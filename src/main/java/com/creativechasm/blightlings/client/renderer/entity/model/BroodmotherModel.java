@@ -107,6 +107,9 @@ public class BroodmotherModel<T extends Entity> extends EntityModel<T>
         rightLeg3.setTextureOffset(21, 0).addBox(-15.0F, -1.0F, -1.0F, 16.0F, 2.0F, 2.0F, 0.0F, false);
     }
 
+    //hacky way
+    private float throb = 0f;
+
     @Override
     public void setRotationAngles(T entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         head.rotateAngleY = netHeadYaw * ((float) Math.PI / 180F);
@@ -150,11 +153,17 @@ public class BroodmotherModel<T extends Entity> extends EntityModel<T>
         rightLeg1.rotateAngleZ += -f9;
         leftLeg0.rotateAngleZ += f10;
         rightLeg0.rotateAngleZ += -f10;
+
+        throb = MathHelper.cos(0.15f * entityIn.ticksExisted) * 0.05f;
     }
 
     @Override
     public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        matrixStack.push();
+        matrixStack.scale(1f + throb, 1f, 1f + throb);
         abdomen.render(matrixStack, buffer, packedLight, packedOverlay);
+        matrixStack.pop();
+
         body.render(matrixStack, buffer, packedLight, packedOverlay);
         leftLeg0.render(matrixStack, buffer, packedLight, packedOverlay);
         head.render(matrixStack, buffer, packedLight, packedOverlay);
