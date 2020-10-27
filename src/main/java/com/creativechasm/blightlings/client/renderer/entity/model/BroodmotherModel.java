@@ -1,9 +1,10 @@
 package com.creativechasm.blightlings.client.renderer.entity.model;
 //Made by Elenterius
 
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
@@ -11,7 +12,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BroodmotherModel<T extends Entity> extends EntityModel<T>
+public class BroodmotherModel<T extends Entity> extends SegmentedModel<T>
 {
     private final ModelRenderer abdomen;
     private final ModelRenderer body;
@@ -161,19 +162,15 @@ public class BroodmotherModel<T extends Entity> extends EntityModel<T>
     public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         matrixStack.push();
         matrixStack.scale(1f + throb, 1f, 1f + throb);
-        abdomen.render(matrixStack, buffer, packedLight, packedOverlay);
+        abdomen.render(matrixStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         matrixStack.pop();
 
-        body.render(matrixStack, buffer, packedLight, packedOverlay);
-        leftLeg0.render(matrixStack, buffer, packedLight, packedOverlay);
-        head.render(matrixStack, buffer, packedLight, packedOverlay);
-        leftLeg1.render(matrixStack, buffer, packedLight, packedOverlay);
-        leftLeg2.render(matrixStack, buffer, packedLight, packedOverlay);
-        leftLeg3.render(matrixStack, buffer, packedLight, packedOverlay);
-        rightLeg0.render(matrixStack, buffer, packedLight, packedOverlay);
-        rightLeg1.render(matrixStack, buffer, packedLight, packedOverlay);
-        rightLeg2.render(matrixStack, buffer, packedLight, packedOverlay);
-        rightLeg3.render(matrixStack, buffer, packedLight, packedOverlay);
+        super.render(matrixStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+    }
+
+    @Override
+    public Iterable<ModelRenderer> getParts() {
+        return ImmutableList.of(body, head, leftLeg0, leftLeg1, leftLeg2, leftLeg3, rightLeg0, rightLeg1, rightLeg2, rightLeg3);
     }
 
     public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {

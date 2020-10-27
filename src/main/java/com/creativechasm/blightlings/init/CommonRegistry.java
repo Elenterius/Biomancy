@@ -3,17 +3,21 @@ package com.creativechasm.blightlings.init;
 import com.creativechasm.blightlings.BlightlingsMod;
 import com.creativechasm.blightlings.entity.BloblingEntity;
 import com.creativechasm.blightlings.entity.BroodmotherEntity;
+import com.creativechasm.blightlings.item.GogglesArmorItem;
 import net.minecraft.block.Block;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.gen.Heightmap;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -52,10 +56,24 @@ public class CommonRegistry
         return spawnReason == SpawnReason.SPAWNER || world.getBlockState(blockpos).canEntitySpawn(world, blockpos, entityType);
     }
 
+    public static final ItemGroup ITEM_GROUP = new ItemGroup(-1, BlightlingsMod.MOD_ID)
+    {
+        @OnlyIn(Dist.CLIENT)
+        public ItemStack createIcon() {
+            return new ItemStack(ModItems.TRUE_SIGHT_GOGGLES);
+        }
+    };
+
     @SubscribeEvent
     public static void onItemsRegistry(final RegistryEvent.Register<Item> event) {
-        event.getRegistry().register(createSpawnEggItem(EntityTypes.BLOBLING, 0x4B2277, 0xAF27E0, new Item.Properties().group(ItemGroup.MISC), "blobling"));
-        event.getRegistry().register(createSpawnEggItem(EntityTypes.BROOD_MOTHER, 0x4B2277, 0xCF7DEC, new Item.Properties().group(ItemGroup.MISC), "brood_mother"));
+        Item.Properties properties = new Item.Properties().group(ITEM_GROUP);
+
+        event.getRegistry().registerAll(
+                new GogglesArmorItem(ModArmorMaterial.CRYSTAL, properties).setRegistryName("true_sight_goggles"),
+
+                createSpawnEggItem(EntityTypes.BLOBLING, 0x4B2277, 0xAF27E0, new Item.Properties().group(ItemGroup.MISC), "blobling"),
+                createSpawnEggItem(EntityTypes.BROOD_MOTHER, 0x4B2277, 0xCF7DEC, new Item.Properties().group(ItemGroup.MISC), "brood_mother")
+        );
     }
 
     @SubscribeEvent
