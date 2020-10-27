@@ -116,6 +116,10 @@ public class BroodmotherModel<T extends Entity> extends SegmentedModel<T>
         head.rotateAngleY = netHeadYaw * ((float) Math.PI / 180F);
         head.rotateAngleX = headPitch * ((float) Math.PI / 180F);
 
+        float mouthAngle = (MathHelper.sin(0.1501f * entityIn.ticksExisted) * 0.5f + 0.5f) * (3.5f + MathHelper.abs(headPitch) * 0.8f) * ((float) Math.PI / 180F);
+        topJaw.rotateAngleX = -mouthAngle;
+        bottomJaw.rotateAngleX = mouthAngle;
+
         float f = (float) Math.PI / 9F;
         leftLeg3.rotateAngleZ = leftLeg0.rotateAngleZ = f;
         rightLeg3.rotateAngleZ = rightLeg0.rotateAngleZ = -f;
