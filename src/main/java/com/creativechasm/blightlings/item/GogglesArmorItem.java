@@ -29,11 +29,19 @@ public class GogglesArmorItem extends ArmorItem implements IRevealInvisible<Gogg
             player.removePotionEffect(Effects.BLINDNESS);
         }
 
-        if (!player.isPotionActive(Effects.NIGHT_VISION)) {
-            EffectInstance effectInstance = new EffectInstance(Effects.NIGHT_VISION, 100);
+        EffectInstance activeEffect = player.getActivePotionEffect(Effects.NIGHT_VISION);
+        if (activeEffect == null) {
+            EffectInstance effectInstance = new EffectInstance(Effects.NIGHT_VISION, 360, 0, false, false);
+            if (player.isPotionApplicable(effectInstance)) {
+                player.addPotionEffect(effectInstance);
+            }
+        }
+        else if (player.ticksExisted % 20 == 0 && activeEffect.getDuration() < 250) {
+            EffectInstance effectInstance = new EffectInstance(Effects.NIGHT_VISION, 360, 0, false, false);
             if (player.isPotionApplicable(effectInstance)) {
                 player.addPotionEffect(effectInstance);
             }
         }
     }
+
 }
