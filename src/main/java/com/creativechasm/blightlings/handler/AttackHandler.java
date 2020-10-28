@@ -20,13 +20,13 @@ public abstract class AttackHandler
 //    private static final UUID HEALTH_REDUCTION_ID = UUID.fromString("9eee3c0b-43cf-41e5-af9d-8cfd79381515");
 //    public static final AttributeModifier negativeHealthModifier = new AttributeModifier(HEALTH_REDUCTION_ID, "health reduction", -2.0F, AttributeModifier.Operation.ADDITION);
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onLivingAttack(LivingAttackEvent event) {
         if (!event.getEntityLiving().isServerWorld()) return;
 
         DamageSource damageSource = event.getSource();
         if (!event.isCanceled() && damageSource instanceof ModEntityDamageSource) {
-            ((ModEntityDamageSource) damageSource).updateAttackStrength(event.getAmount()); // calculate final attacker strength
+            ((ModEntityDamageSource) damageSource).updateAttackStrength(event.getAmount()); // calculate attacker strength ("attack cool down")
         }
     }
 
