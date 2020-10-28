@@ -1,4 +1,4 @@
-package com.creativechasm.blightlings.init;
+package com.creativechasm.blightlings.item;
 
 import com.creativechasm.blightlings.BlightlingsMod;
 import net.minecraft.inventory.EquipmentSlotType;

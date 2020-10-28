@@ -4,14 +4,14 @@ import com.creativechasm.blightlings.BlightlingsMod;
 import com.creativechasm.blightlings.entity.BloblingEntity;
 import com.creativechasm.blightlings.entity.BroodmotherEntity;
 import com.creativechasm.blightlings.item.GogglesArmorItem;
+import com.creativechasm.blightlings.item.ModArmorMaterial;
+import com.creativechasm.blightlings.item.ModItemTier;
 import net.minecraft.block.Block;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.SpawnEggItem;
+import net.minecraft.item.*;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.IServerWorld;
@@ -26,7 +26,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import java.util.Random;
 
 @Mod.EventBusSubscriber(modid = BlightlingsMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class CommonRegistry
+public abstract class CommonRegistry
 {
     @SubscribeEvent
     public static void onSetup(final FMLCommonSetupEvent event) {
@@ -69,10 +69,11 @@ public class CommonRegistry
         Item.Properties properties = new Item.Properties().group(ITEM_GROUP);
 
         event.getRegistry().registerAll(
-                new GogglesArmorItem(ModArmorMaterial.CRYSTAL, properties).setRegistryName("true_sight_goggles"),
+                new GogglesArmorItem(ModArmorMaterial.CRYSTAL, new Item.Properties().group(ITEM_GROUP).rarity(Rarity.EPIC)).setRegistryName("true_sight_goggles"),
+                new AxeItem(ModItemTier.CRYSTAL, 5F, -3.15F, new Item.Properties().group(ITEM_GROUP).rarity(Rarity.EPIC)).setRegistryName("blightbringer_axe"),
 
-                createSpawnEggItem(EntityTypes.BLOBLING, 0x4B2277, 0xAF27E0, new Item.Properties().group(ItemGroup.MISC), "blobling"),
-                createSpawnEggItem(EntityTypes.BROOD_MOTHER, 0x4B2277, 0xCF7DEC, new Item.Properties().group(ItemGroup.MISC), "brood_mother")
+                createSpawnEggItem(EntityTypes.BLOBLING, 0x4B2277, 0xAF27E0, properties, "blobling"),
+                createSpawnEggItem(EntityTypes.BROOD_MOTHER, 0x4B2277, 0xCF7DEC, properties, "brood_mother")
         );
     }
 
@@ -83,6 +84,11 @@ public class CommonRegistry
 
     private static <T extends Entity> Item createSpawnEggItem(EntityType<T> entityType, int primaryColor, int secondaryColor, Item.Properties properties, String name) {
         return new SpawnEggItem(entityType, primaryColor, secondaryColor, properties).setRegistryName("spawn_egg_" + name);
+    }
+
+    @SubscribeEvent
+    public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
+        event.getRegistry().registerAll(ModSoundEvents.createSoundEvent("impactsplat"));
     }
 
     public abstract static class EntityTypes

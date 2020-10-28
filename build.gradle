@@ -97,6 +97,10 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.16.3-34.1.25'
 }
 
+processResources {
+    exclude '**/*.psd'
+}
+
 // Example for how to get properties into the manifest for reading by the runtime..
 jar {
     manifest {
