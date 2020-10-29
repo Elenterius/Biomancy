@@ -28,11 +28,11 @@ public interface ISwarmGroupMember<T extends MobEntity>
         return getGroupSize() > 1;
     }
 
-    void setLeader(@Nullable ISwarmGroupMember<?> groupLeader);
+    void setLeader(@Nullable T groupLeader);
 
-    default ISwarmGroupMember<?> joinGroup(ISwarmGroupMember<?> groupLeader) {
+    default T joinGroup(T groupLeader) {
         setLeader(groupLeader);
-        groupLeader.increaseGroupSize();
+        ((ISwarmGroupMember<?>) groupLeader).increaseGroupSize();
         return groupLeader;
     }
 
@@ -49,8 +49,8 @@ public interface ISwarmGroupMember<T extends MobEntity>
         return isLeader() && getGroupSize() < getMaxGroupSize();
     }
 
-    default boolean inRangeOfLeader() {
-        return asMobEntity().getDistanceSq(getLeader().asMobEntity()) <= 128D;
+    default boolean inRangeOfLeader(T leader) {
+        return asMobEntity().getDistanceSq(leader) <= 128D;
     }
 
     default void moveToLeader() {
@@ -61,6 +61,6 @@ public interface ISwarmGroupMember<T extends MobEntity>
         entityStream
                 .limit(getMaxGroupSize() - getGroupSize())
                 .filter((entity) -> entity != this.asMobEntity())
-                .forEach((entity) -> ((ISwarmGroupMember<?>) entity).joinGroup(this));
+                .forEach((entity) -> ((ISwarmGroupMember<T>) entity).joinGroup((T) this));
     }
 }

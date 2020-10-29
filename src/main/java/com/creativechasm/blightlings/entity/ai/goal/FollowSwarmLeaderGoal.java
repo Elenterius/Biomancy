@@ -47,7 +47,7 @@ public class FollowSwarmLeaderGoal extends Goal
 
     @Override
     public boolean shouldContinueExecuting() {
-        return taskOwner.hasLeader() && taskOwner.inRangeOfLeader();
+        return taskOwner.hasLeader() && taskOwner.inRangeOfLeader((SwarmGroupMemberEntity) taskOwner.getLeader().asMobEntity());
     }
 
     @Override

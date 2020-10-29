@@ -91,7 +91,10 @@ public abstract class CommonRegistry
 
     @SubscribeEvent
     public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
-        event.getRegistry().registerAll(ModSoundEvents.createSoundEvent("impactsplat"));
+        event.getRegistry().registerAll(
+                ModSoundEvents.createSoundEvent("impactsplat"),
+                ModSoundEvents.createSoundEvent("wahwah")
+        );
     }
 
     public abstract static class EntityTypes

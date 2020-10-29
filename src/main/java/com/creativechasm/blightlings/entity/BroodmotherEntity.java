@@ -1,9 +1,14 @@
 package com.creativechasm.blightlings.entity;
 
+import com.creativechasm.blightlings.entity.ai.goal.LookAtAndMakeNoiseGoal;
 import com.creativechasm.blightlings.init.CommonRegistry;
+import com.creativechasm.blightlings.init.ModSoundEvents;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.StringTextComponent;
@@ -25,6 +30,12 @@ public class BroodmotherEntity extends SwarmGroupMemberEntity
                 .func_233815_a_(Attributes.field_233818_a_, 16.0D) //max health
                 .func_233815_a_(Attributes.field_233821_d_, 0.25D) //movement speed
                 .func_233815_a_(Attributes.field_233823_f_, 3.0D); //attack damage
+    }
+
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+        goalSelector.addGoal(6, new LookAtAndMakeNoiseGoal(this, PlayerEntity.class, 8.0F, ModSoundEvents.WAH_WAH));
     }
 
     @Override
@@ -63,11 +74,20 @@ public class BroodmotherEntity extends SwarmGroupMemberEntity
             }
 
             world.addEntity(entity);
+            entity.playSound(SoundEvents.ENTITY_SLIME_SQUISH_SMALL, entity.getSoundVolume(), 1f);
         }
     }
 
     @Override
     protected float getStandingEyeHeight(@Nonnull Pose poseIn, @Nonnull EntitySize sizeIn) {
         return 0.28F;
+    }
+
+    @Override
+    public void playAmbientSound() {
+        SoundEvent soundevent = getAmbientSound();
+        if (soundevent != null) {
+            playSound(soundevent, getSoundVolume(), getSoundPitch() * 0.5f);
+        }
     }
 }
