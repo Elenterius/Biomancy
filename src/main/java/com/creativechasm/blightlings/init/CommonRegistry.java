@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -70,6 +71,8 @@ public abstract class CommonRegistry
 
         event.getRegistry().registerAll(
                 new GogglesArmorItem(ModArmorMaterial.CRYSTAL, new Item.Properties().group(ITEM_GROUP).rarity(Rarity.EPIC)).setRegistryName("true_sight_goggles"),
+                new ArmorItem(ModArmorMaterial.CRYSTAL, EquipmentSlotType.FEET, new Item.Properties().group(ITEM_GROUP).rarity(Rarity.EPIC)).setRegistryName("climbing_boots"),
+                new ArmorItem(ModArmorMaterial.CRYSTAL, EquipmentSlotType.LEGS, new Item.Properties().group(ITEM_GROUP).rarity(Rarity.EPIC)).setRegistryName("jumping_pants"),
                 new AxeItem(ModItemTier.CRYSTAL, 5F, -3.15F, new Item.Properties().group(ITEM_GROUP).rarity(Rarity.EPIC)).setRegistryName("blightbringer_axe"),
 
                 createSpawnEggItem(EntityTypes.BLOBLING, 0x4B2277, 0xAF27E0, properties, "blobling"),

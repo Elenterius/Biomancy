@@ -1,6 +1,7 @@
 package com.creativechasm.blightlings.item;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
@@ -31,17 +32,20 @@ public class GogglesArmorItem extends ArmorItem implements IRevealInvisible<Gogg
 
         EffectInstance activeEffect = player.getActivePotionEffect(Effects.NIGHT_VISION);
         if (activeEffect == null) {
-            EffectInstance effectInstance = new EffectInstance(Effects.NIGHT_VISION, 360, 0, false, false);
+            EffectInstance effectInstance = new EffectInstance(Effects.NIGHT_VISION, Integer.MAX_VALUE, 0, false, false);
             if (player.isPotionApplicable(effectInstance)) {
                 player.addPotionEffect(effectInstance);
             }
         }
-        else if (player.ticksExisted % 20 == 0 && activeEffect.getDuration() < 250) {
-            EffectInstance effectInstance = new EffectInstance(Effects.NIGHT_VISION, 360, 0, false, false);
+        else if (player.ticksExisted % 1200 == 0 && activeEffect.getDuration() < Integer.MAX_VALUE - 2000) {
+            EffectInstance effectInstance = new EffectInstance(Effects.NIGHT_VISION, Integer.MAX_VALUE, 0, false, false);
             if (player.isPotionApplicable(effectInstance)) {
                 player.addPotionEffect(effectInstance);
             }
         }
     }
 
+    public void cancelEffect(LivingEntity entity) {
+        if (entity.isPotionActive(Effects.NIGHT_VISION)) entity.removePotionEffect(Effects.NIGHT_VISION);
+    }
 }

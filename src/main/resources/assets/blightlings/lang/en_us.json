@@ -1,11 +1,13 @@
 {
   "itemGroup.blightlings": "Blightlings",
-  "entity.blightlings.blobling": "Blobling",
-  "entity.blightlings.brood_mother": "Brood Mother",
+  "item.blightlings.true_sight_goggles": "Crystalline Compound Lenses",
+  "item.blightlings.climbing_boots": "Boots of the Millipedes",
+  "item.blightlings.jumping_pants": "Copepod Leggings",
+  "item.blightlings.blightbringer_axe": "Blightbringer Axe",
   "item.blightlings.spawn_egg_blobling": "Blobling Spawn Egg",
   "item.blightlings.spawn_egg_brood_mother": "Brood Mother Spawn Egg",
-  "item.blightlings.true_sight_goggles": "Crystalline Compound Lenses",
-  "item.blightlings.blightbringer_axe": "Blightbringer Axe",
+  "entity.blightlings.blobling": "Blobling",
+  "entity.blightlings.brood_mother": "Brood Mother",
   "death.blightlings.attack.blight_thorn": "%1$s was mauled to death by %2$s",
   "death.blightlings.attack.blight_thorn.item": "%1$s was mauled to death by %2$s using %3$s",
   "sounds.blightlings.impactsplat": "Impact Splat"
