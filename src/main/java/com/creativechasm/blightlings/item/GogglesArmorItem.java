@@ -1,5 +1,7 @@
 package com.creativechasm.blightlings.item;
 
+import com.creativechasm.blightlings.BlightlingsMod;
+import com.creativechasm.blightlings.init.ModItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,8 +13,12 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.world.World;
 
+import javax.annotation.Nullable;
+
 public class GogglesArmorItem extends ArmorItem implements IRevealInvisible<GogglesArmorItem>
 {
+    public static final String ARMOR_TEXTURE = BlightlingsMod.MOD_ID + ":textures/models/armor/true_sight_goggles.png";
+
     public GogglesArmorItem(IArmorMaterial materialIn, Properties properties) {
         super(materialIn, EquipmentSlotType.HEAD, properties);
     }
@@ -47,5 +53,16 @@ public class GogglesArmorItem extends ArmorItem implements IRevealInvisible<Gogg
 
     public void cancelEffect(LivingEntity entity) {
         if (entity.isPotionActive(Effects.NIGHT_VISION)) entity.removePotionEffect(Effects.NIGHT_VISION);
+    }
+
+    @Nullable
+    @Override
+    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type) {
+        return ARMOR_TEXTURE;
+    }
+
+    @Override
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+        return ModItems.BLIGHT_SHARD == repair.getItem();
     }
 }

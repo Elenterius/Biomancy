@@ -1,7 +1,7 @@
 package com.creativechasm.blightlings.item;
 
+import com.creativechasm.blightlings.init.ModItems;
 import net.minecraft.item.IItemTier;
-import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.LazyValue;
 
@@ -9,8 +9,8 @@ import java.util.function.Supplier;
 
 public enum ModItemTier implements IItemTier
 {
-    CRYSTAL(4, 2031, 9.0F, 4.0F, 15, () -> {
-        return Ingredient.fromItems(Items.PURPLE_STAINED_GLASS);
+    BLIGHT_AMALGAM(4, 2031, 9.0F, 4.0F, 15, () -> {
+        return Ingredient.fromItems(ModItems.BLIGHT_SAC);
     });
 
     private final int harvestLevel;

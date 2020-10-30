@@ -3,7 +3,7 @@
   "package": "com.creativechasm.blightlings.mixin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "mixins.blightlings.refmap.json",
-  "mixins": ["DamageSourceMixin", "MixinEntity"],
+  "mixins": ["DamageSourceMixin", "EntityMixin", "LivingEntityAccessor"],
   "injectors": {
     "defaultRequire": 1
   },

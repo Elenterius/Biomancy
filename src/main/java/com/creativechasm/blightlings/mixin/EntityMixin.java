@@ -11,9 +11,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
-public abstract class MixinEntity extends net.minecraftforge.common.capabilities.CapabilityProvider<Entity>
+public abstract class EntityMixin extends net.minecraftforge.common.capabilities.CapabilityProvider<Entity>
 {
-    protected MixinEntity(Class<Entity> baseClass) {
+    protected EntityMixin(Class<Entity> baseClass) {
         super(baseClass);
     }
 

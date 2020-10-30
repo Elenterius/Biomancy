@@ -1,9 +1,8 @@
 {
   "itemGroup.blightlings": "Blightlings",
+
   "item.blightlings.true_sight_goggles": "Oculi of Unveiling",
   "tooltip.blightlings.true_sight_goggles": "True Sight I",
-  "item.blightlings.climbing_boots": "Boots of the Millipedes",
-  "item.blightlings.jumping_pants": "Copepod Leggings",
   "item.blightlings.blightbringer_axe": "Blightbringer Axe",
   "item.blightlings.blight_sac": "Blight Sac",
   "item.blightlings.blight_string": "Purpura Silk",
@@ -14,6 +13,8 @@
   "item.blightlings.spawn_egg_brood_mother": "Brood Mother Spawn Egg",
   "entity.blightlings.blobling": "Blobling",
   "entity.blightlings.brood_mother": "Brood Mother",
+  "enchantment.blightlings.climbing": "Millipedes",
+  "enchantment.blightlings.bullet_jump": "Copepod Leap",
   "death.blightlings.attack.blight_thorn": "%1$s was mauled to death by %2$s",
   "death.blightlings.attack.blight_thorn.item": "%1$s was mauled to death by %2$s using %3$s",
   "sounds.blightlings.impactsplat": "Impact Splat",

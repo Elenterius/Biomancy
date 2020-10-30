@@ -1,7 +1,9 @@
 package com.creativechasm.blightlings.handler;
 
 import com.creativechasm.blightlings.BlightlingsMod;
+import com.creativechasm.blightlings.init.ModEnchantments;
 import com.creativechasm.blightlings.init.ModItems;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -10,6 +12,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -36,7 +39,7 @@ public abstract class EquipmentHandler
         if (!(event.getEntityLiving() instanceof PlayerEntity)) return;
         PlayerEntity entity = (PlayerEntity) event.getEntityLiving();
 
-        if (entity.getItemStackFromSlot(EquipmentSlotType.FEET).getItem() == ModItems.CLIMBING_BOOTS) {
+        if (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.CLIMBING, entity.getItemStackFromSlot(EquipmentSlotType.FEET)) > 0) {
             if (entity.collidedHorizontally && (entity.getFoodStats().getFoodLevel() > 6.0F || entity.abilities.isCreativeMode)) {
                 if (!entity.isOnLadder()) {  // normal climbing
                     Vector3d motion = entity.getMotion();
@@ -54,21 +57,22 @@ public abstract class EquipmentHandler
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onLivingJump(LivingEvent.LivingJumpEvent event) {
         if (!(event.getEntityLiving() instanceof PlayerEntity)) return;
         PlayerEntity entity = (PlayerEntity) event.getEntityLiving();
 
-        if (entity.getItemStackFromSlot(EquipmentSlotType.LEGS).getItem() == ModItems.JUMPING_PANTS) {
-            if (!entity.isPassenger() && (entity.getFoodStats().getFoodLevel() > 6.0F || entity.abilities.isCreativeMode)) {
-                if (event.getEntityLiving().isSneaking()) {
-                    Vector3d vec = entity.getLookVec();
-                    Vector3d motion = entity.getMotion();
-                    float xz = 1 + entity.jumpMovementFactor * 8;
-                    entity.setVelocity(motion.x + vec.x * xz, motion.y + vec.y * (1 + entity.jumpMovementFactor * 2), motion.z + vec.z * xz);
-                    entity.addExhaustion(0.2F);
-                }
+        if (!entity.isPassenger() && (entity.getFoodStats().getFoodLevel() > 6.0F || entity.abilities.isCreativeMode)) {
+            int bulletJumpLevel = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.BULLET_JUMP, entity.getItemStackFromSlot(EquipmentSlotType.LEGS));
+            if (bulletJumpLevel > 0 && event.getEntityLiving().isSneaking()) {
+                Vector3d lookVec = entity.getLookVec();
+                Vector3d motion = entity.getMotion();
+                double jumpMotion = motion.y + 0.25F * bulletJumpLevel;
+                entity.setMotion(motion.x + lookVec.x * jumpMotion, motion.y + lookVec.y * (0.2F * bulletJumpLevel), motion.z + lookVec.z * jumpMotion);
+                entity.startFallFlying(); // "use flight physics" for bullet jump, on top of that we get free boosted elytra takeoff without rockets :)
+                entity.addExhaustion(0.2F);
             }
         }
     }
+
 }

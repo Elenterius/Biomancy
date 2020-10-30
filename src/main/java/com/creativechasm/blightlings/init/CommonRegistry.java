@@ -4,13 +4,12 @@ import com.creativechasm.blightlings.BlightlingsMod;
 import com.creativechasm.blightlings.entity.BloblingEntity;
 import com.creativechasm.blightlings.entity.BroodmotherEntity;
 import com.creativechasm.blightlings.item.GogglesArmorItem;
-import com.creativechasm.blightlings.item.ModArmorMaterial;
 import com.creativechasm.blightlings.item.ModItemTier;
 import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -70,10 +69,8 @@ public abstract class CommonRegistry
         Item.Properties properties = new Item.Properties().group(ITEM_GROUP);
 
         event.getRegistry().registerAll(
-                new GogglesArmorItem(ModArmorMaterial.CRYSTAL, new Item.Properties().group(ITEM_GROUP).rarity(Rarity.EPIC)).setRegistryName("true_sight_goggles"),
-                new ArmorItem(ModArmorMaterial.CRYSTAL, EquipmentSlotType.FEET, new Item.Properties().group(ITEM_GROUP).rarity(Rarity.EPIC)).setRegistryName("climbing_boots"),
-                new ArmorItem(ModArmorMaterial.CRYSTAL, EquipmentSlotType.LEGS, new Item.Properties().group(ITEM_GROUP).rarity(Rarity.EPIC)).setRegistryName("jumping_pants"),
-                new AxeItem(ModItemTier.CRYSTAL, 5F, -3.15F, new Item.Properties().group(ITEM_GROUP).rarity(Rarity.EPIC)).setRegistryName("blightbringer_axe"),
+                new GogglesArmorItem(ArmorMaterial.IRON, new Item.Properties().group(ITEM_GROUP).rarity(Rarity.EPIC)).setRegistryName("true_sight_goggles"),
+                new AxeItem(ModItemTier.BLIGHT_AMALGAM, 5F, -3.15F, new Item.Properties().group(ITEM_GROUP).rarity(Rarity.EPIC)).setRegistryName("blightbringer_axe"),
 
                 new Item(properties).setRegistryName("blight_shard"),
                 new Item(properties).setRegistryName("blight_sac"),
@@ -81,8 +78,8 @@ public abstract class CommonRegistry
                 new Item(properties).setRegistryName("blight_goo"),
                 new Item(properties).setRegistryName("blight_eye"),
 
-                createSpawnEggItem(EntityTypes.BLOBLING, 0x4B2277, 0xAF27E0, properties, "blobling"),
-                createSpawnEggItem(EntityTypes.BROOD_MOTHER, 0x4B2277, 0xCF7DEC, properties, "brood_mother")
+                createSpawnEggItem(EntityTypes.BLOBLING, 0x764da2, 0xff40ff, properties, "blobling"),
+                createSpawnEggItem(EntityTypes.BROOD_MOTHER, 0x49345e, 0xda70d6, properties, "brood_mother")
         );
     }
 
@@ -96,7 +93,15 @@ public abstract class CommonRegistry
     }
 
     @SubscribeEvent
-    public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
+    public static void onEnchantmentRegistry(final RegistryEvent.Register<Enchantment> event) {
+        event.getRegistry().registerAll(
+                new ClimbingEnchantment(Enchantment.Rarity.RARE).setRegistryName("climbing"),
+                new BulletJumpEnchantment(Enchantment.Rarity.RARE).setRegistryName("bullet_jump")
+        );
+    }
+
+    @SubscribeEvent
+    public static void registerSounds(final RegistryEvent.Register<SoundEvent> event) {
         event.getRegistry().registerAll(
                 ModSoundEvents.createSoundEvent("impactsplat"),
                 ModSoundEvents.createSoundEvent("wahwah")
