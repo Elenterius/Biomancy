@@ -1,17 +1,15 @@
 package com.creativechasm.blightlings.entity;
 
-import net.minecraft.entity.EntitySize;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.entity.Pose;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.potion.Potions;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.world.Explosion;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
@@ -50,9 +48,17 @@ public class BloblingEntity extends SwarmGroupMemberEntity
     @Override
     public void onDeath(@Nonnull DamageSource cause) {
         super.onDeath(cause);
-        if (!world.isRemote && !cause.isUnblockable()) {
-            Explosion.Mode mode = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(world, this) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
-            world.createExplosion(this, this.getPosX(), this.getPosY(), this.getPosZ(), 0.75f, mode);
+        if (!world.isRemote && !cause.isMagicDamage() && !cause.isFireDamage() && !cause.isExplosion()) {
+            Vector3d pos = getPositionVec();
+            AreaEffectCloudEntity aoeCloud = new AreaEffectCloudEntity(world, pos.x, pos.y, pos.z);
+            aoeCloud.setDuration(250);
+            aoeCloud.setRadius(1.25F);
+            aoeCloud.setRadiusOnUse(-0.5F);
+            aoeCloud.setWaitTime(10);
+            aoeCloud.setRadiusPerTick(-aoeCloud.getRadius() / (float) aoeCloud.getDuration());
+            aoeCloud.setPotion(rand.nextBoolean() ? Potions.HARMING : Potions.WEAKNESS);
+            aoeCloud.setColor(0xff5eeb);
+            world.addEntity(aoeCloud);
         }
     }
 
