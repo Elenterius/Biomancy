@@ -31,6 +31,5 @@ public abstract class ClientRegistry
     public static void onItemColorRegistry(final ColorHandlerEvent.Item event) {
         event.getItemColors().register((stack, index) -> 0xff5eeb, ModItems.BLIGHT_GOO);
         event.getItemColors().register((stack, index) -> 0xf99fee, ModItems.BLIGHT_STRING);
-        event.getItemColors().register((stack, index) -> 0x9c72f6, ModItems.BLIGHT_EYE);
     }
 }
