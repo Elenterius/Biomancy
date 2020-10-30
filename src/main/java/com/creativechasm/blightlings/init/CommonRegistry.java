@@ -75,6 +75,12 @@ public abstract class CommonRegistry
                 new ArmorItem(ModArmorMaterial.CRYSTAL, EquipmentSlotType.LEGS, new Item.Properties().group(ITEM_GROUP).rarity(Rarity.EPIC)).setRegistryName("jumping_pants"),
                 new AxeItem(ModItemTier.CRYSTAL, 5F, -3.15F, new Item.Properties().group(ITEM_GROUP).rarity(Rarity.EPIC)).setRegistryName("blightbringer_axe"),
 
+                new Item(properties).setRegistryName("blight_shard"),
+                new Item(properties).setRegistryName("blight_sac"),
+                new Item(properties).setRegistryName("blight_string"),
+                new Item(properties).setRegistryName("blight_goo"),
+                new Item(properties).setRegistryName("blight_eye"),
+
                 createSpawnEggItem(EntityTypes.BLOBLING, 0x4B2277, 0xAF27E0, properties, "blobling"),
                 createSpawnEggItem(EntityTypes.BROOD_MOTHER, 0x4B2277, 0xCF7DEC, properties, "brood_mother")
         );

@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shaped", "pattern": [
+  " S ", "SES", " S "
+], "key": {
+  "E": {"item": "minecraft:spider_eye"}, "S": {"item": "blightlings:blight_shard"}
+}, "result": {
+  "item": "blightlings:blight_eye"
+}
+}

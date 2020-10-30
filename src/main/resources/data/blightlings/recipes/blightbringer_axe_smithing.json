@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smithing", "base": {
+  "item": "minecraft:diamond_axe"
+}, "addition": {
+  "item": "blightlings:blight_sac"
+}, "result": {
+  "item": "blightlings:blightbringer_axe"
+}
+}
