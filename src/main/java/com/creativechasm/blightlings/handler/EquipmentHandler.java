@@ -8,6 +8,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
@@ -67,12 +68,31 @@ public abstract class EquipmentHandler
             if (bulletJumpLevel > 0 && event.getEntityLiving().isSneaking()) {
                 Vector3d lookVec = entity.getLookVec();
                 Vector3d motion = entity.getMotion();
-                double jumpMotion = motion.y + 0.25F * bulletJumpLevel;
-                entity.setMotion(motion.x + lookVec.x * jumpMotion, motion.y + lookVec.y * (0.2F * bulletJumpLevel), motion.z + lookVec.z * jumpMotion);
-                entity.startFallFlying(); // "use flight physics" for bullet jump, on top of that we get free boosted elytra takeoff without rockets :)
-                entity.addExhaustion(0.2F);
+
+                boolean startedFalFlying = tryToStartFallFlying(entity); // get free boosted elytra takeoff without rockets :)
+                float factor = startedFalFlying ? 0.3f : 0.5f;
+
+                double jumpMotion = motion.y + factor * bulletJumpLevel + 0.15f;
+                entity.setMotion(motion.x + lookVec.x * jumpMotion, motion.y + lookVec.y * ((factor - 0.1f) * bulletJumpLevel), motion.z + lookVec.z * jumpMotion);
+                entity.isAirBorne = true;
+
+                //WARNING: "Dev moved wrongly!" --> caused by sneaking and trying to jump off block ledge (fall off prevention)
+                entity.setSneaking(false); // the fix
+
+                entity.addExhaustion(0.3F);
             }
         }
+    }
+
+    private static boolean tryToStartFallFlying(PlayerEntity entity) {
+        if (!entity.isElytraFlying() && !entity.isInWater() && !entity.isPotionActive(Effects.LEVITATION)) {
+            ItemStack itemstack = entity.getItemStackFromSlot(EquipmentSlotType.CHEST);
+            if (itemstack.canElytraFly(entity)) {
+                entity.startFallFlying();
+                return true;
+            }
+        }
+        return false;
     }
 
 }
