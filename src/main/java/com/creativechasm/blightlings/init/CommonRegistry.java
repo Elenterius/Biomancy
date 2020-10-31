@@ -3,6 +3,7 @@ package com.creativechasm.blightlings.init;
 import com.creativechasm.blightlings.BlightlingsMod;
 import com.creativechasm.blightlings.entity.BloblingEntity;
 import com.creativechasm.blightlings.entity.BroodmotherEntity;
+import com.creativechasm.blightlings.item.BlightbringerAxeItem;
 import com.creativechasm.blightlings.item.GogglesArmorItem;
 import com.creativechasm.blightlings.item.ModItemTier;
 import net.minecraft.block.Block;
@@ -70,7 +71,7 @@ public abstract class CommonRegistry
 
         event.getRegistry().registerAll(
                 new GogglesArmorItem(ArmorMaterial.IRON, new Item.Properties().group(ITEM_GROUP).rarity(Rarity.EPIC)).setRegistryName("true_sight_goggles"),
-                new AxeItem(ModItemTier.BLIGHT_AMALGAM, 5F, -3.15F, new Item.Properties().group(ITEM_GROUP).rarity(Rarity.EPIC)).setRegistryName("blightbringer_axe"),
+                new BlightbringerAxeItem(ModItemTier.BLIGHT_AMALGAM, 5F, -3.15F, new Item.Properties().group(ITEM_GROUP).rarity(Rarity.EPIC)).setRegistryName("blightbringer_axe"),
 
                 new Item(properties).setRegistryName("blight_shard"),
                 new Item(properties).setRegistryName("blight_sac"),
