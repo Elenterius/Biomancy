@@ -10,7 +10,7 @@ import java.util.function.Supplier;
 public enum ModItemTier implements IItemTier
 {
     BLIGHT_AMALGAM(4, 2031, 9.0F, 4.0F, 15, () -> {
-        return Ingredient.fromItems(ModItems.BLIGHT_SAC);
+        return Ingredient.fromItems(ModItems.BLIGHT_SAC.get());
     });
 
     private final int harvestLevel;

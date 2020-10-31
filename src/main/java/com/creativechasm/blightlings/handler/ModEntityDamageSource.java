@@ -34,7 +34,7 @@ public class ModEntityDamageSource extends EntityDamageSource
     public ITextComponent getDeathMessage(LivingEntity entityLivingBaseIn) {
         ItemStack itemstack = damageSourceEntity instanceof LivingEntity ? ((LivingEntity) damageSourceEntity).getHeldItemMainhand() : ItemStack.EMPTY;
         String str = "death.blightlings.attack." + damageType;
-        ITextComponent entityDisplayName = damageSourceEntity != null ? damageSourceEntity.getDisplayName() : new StringTextComponent("Foobar").func_230530_a_(Style.field_240709_b_.setObfuscated(true));
+        ITextComponent entityDisplayName = damageSourceEntity != null ? damageSourceEntity.getDisplayName() : new StringTextComponent("Foobar").setStyle(Style.EMPTY.setObfuscated(true));
         return !itemstack.isEmpty() && itemstack.hasDisplayName() ? new TranslationTextComponent(str + ".item", entityLivingBaseIn.getDisplayName(), entityDisplayName, itemstack.getTextComponent()) : new TranslationTextComponent(str, entityLivingBaseIn.getDisplayName(), entityDisplayName);
     }
 }

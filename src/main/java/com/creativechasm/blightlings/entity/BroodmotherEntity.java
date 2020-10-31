@@ -1,7 +1,7 @@
 package com.creativechasm.blightlings.entity;
 
 import com.creativechasm.blightlings.entity.ai.goal.LookAtAndMakeNoiseGoal;
-import com.creativechasm.blightlings.init.CommonRegistry;
+import com.creativechasm.blightlings.init.ModEntityTypes;
 import com.creativechasm.blightlings.init.ModSoundEvents;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -27,9 +27,9 @@ public class BroodmotherEntity extends SwarmGroupMemberEntity
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
         return MobEntity.func_233666_p_()
-                .func_233815_a_(Attributes.field_233818_a_, 16.0D) //max health
-                .func_233815_a_(Attributes.field_233821_d_, 0.25D) //movement speed
-                .func_233815_a_(Attributes.field_233823_f_, 3.0D); //attack damage
+                .createMutableAttribute(Attributes.MAX_HEALTH, 20.0D)
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25D)
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 3.0D);
     }
 
     @Override
@@ -46,8 +46,8 @@ public class BroodmotherEntity extends SwarmGroupMemberEntity
     @Override
     public void livingTick() {
         if (!world.isRemote() && ticksExisted % 20 == 0) {
-            if (canGroupGrow() && getHealth() < getMaxHealth() * 0.75f) {
-                if (++timer > 7 && getAttackTarget() != null) {
+            if (canGroupGrow() && getHealth() < getMaxHealth() * 0.8f) {
+                if (++timer > 6 && getAttackTarget() != null) {
                     timer = 0;
                     spawnBlobling();
                 }
@@ -57,7 +57,7 @@ public class BroodmotherEntity extends SwarmGroupMemberEntity
     }
 
     private void spawnBlobling() {
-        BloblingEntity entity = CommonRegistry.EntityTypes.BLOBLING.create(world);
+        BloblingEntity entity = ModEntityTypes.BLOBLING.get().create(world);
         if (entity != null) {
             Vector3d pos = getPositionVec().add(4D * rand.nextDouble() - 2D, 0.5D, 4D * rand.nextDouble() - 2D);
             entity.setLocationAndAngles(pos.x, pos.y, pos.z, rand.nextFloat() * 360.0F, 0.0F);
@@ -69,7 +69,8 @@ public class BroodmotherEntity extends SwarmGroupMemberEntity
             entity.setNoAI(isAIDisabled());
             entity.setInvulnerable(isInvulnerable());
             if (hasCustomName()) {
-                entity.setCustomName(new StringTextComponent("Little ").func_230529_a_(getCustomName()));
+                //noinspection ConstantConditions
+                entity.setCustomName(new StringTextComponent("Little ").append(getCustomName()));
                 entity.setCustomNameVisible(isCustomNameVisible());
             }
 

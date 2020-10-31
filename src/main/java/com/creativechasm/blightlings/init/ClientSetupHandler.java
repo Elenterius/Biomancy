@@ -14,7 +14,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = BlightlingsMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-public abstract class ClientRegistry
+public abstract class ClientSetupHandler
 {
     @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
@@ -23,13 +23,14 @@ public abstract class ClientRegistry
 
     @SubscribeEvent
     public static void onModelRegistry(final ModelRegistryEvent event) {
-        RenderingRegistry.registerEntityRenderingHandler(CommonRegistry.EntityTypes.BLOBLING, BloblingRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(CommonRegistry.EntityTypes.BROOD_MOTHER, BroodmotherRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BLOBLING.get(), BloblingRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BROOD_MOTHER.get(), BroodmotherRenderer::new);
     }
 
     @SubscribeEvent
     public static void onItemColorRegistry(final ColorHandlerEvent.Item event) {
-        event.getItemColors().register((stack, index) -> 0xff5eeb, ModItems.BLIGHT_GOO);
-        event.getItemColors().register((stack, index) -> 0xf99fee, ModItems.BLIGHT_STRING);
+        event.getItemColors().register((stack, index) -> 0xff5eeb, ModItems.BLIGHT_GOO.get());
+        event.getItemColors().register((stack, index) -> 0xf99fee, ModItems.BLIGHT_STRING.get());
     }
+
 }

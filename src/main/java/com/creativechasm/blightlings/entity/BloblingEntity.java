@@ -23,9 +23,9 @@ public class BloblingEntity extends SwarmGroupMemberEntity
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
         return MobEntity.func_233666_p_()
-                .func_233815_a_(Attributes.field_233818_a_, 5.0D) //max health
-                .func_233815_a_(Attributes.field_233821_d_, 0.2D) //movement speed
-                .func_233815_a_(Attributes.field_233823_f_, 1.0D); //attack damage
+                .createMutableAttribute(Attributes.MAX_HEALTH, 5.0D)
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2D)
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 1.0D);
     }
 
     @Override

@@ -1,13 +1,13 @@
-package com.creativechasm.blightlings.init;
+package com.creativechasm.blightlings.enchantment;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentType;
 import net.minecraft.inventory.EquipmentSlotType;
 
-public class BulletJumpEnchantment extends Enchantment
+public class ClimbingEnchantment extends Enchantment
 {
-    public BulletJumpEnchantment(Rarity rarityIn) {
-        super(rarityIn, EnchantmentType.ARMOR_LEGS, new EquipmentSlotType[]{EquipmentSlotType.LEGS});
+    public ClimbingEnchantment(Rarity rarityIn) {
+        super(rarityIn, EnchantmentType.ARMOR_FEET, new EquipmentSlotType[]{EquipmentSlotType.LEGS});
     }
 
     @Override
@@ -22,22 +22,22 @@ public class BulletJumpEnchantment extends Enchantment
 
     @Override
     public int getMaxLevel() {
-        return 3;
+        return 1;
     }
 
-    //can't be acquired by enchantment table?
     @Override
     public boolean isTreasureEnchantment() {
         return true;
     }
 
-    //can be sold by villager
-    public boolean func_230309_h_() {
+    @Override
+    public boolean canVillagerTrade() {
         return false;
     }
 
-    //can be enchanted on loot?
-    public boolean func_230310_i_() {
+    @Override
+    public boolean canGenerateInLoot() {
         return false;
     }
+
 }

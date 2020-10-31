@@ -16,8 +16,8 @@ public class DamageSourceMixin
 {
     @Inject(method = "causePlayerDamage", at = @At("HEAD"), cancellable = true)
     private static void onCausePlayerDamage(PlayerEntity player, CallbackInfoReturnable<DamageSource> cir) {
-        if (player.getHeldItemMainhand().getItem() == ModItems.BLIGHTBRINGER_AXE) {
-            ModEntityDamageSource damageSource = new ModEntityDamageSource("player", "blight_thorn", player, (float) player.func_233637_b_(Attributes.field_233823_f_));
+        if (player.getHeldItemMainhand().getItem() == ModItems.BLIGHTBRINGER_AXE.get()) {
+            ModEntityDamageSource damageSource = new ModEntityDamageSource("player", "blight_thorn", player, (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE));
             damageSource.setIsThornsDamage().setMagicDamage(); //mutate damage
             cir.setReturnValue(damageSource);
         }
@@ -25,8 +25,8 @@ public class DamageSourceMixin
 
     @Inject(method = "causeMobDamage", at = @At("HEAD"), cancellable = true)
     private static void onCauseMobDamage(LivingEntity mob, CallbackInfoReturnable<DamageSource> cir) {
-        if (mob.getHeldItemMainhand().getItem() == ModItems.BLIGHTBRINGER_AXE) {
-            ModEntityDamageSource damageSource = new ModEntityDamageSource("mob", "blight_thorn", mob, (float) mob.func_233637_b_(Attributes.field_233823_f_));
+        if (mob.getHeldItemMainhand().getItem() == ModItems.BLIGHTBRINGER_AXE.get()) {
+            ModEntityDamageSource damageSource = new ModEntityDamageSource("mob", "blight_thorn", mob, (float) mob.getAttributeValue(Attributes.ATTACK_DAMAGE));
             damageSource.setIsThornsDamage().setMagicDamage(); //mutate damage
             cir.setReturnValue(damageSource);
         }

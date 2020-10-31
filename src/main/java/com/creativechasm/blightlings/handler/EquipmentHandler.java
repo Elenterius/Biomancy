@@ -3,6 +3,7 @@ package com.creativechasm.blightlings.handler;
 import com.creativechasm.blightlings.BlightlingsMod;
 import com.creativechasm.blightlings.init.ModEnchantments;
 import com.creativechasm.blightlings.init.ModItems;
+import com.creativechasm.blightlings.item.GogglesArmorItem;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -29,8 +30,9 @@ public abstract class EquipmentHandler
             ItemStack oldStack = event.getFrom();
             ItemStack newStack = event.getTo();
 
-            if (oldStack.getItem() == ModItems.TRUE_SIGHT_GOGGLES && newStack.getItem() != ModItems.TRUE_SIGHT_GOGGLES) { // un-equip
-                ModItems.TRUE_SIGHT_GOGGLES.cancelEffect(entity);
+            GogglesArmorItem goggles = ModItems.TRUE_SIGHT_GOGGLES.get();
+            if (oldStack.getItem() == goggles && newStack.getItem() != goggles) { // un-equip
+                goggles.cancelEffect(entity);
             }
         }
     }

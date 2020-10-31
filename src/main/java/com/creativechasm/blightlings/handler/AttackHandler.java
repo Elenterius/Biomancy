@@ -40,13 +40,13 @@ public abstract class AttackHandler
         if (damageSource instanceof ModEntityDamageSource && ((ModEntityDamageSource) damageSource).statusProc.equals("blight_thorn")) {
             if (((ModEntityDamageSource) damageSource).getAttackStrength() < 0.9f) return; // only trigger if "attack cool down" was nearly full
 
-            ModifiableAttributeInstance healthAttribute = event.getEntityLiving().getAttribute(Attributes.field_233818_a_);
+            ModifiableAttributeInstance healthAttribute = event.getEntityLiving().getAttribute(Attributes.MAX_HEALTH);
             if (healthAttribute != null) {
                 Entity attacker = damageSource.getTrueSource();
                 if (attacker instanceof LivingEntity) {
                     LivingEntity victim = event.getEntityLiving();
                     if (((LivingEntity) attacker).getHealth() < victim.getMaxHealth() * 0.75f && victim.getRNG().nextFloat() < 0.6f) {
-                        healthAttribute.func_233767_b_(new AttributeModifier("health reduction", -0.3F, AttributeModifier.Operation.MULTIPLY_BASE));
+                        healthAttribute.applyNonPersistentModifier(new AttributeModifier("health reduction", -0.3F, AttributeModifier.Operation.MULTIPLY_BASE));
                         victim.playSound(ModSoundEvents.IMPACT_SPLAT, 0.25f, 0.8f);
                     }
                 }

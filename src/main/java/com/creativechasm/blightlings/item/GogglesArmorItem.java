@@ -31,7 +31,7 @@ public class GogglesArmorItem extends ArmorItem implements IRevealInvisible<Gogg
     @OnlyIn(Dist.CLIENT)
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(new TranslationTextComponent(getTranslationKey(stack).replace("item", "tooltip")).func_230530_a_(Style.field_240709_b_.func_240712_a_(TextFormatting.GRAY)));
+        tooltip.add(new TranslationTextComponent(getTranslationKey(stack).replace("item", "tooltip")).setStyle(Style.EMPTY.applyFormatting(TextFormatting.GRAY)));
         tooltip.add(new StringTextComponent(" "));
         super.addInformation(stack, worldIn, tooltip, flagIn);
     }
@@ -76,6 +76,6 @@ public class GogglesArmorItem extends ArmorItem implements IRevealInvisible<Gogg
 
     @Override
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-        return ModItems.BLIGHT_SHARD == repair.getItem();
+        return ModItems.BLIGHT_SHARD.get() == repair.getItem();
     }
 }

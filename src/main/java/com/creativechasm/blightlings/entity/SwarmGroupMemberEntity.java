@@ -47,9 +47,9 @@ public abstract class SwarmGroupMemberEntity extends SpiderEntity implements ISw
 
     @Nullable
     public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-        ModifiableAttributeInstance attribute = getAttribute(Attributes.field_233819_b_);
+        ModifiableAttributeInstance attribute = getAttribute(Attributes.FOLLOW_RANGE);
         if (attribute != null) {
-            attribute.func_233769_c_(new AttributeModifier("Random spawn bonus", rand.nextGaussian() * 0.05D, AttributeModifier.Operation.MULTIPLY_BASE));
+            attribute.applyPersistentModifier(new AttributeModifier("Random spawn bonus", rand.nextGaussian() * 0.05D, AttributeModifier.Operation.MULTIPLY_BASE));
         }
 
         if (spawnDataIn == null) {
@@ -105,6 +105,7 @@ public abstract class SwarmGroupMemberEntity extends SpiderEntity implements ISw
     @Override
     public void setAttackTarget(@Nullable LivingEntity entityIn) {
         super.setAttackTarget(entityIn);
+        //noinspection ConstantConditions
         if (entityIn != null && entityIn.isAlive() && hasLeader() && getLeader().asMobEntity().getAttackTarget() == null) {
             getLeader().asMobEntity().setAttackTarget(entityIn);
         }
