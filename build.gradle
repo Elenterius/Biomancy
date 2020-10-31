@@ -15,7 +15,7 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'idea'
 
 version = '0.0.1-alpha.1'
-group = 'com.creativechasm.mods'
+group = 'com.github.elenterius'
 archivesBaseName = 'blightlings'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
@@ -106,11 +106,11 @@ jar {
     manifest {
         attributes([
             "Specification-Title": "blightlings",
-            "Specification-Vendor": "creativechasm",
+            "Specification-Vendor": "elenterius",
             "Specification-Version": "1", // We are version 1 of ourselves
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
-            "Implementation-Vendor" :"creativechasm",
+            "Implementation-Vendor" :"elenterius",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
             "MixinConfigs": "blightlings.mixins.json"
         ])

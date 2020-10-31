@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "com.creativechasm.blightlings.mixin",
+  "package": "com.github.elenterius.blightlings.mixin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "mixins.blightlings.refmap.json",
   "mixins": ["DamageSourceMixin", "EntityMixin"],
