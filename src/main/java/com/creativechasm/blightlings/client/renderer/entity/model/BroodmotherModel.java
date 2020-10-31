@@ -165,7 +165,8 @@ public class BroodmotherModel<T extends Entity> extends SegmentedModel<T>
     @Override
     public void render(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         matrixStack.push();
-        matrixStack.scale(1f + throb, 1f, 1f + throb);
+        matrixStack.translate(0, -throb, 0);
+        matrixStack.scale(1f + throb, 1f + throb, 1f + throb);
         abdomen.render(matrixStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
         matrixStack.pop();
 

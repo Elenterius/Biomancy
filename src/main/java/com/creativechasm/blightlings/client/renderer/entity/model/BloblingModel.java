@@ -2,6 +2,8 @@ package com.creativechasm.blightlings.client.renderer.entity.model;
 //Made by Elenterius
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.SegmentedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -31,8 +33,7 @@ public class BloblingModel<T extends Entity> extends SegmentedModel<T>
         body.setTextureOffset(0, 12).addBox(-1.5F, -1.0F, -1.5F, 3.0F, 1.0F, 3.0F, 0.0F, false);
 
         blob = new ModelRenderer(this);
-        blob.setRotationPoint(0.5F, -1.0F, -0.5F);
-        body.addChild(blob);
+        blob.setRotationPoint(0.5F, 22.0F, -0.5F);
         setRotationAngle(blob, -0.0873F, 0.0F, 0.0F);
         blob.setTextureOffset(0, 0).addBox(-2.5F, -3.8F, -1.0F, 4.0F, 4.0F, 4.0F, 0.0F, false);
 
@@ -82,10 +83,14 @@ public class BloblingModel<T extends Entity> extends SegmentedModel<T>
         rightLeg2.setTextureOffset(0, 0).addBox(-0.5F, -0.25F, -0.5F, 1.0F, 2.0F, 1.0F, 0.0F, false);
     }
 
+    //hacky way
+    private float throb = 0f;
+
     @Override
     public void setRotationAngles(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         head.rotateAngleY = netHeadYaw * ((float) Math.PI / 180F);
         head.rotateAngleX = headPitch * ((float) Math.PI / 180F);
+
         float f = 0.7854F;
         leftLeg0.rotateAngleZ = leftLeg2.rotateAngleZ = leftLeg3.rotateAngleZ = -f;
         rightLeg0.rotateAngleZ = rightLeg1.rotateAngleZ = rightLeg2.rotateAngleZ = f;
@@ -113,6 +118,19 @@ public class BloblingModel<T extends Entity> extends SegmentedModel<T>
         rightLeg0.rotateAngleZ += -f9;
         rightLeg1.rotateAngleZ += f10;
         rightLeg2.rotateAngleZ += -f10;
+
+        throb = MathHelper.cos(0.15f * entityIn.ticksExisted) * 0.05f;
+    }
+
+    @Override
+    public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        matrixStackIn.push();
+        matrixStackIn.translate(0, -throb, 0);
+        matrixStackIn.scale(1f + throb, 1f + throb, 1f + throb);
+        blob.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+        matrixStackIn.pop();
+
+        super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
     }
 
     @Override
