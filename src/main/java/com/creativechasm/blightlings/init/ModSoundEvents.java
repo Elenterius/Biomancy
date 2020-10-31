@@ -8,8 +8,8 @@ import net.minecraftforge.registries.ObjectHolder;
 @ObjectHolder(BlightlingsMod.MOD_ID)
 public class ModSoundEvents
 {
-    @ObjectHolder("impactsplat")
-    public static SoundEvent IMPACT_SPLAT;
+//    @ObjectHolder("impactsplat")
+//    public static SoundEvent IMPACT_SPLAT;
 
     @ObjectHolder("wahwah")
     public static SoundEvent WAH_WAH;

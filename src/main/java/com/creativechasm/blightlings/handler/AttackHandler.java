@@ -1,13 +1,13 @@
 package com.creativechasm.blightlings.handler;
 
 import com.creativechasm.blightlings.BlightlingsMod;
-import com.creativechasm.blightlings.init.ModSoundEvents;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvents;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -45,10 +45,11 @@ public abstract class AttackHandler
                 Entity attacker = damageSource.getTrueSource();
                 if (attacker instanceof LivingEntity) {
                     LivingEntity victim = event.getEntityLiving();
-                    if (((LivingEntity) attacker).getHealth() < victim.getMaxHealth() * 0.75f && victim.getRNG().nextFloat() < 0.6f) {
-                        healthAttribute.applyNonPersistentModifier(new AttributeModifier("health reduction", -0.3F, AttributeModifier.Operation.MULTIPLY_BASE));
-                        victim.playSound(ModSoundEvents.IMPACT_SPLAT, 0.25f, 0.8f);
-                    }
+//                    if (((LivingEntity) attacker).getHealth() < victim.getMaxHealth() * 0.75f && victim.getRNG().nextFloat() < 0.6f) {
+                    healthAttribute.applyNonPersistentModifier(new AttributeModifier("health reduction", -0.3F, AttributeModifier.Operation.MULTIPLY_BASE));
+//                        victim.playSound(ModSoundEvents.IMPACT_SPLAT, 0.25f, 0.8f);
+                    victim.playSound(SoundEvents.ENTITY_IRON_GOLEM_DAMAGE, 0.4f, 0.45f);
+//                    }
                 }
             }
         }

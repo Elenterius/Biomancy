@@ -47,7 +47,7 @@ public abstract class CommonSetupHandler
     @SubscribeEvent
     public static void registerSounds(final RegistryEvent.Register<SoundEvent> event) {
         event.getRegistry().registerAll(
-                ModSoundEvents.createSoundEvent("impactsplat"),
+//                ModSoundEvents.createSoundEvent("impactsplat"),
                 ModSoundEvents.createSoundEvent("wahwah")
         );
     }
