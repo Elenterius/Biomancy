@@ -45,11 +45,11 @@ public abstract class AttackHandler
                 Entity attacker = damageSource.getTrueSource();
                 if (attacker instanceof LivingEntity) {
                     LivingEntity victim = event.getEntityLiving();
-//                    if (((LivingEntity) attacker).getHealth() < victim.getMaxHealth() * 0.75f && victim.getRNG().nextFloat() < 0.6f) {
-                    healthAttribute.applyNonPersistentModifier(new AttributeModifier("health reduction", -0.3F, AttributeModifier.Operation.MULTIPLY_BASE));
+                    if (((LivingEntity) attacker).getHealth() < victim.getMaxHealth() * 0.75f && victim.getRNG().nextFloat() < 0.6f) {
+                        healthAttribute.applyNonPersistentModifier(new AttributeModifier("health reduction", -0.3F, AttributeModifier.Operation.MULTIPLY_BASE));
 //                        victim.playSound(ModSoundEvents.IMPACT_SPLAT, 0.25f, 0.8f);
-                    victim.playSound(SoundEvents.ENTITY_IRON_GOLEM_DAMAGE, 0.4f, 0.45f);
-//                    }
+                        victim.playSound(SoundEvents.ENTITY_IRON_GOLEM_DAMAGE, 0.4f, 0.45f);
+                    }
                 }
             }
         }
