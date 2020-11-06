@@ -1,0 +1,15 @@
+{
+  "parent": "block/block", "loader": "forge:multi-layer", "layers": {
+  "cutout": {
+    "parent": "block/cube_all", "textures": {
+      "all": "blightlings:block/infertile_soil"
+    }
+  }, "translucent": {
+    "parent": "block/cube_all", "textures": {
+      "all": "blightlings:block/fullbright_overlay_test"
+    }
+  }
+}, "textures": {
+  "particle": "blightlings:block/infertile_soil"
+}
+}
