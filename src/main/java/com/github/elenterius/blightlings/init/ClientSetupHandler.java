@@ -3,6 +3,8 @@ package com.github.elenterius.blightlings.init;
 import com.github.elenterius.blightlings.BlightlingsMod;
 import com.github.elenterius.blightlings.client.renderer.entity.BloblingRenderer;
 import com.github.elenterius.blightlings.client.renderer.entity.BroodmotherRenderer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
@@ -25,6 +27,9 @@ public abstract class ClientSetupHandler
     public static void onModelRegistry(final ModelRegistryEvent event) {
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BLOBLING.get(), BloblingRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BROOD_MOTHER.get(), BroodmotherRenderer::new);
+
+        RenderType cutout = RenderType.getCutout();
+        RenderTypeLookup.setRenderLayer(ModBlocks.LILY_TREE_SAPLING.get(), cutout);
     }
 
     @SubscribeEvent

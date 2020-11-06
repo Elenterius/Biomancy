@@ -1,5 +1,6 @@
 package com.github.elenterius.blightlings;
 
+import com.github.elenterius.blightlings.init.ModBlocks;
 import com.github.elenterius.blightlings.init.ModEnchantments;
 import com.github.elenterius.blightlings.init.ModEntityTypes;
 import com.github.elenterius.blightlings.init.ModItems;
@@ -25,6 +26,7 @@ public class BlightlingsMod
 
     public BlightlingsMod() {
         ModItems.ITEM_REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());
+        ModBlocks.BLOCK_REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());
         ModEntityTypes.ENTITY_TYPE_REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
