@@ -39,4 +39,5 @@ public abstract class ModItems
     public static final RegistryObject<Item> INFERTILE_SOIL_BLOCK_ITEM = ITEM_REGISTRY.register("infertile_soil", () -> new BlockItem(ModBlocks.INFERTILE_SOIL.get(), createItemProperties()));
     public static final RegistryObject<Item> LILYTREE_SAPLING_BLOCK_ITEM = ITEM_REGISTRY.register("lilytree_sapling", () -> new BlockItem(ModBlocks.LILY_TREE_SAPLING.get(), createItemProperties()));
     public static final RegistryObject<Item> LUMINOUS_SOIL_BLOCK_ITEM = ITEM_REGISTRY.register("luminous_soil", () -> new BlockItem(ModBlocks.LUMINOUS_SOIL.get(), createItemProperties()));
+    public static final RegistryObject<Item> BLIGHT_PUSTULE_BLOCK_ITEM = ITEM_REGISTRY.register("blight_pustule", () -> new BlockItem(ModBlocks.BLIGHT_PUSTULE.get(), createItemProperties()));
 }

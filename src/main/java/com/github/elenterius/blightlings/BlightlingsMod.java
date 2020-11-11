@@ -1,9 +1,6 @@
 package com.github.elenterius.blightlings;
 
-import com.github.elenterius.blightlings.init.ModBlocks;
-import com.github.elenterius.blightlings.init.ModEnchantments;
-import com.github.elenterius.blightlings.init.ModEntityTypes;
-import com.github.elenterius.blightlings.init.ModItems;
+import com.github.elenterius.blightlings.init.*;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.ItemGroup;
@@ -28,6 +25,7 @@ public class BlightlingsMod
         ModItems.ITEM_REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());
         ModBlocks.BLOCK_REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());
         ModEntityTypes.ENTITY_TYPE_REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());
+        ModWorldGen.BIOME_REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 
     public static final ItemGroup ITEM_GROUP = new ItemGroup(-1, MOD_ID)

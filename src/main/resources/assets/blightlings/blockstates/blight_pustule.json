@@ -1,0 +1,17 @@
+{
+  "variants": {
+    "facing=up": {
+      "model": "blightlings:block/blight_pustule"
+    }, "facing=down": {
+      "model": "blightlings:block/blight_pustule", "x": 180
+    }, "facing=east": {
+      "model": "blightlings:block/blight_pustule", "x": 90, "y": 90
+    }, "facing=north": {
+      "model": "blightlings:block/blight_pustule", "x": 90
+    }, "facing=south": {
+      "model": "blightlings:block/blight_pustule", "x": -90
+    }, "facing=west": {
+      "model": "blightlings:block/blight_pustule", "x": 90, "y": -90
+    }
+  }
+}

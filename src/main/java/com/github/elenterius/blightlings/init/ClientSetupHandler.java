@@ -32,6 +32,7 @@ public abstract class ClientSetupHandler
 
         RenderTypeLookup.setRenderLayer(ModBlocks.LILY_TREE_SAPLING.get(), RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(ModBlocks.LUMINOUS_SOIL.get(), renderType -> renderType == RenderType.getCutout() || renderType == RenderType.getTranslucent());
+        RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_PUSTULE.get(), RenderType.getCutout());
     }
 
     @SubscribeEvent
