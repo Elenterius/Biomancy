@@ -33,6 +33,11 @@ public abstract class ClientSetupHandler
         RenderTypeLookup.setRenderLayer(ModBlocks.LILY_TREE_SAPLING.get(), RenderType.getCutout());
         RenderTypeLookup.setRenderLayer(ModBlocks.LUMINOUS_SOIL.get(), renderType -> renderType == RenderType.getCutout() || renderType == RenderType.getTranslucent());
         RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_PUSTULE.get(), RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_SPROUT.get(), RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_SPROUT_SMALL.get(), RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_TENTACLE_0.get(), RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_TENTACLE_1.get(), RenderType.getCutout());
+        RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_SHROOM_TALL.get(), RenderType.getCutout());
     }
 
     @SubscribeEvent

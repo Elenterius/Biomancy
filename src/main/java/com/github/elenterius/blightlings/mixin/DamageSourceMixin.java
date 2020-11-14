@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(DamageSource.class)
-public class DamageSourceMixin
+public abstract class DamageSourceMixin
 {
     @Inject(method = "causePlayerDamage", at = @At("HEAD"), cancellable = true)
     private static void onCausePlayerDamage(PlayerEntity player, CallbackInfoReturnable<DamageSource> cir) {

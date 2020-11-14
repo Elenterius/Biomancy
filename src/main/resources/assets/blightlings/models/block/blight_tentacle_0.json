@@ -1,0 +1,5 @@
+{
+  "parent": "block/cross", "textures": {
+  "cross": "blightlings:block/blight_tentacle_0"
+}
+}

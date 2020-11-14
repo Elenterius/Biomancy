@@ -2,7 +2,6 @@ package com.github.elenterius.blightlings.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.BushBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItemUseContext;
@@ -21,7 +20,7 @@ import net.minecraft.world.IWorldReader;
 
 import javax.annotation.Nullable;
 
-public class BlightPustuleBlock extends BushBlock
+public class BlightPustuleBlock extends BlightPlantBlock
 {
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
@@ -84,5 +83,10 @@ public class BlightPustuleBlock extends BushBlock
             case EAST:
                 return SHAPE_EAST.withOffset(vec.x, vec.y, vec.z);
         }
+    }
+
+    @Override
+    public OffsetType getOffsetType() {
+        return OffsetType.NONE;
     }
 }

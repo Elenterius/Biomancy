@@ -3,7 +3,7 @@
   "package": "com.github.elenterius.blightlings.mixin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "mixins.blightlings.refmap.json",
-  "mixins": ["DamageSourceMixin", "EntityMixin"],
+  "mixins": ["DamageSourceMixin", "EntityMixin", "NoiseChunkGeneratorMixin"],
   "injectors": {
     "defaultRequire": 1
   },

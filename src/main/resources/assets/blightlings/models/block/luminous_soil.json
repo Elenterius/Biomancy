@@ -6,7 +6,7 @@
     }
   }, "translucent": {
     "parent": "block/cube_all", "textures": {
-      "all": "blightlings:block/fullbright_overlay_test"
+      "all": "blightlings:block/infertile_soil_overlay"
     }
   }
 }, "textures": {

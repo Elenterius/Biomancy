@@ -1,0 +1,5 @@
+{
+  "parent": "block/cross", "textures": {
+  "cross": "blightlings:block/blight_sprout_small"
+}
+}

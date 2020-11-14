@@ -1,0 +1,5 @@
+{
+  "parent": "block/slab", "textures": {
+  "bottom": "blightlings:block/blight_moss_top", "top": "blightlings:block/blight_moss_top", "side": "blightlings:block/blight_moss_top"
+}
+}
