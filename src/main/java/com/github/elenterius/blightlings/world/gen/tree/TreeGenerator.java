@@ -1,5 +1,6 @@
 package com.github.elenterius.blightlings.world.gen.tree;
 
+import com.github.elenterius.blightlings.init.ModBlocks;
 import com.google.common.collect.Lists;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -28,15 +29,17 @@ public abstract class TreeGenerator
 
         BlockPos.Mutable currPos = pos.toMutable();
 
-        //TODO: "Log" & "Leave" Provider
-        BlockState slabState = Blocks.CRIMSON_SLAB.getDefaultState().with(SlabBlock.TYPE, SlabType.BOTTOM);
+        BlockState slabState = ModBlocks.BLIGHT_MOSS_SLAB.get().getDefaultState().with(SlabBlock.TYPE, SlabType.BOTTOM);
+        BlockState stemHorizontalState = Blocks.COAL_BLOCK.getDefaultState();
+        BlockState stemVerticalState = stemHorizontalState;
+        BlockState sporeInfestedState = ModBlocks.LUMINOUS_SOIL.get().getDefaultState();
 
         int baseHeight = rand.nextInt(2) + 1;
         for (int j = 0; j < baseHeight; ++j) {
-            world.setBlockState(currPos, Blocks.COAL_BLOCK.getDefaultState(), Constants.BlockFlags.BLOCK_UPDATE);
+            world.setBlockState(currPos, stemHorizontalState, Constants.BlockFlags.BLOCK_UPDATE);
             currPos.move(Direction.UP);
         }
-        world.setBlockState(currPos, Blocks.GOLD_BLOCK.getDefaultState(), Constants.BlockFlags.BLOCK_UPDATE);
+        world.setBlockState(currPos, stemHorizontalState, Constants.BlockFlags.BLOCK_UPDATE); //corner
 
         BlockPos forkPos = currPos.toImmutable();
         BlockPos endPos = currPos.toImmutable();
@@ -48,16 +51,16 @@ public abstract class TreeGenerator
         int maxLength = rand.nextInt(5) + 3;
         int horizontalSteps = 0;
         Direction currDirection = branchDirection;
-        for (int i = 0; i < maxLength && tryToSetBlockState(world, currPos, Blocks.LAPIS_BLOCK.getDefaultState(), Constants.BlockFlags.BLOCK_UPDATE); i++) {
+        for (int i = 0; i < maxLength && tryToSetBlockState(world, currPos, stemHorizontalState, Constants.BlockFlags.BLOCK_UPDATE); i++) {
             currPos.move(currDirection);
             horizontalSteps++;
             if (horizontalSteps >= 2 && rand.nextFloat() < 0.5F) {
                 int maxHeight = rand.nextInt(2) + 2;
-                for (int j = 0; j < maxHeight && tryToSetBlockState(world, currPos, Blocks.DIAMOND_BLOCK.getDefaultState(), Constants.BlockFlags.BLOCK_UPDATE); j++) {
+                for (int j = 0; j < maxHeight && tryToSetBlockState(world, currPos, stemVerticalState, Constants.BlockFlags.BLOCK_UPDATE); j++) {
                     currPos.move(Direction.UP);
                     if (j == 0 && i >= maxLength * 0.45f || (maxHeight > 2 && rand.nextFloat() < 0.4F)) {
                         endPos = currPos.toImmutable();
-                        if (maxHeight > 2 && rand.nextFloat() < 0.48F) { //generate disc shape
+                        if (maxHeight > 2 && rand.nextFloat() < 0.44F) { //generate disc shape
                             tryToGenerateDiscShape(world, currPos, slabState, Constants.BlockFlags.BLOCK_UPDATE);
                         }
                         else { //generate small ring
@@ -80,9 +83,9 @@ public abstract class TreeGenerator
         }
 
         //we have reached the top/end
-        world.setBlockState(endPos, Blocks.EMERALD_BLOCK.getDefaultState(), Constants.BlockFlags.BLOCK_UPDATE);
+        world.setBlockState(endPos, sporeInfestedState, Constants.BlockFlags.BLOCK_UPDATE);
         endPos = endPos.up();
-        world.setBlockState(endPos, Blocks.EMERALD_BLOCK.getDefaultState(), Constants.BlockFlags.BLOCK_UPDATE);
+        world.setBlockState(endPos, sporeInfestedState, Constants.BlockFlags.BLOCK_UPDATE);
         tryToGenerateDiscShape(world, endPos, slabState, Constants.BlockFlags.BLOCK_UPDATE); //generate disc shape
 
         //decide if we want to generate a second branch starting from the fork position
