@@ -1,9 +1,8 @@
 package com.github.elenterius.blightlings.mixin;
 
-import com.github.elenterius.blightlings.BlightlingsMod;
+import com.github.elenterius.blightlings.init.ModWorldGen;
 import net.minecraft.block.BlockState;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.biome.BiomeRegistry;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.ChunkGenerator;
@@ -39,16 +38,16 @@ public abstract class NoiseChunkGeneratorMixin extends ChunkGenerator
         super(biomeProvider, biomeProvider1, structuresSettings, seed);
     }
 
-    boolean chunkHasBlightBiome = false;
+    boolean chunkHasPrimaryBlightBiome = false;
 
     @Inject(method = "func_230352_b_", at = @At("HEAD"))
     protected void injectFunc_230352_b_(IWorld world, StructureManager manager, IChunk chunk, CallbackInfo ci) {
-        chunkHasBlightBiome = false;
+        chunkHasPrimaryBlightBiome = false;
         if (chunk.getBiomes() != null) {
             int[] ids = Arrays.stream(chunk.getBiomes().getBiomeIds()).distinct().toArray();
             for (int id : ids) {
-                if (BiomeRegistry.getKeyFromID(id).getLocation().getNamespace().equals(BlightlingsMod.MOD_ID)) {
-                    chunkHasBlightBiome = true;
+                if (id == ModWorldGen.BLIGHT_BIOME_ID || id == ModWorldGen.BLIGHT_BIOME_INNER_EDGE_ID) {
+                    chunkHasPrimaryBlightBiome = true;
                     break;
                 }
             }
@@ -60,7 +59,7 @@ public abstract class NoiseChunkGeneratorMixin extends ChunkGenerator
             at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/gen/NoiseChunkGenerator;func_236086_a_(DI)Lnet/minecraft/block/BlockState;")
     )
     protected BlockState modifyBlockStateVariable(BlockState state, IWorld world, StructureManager manager, IChunk chunk) {
-        if (chunkHasBlightBiome && state == defaultFluid) return AIR;
+        if (chunkHasPrimaryBlightBiome && state == defaultFluid) return AIR;
         return state;
     }
 
