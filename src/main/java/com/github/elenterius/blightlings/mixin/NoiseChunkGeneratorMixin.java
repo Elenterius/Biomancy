@@ -1,6 +1,6 @@
 package com.github.elenterius.blightlings.mixin;
 
-import com.github.elenterius.blightlings.init.ModWorldGen;
+import com.github.elenterius.blightlings.init.ModBiomes;
 import net.minecraft.block.BlockState;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.biome.provider.BiomeProvider;
@@ -46,7 +46,7 @@ public abstract class NoiseChunkGeneratorMixin extends ChunkGenerator
         if (chunk.getBiomes() != null) {
             int[] ids = Arrays.stream(chunk.getBiomes().getBiomeIds()).distinct().toArray();
             for (int id : ids) {
-                if (id == ModWorldGen.BLIGHT_BIOME_ID || id == ModWorldGen.BLIGHT_BIOME_INNER_EDGE_ID) {
+                if (id == ModBiomes.BLIGHT_BIOME_ID || id == ModBiomes.BLIGHT_BIOME_INNER_EDGE_ID) {
                     chunkHasPrimaryBlightBiome = true;
                     break;
                 }

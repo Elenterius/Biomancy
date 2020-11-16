@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
@@ -22,10 +23,16 @@ public class BlightlingsMod
     public static final Logger LOGGER = LogManager.getLogger();
 
     public BlightlingsMod() {
-        ModItems.ITEM_REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());
-        ModBlocks.BLOCK_REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());
-        ModEntityTypes.ENTITY_TYPE_REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());
-        ModWorldGen.BIOME_REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        ModItems.ITEM_REGISTRY.register(modEventBus);
+        ModBlocks.BLOCK_REGISTRY.register(modEventBus);
+
+        ModEntityTypes.ENTITY_TYPE_REGISTRY.register(modEventBus);
+
+//        ModFeatures.FEATURE_REGISTRY.register(modEventBus);
+        ModFeatures.SURFACE_BUILDER_REGISTRY.register(modEventBus);
+//        ModBiomes.BIOME_REGISTRY.register(modEventBus);
     }
 
     public static final ItemGroup ITEM_GROUP = new ItemGroup(-1, MOD_ID)

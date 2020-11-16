@@ -1,7 +1,6 @@
 package com.github.elenterius.blightlings.init;
 
 import com.github.elenterius.blightlings.BlightlingsMod;
-import com.github.elenterius.blightlings.world.gen.tree.LilyTreeFeature;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityClassification;
@@ -14,9 +13,8 @@ import net.minecraft.world.biome.*;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.carver.WorldCarver;
-import net.minecraft.world.gen.feature.*;
-import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
-import net.minecraft.world.gen.placement.Placement;
+import net.minecraft.world.gen.feature.Features;
+import net.minecraft.world.gen.feature.ProbabilityConfig;
 import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilders;
 import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
@@ -24,8 +22,9 @@ import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.world.MobSpawnInfoBuilder;
-import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistry;
 import org.apache.logging.log4j.Marker;
@@ -33,54 +32,48 @@ import org.apache.logging.log4j.MarkerManager;
 
 import java.util.Random;
 
-public abstract class ModWorldGen
+@Mod.EventBusSubscriber(modid = BlightlingsMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+public abstract class ModBiomes
 {
-    public static final DeferredRegister<Biome> BIOME_REGISTRY = DeferredRegister.create(ForgeRegistries.BIOMES, BlightlingsMod.MOD_ID);
+    //we can't use deferred feature & deferred biome registry together because the features may not be registered yet when building biome settings
+//    public static final DeferredRegister<Biome> BIOME_REGISTRY = DeferredRegister.create(ForgeRegistries.BIOMES, BlightlingsMod.MOD_ID);
 
-    public static final RegistryObject<Biome> BLIGHT_BIOME = BIOME_REGISTRY.register("blight_biome", ModWorldGen::makeBlightBiome);
+    public static Biome BLIGHT_BIOME;
+    public static Biome BLIGHT_BIOME_OUTER_EDGE;
+    public static Biome BLIGHT_BIOME_INNER_EDGE;
     public static int BLIGHT_BIOME_ID;
-    public static final RegistryObject<Biome> BLIGHT_BIOME_OUTER_EDGE = BIOME_REGISTRY.register("blight_biome_outer_edge", ModWorldGen::makeBlightBiomeEdge);
     public static int BLIGHT_BIOME_OUTER_EDGE_ID;
-    public static final RegistryObject<Biome> BLIGHT_BIOME_INNER_EDGE = BIOME_REGISTRY.register("blight_biome_inner_edge", ModWorldGen::makeBlightBiomeEdge);
     public static int BLIGHT_BIOME_INNER_EDGE_ID;
 
-    public static final ConfiguredFeature<?, ?> LILY_TREE_FEATURE = registerConfiguredFeature(new ResourceLocation(BlightlingsMod.MOD_ID, "lily_tree"),
-            registerFeature(new ResourceLocation(BlightlingsMod.MOD_ID, "lily_tree"), new LilyTreeFeature(NoFeatureConfig.field_236558_a_))
-                    .withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG)
-                    .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
-                    .withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(2, 0.1f, 1)))
-    );
-
-    private static <FC extends IFeatureConfig, F extends Feature<FC>> ConfiguredFeature<FC, F> registerConfiguredFeature(ResourceLocation registryName, ConfiguredFeature<FC, F> configuredFeature) {
-        Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, registryName, configuredFeature);
-        return configuredFeature;
+    @SubscribeEvent
+    public static void onBiomeRegistry(RegistryEvent.Register<Biome> event) {
+        BlightlingsMod.LOGGER.info("registering biomes");
+        event.getRegistry().registerAll(
+                BLIGHT_BIOME = ModBiomes.makeBlightBiome().setRegistryName(BlightlingsMod.MOD_ID, "blight_biome"),
+                BLIGHT_BIOME_OUTER_EDGE = ModBiomes.makeBlightBiomeEdge().setRegistryName(BlightlingsMod.MOD_ID, "blight_biome_outer_edge"),
+                BLIGHT_BIOME_INNER_EDGE = ModBiomes.makeBlightBiomeEdge().setRegistryName(BlightlingsMod.MOD_ID, "blight_biome_inner_edge")
+        );
     }
 
-    private static <FC extends IFeatureConfig> Feature<FC> registerFeature(ResourceLocation registryName, Feature<FC> configuredFeature) {
-        configuredFeature.setRegistryName(registryName);
-        ForgeRegistries.FEATURES.register(configuredFeature);
-        return configuredFeature;
-    }
-
-    public static void setupBiomes() {
+    public static void onPostSetupBiomes() {
         Marker marker = MarkerManager.getMarker("Biome Post-Setup");
         BlightlingsMod.LOGGER.info(marker, "doing important biome stuff...");
 
-        ResourceLocation registryId = BLIGHT_BIOME.getId();
-        BLIGHT_BIOME_ID = ((ForgeRegistry<Biome>) ForgeRegistries.BIOMES).getID(BLIGHT_BIOME.getId());
+        ResourceLocation registryId = BLIGHT_BIOME.getRegistryName();
+        BLIGHT_BIOME_ID = ((ForgeRegistry<Biome>) ForgeRegistries.BIOMES).getID(registryId);
         BlightlingsMod.LOGGER.debug(marker, String.format("processing biome with registry key %s and id %d", registryId, BLIGHT_BIOME_ID));
         RegistryKey<Biome> key = RegistryKey.getOrCreateKey(Registry.BIOME_KEY, registryId);
         BiomeDictionary.addTypes(key, BiomeDictionary.Type.RARE, BiomeDictionary.Type.MAGICAL, BiomeDictionary.Type.SPOOKY, BiomeDictionary.Type.JUNGLE, BiomeDictionary.Type.OVERWORLD);
         BiomeManager.addBiome(BiomeManager.BiomeType.WARM, new BiomeManager.BiomeEntry(key, 20)); //make biome spawnable in the Overworld
 
-        registryId = BLIGHT_BIOME_OUTER_EDGE.getId();
-        BLIGHT_BIOME_OUTER_EDGE_ID = ((ForgeRegistry<Biome>) ForgeRegistries.BIOMES).getID(BLIGHT_BIOME_OUTER_EDGE.getId());
+        registryId = BLIGHT_BIOME_OUTER_EDGE.getRegistryName();
+        BLIGHT_BIOME_OUTER_EDGE_ID = ((ForgeRegistry<Biome>) ForgeRegistries.BIOMES).getID(registryId);
         BlightlingsMod.LOGGER.debug(marker, String.format("processing biome with registry key %s and id %d", registryId, BLIGHT_BIOME_OUTER_EDGE_ID));
         key = RegistryKey.getOrCreateKey(Registry.BIOME_KEY, registryId);
         BiomeDictionary.addTypes(key, BiomeDictionary.Type.RARE, BiomeDictionary.Type.MAGICAL, BiomeDictionary.Type.SPOOKY, BiomeDictionary.Type.JUNGLE, BiomeDictionary.Type.OVERWORLD);
 
-        registryId = BLIGHT_BIOME_INNER_EDGE.getId();
-        BLIGHT_BIOME_INNER_EDGE_ID = ((ForgeRegistry<Biome>) ForgeRegistries.BIOMES).getID(BLIGHT_BIOME_INNER_EDGE.getId());
+        registryId = BLIGHT_BIOME_INNER_EDGE.getRegistryName();
+        BLIGHT_BIOME_INNER_EDGE_ID = ((ForgeRegistry<Biome>) ForgeRegistries.BIOMES).getID(registryId);
         BlightlingsMod.LOGGER.debug(marker, String.format("processing biome with registry key %s and id %d", registryId, BLIGHT_BIOME_INNER_EDGE_ID));
         key = RegistryKey.getOrCreateKey(Registry.BIOME_KEY, registryId);
         BiomeDictionary.addTypes(key, BiomeDictionary.Type.RARE, BiomeDictionary.Type.MAGICAL, BiomeDictionary.Type.SPOOKY, BiomeDictionary.Type.JUNGLE, BiomeDictionary.Type.OVERWORLD);
@@ -89,7 +82,7 @@ public abstract class ModWorldGen
     private static Biome makeBlightBiome() {
         SurfaceBuilderConfig blightSoilConfig = new SurfaceBuilderConfig(ModBlocks.INFERTILE_SOIL.get().getDefaultState(), ModBlocks.INFERTILE_SOIL.get().getDefaultState(), ModBlocks.INFERTILE_SOIL.get().getDefaultState());
         SurfaceBuilderConfig grassBlightSoilConfig = new SurfaceBuilderConfig(Blocks.GRASS_BLOCK.getDefaultState(), ModBlocks.INFERTILE_SOIL.get().getDefaultState(), ModBlocks.INFERTILE_SOIL.get().getDefaultState());
-        SurfaceBuilder<SurfaceBuilderConfig> blightSurfaceBuilder = Registry.register(Registry.SURFACE_BUILDER, "blight_surface", new SurfaceBuilder<SurfaceBuilderConfig>(SurfaceBuilderConfig.field_237203_a_)
+        SurfaceBuilder<SurfaceBuilderConfig> blightSurfaceBuilder = Registry.register(Registry.SURFACE_BUILDER, new ResourceLocation(BlightlingsMod.MOD_ID, "blight_surface"), new SurfaceBuilder<SurfaceBuilderConfig>(SurfaceBuilderConfig.field_237203_a_)
         {
             @Override
             public void buildSurface(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config) {
@@ -118,7 +111,7 @@ public abstract class ModWorldGen
                 .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Features.ORE_COAL)
                 .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Features.ORE_DIAMOND)
                 .withFeature(GenerationStage.Decoration.LAKES, Features.LAKE_WATER)
-                .withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, LILY_TREE_FEATURE)
+                .withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ModFeatures.CONFIGURED.LILY_TREE_FEATURE.get())
                 .withFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, Features.FOREST_ROCK)
                 .withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.SPRING_WATER)
                 .withFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, Features.BASALT_PILLAR)
@@ -163,7 +156,7 @@ public abstract class ModWorldGen
                 .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Features.ORE_IRON)
                 .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Features.ORE_COAL)
                 .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Features.ORE_DIAMOND)
-                .withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, LILY_TREE_FEATURE)
+                .withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ModFeatures.CONFIGURED.LILY_TREE_FEATURE.get())
                 .withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.PATCH_GRASS_NORMAL)
                 .withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.TREES_JUNGLE_EDGE)
                 .withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.SPRING_WATER)

@@ -33,8 +33,12 @@ public abstract class CommonSetupHandler
 {
     @SubscribeEvent
     public static void onSetup(final FMLCommonSetupEvent event) {
-        event.enqueueWork(ModEntityTypes::onPostSetup); // do stuff after common setup event
-        event.enqueueWork(ModWorldGen::setupBiomes);
+        // do stuff after common setup event
+        event.enqueueWork(() -> {
+            ModEntityTypes.onPostSetup();
+            ModFeatures.injectCarvableBlocks();
+            ModBiomes.onPostSetupBiomes();
+        });
     }
 
     @SubscribeEvent
