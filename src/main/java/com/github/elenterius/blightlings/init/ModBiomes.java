@@ -1,24 +1,17 @@
 package com.github.elenterius.blightlings.init;
 
 import com.github.elenterius.blightlings.BlightlingsMod;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.biome.*;
-import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.carver.WorldCarver;
 import net.minecraft.world.gen.feature.Features;
 import net.minecraft.world.gen.feature.ProbabilityConfig;
-import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilders;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.world.MobSpawnInfoBuilder;
@@ -29,8 +22,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistry;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
-
-import java.util.Random;
 
 @Mod.EventBusSubscriber(modid = BlightlingsMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public abstract class ModBiomes
@@ -80,39 +71,14 @@ public abstract class ModBiomes
     }
 
     private static Biome makeBlightBiome() {
-        SurfaceBuilderConfig blightSoilConfig = new SurfaceBuilderConfig(ModBlocks.INFERTILE_SOIL.get().getDefaultState(), ModBlocks.INFERTILE_SOIL.get().getDefaultState(), ModBlocks.INFERTILE_SOIL.get().getDefaultState());
-        SurfaceBuilderConfig grassBlightSoilConfig = new SurfaceBuilderConfig(Blocks.GRASS_BLOCK.getDefaultState(), ModBlocks.INFERTILE_SOIL.get().getDefaultState(), ModBlocks.INFERTILE_SOIL.get().getDefaultState());
-        SurfaceBuilder<SurfaceBuilderConfig> blightSurfaceBuilder = Registry.register(Registry.SURFACE_BUILDER, new ResourceLocation(BlightlingsMod.MOD_ID, "blight_surface"), new SurfaceBuilder<SurfaceBuilderConfig>(SurfaceBuilderConfig.field_237203_a_)
-        {
-            @Override
-            public void buildSurface(Random random, IChunk chunkIn, Biome biomeIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed, SurfaceBuilderConfig config) {
-                seaLevel = 13;
-
-                if (noise > 1.75D) {
-                    SurfaceBuilder.DEFAULT.buildSurface(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, grassBlightSoilConfig);
-                }
-                else if (noise > -1.45D) {
-                    SurfaceBuilder.DEFAULT.buildSurface(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, blightSoilConfig);
-                }
-                else {
-                    SurfaceBuilder.DEFAULT.buildSurface(random, chunkIn, biomeIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed, SurfaceBuilder.field_237187_R_);
-                }
-            }
-        });
-        ConfiguredSurfaceBuilder<SurfaceBuilderConfig> configuredBlightSurface = WorldGenRegistries.register(
-                WorldGenRegistries.CONFIGURED_SURFACE_BUILDER,
-                new ResourceLocation(BlightlingsMod.MOD_ID, "blight_surface"),
-                blightSurfaceBuilder.func_242929_a(blightSoilConfig)
-        );
-
-        BiomeGenerationSettings.Builder generationSettings = (new BiomeGenerationSettings.Builder()).withSurfaceBuilder(configuredBlightSurface)
+        BiomeGenerationSettings.Builder generationSettings = (new BiomeGenerationSettings.Builder()).withSurfaceBuilder(ModSurfaceBuilders.CONFIGURED.BLIGHT_SURFACE_BUILDER)
                 .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Features.ORE_GOLD)
                 .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Features.ORE_IRON)
                 .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Features.ORE_COAL)
                 .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Features.ORE_DIAMOND)
                 .withFeature(GenerationStage.Decoration.LAKES, Features.LAKE_WATER)
-                .withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ModFeatures.CONFIGURED.LILY_TREE_FEATURE.get())
-                .withFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, Features.FOREST_ROCK)
+                .withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ModFeatures.CONFIGURED.LILY_TREE)
+                .withFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, ModFeatures.CONFIGURED.LUMINOUS_SPORE_BLOB)
                 .withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.SPRING_WATER)
                 .withFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, Features.BASALT_PILLAR)
                 .withCarver(GenerationStage.Carving.AIR, WorldCarver.CAVE.func_242761_a(new ProbabilityConfig(0.42f)))
@@ -156,7 +122,7 @@ public abstract class ModBiomes
                 .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Features.ORE_IRON)
                 .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Features.ORE_COAL)
                 .withFeature(GenerationStage.Decoration.UNDERGROUND_ORES, Features.ORE_DIAMOND)
-                .withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ModFeatures.CONFIGURED.LILY_TREE_FEATURE.get())
+                .withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ModFeatures.CONFIGURED.LILY_TREE)
                 .withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.PATCH_GRASS_NORMAL)
                 .withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.TREES_JUNGLE_EDGE)
                 .withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, Features.SPRING_WATER)

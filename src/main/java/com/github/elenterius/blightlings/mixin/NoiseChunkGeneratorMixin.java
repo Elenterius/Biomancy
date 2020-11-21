@@ -30,15 +30,11 @@ public abstract class NoiseChunkGeneratorMixin extends ChunkGenerator
     @Final
     private static BlockState AIR;
 
-    public NoiseChunkGeneratorMixin(BiomeProvider biomeProvider, DimensionStructuresSettings structuresSettings) {
-        super(biomeProvider, structuresSettings);
-    }
-
-    public NoiseChunkGeneratorMixin(BiomeProvider biomeProvider, BiomeProvider biomeProvider1, DimensionStructuresSettings structuresSettings, long seed) {
-        super(biomeProvider, biomeProvider1, structuresSettings, seed);
-    }
-
     boolean chunkHasPrimaryBlightBiome = false;
+
+    public NoiseChunkGeneratorMixin(BiomeProvider p_i231888_1_, DimensionStructuresSettings p_i231888_2_) {
+        super(p_i231888_1_, p_i231888_2_);
+    }
 
     @Inject(method = "func_230352_b_", at = @At("HEAD"))
     protected void injectFunc_230352_b_(IWorld world, StructureManager manager, IChunk chunk, CallbackInfo ci) {
