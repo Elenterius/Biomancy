@@ -5,6 +5,7 @@ import com.github.elenterius.blightlings.mixin.WorldCarverMixinAccessor;
 import com.github.elenterius.blightlings.world.gen.tree.LilyTreeFeature;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.gen.carver.WorldCarver;
@@ -20,7 +21,10 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.MarkerManager;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Mod.EventBusSubscriber(modid = BlightlingsMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -51,9 +55,13 @@ public abstract class ModFeatures
                 .withConfiguration(new BlockStateFeatureConfig(ModBlocks.LUMINOUS_SOIL.get().getDefaultState()))
                 .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).func_242732_c(2);
 
-        @SuppressWarnings("UnusedReturnValue")
-        private static <FC extends IFeatureConfig> ConfiguredFeature<FC, ?> registerConfiguredFeature(ConfiguredFeature<FC, ?> configuredFeature) {
-            return Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, Objects.requireNonNull(configuredFeature.feature.getRegistryName()), configuredFeature);
+        private static void registerAll() {
+            registerConfiguredFeature("lily_tree", LILY_TREE);
+            registerConfiguredFeature("luminous_spore_blob", LUMINOUS_SPORE_BLOB);
+        }
+
+        private static void registerConfiguredFeature(String name, ConfiguredFeature<?, ?> configuredFeature) {
+            Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, new ResourceLocation(BlightlingsMod.MOD_ID, name), configuredFeature);
         }
     }
 
@@ -85,14 +93,6 @@ public abstract class ModFeatures
         });
 
         BlightlingsMod.LOGGER.info(MarkerManager.getMarker("BiomeFeatures"), "registering configured features...");
-        List<Field> configuredFeatures = Arrays.stream(CONFIGURED.class.getFields()).collect(Collectors.toList());
-        configuredFeatures.forEach(field -> {
-            try {
-                CONFIGURED.registerConfiguredFeature((ConfiguredFeature<?, ?>) field.get(null));
-            }
-            catch (IllegalAccessException e) {
-                BlightlingsMod.LOGGER.error(MarkerManager.getMarker("BiomeFeatures"), "failed to register configured feature", e);
-            }
-        });
+        CONFIGURED.registerAll();
     }
 }
