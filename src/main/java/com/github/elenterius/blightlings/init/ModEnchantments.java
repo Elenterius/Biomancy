@@ -6,7 +6,7 @@ import com.github.elenterius.blightlings.enchantment.ClimbingEnchantment;
 import net.minecraftforge.registries.ObjectHolder;
 
 @ObjectHolder(BlightlingsMod.MOD_ID)
-public class ModEnchantments
+public abstract class ModEnchantments
 {
     @ObjectHolder("climbing")
     public static ClimbingEnchantment CLIMBING;

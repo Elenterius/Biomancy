@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import java.util.function.LongFunction;
 
 @Mixin(LayerUtil.class)
-public class LayerUtilMixin
+public abstract class LayerUtilMixin
 {
     @Redirect(
             method = "func_237216_a_",

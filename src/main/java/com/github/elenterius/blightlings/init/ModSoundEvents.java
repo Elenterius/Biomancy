@@ -6,7 +6,7 @@ import net.minecraft.util.SoundEvent;
 import net.minecraftforge.registries.ObjectHolder;
 
 @ObjectHolder(BlightlingsMod.MOD_ID)
-public class ModSoundEvents
+public abstract class ModSoundEvents
 {
 //    @ObjectHolder("impactsplat")
 //    public static SoundEvent IMPACT_SPLAT;
