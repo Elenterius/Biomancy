@@ -3,12 +3,9 @@ package com.github.elenterius.blightlings.mixin;
 import com.github.elenterius.blightlings.init.ModBiomes;
 import net.minecraft.block.BlockState;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.NoiseChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructureManager;
-import net.minecraft.world.gen.settings.DimensionStructuresSettings;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -20,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.Arrays;
 
 @Mixin(NoiseChunkGenerator.class)
-public abstract class NoiseChunkGeneratorMixin extends ChunkGenerator
+public abstract class NoiseChunkGeneratorMixin
 {
     @Shadow
     @Final
@@ -30,20 +27,24 @@ public abstract class NoiseChunkGeneratorMixin extends ChunkGenerator
     @Final
     private static BlockState AIR;
 
-    boolean chunkHasPrimaryBlightBiome = false;
+    private boolean chunkHasPrimaryBlightBiome = false;
 
-    public NoiseChunkGeneratorMixin(BiomeProvider p_i231888_1_, DimensionStructuresSettings p_i231888_2_) {
-        super(p_i231888_1_, p_i231888_2_);
+    private boolean isBlightBiomeChunk() {
+        return chunkHasPrimaryBlightBiome;
+    }
+
+    private void setBlightBiomeChunk(boolean flag) {
+        chunkHasPrimaryBlightBiome = flag;
     }
 
     @Inject(method = "func_230352_b_", at = @At("HEAD"))
     protected void injectFunc_230352_b_(IWorld world, StructureManager manager, IChunk chunk, CallbackInfo ci) {
-        chunkHasPrimaryBlightBiome = false;
+        setBlightBiomeChunk(false);
         if (chunk.getBiomes() != null) {
             int[] ids = Arrays.stream(chunk.getBiomes().getBiomeIds()).distinct().toArray();
             for (int id : ids) {
                 if (id == ModBiomes.BLIGHT_BIOME_ID || id == ModBiomes.BLIGHT_BIOME_INNER_EDGE_ID) {
-                    chunkHasPrimaryBlightBiome = true;
+                    setBlightBiomeChunk(true);
                     break;
                 }
             }
@@ -55,7 +56,7 @@ public abstract class NoiseChunkGeneratorMixin extends ChunkGenerator
             at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/gen/NoiseChunkGenerator;func_236086_a_(DI)Lnet/minecraft/block/BlockState;")
     )
     protected BlockState modifyBlockStateVariable(BlockState state, IWorld world, StructureManager manager, IChunk chunk) {
-        if (chunkHasPrimaryBlightBiome && state == defaultFluid) return AIR;
+        if (isBlightBiomeChunk() && state == defaultFluid) return AIR;
         return state;
     }
 
