@@ -8,6 +8,9 @@ import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.WorldGenRegistries;
+import net.minecraft.world.gen.blockplacer.SimpleBlockPlacer;
+import net.minecraft.world.gen.blockstateprovider.SimpleBlockStateProvider;
+import net.minecraft.world.gen.blockstateprovider.WeightedBlockStateProvider;
 import net.minecraft.world.gen.carver.WorldCarver;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.placement.AtSurfaceWithExtraConfig;
@@ -32,6 +35,11 @@ public abstract class ModFeatures
 {
     //we can't use deferred feature & deferred biome registry together because the features may not be registered yet when building biome settings
 //    public static final DeferredRegister<Feature<?>> FEATURE_REGISTRY = DeferredRegister.create(ForgeRegistries.FEATURES, BlightlingsMod.MOD_ID);
+    public abstract static class CONFIGS
+    {
+        public static final BlockClusterFeatureConfig BLIGHT_SPROUT_CONFIG = new BlockClusterFeatureConfig.Builder(new WeightedBlockStateProvider().addWeightedBlockstate(ModBlocks.BLIGHT_SPROUT.get().getDefaultState(), 1).addWeightedBlockstate(ModBlocks.BLIGHT_SPROUT_SMALL.get().getDefaultState(), 4), SimpleBlockPlacer.PLACER).tries(32).build();
+        public static final BlockClusterFeatureConfig BLIGHTSHROOM_CONFIG = new BlockClusterFeatureConfig.Builder(new SimpleBlockStateProvider(ModBlocks.BLIGHT_SHROOM_TALL.get().getDefaultState()), SimpleBlockPlacer.PLACER).tries(64).func_227317_b_().build();
+    }
 
     public abstract static class UNCONFIGURED
     {
@@ -55,9 +63,14 @@ public abstract class ModFeatures
                 .withConfiguration(new BlockStateFeatureConfig(ModBlocks.LUMINOUS_SOIL.get().getDefaultState()))
                 .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).func_242732_c(2);
 
+        public static final ConfiguredFeature<?, ?> PATCH_BLIGHT_SPROUTS = Feature.RANDOM_PATCH.withConfiguration(CONFIGS.BLIGHT_SPROUT_CONFIG).withPlacement(Features.Placements.PATCH_PLACEMENT).func_242731_b(7);
+        public static final ConfiguredFeature<?, ?> PATCH_BLIGHTSHROOM = Feature.RANDOM_PATCH.withConfiguration(CONFIGS.BLIGHTSHROOM_CONFIG).chance(4).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT);
+
         private static void registerAll() {
             registerConfiguredFeature("lily_tree", LILY_TREE);
             registerConfiguredFeature("luminous_spore_blob", LUMINOUS_SPORE_BLOB);
+            registerConfiguredFeature("patch_blight_sprouts", PATCH_BLIGHT_SPROUTS);
+            registerConfiguredFeature("patch_blightshroom", PATCH_BLIGHTSHROOM);
         }
 
         private static void registerConfiguredFeature(String name, ConfiguredFeature<?, ?> configuredFeature) {

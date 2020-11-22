@@ -4,10 +4,7 @@ import com.github.elenterius.blightlings.BlightlingsMod;
 import com.github.elenterius.blightlings.world.gen.BlightSurfaceBuilder;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.registry.WorldGenRegistries;
-import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilder;
-import net.minecraft.world.gen.surfacebuilders.ISurfaceBuilderConfig;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilder;
-import net.minecraft.world.gen.surfacebuilders.SurfaceBuilderConfig;
+import net.minecraft.world.gen.surfacebuilders.*;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -31,6 +28,7 @@ public abstract class ModSurfaceBuilders
     public abstract static class UNCONFIGURED
     {
         public static final SurfaceBuilder<SurfaceBuilderConfig> BLIGHT_SURFACE_BUILDER = createSurfaceBuilder("blight_surface", new BlightSurfaceBuilder(SurfaceBuilderConfig.field_237203_a_));
+        public static final SurfaceBuilder<SurfaceBuilderConfig> BLIGHT_GRASS_SURFACE_BUILDER = createSurfaceBuilder("blight_grass_surface", new DefaultSurfaceBuilder(SurfaceBuilderConfig.field_237203_a_));
 
         private static <T extends ISurfaceBuilderConfig> SurfaceBuilder<T> createSurfaceBuilder(String name, SurfaceBuilder<T> surfaceBuilder) {
             surfaceBuilder.setRegistryName(BlightlingsMod.MOD_ID, name);
@@ -41,6 +39,7 @@ public abstract class ModSurfaceBuilders
     public abstract static class CONFIGURED
     {
         public static final ConfiguredSurfaceBuilder<SurfaceBuilderConfig> BLIGHT_SURFACE_BUILDER = UNCONFIGURED.BLIGHT_SURFACE_BUILDER.func_242929_a(ModSurfaceBuilders.CONFIGS.BLIGHT_SOIL_CONFIG);
+        public static final ConfiguredSurfaceBuilder<SurfaceBuilderConfig> BLIGHT_GRASS_SURFACE_BUILDER = UNCONFIGURED.BLIGHT_GRASS_SURFACE_BUILDER.func_242929_a(ModSurfaceBuilders.CONFIGS.GRASS_BLIGHT_SOIL_CONFIG);
 
         private static void registerConfiguredSurfaceBuilder(ConfiguredSurfaceBuilder<? extends ISurfaceBuilderConfig> configuredSB) {
             WorldGenRegistries.register(WorldGenRegistries.CONFIGURED_SURFACE_BUILDER, Objects.requireNonNull(configuredSB.builder.getRegistryName()), configuredSB);
