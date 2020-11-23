@@ -27,24 +27,16 @@ public abstract class NoiseChunkGeneratorMixin
     @Final
     private static BlockState AIR;
 
-    private boolean chunkHasPrimaryBlightBiome = false;
-
-    private boolean isBlightBiomeChunk() {
-        return chunkHasPrimaryBlightBiome;
-    }
-
-    private void setBlightBiomeChunk(boolean flag) {
-        chunkHasPrimaryBlightBiome = flag;
-    }
+    private boolean hasBlightBiome = false;
 
     @Inject(method = "func_230352_b_", at = @At("HEAD"))
-    protected void injectFunc_230352_b_(IWorld world, StructureManager manager, IChunk chunk, CallbackInfo ci) {
-        setBlightBiomeChunk(false);
+    protected void onFunc_230352_b_(IWorld p_230352_1_, StructureManager p_230352_2_, IChunk chunk, CallbackInfo ci) {
+        hasBlightBiome = false;
         if (chunk.getBiomes() != null) {
             int[] ids = Arrays.stream(chunk.getBiomes().getBiomeIds()).distinct().toArray();
             for (int id : ids) {
                 if (id == ModBiomes.BLIGHT_BIOME_ID || id == ModBiomes.BLIGHT_BIOME_INNER_EDGE_ID) {
-                    setBlightBiomeChunk(true);
+                    hasBlightBiome = true;
                     break;
                 }
             }
@@ -56,8 +48,9 @@ public abstract class NoiseChunkGeneratorMixin
             at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/gen/NoiseChunkGenerator;func_236086_a_(DI)Lnet/minecraft/block/BlockState;")
     )
     protected BlockState modifyBlockStateVariable(BlockState state, IWorld world, StructureManager manager, IChunk chunk) {
-        if (isBlightBiomeChunk() && state == defaultFluid) return AIR;
+        if (hasBlightBiome && state == defaultFluid) {
+            return AIR; //remove "ocean", this is important because the blight biome has a negative depth and would normally generate with water below the sea level
+        }
         return state;
     }
-
 }

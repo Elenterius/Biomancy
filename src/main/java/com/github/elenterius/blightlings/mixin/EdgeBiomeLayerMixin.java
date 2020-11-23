@@ -22,5 +22,15 @@ public abstract class EdgeBiomeLayerMixin
                 cir.setReturnValue(ModBiomes.BLIGHT_BIOME_ID);
             }
         }
+        else if (center == ModBiomes.BLIGHT_BIOME_OUTER_EDGE_ID) {
+            int main = ModBiomes.BLIGHT_BIOME_ID;
+            if (toInt(north == main) + toInt(west == main) + toInt(east == main) + toInt(south == main) > 2) {
+                cir.setReturnValue(ModBiomes.BLIGHT_BIOME_INNER_EDGE_ID);
+            }
+        }
+    }
+
+    private int toInt(boolean flag) {
+        return flag ? 1 : 0;
     }
 }
