@@ -100,9 +100,11 @@ public abstract class ModBiomes
                 .downfall(0.25f)
                 .withMobSpawnSettings(
                         new MobSpawnInfoBuilder(MobSpawnInfo.EMPTY)
-                                .withCreatureSpawnProbability(0.99f)
-                                .withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.BLOBLING.get(), 100, 5, 8))
-                                .withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.BROOD_MOTHER.get(), 80, 1, 2))
+                                .withCreatureSpawnProbability(1f)
+//                                .withSpawnCost(ModEntityTypes.BLOBLING.get(), 0.1, 10)
+//                                .withSpawnCost(ModEntityTypes.BROOD_MOTHER.get(), 1, 20)
+                                .withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.BLOBLING.get(), 100, 4, 8))
+                                .withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.BROOD_MOTHER.get(), 80, 2, 4))
                                 .copy()
                 )
                 .setEffects(
@@ -144,8 +146,8 @@ public abstract class ModBiomes
                 .downfall(0.35f)
                 .withMobSpawnSettings(
                         new MobSpawnInfoBuilder(MobSpawnInfo.EMPTY)
-                                .withCreatureSpawnProbability(0.80f)
-                                .withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.BLOBLING.get(), 90, 3, 6))
+                                .withCreatureSpawnProbability(0.8f)
+                                .withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.BLOBLING.get(), 90, 3, 4))
                                 .withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.BROOD_MOTHER.get(), 70, 1, 1))
                                 .copy()
                 )
@@ -189,7 +191,6 @@ public abstract class ModBiomes
                         new MobSpawnInfoBuilder(MobSpawnInfo.EMPTY)
                                 .withCreatureSpawnProbability(0.70f)
                                 .withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.BLOBLING.get(), 90, 3, 6))
-                                .withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.BROOD_MOTHER.get(), 70, 1, 1))
                                 .copy()
                 )
                 .setEffects(
