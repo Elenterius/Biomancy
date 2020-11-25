@@ -1,0 +1,11 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "blightlings:block/lilytree_stem_horizontal", "x": 90, "y": 90
+    }, "axis=y": {
+      "model": "blightlings:block/lilytree_stem"
+    }, "axis=z": {
+      "model": "blightlings:block/lilytree_stem_horizontal", "x": 90
+    }
+  }
+}

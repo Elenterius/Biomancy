@@ -27,7 +27,7 @@ public class LilyTreeFeature extends Feature<NoFeatureConfig>
     }
 
     public boolean generate(IWorld iWorld, Random rand, BlockPos pos, BlockState state) {
-        TreeGenerator.generateLilyTree(iWorld, rand, pos, state);
+        TreeGeneratorUtil.generateLilyTree(iWorld, rand, pos, state);
         return true;
     }
 }

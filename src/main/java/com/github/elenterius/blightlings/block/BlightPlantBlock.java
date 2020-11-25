@@ -17,7 +17,7 @@ public class BlightPlantBlock extends BushBlock
     private final boolean isSmall;
 
     public BlightPlantBlock(boolean isSmall) {
-        super(Block.Properties.create(Material.PLANTS).doesNotBlockMovement().hardnessAndResistance(0.0F).sound(SoundType.PLANT));
+        super(Block.Properties.create(Material.TALL_PLANTS).doesNotBlockMovement().hardnessAndResistance(0.0F).sound(SoundType.PLANT));
         this.isSmall = isSmall;
     }
 

@@ -1,5 +1,5 @@
 {
   "parent": "block/cross", "textures": {
-  "cross": "blightlings:block/blight_shroom_tall"
+  "cross": "blightlings:block/blight_shroom_tall_green"
 }
 }

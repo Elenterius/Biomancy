@@ -46,4 +46,5 @@ public abstract class ModItems
     public static final RegistryObject<Item> BLIGHT_TENTACLE_1_BLOCK_ITEM = ITEM_REGISTRY.register("blight_tentacle_1", () -> new BlockItem(ModBlocks.BLIGHT_TENTACLE_1.get(), createItemProperties()));
     public static final RegistryObject<Item> BLIGHT_SHROOM_TALL_BLOCK_ITEM = ITEM_REGISTRY.register("blight_shroom_tall", () -> new BlockItem(ModBlocks.BLIGHT_SHROOM_TALL.get(), createItemProperties()));
     public static final RegistryObject<Item> BLIGHT_MOSS_SLAB_BLOCK_ITEM = ITEM_REGISTRY.register("blight_moss_slab", () -> new BlockItem(ModBlocks.BLIGHT_MOSS_SLAB.get(), createItemProperties()));
+    public static final RegistryObject<Item> LILYTREE_STEM_BLOCK_ITEM = ITEM_REGISTRY.register("lilytree_stem", () -> new BlockItem(ModBlocks.LILY_TREE_STEM.get(), createItemProperties()));
 }

@@ -1,5 +1,5 @@
 {
   "parent": "item/generated", "textures": {
-  "layer0": "blightlings:block/blight_shroom_tall"
+  "layer0": "blightlings:block/blight_shroom_tall_green"
 }
 }

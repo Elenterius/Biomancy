@@ -1,6 +1,6 @@
 package com.github.elenterius.blightlings.block;
 
-import com.github.elenterius.blightlings.world.gen.tree.TreeGenerator;
+import com.github.elenterius.blightlings.world.gen.tree.TreeGeneratorUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IGrowable;
@@ -41,7 +41,7 @@ public class BlightSaplingBlock extends BlightPlantBlock implements IGrowable
         }
         else {
             if (!net.minecraftforge.event.ForgeEventFactory.saplingGrowTree(world, rand, pos)) return;
-            TreeGenerator.generateLilyTree(world, rand, pos, state);
+            TreeGeneratorUtil.generateLilyTree(world, rand, pos, state);
         }
 
     }

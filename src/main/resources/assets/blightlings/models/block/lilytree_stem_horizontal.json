@@ -1,0 +1,5 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal", "textures": {
+  "end": "blightlings:block/lilytree_stem_top", "side": "blightlings:block/lilytree_stem"
+}
+}

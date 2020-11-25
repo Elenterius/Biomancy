@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.SlabType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -15,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public abstract class TreeGenerator
+public abstract class TreeGeneratorUtil
 {
     public static void generateLilyTree(IWorld world, Random rand, BlockPos pos, BlockState state) {
         List<Direction> cardinalDirections = Lists.newArrayList(Direction.Plane.HORIZONTAL);
@@ -30,16 +31,16 @@ public abstract class TreeGenerator
         BlockPos.Mutable currPos = pos.toMutable();
 
         BlockState slabState = ModBlocks.BLIGHT_MOSS_SLAB.get().getDefaultState().with(SlabBlock.TYPE, SlabType.BOTTOM);
-        BlockState stemHorizontalState = Blocks.COAL_BLOCK.getDefaultState();
-        BlockState stemVerticalState = stemHorizontalState;
+        BlockState stemHorizontalState = ModBlocks.LILY_TREE_STEM.get().getDefaultState();
+        BlockState stemVerticalState = ModBlocks.LILY_TREE_STEM.get().getDefaultState();
         BlockState sporeInfestedState = ModBlocks.LUMINOUS_SOIL.get().getDefaultState();
 
         int baseHeight = rand.nextInt(2) + 1;
         for (int j = 0; j < baseHeight; ++j) {
-            world.setBlockState(currPos, stemHorizontalState, Constants.BlockFlags.BLOCK_UPDATE);
+            world.setBlockState(currPos, stemVerticalState, Constants.BlockFlags.BLOCK_UPDATE);
             currPos.move(Direction.UP);
         }
-        world.setBlockState(currPos, stemHorizontalState, Constants.BlockFlags.BLOCK_UPDATE); //corner
+        world.setBlockState(currPos, stemVerticalState, Constants.BlockFlags.BLOCK_UPDATE); //corner
 
         BlockPos forkPos = currPos.toImmutable();
         BlockPos endPos = currPos.toImmutable();
@@ -51,7 +52,7 @@ public abstract class TreeGenerator
         int maxLength = rand.nextInt(5) + 3;
         int horizontalSteps = 0;
         Direction currDirection = branchDirection;
-        for (int i = 0; i < maxLength && tryToSetBlockState(world, currPos, stemHorizontalState, Constants.BlockFlags.BLOCK_UPDATE); i++) {
+        for (int i = 0; i < maxLength && tryToSetBlockState(world, currPos, stemHorizontalState.with(BlockStateProperties.AXIS, currDirection.getAxis()), Constants.BlockFlags.BLOCK_UPDATE); i++) {
             currPos.move(currDirection);
             horizontalSteps++;
             if (horizontalSteps >= 2 && rand.nextFloat() < 0.5F) {
@@ -75,11 +76,8 @@ public abstract class TreeGenerator
                 }
                 horizontalSteps = 0;
                 currDirection = currDirection.getOpposite();
-                endPos = currPos.toImmutable();
             }
-            else {
-                endPos = currPos.toImmutable();
-            }
+            endPos = currPos.toImmutable();
         }
 
         //we have reached the top/end
