@@ -63,7 +63,7 @@ public class ModLootTableProvider extends LootTableProvider
 
     @Override
     public String getName() {
-        return "BlightlingsMod LootTables";
+        return "BlightlingsMod " + super.getName();
     }
 
     protected void addDefaultTable(Map<ResourceLocation, LootTable.Builder> lootTables, Block block) {

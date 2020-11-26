@@ -1,0 +1,25 @@
+{
+  "parent": "minecraft:recipes/root", "rewards": {
+  "recipes": [
+    "blightlings:pink_wool_from_string"
+  ]
+}, "criteria": {
+  "has_blight_string": {
+    "trigger": "minecraft:inventory_changed", "conditions": {
+      "items": [
+        {
+          "item": "blightlings:blight_string"
+        }
+      ]
+    }
+  }, "has_the_recipe": {
+    "trigger": "minecraft:recipe_unlocked", "conditions": {
+      "recipe": "blightlings:pink_wool_from_string"
+    }
+  }
+}, "requirements": [
+  [
+    "has_blight_string", "has_the_recipe"
+  ]
+]
+}

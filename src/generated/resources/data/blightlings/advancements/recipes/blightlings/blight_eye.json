@@ -1,0 +1,25 @@
+{
+  "parent": "minecraft:recipes/root", "rewards": {
+  "recipes": [
+    "blightlings:blight_eye"
+  ]
+}, "criteria": {
+  "has_blight_shard": {
+    "trigger": "minecraft:inventory_changed", "conditions": {
+      "items": [
+        {
+          "item": "blightlings:blight_shard"
+        }
+      ]
+    }
+  }, "has_the_recipe": {
+    "trigger": "minecraft:recipe_unlocked", "conditions": {
+      "recipe": "blightlings:blight_eye"
+    }
+  }
+}, "requirements": [
+  [
+    "has_blight_shard", "has_the_recipe"
+  ]
+]
+}

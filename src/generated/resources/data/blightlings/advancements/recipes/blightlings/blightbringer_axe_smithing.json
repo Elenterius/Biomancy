@@ -1,0 +1,25 @@
+{
+  "parent": "minecraft:recipes/root", "rewards": {
+  "recipes": [
+    "blightlings:blightbringer_axe_smithing"
+  ]
+}, "criteria": {
+  "has_blight_sac": {
+    "trigger": "minecraft:inventory_changed", "conditions": {
+      "items": [
+        {
+          "item": "blightlings:blight_sac"
+        }
+      ]
+    }
+  }, "has_the_recipe": {
+    "trigger": "minecraft:recipe_unlocked", "conditions": {
+      "recipe": "blightlings:blightbringer_axe_smithing"
+    }
+  }
+}, "requirements": [
+  [
+    "has_blight_sac", "has_the_recipe"
+  ]
+]
+}

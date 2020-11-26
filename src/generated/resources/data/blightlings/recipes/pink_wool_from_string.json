@@ -2,7 +2,9 @@
   "type": "minecraft:crafting_shaped", "pattern": [
   "##", "##"
 ], "key": {
-  "#": {"item": "blightlings:blight_string"}
+  "#": {
+    "item": "blightlings:blight_string"
+  }
 }, "result": {
   "item": "minecraft:pink_wool"
 }
