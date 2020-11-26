@@ -1,10 +1,7 @@
 package com.github.elenterius.blightlings.init;
 
 import com.github.elenterius.blightlings.BlightlingsMod;
-import com.github.elenterius.blightlings.item.BlightbringerAxeItem;
-import com.github.elenterius.blightlings.item.GogglesArmorItem;
-import com.github.elenterius.blightlings.item.ModItemTier;
-import com.github.elenterius.blightlings.item.ModSpawnEggItem;
+import com.github.elenterius.blightlings.item.*;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -22,8 +19,9 @@ public abstract class ModItems
     }
 
     public static final RegistryObject<GogglesArmorItem> TRUE_SIGHT_GOGGLES = ITEM_REGISTRY.register("true_sight_goggles", () -> new GogglesArmorItem(ArmorMaterial.IRON, createItemProperties().rarity(Rarity.EPIC)));
-    public static final RegistryObject<BlightbringerAxeItem> BLIGHTBRINGER_AXE = ITEM_REGISTRY.register("blightbringer_axe",
-            () -> new BlightbringerAxeItem(ModItemTier.BLIGHT_AMALGAM, 5F, -3.15F, createItemProperties().rarity(Rarity.EPIC)));
+    public static final RegistryObject<ModAxeItem> BLIGHTBRINGER_AXE = ITEM_REGISTRY.register("blightbringer_axe", () -> new ModAxeItem(ModItemTier.BLIGHT_AMALGAM, 5F, -3.15F, createItemProperties().rarity(Rarity.EPIC)));
+    public static final RegistryObject<KhopeshItem> BLIGHT_KHOPESH = ITEM_REGISTRY.register("blight_khopesh", () -> new KhopeshItem(ModItemTier.BLIGHT_AMALGAM, 5F, -2.75F, createItemProperties().rarity(Rarity.EPIC)));
+    public static final RegistryObject<SickleItem> BLIGHT_SICKLE = ITEM_REGISTRY.register("blight_sickle", () -> new SickleItem(ModItemTier.BLIGHT_AMALGAM, 3, -2.5F, createItemProperties().rarity(Rarity.EPIC)));
 
     public static final RegistryObject<Item> BLIGHT_SHARD = ITEM_REGISTRY.register("blight_shard", () -> new Item(createItemProperties()));
     public static final RegistryObject<Item> BLIGHT_SAC = ITEM_REGISTRY.register("blight_sac", () -> new Item(createItemProperties()));

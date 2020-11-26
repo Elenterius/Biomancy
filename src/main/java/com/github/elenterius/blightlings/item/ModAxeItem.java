@@ -12,9 +12,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlightbringerAxeItem extends AxeItem
+public class ModAxeItem extends AxeItem
 {
-    public BlightbringerAxeItem(IItemTier tier, float attackDamageIn, float attackSpeedIn, Properties builder) {
+    public ModAxeItem(IItemTier tier, float attackDamageIn, float attackSpeedIn, Properties builder) {
         super(tier, attackDamageIn, attackSpeedIn, builder);
     }
 
