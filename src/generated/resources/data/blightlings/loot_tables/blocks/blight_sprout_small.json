@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:block", "pools": [
+  {
+    "rolls": 1, "entries": [
+    {
+      "type": "minecraft:item", "name": "blightlings:blight_sprout_small"
+    }
+  ], "conditions": [
+    {
+      "condition": "minecraft:survives_explosion"
+    }
+  ]
+  }
+]
+}

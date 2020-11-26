@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:block", "pools": [
+  {
+    "rolls": 1, "entries": [
+    {
+      "type": "minecraft:item", "name": "blightlings:lilytree_sapling"
+    }
+  ], "conditions": [
+    {
+      "condition": "minecraft:survives_explosion"
+    }
+  ]
+  }
+]
+}
