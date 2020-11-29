@@ -1,11 +1,7 @@
 {
-  "required": true,
-  "package": "com.github.elenterius.blightlings.mixin",
-  "compatibilityLevel": "JAVA_8",
-  "refmap": "mixins.blightlings.refmap.json",
-  "mixins": ["DamageSourceMixin", "EdgeBiomeLayerMixin", "EntityMixin", "LayerUtilMixin", "MixRiverLayerMixin", "NoiseChunkGeneratorMixin", "WorldCarverMixinAccessor"],
-  "injectors": {
-    "defaultRequire": 1
-  },
-  "minVersion": "0.8.2"
+  "required": true, "package": "com.github.elenterius.blightlings.mixin", "compatibilityLevel": "JAVA_8", "refmap": "mixins.blightlings.refmap.json", "mixins": [
+  "DamageSourceMixin", "EdgeBiomeLayerMixin", "EntityMixin", "LayerUtilMixin", "LivingRendererMixin", "MinecraftMixin", "MixRiverLayerMixin", "NoiseChunkGeneratorMixin", "WorldCarverMixinAccessor"
+], "injectors": {
+  "defaultRequire": 1
+}, "minVersion": "0.8.2"
 }
