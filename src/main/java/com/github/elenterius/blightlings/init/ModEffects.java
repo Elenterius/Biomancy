@@ -18,10 +18,11 @@ public class ModEffects
     public static AttributeModifier FRENZY_ATTACK_DAMAGE_MODIFIER = new AttributeModifier(FRENZY_ATTACK_DAMAGE_UUID, "confused_attack_damage", 0.25f, AttributeModifier.Operation.ADDITION);
 
     public static final DeferredRegister<Effect> EFFECT_REGISTRY = DeferredRegister.create(ForgeRegistries.POTIONS, BlightlingsMod.MOD_ID);
-    public static final RegistryObject<StatusEffect> DREAD = EFFECT_REGISTRY.register("dread", () -> (StatusEffect) new StatusEffect(EffectType.HARMFUL, 0x1f1f23)
+    public static final RegistryObject<StatusEffect> DREAD = EFFECT_REGISTRY.register("dread", () -> (StatusEffect) new StatusEffect(EffectType.HARMFUL, 0x1f1f23, false)
             .addAttributesModifier(Attributes.KNOCKBACK_RESISTANCE, "011F6C08-EAD8-4F06-8F1A-05CFFA2DE55C", -0.2f, AttributeModifier.Operation.MULTIPLY_TOTAL)
-            .addAttributesModifier(Attributes.ATTACK_SPEED, "D0D84456-EF73-4A52-81C6-E51713B76C90", -0.2f, AttributeModifier.Operation.MULTIPLY_TOTAL));
-    public static final RegistryObject<StatusEffect> FRENZY = EFFECT_REGISTRY.register("frenzy", () -> (StatusEffect) new StatusEffect(EffectType.HARMFUL, 0x1f1f23)
+            .addAttributesModifier(Attributes.ATTACK_SPEED, "D0D84456-EF73-4A52-81C6-E51713B76C90", -0.4f, AttributeModifier.Operation.MULTIPLY_TOTAL)
+            .addAttributesModifier(Attributes.ATTACK_DAMAGE, "f568d23e-515f-401a-af2b-b64d8f227fe7", -0.3f, AttributeModifier.Operation.MULTIPLY_TOTAL));
+    public static final RegistryObject<StatusEffect> FRENZY = EFFECT_REGISTRY.register("frenzy", () -> (StatusEffect) new StatusEffect(EffectType.HARMFUL, 0xce0018)
             .addAttributesModifier(Attributes.ATTACK_SPEED, "FD74324D-939A-4BF3-8E3B-A3717A7E363B", 0.4f, AttributeModifier.Operation.MULTIPLY_TOTAL)
             .addAttributesModifier(Attributes.ATTACK_KNOCKBACK, "B98514E1-C175-4C93-85D5-5BEF3A9CF418", 0.2f, AttributeModifier.Operation.MULTIPLY_TOTAL)
             .addAttributesModifier(Attributes.MAX_HEALTH, "99DD10E5-2682-4C0D-8F8D-0FED3CE2D3F9", -0.3f, AttributeModifier.Operation.MULTIPLY_TOTAL));
