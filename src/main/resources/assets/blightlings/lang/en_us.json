@@ -38,6 +38,8 @@
 
   "enchantment.blightlings.climbing": "Millipedes",
   "enchantment.blightlings.bullet_jump": "Copepod Leap",
+  "effect.blightlings.dread": "Dread",
+  "effect.blightlings.frenzy": "Frenzy",
 
   "tooltip.blightlings.riding_bonus": "When Riding an Entity:",
 

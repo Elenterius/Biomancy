@@ -11,7 +11,7 @@ version = "${file.jarVersion}" #mandatory
 displayName = "Blightlings" #mandatory
 displayURL = "https://github.com/Elenterius/Blightlings" #optional
 logoFile = "logo.png" #optional
-credits = "" #optional
+credits = "Lorc (https://lorcblog.blogspot.com/) for icons which are under CC BY 3.0 (http://creativecommons.org/licenses/by/3.0/) and were modified by downscaling and recoloring."
 authors = "Elenterius" #optional
 #mandatory
 description = '''
