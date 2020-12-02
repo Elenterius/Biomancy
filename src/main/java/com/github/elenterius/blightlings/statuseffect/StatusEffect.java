@@ -1,10 +1,13 @@
 package com.github.elenterius.blightlings.statuseffect;
 
+import com.github.elenterius.blightlings.init.ModEffects;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
+import net.minecraft.util.DamageSource;
 
 import javax.annotation.Nullable;
 import java.util.Collections;
@@ -24,8 +27,16 @@ public class StatusEffect extends Effect
     }
 
     @Override
-    public void performEffect(LivingEntity entityLivingBaseIn, int amplifier) {
-        //do nothing
+    public void performEffect(LivingEntity livingEntity, int amplifier) {
+        if (this == ModEffects.BLIGHT_INFECTION.get()) {
+            livingEntity.attackEntityFrom(DamageSource.MAGIC, (amplifier + 1f) * 0.5f);
+            if (livingEntity instanceof PlayerEntity) {
+                ((PlayerEntity) livingEntity).addExhaustion((amplifier + 1f) * 0.0025f);
+            }
+        }
+        else if (this == ModEffects.FRENZY.get() && livingEntity instanceof PlayerEntity) {
+            ((PlayerEntity) livingEntity).addExhaustion((amplifier + 1f) * 0.0025f);
+        }
     }
 
     @Override
@@ -35,6 +46,14 @@ public class StatusEffect extends Effect
 
     @Override
     public boolean isReady(int duration, int amplifier) {
+        if (this == ModEffects.BLIGHT_INFECTION.get()) {
+            int nTicks = 40 >> amplifier;
+            return nTicks <= 0 || duration % nTicks == 0;
+        }
+        else if (this == ModEffects.FRENZY.get()) {
+            int nTicks = 20 >> amplifier;
+            return nTicks <= 0 || duration % nTicks == 0;
+        }
         return false;
     }
 

@@ -32,20 +32,16 @@
   "block.blightlings.lilytree_sapling": "Prickly Lilymould Sapling",
   "block.blightlings.lilytree_stem": "Prickly Lilymould Stem",
   "block.blightlings.lilytree_pad": "Prickly Lilymould-Pad",
-
   "entity.blightlings.blobling": "Blobling",
   "entity.blightlings.brood_mother": "Brood Mother",
-
   "enchantment.blightlings.climbing": "Millipedes",
   "enchantment.blightlings.bullet_jump": "Copepod Leap",
   "effect.blightlings.dread": "Dread",
   "effect.blightlings.frenzy": "Frenzy",
-
+  "effect.blightlings.blight_infection": "Blight Infection",
   "tooltip.blightlings.riding_bonus": "When Riding an Entity:",
-
   "death.blightlings.attack.blight_thorn": "%1$s was mauled to death by %2$s",
   "death.blightlings.attack.blight_thorn.item": "%1$s was mauled to death by %2$s using %3$s",
-
   "sounds.blightlings.impactsplat": "Impact Splat",
   "sounds.blightlings.wahwah": "Arthropod Growl"
 }

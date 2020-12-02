@@ -23,7 +23,7 @@ public abstract class LivingEntityMixin
     @Inject(method = "getAttributeValue", at = @At("HEAD"), cancellable = true)
     protected void onGetAttributeValue(Attribute attribute, CallbackInfoReturnable<Double> cir) {
         if (attribute == Attributes.ATTACK_DAMAGE && !getAttributeManager().hasAttributeInstance(Attributes.ATTACK_DAMAGE)) {
-            cir.setReturnValue(isPotionActive(ModEffects.FRENZY.get()) ? ModEffects.FRENZY_ATTACK_DAMAGE_MODIFIER.getAmount() : 0d);
+            cir.setReturnValue(isPotionActive(ModEffects.FRENZY.get()) ? 0.25d : 0d);
         }
     }
 }

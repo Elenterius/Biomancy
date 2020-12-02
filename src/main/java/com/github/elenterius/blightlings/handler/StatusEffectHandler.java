@@ -23,6 +23,8 @@ public abstract class StatusEffectHandler
 
     @SubscribeEvent
     public static void onLivingSpawn(final EntityJoinWorldEvent event) {
+        if (event.getWorld().isRemote()) return;
+
         Entity entity = event.getEntity();
         if (entity instanceof MobEntity) {
             ((MobEntity) entity).targetSelector.addGoal(1, new FrenzyTargetGoal<>((MobEntity) entity, LivingEntity.class));
