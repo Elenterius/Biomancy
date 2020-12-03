@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(MixRiverLayer.class)
-public class MixRiverLayerMixin implements IDimOffset0Transformer
+public abstract class MixRiverLayerMixin implements IDimOffset0Transformer
 {
     @Inject(method = "apply", at = @At("HEAD"), cancellable = true)
     protected void onApply(INoiseRandom p_215723_1_, IArea biomeArea, IArea riverArea, int posX, int posZ, CallbackInfoReturnable<Integer> cir) {

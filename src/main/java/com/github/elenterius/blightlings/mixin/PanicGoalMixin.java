@@ -11,9 +11,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PanicGoal.class)
-public class PanicGoalMixin
+public abstract class PanicGoalMixin
 {
-    @Shadow @Final protected CreatureEntity creature;
+    @Shadow
+    @Final
+    protected CreatureEntity creature;
 
     @Inject(method = "shouldExecute", at = @At("HEAD"), cancellable = true)
     protected void onShouldExecute(CallbackInfoReturnable<Boolean> cir) {

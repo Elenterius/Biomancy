@@ -2,8 +2,6 @@ package com.github.elenterius.blightlings.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.DirectionProperty;
 import net.minecraft.state.StateContainer;
@@ -31,8 +29,8 @@ public class BlightPustuleBlock extends BlightPlantBlock
     protected static final VoxelShape SHAPE_SOUTH = Block.makeCuboidShape(2.0D, 2.0D, 0.0D, 14.0D, 14.0D, 4.0D);
     protected static final VoxelShape SHAPE_NORTH = Block.makeCuboidShape(2.0D, 2.0D, 12.0D, 14.0D, 14.0D, 16.0D);
 
-    public BlightPustuleBlock() {
-        super(Properties.create(Material.PLANTS).doesNotBlockMovement().hardnessAndResistance(0.2F).sound(SoundType.PLANT).setLightLevel(value -> 3));
+    public BlightPustuleBlock(Properties properties) {
+        super(properties);
         setDefaultState(getDefaultState().with(FACING, Direction.UP));
     }
 

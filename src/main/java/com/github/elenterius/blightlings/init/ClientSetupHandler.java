@@ -30,14 +30,19 @@ public abstract class ClientSetupHandler
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BLOBLING.get(), BloblingRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BROOD_MOTHER.get(), BroodmotherRenderer::new);
 
-        RenderTypeLookup.setRenderLayer(ModBlocks.LILY_TREE_SAPLING.get(), RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(ModBlocks.LUMINOUS_SOIL.get(), renderType -> renderType == RenderType.getCutout() || renderType == RenderType.getTranslucent());
-        RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_PUSTULE.get(), RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_SPROUT.get(), RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_SPROUT_SMALL.get(), RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_TENTACLE_0.get(), RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_TENTACLE_1.get(), RenderType.getCutout());
-        RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_SHROOM_TALL.get(), RenderType.getCutout());
+        event.enqueueWork(() -> {
+            RenderTypeLookup.setRenderLayer(ModBlocks.LILY_TREE_SAPLING.get(), RenderType.getCutout());
+            RenderTypeLookup.setRenderLayer(ModBlocks.LUMINOUS_SOIL.get(), renderType -> renderType == RenderType.getCutout() || renderType == RenderType.getTranslucent());
+            RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_PUSTULE_SMALL.get(), RenderType.getCutout());
+            RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_PUSTULE_BIG.get(), RenderType.getCutout());
+            RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_PUSTULE_BIG_AND_SMALL.get(), RenderType.getCutout());
+            RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_PUSTULE_SMALL_GROUP.get(), RenderType.getCutout());
+            RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_SPROUT.get(), RenderType.getCutout());
+            RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_SPROUT_SMALL.get(), RenderType.getCutout());
+            RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_TENTACLE_0.get(), RenderType.getCutout());
+            RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_TENTACLE_1.get(), RenderType.getCutout());
+            RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_SHROOM_TALL.get(), RenderType.getCutout());
+        });
     }
 
     @SubscribeEvent

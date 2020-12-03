@@ -32,7 +32,10 @@ public abstract class ModBlocks
     public static final RegistryObject<Block> LUMINOUS_SOIL = BLOCK_REGISTRY.register("luminous_soil",
             () -> new BlightSoilBlock(Block.Properties.create(Material.EARTH, MaterialColor.BLACK).hardnessAndResistance(0.5F).sound(SoundType.GROUND)));
 
-    public static final RegistryObject<Block> BLIGHT_PUSTULE = BLOCK_REGISTRY.register("blight_pustule", BlightPustuleBlock::new);
+    public static final RegistryObject<Block> BLIGHT_PUSTULE_SMALL = BLOCK_REGISTRY.register("blight_pustule_0", () -> new BlightPustuleBlock(glowingPlantProperties(3)));
+    public static final RegistryObject<Block> BLIGHT_PUSTULE_BIG = BLOCK_REGISTRY.register("blight_pustule_1", () -> new BlightPustuleBlock(glowingPlantProperties(9)));
+    public static final RegistryObject<Block> BLIGHT_PUSTULE_BIG_AND_SMALL = BLOCK_REGISTRY.register("blight_pustule_2", () -> new BlightPustuleBlock(glowingPlantProperties(12)));
+    public static final RegistryObject<Block> BLIGHT_PUSTULE_SMALL_GROUP = BLOCK_REGISTRY.register("blight_pustule_3", () -> new BlightPustuleBlock(glowingPlantProperties(7)));
 
     public static final RegistryObject<Block> BLIGHT_SHROOM_TALL = BLOCK_REGISTRY.register("blight_shroom_tall",
             () -> new BlightPlantBlock(Block.Properties.create(Material.PLANTS).doesNotBlockMovement().hardnessAndResistance(0.0F).sound(SoundType.PLANT))
@@ -42,17 +45,20 @@ public abstract class ModBlocks
                     return worldIn.getLightSubtracted(pos, 0) < 13 && super.isValidPosition(state, worldIn, pos);
                 }
             });
-
-    public static final RegistryObject<Block> LILY_TREE_SAPLING = BLOCK_REGISTRY.register("lilytree_sapling", BlightSaplingBlock::new);
+    public static final RegistryObject<Block> CANDELABRA_FUNGUS = BLOCK_REGISTRY.register("candelabra_fungus", () -> new BlightPlantBlock(Block.Properties.create(Material.PLANTS).doesNotBlockMovement().hardnessAndResistance(0.2F).sound(SoundType.PLANT)));
 
     public static final RegistryObject<Block> BLIGHT_SPROUT = BLOCK_REGISTRY.register("blight_sprout", () -> new BlightPlantBlock(true));
     public static final RegistryObject<Block> BLIGHT_SPROUT_SMALL = BLOCK_REGISTRY.register("blight_sprout_small", () -> new BlightPlantBlock(true));
     public static final RegistryObject<Block> BLIGHT_TENTACLE_0 = BLOCK_REGISTRY.register("blight_tentacle_0", BlightPlantBlock::new);
     public static final RegistryObject<Block> BLIGHT_TENTACLE_1 = BLOCK_REGISTRY.register("blight_tentacle_1", BlightPlantBlock::new);
 
+    public static final RegistryObject<Block> LILY_TREE_SAPLING = BLOCK_REGISTRY.register("lilytree_sapling", BlightSaplingBlock::new);
+    public static final RegistryObject<Block> LILY_TREE_STEM = BLOCK_REGISTRY.register("lilytree_stem",
+            () -> new RotatedPillarBlock(Block.Properties.create(Material.WOOD, MaterialColor.DIRT).hardnessAndResistance(0.4F).setAllowsSpawn(ModBlocks::canEntitySpawn).sound(SoundType.PLANT)));
     public static final RegistryObject<Block> BLIGHT_MOSS_SLAB = BLOCK_REGISTRY.register("blight_moss_slab",
             () -> new SlabBlock(Block.Properties.create(Material.EARTH, MaterialColor.DIRT).hardnessAndResistance(0.4F).setAllowsSpawn(ModBlocks::canEntitySpawn).sound(SoundType.PLANT)));
 
-    public static final RegistryObject<Block> LILY_TREE_STEM = BLOCK_REGISTRY.register("lilytree_stem",
-            () -> new RotatedPillarBlock(Block.Properties.create(Material.PLANTS, MaterialColor.DIRT).hardnessAndResistance(0.4F).setAllowsSpawn(ModBlocks::canEntitySpawn).sound(SoundType.PLANT)));
+    private static Block.Properties glowingPlantProperties(int i) {
+        return Block.Properties.create(Material.PLANTS).doesNotBlockMovement().hardnessAndResistance(0.2F).sound(SoundType.PLANT).setLightLevel(v -> i);
+    }
 }

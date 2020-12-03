@@ -1,5 +1,5 @@
 {
-  "credit": "Made by Elenterius", "parent": "block/block", "textures": {
+  "credit": "Made by Elenterius", "parent": "blightlings:block/inv_block_pustule", "textures": {
   "particle": "blightlings:block/tendrils", "tendrils": "blightlings:block/tendrils", "fruit": "blightlings:block/calyx_with_pustule"
 }, "elements": [
   {
