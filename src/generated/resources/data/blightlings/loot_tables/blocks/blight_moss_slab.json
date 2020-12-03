@@ -3,11 +3,19 @@
   {
     "rolls": 1, "entries": [
     {
-      "type": "minecraft:item", "name": "blightlings:blight_moss_slab"
-    }
-  ], "conditions": [
-    {
-      "condition": "minecraft:survives_explosion"
+      "type": "minecraft:item", "functions": [
+      {
+        "function": "minecraft:set_count", "conditions": [
+        {
+          "condition": "minecraft:block_state_property", "block": "blightlings:blight_moss_slab", "properties": {
+          "type": "double"
+        }
+        }
+      ], "count": 2
+      }, {
+        "function": "minecraft:explosion_decay"
+      }
+    ], "name": "blightlings:blight_moss_slab"
     }
   ]
   }
