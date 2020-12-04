@@ -2,6 +2,7 @@ package com.github.elenterius.blightlings.init;
 
 import com.github.elenterius.blightlings.BlightlingsMod;
 import com.github.elenterius.blightlings.client.renderer.block.FullBrightOverlayBakedModel;
+import com.github.elenterius.blightlings.client.renderer.entity.BeetlingRenderer;
 import com.github.elenterius.blightlings.client.renderer.entity.BloblingRenderer;
 import com.github.elenterius.blightlings.client.renderer.entity.BroodmotherRenderer;
 import net.minecraft.block.BlockState;
@@ -29,6 +30,7 @@ public abstract class ClientSetupHandler
     public static void onClientSetup(FMLClientSetupEvent event) {
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BLOBLING.get(), BloblingRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BROOD_MOTHER.get(), BroodmotherRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BEETLING.get(), BeetlingRenderer::new);
 
         event.enqueueWork(() -> {
             RenderTypeLookup.setRenderLayer(ModBlocks.LILY_TREE_SAPLING.get(), RenderType.getCutout());

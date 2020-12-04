@@ -15,8 +15,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BroodmotherRenderer extends MobRenderer<BroodmotherEntity, BroodmotherModel<BroodmotherEntity>>
 {
     private static final ResourceLocation TEXTURE = new ResourceLocation(BlightlingsMod.MOD_ID, "textures/entity/broodmother.png");
-    private static final ResourceLocation EMISSION_TEXTURE = new ResourceLocation(BlightlingsMod.MOD_ID, "textures/entity/broodmother_emission.png");
-    private static final RenderType EYE_RENDER_TYPE = RenderType.getEyes(EMISSION_TEXTURE);
+    private static final ResourceLocation OVERLAY_TEXTURE = new ResourceLocation(BlightlingsMod.MOD_ID, "textures/entity/broodmother_overlay.png");
+    private static final RenderType EYE_RENDER_TYPE = RenderType.getEyes(OVERLAY_TEXTURE);
 
     public BroodmotherRenderer(EntityRendererManager rendererManager) {
         super(rendererManager, new BroodmotherModel<>(), 0.8F);

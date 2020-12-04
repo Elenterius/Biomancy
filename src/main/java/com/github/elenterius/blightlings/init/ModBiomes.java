@@ -103,8 +103,9 @@ public abstract class ModBiomes
                                 .withCreatureSpawnProbability(1f)
 //                                .withSpawnCost(ModEntityTypes.BLOBLING.get(), 0.1, 10)
 //                                .withSpawnCost(ModEntityTypes.BROOD_MOTHER.get(), 1, 20)
-                                .withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.BLOBLING.get(), 100, 4, 8))
+                                .withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.BLOBLING.get(), 100, 6, 12))
                                 .withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.BROOD_MOTHER.get(), 80, 2, 4))
+                                .withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.BEETLING.get(), 80, 2, 6))
                                 .copy()
                 )
                 .setEffects(
