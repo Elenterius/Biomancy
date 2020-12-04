@@ -23,10 +23,6 @@ public abstract class ModBlocks
     public static final DeferredRegister<Block> BLOCK_REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCKS, BlightlingsMod.MOD_ID);
     public static final PlantType BLIGHT_PLANT_TYPE = PlantType.get("blight");
 
-    private static boolean canEntitySpawn(BlockState state, IBlockReader reader, BlockPos pos, EntityType<?> entityType) {
-        return state.isSolidSide(reader, pos, Direction.UP);
-    }
-
     public static final RegistryObject<Block> INFERTILE_SOIL = BLOCK_REGISTRY.register("infertile_soil",
             () -> new BlightSoilBlock(Block.Properties.create(Material.EARTH, MaterialColor.BLACK).hardnessAndResistance(0.5F).setAllowsSpawn(ModBlocks::canEntitySpawn).sound(SoundType.GROUND)));
     public static final RegistryObject<Block> LUMINOUS_SOIL = BLOCK_REGISTRY.register("luminous_soil",
@@ -47,18 +43,24 @@ public abstract class ModBlocks
             });
     public static final RegistryObject<Block> CANDELABRA_FUNGUS = BLOCK_REGISTRY.register("candelabra_fungus", () -> new BlightPlantBlock(Block.Properties.create(Material.PLANTS).doesNotBlockMovement().hardnessAndResistance(0.2F).sound(SoundType.PLANT)));
 
-    public static final RegistryObject<Block> BLIGHT_SPROUT = BLOCK_REGISTRY.register("blight_sprout", () -> new BlightPlantBlock(true));
-    public static final RegistryObject<Block> BLIGHT_SPROUT_SMALL = BLOCK_REGISTRY.register("blight_sprout_small", () -> new BlightPlantBlock(true));
-    public static final RegistryObject<Block> BLIGHT_TENTACLE_0 = BLOCK_REGISTRY.register("blight_tentacle_0", BlightPlantBlock::new);
-    public static final RegistryObject<Block> BLIGHT_TENTACLE_1 = BLOCK_REGISTRY.register("blight_tentacle_1", BlightPlantBlock::new);
+    public static final RegistryObject<Block> BLIGHT_SPROUT = BLOCK_REGISTRY.register("blight_sprout", () -> new BlightPlantBlock(true, blighPlantProperties()));
+    public static final RegistryObject<Block> BLIGHT_SPROUT_SMALL = BLOCK_REGISTRY.register("blight_sprout_small", () -> new BlightPlantBlock(true, blighPlantProperties()));
+    public static final RegistryObject<Block> BLIGHT_TENTACLE_0 = BLOCK_REGISTRY.register("blight_tentacle_0", () -> new BlightPlantBlock(blighPlantProperties()));
+    public static final RegistryObject<Block> BLIGHT_TENTACLE_1 = BLOCK_REGISTRY.register("blight_tentacle_1", () -> new BlightPlantBlock(blighPlantProperties()));
 
-    public static final RegistryObject<Block> LILY_TREE_SAPLING = BLOCK_REGISTRY.register("lilytree_sapling", BlightSaplingBlock::new);
-    public static final RegistryObject<Block> LILY_TREE_STEM = BLOCK_REGISTRY.register("lilytree_stem",
-            () -> new RotatedPillarBlock(Block.Properties.create(Material.WOOD, MaterialColor.DIRT).hardnessAndResistance(0.4F).setAllowsSpawn(ModBlocks::canEntitySpawn).sound(SoundType.PLANT)));
-    public static final RegistryObject<Block> BLIGHT_MOSS_SLAB = BLOCK_REGISTRY.register("blight_moss_slab",
-            () -> new SlabBlock(Block.Properties.create(Material.EARTH, MaterialColor.DIRT).hardnessAndResistance(0.4F).setAllowsSpawn(ModBlocks::canEntitySpawn).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> LILY_TREE_SAPLING = BLOCK_REGISTRY.register("lilytree_sapling", () -> new BlightSaplingBlock(Block.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(0.0F).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> LILY_TREE_STEM = BLOCK_REGISTRY.register("lilytree_stem", () -> new RotatedPillarBlock(Block.Properties.create(Material.WOOD, MaterialColor.DIRT).hardnessAndResistance(0.4F).setAllowsSpawn(ModBlocks::canEntitySpawn).sound(SoundType.PLANT)));
+    public static final RegistryObject<Block> BLIGHT_MOSS_SLAB = BLOCK_REGISTRY.register("blight_moss_slab", () -> new SlabBlock(Block.Properties.create(Material.EARTH, MaterialColor.DIRT).hardnessAndResistance(0.4F).setAllowsSpawn(ModBlocks::canEntitySpawn).sound(SoundType.PLANT)));
 
-    private static Block.Properties glowingPlantProperties(int i) {
+    public static Block.Properties glowingPlantProperties(int i) {
         return Block.Properties.create(Material.PLANTS).doesNotBlockMovement().hardnessAndResistance(0.2F).sound(SoundType.PLANT).setLightLevel(v -> i);
+    }
+
+    public static AbstractBlock.Properties blighPlantProperties() {
+        return Block.Properties.create(Material.TALL_PLANTS).doesNotBlockMovement().setAllowsSpawn(ModBlocks::canEntitySpawn).hardnessAndResistance(0.0F).sound(SoundType.PLANT);
+    }
+
+    public static boolean canEntitySpawn(BlockState state, IBlockReader reader, BlockPos pos, EntityType<?> entityType) {
+        return state.isSolidSide(reader, pos, Direction.UP);
     }
 }

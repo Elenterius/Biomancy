@@ -1,8 +1,10 @@
 package com.github.elenterius.blightlings.block;
 
 import com.github.elenterius.blightlings.init.ModBlocks;
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.BushBlock;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -16,18 +18,9 @@ public class BlightPlantBlock extends BushBlock
     protected static final VoxelShape SHAPE_SMALL = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 8.0D, 14.0D);
     private final boolean isSmall;
 
-    public BlightPlantBlock(boolean isSmall) {
-        super(Block.Properties.create(Material.TALL_PLANTS).doesNotBlockMovement().hardnessAndResistance(0.0F).sound(SoundType.PLANT));
-        this.isSmall = isSmall;
-    }
-
     public BlightPlantBlock(boolean isSmall, Properties properties) {
         super(properties);
         this.isSmall = isSmall;
-    }
-
-    public BlightPlantBlock() {
-        this(false);
     }
 
     public BlightPlantBlock(Properties properties) {

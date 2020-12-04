@@ -4,8 +4,6 @@ import com.github.elenterius.blightlings.world.gen.tree.TreeGeneratorUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.IGrowable;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
@@ -23,8 +21,8 @@ public class BlightSaplingBlock extends BlightPlantBlock implements IGrowable
     public static final IntegerProperty GROWTH_STAGE = BlockStateProperties.STAGE_0_1;
     protected static final VoxelShape SHAPE = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 12.0D, 14.0D);
 
-    public BlightSaplingBlock() {
-        super(Block.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(0.0F).sound(SoundType.PLANT));
+    public BlightSaplingBlock(Properties properties) {
+        super(properties);
         setDefaultState(stateContainer.getBaseState().with(GROWTH_STAGE, 0));
     }
 
