@@ -7,8 +7,6 @@ import com.github.elenterius.blightlings.item.GogglesArmorItem;
 import com.github.elenterius.blightlings.item.KhopeshItem;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
@@ -36,40 +34,28 @@ public abstract class EquipmentHandler
         if (event.getSlot() == EquipmentSlotType.MAINHAND) {
             //old item
             if (event.getFrom().getItem() instanceof KhopeshItem) {
-                ModifiableAttributeInstance modifiableAttributeInstance = event.getEntityLiving().getAttributeManager().createInstanceIfAbsent(Attributes.ATTACK_DAMAGE);
-                if (modifiableAttributeInstance != null && modifiableAttributeInstance.hasModifier(KhopeshItem.RIDING_ATTACK_DAMAGE_MODIFIER)) {
-                    modifiableAttributeInstance.removeModifier(KhopeshItem.RIDING_ATTACK_DAMAGE_MODIFIER);
-                }
+                KhopeshItem.removeSpecialAttributeModifiers(event.getEntityLiving());
             }
 
             //new item
             if (event.getTo().getItem() instanceof KhopeshItem && event.getEntityLiving().isPassenger()) {
-                ModifiableAttributeInstance modifiableAttributeInstance = event.getEntityLiving().getAttributeManager().createInstanceIfAbsent(Attributes.ATTACK_DAMAGE);
-                if (modifiableAttributeInstance != null && !modifiableAttributeInstance.hasModifier(KhopeshItem.RIDING_ATTACK_DAMAGE_MODIFIER)) {
-                    modifiableAttributeInstance.applyNonPersistentModifier(KhopeshItem.RIDING_ATTACK_DAMAGE_MODIFIER);
-                }
+                KhopeshItem.applySpecialAttributeModifiers(event.getEntityLiving());
             }
         }
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onEntityMount(final EntityMountEvent event) {
-        //on dismounting make sure the riding attack modifier is removed
+        //on dismounting make sure the riding modifiers are removed
         if (event.isDismounting() && event.getEntityMounting() instanceof LivingEntity) {
-            ModifiableAttributeInstance modifiableAttributeInstance = ((LivingEntity) event.getEntityMounting()).getAttributeManager().createInstanceIfAbsent(Attributes.ATTACK_DAMAGE);
-            if (modifiableAttributeInstance != null && modifiableAttributeInstance.hasModifier(KhopeshItem.RIDING_ATTACK_DAMAGE_MODIFIER)) {
-                modifiableAttributeInstance.removeModifier(KhopeshItem.RIDING_ATTACK_DAMAGE_MODIFIER);
-            }
+            KhopeshItem.removeSpecialAttributeModifiers((LivingEntity) event.getEntityMounting());
         }
 
-        //on mounting add attack modifier when holding a khopesh weapon
+        //on mounting add modifiers when holding a khopesh weapon
         if (event.isMounting() && event.getEntityMounting() instanceof LivingEntity) {
             ItemStack stack = ((LivingEntity) event.getEntityMounting()).getHeldItemMainhand();
             if (!stack.isEmpty() && stack.getItem() instanceof KhopeshItem) {
-                ModifiableAttributeInstance modifiableAttributeInstance = ((LivingEntity) event.getEntityMounting()).getAttributeManager().createInstanceIfAbsent(Attributes.ATTACK_DAMAGE);
-                if (modifiableAttributeInstance != null && !modifiableAttributeInstance.hasModifier(KhopeshItem.RIDING_ATTACK_DAMAGE_MODIFIER)) {
-                    modifiableAttributeInstance.applyNonPersistentModifier(KhopeshItem.RIDING_ATTACK_DAMAGE_MODIFIER);
-                }
+                KhopeshItem.applySpecialAttributeModifiers((LivingEntity) event.getEntityMounting());
             }
         }
     }
