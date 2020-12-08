@@ -1,7 +1,7 @@
 package com.github.elenterius.blightlings.mixin;
 
 import com.github.elenterius.blightlings.client.renderer.ClientRenderHandler;
-import com.github.elenterius.blightlings.item.IEntityUnveiler;
+import com.github.elenterius.blightlings.item.IEntityUnveilerHeadSlotItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
@@ -28,7 +28,7 @@ public abstract class EntityMixin
 
     @Inject(method = "isInvisibleToPlayer", at = @At("HEAD"), cancellable = true)
     protected void onIsInvisibleToPlayer(PlayerEntity player, CallbackInfoReturnable<Boolean> cir) {
-        if (IEntityUnveiler.canUnveilEntity(player, (Entity) (Object) this)) {
+        if (IEntityUnveilerHeadSlotItem.canUnveilEntity(player, (Entity) (Object) this)) {
             cir.setReturnValue(false);
         }
     }
@@ -46,7 +46,7 @@ public abstract class EntityMixin
                 else cir.setReturnValue(0x00ff00);
             }
         }
-        else if (getTeam() == null && IEntityUnveiler.canUnveilEntity(Minecraft.getInstance().player, entity)) {
+        else if (getTeam() == null && IEntityUnveilerHeadSlotItem.canUnveilEntity(Minecraft.getInstance().player, entity)) {
             if (getType().getClassification() == EntityClassification.MONSTER) cir.setReturnValue(0xCE0018);
             else if (getType().getClassification() == EntityClassification.CREATURE) cir.setReturnValue(0x00ff00);
             else cir.setReturnValue(getType() == EntityType.PLAYER ? 0xffd700 : 0xffffff);

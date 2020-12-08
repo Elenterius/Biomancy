@@ -36,12 +36,18 @@ import net.minecraftforge.registries.ForgeRegistries;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class PotionBeetleItem extends Item
+public class PotionBeetleItem extends Item implements IHighlightRayTraceResultItem
 {
-    public static final float MAX_RAY_TRACE_DISTANCE = 20f;
+    public final float maxDistance;
 
-    public PotionBeetleItem(Properties properties) {
-        super(properties.maxStackSize(1));
+    public PotionBeetleItem(Properties properties, float maxDistance) {
+        super(properties);
+        this.maxDistance = maxDistance;
+    }
+
+    @Override
+    public double getMaxRayTraceDistance() {
+        return maxDistance;
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -77,7 +83,7 @@ public class PotionBeetleItem extends Item
         if (PotionUtils.getPotionFromItem(stack) == Potions.EMPTY) return ActionResult.resultFail(stack);
 
 //        BlockRayTraceResult rayTrace = (BlockRayTraceResult) playerIn.pick(20d, 1f, false);
-        RayTraceResult rayTraceResult = RayTraceUtil.rayTrace(playerIn, target -> !target.isSpectator() && target.isAlive() && target.canBeCollidedWith() && target instanceof LivingEntity && !playerIn.isRidingSameEntity(target), MAX_RAY_TRACE_DISTANCE);
+        RayTraceResult rayTraceResult = RayTraceUtil.rayTrace(playerIn, target -> !target.isSpectator() && target.isAlive() && target.canBeCollidedWith() && target instanceof LivingEntity && !playerIn.isRidingSameEntity(target), getMaxRayTraceDistance());
         if (rayTraceResult.getType() == RayTraceResult.Type.MISS) return ActionResult.resultPass(stack);
 
         BlockPos targetBlockPos = null;

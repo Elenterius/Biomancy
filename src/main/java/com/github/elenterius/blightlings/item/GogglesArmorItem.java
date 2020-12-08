@@ -20,7 +20,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class GogglesArmorItem extends ArmorItem implements IEntityUnveiler<GogglesArmorItem>
+public class GogglesArmorItem extends ArmorItem implements IEntityUnveilerHeadSlotItem
 {
     public static final String ARMOR_TEXTURE = BlightlingsMod.MOD_ID + ":textures/models/armor/true_sight_goggles.png";
 
