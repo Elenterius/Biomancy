@@ -46,6 +46,8 @@ public abstract class EquipmentHandler
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onEntityMount(final EntityMountEvent event) {
+        if (event.getEntityMounting().getEntityWorld().isRemote()) return;
+
         //on dismounting make sure the riding modifiers are removed
         if (event.isDismounting() && event.getEntityMounting() instanceof LivingEntity) {
             KhopeshItem.removeSpecialAttributeModifiers((LivingEntity) event.getEntityMounting());

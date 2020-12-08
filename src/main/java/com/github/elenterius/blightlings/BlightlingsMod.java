@@ -27,6 +27,7 @@ public class BlightlingsMod
 
         ModItems.ITEM_REGISTRY.register(modEventBus);
         ModBlocks.BLOCK_REGISTRY.register(modEventBus);
+        ModRecipes.RECIPE_SERIALIZERS.register(modEventBus);
         ModEntityTypes.ENTITY_TYPE_REGISTRY.register(modEventBus);
         ModEffects.EFFECT_REGISTRY.register(modEventBus);
 

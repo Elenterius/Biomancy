@@ -31,9 +31,10 @@ public class BeetlingEntity extends AnimalEntity
                 .createMutableAttribute(Attributes.MAX_HEALTH, 5d)
                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2d)
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 1d)
-                .createMutableAttribute(Attributes.ARMOR, 5d);
+                .createMutableAttribute(Attributes.ARMOR, 2 + 5 + 6 + 2); //equal to full iron armor
     }
 
+    @Override
     protected void registerGoals() {
         goalSelector.addGoal(0, new SwimGoal(this));
         goalSelector.addGoal(1, new PanicGoal(this, 1.9D));
@@ -100,7 +101,7 @@ public class BeetlingEntity extends AnimalEntity
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState blockIn) {
-        this.playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.15F, getSoundPitch() * 1.0F);
+        this.playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.15F, getSoundPitch());
     }
 
     @Override

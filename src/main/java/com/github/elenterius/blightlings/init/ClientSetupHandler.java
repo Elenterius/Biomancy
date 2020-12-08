@@ -5,6 +5,7 @@ import com.github.elenterius.blightlings.client.renderer.block.FullBrightOverlay
 import com.github.elenterius.blightlings.client.renderer.entity.BeetlingRenderer;
 import com.github.elenterius.blightlings.client.renderer.entity.BloblingRenderer;
 import com.github.elenterius.blightlings.client.renderer.entity.BroodmotherRenderer;
+import com.github.elenterius.blightlings.client.renderer.entity.PotionBeetleRenderer;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.BlockModelShapes;
 import net.minecraft.client.renderer.RenderType;
@@ -31,6 +32,7 @@ public abstract class ClientSetupHandler
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BLOBLING.get(), BloblingRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BROOD_MOTHER.get(), BroodmotherRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BEETLING.get(), BeetlingRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.POTION_BEETLE.get(), PotionBeetleRenderer::new);
 
         event.enqueueWork(() -> {
             RenderTypeLookup.setRenderLayer(ModBlocks.LILY_TREE_SAPLING.get(), RenderType.getCutout());

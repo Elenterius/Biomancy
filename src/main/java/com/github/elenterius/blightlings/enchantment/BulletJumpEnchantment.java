@@ -15,7 +15,7 @@ public class BulletJumpEnchantment extends Enchantment
         super(rarityIn, EnchantmentType.ARMOR_LEGS, new EquipmentSlotType[]{EquipmentSlotType.LEGS});
     }
 
-    @Override
+     @Override
     public int getMinEnchantability(int enchantmentLevel) {
         return enchantmentLevel * 10;
     }
@@ -52,7 +52,7 @@ public class BulletJumpEnchantment extends Enchantment
         boolean startedFaLlFlying = tryToStartFallFlying(entity); // get free boosted elytra takeoff without rockets :)
         float factor = startedFaLlFlying ? 0.3f : 0.5f;
 
-        if (!startedFaLlFlying) {
+        if (!startedFaLlFlying && !entity.getEntityWorld().isRemote()) {
             EffectInstance effectInstance = new EffectInstance(Effects.SLOW_FALLING, 5, 0, false, false);
             if (entity.isPotionApplicable(effectInstance)) {
                 entity.addPotionEffect(effectInstance);

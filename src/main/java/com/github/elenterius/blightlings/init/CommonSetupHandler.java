@@ -33,7 +33,7 @@ public abstract class CommonSetupHandler
 {
     @SubscribeEvent
     public static void onSetup(final FMLCommonSetupEvent event) {
-        // do stuff after common setup event
+        // do stuff after common setup event on single thread
         event.enqueueWork(() -> {
             ModEntityTypes.onPostSetup();
             ModFeatures.injectCarvableBlocks();

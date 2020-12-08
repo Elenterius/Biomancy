@@ -2,6 +2,7 @@ package com.github.elenterius.blightlings.datagen;
 
 import com.github.elenterius.blightlings.BlightlingsMod;
 import com.github.elenterius.blightlings.init.ModItems;
+import com.github.elenterius.blightlings.init.ModRecipes;
 import net.minecraft.block.Blocks;
 import net.minecraft.data.*;
 import net.minecraft.item.Items;
@@ -35,6 +36,8 @@ public class ModRecipeProvider extends RecipeProvider
 
         SmithingRecipeBuilder.smithingRecipe(Ingredient.fromItems(Items.DIAMOND_AXE), Ingredient.fromItems(ModItems.BLIGHT_SAC.get()), ModItems.BLIGHTBRINGER_AXE.get())
                 .addCriterion("has_blight_sac", hasItem(ModItems.BLIGHT_SAC.get())).build(consumer, new ResourceLocation(BlightlingsMod.MOD_ID, ModItems.BLIGHTBRINGER_AXE.get().getRegistryName().getPath() + "_smithing"));
+
+        CustomRecipeBuilder.customRecipe(ModRecipes.CRAFTING_SPECIAL_BEETLE_POTION.get()).build(consumer, BlightlingsMod.MOD_ID + ":" + "potion_beetle");
     }
 
     @Override
