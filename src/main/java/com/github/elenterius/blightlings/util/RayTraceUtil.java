@@ -2,6 +2,7 @@ package com.github.elenterius.blightlings.util;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.projectile.ProjectileHelper;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
@@ -27,5 +28,12 @@ public abstract class RayTraceUtil
         }
 
         return startVec.squareDistanceTo(rayTraceResult.getHitVec()) > distance * distance ? Optional.empty() : Optional.of(rayTraceResult);
+    }
+
+    public static boolean canEntitySeePosition(Entity entity, Vector3d targetPos) {
+        Vector3d startVec = entity.getEyePosition(1f);
+        BlockRayTraceResult rayTraceResult = entity.world.rayTraceBlocks(new RayTraceContext(startVec, targetPos, RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, entity));
+        if (rayTraceResult.getType() == RayTraceResult.Type.MISS) return true;
+        return rayTraceResult.getPos().withinDistance(targetPos, 1.25d);
     }
 }

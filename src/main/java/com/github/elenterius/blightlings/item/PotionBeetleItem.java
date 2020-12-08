@@ -106,8 +106,7 @@ public class PotionBeetleItem extends Item
                 }
                 entity.setOwner(playerIn);
                 entity.setItemStackToSlot(EquipmentSlotType.MAINHAND, getPotionItemStack(stack));
-
-                entity.setTargetPos(targetBlockPos);
+                entity.setTargetBlockPos(targetBlockPos);
                 entity.setAttackTarget(targetEntity);
 
                 Vector3d posVec = playerIn.getEyePosition(1f).add(0d, -0.1d, 0d).add(playerIn.getLookVec().rotateYaw(-15f).normalize().scale(0.15d));

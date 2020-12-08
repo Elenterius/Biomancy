@@ -1,15 +1,16 @@
 package com.github.elenterius.blightlings.entity;
 
+import com.github.elenterius.blightlings.entity.ai.goal.RangedAttackWithMaxDurationGoal;
 import com.github.elenterius.blightlings.entity.ai.goal.ReturnToOwnerGoal;
-import com.github.elenterius.blightlings.entity.ai.goal.WalkToPositionGoal;
+import com.github.elenterius.blightlings.entity.ai.goal.ThrowPotionAtPositionGoal;
 import com.github.elenterius.blightlings.init.ModItems;
 import net.minecraft.block.BlockState;
+import net.minecraft.dispenser.IPosition;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
-import net.minecraft.entity.ai.goal.RangedAttackGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -36,10 +37,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class PotionBeetleEntity extends CreatureEntity implements IRangedAttackMob
+public class PotionBeetleEntity extends CreatureEntity implements IRangedAttackMob, IThrowPotionAtPositionMob
 {
-    private BlockPos targetPos;
     protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.createKey(TameableEntity.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+    private BlockPos targetPos;
 
     public PotionBeetleEntity(EntityType<? extends CreatureEntity> type, World worldIn) {
         super(type, worldIn);
@@ -61,8 +62,8 @@ public class PotionBeetleEntity extends CreatureEntity implements IRangedAttackM
     @Override
     protected void registerGoals() {
         goalSelector.addGoal(0, new SwimGoal(this));
-        goalSelector.addGoal(1, new WalkToPositionGoal(this, 1d));
-        goalSelector.addGoal(2, new RangedAttackGoal(this, 1d, 20, 3F));
+        goalSelector.addGoal(1, new ThrowPotionAtPositionGoal(this, 1d));
+        goalSelector.addGoal(2, new RangedAttackWithMaxDurationGoal(this, 1d, 20, 3.5F, 20 * 30));
         goalSelector.addGoal(3, new ReturnToOwnerGoal(this, 1d));
         goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 8.0F));
         goalSelector.addGoal(7, new LookRandomlyGoal(this));
@@ -107,29 +108,67 @@ public class PotionBeetleEntity extends CreatureEntity implements IRangedAttackM
     }
 
     @Nullable
-    public BlockPos getTargetPos() {
+    public BlockPos getTargetBlockPos() {
         return targetPos;
     }
 
-    public void setTargetPos(@Nullable BlockPos targetPos) {
+    public void setTargetBlockPos(@Nullable BlockPos targetPos) {
         this.targetPos = targetPos;
     }
 
-    public boolean tryToUsePotion() {
-        if (!world.isRemote()) {
-            ItemStack stack = getItemStackFromSlot(EquipmentSlotType.MAINHAND);
-            if (!stack.isEmpty() && stack.getItem() instanceof ThrowablePotionItem) {
-                PotionEntity potionEntity = new PotionEntity(world, this);
-                potionEntity.setItem(stack);
-                potionEntity.func_234612_a_(this, rotationPitch, rotationYaw, -20.0F, 0.5F, 1.0F);
-                if (!isSilent()) {
-                    world.playSound(null, getPosX(), getPosY(), getPosZ(), SoundEvents.ENTITY_WITCH_THROW, getSoundCategory(), 1.0F, 0.8F + rand.nextFloat() * 0.4F);
-                }
-                world.addEntity(potionEntity);
-                stack.shrink(1);
-                setTargetPos(null);
-                return true;
+    @Override
+    public void setTargetPos(@Nullable IPosition position) {
+        targetPos = position != null ? new BlockPos(position) : null;
+    }
+
+    @Nullable
+    @Override
+    public Vector3d getTargetPos() {
+        return targetPos != null ? Vector3d.copyCentered(targetPos) : null;
+    }
+
+    @Override
+    public boolean hasThrowablePotion() {
+        ItemStack stack = getItemStackFromSlot(EquipmentSlotType.MAINHAND);
+        return !stack.isEmpty() && stack.getItem() instanceof ThrowablePotionItem;
+    }
+
+    @Override
+    public boolean tryToThrowPotionAtPosition(Vector3d targetPos) {
+        ItemStack stack = getItemStackFromSlot(EquipmentSlotType.MAINHAND);
+        if (!stack.isEmpty() && stack.getItem() instanceof ThrowablePotionItem) {
+            double x = targetPos.x - getPosX();
+            double y = targetPos.y - 1.1d - getPosY();
+            double z = targetPos.z - getPosZ();
+            float magnitude = MathHelper.sqrt(x * x + z * z);
+
+            PotionEntity potionEntity = new PotionEntity(world, this);
+            potionEntity.setItem(stack);
+            potionEntity.rotationPitch -= 20.0F;
+            potionEntity.shoot(x, y + magnitude * 0.25F, z, 0.9F, 1.0F);
+            if (!isSilent()) {
+                world.playSound(null, getPosX(), getPosY(), getPosZ(), SoundEvents.ENTITY_WITCH_THROW, getSoundCategory(), 1.0F, 0.8F + rand.nextFloat() * 0.4F);
             }
+            world.addEntity(potionEntity);
+
+            stack.shrink(1);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean tryToThrowPotionInLookDirection() {
+        ItemStack stack = getItemStackFromSlot(EquipmentSlotType.MAINHAND);
+        if (!stack.isEmpty() && stack.getItem() instanceof ThrowablePotionItem) {
+            PotionEntity potionEntity = new PotionEntity(world, this);
+            potionEntity.setItem(stack);
+            potionEntity.func_234612_a_(this, rotationPitch, rotationYaw, -20.0F, 0.75F, 1.0F);
+            if (!isSilent()) {
+                world.playSound(null, getPosX(), getPosY(), getPosZ(), SoundEvents.ENTITY_WITCH_THROW, getSoundCategory(), 1.0F, 0.8F + rand.nextFloat() * 0.4F);
+            }
+            world.addEntity(potionEntity);
+            stack.shrink(1);
+            return true;
         }
         return false;
     }
@@ -152,7 +191,6 @@ public class PotionBeetleEntity extends CreatureEntity implements IRangedAttackM
                 world.playSound(null, getPosX(), getPosY(), getPosZ(), SoundEvents.ENTITY_WITCH_THROW, getSoundCategory(), 1.0F, 0.8F + rand.nextFloat() * 0.4F);
             }
             world.addEntity(potionEntity);
-            System.out.println(distanceFactor);
 
             stack.shrink(1);
             setAttackTarget(null);
@@ -232,4 +270,5 @@ public class PotionBeetleEntity extends CreatureEntity implements IRangedAttackM
     protected float getStandingEyeHeight(Pose poseIn, EntitySize sizeIn) {
         return isChild() ? sizeIn.height * 0.16F : 0.16f;
     }
+
 }
