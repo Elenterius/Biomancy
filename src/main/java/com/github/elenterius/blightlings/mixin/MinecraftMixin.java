@@ -1,5 +1,6 @@
 package com.github.elenterius.blightlings.mixin;
 
+import com.github.elenterius.blightlings.client.renderer.ClientRenderHandler;
 import com.github.elenterius.blightlings.item.IEntityUnveiler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -21,7 +22,7 @@ public abstract class MinecraftMixin
 
     @Inject(method = "isEntityGlowing", at = @At("HEAD"), cancellable = true)
     protected void onIsEntityGlowing(Entity entity, CallbackInfoReturnable<Boolean> cir) {
-        if (entity != player && IEntityUnveiler.canUnveilEntity(player, entity)) {
+        if (entity == ClientRenderHandler.HIGHLIGHTED_ENTITY || (entity != player && IEntityUnveiler.canUnveilEntity(player, entity))) {
             cir.setReturnValue(true);
         }
     }
