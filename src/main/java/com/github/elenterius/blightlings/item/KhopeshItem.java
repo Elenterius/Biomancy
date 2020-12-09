@@ -35,10 +35,25 @@ public class KhopeshItem extends AxeItem
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         tooltip.add(new TranslationTextComponent(getTranslationKey(stack).replace("item", "tooltip")).setStyle(Style.EMPTY.applyFormatting(TextFormatting.GRAY)));
-        tooltip.add(new StringTextComponent(" "));
+
+//        if (ItemStackMixinAccessor.isToolTipVisible(((ItemStackMixinAccessor) (Object) stack).getHideFlags(), ItemStack.TooltipDisplayFlags.ENCHANTMENTS)) {
+        tooltip.add(StringTextComponent.EMPTY);
+        tooltip.add(StringTextComponent.EMPTY);
+        stack.func_242395_a(ItemStack.TooltipDisplayFlags.ENCHANTMENTS); //hide enchantments
+        ItemStack.addEnchantmentTooltips(tooltip, stack.getEnchantmentTagList());
+//        }
+
+        tooltip.add(StringTextComponent.EMPTY);
         tooltip.add(new TranslationTextComponent("tooltip.blightlings.riding_bonus").setStyle(Style.EMPTY.applyFormatting(TextFormatting.GRAY)));
         tooltip.add((new StringTextComponent(" ")).append(new TranslationTextComponent("attribute.modifier.plus." + ATTACK_DAMAGE_RIDING_MODIFIER.getOperation().getId(), DECIMALFORMAT.format(ATTACK_DAMAGE_RIDING_MODIFIER.getAmount()), new TranslationTextComponent("attribute.name.generic.attack_damage"))).mergeStyle(TextFormatting.BLUE));
-        super.addInformation(stack, worldIn, tooltip, flagIn);
+        tooltip.add((new StringTextComponent(" ")).append(new TranslationTextComponent("attribute.modifier.plus." + REACH_RIDING_MODIFIER.getOperation().getId(), DECIMALFORMAT.format(REACH_RIDING_MODIFIER.getAmount()), new TranslationTextComponent("attribute.name.generic.reach_distance"))).mergeStyle(TextFormatting.BLUE));
+
+//        int i;
+//        if (stack.hasTag() && stack.getTag() != null && stack.getTag().contains("HideFlags", 99)) i = stack.getTag().getInt("HideFlags");
+//        else i = 0;
+//        if ((i & ItemStack.TooltipDisplayFlags.ENCHANTMENTS.func_242397_a()) == 0 && !stack.getEnchantmentTagList().isEmpty()) {
+//            tooltip.add(StringTextComponent.EMPTY);
+//        }
     }
 
     @Override

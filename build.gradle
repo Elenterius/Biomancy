@@ -95,7 +95,7 @@ mixin {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.4-35.1.0'
+    minecraft 'net.minecraftforge:forge:1.16.4-35.1.11'
 }
 
 processResources {
