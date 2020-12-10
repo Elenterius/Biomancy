@@ -3,6 +3,7 @@
   "DamageSourceMixin",
   "EdgeBiomeLayerMixin",
   "EntityMixin",
+  "ItemStackMixinAccessor",
   "LayerUtilMixin",
   "LivingEntityMixin",
   "LivingRendererMixin",

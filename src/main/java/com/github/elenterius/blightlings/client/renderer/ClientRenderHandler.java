@@ -60,7 +60,7 @@ public abstract class ClientRenderHandler
     }
 
     @SubscribeEvent
-    static void onPreGameOverlayRender(final RenderGameOverlayEvent.Pre event) {
+    public static void onPreRenderGameOverlay(final RenderGameOverlayEvent.Pre event) {
         if (event.getType() == RenderGameOverlayEvent.ElementType.CROSSHAIRS) {
             ClientPlayerEntity player = Minecraft.getInstance().player;
             if (player == null || player.isSpectator()) return;

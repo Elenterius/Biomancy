@@ -12,7 +12,6 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -39,7 +38,7 @@ import java.util.UUID;
 
 public class PotionBeetleEntity extends CreatureEntity implements IRangedAttackMob, IThrowPotionAtPositionMob
 {
-    protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.createKey(TameableEntity.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+    protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.createKey(PotionBeetleEntity.class, DataSerializers.OPTIONAL_UNIQUE_ID);
     private BlockPos targetPos;
 
     public PotionBeetleEntity(EntityType<? extends CreatureEntity> type, World worldIn) {
