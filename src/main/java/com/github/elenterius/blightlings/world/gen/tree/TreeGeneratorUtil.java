@@ -3,7 +3,6 @@ package com.github.elenterius.blightlings.world.gen.tree;
 import com.github.elenterius.blightlings.init.ModBlocks;
 import com.google.common.collect.Lists;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.SlabBlock;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.state.properties.SlabType;
@@ -90,9 +89,9 @@ public abstract class TreeGeneratorUtil
         if (depth == 0) {
             currPos.setPos(forkPos);
             currPos.move(Direction.UP, 2);
-            boolean isEmpty2Up = world.getBlockState(currPos) == Blocks.AIR.getDefaultState() && world.getBlockState(currPos.move(branchDirection)) == Blocks.AIR.getDefaultState();
+            boolean isEmpty2Up = world.getBlockState(currPos).isAir(world, currPos) && world.getBlockState(currPos.move(branchDirection)).isAir(world, currPos);
             currPos.move(Direction.UP);
-            boolean isEmpty3Up = world.getBlockState(currPos) == Blocks.AIR.getDefaultState() && world.getBlockState(currPos.move(branchDirection.getOpposite())) == Blocks.AIR.getDefaultState();
+            boolean isEmpty3Up = world.getBlockState(currPos).isAir(world, currPos) && world.getBlockState(currPos.move(branchDirection.getOpposite())).isAir(world, currPos);
             if (isEmpty2Up && isEmpty3Up && rand.nextFloat() < 0.6f) {
                 generateLilyTree(world, rand, forkPos, state, cardinalDirections, 1);
             }
@@ -100,7 +99,7 @@ public abstract class TreeGeneratorUtil
     }
 
     public static boolean tryToSetBlockState(IWorld world, BlockPos pos, BlockState state, int updateFlag) {
-        return world.getBlockState(pos) == Blocks.AIR.getDefaultState() && world.setBlockState(pos, state, updateFlag);
+        return world.getBlockState(pos).isAir(world, pos) && world.setBlockState(pos, state, updateFlag);
     }
 
     public static void tryToGenerateDiscShape(IWorld world, BlockPos pos, BlockState state, int updateFlag) {
