@@ -83,6 +83,15 @@ public class MasonBeetleEntity extends AbstractUtilityEntity implements IPlaceBl
     }
 
     @Override
+    protected void dropInventory() {
+        ItemStack stack = getPlacementBlock();
+        if (!stack.isEmpty()) {
+            setPlacementBlock(ItemStack.EMPTY);
+            entityDropItem(stack);
+        }
+    }
+
+    @Override
     public boolean tryToPlaceBlockAtPosition(BlockRayTraceResult rayTraceResult, Direction horizontalFacing) {
         if (world instanceof ServerWorld) {
             ServerWorld serverWorld = (ServerWorld) world;
@@ -135,10 +144,9 @@ public class MasonBeetleEntity extends AbstractUtilityEntity implements IPlaceBl
         setItemStackToSlot(EquipmentSlotType.MAINHAND, stack);
     }
 
-    @Nullable
     @Override
-    public BlockPos getBlockPlacementPos() {
-        return getTargetBlockPos();
+    public ItemStack getPlacementBlock() {
+        return getItemStackFromSlot(EquipmentSlotType.MAINHAND);
     }
 
     @Nullable

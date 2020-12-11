@@ -26,7 +26,7 @@ public class MasonBeetleRecipe extends SpecialRecipe {
                 if (stack.getItem() instanceof MasonBeetleItem) {
                     blockStack = ((MasonBeetleItem) stack.getItem()).getBlockItemStack(stack);
                     if (++beetles > 1) return false;
-                } else if (!(stack.getItem() instanceof BlockItem) || ++blocks > 1) return false;
+                } else if (!(stack.getItem() instanceof BlockItem) || stack.getItem().isFood() || ++blocks > 1) return false;
             }
         }
 
@@ -50,6 +50,8 @@ public class MasonBeetleRecipe extends SpecialRecipe {
 
         if (!blockStack.isEmpty()) {
             ItemStack stack = beetleStack.copy();
+            blockStack = blockStack.copy();
+            blockStack.setCount(1);
             stack.setTagInfo("Block", blockStack.serializeNBT());
             stack.getOrCreateTag().putString("BlockName", blockStack.getTranslationKey());
             return stack;

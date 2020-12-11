@@ -141,6 +141,15 @@ public class PotionBeetleEntity extends AbstractUtilityEntity implements IRanged
     }
 
     @Override
+    protected void dropInventory() {
+        ItemStack stack = getItemStackFromSlot(EquipmentSlotType.MAINHAND);
+        if (!stack.isEmpty()) {
+            setItemStackToSlot(EquipmentSlotType.MAINHAND, ItemStack.EMPTY);
+            entityDropItem(stack);
+        }
+    }
+
+    @Override
     protected ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
         if (player.getHeldItemMainhand().isEmpty()) {
             setDead();
@@ -156,7 +165,6 @@ public class PotionBeetleEntity extends AbstractUtilityEntity implements IRanged
                     if (registryKey != null) beetleStack.getOrCreateTag().putString("PotionItem", registryKey.toString());
                     beetleStack.getOrCreateTag().putString("PotionName", potionStack.getTranslationKey());
                 }
-
                 entityDropItem(beetleStack);
 //                player.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(ModItems.POTION_BEETLE.get()));
             }

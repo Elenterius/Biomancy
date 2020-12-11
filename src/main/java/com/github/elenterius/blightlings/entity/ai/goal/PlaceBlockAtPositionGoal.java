@@ -59,7 +59,6 @@ public class PlaceBlockAtPositionGoal extends Goal {
         double distSq = goalOwner.getDistanceSq(x + 0.5d, y + 0.5d, z + 0.5d);
         if (distSq <= 4d * 4d && RayTraceUtil.canEntitySeePosition(goalOwner, Vector3d.copyCentered(placementTarget.targetPos))) {
             if (blockPlacer.tryToPlaceBlockAtPosition(placementTarget.rayTraceResult, placementTarget.horizontalFacing)) {
-                System.out.println("block was placed!");
                 blockPlacer.setBlockPlacementTarget(null);
             }
             goalOwner.getNavigator().clearPath();

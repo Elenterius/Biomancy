@@ -3,7 +3,6 @@ package com.github.elenterius.blightlings.entity;
 import com.github.elenterius.blightlings.util.BlockPlacementTarget;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 
 import javax.annotation.Nullable;
@@ -16,8 +15,7 @@ public interface IPlaceBlockAtPositionMob {
 
     void setPlacementBlock(ItemStack stack);
 
-    @Nullable
-    BlockPos getBlockPlacementPos();
+    ItemStack getPlacementBlock();
 
     @Nullable
     BlockPlacementTarget getBlockPlacementTarget();
