@@ -37,7 +37,8 @@ public class ModRecipeProvider extends RecipeProvider
         SmithingRecipeBuilder.smithingRecipe(Ingredient.fromItems(Items.DIAMOND_AXE), Ingredient.fromItems(ModItems.BLIGHT_SAC.get()), ModItems.BLIGHTBRINGER_AXE.get())
                 .addCriterion("has_blight_sac", hasItem(ModItems.BLIGHT_SAC.get())).build(consumer, new ResourceLocation(BlightlingsMod.MOD_ID, ModItems.BLIGHTBRINGER_AXE.get().getRegistryName().getPath() + "_smithing"));
 
-        CustomRecipeBuilder.customRecipe(ModRecipes.CRAFTING_SPECIAL_BEETLE_POTION.get()).build(consumer, BlightlingsMod.MOD_ID + ":" + "potion_beetle");
+        CustomRecipeBuilder.customRecipe(ModRecipes.CRAFTING_SPECIAL_POTION_BEETLE.get()).build(consumer, BlightlingsMod.MOD_ID + ":" + "potion_beetle");
+        CustomRecipeBuilder.customRecipe(ModRecipes.CRAFTING_SPECIAL_MASON_BEETLE.get()).build(consumer, BlightlingsMod.MOD_ID + ":" + "mason_beetle");
     }
 
     @Override

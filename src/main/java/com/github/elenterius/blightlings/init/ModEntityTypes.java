@@ -1,10 +1,7 @@
 package com.github.elenterius.blightlings.init;
 
 import com.github.elenterius.blightlings.BlightlingsMod;
-import com.github.elenterius.blightlings.entity.BeetlingEntity;
-import com.github.elenterius.blightlings.entity.BloblingEntity;
-import com.github.elenterius.blightlings.entity.BroodmotherEntity;
-import com.github.elenterius.blightlings.entity.PotionBeetleEntity;
+import com.github.elenterius.blightlings.entity.*;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityClassification;
@@ -38,15 +35,18 @@ public abstract class ModEntityTypes
     public static final RegistryObject<EntityType<BroodmotherEntity>> BROOD_MOTHER = ENTITY_TYPE_REGISTRY.register("brood_mother", () -> EntityType.Builder.create(BroodmotherEntity::new, EntityClassification.MONSTER).size(1.6F, 0.7F).build(BlightlingsMod.MOD_ID + ":" + "brood_mother"));
     public static final RegistryObject<EntityType<BeetlingEntity>> BEETLING = ENTITY_TYPE_REGISTRY.register("beetling", () -> EntityType.Builder.create(BeetlingEntity::new, EntityClassification.CREATURE).size(0.475F, 0.34F).build(BlightlingsMod.MOD_ID + ":" + "beetling"));
     public static final RegistryObject<EntityType<PotionBeetleEntity>> POTION_BEETLE = ENTITY_TYPE_REGISTRY.register("potion_beetle", () -> EntityType.Builder.create(PotionBeetleEntity::new, EntityClassification.CREATURE).size(0.475F, 0.34F).build(BlightlingsMod.MOD_ID + ":" + "potion_beetle"));
+    public static final RegistryObject<EntityType<MasonBeetleEntity>> MASON_BEETLE = ENTITY_TYPE_REGISTRY.register("mason_beetle", () -> EntityType.Builder.create(MasonBeetleEntity::new, EntityClassification.CREATURE).size(0.475F, 0.34F).build(BlightlingsMod.MOD_ID + ":" + "mason_beetle"));
 
     static void onPostSetup() {
-        BlightlingsMod.LOGGER.info(MarkerManager.getMarker("ENTITIES"), "configuring entities");
+        BlightlingsMod.LOGGER.debug(MarkerManager.getMarker("ENTITIES"), "creating attributes...");
 
         GlobalEntityTypeAttributes.put(BLOBLING.get(), BloblingEntity.createAttributes().create());
         GlobalEntityTypeAttributes.put(BROOD_MOTHER.get(), BroodmotherEntity.createAttributes().create());
         GlobalEntityTypeAttributes.put(BEETLING.get(), BeetlingEntity.createAttributes().create());
         GlobalEntityTypeAttributes.put(POTION_BEETLE.get(), PotionBeetleEntity.createAttributes().create());
+        GlobalEntityTypeAttributes.put(MASON_BEETLE.get(), MasonBeetleEntity.createAttributes().create());
 
+        BlightlingsMod.LOGGER.debug(MarkerManager.getMarker("ENTITIES"), "registering spawn placement predicates...");
         EntitySpawnPlacementRegistry.register(BLOBLING.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, ModEntityTypes::canMonsterSpawn);
         EntitySpawnPlacementRegistry.register(BROOD_MOTHER.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, ModEntityTypes::canMonsterSpawn);
         EntitySpawnPlacementRegistry.register(BEETLING.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, ModEntityTypes::canAnimalSpawn);

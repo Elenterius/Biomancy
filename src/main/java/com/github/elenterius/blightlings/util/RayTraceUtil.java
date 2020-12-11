@@ -35,7 +35,7 @@ public abstract class RayTraceUtil
         Vector3d startVec = entity.getEyePosition(1f);
         BlockRayTraceResult rayTraceResult = entity.world.rayTraceBlocks(new RayTraceContext(startVec, targetPos, RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, entity));
         if (rayTraceResult.getType() == RayTraceResult.Type.MISS) return true;
-        return rayTraceResult.getPos().withinDistance(targetPos, 1.25d);
+        return rayTraceResult.getPos().withinDistance(targetPos, 1.2d);
     }
 
     @OnlyIn(Dist.CLIENT)

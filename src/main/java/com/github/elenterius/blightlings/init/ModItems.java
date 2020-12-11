@@ -31,6 +31,7 @@ public abstract class ModItems
 
     public static final RegistryObject<Item> LUMINESCENT_SPORES = ITEM_REGISTRY.register("luminescent_spores", () -> new Item(createItemProperties()));
     public static final RegistryObject<PotionBeetleItem> POTION_BEETLE = ITEM_REGISTRY.register("potion_beetle", () -> new PotionBeetleItem(createItemProperties().maxStackSize(1), 20f));
+    public static final RegistryObject<MasonBeetleItem> MASON_BEETLE = ITEM_REGISTRY.register("mason_beetle", () -> new MasonBeetleItem(createItemProperties().maxStackSize(1), 20f));
 
     public static final RegistryObject<ModSpawnEggItem> BLOBLING_SPAWN_EGG = ITEM_REGISTRY.register("blobling_spawn_egg", () -> new ModSpawnEggItem(ModEntityTypes.BLOBLING, 0x764da2, 0xff40ff, createItemProperties()));
     public static final RegistryObject<ModSpawnEggItem> BROOD_MOTHER_SPAWN_EGG = ITEM_REGISTRY.register("brood_mother_spawn_egg", () -> new ModSpawnEggItem(ModEntityTypes.BROOD_MOTHER, 0x49345e, 0xda70d6, createItemProperties()));

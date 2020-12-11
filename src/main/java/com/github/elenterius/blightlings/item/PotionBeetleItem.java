@@ -52,9 +52,10 @@ public class PotionBeetleItem extends Item implements IHighlightRayTraceResultIt
 
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        if (stack.getTag() != null) {
+        if (stack.hasTag() && stack.getTag() != null) {
             String potionTranslationKey = stack.getTag().getString("PotionName");
-            if (!potionTranslationKey.isEmpty()) tooltip.add(new TranslationTextComponent(potionTranslationKey).setStyle(Style.EMPTY.setFormatting(TextFormatting.GRAY)));
+            if (!potionTranslationKey.isEmpty())
+                tooltip.add(new TranslationTextComponent(potionTranslationKey).setStyle(Style.EMPTY.setFormatting(TextFormatting.GRAY)));
         }
         PotionUtils.addPotionTooltip(stack, tooltip, 1.0F);
     }

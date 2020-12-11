@@ -35,6 +35,7 @@ public class ModEntityLootTables extends EntityLootTables
                 .addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(ModItems.BLIGHT_SHARD.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-2.0F, 1.0F))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))).acceptCondition(KilledByPlayer.builder())));
 
         registerLootTable(ModEntityTypes.POTION_BEETLE.get(), LootTable.builder());
+        registerLootTable(ModEntityTypes.MASON_BEETLE.get(), LootTable.builder());
     }
 
     @Override

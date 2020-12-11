@@ -89,6 +89,6 @@ public class PotionBeetleRecipe extends SpecialRecipe
 
     @Override
     public IRecipeSerializer<?> getSerializer() {
-        return ModRecipes.CRAFTING_SPECIAL_BEETLE_POTION.get();
+        return ModRecipes.CRAFTING_SPECIAL_POTION_BEETLE.get();
     }
 }

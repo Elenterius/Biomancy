@@ -1,19 +1,18 @@
 package com.github.elenterius.blightlings.entity.ai.goal;
 
-import com.github.elenterius.blightlings.entity.PotionBeetleEntity;
+import com.github.elenterius.blightlings.entity.AbstractUtilityEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.EnumSet;
 
-public class ReturnToOwnerGoal extends Goal
-{
-    protected final PotionBeetleEntity goalOwner;
+public class ReturnToOwnerGoal extends Goal {
+    protected final AbstractUtilityEntity goalOwner;
     protected final double speed;
     private LivingEntity entityOwner;
 
-    public ReturnToOwnerGoal(PotionBeetleEntity entity, double speed) {
+    public ReturnToOwnerGoal(AbstractUtilityEntity entity, double speed) {
         this.goalOwner = entity;
         this.speed = speed;
         setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
@@ -21,7 +20,7 @@ public class ReturnToOwnerGoal extends Goal
 
     @Override
     public boolean shouldExecute() {
-        if (goalOwner.getTargetPos() != null || goalOwner.getAttackTarget() != null) return false;
+        if (goalOwner.getTargetBlockPos() != null || goalOwner.getAttackTarget() != null) return false;
         PlayerEntity playerEntity = goalOwner.getOwner().orElse(null);
         if (playerEntity == null) return false;
         if (playerEntity.isSpectator() || goalOwner.getDistanceSq(playerEntity) < 3d * 3d) return false;

@@ -17,10 +17,6 @@ import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ThrowablePotionItem;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionUtils;
@@ -33,29 +29,23 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
-public class PotionBeetleEntity extends CreatureEntity implements IRangedAttackMob, IThrowPotionAtPositionMob
-{
-    protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.createKey(PotionBeetleEntity.class, DataSerializers.OPTIONAL_UNIQUE_ID);
-    private BlockPos targetPos;
-
-    public PotionBeetleEntity(EntityType<? extends CreatureEntity> type, World worldIn) {
+public class PotionBeetleEntity extends AbstractUtilityEntity implements IRangedAttackMob, IThrowPotionAtPositionMob {
+    public PotionBeetleEntity(EntityType<? extends AbstractUtilityEntity> type, World worldIn) {
         super(type, worldIn);
+    }
+
+    @Override
+    public CreatureAttribute getCreatureAttribute() {
+        return CreatureAttribute.ARTHROPOD;
     }
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
         return MobEntity.func_233666_p_()
-                .createMutableAttribute(Attributes.MAX_HEALTH, 6d)
+                .createMutableAttribute(Attributes.MAX_HEALTH, 6.5d)
                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.3d)
-                .createMutableAttribute(Attributes.ARMOR, 2 + 5 + 6 + 2); //equal to full iron armor
-    }
-
-    @Override
-    protected void registerData() {
-        super.registerData();
-        dataManager.register(OWNER_UNIQUE_ID, Optional.empty());
+                .createMutableAttribute(Attributes.ARMOR, 2 + 5 + 6 + 2) //equal to full iron armor
+                .createMutableAttribute(Attributes.ARMOR_TOUGHNESS, 1.5d);
     }
 
     @Override
@@ -69,61 +59,14 @@ public class PotionBeetleEntity extends CreatureEntity implements IRangedAttackM
     }
 
     @Override
-    public CreatureAttribute getCreatureAttribute() {
-        return CreatureAttribute.ARTHROPOD;
-    }
-
-    @Override
-    public void writeAdditional(CompoundNBT compound) {
-        super.writeAdditional(compound);
-        if (getOwnerUUID().isPresent()) compound.putUniqueId("OwnerUUID", getOwnerUUID().get());
-    }
-
-    @Override
-    public void readAdditional(CompoundNBT compound) {
-        super.readAdditional(compound);
-        if (compound.hasUniqueId("OwnerUUID")) setOwnerUUID(compound.getUniqueId("OwnerUUID"));
-    }
-
-    public Optional<UUID> getOwnerUUID() {
-        return dataManager.get(OWNER_UNIQUE_ID);
-    }
-
-    public void setOwnerUUID(@Nullable UUID uuid) {
-        dataManager.set(OWNER_UNIQUE_ID, Optional.ofNullable(uuid));
-    }
-
-    public void setOwner(PlayerEntity entity) {
-        setOwnerUUID(entity.getUniqueID());
-    }
-
-    public Optional<PlayerEntity> getOwner() {
-        return getOwnerUUID().map(value -> world.getPlayerByUuid(value));
-    }
-
-    @Override
-    public boolean canBeLeashedTo(PlayerEntity player) {
-        return !getLeashed() && player == getOwner().orElse(null);
-    }
-
-    @Nullable
-    public BlockPos getTargetBlockPos() {
-        return targetPos;
-    }
-
-    public void setTargetBlockPos(@Nullable BlockPos targetPos) {
-        this.targetPos = targetPos;
-    }
-
-    @Override
     public void setTargetPos(@Nullable IPosition position) {
-        targetPos = position != null ? new BlockPos(position) : null;
+        setTargetBlockPos(position != null ? new BlockPos(position) : null);
     }
 
     @Nullable
     @Override
     public Vector3d getTargetPos() {
-        return targetPos != null ? Vector3d.copyCentered(targetPos) : null;
+        return getTargetBlockPos() != null ? Vector3d.copyCentered(getTargetBlockPos()) : null;
     }
 
     @Override
