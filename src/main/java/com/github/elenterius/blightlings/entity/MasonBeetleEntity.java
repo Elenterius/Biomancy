@@ -83,7 +83,7 @@ public class MasonBeetleEntity extends AbstractUtilityEntity implements IPlaceBl
     }
 
     @Override
-    public boolean tryToPlaceBlockAtPosition(BlockRayTraceResult rayTraceResult) {
+    public boolean tryToPlaceBlockAtPosition(BlockRayTraceResult rayTraceResult, Direction horizontalFacing) {
         if (world instanceof ServerWorld) {
             ServerWorld serverWorld = (ServerWorld) world;
             ServerPlayerEntity player = (ServerPlayerEntity) getOwner().orElse(null);
@@ -95,16 +95,19 @@ public class MasonBeetleEntity extends AbstractUtilityEntity implements IPlaceBl
                 if (!stack.isEmpty() && stack.getItem() instanceof BlockItem && !stack.getItem().isFood()) {
                     if (serverWorld.isBlockModifiable(player, blockPos)) {
                         Direction direction = rayTraceResult.getFace();
-                        PlayerInteractionUtil.PlayerSurrogate.of(player, this);
-                        ActionResultType actionResultType = PlayerInteractionUtil.tryToPlaceBlock(player, stack, Hand.MAIN_HAND, rayTraceResult);
-                        if (direction == Direction.UP && !actionResultType.isSuccessOrConsume() && blockPos.getY() >= serverWorld.getServer().getBuildLimit() - 1 && isValidItem(player, stack)) {
-                            ITextComponent textComponent = (new TranslationTextComponent("build.tooHigh", serverWorld.getServer().getBuildLimit())).mergeStyle(TextFormatting.RED);
+                        PlayerInteractionUtil.PlayerSurrogate surrogate = PlayerInteractionUtil.PlayerSurrogate.of(player, this);
+                        ActionResultType actionResultType = PlayerInteractionUtil.tryToPlaceBlock(surrogate, stack, Hand.MAIN_HAND, rayTraceResult, horizontalFacing);
+                        if (direction == Direction.UP && !actionResultType.isSuccessOrConsume() && blockPos.getY() >= serverWorld.getServer().getBuildLimit() - 1 && isValidItem(surrogate, stack)) {
+                            ITextComponent textComponent = new TranslationTextComponent("build.tooHigh", serverWorld.getServer().getBuildLimit()).mergeStyle(TextFormatting.RED);
                             player.sendStatusMessage(textComponent, true);
-                        } else if (actionResultType.isSuccess()) {
-                            //do something like swing an arm
+                        } else if (actionResultType.isSuccessOrConsume()) {
+
+                            ITextComponent blockName = new TranslationTextComponent(stack.getTranslationKey());
+                            ITextComponent beetle_name = hasCustomName() ? getCustomName() : new TranslationTextComponent("msg.blightlings.your_beetle");
+                            ITextComponent textComponent = new TranslationTextComponent("msg.blightlings.beetle_block_place_success", beetle_name, blockName).mergeStyle(TextFormatting.GREEN);
+                            player.sendStatusMessage(textComponent, true);
                             return true;
                         }
-                        System.out.println(actionResultType);
                     }
                 }
             } else {

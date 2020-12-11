@@ -73,7 +73,7 @@ public class MasonBeetleItem extends Item implements IHighlightRayTraceResultIte
         if (rayTraceResult.getType() == RayTraceResult.Type.MISS) return ActionResult.resultPass(stack);
         if (rayTraceResult.getType() != RayTraceResult.Type.BLOCK) return ActionResult.resultPass(stack);
 
-        BlockPlacementTarget placementTarget = new BlockPlacementTarget(rayTraceResult);
+        BlockPlacementTarget placementTarget = new BlockPlacementTarget(rayTraceResult, playerIn.getHorizontalFacing());
         if (!worldIn.getFluidState(placementTarget.targetPos).isEmpty()) return ActionResult.resultFail(stack);
 
         if (!worldIn.isRemote()) {
