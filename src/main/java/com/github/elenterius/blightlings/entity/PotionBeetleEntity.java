@@ -13,22 +13,20 @@ import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.LeadItem;
 import net.minecraft.item.ThrowablePotionItem;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 public class PotionBeetleEntity extends AbstractUtilityEntity implements IRangedAttackMob, IThrowPotionAtPositionMob {
     public PotionBeetleEntity(EntityType<? extends AbstractUtilityEntity> type, World worldIn) {
@@ -67,12 +65,6 @@ public class PotionBeetleEntity extends AbstractUtilityEntity implements IRanged
     @Override
     public Vector3d getTargetPos() {
         return getTargetBlockPos() != null ? Vector3d.copyCentered(getTargetBlockPos()) : null;
-    }
-
-    @Override
-    public boolean hasThrowablePotion() {
-        ItemStack stack = getItemStackFromSlot(EquipmentSlotType.MAINHAND);
-        return !stack.isEmpty() && stack.getItem() instanceof ThrowablePotionItem;
     }
 
     @Override
@@ -150,28 +142,47 @@ public class PotionBeetleEntity extends AbstractUtilityEntity implements IRanged
     }
 
     @Override
-    protected ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
-        if (player.getHeldItemMainhand().isEmpty()) {
-            setDead();
-            if (!player.world.isRemote()) {
-                ItemStack beetleStack = new ItemStack(ModItems.POTION_BEETLE.get());
-                ItemStack potionStack = getItemStackFromSlot(EquipmentSlotType.MAINHAND);
-                if (!potionStack.isEmpty() && potionStack.getItem() instanceof ThrowablePotionItem) {
-                    Potion potion = PotionUtils.getPotionFromItem(potionStack);
-                    List<EffectInstance> effects = PotionUtils.getFullEffectsFromItem(potionStack);
-                    PotionUtils.addPotionToItemStack(beetleStack, potion);
-                    PotionUtils.appendEffects(beetleStack, effects);
-                    ResourceLocation registryKey = ForgeRegistries.ITEMS.getKey(potionStack.getItem());
-                    if (registryKey != null) beetleStack.getOrCreateTag().putString("PotionItem", registryKey.toString());
-                    beetleStack.getOrCreateTag().putString("PotionName", potionStack.getTranslationKey());
-                }
-                entityDropItem(beetleStack);
-//                player.setItemStackToSlot(EquipmentSlotType.MAINHAND, new ItemStack(ModItems.POTION_BEETLE.get()));
-            }
-            return ActionResultType.func_233537_a_(world.isRemote());
-        }
+    public boolean tryToReturnIntoPlayerInventory() {
+        if (world instanceof ServerWorld) {
+            ServerPlayerEntity player = (ServerPlayerEntity) getOwner().orElse(null);
+            if (player == null) return false;
 
-        return super.func_230254_b_(player, hand);
+            ItemStack beetleStack = ModItems.POTION_BEETLE.get().setPotionItemStack(new ItemStack(ModItems.POTION_BEETLE.get()), getPotionItemStack().copy());
+            if (hasCustomName()) beetleStack.setDisplayName(getCustomName());
+            if (player.addItemStackToInventory(beetleStack)) {
+                setPotionItemStack(ItemStack.EMPTY);
+                setDead();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void setPotionItemStack(ItemStack stack) {
+        setItemStackToSlot(EquipmentSlotType.MAINHAND, stack);
+    }
+
+    @Override
+    public ItemStack getPotionItemStack() {
+        return getItemStackFromSlot(EquipmentSlotType.MAINHAND);
+    }
+
+    @Override
+    protected ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+        if (!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() instanceof LeadItem) return ActionResultType.PASS;
+
+        if (!player.world.isRemote()) {
+            setDead();
+            ItemStack beetleStack = ModItems.POTION_BEETLE.get().setPotionItemStack(new ItemStack(ModItems.POTION_BEETLE.get()), getPotionItemStack().copy());
+            if (hasCustomName()) beetleStack.setDisplayName(getCustomName());
+            if (player.addItemStackToInventory(beetleStack)) {
+                setPotionItemStack(ItemStack.EMPTY);
+            } else {
+                entityDropItem(beetleStack);
+            }
+        }
+        return ActionResultType.func_233537_a_(world.isRemote());
     }
 
     @Override

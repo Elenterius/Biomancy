@@ -2,6 +2,7 @@ package com.github.elenterius.blightlings.entity;
 
 import com.github.elenterius.blightlings.entity.ai.goal.PlaceBlockAtPositionGoal;
 import com.github.elenterius.blightlings.entity.ai.goal.ReturnToOwnerGoal;
+import com.github.elenterius.blightlings.init.ModItems;
 import com.github.elenterius.blightlings.util.BlockPlacementTarget;
 import com.github.elenterius.blightlings.util.PlayerInteractionUtil;
 import net.minecraft.block.BlockState;
@@ -15,10 +16,7 @@ import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.BucketItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.pathfinding.FlyingPathNavigator;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.*;
@@ -100,9 +98,10 @@ public class MasonBeetleEntity extends AbstractUtilityEntity implements IPlaceBl
 
             BlockPos blockPos = rayTraceResult.getPos();
             if (blockPos.getY() < serverWorld.getServer().getBuildLimit()) {
-                ItemStack stack = getItemStackFromSlot(EquipmentSlotType.MAINHAND);
+                ItemStack stack = getPlacementBlock();
                 if (!stack.isEmpty() && stack.getItem() instanceof BlockItem && !stack.getItem().isFood()) {
                     if (serverWorld.isBlockModifiable(player, blockPos)) {
+                        String blockTranslation = stack.getTranslationKey();
                         Direction direction = rayTraceResult.getFace();
                         PlayerInteractionUtil.PlayerSurrogate surrogate = PlayerInteractionUtil.PlayerSurrogate.of(player, this);
                         ActionResultType actionResultType = PlayerInteractionUtil.tryToPlaceBlock(surrogate, stack, Hand.MAIN_HAND, rayTraceResult, horizontalFacing);
@@ -110,8 +109,7 @@ public class MasonBeetleEntity extends AbstractUtilityEntity implements IPlaceBl
                             ITextComponent textComponent = new TranslationTextComponent("build.tooHigh", serverWorld.getServer().getBuildLimit()).mergeStyle(TextFormatting.RED);
                             player.sendStatusMessage(textComponent, true);
                         } else if (actionResultType.isSuccessOrConsume()) {
-
-                            ITextComponent blockName = new TranslationTextComponent(stack.getTranslationKey());
+                            ITextComponent blockName = new TranslationTextComponent(blockTranslation);
                             ITextComponent beetle_name = hasCustomName() ? getCustomName() : new TranslationTextComponent("msg.blightlings.your_beetle");
                             ITextComponent textComponent = new TranslationTextComponent("msg.blightlings.beetle_block_place_success", beetle_name, blockName).mergeStyle(TextFormatting.GREEN);
                             player.sendStatusMessage(textComponent, true);
@@ -135,7 +133,7 @@ public class MasonBeetleEntity extends AbstractUtilityEntity implements IPlaceBl
 
     @Override
     public boolean hasPlaceableBlock() {
-        ItemStack stack = getItemStackFromSlot(EquipmentSlotType.MAINHAND);
+        ItemStack stack = getPlacementBlock();
         return !stack.isEmpty() && stack.getItem() instanceof BlockItem;
     }
 
@@ -159,6 +157,40 @@ public class MasonBeetleEntity extends AbstractUtilityEntity implements IPlaceBl
     public void setBlockPlacementTarget(@Nullable BlockPlacementTarget placementTarget) {
         blockPlacementTarget = placementTarget;
         setTargetBlockPos(placementTarget != null ? new BlockPos(placementTarget.targetPos) : null);
+    }
+
+    @Override
+    public boolean tryToReturnIntoPlayerInventory() {
+        if (world instanceof ServerWorld) {
+            ServerPlayerEntity player = (ServerPlayerEntity) getOwner().orElse(null);
+            if (player == null) return false;
+
+            ItemStack beetleStack = ModItems.MASON_BEETLE.get().setBlockItemStack(new ItemStack(ModItems.MASON_BEETLE.get()), getPlacementBlock().copy());
+            if (hasCustomName()) beetleStack.setDisplayName(getCustomName());
+            if (player.addItemStackToInventory(beetleStack)) {
+                setPlacementBlock(ItemStack.EMPTY);
+                setDead();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    protected ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+        if (!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() instanceof LeadItem) return ActionResultType.PASS;
+
+        if (!player.world.isRemote()) {
+            setDead();
+            ItemStack beetleStack = ModItems.MASON_BEETLE.get().setBlockItemStack(new ItemStack(ModItems.MASON_BEETLE.get()), getPlacementBlock().copy());
+            if (hasCustomName()) beetleStack.setDisplayName(getCustomName());
+            if (player.addItemStackToInventory(beetleStack)) {
+                setPlacementBlock(ItemStack.EMPTY);
+            } else {
+                entityDropItem(beetleStack);
+            }
+        }
+        return ActionResultType.func_233537_a_(world.isRemote());
     }
 
     @Override

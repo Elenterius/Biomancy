@@ -116,6 +116,14 @@ public class MasonBeetleItem extends Item implements IHighlightRayTraceResultIte
         return ItemStack.EMPTY;
     }
 
+    public ItemStack setBlockItemStack(ItemStack beetleStack, ItemStack blockStack) {
+        if (!blockStack.isEmpty()) {
+            beetleStack.setTagInfo("Block", blockStack.serializeNBT());
+            beetleStack.getOrCreateTag().putString("BlockName", blockStack.getTranslationKey());
+        }
+        return beetleStack;
+    }
+
     public boolean containsBlock(ItemStack stack) {
         return stack.hasTag() && stack.getTag() != null && stack.getTag().contains("Block");
     }

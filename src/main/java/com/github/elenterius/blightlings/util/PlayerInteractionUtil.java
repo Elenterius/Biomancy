@@ -99,6 +99,11 @@ public abstract class PlayerInteractionUtil {
         }
 
         @Override
+        public boolean isCreative() {
+            return false;
+        }
+
+        @Override
         public boolean isSecondaryUseActive() {
             return false;
         }

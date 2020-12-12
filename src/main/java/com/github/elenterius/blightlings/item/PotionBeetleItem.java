@@ -8,10 +8,7 @@ import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.PotionItem;
+import net.minecraft.item.*;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionUtils;
@@ -148,8 +145,22 @@ public class PotionBeetleItem extends Item implements IHighlightRayTraceResultIt
         return ItemStack.EMPTY;
     }
 
+    public ItemStack setPotionItemStack(ItemStack beetleStack, ItemStack potionStack) {
+        if (!potionStack.isEmpty() && potionStack.getItem() instanceof ThrowablePotionItem) {
+            Potion potion = PotionUtils.getPotionFromItem(potionStack);
+            List<EffectInstance> effects = PotionUtils.getFullEffectsFromItem(potionStack);
+            PotionUtils.addPotionToItemStack(beetleStack, potion);
+            PotionUtils.appendEffects(beetleStack, effects);
+            ResourceLocation registryKey = ForgeRegistries.ITEMS.getKey(potionStack.getItem());
+            if (registryKey != null) beetleStack.getOrCreateTag().putString("PotionItem", registryKey.toString());
+            beetleStack.getOrCreateTag().putString("PotionName", potionStack.getTranslationKey());
+        }
+        return beetleStack;
+    }
+
     @Override
     public boolean hasEffect(ItemStack stack) {
         return PotionUtils.getPotionFromItem(stack) != Potions.EMPTY;
     }
+
 }

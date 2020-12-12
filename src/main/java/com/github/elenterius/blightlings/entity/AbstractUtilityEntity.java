@@ -69,4 +69,6 @@ public abstract class AbstractUtilityEntity extends CreatureEntity {
     public void setTargetBlockPos(@Nullable BlockPos targetPos) {
         this.targetBlockPos = targetPos;
     }
+
+    public abstract boolean tryToReturnIntoPlayerInventory();
 }

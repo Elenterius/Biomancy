@@ -48,18 +48,14 @@ public class MasonBeetleRecipe extends SpecialRecipe {
             }
         }
 
+        if (beetleStack.isEmpty()) return ItemStack.EMPTY;
+
         if (!blockStack.isEmpty()) {
-            ItemStack stack = beetleStack.copy();
             blockStack = blockStack.copy();
             blockStack.setCount(1);
-            stack.setTagInfo("Block", blockStack.serializeNBT());
-            stack.getOrCreateTag().putString("BlockName", blockStack.getTranslationKey());
-            return stack;
+            return ((MasonBeetleItem) beetleStack.getItem()).setBlockItemStack(beetleStack.copy(), blockStack);
         } else {
-            if (beetleStack.getItem() instanceof MasonBeetleItem) {
-                return ((MasonBeetleItem) beetleStack.getItem()).getBlockItemStack(beetleStack);
-            }
-            return ItemStack.EMPTY;
+            return ((MasonBeetleItem) beetleStack.getItem()).getBlockItemStack(beetleStack);
         }
     }
 
