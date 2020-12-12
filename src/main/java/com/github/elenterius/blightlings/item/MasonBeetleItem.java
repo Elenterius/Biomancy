@@ -47,6 +47,18 @@ public class MasonBeetleItem extends Item implements IHighlightRayTraceResultIte
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public boolean canHighlightLivingEntities(ItemStack stack) {
+        return false;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public boolean canHighlightBlocks(ItemStack stack) {
+        return containsBlock(stack);
+    }
+
     @Override
     public ItemStack getContainerItem(ItemStack stack) {
         if (!hasContainerItem(stack)) {

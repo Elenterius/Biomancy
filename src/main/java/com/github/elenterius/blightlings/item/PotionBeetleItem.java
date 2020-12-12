@@ -7,7 +7,6 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Potion;
@@ -57,12 +56,23 @@ public class PotionBeetleItem extends Item implements IHighlightRayTraceResultIt
         PotionUtils.addPotionTooltip(stack, tooltip, 1.0F);
     }
 
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public boolean canHighlightBlocks(ItemStack stack) {
+        return containsPotion(stack);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public int getColorForBlock(ItemStack stack, BlockPos blockPos) {
+        return 0xCE0018;
+    }
+
     @Override
     public ItemStack getContainerItem(ItemStack stack) {
         if (!hasContainerItem(stack)) {
             return ItemStack.EMPTY;
-        }
-        else {
+        } else {
             ItemStack stack1 = stack.copy();
             stack1.removeChildTag("Potion");
             stack1.removeChildTag("PotionItem");
@@ -72,13 +82,17 @@ public class PotionBeetleItem extends Item implements IHighlightRayTraceResultIt
 
     @Override
     public boolean hasContainerItem(ItemStack stack) {
+        return containsPotion(stack);
+    }
+
+    public boolean containsPotion(ItemStack stack) {
         return PotionUtils.getPotionFromItem(stack) != Potions.EMPTY;
     }
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         ItemStack stack = playerIn.getHeldItem(handIn);
-        if (PotionUtils.getPotionFromItem(stack) == Potions.EMPTY) return ActionResult.resultFail(stack);
+        if (!containsPotion(stack)) return ActionResult.resultFail(stack);
 
 //        BlockRayTraceResult rayTrace = (BlockRayTraceResult) playerIn.pick(20d, 1f, false);
         RayTraceResult rayTraceResult = RayTraceUtil.rayTrace(playerIn, target -> !target.isSpectator() && target.isAlive() && target.canBeCollidedWith() && target instanceof LivingEntity && !playerIn.isRidingSameEntity(target), getMaxRayTraceDistance());
@@ -108,7 +122,7 @@ public class PotionBeetleItem extends Item implements IHighlightRayTraceResultIt
                     entity.setCustomNameVisible(true);
                 }
                 entity.setOwner(playerIn);
-                entity.setItemStackToSlot(EquipmentSlotType.MAINHAND, getPotionItemStack(stack));
+                entity.setPotionItemStack(getPotionItemStack(stack));
                 entity.setTargetBlockPos(targetBlockPos);
                 entity.setAttackTarget(targetEntity);
 

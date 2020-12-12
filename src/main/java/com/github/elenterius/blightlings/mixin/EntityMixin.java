@@ -40,10 +40,10 @@ public abstract class EntityMixin
         //noinspection ConstantConditions
         if (entity == ClientRenderHandler.HIGHLIGHTED_ENTITY) {
             Team team = getTeam();
-            if (team == null) cir.setReturnValue(0xCE0018);
+            if (team == null) cir.setReturnValue(ClientRenderHandler.COLOR_ENEMY);
             else {
-                if (!getTeam().isSameTeam(team)) cir.setReturnValue(0xCE0018);
-                else cir.setReturnValue(0x00ff00);
+                if (!getTeam().isSameTeam(team)) cir.setReturnValue(ClientRenderHandler.COLOR_ENEMY);
+                else cir.setReturnValue(ClientRenderHandler.COLOR_FRIENDLY);
             }
         }
         else if (getTeam() == null && IEntityUnveilerHeadSlotItem.canUnveilEntity(Minecraft.getInstance().player, entity)) {
