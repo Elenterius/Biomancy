@@ -66,8 +66,8 @@ public abstract class EquipmentHandler
     public static void onLivingUpdate(final LivingEvent.LivingUpdateEvent event) {
         if (!(event.getEntityLiving() instanceof PlayerEntity)) return;
 
-        if (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.CLIMBING, event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.FEET)) > 0) {
-            ModEnchantments.CLIMBING.tryToClimb((PlayerEntity) event.getEntityLiving());
+        if (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.CLIMBING.get(), event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.FEET)) > 0) {
+            ModEnchantments.CLIMBING.get().tryToClimb((PlayerEntity) event.getEntityLiving());
         }
     }
 
@@ -77,9 +77,9 @@ public abstract class EquipmentHandler
         PlayerEntity player = (PlayerEntity) event.getEntityLiving();
 
         if (!player.isPassenger() && (player.getFoodStats().getFoodLevel() > 6.0F || player.abilities.isCreativeMode)) {
-            int bulletJumpLevel = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.BULLET_JUMP, player.getItemStackFromSlot(EquipmentSlotType.LEGS));
+            int bulletJumpLevel = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.BULLET_JUMP.get(), player.getItemStackFromSlot(EquipmentSlotType.LEGS));
             if (bulletJumpLevel > 0 && event.getEntityLiving().isSneaking()) {
-                ModEnchantments.BULLET_JUMP.executeBulletJump(player, bulletJumpLevel, true);
+                ModEnchantments.BULLET_JUMP.get().executeBulletJump(player, bulletJumpLevel, true);
             }
         }
     }

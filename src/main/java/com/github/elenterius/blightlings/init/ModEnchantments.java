@@ -3,14 +3,14 @@ package com.github.elenterius.blightlings.init;
 import com.github.elenterius.blightlings.BlightlingsMod;
 import com.github.elenterius.blightlings.enchantment.BulletJumpEnchantment;
 import com.github.elenterius.blightlings.enchantment.ClimbingEnchantment;
-import net.minecraftforge.registries.ObjectHolder;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
-@ObjectHolder(BlightlingsMod.MOD_ID)
-public abstract class ModEnchantments
-{
-    @ObjectHolder("climbing")
-    public static ClimbingEnchantment CLIMBING;
+public abstract class ModEnchantments {
+    public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, BlightlingsMod.MOD_ID);
 
-    @ObjectHolder("bullet_jump")
-    public static BulletJumpEnchantment BULLET_JUMP;
+    public static final RegistryObject<ClimbingEnchantment> CLIMBING = ENCHANTMENTS.register("climbing", () -> new ClimbingEnchantment(Enchantment.Rarity.RARE));
+    public static final RegistryObject<BulletJumpEnchantment> BULLET_JUMP = ENCHANTMENTS.register("bullet_jump", () -> new BulletJumpEnchantment(Enchantment.Rarity.RARE));
 }

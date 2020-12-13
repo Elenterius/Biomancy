@@ -43,7 +43,7 @@ public class ModBlockLootTables extends BlockLootTables
 
     @Override
     protected Iterable<Block> getKnownBlocks() {
-        List<Block> blocks = ModBlocks.BLOCK_REGISTRY.getEntries().stream().map(RegistryObject::get).collect(Collectors.toList());
+        List<Block> blocks = ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).collect(Collectors.toList());
         BlightlingsMod.LOGGER.info(MarkerManager.getMarker("BockLootTables"), String.format("generating loot tables for %s blocks...", blocks.size()));
         return blocks;
     }

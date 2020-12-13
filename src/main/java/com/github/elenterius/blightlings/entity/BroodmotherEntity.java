@@ -35,7 +35,7 @@ public class BroodmotherEntity extends SwarmGroupMemberEntity
     @Override
     protected void registerGoals() {
         super.registerGoals();
-        goalSelector.addGoal(6, new LookAtAndMakeNoiseGoal(this, PlayerEntity.class, 8.0F, ModSoundEvents.WAH_WAH));
+        goalSelector.addGoal(6, new LookAtAndMakeNoiseGoal(this, PlayerEntity.class, 8.0F, ModSoundEvents.WAH_WAH.get()));
     }
 
     @Override
