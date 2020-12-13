@@ -88,7 +88,7 @@ public abstract class ModBiomes
                 .withFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, Features.BASALT_PILLAR)
                 .withCarver(GenerationStage.Carving.AIR, WorldCarver.CAVE.func_242761_a(new ProbabilityConfig(0.425f)))
                 .withCarver(GenerationStage.Carving.AIR, WorldCarver.CANYON.func_242761_a(new ProbabilityConfig(0.225f)))
-//                .withStructure(StructureFeatures.RUINED_PORTAL)
+//                .withStructure(StructureFeatures.RUINED_PORTAL) // add monolith instead
                 ;
 
         return new Biome.Builder()
@@ -101,11 +101,9 @@ public abstract class ModBiomes
                 .withMobSpawnSettings(
                         new MobSpawnInfoBuilder(MobSpawnInfo.EMPTY)
                                 .withCreatureSpawnProbability(1f)
-//                                .withSpawnCost(ModEntityTypes.BLOBLING.get(), 0.1, 10)
-//                                .withSpawnCost(ModEntityTypes.BROOD_MOTHER.get(), 1, 20)
                                 .withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.BLOBLING.get(), 100, 6, 12))
                                 .withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.BROOD_MOTHER.get(), 80, 2, 4))
-                                .withSpawner(EntityClassification.CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.BEETLING.get(), 80, 2, 6))
+                                .withSpawner(EntityClassification.WATER_CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.BEETLING.get(), 80, 1, 2))
                                 .copy()
                 )
                 .setEffects(
