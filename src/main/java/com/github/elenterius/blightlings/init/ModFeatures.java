@@ -2,6 +2,7 @@ package com.github.elenterius.blightlings.init;
 
 import com.github.elenterius.blightlings.BlightlingsMod;
 import com.github.elenterius.blightlings.mixin.WorldCarverMixinAccessor;
+import com.github.elenterius.blightlings.world.gen.feature.MoonMonolithFeature;
 import com.github.elenterius.blightlings.world.gen.tree.LilyTreeFeature;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
@@ -45,6 +46,7 @@ public abstract class ModFeatures
     {
         public static final Feature<NoFeatureConfig> LILY_TREE = createFeature("lily_tree", new LilyTreeFeature(NoFeatureConfig.field_236558_a_));
         public static final Feature<BlockStateFeatureConfig> LUMINOUS_SPORE_BLOB = createFeature("luminous_spore_blob", new BlockBlobFeature(BlockStateFeatureConfig.field_236455_a_));
+        public static final Feature<NoFeatureConfig> MOON_MONOLITH = createFeature("moon_monolith", new MoonMonolithFeature(NoFeatureConfig.field_236558_a_));
 
         private static <FC extends IFeatureConfig> Feature<FC> createFeature(String name, Feature<FC> feature) {
             feature.setRegistryName(BlightlingsMod.MOD_ID, name);
@@ -52,25 +54,25 @@ public abstract class ModFeatures
         }
     }
 
-    public abstract static class CONFIGURED
-    {
-        public static final ConfiguredFeature<?, ?> LILY_TREE = UNCONFIGURED.LILY_TREE
-                .withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG)
-                .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT)
-                .withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(2, 0.1f, 1)));
+    public abstract static class CONFIGURED {
+        public static final ConfiguredFeature<?, ?> LILY_TREE = UNCONFIGURED.LILY_TREE.withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG)
+                .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).withPlacement(Placement.COUNT_EXTRA.configure(new AtSurfaceWithExtraConfig(2, 0.1f, 1)));
 
-        public static final ConfiguredFeature<?, ?> LUMINOUS_SPORE_BLOB = UNCONFIGURED.LUMINOUS_SPORE_BLOB
-                .withConfiguration(new BlockStateFeatureConfig(ModBlocks.LUMINOUS_SOIL.get().getDefaultState()))
+        public static final ConfiguredFeature<?, ?> LUMINOUS_SPORE_BLOB = UNCONFIGURED.LUMINOUS_SPORE_BLOB.withConfiguration(new BlockStateFeatureConfig(ModBlocks.LUMINOUS_SOIL.get().getDefaultState()))
                 .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).func_242732_c(2);
 
         public static final ConfiguredFeature<?, ?> PATCH_BLIGHT_SPROUTS = Feature.RANDOM_PATCH.withConfiguration(CONFIGS.BLIGHT_SPROUT_CONFIG).withPlacement(Features.Placements.PATCH_PLACEMENT).func_242731_b(7);
         public static final ConfiguredFeature<?, ?> PATCH_BLIGHTSHROOM = Feature.RANDOM_PATCH.withConfiguration(CONFIGS.BLIGHTSHROOM_CONFIG).chance(4).withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT);
+
+        public static final ConfiguredFeature<?, ?> MOON_MONOLITH = UNCONFIGURED.MOON_MONOLITH.withConfiguration(NoFeatureConfig.NO_FEATURE_CONFIG)
+                .withPlacement(Features.Placements.HEIGHTMAP_PLACEMENT).chance(250);
 
         private static void registerAll() {
             registerConfiguredFeature("lily_tree", LILY_TREE);
             registerConfiguredFeature("luminous_spore_blob", LUMINOUS_SPORE_BLOB);
             registerConfiguredFeature("patch_blight_sprouts", PATCH_BLIGHT_SPROUTS);
             registerConfiguredFeature("patch_blightshroom", PATCH_BLIGHTSHROOM);
+            registerConfiguredFeature("moon_monolith", MOON_MONOLITH);
         }
 
         private static void registerConfiguredFeature(String name, ConfiguredFeature<?, ?> configuredFeature) {

@@ -85,11 +85,9 @@ public abstract class ModBiomes
                 .withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ModFeatures.CONFIGURED.PATCH_BLIGHT_SPROUTS)
                 .withFeature(GenerationStage.Decoration.VEGETAL_DECORATION, ModFeatures.CONFIGURED.PATCH_BLIGHTSHROOM)
                 .withFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, ModFeatures.CONFIGURED.LUMINOUS_SPORE_BLOB)
-                .withFeature(GenerationStage.Decoration.LOCAL_MODIFICATIONS, Features.BASALT_PILLAR)
+                .withFeature(GenerationStage.Decoration.SURFACE_STRUCTURES, ModFeatures.CONFIGURED.MOON_MONOLITH)
                 .withCarver(GenerationStage.Carving.AIR, WorldCarver.CAVE.func_242761_a(new ProbabilityConfig(0.425f)))
-                .withCarver(GenerationStage.Carving.AIR, WorldCarver.CANYON.func_242761_a(new ProbabilityConfig(0.225f)))
-//                .withStructure(StructureFeatures.RUINED_PORTAL) // add monolith instead
-                ;
+                .withCarver(GenerationStage.Carving.AIR, WorldCarver.CANYON.func_242761_a(new ProbabilityConfig(0.225f)));
 
         return new Biome.Builder()
                 .scale(0.35f)
@@ -100,10 +98,12 @@ public abstract class ModBiomes
                 .downfall(0.25f)
                 .withMobSpawnSettings(
                         new MobSpawnInfoBuilder(MobSpawnInfo.EMPTY)
-                                .withCreatureSpawnProbability(1f)
-                                .withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.BLOBLING.get(), 100, 6, 12))
+                                .withCreatureSpawnProbability(0.5f)
+                                .withSpawnCost(ModEntityTypes.BEETLING.get(), 1d, 20d)
+                                .withSpawnCost(ModEntityTypes.BLOBLING.get(), 1d, 30d)
+                                .withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.BLOBLING.get(), 100, 4, 6))
                                 .withSpawner(EntityClassification.MONSTER, new MobSpawnInfo.Spawners(ModEntityTypes.BROOD_MOTHER.get(), 80, 2, 4))
-                                .withSpawner(EntityClassification.WATER_CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.BEETLING.get(), 80, 1, 2))
+                                .withSpawner(EntityClassification.WATER_CREATURE, new MobSpawnInfo.Spawners(ModEntityTypes.BEETLING.get(), 70, 1, 2))
                                 .copy()
                 )
                 .setEffects(
