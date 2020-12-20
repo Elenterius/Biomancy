@@ -17,7 +17,7 @@ public class BlightSoilBlock extends Block
 
     @Override
     public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction facing, IPlantable plantable) {
-        BlockState plant = plantable.getPlant(world, pos.offset(facing));
+//        BlockState plant = plantable.getPlant(world, pos.offset(facing));
         PlantType type = plantable.getPlantType(world, pos.offset(facing));
         return type == ModBlocks.BLIGHT_PLANT_TYPE;
     }

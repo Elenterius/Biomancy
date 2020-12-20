@@ -1,4 +1,4 @@
-package com.github.elenterius.blightlings.mixin;
+package com.github.elenterius.blightlings.mixin.client;
 
 import com.github.elenterius.blightlings.client.renderer.ClientRenderHandler;
 import com.github.elenterius.blightlings.item.IEntityUnveilerHeadSlotItem;

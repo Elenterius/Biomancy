@@ -6,17 +6,20 @@
   "mixins": [
     "DamageSourceMixin",
     "EdgeBiomeLayerMixin",
-    "EntityMixin",
     "ItemStackMixinAccessor",
     "LayerUtilMixin",
     "LivingEntityMixin",
     "LivingRendererMixin",
-    "MinecraftMixin",
     "MixRiverLayerMixin",
     "NoiseChunkGeneratorMixin",
     "PanicGoalMixin",
     "WorldCarverMixinAccessor"
   ],
+  "client": [
+    "client.EntityMixin",
+    "client.MinecraftMixin"
+  ],
+  "server": [],
   "injectors": {
     "defaultRequire": 1
   },
