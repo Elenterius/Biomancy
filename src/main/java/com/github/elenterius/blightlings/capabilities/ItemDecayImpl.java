@@ -22,6 +22,7 @@ import net.minecraftforge.common.util.LazyOptional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Collection;
 
 public final class ItemDecayImpl {
 	private ItemDecayImpl() {
@@ -58,10 +59,20 @@ public final class ItemDecayImpl {
 			if (stack.isEmpty() || newCount != oldCount && world.rand.nextFloat() < 0.4f) {
 				int difference = MathHelper.clamp(MathHelper.abs(oldCount - newCount), 1, stack.getMaxStackSize());
 				float p = ((float) difference / (float) stack.getMaxStackSize());
-				EffectInstance effectInstance = new EffectInstance(ModEffects.BLIGHT_INFECTION.get(), Math.min(difference, 5) * 20, Math.round(p) * 2);
 				if (entity instanceof LivingEntity && p < 0.46f) {
+					Collection<EffectInstance> effects = ((LivingEntity) entity).getActivePotionEffects();
+					int amplifier = 0;
+					for (EffectInstance effectInstance : effects) {
+						if (effectInstance.getPotion() == ModEffects.BLIGHT_INFECTION.get()) {
+							amplifier = effectInstance.getAmplifier();
+							break;
+						}
+					}
+					EffectInstance effectInstance = new EffectInstance(ModEffects.BLIGHT_INFECTION.get(), Math.min(difference, 5) * 20, Math.round(p) * 2 + amplifier);
 					((LivingEntity) entity).addPotionEffect(effectInstance);
-				} else {
+				}
+				else {
+					EffectInstance effectInstance = new EffectInstance(ModEffects.BLIGHT_INFECTION.get(), Math.min(difference, 5) * 20, Math.round(p) * 2);
 					Vector3d pos = entity.getPositionVec();
 					AreaEffectCloudEntity aoeCloud = new AreaEffectCloudEntity(world, pos.x, pos.y, pos.z);
 					aoeCloud.setDuration(30 * 20);
