@@ -10,25 +10,33 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.client.util.InputMappings;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.apache.logging.log4j.MarkerManager;
+import org.lwjgl.glfw.GLFW;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = BlightlingsMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class ClientSetupHandler {
-	private ClientSetupHandler() {
-	}
+	private ClientSetupHandler() {}
+
+	public static final KeyBinding DEFAULT_ITEM_KEY_BINDING = new KeyBinding(String.format("key.%s.item_default", BlightlingsMod.MOD_ID), KeyConflictContext.UNIVERSAL, InputMappings.Type.KEYSYM, GLFW.GLFW_KEY_V, "key.categories." + BlightlingsMod.MOD_ID);
 
 	@SubscribeEvent
 	public static void onClientSetup(FMLClientSetupEvent event) {
+		ClientRegistry.registerKeyBinding(DEFAULT_ITEM_KEY_BINDING);
+
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BLOBLING.get(), BloblingRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BROOD_MOTHER.get(), BroodmotherRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BEETLING.get(), BeetlingRenderer::new);
@@ -52,9 +60,7 @@ public final class ClientSetupHandler {
 	}
 
 	@SubscribeEvent
-	public static void onBlockModelRegistry(final ModelRegistryEvent event) {
-
-	}
+	public static void onBlockModelRegistry(final ModelRegistryEvent event) {}
 
 	@SubscribeEvent
 	public static void onItemColorRegistry(final ColorHandlerEvent.Item event) {

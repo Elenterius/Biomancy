@@ -10,8 +10,7 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = BlightlingsMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class PlayerInteractionHandler {
-	private PlayerInteractionHandler() {
-	}
+	private PlayerInteractionHandler() {}
 
 	@SubscribeEvent
 	public static void onPlayerInteraction(final PlayerInteractEvent.EntityInteract event) {

@@ -26,8 +26,7 @@ import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = BlightlingsMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class CommonSetupHandler {
-	private CommonSetupHandler() {
-	}
+	private CommonSetupHandler() {}
 
 	@SubscribeEvent
 	public static void onSetup(final FMLCommonSetupEvent event) {

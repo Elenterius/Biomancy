@@ -1,5 +1,8 @@
 {
   "itemGroup.blightlings": "Blightlings",
+  "key.categories.blightlings": "Blightlings Mod",
+  "key.blightlings.item_default": "Enable/Disable Item Ability",
+
   "biome.blightlings.blight_biome": "Blight Plagued Crater",
 
   "item.blightlings.true_sight_goggles": "Oculi of Unveiling",

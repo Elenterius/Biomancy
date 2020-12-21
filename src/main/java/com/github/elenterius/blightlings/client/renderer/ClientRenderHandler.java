@@ -24,8 +24,7 @@ import net.minecraftforge.fml.common.Mod;
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = BlightlingsMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public final class ClientRenderHandler {
-	private ClientRenderHandler() {
-	}
+	private ClientRenderHandler() {}
 
 	public static Entity HIGHLIGHTED_ENTITY = null;
 	public static int COLOR_ENEMY = 0xffffff;

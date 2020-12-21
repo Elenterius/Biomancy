@@ -34,6 +34,17 @@ public class GogglesArmorItem extends ArmorItem implements IEntityUnveilerHeadSl
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(TooltipUtil.getTooltip(this).setStyle(TooltipUtil.LORE_STYLE));
 		tooltip.add(StringTextComponent.EMPTY);
+		if (stack.hasTag() && stack.getOrCreateTag().contains("BlightlingsItemAbilityEnabled")) {
+			if (stack.getOrCreateTag().getBoolean("BlightlingsItemAbilityEnabled")) {
+				tooltip.add(new StringTextComponent("The Item is Active. <Press V to deactivate>"));
+			}
+			else {
+				tooltip.add(new StringTextComponent("The Item is Inert. <Press V to activate>"));
+			}
+		}
+		else {
+			stack.getOrCreateTag().putBoolean("BlightlingsItemAbilityEnabled", true);
+		}
 	}
 
 	@Override
@@ -55,7 +66,8 @@ public class GogglesArmorItem extends ArmorItem implements IEntityUnveilerHeadSl
 			if (player.isPotionApplicable(effectInstance)) {
 				player.addPotionEffect(effectInstance);
 			}
-		} else if (player.ticksExisted % 1200 == 0 && activeEffect.getDuration() < Integer.MAX_VALUE - 2000) {
+		}
+		else if (player.ticksExisted % 1200 == 0 && activeEffect.getDuration() < Integer.MAX_VALUE - 2000) {
 			EffectInstance effectInstance = new EffectInstance(Effects.NIGHT_VISION, Integer.MAX_VALUE, 0, false, false);
 			if (player.isPotionApplicable(effectInstance)) {
 				player.addPotionEffect(effectInstance);

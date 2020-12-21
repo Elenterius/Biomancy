@@ -26,8 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Mod.EventBusSubscriber(modid = BlightlingsMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class ItemDecayHandler {
-	private ItemDecayHandler() {
-	}
+	private ItemDecayHandler() {}
 
     /*
     We don't use the forge event because it sucks (it does not supply the container provider)
