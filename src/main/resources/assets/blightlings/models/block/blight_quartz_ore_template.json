@@ -1,0 +1,556 @@
+{
+  "credit": "Made by Elenterius",
+  "parent": "block/block",
+  "textures": {
+    "particle": "blightlings:block/blight_quartz_crystal",
+    "texture": "blightlings:block/blight_quartz_crystal"
+  },
+  "elements": [
+    {
+      "name": "main_crystal",
+      "from": [
+        4,
+        0,
+        4
+      ],
+      "to": [
+        12,
+        12,
+        12
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          8,
+          6,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            4,
+            8,
+            16
+          ],
+          "texture": "#texture"
+        },
+        "east": {
+          "uv": [
+            0,
+            4,
+            8,
+            16
+          ],
+          "texture": "#texture"
+        },
+        "south": {
+          "uv": [
+            0,
+            4,
+            8,
+            16
+          ],
+          "texture": "#texture"
+        },
+        "west": {
+          "uv": [
+            0,
+            4,
+            8,
+            16
+          ],
+          "texture": "#texture"
+        },
+        "up": {
+          "uv": [
+            8,
+            8,
+            16,
+            16
+          ],
+          "texture": "#texture"
+        },
+        "down": {
+          "uv": [
+            8,
+            8,
+            16,
+            16
+          ],
+          "texture": "#texture"
+        }
+      }
+    },
+    {
+      "name": "side_crystal",
+      "from": [
+        10,
+        -1,
+        6
+      ],
+      "to": [
+        14,
+        5,
+        10
+      ],
+      "rotation": {
+        "angle": -22.5,
+        "axis": "z",
+        "origin": [
+          12,
+          -1,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            12,
+            0,
+            16,
+            6
+          ],
+          "texture": "#texture"
+        },
+        "east": {
+          "uv": [
+            12,
+            0,
+            16,
+            6
+          ],
+          "texture": "#texture"
+        },
+        "south": {
+          "uv": [
+            12,
+            0,
+            16,
+            6
+          ],
+          "texture": "#texture"
+        },
+        "west": {
+          "uv": [
+            12,
+            0,
+            16,
+            6
+          ],
+          "texture": "#texture"
+        },
+        "up": {
+          "uv": [
+            4,
+            4,
+            0,
+            0
+          ],
+          "texture": "#texture"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": "#texture"
+        }
+      }
+    },
+    {
+      "name": "side_crystal",
+      "from": [
+        10,
+        0.01,
+        2
+      ],
+      "to": [
+        13,
+        4.01,
+        5
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "z",
+        "origin": [
+          12,
+          0,
+          4
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            9,
+            0,
+            12,
+            4
+          ],
+          "texture": "#texture"
+        },
+        "east": {
+          "uv": [
+            9,
+            0,
+            12,
+            4
+          ],
+          "texture": "#texture"
+        },
+        "south": {
+          "uv": [
+            9,
+            0,
+            12,
+            4
+          ],
+          "texture": "#texture"
+        },
+        "west": {
+          "uv": [
+            9,
+            0,
+            12,
+            4
+          ],
+          "texture": "#texture"
+        },
+        "up": {
+          "uv": [
+            9,
+            5,
+            12,
+            8
+          ],
+          "texture": "#texture"
+        },
+        "down": {
+          "uv": [
+            9,
+            5,
+            12,
+            8
+          ],
+          "texture": "#texture"
+        }
+      }
+    },
+    {
+      "name": "side_crystal",
+      "from": [
+        7,
+        0.01,
+        11
+      ],
+      "to": [
+        10,
+        4.01,
+        14
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "z",
+        "origin": [
+          9,
+          0,
+          13
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            9,
+            0,
+            12,
+            4
+          ],
+          "texture": "#texture"
+        },
+        "east": {
+          "uv": [
+            9,
+            0,
+            12,
+            4
+          ],
+          "texture": "#texture"
+        },
+        "south": {
+          "uv": [
+            9,
+            0,
+            12,
+            4
+          ],
+          "texture": "#texture"
+        },
+        "west": {
+          "uv": [
+            9,
+            0,
+            12,
+            4
+          ],
+          "texture": "#texture"
+        },
+        "up": {
+          "uv": [
+            9,
+            5,
+            12,
+            8
+          ],
+          "texture": "#texture"
+        },
+        "down": {
+          "uv": [
+            9,
+            5,
+            12,
+            8
+          ],
+          "texture": "#texture"
+        }
+      }
+    },
+    {
+      "name": "side_crystal",
+      "from": [
+        6,
+        -0.5,
+        3
+      ],
+      "to": [
+        10,
+        5.5,
+        7
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "x",
+        "origin": [
+          8,
+          -1,
+          5
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            12,
+            0,
+            16,
+            6
+          ],
+          "texture": "#texture"
+        },
+        "east": {
+          "uv": [
+            16,
+            0,
+            12,
+            6
+          ],
+          "texture": "#texture"
+        },
+        "south": {
+          "uv": [
+            12,
+            0,
+            16,
+            6
+          ],
+          "texture": "#texture"
+        },
+        "west": {
+          "uv": [
+            16,
+            0,
+            12,
+            6
+          ],
+          "texture": "#texture"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": "#texture"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": "#texture"
+        }
+      }
+    },
+    {
+      "name": "side_crystal",
+      "from": [
+        3,
+        -0.5,
+        8.25
+      ],
+      "to": [
+        7,
+        5.5,
+        12.25
+      ],
+      "rotation": {
+        "angle": 45,
+        "axis": "x",
+        "origin": [
+          5,
+          -0.5,
+          10.25
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            16,
+            0,
+            12,
+            6
+          ],
+          "texture": "#texture"
+        },
+        "east": {
+          "uv": [
+            16,
+            0,
+            12,
+            6
+          ],
+          "texture": "#texture"
+        },
+        "south": {
+          "uv": [
+            16,
+            0,
+            12,
+            6
+          ],
+          "texture": "#texture"
+        },
+        "west": {
+          "uv": [
+            16,
+            0,
+            12,
+            6
+          ],
+          "texture": "#texture"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": "#texture"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": "#texture"
+        }
+      }
+    },
+    {
+      "name": "side_crystal",
+      "from": [
+        1.5,
+        0,
+        6
+      ],
+      "to": [
+        5.5,
+        6,
+        10
+      ],
+      "rotation": {
+        "angle": 22.5,
+        "axis": "z",
+        "origin": [
+          3.5,
+          0,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            12,
+            0,
+            16,
+            6
+          ],
+          "texture": "#texture"
+        },
+        "east": {
+          "uv": [
+            12,
+            0,
+            16,
+            6
+          ],
+          "texture": "#texture"
+        },
+        "south": {
+          "uv": [
+            12,
+            0,
+            16,
+            6
+          ],
+          "texture": "#texture"
+        },
+        "west": {
+          "uv": [
+            12,
+            0,
+            16,
+            6
+          ],
+          "texture": "#texture"
+        },
+        "up": {
+          "uv": [
+            0,
+            4,
+            4,
+            0
+          ],
+          "texture": "#texture"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": "#texture"
+        }
+      }
+    }
+  ]
+}

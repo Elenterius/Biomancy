@@ -3,6 +3,7 @@ package com.github.elenterius.blightlings.init;
 import com.github.elenterius.blightlings.BlightlingsMod;
 import com.github.elenterius.blightlings.client.renderer.block.FullBrightOverlayBakedModel;
 import com.github.elenterius.blightlings.client.renderer.entity.*;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.BlockModelShapes;
 import net.minecraft.client.renderer.RenderType;
@@ -33,8 +34,9 @@ public abstract class ClientSetupHandler
         RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.MASON_BEETLE.get(), BlockBeetleRenderer::new);
 
         event.enqueueWork(() -> {
-            RenderTypeLookup.setRenderLayer(ModBlocks.LILY_TREE_SAPLING.get(), RenderType.getCutout());
             RenderTypeLookup.setRenderLayer(ModBlocks.LUMINOUS_SOIL.get(), renderType -> renderType == RenderType.getCutout() || renderType == RenderType.getTranslucent());
+            RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_QUARTZ_ORE.get(), renderType -> renderType == RenderType.getSolid() || renderType == RenderType.getTranslucent());
+            RenderTypeLookup.setRenderLayer(ModBlocks.LILY_TREE_SAPLING.get(), RenderType.getCutout());
             RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_PUSTULE_SMALL.get(), RenderType.getCutout());
             RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_PUSTULE_BIG.get(), RenderType.getCutout());
             RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_PUSTULE_BIG_AND_SMALL.get(), RenderType.getCutout());
@@ -60,16 +62,19 @@ public abstract class ClientSetupHandler
 
     @SubscribeEvent
     public static void onModelBakeEvent(ModelBakeEvent event) {
-        for (BlockState blockState : ModBlocks.LUMINOUS_SOIL.get().getStateContainer().getValidStates()) {
+        addFullBrightOverlayBakedModel(ModBlocks.LUMINOUS_SOIL.get(), event);
+        addFullBrightOverlayBakedModel(ModBlocks.BLIGHT_QUARTZ_ORE.get(), event);
+    }
+
+    private static void addFullBrightOverlayBakedModel(Block block, ModelBakeEvent event) {
+        for (BlockState blockState : block.getStateContainer().getValidStates()) {
             ModelResourceLocation modelLocation = BlockModelShapes.getModelLocation(blockState);
             IBakedModel bakedModel = event.getModelRegistry().get(modelLocation);
             if (bakedModel == null) {
-                BlightlingsMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Did not find any vanilla baked models for block luminous_soil");
-            }
-            else if (bakedModel instanceof FullBrightOverlayBakedModel) {
-                BlightlingsMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Attempted to replace already existing FullBrightOverlayBakedModel for block luminous_soil");
-            }
-            else {
+                BlightlingsMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Did not find any vanilla baked models for " + block.getRegistryName());
+            } else if (bakedModel instanceof FullBrightOverlayBakedModel) {
+                BlightlingsMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Attempted to replace already existing FullBrightOverlayBakedModel for " + block.getRegistryName());
+            } else {
                 FullBrightOverlayBakedModel customModel = new FullBrightOverlayBakedModel(bakedModel);
                 event.getModelRegistry().put(modelLocation, customModel);
             }

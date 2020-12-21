@@ -1,6 +1,8 @@
 package com.github.elenterius.blightlings.init;
 
 import com.github.elenterius.blightlings.BlightlingsMod;
+import com.github.elenterius.blightlings.capabilities.IItemDecayTracker;
+import com.github.elenterius.blightlings.capabilities.ItemDecayImpl;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.dispenser.IBlockSource;
@@ -10,6 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.Direction;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -26,6 +29,8 @@ public abstract class CommonSetupHandler
 {
     @SubscribeEvent
     public static void onSetup(final FMLCommonSetupEvent event) {
+        CapabilityManager.INSTANCE.register(IItemDecayTracker.class, new ItemDecayImpl.DecayTrackerStorage(), ItemDecayImpl.DecayTrackerDefaultImpl::new);
+
         // do stuff after common setup event on single thread
         event.enqueueWork(() -> {
             ModEntityTypes.onPostSetup();

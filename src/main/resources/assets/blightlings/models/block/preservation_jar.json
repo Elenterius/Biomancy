@@ -1,0 +1,229 @@
+{
+  "credit": "Made by Elenterius",
+  "parent": "block/block",
+  "textures": {
+    "particle": "blightlings:block/preservation_jar_container",
+    "container": "blightlings:block/preservation_jar_container",
+    "lid": "blightlings:block/preservation_jar_lid",
+    "top_bottom": "blightlings:block/preservation_jar_top_bottom"
+  },
+  "elements": [
+    {
+      "name": "container",
+      "from": [
+        3,
+        0,
+        3
+      ],
+      "to": [
+        13,
+        11,
+        13
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          7,
+          6,
+          7
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            3,
+            5,
+            13,
+            16
+          ],
+          "texture": "#container"
+        },
+        "east": {
+          "uv": [
+            3,
+            5,
+            13,
+            16
+          ],
+          "texture": "#container"
+        },
+        "south": {
+          "uv": [
+            3,
+            5,
+            13,
+            16
+          ],
+          "texture": "#container"
+        },
+        "west": {
+          "uv": [
+            3,
+            5,
+            13,
+            16
+          ],
+          "texture": "#container"
+        },
+        "up": {
+          "uv": [
+            3,
+            3,
+            13,
+            13
+          ],
+          "texture": "#top_bottom"
+        },
+        "down": {
+          "uv": [
+            3,
+            3,
+            13,
+            13
+          ],
+          "texture": "#top_bottom",
+          "cullface": "down"
+        }
+      }
+    },
+    {
+      "name": "neck",
+      "from": [
+        4,
+        11,
+        4
+      ],
+      "to": [
+        12,
+        13,
+        12
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          8,
+          12,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            3,
+            12,
+            5
+          ],
+          "texture": "#container"
+        },
+        "east": {
+          "uv": [
+            4,
+            3,
+            12,
+            5
+          ],
+          "texture": "#container"
+        },
+        "south": {
+          "uv": [
+            4,
+            3,
+            12,
+            5
+          ],
+          "texture": "#container"
+        },
+        "west": {
+          "uv": [
+            4,
+            3,
+            12,
+            5
+          ],
+          "texture": "#container"
+        }
+      }
+    },
+    {
+      "name": "lid",
+      "from": [
+        3.5,
+        13,
+        3.5
+      ],
+      "to": [
+        12.5,
+        15,
+        12.5
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          7.5,
+          13,
+          7.5
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            9,
+            2
+          ],
+          "texture": "#lid"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            9,
+            2
+          ],
+          "texture": "#lid"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            9,
+            2
+          ],
+          "texture": "#lid"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            9,
+            2
+          ],
+          "texture": "#lid"
+        },
+        "up": {
+          "uv": [
+            0,
+            7,
+            9,
+            16
+          ],
+          "texture": "#lid"
+        },
+        "down": {
+          "uv": [
+            0,
+            7,
+            9,
+            16
+          ],
+          "texture": "#lid"
+        }
+      }
+    }
+  ]
+}

@@ -9,8 +9,10 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = BlightlingsMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public abstract class PlayerInteractionHandler
-{
+public final class PlayerInteractionHandler {
+    private PlayerInteractionHandler() {
+    }
+
     @SubscribeEvent
     public static void onPlayerInteraction(final PlayerInteractEvent.EntityInteract event) {
         if (event.getWorld().isRemote()) return;

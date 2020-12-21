@@ -20,13 +20,13 @@ public class ModRecipeProvider extends RecipeProvider
 
     @Override
     protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
-        ShapedRecipeBuilder.shapedRecipe(ModItems.BLIGHT_EYE.get())
+        ShapedRecipeBuilder.shapedRecipe(ModItems.OCULUS.get())
                 .key('G', ModItems.BLIGHT_GOO.get()).key('S', ModItems.BLIGHT_SHARD.get()).key('E', Items.SPIDER_EYE)
                 .patternLine("GSG").patternLine("SES").patternLine("GSG")
                 .addCriterion("has_blight_shard", hasItem(ModItems.BLIGHT_SHARD.get())).build(consumer);
 
         ShapedRecipeBuilder.shapedRecipe(ModItems.TRUE_SIGHT_GOGGLES.get())
-                .key('O', ModItems.BLIGHT_EYE.get()).key('S', ModItems.BLIGHT_SAC.get()).key('I', Tags.Items.INGOTS_IRON)
+                .key('O', ModItems.OCULUS.get()).key('S', ModItems.BLIGHT_SAC.get()).key('I', Tags.Items.INGOTS_IRON)
                 .patternLine("OSO").patternLine("OIO")
                 .addCriterion("has_blight_shard", hasItem(ModItems.BLIGHT_SHARD.get())).build(consumer);
 
