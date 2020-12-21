@@ -14,16 +14,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ModAxeItem extends AxeItem
-{
-    public ModAxeItem(IItemTier tier, float attackDamageIn, float attackSpeedIn, Properties builder) {
-        super(tier, attackDamageIn, attackSpeedIn, builder);
-    }
+public class ModAxeItem extends AxeItem {
+	public ModAxeItem(IItemTier tier, float attackDamageIn, float attackSpeedIn, Properties builder) {
+		super(tier, attackDamageIn, attackSpeedIn, builder);
+	}
 
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(TooltipUtil.getTooltip(this).setStyle(TooltipUtil.LORE_STYLE));
-        tooltip.add(StringTextComponent.EMPTY);
-    }
+	@OnlyIn(Dist.CLIENT)
+	@Override
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		tooltip.add(TooltipUtil.getTooltip(this).setStyle(TooltipUtil.LORE_STYLE));
+		tooltip.add(StringTextComponent.EMPTY);
+	}
 }

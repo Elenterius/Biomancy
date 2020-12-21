@@ -21,44 +21,42 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = BlightlingsMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class DataGenerators
-{
+public class DataGenerators {
 
-    @SubscribeEvent
-    public static void gatherData(GatherDataEvent event) {
-        DataGenerator generator = event.getGenerator();
-        generator.addProvider(new ModLootTableProvider(generator));
-        generator.addProvider(new ModRecipeProvider(generator));
-    }
+	@SubscribeEvent
+	public static void gatherData(GatherDataEvent event) {
+		DataGenerator generator = event.getGenerator();
+		generator.addProvider(new ModLootTableProvider(generator));
+		generator.addProvider(new ModRecipeProvider(generator));
+	}
 
-    public static class ModLootTableProvider extends LootTableProvider
-    {
-        private final List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootParameterSet>> lootTables = ImmutableList.of(
+	public static class ModLootTableProvider extends LootTableProvider {
+		private final List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootParameterSet>> lootTables = ImmutableList.of(
 //            Pair.of(FishingLootTables::new, LootParameterSets.FISHING),
 //            Pair.of(ChestLootTables::new, LootParameterSets.CHEST),
-                Pair.of(ModEntityLootTables::new, LootParameterSets.ENTITY),
-                Pair.of(ModBlockLootTables::new, LootParameterSets.BLOCK)
+				Pair.of(ModEntityLootTables::new, LootParameterSets.ENTITY),
+				Pair.of(ModBlockLootTables::new, LootParameterSets.BLOCK)
 //            Pair.of(PiglinBarteringAddition::new, LootParameterSets.field_237453_h_),
 //            Pair.of(GiftLootTables::new, LootParameterSets.GIFT)
-        );
+		);
 
-        public ModLootTableProvider(DataGenerator dataGeneratorIn) {
-            super(dataGeneratorIn);
-        }
+		public ModLootTableProvider(DataGenerator dataGeneratorIn) {
+			super(dataGeneratorIn);
+		}
 
-        @Override
-        protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootParameterSet>> getTables() {
-            return lootTables;
-        }
+		@Override
+		protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootParameterSet>> getTables() {
+			return lootTables;
+		}
 
-        @Override
-        protected void validate(Map<ResourceLocation, LootTable> map, ValidationTracker validationtracker) {
-            // do nothing, we can remove the override when all lootTables are present
-        }
+		@Override
+		protected void validate(Map<ResourceLocation, LootTable> map, ValidationTracker validationtracker) {
+			// do nothing, we can remove the override when all lootTables are present
+		}
 
-        @Override
-        public String getName() {
-            return "BlightlingsMod " + super.getName();
-        }
-    }
+		@Override
+		public String getName() {
+			return "BlightlingsMod " + super.getName();
+		}
+	}
 }

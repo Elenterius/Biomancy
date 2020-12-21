@@ -25,44 +25,45 @@ import java.util.Map;
 import java.util.Objects;
 
 @Mod.EventBusSubscriber(modid = BlightlingsMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public abstract class CommonSetupHandler
-{
-    @SubscribeEvent
-    public static void onSetup(final FMLCommonSetupEvent event) {
-        CapabilityManager.INSTANCE.register(IItemDecayTracker.class, new ItemDecayImpl.DecayTrackerStorage(), ItemDecayImpl.DecayTrackerDefaultImpl::new);
+public final class CommonSetupHandler {
+	private CommonSetupHandler() {
+	}
 
-        // do stuff after common setup event on single thread
-        event.enqueueWork(() -> {
-            ModEntityTypes.onPostSetup();
-            ModFeatures.injectCarvableBlocks();
-            ModBiomes.onPostSetupBiomes();
-        });
-    }
+	@SubscribeEvent
+	public static void onSetup(final FMLCommonSetupEvent event) {
+		CapabilityManager.INSTANCE.register(IItemDecayTracker.class, new ItemDecayImpl.DecayTrackerStorage(), ItemDecayImpl.DecayTrackerDefaultImpl::new);
 
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void onRegisterEntityType(final RegistryEvent.Register<EntityType<?>> event) {
-        DefaultDispenseItemBehavior behavior = new DefaultDispenseItemBehavior()
-        {
-            @Override
-            protected ItemStack dispenseStack(IBlockSource iBlockSource, ItemStack stack) {
-                EntityType<?> entityType = ((SpawnEggItem) stack.getItem()).getType(stack.getTag());
-                Direction direction = iBlockSource.getBlockState().get(DispenserBlock.FACING);
-                entityType.spawn(iBlockSource.getWorld(), stack, null, iBlockSource.getBlockPos().offset(direction), SpawnReason.DISPENSER, direction != Direction.UP, false);
-                stack.shrink(1);
-                return stack;
-            }
-        };
+		// do stuff after common setup event on single thread
+		event.enqueueWork(() -> {
+			ModEntityTypes.onPostSetup();
+			ModFeatures.injectCarvableBlocks();
+			ModBiomes.onPostSetupBiomes();
+		});
+	}
 
-        //hacky fix for spawn eggs and deferred entity types
-        BlightlingsMod.LOGGER.info("Injecting EntityType into SpawnEggs...");
-        final Map<EntityType<?>, SpawnEggItem> EGGS = ObfuscationReflectionHelper.getPrivateValue(SpawnEggItem.class, null, "field_195987_b");
-        Objects.requireNonNull(EGGS);
-        for (RegistryObject<Item> entry : ModItems.ITEMS.getEntries()) {
-            if (entry.get() instanceof SpawnEggItem) {
-                SpawnEggItem item = (SpawnEggItem) entry.get();
-                EGGS.put(item.getType(null), item);
-                DispenserBlock.registerDispenseBehavior(item, behavior);
-            }
-        }
-    }
+	@SubscribeEvent(priority = EventPriority.LOWEST)
+	public static void onRegisterEntityType(final RegistryEvent.Register<EntityType<?>> event) {
+		DefaultDispenseItemBehavior behavior = new DefaultDispenseItemBehavior() {
+			@Override
+			protected ItemStack dispenseStack(IBlockSource iBlockSource, ItemStack stack) {
+				EntityType<?> entityType = ((SpawnEggItem) stack.getItem()).getType(stack.getTag());
+				Direction direction = iBlockSource.getBlockState().get(DispenserBlock.FACING);
+				entityType.spawn(iBlockSource.getWorld(), stack, null, iBlockSource.getBlockPos().offset(direction), SpawnReason.DISPENSER, direction != Direction.UP, false);
+				stack.shrink(1);
+				return stack;
+			}
+		};
+
+		//hacky fix for spawn eggs and deferred entity types
+		BlightlingsMod.LOGGER.info("Injecting EntityType into SpawnEggs...");
+		final Map<EntityType<?>, SpawnEggItem> EGGS = ObfuscationReflectionHelper.getPrivateValue(SpawnEggItem.class, null, "field_195987_b");
+		Objects.requireNonNull(EGGS);
+		for (RegistryObject<Item> entry : ModItems.ITEMS.getEntries()) {
+			if (entry.get() instanceof SpawnEggItem) {
+				SpawnEggItem item = (SpawnEggItem) entry.get();
+				EGGS.put(item.getType(null), item);
+				DispenserBlock.registerDispenseBehavior(item, behavior);
+			}
+		}
+	}
 }

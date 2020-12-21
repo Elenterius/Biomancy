@@ -26,122 +26,122 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class MasonBeetleItem extends Item implements IHighlightRayTraceResultItem {
-    public final float maxDistance;
+	public final float maxDistance;
 
-    public MasonBeetleItem(Properties properties, float maxDistance) {
-        super(properties);
-        this.maxDistance = maxDistance;
-    }
+	public MasonBeetleItem(Properties properties, float maxDistance) {
+		super(properties);
+		this.maxDistance = maxDistance;
+	}
 
-    @Override
-    public double getMaxRayTraceDistance() {
-        return maxDistance;
-    }
+	@Override
+	public double getMaxRayTraceDistance() {
+		return maxDistance;
+	}
 
-    @OnlyIn(Dist.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        if (stack.hasTag() && stack.getTag() != null) {
-            String translationKey = stack.getTag().getString("BlockName");
-            if (!translationKey.isEmpty())
-                tooltip.add(new TranslationTextComponent(translationKey).setStyle(Style.EMPTY.setFormatting(TextFormatting.GRAY)));
-        }
-    }
+	@OnlyIn(Dist.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		if (stack.hasTag() && stack.getTag() != null) {
+			String translationKey = stack.getTag().getString("BlockName");
+			if (!translationKey.isEmpty())
+				tooltip.add(new TranslationTextComponent(translationKey).setStyle(Style.EMPTY.setFormatting(TextFormatting.GRAY)));
+		}
+	}
 
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public boolean canHighlightLivingEntities(ItemStack stack) {
-        return false;
-    }
+	@OnlyIn(Dist.CLIENT)
+	@Override
+	public boolean canHighlightLivingEntities(ItemStack stack) {
+		return false;
+	}
 
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public boolean canHighlightBlocks(ItemStack stack) {
-        return containsBlock(stack);
-    }
+	@OnlyIn(Dist.CLIENT)
+	@Override
+	public boolean canHighlightBlocks(ItemStack stack) {
+		return containsBlock(stack);
+	}
 
-    @Override
-    public ItemStack getContainerItem(ItemStack stack) {
-        if (!hasContainerItem(stack)) {
-            return ItemStack.EMPTY;
-        } else {
-            ItemStack stack1 = stack.copy();
-            stack1.removeChildTag("Block");
-            stack1.removeChildTag("BlockName");
-            return stack1;
-        }
-    }
+	@Override
+	public ItemStack getContainerItem(ItemStack stack) {
+		if (!hasContainerItem(stack)) {
+			return ItemStack.EMPTY;
+		} else {
+			ItemStack stack1 = stack.copy();
+			stack1.removeChildTag("Block");
+			stack1.removeChildTag("BlockName");
+			return stack1;
+		}
+	}
 
-    @Override
-    public boolean hasContainerItem(ItemStack stack) {
-        return containsBlock(stack);
-    }
+	@Override
+	public boolean hasContainerItem(ItemStack stack) {
+		return containsBlock(stack);
+	}
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-        ItemStack stack = playerIn.getHeldItem(handIn);
-        if (!containsBlock(stack)) return ActionResult.resultFail(stack);
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
+		ItemStack stack = playerIn.getHeldItem(handIn);
+		if (!containsBlock(stack)) return ActionResult.resultFail(stack);
 
-        BlockRayTraceResult rayTraceResult = (BlockRayTraceResult) playerIn.pick(20d, 1f, false);
-        if (rayTraceResult.getType() == RayTraceResult.Type.MISS) return ActionResult.resultPass(stack);
-        if (rayTraceResult.getType() != RayTraceResult.Type.BLOCK) return ActionResult.resultPass(stack);
+		BlockRayTraceResult rayTraceResult = (BlockRayTraceResult) playerIn.pick(20d, 1f, false);
+		if (rayTraceResult.getType() == RayTraceResult.Type.MISS) return ActionResult.resultPass(stack);
+		if (rayTraceResult.getType() != RayTraceResult.Type.BLOCK) return ActionResult.resultPass(stack);
 
-        BlockPlacementTarget placementTarget = new BlockPlacementTarget(rayTraceResult, playerIn.getHorizontalFacing());
-        if (!worldIn.getFluidState(placementTarget.targetPos).isEmpty()) return ActionResult.resultFail(stack);
+		BlockPlacementTarget placementTarget = new BlockPlacementTarget(rayTraceResult, playerIn.getHorizontalFacing());
+		if (!worldIn.getFluidState(placementTarget.targetPos).isEmpty()) return ActionResult.resultFail(stack);
 
-        if (!worldIn.isRemote()) {
-            MasonBeetleEntity entity = ModEntityTypes.MASON_BEETLE.get().create(worldIn);
-            if (entity != null) {
-                entity.enablePersistence();
-                if (stack.hasDisplayName()) {
-                    entity.setCustomName(stack.getDisplayName());
-                    entity.setCustomNameVisible(true);
-                }
-                entity.setOwner(playerIn);
-                entity.setPlacementBlock(getBlockItemStack(stack));
-                entity.setBlockPlacementTarget(placementTarget);
+		if (!worldIn.isRemote()) {
+			MasonBeetleEntity entity = ModEntityTypes.MASON_BEETLE.get().create(worldIn);
+			if (entity != null) {
+				entity.enablePersistence();
+				if (stack.hasDisplayName()) {
+					entity.setCustomName(stack.getDisplayName());
+					entity.setCustomNameVisible(true);
+				}
+				entity.setOwner(playerIn);
+				entity.setPlacementBlock(getBlockItemStack(stack));
+				entity.setBlockPlacementTarget(placementTarget);
 
-                Vector3d posVec = playerIn.getEyePosition(1f).add(0d, -0.1d, 0d).add(playerIn.getLookVec().rotateYaw(-15f).normalize().scale(0.15d));
-                entity.setPosition(posVec.x, posVec.y, posVec.z);
-                entity.lookAt(EntityAnchorArgument.Type.EYES, Vector3d.copyCentered(placementTarget.targetPos));
-                Vector3d direction = entity.getLookVec().normalize().scale(0.55f);
-                entity.setMotion(direction);
-                entity.isAirBorne = true;
-                Vector3d playerMotion = playerIn.getMotion();
-                entity.setMotion(entity.getMotion().add(playerMotion.x, playerIn.isOnGround() ? 0d : playerMotion.y, playerMotion.z));
+				Vector3d posVec = playerIn.getEyePosition(1f).add(0d, -0.1d, 0d).add(playerIn.getLookVec().rotateYaw(-15f).normalize().scale(0.15d));
+				entity.setPosition(posVec.x, posVec.y, posVec.z);
+				entity.lookAt(EntityAnchorArgument.Type.EYES, Vector3d.copyCentered(placementTarget.targetPos));
+				Vector3d direction = entity.getLookVec().normalize().scale(0.55f);
+				entity.setMotion(direction);
+				entity.isAirBorne = true;
+				Vector3d playerMotion = playerIn.getMotion();
+				entity.setMotion(entity.getMotion().add(playerMotion.x, playerIn.isOnGround() ? 0d : playerMotion.y, playerMotion.z));
 
-                if (worldIn.addEntity(entity)) {
-                    entity.playAmbientSound();
-                    stack.shrink(1);
-                    return ActionResult.resultConsume(stack);
-                }
-            }
-            return ActionResult.resultFail(stack);
-        }
-        return ActionResult.resultSuccess(stack);
-    }
+				if (worldIn.addEntity(entity)) {
+					entity.playAmbientSound();
+					stack.shrink(1);
+					return ActionResult.resultConsume(stack);
+				}
+			}
+			return ActionResult.resultFail(stack);
+		}
+		return ActionResult.resultSuccess(stack);
+	}
 
-    public ItemStack getBlockItemStack(ItemStack stack) {
-        if (containsBlock(stack)) {
-            CompoundNBT childTag = stack.getChildTag("Block");
-            if (childTag != null) return ItemStack.read(childTag);
-        }
-        return ItemStack.EMPTY;
-    }
+	public ItemStack getBlockItemStack(ItemStack stack) {
+		if (containsBlock(stack)) {
+			CompoundNBT childTag = stack.getChildTag("Block");
+			if (childTag != null) return ItemStack.read(childTag);
+		}
+		return ItemStack.EMPTY;
+	}
 
-    public ItemStack setBlockItemStack(ItemStack beetleStack, ItemStack blockStack) {
-        if (!blockStack.isEmpty()) {
-            beetleStack.setTagInfo("Block", blockStack.serializeNBT());
-            beetleStack.getOrCreateTag().putString("BlockName", blockStack.getTranslationKey());
-        }
-        return beetleStack;
-    }
+	public ItemStack setBlockItemStack(ItemStack beetleStack, ItemStack blockStack) {
+		if (!blockStack.isEmpty()) {
+			beetleStack.setTagInfo("Block", blockStack.serializeNBT());
+			beetleStack.getOrCreateTag().putString("BlockName", blockStack.getTranslationKey());
+		}
+		return beetleStack;
+	}
 
-    public boolean containsBlock(ItemStack stack) {
-        return stack.hasTag() && stack.getTag() != null && stack.getTag().contains("Block");
-    }
+	public boolean containsBlock(ItemStack stack) {
+		return stack.hasTag() && stack.getTag() != null && stack.getTag().contains("Block");
+	}
 
-    @Override
-    public boolean hasEffect(ItemStack stack) {
-        return containsBlock(stack);
-    }
+	@Override
+	public boolean hasEffect(ItemStack stack) {
+		return containsBlock(stack);
+	}
 }

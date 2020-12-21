@@ -14,28 +14,29 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = BlightlingsMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public abstract class StatusEffectHandler
-{
+public final class StatusEffectHandler {
+	private StatusEffectHandler() {}
+
 //    @SubscribeEvent
 //    public static void onLivingUpdate(final LivingEvent.LivingUpdateEvent event) {
 //
 //    }
 
-    @SubscribeEvent
-    public static void onLivingSpawn(final EntityJoinWorldEvent event) {
-        if (event.getWorld().isRemote()) return;
+	@SubscribeEvent
+	public static void onLivingSpawn(final EntityJoinWorldEvent event) {
+		if (event.getWorld().isRemote()) return;
 
-        Entity entity = event.getEntity();
-        if (entity instanceof MobEntity) {
-            ((MobEntity) entity).targetSelector.addGoal(1, new FrenzyTargetGoal<>((MobEntity) entity, LivingEntity.class));
+		Entity entity = event.getEntity();
+		if (entity instanceof MobEntity) {
+			((MobEntity) entity).targetSelector.addGoal(1, new FrenzyTargetGoal<>((MobEntity) entity, LivingEntity.class));
 
-            if (!(entity instanceof IMob) && entity instanceof CreatureEntity) {
-                ((MobEntity) entity).goalSelector.addGoal(2, new FrenzyMeleeAttackGoal((CreatureEntity) entity, 1.0D, false));
-            }
+			if (!(entity instanceof IMob) && entity instanceof CreatureEntity) {
+				((MobEntity) entity).goalSelector.addGoal(2, new FrenzyMeleeAttackGoal((CreatureEntity) entity, 1.0D, false));
+			}
 
-            if (entity instanceof CreatureEntity) {
-                ((MobEntity) entity).goalSelector.addGoal(1, new DreadPanicGoal((CreatureEntity) entity, 2.0D));
-            }
-        }
-    }
+			if (entity instanceof CreatureEntity) {
+				((MobEntity) entity).goalSelector.addGoal(1, new DreadPanicGoal((CreatureEntity) entity, 2.0D));
+			}
+		}
+	}
 }

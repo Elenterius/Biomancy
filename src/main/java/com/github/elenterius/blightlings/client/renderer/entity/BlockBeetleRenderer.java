@@ -15,28 +15,28 @@ import javax.annotation.Nonnull;
 
 @OnlyIn(Dist.CLIENT)
 public class BlockBeetleRenderer extends MobRenderer<MasonBeetleEntity, BeetlingModel<MasonBeetleEntity>> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(BlightlingsMod.MOD_ID, "textures/entity/beetle.png");
-    private static final ResourceLocation OVERLAY_TEXTURE = new ResourceLocation(BlightlingsMod.MOD_ID, "textures/entity/beetle_overlay.png");
-    private static final RenderType EYE_RENDER_TYPE = RenderType.getEyes(OVERLAY_TEXTURE);
+	private static final ResourceLocation TEXTURE = new ResourceLocation(BlightlingsMod.MOD_ID, "textures/entity/beetle.png");
+	private static final ResourceLocation OVERLAY_TEXTURE = new ResourceLocation(BlightlingsMod.MOD_ID, "textures/entity/beetle_overlay.png");
+	private static final RenderType EYE_RENDER_TYPE = RenderType.getEyes(OVERLAY_TEXTURE);
 
-    public BlockBeetleRenderer(EntityRendererManager renderManagerIn) {
-        super(renderManagerIn, new BeetlingModel<>(), 0.24F);
-        addLayer(new AbstractEyesLayer<MasonBeetleEntity, BeetlingModel<MasonBeetleEntity>>(this) {
-            @Override
-            public RenderType getRenderType() {
-                return EYE_RENDER_TYPE;
-            }
-        });
-    }
+	public BlockBeetleRenderer(EntityRendererManager renderManagerIn) {
+		super(renderManagerIn, new BeetlingModel<>(), 0.24F);
+		addLayer(new AbstractEyesLayer<MasonBeetleEntity, BeetlingModel<MasonBeetleEntity>>(this) {
+			@Override
+			public RenderType getRenderType() {
+				return EYE_RENDER_TYPE;
+			}
+		});
+	}
 
-    @Override
-    protected float getDeathMaxRotation(MasonBeetleEntity entity) {
-        return 180.0F;
-    }
+	@Override
+	protected float getDeathMaxRotation(MasonBeetleEntity entity) {
+		return 180.0F;
+	}
 
-    @Override
-    @Nonnull
-    public ResourceLocation getEntityTexture(MasonBeetleEntity entity) {
-        return TEXTURE;
-    }
+	@Override
+	@Nonnull
+	public ResourceLocation getEntityTexture(MasonBeetleEntity entity) {
+		return TEXTURE;
+	}
 }

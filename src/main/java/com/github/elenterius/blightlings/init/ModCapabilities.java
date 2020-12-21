@@ -13,17 +13,15 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = BlightlingsMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class ModCapabilities {
-    private ModCapabilities() {
-    }
+	@CapabilityInject(IItemDecayTracker.class)
+	public static Capability<IItemDecayTracker> ITEM_DECAY_CAPABILITY = null;
 
-    @CapabilityInject(IItemDecayTracker.class)
-    public static Capability<IItemDecayTracker> ITEM_DECAY_CAPABILITY = null;
+	private ModCapabilities() {}
 
-    @SubscribeEvent
-    public static void onAttachCapability(AttachCapabilitiesEvent<ItemStack> event) {
-        if (event.getObject().getItem() instanceof DecayingItem) {
-            event.addCapability(ItemDecayImpl.DecayProvider.REGISTRY_KEY, new ItemDecayImpl.DecayProvider());
-        }
-    }
-
+	@SubscribeEvent
+	public static void onAttachCapability(AttachCapabilitiesEvent<ItemStack> event) {
+		if (event.getObject().getItem() instanceof DecayingItem) {
+			event.addCapability(ItemDecayImpl.DecayProvider.REGISTRY_KEY, new ItemDecayImpl.DecayProvider());
+		}
+	}
 }

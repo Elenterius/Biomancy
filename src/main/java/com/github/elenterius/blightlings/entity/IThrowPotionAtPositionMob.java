@@ -8,19 +8,19 @@ import net.minecraft.util.math.vector.Vector3d;
 import javax.annotation.Nullable;
 
 public interface IThrowPotionAtPositionMob {
-    boolean tryToThrowPotionAtPosition(Vector3d targetPos);
+	boolean tryToThrowPotionAtPosition(Vector3d targetPos);
 
-    default boolean hasThrowablePotion() {
-        ItemStack stack = getPotionItemStack();
-        return !stack.isEmpty() && stack.getItem() instanceof ThrowablePotionItem;
-    }
+	default boolean hasThrowablePotion() {
+		ItemStack stack = getPotionItemStack();
+		return !stack.isEmpty() && stack.getItem() instanceof ThrowablePotionItem;
+	}
 
-    ItemStack getPotionItemStack();
+	ItemStack getPotionItemStack();
 
-    void setPotionItemStack(ItemStack stack);
+	void setPotionItemStack(ItemStack stack);
 
-    @Nullable
-    Vector3d getTargetPos();
+	@Nullable
+	Vector3d getTargetPos();
 
-    void setTargetPos(@Nullable IPosition position);
+	void setTargetPos(@Nullable IPosition position);
 }

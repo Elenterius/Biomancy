@@ -17,12 +17,12 @@ import java.util.OptionalInt;
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 
-    public ServerPlayerEntityMixin(World p_i241920_1_, BlockPos p_i241920_2_, float p_i241920_3_, GameProfile p_i241920_4_) {
-        super(p_i241920_1_, p_i241920_2_, p_i241920_3_, p_i241920_4_);
-    }
+	public ServerPlayerEntityMixin(World p_i241920_1_, BlockPos p_i241920_2_, float p_i241920_3_, GameProfile p_i241920_4_) {
+		super(p_i241920_1_, p_i241920_2_, p_i241920_3_, p_i241920_4_);
+	}
 
-    @Inject(method = "openContainer", at = @At(value = "INVOKE", shift = At.Shift.BEFORE, target = "Lnet/minecraftforge/eventbus/api/IEventBus;post(Lnet/minecraftforge/eventbus/api/Event;)Z"))
-    protected void onContainerOpen(INamedContainerProvider p_213829_1_, CallbackInfoReturnable<OptionalInt> cir) {
-        ItemDecayHandler.decayItemsInContainer((ServerPlayerEntity) (Object) this, openContainer, p_213829_1_);
-    }
+	@Inject(method = "openContainer", at = @At(value = "INVOKE", shift = At.Shift.BEFORE, remap = false, target = "Lnet/minecraftforge/eventbus/api/IEventBus;post(Lnet/minecraftforge/eventbus/api/Event;)Z"))
+	protected void onContainerOpen(INamedContainerProvider p_213829_1_, CallbackInfoReturnable<OptionalInt> cir) {
+		ItemDecayHandler.decayItemsInContainer((ServerPlayerEntity) (Object) this, openContainer, p_213829_1_);
+	}
 }

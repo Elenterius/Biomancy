@@ -18,31 +18,31 @@ import java.util.List;
 
 public class DecayingItem extends Item {
 
-    public final int halfTime;
-    public final float decayFactor;
+	public final int halfTime;
+	public final float decayFactor;
 
-    public DecayingItem(int halfTimeInSeconds, float decayFactor, Properties properties) {
-        super(properties);
-        this.halfTime = halfTimeInSeconds;
-        this.decayFactor = decayFactor;
-    }
+	public DecayingItem(int halfTimeInSeconds, float decayFactor, Properties properties) {
+		super(properties);
+		this.halfTime = halfTimeInSeconds;
+		this.decayFactor = decayFactor;
+	}
 
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-        //sync capability to client??
-    }
+	@OnlyIn(Dist.CLIENT)
+	@Override
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		//sync capability to client??
+	}
 
-    @Override
-    public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entity) {
-        LazyOptional<IItemDecayTracker> capability = stack.getCapability(ModCapabilities.ITEM_DECAY_CAPABILITY);
-        capability.ifPresent(decayTracker -> decayTracker.onUpdate(stack, entity.world, entity, halfTime * 20L, decayFactor, false));
-        return false;
-    }
+	@Override
+	public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entity) {
+		LazyOptional<IItemDecayTracker> capability = stack.getCapability(ModCapabilities.ITEM_DECAY_CAPABILITY);
+		capability.ifPresent(decayTracker -> decayTracker.onUpdate(stack, entity.world, entity, halfTime * 20L, decayFactor, false));
+		return false;
+	}
 
-    @Override
-    public void inventoryTick(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
-        LazyOptional<IItemDecayTracker> capability = stack.getCapability(ModCapabilities.ITEM_DECAY_CAPABILITY);
-        capability.ifPresent(decayTracker -> decayTracker.onUpdate(stack, world, entity, halfTime * 20L, decayFactor, false));
-    }
+	@Override
+	public void inventoryTick(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
+		LazyOptional<IItemDecayTracker> capability = stack.getCapability(ModCapabilities.ITEM_DECAY_CAPABILITY);
+		capability.ifPresent(decayTracker -> decayTracker.onUpdate(stack, world, entity, halfTime * 20L, decayFactor, false));
+	}
 }

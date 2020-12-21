@@ -8,11 +8,10 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import java.util.Set;
 
 @Mixin(WorldCarver.class)
-public interface WorldCarverMixinAccessor
-{
-    @Accessor
-    Set<Block> getCarvableBlocks();
+public interface WorldCarverMixinAccessor {
+	@Accessor
+	Set<Block> getCarvableBlocks();
 
-    @Accessor
-    void setCarvableBlocks(Set<Block> carvableBlocks);
+	@Accessor
+	void setCarvableBlocks(Set<Block> carvableBlocks);
 }

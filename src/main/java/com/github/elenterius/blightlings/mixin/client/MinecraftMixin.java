@@ -14,16 +14,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import javax.annotation.Nullable;
 
 @Mixin(Minecraft.class)
-public abstract class MinecraftMixin
-{
-    @Shadow
-    @Nullable
-    public ClientPlayerEntity player;
+public abstract class MinecraftMixin {
+	@Shadow
+	@Nullable
+	public ClientPlayerEntity player;
 
-    @Inject(method = "isEntityGlowing", at = @At("HEAD"), cancellable = true)
-    protected void onIsEntityGlowing(Entity entity, CallbackInfoReturnable<Boolean> cir) {
-        if (entity == ClientRenderHandler.HIGHLIGHTED_ENTITY || (entity != player && IEntityUnveilerHeadSlotItem.canUnveilEntity(player, entity))) {
-            cir.setReturnValue(true);
-        }
-    }
+	@Inject(method = "isEntityGlowing", at = @At("HEAD"), cancellable = true)
+	protected void onIsEntityGlowing(Entity entity, CallbackInfoReturnable<Boolean> cir) {
+		if (entity == ClientRenderHandler.HIGHLIGHTED_ENTITY || (entity != player && IEntityUnveilerHeadSlotItem.canUnveilEntity(player, entity))) {
+			cir.setReturnValue(true);
+		}
+	}
 }

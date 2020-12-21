@@ -9,14 +9,14 @@ import net.minecraft.world.IBlockReader;
 
 public class PreservationJarBlock extends Block {
 
-    protected static final VoxelShape SHAPE = Block.makeCuboidShape(3.0D, 0.0D, 3.0D, 13.0D, 15.0D, 13.0D);
+	protected static final VoxelShape SHAPE = Block.makeCuboidShape(3.0D, 0.0D, 3.0D, 13.0D, 15.0D, 13.0D);
 
-    public PreservationJarBlock(Properties properties) {
-        super(properties);
-    }
+	public PreservationJarBlock(Properties properties) {
+		super(properties);
+	}
 
-    @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return SHAPE;
-    }
+	@Override
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+		return SHAPE;
+	}
 }

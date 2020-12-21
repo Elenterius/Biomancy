@@ -14,31 +14,29 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nonnull;
 
 @OnlyIn(Dist.CLIENT)
-public class PotionBeetleRenderer extends MobRenderer<PotionBeetleEntity, BeetlingModel<PotionBeetleEntity>>
-{
-    private static final ResourceLocation TEXTURE = new ResourceLocation(BlightlingsMod.MOD_ID, "textures/entity/beetle.png");
-    private static final ResourceLocation OVERLAY_TEXTURE = new ResourceLocation(BlightlingsMod.MOD_ID, "textures/entity/beetle_overlay.png");
-    private static final RenderType EYE_RENDER_TYPE = RenderType.getEyes(OVERLAY_TEXTURE);
+public class PotionBeetleRenderer extends MobRenderer<PotionBeetleEntity, BeetlingModel<PotionBeetleEntity>> {
+	private static final ResourceLocation TEXTURE = new ResourceLocation(BlightlingsMod.MOD_ID, "textures/entity/beetle.png");
+	private static final ResourceLocation OVERLAY_TEXTURE = new ResourceLocation(BlightlingsMod.MOD_ID, "textures/entity/beetle_overlay.png");
+	private static final RenderType EYE_RENDER_TYPE = RenderType.getEyes(OVERLAY_TEXTURE);
 
-    public PotionBeetleRenderer(EntityRendererManager renderManagerIn) {
-        super(renderManagerIn, new BeetlingModel<>(), 0.24F);
-        addLayer(new AbstractEyesLayer<PotionBeetleEntity, BeetlingModel<PotionBeetleEntity>>(this)
-        {
-            @Override
-            public RenderType getRenderType() {
-                return EYE_RENDER_TYPE;
-            }
-        });
-    }
+	public PotionBeetleRenderer(EntityRendererManager renderManagerIn) {
+		super(renderManagerIn, new BeetlingModel<>(), 0.24F);
+		addLayer(new AbstractEyesLayer<PotionBeetleEntity, BeetlingModel<PotionBeetleEntity>>(this) {
+			@Override
+			public RenderType getRenderType() {
+				return EYE_RENDER_TYPE;
+			}
+		});
+	}
 
-    @Override
-    protected float getDeathMaxRotation(PotionBeetleEntity entity) {
-        return 180.0F;
-    }
+	@Override
+	protected float getDeathMaxRotation(PotionBeetleEntity entity) {
+		return 180.0F;
+	}
 
-    @Override
-    @Nonnull
-    public ResourceLocation getEntityTexture(PotionBeetleEntity entity) {
-        return TEXTURE;
-    }
+	@Override
+	@Nonnull
+	public ResourceLocation getEntityTexture(PotionBeetleEntity entity) {
+		return TEXTURE;
+	}
 }

@@ -9,16 +9,16 @@ import javax.annotation.Nullable;
 
 public interface IPlaceBlockAtPositionMob {
 
-    boolean tryToPlaceBlockAtPosition(BlockRayTraceResult rayTraceResult, Direction horizontalFacing);
+	boolean tryToPlaceBlockAtPosition(BlockRayTraceResult rayTraceResult, Direction horizontalFacing);
 
-    boolean hasPlaceableBlock();
+	boolean hasPlaceableBlock();
 
-    void setPlacementBlock(ItemStack stack);
+	void setPlacementBlock(ItemStack stack);
 
-    ItemStack getPlacementBlock();
+	ItemStack getPlacementBlock();
 
-    @Nullable
-    BlockPlacementTarget getBlockPlacementTarget();
+	@Nullable
+	BlockPlacementTarget getBlockPlacementTarget();
 
-    void setBlockPlacementTarget(@Nullable BlockPlacementTarget placementTarget);
+	void setBlockPlacementTarget(@Nullable BlockPlacementTarget placementTarget);
 }

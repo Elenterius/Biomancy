@@ -20,6 +20,7 @@ group = 'com.github.elenterius.blightlings'
 archivesBaseName = 'blightlings'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+compileJava.options.encoding = 'UTF-8'
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
@@ -98,9 +99,29 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.16.4-35.1.11'
 }
 
+import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
+
 processResources {
     exclude '**/*.psd'
     exclude '**/*.bbmodel'
+    doLast {
+        println("minimizing JSONs...")
+        for (File file in fileTree(dir: outputs.files.asPath, include: "**/*.json")) {
+            file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
+        }
+    }
+}
+
+build {
+    doLast {
+        println("updating version in README.md...")
+        def versionEscaped = version.toString().replace("-", "--")
+        def color = versionEscaped.contains("alpha") ? "red" : versionEscaped.contains("beta") ? "yellow" : "green"
+        ant.replaceregexp(match:'Blightlings-([0-9\\.\\-]+[a-z\\.0-9\\-]+)', replace:"Blightlings-$versionEscaped-$color", flags:'g', byline:true) {
+            fileset(dir: '.', includes: 'README.md')
+        }
+    }
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..

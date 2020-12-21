@@ -8,19 +8,18 @@ import net.minecraftforge.fml.RegistryObject;
 
 import javax.annotation.Nullable;
 
-public class ModSpawnEggItem extends SpawnEggItem
-{
-    private final Lazy<? extends EntityType<?>> lazyEntityTypeSupplier;
+public class ModSpawnEggItem extends SpawnEggItem {
+	private final Lazy<? extends EntityType<?>> lazyEntityTypeSupplier;
 
-    public ModSpawnEggItem(RegistryObject<? extends EntityType<?>> registryObject, int primaryColor, int secondaryColor, Properties properties) {
-        //noinspection ConstantConditions
-        super(null, primaryColor, secondaryColor, properties);
-        lazyEntityTypeSupplier = Lazy.of(registryObject);
-    }
+	public ModSpawnEggItem(RegistryObject<? extends EntityType<?>> registryObject, int primaryColor, int secondaryColor, Properties properties) {
+		//noinspection ConstantConditions
+		super(null, primaryColor, secondaryColor, properties);
+		lazyEntityTypeSupplier = Lazy.of(registryObject);
+	}
 
-    @Override
-    public EntityType<?> getType(@Nullable CompoundNBT nbt) {
-        return lazyEntityTypeSupplier.get();
-    }
+	@Override
+	public EntityType<?> getType(@Nullable CompoundNBT nbt) {
+		return lazyEntityTypeSupplier.get();
+	}
 
 }

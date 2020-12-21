@@ -11,14 +11,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(MixRiverLayer.class)
-public abstract class MixRiverLayerMixin implements IDimOffset0Transformer
-{
-    @Inject(method = "apply", at = @At("HEAD"), cancellable = true)
-    protected void onApply(INoiseRandom p_215723_1_, IArea biomeArea, IArea riverArea, int posX, int posZ, CallbackInfoReturnable<Integer> cir) {
-        int i = biomeArea.getValue(getOffsetX(posX), getOffsetZ(posZ));
-        // prevents the generation of rivers in the following biomes
-        if (i == ModBiomes.BLIGHT_BIOME_ID || i == ModBiomes.BLIGHT_BIOME_INNER_EDGE_ID || i == ModBiomes.BLIGHT_BIOME_OUTER_EDGE_ID) {
-            cir.setReturnValue(i);
-        }
-    }
+public abstract class MixRiverLayerMixin implements IDimOffset0Transformer {
+	@Inject(method = "apply", at = @At("HEAD"), cancellable = true)
+	protected void onApply(INoiseRandom p_215723_1_, IArea biomeArea, IArea riverArea, int posX, int posZ, CallbackInfoReturnable<Integer> cir) {
+		int i = biomeArea.getValue(getOffsetX(posX), getOffsetZ(posZ));
+		// prevents the generation of rivers in the following biomes
+		if (i == ModBiomes.BLIGHT_BIOME_ID || i == ModBiomes.BLIGHT_BIOME_INNER_EDGE_ID || i == ModBiomes.BLIGHT_BIOME_OUTER_EDGE_ID) {
+			cir.setReturnValue(i);
+		}
+	}
 }
