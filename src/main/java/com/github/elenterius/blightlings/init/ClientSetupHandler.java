@@ -31,11 +31,11 @@ import org.lwjgl.glfw.GLFW;
 public final class ClientSetupHandler {
 	private ClientSetupHandler() {}
 
-	public static final KeyBinding DEFAULT_ITEM_KEY_BINDING = new KeyBinding(String.format("key.%s.item_default", BlightlingsMod.MOD_ID), KeyConflictContext.UNIVERSAL, InputMappings.Type.KEYSYM, GLFW.GLFW_KEY_V, "key.categories." + BlightlingsMod.MOD_ID);
+	public static final KeyBinding ITEM_DEFAULT_KEY_BINDING = new KeyBinding(String.format("key.%s.item_default", BlightlingsMod.MOD_ID), KeyConflictContext.UNIVERSAL, InputMappings.Type.KEYSYM, GLFW.GLFW_KEY_V, "key.categories." + BlightlingsMod.MOD_ID);
 
 	@SubscribeEvent
 	public static void onClientSetup(FMLClientSetupEvent event) {
-		ClientRegistry.registerKeyBinding(DEFAULT_ITEM_KEY_BINDING);
+		ClientRegistry.registerKeyBinding(ITEM_DEFAULT_KEY_BINDING);
 
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BLOBLING.get(), BloblingRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BROOD_MOTHER.get(), BroodmotherRenderer::new);

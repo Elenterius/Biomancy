@@ -3,6 +3,7 @@ package com.github.elenterius.blightlings.init;
 import com.github.elenterius.blightlings.BlightlingsMod;
 import com.github.elenterius.blightlings.capabilities.IItemDecayTracker;
 import com.github.elenterius.blightlings.capabilities.ItemDecayImpl;
+import com.github.elenterius.blightlings.network.ModNetworkHandler;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.dispenser.IBlockSource;
@@ -31,6 +32,8 @@ public final class CommonSetupHandler {
 	@SubscribeEvent
 	public static void onSetup(final FMLCommonSetupEvent event) {
 		CapabilityManager.INSTANCE.register(IItemDecayTracker.class, new ItemDecayImpl.DecayTrackerStorage(), ItemDecayImpl.DecayTrackerDefaultImpl::new);
+
+		ModNetworkHandler.register();
 
 		// do stuff after common setup event on single thread
 		event.enqueueWork(() -> {

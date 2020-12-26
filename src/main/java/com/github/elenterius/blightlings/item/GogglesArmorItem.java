@@ -47,6 +47,7 @@ public class GogglesArmorItem extends ArmorItem implements IEntityUnveilerHeadSl
 		}
 	}
 
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public boolean canUnveilEntity(ItemStack stack, PlayerEntity player, @Nullable Entity invisibleEntity) {
 		return true;

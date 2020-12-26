@@ -18,16 +18,18 @@ public final class ModItems {
 	public static final RegistryObject<KhopeshItem> BLIGHT_KHOPESH = ITEMS.register("blight_khopesh", () -> new KhopeshItem(ModItemTier.BLIGHT_AMALGAM, 5F, -2.75F, createItemProperties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<SickleItem> BLIGHT_SICKLE = ITEMS.register("blight_sickle", () -> new SickleItem(ModItemTier.BLIGHT_AMALGAM, 3, -2.5F, createItemProperties().rarity(Rarity.EPIC)));
 
+	public static final RegistryObject<InfestedRifleItem> INFESTED_RIFLE = ITEMS.register("infested_rifle", () -> new InfestedRifleItem(createItemProperties().maxStackSize(1).maxDamage(384).rarity(Rarity.EPIC)));
+
+	public static final RegistryObject<Item> LUMINESCENT_SPORES = ITEMS.register("luminescent_spores", () -> new Item(createItemProperties()));
+	public static final RegistryObject<PotionBeetleItem> POTION_BEETLE = ITEMS.register("potion_beetle", () -> new PotionBeetleItem(createItemProperties().maxStackSize(1), 20f));
+	public static final RegistryObject<MasonBeetleItem> MASON_BEETLE = ITEMS.register("mason_beetle", () -> new MasonBeetleItem(createItemProperties().maxStackSize(1), 20f));
+
 	public static final RegistryObject<Item> BLIGHT_SHARD = ITEMS.register("blight_shard", () -> new Item(createItemProperties()));
 	public static final RegistryObject<Item> BLIGHT_SAC = ITEMS.register("blight_sac", () -> new Item(createItemProperties()));
 	public static final RegistryObject<Item> BLIGHT_STRING = ITEMS.register("blight_string", () -> new Item(createItemProperties()));
 	public static final RegistryObject<Item> OCULUS = ITEMS.register("blight_eye", () -> new Item(createItemProperties()));
 	public static final RegistryObject<DecayingItem> BLIGHT_GOO = ITEMS.register("blight_goo", () -> new DecayingItem(2 * 60, 0.5f, createItemProperties()));
 	public static final RegistryObject<DecayingItem> BLIGHT_QUARTZ = ITEMS.register("blight_quartz", () -> new DecayingItem(20 * 60, 0.5f, createItemProperties()));
-
-	public static final RegistryObject<Item> LUMINESCENT_SPORES = ITEMS.register("luminescent_spores", () -> new Item(createItemProperties()));
-	public static final RegistryObject<PotionBeetleItem> POTION_BEETLE = ITEMS.register("potion_beetle", () -> new PotionBeetleItem(createItemProperties().maxStackSize(1), 20f));
-	public static final RegistryObject<MasonBeetleItem> MASON_BEETLE = ITEMS.register("mason_beetle", () -> new MasonBeetleItem(createItemProperties().maxStackSize(1), 20f));
 
 	public static final RegistryObject<ModSpawnEggItem> BLOBLING_SPAWN_EGG = ITEMS.register("blobling_spawn_egg", () -> new ModSpawnEggItem(ModEntityTypes.BLOBLING, 0x764da2, 0xff40ff, createItemProperties()));
 	public static final RegistryObject<ModSpawnEggItem> BROOD_MOTHER_SPAWN_EGG = ITEMS.register("brood_mother_spawn_egg", () -> new ModSpawnEggItem(ModEntityTypes.BROOD_MOTHER, 0x49345e, 0xda70d6, createItemProperties()));
