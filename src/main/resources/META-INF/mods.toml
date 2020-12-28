@@ -22,12 +22,12 @@ Mod that adds Arthropods and obscure artifacts with a blight theme.
 modId = "forge" #mandatory
 mandatory = true #mandatory
 versionRange = "[35,)" #mandatory
-ordering = "NONE" # BEFORE or AFTER required if the relationship is not mandatory
+ordering = "AFTER" # BEFORE or AFTER required if the relationship is not mandatory
 side = "BOTH" # BOTH, CLIENT or SERVER
 
 [[dependencies.blightlings]]
-    modId="minecraft"
+modId="minecraft"
 mandatory = true
 versionRange = "[1.16.4]"
 ordering = "NONE"
-    side="BOTH"
+side="BOTH"

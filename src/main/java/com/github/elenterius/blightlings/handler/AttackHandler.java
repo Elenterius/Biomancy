@@ -1,15 +1,20 @@
 package com.github.elenterius.blightlings.handler;
 
 import com.github.elenterius.blightlings.BlightlingsMod;
+import com.github.elenterius.blightlings.item.ClawWeaponItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvents;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.event.entity.player.CriticalHitEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -22,7 +27,7 @@ public final class AttackHandler {
 	private AttackHandler() {}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public static void onLivingAttack(LivingAttackEvent event) {
+	public static void onLivingAttack(final LivingAttackEvent event) {
 		if (!event.getEntityLiving().isServerWorld()) return;
 
 		DamageSource damageSource = event.getSource();
@@ -32,7 +37,7 @@ public final class AttackHandler {
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public static void onLivingDamageAfterDamageReduction(LivingDamageEvent event) {
+	public static void onLivingDamageAfterDamageReduction(final LivingDamageEvent event) {
 		if (!event.getEntityLiving().isServerWorld()) return;
 
 		//if this is called the victims armor didn't block all damage
@@ -54,5 +59,55 @@ public final class AttackHandler {
 				}
 			}
 		}
+
+
 	}
+
+	@SubscribeEvent(priority = EventPriority.LOWEST)
+	public static void onLivingDamageAfterDamageReductionLast(final LivingDamageEvent event) {
+		if (event.getAmount() > 0f && event.getSource().getImmediateSource() instanceof LivingEntity) {
+			ItemStack heldStack = ((LivingEntity) event.getSource().getImmediateSource()).getHeldItemMainhand();
+			if (heldStack.getItem() instanceof ClawWeaponItem) {
+				((ClawWeaponItem) heldStack.getItem()).onDamageEntity(heldStack, (LivingEntity) event.getSource().getImmediateSource(), event.getEntityLiving(), event.getAmount());
+			}
+		}
+	}
+
+	@SubscribeEvent(priority = EventPriority.LOWEST)
+	public static void onCriticalHit(final CriticalHitEvent event) {
+		if (event.getDamageModifier() > 0 && event.getTarget() instanceof LivingEntity && (event.getResult() == Event.Result.ALLOW || event.isVanillaCritical() && event.getResult() == Event.Result.DEFAULT)) {
+			ItemStack heldStack = event.getEntityLiving().getHeldItemMainhand();
+			if (heldStack.getItem() instanceof ClawWeaponItem) {
+				((ClawWeaponItem) heldStack.getItem()).onCriticalHitEntity(heldStack, event.getPlayer(), (LivingEntity) event.getTarget());
+			}
+		}
+	}
+
+	public static void onAttackEntity(final AttackEntityEvent event) {
+
+	}
+
+	//copied from MMD
+//	@SubscribeEvent
+//	public void onPlayerSweep(AttackEntityEvent event) {
+//		EntityPlayer player = event.getEntityPlayer();
+//		Entity hurt = event.getTarget();
+//		if (player != null) {
+//			ItemStack stack = player.getHeldItemMainhand();
+//			if (player.getCooledAttackStrength(0) >= 1.0) {
+//				int level = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.thunderAspect, stack);
+//				if (hurt instanceof EntityLivingBase) {
+//					if (level > 0) {
+//						hurt.attackEntityFrom(DamageSource.LIGHTNING_BOLT, level * 2);
+//						Vec3d lookVec = player.getLookVec();
+//						hurt.motionX += lookVec.x * (1 + 0.2 * level);
+//						hurt.motionY += lookVec.y > 0 ? lookVec.y * (1 + 0.2 * level) : 1 + 0.4 * level;
+//						hurt.motionZ += lookVec.z * (1 + 0.2 * level);
+//					}
+//					if (player.world.isRemote) {
+//						player.world.playSound(hurt.posX, hurt.posY, hurt.posZ, SoundEvents.ENTITY_LIGHTNING_IMPACT, SoundCategory.PLAYERS,
+//								1.0F + player.world.rand.nextFloat(), 1.0F + player.world.rand.nextFloat(), true);
+//					}
+//				}
+//			}
 }
