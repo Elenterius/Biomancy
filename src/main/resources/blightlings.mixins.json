@@ -13,12 +13,14 @@
     "MixRiverLayerMixin",
     "NoiseChunkGeneratorMixin",
     "PanicGoalMixin",
+    "PlayerEntityMixin",
     "ServerPlayerEntityMixin",
     "SwordItemMixinAccessor",
     "WorldCarverMixinAccessor"
   ],
   "client": [
     "client.EntityMixin",
+    "client.GameRendererMixin",
     "client.MinecraftMixin",
     "client.PlayerRendererMixin"
   ],

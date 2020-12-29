@@ -86,28 +86,4 @@ public final class AttackHandler {
 	public static void onAttackEntity(final AttackEntityEvent event) {
 
 	}
-
-	//copied from MMD
-//	@SubscribeEvent
-//	public void onPlayerSweep(AttackEntityEvent event) {
-//		EntityPlayer player = event.getEntityPlayer();
-//		Entity hurt = event.getTarget();
-//		if (player != null) {
-//			ItemStack stack = player.getHeldItemMainhand();
-//			if (player.getCooledAttackStrength(0) >= 1.0) {
-//				int level = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.thunderAspect, stack);
-//				if (hurt instanceof EntityLivingBase) {
-//					if (level > 0) {
-//						hurt.attackEntityFrom(DamageSource.LIGHTNING_BOLT, level * 2);
-//						Vec3d lookVec = player.getLookVec();
-//						hurt.motionX += lookVec.x * (1 + 0.2 * level);
-//						hurt.motionY += lookVec.y > 0 ? lookVec.y * (1 + 0.2 * level) : 1 + 0.4 * level;
-//						hurt.motionZ += lookVec.z * (1 + 0.2 * level);
-//					}
-//					if (player.world.isRemote) {
-//						player.world.playSound(hurt.posX, hurt.posY, hurt.posZ, SoundEvents.ENTITY_LIGHTNING_IMPACT, SoundCategory.PLAYERS,
-//								1.0F + player.world.rand.nextFloat(), 1.0F + player.world.rand.nextFloat(), true);
-//					}
-//				}
-//			}
 }

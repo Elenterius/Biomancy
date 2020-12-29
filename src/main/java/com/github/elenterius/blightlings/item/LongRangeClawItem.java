@@ -1,5 +1,6 @@
 package com.github.elenterius.blightlings.item;
 
+import com.github.elenterius.blightlings.init.ModAttributes;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.entity.Entity;
@@ -11,15 +12,14 @@ import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.util.Lazy;
 
 import java.util.UUID;
 
 public class LongRangeClawItem extends ClawWeaponItem {
 
-	public static AttributeModifier RETRACTED_CLAW_REACH_MODIFIER = new AttributeModifier(UUID.fromString("d76adb08-2bb3-4e88-997d-766a919f0f6b"), "weapon_reach_modifier", 0.5f, AttributeModifier.Operation.ADDITION);
-	public static AttributeModifier EXTENDED_CLAW_REACH_MODIFIER = new AttributeModifier(UUID.fromString("29ace568-4e32-4809-840c-3c9a0e1ebcd4"), "weapon_reach_modifier", 1.7f, AttributeModifier.Operation.ADDITION);
+	public static AttributeModifier RETRACTED_CLAW_REACH_MODIFIER = new AttributeModifier(UUID.fromString("d76adb08-2bb3-4e88-997d-766a919f0f6b"), "attack_reach_modifier", 0.5f, AttributeModifier.Operation.ADDITION);
+	public static AttributeModifier EXTENDED_CLAW_REACH_MODIFIER = new AttributeModifier(UUID.fromString("29ace568-4e32-4809-840c-3c9a0e1ebcd4"), "attack_reach_modifier", 1.5f, AttributeModifier.Operation.ADDITION);
 
 	private final Lazy<Multimap<Attribute, AttributeModifier>> lazyAttributeModifiersV2;
 
@@ -36,14 +36,14 @@ public class LongRangeClawItem extends ClawWeaponItem {
 				builder.put(attribute, attributeModifier);
 			}
 		});
-		builder.put(ForgeMod.REACH_DISTANCE.get(), EXTENDED_CLAW_REACH_MODIFIER);
+		builder.put(ModAttributes.getAttackReachDistance(), EXTENDED_CLAW_REACH_MODIFIER);
 		return builder.build();
 	}
 
 	@Override
 	protected void addAdditionalAttributeModifiers(ImmutableMultimap.Builder<Attribute, AttributeModifier> builder) {
 		super.addAdditionalAttributeModifiers(builder);
-		builder.put(ForgeMod.REACH_DISTANCE.get(), RETRACTED_CLAW_REACH_MODIFIER);
+		builder.put(ModAttributes.getAttackReachDistance(), RETRACTED_CLAW_REACH_MODIFIER);
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class LongRangeClawItem extends ClawWeaponItem {
 	public void onCriticalHitEntity(ItemStack stack, LivingEntity attacker, LivingEntity target) {
 		super.onCriticalHitEntity(stack, attacker, target);
 		if (!attacker.world.isRemote()) {
-			stack.getOrCreateTag().putInt("LongClawTimeLeft", 180);
+			stack.getOrCreateTag().putInt("LongClawTimeLeft", 60);
 		}
 	}
 

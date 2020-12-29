@@ -1,7 +1,9 @@
 package com.github.elenterius.blightlings.mixin;
 
 import com.github.elenterius.blightlings.handler.ItemDecayHandler;
+import com.github.elenterius.blightlings.init.ModAttributes;
 import com.mojang.authlib.GameProfile;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
@@ -10,6 +12,7 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.OptionalInt;
@@ -24,5 +27,14 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 	@Inject(method = "openContainer", at = @At(value = "INVOKE", shift = At.Shift.BEFORE, remap = false, target = "Lnet/minecraftforge/eventbus/api/IEventBus;post(Lnet/minecraftforge/eventbus/api/Event;)Z"))
 	protected void onContainerOpen(INamedContainerProvider p_213829_1_, CallbackInfoReturnable<OptionalInt> cir) {
 		ItemDecayHandler.decayItemsInContainer((ServerPlayerEntity) (Object) this, openContainer, p_213829_1_);
+	}
+
+	@Inject(method = "attackTargetEntityWithCurrentItem", cancellable = true, at = @At(value = "INVOKE", shift = At.Shift.BEFORE, target = "Lnet/minecraft/entity/player/PlayerEntity;attackTargetEntityWithCurrentItem(Lnet/minecraft/entity/Entity;)V"))
+	protected void onAttackTargetEntityWithCurrentItem(Entity targetEntity, CallbackInfo ci) {
+		ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
+		double maxDist = ModAttributes.getAttackReachDistance(player);
+		if (maxDist != ModAttributes.DEFAULT_ATTACK_REACH_DISTANCE && player.getDistanceSq(targetEntity) > maxDist * maxDist) {
+			ci.cancel(); //prevent attack if distance is larger than max attack distance
+		}
 	}
 }

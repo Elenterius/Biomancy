@@ -59,6 +59,7 @@
   "effect.blightlings.frenzy": "Corrupting Frenzy",
   "effect.blightlings.blight_infection": "Blight Infection",
 
+  "attribute.generic.attack_distance": "Attack Distance",
   "tooltip.blightlings.riding_bonus": "When Riding an Entity:",
   "msg.blightlings.your_beetle": "Your Beetle",
   "msg.blightlings.beetle_block_place_success": "%1$s successfully placed %2$s",

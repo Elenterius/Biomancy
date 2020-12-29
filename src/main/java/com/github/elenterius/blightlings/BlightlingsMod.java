@@ -35,6 +35,7 @@ public class BlightlingsMod {
 	public BlightlingsMod() {
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+		ModAttributes.ATTRIBUTES.register(modEventBus);
 		ModItems.ITEMS.register(modEventBus);
 		ModBlocks.BLOCKS.register(modEventBus);
 		ModRecipes.RECIPE_SERIALIZERS.register(modEventBus);

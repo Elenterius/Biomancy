@@ -1,5 +1,6 @@
 package com.github.elenterius.blightlings.item;
 
+import com.github.elenterius.blightlings.init.ModAttributes;
 import com.google.common.collect.ImmutableMultimap;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
@@ -8,14 +9,13 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraftforge.common.ForgeMod;
 
 import java.util.UUID;
 
 public class LeechClawItem extends ClawWeaponItem {
 
-	public static AttributeModifier CLAW_REACH_MODIFIER = new AttributeModifier(UUID.fromString("d2589c7b-7b0f-4850-910a-31598f2f349d"), "weapon_reach_modifier", -0.5f, AttributeModifier.Operation.ADDITION);
-	public static AttributeModifier MOVEMENT_MODIFIER = new AttributeModifier(UUID.fromString("0823f523-d756-4725-9a6a-098059458c4b"), "movement_modifier", 0.05f, AttributeModifier.Operation.MULTIPLY_BASE);
+	public static AttributeModifier ATTACK_REACH_MODIFIER = new AttributeModifier(UUID.fromString("d2589c7b-7b0f-4850-910a-31598f2f349d"), "attack_reach_modifier", -0.5f, AttributeModifier.Operation.ADDITION);
+	public static AttributeModifier MOVEMENT_MODIFIER = new AttributeModifier(UUID.fromString("0823f523-d756-4725-9a6a-098059458c4b"), "movement_modifier", 0.1f, AttributeModifier.Operation.MULTIPLY_BASE);
 
 	public LeechClawItem(IItemTier tier, int attackDamageIn, float attackSpeedIn, Properties builderIn) {
 		super(tier, attackDamageIn, attackSpeedIn, builderIn);
@@ -24,7 +24,7 @@ public class LeechClawItem extends ClawWeaponItem {
 	@Override
 	protected void addAdditionalAttributeModifiers(ImmutableMultimap.Builder<Attribute, AttributeModifier> builder) {
 		super.addAdditionalAttributeModifiers(builder);
-		builder.put(ForgeMod.REACH_DISTANCE.get(), CLAW_REACH_MODIFIER);
+		builder.put(ModAttributes.getAttackReachDistance(), ATTACK_REACH_MODIFIER);
 		builder.put(Attributes.MOVEMENT_SPEED, MOVEMENT_MODIFIER);
 	}
 
