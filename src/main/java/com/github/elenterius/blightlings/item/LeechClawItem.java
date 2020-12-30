@@ -9,6 +9,8 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 
 import java.util.UUID;
 
@@ -30,7 +32,14 @@ public class LeechClawItem extends ClawWeaponItem {
 
 	public void onCriticalHitEntity(ItemStack stack, LivingEntity attacker, LivingEntity target) {
 		super.onCriticalHitEntity(stack, attacker, target);
-		//TODO: Grant invigorated effect - increases max health by 5% for 15s up to 15 stacks -> 25% max health for 15s
+
+		EffectInstance effect = attacker.getActivePotionEffect(Effects.ABSORPTION);
+		if (effect != null) {
+			attacker.addPotionEffect(new EffectInstance(Effects.ABSORPTION, 240, Math.min(3, effect.getAmplifier() + 1)));
+		}
+		else {
+			attacker.addPotionEffect(new EffectInstance(Effects.ABSORPTION, 240, 0));
+		}
 
 		if (!attacker.world.isRemote()) {
 			stack.getOrCreateTag().putLong("LastCriticalHitTime", attacker.world.getGameTime());

@@ -3,17 +3,27 @@ package com.github.elenterius.blightlings.item;
 import com.github.elenterius.blightlings.init.ModAttributes;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IItemTier;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Lazy;
 
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.UUID;
 
 public class LongRangeClawItem extends ClawWeaponItem {
@@ -26,6 +36,28 @@ public class LongRangeClawItem extends ClawWeaponItem {
 	public LongRangeClawItem(IItemTier tier, int attackDamageIn, float attackSpeedIn, Properties builderIn) {
 		super(tier, attackDamageIn, attackSpeedIn, builderIn);
 		lazyAttributeModifiersV2 = Lazy.of(this::createAttributeModifiersV2);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	@Override
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		int timeLeft = stack.getOrCreateTag().getInt("LongClawTimeLeft");
+		if (timeLeft > 0) {
+			tooltip.add(new StringTextComponent(String.format("The Item is Awake. (%d)", timeLeft)));
+		}
+		else {
+			tooltip.add(new StringTextComponent("The Item is Inert."));
+		}
+		tooltip.add(StringTextComponent.EMPTY);
+	}
+
+	@Override
+	public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
+		if (isInGroup(group)) {
+			ItemStack stack = new ItemStack(this);
+			stack.addEnchantment(Enchantments.SWEEPING, 3);
+			items.add(stack);
+		}
 	}
 
 	protected Multimap<Attribute, AttributeModifier> createAttributeModifiersV2() {
