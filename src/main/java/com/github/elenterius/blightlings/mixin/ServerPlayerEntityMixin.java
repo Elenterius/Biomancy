@@ -29,11 +29,14 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 		ItemDecayHandler.decayItemsInContainer((ServerPlayerEntity) (Object) this, openContainer, p_213829_1_);
 	}
 
+	/**
+	 * Injects an max attack distance check. When the players attack distance is reduced and can't reach the target anymore this mixin cancels the attacks.
+	 */
 	@Inject(method = "attackTargetEntityWithCurrentItem", cancellable = true, at = @At(value = "INVOKE", shift = At.Shift.BEFORE, target = "Lnet/minecraft/entity/player/PlayerEntity;attackTargetEntityWithCurrentItem(Lnet/minecraft/entity/Entity;)V"))
 	protected void onAttackTargetEntityWithCurrentItem(Entity targetEntity, CallbackInfo ci) {
 		ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
-		double maxDist = ModAttributes.getAttackReachDistance(player);
-		if (maxDist != ModAttributes.DEFAULT_ATTACK_REACH_DISTANCE && player.getDistanceSq(targetEntity) > maxDist * maxDist) {
+		double maxDist = ModAttributes.getAttackReachDistance(player); // the max attack distance can be smaller than the default value of 3
+		if (!player.isCreative() && player.getDistanceSq(targetEntity) > maxDist * maxDist) {
 			ci.cancel(); //prevent attack if distance is larger than max attack distance
 		}
 	}

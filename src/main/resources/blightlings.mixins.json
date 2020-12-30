@@ -20,7 +20,7 @@
   ],
   "client": [
     "client.EntityMixin",
-    "client.GameRendererMixin",
+    "client.GetMouseOverMixin",
     "client.MinecraftMixin",
     "client.PlayerRendererMixin"
   ],
