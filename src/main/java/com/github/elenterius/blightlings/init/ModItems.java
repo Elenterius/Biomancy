@@ -18,7 +18,7 @@ public final class ModItems {
 	public static final RegistryObject<KhopeshItem> BLIGHT_KHOPESH = ITEMS.register("blight_khopesh", () -> new KhopeshItem(ModItemTier.BLIGHT_AMALGAM, 5F, -2.75F, createItemProperties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<SickleItem> BLIGHT_SICKLE = ITEMS.register("blight_sickle", () -> new SickleItem(ModItemTier.BLIGHT_AMALGAM, 3, -2.5F, createItemProperties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<LeechClawItem> LEECH_CLAW = ITEMS.register("leech_claw", () -> new LeechClawItem(ModItemTier.BLIGHT_AMALGAM, 3, -2.2f, createItemProperties().rarity(Rarity.EPIC)));
-	public static final RegistryObject<LongRangeClawItem> LONG_RANGE_CLAW = ITEMS.register("long_range_claw", () -> new LongRangeClawItem(ModItemTier.BLIGHT_AMALGAM, 3, -2.4f, createItemProperties().rarity(Rarity.EPIC)));
+	public static final RegistryObject<LongRangeClawItem> LONG_RANGE_CLAW = ITEMS.register("long_range_claw", () -> new LongRangeClawItem(ModItemTier.BLIGHT_AMALGAM, 3, -2.4f, 60, createItemProperties().rarity(Rarity.EPIC)));
 
 	public static final RegistryObject<InfestedRifleItem> INFESTED_RIFLE = ITEMS.register("infested_rifle", () -> new InfestedRifleItem(createItemProperties().maxStackSize(1).maxDamage(384).rarity(Rarity.EPIC)));
 

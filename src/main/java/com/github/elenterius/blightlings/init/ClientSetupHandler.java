@@ -3,6 +3,7 @@ package com.github.elenterius.blightlings.init;
 import com.github.elenterius.blightlings.BlightlingsMod;
 import com.github.elenterius.blightlings.client.renderer.block.FullBrightOverlayBakedModel;
 import com.github.elenterius.blightlings.client.renderer.entity.*;
+import com.github.elenterius.blightlings.item.LongRangeClawItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.BlockModelShapes;
@@ -12,6 +13,8 @@ import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
+import net.minecraft.item.ItemModelsProperties;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
@@ -44,6 +47,8 @@ public final class ClientSetupHandler {
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.MASON_BEETLE.get(), BlockBeetleRenderer::new);
 
 		event.enqueueWork(() -> {
+			ItemModelsProperties.registerProperty(ModItems.LONG_RANGE_CLAW.get(), new ResourceLocation("extended"), (stack, clientWorld, livingEntity) -> LongRangeClawItem.isClawExtended(stack) ? 1f : 0f);
+
 			RenderTypeLookup.setRenderLayer(ModBlocks.LUMINOUS_SOIL.get(), renderType -> renderType == RenderType.getCutout() || renderType == RenderType.getTranslucent());
 			RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_QUARTZ_ORE.get(), renderType -> renderType == RenderType.getSolid() || renderType == RenderType.getTranslucent());
 			RenderTypeLookup.setRenderLayer(ModBlocks.LILY_TREE_SAPLING.get(), RenderType.getCutout());

@@ -15,8 +15,11 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -33,9 +36,16 @@ public class LongRangeClawItem extends ClawWeaponItem {
 
 	private final Lazy<Multimap<Attribute, AttributeModifier>> lazyAttributeModifiersV2;
 
-	public LongRangeClawItem(IItemTier tier, int attackDamageIn, float attackSpeedIn, Properties builderIn) {
+	private final int abilityDuration; // in "seconds"
+
+	public LongRangeClawItem(IItemTier tier, int attackDamageIn, float attackSpeedIn, int abilityDuration, Properties builderIn) {
 		super(tier, attackDamageIn, attackSpeedIn, builderIn);
 		lazyAttributeModifiersV2 = Lazy.of(this::createAttributeModifiersV2);
+		this.abilityDuration = abilityDuration;
+	}
+
+	public static boolean isClawExtended(ItemStack stack) {
+		return stack.getOrCreateTag().getInt("LongClawTimeLeft") > 0;
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -43,12 +53,12 @@ public class LongRangeClawItem extends ClawWeaponItem {
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		int timeLeft = stack.getOrCreateTag().getInt("LongClawTimeLeft");
 		if (timeLeft > 0) {
-			tooltip.add(new StringTextComponent(String.format("The Item is Awake. (%d)", timeLeft)));
+			tooltip.add(new TranslationTextComponent("tooltip.blightlings.item_is_awake").appendString(" (" + timeLeft + ")").mergeStyle(TextFormatting.GRAY));
 		}
 		else {
-			tooltip.add(new StringTextComponent("The Item is Inert."));
+			tooltip.add(new TranslationTextComponent("tooltip.blightlings.item_is_inert").mergeStyle(TextFormatting.GRAY));
 		}
-		tooltip.add(StringTextComponent.EMPTY);
+		if (stack.isEnchanted()) tooltip.add(StringTextComponent.EMPTY);
 	}
 
 	@Override
@@ -80,13 +90,16 @@ public class LongRangeClawItem extends ClawWeaponItem {
 
 	@Override
 	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType slot, ItemStack stack) {
-		return slot == EquipmentSlotType.MAINHAND && stack.getOrCreateTag().getInt("LongClawTimeLeft") > 0 ? lazyAttributeModifiersV2.get() : super.getAttributeModifiers(slot, stack);
+		return slot == EquipmentSlotType.MAINHAND && isClawExtended(stack) ? lazyAttributeModifiersV2.get() : super.getAttributeModifiers(slot, stack);
 	}
 
 	public void onCriticalHitEntity(ItemStack stack, LivingEntity attacker, LivingEntity target) {
 		super.onCriticalHitEntity(stack, attacker, target);
 		if (!attacker.world.isRemote()) {
-			stack.getOrCreateTag().putInt("LongClawTimeLeft", 60);
+			stack.getOrCreateTag().putInt("LongClawTimeLeft", abilityDuration);
+		}
+		else {
+			attacker.playSound(SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1.0F, 1.0F / (random.nextFloat() * 0.5F + 1.0F) + 0.2F);
 		}
 	}
 
