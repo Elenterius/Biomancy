@@ -1,8 +1,13 @@
 {
   "credit": "Made by Elenterius",
+  "texture_size": [
+    32,
+    32
+  ],
   "textures": {
     "particle": "blightlings:item/long_range_claw",
-    "texture": "blightlings:item/long_range_claw"
+    "texture": "blightlings:item/long_range_claw",
+    "eye": "blightlings:item/eye_excited"
   },
   "elements": [
     {
@@ -81,6 +86,85 @@
             3
           ],
           "texture": "#texture"
+        }
+      }
+    },
+    {
+      "name": "eye",
+      "from": [
+        7,
+        10.5,
+        10.5
+      ],
+      "to": [
+        9,
+        11.5,
+        12.5
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          9,
+          11,
+          10.5
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            6,
+            8,
+            8
+          ],
+          "texture": "#eye"
+        },
+        "east": {
+          "uv": [
+            4,
+            4,
+            8,
+            6
+          ],
+          "texture": "#eye"
+        },
+        "south": {
+          "uv": [
+            4,
+            2,
+            8,
+            4
+          ],
+          "texture": "#eye",
+          "cullface": "south"
+        },
+        "west": {
+          "uv": [
+            4,
+            0,
+            8,
+            2
+          ],
+          "texture": "#eye"
+        },
+        "up": {
+          "uv": [
+            4,
+            4,
+            0,
+            0
+          ],
+          "texture": "#eye"
+        },
+        "down": {
+          "uv": [
+            4,
+            4,
+            0,
+            8
+          ],
+          "texture": "#eye"
         }
       }
     },
@@ -1450,6 +1534,7 @@
   "groups": [
     0,
     1,
+    2,
     {
       "name": "claw",
       "origin": [
@@ -1458,11 +1543,11 @@
         8
       ],
       "children": [
-        2,
         3,
         4,
         5,
-        6
+        6,
+        7
       ]
     },
     {
@@ -1473,11 +1558,11 @@
         8
       ],
       "children": [
-        7,
         8,
         9,
         10,
-        11
+        11,
+        12
       ]
     },
     {
@@ -1488,11 +1573,11 @@
         8
       ],
       "children": [
-        12,
         13,
         14,
         15,
-        16
+        16,
+        17
       ]
     }
   ]

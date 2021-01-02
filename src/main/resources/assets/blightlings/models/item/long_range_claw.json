@@ -1,8 +1,13 @@
 {
   "credit": "Made by Elenterius",
+  "texture_size": [
+    32,
+    32
+  ],
   "textures": {
     "particle": "blightlings:item/long_range_claw",
-    "texture": "blightlings:item/long_range_claw"
+    "texture": "blightlings:item/long_range_claw",
+    "eye": "blightlings:item/eye_dormant"
   },
   "overrides": [
     {
@@ -167,6 +172,85 @@
             6
           ],
           "texture": "#texture"
+        }
+      }
+    },
+    {
+      "name": "oculus",
+      "from": [
+        7,
+        10.5,
+        10.5
+      ],
+      "to": [
+        9,
+        11.5,
+        12.5
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          8,
+          11,
+          11.5
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            6,
+            8,
+            8
+          ],
+          "texture": "#eye"
+        },
+        "east": {
+          "uv": [
+            4,
+            2,
+            8,
+            4
+          ],
+          "texture": "#eye"
+        },
+        "south": {
+          "uv": [
+            4,
+            4,
+            8,
+            6
+          ],
+          "texture": "#eye",
+          "cullface": "south"
+        },
+        "west": {
+          "uv": [
+            4,
+            0,
+            8,
+            2
+          ],
+          "texture": "#eye"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            4,
+            4
+          ],
+          "texture": "#eye"
+        },
+        "down": {
+          "uv": [
+            0,
+            4,
+            4,
+            8
+          ],
+          "texture": "#eye"
         }
       }
     },
@@ -1228,6 +1312,17 @@
     0,
     1,
     {
+      "name": "eye",
+      "origin": [
+        8,
+        11,
+        10.5
+      ],
+      "children": [
+        2
+      ]
+    },
+    {
       "name": "claw",
       "origin": [
         8,
@@ -1235,10 +1330,10 @@
         8
       ],
       "children": [
-        2,
         3,
         4,
-        5
+        5,
+        6
       ]
     },
     {
@@ -1249,10 +1344,10 @@
         8
       ],
       "children": [
-        6,
         7,
         8,
-        9
+        9,
+        10
       ]
     },
     {
@@ -1263,10 +1358,10 @@
         8
       ],
       "children": [
-        10,
         11,
         12,
-        13
+        13,
+        14
       ]
     }
   ]
