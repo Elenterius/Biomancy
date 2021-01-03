@@ -72,7 +72,7 @@ public final class EquipmentHandler {
 		}
 	}
 
-	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	@SubscribeEvent
 	public static void onLivingJump(final LivingEvent.LivingJumpEvent event) {
 		if (!(event.getEntityLiving() instanceof PlayerEntity)) return;
 		PlayerEntity player = (PlayerEntity) event.getEntityLiving();
