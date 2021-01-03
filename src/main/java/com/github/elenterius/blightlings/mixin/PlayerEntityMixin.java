@@ -18,7 +18,7 @@ public abstract class PlayerEntityMixin {
 	@Inject(method = "func_234570_el_", at = @At(value = "RETURN"))
 	private static void onRegisterAttributes(CallbackInfoReturnable<AttributeModifierMap.MutableAttribute> cir) {
 		BlightlingsMod.LOGGER.debug(MarkerManager.getMarker("ATTRIBUTE INJECTION"), "adding attack distance attribute to player...");
-		cir.getReturnValue().createMutableAttribute(ModAttributes.getAttackReachDistance());
+		cir.getReturnValue().createMutableAttribute(ModAttributes.getAttackDistance());
 	}
 
 	@Redirect(method = "attackTargetEntityWithCurrentItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getDistanceSq(Lnet/minecraft/entity/Entity;)D"))

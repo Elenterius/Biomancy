@@ -78,14 +78,14 @@ public class LongRangeClawItem extends ClawWeaponItem {
 				builder.put(attribute, attributeModifier);
 			}
 		});
-		builder.put(ModAttributes.getAttackReachDistance(), EXTENDED_CLAW_REACH_MODIFIER);
+		builder.put(ModAttributes.getAttackDistance(), EXTENDED_CLAW_REACH_MODIFIER);
 		return builder.build();
 	}
 
 	@Override
 	protected void addAdditionalAttributeModifiers(ImmutableMultimap.Builder<Attribute, AttributeModifier> builder) {
 		super.addAdditionalAttributeModifiers(builder);
-		builder.put(ModAttributes.getAttackReachDistance(), RETRACTED_CLAW_REACH_MODIFIER);
+		builder.put(ModAttributes.getAttackDistance(), RETRACTED_CLAW_REACH_MODIFIER);
 	}
 
 	@Override

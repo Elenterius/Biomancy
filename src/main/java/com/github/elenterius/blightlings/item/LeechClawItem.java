@@ -26,7 +26,7 @@ public class LeechClawItem extends ClawWeaponItem {
 	@Override
 	protected void addAdditionalAttributeModifiers(ImmutableMultimap.Builder<Attribute, AttributeModifier> builder) {
 		super.addAdditionalAttributeModifiers(builder);
-		builder.put(ModAttributes.getAttackReachDistance(), ATTACK_REACH_MODIFIER);
+		builder.put(ModAttributes.getAttackDistance(), ATTACK_REACH_MODIFIER);
 		builder.put(Attributes.MOVEMENT_SPEED, MOVEMENT_MODIFIER);
 	}
 
