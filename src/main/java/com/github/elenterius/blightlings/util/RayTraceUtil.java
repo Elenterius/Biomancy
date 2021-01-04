@@ -11,7 +11,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.function.Predicate;
 
-public abstract class RayTraceUtil {
+public final class RayTraceUtil {
+	private RayTraceUtil() {}
+
 	public static RayTraceResult rayTrace(Entity entity, Predicate<Entity> predicate, double distance) {
 		Vector3d startVec = entity.getEyePosition(1f);
 		Vector3d lookVec = entity.getLookVec();

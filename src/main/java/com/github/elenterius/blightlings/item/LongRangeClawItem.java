@@ -1,6 +1,7 @@
 package com.github.elenterius.blightlings.item;
 
 import com.github.elenterius.blightlings.init.ModAttributes;
+import com.github.elenterius.blightlings.util.TooltipUtil;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.util.ITooltipFlag;
@@ -16,8 +17,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
@@ -51,14 +52,26 @@ public class LongRangeClawItem extends ClawWeaponItem {
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		tooltip.add(TooltipUtil.getTooltip(this).setStyle(TooltipUtil.LORE_STYLE));
+		tooltip.add(TooltipUtil.FORCE_EMPTY_LINE);
+
 		int timeLeft = stack.getOrCreateTag().getInt("LongClawTimeLeft");
 		if (timeLeft > 0) {
-			tooltip.add(new TranslationTextComponent("tooltip.blightlings.item_is_awake").appendString(" (" + timeLeft + ")").mergeStyle(TextFormatting.GRAY));
+			tooltip.add(new TranslationTextComponent("tooltip.blightlings.item_is_excited").appendString(" (" + timeLeft + ")").mergeStyle(TextFormatting.GRAY));
 		}
 		else {
-			tooltip.add(new TranslationTextComponent("tooltip.blightlings.item_is_inert").mergeStyle(TextFormatting.GRAY));
+			tooltip.add(new TranslationTextComponent("tooltip.blightlings.item_is_dormant").mergeStyle(TextFormatting.GRAY));
 		}
-		if (stack.isEnchanted()) tooltip.add(StringTextComponent.EMPTY);
+		if (stack.isEnchanted()) tooltip.add(TooltipUtil.FORCE_EMPTY_LINE);
+	}
+
+	@Override
+	public ITextComponent getHighlightTip(ItemStack stack, ITextComponent displayName) {
+		if (displayName instanceof IFormattableTextComponent) {
+			String key = stack.getOrCreateTag().getInt("LongClawTimeLeft") > 0 ? "tooltip.blightlings.excited" : "tooltip.blightlings.dormant";
+			return ((IFormattableTextComponent) displayName).appendString(" (").append(new TranslationTextComponent(key)).appendString(")");
+		}
+		return displayName;
 	}
 
 	@Override

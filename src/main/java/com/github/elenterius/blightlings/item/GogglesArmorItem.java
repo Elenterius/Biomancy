@@ -1,6 +1,7 @@
 package com.github.elenterius.blightlings.item;
 
 import com.github.elenterius.blightlings.BlightlingsMod;
+import com.github.elenterius.blightlings.init.ClientSetupHandler;
 import com.github.elenterius.blightlings.init.ModItems;
 import com.github.elenterius.blightlings.util.TooltipUtil;
 import net.minecraft.client.util.ITooltipFlag;
@@ -13,8 +14,10 @@ import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -32,19 +35,31 @@ public class GogglesArmorItem extends ArmorItem implements IEntityUnveilerHeadSl
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(TooltipUtil.getTooltip(this).setStyle(TooltipUtil.LORE_STYLE));
-		tooltip.add(StringTextComponent.EMPTY);
+		tooltip.add(TooltipUtil.getTooltip(this).mergeStyle(TooltipUtil.LORE_STYLE));
+		tooltip.add(TooltipUtil.FORCE_EMPTY_LINE);
 		if (stack.hasTag() && stack.getOrCreateTag().contains("BlightlingsItemAbilityEnabled")) {
 			if (stack.getOrCreateTag().getBoolean("BlightlingsItemAbilityEnabled")) {
-				tooltip.add(new StringTextComponent("The Item is Active. <Press V to deactivate>"));
+				tooltip.add(new TranslationTextComponent("tooltip.blightlings.item_is_awake").mergeStyle(TextFormatting.GRAY));
+				tooltip.add(new TranslationTextComponent("tooltip.blightlings.press_button_to", ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.func_238171_j_().copyRaw().mergeStyle(TextFormatting.AQUA), new TranslationTextComponent("tooltip.blightlings.action_deactivate")).mergeStyle(TextFormatting.DARK_GRAY));
 			}
 			else {
-				tooltip.add(new StringTextComponent("The Item is Inert. <Press V to activate>"));
+				tooltip.add(new TranslationTextComponent("tooltip.blightlings.item_is_inert").mergeStyle(TextFormatting.GRAY));
+				tooltip.add(new TranslationTextComponent("tooltip.blightlings.press_button_to", ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.func_238171_j_().copyRaw().mergeStyle(TextFormatting.AQUA), new TranslationTextComponent("tooltip.blightlings.action_activate")).mergeStyle(TextFormatting.DARK_GRAY));
 			}
+			tooltip.add(TooltipUtil.FORCE_EMPTY_LINE);
 		}
 		else {
 			stack.getOrCreateTag().putBoolean("BlightlingsItemAbilityEnabled", true);
 		}
+	}
+
+	@Override
+	public ITextComponent getHighlightTip(ItemStack stack, ITextComponent displayName) {
+		if (displayName instanceof IFormattableTextComponent) {
+			String key = stack.getOrCreateTag().getBoolean("BlightlingsItemAbilityEnabled") ? "tooltip.blightlings.awake" : "tooltip.blightlings.inert";
+			return ((IFormattableTextComponent) displayName).appendString(" (").append(new TranslationTextComponent(key)).appendString(")");
+		}
+		return displayName;
 	}
 
 	@OnlyIn(Dist.CLIENT)

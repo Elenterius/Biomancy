@@ -15,11 +15,25 @@ public final class PlayerInteractionHandler {
 	@SubscribeEvent
 	public static void onPlayerInteraction(final PlayerInteractEvent.EntityInteract event) {
 		if (event.getWorld().isRemote()) return;
-		if (event.getPlayer().isSneaking() && (event.getTarget() instanceof ItemFrameEntity || event.getTarget() instanceof ArmorStandEntity)
-				&& !event.getItemStack().isEmpty() && event.getItemStack().getItem() == ModItems.LUMINESCENT_SPORES.get()) {
+		if (event.getPlayer().isSneaking() && event.getTarget() instanceof ItemFrameEntity && !event.getItemStack().isEmpty() && event.getItemStack().getItem() == ModItems.LUMINESCENT_SPORES.get()) {
 			event.setCanceled(true);
 			event.getTarget().setInvisible(!event.getTarget().isInvisible());
-			event.getItemStack().shrink(1);
+			if (!event.getPlayer().isCreative()) {
+				event.getItemStack().shrink(1);
+			}
 		}
 	}
+
+	@SubscribeEvent
+	public static void onPlayerInteraction(final PlayerInteractEvent.EntityInteractSpecific event) {
+		if (event.getWorld().isRemote()) return;
+		if (event.getPlayer().isSneaking() && event.getTarget() instanceof ArmorStandEntity && !event.getItemStack().isEmpty() && event.getItemStack().getItem() == ModItems.LUMINESCENT_SPORES.get()) {
+			event.setCanceled(true);
+			event.getTarget().setInvisible(!event.getTarget().isInvisible());
+			if (!event.getPlayer().isCreative()) {
+				event.getItemStack().shrink(1);
+			}
+		}
+	}
+
 }

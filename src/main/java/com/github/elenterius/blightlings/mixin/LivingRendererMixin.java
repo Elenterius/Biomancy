@@ -28,14 +28,11 @@ public abstract class LivingRendererMixin<T extends LivingEntity, M extends Enti
 	}
 
 	@Inject(
-			method = "render",
+			method = "render", locals = LocalCapture.CAPTURE_FAILSOFT,
 			at = @At(
-					value = "FIELD",
-					target = "Lnet/minecraft/client/renderer/entity/LivingRenderer;entityModel:Lnet/minecraft/client/renderer/entity/model/EntityModel;",
-					ordinal = 5,
-					shift = At.Shift.AFTER
-			),
-			locals = LocalCapture.CAPTURE_FAILSOFT
+					value = "FIELD", ordinal = 5, shift = At.Shift.AFTER,
+					target = "Lnet/minecraft/client/renderer/entity/LivingRenderer;entityModel:Lnet/minecraft/client/renderer/entity/model/EntityModel;"
+			)
 	)
 	protected void onPostRenderModel(LivingEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, CallbackInfo ci,
 									 boolean shouldSit, float f, float f1, float f2, float f6, float f7, float f8, float f5, Minecraft minecraft, boolean flag, boolean flag1, boolean flag2,
