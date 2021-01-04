@@ -1,4 +1,4 @@
-package com.github.elenterius.blightlings.mixin;
+package com.github.elenterius.blightlings.mixin.client;
 
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;

@@ -1,4 +1,4 @@
-package com.github.elenterius.blightlings.mixin;
+package com.github.elenterius.blightlings.mixin.client;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -27,16 +27,8 @@ public abstract class LivingRendererMixin<T extends LivingEntity, M extends Enti
 		super(renderManager);
 	}
 
-	@Inject(
-			method = "render",
-			at = @At(
-					value = "FIELD",
-					target = "Lnet/minecraft/client/renderer/entity/LivingRenderer;entityModel:Lnet/minecraft/client/renderer/entity/model/EntityModel;",
-					ordinal = 5,
-					shift = At.Shift.AFTER
-			),
-			locals = LocalCapture.CAPTURE_FAILSOFT
-	)
+	@Inject(method = "render", locals = LocalCapture.CAPTURE_FAILSOFT, at = @At(value = "FIELD", ordinal = 5, shift = At.Shift.AFTER,
+			target = "Lnet/minecraft/client/renderer/entity/LivingRenderer;entityModel:Lnet/minecraft/client/renderer/entity/model/EntityModel;"))
 	protected void onPostRenderModel(LivingEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, CallbackInfo ci,
 									 boolean shouldSit, float f, float f1, float f2, float f6, float f7, float f8, float f5, Minecraft minecraft, boolean flag, boolean flag1, boolean flag2,
 									 RenderType rendertype, IVertexBuilder ivertexbuilder, int i) {

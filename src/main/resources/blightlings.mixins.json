@@ -6,10 +6,8 @@
   "mixins": [
     "DamageSourceMixin",
     "EdgeBiomeLayerMixin",
-    "ItemStackMixinAccessor",
     "LayerUtilMixin",
     "LivingEntityMixin",
-    "LivingRendererMixin",
     "MixRiverLayerMixin",
     "NoiseChunkGeneratorMixin",
     "PanicGoalMixin",
@@ -21,6 +19,8 @@
   "client": [
     "client.EntityMixin",
     "client.GetMouseOverMixin",
+    "client.ItemStackMixinAccessor",
+    "client.LivingRendererMixin",
     "client.MinecraftMixin",
     "client.PlayerRendererMixin"
   ],

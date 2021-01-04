@@ -23,7 +23,8 @@ import net.minecraftforge.eventbus.api.Event;
 
 import java.util.UUID;
 
-public abstract class PlayerInteractionUtil {
+public final class PlayerInteractionUtil {
+	private PlayerInteractionUtil() {}
 
 	public static ActionResultType tryToPlaceBlock(ServerPlayerEntity playerIn, ItemStack stackIn, Hand handIn, BlockRayTraceResult rayTraceResult, Direction horizontalFacing) {
 		BlockPos blockpos = rayTraceResult.getPos();
