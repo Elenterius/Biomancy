@@ -1,6 +1,8 @@
 package com.github.elenterius.blightlings.client.renderer;
 
 import com.github.elenterius.blightlings.BlightlingsMod;
+import com.github.elenterius.blightlings.enchantment.AttunedDamageEnchantment;
+import com.github.elenterius.blightlings.init.ModEnchantments;
 import com.github.elenterius.blightlings.item.IHighlightRayTraceResultItem;
 import com.github.elenterius.blightlings.util.RayTraceUtil;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
@@ -9,17 +11,23 @@ import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = BlightlingsMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
@@ -104,4 +112,21 @@ public final class ClientRenderHandler {
 			event.setBorderEnd(borderColorEnd);
 		}
 	}
+
+	@SubscribeEvent
+	public static void onItemTooltip(final ItemTooltipEvent event) {
+		ItemStack stack = event.getItemStack();
+		int level = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.ATTUNED_BANE.get(), stack);
+		if (level > 0 && AttunedDamageEnchantment.isAttuned(stack)) {
+			List<ITextComponent> list = event.getToolTip();
+			for (int i = 0; i < list.size(); i++) {
+				ITextComponent iTextComponent = list.get(i);
+				if (iTextComponent instanceof TranslationTextComponent && ((TranslationTextComponent) iTextComponent).getKey().equals("enchantment.blightlings.attuned_bane")) {
+					list.set(i, ModEnchantments.ATTUNED_BANE.get().getDisplayName(level, stack));
+					break;
+				}
+			}
+		}
+	}
+
 }

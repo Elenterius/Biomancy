@@ -58,6 +58,8 @@
 
   "enchantment.blightlings.climbing": "Millipedes",
   "enchantment.blightlings.bullet_jump": "Copepod's Leap",
+  "enchantment.blightlings.attuned_bane": "Attuning Bane",
+  "enchantment.blightlings.attuned_bane_of": "Bane of %1$s",
   "effect.blightlings.dread": "Frightened",
   "effect.blightlings.frenzy": "Corrupting Frenzy",
   "effect.blightlings.blight_infection": "Blight Infection",

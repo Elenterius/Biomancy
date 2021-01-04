@@ -1,7 +1,10 @@
 package com.github.elenterius.blightlings.handler;
 
 import com.github.elenterius.blightlings.BlightlingsMod;
+import com.github.elenterius.blightlings.enchantment.AttunedDamageEnchantment;
+import com.github.elenterius.blightlings.init.ModEnchantments;
 import com.github.elenterius.blightlings.item.ClawWeaponItem;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -59,8 +62,6 @@ public final class AttackHandler {
 				}
 			}
 		}
-
-
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
@@ -83,7 +84,21 @@ public final class AttackHandler {
 		}
 	}
 
+	@SubscribeEvent
 	public static void onAttackEntity(final AttackEntityEvent event) {
-
+		if (event.getTarget().canBeAttackedWithItem()) {
+			ItemStack heldStack = event.getPlayer().getHeldItemMainhand();
+			if (!heldStack.isEmpty() && EnchantmentHelper.getEnchantmentLevel(ModEnchantments.ATTUNED_BANE.get(), heldStack) > 0) {
+				if (!AttunedDamageEnchantment.isAttuned(heldStack)) {
+					if (!event.getPlayer().world.isRemote()) {
+						AttunedDamageEnchantment.setAttunedTarget(heldStack, event.getTarget());
+					}
+					else {
+						event.getPlayer().playSound(SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, 1f, 1f);
+					}
+				}
+			}
+		}
 	}
+
 }

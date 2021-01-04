@@ -1,10 +1,15 @@
 package com.github.elenterius.blightlings.mixin;
 
 import com.github.elenterius.blightlings.BlightlingsMod;
+import com.github.elenterius.blightlings.enchantment.AttunedDamageEnchantment;
 import com.github.elenterius.blightlings.init.ModAttributes;
+import com.github.elenterius.blightlings.init.ModEnchantments;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import org.apache.logging.log4j.MarkerManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -30,4 +35,16 @@ public abstract class PlayerEntityMixin {
 		}
 		return distSq;
 	}
+
+	@Redirect(method = "attackTargetEntityWithCurrentItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getModifierForCreature(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/CreatureAttribute;)F"))
+	protected float transformExtraDamageModifier(ItemStack stack, CreatureAttribute creatureAttribute, Entity targetEntity) {
+		if (AttunedDamageEnchantment.isAttuned(stack)) {
+			float modifier = ModEnchantments.ATTUNED_BANE.get().getAttackDamageModifier(stack, (PlayerEntity) (Object) this, targetEntity);
+			return EnchantmentHelper.getModifierForCreature(stack, creatureAttribute) + modifier;
+		}
+		else {
+			return EnchantmentHelper.getModifierForCreature(stack, creatureAttribute);
+		}
+	}
+
 }
