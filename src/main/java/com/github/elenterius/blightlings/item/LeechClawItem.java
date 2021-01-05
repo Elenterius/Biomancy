@@ -24,7 +24,7 @@ import java.util.UUID;
 
 public class LeechClawItem extends ClawWeaponItem {
 
-	public static AttributeModifier ATTACK_REACH_MODIFIER = new AttributeModifier(UUID.fromString("d2589c7b-7b0f-4850-910a-31598f2f349d"), "attack_reach_modifier", -0.55f, AttributeModifier.Operation.ADDITION);
+	public static AttributeModifier ATTACK_DISTANCE_MODIFIER = new AttributeModifier(ModAttributes.UUIDS.ATTACK_DISTANCE, "attack_distance_modifier", -0.55f, AttributeModifier.Operation.ADDITION);
 	public static AttributeModifier MOVEMENT_MODIFIER = new AttributeModifier(UUID.fromString("0823f523-d756-4725-9a6a-098059458c4b"), "movement_modifier", 0.1f, AttributeModifier.Operation.MULTIPLY_BASE);
 
 	public LeechClawItem(IItemTier tier, int attackDamageIn, float attackSpeedIn, Properties builderIn) {
@@ -41,7 +41,7 @@ public class LeechClawItem extends ClawWeaponItem {
 	@Override
 	protected void addAdditionalAttributeModifiers(ImmutableMultimap.Builder<Attribute, AttributeModifier> builder) {
 		super.addAdditionalAttributeModifiers(builder);
-		builder.put(ModAttributes.getAttackDistance(), ATTACK_REACH_MODIFIER);
+		builder.put(ModAttributes.getAttackDistance(), ATTACK_DISTANCE_MODIFIER);
 		builder.put(Attributes.MOVEMENT_SPEED, MOVEMENT_MODIFIER);
 	}
 

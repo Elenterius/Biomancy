@@ -28,7 +28,7 @@ import java.util.Random;
 
 public class ClawWeaponItem extends SwordItem {
 
-	final Lazy<Multimap<Attribute, AttributeModifier>> lazyAttributeModifiers;
+	final Lazy<Multimap<Attribute, AttributeModifier>> lazyAttributeModifiers; //is needed if we want to add forge block reach distance
 
 	public ClawWeaponItem(IItemTier tier, int attackDamageIn, float attackSpeedIn, Properties builderIn) {
 		super(tier, attackDamageIn, attackSpeedIn, builderIn);
