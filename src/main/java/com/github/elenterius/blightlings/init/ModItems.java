@@ -17,7 +17,7 @@ public final class ModItems {
 	public static final RegistryObject<ModAxeItem> BLIGHTBRINGER_AXE = ITEMS.register("blightbringer_axe", () -> new ModAxeItem(ModItemTier.BLIGHT_AMALGAM, 5F, -3.15F, createItemProperties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<KhopeshItem> BLIGHT_KHOPESH = ITEMS.register("blight_khopesh", () -> new KhopeshItem(ModItemTier.BLIGHT_AMALGAM, 5F, -2.75F, createItemProperties().rarity(Rarity.EPIC)));
 	//	public static final RegistryObject<PoleWeaponItem> BLIGHT_SICKLE = ITEMS.register("blight_sickle", () -> new PoleWeaponItem(ModItemTier.BLIGHT_AMALGAM, 3, -2.5F, createItemProperties().rarity(Rarity.EPIC)));
-	public static final RegistryObject<PoleWeaponItem> INFESTED_GUAN_DAO = ITEMS.register("infested_guan_dao", () -> new PoleWeaponItem(ModItemTier.BLIGHT_AMALGAM, 4, -3F, createItemProperties().rarity(Rarity.EPIC)));
+	public static final RegistryObject<InfestedGuanDaoItem> INFESTED_GUAN_DAO = ITEMS.register("infested_guan_dao", () -> new InfestedGuanDaoItem(ModItemTier.BLIGHT_AMALGAM, 4, -3F, createItemProperties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<LeechClawItem> LEECH_CLAW = ITEMS.register("leech_claw", () -> new LeechClawItem(ModItemTier.BLIGHT_AMALGAM, 3, -2.2f, createItemProperties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<LongRangeClawItem> LONG_RANGE_CLAW = ITEMS.register("long_range_claw", () -> new LongRangeClawItem(ModItemTier.BLIGHT_AMALGAM, 3, -2.4f, 60, createItemProperties().rarity(Rarity.EPIC)));
 

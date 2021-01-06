@@ -35,7 +35,7 @@ public class LeechClawItem extends ClawWeaponItem {
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(TooltipUtil.getTooltip(this).setStyle(TooltipUtil.LORE_STYLE));
-		if (stack.isEnchanted()) tooltip.add(TooltipUtil.FORCE_EMPTY_LINE);
+		tooltip.add(TooltipUtil.FORCE_EMPTY_LINE);
 	}
 
 	@Override

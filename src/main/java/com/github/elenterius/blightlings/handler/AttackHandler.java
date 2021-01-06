@@ -3,7 +3,9 @@ package com.github.elenterius.blightlings.handler;
 import com.github.elenterius.blightlings.BlightlingsMod;
 import com.github.elenterius.blightlings.enchantment.AttunedDamageEnchantment;
 import com.github.elenterius.blightlings.init.ModEnchantments;
+import com.github.elenterius.blightlings.init.ModItems;
 import com.github.elenterius.blightlings.item.ClawWeaponItem;
+import com.github.elenterius.blightlings.item.InfestedGuanDaoItem;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -88,13 +90,18 @@ public final class AttackHandler {
 	public static void onAttackEntity(final AttackEntityEvent event) {
 		if (event.getTarget().canBeAttackedWithItem()) {
 			ItemStack heldStack = event.getPlayer().getHeldItemMainhand();
-			if (!heldStack.isEmpty() && EnchantmentHelper.getEnchantmentLevel(ModEnchantments.ATTUNED_BANE.get(), heldStack) > 0) {
-				if (!AttunedDamageEnchantment.isAttuned(heldStack)) {
-					if (!event.getPlayer().world.isRemote()) {
-						AttunedDamageEnchantment.setAttunedTarget(heldStack, event.getTarget());
-					}
-					else {
-						event.getPlayer().playSound(SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, 1f, 1f);
+			if (!heldStack.isEmpty()) {
+				if (heldStack.getItem() == ModItems.INFESTED_GUAN_DAO.get() && event.getPlayer().getCooledAttackStrength(0.5f) > 0.8f) {
+					InfestedGuanDaoItem.adaptAttackDamageToTarget(heldStack, event.getPlayer(), event.getTarget());
+				}
+				if (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.ATTUNED_BANE.get(), heldStack) > 0) {
+					if (!AttunedDamageEnchantment.isAttuned(heldStack)) {
+						if (!event.getPlayer().world.isRemote()) {
+							AttunedDamageEnchantment.setAttunedTarget(heldStack, event.getTarget());
+						}
+						else {
+							event.getPlayer().playSound(SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, 1f, 1f);
+						}
 					}
 				}
 			}

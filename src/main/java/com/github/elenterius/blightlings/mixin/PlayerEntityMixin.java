@@ -4,6 +4,8 @@ import com.github.elenterius.blightlings.BlightlingsMod;
 import com.github.elenterius.blightlings.enchantment.AttunedDamageEnchantment;
 import com.github.elenterius.blightlings.init.ModAttributes;
 import com.github.elenterius.blightlings.init.ModEnchantments;
+import com.github.elenterius.blightlings.init.ModItems;
+import com.github.elenterius.blightlings.item.InfestedGuanDaoItem;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
@@ -38,8 +40,13 @@ public abstract class PlayerEntityMixin {
 
 	@Redirect(method = "attackTargetEntityWithCurrentItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getModifierForCreature(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/CreatureAttribute;)F"))
 	protected float transformExtraDamageModifier(ItemStack stack, CreatureAttribute creatureAttribute, Entity targetEntity) {
-		if (AttunedDamageEnchantment.isAttuned(stack)) {
-			float modifier = ModEnchantments.ATTUNED_BANE.get().getAttackDamageModifier(stack, (PlayerEntity) (Object) this, targetEntity);
+		if (!stack.isEmpty()) {
+			float modifier = 0f;
+			if (AttunedDamageEnchantment.isAttuned(stack))
+				modifier = ModEnchantments.ATTUNED_BANE.get().getAttackDamageModifier(stack, (PlayerEntity) (Object) this, targetEntity);
+			if (stack.getItem() == ModItems.INFESTED_GUAN_DAO.get())
+				modifier += InfestedGuanDaoItem.getAttackDamageModifier(stack, (PlayerEntity) (Object) this, targetEntity);
+
 			return EnchantmentHelper.getModifierForCreature(stack, creatureAttribute) + modifier;
 		}
 		else {
