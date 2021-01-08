@@ -1,6 +1,7 @@
 package com.github.elenterius.blightlings.util;
 
 import com.github.elenterius.blightlings.mixin.client.ItemStackMixinAccessor;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Util;
@@ -15,14 +16,21 @@ public final class TooltipUtil {
 
 	public static final Style LORE_STYLE = Style.EMPTY.setFormatting(TextFormatting.DARK_GRAY).setItalic(true);
 
+	public static ITextComponent FAKE_EMPTY_LINE = new StringTextComponent(" ");
+
 	/**
 	 * When the tooltip text is too long it gets wrapped and {@link StringTextComponent#EMPTY} components (empty strings) are eaten up.<br>
 	 */
 	// Is this a bug or intended vanilla behavior?
-	public static final ITextComponent FORCE_EMPTY_LINE = new StringTextComponent(" ");
+	@OnlyIn(Dist.CLIENT)
+	public static ITextComponent EMPTY_LINE_HACK() {
+		return Screen.hasControlDown() ? FAKE_EMPTY_LINE : StringTextComponent.EMPTY;
+	}
 
+	@OnlyIn(Dist.CLIENT)
 	public static TranslationTextComponent getTooltip(Item item) {
-		return new TranslationTextComponent(Util.makeTranslationKey("tooltip", ForgeRegistries.ITEMS.getKey(item)));
+		return Screen.hasControlDown() ? new TranslationTextComponent(Util.makeTranslationKey("tooltip", ForgeRegistries.ITEMS.getKey(item))) :
+				new TranslationTextComponent("tooltip.blightlings.press_button_to", new TranslationTextComponent("keyboard.ctrl").mergeStyle(TextFormatting.AQUA), "show Info");
 	}
 
 	@OnlyIn(Dist.CLIENT)

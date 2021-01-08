@@ -1,6 +1,7 @@
 package com.github.elenterius.blightlings.handler;
 
 import com.github.elenterius.blightlings.BlightlingsMod;
+import com.github.elenterius.blightlings.damagesource.ModEntityDamageSource;
 import com.github.elenterius.blightlings.enchantment.AttunedDamageEnchantment;
 import com.github.elenterius.blightlings.init.ModEnchantments;
 import com.github.elenterius.blightlings.init.ModItems;

@@ -1,6 +1,7 @@
 package com.github.elenterius.blightlings.item;
 
 import com.github.elenterius.blightlings.BlightlingsMod;
+import com.github.elenterius.blightlings.init.ModDamageSources;
 import com.github.elenterius.blightlings.util.TooltipUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -9,7 +10,6 @@ import net.minecraft.item.Food;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
@@ -74,7 +74,7 @@ public class InfestedGuanDaoItem extends PoleWeaponItem {
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(TooltipUtil.getTooltip(this).setStyle(TooltipUtil.LORE_STYLE));
-		tooltip.add(TooltipUtil.FORCE_EMPTY_LINE);
+		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 
 		CompoundNBT nbt = stack.getOrCreateChildTag(BlightlingsMod.MOD_ID);
 		byte hitCount = nbt.getByte("HitCount");
@@ -85,7 +85,7 @@ public class InfestedGuanDaoItem extends PoleWeaponItem {
 		tooltip.add(new TranslationTextComponent("tooltip.blightlings." + key).mergeStyle(TextFormatting.GRAY));
 		tooltip.add(new StringTextComponent("Hunger: " + nbt.getByte("Hunger")).mergeStyle(TextFormatting.DARK_GRAY));
 		tooltip.add(new StringTextComponent("Damage Modifier: +" + (1f + Math.max(0, hitCount - 1) * 0.5f)).mergeStyle(TextFormatting.DARK_GRAY));
-		tooltip.add(TooltipUtil.FORCE_EMPTY_LINE);
+		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class InfestedGuanDaoItem extends PoleWeaponItem {
 				int feedGoal = Math.min(125 + hunger, MathHelper.floor(hunger * 0.7f + stack.getDamage() * 0.025f));
 				int replenished = tryToEatMeat((LivingEntity) entityIn, feedGoal);
 				if (replenished < feedGoal) {
-					entityIn.attackEntityFrom(DamageSource.STARVE, 2f);
+					entityIn.attackEntityFrom(ModDamageSources.SYMBIONT_EAT, 2f);
 				}
 				nbt.putByte("Hunger", (byte) MathHelper.clamp(hunger - replenished, -125, 125));
 			}
@@ -105,7 +105,7 @@ public class InfestedGuanDaoItem extends PoleWeaponItem {
 				int feedGoal = Math.min(125 + hunger, MathHelper.floor(hunger * worldIn.rand.nextFloat() + stack.getDamage() * 0.025f));
 				int replenished = tryToEatMeat((LivingEntity) entityIn, feedGoal);
 				if (replenished < feedGoal) {
-					entityIn.attackEntityFrom(DamageSource.STARVE, 0.5f);
+					entityIn.attackEntityFrom(ModDamageSources.SYMBIONT_EAT, 0.5f);
 				}
 				nbt.putByte("Hunger", (byte) MathHelper.clamp(hunger - replenished, -125, 125));
 			}

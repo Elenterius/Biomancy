@@ -22,6 +22,6 @@ public class ModAxeItem extends AxeItem {
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(TooltipUtil.getTooltip(this).setStyle(TooltipUtil.LORE_STYLE));
-		tooltip.add(TooltipUtil.FORCE_EMPTY_LINE);
+		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 	}
 }

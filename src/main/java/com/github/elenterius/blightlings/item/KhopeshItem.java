@@ -40,11 +40,11 @@ public class KhopeshItem extends AxeItem {
 			if (TooltipUtil.isToolTipVisible(stack, ItemStack.TooltipDisplayFlags.ENCHANTMENTS)) {
 				stack.func_242395_a(ItemStack.TooltipDisplayFlags.ENCHANTMENTS); //hide enchantment tooltip
 			}
-			tooltip.add(TooltipUtil.FORCE_EMPTY_LINE);
+			tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 			ItemStack.addEnchantmentTooltips(tooltip, stack.getEnchantmentTagList()); //add enchantments before custom modifiers
 		}
 
-		tooltip.add(TooltipUtil.FORCE_EMPTY_LINE);
+		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 		tooltip.add(new TranslationTextComponent("tooltip.blightlings.riding_bonus").setStyle(Style.EMPTY.applyFormatting(TextFormatting.GRAY)));
 		tooltip.add((new StringTextComponent(" ")).append(new TranslationTextComponent("attribute.modifier.plus." + ATTACK_DAMAGE_RIDING_MODIFIER.getOperation().getId(), DECIMALFORMAT.format(ATTACK_DAMAGE_RIDING_MODIFIER.getAmount()), new TranslationTextComponent("attribute.name.generic.attack_damage"))).mergeStyle(TextFormatting.BLUE));
 		tooltip.add((new StringTextComponent(" ")).append(new TranslationTextComponent("attribute.modifier.plus." + ATTACK_DIST_RIDING_MODIFIER.getOperation().getId(), DECIMALFORMAT.format(ATTACK_DIST_RIDING_MODIFIER.getAmount()), new TranslationTextComponent("attribute.generic.attack_distance"))).mergeStyle(TextFormatting.BLUE));

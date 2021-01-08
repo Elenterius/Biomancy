@@ -53,7 +53,7 @@ public class LongRangeClawItem extends ClawWeaponItem {
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(TooltipUtil.getTooltip(this).setStyle(TooltipUtil.LORE_STYLE));
-		tooltip.add(TooltipUtil.FORCE_EMPTY_LINE);
+		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 
 		int timeLeft = stack.getOrCreateTag().getInt("LongClawTimeLeft");
 		if (timeLeft > 0) {
@@ -62,7 +62,7 @@ public class LongRangeClawItem extends ClawWeaponItem {
 		else {
 			tooltip.add(new TranslationTextComponent("tooltip.blightlings.item_is_dormant").mergeStyle(TextFormatting.GRAY));
 		}
-		if (stack.isEnchanted()) tooltip.add(TooltipUtil.FORCE_EMPTY_LINE);
+		if (stack.isEnchanted()) tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package com.github.elenterius.blightlings.handler;
+package com.github.elenterius.blightlings.damagesource;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;

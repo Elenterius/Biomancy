@@ -1,6 +1,6 @@
 package com.github.elenterius.blightlings.mixin;
 
-import com.github.elenterius.blightlings.handler.ModEntityDamageSource;
+import com.github.elenterius.blightlings.damagesource.ModEntityDamageSource;
 import com.github.elenterius.blightlings.init.ModItems;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attributes;

@@ -13,27 +13,35 @@ import net.minecraftforge.registries.ForgeRegistries;
 public final class ModItems {
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, BlightlingsMod.MOD_ID);
 
+	// Artifacts
 	public static final RegistryObject<GogglesArmorItem> TRUE_SIGHT_GOGGLES = ITEMS.register("true_sight_goggles", () -> new GogglesArmorItem(ArmorMaterial.IRON, createItemProperties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<ModAxeItem> BLIGHTBRINGER_AXE = ITEMS.register("blightbringer_axe", () -> new ModAxeItem(ModItemTier.BLIGHT_AMALGAM, 5F, -3.15F, createItemProperties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<KhopeshItem> BLIGHT_KHOPESH = ITEMS.register("blight_khopesh", () -> new KhopeshItem(ModItemTier.BLIGHT_AMALGAM, 5F, -2.75F, createItemProperties().rarity(Rarity.EPIC)));
-	//	public static final RegistryObject<PoleWeaponItem> BLIGHT_SICKLE = ITEMS.register("blight_sickle", () -> new PoleWeaponItem(ModItemTier.BLIGHT_AMALGAM, 3, -2.5F, createItemProperties().rarity(Rarity.EPIC)));
-	public static final RegistryObject<InfestedGuanDaoItem> INFESTED_GUAN_DAO = ITEMS.register("infested_guan_dao", () -> new InfestedGuanDaoItem(ModItemTier.BLIGHT_AMALGAM, 4, -3F, createItemProperties().rarity(Rarity.EPIC)));
+
+	// Weapon Biomorphs
 	public static final RegistryObject<LeechClawItem> LEECH_CLAW = ITEMS.register("leech_claw", () -> new LeechClawItem(ModItemTier.BLIGHT_AMALGAM, 3, -2.2f, createItemProperties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<LongRangeClawItem> LONG_RANGE_CLAW = ITEMS.register("long_range_claw", () -> new LongRangeClawItem(ModItemTier.BLIGHT_AMALGAM, 3, -2.4f, 60, createItemProperties().rarity(Rarity.EPIC)));
+	public static final RegistryObject<InfestedGuanDaoItem> INFESTED_GUAN_DAO = ITEMS.register("infested_guan_dao", () -> new InfestedGuanDaoItem(ModItemTier.BLIGHT_AMALGAM, 4, -3F, createItemProperties().rarity(Rarity.EPIC)));
+	public static final RegistryObject<InfestedRifleItem> BIO_RIFLE = ITEMS.register("infested_rifle", () -> new InfestedRifleItem(createItemProperties().maxStackSize(1).maxDamage(384).rarity(Rarity.EPIC)));
 
-	public static final RegistryObject<InfestedRifleItem> INFESTED_RIFLE = ITEMS.register("infested_rifle", () -> new InfestedRifleItem(createItemProperties().maxStackSize(1).maxDamage(384).rarity(Rarity.EPIC)));
+	// Auxiliary Biomorphs
+	public static final RegistryObject<ItemStorageItem> SINGLE_ITEM_BAG_ITEM = ITEMS.register("single_item_bag", () -> new ItemStorageItem(createItemProperties().maxStackSize(1).rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<EntityStorageItem> ENTITY_STORAGE_ITEM = ITEMS.register("entity_storage", () -> new EntityStorageItem(createItemProperties().maxStackSize(1).rarity(Rarity.UNCOMMON)));
 
-	public static final RegistryObject<Item> LUMINESCENT_SPORES = ITEMS.register("luminescent_spores", () -> new Item(createItemProperties()));
+	// Living Symbionts
 	public static final RegistryObject<PotionBeetleItem> POTION_BEETLE = ITEMS.register("potion_beetle", () -> new PotionBeetleItem(createItemProperties().maxStackSize(1), 20f));
 	public static final RegistryObject<MasonBeetleItem> MASON_BEETLE = ITEMS.register("mason_beetle", () -> new MasonBeetleItem(createItemProperties().maxStackSize(1), 20f));
 
+	// Misc
+	public static final RegistryObject<Item> LUMINESCENT_SPORES = ITEMS.register("luminescent_spores", () -> new Item(createItemProperties()));
+	public static final RegistryObject<DecayingItem> BLIGHT_QUARTZ = ITEMS.register("blight_quartz", () -> new DecayingItem(20 * 60, 0.5f, createItemProperties()));
+	public static final RegistryObject<DecayingItem> BLIGHT_GOO = ITEMS.register("blight_goo", () -> new DecayingItem(2 * 60, 0.5f, createItemProperties()));
 	public static final RegistryObject<Item> BLIGHT_SHARD = ITEMS.register("blight_shard", () -> new Item(createItemProperties()));
 	public static final RegistryObject<Item> BLIGHT_SAC = ITEMS.register("blight_sac", () -> new Item(createItemProperties()));
 	public static final RegistryObject<Item> BLIGHT_STRING = ITEMS.register("blight_string", () -> new Item(createItemProperties()));
 	public static final RegistryObject<Item> OCULUS = ITEMS.register("blight_eye", () -> new Item(createItemProperties()));
-	public static final RegistryObject<DecayingItem> BLIGHT_GOO = ITEMS.register("blight_goo", () -> new DecayingItem(2 * 60, 0.5f, createItemProperties()));
-	public static final RegistryObject<DecayingItem> BLIGHT_QUARTZ = ITEMS.register("blight_quartz", () -> new DecayingItem(20 * 60, 0.5f, createItemProperties()));
 
+	// Spawn Eggs
 	public static final RegistryObject<ModSpawnEggItem> BLOBLING_SPAWN_EGG = ITEMS.register("blobling_spawn_egg", () -> new ModSpawnEggItem(ModEntityTypes.BLOBLING, 0x764da2, 0xff40ff, createItemProperties()));
 	public static final RegistryObject<ModSpawnEggItem> BROOD_MOTHER_SPAWN_EGG = ITEMS.register("brood_mother_spawn_egg", () -> new ModSpawnEggItem(ModEntityTypes.BROOD_MOTHER, 0x49345e, 0xda70d6, createItemProperties()));
 	public static final RegistryObject<ModSpawnEggItem> BEETLING_SPAWN_EGG = ITEMS.register("beetling_spawn_egg", () -> new ModSpawnEggItem(ModEntityTypes.BEETLING, 0x764da2, 0xff40ff, createItemProperties()));

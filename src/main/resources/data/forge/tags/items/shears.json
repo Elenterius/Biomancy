@@ -1,5 +1,6 @@
 {
   "replace": false, "values": [
-  "blightlings:blight_sickle"
+  "blightlings:long_range_claw",
+  "blightlings:leech_claw"
 ]
 }

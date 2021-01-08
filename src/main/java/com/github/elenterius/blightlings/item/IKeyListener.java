@@ -14,6 +14,9 @@ import javax.annotation.Nullable;
 
 public interface IKeyListener {
 
+	/**
+	 * @param slotIndex of EquipmentSlotType (Armor + Main & Off Hand). This is not the inventory index of a player
+	 */
 	static void onReceiveKeybindingPacket(ServerWorld world, ServerPlayerEntity player, int slotIndex, byte flag) {
 		EquipmentSlotType slotType = getEquipmentSlotTypeFrom(slotIndex);
 		if (slotType != null) {

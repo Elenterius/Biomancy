@@ -1,0 +1,20 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "blightlings:item/bag_empty"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "fullness": 0.0001
+      },
+      "model": "blightlings:item/bag_half_full"
+    },
+    {
+      "predicate": {
+        "fullness": 1
+      },
+      "model": "blightlings:item/bag_full"
+    }
+  ]
+}

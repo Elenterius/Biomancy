@@ -36,7 +36,7 @@ public class GogglesArmorItem extends ArmorItem implements IEntityUnveilerHeadSl
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(TooltipUtil.getTooltip(this).mergeStyle(TooltipUtil.LORE_STYLE));
-		tooltip.add(TooltipUtil.FORCE_EMPTY_LINE);
+		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 		if (stack.hasTag() && stack.getOrCreateTag().contains("BlightlingsItemAbilityEnabled")) {
 			if (stack.getOrCreateTag().getBoolean("BlightlingsItemAbilityEnabled")) {
 				tooltip.add(new TranslationTextComponent("tooltip.blightlings.item_is_awake").mergeStyle(TextFormatting.GRAY));
@@ -46,10 +46,7 @@ public class GogglesArmorItem extends ArmorItem implements IEntityUnveilerHeadSl
 				tooltip.add(new TranslationTextComponent("tooltip.blightlings.item_is_inert").mergeStyle(TextFormatting.GRAY));
 				tooltip.add(new TranslationTextComponent("tooltip.blightlings.press_button_to", ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.func_238171_j_().copyRaw().mergeStyle(TextFormatting.AQUA), new TranslationTextComponent("tooltip.blightlings.action_activate")).mergeStyle(TextFormatting.DARK_GRAY));
 			}
-			tooltip.add(TooltipUtil.FORCE_EMPTY_LINE);
-		}
-		else {
-			stack.getOrCreateTag().putBoolean("BlightlingsItemAbilityEnabled", true);
+			tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 		}
 	}
 

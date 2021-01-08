@@ -13,11 +13,15 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = BlightlingsMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class ModCapabilities {
+
 	@CapabilityInject(IItemDecayTracker.class)
 	public static Capability<IItemDecayTracker> ITEM_DECAY_CAPABILITY = null;
 
 	private ModCapabilities() {}
 
+	/**
+	 * Attaches capabilities to external objects
+	 */
 	@SubscribeEvent
 	public static void onAttachCapability(AttachCapabilitiesEvent<ItemStack> event) {
 		if (event.getObject().getItem() instanceof DecayingItem) {

@@ -37,7 +37,7 @@ public class KeyBindPacket {
 			if (handler instanceof ServerPlayNetHandler) {
 				ServerWorld world = (ServerWorld) ((ServerPlayNetHandler) handler).player.world;
 				ServerPlayerEntity playerEntity = ((ServerPlayNetHandler) handler).player;
-				IKeyListener.onReceiveKeybindingPacket(world, playerEntity, UnsignedBytes.toInt(packet.slotIndex), packet.flag);
+				IKeyListener.onReceiveKeybindingPacket(world, playerEntity, UnsignedBytes.toInt(packet.slotIndex), packet.flag); //TODO: add version which is not tied to EquipmentSlotType
 			}
 		});
 		ctx.get().setPacketHandled(true);
