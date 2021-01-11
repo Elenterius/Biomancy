@@ -18,6 +18,9 @@
   "item.blightlings.mason_beetle": "Beetle of Block Placement",
   "item.blightlings.luminescent_spores": "Luminescent Spores",
 
+  "item.blightlings.mended_skin": "Stitched Skin",
+  "item.blightlings.sewing_kit": "Sewing Kit",
+
   "item.blightlings.blight_sac": "Blight Sac",
   "item.blightlings.blight_string": "[PH] Purpura Silk",
   "item.blightlings.blight_goo": "[PH] Bile/Mucus",
@@ -54,7 +57,9 @@
   "block.blightlings.blight_pustule_2": "Large and Small Pustules",
   "block.blightlings.blight_pustule_3": "Small Pustule Cluster",
   "block.blightlings.candelabra_fungus": "Candelabra Fungus",
-  "block.blightlings.preservation_jar": "Āvapanī of Preservation",
+
+  "block.blightlings.gulge": "Gulge",
+  "container.blightlings.gulge": "Gulge",
 
   "entity.blightlings.blobling": "Blobling",
   "entity.blightlings.brood_mother": "Brood Mother",
@@ -87,6 +92,9 @@
   "tooltip.blightlings.action_deactivate": "deactivate",
   "tooltip.blightlings.action_reload": "reload",
   "tooltip.blightlings.action_cycle": "cycle",
+  "tooltip.blightlings.contains": "Contains: %1$s",
+  "tooltip.blightlings.contains_nothing": "Contains: Nothing",
+  "tooltip.blightlings.empty": "Empty",
 
   "keyboard.ctrl": "ctrl",
   "enum.blightlings.mode.none": "None",

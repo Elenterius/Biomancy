@@ -2,6 +2,7 @@ package com.github.elenterius.blightlings.init;
 
 import com.github.elenterius.blightlings.BlightlingsMod;
 import com.github.elenterius.blightlings.entity.*;
+import com.github.elenterius.blightlings.tileentity.GulgeTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityClassification;
@@ -11,6 +12,7 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Difficulty;
@@ -29,13 +31,19 @@ import java.util.Random;
 
 @Mod.EventBusSubscriber(modid = BlightlingsMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class ModEntityTypes {
-	public static final DeferredRegister<EntityType<?>> ENTITY_TYPE_REGISTRY = DeferredRegister.create(ForgeRegistries.ENTITIES, BlightlingsMod.MOD_ID);
+	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, BlightlingsMod.MOD_ID);
 
-	public static final RegistryObject<EntityType<BloblingEntity>> BLOBLING = ENTITY_TYPE_REGISTRY.register("blobling", () -> EntityType.Builder.create(BloblingEntity::new, EntityClassification.MONSTER).size(0.4F, 0.35F).build(BlightlingsMod.MOD_ID + ":" + "blobling"));
-	public static final RegistryObject<EntityType<BroodmotherEntity>> BROOD_MOTHER = ENTITY_TYPE_REGISTRY.register("brood_mother", () -> EntityType.Builder.create(BroodmotherEntity::new, EntityClassification.MONSTER).size(1.6F, 0.7F).build(BlightlingsMod.MOD_ID + ":" + "brood_mother"));
-	public static final RegistryObject<EntityType<BeetlingEntity>> BEETLING = ENTITY_TYPE_REGISTRY.register("beetling", () -> EntityType.Builder.create(BeetlingEntity::new, EntityClassification.CREATURE).size(0.475F, 0.34F).build(BlightlingsMod.MOD_ID + ":" + "beetling"));
-	public static final RegistryObject<EntityType<PotionBeetleEntity>> POTION_BEETLE = ENTITY_TYPE_REGISTRY.register("potion_beetle", () -> EntityType.Builder.create(PotionBeetleEntity::new, EntityClassification.CREATURE).size(0.475F, 0.34F).build(BlightlingsMod.MOD_ID + ":" + "potion_beetle"));
-	public static final RegistryObject<EntityType<MasonBeetleEntity>> MASON_BEETLE = ENTITY_TYPE_REGISTRY.register("mason_beetle", () -> EntityType.Builder.create(MasonBeetleEntity::new, EntityClassification.CREATURE).size(0.475F, 0.34F).build(BlightlingsMod.MOD_ID + ":" + "mason_beetle"));
+	public static final RegistryObject<EntityType<BloblingEntity>> BLOBLING = ENTITIES.register("blobling", () -> EntityType.Builder.create(BloblingEntity::new, EntityClassification.MONSTER).size(0.4F, 0.35F).build(BlightlingsMod.MOD_ID + ":" + "blobling"));
+	public static final RegistryObject<EntityType<BroodmotherEntity>> BROOD_MOTHER = ENTITIES.register("brood_mother", () -> EntityType.Builder.create(BroodmotherEntity::new, EntityClassification.MONSTER).size(1.6F, 0.7F).build(BlightlingsMod.MOD_ID + ":" + "brood_mother"));
+	public static final RegistryObject<EntityType<BeetlingEntity>> BEETLING = ENTITIES.register("beetling", () -> EntityType.Builder.create(BeetlingEntity::new, EntityClassification.CREATURE).size(0.475F, 0.34F).build(BlightlingsMod.MOD_ID + ":" + "beetling"));
+	public static final RegistryObject<EntityType<PotionBeetleEntity>> POTION_BEETLE = ENTITIES.register("potion_beetle", () -> EntityType.Builder.create(PotionBeetleEntity::new, EntityClassification.CREATURE).size(0.475F, 0.34F).build(BlightlingsMod.MOD_ID + ":" + "potion_beetle"));
+	public static final RegistryObject<EntityType<MasonBeetleEntity>> MASON_BEETLE = ENTITIES.register("mason_beetle", () -> EntityType.Builder.create(MasonBeetleEntity::new, EntityClassification.CREATURE).size(0.475F, 0.34F).build(BlightlingsMod.MOD_ID + ":" + "mason_beetle"));
+
+
+	public static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, BlightlingsMod.MOD_ID);
+
+	@SuppressWarnings("ConstantConditions")
+	public static final RegistryObject<TileEntityType<GulgeTileEntity>> GULGE_TILE = TILE_ENTITIES.register("gulge_tile", () -> TileEntityType.Builder.create(GulgeTileEntity::new, ModBlocks.GULGE.get()).build(null));
 
 	private ModEntityTypes() {}
 

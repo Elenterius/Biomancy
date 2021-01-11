@@ -28,26 +28,37 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nonnull;
 
 @Mod(BlightlingsMod.MOD_ID)
-public class BlightlingsMod {
+public final class BlightlingsMod {
 	public static final String MOD_ID = "blightlings";
 	public static final Logger LOGGER = LogManager.getLogger();
 
 	public BlightlingsMod() {
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-		ModAttributes.ATTRIBUTES.register(modEventBus);
 		ModItems.ITEMS.register(modEventBus);
 		ModBlocks.BLOCKS.register(modEventBus);
-		ModRecipes.RECIPE_SERIALIZERS.register(modEventBus);
-		ModEntityTypes.ENTITY_TYPE_REGISTRY.register(modEventBus);
-		ModEffects.EFFECTS.register(modEventBus);
 		ModEnchantments.ENCHANTMENTS.register(modEventBus);
+		ModRecipes.RECIPE_SERIALIZERS.register(modEventBus);
+		ModEntityTypes.TILE_ENTITIES.register(modEventBus);
+		ModContainerTypes.CONTAINERS.register(modEventBus);
+
+		ModAttributes.ATTRIBUTES.register(modEventBus);
+		ModEffects.EFFECTS.register(modEventBus);
+		ModEntityTypes.ENTITIES.register(modEventBus);
 
 		ModSoundEvents.SOUND_EVENTS.register(modEventBus);
 
 //        ModFeatures.FEATURE_REGISTRY.register(modEventBus);
 		ModFeatures.SURFACE_BUILDER_REGISTRY.register(modEventBus);
 //        ModBiomes.BIOME_REGISTRY.register(modEventBus);
+	}
+
+	public static String getTranslationKey(String prefix, String suffix) {
+		return prefix + "." + MOD_ID + "." + suffix;
+	}
+
+	public static TranslationTextComponent getTranslationComponent(String prefix, String suffix) {
+		return new TranslationTextComponent(getTranslationKey(prefix, suffix));
 	}
 
 	public static final ItemGroup ITEM_GROUP = new ItemGroup(-1, MOD_ID) {

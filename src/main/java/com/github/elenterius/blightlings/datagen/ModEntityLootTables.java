@@ -39,7 +39,7 @@ public class ModEntityLootTables extends EntityLootTables {
 
 	@Override
 	protected Iterable<EntityType<?>> getKnownEntities() {
-		List<EntityType<?>> entityTypes = ModEntityTypes.ENTITY_TYPE_REGISTRY.getEntries().stream().map(RegistryObject::get).collect(Collectors.toList());
+		List<EntityType<?>> entityTypes = ModEntityTypes.ENTITIES.getEntries().stream().map(RegistryObject::get).collect(Collectors.toList());
 		BlightlingsMod.LOGGER.info(MarkerManager.getMarker("EntityLootTables"), String.format("generating loot tables for %s entity types...", entityTypes.size()));
 		return entityTypes;
 	}

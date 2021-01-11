@@ -50,7 +50,6 @@ public final class ModItems {
 	public static final RegistryObject<BlockItem> INFERTILE_SOIL = ITEMS.register("infertile_soil", () -> new BlockItem(ModBlocks.INFERTILE_SOIL.get(), createItemProperties()));
 	public static final RegistryObject<BlockItem> LUMINOUS_SOIL = ITEMS.register("luminous_soil", () -> new BlockItem(ModBlocks.LUMINOUS_SOIL.get(), createItemProperties()));
 	public static final RegistryObject<BlockItem> BLIGHT_QUARTZ_ORE = ITEMS.register("blight_quartz_ore", () -> new BlockItem(ModBlocks.BLIGHT_QUARTZ_ORE.get(), createItemProperties()));
-	public static final RegistryObject<BlockItem> PRESERVATION_JAR = ITEMS.register("preservation_jar", () -> new BlockItem(ModBlocks.PRESERVATION_JAR.get(), createItemProperties()));
 
 	public static final RegistryObject<BlockItem> LILYTREE_SAPLING = ITEMS.register("lilytree_sapling", () -> new BlockItem(ModBlocks.LILY_TREE_SAPLING.get(), createItemProperties()));
 	public static final RegistryObject<BlockItem> LILYTREE_STEM = ITEMS.register("lilytree_stem", () -> new BlockItem(ModBlocks.LILY_TREE_STEM.get(), createItemProperties()));
@@ -67,6 +66,9 @@ public final class ModItems {
 	public static final RegistryObject<BlockItem> BLIGHT_TENTACLE_1 = ITEMS.register("blight_tentacle_1", () -> new BlockItem(ModBlocks.BLIGHT_TENTACLE_1.get(), createItemProperties()));
 	public static final RegistryObject<BlockItem> BLIGHT_SHROOM_TALL = ITEMS.register("blight_shroom_tall", () -> new BlockItem(ModBlocks.BLIGHT_SHROOM_TALL.get(), createItemProperties()));
 	public static final RegistryObject<BlockItem> CANDELABRA_FUNGUS = ITEMS.register("candelabra_fungus", () -> new BlockItem(ModBlocks.CANDELABRA_FUNGUS.get(), createItemProperties()));
+
+	//container blocks
+	public static final RegistryObject<BlockItem> GULGE = ITEMS.register("gulge", () -> new BlockItem(ModBlocks.GULGE.get(), createItemProperties()));
 
 	private ModItems() {}
 

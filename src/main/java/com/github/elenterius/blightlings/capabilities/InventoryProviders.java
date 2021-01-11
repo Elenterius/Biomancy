@@ -20,7 +20,7 @@ public final class InventoryProviders {
 
 		public static final ResourceLocation REGISTRY_KEY = new ResourceLocation(BlightlingsMod.MOD_ID, "single_item_bag");
 		private ItemStack stack; //cheese cap sync
-		private final LazyOptional<IItemHandler> capProvider = LazyOptional.of(() -> new SingleItemStackHandler(stack, (short) (64 * 64)));
+		private final LazyOptional<IItemHandler> capProvider = LazyOptional.of(() -> new SpecialSingleItemStackHandler(stack, (short) (64 * 64)));
 
 		public ItemStackInvProvider(ItemStack stack) {
 			this.stack = stack;

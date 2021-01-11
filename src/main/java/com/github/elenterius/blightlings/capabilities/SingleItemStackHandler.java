@@ -1,6 +1,5 @@
 package com.github.elenterius.blightlings.capabilities;
 
-import com.github.elenterius.blightlings.BlightlingsMod;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -13,18 +12,9 @@ import javax.annotation.Nonnull;
 
 public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifiable, INBTSerializable<CompoundNBT> {
 
-	private static final CompoundNBT EMPTY_COMPOUND_NBT = new CompoundNBT();
+	protected ItemStack cachedStack = ItemStack.EMPTY;
 
-	private final ItemStack hostStack;
-	private final int maxItemAmount;
-	private ItemStack cachedStack;
-	private int itemAmount;
-
-	public SingleItemStackHandler(ItemStack hostStack, short maxAmount) {
-		this.maxItemAmount = maxAmount;
-		this.hostStack = hostStack;
-		deserializeNBT(null);
-	}
+	public SingleItemStackHandler() {}
 
 	protected void validateSlotIndex(int slot) {
 		if (slot != 0) throw new RuntimeException("Slot " + slot + " not valid - must be 0");
@@ -37,7 +27,7 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 
 	@Override
 	public int getSlotLimit(int slot) {
-		return maxItemAmount;
+		return cachedStack.getMaxStackSize();
 	}
 
 	@Override
@@ -49,8 +39,12 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 		return cachedStack.isEmpty();
 	}
 
-	public int getCount() {
-		return itemAmount;
+	public int getAmount() {
+		return cachedStack.getCount();
+	}
+
+	public int getMaxAmount() {
+		return getSlotLimit(0);
 	}
 
 	public Item getItem() {
@@ -61,7 +55,6 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 	@Override
 	public ItemStack getStackInSlot(int slot) {
 		validateSlotIndex(slot);
-		updateCachedStack();
 		return cachedStack;
 	}
 
@@ -69,8 +62,6 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 	public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
 		validateSlotIndex(slot);
 		cachedStack = stack;
-		itemAmount = stack.getCount();
-		serializeNBT(); // save new stack
 	}
 
 	@Nonnull
@@ -80,21 +71,17 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 		if (stackIn.isEmpty()) return ItemStack.EMPTY;
 		if (!isItemValid(slot, stackIn)) return stackIn;
 
-		updateCachedStack();
-		ItemStack storedStack = cachedStack;
-		if (!storedStack.isEmpty() && !ItemHandlerHelper.canItemStacksStack(stackIn, storedStack)) return stackIn;
+		if (!cachedStack.isEmpty() && !ItemHandlerHelper.canItemStacksStack(stackIn, cachedStack)) return stackIn;
+		if (getAmount() >= getMaxAmount()) return stackIn;
 
-		if (itemAmount >= maxItemAmount) return stackIn;
 		int insertGoal = stackIn.getCount();
-		int newAmount = itemAmount + insertGoal;
-		int overflow = newAmount > maxItemAmount ? newAmount - maxItemAmount : 0;
+		int newAmount = getAmount() + insertGoal;
+		int overflow = newAmount > getMaxAmount() ? newAmount - getMaxAmount() : 0;
 
 		if (!simulate) {
 			int insertAmount = overflow > 0 ? insertGoal - overflow : insertGoal;
-			if (storedStack.isEmpty()) cachedStack = ItemHandlerHelper.copyStackWithSize(stackIn, insertAmount);
-			else storedStack.grow(insertAmount);
-			itemAmount += insertAmount;
-			serializeNBT();
+			if (cachedStack.isEmpty()) cachedStack = ItemHandlerHelper.copyStackWithSize(stackIn, insertAmount);
+			else cachedStack.grow(insertAmount);
 		}
 
 		return overflow > 0 ? ItemHandlerHelper.copyStackWithSize(stackIn, overflow) : ItemStack.EMPTY;
@@ -106,74 +93,54 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 		validateSlotIndex(slot);
 		if (amount == 0) return ItemStack.EMPTY;
 
-		updateCachedStack();
-		ItemStack storedStack = cachedStack;
-		if (storedStack.isEmpty()) return ItemStack.EMPTY;
-		int extractGoal = Math.min(amount, maxItemAmount);
+		if (cachedStack.isEmpty()) return ItemStack.EMPTY;
+		int extractGoal = Math.min(amount, getMaxAmount());
 
-		if (itemAmount <= extractGoal) {
+		if (getAmount() <= extractGoal) {
 			if (!simulate) {
+				ItemStack stack = cachedStack;
 				cachedStack = ItemStack.EMPTY;
-				itemAmount = 0;
-				serializeNBT();
-				return storedStack;
+				return stack;
 			}
-			else return storedStack.copy();
+			else return cachedStack.copy();
 		}
 		else {
 			if (!simulate) {
-				itemAmount -= extractGoal;
-				cachedStack = ItemHandlerHelper.copyStackWithSize(storedStack, itemAmount);
-				serializeNBT();
+				cachedStack.grow(-extractGoal);
 			}
-			return ItemHandlerHelper.copyStackWithSize(storedStack, extractGoal);
+			return ItemHandlerHelper.copyStackWithSize(cachedStack, extractGoal);
 		}
+	}
+
+	public void serializeItemAmount(CompoundNBT nbt) {
+
+	}
+
+	public int deserializeItemAmount(CompoundNBT nbt) {
+		return 0;
 	}
 
 	@Override
 	public CompoundNBT serializeNBT() {
-		CompoundNBT inventory = new CompoundNBT();
-		inventory.putShort("MaxAmount", (short) maxItemAmount); // for client display
-		inventory.putShort("Amount", (short) itemAmount);
-		if (cachedStack.getCount() > 64) cachedStack.setCount(64); // prevent byte overflow
-		inventory.put("Item", cachedStack.write(new CompoundNBT()));
-		if (cachedStack.getCount() != itemAmount) cachedStack.setCount(itemAmount); //restore correct item amount
-		hostStack.getOrCreateChildTag(BlightlingsMod.MOD_ID).put("Inventory", inventory); //cheese cap sync
-		return EMPTY_COMPOUND_NBT;
+		CompoundNBT nbt = new CompoundNBT();
+		serializeItemAmount(nbt);
+		int count = cachedStack.getCount();
+		if (!cachedStack.isEmpty()) {
+			if (count > 64) cachedStack.setCount(64); //prevent byte overflow
+			nbt.put("Item", cachedStack.write(new CompoundNBT()));
+			if (count != cachedStack.getCount()) cachedStack.setCount(count); //restore item count
+		}
+		return nbt;
 	}
 
 	@Override
-	public void deserializeNBT(CompoundNBT ignored) {
-		CompoundNBT nbt = hostStack.getOrCreateChildTag(BlightlingsMod.MOD_ID);
-		if (nbt.contains("Inventory")) readNBT(nbt.getCompound("Inventory"));
-		else reset();
-	}
-
-	private void readNBT(CompoundNBT inventory) {
-		cachedStack = ItemStack.read(inventory.getCompound("Item")); //cheese cap sync
-		itemAmount = inventory.getShort("Amount");
-		if (cachedStack.getCount() != itemAmount) cachedStack.setCount(itemAmount); //restore correct item amount
-		if (!inventory.contains("MaxAmount")) {
-			inventory.putShort("MaxAmount", (short) maxItemAmount); //for client display
+	public void deserializeNBT(CompoundNBT nbt) {
+		if (nbt.contains("Item")) cachedStack = ItemStack.read(nbt.getCompound("Item"));
+		else cachedStack = ItemStack.EMPTY;
+		int itemAmount = deserializeItemAmount(nbt);
+		if (itemAmount > cachedStack.getCount()) {
+			cachedStack.setCount(itemAmount); //restore item amount
 		}
 	}
 
-	protected void updateCachedStack() {
-		CompoundNBT nbt = hostStack.getOrCreateChildTag(BlightlingsMod.MOD_ID);
-		if (nbt.contains("Inventory")) {
-			CompoundNBT inventory = nbt.getCompound("Inventory");
-			if (inventory.getBoolean("IsDirty")) {
-				inventory.putBoolean("IsDirty", false);
-				readNBT(inventory); //reload
-			}
-		}
-		else {
-			reset();
-		}
-	}
-
-	private void reset() {
-		cachedStack = ItemStack.EMPTY;
-		itemAmount = 0;
-	}
 }
