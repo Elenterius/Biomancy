@@ -58,12 +58,12 @@ public class ItemStorageItem extends BagItem implements IKeyListener {
 			int amount = wrapper.getShort("Amount");
 			if (!storedStack.isEmpty() && amount > 0) {
 				int maxAmount = wrapper.getShort("MaxAmount");
-				tooltip.add(new StringTextComponent("Contains: ").append(storedStack.getDisplayName()).mergeStyle(TextFormatting.GRAY));
+				tooltip.add(new TranslationTextComponent("tooltip.blightlings.contains", storedStack.getDisplayName()).mergeStyle(TextFormatting.GRAY));
 				tooltip.add(new StringTextComponent(String.format("%d/%d", amount, maxAmount)).mergeStyle(TextFormatting.GRAY));
 			}
-			else tooltip.add(new StringTextComponent("Contains: Nothing"));
+			else tooltip.add(new TranslationTextComponent("tooltip.blightlings.contains_nothing"));
 		}
-		else tooltip.add(new StringTextComponent("Empty"));
+		else tooltip.add(new TranslationTextComponent("tooltip.blightlings.empty"));
 
 		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 		tooltip.add(new StringTextComponent("Mode: ").mergeStyle(TextFormatting.GRAY)

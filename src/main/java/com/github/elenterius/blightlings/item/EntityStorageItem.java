@@ -41,9 +41,9 @@ public class EntityStorageItem extends BagItem {
 		CompoundNBT parentNBT = stack.getOrCreateChildTag(BlightlingsMod.MOD_ID);
 		if (parentNBT.contains("Entity")) {
 			CompoundNBT childNBT = parentNBT.getCompound("Entity");
-			tooltip.add(new StringTextComponent("Contains: ").append(new TranslationTextComponent(childNBT.getString("Name")).mergeStyle(TextFormatting.GRAY)));
+			tooltip.add(new TranslationTextComponent("tooltip.blightlings.contains", new TranslationTextComponent(childNBT.getString("Name")).mergeStyle(TextFormatting.GRAY)));
 		}
-		else tooltip.add(new StringTextComponent("Contains: Nothing"));
+		else tooltip.add(new TranslationTextComponent("tooltip.blightlings.contains_nothing"));
 	}
 
 	@Override
