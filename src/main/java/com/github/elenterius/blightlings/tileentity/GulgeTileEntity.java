@@ -49,6 +49,10 @@ public class GulgeTileEntity extends OwnableTileEntity implements INamedContaine
 //		}
 	}
 
+	public boolean isEmpty() {
+		return gulgeContents.isEmpty();
+	}
+
 	@Override
 	public CompoundNBT write(CompoundNBT nbt) {
 		super.write(nbt);

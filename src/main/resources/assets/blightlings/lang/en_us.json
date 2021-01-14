@@ -11,9 +11,9 @@
   "item.blightlings.long_range_claw": "Claw of Dūra",
   "item.blightlings.blight_khopesh": "Khopesh of Vāhanam",
   "item.blightlings.infested_guan_dao": "Aṅkura Śūla",
-  "item.blightlings.empty_bag": "Gulge Sac",
-  "item.blightlings.single_item_bag": "Item Gulge Sac",
-  "item.blightlings.entity_storage": "Entity Gulge Sac",
+  "item.blightlings.empty_bag": "Small Gulge Sac",
+  "item.blightlings.single_item_bag": "Small Item Gulge-Sac",
+  "item.blightlings.entity_storage": "Entity Gulge-Sac",
   "item.blightlings.potion_beetle": "Beetle of Potion Delivery",
   "item.blightlings.mason_beetle": "Beetle of Block Placement",
   "item.blightlings.luminescent_spores": "Luminescent Spores",
@@ -58,8 +58,8 @@
   "block.blightlings.blight_pustule_3": "Small Pustule Cluster",
   "block.blightlings.candelabra_fungus": "Candelabra Fungus",
 
-  "block.blightlings.gulge": "Gulge",
-  "container.blightlings.gulge": "Gulge",
+  "block.blightlings.gulge": "Deep Gulge",
+  "container.blightlings.gulge": "Deep Gulge",
 
   "entity.blightlings.blobling": "Blobling",
   "entity.blightlings.brood_mother": "Brood Mother",

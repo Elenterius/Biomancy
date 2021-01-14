@@ -4,11 +4,13 @@ import com.github.elenterius.blightlings.BlightlingsMod;
 import com.github.elenterius.blightlings.init.ModBlocks;
 import com.github.elenterius.blightlings.init.ModItems;
 import net.minecraft.block.Block;
-import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.data.loot.BlockLootTables;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.loot.*;
-import net.minecraft.loot.functions.*;
+import net.minecraft.loot.functions.ApplyBonus;
+import net.minecraft.loot.functions.CopyName;
+import net.minecraft.loot.functions.CopyNbt;
+import net.minecraft.loot.functions.SetCount;
 import net.minecraftforge.fml.RegistryObject;
 import org.apache.logging.log4j.MarkerManager;
 
@@ -22,11 +24,10 @@ public class ModBlockLootTables extends BlockLootTables {
 				.addEntry(
 						ItemLootEntry.builder(itemContainer).acceptFunction(CopyName.builder(CopyName.Source.BLOCK_ENTITY))
 								.acceptFunction(CopyNbt.builder(CopyNbt.Source.BLOCK_ENTITY)
-//										.replaceOperation("Lock", "BlockEntityTag.Lock")
-//										.replaceOperation("LootTable", "BlockEntityTag.LootTable")
-//										.replaceOperation("LootTableSeed", "BlockEntityTag.LootTableSeed")
+												.addOperation("Contents", "BlockEntityTag.Contents", CopyNbt.Action.REPLACE) // doesn't work :(
+//										.replaceOperation("OwnerUUID", "BlockEntityTag.OwnerUUID")
+//										.replaceOperation("UserList", "BlockEntityTag.UserList")
 								)
-								.acceptFunction(SetContents.builderIn().addLootEntry(DynamicLootEntry.func_216162_a(ShulkerBoxBlock.CONTENTS)))
 				)));
 	}
 

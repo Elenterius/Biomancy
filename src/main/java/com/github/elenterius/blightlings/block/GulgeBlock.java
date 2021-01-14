@@ -3,13 +3,16 @@ package com.github.elenterius.blightlings.block;
 import com.github.elenterius.blightlings.tileentity.GulgeTileEntity;
 import com.github.elenterius.blightlings.util.TooltipUtil;
 import net.minecraft.block.*;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.NumberNBT;
@@ -19,6 +22,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -30,10 +35,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.List;
 
 public class GulgeBlock extends ContainerBlock {
 	public static final EnumProperty<Direction> FACING = DirectionalBlock.FACING;
+
+	protected static final VoxelShape SHAPE_UD = Block.makeCuboidShape(3d, 0d, 3d, 13d, 16d, 13d);
+	protected static final VoxelShape SHAPE_NS = Block.makeCuboidShape(3d, 3d, 0d, 13d, 13d, 16d);
+	protected static final VoxelShape SHAPE_WE = Block.makeCuboidShape(0d, 3d, 3d, 16d, 13d, 13d);
 
 	public GulgeBlock(Properties builder) {
 		super(builder);
@@ -105,16 +115,53 @@ public class GulgeBlock extends ContainerBlock {
 		}
 	}
 
-//	@Override
-//	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
-//		ItemStack itemstack = super.getItem(worldIn, pos, state);
-//		GulgeTileEntity tileEntity = (GulgeTileEntity) worldIn.getTileEntity(pos);
-//		CompoundNBT nbt = tileEntity.write(new CompoundNBT());
-//		if (!nbt.isEmpty()) {
-//			itemstack.setTagInfo("BlockEntityTag", nbt);
-//		}
-//		return itemstack;
-//	}
+	@Override
+	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+		TileEntity tileEntity = worldIn.getTileEntity(pos);
+		if (tileEntity instanceof GulgeTileEntity) {
+			GulgeTileEntity tile = (GulgeTileEntity) tileEntity;
+			if (!worldIn.isRemote()) {
+				if (!player.isCreative() || (player.isCreative() && !tile.isEmpty())) { // we drop the item manually
+					ItemStack stack = new ItemStack(this);
+					CompoundNBT nbt = tile.write(new CompoundNBT());
+					if (!nbt.isEmpty()) {
+						stack.setTagInfo("BlockEntityTag", nbt);
+					}
+
+					if (tile.hasCustomName()) {
+						stack.setDisplayName(tile.getCustomName());
+					}
+
+					ItemEntity itementity = new ItemEntity(worldIn, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, stack);
+					itementity.setDefaultPickupDelay();
+					worldIn.addEntity(itementity);
+				}
+			}
+		}
+
+		super.onBlockHarvested(worldIn, pos, state, player);
+	}
+
+	@Override
+	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+		return Collections.emptyList(); // fuck copy nbt in loot tables //TODO: figure out how to copy nbt to loot
+	}
+
+	@Override
+	public ItemStack getItem(IBlockReader worldIn, BlockPos pos, BlockState state) {
+		ItemStack itemstack = super.getItem(worldIn, pos, state);
+		GulgeTileEntity tileEntity = (GulgeTileEntity) worldIn.getTileEntity(pos);
+		CompoundNBT nbt = tileEntity.write(new CompoundNBT());
+		if (!nbt.isEmpty()) {
+			itemstack.setTagInfo("BlockEntityTag", nbt);
+		}
+		return itemstack;
+	}
+
+	@Override
+	public PushReaction getPushReaction(BlockState state) {
+		return PushReaction.BLOCK;
+	}
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
@@ -129,6 +176,22 @@ public class GulgeBlock extends ContainerBlock {
 	@Override
 	public BlockRenderType getRenderType(BlockState state) {
 		return BlockRenderType.MODEL;
+	}
+
+	@Override
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+		switch (state.get(FACING)) {
+			case UP:
+			case DOWN:
+			default:
+				return SHAPE_UD;
+			case NORTH:
+			case SOUTH:
+				return SHAPE_NS;
+			case WEST:
+			case EAST:
+				return SHAPE_WE;
+		}
 	}
 
 	@Nullable
