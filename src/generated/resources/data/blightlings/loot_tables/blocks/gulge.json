@@ -18,7 +18,17 @@
                 {
                   "source": "Contents",
                   "target": "BlockEntityTag.Contents",
-                  "op": "merge"
+                  "op": "replace"
+                },
+                {
+                  "source": "OwnerUUID",
+                  "target": "BlockEntityTag.OwnerUUID",
+                  "op": "replace"
+                },
+                {
+                  "source": "UserList",
+                  "target": "BlockEntityTag.UserList",
+                  "op": "replace"
                 }
               ]
             }

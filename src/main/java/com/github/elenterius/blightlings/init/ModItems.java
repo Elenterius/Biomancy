@@ -68,7 +68,7 @@ public final class ModItems {
 	public static final RegistryObject<BlockItem> CANDELABRA_FUNGUS = ITEMS.register("candelabra_fungus", () -> new BlockItem(ModBlocks.CANDELABRA_FUNGUS.get(), createItemProperties()));
 
 	//container blocks
-	public static final RegistryObject<BlockItem> GULGE = ITEMS.register("gulge", () -> new BlockItem(ModBlocks.GULGE.get(), createItemProperties()));
+	public static final RegistryObject<BlockItem> GULGE = ITEMS.register("gulge", () -> new BlockItem(ModBlocks.GULGE.get(), createItemProperties().rarity(Rarity.EPIC)));
 
 	private ModItems() {}
 

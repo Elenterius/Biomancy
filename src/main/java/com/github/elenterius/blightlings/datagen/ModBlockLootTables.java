@@ -7,10 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.data.loot.BlockLootTables;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.loot.*;
-import net.minecraft.loot.functions.ApplyBonus;
-import net.minecraft.loot.functions.CopyName;
-import net.minecraft.loot.functions.CopyNbt;
-import net.minecraft.loot.functions.SetCount;
+import net.minecraft.loot.functions.*;
 import net.minecraftforge.fml.RegistryObject;
 import org.apache.logging.log4j.MarkerManager;
 
@@ -21,13 +18,13 @@ public class ModBlockLootTables extends BlockLootTables {
 
 	protected static LootTable.Builder droppingWithContents(Block itemContainer) {
 		return LootTable.builder().addLootPool(withSurvivesExplosion(itemContainer, LootPool.builder().rolls(ConstantRange.of(1))
-				.addEntry(
-						ItemLootEntry.builder(itemContainer).acceptFunction(CopyName.builder(CopyName.Source.BLOCK_ENTITY))
-								.acceptFunction(CopyNbt.builder(CopyNbt.Source.BLOCK_ENTITY)
-												.addOperation("Contents", "BlockEntityTag.Contents", CopyNbt.Action.REPLACE) // doesn't work :(
-//										.replaceOperation("OwnerUUID", "BlockEntityTag.OwnerUUID")
-//										.replaceOperation("UserList", "BlockEntityTag.UserList")
-								)
+				.addEntry(ItemLootEntry.builder(itemContainer)
+						.acceptFunction(CopyName.builder(CopyName.Source.BLOCK_ENTITY))
+						.acceptFunction(CopyNbt.builder(CopyNbt.Source.BLOCK_ENTITY)
+								.replaceOperation("Contents", "BlockEntityTag.Contents")
+								.replaceOperation("OwnerUUID", "BlockEntityTag.OwnerUUID")
+								.replaceOperation("UserList", "BlockEntityTag.UserList")
+						)
 				)));
 	}
 

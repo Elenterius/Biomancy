@@ -76,12 +76,6 @@ public class GulgeTileEntity extends OwnableTileEntity implements INamedContaine
 	}
 
 	@Override
-	protected void invalidateCaps() {
-		super.invalidateCaps();
-		gulgeContents.itemHandler.invalidate();
-	}
-
-	@Override
 	protected ITextComponent getDefaultName() {
 		return BlightlingsMod.getTranslationComponent("container", "gulge");
 	}

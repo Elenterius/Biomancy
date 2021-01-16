@@ -51,9 +51,13 @@ public final class ModBlocks {
 	public static final RegistryObject<SlabBlock> BLIGHT_MOSS_SLAB = BLOCKS.register("blight_moss_slab", () -> new SlabBlock(Block.Properties.create(Material.EARTH, MaterialColor.DIRT).hardnessAndResistance(0.4F).setAllowsSpawn(ModBlocks::canEntitySpawn).sound(SoundType.PLANT)));
 
 	//Containers
-	public static final RegistryObject<GulgeBlock> GULGE = BLOCKS.register("gulge", () -> new GulgeBlock(AbstractBlock.Properties.create(Material.ORGANIC, MaterialColor.PINK).harvestTool(ToolType.SHOVEL).hardnessAndResistance(3.0F, 3.0F).sound(SoundType.SLIME)));
+	public static final RegistryObject<GulgeBlock> GULGE = BLOCKS.register("gulge", () -> new GulgeBlock(createFleshProperties()));
 
 	private ModBlocks() {}
+
+	public static AbstractBlock.Properties createFleshProperties() {
+		return AbstractBlock.Properties.create(Material.ORGANIC, MaterialColor.PINK).harvestTool(ToolType.SHOVEL).hardnessAndResistance(3.0F, 3.0F).sound(SoundType.SLIME).setAllowsSpawn(ModBlocks::limitEntitySpawnToFlesh);
+	}
 
 	public static Block.Properties glowingPlantProperties(int i) {
 		return Block.Properties.create(Material.PLANTS).doesNotBlockMovement().hardnessAndResistance(0.2F).sound(SoundType.PLANT).setLightLevel(v -> i);
@@ -61,6 +65,11 @@ public final class ModBlocks {
 
 	public static AbstractBlock.Properties blighPlantProperties() {
 		return Block.Properties.create(Material.TALL_PLANTS).doesNotBlockMovement().setAllowsSpawn(ModBlocks::canEntitySpawn).hardnessAndResistance(0.0F).sound(SoundType.PLANT);
+	}
+
+	public static boolean limitEntitySpawnToFlesh(BlockState state, IBlockReader reader, BlockPos pos, EntityType<?> entityType) {
+//		entityType.getTags().contains(); //TODO: implement this
+		return false;
 	}
 
 	public static boolean canEntitySpawn(BlockState state, IBlockReader reader, BlockPos pos, EntityType<?> entityType) {
