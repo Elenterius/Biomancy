@@ -56,7 +56,6 @@ public final class ClientSetupHandler {
 			ItemModelsProperties.registerProperty(ModItems.ENTITY_STORAGE_ITEM.get(), new ResourceLocation("fullness"), (stack, clientWorld, livingEntity) -> ModItems.ENTITY_STORAGE_ITEM.get().getFullness(stack));
 
 			RenderTypeLookup.setRenderLayer(ModBlocks.LUMINOUS_SOIL.get(), renderType -> renderType == RenderType.getCutout() || renderType == RenderType.getTranslucent());
-			RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_QUARTZ_ORE.get(), renderType -> renderType == RenderType.getSolid() || renderType == RenderType.getTranslucent());
 			RenderTypeLookup.setRenderLayer(ModBlocks.LILY_TREE_SAPLING.get(), RenderType.getCutout());
 			RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_PUSTULE_SMALL.get(), RenderType.getCutout());
 			RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_PUSTULE_BIG.get(), RenderType.getCutout());
@@ -75,14 +74,13 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void onItemColorRegistry(final ColorHandlerEvent.Item event) {
-		event.getItemColors().register((stack, index) -> 0xff5eeb, ModItems.BLIGHT_GOO.get());
-		event.getItemColors().register((stack, index) -> 0xf99fee, ModItems.BLIGHT_STRING.get());
+//		event.getItemColors().register((stack, index) -> 0xff5eeb, ModItems.ERODING_BILE.get());
+		//0xf99fee
 	}
 
 	@SubscribeEvent
 	public static void onModelBakeEvent(ModelBakeEvent event) {
 		addFullBrightOverlayBakedModel(ModBlocks.LUMINOUS_SOIL.get(), event);
-		addFullBrightOverlayBakedModel(ModBlocks.BLIGHT_QUARTZ_ORE.get(), event);
 	}
 
 	private static void addFullBrightOverlayBakedModel(Block block, ModelBakeEvent event) {

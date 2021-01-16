@@ -18,15 +18,22 @@
   "item.blightlings.mason_beetle": "Beetle of Block Placement",
   "item.blightlings.luminescent_spores": "Luminescent Spores",
 
+  "item.blightlings.sewing_kit": "Bone Needle & String",
+  "item.blightlings.sewing_kit_empty": "Bone Needle",
+  "item.blightlings.sharp_bone": "Sharpened Bone",
   "item.blightlings.mended_skin": "Stitched Skin",
-  "item.blightlings.sewing_kit": "Sewing Kit",
+  "item.blightlings.bone_scraps": "Bone Scraps",
+  "item.blightlings.skin_chunk": "Chunk of Skin",
+  "item.blightlings.flesh_lump": "Lump of Flesh",
+  "item.blightlings.mutagenic_bile": "Mutagenic Bile",
+  "item.blightlings.eroding_bile": "Eroding Bile",
+  "item.blightlings.rejuvenating_mucus": "Rejuvenating Mucus",
+  "item.blightlings.oculus": "Oculus",
+  "item.blightlings.lens_shard": "Meniscus Lens Shard",
 
-  "item.blightlings.blight_sac": "Blight Sac",
-  "item.blightlings.blight_string": "[PH] Purpura Silk",
-  "item.blightlings.blight_goo": "[PH] Bile/Mucus",
-  "item.blightlings.blight_shard": "Meniscus Lens Shard",
-  "item.blightlings.blight_eye": "Oculus",
-  "item.blightlings.blight_quartz": "Blight Quartz Shard",
+  "item.blightlings.mutated_heart": "Bio-Engine",
+
+  "item.blightlings.twisted_heart": "Blight Sac",
   "item.blightlings.makhana": "Polluted Makhana",
 
   "item.blightlings.blobling_spawn_egg": "Blobling Spawn Egg",
@@ -47,7 +54,6 @@
   "block.blightlings.luminous_soil": "Infertile Soil infested with Luminescent Spores",
   "block.blightlings.blight_soil": "Afflicted Soil",
   "block.blightlings.blight_stone": "Afflicted Stone",
-  "block.blightlings.blight_quartz_ore": "Blight Quartz Ore",
   "block.blightlings.blight_moss": "Infested Bryophyta",
   "block.blightlings.lilytree_sapling": "Prickly Lilymould Sapling",
   "block.blightlings.lilytree_stem": "Prickly Lilymould Stem",
@@ -56,9 +62,12 @@
   "block.blightlings.blight_pustule_1": "Large Pustule",
   "block.blightlings.blight_pustule_2": "Large and Small Pustules",
   "block.blightlings.blight_pustule_3": "Small Pustule Cluster",
-  "block.blightlings.candelabra_fungus": "Candelabra Fungus",
 
+  "block.blightlings.flesh_block": "Flesh Block",
+  "block.blightlings.flesh_block_slab": "Flesh Block Slab",
+  "block.blightlings.mutated_flesh_block": "Mutated Flesh Block",
   "block.blightlings.gulge": "Deep Gulge",
+
   "container.blightlings.gulge": "Deep Gulge",
 
   "entity.blightlings.blobling": "Blobling",

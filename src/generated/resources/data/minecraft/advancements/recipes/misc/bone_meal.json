@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:bone_meal"
+    ]
+  },
+  "criteria": {
+    "has_bone_scraps": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "blightlings:bone_scraps"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:bone_meal"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_bone_scraps",
+      "has_the_recipe"
+    ]
+  ]
+}

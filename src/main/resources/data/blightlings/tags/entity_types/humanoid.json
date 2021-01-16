@@ -1,0 +1,18 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:player",
+    "minecraft:villager",
+    "minecraft:wandering_trader",
+    "minecraft:pillager",
+    "minecraft:illusioner",
+    "minecraft:evoker",
+    "minecraft:vindicator",
+    "minecraft:witch",
+    "minecraft:piglin",
+    "minecraft:piglin_brute"
+  ],
+  "optional": [
+    "eidolon:necromancer"
+  ]
+}

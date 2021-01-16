@@ -100,6 +100,6 @@ public class GogglesArmorItem extends ArmorItem implements IEntityUnveilerHeadSl
 
 	@Override
 	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-		return ModItems.BLIGHT_SHARD.get() == repair.getItem();
+		return ModItems.LENS_SHARD.get() == repair.getItem();
 	}
 }

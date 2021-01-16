@@ -3,9 +3,9 @@ package com.github.elenterius.blightlings.datagen;
 import com.github.elenterius.blightlings.BlightlingsMod;
 import com.github.elenterius.blightlings.init.ModItems;
 import com.github.elenterius.blightlings.init.ModRecipes;
-import net.minecraft.block.Blocks;
 import net.minecraft.data.*;
 import net.minecraft.item.Items;
+import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
@@ -20,21 +20,46 @@ public class ModRecipeProvider extends RecipeProvider {
 	@Override
 	protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
 		ShapedRecipeBuilder.shapedRecipe(ModItems.OCULUS.get())
-				.key('G', ModItems.BLIGHT_GOO.get()).key('S', ModItems.BLIGHT_SHARD.get()).key('E', Items.SPIDER_EYE)
-				.patternLine("GSG").patternLine("SES").patternLine("GSG")
-				.addCriterion("has_blight_shard", hasItem(ModItems.BLIGHT_SHARD.get())).build(consumer);
+				.key('F', ModItems.FLESH_LUMP.get()).key('R', ModItems.REJUVENATING_MUCUS.get()).key('S', ModItems.LENS_SHARD.get()).key('E', Items.SPIDER_EYE)
+				.patternLine("RSF").patternLine("SER").patternLine("RSF")
+				.addCriterion("has_rejuvenating_mucus", hasItem(ModItems.REJUVENATING_MUCUS.get())).build(consumer);
 
 		ShapedRecipeBuilder.shapedRecipe(ModItems.TRUE_SIGHT_GOGGLES.get())
-				.key('O', ModItems.OCULUS.get()).key('S', ModItems.BLIGHT_SAC.get()).key('I', Tags.Items.INGOTS_IRON)
+				.key('O', ModItems.OCULUS.get()).key('S', ModItems.TWISTED_HEART.get()).key('I', Tags.Items.INGOTS_IRON)
 				.patternLine("OSO").patternLine("OIO")
-				.addCriterion("has_blight_shard", hasItem(ModItems.BLIGHT_SHARD.get())).build(consumer);
+				.addCriterion("has_lens_shard", hasItem(ModItems.LENS_SHARD.get())).build(consumer);
 
-		ShapedRecipeBuilder.shapedRecipe(Blocks.PINK_WOOL)
-				.key('#', ModItems.BLIGHT_STRING.get()).patternLine("##").patternLine("##")
-				.addCriterion("has_blight_string", hasItem(ModItems.BLIGHT_STRING.get())).build(consumer, new ResourceLocation(BlightlingsMod.MOD_ID, "pink_wool_from_string"));
+		ShapelessRecipeBuilder.shapelessRecipe(ModItems.SEWING_KIT_EMPTY.get())
+				.addIngredient(Tags.Items.BONES).addIngredient(Items.FLINT)
+				.addCriterion("has_bone", hasItem(Tags.Items.BONES)).build(consumer);
 
-		SmithingRecipeBuilder.smithingRecipe(Ingredient.fromItems(Items.DIAMOND_AXE), Ingredient.fromItems(ModItems.BLIGHT_SAC.get()), ModItems.BLIGHTBRINGER_AXE.get())
-				.addCriterion("has_blight_sac", hasItem(ModItems.BLIGHT_SAC.get())).build(consumer, new ResourceLocation(BlightlingsMod.MOD_ID, ModItems.BLIGHTBRINGER_AXE.get().getRegistryName().getPath() + "_smithing"));
+		ShapedRecipeBuilder.shapedRecipe(ModItems.SHARP_BONE.get())
+				.key('S', ModItems.SEWING_KIT_EMPTY.get()).key('B', Tags.Items.BONES)
+				.patternLine("S").patternLine("B")
+				.addCriterion("has_bone", hasItem(Tags.Items.BONES)).build(consumer);
+
+		ShapelessRecipeBuilder.shapelessRecipe(ModItems.SEWING_KIT.get())
+				.addIngredient(ModItems.SEWING_KIT_EMPTY.get()).addIngredient(Tags.Items.STRING).addIngredient(Tags.Items.STRING).addIngredient(Tags.Items.STRING)
+				.addCriterion("has_empty_sewing_kit", hasItem(ModItems.SEWING_KIT_EMPTY.get())).build(consumer);
+
+		CustomRecipeBuilder.customRecipe(ModRecipes.REPAIR_SPECIAL_SEWING_KIT.get()).build(consumer, BlightlingsMod.MOD_ID + ":" + "sewing_kit_nbt");
+
+		ShapelessRecipeBuilder.shapelessRecipe(Items.BONE_MEAL)
+				.addIngredient(ModItems.BONE_SCRAPS.get(), 4)
+				.addCriterion("has_bone_scraps", hasItem(ModItems.BONE_SCRAPS.get())).build(consumer);
+
+		ShapedRecipeBuilder.shapedRecipe(ModItems.MENDED_SKIN.get())
+				.key('S', ModItems.SEWING_KIT.get())
+				.key('C', ModItems.SKIN_CHUNK.get())
+				.patternLine("CC ").patternLine("CC ").patternLine("CCS")
+				.addCriterion("has_skin_chunk", hasItem(ModItems.SKIN_CHUNK.get())).build(consumer);
+
+		CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(ModItems.MENDED_SKIN.get()), Items.LEATHER, 0.1F, 350, IRecipeSerializer.SMOKING)
+				.addCriterion("has_skin_chunk", hasItem(ModItems.SKIN_CHUNK.get())).build(consumer, new ResourceLocation(BlightlingsMod.MOD_ID, "leather_from_smoking"));
+
+		//noinspection ConstantConditions
+		SmithingRecipeBuilder.smithingRecipe(Ingredient.fromItems(Items.DIAMOND_AXE), Ingredient.fromItems(ModItems.TWISTED_HEART.get()), ModItems.BLIGHTBRINGER_AXE.get())
+				.addCriterion("has_blight_sac", hasItem(ModItems.TWISTED_HEART.get())).build(consumer, new ResourceLocation(BlightlingsMod.MOD_ID, ModItems.BLIGHTBRINGER_AXE.get().getRegistryName().getPath() + "_smithing"));
 
 		CustomRecipeBuilder.customRecipe(ModRecipes.CRAFTING_SPECIAL_POTION_BEETLE.get()).build(consumer, BlightlingsMod.MOD_ID + ":" + "potion_beetle");
 		CustomRecipeBuilder.customRecipe(ModRecipes.CRAFTING_SPECIAL_MASON_BEETLE.get()).build(consumer, BlightlingsMod.MOD_ID + ":" + "mason_beetle");

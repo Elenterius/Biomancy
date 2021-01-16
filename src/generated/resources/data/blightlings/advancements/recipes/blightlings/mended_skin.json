@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "blightlings:mended_skin"
+    ]
+  },
+  "criteria": {
+    "has_skin_chunk": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "blightlings:skin_chunk"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "blightlings:mended_skin"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_skin_chunk",
+      "has_the_recipe"
+    ]
+  ]
+}

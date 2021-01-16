@@ -25,8 +25,6 @@ public final class ModBlocks {
 	public static final RegistryObject<BlightSoilBlock> LUMINOUS_SOIL = BLOCKS.register("luminous_soil",
 			() -> new BlightSoilBlock(Block.Properties.create(Material.EARTH, MaterialColor.BLACK).hardnessAndResistance(0.5F).sound(SoundType.GROUND)));
 
-	public static final RegistryObject<CrystalOre> BLIGHT_QUARTZ_ORE = BLOCKS.register("blight_quartz_ore", () -> new CrystalOre(AbstractBlock.Properties.create(Material.ROCK, MaterialColor.QUARTZ).setRequiresTool().hardnessAndResistance(3.0F, 3.0F).sound(SoundType.NETHER_ORE)));
-
 	public static final RegistryObject<BlightPustuleBlock> BLIGHT_PUSTULE_SMALL = BLOCKS.register("blight_pustule_0", () -> new BlightPustuleBlock(glowingPlantProperties(3)));
 	public static final RegistryObject<BlightPustuleBlock> BLIGHT_PUSTULE_BIG = BLOCKS.register("blight_pustule_1", () -> new BlightPustuleBlock(glowingPlantProperties(9)));
 	public static final RegistryObject<BlightPustuleBlock> BLIGHT_PUSTULE_BIG_AND_SMALL = BLOCKS.register("blight_pustule_2", () -> new BlightPustuleBlock(glowingPlantProperties(12)));
@@ -39,7 +37,6 @@ public final class ModBlocks {
 					return worldIn.getLightSubtracted(pos, 0) < 13 && super.isValidPosition(state, worldIn, pos);
 				}
 			});
-	public static final RegistryObject<Block> CANDELABRA_FUNGUS = BLOCKS.register("candelabra_fungus", () -> new BlightPlantBlock(Block.Properties.create(Material.PLANTS).doesNotBlockMovement().hardnessAndResistance(0.2F).sound(SoundType.PLANT)));
 
 	public static final RegistryObject<BlightPlantBlock> BLIGHT_SPROUT = BLOCKS.register("blight_sprout", () -> new BlightPlantBlock(true, blighPlantProperties()));
 	public static final RegistryObject<BlightPlantBlock> BLIGHT_SPROUT_SMALL = BLOCKS.register("blight_sprout_small", () -> new BlightPlantBlock(true, blighPlantProperties()));
@@ -49,6 +46,11 @@ public final class ModBlocks {
 	public static final RegistryObject<BlightSaplingBlock> LILY_TREE_SAPLING = BLOCKS.register("lilytree_sapling", () -> new BlightSaplingBlock(Block.Properties.create(Material.PLANTS).doesNotBlockMovement().tickRandomly().hardnessAndResistance(0.0F).sound(SoundType.PLANT)));
 	public static final RegistryObject<RotatedPillarBlock> LILY_TREE_STEM = BLOCKS.register("lilytree_stem", () -> new RotatedPillarBlock(Block.Properties.create(Material.WOOD, MaterialColor.DIRT).hardnessAndResistance(0.4F).setAllowsSpawn(ModBlocks::canEntitySpawn).sound(SoundType.PLANT)));
 	public static final RegistryObject<SlabBlock> BLIGHT_MOSS_SLAB = BLOCKS.register("blight_moss_slab", () -> new SlabBlock(Block.Properties.create(Material.EARTH, MaterialColor.DIRT).hardnessAndResistance(0.4F).setAllowsSpawn(ModBlocks::canEntitySpawn).sound(SoundType.PLANT)));
+
+	//Material
+	public static final RegistryObject<Block> FLESH_BLOCK = BLOCKS.register("flesh_block", () -> new Block(createFleshProperties()));
+	public static final RegistryObject<SlabBlock> FLESH_BLOCK_SLAB = BLOCKS.register("flesh_block_slab", () -> new SlabBlock(createFleshProperties()));
+	public static final RegistryObject<MutatedFleshBlock> MUTATED_FLESH_BLOCK = BLOCKS.register("mutated_flesh_block", () -> new MutatedFleshBlock(createFleshProperties()));
 
 	//Containers
 	public static final RegistryObject<GulgeBlock> GULGE = BLOCKS.register("gulge", () -> new GulgeBlock(createFleshProperties()));

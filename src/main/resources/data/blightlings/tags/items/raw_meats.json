@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:porkchop",
+    "minecraft:rabbit",
+    "minecraft:mutton",
+    "minecraft:cod",
+    "minecraft:salmon",
+    "minecraft:beef",
+    "minecraft:chicken",
+    "blightlings:flesh_lump",
+    "blightlings:flesh_block",
+    "blightlings:flesh_block_slab",
+    "blightlings:mutated_flesh_block"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "blightlings:block/flesh_block_bland"
+      },
+      {
+        "model": "blightlings:block/flesh_block_rough_0"
+      },
+      {
+        "model": "blightlings:block/flesh_block_rough_1"
+      },
+      {
+        "model": "blightlings:block/flesh_block_rough_2"
+      }
+    ]
+  }
+}

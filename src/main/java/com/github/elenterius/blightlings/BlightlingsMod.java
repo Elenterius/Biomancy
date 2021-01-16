@@ -13,6 +13,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.potion.Potions;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
@@ -53,11 +54,15 @@ public final class BlightlingsMod {
 //        ModBiomes.BIOME_REGISTRY.register(modEventBus);
 	}
 
+	public static ResourceLocation createRL(String path) {
+		return new ResourceLocation(MOD_ID, path);
+	}
+
 	public static String getTranslationKey(String prefix, String suffix) {
 		return prefix + "." + MOD_ID + "." + suffix;
 	}
 
-	public static TranslationTextComponent getTranslationComponent(String prefix, String suffix) {
+	public static TranslationTextComponent getTranslationText(String prefix, String suffix) {
 		return new TranslationTextComponent(getTranslationKey(prefix, suffix));
 	}
 
@@ -71,10 +76,10 @@ public final class BlightlingsMod {
 		public void fill(@Nonnull NonNullList<ItemStack> items) {
 			super.fill(items);
 			items.add(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(ModEnchantments.CLIMBING.get(), 1)));
-			items.add(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(ModEnchantments.BULLET_JUMP.get(), 1)));
-			items.add(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(ModEnchantments.BULLET_JUMP.get(), 2)));
 			items.add(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(ModEnchantments.BULLET_JUMP.get(), 3)));
+			items.add(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(ModEnchantments.ATTUNED_BANE.get(), 5)));
 
+			//add placeholder potions
 			for (RegistryObject<Effect> effect : ModEffects.EFFECTS.getEntries()) {
 				ItemStack potionStack = PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.WATER);
 				CompoundNBT compoundnbt = potionStack.getOrCreateTag();

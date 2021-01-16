@@ -1,15 +1,21 @@
 {
-  "type": "minecraft:crafting_shaped", "pattern": [
-  "OSO", "OIO"
-], "key": {
-  "O": {
-    "item": "blightlings:blight_eye"
-  }, "S": {
-    "item": "blightlings:blight_sac"
-  }, "I": {
-    "tag": "forge:ingots/iron"
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "OSO",
+    "OIO"
+  ],
+  "key": {
+    "O": {
+      "item": "blightlings:oculus"
+    },
+    "S": {
+      "item": "blightlings:twisted_heart"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "result": {
+    "item": "blightlings:true_sight_goggles"
   }
-}, "result": {
-  "item": "blightlings:true_sight_goggles"
-}
 }

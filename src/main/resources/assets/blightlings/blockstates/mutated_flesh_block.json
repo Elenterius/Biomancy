@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=eye_0": {
+      "model": "blightlings:block/mutated_flesh_block_eye_0"
+    },
+    "type=eye_1": {
+      "model": "blightlings:block/mutated_flesh_block_eye_1"
+    },
+    "type=mouth": {
+      "model": "blightlings:block/mutated_flesh_block_mouth"
+    }
+  }
+}

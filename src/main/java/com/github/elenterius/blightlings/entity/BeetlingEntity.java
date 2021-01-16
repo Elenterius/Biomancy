@@ -38,7 +38,7 @@ public class BeetlingEntity extends AnimalEntity {
 		goalSelector.addGoal(0, new SwimGoal(this));
 		goalSelector.addGoal(1, new PanicGoal(this, 1.9D));
 		goalSelector.addGoal(2, new BreedGoal(this, 0.8D));
-		goalSelector.addGoal(3, new TemptGoal(this, 1.15D, Ingredient.fromItems(ModItems.BLIGHT_GOO.get()), true));
+		goalSelector.addGoal(3, new TemptGoal(this, 1.15D, Ingredient.fromItems(ModItems.ERODING_BILE.get()), true));
 		goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
 		goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
 		goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 5.0F));
@@ -53,7 +53,7 @@ public class BeetlingEntity extends AnimalEntity {
 
 	@Override
 	public boolean isBreedingItem(ItemStack stack) {
-		return stack.getItem() == ModItems.BLIGHT_GOO.get();
+		return stack.getItem() == ModItems.ERODING_BILE.get();
 	}
 
 	@Override

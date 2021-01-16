@@ -1,0 +1,25 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:skeleton",
+    "minecraft:stray",
+    "minecraft:zombie",
+    "minecraft:drowned",
+    "minecraft:husk",
+    "minecraft:giant",
+    "minecraft:phantom",
+    "minecraft:wither",
+    "minecraft:wither_skeleton",
+    "minecraft:zoglin",
+    "minecraft:zombified_piglin",
+    "minecraft:zombie_villager",
+    "minecraft:zombie_horse",
+    "minecraft:skeleton_horse"
+  ],
+  "optional": [
+    "eidolon:zombie_brute",
+    "eidolon:wraith",
+    "bewitchment:black_dog",
+    "bewitchment:ghost"
+  ]
+}

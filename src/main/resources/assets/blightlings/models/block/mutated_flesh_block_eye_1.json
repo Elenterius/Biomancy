@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "blightlings:block/flesh_eye_1"
+  }
+}
