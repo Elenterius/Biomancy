@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "powered=false,sensitivity=none": {
+      "model": "blightlings:block/bioflesh_pressure_plate"
+    },
+    "powered=false,sensitivity=friend": {
+      "model": "blightlings:block/bioflesh_pressure_plate_friend"
+    },
+    "powered=false,sensitivity=enemy": {
+      "model": "blightlings:block/bioflesh_pressure_plate_enemy"
+    },
+    "powered=true,sensitivity=none": {
+      "model": "blightlings:block/bioflesh_pressure_plate_down"
+    },
+    "powered=true,sensitivity=friend": {
+      "model": "blightlings:block/bioflesh_pressure_plate_down_friend"
+    },
+    "powered=true,sensitivity=enemy": {
+      "model": "blightlings:block/bioflesh_pressure_plate_down_enemy"
+    }
+  }
+}

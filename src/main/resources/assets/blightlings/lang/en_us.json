@@ -66,8 +66,12 @@
   "block.blightlings.flesh_block": "Flesh Block",
   "block.blightlings.flesh_block_slab": "Flesh Block Slab",
   "block.blightlings.mutated_flesh_block": "Mutated Flesh Block",
+  "block.blightlings.bioflesh_door": "Semi-Living Flesh Door",
+  "block.blightlings.bioflesh_trapdoor": "Semi-Living Flesh Trap Door",
+  "block.blightlings.bioflesh_pressure_plate": "Semi-Living Flesh Pressure Plate",
   "block.blightlings.gulge": "Deep Gulge",
 
+  "tile.blightlings.ownable": "Ownable Tile Entity",
   "container.blightlings.gulge": "Deep Gulge",
 
   "entity.blightlings.blobling": "Blobling",
@@ -104,6 +108,7 @@
   "tooltip.blightlings.contains": "Contains: %1$s",
   "tooltip.blightlings.contains_nothing": "Contains: Nothing",
   "tooltip.blightlings.empty": "Empty",
+  "tooltip.blightlings.owner": "Owner: %1$s",
 
   "keyboard.ctrl": "ctrl",
   "enum.blightlings.mode.none": "None",

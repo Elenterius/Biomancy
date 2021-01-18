@@ -1,7 +1,9 @@
 package com.github.elenterius.blightlings.util;
 
 import com.github.elenterius.blightlings.mixin.client.ItemStackMixinAccessor;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Util;
@@ -11,10 +13,14 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.UUID;
+
 public final class TooltipUtil {
 	private TooltipUtil() {}
 
 	public static final Style LORE_STYLE = Style.EMPTY.setFormatting(TextFormatting.DARK_GRAY).setItalic(true);
+
+	public static final TranslationTextComponent CTRL_KEY_TEXT = new TranslationTextComponent("keyboard.ctrl");
 
 	public static ITextComponent FAKE_EMPTY_LINE = new StringTextComponent(" ");
 
@@ -50,4 +56,16 @@ public final class TooltipUtil {
 			stack.getTag().putInt("HideFlags", stack.getTag().getInt("HideFlags") & ~tooltipDisplay.func_242397_a());
 		}
 	}
+
+	@OnlyIn(Dist.CLIENT)
+	public static String tryToGetPlayerNameOnClientSide(UUID uuid) {
+		if (Minecraft.getInstance().world != null) {
+			PlayerEntity player = Minecraft.getInstance().world.getPlayerByUuid(uuid);
+			if (player != null) {
+				return player.getGameProfile().getName();
+			}
+		}
+		return uuid.toString();
+	}
+
 }

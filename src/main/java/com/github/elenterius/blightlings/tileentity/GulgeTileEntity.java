@@ -26,7 +26,7 @@ public class GulgeTileEntity extends OwnableTileEntity implements INamedContaine
 
 	public GulgeTileEntity() {
 		super(ModEntityTypes.GULGE_TILE.get());
-		gulgeContents = GulgeContents.createServerContents(MAX_ITEM_AMOUNT, this::canPlayerAccess, this::markDirty);
+		gulgeContents = GulgeContents.createServerContents(MAX_ITEM_AMOUNT, this::canPlayerOpenInv, this::markDirty);
 		gulgeContents.setOpenInventoryConsumer(this::onOpenInventory);
 		gulgeContents.setCloseInventoryConsumer(this::onCloseInventory);
 	}
