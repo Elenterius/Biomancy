@@ -2,11 +2,11 @@ package com.github.elenterius.blightlings.block;
 
 import com.github.elenterius.blightlings.tileentity.GulgeTileEntity;
 import com.github.elenterius.blightlings.util.TooltipUtil;
-import net.minecraft.block.*;
-import net.minecraft.block.material.PushReaction;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.DirectionalBlock;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.container.INamedContainerProvider;
@@ -27,7 +27,6 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -37,7 +36,7 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class GulgeBlock extends ContainerBlock {
+public class GulgeBlock extends OwnableContainerBlock {
 	public static final EnumProperty<Direction> FACING = DirectionalBlock.FACING;
 
 	protected static final VoxelShape SHAPE_UD = Block.makeCuboidShape(3d, 0d, 3d, 13d, 16d, 13d);
@@ -47,6 +46,16 @@ public class GulgeBlock extends ContainerBlock {
 	public GulgeBlock(Properties builder) {
 		super(builder);
 		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.UP));
+	}
+
+	@Override
+	public BlockState getStateForPlacement(BlockItemUseContext context) {
+		return this.getDefaultState().with(FACING, context.getFace());
+	}
+
+	@Override
+	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+		builder.add(FACING);
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -82,6 +91,7 @@ public class GulgeBlock extends ContainerBlock {
 	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
 		if (worldIn.isRemote()) return ActionResultType.SUCCESS;
 
+		//TODO: verify that authorization works
 		INamedContainerProvider containerProvider = getContainer(state, worldIn, pos);
 		if (containerProvider != null && player instanceof ServerPlayerEntity) {
 			ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
@@ -90,48 +100,6 @@ public class GulgeBlock extends ContainerBlock {
 		}
 
 		return ActionResultType.FAIL;
-	}
-
-	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-		if (stack.hasDisplayName()) {
-			TileEntity tileentity = worldIn.getTileEntity(pos);
-			if (tileentity instanceof GulgeTileEntity) {
-				((GulgeTileEntity) tileentity).setCustomName(stack.getDisplayName());
-			}
-		}
-	}
-
-	@Override
-	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-		TileEntity tileEntity = worldIn.getTileEntity(pos);
-		if (tileEntity instanceof GulgeTileEntity) {
-			GulgeTileEntity tile = (GulgeTileEntity) tileEntity;
-			if (!worldIn.isRemote() && player.isCreative()) { // drop item for creative player
-				if (!tile.isEmpty() && worldIn.getGameRules().getBoolean(GameRules.DO_TILE_DROPS)) {
-					ItemStack stack = new ItemStack(this);
-					CompoundNBT nbt = tile.write(new CompoundNBT());
-					if (!nbt.isEmpty()) {
-						stack.setTagInfo("BlockEntityTag", nbt);
-					}
-
-					if (tile.hasCustomName()) {
-						stack.setDisplayName(tile.getCustomName());
-					}
-
-					ItemEntity itemEntity = new ItemEntity(worldIn, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, stack);
-					itemEntity.setDefaultPickupDelay();
-					worldIn.addEntity(itemEntity);
-				}
-			}
-		}
-
-		super.onBlockHarvested(worldIn, pos, state, player);
-	}
-
-	@Override
-	public PushReaction getPushReaction(BlockState state) {
-		return PushReaction.BLOCK;
 	}
 
 	@Override
@@ -169,16 +137,6 @@ public class GulgeBlock extends ContainerBlock {
 	@Override
 	public TileEntity createNewTileEntity(IBlockReader worldIn) {
 		return new GulgeTileEntity();
-	}
-
-	@Override
-	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return this.getDefaultState().with(FACING, context.getFace());
-	}
-
-	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(FACING);
 	}
 
 }

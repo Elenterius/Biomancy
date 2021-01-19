@@ -42,7 +42,7 @@ public class OwnableDoorBlock extends DoorBlock implements IOwnableBlock {
 	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
-		IOwnableBlock.addOwnableTooltip(stack, tooltip, flagIn);
+		OwnableBlock.addOwnableTooltip(stack, tooltip, flagIn);
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class OwnableDoorBlock extends DoorBlock implements IOwnableBlock {
 		//we assume the pos of this method is always the origin position of the door (lower half)
 		TileEntity tileEntity = worldIn.getTileEntity(pos);
 		if (tileEntity instanceof SimpleOwnableTileEntity) {
-			IOwnableBlock.attachDataToOwnableTile(worldIn, (SimpleOwnableTileEntity) tileEntity, placer, stack);
+			OwnableBlock.attachDataToOwnableTile(worldIn, (SimpleOwnableTileEntity) tileEntity, placer, stack);
 		}
 	}
 
@@ -121,7 +121,7 @@ public class OwnableDoorBlock extends DoorBlock implements IOwnableBlock {
 		if (state.get(HALF) == DoubleBlockHalf.UPPER) {
 			tilePos = pos.down();
 		}
-		IOwnableBlock.dropForCreativePlayer(worldIn, this, tilePos, player);
+		OwnableBlock.dropForCreativePlayer(worldIn, this, tilePos, player);
 
 		super.onBlockHarvested(worldIn, pos, state, player);
 	}

@@ -52,7 +52,7 @@ public class OwnablePressurePlateBlock extends PressurePlateBlock implements IOw
 	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
-		IOwnableBlock.addOwnableTooltip(stack, tooltip, flagIn);
+		OwnableBlock.addOwnableTooltip(stack, tooltip, flagIn);
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class OwnablePressurePlateBlock extends PressurePlateBlock implements IOw
 		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
 		TileEntity tileEntity = worldIn.getTileEntity(pos);
 		if (tileEntity instanceof SimpleOwnableTileEntity) {
-			IOwnableBlock.attachDataToOwnableTile(worldIn, (SimpleOwnableTileEntity) tileEntity, placer, stack);
+			OwnableBlock.attachDataToOwnableTile(worldIn, (SimpleOwnableTileEntity) tileEntity, placer, stack);
 		}
 	}
 
@@ -117,10 +117,11 @@ public class OwnablePressurePlateBlock extends PressurePlateBlock implements IOw
 
 	@Override
 	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-		IOwnableBlock.dropForCreativePlayer(worldIn, this, pos, player);
+		OwnableBlock.dropForCreativePlayer(worldIn, this, pos, player);
 		super.onBlockHarvested(worldIn, pos, state, player);
 	}
 
+	@Override
 	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader worldIn, BlockPos pos) {
 		TileEntity tileEntity = worldIn.getTileEntity(pos);
 		if (tileEntity instanceof SimpleOwnableTileEntity) {

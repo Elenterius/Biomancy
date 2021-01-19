@@ -1,12 +1,11 @@
 package com.github.elenterius.blightlings.block;
 
-import net.minecraft.block.ContainerBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockReader;
 
 import javax.annotation.Nullable;
 
-public class BioConverterBlock extends ContainerBlock {
+public class BioConverterBlock extends OwnableContainerBlock {
 
 	protected BioConverterBlock(Properties builder) {
 		super(builder);

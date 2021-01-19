@@ -66,6 +66,13 @@ public class GulgeTileEntity extends OwnableTileEntity implements INamedContaine
 		gulgeContents.deserializeNBT(nbt.getCompound("Contents"));
 	}
 
+	@Override
+	public CompoundNBT writeToItemBlockEntityTag(CompoundNBT nbt) {
+		super.writeToItemBlockEntityTag(nbt);
+		nbt.put("Contents", gulgeContents.serializeNBT());
+		return nbt;
+	}
+
 	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
