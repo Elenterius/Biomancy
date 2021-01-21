@@ -19,6 +19,9 @@ public final class ModTags {
 
 	public static final class Items {
 		public static final Tags.IOptionalNamedTag<Item> RAW_MEATS = ItemTags.createOptional(new ResourceLocation(BlightlingsMod.MOD_ID, "raw_meats"));
+		public static final Tags.IOptionalNamedTag<Item> FLESH = ItemTags.createOptional(new ResourceLocation(BlightlingsMod.MOD_ID, "flesh"));
+		public static final Tags.IOptionalNamedTag<Item> COOKED_MEATS = ItemTags.createOptional(new ResourceLocation(BlightlingsMod.MOD_ID, "cooked_meats"));
+		public static final Tags.IOptionalNamedTag<Item> SUGARS = ItemTags.createOptional(new ResourceLocation(BlightlingsMod.MOD_ID, "sugars"));
 
 		private Items() {}
 

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "blightlings:rejuvenating_mucus_decomposing"
+    ]
+  },
+  "criteria": {
+    "has_suspicious_stew": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:suspicious_stew"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "blightlings:rejuvenating_mucus_decomposing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_suspicious_stew",
+      "has_the_recipe"
+    ]
+  ]
+}

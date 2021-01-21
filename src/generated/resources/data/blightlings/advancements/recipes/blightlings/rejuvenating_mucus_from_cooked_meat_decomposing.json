@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "blightlings:rejuvenating_mucus_from_cooked_meat_decomposing"
+    ]
+  },
+  "criteria": {
+    "has_any_cooked_meat": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "blightlings:cooked_meats"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "blightlings:rejuvenating_mucus_from_cooked_meat_decomposing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_any_cooked_meat",
+      "has_the_recipe"
+    ]
+  ]
+}

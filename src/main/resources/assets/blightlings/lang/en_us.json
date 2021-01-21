@@ -70,9 +70,11 @@
   "block.blightlings.bioflesh_trapdoor": "Semi-Living Flesh Trap Door",
   "block.blightlings.bioflesh_pressure_plate": "Semi-Living Flesh Pressure Plate",
   "block.blightlings.gulge": "Deep Gulge",
+  "block.blightlings.decomposer": "Bio Decomposer",
 
   "tile.blightlings.ownable": "Ownable Tile Entity",
   "container.blightlings.gulge": "Deep Gulge",
+  "container.blightlings.decomposer": "Bio Decomposer",
 
   "entity.blightlings.blobling": "Blobling",
   "entity.blightlings.brood_mother": "Brood Mother",
@@ -109,6 +111,8 @@
   "tooltip.blightlings.contains_nothing": "Contains: Nothing",
   "tooltip.blightlings.empty": "Empty",
   "tooltip.blightlings.owner": "Owner: %1$s",
+  "tooltip.blightlings.main_fuel": "Satiety",
+  "tooltip.blightlings.speed_fuel": "Dopamine & Serotonin",
 
   "keyboard.ctrl": "ctrl",
   "enum.blightlings.mode.none": "None",

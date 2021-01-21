@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "blightlings:rejuvenating_mucus_from_strong_healing_potion_decomposing"
+    ]
+  },
+  "criteria": {
+    "has_potion": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:potion"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "blightlings:rejuvenating_mucus_from_strong_healing_potion_decomposing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_potion",
+      "has_the_recipe"
+    ]
+  ]
+}

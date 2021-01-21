@@ -108,7 +108,12 @@ processResources {
     doLast {
         println("minimizing JSONs...")
         for (File file in fileTree(dir: outputs.files.asPath, include: "**/*.json")) {
-            file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
+            try {
+                file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
+            }
+            catch (Exception e) {
+                throw new Exception("Failed to minimize " + file, e)
+            }
         }
     }
 }

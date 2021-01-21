@@ -66,6 +66,7 @@ public class GulgeBlock extends OwnableContainerBlock {
 
 		CompoundNBT nbt = stack.getChildTag("BlockEntityTag");
 		if (nbt != null) {
+
 			CompoundNBT contents = nbt.getCompound("Contents");
 			if (!contents.isEmpty()) {
 				ItemStack storedStack = contents.contains("Item") ? ItemStack.read(contents.getCompound("Item")) : ItemStack.EMPTY;

@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "blightlings:flesh_lump"
+    },
+    {
+      "item": "blightlings:flesh_lump"
+    },
+    {
+      "item": "blightlings:flesh_lump"
+    },
+    {
+      "item": "blightlings:flesh_lump"
+    },
+    {
+      "item": "blightlings:flesh_lump"
+    },
+    {
+      "item": "blightlings:flesh_lump"
+    },
+    {
+      "item": "blightlings:flesh_lump"
+    },
+    {
+      "item": "blightlings:flesh_lump"
+    },
+    {
+      "item": "blightlings:flesh_lump"
+    }
+  ],
+  "result": {
+    "item": "blightlings:flesh_block"
+  }
+}

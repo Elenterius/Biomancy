@@ -29,8 +29,8 @@ public class GulgeContents implements IInventory {
 		this.markDirtyNotifier = markDirtyNotifier;
 	}
 
-	public static GulgeContents createServerContents(short maxItemAmount, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotificationLambda) {
-		return new GulgeContents(maxItemAmount, canPlayerAccessInventory, markDirtyNotificationLambda);
+	public static GulgeContents createServerContents(short maxItemAmount, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
+		return new GulgeContents(maxItemAmount, canPlayerAccessInventory, markDirtyNotifier);
 	}
 
 	public static GulgeContents createClientContents(short maxItemAmount) {
@@ -121,11 +121,6 @@ public class GulgeContents implements IInventory {
 	@Override
 	public void clear() {
 		itemHandler.ifPresent(handler -> handler.setStackInSlot(0, ItemStack.EMPTY));
-	}
-
-	@FunctionalInterface
-	public interface Notify {
-		void invoke();
 	}
 
 }

@@ -1,0 +1,17 @@
+{
+  "type": "blightlings:decomposing",
+  "ingredients": [
+    {
+      "type": "forge:nbt",
+      "item": "minecraft:potion",
+      "count": 1,
+      "nbt": "{Potion:\"minecraft:strong_regeneration\"}"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "blightlings:rejuvenating_mucus",
+    "count": 5
+  },
+  "decomposingtime": 200
+}

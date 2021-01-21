@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:rotten_flesh",
+    "blightlings:flesh_lump",
+    "blightlings:flesh_block",
+    "blightlings:flesh_block_slab",
+    "blightlings:mutated_flesh_block"
+  ]
+}

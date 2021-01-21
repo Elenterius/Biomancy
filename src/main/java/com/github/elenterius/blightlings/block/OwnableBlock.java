@@ -42,6 +42,7 @@ public abstract class OwnableBlock extends Block implements IOwnableBlock {
 		CompoundNBT nbt = stack.getChildTag("BlockEntityTag");
 		if (nbt != null) {
 			if (nbt.hasUniqueId("OwnerUUID")) {
+				tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 				StringTextComponent ownerName = new StringTextComponent(TooltipUtil.tryToGetPlayerNameOnClientSide(nbt.getUniqueId("OwnerUUID")));
 				ownerName.mergeStyle(TextFormatting.WHITE);
 				tooltip.add(new TranslationTextComponent("tooltip.blightlings.owner", ownerName).mergeStyle(TextFormatting.GRAY));

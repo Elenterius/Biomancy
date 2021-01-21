@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "blightlings:skeleton_skull_decomposing"
+    ]
+  },
+  "criteria": {
+    "has_zombie_head": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:zombie_head"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "blightlings:skeleton_skull_decomposing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_zombie_head",
+      "has_the_recipe"
+    ]
+  ]
+}

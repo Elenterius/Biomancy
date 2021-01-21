@@ -10,7 +10,7 @@ import net.minecraft.tileentity.TileEntityType;
 
 import javax.annotation.Nullable;
 
-public class SimpleSyncedTileEntity extends TileEntity {
+public abstract class SimpleSyncedTileEntity extends TileEntity {
 
 	public SimpleSyncedTileEntity(TileEntityType<?> tileEntityTypeIn) {
 		super(tileEntityTypeIn);

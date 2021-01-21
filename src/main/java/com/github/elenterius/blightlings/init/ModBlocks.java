@@ -6,6 +6,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.entity.EntityType;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -25,6 +26,7 @@ public final class ModBlocks {
 
 	//BlockProperties
 	public static final EnumProperty<UserSensitivity> USER_SENSITIVITY_PROPERTY = EnumProperty.create("sensitivity", UserSensitivity.class);
+	public static final BooleanProperty CRAFTING_PROPERTY = BooleanProperty.create("crafting");
 
 	//Blocks
 	public static final RegistryObject<BlightSoilBlock> INFERTILE_SOIL = BLOCKS.register("infertile_soil",
@@ -66,6 +68,7 @@ public final class ModBlocks {
 
 	//Containers
 	public static final RegistryObject<GulgeBlock> GULGE = BLOCKS.register("gulge", () -> new GulgeBlock(createFleshProperties()));
+	public static final RegistryObject<DecomposerBlock> DECOMPOSER = BLOCKS.register("decomposer", () -> new DecomposerBlock(createFleshProperties()));
 
 	private ModBlocks() {}
 

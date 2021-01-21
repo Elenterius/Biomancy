@@ -2,6 +2,7 @@ package com.github.elenterius.blightlings.init;
 
 import com.github.elenterius.blightlings.BlightlingsMod;
 import com.github.elenterius.blightlings.entity.*;
+import com.github.elenterius.blightlings.tileentity.DecomposerTileEntity;
 import com.github.elenterius.blightlings.tileentity.GulgeTileEntity;
 import com.github.elenterius.blightlings.tileentity.SimpleOwnableTileEntity;
 import net.minecraft.block.BlockState;
@@ -44,9 +45,11 @@ public final class ModEntityTypes {
 	public static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, BlightlingsMod.MOD_ID);
 
 	@SuppressWarnings("ConstantConditions")
-	public static final RegistryObject<TileEntityType<GulgeTileEntity>> GULGE_TILE = TILE_ENTITIES.register("gulge_tile", () -> TileEntityType.Builder.create(GulgeTileEntity::new, ModBlocks.GULGE.get()).build(null));
+	public static final RegistryObject<TileEntityType<GulgeTileEntity>> GULGE_TILE = TILE_ENTITIES.register("gulge", () -> TileEntityType.Builder.create(GulgeTileEntity::new, ModBlocks.GULGE.get()).build(null));
 	@SuppressWarnings("ConstantConditions")
 	public static final RegistryObject<TileEntityType<SimpleOwnableTileEntity>> SIMPLE_OWNABLE_TILE = TILE_ENTITIES.register("ownable_tile", () -> TileEntityType.Builder.create(SimpleOwnableTileEntity::new, ModBlocks.BIO_FLESH_DOOR.get(), ModBlocks.BIO_FLESH_TRAPDOOR.get(), ModBlocks.BIO_FLESH_PRESSURE_PLATE.get()).build(null));
+	@SuppressWarnings("ConstantConditions")
+	public static final RegistryObject<TileEntityType<DecomposerTileEntity>> DECOMPOSER_TILE = TILE_ENTITIES.register("decomposer", () -> TileEntityType.Builder.create(DecomposerTileEntity::new, ModBlocks.DECOMPOSER.get()).build(null));
 
 	private ModEntityTypes() {}
 

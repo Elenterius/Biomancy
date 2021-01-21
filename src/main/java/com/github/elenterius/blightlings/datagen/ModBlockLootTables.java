@@ -33,6 +33,19 @@ public class ModBlockLootTables extends BlockLootTables {
 				)));
 	}
 
+	protected static LootTable.Builder droppingWithFuel(Block itemContainer) {
+		return LootTable.builder().addLootPool(withSurvivesExplosion(itemContainer, LootPool.builder().rolls(ConstantRange.of(1))
+				.addEntry(ItemLootEntry.builder(itemContainer)
+						.acceptFunction(CopyName.builder(CopyName.Source.BLOCK_ENTITY))
+						.acceptFunction(CopyNbt.builder(CopyNbt.Source.BLOCK_ENTITY)
+								.replaceOperation("MainFuel", "BlockEntityTag.MainFuel")
+								.replaceOperation("SpeedFuel", "BlockEntityTag.SpeedFuel")
+								.replaceOperation("OwnerUUID", "BlockEntityTag.OwnerUUID")
+								.replaceOperation("UserList", "BlockEntityTag.UserList")
+						)
+				)));
+	}
+
 	protected static LootTable.Builder droppingSimpleOwnableDoor(Block ownableDoor) {
 		return LootTable.builder().addLootPool(withSurvivesExplosion(ownableDoor, LootPool.builder().rolls(ConstantRange.of(1))
 				.addEntry(ItemLootEntry.builder(ownableDoor)
@@ -85,7 +98,9 @@ public class ModBlockLootTables extends BlockLootTables {
 		registerLootTable(ModBlocks.BIO_FLESH_DOOR.get(), ModBlockLootTables::droppingSimpleOwnableDoor);
 		registerLootTable(ModBlocks.BIO_FLESH_TRAPDOOR.get(), ModBlockLootTables::droppingSimpleOwnable);
 		registerLootTable(ModBlocks.BIO_FLESH_PRESSURE_PLATE.get(), ModBlockLootTables::droppingSimpleOwnable);
+
 		registerLootTable(ModBlocks.GULGE.get(), ModBlockLootTables::droppingWithContents);
+		registerLootTable(ModBlocks.DECOMPOSER.get(), ModBlockLootTables::droppingWithFuel);
 
 		registerLootTable(ModBlocks.LUMINOUS_SOIL.get(), (soil) -> droppingWithSilkTouch(soil, withExplosionDecay(soil, ItemLootEntry.builder(ModItems.LUMINESCENT_SPORES.get())
 				.acceptFunction(SetCount.builder(RandomValueRange.of(4.0F, 5.0F))).acceptFunction(ApplyBonus.uniformBonusCount(Enchantments.FORTUNE)))));

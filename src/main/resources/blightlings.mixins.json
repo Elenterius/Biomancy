@@ -13,6 +13,7 @@
     "NoiseChunkGeneratorMixin",
     "PanicGoalMixin",
     "PlayerEntityMixin",
+    "RecipeManagerMixinAccessor",
     "ServerPlayerEntityMixin",
     "SwordItemMixinAccessor",
     "WorldCarverMixinAccessor"

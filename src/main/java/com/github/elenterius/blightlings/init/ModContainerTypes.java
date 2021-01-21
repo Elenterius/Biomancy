@@ -1,6 +1,7 @@
 package com.github.elenterius.blightlings.init;
 
 import com.github.elenterius.blightlings.BlightlingsMod;
+import com.github.elenterius.blightlings.inventory.DecomposerContainer;
 import com.github.elenterius.blightlings.inventory.GulgeContainer;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraftforge.common.extensions.IForgeContainerType;
@@ -13,5 +14,6 @@ public final class ModContainerTypes {
 
 	public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, BlightlingsMod.MOD_ID);
 
-	public static final RegistryObject<ContainerType<GulgeContainer>> GULGE = CONTAINERS.register("gulge_container", () -> IForgeContainerType.create(GulgeContainer::createClientContainer));
+	public static final RegistryObject<ContainerType<GulgeContainer>> GULGE = CONTAINERS.register("gulge", () -> IForgeContainerType.create(GulgeContainer::createClientContainer));
+	public static final RegistryObject<ContainerType<DecomposerContainer>> DECOMPOSER = CONTAINERS.register("decomposer", () -> IForgeContainerType.create(DecomposerContainer::createClientContainer));
 }

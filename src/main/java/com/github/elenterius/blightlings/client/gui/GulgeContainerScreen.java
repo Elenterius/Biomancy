@@ -32,8 +32,7 @@ public class GulgeContainerScreen extends ContainerScreen<GulgeContainer> {
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
 		final float FONT_Y_SPACING = 12;
-		font.func_243248_b(matrixStack, title, 10, 24 - FONT_Y_SPACING, Color.white.getRGB());
-//		font.func_243248_b(matrixStack, playerInventory.getDisplayName(), posX, 51 - FONT_Y_SPACING, Color.darkGray.getRGB());
+		font.func_243248_b(matrixStack, title, 10, 18 - FONT_Y_SPACING, Color.white.getRGB());
 	}
 
 	@Override

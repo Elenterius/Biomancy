@@ -1,7 +1,6 @@
 package com.github.elenterius.blightlings.block;
 
 import com.github.elenterius.blightlings.tileentity.OwnableTileEntity;
-import com.github.elenterius.blightlings.util.TooltipUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ContainerBlock;
 import net.minecraft.block.material.PushReaction;
@@ -30,7 +29,6 @@ public abstract class OwnableContainerBlock extends ContainerBlock implements IO
 	@Override
 	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 		OwnableBlock.addOwnableTooltip(stack, tooltip, flagIn);
 	}
 
