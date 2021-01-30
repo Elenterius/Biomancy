@@ -66,6 +66,9 @@ public final class ModBlocks {
 	public static final RegistryObject<OwnableTrapDoorBlock> BIO_FLESH_TRAPDOOR = BLOCKS.register("bioflesh_trapdoor", () -> new OwnableTrapDoorBlock(createFleshProperties().notSolid().setAllowsSpawn(ModBlocks::neverAllowSpawn)));
 	public static final RegistryObject<OwnablePressurePlateBlock> BIO_FLESH_PRESSURE_PLATE = BLOCKS.register("bioflesh_pressure_plate", () -> new OwnablePressurePlateBlock(createFleshProperties().doesNotBlockMovement()));
 
+	//Semi-Container
+	public static final RegistryObject<MeatsoupCauldronBlock> MEATSOUP_CAULDRON = BLOCKS.register("meatsoup_cauldron", () -> new MeatsoupCauldronBlock(AbstractBlock.Properties.create(Material.IRON, MaterialColor.STONE).setRequiresTool().hardnessAndResistance(2.0F).notSolid()));
+
 	//Containers
 	public static final RegistryObject<GulgeBlock> GULGE = BLOCKS.register("gulge", () -> new GulgeBlock(createFleshProperties()));
 	public static final RegistryObject<DecomposerBlock> DECOMPOSER = BLOCKS.register("decomposer", () -> new DecomposerBlock(createFleshProperties()));

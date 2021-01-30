@@ -39,6 +39,7 @@
   "item.blightlings.blobling_spawn_egg": "Blobling Spawn Egg",
   "item.blightlings.brood_mother_spawn_egg": "Brood Mother Spawn Egg",
   "item.blightlings.beetling_spawn_egg": "Beetling Spawn Egg",
+  "item.blightlings.flesh_blob_spawn_egg": "Flesh Blob Spawn Egg",
 
   "tooltip.blightlings.true_sight_goggles": "Grants you peering sight, revealing the unseen to you. You can't be blinded by night nor magic.",
   "tooltip.blightlings.blightbringer_axe": "A ornery Axe that has a 60% chance to cleave away 30% of its enemies max health when the wielders health is below 75% of the max health of the enemy.",
@@ -71,6 +72,7 @@
   "block.blightlings.bioflesh_pressure_plate": "Semi-Living Flesh Pressure Plate",
   "block.blightlings.gulge": "Deep Gulge",
   "block.blightlings.decomposer": "Bio Decomposer",
+  "block.blightlings.meatsoup_cauldron": "Meatsoup Cauldron",
 
   "tile.blightlings.ownable": "Ownable Tile Entity",
   "container.blightlings.gulge": "Deep Gulge",
@@ -80,6 +82,7 @@
   "entity.blightlings.brood_mother": "Brood Mother",
   "entity.blightlings.beetling": "Beetling",
   "entity.blightlings.potion_beetle": "Potion Beetle",
+  "entity.blightlings.flesh_blob": "Flesh Blob",
 
   "enchantment.blightlings.climbing": "Millipedes",
   "enchantment.blightlings.bullet_jump": "Copepod's Leap",

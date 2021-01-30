@@ -36,6 +36,9 @@ public class ModEntityLootTables extends EntityLootTables {
 
 		registerLootTable(ModEntityTypes.POTION_BEETLE.get(), LootTable.builder());
 		registerLootTable(ModEntityTypes.MASON_BEETLE.get(), LootTable.builder());
+
+		registerLootTable(ModEntityTypes.FLESH_BLOB.get(), LootTable.builder()
+				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(ModItems.FLESH_BLOCK.get()).acceptFunction(SetCount.builder(ConstantRange.of(1))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F))))));
 	}
 
 	@Override

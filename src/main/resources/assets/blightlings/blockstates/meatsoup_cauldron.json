@@ -1,0 +1,31 @@
+{
+  "variants": {
+    "level=0": {
+      "model": "minecraft:block/cauldron"
+    },
+    "level=1": {
+      "model": "blightlings:block/meatsoup_cauldron_level1"
+    },
+    "level=2": {
+      "model": "blightlings:block/meatsoup_cauldron_level1"
+    },
+    "level=3": {
+      "model": "blightlings:block/meatsoup_cauldron_level2"
+    },
+    "level=4": {
+      "model": "blightlings:block/meatsoup_cauldron_level2"
+    },
+    "level=5": {
+      "model": "blightlings:block/meatsoup_cauldron_level3"
+    },
+    "level=6": {
+      "model": "blightlings:block/meatsoup_cauldron_level3"
+    },
+    "level=7": {
+      "model": "blightlings:block/meatsoup_cauldron_level3"
+    },
+    "level=8": {
+      "model": "blightlings:block/meatsoup_cauldron_level3"
+    }
+  }
+}

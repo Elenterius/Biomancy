@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cauldron_level1",
+  "textures": {
+    "water": "blightlings:block/flesh_bland"
+  }
+}

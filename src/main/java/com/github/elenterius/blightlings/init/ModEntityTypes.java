@@ -40,6 +40,7 @@ public final class ModEntityTypes {
 	public static final RegistryObject<EntityType<BeetlingEntity>> BEETLING = ENTITIES.register("beetling", () -> EntityType.Builder.create(BeetlingEntity::new, EntityClassification.CREATURE).size(0.475F, 0.34F).build(BlightlingsMod.MOD_ID + ":" + "beetling"));
 	public static final RegistryObject<EntityType<PotionBeetleEntity>> POTION_BEETLE = ENTITIES.register("potion_beetle", () -> EntityType.Builder.create(PotionBeetleEntity::new, EntityClassification.CREATURE).size(0.475F, 0.34F).build(BlightlingsMod.MOD_ID + ":" + "potion_beetle"));
 	public static final RegistryObject<EntityType<MasonBeetleEntity>> MASON_BEETLE = ENTITIES.register("mason_beetle", () -> EntityType.Builder.create(MasonBeetleEntity::new, EntityClassification.CREATURE).size(0.475F, 0.34F).build(BlightlingsMod.MOD_ID + ":" + "mason_beetle"));
+	public static final RegistryObject<EntityType<FleshBlobEntity>> FLESH_BLOB = ENTITIES.register("flesh_blob", () -> EntityType.Builder.create(FleshBlobEntity::new, EntityClassification.CREATURE).size(0.75F, 0.75F).build(BlightlingsMod.MOD_ID + ":" + "flesh_blob"));
 
 
 	public static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, BlightlingsMod.MOD_ID);
@@ -61,6 +62,7 @@ public final class ModEntityTypes {
 		GlobalEntityTypeAttributes.put(BEETLING.get(), BeetlingEntity.createAttributes().create());
 		GlobalEntityTypeAttributes.put(POTION_BEETLE.get(), PotionBeetleEntity.createAttributes().create());
 		GlobalEntityTypeAttributes.put(MASON_BEETLE.get(), MasonBeetleEntity.createAttributes().create());
+		GlobalEntityTypeAttributes.put(FLESH_BLOB.get(), FleshBlobEntity.createAttributes().create());
 
 		BlightlingsMod.LOGGER.debug(MarkerManager.getMarker("ENTITIES"), "registering spawn placement predicates...");
 		EntitySpawnPlacementRegistry.register(BLOBLING.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, ModEntityTypes::canMonsterSpawn);
