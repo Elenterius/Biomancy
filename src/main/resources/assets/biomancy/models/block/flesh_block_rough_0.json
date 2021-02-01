@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "biomancy:block/flesh_rough_0"
+  }
+}

@@ -1,8 +1,0 @@
-{
-  "parent": "block/slab_top",
-  "textures": {
-    "bottom": "blightlings:block/flesh_bland",
-    "top": "blightlings:block/flesh_bland",
-    "side": "blightlings:block/flesh_bland"
-  }
-}

@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:rotten_flesh",
+    "biomancy:flesh_lump",
+    "biomancy:flesh_block",
+    "biomancy:flesh_block_slab",
+    "biomancy:mutated_flesh_block"
+  ]
+}

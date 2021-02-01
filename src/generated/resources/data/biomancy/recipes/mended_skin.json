@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CC ",
+    "CC ",
+    "CCS"
+  ],
+  "key": {
+    "S": {
+      "item": "biomancy:sewing_kit"
+    },
+    "C": {
+      "item": "biomancy:skin_chunk"
+    }
+  },
+  "result": {
+    "item": "biomancy:mended_skin"
+  }
+}

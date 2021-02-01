@@ -1,0 +1,29 @@
+{
+  "required": true,
+  "package": "com.github.elenterius.biomancy.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "mixins.biomancy.refmap.json",
+  "mixins": [
+    "DamageSourceMixin",
+    "GrindstoneContainerMixin",
+    "LivingEntityMixin",
+    "PanicGoalMixin",
+    "PlayerEntityMixin",
+    "RecipeManagerMixinAccessor",
+    "ServerPlayerEntityMixin",
+    "SwordItemMixinAccessor"
+  ],
+  "client": [
+    "client.EntityMixin",
+    "client.GetMouseOverMixin",
+    "client.ItemStackMixinAccessor",
+    "client.LivingRendererMixin",
+    "client.MinecraftMixin",
+    "client.PlayerRendererMixin"
+  ],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8.2"
+}

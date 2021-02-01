@@ -1,0 +1,13 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:warped_fungus"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:mutagenic_bile"
+  },
+  "decomposingtime": 200
+}

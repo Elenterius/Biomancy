@@ -1,0 +1,27 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "tag": "biomancy:raw_meats"
+    }
+  ],
+  "byproducts": [
+    {
+      "result": {
+        "item": "biomancy:skin_chunk"
+      },
+      "chance": 0.4
+    },
+    {
+      "result": {
+        "item": "biomancy:bone_scraps"
+      },
+      "chance": 0.2
+    }
+  ],
+  "result": {
+    "item": "biomancy:flesh_lump",
+    "count": 2
+  },
+  "decomposingtime": 200
+}

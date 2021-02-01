@@ -1,0 +1,17 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "type": "forge:nbt",
+      "item": "minecraft:potion",
+      "count": 1,
+      "nbt": "{Potion:\"minecraft:strong_healing\"}"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:rejuvenating_mucus",
+    "count": 5
+  },
+  "decomposingtime": 200
+}

@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:wither_skeleton_skull_decomposing"
+    ]
+  },
+  "criteria": {
+    "has_eroding_bile_and_wither_rose": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "biomancy:eroding_bile"
+          },
+          {
+            "item": "minecraft:wither_rose"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:wither_skeleton_skull_decomposing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_eroding_bile_and_wither_rose",
+      "has_the_recipe"
+    ]
+  ]
+}

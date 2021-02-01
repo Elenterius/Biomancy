@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S",
+    "B"
+  ],
+  "key": {
+    "S": {
+      "item": "biomancy:sewing_kit_empty"
+    },
+    "B": {
+      "tag": "forge:bones"
+    }
+  },
+  "result": {
+    "item": "biomancy:sharp_bone"
+  }
+}

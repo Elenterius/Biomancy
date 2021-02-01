@@ -1,6 +1,6 @@
 {
   "replace": false, "values": [
-  "blightlings:long_range_claw",
-  "blightlings:leech_claw"
+  "biomancy:long_range_claw",
+  "biomancy:leech_claw"
 ]
 }

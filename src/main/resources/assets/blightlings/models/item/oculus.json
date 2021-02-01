@@ -1,5 +1,0 @@
-{
-  "parent": "item/generated", "textures": {
-  "layer0": "minecraft:item/spider_eye", "layer1": "blightlings:item/oculus_overlay"
-}
-}

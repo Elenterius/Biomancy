@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:mutagenic_bile_decomposing"
+    ]
+  },
+  "criteria": {
+    "has_warped_fungus": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:warped_fungus"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:mutagenic_bile_decomposing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_warped_fungus",
+      "has_the_recipe"
+    ]
+  ]
+}

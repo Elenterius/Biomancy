@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/door_bottom",
-  "textures": {
-    "top": "blightlings:block/bioflesh_door_top",
-    "bottom": "blightlings:block/bioflesh_door_bottom"
-  }
-}

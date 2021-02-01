@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:true_sight_goggles"
+    ]
+  },
+  "criteria": {
+    "has_lens_shard": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "biomancy:lens_shard"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:true_sight_goggles"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_lens_shard",
+      "has_the_recipe"
+    ]
+  ]
+}

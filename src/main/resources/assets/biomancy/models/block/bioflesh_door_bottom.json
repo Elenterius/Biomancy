@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/door_bottom",
+  "textures": {
+    "top": "biomancy:block/bioflesh_door_top",
+    "bottom": "biomancy:block/bioflesh_door_bottom"
+  }
+}

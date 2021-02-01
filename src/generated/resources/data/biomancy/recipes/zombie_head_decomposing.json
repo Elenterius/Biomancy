@@ -1,0 +1,19 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:player_head"
+    },
+    {
+      "item": "biomancy:eroding_bile"
+    },
+    {
+      "item": "biomancy:eroding_bile"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "minecraft:zombie_head"
+  },
+  "decomposingtime": 400
+}

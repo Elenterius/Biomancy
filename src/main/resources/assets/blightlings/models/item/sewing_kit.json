@@ -1,7 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "minecraft:item/string",
-    "layer1": "blightlings:item/sewing_kit"
-  }
-}

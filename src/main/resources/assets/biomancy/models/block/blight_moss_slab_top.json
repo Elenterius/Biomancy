@@ -1,0 +1,7 @@
+{
+  "parent": "block/slab_top", "textures": {
+  "bottom": "biomancy:block/blight_moss_top",
+  "top": "biomancy:block/blight_moss_top",
+  "side": "biomancy:block/blight_moss_top"
+}
+}

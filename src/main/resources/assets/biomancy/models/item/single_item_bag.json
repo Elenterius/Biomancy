@@ -1,0 +1,20 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "biomancy:item/bag_empty"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "fullness": 0.0001
+      },
+      "model": "biomancy:item/bag_half_full"
+    },
+    {
+      "predicate": {
+        "fullness": 1
+      },
+      "model": "biomancy:item/bag_full"
+    }
+  ]
+}

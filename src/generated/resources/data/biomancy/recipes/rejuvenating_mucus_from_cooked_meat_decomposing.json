@@ -1,0 +1,13 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "tag": "biomancy:cooked_meats"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:rejuvenating_mucus"
+  },
+  "decomposingtime": 200
+}

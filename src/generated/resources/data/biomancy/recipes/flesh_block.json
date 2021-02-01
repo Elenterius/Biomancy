@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "biomancy:flesh_lump"
+    },
+    {
+      "item": "biomancy:flesh_lump"
+    },
+    {
+      "item": "biomancy:flesh_lump"
+    },
+    {
+      "item": "biomancy:flesh_lump"
+    },
+    {
+      "item": "biomancy:flesh_lump"
+    },
+    {
+      "item": "biomancy:flesh_lump"
+    },
+    {
+      "item": "biomancy:flesh_lump"
+    },
+    {
+      "item": "biomancy:flesh_lump"
+    },
+    {
+      "item": "biomancy:flesh_lump"
+    }
+  ],
+  "result": {
+    "item": "biomancy:flesh_block"
+  }
+}

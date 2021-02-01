@@ -1,0 +1,5 @@
+{
+  "parent": "minecraft:item/handheld", "textures": {
+  "layer0": "biomancy:item/blightbringer_axe"
+}
+}

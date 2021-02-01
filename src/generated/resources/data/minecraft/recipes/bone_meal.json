@@ -2,16 +2,16 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "blightlings:bone_scraps"
+      "item": "biomancy:bone_scraps"
     },
     {
-      "item": "blightlings:bone_scraps"
+      "item": "biomancy:bone_scraps"
     },
     {
-      "item": "blightlings:bone_scraps"
+      "item": "biomancy:bone_scraps"
     },
     {
-      "item": "blightlings:bone_scraps"
+      "item": "biomancy:bone_scraps"
     }
   ],
   "result": {

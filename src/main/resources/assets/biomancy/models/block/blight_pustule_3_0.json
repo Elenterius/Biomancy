@@ -1,0 +1,176 @@
+{
+  "credit": "Made by Elenterius",
+  "parent": "biomancy:block/inv_block_pustule",
+  "textures": {
+    "particle": "biomancy:block/tendrils",
+    "tendrils": "biomancy:block/tendrils",
+    "fruit": "biomancy:block/calyx_with_pustule"
+  },
+  "elements": [
+    {
+      "name": "tendrils",
+      "from": [
+        0,
+        0.01,
+        0
+      ],
+      "to": [
+        16,
+        0.01,
+        16
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          8,
+          0,
+          8
+        ]
+      },
+      "faces": {
+        "up": {
+          "uv": [
+            16,
+            16,
+            0,
+            0
+          ],
+          "rotation": 90,
+          "texture": "#tendrils"
+        }
+      }
+    },
+    {
+      "name": "pustule",
+      "from": [
+        4.98271,
+        0.56505,
+        5.31645
+      ],
+      "to": [
+        7.98271,
+        3.56505,
+        8.31645
+      ],
+      "rotation": {
+        "angle": -22.5,
+        "axis": "x",
+        "origin": [
+          7.5,
+          0,
+          8.5
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            3,
+            10,
+            6,
+            13
+          ],
+          "texture": "#fruit"
+        },
+        "east": {
+          "uv": [
+            0,
+            10,
+            3,
+            13
+          ],
+          "texture": "#fruit"
+        },
+        "south": {
+          "uv": [
+            3,
+            10,
+            6,
+            13
+          ],
+          "texture": "#fruit"
+        },
+      "west": {"uv": [0, 10, 3, 13], "texture": "#fruit"},
+      "up": {"uv": [12, 13, 9, 10], "rotation": 90, "texture": "#fruit"},
+      "down": {"uv": [0, 0, 0, 0], "rotation": 270, "texture": "#fruit"}
+    }
+  }, {
+    "name": "calyx", "from": [4.73271, 0.56505, 4.99033], "to": [8.23271, 3.56505, 8.49033], "rotation": {"angle": -22.5, "axis": "x", "origin": [7.5, 0, 8.5]}, "faces": {
+      "north": {"uv": [3, 13, 6, 16], "texture": "#fruit"},
+      "east": {"uv": [0, 13, 3, 16], "texture": "#fruit"},
+      "south": {"uv": [3, 13, 6, 16], "texture": "#fruit"},
+      "west": {"uv": [0, 13, 3, 16], "texture": "#fruit"},
+      "up": {"uv": [0, 0, 0, 0], "rotation": 90, "texture": "#fruit"},
+      "down": {"uv": [9, 13, 6, 16], "rotation": 270, "texture": "#fruit"}
+    }
+  }, {
+    "name": "pustule", "from": [4.28198, 0, 8.0622], "to": [7.28198, 3, 11.0622], "rotation": {"angle": 22.5, "axis": "y", "origin": [7.75, 0, 7.75]}, "faces": {
+      "north": {"uv": [3, 10, 6, 13], "texture": "#fruit"},
+      "east": {"uv": [0, 10, 3, 13], "texture": "#fruit"},
+      "south": {"uv": [3, 10, 6, 13], "texture": "#fruit"},
+      "west": {"uv": [0, 10, 3, 13], "texture": "#fruit"},
+      "up": {"uv": [12, 13, 9, 10], "rotation": 90, "texture": "#fruit"},
+      "down": {"uv": [0, 0, 0, 0], "rotation": 270, "texture": "#fruit"}
+    }
+  }, {
+    "name": "calyx", "from": [4.03198, 0, 7.8122], "to": [7.53198, 3, 11.3122], "rotation": {"angle": 22.5, "axis": "y", "origin": [7.75, 0, 7.75]}, "faces": {
+      "north": {"uv": [3, 13, 6, 16], "texture": "#fruit"},
+      "east": {"uv": [0, 13, 3, 16], "texture": "#fruit"},
+      "south": {"uv": [3, 13, 6, 16], "texture": "#fruit"},
+      "west": {"uv": [0, 13, 3, 16], "texture": "#fruit"},
+      "up": {"uv": [0, 0, 0, 0], "rotation": 90, "texture": "#fruit"},
+      "down": {"uv": [9, 13, 6, 16], "rotation": 270, "texture": "#fruit"}
+    }
+  }, {
+    "name": "pustule", "from": [7.61643, 0, 3.64844], "to": [10.61643, 3, 6.64844], "rotation": {"angle": -22.5, "axis": "y", "origin": [8, 0, 8]}, "faces": {
+      "north": {"uv": [0, 10, 3, 13], "texture": "#fruit"},
+      "east": {"uv": [3, 10, 6, 13], "texture": "#fruit"},
+      "south": {"uv": [0, 10, 3, 13], "texture": "#fruit"},
+      "west": {"uv": [3, 10, 6, 13], "texture": "#fruit"},
+      "up": {"uv": [12, 13, 9, 10], "texture": "#fruit"},
+      "down": {"uv": [0, 0, 0, 0], "texture": "#fruit"}
+    }
+  }, {
+    "name": "calyx", "from": [7.36643, 0, 3.39844], "to": [10.86643, 3, 6.89844], "rotation": {"angle": -22.5, "axis": "y", "origin": [8, 0, 8]}, "faces": {
+      "north": {"uv": [0, 13, 3, 16], "texture": "#fruit"},
+      "east": {"uv": [3, 13, 6, 16], "texture": "#fruit"},
+      "south": {"uv": [0, 13, 3, 16], "texture": "#fruit"},
+      "west": {"uv": [3, 13, 6, 16], "texture": "#fruit"},
+      "up": {"uv": [0, 0, 0, 0], "texture": "#fruit"},
+      "down": {"uv": [9, 13, 6, 16], "texture": "#fruit"}
+    }
+  }, {
+    "name": "pustule", "from": [7.16369, -0.25, 8.38516], "to": [10.16369, 2.75, 11.38516], "rotation": {"angle": 45, "axis": "y", "origin": [8, -0.25, 8]}, "faces": {
+      "north": {"uv": [3, 10, 6, 13], "texture": "#fruit"},
+      "east": {"uv": [0, 10, 3, 13], "texture": "#fruit"},
+      "south": {"uv": [3, 10, 6, 13], "texture": "#fruit"},
+      "west": {"uv": [0, 10, 3, 13], "texture": "#fruit"},
+      "up": {"uv": [12, 13, 9, 10], "rotation": 90, "texture": "#fruit"},
+      "down": {"uv": [0, 0, 0, 0], "rotation": 270, "texture": "#fruit"}
+    }
+  }, {
+    "name": "calyx", "from": [6.91369, -0.25, 8.13516], "to": [10.41369, 2.75, 11.63516], "rotation": {"angle": 45, "axis": "y", "origin": [8, -0.25, 8]}, "faces": {
+      "north": {"uv": [3, 13, 6, 16], "texture": "#fruit"},
+      "east": {"uv": [0, 13, 3, 16], "texture": "#fruit"},
+      "south": {"uv": [3, 13, 6, 16], "texture": "#fruit"},
+      "west": {"uv": [0, 13, 3, 16], "texture": "#fruit"},
+      "up": {"uv": [0, 0, 0, 0], "rotation": 90, "texture": "#fruit"},
+      "down": {"uv": [9, 13, 6, 16], "rotation": 270, "texture": "#fruit"}
+    }
+  }
+], "groups": [
+  {
+    "name": "group", "origin": [8, 8, 8], "children": [
+    0, {
+      "name": "small_0", "origin": [3, 1.5, 8], "children": [1, 2]
+    }, {
+      "name": "small_1", "origin": [3, 1.5, 8], "children": [3, 4]
+    }, {
+      "name": "small_2", "origin": [3, 1.5, 8], "children": [5, 6]
+    }, {
+      "name": "small_3", "origin": [3, 1.5, 8], "children": [7, 8]
+    }
+  ]
+  }
+]
+}

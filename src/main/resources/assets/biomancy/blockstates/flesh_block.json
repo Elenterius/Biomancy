@@ -1,0 +1,18 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "biomancy:block/flesh_block_bland"
+      },
+      {
+        "model": "biomancy:block/flesh_block_rough_0"
+      },
+      {
+        "model": "biomancy:block/flesh_block_rough_1"
+      },
+      {
+        "model": "biomancy:block/flesh_block_rough_2"
+      }
+    ]
+  }
+}

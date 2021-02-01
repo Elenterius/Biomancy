@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "minecraft:diamond_axe"
+  },
+  "addition": {
+    "item": "biomancy:twisted_heart"
+  },
+  "result": {
+    "item": "biomancy:blightbringer_axe"
+  }
+}

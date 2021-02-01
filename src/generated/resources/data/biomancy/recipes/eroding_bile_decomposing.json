@@ -1,0 +1,20 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:rotten_flesh"
+    }
+  ],
+  "byproducts": [
+    {
+      "result": {
+        "item": "biomancy:flesh_lump"
+      },
+      "chance": 0.2
+    }
+  ],
+  "result": {
+    "item": "biomancy:eroding_bile"
+  },
+  "decomposingtime": 200
+}

@@ -1,0 +1,24 @@
+{
+  "variants": {
+    "facing=up": {
+      "model": "biomancy:block/blight_pustule_1"
+    }, "facing=down": {
+      "model": "biomancy:block/blight_pustule_1",
+      "x": 180
+    }, "facing=east": {
+      "model": "biomancy:block/blight_pustule_1",
+      "x": 90,
+      "y": 90
+    }, "facing=north": {
+      "model": "biomancy:block/blight_pustule_1",
+      "x": 90
+    }, "facing=south": {
+      "model": "biomancy:block/blight_pustule_1",
+      "x": -90
+    }, "facing=west": {
+      "model": "biomancy:block/blight_pustule_1",
+      "x": 90,
+      "y": -90
+    }
+  }
+}

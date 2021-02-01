@@ -1,0 +1,111 @@
+{
+  "variants": {
+    "facing=up": [
+      {
+        "model": "biomancy:block/blight_pustule_3_0"
+      },
+      {
+        "model": "biomancy:block/blight_pustule_3_1"
+      },
+      {
+        "model": "biomancy:block/blight_pustule_3_2"
+      },
+      {
+        "model": "biomancy:block/blight_pustule_3_3"
+      }
+    ], "facing=down": [
+      {
+        "model": "biomancy:block/blight_pustule_3_0",
+        "x": 180
+      },
+      {
+        "model": "biomancy:block/blight_pustule_3_1",
+        "x": 180
+      },
+      {
+        "model": "biomancy:block/blight_pustule_3_2",
+        "x": 180
+      },
+      {
+        "model": "biomancy:block/blight_pustule_3_3",
+        "x": 180
+      }
+    ], "facing=east": [
+      {
+        "model": "biomancy:block/blight_pustule_3_0",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "biomancy:block/blight_pustule_3_1",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "biomancy:block/blight_pustule_3_2",
+        "x": 90,
+        "y": 90
+      },
+      {
+        "model": "biomancy:block/blight_pustule_3_3",
+        "x": 90,
+        "y": 90
+      }
+    ], "facing=north": [
+      {
+        "model": "biomancy:block/blight_pustule_3_0",
+        "x": 90
+      },
+      {
+        "model": "biomancy:block/blight_pustule_3_1",
+        "x": 90
+      },
+      {
+        "model": "biomancy:block/blight_pustule_3_2",
+        "x": 90
+      },
+      {
+        "model": "biomancy:block/blight_pustule_3_3",
+        "x": 90
+      }
+    ], "facing=south": [
+      {
+        "model": "biomancy:block/blight_pustule_3_0",
+        "x": -90
+      },
+      {
+        "model": "biomancy:block/blight_pustule_3_1",
+        "x": -90
+      },
+      {
+        "model": "biomancy:block/blight_pustule_3_2",
+        "x": -90
+      },
+      {
+        "model": "biomancy:block/blight_pustule_3_3",
+        "x": -90
+      }
+    ], "facing=west": [
+      {
+        "model": "biomancy:block/blight_pustule_3_0",
+        "x": 90,
+        "y": -90
+      },
+      {
+        "model": "biomancy:block/blight_pustule_3_1",
+        "x": 90,
+        "y": -90
+      },
+      {
+        "model": "biomancy:block/blight_pustule_3_2",
+        "x": 90,
+        "y": -90
+      },
+      {
+        "model": "biomancy:block/blight_pustule_3_3",
+        "x": 90,
+        "y": -90
+      }
+    ]
+  }
+}

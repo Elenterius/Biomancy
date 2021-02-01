@@ -1,6 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "blightlings:item/sewing_kit_empty"
-  }
-}

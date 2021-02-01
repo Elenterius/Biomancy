@@ -1,0 +1,26 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:zombie_head"
+    }
+  ],
+  "byproducts": [
+    {
+      "result": {
+        "item": "biomancy:eroding_bile"
+      },
+      "chance": 1.0
+    },
+    {
+      "result": {
+        "item": "biomancy:flesh_lump"
+      },
+      "chance": 0.2
+    }
+  ],
+  "result": {
+    "item": "minecraft:skeleton_skull"
+  },
+  "decomposingtime": 400
+}

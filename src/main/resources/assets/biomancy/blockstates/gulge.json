@@ -1,0 +1,29 @@
+{
+  "variants": {
+    "facing=up": {
+      "model": "biomancy:block/gulge"
+    },
+    "facing=down": {
+      "model": "biomancy:block/gulge",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "biomancy:block/gulge",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "biomancy:block/gulge",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "biomancy:block/gulge",
+      "x": -90
+    },
+    "facing=west": {
+      "model": "biomancy:block/gulge",
+      "x": 90,
+      "y": -90
+    }
+  }
+}

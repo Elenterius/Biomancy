@@ -1,0 +1,20 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:suspicious_stew"
+    }
+  ],
+  "byproducts": [
+    {
+      "result": {
+        "item": "biomancy:mutagenic_bile"
+      },
+      "chance": 0.15
+    }
+  ],
+  "result": {
+    "item": "biomancy:rejuvenating_mucus"
+  },
+  "decomposingtime": 200
+}
