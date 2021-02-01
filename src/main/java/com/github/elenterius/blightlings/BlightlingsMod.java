@@ -48,10 +48,6 @@ public final class BlightlingsMod {
 		ModEntityTypes.ENTITIES.register(modEventBus);
 
 		ModSoundEvents.SOUND_EVENTS.register(modEventBus);
-
-//        ModFeatures.FEATURE_REGISTRY.register(modEventBus);
-		ModFeatures.SURFACE_BUILDER_REGISTRY.register(modEventBus);
-//        ModBiomes.BIOME_REGISTRY.register(modEventBus);
 	}
 
 	public static ResourceLocation createRL(String path) {

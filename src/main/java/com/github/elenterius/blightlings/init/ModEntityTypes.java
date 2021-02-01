@@ -77,7 +77,7 @@ public final class ModEntityTypes {
 
 	public static boolean canAnimalSpawn(EntityType<? extends AnimalEntity> type, IWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {
 		BlockState blockState = worldIn.getBlockState(pos.down());
-		return (blockState.isIn(Blocks.GRASS_BLOCK) || blockState.isIn(ModBlocks.INFERTILE_SOIL.get())) && worldIn.getLightSubtracted(pos, 0) > 6;
+		return blockState.isIn(Blocks.GRASS_BLOCK) && worldIn.getLightSubtracted(pos, 0) > 6;
 	}
 
 	@SubscribeEvent

@@ -3,16 +3,19 @@ package com.github.elenterius.blightlings.datagen;
 import com.github.elenterius.blightlings.BlightlingsMod;
 import com.github.elenterius.blightlings.block.MutatedFleshBlock;
 import com.github.elenterius.blightlings.init.ModBlocks;
-import com.github.elenterius.blightlings.init.ModItems;
 import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.data.loot.BlockLootTables;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.loot.*;
+import net.minecraft.loot.ConstantRange;
+import net.minecraft.loot.ItemLootEntry;
+import net.minecraft.loot.LootPool;
+import net.minecraft.loot.LootTable;
 import net.minecraft.loot.conditions.BlockStateProperty;
-import net.minecraft.loot.functions.*;
+import net.minecraft.loot.functions.CopyBlockState;
+import net.minecraft.loot.functions.CopyName;
+import net.minecraft.loot.functions.CopyNbt;
 import net.minecraft.state.properties.DoubleBlockHalf;
 import net.minecraftforge.fml.RegistryObject;
 import org.apache.logging.log4j.MarkerManager;
@@ -78,21 +81,6 @@ public class ModBlockLootTables extends BlockLootTables {
 	@Override
 	protected void addTables() {
 
-		registerDropSelfLootTable(ModBlocks.INFERTILE_SOIL.get());
-		registerDropSelfLootTable(ModBlocks.BLIGHT_PUSTULE_SMALL.get());
-		registerDropSelfLootTable(ModBlocks.BLIGHT_PUSTULE_BIG.get());
-		registerDropSelfLootTable(ModBlocks.BLIGHT_PUSTULE_BIG_AND_SMALL.get());
-		registerDropSelfLootTable(ModBlocks.BLIGHT_PUSTULE_SMALL_GROUP.get());
-		registerDropSelfLootTable(ModBlocks.BLIGHT_SHROOM_TALL.get());
-		registerDropSelfLootTable(ModBlocks.LILY_TREE_SAPLING.get());
-		registerDropSelfLootTable(ModBlocks.BLIGHT_SPROUT.get());
-		registerDropSelfLootTable(ModBlocks.BLIGHT_SPROUT_SMALL.get());
-		registerDropSelfLootTable(ModBlocks.BLIGHT_TENTACLE_0.get());
-		registerDropSelfLootTable(ModBlocks.BLIGHT_TENTACLE_1.get());
-		registerDropSelfLootTable(ModBlocks.LILY_TREE_STEM.get());
-
-		registerLootTable(ModBlocks.BLIGHT_MOSS_SLAB.get(), BlockLootTables::droppingSlab);
-
 		registerDropSelfLootTable(ModBlocks.FLESH_BLOCK.get());
 		registerLootTable(ModBlocks.FLESH_BLOCK_SLAB.get(), BlockLootTables::droppingSlab);
 		registerLootTable(ModBlocks.MUTATED_FLESH_BLOCK.get(), ModBlockLootTables::droppingMutatedFlesh);
@@ -104,8 +92,8 @@ public class ModBlockLootTables extends BlockLootTables {
 		registerLootTable(ModBlocks.GULGE.get(), ModBlockLootTables::droppingWithContents);
 		registerLootTable(ModBlocks.DECOMPOSER.get(), ModBlockLootTables::droppingWithFuel);
 
-		registerLootTable(ModBlocks.LUMINOUS_SOIL.get(), (soil) -> droppingWithSilkTouch(soil, withExplosionDecay(soil, ItemLootEntry.builder(ModItems.LUMINESCENT_SPORES.get())
-				.acceptFunction(SetCount.builder(RandomValueRange.of(4.0F, 5.0F))).acceptFunction(ApplyBonus.uniformBonusCount(Enchantments.FORTUNE)))));
+//		registerLootTable(ModBlocks.LUMINOUS_SOIL.get(), (soil) -> droppingWithSilkTouch(soil, withExplosionDecay(soil, ItemLootEntry.builder(ModItems.LUMINESCENT_SPORES.get())
+//				.acceptFunction(SetCount.builder(RandomValueRange.of(4.0F, 5.0F))).acceptFunction(ApplyBonus.uniformBonusCount(Enchantments.FORTUNE)))));
 	}
 
 	@Override

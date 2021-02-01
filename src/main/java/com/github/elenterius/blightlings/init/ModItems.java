@@ -54,23 +54,8 @@ public final class ModItems {
 	public static final RegistryObject<ModSpawnEggItem> FLESH_BLOB_SPAWN_EGG = ITEMS.register("flesh_blob_spawn_egg", () -> new ModSpawnEggItem(ModEntityTypes.FLESH_BLOB, 0x764da2, 0xff40ff, createItemProperties()));
 
 	/* **** Block Items ********************************************* */
-	public static final RegistryObject<BlockItem> INFERTILE_SOIL = ITEMS.register("infertile_soil", () -> new BlockItem(ModBlocks.INFERTILE_SOIL.get(), createItemProperties()));
-	public static final RegistryObject<BlockItem> LUMINOUS_SOIL = ITEMS.register("luminous_soil", () -> new BlockItem(ModBlocks.LUMINOUS_SOIL.get(), createItemProperties()));
 
-	public static final RegistryObject<BlockItem> LILYTREE_SAPLING = ITEMS.register("lilytree_sapling", () -> new BlockItem(ModBlocks.LILY_TREE_SAPLING.get(), createItemProperties()));
-	public static final RegistryObject<BlockItem> LILYTREE_STEM = ITEMS.register("lilytree_stem", () -> new BlockItem(ModBlocks.LILY_TREE_STEM.get(), createItemProperties()));
-	public static final RegistryObject<BlockItem> BLIGHT_MOSS_SLAB = ITEMS.register("blight_moss_slab", () -> new BlockItem(ModBlocks.BLIGHT_MOSS_SLAB.get(), createItemProperties()));
-
-	public static final RegistryObject<BlockItem> BLIGHT_PUSTULE_SMALL = ITEMS.register("blight_pustule_0", () -> new BlockItem(ModBlocks.BLIGHT_PUSTULE_SMALL.get(), createItemProperties()));
-	public static final RegistryObject<BlockItem> BLIGHT_PUSTULE_BIG = ITEMS.register("blight_pustule_1", () -> new BlockItem(ModBlocks.BLIGHT_PUSTULE_BIG.get(), createItemProperties()));
-	public static final RegistryObject<BlockItem> BLIGHT_PUSTULE_BIG_SMALL = ITEMS.register("blight_pustule_2", () -> new BlockItem(ModBlocks.BLIGHT_PUSTULE_BIG_AND_SMALL.get(), createItemProperties()));
-	public static final RegistryObject<BlockItem> BLIGHT_PUSTULE_SMALL_GROUP = ITEMS.register("blight_pustule_3", () -> new BlockItem(ModBlocks.BLIGHT_PUSTULE_SMALL_GROUP.get(), createItemProperties()));
-
-	public static final RegistryObject<BlockItem> BLIGHT_SPROUT = ITEMS.register("blight_sprout", () -> new BlockItem(ModBlocks.BLIGHT_SPROUT.get(), createItemProperties()));
-	public static final RegistryObject<BlockItem> BLIGHT_SPROUT_SMALL = ITEMS.register("blight_sprout_small", () -> new BlockItem(ModBlocks.BLIGHT_SPROUT_SMALL.get(), createItemProperties()));
-	public static final RegistryObject<BlockItem> BLIGHT_TENTACLE_0 = ITEMS.register("blight_tentacle_0", () -> new BlockItem(ModBlocks.BLIGHT_TENTACLE_0.get(), createItemProperties()));
-	public static final RegistryObject<BlockItem> BLIGHT_TENTACLE_1 = ITEMS.register("blight_tentacle_1", () -> new BlockItem(ModBlocks.BLIGHT_TENTACLE_1.get(), createItemProperties()));
-	public static final RegistryObject<BlockItem> BLIGHT_SHROOM_TALL = ITEMS.register("blight_shroom_tall", () -> new BlockItem(ModBlocks.BLIGHT_SHROOM_TALL.get(), createItemProperties()));
+	//decoration blocks
 
 	//material blocks
 	public static final RegistryObject<BlockItem> FLESH_BLOCK = ITEMS.register("flesh_block", () -> new BlockItem(ModBlocks.FLESH_BLOCK.get(), createItemProperties()));

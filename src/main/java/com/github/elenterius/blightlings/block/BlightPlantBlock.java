@@ -29,7 +29,8 @@ public class BlightPlantBlock extends BushBlock {
 
 	@Override
 	protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return state.isIn(ModBlocks.INFERTILE_SOIL.get()) || state.isIn(ModBlocks.LUMINOUS_SOIL.get()) || state.isIn(Blocks.GRASS_BLOCK);
+		return state.isIn(Blocks.GRASS_BLOCK);
+//		return state.isIn(ModBlocks.INFERTILE_SOIL.get()) || state.isIn(ModBlocks.LUMINOUS_SOIL.get()) || state.isIn(Blocks.GRASS_BLOCK);
 	}
 
 	@Override

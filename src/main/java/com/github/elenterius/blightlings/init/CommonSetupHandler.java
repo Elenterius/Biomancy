@@ -42,9 +42,6 @@ public final class CommonSetupHandler {
 			ModRecipes.registerCustomItemPredicates();
 
 			ModEntityTypes.onPostSetup();
-
-			ModFeatures.injectCarvableBlocks();
-			ModBiomes.onPostSetupBiomes();
 		});
 	}
 

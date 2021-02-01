@@ -5,18 +5,13 @@
   "refmap": "mixins.blightlings.refmap.json",
   "mixins": [
     "DamageSourceMixin",
-    "EdgeBiomeLayerMixin",
     "GrindstoneContainerMixin",
-    "LayerUtilMixin",
     "LivingEntityMixin",
-    "MixRiverLayerMixin",
-    "NoiseChunkGeneratorMixin",
     "PanicGoalMixin",
     "PlayerEntityMixin",
     "RecipeManagerMixinAccessor",
     "ServerPlayerEntityMixin",
-    "SwordItemMixinAccessor",
-    "WorldCarverMixinAccessor"
+    "SwordItemMixinAccessor"
   ],
   "client": [
     "client.EntityMixin",

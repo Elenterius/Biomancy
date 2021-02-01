@@ -61,17 +61,8 @@ public final class ClientSetupHandler {
 			RenderTypeLookup.setRenderLayer(ModBlocks.BIO_FLESH_DOOR.get(), RenderType.getCutout());
 			RenderTypeLookup.setRenderLayer(ModBlocks.BIO_FLESH_TRAPDOOR.get(), RenderType.getCutout());
 
-			RenderTypeLookup.setRenderLayer(ModBlocks.LUMINOUS_SOIL.get(), renderType -> renderType == RenderType.getCutout() || renderType == RenderType.getTranslucent());
-			RenderTypeLookup.setRenderLayer(ModBlocks.LILY_TREE_SAPLING.get(), RenderType.getCutout());
-			RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_PUSTULE_SMALL.get(), RenderType.getCutout());
-			RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_PUSTULE_BIG.get(), RenderType.getCutout());
-			RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_PUSTULE_BIG_AND_SMALL.get(), RenderType.getCutout());
-			RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_PUSTULE_SMALL_GROUP.get(), RenderType.getCutout());
-			RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_SPROUT.get(), RenderType.getCutout());
-			RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_SPROUT_SMALL.get(), RenderType.getCutout());
-			RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_TENTACLE_0.get(), RenderType.getCutout());
-			RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_TENTACLE_1.get(), RenderType.getCutout());
-			RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_SHROOM_TALL.get(), RenderType.getCutout());
+//			RenderTypeLookup.setRenderLayer(ModBlocks.LUMINOUS_SOIL.get(), renderType -> renderType == RenderType.getCutout() || renderType == RenderType.getTranslucent());
+//			RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_PUSTULE_SMALL.get(), RenderType.getCutout());
 		});
 	}
 
@@ -86,7 +77,7 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void onModelBakeEvent(ModelBakeEvent event) {
-		addFullBrightOverlayBakedModel(ModBlocks.LUMINOUS_SOIL.get(), event);
+//		addFullBrightOverlayBakedModel(ModBlocks.LUMINOUS_SOIL.get(), event);
 	}
 
 	private static void addFullBrightOverlayBakedModel(Block block, ModelBakeEvent event) {
