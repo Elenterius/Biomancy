@@ -62,17 +62,19 @@ public final class ItemDecayImpl {
 				if (entity instanceof LivingEntity && p < 0.46f) {
 					Collection<EffectInstance> effects = ((LivingEntity) entity).getActivePotionEffects();
 					int amplifier = 0;
+					int duration = 0;
 					for (EffectInstance effectInstance : effects) {
-						if (effectInstance.getPotion() == ModEffects.BLIGHT_INFECTION.get()) {
+						if (effectInstance.getPotion() == ModEffects.FLESH_EATING_DISEASE.get()) {
 							amplifier = effectInstance.getAmplifier();
+							duration = effectInstance.getDuration();
 							break;
 						}
 					}
-					EffectInstance effectInstance = new EffectInstance(ModEffects.BLIGHT_INFECTION.get(), Math.min(difference, 5) * 20, Math.round(p) * 2 + amplifier);
+					EffectInstance effectInstance = new EffectInstance(ModEffects.FLESH_EATING_DISEASE.get(), Math.min(difference, 5) * 120 + duration, Math.round(p) * 2 + amplifier);
 					((LivingEntity) entity).addPotionEffect(effectInstance);
 				}
 				else {
-					EffectInstance effectInstance = new EffectInstance(ModEffects.BLIGHT_INFECTION.get(), Math.min(difference, 5) * 20, Math.round(p) * 2);
+					EffectInstance effectInstance = new EffectInstance(ModEffects.FLESH_EATING_DISEASE.get(), Math.min(difference, 5) * 120, Math.round(p) * 2);
 					Vector3d pos = entity.getPositionVec();
 					AreaEffectCloudEntity aoeCloud = new AreaEffectCloudEntity(world, pos.x, pos.y, pos.z);
 					aoeCloud.setDuration(30 * 20);

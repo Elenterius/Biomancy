@@ -58,6 +58,8 @@ public final class ClientSetupHandler {
 			ItemModelsProperties.registerProperty(ModItems.SINGLE_ITEM_BAG_ITEM.get(), new ResourceLocation("fullness"), (stack, clientWorld, livingEntity) -> ModItems.SINGLE_ITEM_BAG_ITEM.get().getFullness(stack));
 			ItemModelsProperties.registerProperty(ModItems.ENTITY_STORAGE_ITEM.get(), new ResourceLocation("fullness"), (stack, clientWorld, livingEntity) -> ModItems.ENTITY_STORAGE_ITEM.get().getFullness(stack));
 
+			RenderTypeLookup.setRenderLayer(ModBlocks.FLESH_TENTACLE.get(), RenderType.getCutout());
+			RenderTypeLookup.setRenderLayer(ModBlocks.FLESH_MELON_CROP.get(), RenderType.getCutout());
 			RenderTypeLookup.setRenderLayer(ModBlocks.BIO_FLESH_DOOR.get(), RenderType.getCutout());
 			RenderTypeLookup.setRenderLayer(ModBlocks.BIO_FLESH_TRAPDOOR.get(), RenderType.getCutout());
 
@@ -71,8 +73,15 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void onItemColorRegistry(final ColorHandlerEvent.Item event) {
-//		event.getItemColors().register((stack, index) -> 0xff5eeb, ModItems.ERODING_BILE.get());
-		//0xf99fee
+		event.getItemColors().register((stack, index) -> 0xff6981, ModItems.FLESH_MELON_BLOCK.get(), ModItems.FLESH_MELON_SEEDS.get(), ModItems.FLESH_MELON_SLICE.get());
+		event.getItemColors().register((stack, index) -> 0x6c2e1f, ModItems.COOKED_FLESH_MELON_SLICE.get());
+		event.getItemColors().register((stack, index) -> 0x8d758c, ModItems.NECROTIC_FLESH.get(), ModItems.NECROTIC_FLESH_BLOCK.get());
+	}
+
+	@SubscribeEvent
+	public static void onItemColorRegistry(final ColorHandlerEvent.Block event) {
+		event.getBlockColors().register((state, displayReader, pos, index) -> 0xff6981, ModBlocks.FLESH_MELON_BLOCK.get(), ModBlocks.FLESH_MELON_CROP.get());
+		event.getBlockColors().register((state, displayReader, pos, index) -> 0x8d758c, ModBlocks.NECROTIC_FLESH_BLOCK.get());
 	}
 
 	@SubscribeEvent

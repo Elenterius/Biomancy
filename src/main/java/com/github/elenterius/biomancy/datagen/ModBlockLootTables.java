@@ -3,16 +3,17 @@ package com.github.elenterius.biomancy.datagen;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.MutatedFleshBlock;
 import com.github.elenterius.biomancy.init.ModBlocks;
+import com.github.elenterius.biomancy.init.ModItems;
 import net.minecraft.advancements.criterion.StatePropertiesPredicate;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.CropsBlock;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.data.loot.BlockLootTables;
-import net.minecraft.loot.ConstantRange;
-import net.minecraft.loot.ItemLootEntry;
-import net.minecraft.loot.LootPool;
-import net.minecraft.loot.LootTable;
+import net.minecraft.item.Item;
+import net.minecraft.loot.*;
 import net.minecraft.loot.conditions.BlockStateProperty;
+import net.minecraft.loot.conditions.ILootCondition;
 import net.minecraft.loot.functions.CopyBlockState;
 import net.minecraft.loot.functions.CopyName;
 import net.minecraft.loot.functions.CopyNbt;
@@ -78,10 +79,20 @@ public class ModBlockLootTables extends BlockLootTables {
 				.addEntry(ItemLootEntry.builder(flesh).acceptFunction(CopyBlockState.func_227545_a_(flesh).func_227552_a_(MutatedFleshBlock.MUTATION_TYPE)))));
 	}
 
+	protected static LootTable.Builder droppingFruitWithBonusOrSeeds(Block block, Item fruit, Item seeds) {
+		ILootCondition.IBuilder conditionBuilder = BlockStateProperty.builder(ModBlocks.FLESH_MELON_CROP.get()).fromProperties(StatePropertiesPredicate.Builder.newBuilder().withIntProp(CropsBlock.AGE, 7));
+		return withExplosionDecay(block, LootTable.builder().addLootPool(LootPool.builder().addEntry(ItemLootEntry.builder(fruit).acceptCondition(conditionBuilder).alternatively(ItemLootEntry.builder(seeds)))));
+	}
+
 	@Override
 	protected void addTables() {
 
+		registerDropSelfLootTable(ModBlocks.FLESH_MELON_BLOCK.get());
+		registerLootTable(ModBlocks.FLESH_MELON_CROP.get(), droppingFruitWithBonusOrSeeds(ModBlocks.FLESH_MELON_CROP.get(), ModItems.FLESH_MELON_BLOCK.get(), ModItems.FLESH_MELON_SEEDS.get()));
+
+		registerDropSelfLootTable(ModBlocks.FLESH_TENTACLE.get());
 		registerDropSelfLootTable(ModBlocks.FLESH_BLOCK.get());
+		registerLootTable(ModBlocks.NECROTIC_FLESH_BLOCK.get(), droppingRandomly(ModItems.NECROTIC_FLESH.get(), BinomialRange.of(9, 0.5f)));
 		registerLootTable(ModBlocks.FLESH_BLOCK_SLAB.get(), BlockLootTables::droppingSlab);
 		registerLootTable(ModBlocks.MUTATED_FLESH_BLOCK.get(), ModBlockLootTables::droppingMutatedFlesh);
 		registerLootTable(ModBlocks.BIO_FLESH_DOOR.get(), ModBlockLootTables::droppingSimpleOwnableDoor);

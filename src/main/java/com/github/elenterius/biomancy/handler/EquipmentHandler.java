@@ -26,7 +26,7 @@ public final class EquipmentHandler {
 		if (!event.getEntityLiving().isServerWorld()) return;
 
 		if (event.getSlot() == EquipmentSlotType.HEAD) {
-			GogglesArmorItem goggles = ModItems.TRUE_SIGHT_GOGGLES.get();
+			GogglesArmorItem goggles = ModItems.OCULI_OF_UNVEILING.get();
 			if (event.getFrom().getItem() == goggles && event.getTo().getItem() != goggles) { // un-equip
 				goggles.cancelEffect(event.getEntityLiving());
 			}

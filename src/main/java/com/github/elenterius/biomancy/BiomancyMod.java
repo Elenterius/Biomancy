@@ -65,7 +65,7 @@ public final class BiomancyMod {
 	public static final ItemGroup ITEM_GROUP = new ItemGroup(-1, MOD_ID) {
 		@OnlyIn(Dist.CLIENT)
 		public ItemStack createIcon() {
-			return new ItemStack(ModItems.TRUE_SIGHT_GOGGLES.get());
+			return new ItemStack(ModItems.OCULUS.get());
 		}
 
 		@Override

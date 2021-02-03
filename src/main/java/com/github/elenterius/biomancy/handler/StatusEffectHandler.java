@@ -2,8 +2,8 @@ package com.github.elenterius.biomancy.handler;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.entity.ai.goal.DreadPanicGoal;
-import com.github.elenterius.biomancy.entity.ai.goal.FrenzyMeleeAttackGoal;
-import com.github.elenterius.biomancy.entity.ai.goal.FrenzyTargetGoal;
+import com.github.elenterius.biomancy.entity.ai.goal.RavenousHungerTargetGoal;
+import com.github.elenterius.biomancy.entity.ai.goal.RavenousMeleeAttackGoal;
 import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -28,10 +28,10 @@ public final class StatusEffectHandler {
 
 		Entity entity = event.getEntity();
 		if (entity instanceof MobEntity) {
-			((MobEntity) entity).targetSelector.addGoal(1, new FrenzyTargetGoal<>((MobEntity) entity, LivingEntity.class));
+			((MobEntity) entity).targetSelector.addGoal(1, new RavenousHungerTargetGoal<>((MobEntity) entity, LivingEntity.class));
 
 			if (!(entity instanceof IMob) && entity instanceof CreatureEntity) {
-				((MobEntity) entity).goalSelector.addGoal(2, new FrenzyMeleeAttackGoal((CreatureEntity) entity, 1.0D, false));
+				((MobEntity) entity).goalSelector.addGoal(2, new RavenousMeleeAttackGoal((CreatureEntity) entity, 1.0D, false));
 			}
 
 			if (entity instanceof CreatureEntity) {

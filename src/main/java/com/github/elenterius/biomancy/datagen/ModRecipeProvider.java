@@ -60,9 +60,8 @@ public class ModRecipeProvider extends RecipeProvider {
 		registerDecomposingRecipes(consumer);
 
 		LOGGER.info(logMarker, "registering misc recipes...");
-		//noinspection ConstantConditions
-		SmithingRecipeBuilder.smithingRecipe(Ingredient.fromItems(Items.DIAMOND_AXE), Ingredient.fromItems(ModItems.TWISTED_HEART.get()), ModItems.BLIGHTBRINGER_AXE.get())
-				.addCriterion("has_blight_sac", hasItem(ModItems.TWISTED_HEART.get())).build(consumer, new ResourceLocation(BiomancyMod.MOD_ID, ModItems.BLIGHTBRINGER_AXE.get().getRegistryName().getPath() + "_smithing"));
+//		SmithingRecipeBuilder.smithingRecipe(Ingredient.fromItems(Items.DIAMOND_AXE), Ingredient.fromItems(ModItems.TWISTED_HEART.get()), ModItems.BIOFLESH_WAR_AXE.get())
+//				.addCriterion("has_blight_sac", hasItem(ModItems.TWISTED_HEART.get())).build(consumer, new ResourceLocation(BiomancyMod.MOD_ID, ModItems.BIOFLESH_WAR_AXE.get().getRegistryName().getPath() + "_smithing"));
 	}
 
 	private void registerDecomposingRecipes(Consumer<IFinishedRecipe> consumer) {
@@ -144,14 +143,19 @@ public class ModRecipeProvider extends RecipeProvider {
 
 	private void registerWorkbenchRecipes(Consumer<IFinishedRecipe> consumer) {
 		ShapedRecipeBuilder.shapedRecipe(ModItems.OCULUS.get())
-				.key('F', ModItems.FLESH_LUMP.get()).key('R', ModItems.REJUVENATING_MUCUS.get()).key('S', ModItems.LENS_SHARD.get()).key('E', Items.SPIDER_EYE)
-				.patternLine("RSF").patternLine("SER").patternLine("RSF")
+				.key('F', ModItems.FLESH_LUMP.get()).key('R', ModItems.REJUVENATING_MUCUS.get()).key('L', ModItems.MENISCUS_LENS.get()).key('E', Items.SPIDER_EYE)
+				.patternLine("FRF").patternLine("LER").patternLine("FRF")
 				.addCriterion("has_rejuvenating_mucus", hasItem(ModItems.REJUVENATING_MUCUS.get())).build(consumer);
 
-		ShapedRecipeBuilder.shapedRecipe(ModItems.TRUE_SIGHT_GOGGLES.get())
-				.key('O', ModItems.OCULUS.get()).key('S', ModItems.TWISTED_HEART.get()).key('I', Tags.Items.INGOTS_IRON)
-				.patternLine("OSO").patternLine("OIO")
-				.addCriterion("has_lens_shard", hasItem(ModItems.LENS_SHARD.get())).build(consumer);
+		ShapedRecipeBuilder.shapedRecipe(ModItems.MENISCUS_LENS.get())
+				.key('P', Tags.Items.GLASS_PANES).key('Q', Items.QUARTZ)
+				.patternLine(" P ").patternLine("PQP").patternLine(" P ")
+				.addCriterion("has_quartz", hasItem(Items.QUARTZ)).build(consumer);
+
+		ShapedRecipeBuilder.shapedRecipe(ModItems.OCULI_OF_UNVEILING.get())
+				.key('O', ModItems.OCULUS.get()).key('I', Tags.Items.INGOTS_IRON)
+				.patternLine("OIO").patternLine("O O")
+				.addCriterion("has_lens_shard", hasItem(ModItems.MENISCUS_LENS.get())).build(consumer);
 
 		ShapelessRecipeBuilder.shapelessRecipe(ModItems.SEWING_KIT_EMPTY.get())
 				.addIngredient(Tags.Items.BONES).addIngredient(Items.FLINT)
@@ -176,9 +180,17 @@ public class ModRecipeProvider extends RecipeProvider {
 				.patternLine("CC ").patternLine("CC ").patternLine("CCS")
 				.addCriterion("has_skin_chunk", hasItem(ModItems.SKIN_CHUNK.get())).build(consumer);
 
-		ShapelessRecipeBuilder.shapelessRecipe(ModItems.FLESH_BLOCK.get())
-				.addIngredient(ModItems.FLESH_LUMP.get(), 9)
-				.addCriterion("has_flesh_lump", hasItem(ModItems.FLESH_LUMP.get())).build(consumer);
+		ShapelessRecipeBuilder.shapelessRecipe(ModItems.FLESH_LUMP.get())
+				.addIngredient(ModItems.NECROTIC_FLESH.get()).addIngredient(ModItems.REJUVENATING_MUCUS.get())
+				.addCriterion("has_necrotic_flesh", hasItem(ModItems.NECROTIC_FLESH.get())).build(consumer);
+
+//		ShapelessRecipeBuilder.shapelessRecipe(ModItems.NECROTIC_FLESH.get(), 9)
+//				.addIngredient(ModItems.NECROTIC_FLESH_BLOCK.get())
+//				.addCriterion("has_necrotic_flesh_block", hasItem(ModItems.NECROTIC_FLESH_BLOCK.get())).build(consumer);
+
+//		ShapelessRecipeBuilder.shapelessRecipe(ModItems.FLESH_BLOCK.get())
+//				.addIngredient(ModItems.FLESH_LUMP.get(), 9)
+//				.addCriterion("has_flesh_lump", hasItem(ModItems.FLESH_LUMP.get())).build(consumer);
 
 		CustomRecipeBuilder.customRecipe(ModRecipes.REPAIR_SPECIAL_SEWING_KIT.get()).build(consumer, BiomancyMod.MOD_ID + ":" + "sewing_kit_nbt");
 		CustomRecipeBuilder.customRecipe(ModRecipes.CRAFTING_SPECIAL_POTION_BEETLE.get()).build(consumer, BiomancyMod.MOD_ID + ":" + "potion_beetle");

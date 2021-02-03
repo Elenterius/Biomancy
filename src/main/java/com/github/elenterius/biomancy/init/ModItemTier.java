@@ -11,8 +11,11 @@ public enum ModItemTier implements IItemTier {
 	BONE(1, 131, 4.0F, 1.0F, 5, () -> {
 		return Ingredient.fromItems(Items.BONE_MEAL, ModItems.BONE_SCRAPS.get());
 	}),
-	BLIGHT_AMALGAM(4, 2031, 9.0F, 4.0F, 15, () -> {
-		return Ingredient.fromItems(ModItems.TWISTED_HEART.get());
+	LESSER_BIOFLESH(3, 1650, 6.0F, 2.0F, 14, () -> {
+		return Ingredient.fromItems(ModItems.FLESH_BLOCK.get());
+	}),
+	BIOFLESH(4, 2031, 9.0F, 4.0F, 15, () -> {
+		return Ingredient.fromItems(ModItems.FLESH_BLOCK.get());
 	});
 
 	private final int harvestLevel;

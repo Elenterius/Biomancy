@@ -18,7 +18,7 @@ import net.minecraft.world.IWorldReader;
 
 import javax.annotation.Nullable;
 
-public class BlightPustuleBlock extends BlightPlantBlock {
+public class BlightPustuleBlock extends FleshPlantBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
 	protected static final VoxelShape SHAPE_UP = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 4.0D, 14.0D);

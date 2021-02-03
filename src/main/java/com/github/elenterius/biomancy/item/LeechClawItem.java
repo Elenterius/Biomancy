@@ -24,6 +24,7 @@ import java.util.UUID;
 
 public class LeechClawItem extends ClawWeaponItem {
 
+	public static final String NBT_KEY = "LastCriticalHitTime";
 	public static AttributeModifier ATTACK_DISTANCE_MODIFIER = new AttributeModifier(ModAttributes.UUIDS.ATTACK_DISTANCE, "attack_distance_modifier", -0.55f, AttributeModifier.Operation.ADDITION);
 	public static AttributeModifier MOVEMENT_MODIFIER = new AttributeModifier(UUID.fromString("0823f523-d756-4725-9a6a-098059458c4b"), "movement_modifier", 0.1f, AttributeModifier.Operation.MULTIPLY_BASE);
 
@@ -57,7 +58,7 @@ public class LeechClawItem extends ClawWeaponItem {
 		}
 
 		if (!attacker.world.isRemote()) {
-			stack.getOrCreateTag().putLong("LastCriticalHitTime", attacker.world.getGameTime());
+			stack.getOrCreateTag().putLong(NBT_KEY, attacker.world.getGameTime());
 		}
 	}
 
@@ -67,9 +68,9 @@ public class LeechClawItem extends ClawWeaponItem {
 
 		if (!attacker.world.isRemote()) {
 			CompoundNBT nbt = stack.getOrCreateTag();
-			long elapsedTime = attacker.world.getGameTime() - nbt.getLong("LastCriticalHitTime");
+			long elapsedTime = attacker.world.getGameTime() - nbt.getLong(NBT_KEY);
 			if (elapsedTime <= 20) {
-				nbt.putLong("LastCriticalHitTime", nbt.getLong("LastCriticalHitTime") - 21);
+				nbt.putLong(NBT_KEY, nbt.getLong(NBT_KEY) - 21);
 				attacker.heal(amount * 0.1f); // Heal the wielder by 10% of the damage dealt
 			}
 		}

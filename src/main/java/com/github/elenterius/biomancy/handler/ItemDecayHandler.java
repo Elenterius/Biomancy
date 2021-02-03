@@ -72,7 +72,7 @@ public final class ItemDecayHandler {
 
 		if (decayAmount.get() > 1) {
 			int n = MathHelper.ceil(decayAmount.get() / 32f);
-			EffectInstance effectInstance = new EffectInstance(ModEffects.BLIGHT_INFECTION.get(), n * 10 * 20, n);
+			EffectInstance effectInstance = new EffectInstance(ModEffects.FLESH_EATING_DISEASE.get(), n * 10 * 20, n);
 			Vector3d pos = Vector3d.copyCentered(entity.getPos());
 			AreaEffectCloudEntity aoeCloud = new AreaEffectCloudEntity(world, pos.x, pos.y, pos.z);
 			aoeCloud.setDuration(n * 30 * 20);

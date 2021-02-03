@@ -1,9 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "RSF",
-    "SER",
-    "RSF"
+    "FRF",
+    "LER",
+    "FRF"
   ],
   "key": {
     "F": {
@@ -12,8 +12,8 @@
     "R": {
       "item": "biomancy:rejuvenating_mucus"
     },
-    "S": {
-      "item": "biomancy:lens_shard"
+    "L": {
+      "item": "biomancy:lens"
     },
     "E": {
       "item": "minecraft:spider_eye"

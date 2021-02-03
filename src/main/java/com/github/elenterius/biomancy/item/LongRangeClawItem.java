@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.item;
 
+import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModAttributes;
 import com.github.elenterius.biomancy.util.TooltipUtil;
 import com.google.common.collect.ImmutableMultimap;
@@ -20,7 +21,6 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -32,6 +32,7 @@ import java.util.UUID;
 
 public class LongRangeClawItem extends ClawWeaponItem {
 
+	public static final String NBT_KEY = "LongClawTimeLeft";
 	public static AttributeModifier RETRACTED_CLAW_REACH_MODIFIER = new AttributeModifier(UUID.fromString("d76adb08-2bb3-4e88-997d-766a919f0f6b"), "attack_distance_modifier", 0.5f, AttributeModifier.Operation.ADDITION);
 	public static AttributeModifier EXTENDED_CLAW_REACH_MODIFIER = new AttributeModifier(UUID.fromString("29ace568-4e32-4809-840c-3c9a0e1ebcd4"), "attack_distance_modifier", 1.5f, AttributeModifier.Operation.ADDITION);
 
@@ -46,7 +47,7 @@ public class LongRangeClawItem extends ClawWeaponItem {
 	}
 
 	public static boolean isClawExtended(ItemStack stack) {
-		return stack.getOrCreateTag().getInt("LongClawTimeLeft") > 0;
+		return stack.getOrCreateTag().getInt(NBT_KEY) > 0;
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -55,12 +56,12 @@ public class LongRangeClawItem extends ClawWeaponItem {
 		tooltip.add(TooltipUtil.getTooltip(this).setStyle(TooltipUtil.LORE_STYLE));
 		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 
-		int timeLeft = stack.getOrCreateTag().getInt("LongClawTimeLeft");
+		int timeLeft = stack.getOrCreateTag().getInt(NBT_KEY);
 		if (timeLeft > 0) {
-			tooltip.add(new TranslationTextComponent("tooltip.biomancy.item_is_excited").appendString(" (" + timeLeft + ")").mergeStyle(TextFormatting.GRAY));
+			tooltip.add(BiomancyMod.getTranslationText("tooltip", "item_is_excited").appendString(" (" + timeLeft + ")").mergeStyle(TextFormatting.GRAY));
 		}
 		else {
-			tooltip.add(new TranslationTextComponent("tooltip.biomancy.item_is_dormant").mergeStyle(TextFormatting.GRAY));
+			tooltip.add(BiomancyMod.getTranslationText("tooltip", "item_is_dormant").mergeStyle(TextFormatting.GRAY));
 		}
 		if (stack.isEnchanted()) tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 	}
@@ -68,8 +69,8 @@ public class LongRangeClawItem extends ClawWeaponItem {
 	@Override
 	public ITextComponent getHighlightTip(ItemStack stack, ITextComponent displayName) {
 		if (displayName instanceof IFormattableTextComponent) {
-			String key = stack.getOrCreateTag().getInt("LongClawTimeLeft") > 0 ? "tooltip.biomancy.excited" : "tooltip.biomancy.dormant";
-			return ((IFormattableTextComponent) displayName).appendString(" (").append(new TranslationTextComponent(key)).appendString(")");
+			String keySuffix = stack.getOrCreateTag().getInt(NBT_KEY) > 0 ? "excited" : "dormant";
+			return ((IFormattableTextComponent) displayName).appendString(" (").append(BiomancyMod.getTranslationText("tooltip", keySuffix)).appendString(")");
 		}
 		return displayName;
 	}
@@ -109,7 +110,7 @@ public class LongRangeClawItem extends ClawWeaponItem {
 	public void onCriticalHitEntity(ItemStack stack, LivingEntity attacker, LivingEntity target) {
 		super.onCriticalHitEntity(stack, attacker, target);
 		if (!attacker.world.isRemote()) {
-			stack.getOrCreateTag().putInt("LongClawTimeLeft", abilityDuration);
+			stack.getOrCreateTag().putInt(NBT_KEY, abilityDuration);
 		}
 		else {
 			attacker.playSound(SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1.0F, 1.0F / (random.nextFloat() * 0.5F + 1.0F) + 0.2F);
@@ -120,9 +121,9 @@ public class LongRangeClawItem extends ClawWeaponItem {
 	public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
 		if (!worldIn.isRemote() && worldIn.getGameTime() % 20L == 0L) {
 			CompoundNBT nbt = stack.getOrCreateTag();
-			int timeLeft = nbt.getInt("LongClawTimeLeft");
+			int timeLeft = nbt.getInt(NBT_KEY);
 			if (timeLeft > 0) {
-				nbt.putInt("LongClawTimeLeft", timeLeft - 1);
+				nbt.putInt(NBT_KEY, timeLeft - 1);
 			}
 		}
 	}

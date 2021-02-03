@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:unveiling_oculi"
+    ]
+  },
+  "criteria": {
+    "has_lens_shard": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "biomancy:lens"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:unveiling_oculi"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_lens_shard",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.damagesource;
 
+import com.github.elenterius.biomancy.BiomancyMod;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
@@ -12,13 +13,14 @@ import net.minecraft.util.text.TranslationTextComponent;
 import javax.annotation.Nullable;
 
 public class ModEntityDamageSource extends EntityDamageSource {
+
 	public String statusProc;
 	private float attackStrength;
 
-	public ModEntityDamageSource(String damageCause, String statusProc, @Nullable Entity damageSourceEntityIn, float attackStrength) {
+	public ModEntityDamageSource(String damageCause, String statusProcIn, @Nullable Entity damageSourceEntityIn, float attackStrengthIn) {
 		super(damageCause, damageSourceEntityIn);
-		this.attackStrength = attackStrength;
-		this.statusProc = statusProc;
+		attackStrength = attackStrengthIn;
+		statusProc = statusProcIn;
 	}
 
 	public float getAttackStrength() {
@@ -32,8 +34,9 @@ public class ModEntityDamageSource extends EntityDamageSource {
 	@Override
 	public ITextComponent getDeathMessage(LivingEntity entityLivingBaseIn) {
 		ItemStack itemstack = damageSourceEntity instanceof LivingEntity ? ((LivingEntity) damageSourceEntity).getHeldItemMainhand() : ItemStack.EMPTY;
-		String str = "death.biomancy.attack." + damageType;
+		String str = "death.attack." + BiomancyMod.MOD_ID + "." + damageType;
 		ITextComponent entityDisplayName = damageSourceEntity != null ? damageSourceEntity.getDisplayName() : new StringTextComponent("Foobar").setStyle(Style.EMPTY.setObfuscated(true));
 		return !itemstack.isEmpty() && itemstack.hasDisplayName() ? new TranslationTextComponent(str + ".item", entityLivingBaseIn.getDisplayName(), entityDisplayName, itemstack.getTextComponent()) : new TranslationTextComponent(str, entityLivingBaseIn.getDisplayName(), entityDisplayName);
 	}
+
 }

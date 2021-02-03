@@ -18,7 +18,7 @@ public abstract class PanicGoalMixin {
 
 	@Inject(method = "shouldExecute", at = @At("HEAD"), cancellable = true)
 	protected void onShouldExecute(CallbackInfoReturnable<Boolean> cir) {
-		if (creature.isPotionActive(ModEffects.FRENZY.get())) {
+		if (creature.isPotionActive(ModEffects.RAVENOUS_HUNGER.get())) {
 			cir.setReturnValue(false);
 		}
 	}

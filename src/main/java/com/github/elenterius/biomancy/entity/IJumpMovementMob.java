@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.entity;
 
 import com.github.elenterius.biomancy.entity.ai.controller.GenericJumpController;
 import com.github.elenterius.biomancy.entity.ai.controller.GenericJumpMovementController;
+import com.github.elenterius.biomancy.entity.ai.controller.GenericJumpMovementHelper;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;

@@ -44,7 +44,7 @@ public abstract class PlayerEntityMixin {
 			float modifier = 0f;
 			if (AttunedDamageEnchantment.isAttuned(stack))
 				modifier = ModEnchantments.ATTUNED_BANE.get().getAttackDamageModifier(stack, (PlayerEntity) (Object) this, targetEntity);
-			if (stack.getItem() == ModItems.INFESTED_GUAN_DAO.get())
+			if (stack.getItem() == ModItems.BIOFLESH_GUAN_DAO.get())
 				modifier += InfestedGuanDaoItem.getAttackDamageModifier(stack, (PlayerEntity) (Object) this, targetEntity);
 
 			return EnchantmentHelper.getModifierForCreature(stack, creatureAttribute) + modifier;

@@ -92,7 +92,7 @@ public final class AttackHandler {
 		if (event.getTarget().canBeAttackedWithItem()) {
 			ItemStack heldStack = event.getPlayer().getHeldItemMainhand();
 			if (!heldStack.isEmpty()) {
-				if (heldStack.getItem() == ModItems.INFESTED_GUAN_DAO.get() && event.getPlayer().getCooledAttackStrength(0.5f) > 0.8f) {
+				if (heldStack.getItem() == ModItems.BIOFLESH_GUAN_DAO.get() && event.getPlayer().getCooledAttackStrength(0.5f) > 0.8f) {
 					InfestedGuanDaoItem.adaptAttackDamageToTarget(heldStack, event.getPlayer(), event.getTarget());
 				}
 				if (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.ATTUNED_BANE.get(), heldStack) > 0) {

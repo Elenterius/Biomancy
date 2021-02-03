@@ -27,7 +27,7 @@ import java.util.List;
 
 public class GogglesArmorItem extends ArmorItem implements IEntityUnveilerHeadSlotItem {
 
-	public static final String ARMOR_TEXTURE = BiomancyMod.MOD_ID + ":textures/models/armor/true_sight_goggles.png";
+	public static final String ARMOR_TEXTURE = BiomancyMod.MOD_ID + ":textures/models/armor/oculi_of_unveiling.png";
 
 	public GogglesArmorItem(IArmorMaterial materialIn, Properties properties) {
 		super(materialIn, EquipmentSlotType.HEAD, properties);
@@ -101,6 +101,6 @@ public class GogglesArmorItem extends ArmorItem implements IEntityUnveilerHeadSl
 
 	@Override
 	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
-		return ModItems.LENS_SHARD.get() == repair.getItem();
+		return ModItems.MENISCUS_LENS.get() == repair.getItem();
 	}
 }

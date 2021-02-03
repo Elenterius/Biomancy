@@ -1,6 +1,6 @@
 {
-  "parent": "item/generated", "textures": {
-  "layer0": "minecraft:item/spider_eye",
-  "layer1": "biomancy:item/oculus_overlay"
-}
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "biomancy:item/oculus"
+  }
 }

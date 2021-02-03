@@ -1,0 +1,12 @@
+{
+  "parent": "biomancy:block/tinted_cube",
+  "textures": {
+    "particle": "minecraft:block/melon_side",
+    "down": "minecraft:block/melon_top",
+    "up": "minecraft:block/melon_top",
+    "north": "minecraft:block/melon_side",
+    "east": "minecraft:block/melon_side",
+    "south": "minecraft:block/melon_side",
+    "west": "minecraft:block/melon_side"
+  }
+}

@@ -17,7 +17,7 @@ import net.minecraftforge.common.util.Constants;
 
 import java.util.Random;
 
-public class MutatedFleshBlock extends Block {
+public class MutatedFleshBlock extends FleshBlock {
 
 	public static final EnumProperty<MutationType> MUTATION_TYPE = EnumProperty.create("type", MutationType.class);
 
@@ -36,12 +36,12 @@ public class MutatedFleshBlock extends Block {
 		ItemStack stack = player.getHeldItem(handIn);
 		if (stack.getItem() == ModItems.MUTAGENIC_BILE.get()) {
 			if (!worldIn.isRemote) {
-				BlockState newState = state.with(MUTATION_TYPE, MutationType.pickRandom(worldIn.rand));
-				if (newState != state) {
-					worldIn.setBlockState(pos, newState, Constants.BlockFlags.DEFAULT);
-				}
 				if (!player.abilities.isCreativeMode) {
 					stack.shrink(1);
+				}
+				BlockState newState = state.with(MUTATION_TYPE, MutationType.pickRandom(worldIn.rand));
+				if (newState != state) {
+					worldIn.setBlockState(pos, newState, Constants.BlockFlags.BLOCK_UPDATE);
 				}
 			}
 			return ActionResultType.func_233537_a_(worldIn.isRemote);

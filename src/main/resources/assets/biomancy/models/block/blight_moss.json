@@ -1,5 +1,0 @@
-{
-  "parent": "block/cube_all", "textures": {
-  "all": "biomancy:block/blight_moss_top"
-}
-}

@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.entity.ai.controller;
 
-import com.github.elenterius.biomancy.entity.GenericJumpMovementHelper;
 import com.github.elenterius.biomancy.entity.IJumpMovementMob;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.controller.MovementController;
