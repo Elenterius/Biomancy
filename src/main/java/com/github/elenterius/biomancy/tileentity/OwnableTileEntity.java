@@ -160,9 +160,9 @@ public abstract class OwnableTileEntity extends SimpleSyncedTileEntity implement
 
 	public CompoundNBT writeToItemBlockEntityTag(CompoundNBT nbt) {
 
-		if (owner != null) nbt.putUniqueId("OwnerUUID", owner);
-
 		if (userList.size() > 0) {
+			if (owner != null) nbt.putUniqueId("OwnerUUID", owner);
+
 			ListNBT listNBT = new ListNBT();
 			for (UserAuthorization userAuthorization : userList) {
 				listNBT.add(userAuthorization.serializeNBT());

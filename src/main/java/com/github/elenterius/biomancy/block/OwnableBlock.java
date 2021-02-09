@@ -88,15 +88,15 @@ public abstract class OwnableBlock extends Block implements IOwnableBlock {
 					CompoundNBT nbt = tile.writeToItemBlockEntityTag(new CompoundNBT());
 					if (!nbt.isEmpty()) {
 						stack.setTagInfo("BlockEntityTag", nbt);
-					}
 
-					if (tile.hasCustomName()) {
-						stack.setDisplayName(tile.getCustomName());
-					}
+						if (tile.hasCustomName()) {
+							stack.setDisplayName(tile.getCustomName());
+						}
 
-					ItemEntity itemEntity = new ItemEntity(worldIn, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, stack);
-					itemEntity.setDefaultPickupDelay();
-					worldIn.addEntity(itemEntity);
+						ItemEntity itemEntity = new ItemEntity(worldIn, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, stack);
+						itemEntity.setDefaultPickupDelay();
+						worldIn.addEntity(itemEntity);
+					}
 				}
 			}
 		}

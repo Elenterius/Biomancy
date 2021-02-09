@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.gui.DecomposerContainerScreen;
+import com.github.elenterius.biomancy.client.gui.FleshChestContainerScreen;
 import com.github.elenterius.biomancy.client.gui.GulgeContainerScreen;
 import com.github.elenterius.biomancy.client.renderer.block.FullBrightOverlayBakedModel;
 import com.github.elenterius.biomancy.client.renderer.entity.*;
@@ -53,6 +54,7 @@ public final class ClientSetupHandler {
 		event.enqueueWork(() -> {
 			ScreenManager.registerFactory(ModContainerTypes.GULGE.get(), GulgeContainerScreen::new);
 			ScreenManager.registerFactory(ModContainerTypes.DECOMPOSER.get(), DecomposerContainerScreen::new);
+			ScreenManager.registerFactory(ModContainerTypes.FLESH_CHEST.get(), FleshChestContainerScreen::new);
 
 			ItemModelsProperties.registerProperty(ModItems.LONG_RANGE_CLAW.get(), new ResourceLocation("extended"), (stack, clientWorld, livingEntity) -> LongRangeClawItem.isClawExtended(stack) ? 1f : 0f);
 			ItemModelsProperties.registerProperty(ModItems.SINGLE_ITEM_BAG_ITEM.get(), new ResourceLocation("fullness"), (stack, clientWorld, livingEntity) -> ModItems.SINGLE_ITEM_BAG_ITEM.get().getFullness(stack));

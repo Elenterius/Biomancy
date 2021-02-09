@@ -40,7 +40,7 @@ public final class BiomancyMod {
 		ModBlocks.BLOCKS.register(modEventBus);
 		ModEnchantments.ENCHANTMENTS.register(modEventBus);
 		ModRecipes.RECIPE_SERIALIZERS.register(modEventBus);
-		ModEntityTypes.TILE_ENTITIES.register(modEventBus);
+		ModTileEntityTypes.TILE_ENTITIES.register(modEventBus);
 		ModContainerTypes.CONTAINERS.register(modEventBus);
 
 		ModAttributes.ATTRIBUTES.register(modEventBus);

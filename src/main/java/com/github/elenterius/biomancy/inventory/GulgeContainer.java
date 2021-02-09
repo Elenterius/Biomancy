@@ -58,8 +58,8 @@ public class GulgeContainer extends Container {
 
 			@Override
 			public void putStack(ItemStack stack) {
-				if (gulgeContents.itemHandler.isPresent()) {
-					gulgeContents.itemHandler.ifPresent(itemHandler -> {
+				if (gulgeContents.getOptionalItemStackHandler().isPresent()) {
+					gulgeContents.getOptionalItemStackHandler().ifPresent(itemHandler -> {
 						ItemStack remainder = itemHandler.insertItem(0, stack, false);  //redirect stack into gulge inventory
 						inventory.setInventorySlotContents(0, remainder);
 					});
@@ -83,8 +83,8 @@ public class GulgeContainer extends Container {
 			public ItemStack onTake(PlayerEntity playerIn, ItemStack stack) {
 				//server & client side
 
-				if (gulgeContents.itemHandler.isPresent()) {
-					gulgeContents.itemHandler.ifPresent(itemHandler -> {
+				if (gulgeContents.getOptionalItemStackHandler().isPresent()) {
+					gulgeContents.getOptionalItemStackHandler().ifPresent(itemHandler -> {
 						ItemStack gulgeStack = itemHandler.getStackInSlot(0);
 						if (!gulgeStack.isEmpty()) { // check if there still is something left to take
 							itemHandler.extractItem(0, 1, false); //actually extract the item

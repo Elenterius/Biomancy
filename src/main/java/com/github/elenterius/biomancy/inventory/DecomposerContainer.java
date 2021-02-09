@@ -22,7 +22,7 @@ public class DecomposerContainer extends Container {
 	protected final SimpleInvContents inputContents;
 	protected final SimpleInvContents outputContents;
 	private final DecomposerStateData decomposerState;
-	private World world;
+	private final World world;
 
 	private DecomposerContainer(int screenId, PlayerInventory playerInventory, SimpleInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, DecomposerStateData decomposerState) {
 		super(ModContainerTypes.DECOMPOSER.get(), screenId);
@@ -46,14 +46,14 @@ public class DecomposerContainer extends Container {
 		}
 
 		// Add the players main inventory
-		final int PLAYER_INVENTORY_XPOS = 8;
-		final int PLAYER_INVENTORY_YPOS = 84;
+		final int PLAYER_INVENTORY_POS_X = 8;
+		final int PLAYER_INVENTORY_POS_Y = 84;
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 9; x++) {
 				int slotNumber = HOT_BAR_SIZE + y * 9 + x;
-				int xpos = PLAYER_INVENTORY_XPOS + x * SLOT_X_SPACING;
-				int ypos = PLAYER_INVENTORY_YPOS + y * SLOT_Y_SPACING;
-				addSlot(new SlotItemHandler(playerInventoryForge, slotNumber, xpos, ypos));
+				int posX = PLAYER_INVENTORY_POS_X + x * SLOT_X_SPACING;
+				int posY = PLAYER_INVENTORY_POS_Y + y * SLOT_Y_SPACING;
+				addSlot(new SlotItemHandler(playerInventoryForge, slotNumber, posX, posY));
 			}
 		}
 

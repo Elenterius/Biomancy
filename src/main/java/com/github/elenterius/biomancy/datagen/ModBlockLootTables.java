@@ -26,12 +26,12 @@ import java.util.stream.Collectors;
 
 public class ModBlockLootTables extends BlockLootTables {
 
-	protected static LootTable.Builder droppingWithContents(Block itemContainer) {
+	protected static LootTable.Builder droppingWithInventory(Block itemContainer) {
 		return LootTable.builder().addLootPool(withSurvivesExplosion(itemContainer, LootPool.builder().rolls(ConstantRange.of(1))
 				.addEntry(ItemLootEntry.builder(itemContainer)
 						.acceptFunction(CopyName.builder(CopyName.Source.BLOCK_ENTITY))
 						.acceptFunction(CopyNbt.builder(CopyNbt.Source.BLOCK_ENTITY)
-								.replaceOperation("Contents", "BlockEntityTag.Contents")
+								.replaceOperation("Inventory", "BlockEntityTag.Inventory")
 								.replaceOperation("OwnerUUID", "BlockEntityTag.OwnerUUID")
 								.replaceOperation("UserList", "BlockEntityTag.UserList")
 						)
@@ -100,7 +100,8 @@ public class ModBlockLootTables extends BlockLootTables {
 		registerLootTable(ModBlocks.BIO_FLESH_PRESSURE_PLATE.get(), ModBlockLootTables::droppingSimpleOwnable);
 
 		registerLootTable(ModBlocks.MEATSOUP_CAULDRON.get(), dropping(Blocks.CAULDRON));
-		registerLootTable(ModBlocks.GULGE.get(), ModBlockLootTables::droppingWithContents);
+		registerLootTable(ModBlocks.GULGE.get(), ModBlockLootTables::droppingWithInventory);
+		registerLootTable(ModBlocks.FLESH_CHEST.get(), ModBlockLootTables::droppingWithInventory);
 		registerLootTable(ModBlocks.DECOMPOSER.get(), ModBlockLootTables::droppingWithFuel);
 
 //		registerLootTable(ModBlocks.LUMINOUS_SOIL.get(), (soil) -> droppingWithSilkTouch(soil, withExplosionDecay(soil, ItemLootEntry.builder(ModItems.LUMINESCENT_SPORES.get())

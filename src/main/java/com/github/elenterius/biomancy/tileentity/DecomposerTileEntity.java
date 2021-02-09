@@ -2,9 +2,9 @@ package com.github.elenterius.biomancy.tileentity;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.DecomposerBlock;
-import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.init.ModTags;
+import com.github.elenterius.biomancy.init.ModTileEntityTypes;
 import com.github.elenterius.biomancy.inventory.DecomposerContainer;
 import com.github.elenterius.biomancy.inventory.SimpleInvContents;
 import com.github.elenterius.biomancy.mixin.RecipeManagerMixinAccessor;
@@ -54,7 +54,7 @@ public class DecomposerTileEntity extends OwnableTileEntity implements INamedCon
 	private final SimpleInvContents outputContents;
 
 	public DecomposerTileEntity() {
-		super(ModEntityTypes.DECOMPOSER_TILE.get());
+		super(ModTileEntityTypes.DECOMPOSER.get());
 		fuelContents = SimpleInvContents.createServerContents(FUEL_SLOTS_COUNT, this::canPlayerOpenInv, this::markDirty);
 		inputContents = SimpleInvContents.createServerContents(INPUT_SLOTS_COUNT, this::canPlayerOpenInv, this::markDirty);
 		outputContents = SimpleInvContents.createServerContents(OUTPUT_SLOTS_COUNT, true, this::canPlayerOpenInv, this::markDirty);

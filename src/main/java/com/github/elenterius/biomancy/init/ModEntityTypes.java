@@ -2,9 +2,6 @@ package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.entity.*;
-import com.github.elenterius.biomancy.tileentity.DecomposerTileEntity;
-import com.github.elenterius.biomancy.tileentity.GulgeTileEntity;
-import com.github.elenterius.biomancy.tileentity.SimpleOwnableTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityClassification;
@@ -14,7 +11,6 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Difficulty;
@@ -41,16 +37,6 @@ public final class ModEntityTypes {
 	public static final RegistryObject<EntityType<PotionBeetleEntity>> POTION_BEETLE = ENTITIES.register("potion_beetle", () -> EntityType.Builder.create(PotionBeetleEntity::new, EntityClassification.CREATURE).size(0.475F, 0.34F).build(BiomancyMod.MOD_ID + ":" + "potion_beetle"));
 	public static final RegistryObject<EntityType<MasonBeetleEntity>> MASON_BEETLE = ENTITIES.register("mason_beetle", () -> EntityType.Builder.create(MasonBeetleEntity::new, EntityClassification.CREATURE).size(0.475F, 0.34F).build(BiomancyMod.MOD_ID + ":" + "mason_beetle"));
 	public static final RegistryObject<EntityType<FleshBlobEntity>> FLESH_BLOB = ENTITIES.register("flesh_blob", () -> EntityType.Builder.create(FleshBlobEntity::new, EntityClassification.CREATURE).size(0.75F, 0.75F).build(BiomancyMod.MOD_ID + ":" + "flesh_blob"));
-
-
-	public static final DeferredRegister<TileEntityType<?>> TILE_ENTITIES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, BiomancyMod.MOD_ID);
-
-	@SuppressWarnings("ConstantConditions")
-	public static final RegistryObject<TileEntityType<GulgeTileEntity>> GULGE_TILE = TILE_ENTITIES.register("gulge", () -> TileEntityType.Builder.create(GulgeTileEntity::new, ModBlocks.GULGE.get()).build(null));
-	@SuppressWarnings("ConstantConditions")
-	public static final RegistryObject<TileEntityType<SimpleOwnableTileEntity>> SIMPLE_OWNABLE_TILE = TILE_ENTITIES.register("ownable_tile", () -> TileEntityType.Builder.create(SimpleOwnableTileEntity::new, ModBlocks.BIO_FLESH_DOOR.get(), ModBlocks.BIO_FLESH_TRAPDOOR.get(), ModBlocks.BIO_FLESH_PRESSURE_PLATE.get()).build(null));
-	@SuppressWarnings("ConstantConditions")
-	public static final RegistryObject<TileEntityType<DecomposerTileEntity>> DECOMPOSER_TILE = TILE_ENTITIES.register("decomposer", () -> TileEntityType.Builder.create(DecomposerTileEntity::new, ModBlocks.DECOMPOSER.get()).build(null));
 
 	private ModEntityTypes() {}
 

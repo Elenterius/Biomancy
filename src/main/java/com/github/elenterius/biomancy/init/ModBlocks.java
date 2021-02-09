@@ -58,6 +58,7 @@ public final class ModBlocks {
 
 	//Containers
 	public static final RegistryObject<GulgeBlock> GULGE = BLOCKS.register("gulge", () -> new GulgeBlock(createFleshProperties()));
+	public static final RegistryObject<FleshChestBlock> FLESH_CHEST = BLOCKS.register("bioflesh_chest", () -> new FleshChestBlock(createFleshProperties()));
 	public static final RegistryObject<DecomposerBlock> DECOMPOSER = BLOCKS.register("decomposer", () -> new DecomposerBlock(createFleshProperties()));
 
 	private ModBlocks() {}

@@ -86,6 +86,7 @@ public final class ModItems {
 
 	//container blocks
 	public static final RegistryObject<BlockItem> GULGE = ITEMS.register("gulge", () -> new BlockItem(ModBlocks.GULGE.get(), createItemProperties().rarity(Rarity.EPIC)));
+	public static final RegistryObject<BlockItem> FLESH_CHEST = ITEMS.register("bioflesh_chest", () -> new BlockItem(ModBlocks.FLESH_CHEST.get(), createItemProperties().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<BlockItem> DECOMPOSER = ITEMS.register("decomposer", () -> new BlockItem(ModBlocks.DECOMPOSER.get(), createItemProperties().rarity(Rarity.UNCOMMON)));
 
 	private ModItems() {}

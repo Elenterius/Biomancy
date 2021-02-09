@@ -2,11 +2,12 @@ package com.github.elenterius.biomancy.tileentity;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModTileEntityTypes;
-import com.github.elenterius.biomancy.inventory.GulgeContainer;
-import com.github.elenterius.biomancy.inventory.GulgeContents;
+import com.github.elenterius.biomancy.inventory.FleshChestContainer;
+import com.github.elenterius.biomancy.inventory.SimpleInvContents;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.nbt.CompoundNBT;
@@ -19,22 +20,23 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class GulgeTileEntity extends OwnableTileEntity implements INamedContainerProvider {
+public class FleshChestTileEntity extends OwnableTileEntity implements INamedContainerProvider {
 
-	public static final short MAX_ITEM_AMOUNT = 32_000;
-	private final GulgeContents gulgeContents;
+	public static final int INV_SLOTS_COUNT = 6 * 9;
 
-	public GulgeTileEntity() {
-		super(ModTileEntityTypes.GULGE.get());
-		gulgeContents = GulgeContents.createServerContents(MAX_ITEM_AMOUNT, this::canPlayerOpenInv, this::markDirty);
-		gulgeContents.setOpenInventoryConsumer(this::onOpenInventory);
-		gulgeContents.setCloseInventoryConsumer(this::onCloseInventory);
+	private final SimpleInvContents invContents;
+
+	public FleshChestTileEntity() {
+		super(ModTileEntityTypes.FLESH_CHEST.get());
+		invContents = SimpleInvContents.createServerContents(INV_SLOTS_COUNT, this::canPlayerOpenInv, this::markDirty);
+		invContents.setOpenInventoryConsumer(this::onOpenInventory);
+		invContents.setCloseInventoryConsumer(this::onCloseInventory);
 	}
 
 	@Nullable
 	@Override
 	public Container createMenu(int screenId, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-		return GulgeContainer.createServerContainer(screenId, playerInventory, gulgeContents);
+		return FleshChestContainer.createServerContainer(screenId, playerInventory, invContents);
 	}
 
 	public void onOpenInventory(PlayerEntity player) {
@@ -49,47 +51,52 @@ public class GulgeTileEntity extends OwnableTileEntity implements INamedContaine
 //		}
 	}
 
-	public boolean isEmpty() {
-		return gulgeContents.isEmpty();
-	}
-
 	@Override
 	public CompoundNBT write(CompoundNBT nbt) {
 		super.write(nbt);
-		nbt.put("Inventory", gulgeContents.serializeNBT());
+		nbt.put("Inventory", invContents.serializeNBT());
 		return nbt;
 	}
 
 	@Override
 	public void read(BlockState state, CompoundNBT nbt) {
 		super.read(state, nbt);
-		gulgeContents.deserializeNBT(nbt.getCompound("Inventory"));
+		invContents.deserializeNBT(nbt.getCompound("Inventory"));
+		if (invContents.getSizeInventory() != INV_SLOTS_COUNT) {
+			throw new IllegalArgumentException("Corrupted NBT: Number of inventory slots did not match expected count.");
+		}
 	}
 
 	@Override
 	public CompoundNBT writeToItemBlockEntityTag(CompoundNBT nbt) {
 		super.writeToItemBlockEntityTag(nbt);
-		if (!gulgeContents.isEmpty()) nbt.put("Inventory", gulgeContents.serializeNBT());
+		if (!invContents.isEmpty()) nbt.put("Inventory", invContents.serializeNBT());
 		return nbt;
 	}
 
 	@Override
 	public void invalidateCaps() {
-		gulgeContents.getOptionalItemStackHandler().invalidate();
+		invContents.getOptionalItemStackHandler().invalidate();
 		super.invalidateCaps();
+	}
+
+	@Nullable
+	public IInventory getInventory() {
+		return !removed ? invContents : null;
 	}
 
 	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
 		if (!removed && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			return gulgeContents.getOptionalItemStackHandler().cast();
+			return invContents.getOptionalItemStackHandler().cast();
 		}
 		return super.getCapability(cap, side);
 	}
 
 	@Override
 	protected ITextComponent getDefaultName() {
-		return BiomancyMod.getTranslationText("container", "gulge");
+		return BiomancyMod.getTranslationText("container", "bioflesh_chest");
 	}
+
 }

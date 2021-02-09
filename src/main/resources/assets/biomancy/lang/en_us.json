@@ -67,6 +67,7 @@
   "block.biomancy.bioflesh_trapdoor": "Semi-Living Flesh Trap Door",
   "block.biomancy.bioflesh_pressure_plate": "Semi-Living Flesh Pressure Plate",
   "block.biomancy.gulge": "Deep Gulge",
+  "block.biomancy.bioflesh_chest": "Semi-Living Flesh Chest",
   "block.biomancy.decomposer": "Bio Decomposer",
   "block.biomancy.meatsoup_cauldron": "Fleshpot",
   "block.biomancy.flesh_melon_block": "Flesh Melon Block",
@@ -75,6 +76,7 @@
 
   "tile.biomancy.ownable": "Ownable Tile Entity",
   "container.biomancy.gulge": "Deep Gulge",
+  "container.biomancy.bioflesh_chest": "Semi-Living Flesh Chest",
   "container.biomancy.decomposer": "Bio Decomposer",
 
   "entity.biomancy.blobling": "Blobling",

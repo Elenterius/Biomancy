@@ -1,13 +1,13 @@
 package com.github.elenterius.biomancy.tileentity;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.init.ModEntityTypes;
+import com.github.elenterius.biomancy.init.ModTileEntityTypes;
 import net.minecraft.util.text.ITextComponent;
 
 public class SimpleOwnableTileEntity extends OwnableTileEntity {
 
 	public SimpleOwnableTileEntity() {
-		super(ModEntityTypes.SIMPLE_OWNABLE_TILE.get());
+		super(ModTileEntityTypes.SIMPLE_OWNABLE_TILE.get());
 	}
 
 	@Override
