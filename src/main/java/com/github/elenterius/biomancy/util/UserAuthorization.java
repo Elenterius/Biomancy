@@ -8,13 +8,17 @@ import java.util.UUID;
 public class UserAuthorization implements INBTSerializable<CompoundNBT> {
 
 	private UUID userUUID;
-	private AuthorityType authority;
+	private AuthorityLevel authority;
 
 	public UserAuthorization(CompoundNBT nbt) {
 		deserializeNBT(nbt);
 	}
 
-	public UserAuthorization(UUID userUUID, AuthorityType type) {
+	public UserAuthorization(UUID userUUID) {
+		this(userUUID, AuthorityLevel.USER);
+	}
+
+	public UserAuthorization(UUID userUUID, AuthorityLevel type) {
 		this.userUUID = userUUID;
 		authority = type;
 	}
@@ -23,12 +27,12 @@ public class UserAuthorization implements INBTSerializable<CompoundNBT> {
 		return userUUID;
 	}
 
-	public AuthorityType getAuthority() {
+	public AuthorityLevel getAuthority() {
 		return authority;
 	}
 
-	public void setAuthority(AuthorityType type) {
-		authority = type;
+	public void setAuthorityLevel(AuthorityLevel level) {
+		authority = level;
 	}
 
 	public int getAuthorityLevel() {
@@ -46,7 +50,7 @@ public class UserAuthorization implements INBTSerializable<CompoundNBT> {
 	@Override
 	public void deserializeNBT(CompoundNBT nbt) {
 		userUUID = nbt.getUniqueId("UserUUID");
-		authority = AuthorityType.deserialize(nbt);
+		authority = AuthorityLevel.deserialize(nbt);
 	}
 
 	@Override
@@ -63,23 +67,31 @@ public class UserAuthorization implements INBTSerializable<CompoundNBT> {
 		return "(" + userUUID.toString() + "," + authority + ")";
 	}
 
-	public enum AuthorityType {
-		NONE(0), USER(1), ADMIN(2);
+	public enum AuthorityLevel {
+		NONE(0), USER(1), ADMIN(2), OWNER(3);
 
-		static AuthorityType[] SORTED_LEVELS = new AuthorityType[]{NONE, USER, ADMIN};
+		static AuthorityLevel[] SORTED_LEVELS = new AuthorityLevel[]{NONE, USER, ADMIN, OWNER};
 		private final byte level;
 
-		AuthorityType(int level) {
+		AuthorityLevel(int level) {
 			this.level = (byte) level;
 		}
 
-		public static AuthorityType fromId(byte level) {
+		public static AuthorityLevel fromId(byte level) {
 			if (level < 0 || level >= SORTED_LEVELS.length) return NONE;
 			return SORTED_LEVELS[level];
 		}
 
-		public static AuthorityType deserialize(CompoundNBT nbt) {
-			return AuthorityType.fromId(nbt.getByte("AuthorityLevel"));
+		public static AuthorityLevel deserialize(CompoundNBT nbt) {
+			return AuthorityLevel.fromId(nbt.getByte("AuthorityLevel"));
+		}
+
+		public boolean isUserLevel() {
+			return level > NONE.level;
+		}
+
+		public boolean isAdminLevel() {
+			return level >= ADMIN.level;
 		}
 
 		public void serialize(CompoundNBT nbt) {

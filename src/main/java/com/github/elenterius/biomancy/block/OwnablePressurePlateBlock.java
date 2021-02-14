@@ -100,11 +100,11 @@ public class OwnablePressurePlateBlock extends PressurePlateBlock implements IOw
 				for (Entity entity : list) {
 					if (!entity.doesEntityNotTriggerPressurePlate()) {
 						if (sensitivity == UserSensitivity.UNAUTHORIZED) {
-							if (!ownableTile.isAuthorized(entity.getUniqueID())) {
+							if (!ownableTile.isUserAuthorized(entity.getUniqueID())) {
 								return 15;
 							}
 						}
-						else if (ownableTile.isAuthorized(entity.getUniqueID())) {
+						else if (ownableTile.isUserAuthorized(entity.getUniqueID())) {
 							return 15;
 						}
 					}

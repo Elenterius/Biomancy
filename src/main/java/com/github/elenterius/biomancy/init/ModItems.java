@@ -28,6 +28,8 @@ public final class ModItems {
 	public static final RegistryObject<SwordItem> SHARP_BONE = ITEMS.register("sharp_bone", () -> new SwordItem(ModItemTier.BONE, 3, -2.4F, createItemProperties()));
 	public static final RegistryObject<Item> SEWING_KIT_EMPTY = ITEMS.register("sewing_kit_empty", () -> new Item(createItemProperties().maxStackSize(1)));
 	public static final RegistryObject<SewingKitItem> SEWING_KIT = ITEMS.register("sewing_kit", () -> new SewingKitItem(createItemProperties().maxStackSize(1).maxDamage(64)));
+	public static final RegistryObject<AccessKeyItem> OCULUS_KEY = ITEMS.register("oculus_key", () -> new AccessKeyItem(createItemProperties()));
+	public static final RegistryObject<SyringeItem> SYRINGE = ITEMS.register("syringe", () -> new SyringeItem(createItemProperties()));
 	// Adaptive Tools
 	public static final RegistryObject<AdaptivePickaxeItem> BIOFLESH_PICKAXE = ITEMS.register("bioflesh_pickaxe", () -> new AdaptivePickaxeItem(ModItemTier.LESSER_BIOFLESH, 1, -2.8f, createItemProperties().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<AdaptiveShovelItem> BIOFLESH_SHOVEL = ITEMS.register("bioflesh_shovel", () -> new AdaptiveShovelItem(ModItemTier.LESSER_BIOFLESH, 1.5f, -3f, createItemProperties().rarity(Rarity.UNCOMMON)));

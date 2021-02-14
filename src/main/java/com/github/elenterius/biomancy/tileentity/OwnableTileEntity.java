@@ -16,13 +16,14 @@ import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 public abstract class OwnableTileEntity extends SimpleSyncedTileEntity implements IOwnableTile, INameable {
 
-	private final ArrayList<UserAuthorization> userList = new ArrayList<>();
+	private final HashMap<UUID, UserAuthorization.AuthorityLevel> userAuthorityLevelMap = new HashMap<>(8); // 8 * 0.75 = 6 -> we naively assume that the average player won't add more than 6 users
 	private ITextComponent customName = null;
 	@Nullable
 	private UUID owner;
@@ -49,29 +50,14 @@ public abstract class OwnableTileEntity extends SimpleSyncedTileEntity implement
 		}
 	}
 
+	@Override
+	public HashMap<UUID, UserAuthorization.AuthorityLevel> getUserAuthorityLevelMap() {
+		return userAuthorityLevelMap;
+	}
+
 	public boolean isPlayerAuthorized(PlayerEntity player) {
 		if (player.isCreative()) return true;
-		return isAuthorized(player.getUniqueID());
-	}
-
-	public boolean isAuthorized(UUID uuid) {
-		if (isLocked()) {
-			if (!isOwner(uuid)) {
-				boolean isAuthorized = false;
-				for (UserAuthorization userAuthorization : userList) {
-					if (userAuthorization.getUser().equals(uuid)) {
-						isAuthorized = userAuthorization.getAuthorityLevel() > 0;
-						break;
-					}
-				}
-				return isAuthorized;
-			}
-		}
-		return true;
-	}
-
-	public boolean isLocked() {
-		return hasOwner();
+		return isUserAuthorized(player.getUniqueID());
 	}
 
 	@Override
@@ -132,11 +118,14 @@ public abstract class OwnableTileEntity extends SimpleSyncedTileEntity implement
 		if (nbt.hasUniqueId("OwnerUUID")) owner = nbt.getUniqueId("OwnerUUID");
 		else owner = null;
 
-		userList.clear();
+		userAuthorityLevelMap.clear();
 		if (nbt.contains("UserList")) {
 			ListNBT nbtList = nbt.getList("UserList", Constants.NBT.TAG_COMPOUND);
 			for (int i = 0; i < nbtList.size(); i++) {
-				userList.add(new UserAuthorization(nbtList.getCompound(i)));
+				CompoundNBT nbtEntry = nbtList.getCompound(i);
+				UUID userUUID = nbtEntry.getUniqueId("UserUUID");
+				UserAuthorization.AuthorityLevel authority = UserAuthorization.AuthorityLevel.deserialize(nbtEntry);
+				userAuthorityLevelMap.put(userUUID, authority);
 			}
 		}
 	}
@@ -148,10 +137,13 @@ public abstract class OwnableTileEntity extends SimpleSyncedTileEntity implement
 
 		if (owner != null) nbt.putUniqueId("OwnerUUID", owner);
 
-		if (userList.size() > 0) {
+		if (userAuthorityLevelMap.size() > 0) {
 			ListNBT listNBT = new ListNBT();
-			for (UserAuthorization userAuthorization : userList) {
-				listNBT.add(userAuthorization.serializeNBT());
+			for (Map.Entry<UUID, UserAuthorization.AuthorityLevel> entry : userAuthorityLevelMap.entrySet()) {
+				CompoundNBT nbtEntry = new CompoundNBT();
+				nbtEntry.putUniqueId("UserUUID", entry.getKey());
+				entry.getValue().serialize(nbtEntry);
+				listNBT.add(nbtEntry);
 			}
 			nbt.put("UserList", listNBT);
 		}
@@ -160,12 +152,15 @@ public abstract class OwnableTileEntity extends SimpleSyncedTileEntity implement
 
 	public CompoundNBT writeToItemBlockEntityTag(CompoundNBT nbt) {
 
-		if (userList.size() > 0) {
+		if (userAuthorityLevelMap.size() > 0) {
 			if (owner != null) nbt.putUniqueId("OwnerUUID", owner);
 
 			ListNBT listNBT = new ListNBT();
-			for (UserAuthorization userAuthorization : userList) {
-				listNBT.add(userAuthorization.serializeNBT());
+			for (Map.Entry<UUID, UserAuthorization.AuthorityLevel> entry : userAuthorityLevelMap.entrySet()) {
+				CompoundNBT nbtEntry = new CompoundNBT();
+				nbtEntry.putUniqueId("UserUUID", entry.getKey());
+				entry.getValue().serialize(nbtEntry);
+				listNBT.add(nbtEntry);
 			}
 			nbt.put("UserList", listNBT);
 		}

@@ -195,6 +195,7 @@ public class ModRecipeProvider extends RecipeProvider {
 		CustomRecipeBuilder.customRecipe(ModRecipes.REPAIR_SPECIAL_SEWING_KIT.get()).build(consumer, BiomancyMod.MOD_ID + ":" + "sewing_kit_nbt");
 		CustomRecipeBuilder.customRecipe(ModRecipes.CRAFTING_SPECIAL_POTION_BEETLE.get()).build(consumer, BiomancyMod.MOD_ID + ":" + "potion_beetle");
 		CustomRecipeBuilder.customRecipe(ModRecipes.CRAFTING_SPECIAL_MASON_BEETLE.get()).build(consumer, BiomancyMod.MOD_ID + ":" + "mason_beetle");
+		CustomRecipeBuilder.customRecipe(ModRecipes.CRAFTING_SPECIAL_ADD_USER_TO_KEY.get()).build(consumer, BiomancyMod.MOD_ID + ":" + "add_user_to_key");
 	}
 
 	@Override

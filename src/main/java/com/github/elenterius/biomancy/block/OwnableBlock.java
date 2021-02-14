@@ -53,8 +53,8 @@ public abstract class OwnableBlock extends Block implements IOwnableBlock {
 					int limit = Screen.hasControlDown() ? Math.min(5, nbtList.size()) : nbtList.size();
 					for (int i = 0; i < limit; i++) {
 						CompoundNBT userNbt = nbtList.getCompound(i);
-						StringTextComponent userName = new StringTextComponent(TooltipUtil.tryToGetPlayerNameOnClientSide(userNbt.getUniqueId("UserUUID")));
-						UserAuthorization.AuthorityType level = UserAuthorization.AuthorityType.deserialize(userNbt);
+						String userName = TooltipUtil.tryToGetPlayerNameOnClientSide(userNbt.getUniqueId("UserUUID"));
+						UserAuthorization.AuthorityLevel level = UserAuthorization.AuthorityLevel.deserialize(userNbt);
 						tooltip.add(new StringTextComponent(String.format(" - %s (%s)", userName, level.name().toLowerCase(Locale.ROOT))).mergeStyle(TextFormatting.GRAY));
 					}
 					int remainder = nbtList.size() - limit;
@@ -106,7 +106,6 @@ public abstract class OwnableBlock extends Block implements IOwnableBlock {
 	@Override
 	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 		addOwnableTooltip(stack, tooltip, flagIn);
 	}
 

@@ -11,6 +11,8 @@
   "item.biomancy.mason_beetle": "Beetle of Block Placement",
   "item.biomancy.sewing_kit": "Bone Needle & String",
   "item.biomancy.sewing_kit_empty": "Bone Needle",
+  "item.biomancy.oculus_key": "Oculus Key",
+  "item.biomancy.syringe": "Syringe",
 
   "item.biomancy.sharp_bone": "Sharpened Bone",
   "item.biomancy.leech_claw": "Hirudinean Claw",
@@ -113,6 +115,7 @@
   "tooltip.biomancy.action_reload": "reload",
   "tooltip.biomancy.action_cycle": "cycle",
   "tooltip.biomancy.contains": "Contains: %1$s",
+  "tooltip.biomancy.contains_dna": "Contains genetic material of %1$s",
   "tooltip.biomancy.contains_nothing": "Contains: Nothing",
   "tooltip.biomancy.empty": "Empty",
   "tooltip.biomancy.owner": "Owner: %1$s",

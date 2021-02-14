@@ -182,7 +182,7 @@ public class OwnableDoorBlock extends DoorBlock implements IOwnableBlock {
 					if (neighborTile instanceof IOwnableTile) {
 						Optional<UUID> neighborOwner = ((IOwnableTile) neighborTile).getOwner();
 						if (neighborOwner.isPresent()) {
-							isLocked = !((SimpleOwnableTileEntity) tileEntity).isAuthorized(neighborOwner.get());
+							isLocked = !((SimpleOwnableTileEntity) tileEntity).isUserAuthorized(neighborOwner.get());
 						}
 					}
 				}

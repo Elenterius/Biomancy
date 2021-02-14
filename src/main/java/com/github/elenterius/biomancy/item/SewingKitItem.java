@@ -32,7 +32,6 @@ public class SewingKitItem extends Item {
 
 	/**
 	 * we use our own repair recipe implementation
-	 *
 	 * @see SewingKitRepairRecipe
 	 */
 	public boolean isRepairableWith(ItemStack damagedStack, ItemStack materialStack) {
@@ -41,7 +40,6 @@ public class SewingKitItem extends Item {
 
 	/**
 	 * disables workbench repair crafting
-	 *
 	 * @return false
 	 */
 	@Override

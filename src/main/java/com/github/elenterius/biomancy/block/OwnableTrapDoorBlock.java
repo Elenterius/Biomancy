@@ -135,7 +135,7 @@ public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableBlock
 				if (neighborTile instanceof IOwnableTile) {
 					Optional<UUID> neighborOwner = ((IOwnableTile) neighborTile).getOwner();
 					if (neighborOwner.isPresent()) {
-						isLocked = !((SimpleOwnableTileEntity) tileEntity).isAuthorized(neighborOwner.get());
+						isLocked = !((SimpleOwnableTileEntity) tileEntity).isUserAuthorized(neighborOwner.get());
 					}
 				}
 			}
@@ -185,14 +185,14 @@ public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableBlock
 						for (Entity entity : list) {
 							if (!entity.isSteppingCarefully()) {
 								if (sensitivity == UserSensitivity.UNAUTHORIZED) {
-									if (!((SimpleOwnableTileEntity) tileEntity).isAuthorized(entity.getUniqueID())) {
+									if (!((SimpleOwnableTileEntity) tileEntity).isUserAuthorized(entity.getUniqueID())) {
 										// if block is inverted keep door open when not authorized (trap mode)
 										worldIn.getPendingBlockTicks().scheduleTick(pos, state.getBlock(), 60); //schedule tick for the next close attempt (~3sec)
 										return;
 									}
 								}
 								else {
-									if (((SimpleOwnableTileEntity) tileEntity).isAuthorized(entity.getUniqueID())) {
+									if (((SimpleOwnableTileEntity) tileEntity).isUserAuthorized(entity.getUniqueID())) {
 										// when normal only keep door open for authorized users
 										worldIn.getPendingBlockTicks().scheduleTick(pos, state.getBlock(), 60); //schedule tick for the next close attempt (~3sec)
 										return;
@@ -240,12 +240,12 @@ public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableBlock
 					for (Entity entity : list) {
 						if (!entity.isSteppingCarefully()) {
 							if (sensitivity == UserSensitivity.UNAUTHORIZED) {
-								if (!ownableTile.isAuthorized(entity.getUniqueID())) {
+								if (!ownableTile.isUserAuthorized(entity.getUniqueID())) {
 									openTrapDoor(worldIn, state, pos, true);
 									return;
 								}
 							}
-							else if (ownableTile.isAuthorized(entity.getUniqueID())) {
+							else if (ownableTile.isUserAuthorized(entity.getUniqueID())) {
 								openTrapDoor(worldIn, state, pos, true);
 								return;
 							}
