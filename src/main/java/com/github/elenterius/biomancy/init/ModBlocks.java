@@ -42,6 +42,7 @@ public final class ModBlocks {
 	//Material Blocks
 	public static final RegistryObject<Block> FLESH_BLOCK = BLOCKS.register("flesh_block", () -> new FleshBlock(createFleshProperties()));
 	public static final RegistryObject<SlabBlock> FLESH_BLOCK_SLAB = BLOCKS.register("flesh_block_slab", () -> new SlabBlock(createFleshProperties()));
+	public static final RegistryObject<StairsBlock> FLESH_BLOCK_STAIRS = BLOCKS.register("flesh_block_stairs", () -> new StairsBlock(() -> FLESH_BLOCK.get().getDefaultState(), createFleshProperties()));
 	public static final RegistryObject<MutatedFleshBlock> MUTATED_FLESH_BLOCK = BLOCKS.register("mutated_flesh_block", () -> new MutatedFleshBlock(createFleshProperties()));
 	public static final RegistryObject<Block> NECROTIC_FLESH_BLOCK = BLOCKS.register("necrotic_flesh_block", () -> new FleshBlock(createFleshProperties()));
 
@@ -60,6 +61,7 @@ public final class ModBlocks {
 	public static final RegistryObject<GulgeBlock> GULGE = BLOCKS.register("gulge", () -> new GulgeBlock(createFleshProperties()));
 	public static final RegistryObject<FleshChestBlock> FLESH_CHEST = BLOCKS.register("bioflesh_chest", () -> new FleshChestBlock(createFleshProperties()));
 	public static final RegistryObject<DecomposerBlock> DECOMPOSER = BLOCKS.register("decomposer", () -> new DecomposerBlock(createFleshProperties()));
+	public static final RegistryObject<EvolutionPoolBlock> EVOLUTION_POOL = BLOCKS.register("evolution_pool", () -> new EvolutionPoolBlock(createFleshProperties()));
 
 	private ModBlocks() {}
 

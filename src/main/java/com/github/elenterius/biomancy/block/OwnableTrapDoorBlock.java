@@ -3,7 +3,6 @@ package com.github.elenterius.biomancy.block;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.tileentity.IOwnableTile;
 import com.github.elenterius.biomancy.tileentity.SimpleOwnableTileEntity;
-import com.github.elenterius.biomancy.util.TooltipUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.TrapDoorBlock;
@@ -74,7 +73,6 @@ public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableBlock
 	@Override
 	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 		OwnableBlock.addOwnableTooltip(stack, tooltip, flagIn);
 	}
 
@@ -278,7 +276,7 @@ public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableBlock
 	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader worldIn, BlockPos pos) {
 		TileEntity tileEntity = worldIn.getTileEntity(pos);
 		if (tileEntity instanceof SimpleOwnableTileEntity) {
-			if (((SimpleOwnableTileEntity) tileEntity).isPlayerAuthorized(player)) { //only allow authorized players to mine the block
+			if (((SimpleOwnableTileEntity) tileEntity).isUserAuthorized(player)) { //only allow authorized players to mine the block
 				return super.getPlayerRelativeBlockHardness(state, player, worldIn, pos);
 			}
 		}

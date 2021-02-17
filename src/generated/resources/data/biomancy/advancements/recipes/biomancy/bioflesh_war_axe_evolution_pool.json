@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:bioflesh_war_axe_evolution_pool"
+    ]
+  },
+  "criteria": {
+    "has_bioflesh_axe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "biomancy:bioflesh_axe"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:bioflesh_war_axe_evolution_pool"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_bioflesh_axe",
+      "has_the_recipe"
+    ]
+  ]
+}

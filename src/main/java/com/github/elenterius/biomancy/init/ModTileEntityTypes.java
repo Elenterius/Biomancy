@@ -1,10 +1,7 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.tileentity.DecomposerTileEntity;
-import com.github.elenterius.biomancy.tileentity.FleshChestTileEntity;
-import com.github.elenterius.biomancy.tileentity.GulgeTileEntity;
-import com.github.elenterius.biomancy.tileentity.SimpleOwnableTileEntity;
+import com.github.elenterius.biomancy.tileentity.*;
 import com.mojang.datafixers.types.Type;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraftforge.fml.RegistryObject;
@@ -26,6 +23,11 @@ public class ModTileEntityTypes {
 
 	// Machines
 	public static final RegistryObject<TileEntityType<DecomposerTileEntity>> DECOMPOSER = TILE_ENTITIES.register("decomposer", () -> TileEntityType.Builder.create(DecomposerTileEntity::new, ModBlocks.DECOMPOSER.get()).build(NO_DATA_FIXER));
+	public static final RegistryObject<TileEntityType<EvolutionPoolTileEntity>> EVOLUTION_POOL = TILE_ENTITIES.register("evolution_pool", () -> TileEntityType.Builder.create(EvolutionPoolTileEntity::new, ModBlocks.EVOLUTION_POOL.get()).build(NO_DATA_FIXER));
+
+	// Multi-Block Tile Delegator
+	public static final RegistryObject<TileEntityType<OwnableTileEntityDelegator>> TILE_DELEGATOR = TILE_ENTITIES.register("tile_delegator", () -> TileEntityType.Builder.create(OwnableTileEntityDelegator::new, ModBlocks.EVOLUTION_POOL.get(), ModBlocks.BIO_FLESH_DOOR.get()).build(NO_DATA_FIXER));
+
 
 	private ModTileEntityTypes() {}
 

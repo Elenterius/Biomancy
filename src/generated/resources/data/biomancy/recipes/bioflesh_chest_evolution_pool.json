@@ -1,0 +1,18 @@
+{
+  "type": "biomancy:evolution_pool",
+  "ingredients": [
+    {
+      "item": "minecraft:chest"
+    },
+    {
+      "item": "minecraft:chest"
+    },
+    {
+      "item": "biomancy:flesh_block"
+    }
+  ],
+  "result": {
+    "item": "biomancy:bioflesh_chest"
+  },
+  "time": 400
+}

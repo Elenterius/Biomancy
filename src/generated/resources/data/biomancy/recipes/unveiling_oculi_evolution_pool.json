@@ -1,0 +1,27 @@
+{
+  "type": "biomancy:evolution_pool",
+  "ingredients": [
+    {
+      "item": "minecraft:iron_helmet"
+    },
+    {
+      "item": "biomancy:oculus"
+    },
+    {
+      "item": "biomancy:oculus"
+    },
+    {
+      "item": "biomancy:oculus"
+    },
+    {
+      "item": "biomancy:oculus"
+    },
+    {
+      "item": "biomancy:flesh_block"
+    }
+  ],
+  "result": {
+    "item": "biomancy:unveiling_oculi"
+  },
+  "time": 400
+}

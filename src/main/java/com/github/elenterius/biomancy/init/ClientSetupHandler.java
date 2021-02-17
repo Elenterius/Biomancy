@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.gui.DecomposerContainerScreen;
+import com.github.elenterius.biomancy.client.gui.EvolutionPoolContainerScreen;
 import com.github.elenterius.biomancy.client.gui.FleshChestContainerScreen;
 import com.github.elenterius.biomancy.client.gui.GulgeContainerScreen;
 import com.github.elenterius.biomancy.client.renderer.block.FullBrightOverlayBakedModel;
@@ -55,6 +56,7 @@ public final class ClientSetupHandler {
 			ScreenManager.registerFactory(ModContainerTypes.GULGE.get(), GulgeContainerScreen::new);
 			ScreenManager.registerFactory(ModContainerTypes.DECOMPOSER.get(), DecomposerContainerScreen::new);
 			ScreenManager.registerFactory(ModContainerTypes.FLESH_CHEST.get(), FleshChestContainerScreen::new);
+			ScreenManager.registerFactory(ModContainerTypes.EVOLUTION_POOL.get(), EvolutionPoolContainerScreen::new);
 
 			ItemModelsProperties.registerProperty(ModItems.LONG_RANGE_CLAW.get(), new ResourceLocation("extended"), (stack, clientWorld, livingEntity) -> LongRangeClawItem.isClawExtended(stack) ? 1f : 0f);
 			ItemModelsProperties.registerProperty(ModItems.SINGLE_ITEM_BAG_ITEM.get(), new ResourceLocation("fullness"), (stack, clientWorld, livingEntity) -> ModItems.SINGLE_ITEM_BAG_ITEM.get().getFullness(stack));
@@ -64,6 +66,8 @@ public final class ClientSetupHandler {
 			RenderTypeLookup.setRenderLayer(ModBlocks.FLESH_MELON_CROP.get(), RenderType.getCutout());
 			RenderTypeLookup.setRenderLayer(ModBlocks.BIO_FLESH_DOOR.get(), RenderType.getCutout());
 			RenderTypeLookup.setRenderLayer(ModBlocks.BIO_FLESH_TRAPDOOR.get(), RenderType.getCutout());
+
+			RenderTypeLookup.setRenderLayer(ModBlocks.EVOLUTION_POOL.get(), RenderType.getTranslucent());
 
 //			RenderTypeLookup.setRenderLayer(ModBlocks.LUMINOUS_SOIL.get(), renderType -> renderType == RenderType.getCutout() || renderType == RenderType.getTranslucent());
 //			RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_PUSTULE_SMALL.get(), RenderType.getCutout());

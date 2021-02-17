@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:bioflesh_pickaxe_evolution_pool"
+    ]
+  },
+  "criteria": {
+    "has_mutagenic_bile": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "biomancy:mutagenic_bile"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:bioflesh_pickaxe_evolution_pool"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_mutagenic_bile",
+      "has_the_recipe"
+    ]
+  ]
+}

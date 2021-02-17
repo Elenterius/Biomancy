@@ -43,11 +43,11 @@ public class DecomposingRecipeBuilder {
 		count = countIn;
 	}
 
-	public static DecomposingRecipeBuilder decomposingRecipe(IItemProvider resultIn, int craftingTimeIn) {
+	public static DecomposingRecipeBuilder createRecipe(IItemProvider resultIn, int craftingTimeIn) {
 		return new DecomposingRecipeBuilder(resultIn, craftingTimeIn, 1);
 	}
 
-	public static DecomposingRecipeBuilder decomposingRecipe(IItemProvider resultIn, int craftingTimeIn, int countIn) {
+	public static DecomposingRecipeBuilder createRecipe(IItemProvider resultIn, int craftingTimeIn, int countIn) {
 		return new DecomposingRecipeBuilder(resultIn, craftingTimeIn, countIn);
 	}
 
@@ -223,7 +223,7 @@ public class DecomposingRecipeBuilder {
 			}
 			json.add("result", jsonobject);
 
-			json.addProperty("decomposingtime", craftingTime);
+			json.addProperty("time", craftingTime);
 		}
 
 		public IRecipeSerializer<?> getSerializer() {

@@ -34,11 +34,11 @@ public abstract class OwnableTileEntity extends SimpleSyncedTileEntity implement
 
 	public boolean canPlayerOpenInv(PlayerEntity player) {
 		if (world == null || world.getTileEntity(pos) != this) return false;
-		return player.getDistanceSq(Vector3d.copyCentered(pos)) < 8d * 8d && isPlayerAuthorized(player);
+		return player.getDistanceSq(Vector3d.copyCentered(pos)) < 8d * 8d && isUserAuthorized(player);
 	}
 
 	public boolean canPlayerUse(PlayerEntity player) {
-		if (!player.isSpectator() && !isPlayerAuthorized(player)) {
+		if (!player.isSpectator() && !isUserAuthorized(player)) {
 			if (!player.world.isRemote()) {
 				player.sendStatusMessage(new TranslationTextComponent("container.isLocked", getDefaultName()).mergeStyle(TextFormatting.RED), true);
 				player.playSound(SoundEvents.BLOCK_CHEST_LOCKED, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -53,11 +53,6 @@ public abstract class OwnableTileEntity extends SimpleSyncedTileEntity implement
 	@Override
 	public HashMap<UUID, UserAuthorization.AuthorityLevel> getUserAuthorityLevelMap() {
 		return userAuthorityLevelMap;
-	}
-
-	public boolean isPlayerAuthorized(PlayerEntity player) {
-		if (player.isCreative()) return true;
-		return isUserAuthorized(player.getUniqueID());
 	}
 
 	@Override

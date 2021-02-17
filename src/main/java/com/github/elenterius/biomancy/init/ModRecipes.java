@@ -26,8 +26,10 @@ public final class ModRecipes {
 	public static final RegistryObject<SpecialRecipeSerializer<AddUserToAccessKeyRecipe>> CRAFTING_SPECIAL_ADD_USER_TO_KEY = RECIPE_SERIALIZERS.register("crafting_special_add_user_to_key", () -> new SpecialRecipeSerializer<>(AddUserToAccessKeyRecipe::new));
 
 	public static final RegistryObject<IRecipeSerializer<DecomposingRecipe>> DECOMPOSING_SERIALIZER = RECIPE_SERIALIZERS.register("decomposing", DecomposingRecipe.Serializer::new);
+	public static final RegistryObject<IRecipeSerializer<EvolutionPoolRecipe>> EVOLUTION_POOL_SERIALIZER = RECIPE_SERIALIZERS.register("evolution_pool", EvolutionPoolRecipe.Serializer::new);
 
 	public static final IRecipeType<DecomposingRecipe> DECOMPOSING_RECIPE_TYPE = createRecipeType("decomposing");
+	public static final IRecipeType<EvolutionPoolRecipe> EVOLUTION_POOL_RECIPE_TYPE = createRecipeType("evolution_pool");
 
 	public static final ItemPredicate ANY_MEATLESS_FOOD_ITEM_PREDICATE = new ItemPredicate() {
 		@Override
@@ -50,6 +52,7 @@ public final class ModRecipes {
 
 	public static void registerRecipeTypes() {
 		Registry.register(Registry.RECIPE_TYPE, BiomancyMod.createRL("decomposing"), DECOMPOSING_RECIPE_TYPE);
+		Registry.register(Registry.RECIPE_TYPE, BiomancyMod.createRL("evolution_pool"), EVOLUTION_POOL_RECIPE_TYPE);
 	}
 
 	private static <T extends IRecipe<?>> IRecipeType<T> createRecipeType(String name) {

@@ -1,0 +1,24 @@
+{
+  "type": "biomancy:evolution_pool",
+  "ingredients": [
+    {
+      "item": "biomancy:artificial_stomach"
+    },
+    {
+      "item": "minecraft:hopper"
+    },
+    {
+      "item": "biomancy:flesh_lump"
+    },
+    {
+      "item": "biomancy:flesh_lump"
+    },
+    {
+      "item": "biomancy:flesh_lump"
+    }
+  ],
+  "result": {
+    "item": "biomancy:single_item_bag"
+  },
+  "time": 400
+}

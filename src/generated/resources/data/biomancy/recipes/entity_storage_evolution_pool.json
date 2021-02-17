@@ -1,0 +1,27 @@
+{
+  "type": "biomancy:evolution_pool",
+  "ingredients": [
+    {
+      "item": "biomancy:artificial_stomach"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "minecraft:ender_chest"
+    },
+    {
+      "item": "biomancy:flesh_lump"
+    },
+    {
+      "item": "biomancy:flesh_lump"
+    },
+    {
+      "item": "biomancy:flesh_lump"
+    }
+  ],
+  "result": {
+    "item": "biomancy:entity_storage"
+  },
+  "time": 400
+}

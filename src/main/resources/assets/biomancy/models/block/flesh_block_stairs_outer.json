@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "biomancy:block/flesh_bland",
+    "top": "biomancy:block/flesh_bland",
+    "side": "biomancy:block/flesh_bland"
+  }
+}

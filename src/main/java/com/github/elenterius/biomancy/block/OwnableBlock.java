@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.block;
 
+import com.github.elenterius.biomancy.tileentity.IOwnableTile;
 import com.github.elenterius.biomancy.tileentity.OwnableTileEntity;
 import com.github.elenterius.biomancy.util.TooltipUtil;
 import com.github.elenterius.biomancy.util.UserAuthorization;
@@ -127,8 +128,8 @@ public abstract class OwnableBlock extends Block implements IOwnableBlock {
 	@Override
 	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader worldIn, BlockPos pos) {
 		TileEntity tileEntity = worldIn.getTileEntity(pos);
-		if (tileEntity instanceof OwnableTileEntity) {
-			if (((OwnableTileEntity) tileEntity).isPlayerAuthorized(player)) { //only allow authorized players to mine the block
+		if (tileEntity instanceof IOwnableTile) {
+			if (((IOwnableTile) tileEntity).isUserAuthorized(player)) { //only allow authorized players to mine the block
 				return super.getPlayerRelativeBlockHardness(state, player, worldIn, pos);
 			}
 		}

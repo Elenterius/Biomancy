@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.block;
 
 import com.github.elenterius.biomancy.tileentity.IOwnableTile;
+import com.github.elenterius.biomancy.tileentity.OwnableTileEntityDelegator;
 import com.github.elenterius.biomancy.tileentity.SimpleOwnableTileEntity;
-import com.github.elenterius.biomancy.util.TooltipUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -41,7 +41,6 @@ public class OwnableDoorBlock extends DoorBlock implements IOwnableBlock {
 	@Override
 	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 		OwnableBlock.addOwnableTooltip(stack, tooltip, flagIn);
 	}
 
@@ -53,6 +52,12 @@ public class OwnableDoorBlock extends DoorBlock implements IOwnableBlock {
 		TileEntity tileEntity = worldIn.getTileEntity(pos);
 		if (tileEntity instanceof SimpleOwnableTileEntity) {
 			OwnableBlock.attachDataToOwnableTile(worldIn, (SimpleOwnableTileEntity) tileEntity, placer, stack);
+		}
+		if (tileEntity instanceof OwnableTileEntityDelegator) {
+			TileEntity main = worldIn.getTileEntity(pos.down());
+			if (main instanceof SimpleOwnableTileEntity) {
+				((OwnableTileEntityDelegator) tileEntity).setDelegate(main);
+			}
 		}
 	}
 
@@ -135,7 +140,7 @@ public class OwnableDoorBlock extends DoorBlock implements IOwnableBlock {
 
 		TileEntity tileEntity = worldIn.getTileEntity(tilePos);
 		if (tileEntity instanceof SimpleOwnableTileEntity) {
-			if (((SimpleOwnableTileEntity) tileEntity).isPlayerAuthorized(player)) { //only allow authorized players to mine the block
+			if (((SimpleOwnableTileEntity) tileEntity).isUserAuthorized(player)) { //only allow authorized players to mine the block
 				return super.getPlayerRelativeBlockHardness(state, player, worldIn, pos);
 			}
 		}
@@ -253,6 +258,6 @@ public class OwnableDoorBlock extends DoorBlock implements IOwnableBlock {
 	@Nullable
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return new SimpleOwnableTileEntity();
+		return state.get(HALF) == DoubleBlockHalf.LOWER ? new SimpleOwnableTileEntity() : new OwnableTileEntityDelegator();
 	}
 }

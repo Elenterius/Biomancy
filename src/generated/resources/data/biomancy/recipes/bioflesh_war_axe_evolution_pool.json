@@ -1,0 +1,27 @@
+{
+  "type": "biomancy:evolution_pool",
+  "ingredients": [
+    {
+      "item": "biomancy:bioflesh_axe"
+    },
+    {
+      "item": "biomancy:oculus"
+    },
+    {
+      "item": "biomancy:sharp_bone"
+    },
+    {
+      "item": "biomancy:artificial_stomach"
+    },
+    {
+      "item": "biomancy:flesh_lump"
+    },
+    {
+      "item": "biomancy:flesh_lump"
+    }
+  ],
+  "result": {
+    "item": "biomancy:bioflesh_war_axe"
+  },
+  "time": 400
+}

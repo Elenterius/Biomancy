@@ -164,7 +164,7 @@ public class DecomposingRecipe implements IRecipe<IInventory> {
 			}
 
 			ItemStack resultStack = ShapedRecipe.deserializeItem(JSONUtils.getJsonObject(json, "result"));
-			int time = JSONUtils.getInt(json, "decomposingtime", 100);
+			int time = JSONUtils.getInt(json, "time", 100);
 
 			return new DecomposingRecipe(recipeId, resultStack, time, ingredients, byproducts);
 		}

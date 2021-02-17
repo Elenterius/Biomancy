@@ -1,0 +1,18 @@
+{
+  "type": "biomancy:evolution_pool",
+  "ingredients": [
+    {
+      "item": "minecraft:heavy_weighted_pressure_plate"
+    },
+    {
+      "item": "biomancy:oculus"
+    },
+    {
+      "item": "biomancy:flesh_block"
+    }
+  ],
+  "result": {
+    "item": "biomancy:bioflesh_pressure_plate"
+  },
+  "time": 400
+}

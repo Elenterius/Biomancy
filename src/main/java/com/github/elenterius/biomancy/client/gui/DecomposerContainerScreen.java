@@ -16,9 +16,9 @@ import java.util.List;
 public class DecomposerContainerScreen extends ContainerScreen<DecomposerContainer> {
 
 	private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(BiomancyMod.MOD_ID, "textures/gui/decomposer_inventory.png");
-	public final int FUEL_BAR_POS_X = 16;
+	public final int FUEL_BAR_POS_X = 16 + 1;
 	public final int FUEL_BAR_POS_Y = 33 + 4;
-	public final int FUEL_BAR_WIDTH = 6;
+	public final int FUEL_BAR_WIDTH = 5;
 	public final int FUEL_BAR_HEIGHT = 60 - FUEL_BAR_POS_Y;
 
 	public DecomposerContainerScreen(DecomposerContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
@@ -61,7 +61,8 @@ public class DecomposerContainerScreen extends ContainerScreen<DecomposerContain
 		int posY = guiTop + FUEL_BAR_POS_Y;
 		int maxPosY = posY + FUEL_BAR_HEIGHT;
 		AbstractGui.fill(matrixStack, posX, posY + (int) (FUEL_BAR_HEIGHT * (1f - container.getFuelNormalized())), posX + FUEL_BAR_WIDTH, maxPosY, 0xFF9B2425);
-		AbstractGui.fill(matrixStack, posX + FUEL_BAR_WIDTH + 4, posY + (int) (FUEL_BAR_HEIGHT * (1f - container.getSpeedFuelNormalized())), posX + FUEL_BAR_WIDTH + 4 + FUEL_BAR_WIDTH, maxPosY, 0xFFF4EFC8);
+		posX += FUEL_BAR_WIDTH + 6;
+		AbstractGui.fill(matrixStack, posX, posY + (int) (FUEL_BAR_HEIGHT * (1f - container.getSpeedFuelNormalized())), posX + FUEL_BAR_WIDTH, maxPosY, 0xFFF4EFC8);
 	}
 
 	@Override
@@ -76,7 +77,7 @@ public class DecomposerContainerScreen extends ContainerScreen<DecomposerContain
 			hoveringText.add(BiomancyMod.getTranslationText("tooltip", "main_fuel").appendString(": " + mainFuel + "%"));
 		}
 
-		if (isInRect(guiLeft + FUEL_BAR_POS_X + FUEL_BAR_WIDTH + 4, guiTop + FUEL_BAR_POS_Y, FUEL_BAR_WIDTH, FUEL_BAR_HEIGHT, mouseX, mouseY)) {
+		if (isInRect(guiLeft + FUEL_BAR_POS_X + FUEL_BAR_WIDTH + 6, guiTop + FUEL_BAR_POS_Y, FUEL_BAR_WIDTH, FUEL_BAR_HEIGHT, mouseX, mouseY)) {
 			int speedFuel = (int) (container.getSpeedFuelNormalized() * 100);
 			hoveringText.add(BiomancyMod.getTranslationText("tooltip", "speed_fuel").appendString(": " + speedFuel + "%"));
 		}

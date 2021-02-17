@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.tileentity;
 
 import com.github.elenterius.biomancy.util.UserAuthorization;
+import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.HashMap;
 import java.util.Optional;
@@ -52,5 +53,10 @@ public interface IOwnableTile {
 			return authorityLevel.isUserLevel();
 		}
 		return true;
+	}
+
+	default boolean isUserAuthorized(PlayerEntity player) {
+		if (player.isCreative()) return true;
+		return isUserAuthorized(player.getUniqueID());
 	}
 }

@@ -38,6 +38,7 @@ public final class CommonSetupHandler {
 		// do stuff after common setup event on single thread
 		event.enqueueWork(() -> {
 			ModTags.init();
+
 			ModRecipes.registerRecipeTypes();
 			ModRecipes.registerCustomItemPredicates();
 

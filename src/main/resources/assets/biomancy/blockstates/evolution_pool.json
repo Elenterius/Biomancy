@@ -1,0 +1,37 @@
+{
+  "variants": {
+    "part=se_corner": {
+      "model": "biomancy:block/evolution_pool_corner"
+    },
+    "part=south_wall": {
+      "model": "biomancy:block/evolution_pool_wall",
+      "y": 90
+    },
+    "part=sw_corner": {
+      "model": "biomancy:block/evolution_pool_corner",
+      "y": 90
+    },
+    "part=west_wall": {
+      "model": "biomancy:block/evolution_pool_wall",
+      "y": -180
+    },
+    "part=nw_corner": {
+      "model": "biomancy:block/evolution_pool_corner",
+      "y": -180
+    },
+    "part=north_wall": {
+      "model": "biomancy:block/evolution_pool_wall",
+      "y": -90
+    },
+    "part=ne_corner": {
+      "model": "biomancy:block/evolution_pool_corner",
+      "y": -90
+    },
+    "part=east_wall": {
+      "model": "biomancy:block/evolution_pool_wall"
+    },
+    "part=middle": {
+      "model": "biomancy:block/evolution_pool_floor"
+    }
+  }
+}

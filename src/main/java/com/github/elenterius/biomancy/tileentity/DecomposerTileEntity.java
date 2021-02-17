@@ -120,8 +120,8 @@ public class DecomposerTileEntity extends OwnableTileEntity implements INamedCon
 			}
 			else {
 				if (outputContents.doesItemStackFit(0, itemToCraft)) {
-					if (decomposerState.craftingState == CraftingState.NONE) {
-						decomposerState.craftingState = CraftingState.IN_PROGRESS;
+					if (decomposerState.getCraftingState() == CraftingState.NONE) {
+						decomposerState.setCraftingState(CraftingState.IN_PROGRESS);
 						decomposerState.clear(); //safe guard, shouldn't be needed
 						decomposerState.setCraftingGoalRecipe(recipeToCraft); // this also sets the time required for crafting
 					}
@@ -133,12 +133,12 @@ public class DecomposerTileEntity extends OwnableTileEntity implements INamedCon
 					}
 				}
 				else {
-					if (decomposerState.craftingState != CraftingState.COMPLETED) decomposerState.cancelCrafting();
+					if (decomposerState.getCraftingState() != CraftingState.COMPLETED) decomposerState.cancelCrafting();
 				}
 			}
 
 			//change crafting progress
-			if (decomposerState.craftingState == CraftingState.IN_PROGRESS) {
+			if (decomposerState.getCraftingState() == CraftingState.IN_PROGRESS) {
 				if (consumeFuel()) decomposerState.timeElapsed += consumeSpeedFuel() ? 2 : 1;
 				else decomposerState.timeElapsed -= 2;
 
@@ -146,11 +146,11 @@ public class DecomposerTileEntity extends OwnableTileEntity implements INamedCon
 			}
 
 			//craft items
-			if (decomposerState.craftingState == CraftingState.IN_PROGRESS || decomposerState.craftingState == CraftingState.COMPLETED) {
+			if (decomposerState.getCraftingState() == CraftingState.IN_PROGRESS || decomposerState.getCraftingState() == CraftingState.COMPLETED) {
 				if (decomposerState.timeElapsed >= decomposerState.timeForCompletion) {
-					decomposerState.craftingState = CraftingState.COMPLETED;
+					decomposerState.setCraftingState(CraftingState.COMPLETED);
 					if (craftItems(recipeToCraft, world.rand)) {
-						decomposerState.craftingState = CraftingState.NONE;
+						decomposerState.setCraftingState(CraftingState.NONE);
 					}
 				}
 			}
@@ -158,14 +158,15 @@ public class DecomposerTileEntity extends OwnableTileEntity implements INamedCon
 
 		//clean-up states
 		if (decomposerState.isCraftingCanceled()) {
-			decomposerState.craftingState = CraftingState.NONE;
+			decomposerState.setCraftingState(CraftingState.NONE);
+			decomposerState.clear();
 		}
-		if (decomposerState.craftingState == CraftingState.NONE) {
+		else if (decomposerState.getCraftingState() == CraftingState.NONE) {
 			decomposerState.clear();
 		}
 
 		BlockState oldBlockState = world.getBlockState(pos);
-		BlockState newBlockState = oldBlockState.with(DecomposerBlock.DECOMPOSING, decomposerState.craftingState == CraftingState.IN_PROGRESS);
+		BlockState newBlockState = oldBlockState.with(DecomposerBlock.DECOMPOSING, decomposerState.getCraftingState() == CraftingState.IN_PROGRESS);
 		if (!newBlockState.equals(oldBlockState)) {
 			world.setBlockState(pos, newBlockState, Constants.BlockFlags.BLOCK_UPDATE);
 			markDirty();
@@ -236,7 +237,7 @@ public class DecomposerTileEntity extends OwnableTileEntity implements INamedCon
 
 		if (!stackIn.isEmpty()) {
 			Item item = stackIn.getItem();
-			if (stackIn.isFood()) {
+			if (decomposerState.mainFuel < MAX_FUEL && stackIn.isFood()) {
 				Food food = item.getFood();
 				if (food != null && food.isMeat()) {
 					int fuelValue = Math.max(1, food.getHealing());
@@ -247,29 +248,32 @@ public class DecomposerTileEntity extends OwnableTileEntity implements INamedCon
 						fuelValue = Math.max(1, fuelValue / 3) * 100;
 					}
 
-					int itemsNeeded = MathHelper.ceil(Math.max(0, MAX_FUEL - decomposerState.mainFuel) / (float) fuelValue);
+					int itemsNeeded = Math.round(Math.max(0, MAX_FUEL - decomposerState.mainFuel) / (float) fuelValue);
 					int consumeAmount = Math.min(stackIn.getCount(), itemsNeeded);
-					decomposerState.mainFuel = (short) MathHelper.clamp(decomposerState.mainFuel + fuelValue * consumeAmount, 0, MAX_FUEL);
+					if (consumeAmount > 0) {
+						decomposerState.mainFuel = (short) MathHelper.clamp(decomposerState.mainFuel + fuelValue * consumeAmount, 0, MAX_FUEL + fuelValue);
 
-					if (item.isIn(ModTags.Items.SUGARS) && decomposerState.speedFuel < MAX_FUEL) {
-						decomposerState.speedFuel += MathHelper.clamp(consumeAmount, 0, MAX_FUEL);
+						if (item.isIn(ModTags.Items.SUGARS) && decomposerState.speedFuel < MAX_FUEL) {
+							decomposerState.speedFuel += MathHelper.clamp(consumeAmount, 0, MAX_FUEL);
+						}
+
+						return ItemHandlerHelper.copyStackWithSize(stackIn, stackIn.getCount() - consumeAmount);
 					}
-
-					return ItemHandlerHelper.copyStackWithSize(stackIn, stackIn.getCount() - consumeAmount);
 				}
 			}
 
-			if (item.isIn(ModTags.Items.SUGARS)) {
+			if (decomposerState.speedFuel < MAX_FUEL && item.isIn(ModTags.Items.SUGARS)) {
 				int speedFuelValue = 200;
 				if (item instanceof BlockItem) speedFuelValue = ((BlockItem) item).getBlock() instanceof SlabBlock ? 800 : 1600;
 				if (item.getRegistryName() != null && item.getRegistryName().getPath().contains("honey")) speedFuelValue *= 2;
 				if (item == Items.SWEET_BERRIES) speedFuelValue *= 4;
 
-				int itemsNeeded = MathHelper.ceil(Math.max(0, MAX_FUEL - decomposerState.speedFuel) / (float) speedFuelValue);
+				int itemsNeeded = Math.round(Math.max(0, MAX_FUEL - decomposerState.speedFuel) / (float) speedFuelValue);
 				int consumeAmount = Math.min(stackIn.getCount(), itemsNeeded);
-				decomposerState.speedFuel = (short) MathHelper.clamp(decomposerState.speedFuel + speedFuelValue * consumeAmount, 0, MAX_FUEL);
-
-				return ItemHandlerHelper.copyStackWithSize(stackIn, stackIn.getCount() - consumeAmount);
+				if (consumeAmount > 0) {
+					decomposerState.speedFuel = (short) MathHelper.clamp(decomposerState.speedFuel + speedFuelValue * consumeAmount, 0, MAX_FUEL + speedFuelValue);
+					return ItemHandlerHelper.copyStackWithSize(stackIn, stackIn.getCount() - consumeAmount);
+				}
 			}
 		}
 		return stackIn;
