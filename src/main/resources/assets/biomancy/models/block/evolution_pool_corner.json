@@ -1,10 +1,11 @@
 {
   "credit": "Made by Elenterius",
   "parent": "block/block",
+  "ambientocclusion": false,
   "textures": {
     "flesh": "biomancy:block/flesh_bland",
     "fluid": "biomancy:block/mutagenic_bile",
-    "particle": "biomancy:block/spike",
+    "particle": "biomancy:block/flesh_bland",
     "spike": "biomancy:block/spike"
   },
   "elements": [
@@ -274,8 +275,7 @@
             12,
             12
           ],
-          "texture": "#fluid",
-          "cullface": "up"
+          "texture": "#fluid"
         }
       }
     },

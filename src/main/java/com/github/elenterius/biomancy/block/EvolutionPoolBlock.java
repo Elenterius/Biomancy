@@ -321,6 +321,7 @@ public class EvolutionPoolBlock extends OwnableContainerBlock {
 								}
 							}
 							if (remainder.getCount() != stack.getCount()) {
+								worldIn.playSound(entityIn.getPosX(), entityIn.getPosY(), entityIn.getPosZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.5f, 1f, false);
 								((ItemEntity) entityIn).setItem(remainder);
 							}
 						});
@@ -362,19 +363,37 @@ public class EvolutionPoolBlock extends OwnableContainerBlock {
 		if (rand.nextInt(4) == 0) {
 			boolean isCrafting = stateIn.get(CRAFTING);
 			if (isCrafting) {
-				BlockState blockstate = worldIn.getBlockState(pos);
-				double yOffset = blockstate.getShape(worldIn, pos).max(Direction.Axis.Y, 0.5d, 0.5d) + 0.03125d;
-				int n = rand.nextInt(8);
+				int n = rand.nextInt(5);
+				MultiBlockPart part = stateIn.get(MULTI_BLOCK_PART);
+				double zOffset = part == MultiBlockPart.NORTH_EAST_CORNER || part == MultiBlockPart.NORTH_WEST_CORNER ? 1d : 0d;
+				double xOffset = part == MultiBlockPart.NORTH_WEST_CORNER || part == MultiBlockPart.SOUTH_WEST_CORNER ? 1d : 0d;
+
 				for (int i = 0; i < n; i++) {
-					worldIn.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + 0.13125f + 0.7375f * rand.nextFloat(), pos.getY() + yOffset + (1 - yOffset), pos.getZ() + 0.13125f + 0.7375f * rand.nextFloat(), 1.8f, 1.4f, 1.4f);
+					worldIn.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + xOffset + 0.75f * rand.nextFloat() - 0.3525d, pos.getY() + 0.3d, pos.getZ() + zOffset + 0.75f * rand.nextFloat() - 0.3525d, 1.376f, 1.588f, 1.227f);
+				}
+				if (n > 0 && rand.nextInt(4) == 0) {
+					worldIn.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_TROPICAL_FISH_FLOP, SoundCategory.BLOCKS, 0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
 				}
 			}
+		}
+
+		if (rand.nextInt(200) == 0) {
+			worldIn.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_LAVA_AMBIENT, SoundCategory.BLOCKS, 0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
 		}
 	}
 
 	@Override
 	public BlockRenderType getRenderType(BlockState state) {
 		return BlockRenderType.MODEL;
+	}
+
+	public boolean isTransparent(BlockState state) {
+		return true;
+	}
+
+	@Override
+	public boolean collisionExtendsVertically(BlockState state, IBlockReader world, BlockPos pos, Entity collidingEntity) {
+		return false;
 	}
 
 	public enum MultiBlockPart implements IStringSerializable {

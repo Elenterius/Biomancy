@@ -274,12 +274,29 @@ public class EvolutionPoolTileEntity extends OwnableTileEntity implements INamed
 			stateData.clear();
 		}
 
-		BlockState oldBlockState = world.getBlockState(pos);
-		BlockState newBlockState = oldBlockState.with(EvolutionPoolBlock.CRAFTING, stateData.getCraftingState() == CraftingState.IN_PROGRESS);
+		updateMultiBlockStates(world, stateData.getCraftingState() == CraftingState.IN_PROGRESS);
+	}
+
+	private void updateMultiBlockStates(World worldIn, boolean isCraftingInProgress) {
+		boolean isDirty = false;
+
+		BlockState oldBlockState = worldIn.getBlockState(pos);
+		BlockState newBlockState = oldBlockState.with(EvolutionPoolBlock.CRAFTING, isCraftingInProgress);
 		if (!newBlockState.equals(oldBlockState)) {
-			world.setBlockState(pos, newBlockState, Constants.BlockFlags.BLOCK_UPDATE);
-			markDirty();
+			worldIn.setBlockState(pos, newBlockState, Constants.BlockFlags.BLOCK_UPDATE);
+			isDirty = true;
 		}
+
+		for (BlockPos subPos : subTiles) {
+			oldBlockState = worldIn.getBlockState(subPos);
+			newBlockState = oldBlockState.with(EvolutionPoolBlock.CRAFTING, isCraftingInProgress);
+			if (!newBlockState.equals(oldBlockState)) {
+				worldIn.setBlockState(subPos, newBlockState, Constants.BlockFlags.BLOCK_UPDATE);
+				isDirty = true;
+			}
+		}
+
+		if (isDirty) markDirty();
 	}
 
 	private boolean consumeFuel() {

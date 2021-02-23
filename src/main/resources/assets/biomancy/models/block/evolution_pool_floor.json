@@ -3,7 +3,8 @@
   "parent": "block/block",
   "textures": {
     "flesh": "biomancy:block/flesh_bland",
-    "fluid": "biomancy:block/mutagenic_bile"
+    "fluid": "biomancy:block/mutagenic_bile",
+    "particle": "biomancy:block/flesh_bland"
   },
   "elements": [
     {
@@ -35,7 +36,8 @@
             16,
             16
           ],
-          "texture": "#flesh"
+          "texture": "#flesh",
+          "cullface": "north"
         },
         "east": {
           "uv": [
@@ -44,7 +46,8 @@
             16,
             16
           ],
-          "texture": "#flesh"
+          "texture": "#flesh",
+          "cullface": "east"
         },
         "south": {
           "uv": [
@@ -53,7 +56,8 @@
             16,
             16
           ],
-          "texture": "#flesh"
+          "texture": "#flesh",
+          "cullface": "south"
         },
         "west": {
           "uv": [
@@ -62,7 +66,8 @@
             16,
             16
           ],
-          "texture": "#flesh"
+          "texture": "#flesh",
+          "cullface": "west"
         },
         "up": {
           "uv": [
@@ -80,7 +85,8 @@
             16,
             16
           ],
-          "texture": "#flesh"
+          "texture": "#flesh",
+          "cullface": "down"
         }
       }
     },
@@ -113,7 +119,8 @@
             16,
             8
           ],
-          "texture": "#fluid"
+          "texture": "#fluid",
+          "cullface": "north"
         },
         "east": {
           "uv": [
@@ -122,7 +129,8 @@
             16,
             8
           ],
-          "texture": "#fluid"
+          "texture": "#fluid",
+          "cullface": "east"
         },
         "south": {
           "uv": [
@@ -131,7 +139,8 @@
             16,
             8
           ],
-          "texture": "#fluid"
+          "texture": "#fluid",
+          "cullface": "south"
         },
         "west": {
           "uv": [
@@ -140,7 +149,8 @@
             16,
             8
           ],
-          "texture": "#fluid"
+          "texture": "#fluid",
+          "cullface": "west"
         },
         "up": {
           "uv": [
@@ -148,15 +158,6 @@
             0,
             16,
             16
-          ],
-          "texture": "#fluid"
-        },
-        "down": {
-          "uv": [
-            0,
-            0,
-            0,
-            0
           ],
           "texture": "#fluid"
         }
