@@ -14,6 +14,7 @@
     "SwordItemMixinAccessor"
   ],
   "client": [
+    "client.ClientRecipeBookMixin",
     "client.EntityMixin",
     "client.GetMouseOverMixin",
     "client.ItemStackMixinAccessor",
