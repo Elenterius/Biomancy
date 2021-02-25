@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.tileentity.DecomposerTileEntity;
 import com.github.elenterius.biomancy.util.TooltipUtil;
+import com.github.elenterius.biomancy.util.VoxelShapeUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -20,9 +21,14 @@ import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.shapes.IBooleanFunction;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -30,15 +36,28 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class DecomposerBlock extends OwnableContainerBlock {
 
 	public static final BooleanProperty DECOMPOSING = ModBlocks.CRAFTING_PROPERTY;
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
+	public static final VoxelShape NORTH_SHAPE = createVoxelShape(Direction.NORTH);
+	public static final VoxelShape SOUTH_SHAPE = createVoxelShape(Direction.SOUTH);
+	public static final VoxelShape EAST_SHAPE = createVoxelShape(Direction.EAST);
+	public static final VoxelShape WEST_SHAPE = createVoxelShape(Direction.WEST);
+
 	public DecomposerBlock(Properties builder) {
 		super(builder);
 		setDefaultState(stateContainer.getBaseState().with(DECOMPOSING, false).with(FACING, Direction.NORTH));
+	}
+
+	private static VoxelShape createVoxelShape(Direction direction) {
+		AxisAlignedBB aabb0 = VoxelShapeUtil.createUnitAABB(0, 0, 3, 16, 14, 16);
+		AxisAlignedBB aabb1 = VoxelShapeUtil.createUnitAABB(4, 14, 4, 12, 16, 12);
+		AxisAlignedBB aabb2 = VoxelShapeUtil.createUnitAABB(3, 1, 0, 13, 10, 3);
+		return Stream.of(VoxelShapeUtil.createWithFacing(direction, aabb0), VoxelShapeUtil.createWithFacing(direction, aabb1), VoxelShapeUtil.createWithFacing(direction, aabb2)).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).get();
 	}
 
 	@Override
@@ -111,4 +130,19 @@ public class DecomposerBlock extends OwnableContainerBlock {
 		return BlockRenderType.MODEL;
 	}
 
+	@Override
+	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+		Direction facing = state.get(FACING);
+		switch (facing) {
+			case NORTH:
+				return NORTH_SHAPE;
+			case SOUTH:
+				return SOUTH_SHAPE;
+			case WEST:
+				return WEST_SHAPE;
+			case EAST:
+				return EAST_SHAPE;
+		}
+		return VoxelShapes.fullCube();
+	}
 }

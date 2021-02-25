@@ -132,6 +132,7 @@
   "tooltip.biomancy.main_fuel": "Satiety",
   "tooltip.biomancy.speed_fuel": "Glucose",
   "tooltip.biomancy.mutagen": "Mutagen",
+  "tooltip.biomancy.slots": "Slots",
 
   "keyboard.ctrl": "ctrl",
   "enum.biomancy.mode.none": "None",
@@ -151,5 +152,8 @@
   "death.attack.biomancy.disease.player": "%1$s was infected by an disease through %2$s and ultimately died",
 
   "sounds.biomancy.impactsplat": "Impact Splat",
-  "sounds.biomancy.wahwah": "Arthropod Growl"
+  "sounds.biomancy.wahwah": "Arthropod Growl",
+
+  "guide_book.biomancy.name": "Encyclopedia of Biollurgy",
+  "guide_book.biomancy.landing_text": "Lorem Ipsum Dolor..."
 }

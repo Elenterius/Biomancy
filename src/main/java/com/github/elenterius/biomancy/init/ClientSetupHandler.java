@@ -7,10 +7,12 @@ import com.github.elenterius.biomancy.client.gui.FleshChestContainerScreen;
 import com.github.elenterius.biomancy.client.gui.GulgeContainerScreen;
 import com.github.elenterius.biomancy.client.renderer.block.FullBrightOverlayBakedModel;
 import com.github.elenterius.biomancy.client.renderer.entity.*;
+import com.github.elenterius.biomancy.client.renderer.tileentity.FleshChestTileEntityRenderer;
 import com.github.elenterius.biomancy.item.LongRangeClawItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.gui.ScreenManager;
+import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.BlockModelShapes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
@@ -25,6 +27,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -44,6 +47,8 @@ public final class ClientSetupHandler {
 	@SubscribeEvent
 	public static void onClientSetup(FMLClientSetupEvent event) {
 		ClientRegistry.registerKeyBinding(ITEM_DEFAULT_KEY_BINDING);
+
+		ClientRegistry.bindTileEntityRenderer(ModTileEntityTypes.FLESH_CHEST.get(), FleshChestTileEntityRenderer::new);
 
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BLOBLING.get(), BloblingRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BROOD_MOTHER.get(), BroodmotherRenderer::new);
@@ -88,6 +93,15 @@ public final class ClientSetupHandler {
 	public static void onItemColorRegistry(final ColorHandlerEvent.Block event) {
 		event.getBlockColors().register((state, displayReader, pos, index) -> 0xff6981, ModBlocks.FLESH_MELON_BLOCK.get(), ModBlocks.FLESH_MELON_CROP.get());
 		event.getBlockColors().register((state, displayReader, pos, index) -> 0x8d758c, ModBlocks.NECROTIC_FLESH_BLOCK.get());
+	}
+
+	@SubscribeEvent
+	public static void onStitch(TextureStitchEvent.Pre event) {
+		if (!event.getMap().getTextureLocation().equals(Atlases.CHEST_ATLAS)) {
+			return;
+		}
+
+		event.addSprite(FleshChestTileEntityRenderer.FLESH_CHEST_TEXTURE);
 	}
 
 	@SubscribeEvent

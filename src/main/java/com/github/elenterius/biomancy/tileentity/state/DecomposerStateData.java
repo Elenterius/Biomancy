@@ -37,10 +37,10 @@ public class DecomposerStateData extends RecipeCraftingStateData<DecomposingReci
 	@Override
 	public void serializeNBT(CompoundNBT nbt) {
 		super.serializeNBT(nbt);
-		nbt.putInt("TimeElapsed", timeElapsed);
-		nbt.putInt("TimeForCompletion", timeForCompletion);
-		nbt.putShort("MainFuel", mainFuel);
-		nbt.putShort("SpeedFuel", speedFuel);
+		if (timeElapsed > 0) nbt.putInt("TimeElapsed", timeElapsed);
+		if (timeForCompletion > 0) nbt.putInt("TimeForCompletion", timeForCompletion);
+		if (mainFuel > 0) nbt.putShort("MainFuel", mainFuel);
+		if (speedFuel > 0) nbt.putShort("SpeedFuel", speedFuel);
 	}
 
 	@Override

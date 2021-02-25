@@ -312,9 +312,9 @@ public class DecomposerTileEntity extends OwnableTileEntity implements INamedCon
 	public CompoundNBT writeToItemBlockEntityTag(CompoundNBT nbt) {
 		super.writeToItemBlockEntityTag(nbt);
 		decomposerState.serializeNBT(nbt);
-		nbt.put("FuelSlots", fuelContents.serializeNBT());
-		nbt.put("InputSlots", inputContents.serializeNBT());
-		nbt.put("OutputSlots", outputContents.serializeNBT());
+		if (!fuelContents.isEmpty()) nbt.put("FuelSlots", fuelContents.serializeNBT());
+		if (!inputContents.isEmpty()) nbt.put("InputSlots", inputContents.serializeNBT());
+		if (!outputContents.isEmpty()) nbt.put("OutputSlots", outputContents.serializeNBT());
 		return nbt;
 	}
 

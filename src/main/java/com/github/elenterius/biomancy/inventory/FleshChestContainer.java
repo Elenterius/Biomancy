@@ -22,6 +22,8 @@ public class FleshChestContainer extends Container {
 		this.invContents = invContents;
 		PlayerInvWrapper playerInventoryForge = new PlayerInvWrapper(playerInventory);
 
+		invContents.openInventory(playerInventory.player);
+
 		final int HOT_BAR_SIZE = 9;
 		final int SLOT_X_SPACING = 18;
 		final int SLOT_Y_SPACING = 18;
@@ -67,6 +69,12 @@ public class FleshChestContainer extends Container {
 	@Override
 	public boolean canInteractWith(PlayerEntity playerIn) {
 		return invContents.isUsableByPlayer(playerIn);
+	}
+
+	@Override
+	public void onContainerClosed(PlayerEntity playerIn) {
+		super.onContainerClosed(playerIn);
+		invContents.closeInventory(playerIn);
 	}
 
 	/**

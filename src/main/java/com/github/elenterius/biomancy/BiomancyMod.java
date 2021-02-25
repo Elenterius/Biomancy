@@ -62,7 +62,7 @@ public final class BiomancyMod {
 		return new TranslationTextComponent(getTranslationKey(prefix, suffix));
 	}
 
-	public static final ItemGroup ITEM_GROUP = new ItemGroup(-1, MOD_ID) {
+	public static final ItemGroup ITEM_GROUP = new ItemGroup(MOD_ID) {
 		@OnlyIn(Dist.CLIENT)
 		public ItemStack createIcon() {
 			return new ItemStack(ModItems.OCULUS.get());
