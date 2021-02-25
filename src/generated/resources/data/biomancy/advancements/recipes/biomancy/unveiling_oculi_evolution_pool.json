@@ -12,6 +12,9 @@
         "items": [
           {
             "item": "biomancy:mutagenic_bile"
+          },
+          {
+            "item": "biomancy:lens"
           }
         ]
       }

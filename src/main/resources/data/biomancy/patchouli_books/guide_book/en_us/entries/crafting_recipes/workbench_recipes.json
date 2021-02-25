@@ -1,0 +1,21 @@
+{
+  "name": "Workbench Recipes",
+  "icon": "minecraft:crafting_table",
+  "category": "biomancy:crafting_recipes",
+  "pages": [
+    {
+      "type": "crafting",
+      "recipe": "biomancy:lens",
+      "recipe2": "biomancy:oculus"
+    },
+    {
+      "type": "crafting",
+      "recipe": "biomancy:sharp_bone",
+      "recipe2": "biomancy:flesh_lump"
+    },
+    {
+      "type": "crafting",
+      "recipe": "biomancy:decomposer"
+    }
+  ]
+}

@@ -99,7 +99,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.OCULI_OF_UNVEILING.get(), defaultTime)
 				.addIngredient(Items.IRON_HELMET).addIngredients(ModItems.OCULUS.get(), 4).addIngredient(ModItems.FLESH_BLOCK.get())
-				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
+				.addCriterion("has_mutagenic_bile", hasItems(ModItems.MUTAGENIC_BILE.get(), ModItems.MENISCUS_LENS.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIOFLESH_AXE.get(), defaultTime)
 				.addIngredient(Items.IRON_AXE).addIngredient(Items.BONE).addIngredient(ModItems.FLESH_BLOCK.get())
@@ -197,6 +197,7 @@ public class ModRecipeProvider extends RecipeProvider {
 	}
 
 	private void registerWorkbenchRecipes(Consumer<IFinishedRecipe> consumer) {
+
 		ShapedRecipeBuilder.shapedRecipe(ModItems.OCULUS.get())
 				.key('F', ModItems.FLESH_LUMP.get()).key('R', ModItems.REJUVENATING_MUCUS.get()).key('L', ModItems.MENISCUS_LENS.get()).key('E', Items.SPIDER_EYE)
 				.patternLine("FRF").patternLine("LER").patternLine("FRF")
@@ -206,11 +207,6 @@ public class ModRecipeProvider extends RecipeProvider {
 				.key('P', Tags.Items.GLASS_PANES).key('Q', Items.QUARTZ)
 				.patternLine(" P ").patternLine("PQP").patternLine(" P ")
 				.addCriterion("has_quartz", hasItem(Items.QUARTZ)).build(consumer);
-
-		ShapedRecipeBuilder.shapedRecipe(ModItems.OCULI_OF_UNVEILING.get())
-				.key('O', ModItems.OCULUS.get()).key('I', Tags.Items.INGOTS_IRON)
-				.patternLine("OIO").patternLine("O O")
-				.addCriterion("has_lens_shard", hasItem(ModItems.MENISCUS_LENS.get())).build(consumer);
 
 		ShapelessRecipeBuilder.shapelessRecipe(ModItems.SEWING_KIT_EMPTY.get())
 				.addIngredient(Tags.Items.BONES).addIngredient(Items.FLINT)
@@ -234,6 +230,20 @@ public class ModRecipeProvider extends RecipeProvider {
 				.key('C', ModItems.SKIN_CHUNK.get())
 				.patternLine("CC ").patternLine("CC ").patternLine("CCS")
 				.addCriterion("has_skin_chunk", hasItem(ModItems.SKIN_CHUNK.get())).build(consumer);
+
+		ShapedRecipeBuilder.shapedRecipe(ModItems.ARTIFICIAL_STOMACH.get())
+				.key('S', ModItems.SEWING_KIT.get())
+				.key('M', ModItems.MENDED_SKIN.get())
+				.key('C', ModItems.SKIN_CHUNK.get())
+				.patternLine("  C").patternLine("MMC").patternLine("MMS")
+				.addCriterion("has_mended_skin", hasItem(ModItems.MENDED_SKIN.get())).build(consumer);
+
+		ShapedRecipeBuilder.shapedRecipe(ModItems.DECOMPOSER.get())
+				.key('S', ModItems.ARTIFICIAL_STOMACH.get())
+				.key('F', ModItems.FLESH_BLOCK.get())
+				.key('L', ModItems.FLESH_BLOCK_SLAB.get())
+				.patternLine("FLF").patternLine("FSF").patternLine("FLF")
+				.addCriterion("has_stomach", hasItem(ModItems.ARTIFICIAL_STOMACH.get())).build(consumer);
 
 		ShapelessRecipeBuilder.shapelessRecipe(ModItems.FLESH_LUMP.get())
 				.addIngredient(ModItems.NECROTIC_FLESH.get()).addIngredient(ModItems.REJUVENATING_MUCUS.get())

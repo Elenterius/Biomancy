@@ -1,0 +1,46 @@
+{
+  "name": "Semi-Living Weapons",
+  "icon": "biomancy:long_range_claw",
+  "category": "biomancy:items",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Semi-living Weapons made of bioflesh."
+    },
+    {
+      "type": "spotlight",
+      "item": "biomancy:leech_claw",
+      "text": {
+        "translate": "tooltip.biomancy.leech_claw"
+      }
+    },
+    {
+      "type": "spotlight",
+      "item": "biomancy:long_range_claw",
+      "text": {
+        "translate": "tooltip.biomancy.long_range_claw"
+      }
+    },
+    {
+      "type": "spotlight",
+      "item": "biomancy:bioflesh_war_axe",
+      "text": {
+        "translate": "tooltip.biomancy.bioflesh_war_axe"
+      }
+    },
+    {
+      "type": "spotlight",
+      "item": "biomancy:bioflesh_khopesh",
+      "text": {
+        "translate": "tooltip.biomancy.bioflesh_khopesh"
+      }
+    },
+    {
+      "type": "spotlight",
+      "item": "biomancy:bioflesh_guan_dao",
+      "text": {
+        "translate": "tooltip.biomancy.bioflesh_guan_dao"
+      }
+    }
+  ]
+}

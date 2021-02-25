@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "biomancy:flesh_block"
+          "name": "biomancy:flesh_block_stairs"
         }
       ],
       "conditions": [

@@ -1,0 +1,11 @@
+{
+  "name": "Organic Agents",
+  "icon": "biomancy:mutagenic_bile",
+  "category": "biomancy:substances",
+  "pages": [
+    {
+      "type": "text",
+      "text": "[PH] Mutagenic Bile"
+    }
+  ]
+}

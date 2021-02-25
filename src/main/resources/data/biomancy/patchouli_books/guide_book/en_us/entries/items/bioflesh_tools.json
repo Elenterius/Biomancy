@@ -1,0 +1,39 @@
+{
+  "name": "Semi-Living Tools",
+  "icon": "biomancy:long_range_claw",
+  "category": "biomancy:items",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Semi-living Tools made of flesh."
+    },
+    {
+      "type": "spotlight",
+      "item": "biomancy:single_item_bag",
+      "text": {
+        "translate": "tooltip.biomancy.single_item_bag"
+      }
+    },
+    {
+      "type": "spotlight",
+      "item": "biomancy:entity_storage",
+      "text": {
+        "translate": "tooltip.biomancy.entity_storage"
+      }
+    },
+    {
+      "type": "spotlight",
+      "item": "biomancy:bioflesh_war_axe",
+      "text": {
+        "translate": "tooltip.biomancy.bioflesh_war_axe"
+      }
+    },
+    {
+      "type": "spotlight",
+      "item": "biomancy:oculus_key",
+      "text": {
+        "translate": "tooltip.biomancy.oculus_key"
+      }
+    }
+  ]
+}

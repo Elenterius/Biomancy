@@ -1,0 +1,32 @@
+{
+  "name": "Fleshborn Tools",
+  "icon": "biomancy:bioflesh_pickaxe",
+  "category": "biomancy:items",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Tools made of lesser bioflesh, which attune to the block they harvest. The more blocks of the same type are broken the faster the harvesting becomes. Mining a different block disrupts the chain."
+    },
+    {
+      "type": "spotlight",
+      "item": "biomancy:bioflesh_pickaxe",
+      "text": {
+        "translate": "tooltip.biomancy.bioflesh_pickaxe"
+      }
+    },
+    {
+      "type": "spotlight",
+      "item": "biomancy:bioflesh_axe",
+      "text": {
+        "translate": "tooltip.biomancy.bioflesh_axe"
+      }
+    },
+    {
+      "type": "spotlight",
+      "item": "biomancy:bioflesh_shovel",
+      "text": {
+        "translate": "tooltip.biomancy.bioflesh_shovel"
+      }
+    }
+  ]
+}

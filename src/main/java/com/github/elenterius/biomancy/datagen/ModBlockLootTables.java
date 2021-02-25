@@ -94,6 +94,7 @@ public class ModBlockLootTables extends BlockLootTables {
 		registerDropSelfLootTable(ModBlocks.FLESH_BLOCK.get());
 		registerLootTable(ModBlocks.NECROTIC_FLESH_BLOCK.get(), droppingRandomly(ModItems.NECROTIC_FLESH.get(), BinomialRange.of(9, 0.5f)));
 		registerLootTable(ModBlocks.FLESH_BLOCK_SLAB.get(), BlockLootTables::droppingSlab);
+		registerDropSelfLootTable(ModBlocks.FLESH_BLOCK_STAIRS.get());
 		registerLootTable(ModBlocks.MUTATED_FLESH_BLOCK.get(), ModBlockLootTables::droppingMutatedFlesh);
 		registerLootTable(ModBlocks.BIO_FLESH_DOOR.get(), ModBlockLootTables::droppingSimpleOwnableDoor);
 		registerLootTable(ModBlocks.BIO_FLESH_TRAPDOOR.get(), ModBlockLootTables::droppingSimpleOwnable);
@@ -103,7 +104,7 @@ public class ModBlockLootTables extends BlockLootTables {
 		registerLootTable(ModBlocks.GULGE.get(), ModBlockLootTables::droppingWithInventory);
 		registerLootTable(ModBlocks.FLESH_CHEST.get(), ModBlockLootTables::droppingWithInventory);
 		registerLootTable(ModBlocks.DECOMPOSER.get(), ModBlockLootTables::droppingWithFuel);
-		registerLootTable(ModBlocks.EVOLUTION_POOL.get(), dropping(ModBlocks.FLESH_BLOCK.get()));
+		registerLootTable(ModBlocks.EVOLUTION_POOL.get(), dropping(ModBlocks.FLESH_BLOCK_STAIRS.get()));
 
 //		registerLootTable(ModBlocks.LUMINOUS_SOIL.get(), (soil) -> droppingWithSilkTouch(soil, withExplosionDecay(soil, ItemLootEntry.builder(ModItems.LUMINESCENT_SPORES.get())
 //				.acceptFunction(SetCount.builder(RandomValueRange.of(4.0F, 5.0F))).acceptFunction(ApplyBonus.uniformBonusCount(Enchantments.FORTUNE)))));

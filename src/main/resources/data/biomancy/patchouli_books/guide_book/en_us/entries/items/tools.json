@@ -1,0 +1,26 @@
+{
+  "name": "Normal Tools & Weapons",
+  "icon": "biomancy:syringe",
+  "category": "biomancy:items",
+  "pages": [
+    {
+      "type": "text",
+      "text": "These things are cold and dead..."
+    },
+    {
+      "type": "spotlight",
+      "item": "biomancy:sewing_kit",
+      "text": "Allows you to sew things together..."
+    },
+    {
+      "type": "spotlight",
+      "item": "biomancy:sharp_bone",
+      "text": "A sharpened bone that can be used as a sword."
+    },
+    {
+      "type": "spotlight",
+      "item": "biomancy:syringe",
+      "text": "Take genetic material samples of Living Entities or forcefully inject them with questionable substances."
+    }
+  ]
+}

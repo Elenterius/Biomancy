@@ -1,0 +1,17 @@
+{
+  "name": "Sewing Recipes",
+  "icon": "biomancy:sewing_kit",
+  "category": "biomancy:crafting_recipes",
+  "pages": [
+    {
+      "type": "crafting",
+      "recipe": "biomancy:sewing_kit_empty",
+      "recipe2": "biomancy:sewing_kit"
+    },
+    {
+      "type": "crafting",
+      "recipe": "biomancy:mended_skin",
+      "recipe2": "biomancy:artificial_stomach"
+    }
+  ]
+}

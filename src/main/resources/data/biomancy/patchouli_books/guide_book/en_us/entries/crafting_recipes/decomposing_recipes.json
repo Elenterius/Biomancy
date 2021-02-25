@@ -1,0 +1,11 @@
+{
+  "name": "Things to decompose",
+  "icon": "biomancy:decomposer",
+  "category": "biomancy:crafting_recipes",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Who needs a composter, when you can use a semi-living thing with a stomach to decompose things into other things."
+    }
+  ]
+}

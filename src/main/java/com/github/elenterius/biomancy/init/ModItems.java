@@ -89,7 +89,6 @@ public final class ModItems {
 	public static final RegistryObject<BlockItem> BIO_FLESH_PRESSURE_PLATE = ITEMS.register("bioflesh_pressure_plate", () -> new BlockItem(ModBlocks.BIO_FLESH_PRESSURE_PLATE.get(), createItemProperties()));
 
 	//semi-container blocks
-	public static final RegistryObject<BlockItem> MEATSOUP_CAULDRON = ITEMS.register("meatsoup_cauldron", () -> new BlockItem(ModBlocks.MEATSOUP_CAULDRON.get(), createItemProperties()));
 
 	//container blocks
 	public static final RegistryObject<BlockItem> GULGE = ITEMS.register("gulge", () -> new BlockItem(ModBlocks.GULGE.get(), createItemProperties().rarity(Rarity.EPIC)));

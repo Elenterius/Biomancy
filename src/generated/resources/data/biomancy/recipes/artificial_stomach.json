@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  C",
+    "MMC",
+    "MMS"
+  ],
+  "key": {
+    "S": {
+      "item": "biomancy:sewing_kit"
+    },
+    "M": {
+      "item": "biomancy:mended_skin"
+    },
+    "C": {
+      "item": "biomancy:skin_chunk"
+    }
+  },
+  "result": {
+    "item": "biomancy:artificial_stomach"
+  }
+}

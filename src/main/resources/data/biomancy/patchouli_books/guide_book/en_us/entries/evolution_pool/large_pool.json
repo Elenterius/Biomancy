@@ -1,0 +1,37 @@
+{
+  "name": "Large Evolution Pool",
+  "icon": "biomancy:evolution_pool",
+  "category": "biomancy:evolution_pool",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Exposing living entities to it with the correct combination of catalysts causes them to mutate or evolve into superior forms of life."
+    },
+    {
+      "type": "multiblock",
+      "name": "Evolution Pool",
+      "text": "A large pool filled with mutagenic bile in order to forcefully induce mutations in living entities.",
+      "enable_visualize": false,
+      "multiblock": {
+        "pattern": [
+          [
+            "AWB",
+            "N0S",
+            "CED"
+          ]
+        ],
+        "mapping": {
+          "A": "biomancy:evolution_pool[part=nw_corner]",
+          "B": "biomancy:evolution_pool[part=sw_corner]",
+          "C": "biomancy:evolution_pool[part=ne_corner]",
+          "D": "biomancy:evolution_pool[part=se_corner]",
+          "W": "biomancy:evolution_pool[part=west_wall]",
+          "N": "biomancy:evolution_pool[part=north_wall]",
+          "S": "biomancy:evolution_pool[part=south_wall]",
+          "E": "biomancy:evolution_pool[part=east_wall]",
+          "0": "biomancy:evolution_pool[part=middle]"
+        }
+      }
+    }
+  ]
+}

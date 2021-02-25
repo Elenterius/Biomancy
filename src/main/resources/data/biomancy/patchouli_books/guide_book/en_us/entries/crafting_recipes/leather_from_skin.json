@@ -1,0 +1,15 @@
+{
+  "name": "Leather from Skin",
+  "icon": "minecraft:leather",
+  "category": "biomancy:crafting_recipes",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Chunks of skin can be sown together into stitched skin, which in turn can be smoked into leather."
+    },
+    {
+      "type": "smoking",
+      "recipe": "biomancy:leather_from_smoking"
+    }
+  ]
+}
