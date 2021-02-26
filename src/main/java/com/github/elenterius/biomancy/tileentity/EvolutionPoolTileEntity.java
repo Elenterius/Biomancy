@@ -68,7 +68,7 @@ public class EvolutionPoolTileEntity extends OwnableTileEntity implements INamed
 		super(ModTileEntityTypes.EVOLUTION_POOL.get());
 		fuelContents = SimpleInvContents.createServerContents(FUEL_SLOTS_COUNT, this::canPlayerOpenInv, this::markDirty);
 		inputContents = SimpleInvContents.createServerContents(INPUT_SLOTS_COUNT, this::canPlayerOpenInv, this::markDirty);
-		outputContents = SimpleInvContents.createServerContents(OUTPUT_SLOTS_COUNT, true, this::canPlayerOpenInv, this::markDirty);
+		outputContents = SimpleInvContents.createServerContents(OUTPUT_SLOTS_COUNT, SimpleInvContents.ISHandlerType.NO_INSERT, this::canPlayerOpenInv, this::markDirty);
 	}
 
 	public static Optional<EvolutionPoolRecipe> getRecipeForItem(World world, ItemStack stackIn) {

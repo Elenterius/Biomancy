@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.inventory;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.capabilities.NonNestingItemStackHandler;
 import com.github.elenterius.biomancy.init.ModContainerTypes;
 import com.github.elenterius.biomancy.tileentity.FleshChestTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -52,7 +53,7 @@ public class FleshChestContainer extends Container {
 				int slotNumber = y * 9 + x;
 				int posX = CHEST_INVENTORY_POS_X + x * SLOT_X_SPACING;
 				int posY = CHEST_INVENTORY_POS_Y + y * SLOT_Y_SPACING;
-				addSlot(new Slot(invContents, slotNumber, posX, posY));
+				addSlot(new NonNestingSlot(invContents, slotNumber, posX, posY));
 			}
 		}
 	}
@@ -88,7 +89,7 @@ public class FleshChestContainer extends Container {
 		ItemStack sourceStack = sourceSlot.getStack();
 		ItemStack copyOfSourceStack = sourceStack.copy();
 
-		boolean successfulTransfer;
+		boolean successfulTransfer = false;
 		SlotZone sourceZone = SlotZone.getZoneFromIndex(sourceSlotIndex);
 
 		switch (sourceZone) {
@@ -99,7 +100,9 @@ public class FleshChestContainer extends Container {
 
 			case PLAYER_HOTBAR:
 			case PLAYER_MAIN_INVENTORY:
-				successfulTransfer = mergeInto(SlotZone.CHEST_INVENTORY, sourceStack, false);
+				if (NonNestingItemStackHandler.isItemStackInventoryEmpty(sourceStack)) {
+					successfulTransfer = mergeInto(SlotZone.CHEST_INVENTORY, sourceStack, false);
+				}
 				if (!successfulTransfer) {
 					if (sourceZone == SlotZone.PLAYER_HOTBAR) successfulTransfer = mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, sourceStack, false);
 					else successfulTransfer = mergeInto(SlotZone.PLAYER_HOTBAR, sourceStack, false);

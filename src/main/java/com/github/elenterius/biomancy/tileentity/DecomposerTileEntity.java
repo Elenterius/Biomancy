@@ -57,7 +57,7 @@ public class DecomposerTileEntity extends OwnableTileEntity implements INamedCon
 		super(ModTileEntityTypes.DECOMPOSER.get());
 		fuelContents = SimpleInvContents.createServerContents(FUEL_SLOTS_COUNT, this::canPlayerOpenInv, this::markDirty);
 		inputContents = SimpleInvContents.createServerContents(INPUT_SLOTS_COUNT, this::canPlayerOpenInv, this::markDirty);
-		outputContents = SimpleInvContents.createServerContents(OUTPUT_SLOTS_COUNT, true, this::canPlayerOpenInv, this::markDirty);
+		outputContents = SimpleInvContents.createServerContents(OUTPUT_SLOTS_COUNT, SimpleInvContents.ISHandlerType.NO_INSERT, this::canPlayerOpenInv, this::markDirty);
 	}
 
 	public static boolean areRecipesEqual(DecomposingRecipe recipeA, DecomposingRecipe recipeB, boolean relaxed) {

@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.inventory;
 
 import com.github.elenterius.biomancy.capabilities.NoInsertItemStackHandler;
+import com.github.elenterius.biomancy.capabilities.NonNestingItemStackHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -31,18 +32,22 @@ public class SimpleInvContents implements IInventory {
 		optionalItemStackHandler = LazyOptional.of(() -> itemStackHandler);
 	}
 
-	SimpleInvContents(int slotAmount, boolean isOutputInv) {
+	SimpleInvContents(int slotAmount, ISHandlerType handlerType) {
 		itemStackHandler = new ItemStackHandler(slotAmount);
-		if (isOutputInv) {
-			optionalItemStackHandler = LazyOptional.of(() -> new NoInsertItemStackHandler(itemStackHandler));
-		}
-		else {
-			optionalItemStackHandler = LazyOptional.of(() -> itemStackHandler);
+		switch (handlerType) {
+			case NO_INSERT:
+				optionalItemStackHandler = LazyOptional.of(() -> new NoInsertItemStackHandler(itemStackHandler));
+				break;
+			case NON_NESTING:
+				optionalItemStackHandler = LazyOptional.of(() -> new NonNestingItemStackHandler(itemStackHandler));
+				break;
+			default:
+				optionalItemStackHandler = LazyOptional.of(() -> itemStackHandler);
 		}
 	}
 
-	SimpleInvContents(int slotAmount, boolean isOutputInv, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
-		this(slotAmount, isOutputInv);
+	SimpleInvContents(int slotAmount, ISHandlerType type, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
+		this(slotAmount, type);
 		this.canPlayerAccessInventory = canPlayerAccessInventory;
 		this.markDirtyNotifier = markDirtyNotifier;
 	}
@@ -53,12 +58,12 @@ public class SimpleInvContents implements IInventory {
 		this.markDirtyNotifier = markDirtyNotifier;
 	}
 
-	public static SimpleInvContents createServerContents(int slotAmount, boolean isOutputInv, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
-		return new SimpleInvContents(slotAmount, isOutputInv, canPlayerAccessInventory, markDirtyNotifier);
+	public static SimpleInvContents createServerContents(int slotAmount, ISHandlerType type, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
+		return new SimpleInvContents(slotAmount, type, canPlayerAccessInventory, markDirtyNotifier);
 	}
 
-	public static SimpleInvContents createClientContents(int slotAmount, boolean isOutputInv) {
-		return new SimpleInvContents(slotAmount, isOutputInv);
+	public static SimpleInvContents createClientContents(int slotAmount, ISHandlerType type) {
+		return new SimpleInvContents(slotAmount, type);
 	}
 
 	public static SimpleInvContents createServerContents(int slotAmount, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
@@ -171,5 +176,16 @@ public class SimpleInvContents implements IInventory {
 		for (int i = 0; i < itemStackHandler.getSlots(); ++i) {
 			itemStackHandler.setStackInSlot(i, ItemStack.EMPTY);
 		}
+	}
+
+	public enum ISHandlerType {
+		/**
+		 * prevents insertion of items
+		 */
+		NO_INSERT,
+		/**
+		 * prevents nesting of items with an inventory (ITEM_HANDLER_CAPABILITY and Shulker Boxes)
+		 */
+		NON_NESTING;
 	}
 }

@@ -48,7 +48,7 @@ public class FleshChestTileEntity extends OwnableTileEntity implements INamedCon
 
 	public FleshChestTileEntity() {
 		super(ModTileEntityTypes.FLESH_CHEST.get());
-		invContents = SimpleInvContents.createServerContents(INV_SLOTS_COUNT, this::canPlayerOpenInv, this::markDirty);
+		invContents = SimpleInvContents.createServerContents(INV_SLOTS_COUNT, SimpleInvContents.ISHandlerType.NON_NESTING, this::canPlayerOpenInv, this::markDirty);
 		invContents.setOpenInventoryConsumer(this::onOpenInventory);
 		invContents.setCloseInventoryConsumer(this::onCloseInventory);
 	}
@@ -149,7 +149,7 @@ public class FleshChestTileEntity extends OwnableTileEntity implements INamedCon
 	@Override
 	public CompoundNBT write(CompoundNBT nbt) {
 		super.write(nbt);
-		nbt.put("Inventory", invContents.serializeNBT());
+		if (!invContents.isEmpty()) nbt.put("Inventory", invContents.serializeNBT());
 		return nbt;
 	}
 
