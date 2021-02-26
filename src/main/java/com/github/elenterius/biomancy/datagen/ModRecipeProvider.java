@@ -221,6 +221,11 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addIngredient(ModItems.SEWING_KIT_EMPTY.get()).addIngredient(Tags.Items.STRING).addIngredient(Tags.Items.STRING).addIngredient(Tags.Items.STRING)
 				.addCriterion("has_empty_sewing_kit", hasItem(ModItems.SEWING_KIT_EMPTY.get())).build(consumer);
 
+		ShapedRecipeBuilder.shapedRecipe(ModItems.SYRINGE.get())
+				.key('B', Items.GLASS_BOTTLE).key('S', ModItems.SEWING_KIT_EMPTY.get()).key('I', Items.IRON_INGOT).key('N', Items.IRON_NUGGET)
+				.patternLine("SBN").patternLine("NII").patternLine("  I")
+				.addCriterion("has_quartz", hasItem(Items.QUARTZ)).build(consumer);
+
 		ShapelessRecipeBuilder.shapelessRecipe(Items.BONE_MEAL)
 				.addIngredient(ModItems.BONE_SCRAPS.get(), 4)
 				.addCriterion("has_bone_scraps", hasItem(ModItems.BONE_SCRAPS.get())).build(consumer);
@@ -248,6 +253,18 @@ public class ModRecipeProvider extends RecipeProvider {
 		ShapelessRecipeBuilder.shapelessRecipe(ModItems.FLESH_LUMP.get())
 				.addIngredient(ModItems.NECROTIC_FLESH.get()).addIngredient(ModItems.REJUVENATING_MUCUS.get())
 				.addCriterion("has_necrotic_flesh", hasItem(ModItems.NECROTIC_FLESH.get())).build(consumer);
+
+		ShapedRecipeBuilder.shapedRecipe(ModItems.FLESH_BLOCK_SLAB.get(), 3 * 2)
+				.key('F', ModItems.FLESH_BLOCK.get())
+				.patternLine("FFF")
+				.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK.get())).build(consumer);
+
+		ShapedRecipeBuilder.shapedRecipe(ModItems.FLESH_BLOCK_STAIRS.get(), 4)
+				.key('F', ModItems.FLESH_BLOCK.get())
+				.patternLine("F  ")
+				.patternLine("FF ")
+				.patternLine("FFF")
+				.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK.get())).build(consumer);
 
 //		ShapelessRecipeBuilder.shapelessRecipe(ModItems.NECROTIC_FLESH.get(), 9)
 //				.addIngredient(ModItems.NECROTIC_FLESH_BLOCK.get())

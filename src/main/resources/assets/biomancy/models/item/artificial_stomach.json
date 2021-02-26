@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "biomancy:item/mended_skin"
+    "layer0": "biomancy:item/stitched_stomach"
   }
 }

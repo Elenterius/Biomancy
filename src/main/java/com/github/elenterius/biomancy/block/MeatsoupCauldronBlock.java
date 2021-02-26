@@ -120,9 +120,9 @@ public class MeatsoupCauldronBlock extends Block {
 	}
 
 	@Override
-	public void onBlockClicked(BlockState state, World worldIn, BlockPos pos, PlayerEntity player) {
+	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
 		int level = state.get(LEVEL);
-		if (level == MAX_LEVEL) {
+		if (level >= MAX_LEVEL) {
 			if (!worldIn.isRemote) {
 				worldIn.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
 				ItemStack resultStack = new ItemStack(ModItems.FLESH_BLOCK.get());
@@ -131,14 +131,11 @@ public class MeatsoupCauldronBlock extends Block {
 					worldIn.playSound(null, pos, SoundEvents.ENTITY_ITEM_FRAME_REMOVE_ITEM, SoundCategory.BLOCKS, 1.0F, 1.0F);
 				}
 			}
+			return ActionResultType.func_233537_a_(worldIn.isRemote);
 		}
-	}
 
-	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
 		ItemStack stack = player.getHeldItem(handIn);
 		if (!stack.isEmpty()) {
-			int level = state.get(LEVEL);
 			int flagValue = state.get(FLAGS);
 			Item item = stack.getItem();
 			if (!Flags.isFlagSet(flagValue, Flags.ROTTEN_FLESH) && (item == Items.ROTTEN_FLESH || item == ModItems.MUTAGENIC_BILE.get())) {
