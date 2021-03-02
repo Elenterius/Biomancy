@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:biotic_material_13_decomposing"
+    ]
+  },
+  "criteria": {
+    "has_biotics": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "biomancy:biotics"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:biotic_material_13_decomposing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_biotics",
+      "has_the_recipe"
+    ]
+  ]
+}

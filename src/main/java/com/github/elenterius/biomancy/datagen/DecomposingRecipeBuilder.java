@@ -55,6 +55,10 @@ public class DecomposingRecipeBuilder {
 		return addIngredient(Ingredient.fromTag(tagIn));
 	}
 
+	public DecomposingRecipeBuilder addIngredients(ITag<Item> tagIn, int quantity) {
+		return addIngredients(Ingredient.fromTag(tagIn), quantity);
+	}
+
 	public DecomposingRecipeBuilder addIngredient(IItemProvider itemIn) {
 		return addIngredients(itemIn, 1);
 	}
@@ -137,7 +141,7 @@ public class DecomposingRecipeBuilder {
 	private void build(Consumer<IFinishedRecipe> consumerIn, ResourceLocation id) {
 		validate(id);
 		advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.create(id)).withRewards(AdvancementRewards.Builder.recipe(id)).withRequirementsStrategy(IRequirementsStrategy.OR);
-		consumerIn.accept(new Result(id, result, craftingTime, count, this.group == null ? "" : group, ingredients, byproducts, advancementBuilder, new ResourceLocation(id.getNamespace(), "recipes/" + result.getGroup().getPath() + "/" + id.getPath())));
+		consumerIn.accept(new Result(id, result, craftingTime, count, this.group == null ? "" : group, ingredients, byproducts, advancementBuilder, new ResourceLocation(id.getNamespace(), "recipes/" + (result.getGroup() != null ? result.getGroup().getPath() : BiomancyMod.MOD_ID) + "/" + id.getPath())));
 	}
 
 	private void validate(ResourceLocation id) {

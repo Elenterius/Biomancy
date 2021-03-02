@@ -1,0 +1,13 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "tag": "forge:gems/lapis"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:silicate_paste"
+  },
+  "time": 400
+}

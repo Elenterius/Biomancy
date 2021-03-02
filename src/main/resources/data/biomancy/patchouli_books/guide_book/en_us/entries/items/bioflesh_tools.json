@@ -1,6 +1,6 @@
 {
   "name": "Semi-Living Tools",
-  "icon": "biomancy:long_range_claw",
+  "icon": "biomancy:oculus_key",
   "category": "biomancy:items",
   "pages": [
     {
@@ -19,13 +19,6 @@
       "item": "biomancy:entity_storage",
       "text": {
         "translate": "tooltip.biomancy.entity_storage"
-      }
-    },
-    {
-      "type": "spotlight",
-      "item": "biomancy:bioflesh_war_axe",
-      "text": {
-        "translate": "tooltip.biomancy.bioflesh_war_axe"
       }
     },
     {

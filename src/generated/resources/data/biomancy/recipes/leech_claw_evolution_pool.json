@@ -1,0 +1,27 @@
+{
+  "type": "biomancy:evolution_pool",
+  "ingredients": [
+    {
+      "item": "biomancy:oculus"
+    },
+    {
+      "item": "biomancy:syringe"
+    },
+    {
+      "type": "forge:nbt",
+      "item": "minecraft:enchanted_book",
+      "count": 1,
+      "nbt": "{StoredEnchantments:[{lvl:1s,id:\"minecraft:mending\"}]}"
+    },
+    {
+      "item": "minecraft:diamond_sword"
+    },
+    {
+      "item": "biomancy:flesh_block"
+    }
+  ],
+  "result": {
+    "item": "biomancy:leech_claw"
+  },
+  "time": 800
+}

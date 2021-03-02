@@ -1,0 +1,19 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "tag": "forge:nuggets/gold"
+    },
+    {
+      "tag": "forge:nuggets/gold"
+    },
+    {
+      "tag": "forge:nuggets/gold"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:oxide_powder"
+  },
+  "time": 300
+}

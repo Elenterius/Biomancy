@@ -1,0 +1,13 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:prismarine_shard"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:keratin_filaments"
+  },
+  "time": 400
+}

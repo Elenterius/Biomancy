@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:silicate_paste_9_decomposing"
+    ]
+  },
+  "criteria": {
+    "has_silicates": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "biomancy:silicates"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:silicate_paste_9_decomposing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_silicates",
+      "has_the_recipe"
+    ]
+  ]
+}

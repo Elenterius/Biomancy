@@ -10,6 +10,7 @@ import net.minecraft.loot.LootParameterSets;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.ValidationTracker;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
@@ -28,6 +29,12 @@ public class DataGenerators {
 	public static void gatherData(GatherDataEvent event) {
 		DataGenerator generator = event.getGenerator();
 		generator.addProvider(new ModLootTableProvider(generator));
+
+		ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
+		ModBlockTagsProvider blockTags = new ModBlockTagsProvider(generator, existingFileHelper);
+		generator.addProvider(blockTags);
+		generator.addProvider(new ModItemTagsProvider(generator, blockTags, existingFileHelper));
+
 		generator.addProvider(new ModRecipeProvider(generator));
 	}
 

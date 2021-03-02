@@ -45,7 +45,7 @@ public class DecomposerTileEntity extends OwnableTileEntity implements INamedCon
 	public static final int FUEL_SLOTS_COUNT = 1;
 	public static final int INPUT_SLOTS_COUNT = DecomposingRecipe.MAX_INGREDIENTS;
 	public static final int OUTPUT_SLOTS_COUNT = 1 + DecomposingRecipe.MAX_BYPRODUCTS;
-	public static final int FUEL_COST = 10;
+	public static final int FUEL_COST = 5;
 	public static final int MAX_FUEL = 32_000;
 
 	private final DecomposerStateData decomposerState = new DecomposerStateData();
@@ -93,6 +93,13 @@ public class DecomposerTileEntity extends OwnableTileEntity implements INamedCon
 					}
 					return false;
 				}).findFirst();
+	}
+
+	public static boolean isItemValidFuel(ItemStack stack) {
+		if (stack.isEmpty()) return false;
+		Item item = stack.getItem();
+		if (item.isFood() && item.getFood() != null && item.getFood().isMeat()) return true;
+		return item.isIn(ModTags.Items.RAW_MEATS) || item.isIn(ModTags.Items.SUGARS);
 	}
 
 	@Nullable
@@ -214,13 +221,6 @@ public class DecomposerTileEntity extends OwnableTileEntity implements INamedCon
 		return false;
 	}
 
-	public static boolean isItemValidFuel(ItemStack stack) {
-		if (stack.isEmpty()) return false;
-		Item item = stack.getItem();
-		if (item.isFood() && item.getFood() != null && item.getFood().isMeat()) return true;
-		return item.isIn(ModTags.Items.RAW_MEATS) || item.isIn(ModTags.Items.SUGARS);
-	}
-
 	public void refuel() {
 		ItemStack stack = fuelContents.getStackInSlot(0);
 		if (!stack.isEmpty()) {
@@ -251,13 +251,19 @@ public class DecomposerTileEntity extends OwnableTileEntity implements INamedCon
 					int itemsNeeded = Math.round(Math.max(0, MAX_FUEL - decomposerState.mainFuel) / (float) fuelValue);
 					int consumeAmount = Math.min(stackIn.getCount(), itemsNeeded);
 					if (consumeAmount > 0) {
-						decomposerState.mainFuel = (short) MathHelper.clamp(decomposerState.mainFuel + fuelValue * consumeAmount, 0, MAX_FUEL + fuelValue);
+						int newValue = decomposerState.mainFuel + fuelValue * consumeAmount;
+						if (newValue <= MAX_FUEL) {
+							decomposerState.mainFuel = (short) MathHelper.clamp(newValue, 0, Short.MAX_VALUE);
 
-						if (item.isIn(ModTags.Items.SUGARS) && decomposerState.speedFuel < MAX_FUEL) {
-							decomposerState.speedFuel += MathHelper.clamp(consumeAmount, 0, MAX_FUEL);
+							if (item.isIn(ModTags.Items.SUGARS) && decomposerState.speedFuel < MAX_FUEL) {
+								decomposerState.speedFuel += MathHelper.clamp(consumeAmount, 0, MAX_FUEL);
+							}
+
+							return ItemHandlerHelper.copyStackWithSize(stackIn, stackIn.getCount() - consumeAmount);
 						}
-
-						return ItemHandlerHelper.copyStackWithSize(stackIn, stackIn.getCount() - consumeAmount);
+						else {
+							return stackIn;
+						}
 					}
 				}
 			}
@@ -271,8 +277,11 @@ public class DecomposerTileEntity extends OwnableTileEntity implements INamedCon
 				int itemsNeeded = Math.round(Math.max(0, MAX_FUEL - decomposerState.speedFuel) / (float) speedFuelValue);
 				int consumeAmount = Math.min(stackIn.getCount(), itemsNeeded);
 				if (consumeAmount > 0) {
-					decomposerState.speedFuel = (short) MathHelper.clamp(decomposerState.speedFuel + speedFuelValue * consumeAmount, 0, MAX_FUEL + speedFuelValue);
-					return ItemHandlerHelper.copyStackWithSize(stackIn, stackIn.getCount() - consumeAmount);
+					int newValue = decomposerState.speedFuel + speedFuelValue * consumeAmount;
+					if (newValue <= MAX_FUEL) {
+						decomposerState.speedFuel = (short) MathHelper.clamp(newValue, 0, Short.MAX_VALUE);
+						return ItemHandlerHelper.copyStackWithSize(stackIn, stackIn.getCount() - consumeAmount);
+					}
 				}
 			}
 		}

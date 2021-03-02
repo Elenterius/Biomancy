@@ -1,0 +1,19 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:wither_rose"
+    },
+    {
+      "item": "minecraft:wither_rose"
+    },
+    {
+      "item": "minecraft:wither_rose"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:biotic_material"
+  },
+  "time": 253
+}

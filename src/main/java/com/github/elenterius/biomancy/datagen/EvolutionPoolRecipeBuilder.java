@@ -11,6 +11,7 @@ import net.minecraft.advancements.IRequirementsStrategy;
 import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
@@ -27,14 +28,14 @@ import java.util.function.Consumer;
 public class EvolutionPoolRecipeBuilder {
 
 	private final Item result;
-	private final CompoundNBT resultNbt;
+	private final NbtString resultNbt;
 	private final int count;
 	private final List<Ingredient> ingredients = new ArrayList<>();
 	private final int craftingTime;
 	private final Advancement.Builder advancementBuilder = Advancement.Builder.builder();
 	private String group;
 
-	private EvolutionPoolRecipeBuilder(IItemProvider resultIn, CompoundNBT resultNbtIn, int craftingTimeIn, int countIn) {
+	private EvolutionPoolRecipeBuilder(IItemProvider resultIn, NbtString resultNbtIn, int craftingTimeIn, int countIn) {
 		assert craftingTimeIn >= 0;
 		assert countIn > 0;
 
@@ -45,19 +46,27 @@ public class EvolutionPoolRecipeBuilder {
 	}
 
 	public static EvolutionPoolRecipeBuilder createRecipe(IItemProvider resultIn, int craftingTimeIn) {
-		return new EvolutionPoolRecipeBuilder(resultIn, new CompoundNBT(), craftingTimeIn, 1);
+		return new EvolutionPoolRecipeBuilder(resultIn, NbtString.EMPTY, craftingTimeIn, 1);
 	}
 
-	public static EvolutionPoolRecipeBuilder createRecipe(IItemProvider resultIn, CompoundNBT resultNbtIn, int craftingTimeIn) {
-		return new EvolutionPoolRecipeBuilder(resultIn, resultNbtIn, craftingTimeIn, 1);
+	public static EvolutionPoolRecipeBuilder createRecipe(ItemStack stack, int craftingTimeIn) {
+		return createRecipe(stack.getItem(), stack.getOrCreateTag(), craftingTimeIn, 1);
+	}
+
+	public static EvolutionPoolRecipeBuilder createRecipe(IItemProvider resultIn, CompoundNBT itemNbtTag, int craftingTimeIn) {
+		return new EvolutionPoolRecipeBuilder(resultIn, new NbtString(itemNbtTag), craftingTimeIn, 1);
 	}
 
 	public static EvolutionPoolRecipeBuilder createRecipe(IItemProvider resultIn, int craftingTimeIn, int countIn) {
-		return new EvolutionPoolRecipeBuilder(resultIn, new CompoundNBT(), craftingTimeIn, countIn);
+		return new EvolutionPoolRecipeBuilder(resultIn, NbtString.EMPTY, craftingTimeIn, countIn);
 	}
 
-	public static EvolutionPoolRecipeBuilder createRecipe(IItemProvider resultIn, CompoundNBT resultNbtIn, int craftingTimeIn, int countIn) {
-		return new EvolutionPoolRecipeBuilder(resultIn, resultNbtIn, craftingTimeIn, countIn);
+	public static EvolutionPoolRecipeBuilder createRecipe(ItemStack stack, int craftingTimeIn, int countIn) {
+		return createRecipe(stack.getItem(), stack.getOrCreateTag(), craftingTimeIn, countIn);
+	}
+
+	public static EvolutionPoolRecipeBuilder createRecipe(IItemProvider resultIn, CompoundNBT itemNbtTag, int craftingTimeIn, int countIn) {
+		return new EvolutionPoolRecipeBuilder(resultIn, new NbtString(itemNbtTag), craftingTimeIn, countIn);
 	}
 
 	public EvolutionPoolRecipeBuilder addIngredient(ITag<Item> tagIn) {
@@ -124,12 +133,33 @@ public class EvolutionPoolRecipeBuilder {
 	private void build(Consumer<IFinishedRecipe> consumerIn, ResourceLocation id) {
 		validate(id);
 		advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.create(id)).withRewards(AdvancementRewards.Builder.recipe(id)).withRequirementsStrategy(IRequirementsStrategy.OR);
-		consumerIn.accept(new Result(id, result, resultNbt, craftingTime, count, this.group == null ? "" : group, ingredients, advancementBuilder, new ResourceLocation(id.getNamespace(), "recipes/" + result.getGroup().getPath() + "/" + id.getPath())));
+		consumerIn.accept(new Result(id, result, resultNbt, craftingTime, count, group == null ? "" : group, ingredients, advancementBuilder, new ResourceLocation(id.getNamespace(), "recipes/" + (result.getGroup() != null ? result.getGroup().getPath() : BiomancyMod.MOD_ID) + "/" + id.getPath())));
 	}
 
 	private void validate(ResourceLocation id) {
 		if (advancementBuilder.getCriteria().isEmpty()) {
 			throw new IllegalStateException("No way of obtaining recipe " + id);
+		}
+	}
+
+	public static class NbtString {
+		public static NbtString EMPTY = new NbtString();
+
+		final String nbtStr;
+
+		private NbtString() { nbtStr = null; }
+
+		public NbtString(CompoundNBT nbt) {
+			if (!nbt.isEmpty()) nbtStr = nbt.toString();
+			else nbtStr = null;
+		}
+
+		String getString() {
+			return nbtStr;
+		}
+
+		boolean isEmpty() {
+			return nbtStr == null;
 		}
 	}
 
@@ -139,12 +169,12 @@ public class EvolutionPoolRecipeBuilder {
 		private final List<Ingredient> ingredients;
 		private final Item result;
 		private final int count;
-		private final CompoundNBT resultNbt;
+		private final NbtString resultNbt;
 		private final int craftingTime;
 		private final Advancement.Builder advancementBuilder;
 		private final ResourceLocation advancementId;
 
-		public Result(ResourceLocation idIn, Item resultIn, CompoundNBT resultNbtIn, int craftingTimeIn, int countIn, String groupIn, List<Ingredient> ingredientsIn, Advancement.Builder advancementBuilderIn, ResourceLocation advancementIdIn) {
+		public Result(ResourceLocation idIn, Item resultIn, NbtString resultNbtIn, int craftingTimeIn, int countIn, String groupIn, List<Ingredient> ingredientsIn, Advancement.Builder advancementBuilderIn, ResourceLocation advancementIdIn) {
 			id = idIn;
 			group = groupIn;
 			ingredients = ingredientsIn;
@@ -173,7 +203,7 @@ public class EvolutionPoolRecipeBuilder {
 				jsonObject.addProperty("count", count);
 			}
 			if (!resultNbt.isEmpty()) {
-				jsonObject.addProperty("nbt", resultNbt.toString());
+				jsonObject.addProperty("nbt", resultNbt.getString());
 			}
 			json.add("result", jsonObject);
 

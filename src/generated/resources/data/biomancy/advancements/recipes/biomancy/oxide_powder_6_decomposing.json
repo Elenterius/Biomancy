@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:oxide_powder_6_decomposing"
+    ]
+  },
+  "criteria": {
+    "has_oxide": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "biomancy:oxides"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:oxide_powder_6_decomposing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_oxide",
+      "has_the_recipe"
+    ]
+  ]
+}

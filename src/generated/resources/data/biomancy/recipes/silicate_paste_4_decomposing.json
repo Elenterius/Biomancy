@@ -1,0 +1,21 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:nautilus_shell"
+    }
+  ],
+  "byproducts": [
+    {
+      "result": {
+        "item": "biomancy:mutagenic_bile"
+      },
+      "chance": 0.4
+    }
+  ],
+  "result": {
+    "item": "biomancy:silicate_paste",
+    "count": 3
+  },
+  "time": 200
+}

@@ -1,0 +1,19 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:peony"
+    },
+    {
+      "item": "minecraft:peony"
+    },
+    {
+      "item": "minecraft:peony"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:biotic_material"
+  },
+  "time": 253
+}

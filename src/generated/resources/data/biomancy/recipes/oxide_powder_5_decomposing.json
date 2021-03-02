@@ -1,0 +1,14 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/netherite"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:oxide_powder",
+    "count": 36
+  },
+  "time": 300
+}

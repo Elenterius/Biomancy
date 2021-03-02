@@ -1,0 +1,14 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "tag": "forge:gems/prismarine"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:silicate_paste",
+    "count": 3
+  },
+  "time": 400
+}

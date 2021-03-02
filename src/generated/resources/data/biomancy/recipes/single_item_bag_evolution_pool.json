@@ -8,6 +8,9 @@
       "item": "minecraft:hopper"
     },
     {
+      "item": "biomancy:bioflesh_chest"
+    },
+    {
       "item": "biomancy:flesh_lump"
     },
     {
@@ -20,5 +23,5 @@
   "result": {
     "item": "biomancy:single_item_bag"
   },
-  "time": 400
+  "time": 550
 }

@@ -1,0 +1,16 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "tag": "forge:bones"
+    },
+    {
+      "tag": "forge:bones"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:oxide_powder"
+  },
+  "time": 200
+}

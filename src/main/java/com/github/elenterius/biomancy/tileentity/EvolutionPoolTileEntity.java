@@ -54,8 +54,8 @@ public class EvolutionPoolTileEntity extends OwnableTileEntity implements INamed
 
 	public static final int DEFAULT_TIME = 400;
 	public static final int MAX_FUEL = 32_000;
-	private static final short FUEL_COST = 2;
-	private static final float FUEL_CONVERSION = FUEL_COST * DEFAULT_TIME / 4f;
+	public static final short FUEL_COST = 2;
+	public static final float FUEL_CONVERSION = FUEL_COST * DEFAULT_TIME / 4f;
 
 	private final EvolutionPoolStateData stateData = new EvolutionPoolStateData();
 	private final SimpleInvContents fuelContents;

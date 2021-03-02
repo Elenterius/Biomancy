@@ -19,9 +19,14 @@ public final class ModTags {
 
 	public static final class Items {
 		public static final Tags.IOptionalNamedTag<Item> RAW_MEATS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "raw_meats"));
-		public static final Tags.IOptionalNamedTag<Item> FLESH = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "flesh"));
+		//		public static final Tags.IOptionalNamedTag<Item> FLESH = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "flesh"));
 		public static final Tags.IOptionalNamedTag<Item> COOKED_MEATS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "cooked_meats"));
 		public static final Tags.IOptionalNamedTag<Item> SUGARS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "sugars"));
+		public static final Tags.IOptionalNamedTag<Item> BIOTICS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "biotics"));
+		public static final Tags.IOptionalNamedTag<Item> OXIDES = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "oxides"));
+		public static final Tags.IOptionalNamedTag<Item> SILICATES = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "silicates"));
+		public static final Tags.IOptionalNamedTag<Item> KERATINS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "keratins"));
+		public static final Tags.IOptionalNamedTag<Item> HORMONES = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "hormones"));
 
 		private Items() {}
 

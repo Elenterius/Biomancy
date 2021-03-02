@@ -2,7 +2,7 @@
   "type": "biomancy:evolution_pool",
   "ingredients": [
     {
-      "item": "minecraft:chest"
+      "item": "biomancy:bioflesh_chest"
     },
     {
       "item": "biomancy:artificial_stomach"
@@ -23,5 +23,5 @@
   "result": {
     "item": "biomancy:gulge"
   },
-  "time": 400
+  "time": 800
 }

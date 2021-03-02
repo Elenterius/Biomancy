@@ -1,0 +1,19 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:lily_pad"
+    },
+    {
+      "item": "minecraft:lily_pad"
+    },
+    {
+      "item": "minecraft:lily_pad"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:biotic_material"
+  },
+  "time": 253
+}

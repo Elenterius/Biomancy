@@ -1,0 +1,14 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:rabbit_hide"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:keratin_filaments",
+    "count": 2
+  },
+  "time": 200
+}

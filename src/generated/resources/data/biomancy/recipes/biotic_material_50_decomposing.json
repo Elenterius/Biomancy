@@ -1,0 +1,19 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:shroomlight"
+    },
+    {
+      "item": "minecraft:shroomlight"
+    },
+    {
+      "item": "minecraft:shroomlight"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:biotic_material"
+  },
+  "time": 253
+}

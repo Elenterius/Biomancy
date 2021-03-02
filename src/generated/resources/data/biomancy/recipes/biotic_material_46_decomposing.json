@@ -1,0 +1,16 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:warped_wart_block"
+    },
+    {
+      "item": "minecraft:warped_wart_block"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:biotic_material"
+  },
+  "time": 222
+}

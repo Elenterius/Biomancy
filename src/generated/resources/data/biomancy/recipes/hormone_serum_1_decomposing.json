@@ -1,0 +1,14 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:rabbit_foot"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:hormone_serum",
+    "count": 3
+  },
+  "time": 200
+}

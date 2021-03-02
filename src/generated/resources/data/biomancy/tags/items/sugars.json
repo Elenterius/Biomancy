@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:sugar",
+    "minecraft:cookie",
+    "minecraft:cake",
+    "minecraft:honeycomb",
+    "minecraft:honey_block",
+    "minecraft:honeycomb_block",
+    "minecraft:honey_bottle",
+    "minecraft:sweet_berries",
+    "minecraft:cocoa_beans"
+  ]
+}

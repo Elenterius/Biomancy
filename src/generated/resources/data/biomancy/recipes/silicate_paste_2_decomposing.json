@@ -1,0 +1,16 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:granite"
+    },
+    {
+      "item": "minecraft:granite"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:silicate_paste"
+  },
+  "time": 400
+}

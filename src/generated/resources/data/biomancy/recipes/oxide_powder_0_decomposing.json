@@ -1,0 +1,14 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/iron"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:oxide_powder",
+    "count": 3
+  },
+  "time": 300
+}

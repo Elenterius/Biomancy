@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:keratin_filaments_0_decomposing"
+    ]
+  },
+  "criteria": {
+    "has_keratins": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "biomancy:keratins"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:keratin_filaments_0_decomposing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_keratins",
+      "has_the_recipe"
+    ]
+  ]
+}

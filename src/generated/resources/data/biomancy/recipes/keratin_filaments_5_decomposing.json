@@ -1,0 +1,13 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "tag": "minecraft:wool"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:keratin_filaments"
+  },
+  "time": 200
+}

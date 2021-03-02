@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:bioflesh_guan_dao_evolution_pool"
+    ]
+  },
+  "criteria": {
+    "has_oculus": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "biomancy:oculus"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:bioflesh_guan_dao_evolution_pool"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_oculus",
+      "has_the_recipe"
+    ]
+  ]
+}

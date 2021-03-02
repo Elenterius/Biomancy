@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:netherite_scrap",
+    "minecraft:turtle_egg",
+    "minecraft:bone_meal",
+    "#forge:ingots/iron",
+    "#forge:nuggets/iron",
+    "#forge:ingots/gold",
+    "#forge:nuggets/gold",
+    "#forge:ingots/netherite",
+    "#forge:eggs",
+    "#forge:bones"
+  ]
+}

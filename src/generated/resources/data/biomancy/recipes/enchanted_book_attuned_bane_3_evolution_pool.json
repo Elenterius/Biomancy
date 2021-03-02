@@ -1,0 +1,37 @@
+{
+  "type": "biomancy:evolution_pool",
+  "ingredients": [
+    {
+      "type": "forge:nbt",
+      "item": "minecraft:enchanted_book",
+      "count": 1,
+      "nbt": "{StoredEnchantments:[{lvl:3s,id:\"minecraft:sharpness\"}]}"
+    },
+    {
+      "type": "forge:nbt",
+      "item": "minecraft:enchanted_book",
+      "count": 1,
+      "nbt": "{StoredEnchantments:[{lvl:3s,id:\"minecraft:smite\"}]}"
+    },
+    {
+      "type": "forge:nbt",
+      "item": "minecraft:enchanted_book",
+      "count": 1,
+      "nbt": "{StoredEnchantments:[{lvl:3s,id:\"minecraft:bane_of_arthropods\"}]}"
+    },
+    {
+      "item": "biomancy:artificial_stomach"
+    },
+    {
+      "item": "biomancy:eroding_bile"
+    },
+    {
+      "item": "biomancy:rejuvenating_mucus"
+    }
+  ],
+  "result": {
+    "item": "minecraft:enchanted_book",
+    "nbt": "{StoredEnchantments:[{lvl:3s,id:\"biomancy:attuned_bane\"}]}"
+  },
+  "time": 775
+}

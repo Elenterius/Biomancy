@@ -1,0 +1,22 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "tag": "forge:feathers"
+    },
+    {
+      "tag": "forge:feathers"
+    },
+    {
+      "tag": "forge:feathers"
+    },
+    {
+      "tag": "forge:feathers"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:keratin_filaments"
+  },
+  "time": 200
+}

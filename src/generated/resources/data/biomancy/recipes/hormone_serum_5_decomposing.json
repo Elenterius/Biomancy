@@ -1,0 +1,16 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:honeycomb"
+    },
+    {
+      "item": "minecraft:honeycomb"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:hormone_serum"
+  },
+  "time": 200
+}

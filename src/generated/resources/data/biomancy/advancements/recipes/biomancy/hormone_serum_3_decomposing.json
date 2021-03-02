@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:hormone_serum_3_decomposing"
+    ]
+  },
+  "criteria": {
+    "has_hormones": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "biomancy:hormones"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:hormone_serum_3_decomposing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_hormones",
+      "has_the_recipe"
+    ]
+  ]
+}

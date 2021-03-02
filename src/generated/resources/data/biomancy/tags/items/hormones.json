@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:ink_sac",
+    "minecraft:rabbit_foot",
+    "minecraft:spider_eye",
+    "minecraft:ghast_tear",
+    "minecraft:fermented_spider_eye",
+    "minecraft:honeycomb",
+    "minecraft:slime_ball",
+    {
+      "id": "minecraft:glow_ink_sac",
+      "required": false
+    }
+  ]
+}

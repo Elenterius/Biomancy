@@ -1,0 +1,35 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:turtle_egg"
+    },
+    {
+      "item": "minecraft:turtle_egg"
+    },
+    {
+      "item": "minecraft:turtle_egg"
+    },
+    {
+      "item": "minecraft:turtle_egg"
+    },
+    {
+      "item": "minecraft:turtle_egg"
+    },
+    {
+      "item": "minecraft:turtle_egg"
+    }
+  ],
+  "byproducts": [
+    {
+      "result": {
+        "item": "biomancy:mutagenic_bile"
+      },
+      "chance": 0.05
+    }
+  ],
+  "result": {
+    "item": "biomancy:oxide_powder"
+  },
+  "time": 200
+}

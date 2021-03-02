@@ -24,9 +24,14 @@
   "item.biomancy.bioflesh_axe": "Fleshborn Axe",
   "item.biomancy.bioflesh_shovel": "Fleshborn Shovel",
 
-  "item.biomancy.eroding_bile": "Eroding Bile",
-  "item.biomancy.rejuvenating_mucus": "Rejuvenating Mucus",
   "item.biomancy.mutagenic_bile": "Mutagenic Bile",
+  "item.biomancy.rejuvenating_mucus": "Rejuvenating Mucus",
+  "item.biomancy.eroding_bile": "Eroding Bile",
+  "item.biomancy.biotic_material": "Biotic Matter",
+  "item.biomancy.keratin_filaments": "Keratin Filaments",
+  "item.biomancy.oxide_powder": "Coarse Oxide Powder",
+  "item.biomancy.silicate_paste": "Silicate Paste",
+  "item.biomancy.hormone_serum": "Hormone Rich Bile",
 
   "item.biomancy.bone_scraps": "Bone Scraps",
   "item.biomancy.skin_chunk": "Chunk of Skin",
@@ -133,6 +138,8 @@
   "tooltip.biomancy.speed_fuel": "Glucose",
   "tooltip.biomancy.mutagen": "Mutagen",
   "tooltip.biomancy.slots": "Slots",
+  "tooltip.biomancy.byproduct": "Byproduct",
+  "tooltip.biomancy.chance": "Chance",
 
   "keyboard.ctrl": "ctrl",
   "enum.biomancy.mode.none": "None",
@@ -155,5 +162,8 @@
   "sounds.biomancy.wahwah": "Arthropod Growl",
 
   "guide_book.biomancy.name": "Encyclopedia Biollurgica",
-  "guide_book.biomancy.landing_text": "Disclaimer: This whole guide is WIP and lacking lots of information."
+  "guide_book.biomancy.landing_text": "Disclaimer: This whole guide is WIP and lacking lots of information.",
+
+  "jei.biomancy.recipe.decomposer": "Decomposer Recipes",
+  "jei.biomancy.recipe.evolution_pool": "Evolution Pool Recipes"
 }
