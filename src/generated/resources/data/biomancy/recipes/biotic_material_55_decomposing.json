@@ -2,18 +2,24 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:sunflower"
+      "item": "minecraft:dried_kelp_block"
     },
     {
-      "item": "minecraft:sunflower"
+      "item": "minecraft:dried_kelp_block"
     },
     {
-      "item": "minecraft:sunflower"
+      "item": "minecraft:dried_kelp_block"
+    },
+    {
+      "item": "minecraft:dried_kelp_block"
+    },
+    {
+      "item": "minecraft:dried_kelp_block"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 253
+  "time": 275
 }

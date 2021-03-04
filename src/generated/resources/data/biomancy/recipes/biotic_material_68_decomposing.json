@@ -2,13 +2,13 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:brown_mushroom"
+      "item": "minecraft:carrot"
     },
     {
-      "item": "minecraft:brown_mushroom"
+      "item": "minecraft:carrot"
     },
     {
-      "item": "minecraft:brown_mushroom"
+      "item": "minecraft:carrot"
     }
   ],
   "byproducts": [],

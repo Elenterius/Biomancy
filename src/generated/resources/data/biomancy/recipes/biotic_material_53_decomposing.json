@@ -2,27 +2,18 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:acacia_leaves"
+      "item": "minecraft:carved_pumpkin"
     },
     {
-      "item": "minecraft:acacia_leaves"
+      "item": "minecraft:carved_pumpkin"
     },
     {
-      "item": "minecraft:acacia_leaves"
-    },
-    {
-      "item": "minecraft:acacia_leaves"
-    },
-    {
-      "item": "minecraft:acacia_leaves"
-    },
-    {
-      "item": "minecraft:acacia_leaves"
+      "item": "minecraft:carved_pumpkin"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 305
+  "time": 253
 }

@@ -2,22 +2,22 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:oak_leaves"
+      "item": "minecraft:seagrass"
     },
     {
-      "item": "minecraft:oak_leaves"
+      "item": "minecraft:seagrass"
     },
     {
-      "item": "minecraft:oak_leaves"
+      "item": "minecraft:seagrass"
     },
     {
-      "item": "minecraft:oak_leaves"
+      "item": "minecraft:seagrass"
     },
     {
-      "item": "minecraft:oak_leaves"
+      "item": "minecraft:seagrass"
     },
     {
-      "item": "minecraft:oak_leaves"
+      "item": "minecraft:seagrass"
     }
   ],
   "byproducts": [],

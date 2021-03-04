@@ -2,13 +2,13 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:peony"
+      "item": "minecraft:red_mushroom"
     },
     {
-      "item": "minecraft:peony"
+      "item": "minecraft:red_mushroom"
     },
     {
-      "item": "minecraft:peony"
+      "item": "minecraft:red_mushroom"
     }
   ],
   "byproducts": [],

@@ -2,18 +2,27 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:cocoa_beans"
+      "item": "minecraft:jungle_sapling"
     },
     {
-      "item": "minecraft:cocoa_beans"
+      "item": "minecraft:jungle_sapling"
     },
     {
-      "item": "minecraft:cocoa_beans"
+      "item": "minecraft:jungle_sapling"
+    },
+    {
+      "item": "minecraft:jungle_sapling"
+    },
+    {
+      "item": "minecraft:jungle_sapling"
+    },
+    {
+      "item": "minecraft:jungle_sapling"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 253
+  "time": 305
 }

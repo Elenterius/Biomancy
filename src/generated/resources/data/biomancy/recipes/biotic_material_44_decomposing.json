@@ -2,18 +2,24 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:carved_pumpkin"
+      "item": "minecraft:cactus"
     },
     {
-      "item": "minecraft:carved_pumpkin"
+      "item": "minecraft:cactus"
     },
     {
-      "item": "minecraft:carved_pumpkin"
+      "item": "minecraft:cactus"
+    },
+    {
+      "item": "minecraft:cactus"
+    },
+    {
+      "item": "minecraft:cactus"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 253
+  "time": 275
 }

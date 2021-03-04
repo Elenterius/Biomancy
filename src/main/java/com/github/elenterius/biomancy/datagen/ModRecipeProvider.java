@@ -501,10 +501,6 @@ public class ModRecipeProvider extends RecipeProvider {
 				.patternLine("FLF").patternLine("FSF").patternLine("FLF")
 				.addCriterion("has_stomach", hasItem(ModItems.ARTIFICIAL_STOMACH.get())).build(consumer);
 
-		ShapelessRecipeBuilder.shapelessRecipe(ModItems.FLESH_LUMP.get())
-				.addIngredient(ModItems.NECROTIC_FLESH.get()).addIngredient(ModItems.REJUVENATING_MUCUS.get())
-				.addCriterion("has_necrotic_flesh", hasItem(ModItems.NECROTIC_FLESH.get())).build(consumer);
-
 		ShapedRecipeBuilder.shapedRecipe(ModItems.FLESH_BLOCK_SLAB.get(), 3 * 2)
 				.key('F', ModItems.FLESH_BLOCK.get())
 				.patternLine("FFF")
@@ -517,13 +513,25 @@ public class ModRecipeProvider extends RecipeProvider {
 				.patternLine("FFF")
 				.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK.get())).build(consumer);
 
-//		ShapelessRecipeBuilder.shapelessRecipe(ModItems.NECROTIC_FLESH.get(), 9)
-//				.addIngredient(ModItems.NECROTIC_FLESH_BLOCK.get())
-//				.addCriterion("has_necrotic_flesh_block", hasItem(ModItems.NECROTIC_FLESH_BLOCK.get())).build(consumer);
+		ShapelessRecipeBuilder.shapelessRecipe(ModItems.NECROTIC_FLESH.get(), 9)
+				.addIngredient(ModItems.NECROTIC_FLESH_BLOCK.get())
+				.addCriterion("has_necrotic_flesh_block", hasItem(ModItems.NECROTIC_FLESH_BLOCK.get())).build(consumer);
 
-//		ShapelessRecipeBuilder.shapelessRecipe(ModItems.FLESH_BLOCK.get())
-//				.addIngredient(ModItems.FLESH_LUMP.get(), 9)
-//				.addCriterion("has_flesh_lump", hasItem(ModItems.FLESH_LUMP.get())).build(consumer);
+		ShapelessRecipeBuilder.shapelessRecipe(ModItems.NECROTIC_FLESH_BLOCK.get())
+				.addIngredient(ModItems.NECROTIC_FLESH.get(), 9)
+				.addCriterion("has_necrotic_flesh", hasItem(ModItems.NECROTIC_FLESH.get())).build(consumer);
+
+		ShapelessRecipeBuilder.shapelessRecipe(ModItems.FLESH_BLOCK.get())
+				.addIngredient(ModItems.FLESH_LUMP.get(), 9)
+				.addCriterion("has_flesh_lump", hasItem(ModItems.FLESH_LUMP.get())).build(consumer);
+
+		ShapelessRecipeBuilder.shapelessRecipe(ModItems.FLESH_LUMP.get(), 9)
+				.addIngredient(ModItems.FLESH_BLOCK.get())
+				.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK.get())).build(consumer);
+
+		ShapelessRecipeBuilder.shapelessRecipe(ModItems.FLESH_LUMP.get())
+				.addIngredient(ModItems.NECROTIC_FLESH.get()).addIngredient(ModItems.REJUVENATING_MUCUS.get())
+				.addCriterion("has_necrotic_flesh", hasItem(ModItems.NECROTIC_FLESH.get())).build(consumer, BiomancyMod.createRL("flesh_from_necrotic"));
 
 		CustomRecipeBuilder.customRecipe(ModRecipes.REPAIR_SPECIAL_SEWING_KIT.get()).build(consumer, BiomancyMod.MOD_ID + ":" + "sewing_kit_nbt");
 		CustomRecipeBuilder.customRecipe(ModRecipes.CRAFTING_SPECIAL_POTION_BEETLE.get()).build(consumer, BiomancyMod.MOD_ID + ":" + "potion_beetle");

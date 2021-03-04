@@ -2,18 +2,15 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:crimson_fungus"
+      "item": "minecraft:baked_potato"
     },
     {
-      "item": "minecraft:crimson_fungus"
-    },
-    {
-      "item": "minecraft:crimson_fungus"
+      "item": "minecraft:baked_potato"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 253
+  "time": 222
 }

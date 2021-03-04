@@ -2,22 +2,22 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:sweet_berries"
+      "item": "minecraft:acacia_leaves"
     },
     {
-      "item": "minecraft:sweet_berries"
+      "item": "minecraft:acacia_leaves"
     },
     {
-      "item": "minecraft:sweet_berries"
+      "item": "minecraft:acacia_leaves"
     },
     {
-      "item": "minecraft:sweet_berries"
+      "item": "minecraft:acacia_leaves"
     },
     {
-      "item": "minecraft:sweet_berries"
+      "item": "minecraft:acacia_leaves"
     },
     {
-      "item": "minecraft:sweet_berries"
+      "item": "minecraft:acacia_leaves"
     }
   ],
   "byproducts": [],

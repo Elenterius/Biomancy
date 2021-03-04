@@ -2,13 +2,13 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:wheat"
+      "item": "minecraft:rose_bush"
     },
     {
-      "item": "minecraft:wheat"
+      "item": "minecraft:rose_bush"
     },
     {
-      "item": "minecraft:wheat"
+      "item": "minecraft:rose_bush"
     }
   ],
   "byproducts": [],

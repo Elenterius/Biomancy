@@ -2,24 +2,15 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:tall_grass"
+      "item": "minecraft:brown_mushroom_block"
     },
     {
-      "item": "minecraft:tall_grass"
-    },
-    {
-      "item": "minecraft:tall_grass"
-    },
-    {
-      "item": "minecraft:tall_grass"
-    },
-    {
-      "item": "minecraft:tall_grass"
+      "item": "minecraft:brown_mushroom_block"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 275
+  "time": 222
 }

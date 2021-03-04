@@ -2,15 +2,18 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:bread"
+      "item": "minecraft:large_fern"
     },
     {
-      "item": "minecraft:bread"
+      "item": "minecraft:large_fern"
+    },
+    {
+      "item": "minecraft:large_fern"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 222
+  "time": 253
 }

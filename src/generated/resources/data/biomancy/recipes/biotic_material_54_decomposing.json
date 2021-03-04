@@ -2,27 +2,24 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:pumpkin_seeds"
+      "item": "minecraft:sugar_cane"
     },
     {
-      "item": "minecraft:pumpkin_seeds"
+      "item": "minecraft:sugar_cane"
     },
     {
-      "item": "minecraft:pumpkin_seeds"
+      "item": "minecraft:sugar_cane"
     },
     {
-      "item": "minecraft:pumpkin_seeds"
+      "item": "minecraft:sugar_cane"
     },
     {
-      "item": "minecraft:pumpkin_seeds"
-    },
-    {
-      "item": "minecraft:pumpkin_seeds"
+      "item": "minecraft:sugar_cane"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 305
+  "time": 275
 }

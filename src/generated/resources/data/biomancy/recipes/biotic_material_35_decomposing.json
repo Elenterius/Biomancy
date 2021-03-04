@@ -2,13 +2,13 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:sea_pickle"
+      "item": "minecraft:fern"
     },
     {
-      "item": "minecraft:sea_pickle"
+      "item": "minecraft:fern"
     },
     {
-      "item": "minecraft:sea_pickle"
+      "item": "minecraft:fern"
     }
   ],
   "byproducts": [],

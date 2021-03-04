@@ -2,15 +2,18 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:brown_mushroom_block"
+      "item": "minecraft:lily_of_the_valley"
     },
     {
-      "item": "minecraft:brown_mushroom_block"
+      "item": "minecraft:lily_of_the_valley"
+    },
+    {
+      "item": "minecraft:lily_of_the_valley"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 222
+  "time": 253
 }

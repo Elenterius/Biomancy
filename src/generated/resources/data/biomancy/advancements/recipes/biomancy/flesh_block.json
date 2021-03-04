@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:flesh_block"
+    ]
+  },
+  "criteria": {
+    "has_flesh_lump": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "biomancy:flesh_lump"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:flesh_block"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_flesh_lump",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -2,22 +2,22 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:seagrass"
+      "item": "minecraft:spruce_sapling"
     },
     {
-      "item": "minecraft:seagrass"
+      "item": "minecraft:spruce_sapling"
     },
     {
-      "item": "minecraft:seagrass"
+      "item": "minecraft:spruce_sapling"
     },
     {
-      "item": "minecraft:seagrass"
+      "item": "minecraft:spruce_sapling"
     },
     {
-      "item": "minecraft:seagrass"
+      "item": "minecraft:spruce_sapling"
     },
     {
-      "item": "minecraft:seagrass"
+      "item": "minecraft:spruce_sapling"
     }
   ],
   "byproducts": [],

@@ -2,13 +2,13 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:red_tulip"
+      "item": "minecraft:lily_pad"
     },
     {
-      "item": "minecraft:red_tulip"
+      "item": "minecraft:lily_pad"
     },
     {
-      "item": "minecraft:red_tulip"
+      "item": "minecraft:lily_pad"
     }
   ],
   "byproducts": [],

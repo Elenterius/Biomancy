@@ -2,18 +2,12 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:red_mushroom"
-    },
-    {
-      "item": "minecraft:red_mushroom"
-    },
-    {
-      "item": "minecraft:red_mushroom"
+      "item": "minecraft:pumpkin_pie"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 253
+  "time": 200
 }

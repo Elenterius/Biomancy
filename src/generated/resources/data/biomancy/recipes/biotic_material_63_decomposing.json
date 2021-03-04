@@ -2,27 +2,18 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:beetroot_seeds"
+      "item": "minecraft:azure_bluet"
     },
     {
-      "item": "minecraft:beetroot_seeds"
+      "item": "minecraft:azure_bluet"
     },
     {
-      "item": "minecraft:beetroot_seeds"
-    },
-    {
-      "item": "minecraft:beetroot_seeds"
-    },
-    {
-      "item": "minecraft:beetroot_seeds"
-    },
-    {
-      "item": "minecraft:beetroot_seeds"
+      "item": "minecraft:azure_bluet"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 305
+  "time": 253
 }

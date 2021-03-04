@@ -2,13 +2,13 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:orange_tulip"
+      "item": "minecraft:melon"
     },
     {
-      "item": "minecraft:orange_tulip"
+      "item": "minecraft:melon"
     },
     {
-      "item": "minecraft:orange_tulip"
+      "item": "minecraft:melon"
     }
   ],
   "byproducts": [],

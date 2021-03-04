@@ -2,13 +2,13 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:wither_rose"
+      "item": "minecraft:poppy"
     },
     {
-      "item": "minecraft:wither_rose"
+      "item": "minecraft:poppy"
     },
     {
-      "item": "minecraft:wither_rose"
+      "item": "minecraft:poppy"
     }
   ],
   "byproducts": [],

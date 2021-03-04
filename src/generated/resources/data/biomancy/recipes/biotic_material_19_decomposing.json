@@ -2,18 +2,27 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:nether_wart"
+      "item": "minecraft:beetroot_seeds"
     },
     {
-      "item": "minecraft:nether_wart"
+      "item": "minecraft:beetroot_seeds"
     },
     {
-      "item": "minecraft:nether_wart"
+      "item": "minecraft:beetroot_seeds"
+    },
+    {
+      "item": "minecraft:beetroot_seeds"
+    },
+    {
+      "item": "minecraft:beetroot_seeds"
+    },
+    {
+      "item": "minecraft:beetroot_seeds"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 253
+  "time": 305
 }

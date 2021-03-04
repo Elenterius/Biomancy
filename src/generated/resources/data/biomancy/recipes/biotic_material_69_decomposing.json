@@ -2,27 +2,15 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:acacia_sapling"
+      "item": "minecraft:cookie"
     },
     {
-      "item": "minecraft:acacia_sapling"
-    },
-    {
-      "item": "minecraft:acacia_sapling"
-    },
-    {
-      "item": "minecraft:acacia_sapling"
-    },
-    {
-      "item": "minecraft:acacia_sapling"
-    },
-    {
-      "item": "minecraft:acacia_sapling"
+      "item": "minecraft:cookie"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 305
+  "time": 222
 }

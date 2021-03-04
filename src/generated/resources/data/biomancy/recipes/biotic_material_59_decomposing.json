@@ -2,27 +2,18 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:spruce_leaves"
+      "item": "minecraft:beetroot"
     },
     {
-      "item": "minecraft:spruce_leaves"
+      "item": "minecraft:beetroot"
     },
     {
-      "item": "minecraft:spruce_leaves"
-    },
-    {
-      "item": "minecraft:spruce_leaves"
-    },
-    {
-      "item": "minecraft:spruce_leaves"
-    },
-    {
-      "item": "minecraft:spruce_leaves"
+      "item": "minecraft:beetroot"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 305
+  "time": 253
 }

@@ -2,13 +2,13 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:apple"
+      "item": "minecraft:shroomlight"
     },
     {
-      "item": "minecraft:apple"
+      "item": "minecraft:shroomlight"
     },
     {
-      "item": "minecraft:apple"
+      "item": "minecraft:shroomlight"
     }
   ],
   "byproducts": [],

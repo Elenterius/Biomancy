@@ -2,24 +2,18 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:nether_sprouts"
+      "item": "minecraft:mushroom_stem"
     },
     {
-      "item": "minecraft:nether_sprouts"
+      "item": "minecraft:mushroom_stem"
     },
     {
-      "item": "minecraft:nether_sprouts"
-    },
-    {
-      "item": "minecraft:nether_sprouts"
-    },
-    {
-      "item": "minecraft:nether_sprouts"
+      "item": "minecraft:mushroom_stem"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 275
+  "time": 253
 }

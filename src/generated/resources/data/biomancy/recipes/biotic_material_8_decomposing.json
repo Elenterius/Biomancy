@@ -2,27 +2,15 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:jungle_leaves"
+      "item": "minecraft:red_mushroom_block"
     },
     {
-      "item": "minecraft:jungle_leaves"
-    },
-    {
-      "item": "minecraft:jungle_leaves"
-    },
-    {
-      "item": "minecraft:jungle_leaves"
-    },
-    {
-      "item": "minecraft:jungle_leaves"
-    },
-    {
-      "item": "minecraft:jungle_leaves"
+      "item": "minecraft:red_mushroom_block"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 305
+  "time": 222
 }

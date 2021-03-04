@@ -2,27 +2,18 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:dark_oak_sapling"
+      "item": "minecraft:wither_rose"
     },
     {
-      "item": "minecraft:dark_oak_sapling"
+      "item": "minecraft:wither_rose"
     },
     {
-      "item": "minecraft:dark_oak_sapling"
-    },
-    {
-      "item": "minecraft:dark_oak_sapling"
-    },
-    {
-      "item": "minecraft:dark_oak_sapling"
-    },
-    {
-      "item": "minecraft:dark_oak_sapling"
+      "item": "minecraft:wither_rose"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 305
+  "time": 253
 }

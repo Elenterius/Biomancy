@@ -2,18 +2,24 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:pumpkin"
+      "item": "minecraft:weeping_vines"
     },
     {
-      "item": "minecraft:pumpkin"
+      "item": "minecraft:weeping_vines"
     },
     {
-      "item": "minecraft:pumpkin"
+      "item": "minecraft:weeping_vines"
+    },
+    {
+      "item": "minecraft:weeping_vines"
+    },
+    {
+      "item": "minecraft:weeping_vines"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 253
+  "time": 275
 }

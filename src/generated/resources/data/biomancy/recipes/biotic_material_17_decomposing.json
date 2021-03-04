@@ -2,18 +2,24 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:rose_bush"
+      "item": "minecraft:nether_sprouts"
     },
     {
-      "item": "minecraft:rose_bush"
+      "item": "minecraft:nether_sprouts"
     },
     {
-      "item": "minecraft:rose_bush"
+      "item": "minecraft:nether_sprouts"
+    },
+    {
+      "item": "minecraft:nether_sprouts"
+    },
+    {
+      "item": "minecraft:nether_sprouts"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 253
+  "time": 275
 }

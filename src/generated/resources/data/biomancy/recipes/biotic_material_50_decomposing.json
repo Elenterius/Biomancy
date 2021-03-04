@@ -2,18 +2,24 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:shroomlight"
+      "item": "minecraft:melon_slice"
     },
     {
-      "item": "minecraft:shroomlight"
+      "item": "minecraft:melon_slice"
     },
     {
-      "item": "minecraft:shroomlight"
+      "item": "minecraft:melon_slice"
+    },
+    {
+      "item": "minecraft:melon_slice"
+    },
+    {
+      "item": "minecraft:melon_slice"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 253
+  "time": 275
 }

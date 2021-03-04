@@ -2,24 +2,27 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:dried_kelp_block"
+      "item": "minecraft:birch_sapling"
     },
     {
-      "item": "minecraft:dried_kelp_block"
+      "item": "minecraft:birch_sapling"
     },
     {
-      "item": "minecraft:dried_kelp_block"
+      "item": "minecraft:birch_sapling"
     },
     {
-      "item": "minecraft:dried_kelp_block"
+      "item": "minecraft:birch_sapling"
     },
     {
-      "item": "minecraft:dried_kelp_block"
+      "item": "minecraft:birch_sapling"
+    },
+    {
+      "item": "minecraft:birch_sapling"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 275
+  "time": 305
 }

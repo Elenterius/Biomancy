@@ -2,13 +2,13 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:carrot"
+      "item": "minecraft:crimson_roots"
     },
     {
-      "item": "minecraft:carrot"
+      "item": "minecraft:crimson_roots"
     },
     {
-      "item": "minecraft:carrot"
+      "item": "minecraft:crimson_roots"
     }
   ],
   "byproducts": [],
