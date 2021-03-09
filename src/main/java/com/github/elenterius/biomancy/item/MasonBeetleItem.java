@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.item;
 
-import com.github.elenterius.biomancy.entity.MasonBeetleEntity;
+import com.github.elenterius.biomancy.entity.golem.MasonBeetleEntity;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.util.BlockPlacementTarget;
 import net.minecraft.client.util.ITooltipFlag;

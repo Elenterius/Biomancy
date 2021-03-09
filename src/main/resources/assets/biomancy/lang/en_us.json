@@ -53,6 +53,7 @@
   "item.biomancy.makhana": "Polluted Makhana",
 
   "item.biomancy.flesh_blob_spawn_egg": "Flesh Blob Spawn Egg",
+  "item.biomancy.fleshkin_spawn_egg": "Fleshkin Spawn Egg",
   "item.biomancy.failed_sheep_spawn_egg": "Failed Sheep Spawn Egg",
   "item.biomancy.chroma_sheep_spawn_egg": "Chroma Sheep Spawn Egg",
   "item.biomancy.silky_wool_sheep_spawn_egg": "Silky Wool Sheep Spawn Egg",
@@ -102,15 +103,16 @@
   "container.biomancy.evolution_pool": "Evolution Pool",
 
   "entity.biomancy.flesh_blob": "Flesh Blob",
+  "entity.biomancy.fleshkin": "Fleshkin",
   "entity.biomancy.failed_sheep": "Failed Sheep",
   "entity.biomancy.chroma_sheep": "Chroma Sheep",
   "entity.biomancy.silky_wool_sheep": "Silky Wool Sheep",
   "entity.biomancy.thick_wool_sheep": "Cloud Wool Sheep",
 
+  "entity.biomancy.potion_beetle": "Potion Beetle",
+  "entity.biomancy.beetling": "Beetling",
   "entity.biomancy.blobling": "Blobling",
   "entity.biomancy.brood_mother": "Brood Mother",
-  "entity.biomancy.beetling": "Beetling",
-  "entity.biomancy.potion_beetle": "Potion Beetle",
 
   "enchantment.biomancy.climbing": "Millipedes",
   "enchantment.biomancy.bullet_jump": "Copepod's Leap",

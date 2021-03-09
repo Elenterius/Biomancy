@@ -2,15 +2,24 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:hay_block"
+      "item": "minecraft:weeping_vines"
     },
     {
-      "item": "minecraft:hay_block"
+      "item": "minecraft:weeping_vines"
+    },
+    {
+      "item": "minecraft:weeping_vines"
+    },
+    {
+      "item": "minecraft:weeping_vines"
+    },
+    {
+      "item": "minecraft:weeping_vines"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 222
+  "time": 275
 }

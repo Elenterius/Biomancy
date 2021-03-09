@@ -2,18 +2,24 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:orange_tulip"
+      "item": "minecraft:cactus"
     },
     {
-      "item": "minecraft:orange_tulip"
+      "item": "minecraft:cactus"
     },
     {
-      "item": "minecraft:orange_tulip"
+      "item": "minecraft:cactus"
+    },
+    {
+      "item": "minecraft:cactus"
+    },
+    {
+      "item": "minecraft:cactus"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 253
+  "time": 275
 }

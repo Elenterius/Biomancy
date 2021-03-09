@@ -50,27 +50,6 @@
             }
           ],
           "name": "biomancy:lens"
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "min": -3.0,
-                "max": 1.0,
-                "type": "minecraft:uniform"
-              }
-            },
-            {
-              "function": "minecraft:looting_enchant",
-              "count": {
-                "min": 0.0,
-                "max": 1.0
-              }
-            }
-          ],
-          "name": "biomancy:twisted_heart"
         }
       ],
       "conditions": [

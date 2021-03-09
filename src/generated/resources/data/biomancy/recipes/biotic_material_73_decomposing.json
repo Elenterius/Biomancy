@@ -2,18 +2,15 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:sunflower"
+      "item": "minecraft:cookie"
     },
     {
-      "item": "minecraft:sunflower"
-    },
-    {
-      "item": "minecraft:sunflower"
+      "item": "minecraft:cookie"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 253
+  "time": 222
 }

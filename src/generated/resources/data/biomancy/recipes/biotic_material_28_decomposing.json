@@ -2,18 +2,27 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:cornflower"
+      "item": "minecraft:dark_oak_leaves"
     },
     {
-      "item": "minecraft:cornflower"
+      "item": "minecraft:dark_oak_leaves"
     },
     {
-      "item": "minecraft:cornflower"
+      "item": "minecraft:dark_oak_leaves"
+    },
+    {
+      "item": "minecraft:dark_oak_leaves"
+    },
+    {
+      "item": "minecraft:dark_oak_leaves"
+    },
+    {
+      "item": "minecraft:dark_oak_leaves"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 253
+  "time": 305
 }

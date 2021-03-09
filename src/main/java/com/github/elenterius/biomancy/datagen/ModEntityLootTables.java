@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.datagen;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.entity.gmo.SilkyWoolSheepEntity;
+import com.github.elenterius.biomancy.entity.mutation.SilkyWoolSheepEntity;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModItems;
 import net.minecraft.data.loot.EntityLootTables;
@@ -31,7 +31,6 @@ public class ModEntityLootTables extends EntityLootTables {
 				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(Items.STRING).acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 2.0F))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))))
 				.addLootPool(LootPool.builder().rolls(ConstantRange.of(2))
 						.addEntry(ItemLootEntry.builder(ModItems.MENISCUS_LENS.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-1.0F, 1.0F))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 2.0F))))
-						.addEntry(ItemLootEntry.builder(ModItems.TWISTED_HEART.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-3.0F, 1.0F))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F))))
 						.acceptCondition(KilledByPlayer.builder())));
 
 		registerLootTable(ModEntityTypes.BEETLING.get(), LootTable.builder()
@@ -44,8 +43,12 @@ public class ModEntityLootTables extends EntityLootTables {
 		registerLootTable(ModEntityTypes.FLESH_BLOB.get(), LootTable.builder()
 				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(ModItems.FLESH_BLOCK.get())
 						.acceptFunction(SetCount.builder(ConstantRange.of(1))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))))
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(ModItems.OCULUS.get())
-						.acceptFunction(SetCount.builder(RandomValueRange.of(-3.0F, 1.0F))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))).acceptCondition(KilledByPlayer.builder())));
+				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1))
+						.addEntry(ItemLootEntry.builder(ModItems.OCULUS.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-3.0F, 1.0F))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F))))
+						.acceptCondition(KilledByPlayer.builder()))
+				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1))
+						.addEntry(ItemLootEntry.builder(ModItems.TWISTED_HEART.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-3.0F, 1.0F))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))))
+		);
 
 		registerLootTable(ModEntityTypes.FAILED_SHEEP.get(), LootTable.builder()
 				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(ModItems.FLESH_LUMP.get()).acceptFunction(SetCount.builder(RandomValueRange.of(1, 3))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f)))))

@@ -1,5 +1,6 @@
-package com.github.elenterius.biomancy.entity;
+package com.github.elenterius.biomancy.entity.aberration;
 
+import com.github.elenterius.biomancy.entity.IJumpMovementMob;
 import com.github.elenterius.biomancy.entity.ai.controller.GenericJumpController;
 import com.github.elenterius.biomancy.entity.ai.controller.GenericJumpMovementController;
 import com.github.elenterius.biomancy.entity.ai.controller.GenericJumpMovementHelper;

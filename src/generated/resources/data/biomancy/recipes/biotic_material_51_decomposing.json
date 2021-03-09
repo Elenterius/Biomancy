@@ -2,18 +2,27 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:apple"
+      "item": "minecraft:oak_leaves"
     },
     {
-      "item": "minecraft:apple"
+      "item": "minecraft:oak_leaves"
     },
     {
-      "item": "minecraft:apple"
+      "item": "minecraft:oak_leaves"
+    },
+    {
+      "item": "minecraft:oak_leaves"
+    },
+    {
+      "item": "minecraft:oak_leaves"
+    },
+    {
+      "item": "minecraft:oak_leaves"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 253
+  "time": 305
 }

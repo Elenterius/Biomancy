@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.client.renderer.entity;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.renderer.entity.model.FleshBlobModel;
-import com.github.elenterius.biomancy.entity.FleshBlobEntity;
+import com.github.elenterius.biomancy.entity.aberration.FleshBlobEntity;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;

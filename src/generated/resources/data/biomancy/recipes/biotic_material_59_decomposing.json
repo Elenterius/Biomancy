@@ -2,13 +2,13 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:beetroot"
+      "item": "minecraft:cocoa_beans"
     },
     {
-      "item": "minecraft:beetroot"
+      "item": "minecraft:cocoa_beans"
     },
     {
-      "item": "minecraft:beetroot"
+      "item": "minecraft:cocoa_beans"
     }
   ],
   "byproducts": [],

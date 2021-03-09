@@ -2,15 +2,24 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:warped_wart_block"
+      "item": "minecraft:melon_slice"
     },
     {
-      "item": "minecraft:warped_wart_block"
+      "item": "minecraft:melon_slice"
+    },
+    {
+      "item": "minecraft:melon_slice"
+    },
+    {
+      "item": "minecraft:melon_slice"
+    },
+    {
+      "item": "minecraft:melon_slice"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 222
+  "time": 275
 }

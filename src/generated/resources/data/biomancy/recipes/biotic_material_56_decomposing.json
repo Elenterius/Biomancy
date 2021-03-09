@@ -2,18 +2,24 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:peony"
+      "item": "minecraft:twisting_vines"
     },
     {
-      "item": "minecraft:peony"
+      "item": "minecraft:twisting_vines"
     },
     {
-      "item": "minecraft:peony"
+      "item": "minecraft:twisting_vines"
+    },
+    {
+      "item": "minecraft:twisting_vines"
+    },
+    {
+      "item": "minecraft:twisting_vines"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 253
+  "time": 275
 }

@@ -2,15 +2,18 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:bread"
+      "item": "minecraft:brown_mushroom"
     },
     {
-      "item": "minecraft:bread"
+      "item": "minecraft:brown_mushroom"
+    },
+    {
+      "item": "minecraft:brown_mushroom"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 222
+  "time": 253
 }

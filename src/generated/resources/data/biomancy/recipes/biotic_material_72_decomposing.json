@@ -2,18 +2,24 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:mushroom_stem"
+      "item": "minecraft:sugar_cane"
     },
     {
-      "item": "minecraft:mushroom_stem"
+      "item": "minecraft:sugar_cane"
     },
     {
-      "item": "minecraft:mushroom_stem"
+      "item": "minecraft:sugar_cane"
+    },
+    {
+      "item": "minecraft:sugar_cane"
+    },
+    {
+      "item": "minecraft:sugar_cane"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 253
+  "time": 275
 }

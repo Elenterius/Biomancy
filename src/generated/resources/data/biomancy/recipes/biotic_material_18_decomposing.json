@@ -2,22 +2,22 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:birch_leaves"
+      "item": "minecraft:spruce_sapling"
     },
     {
-      "item": "minecraft:birch_leaves"
+      "item": "minecraft:spruce_sapling"
     },
     {
-      "item": "minecraft:birch_leaves"
+      "item": "minecraft:spruce_sapling"
     },
     {
-      "item": "minecraft:birch_leaves"
+      "item": "minecraft:spruce_sapling"
     },
     {
-      "item": "minecraft:birch_leaves"
+      "item": "minecraft:spruce_sapling"
     },
     {
-      "item": "minecraft:birch_leaves"
+      "item": "minecraft:spruce_sapling"
     }
   ],
   "byproducts": [],

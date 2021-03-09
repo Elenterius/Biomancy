@@ -2,22 +2,22 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:sweet_berries"
+      "item": "minecraft:birch_sapling"
     },
     {
-      "item": "minecraft:sweet_berries"
+      "item": "minecraft:birch_sapling"
     },
     {
-      "item": "minecraft:sweet_berries"
+      "item": "minecraft:birch_sapling"
     },
     {
-      "item": "minecraft:sweet_berries"
+      "item": "minecraft:birch_sapling"
     },
     {
-      "item": "minecraft:sweet_berries"
+      "item": "minecraft:birch_sapling"
     },
     {
-      "item": "minecraft:sweet_berries"
+      "item": "minecraft:birch_sapling"
     }
   ],
   "byproducts": [],

@@ -2,13 +2,13 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:lily_of_the_valley"
+      "item": "minecraft:blue_orchid"
     },
     {
-      "item": "minecraft:lily_of_the_valley"
+      "item": "minecraft:blue_orchid"
     },
     {
-      "item": "minecraft:lily_of_the_valley"
+      "item": "minecraft:blue_orchid"
     }
   ],
   "byproducts": [],

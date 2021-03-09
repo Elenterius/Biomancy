@@ -2,22 +2,22 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:pumpkin_seeds"
+      "item": "minecraft:jungle_sapling"
     },
     {
-      "item": "minecraft:pumpkin_seeds"
+      "item": "minecraft:jungle_sapling"
     },
     {
-      "item": "minecraft:pumpkin_seeds"
+      "item": "minecraft:jungle_sapling"
     },
     {
-      "item": "minecraft:pumpkin_seeds"
+      "item": "minecraft:jungle_sapling"
     },
     {
-      "item": "minecraft:pumpkin_seeds"
+      "item": "minecraft:jungle_sapling"
     },
     {
-      "item": "minecraft:pumpkin_seeds"
+      "item": "minecraft:jungle_sapling"
     }
   ],
   "byproducts": [],

@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.client.renderer.entity.layers;
 
-import com.github.elenterius.biomancy.entity.gmo.ThickWoolSheepEntity;
+import com.github.elenterius.biomancy.entity.mutation.ThickWoolSheepEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.IEntityRenderer;

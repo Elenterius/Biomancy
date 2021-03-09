@@ -1,8 +1,9 @@
-package com.github.elenterius.biomancy.entity;
+package com.github.elenterius.biomancy.entity.golem;
 
+import com.github.elenterius.biomancy.entity.IThrowPotionAtPositionMob;
 import com.github.elenterius.biomancy.entity.ai.goal.RangedAttackWithMaxDurationGoal;
-import com.github.elenterius.biomancy.entity.ai.goal.ReturnToOwnerGoal;
 import com.github.elenterius.biomancy.entity.ai.goal.ThrowPotionAtPositionGoal;
+import com.github.elenterius.biomancy.entity.ai.goal.golem.ReturnToOwnerGoal;
 import com.github.elenterius.biomancy.init.ModItems;
 import net.minecraft.block.BlockState;
 import net.minecraft.dispenser.IPosition;
@@ -28,8 +29,8 @@ import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 
-public class PotionBeetleEntity extends AbstractUtilityEntity implements IRangedAttackMob, IThrowPotionAtPositionMob {
-	public PotionBeetleEntity(EntityType<? extends AbstractUtilityEntity> type, World worldIn) {
+public class PotionBeetleEntity extends OwnableCreatureEntity implements IRangedAttackMob, IThrowPotionAtPositionMob {
+	public PotionBeetleEntity(EntityType<? extends OwnableCreatureEntity> type, World worldIn) {
 		super(type, worldIn);
 	}
 

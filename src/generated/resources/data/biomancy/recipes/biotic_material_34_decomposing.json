@@ -2,27 +2,15 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:dark_oak_sapling"
+      "item": "minecraft:hay_block"
     },
     {
-      "item": "minecraft:dark_oak_sapling"
-    },
-    {
-      "item": "minecraft:dark_oak_sapling"
-    },
-    {
-      "item": "minecraft:dark_oak_sapling"
-    },
-    {
-      "item": "minecraft:dark_oak_sapling"
-    },
-    {
-      "item": "minecraft:dark_oak_sapling"
+      "item": "minecraft:hay_block"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 305
+  "time": 222
 }

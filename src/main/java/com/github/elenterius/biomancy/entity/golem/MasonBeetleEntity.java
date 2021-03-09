@@ -1,7 +1,8 @@
-package com.github.elenterius.biomancy.entity;
+package com.github.elenterius.biomancy.entity.golem;
 
+import com.github.elenterius.biomancy.entity.IPlaceBlockAtPositionMob;
 import com.github.elenterius.biomancy.entity.ai.goal.PlaceBlockAtPositionGoal;
-import com.github.elenterius.biomancy.entity.ai.goal.ReturnToOwnerGoal;
+import com.github.elenterius.biomancy.entity.ai.goal.golem.ReturnToOwnerGoal;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.util.BlockPlacementTarget;
 import com.github.elenterius.biomancy.util.PlayerInteractionUtil;
@@ -30,11 +31,11 @@ import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nullable;
 
-public class MasonBeetleEntity extends AbstractUtilityEntity implements IPlaceBlockAtPositionMob {
+public class MasonBeetleEntity extends OwnableCreatureEntity implements IPlaceBlockAtPositionMob {
 
 	private BlockPlacementTarget blockPlacementTarget = null;
 
-	public MasonBeetleEntity(EntityType<? extends AbstractUtilityEntity> type, World worldIn) {
+	public MasonBeetleEntity(EntityType<? extends OwnableCreatureEntity> type, World worldIn) {
 		super(type, worldIn);
 		moveController = new FlyingMovementController(this, 20, true);
 	}

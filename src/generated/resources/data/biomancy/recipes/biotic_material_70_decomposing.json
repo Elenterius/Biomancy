@@ -2,13 +2,13 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:shroomlight"
+      "item": "minecraft:dandelion"
     },
     {
-      "item": "minecraft:shroomlight"
+      "item": "minecraft:dandelion"
     },
     {
-      "item": "minecraft:shroomlight"
+      "item": "minecraft:dandelion"
     }
   ],
   "byproducts": [],

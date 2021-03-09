@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.entity.gmo;
+package com.github.elenterius.biomancy.entity.mutation;
 
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;

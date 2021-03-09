@@ -2,27 +2,12 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:oak_sapling"
-    },
-    {
-      "item": "minecraft:oak_sapling"
-    },
-    {
-      "item": "minecraft:oak_sapling"
-    },
-    {
-      "item": "minecraft:oak_sapling"
-    },
-    {
-      "item": "minecraft:oak_sapling"
-    },
-    {
-      "item": "minecraft:oak_sapling"
+      "item": "minecraft:cake"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 305
+  "time": 200
 }

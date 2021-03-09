@@ -2,18 +2,27 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:blue_orchid"
+      "item": "minecraft:oak_sapling"
     },
     {
-      "item": "minecraft:blue_orchid"
+      "item": "minecraft:oak_sapling"
     },
     {
-      "item": "minecraft:blue_orchid"
+      "item": "minecraft:oak_sapling"
+    },
+    {
+      "item": "minecraft:oak_sapling"
+    },
+    {
+      "item": "minecraft:oak_sapling"
+    },
+    {
+      "item": "minecraft:oak_sapling"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 253
+  "time": 305
 }

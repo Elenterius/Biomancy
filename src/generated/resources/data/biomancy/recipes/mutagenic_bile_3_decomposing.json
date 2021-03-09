@@ -1,0 +1,22 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "biomancy:twisted_heart"
+    }
+  ],
+  "byproducts": [
+    {
+      "result": {
+        "item": "biomancy:keratin_filaments",
+        "count": 2
+      },
+      "chance": 0.5
+    }
+  ],
+  "result": {
+    "item": "biomancy:mutagenic_bile",
+    "count": 6
+  },
+  "time": 200
+}

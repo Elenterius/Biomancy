@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:mutagenic_bile_2_decomposing"
+    ]
+  },
+  "criteria": {
+    "has_warped_roots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:warped_roots"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:mutagenic_bile_2_decomposing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_warped_roots",
+      "has_the_recipe"
+    ]
+  ]
+}

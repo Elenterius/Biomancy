@@ -1,5 +1,6 @@
-package com.github.elenterius.biomancy.entity;
+package com.github.elenterius.biomancy.entity.hybrid;
 
+import com.github.elenterius.biomancy.entity.SwarmGroupMemberEntity;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;

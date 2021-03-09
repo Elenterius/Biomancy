@@ -2,18 +2,24 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:nether_wart"
+      "item": "minecraft:vine"
     },
     {
-      "item": "minecraft:nether_wart"
+      "item": "minecraft:vine"
     },
     {
-      "item": "minecraft:nether_wart"
+      "item": "minecraft:vine"
+    },
+    {
+      "item": "minecraft:vine"
+    },
+    {
+      "item": "minecraft:vine"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 253
+  "time": 275
 }

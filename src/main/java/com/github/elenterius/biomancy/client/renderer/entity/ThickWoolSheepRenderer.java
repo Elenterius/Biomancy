@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.renderer.entity;
 
 import com.github.elenterius.biomancy.client.renderer.entity.layers.ThickWoolSheepLayer;
-import com.github.elenterius.biomancy.entity.gmo.ThickWoolSheepEntity;
+import com.github.elenterius.biomancy.entity.mutation.ThickWoolSheepEntity;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.model.SheepModel;

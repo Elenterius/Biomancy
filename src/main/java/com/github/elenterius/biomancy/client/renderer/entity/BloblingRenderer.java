@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.client.renderer.entity;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.renderer.entity.model.BloblingModel;
-import com.github.elenterius.biomancy.entity.BloblingEntity;
+import com.github.elenterius.biomancy.entity.hybrid.BloblingEntity;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;

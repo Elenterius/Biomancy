@@ -2,27 +2,18 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:jungle_leaves"
+      "item": "minecraft:pink_tulip"
     },
     {
-      "item": "minecraft:jungle_leaves"
+      "item": "minecraft:pink_tulip"
     },
     {
-      "item": "minecraft:jungle_leaves"
-    },
-    {
-      "item": "minecraft:jungle_leaves"
-    },
-    {
-      "item": "minecraft:jungle_leaves"
-    },
-    {
-      "item": "minecraft:jungle_leaves"
+      "item": "minecraft:pink_tulip"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 305
+  "time": 253
 }

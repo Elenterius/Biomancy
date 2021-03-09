@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.client.renderer.entity.layers;
 
-import com.github.elenterius.biomancy.entity.gmo.ChromaSheepEntity;
+import com.github.elenterius.biomancy.entity.mutation.ChromaSheepEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.entity.IEntityRenderer;

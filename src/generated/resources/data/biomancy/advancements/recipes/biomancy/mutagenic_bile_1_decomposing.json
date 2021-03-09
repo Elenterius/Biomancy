@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "has_warped_roots": {
+    "has_warped_fungus": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "minecraft:warped_roots"
+            "item": "minecraft:warped_fungus"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_warped_roots",
+      "has_warped_fungus",
       "has_the_recipe"
     ]
   ]

@@ -1,6 +1,6 @@
-package com.github.elenterius.biomancy.entity.ai.goal;
+package com.github.elenterius.biomancy.entity.ai.goal.golem;
 
-import com.github.elenterius.biomancy.entity.AbstractUtilityEntity;
+import com.github.elenterius.biomancy.entity.golem.OwnableCreatureEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.player.PlayerEntity;
@@ -8,12 +8,12 @@ import net.minecraft.entity.player.PlayerEntity;
 import java.util.EnumSet;
 
 public class ReturnToOwnerGoal extends Goal {
-	protected final AbstractUtilityEntity goalOwner;
+	protected final OwnableCreatureEntity goalOwner;
 	protected final double speed;
 	private LivingEntity entityOwner;
 	private int delayTime = 0;
 
-	public ReturnToOwnerGoal(AbstractUtilityEntity entity, double speed) {
+	public ReturnToOwnerGoal(OwnableCreatureEntity entity, double speed) {
 		this.goalOwner = entity;
 		this.speed = speed;
 		setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));

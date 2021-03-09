@@ -2,13 +2,13 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:allium"
+      "item": "minecraft:large_fern"
     },
     {
-      "item": "minecraft:allium"
+      "item": "minecraft:large_fern"
     },
     {
-      "item": "minecraft:allium"
+      "item": "minecraft:large_fern"
     }
   ],
   "byproducts": [],

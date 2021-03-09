@@ -2,18 +2,15 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:dandelion"
+      "item": "minecraft:nether_wart_block"
     },
     {
-      "item": "minecraft:dandelion"
-    },
-    {
-      "item": "minecraft:dandelion"
+      "item": "minecraft:nether_wart_block"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 253
+  "time": 222
 }

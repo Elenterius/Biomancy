@@ -2,15 +2,18 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:nether_wart_block"
+      "item": "minecraft:crimson_roots"
     },
     {
-      "item": "minecraft:nether_wart_block"
+      "item": "minecraft:crimson_roots"
+    },
+    {
+      "item": "minecraft:crimson_roots"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 222
+  "time": 253
 }

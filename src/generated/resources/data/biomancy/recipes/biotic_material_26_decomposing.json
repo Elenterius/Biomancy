@@ -2,27 +2,18 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:oak_leaves"
+      "item": "minecraft:poppy"
     },
     {
-      "item": "minecraft:oak_leaves"
+      "item": "minecraft:poppy"
     },
     {
-      "item": "minecraft:oak_leaves"
-    },
-    {
-      "item": "minecraft:oak_leaves"
-    },
-    {
-      "item": "minecraft:oak_leaves"
-    },
-    {
-      "item": "minecraft:oak_leaves"
+      "item": "minecraft:poppy"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 305
+  "time": 253
 }

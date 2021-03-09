@@ -7,6 +7,7 @@ import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.init.ModTags;
 import com.github.elenterius.biomancy.recipe.ItemStackIngredient;
 import com.github.elenterius.biomancy.tileentity.EvolutionPoolTileEntity;
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.advancements.criterion.EnchantmentPredicate;
 import net.minecraft.advancements.criterion.InventoryChangeTrigger;
 import net.minecraft.advancements.criterion.ItemPredicate;
@@ -36,6 +37,7 @@ import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 
 import java.util.Arrays;
+import java.util.Set;
 import java.util.function.Consumer;
 
 public class ModRecipeProvider extends RecipeProvider {
@@ -80,15 +82,15 @@ public class ModRecipeProvider extends RecipeProvider {
 		final int defaultTime = EvolutionPoolTileEntity.DEFAULT_TIME;
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIO_FLESH_DOOR.get(), defaultTime)
-				.addIngredient(Items.IRON_DOOR).addIngredient(ModItems.FLESH_BLOCK.get())
+				.addIngredient(Items.IRON_DOOR).addIngredient(ModItems.FLESH_BLOCK.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_SERUM.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIO_FLESH_TRAPDOOR.get(), defaultTime)
-				.addIngredient(Items.IRON_TRAPDOOR).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.FLESH_BLOCK.get())
+				.addIngredient(Items.IRON_TRAPDOOR).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.FLESH_BLOCK.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_SERUM.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIO_FLESH_PRESSURE_PLATE.get(), defaultTime)
-				.addIngredient(Items.HEAVY_WEIGHTED_PRESSURE_PLATE).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.FLESH_BLOCK.get())
+				.addIngredient(Items.HEAVY_WEIGHTED_PRESSURE_PLATE).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.FLESH_BLOCK.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_SERUM.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.GULGE.get(), defaultTime * 2)
@@ -96,15 +98,15 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESH_CHEST.get(), defaultTime)
-				.addIngredients(Items.CHEST, 2).addIngredient(ModItems.FLESH_BLOCK.get())
+				.addIngredients(Items.CHEST, 2).addIngredient(ModItems.FLESH_BLOCK.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_SERUM.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.SINGLE_ITEM_BAG_ITEM.get(), defaultTime + 150)
-				.addIngredient(ModItems.ARTIFICIAL_STOMACH.get()).addIngredient(Items.HOPPER).addIngredient(ModItems.FLESH_CHEST.get()).addIngredients(ModItems.FLESH_LUMP.get(), 3)
+				.addIngredients(ModItems.ARTIFICIAL_STOMACH.get(), 2).addIngredient(Items.HOPPER).addIngredient(ModItems.FLESH_CHEST.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2)
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.ENTITY_STORAGE_ITEM.get(), defaultTime + 150)
-				.addIngredient(ModItems.ARTIFICIAL_STOMACH.get()).addIngredient(Items.EGG).addIngredient(Items.ENDER_CHEST).addIngredients(ModItems.FLESH_LUMP.get(), 3)
+				.addIngredients(ModItems.ARTIFICIAL_STOMACH.get(), 2).addIngredient(Items.EGG).addIngredient(Items.ENDER_CHEST).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2)
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.OCULI_OF_UNVEILING.get(), defaultTime * 2)
@@ -112,20 +114,20 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addCriterion("has_mutagenic_bile", hasItems(ModItems.MUTAGENIC_BILE.get(), ModItems.MENISCUS_LENS.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIOFLESH_AXE.get(), defaultTime)
-				.addIngredient(Items.IRON_AXE).addIngredient(Items.BONE).addIngredient(ModItems.FLESH_BLOCK.get())
+				.addIngredient(Items.IRON_AXE).addIngredient(Items.BONE).addIngredient(ModItems.FLESH_BLOCK.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_SERUM.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIOFLESH_SHOVEL.get(), defaultTime)
-				.addIngredient(Items.IRON_SHOVEL).addIngredient(Items.BONE).addIngredient(ModItems.FLESH_BLOCK.get())
+				.addIngredient(Items.IRON_SHOVEL).addIngredient(Items.BONE).addIngredient(ModItems.FLESH_BLOCK.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_SERUM.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIOFLESH_PICKAXE.get(), defaultTime)
-				.addIngredient(Items.IRON_PICKAXE).addIngredient(Items.BONE).addIngredient(ModItems.FLESH_BLOCK.get())
+				.addIngredient(Items.IRON_PICKAXE).addIngredient(Items.BONE).addIngredient(ModItems.FLESH_BLOCK.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_SERUM.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIOFLESH_WAR_AXE.get(), defaultTime * 2)
-				.addIngredient(ModItems.BIOFLESH_AXE.get()).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.SHARP_BONE.get()).addIngredient(ModItems.ARTIFICIAL_STOMACH.get())
-				.addIngredients(ModItems.FLESH_LUMP.get(), 2)
+				.addIngredient(ModItems.BIOFLESH_AXE.get()).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.HORMONE_SERUM.get()).addIngredient(ModItems.ARTIFICIAL_STOMACH.get())
+				.addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2)
 				.addCriterion("has_bioflesh_axe", hasItem(ModItems.BIOFLESH_AXE.get())).build(consumer);
 
 		Enchantment enchantment = ModEnchantments.ATTUNED_BANE.get();
@@ -347,9 +349,10 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addByproduct(ModItems.SILICATE_PASTE.get(), 0.3f)
 				.addCriterion("has_biotics", hasItem(ModTags.Items.BIOTICS)).build(consumer, "" + id[0]++, true);
 
+		Set<Item> ignore = ImmutableSet.of(Items.KELP, Items.DRIED_KELP, Items.WARPED_FUNGUS, Items.WARPED_ROOTS, Items.WARPED_WART_BLOCK);
 		ComposterBlock.CHANCES.forEach((itemProvider, chance) -> {
 			Item item = itemProvider.asItem();
-			if (item != Items.KELP && item != Items.DRIED_KELP && item != Items.WARPED_FUNGUS && item != Items.WARPED_ROOTS) {
+			if (!ignore.contains(item)) {
 				DecomposingRecipeBuilder.createRecipe(ModItems.BIOTIC_MATERIAL.get(), defaultDecomposingTime + Math.round(Math.max(1f - chance, 0f) * 150))
 						.addIngredients(item, MathHelper.clamp(Math.round(-7.14f * chance + 8.14f), 1, 6))
 						.addCriterion("has_biotics", hasItem(ModTags.Items.BIOTICS)).build(consumer, "" + id[0], true);
@@ -358,24 +361,40 @@ public class ModRecipeProvider extends RecipeProvider {
 		});
 	}
 
+	private void registerMutagenRecipes(Consumer<IFinishedRecipe> consumer) {
+		final int defaultDecomposingTime = 200;
+		int id = 0;
+
+		DecomposingRecipeBuilder.createRecipe(ModItems.MUTAGENIC_BILE.get(), defaultDecomposingTime)
+				.addIngredient(Items.WARPED_FUNGUS)
+				.addByproduct(ModItems.BIOTIC_MATERIAL.get(), 0.4f)
+				.addCriterion("has_warped_fungus", hasItem(Items.WARPED_FUNGUS)).build(consumer, "" + id++, true);
+
+		DecomposingRecipeBuilder.createRecipe(ModItems.MUTAGENIC_BILE.get(), defaultDecomposingTime, 6)
+				.addIngredient(Items.WARPED_WART_BLOCK)
+				.addByproduct(ModItems.BIOTIC_MATERIAL.get(), 0.6f)
+				.addCriterion("has_warped_fungus", hasItem(Items.WARPED_FUNGUS)).build(consumer, "" + id++, true);
+
+		DecomposingRecipeBuilder.createRecipe(ModItems.MUTAGENIC_BILE.get(), defaultDecomposingTime)
+				.addIngredients(Items.WARPED_ROOTS, 2)
+				.addByproduct(ModItems.BIOTIC_MATERIAL.get(), 0.4f)
+				.addCriterion("has_warped_roots", hasItem(Items.WARPED_ROOTS)).build(consumer, "" + id++, true);
+
+		DecomposingRecipeBuilder.createRecipe(ModItems.MUTAGENIC_BILE.get(), defaultDecomposingTime, 6)
+				.addIngredient(ModItems.TWISTED_HEART.get())
+				.addByproduct(ModItems.KERATIN_FILAMENTS.get(), 2, 0.5f)
+				.addCriterion("has_twisted_heart", hasItem(ModItems.TWISTED_HEART.get())).build(consumer, "" + id, true);
+	}
+
 	private void registerDecomposingRecipes(Consumer<IFinishedRecipe> consumer) {
 		final int defaultDecomposingTime = 200;
 
+		registerMutagenRecipes(consumer);
 		registerOxidesRecipes(consumer);
 		registerSilicatesRecipes(consumer);
 		registerKeratinsRecipes(consumer);
 		registerBioticsRecipes(consumer);
 		registerHormonesRecipes(consumer);
-
-		DecomposingRecipeBuilder.createRecipe(ModItems.MUTAGENIC_BILE.get(), defaultDecomposingTime)
-				.addIngredient(Items.WARPED_FUNGUS)
-				.addByproduct(ModItems.BIOTIC_MATERIAL.get(), 0.4f)
-				.addCriterion("has_warped_fungus", hasItem(Items.WARPED_FUNGUS)).build(consumer, "0", true);
-
-		DecomposingRecipeBuilder.createRecipe(ModItems.MUTAGENIC_BILE.get(), defaultDecomposingTime)
-				.addIngredients(Items.WARPED_ROOTS, 2)
-				.addByproduct(ModItems.BIOTIC_MATERIAL.get(), 0.4f)
-				.addCriterion("has_warped_roots", hasItem(Items.WARPED_ROOTS)).build(consumer, "1", true);
 
 		DecomposingRecipeBuilder.createRecipe(ModItems.FLESH_LUMP.get(), defaultDecomposingTime)
 				.addIngredient(Items.CHICKEN)

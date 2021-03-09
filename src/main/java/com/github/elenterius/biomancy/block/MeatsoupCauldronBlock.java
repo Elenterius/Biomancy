@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.block;
 
-import com.github.elenterius.biomancy.entity.FleshBlobEntity;
+import com.github.elenterius.biomancy.entity.aberration.FleshBlobEntity;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModTags;

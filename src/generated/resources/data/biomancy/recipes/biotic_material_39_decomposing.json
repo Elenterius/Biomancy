@@ -2,13 +2,13 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:crimson_fungus"
+      "item": "minecraft:fern"
     },
     {
-      "item": "minecraft:crimson_fungus"
+      "item": "minecraft:fern"
     },
     {
-      "item": "minecraft:crimson_fungus"
+      "item": "minecraft:fern"
     }
   ],
   "byproducts": [],

@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.renderer.entity;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.entity.gmo.FailedSheepEntity;
+import com.github.elenterius.biomancy.entity.aberration.FailedSheepEntity;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.model.SheepModel;

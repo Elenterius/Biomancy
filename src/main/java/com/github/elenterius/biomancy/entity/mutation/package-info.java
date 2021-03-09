@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package com.github.elenterius.biomancy.entity.gmo;
+package com.github.elenterius.biomancy.entity.mutation;
 
 import mcp.MethodsReturnNonnullByDefault;
 

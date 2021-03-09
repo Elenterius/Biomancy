@@ -1,5 +1,7 @@
-package com.github.elenterius.biomancy.entity;
+package com.github.elenterius.biomancy.entity.hybrid;
 
+import com.github.elenterius.biomancy.entity.SwarmGroupData;
+import com.github.elenterius.biomancy.entity.SwarmGroupMemberEntity;
 import com.github.elenterius.biomancy.entity.ai.goal.LookAtAndMakeNoiseGoal;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
@@ -17,10 +19,10 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 
-public class BroodmotherEntity extends SwarmGroupMemberEntity {
+public class CrocospiderEntity extends SwarmGroupMemberEntity {
 	private byte timer;
 
-	public BroodmotherEntity(EntityType<? extends BroodmotherEntity> entityType, World world) {
+	public CrocospiderEntity(EntityType<? extends CrocospiderEntity> entityType, World world) {
 		super(entityType, world);
 	}
 

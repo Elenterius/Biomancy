@@ -2,24 +2,27 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:twisting_vines"
+      "item": "minecraft:spruce_leaves"
     },
     {
-      "item": "minecraft:twisting_vines"
+      "item": "minecraft:spruce_leaves"
     },
     {
-      "item": "minecraft:twisting_vines"
+      "item": "minecraft:spruce_leaves"
     },
     {
-      "item": "minecraft:twisting_vines"
+      "item": "minecraft:spruce_leaves"
     },
     {
-      "item": "minecraft:twisting_vines"
+      "item": "minecraft:spruce_leaves"
+    },
+    {
+      "item": "minecraft:spruce_leaves"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 275
+  "time": 305
 }

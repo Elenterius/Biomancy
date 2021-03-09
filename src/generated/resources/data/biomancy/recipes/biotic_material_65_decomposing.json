@@ -2,27 +2,18 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:spruce_sapling"
+      "item": "minecraft:crimson_fungus"
     },
     {
-      "item": "minecraft:spruce_sapling"
+      "item": "minecraft:crimson_fungus"
     },
     {
-      "item": "minecraft:spruce_sapling"
-    },
-    {
-      "item": "minecraft:spruce_sapling"
-    },
-    {
-      "item": "minecraft:spruce_sapling"
-    },
-    {
-      "item": "minecraft:spruce_sapling"
+      "item": "minecraft:crimson_fungus"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 305
+  "time": 253
 }

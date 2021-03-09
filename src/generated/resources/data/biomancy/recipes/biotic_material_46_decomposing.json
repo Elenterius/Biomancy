@@ -2,18 +2,15 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:lilac"
+      "item": "minecraft:brown_mushroom_block"
     },
     {
-      "item": "minecraft:lilac"
-    },
-    {
-      "item": "minecraft:lilac"
+      "item": "minecraft:brown_mushroom_block"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 253
+  "time": 222
 }

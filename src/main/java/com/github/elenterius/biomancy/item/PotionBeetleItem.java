@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.item;
 
-import com.github.elenterius.biomancy.entity.PotionBeetleEntity;
+import com.github.elenterius.biomancy.entity.golem.PotionBeetleEntity;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.util.RayTraceUtil;
 import net.minecraft.client.util.ITooltipFlag;

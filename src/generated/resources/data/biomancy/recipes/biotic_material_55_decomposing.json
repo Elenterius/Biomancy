@@ -2,24 +2,18 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:dried_kelp_block"
+      "item": "minecraft:allium"
     },
     {
-      "item": "minecraft:dried_kelp_block"
+      "item": "minecraft:allium"
     },
     {
-      "item": "minecraft:dried_kelp_block"
-    },
-    {
-      "item": "minecraft:dried_kelp_block"
-    },
-    {
-      "item": "minecraft:dried_kelp_block"
+      "item": "minecraft:allium"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 275
+  "time": 253
 }

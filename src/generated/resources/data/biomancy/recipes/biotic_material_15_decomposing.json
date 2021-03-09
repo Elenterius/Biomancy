@@ -2,18 +2,27 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:brown_mushroom"
+      "item": "minecraft:grass"
     },
     {
-      "item": "minecraft:brown_mushroom"
+      "item": "minecraft:grass"
     },
     {
-      "item": "minecraft:brown_mushroom"
+      "item": "minecraft:grass"
+    },
+    {
+      "item": "minecraft:grass"
+    },
+    {
+      "item": "minecraft:grass"
+    },
+    {
+      "item": "minecraft:grass"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 253
+  "time": 305
 }

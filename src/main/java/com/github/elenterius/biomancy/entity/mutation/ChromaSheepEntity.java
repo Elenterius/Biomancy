@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.entity.gmo;
+package com.github.elenterius.biomancy.entity.mutation;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;

@@ -2,13 +2,13 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:pink_tulip"
+      "item": "minecraft:mushroom_stem"
     },
     {
-      "item": "minecraft:pink_tulip"
+      "item": "minecraft:mushroom_stem"
     },
     {
-      "item": "minecraft:pink_tulip"
+      "item": "minecraft:mushroom_stem"
     }
   ],
   "byproducts": [],

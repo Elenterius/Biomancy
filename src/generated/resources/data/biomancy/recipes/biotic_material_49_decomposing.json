@@ -2,27 +2,18 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:grass"
+      "item": "minecraft:shroomlight"
     },
     {
-      "item": "minecraft:grass"
+      "item": "minecraft:shroomlight"
     },
     {
-      "item": "minecraft:grass"
-    },
-    {
-      "item": "minecraft:grass"
-    },
-    {
-      "item": "minecraft:grass"
-    },
-    {
-      "item": "minecraft:grass"
+      "item": "minecraft:shroomlight"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:biotic_material"
   },
-  "time": 305
+  "time": 253
 }

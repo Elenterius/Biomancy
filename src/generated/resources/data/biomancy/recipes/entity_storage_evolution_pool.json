@@ -5,19 +5,19 @@
       "item": "biomancy:artificial_stomach"
     },
     {
+      "item": "biomancy:artificial_stomach"
+    },
+    {
       "item": "minecraft:egg"
     },
     {
       "item": "minecraft:ender_chest"
     },
     {
-      "item": "biomancy:flesh_lump"
+      "item": "biomancy:keratin_filaments"
     },
     {
-      "item": "biomancy:flesh_lump"
-    },
-    {
-      "item": "biomancy:flesh_lump"
+      "item": "biomancy:keratin_filaments"
     }
   ],
   "result": {

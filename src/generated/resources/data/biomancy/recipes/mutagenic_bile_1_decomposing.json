@@ -2,10 +2,7 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "item": "minecraft:warped_roots"
-    },
-    {
-      "item": "minecraft:warped_roots"
+      "item": "minecraft:warped_wart_block"
     }
   ],
   "byproducts": [
@@ -13,11 +10,12 @@
       "result": {
         "item": "biomancy:biotic_material"
       },
-      "chance": 0.4
+      "chance": 0.6
     }
   ],
   "result": {
-    "item": "biomancy:mutagenic_bile"
+    "item": "biomancy:mutagenic_bile",
+    "count": 6
   },
   "time": 200
 }
