@@ -101,7 +101,7 @@ public class AttunedDamageEnchantment extends Enchantment {
 		IFormattableTextComponent textComponent = new TranslationTextComponent("enchantment.biomancy.attuned_bane_of", name != null ? name : new StringTextComponent("null").mergeStyle(TextFormatting.OBFUSCATED, TextFormatting.RED));
 
 		if (level != 1 || getMaxLevel() != 1) {
-			textComponent.appendString(" ").append(new TranslationTextComponent("enchantment.level." + level));
+			textComponent.appendString(" ").appendSibling(new TranslationTextComponent("enchantment.level." + level));
 		}
 
 		return textComponent.mergeStyle(TextFormatting.GRAY);

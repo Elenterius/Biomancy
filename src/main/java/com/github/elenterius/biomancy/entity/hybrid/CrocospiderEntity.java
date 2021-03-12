@@ -71,7 +71,7 @@ public class CrocospiderEntity extends SwarmGroupMemberEntity {
 			entity.setInvulnerable(isInvulnerable());
 			if (hasCustomName()) {
 				//noinspection ConstantConditions
-				entity.setCustomName(new StringTextComponent("Little ").append(getCustomName()));
+				entity.setCustomName(new StringTextComponent("Little ").appendSibling(getCustomName()));
 				entity.setCustomNameVisible(isCustomNameVisible());
 			}
 

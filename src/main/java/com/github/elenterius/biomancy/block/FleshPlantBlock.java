@@ -30,8 +30,8 @@ public class FleshPlantBlock extends BushBlock {
 
 	@Override
 	protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		if (state.isIn(ModBlocks.FLESH_BLOCK.get())) return true;
-		if (state.isIn(ModBlocks.FLESH_BLOCK_SLAB.get())) return state.get(SlabBlock.TYPE) != SlabType.BOTTOM;
+		if (state.matchesBlock(ModBlocks.FLESH_BLOCK.get())) return true;
+		if (state.matchesBlock(ModBlocks.FLESH_BLOCK_SLAB.get())) return state.get(SlabBlock.TYPE) != SlabType.BOTTOM;
 		return false;
 	}
 

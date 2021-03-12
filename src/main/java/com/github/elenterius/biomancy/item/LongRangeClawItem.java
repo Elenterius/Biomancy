@@ -70,7 +70,7 @@ public class LongRangeClawItem extends ClawWeaponItem {
 	public ITextComponent getHighlightTip(ItemStack stack, ITextComponent displayName) {
 		if (displayName instanceof IFormattableTextComponent) {
 			String keySuffix = stack.getOrCreateTag().getInt(NBT_KEY) > 0 ? "excited" : "dormant";
-			return ((IFormattableTextComponent) displayName).appendString(" (").append(BiomancyMod.getTranslationText("tooltip", keySuffix)).appendString(")");
+			return ((IFormattableTextComponent) displayName).appendString(" (").appendSibling(BiomancyMod.getTranslationText("tooltip", keySuffix)).appendString(")");
 		}
 		return displayName;
 	}

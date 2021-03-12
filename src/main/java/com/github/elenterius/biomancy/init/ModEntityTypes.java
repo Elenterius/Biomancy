@@ -49,7 +49,7 @@ public final class ModEntityTypes {
 		BiomancyMod.LOGGER.debug(MarkerManager.getMarker("ENTITIES"), "creating attributes...");
 
 		GlobalEntityTypeAttributes.put(FLESH_BLOB.get(), FleshBlobEntity.createAttributes().create());
-		GlobalEntityTypeAttributes.put(FAILED_SHEEP.get(), SheepEntity.func_234225_eI_().create());
+		GlobalEntityTypeAttributes.put(FAILED_SHEEP.get(), SheepEntity.registerAttributes().create());
 		GlobalEntityTypeAttributes.put(CHROMA_SHEEP.get(), ChromaSheepEntity.createAttributes().create());
 		GlobalEntityTypeAttributes.put(SILKY_WOOL_SHEEP.get(), SilkyWoolSheepEntity.createAttributes().create());
 		GlobalEntityTypeAttributes.put(THICK_WOOL_SHEEP.get(), ThickWoolSheepEntity.createAttributes().create());

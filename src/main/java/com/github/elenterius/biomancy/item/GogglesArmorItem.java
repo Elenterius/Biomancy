@@ -55,7 +55,7 @@ public class GogglesArmorItem extends ArmorItem implements IEntityUnveilerHeadSl
 	public ITextComponent getHighlightTip(ItemStack stack, ITextComponent displayName) {
 		if (displayName instanceof IFormattableTextComponent) {
 			String key = stack.getOrCreateTag().getBoolean(NBT_KEY) ? BiomancyMod.getTranslationKey("tooltip", "awake") : BiomancyMod.getTranslationKey("tooltip", "inert");
-			return ((IFormattableTextComponent) displayName).appendString(" (").append(new TranslationTextComponent(key)).appendString(")");
+			return ((IFormattableTextComponent) displayName).appendString(" (").appendSibling(new TranslationTextComponent(key)).appendString(")");
 		}
 		return displayName;
 	}

@@ -205,7 +205,7 @@ public class EvolutionPoolTileEntity extends OwnableTileEntity implements INamed
 		BlockState state = worldIn.getBlockState(posIn);
 		TileEntity tileEntity = worldIn.getTileEntity(posIn);
 		if (tileEntity instanceof OwnableTileEntityDelegator) {
-			return state.isIn(ModBlocks.EVOLUTION_POOL.get()) && ((OwnableTileEntityDelegator) tileEntity).getDelegatePos().equals(this.pos);
+			return state.matchesBlock(ModBlocks.EVOLUTION_POOL.get()) && ((OwnableTileEntityDelegator) tileEntity).getDelegatePos().equals(this.pos);
 		}
 		return false;
 	}

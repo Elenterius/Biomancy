@@ -92,10 +92,10 @@ public class SmallEvolutionPoolRecipeCategory implements IRecipeCategory<Evoluti
 			int seconds = ticks / 20;
 			int mutagenCost = ticks * EvolutionPoolTileEntity.FUEL_COST;
 			TranslationTextComponent timeText = new TranslationTextComponent("gui.jei.category.smelting.time.seconds", seconds);
-			IFormattableTextComponent costText = new StringTextComponent("+" + mutagenCost + " ").append(new TranslationTextComponent("tooltip.biomancy.mutagen"));
+			IFormattableTextComponent costText = new StringTextComponent("+" + mutagenCost + " ").appendSibling(new TranslationTextComponent("tooltip.biomancy.mutagen"));
 			FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
-			fontRenderer.func_243248_b(matrixStack, timeText, background.getWidth() - fontRenderer.getStringPropertyWidth(timeText), 42, 0xff808080);
-			fontRenderer.func_243248_b(matrixStack, costText, 0, 47, 0xff808080);
+			fontRenderer.drawText(matrixStack, timeText, background.getWidth() - fontRenderer.getStringPropertyWidth(timeText), 42, 0xff808080);
+			fontRenderer.drawText(matrixStack, costText, 0, 47, 0xff808080);
 		}
 	}
 }

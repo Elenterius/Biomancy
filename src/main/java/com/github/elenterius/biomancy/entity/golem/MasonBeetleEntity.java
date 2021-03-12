@@ -178,7 +178,7 @@ public class MasonBeetleEntity extends OwnableCreatureEntity implements IPlaceBl
 	}
 
 	@Override
-	protected ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+	protected ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
 		if (!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() instanceof LeadItem) return ActionResultType.PASS;
 
 		if (!player.world.isRemote()) {
@@ -187,7 +187,8 @@ public class MasonBeetleEntity extends OwnableCreatureEntity implements IPlaceBl
 			if (hasCustomName()) beetleStack.setDisplayName(getCustomName());
 			if (player.addItemStackToInventory(beetleStack)) {
 				setPlacementBlock(ItemStack.EMPTY);
-			} else {
+			}
+			else {
 				entityDropItem(beetleStack);
 			}
 		}

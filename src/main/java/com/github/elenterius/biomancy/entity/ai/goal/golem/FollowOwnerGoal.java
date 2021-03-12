@@ -131,7 +131,7 @@ public class FollowOwnerGoal<T extends CreatureEntity & IOwnableCreature & IGole
 	}
 
 	private boolean isTeleportFriendlyBlock(BlockPos pos) {
-		PathNodeType pathnodetype = WalkNodeProcessor.func_237231_a_(world, pos.toMutable());
+		PathNodeType pathnodetype = WalkNodeProcessor.getFloorNodeType(world, pos.toMutable());
 		if (pathnodetype != PathNodeType.WALKABLE) {
 			return false;
 		}

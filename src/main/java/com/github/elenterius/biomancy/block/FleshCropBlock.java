@@ -24,7 +24,7 @@ public class FleshCropBlock extends CropsBlock {
 	public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
 		if (!worldIn.isAreaLoaded(pos, 1)) return;
 		BlockPos downPos = pos.down();
-		if (worldIn.getBlockState(downPos).isIn(ModBlocks.FLESH_BLOCK.get()) && worldIn.getLightSubtracted(pos, 0) >= 8) {
+		if (worldIn.getBlockState(downPos).matchesBlock(ModBlocks.FLESH_BLOCK.get()) && worldIn.getLightSubtracted(pos, 0) >= 8) {
 			int age = getAge(state);
 			if (age < getMaxAge()) {
 				if (ForgeHooks.onCropsGrowPre(worldIn, pos, state, random.nextInt((int) (25f / getGrowthChance(this, worldIn, pos)) + 1) == 0)) {
@@ -43,7 +43,7 @@ public class FleshCropBlock extends CropsBlock {
 		int newAge = MathHelper.clamp(getAge(state) + getBonemealAgeIncrease(worldIn), 0, getMaxAge());
 		if (newAge == getMaxAge()) {
 			BlockPos downPos = pos.down();
-			if (worldIn.getBlockState(downPos).isIn(ModBlocks.FLESH_BLOCK.get())) {
+			if (worldIn.getBlockState(downPos).matchesBlock(ModBlocks.FLESH_BLOCK.get())) {
 				worldIn.setBlockState(downPos, ModBlocks.NECROTIC_FLESH_BLOCK.get().getDefaultState(), Constants.BlockFlags.BLOCK_UPDATE);
 			}
 		}
@@ -53,7 +53,7 @@ public class FleshCropBlock extends CropsBlock {
 
 	@Override
 	public boolean canGrow(IBlockReader worldIn, BlockPos pos, BlockState state, boolean isClient) {
-		return worldIn.getBlockState(pos.down()).isIn(ModBlocks.FLESH_BLOCK.get()) && super.canGrow(worldIn, pos, state, isClient);
+		return worldIn.getBlockState(pos.down()).matchesBlock(ModBlocks.FLESH_BLOCK.get()) && super.canGrow(worldIn, pos, state, isClient);
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class FleshCropBlock extends CropsBlock {
 
 	@Override
 	protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return state.isIn(ModBlocks.FLESH_BLOCK.get()) || state.isIn(ModBlocks.NECROTIC_FLESH_BLOCK.get());
+		return state.matchesBlock(ModBlocks.FLESH_BLOCK.get()) || state.matchesBlock(ModBlocks.NECROTIC_FLESH_BLOCK.get());
 	}
 
 	@Override

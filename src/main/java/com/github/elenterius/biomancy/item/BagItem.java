@@ -38,7 +38,7 @@ public abstract class BagItem extends Item implements IOwnableItem {
 			Optional<UUID> owner = getOwner(stack);
 			owner.ifPresent(uuid -> {
 				PlayerEntity player = worldIn.getPlayerByUuid(uuid);
-				tooltip.add(new StringTextComponent("Owner: ").append(player != null ? player.getDisplayName() : new StringTextComponent(owner.toString())));
+				tooltip.add(new StringTextComponent("Owner: ").appendSibling(player != null ? player.getDisplayName() : new StringTextComponent(owner.toString())));
 			});
 		}
 		tooltip.add(TooltipUtil.getTooltip(this).setStyle(TooltipUtil.LORE_STYLE));

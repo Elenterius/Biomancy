@@ -56,7 +56,7 @@ public class ClawWeaponItem extends SwordItem {
 
 	@Override
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
-		if (!state.isIn(Blocks.COBWEB) && !state.isIn(BlockTags.LEAVES)) {
+		if (!state.matchesBlock(Blocks.COBWEB) && !state.isIn(BlockTags.LEAVES)) {
 			return state.isIn(BlockTags.WOOL) ? 5.0F : super.getDestroySpeed(stack, state);
 		}
 		return 15.0F;

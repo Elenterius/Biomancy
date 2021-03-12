@@ -103,7 +103,7 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposingReci
 						}
 					}
 //					tooltip.add(new TranslationTextComponent(BiomancyMod.getTranslationKey("tooltip", "byproduct")));
-					tooltip.add(new StringTextComponent(chance + "% ").append(new TranslationTextComponent(BiomancyMod.getTranslationKey("tooltip", "chance"))).mergeStyle(TextFormatting.GRAY));
+					tooltip.add(new StringTextComponent(chance + "% ").appendSibling(new TranslationTextComponent(BiomancyMod.getTranslationKey("tooltip", "chance"))).mergeStyle(TextFormatting.GRAY));
 				}
 			}
 		});
@@ -118,7 +118,7 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposingReci
 			Minecraft minecraft = Minecraft.getInstance();
 			FontRenderer fontRenderer = minecraft.fontRenderer;
 			int stringWidth = fontRenderer.getStringPropertyWidth(timeString);
-			fontRenderer.func_243248_b(matrixStack, timeString, (float) (background.getWidth() - stringWidth), 42 - fontRenderer.FONT_HEIGHT, 0xff808080);
+			fontRenderer.drawText(matrixStack, timeString, (float) (background.getWidth() - stringWidth), 42 - fontRenderer.FONT_HEIGHT, 0xff808080);
 		}
 	}
 }

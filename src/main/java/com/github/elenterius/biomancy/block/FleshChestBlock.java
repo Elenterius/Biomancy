@@ -81,7 +81,7 @@ public class FleshChestBlock extends OwnableContainerBlock implements IWaterLogg
 						tooltip.add((new TranslationTextComponent("container.shulkerBox.more", totalCount - count)).mergeStyle(TextFormatting.ITALIC, TextFormatting.GRAY));
 					}
 					tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
-					tooltip.add(new StringTextComponent(String.format("%d/%d ", totalCount, FleshChestTileEntity.INV_SLOTS_COUNT)).append(new TranslationTextComponent("tooltip.biomancy.slots")).mergeStyle(TextFormatting.GRAY));
+					tooltip.add(new StringTextComponent(String.format("%d/%d ", totalCount, FleshChestTileEntity.INV_SLOTS_COUNT)).appendSibling(new TranslationTextComponent("tooltip.biomancy.slots")).mergeStyle(TextFormatting.GRAY));
 				}
 			}
 		}

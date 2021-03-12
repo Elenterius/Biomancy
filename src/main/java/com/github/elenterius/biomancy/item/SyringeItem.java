@@ -70,7 +70,7 @@ public class SyringeItem extends Item {
 	public ActionResultType itemInteractionForEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity targetEntity, Hand hand) {
 		if (playerIn.world.isRemote()) return ActionResultType.PASS;
 
-		boolean isValidEntity = targetEntity.isAlive() && (targetEntity.isNonBoss() || playerIn.isCreative());
+		boolean isValidEntity = targetEntity.isAlive() && (targetEntity.canChangeDimension() || playerIn.isCreative());
 		if (isValidEntity) {
 			CompoundNBT nbt = stack.getOrCreateTag();
 			if (!nbt.contains(NBT_KEY)) {

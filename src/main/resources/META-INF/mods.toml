@@ -18,10 +18,10 @@ A Mod about creating life from meat and flesh.
 '''
 
 [[dependencies.biomancy]] #optional
-modId = "forge" #mandatory
-mandatory = true #mandatory
-versionRange = "[35,37)" #mandatory
-ordering = "AFTER" # BEFORE or AFTER required if the relationship is not mandatory
+modId = "forge"
+mandatory = true
+versionRange = "[36,)"
+ordering = "NONE"
 side = "BOTH" # BOTH, CLIENT or SERVER
 
 [[dependencies.biomancy]]

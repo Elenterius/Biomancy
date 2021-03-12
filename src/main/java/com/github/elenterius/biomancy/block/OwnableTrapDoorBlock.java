@@ -91,7 +91,7 @@ public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableBlock
 		if (tileEntity instanceof SimpleOwnableTileEntity) {
 			if (((SimpleOwnableTileEntity) tileEntity).canPlayerUse(player)) { //only interact with authorized players
 				if (player.isSneaking()) {
-					state = state.func_235896_a_(SENSITIVITY);
+					state = state.cycleValue(SENSITIVITY);
 					worldIn.setBlockState(pos, state, Constants.BlockFlags.BLOCK_UPDATE);
 					if (state.get(WATERLOGGED)) {
 						worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
@@ -99,7 +99,7 @@ public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableBlock
 					return ActionResultType.func_233537_a_(worldIn.isRemote);
 				}
 
-				state = state.func_235896_a_(OPEN);
+				state = state.cycleValue(OPEN);
 				worldIn.setBlockState(pos, state, Constants.BlockFlags.BLOCK_UPDATE);
 				if (state.get(WATERLOGGED)) {
 					worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
@@ -128,7 +128,7 @@ public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableBlock
 			boolean isLocked = ((SimpleOwnableTileEntity) tileEntity).isLocked();
 
 			//when the block is locked, check if th owner of the neighbor is authorized to interact with this block (only works with "direct" neighbors)
-			if (isLocked && neighborBlock instanceof IOwnableBlock && worldIn.getBlockState(neighborPos).isIn(neighborBlock)) { //only allow "direct" neighbors
+			if (isLocked && neighborBlock instanceof IOwnableBlock && worldIn.getBlockState(neighborPos).matchesBlock(neighborBlock)) { //only allow "direct" neighbors
 				TileEntity neighborTile = worldIn.getTileEntity(neighborPos);
 				if (neighborTile instanceof IOwnableTile) {
 					Optional<UUID> neighborOwner = ((IOwnableTile) neighborTile).getOwner();

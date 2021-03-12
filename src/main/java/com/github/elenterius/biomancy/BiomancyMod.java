@@ -83,7 +83,7 @@ public final class BiomancyMod {
 				EffectInstance effectInstance = new EffectInstance(effect.get(), 20 * 30);
 				listnbt.add(effectInstance.write(new CompoundNBT()));
 				compoundnbt.put("CustomPotionEffects", listnbt);
-				potionStack.setDisplayName(new StringTextComponent("[PH] Sliver of ").append(new TranslationTextComponent(effect.get().getName())));
+				potionStack.setDisplayName(new StringTextComponent("[PH] Sliver of ").appendSibling(new TranslationTextComponent(effect.get().getName())));
 				items.add(potionStack);
 			}
 		}

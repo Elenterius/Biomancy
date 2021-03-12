@@ -230,7 +230,7 @@ public class EvolutionPoolBlock extends OwnableContainerBlock {
 	}
 
 	public static void revertMultiBlockPart(World world, BlockState state, BlockPos pos) {
-		if (!state.isIn(ModBlocks.EVOLUTION_POOL.get())) return;
+		if (!state.matchesBlock(ModBlocks.EVOLUTION_POOL.get())) return;
 
 		EvolutionPoolBlock.MultiBlockPart multiBlockPart = state.get(EvolutionPoolBlock.MULTI_BLOCK_PART);
 		switch (multiBlockPart) {
@@ -288,11 +288,11 @@ public class EvolutionPoolBlock extends OwnableContainerBlock {
 	}
 
 	public static boolean isValidStairsBlock(BlockState stateIn) {
-		return stateIn.isIn(ModBlocks.FLESH_BLOCK_STAIRS.get()) && stateIn.get(StairsBlock.HALF) == Half.BOTTOM;
+		return stateIn.matchesBlock(ModBlocks.FLESH_BLOCK_STAIRS.get()) && stateIn.get(StairsBlock.HALF) == Half.BOTTOM;
 	}
 
 	public static boolean isValidStairsBlock(BlockState stateIn, StairsShape stairsShapeIn) {
-		return stateIn.isIn(ModBlocks.FLESH_BLOCK_STAIRS.get()) && stateIn.get(StairsBlock.HALF) == Half.BOTTOM && stateIn.get(StairsBlock.SHAPE) == stairsShapeIn;
+		return stateIn.matchesBlock(ModBlocks.FLESH_BLOCK_STAIRS.get()) && stateIn.get(StairsBlock.HALF) == Half.BOTTOM && stateIn.get(StairsBlock.SHAPE) == stairsShapeIn;
 	}
 
 	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {

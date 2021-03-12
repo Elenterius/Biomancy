@@ -67,7 +67,7 @@ public class ItemStorageItem extends BagItem implements IKeyListener {
 
 		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 		tooltip.add(new StringTextComponent("Mode: ").mergeStyle(TextFormatting.GRAY)
-				.append(new TranslationTextComponent("enum.biomancy.mode." + getMode(stack).toString().toLowerCase(Locale.ROOT)).mergeStyle(TextFormatting.AQUA)));
+				.appendSibling(new TranslationTextComponent("enum.biomancy.mode." + getMode(stack).toString().toLowerCase(Locale.ROOT)).mergeStyle(TextFormatting.AQUA)));
 		tooltip.add(new TranslationTextComponent("tooltip.biomancy.press_button_to", ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.func_238171_j_().copyRaw().mergeStyle(TextFormatting.AQUA), new TranslationTextComponent("tooltip.biomancy.action_cycle")).mergeStyle(TextFormatting.DARK_GRAY));
 	}
 
@@ -79,14 +79,14 @@ public class ItemStorageItem extends BagItem implements IKeyListener {
 			ItemStack storedStack = ItemStack.read(wrapper.getCompound("Item"));
 			if (!storedStack.isEmpty()) {
 				int amount = wrapper.getShort("Amount");
-				return new StringTextComponent("").append(displayName).appendString(" (")
-						.append(new TranslationTextComponent("enum.biomancy.mode." + getMode(stack).toString().toLowerCase(Locale.ROOT))).appendString(", " + amount + "x ")
-						.append(storedStack.getDisplayName()).appendString(")");
+				return new StringTextComponent("").appendSibling(displayName).appendString(" (")
+						.appendSibling(new TranslationTextComponent("enum.biomancy.mode." + getMode(stack).toString().toLowerCase(Locale.ROOT))).appendString(", " + amount + "x ")
+						.appendSibling(storedStack.getDisplayName()).appendString(")");
 			}
 		}
 
-		return new StringTextComponent("").append(displayName).appendString(" (")
-				.append(new TranslationTextComponent("enum.biomancy.mode." + getMode(stack).toString().toLowerCase(Locale.ROOT))).appendString(", Empty)");
+		return new StringTextComponent("").appendSibling(displayName).appendString(" (")
+				.appendSibling(new TranslationTextComponent("enum.biomancy.mode." + getMode(stack).toString().toLowerCase(Locale.ROOT))).appendString(", Empty)");
 	}
 
 	@Override

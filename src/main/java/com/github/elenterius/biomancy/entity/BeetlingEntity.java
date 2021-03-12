@@ -47,7 +47,7 @@ public class BeetlingEntity extends AnimalEntity {
 
 	@Nullable
 	@Override
-	public AgeableEntity func_241840_a(ServerWorld world, AgeableEntity ageableEntity) {
+	public AgeableEntity createChild(ServerWorld world, AgeableEntity ageableEntity) {
 		return ModEntityTypes.BEETLING.get().create(world);
 	}
 

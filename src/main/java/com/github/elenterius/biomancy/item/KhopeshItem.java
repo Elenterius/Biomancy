@@ -48,18 +48,18 @@ public class KhopeshItem extends AxeItem {
 
 		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 		tooltip.add(BiomancyMod.getTranslationText("tooltip", "riding_bonus").setStyle(Style.EMPTY.applyFormatting(TextFormatting.GRAY)));
-		tooltip.add((new StringTextComponent(" ")).append(new TranslationTextComponent("attribute.modifier.plus." + ATTACK_DAMAGE_RIDING_MODIFIER.getOperation().getId(), DECIMALFORMAT.format(ATTACK_DAMAGE_RIDING_MODIFIER.getAmount()), new TranslationTextComponent("attribute.name.generic.attack_damage"))).mergeStyle(TextFormatting.BLUE));
-		tooltip.add((new StringTextComponent(" ")).append(new TranslationTextComponent("attribute.modifier.plus." + ATTACK_DIST_RIDING_MODIFIER.getOperation().getId(), DECIMALFORMAT.format(ATTACK_DIST_RIDING_MODIFIER.getAmount()), new TranslationTextComponent("attribute.generic.attack_distance"))).mergeStyle(TextFormatting.BLUE));
+		tooltip.add((new StringTextComponent(" ")).appendSibling(new TranslationTextComponent("attribute.modifier.plus." + ATTACK_DAMAGE_RIDING_MODIFIER.getOperation().getId(), DECIMALFORMAT.format(ATTACK_DAMAGE_RIDING_MODIFIER.getAmount()), new TranslationTextComponent("attribute.name.generic.attack_damage"))).mergeStyle(TextFormatting.BLUE));
+		tooltip.add((new StringTextComponent(" ")).appendSibling(new TranslationTextComponent("attribute.modifier.plus." + ATTACK_DIST_RIDING_MODIFIER.getOperation().getId(), DECIMALFORMAT.format(ATTACK_DIST_RIDING_MODIFIER.getAmount()), new TranslationTextComponent("attribute.generic.attack_distance"))).mergeStyle(TextFormatting.BLUE));
 	}
 
 	@Override
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
-		return state.isIn(Blocks.COBWEB) ? 25f : super.getDestroySpeed(stack, state);
+		return state.matchesBlock(Blocks.COBWEB) ? 25f : super.getDestroySpeed(stack, state);
 	}
 
 	@Override
 	public boolean canHarvestBlock(BlockState blockIn) {
-		return blockIn.isIn(Blocks.COBWEB) || super.canHarvestBlock(blockIn);
+		return blockIn.matchesBlock(Blocks.COBWEB) || super.canHarvestBlock(blockIn);
 	}
 
 	public static void removeSpecialAttributeModifiers(LivingEntity livingEntity) {

@@ -54,7 +54,7 @@ public final class PlayerInteractionHandler {
 			Item item = event.getItemStack().getItem();
 			if (item.isIn(ModTags.Items.RAW_MEATS)) {
 				BlockState blockState = event.getWorld().getBlockState(event.getPos());
-				if (blockState.isIn(Blocks.CAULDRON) && blockState == Blocks.CAULDRON.getDefaultState()) {
+				if (blockState.matchesBlock(Blocks.CAULDRON) && blockState == Blocks.CAULDRON.getDefaultState()) {
 					if (!event.getPlayer().abilities.isCreativeMode) {
 						event.getItemStack().grow(-1);
 					}

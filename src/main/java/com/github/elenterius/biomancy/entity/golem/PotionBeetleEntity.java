@@ -97,7 +97,7 @@ public class PotionBeetleEntity extends OwnableCreatureEntity implements IRanged
 		if (!stack.isEmpty() && stack.getItem() instanceof ThrowablePotionItem) {
 			PotionEntity potionEntity = new PotionEntity(world, this);
 			potionEntity.setItem(stack);
-			potionEntity.func_234612_a_(this, rotationPitch, rotationYaw, -20.0F, 0.75F, 1.0F);
+			potionEntity.setDirectionAndMovement(this, rotationPitch, rotationYaw, -20.0F, 0.75F, 1.0F);
 			if (!isSilent()) {
 				world.playSound(null, getPosX(), getPosY(), getPosZ(), SoundEvents.ENTITY_WITCH_THROW, getSoundCategory(), 1.0F, 0.8F + rand.nextFloat() * 0.4F);
 			}
@@ -170,7 +170,7 @@ public class PotionBeetleEntity extends OwnableCreatureEntity implements IRanged
 	}
 
 	@Override
-	protected ActionResultType func_230254_b_(PlayerEntity player, Hand hand) {
+	protected ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
 		if (!player.getHeldItemMainhand().isEmpty() && player.getHeldItemMainhand().getItem() instanceof LeadItem) return ActionResultType.PASS;
 
 		if (!player.world.isRemote()) {
@@ -179,7 +179,8 @@ public class PotionBeetleEntity extends OwnableCreatureEntity implements IRanged
 			if (hasCustomName()) beetleStack.setDisplayName(getCustomName());
 			if (player.addItemStackToInventory(beetleStack)) {
 				setPotionItemStack(ItemStack.EMPTY);
-			} else {
+			}
+			else {
 				entityDropItem(beetleStack);
 			}
 		}

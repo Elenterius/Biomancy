@@ -71,7 +71,7 @@ public class OwnableDoorBlock extends DoorBlock implements IOwnableBlock {
 		TileEntity tileEntity = worldIn.getTileEntity(tilePos);
 		if (tileEntity instanceof SimpleOwnableTileEntity) {
 			if (((SimpleOwnableTileEntity) tileEntity).canPlayerUse(player)) { //only open/close door for authorized player
-				state = state.func_235896_a_(OPEN);
+				state = state.cycleValue(OPEN);
 				worldIn.setBlockState(pos, state, 10);
 				worldIn.playEvent(player, state.get(OPEN) ? getOpenSound() : getCloseSound(), pos, 0);
 
@@ -95,7 +95,7 @@ public class OwnableDoorBlock extends DoorBlock implements IOwnableBlock {
 						break;
 				}
 				BlockState connectedState = worldIn.getBlockState(connectedPos);
-				if (connectedState.isIn(this) && connectedState.get(FACING) == direction && connectedState.get(HINGE) != state.get(HINGE)) { //check if it is a door with an opposite hinge
+				if (connectedState.matchesBlock(this) && connectedState.get(FACING) == direction && connectedState.get(HINGE) != state.get(HINGE)) { //check if it is a door with an opposite hinge
 					tilePos = connectedPos;
 					if (state.get(HALF) == DoubleBlockHalf.UPPER) {
 						tilePos = connectedPos.down();
@@ -149,7 +149,7 @@ public class OwnableDoorBlock extends DoorBlock implements IOwnableBlock {
 
 	@Override
 	public void openDoor(World worldIn, BlockState state, BlockPos pos, boolean open) {
-		if (state.isIn(this) && state.get(OPEN) != open) {
+		if (state.matchesBlock(this) && state.get(OPEN) != open) {
 			BlockPos tilePos = pos;
 			DoubleBlockHalf half = state.get(HALF);
 			if (half == DoubleBlockHalf.UPPER) {
@@ -182,7 +182,7 @@ public class OwnableDoorBlock extends DoorBlock implements IOwnableBlock {
 
 			//when the block is locked, check if th owner of the neighbor is authorized to interact with this block
 			if (isLocked && neighborBlock instanceof IOwnableBlock) {
-				if (worldIn.getBlockState(neighborPos).isIn(neighborBlock)) { //only allow "direct" neighbors
+				if (worldIn.getBlockState(neighborPos).matchesBlock(neighborBlock)) { //only allow "direct" neighbors
 					TileEntity neighborTile = worldIn.getTileEntity(neighborPos);
 					if (neighborTile instanceof IOwnableTile) {
 						Optional<UUID> neighborOwner = ((IOwnableTile) neighborTile).getOwner();
@@ -222,7 +222,7 @@ public class OwnableDoorBlock extends DoorBlock implements IOwnableBlock {
 	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
 		DoubleBlockHalf half = stateIn.get(HALF);
 		if ((facing.getAxis() == Direction.Axis.Y) && (half == DoubleBlockHalf.LOWER == (facing == Direction.UP))) { //check if current state is the lower half and facing state is the upper half
-			if (facingState.isIn(this) && facingState.get(HALF) != half) { //check if upper half is a different door half
+			if (facingState.matchesBlock(this) && facingState.get(HALF) != half) { //check if upper half is a different door half
 				return stateIn.with(FACING, facingState.get(FACING)).with(OPEN, facingState.get(OPEN)).with(HINGE, facingState.get(HINGE)).with(POWERED, facingState.get(POWERED));
 			}
 			return Blocks.AIR.getDefaultState(); //top door half is missing, set the lower half to air as well

@@ -50,7 +50,7 @@ public class EntityStorageItem extends BagItem {
 	public ITextComponent getHighlightTip(ItemStack stack, ITextComponent displayName) {
 		CompoundNBT nbt = stack.getOrCreateChildTag(BiomancyMod.MOD_ID);
 		if (nbt.contains("Entity")) {
-			return new StringTextComponent("").append(displayName).appendString(" (").append(new TranslationTextComponent(nbt.getCompound("Entity").getString("Name")).appendString(")"));
+			return new StringTextComponent("").appendSibling(displayName).appendString(" (").appendSibling(new TranslationTextComponent(nbt.getCompound("Entity").getString("Name")).appendString(")"));
 		}
 		return super.getHighlightTip(stack, displayName);
 	}
@@ -116,7 +116,7 @@ public class EntityStorageItem extends BagItem {
 		if (playerIn.world.isRemote()) return ActionResultType.PASS;
 		onPlayerInteractWithItem(stack, playerIn);
 
-		boolean isValidTarget = target.isAlive() && !(target instanceof PlayerEntity) && (target.isNonBoss() || playerIn.isCreative()); // blame creative player if something breaks due to storing boss mobs
+		boolean isValidTarget = target.isAlive() && !(target instanceof PlayerEntity) && (target.canChangeDimension() || playerIn.isCreative()); // blame creative player if something breaks due to storing boss mobs
 		if (isValidTarget) {
 			CompoundNBT nbt = stack.getOrCreateChildTag(BiomancyMod.MOD_ID);
 			if (!nbt.contains("Entity")) {

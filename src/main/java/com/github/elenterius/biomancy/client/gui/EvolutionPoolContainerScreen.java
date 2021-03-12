@@ -42,7 +42,7 @@ public class EvolutionPoolContainerScreen extends ContainerScreen<EvolutionPoolC
 	@Override
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
 		final float FONT_Y_SPACING = 12;
-		font.func_243248_b(matrixStack, title, 10, 18 - FONT_Y_SPACING, 0xFFFFFF);
+		font.drawText(matrixStack, title, 10, 18 - FONT_Y_SPACING, 0xFFFFFF);
 
 		int craftingProgress = (int) (container.getCraftingProgressNormalized() * 100);
 		font.drawString(matrixStack, craftingProgress + "%", 52, 52 + 6, 0xFFFFFF);

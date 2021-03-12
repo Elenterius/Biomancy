@@ -36,7 +36,7 @@ public class FleshBlock extends Block {
 
 	@Override
 	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		if (this == ModBlocks.NECROTIC_FLESH_BLOCK.get() && state.isIn(ModBlocks.NECROTIC_FLESH_BLOCK.get())) {
+		if (this == ModBlocks.NECROTIC_FLESH_BLOCK.get() && state.matchesBlock(ModBlocks.NECROTIC_FLESH_BLOCK.get())) {
 			ItemStack stack = player.getHeldItem(handIn);
 			if (stack.getItem() == ModItems.REJUVENATING_MUCUS.get()) {
 				if (!worldIn.isRemote) {
