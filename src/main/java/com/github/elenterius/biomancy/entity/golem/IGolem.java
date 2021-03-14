@@ -19,20 +19,25 @@ public interface IGolem {
 	}
 
 	enum Command {
-		SIT,
-		DEFEND_POSITION,
-		DEFEND_OWNER,
-		HUNT;
+		SIT, //do nothing
+		HOLD_POSITION, //stand guard
+		DEFEND_OWNER, //follows owner
+		PATROL_AREA, //wander around home position
+		SEEK_AND_DESTROY; //seeks out and attacks any hostile entity
 
-		public byte serialize() {
-			return (byte) ordinal();
+		public Command cycle() {
+			return deserialize((byte) (ordinal() + 1));
 		}
 
 		public static Command deserialize(byte b) {
 			for (Command value : values()) {
 				if (value.ordinal() == b) return value;
 			}
-			return DEFEND_OWNER;
+			return SIT;
+		}
+
+		public byte serialize() {
+			return (byte) ordinal();
 		}
 	}
 

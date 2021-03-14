@@ -79,7 +79,7 @@ public class FollowOwnerGoal<T extends CreatureEntity & IOwnableCreature & IGole
 	public void startExecuting() {
 		pathingDelay = 0;
 		oldWaterCost = entity.getPathPriority(PathNodeType.WATER);
-		entity.setPathPriority(PathNodeType.WATER, 0.0F);
+		entity.setPathPriority(PathNodeType.WATER, 0f);
 	}
 
 	public void resetTask() {
@@ -89,7 +89,7 @@ public class FollowOwnerGoal<T extends CreatureEntity & IOwnableCreature & IGole
 	}
 
 	public void tick() {
-		entity.getLookController().setLookPositionWithEntity(entityOwner, 10.0F, entity.getVerticalFaceSpeed());
+		entity.getLookController().setLookPositionWithEntity(entityOwner, 10f, entity.getVerticalFaceSpeed());
 		if (--pathingDelay <= 0) {
 			pathingDelay = 10;
 			if (!entity.getLeashed() && !entity.isPassenger()) {

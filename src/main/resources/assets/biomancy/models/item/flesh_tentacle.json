@@ -1,5 +1,15 @@
 {
-  "parent": "item/generated", "textures": {
-  "layer0": "biomancy:block/flesh_tentacle"
-}
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "biomancy:block/flesh_tentacle"
+  },
+  "display": {
+    "head": {
+      "translation": [
+        0,
+        15,
+        0
+      ]
+    }
+  }
 }

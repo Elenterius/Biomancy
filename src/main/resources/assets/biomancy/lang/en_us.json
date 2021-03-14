@@ -163,6 +163,7 @@
   "msg.biomancy.failed_to_spawn": "Failed to Spawn %1$s",
   "msg.biomancy.your_beetle": "Your Beetle",
   "msg.biomancy.beetle_block_place_success": "%1$s successfully placed %2$s",
+  "msg.biomancy.set_golem_command": "%1$s will now execute the %2$s command",
 
   "death.attack.biomancy.blight_thorn": "%1$s was mauled to death by %2$s",
   "death.attack.biomancy.blight_thorn.item": "%1$s was mauled to death by %2$s using %3$s",

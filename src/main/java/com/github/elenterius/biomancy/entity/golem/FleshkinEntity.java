@@ -1,18 +1,19 @@
 package com.github.elenterius.biomancy.entity.golem;
 
-import com.github.elenterius.biomancy.entity.ai.goal.golem.CopyOwnerAttackTargetGoal;
-import com.github.elenterius.biomancy.entity.ai.goal.golem.CopyOwnerRevengeTargetGoal;
+import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.entity.ai.goal.golem.FollowOwnerGoal;
+import com.github.elenterius.biomancy.entity.ai.goal.golem.*;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.monster.MonsterEntity;
-import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
@@ -20,11 +21,18 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
+import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public class FleshkinEntity extends OwnableMonsterEntity implements IGolem {
@@ -61,15 +69,29 @@ public class FleshkinEntity extends OwnableMonsterEntity implements IGolem {
 	@Override
 	protected void registerGoals() {
 		goalSelector.addGoal(1, new SwimGoal(this));
-		goalSelector.addGoal(3, new MeleeAttackGoal(this, 1d, true));
-		goalSelector.addGoal(4, new FollowOwnerGoal<>(this, 1d, 10f, 2f, false));
+		goalSelector.addGoal(2, new MeleeAttackGoal(this, 1d, true));
+		goalSelector.addGoal(3, new MoveTowardsTargetGoal(this, 0.9d, 36f));
+		goalSelector.addGoal(3, new ReturnToHomePosGoal<>(this, 0.6d, false));
+		goalSelector.addGoal(4, new PatrolAreaGoal<>(this, 0.6d));
+		goalSelector.addGoal(5, new FollowOwnerGoal<>(this, 1d, 10f, 2f, false));
 		goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 8f));
 		goalSelector.addGoal(6, new LookRandomlyGoal(this));
 
 		targetSelector.addGoal(1, new CopyOwnerRevengeTargetGoal<>(this));
 		targetSelector.addGoal(2, new CopyOwnerAttackTargetGoal<>(this));
 		targetSelector.addGoal(3, new HurtByTargetGoal(this).setCallsForHelp());
-		targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, ZombieEntity.class, false));
+		targetSelector.addGoal(4, new FindAttackTargetGoal<>(this, MobEntity.class, 5, false, false, (target) -> {
+			if (target instanceof IMob) {
+				if (target instanceof IOwnableCreature) {
+					Optional<PlayerEntity> owner = getOwner();
+					if (owner.isPresent()) {
+						return shouldAttackEntity(target, owner.get());
+					}
+				}
+				return true;
+			}
+			return false;
+		}));
 	}
 
 	@Override
@@ -77,21 +99,60 @@ public class FleshkinEntity extends OwnableMonsterEntity implements IGolem {
 		if (isInvulnerableTo(source)) {
 			return false;
 		}
-		else {
-			//TODO: cancel idle
+		else if (getGolemCommand() == Command.SIT) {
+			setGolemCommand(Command.PATROL_AREA);
 		}
 		return super.attackEntityFrom(source, amount);
 	}
 
-
 	@Override
-	public Command getGolemCommand() {
-		return Command.deserialize(dataManager.get(GOLEM_COMMAND));
+	protected ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
+		if (player.isCreative() && player.getHeldItemMainhand().getItem() == Items.DEBUG_STICK) {
+			setOwner(player);
+			player.sendStatusMessage(new StringTextComponent("You are now the owner of this creature!").mergeStyle(TextFormatting.RED), true);
+		}
+
+		if (!player.getHeldItemMainhand().isEmpty() || !isOwner(player)) return ActionResultType.PASS;
+
+		if (!player.world.isRemote() && player.isSneaking()) {
+			Command newCommand = getGolemCommand().cycle();
+			if (newCommand == Command.SIT) {
+				setHomePosAndDistance(getPosition(), 4);
+			}
+			else if (newCommand == Command.PATROL_AREA) {
+				setHomePosAndDistance(getPosition(), 24);
+			}
+			else if (newCommand == Command.HOLD_POSITION) {
+				setHomePosAndDistance(getPosition(), 8);
+			}
+
+			setGolemCommand(newCommand);
+			IFormattableTextComponent cmd = new StringTextComponent(newCommand.toString()).mergeStyle(TextFormatting.DARK_AQUA);
+			TranslationTextComponent text = new TranslationTextComponent(BiomancyMod.getTranslationKey("msg", "set_golem_command"), getName(), cmd);
+			text.mergeStyle(TextFormatting.WHITE);
+			player.sendStatusMessage(text, true);
+		}
+		return ActionResultType.func_233537_a_(world.isRemote());
 	}
 
 	@Override
-	public void setGolemCommand(Command cmd) {
-		dataManager.set(GOLEM_COMMAND, cmd.serialize());
+	public Command getGolemCommand() {
+		return Command.deserialize((byte) (dataManager.get(GOLEM_COMMAND) & 0xF));
+	}
+
+	@Override
+	public void setGolemCommand(Command commandIn) {
+		int prevCommand = (dataManager.get(GOLEM_COMMAND) & 0xF) << 4;
+		int newCommand = commandIn.serialize();
+		dataManager.set(GOLEM_COMMAND, (byte) (prevCommand | newCommand));
+	}
+
+	public Command getGolemCommand(byte packedCommands) {
+		return Command.deserialize((byte) (packedCommands & 0xF));
+	}
+
+	public Command getPreviousGolemCommand(byte packedCommands) {
+		return Command.deserialize((byte) (packedCommands >> 4));
 	}
 
 	@Override
@@ -148,13 +209,13 @@ public class FleshkinEntity extends OwnableMonsterEntity implements IGolem {
 
 	@Override
 	protected float getStandingEyeHeight(Pose poseIn, EntitySize sizeIn) {
-		return isChild() ? 0.93F : 1.74F;
+		return isChild() ? 0.93f : 1.74f;
 	}
 
 	@Override
 	public boolean func_230293_i_(ItemStack stack) {
 		Item item = stack.getItem();
-		return (item instanceof ArmorItem || item instanceof TieredItem);
+		return (item instanceof ArmorItem || item instanceof TieredItem || item instanceof ShieldItem || item instanceof ShootableItem);
 	}
 
 	@Override
