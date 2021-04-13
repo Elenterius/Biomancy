@@ -6,10 +6,11 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
+
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
@@ -29,7 +30,6 @@ minecraft {
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
-    // Default run configurations.
     runs {
         client {
             workingDirectory project.file('run')
@@ -76,7 +76,6 @@ minecraft {
 
             properties 'mixin.env.disableRefMap': 'true'
 
-            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
             args '--mod', 'biomancy', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
@@ -97,12 +96,12 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
     maven {
-        // location of the maven that hosts JEI files
+        // JEI files
         name = "Progwml6 maven"
         url = "https://dvs1.progwml6.com/files/maven/"
     }
     maven {
-        // location of a maven mirror for JEI files, as a fallback
+        // JEI fallback
         name = "ModMaven"
         url = "https://modmaven.k-4u.nl"
     }
@@ -110,7 +109,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.5-36.0.54'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.1.4'
 
     compileOnly fg.deobf("mezz.jei:jei-1.16.4:7.6.1.71:api") // compile against the JEI API but do not include it at runtime
     runtimeOnly fg.deobf("mezz.jei:jei-1.16.4:7.6.1.71") // at runtime, use the full JEI jar
@@ -149,7 +148,7 @@ build {
     }
 }
 
-// Example for how to get properties into the manifest for reading by the runtime..
+// manifest properties for reading on runtime
 jar {
     manifest {
         attributes([
