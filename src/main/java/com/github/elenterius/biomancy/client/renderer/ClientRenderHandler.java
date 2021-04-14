@@ -3,9 +3,12 @@ package com.github.elenterius.biomancy.client.renderer;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.enchantment.AttunedDamageEnchantment;
 import com.github.elenterius.biomancy.init.ModEnchantments;
+import com.github.elenterius.biomancy.item.IAreaHarvestingItem;
 import com.github.elenterius.biomancy.item.IHighlightRayTraceResultItem;
+import com.github.elenterius.biomancy.util.PlayerInteractionUtil;
 import com.github.elenterius.biomancy.util.RayTraceUtil;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -20,6 +23,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.DrawHighlightEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -58,7 +62,8 @@ public final class ClientRenderHandler {
 			RayTraceResult rayTraceResult;
 			if (!canHighlightEntities) {
 				rayTraceResult = player.pick(iHighlighter.getMaxRayTraceDistance(), event.getPartialTicks(), false);
-			} else {
+			}
+			else {
 				rayTraceResult = RayTraceUtil.clientRayTrace(player, event.getPartialTicks(), iHighlighter.getMaxRayTraceDistance());
 			}
 
@@ -81,7 +86,8 @@ public final class ClientRenderHandler {
 				WorldRenderer.drawBoundingBox(event.getMatrixStack(), buffer, axisAlignedBB, red, green, blue, alpha);
 				iRenderTypeBuffer.finish(RenderType.getLines());
 //                iRenderTypeBuffer.finish();
-			} else if (canHighlightEntities && rayTraceResult.getType() == RayTraceResult.Type.ENTITY && rayTraceResult instanceof EntityRayTraceResult) {
+			}
+			else if (canHighlightEntities && rayTraceResult.getType() == RayTraceResult.Type.ENTITY && rayTraceResult instanceof EntityRayTraceResult) {
 				HIGHLIGHTED_ENTITY = ((EntityRayTraceResult) rayTraceResult).getEntity();
 				COLOR_ENEMY = iHighlighter.getColorForEnemyEntity(heldStack, HIGHLIGHTED_ENTITY);
 				COLOR_FRIENDLY = iHighlighter.getColorForFriendlyEntity(heldStack, HIGHLIGHTED_ENTITY);
@@ -97,6 +103,33 @@ public final class ClientRenderHandler {
 			ItemStack heldStack = player.getHeldItemMainhand();
 			if (!heldStack.isEmpty() && heldStack.getItem() instanceof IHighlightRayTraceResultItem && (HIGHLIGHTED_ENTITY != null || HIGHLIGHTED_BLOCK_POS != null)) {
 				event.setCanceled(true);
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void onDrawBlockSelectionBox(final DrawHighlightEvent.HighlightBlock event) {
+		ClientPlayerEntity player = Minecraft.getInstance().player;
+		if (player == null) return;
+
+		ItemStack heldStack = player.getHeldItemMainhand();
+		if (!heldStack.isEmpty() && heldStack.getItem() instanceof IAreaHarvestingItem) {
+			byte blockHarvestRange = ((IAreaHarvestingItem) heldStack.getItem()).getBlockHarvestRange(heldStack);
+			if (blockHarvestRange > 0) {
+				BlockPos pos = event.getTarget().getPos();
+				BlockState blockState = player.worldClient.getBlockState(pos);
+				if (blockState.isAir(player.worldClient, pos)) return;
+
+				Vector3d pView = event.getInfo().getProjectedView();
+				IVertexBuilder vertexBuilder = event.getBuffers().getBuffer(RenderType.getLines());
+
+				List<BlockPos> neighbors = PlayerInteractionUtil.findBlockNeighbors(player.worldClient, event.getTarget(), blockState, pos, blockHarvestRange);
+				for (BlockPos neighborPos : neighbors) {
+					if (player.worldClient.getWorldBorder().contains(neighborPos)) {
+						AxisAlignedBB axisAlignedBB = new AxisAlignedBB(neighborPos).offset(-pView.x, -pView.y, -pView.z);
+						WorldRenderer.drawBoundingBox(event.getMatrix(), vertexBuilder, axisAlignedBB, 0f, 0f, 0f, 0.3f);
+					}
+				}
 			}
 		}
 	}
