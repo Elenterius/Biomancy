@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.item;
+package com.github.elenterius.biomancy.item.weapon.shootable;
 
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -27,7 +27,7 @@ import java.util.function.Predicate;
 public class InfestedRifleItem extends ProjectileWeaponItem {
 
 	public InfestedRifleItem(Properties builder) {
-		super(builder, 10, 1f - 0.0075f, 60, 4 * 20);
+		super(builder, 2f, 1f - 0.0075f, 60, 4 * 20);
 	}
 
 	public static void fireProjectiles(World worldIn, LivingEntity shooter, Hand hand, ItemStack stack, float velocity, float inaccuracy) {

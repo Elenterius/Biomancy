@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.item;
+package com.github.elenterius.biomancy.item.weapon;
 
 import com.github.elenterius.biomancy.util.TooltipUtil;
 import net.minecraft.client.util.ITooltipFlag;
@@ -13,8 +13,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ModAxeItem extends AxeItem {
-	public ModAxeItem(IItemTier tier, float attackDamageIn, float attackSpeedIn, Properties builder) {
+public class WarAxeItem extends AxeItem {
+	public WarAxeItem(IItemTier tier, float attackDamageIn, float attackSpeedIn, Properties builder) {
 		super(tier, attackDamageIn, attackSpeedIn, builder);
 	}
 

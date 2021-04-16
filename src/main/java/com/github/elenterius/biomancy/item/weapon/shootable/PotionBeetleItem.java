@@ -1,7 +1,8 @@
-package com.github.elenterius.biomancy.item;
+package com.github.elenterius.biomancy.item.weapon.shootable;
 
 import com.github.elenterius.biomancy.entity.golem.PotionBeetleEntity;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
+import com.github.elenterius.biomancy.item.IHighlightRayTraceResultItem;
 import com.github.elenterius.biomancy.util.RayTraceUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.command.arguments.EntityAnchorArgument;
@@ -71,7 +72,8 @@ public class PotionBeetleItem extends Item implements IHighlightRayTraceResultIt
 	public ItemStack getContainerItem(ItemStack stack) {
 		if (!hasContainerItem(stack)) {
 			return ItemStack.EMPTY;
-		} else {
+		}
+		else {
 			ItemStack stack1 = stack.copy();
 			stack1.removeChildTag("Potion");
 			stack1.removeChildTag("PotionItem");
@@ -103,11 +105,13 @@ public class PotionBeetleItem extends Item implements IHighlightRayTraceResultIt
 			BlockRayTraceResult rayTrace = (BlockRayTraceResult) rayTraceResult;
 			targetBlockPos = rayTrace.getPos().offset(rayTrace.getFace());
 			if (!worldIn.getFluidState(targetBlockPos).isEmpty()) return ActionResult.resultFail(stack);
-		} else if (rayTraceResult.getType() == RayTraceResult.Type.ENTITY && rayTraceResult instanceof EntityRayTraceResult) {
+		}
+		else if (rayTraceResult.getType() == RayTraceResult.Type.ENTITY && rayTraceResult instanceof EntityRayTraceResult) {
 			EntityRayTraceResult rayTrace = (EntityRayTraceResult) rayTraceResult;
 			if (rayTrace.getEntity() instanceof LivingEntity) {
 				targetEntity = (LivingEntity) rayTrace.getEntity();
-			} else return ActionResult.resultFail(stack);
+			}
+			else return ActionResult.resultFail(stack);
 		}
 
 		if (!worldIn.isRemote()) {

@@ -4,7 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.item.GogglesArmorItem;
-import com.github.elenterius.biomancy.item.KhopeshItem;
+import com.github.elenterius.biomancy.item.weapon.KhopeshItem;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;

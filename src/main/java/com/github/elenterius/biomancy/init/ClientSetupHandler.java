@@ -8,7 +8,7 @@ import com.github.elenterius.biomancy.client.gui.GulgeContainerScreen;
 import com.github.elenterius.biomancy.client.renderer.block.FullBrightOverlayBakedModel;
 import com.github.elenterius.biomancy.client.renderer.entity.*;
 import com.github.elenterius.biomancy.client.renderer.tileentity.FleshChestTileEntityRenderer;
-import com.github.elenterius.biomancy.item.LongRangeClawItem;
+import com.github.elenterius.biomancy.item.weapon.LongRangeClawItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.gui.ScreenManager;
@@ -74,6 +74,8 @@ public final class ClientSetupHandler {
 			ItemModelsProperties.registerProperty(ModItems.LONG_RANGE_CLAW.get(), new ResourceLocation("extended"), (stack, clientWorld, livingEntity) -> LongRangeClawItem.isClawExtended(stack) ? 1f : 0f);
 			ItemModelsProperties.registerProperty(ModItems.SINGLE_ITEM_BAG_ITEM.get(), new ResourceLocation("fullness"), (stack, clientWorld, livingEntity) -> ModItems.SINGLE_ITEM_BAG_ITEM.get().getFullness(stack));
 			ItemModelsProperties.registerProperty(ModItems.ENTITY_STORAGE_ITEM.get(), new ResourceLocation("fullness"), (stack, clientWorld, livingEntity) -> ModItems.ENTITY_STORAGE_ITEM.get().getFullness(stack));
+			ItemModelsProperties.registerProperty(ModItems.SINEW_BOW.get(), new ResourceLocation("pull"), (stack, clientWorld, livingEntity) -> livingEntity == null || livingEntity.getActiveItemStack() != stack ? 0f : ModItems.SINEW_BOW.get().getPullProgress(stack, livingEntity));
+			ItemModelsProperties.registerProperty(ModItems.SINEW_BOW.get(), new ResourceLocation("pulling"), (stack, clientWorld, livingEntity) -> livingEntity != null && livingEntity.isHandActive() && livingEntity.getActiveItemStack() == stack ? 1f : 0f);
 
 			RenderTypeLookup.setRenderLayer(ModBlocks.FLESH_TENTACLE.get(), RenderType.getCutout());
 			RenderTypeLookup.setRenderLayer(ModBlocks.FLESH_MELON_CROP.get(), RenderType.getCutout());
@@ -92,7 +94,7 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void onItemColorRegistry(final ColorHandlerEvent.Item event) {
-		event.getItemColors().register((stack, index) -> 0xff6981, ModItems.FLESH_MELON_BLOCK.get(), ModItems.FLESH_MELON_SEEDS.get(), ModItems.FLESH_MELON_SLICE.get());
+		event.getItemColors().register((stack, index) -> 0xff6981, ModItems.FLESH_MELON_BLOCK.get(), ModItems.FLESH_MELON_SEEDS.get(), ModItems.FLESH_MELON_SLICE.get(), ModItems.SINEW_BOW.get());
 		event.getItemColors().register((stack, index) -> 0x6c2e1f, ModItems.COOKED_FLESH_MELON_SLICE.get());
 		event.getItemColors().register((stack, index) -> 0x8d758c, ModItems.NECROTIC_FLESH.get(), ModItems.NECROTIC_FLESH_BLOCK.get());
 	}
@@ -123,9 +125,11 @@ public final class ClientSetupHandler {
 			IBakedModel bakedModel = event.getModelRegistry().get(modelLocation);
 			if (bakedModel == null) {
 				BiomancyMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Did not find any vanilla baked models for " + block.getRegistryName());
-			} else if (bakedModel instanceof FullBrightOverlayBakedModel) {
+			}
+			else if (bakedModel instanceof FullBrightOverlayBakedModel) {
 				BiomancyMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Attempted to replace already existing FullBrightOverlayBakedModel for " + block.getRegistryName());
-			} else {
+			}
+			else {
 				FullBrightOverlayBakedModel customModel = new FullBrightOverlayBakedModel(bakedModel);
 				event.getModelRegistry().put(modelLocation, customModel);
 			}

@@ -5,7 +5,7 @@ import com.github.elenterius.biomancy.enchantment.AttunedDamageEnchantment;
 import com.github.elenterius.biomancy.init.ModAttributes;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModItems;
-import com.github.elenterius.biomancy.item.InfestedGuanDaoItem;
+import com.github.elenterius.biomancy.item.weapon.InfestedGuanDaoItem;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;

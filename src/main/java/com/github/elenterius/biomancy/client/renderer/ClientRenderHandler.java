@@ -5,19 +5,23 @@ import com.github.elenterius.biomancy.enchantment.AttunedDamageEnchantment;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.item.IAreaHarvestingItem;
 import com.github.elenterius.biomancy.item.IHighlightRayTraceResultItem;
+import com.github.elenterius.biomancy.item.weapon.shootable.SinewBowItem;
 import com.github.elenterius.biomancy.util.PlayerInteractionUtil;
 import com.github.elenterius.biomancy.util.RayTraceUtil;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.*;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -30,18 +34,19 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = BiomancyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public final class ClientRenderHandler {
-	private ClientRenderHandler() {}
-
 	public static Entity HIGHLIGHTED_ENTITY = null;
 	public static int COLOR_ENEMY = 0xffffff;
 	public static int COLOR_FRIENDLY = 0xffffff;
 	public static BlockPos HIGHLIGHTED_BLOCK_POS = null;
+
+	private ClientRenderHandler() {}
 
 	@SubscribeEvent
 	public static void handleRenderWorldLast(RenderWorldLastEvent event) {
@@ -101,10 +106,131 @@ public final class ClientRenderHandler {
 			ClientPlayerEntity player = Minecraft.getInstance().player;
 			if (player == null || player.isSpectator()) return;
 			ItemStack heldStack = player.getHeldItemMainhand();
-			if (!heldStack.isEmpty() && heldStack.getItem() instanceof IHighlightRayTraceResultItem && (HIGHLIGHTED_ENTITY != null || HIGHLIGHTED_BLOCK_POS != null)) {
+			if (heldStack.getItem() instanceof IHighlightRayTraceResultItem && (HIGHLIGHTED_ENTITY != null || HIGHLIGHTED_BLOCK_POS != null)) {
 				event.setCanceled(true);
 			}
+			else if (heldStack.getItem() instanceof SinewBowItem) {
+				SinewBowItem bowItem = (SinewBowItem) heldStack.getItem();
+				int timeLeft = player.getItemInUseCount();
+				if (timeLeft == 0) timeLeft = heldStack.getUseDuration();
+				int charge = heldStack.getUseDuration() - timeLeft;
+				float pullProgress = Math.min((float) charge / bowItem.drawTime, 1f);
+				float velocity = bowItem.getArrowVelocity(heldStack, charge) * bowItem.baseVelocity;
+				float x = event.getWindow().getScaledWidth() * 0.5f;
+				float y = event.getWindow().getScaledHeight() * 0.5f;
+				AbstractGui.drawString(event.getMatrixStack(), Minecraft.getInstance().fontRenderer, String.format("V: %.1f", velocity), (int) x + 18, (int) y + 6, 0xFFFEFEFE);
+//				drawArc(event.getMatrixStack(), x, y, 13f, 0f, pullProgress * (float) Math.PI * 2f, 0xDDF0F0F0);
+				drawRectangularProgressBar(event.getMatrixStack(), x, y, 25f, pullProgress, 0xFFFEFEFE);
+			}
 		}
+	}
+
+	private static void drawRectangularProgressBar(MatrixStack matrixStack, float cx, float cy, float lengthA, float progress, int color) {
+		Matrix4f matrix = matrixStack.getLast().getMatrix();
+		float alpha = (float) (color >> 24 & 255) / 255f;
+		float red = (float) (color >> 16 & 255) / 255f;
+		float green = (float) (color >> 8 & 255) / 255f;
+		float blue = (float) (color & 255) / 255f;
+
+		BufferBuilder bufferbuilder = Tessellator.getInstance().getBuffer();
+		RenderSystem.enableBlend();
+		RenderSystem.disableTexture();
+		RenderSystem.defaultBlendFunc();
+		RenderSystem.lineWidth(4f);
+		bufferbuilder.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
+
+		float totalLength = lengthA * 4f;
+		float halfLength = lengthA * 0.5f;
+		float currentLength = progress * totalLength;
+
+		// top right line
+		float d = currentLength;
+		d = Math.min(d, halfLength);
+		if (d > 0) {
+			float x = cx;
+			float y = cy - halfLength;
+			bufferbuilder.pos(matrix, x, y, 0f).color(red, green, blue, alpha).endVertex();
+			bufferbuilder.pos(matrix, x + halfLength, y, 0f).color(red, green, blue, alpha).endVertex();
+		}
+
+		// right line
+		d = currentLength - halfLength;
+		d = Math.min(d, lengthA);
+		if (d > 0) {
+			float x = cx + halfLength;
+			float y = cy - halfLength;
+//			bufferbuilder.pos(matrix, x, y, 0f).color(red, green, blue, alpha).endVertex();
+			bufferbuilder.pos(matrix, x, y + d, 0f).color(red, green, blue, alpha).endVertex();
+		}
+
+		// bottom line
+		d = currentLength - 3f * halfLength;
+		d = Math.min(d, lengthA);
+		if (d > 0) {
+			float x = cx + halfLength;
+			float y = cy + halfLength;
+//			bufferbuilder.pos(matrix, x, y, 0f).color(red, green, blue, alpha).endVertex();
+			bufferbuilder.pos(matrix, x - d, y, 0f).color(red, green, blue, alpha).endVertex();
+		}
+
+		// left line
+		d = currentLength - 5f * halfLength;
+		d = Math.min(d, lengthA);
+		if (d > 0) {
+			float x = cx - halfLength;
+			float y = cy + halfLength;
+//			bufferbuilder.pos(matrix, x, y, 0f).color(red, green, blue, alpha).endVertex();
+			bufferbuilder.pos(matrix, x, y - d, 0f).color(red, green, blue, alpha).endVertex();
+		}
+
+		// top left line
+		d = currentLength - 7f * halfLength;
+		d = Math.min(d, halfLength);
+		if (d > 0) {
+			float x = cx - halfLength;
+			float y = cy - halfLength;
+			bufferbuilder.pos(matrix, x, y, 0f).color(red, green, blue, alpha).endVertex();
+			bufferbuilder.pos(matrix, x + halfLength, y, 0f).color(red, green, blue, alpha).endVertex();
+		}
+
+		bufferbuilder.finishDrawing();
+		WorldVertexBufferUploader.draw(bufferbuilder);
+		RenderSystem.enableTexture();
+		RenderSystem.disableBlend();
+	}
+
+	private static void drawArc(MatrixStack matrixStack, float cx, float cy, float radius, float startAngle, float endAngle, int color) {
+		Matrix4f matrix = matrixStack.getLast().getMatrix();
+		float alpha = (float) (color >> 24 & 255) / 255f;
+		float red = (float) (color >> 16 & 255) / 255f;
+		float green = (float) (color >> 8 & 255) / 255f;
+		float blue = (float) (color & 255) / 255f;
+
+		float angleOffset = (float) (Math.PI * 0.5f);
+		startAngle -= angleOffset;
+		endAngle -= angleOffset;
+
+		BufferBuilder bufferbuilder = Tessellator.getInstance().getBuffer();
+		RenderSystem.enableBlend();
+		RenderSystem.disableTexture();
+		RenderSystem.defaultBlendFunc();
+		RenderSystem.lineWidth(5.1f);
+		bufferbuilder.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
+
+		float step = 0.1f;
+		for (float theta = startAngle; theta < endAngle; theta += step) {
+			float x = radius * MathHelper.cos(theta) + cx;
+			float y = radius * MathHelper.sin(theta) + cy;
+			bufferbuilder.pos(matrix, x, y, 0f).color(red, green, blue, alpha).endVertex();
+		}
+		float x = radius * MathHelper.cos(endAngle) + cx;
+		float y = radius * MathHelper.sin(endAngle) + cy;
+		bufferbuilder.pos(matrix, x, y, 0f).color(red, green, blue, alpha).endVertex();
+
+		bufferbuilder.finishDrawing();
+		WorldVertexBufferUploader.draw(bufferbuilder);
+		RenderSystem.enableTexture();
+		RenderSystem.disableBlend();
 	}
 
 	@SubscribeEvent

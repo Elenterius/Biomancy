@@ -1,5 +1,6 @@
-package com.github.elenterius.biomancy.item;
+package com.github.elenterius.biomancy.item.weapon.shootable;
 
+import com.github.elenterius.biomancy.item.IKeyListener;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -19,6 +20,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
@@ -29,14 +31,15 @@ import java.util.List;
 
 public abstract class ProjectileWeaponItem extends ShootableItem implements IVanishable, IKeyListener {
 
-	private final int baseFireRate;
+	public static final float ONE_SECOND = 20f; //measured in ticks
+	private final int baseShootDelay; //measured in ticks
 	private final int baseMaxAmmo;
 	private final float baseAccuracy;
 	private final int baseReloadTime;
 
-	public ProjectileWeaponItem(Properties builder, int fireRate, float accuracy, int maxAmmo, int reloadTime) {
+	public ProjectileWeaponItem(Properties builder, float fireRate, float accuracy, int maxAmmo, int reloadTime) {
 		super(builder);
-		this.baseFireRate = fireRate;
+		this.baseShootDelay = Math.max(1, Math.round(ONE_SECOND / fireRate));
 		this.baseMaxAmmo = maxAmmo;
 		this.baseAccuracy = accuracy;
 		this.baseReloadTime = reloadTime;
@@ -45,10 +48,10 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(new StringTextComponent(String.format("Fire Rate: %.2f (%.2f)", getFireRate() / 20f, baseFireRate / 20f)));
+		tooltip.add(new StringTextComponent(String.format("Fire Rate: %.2f (%.2f) RPS", getFireRate(), ONE_SECOND / baseShootDelay)));
 		tooltip.add(new StringTextComponent(String.format("Accuracy: %.2f (%.2f) (Inaccuracy: %.2f)", getAccuracy(), baseAccuracy, getInaccuracy())));
 		tooltip.add(new StringTextComponent(String.format("Ammo: %d/%d (%d)", getAmmo(stack), getMaxAmmo(), baseMaxAmmo)));
-		tooltip.add(new StringTextComponent(String.format("Reload Time: %.2f (%.2f)", getReloadTime(stack) / 20f, baseReloadTime / 20f)));
+		tooltip.add(new StringTextComponent(String.format("Reload Time: %.2f (%.2f)", getReloadTime(stack) / ONE_SECOND, baseReloadTime / ONE_SECOND)));
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -96,6 +99,7 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 			return ActionResult.resultConsume(stack);
 		}
 		else {
+			player.sendStatusMessage(new StringTextComponent("No Ammo").mergeStyle(TextFormatting.RED), true);
 			return ActionResult.resultFail(stack);
 		}
 	}
@@ -107,11 +111,13 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 			if (state == State.SHOOTING) {
 				if (hasAmmo(stack)) {
 					float elapsedTime = getUseDuration(stack) - timeLeft;
-					if (elapsedTime % getFireRate() == 0) {
+					if (elapsedTime % getShootDelay() == 0) {
 						shoot((ServerWorld) world, livingEntity, livingEntity.getActiveHand(), stack, getInaccuracy());
 					}
 				}
 				else {
+					if (livingEntity instanceof PlayerEntity)
+						((PlayerEntity) livingEntity).sendStatusMessage(new StringTextComponent("Out of Ammo").mergeStyle(TextFormatting.RED), true);
 					livingEntity.stopActiveHand();
 					stopShooting(stack, (ServerWorld) world, livingEntity);
 				}
@@ -219,7 +225,7 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 		setAmmo(stack, getMaxAmmo());
 
 		SoundCategory soundcategory = livingEntity instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE;
-		world.playSound(null, livingEntity.getPosX(), livingEntity.getPosY(), livingEntity.getPosZ(), SoundEvents.ITEM_CROSSBOW_LOADING_END, soundcategory, 1.0F, 1.0F / (random.nextFloat() * 0.5F + 1.0F) + 0.2F);
+		world.playSound(null, livingEntity.getPosX(), livingEntity.getPosY(), livingEntity.getPosZ(), SoundEvents.ITEM_CROSSBOW_LOADING_END, soundcategory, 1f, 1f / (random.nextFloat() * 0.5f + 1f) + 0.2f);
 	}
 
 	public float getReloadProgress(long elapsedTime, long reloadTime) {
@@ -238,8 +244,12 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 		return baseAccuracy;
 	}
 
-	public int getFireRate() {
-		return baseFireRate;
+	public int getShootDelay() {
+		return baseShootDelay;
+	}
+
+	public float getFireRate() {
+		return ONE_SECOND / getShootDelay();
 	}
 
 	public int getReloadTime(ItemStack stack) {
@@ -251,7 +261,7 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 	}
 
 	public boolean hasAmmo(ItemStack stack) {
-		return getAmmo(stack) >= 3;
+		return getAmmo(stack) > 0;
 	}
 
 	public int getAmmo(ItemStack stack) {

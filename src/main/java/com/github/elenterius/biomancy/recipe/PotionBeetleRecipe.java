@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.recipe;
 
 import com.github.elenterius.biomancy.init.ModRecipes;
-import com.github.elenterius.biomancy.item.PotionBeetleItem;
+import com.github.elenterius.biomancy.item.weapon.shootable.PotionBeetleItem;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.IRecipeSerializer;
@@ -32,7 +32,8 @@ public class PotionBeetleRecipe extends SpecialRecipe {
 				if (stack.getItem() instanceof PotionBeetleItem) {
 					potion = PotionUtils.getPotionFromItem(stack);
 					if (++beetles > 1) return false;
-				} else if (!(stack.getItem() instanceof ThrowablePotionItem) || ++potions > 1) return false;
+				}
+				else if (!(stack.getItem() instanceof ThrowablePotionItem) || ++potions > 1) return false;
 			}
 		}
 
@@ -48,7 +49,8 @@ public class PotionBeetleRecipe extends SpecialRecipe {
 			if (!stack.isEmpty()) {
 				if (stack.getItem() instanceof PotionBeetleItem) {
 					beetleStack = stack;
-				} else {
+				}
+				else {
 					potionStack = stack;
 				}
 			}
@@ -64,7 +66,8 @@ public class PotionBeetleRecipe extends SpecialRecipe {
 			if (registryKey != null) stack.getOrCreateTag().putString("PotionItem", registryKey.toString());
 			stack.getOrCreateTag().putString("PotionName", potionStack.getTranslationKey());
 			return stack;
-		} else {
+		}
+		else {
 			Potion potion = PotionUtils.getPotionFromItem(beetleStack);
 			if (potion != Potions.EMPTY) {
 				List<EffectInstance> effects = PotionUtils.getFullEffectsFromItem(beetleStack);

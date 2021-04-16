@@ -3,6 +3,8 @@ package com.github.elenterius.biomancy.init;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.renderer.tileentity.GenericISTER;
 import com.github.elenterius.biomancy.item.*;
+import com.github.elenterius.biomancy.item.weapon.*;
+import com.github.elenterius.biomancy.item.weapon.shootable.*;
 import com.github.elenterius.biomancy.tileentity.FleshChestTileEntity;
 import net.minecraft.item.*;
 import net.minecraftforge.fml.RegistryObject;
@@ -16,8 +18,11 @@ public final class ModItems {
 	public static final RegistryObject<GogglesArmorItem> OCULI_OF_UNVEILING = ITEMS.register("unveiling_oculi", () -> new GogglesArmorItem(ArmorMaterial.IRON, createItemProperties().rarity(Rarity.EPIC)));
 
 	// Weapons
-	public static final RegistryObject<ModAxeItem> BIOFLESH_WAR_AXE = ITEMS.register("bioflesh_war_axe", () -> new ModAxeItem(ModItemTier.BIOFLESH, 5F, -3.15F, createItemProperties().rarity(Rarity.EPIC)));
+	public static final RegistryObject<WarAxeItem> BIOFLESH_WAR_AXE = ITEMS.register("bioflesh_war_axe", () -> new WarAxeItem(ModItemTier.BIOFLESH, 5F, -3.15F, createItemProperties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<KhopeshItem> BIOFLESH_KHOPESH = ITEMS.register("bioflesh_khopesh", () -> new KhopeshItem(ModItemTier.BIOFLESH, 5F, -2.75F, createItemProperties().rarity(Rarity.EPIC)));
+	public static final RegistryObject<SinewBowItem> SINEW_BOW = ITEMS.register("sinew_bow", () -> new SinewBowItem(createItemProperties().maxDamage(ModItemTier.LESSER_BIOFLESH.getMaxUses() / 3)));
+	public static final RegistryObject<WithershotItem> WITHERSHOT = ITEMS.register("withershot", () -> new WithershotItem(createItemProperties().maxStackSize(1).maxDamage(ModItemTier.BONE.getMaxUses()).rarity(Rarity.EPIC)));
+	public static final RegistryObject<EntityLauncherItem> ENTITY_LAUNCHER = ITEMS.register("entity_launcher", () -> new EntityLauncherItem(createItemProperties().maxStackSize(1).maxDamage(ModItemTier.LESSER_BIOFLESH.getMaxUses()).rarity(Rarity.EPIC)));
 	// Semi-Living Weapons
 	public static final RegistryObject<LeechClawItem> LEECH_CLAW = ITEMS.register("leech_claw", () -> new LeechClawItem(ModItemTier.BIOFLESH, 3, -2.2f, createItemProperties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<LongRangeClawItem> LONG_RANGE_CLAW = ITEMS.register("long_range_claw", () -> new LongRangeClawItem(ModItemTier.BIOFLESH, 3, -2.4f, 60, createItemProperties().rarity(Rarity.EPIC)));

@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.item;
+package com.github.elenterius.biomancy.item.weapon;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModDamageSources;
