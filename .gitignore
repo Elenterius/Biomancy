@@ -26,3 +26,5 @@ forge*changelog.txt
 
 logs
 /src/generated/resources/.cache/
+/scripts/.vscode/
+/scripts/lib/

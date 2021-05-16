@@ -1,8 +1,7 @@
 buildscript {
     repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
+        maven { url = 'https://maven.minecraftforge.net' }
         maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
-        jcenter()
         mavenCentral()
     }
     dependencies {
@@ -118,8 +117,9 @@ dependencies {
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.4-50")
 }
 
-import groovy.json.JsonSlurper
+
 import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
 
 processResources {
     exclude '**/*.psd'
@@ -142,7 +142,7 @@ build {
         println("updating version in README.md...")
         def versionEscaped = version.toString().replace("-", "--")
         def color = versionEscaped.contains("alpha") ? "red" : versionEscaped.contains("beta") ? "yellow" : "green"
-        ant.replaceregexp(match:'Biomancy-([0-9\\.\\-]+[a-z\\.0-9\\-]+)', replace:"Biomancy-$versionEscaped-$color", flags:'g', byline:true) {
+        ant.replaceregexp(match: 'Biomancy-([0-9\\.\\-]+[a-z\\.0-9\\-]+)', replace: "Biomancy-$versionEscaped-$color", flags: 'g', byline: true) {
             fileset(dir: '.', includes: 'README.md')
         }
     }
@@ -152,19 +152,35 @@ build {
 jar {
     manifest {
         attributes([
-            "Specification-Title": "biomancy",
-            "Specification-Vendor": "elenterius",
-            "Specification-Version": "1", // We are version 1 of ourselves
-            "Implementation-Title": project.name,
-            "Implementation-Version": "${version}",
-            "Implementation-Vendor" :"elenterius",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-            "MixinConfigs": "biomancy.mixins.json"
+                "Specification-Title"     : "biomancy",
+                "Specification-Vendor"    : "elenterius",
+                "Specification-Version"   : "1", // We are version 1 of ourselves
+                "Implementation-Title"    : project.name,
+                "Implementation-Version"  : "${version}",
+                "Implementation-Vendor"   : "elenterius",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "MixinConfigs"            : "biomancy.mixins.json"
         ])
     }
 }
 
 // This is the preferred method to reobfuscate your jar file
-jar.finalizedBy('reobfJar') 
+jar.finalizedBy('reobfJar')
 // However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
 //publish.dependsOn('reobfJar')
+
+
+task copyMCClientJar(type: Copy) {
+    doLast {
+        print("copying minecraft client-extra.jar...")
+    }
+    into "scripts/lib"
+    from(configurations.runtime) {
+        include 'client-extra.jar'
+    }
+}
+
+task drawRecipeDiGraphs(type: Exec, dependsOn: copyMCClientJar) {
+    workingDir 'scripts'
+    commandLine 'python', 'recipe_graph_network.py'
+}
