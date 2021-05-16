@@ -1,0 +1,28 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:birch_sapling"
+    },
+    {
+      "item": "minecraft:birch_sapling"
+    },
+    {
+      "item": "minecraft:birch_sapling"
+    },
+    {
+      "item": "minecraft:birch_sapling"
+    },
+    {
+      "item": "minecraft:birch_sapling"
+    },
+    {
+      "item": "minecraft:birch_sapling"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:digestate"
+  },
+  "time": 305
+}

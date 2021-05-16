@@ -1,0 +1,13 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:cake"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:digestate"
+  },
+  "time": 200
+}

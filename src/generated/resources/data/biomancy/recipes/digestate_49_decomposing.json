@@ -1,0 +1,19 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:rose_bush"
+    },
+    {
+      "item": "minecraft:rose_bush"
+    },
+    {
+      "item": "minecraft:rose_bush"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:digestate"
+  },
+  "time": 253
+}

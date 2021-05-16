@@ -8,7 +8,7 @@
   "byproducts": [
     {
       "result": {
-        "item": "biomancy:biotic_material"
+        "item": "biomancy:digestate"
       },
       "chance": 0.6
     }

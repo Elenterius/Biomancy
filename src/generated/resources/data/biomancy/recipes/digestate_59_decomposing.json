@@ -1,0 +1,28 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:dark_oak_leaves"
+    },
+    {
+      "item": "minecraft:dark_oak_leaves"
+    },
+    {
+      "item": "minecraft:dark_oak_leaves"
+    },
+    {
+      "item": "minecraft:dark_oak_leaves"
+    },
+    {
+      "item": "minecraft:dark_oak_leaves"
+    },
+    {
+      "item": "minecraft:dark_oak_leaves"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:digestate"
+  },
+  "time": 305
+}

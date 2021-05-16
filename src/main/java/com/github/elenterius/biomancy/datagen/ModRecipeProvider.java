@@ -339,12 +339,12 @@ public class ModRecipeProvider extends RecipeProvider {
 		final int defaultDecomposingTime = 200;
 		final int[] id = {0};
 
-		DecomposingRecipeBuilder.createRecipe(ModItems.BIOTIC_MATERIAL.get(), defaultDecomposingTime + 100)
+		DecomposingRecipeBuilder.createRecipe(ModItems.DIGESTATE.get(), defaultDecomposingTime + 100)
 				.addIngredients(Items.KELP, 6)
 				.addByproduct(ModItems.SILICATE_PASTE.get(), 0.3f)
 				.addCriterion("has_biotics", hasItem(ModTags.Items.BIOTICS)).build(consumer, "" + id[0]++, true);
 
-		DecomposingRecipeBuilder.createRecipe(ModItems.BIOTIC_MATERIAL.get(), defaultDecomposingTime)
+		DecomposingRecipeBuilder.createRecipe(ModItems.DIGESTATE.get(), defaultDecomposingTime)
 				.addIngredients(Items.DRIED_KELP, 6)
 				.addByproduct(ModItems.SILICATE_PASTE.get(), 0.3f)
 				.addCriterion("has_biotics", hasItem(ModTags.Items.BIOTICS)).build(consumer, "" + id[0]++, true);
@@ -353,7 +353,7 @@ public class ModRecipeProvider extends RecipeProvider {
 		ComposterBlock.CHANCES.forEach((itemProvider, chance) -> {
 			Item item = itemProvider.asItem();
 			if (!ignore.contains(item)) {
-				DecomposingRecipeBuilder.createRecipe(ModItems.BIOTIC_MATERIAL.get(), defaultDecomposingTime + Math.round(Math.max(1f - chance, 0f) * 150))
+				DecomposingRecipeBuilder.createRecipe(ModItems.DIGESTATE.get(), defaultDecomposingTime + Math.round(Math.max(1f - chance, 0f) * 150))
 						.addIngredients(item, MathHelper.clamp(Math.round(-7.14f * chance + 8.14f), 1, 6))
 						.addCriterion("has_biotics", hasItem(ModTags.Items.BIOTICS)).build(consumer, "" + id[0], true);
 				id[0]++;
@@ -367,17 +367,17 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		DecomposingRecipeBuilder.createRecipe(ModItems.MUTAGENIC_BILE.get(), defaultDecomposingTime)
 				.addIngredient(Items.WARPED_FUNGUS)
-				.addByproduct(ModItems.BIOTIC_MATERIAL.get(), 0.4f)
+				.addByproduct(ModItems.DIGESTATE.get(), 0.4f)
 				.addCriterion("has_warped_fungus", hasItem(Items.WARPED_FUNGUS)).build(consumer, "" + id++, true);
 
 		DecomposingRecipeBuilder.createRecipe(ModItems.MUTAGENIC_BILE.get(), defaultDecomposingTime, 6)
 				.addIngredient(Items.WARPED_WART_BLOCK)
-				.addByproduct(ModItems.BIOTIC_MATERIAL.get(), 0.6f)
+				.addByproduct(ModItems.DIGESTATE.get(), 0.6f)
 				.addCriterion("has_warped_fungus", hasItem(Items.WARPED_FUNGUS)).build(consumer, "" + id++, true);
 
 		DecomposingRecipeBuilder.createRecipe(ModItems.MUTAGENIC_BILE.get(), defaultDecomposingTime)
 				.addIngredients(Items.WARPED_ROOTS, 2)
-				.addByproduct(ModItems.BIOTIC_MATERIAL.get(), 0.4f)
+				.addByproduct(ModItems.DIGESTATE.get(), 0.4f)
 				.addCriterion("has_warped_roots", hasItem(Items.WARPED_ROOTS)).build(consumer, "" + id++, true);
 
 		DecomposingRecipeBuilder.createRecipe(ModItems.MUTAGENIC_BILE.get(), defaultDecomposingTime, 6)

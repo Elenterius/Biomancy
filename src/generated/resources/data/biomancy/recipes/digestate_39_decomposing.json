@@ -1,0 +1,28 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:grass"
+    },
+    {
+      "item": "minecraft:grass"
+    },
+    {
+      "item": "minecraft:grass"
+    },
+    {
+      "item": "minecraft:grass"
+    },
+    {
+      "item": "minecraft:grass"
+    },
+    {
+      "item": "minecraft:grass"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:digestate"
+  },
+  "time": 305
+}

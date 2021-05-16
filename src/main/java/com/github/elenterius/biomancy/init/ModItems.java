@@ -54,23 +54,28 @@ public final class ModItems {
 	public static final RegistryObject<Item> OCULUS = ITEMS.register("oculus", () -> new Item(createItemProperties()));
 	public static final RegistryObject<Item> MENISCUS_LENS = ITEMS.register("lens", () -> new Item(createItemProperties()));
 	public static final RegistryObject<Item> NECROTIC_FLESH = ITEMS.register("necrotic_flesh", () -> new Item(createItemProperties()));
+	public static final RegistryObject<Item> BIOMETAL = ITEMS.register("biometal", () -> new Item(createItemProperties()));
 
 	public static final RegistryObject<Item> ARTIFICIAL_STOMACH = ITEMS.register("artificial_stomach", () -> new Item(createItemProperties()));
 	public static final RegistryObject<Item> TWISTED_HEART = ITEMS.register("twisted_heart", () -> new Item(createItemProperties()));
+
+	public static final RegistryObject<Item> BOLUS = ITEMS.register("bolus", () -> new Item(createItemProperties())); //crushed biomass
+	public static final RegistryObject<Item> DIGESTATE = ITEMS.register("digestate", () -> new Item(createItemProperties()));
+	public static final RegistryObject<Item> NUTRIENT_PASTE = ITEMS.register("nutrient_paste", () -> new Item(createItemProperties()));
+	public static final RegistryObject<Item> NUTRIENT_BAR = ITEMS.register("nutrient_bar", () -> new Item(createItemProperties()));
+	public static final RegistryObject<Item> OXIDE_POWDER = ITEMS.register("oxide_powder", () -> new Item(createItemProperties()));
+	public static final RegistryObject<Item> SILICATE_PASTE = ITEMS.register("silicate_paste", () -> new Item(createItemProperties()));
+	public static final RegistryObject<Item> KERATIN_FILAMENTS = ITEMS.register("keratin_filaments", () -> new Item(createItemProperties()));
 
 	// Secretions
 	public static final RegistryObject<Item> MUTAGENIC_BILE = ITEMS.register("mutagenic_bile", () -> new Item(createItemProperties()));
 	public static final RegistryObject<Item> REJUVENATING_MUCUS = ITEMS.register("rejuvenating_mucus", () -> new Item(createItemProperties()));
 	public static final RegistryObject<DecayingItem> ERODING_BILE = ITEMS.register("eroding_bile", () -> new DecayingItem(6 * 60, 0.5f, createItemProperties()));
-	public static final RegistryObject<Item> BIOTIC_MATERIAL = ITEMS.register("biotic_material", () -> new Item(createItemProperties()));
-	public static final RegistryObject<Item> KERATIN_FILAMENTS = ITEMS.register("keratin_filaments", () -> new Item(createItemProperties()));
-	public static final RegistryObject<Item> OXIDE_POWDER = ITEMS.register("oxide_powder", () -> new Item(createItemProperties()));
-	public static final RegistryObject<Item> SILICATE_PASTE = ITEMS.register("silicate_paste", () -> new Item(createItemProperties()));
 	public static final RegistryObject<Item> HORMONE_SERUM = ITEMS.register("hormone_serum", () -> new Item(createItemProperties()));
 
 	// Food
-	public static final RegistryObject<Item> FLESH_MELON_SLICE = ITEMS.register("flesh_melon_slice", () -> new Item(createItemProperties().food(ModFoods.FLESH_MELON_SLICE)));
-	public static final RegistryObject<Item> COOKED_FLESH_MELON_SLICE = ITEMS.register("cooked_flesh_melon_slice", () -> new Item(createItemProperties().food(ModFoods.COOKED_FLESH_MELON_SLICE)));
+	public static final RegistryObject<Item> VILE_MELON_SLICE = ITEMS.register("flesh_melon_slice", () -> new Item(createItemProperties().food(ModFoods.FLESH_MELON_SLICE)));
+	public static final RegistryObject<Item> COOKED_VILE_MELON_SLICE = ITEMS.register("cooked_flesh_melon_slice", () -> new Item(createItemProperties().food(ModFoods.COOKED_FLESH_MELON_SLICE)));
 
 	// Spawn Eggs
 	public static final RegistryObject<ModSpawnEggItem> FLESH_BLOB_SPAWN_EGG = ITEMS.register("flesh_blob_spawn_egg", () -> new ModSpawnEggItem(ModEntityTypes.FLESH_BLOB, 0xe9967a, 0xf6d2c6, createItemProperties()));

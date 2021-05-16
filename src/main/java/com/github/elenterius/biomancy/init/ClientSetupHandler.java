@@ -94,8 +94,8 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void onItemColorRegistry(final ColorHandlerEvent.Item event) {
-		event.getItemColors().register((stack, index) -> 0xff6981, ModItems.FLESH_MELON_BLOCK.get(), ModItems.FLESH_MELON_SEEDS.get(), ModItems.FLESH_MELON_SLICE.get(), ModItems.SINEW_BOW.get());
-		event.getItemColors().register((stack, index) -> 0x6c2e1f, ModItems.COOKED_FLESH_MELON_SLICE.get());
+		event.getItemColors().register((stack, index) -> 0xff6981, ModItems.FLESH_MELON_BLOCK.get(), ModItems.FLESH_MELON_SEEDS.get(), ModItems.VILE_MELON_SLICE.get(), ModItems.SINEW_BOW.get());
+		event.getItemColors().register((stack, index) -> 0x6c2e1f, ModItems.COOKED_VILE_MELON_SLICE.get());
 		event.getItemColors().register((stack, index) -> 0x8d758c, ModItems.NECROTIC_FLESH.get(), ModItems.NECROTIC_FLESH_BLOCK.get());
 	}
 
