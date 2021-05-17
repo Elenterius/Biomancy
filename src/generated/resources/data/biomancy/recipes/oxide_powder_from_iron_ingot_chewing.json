@@ -1,0 +1,11 @@
+{
+  "type": "biomancy:chewing",
+  "ingredient": {
+    "tag": "forge:ingots/iron"
+  },
+  "result": {
+    "item": "biomancy:oxide_powder",
+    "count": 9
+  },
+  "time": 600
+}

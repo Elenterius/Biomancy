@@ -1,0 +1,14 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:crimson_fungus"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "minecraft:sugar",
+    "count": 4
+  },
+  "time": 253
+}

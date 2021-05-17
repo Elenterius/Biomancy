@@ -2,18 +2,27 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "tag": "forge:nuggets/gold"
+      "item": "minecraft:bone_meal"
     },
     {
-      "tag": "forge:nuggets/gold"
+      "item": "minecraft:bone_meal"
     },
     {
-      "tag": "forge:nuggets/gold"
+      "item": "minecraft:bone_meal"
+    },
+    {
+      "item": "minecraft:bone_meal"
+    },
+    {
+      "item": "minecraft:bone_meal"
+    },
+    {
+      "item": "minecraft:bone_meal"
     }
   ],
   "byproducts": [],
   "result": {
     "item": "biomancy:oxide_powder"
   },
-  "time": 300
+  "time": 200
 }

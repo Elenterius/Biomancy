@@ -1,0 +1,11 @@
+{
+  "type": "biomancy:chewing",
+  "ingredient": {
+    "item": "minecraft:hay_block"
+  },
+  "result": {
+    "item": "biomancy:bolus",
+    "count": 5
+  },
+  "time": 222
+}

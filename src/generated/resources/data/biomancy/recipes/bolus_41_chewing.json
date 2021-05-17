@@ -1,0 +1,11 @@
+{
+  "type": "biomancy:chewing",
+  "ingredient": {
+    "item": "minecraft:tall_grass"
+  },
+  "result": {
+    "item": "biomancy:bolus",
+    "count": 2
+  },
+  "time": 275
+}

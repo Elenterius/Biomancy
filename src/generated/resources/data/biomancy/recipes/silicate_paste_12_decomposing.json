@@ -1,0 +1,35 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:dried_kelp"
+    },
+    {
+      "item": "minecraft:dried_kelp"
+    },
+    {
+      "item": "minecraft:dried_kelp"
+    },
+    {
+      "item": "minecraft:dried_kelp"
+    },
+    {
+      "item": "minecraft:dried_kelp"
+    },
+    {
+      "item": "minecraft:dried_kelp"
+    }
+  ],
+  "byproducts": [
+    {
+      "result": {
+        "item": "biomancy:digestate"
+      },
+      "chance": 0.3
+    }
+  ],
+  "result": {
+    "item": "biomancy:silicate_paste"
+  },
+  "time": 200
+}

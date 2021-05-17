@@ -2,13 +2,34 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "tag": "forge:ingots/iron"
+      "tag": "forge:eggs"
+    },
+    {
+      "tag": "forge:eggs"
+    },
+    {
+      "tag": "forge:eggs"
+    },
+    {
+      "tag": "forge:eggs"
+    },
+    {
+      "tag": "forge:eggs"
+    },
+    {
+      "tag": "forge:eggs"
     }
   ],
-  "byproducts": [],
+  "byproducts": [
+    {
+      "result": {
+        "item": "biomancy:mutagenic_bile"
+      },
+      "chance": 0.05
+    }
+  ],
   "result": {
-    "item": "biomancy:oxide_powder",
-    "count": 3
+    "item": "biomancy:oxide_powder"
   },
-  "time": 300
+  "time": 200
 }

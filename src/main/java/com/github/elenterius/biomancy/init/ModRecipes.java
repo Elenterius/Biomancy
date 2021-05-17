@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.recipe.*;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import net.minecraft.advancements.criterion.ItemPredicate;
+import net.minecraft.block.ComposterBlock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -25,10 +26,14 @@ public final class ModRecipes {
 	public static final RegistryObject<SpecialRecipeSerializer<SewingKitRepairRecipe>> REPAIR_SPECIAL_SEWING_KIT = RECIPE_SERIALIZERS.register("repair_special_sewing_kit", () -> new SpecialRecipeSerializer<>(SewingKitRepairRecipe::new));
 	public static final RegistryObject<SpecialRecipeSerializer<AddUserToAccessKeyRecipe>> CRAFTING_SPECIAL_ADD_USER_TO_KEY = RECIPE_SERIALIZERS.register("crafting_special_add_user_to_key", () -> new SpecialRecipeSerializer<>(AddUserToAccessKeyRecipe::new));
 
-	public static final RegistryObject<IRecipeSerializer<DecomposingRecipe>> DECOMPOSING_SERIALIZER = RECIPE_SERIALIZERS.register("decomposing", DecomposingRecipe.Serializer::new);
+	public static final RegistryObject<IRecipeSerializer<ChewerRecipe>> CHEWER_SERIALIZER = RECIPE_SERIALIZERS.register("chewing", ChewerRecipe.Serializer::new);
+	public static final RegistryObject<IRecipeSerializer<DigesterRecipe>> DIGESTER_SERIALIZER = RECIPE_SERIALIZERS.register("digesting", DigesterRecipe.Serializer::new);
+	public static final RegistryObject<IRecipeSerializer<DecomposerRecipe>> DECOMPOSING_SERIALIZER = RECIPE_SERIALIZERS.register("decomposing", DecomposerRecipe.Serializer::new);
 	public static final RegistryObject<IRecipeSerializer<EvolutionPoolRecipe>> EVOLUTION_POOL_SERIALIZER = RECIPE_SERIALIZERS.register("evolution_pool", EvolutionPoolRecipe.Serializer::new);
 
-	public static final IRecipeType<DecomposingRecipe> DECOMPOSING_RECIPE_TYPE = createRecipeType("decomposing");
+	public static final IRecipeType<ChewerRecipe> CHEWER_RECIPE_TYPE = createRecipeType("chewing");
+	public static final IRecipeType<DigesterRecipe> DIGESTER_RECIPE_TYPE = createRecipeType("digesting");
+	public static final IRecipeType<DecomposerRecipe> DECOMPOSING_RECIPE_TYPE = createRecipeType("decomposing");
 	public static final IRecipeType<EvolutionPoolRecipe> EVOLUTION_POOL_RECIPE_TYPE = createRecipeType("evolution_pool");
 
 	public static final ItemPredicate ANY_MEATLESS_FOOD_ITEM_PREDICATE = new ItemPredicate() {
@@ -46,6 +51,10 @@ public final class ModRecipes {
 
 	private ModRecipes() {}
 
+	public static void registerComposterRecipes() {
+		ComposterBlock.CHANCES.putIfAbsent(ModItems.DIGESTATE.get(), 0.7f);
+	}
+
 	public static void registerCustomItemPredicates() {
 		ItemPredicate.register(BiomancyMod.createRL("any_meatless_food"), jsonObject -> ANY_MEATLESS_FOOD_ITEM_PREDICATE);
 	}
@@ -57,6 +66,7 @@ public final class ModRecipes {
 
 	private static <T extends IRecipe<?>> IRecipeType<T> createRecipeType(String name) {
 		return new IRecipeType<T>() {
+			@Override
 			public String toString() {
 				return name;
 			}

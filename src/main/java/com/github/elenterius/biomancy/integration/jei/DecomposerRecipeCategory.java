@@ -3,7 +3,8 @@ package com.github.elenterius.biomancy.integration.jei;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModRecipes;
-import com.github.elenterius.biomancy.recipe.DecomposingRecipe;
+import com.github.elenterius.biomancy.recipe.Byproduct;
+import com.github.elenterius.biomancy.recipe.DecomposerRecipe;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -24,9 +25,9 @@ import net.minecraft.util.text.TranslationTextComponent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DecomposerRecipeCategory implements IRecipeCategory<DecomposingRecipe> {
+public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecipe> {
 
-	public static final ResourceLocation ID = BiomancyMod.createRL("jei_" + ModRecipes.DECOMPOSING_RECIPE_TYPE.toString());
+	public static final ResourceLocation ID = BiomancyMod.createRL("jei_" + ModRecipes.DECOMPOSING_RECIPE_TYPE);
 	private static final int OUTPUT_SLOT = 0;
 	private static final int INPUT_SLOT = 4;
 	private final IDrawable background;
@@ -43,8 +44,8 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposingReci
 	}
 
 	@Override
-	public Class<? extends DecomposingRecipe> getRecipeClass() {
-		return DecomposingRecipe.class;
+	public Class<? extends DecomposerRecipe> getRecipeClass() {
+		return DecomposerRecipe.class;
 	}
 
 	@Override
@@ -63,18 +64,18 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposingReci
 	}
 
 	@Override
-	public void setIngredients(DecomposingRecipe recipe, IIngredients ingredients) {
+	public void setIngredients(DecomposerRecipe recipe, IIngredients ingredients) {
 		ingredients.setInputIngredients(recipe.getIngredients());
 		List<ItemStack> outputs = new ArrayList<>();
 		outputs.add(recipe.getRecipeOutput());
-		for (DecomposingRecipe.OptionalByproduct byproduct : recipe.getOptionalByproducts()) {
+		for (Byproduct byproduct : recipe.getByproducts()) {
 			outputs.add(byproduct.getItemStack());
 		}
 		ingredients.setOutputs(VanillaTypes.ITEM, outputs);
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayout layout, DecomposingRecipe recipe, IIngredients ingredients) {
+	public void setRecipe(IRecipeLayout layout, DecomposerRecipe recipe, IIngredients ingredients) {
 		layout.setShapeless();
 
 		IGuiItemStackGroup guiISGroup = layout.getItemStacks();
@@ -96,8 +97,8 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposingReci
 			if (index > 0 && index < 4) {
 				if (!stack.isEmpty()) {
 					int chance = 100;
-					for (DecomposingRecipe.OptionalByproduct byproduct : recipe.getOptionalByproducts()) {
-						if (byproduct.getItemStack().isItemEqual(stack)) {
+					for (Byproduct byproduct : recipe.getByproducts()) {
+						if (!stack.isEmpty() && byproduct.getItem() == stack.getItem()) {
 							chance = Math.round(byproduct.getChance() * 100);
 							break;
 						}
@@ -110,7 +111,7 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposingReci
 	}
 
 	@Override
-	public void draw(DecomposingRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
+	public void draw(DecomposerRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
 		int ticks = recipe.getDecomposingTime();
 		if (ticks > 0) {
 			int seconds = ticks / 20;

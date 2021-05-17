@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import os
 import subprocess
+import time
 import zipfile
 
 os.environ["PATH"] += os.pathsep + 'D:/Program Files/Graphviz/bin'  # workaround
@@ -31,13 +32,94 @@ def get_ingredients_with_amount(ingredient_list):
     return ingredients
 
 
-def add_decomposer_recipe(recipe, output_node: str, digraph: nx.Graph, labels: dict):
-    recipe_hash = str(hash(output_node))
+def add_digester_recipe(recipe, output_node: str, digraph: nx.Graph, labels: dict, inter_connect: bool):
+    recipe_hash = str(hash(output_node)) if not inter_connect else ""
 
     # output nodes ####################################################
     output_item = recipe_hash + recipe['result']['item'].replace(":", "_")
-    digraph.add_edge(output_node, output_item)
+    if 'count' in recipe['result']:
+        amount = recipe['result']['count']
+    else:
+        amount = 1
+    digraph.add_edge(output_node, output_item, weight=amount)
     labels[output_item] = recipe['result']['item']
+    labels[output_node] = f'digester, {recipe["time"]} ticks'
+
+    byproduct = recipe['byproduct']
+    item = recipe_hash + byproduct['result']['item'].replace(":", "_")
+    chance = byproduct['chance']
+    digraph.add_edge(output_node, item, weight=chance)
+    labels[item] = byproduct['result']['item']
+
+    # input node ######################################################
+    ingredient = recipe['ingredient']
+    if 'item' in ingredient:
+        ingredient = ingredient['item']
+    else:
+        ingredient = "tag=" + ingredient['tag']
+    node = recipe_hash + ingredient.replace(":", "_")
+    digraph.add_edge(node, output_node, weight=1)
+    labels[node] = ingredient
+
+
+def add_chewer_recipe(recipe, output_node: str, digraph: nx.Graph, labels: dict, inter_connect: bool):
+    recipe_hash = str(hash(output_node)) if not inter_connect else ""
+
+    # output node ####################################################
+    output_item = recipe_hash + recipe['result']['item'].replace(":", "_")
+    if 'count' in recipe['result']:
+        amount = recipe['result']['count']
+    else:
+        amount = 1
+    digraph.add_edge(output_node, output_item, weight=amount)
+    labels[output_item] = recipe['result']['item']
+    labels[output_node] = f'chewer, {recipe["time"]} ticks'
+
+    # input node ######################################################
+    ingredient = recipe['ingredient']
+    if 'item' in ingredient:
+        ingredient = ingredient['item']
+    else:
+        ingredient = "tag=" + ingredient['tag']
+    node = recipe_hash + ingredient.replace(":", "_")
+    digraph.add_edge(node, output_node, weight=1)
+    labels[node] = ingredient
+
+
+def add_evolution_pool_recipe(recipe, output_node: str, digraph: nx.Graph, labels: dict, inter_connect: bool):
+    recipe_hash = str(hash(output_node)) if not inter_connect else ""
+
+    # output nodes ####################################################
+    output_item = recipe_hash + recipe['result']['item'].replace(":", "_")
+    if 'count' in recipe['result']:
+        amount = recipe['result']['count']
+    else:
+        amount = 1
+    digraph.add_edge(output_node, output_item, weight=amount)
+    labels[output_item] = recipe['result']['item']
+    labels[output_node] = f'evolution pool, {recipe["time"]} ticks'
+
+    # input nodes ######################################################
+    ingredients = get_ingredients_with_amount(recipe['ingredients'])
+    for ingredient in ingredients:
+        amount = ingredients[ingredient]
+        node = recipe_hash + ingredient.replace(":", "_")
+        digraph.add_edge(node, output_node, weight=amount)
+        labels[node] = ingredient
+
+
+def add_decomposer_recipe(recipe, output_node: str, digraph: nx.Graph, labels: dict, inter_connect: bool):
+    recipe_hash = str(hash(output_node)) if not inter_connect else ""
+
+    # output nodes ####################################################
+    output_item = recipe_hash + recipe['result']['item'].replace(":", "_")
+    if 'count' in recipe['result']:
+        amount = recipe['result']['count']
+    else:
+        amount = 1
+    digraph.add_edge(output_node, output_item, weight=amount)
+    labels[output_item] = recipe['result']['item']
+    labels[output_node] = f'decomposer, {recipe["time"]} ticks'
 
     for byproduct in recipe['byproducts']:
         item = recipe_hash + byproduct['result']['item'].replace(":", "_")
@@ -68,6 +150,9 @@ def get_node_textures(labels: dict):
             if cached_textures[label] is not None:
                 textures[key] = cached_textures[label]
         else:
+            if ":" not in label:
+                continue
+
             namespace, item_name = label.split(":")
 
             if namespace == "biomancy":
@@ -84,25 +169,30 @@ def get_node_textures(labels: dict):
                 item_model = json.loads(f.read())
 
             if "textures" in item_model:
-                texture_id = item_model["textures"]["layer0"]
-                if ":" in texture_id:
-                    namespace, texture_path = texture_id.split(":")
-                else:
-                    namespace = "minecraft"
-                    texture_path = texture_id
+                textures[key] = []
+                cached_textures[label] = []
 
-                if namespace == "biomancy":
-                    item_texture = f'{biomancy_assets_dir}/textures/{texture_path}.png'
-                else:
-                    item_texture = f'./lib/assets/{namespace}/textures/{texture_path}.png'
+                for texture_layer in item_model["textures"]:
+                    texture_id = item_model["textures"][texture_layer]  # layer0, etc
 
-                if not os.path.exists(item_texture):
-                    print("WARN: missing item texture: " + item_texture)
-                    continue
+                    if ":" in texture_id:
+                        namespace, texture_path = texture_id.split(":")
+                    else:
+                        namespace = "minecraft"
+                        texture_path = texture_id
 
-                texture_data = mpimg.imread(item_texture)
-                textures[key] = texture_data
-                cached_textures[label] = texture_data
+                    if namespace == "biomancy":
+                        item_texture = f'{biomancy_assets_dir}/textures/{texture_path}.png'
+                    else:
+                        item_texture = f'./lib/assets/{namespace}/textures/{texture_path}.png'
+
+                    if not os.path.exists(item_texture):
+                        print("WARN: missing item texture: " + item_texture)
+                        continue
+
+                    texture_data = mpimg.imread(item_texture)
+                    textures[key].append(texture_data)
+                    cached_textures[label].append(texture_data)
             else:
                 print("WARN: texture not loaded: " + label)
                 # TODO: get texture for block
@@ -110,7 +200,7 @@ def get_node_textures(labels: dict):
     return textures
 
 
-def draw_recipe_digraph(figsize=(40, 40), prog="dot"):
+def draw_recipe_digraph(figsize=(40, 40), prog="dot", inter_connect=False):
     recipes_dir = "../src/generated/resources/data/biomancy/recipes"
     (path, _, filenames) = next(os.walk(recipes_dir))
 
@@ -127,7 +217,13 @@ def draw_recipe_digraph(figsize=(40, 40), prog="dot"):
 
         # print(recipe_json, "\n")
         if recipe_json['type'] == 'biomancy:decomposing':
-            add_decomposer_recipe(recipe_json, name, DG, node_labels)
+            add_decomposer_recipe(recipe_json, name, DG, node_labels, inter_connect)
+        elif recipe_json['type'] == 'biomancy:chewing':
+            add_chewer_recipe(recipe_json, name, DG, node_labels, inter_connect)
+        elif recipe_json['type'] == 'biomancy:digesting':
+            add_digester_recipe(recipe_json, name, DG, node_labels, inter_connect)
+        elif recipe_json['type'] == 'biomancy:evolution_pool':
+            add_evolution_pool_recipe(recipe_json, name, DG, node_labels, inter_connect)
 
     print("loading textures...")
     node_textures = get_node_textures(node_labels)
@@ -137,19 +233,24 @@ def draw_recipe_digraph(figsize=(40, 40), prog="dot"):
     fig = plt.gcf()
     fig.set_size_inches(figsize[0], figsize[1])
 
-    print("layouting digraph...")
+    print("layouting digraph...", end='')
+    start_time = time.time()
     pos = nx.nx_pydot.pydot_layout(DG, prog=prog)
+    print(f" {time.time() - start_time}s")
 
     print("drawing digraph...")
     nx.draw(DG, pos, arrowsize=20)
 
-    print(" - drawing labels...")
-    nx.draw_networkx_edge_labels(DG, pos, edge_labels=edge_labels, label_pos=0.7, font_size=14)
+    print(" - drawing labels...", end='')
+    start_time = time.time()
+    nx.draw_networkx_edge_labels(DG, pos, edge_labels=edge_labels, label_pos=0.65, font_size=14)
     for key in node_labels:
         node_labels[key] = "     " + node_labels[key]
     nx.draw_networkx_labels(DG, pos, labels=node_labels, font_size=12, horizontalalignment="left")
+    print(f" {time.time() - start_time}s")
 
-    print(" - drawing textures...")
+    print(" - drawing textures...", end='')
+    start_time = time.time()
     ax = plt.gca()
     trans = ax.transData.transform
     trans2 = fig.transFigure.inverted().transform
@@ -159,16 +260,22 @@ def draw_recipe_digraph(figsize=(40, 40), prog="dot"):
             (x, y) = pos[n]
             xx, yy = trans((x, y))  # figure coordinates
             xa, ya = trans2((xx, yy))  # axes coordinates
-            a = plt.axes([xa - img_size / 2.0, ya - img_size / 2.0, img_size, img_size])
-            a.imshow(node_textures[n])
-            a.set_aspect('equal')
-            a.axis('off')
+            for texture in node_textures[n]:
+                a = plt.axes([xa - img_size / 2.0, ya - img_size / 2.0, img_size, img_size])
+                a.imshow(texture)
+                a.set_aspect('equal')
+                a.axis('off')
+    print(f" {time.time() - start_time}s")
 
     print("exporting drawing to pdf...")
-    fig.savefig(f'decomposer_recipes_digraph_{prog}.pdf')
+    fig.savefig(f'biomancy_production_digraph_{prog}.pdf')
+
+    # https://cytoscape.org/ or https://www.yworks.com/products/yed
+    print("exporting graph to GLM...")
+    nx.readwrite.gml.write_gml(DG, 'biomancy_production_digraph.gml')
 
 
-def get_assets():
+def get_mc_assets():
     print("checking for minecraft assets...")
     mc_jar = "./lib/client-extra.jar"
     mc_assets_dir = "./lib/assets/minecraft"
@@ -191,5 +298,5 @@ def get_assets():
 
 
 if __name__ == '__main__':
-    get_assets()
-    draw_recipe_digraph(figsize=(50, 50), prog="twopi")  # dot, neato, twopi
+    get_mc_assets()
+    draw_recipe_digraph(figsize=(75, 75), prog="twopi", inter_connect=True)  # dot, neato, twopi

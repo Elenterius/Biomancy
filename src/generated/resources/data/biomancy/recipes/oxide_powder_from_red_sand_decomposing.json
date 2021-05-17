@@ -1,0 +1,23 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:red_sand"
+    },
+    {
+      "item": "minecraft:red_sand"
+    }
+  ],
+  "byproducts": [
+    {
+      "result": {
+        "item": "biomancy:oxide_powder"
+      },
+      "chance": 0.5
+    }
+  ],
+  "result": {
+    "item": "biomancy:oxide_powder"
+  },
+  "time": 300
+}

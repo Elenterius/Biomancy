@@ -1,10 +1,10 @@
 package com.github.elenterius.biomancy.tileentity.state;
 
-import com.github.elenterius.biomancy.recipe.DecomposingRecipe;
+import com.github.elenterius.biomancy.recipe.DecomposerRecipe;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.IIntArray;
 
-public class DecomposerStateData extends RecipeCraftingStateData<DecomposingRecipe> implements IIntArray {
+public class DecomposerStateData extends RecipeCraftingStateData<DecomposerRecipe> implements IIntArray {
 
 	public static final int TIME_INDEX = 0;
 	public static final int TIME_FOR_COMPLETION_INDEX = 1;
@@ -17,12 +17,12 @@ public class DecomposerStateData extends RecipeCraftingStateData<DecomposingReci
 	public short speedFuel; //glucose ("candy", food that contains sugar)
 
 	@Override
-	Class<DecomposingRecipe> getRecipeType() {
-		return DecomposingRecipe.class;
+	Class<DecomposerRecipe> getRecipeType() {
+		return DecomposerRecipe.class;
 	}
 
 	@Override
-	public void setCraftingGoalRecipe(DecomposingRecipe recipe) {
+	public void setCraftingGoalRecipe(DecomposerRecipe recipe) {
 		super.setCraftingGoalRecipe(recipe);
 		timeForCompletion = recipe.getDecomposingTime();
 	}

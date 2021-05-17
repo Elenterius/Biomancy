@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:sand"
+    },
+    {
+      "item": "biomancy:oxide_powder"
+    },
+    {
+      "item": "biomancy:oxide_powder"
+    }
+  ],
+  "result": {
+    "item": "minecraft:red_sand"
+  }
+}

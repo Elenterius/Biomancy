@@ -1,0 +1,10 @@
+{
+  "type": "biomancy:chewing",
+  "ingredient": {
+    "item": "minecraft:red_sand"
+  },
+  "result": {
+    "item": "biomancy:silicate_paste"
+  },
+  "time": 800
+}

@@ -8,7 +8,8 @@ import com.github.elenterius.biomancy.init.ModTileEntityTypes;
 import com.github.elenterius.biomancy.inventory.DecomposerContainer;
 import com.github.elenterius.biomancy.inventory.SimpleInvContents;
 import com.github.elenterius.biomancy.mixin.RecipeManagerMixinAccessor;
-import com.github.elenterius.biomancy.recipe.DecomposingRecipe;
+import com.github.elenterius.biomancy.recipe.Byproduct;
+import com.github.elenterius.biomancy.recipe.DecomposerRecipe;
 import com.github.elenterius.biomancy.tileentity.state.CraftingState;
 import com.github.elenterius.biomancy.tileentity.state.DecomposerStateData;
 import net.minecraft.block.BlockState;
@@ -43,8 +44,8 @@ import java.util.Random;
 public class DecomposerTileEntity extends OwnableTileEntity implements INamedContainerProvider, ITickableTileEntity {
 
 	public static final int FUEL_SLOTS_COUNT = 1;
-	public static final int INPUT_SLOTS_COUNT = DecomposingRecipe.MAX_INGREDIENTS;
-	public static final int OUTPUT_SLOTS_COUNT = 1 + DecomposingRecipe.MAX_BYPRODUCTS;
+	public static final int INPUT_SLOTS_COUNT = DecomposerRecipe.MAX_INGREDIENTS;
+	public static final int OUTPUT_SLOTS_COUNT = 1 + DecomposerRecipe.MAX_BYPRODUCTS;
 	public static final int FUEL_COST = 5;
 	public static final int MAX_FUEL = 32_000;
 
@@ -60,7 +61,7 @@ public class DecomposerTileEntity extends OwnableTileEntity implements INamedCon
 		outputContents = SimpleInvContents.createServerContents(OUTPUT_SLOTS_COUNT, SimpleInvContents.ISHandlerType.NO_INSERT, this::canPlayerOpenInv, this::markDirty);
 	}
 
-	public static boolean areRecipesEqual(DecomposingRecipe recipeA, DecomposingRecipe recipeB, boolean relaxed) {
+	public static boolean areRecipesEqual(DecomposerRecipe recipeA, DecomposerRecipe recipeB, boolean relaxed) {
 		boolean flag = recipeA.getId().equals(recipeB.getId());
 		if (!relaxed && !ItemHandlerHelper.canItemStacksStack(recipeA.getRecipeOutput(), recipeB.getRecipeOutput())) {
 			return false;
@@ -69,24 +70,24 @@ public class DecomposerTileEntity extends OwnableTileEntity implements INamedCon
 	}
 
 	public static ItemStack getRecipeResult(World world, IInventory inputInv) {
-		Optional<DecomposingRecipe> recipe = getRecipeForInput(world, inputInv);
+		Optional<DecomposerRecipe> recipe = getRecipeForInput(world, inputInv);
 		return recipe.map(decomposingRecipe -> decomposingRecipe.getRecipeOutput().copy()).orElse(ItemStack.EMPTY);
 	}
 
 	public static int getCraftingTime(World world, IInventory inputInv) {
-		Optional<DecomposingRecipe> recipe = getRecipeForInput(world, inputInv);
-		return recipe.map(DecomposingRecipe::getDecomposingTime).orElse(0);
+		Optional<DecomposerRecipe> recipe = getRecipeForInput(world, inputInv);
+		return recipe.map(DecomposerRecipe::getDecomposingTime).orElse(0);
 	}
 
-	public static Optional<DecomposingRecipe> getRecipeForInput(World world, IInventory inputInv) {
+	public static Optional<DecomposerRecipe> getRecipeForInput(World world, IInventory inputInv) {
 		RecipeManager recipeManager = world.getRecipeManager();
 		return recipeManager.getRecipe(ModRecipes.DECOMPOSING_RECIPE_TYPE, inputInv, world);
 	}
 
-	public static Optional<DecomposingRecipe> getRecipeForItem(World world, ItemStack stack) {
+	public static Optional<DecomposerRecipe> getRecipeForItem(World world, ItemStack stack) {
 		RecipeManagerMixinAccessor recipeManager = (RecipeManagerMixinAccessor) world.getRecipeManager();
 
-		return recipeManager.callGetRecipes(ModRecipes.DECOMPOSING_RECIPE_TYPE).values().stream().map((recipe) -> (DecomposingRecipe) recipe)
+		return recipeManager.callGetRecipes(ModRecipes.DECOMPOSING_RECIPE_TYPE).values().stream().map((recipe) -> (DecomposerRecipe) recipe)
 				.filter(recipe -> {
 					for (Ingredient ingredient : recipe.getIngredients()) {
 						if (ingredient.test(stack)) return true;
@@ -116,7 +117,7 @@ public class DecomposerTileEntity extends OwnableTileEntity implements INamedCon
 			refuel();
 		}
 
-		DecomposingRecipe recipeToCraft = getRecipeForInput(world, inputContents).orElse(null);
+		DecomposerRecipe recipeToCraft = getRecipeForInput(world, inputContents).orElse(null);
 		if (recipeToCraft == null) {
 			decomposerState.cancelCrafting();
 		}
@@ -133,7 +134,7 @@ public class DecomposerTileEntity extends OwnableTileEntity implements INamedCon
 						decomposerState.setCraftingGoalRecipe(recipeToCraft); // this also sets the time required for crafting
 					}
 					else if (!decomposerState.isCraftingCanceled()) {
-						DecomposingRecipe recipeCraftingGoal = decomposerState.getCraftingGoalRecipe(world).orElse(null);
+						DecomposerRecipe recipeCraftingGoal = decomposerState.getCraftingGoalRecipe(world).orElse(null);
 						if (recipeCraftingGoal == null || !areRecipesEqual(recipeToCraft, recipeCraftingGoal, true)) {
 							decomposerState.cancelCrafting();
 						}
@@ -180,7 +181,7 @@ public class DecomposerTileEntity extends OwnableTileEntity implements INamedCon
 		}
 	}
 
-	private boolean craftItems(DecomposingRecipe recipeToCraft, Random rand) {
+	private boolean craftItems(DecomposerRecipe recipeToCraft, Random rand) {
 		ItemStack result = recipeToCraft.getCraftingResult(inputContents);
 		if (!result.isEmpty() && outputContents.doesItemStackFit(0, result)) {
 			for (int idx = 0; idx < inputContents.getSizeInventory(); idx++) {
@@ -190,9 +191,9 @@ public class DecomposerTileEntity extends OwnableTileEntity implements INamedCon
 			outputContents.insertItemStack(0, result); //output result
 
 			//output optional byproducts
-			for (DecomposingRecipe.OptionalByproduct byproduct : recipeToCraft.getOptionalByproducts()) {
+			for (Byproduct byproduct : recipeToCraft.getByproducts()) {
 				if (rand.nextFloat() <= byproduct.getChance()) {
-					ItemStack stack = byproduct.getItemStack().copy();
+					ItemStack stack = byproduct.getItemStack();
 					for (int idx = 1; idx < outputContents.getSizeInventory(); idx++) { //index 0 is reserved for the main crafting output
 						stack = outputContents.insertItemStack(idx, stack); //update stack with remainder
 						if (stack.isEmpty()) break;

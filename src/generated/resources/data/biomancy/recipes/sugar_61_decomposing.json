@@ -1,0 +1,14 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:cookie"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "minecraft:sugar",
+    "count": 5
+  },
+  "time": 222
+}

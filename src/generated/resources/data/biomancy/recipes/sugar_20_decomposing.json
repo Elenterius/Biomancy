@@ -1,0 +1,13 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:jungle_sapling"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "minecraft:sugar"
+  },
+  "time": 305
+}

@@ -46,6 +46,7 @@ public final class ModBlocks {
 	public static final RegistryObject<MutatedFleshBlock> MUTATED_FLESH_BLOCK = BLOCKS.register("mutated_flesh_block", () -> new MutatedFleshBlock(createFleshProperties()));
 	public static final RegistryObject<Block> NECROTIC_FLESH_BLOCK = BLOCKS.register("necrotic_flesh_block", () -> new FleshBlock(createFleshProperties()));
 
+	//Plant
 	public static final RegistryObject<Block> FLESH_MELON_BLOCK = BLOCKS.register("flesh_melon_block", () -> new Block(Block.Properties.create(Material.GOURD, MaterialColor.PINK).hardnessAndResistance(1f).sound(SoundType.WOOD)));
 	public static final RegistryObject<FleshMelonCropBlock> FLESH_MELON_CROP = BLOCKS.register("flesh_melon_crop", () -> new FleshMelonCropBlock(Block.Properties.create(Material.PLANTS, MaterialColor.PINK).tickRandomly().hardnessAndResistance(0.2f).sound(SoundType.STEM)));
 
@@ -60,6 +61,10 @@ public final class ModBlocks {
 	//Containers
 	public static final RegistryObject<GulgeBlock> GULGE = BLOCKS.register("gulge", () -> new GulgeBlock(createFleshProperties()));
 	public static final RegistryObject<FleshChestBlock> FLESH_CHEST = BLOCKS.register("bioflesh_chest", () -> new FleshChestBlock(createFleshProperties()));
+
+	//machine containers
+	public static final RegistryObject<DecomposerBlock> CHEWER = BLOCKS.register("chewer", () -> new DecomposerBlock(createFleshProperties()));
+	public static final RegistryObject<DecomposerBlock> DIGESTER = BLOCKS.register("digester", () -> new DecomposerBlock(createFleshProperties()));
 	public static final RegistryObject<DecomposerBlock> DECOMPOSER = BLOCKS.register("decomposer", () -> new DecomposerBlock(createFleshProperties()));
 	public static final RegistryObject<EvolutionPoolBlock> EVOLUTION_POOL = BLOCKS.register("evolution_pool", () -> new EvolutionPoolBlock(createFleshProperties()));
 

@@ -1,0 +1,11 @@
+{
+  "type": "biomancy:chewing",
+  "ingredient": {
+    "item": "minecraft:carved_pumpkin"
+  },
+  "result": {
+    "item": "biomancy:bolus",
+    "count": 4
+  },
+  "time": 253
+}

@@ -1,0 +1,10 @@
+{
+  "type": "biomancy:chewing",
+  "ingredient": {
+    "tag": "forge:nuggets/iron"
+  },
+  "result": {
+    "item": "biomancy:oxide_powder"
+  },
+  "time": 200
+}

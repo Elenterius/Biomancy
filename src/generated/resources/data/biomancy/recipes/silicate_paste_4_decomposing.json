@@ -8,9 +8,10 @@
   "byproducts": [
     {
       "result": {
-        "item": "biomancy:mutagenic_bile"
+        "item": "biomancy:mutagenic_bile",
+        "count": 2
       },
-      "chance": 0.4
+      "chance": 1.0
     }
   ],
   "result": {

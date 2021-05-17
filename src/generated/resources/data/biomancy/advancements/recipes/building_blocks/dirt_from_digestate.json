@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:dirt_from_digestate"
+    ]
+  },
+  "criteria": {
+    "has_digestate": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "biomancy:digestate"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:dirt_from_digestate"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_digestate",
+      "has_the_recipe"
+    ]
+  ]
+}

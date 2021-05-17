@@ -1,0 +1,13 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:dried_kelp"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "minecraft:sugar"
+  },
+  "time": 305
+}

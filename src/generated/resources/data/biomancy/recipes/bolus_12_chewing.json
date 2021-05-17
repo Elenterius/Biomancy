@@ -1,0 +1,10 @@
+{
+  "type": "biomancy:chewing",
+  "ingredient": {
+    "item": "minecraft:acacia_leaves"
+  },
+  "result": {
+    "item": "biomancy:bolus"
+  },
+  "time": 305
+}

@@ -1,0 +1,11 @@
+{
+  "type": "biomancy:chewing",
+  "ingredient": {
+    "item": "minecraft:nether_sprouts"
+  },
+  "result": {
+    "item": "biomancy:bolus",
+    "count": 2
+  },
+  "time": 275
+}

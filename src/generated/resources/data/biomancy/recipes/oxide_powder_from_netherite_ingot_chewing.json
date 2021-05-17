@@ -1,0 +1,11 @@
+{
+  "type": "biomancy:chewing",
+  "ingredient": {
+    "tag": "forge:ingots/netherite"
+  },
+  "result": {
+    "item": "biomancy:oxide_powder",
+    "count": 60
+  },
+  "time": 600
+}

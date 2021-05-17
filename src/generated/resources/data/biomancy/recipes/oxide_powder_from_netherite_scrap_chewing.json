@@ -1,0 +1,11 @@
+{
+  "type": "biomancy:chewing",
+  "ingredient": {
+    "item": "minecraft:netherite_scrap"
+  },
+  "result": {
+    "item": "biomancy:oxide_powder",
+    "count": 6
+  },
+  "time": 200
+}

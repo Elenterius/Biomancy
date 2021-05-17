@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:red_sand_from_red_sandstone_chewing"
+    ]
+  },
+  "criteria": {
+    "has_red_sandstone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:red_sandstone"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:red_sand_from_red_sandstone_chewing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_red_sandstone",
+      "has_the_recipe"
+    ]
+  ]
+}

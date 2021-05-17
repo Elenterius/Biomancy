@@ -2,10 +2,22 @@
   "type": "biomancy:evolution_pool",
   "ingredients": [
     {
-      "item": "minecraft:rotten_flesh"
+      "item": "biomancy:oculus"
     },
     {
-      "item": "minecraft:bone"
+      "type": "forge:nbt",
+      "item": "minecraft:enchanted_book",
+      "count": 1,
+      "nbt": "{StoredEnchantments:[{lvl:3s,id:\"minecraft:sweeping\"}]}"
+    },
+    {
+      "item": "biomancy:sharp_bone"
+    },
+    {
+      "item": "biomancy:sharp_bone"
+    },
+    {
+      "item": "minecraft:diamond_sword"
     },
     {
       "item": "biomancy:flesh_block"
@@ -14,5 +26,5 @@
   "result": {
     "item": "biomancy:long_range_claw"
   },
-  "time": 400
+  "time": 800
 }

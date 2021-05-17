@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:red_sand_from_oxide"
+    ]
+  },
+  "criteria": {
+    "has_oxide_powder": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "biomancy:silicate_paste"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:red_sand_from_oxide"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_oxide_powder",
+      "has_the_recipe"
+    ]
+  ]
+}

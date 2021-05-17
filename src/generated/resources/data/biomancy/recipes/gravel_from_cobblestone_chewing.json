@@ -1,0 +1,10 @@
+{
+  "type": "biomancy:chewing",
+  "ingredient": {
+    "item": "minecraft:cobblestone"
+  },
+  "result": {
+    "item": "minecraft:gravel"
+  },
+  "time": 400
+}

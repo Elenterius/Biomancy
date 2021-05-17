@@ -103,6 +103,8 @@ public class ModBlockLootTables extends BlockLootTables {
 		registerLootTable(ModBlocks.MEATSOUP_CAULDRON.get(), dropping(Blocks.CAULDRON));
 		registerLootTable(ModBlocks.GULGE.get(), ModBlockLootTables::droppingWithInventory);
 		registerLootTable(ModBlocks.FLESH_CHEST.get(), ModBlockLootTables::droppingWithInventory);
+		registerDropSelfLootTable(ModBlocks.CHEWER.get()); //TODO: drop inventory
+		registerDropSelfLootTable(ModBlocks.DIGESTER.get());  //TODO: drop inventory
 		registerLootTable(ModBlocks.DECOMPOSER.get(), ModBlockLootTables::droppingWithFuel);
 		registerLootTable(ModBlocks.EVOLUTION_POOL.get(), dropping(ModBlocks.FLESH_BLOCK_STAIRS.get()));
 

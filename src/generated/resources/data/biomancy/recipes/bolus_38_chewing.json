@@ -1,0 +1,10 @@
+{
+  "type": "biomancy:chewing",
+  "ingredient": {
+    "item": "minecraft:spruce_leaves"
+  },
+  "result": {
+    "item": "biomancy:bolus"
+  },
+  "time": 305
+}

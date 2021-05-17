@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:cobblestone"
+    },
+    {
+      "item": "biomancy:silicate_paste"
+    },
+    {
+      "item": "biomancy:silicate_paste"
+    }
+  ],
+  "result": {
+    "item": "minecraft:diorite"
+  }
+}

@@ -41,6 +41,7 @@ public final class CommonSetupHandler {
 
 			ModRecipes.registerRecipeTypes();
 			ModRecipes.registerCustomItemPredicates();
+			ModRecipes.registerComposterRecipes();
 
 			ModEntityTypes.onPostSetup();
 		});

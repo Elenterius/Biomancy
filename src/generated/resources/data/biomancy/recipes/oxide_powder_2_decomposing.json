@@ -2,13 +2,15 @@
   "type": "biomancy:decomposing",
   "ingredients": [
     {
-      "tag": "forge:ingots/gold"
+      "tag": "forge:bones"
+    },
+    {
+      "tag": "forge:bones"
     }
   ],
   "byproducts": [],
   "result": {
-    "item": "biomancy:oxide_powder",
-    "count": 3
+    "item": "biomancy:oxide_powder"
   },
-  "time": 300
+  "time": 200
 }

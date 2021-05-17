@@ -1,0 +1,10 @@
+{
+  "type": "biomancy:chewing",
+  "ingredient": {
+    "item": "minecraft:oak_sapling"
+  },
+  "result": {
+    "item": "biomancy:bolus"
+  },
+  "time": 305
+}

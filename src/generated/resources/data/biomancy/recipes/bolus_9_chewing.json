@@ -1,0 +1,11 @@
+{
+  "type": "biomancy:chewing",
+  "ingredient": {
+    "item": "minecraft:cake"
+  },
+  "result": {
+    "item": "biomancy:bolus",
+    "count": 6
+  },
+  "time": 200
+}

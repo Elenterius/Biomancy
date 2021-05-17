@@ -5,7 +5,14 @@
       "item": "minecraft:shulker_shell"
     }
   ],
-  "byproducts": [],
+  "byproducts": [
+    {
+      "result": {
+        "item": "biomancy:silicate_paste"
+      },
+      "chance": 1.0
+    }
+  ],
   "result": {
     "item": "biomancy:silicate_paste",
     "count": 3

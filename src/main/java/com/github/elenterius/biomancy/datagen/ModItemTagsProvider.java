@@ -44,7 +44,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 				.add(SUGAR, COOKIE, CAKE, HONEYCOMB, HONEY_BLOCK, HONEYCOMB_BLOCK, HONEY_BOTTLE, SWEET_BERRIES, COCOA_BEANS);
 
 		LOGGER.info(logMarker, "registering secretion item tags...");
-		Builder<Item> bioticsBuilder = getOrCreateBuilder(ModTags.Items.BIOTICS);
+		Builder<Item> bioticsBuilder = getOrCreateBuilder(ModTags.Items.RAW_BIOMASS);
 		ComposterBlock.CHANCES.keySet().stream().map(IItemProvider::asItem).forEach(bioticsBuilder::addItemEntry);
 
 		getOrCreateBuilder(ModTags.Items.OXIDES)

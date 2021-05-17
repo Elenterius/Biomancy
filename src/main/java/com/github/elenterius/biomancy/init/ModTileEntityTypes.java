@@ -22,7 +22,7 @@ public class ModTileEntityTypes {
 	public static final RegistryObject<TileEntityType<FleshChestTileEntity>> FLESH_CHEST = TILE_ENTITIES.register("bioflesh_chest", () -> TileEntityType.Builder.create(FleshChestTileEntity::new, ModBlocks.FLESH_CHEST.get()).build(NO_DATA_FIXER));
 
 	// Machines
-	public static final RegistryObject<TileEntityType<DecomposerTileEntity>> DECOMPOSER = TILE_ENTITIES.register("decomposer", () -> TileEntityType.Builder.create(DecomposerTileEntity::new, ModBlocks.DECOMPOSER.get()).build(NO_DATA_FIXER));
+	public static final RegistryObject<TileEntityType<DecomposerTileEntity>> DECOMPOSER = TILE_ENTITIES.register("decomposer", () -> TileEntityType.Builder.create(DecomposerTileEntity::new, ModBlocks.DIGESTER.get()).build(NO_DATA_FIXER));
 	public static final RegistryObject<TileEntityType<EvolutionPoolTileEntity>> EVOLUTION_POOL = TILE_ENTITIES.register("evolution_pool", () -> TileEntityType.Builder.create(EvolutionPoolTileEntity::new, ModBlocks.EVOLUTION_POOL.get()).build(NO_DATA_FIXER));
 
 	// Multi-Block Tile Delegator

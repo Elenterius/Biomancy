@@ -8,7 +8,14 @@
       "item": "minecraft:granite"
     }
   ],
-  "byproducts": [],
+  "byproducts": [
+    {
+      "result": {
+        "item": "biomancy:silicate_paste"
+      },
+      "chance": 0.5
+    }
+  ],
   "result": {
     "item": "biomancy:silicate_paste"
   },

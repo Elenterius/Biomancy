@@ -1,0 +1,13 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:dark_oak_sapling"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "minecraft:sugar"
+  },
+  "time": 305
+}

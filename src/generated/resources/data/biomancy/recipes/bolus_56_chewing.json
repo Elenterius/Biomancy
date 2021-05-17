@@ -1,0 +1,11 @@
+{
+  "type": "biomancy:chewing",
+  "ingredient": {
+    "item": "minecraft:lily_of_the_valley"
+  },
+  "result": {
+    "item": "biomancy:bolus",
+    "count": 4
+  },
+  "time": 253
+}
