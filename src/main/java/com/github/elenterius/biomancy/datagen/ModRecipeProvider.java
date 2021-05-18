@@ -126,19 +126,19 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.OCULI_OF_UNVEILING.get(), defaultTime * 2)
-				.addIngredient(Items.IRON_HELMET).addIngredients(ModItems.OCULUS.get(), 4).addIngredient(ModItems.FLESH_BLOCK.get())
+				.addIngredient(Items.IRON_HELMET).addIngredients(ModItems.OCULUS.get(), 4).addIngredient(ModItems.BIOMETAL.get())
 				.addCriterion("has_mutagenic_bile", hasItems(ModItems.MUTAGENIC_BILE.get(), ModItems.MENISCUS_LENS.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIOFLESH_AXE.get(), defaultTime)
-				.addIngredient(Items.IRON_AXE).addIngredient(Items.BONE).addIngredient(ModItems.FLESH_BLOCK.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_SERUM.get())
+				.addIngredient(Items.IRON_AXE).addIngredient(Items.BONE).addIngredients(ModItems.BIOMETAL.get(), 3).addIngredient(ModItems.HORMONE_SERUM.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIOFLESH_SHOVEL.get(), defaultTime)
-				.addIngredient(Items.IRON_SHOVEL).addIngredient(Items.BONE).addIngredient(ModItems.FLESH_BLOCK.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_SERUM.get())
+				.addIngredient(Items.IRON_SHOVEL).addIngredient(Items.BONE).addIngredient(ModItems.BIOMETAL.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_SERUM.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIOFLESH_PICKAXE.get(), defaultTime)
-				.addIngredient(Items.IRON_PICKAXE).addIngredient(Items.BONE).addIngredient(ModItems.FLESH_BLOCK.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_SERUM.get())
+				.addIngredient(Items.IRON_PICKAXE).addIngredient(Items.BONE).addIngredients(ModItems.BIOMETAL.get(), 3).addIngredient(ModItems.HORMONE_SERUM.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIOFLESH_WAR_AXE.get(), defaultTime * 2)
@@ -148,17 +148,17 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		ItemStackIngredient sweepingBook = new ItemStackIngredient(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(Enchantments.SWEEPING, Enchantments.SWEEPING.getMaxLevel())));
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.LONG_RANGE_CLAW.get(), defaultTime * 2)
-				.addIngredient(ModItems.OCULUS.get()).addIngredient(sweepingBook).addIngredients(ModItems.SHARP_BONE.get(), 2).addIngredient(Items.DIAMOND_SWORD).addIngredient(ModItems.FLESH_BLOCK.get())
+				.addIngredient(ModItems.OCULUS.get()).addIngredient(sweepingBook).addIngredients(ModItems.SHARP_BONE.get(), 2).addIngredient(Items.DIAMOND_SWORD).addIngredient(ModItems.BIOMETAL.get())
 				.addCriterion("has_oculus", hasItem(ModItems.OCULUS.get())).build(consumer);
 
 		ItemStackIngredient mendingBook = new ItemStackIngredient(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(Enchantments.MENDING, Enchantments.MENDING.getMaxLevel())));
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.LEECH_CLAW.get(), defaultTime * 2)
-				.addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.SYRINGE.get()).addIngredient(mendingBook).addIngredient(Items.DIAMOND_SWORD).addIngredient(ModItems.FLESH_BLOCK.get())
+				.addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.SYRINGE.get()).addIngredient(mendingBook).addIngredient(Items.DIAMOND_SWORD).addIngredient(ModItems.BIOMETAL.get())
 				.addCriterion("has_oculus", hasItem(ModItems.OCULUS.get())).build(consumer);
 
 		ItemStackIngredient maxBaneBook = new ItemStackIngredient(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(ModEnchantments.ATTUNED_BANE.get(), ModEnchantments.ATTUNED_BANE.get().getMaxLevel())));
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIOFLESH_GUAN_DAO.get(), defaultTime * 2)
-				.addIngredient(ModItems.OCULUS.get()).addIngredient(maxBaneBook).addIngredient(Items.BONE).addIngredient(Items.DIAMOND_SWORD).addIngredient(Items.DIAMOND_AXE).addIngredient(ModItems.FLESH_BLOCK.get())
+				.addIngredient(ModItems.OCULUS.get()).addIngredient(maxBaneBook).addIngredient(Items.BONE).addIngredient(Items.DIAMOND_SWORD).addIngredient(Items.DIAMOND_AXE).addIngredient(ModItems.BIOMETAL.get())
 				.addCriterion("has_oculus", hasItem(ModItems.OCULUS.get())).build(consumer);
 
 		// Enchantments ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -673,7 +673,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		ShapelessRecipeBuilder.shapelessRecipe(Items.RED_SAND)
 				.addIngredient(Items.SAND).addIngredient(ModItems.OXIDE_POWDER.get()).addIngredient(ModItems.OXIDE_POWDER.get())
-				.addCriterion("has_oxide_powder", hasItem(ModItems.SILICATE_PASTE.get())).build(consumer, BiomancyMod.createRL("red_sand_from_oxide"));
+				.addCriterion("has_oxide_powder", hasItem(ModItems.OXIDE_POWDER.get())).build(consumer, BiomancyMod.createRL("red_sand_from_oxide"));
 
 		ShapedRecipeBuilder.shapedRecipe(Items.DIRT)
 				.key('S', Items.SAND)
