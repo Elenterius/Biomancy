@@ -11,6 +11,11 @@ public class DecomposerStateData extends RecipeCraftingStateData<DecomposerRecip
 	public static final int FUEL_INDEX = 2;
 	public static final int SPEED_FUEL_INDEX = 3;
 
+	public static final String NBT_KEY_TIME_ELAPSED = "TimeElapsed";
+	public static final String NBT_KEY_TIME_FOR_COMPLETION = "TimeForCompletion";
+	public static final String NBT_KEY_MAIN_FUEL = "MainFuel";
+	public static final String NBT_KEY_SPEED_FUEL = "SpeedFuel";
+
 	public int timeElapsed;
 	public int timeForCompletion;
 	public short mainFuel; //raw-meat (fake "saturation", we use the food healing value instead)
@@ -37,19 +42,19 @@ public class DecomposerStateData extends RecipeCraftingStateData<DecomposerRecip
 	@Override
 	public void serializeNBT(CompoundNBT nbt) {
 		super.serializeNBT(nbt);
-		if (timeElapsed > 0) nbt.putInt("TimeElapsed", timeElapsed);
-		if (timeForCompletion > 0) nbt.putInt("TimeForCompletion", timeForCompletion);
-		if (mainFuel > 0) nbt.putShort("MainFuel", mainFuel);
-		if (speedFuel > 0) nbt.putShort("SpeedFuel", speedFuel);
+		if (timeElapsed > 0) nbt.putInt(NBT_KEY_TIME_ELAPSED, timeElapsed);
+		if (timeForCompletion > 0) nbt.putInt(NBT_KEY_TIME_FOR_COMPLETION, timeForCompletion);
+		if (mainFuel > 0) nbt.putShort(NBT_KEY_MAIN_FUEL, mainFuel);
+		if (speedFuel > 0) nbt.putShort(NBT_KEY_SPEED_FUEL, speedFuel);
 	}
 
 	@Override
 	public void deserializeNBT(CompoundNBT nbt) {
 		super.deserializeNBT(nbt);
-		timeElapsed = nbt.getInt("TimeElapsed");
-		timeForCompletion = nbt.getInt("TimeForCompletion");
-		mainFuel = nbt.getShort("MainFuel");
-		speedFuel = nbt.getShort("SpeedFuel");
+		timeElapsed = nbt.getInt(NBT_KEY_TIME_ELAPSED);
+		timeForCompletion = nbt.getInt(NBT_KEY_TIME_FOR_COMPLETION);
+		mainFuel = nbt.getShort(NBT_KEY_MAIN_FUEL);
+		speedFuel = nbt.getShort(NBT_KEY_SPEED_FUEL);
 	}
 
 	@Override

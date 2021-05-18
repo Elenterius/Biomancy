@@ -1,30 +1,30 @@
 package com.github.elenterius.biomancy.tileentity.state;
 
-import com.github.elenterius.biomancy.recipe.EvolutionPoolRecipe;
+import com.github.elenterius.biomancy.recipe.DigesterRecipe;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.IIntArray;
 
-public class EvolutionPoolStateData extends RecipeCraftingStateData<EvolutionPoolRecipe> implements IIntArray {
-
-	public static final int TIME_INDEX = 0;
-	public static final int TIME_FOR_COMPLETION_INDEX = 1;
-	public static final int FUEL_INDEX = 2;
+public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> implements IIntArray {
 
 	public static final String NBT_KEY_TIME_ELAPSED = "TimeElapsed";
 	public static final String NBT_KEY_TIME_FOR_COMPLETION = "TimeForCompletion";
 	public static final String NBT_KEY_FUEL = "Fuel";
 
+	public static final int TIME_INDEX = 0;
+	public static final int TIME_FOR_COMPLETION_INDEX = 1;
+	public static final int FUEL_INDEX = 2;
+
 	public int timeElapsed;
 	public int timeForCompletion;
-	public short fuel; //mutagenic bile
+	public short fuel; //water
 
 	@Override
-	Class<EvolutionPoolRecipe> getRecipeType() {
-		return EvolutionPoolRecipe.class;
+	Class<DigesterRecipe> getRecipeType() {
+		return DigesterRecipe.class;
 	}
 
 	@Override
-	public void setCraftingGoalRecipe(EvolutionPoolRecipe recipe) {
+	public void setCraftingGoalRecipe(DigesterRecipe recipe) {
 		super.setCraftingGoalRecipe(recipe);
 		timeForCompletion = recipe.getCraftingTime();
 	}

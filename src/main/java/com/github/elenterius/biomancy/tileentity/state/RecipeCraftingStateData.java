@@ -10,6 +10,8 @@ import java.util.Optional;
 
 public abstract class RecipeCraftingStateData<T extends IRecipe<?>> {
 
+	public static final String NBT_KEY_RECIPE_ID = "RecipeId";
+
 	private CraftingState craftingState = CraftingState.NONE;
 	private ResourceLocation recipeId; //we don't store the recipe reference, this way we don't have to check if the recipe was changed in the meantime
 
@@ -59,14 +61,14 @@ public abstract class RecipeCraftingStateData<T extends IRecipe<?>> {
 	public void serializeNBT(CompoundNBT nbt) {
 		CraftingState.serialize(nbt, craftingState);
 		if (recipeId != null) {
-			nbt.putString("RecipeId", recipeId.toString());
+			nbt.putString(NBT_KEY_RECIPE_ID, recipeId.toString());
 		}
 	}
 
 	public void deserializeNBT(CompoundNBT nbt) {
 		craftingState = CraftingState.deserialize(nbt);
-		if (nbt.contains("RecipeId")) {
-			String id = nbt.getString("RecipeId");
+		if (nbt.contains(NBT_KEY_RECIPE_ID)) {
+			String id = nbt.getString(NBT_KEY_RECIPE_ID);
 			recipeId = ResourceLocation.tryCreate(id);
 		}
 		else recipeId = null;

@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundNBT;
 public enum CraftingState {
 	NONE(0), IN_PROGRESS(1), CANCELED(2), COMPLETED(3);
 
+	public static final String NBT_KEY = "CraftingState";
 	final byte id;
 
 	CraftingState(int id) {
@@ -31,10 +32,10 @@ public enum CraftingState {
 	}
 
 	public static void serialize(CompoundNBT nbt, CraftingState state) {
-		nbt.putByte("CraftingState", state.id);
+		nbt.putByte(NBT_KEY, state.id);
 	}
 
 	public static CraftingState deserialize(CompoundNBT nbt) {
-		return CraftingState.fromId(nbt.getByte("CraftingState"));
+		return CraftingState.fromId(nbt.getByte(NBT_KEY));
 	}
 }
