@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:vile_melon_from_campfire"
+    ]
+  },
+  "criteria": {
+    "has_vile_melon_slice": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "biomancy:flesh_melon_slice"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:vile_melon_from_campfire"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_vile_melon_slice",
+      "has_the_recipe"
+    ]
+  ]
+}

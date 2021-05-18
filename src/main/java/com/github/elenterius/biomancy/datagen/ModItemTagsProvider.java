@@ -10,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.apache.commons.lang3.StringUtils;
@@ -18,6 +19,7 @@ import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 
 import javax.annotation.Nullable;
+import java.util.Comparator;
 
 import static net.minecraft.item.Items.*;
 
@@ -28,6 +30,17 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
 	public ModItemTagsProvider(DataGenerator dataGenerator, BlockTagsProvider blockTagProvider, @Nullable ExistingFileHelper existingFileHelper) {
 		super(dataGenerator, blockTagProvider, BiomancyMod.MOD_ID, existingFileHelper);
+	}
+
+	protected final ItemComparator ITEM_ID_COMPARATOR = new ItemComparator();
+
+	static class ItemComparator implements Comparator<IItemProvider> {
+		@Override
+		public int compare(IItemProvider a, IItemProvider b) {
+			ResourceLocation idA = Registry.ITEM.getKey(a.asItem());
+			ResourceLocation idB = Registry.ITEM.getKey(b.asItem());
+			return idA.compareTo(idB);
+		}
 	}
 
 	@Override
@@ -44,8 +57,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 				.add(SUGAR, COOKIE, CAKE, HONEYCOMB, HONEY_BLOCK, HONEYCOMB_BLOCK, HONEY_BOTTLE, SWEET_BERRIES, COCOA_BEANS);
 
 		LOGGER.info(logMarker, "registering secretion item tags...");
-		Builder<Item> bioticsBuilder = getOrCreateBuilder(ModTags.Items.RAW_BIOMASS);
-		ComposterBlock.CHANCES.keySet().stream().map(IItemProvider::asItem).forEach(bioticsBuilder::addItemEntry);
+		Builder<Item> builder = getOrCreateBuilder(ModTags.Items.RAW_BIOMASS);
+		ComposterBlock.CHANCES.keySet().stream().sorted(ITEM_ID_COMPARATOR).map(IItemProvider::asItem).forEach(builder::addItemEntry);
 
 		getOrCreateBuilder(ModTags.Items.OXIDES)
 				.add(NETHERITE_SCRAP, TURTLE_EGG, BONE_MEAL)

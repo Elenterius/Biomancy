@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:sugar_from_mc_cactus_decomposing"
+    ]
+  },
+  "criteria": {
+    "has_raw_biomass": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "biomancy:raw_biomass"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:sugar_from_mc_cactus_decomposing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_raw_biomass",
+      "has_the_recipe"
+    ]
+  ]
+}

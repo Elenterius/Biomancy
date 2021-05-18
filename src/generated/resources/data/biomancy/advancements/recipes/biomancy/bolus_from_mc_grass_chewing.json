@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:bolus_from_mc_grass_chewing"
+    ]
+  },
+  "criteria": {
+    "has_raw_biomass": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "biomancy:raw_biomass"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:bolus_from_mc_grass_chewing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_raw_biomass",
+      "has_the_recipe"
+    ]
+  ]
+}

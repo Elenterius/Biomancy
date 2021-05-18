@@ -14,6 +14,13 @@
         "item": "biomancy:oxide_powder"
       },
       "chance": 0.5
+    },
+    {
+      "result": {
+        "item": "biomancy:silicate_paste",
+        "count": 2
+      },
+      "chance": 0.8
     }
   ],
   "result": {

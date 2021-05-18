@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "biomancy:flesh_melon_slice"
+    }
+  ],
+  "result": {
+    "item": "biomancy:flesh_melon_seeds"
+  }
+}
