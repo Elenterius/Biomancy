@@ -22,7 +22,7 @@ public class DigesterRecipe implements IRecipe<IInventory> {
 	private final Byproduct byproduct;
 	private final int time;
 
-	public DigesterRecipe(ResourceLocation keyIn, ItemStack resultIn, Byproduct byproductIn, int timeIn, Ingredient ingredientIn) {
+	public DigesterRecipe(ResourceLocation keyIn, ItemStack resultIn, @Nullable Byproduct byproductIn, int timeIn, Ingredient ingredientIn) {
 		registryId = keyIn;
 		ingredient = ingredientIn;
 		result = resultIn;
@@ -48,6 +48,11 @@ public class DigesterRecipe implements IRecipe<IInventory> {
 	@Override
 	public ItemStack getRecipeOutput() {
 		return result;
+	}
+
+	@Nullable
+	public Byproduct getByproduct() {
+		return byproduct;
 	}
 
 	@Override

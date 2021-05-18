@@ -196,6 +196,8 @@
   "guide_book.biomancy.name": "Vionomicon",
   "guide_book.biomancy.landing_text": "Disclaimer: This whole guide is WIP and lacking lots of information.",
 
+  "jei.biomancy.recipe.chewer": "Chewer Recipes",
+  "jei.biomancy.recipe.digester": "Digester Recipes",
   "jei.biomancy.recipe.decomposer": "Decomposer Recipes",
   "jei.biomancy.recipe.evolution_pool": "Evolution Pool Recipes"
 }

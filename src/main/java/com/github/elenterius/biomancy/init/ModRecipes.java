@@ -60,6 +60,8 @@ public final class ModRecipes {
 	}
 
 	public static void registerRecipeTypes() {
+		Registry.register(Registry.RECIPE_TYPE, BiomancyMod.createRL("chewing"), CHEWER_RECIPE_TYPE);
+		Registry.register(Registry.RECIPE_TYPE, BiomancyMod.createRL("digesting"), DIGESTER_RECIPE_TYPE);
 		Registry.register(Registry.RECIPE_TYPE, BiomancyMod.createRL("decomposing"), DECOMPOSING_RECIPE_TYPE);
 		Registry.register(Registry.RECIPE_TYPE, BiomancyMod.createRL("evolution_pool"), EVOLUTION_POOL_RECIPE_TYPE);
 	}
