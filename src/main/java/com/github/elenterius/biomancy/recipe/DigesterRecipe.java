@@ -92,7 +92,7 @@ public class DigesterRecipe implements IRecipe<IInventory> {
 		public DigesterRecipe read(ResourceLocation recipeId, JsonObject json) {
 			Ingredient ingredient = readIngredient(json);
 			ItemStack resultStack = ShapedRecipe.deserializeItem(JSONUtils.getJsonObject(json, "result"));
-			Byproduct byproduct = Byproduct.deserialize(JSONUtils.getJsonObject(json, "byproduct"));
+			Byproduct byproduct = json.has("byproduct") ? Byproduct.deserialize(JSONUtils.getJsonObject(json, "byproduct")) : null;
 			int time = JSONUtils.getInt(json, "time", 100);
 			return new DigesterRecipe(recipeId, resultStack, byproduct, time, ingredient);
 		}
@@ -104,7 +104,9 @@ public class DigesterRecipe implements IRecipe<IInventory> {
 			ItemStack resultStack = buffer.readItemStack();
 			int time = buffer.readInt();
 			Ingredient ingredient = Ingredient.read(buffer);
-			Byproduct byproduct = Byproduct.read(buffer);
+
+			boolean hasByproduct = buffer.readBoolean();
+			Byproduct byproduct = hasByproduct ? Byproduct.read(buffer) : null;
 
 			return new DigesterRecipe(recipeId, resultStack, byproduct, time, ingredient);
 		}
@@ -115,7 +117,10 @@ public class DigesterRecipe implements IRecipe<IInventory> {
 			buffer.writeItemStack(recipe.result);
 			buffer.writeInt(recipe.time);
 			recipe.ingredient.write(buffer);
-			recipe.byproduct.write(buffer);
+
+			boolean hasByproduct = recipe.byproduct != null;
+			buffer.writeBoolean(hasByproduct);
+			if (hasByproduct) recipe.byproduct.write(buffer);
 		}
 	}
 }
