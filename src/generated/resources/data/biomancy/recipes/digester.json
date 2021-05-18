@@ -7,7 +7,7 @@
   ],
   "key": {
     "S": {
-      "item": "biomancy:digester"
+      "item": "biomancy:artificial_stomach"
     },
     "F": {
       "item": "biomancy:flesh_block"
@@ -17,6 +17,6 @@
     }
   },
   "result": {
-    "item": "biomancy:decomposer"
+    "item": "biomancy:digester"
   }
 }

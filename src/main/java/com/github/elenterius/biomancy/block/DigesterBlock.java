@@ -2,7 +2,8 @@ package com.github.elenterius.biomancy.block;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModBlocks;
-import com.github.elenterius.biomancy.tileentity.DecomposerTileEntity;
+import com.github.elenterius.biomancy.tileentity.DigesterTileEntity;
+import com.github.elenterius.biomancy.tileentity.state.DigesterStateData;
 import com.github.elenterius.biomancy.util.TooltipUtil;
 import com.github.elenterius.biomancy.util.VoxelShapeUtil;
 import net.minecraft.block.Block;
@@ -38,9 +39,9 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class DecomposerBlock extends OwnableContainerBlock {
+public class DigesterBlock extends OwnableContainerBlock {
 
-	public static final BooleanProperty DECOMPOSING = ModBlocks.CRAFTING_PROPERTY;
+	public static final BooleanProperty CRAFTING = ModBlocks.CRAFTING_PROPERTY;
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
 	public static final VoxelShape NORTH_SHAPE = createVoxelShape(Direction.NORTH);
@@ -48,9 +49,9 @@ public class DecomposerBlock extends OwnableContainerBlock {
 	public static final VoxelShape EAST_SHAPE = createVoxelShape(Direction.EAST);
 	public static final VoxelShape WEST_SHAPE = createVoxelShape(Direction.WEST);
 
-	public DecomposerBlock(Properties builder) {
+	public DigesterBlock(Properties builder) {
 		super(builder);
-		setDefaultState(stateContainer.getBaseState().with(DECOMPOSING, false).with(FACING, Direction.NORTH));
+		setDefaultState(stateContainer.getBaseState().with(CRAFTING, false).with(FACING, Direction.NORTH));
 	}
 
 	private static VoxelShape createVoxelShape(Direction direction) {
@@ -65,17 +66,15 @@ public class DecomposerBlock extends OwnableContainerBlock {
 		CompoundNBT nbt = stack.getChildTag("BlockEntityTag");
 		if (nbt != null) {
 			tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
-			int mainFuel = (int) (MathHelper.clamp(nbt.getShort("MainFuel") / (float) DecomposerTileEntity.MAX_FUEL, 0f, 1f) * 100);
-			int speedFuel = (int) (MathHelper.clamp(nbt.getShort("SpeedFuel") / (float) DecomposerTileEntity.MAX_FUEL, 0f, 1f) * 100);
-			tooltip.add(BiomancyMod.getTranslationText("tooltip", "biofuel").appendString(": " + mainFuel + "%"));
-			tooltip.add(BiomancyMod.getTranslationText("tooltip", "speed_fuel").appendString(": " + speedFuel + "%"));
+			int mainFuel = (int) (MathHelper.clamp(nbt.getShort(DigesterStateData.NBT_KEY_FUEL) / (float) DigesterTileEntity.MAX_FUEL, 0f, 1f) * 100);
+			tooltip.add(BiomancyMod.getTranslationText("tooltip", "water").appendString(": " + mainFuel + "%"));
 		}
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 	}
 
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(DECOMPOSING, FACING);
+		builder.add(CRAFTING, FACING);
 	}
 
 	@Override
@@ -87,8 +86,8 @@ public class DecomposerBlock extends OwnableContainerBlock {
 	public void onReplaced(BlockState state, World world, BlockPos blockPos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock()) {
 			TileEntity tileEntity = world.getTileEntity(blockPos);
-			if (tileEntity instanceof DecomposerTileEntity) {
-				((DecomposerTileEntity) tileEntity).dropAllInvContents(world, blockPos);
+			if (tileEntity instanceof DigesterTileEntity) {
+				((DigesterTileEntity) tileEntity).dropAllInvContents(world, blockPos);
 			}
 			super.onReplaced(state, world, blockPos, newState, isMoving);
 		}
@@ -112,7 +111,7 @@ public class DecomposerBlock extends OwnableContainerBlock {
 	@Nullable
 	@Override
 	public TileEntity createNewTileEntity(IBlockReader worldIn) {
-		return new DecomposerTileEntity();
+		return new DigesterTileEntity();
 	}
 
 	@Override

@@ -64,7 +64,7 @@ public final class ModBlocks {
 
 	//machine containers
 	public static final RegistryObject<ChewerBlock> CHEWER = BLOCKS.register("chewer", () -> new ChewerBlock(createFleshProperties()));
-	public static final RegistryObject<DecomposerBlock> DIGESTER = BLOCKS.register("digester", () -> new DecomposerBlock(createFleshProperties()));
+	public static final RegistryObject<DigesterBlock> DIGESTER = BLOCKS.register("digester", () -> new DigesterBlock(createFleshProperties()));
 	public static final RegistryObject<DecomposerBlock> DECOMPOSER = BLOCKS.register("decomposer", () -> new DecomposerBlock(createFleshProperties()));
 	public static final RegistryObject<EvolutionPoolBlock> EVOLUTION_POOL = BLOCKS.register("evolution_pool", () -> new EvolutionPoolBlock(createFleshProperties()));
 

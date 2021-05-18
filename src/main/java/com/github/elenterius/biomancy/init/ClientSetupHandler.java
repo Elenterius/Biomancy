@@ -66,6 +66,7 @@ public final class ClientSetupHandler {
 			ScreenManager.registerFactory(ModContainerTypes.GULGE.get(), GulgeContainerScreen::new);
 			ScreenManager.registerFactory(ModContainerTypes.FLESH_CHEST.get(), FleshChestContainerScreen::new);
 			ScreenManager.registerFactory(ModContainerTypes.CHEWER.get(), ChewerContainerScreen::new);
+			ScreenManager.registerFactory(ModContainerTypes.DIGESTER.get(), DigesterContainerScreen::new);
 			ScreenManager.registerFactory(ModContainerTypes.DECOMPOSER.get(), DecomposerContainerScreen::new);
 			ScreenManager.registerFactory(ModContainerTypes.EVOLUTION_POOL.get(), EvolutionPoolContainerScreen::new);
 

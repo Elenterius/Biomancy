@@ -236,7 +236,7 @@ public class DecomposerTileEntity extends OwnableTileEntity implements INamedCon
 	public ItemStack addFuel(ItemStack stackIn) {
 		if (world == null || world.isRemote()) return stackIn;
 
-		if (!stackIn.isEmpty()) {
+		if (!stackIn.isEmpty()) { //TODO: replace dependency on meat with nutrient paste
 			Item item = stackIn.getItem();
 			if (decomposerState.mainFuel < MAX_FUEL && stackIn.isFood()) {
 				Food food = item.getFood();

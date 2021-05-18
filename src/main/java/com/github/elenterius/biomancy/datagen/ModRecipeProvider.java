@@ -640,11 +640,11 @@ public class ModRecipeProvider extends RecipeProvider {
 		// machines ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		ShapedRecipeBuilder.shapedRecipe(ModItems.DECOMPOSER.get())
-				.key('S', ModItems.ARTIFICIAL_STOMACH.get())
+				.key('S', ModItems.DIGESTER.get())
 				.key('F', ModItems.FLESH_BLOCK.get())
 				.key('L', ModItems.FLESH_BLOCK_SLAB.get())
 				.patternLine("FLF").patternLine("FSF").patternLine("FLF")
-				.addCriterion("has_stomach", hasItem(ModItems.ARTIFICIAL_STOMACH.get())).build(consumer);
+				.addCriterion("has_digester", hasItem(ModItems.DIGESTER.get())).build(consumer);
 
 		ShapedRecipeBuilder.shapedRecipe(ModItems.CHEWER.get())
 				.key('S', Items.STONECUTTER)
@@ -652,6 +652,13 @@ public class ModRecipeProvider extends RecipeProvider {
 				.key('L', ModItems.FLESH_BLOCK_SLAB.get())
 				.patternLine("FLF").patternLine("FSF").patternLine("FLF")
 				.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK.get())).build(consumer);
+
+		ShapedRecipeBuilder.shapedRecipe(ModItems.DIGESTER.get())
+				.key('S', ModItems.ARTIFICIAL_STOMACH.get())
+				.key('F', ModItems.FLESH_BLOCK.get())
+				.key('L', ModItems.FLESH_BLOCK_SLAB.get())
+				.patternLine("FLF").patternLine("FSF").patternLine("FLF")
+				.addCriterion("has_stomach", hasItem(ModItems.ARTIFICIAL_STOMACH.get())).build(consumer);
 
 		// food ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -1,16 +1,17 @@
 package com.github.elenterius.biomancy.tileentity;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.block.ChewerBlock;
+import com.github.elenterius.biomancy.block.DigesterBlock;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.init.ModTileEntityTypes;
-import com.github.elenterius.biomancy.inventory.ChewerContainer;
+import com.github.elenterius.biomancy.inventory.DigesterContainer;
 import com.github.elenterius.biomancy.inventory.SimpleInvContents;
 import com.github.elenterius.biomancy.mixin.RecipeManagerMixinAccessor;
-import com.github.elenterius.biomancy.recipe.ChewerRecipe;
-import com.github.elenterius.biomancy.tileentity.state.ChewerStateData;
+import com.github.elenterius.biomancy.recipe.Byproduct;
+import com.github.elenterius.biomancy.recipe.DigesterRecipe;
 import com.github.elenterius.biomancy.tileentity.state.CraftingState;
+import com.github.elenterius.biomancy.tileentity.state.DigesterStateData;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -37,34 +38,35 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Optional;
+import java.util.Random;
 
-public class ChewerTileEntity extends OwnableTileEntity implements INamedContainerProvider, ITickableTileEntity {
+public class DigesterTileEntity extends OwnableTileEntity implements INamedContainerProvider, ITickableTileEntity {
 
 	public static final int FUEL_SLOTS_COUNT = 1;
 	public static final int INPUT_SLOTS_COUNT = 1;
-	public static final int OUTPUT_SLOTS_COUNT = 1;
+	public static final int OUTPUT_SLOTS_COUNT = 2;
 
 	public static final int DEFAULT_TIME = 200;
 	public static final int MAX_FUEL = 32_000;
 	public static final short FUEL_COST = 2;
 	public static final float FUEL_CONVERSION = FUEL_COST * DEFAULT_TIME / 4f;
 
-	private final ChewerStateData stateData = new ChewerStateData();
+	private final DigesterStateData stateData = new DigesterStateData();
 	private final SimpleInvContents fuelContents;
 	private final SimpleInvContents inputContents;
 	private final SimpleInvContents outputContents;
 
-	public ChewerTileEntity() {
-		super(ModTileEntityTypes.CHEWER.get());
+	public DigesterTileEntity() {
+		super(ModTileEntityTypes.DIGESTER.get());
 		fuelContents = SimpleInvContents.createServerContents(FUEL_SLOTS_COUNT, this::canPlayerOpenInv, this::markDirty);
 		inputContents = SimpleInvContents.createServerContents(INPUT_SLOTS_COUNT, this::canPlayerOpenInv, this::markDirty);
 		outputContents = SimpleInvContents.createServerContents(OUTPUT_SLOTS_COUNT, SimpleInvContents.ISHandlerType.NO_INSERT, this::canPlayerOpenInv, this::markDirty);
 	}
 
-	public static Optional<ChewerRecipe> getRecipeForItem(World world, ItemStack stackIn) {
+	public static Optional<DigesterRecipe> getRecipeForItem(World world, ItemStack stackIn) {
 		RecipeManagerMixinAccessor recipeManager = (RecipeManagerMixinAccessor) world.getRecipeManager();
 
-		return recipeManager.callGetRecipes(ModRecipes.CHEWER_RECIPE_TYPE).values().stream().map((recipe) -> (ChewerRecipe) recipe)
+		return recipeManager.callGetRecipes(ModRecipes.DIGESTER_RECIPE_TYPE).values().stream().map((recipe) -> (DigesterRecipe) recipe)
 				.filter(recipe -> {
 					for (Ingredient ingredient : recipe.getIngredients()) {
 						if (ingredient.test(stackIn)) return true;
@@ -73,7 +75,7 @@ public class ChewerTileEntity extends OwnableTileEntity implements INamedContain
 				}).findFirst();
 	}
 
-	public static boolean areRecipesEqual(ChewerRecipe recipeA, ChewerRecipe recipeB, boolean relaxed) {
+	public static boolean areRecipesEqual(DigesterRecipe recipeA, DigesterRecipe recipeB, boolean relaxed) {
 		boolean flag = recipeA.getId().equals(recipeB.getId());
 		if (!relaxed && !ItemHandlerHelper.canItemStacksStack(recipeA.getRecipeOutput(), recipeB.getRecipeOutput())) {
 			return false;
@@ -81,9 +83,9 @@ public class ChewerTileEntity extends OwnableTileEntity implements INamedContain
 		return flag;
 	}
 
-	public static Optional<ChewerRecipe> getRecipeForInput(World world, IInventory inputInv) {
+	public static Optional<DigesterRecipe> getRecipeForInput(World world, IInventory inputInv) {
 		RecipeManager recipeManager = world.getRecipeManager();
-		return recipeManager.getRecipe(ModRecipes.CHEWER_RECIPE_TYPE, inputInv, world);
+		return recipeManager.getRecipe(ModRecipes.DIGESTER_RECIPE_TYPE, inputInv, world);
 	}
 
 	public static boolean isItemValidFuel(ItemStack stack) {
@@ -92,13 +94,13 @@ public class ChewerTileEntity extends OwnableTileEntity implements INamedContain
 
 	@Override
 	protected ITextComponent getDefaultName() {
-		return BiomancyMod.getTranslationText("container", "chewer");
+		return BiomancyMod.getTranslationText("container", "digester");
 	}
 
 	@Nullable
 	@Override
 	public Container createMenu(int screenId, PlayerInventory playerInv, PlayerEntity player) {
-		return ChewerContainer.createServerContainer(screenId, playerInv, fuelContents, inputContents, outputContents, stateData);
+		return DigesterContainer.createServerContainer(screenId, playerInv, fuelContents, inputContents, outputContents, stateData);
 	}
 
 	@Override
@@ -109,7 +111,7 @@ public class ChewerTileEntity extends OwnableTileEntity implements INamedContain
 			refuel();
 		}
 
-		ChewerRecipe recipeToCraft = getRecipeForInput(world, inputContents).orElse(null);
+		DigesterRecipe recipeToCraft = getRecipeForInput(world, inputContents).orElse(null);
 		if (recipeToCraft == null) {
 			stateData.cancelCrafting();
 		}
@@ -126,7 +128,7 @@ public class ChewerTileEntity extends OwnableTileEntity implements INamedContain
 						stateData.setCraftingGoalRecipe(recipeToCraft); // this also sets the time required for crafting
 					}
 					else if (!stateData.isCraftingCanceled()) {
-						ChewerRecipe recipeCraftingGoal = stateData.getCraftingGoalRecipe(world).orElse(null);
+						DigesterRecipe recipeCraftingGoal = stateData.getCraftingGoalRecipe(world).orElse(null);
 						if (recipeCraftingGoal == null || !areRecipesEqual(recipeToCraft, recipeCraftingGoal, true)) {
 							stateData.cancelCrafting();
 						}
@@ -149,7 +151,7 @@ public class ChewerTileEntity extends OwnableTileEntity implements INamedContain
 			if (stateData.getCraftingState() == CraftingState.IN_PROGRESS || stateData.getCraftingState() == CraftingState.COMPLETED) {
 				if (stateData.timeElapsed >= stateData.timeForCompletion) {
 					stateData.setCraftingState(CraftingState.COMPLETED);
-					if (craftItem(recipeToCraft)) {
+					if (craftItems(recipeToCraft, world.rand)) {
 						stateData.setCraftingState(CraftingState.NONE);
 					}
 				}
@@ -166,20 +168,30 @@ public class ChewerTileEntity extends OwnableTileEntity implements INamedContain
 		}
 
 		BlockState oldBlockState = world.getBlockState(pos);
-		BlockState newBlockState = oldBlockState.with(ChewerBlock.CRAFTING, stateData.getCraftingState() == CraftingState.IN_PROGRESS);
+		BlockState newBlockState = oldBlockState.with(DigesterBlock.CRAFTING, stateData.getCraftingState() == CraftingState.IN_PROGRESS);
 		if (!newBlockState.equals(oldBlockState)) {
 			world.setBlockState(pos, newBlockState, Constants.BlockFlags.BLOCK_UPDATE);
 			markDirty();
 		}
 	}
 
-	private boolean craftItem(ChewerRecipe recipeToCraft) {
+	private boolean craftItems(DigesterRecipe recipeToCraft, Random rand) {
 		ItemStack result = recipeToCraft.getCraftingResult(inputContents);
 		if (!result.isEmpty() && outputContents.doesItemStackFit(0, result)) {
 			for (int idx = 0; idx < inputContents.getSizeInventory(); idx++) {
 				inputContents.decrStackSize(idx, 1);
 			}
 			outputContents.insertItemStack(0, result);
+
+			Byproduct byproduct = recipeToCraft.getByproduct();
+			if (byproduct != null && rand.nextFloat() <= byproduct.getChance()) {
+				ItemStack stack = byproduct.getItemStack();
+				for (int idx = 1; idx < outputContents.getSizeInventory(); idx++) { //index 0 is reserved for the main crafting output
+					stack = outputContents.insertItemStack(idx, stack); //update stack with remainder
+					if (stack.isEmpty()) break;
+				}
+			}
+
 			markDirty();
 			return true;
 		}

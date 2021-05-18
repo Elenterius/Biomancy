@@ -24,6 +24,7 @@ public class ModTileEntityTypes {
 	// Machines
 	public static final RegistryObject<TileEntityType<DecomposerTileEntity>> DECOMPOSER = TILE_ENTITIES.register("decomposer", () -> TileEntityType.Builder.create(DecomposerTileEntity::new, ModBlocks.DIGESTER.get()).build(NO_DATA_FIXER));
 	public static final RegistryObject<TileEntityType<ChewerTileEntity>> CHEWER = TILE_ENTITIES.register("chewer", () -> TileEntityType.Builder.create(ChewerTileEntity::new, ModBlocks.CHEWER.get()).build(NO_DATA_FIXER));
+	public static final RegistryObject<TileEntityType<DigesterTileEntity>> DIGESTER = TILE_ENTITIES.register("digester", () -> TileEntityType.Builder.create(DigesterTileEntity::new, ModBlocks.DIGESTER.get()).build(NO_DATA_FIXER));
 	public static final RegistryObject<TileEntityType<EvolutionPoolTileEntity>> EVOLUTION_POOL = TILE_ENTITIES.register("evolution_pool", () -> TileEntityType.Builder.create(EvolutionPoolTileEntity::new, ModBlocks.EVOLUTION_POOL.get()).build(NO_DATA_FIXER));
 
 	// Multi-Block Tile Delegator

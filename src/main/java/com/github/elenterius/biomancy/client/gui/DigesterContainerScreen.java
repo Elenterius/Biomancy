@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.inventory.DecomposerContainer;
+import com.github.elenterius.biomancy.inventory.DigesterContainer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.AbstractGui;
@@ -13,16 +13,16 @@ import net.minecraft.util.text.ITextComponent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DecomposerContainerScreen extends ContainerScreen<DecomposerContainer> {
+public class DigesterContainerScreen extends ContainerScreen<DigesterContainer> {
 
-	private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(BiomancyMod.MOD_ID, "textures/gui/decomposer_inventory.png");
-	public final int FUEL_BAR_POS_X = 16 + 1;
-	public final int FUEL_BAR_POS_Y = 33 + 4;
+	private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(BiomancyMod.MOD_ID, "textures/gui/chewer_inventory.png");
+	public final int FUEL_BAR_POS_X = 39;
+	public final int FUEL_BAR_POS_Y = 17;
 	public final int FUEL_BAR_WIDTH = 5;
 	public final int FUEL_BAR_HEIGHT = 60 - FUEL_BAR_POS_Y;
 
-	public DecomposerContainerScreen(DecomposerContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
-		super(screenContainer, inv, titleIn);
+	public DigesterContainerScreen(DigesterContainer container, PlayerInventory inv, ITextComponent titleIn) {
+		super(container, inv, titleIn);
 		//texture size
 		xSize = 176;
 		ySize = 166;
@@ -43,6 +43,7 @@ public class DecomposerContainerScreen extends ContainerScreen<DecomposerContain
 	protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
 		final float FONT_Y_SPACING = 12;
 		font.drawText(matrixStack, title, 10, 18 - FONT_Y_SPACING, 0xFFFFFF);
+
 		int craftingProgress = (int) (container.getCraftingProgressNormalized() * 100);
 		font.drawString(matrixStack, craftingProgress + "%", 52, 52 + 6, 0xFFFFFF);
 	}
@@ -59,9 +60,7 @@ public class DecomposerContainerScreen extends ContainerScreen<DecomposerContain
 		int posX = guiLeft + FUEL_BAR_POS_X;
 		int posY = guiTop + FUEL_BAR_POS_Y;
 		int maxPosY = posY + FUEL_BAR_HEIGHT;
-		AbstractGui.fill(matrixStack, posX, posY + (int) (FUEL_BAR_HEIGHT * (1f - container.getFuelNormalized())), posX + FUEL_BAR_WIDTH, maxPosY, 0xFF9B2425);
-		posX += FUEL_BAR_WIDTH + 6;
-		AbstractGui.fill(matrixStack, posX, posY + (int) (FUEL_BAR_HEIGHT * (1f - container.getSpeedFuelNormalized())), posX + FUEL_BAR_WIDTH, maxPosY, 0xFFF4EFC8);
+		AbstractGui.fill(matrixStack, posX, posY + (int) (FUEL_BAR_HEIGHT * (1f - container.getFuelNormalized())), posX + FUEL_BAR_WIDTH, maxPosY, 0xFF60963A);
 	}
 
 	@Override
@@ -73,12 +72,7 @@ public class DecomposerContainerScreen extends ContainerScreen<DecomposerContain
 
 		if (isInRect(guiLeft + FUEL_BAR_POS_X, guiTop + FUEL_BAR_POS_Y, FUEL_BAR_WIDTH, FUEL_BAR_HEIGHT, mouseX, mouseY)) {
 			int mainFuel = (int) (container.getFuelNormalized() * 100);
-			hoveringText.add(BiomancyMod.getTranslationText("tooltip", "biofuel").appendString(": " + mainFuel + "%"));
-		}
-
-		if (isInRect(guiLeft + FUEL_BAR_POS_X + FUEL_BAR_WIDTH + 6, guiTop + FUEL_BAR_POS_Y, FUEL_BAR_WIDTH, FUEL_BAR_HEIGHT, mouseX, mouseY)) {
-			int speedFuel = (int) (container.getSpeedFuelNormalized() * 100);
-			hoveringText.add(BiomancyMod.getTranslationText("tooltip", "speed_fuel").appendString(": " + speedFuel + "%"));
+			hoveringText.add(BiomancyMod.getTranslationText("tooltip", "water").appendString(": " + mainFuel + "%"));
 		}
 
 		if (!hoveringText.isEmpty()) {
