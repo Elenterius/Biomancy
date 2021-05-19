@@ -1,0 +1,27 @@
+{
+  "type": "biomancy:evolution_pool",
+  "ingredients": [
+    {
+      "item": "minecraft:popped_chorus_fruit"
+    },
+    {
+      "item": "minecraft:popped_chorus_fruit"
+    },
+    {
+      "item": "biomancy:silicate_paste"
+    },
+    {
+      "item": "biomancy:silicate_paste"
+    },
+    {
+      "item": "biomancy:silicate_paste"
+    },
+    {
+      "item": "biomancy:silicate_paste"
+    }
+  ],
+  "result": {
+    "item": "minecraft:shulker_shell"
+  },
+  "time": 800
+}

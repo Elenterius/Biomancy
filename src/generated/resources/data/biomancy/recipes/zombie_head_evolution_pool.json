@@ -1,5 +1,5 @@
 {
-  "type": "biomancy:decomposing",
+  "type": "biomancy:evolution_pool",
   "ingredients": [
     {
       "item": "minecraft:player_head"
@@ -9,11 +9,13 @@
     },
     {
       "item": "biomancy:eroding_bile"
+    },
+    {
+      "item": "minecraft:rotten_flesh"
     }
   ],
-  "byproducts": [],
   "result": {
     "item": "minecraft:zombie_head"
   },
-  "time": 400
+  "time": 800
 }

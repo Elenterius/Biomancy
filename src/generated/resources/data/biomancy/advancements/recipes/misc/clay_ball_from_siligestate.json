@@ -2,19 +2,19 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:wither_skeleton_skull_decomposing"
+      "biomancy:clay_ball_from_siligestate"
     ]
   },
   "criteria": {
-    "has_eroding_bile_and_wither_rose": {
+    "has_siligestate": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "biomancy:eroding_bile"
+            "item": "biomancy:digestate"
           },
           {
-            "item": "minecraft:wither_rose"
+            "item": "biomancy:silicate_paste"
           }
         ]
       }
@@ -22,13 +22,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:wither_skeleton_skull_decomposing"
+        "recipe": "biomancy:clay_ball_from_siligestate"
       }
     }
   },
   "requirements": [
     [
-      "has_eroding_bile_and_wither_rose",
+      "has_siligestate",
       "has_the_recipe"
     ]
   ]

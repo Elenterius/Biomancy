@@ -1,0 +1,28 @@
+{
+  "type": "biomancy:evolution_pool",
+  "ingredients": [
+    {
+      "item": "minecraft:iron_nugget"
+    },
+    {
+      "item": "biomancy:oxide_powder"
+    },
+    {
+      "item": "biomancy:oxide_powder"
+    },
+    {
+      "item": "biomancy:oxide_powder"
+    },
+    {
+      "item": "biomancy:oxide_powder"
+    },
+    {
+      "item": "biomancy:oxide_powder"
+    }
+  ],
+  "result": {
+    "item": "minecraft:iron_nugget",
+    "count": 5
+  },
+  "time": 400
+}

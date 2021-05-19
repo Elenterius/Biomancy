@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:zombie_head_decomposing"
+      "biomancy:shulker_shell_evolution_pool"
     ]
   },
   "criteria": {
-    "has_eroding_bile": {
+    "has_silicate_paste": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "biomancy:eroding_bile"
+            "item": "biomancy:silicate_paste"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:zombie_head_decomposing"
+        "recipe": "biomancy:shulker_shell_evolution_pool"
       }
     }
   },
   "requirements": [
     [
-      "has_eroding_bile",
+      "has_silicate_paste",
       "has_the_recipe"
     ]
   ]

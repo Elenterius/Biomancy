@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:gold_nugget_evolution_pool"
+    ]
+  },
+  "criteria": {
+    "has_oxide_powder": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "biomancy:oxide_powder"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:gold_nugget_evolution_pool"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_oxide_powder",
+      "has_the_recipe"
+    ]
+  ]
+}

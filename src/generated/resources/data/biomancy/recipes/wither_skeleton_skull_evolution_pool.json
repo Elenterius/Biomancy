@@ -1,5 +1,5 @@
 {
-  "type": "biomancy:decomposing",
+  "type": "biomancy:evolution_pool",
   "ingredients": [
     {
       "item": "minecraft:skeleton_skull"
@@ -9,11 +9,13 @@
     },
     {
       "item": "biomancy:eroding_bile"
+    },
+    {
+      "item": "biomancy:eroding_bile"
     }
   ],
-  "byproducts": [],
   "result": {
     "item": "minecraft:wither_skeleton_skull"
   },
-  "time": 600
+  "time": 1200
 }
