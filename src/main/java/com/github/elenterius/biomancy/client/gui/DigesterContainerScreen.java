@@ -15,7 +15,7 @@ import java.util.List;
 
 public class DigesterContainerScreen extends ContainerScreen<DigesterContainer> {
 
-	private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(BiomancyMod.MOD_ID, "textures/gui/chewer_inventory.png");
+	private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(BiomancyMod.MOD_ID, "textures/gui/digester_inventory.png");
 	public final int FUEL_BAR_POS_X = 39;
 	public final int FUEL_BAR_POS_Y = 17;
 	public final int FUEL_BAR_WIDTH = 5;

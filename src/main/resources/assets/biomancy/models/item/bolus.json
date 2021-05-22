@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "biomancy:item/digestate"
+    "layer0": "biomancy:item/bolus"
   }
 }
