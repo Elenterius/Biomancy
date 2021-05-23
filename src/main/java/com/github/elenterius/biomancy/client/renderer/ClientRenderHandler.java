@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.enchantment.AttunedDamageEnchantment;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.item.IAreaHarvestingItem;
 import com.github.elenterius.biomancy.item.IHighlightRayTraceResultItem;
+import com.github.elenterius.biomancy.item.weapon.shootable.ProjectileWeaponItem;
 import com.github.elenterius.biomancy.item.weapon.shootable.SinewBowItem;
 import com.github.elenterius.biomancy.util.PlayerInteractionUtil;
 import com.github.elenterius.biomancy.util.RayTraceUtil;
@@ -15,10 +16,12 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.*;
 import net.minecraft.util.math.vector.Matrix4f;
@@ -105,12 +108,16 @@ public final class ClientRenderHandler {
 		if (event.getType() == RenderGameOverlayEvent.ElementType.CROSSHAIRS) {
 			ClientPlayerEntity player = Minecraft.getInstance().player;
 			if (player == null || player.isSpectator()) return;
+
 			ItemStack heldStack = player.getHeldItemMainhand();
-			if (heldStack.getItem() instanceof IHighlightRayTraceResultItem && (HIGHLIGHTED_ENTITY != null || HIGHLIGHTED_BLOCK_POS != null)) {
+			Item item = heldStack.getItem();
+
+			if (item instanceof IHighlightRayTraceResultItem && (HIGHLIGHTED_ENTITY != null || HIGHLIGHTED_BLOCK_POS != null)) {
 				event.setCanceled(true);
 			}
-			else if (heldStack.getItem() instanceof SinewBowItem) {
-				SinewBowItem bowItem = (SinewBowItem) heldStack.getItem();
+
+			if (item instanceof SinewBowItem) {
+				SinewBowItem bowItem = (SinewBowItem) item;
 				int timeLeft = player.getItemInUseCount();
 				if (timeLeft == 0) timeLeft = heldStack.getUseDuration();
 				int charge = heldStack.getUseDuration() - timeLeft;
@@ -121,6 +128,29 @@ public final class ClientRenderHandler {
 				AbstractGui.drawString(event.getMatrixStack(), Minecraft.getInstance().fontRenderer, String.format("V: %.1f", velocity), (int) x + 18, (int) y + 6, 0xFFFEFEFE);
 //				drawArc(event.getMatrixStack(), x, y, 13f, 0f, pullProgress * (float) Math.PI * 2f, 0xDDF0F0F0);
 				drawRectangularProgressBar(event.getMatrixStack(), x, y, 25f, pullProgress, 0xFFFEFEFE);
+			}
+			else if (item instanceof ProjectileWeaponItem) {
+				FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
+
+				ProjectileWeaponItem gunItem = (ProjectileWeaponItem) item;
+				int ammo = gunItem.getAmmo(heldStack);
+				int maxAmmo = gunItem.getMaxAmmo();
+				String endPart = "/" + maxAmmo;
+				String frontPart = "" + ammo;
+
+				int scaledWidth = event.getWindow().getScaledWidth();
+				int scaledHeight = event.getWindow().getScaledHeight();
+				int x = scaledWidth - fontRenderer.getStringWidth(endPart) - 4;
+				int y = scaledHeight - fontRenderer.FONT_HEIGHT - 4;
+
+				AbstractGui.drawString(event.getMatrixStack(), fontRenderer, endPart, x, y, 0xFF9E9E9E);
+				MatrixStack matrix = event.getMatrixStack();
+				matrix.push();
+				matrix.translate(scaledWidth, scaledHeight, 0);
+				matrix.scale(1.5f, 1.5f, 1f);
+				matrix.translate(-scaledWidth - fontRenderer.getStringWidth(frontPart) * 1.5f + fontRenderer.getStringWidth(endPart) - 4, -scaledHeight, 0);
+				AbstractGui.drawString(event.getMatrixStack(), fontRenderer, frontPart, x, y, 0xFFFEFEFE);
+				matrix.pop();
 			}
 		}
 	}
