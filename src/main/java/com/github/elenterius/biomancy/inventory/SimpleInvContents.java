@@ -178,6 +178,10 @@ public class SimpleInvContents implements IInventory {
 		}
 	}
 
+	public IItemHandler getItemStackHandler() {
+		return itemStackHandler;
+	}
+
 	public enum ISHandlerType {
 		/**
 		 * prevents insertion of items
@@ -186,6 +190,6 @@ public class SimpleInvContents implements IInventory {
 		/**
 		 * prevents nesting of items with an inventory (ITEM_HANDLER_CAPABILITY and Shulker Boxes)
 		 */
-		NON_NESTING;
+		NON_NESTING
 	}
 }

@@ -19,14 +19,16 @@ import org.apache.logging.log4j.MarkerManager;
 public class DigesterContainer extends Container {
 
 	protected final SimpleInvContents fuelContents;
+	protected final SimpleInvContents fuelOutContents;
 	protected final SimpleInvContents inputContents;
 	protected final SimpleInvContents outputContents;
 	private final DigesterStateData stateData;
 	private final World world;
 
-	private DigesterContainer(int screenId, PlayerInventory playerInventory, SimpleInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, DigesterStateData stateData) {
+	private DigesterContainer(int screenId, PlayerInventory playerInventory, SimpleInvContents fuelContents, SimpleInvContents fuelOutContents, SimpleInvContents inputContents, SimpleInvContents outputContents, DigesterStateData stateData) {
 		super(ModContainerTypes.DIGESTER.get(), screenId);
 		this.fuelContents = fuelContents;
+		this.fuelOutContents = fuelOutContents;
 		this.inputContents = inputContents;
 		this.outputContents = outputContents;
 		this.stateData = stateData;
@@ -57,9 +59,7 @@ public class DigesterContainer extends Container {
 			}
 		}
 
-		int posX = 17;
-		int posY = 17;
-		addSlot(new Slot(fuelContents, 0, posX, posY) {
+		addSlot(new Slot(fuelContents, 0, 17, 17) {
 			@Override
 			public boolean isItemValid(ItemStack stack) {
 				return DigesterTileEntity.isItemValidFuel(stack);
@@ -70,18 +70,21 @@ public class DigesterContainer extends Container {
 
 		addSlot(new OutputSlot(outputContents, 0, 107, 26));
 		addSlot(new OutputSlot(outputContents, 1, 107 + 18, 26));
+
+		addSlot(new OutputSlot(fuelOutContents, 0, 17, 44));
 	}
 
-	public static DigesterContainer createServerContainer(int screenId, PlayerInventory playerInventory, SimpleInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, DigesterStateData stateData) {
-		return new DigesterContainer(screenId, playerInventory, fuelContents, inputContents, outputContents, stateData);
+	public static DigesterContainer createServerContainer(int screenId, PlayerInventory playerInventory, SimpleInvContents fuelContents, SimpleInvContents fuelOutContents, SimpleInvContents inputContents, SimpleInvContents outputContents, DigesterStateData stateData) {
+		return new DigesterContainer(screenId, playerInventory, fuelContents, fuelOutContents, inputContents, outputContents, stateData);
 	}
 
 	public static DigesterContainer createClientContainer(int screenId, PlayerInventory playerInventory, PacketBuffer extraData) {
 		SimpleInvContents fuelContents = SimpleInvContents.createClientContents(DigesterTileEntity.FUEL_SLOTS_COUNT);
+		SimpleInvContents fuelOutContents = SimpleInvContents.createClientContents(DigesterTileEntity.FUEL_OUT_SLOTS_COUNT);
 		SimpleInvContents inputContents = SimpleInvContents.createClientContents(DigesterTileEntity.INPUT_SLOTS_COUNT);
 		SimpleInvContents outputContents = SimpleInvContents.createClientContents(DigesterTileEntity.OUTPUT_SLOTS_COUNT);
 		DigesterStateData stateData = new DigesterStateData();
-		return new DigesterContainer(screenId, playerInventory, fuelContents, inputContents, outputContents, stateData);
+		return new DigesterContainer(screenId, playerInventory, fuelContents, fuelOutContents, inputContents, outputContents, stateData);
 	}
 
 	@Override
@@ -96,7 +99,7 @@ public class DigesterContainer extends Container {
 	}
 
 	public float getFuelNormalized() {
-		return MathHelper.clamp(stateData.fuel / (float) DigesterTileEntity.MAX_FUEL, 0f, 1f);
+		return MathHelper.clamp(stateData.fuel.getFluidAmount() / (float) stateData.fuel.getCapacity(), 0f, 1f);
 	}
 
 	/**
@@ -122,6 +125,7 @@ public class DigesterContainer extends Container {
 
 			case INPUT_ZONE:
 			case FUEL_ZONE:
+			case FUEL_OUT_ZONE:
 				successfulTransfer = mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, sourceStack, false);
 				if (!successfulTransfer) successfulTransfer = mergeInto(SlotZone.PLAYER_HOTBAR, sourceStack, false);
 				break;
@@ -167,7 +171,8 @@ public class DigesterContainer extends Container {
 		PLAYER_MAIN_INVENTORY(9, 3 * 9),
 		FUEL_ZONE(9 + 3 * 9, DigesterTileEntity.FUEL_SLOTS_COUNT),
 		INPUT_ZONE(9 + 3 * 9 + DigesterTileEntity.FUEL_SLOTS_COUNT, DigesterTileEntity.INPUT_SLOTS_COUNT),
-		OUTPUT_ZONE(9 + 3 * 9 + DigesterTileEntity.FUEL_SLOTS_COUNT + DigesterTileEntity.INPUT_SLOTS_COUNT, DigesterTileEntity.OUTPUT_SLOTS_COUNT);
+		OUTPUT_ZONE(9 + 3 * 9 + DigesterTileEntity.FUEL_SLOTS_COUNT + DigesterTileEntity.INPUT_SLOTS_COUNT, DigesterTileEntity.OUTPUT_SLOTS_COUNT),
+		FUEL_OUT_ZONE(9 + 3 * 9 + DigesterTileEntity.FUEL_SLOTS_COUNT + DigesterTileEntity.INPUT_SLOTS_COUNT + DigesterTileEntity.OUTPUT_SLOTS_COUNT, DigesterTileEntity.FUEL_OUT_SLOTS_COUNT);
 
 		public final int firstIndex;
 		public final int slotCount;

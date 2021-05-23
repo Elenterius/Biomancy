@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.recipe.Byproduct;
 import com.github.elenterius.biomancy.recipe.DigesterRecipe;
+import com.github.elenterius.biomancy.tileentity.DigesterTileEntity;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import mezz.jei.api.constants.VanillaTypes;
@@ -19,6 +20,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -86,7 +88,6 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 					if (byproduct != null && byproduct.getItem() == stack.getItem()) {
 						chance = Math.round(byproduct.getChance() * 100);
 					}
-//					tooltip.add(new TranslationTextComponent(BiomancyMod.getTranslationKey("tooltip", "byproduct")));
 					tooltip.add(new StringTextComponent(chance + "% ").appendSibling(new TranslationTextComponent(BiomancyMod.getTranslationKey("tooltip", "chance"))).mergeStyle(TextFormatting.GRAY));
 				}
 			}
@@ -99,10 +100,12 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 		if (ticks > 0) {
 			int seconds = ticks / 20;
 			TranslationTextComponent timeString = new TranslationTextComponent("gui.jei.category.smelting.time.seconds", seconds);
-			Minecraft minecraft = Minecraft.getInstance();
-			FontRenderer fontRenderer = minecraft.fontRenderer;
+			FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
 			int stringWidth = fontRenderer.getStringPropertyWidth(timeString);
 			fontRenderer.drawText(matrixStack, timeString, background.getWidth() - stringWidth, background.getHeight() - fontRenderer.FONT_HEIGHT, 0xff808080);
+			int waterCost = ticks * DigesterTileEntity.FUEL_COST;
+			IFormattableTextComponent costText = new StringTextComponent("+" + waterCost + " ").appendSibling(new TranslationTextComponent("tooltip.biomancy.water"));
+			fontRenderer.drawText(matrixStack, costText, 0, background.getHeight() - fontRenderer.FONT_HEIGHT, 0xff808080);
 		}
 	}
 }

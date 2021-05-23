@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.recipe.Byproduct;
 import com.github.elenterius.biomancy.recipe.DecomposerRecipe;
+import com.github.elenterius.biomancy.tileentity.DecomposerTileEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -18,6 +19,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -116,10 +118,11 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 		if (ticks > 0) {
 			int seconds = ticks / 20;
 			TranslationTextComponent timeString = new TranslationTextComponent("gui.jei.category.smelting.time.seconds", seconds);
-			Minecraft minecraft = Minecraft.getInstance();
-			FontRenderer fontRenderer = minecraft.fontRenderer;
-			int stringWidth = fontRenderer.getStringPropertyWidth(timeString);
-			fontRenderer.drawText(matrixStack, timeString, (float) (background.getWidth() - stringWidth), 42 - fontRenderer.FONT_HEIGHT, 0xff808080);
+			FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
+			fontRenderer.drawText(matrixStack, timeString, (float) (background.getWidth() - fontRenderer.getStringPropertyWidth(timeString)), 42 - fontRenderer.FONT_HEIGHT, 0xff808080);
+			int fuelCost = ticks * DecomposerTileEntity.FUEL_COST;
+			IFormattableTextComponent costText = new StringTextComponent("+" + fuelCost + " ").appendSibling(new TranslationTextComponent("tooltip.biomancy.biofuel"));
+			fontRenderer.drawText(matrixStack, costText, 0, background.getHeight() - fontRenderer.FONT_HEIGHT, 0xff808080);
 		}
 	}
 }

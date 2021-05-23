@@ -1,8 +1,14 @@
 package com.github.elenterius.biomancy.tileentity.state;
 
 import com.github.elenterius.biomancy.recipe.DigesterRecipe;
+import com.github.elenterius.biomancy.tileentity.DigesterTileEntity;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.IIntArray;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> implements IIntArray {
 
@@ -16,7 +22,13 @@ public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> i
 
 	public int timeElapsed;
 	public int timeForCompletion;
-	public short fuel; //water
+
+	public FluidTank fuel = new FluidTank(DigesterTileEntity.MAX_FUEL, fluidStack -> fluidStack.getFluid() == Fluids.WATER);
+	private final LazyOptional<IFluidHandler> optionalFluidHandler = LazyOptional.of(() -> fuel);
+
+	public LazyOptional<IFluidHandler> getOptionalFluidHandler() {
+		return optionalFluidHandler;
+	}
 
 	@Override
 	Class<DigesterRecipe> getRecipeType() {
@@ -41,7 +53,7 @@ public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> i
 		super.serializeNBT(nbt);
 		nbt.putInt(NBT_KEY_TIME_ELAPSED, timeElapsed);
 		nbt.putInt(NBT_KEY_TIME_FOR_COMPLETION, timeForCompletion);
-		nbt.putShort(NBT_KEY_FUEL, fuel);
+		nbt.put(NBT_KEY_FUEL, fuel.writeToNBT(new CompoundNBT()));
 	}
 
 	@Override
@@ -49,7 +61,7 @@ public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> i
 		super.deserializeNBT(nbt);
 		timeElapsed = nbt.getInt(NBT_KEY_TIME_ELAPSED);
 		timeForCompletion = nbt.getInt(NBT_KEY_TIME_FOR_COMPLETION);
-		fuel = nbt.getShort(NBT_KEY_FUEL);
+		fuel.readFromNBT(nbt.getCompound(NBT_KEY_FUEL));
 	}
 
 	private void validateIndex(int index) {
@@ -61,7 +73,7 @@ public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> i
 		validateIndex(index);
 		if (index == TIME_INDEX) return timeElapsed;
 		else if (index == TIME_FOR_COMPLETION_INDEX) return timeForCompletion;
-		else if (index == FUEL_INDEX) return fuel;
+		else if (index == FUEL_INDEX) return fuel.getFluidAmount();
 		return 0;
 	}
 
@@ -70,7 +82,14 @@ public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> i
 		validateIndex(index);
 		if (index == TIME_INDEX) timeElapsed = value;
 		else if (index == TIME_FOR_COMPLETION_INDEX) timeForCompletion = value;
-		else if (index == FUEL_INDEX) fuel = (short) value;
+		else if (index == FUEL_INDEX) {
+			if (fuel.isEmpty()) {
+				fuel.setFluid(new FluidStack(Fluids.WATER, value));
+			}
+			else {
+				fuel.getFluid().setAmount(value);
+			}
+		}
 	}
 
 	@Override

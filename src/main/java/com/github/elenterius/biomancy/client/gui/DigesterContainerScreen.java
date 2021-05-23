@@ -60,7 +60,7 @@ public class DigesterContainerScreen extends ContainerScreen<DigesterContainer> 
 		int posX = guiLeft + FUEL_BAR_POS_X;
 		int posY = guiTop + FUEL_BAR_POS_Y;
 		int maxPosY = posY + FUEL_BAR_HEIGHT;
-		AbstractGui.fill(matrixStack, posX, posY + (int) (FUEL_BAR_HEIGHT * (1f - container.getFuelNormalized())), posX + FUEL_BAR_WIDTH, maxPosY, 0xFF60963A);
+		AbstractGui.fill(matrixStack, posX, posY + (int) (FUEL_BAR_HEIGHT * (1f - container.getFuelNormalized())), posX + FUEL_BAR_WIDTH, maxPosY, 0xFF2E58D3);
 	}
 
 	@Override
