@@ -55,7 +55,8 @@ public class AdaptiveAxeItem extends AxeItem implements IAdaptiveEfficiencyItem,
 
 	@Override
 	public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, PlayerEntity player) {
-		if (getBlockHarvestRange(stack) > 0 && !player.world.isRemote && player instanceof ServerPlayerEntity) {
+
+		if (!player.isSneaking() && getBlockHarvestRange(stack) > 0 && !player.world.isRemote && player instanceof ServerPlayerEntity) {
 			ServerWorld world = (ServerWorld) player.world;
 			ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
 			BlockState blockState = world.getBlockState(pos);

@@ -3,10 +3,12 @@ package com.github.elenterius.biomancy.client.renderer;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.enchantment.AttunedDamageEnchantment;
 import com.github.elenterius.biomancy.init.ModEnchantments;
+import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.item.IAreaHarvestingItem;
 import com.github.elenterius.biomancy.item.IHighlightRayTraceResultItem;
 import com.github.elenterius.biomancy.item.weapon.shootable.ProjectileWeaponItem;
 import com.github.elenterius.biomancy.item.weapon.shootable.SinewBowItem;
+import com.github.elenterius.biomancy.util.GeometricShape;
 import com.github.elenterius.biomancy.util.PlayerInteractionUtil;
 import com.github.elenterius.biomancy.util.RayTraceUtil;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -269,7 +271,7 @@ public final class ClientRenderHandler {
 		if (player == null) return;
 
 		ItemStack heldStack = player.getHeldItemMainhand();
-		if (!heldStack.isEmpty() && heldStack.getItem() instanceof IAreaHarvestingItem) {
+		if (!player.isSneaking() && !heldStack.isEmpty() && heldStack.getItem() instanceof IAreaHarvestingItem) {
 			byte blockHarvestRange = ((IAreaHarvestingItem) heldStack.getItem()).getBlockHarvestRange(heldStack);
 			if (blockHarvestRange > 0) {
 				BlockPos pos = event.getTarget().getPos();
@@ -279,7 +281,7 @@ public final class ClientRenderHandler {
 				Vector3d pView = event.getInfo().getProjectedView();
 				IVertexBuilder vertexBuilder = event.getBuffers().getBuffer(RenderType.getLines());
 
-				List<BlockPos> neighbors = PlayerInteractionUtil.findBlockNeighbors(player.worldClient, event.getTarget(), blockState, pos, blockHarvestRange);
+				List<BlockPos> neighbors = PlayerInteractionUtil.findBlockNeighbors(player.worldClient, event.getTarget(), blockState, pos, blockHarvestRange, heldStack.getItem() == ModItems.LONG_RANGE_CLAW.get() ? GeometricShape.CUBE : GeometricShape.PLANE);
 				for (BlockPos neighborPos : neighbors) {
 					if (player.worldClient.getWorldBorder().contains(neighborPos)) {
 						AxisAlignedBB axisAlignedBB = new AxisAlignedBB(neighborPos).offset(-pView.x, -pView.y, -pView.z);

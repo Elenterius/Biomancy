@@ -85,7 +85,18 @@ public final class PlayerInteractionUtil {
 		return findBlockNeighbors(world, rayTraceResult, targetState, startPos, range);
 	}
 
-	public static List<BlockPos> findBlockNeighbors(World world, BlockRayTraceResult rayTraceResult, BlockState targetState, BlockPos startPos, int range) {
+	public static List<BlockPos> findBlockNeighbors(World world, BlockRayTraceResult rayTraceResult, BlockState targetState, BlockPos startPos, int range, GeometricShape shape) {
+		switch (shape) {
+			default:
+			case PLANE:
+				return findBlockNeighbors(world, rayTraceResult, targetState, startPos, range);
+
+			case CUBE:
+				return findBlockNeighbors3D(world, rayTraceResult, targetState, startPos, range);
+		}
+	}
+
+	public static List<BlockPos> findBlockNeighbors3D(World world, BlockRayTraceResult rayTraceResult, BlockState targetState, BlockPos startPos, int range) {
 		if (rayTraceResult.getType() == RayTraceResult.Type.MISS || !rayTraceResult.getPos().equals(startPos)) {
 			return Collections.emptyList();
 		}
@@ -93,7 +104,32 @@ public final class PlayerInteractionUtil {
 		Block targetBlock = targetState.getBlock();
 		List<BlockPos> neighbors = new ArrayList<>();
 
-		Direction.Axis axis = rayTraceResult.getFace().getAxis();
+		for (int x = -range; x <= range; x++) {
+			for (int z = -range; z <= range; z++) {
+				for (int y = -range; y <= range; y++) {
+					if (x == 0 && z == 0 && y == 0) continue;
+					BlockPos pos = startPos.add(x, y, z);
+					if (world.getBlockState(pos).matchesBlock(targetBlock)) neighbors.add(pos);
+				}
+			}
+		}
+
+		return neighbors;
+	}
+
+	public static List<BlockPos> findBlockNeighbors(World world, BlockRayTraceResult rayTraceResult, BlockState targetState, BlockPos startPos, int range) {
+		if (rayTraceResult.getType() == RayTraceResult.Type.MISS || !rayTraceResult.getPos().equals(startPos)) {
+			return Collections.emptyList();
+		}
+
+		return findBlockNeighbors(world, rayTraceResult.getFace(), targetState, startPos, range);
+	}
+
+	public static List<BlockPos> findBlockNeighbors(World world, Direction direction, BlockState targetState, BlockPos startPos, int range) {
+		Block targetBlock = targetState.getBlock();
+		List<BlockPos> neighbors = new ArrayList<>();
+
+		Direction.Axis axis = direction.getAxis();
 		if (axis == Direction.Axis.Y) {
 			int y = 0;
 			for (int x = -range; x <= range; x++) {
@@ -166,15 +202,15 @@ public final class PlayerInteractionUtil {
 		private final LivingEntity surrogate;
 		private final ServerPlayerEntity owner;
 
-		public static PlayerSurrogate of(ServerPlayerEntity player, LivingEntity surrogate) {
-			return new PlayerSurrogate(player, surrogate);
-		}
-
 		private PlayerSurrogate(ServerPlayerEntity player, LivingEntity surrogate) {
 			super(player.getServerWorld(), player.getGameProfile());
 			this.owner = player;
 			this.surrogate = surrogate;
 			setHealth(surrogate.getHealth());
+		}
+
+		public static PlayerSurrogate of(ServerPlayerEntity player, LivingEntity surrogate) {
+			return new PlayerSurrogate(player, surrogate);
 		}
 
 		@Override

@@ -2,26 +2,36 @@ package com.github.elenterius.biomancy.item.weapon;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModAttributes;
+import com.github.elenterius.biomancy.item.IAreaHarvestingItem;
+import com.github.elenterius.biomancy.util.PlayerInteractionUtil;
 import com.github.elenterius.biomancy.util.TooltipUtil;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IItemTier;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Lazy;
@@ -30,7 +40,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-public class LongRangeClawItem extends ClawWeaponItem {
+public class LongRangeClawItem extends ClawWeaponItem implements IAreaHarvestingItem {
 
 	public static final String NBT_KEY = "LongClawTimeLeft";
 	public static AttributeModifier RETRACTED_CLAW_REACH_MODIFIER = new AttributeModifier(UUID.fromString("d76adb08-2bb3-4e88-997d-766a919f0f6b"), "attack_distance_modifier", 0.5f, AttributeModifier.Operation.ADDITION);
@@ -113,7 +123,7 @@ public class LongRangeClawItem extends ClawWeaponItem {
 			stack.getOrCreateTag().putInt(NBT_KEY, abilityDuration);
 		}
 		else {
-			attacker.playSound(SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1.0F, 1.0F / (random.nextFloat() * 0.5F + 1.0F) + 0.2F);
+			attacker.playSound(SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1f, 1f / (random.nextFloat() * 0.5f + 1f) + 0.2f);
 		}
 	}
 
@@ -131,5 +141,31 @@ public class LongRangeClawItem extends ClawWeaponItem {
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return slotChanged;
+	}
+
+	@Override
+	public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, PlayerEntity player) {
+		byte harvestRange = getBlockHarvestRange(stack);
+		if (!player.isSneaking() && harvestRange > 0 && !player.world.isRemote && player instanceof ServerPlayerEntity) {
+			ServerWorld world = (ServerWorld) player.world;
+			ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
+			BlockState blockState = world.getBlockState(pos);
+			BlockRayTraceResult rayTraceResult = Item.rayTrace(world, player, RayTraceContext.FluidMode.NONE);
+			if (PlayerInteractionUtil.harvestBlock(world, serverPlayer, blockState, pos)) {
+				List<BlockPos> blockNeighbors = PlayerInteractionUtil.findBlockNeighbors3D(world, rayTraceResult, blockState, pos, harvestRange);
+				for (BlockPos neighborPos : blockNeighbors) {
+					PlayerInteractionUtil.harvestBlock(world, serverPlayer, blockState, neighborPos);
+				}
+			}
+			return true;
+		}
+
+		//only called on client side
+		return super.onBlockStartBreak(stack, pos, player);
+	}
+
+	@Override
+	public byte getBlockHarvestRange(ItemStack stack) {
+		return (byte) 1;
 	}
 }

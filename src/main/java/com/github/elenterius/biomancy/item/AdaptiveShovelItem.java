@@ -3,14 +3,16 @@ package com.github.elenterius.biomancy.item;
 import com.github.elenterius.biomancy.util.PlayerInteractionUtil;
 import com.github.elenterius.biomancy.util.TooltipUtil;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.CampfireBlock;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShovelItem;
+import net.minecraft.item.*;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceContext;
@@ -19,6 +21,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ToolType;
+import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -55,7 +59,8 @@ public class AdaptiveShovelItem extends ShovelItem implements IAdaptiveEfficienc
 
 	@Override
 	public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, PlayerEntity player) {
-		if (getBlockHarvestRange(stack) > 0 && !player.world.isRemote && player instanceof ServerPlayerEntity) {
+
+		if (!player.isSneaking() && getBlockHarvestRange(stack) > 0 && !player.world.isRemote && player instanceof ServerPlayerEntity) {
 			ServerWorld world = (ServerWorld) player.world;
 			ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
 			BlockState blockState = world.getBlockState(pos);
@@ -71,6 +76,51 @@ public class AdaptiveShovelItem extends ShovelItem implements IAdaptiveEfficienc
 
 		//only called on client side
 		return super.onBlockStartBreak(stack, pos, player);
+	}
+
+	@Override
+	public ActionResultType onItemUse(ItemUseContext context) {
+		if (context.getFace() == Direction.DOWN) return ActionResultType.PASS;
+
+		PlayerEntity player = context.getPlayer();
+		World world = context.getWorld();
+		BlockPos blockPos = context.getPos();
+		BlockState originalState = world.getBlockState(blockPos);
+
+		BlockState modifiedState = originalState.getToolModifiedState(world, blockPos, player, context.getItem(), ToolType.SHOVEL);
+		if (modifiedState != null && world.isAirBlock(blockPos.up())) {
+			world.playSound(player, blockPos, SoundEvents.ITEM_SHOVEL_FLATTEN, SoundCategory.BLOCKS, 1f, 1f);
+			if (!world.isRemote) {
+				int durabilityCost = 1;
+
+				if (player != null && !player.isSneaking()) {
+					List<BlockPos> blockNeighbors = PlayerInteractionUtil.findBlockNeighbors(world, context.getFace(), originalState, blockPos, getBlockHarvestRange(context.getItem()));
+					for (BlockPos neighborPos : blockNeighbors) {
+						BlockState modifiedNeighbor = world.getBlockState(neighborPos).getToolModifiedState(world, neighborPos, player, context.getItem(), ToolType.SHOVEL);
+						if (modifiedNeighbor != null && world.isAirBlock(blockPos.up())) {
+							world.setBlockState(neighborPos, modifiedNeighbor, Constants.BlockFlags.DEFAULT_AND_RERENDER);
+							durabilityCost++;
+						}
+					}
+				}
+
+				world.setBlockState(blockPos, modifiedState, Constants.BlockFlags.DEFAULT_AND_RERENDER);
+				if (player != null) context.getItem().damageItem(durabilityCost, player, (playerEntity) -> playerEntity.sendBreakAnimation(context.getHand()));
+			}
+			return ActionResultType.func_233537_a_(world.isRemote);
+		}
+		else if (originalState.getBlock() instanceof CampfireBlock && originalState.get(CampfireBlock.LIT)) {
+			if (!world.isRemote()) world.playEvent(null, Constants.WorldEvents.FIRE_EXTINGUISH_SOUND, blockPos, 0);
+			CampfireBlock.extinguish(world, blockPos, originalState);
+			BlockState newState = originalState.with(CampfireBlock.LIT, Boolean.FALSE);
+			if (!world.isRemote) {
+				world.setBlockState(blockPos, newState, Constants.BlockFlags.DEFAULT_AND_RERENDER);
+				if (player != null) context.getItem().damageItem(1, player, (playerEntity) -> playerEntity.sendBreakAnimation(context.getHand()));
+			}
+			return ActionResultType.func_233537_a_(world.isRemote);
+		}
+
+		return ActionResultType.PASS;
 	}
 
 	@Override
