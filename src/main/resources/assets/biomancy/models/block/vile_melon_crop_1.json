@@ -3,6 +3,6 @@
   "textures": {
     "top": "minecraft:block/melon_top",
     "side": "minecraft:block/melon_side",
-    "leaves": "biomancy:block/flesh_melon_leaves"
+    "leaves": "biomancy:block/vile_melon_leaves"
   }
 }

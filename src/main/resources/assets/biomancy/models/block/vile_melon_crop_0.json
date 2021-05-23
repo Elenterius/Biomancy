@@ -1,6 +1,6 @@
 {
   "parent": "biomancy:block/gourd_0_template",
   "textures": {
-    "leaves": "biomancy:block/flesh_melon_sprout"
+    "leaves": "biomancy:block/vile_melon_sprout"
   }
 }

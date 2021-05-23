@@ -62,7 +62,6 @@ public final class ModItems {
 	public static final RegistryObject<Item> BOLUS = ITEMS.register("bolus", () -> new Item(createItemProperties())); //crushed biomass
 	public static final RegistryObject<Item> DIGESTATE = ITEMS.register("digestate", () -> new Item(createItemProperties()));
 	public static final RegistryObject<Item> NUTRIENT_PASTE = ITEMS.register("nutrient_paste", () -> new Item(createItemProperties()));
-	public static final RegistryObject<Item> NUTRIENT_BAR = ITEMS.register("nutrient_bar", () -> new Item(createItemProperties()));
 	public static final RegistryObject<Item> OXIDE_POWDER = ITEMS.register("oxide_powder", () -> new Item(createItemProperties()));
 	public static final RegistryObject<Item> SILICATE_PASTE = ITEMS.register("silicate_paste", () -> new Item(createItemProperties()));
 	public static final RegistryObject<Item> KERATIN_FILAMENTS = ITEMS.register("keratin_filaments", () -> new Item(createItemProperties()));
@@ -74,8 +73,9 @@ public final class ModItems {
 	public static final RegistryObject<Item> HORMONE_SERUM = ITEMS.register("hormone_serum", () -> new Item(createItemProperties()));
 
 	// Food
-	public static final RegistryObject<Item> VILE_MELON_SLICE = ITEMS.register("flesh_melon_slice", () -> new Item(createItemProperties().food(ModFoods.FLESH_MELON_SLICE)));
-	public static final RegistryObject<Item> COOKED_VILE_MELON_SLICE = ITEMS.register("cooked_flesh_melon_slice", () -> new Item(createItemProperties().food(ModFoods.COOKED_FLESH_MELON_SLICE)));
+	public static final RegistryObject<Item> VILE_MELON_SLICE = ITEMS.register("vile_melon_slice", () -> new Item(createItemProperties().food(ModFoods.VILE_MELON_SLICE)));
+	public static final RegistryObject<Item> COOKED_VILE_MELON_SLICE = ITEMS.register("cooked_vile_melon_slice", () -> new Item(createItemProperties().food(ModFoods.COOKED_VILE_MELON_SLICE)));
+	public static final RegistryObject<Item> NUTRIENT_BAR = ITEMS.register("nutrient_bar", () -> new Item(createItemProperties().food(ModFoods.NUTRIENT_BAR)));
 
 	// Spawn Eggs
 	public static final RegistryObject<ModSpawnEggItem> FLESH_BLOB_SPAWN_EGG = ITEMS.register("flesh_blob_spawn_egg", () -> new ModSpawnEggItem(ModEntityTypes.FLESH_BLOB, 0xe9967a, 0xf6d2c6, createItemProperties()));
@@ -92,8 +92,8 @@ public final class ModItems {
 	/* **** Block Items ********************************************* */
 
 	//crops
-	public static final RegistryObject<Item> FLESH_MELON_SEEDS = ITEMS.register("flesh_melon_seeds", () -> new BlockNamedItem(ModBlocks.FLESH_MELON_CROP.get(), createItemProperties()));
-	public static final RegistryObject<Item> FLESH_MELON_BLOCK = ITEMS.register("flesh_melon_block", () -> new BlockItem(ModBlocks.FLESH_MELON_BLOCK.get(), createItemProperties()));
+	public static final RegistryObject<Item> VILE_MELON_SEEDS = ITEMS.register("vile_melon_seeds", () -> new BlockNamedItem(ModBlocks.VILE_MELON_CROP.get(), createItemProperties()));
+	public static final RegistryObject<Item> VILE_MELON_BLOCK = ITEMS.register("vile_melon_block", () -> new BlockItem(ModBlocks.VILE_MELON_BLOCK.get(), createItemProperties()));
 
 	//decoration blocks
 	public static final RegistryObject<BlockItem> FLESH_TENTACLE = ITEMS.register("flesh_tentacle", () -> new BlockItem(ModBlocks.FLESH_TENTACLE.get(), createItemProperties()));

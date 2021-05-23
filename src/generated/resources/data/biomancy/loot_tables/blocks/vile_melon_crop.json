@@ -12,17 +12,17 @@
               "conditions": [
                 {
                   "condition": "minecraft:block_state_property",
-                  "block": "biomancy:flesh_melon_crop",
+                  "block": "biomancy:vile_melon_crop",
                   "properties": {
                     "age": "7"
                   }
                 }
               ],
-              "name": "biomancy:flesh_melon_block"
+              "name": "biomancy:vile_melon_block"
             },
             {
               "type": "minecraft:item",
-              "name": "biomancy:flesh_melon_seeds"
+              "name": "biomancy:vile_melon_seeds"
             }
           ]
         }

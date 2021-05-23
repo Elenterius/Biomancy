@@ -35,7 +35,7 @@ public class FleshMelonCropBlock extends FleshCropBlock {
 
 	@Override
 	public IItemProvider getSeedsItem() {
-		return ModItems.FLESH_MELON_SEEDS.get();
+		return ModItems.VILE_MELON_SEEDS.get();
 	}
 
 }

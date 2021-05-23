@@ -695,7 +695,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.patternLine("SBS").patternLine("NNN")
 				.addCriterion("has_nutrient_paste", hasItem(ModItems.NUTRIENT_PASTE.get())).build(consumer);
 
-		ShapelessRecipeBuilder.shapelessRecipe(ModItems.FLESH_MELON_SEEDS.get())
+		ShapelessRecipeBuilder.shapelessRecipe(ModItems.VILE_MELON_SEEDS.get())
 				.addIngredient(ModItems.VILE_MELON_SLICE.get())
 				.addCriterion("has_vile_melon_slice", hasItem(ModItems.VILE_MELON_SLICE.get())).build(consumer);
 

@@ -80,15 +80,15 @@ public class ModBlockLootTables extends BlockLootTables {
 	}
 
 	protected static LootTable.Builder droppingFruitWithBonusOrSeeds(Block block, Item fruit, Item seeds) {
-		ILootCondition.IBuilder conditionBuilder = BlockStateProperty.builder(ModBlocks.FLESH_MELON_CROP.get()).fromProperties(StatePropertiesPredicate.Builder.newBuilder().withIntProp(CropsBlock.AGE, 7));
+		ILootCondition.IBuilder conditionBuilder = BlockStateProperty.builder(ModBlocks.VILE_MELON_CROP.get()).fromProperties(StatePropertiesPredicate.Builder.newBuilder().withIntProp(CropsBlock.AGE, 7));
 		return withExplosionDecay(block, LootTable.builder().addLootPool(LootPool.builder().addEntry(ItemLootEntry.builder(fruit).acceptCondition(conditionBuilder).alternatively(ItemLootEntry.builder(seeds)))));
 	}
 
 	@Override
 	protected void addTables() {
 
-		registerDropSelfLootTable(ModBlocks.FLESH_MELON_BLOCK.get());
-		registerLootTable(ModBlocks.FLESH_MELON_CROP.get(), droppingFruitWithBonusOrSeeds(ModBlocks.FLESH_MELON_CROP.get(), ModItems.FLESH_MELON_BLOCK.get(), ModItems.FLESH_MELON_SEEDS.get()));
+		registerDropSelfLootTable(ModBlocks.VILE_MELON_BLOCK.get());
+		registerLootTable(ModBlocks.VILE_MELON_CROP.get(), droppingFruitWithBonusOrSeeds(ModBlocks.VILE_MELON_CROP.get(), ModItems.VILE_MELON_BLOCK.get(), ModItems.VILE_MELON_SEEDS.get()));
 
 		registerDropSelfLootTable(ModBlocks.FLESH_TENTACLE.get());
 		registerDropSelfLootTable(ModBlocks.FLESH_BLOCK.get());

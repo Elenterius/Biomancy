@@ -47,8 +47,8 @@ public final class ModBlocks {
 	public static final RegistryObject<Block> NECROTIC_FLESH_BLOCK = BLOCKS.register("necrotic_flesh_block", () -> new FleshBlock(createFleshProperties()));
 
 	//Plant
-	public static final RegistryObject<Block> FLESH_MELON_BLOCK = BLOCKS.register("flesh_melon_block", () -> new Block(Block.Properties.create(Material.GOURD, MaterialColor.PINK).hardnessAndResistance(1f).sound(SoundType.WOOD)));
-	public static final RegistryObject<FleshMelonCropBlock> FLESH_MELON_CROP = BLOCKS.register("flesh_melon_crop", () -> new FleshMelonCropBlock(Block.Properties.create(Material.PLANTS, MaterialColor.PINK).tickRandomly().hardnessAndResistance(0.2f).sound(SoundType.STEM)));
+	public static final RegistryObject<Block> VILE_MELON_BLOCK = BLOCKS.register("vile_melon_block", () -> new Block(Block.Properties.create(Material.GOURD, MaterialColor.PINK).hardnessAndResistance(1f).sound(SoundType.WOOD)));
+	public static final RegistryObject<FleshMelonCropBlock> VILE_MELON_CROP = BLOCKS.register("vile_melon_crop", () -> new FleshMelonCropBlock(Block.Properties.create(Material.PLANTS, MaterialColor.PINK).tickRandomly().hardnessAndResistance(0.2f).sound(SoundType.STEM)));
 
 	//Bio-Constructs
 	public static final RegistryObject<OwnableDoorBlock> BIO_FLESH_DOOR = BLOCKS.register("bioflesh_door", () -> new OwnableDoorBlock(createFleshProperties().notSolid()));

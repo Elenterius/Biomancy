@@ -55,11 +55,9 @@
   "item.biomancy.heart": "Heart",
   "item.biomancy.liver": "Liver",
   "item.biomancy.kidney": "Kidney",
-  "item.biomancy.flesh_melon_seeds": "Flesh Melon Seeds",
-  "item.biomancy.flesh_melon_slice": "Flesh Melon Slice",
-  "item.biomancy.cooked_flesh_melon_slice": "Cooked Flesh Melon Slice",
-
-  "item.biomancy.makhana": "Polluted Makhana",
+  "item.biomancy.vile_melon_seeds": "Vile-Melon Seeds",
+  "item.biomancy.vile_melon_slice": "Vile-Melon Slice",
+  "item.biomancy.cooked_vile_melon_slice": "Cooked Vile-Melon Slice",
 
   "item.biomancy.flesh_blob_spawn_egg": "Flesh Blob Spawn Egg",
   "item.biomancy.fleshkin_spawn_egg": "Fleshkin Spawn Egg",
