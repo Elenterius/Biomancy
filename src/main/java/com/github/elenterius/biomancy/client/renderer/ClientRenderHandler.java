@@ -153,6 +153,15 @@ public final class ClientRenderHandler {
 				matrix.translate(-scaledWidth - fontRenderer.getStringWidth(frontPart) * 1.5f + fontRenderer.getStringWidth(endPart) - 4, -scaledHeight, 0);
 				AbstractGui.drawString(event.getMatrixStack(), fontRenderer, frontPart, x, y, 0xFFFEFEFE);
 				matrix.pop();
+
+				if (gunItem.getState(heldStack) == ProjectileWeaponItem.State.RELOADING) {
+					long elapsedTime = player.worldClient.getGameTime() - gunItem.getReloadStartTime(heldStack);
+					float reloadProgress = gunItem.getReloadProgress(elapsedTime, gunItem.getReloadTime(heldStack));
+
+					float xm = event.getWindow().getScaledWidth() * 0.5f;
+					float ym = event.getWindow().getScaledHeight() * 0.5f;
+					drawRectangularProgressBar(event.getMatrixStack(), xm, ym, 20f, reloadProgress, 0xFF9E9E9E);
+				}
 			}
 		}
 	}

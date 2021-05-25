@@ -1,5 +1,7 @@
 package com.github.elenterius.biomancy.item.weapon.shootable;
 
+import com.github.elenterius.biomancy.entity.projectile.ToothProjectileEntity;
+import com.github.elenterius.biomancy.init.ModEntityTypes;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
@@ -59,30 +61,30 @@ public class InfestedRifleItem extends ProjectileWeaponItem {
 	private static void fireProjectile(World worldIn, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, float soundPitch, boolean isCreativeMode, float velocity, float inaccuracy, float projectileAngle) {
 		if (!worldIn.isRemote) {
 			ProjectileEntity projectileEntity;
-			ArrowEntity arrowentity = new ArrowEntity(worldIn, shooter);
-			if (shooter instanceof PlayerEntity) {
-				arrowentity.setIsCritical(true);
+			ToothProjectileEntity toothProjectile = ModEntityTypes.TOOTH_PROJECTILE.get().create(worldIn);
+			if (toothProjectile != null) {
+				toothProjectile.setPosition(shooter.getPosX(), shooter.getPosY(), shooter.getPosZ());
+				toothProjectile.setShooter(shooter);
 			}
-			arrowentity.setDamage(2.5d);
-			arrowentity.setHitSound(SoundEvents.ITEM_CROSSBOW_HIT);
-			arrowentity.setShotFromCrossbow(true);
-			applyEnchantmentsOnProjectile(projectileWeapon, arrowentity);
-			projectileEntity = arrowentity;
+//			applyEnchantmentsOnProjectile(projectileWeapon, arrowentity);
+			projectileEntity = toothProjectile;
 
 //			if (shooter instanceof IProjectileWeaponUser) {
 //				IProjectileWeaponUser user = (IProjectileWeaponUser) shooter;
 //				user.aimAtTargetAndShoot(user.getAttackTarget(), projectileWeapon, projectileEntity, projectileAngle);
 //			} else {
-			Vector3d upVec = shooter.getUpVector(1.0F);
+			Vector3d upVec = shooter.getUpVector(1f);
 			Quaternion quaternion = new Quaternion(new Vector3f(upVec), projectileAngle, true);
-			Vector3f lookVec = new Vector3f(shooter.getLook(1.0F));
+			Vector3f lookVec = new Vector3f(shooter.getLook(1f));
 			lookVec.transform(quaternion);
 			projectileEntity.shoot(lookVec.getX(), lookVec.getY(), lookVec.getZ(), velocity, inaccuracy);
 //			}
 
 			projectileWeapon.damageItem(1, shooter, (entity) -> entity.sendBreakAnimation(hand));
-			worldIn.addEntity(projectileEntity);
-			worldIn.playSound(null, shooter.getPosX(), shooter.getPosY(), shooter.getPosZ(), SoundEvents.ITEM_CROSSBOW_SHOOT, SoundCategory.PLAYERS, 1.0F, soundPitch);
+
+			if (worldIn.addEntity(projectileEntity)) {
+				worldIn.playSound(null, shooter.getPosX(), shooter.getPosY(), shooter.getPosZ(), SoundEvents.ITEM_CROSSBOW_SHOOT, SoundCategory.PLAYERS, 1f, soundPitch);
+			}
 		}
 	}
 
@@ -114,15 +116,15 @@ public class InfestedRifleItem extends ProjectileWeaponItem {
 	}
 
 	@Override
-	public void startReload(ItemStack stack, ServerWorld world, LivingEntity livingEntity) {
+	public void onReloadStarted(ItemStack stack, ServerWorld world, LivingEntity livingEntity) {
 		stack.getOrCreateTag().putInt("OldAmmo", getAmmo(stack));
-		super.startReload(stack, world, livingEntity);
 	}
 
 	@Override
 	public void onReloadTick(ItemStack stack, ServerWorld world, LivingEntity livingEntity, long elapsedTime) {
-		if (elapsedTime % 20 != 0) return; //only here to prevent wonky screen from too many negative health updates  //TODO: find better way for this
+		if (elapsedTime % 20L != 0L) return; //only here to prevent wonky screen from too many negative health updates  //TODO: find better way for this
 		reloadAmmo(stack, world, livingEntity, elapsedTime);
+		if (elapsedTime % 40L == 0L) playSFX(world, livingEntity, SoundEvents.ITEM_CROSSBOW_LOADING_MIDDLE);
 	}
 
 	@Override
@@ -166,8 +168,6 @@ public class InfestedRifleItem extends ProjectileWeaponItem {
 					}
 				}
 				addAmmo(stack, reloadAmount);
-				SoundCategory soundcategory = livingEntity instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE;
-				world.playSound(null, livingEntity.getPosX(), livingEntity.getPosY(), livingEntity.getPosZ(), SoundEvents.ITEM_CROSSBOW_LOADING_END, soundcategory, 1.0F, 1.0F / (random.nextFloat() * 0.5F + 1.0F) + 0.2F);
 			}
 		}
 	}

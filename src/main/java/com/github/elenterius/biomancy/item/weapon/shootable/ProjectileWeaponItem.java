@@ -13,10 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShootableItem;
 import net.minecraft.item.UseAction;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -142,7 +139,7 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 			if (getState(stack) == State.RELOADING) {
 				LivingEntity livingEntity = (LivingEntity) entity;
 
-				if (canReload(stack, livingEntity)) {
+				if (isSelected && canReload(stack, livingEntity)) {
 					long elapsedTime = world.getGameTime() - getReloadStartTime(stack);
 					if (elapsedTime < 0) return;
 
@@ -196,21 +193,25 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 		setState(stack, State.RELOADING);
 		stack.getOrCreateTag().putLong("ReloadStartTime", world.getGameTime());
 		onReloadStarted(stack, world, livingEntity);
+		playSFX(world, livingEntity, SoundEvents.ITEM_CROSSBOW_LOADING_START);
 	}
 
 	public void finishReload(ItemStack stack, ServerWorld world, LivingEntity livingEntity) {
 		setState(stack, State.NONE);
 		onReloadFinished(stack, world, livingEntity);
+		playSFX(world, livingEntity, SoundEvents.ITEM_CROSSBOW_LOADING_END);
 	}
 
 	public void stopReload(ItemStack stack, ServerWorld world, LivingEntity livingEntity) {
 		setState(stack, State.NONE);
 		onReloadStopped(stack, world, livingEntity);
+		playSFX(world, livingEntity, SoundEvents.ITEM_CROSSBOW_LOADING_END);
 	}
 
 	public void cancelReload(ItemStack stack, ServerWorld world, LivingEntity livingEntity) {
 		setState(stack, State.NONE);
 		onReloadCanceled(stack, world, livingEntity);
+		playSFX(world, livingEntity, SoundEvents.ITEM_CROSSBOW_LOADING_END);
 	}
 
 	public void onReloadStarted(ItemStack stack, ServerWorld world, LivingEntity livingEntity) {}
@@ -223,9 +224,6 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 
 	public void onReloadFinished(ItemStack stack, ServerWorld world, LivingEntity livingEntity) {
 		setAmmo(stack, getMaxAmmo());
-
-		SoundCategory soundcategory = livingEntity instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE;
-		world.playSound(null, livingEntity.getPosX(), livingEntity.getPosY(), livingEntity.getPosZ(), SoundEvents.ITEM_CROSSBOW_LOADING_END, soundcategory, 1f, 1f / (random.nextFloat() * 0.5f + 1f) + 0.2f);
 	}
 
 	public float getReloadProgress(long elapsedTime, long reloadTime) {
@@ -281,5 +279,10 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 
 	public void consumeAmmo(ItemStack stack, int amount) {
 		addAmmo(stack, -amount);
+	}
+
+	public void playSFX(World world, LivingEntity shooter, SoundEvent soundEvent) {
+		SoundCategory soundcategory = shooter instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE;
+		world.playSound(null, shooter.getPosX(), shooter.getPosY(), shooter.getPosZ(), soundEvent, soundcategory, 1f, 1f / (random.nextFloat() * 0.5f + 1f) + 0.2f);
 	}
 }

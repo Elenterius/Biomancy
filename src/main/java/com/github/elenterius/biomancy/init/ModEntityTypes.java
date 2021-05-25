@@ -12,6 +12,8 @@ import com.github.elenterius.biomancy.entity.hybrid.CrocospiderEntity;
 import com.github.elenterius.biomancy.entity.mutation.ChromaSheepEntity;
 import com.github.elenterius.biomancy.entity.mutation.SilkyWoolSheepEntity;
 import com.github.elenterius.biomancy.entity.mutation.ThickWoolSheepEntity;
+import com.github.elenterius.biomancy.entity.projectile.ToothProjectileEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
@@ -26,24 +28,31 @@ import org.apache.logging.log4j.MarkerManager;
 public final class ModEntityTypes {
 	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, BiomancyMod.MOD_ID);
 
-	public static final RegistryObject<EntityType<FleshBlobEntity>> FLESH_BLOB = ENTITIES.register("flesh_blob", () -> EntityType.Builder.create(FleshBlobEntity::new, EntityClassification.CREATURE).size(0.75F, 0.75F).build(BiomancyMod.MOD_ID + ":" + "flesh_blob"));
+	public static final RegistryObject<EntityType<FleshBlobEntity>> FLESH_BLOB = register("flesh_blob", EntityType.Builder.create(FleshBlobEntity::new, EntityClassification.CREATURE).size(0.75F, 0.75F));
 
 	//GMOs
-	public static final RegistryObject<EntityType<ChromaSheepEntity>> CHROMA_SHEEP = ENTITIES.register("chroma_sheep", () -> EntityType.Builder.create(ChromaSheepEntity::new, EntityClassification.CREATURE).size(0.9f, 1.3f).trackingRange(10).build(BiomancyMod.MOD_ID + ":" + "chroma_sheep"));
-	public static final RegistryObject<EntityType<SilkyWoolSheepEntity>> SILKY_WOOL_SHEEP = ENTITIES.register("silky_wool_sheep", () -> EntityType.Builder.create(SilkyWoolSheepEntity::new, EntityClassification.CREATURE).size(0.9f, 1.3f).trackingRange(10).build(BiomancyMod.MOD_ID + ":" + "silky_wool_sheep"));
-	public static final RegistryObject<EntityType<ThickWoolSheepEntity>> THICK_WOOL_SHEEP = ENTITIES.register("thick_wool_sheep", () -> EntityType.Builder.create(ThickWoolSheepEntity::new, EntityClassification.CREATURE).size(0.9f, 1.3f).trackingRange(10).build(BiomancyMod.MOD_ID + ":" + "thick_wool_sheep"));
-	public static final RegistryObject<EntityType<FailedSheepEntity>> FAILED_SHEEP = ENTITIES.register("failed_sheep", () -> EntityType.Builder.create(FailedSheepEntity::new, EntityClassification.CREATURE).size(0.9f, 1.3f).trackingRange(10).build(BiomancyMod.MOD_ID + ":" + "failed_sheep"));
+	public static final RegistryObject<EntityType<ChromaSheepEntity>> CHROMA_SHEEP = register("chroma_sheep", EntityType.Builder.create(ChromaSheepEntity::new, EntityClassification.CREATURE).size(0.9f, 1.3f).trackingRange(10));
+	public static final RegistryObject<EntityType<SilkyWoolSheepEntity>> SILKY_WOOL_SHEEP = register("silky_wool_sheep", EntityType.Builder.create(SilkyWoolSheepEntity::new, EntityClassification.CREATURE).size(0.9f, 1.3f).trackingRange(10));
+	public static final RegistryObject<EntityType<ThickWoolSheepEntity>> THICK_WOOL_SHEEP = register("thick_wool_sheep", EntityType.Builder.create(ThickWoolSheepEntity::new, EntityClassification.CREATURE).size(0.9f, 1.3f).trackingRange(10));
+	public static final RegistryObject<EntityType<FailedSheepEntity>> FAILED_SHEEP = register("failed_sheep", EntityType.Builder.create(FailedSheepEntity::new, EntityClassification.CREATURE).size(0.9f, 1.3f).trackingRange(10));
 
 	//Golems
-	public static final RegistryObject<EntityType<FleshkinEntity>> FLESHKIN = ENTITIES.register("fleshkin", () -> EntityType.Builder.create(FleshkinEntity::new, EntityClassification.MONSTER).size(0.6f, 1.95f).trackingRange(10).build(BiomancyMod.MOD_ID + ":" + "fleshkin"));
+	public static final RegistryObject<EntityType<FleshkinEntity>> FLESHKIN = register("fleshkin", EntityType.Builder.create(FleshkinEntity::new, EntityClassification.MONSTER).size(0.6f, 1.95f).trackingRange(10));
 
-	public static final RegistryObject<EntityType<BloblingEntity>> BLOBLING = ENTITIES.register("blobling", () -> EntityType.Builder.create(BloblingEntity::new, EntityClassification.MONSTER).size(0.4F, 0.35F).build(BiomancyMod.MOD_ID + ":" + "blobling"));
-	public static final RegistryObject<EntityType<CrocospiderEntity>> BROOD_MOTHER = ENTITIES.register("brood_mother", () -> EntityType.Builder.create(CrocospiderEntity::new, EntityClassification.MONSTER).size(1.6F, 0.7F).build(BiomancyMod.MOD_ID + ":" + "brood_mother"));
-	public static final RegistryObject<EntityType<BeetlingEntity>> BEETLING = ENTITIES.register("beetling", () -> EntityType.Builder.create(BeetlingEntity::new, EntityClassification.CREATURE).size(0.475F, 0.34F).build(BiomancyMod.MOD_ID + ":" + "beetling"));
-	public static final RegistryObject<EntityType<PotionBeetleEntity>> POTION_BEETLE = ENTITIES.register("potion_beetle", () -> EntityType.Builder.create(PotionBeetleEntity::new, EntityClassification.CREATURE).size(0.475F, 0.34F).build(BiomancyMod.MOD_ID + ":" + "potion_beetle"));
-	public static final RegistryObject<EntityType<MasonBeetleEntity>> MASON_BEETLE = ENTITIES.register("mason_beetle", () -> EntityType.Builder.create(MasonBeetleEntity::new, EntityClassification.CREATURE).size(0.475F, 0.34F).build(BiomancyMod.MOD_ID + ":" + "mason_beetle"));
+	public static final RegistryObject<EntityType<BloblingEntity>> BLOBLING = register("blobling", EntityType.Builder.create(BloblingEntity::new, EntityClassification.MONSTER).size(0.4F, 0.35F));
+	public static final RegistryObject<EntityType<CrocospiderEntity>> BROOD_MOTHER = register("brood_mother", EntityType.Builder.create(CrocospiderEntity::new, EntityClassification.MONSTER).size(1.6F, 0.7F));
+	public static final RegistryObject<EntityType<BeetlingEntity>> BEETLING = register("beetling", EntityType.Builder.create(BeetlingEntity::new, EntityClassification.CREATURE).size(0.475F, 0.34F));
+	public static final RegistryObject<EntityType<PotionBeetleEntity>> POTION_BEETLE = register("potion_beetle", EntityType.Builder.create(PotionBeetleEntity::new, EntityClassification.CREATURE).size(0.475F, 0.34F));
+	public static final RegistryObject<EntityType<MasonBeetleEntity>> MASON_BEETLE = register("mason_beetle", EntityType.Builder.create(MasonBeetleEntity::new, EntityClassification.CREATURE).size(0.475F, 0.34F));
+
+	//Projectiles
+	public static final RegistryObject<EntityType<ToothProjectileEntity>> TOOTH_PROJECTILE = register("tooth_projectile", EntityType.Builder.create(ToothProjectileEntity::new, EntityClassification.MISC).size(0.25f, 0.25f).updateInterval(10));
 
 	private ModEntityTypes() {}
+
+	private static <T extends Entity> RegistryObject<EntityType<T>> register(String name, EntityType.Builder<T> builder) {
+		return ENTITIES.register(name, () -> builder.build(BiomancyMod.MOD_ID + ":" + name));
+	}
 
 	static void onPostSetup() {
 		BiomancyMod.LOGGER.debug(MarkerManager.getMarker("ENTITIES"), "creating attributes...");
