@@ -76,7 +76,7 @@ public class MeatsoupCauldronBlock extends Block {
 				if (blobEntity != null) {
 					blobEntity.setLocationAndAngles(pos.getX() + 0.5f, pos.getY() + 4f / 16f, pos.getZ() + 0.5f, 0, 0);
 					if (p > 0.4f && worldIn.rand.nextFloat() < 0.5f) {
-						blobEntity.setFleshBlobData((byte) 13);
+						blobEntity.setCustomEntityData((byte) 13);
 					}
 					worldIn.addEntity(blobEntity);
 				}
