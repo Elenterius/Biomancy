@@ -27,7 +27,7 @@ public final class ClientInputHandler {
 	@SubscribeEvent
 	public static void onKeyInput(final InputEvent.KeyInputEvent event) {
 		ClientPlayerEntity player = Minecraft.getInstance().player;
-		if (player != null && event.getKey() == ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.getKey().getKeyCode() && ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.isPressed()) {
+		if (player != null && event.getKey() == ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.getKey().getKeyCode() && event.getAction() == GLFW.GLFW_RELEASE) {
 			if (event.getModifiers() == GLFW.GLFW_MOD_CONTROL) {
 				for (EquipmentSlotType slotType : armorSlotTypes) { //worst case this will send 4 packets to the server
 					ItemStack armorStack = player.getItemStackFromSlot(slotType);
