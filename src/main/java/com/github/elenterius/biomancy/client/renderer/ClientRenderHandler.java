@@ -12,17 +12,21 @@ import com.github.elenterius.biomancy.util.GeometricShape;
 import com.github.elenterius.biomancy.util.PlayerInteractionUtil;
 import com.github.elenterius.biomancy.util.RayTraceUtil;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.settings.AttackIndicatorStatus;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.*;
@@ -108,7 +112,8 @@ public final class ClientRenderHandler {
 	@SubscribeEvent
 	public static void onPreRenderGameOverlay(final RenderGameOverlayEvent.Pre event) {
 		if (event.getType() == RenderGameOverlayEvent.ElementType.CROSSHAIRS) {
-			ClientPlayerEntity player = Minecraft.getInstance().player;
+			Minecraft mc = Minecraft.getInstance();
+			ClientPlayerEntity player = mc.player;
 			if (player == null || player.isSpectator()) return;
 
 			ItemStack heldStack = player.getHeldItemMainhand();
@@ -127,12 +132,12 @@ public final class ClientRenderHandler {
 				float velocity = bowItem.getArrowVelocity(heldStack, charge) * bowItem.baseVelocity;
 				float x = event.getWindow().getScaledWidth() * 0.5f;
 				float y = event.getWindow().getScaledHeight() * 0.5f;
-				AbstractGui.drawString(event.getMatrixStack(), Minecraft.getInstance().fontRenderer, String.format("V: %.1f", velocity), (int) x + 18, (int) y + 6, 0xFFFEFEFE);
+				AbstractGui.drawString(event.getMatrixStack(), mc.fontRenderer, String.format("V: %.1f", velocity), (int) x + 18, (int) y + 6, 0xFFFEFEFE);
 //				drawArc(event.getMatrixStack(), x, y, 13f, 0f, pullProgress * (float) Math.PI * 2f, 0xDDF0F0F0);
 				drawRectangularProgressBar(event.getMatrixStack(), x, y, 25f, pullProgress, 0xFFFEFEFE);
 			}
 			else if (item instanceof ProjectileWeaponItem) {
-				FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
+				FontRenderer fontRenderer = mc.fontRenderer;
 
 				ProjectileWeaponItem gunItem = (ProjectileWeaponItem) item;
 				int ammo = gunItem.getAmmo(heldStack);
@@ -154,16 +159,53 @@ public final class ClientRenderHandler {
 				AbstractGui.drawString(event.getMatrixStack(), fontRenderer, frontPart, x, y, 0xFFFEFEFE);
 				matrix.pop();
 
-				if (gunItem.getState(heldStack) == ProjectileWeaponItem.State.RELOADING) {
-					long elapsedTime = player.worldClient.getGameTime() - gunItem.getReloadStartTime(heldStack);
-					float reloadProgress = gunItem.getReloadProgress(elapsedTime, gunItem.getReloadTime(heldStack));
+				GameSettings gamesettings = mc.gameSettings;
+				if (gamesettings.getPointOfView().func_243192_a() && !gamesettings.showDebugInfo) { // is first person point of view
 
-					float xm = event.getWindow().getScaledWidth() * 0.5f;
-					float ym = event.getWindow().getScaledHeight() * 0.5f;
-					drawRectangularProgressBar(event.getMatrixStack(), xm, ym, 20f, reloadProgress, 0xFF9E9E9E);
+					ProjectileWeaponItem.State gunState = gunItem.getState(heldStack);
+					if (gunState == ProjectileWeaponItem.State.RELOADING) {
+						long elapsedTime = player.worldClient.getGameTime() - gunItem.getReloadStartTime(heldStack);
+						float reloadProgress = gunItem.getReloadProgress(elapsedTime, gunItem.getReloadTime(heldStack));
+
+						float xm = event.getWindow().getScaledWidth() * 0.5f;
+						float ym = event.getWindow().getScaledHeight() * 0.5f;
+						drawRectangularProgressBar(event.getMatrixStack(), xm, ym, 20f, reloadProgress, 0xFF9E9E9E);
+					}
+					else {
+						long elapsedTime = player.worldClient.getGameTime() - heldStack.getOrCreateTag().getLong("ShootTime");
+						if (elapsedTime < gunItem.getShootDelay()) {
+							if (canDrawAttackIndicator(mc, player)) {
+								float progress = (float) elapsedTime / gunItem.getShootDelay();
+								if (progress < 1f) {
+									mc.getTextureManager().bindTexture(AbstractGui.GUI_ICONS_LOCATION);
+									RenderSystem.enableBlend();
+									RenderSystem.enableAlphaTest();
+									RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+
+									x = scaledWidth / 2 - 8;
+									y = scaledHeight / 2 - 7 + 16;
+									mc.ingameGUI.blit(event.getMatrixStack(), x, y, 36, 94, 16, 4);
+									mc.ingameGUI.blit(event.getMatrixStack(), x, y, 52, 94, (int) (progress * 17f), 4);
+
+									RenderSystem.defaultBlendFunc();
+								}
+							}
+						}
+					}
 				}
 			}
 		}
+	}
+
+	private static boolean canDrawAttackIndicator(Minecraft mc, ClientPlayerEntity player) {
+		if (mc.gameSettings.attackIndicator != AttackIndicatorStatus.CROSSHAIR) return true;
+		boolean isIndicatorAlreadyBeingDrawn = false;
+		float attackStrength = player.getCooledAttackStrength(0f);
+		if (mc.pointedEntity instanceof LivingEntity && attackStrength >= 1.0F) {
+			isIndicatorAlreadyBeingDrawn = player.getCooldownPeriod() > 5.0F;
+			isIndicatorAlreadyBeingDrawn &= mc.pointedEntity.isAlive();
+		}
+		return !isIndicatorAlreadyBeingDrawn && attackStrength >= 1;
 	}
 
 	private static void drawRectangularProgressBar(MatrixStack matrixStack, float cx, float cy, float lengthA, float progress, int color) {
@@ -200,7 +242,6 @@ public final class ClientRenderHandler {
 		if (d > 0) {
 			float x = cx + halfLength;
 			float y = cy - halfLength;
-//			bufferbuilder.pos(matrix, x, y, 0f).color(red, green, blue, alpha).endVertex();
 			bufferbuilder.pos(matrix, x, y + d, 0f).color(red, green, blue, alpha).endVertex();
 		}
 
@@ -210,7 +251,6 @@ public final class ClientRenderHandler {
 		if (d > 0) {
 			float x = cx + halfLength;
 			float y = cy + halfLength;
-//			bufferbuilder.pos(matrix, x, y, 0f).color(red, green, blue, alpha).endVertex();
 			bufferbuilder.pos(matrix, x - d, y, 0f).color(red, green, blue, alpha).endVertex();
 		}
 
@@ -220,7 +260,6 @@ public final class ClientRenderHandler {
 		if (d > 0) {
 			float x = cx - halfLength;
 			float y = cy + halfLength;
-//			bufferbuilder.pos(matrix, x, y, 0f).color(red, green, blue, alpha).endVertex();
 			bufferbuilder.pos(matrix, x, y - d, 0f).color(red, green, blue, alpha).endVertex();
 		}
 
@@ -254,7 +293,8 @@ public final class ClientRenderHandler {
 		BufferBuilder bufferbuilder = Tessellator.getInstance().getBuffer();
 		RenderSystem.enableBlend();
 		RenderSystem.disableTexture();
-		RenderSystem.defaultBlendFunc();
+		RenderSystem.enableAlphaTest();
+		RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 		RenderSystem.lineWidth(5.1f);
 		bufferbuilder.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
 
@@ -272,6 +312,7 @@ public final class ClientRenderHandler {
 		WorldVertexBufferUploader.draw(bufferbuilder);
 		RenderSystem.enableTexture();
 		RenderSystem.disableBlend();
+		RenderSystem.defaultBlendFunc();
 	}
 
 	@SubscribeEvent

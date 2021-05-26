@@ -17,7 +17,7 @@ public class ToothGunItem extends ProjectileWeaponItem {
 	public static final Predicate<ItemStack> VALID_AMMO_ITEM = (stack) -> stack.getItem() == ModItems.NUTRIENT_PASTE.get();
 
 	public ToothGunItem(Properties builder) {
-		super(builder, 1.2f, 0.965f, 6, 4 * 20);
+		super(builder, 1.25f, 0.975f, 6, 4 * 20);
 	}
 
 	public static void fireProjectile(ServerWorld worldIn, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, float inaccuracy) {
@@ -41,8 +41,13 @@ public class ToothGunItem extends ProjectileWeaponItem {
 	}
 
 	@Override
+	public int getAmmoReloadCost() {
+		return 3;
+	}
+
+	@Override
 	public void stopShooting(ItemStack stack, ServerWorld world, LivingEntity shooter) {
-		startReload(stack, world, shooter);
+		startReload(stack, world, shooter); //auto reload
 	}
 
 	@Override

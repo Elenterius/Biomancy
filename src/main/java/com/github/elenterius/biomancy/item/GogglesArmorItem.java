@@ -45,7 +45,7 @@ public class GogglesArmorItem extends ArmorItem implements IEntityUnveilerHeadSl
 			}
 			else {
 				tooltip.add(BiomancyMod.getTranslationText("tooltip", "item_is_inert").mergeStyle(TextFormatting.GRAY));
-				tooltip.add(new TranslationTextComponent(BiomancyMod.getTranslationKey("tooltip", "press_button_to"), ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.func_238171_j_().copyRaw().mergeStyle(TextFormatting.AQUA), BiomancyMod.getTranslationText("tooltip", "action_deactivate")).mergeStyle(TextFormatting.DARK_GRAY));
+				tooltip.add(new TranslationTextComponent(BiomancyMod.getTranslationKey("tooltip", "press_button_to"), ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.func_238171_j_().copyRaw().mergeStyle(TextFormatting.AQUA), BiomancyMod.getTranslationText("tooltip", "action_activate")).mergeStyle(TextFormatting.DARK_GRAY));
 			}
 			tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 		}

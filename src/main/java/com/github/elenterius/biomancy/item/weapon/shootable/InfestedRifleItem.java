@@ -1,14 +1,12 @@
 package com.github.elenterius.biomancy.item.weapon.shootable;
 
 import com.github.elenterius.biomancy.entity.projectile.ToothProjectileEntity;
-import com.github.elenterius.biomancy.init.ModEntityTypes;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.EntityDamageSource;
@@ -29,7 +27,7 @@ import java.util.function.Predicate;
 public class InfestedRifleItem extends ProjectileWeaponItem {
 
 	public InfestedRifleItem(Properties builder) {
-		super(builder, 2f, 1f - 0.0075f, 60, 4 * 20);
+		super(builder, 2f, 0.95f, 60, 4 * 20);
 	}
 
 	public static void fireProjectiles(World worldIn, LivingEntity shooter, Hand hand, ItemStack stack, float velocity, float inaccuracy) {
@@ -60,29 +58,28 @@ public class InfestedRifleItem extends ProjectileWeaponItem {
 
 	private static void fireProjectile(World worldIn, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, float soundPitch, boolean isCreativeMode, float velocity, float inaccuracy, float projectileAngle) {
 		if (!worldIn.isRemote) {
-			ProjectileEntity projectileEntity;
-			ToothProjectileEntity toothProjectile = ModEntityTypes.TOOTH_PROJECTILE.get().create(worldIn);
-			if (toothProjectile != null) {
-				toothProjectile.setPosition(shooter.getPosX(), shooter.getPosY(), shooter.getPosZ());
-				toothProjectile.setShooter(shooter);
-			}
+			ToothProjectileEntity toothProjectile = new ToothProjectileEntity(worldIn, shooter);
 //			applyEnchantmentsOnProjectile(projectileWeapon, arrowentity);
-			projectileEntity = toothProjectile;
 
 //			if (shooter instanceof IProjectileWeaponUser) {
 //				IProjectileWeaponUser user = (IProjectileWeaponUser) shooter;
 //				user.aimAtTargetAndShoot(user.getAttackTarget(), projectileWeapon, projectileEntity, projectileAngle);
 //			} else {
-			Vector3d upVec = shooter.getUpVector(1f);
-			Quaternion quaternion = new Quaternion(new Vector3f(upVec), projectileAngle, true);
-			Vector3f lookVec = new Vector3f(shooter.getLook(1f));
-			lookVec.transform(quaternion);
-			projectileEntity.shoot(lookVec.getX(), lookVec.getY(), lookVec.getZ(), velocity, inaccuracy);
+
+			//projectile pattern
+			Vector3f forward = new Vector3f(shooter.getLookVec());
+			Vector3d up = shooter.getUpVector(1f);
+			forward.transform(new Quaternion(new Vector3f(up), projectileAngle, true));
+			Vector3d right = new Vector3d(forward).crossProduct(up);
+			forward.transform(new Quaternion(new Vector3f(right), projectileAngle * (0.5f * random.nextFloat() - 0.5f), true));
+
+			toothProjectile.shoot(forward.getX(), forward.getY(), forward.getZ(), velocity, inaccuracy);
+
 //			}
 
 			projectileWeapon.damageItem(1, shooter, (entity) -> entity.sendBreakAnimation(hand));
 
-			if (worldIn.addEntity(projectileEntity)) {
+			if (worldIn.addEntity(toothProjectile)) {
 				worldIn.playSound(null, shooter.getPosX(), shooter.getPosY(), shooter.getPosZ(), SoundEvents.ITEM_CROSSBOW_SHOOT, SoundCategory.PLAYERS, 1f, soundPitch);
 			}
 		}
@@ -110,39 +107,45 @@ public class InfestedRifleItem extends ProjectileWeaponItem {
 	}
 
 	@Override
-	public void shoot(ServerWorld world, LivingEntity livingEntity, Hand hand, ItemStack projectileWeapon, float inaccuracy) {
-		fireProjectiles(world, livingEntity, hand, projectileWeapon, 1f, inaccuracy);
+	public void shoot(ServerWorld world, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, float inaccuracy) {
+		fireProjectiles(world, shooter, hand, projectileWeapon, 1f, inaccuracy);
 		consumeAmmo(projectileWeapon, 3);
 	}
 
 	@Override
-	public void onReloadStarted(ItemStack stack, ServerWorld world, LivingEntity livingEntity) {
+	public void onReloadStarted(ItemStack stack, ServerWorld world, LivingEntity shooter) {
 		stack.getOrCreateTag().putInt("OldAmmo", getAmmo(stack));
 	}
 
 	@Override
-	public void onReloadTick(ItemStack stack, ServerWorld world, LivingEntity livingEntity, long elapsedTime) {
+	public void onReloadTick(ItemStack stack, ServerWorld world, LivingEntity shooter, long elapsedTime) {
 		if (elapsedTime % 20L != 0L) return; //only here to prevent wonky screen from too many negative health updates  //TODO: find better way for this
-		reloadAmmo(stack, world, livingEntity, elapsedTime);
-		if (elapsedTime % 40L == 0L) playSFX(world, livingEntity, SoundEvents.ITEM_CROSSBOW_LOADING_MIDDLE);
+		reloadAmmo(stack, world, shooter, elapsedTime);
+		if (elapsedTime % 40L == 0L) playSFX(world, shooter, SoundEvents.ITEM_CROSSBOW_LOADING_MIDDLE);
 	}
 
 	@Override
-	public void onReloadFinished(ItemStack stack, ServerWorld world, LivingEntity livingEntity) {
-		long elapsedTime = world.getGameTime() - getReloadStartTime(stack);
-		reloadAmmo(stack, world, livingEntity, elapsedTime);
+	public void finishReload(ItemStack stack, ServerWorld world, LivingEntity shooter) {
+		setState(stack, State.NONE);
+		onReloadFinished(stack, world, shooter);
 	}
 
 	@Override
-	public void onReloadStopped(ItemStack stack, ServerWorld world, LivingEntity livingEntity) {
+	public void onReloadFinished(ItemStack stack, ServerWorld world, LivingEntity shooter) {
 		long elapsedTime = world.getGameTime() - getReloadStartTime(stack);
-		reloadAmmo(stack, world, livingEntity, elapsedTime);
+		reloadAmmo(stack, world, shooter, elapsedTime);
 	}
 
 	@Override
-	public void onReloadCanceled(ItemStack stack, ServerWorld world, LivingEntity livingEntity) {
+	public void onReloadStopped(ItemStack stack, ServerWorld world, LivingEntity shooter) {
 		long elapsedTime = world.getGameTime() - getReloadStartTime(stack);
-		reloadAmmo(stack, world, livingEntity, elapsedTime);
+		reloadAmmo(stack, world, shooter, elapsedTime);
+	}
+
+	@Override
+	public void onReloadCanceled(ItemStack stack, ServerWorld world, LivingEntity shooter) {
+		long elapsedTime = world.getGameTime() - getReloadStartTime(stack);
+		reloadAmmo(stack, world, shooter, elapsedTime);
 	}
 
 	void reloadAmmo(ItemStack stack, ServerWorld world, LivingEntity livingEntity, long elapsedTime) {
@@ -173,8 +176,8 @@ public class InfestedRifleItem extends ProjectileWeaponItem {
 	}
 
 	@Override
-	public boolean canReload(ItemStack stack, LivingEntity entity) {
-		return entity.getHealth() > 0f && super.canReload(stack, entity);
+	public boolean canReload(ItemStack stack, LivingEntity shooter) {
+		return shooter.getHealth() > 0f && getAmmo(stack) < getMaxAmmo();
 	}
 
 	@Override

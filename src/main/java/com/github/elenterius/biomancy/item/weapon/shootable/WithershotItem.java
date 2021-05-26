@@ -44,20 +44,20 @@ public class WithershotItem extends ProjectileWeaponItem {
 	}
 
 	@Override
-	public void shoot(ServerWorld worldIn, LivingEntity livingEntity, Hand hand, ItemStack projectileWeapon, float inaccuracy) {
-		RayTraceResult rayTraceResult = RayTraceUtil.rayTrace(livingEntity, target -> !target.isSpectator() && target.isAlive() && target.canBeCollidedWith() && target instanceof LivingEntity && !livingEntity.isRidingSameEntity(target), func_230305_d_());
+	public void shoot(ServerWorld worldIn, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, float inaccuracy) {
+		RayTraceResult rayTraceResult = RayTraceUtil.rayTrace(shooter, target -> !target.isSpectator() && target.isAlive() && target.canBeCollidedWith() && target instanceof LivingEntity && !shooter.isRidingSameEntity(target), func_230305_d_());
 		if (rayTraceResult.getType() == RayTraceResult.Type.MISS) return;
 
 		if (rayTraceResult.getType() == RayTraceResult.Type.BLOCK && rayTraceResult instanceof BlockRayTraceResult) {
 			BlockRayTraceResult rayTrace = (BlockRayTraceResult) rayTraceResult;
 			BlockPos targetPos = rayTrace.getPos().offset(rayTrace.getFace());
-			fireProjectile(worldIn, livingEntity, hand, projectileWeapon, targetPos.getX() + 0.5d, targetPos.getY() + 0.5d, targetPos.getZ() + 0.5d);
+			fireProjectile(worldIn, shooter, hand, projectileWeapon, targetPos.getX() + 0.5d, targetPos.getY() + 0.5d, targetPos.getZ() + 0.5d);
 			consumeAmmo(projectileWeapon, 1);
 		}
 		else if (rayTraceResult.getType() == RayTraceResult.Type.ENTITY && rayTraceResult instanceof EntityRayTraceResult) {
 			EntityRayTraceResult rayTrace = (EntityRayTraceResult) rayTraceResult;
 			if (rayTrace.getEntity() instanceof LivingEntity) {
-				fireProjectile(worldIn, livingEntity, hand, projectileWeapon, (LivingEntity) rayTrace.getEntity());
+				fireProjectile(worldIn, shooter, hand, projectileWeapon, (LivingEntity) rayTrace.getEntity());
 				consumeAmmo(projectileWeapon, 1);
 			}
 		}

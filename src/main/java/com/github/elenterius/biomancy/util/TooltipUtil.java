@@ -14,6 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.List;
 import java.util.UUID;
 
 public final class TooltipUtil {
@@ -38,6 +39,14 @@ public final class TooltipUtil {
 	public static TranslationTextComponent getTooltip(Item item) {
 		return Screen.hasControlDown() ? new TranslationTextComponent(Util.makeTranslationKey("tooltip", ForgeRegistries.ITEMS.getKey(item))) :
 				new TranslationTextComponent(BiomancyMod.getTranslationKey("tooltip", "press_button_to"), new TranslationTextComponent("keyboard.ctrl").mergeStyle(TextFormatting.AQUA), "show Info");
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public static boolean showExtraInfo(List<ITextComponent> tooltip) {
+		boolean flag = Screen.hasControlDown();
+		if (!flag)
+			tooltip.add(new TranslationTextComponent(BiomancyMod.getTranslationKey("tooltip", "press_button_to"), new TranslationTextComponent("keyboard.ctrl").mergeStyle(TextFormatting.AQUA), "show Info"));
+		return flag;
 	}
 
 	@OnlyIn(Dist.CLIENT)
