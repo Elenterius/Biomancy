@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.entity.projectile;
 
 import com.github.elenterius.biomancy.init.ModDamageSources;
+import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -13,6 +14,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SChangeGameStatePacket;
+import net.minecraft.particles.IParticleData;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -31,6 +34,16 @@ public class ToothProjectileEntity extends DamagingProjectileEntity implements I
 		super(entityType, world);
 	}
 
+	public ToothProjectileEntity(World world, double x, double y, double z) {
+		this(ModEntityTypes.TOOTH_PROJECTILE.get(), world);
+		setPosition(x, y, z);
+	}
+
+	public ToothProjectileEntity(World world, LivingEntity shooter) {
+		this(world, shooter.getPosX(), shooter.getPosYEye() - 0.1f, shooter.getPosZ());
+		setShooter(shooter);
+	}
+
 	@Override
 	public IPacket<?> createSpawnPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
@@ -40,26 +53,35 @@ public class ToothProjectileEntity extends DamagingProjectileEntity implements I
 	public void writeSpawnData(PacketBuffer buffer) {
 		Entity shooter = getShooter();
 		buffer.writeVarInt(shooter == null ? 0 : shooter.getEntityId());
+		buffer.writeDouble(accelerationX);
+		buffer.writeDouble(accelerationY);
+		buffer.writeDouble(accelerationZ);
 	}
 
 	@Override
-	public void readSpawnData(PacketBuffer additionalData) {
-		Entity shooter = world.getEntityByID(additionalData.readVarInt());
+	public void readSpawnData(PacketBuffer buffer) {
+		Entity shooter = world.getEntityByID(buffer.readVarInt());
 		setShooter(shooter);
+		accelerationX = buffer.readDouble();
+		accelerationY = buffer.readDouble();
+		accelerationZ = buffer.readDouble();
 	}
 
 	@Override
-	public void tick() {
-		Entity shooter = getShooter();
-		System.out.println("flag: " + (world.isRemote || (shooter == null || !shooter.removed) && world.isBlockLoaded(getPosition())));
-		super.tick();
+	public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
+		super.shoot(x, y, z, velocity, inaccuracy);
+		double magnitude = getMotion().length();
+		if (magnitude != 0.0D) {
+			accelerationX = getMotion().x / magnitude * 0.1d;
+			accelerationY = getMotion().y / magnitude * 0.1d;
+			accelerationZ = getMotion().z / magnitude * 0.1d;
+		}
 	}
 
 	@Override
 	protected void onImpact(RayTraceResult result) {
 		super.onImpact(result);
 		if (!world.isRemote) {
-			setShooter(null);
 			remove();
 		}
 	}
@@ -70,7 +92,7 @@ public class ToothProjectileEntity extends DamagingProjectileEntity implements I
 		if (!world.isRemote) {
 			Entity victim = result.getEntity();
 			Entity shooter = getShooter();
-			boolean success = victim.attackEntityFrom(ModDamageSources.createToothProjectileDamage(this, shooter), 2.5f);
+			boolean success = victim.attackEntityFrom(ModDamageSources.createToothProjectileDamage(this, shooter), 5f);
 			if (success) {
 				if (shooter instanceof LivingEntity) {
 					applyEnchantments((LivingEntity) shooter, victim); //thorn & arthropod damage
@@ -110,10 +132,25 @@ public class ToothProjectileEntity extends DamagingProjectileEntity implements I
 		return false;
 	}
 
+	@Override
+	protected IParticleData getParticle() {
+		return ParticleTypes.POOF;
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	private static final ItemStack ITEM_TO_RENDER = getItemForRendering();
+
+	@OnlyIn(Dist.CLIENT)
+	private static ItemStack getItemForRendering() {
+		ItemStack stack = new ItemStack(ModItems.BONE_SCRAPS.get());
+		stack.getOrCreateTag().putInt("ScrapType", 1);
+		return stack;
+	}
+
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public ItemStack getItem() {
-		return new ItemStack(ModItems.BONE_SCRAPS.get());
+		return ITEM_TO_RENDER;
 	}
 
 }

@@ -46,7 +46,7 @@ public final class ModEntityTypes {
 	public static final RegistryObject<EntityType<MasonBeetleEntity>> MASON_BEETLE = register("mason_beetle", EntityType.Builder.create(MasonBeetleEntity::new, EntityClassification.CREATURE).size(0.475F, 0.34F));
 
 	//Projectiles
-	public static final RegistryObject<EntityType<ToothProjectileEntity>> TOOTH_PROJECTILE = register("tooth_projectile", EntityType.Builder.create(ToothProjectileEntity::new, EntityClassification.MISC).size(0.25f, 0.25f).updateInterval(10));
+	public static final RegistryObject<EntityType<ToothProjectileEntity>> TOOTH_PROJECTILE = register("tooth_projectile", EntityType.Builder.<ToothProjectileEntity>create(ToothProjectileEntity::new, EntityClassification.MISC).size(0.25f, 0.25f).updateInterval(10));
 
 	private ModEntityTypes() {}
 

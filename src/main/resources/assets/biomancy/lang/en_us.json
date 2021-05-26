@@ -14,6 +14,9 @@
   "item.biomancy.oculus_key": "Oculus Key",
   "item.biomancy.syringe": "Syringe",
 
+  "item.biomancy.bioflesh_pickaxe": "Fleshborn Pickaxe",
+  "item.biomancy.bioflesh_axe": "Fleshborn Axe",
+  "item.biomancy.bioflesh_shovel": "Fleshborn Shovel",
   "item.biomancy.sharp_bone": "Sharpened Bone",
   "item.biomancy.leech_claw": "Hirudinean Claw",
   "item.biomancy.long_range_claw": "Marfanoid Claw",
@@ -23,9 +26,7 @@
   "item.biomancy.sinew_bow": "Bow of Sinew",
   "item.biomancy.withershot": "Withershot",
   "item.biomancy.entity_launcher": "Organics-Launcher",
-  "item.biomancy.bioflesh_pickaxe": "Fleshborn Pickaxe",
-  "item.biomancy.bioflesh_axe": "Fleshborn Axe",
-  "item.biomancy.bioflesh_shovel": "Fleshborn Shovel",
+  "item.biomancy.tooth_gun": "Tooth Gun",
 
   "item.biomancy.mutagenic_bile": "Mutagenic Bile",
   "item.biomancy.rejuvenating_mucus": "Rejuvenating Mucus",
@@ -34,14 +35,11 @@
   "item.biomancy.oxide_powder": "Coarse Oxide Powder",
   "item.biomancy.silicate_paste": "Silicate Paste",
   "item.biomancy.hormone_serum": "Hormone Rich Bile",
-
   "item.biomancy.bolus": "Crushed Biomass",
   "item.biomancy.digestate": "Digestate",
   "item.biomancy.nutrient_paste": "Nutrient Paste",
   "item.biomancy.nutrient_bar": "Nutrient Bar",
-
   "item.biomancy.biometal": "Biometal",
-
   "item.biomancy.bone_scraps": "Bone Scraps",
   "item.biomancy.skin_chunk": "Chunk of Skin",
   "item.biomancy.flesh_lump": "Lump of Flesh",
@@ -50,11 +48,13 @@
   "item.biomancy.mended_skin": "Stitched Skin",
   "item.biomancy.artificial_stomach": "Stitched Stomach",
   "item.biomancy.oculus": "Oculus",
+
   "item.biomancy.stomach": "Stomach",
   "item.biomancy.brain": "Brain",
   "item.biomancy.heart": "Heart",
   "item.biomancy.liver": "Liver",
   "item.biomancy.kidney": "Kidney",
+
   "item.biomancy.vile_melon_seeds": "Vile-Melon Seeds",
   "item.biomancy.vile_melon_slice": "Vile-Melon Slice",
   "item.biomancy.cooked_vile_melon_slice": "Cooked Vile-Melon Slice",
