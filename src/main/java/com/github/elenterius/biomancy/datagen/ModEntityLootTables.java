@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.datagen;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.entity.aberration.FleshBlobEntity;
 import com.github.elenterius.biomancy.entity.mutation.SilkyWoolSheepEntity;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModItems;
@@ -54,12 +55,22 @@ public class ModEntityLootTables extends EntityLootTables {
 				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1))
 						.addEntry(ItemLootEntry.builder(ModItems.TWISTED_HEART.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-3.0F, 1.0F))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))))
 		);
+		registerLootTable(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_2, fleshBlobLootTableBuilderWithDrop(1));
+		registerLootTable(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_3, fleshBlobLootTableBuilderWithDrop(2));
+		registerLootTable(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_4, fleshBlobLootTableBuilderWithDrop(3));
+		registerLootTable(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_5, fleshBlobLootTableBuilderWithDrop(4));
+		registerLootTable(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_6, fleshBlobLootTableBuilderWithDrop(5));
+		registerLootTable(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_7, fleshBlobLootTableBuilderWithDrop(6));
+		registerLootTable(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_8, fleshBlobLootTableBuilderWithDrop(7));
+		registerLootTable(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_9, fleshBlobLootTableBuilderWithDrop(8));
+		registerLootTable(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_10, fleshBlobLootTableBuilderWithDrop(9));
 
 		registerLootTable(ModEntityTypes.FAILED_SHEEP.get(), LootTable.builder()
 				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(ModItems.FLESH_LUMP.get()).acceptFunction(SetCount.builder(RandomValueRange.of(1, 3))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f)))))
 				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(ModItems.SKIN_CHUNK.get()).acceptFunction(SetCount.builder(RandomValueRange.of(2, 4))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f))))));
 		registerLootTable(ModEntityTypes.CHROMA_SHEEP.get(), LootTable.builder().addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(Items.MUTTON).acceptFunction(SetCount.builder(RandomValueRange.of(1, 2))).acceptFunction(Smelt.func_215953_b().acceptCondition(EntityHasProperty.builder(LootContext.EntityTarget.THIS, ON_FIRE))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f))))));
 		registerLootTable(ModEntityTypes.THICK_WOOL_SHEEP.get(), LootTable.builder().addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(Items.MUTTON).acceptFunction(SetCount.builder(RandomValueRange.of(1, 2))).acceptFunction(Smelt.func_215953_b().acceptCondition(EntityHasProperty.builder(LootContext.EntityTarget.THIS, ON_FIRE))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f))))));
+
 		registerLootTable(ModEntityTypes.SILKY_WOOL_SHEEP.get(), LootTable.builder().addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(Items.MUTTON).acceptFunction(SetCount.builder(RandomValueRange.of(2, 3))).acceptFunction(Smelt.func_215953_b().acceptCondition(EntityHasProperty.builder(LootContext.EntityTarget.THIS, ON_FIRE))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f))))));
 		registerLootTable(SilkyWoolSheepEntity.SILKY_WOOL_LOOT_TABLE, LootTable.builder()
 				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(Items.STRING).acceptFunction(SetCount.builder(RandomValueRange.of(0, 3)))))
@@ -87,6 +98,12 @@ public class ModEntityLootTables extends EntityLootTables {
 		return LootTable.builder()
 				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(wool)))
 				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(TableLootEntry.builder(EntityType.SHEEP.getLootTable())));
+	}
+
+	private static LootTable.Builder fleshBlobLootTableBuilderWithDrop(int rolls) {
+		return LootTable.builder()
+				.addLootPool(LootPool.builder().rolls(ConstantRange.of(rolls)).addEntry(ItemLootEntry.builder(ModItems.FLESH_BLOCK.get())))
+				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(TableLootEntry.builder(ModEntityTypes.FLESH_BLOB.get().getLootTable())));
 	}
 
 	@Override

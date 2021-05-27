@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.entity.aberration;
 
+import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.entity.IJumpMovementMob;
 import com.github.elenterius.biomancy.entity.ai.controller.GenericJumpController;
 import com.github.elenterius.biomancy.entity.ai.controller.GenericJumpMovementController;
@@ -22,10 +23,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ItemParticleData;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
@@ -38,6 +36,16 @@ import javax.annotation.Nullable;
 import java.util.function.Predicate;
 
 public class FleshBlobEntity extends CreatureEntity implements IJumpMovementMob<FleshBlobEntity> {
+
+	public static final ResourceLocation LOOT_TABLE_FOR_SIZE_2 = BiomancyMod.createRL("entities/flesh_blob/size_2");
+	public static final ResourceLocation LOOT_TABLE_FOR_SIZE_3 = BiomancyMod.createRL("entities/flesh_blob/size_3");
+	public static final ResourceLocation LOOT_TABLE_FOR_SIZE_4 = BiomancyMod.createRL("entities/flesh_blob/size_4");
+	public static final ResourceLocation LOOT_TABLE_FOR_SIZE_5 = BiomancyMod.createRL("entities/flesh_blob/size_5");
+	public static final ResourceLocation LOOT_TABLE_FOR_SIZE_6 = BiomancyMod.createRL("entities/flesh_blob/size_6");
+	public static final ResourceLocation LOOT_TABLE_FOR_SIZE_7 = BiomancyMod.createRL("entities/flesh_blob/size_7");
+	public static final ResourceLocation LOOT_TABLE_FOR_SIZE_8 = BiomancyMod.createRL("entities/flesh_blob/size_8");
+	public static final ResourceLocation LOOT_TABLE_FOR_SIZE_9 = BiomancyMod.createRL("entities/flesh_blob/size_9");
+	public static final ResourceLocation LOOT_TABLE_FOR_SIZE_10 = BiomancyMod.createRL("entities/flesh_blob/size_10");
 
 	public static final byte EATING_STATE_ID = 61; // any id > 55 should be future compatible. see handleStatusUpdate()
 	public static final byte JUMPING_STATE_ID = 60;
@@ -258,6 +266,34 @@ public class FleshBlobEntity extends CreatureEntity implements IJumpMovementMob<
 
 		super.spawnDrops(damageSourceIn);
 	}
+
+	@Override
+	public ResourceLocation getLootTable() {
+		switch (getBlobSize()) {
+			default:
+			case 1:
+				return getType().getLootTable();
+			case 2:
+				return LOOT_TABLE_FOR_SIZE_2;
+			case 3:
+				return LOOT_TABLE_FOR_SIZE_3;
+			case 4:
+				return LOOT_TABLE_FOR_SIZE_4;
+			case 5:
+				return LOOT_TABLE_FOR_SIZE_5;
+			case 6:
+				return LOOT_TABLE_FOR_SIZE_6;
+			case 7:
+				return LOOT_TABLE_FOR_SIZE_7;
+			case 8:
+				return LOOT_TABLE_FOR_SIZE_8;
+			case 9:
+				return LOOT_TABLE_FOR_SIZE_9;
+			case 10:
+				return LOOT_TABLE_FOR_SIZE_10;
+		}
+	}
+
 
 	@OnlyIn(Dist.CLIENT)
 	public void handleStatusUpdate(byte id) {
