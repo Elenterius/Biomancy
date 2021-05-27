@@ -101,6 +101,9 @@ public final class ClientSetupHandler {
 		event.getItemColors().register((stack, index) -> 0xff6981, ModItems.VILE_MELON_BLOCK.get(), ModItems.VILE_MELON_SEEDS.get(), ModItems.VILE_MELON_SLICE.get());
 		event.getItemColors().register((stack, index) -> 0x6c2e1f, ModItems.COOKED_VILE_MELON_SLICE.get());
 		event.getItemColors().register((stack, index) -> 0x8d758c, ModItems.NECROTIC_FLESH.get(), ModItems.NECROTIC_FLESH_BLOCK.get());
+
+		event.getItemColors().register((stack, index) -> index == 1 ? 0xfff81f : -1, ModItems.SYRINGE.get()); //TODO: get correct color
+//		event.getItemColors().register((stack, index) -> index == 0 ? 0xfff81f : -1, ModItems.TEST_TUBE_FILLED.get());
 	}
 
 	@SubscribeEvent

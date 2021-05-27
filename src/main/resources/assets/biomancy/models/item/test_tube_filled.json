@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "biomancy:item/glass_test_tube_fluid",
+    "layer1": "biomancy:item/glass_test_tube_overlay"
+  }
+}
