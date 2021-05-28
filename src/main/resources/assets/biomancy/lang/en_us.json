@@ -7,7 +7,6 @@
   "item.biomancy.empty_bag": "Small Gulge Sac",
   "item.biomancy.single_item_bag": "Small Item Gulge-Sac",
   "item.biomancy.entity_storage": "Entity Gulge-Sac",
-  "item.biomancy.potion_beetle": "Beetle of Potion Delivery",
   "item.biomancy.mason_beetle": "Beetle of Block Placement",
   "item.biomancy.sewing_kit": "Bone Needle & String",
   "item.biomancy.sewing_kit_empty": "Bone Needle",
@@ -27,6 +26,7 @@
   "item.biomancy.withershot": "Withershot",
   "item.biomancy.entity_launcher": "Organics-Launcher",
   "item.biomancy.tooth_gun": "Tooth Gun",
+  "item.biomancy.boomling_grenade": "Boomling-Nade",
 
   "item.biomancy.mutagenic_bile": "Mutagenic Bile",
   "item.biomancy.rejuvenating_mucus": "Rejuvenating Mucus",
@@ -61,14 +61,13 @@
 
   "item.biomancy.flesh_blob_spawn_egg": "Flesh Blob Spawn Egg",
   "item.biomancy.fleshkin_spawn_egg": "Fleshkin Spawn Egg",
+  "item.biomancy.boomling_spawn_egg": "Boomling Spawn Egg",
   "item.biomancy.failed_sheep_spawn_egg": "Failed Sheep Spawn Egg",
   "item.biomancy.chroma_sheep_spawn_egg": "Chroma Sheep Spawn Egg",
   "item.biomancy.silky_wool_sheep_spawn_egg": "Silky Wool Sheep Spawn Egg",
   "item.biomancy.thick_wool_sheep_spawn_egg": "Thick Wool Sheep Spawn Egg",
-
-  "item.biomancy.blobling_spawn_egg": "Blobling Spawn Egg",
-  "item.biomancy.brood_mother_spawn_egg": "Brood Mother Spawn Egg",
   "item.biomancy.beetling_spawn_egg": "Beetling Spawn Egg",
+  "item.biomancy.brood_mother_spawn_egg": "Brood Mother Spawn Egg",
 
   "tooltip.biomancy.unveiling_oculi": "Grants you peering sight, revealing the unseen to you. You can't be blinded by night nor magic.",
   "tooltip.biomancy.bioflesh_war_axe": "A ornery Axe that has a 60% chance to cleave away 30% of its enemies max health when the wielders health is below 75% of the max health of the enemy.",
@@ -87,8 +86,8 @@
 
   "#plants": "",
   "block.biomancy.meat_berry_bush": "Meat-Berry Bush",
-  "block.biomancy.flesh_melon_block": "Vile Melon Block",
-  "block.biomancy.flesh_melon_crop": "Vile Melon",
+  "block.biomancy.vile_melon_block": "Vile Melon Block",
+  "block.biomancy.vile_melon_crop": "Vile Melon",
   "block.biomancy.flesh_tentacle": "Flesh Tentacle",
 
   "block.biomancy.flesh_block": "Flesh Block",

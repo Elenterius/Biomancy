@@ -12,7 +12,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BloblingModel<T extends Entity> extends SegmentedModel<T> {
+public class BoomlingModel<T extends Entity> extends SegmentedModel<T> {
 	private final ModelRenderer body;
 	private final ModelRenderer blob;
 	private final ModelRenderer head;
@@ -23,7 +23,7 @@ public class BloblingModel<T extends Entity> extends SegmentedModel<T> {
 	private final ModelRenderer rightLeg1;
 	private final ModelRenderer rightLeg2;
 
-	public BloblingModel() {
+	public BoomlingModel() {
 		textureWidth = 16;
 		textureHeight = 16;
 

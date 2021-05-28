@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.item.weapon.shootable;
 
-import com.github.elenterius.biomancy.entity.golem.PotionBeetleEntity;
+import com.github.elenterius.biomancy.entity.golem.BoomlingEntity;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import net.minecraft.command.arguments.EntityAnchorArgument;
 import net.minecraft.entity.LivingEntity;
@@ -18,7 +18,7 @@ public class EntityLauncherItem extends ProjectileWeaponItem {
 	}
 
 	public static void fireProjectile(ServerWorld worldIn, LivingEntity shooter, Hand hand, ItemStack projectileWeapon) {
-		PotionBeetleEntity entity = ModEntityTypes.POTION_BEETLE.get().create(worldIn);
+		BoomlingEntity entity = ModEntityTypes.BOOMLING.get().create(worldIn);
 		if (entity != null) {
 			entity.enablePersistence();
 			if (projectileWeapon.hasDisplayName()) {

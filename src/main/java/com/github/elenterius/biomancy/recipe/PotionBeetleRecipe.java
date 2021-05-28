@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.recipe;
 
 import com.github.elenterius.biomancy.init.ModRecipes;
-import com.github.elenterius.biomancy.item.weapon.shootable.PotionBeetleItem;
+import com.github.elenterius.biomancy.item.weapon.shootable.ThrowableBoomlingItem;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.IRecipeSerializer;
@@ -29,7 +29,7 @@ public class PotionBeetleRecipe extends SpecialRecipe {
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
 			if (!stack.isEmpty()) {
-				if (stack.getItem() instanceof PotionBeetleItem) {
+				if (stack.getItem() instanceof ThrowableBoomlingItem) {
 					potion = PotionUtils.getPotionFromItem(stack);
 					if (++beetles > 1) return false;
 				}
@@ -47,7 +47,7 @@ public class PotionBeetleRecipe extends SpecialRecipe {
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
 			if (!stack.isEmpty()) {
-				if (stack.getItem() instanceof PotionBeetleItem) {
+				if (stack.getItem() instanceof ThrowableBoomlingItem) {
 					beetleStack = stack;
 				}
 				else {

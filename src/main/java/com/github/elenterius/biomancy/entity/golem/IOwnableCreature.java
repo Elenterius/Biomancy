@@ -19,6 +19,8 @@ public interface IOwnableCreature {
 	Optional<PlayerEntity> getOwner();
 
 	default boolean shouldAttackEntity(LivingEntity target, LivingEntity owner) {
+		if (target.getUniqueID().equals(owner.getUniqueID())) return false;
+
 		if (target instanceof IOwnableCreature) {
 			return !((IOwnableCreature) target).isOwner(owner);
 		}

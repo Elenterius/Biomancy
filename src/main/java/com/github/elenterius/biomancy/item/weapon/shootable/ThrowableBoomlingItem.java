@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.item.weapon.shootable;
 
-import com.github.elenterius.biomancy.entity.golem.PotionBeetleEntity;
+import com.github.elenterius.biomancy.entity.golem.BoomlingEntity;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.item.IHighlightRayTraceResultItem;
 import com.github.elenterius.biomancy.util.RayTraceUtil;
@@ -33,10 +33,10 @@ import net.minecraftforge.registries.ForgeRegistries;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class PotionBeetleItem extends Item implements IHighlightRayTraceResultItem {
+public class ThrowableBoomlingItem extends Item implements IHighlightRayTraceResultItem {
 	public final float maxDistance;
 
-	public PotionBeetleItem(Properties properties, float maxDistance) {
+	public ThrowableBoomlingItem(Properties properties, float maxDistance) {
 		super(properties);
 		this.maxDistance = maxDistance;
 	}
@@ -115,7 +115,7 @@ public class PotionBeetleItem extends Item implements IHighlightRayTraceResultIt
 		}
 
 		if (!worldIn.isRemote()) {
-			PotionBeetleEntity entity = ModEntityTypes.POTION_BEETLE.get().create(worldIn);
+			BoomlingEntity entity = ModEntityTypes.BOOMLING.get().create(worldIn);
 			if (entity != null) {
 				entity.enablePersistence();
 				if (stack.hasDisplayName()) {
@@ -123,7 +123,7 @@ public class PotionBeetleItem extends Item implements IHighlightRayTraceResultIt
 					entity.setCustomNameVisible(true);
 				}
 				entity.setOwner(playerIn);
-				entity.setPotionItemStack(getPotionItemStack(stack));
+				entity.setStoredPotion(getPotionItemStack(stack));
 				entity.setTargetBlockPos(targetBlockPos);
 				entity.setAttackTarget(targetEntity);
 

@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.entity.hybrid;
 import com.github.elenterius.biomancy.entity.SwarmGroupData;
 import com.github.elenterius.biomancy.entity.SwarmGroupMemberEntity;
 import com.github.elenterius.biomancy.entity.ai.goal.LookAtAndMakeNoiseGoal;
+import com.github.elenterius.biomancy.entity.golem.BoomlingEntity;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import net.minecraft.entity.*;
@@ -58,7 +59,7 @@ public class CrocospiderEntity extends SwarmGroupMemberEntity {
 	}
 
 	private void spawnBlobling() {
-		BloblingEntity entity = ModEntityTypes.BLOBLING.get().create(world);
+		BoomlingEntity entity = ModEntityTypes.BOOMLING.get().create(world);
 		if (entity != null) {
 			Vector3d pos = getPositionVec().add(4D * rand.nextDouble() - 2D, 0.5D, 4D * rand.nextDouble() - 2D);
 			entity.setLocationAndAngles(pos.x, pos.y, pos.z, rand.nextFloat() * 360.0F, 0.0F);
@@ -76,7 +77,7 @@ public class CrocospiderEntity extends SwarmGroupMemberEntity {
 			}
 
 			world.addEntity(entity);
-			entity.playSound(SoundEvents.ENTITY_SLIME_SQUISH_SMALL, entity.getSoundVolume(), 1f);
+			entity.playSound(SoundEvents.ENTITY_SLIME_SQUISH_SMALL, 0.4f, 1f);
 		}
 	}
 
