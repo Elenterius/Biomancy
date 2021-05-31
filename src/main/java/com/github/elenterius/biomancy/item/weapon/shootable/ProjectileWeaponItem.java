@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.init.ClientSetupHandler;
 import com.github.elenterius.biomancy.item.IKeyListener;
 import com.github.elenterius.biomancy.util.TooltipUtil;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.enchantment.IVanishable;
@@ -68,7 +69,7 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public ActionResult<Byte> onClientKeyPress(ItemStack stack, World world, PlayerEntity player, byte flags) {
+	public ActionResult<Byte> onClientKeyPress(ItemStack stack, ClientWorld world, PlayerEntity player, byte flags) {
 		State state = getState(stack);
 		if (state == State.NONE && !canReload(stack, player)) {
 			playSFX(world, player, SoundEvents.BLOCK_DISPENSER_FAIL);

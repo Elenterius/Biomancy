@@ -46,6 +46,7 @@ public final class BiomancyMod {
 		ModAttributes.ATTRIBUTES.register(modEventBus);
 		ModEffects.EFFECTS.register(modEventBus);
 		ModEntityTypes.ENTITIES.register(modEventBus);
+		ModReagents.REAGENTS.register(modEventBus);
 
 		ModSoundEvents.SOUND_EVENTS.register(modEventBus);
 	}

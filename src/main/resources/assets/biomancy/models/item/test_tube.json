@@ -1,6 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "biomancy:item/glass_test_tube_empty"
-  }
-}

@@ -15,8 +15,12 @@
     },
     {
       "type": "crafting",
-      "recipe": "biomancy:decomposer",
-      "recipe2": "biomancy:syringe"
+      "recipe": "biomancy:chewer",
+      "recipe2": "biomancy:digester"
+    },
+    {
+      "type": "crafting",
+      "recipe": "biomancy:decomposer"
     }
   ]
 }

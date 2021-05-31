@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.item;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -12,7 +13,6 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -48,7 +48,7 @@ public interface IEntityUnveilerHeadSlotItem extends IKeyListener {
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	default ActionResult<Byte> onClientKeyPress(ItemStack stack, World world, PlayerEntity player, byte flags) {
+	default ActionResult<Byte> onClientKeyPress(ItemStack stack, ClientWorld world, PlayerEntity player, byte flags) {
 		boolean isActive = ((IEntityUnveilerHeadSlotItem) stack.getItem()).isItemAbilityActive(stack);
 		byte flag = isActive ? (byte) 0 : (byte) 1;
 		stack.getOrCreateTag().putBoolean(NBT_KEY, flag == 1);

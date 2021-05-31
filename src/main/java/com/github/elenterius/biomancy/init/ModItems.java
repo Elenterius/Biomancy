@@ -28,7 +28,8 @@ public final class ModItems {
 	public static final RegistryObject<LeechClawItem> LEECH_CLAW = ITEMS.register("leech_claw", () -> new LeechClawItem(ModItemTier.BIOFLESH, 3, -2.2f, createItemProperties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<LongRangeClawItem> LONG_RANGE_CLAW = ITEMS.register("long_range_claw", () -> new LongRangeClawItem(ModItemTier.BIOFLESH, 3, -2.4f, 60, createItemProperties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<InfestedGuanDaoItem> BIOFLESH_GUAN_DAO = ITEMS.register("bioflesh_guan_dao", () -> new InfestedGuanDaoItem(ModItemTier.BIOFLESH, 4, -3F, createItemProperties().rarity(Rarity.EPIC)));
-	public static final RegistryObject<InfestedRifleItem> BIO_RIFLE = ITEMS.register("infested_rifle", () -> new InfestedRifleItem(createItemProperties().maxStackSize(1).maxDamage(384).rarity(Rarity.EPIC)));
+//	public static final RegistryObject<InfestedRifleItem> INFESTED_RIFLE = ITEMS.register("infested_rifle", () -> new InfestedRifleItem(createItemProperties().maxStackSize(1).maxDamage(384).rarity(Rarity.EPIC)));
+
 	// Living Weapon-Creature
 	public static final RegistryObject<ThrowableBoomlingItem> BOOMLING_GRENADE = ITEMS.register("boomling_grenade", () -> new ThrowableBoomlingItem(createItemProperties().maxStackSize(1), 20f));
 
@@ -39,7 +40,10 @@ public final class ModItems {
 	public static final RegistryObject<Item> SEWING_KIT_EMPTY = ITEMS.register("sewing_kit_empty", () -> new Item(createItemProperties().maxStackSize(1)));
 	public static final RegistryObject<SewingKitItem> SEWING_KIT = ITEMS.register("sewing_kit", () -> new SewingKitItem(createItemProperties().maxStackSize(1).maxDamage(64)));
 	public static final RegistryObject<AccessKeyItem> OCULUS_KEY = ITEMS.register("oculus_key", () -> new AccessKeyItem(createItemProperties()));
-	public static final RegistryObject<SyringeItem> SYRINGE = ITEMS.register("syringe", () -> new SyringeItem(createItemProperties()));
+	//	public static final RegistryObject<SyringeItem> SYRINGE = ITEMS.register("syringe", () -> new SyringeItem(createItemProperties()));
+	public static final RegistryObject<Item> GLASS_VIAL = ITEMS.register("glass_vial", () -> new Item(createItemProperties()));
+	public static final RegistryObject<ReagentItem> REAGENT = ITEMS.register("reagent", () -> new ReagentItem(createItemProperties().maxStackSize(8)));
+	public static final RegistryObject<InjectionDeviceItem> INJECTION_DEVICE = ITEMS.register("injection_device", () -> new InjectionDeviceItem(createItemProperties().maxStackSize(1)));
 	// Adaptive Tools
 	public static final RegistryObject<AdaptivePickaxeItem> BIOFLESH_PICKAXE = ITEMS.register("bioflesh_pickaxe", () -> new AdaptivePickaxeItem(ModItemTier.LESSER_BIOFLESH, 1, -2.8f, createItemProperties().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<AdaptiveShovelItem> BIOFLESH_SHOVEL = ITEMS.register("bioflesh_shovel", () -> new AdaptiveShovelItem(ModItemTier.LESSER_BIOFLESH, 1.5f, -3f, createItemProperties().rarity(Rarity.UNCOMMON)));

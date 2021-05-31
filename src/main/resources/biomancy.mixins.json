@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "mixins.biomancy.refmap.json",
   "mixins": [
+    "ArmorStandEntityAccessor",
     "DamageSourceMixin",
     "GrindstoneContainerMixin",
     "LivingEntityMixin",
@@ -11,6 +12,7 @@
     "PlayerEntityMixin",
     "RecipeManagerMixinAccessor",
     "ServerPlayerEntityMixin",
+    "SlimeEntityAccessor",
     "SwordItemMixinAccessor"
   ],
   "client": [

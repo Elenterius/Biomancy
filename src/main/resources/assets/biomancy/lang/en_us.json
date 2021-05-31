@@ -12,6 +12,9 @@
   "item.biomancy.sewing_kit_empty": "Bone Needle",
   "item.biomancy.oculus_key": "Oculus Key",
   "item.biomancy.syringe": "Syringe",
+  "item.biomancy.injection_device": "Injection Device",
+  "item.biomancy.glass_vial": "Glass Vial",
+  "item.biomancy.reagent": "Reagent",
 
   "item.biomancy.bioflesh_pickaxe": "Fleshborn Pickaxe",
   "item.biomancy.bioflesh_axe": "Fleshborn Axe",
@@ -120,14 +123,12 @@
 
   "entity.biomancy.flesh_blob": "Flesh Blob",
   "entity.biomancy.fleshkin": "Fleshkin",
+  "entity.biomancy.boomling": "Boomling",
   "entity.biomancy.failed_sheep": "Failed Sheep",
   "entity.biomancy.chroma_sheep": "Chroma Sheep",
   "entity.biomancy.silky_wool_sheep": "Silky Wool Sheep",
   "entity.biomancy.thick_wool_sheep": "Cloud Wool Sheep",
-
-  "entity.biomancy.potion_beetle": "Potion Beetle",
   "entity.biomancy.beetling": "Beetling",
-  "entity.biomancy.blobling": "Blobling",
   "entity.biomancy.brood_mother": "Brood Mother",
 
   "enchantment.biomancy.climbing": "Millipedes",
@@ -137,6 +138,15 @@
   "effect.biomancy.dread": "Frightened",
   "effect.biomancy.ravenous_hunger": "Ravenous Hunger",
   "effect.biomancy.flesh_eating_disease": "Necrotizing Flesh",
+  "reagent.biomancy.growth_serum": "Growth Serum",
+  "reagent.biomancy.rejuvenation_serum": "Rejuvenation Serum",
+  "reagent.biomancy.breeding_stimulant": "Breeding Stimulant",
+  "reagent.biomancy.absorption_boost": "Absorption Stimulant",
+  "reagent.biomancy.insomnia_cure": "Insomnia Cure",
+  "reagent.biomancy.cleansing_serum": "Cleansing Serum",
+  "reagent.biomancy.decay_agent": "Decay Serum",
+  "reagent.biomancy.mutagen_serum": "Mutagen Serum",
+  "reagent.biomancy.blood_sample": "Blood Sample",
 
   "attribute.generic.attack_distance": "Attack Distance",
   "tooltip.biomancy.riding_bonus": "When Riding an Entity:",
@@ -157,8 +167,9 @@
   "tooltip.biomancy.action_deactivate": "deactivate",
   "tooltip.biomancy.action_reload": "reload",
   "tooltip.biomancy.action_cycle": "cycle",
+  "tooltip.biomancy.action_self_inject": "inject yourself",
   "tooltip.biomancy.contains": "Contains: %1$s",
-  "tooltip.biomancy.contains_dna": "Contains genetic material of %1$s",
+  "tooltip.biomancy.contains_dna": "Contains: Genetic Material of %1$s",
   "tooltip.biomancy.contains_nothing": "Contains: Nothing",
   "tooltip.biomancy.empty": "Empty",
   "tooltip.biomancy.owner": "Owner: %1$s",
@@ -177,6 +188,7 @@
   "enum.biomancy.mode.replenish": "Replenish",
 
   "msg.biomancy.already_full": "Already Full",
+  "msg.biomancy.not_sleepy": "You don't feel sleepy...",
   "msg.biomancy.not_allowed": "Not Allowed",
   "msg.biomancy.failed_to_spawn": "Failed to Spawn %1$s",
   "msg.biomancy.your_beetle": "Your Beetle",
@@ -189,8 +201,9 @@
   "death.attack.biomancy.disease": "%1$s succumbed to a disease",
   "death.attack.biomancy.disease.player": "%1$s was infected by an disease through %2$s and ultimately died",
 
-  "sounds.biomancy.impactsplat": "Impact Splat",
   "sounds.biomancy.wahwah": "Arthropod Growl",
+  "sounds.biomancy.inject": "Inject Reagent",
+  "sounds.biomancy.impactsplat": "Impact Splat",
 
   "guide_book.biomancy.name": "Vionomicon",
   "guide_book.biomancy.landing_text": "Disclaimer: This whole guide is WIP and lacking lots of information.",

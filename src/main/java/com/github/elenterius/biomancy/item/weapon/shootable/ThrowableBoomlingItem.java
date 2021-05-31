@@ -95,7 +95,6 @@ public class ThrowableBoomlingItem extends Item implements IHighlightRayTraceRes
 		ItemStack stack = playerIn.getHeldItem(handIn);
 		if (!containsPotion(stack)) return ActionResult.resultFail(stack);
 
-//        BlockRayTraceResult rayTrace = (BlockRayTraceResult) playerIn.pick(20d, 1f, false);
 		RayTraceResult rayTraceResult = RayTraceUtil.rayTrace(playerIn, target -> !target.isSpectator() && target.isAlive() && target.canBeCollidedWith() && target instanceof LivingEntity && !playerIn.isRidingSameEntity(target), getMaxRayTraceDistance());
 		if (rayTraceResult.getType() == RayTraceResult.Type.MISS) return ActionResult.resultPass(stack);
 

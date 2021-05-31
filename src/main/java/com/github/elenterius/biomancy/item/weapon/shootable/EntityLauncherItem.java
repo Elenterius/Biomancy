@@ -3,7 +3,9 @@ package com.github.elenterius.biomancy.item.weapon.shootable;
 import com.github.elenterius.biomancy.entity.golem.BoomlingEntity;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import net.minecraft.command.arguments.EntityAnchorArgument;
+import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Pose;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.vector.Vector3d;
@@ -26,7 +28,9 @@ public class EntityLauncherItem extends ProjectileWeaponItem {
 				entity.setCustomNameVisible(true);
 			}
 
-			Vector3d posVec = shooter.getEyePosition(1f).add(0d, -0.1d, 0d).add(shooter.getLookVec().rotateYaw(-15f).normalize().scale(0.15d));
+			EntitySize size = entity.getSize(Pose.FALL_FLYING);
+
+			Vector3d posVec = shooter.getEyePosition(1f).add(0d, -0.1d, 0d).add(shooter.getLookVec().rotateYaw(-15f).normalize().add(size.width * 0.5f, 0, size.width * 0.5f));
 			entity.setPosition(posVec.x, posVec.y, posVec.z);
 			Vector3d direction = shooter.getLookVec().normalize().scale(2.55f);
 			entity.lookAt(EntityAnchorArgument.Type.FEET, direction);

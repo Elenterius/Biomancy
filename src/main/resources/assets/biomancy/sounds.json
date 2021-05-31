@@ -1,8 +1,14 @@
 {
- "wahwah": {
-   "sounds": [
-     "biomancy:wahwah"
-   ],
-   "subtitle": "sounds.biomancy.wahwah"
- }
+  "wahwah": {
+    "sounds": [
+      "biomancy:wahwah"
+    ],
+    "subtitle": "sounds.biomancy.wahwah"
+  },
+  "inject": {
+    "sounds": [
+      "biomancy:inject"
+    ],
+    "subtitle": "sounds.biomancy.inject"
+  }
 }

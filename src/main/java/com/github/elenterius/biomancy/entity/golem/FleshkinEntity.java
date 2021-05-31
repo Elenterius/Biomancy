@@ -47,6 +47,7 @@ public class FleshkinEntity extends OwnableMonsterEntity implements IGolem {
 
 	public FleshkinEntity(EntityType<? extends MonsterEntity> type, World worldIn) {
 		super(type, worldIn);
+		setCanPickUpLoot(true);
 	}
 
 	public static AttributeModifierMap.MutableAttribute createAttributes() {
@@ -216,11 +217,6 @@ public class FleshkinEntity extends OwnableMonsterEntity implements IGolem {
 	public boolean func_230293_i_(ItemStack stack) {
 		Item item = stack.getItem();
 		return (item instanceof ArmorItem || item instanceof TieredItem || item instanceof ShieldItem || item instanceof ShootableItem);
-	}
-
-	@Override
-	public boolean canPickUpLoot() {
-		return true;
 	}
 
 	@Override

@@ -19,7 +19,7 @@
     },
     {
       "type": "spotlight",
-      "item": "biomancy:syringe",
+      "item": "biomancy:injection_device",
       "text": "Take genetic material samples of Living Entities or forcefully inject them with questionable substances."
     }
   ]

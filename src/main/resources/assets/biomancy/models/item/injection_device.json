@@ -1,0 +1,7 @@
+{
+  "parent": "biomancy:item/handheld_gun",
+  "textures": {
+    "layer0": "biomancy:item/injection_device",
+    "layer1": "biomancy:item/injection_device_overlay"
+  }
+}

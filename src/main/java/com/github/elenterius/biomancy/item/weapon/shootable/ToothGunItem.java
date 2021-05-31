@@ -52,7 +52,27 @@ public class ToothGunItem extends ProjectileWeaponItem {
 
 	@Override
 	public void onReloadTick(ItemStack stack, ServerWorld world, LivingEntity shooter, long elapsedTime) {
-		if (elapsedTime % 40L == 0L) playSFX(world, shooter, SoundEvents.ITEM_CROSSBOW_LOADING_MIDDLE);
+		if (elapsedTime % 20L == 0L) playSFX(world, shooter, SoundEvents.ENTITY_GENERIC_EAT);
+	}
+
+	@Override
+	public void onReloadStarted(ItemStack stack, ServerWorld world, LivingEntity shooter) {
+		playSFX(world, shooter, SoundEvents.ENTITY_GENERIC_EAT);
+	}
+
+	@Override
+	public void onReloadCanceled(ItemStack stack, ServerWorld world, LivingEntity shooter) {
+		playSFX(world, shooter, SoundEvents.BLOCK_DISPENSER_FAIL);
+	}
+
+	@Override
+	public void onReloadStopped(ItemStack stack, ServerWorld world, LivingEntity shooter) {
+		playSFX(world, shooter, SoundEvents.BLOCK_DISPENSER_FAIL);
+	}
+
+	@Override
+	public void onReloadFinished(ItemStack stack, ServerWorld world, LivingEntity shooter) {
+		playSFX(world, shooter, SoundEvents.ENTITY_PLAYER_BURP);
 	}
 
 	@Override

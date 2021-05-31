@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.capabilities.SpecialSingleItemStackHandler
 import com.github.elenterius.biomancy.init.ClientSetupHandler;
 import com.github.elenterius.biomancy.util.TooltipUtil;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -149,7 +150,7 @@ public class ItemStorageItem extends BagItem implements IKeyListener {
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public ActionResult<Byte> onClientKeyPress(ItemStack stack, World world, PlayerEntity player, byte flags) {
+	public ActionResult<Byte> onClientKeyPress(ItemStack stack, ClientWorld world, PlayerEntity player, byte flags) {
 		Mode bagMode = getMode(stack).cycle();
 		player.playSound(SoundEvents.ENTITY_GENERIC_HURT, 0.8F, 0.25f + world.rand.nextFloat() * 0.25f);
 		return ActionResult.resultSuccess(bagMode.id);

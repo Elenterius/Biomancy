@@ -189,7 +189,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		ItemStackIngredient mendingBook = new ItemStackIngredient(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(Enchantments.MENDING, Enchantments.MENDING.getMaxLevel())));
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.LEECH_CLAW.get(), defaultTime * 2)
-				.addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.SYRINGE.get()).addIngredient(mendingBook).addIngredient(Items.DIAMOND_SWORD).addIngredient(ModItems.BIOMETAL.get())
+				.addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.INJECTION_DEVICE.get()).addIngredient(mendingBook).addIngredient(Items.DIAMOND_SWORD).addIngredient(ModItems.BIOMETAL.get())
 				.addCriterion("has_oculus", hasItem(ModItems.OCULUS.get())).build(consumer);
 
 		ItemStackIngredient maxBaneBook = new ItemStackIngredient(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(ModEnchantments.ATTUNED_BANE.get(), ModEnchantments.ATTUNED_BANE.get().getMaxLevel())));
@@ -609,7 +609,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addIngredient(ModItems.SEWING_KIT_EMPTY.get()).addIngredient(Tags.Items.STRING).addIngredient(Tags.Items.STRING).addIngredient(Tags.Items.STRING)
 				.addCriterion("has_empty_sewing_kit", hasItem(ModItems.SEWING_KIT_EMPTY.get())).build(consumer);
 
-		ShapedRecipeBuilder.shapedRecipe(ModItems.SYRINGE.get())
+		ShapedRecipeBuilder.shapedRecipe(ModItems.INJECTION_DEVICE.get())
 				.key('B', Items.GLASS_BOTTLE).key('S', ModItems.SEWING_KIT_EMPTY.get()).key('I', Items.IRON_INGOT).key('N', Items.IRON_NUGGET)
 				.patternLine("SBN").patternLine("NII").patternLine("  I")
 				.addCriterion("has_quartz", hasItem(Items.QUARTZ)).build(consumer);

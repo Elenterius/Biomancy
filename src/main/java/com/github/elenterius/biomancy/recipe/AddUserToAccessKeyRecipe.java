@@ -1,9 +1,10 @@
 package com.github.elenterius.biomancy.recipe;
 
 import com.github.elenterius.biomancy.init.ModItems;
+import com.github.elenterius.biomancy.init.ModReagents;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.item.AccessKeyItem;
-import com.github.elenterius.biomancy.item.SyringeItem;
+import com.github.elenterius.biomancy.reagent.Reagent;
 import com.github.elenterius.biomancy.util.UserAuthorization;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
@@ -25,7 +26,7 @@ public class AddUserToAccessKeyRecipe extends SpecialRecipe {
 
 	@Override
 	public boolean matches(CraftingInventory inv, World worldIn) {
-		int syringe = 0, key = 0;
+		int dna = 0, key = 0;
 
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
@@ -33,19 +34,20 @@ public class AddUserToAccessKeyRecipe extends SpecialRecipe {
 				if (stack.getItem() instanceof AccessKeyItem) {
 					if (++key > 1) return false;
 				}
-				else if (stack.getItem() == ModItems.SYRINGE.get()) {
-					if (++syringe > 1) return false;
+				else if (stack.getItem() == ModItems.REAGENT.get()) {
+					Reagent reagent = Reagent.deserialize(stack.getOrCreateTag());
+					if (reagent == null || reagent != ModReagents.BLOOD_SAMPLE.get() || ++dna > 1) return false;
 				}
 			}
 		}
 
-		return syringe == 1 && key == 1;
+		return dna == 1 && key == 1;
 	}
 
 	@Override
 	public ItemStack getCraftingResult(CraftingInventory inv) {
 		ItemStack key = ItemStack.EMPTY;
-		ItemStack syringe = ItemStack.EMPTY;
+		ItemStack reagentStack = ItemStack.EMPTY;
 
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
@@ -53,17 +55,21 @@ public class AddUserToAccessKeyRecipe extends SpecialRecipe {
 				if (stack.getItem() instanceof AccessKeyItem) {
 					key = stack;
 				}
-				else if (stack.getItem() == ModItems.SYRINGE.get())
-					syringe = stack;
+				else if (stack.getItem() == ModItems.REAGENT.get()) {
+					Reagent temp = Reagent.deserialize(stack.getOrCreateTag());
+					if (temp != null && temp == ModReagents.BLOOD_SAMPLE.get()) {
+						reagentStack = stack;
+					}
+				}
 			}
 		}
 
-		if (key.isEmpty() || syringe.isEmpty()) return ItemStack.EMPTY;
+		if (key.isEmpty() || reagentStack.isEmpty()) return ItemStack.EMPTY;
 		ItemStack stack = key.copy();
 
-		CompoundNBT syringeNbt = syringe.getOrCreateTag();
-		if (syringeNbt.contains(SyringeItem.NBT_KEY)) {
-			CompoundNBT entityNBT = syringeNbt.getCompound(SyringeItem.NBT_KEY);
+		CompoundNBT reagentNbt = reagentStack.getOrCreateTag();
+		if (reagentNbt.contains(Reagent.NBT_KEY_DATA)) {
+			CompoundNBT entityNBT = reagentNbt.getCompound(Reagent.NBT_KEY_DATA);
 			if (entityNBT.contains("EntityUUID")) {
 				UUID userUUID = entityNBT.getUniqueId("EntityUUID");
 

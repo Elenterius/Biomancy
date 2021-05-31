@@ -8,8 +8,11 @@ import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.item.Item;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
@@ -22,29 +25,19 @@ import net.minecraftforge.fml.common.Mod;
 public final class PlayerInteractionHandler {
 	private PlayerInteractionHandler() {}
 
-//	@SubscribeEvent
-//	public static void onPlayerInteraction(final PlayerInteractEvent.EntityInteract event) {
-//		if (event.getWorld().isRemote()) return;
-//		if (event.getPlayer().isSneaking() && event.getTarget() instanceof ItemFrameEntity && !event.getItemStack().isEmpty() && event.getItemStack().getItem() == ModItems.LUMINESCENT_SPORES.get()) {
-//			event.setCanceled(true);
-//			event.getTarget().setInvisible(!event.getTarget().isInvisible());
-//			if (!event.getPlayer().isCreative()) {
-//				event.getItemStack().shrink(1);
-//			}
-//		}
-//	}
-//
-//	@SubscribeEvent
-//	public static void onPlayerInteraction(final PlayerInteractEvent.EntityInteractSpecific event) {
-//		if (event.getWorld().isRemote()) return;
-//		if (event.getPlayer().isSneaking() && event.getTarget() instanceof ArmorStandEntity && !event.getItemStack().isEmpty() && event.getItemStack().getItem() == ModItems.LUMINESCENT_SPORES.get()) {
-//			event.setCanceled(true);
-//			event.getTarget().setInvisible(!event.getTarget().isInvisible());
-//			if (!event.getPlayer().isCreative()) {
-//				event.getItemStack().shrink(1);
-//			}
-//		}
-//	}
+	@SubscribeEvent
+	public static void onPlayerInteraction(final PlayerInteractEvent.EntityInteractSpecific event) {
+		//workaround for interacting with armor stands
+		if (event.getTarget() instanceof ArmorStandEntity && event.getItemStack().getItem() == ModItems.INJECTION_DEVICE.get()) {
+			if (event.getWorld().isRemote()) return; //TODO: figure out what to do on the client side to make it work the correct way
+
+			event.setCanceled(true);
+			event.setCancellationResult(ActionResultType.FAIL);
+
+			//manually call the function
+			ModItems.INJECTION_DEVICE.get().itemInteractionForEntity(event.getItemStack(), event.getPlayer(), (LivingEntity) event.getTarget(), event.getHand());
+		}
+	}
 
 	@SubscribeEvent
 	public static void onPlayerRightClickBlock(final PlayerInteractEvent.RightClickBlock event) {

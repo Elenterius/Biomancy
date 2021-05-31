@@ -18,6 +18,8 @@ import net.minecraft.item.Food;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.StringNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -31,8 +33,11 @@ import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 
 public class FleshBlobEntity extends CreatureEntity implements IJumpMovementMob<FleshBlobEntity> {
@@ -56,6 +61,9 @@ public class FleshBlobEntity extends CreatureEntity implements IJumpMovementMob<
 
 	protected GenericJumpMovementHelper<FleshBlobEntity> jumpMovementState;
 	private int eatTimer;
+
+	@Nullable
+	private List<EntityType<?>> injectedDNAs = null;
 
 	public FleshBlobEntity(EntityType<? extends CreatureEntity> type, World worldIn) {
 		super(type, worldIn);
@@ -88,14 +96,18 @@ public class FleshBlobEntity extends CreatureEntity implements IJumpMovementMob<
 		dataManager.register(BLOB_SIZE, (byte) 1);
 	}
 
-	protected void setBlobSize(byte size, boolean resetHealth) {
+	public void setBlobSize(byte size, boolean resetHealth) {
 		size = (byte) MathHelper.clamp(size, 1, 10);
 		dataManager.set(BLOB_SIZE, size);
 		recenterBoundingBox();
 		recalculateSize();
+		//noinspection ConstantConditions
 		getAttribute(Attributes.MAX_HEALTH).setBaseValue(size * 10);
+		//noinspection ConstantConditions
 		getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.2f + 0.1f * size);
+		//noinspection ConstantConditions
 		getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(size + (getFleshBlobData() == 1 ? 8 : 3));
+		//noinspection ConstantConditions
 		getAttribute(Attributes.ARMOR).setBaseValue(size * 3);
 		if (resetHealth) setHealth(getMaxHealth());
 		experienceValue = size;
@@ -129,6 +141,14 @@ public class FleshBlobEntity extends CreatureEntity implements IJumpMovementMob<
 		return dataManager.get(FLESH_BLOB_DATA);
 	}
 
+	public boolean isHangry() {
+		return dataManager.get(FLESH_BLOB_DATA) == 1;
+	}
+
+	public void setHangry() {
+		setCustomEntityData((byte) 1);
+	}
+
 	public void setCustomEntityData(byte flag) {
 		if (flag == 1) {
 			//noinspection ConstantConditions
@@ -138,6 +158,10 @@ public class FleshBlobEntity extends CreatureEntity implements IJumpMovementMob<
 			targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, AnimalEntity.class, true));
 
 		}
+		else if (flag == 0) {
+			//noinspection ConstantConditions
+			getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(getBlobSize() + 3d);
+		}
 		dataManager.set(FLESH_BLOB_DATA, flag);
 	}
 
@@ -146,6 +170,21 @@ public class FleshBlobEntity extends CreatureEntity implements IJumpMovementMob<
 		super.readAdditional(compound);
 		setCustomEntityData(compound.getByte("FleshBlobData"));
 		setBlobSize(compound.getByte("Size"), false);
+		ListNBT storedDNAs = compound.getList("InjectedDNAs", Constants.NBT.TAG_STRING);
+		if (storedDNAs.isEmpty()) {
+			injectedDNAs = null;
+		}
+		else {
+			if (injectedDNAs == null) injectedDNAs = new ArrayList<>();
+			else injectedDNAs.clear();
+
+			for (int i = 0; i < storedDNAs.size(); i++) {
+				String entityTypeId = storedDNAs.getString(i);
+				if (!entityTypeId.isEmpty()) {
+					EntityType.byKey(entityTypeId).ifPresent(type -> injectedDNAs.add(type));
+				}
+			}
+		}
 	}
 
 	@Override
@@ -153,6 +192,33 @@ public class FleshBlobEntity extends CreatureEntity implements IJumpMovementMob<
 		super.writeAdditional(compound);
 		compound.putByte("FleshBlobData", getFleshBlobData());
 		compound.putByte("Size", getBlobSize());
+
+		ListNBT listnbt = new ListNBT();
+		if (injectedDNAs != null && !injectedDNAs.isEmpty()) {
+			for (EntityType<?> entityType : injectedDNAs) {
+				ResourceLocation rl = EntityType.getKey(entityType);
+				if (entityType.isSerializable()) listnbt.add(StringNBT.valueOf(rl.toString()));
+			}
+		}
+		compound.put("InjectedDNAs", listnbt);
+	}
+
+	public void addForeignEntityDNA(EntityType<?> entityType) {
+		if (injectedDNAs == null) injectedDNAs = new ArrayList<>();
+		injectedDNAs.add(entityType);
+	}
+
+	@Nullable
+	public List<EntityType<?>> getForeignEntityDNA() {
+		return injectedDNAs;
+	}
+
+	public boolean hasForeignEntityDNA() {
+		return injectedDNAs != null && !injectedDNAs.isEmpty();
+	}
+
+	public void clearForeignEntityDNA() {
+		if (injectedDNAs != null) injectedDNAs.clear();
 	}
 
 	@Override
