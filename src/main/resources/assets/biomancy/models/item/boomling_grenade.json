@@ -1,6 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "biomancy:item/potion_beetle"
+    "layer0": "biomancy:item/boomling_nade",
+    "layer1": "biomancy:item/boomling_nade_overlay"
   }
 }

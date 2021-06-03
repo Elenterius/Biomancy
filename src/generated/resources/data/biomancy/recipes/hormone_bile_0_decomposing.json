@@ -1,0 +1,16 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "item": "minecraft:ink_sac"
+    },
+    {
+      "item": "minecraft:ink_sac"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:hormone_bile"
+  },
+  "time": 200
+}

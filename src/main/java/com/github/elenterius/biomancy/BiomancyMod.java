@@ -5,22 +5,12 @@ import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
-import net.minecraft.potion.Effect;
-import net.minecraft.potion.EffectInstance;
-import net.minecraft.potion.PotionUtils;
-import net.minecraft.potion.Potions;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
@@ -77,16 +67,16 @@ public final class BiomancyMod {
 			items.add(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(ModEnchantments.ATTUNED_BANE.get(), 5)));
 
 			//add placeholder potions
-			for (RegistryObject<Effect> effect : ModEffects.EFFECTS.getEntries()) {
-				ItemStack potionStack = PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.WATER);
-				CompoundNBT compoundnbt = potionStack.getOrCreateTag();
-				ListNBT listnbt = compoundnbt.getList("CustomPotionEffects", Constants.NBT.TAG_LIST);
-				EffectInstance effectInstance = new EffectInstance(effect.get(), 20 * 30);
-				listnbt.add(effectInstance.write(new CompoundNBT()));
-				compoundnbt.put("CustomPotionEffects", listnbt);
-				potionStack.setDisplayName(new StringTextComponent("[PH] Sliver of ").appendSibling(new TranslationTextComponent(effect.get().getName())));
-				items.add(potionStack);
-			}
+//			for (RegistryObject<Effect> effect : ModEffects.EFFECTS.getEntries()) {
+//				ItemStack potionStack = PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.WATER);
+//				CompoundNBT compoundnbt = potionStack.getOrCreateTag();
+//				ListNBT listnbt = compoundnbt.getList("CustomPotionEffects", Constants.NBT.TAG_LIST);
+//				EffectInstance effectInstance = new EffectInstance(effect.get(), 20 * 30);
+//				listnbt.add(effectInstance.write(new CompoundNBT()));
+//				compoundnbt.put("CustomPotionEffects", listnbt);
+//				potionStack.setDisplayName(new StringTextComponent("[PH] Sliver of ").appendSibling(new TranslationTextComponent(effect.get().getName())));
+//				items.add(potionStack);
+//			}
 		}
 	};
 

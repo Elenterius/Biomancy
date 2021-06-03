@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:bone_meal_from_bone_scraps"
+    ]
+  },
+  "criteria": {
+    "has_bone_scraps": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "biomancy:bone_scraps"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:bone_meal_from_bone_scraps"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_bone_scraps",
+      "has_the_recipe"
+    ]
+  ]
+}

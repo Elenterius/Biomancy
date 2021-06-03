@@ -1,14 +1,9 @@
 package com.github.elenterius.biomancy.datagen;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.datagen.recipe.ChewerRecipeBuilder;
-import com.github.elenterius.biomancy.datagen.recipe.DecomposerRecipeBuilder;
-import com.github.elenterius.biomancy.datagen.recipe.DigesterRecipeBuilder;
-import com.github.elenterius.biomancy.datagen.recipe.EvolutionPoolRecipeBuilder;
-import com.github.elenterius.biomancy.init.ModEnchantments;
-import com.github.elenterius.biomancy.init.ModItems;
-import com.github.elenterius.biomancy.init.ModRecipes;
-import com.github.elenterius.biomancy.init.ModTags;
+import com.github.elenterius.biomancy.datagen.recipe.*;
+import com.github.elenterius.biomancy.init.*;
+import com.github.elenterius.biomancy.item.ReagentItem;
 import com.github.elenterius.biomancy.recipe.ItemStackIngredient;
 import com.github.elenterius.biomancy.tileentity.EvolutionPoolTileEntity;
 import net.minecraft.advancements.criterion.EnchantmentPredicate;
@@ -127,20 +122,20 @@ public class ModRecipeProvider extends RecipeProvider {
 		// Biometal ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIOMETAL.get(), defaultTime)
 				.addIngredient(Items.IRON_INGOT).addIngredient(ModItems.FLESH_BLOCK.get()).addIngredients(ModItems.OXIDE_POWDER.get(), 2)
-				.addIngredient(ModItems.KERATIN_FILAMENTS.get()).addIngredient(ModItems.HORMONE_SERUM.get())
+				.addIngredient(ModItems.KERATIN_FILAMENTS.get()).addIngredient(ModItems.HORMONE_BILE.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		// Blocks //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIO_FLESH_DOOR.get(), defaultTime)
-				.addIngredient(Items.IRON_DOOR).addIngredient(ModItems.FLESH_BLOCK.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_SERUM.get())
+				.addIngredient(Items.IRON_DOOR).addIngredient(ModItems.FLESH_BLOCK.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIO_FLESH_TRAPDOOR.get(), defaultTime)
-				.addIngredient(Items.IRON_TRAPDOOR).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.FLESH_BLOCK.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_SERUM.get())
+				.addIngredient(Items.IRON_TRAPDOOR).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.FLESH_BLOCK.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIO_FLESH_PRESSURE_PLATE.get(), defaultTime)
-				.addIngredient(Items.HEAVY_WEIGHTED_PRESSURE_PLATE).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.FLESH_BLOCK.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_SERUM.get())
+				.addIngredient(Items.HEAVY_WEIGHTED_PRESSURE_PLATE).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.FLESH_BLOCK.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.GULGE.get(), defaultTime * 2)
@@ -148,7 +143,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESH_CHEST.get(), defaultTime)
-				.addIngredients(Items.CHEST, 2).addIngredient(ModItems.FLESH_BLOCK.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_SERUM.get())
+				.addIngredients(Items.CHEST, 2).addIngredient(ModItems.FLESH_BLOCK.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		// Tools ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -165,20 +160,20 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addCriterion("has_mutagenic_bile", hasItems(ModItems.MUTAGENIC_BILE.get(), ModItems.MENISCUS_LENS.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIOFLESH_AXE.get(), defaultTime)
-				.addIngredient(Items.IRON_AXE).addIngredient(Items.BONE).addIngredients(ModItems.BIOMETAL.get(), 3).addIngredient(ModItems.HORMONE_SERUM.get())
+				.addIngredient(Items.IRON_AXE).addIngredient(Items.BONE).addIngredients(ModItems.BIOMETAL.get(), 3).addIngredient(ModItems.HORMONE_BILE.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIOFLESH_SHOVEL.get(), defaultTime)
-				.addIngredient(Items.IRON_SHOVEL).addIngredient(Items.BONE).addIngredient(ModItems.BIOMETAL.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_SERUM.get())
+				.addIngredient(Items.IRON_SHOVEL).addIngredient(Items.BONE).addIngredient(ModItems.BIOMETAL.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIOFLESH_PICKAXE.get(), defaultTime)
-				.addIngredient(Items.IRON_PICKAXE).addIngredient(Items.BONE).addIngredients(ModItems.BIOMETAL.get(), 3).addIngredient(ModItems.HORMONE_SERUM.get())
+				.addIngredient(Items.IRON_PICKAXE).addIngredient(Items.BONE).addIngredients(ModItems.BIOMETAL.get(), 3).addIngredient(ModItems.HORMONE_BILE.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		// Weapons /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIOFLESH_WAR_AXE.get(), defaultTime * 2)
-				.addIngredient(ModItems.BIOFLESH_AXE.get()).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.HORMONE_SERUM.get()).addIngredient(ModItems.ARTIFICIAL_STOMACH.get())
+				.addIngredient(ModItems.BIOFLESH_AXE.get()).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.HORMONE_BILE.get()).addIngredient(ModItems.ARTIFICIAL_STOMACH.get())
 				.addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2)
 				.addCriterion("has_bioflesh_axe", hasItem(ModItems.BIOFLESH_AXE.get())).build(consumer);
 
@@ -196,6 +191,14 @@ public class ModRecipeProvider extends RecipeProvider {
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIOFLESH_GUAN_DAO.get(), defaultTime * 2)
 				.addIngredient(ModItems.OCULUS.get()).addIngredient(maxBaneBook).addIngredient(Items.BONE).addIngredient(Items.DIAMOND_SWORD).addIngredient(Items.DIAMOND_AXE).addIngredient(ModItems.BIOMETAL.get())
 				.addCriterion("has_oculus", hasItem(ModItems.OCULUS.get())).build(consumer);
+
+		EvolutionPoolRecipeBuilder.createRecipe(ModItems.TOOTH_GUN.get(), defaultTime * 2)
+				.addIngredient(ModItems.INJECTION_DEVICE.get()).addIngredient(Items.SKELETON_SKULL).addIngredient(Items.CROSSBOW).addIngredient(ModItems.ARTIFICIAL_STOMACH.get()).addIngredient(ModItems.BIOMETAL.get()).addIngredient(ModItems.SILICATE_PASTE.get())
+				.addCriterion("has_injection_device", hasItem(ModItems.INJECTION_DEVICE.get())).build(consumer);
+
+		EvolutionPoolRecipeBuilder.createRecipe(ModItems.WITHERSHOT.get(), defaultTime * 2)
+				.addIngredient(ModItems.TOOTH_GUN.get()).addIngredient(Items.NETHER_STAR).addIngredient(ModItems.ERODING_BILE.get()).addIngredient(Items.WITHER_SKELETON_SKULL)
+				.addCriterion("has_tooth_gun", hasItem(ModItems.TOOTH_GUN.get())).build(consumer);
 
 		// Enchantments ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		Enchantment enchantment = ModEnchantments.ATTUNED_BANE.get();
@@ -356,31 +359,31 @@ public class ModRecipeProvider extends RecipeProvider {
 		final int defaultDecomposingTime = 200;
 		int id = 0;
 
-		DecomposerRecipeBuilder.createRecipe(ModItems.HORMONE_SERUM.get(), defaultDecomposingTime)
+		DecomposerRecipeBuilder.createRecipe(ModItems.HORMONE_BILE.get(), defaultDecomposingTime)
 				.addIngredients(Items.INK_SAC, 2)
 				.addCriterion("has_hormones", hasItem(ModTags.Items.HORMONES)).build(consumer, "" + id++, true);
 
-		DecomposerRecipeBuilder.createRecipe(ModItems.HORMONE_SERUM.get(), defaultDecomposingTime, 3)
+		DecomposerRecipeBuilder.createRecipe(ModItems.HORMONE_BILE.get(), defaultDecomposingTime, 3)
 				.addIngredient(Items.RABBIT_FOOT)
 				.addCriterion("has_hormones", hasItem(ModTags.Items.HORMONES)).build(consumer, "" + id++, true);
 
-		DecomposerRecipeBuilder.createRecipe(ModItems.HORMONE_SERUM.get(), defaultDecomposingTime, 3)
+		DecomposerRecipeBuilder.createRecipe(ModItems.HORMONE_BILE.get(), defaultDecomposingTime, 3)
 				.addIngredient(Items.GHAST_TEAR)
 				.addCriterion("has_hormones", hasItem(ModTags.Items.HORMONES)).build(consumer, "" + id++, true);
 
-		DecomposerRecipeBuilder.createRecipe(ModItems.HORMONE_SERUM.get(), defaultDecomposingTime * 3)
+		DecomposerRecipeBuilder.createRecipe(ModItems.HORMONE_BILE.get(), defaultDecomposingTime * 3)
 				.addIngredients(Items.SPIDER_EYE, 6)
 				.addCriterion("has_hormones", hasItem(ModTags.Items.HORMONES)).build(consumer, "" + id++, true);
 
-		DecomposerRecipeBuilder.createRecipe(ModItems.HORMONE_SERUM.get(), defaultDecomposingTime * 2)
+		DecomposerRecipeBuilder.createRecipe(ModItems.HORMONE_BILE.get(), defaultDecomposingTime * 2)
 				.addIngredients(Items.FERMENTED_SPIDER_EYE, 4)
 				.addCriterion("has_hormones", hasItem(ModTags.Items.HORMONES)).build(consumer, "" + id++, true);
 
-		DecomposerRecipeBuilder.createRecipe(ModItems.HORMONE_SERUM.get(), defaultDecomposingTime)
+		DecomposerRecipeBuilder.createRecipe(ModItems.HORMONE_BILE.get(), defaultDecomposingTime)
 				.addIngredients(Items.HONEYCOMB, 2)
 				.addCriterion("has_hormones", hasItem(ModTags.Items.HORMONES)).build(consumer, "" + id++, true);
 
-		DecomposerRecipeBuilder.createRecipe(ModItems.HORMONE_SERUM.get(), defaultDecomposingTime)
+		DecomposerRecipeBuilder.createRecipe(ModItems.HORMONE_BILE.get(), defaultDecomposingTime)
 				.addIngredient(Items.SLIME_BALL)
 				.addByproduct(ModItems.MUTAGENIC_BILE.get(), 0.15f)
 				.addByproduct(ModItems.ERODING_BILE.get(), 0.2f)
@@ -609,14 +612,19 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addIngredient(ModItems.SEWING_KIT_EMPTY.get()).addIngredient(Tags.Items.STRING).addIngredient(Tags.Items.STRING).addIngredient(Tags.Items.STRING)
 				.addCriterion("has_empty_sewing_kit", hasItem(ModItems.SEWING_KIT_EMPTY.get())).build(consumer);
 
+		ShapedRecipeBuilder.shapedRecipe(ModItems.GLASS_VIAL.get(), 8)
+				.key('G', Tags.Items.GLASS).key('T', ItemTags.WOODEN_SLABS)
+				.patternLine("GTG").patternLine("G G").patternLine(" G ")
+				.addCriterion("has_glass", hasItem(Tags.Items.GLASS)).build(consumer);
+
 		ShapedRecipeBuilder.shapedRecipe(ModItems.INJECTION_DEVICE.get())
-				.key('B', Items.GLASS_BOTTLE).key('S', ModItems.SEWING_KIT_EMPTY.get()).key('I', Items.IRON_INGOT).key('N', Items.IRON_NUGGET)
+				.key('B', ModItems.GLASS_VIAL.get()).key('S', ModItems.SEWING_KIT_EMPTY.get()).key('I', Items.IRON_INGOT).key('N', Items.IRON_NUGGET)
 				.patternLine("SBN").patternLine("NII").patternLine("  I")
-				.addCriterion("has_quartz", hasItem(Items.QUARTZ)).build(consumer);
+				.addCriterion("has_glass_vial", hasItem(ModItems.GLASS_VIAL.get())).build(consumer);
 
 		ShapelessRecipeBuilder.shapelessRecipe(Items.BONE_MEAL)
 				.addIngredient(ModItems.BONE_SCRAPS.get(), 4)
-				.addCriterion("has_bone_scraps", hasItem(ModItems.BONE_SCRAPS.get())).build(consumer);
+				.addCriterion("has_bone_scraps", hasItem(ModItems.BONE_SCRAPS.get())).build(consumer, BiomancyMod.createRL("bone_meal_from_bone_scraps"));
 
 		ShapedRecipeBuilder.shapedRecipe(ModItems.MENDED_SKIN.get())
 				.key('S', ModItems.SEWING_KIT.get())
@@ -686,6 +694,50 @@ public class ModRecipeProvider extends RecipeProvider {
 				.patternLine("FLF").patternLine("FSF").patternLine("FLF")
 				.addCriterion("has_stomach", hasItem(ModItems.ARTIFICIAL_STOMACH.get())).build(consumer);
 
+		// reagents ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		//noinspection ConstantConditions
+		ShapelessNbtRecipeBuilder.shapelessRecipe(ReagentItem.getReagentItemStack(ModReagents.MUTAGEN_SERUM.get()))
+				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(ModItems.MUTAGENIC_BILE.get()).addIngredient(ModItems.HORMONE_BILE.get())
+				.addCriterion("has_glass_vial", hasItem(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.MUTAGEN_SERUM.get().getRegistryName().getPath() + "_vial"));
+
+		//noinspection ConstantConditions
+		ShapelessNbtRecipeBuilder.shapelessRecipe(ReagentItem.getReagentItemStack(ModReagents.REJUVENATION_SERUM.get()))
+				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(ModItems.REJUVENATING_MUCUS.get()).addIngredient(ModItems.HORMONE_BILE.get()).addIngredient(ModItems.NUTRIENT_PASTE.get())
+				.addCriterion("has_glass_vial", hasItem(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.REJUVENATION_SERUM.get().getRegistryName().getPath() + "_vial"));
+
+		//noinspection ConstantConditions
+		ShapelessNbtRecipeBuilder.shapelessRecipe(ReagentItem.getReagentItemStack(ModReagents.GROWTH_SERUM.get()))
+				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(ModItems.NUTRIENT_PASTE.get()).addIngredient(ModItems.HORMONE_BILE.get()).addIngredient(Items.BONE_MEAL)
+				.addCriterion("has_glass_vial", hasItem(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.GROWTH_SERUM.get().getRegistryName().getPath() + "_vial"));
+
+		//noinspection ConstantConditions
+		ShapelessNbtRecipeBuilder.shapelessRecipe(ReagentItem.getReagentItemStack(ModReagents.DECAY_AGENT.get()))
+				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(ModItems.ERODING_BILE.get()).addIngredient(ModItems.HORMONE_BILE.get())
+				.addCriterion("has_glass_vial", hasItem(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.DECAY_AGENT.get().getRegistryName().getPath() + "_vial"));
+
+		//noinspection ConstantConditions
+		ShapelessNbtRecipeBuilder.shapelessRecipe(ReagentItem.getReagentItemStack(ModReagents.BREEDING_STIMULANT.get()))
+				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(ModItems.NUTRIENT_BAR.get()).addIngredient(ModItems.HORMONE_BILE.get())
+				.addCriterion("has_glass_vial", hasItem(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.BREEDING_STIMULANT.get().getRegistryName().getPath() + "_vial"));
+
+		//noinspection ConstantConditions
+		ShapelessNbtRecipeBuilder.shapelessRecipe(ReagentItem.getReagentItemStack(ModReagents.CLEANSING_SERUM.get()))
+				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(ModItems.REJUVENATING_MUCUS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get()).addIngredient(Items.MILK_BUCKET, 2)
+				.addCriterion("has_glass_vial", hasItem(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.CLEANSING_SERUM.get().getRegistryName().getPath() + "_vial"));
+
+		//noinspection ConstantConditions
+		ShapelessNbtRecipeBuilder.shapelessRecipe(ReagentItem.getReagentItemStack(ModReagents.INSOMNIA_CURE.get()))
+				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(ModItems.REJUVENATING_MUCUS.get(), 3).addIngredient(ModItems.HORMONE_BILE.get())
+				.addIngredient(ReagentItem.getReagentItemStack(ModReagents.CLEANSING_SERUM.get())).addIngredient(ModItems.NUTRIENT_PASTE.get())
+				.addCriterion("has_glass_vial", hasItem(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.INSOMNIA_CURE.get().getRegistryName().getPath() + "_vial"));
+
+		//noinspection ConstantConditions
+		ShapelessNbtRecipeBuilder.shapelessRecipe(ReagentItem.getReagentItemStack(ModReagents.ABSORPTION_BOOST.get()))
+				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(ModItems.ERODING_BILE.get()).addIngredient(ModItems.HORMONE_BILE.get())
+				.addIngredient(ReagentItem.getReagentItemStack(ModReagents.GROWTH_SERUM.get())).addIngredient(Items.GOLDEN_APPLE)
+				.addCriterion("has_glass_vial", hasItem(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.ABSORPTION_BOOST.get().getRegistryName().getPath() + "_vial"));
+
 		// food ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		ShapedRecipeBuilder.shapedRecipe(ModItems.NUTRIENT_BAR.get())
@@ -726,7 +778,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		// special /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		CustomRecipeBuilder.customRecipe(ModRecipes.REPAIR_SPECIAL_SEWING_KIT.get()).build(consumer, BiomancyMod.MOD_ID + ":" + "sewing_kit_nbt");
-		CustomRecipeBuilder.customRecipe(ModRecipes.CRAFTING_SPECIAL_POTION_BEETLE.get()).build(consumer, BiomancyMod.MOD_ID + ":" + "potion_beetle");
+		CustomRecipeBuilder.customRecipe(ModRecipes.CRAFTING_SPECIAL_BOOMLING_GRENADE.get()).build(consumer, BiomancyMod.MOD_ID + ":" + "boomling_grenade");
 		CustomRecipeBuilder.customRecipe(ModRecipes.CRAFTING_SPECIAL_MASON_BEETLE.get()).build(consumer, BiomancyMod.MOD_ID + ":" + "mason_beetle");
 		CustomRecipeBuilder.customRecipe(ModRecipes.CRAFTING_SPECIAL_ADD_USER_TO_KEY.get()).build(consumer, BiomancyMod.MOD_ID + ":" + "add_user_to_key");
 	}

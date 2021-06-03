@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "biomancy:glass_vial"
+    },
+    {
+      "item": "biomancy:rejuvenating_mucus"
+    },
+    {
+      "item": "biomancy:rejuvenating_mucus"
+    },
+    {
+      "item": "biomancy:hormone_bile"
+    },
+    {
+      "item": "minecraft:milk_bucket"
+    },
+    {
+      "item": "minecraft:milk_bucket"
+    }
+  ],
+  "result": {
+    "item": "biomancy:reagent",
+    "nbt": "{ReagentId:\"biomancy:cleansing_serum\",ReagentColor:9937817}"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:withershot_evolution_pool"
+    ]
+  },
+  "criteria": {
+    "has_tooth_gun": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "biomancy:tooth_gun"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:withershot_evolution_pool"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_tooth_gun",
+      "has_the_recipe"
+    ]
+  ]
+}

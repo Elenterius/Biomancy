@@ -187,8 +187,8 @@ public class EvolutionPoolRecipeBuilder {
 		}
 
 		public void serialize(JsonObject json) {
-			if (!this.group.isEmpty()) {
-				json.addProperty("group", this.group);
+			if (!group.isEmpty()) {
+				json.addProperty("group", group);
 			}
 
 			JsonArray jsonArray = new JsonArray();

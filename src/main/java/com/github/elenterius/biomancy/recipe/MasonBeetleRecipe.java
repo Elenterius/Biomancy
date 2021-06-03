@@ -26,7 +26,8 @@ public class MasonBeetleRecipe extends SpecialRecipe {
 				if (stack.getItem() instanceof MasonBeetleItem) {
 					blockStack = ((MasonBeetleItem) stack.getItem()).getBlockItemStack(stack);
 					if (++beetles > 1) return false;
-				} else if (!(stack.getItem() instanceof BlockItem) || stack.getItem().isFood() || ++blocks > 1) return false;
+				}
+				else if (!(stack.getItem() instanceof BlockItem) || stack.getItem().isFood() || ++blocks > 1) return false;
 			}
 		}
 
@@ -42,7 +43,8 @@ public class MasonBeetleRecipe extends SpecialRecipe {
 			if (!stack.isEmpty()) {
 				if (stack.getItem() instanceof MasonBeetleItem) {
 					beetleStack = stack;
-				} else {
+				}
+				else {
 					blockStack = stack;
 				}
 			}
@@ -54,7 +56,8 @@ public class MasonBeetleRecipe extends SpecialRecipe {
 			blockStack = blockStack.copy();
 			blockStack.setCount(1);
 			return ((MasonBeetleItem) beetleStack.getItem()).setBlockItemStack(beetleStack.copy(), blockStack);
-		} else {
+		}
+		else {
 			return ((MasonBeetleItem) beetleStack.getItem()).getBlockItemStack(beetleStack);
 		}
 	}
@@ -66,6 +69,6 @@ public class MasonBeetleRecipe extends SpecialRecipe {
 
 	@Override
 	public IRecipeSerializer<?> getSerializer() {
-		return ModRecipes.CRAFTING_SPECIAL_POTION_BEETLE.get();
+		return ModRecipes.CRAFTING_SPECIAL_BOOMLING_GRENADE.get();
 	}
 }

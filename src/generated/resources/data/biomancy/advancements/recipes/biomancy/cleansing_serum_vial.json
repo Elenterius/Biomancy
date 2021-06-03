@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:cleansing_serum_vial"
+    ]
+  },
+  "criteria": {
+    "has_glass_vial": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "biomancy:glass_vial"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:cleansing_serum_vial"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_glass_vial",
+      "has_the_recipe"
+    ]
+  ]
+}

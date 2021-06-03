@@ -1,0 +1,27 @@
+{
+  "type": "biomancy:evolution_pool",
+  "ingredients": [
+    {
+      "item": "biomancy:injection_device"
+    },
+    {
+      "item": "minecraft:skeleton_skull"
+    },
+    {
+      "item": "minecraft:crossbow"
+    },
+    {
+      "item": "biomancy:artificial_stomach"
+    },
+    {
+      "item": "biomancy:biometal"
+    },
+    {
+      "item": "biomancy:silicate_paste"
+    }
+  ],
+  "result": {
+    "item": "biomancy:tooth_gun"
+  },
+  "time": 800
+}

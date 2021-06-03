@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:tooth_gun_evolution_pool"
+    ]
+  },
+  "criteria": {
+    "has_injection_device": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "biomancy:injection_device"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:tooth_gun_evolution_pool"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_injection_device",
+      "has_the_recipe"
+    ]
+  ]
+}

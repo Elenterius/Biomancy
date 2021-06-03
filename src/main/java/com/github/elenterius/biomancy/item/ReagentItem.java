@@ -37,11 +37,15 @@ public class ReagentItem extends Item {
 	public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
 		if (isInGroup(group)) {
 			for (Reagent reagent : ModReagents.REGISTRY.get()) {
-				ItemStack stack = new ItemStack(this);
-				Reagent.serialize(reagent, stack.getOrCreateTag());
-				items.add(stack);
+				items.add(ReagentItem.getReagentItemStack(reagent));
 			}
 		}
+	}
+
+	public static ItemStack getReagentItemStack(Reagent reagent) {
+		ItemStack stack = new ItemStack(ModItems.REAGENT.get());
+		Reagent.serialize(reagent, stack.getOrCreateTag());
+		return stack;
 	}
 
 	@Override

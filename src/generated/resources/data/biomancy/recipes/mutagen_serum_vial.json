@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "biomancy:glass_vial"
+    },
+    {
+      "item": "biomancy:mutagenic_bile"
+    },
+    {
+      "item": "biomancy:hormone_bile"
+    }
+  ],
+  "result": {
+    "item": "biomancy:reagent",
+    "nbt": "{ReagentId:\"biomancy:mutagen_serum\",ReagentColor:6329914}"
+  }
+}

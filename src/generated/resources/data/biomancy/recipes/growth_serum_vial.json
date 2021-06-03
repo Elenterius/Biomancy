@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "biomancy:glass_vial"
+    },
+    {
+      "item": "biomancy:nutrient_paste"
+    },
+    {
+      "item": "biomancy:hormone_bile"
+    },
+    {
+      "item": "minecraft:bone_meal"
+    }
+  ],
+  "result": {
+    "item": "biomancy:reagent",
+    "nbt": "{ReagentId:\"biomancy:growth_serum\",ReagentColor:12179138}"
+  }
+}

@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "has_quartz": {
+    "has_glass_vial": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "minecraft:quartz"
+            "item": "biomancy:glass_vial"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_quartz",
+      "has_glass_vial",
       "has_the_recipe"
     ]
   ]

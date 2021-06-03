@@ -30,13 +30,6 @@
     },
     {
       "type": "spotlight",
-      "item": "biomancy:bioflesh_khopesh",
-      "text": {
-        "translate": "tooltip.biomancy.bioflesh_khopesh"
-      }
-    },
-    {
-      "type": "spotlight",
       "item": "biomancy:bioflesh_guan_dao",
       "text": {
         "translate": "tooltip.biomancy.bioflesh_guan_dao"

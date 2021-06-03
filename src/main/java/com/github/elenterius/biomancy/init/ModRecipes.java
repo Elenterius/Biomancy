@@ -21,7 +21,7 @@ public final class ModRecipes {
 
 	public static final DeferredRegister<IRecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, BiomancyMod.MOD_ID);
 
-	public static final RegistryObject<SpecialRecipeSerializer<PotionBeetleRecipe>> CRAFTING_SPECIAL_POTION_BEETLE = RECIPE_SERIALIZERS.register("crafting_special_potion_beetle", () -> new SpecialRecipeSerializer<>(PotionBeetleRecipe::new));
+	public static final RegistryObject<SpecialRecipeSerializer<BoomlingGrenadeRecipe>> CRAFTING_SPECIAL_BOOMLING_GRENADE = RECIPE_SERIALIZERS.register("crafting_special_boomling_grenade", () -> new SpecialRecipeSerializer<>(BoomlingGrenadeRecipe::new));
 	public static final RegistryObject<SpecialRecipeSerializer<MasonBeetleRecipe>> CRAFTING_SPECIAL_MASON_BEETLE = RECIPE_SERIALIZERS.register("crafting_special_mason_beetle", () -> new SpecialRecipeSerializer<>(MasonBeetleRecipe::new));
 	public static final RegistryObject<SpecialRecipeSerializer<SewingKitRepairRecipe>> REPAIR_SPECIAL_SEWING_KIT = RECIPE_SERIALIZERS.register("repair_special_sewing_kit", () -> new SpecialRecipeSerializer<>(SewingKitRepairRecipe::new));
 	public static final RegistryObject<SpecialRecipeSerializer<AddUserToAccessKeyRecipe>> CRAFTING_SPECIAL_ADD_USER_TO_KEY = RECIPE_SERIALIZERS.register("crafting_special_add_user_to_key", () -> new SpecialRecipeSerializer<>(AddUserToAccessKeyRecipe::new));

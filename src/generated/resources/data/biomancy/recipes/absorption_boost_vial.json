@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "biomancy:glass_vial"
+    },
+    {
+      "item": "biomancy:eroding_bile"
+    },
+    {
+      "item": "biomancy:hormone_bile"
+    },
+    {
+      "type": "forge:nbt",
+      "item": "biomancy:reagent",
+      "count": 1,
+      "nbt": "{ReagentId:\"biomancy:growth_serum\",ReagentColor:12179138}"
+    },
+    {
+      "item": "minecraft:golden_apple"
+    }
+  ],
+  "result": {
+    "item": "biomancy:reagent",
+    "nbt": "{ReagentId:\"biomancy:absorption_boost\",ReagentColor:15187266}"
+  }
+}

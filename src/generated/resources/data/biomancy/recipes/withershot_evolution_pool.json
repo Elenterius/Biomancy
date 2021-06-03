@@ -1,0 +1,21 @@
+{
+  "type": "biomancy:evolution_pool",
+  "ingredients": [
+    {
+      "item": "biomancy:tooth_gun"
+    },
+    {
+      "item": "minecraft:nether_star"
+    },
+    {
+      "item": "biomancy:eroding_bile"
+    },
+    {
+      "item": "minecraft:wither_skeleton_skull"
+    }
+  ],
+  "result": {
+    "item": "biomancy:withershot"
+  },
+  "time": 800
+}
