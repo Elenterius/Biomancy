@@ -2,6 +2,9 @@ package com.github.elenterius.biomancy.item.weapon.shootable;
 
 import com.github.elenterius.biomancy.entity.projectile.ToothProjectileEntity;
 import com.github.elenterius.biomancy.init.ModItems;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Hand;
@@ -17,14 +20,20 @@ public class ToothGunItem extends ProjectileWeaponItem {
 	public static final Predicate<ItemStack> VALID_AMMO_ITEM = (stack) -> stack.getItem() == ModItems.NUTRIENT_PASTE.get();
 
 	public ToothGunItem(Properties builder) {
-		super(builder, 1.25f, 0.975f, 6, 4 * 20);
+		super(builder, 1.25f, 0.96f, 5f, 6, 4 * 20);
 	}
 
-	public static void fireProjectile(ServerWorld worldIn, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, float inaccuracy) {
+	public static void fireProjectile(ServerWorld worldIn, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, float damage, float inaccuracy) {
 		if (!worldIn.isRemote) {
 			ToothProjectileEntity projectile = new ToothProjectileEntity(worldIn, shooter);
 			Vector3d direction = shooter.getLookVec();
 			projectile.shoot(direction.getX(), direction.getY(), direction.getZ(), 1f, inaccuracy);
+
+			projectile.setDamage(damage);
+			int level = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, projectileWeapon);
+			if (level > 0) {
+				projectile.setKnockback((byte) level);
+			}
 
 			projectileWeapon.damageItem(1, shooter, (entity) -> entity.sendBreakAnimation(hand));
 
@@ -35,8 +44,8 @@ public class ToothGunItem extends ProjectileWeaponItem {
 	}
 
 	@Override
-	public void shoot(ServerWorld world, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, float inaccuracy) {
-		fireProjectile(world, shooter, hand, projectileWeapon, inaccuracy);
+	public void shoot(ServerWorld world, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, float damage, float inaccuracy) {
+		fireProjectile(world, shooter, hand, projectileWeapon, damage, inaccuracy);
 		consumeAmmo(projectileWeapon, 1);
 	}
 
@@ -83,6 +92,11 @@ public class ToothGunItem extends ProjectileWeaponItem {
 	@Override
 	public int func_230305_d_() {
 		return 10; //max range
+	}
+
+	@Override
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+		return enchantment == Enchantments.PUNCH || super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 }

@@ -6,7 +6,6 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.EntityDamageSource;
@@ -27,22 +26,22 @@ import java.util.function.Predicate;
 public class InfestedRifleItem extends ProjectileWeaponItem {
 
 	public InfestedRifleItem(Properties builder) {
-		super(builder, 2f, 0.95f, 60, 4 * 20);
+		super(builder, 2f, 0.95f, 2f, 60, 4 * 20);
 	}
 
-	public static void fireProjectiles(World worldIn, LivingEntity shooter, Hand hand, ItemStack stack, float velocity, float inaccuracy) {
+	public static void fireProjectiles(World worldIn, LivingEntity shooter, Hand hand, ItemStack stack, float damage, float velocity, float inaccuracy) {
 		boolean isCreativePlayer = shooter instanceof PlayerEntity && ((PlayerEntity) shooter).abilities.isCreativeMode;
 		Random rng = shooter.getRNG();
 		boolean flag = rng.nextBoolean();
 
-		fireProjectile(worldIn, shooter, hand, stack, 1f, isCreativePlayer, velocity, inaccuracy, 0f);
-		fireProjectile(worldIn, shooter, hand, stack, rngPitch(rng, flag), isCreativePlayer, velocity, inaccuracy, -2f);
-		fireProjectile(worldIn, shooter, hand, stack, rngPitch(rng, !flag), isCreativePlayer, velocity, inaccuracy, 2f);
+		fireProjectile(worldIn, shooter, hand, stack, 1f, isCreativePlayer, damage, velocity, inaccuracy, 0f);
+		fireProjectile(worldIn, shooter, hand, stack, rngPitch(rng, flag), isCreativePlayer, damage, velocity, inaccuracy, -2f);
+		fireProjectile(worldIn, shooter, hand, stack, rngPitch(rng, !flag), isCreativePlayer, damage, velocity, inaccuracy, 2f);
 
 		int extraProjectiles = EnchantmentHelper.getEnchantmentLevel(Enchantments.MULTISHOT, stack) * 2;
 		for (int i = 1; i < extraProjectiles + 1; i++) {
-			fireProjectile(worldIn, shooter, hand, stack, Math.max(0, rngPitch(rng, flag) - 0.05f * i), isCreativePlayer, velocity, inaccuracy, -2f - i);
-			fireProjectile(worldIn, shooter, hand, stack, Math.max(0, rngPitch(rng, !flag) - 0.05f * i), isCreativePlayer, velocity, inaccuracy, 2f + i);
+			fireProjectile(worldIn, shooter, hand, stack, Math.max(0, rngPitch(rng, flag) - 0.05f * i), isCreativePlayer, damage, velocity, inaccuracy, -2f - i);
+			fireProjectile(worldIn, shooter, hand, stack, Math.max(0, rngPitch(rng, !flag) - 0.05f * i), isCreativePlayer, damage, velocity, inaccuracy, 2f + i);
 		}
 
 		if (shooter instanceof ServerPlayerEntity) {
@@ -56,7 +55,7 @@ public class InfestedRifleItem extends ProjectileWeaponItem {
 		return flag ? v + 0.63f : v + 0.43f;
 	}
 
-	private static void fireProjectile(World worldIn, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, float soundPitch, boolean isCreativeMode, float velocity, float inaccuracy, float projectileAngle) {
+	private static void fireProjectile(World worldIn, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, float soundPitch, boolean isCreativeMode, float damage, float velocity, float inaccuracy, float projectileAngle) {
 		if (!worldIn.isRemote) {
 			ToothProjectileEntity toothProjectile = new ToothProjectileEntity(worldIn, shooter);
 //			applyEnchantmentsOnProjectile(projectileWeapon, arrowentity);
@@ -74,7 +73,7 @@ public class InfestedRifleItem extends ProjectileWeaponItem {
 			forward.transform(new Quaternion(new Vector3f(right), projectileAngle * (0.5f * random.nextFloat() - 0.5f), true));
 
 			toothProjectile.shoot(forward.getX(), forward.getY(), forward.getZ(), velocity, inaccuracy);
-
+			toothProjectile.setDamage(damage);
 //			}
 
 			projectileWeapon.damageItem(1, shooter, (entity) -> entity.sendBreakAnimation(hand));
@@ -85,30 +84,9 @@ public class InfestedRifleItem extends ProjectileWeaponItem {
 		}
 	}
 
-	public static void applyEnchantmentsOnProjectile(ItemStack projectileWeapon, ArrowEntity arrowEntity) {
-		int i = EnchantmentHelper.getEnchantmentLevel(Enchantments.PIERCING, projectileWeapon);
-		if (i > 0) {
-			arrowEntity.setPierceLevel((byte) i);
-		}
-
-		int j = EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, projectileWeapon);
-		if (j > 0) {
-			arrowEntity.setDamage(arrowEntity.getDamage() + (double) j * 0.5D + 0.5D);
-		}
-
-		int k = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, projectileWeapon);
-		if (k > 0) {
-			arrowEntity.setKnockbackStrength(k);
-		}
-
-		if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FLAME, projectileWeapon) > 0) {
-			//TODO: modify projectile to explode into an gas cloud on impact (lingering AOE effect cloud)
-		}
-	}
-
 	@Override
-	public void shoot(ServerWorld world, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, float inaccuracy) {
-		fireProjectiles(world, shooter, hand, projectileWeapon, 1f, inaccuracy);
+	public void shoot(ServerWorld world, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, float damage, float inaccuracy) {
+		fireProjectiles(world, shooter, hand, projectileWeapon, damage, 1f, inaccuracy);
 		consumeAmmo(projectileWeapon, 3);
 	}
 

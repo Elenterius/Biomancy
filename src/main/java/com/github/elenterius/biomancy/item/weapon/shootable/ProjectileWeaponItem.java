@@ -2,10 +2,12 @@ package com.github.elenterius.biomancy.item.weapon.shootable;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ClientSetupHandler;
+import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.item.IKeyListener;
 import com.github.elenterius.biomancy.util.TooltipUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.client.world.ClientWorld;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.enchantment.IVanishable;
@@ -35,6 +37,7 @@ import java.util.List;
 public abstract class ProjectileWeaponItem extends ShootableItem implements IVanishable, IKeyListener {
 
 	public static final float ONE_SECOND = 20f; //measured in ticks
+	public static final float MAX_INACCURACY = 0.85f; //0.0 - 1.0
 
 	public static final String NBT_KEY_AMMO = "Ammo";
 	public static final String NBT_KEY_RELOAD_TIMESTAMP = "ReloadStartTime";
@@ -42,26 +45,33 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 	public static final String NBT_KEY_SHOOT_TIMESTAMP = "ShootTime";
 
 	private final int baseShootDelay; //measured in ticks
+	private final float baseProjectileDamage;
 	private final int baseMaxAmmo;
 	private final float baseAccuracy;
 	private final int baseReloadTime;
 
-	public ProjectileWeaponItem(Properties builder, float fireRate, float accuracy, int maxAmmo, int reloadTime) {
+	/**
+	 * @param accuracy from 0.0 to 1.0
+	 */
+	public ProjectileWeaponItem(Properties builder, float fireRate, float accuracy, float damage, int maxAmmo, int reloadTime) {
 		super(builder);
-		this.baseShootDelay = Math.max(1, Math.round(ONE_SECOND / fireRate));
-		this.baseMaxAmmo = maxAmmo;
-		this.baseAccuracy = accuracy;
-		this.baseReloadTime = reloadTime;
+		assert accuracy >= 0f && accuracy <= 1f;
+		baseShootDelay = Math.max(1, Math.round(ONE_SECOND / fireRate));
+		baseMaxAmmo = maxAmmo;
+		baseAccuracy = accuracy;
+		baseProjectileDamage = damage;
+		baseReloadTime = reloadTime;
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		if (TooltipUtil.showExtraInfo(tooltip)) {
-			tooltip.add(new StringTextComponent(String.format("Fire Rate: %.2f (%.2f) RPS", getFireRate(), ONE_SECOND / baseShootDelay)));
-			tooltip.add(new StringTextComponent(String.format("Accuracy: %.2f (%.2f) (Inaccuracy: %.2f)", getAccuracy(), baseAccuracy, getInaccuracy())));
+			tooltip.add(new StringTextComponent(String.format("Fire Rate: %.2f (%.2f) RPS", getFireRate(stack), ONE_SECOND / baseShootDelay)));
+			tooltip.add(new StringTextComponent(String.format("Accuracy: %.3f (%.3f) (InAcc: %.4f)", getAccuracy(), baseAccuracy, 0.0075f * getInaccuracy())));
 			tooltip.add(new StringTextComponent(String.format("Ammo: %d/%d (%d)", getAmmo(stack), getMaxAmmo(), baseMaxAmmo)));
 			tooltip.add(new StringTextComponent(String.format("Reload Time: %.2f (%.2f)", getReloadTime(stack) / ONE_SECOND, baseReloadTime / ONE_SECOND)));
+			tooltip.add(new StringTextComponent(String.format("Projectile Damage: %.2f (%.2f)", getProjectileDamage(stack), baseProjectileDamage)));
 			tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 		}
 		tooltip.add(new TranslationTextComponent(BiomancyMod.getTranslationKey("tooltip", "press_button_to"), ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.func_238171_j_().copyRaw().mergeStyle(TextFormatting.AQUA), BiomancyMod.getTranslationText("tooltip", "action_reload")).mergeStyle(TextFormatting.DARK_GRAY));
@@ -133,15 +143,16 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 				if (hasAmmo(stack)) {
 					float elapsedTime = getUseDuration(stack) - timeLeft;
 
+					int shootDelay = getShootDelay(stack);
 					if (elapsedTime == 0) { //prevent right click spam attack by user
-						if (world.getGameTime() - stack.getOrCreateTag().getLong(NBT_KEY_SHOOT_TIMESTAMP) < getShootDelay()) {
+						if (world.getGameTime() - stack.getOrCreateTag().getLong(NBT_KEY_SHOOT_TIMESTAMP) < shootDelay) {
 							playSFX(world, shooter, SoundEvents.BLOCK_DISPENSER_FAIL);
 							return;
 						}
 					}
 
-					if (elapsedTime % getShootDelay() == 0) {
-						shoot((ServerWorld) world, shooter, shooter.getActiveHand(), stack, getInaccuracy());
+					if (elapsedTime % shootDelay == 0) {
+						shoot((ServerWorld) world, shooter, shooter.getActiveHand(), stack, getProjectileDamage(stack), getInaccuracy());
 						stack.getOrCreateTag().putLong(NBT_KEY_SHOOT_TIMESTAMP, world.getGameTime());
 					}
 				}
@@ -165,7 +176,7 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 		//startReload(stack, (ServerWorld) world, livingEntity);
 	}
 
-	public abstract void shoot(ServerWorld world, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, float inaccuracy);
+	public abstract void shoot(ServerWorld world, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, float damage, float inaccuracy);
 
 	@Override
 	public void inventoryTick(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
@@ -272,23 +283,27 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 	}
 
 	public float getInaccuracy() {
-		return -(1f / 0.0075f) * getAccuracy() + (1f / 0.0075f);
+		return -MAX_INACCURACY * getAccuracy() + MAX_INACCURACY;
 	}
 
 	public float getAccuracy() {
 		return baseAccuracy;
 	}
 
-	public int getShootDelay() {
-		return baseShootDelay;
+	public int getShootDelay(ItemStack stack) {
+		return baseShootDelay - 2 * EnchantmentHelper.getEnchantmentLevel(ModEnchantments.QUICK_SHOT.get(), stack);
 	}
 
-	public float getFireRate() {
-		return ONE_SECOND / getShootDelay();
+	public float getFireRate(ItemStack stack) {
+		return ONE_SECOND / getShootDelay(stack);
 	}
 
 	public int getReloadTime(ItemStack stack) {
 		return baseReloadTime - 5 * EnchantmentHelper.getEnchantmentLevel(Enchantments.QUICK_CHARGE, stack);
+	}
+
+	public float getProjectileDamage(ItemStack stack) {
+		return baseProjectileDamage + 0.6f * EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, stack);
 	}
 
 	public int getMaxAmmo() {
@@ -336,6 +351,11 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 
 	public void consumeAmmo(ItemStack stack, int amount) {
 		addAmmo(stack, -amount);
+	}
+
+	@Override
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+		return enchantment == Enchantments.POWER || enchantment == Enchantments.QUICK_CHARGE || super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 	public void playSFX(World world, LivingEntity shooter, SoundEvent soundEvent) {

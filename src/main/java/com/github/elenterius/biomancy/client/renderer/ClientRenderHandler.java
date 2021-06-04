@@ -173,9 +173,10 @@ public final class ClientRenderHandler {
 					}
 					else {
 						long elapsedTime = player.worldClient.getGameTime() - heldStack.getOrCreateTag().getLong("ShootTime");
-						if (elapsedTime < gunItem.getShootDelay()) {
+						int shootDelay = gunItem.getShootDelay(heldStack);
+						if (elapsedTime < shootDelay) {
 							if (canDrawAttackIndicator(mc, player)) {
-								float progress = (float) elapsedTime / gunItem.getShootDelay();
+								float progress = (float) elapsedTime / shootDelay;
 								if (progress < 1f) {
 									mc.getTextureManager().bindTexture(AbstractGui.GUI_ICONS_LOCATION);
 									RenderSystem.enableBlend();

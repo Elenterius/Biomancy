@@ -16,7 +16,7 @@ import java.util.function.Predicate;
 public class EntityLauncherItem extends ProjectileWeaponItem {
 
 	public EntityLauncherItem(Properties builder) {
-		super(builder, 0.75f, 1f, 1, 4 * 20);
+		super(builder, 0.75f, 1f, 0f, 1, 4 * 20);
 	}
 
 	public static void fireProjectile(ServerWorld worldIn, LivingEntity shooter, Hand hand, ItemStack projectileWeapon) {
@@ -47,7 +47,7 @@ public class EntityLauncherItem extends ProjectileWeaponItem {
 	}
 
 	@Override
-	public void shoot(ServerWorld worldIn, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, float inaccuracy) {
+	public void shoot(ServerWorld worldIn, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, float damage, float inaccuracy) {
 		fireProjectile(worldIn, shooter, hand, projectileWeapon);
 		consumeAmmo(projectileWeapon, 1);
 	}

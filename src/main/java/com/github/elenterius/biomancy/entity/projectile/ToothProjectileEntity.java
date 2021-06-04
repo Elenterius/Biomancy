@@ -11,6 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SChangeGameStatePacket;
@@ -21,6 +22,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -29,6 +31,9 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 @OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
 public class ToothProjectileEntity extends DamagingProjectileEntity implements IRendersAsItem, IEntityAdditionalSpawnData {
+
+	private float damage = 5f;
+	private byte knockback = 0;
 
 	public ToothProjectileEntity(EntityType<? extends DamagingProjectileEntity> entityType, World world) {
 		super(entityType, world);
@@ -68,6 +73,32 @@ public class ToothProjectileEntity extends DamagingProjectileEntity implements I
 	}
 
 	@Override
+	public void writeAdditional(CompoundNBT compound) {
+		super.writeAdditional(compound);
+		compound.putFloat("damage", damage);
+		compound.putByte("knockback", knockback);
+	}
+
+	@Override
+	public void readAdditional(CompoundNBT compound) {
+		super.readAdditional(compound);
+		damage = compound.contains("damage") ? compound.getFloat("damage") : 5f;
+		knockback = compound.getByte("knockback");
+	}
+
+	public void setDamage(float damageIn) {
+		damage = damageIn;
+	}
+
+	public float getDamage() {
+		return damage;
+	}
+
+	public void setKnockback(byte knockbackIn) {
+		knockback = knockbackIn;
+	}
+
+	@Override
 	public void shoot(double x, double y, double z, float velocity, float inaccuracy) {
 		super.shoot(x, y, z, velocity, inaccuracy);
 		double magnitude = getMotion().length();
@@ -89,11 +120,20 @@ public class ToothProjectileEntity extends DamagingProjectileEntity implements I
 	@Override
 	protected void onEntityHit(EntityRayTraceResult result) {
 		super.onEntityHit(result);
-		if (!world.isRemote) {
-			Entity victim = result.getEntity();
-			Entity shooter = getShooter();
-			boolean success = victim.attackEntityFrom(ModDamageSources.createToothProjectileDamage(this, shooter), 5f);
-			if (success) {
+		Entity victim = result.getEntity();
+		Entity shooter = getShooter();
+		if (shooter instanceof LivingEntity) {
+			((LivingEntity) shooter).setLastAttackedEntity(victim);
+		}
+		boolean success = victim.attackEntityFrom(ModDamageSources.createToothProjectileDamage(this, shooter != null ? shooter : this), damage);
+		if (success && victim instanceof LivingEntity) {
+			if (!world.isRemote) {
+				if (knockback > 0) {
+					Vector3d vector3d = getMotion().mul(1d, 0d, 1d).normalize().scale((double) knockback * 0.6d);
+					if (vector3d.lengthSquared() > 0d) {
+						victim.addVelocity(vector3d.x, 0.1d, vector3d.z);
+					}
+				}
 				if (shooter instanceof LivingEntity) {
 					applyEnchantments((LivingEntity) shooter, victim); //thorn & arthropod damage
 				}
