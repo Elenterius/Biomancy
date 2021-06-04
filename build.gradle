@@ -109,6 +109,7 @@ repositories {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.1.4'
+    annotationProcessor 'org.spongepowered:mixin:0.8:processor'
 
     compileOnly fg.deobf("mezz.jei:jei-1.16.4:7.6.1.71:api") // compile against the JEI API but do not include it at runtime
     runtimeOnly fg.deobf("mezz.jei:jei-1.16.4:7.6.1.71") // at runtime, use the full JEI jar
