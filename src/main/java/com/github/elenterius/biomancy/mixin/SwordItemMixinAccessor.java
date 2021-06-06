@@ -9,6 +9,8 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(SwordItem.class)
 public interface SwordItemMixinAccessor {
+
 	@Accessor
 	Multimap<Attribute, AttributeModifier> getAttributeModifiers();
+
 }

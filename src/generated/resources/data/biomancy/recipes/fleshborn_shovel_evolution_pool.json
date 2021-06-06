@@ -1,0 +1,27 @@
+{
+  "type": "biomancy:evolution_pool",
+  "ingredients": [
+    {
+      "item": "minecraft:iron_shovel"
+    },
+    {
+      "item": "minecraft:bone"
+    },
+    {
+      "item": "biomancy:biometal"
+    },
+    {
+      "item": "biomancy:keratin_filaments"
+    },
+    {
+      "item": "biomancy:keratin_filaments"
+    },
+    {
+      "item": "biomancy:hormone_bile"
+    }
+  ],
+  "result": {
+    "item": "biomancy:fleshborn_shovel"
+  },
+  "time": 400
+}

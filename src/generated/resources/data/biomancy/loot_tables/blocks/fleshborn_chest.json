@@ -1,0 +1,46 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
+            },
+            {
+              "function": "minecraft:copy_nbt",
+              "source": "block_entity",
+              "ops": [
+                {
+                  "source": "Inventory",
+                  "target": "BlockEntityTag.Inventory",
+                  "op": "replace"
+                },
+                {
+                  "source": "OwnerUUID",
+                  "target": "BlockEntityTag.OwnerUUID",
+                  "op": "replace"
+                },
+                {
+                  "source": "UserList",
+                  "target": "BlockEntityTag.UserList",
+                  "op": "replace"
+                }
+              ]
+            }
+          ],
+          "name": "biomancy:fleshborn_chest"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    }
+  ]
+}

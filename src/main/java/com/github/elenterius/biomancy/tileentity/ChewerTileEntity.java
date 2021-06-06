@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.tileentity;
 
-import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.ChewerBlock;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
@@ -11,6 +10,7 @@ import com.github.elenterius.biomancy.mixin.RecipeManagerMixinAccessor;
 import com.github.elenterius.biomancy.recipe.ChewerRecipe;
 import com.github.elenterius.biomancy.tileentity.state.ChewerStateData;
 import com.github.elenterius.biomancy.tileentity.state.CraftingState;
+import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -87,12 +87,12 @@ public class ChewerTileEntity extends OwnableTileEntity implements INamedContain
 	}
 
 	public static boolean isItemValidFuel(ItemStack stack) {
-		return stack.getItem() == ModItems.NUTRIENT_PASTE.get();
+		return stack.getItem() == ModItems.NUTRIENT_PASTE.get() || stack.getItem() == ModItems.NUTRIENT_BAR.get();
 	}
 
 	@Override
 	protected ITextComponent getDefaultName() {
-		return BiomancyMod.getTranslationText("container", "chewer");
+		return TextUtil.getTranslationText("container", "chewer");
 	}
 
 	@Nullable
@@ -211,10 +211,11 @@ public class ChewerTileEntity extends OwnableTileEntity implements INamedContain
 		if (world == null || world.isRemote()) return stackIn;
 
 		if (!stackIn.isEmpty() && stateData.fuel < MAX_FUEL) {
-			int itemsNeeded = Math.round(Math.max(0, MAX_FUEL - stateData.fuel) / FUEL_CONVERSION);
+			float fuelConversion = FUEL_CONVERSION * (stackIn.getItem() == ModItems.NUTRIENT_BAR.get() ? 5 : 1);
+			int itemsNeeded = Math.round(Math.max(0, MAX_FUEL - stateData.fuel) / fuelConversion);
 			int consumeAmount = Math.min(stackIn.getCount(), itemsNeeded);
 			if (consumeAmount > 0) {
-				stateData.fuel = (short) MathHelper.clamp(stateData.fuel + FUEL_CONVERSION * consumeAmount, 0, MAX_FUEL + FUEL_CONVERSION);
+				stateData.fuel = (short) MathHelper.clamp(stateData.fuel + fuelConversion * consumeAmount, 0, MAX_FUEL + fuelConversion);
 				return ItemHandlerHelper.copyStackWithSize(stackIn, stackIn.getCount() - consumeAmount);
 			}
 		}

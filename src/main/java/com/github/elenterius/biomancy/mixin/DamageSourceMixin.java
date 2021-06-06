@@ -14,15 +14,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class DamageSourceMixin {
 
 	@Inject(method = "causePlayerDamage", at = @At("HEAD"), cancellable = true)
-	private static void onCausePlayerDamage(PlayerEntity player, CallbackInfoReturnable<DamageSource> cir) {
-		if (player.getHeldItemMainhand().getItem() == ModItems.BIOFLESH_WAR_AXE.get()) {
+	private static void biomancy_onCausePlayerDamage(PlayerEntity player, CallbackInfoReturnable<DamageSource> cir) {
+		if (player.getHeldItemMainhand().getItem() == ModItems.FLESHBORN_WAR_AXE.get()) {
 			cir.setReturnValue(ModDamageSources.createBlightThornDamage("player", player));
 		}
 	}
 
 	@Inject(method = "causeMobDamage", at = @At("HEAD"), cancellable = true)
-	private static void onCauseMobDamage(LivingEntity mob, CallbackInfoReturnable<DamageSource> cir) {
-		if (mob.getHeldItemMainhand().getItem() == ModItems.BIOFLESH_WAR_AXE.get()) {
+	private static void biomancy_onCauseMobDamage(LivingEntity mob, CallbackInfoReturnable<DamageSource> cir) {
+		if (mob.getHeldItemMainhand().getItem() == ModItems.FLESHBORN_WAR_AXE.get()) {
 			cir.setReturnValue(ModDamageSources.createBlightThornDamage("mob", mob));
 		}
 	}

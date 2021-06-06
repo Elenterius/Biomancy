@@ -2,19 +2,12 @@ package com.github.elenterius.biomancy.item;
 
 import com.github.elenterius.biomancy.capabilities.IItemDecayTracker;
 import com.github.elenterius.biomancy.init.ModCapabilities;
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.LazyOptional;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class DecayingItem extends Item {
 
@@ -27,11 +20,17 @@ public class DecayingItem extends Item {
 		this.decayFactor = decayFactor;
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		//sync capability to client??
-	}
+//	@OnlyIn(Dist.CLIENT)
+//	@Override
+//	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+//		if (flagIn.isAdvanced() && worldIn != null) {
+//			LazyOptional<IItemDecayTracker> capability = stack.getCapability(ModCapabilities.ITEM_DECAY_CAPABILITY);
+//			capability.ifPresent(decayTracker -> {
+//				long elapsedTime = worldIn.getGameTime() - decayTracker.getStartTime();
+//				tooltip.add(new StringTextComponent("Elapsed Time: " + elapsedTime));
+//			});
+//		}
+//	}
 
 	@Override
 	public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entity) {

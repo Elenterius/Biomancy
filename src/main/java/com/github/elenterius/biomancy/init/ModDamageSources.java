@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.damagesource.ModEntityDamageSource;
+import com.github.elenterius.biomancy.entity.projectile.AbstractProjectileEntity;
 import com.github.elenterius.biomancy.entity.projectile.ToothProjectileEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -33,6 +34,10 @@ public final class ModDamageSources {
 	}
 
 	public static DamageSource createToothProjectileDamage(ToothProjectileEntity projectile, @Nullable Entity shooter) {
-		return (new IndirectEntityDamageSource(BiomancyMod.MOD_ID + "." + "tooth_projectile", projectile, shooter)).setProjectile();
+		return new IndirectEntityDamageSource(BiomancyMod.MOD_ID + "." + "tooth_projectile", projectile, shooter).setProjectile();
+	}
+
+	public static DamageSource createWitherSkullDamage(AbstractProjectileEntity projectile, Entity shooter) {
+		return new IndirectEntityDamageSource("witherSkull", projectile, shooter).setProjectile();
 	}
 }

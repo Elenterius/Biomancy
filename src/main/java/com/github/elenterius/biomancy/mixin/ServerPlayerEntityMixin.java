@@ -25,7 +25,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 	}
 
 	@Inject(method = "openContainer", at = @At(value = "INVOKE", shift = At.Shift.BEFORE, remap = false, target = "Lnet/minecraftforge/eventbus/api/IEventBus;post(Lnet/minecraftforge/eventbus/api/Event;)Z"))
-	protected void onContainerOpen(INamedContainerProvider p_213829_1_, CallbackInfoReturnable<OptionalInt> cir) {
+	protected void biomancy_onContainerOpen(INamedContainerProvider p_213829_1_, CallbackInfoReturnable<OptionalInt> cir) {
 		ItemDecayHandler.decayItemsInContainer((ServerPlayerEntity) (Object) this, openContainer, p_213829_1_);
 	}
 
@@ -33,7 +33,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 	 * Injects an max attack distance check. When the players attack distance is reduced and can't reach the target anymore this mixin cancels the attacks.
 	 */
 	@Inject(method = "attackTargetEntityWithCurrentItem", cancellable = true, at = @At(value = "INVOKE", shift = At.Shift.BEFORE, target = "Lnet/minecraft/entity/player/PlayerEntity;attackTargetEntityWithCurrentItem(Lnet/minecraft/entity/Entity;)V"))
-	protected void onAttackTargetEntityWithCurrentItem(Entity targetEntity, CallbackInfo ci) {
+	protected void biomancy_onAttackTargetEntityWithCurrentItem(Entity targetEntity, CallbackInfo ci) {
 		ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 		double maxDist = ModAttributes.getAttackReachDistance(player); // the max attack distance can be smaller than the default value of 3
 		if (!player.isCreative() && player.getDistanceSq(targetEntity) > maxDist * maxDist) {

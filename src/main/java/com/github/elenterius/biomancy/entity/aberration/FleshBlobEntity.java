@@ -29,11 +29,13 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -206,6 +208,12 @@ public class FleshBlobEntity extends CreatureEntity implements IJumpMovementMob<
 	public void addForeignEntityDNA(EntityType<?> entityType) {
 		if (injectedDNAs == null) injectedDNAs = new ArrayList<>();
 		injectedDNAs.add(entityType);
+
+		if (injectedDNAs.size() > 5) { //prevent storing of too many DNAs
+			Explosion.Mode mode = ForgeEventFactory.getMobGriefingEvent(world, this) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
+			world.createExplosion(this, getPosX(), getPosY(), getPosZ(), getBlobSize() + 4f * 1.25f, mode);
+			remove();
+		}
 	}
 
 	@Nullable

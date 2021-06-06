@@ -1,10 +1,10 @@
 package com.github.elenterius.biomancy.block;
 
-import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.client.util.TooltipUtil;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.tileentity.ChewerTileEntity;
 import com.github.elenterius.biomancy.tileentity.state.ChewerStateData;
-import com.github.elenterius.biomancy.util.TooltipUtil;
+import com.github.elenterius.biomancy.util.TextUtil;
 import com.github.elenterius.biomancy.util.VoxelShapeUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -67,7 +67,7 @@ public class ChewerBlock extends OwnableContainerBlock {
 		if (nbt != null) {
 			tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 			int mainFuel = (int) (MathHelper.clamp(nbt.getShort(ChewerStateData.NBT_KEY_FUEL) / (float) ChewerTileEntity.MAX_FUEL, 0f, 1f) * 100);
-			tooltip.add(BiomancyMod.getTranslationText("tooltip", "biofuel").appendString(": " + mainFuel + "%"));
+			tooltip.add(TextUtil.getTranslationText("tooltip", "biofuel").appendString(": " + mainFuel + "%"));
 		}
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 	}

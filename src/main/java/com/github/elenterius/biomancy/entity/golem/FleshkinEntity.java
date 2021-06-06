@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.entity.golem;
 
-import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.entity.ai.goal.golem.FollowOwnerGoal;
 import com.github.elenterius.biomancy.entity.ai.goal.golem.*;
+import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
@@ -129,7 +129,7 @@ public class FleshkinEntity extends OwnableMonsterEntity implements IGolem {
 
 			setGolemCommand(newCommand);
 			IFormattableTextComponent cmd = new StringTextComponent(newCommand.toString()).mergeStyle(TextFormatting.DARK_AQUA);
-			TranslationTextComponent text = new TranslationTextComponent(BiomancyMod.getTranslationKey("msg", "set_golem_command"), getName(), cmd);
+			TranslationTextComponent text = new TranslationTextComponent(TextUtil.getTranslationKey("msg", "set_golem_command"), getName(), cmd);
 			text.mergeStyle(TextFormatting.WHITE);
 			player.sendStatusMessage(text, true);
 		}

@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.inventory;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.capabilities.NonNestingItemStackHandler;
 import com.github.elenterius.biomancy.init.ModContainerTypes;
-import com.github.elenterius.biomancy.tileentity.FleshChestTileEntity;
+import com.github.elenterius.biomancy.tileentity.FleshbornChestTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -19,7 +19,7 @@ public class FleshChestContainer extends Container {
 	protected final SimpleInvContents invContents;
 
 	private FleshChestContainer(int screenId, PlayerInventory playerInventory, SimpleInvContents invContents) {
-		super(ModContainerTypes.FLESH_CHEST.get(), screenId);
+		super(ModContainerTypes.FLESHBORN_CHEST.get(), screenId);
 		this.invContents = invContents;
 		PlayerInvWrapper playerInventoryForge = new PlayerInvWrapper(playerInventory);
 
@@ -63,7 +63,7 @@ public class FleshChestContainer extends Container {
 	}
 
 	public static FleshChestContainer createClientContainer(int screenId, PlayerInventory playerInventory, PacketBuffer extraData) {
-		SimpleInvContents invContents = SimpleInvContents.createClientContents(FleshChestTileEntity.INV_SLOTS_COUNT);
+		SimpleInvContents invContents = SimpleInvContents.createClientContents(FleshbornChestTileEntity.INV_SLOTS_COUNT);
 		return new FleshChestContainer(screenId, playerInventory, invContents);
 	}
 
@@ -134,7 +134,7 @@ public class FleshChestContainer extends Container {
 	private enum SlotZone {
 		PLAYER_HOTBAR(0, 9),
 		PLAYER_MAIN_INVENTORY(9, 3 * 9),
-		CHEST_INVENTORY(9 + 3 * 9, FleshChestTileEntity.INV_SLOTS_COUNT);
+		CHEST_INVENTORY(9 + 3 * 9, FleshbornChestTileEntity.INV_SLOTS_COUNT);
 
 		public final int firstIndex;
 		public final int slotCount;

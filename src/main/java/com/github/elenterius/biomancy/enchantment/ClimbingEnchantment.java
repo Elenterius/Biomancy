@@ -34,12 +34,12 @@ public class ClimbingEnchantment extends Enchantment {
 
 	@Override
 	public boolean canVillagerTrade() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean canGenerateInLoot() {
-		return false;
+		return true;
 	}
 
 	public boolean tryToClimb(PlayerEntity entity) {
@@ -53,7 +53,8 @@ public class ClimbingEnchantment extends Enchantment {
 				entity.fallDistance = 0f;
 				entity.setMotion(mx, my, mz);
 				return true;
-			} else if (!entity.isSneaking()) { // ladder climbing
+			}
+			else if (!entity.isSneaking()) { // ladder climbing
 				entity.setMotion(entity.getMotion().add(0d, 0.08700634D, 0d));
 				return true;
 			}

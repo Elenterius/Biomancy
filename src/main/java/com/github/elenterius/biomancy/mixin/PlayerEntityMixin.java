@@ -23,13 +23,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class PlayerEntityMixin {
 
 	@Inject(method = "func_234570_el_", at = @At(value = "RETURN"))
-	private static void onRegisterAttributes(CallbackInfoReturnable<AttributeModifierMap.MutableAttribute> cir) {
+	private static void biomancy_onRegisterAttributes(CallbackInfoReturnable<AttributeModifierMap.MutableAttribute> cir) {
 		BiomancyMod.LOGGER.debug(MarkerManager.getMarker("ATTRIBUTE INJECTION"), "adding attack distance attribute to player...");
 		cir.getReturnValue().createMutableAttribute(ModAttributes.getAttackDistance());
 	}
 
 	@Redirect(method = "attackTargetEntityWithCurrentItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getDistanceSq(Lnet/minecraft/entity/Entity;)D"))
-	protected double transformSweepDistSq(PlayerEntity playerEntity, Entity entityIn) {
+	protected double biomancy_transformSweepDistSq(PlayerEntity playerEntity, Entity entityIn) {
 		double distSq = playerEntity.getDistanceSq(entityIn);
 		double maxDist = ModAttributes.getAttackReachDistance(playerEntity);
 		if (distSq < maxDist * maxDist) {
@@ -39,12 +39,12 @@ public abstract class PlayerEntityMixin {
 	}
 
 	@Redirect(method = "attackTargetEntityWithCurrentItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getModifierForCreature(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/CreatureAttribute;)F"))
-	protected float transformExtraDamageModifier(ItemStack stack, CreatureAttribute creatureAttribute, Entity targetEntity) {
+	protected float biomancy_transformExtraDamageModifier(ItemStack stack, CreatureAttribute creatureAttribute, Entity targetEntity) {
 		if (!stack.isEmpty()) {
 			float modifier = 0f;
 			if (AttunedDamageEnchantment.isAttuned(stack))
 				modifier = ModEnchantments.ATTUNED_BANE.get().getAttackDamageModifier(stack, (PlayerEntity) (Object) this, targetEntity);
-			if (stack.getItem() == ModItems.BIOFLESH_GUAN_DAO.get())
+			if (stack.getItem() == ModItems.FLESHBORN_GUAN_DAO.get())
 				modifier += InfestedGuanDaoItem.getAttackDamageModifier(stack, (PlayerEntity) (Object) this, targetEntity);
 
 			return EnchantmentHelper.getModifierForCreature(stack, creatureAttribute) + modifier;

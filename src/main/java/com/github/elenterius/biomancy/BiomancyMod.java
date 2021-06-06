@@ -1,16 +1,17 @@
 package com.github.elenterius.biomancy;
 
 import com.github.elenterius.biomancy.init.*;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.item.EnchantedBookItem;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
@@ -45,15 +46,8 @@ public final class BiomancyMod {
 		return new ResourceLocation(MOD_ID, path);
 	}
 
-	public static String getTranslationKey(String prefix, String suffix) {
-		return prefix + "." + MOD_ID + "." + suffix;
-	}
-
-	public static TranslationTextComponent getTranslationText(String prefix, String suffix) {
-		return new TranslationTextComponent(getTranslationKey(prefix, suffix));
-	}
-
 	public static final ItemGroup ITEM_GROUP = new ItemGroup(MOD_ID) {
+
 		@OnlyIn(Dist.CLIENT)
 		public ItemStack createIcon() {
 			return new ItemStack(ModItems.OCULUS.get());
@@ -62,9 +56,10 @@ public final class BiomancyMod {
 		@Override
 		public void fill(@Nonnull NonNullList<ItemStack> items) {
 			super.fill(items);
-			items.add(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(ModEnchantments.CLIMBING.get(), 1)));
-			items.add(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(ModEnchantments.BULLET_JUMP.get(), 3)));
-			items.add(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(ModEnchantments.ATTUNED_BANE.get(), 5)));
+			for (RegistryObject<Enchantment> entry : ModEnchantments.ENCHANTMENTS.getEntries()) {
+				Enchantment enchantment = entry.get();
+				items.add(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(enchantment, enchantment.getMaxLevel())));
+			}
 
 			//add placeholder potions
 //			for (RegistryObject<Effect> effect : ModEffects.EFFECTS.getEntries()) {

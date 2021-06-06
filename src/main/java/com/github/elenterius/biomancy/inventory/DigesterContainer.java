@@ -102,6 +102,10 @@ public class DigesterContainer extends Container {
 		return MathHelper.clamp(stateData.fuel.getFluidAmount() / (float) stateData.fuel.getCapacity(), 0f, 1f);
 	}
 
+	public String getFuelTranslationKey() {
+		return stateData.fuel.getFluid().getTranslationKey();
+	}
+
 	/**
 	 * copied from: https://github.com/TheGreyGhost/MinecraftByExample/blob/1-16-3-final/src/main/java/minecraftbyexample/mbe31_inventory_furnace/ContainerFurnace.java
 	 */

@@ -31,18 +31,18 @@ public abstract class GetMouseOverMixin {
 	private Minecraft mc;
 
 	@Redirect(method = "getMouseOver", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/PlayerController;getBlockReachDistance()F"))
-	protected float transformD0(PlayerController playerController) {
-		return (float) ModAttributes.getAttackReachDistance(mc.player); // replace block read distance with attack distance
+	protected float biomancy_transformD0(PlayerController playerController) {
+		return (float) ModAttributes.getAttackReachDistance(mc.player); // replace block reach distance with attack distance
 	}
 
 	@ModifyArg(method = "getMouseOver", index = 0, at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;pick(DFZ)Lnet/minecraft/util/math/RayTraceResult;"))
-	protected double transformPickRayTraceDistance(double d0) {
+	protected double biomancy_transformPickRayTraceDistance(double d0) {
 		//noinspection ConstantConditions
 		return mc.playerController.getBlockReachDistance(); // use block reach distance for block pick
 	}
 
 	@Redirect(method = "getMouseOver", at = @At(value = "INVOKE", ordinal = 1, target = "Lnet/minecraft/util/math/vector/Vector3d;squareDistanceTo(Lnet/minecraft/util/math/vector/Vector3d;)D"))
-	protected double transformD2(Vector3d vector3d, Vector3d vec) {
+	protected double biomancy_transformD2(Vector3d vector3d, Vector3d vec) {
 		double distSq = vector3d.squareDistanceTo(vec);
 		//noinspection ConstantConditions
 		double maxDist = !mc.player.isCreative() ? ModAttributes.getAttackReachDistance(mc.player) : 6d;

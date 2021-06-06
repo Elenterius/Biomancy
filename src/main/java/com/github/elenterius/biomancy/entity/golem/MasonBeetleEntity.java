@@ -3,7 +3,6 @@ package com.github.elenterius.biomancy.entity.golem;
 import com.github.elenterius.biomancy.entity.IPlaceBlockAtPositionMob;
 import com.github.elenterius.biomancy.entity.ai.goal.PlaceBlockAtPositionGoal;
 import com.github.elenterius.biomancy.entity.ai.goal.golem.ReturnToOwnerGoal;
-import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.util.BlockPlacementTarget;
 import com.github.elenterius.biomancy.util.PlayerInteractionUtil;
 import net.minecraft.block.BlockState;
@@ -109,7 +108,8 @@ public class MasonBeetleEntity extends OwnableCreatureEntity implements IPlaceBl
 						if (direction == Direction.UP && !actionResultType.isSuccessOrConsume() && blockPos.getY() >= serverWorld.getServer().getBuildLimit() - 1 && isValidItem(surrogate, stack)) {
 							ITextComponent textComponent = new TranslationTextComponent("build.tooHigh", serverWorld.getServer().getBuildLimit()).mergeStyle(TextFormatting.RED);
 							player.sendStatusMessage(textComponent, true);
-						} else if (actionResultType.isSuccessOrConsume()) {
+						}
+						else if (actionResultType.isSuccessOrConsume()) {
 							ITextComponent blockName = new TranslationTextComponent(blockTranslation);
 							ITextComponent beetle_name = hasCustomName() ? getCustomName() : new TranslationTextComponent("msg.biomancy.your_beetle");
 							ITextComponent textComponent = new TranslationTextComponent("msg.biomancy.beetle_block_place_success", beetle_name, blockName).mergeStyle(TextFormatting.GREEN);
@@ -118,7 +118,8 @@ public class MasonBeetleEntity extends OwnableCreatureEntity implements IPlaceBl
 						}
 					}
 				}
-			} else {
+			}
+			else {
 				ITextComponent textComponent = (new TranslationTextComponent("build.tooHigh", serverWorld.getServer().getBuildLimit())).mergeStyle(TextFormatting.RED);
 				player.sendStatusMessage(textComponent, true);
 			}
@@ -166,13 +167,13 @@ public class MasonBeetleEntity extends OwnableCreatureEntity implements IPlaceBl
 			ServerPlayerEntity player = (ServerPlayerEntity) getOwner().orElse(null);
 			if (player == null) return false;
 
-			ItemStack beetleStack = ModItems.MASON_BEETLE.get().setBlockItemStack(new ItemStack(ModItems.MASON_BEETLE.get()), getPlacementBlock().copy());
-			if (hasCustomName()) beetleStack.setDisplayName(getCustomName());
-			if (player.addItemStackToInventory(beetleStack)) {
-				setPlacementBlock(ItemStack.EMPTY);
-				setDead();
-				return true;
-			}
+//			ItemStack beetleStack = ModItems.MASON_BEETLE.get().setBlockItemStack(new ItemStack(ModItems.MASON_BEETLE.get()), getPlacementBlock().copy());
+//			if (hasCustomName()) beetleStack.setDisplayName(getCustomName());
+//			if (player.addItemStackToInventory(beetleStack)) {
+//				setPlacementBlock(ItemStack.EMPTY);
+//				setDead();
+//				return true;
+//			}
 		}
 		return false;
 	}
@@ -183,14 +184,14 @@ public class MasonBeetleEntity extends OwnableCreatureEntity implements IPlaceBl
 
 		if (!player.world.isRemote()) {
 			setDead();
-			ItemStack beetleStack = ModItems.MASON_BEETLE.get().setBlockItemStack(new ItemStack(ModItems.MASON_BEETLE.get()), getPlacementBlock().copy());
-			if (hasCustomName()) beetleStack.setDisplayName(getCustomName());
-			if (player.addItemStackToInventory(beetleStack)) {
-				setPlacementBlock(ItemStack.EMPTY);
-			}
-			else {
-				entityDropItem(beetleStack);
-			}
+//			ItemStack beetleStack = ModItems.MASON_BEETLE.get().setBlockItemStack(new ItemStack(ModItems.MASON_BEETLE.get()), getPlacementBlock().copy());
+//			if (hasCustomName()) beetleStack.setDisplayName(getCustomName());
+//			if (player.addItemStackToInventory(beetleStack)) {
+//				setPlacementBlock(ItemStack.EMPTY);
+//			}
+//			else {
+//				entityDropItem(beetleStack);
+//			}
 		}
 		return ActionResultType.func_233537_a_(world.isRemote());
 	}

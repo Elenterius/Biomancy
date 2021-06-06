@@ -6,6 +6,33 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
+            },
+            {
+              "function": "minecraft:copy_nbt",
+              "source": "block_entity",
+              "ops": [
+                {
+                  "source": "Fuel",
+                  "target": "BlockEntityTag.Fuel",
+                  "op": "replace"
+                },
+                {
+                  "source": "OwnerUUID",
+                  "target": "BlockEntityTag.OwnerUUID",
+                  "op": "replace"
+                },
+                {
+                  "source": "UserList",
+                  "target": "BlockEntityTag.UserList",
+                  "op": "replace"
+                }
+              ]
+            }
+          ],
           "name": "biomancy:digester"
         }
       ],

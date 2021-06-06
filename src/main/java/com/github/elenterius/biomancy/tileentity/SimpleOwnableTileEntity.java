@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.tileentity;
 
-import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModTileEntityTypes;
+import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.util.text.ITextComponent;
 
 public class SimpleOwnableTileEntity extends OwnableTileEntity {
@@ -12,7 +12,7 @@ public class SimpleOwnableTileEntity extends OwnableTileEntity {
 
 	@Override
 	protected ITextComponent getDefaultName() {
-		return BiomancyMod.getTranslationText("tile", "ownable");
+		return TextUtil.getTranslationText("tile", "ownable");
 	}
 
 }

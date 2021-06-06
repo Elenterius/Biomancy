@@ -1,9 +1,9 @@
 package com.github.elenterius.biomancy.item;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.init.ClientSetupHandler;
+import com.github.elenterius.biomancy.client.util.TooltipUtil;
 import com.github.elenterius.biomancy.init.ModItems;
-import com.github.elenterius.biomancy.util.TooltipUtil;
+import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -36,16 +36,16 @@ public class GogglesArmorItem extends ArmorItem implements IEntityUnveilerHeadSl
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(TooltipUtil.getTooltip(this).mergeStyle(TooltipUtil.LORE_STYLE));
+		tooltip.add(TooltipUtil.getItemInfoTooltip(this).mergeStyle(TooltipUtil.LORE_STYLE));
 		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 		if (stack.hasTag() && stack.getOrCreateTag().contains(NBT_KEY)) {
 			if (stack.getOrCreateTag().getBoolean(NBT_KEY)) {
-				tooltip.add(BiomancyMod.getTranslationText("tooltip", "item_is_awake").mergeStyle(TextFormatting.GRAY));
-				tooltip.add(new TranslationTextComponent(BiomancyMod.getTranslationKey("tooltip", "press_button_to"), ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.func_238171_j_().copyRaw().mergeStyle(TextFormatting.AQUA), BiomancyMod.getTranslationText("tooltip", "action_deactivate")).mergeStyle(TextFormatting.DARK_GRAY));
+				tooltip.add(TextUtil.getTranslationText("tooltip", "item_is_awake").mergeStyle(TextFormatting.GRAY));
+				tooltip.add(TooltipUtil.pressButtonTo(TooltipUtil.getDefaultKey(), TextUtil.getTranslationText("tooltip", "action_deactivate")).mergeStyle(TextFormatting.DARK_GRAY));
 			}
 			else {
-				tooltip.add(BiomancyMod.getTranslationText("tooltip", "item_is_inert").mergeStyle(TextFormatting.GRAY));
-				tooltip.add(new TranslationTextComponent(BiomancyMod.getTranslationKey("tooltip", "press_button_to"), ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.func_238171_j_().copyRaw().mergeStyle(TextFormatting.AQUA), BiomancyMod.getTranslationText("tooltip", "action_activate")).mergeStyle(TextFormatting.DARK_GRAY));
+				tooltip.add(TextUtil.getTranslationText("tooltip", "item_is_inert").mergeStyle(TextFormatting.GRAY));
+				tooltip.add(TooltipUtil.pressButtonTo(TooltipUtil.getDefaultKey(), TextUtil.getTranslationText("tooltip", "action_activate")).mergeStyle(TextFormatting.DARK_GRAY));
 			}
 			tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 		}
@@ -54,7 +54,7 @@ public class GogglesArmorItem extends ArmorItem implements IEntityUnveilerHeadSl
 	@Override
 	public ITextComponent getHighlightTip(ItemStack stack, ITextComponent displayName) {
 		if (displayName instanceof IFormattableTextComponent) {
-			String key = stack.getOrCreateTag().getBoolean(NBT_KEY) ? BiomancyMod.getTranslationKey("tooltip", "awake") : BiomancyMod.getTranslationKey("tooltip", "inert");
+			String key = stack.getOrCreateTag().getBoolean(NBT_KEY) ? TextUtil.getTranslationKey("tooltip", "awake") : TextUtil.getTranslationKey("tooltip", "inert");
 			return ((IFormattableTextComponent) displayName).appendString(" (").appendSibling(new TranslationTextComponent(key)).appendString(")");
 		}
 		return displayName;

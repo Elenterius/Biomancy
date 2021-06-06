@@ -1,0 +1,27 @@
+{
+  "type": "biomancy:evolution_pool",
+  "ingredients": [
+    {
+      "item": "minecraft:chest"
+    },
+    {
+      "item": "minecraft:chest"
+    },
+    {
+      "item": "biomancy:biometal"
+    },
+    {
+      "item": "biomancy:keratin_filaments"
+    },
+    {
+      "item": "biomancy:keratin_filaments"
+    },
+    {
+      "item": "biomancy:hormone_bile"
+    }
+  ],
+  "result": {
+    "item": "biomancy:fleshborn_chest"
+  },
+  "time": 400
+}

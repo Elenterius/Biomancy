@@ -1,9 +1,9 @@
 package com.github.elenterius.biomancy.block;
 
-import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.client.util.TooltipUtil;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.tileentity.DecomposerTileEntity;
-import com.github.elenterius.biomancy.util.TooltipUtil;
+import com.github.elenterius.biomancy.util.TextUtil;
 import com.github.elenterius.biomancy.util.VoxelShapeUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -67,8 +67,8 @@ public class DecomposerBlock extends OwnableContainerBlock {
 			tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 			int mainFuel = (int) (MathHelper.clamp(nbt.getShort("MainFuel") / (float) DecomposerTileEntity.MAX_FUEL, 0f, 1f) * 100);
 			int speedFuel = (int) (MathHelper.clamp(nbt.getShort("SpeedFuel") / (float) DecomposerTileEntity.MAX_FUEL, 0f, 1f) * 100);
-			tooltip.add(BiomancyMod.getTranslationText("tooltip", "biofuel").appendString(": " + mainFuel + "%"));
-			tooltip.add(BiomancyMod.getTranslationText("tooltip", "speed_fuel").appendString(": " + speedFuel + "%"));
+			tooltip.add(TextUtil.getTranslationText("tooltip", "biofuel").appendString(": " + mainFuel + "%"));
+			tooltip.add(TextUtil.getTranslationText("tooltip", "speed_fuel").appendString(": " + speedFuel + "%"));
 		}
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 	}

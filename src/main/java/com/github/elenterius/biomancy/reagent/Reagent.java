@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.reagent;
 
-import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModReagents;
+import com.github.elenterius.biomancy.util.TextUtil;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.util.ITooltipFlag;
@@ -88,7 +88,7 @@ public abstract class Reagent extends ForgeRegistryEntry<Reagent> {
 	@OnlyIn(Dist.CLIENT)
 	public void addInfoToTooltip(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		if (stack.getItem() != ModItems.REAGENT.get())
-			tooltip.add(new TranslationTextComponent(BiomancyMod.getTranslationKey("tooltip", "contains"), new TranslationTextComponent(getTranslationKey())).mergeStyle(TextFormatting.GRAY));
+			tooltip.add(new TranslationTextComponent(TextUtil.getTranslationKey("tooltip", "contains"), new TranslationTextComponent(getTranslationKey())).mergeStyle(TextFormatting.GRAY));
 	}
 
 	public String getTranslationKey() {

@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class GrindstoneContainerMixin {
 
 	@Inject(method = "removeEnchantments", at = @At(value = "TAIL"))
-	protected void onRemoveEnchantments(ItemStack stack, int damage, int count, CallbackInfoReturnable<ItemStack> cir) {
+	protected void biomancy_onRemoveEnchantments(ItemStack stack, int damage, int count, CallbackInfoReturnable<ItemStack> cir) {
 		cir.getReturnValue().removeChildTag(AttunedDamageEnchantment.NBT_KEY);
 	}
 

@@ -1,0 +1,50 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "biomancy:fleshborn_door",
+              "properties": {
+                "half": "lower"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
+            },
+            {
+              "function": "minecraft:copy_nbt",
+              "source": "block_entity",
+              "ops": [
+                {
+                  "source": "OwnerUUID",
+                  "target": "BlockEntityTag.OwnerUUID",
+                  "op": "replace"
+                },
+                {
+                  "source": "UserList",
+                  "target": "BlockEntityTag.UserList",
+                  "op": "replace"
+                }
+              ]
+            }
+          ],
+          "name": "biomancy:fleshborn_door"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    }
+  ]
+}

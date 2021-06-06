@@ -92,11 +92,11 @@ public final class PlayerInteractionUtil {
 				return findBlockNeighbors(world, rayTraceResult, targetState, startPos, range);
 
 			case CUBE:
-				return findBlockNeighbors3D(world, rayTraceResult, targetState, startPos, range);
+				return findBlockNeighborsCube(world, rayTraceResult, targetState, startPos, range);
 		}
 	}
 
-	public static List<BlockPos> findBlockNeighbors3D(World world, BlockRayTraceResult rayTraceResult, BlockState targetState, BlockPos startPos, int range) {
+	public static List<BlockPos> findBlockNeighborsCube(World world, BlockRayTraceResult rayTraceResult, BlockState targetState, BlockPos startPos, int range) {
 		if (rayTraceResult.getType() == RayTraceResult.Type.MISS || !rayTraceResult.getPos().equals(startPos)) {
 			return Collections.emptyList();
 		}

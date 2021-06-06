@@ -1,8 +1,9 @@
 package com.github.elenterius.biomancy.block;
 
+import com.github.elenterius.biomancy.client.util.TooltipUtil;
 import com.github.elenterius.biomancy.tileentity.IOwnableTile;
 import com.github.elenterius.biomancy.tileentity.OwnableTileEntity;
-import com.github.elenterius.biomancy.util.TooltipUtil;
+import com.github.elenterius.biomancy.util.TextUtil;
 import com.github.elenterius.biomancy.util.UserAuthorization;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -46,7 +47,7 @@ public abstract class OwnableBlock extends Block implements IOwnableBlock {
 				tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 				StringTextComponent ownerName = new StringTextComponent(TooltipUtil.tryToGetPlayerNameOnClientSide(nbt.getUniqueId("OwnerUUID")));
 				ownerName.mergeStyle(TextFormatting.WHITE);
-				tooltip.add(new TranslationTextComponent("tooltip.biomancy.owner", ownerName).mergeStyle(TextFormatting.GRAY));
+				tooltip.add(new TranslationTextComponent(TextUtil.getTranslationKey("tooltip", "owner"), ownerName).mergeStyle(TextFormatting.GRAY));
 
 				if (nbt.contains("UserList")) {
 					ListNBT nbtList = nbt.getList("UserList", Constants.NBT.TAG_COMPOUND);
@@ -60,7 +61,7 @@ public abstract class OwnableBlock extends Block implements IOwnableBlock {
 					}
 					int remainder = nbtList.size() - limit;
 					if (remainder > 0) {
-						tooltip.add(new TranslationTextComponent("tooltip.biomancy.press_button_to", TooltipUtil.CTRL_KEY_TEXT.mergeStyle(TextFormatting.AQUA), "show " + remainder + " more users..."));
+						tooltip.add(TooltipUtil.pressButtonTo(TooltipUtil.getCtrlKey(), "show " + remainder + " more users..."));
 					}
 				}
 			}

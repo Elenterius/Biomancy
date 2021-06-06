@@ -8,14 +8,14 @@ import net.minecraft.util.LazyValue;
 import java.util.function.Supplier;
 
 public enum ModItemTier implements IItemTier {
-	BONE(1, 131, 4.0F, 1.0F, 5, () -> {
+	BONE(1, 131, 4f, 1f, 5, () -> {
 		return Ingredient.fromItems(Items.BONE_MEAL, ModItems.BONE_SCRAPS.get());
 	}),
-	LESSER_BIOFLESH(3, 1650, 6.0F, 2.0F, 14, () -> {
+	LESSER_BIOMETAL(3, 1650, 6f, 2f, 14, () -> {
 		return Ingredient.fromItems(ModItems.FLESH_BLOCK.get());
 	}),
-	BIOFLESH(4, 2031, 9.0F, 4.0F, 15, () -> {
-		return Ingredient.fromItems(ModItems.FLESH_BLOCK.get());
+	BIOMETAL(4, 2031, 9f, 4f, 15, () -> {
+		return Ingredient.fromItems(ModItems.BIOMETAL.get());
 	});
 
 	private final int harvestLevel;

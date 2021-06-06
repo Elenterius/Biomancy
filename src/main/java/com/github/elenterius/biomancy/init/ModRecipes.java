@@ -2,10 +2,12 @@ package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.recipe.*;
+import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.block.ComposterBlock;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -35,6 +37,7 @@ public final class ModRecipes {
 	public static final IRecipeType<DigesterRecipe> DIGESTER_RECIPE_TYPE = createRecipeType("digesting");
 	public static final IRecipeType<DecomposerRecipe> DECOMPOSING_RECIPE_TYPE = createRecipeType("decomposing");
 	public static final IRecipeType<EvolutionPoolRecipe> EVOLUTION_POOL_RECIPE_TYPE = createRecipeType("evolution_pool");
+	public static final ImmutableSet<IRecipeType<? extends IRecipe<IInventory>>> RECIPE_TYPES = ImmutableSet.of(CHEWER_RECIPE_TYPE, DIGESTER_RECIPE_TYPE, DECOMPOSING_RECIPE_TYPE, EVOLUTION_POOL_RECIPE_TYPE);
 
 	public static final ItemPredicate ANY_MEATLESS_FOOD_ITEM_PREDICATE = new ItemPredicate() {
 		@Override

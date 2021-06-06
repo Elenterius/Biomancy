@@ -1,12 +1,12 @@
 package com.github.elenterius.biomancy.item;
 
-import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.init.ClientSetupHandler;
+import com.github.elenterius.biomancy.client.util.TooltipUtil;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModReagents;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.reagent.BloodSampleReagent;
 import com.github.elenterius.biomancy.reagent.Reagent;
+import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
@@ -18,10 +18,7 @@ import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.*;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.*;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
@@ -49,8 +46,19 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 			tooltip.add(new StringTextComponent(String.format("Amount: %d/4", amount)).mergeStyle(TextFormatting.GRAY));
 			reagent.addInfoToTooltip(stack, worldIn, tooltip, flagIn);
 		}
-		else tooltip.add(BiomancyMod.getTranslationText("tooltip", "contains_nothing").mergeStyle(TextFormatting.GRAY));
-		tooltip.add(new TranslationTextComponent(BiomancyMod.getTranslationKey("tooltip", "press_button_to"), ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.func_238171_j_().copyRaw().mergeStyle(TextFormatting.AQUA), BiomancyMod.getTranslationText("tooltip", "action_self_inject")).mergeStyle(TextFormatting.DARK_GRAY));
+		else tooltip.add(TextUtil.getTranslationText("tooltip", "contains_nothing").mergeStyle(TextFormatting.GRAY));
+		tooltip.add(TooltipUtil.pressButtonTo(TooltipUtil.getDefaultKey(), TextUtil.getTranslationText("tooltip", "action_self_inject")).mergeStyle(TextFormatting.DARK_GRAY));
+	}
+
+	@Override
+	public ITextComponent getHighlightTip(ItemStack stack, ITextComponent displayName) {
+		if (displayName instanceof IFormattableTextComponent) {
+			Reagent reagent = Reagent.deserialize(stack.getOrCreateTag());
+			if (reagent != null) {
+				return ((IFormattableTextComponent) displayName).appendString(" (").appendSibling(new TranslationTextComponent(reagent.getTranslationKey()).mergeStyle(TextFormatting.AQUA)).appendString(")");
+			}
+		}
+		return displayName;
 	}
 
 	public int getReagentColor(ItemStack stack) {
@@ -202,7 +210,7 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 					CompoundNBT nbt = stack.getOrCreateTag();
 					Reagent.serialize(ModReagents.BLOOD_SAMPLE.get(), nbt);
 					nbt.put(Reagent.NBT_KEY_DATA, reagentNbt);
-					setReagentAmount(stack, (byte) 1);
+					setReagentAmount(stack, getMaxReagentAmount());
 
 					playSFX(target.world, player, ModSoundEvents.INJECT.get());
 					target.attackEntityFrom(DamageSource.causeBeeStingDamage(player), 0.5f);

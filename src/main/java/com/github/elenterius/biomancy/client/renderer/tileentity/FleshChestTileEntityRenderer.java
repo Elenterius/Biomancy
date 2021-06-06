@@ -50,7 +50,7 @@ public class FleshChestTileEntityRenderer<T extends TileEntity & IChestLid> exte
 	@Override
 	public void render(T tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		World world = tileEntityIn.getWorld();
-		BlockState state = world != null ? tileEntityIn.getBlockState() : ModBlocks.FLESH_CHEST.get().getDefaultState().with(ChestBlock.FACING, Direction.SOUTH);
+		BlockState state = world != null ? tileEntityIn.getBlockState() : ModBlocks.FLESHBORN_CHEST.get().getDefaultState().with(ChestBlock.FACING, Direction.SOUTH);
 		Block block = state.getBlock();
 		if (block instanceof FleshChestBlock) {
 			matrixStackIn.push();

@@ -20,33 +20,31 @@ public class ToothGunItem extends ProjectileWeaponItem {
 	public static final Predicate<ItemStack> VALID_AMMO_ITEM = (stack) -> stack.getItem() == ModItems.NUTRIENT_PASTE.get();
 
 	public ToothGunItem(Properties builder) {
-		super(builder, 1.25f, 0.96f, 5f, 6, 4 * 20);
+		super(builder, 1.25f, 0.92f, 5f, 6, 4 * 20);
 	}
 
 	public static void fireProjectile(ServerWorld worldIn, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, float damage, float inaccuracy) {
-		if (!worldIn.isRemote) {
-			ToothProjectileEntity projectile = new ToothProjectileEntity(worldIn, shooter);
-			Vector3d direction = shooter.getLookVec();
-			projectile.shoot(direction.getX(), direction.getY(), direction.getZ(), 1f, inaccuracy);
+		ToothProjectileEntity projectile = new ToothProjectileEntity(worldIn, shooter);
+		projectile.setDamage(damage);
+		int level = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, projectileWeapon);
+		if (level > 0) {
+			projectile.setKnockback((byte) level);
+		}
 
-			projectile.setDamage(damage);
-			int level = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, projectileWeapon);
-			if (level > 0) {
-				projectile.setKnockback((byte) level);
-			}
+		Vector3d direction = shooter.getLookVec();
+		projectile.shoot(direction.getX(), direction.getY(), direction.getZ(), 1.75f, inaccuracy);
 
-			projectileWeapon.damageItem(1, shooter, (entity) -> entity.sendBreakAnimation(hand));
+		projectileWeapon.damageItem(1, shooter, (entity) -> entity.sendBreakAnimation(hand));
 
-			if (worldIn.addEntity(projectile)) {
-				worldIn.playSound(null, shooter.getPosX(), shooter.getPosY(), shooter.getPosZ(), SoundEvents.ITEM_CROSSBOW_SHOOT, SoundCategory.PLAYERS, 1f, 1.4f);
-			}
+		if (worldIn.addEntity(projectile)) {
+			worldIn.playSound(null, shooter.getPosX(), shooter.getPosY(), shooter.getPosZ(), SoundEvents.ITEM_CROSSBOW_SHOOT, SoundCategory.PLAYERS, 1f, 1.4f);
 		}
 	}
 
 	@Override
 	public void shoot(ServerWorld world, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, float damage, float inaccuracy) {
 		fireProjectile(world, shooter, hand, projectileWeapon, damage, inaccuracy);
-		consumeAmmo(projectileWeapon, 1);
+		consumeAmmo(shooter, projectileWeapon, 1);
 	}
 
 	@Override

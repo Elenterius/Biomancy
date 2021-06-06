@@ -1,0 +1,27 @@
+{
+  "type": "biomancy:evolution_pool",
+  "ingredients": [
+    {
+      "item": "minecraft:iron_axe"
+    },
+    {
+      "item": "minecraft:bone"
+    },
+    {
+      "item": "biomancy:biometal"
+    },
+    {
+      "item": "biomancy:biometal"
+    },
+    {
+      "item": "biomancy:biometal"
+    },
+    {
+      "item": "biomancy:hormone_bile"
+    }
+  ],
+  "result": {
+    "item": "biomancy:fleshborn_axe"
+  },
+  "time": 400
+}

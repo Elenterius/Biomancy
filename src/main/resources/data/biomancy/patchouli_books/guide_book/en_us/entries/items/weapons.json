@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "text",
-      "text": "Semi-living Weapons made of bioflesh."
+      "text": "Semi-living Weapons made of biometal."
     },
     {
       "type": "spotlight",
@@ -23,16 +23,16 @@
     },
     {
       "type": "spotlight",
-      "item": "biomancy:bioflesh_war_axe",
+      "item": "biomancy:fleshborn_war_axe",
       "text": {
-        "translate": "tooltip.biomancy.bioflesh_war_axe"
+        "translate": "tooltip.biomancy.fleshborn_war_axe"
       }
     },
     {
       "type": "spotlight",
-      "item": "biomancy:bioflesh_guan_dao",
+      "item": "biomancy:fleshborn_guan_dao",
       "text": {
-        "translate": "tooltip.biomancy.bioflesh_guan_dao"
+        "translate": "tooltip.biomancy.fleshborn_guan_dao"
       }
     }
   ]

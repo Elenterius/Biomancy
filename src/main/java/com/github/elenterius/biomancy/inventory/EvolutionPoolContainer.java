@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModContainerTypes;
 import com.github.elenterius.biomancy.tileentity.EvolutionPoolTileEntity;
 import com.github.elenterius.biomancy.tileentity.state.EvolutionPoolStateData;
+import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -165,6 +166,10 @@ public class EvolutionPoolContainer extends Container {
 
 	private boolean mergeInto(SlotZone destinationZone, ItemStack sourceStack, boolean fillFromEnd) {
 		return mergeItemStack(sourceStack, destinationZone.firstIndex, destinationZone.lastIndexPlus1, fillFromEnd);
+	}
+
+	public String getFuelTranslationKey() {
+		return TextUtil.getTranslationKey("tooltip", "mutagen");
 	}
 
 	private enum SlotZone {

@@ -43,6 +43,18 @@ public class ModBlockLootTables extends BlockLootTables {
 				.addEntry(ItemLootEntry.builder(itemContainer)
 						.acceptFunction(CopyName.builder(CopyName.Source.BLOCK_ENTITY))
 						.acceptFunction(CopyNbt.builder(CopyNbt.Source.BLOCK_ENTITY)
+								.replaceOperation("Fuel", "BlockEntityTag.Fuel")
+								.replaceOperation("OwnerUUID", "BlockEntityTag.OwnerUUID")
+								.replaceOperation("UserList", "BlockEntityTag.UserList")
+						)
+				)));
+	}
+
+	protected static LootTable.Builder droppingWithSpecialFuel(Block itemContainer) {
+		return LootTable.builder().addLootPool(withSurvivesExplosion(itemContainer, LootPool.builder().rolls(ConstantRange.of(1))
+				.addEntry(ItemLootEntry.builder(itemContainer)
+						.acceptFunction(CopyName.builder(CopyName.Source.BLOCK_ENTITY))
+						.acceptFunction(CopyNbt.builder(CopyNbt.Source.BLOCK_ENTITY)
 								.replaceOperation("MainFuel", "BlockEntityTag.MainFuel")
 								.replaceOperation("SpeedFuel", "BlockEntityTag.SpeedFuel")
 								.replaceOperation("OwnerUUID", "BlockEntityTag.OwnerUUID")
@@ -96,16 +108,16 @@ public class ModBlockLootTables extends BlockLootTables {
 		registerLootTable(ModBlocks.FLESH_BLOCK_SLAB.get(), BlockLootTables::droppingSlab);
 		registerDropSelfLootTable(ModBlocks.FLESH_BLOCK_STAIRS.get());
 		registerLootTable(ModBlocks.MUTATED_FLESH_BLOCK.get(), ModBlockLootTables::droppingMutatedFlesh);
-		registerLootTable(ModBlocks.BIO_FLESH_DOOR.get(), ModBlockLootTables::droppingSimpleOwnableDoor);
-		registerLootTable(ModBlocks.BIO_FLESH_TRAPDOOR.get(), ModBlockLootTables::droppingSimpleOwnable);
-		registerLootTable(ModBlocks.BIO_FLESH_PRESSURE_PLATE.get(), ModBlockLootTables::droppingSimpleOwnable);
+		registerLootTable(ModBlocks.FLESHBORN_DOOR.get(), ModBlockLootTables::droppingSimpleOwnableDoor);
+		registerLootTable(ModBlocks.FLESHBORN_TRAPDOOR.get(), ModBlockLootTables::droppingSimpleOwnable);
+		registerLootTable(ModBlocks.FLESHBORN_PRESSURE_PLATE.get(), ModBlockLootTables::droppingSimpleOwnable);
 
 		registerLootTable(ModBlocks.MEATSOUP_CAULDRON.get(), dropping(Blocks.CAULDRON));
 		registerLootTable(ModBlocks.GULGE.get(), ModBlockLootTables::droppingWithInventory);
-		registerLootTable(ModBlocks.FLESH_CHEST.get(), ModBlockLootTables::droppingWithInventory);
-		registerDropSelfLootTable(ModBlocks.CHEWER.get()); //TODO: drop inventory
-		registerDropSelfLootTable(ModBlocks.DIGESTER.get());  //TODO: drop inventory
-		registerLootTable(ModBlocks.DECOMPOSER.get(), ModBlockLootTables::droppingWithFuel);
+		registerLootTable(ModBlocks.FLESHBORN_CHEST.get(), ModBlockLootTables::droppingWithInventory);
+		registerLootTable(ModBlocks.CHEWER.get(), ModBlockLootTables::droppingWithFuel);
+		registerLootTable(ModBlocks.DIGESTER.get(), ModBlockLootTables::droppingWithFuel);
+		registerLootTable(ModBlocks.DECOMPOSER.get(), ModBlockLootTables::droppingWithSpecialFuel);
 		registerLootTable(ModBlocks.EVOLUTION_POOL.get(), dropping(ModBlocks.FLESH_BLOCK_STAIRS.get()));
 
 //		registerLootTable(ModBlocks.LUMINOUS_SOIL.get(), (soil) -> droppingWithSilkTouch(soil, withExplosionDecay(soil, ItemLootEntry.builder(ModItems.LUMINESCENT_SPORES.get())

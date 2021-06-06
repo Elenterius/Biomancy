@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.item;
 
+import com.github.elenterius.biomancy.client.util.TooltipUtil;
 import com.github.elenterius.biomancy.util.PlayerInteractionUtil;
-import com.github.elenterius.biomancy.util.TooltipUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
@@ -32,7 +32,7 @@ public class AdaptivePickaxeItem extends PickaxeItem implements IAdaptiveEfficie
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(TooltipUtil.getTooltip(this).setStyle(TooltipUtil.LORE_STYLE));
+		tooltip.add(TooltipUtil.getItemInfoTooltip(this).setStyle(TooltipUtil.LORE_STYLE));
 		IAdaptiveEfficiencyItem.addAdaptiveEfficiencyTooltip(stack, tooltip);
 	}
 

@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModContainerTypes;
 import com.github.elenterius.biomancy.tileentity.ChewerTileEntity;
 import com.github.elenterius.biomancy.tileentity.state.ChewerStateData;
+import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -96,6 +97,10 @@ public class ChewerContainer extends Container {
 
 	public float getFuelNormalized() {
 		return MathHelper.clamp(stateData.fuel / (float) ChewerTileEntity.MAX_FUEL, 0f, 1f);
+	}
+
+	public String getFuelTranslationKey() {
+		return TextUtil.getTranslationKey("tooltip", "biofuel");
 	}
 
 	/**

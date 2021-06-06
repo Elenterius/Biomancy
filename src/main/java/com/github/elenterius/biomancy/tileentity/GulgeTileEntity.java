@@ -1,9 +1,9 @@
 package com.github.elenterius.biomancy.tileentity;
 
-import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModTileEntityTypes;
 import com.github.elenterius.biomancy.inventory.GulgeContainer;
 import com.github.elenterius.biomancy.inventory.GulgeContents;
+import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -90,6 +90,6 @@ public class GulgeTileEntity extends OwnableTileEntity implements INamedContaine
 
 	@Override
 	protected ITextComponent getDefaultName() {
-		return BiomancyMod.getTranslationText("container", "gulge");
+		return TextUtil.getTranslationText("container", "gulge");
 	}
 }

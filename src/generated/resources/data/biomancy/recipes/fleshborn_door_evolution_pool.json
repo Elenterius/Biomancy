@@ -1,0 +1,24 @@
+{
+  "type": "biomancy:evolution_pool",
+  "ingredients": [
+    {
+      "item": "minecraft:iron_door"
+    },
+    {
+      "item": "biomancy:biometal"
+    },
+    {
+      "item": "biomancy:keratin_filaments"
+    },
+    {
+      "item": "biomancy:keratin_filaments"
+    },
+    {
+      "item": "biomancy:hormone_bile"
+    }
+  ],
+  "result": {
+    "item": "biomancy:fleshborn_door"
+  },
+  "time": 400
+}

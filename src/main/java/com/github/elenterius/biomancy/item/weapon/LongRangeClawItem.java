@@ -1,10 +1,11 @@
 package com.github.elenterius.biomancy.item.weapon;
 
-import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.client.util.TooltipUtil;
 import com.github.elenterius.biomancy.init.ModAttributes;
 import com.github.elenterius.biomancy.item.IAreaHarvestingItem;
+import com.github.elenterius.biomancy.util.GeometricShape;
 import com.github.elenterius.biomancy.util.PlayerInteractionUtil;
-import com.github.elenterius.biomancy.util.TooltipUtil;
+import com.github.elenterius.biomancy.util.TextUtil;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.BlockState;
@@ -63,15 +64,15 @@ public class LongRangeClawItem extends ClawWeaponItem implements IAreaHarvesting
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(TooltipUtil.getTooltip(this).setStyle(TooltipUtil.LORE_STYLE));
+		tooltip.add(TooltipUtil.getItemInfoTooltip(this).setStyle(TooltipUtil.LORE_STYLE));
 		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 
 		int timeLeft = stack.getOrCreateTag().getInt(NBT_KEY);
 		if (timeLeft > 0) {
-			tooltip.add(BiomancyMod.getTranslationText("tooltip", "item_is_excited").appendString(" (" + timeLeft + ")").mergeStyle(TextFormatting.GRAY));
+			tooltip.add(TextUtil.getTranslationText("tooltip", "item_is_excited").appendString(" (" + timeLeft + ")").mergeStyle(TextFormatting.GRAY));
 		}
 		else {
-			tooltip.add(BiomancyMod.getTranslationText("tooltip", "item_is_dormant").mergeStyle(TextFormatting.GRAY));
+			tooltip.add(TextUtil.getTranslationText("tooltip", "item_is_dormant").mergeStyle(TextFormatting.GRAY));
 		}
 		if (stack.isEnchanted()) tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 	}
@@ -80,7 +81,7 @@ public class LongRangeClawItem extends ClawWeaponItem implements IAreaHarvesting
 	public ITextComponent getHighlightTip(ItemStack stack, ITextComponent displayName) {
 		if (displayName instanceof IFormattableTextComponent) {
 			String keySuffix = stack.getOrCreateTag().getInt(NBT_KEY) > 0 ? "excited" : "dormant";
-			return ((IFormattableTextComponent) displayName).appendString(" (").appendSibling(BiomancyMod.getTranslationText("tooltip", keySuffix)).appendString(")");
+			return ((IFormattableTextComponent) displayName).appendString(" (").appendSibling(TextUtil.getTranslationText("tooltip", keySuffix)).appendString(")");
 		}
 		return displayName;
 	}
@@ -152,7 +153,7 @@ public class LongRangeClawItem extends ClawWeaponItem implements IAreaHarvesting
 			BlockState blockState = world.getBlockState(pos);
 			BlockRayTraceResult rayTraceResult = Item.rayTrace(world, player, RayTraceContext.FluidMode.NONE);
 			if (PlayerInteractionUtil.harvestBlock(world, serverPlayer, blockState, pos)) {
-				List<BlockPos> blockNeighbors = PlayerInteractionUtil.findBlockNeighbors3D(world, rayTraceResult, blockState, pos, harvestRange);
+				List<BlockPos> blockNeighbors = PlayerInteractionUtil.findBlockNeighbors(world, rayTraceResult, blockState, pos, harvestRange, getHarvestShape(stack));
 				for (BlockPos neighborPos : blockNeighbors) {
 					PlayerInteractionUtil.harvestBlock(world, serverPlayer, blockState, neighborPos);
 				}
@@ -167,5 +168,10 @@ public class LongRangeClawItem extends ClawWeaponItem implements IAreaHarvesting
 	@Override
 	public byte getBlockHarvestRange(ItemStack stack) {
 		return (byte) 1;
+	}
+
+	@Override
+	public GeometricShape getHarvestShape(ItemStack stack) {
+		return GeometricShape.CUBE;
 	}
 }

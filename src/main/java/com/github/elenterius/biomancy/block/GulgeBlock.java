@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.block;
 
+import com.github.elenterius.biomancy.client.util.TooltipUtil;
 import com.github.elenterius.biomancy.tileentity.GulgeTileEntity;
-import com.github.elenterius.biomancy.util.TooltipUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;

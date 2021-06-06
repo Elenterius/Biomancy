@@ -87,7 +87,7 @@ public class InfestedRifleItem extends ProjectileWeaponItem {
 	@Override
 	public void shoot(ServerWorld world, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, float damage, float inaccuracy) {
 		fireProjectiles(world, shooter, hand, projectileWeapon, damage, 1f, inaccuracy);
-		consumeAmmo(projectileWeapon, 3);
+		consumeAmmo(shooter, projectileWeapon, 3);
 	}
 
 	@Override
@@ -128,15 +128,15 @@ public class InfestedRifleItem extends ProjectileWeaponItem {
 
 	void reloadAmmo(ItemStack stack, ServerWorld world, LivingEntity livingEntity, long elapsedTime) {
 		if (canReload(stack, livingEntity)) {
-			float reloadAmountPerTick = (float) getMaxAmmo() / (float) getReloadTime(stack);
+			float reloadAmountPerTick = (float) getMaxAmmo(stack) / (float) getReloadTime(stack);
 			int oldAmmo = stack.getOrCreateTag().getInt("OldAmmo");
 			int currAmmo = getAmmo(stack);
-			int newAmmo = Math.min(getMaxAmmo(), MathHelper.floor(elapsedTime * reloadAmountPerTick) + oldAmmo);
+			int newAmmo = Math.min(getMaxAmmo(stack), MathHelper.floor(elapsedTime * reloadAmountPerTick) + oldAmmo);
 
 			if (newAmmo > currAmmo) {
 				int reloadAmount = newAmmo - currAmmo;
 
-				float unitPrice = (0.13f / getMaxAmmo()) * livingEntity.getMaxHealth();
+				float unitPrice = (0.13f / getMaxAmmo(stack)) * livingEntity.getMaxHealth();
 				float healthCost = reloadAmount * unitPrice;
 				boolean isCreativePlayer = livingEntity instanceof PlayerEntity && ((PlayerEntity) livingEntity).abilities.isCreativeMode;
 				if (!isCreativePlayer && healthCost > livingEntity.getHealth()) {
@@ -155,7 +155,7 @@ public class InfestedRifleItem extends ProjectileWeaponItem {
 
 	@Override
 	public boolean canReload(ItemStack stack, LivingEntity shooter) {
-		return shooter.getHealth() > 0f && getAmmo(stack) < getMaxAmmo();
+		return shooter.getHealth() > 0f && getAmmo(stack) < getMaxAmmo(stack);
 	}
 
 	@Override

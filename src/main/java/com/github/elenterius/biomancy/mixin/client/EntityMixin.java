@@ -26,7 +26,7 @@ public abstract class EntityMixin {
 	public abstract Team getTeam();
 
 	@Inject(method = "isInvisibleToPlayer", at = @At("HEAD"), cancellable = true)
-	protected void onIsInvisibleToPlayer(PlayerEntity player, CallbackInfoReturnable<Boolean> cir) {
+	protected void biomancy_onIsInvisibleToPlayer(PlayerEntity player, CallbackInfoReturnable<Boolean> cir) {
 		if (IEntityUnveilerHeadSlotItem.canUnveilEntity(player, (Entity) (Object) this)) {
 			cir.setReturnValue(false);
 		}
@@ -34,7 +34,7 @@ public abstract class EntityMixin {
 
 	//on client side
 	@Inject(method = "getTeamColor", at = @At("HEAD"), cancellable = true)
-	protected void onGetTeamColor(CallbackInfoReturnable<Integer> cir) {
+	protected void biomancy_onGetTeamColor(CallbackInfoReturnable<Integer> cir) {
 		Entity entity = (Entity) (Object) this;
 		//noinspection ConstantConditions
 		if (entity == ClientRenderHandler.HIGHLIGHTED_ENTITY) {
@@ -44,7 +44,8 @@ public abstract class EntityMixin {
 				if (!getTeam().isSameTeam(team)) cir.setReturnValue(ClientRenderHandler.COLOR_ENEMY);
 				else cir.setReturnValue(ClientRenderHandler.COLOR_FRIENDLY);
 			}
-		} else if (getTeam() == null && IEntityUnveilerHeadSlotItem.canUnveilEntity(Minecraft.getInstance().player, entity)) {
+		}
+		else if (getTeam() == null && IEntityUnveilerHeadSlotItem.canUnveilEntity(Minecraft.getInstance().player, entity)) {
 			if (getType().getClassification() == EntityClassification.MONSTER) cir.setReturnValue(0xCE0018);
 			else if (getType().getClassification() == EntityClassification.CREATURE) cir.setReturnValue(0x00ff00);
 			else cir.setReturnValue(getType() == EntityType.PLAYER ? 0xffd700 : 0xffffff);

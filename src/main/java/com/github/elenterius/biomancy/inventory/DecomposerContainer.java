@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModContainerTypes;
 import com.github.elenterius.biomancy.tileentity.DecomposerTileEntity;
 import com.github.elenterius.biomancy.tileentity.state.DecomposerStateData;
+import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -106,6 +107,10 @@ public class DecomposerContainer extends Container {
 
 	public float getFuelNormalized() {
 		return MathHelper.clamp(decomposerState.mainFuel / (float) DecomposerTileEntity.MAX_FUEL, 0f, 1f);
+	}
+
+	public String getFuelTranslationKey() {
+		return TextUtil.getTranslationKey("tooltip", "biofuel");
 	}
 
 	public float getSpeedFuelNormalized() {

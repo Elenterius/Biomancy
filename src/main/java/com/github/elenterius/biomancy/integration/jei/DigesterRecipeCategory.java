@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.recipe.Byproduct;
 import com.github.elenterius.biomancy.recipe.DigesterRecipe;
 import com.github.elenterius.biomancy.tileentity.DigesterTileEntity;
+import com.github.elenterius.biomancy.util.TextUtil;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import mezz.jei.api.constants.VanillaTypes;
@@ -88,7 +89,7 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 					if (byproduct != null && byproduct.getItem() == stack.getItem()) {
 						chance = Math.round(byproduct.getChance() * 100);
 					}
-					tooltip.add(new StringTextComponent(chance + "% ").appendSibling(new TranslationTextComponent(BiomancyMod.getTranslationKey("tooltip", "chance"))).mergeStyle(TextFormatting.GRAY));
+					tooltip.add(new StringTextComponent(chance + "% ").appendSibling(new TranslationTextComponent(TextUtil.getTranslationKey("tooltip", "chance"))).mergeStyle(TextFormatting.GRAY));
 				}
 			}
 		});

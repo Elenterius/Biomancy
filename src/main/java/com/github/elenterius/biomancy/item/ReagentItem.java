@@ -1,9 +1,9 @@
 package com.github.elenterius.biomancy.item;
 
-import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModReagents;
 import com.github.elenterius.biomancy.reagent.Reagent;
+import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -30,7 +30,7 @@ public class ReagentItem extends Item {
 		if (reagent != null) {
 			reagent.addInfoToTooltip(stack, worldIn, tooltip, flagIn);
 		}
-		else tooltip.add(BiomancyMod.getTranslationText("tooltip", "contains_nothing"));
+		else tooltip.add(TextUtil.getTranslationText("tooltip", "contains_nothing"));
 	}
 
 	@Override

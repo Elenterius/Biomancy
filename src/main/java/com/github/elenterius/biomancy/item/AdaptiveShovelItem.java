@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.item;
 
+import com.github.elenterius.biomancy.client.util.TooltipUtil;
 import com.github.elenterius.biomancy.util.PlayerInteractionUtil;
-import com.github.elenterius.biomancy.util.TooltipUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CampfireBlock;
 import net.minecraft.client.util.ITooltipFlag;
@@ -36,14 +36,14 @@ public class AdaptiveShovelItem extends ShovelItem implements IAdaptiveEfficienc
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(TooltipUtil.getTooltip(this).setStyle(TooltipUtil.LORE_STYLE));
+		tooltip.add(TooltipUtil.getItemInfoTooltip(this).setStyle(TooltipUtil.LORE_STYLE));
 		IAdaptiveEfficiencyItem.addAdaptiveEfficiencyTooltip(stack, tooltip);
 	}
 
 	@Override
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
 		float currEfficiency = super.getDestroySpeed(stack, state);
-		if (currEfficiency >= this.efficiency) {
+		if (currEfficiency >= efficiency) {
 			return Math.min(currEfficiency + IAdaptiveEfficiencyItem.getEfficiencyModifier(stack, state), MAX_EFFICIENCY);
 		}
 		return currEfficiency;

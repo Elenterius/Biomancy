@@ -5,6 +5,7 @@
   "refmap": "mixins.biomancy.refmap.json",
   "mixins": [
     "ArmorStandEntityAccessor",
+    "CapabilityProviderMixin",
     "DamageSourceMixin",
     "GrindstoneContainerMixin",
     "LivingEntityMixin",

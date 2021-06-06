@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.item;
 
+import com.github.elenterius.biomancy.client.util.TooltipUtil;
 import com.github.elenterius.biomancy.init.ModDamageSources;
-import com.github.elenterius.biomancy.util.TooltipUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,7 +25,7 @@ public abstract class BagItem extends Item implements IOwnableItem {
 	}
 
 	/**
-	 * @return fullness as percentage (0 - 1)
+	 * @return fullness as percentage (0 - 1.0)
 	 */
 	public float getFullness(ItemStack stack) {
 		return 0f;
@@ -41,7 +41,7 @@ public abstract class BagItem extends Item implements IOwnableItem {
 				tooltip.add(new StringTextComponent("Owner: ").appendSibling(player != null ? player.getDisplayName() : new StringTextComponent(owner.toString())));
 			});
 		}
-		tooltip.add(TooltipUtil.getTooltip(this).setStyle(TooltipUtil.LORE_STYLE));
+		tooltip.add(TooltipUtil.getItemInfoTooltip(this).setStyle(TooltipUtil.LORE_STYLE));
 		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 	}
 

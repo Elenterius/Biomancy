@@ -1,35 +1,29 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.client.gui.drawable.ProgressBar;
 import com.github.elenterius.biomancy.inventory.ChewerContainer;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChewerContainerScreen extends ContainerScreen<ChewerContainer> {
 
-	private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(BiomancyMod.MOD_ID, "textures/gui/chewer_inventory.png");
-	public final int FUEL_BAR_POS_X = 39;
-	public final int FUEL_BAR_POS_Y = 17;
-	public final int FUEL_BAR_WIDTH = 5;
-	public final int FUEL_BAR_HEIGHT = 60 - FUEL_BAR_POS_Y;
+	private static final ResourceLocation BACKGROUND_TEXTURE = BiomancyMod.createRL("textures/gui/chewer_gui.png");
+	private final ProgressBar progressBar = new ProgressBar(39, 17, 5, 60 - 17, 0xFF60963A);
 
 	public ChewerContainerScreen(ChewerContainer container, PlayerInventory inv, ITextComponent titleIn) {
 		super(container, inv, titleIn);
 		//texture size
 		xSize = 176;
 		ySize = 166;
-	}
-
-	public static boolean isInRect(int x, int y, int xSize, int ySize, int mouseX, int mouseY) {
-		return ((mouseX >= x && mouseX <= x + xSize) && (mouseY >= y && mouseY <= y + ySize));
 	}
 
 	@Override
@@ -44,8 +38,8 @@ public class ChewerContainerScreen extends ContainerScreen<ChewerContainer> {
 		final float FONT_Y_SPACING = 12;
 		font.drawText(matrixStack, title, 10, 18 - FONT_Y_SPACING, 0xFFFFFF);
 
-		int craftingProgress = (int) (container.getCraftingProgressNormalized() * 100);
-		font.drawString(matrixStack, craftingProgress + "%", 52, 52 + 6, 0xFFFFFF);
+		String craftingProgress = (int) (container.getCraftingProgressNormalized() * 100) + "%";
+		font.drawString(matrixStack, craftingProgress, 155 - font.getStringWidth(craftingProgress), 52 + 6, 0xFFFFFF);
 	}
 
 	@Override
@@ -57,10 +51,8 @@ public class ChewerContainerScreen extends ContainerScreen<ChewerContainer> {
 		int edgeSpacingY = (height - ySize) / 2;
 		blit(matrixStack, edgeSpacingX, edgeSpacingY, 0, 0, xSize, ySize);
 
-		int posX = guiLeft + FUEL_BAR_POS_X;
-		int posY = guiTop + FUEL_BAR_POS_Y;
-		int maxPosY = posY + FUEL_BAR_HEIGHT;
-		AbstractGui.fill(matrixStack, posX, posY + (int) (FUEL_BAR_HEIGHT * (1f - container.getFuelNormalized())), posX + FUEL_BAR_WIDTH, maxPosY, 0xFF60963A);
+		progressBar.setProgress(container.getFuelNormalized());
+		progressBar.draw(matrixStack, guiLeft, guiTop, mouseX, mouseY);
 	}
 
 	@Override
@@ -70,9 +62,9 @@ public class ChewerContainerScreen extends ContainerScreen<ChewerContainer> {
 
 		List<ITextComponent> hoveringText = new ArrayList<>();
 
-		if (isInRect(guiLeft + FUEL_BAR_POS_X, guiTop + FUEL_BAR_POS_Y, FUEL_BAR_WIDTH, FUEL_BAR_HEIGHT, mouseX, mouseY)) {
-			int mainFuel = (int) (container.getFuelNormalized() * 100);
-			hoveringText.add(BiomancyMod.getTranslationText("tooltip", "biofuel").appendString(": " + mainFuel + "%"));
+		if (progressBar.isMouseInside(guiLeft, guiTop, mouseX, mouseY)) {
+			int fuel = (int) (container.getFuelNormalized() * 100);
+			hoveringText.add(new TranslationTextComponent(container.getFuelTranslationKey()).appendString(": " + fuel + "%"));
 		}
 
 		if (!hoveringText.isEmpty()) {

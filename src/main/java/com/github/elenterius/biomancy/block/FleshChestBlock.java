@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.block;
 
-import com.github.elenterius.biomancy.tileentity.FleshChestTileEntity;
-import com.github.elenterius.biomancy.util.TooltipUtil;
+import com.github.elenterius.biomancy.client.util.TooltipUtil;
+import com.github.elenterius.biomancy.tileentity.FleshbornChestTileEntity;
 import net.minecraft.block.*;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -59,7 +59,7 @@ public class FleshChestBlock extends OwnableContainerBlock implements IWaterLogg
 			CompoundNBT invNbt = nbt.getCompound("Inventory");
 			if (!invNbt.isEmpty()) {
 				if (invNbt.contains("Items", 9)) {
-					int size = invNbt.contains("Size") ? invNbt.getInt("Size") : FleshChestTileEntity.INV_SLOTS_COUNT;
+					int size = invNbt.contains("Size") ? invNbt.getInt("Size") : FleshbornChestTileEntity.INV_SLOTS_COUNT;
 					NonNullList<ItemStack> itemList = NonNullList.withSize(size, ItemStack.EMPTY);
 					ItemStackHelper.loadAllItems(invNbt, itemList);
 					int count = 0;
@@ -81,7 +81,7 @@ public class FleshChestBlock extends OwnableContainerBlock implements IWaterLogg
 						tooltip.add((new TranslationTextComponent("container.shulkerBox.more", totalCount - count)).mergeStyle(TextFormatting.ITALIC, TextFormatting.GRAY));
 					}
 					tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
-					tooltip.add(new StringTextComponent(String.format("%d/%d ", totalCount, FleshChestTileEntity.INV_SLOTS_COUNT)).appendSibling(new TranslationTextComponent("tooltip.biomancy.slots")).mergeStyle(TextFormatting.GRAY));
+					tooltip.add(new StringTextComponent(String.format("%d/%d ", totalCount, FleshbornChestTileEntity.INV_SLOTS_COUNT)).appendSibling(new TranslationTextComponent("tooltip.biomancy.slots")).mergeStyle(TextFormatting.GRAY));
 				}
 			}
 		}
@@ -135,8 +135,8 @@ public class FleshChestBlock extends OwnableContainerBlock implements IWaterLogg
 	@Override
 	public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
 		TileEntity tileEntity = worldIn.getTileEntity(pos);
-		if (tileEntity instanceof FleshChestTileEntity) {
-			return Container.calcRedstoneFromInventory(((FleshChestTileEntity) tileEntity).getInventory());
+		if (tileEntity instanceof FleshbornChestTileEntity) {
+			return Container.calcRedstoneFromInventory(((FleshbornChestTileEntity) tileEntity).getInventory());
 		}
 		return 0;
 	}
@@ -169,7 +169,7 @@ public class FleshChestBlock extends OwnableContainerBlock implements IWaterLogg
 	@Nullable
 	@Override
 	public TileEntity createNewTileEntity(IBlockReader worldIn) {
-		return new FleshChestTileEntity();
+		return new FleshbornChestTileEntity();
 	}
 
 }

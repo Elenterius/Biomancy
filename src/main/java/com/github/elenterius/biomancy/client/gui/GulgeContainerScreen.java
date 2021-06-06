@@ -13,7 +13,7 @@ import java.awt.*;
 
 public class GulgeContainerScreen extends ContainerScreen<GulgeContainer> {
 
-	private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(BiomancyMod.MOD_ID, "textures/gui/gulge_inventory.png");
+	private static final ResourceLocation BACKGROUND_TEXTURE = BiomancyMod.createRL("textures/gui/gulge_gui.png");
 
 	public GulgeContainerScreen(GulgeContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
 		super(screenContainer, inv, titleIn);

@@ -11,7 +11,7 @@ import net.minecraft.util.text.ITextComponent;
 
 public class FleshChestContainerScreen extends ContainerScreen<FleshChestContainer> {
 
-	private static final ResourceLocation BACKGROUND_TEXTURE = new ResourceLocation(BiomancyMod.MOD_ID, "textures/gui/flesh_chest_inventory.png");
+	private static final ResourceLocation BACKGROUND_TEXTURE = BiomancyMod.createRL("textures/gui/flesh_chest_gui.png");
 
 	public FleshChestContainerScreen(FleshChestContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
 		super(screenContainer, inv, titleIn);

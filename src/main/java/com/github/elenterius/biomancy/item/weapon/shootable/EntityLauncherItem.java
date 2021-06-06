@@ -49,7 +49,7 @@ public class EntityLauncherItem extends ProjectileWeaponItem {
 	@Override
 	public void shoot(ServerWorld worldIn, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, float damage, float inaccuracy) {
 		fireProjectile(worldIn, shooter, hand, projectileWeapon);
-		consumeAmmo(projectileWeapon, 1);
+		consumeAmmo(shooter, projectileWeapon, 1);
 	}
 
 	@Override

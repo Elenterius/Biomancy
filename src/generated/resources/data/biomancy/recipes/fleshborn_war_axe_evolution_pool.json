@@ -1,0 +1,27 @@
+{
+  "type": "biomancy:evolution_pool",
+  "ingredients": [
+    {
+      "item": "biomancy:fleshborn_axe"
+    },
+    {
+      "item": "biomancy:oculus"
+    },
+    {
+      "item": "biomancy:hormone_bile"
+    },
+    {
+      "item": "biomancy:artificial_stomach"
+    },
+    {
+      "item": "biomancy:keratin_filaments"
+    },
+    {
+      "item": "biomancy:keratin_filaments"
+    }
+  ],
+  "result": {
+    "item": "biomancy:fleshborn_war_axe"
+  },
+  "time": 800
+}

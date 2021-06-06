@@ -17,7 +17,7 @@ public abstract class PanicGoalMixin {
 	protected CreatureEntity creature;
 
 	@Inject(method = "shouldExecute", at = @At("HEAD"), cancellable = true)
-	protected void onShouldExecute(CallbackInfoReturnable<Boolean> cir) {
+	protected void biomancy_onShouldExecute(CallbackInfoReturnable<Boolean> cir) {
 		if (creature.isPotionActive(ModEffects.RAVENOUS_HUNGER.get())) {
 			cir.setReturnValue(false);
 		}

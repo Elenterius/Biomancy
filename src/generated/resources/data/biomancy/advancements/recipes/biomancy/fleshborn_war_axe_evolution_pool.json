@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:fleshborn_war_axe_evolution_pool"
+    ]
+  },
+  "criteria": {
+    "has_fleshborn_axe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "biomancy:fleshborn_axe"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:fleshborn_war_axe_evolution_pool"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_fleshborn_axe",
+      "has_the_recipe"
+    ]
+  ]
+}

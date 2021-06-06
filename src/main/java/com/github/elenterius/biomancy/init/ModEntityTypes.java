@@ -6,12 +6,12 @@ import com.github.elenterius.biomancy.entity.aberration.FailedSheepEntity;
 import com.github.elenterius.biomancy.entity.aberration.FleshBlobEntity;
 import com.github.elenterius.biomancy.entity.golem.BoomlingEntity;
 import com.github.elenterius.biomancy.entity.golem.FleshkinEntity;
-import com.github.elenterius.biomancy.entity.golem.MasonBeetleEntity;
 import com.github.elenterius.biomancy.entity.hybrid.CrocospiderEntity;
 import com.github.elenterius.biomancy.entity.mutation.ChromaSheepEntity;
 import com.github.elenterius.biomancy.entity.mutation.SilkyWoolSheepEntity;
 import com.github.elenterius.biomancy.entity.mutation.ThickWoolSheepEntity;
 import com.github.elenterius.biomancy.entity.projectile.ToothProjectileEntity;
+import com.github.elenterius.biomancy.entity.projectile.WitherSkullProjectileEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
@@ -36,7 +36,7 @@ public final class ModEntityTypes {
 	public static final RegistryObject<EntityType<BoomlingEntity>> BOOMLING = register("boomling", EntityType.Builder.create(BoomlingEntity::new, EntityClassification.MONSTER).size(0.4F, 0.35F));
 
 	public static final RegistryObject<EntityType<BeetlingEntity>> BEETLING = register("beetling", EntityType.Builder.create(BeetlingEntity::new, EntityClassification.CREATURE).size(0.475F, 0.34F));
-	public static final RegistryObject<EntityType<MasonBeetleEntity>> MASON_BEETLE = register("mason_beetle", EntityType.Builder.create(MasonBeetleEntity::new, EntityClassification.CREATURE).size(0.475F, 0.34F));
+	//	public static final RegistryObject<EntityType<MasonBeetleEntity>> MASON_BEETLE = register("mason_beetle", EntityType.Builder.create(MasonBeetleEntity::new, EntityClassification.CREATURE).size(0.475F, 0.34F));
 	public static final RegistryObject<EntityType<CrocospiderEntity>> BROOD_MOTHER = register("brood_mother", EntityType.Builder.create(CrocospiderEntity::new, EntityClassification.MONSTER).size(1.6F, 0.7F));
 
 	//GMOs
@@ -46,6 +46,7 @@ public final class ModEntityTypes {
 
 	//Projectiles
 	public static final RegistryObject<EntityType<ToothProjectileEntity>> TOOTH_PROJECTILE = register("tooth_projectile", EntityType.Builder.<ToothProjectileEntity>create(ToothProjectileEntity::new, EntityClassification.MISC).size(0.25f, 0.25f).updateInterval(10));
+	public static final RegistryObject<EntityType<WitherSkullProjectileEntity>> WITHER_SKULL_PROJECTILE = register("wither_skull", EntityType.Builder.<WitherSkullProjectileEntity>create(WitherSkullProjectileEntity::new, EntityClassification.MISC).size(0.3125f, 0.3125f).updateInterval(10));
 
 	private ModEntityTypes() {}
 
@@ -67,7 +68,7 @@ public final class ModEntityTypes {
 		GlobalEntityTypeAttributes.put(BOOMLING.get(), BoomlingEntity.createAttributes().create());
 		GlobalEntityTypeAttributes.put(BROOD_MOTHER.get(), CrocospiderEntity.createAttributes().create());
 		GlobalEntityTypeAttributes.put(BEETLING.get(), BeetlingEntity.createAttributes().create());
-		GlobalEntityTypeAttributes.put(MASON_BEETLE.get(), MasonBeetleEntity.createAttributes().create());
+//		GlobalEntityTypeAttributes.put(MASON_BEETLE.get(), MasonBeetleEntity.createAttributes().create());
 
 //		BiomancyMod.LOGGER.debug(MarkerManager.getMarker("ENTITIES"), "registering spawn placement predicates...");
 //		EntitySpawnPlacementRegistry.register(BLOBLING.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, ModEntityTypes::canMonsterSpawn);

@@ -6,7 +6,7 @@ import com.github.elenterius.biomancy.item.*;
 import com.github.elenterius.biomancy.item.weapon.*;
 import com.github.elenterius.biomancy.item.weapon.shootable.ToothGunItem;
 import com.github.elenterius.biomancy.item.weapon.shootable.WithershotItem;
-import com.github.elenterius.biomancy.tileentity.FleshChestTileEntity;
+import com.github.elenterius.biomancy.tileentity.FleshbornChestTileEntity;
 import net.minecraft.item.*;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -19,23 +19,24 @@ public final class ModItems {
 	public static final RegistryObject<GogglesArmorItem> OCULI_OF_UNVEILING = ITEMS.register("unveiling_oculi", () -> new GogglesArmorItem(ArmorMaterial.IRON, createItemProperties().rarity(Rarity.EPIC)));
 
 	// Weapons
-	public static final RegistryObject<WarAxeItem> BIOFLESH_WAR_AXE = ITEMS.register("bioflesh_war_axe", () -> new WarAxeItem(ModItemTier.BIOFLESH, 5F, -3.15F, createItemProperties().rarity(Rarity.EPIC)));
-	//	public static final RegistryObject<KhopeshItem> BIOFLESH_KHOPESH = ITEMS.register("bioflesh_khopesh", () -> new KhopeshItem(ModItemTier.BIOFLESH, 5F, -2.75F, createItemProperties().rarity(Rarity.EPIC)));
-	public static final RegistryObject<WithershotItem> WITHERSHOT = ITEMS.register("withershot", () -> new WithershotItem(createItemProperties().maxStackSize(1).maxDamage(ModItemTier.LESSER_BIOFLESH.getMaxUses()).rarity(Rarity.EPIC)));
-	public static final RegistryObject<ToothGunItem> TOOTH_GUN = ITEMS.register("tooth_gun", () -> new ToothGunItem(createItemProperties().maxStackSize(1).maxDamage(ModItemTier.LESSER_BIOFLESH.getMaxUses() / 2).rarity(Rarity.EPIC)));
-	public static final RegistryObject<LeechClawItem> LEECH_CLAW = ITEMS.register("leech_claw", () -> new LeechClawItem(ModItemTier.BIOFLESH, 3, -2.2f, createItemProperties().rarity(Rarity.EPIC)));
-	public static final RegistryObject<LongRangeClawItem> LONG_RANGE_CLAW = ITEMS.register("long_range_claw", () -> new LongRangeClawItem(ModItemTier.BIOFLESH, 3, -2.4f, 60, createItemProperties().rarity(Rarity.EPIC)));
-	public static final RegistryObject<InfestedGuanDaoItem> BIOFLESH_GUAN_DAO = ITEMS.register("bioflesh_guan_dao", () -> new InfestedGuanDaoItem(ModItemTier.BIOFLESH, 4, -3F, createItemProperties().rarity(Rarity.EPIC)));
-	//	public static final RegistryObject<SinewBowItem> SINEW_BOW = ITEMS.register("sinew_bow", () -> new SinewBowItem(createItemProperties().maxDamage(ModItemTier.LESSER_BIOFLESH.getMaxUses() / 3)));
-	//	public static final RegistryObject<EntityLauncherItem> ENTITY_LAUNCHER = ITEMS.register("entity_launcher", () -> new EntityLauncherItem(createItemProperties().maxStackSize(1).maxDamage(ModItemTier.LESSER_BIOFLESH.getMaxUses()).rarity(Rarity.EPIC)));
+	public static final RegistryObject<WarAxeItem> FLESHBORN_WAR_AXE = ITEMS.register("fleshborn_war_axe", () -> new WarAxeItem(ModItemTier.BIOMETAL, 5F, -3.15F, createItemProperties().rarity(Rarity.EPIC)));
+	//	public static final RegistryObject<KhopeshItem> FLESHBORN_KHOPESH = ITEMS.register("fleshborn_khopesh", () -> new KhopeshItem(ModItemTier.BIOMETAL, 5F, -2.75F, createItemProperties().rarity(Rarity.EPIC)));
+	//	public static final RegistryObject<KhopeshItem> FLESHBORN_SWORD = ITEMS.register("fleshborn_sword", () -> new KhopeshItem(ModItemTier.BIOMETAL, 5F, -2.75F, createItemProperties().rarity(Rarity.EPIC)));
+	public static final RegistryObject<WithershotItem> WITHERSHOT = ITEMS.register("withershot", () -> new WithershotItem(createItemProperties().maxStackSize(1).maxDamage(ModItemTier.BIOMETAL.getMaxUses()).rarity(Rarity.EPIC)));
+	public static final RegistryObject<ToothGunItem> TOOTH_GUN = ITEMS.register("tooth_gun", () -> new ToothGunItem(createItemProperties().maxStackSize(1).maxDamage(ModItemTier.LESSER_BIOMETAL.getMaxUses()).rarity(Rarity.EPIC)));
+	public static final RegistryObject<LeechClawItem> LEECH_CLAW = ITEMS.register("leech_claw", () -> new LeechClawItem(ModItemTier.BIOMETAL, 3, -2.2f, createItemProperties().rarity(Rarity.EPIC)));
+	public static final RegistryObject<LongRangeClawItem> LONG_RANGE_CLAW = ITEMS.register("long_range_claw", () -> new LongRangeClawItem(ModItemTier.BIOMETAL, 3, -2.4f, 60, createItemProperties().rarity(Rarity.EPIC)));
+	public static final RegistryObject<InfestedGuanDaoItem> FLESHBORN_GUAN_DAO = ITEMS.register("fleshborn_guan_dao", () -> new InfestedGuanDaoItem(ModItemTier.BIOMETAL, 4, -3F, createItemProperties().rarity(Rarity.EPIC)));
+	//	public static final RegistryObject<SinewBowItem> SINEW_BOW = ITEMS.register("sinew_bow", () -> new SinewBowItem(createItemProperties().maxDamage(ModItemTier.LESSER_BIOMETAL.getMaxUses() / 3)));
+	//	public static final RegistryObject<EntityLauncherItem> ENTITY_LAUNCHER = ITEMS.register("entity_launcher", () -> new EntityLauncherItem(createItemProperties().maxStackSize(1).maxDamage(ModItemTier.LESSER_BIOMETAL.getMaxUses()).rarity(Rarity.EPIC)));
 	//	public static final RegistryObject<InfestedRifleItem> INFESTED_RIFLE = ITEMS.register("infested_rifle", () -> new InfestedRifleItem(createItemProperties().maxStackSize(1).maxDamage(384).rarity(Rarity.EPIC)));
 
 	// Weapon-Creature
 	public static final RegistryObject<ThrowableBoomlingItem> BOOMLING_GRENADE = ITEMS.register("boomling_grenade", () -> new ThrowableBoomlingItem(createItemProperties().maxStackSize(1), 20f));
 
 	// Tools
-	public static final RegistryObject<ItemStorageItem> SINGLE_ITEM_BAG_ITEM = ITEMS.register("single_item_bag", () -> new ItemStorageItem(createItemProperties().maxStackSize(1).rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<EntityStorageItem> ENTITY_STORAGE_ITEM = ITEMS.register("entity_storage", () -> new EntityStorageItem(createItemProperties().maxStackSize(1).rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<ItemStorageBagItem> SINGLE_ITEM_BAG_ITEM = ITEMS.register("single_item_bag", () -> new ItemStorageBagItem(createItemProperties().maxStackSize(1).rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<EntityStorageBagItem> ENTITY_STORAGE_ITEM = ITEMS.register("entity_storage", () -> new EntityStorageBagItem(createItemProperties().maxStackSize(1).rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<SwordItem> SHARP_BONE = ITEMS.register("sharp_bone", () -> new SwordItem(ModItemTier.BONE, 3, -2.4F, createItemProperties()));
 	public static final RegistryObject<Item> SEWING_KIT_EMPTY = ITEMS.register("sewing_kit_empty", () -> new Item(createItemProperties().maxStackSize(1)));
 	public static final RegistryObject<SewingKitItem> SEWING_KIT = ITEMS.register("sewing_kit", () -> new SewingKitItem(createItemProperties().maxStackSize(1).maxDamage(64)));
@@ -44,12 +45,12 @@ public final class ModItems {
 	public static final RegistryObject<ReagentItem> REAGENT = ITEMS.register("reagent", () -> new ReagentItem(createItemProperties().maxStackSize(8)));
 	public static final RegistryObject<InjectionDeviceItem> INJECTION_DEVICE = ITEMS.register("injection_device", () -> new InjectionDeviceItem(createItemProperties().maxStackSize(1)));
 	// Adaptive Tools
-	public static final RegistryObject<AdaptivePickaxeItem> BIOFLESH_PICKAXE = ITEMS.register("bioflesh_pickaxe", () -> new AdaptivePickaxeItem(ModItemTier.LESSER_BIOFLESH, 1, -2.8f, createItemProperties().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<AdaptiveShovelItem> BIOFLESH_SHOVEL = ITEMS.register("bioflesh_shovel", () -> new AdaptiveShovelItem(ModItemTier.LESSER_BIOFLESH, 1.5f, -3f, createItemProperties().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<AdaptiveAxeItem> BIOFLESH_AXE = ITEMS.register("bioflesh_axe", () -> new AdaptiveAxeItem(ModItemTier.LESSER_BIOFLESH, 6f, -3f, createItemProperties().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<AdaptivePickaxeItem> FLESHBORN_PICKAXE = ITEMS.register("fleshborn_pickaxe", () -> new AdaptivePickaxeItem(ModItemTier.LESSER_BIOMETAL, 1, -2.8f, createItemProperties().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<AdaptiveShovelItem> FLESHBORN_SHOVEL = ITEMS.register("fleshborn_shovel", () -> new AdaptiveShovelItem(ModItemTier.LESSER_BIOMETAL, 1.5f, -3f, createItemProperties().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<AdaptiveAxeItem> FLESHBORN_AXE = ITEMS.register("fleshborn_axe", () -> new AdaptiveAxeItem(ModItemTier.LESSER_BIOMETAL, 6f, -3f, createItemProperties().rarity(Rarity.UNCOMMON)));
 
 	// Living Tool-Creatures
-	public static final RegistryObject<MasonBeetleItem> MASON_BEETLE = ITEMS.register("mason_beetle", () -> new MasonBeetleItem(createItemProperties().maxStackSize(1), 20f));
+//	public static final RegistryObject<MasonBeetleItem> MASON_BEETLE = ITEMS.register("mason_beetle", () -> new MasonBeetleItem(createItemProperties().maxStackSize(1), 20f));
 
 	// Material
 	public static final RegistryObject<Item> SKIN_CHUNK = ITEMS.register("skin_chunk", () -> new Item(createItemProperties()));
@@ -62,7 +63,7 @@ public final class ModItems {
 	public static final RegistryObject<Item> BIOMETAL = ITEMS.register("biometal", () -> new Item(createItemProperties()));
 
 	public static final RegistryObject<Item> ARTIFICIAL_STOMACH = ITEMS.register("artificial_stomach", () -> new Item(createItemProperties()));
-	public static final RegistryObject<Item> TWISTED_HEART = ITEMS.register("twisted_heart", () -> new Item(createItemProperties()));
+//	public static final RegistryObject<Item> TWISTED_HEART = ITEMS.register("twisted_heart", () -> new Item(createItemProperties()));
 
 	public static final RegistryObject<Item> BOLUS = ITEMS.register("bolus", () -> new Item(createItemProperties())); //crushed biomass
 	public static final RegistryObject<Item> DIGESTATE = ITEMS.register("digestate", () -> new Item(createItemProperties()));
@@ -112,15 +113,15 @@ public final class ModItems {
 	public static final RegistryObject<BlockItem> NECROTIC_FLESH_BLOCK = ITEMS.register("necrotic_flesh_block", () -> new BlockItem(ModBlocks.NECROTIC_FLESH_BLOCK.get(), createItemProperties()));
 
 	//bio-construct blocks
-	public static final RegistryObject<BlockItem> BIO_FLESH_DOOR = ITEMS.register("bioflesh_door", () -> new BlockItem(ModBlocks.BIO_FLESH_DOOR.get(), createItemProperties()));
-	public static final RegistryObject<BlockItem> BIO_FLESH_TRAPDOOR = ITEMS.register("bioflesh_trapdoor", () -> new BlockItem(ModBlocks.BIO_FLESH_TRAPDOOR.get(), createItemProperties()));
-	public static final RegistryObject<BlockItem> BIO_FLESH_PRESSURE_PLATE = ITEMS.register("bioflesh_pressure_plate", () -> new BlockItem(ModBlocks.BIO_FLESH_PRESSURE_PLATE.get(), createItemProperties()));
+	public static final RegistryObject<BlockItem> FLESHBORN_DOOR = ITEMS.register("fleshborn_door", () -> new BlockItem(ModBlocks.FLESHBORN_DOOR.get(), createItemProperties()));
+	public static final RegistryObject<BlockItem> FLESHBORN_TRAPDOOR = ITEMS.register("fleshborn_trapdoor", () -> new BlockItem(ModBlocks.FLESHBORN_TRAPDOOR.get(), createItemProperties()));
+	public static final RegistryObject<BlockItem> FLESHBORN_PRESSURE_PLATE = ITEMS.register("fleshborn_pressure_plate", () -> new BlockItem(ModBlocks.FLESHBORN_PRESSURE_PLATE.get(), createItemProperties()));
 
 	//semi-container blocks
 
 	//container blocks
 	public static final RegistryObject<BlockItem> GULGE = ITEMS.register("gulge", () -> new BlockItem(ModBlocks.GULGE.get(), createItemProperties().rarity(Rarity.EPIC)));
-	public static final RegistryObject<BlockItem> FLESH_CHEST = ITEMS.register("bioflesh_chest", () -> new BlockItem(ModBlocks.FLESH_CHEST.get(), createItemProperties().rarity(Rarity.UNCOMMON).setISTER(() -> () -> new GenericISTER<>(FleshChestTileEntity::new))));
+	public static final RegistryObject<BlockItem> FLESH_CHEST = ITEMS.register("fleshborn_chest", () -> new BlockItem(ModBlocks.FLESHBORN_CHEST.get(), createItemProperties().rarity(Rarity.UNCOMMON).setISTER(() -> () -> new GenericISTER<>(FleshbornChestTileEntity::new))));
 	public static final RegistryObject<BlockItem> CHEWER = ITEMS.register("chewer", () -> new BlockItem(ModBlocks.CHEWER.get(), createItemProperties().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<BlockItem> DIGESTER = ITEMS.register("digester", () -> new BlockItem(ModBlocks.DIGESTER.get(), createItemProperties().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<BlockItem> DECOMPOSER = ITEMS.register("decomposer", () -> new BlockItem(ModBlocks.DECOMPOSER.get(), createItemProperties().rarity(Rarity.UNCOMMON)));

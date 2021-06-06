@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.tileentity;
 
-import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.DigesterBlock;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.init.ModTileEntityTypes;
@@ -11,6 +10,7 @@ import com.github.elenterius.biomancy.recipe.Byproduct;
 import com.github.elenterius.biomancy.recipe.DigesterRecipe;
 import com.github.elenterius.biomancy.tileentity.state.CraftingState;
 import com.github.elenterius.biomancy.tileentity.state.DigesterStateData;
+import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -98,7 +98,7 @@ public class DigesterTileEntity extends OwnableTileEntity implements INamedConta
 
 	@Override
 	protected ITextComponent getDefaultName() {
-		return BiomancyMod.getTranslationText("container", "digester");
+		return TextUtil.getTranslationText("container", "digester");
 	}
 
 	@Nullable

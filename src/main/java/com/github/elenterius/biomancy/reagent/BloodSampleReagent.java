@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.reagent;
 
-import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.entity.aberration.FleshBlobEntity;
+import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -52,7 +52,7 @@ public class BloodSampleReagent extends Reagent {
 		CompoundNBT nbt = stack.getOrCreateTag();
 		if (nbt.contains(NBT_KEY_DATA)) {
 			CompoundNBT reagentNbt = nbt.getCompound(NBT_KEY_DATA);
-			tooltip.add(new TranslationTextComponent(BiomancyMod.getTranslationKey("tooltip", "contains_dna"), new TranslationTextComponent(reagentNbt.getString("Name"))).mergeStyle(TextFormatting.GRAY));
+			tooltip.add(new TranslationTextComponent(TextUtil.getTranslationKey("tooltip", "contains_dna"), new TranslationTextComponent(reagentNbt.getString("Name"))).mergeStyle(TextFormatting.GRAY));
 		}
 	}
 

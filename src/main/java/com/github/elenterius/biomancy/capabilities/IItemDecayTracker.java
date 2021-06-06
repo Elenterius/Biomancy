@@ -27,8 +27,10 @@ public interface IItemDecayTracker extends INBTSerializable<LongNBT> {
 		if (!canDecay(stack)) return;
 		if (world instanceof ServerWorld && stack.getCount() > 0) {
 			if (getStartTime() == 0) {
-				setStartTime(world.getGameTime());
-			} else if (world.getGameTime() % 20L == 0L || forceUpdate) {
+				long currTime = world.getGameTime();
+				setStartTime(currTime);
+			}
+			else if (world.getGameTime() % 20L == 0L || forceUpdate) {
 				int oldCount = stack.getCount();
 				performDecayStep(stack, (ServerWorld) world, halfTime, decayFactor);
 				onItemDecay(stack, (ServerWorld) world, entity, oldCount, stack.getCount());
@@ -38,13 +40,13 @@ public interface IItemDecayTracker extends INBTSerializable<LongNBT> {
 
 	default void performDecayStep(ItemStack stack, ServerWorld world, long halfTime, float decayFactor) {
 		if (stack.getCount() > 0) {
-			long currTime = world.getGameTime();
+			final long currTime = world.getGameTime();
 			long elapsedTime = currTime - getStartTime();
 			if (elapsedTime > 0 && elapsedTime < currTime) {
 				float elapsedHalfTimes = (float) elapsedTime / (float) halfTime;
 				int count = MathHelper.clamp((int) Math.round(stack.getCount() * Math.pow(1f - decayFactor, elapsedHalfTimes)), 0, stack.getMaxStackSize());
 				if (count != stack.getCount()) {
-					setStartTime(world.getGameTime()); //reset time
+					setStartTime(currTime); //reset time
 					stack.setCount(count);
 				}
 			}

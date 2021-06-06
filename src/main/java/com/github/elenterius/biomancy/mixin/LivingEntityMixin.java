@@ -21,7 +21,7 @@ public abstract class LivingEntityMixin {
 	public abstract boolean isPotionActive(Effect potionIn);
 
 	@Inject(method = "getAttributeValue", at = @At("HEAD"), cancellable = true)
-	protected void onGetAttributeValue(Attribute attribute, CallbackInfoReturnable<Double> cir) {
+	protected void biomancy_onGetAttributeValue(Attribute attribute, CallbackInfoReturnable<Double> cir) {
 		if (attribute == Attributes.ATTACK_DAMAGE && !getAttributeManager().hasAttributeInstance(Attributes.ATTACK_DAMAGE)) {
 			cir.setReturnValue(isPotionActive(ModEffects.RAVENOUS_HUNGER.get()) ? 0.25d : 0d);
 		}

@@ -1,10 +1,9 @@
 package com.github.elenterius.biomancy.item.weapon.shootable;
 
-import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.init.ClientSetupHandler;
+import com.github.elenterius.biomancy.client.util.TooltipUtil;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.item.IKeyListener;
-import com.github.elenterius.biomancy.util.TooltipUtil;
+import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.enchantment.Enchantment;
@@ -25,19 +24,19 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
+import java.text.DecimalFormat;
 import java.util.List;
 
 public abstract class ProjectileWeaponItem extends ShootableItem implements IVanishable, IKeyListener {
 
 	public static final float ONE_SECOND = 20f; //measured in ticks
-	public static final float MAX_INACCURACY = 0.85f; //0.0 - 1.0
+	public static final float MAX_INACCURACY = 1f; //0.0 - 1.0
 
 	public static final String NBT_KEY_AMMO = "Ammo";
 	public static final String NBT_KEY_RELOAD_TIMESTAMP = "ReloadStartTime";
@@ -67,14 +66,15 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		if (TooltipUtil.showExtraInfo(tooltip)) {
-			tooltip.add(new StringTextComponent(String.format("Fire Rate: %.2f (%.2f) RPS", getFireRate(stack), ONE_SECOND / baseShootDelay)));
-			tooltip.add(new StringTextComponent(String.format("Accuracy: %.3f (%.3f) (InAcc: %.4f)", getAccuracy(), baseAccuracy, 0.0075f * getInaccuracy())));
-			tooltip.add(new StringTextComponent(String.format("Ammo: %d/%d (%d)", getAmmo(stack), getMaxAmmo(), baseMaxAmmo)));
-			tooltip.add(new StringTextComponent(String.format("Reload Time: %.2f (%.2f)", getReloadTime(stack) / ONE_SECOND, baseReloadTime / ONE_SECOND)));
-			tooltip.add(new StringTextComponent(String.format("Projectile Damage: %.2f (%.2f)", getProjectileDamage(stack), baseProjectileDamage)));
+			DecimalFormat df = TooltipUtil.getDecimalFormatter("#.###");
+			tooltip.add(new StringTextComponent(String.format("Fire Rate: %s (%s) RPS", df.format(getFireRate(stack)), df.format(ONE_SECOND / baseShootDelay))));
+			tooltip.add(new StringTextComponent(String.format("Accuracy: %s (%s) (InAcc: %s)", df.format(getAccuracy()), df.format(baseAccuracy), df.format(getInaccuracy()))));
+			tooltip.add(new StringTextComponent(String.format("Ammo: %d/%d (x/%d)", getAmmo(stack), getMaxAmmo(stack), baseMaxAmmo)));
+			tooltip.add(new StringTextComponent(String.format("Reload Time: %s (%s)", df.format(getReloadTime(stack) / ONE_SECOND), df.format(baseReloadTime / ONE_SECOND))));
+			tooltip.add(new StringTextComponent(String.format("Projectile Damage: %s (%s)", df.format(getProjectileDamage(stack)), df.format(baseProjectileDamage))));
 			tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 		}
-		tooltip.add(new TranslationTextComponent(BiomancyMod.getTranslationKey("tooltip", "press_button_to"), ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.func_238171_j_().copyRaw().mergeStyle(TextFormatting.AQUA), BiomancyMod.getTranslationText("tooltip", "action_reload")).mergeStyle(TextFormatting.DARK_GRAY));
+		tooltip.add(TooltipUtil.pressButtonTo(TooltipUtil.getDefaultKey(), TextUtil.getTranslationText("tooltip", "action_reload")).mergeStyle(TextFormatting.DARK_GRAY));
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -228,7 +228,7 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 		setState(stack, State.NONE);
 
 		if (shooter instanceof PlayerEntity && ((PlayerEntity) shooter).abilities.isCreativeMode) {
-			setAmmo(stack, getMaxAmmo());
+			setAmmo(stack, getMaxAmmo(stack));
 			onReloadFinished(stack, world, shooter);
 			return;
 		}
@@ -236,7 +236,7 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 		ItemStack ammoStack = findAmmoInInv(stack, shooter);
 		if (!ammoStack.isEmpty() && ammoStack.getCount() >= getAmmoReloadCost()) {
 			ammoStack.shrink(getAmmoReloadCost());
-			setAmmo(stack, getMaxAmmo());
+			setAmmo(stack, getMaxAmmo(stack));
 			onReloadFinished(stack, world, shooter);
 		}
 		else {
@@ -277,7 +277,7 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 	}
 
 	public boolean canReload(ItemStack stack, LivingEntity shooter) {
-		if (getAmmo(stack) >= getMaxAmmo()) return false;
+		if (getAmmo(stack) >= getMaxAmmo(stack)) return false;
 		ItemStack ammo = findAmmoInInv(stack, shooter);
 		return !ammo.isEmpty() && ammo.getCount() >= getAmmoReloadCost();
 	}
@@ -306,8 +306,8 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 		return baseProjectileDamage + 0.6f * EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, stack);
 	}
 
-	public int getMaxAmmo() {
-		return baseMaxAmmo;
+	public int getMaxAmmo(ItemStack stack) {
+		return MathHelper.floor(baseMaxAmmo + baseMaxAmmo * 0.5f * EnchantmentHelper.getEnchantmentLevel(ModEnchantments.MAX_AMMO.get(), stack));
 	}
 
 	public ItemStack findAmmoInInv(ItemStack stack, LivingEntity shooter) {
@@ -340,7 +340,7 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 
 	public void setAmmo(ItemStack stack, int amount) {
 		CompoundNBT nbt = stack.getOrCreateTag();
-		nbt.putInt(NBT_KEY_AMMO, MathHelper.clamp(amount, 0, getMaxAmmo()));
+		nbt.putInt(NBT_KEY_AMMO, MathHelper.clamp(amount, 0, getMaxAmmo(stack)));
 	}
 
 	public void addAmmo(ItemStack stack, int amount) {
@@ -351,6 +351,10 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 
 	public void consumeAmmo(ItemStack stack, int amount) {
 		addAmmo(stack, -amount);
+	}
+
+	public void consumeAmmo(LivingEntity shooter, ItemStack stack, int amount) {
+		if (!(shooter instanceof PlayerEntity) || !((PlayerEntity) shooter).abilities.isCreativeMode) addAmmo(stack, -amount);
 	}
 
 	@Override

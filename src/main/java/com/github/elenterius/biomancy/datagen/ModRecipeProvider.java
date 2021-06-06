@@ -126,24 +126,24 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		// Blocks //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIO_FLESH_DOOR.get(), defaultTime)
-				.addIngredient(Items.IRON_DOOR).addIngredient(ModItems.FLESH_BLOCK.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get())
+		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESHBORN_DOOR.get(), defaultTime)
+				.addIngredient(Items.IRON_DOOR).addIngredient(ModItems.BIOMETAL.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
-		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIO_FLESH_TRAPDOOR.get(), defaultTime)
-				.addIngredient(Items.IRON_TRAPDOOR).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.FLESH_BLOCK.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get())
+		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESHBORN_TRAPDOOR.get(), defaultTime)
+				.addIngredient(Items.IRON_TRAPDOOR).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.BIOMETAL.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
-		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIO_FLESH_PRESSURE_PLATE.get(), defaultTime)
-				.addIngredient(Items.HEAVY_WEIGHTED_PRESSURE_PLATE).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.FLESH_BLOCK.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get())
+		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESHBORN_PRESSURE_PLATE.get(), defaultTime)
+				.addIngredient(Items.HEAVY_WEIGHTED_PRESSURE_PLATE).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.BIOMETAL.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.GULGE.get(), defaultTime * 2)
-				.addIngredient(ModItems.FLESH_CHEST.get()).addIngredients(ModItems.ARTIFICIAL_STOMACH.get(), 4).addIngredient(ModItems.FLESH_BLOCK.get())
+				.addIngredient(ModItems.FLESH_CHEST.get()).addIngredients(ModItems.ARTIFICIAL_STOMACH.get(), 4).addIngredient(ModItems.BIOMETAL.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESH_CHEST.get(), defaultTime)
-				.addIngredients(Items.CHEST, 2).addIngredient(ModItems.FLESH_BLOCK.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get())
+				.addIngredients(Items.CHEST, 2).addIngredient(ModItems.BIOMETAL.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		// Tools ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -159,23 +159,23 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addIngredient(Items.IRON_HELMET).addIngredients(ModItems.OCULUS.get(), 4).addIngredient(ModItems.BIOMETAL.get())
 				.addCriterion("has_mutagenic_bile", hasItems(ModItems.MUTAGENIC_BILE.get(), ModItems.MENISCUS_LENS.get())).build(consumer);
 
-		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIOFLESH_AXE.get(), defaultTime)
+		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESHBORN_AXE.get(), defaultTime)
 				.addIngredient(Items.IRON_AXE).addIngredient(Items.BONE).addIngredients(ModItems.BIOMETAL.get(), 3).addIngredient(ModItems.HORMONE_BILE.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
-		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIOFLESH_SHOVEL.get(), defaultTime)
+		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESHBORN_SHOVEL.get(), defaultTime)
 				.addIngredient(Items.IRON_SHOVEL).addIngredient(Items.BONE).addIngredient(ModItems.BIOMETAL.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
-		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIOFLESH_PICKAXE.get(), defaultTime)
+		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESHBORN_PICKAXE.get(), defaultTime)
 				.addIngredient(Items.IRON_PICKAXE).addIngredient(Items.BONE).addIngredients(ModItems.BIOMETAL.get(), 3).addIngredient(ModItems.HORMONE_BILE.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		// Weapons /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIOFLESH_WAR_AXE.get(), defaultTime * 2)
-				.addIngredient(ModItems.BIOFLESH_AXE.get()).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.HORMONE_BILE.get()).addIngredient(ModItems.ARTIFICIAL_STOMACH.get())
+		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESHBORN_WAR_AXE.get(), defaultTime * 2)
+				.addIngredient(ModItems.FLESHBORN_AXE.get()).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.HORMONE_BILE.get()).addIngredient(ModItems.ARTIFICIAL_STOMACH.get())
 				.addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2)
-				.addCriterion("has_bioflesh_axe", hasItem(ModItems.BIOFLESH_AXE.get())).build(consumer);
+				.addCriterion("has_fleshborn_axe", hasItem(ModItems.FLESHBORN_AXE.get())).build(consumer);
 
 		ItemStackIngredient sweepingBook = new ItemStackIngredient(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(Enchantments.SWEEPING, Enchantments.SWEEPING.getMaxLevel())));
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.LONG_RANGE_CLAW.get(), defaultTime * 2)
@@ -188,7 +188,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addCriterion("has_oculus", hasItem(ModItems.OCULUS.get())).build(consumer);
 
 		ItemStackIngredient maxBaneBook = new ItemStackIngredient(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(ModEnchantments.ATTUNED_BANE.get(), ModEnchantments.ATTUNED_BANE.get().getMaxLevel())));
-		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIOFLESH_GUAN_DAO.get(), defaultTime * 2)
+		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESHBORN_GUAN_DAO.get(), defaultTime * 2)
 				.addIngredient(ModItems.OCULUS.get()).addIngredient(maxBaneBook).addIngredient(Items.BONE).addIngredient(Items.DIAMOND_SWORD).addIngredient(Items.DIAMOND_AXE).addIngredient(ModItems.BIOMETAL.get())
 				.addCriterion("has_oculus", hasItem(ModItems.OCULUS.get())).build(consumer);
 
@@ -410,10 +410,10 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addByproduct(ModItems.DIGESTATE.get(), 0.4f)
 				.addCriterion("has_warped_roots", hasItem(Items.WARPED_ROOTS)).build(consumer, "" + id++, true);
 
-		DecomposerRecipeBuilder.createRecipe(ModItems.MUTAGENIC_BILE.get(), defaultDecomposingTime, 6)
-				.addIngredient(ModItems.TWISTED_HEART.get())
-				.addByproduct(ModItems.KERATIN_FILAMENTS.get(), 2, 0.5f)
-				.addCriterion("has_twisted_heart", hasItem(ModItems.TWISTED_HEART.get())).build(consumer, "" + id, true);
+//		DecomposerRecipeBuilder.createRecipe(ModItems.MUTAGENIC_BILE.get(), defaultDecomposingTime, 6)
+//				.addIngredient(ModItems.TWISTED_HEART.get())
+//				.addByproduct(ModItems.KERATIN_FILAMENTS.get(), 2, 0.5f)
+//				.addCriterion("has_twisted_heart", hasItem(ModItems.TWISTED_HEART.get())).build(consumer, "" + id, true);
 	}
 
 	private void registerChewerRecipes(Consumer<IFinishedRecipe> consumer) {

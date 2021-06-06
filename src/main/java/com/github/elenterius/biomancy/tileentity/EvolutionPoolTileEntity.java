@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.tileentity;
 
-import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.EvolutionPoolBlock;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModItems;
@@ -12,6 +11,7 @@ import com.github.elenterius.biomancy.mixin.RecipeManagerMixinAccessor;
 import com.github.elenterius.biomancy.recipe.EvolutionPoolRecipe;
 import com.github.elenterius.biomancy.tileentity.state.CraftingState;
 import com.github.elenterius.biomancy.tileentity.state.EvolutionPoolStateData;
+import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -102,7 +102,7 @@ public class EvolutionPoolTileEntity extends OwnableTileEntity implements INamed
 
 	@Override
 	protected ITextComponent getDefaultName() {
-		return BiomancyMod.getTranslationText("container", "evolution_pool");
+		return TextUtil.getTranslationText("container", "evolution_pool");
 	}
 
 	@Nullable

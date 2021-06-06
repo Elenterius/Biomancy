@@ -1,7 +1,6 @@
 package com.github.elenterius.biomancy.item;
 
 import com.github.elenterius.biomancy.entity.golem.MasonBeetleEntity;
-import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.util.BlockPlacementTarget;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.command.arguments.EntityAnchorArgument;
@@ -63,7 +62,8 @@ public class MasonBeetleItem extends Item implements IHighlightRayTraceResultIte
 	public ItemStack getContainerItem(ItemStack stack) {
 		if (!hasContainerItem(stack)) {
 			return ItemStack.EMPTY;
-		} else {
+		}
+		else {
 			ItemStack stack1 = stack.copy();
 			stack1.removeChildTag("Block");
 			stack1.removeChildTag("BlockName");
@@ -89,7 +89,8 @@ public class MasonBeetleItem extends Item implements IHighlightRayTraceResultIte
 		if (!worldIn.getFluidState(placementTarget.targetPos).isEmpty()) return ActionResult.resultFail(stack);
 
 		if (!worldIn.isRemote()) {
-			MasonBeetleEntity entity = ModEntityTypes.MASON_BEETLE.get().create(worldIn);
+//			MasonBeetleEntity entity = ModEntityTypes.MASON_BEETLE.get().create(worldIn);
+			MasonBeetleEntity entity = null;
 			if (entity != null) {
 				entity.enablePersistence();
 				if (stack.hasDisplayName()) {

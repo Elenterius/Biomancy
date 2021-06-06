@@ -1,8 +1,9 @@
 package com.github.elenterius.biomancy.item;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.client.util.TooltipUtil;
 import com.github.elenterius.biomancy.tileentity.IOwnableTile;
-import com.github.elenterius.biomancy.util.TooltipUtil;
+import com.github.elenterius.biomancy.util.TextUtil;
 import com.github.elenterius.biomancy.util.UserAuthorization;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.ITooltipFlag;
@@ -21,6 +22,8 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants;
 import org.apache.commons.lang3.StringUtils;
 
@@ -37,6 +40,7 @@ public class AccessKeyItem extends Item {
 		super(properties);
 	}
 
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		CompoundNBT nbt = stack.getOrCreateChildTag(NBT_KEY);
@@ -44,7 +48,7 @@ public class AccessKeyItem extends Item {
 			tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 			StringTextComponent ownerName = new StringTextComponent(TooltipUtil.tryToGetPlayerNameOnClientSide(nbt.getUniqueId("OwnerUUID")));
 			ownerName.mergeStyle(TextFormatting.WHITE);
-			tooltip.add(new TranslationTextComponent(BiomancyMod.getTranslationKey("tooltip", "owner"), ownerName).mergeStyle(TextFormatting.GRAY));
+			tooltip.add(new TranslationTextComponent(TextUtil.getTranslationKey("tooltip", "owner"), ownerName).mergeStyle(TextFormatting.GRAY));
 
 			if (nbt.contains("UserList")) {
 				ListNBT nbtList = nbt.getList("UserList", Constants.NBT.TAG_COMPOUND);
@@ -58,7 +62,7 @@ public class AccessKeyItem extends Item {
 				}
 				int remainder = nbtList.size() - limit;
 				if (remainder > 0) {
-					tooltip.add(new TranslationTextComponent(BiomancyMod.getTranslationKey("tooltip", "press_button_to"), TooltipUtil.CTRL_KEY_TEXT.mergeStyle(TextFormatting.AQUA), "show " + remainder + " more users..."));
+					tooltip.add(TooltipUtil.pressButtonTo(TooltipUtil.getCtrlKey(), "show " + remainder + " more users..."));
 				}
 			}
 		}

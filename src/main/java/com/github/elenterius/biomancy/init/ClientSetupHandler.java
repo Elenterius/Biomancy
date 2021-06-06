@@ -53,7 +53,7 @@ public final class ClientSetupHandler {
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.FLESH_BLOB.get(), FleshBlobRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.FLESHKIN.get(), FleshkinRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BOOMLING.get(), BoomlingRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.MASON_BEETLE.get(), BlockBeetleRenderer::new);
+//		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.MASON_BEETLE.get(), BlockBeetleRenderer::new);
 
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.FAILED_SHEEP.get(), FailedSheepRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.CHROMA_SHEEP.get(), ChromaSheepRenderer::new);
@@ -63,10 +63,11 @@ public final class ClientSetupHandler {
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BROOD_MOTHER.get(), BroodmotherRenderer::new);
 
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.TOOTH_PROJECTILE.get(), manager -> new SpriteRenderer<>(manager, Minecraft.getInstance().getItemRenderer()));
+		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.WITHER_SKULL_PROJECTILE.get(), WitherSkullProjectileRenderer::new);
 
 		event.enqueueWork(() -> {
 			ScreenManager.registerFactory(ModContainerTypes.GULGE.get(), GulgeContainerScreen::new);
-			ScreenManager.registerFactory(ModContainerTypes.FLESH_CHEST.get(), FleshChestContainerScreen::new);
+			ScreenManager.registerFactory(ModContainerTypes.FLESHBORN_CHEST.get(), FleshChestContainerScreen::new);
 			ScreenManager.registerFactory(ModContainerTypes.CHEWER.get(), ChewerContainerScreen::new);
 			ScreenManager.registerFactory(ModContainerTypes.DIGESTER.get(), DigesterContainerScreen::new);
 			ScreenManager.registerFactory(ModContainerTypes.DECOMPOSER.get(), DecomposerContainerScreen::new);
@@ -81,8 +82,8 @@ public final class ClientSetupHandler {
 
 			RenderTypeLookup.setRenderLayer(ModBlocks.FLESH_TENTACLE.get(), RenderType.getCutout());
 			RenderTypeLookup.setRenderLayer(ModBlocks.VILE_MELON_CROP.get(), RenderType.getCutout());
-			RenderTypeLookup.setRenderLayer(ModBlocks.BIO_FLESH_DOOR.get(), RenderType.getCutout());
-			RenderTypeLookup.setRenderLayer(ModBlocks.BIO_FLESH_TRAPDOOR.get(), RenderType.getCutout());
+			RenderTypeLookup.setRenderLayer(ModBlocks.FLESHBORN_DOOR.get(), RenderType.getCutout());
+			RenderTypeLookup.setRenderLayer(ModBlocks.FLESHBORN_TRAPDOOR.get(), RenderType.getCutout());
 
 			RenderTypeLookup.setRenderLayer(ModBlocks.EVOLUTION_POOL.get(), RenderType.getTranslucent());
 

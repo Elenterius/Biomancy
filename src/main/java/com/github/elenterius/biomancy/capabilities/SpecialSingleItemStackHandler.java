@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.capabilities;
 
-import com.github.elenterius.biomancy.BiomancyMod;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
@@ -10,10 +9,16 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class SpecialSingleItemStackHandler implements IItemHandler, IItemHandlerModifiable, INBTSerializable<CompoundNBT> {
 
 	private static final CompoundNBT EMPTY_COMPOUND_NBT = new CompoundNBT();
+	public static final String NBT_KEY_INVENTORY = "SingleItemInv";
+	public static final String NBT_KEY_ITEM = "Item";
+	public static final String NBT_KEY_AMOUNT = "Amount";
+	public static final String NBT_KEY_MAX_AMOUNT = "MaxAmount";
+	public static final String NBT_KEY_IS_DIRTY = "IsDirty";
 
 	private final ItemStack hostStack;
 	private final int maxItemAmount;
@@ -132,38 +137,38 @@ public class SpecialSingleItemStackHandler implements IItemHandler, IItemHandler
 
 	@Override
 	public CompoundNBT serializeNBT() {
-		CompoundNBT inventory = new CompoundNBT();
-		inventory.putShort("MaxAmount", (short) maxItemAmount); // for client display
-		inventory.putShort("Amount", (short) itemAmount);
+		CompoundNBT invNbt = new CompoundNBT();
+		invNbt.putShort(NBT_KEY_MAX_AMOUNT, (short) maxItemAmount); // for client display
+		invNbt.putShort(NBT_KEY_AMOUNT, (short) itemAmount);
 		if (cachedStack.getCount() > 64) cachedStack.setCount(64); // prevent byte overflow
-		inventory.put("Item", cachedStack.write(new CompoundNBT()));
+		invNbt.put(NBT_KEY_ITEM, cachedStack.write(new CompoundNBT()));
 		if (cachedStack.getCount() != itemAmount) cachedStack.setCount(itemAmount); //restore correct item amount
-		hostStack.getOrCreateChildTag(BiomancyMod.MOD_ID).put("Inventory", inventory); //cheese cap sync
+		hostStack.getOrCreateTag().put(NBT_KEY_INVENTORY, invNbt); //cheese cap sync
 		return EMPTY_COMPOUND_NBT;
 	}
 
 	@Override
-	public void deserializeNBT(CompoundNBT ignored) {
-		CompoundNBT nbt = hostStack.getOrCreateChildTag(BiomancyMod.MOD_ID);
-		if (nbt.contains("Inventory")) readNBT(nbt.getCompound("Inventory"));
+	public void deserializeNBT(@Nullable CompoundNBT ignored) {
+		CompoundNBT nbt = hostStack.getOrCreateTag();
+		if (nbt.contains(NBT_KEY_INVENTORY)) readNBT(nbt.getCompound(NBT_KEY_INVENTORY));
 		else reset();
 	}
 
-	private void readNBT(CompoundNBT inventory) {
-		cachedStack = ItemStack.read(inventory.getCompound("Item")); //cheese cap sync
-		itemAmount = inventory.getShort("Amount");
+	private void readNBT(CompoundNBT invNbt) {
+		cachedStack = ItemStack.read(invNbt.getCompound(NBT_KEY_ITEM)); //cheese cap sync
+		itemAmount = invNbt.getShort(NBT_KEY_AMOUNT);
 		if (cachedStack.getCount() != itemAmount) cachedStack.setCount(itemAmount); //restore correct item amount
-		if (!inventory.contains("MaxAmount")) {
-			inventory.putShort("MaxAmount", (short) maxItemAmount); //for client display
+		if (!invNbt.contains(NBT_KEY_MAX_AMOUNT)) {
+			invNbt.putShort(NBT_KEY_MAX_AMOUNT, (short) maxItemAmount); //for client display
 		}
 	}
 
 	protected void updateCachedStack() {
-		CompoundNBT nbt = hostStack.getOrCreateChildTag(BiomancyMod.MOD_ID);
-		if (nbt.contains("Inventory")) {
-			CompoundNBT inventory = nbt.getCompound("Inventory");
-			if (inventory.getBoolean("IsDirty")) {
-				inventory.putBoolean("IsDirty", false);
+		CompoundNBT nbt = hostStack.getOrCreateTag();
+		if (nbt.contains(NBT_KEY_INVENTORY)) {
+			CompoundNBT inventory = nbt.getCompound(NBT_KEY_INVENTORY);
+			if (inventory.getBoolean(NBT_KEY_IS_DIRTY)) {
+				inventory.putBoolean(NBT_KEY_IS_DIRTY, false);
 				readNBT(inventory); //reload
 			}
 		}

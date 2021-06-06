@@ -51,16 +51,16 @@ public final class ModBlocks {
 	public static final RegistryObject<FleshMelonCropBlock> VILE_MELON_CROP = BLOCKS.register("vile_melon_crop", () -> new FleshMelonCropBlock(Block.Properties.create(Material.PLANTS, MaterialColor.PINK).tickRandomly().hardnessAndResistance(0.2f).sound(SoundType.STEM)));
 
 	//Bio-Constructs
-	public static final RegistryObject<OwnableDoorBlock> BIO_FLESH_DOOR = BLOCKS.register("bioflesh_door", () -> new OwnableDoorBlock(createFleshProperties().notSolid()));
-	public static final RegistryObject<OwnableTrapDoorBlock> BIO_FLESH_TRAPDOOR = BLOCKS.register("bioflesh_trapdoor", () -> new OwnableTrapDoorBlock(createFleshProperties().notSolid().setAllowsSpawn(ModBlocks::neverAllowSpawn)));
-	public static final RegistryObject<OwnablePressurePlateBlock> BIO_FLESH_PRESSURE_PLATE = BLOCKS.register("bioflesh_pressure_plate", () -> new OwnablePressurePlateBlock(createFleshProperties().doesNotBlockMovement()));
+	public static final RegistryObject<OwnableDoorBlock> FLESHBORN_DOOR = BLOCKS.register("fleshborn_door", () -> new OwnableDoorBlock(createFleshProperties().notSolid()));
+	public static final RegistryObject<OwnableTrapDoorBlock> FLESHBORN_TRAPDOOR = BLOCKS.register("fleshborn_trapdoor", () -> new OwnableTrapDoorBlock(createFleshProperties().notSolid().setAllowsSpawn(ModBlocks::neverAllowSpawn)));
+	public static final RegistryObject<OwnablePressurePlateBlock> FLESHBORN_PRESSURE_PLATE = BLOCKS.register("fleshborn_pressure_plate", () -> new OwnablePressurePlateBlock(createFleshProperties().doesNotBlockMovement()));
 
 	//Semi-Container
 	public static final RegistryObject<MeatsoupCauldronBlock> MEATSOUP_CAULDRON = BLOCKS.register("meatsoup_cauldron", () -> new MeatsoupCauldronBlock(AbstractBlock.Properties.create(Material.IRON, MaterialColor.STONE).setRequiresTool().hardnessAndResistance(2.0F).notSolid()));
 
 	//Containers
+	public static final RegistryObject<FleshChestBlock> FLESHBORN_CHEST = BLOCKS.register("fleshborn_chest", () -> new FleshChestBlock(createFleshProperties()));
 	public static final RegistryObject<GulgeBlock> GULGE = BLOCKS.register("gulge", () -> new GulgeBlock(createFleshProperties()));
-	public static final RegistryObject<FleshChestBlock> FLESH_CHEST = BLOCKS.register("bioflesh_chest", () -> new FleshChestBlock(createFleshProperties()));
 
 	//machine containers
 	public static final RegistryObject<ChewerBlock> CHEWER = BLOCKS.register("chewer", () -> new ChewerBlock(createFleshProperties()));

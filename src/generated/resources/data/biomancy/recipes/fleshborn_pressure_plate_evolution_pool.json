@@ -1,0 +1,27 @@
+{
+  "type": "biomancy:evolution_pool",
+  "ingredients": [
+    {
+      "item": "minecraft:heavy_weighted_pressure_plate"
+    },
+    {
+      "item": "biomancy:oculus"
+    },
+    {
+      "item": "biomancy:biometal"
+    },
+    {
+      "item": "biomancy:keratin_filaments"
+    },
+    {
+      "item": "biomancy:keratin_filaments"
+    },
+    {
+      "item": "biomancy:hormone_bile"
+    }
+  ],
+  "result": {
+    "item": "biomancy:fleshborn_pressure_plate"
+  },
+  "time": 400
+}

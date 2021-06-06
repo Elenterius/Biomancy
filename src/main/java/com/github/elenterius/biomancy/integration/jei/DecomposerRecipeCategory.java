@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.recipe.Byproduct;
 import com.github.elenterius.biomancy.recipe.DecomposerRecipe;
 import com.github.elenterius.biomancy.tileentity.DecomposerTileEntity;
+import com.github.elenterius.biomancy.util.TextUtil;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -106,7 +107,7 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 						}
 					}
 //					tooltip.add(new TranslationTextComponent(BiomancyMod.getTranslationKey("tooltip", "byproduct")));
-					tooltip.add(new StringTextComponent(chance + "% ").appendSibling(new TranslationTextComponent(BiomancyMod.getTranslationKey("tooltip", "chance"))).mergeStyle(TextFormatting.GRAY));
+					tooltip.add(new StringTextComponent(chance + "% ").appendSibling(new TranslationTextComponent(TextUtil.getTranslationKey("tooltip", "chance"))).mergeStyle(TextFormatting.GRAY));
 				}
 			}
 		});

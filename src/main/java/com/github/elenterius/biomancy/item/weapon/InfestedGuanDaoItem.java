@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.item.weapon;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.client.util.TooltipUtil;
 import com.github.elenterius.biomancy.init.ModDamageSources;
-import com.github.elenterius.biomancy.util.TooltipUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -73,7 +73,7 @@ public class InfestedGuanDaoItem extends PoleWeaponItem {
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(TooltipUtil.getTooltip(this).setStyle(TooltipUtil.LORE_STYLE));
+		tooltip.add(TooltipUtil.getItemInfoTooltip(this).setStyle(TooltipUtil.LORE_STYLE));
 		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 
 		CompoundNBT nbt = stack.getOrCreateChildTag(BiomancyMod.MOD_ID);

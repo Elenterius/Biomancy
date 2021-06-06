@@ -2,7 +2,7 @@
   "type": "biomancy:evolution_pool",
   "ingredients": [
     {
-      "item": "biomancy:bioflesh_chest"
+      "item": "biomancy:fleshborn_chest"
     },
     {
       "item": "biomancy:artificial_stomach"
@@ -17,7 +17,7 @@
       "item": "biomancy:artificial_stomach"
     },
     {
-      "item": "biomancy:flesh_block"
+      "item": "biomancy:biometal"
     }
   ],
   "result": {
