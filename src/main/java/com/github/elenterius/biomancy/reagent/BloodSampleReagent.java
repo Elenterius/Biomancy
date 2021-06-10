@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.reagent;
 
 import com.github.elenterius.biomancy.entity.aberration.FleshBlobEntity;
-import com.github.elenterius.biomancy.util.TextUtil;
+import com.github.elenterius.biomancy.util.ClientTextUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -15,6 +15,8 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
@@ -47,12 +49,16 @@ public class BloodSampleReagent extends Reagent {
 		return null;
 	}
 
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInfoToTooltip(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		CompoundNBT nbt = stack.getOrCreateTag();
 		if (nbt.contains(NBT_KEY_DATA)) {
 			CompoundNBT reagentNbt = nbt.getCompound(NBT_KEY_DATA);
-			tooltip.add(new TranslationTextComponent(TextUtil.getTranslationKey("tooltip", "contains_dna"), new TranslationTextComponent(reagentNbt.getString("Name"))).mergeStyle(TextFormatting.GRAY));
+			tooltip.add(ClientTextUtil.getTooltipText("contains_dna", new TranslationTextComponent(reagentNbt.getString("Name"))).mergeStyle(TextFormatting.GRAY));
+		}
+		if (ClientTextUtil.showExtraInfo(tooltip)) {
+			tooltip.add(new TranslationTextComponent(getTranslationKey().replace("reagent", "tooltip")).mergeStyle(ClientTextUtil.LORE_STYLE));
 		}
 	}
 

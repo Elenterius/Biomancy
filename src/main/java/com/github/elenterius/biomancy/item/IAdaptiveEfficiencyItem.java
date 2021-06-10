@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.item;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.client.util.TooltipUtil;
+import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
@@ -28,10 +28,10 @@ public interface IAdaptiveEfficiencyItem {
 		String blockName = nbt.getString("BlockName");
 		if (!blockName.isEmpty()) {
 			float modifier = nbt.getByte("Level") * 0.5f;
-			tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
+			tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 			tooltip.add(new TranslationTextComponent(TextUtil.getTranslationKey("tooltip", "mining_bonus"), new TranslationTextComponent(blockName)).mergeStyle(TextFormatting.GRAY));
 			tooltip.add(new StringTextComponent(" +" + modifier + " ").appendSibling(new TranslationTextComponent("enchantment.minecraft.efficiency")).mergeStyle(TextFormatting.BLUE));
-			tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
+			tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 		}
 	}
 

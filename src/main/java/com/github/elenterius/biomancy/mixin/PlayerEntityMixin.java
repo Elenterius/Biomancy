@@ -5,7 +5,7 @@ import com.github.elenterius.biomancy.enchantment.AttunedDamageEnchantment;
 import com.github.elenterius.biomancy.init.ModAttributes;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModItems;
-import com.github.elenterius.biomancy.item.weapon.InfestedGuanDaoItem;
+import com.github.elenterius.biomancy.item.weapon.FleshbornGuanDaoItem;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.CreatureAttribute;
 import net.minecraft.entity.Entity;
@@ -45,7 +45,7 @@ public abstract class PlayerEntityMixin {
 			if (AttunedDamageEnchantment.isAttuned(stack))
 				modifier = ModEnchantments.ATTUNED_BANE.get().getAttackDamageModifier(stack, (PlayerEntity) (Object) this, targetEntity);
 			if (stack.getItem() == ModItems.FLESHBORN_GUAN_DAO.get())
-				modifier += InfestedGuanDaoItem.getAttackDamageModifier(stack, (PlayerEntity) (Object) this, targetEntity);
+				modifier += FleshbornGuanDaoItem.getAttackDamageModifier(stack, (PlayerEntity) (Object) this, targetEntity);
 
 			return EnchantmentHelper.getModifierForCreature(stack, creatureAttribute) + modifier;
 		}

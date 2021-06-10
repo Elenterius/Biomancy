@@ -10,7 +10,9 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.client.MinecraftForgeClient;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,8 +65,9 @@ public class EvolutionPoolContainerScreen extends ContainerScreen<EvolutionPoolC
 		List<ITextComponent> hoveringText = new ArrayList<>();
 
 		if (progressBar.isMouseInside(guiLeft, guiTop, mouseX, mouseY)) {
-			int fuel = (int) (container.getFuelNormalized() * 100);
-			hoveringText.add(new TranslationTextComponent(container.getFuelTranslationKey()).appendString(": " + fuel + "%"));
+			float fuel = container.getFuelNormalized();
+			NumberFormat percentFormatter = NumberFormat.getPercentInstance(MinecraftForgeClient.getLocale());
+			hoveringText.add(new TranslationTextComponent(container.getFuelTranslationKey()).appendString(": " + percentFormatter.format(fuel)));
 		}
 
 		if (!hoveringText.isEmpty()) {

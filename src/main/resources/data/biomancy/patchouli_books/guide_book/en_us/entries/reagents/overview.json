@@ -1,0 +1,11 @@
+{
+  "name": "Overview",
+  "icon": "biomancy:mutagenic_bile",
+  "category": "biomancy:reagents",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Reagents are exotic substances that affect Mobs & Blocks and are injected using a injection device."
+    }
+  ]
+}

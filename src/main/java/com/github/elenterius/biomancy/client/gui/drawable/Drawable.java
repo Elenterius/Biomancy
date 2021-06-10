@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.client.gui.drawable;
 
-import com.github.elenterius.biomancy.client.util.GuiUtil;
+import com.github.elenterius.biomancy.util.GuiUtil;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 public abstract class Drawable {

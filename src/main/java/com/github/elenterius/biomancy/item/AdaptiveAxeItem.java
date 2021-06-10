@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.item;
 
-import com.github.elenterius.biomancy.client.util.TooltipUtil;
+import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.PlayerInteractionUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
@@ -32,7 +32,7 @@ public class AdaptiveAxeItem extends AxeItem implements IAdaptiveEfficiencyItem,
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(TooltipUtil.getItemInfoTooltip(this).setStyle(TooltipUtil.LORE_STYLE));
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).setStyle(ClientTextUtil.LORE_STYLE));
 		IAdaptiveEfficiencyItem.addAdaptiveEfficiencyTooltip(stack, tooltip);
 	}
 

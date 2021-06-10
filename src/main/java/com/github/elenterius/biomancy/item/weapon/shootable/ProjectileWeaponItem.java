@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.item.weapon.shootable;
 
-import com.github.elenterius.biomancy.client.util.TooltipUtil;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.item.IKeyListener;
+import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.client.world.ClientWorld;
@@ -65,16 +65,17 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		if (TooltipUtil.showExtraInfo(tooltip)) {
-			DecimalFormat df = TooltipUtil.getDecimalFormatter("#.###");
-			tooltip.add(new StringTextComponent(String.format("Fire Rate: %s (%s) RPS", df.format(getFireRate(stack)), df.format(ONE_SECOND / baseShootDelay))));
-			tooltip.add(new StringTextComponent(String.format("Accuracy: %s (%s) (InAcc: %s)", df.format(getAccuracy()), df.format(baseAccuracy), df.format(getInaccuracy()))));
-			tooltip.add(new StringTextComponent(String.format("Ammo: %d/%d (x/%d)", getAmmo(stack), getMaxAmmo(stack), baseMaxAmmo)));
-			tooltip.add(new StringTextComponent(String.format("Reload Time: %s (%s)", df.format(getReloadTime(stack) / ONE_SECOND), df.format(baseReloadTime / ONE_SECOND))));
-			tooltip.add(new StringTextComponent(String.format("Projectile Damage: %s (%s)", df.format(getProjectileDamage(stack)), df.format(baseProjectileDamage))));
-			tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).setStyle(ClientTextUtil.LORE_STYLE));
+		if (ClientTextUtil.showExtraInfo(tooltip)) {
+			DecimalFormat df = ClientTextUtil.getDecimalFormatter("#.###");
+			tooltip.add(TextUtil.getTooltipText("fire_rate").appendString(String.format(": %s (%s) RPS", df.format(getFireRate(stack)), df.format(ONE_SECOND / baseShootDelay))));
+			tooltip.add(TextUtil.getTooltipText("accuracy").appendString(String.format(": %s (%s) (InAcc: %s)", df.format(getAccuracy()), df.format(baseAccuracy), df.format(getInaccuracy()))));
+			tooltip.add(TextUtil.getTooltipText("ammo").appendString(String.format(": %d/%d (x/%d)", getAmmo(stack), getMaxAmmo(stack), baseMaxAmmo)));
+			tooltip.add(TextUtil.getTooltipText("reload_time").appendString(String.format(": %s (%s)", df.format(getReloadTime(stack) / ONE_SECOND), df.format(baseReloadTime / ONE_SECOND))));
+			tooltip.add(TextUtil.getTooltipText("projectile_damage").appendString(String.format(": %s (%s)", df.format(getProjectileDamage(stack)), df.format(baseProjectileDamage))));
+			tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 		}
-		tooltip.add(TooltipUtil.pressButtonTo(TooltipUtil.getDefaultKey(), TextUtil.getTranslationText("tooltip", "action_reload")).mergeStyle(TextFormatting.DARK_GRAY));
+		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextUtil.getTranslationText("tooltip", "action_reload")).mergeStyle(TextFormatting.DARK_GRAY));
 	}
 
 	@OnlyIn(Dist.CLIENT)

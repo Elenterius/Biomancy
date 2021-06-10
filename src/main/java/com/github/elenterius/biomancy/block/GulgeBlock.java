@@ -1,7 +1,8 @@
 package com.github.elenterius.biomancy.block;
 
-import com.github.elenterius.biomancy.client.util.TooltipUtil;
 import com.github.elenterius.biomancy.tileentity.GulgeTileEntity;
+import com.github.elenterius.biomancy.util.ClientTextUtil;
+import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -26,7 +27,6 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -34,6 +34,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class GulgeBlock extends OwnableContainerBlock {
@@ -62,7 +63,7 @@ public class GulgeBlock extends OwnableContainerBlock {
 	@Override
 	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
-		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
+		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 
 		CompoundNBT nbt = stack.getChildTag("BlockEntityTag");
 		if (nbt != null) {
@@ -77,14 +78,15 @@ public class GulgeBlock extends OwnableContainerBlock {
 							itemAmount = ((NumberNBT) inbt).getInt();
 						}
 					}
-					tooltip.add(new TranslationTextComponent("tooltip.biomancy.contains", storedStack.getDisplayName().deepCopy()).mergeStyle(TextFormatting.GRAY));
-					tooltip.add(new StringTextComponent(String.format("%d/%d", itemAmount, GulgeTileEntity.MAX_ITEM_AMOUNT)).mergeStyle(TextFormatting.GRAY));
+					tooltip.add(TextUtil.getTooltipText("contains", storedStack.getDisplayName().deepCopy()).mergeStyle(TextFormatting.GRAY));
+					DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
+					tooltip.add(new StringTextComponent(df.format(itemAmount) + "/" + df.format(GulgeTileEntity.MAX_ITEM_AMOUNT)).mergeStyle(TextFormatting.GRAY));
 					return;
 				}
 			}
 		}
 
-		tooltip.add(new TranslationTextComponent("tooltip.biomancy.empty"));
+		tooltip.add(TextUtil.getTooltipText("empty").mergeStyle(TextFormatting.GRAY));
 	}
 
 	@Override

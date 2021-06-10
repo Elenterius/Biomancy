@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.item.IKeyListener;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.gui.screen.inventory.InventoryScreen;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
@@ -26,7 +27,10 @@ public final class ClientInputHandler {
 
 	@SubscribeEvent
 	public static void onKeyInput(final InputEvent.KeyInputEvent event) {
-		ClientPlayerEntity player = Minecraft.getInstance().player;
+		Minecraft mc = Minecraft.getInstance();
+		ClientPlayerEntity player = mc.player;
+		if (!(mc.currentScreen instanceof InventoryScreen) && mc.currentScreen != null) return;
+
 		if (player != null && event.getKey() == ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.getKey().getKeyCode() && event.getAction() == GLFW.GLFW_RELEASE) {
 			if (event.getModifiers() == GLFW.GLFW_MOD_CONTROL) {
 				for (EquipmentSlotType slotType : armorSlotTypes) { //worst case this will send 4 packets to the server
@@ -51,6 +55,7 @@ public final class ClientInputHandler {
 				}
 			}
 		}
+
 	}
 
 //	@SubscribeEvent

@@ -1,9 +1,9 @@
 ![Biomancy](media/biomancy.png)
 
-[![Biomancy Version](https://img.shields.io/badge/Biomancy-1.0.0-green)](https://github.com/Elenterius/Biomancy)
+[![Biomancy Version](https://img.shields.io/badge/Biomancy-1.0.0--beta.1-yellow)](https://github.com/Elenterius/Biomancy)
 [![Forge Version](https://img.shields.io/badge/Minecraft%20Forge-1.16.5--36.1.4-orange)](https://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.16.5.html)
 
-A Biopunk inspired Minecraft Mod about semi living fleshy things and biomanipulation.
+Biomancy is a Biopunk inspired Mod and themed around flesh magic and bio-manipulation.
 
 **Mod Integrations**
 
@@ -66,9 +66,7 @@ A Biopunk inspired Minecraft Mod about semi living fleshy things and biomanipula
 - Chewer (uses Nutrient Paste/Bar as Fuel)
 - Digester (uses Water as fuel)
 - Decomposer (uses Nutrient Paste/Bar as Fuel)
-- Evolution Pool
-    - Multi-block, built from 2x2 flesh stairs forming a well
-    - uses Mutagenic Bile as fuel
+- Evolution Pool (uses Mutagenic Bile as fuel)
 
 #### Storage
 
@@ -101,4 +99,17 @@ Things you need to craft your first flesh block:
 
 Click an empty cauldron with raw meat and fill it up. Add the bone meal and as the last step add the healing potion.
 ![flesh block recipe](media/flesh_block_recipe.gif)
+
+#### Evolution Pool Construction
+
+The evolution pool is a multi-block and is built from 2x2 flesh stairs forming a well.
+
+<table>
+<tr>
+<td><img src="media/evolution_pool_setup.png" alt="evolution pool setup"/></td>
+<td><img src="media/evolution_pool.png" alt="evolution pool"/></td>
+</tr>
+</table>
+
+
 

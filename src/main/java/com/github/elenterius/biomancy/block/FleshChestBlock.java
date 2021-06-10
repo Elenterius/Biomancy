@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.block;
 
-import com.github.elenterius.biomancy.client.util.TooltipUtil;
 import com.github.elenterius.biomancy.tileentity.FleshbornChestTileEntity;
+import com.github.elenterius.biomancy.util.ClientTextUtil;
 import net.minecraft.block.*;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -80,7 +80,7 @@ public class FleshChestBlock extends OwnableContainerBlock implements IWaterLogg
 					if (totalCount - count > 0) {
 						tooltip.add((new TranslationTextComponent("container.shulkerBox.more", totalCount - count)).mergeStyle(TextFormatting.ITALIC, TextFormatting.GRAY));
 					}
-					tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
+					tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 					tooltip.add(new StringTextComponent(String.format("%d/%d ", totalCount, FleshbornChestTileEntity.INV_SLOTS_COUNT)).appendSibling(new TranslationTextComponent("tooltip.biomancy.slots")).mergeStyle(TextFormatting.GRAY));
 				}
 			}

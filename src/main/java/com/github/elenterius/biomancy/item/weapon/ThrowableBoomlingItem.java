@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.item.weapon;
 import com.github.elenterius.biomancy.entity.golem.BoomlingEntity;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.item.IHighlightRayTraceResultItem;
+import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.RayTraceUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.command.arguments.EntityAnchorArgument;
@@ -48,6 +49,7 @@ public class ThrowableBoomlingItem extends Item implements IHighlightRayTraceRes
 
 	@OnlyIn(Dist.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).setStyle(ClientTextUtil.LORE_STYLE));
 		if (stack.hasTag() && stack.getTag() != null) {
 			String potionTranslationKey = stack.getTag().getString("PotionName");
 			if (!potionTranslationKey.isEmpty())

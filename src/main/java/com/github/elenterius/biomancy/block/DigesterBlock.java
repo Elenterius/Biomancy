@@ -1,9 +1,9 @@
 package com.github.elenterius.biomancy.block;
 
-import com.github.elenterius.biomancy.client.util.TooltipUtil;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.tileentity.DigesterTileEntity;
 import com.github.elenterius.biomancy.tileentity.state.DigesterStateData;
+import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.VoxelShapeUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
@@ -63,9 +63,10 @@ public class DigesterBlock extends OwnableContainerBlock {
 
 	@Override
 	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()).setStyle(ClientTextUtil.LORE_STYLE));
 		CompoundNBT nbt = stack.getChildTag("BlockEntityTag");
 		if (nbt != null) {
-			tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
+			tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 			CompoundNBT fuelNbt = nbt.getCompound(DigesterStateData.NBT_KEY_FUEL);
 			int mainFuel = (int) (MathHelper.clamp(fuelNbt.getInt("Amount") / (float) DigesterTileEntity.MAX_FUEL, 0f, 1f) * 100);
 			tooltip.add(new TranslationTextComponent("fluid." + fuelNbt.getString("FluidName").replace(":", ".").replace("/", ".")).appendString(": " + mainFuel + "%"));

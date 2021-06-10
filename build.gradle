@@ -15,7 +15,7 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
-version = '1.0.0'
+version = "${mc_version}-${mod_version}-forge"
 group = 'com.github.elenterius.biomancy'
 archivesBaseName = 'biomancy'
 
@@ -134,7 +134,7 @@ processResources {
 build {
     doLast {
         println("updating version in README.md...")
-        def versionEscaped = version.toString().replace("-", "--")
+        def versionEscaped = mod_version.toString().replace("-", "--")
         def color = versionEscaped.contains("alpha") ? "red" : versionEscaped.contains("beta") ? "yellow" : "green"
         ant.replaceregexp(match: 'Biomancy-([0-9\\.\\-]+[a-z\\.0-9\\-]+)', replace: "Biomancy-$versionEscaped-$color", flags: 'g', byline: true) {
             fileset(dir: '.', includes: 'README.md')
@@ -155,11 +155,11 @@ jar {
     manifest {
         attributes([
                 "Specification-Title"     : "biomancy",
-                "Specification-Vendor"    : "elenterius",
+                "Specification-Vendor"    : "Elenterius",
                 "Specification-Version"   : "1", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,
-                "Implementation-Version"  : "${version}",
-                "Implementation-Vendor"   : "elenterius",
+                "Implementation-Version"  : "${mod_version}",
+                "Implementation-Vendor"   : "Elenterius",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
                 "MixinConfigs"            : "biomancy.mixins.json"
         ])

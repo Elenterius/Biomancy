@@ -1,8 +1,7 @@
-package com.github.elenterius.biomancy.client.util;
+package com.github.elenterius.biomancy.util;
 
 import com.github.elenterius.biomancy.init.ClientSetupHandler;
 import com.github.elenterius.biomancy.mixin.client.ItemStackMixinAccessor;
-import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,18 +22,19 @@ import java.util.Locale;
 import java.util.UUID;
 
 @OnlyIn(Dist.CLIENT)
-public final class TooltipUtil {
+public final class ClientTextUtil extends TextUtil {
 
 	public static final Style LORE_STYLE = Style.EMPTY.setFormatting(TextFormatting.DARK_GRAY).setItalic(true);
 
 	private static final TranslationTextComponent CTRL_KEY_TEXT = new TranslationTextComponent("keyboard.ctrl");
+	private static final TranslationTextComponent ALT_KEY_TEXT = new TranslationTextComponent("keyboard.alt");
 	private static final ITextComponent FAKE_EMPTY_LINE = new StringTextComponent(" ");
 
 	private static DecimalFormat decimalFormat = null;
 	private static String prevPattern = "";
 	private static Locale prevLocale = MinecraftForgeClient.getLocale();
 
-	private TooltipUtil() {}
+	private ClientTextUtil() {super();}
 
 	/**
 	 * When the tooltip text is too long it gets wrapped and {@link StringTextComponent#EMPTY} components (empty strings) are eaten up.<br>
@@ -49,8 +49,8 @@ public final class TooltipUtil {
 	}
 
 	public static boolean showExtraInfo(List<ITextComponent> tooltip) {
-		boolean flag = Screen.hasControlDown();
-		if (!flag) tooltip.add(pressButtonTo(CTRL_KEY_TEXT.copyRaw(), "show Info"));
+		boolean flag = Screen.hasAltDown();
+		if (!flag) tooltip.add(pressButtonTo(ALT_KEY_TEXT.copyRaw(), "show Info").mergeStyle(LORE_STYLE));
 		return flag;
 	}
 

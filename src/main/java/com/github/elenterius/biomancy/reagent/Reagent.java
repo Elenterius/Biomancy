@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.reagent;
 
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModReagents;
-import com.github.elenterius.biomancy.util.TextUtil;
+import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.util.ITooltipFlag;
@@ -32,10 +32,9 @@ public abstract class Reagent extends ForgeRegistryEntry<Reagent> {
 	public static final String NBT_KEY_ID = "ReagentId";
 	public static final String NBT_KEY_DATA = "ReagentData";
 	public static final String NBT_KEY_COLOR = "ReagentColor";
-
+	private final int color;
 	@Nullable
 	private Multimap<Attribute, AttributeModifier> attributeModifiers = null;
-	private final int color;
 
 	public Reagent(int colorIn) {
 		color = colorIn;
@@ -87,8 +86,12 @@ public abstract class Reagent extends ForgeRegistryEntry<Reagent> {
 
 	@OnlyIn(Dist.CLIENT)
 	public void addInfoToTooltip(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		if (stack.getItem() != ModItems.REAGENT.get())
-			tooltip.add(new TranslationTextComponent(TextUtil.getTranslationKey("tooltip", "contains"), new TranslationTextComponent(getTranslationKey())).mergeStyle(TextFormatting.GRAY));
+		if (stack.getItem() != ModItems.REAGENT.get()) {
+			tooltip.add(ClientTextUtil.getTooltipText("contains", new TranslationTextComponent(getTranslationKey())).mergeStyle(TextFormatting.GRAY));
+		}
+		if (ClientTextUtil.showExtraInfo(tooltip)) {
+			tooltip.add(new TranslationTextComponent(getTranslationKey().replace("reagent", "tooltip")).mergeStyle(ClientTextUtil.LORE_STYLE));
+		}
 	}
 
 	public String getTranslationKey() {

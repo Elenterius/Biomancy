@@ -1,9 +1,8 @@
 package com.github.elenterius.biomancy.block;
 
-import com.github.elenterius.biomancy.client.util.TooltipUtil;
 import com.github.elenterius.biomancy.tileentity.IOwnableTile;
 import com.github.elenterius.biomancy.tileentity.OwnableTileEntity;
-import com.github.elenterius.biomancy.util.TextUtil;
+import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.UserAuthorization;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -21,7 +20,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
@@ -43,25 +41,25 @@ public abstract class OwnableBlock extends Block implements IOwnableBlock {
 	public static void addOwnableTooltip(ItemStack stack, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		CompoundNBT nbt = stack.getChildTag("BlockEntityTag");
 		if (nbt != null) {
-			if (nbt.hasUniqueId("OwnerUUID")) {
-				tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
-				StringTextComponent ownerName = new StringTextComponent(TooltipUtil.tryToGetPlayerNameOnClientSide(nbt.getUniqueId("OwnerUUID")));
+			if (nbt.hasUniqueId(IOwnableBlock.NBT_KEY_OWNER)) {
+				tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
+				StringTextComponent ownerName = new StringTextComponent(ClientTextUtil.tryToGetPlayerNameOnClientSide(nbt.getUniqueId(IOwnableBlock.NBT_KEY_OWNER)));
 				ownerName.mergeStyle(TextFormatting.WHITE);
-				tooltip.add(new TranslationTextComponent(TextUtil.getTranslationKey("tooltip", "owner"), ownerName).mergeStyle(TextFormatting.GRAY));
+				tooltip.add(ClientTextUtil.getTooltipText("owner", ownerName).mergeStyle(TextFormatting.GRAY));
 
-				if (nbt.contains("UserList")) {
-					ListNBT nbtList = nbt.getList("UserList", Constants.NBT.TAG_COMPOUND);
+				if (nbt.contains(IOwnableBlock.NBT_KEY_USER_LIST)) {
+					ListNBT nbtList = nbt.getList(IOwnableBlock.NBT_KEY_USER_LIST, Constants.NBT.TAG_COMPOUND);
 					tooltip.add(new StringTextComponent("Users: ").mergeStyle(TextFormatting.GRAY));
 					int limit = Screen.hasControlDown() ? Math.min(5, nbtList.size()) : nbtList.size();
 					for (int i = 0; i < limit; i++) {
 						CompoundNBT userNbt = nbtList.getCompound(i);
-						String userName = TooltipUtil.tryToGetPlayerNameOnClientSide(userNbt.getUniqueId("UserUUID"));
+						String userName = ClientTextUtil.tryToGetPlayerNameOnClientSide(userNbt.getUniqueId(IOwnableBlock.NBT_KEY_USER));
 						UserAuthorization.AuthorityLevel level = UserAuthorization.AuthorityLevel.deserialize(userNbt);
 						tooltip.add(new StringTextComponent(String.format(" - %s (%s)", userName, level.name().toLowerCase(Locale.ROOT))).mergeStyle(TextFormatting.GRAY));
 					}
 					int remainder = nbtList.size() - limit;
 					if (remainder > 0) {
-						tooltip.add(TooltipUtil.pressButtonTo(TooltipUtil.getCtrlKey(), "show " + remainder + " more users..."));
+						tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getCtrlKey(), "show " + remainder + " more users..."));
 					}
 				}
 			}

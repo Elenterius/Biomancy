@@ -1,11 +1,11 @@
 package com.github.elenterius.biomancy.item;
 
-import com.github.elenterius.biomancy.client.util.TooltipUtil;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModReagents;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.reagent.BloodSampleReagent;
 import com.github.elenterius.biomancy.reagent.Reagent;
+import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.client.world.ClientWorld;
@@ -39,6 +39,7 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).setStyle(ClientTextUtil.LORE_STYLE));
 		CompoundNBT nbt = stack.getOrCreateTag();
 		Reagent reagent = Reagent.deserialize(nbt);
 		if (reagent != null) {
@@ -47,7 +48,7 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 			reagent.addInfoToTooltip(stack, worldIn, tooltip, flagIn);
 		}
 		else tooltip.add(TextUtil.getTranslationText("tooltip", "contains_nothing").mergeStyle(TextFormatting.GRAY));
-		tooltip.add(TooltipUtil.pressButtonTo(TooltipUtil.getDefaultKey(), TextUtil.getTranslationText("tooltip", "action_self_inject")).mergeStyle(TextFormatting.DARK_GRAY));
+		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextUtil.getTranslationText("tooltip", "action_self_inject")).mergeStyle(TextFormatting.DARK_GRAY));
 	}
 
 	@Override

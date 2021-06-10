@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.handler;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModItems;
-import com.github.elenterius.biomancy.item.GogglesArmorItem;
+import com.github.elenterius.biomancy.item.OculiGogglesArmorItem;
 import com.github.elenterius.biomancy.item.weapon.KhopeshItem;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
@@ -26,7 +26,7 @@ public final class EquipmentHandler {
 		if (!event.getEntityLiving().isServerWorld()) return;
 
 		if (event.getSlot() == EquipmentSlotType.HEAD) {
-			GogglesArmorItem goggles = ModItems.OCULI_OF_UNVEILING.get();
+			OculiGogglesArmorItem goggles = ModItems.OCULI_OF_UNVEILING.get();
 			if (event.getFrom().getItem() == goggles && event.getTo().getItem() != goggles) { // un-equip
 				goggles.cancelEffect(event.getEntityLiving());
 			}

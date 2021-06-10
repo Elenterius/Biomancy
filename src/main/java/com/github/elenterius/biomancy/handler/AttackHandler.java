@@ -6,7 +6,7 @@ import com.github.elenterius.biomancy.enchantment.AttunedDamageEnchantment;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.item.weapon.ClawWeaponItem;
-import com.github.elenterius.biomancy.item.weapon.InfestedGuanDaoItem;
+import com.github.elenterius.biomancy.item.weapon.FleshbornGuanDaoItem;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -93,7 +93,7 @@ public final class AttackHandler {
 			ItemStack heldStack = event.getPlayer().getHeldItemMainhand();
 			if (!heldStack.isEmpty()) {
 				if (heldStack.getItem() == ModItems.FLESHBORN_GUAN_DAO.get() && event.getPlayer().getCooledAttackStrength(0.5f) > 0.8f) {
-					InfestedGuanDaoItem.adaptAttackDamageToTarget(heldStack, event.getPlayer(), event.getTarget());
+					FleshbornGuanDaoItem.adaptAttackDamageToTarget(heldStack, event.getPlayer(), event.getTarget());
 				}
 				if (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.ATTUNED_BANE.get(), heldStack) > 0) {
 					if (!AttunedDamageEnchantment.isAttuned(heldStack)) {

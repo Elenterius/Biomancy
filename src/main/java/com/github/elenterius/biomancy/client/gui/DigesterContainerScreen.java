@@ -10,14 +10,16 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.client.MinecraftForgeClient;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DigesterContainerScreen extends ContainerScreen<DigesterContainer> {
 
 	private static final ResourceLocation BACKGROUND_TEXTURE = BiomancyMod.createRL("textures/gui/digester_gui.png");
-	private final ProgressBar progressBar = new ProgressBar(39, 17, 5, 60 - 17, 0xFF60963A);
+	private final ProgressBar progressBar = new ProgressBar(39, 17, 5, 60 - 17, 0xFF2E58D3);
 
 	public DigesterContainerScreen(DigesterContainer container, PlayerInventory inv, ITextComponent titleIn) {
 		super(container, inv, titleIn);
@@ -63,8 +65,9 @@ public class DigesterContainerScreen extends ContainerScreen<DigesterContainer> 
 		List<ITextComponent> hoveringText = new ArrayList<>();
 
 		if (progressBar.isMouseInside(guiLeft, guiTop, mouseX, mouseY)) {
-			int fuel = (int) (container.getFuelNormalized() * 100);
-			hoveringText.add(new TranslationTextComponent(container.getFuelTranslationKey()).appendString(": " + fuel + "%"));
+			float fuel = container.getFuelNormalized();
+			NumberFormat percentFormatter = NumberFormat.getPercentInstance(MinecraftForgeClient.getLocale());
+			hoveringText.add(new TranslationTextComponent(container.getFuelTranslationKey()).appendString(": " + percentFormatter.format(fuel)));
 		}
 
 		if (!hoveringText.isEmpty()) {

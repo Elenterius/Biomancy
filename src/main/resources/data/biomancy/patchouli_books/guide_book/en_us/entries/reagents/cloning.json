@@ -1,0 +1,11 @@
+{
+  "name": "Cloning",
+  "icon": "biomancy:injection_device",
+  "category": "biomancy:reagents",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Grow entities using flesh blobs and blood samples."
+    }
+  ]
+}

@@ -5,8 +5,8 @@ import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 
-public final class TextUtil {
-	private TextUtil() {}
+public abstract class TextUtil {
+	TextUtil() {}
 
 	public static String getTranslationKey(String prefix, String suffix) {
 		return prefix + "." + BiomancyMod.MOD_ID + "." + suffix;

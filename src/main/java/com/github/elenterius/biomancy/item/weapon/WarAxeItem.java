@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.item.weapon;
 
-import com.github.elenterius.biomancy.client.util.TooltipUtil;
+import com.github.elenterius.biomancy.util.ClientTextUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.IItemTier;
@@ -21,7 +21,7 @@ public class WarAxeItem extends AxeItem {
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(TooltipUtil.getItemInfoTooltip(this).setStyle(TooltipUtil.LORE_STYLE));
-		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).setStyle(ClientTextUtil.LORE_STYLE));
+		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 	}
 }

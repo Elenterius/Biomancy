@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.item.weapon;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.client.util.TooltipUtil;
 import com.github.elenterius.biomancy.init.ModDamageSources;
+import com.github.elenterius.biomancy.util.ClientTextUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -27,10 +27,28 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-public class InfestedGuanDaoItem extends PoleWeaponItem {
+public class FleshbornGuanDaoItem extends PoleWeaponItem {
 
-	public InfestedGuanDaoItem(IItemTier tier, int attackDamageIn, float attackSpeedIn, Properties builderIn) {
+	public FleshbornGuanDaoItem(IItemTier tier, int attackDamageIn, float attackSpeedIn, Properties builderIn) {
 		super(tier, attackDamageIn, attackSpeedIn, builderIn);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	@Override
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).setStyle(ClientTextUtil.LORE_STYLE));
+		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
+
+		CompoundNBT nbt = stack.getOrCreateChildTag(BiomancyMod.MOD_ID);
+		byte hitCount = nbt.getByte("HitCount");
+		String key;
+		if (hitCount > 9) key = "item_is_exalted";
+		else if (hitCount > 0) key = "item_is_excited";
+		else key = "item_is_awake";
+		tooltip.add(new TranslationTextComponent("tooltip.biomancy." + key).mergeStyle(TextFormatting.GRAY));
+		tooltip.add(new StringTextComponent("Hunger: " + nbt.getByte("Hunger")).mergeStyle(TextFormatting.DARK_GRAY));
+		tooltip.add(new StringTextComponent("Damage Modifier: +" + (hitCount == 0 ? 0 : (1f + Math.max(0, hitCount - 1) * 0.5f))).mergeStyle(TextFormatting.DARK_GRAY));
+		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 	}
 
 	public static void adaptAttackDamageToTarget(ItemStack stack, LivingEntity attacker, Entity target) {
@@ -68,24 +86,6 @@ public class InfestedGuanDaoItem extends PoleWeaponItem {
 			}
 		}
 		return 0f;
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(TooltipUtil.getItemInfoTooltip(this).setStyle(TooltipUtil.LORE_STYLE));
-		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
-
-		CompoundNBT nbt = stack.getOrCreateChildTag(BiomancyMod.MOD_ID);
-		byte hitCount = nbt.getByte("HitCount");
-		String key;
-		if (hitCount > 9) key = "item_is_exalted";
-		else if (hitCount > 0) key = "item_is_excited";
-		else key = "item_is_awake";
-		tooltip.add(new TranslationTextComponent("tooltip.biomancy." + key).mergeStyle(TextFormatting.GRAY));
-		tooltip.add(new StringTextComponent("Hunger: " + nbt.getByte("Hunger")).mergeStyle(TextFormatting.DARK_GRAY));
-		tooltip.add(new StringTextComponent("Damage Modifier: +" + (1f + Math.max(0, hitCount - 1) * 0.5f)).mergeStyle(TextFormatting.DARK_GRAY));
-		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
 	}
 
 	@Override

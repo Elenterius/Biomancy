@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.item;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.client.util.TooltipUtil;
 import com.github.elenterius.biomancy.tileentity.IOwnableTile;
+import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
 import com.github.elenterius.biomancy.util.UserAuthorization;
 import net.minecraft.client.gui.screen.Screen;
@@ -43,10 +43,11 @@ public class AccessKeyItem extends Item {
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).setStyle(ClientTextUtil.LORE_STYLE));
 		CompoundNBT nbt = stack.getOrCreateChildTag(NBT_KEY);
 		if (nbt.hasUniqueId("OwnerUUID")) {
-			tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
-			StringTextComponent ownerName = new StringTextComponent(TooltipUtil.tryToGetPlayerNameOnClientSide(nbt.getUniqueId("OwnerUUID")));
+			tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
+			StringTextComponent ownerName = new StringTextComponent(ClientTextUtil.tryToGetPlayerNameOnClientSide(nbt.getUniqueId("OwnerUUID")));
 			ownerName.mergeStyle(TextFormatting.WHITE);
 			tooltip.add(new TranslationTextComponent(TextUtil.getTranslationKey("tooltip", "owner"), ownerName).mergeStyle(TextFormatting.GRAY));
 
@@ -56,13 +57,13 @@ public class AccessKeyItem extends Item {
 				int limit = Screen.hasControlDown() ? Math.min(5, nbtList.size()) : nbtList.size();
 				for (int i = 0; i < limit; i++) {
 					CompoundNBT userNbt = nbtList.getCompound(i);
-					String userName = TooltipUtil.tryToGetPlayerNameOnClientSide(userNbt.getUniqueId("UserUUID"));
+					String userName = ClientTextUtil.tryToGetPlayerNameOnClientSide(userNbt.getUniqueId("UserUUID"));
 					UserAuthorization.AuthorityLevel level = UserAuthorization.AuthorityLevel.deserialize(userNbt);
 					tooltip.add(new StringTextComponent(String.format(" - %s (%s)", userName, level.name().toLowerCase(Locale.ROOT))).mergeStyle(TextFormatting.GRAY));
 				}
 				int remainder = nbtList.size() - limit;
 				if (remainder > 0) {
-					tooltip.add(TooltipUtil.pressButtonTo(TooltipUtil.getCtrlKey(), "show " + remainder + " more users..."));
+					tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getCtrlKey(), "show " + remainder + " more users..."));
 				}
 			}
 		}

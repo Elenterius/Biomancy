@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.item.weapon;
 
-import com.github.elenterius.biomancy.client.util.TooltipUtil;
 import com.github.elenterius.biomancy.init.ModAttributes;
 import com.github.elenterius.biomancy.item.IAreaHarvestingItem;
+import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.GeometricShape;
 import com.github.elenterius.biomancy.util.PlayerInteractionUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
@@ -64,8 +64,8 @@ public class LongRangeClawItem extends ClawWeaponItem implements IAreaHarvesting
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(TooltipUtil.getItemInfoTooltip(this).setStyle(TooltipUtil.LORE_STYLE));
-		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).setStyle(ClientTextUtil.LORE_STYLE));
+		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 
 		int timeLeft = stack.getOrCreateTag().getInt(NBT_KEY);
 		if (timeLeft > 0) {
@@ -74,7 +74,7 @@ public class LongRangeClawItem extends ClawWeaponItem implements IAreaHarvesting
 		else {
 			tooltip.add(TextUtil.getTranslationText("tooltip", "item_is_dormant").mergeStyle(TextFormatting.GRAY));
 		}
-		if (stack.isEnchanted()) tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
+		if (stack.isEnchanted()) tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 	}
 
 	@Override

@@ -1,5 +1,9 @@
-package com.github.elenterius.biomancy.client.util;
+package com.github.elenterius.biomancy.util;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+@OnlyIn(Dist.CLIENT)
 public final class GuiUtil {
 	private GuiUtil() {}
 

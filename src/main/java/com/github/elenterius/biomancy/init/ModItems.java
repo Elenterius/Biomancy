@@ -16,7 +16,7 @@ public final class ModItems {
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, BiomancyMod.MOD_ID);
 
 	// Armor
-	public static final RegistryObject<GogglesArmorItem> OCULI_OF_UNVEILING = ITEMS.register("unveiling_oculi", () -> new GogglesArmorItem(ArmorMaterial.IRON, createItemProperties().rarity(Rarity.EPIC)));
+	public static final RegistryObject<OculiGogglesArmorItem> OCULI_OF_UNVEILING = ITEMS.register("unveiling_oculi", () -> new OculiGogglesArmorItem(ArmorMaterial.IRON, createItemProperties().rarity(Rarity.EPIC)));
 
 	// Weapons
 	public static final RegistryObject<WarAxeItem> FLESHBORN_WAR_AXE = ITEMS.register("fleshborn_war_axe", () -> new WarAxeItem(ModItemTier.BIOMETAL, 5F, -3.15F, createItemProperties().rarity(Rarity.EPIC)));
@@ -26,7 +26,7 @@ public final class ModItems {
 	public static final RegistryObject<ToothGunItem> TOOTH_GUN = ITEMS.register("tooth_gun", () -> new ToothGunItem(createItemProperties().maxStackSize(1).maxDamage(ModItemTier.LESSER_BIOMETAL.getMaxUses()).rarity(Rarity.EPIC)));
 	public static final RegistryObject<LeechClawItem> LEECH_CLAW = ITEMS.register("leech_claw", () -> new LeechClawItem(ModItemTier.BIOMETAL, 3, -2.2f, createItemProperties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<LongRangeClawItem> LONG_RANGE_CLAW = ITEMS.register("long_range_claw", () -> new LongRangeClawItem(ModItemTier.BIOMETAL, 3, -2.4f, 60, createItemProperties().rarity(Rarity.EPIC)));
-	public static final RegistryObject<InfestedGuanDaoItem> FLESHBORN_GUAN_DAO = ITEMS.register("fleshborn_guan_dao", () -> new InfestedGuanDaoItem(ModItemTier.BIOMETAL, 4, -3F, createItemProperties().rarity(Rarity.EPIC)));
+	public static final RegistryObject<FleshbornGuanDaoItem> FLESHBORN_GUAN_DAO = ITEMS.register("fleshborn_guan_dao", () -> new FleshbornGuanDaoItem(ModItemTier.BIOMETAL, 4, -3F, createItemProperties().rarity(Rarity.EPIC)));
 	//	public static final RegistryObject<SinewBowItem> SINEW_BOW = ITEMS.register("sinew_bow", () -> new SinewBowItem(createItemProperties().maxDamage(ModItemTier.LESSER_BIOMETAL.getMaxUses() / 3)));
 	//	public static final RegistryObject<EntityLauncherItem> ENTITY_LAUNCHER = ITEMS.register("entity_launcher", () -> new EntityLauncherItem(createItemProperties().maxStackSize(1).maxDamage(ModItemTier.LESSER_BIOMETAL.getMaxUses()).rarity(Rarity.EPIC)));
 	//	public static final RegistryObject<InfestedRifleItem> INFESTED_RIFLE = ITEMS.register("infested_rifle", () -> new InfestedRifleItem(createItemProperties().maxStackSize(1).maxDamage(384).rarity(Rarity.EPIC)));

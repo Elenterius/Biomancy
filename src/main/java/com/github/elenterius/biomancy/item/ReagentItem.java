@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.item;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModReagents;
 import com.github.elenterius.biomancy.reagent.Reagent;
-import com.github.elenterius.biomancy.util.TextUtil;
+import com.github.elenterius.biomancy.util.ClientTextUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -23,6 +23,12 @@ public class ReagentItem extends Item {
 		super(properties);
 	}
 
+	public static ItemStack getReagentItemStack(Reagent reagent) {
+		ItemStack stack = new ItemStack(ModItems.REAGENT.get());
+		Reagent.serialize(reagent, stack.getOrCreateTag());
+		return stack;
+	}
+
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
@@ -30,7 +36,7 @@ public class ReagentItem extends Item {
 		if (reagent != null) {
 			reagent.addInfoToTooltip(stack, worldIn, tooltip, flagIn);
 		}
-		else tooltip.add(TextUtil.getTranslationText("tooltip", "contains_nothing"));
+		else tooltip.add(ClientTextUtil.getTooltipText("contains_nothing"));
 	}
 
 	@Override
@@ -40,12 +46,6 @@ public class ReagentItem extends Item {
 				items.add(ReagentItem.getReagentItemStack(reagent));
 			}
 		}
-	}
-
-	public static ItemStack getReagentItemStack(Reagent reagent) {
-		ItemStack stack = new ItemStack(ModItems.REAGENT.get());
-		Reagent.serialize(reagent, stack.getOrCreateTag());
-		return stack;
 	}
 
 	@Override

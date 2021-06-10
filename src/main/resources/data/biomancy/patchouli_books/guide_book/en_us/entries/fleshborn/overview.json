@@ -1,0 +1,11 @@
+{
+  "name": "Overview",
+  "icon": "biomancy:fleshborn_shovel",
+  "category": "biomancy:fleshborn",
+  "pages": [
+    {
+      "type": "text",
+      "text": "There are three categories of fleshborn:\n1. Fleshborn that are symbiotic organisms (i.e. both of you benefit together; e.g. heal each other)\n2. Fleshborn that are parasitic organisms (e.g. consume your vitality regardless of your current health situation → death)\n3. Fleshborn that are exploited organisms (e.g. they do your bidding without compensation)"
+    }
+  ]
+}

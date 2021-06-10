@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.block;
 
-import com.github.elenterius.biomancy.client.util.TooltipUtil;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.tileentity.DecomposerTileEntity;
+import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
 import com.github.elenterius.biomancy.util.VoxelShapeUtil;
 import net.minecraft.block.Block;
@@ -62,9 +62,10 @@ public class DecomposerBlock extends OwnableContainerBlock {
 
 	@Override
 	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()).setStyle(ClientTextUtil.LORE_STYLE));
 		CompoundNBT nbt = stack.getChildTag("BlockEntityTag");
 		if (nbt != null) {
-			tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
+			tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 			int mainFuel = (int) (MathHelper.clamp(nbt.getShort("MainFuel") / (float) DecomposerTileEntity.MAX_FUEL, 0f, 1f) * 100);
 			int speedFuel = (int) (MathHelper.clamp(nbt.getShort("SpeedFuel") / (float) DecomposerTileEntity.MAX_FUEL, 0f, 1f) * 100);
 			tooltip.add(TextUtil.getTranslationText("tooltip", "biofuel").appendString(": " + mainFuel + "%"));

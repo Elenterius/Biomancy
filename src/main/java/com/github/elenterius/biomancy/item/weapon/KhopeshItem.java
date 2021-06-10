@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.item.weapon;
 
-import com.github.elenterius.biomancy.client.util.TooltipUtil;
 import com.github.elenterius.biomancy.init.ModAttributes;
+import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -36,17 +36,17 @@ public class KhopeshItem extends AxeItem {
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(TooltipUtil.getItemInfoTooltip(this).setStyle(TooltipUtil.LORE_STYLE));
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).setStyle(ClientTextUtil.LORE_STYLE));
 
 		if (stack.isEnchanted()) {
-			if (TooltipUtil.isToolTipVisible(stack, ItemStack.TooltipDisplayFlags.ENCHANTMENTS)) {
+			if (ClientTextUtil.isToolTipVisible(stack, ItemStack.TooltipDisplayFlags.ENCHANTMENTS)) {
 				stack.func_242395_a(ItemStack.TooltipDisplayFlags.ENCHANTMENTS); //hide enchantment tooltip
 			}
-			tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
+			tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 			ItemStack.addEnchantmentTooltips(tooltip, stack.getEnchantmentTagList()); //add enchantments before custom modifiers
 		}
 
-		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
+		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 		tooltip.add(TextUtil.getTranslationText("tooltip", "riding_bonus").setStyle(Style.EMPTY.applyFormatting(TextFormatting.GRAY)));
 		tooltip.add((new StringTextComponent(" ")).appendSibling(new TranslationTextComponent("attribute.modifier.plus." + ATTACK_DAMAGE_RIDING_MODIFIER.getOperation().getId(), DECIMALFORMAT.format(ATTACK_DAMAGE_RIDING_MODIFIER.getAmount()), new TranslationTextComponent("attribute.name.generic.attack_damage"))).mergeStyle(TextFormatting.BLUE));
 		tooltip.add((new StringTextComponent(" ")).appendSibling(new TranslationTextComponent("attribute.modifier.plus." + ATTACK_DIST_RIDING_MODIFIER.getOperation().getId(), DECIMALFORMAT.format(ATTACK_DIST_RIDING_MODIFIER.getAmount()), new TranslationTextComponent("attribute.generic.attack_distance"))).mergeStyle(TextFormatting.BLUE));

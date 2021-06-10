@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.item;
 
 import com.github.elenterius.biomancy.capabilities.InventoryProviders;
 import com.github.elenterius.biomancy.capabilities.SpecialSingleItemStackHandler;
-import com.github.elenterius.biomancy.client.util.TooltipUtil;
+import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.client.world.ClientWorld;
@@ -31,6 +31,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -65,16 +66,17 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 			if (!storedStack.isEmpty() && amount > 0) {
 				int maxAmount = invNbt.getShort(NBT_KEY_MAX_AMOUNT);
 				tooltip.add(TextUtil.getTooltipText("contains", storedStack.getDisplayName()).mergeStyle(TextFormatting.GRAY));
-				tooltip.add(new StringTextComponent(String.format("%d/%d", amount, maxAmount)).mergeStyle(TextFormatting.GRAY));
+				DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
+				tooltip.add(new StringTextComponent(df.format(amount) + "/" + df.format(maxAmount)).mergeStyle(TextFormatting.GRAY));
 			}
 			else tooltip.add(TextUtil.getTooltipText("contains_nothing").mergeStyle(TextFormatting.GRAY));
 		}
 		else tooltip.add(TextUtil.getTooltipText("contains_nothing").mergeStyle(TextFormatting.GRAY));
 
-		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
+		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 		tooltip.add(new StringTextComponent("Mode: ").mergeStyle(TextFormatting.GRAY)
 				.appendSibling(new TranslationTextComponent(getMode(stack).getTranslationKey()).mergeStyle(TextFormatting.AQUA)));
-		tooltip.add(TooltipUtil.pressButtonTo(TooltipUtil.getDefaultKey(), TextUtil.getTooltipText("action_cycle")).mergeStyle(TextFormatting.DARK_GRAY));
+		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextUtil.getTooltipText("action_cycle")).mergeStyle(TextFormatting.DARK_GRAY));
 	}
 
 	@Override

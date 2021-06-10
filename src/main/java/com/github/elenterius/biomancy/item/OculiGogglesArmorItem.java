@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.item;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.client.util.TooltipUtil;
 import com.github.elenterius.biomancy.init.ModItems;
+import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -14,10 +14,7 @@ import net.minecraft.item.IArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.*;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -25,30 +22,29 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class GogglesArmorItem extends ArmorItem implements IEntityUnveilerHeadSlotItem {
+public class OculiGogglesArmorItem extends ArmorItem implements IEntityUnveilerHeadSlotItem {
 
 	public static final String ARMOR_TEXTURE = BiomancyMod.MOD_ID + ":textures/models/armor/oculi_of_unveiling.png";
 
-	public GogglesArmorItem(IArmorMaterial materialIn, Properties properties) {
+	public OculiGogglesArmorItem(IArmorMaterial materialIn, Properties properties) {
 		super(materialIn, EquipmentSlotType.HEAD, properties);
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(TooltipUtil.getItemInfoTooltip(this).mergeStyle(TooltipUtil.LORE_STYLE));
-		tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
-		if (stack.hasTag() && stack.getOrCreateTag().contains(NBT_KEY)) {
-			if (stack.getOrCreateTag().getBoolean(NBT_KEY)) {
-				tooltip.add(TextUtil.getTranslationText("tooltip", "item_is_awake").mergeStyle(TextFormatting.GRAY));
-				tooltip.add(TooltipUtil.pressButtonTo(TooltipUtil.getDefaultKey(), TextUtil.getTranslationText("tooltip", "action_deactivate")).mergeStyle(TextFormatting.DARK_GRAY));
-			}
-			else {
-				tooltip.add(TextUtil.getTranslationText("tooltip", "item_is_inert").mergeStyle(TextFormatting.GRAY));
-				tooltip.add(TooltipUtil.pressButtonTo(TooltipUtil.getDefaultKey(), TextUtil.getTranslationText("tooltip", "action_activate")).mergeStyle(TextFormatting.DARK_GRAY));
-			}
-			tooltip.add(TooltipUtil.EMPTY_LINE_HACK());
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).mergeStyle(ClientTextUtil.LORE_STYLE));
+		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
+		if (stack.getOrCreateTag().getBoolean(NBT_KEY)) {
+			tooltip.add(TextUtil.getTranslationText("tooltip", "item_is_awake").mergeStyle(TextFormatting.GRAY));
+			tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextUtil.getTranslationText("tooltip", "action_deactivate")).mergeStyle(TextFormatting.DARK_GRAY));
 		}
+		else {
+			tooltip.add(TextUtil.getTranslationText("tooltip", "item_is_inert").mergeStyle(TextFormatting.GRAY));
+			tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextUtil.getTranslationText("tooltip", "action_activate")).mergeStyle(TextFormatting.DARK_GRAY));
+		}
+		tooltip.add(new StringTextComponent("If equipped, use ").appendSibling(ClientTextUtil.getCtrlKey()).appendString(" + ").appendSibling(ClientTextUtil.getDefaultKey().appendString(" instead.")).mergeStyle(TextFormatting.DARK_GRAY));
+		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 	}
 
 	@Override

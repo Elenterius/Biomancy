@@ -103,7 +103,8 @@ public class DigesterContainer extends Container {
 	}
 
 	public String getFuelTranslationKey() {
-		return stateData.fuel.getFluid().getTranslationKey();
+//		return stateData.fuel.getFluid().getTranslationKey();
+		return "fluid.minecraft.water";
 	}
 
 	/**
