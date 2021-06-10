@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.block;
 import com.github.elenterius.biomancy.tileentity.IOwnableTile;
 import com.github.elenterius.biomancy.tileentity.OwnableTileEntityDelegator;
 import com.github.elenterius.biomancy.tileentity.SimpleOwnableTileEntity;
+import com.github.elenterius.biomancy.util.ClientTextUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -41,6 +42,7 @@ public class OwnableDoorBlock extends DoorBlock implements IOwnableBlock {
 	@Override
 	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()).setStyle(ClientTextUtil.LORE_STYLE));
 		OwnableBlock.addOwnableTooltip(stack, tooltip, flagIn);
 	}
 

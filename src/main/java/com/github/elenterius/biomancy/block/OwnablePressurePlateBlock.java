@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.block;
 
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.tileentity.SimpleOwnableTileEntity;
+import com.github.elenterius.biomancy.util.ClientTextUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.PressurePlateBlock;
@@ -50,6 +51,7 @@ public class OwnablePressurePlateBlock extends PressurePlateBlock implements IOw
 	@Override
 	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, worldIn, tooltip, flagIn);
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()).setStyle(ClientTextUtil.LORE_STYLE));
 		OwnableBlock.addOwnableTooltip(stack, tooltip, flagIn);
 	}
 
