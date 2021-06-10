@@ -92,8 +92,7 @@ public class ToothProjectileEntity extends AbstractProjectileEntity implements I
 		return ParticleTypes.POOF;
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	private static final ItemStack ITEM_TO_RENDER = getItemForRendering();
+	private static ItemStack ITEM_TO_RENDER;
 
 	@OnlyIn(Dist.CLIENT)
 	private static ItemStack getItemForRendering() {
@@ -105,6 +104,9 @@ public class ToothProjectileEntity extends AbstractProjectileEntity implements I
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public ItemStack getItem() {
+		if (ITEM_TO_RENDER == null) {
+			ITEM_TO_RENDER = getItemForRendering();
+		}
 		return ITEM_TO_RENDER;
 	}
 
