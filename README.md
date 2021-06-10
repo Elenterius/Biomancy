@@ -63,9 +63,9 @@ Biomancy is a Biopunk inspired Mod and themed around flesh magic and bio-manipul
 
 #### Machines
 
-- Chewer (uses Nutrient Paste/Bar as Fuel)
+- Chewer (uses Nutrient Paste/Bar or Cooked Meat as Fuel)
 - Digester (uses Water as fuel)
-- Decomposer (uses Nutrient Paste/Bar as Fuel)
+- Decomposer (uses Nutrient Paste/Bar or Cooked Meat as Fuel)
 - Evolution Pool (uses Mutagenic Bile as fuel)
 
 #### Storage
