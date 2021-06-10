@@ -7,8 +7,8 @@ Biomancy is a Biopunk inspired Mod and themed around flesh magic and bio-manipul
 
 **Mod Integrations**
 
--[x] JEI
--[ ] Patchouli WIP
+- [x] JEI
+- [ ] Patchouli WIP
 
 ## Features
 
