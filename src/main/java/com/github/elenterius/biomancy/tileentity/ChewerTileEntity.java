@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.tileentity;
 import com.github.elenterius.biomancy.block.ChewerBlock;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
+import com.github.elenterius.biomancy.init.ModTags;
 import com.github.elenterius.biomancy.init.ModTileEntityTypes;
 import com.github.elenterius.biomancy.inventory.ChewerContainer;
 import com.github.elenterius.biomancy.inventory.SimpleInvContents;
@@ -87,7 +88,7 @@ public class ChewerTileEntity extends OwnableTileEntity implements INamedContain
 	}
 
 	public static boolean isItemValidFuel(ItemStack stack) {
-		return stack.getItem() == ModItems.NUTRIENT_PASTE.get() || stack.getItem() == ModItems.NUTRIENT_BAR.get();
+		return stack.getItem() == ModItems.NUTRIENT_PASTE.get() || stack.getItem() == ModItems.NUTRIENT_BAR.get() || stack.getItem().isIn(ModTags.Items.COOKED_MEATS);
 	}
 
 	@Override

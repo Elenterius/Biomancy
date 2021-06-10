@@ -166,9 +166,9 @@
   "tooltip.biomancy.fleshborn_pressure_plate": "Sneak click to change mode.\nAble to activate ownable blocks.",
   "tooltip.biomancy.fleshborn_chest": "Keeps Inventory.",
   "tooltip.biomancy.gulge": "Stores 32k of a single item, keeps inventory.",
-  "tooltip.biomancy.chewer": "Uses Nutrient Paste/Bar as Fuel.",
+  "tooltip.biomancy.chewer": "Uses Nutrient Paste/Bar or Cooked Meat as Fuel.",
   "tooltip.biomancy.digester": "Uses Water as fuel.",
-  "tooltip.biomancy.decomposer": "Uses Nutrient Paste/Bar as Fuel.",
+  "tooltip.biomancy.decomposer": "Uses Nutrient Paste/Bar Cooked Meat as Fuel.",
   "tooltip.biomancy.evolution_pool": "Uses Mutagenic Bile as fuel.",
 
   "tooltip.biomancy.riding_bonus": "When Riding an Entity:",
