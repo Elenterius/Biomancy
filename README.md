@@ -1,4 +1,4 @@
-![Biomancy](media/biomancy.png)
+<img src="media/biomancy.png" alt="Biomancy" width="30%" style="image-rendering: crisp-edges;"/>
 
 [![Biomancy Version](https://img.shields.io/badge/Biomancy-1.0.0--beta.1-yellow)](https://github.com/Elenterius/Biomancy)
 [![Forge Version](https://img.shields.io/badge/Minecraft%20Forge-1.16.5--36.1.4-orange)](https://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.16.5.html)
