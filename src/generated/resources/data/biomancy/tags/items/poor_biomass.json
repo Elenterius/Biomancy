@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:flowers",
+    "#forge:seeds",
+    "#minecraft:leaves",
+    "minecraft:sweet_berries",
+    "minecraft:sugar_cane",
+    "minecraft:kelp",
+    "minecraft:dried_kelp",
+    "minecraft:grass",
+    "minecraft:seagrass",
+    "minecraft:vine",
+    "minecraft:fern",
+    "minecraft:bamboo"
+  ]
+}

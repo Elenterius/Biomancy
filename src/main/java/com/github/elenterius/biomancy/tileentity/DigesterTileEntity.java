@@ -55,7 +55,7 @@ public class DigesterTileEntity extends OwnableTileEntity implements INamedConta
 	public static final int OUTPUT_SLOTS_COUNT = 2;
 
 	public static final int MAX_FUEL = 32_000;
-	public static final short FUEL_COST = 2;
+	public static final short FUEL_COST = 1;
 
 	private final DigesterStateData stateData = new DigesterStateData();
 	private final SimpleInvContents fuelContents;

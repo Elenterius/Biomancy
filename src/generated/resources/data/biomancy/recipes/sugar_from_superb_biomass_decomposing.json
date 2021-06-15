@@ -1,0 +1,14 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredients": [
+    {
+      "tag": "biomancy:superb_biomass"
+    }
+  ],
+  "byproducts": [],
+  "result": {
+    "item": "minecraft:sugar",
+    "count": 6
+  },
+  "time": 800
+}

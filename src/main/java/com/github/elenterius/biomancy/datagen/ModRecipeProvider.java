@@ -5,12 +5,12 @@ import com.github.elenterius.biomancy.datagen.recipe.*;
 import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.item.ReagentItem;
 import com.github.elenterius.biomancy.recipe.ItemStackIngredient;
+import com.github.elenterius.biomancy.tileentity.ChewerTileEntity;
 import com.github.elenterius.biomancy.tileentity.EvolutionPoolTileEntity;
 import net.minecraft.advancements.criterion.EnchantmentPredicate;
 import net.minecraft.advancements.criterion.InventoryChangeTrigger;
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.advancements.criterion.MinMaxBounds;
-import net.minecraft.block.ComposterBlock;
 import net.minecraft.data.*;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
@@ -27,8 +27,6 @@ import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.Tags;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
@@ -417,18 +415,24 @@ public class ModRecipeProvider extends RecipeProvider {
 	}
 
 	private void registerChewerRecipes(Consumer<IFinishedRecipe> consumer) {
-		final int defaultChewingTime = 200;
+		final int defaultChewingTime = ChewerTileEntity.DEFAULT_TIME;
 
 		// crushed biomass /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		ComposterBlock.CHANCES.keySet().stream().filter(IGNORE_COMPOSTABLE_PREDICATE).forEach(iItemProvider -> {
-			float chance = ComposterBlock.CHANCES.getFloat(iItemProvider);
-			int amount = 7 - MathHelper.clamp(Math.round(-7.14f * chance + 8.14f), 1, 6);
-			ResourceLocation itemId = Registry.ITEM.getKey(iItemProvider.asItem());
-			String namespace = itemId.getNamespace().equals("minecraft") ? "mc" : itemId.getNamespace();
-			ChewerRecipeBuilder.createRecipe(ModItems.BOLUS.get(), defaultChewingTime + Math.round(Math.max(1f - chance, 0f) * 150), amount)
-					.setIngredient(iItemProvider.asItem())
-					.addCriterion("has_raw_biomass", hasItem(ModTags.Items.RAW_BIOMASS)).build(consumer, "from_" + namespace + '_' + itemId.getPath(), true);
-		});
+		ChewerRecipeBuilder.createRecipe(ModItems.BOLUS.get(), 100, 2)
+				.setIngredient(ModTags.Items.POOR_BIOMASS)
+				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_poor_biomass", true);
+
+		ChewerRecipeBuilder.createRecipe(ModItems.BOLUS.get(), 190, 4)
+				.setIngredient(ModTags.Items.AVERAGE_BIOMASS)
+				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_average_biomass", true);
+
+		ChewerRecipeBuilder.createRecipe(ModItems.BOLUS.get(), 275, 6)
+				.setIngredient(ModTags.Items.GOOD_BIOMASS)
+				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_good_biomass", true);
+
+		ChewerRecipeBuilder.createRecipe(ModItems.BOLUS.get(), 300, 8)
+				.setIngredient(ModTags.Items.SUPERB_BIOMASS)
+				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_superb_biomass", true);
 
 		// misc ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		ChewerRecipeBuilder.createRecipe(Items.COBBLESTONE, defaultChewingTime)
@@ -492,7 +496,27 @@ public class ModRecipeProvider extends RecipeProvider {
 		DigesterRecipeBuilder.createRecipe(ModItems.NUTRIENT_PASTE.get(), defaultTime)
 				.setIngredient(ModItems.BOLUS.get())
 				.setByproduct(ModItems.DIGESTATE.get(), 1f)
-				.addCriterion("has_crushed_biomass", hasItem(ModItems.BOLUS.get())).build(consumer);
+				.addCriterion("has_crushed_biomass", hasItem(ModItems.BOLUS.get())).build(consumer, "from_bolus", true);
+
+		DigesterRecipeBuilder.createRecipe(ModItems.NUTRIENT_PASTE.get(), 300)
+				.setIngredient(ModTags.Items.POOR_BIOMASS)
+				.setByproduct(ModItems.DIGESTATE.get(), 0.15f)
+				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_poor_biomass", true);
+
+		DigesterRecipeBuilder.createRecipe(ModItems.NUTRIENT_PASTE.get(), 400, 2)
+				.setIngredient(ModTags.Items.AVERAGE_BIOMASS)
+				.setByproduct(ModItems.DIGESTATE.get(), 0.3f)
+				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_average_biomass", true);
+
+		DigesterRecipeBuilder.createRecipe(ModItems.NUTRIENT_PASTE.get(), 600, 3)
+				.setIngredient(ModTags.Items.GOOD_BIOMASS)
+				.setByproduct(ModItems.DIGESTATE.get(), 0.5f)
+				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_good_biomass", true);
+
+		DigesterRecipeBuilder.createRecipe(ModItems.NUTRIENT_PASTE.get(), 800, 4)
+				.setIngredient(ModTags.Items.SUPERB_BIOMASS)
+				.setByproduct(ModItems.DIGESTATE.get(), 0.6f)
+				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_superb_biomass", true);
 	}
 
 	private void registerDecomposerRecipes(Consumer<IFinishedRecipe> consumer) {
@@ -505,16 +529,21 @@ public class ModRecipeProvider extends RecipeProvider {
 		registerHormonesRecipes(consumer);
 
 		// sugars //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		ComposterBlock.CHANCES.keySet().stream().filter(IGNORE_COMPOSTABLE_PREDICATE).forEach(iItemProvider -> {
-			float chance = ComposterBlock.CHANCES.getFloat(iItemProvider);
-			int amount = 7 - MathHelper.clamp(Math.round(-7.14f * chance + 8.14f), 1, 6);
-			ResourceLocation itemId = Registry.ITEM.getKey(iItemProvider.asItem());
-			String namespace = itemId.getNamespace().equals("minecraft") ? "mc" : itemId.getNamespace();
-			DecomposerRecipeBuilder.createRecipe(Items.SUGAR, defaultDecomposingTime + Math.round(Math.max(1f - chance, 0f) * 150), amount)
-					.addIngredient(iItemProvider.asItem())
-//					.addByproduct(ModItems.DIGESTATE.get(), 0.05f)
-					.addCriterion("has_raw_biomass", hasItem(ModTags.Items.RAW_BIOMASS)).build(consumer, "from_" + namespace + '_' + itemId.getPath(), true);
-		});
+		DecomposerRecipeBuilder.createRecipe(Items.SUGAR, 300, 1)
+				.addIngredient(ModTags.Items.POOR_BIOMASS)
+				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_poor_biomass", true);
+
+		DecomposerRecipeBuilder.createRecipe(Items.SUGAR, 400, 2)
+				.addIngredient(ModTags.Items.AVERAGE_BIOMASS)
+				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_average_biomass", true);
+
+		DecomposerRecipeBuilder.createRecipe(Items.SUGAR, 600, 4)
+				.addIngredient(ModTags.Items.GOOD_BIOMASS)
+				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_good_biomass", true);
+
+		DecomposerRecipeBuilder.createRecipe(Items.SUGAR, 800, 6)
+				.addIngredient(ModTags.Items.SUPERB_BIOMASS)
+				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_superb_biomass", true);
 
 		// misc ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		DecomposerRecipeBuilder.createRecipe(ModItems.FLESH_LUMP.get(), defaultDecomposingTime)

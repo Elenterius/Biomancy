@@ -1,0 +1,16 @@
+{
+  "type": "biomancy:digesting",
+  "ingredient": {
+    "tag": "biomancy:poor_biomass"
+  },
+  "result": {
+    "item": "biomancy:nutrient_paste"
+  },
+  "time": 300,
+  "byproduct": {
+    "result": {
+      "item": "biomancy:digestate"
+    },
+    "chance": 0.15
+  }
+}
