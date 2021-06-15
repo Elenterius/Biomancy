@@ -77,7 +77,17 @@ minecraft {
     }
 }
 
+//The mixin annotation processor doesn't have an obfuscation mapping when run through the IntelliJ compiler
+if (System.getProperty("idea.sync.active") == "true") {
+    afterEvaluate {
+        tasks.withType(JavaCompile).all {
+            it.options.annotationProcessorPath = files()
+        }
+    }
+}
+
 mixin {
+//    defaultObfuscationEnv "searge"
     add sourceSets.main, "mixins.biomancy.refmap.json"
 }
 
