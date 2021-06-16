@@ -20,7 +20,7 @@
       "nbt": "{StoredEnchantments:[{lvl:5s,id:\"minecraft:bane_of_arthropods\"}]}"
     },
     {
-      "item": "biomancy:artificial_stomach"
+      "tag": "biomancy:stomachs"
     },
     {
       "item": "biomancy:eroding_bile"

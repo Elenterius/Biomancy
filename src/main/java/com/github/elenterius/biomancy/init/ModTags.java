@@ -34,6 +34,8 @@ public final class ModTags {
 		public static final Tags.IOptionalNamedTag<Item> KERATINS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "keratins"));
 		public static final Tags.IOptionalNamedTag<Item> HORMONES = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "hormones"));
 
+		public static final Tags.IOptionalNamedTag<Item> STOMACHS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "stomachs"));
+
 		private Items() {}
 
 		private static void forceInit() {}

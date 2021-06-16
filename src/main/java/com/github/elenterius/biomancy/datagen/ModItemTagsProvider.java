@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.datagen;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModTags;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
@@ -80,6 +81,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 		builder.addOptionalTag(ModTags.Items.AVERAGE_BIOMASS.getName());
 		builder.addOptionalTag(ModTags.Items.GOOD_BIOMASS.getName());
 		builder.addOptionalTag(ModTags.Items.SUPERB_BIOMASS.getName());
+
+		getOrCreateBuilder(ModTags.Items.STOMACHS)
+				.add(ModItems.ARTIFICIAL_STOMACH.get(), ModItems.STOMACH.get());
 
 		LOGGER.info(logMarker, "registering secretion item tags...");
 		getOrCreateBuilder(ModTags.Items.OXIDES)

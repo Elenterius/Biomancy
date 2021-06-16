@@ -137,7 +137,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.GULGE.get(), defaultTime * 2)
-				.addIngredient(ModItems.FLESH_CHEST.get()).addIngredients(ModItems.ARTIFICIAL_STOMACH.get(), 4).addIngredient(ModItems.BIOMETAL.get())
+				.addIngredient(ModItems.FLESH_CHEST.get()).addIngredients(ModTags.Items.STOMACHS, 4).addIngredient(ModItems.BIOMETAL.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESH_CHEST.get(), defaultTime)
@@ -146,11 +146,11 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		// Tools ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.SINGLE_ITEM_BAG_ITEM.get(), defaultTime + 150)
-				.addIngredients(ModItems.ARTIFICIAL_STOMACH.get(), 2).addIngredient(Items.HOPPER).addIngredient(ModItems.FLESH_CHEST.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2)
+				.addIngredients(ModTags.Items.STOMACHS, 2).addIngredient(Items.HOPPER).addIngredient(ModItems.FLESH_CHEST.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2)
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.ENTITY_STORAGE_ITEM.get(), defaultTime + 150)
-				.addIngredients(ModItems.ARTIFICIAL_STOMACH.get(), 2).addIngredient(Items.EGG).addIngredient(Items.ENDER_CHEST).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2)
+				.addIngredients(ModTags.Items.STOMACHS, 2).addIngredient(Items.EGG).addIngredient(Items.ENDER_CHEST).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2)
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.OCULI_OF_UNVEILING.get(), defaultTime * 2)
@@ -171,7 +171,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		// Weapons /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESHBORN_WAR_AXE.get(), defaultTime * 2)
-				.addIngredient(ModItems.FLESHBORN_AXE.get()).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.HORMONE_BILE.get()).addIngredient(ModItems.ARTIFICIAL_STOMACH.get())
+				.addIngredient(ModItems.FLESHBORN_AXE.get()).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.HORMONE_BILE.get()).addIngredient(ModTags.Items.STOMACHS)
 				.addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2)
 				.addCriterion("has_fleshborn_axe", hasItem(ModItems.FLESHBORN_AXE.get())).build(consumer);
 
@@ -191,7 +191,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addCriterion("has_oculus", hasItem(ModItems.OCULUS.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.TOOTH_GUN.get(), defaultTime * 2)
-				.addIngredient(ModItems.INJECTION_DEVICE.get()).addIngredient(Items.SKELETON_SKULL).addIngredient(Items.CROSSBOW).addIngredient(ModItems.ARTIFICIAL_STOMACH.get()).addIngredient(ModItems.BIOMETAL.get()).addIngredient(ModItems.SILICATE_PASTE.get())
+				.addIngredient(ModItems.INJECTION_DEVICE.get()).addIngredient(Items.SKELETON_SKULL).addIngredient(Items.CROSSBOW).addIngredient(ModTags.Items.STOMACHS).addIngredient(ModItems.BIOMETAL.get()).addIngredient(ModItems.SILICATE_PASTE.get())
 				.addCriterion("has_injection_device", hasItem(ModItems.INJECTION_DEVICE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.WITHERSHOT.get(), defaultTime * 2)
@@ -206,7 +206,7 @@ public class ModRecipeProvider extends RecipeProvider {
 			ItemStackIngredient smiteBook = new ItemStackIngredient(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(Enchantments.SMITE, level)));
 			ItemStackIngredient arthropodsBook = new ItemStackIngredient(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(Enchantments.BANE_OF_ARTHROPODS, level)));
 			EvolutionPoolRecipeBuilder.createRecipe(minBaneBook, defaultTime + 125 * level)
-					.addIngredient(sharpnessBook).addIngredient(smiteBook).addIngredient(arthropodsBook).addIngredient(ModItems.ARTIFICIAL_STOMACH.get()).addIngredient(ModItems.ERODING_BILE.get()).addIngredient(ModItems.REJUVENATING_MUCUS.get())
+					.addIngredient(sharpnessBook).addIngredient(smiteBook).addIngredient(arthropodsBook).addIngredient(ModTags.Items.STOMACHS).addIngredient(ModItems.ERODING_BILE.get()).addIngredient(ModItems.REJUVENATING_MUCUS.get())
 					.addCriterion("has_smite_enchant", hasItem(ItemPredicate.Builder.create().enchantment(new EnchantmentPredicate(Enchantments.SMITE, MinMaxBounds.IntBound.atLeast(1))).build())).build(consumer, "attuned_bane_" + level, true);
 		}
 	}
@@ -717,11 +717,11 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK.get())).build(consumer);
 
 		ShapedRecipeBuilder.shapedRecipe(ModItems.DIGESTER.get())
-				.key('S', ModItems.ARTIFICIAL_STOMACH.get())
+				.key('S', ModTags.Items.STOMACHS)
 				.key('F', ModItems.FLESH_BLOCK.get())
 				.key('L', ModItems.FLESH_BLOCK_SLAB.get())
 				.patternLine("FLF").patternLine("FSF").patternLine("FLF")
-				.addCriterion("has_stomach", hasItem(ModItems.ARTIFICIAL_STOMACH.get())).build(consumer);
+				.addCriterion("has_stomach", hasItem(ModTags.Items.STOMACHS)).build(consumer);
 
 		// reagents ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

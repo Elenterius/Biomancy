@@ -11,7 +11,7 @@
       "item": "minecraft:crossbow"
     },
     {
-      "item": "biomancy:artificial_stomach"
+      "tag": "biomancy:stomachs"
     },
     {
       "item": "biomancy:biometal"

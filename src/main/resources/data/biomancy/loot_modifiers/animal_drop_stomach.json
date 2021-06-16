@@ -1,0 +1,21 @@
+{
+  "conditions": [
+    {
+      "condition": "minecraft:killed_by_player"
+    },
+    {
+      "condition": "minecraft:entity_properties",
+      "predicate": {
+        "flags": {
+          "is_on_fire": false
+        }
+      },
+      "entity": "this"
+    }
+  ],
+  "#comment": "the add_mob_loot serializer supports count (int) and nbt (string) keys",
+  "loot": {
+    "item": "biomancy:stomach"
+  },
+  "chance": 0.4
+}
