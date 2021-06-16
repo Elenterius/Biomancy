@@ -508,10 +508,20 @@ public class ModRecipeProvider extends RecipeProvider {
 				.setByproduct(ModItems.DIGESTATE.get(), 0.3f)
 				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_average_biomass", true);
 
+		DigesterRecipeBuilder.createRecipe(ModItems.NUTRIENT_PASTE.get(), 400, 2)
+				.setIngredient(ModTags.Items.RAW_MEATS)
+				.setByproduct(ModItems.DIGESTATE.get(), 0.3f)
+				.addCriterion("has_raw_meat", hasItem(ModTags.Items.RAW_MEATS)).build(consumer, "from_raw_meat", true);
+
 		DigesterRecipeBuilder.createRecipe(ModItems.NUTRIENT_PASTE.get(), 600, 3)
 				.setIngredient(ModTags.Items.GOOD_BIOMASS)
 				.setByproduct(ModItems.DIGESTATE.get(), 0.5f)
 				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_good_biomass", true);
+
+		DigesterRecipeBuilder.createRecipe(ModItems.NUTRIENT_PASTE.get(), 600, 3)
+				.setIngredient(ModTags.Items.COOKED_MEATS)
+				.setByproduct(ModItems.DIGESTATE.get(), 0.5f)
+				.addCriterion("has_cooked_meat", hasItem(ModTags.Items.COOKED_MEATS)).build(consumer, "from_cooked_meat", true);
 
 		DigesterRecipeBuilder.createRecipe(ModItems.NUTRIENT_PASTE.get(), 800, 4)
 				.setIngredient(ModTags.Items.SUPERB_BIOMASS)
@@ -564,7 +574,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime)
 				.addIngredient(ModTags.Items.COOKED_MEATS)
-				.addCriterion("has_any_cooked_meat", hasItem(ModTags.Items.COOKED_MEATS)).build(consumer, "from_cooked_meat", true);
+				.addCriterion("has_cooked_meat", hasItem(ModTags.Items.COOKED_MEATS)).build(consumer, "from_cooked_meat", true);
 
 //		DecomposingRecipeBuilder.decomposingRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime)
 //				.addIngredient(new AnyMeatlessFoodIngredient()) //TODO: fix this

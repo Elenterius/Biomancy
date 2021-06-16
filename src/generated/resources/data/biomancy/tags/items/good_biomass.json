@@ -1,7 +1,6 @@
 {
   "replace": false,
   "values": [
-    "#biomancy:cooked_meats",
     "minecraft:bread",
     "minecraft:mushroom_stem",
     "minecraft:suspicious_stew",

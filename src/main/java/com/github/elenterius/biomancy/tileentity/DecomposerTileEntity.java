@@ -3,7 +3,6 @@ package com.github.elenterius.biomancy.tileentity;
 import com.github.elenterius.biomancy.block.DecomposerBlock;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
-import com.github.elenterius.biomancy.init.ModTags;
 import com.github.elenterius.biomancy.init.ModTileEntityTypes;
 import com.github.elenterius.biomancy.inventory.DecomposerContainer;
 import com.github.elenterius.biomancy.inventory.SimpleInvContents;
@@ -100,7 +99,7 @@ public class DecomposerTileEntity extends OwnableTileEntity implements INamedCon
 	}
 
 	public static boolean isItemValidFuel(ItemStack stack) {
-		return stack.getItem() == ModItems.NUTRIENT_PASTE.get() || stack.getItem() == ModItems.NUTRIENT_BAR.get() || stack.getItem().isIn(ModTags.Items.COOKED_MEATS);
+		return stack.getItem() == ModItems.NUTRIENT_PASTE.get() || stack.getItem() == ModItems.NUTRIENT_BAR.get();
 	}
 
 	@Nullable
