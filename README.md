@@ -10,6 +10,9 @@ Biomancy is a Biopunk inspired Mod and themed around flesh magic and bio-manipul
 - [x] JEI
 - [ ] Patchouli WIP
 
+## Download
+https://www.curseforge.com/minecraft/mc-mods/biomancy
+
 ## Features
 
 ### Items
@@ -34,6 +37,7 @@ Biomancy is a Biopunk inspired Mod and themed around flesh magic and bio-manipul
 - Boomling-nade (heat seeking potion)
     - combine with splash potion in crafting table
     - sneak click to pick back up once thrown
+- Nutrient Paste/Bar (solid Biofuel)
 
 #### Reagents
 
@@ -63,10 +67,14 @@ Biomancy is a Biopunk inspired Mod and themed around flesh magic and bio-manipul
 
 #### Machines
 
-- Chewer (uses Nutrient Paste/Bar or Cooked Meat as Fuel)
+- Chewer (uses Nutrient Paste/Bar as biofuel)
+  - crushes things
 - Digester (uses Water as fuel)
-- Decomposer (uses Nutrient Paste/Bar or Cooked Meat as Fuel)
+  - converts raw or crushed biomass into nutrient paste (solid biofuel)
+- Decomposer (uses Nutrient Paste/Bar as biofuel)
+  - deconstructs things into subcomponents
 - Evolution Pool (uses Mutagenic Bile as fuel)
+  - mutagen fueled crafting table
 
 #### Storage
 
