@@ -46,13 +46,13 @@ public class ModEntityLootTables extends EntityLootTables {
 		);
 
 		registerLootTable(ModEntityTypes.FLESH_BLOB.get(), LootTable.builder()
-						.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(ModItems.FLESH_BLOCK.get())
-								.acceptFunction(SetCount.builder(ConstantRange.of(1))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))))
-						.addLootPool(LootPool.builder().rolls(ConstantRange.of(1))
-								.addEntry(ItemLootEntry.builder(ModItems.OCULUS.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-3.0F, 1.0F))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F))))
-								.acceptCondition(KilledByPlayer.builder()))
-//				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1))
-//						.addEntry(ItemLootEntry.builder(ModItems.TWISTED_HEART.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-3.0F, 1.0F))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))))
+				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(ModItems.FLESH_BLOCK.get())
+						.acceptFunction(SetCount.builder(ConstantRange.of(1))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f)))))
+				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1))
+						.addEntry(ItemLootEntry.builder(ModItems.OCULUS.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-3f, 1f))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f))))
+						.acceptCondition(KilledByPlayer.builder()))
+				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1))
+						.addEntry(ItemLootEntry.builder(ModItems.STOMACH.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-3f, 1f))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f)))))
 		);
 		registerLootTable(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_2, fleshBlobLootTableBuilderWithDrop(1));
 		registerLootTable(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_3, fleshBlobLootTableBuilderWithDrop(2));

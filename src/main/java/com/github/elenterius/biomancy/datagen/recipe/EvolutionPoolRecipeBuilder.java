@@ -73,6 +73,10 @@ public class EvolutionPoolRecipeBuilder {
 		return addIngredient(Ingredient.fromTag(tagIn));
 	}
 
+	public EvolutionPoolRecipeBuilder addIngredients(ITag<Item> tagIn, int quantity) {
+		return addIngredients(Ingredient.fromTag(tagIn), quantity);
+	}
+
 	public EvolutionPoolRecipeBuilder addIngredient(IItemProvider itemIn) {
 		return addIngredients(itemIn, 1);
 	}

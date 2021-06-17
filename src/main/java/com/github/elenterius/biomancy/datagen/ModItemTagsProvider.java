@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.datagen;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModTags;
-import net.minecraft.block.ComposterBlock;
 import net.minecraft.data.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.ItemTagsProvider;
@@ -56,10 +56,35 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 		getOrCreateBuilder(ModTags.Items.SUGARS)
 				.add(SUGAR, COOKIE, CAKE, HONEYCOMB, HONEY_BLOCK, HONEYCOMB_BLOCK, HONEY_BOTTLE, SWEET_BERRIES, COCOA_BEANS);
 
-		LOGGER.info(logMarker, "registering secretion item tags...");
-		Builder<Item> builder = getOrCreateBuilder(ModTags.Items.RAW_BIOMASS);
-		ComposterBlock.CHANCES.keySet().stream().sorted(ITEM_ID_COMPARATOR).map(IItemProvider::asItem).forEach(builder::addItemEntry);
+		getOrCreateBuilder(ModTags.Items.POOR_BIOMASS)
+				.addTag(ItemTags.FLOWERS).addTag(Tags.Items.SEEDS).addTag(ItemTags.LEAVES)
+				.add(SWEET_BERRIES, SUGAR_CANE, KELP, DRIED_KELP, GRASS, SEAGRASS, VINE, FERN, BAMBOO);
 
+		getOrCreateBuilder(ModTags.Items.AVERAGE_BIOMASS)
+				.addTag(ItemTags.SAPLINGS)
+				.add(WHEAT, BEETROOT, POTATO, CARROT, COOKIE, CACTUS, APPLE, CHORUS_FRUIT, MELON_SLICE, SPIDER_EYE, WARPED_FUNGUS,
+						NETHER_SPROUTS, WEEPING_VINES, TWISTING_VINES, LARGE_FERN, TALL_GRASS, WARPED_ROOTS, CRIMSON_ROOTS, NETHER_WART,
+						CRIMSON_FUNGUS, RED_MUSHROOM, BROWN_MUSHROOM);
+
+		getOrCreateBuilder(ModTags.Items.GOOD_BIOMASS)
+				.add(BREAD, MUSHROOM_STEM, SUSPICIOUS_STEW, COCOA_BEANS, BAKED_POTATO, HONEY_BOTTLE, MELON, PUMPKIN, DRIED_KELP_BLOCK,
+						SEA_PICKLE, LILY_PAD, CARVED_PUMPKIN, WARPED_WART_BLOCK, NETHER_WART_BLOCK, RED_MUSHROOM_BLOCK, BROWN_MUSHROOM_BLOCK,
+						SHROOMLIGHT, MUSHROOM_STEM);
+
+		getOrCreateBuilder(ModTags.Items.SUPERB_BIOMASS)
+				.add(CAKE, PUMPKIN_PIE, RABBIT_STEW, BEETROOT_SOUP, POISONOUS_POTATO, HAY_BLOCK);
+
+		Builder<Item> builder = getOrCreateBuilder(ModTags.Items.BIOMASS);
+//		ComposterBlock.CHANCES.keySet().stream().sorted(ITEM_ID_COMPARATOR).map(IItemProvider::asItem).forEach(builder::addItemEntry);
+		builder.addOptionalTag(ModTags.Items.POOR_BIOMASS.getName());
+		builder.addOptionalTag(ModTags.Items.AVERAGE_BIOMASS.getName());
+		builder.addOptionalTag(ModTags.Items.GOOD_BIOMASS.getName());
+		builder.addOptionalTag(ModTags.Items.SUPERB_BIOMASS.getName());
+
+		getOrCreateBuilder(ModTags.Items.STOMACHS)
+				.add(ModItems.ARTIFICIAL_STOMACH.get(), ModItems.STOMACH.get());
+
+		LOGGER.info(logMarker, "registering secretion item tags...");
 		getOrCreateBuilder(ModTags.Items.OXIDES)
 				.add(NETHERITE_SCRAP, TURTLE_EGG, BONE_MEAL)
 				.addTag(Tags.Items.INGOTS_IRON).addTag(Tags.Items.NUGGETS_IRON)

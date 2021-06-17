@@ -112,20 +112,18 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 		}
 	}
 
-	public void serializeItemAmount(CompoundNBT nbt) {
-
-	}
+	public void serializeItemAmount(CompoundNBT nbt) {}
 
 	public int deserializeItemAmount(CompoundNBT nbt) {
-		return 0;
+		return -1;
 	}
 
 	@Override
 	public CompoundNBT serializeNBT() {
 		CompoundNBT nbt = new CompoundNBT();
 		serializeItemAmount(nbt);
-		int count = cachedStack.getCount();
 		if (!cachedStack.isEmpty()) {
+			int count = cachedStack.getCount();
 			if (count > 64) cachedStack.setCount(64); //prevent byte overflow
 			nbt.put("Item", cachedStack.write(new CompoundNBT()));
 			if (count != cachedStack.getCount()) cachedStack.setCount(count); //restore item count
@@ -137,6 +135,7 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 	public void deserializeNBT(CompoundNBT nbt) {
 		if (nbt.contains("Item")) cachedStack = ItemStack.read(nbt.getCompound("Item"));
 		else cachedStack = ItemStack.EMPTY;
+
 		int itemAmount = deserializeItemAmount(nbt);
 		if (itemAmount > cachedStack.getCount()) {
 			cachedStack.setCount(itemAmount); //restore item amount

@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "#biomancy:poor_biomass",
+      "required": false
+    },
+    {
+      "id": "#biomancy:average_biomass",
+      "required": false
+    },
+    {
+      "id": "#biomancy:good_biomass",
+      "required": false
+    },
+    {
+      "id": "#biomancy:superb_biomass",
+      "required": false
+    }
+  ]
+}

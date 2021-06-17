@@ -5,13 +5,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.IIntArray;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public class GulgeContents implements IInventory {
+public class GulgeContents implements IInventory, IIntArray {
 
 	private final LargeSingleItemStackHandler itemStackHandler;
 	private final LazyOptional<IItemHandler> optionalItemStackHandler;
@@ -106,6 +107,12 @@ public class GulgeContents implements IInventory {
 	}
 
 	@Override
+	public int getInventoryStackLimit()
+	{
+		return itemStackHandler.getMaxAmount();
+	}
+
+	@Override
 	public ItemStack getStackInSlot(int index) {
 		return itemStackHandler.getStackInSlot(index);
 	}
@@ -130,4 +137,39 @@ public class GulgeContents implements IInventory {
 		itemStackHandler.setStackInSlot(0, ItemStack.EMPTY);
 	}
 
+	private void validateTrackingIndex(int index) {
+		if (index < 0 || index >= size()) throw new IndexOutOfBoundsException("Index out of bounds:" + index);
+	}
+
+	/**
+	 * get tracked value
+	 * @param index tracking-index
+	 * @return tracked value by index
+	 */
+	@Override
+	public int get(int index)
+	{
+		validateTrackingIndex(index);
+		return itemStackHandler.getAmount();
+	}
+
+	/**
+	 * update value of tracked value
+	 * @param index tracking-index
+	 */
+	@Override
+	public void set(int index, int value)
+	{
+		validateTrackingIndex(index);
+		itemStackHandler.setAmount((short) value);
+	}
+
+	/**
+	 * @return tracking IntArray Size
+	 */
+	@Override
+	public int size()
+	{
+		return 1;
+	}
 }

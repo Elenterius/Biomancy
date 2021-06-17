@@ -7,7 +7,7 @@
   ],
   "key": {
     "S": {
-      "item": "biomancy:artificial_stomach"
+      "tag": "biomancy:stomachs"
     },
     "F": {
       "item": "biomancy:flesh_block"

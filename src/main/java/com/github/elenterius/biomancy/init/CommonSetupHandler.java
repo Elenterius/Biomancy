@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.init;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.capabilities.IItemDecayTracker;
 import com.github.elenterius.biomancy.capabilities.ItemDecayImpl;
+import com.github.elenterius.biomancy.handler.AnimalDropStomachLootModifier;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.dispenser.DefaultDispenseItemBehavior;
@@ -14,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -45,6 +47,11 @@ public final class CommonSetupHandler {
 
 			ModEntityTypes.onPostSetup();
 		});
+	}
+
+	@SubscribeEvent
+	public static void registerModifierSerializers(final RegistryEvent.Register<GlobalLootModifierSerializer<?>> event) {
+		event.getRegistry().register(new AnimalDropStomachLootModifier.Serializer().setRegistryName(BiomancyMod.createRL("animal_drop_stomach")));
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)

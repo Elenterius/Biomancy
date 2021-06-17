@@ -62,6 +62,7 @@ public final class ModItems {
 	public static final RegistryObject<Item> BIOMETAL = ITEMS.register("biometal", () -> new Item(createItemProperties()));
 
 	public static final RegistryObject<Item> ARTIFICIAL_STOMACH = ITEMS.register("artificial_stomach", () -> new Item(createItemProperties()));
+	public static final RegistryObject<Item> STOMACH = ITEMS.register("stomach", () -> new Item(createItemProperties()));
 //	public static final RegistryObject<Item> TWISTED_HEART = ITEMS.register("twisted_heart", () -> new Item(createItemProperties()));
 
 	public static final RegistryObject<Item> BOLUS = ITEMS.register("bolus", () -> new Item(createItemProperties())); //crushed biomass

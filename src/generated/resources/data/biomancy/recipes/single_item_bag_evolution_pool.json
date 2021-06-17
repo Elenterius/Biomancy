@@ -2,10 +2,10 @@
   "type": "biomancy:evolution_pool",
   "ingredients": [
     {
-      "item": "biomancy:artificial_stomach"
+      "tag": "biomancy:stomachs"
     },
     {
-      "item": "biomancy:artificial_stomach"
+      "tag": "biomancy:stomachs"
     },
     {
       "item": "minecraft:hopper"

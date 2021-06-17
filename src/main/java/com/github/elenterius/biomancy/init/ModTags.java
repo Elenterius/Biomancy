@@ -22,11 +22,19 @@ public final class ModTags {
 		//		public static final Tags.IOptionalNamedTag<Item> FLESH = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "flesh"));
 		public static final Tags.IOptionalNamedTag<Item> COOKED_MEATS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "cooked_meats"));
 		public static final Tags.IOptionalNamedTag<Item> SUGARS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "sugars"));
-		public static final Tags.IOptionalNamedTag<Item> RAW_BIOMASS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "raw_biomass"));
+
+		public static final Tags.IOptionalNamedTag<Item> BIOMASS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "biomass"));
+		public static final Tags.IOptionalNamedTag<Item> POOR_BIOMASS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "poor_biomass"));
+		public static final Tags.IOptionalNamedTag<Item> AVERAGE_BIOMASS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "average_biomass"));
+		public static final Tags.IOptionalNamedTag<Item> GOOD_BIOMASS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "good_biomass"));
+		public static final Tags.IOptionalNamedTag<Item> SUPERB_BIOMASS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "superb_biomass"));
+
 		public static final Tags.IOptionalNamedTag<Item> OXIDES = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "oxides"));
 		public static final Tags.IOptionalNamedTag<Item> SILICATES = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "silicates"));
 		public static final Tags.IOptionalNamedTag<Item> KERATINS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "keratins"));
 		public static final Tags.IOptionalNamedTag<Item> HORMONES = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "hormones"));
+
+		public static final Tags.IOptionalNamedTag<Item> STOMACHS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "stomachs"));
 
 		private Items() {}
 

@@ -1,0 +1,28 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:saplings",
+    "minecraft:wheat",
+    "minecraft:beetroot",
+    "minecraft:potato",
+    "minecraft:carrot",
+    "minecraft:cookie",
+    "minecraft:cactus",
+    "minecraft:apple",
+    "minecraft:chorus_fruit",
+    "minecraft:melon_slice",
+    "minecraft:spider_eye",
+    "minecraft:warped_fungus",
+    "minecraft:nether_sprouts",
+    "minecraft:weeping_vines",
+    "minecraft:twisting_vines",
+    "minecraft:large_fern",
+    "minecraft:tall_grass",
+    "minecraft:warped_roots",
+    "minecraft:crimson_roots",
+    "minecraft:nether_wart",
+    "minecraft:crimson_fungus",
+    "minecraft:red_mushroom",
+    "minecraft:brown_mushroom"
+  ]
+}

@@ -5,12 +5,12 @@ import com.github.elenterius.biomancy.datagen.recipe.*;
 import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.item.ReagentItem;
 import com.github.elenterius.biomancy.recipe.ItemStackIngredient;
+import com.github.elenterius.biomancy.tileentity.ChewerTileEntity;
 import com.github.elenterius.biomancy.tileentity.EvolutionPoolTileEntity;
 import net.minecraft.advancements.criterion.EnchantmentPredicate;
 import net.minecraft.advancements.criterion.InventoryChangeTrigger;
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.advancements.criterion.MinMaxBounds;
-import net.minecraft.block.ComposterBlock;
 import net.minecraft.data.*;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
@@ -27,8 +27,6 @@ import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.Tags;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
@@ -139,7 +137,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.GULGE.get(), defaultTime * 2)
-				.addIngredient(ModItems.FLESH_CHEST.get()).addIngredients(ModItems.ARTIFICIAL_STOMACH.get(), 4).addIngredient(ModItems.BIOMETAL.get())
+				.addIngredient(ModItems.FLESH_CHEST.get()).addIngredients(ModTags.Items.STOMACHS, 4).addIngredient(ModItems.BIOMETAL.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESH_CHEST.get(), defaultTime)
@@ -148,11 +146,11 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		// Tools ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.SINGLE_ITEM_BAG_ITEM.get(), defaultTime + 150)
-				.addIngredients(ModItems.ARTIFICIAL_STOMACH.get(), 2).addIngredient(Items.HOPPER).addIngredient(ModItems.FLESH_CHEST.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2)
+				.addIngredients(ModTags.Items.STOMACHS, 2).addIngredient(Items.HOPPER).addIngredient(ModItems.FLESH_CHEST.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2)
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.ENTITY_STORAGE_ITEM.get(), defaultTime + 150)
-				.addIngredients(ModItems.ARTIFICIAL_STOMACH.get(), 2).addIngredient(Items.EGG).addIngredient(Items.ENDER_CHEST).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2)
+				.addIngredients(ModTags.Items.STOMACHS, 2).addIngredient(Items.EGG).addIngredient(Items.ENDER_CHEST).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2)
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.OCULI_OF_UNVEILING.get(), defaultTime * 2)
@@ -173,7 +171,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		// Weapons /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESHBORN_WAR_AXE.get(), defaultTime * 2)
-				.addIngredient(ModItems.FLESHBORN_AXE.get()).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.HORMONE_BILE.get()).addIngredient(ModItems.ARTIFICIAL_STOMACH.get())
+				.addIngredient(ModItems.FLESHBORN_AXE.get()).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.HORMONE_BILE.get()).addIngredient(ModTags.Items.STOMACHS)
 				.addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2)
 				.addCriterion("has_fleshborn_axe", hasItem(ModItems.FLESHBORN_AXE.get())).build(consumer);
 
@@ -193,7 +191,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addCriterion("has_oculus", hasItem(ModItems.OCULUS.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.TOOTH_GUN.get(), defaultTime * 2)
-				.addIngredient(ModItems.INJECTION_DEVICE.get()).addIngredient(Items.SKELETON_SKULL).addIngredient(Items.CROSSBOW).addIngredient(ModItems.ARTIFICIAL_STOMACH.get()).addIngredient(ModItems.BIOMETAL.get()).addIngredient(ModItems.SILICATE_PASTE.get())
+				.addIngredient(ModItems.INJECTION_DEVICE.get()).addIngredient(Items.SKELETON_SKULL).addIngredient(Items.CROSSBOW).addIngredient(ModTags.Items.STOMACHS).addIngredient(ModItems.BIOMETAL.get()).addIngredient(ModItems.SILICATE_PASTE.get())
 				.addCriterion("has_injection_device", hasItem(ModItems.INJECTION_DEVICE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.WITHERSHOT.get(), defaultTime * 2)
@@ -208,7 +206,7 @@ public class ModRecipeProvider extends RecipeProvider {
 			ItemStackIngredient smiteBook = new ItemStackIngredient(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(Enchantments.SMITE, level)));
 			ItemStackIngredient arthropodsBook = new ItemStackIngredient(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(Enchantments.BANE_OF_ARTHROPODS, level)));
 			EvolutionPoolRecipeBuilder.createRecipe(minBaneBook, defaultTime + 125 * level)
-					.addIngredient(sharpnessBook).addIngredient(smiteBook).addIngredient(arthropodsBook).addIngredient(ModItems.ARTIFICIAL_STOMACH.get()).addIngredient(ModItems.ERODING_BILE.get()).addIngredient(ModItems.REJUVENATING_MUCUS.get())
+					.addIngredient(sharpnessBook).addIngredient(smiteBook).addIngredient(arthropodsBook).addIngredient(ModTags.Items.STOMACHS).addIngredient(ModItems.ERODING_BILE.get()).addIngredient(ModItems.REJUVENATING_MUCUS.get())
 					.addCriterion("has_smite_enchant", hasItem(ItemPredicate.Builder.create().enchantment(new EnchantmentPredicate(Enchantments.SMITE, MinMaxBounds.IntBound.atLeast(1))).build())).build(consumer, "attuned_bane_" + level, true);
 		}
 	}
@@ -417,18 +415,24 @@ public class ModRecipeProvider extends RecipeProvider {
 	}
 
 	private void registerChewerRecipes(Consumer<IFinishedRecipe> consumer) {
-		final int defaultChewingTime = 200;
+		final int defaultChewingTime = ChewerTileEntity.DEFAULT_TIME;
 
 		// crushed biomass /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		ComposterBlock.CHANCES.keySet().stream().filter(IGNORE_COMPOSTABLE_PREDICATE).forEach(iItemProvider -> {
-			float chance = ComposterBlock.CHANCES.getFloat(iItemProvider);
-			int amount = 7 - MathHelper.clamp(Math.round(-7.14f * chance + 8.14f), 1, 6);
-			ResourceLocation itemId = Registry.ITEM.getKey(iItemProvider.asItem());
-			String namespace = itemId.getNamespace().equals("minecraft") ? "mc" : itemId.getNamespace();
-			ChewerRecipeBuilder.createRecipe(ModItems.BOLUS.get(), defaultChewingTime + Math.round(Math.max(1f - chance, 0f) * 150), amount)
-					.setIngredient(iItemProvider.asItem())
-					.addCriterion("has_raw_biomass", hasItem(ModTags.Items.RAW_BIOMASS)).build(consumer, "from_" + namespace + '_' + itemId.getPath(), true);
-		});
+		ChewerRecipeBuilder.createRecipe(ModItems.BOLUS.get(), 100, 2)
+				.setIngredient(ModTags.Items.POOR_BIOMASS)
+				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_poor_biomass", true);
+
+		ChewerRecipeBuilder.createRecipe(ModItems.BOLUS.get(), 190, 4)
+				.setIngredient(ModTags.Items.AVERAGE_BIOMASS)
+				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_average_biomass", true);
+
+		ChewerRecipeBuilder.createRecipe(ModItems.BOLUS.get(), 275, 6)
+				.setIngredient(ModTags.Items.GOOD_BIOMASS)
+				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_good_biomass", true);
+
+		ChewerRecipeBuilder.createRecipe(ModItems.BOLUS.get(), 300, 8)
+				.setIngredient(ModTags.Items.SUPERB_BIOMASS)
+				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_superb_biomass", true);
 
 		// misc ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		ChewerRecipeBuilder.createRecipe(Items.COBBLESTONE, defaultChewingTime)
@@ -492,7 +496,37 @@ public class ModRecipeProvider extends RecipeProvider {
 		DigesterRecipeBuilder.createRecipe(ModItems.NUTRIENT_PASTE.get(), defaultTime)
 				.setIngredient(ModItems.BOLUS.get())
 				.setByproduct(ModItems.DIGESTATE.get(), 1f)
-				.addCriterion("has_crushed_biomass", hasItem(ModItems.BOLUS.get())).build(consumer);
+				.addCriterion("has_crushed_biomass", hasItem(ModItems.BOLUS.get())).build(consumer, "from_bolus", true);
+
+		DigesterRecipeBuilder.createRecipe(ModItems.NUTRIENT_PASTE.get(), 300)
+				.setIngredient(ModTags.Items.POOR_BIOMASS)
+				.setByproduct(ModItems.DIGESTATE.get(), 0.15f)
+				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_poor_biomass", true);
+
+		DigesterRecipeBuilder.createRecipe(ModItems.NUTRIENT_PASTE.get(), 400, 2)
+				.setIngredient(ModTags.Items.AVERAGE_BIOMASS)
+				.setByproduct(ModItems.DIGESTATE.get(), 0.3f)
+				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_average_biomass", true);
+
+		DigesterRecipeBuilder.createRecipe(ModItems.NUTRIENT_PASTE.get(), 400, 2)
+				.setIngredient(ModTags.Items.RAW_MEATS)
+				.setByproduct(ModItems.DIGESTATE.get(), 0.3f)
+				.addCriterion("has_raw_meat", hasItem(ModTags.Items.RAW_MEATS)).build(consumer, "from_raw_meat", true);
+
+		DigesterRecipeBuilder.createRecipe(ModItems.NUTRIENT_PASTE.get(), 600, 3)
+				.setIngredient(ModTags.Items.GOOD_BIOMASS)
+				.setByproduct(ModItems.DIGESTATE.get(), 0.5f)
+				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_good_biomass", true);
+
+		DigesterRecipeBuilder.createRecipe(ModItems.NUTRIENT_PASTE.get(), 600, 3)
+				.setIngredient(ModTags.Items.COOKED_MEATS)
+				.setByproduct(ModItems.DIGESTATE.get(), 0.5f)
+				.addCriterion("has_cooked_meat", hasItem(ModTags.Items.COOKED_MEATS)).build(consumer, "from_cooked_meat", true);
+
+		DigesterRecipeBuilder.createRecipe(ModItems.NUTRIENT_PASTE.get(), 800, 4)
+				.setIngredient(ModTags.Items.SUPERB_BIOMASS)
+				.setByproduct(ModItems.DIGESTATE.get(), 0.6f)
+				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_superb_biomass", true);
 	}
 
 	private void registerDecomposerRecipes(Consumer<IFinishedRecipe> consumer) {
@@ -505,16 +539,21 @@ public class ModRecipeProvider extends RecipeProvider {
 		registerHormonesRecipes(consumer);
 
 		// sugars //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		ComposterBlock.CHANCES.keySet().stream().filter(IGNORE_COMPOSTABLE_PREDICATE).forEach(iItemProvider -> {
-			float chance = ComposterBlock.CHANCES.getFloat(iItemProvider);
-			int amount = 7 - MathHelper.clamp(Math.round(-7.14f * chance + 8.14f), 1, 6);
-			ResourceLocation itemId = Registry.ITEM.getKey(iItemProvider.asItem());
-			String namespace = itemId.getNamespace().equals("minecraft") ? "mc" : itemId.getNamespace();
-			DecomposerRecipeBuilder.createRecipe(Items.SUGAR, defaultDecomposingTime + Math.round(Math.max(1f - chance, 0f) * 150), amount)
-					.addIngredient(iItemProvider.asItem())
-//					.addByproduct(ModItems.DIGESTATE.get(), 0.05f)
-					.addCriterion("has_raw_biomass", hasItem(ModTags.Items.RAW_BIOMASS)).build(consumer, "from_" + namespace + '_' + itemId.getPath(), true);
-		});
+		DecomposerRecipeBuilder.createRecipe(Items.SUGAR, 300, 1)
+				.addIngredient(ModTags.Items.POOR_BIOMASS)
+				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_poor_biomass", true);
+
+		DecomposerRecipeBuilder.createRecipe(Items.SUGAR, 400, 2)
+				.addIngredient(ModTags.Items.AVERAGE_BIOMASS)
+				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_average_biomass", true);
+
+		DecomposerRecipeBuilder.createRecipe(Items.SUGAR, 600, 4)
+				.addIngredient(ModTags.Items.GOOD_BIOMASS)
+				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_good_biomass", true);
+
+		DecomposerRecipeBuilder.createRecipe(Items.SUGAR, 800, 6)
+				.addIngredient(ModTags.Items.SUPERB_BIOMASS)
+				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_superb_biomass", true);
 
 		// misc ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		DecomposerRecipeBuilder.createRecipe(ModItems.FLESH_LUMP.get(), defaultDecomposingTime)
@@ -535,7 +574,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime)
 				.addIngredient(ModTags.Items.COOKED_MEATS)
-				.addCriterion("has_any_cooked_meat", hasItem(ModTags.Items.COOKED_MEATS)).build(consumer, "from_cooked_meat", true);
+				.addCriterion("has_cooked_meat", hasItem(ModTags.Items.COOKED_MEATS)).build(consumer, "from_cooked_meat", true);
 
 //		DecomposingRecipeBuilder.decomposingRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime)
 //				.addIngredient(new AnyMeatlessFoodIngredient()) //TODO: fix this
@@ -588,6 +627,11 @@ public class ModRecipeProvider extends RecipeProvider {
 	}
 
 	private void registerWorkbenchRecipes(Consumer<IFinishedRecipe> consumer) {
+
+		ShapedRecipeBuilder.shapedRecipe(ModItems.OCULUS_KEY.get())
+				.key('F', ModItems.FLESH_LUMP.get()).key('B', Items.BONE).key('O', ModItems.OCULUS.get()).key('S', ModItems.BONE_SCRAPS.get())
+				.patternLine("FBO").patternLine("SS ")
+				.addCriterion("has_oculus", hasItem(ModItems.OCULUS.get())).build(consumer);
 
 		ShapedRecipeBuilder.shapedRecipe(ModItems.OCULUS.get())
 				.key('F', ModItems.FLESH_LUMP.get()).key('R', ModItems.REJUVENATING_MUCUS.get()).key('L', ModItems.MENISCUS_LENS.get()).key('E', Items.SPIDER_EYE)
@@ -688,11 +732,11 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK.get())).build(consumer);
 
 		ShapedRecipeBuilder.shapedRecipe(ModItems.DIGESTER.get())
-				.key('S', ModItems.ARTIFICIAL_STOMACH.get())
+				.key('S', ModTags.Items.STOMACHS)
 				.key('F', ModItems.FLESH_BLOCK.get())
 				.key('L', ModItems.FLESH_BLOCK_SLAB.get())
 				.patternLine("FLF").patternLine("FSF").patternLine("FLF")
-				.addCriterion("has_stomach", hasItem(ModItems.ARTIFICIAL_STOMACH.get())).build(consumer);
+				.addCriterion("has_stomach", hasItem(ModTags.Items.STOMACHS)).build(consumer);
 
 		// reagents ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

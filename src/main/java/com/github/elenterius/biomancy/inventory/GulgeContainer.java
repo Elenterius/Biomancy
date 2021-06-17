@@ -28,6 +28,10 @@ public class GulgeContainer extends Container {
 		super(ModContainerTypes.GULGE.get(), screenId);
 		this.gulgeContents = gulgeContents;
 
+		// track item count and sync to client.
+		// We do this because ItemStack size is serialized using a signed byte and thus can't store values larger than 127
+		trackIntArray(gulgeContents);
+
 		PlayerInvWrapper playerInventoryForge = new PlayerInvWrapper(playerInventory);
 
 		final int HOT_BAR_SIZE = 9;
@@ -50,6 +54,7 @@ public class GulgeContainer extends Container {
 			}
 		}
 
+		//we use input/output slots to manipulate the inv contents in order to avoid the headache of syncing ItemStacks with an item count larger than Byte.MAX_VALUE
 		addSlot(new Slot(redirectedInput, 0, 80 - 18, 35) {
 			@Override
 			public boolean isItemValid(ItemStack stack) {
@@ -100,17 +105,6 @@ public class GulgeContainer extends Container {
 				return stack;
 			}
 		});
-		addSlot(new Slot(gulgeContents, 0, 176 - 34, 24 - 12) {
-			@Override
-			public boolean isItemValid(ItemStack stack) {
-				return false;
-			}
-
-			@Override
-			public boolean canTakeStack(PlayerEntity playerIn) {
-				return false;
-			}
-		});
 	}
 
 	public static GulgeContainer createServerContainer(int screenId, PlayerInventory playerInventory, GulgeContents contents) {
@@ -132,6 +126,10 @@ public class GulgeContainer extends Container {
 	}
 
 	private void updateOutputSlot(ItemStack storedStack) {
+		//prime cheese ;)
+		//this avoids the need of syncing "Big-ItemStacks" (item count is larger than Byte.MAX_VALUE) to the client
+		//instead we only sync an ItemStack copy with a item count of 1
+
 		ItemStack outputStack = redirectedOutput.getStackInSlot(0);
 		if (storedStack.isEmpty()) {
 			if (!outputStack.isEmpty()) redirectedOutput.setInventorySlotContents(0, ItemStack.EMPTY);
@@ -191,4 +189,15 @@ public class GulgeContainer extends Container {
 		return copyOfSourceStack;
 	}
 
+	public int getStoredItemCount() {
+		return gulgeContents.get(0);
+	}
+
+	public int getMaxItemCount() {
+		return gulgeContents.getInventoryStackLimit();
+	}
+
+	public ItemStack getStoredItemStack() {
+		return redirectedOutput.getStackInSlot(0); //reflects the stored ItemStack but clamped to a count size of 0 or 1
+	}
 }
