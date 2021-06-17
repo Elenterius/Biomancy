@@ -628,6 +628,11 @@ public class ModRecipeProvider extends RecipeProvider {
 
 	private void registerWorkbenchRecipes(Consumer<IFinishedRecipe> consumer) {
 
+		ShapedRecipeBuilder.shapedRecipe(ModItems.OCULUS_KEY.get())
+				.key('F', ModItems.FLESH_LUMP.get()).key('B', Items.BONE).key('O', ModItems.OCULUS.get()).key('S', ModItems.BONE_SCRAPS.get())
+				.patternLine("FBO").patternLine("SS ")
+				.addCriterion("has_oculus", hasItem(ModItems.OCULUS.get())).build(consumer);
+
 		ShapedRecipeBuilder.shapedRecipe(ModItems.OCULUS.get())
 				.key('F', ModItems.FLESH_LUMP.get()).key('R', ModItems.REJUVENATING_MUCUS.get()).key('L', ModItems.MENISCUS_LENS.get()).key('E', Items.SPIDER_EYE)
 				.patternLine("FRF").patternLine("LER").patternLine("FRF")
