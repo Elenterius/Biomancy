@@ -1,0 +1,16 @@
+on:
+  issues:
+    types: [opened, labeled]
+
+jobs:
+  assign_one_project:
+    runs-on: ubuntu-latest
+    name: Assign to One Project
+    steps:
+    - name: Assign Issue with bug label to project 2
+      uses: srggrs/assign-one-project-github-action@1.2.1
+      if: |
+        contains(github.event.issue.labels.*.name, 'bug')
+      with:
+        project: 'https://github.com/Elenterius/Biomancy/projects/2'
+        column_name: 'Needs triage'
