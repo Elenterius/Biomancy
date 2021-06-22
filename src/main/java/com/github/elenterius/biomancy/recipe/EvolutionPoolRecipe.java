@@ -18,22 +18,19 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 
-public class EvolutionPoolRecipe implements IRecipe<IInventory> {
+public class EvolutionPoolRecipe extends AbstractBioMechanicalRecipe {
 
 	public static final int MAX_INGREDIENTS = 6;
 
 	private final NonNullList<Ingredient> recipeIngredients;
 	private final ItemStack recipeResult;
-	private final int time;
 	private final boolean isSimple;
 
-	private final ResourceLocation registryId;
 
-	public EvolutionPoolRecipe(ResourceLocation keyIn, ItemStack result, int timeIn, NonNullList<Ingredient> ingredients) {
-		registryId = keyIn;
+	public EvolutionPoolRecipe(ResourceLocation registryKey, ItemStack result, int craftingTime, NonNullList<Ingredient> ingredients) {
+		super(registryKey, craftingTime);
 		recipeIngredients = ingredients;
 		recipeResult = result;
-		time = timeIn;
 		isSimple = ingredients.stream().allMatch(Ingredient::isSimple);
 	}
 
@@ -76,11 +73,6 @@ public class EvolutionPoolRecipe implements IRecipe<IInventory> {
 	}
 
 	@Override
-	public ResourceLocation getId() {
-		return registryId;
-	}
-
-	@Override
 	public IRecipeSerializer<?> getSerializer() {
 		return ModRecipes.EVOLUTION_POOL_SERIALIZER.get();
 	}
@@ -88,10 +80,6 @@ public class EvolutionPoolRecipe implements IRecipe<IInventory> {
 	@Override
 	public IRecipeType<?> getType() {
 		return ModRecipes.EVOLUTION_POOL_RECIPE_TYPE;
-	}
-
-	public int getCraftingTime() {
-		return time;
 	}
 
 	public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<EvolutionPoolRecipe> {
@@ -144,7 +132,7 @@ public class EvolutionPoolRecipe implements IRecipe<IInventory> {
 		public void write(PacketBuffer buffer, EvolutionPoolRecipe recipe) {
 			//server side
 			buffer.writeItemStack(recipe.recipeResult);
-			buffer.writeInt(recipe.time);
+			buffer.writeInt(recipe.getCraftingTime());
 
 			buffer.writeVarInt(recipe.recipeIngredients.size());
 			for (Ingredient ingredient : recipe.recipeIngredients) {

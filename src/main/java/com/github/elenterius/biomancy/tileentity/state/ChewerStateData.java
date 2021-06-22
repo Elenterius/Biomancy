@@ -2,20 +2,12 @@ package com.github.elenterius.biomancy.tileentity.state;
 
 import com.github.elenterius.biomancy.recipe.ChewerRecipe;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.IIntArray;
 
-public class ChewerStateData extends RecipeCraftingStateData<ChewerRecipe> implements IIntArray {
+public class ChewerStateData extends RecipeCraftingStateData<ChewerRecipe> {
 
-	public static final String NBT_KEY_TIME_ELAPSED = "TimeElapsed";
-	public static final String NBT_KEY_TIME_FOR_COMPLETION = "TimeForCompletion";
 	public static final String NBT_KEY_FUEL = "Fuel";
-
-	public static final int TIME_INDEX = 0;
-	public static final int TIME_FOR_COMPLETION_INDEX = 1;
 	public static final int FUEL_INDEX = 2;
 
-	public int timeElapsed;
-	public int timeForCompletion;
 	public short fuel; //biofuel (nutrient paste)
 
 	@Override
@@ -24,36 +16,15 @@ public class ChewerStateData extends RecipeCraftingStateData<ChewerRecipe> imple
 	}
 
 	@Override
-	public void setCraftingGoalRecipe(ChewerRecipe recipe) {
-		super.setCraftingGoalRecipe(recipe);
-		timeForCompletion = recipe.getCraftingTime();
-	}
-
-	@Override
-	public void clear() {
-		timeElapsed = 0;
-		timeForCompletion = 0;
-		super.clear();
-	}
-
-	@Override
 	public void serializeNBT(CompoundNBT nbt) {
 		super.serializeNBT(nbt);
-		nbt.putInt(NBT_KEY_TIME_ELAPSED, timeElapsed);
-		nbt.putInt(NBT_KEY_TIME_FOR_COMPLETION, timeForCompletion);
 		nbt.putShort(NBT_KEY_FUEL, fuel);
 	}
 
 	@Override
 	public void deserializeNBT(CompoundNBT nbt) {
 		super.deserializeNBT(nbt);
-		timeElapsed = nbt.getInt(NBT_KEY_TIME_ELAPSED);
-		timeForCompletion = nbt.getInt(NBT_KEY_TIME_FOR_COMPLETION);
 		fuel = nbt.getShort(NBT_KEY_FUEL);
-	}
-
-	private void validateIndex(int index) {
-		if (index < 0 || index >= size()) throw new IndexOutOfBoundsException("Index out of bounds:" + index);
 	}
 
 	@Override

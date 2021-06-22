@@ -18,23 +18,20 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DecomposerRecipe implements IRecipe<IInventory> {
+public class DecomposerRecipe extends AbstractBioMechanicalRecipe {
 
 	public static final int MAX_INGREDIENTS = 2 * 3;
 	public static final int MAX_BYPRODUCTS = 3;
 
 	private final NonNullList<Ingredient> recipeIngredients;
 	private final ItemStack recipeResult;
-	private final int time;
 	private final List<Byproduct> byproducts;
-	private final ResourceLocation key;
 	private final boolean isSimple;
 
-	public DecomposerRecipe(ResourceLocation keyIn, ItemStack result, int timeIn, NonNullList<Ingredient> ingredients, List<Byproduct> byproducts) {
-		key = keyIn;
+	public DecomposerRecipe(ResourceLocation registryKey, ItemStack result, int craftingTime, NonNullList<Ingredient> ingredients, List<Byproduct> byproducts) {
+		super(registryKey, craftingTime);
 		recipeIngredients = ingredients;
 		recipeResult = result;
-		time = timeIn;
 		this.byproducts = byproducts;
 		isSimple = ingredients.stream().allMatch(Ingredient::isSimple);
 	}
@@ -76,10 +73,6 @@ public class DecomposerRecipe implements IRecipe<IInventory> {
 		return byproducts;
 	}
 
-	public int getDecomposingTime() {
-		return time;
-	}
-
 	@Override
 	public ItemStack getRecipeOutput() {
 		return recipeResult;
@@ -93,11 +86,6 @@ public class DecomposerRecipe implements IRecipe<IInventory> {
 	@Override
 	public IRecipeType<?> getType() {
 		return ModRecipes.DECOMPOSING_RECIPE_TYPE;
-	}
-
-	@Override
-	public ResourceLocation getId() {
-		return key;
 	}
 
 	public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<DecomposerRecipe> {
@@ -168,7 +156,7 @@ public class DecomposerRecipe implements IRecipe<IInventory> {
 		public void write(PacketBuffer buffer, DecomposerRecipe recipe) {
 			//server side
 			buffer.writeItemStack(recipe.recipeResult);
-			buffer.writeInt(recipe.time);
+			buffer.writeInt(recipe.getCraftingTime());
 
 			buffer.writeVarInt(recipe.byproducts.size());
 			for (Byproduct byproduct : recipe.byproducts) {

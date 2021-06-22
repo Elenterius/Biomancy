@@ -115,7 +115,7 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 
 	@Override
 	public void draw(DecomposerRecipe recipe, MatrixStack matrixStack, double mouseX, double mouseY) {
-		int ticks = recipe.getDecomposingTime();
+		int ticks = recipe.getCraftingTime();
 		if (ticks > 0) {
 			int seconds = ticks / 20;
 			TranslationTextComponent timeString = new TranslationTextComponent("gui.jei.category.smelting.time.seconds", seconds);

@@ -49,7 +49,6 @@ public class EvolutionPoolBlock extends OwnableContainerBlock {
 
 	public static final EnumProperty<MultiBlockPart> MULTI_BLOCK_PART = EnumProperty.create("part", MultiBlockPart.class);
 	public static final BooleanProperty CONTROLLER = BooleanProperty.create("controller");
-	public static final BooleanProperty CRAFTING = ModBlocks.CRAFTING_PROPERTY;
 	public static final Direction8[] SORTED_POS_OFFSETS = new Direction8[]{Direction8.NORTH, Direction8.SOUTH, Direction8.WEST, Direction8.EAST, Direction8.NORTH_WEST, Direction8.NORTH_WEST, Direction8.SOUTH_WEST, Direction8.SOUTH_EAST};
 
 	public static final VoxelShape FLOOR_SHAPE = Block.makeCuboidShape(0, 0, 0, 16, 3, 16);
@@ -73,12 +72,12 @@ public class EvolutionPoolBlock extends OwnableContainerBlock {
 
 	public EvolutionPoolBlock(Properties properties) {
 		super(properties);
-		setDefaultState(stateContainer.getBaseState().with(MULTI_BLOCK_PART, MultiBlockPart.MIDDLE).with(CONTROLLER, false).with(CRAFTING, false));
+		setDefaultState(stateContainer.getBaseState().with(MULTI_BLOCK_PART, MultiBlockPart.MIDDLE).with(CONTROLLER, false).with(MachineBlock.CRAFTING, false));
 	}
 
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(MULTI_BLOCK_PART, CONTROLLER, CRAFTING);
+		builder.add(MULTI_BLOCK_PART, CONTROLLER, MachineBlock.CRAFTING);
 	}
 
 	@Nullable
@@ -304,7 +303,7 @@ public class EvolutionPoolBlock extends OwnableContainerBlock {
 					tile = ((OwnableTileEntityDelegator) tile).getDelegate();
 				}
 				if (tile instanceof EvolutionPoolTileEntity) {
-					if (EvolutionPoolTileEntity.isItemValidFuel(stack)) {
+					if (EvolutionPoolTileEntity.VALID_FUEL.test(stack)) {
 						ItemStack remainder = ((EvolutionPoolTileEntity) tile).addFuel(stack);
 						if (remainder.getCount() != stack.getCount()) {
 							((ItemEntity) entityIn).setItem(remainder);
@@ -361,7 +360,7 @@ public class EvolutionPoolBlock extends OwnableContainerBlock {
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
 		if (rand.nextInt(4) == 0) {
-			boolean isCrafting = stateIn.get(CRAFTING);
+			boolean isCrafting = stateIn.get(MachineBlock.CRAFTING);
 			if (isCrafting) {
 				int n = rand.nextInt(5);
 				MultiBlockPart part = stateIn.get(MULTI_BLOCK_PART);

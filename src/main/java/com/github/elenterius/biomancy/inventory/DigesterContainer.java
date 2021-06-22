@@ -62,7 +62,7 @@ public class DigesterContainer extends Container {
 		addSlot(new Slot(fuelContents, 0, 17, 17) {
 			@Override
 			public boolean isItemValid(ItemStack stack) {
-				return DigesterTileEntity.isItemValidFuel(stack);
+				return DigesterTileEntity.VALID_FUEL.test(stack);
 			}
 		});
 
@@ -141,10 +141,10 @@ public class DigesterContainer extends Container {
 
 			case PLAYER_HOTBAR:
 			case PLAYER_MAIN_INVENTORY:
-				if (DigesterTileEntity.getRecipeForItem(world, sourceStack).isPresent()) {
+				if (DigesterTileEntity.RECIPE_TYPE.getRecipeForItem(world, sourceStack).isPresent()) {
 					successfulTransfer = mergeInto(SlotZone.INPUT_ZONE, sourceStack, false);
 				}
-				if (!successfulTransfer && DigesterTileEntity.isItemValidFuel(sourceStack)) {
+				if (!successfulTransfer && DigesterTileEntity.VALID_FUEL.test(sourceStack)) {
 					successfulTransfer = mergeInto(SlotZone.FUEL_ZONE, sourceStack, true);
 				}
 				if (!successfulTransfer) {

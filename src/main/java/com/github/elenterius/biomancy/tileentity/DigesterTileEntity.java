@@ -1,14 +1,13 @@
 package com.github.elenterius.biomancy.tileentity;
 
-import com.github.elenterius.biomancy.block.DigesterBlock;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.init.ModTileEntityTypes;
 import com.github.elenterius.biomancy.inventory.DigesterContainer;
+import com.github.elenterius.biomancy.inventory.FuelInvContents;
 import com.github.elenterius.biomancy.inventory.SimpleInvContents;
-import com.github.elenterius.biomancy.mixin.RecipeManagerMixinAccessor;
+import com.github.elenterius.biomancy.recipe.BioMechanicalRecipeType;
 import com.github.elenterius.biomancy.recipe.Byproduct;
 import com.github.elenterius.biomancy.recipe.DigesterRecipe;
-import com.github.elenterius.biomancy.tileentity.state.CraftingState;
 import com.github.elenterius.biomancy.tileentity.state.DigesterStateData;
 import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.block.BlockState;
@@ -18,21 +17,16 @@ import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.potion.Potions;
-import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
@@ -40,14 +34,12 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Optional;
-import java.util.Random;
+import java.util.function.Predicate;
 
-public class DigesterTileEntity extends OwnableTileEntity implements INamedContainerProvider, ITickableTileEntity {
+public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, DigesterStateData> {
 
 	public static final int FUEL_SLOTS_COUNT = 1;
 	public static final int FUEL_OUT_SLOTS_COUNT = 1;
@@ -56,130 +48,102 @@ public class DigesterTileEntity extends OwnableTileEntity implements INamedConta
 
 	public static final int MAX_FUEL = 32_000;
 	public static final short FUEL_COST = 1;
+	public static final Predicate<ItemStack> VALID_FUEL = stack -> {
+		if (stack.getItem() == Items.POTION && PotionUtils.getPotionFromItem(stack) == Potions.WATER) return true;
+		return FluidUtil.getFluidContained(stack).map(DigesterTileEntity::isFluidValidFuel).orElse(false);
+	};
+	public static final BioMechanicalRecipeType<DigesterRecipe> RECIPE_TYPE = ModRecipes.DIGESTER_RECIPE_TYPE;
 
 	private final DigesterStateData stateData = new DigesterStateData();
-	private final SimpleInvContents fuelContents;
+	private final FuelInvContents fuelContents;
 	private final SimpleInvContents fuelOutContents;
 	private final SimpleInvContents inputContents;
 	private final SimpleInvContents outputContents;
 
 	public DigesterTileEntity() {
 		super(ModTileEntityTypes.DIGESTER.get());
-		fuelContents = SimpleInvContents.createServerContents(FUEL_SLOTS_COUNT, this::canPlayerOpenInv, this::markDirty);
-		fuelOutContents = SimpleInvContents.createServerContents(FUEL_OUT_SLOTS_COUNT, this::canPlayerOpenInv, this::markDirty);
+		fuelContents = FuelInvContents.createServerContents(FUEL_SLOTS_COUNT, this::isItemValidFuel, this::canPlayerOpenInv, this::markDirty);
+		fuelOutContents = SimpleInvContents.createServerContents(FUEL_OUT_SLOTS_COUNT, SimpleInvContents.ISHandlerType.NO_INSERT, this::canPlayerOpenInv, this::markDirty);
 		inputContents = SimpleInvContents.createServerContents(INPUT_SLOTS_COUNT, this::canPlayerOpenInv, this::markDirty);
 		outputContents = SimpleInvContents.createServerContents(OUTPUT_SLOTS_COUNT, SimpleInvContents.ISHandlerType.NO_INSERT, this::canPlayerOpenInv, this::markDirty);
 	}
 
-	public static Optional<DigesterRecipe> getRecipeForItem(World world, ItemStack stackIn) {
-		RecipeManagerMixinAccessor recipeManager = (RecipeManagerMixinAccessor) world.getRecipeManager();
-
-		return recipeManager.callGetRecipes(ModRecipes.DIGESTER_RECIPE_TYPE).values().stream().map((recipe) -> (DigesterRecipe) recipe)
-				.filter(recipe -> {
-					for (Ingredient ingredient : recipe.getIngredients()) {
-						if (ingredient.test(stackIn)) return true;
-					}
-					return false;
-				}).findFirst();
-	}
-
-	public static boolean areRecipesEqual(DigesterRecipe recipeA, DigesterRecipe recipeB, boolean relaxed) {
-		boolean flag = recipeA.getId().equals(recipeB.getId());
-		if (!relaxed && !ItemHandlerHelper.canItemStacksStack(recipeA.getRecipeOutput(), recipeB.getRecipeOutput())) {
-			return false;
-		}
-		return flag;
-	}
-
-	public static Optional<DigesterRecipe> getRecipeForInput(World world, IInventory inputInv) {
-		RecipeManager recipeManager = world.getRecipeManager();
-		return recipeManager.getRecipe(ModRecipes.DIGESTER_RECIPE_TYPE, inputInv, world);
+	@Override
+	protected DigesterStateData getStateData() {
+		return stateData;
 	}
 
 	@Override
-	protected ITextComponent getDefaultName() {
-		return TextUtil.getTranslationText("container", "digester");
-	}
-
-	@Nullable
-	@Override
-	public Container createMenu(int screenId, PlayerInventory playerInv, PlayerEntity player) {
-		return DigesterContainer.createServerContainer(screenId, playerInv, fuelContents, fuelOutContents, inputContents, outputContents, stateData);
+	public BioMechanicalRecipeType<DigesterRecipe> getRecipeType() {
+		return RECIPE_TYPE;
 	}
 
 	@Override
-	public void tick() {
-		if (world == null || world.isRemote) return;
+	public int getFuelAmount() {
+		return stateData.fuel.getFluidAmount();
+	}
 
-		if (world.getGameTime() % 10L == 0L) {
-			refuel();
-		}
-
-		DigesterRecipe recipeToCraft = getRecipeForInput(world, inputContents).orElse(null);
-		if (recipeToCraft == null) {
-			stateData.cancelCrafting();
+	@Override
+	public void setFuelAmount(int newAmount) {
+		if (stateData.fuel.isEmpty()) {
+			stateData.fuel.setFluid(new FluidStack(Fluids.WATER, newAmount));
 		}
 		else {
-			ItemStack itemToCraft = recipeToCraft.getRecipeOutput(); // .copy()
-			if (itemToCraft.isEmpty()) {
-				stateData.cancelCrafting();
-			}
-			else {
-				if (outputContents.doesItemStackFit(0, itemToCraft)) {
-					if (stateData.getCraftingState() == CraftingState.NONE) {
-						stateData.setCraftingState(CraftingState.IN_PROGRESS);
-						stateData.clear(); //safe guard, shouldn't be needed
-						stateData.setCraftingGoalRecipe(recipeToCraft); // this also sets the time required for crafting
-					}
-					else if (!stateData.isCraftingCanceled()) {
-						DigesterRecipe recipeCraftingGoal = stateData.getCraftingGoalRecipe(world).orElse(null);
-						if (recipeCraftingGoal == null || !areRecipesEqual(recipeToCraft, recipeCraftingGoal, true)) {
-							stateData.cancelCrafting();
-						}
-					}
-				}
-				else {
-					if (stateData.getCraftingState() != CraftingState.COMPLETED) stateData.cancelCrafting();
-				}
-			}
-
-			//change crafting progress
-			if (stateData.getCraftingState() == CraftingState.IN_PROGRESS) {
-				if (consumeFuel()) stateData.timeElapsed += 1;
-				else stateData.timeElapsed -= 2;
-
-				if (stateData.timeElapsed < 0) stateData.timeElapsed = 0;
-			}
-
-			//craft items
-			if (stateData.getCraftingState() == CraftingState.IN_PROGRESS || stateData.getCraftingState() == CraftingState.COMPLETED) {
-				if (stateData.timeElapsed >= stateData.timeForCompletion) {
-					stateData.setCraftingState(CraftingState.COMPLETED);
-					if (craftItems(recipeToCraft, world.rand)) {
-						stateData.setCraftingState(CraftingState.NONE);
-					}
-				}
-			}
-		}
-
-		//clean-up states
-		if (stateData.isCraftingCanceled()) {
-			stateData.setCraftingState(CraftingState.NONE);
-			stateData.clear();
-		}
-		else if (stateData.getCraftingState() == CraftingState.NONE) {
-			stateData.clear();
-		}
-
-		BlockState oldBlockState = world.getBlockState(pos);
-		BlockState newBlockState = oldBlockState.with(DigesterBlock.CRAFTING, stateData.getCraftingState() == CraftingState.IN_PROGRESS);
-		if (!newBlockState.equals(oldBlockState)) {
-			world.setBlockState(pos, newBlockState, Constants.BlockFlags.BLOCK_UPDATE);
-			markDirty();
+			stateData.fuel.getFluid().setAmount(newAmount);
 		}
 	}
 
-	private boolean craftItems(DigesterRecipe recipeToCraft, Random rand) {
+	@Override
+	public void addFuelAmount(int addAmount) {
+		if (stateData.fuel.isEmpty()) {
+			if (addAmount > 0) stateData.fuel.setFluid(new FluidStack(Fluids.WATER, addAmount));
+		}
+		else {
+			stateData.fuel.getFluid().grow(addAmount);
+		}
+	}
+
+	@Override
+	public int getMaxFuelAmount() {
+		return MAX_FUEL;
+	}
+
+	@Override
+	public int getFuelCost() {
+		return FUEL_COST;
+	}
+
+	public static boolean isFluidValidFuel(FluidStack fluidStack) {
+		return fluidStack.getFluid() == Fluids.WATER;
+	}
+
+	@Override
+	public boolean isItemValidFuel(ItemStack stack) {
+		return VALID_FUEL.test(stack);
+	}
+
+	@Override
+	public float getFuelConversion(ItemStack stackIn) {
+		return 1;
+	}
+
+	@Override
+	public ItemStack getStackInFuelSlot() {
+		return fuelContents.getStackInSlot(0);
+	}
+
+	@Override
+	public void setStackInFuelSlot(ItemStack stack) {
+		fuelContents.setInventorySlotContents(0, stack);
+	}
+
+	@Override
+	protected boolean doesItemFitIntoOutputInventory(ItemStack stackToCraft) {
+		return outputContents.doesItemStackFit(0, stackToCraft);
+	}
+
+	@Override
+	protected boolean craftRecipe(DigesterRecipe recipeToCraft, World world) {
 		ItemStack result = recipeToCraft.getCraftingResult(inputContents);
 		if (!result.isEmpty() && outputContents.doesItemStackFit(0, result)) {
 			for (int idx = 0; idx < inputContents.getSizeInventory(); idx++) {
@@ -188,7 +152,7 @@ public class DigesterTileEntity extends OwnableTileEntity implements INamedConta
 			outputContents.insertItemStack(0, result);
 
 			Byproduct byproduct = recipeToCraft.getByproduct();
-			if (byproduct != null && rand.nextFloat() <= byproduct.getChance()) {
+			if (byproduct != null && world.rand.nextFloat() <= byproduct.getChance()) {
 				ItemStack stack = byproduct.getItemStack();
 				for (int idx = 1; idx < outputContents.getSizeInventory(); idx++) { //index 0 is reserved for the main crafting output
 					stack = outputContents.insertItemStack(idx, stack); //update stack with remainder
@@ -202,23 +166,7 @@ public class DigesterTileEntity extends OwnableTileEntity implements INamedConta
 		return false;
 	}
 
-	private boolean consumeFuel() {
-		if (stateData.fuel.getFluidAmount() >= FUEL_COST) {
-			stateData.fuel.getFluid().shrink(FUEL_COST);
-			return true;
-		}
-		return false;
-	}
-
-	public static boolean isFluidValidFuel(FluidStack fluidStack) {
-		return fluidStack.getFluid() == Fluids.WATER;
-	}
-
-	public static boolean isItemValidFuel(ItemStack stack) {
-		if (stack.getItem() == Items.POTION && PotionUtils.getPotionFromItem(stack) == Potions.WATER) return true;
-		return FluidUtil.getFluidContained(stack).map(DigesterTileEntity::isFluidValidFuel).orElse(false);
-	}
-
+	@Override
 	public void refuel() {
 		int fluidAmount = stateData.fuel.getFluidAmount();
 		int maxFluidAmount = stateData.fuel.getCapacity();
@@ -253,6 +201,23 @@ public class DigesterTileEntity extends OwnableTileEntity implements INamedConta
 		}
 	}
 
+	@Override
+	protected IInventory getInputInventory() {
+		return inputContents;
+	}
+
+	@Override
+	protected ITextComponent getDefaultName() {
+		return TextUtil.getTranslationText("container", "digester");
+	}
+
+	@Nullable
+	@Override
+	public Container createMenu(int screenId, PlayerInventory playerInv, PlayerEntity player) {
+		return DigesterContainer.createServerContainer(screenId, playerInv, fuelContents, fuelOutContents, inputContents, outputContents, stateData);
+	}
+
+	@Override
 	public void dropAllInvContents(World world, BlockPos pos) {
 		InventoryHelper.dropInventoryItems(world, pos, fuelContents);
 		InventoryHelper.dropInventoryItems(world, pos, fuelOutContents);
