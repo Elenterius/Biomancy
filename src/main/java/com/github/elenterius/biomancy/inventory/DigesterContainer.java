@@ -98,6 +98,10 @@ public class DigesterContainer extends Container {
 		return MathHelper.clamp(stateData.timeElapsed / (float) stateData.timeForCompletion, 0f, 1f);
 	}
 
+	public int getFuel() {
+		return stateData.fuel.getFluidAmount();
+	}
+
 	public float getFuelNormalized() {
 		return MathHelper.clamp(stateData.fuel.getFluidAmount() / (float) stateData.fuel.getCapacity(), 0f, 1f);
 	}

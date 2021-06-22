@@ -105,6 +105,10 @@ public class DecomposerContainer extends Container {
 		return MathHelper.clamp(decomposerState.timeElapsed / (float) decomposerState.timeForCompletion, 0f, 1f);
 	}
 
+	public int getFuel() {
+		return decomposerState.mainFuel;
+	}
+
 	public float getFuelNormalized() {
 		return MathHelper.clamp(decomposerState.mainFuel / (float) DecomposerTileEntity.MAX_FUEL, 0f, 1f);
 	}

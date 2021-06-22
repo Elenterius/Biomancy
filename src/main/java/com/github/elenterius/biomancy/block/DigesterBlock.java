@@ -24,7 +24,6 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -38,6 +37,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -71,8 +71,10 @@ public class DigesterBlock extends OwnableContainerBlock {
 		if (nbt != null) {
 			tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 			CompoundNBT fuelNbt = nbt.getCompound(DigesterStateData.NBT_KEY_FUEL);
-			int mainFuel = (int) (MathHelper.clamp(fuelNbt.getInt("Amount") / (float) DigesterTileEntity.MAX_FUEL, 0f, 1f) * 100);
-			tooltip.add(new TranslationTextComponent("fluid." + fuelNbt.getString("FluidName").replace(":", ".").replace("/", ".")).appendString(": " + mainFuel + "%"));
+			int fuel = fuelNbt.getInt("Amount");
+			String translationKey = "fluid." + fuelNbt.getString("FluidName").replace(":", ".").replace("/", ".");
+			DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
+			tooltip.add(new TranslationTextComponent(translationKey).appendString(String.format(": %s/%s", df.format(fuel), df.format(DigesterTileEntity.MAX_FUEL))));
 		}
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 	}

@@ -101,6 +101,10 @@ public class EvolutionPoolContainer extends Container {
 		return MathHelper.clamp(stateData.timeElapsed / (float) stateData.timeForCompletion, 0f, 1f);
 	}
 
+	public int getFuel() {
+		return stateData.fuel;
+	}
+
 	public float getFuelNormalized() {
 		return MathHelper.clamp(stateData.fuel / (float) EvolutionPoolTileEntity.MAX_FUEL, 0f, 1f);
 	}

@@ -95,6 +95,10 @@ public class ChewerContainer extends Container {
 		return MathHelper.clamp(stateData.timeElapsed / (float) stateData.timeForCompletion, 0f, 1f);
 	}
 
+	public int getFuel() {
+		return stateData.fuel;
+	}
+
 	public float getFuelNormalized() {
 		return MathHelper.clamp(stateData.fuel / (float) ChewerTileEntity.MAX_FUEL, 0f, 1f);
 	}

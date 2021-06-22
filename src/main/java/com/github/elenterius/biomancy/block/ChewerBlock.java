@@ -25,7 +25,6 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -38,6 +37,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -70,8 +70,9 @@ public class ChewerBlock extends OwnableContainerBlock {
 		CompoundNBT nbt = stack.getChildTag("BlockEntityTag");
 		if (nbt != null) {
 			tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
-			int mainFuel = (int) (MathHelper.clamp(nbt.getShort(ChewerStateData.NBT_KEY_FUEL) / (float) ChewerTileEntity.MAX_FUEL, 0f, 1f) * 100);
-			tooltip.add(TextUtil.getTranslationText("tooltip", "biofuel").appendString(": " + mainFuel + "%"));
+			int fuel = nbt.getShort(ChewerStateData.NBT_KEY_FUEL);
+			DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
+			tooltip.add(TextUtil.getTranslationText("tooltip", "biofuel").appendString(String.format(": %s/%s", df.format(fuel), df.format(ChewerTileEntity.MAX_FUEL))));
 		}
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 	}

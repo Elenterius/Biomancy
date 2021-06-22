@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.block;
 
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.tileentity.DecomposerTileEntity;
+import com.github.elenterius.biomancy.tileentity.state.DecomposerStateData;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
 import com.github.elenterius.biomancy.util.VoxelShapeUtil;
@@ -24,7 +25,6 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
@@ -37,6 +37,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -69,10 +70,9 @@ public class DecomposerBlock extends OwnableContainerBlock {
 		CompoundNBT nbt = stack.getChildTag("BlockEntityTag");
 		if (nbt != null) {
 			tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
-			int mainFuel = (int) (MathHelper.clamp(nbt.getShort("MainFuel") / (float) DecomposerTileEntity.MAX_FUEL, 0f, 1f) * 100);
-			int speedFuel = (int) (MathHelper.clamp(nbt.getShort("SpeedFuel") / (float) DecomposerTileEntity.MAX_FUEL, 0f, 1f) * 100);
-			tooltip.add(TextUtil.getTranslationText("tooltip", "biofuel").appendString(": " + mainFuel + "%"));
-			tooltip.add(TextUtil.getTranslationText("tooltip", "speed_fuel").appendString(": " + speedFuel + "%"));
+			int fuel = nbt.getShort(DecomposerStateData.NBT_KEY_MAIN_FUEL);
+			DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
+			tooltip.add(TextUtil.getTranslationText("tooltip", "biofuel").appendString(String.format(": %s/%s", df.format(fuel), df.format(DecomposerTileEntity.MAX_FUEL))));
 		}
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 	}
