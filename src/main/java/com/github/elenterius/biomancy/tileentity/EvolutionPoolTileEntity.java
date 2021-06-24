@@ -49,8 +49,8 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 	public static final int DEFAULT_TIME = 400;
 	public static final int MAX_FUEL = 32_000;
 	public static final short FUEL_COST = 2;
-	public static final float FUEL_CONVERSION = 200; // FUEL_COST * DEFAULT_TIME / 4f
-	public static final Predicate<ItemStack> VALID_FUEL = stack -> stack.getItem() == ModItems.MUTAGENIC_BILE.get();
+	public static final float ITEM_FUEL_VALUE = 200; // FUEL_COST * DEFAULT_TIME / 4f
+	public static final Predicate<ItemStack> VALID_FUEL_ITEM = stack -> stack.getItem() == ModItems.MUTAGENIC_BILE.get();
 	public static final BioMechanicalRecipeType<EvolutionPoolRecipe> RECIPE_TYPE = ModRecipes.EVOLUTION_POOL_RECIPE_TYPE;
 
 	private final EvolutionPoolStateData stateData = new EvolutionPoolStateData();
@@ -104,12 +104,12 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 
 	@Override
 	public boolean isItemValidFuel(ItemStack stack) {
-		return VALID_FUEL.test(stack);
+		return VALID_FUEL_ITEM.test(stack);
 	}
 
 	@Override
-	public float getFuelConversion(ItemStack stackIn) {
-		return FUEL_CONVERSION;
+	public float getItemFuelValue(ItemStack stackIn) {
+		return ITEM_FUEL_VALUE;
 	}
 
 	@Override

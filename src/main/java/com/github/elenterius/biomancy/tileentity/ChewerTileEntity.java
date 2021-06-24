@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.tileentity;
 
-import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.init.ModTileEntityTypes;
 import com.github.elenterius.biomancy.inventory.ChewerContainer;
@@ -9,6 +8,7 @@ import com.github.elenterius.biomancy.inventory.SimpleInvContents;
 import com.github.elenterius.biomancy.recipe.BioMechanicalRecipeType;
 import com.github.elenterius.biomancy.recipe.ChewerRecipe;
 import com.github.elenterius.biomancy.tileentity.state.ChewerStateData;
+import com.github.elenterius.biomancy.util.BiofuelUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -28,7 +28,6 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.function.Predicate;
 
 public class ChewerTileEntity extends MachineTileEntity<ChewerRecipe, ChewerStateData> {
 
@@ -39,8 +38,6 @@ public class ChewerTileEntity extends MachineTileEntity<ChewerRecipe, ChewerStat
 	public static final int DEFAULT_TIME = 200;
 	public static final int MAX_FUEL = 32_000;
 	public static final short FUEL_COST = 2;
-	public static final float FUEL_CONVERSION = 100; // FUEL_COST * DEFAULT_TIME / 4f
-	public static final Predicate<ItemStack> VALID_FUEL = stack -> stack.getItem() == ModItems.NUTRIENT_PASTE.get() || stack.getItem() == ModItems.NUTRIENT_BAR.get();
 	public static final BioMechanicalRecipeType<ChewerRecipe> RECIPE_TYPE = ModRecipes.CHEWER_RECIPE_TYPE;
 
 	private final ChewerStateData stateData = new ChewerStateData();
@@ -92,12 +89,12 @@ public class ChewerTileEntity extends MachineTileEntity<ChewerRecipe, ChewerStat
 
 	@Override
 	public boolean isItemValidFuel(ItemStack stack) {
-		return VALID_FUEL.test(stack);
+		return BiofuelUtil.isItemValidFuel(stack);
 	}
 
 	@Override
-	public float getFuelConversion(ItemStack stackIn) {
-		return FUEL_CONVERSION * (stackIn.getItem() == ModItems.NUTRIENT_BAR.get() ? 5 : 1);
+	public float getItemFuelValue(ItemStack stackIn) {
+		return BiofuelUtil.getItemFuelValue(stackIn);
 	}
 
 	@Override

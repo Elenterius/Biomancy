@@ -306,7 +306,7 @@ public class EvolutionPoolBlock extends OwnableContainerBlock {
 					tile = ((OwnableTileEntityDelegator) tile).getDelegate();
 				}
 				if (tile instanceof EvolutionPoolTileEntity) {
-					if (EvolutionPoolTileEntity.VALID_FUEL.test(stack)) {
+					if (EvolutionPoolTileEntity.VALID_FUEL_ITEM.test(stack)) {
 						ItemStack remainder = ((EvolutionPoolTileEntity) tile).addFuel(stack);
 						if (remainder.getCount() != stack.getCount()) {
 							((ItemEntity) entityIn).setItem(remainder);

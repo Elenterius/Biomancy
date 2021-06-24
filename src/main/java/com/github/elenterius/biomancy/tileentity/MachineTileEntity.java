@@ -42,7 +42,7 @@ public abstract class MachineTileEntity<R extends AbstractBioMechanicalRecipe, S
 
 	public abstract boolean isItemValidFuel(ItemStack stack);
 
-	public abstract float getFuelConversion(ItemStack stackIn);
+	public abstract float getItemFuelValue(ItemStack stackIn);
 
 	public abstract ItemStack getStackInFuelSlot();
 
@@ -87,11 +87,13 @@ public abstract class MachineTileEntity<R extends AbstractBioMechanicalRecipe, S
 		if (world == null || world.isRemote()) return stackIn;
 
 		if (!stackIn.isEmpty() && getFuelAmount() < getMaxFuelAmount()) {
-			float fuelConversion = getFuelConversion(stackIn);
-			int itemsNeeded = Math.round(Math.max(0, getMaxFuelAmount() - getFuelAmount()) / fuelConversion);
+			float itemFuelValue = getItemFuelValue(stackIn);
+			if (itemFuelValue <= 0f) return stackIn;
+
+			int itemsNeeded = Math.round(Math.max(0, getMaxFuelAmount() - getFuelAmount()) / itemFuelValue);
 			int consumeAmount = Math.min(stackIn.getCount(), itemsNeeded);
 			if (consumeAmount > 0) {
-				short newFuel = (short) MathHelper.clamp(getFuelAmount() + fuelConversion * consumeAmount, 0, getMaxFuelAmount() + fuelConversion);
+				short newFuel = (short) MathHelper.clamp(getFuelAmount() + itemFuelValue * consumeAmount, 0, getMaxFuelAmount() + itemFuelValue);
 				setFuelAmount(newFuel);
 				return ItemHandlerHelper.copyStackWithSize(stackIn, stackIn.getCount() - consumeAmount);
 			}

@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.tileentity;
 
-import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.init.ModTileEntityTypes;
 import com.github.elenterius.biomancy.inventory.DecomposerContainer;
@@ -10,6 +9,7 @@ import com.github.elenterius.biomancy.recipe.BioMechanicalRecipeType;
 import com.github.elenterius.biomancy.recipe.Byproduct;
 import com.github.elenterius.biomancy.recipe.DecomposerRecipe;
 import com.github.elenterius.biomancy.tileentity.state.DecomposerStateData;
+import com.github.elenterius.biomancy.util.BiofuelUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -29,7 +29,6 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.function.Predicate;
 
 public class DecomposerTileEntity extends MachineTileEntity<DecomposerRecipe, DecomposerStateData> {
 
@@ -37,11 +36,8 @@ public class DecomposerTileEntity extends MachineTileEntity<DecomposerRecipe, De
 	public static final int INPUT_SLOTS_COUNT = DecomposerRecipe.MAX_INGREDIENTS;
 	public static final int OUTPUT_SLOTS_COUNT = 1 + DecomposerRecipe.MAX_BYPRODUCTS;
 
-	public static final int DEFAULT_TIME = 200;
 	public static final int MAX_FUEL = 32_000;
 	public static final short FUEL_COST = 5;
-	public static final float FUEL_CONVERSION = 250; // FUEL_COST * DEFAULT_TIME / 4f
-	public static final Predicate<ItemStack> VALID_FUEL = stack -> stack.getItem() == ModItems.NUTRIENT_PASTE.get() || stack.getItem() == ModItems.NUTRIENT_BAR.get();
 	public static final BioMechanicalRecipeType<DecomposerRecipe> RECIPE_TYPE = ModRecipes.DECOMPOSING_RECIPE_TYPE;
 
 	private final DecomposerStateData stateData = new DecomposerStateData();
@@ -93,12 +89,12 @@ public class DecomposerTileEntity extends MachineTileEntity<DecomposerRecipe, De
 
 	@Override
 	public boolean isItemValidFuel(ItemStack stack) {
-		return VALID_FUEL.test(stack);
+		return BiofuelUtil.isItemValidFuel(stack);
 	}
 
 	@Override
-	public float getFuelConversion(ItemStack stackIn) {
-		return FUEL_CONVERSION * (stackIn.getItem() == ModItems.NUTRIENT_BAR.get() ? 5 : 1);
+	public float getItemFuelValue(ItemStack stackIn) {
+		return BiofuelUtil.getItemFuelValue(stackIn);
 	}
 
 	@Override

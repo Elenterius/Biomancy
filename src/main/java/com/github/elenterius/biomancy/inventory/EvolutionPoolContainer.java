@@ -63,7 +63,7 @@ public class EvolutionPoolContainer extends Container {
 		addSlot(new Slot(fuelContents, 0, posX, posY) {
 			@Override
 			public boolean isItemValid(ItemStack stack) {
-				return EvolutionPoolTileEntity.VALID_FUEL.test(stack);
+				return EvolutionPoolTileEntity.VALID_FUEL_ITEM.test(stack);
 			}
 		});
 
@@ -141,7 +141,7 @@ public class EvolutionPoolContainer extends Container {
 				if (EvolutionPoolTileEntity.RECIPE_TYPE.getRecipeForItem(world, sourceStack).isPresent()) {
 					successfulTransfer = mergeInto(SlotZone.INPUT_ZONE, sourceStack, false);
 				}
-				if (!successfulTransfer && EvolutionPoolTileEntity.VALID_FUEL.test(sourceStack)) {
+				if (!successfulTransfer && EvolutionPoolTileEntity.VALID_FUEL_ITEM.test(sourceStack)) {
 					successfulTransfer = mergeInto(SlotZone.FUEL_ZONE, sourceStack, true);
 				}
 				if (!successfulTransfer) {

@@ -48,7 +48,7 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 
 	public static final int MAX_FUEL = 32_000;
 	public static final short FUEL_COST = 1;
-	public static final Predicate<ItemStack> VALID_FUEL = stack -> {
+	public static final Predicate<ItemStack> VALID_FUEL_ITEM = stack -> {
 		if (stack.getItem() == Items.POTION && PotionUtils.getPotionFromItem(stack) == Potions.WATER) return true;
 		return FluidUtil.getFluidContained(stack).map(DigesterTileEntity::isFluidValidFuel).orElse(false);
 	};
@@ -119,11 +119,11 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 
 	@Override
 	public boolean isItemValidFuel(ItemStack stack) {
-		return VALID_FUEL.test(stack);
+		return VALID_FUEL_ITEM.test(stack);
 	}
 
 	@Override
-	public float getFuelConversion(ItemStack stackIn) {
+	public float getItemFuelValue(ItemStack stackIn) {
 		return 1;
 	}
 

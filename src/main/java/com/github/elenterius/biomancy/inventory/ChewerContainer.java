@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModContainerTypes;
 import com.github.elenterius.biomancy.tileentity.ChewerTileEntity;
 import com.github.elenterius.biomancy.tileentity.state.ChewerStateData;
+import com.github.elenterius.biomancy.util.BiofuelUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -63,7 +64,7 @@ public class ChewerContainer extends Container {
 		addSlot(new Slot(fuelContents, 0, posX, posY) {
 			@Override
 			public boolean isItemValid(ItemStack stack) {
-				return ChewerTileEntity.VALID_FUEL.test(stack);
+				return BiofuelUtil.isItemValidFuel(stack);
 			}
 		});
 
@@ -139,7 +140,7 @@ public class ChewerContainer extends Container {
 				if (ChewerTileEntity.RECIPE_TYPE.getRecipeForItem(world, sourceStack).isPresent()) {
 					successfulTransfer = mergeInto(SlotZone.INPUT_ZONE, sourceStack, false);
 				}
-				if (!successfulTransfer && ChewerTileEntity.VALID_FUEL.test(sourceStack)) {
+				if (!successfulTransfer && BiofuelUtil.isItemValidFuel(sourceStack)) {
 					successfulTransfer = mergeInto(SlotZone.FUEL_ZONE, sourceStack, true);
 				}
 				if (!successfulTransfer) {
