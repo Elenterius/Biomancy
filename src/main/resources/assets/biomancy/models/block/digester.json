@@ -1,11 +1,12 @@
 {
-	"credit": "Made with Blockbench",
+	"credit": "Made by Serpentarium",
+	"parent": "block/block",
 	"textures": {
-		"12": "flesh_mouth",
-		"14": "flesh_rough_1",
-		"15": "flesh_rough_2",
-		"19": "muscle",
-		"particle": "decomposer_front"
+		"12": "biomancy:block/flesh_mouth",
+		"14": "biomancy:block/flesh_rough_1",
+		"15": "biomancy:block/flesh_rough_2",
+		"19": "biomancy:block/muscle",
+		"particle": "biomancy:block/flesh_bland"
 	},
 	"elements": [
 		{
