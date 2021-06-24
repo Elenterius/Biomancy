@@ -150,6 +150,9 @@ public class EvolutionPoolBlock extends OwnableContainerBlock {
 				((EvolutionPoolTileEntity) tile).dropAllInvContents(worldIn, pos);
 				((EvolutionPoolTileEntity) tile).scheduleMultiBlockDeconstruction(true);
 			}
+			if (state.get(MachineBlock.CRAFTING)) {
+				worldIn.updateComparatorOutputLevel(pos, this);
+			}
 			super.onReplaced(state, worldIn, pos, newState, isMoving);
 		}
 	}
@@ -328,6 +331,16 @@ public class EvolutionPoolBlock extends OwnableContainerBlock {
 				}
 			}
 		}
+	}
+
+	@Override
+	public boolean hasComparatorInputOverride(BlockState state) {
+		return true;
+	}
+
+	@Override
+	public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
+		return blockState.get(MachineBlock.CRAFTING) ? 15 : 0;
 	}
 
 	@Override

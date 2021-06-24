@@ -91,6 +91,9 @@ public abstract class MachineBlock<T extends MachineTileEntity<?,?>> extends Own
 			if (tileEntity instanceof MachineTileEntity<?,?>) {
 				((MachineTileEntity<?,?>) tileEntity).dropAllInvContents(worldIn, pos);
 			}
+			if (state.get(CRAFTING)) {
+				worldIn.updateComparatorOutputLevel(pos, this);
+			}
 			super.onReplaced(state, worldIn, pos, newState, isMoving);
 		}
 	}
@@ -114,6 +117,16 @@ public abstract class MachineBlock<T extends MachineTileEntity<?,?>> extends Own
 	@Override
 	public boolean canProvidePower(BlockState state) {
 		return true;
+	}
+
+	@Override
+	public boolean hasComparatorInputOverride(BlockState state) {
+		return true;
+	}
+
+	@Override
+	public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
+		return blockState.get(CRAFTING) ? 15 : 0;
 	}
 
 	protected void updateNeighbors(World worldIn, BlockPos pos) {
