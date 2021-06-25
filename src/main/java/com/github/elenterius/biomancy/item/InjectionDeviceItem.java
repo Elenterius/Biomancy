@@ -93,7 +93,7 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 			ItemStack offhandStack = playerIn.getHeldItemOffhand();
 			if (!offhandStack.isEmpty()) {
 				if (offhandStack.getItem() == ModItems.REAGENT.get()) {
-					if (addReagent(offhandStack, heldStack)) {
+					if (addReagent(offhandStack, heldStack, playerIn)) {
 						playSFX(worldIn, playerIn, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC);
 						return ActionResult.resultFail(heldStack);
 					}
@@ -128,7 +128,7 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 		return false;
 	}
 
-	private boolean addReagent(ItemStack ammoStack, ItemStack gunStack) {
+	private boolean addReagent(ItemStack ammoStack, ItemStack gunStack, PlayerEntity playerIn) {
 		byte amount = getReagentAmount(gunStack);
 		if (amount >= getMaxReagentAmount()) return false;
 
@@ -141,6 +141,11 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 				Reagent.copyAdditionalData(ammoStack.getOrCreateTag(), nbt);
 				setReagentAmount(gunStack, (byte) 1);
 				ammoStack.grow(-1);
+
+				ItemStack stack = new ItemStack(ModItems.GLASS_VIAL.get());
+				if (!playerIn.addItemStackToInventory(stack)) {
+					playerIn.entityDropItem(stack);
+				}
 				return true;
 			}
 			else {
@@ -153,6 +158,11 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 						}
 						setReagentAmount(gunStack, (byte) (amount + 1));
 						ammoStack.grow(-1);
+
+						ItemStack stack = new ItemStack(ModItems.GLASS_VIAL.get());
+						if (!playerIn.addItemStackToInventory(stack)) {
+							playerIn.entityDropItem(stack);
+						}
 						return true;
 					}
 				}
