@@ -1,18 +1,18 @@
 {
   "variants": {
     "facing=east": {
-      "model": "biomancy:block/chewer",
+      "model": "biomancy:block/decomposer",
       "y": 90
     },
     "facing=north": {
-      "model": "biomancy:block/chewer"
+      "model": "biomancy:block/decomposer"
     },
     "facing=south": {
-      "model": "biomancy:block/chewer",
+      "model": "biomancy:block/decomposer",
       "y": 180
     },
     "facing=west": {
-      "model": "biomancy:block/chewer",
+      "model": "biomancy:block/decomposer",
       "y": 270
     }
   }
