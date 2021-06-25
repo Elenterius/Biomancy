@@ -35,18 +35,25 @@ public class BloodSampleReagent extends Reagent {
 	@Nullable
 	public static CompoundNBT getBloodSampleFromEntity(PlayerEntity player, LivingEntity target) {
 		boolean isValidEntity = target.isAlive() && (isNonBoss(target) || player.isCreative());
-		if (isValidEntity) {
-			CompoundNBT nbt = new CompoundNBT();
-			String typeId = target.getEntityString();
-			if (typeId != null) {
-				nbt.putString("EntityTypeId", typeId);
-				nbt.putString("Name", target.getType().getTranslationKey());
-				nbt.putBoolean("IsPlayer", target instanceof PlayerEntity);
-				nbt.putUniqueId("EntityUUID", target.getUniqueID());
-				return nbt;
-			}
+		return isValidEntity ? getBloodSampleFromEntityUnchecked(target) : null;
+	}
+
+	@Nullable
+	public static CompoundNBT getBloodSampleFromEntityUnchecked(LivingEntity target) {
+		CompoundNBT nbt = new CompoundNBT();
+		String typeId = target instanceof PlayerEntity ? getPlayerTypeId((PlayerEntity) target) : target.getEntityString();
+		if (typeId != null) {
+			nbt.putString("EntityTypeId", typeId);
+			nbt.putString("Name", target.getType().getTranslationKey());
+			nbt.putBoolean("IsPlayer", target instanceof PlayerEntity);
+			nbt.putUniqueId("EntityUUID", target.getUniqueID());
+			return nbt;
 		}
 		return null;
+	}
+
+	private static String getPlayerTypeId(PlayerEntity playerEntity) {
+		return EntityType.getKey(playerEntity.getType()).toString();
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -55,7 +62,11 @@ public class BloodSampleReagent extends Reagent {
 		CompoundNBT nbt = stack.getOrCreateTag();
 		if (nbt.contains(NBT_KEY_DATA)) {
 			CompoundNBT reagentNbt = nbt.getCompound(NBT_KEY_DATA);
-			tooltip.add(ClientTextUtil.getTooltipText("contains_dna", new TranslationTextComponent(reagentNbt.getString("Name"))).mergeStyle(TextFormatting.GRAY));
+			if (reagentNbt.getBoolean("IsPlayer")) {
+				String playerName =  " " + ClientTextUtil.tryToGetPlayerNameOnClientSide(reagentNbt.getUniqueId("EntityUUID"));
+				tooltip.add(ClientTextUtil.getTooltipText("contains_dna", new TranslationTextComponent(reagentNbt.getString("Name")).appendString(playerName)).mergeStyle(TextFormatting.GRAY));
+			}
+			else tooltip.add(ClientTextUtil.getTooltipText("contains_dna", new TranslationTextComponent(reagentNbt.getString("Name"))).mergeStyle(TextFormatting.GRAY));
 		}
 		if (ClientTextUtil.showExtraInfo(tooltip)) {
 			tooltip.add(new TranslationTextComponent(getTranslationKey().replace("reagent", "tooltip")).mergeStyle(ClientTextUtil.LORE_STYLE));

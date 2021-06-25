@@ -204,7 +204,7 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 			if (player.world.isRemote) playSFX(player.world, player, SoundEvents.BLOCK_DISPENSER_FAIL);
 			return ActionResultType.FAIL;
 		}
-		else { //it's essentially empty
+		else { //the device is empty
 			if (!target.world.isRemote) {
 				CompoundNBT reagentNbt = BloodSampleReagent.getBloodSampleFromEntity(player, target);
 				if (reagentNbt != null && !reagentNbt.isEmpty()) {
@@ -236,7 +236,27 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 			}
 			return success;
 		}
-		return false;
+		else { //the device is empty
+			if (!player.world.isRemote) {
+				CompoundNBT reagentNbt = BloodSampleReagent.getBloodSampleFromEntityUnchecked(player);
+				if (reagentNbt != null && !reagentNbt.isEmpty()) {
+					CompoundNBT nbt = stack.getOrCreateTag();
+					Reagent.serialize(ModReagents.BLOOD_SAMPLE.get(), nbt);
+					nbt.put(Reagent.NBT_KEY_DATA, reagentNbt);
+					setReagentAmount(stack, getMaxReagentAmount());
+
+					playSFX(player.world, player, ModSoundEvents.INJECT.get());
+					player.attackEntityFrom(DamageSource.causeBeeStingDamage(player), 0.5f);
+
+					if (player.isCreative()) {
+						player.setHeldItem(player.getActiveHand(), stack); //fix for creative mode (normally the stack is not modified in creative)
+					}
+					return true;
+				}
+				else return false;
+			}
+			else return true;
+		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
