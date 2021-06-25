@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.util;
 
 import com.github.elenterius.biomancy.init.ClientSetupHandler;
-import com.github.elenterius.biomancy.mixin.client.ItemStackMixinAccessor;
+import com.github.elenterius.biomancy.mixin.client.ClientItemStackMixinAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.PlayerEntity;
@@ -68,11 +68,11 @@ public final class ClientTextUtil extends TextUtil {
 
 	public static int getHideFlags(ItemStack stack) {
 		//noinspection ConstantConditions
-		return ((ItemStackMixinAccessor) (Object) stack).getHideFlags();
+		return ((ClientItemStackMixinAccessor) (Object) stack).biomancy_getHideFlags();
 	}
 
 	public static boolean isToolTipVisible(ItemStack stack, ItemStack.TooltipDisplayFlags flags) {
-		return ItemStackMixinAccessor.isToolTipVisible(getHideFlags(stack), flags);
+		return ClientItemStackMixinAccessor.biomancy_isToolTipVisible(getHideFlags(stack), flags);
 	}
 
 	public static void setTooltipVisible(ItemStack stack, ItemStack.TooltipDisplayFlags tooltipDisplay) {

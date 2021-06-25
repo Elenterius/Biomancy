@@ -117,7 +117,7 @@ public class GrowthReagent extends Reagent {
 			if (!target.world.isRemote) {
 				int slimeSize = ((SlimeEntity) target).getSlimeSize();
 				if (slimeSize < 25) {
-					((SlimeEntityAccessor) target).callSetSlimeSize(slimeSize + 1, false);
+					((SlimeEntityAccessor) target).biomancy_setSlimeSize(slimeSize + 1, false);
 				}
 				else {
 					target.attackEntityFrom(DamageSource.causeExplosionDamage(source), target.getHealth()); //"explode" slime
@@ -143,7 +143,7 @@ public class GrowthReagent extends Reagent {
 //				EntityDataManager dataManager = target.getDataManager();
 //				byte status = dataManager.get(ArmorStandEntity.STATUS);
 //				dataManager.set(ArmorStandEntity.STATUS, (byte) (status & ~1));
-				((ArmorStandEntityAccessor) target).callSetSmall(false);
+				((ArmorStandEntityAccessor) target).biomancy_setSmall(false);
 				return true;
 			}
 		}

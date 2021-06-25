@@ -13,7 +13,7 @@ import java.util.Map;
 @Mixin(RecipeManager.class)
 public interface RecipeManagerMixinAccessor {
 
-	@Invoker
-	<C extends IInventory, T extends IRecipe<C>> Map<ResourceLocation, IRecipe<C>> callGetRecipes(IRecipeType<T> recipeTypeIn);
+	@Invoker("getRecipes")
+	<C extends IInventory, T extends IRecipe<C>> Map<ResourceLocation, IRecipe<C>> biomancy_getRecipes(IRecipeType<T> recipeTypeIn);
 
 }

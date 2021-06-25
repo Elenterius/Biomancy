@@ -37,7 +37,7 @@ public class ClawWeaponItem extends SwordItem {
 
 	protected Multimap<Attribute, AttributeModifier> createAttributeModifiers() {
 		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-		Multimap<Attribute, AttributeModifier> swordAttributes = ((SwordItemMixinAccessor) this).getAttributeModifiers();
+		Multimap<Attribute, AttributeModifier> swordAttributes = ((SwordItemMixinAccessor) this).biomancy_attributeModifiers();
 		swordAttributes.forEach(builder::put);
 		addAdditionalAttributeModifiers(builder);
 		return builder.build();

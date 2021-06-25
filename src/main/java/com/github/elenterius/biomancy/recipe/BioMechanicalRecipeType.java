@@ -30,7 +30,7 @@ public class BioMechanicalRecipeType<T extends AbstractBioMechanicalRecipe> impl
 	public Optional<T> getRecipeForItem(World world, ItemStack stack) {
 		RecipeManagerMixinAccessor recipeManager = (RecipeManagerMixinAccessor) world.getRecipeManager();
 		//noinspection unchecked
-		return recipeManager.callGetRecipes(this).values().stream().map(recipe -> (T) recipe)
+		return recipeManager.biomancy_getRecipes(this).values().stream().map(recipe -> (T) recipe)
 				.filter(recipe -> {
 					for (Ingredient ingredient : recipe.getIngredients()) {
 						if (ingredient.test(stack)) return true;

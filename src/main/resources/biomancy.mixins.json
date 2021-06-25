@@ -17,10 +17,10 @@
     "SwordItemMixinAccessor"
   ],
   "client": [
+    "client.ClientItemStackMixinAccessor",
     "client.ClientRecipeBookMixin",
     "client.EntityMixin",
     "client.GetMouseOverMixin",
-    "client.ItemStackMixinAccessor",
     "client.LivingRendererMixin",
     "client.MinecraftMixin",
     "client.PlayerRendererMixin"
