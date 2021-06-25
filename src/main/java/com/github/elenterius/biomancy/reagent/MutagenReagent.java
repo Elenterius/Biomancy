@@ -46,7 +46,7 @@ public class MutagenReagent extends Reagent {
 			int amplifier = 0;
 			int duration = 0;
 			for (EffectInstance effectInstance : effects) {
-				if (effectInstance.getPotion() == ModEffects.FLESH_EATING_DISEASE.get()) {
+				if (effectInstance.getPotion() == ModEffects.RAVENOUS_HUNGER.get()) {
 					amplifier = effectInstance.getAmplifier();
 					duration = effectInstance.getDuration();
 					break;
@@ -56,7 +56,7 @@ public class MutagenReagent extends Reagent {
 			duration += 5 * 120;
 
 			if (!convertLivingEntity(source, target, amplifier)) {
-				EffectInstance effectInstance = new EffectInstance(ModEffects.FLESH_EATING_DISEASE.get(), duration, amplifier);
+				EffectInstance effectInstance = new EffectInstance(ModEffects.RAVENOUS_HUNGER.get(), duration, amplifier);
 				target.addPotionEffect(effectInstance);
 			}
 		}
@@ -84,7 +84,7 @@ public class MutagenReagent extends Reagent {
 
 	private boolean convertLivingEntity(@Nullable LivingEntity source, LivingEntity target, int amplifier) {
 		ServerWorld world = (ServerWorld) target.world;
-		if (amplifier < 2) return false;
+		if (amplifier < 1) return false;
 
 		if (target instanceof GuardianEntity) {
 			return convertMobEntityTo(world, (GuardianEntity) target, EntityType.ELDER_GUARDIAN);
