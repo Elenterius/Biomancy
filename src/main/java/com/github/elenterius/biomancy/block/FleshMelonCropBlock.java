@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.block;
 
-import com.github.elenterius.biomancy.init.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.item.Items;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -35,7 +35,8 @@ public class FleshMelonCropBlock extends FleshCropBlock {
 
 	@Override
 	public IItemProvider getSeedsItem() {
-		return ModItems.VILE_MELON_SEEDS.get();
+		return Items.AIR; //TODO: revert this
+//		return ModItems.VILE_MELON_SEEDS.get();
 	}
 
 }

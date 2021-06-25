@@ -81,7 +81,7 @@ public final class ClientSetupHandler {
 			ItemModelsProperties.registerProperty(ModItems.BONE_SCRAPS.get(), new ResourceLocation("type"), (stack, clientWorld, livingEntity) -> stack.getOrCreateTag().getInt("ScrapType"));
 
 			RenderTypeLookup.setRenderLayer(ModBlocks.FLESH_TENTACLE.get(), RenderType.getCutout());
-			RenderTypeLookup.setRenderLayer(ModBlocks.VILE_MELON_CROP.get(), RenderType.getCutout());
+//			RenderTypeLookup.setRenderLayer(ModBlocks.VILE_MELON_CROP.get(), RenderType.getCutout());
 			RenderTypeLookup.setRenderLayer(ModBlocks.FLESHBORN_DOOR.get(), RenderType.getCutout());
 			RenderTypeLookup.setRenderLayer(ModBlocks.FLESHBORN_TRAPDOOR.get(), RenderType.getCutout());
 
@@ -97,8 +97,8 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void onItemColorRegistry(final ColorHandlerEvent.Item event) {
-		event.getItemColors().register((stack, index) -> 0xff6981, ModItems.VILE_MELON_BLOCK.get(), ModItems.VILE_MELON_SEEDS.get(), ModItems.VILE_MELON_SLICE.get());
-		event.getItemColors().register((stack, index) -> 0x6c2e1f, ModItems.COOKED_VILE_MELON_SLICE.get());
+//		event.getItemColors().register((stack, index) -> 0xff6981, ModItems.VILE_MELON_BLOCK.get(), ModItems.VILE_MELON_SEEDS.get(), ModItems.VILE_MELON_SLICE.get());
+//		event.getItemColors().register((stack, index) -> 0x6c2e1f, ModItems.COOKED_VILE_MELON_SLICE.get());
 		event.getItemColors().register((stack, index) -> 0x8d758c, ModItems.NECROTIC_FLESH.get(), ModItems.NECROTIC_FLESH_BLOCK.get());
 
 		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.INJECTION_DEVICE.get().getReagentColor(stack) : -1, ModItems.INJECTION_DEVICE.get());
@@ -108,7 +108,7 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void onItemColorRegistry(final ColorHandlerEvent.Block event) {
-		event.getBlockColors().register((state, displayReader, pos, index) -> 0xff6981, ModBlocks.VILE_MELON_BLOCK.get(), ModBlocks.VILE_MELON_CROP.get());
+//		event.getBlockColors().register((state, displayReader, pos, index) -> 0xff6981, ModBlocks.VILE_MELON_BLOCK.get(), ModBlocks.VILE_MELON_CROP.get());
 		event.getBlockColors().register((state, displayReader, pos, index) -> 0x8d758c, ModBlocks.NECROTIC_FLESH_BLOCK.get());
 	}
 
