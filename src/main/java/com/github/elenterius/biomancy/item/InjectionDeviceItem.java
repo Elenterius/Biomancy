@@ -183,7 +183,7 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 			boolean success = reagent.affectBlock(stack.getOrCreateTag().getCompound(Reagent.NBT_KEY_DATA), context.getPlayer(), world, context.getPos(), context.getFace());
 			if (success) {
 				if (!world.isRemote) {
-					addReagentAmount(stack, (byte) -1);
+					if (context.getPlayer() == null || !context.getPlayer().isCreative()) addReagentAmount(stack, (byte) -1);
 					world.playEvent(Constants.WorldEvents.BONEMEAL_PARTICLES, context.getPos().up(), 0);
 					playSFX(world, context.getPlayer(), ModSoundEvents.INJECT.get());
 				}
@@ -204,7 +204,8 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 			if (reagent.affectEntity(stack.getOrCreateTag().getCompound(Reagent.NBT_KEY_DATA), player, target)) {
 				if (!target.world.isRemote) {
 					if (reagent.isAttributeModifier()) reagent.applyAttributesModifiersToEntity(target);
-					addReagentAmount(stack, (byte) -1);
+					if (!player.isCreative()) addReagentAmount(stack, (byte) -1);
+
 					target.world.playEvent(Constants.WorldEvents.SPAWN_EXPLOSION_PARTICLE, target.getPosition(), 0);
 					playSFX(target.world, player, ModSoundEvents.INJECT.get());
 				}
@@ -241,8 +242,9 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 		Reagent reagent = Reagent.deserialize(stack.getOrCreateTag());
 		if (reagent != null) {
 			boolean success = reagent.affectPlayerSelf(stack.getOrCreateTag().getCompound(Reagent.NBT_KEY_DATA), player);
-			if (!player.world.isRemote && success && reagent.isAttributeModifier()) {
-				reagent.applyAttributesModifiersToEntity(player);
+			if (success && !player.world.isRemote) {
+				if (reagent.isAttributeModifier()) reagent.applyAttributesModifiersToEntity(player);
+				if (!player.isCreative()) addReagentAmount(stack, (byte) -1);
 			}
 			return success;
 		}
