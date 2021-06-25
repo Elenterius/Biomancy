@@ -160,7 +160,7 @@ public final class ClientRenderHandler {
 				LazyOptional<IItemHandler> capability = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
 				if (capability.isPresent()) {
 					mc.getTextureManager().bindTexture(ITEM_BAG_INDICATOR_TEX);
-					int x = scaledWidth / 2 - 33;
+					int x = scaledWidth / 2 - 16 - 8;
 					int y = scaledHeight / 2 + 9;
 					AbstractGui.blit(matrixStack, x, y, 0, mode == ItemStorageBagItem.Mode.DEVOUR ? 0 : 16, 32, 16, 32, 32);
 
