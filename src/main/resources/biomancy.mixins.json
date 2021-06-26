@@ -14,7 +14,8 @@
     "RecipeManagerMixinAccessor",
     "ServerPlayerEntityMixin",
     "SlimeEntityAccessor",
-    "SwordItemMixinAccessor"
+    "SwordItemMixinAccessor",
+    "ZombieVillagerEntityMixinAccessor"
   ],
   "client": [
     "client.ClientItemStackMixinAccessor",

@@ -5,7 +5,10 @@ import com.github.elenterius.biomancy.entity.aberration.FleshBlobEntity;
 import com.github.elenterius.biomancy.entity.golem.IOwnableCreature;
 import com.github.elenterius.biomancy.init.ModEffects;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
-import net.minecraft.entity.*;
+import com.github.elenterius.biomancy.util.MobUtil;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Pose;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.GuardianEntity;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -26,7 +29,6 @@ import net.minecraftforge.event.ForgeEventFactory;
 import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.List;
-import java.util.function.BiConsumer;
 
 public class MutagenReagent extends Reagent {
 
@@ -55,7 +57,10 @@ public class MutagenReagent extends Reagent {
 			amplifier += 1;
 			duration += 5 * 120;
 
-			if (!convertLivingEntity(source, target, amplifier)) {
+			if (convertLivingEntity(source, target, amplifier)) {
+				if (!target.isSilent()) target.world.playEvent(null, Constants.WorldEvents.ZOMBIE_INFECT_SOUND, target.getPosition(), 0);
+			}
+			else {
 				EffectInstance effectInstance = new EffectInstance(ModEffects.RAVENOUS_HUNGER.get(), duration, amplifier);
 				target.addPotionEffect(effectInstance);
 			}
@@ -87,59 +92,34 @@ public class MutagenReagent extends Reagent {
 		if (amplifier < 1) return false;
 
 		if (target instanceof GuardianEntity) {
-			return convertMobEntityTo(world, (GuardianEntity) target, EntityType.ELDER_GUARDIAN);
+			return MobUtil.convertMobEntityTo(world, (GuardianEntity) target, EntityType.ELDER_GUARDIAN);
 		}
 		else if (target instanceof VillagerEntity) {
-			return convertMobEntityTo(world, (VillagerEntity) target, EntityType.PILLAGER, false);
+			return MobUtil.convertMobEntityTo(world, (VillagerEntity) target, EntityType.PILLAGER, false);
 		}
 		else if (target instanceof SheepEntity && !(target instanceof FailedSheepEntity)) {
 			float v = world.rand.nextFloat();
 			if (v < 0.04f)
-				return convertMobEntityTo(world, (SheepEntity) target, ModEntityTypes.CHROMA_SHEEP.get());
+				return MobUtil.convertMobEntityTo(world, (SheepEntity) target, ModEntityTypes.CHROMA_SHEEP.get());
 			else if (v < 0.2f)
-				return convertMobEntityTo(world, (SheepEntity) target, ModEntityTypes.THICK_WOOL_SHEEP.get());
+				return MobUtil.convertMobEntityTo(world, (SheepEntity) target, ModEntityTypes.THICK_WOOL_SHEEP.get());
 			else if (v < 0.45f)
-				return convertMobEntityTo(world, (SheepEntity) target, ModEntityTypes.SILKY_WOOL_SHEEP.get());
+				return MobUtil.convertMobEntityTo(world, (SheepEntity) target, ModEntityTypes.SILKY_WOOL_SHEEP.get());
 			else if (v < 0.8f)
-				return convertMobEntityTo(world, (SheepEntity) target, ModEntityTypes.FAILED_SHEEP.get());
+				return MobUtil.convertMobEntityTo(world, (SheepEntity) target, ModEntityTypes.FAILED_SHEEP.get());
 		}
 		else if (target instanceof FleshBlobEntity) {
 			return convertFleshBlob(world, source, (FleshBlobEntity) target);
 		}
 		else if (target instanceof AnimalEntity && !(target instanceof TameableEntity) && !(target instanceof IOwnableCreature)) {
 			if (world.rand.nextFloat() < 0.4f) {
-				return convertMobEntityTo(world, (AnimalEntity) target, ModEntityTypes.FLESH_BLOB.get(), true, (oldEntity, outcome) -> {
+				return MobUtil.convertMobEntityTo(world, (AnimalEntity) target, ModEntityTypes.FLESH_BLOB.get(), true, (oldEntity, outcome) -> {
 					int size = MathHelper.clamp(Math.round(oldEntity.getSize(Pose.STANDING).height), 1, 10);
 					if (size > 1) outcome.setBlobSize((byte) size, true);
 				});
 			}
 		}
 
-		return false;
-	}
-
-	private <E extends MobEntity, T extends MobEntity> boolean convertMobEntityTo(ServerWorld world, E entityIn, EntityType<T> outcomeType) {
-		return convertMobEntityTo(world, entityIn, outcomeType, true);
-	}
-
-	private <E extends MobEntity, T extends MobEntity> boolean convertMobEntityTo(ServerWorld world, E entityIn, EntityType<T> outcomeType, boolean copyEquipment) {
-		return convertMobEntityTo(world, entityIn, outcomeType, copyEquipment, (oldEntity, outcome) -> {});
-	}
-
-	private <E extends MobEntity, T extends MobEntity> boolean convertMobEntityTo(ServerWorld world, E oldEntity, EntityType<T> outcomeType, boolean copyEquipment, BiConsumer<E, T> onConvert) {
-		if (ForgeEventFactory.canLivingConvert(oldEntity, outcomeType, (timer) -> {})) {
-			T newEntity = oldEntity.func_233656_b_(outcomeType, copyEquipment);// create new entity with same settings & equipment and remove old entity
-			if (newEntity != null) {
-				newEntity.onInitialSpawn(world, world.getDifficultyForLocation(oldEntity.getPosition()), SpawnReason.CONVERSION, null, null);
-				newEntity.hurtResistantTime = 60;
-				onConvert.accept(oldEntity, newEntity);
-				ForgeEventFactory.onLivingConvert(oldEntity, newEntity);
-				if (!oldEntity.isSilent()) {
-					world.playEvent(null, Constants.WorldEvents.ZOMBIE_INFECT_SOUND, oldEntity.getPosition(), 0);
-				}
-				return true;
-			}
-		}
 		return false;
 	}
 
@@ -152,7 +132,7 @@ public class MutagenReagent extends Reagent {
 					if (dnaCount == 1) {
 						EntityType<?> entityType = entityDNAs.get(0);
 						if (entityType == EntityType.PLAYER) {
-							return convertMobEntityTo(world, target, ModEntityTypes.FLESHKIN.get(), false, (fleshBlob, fleshkin) -> {
+							return MobUtil.convertMobEntityTo(world, target, ModEntityTypes.FLESHKIN.get(), false, (fleshBlob, fleshkin) -> {
 								if (!fleshBlob.isHangry()) {
 									if (source != null) fleshkin.setOwnerUUID(source.getUniqueID());
 								}
@@ -160,14 +140,14 @@ public class MutagenReagent extends Reagent {
 							});
 						}
 						else {
-							return convertLivingEntityTo(world, target, entityType);
+							return MobUtil.convertLivingEntityTo(world, target, entityType);
 						}
 					}
 					else if (dnaCount == 2) {
 						EntityType<?> typeA = entityDNAs.get(0);
 						EntityType<?> typeB = entityDNAs.get(1);
 						if ((typeA == EntityType.CAVE_SPIDER && typeB == EntityType.CREEPER) || (typeB == EntityType.CAVE_SPIDER && typeA == EntityType.CREEPER)) {
-							return convertMobEntityTo(world, target, ModEntityTypes.BOOMLING.get(), false);
+							return MobUtil.convertMobEntityTo(world, target, ModEntityTypes.BOOMLING.get(), false);
 						}
 					}
 					else {
@@ -185,34 +165,6 @@ public class MutagenReagent extends Reagent {
 				}
 			}
 		}
-		return false;
-	}
-
-	private boolean convertLivingEntityTo(ServerWorld world, LivingEntity oldEntity, EntityType<?> outcomeType) {
-		if (oldEntity.removed) return false;
-
-		Entity entity = outcomeType.create(world);
-		if (entity != null) {
-			if (entity instanceof LivingEntity) {
-				//noinspection unchecked
-				EntityType<? extends LivingEntity> entityType = (EntityType<? extends LivingEntity>) outcomeType;
-				if (ForgeEventFactory.canLivingConvert(oldEntity, entityType, (timer) -> {})) {
-					entity.copyLocationAndAnglesFrom(oldEntity);
-					oldEntity.remove();
-					world.addEntity(entity);
-					if (entity instanceof MobEntity) {
-						((MobEntity) entity).onInitialSpawn(world, world.getDifficultyForLocation(oldEntity.getPosition()), SpawnReason.CONVERSION, null, null);
-					}
-					entity.hurtResistantTime = 60;
-					ForgeEventFactory.onLivingConvert(oldEntity, (LivingEntity) entity);
-					if (!oldEntity.isSilent()) world.playEvent(null, Constants.WorldEvents.ZOMBIE_INFECT_SOUND, oldEntity.getPosition(), 0);
-					return true;
-				}
-			}
-
-			entity.remove();
-		}
-
 		return false;
 	}
 
