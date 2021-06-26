@@ -70,7 +70,7 @@ public abstract class MachineBlock<T extends MachineTileEntity<?,?>> extends Own
 	}
 
 	protected int getPoweredDuration() {
-		return 20;
+		return 2;
 	}
 
 	@Override
