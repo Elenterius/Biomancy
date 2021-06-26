@@ -40,10 +40,9 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).setStyle(ClientTextUtil.LORE_STYLE));
-		CompoundNBT nbt = stack.getOrCreateTag();
-		Reagent reagent = Reagent.deserialize(nbt);
+		Reagent reagent = getReagent(stack);
 		if (reagent != null) {
-			byte amount = nbt.getByte(NBT_KEY_REAGENT_AMOUNT);
+			byte amount = getReagentAmount(stack);
 			tooltip.add(new StringTextComponent(String.format("Amount: %d/4", amount)).mergeStyle(TextFormatting.GRAY));
 			reagent.addInfoToTooltip(stack, worldIn, tooltip, flagIn);
 		}
@@ -54,12 +53,17 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 	@Override
 	public ITextComponent getHighlightTip(ItemStack stack, ITextComponent displayName) {
 		if (displayName instanceof IFormattableTextComponent) {
-			Reagent reagent = Reagent.deserialize(stack.getOrCreateTag());
+			Reagent reagent = getReagent(stack);
 			if (reagent != null) {
 				return ((IFormattableTextComponent) displayName).appendString(" (").appendSibling(new TranslationTextComponent(reagent.getTranslationKey()).mergeStyle(TextFormatting.AQUA)).appendString(")");
 			}
 		}
 		return displayName;
+	}
+
+	@Nullable
+	public Reagent getReagent(ItemStack stack) {
+		return Reagent.deserialize(stack.getOrCreateTag());
 	}
 
 	public int getReagentColor(ItemStack stack) {
@@ -112,7 +116,7 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 		byte amount = getReagentAmount(gunStack);
 		if (amount < 1) return false;
 
-		Reagent storedReagent = Reagent.deserialize(gunStack.getOrCreateTag());
+		Reagent storedReagent = getReagent(gunStack);
 		if (storedReagent != null) {
 			ItemStack stack = new ItemStack(ModItems.REAGENT.get());
 			Reagent.serialize(storedReagent, stack.getOrCreateTag());
@@ -132,8 +136,8 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 		byte amount = getReagentAmount(gunStack);
 		if (amount >= getMaxReagentAmount()) return false;
 
-		Reagent reagentIn = Reagent.deserialize(ammoStack.getOrCreateTag());
-		Reagent storedReagent = Reagent.deserialize(gunStack.getOrCreateTag());
+		Reagent reagentIn = getReagent(ammoStack);
+		Reagent storedReagent = getReagent(gunStack);
 		if (reagentIn != null) {
 			if (storedReagent == null) {
 				CompoundNBT gunNbt = gunStack.getOrCreateTag();
@@ -177,7 +181,7 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 		if (context.getPlayer() != null && !context.getPlayer().canPlayerEdit(context.getPos().offset(context.getFace()), context.getFace(), stack))
 			return ActionResultType.FAIL;
 
-		Reagent reagent = Reagent.deserialize(stack.getOrCreateTag());
+		Reagent reagent = getReagent(stack);
 		if (reagent != null) {
 			World world = context.getWorld();
 			boolean success = reagent.affectBlock(stack.getOrCreateTag().getCompound(Reagent.NBT_KEY_DATA), context.getPlayer(), world, context.getPos(), context.getFace());
@@ -199,7 +203,7 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 
 	@Override
 	public ActionResultType itemInteractionForEntity(ItemStack stack, PlayerEntity player, LivingEntity target, Hand hand) {
-		Reagent reagent = Reagent.deserialize(stack.getOrCreateTag());
+		Reagent reagent = getReagent(stack);
 		if (reagent != null) {
 			if (reagent.affectEntity(stack.getOrCreateTag().getCompound(Reagent.NBT_KEY_DATA), player, target)) {
 				if (!target.world.isRemote) {
@@ -239,7 +243,7 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 	}
 
 	public boolean interactWithPlayerSelf(ItemStack stack, PlayerEntity player) {
-		Reagent reagent = Reagent.deserialize(stack.getOrCreateTag());
+		Reagent reagent = getReagent(stack);
 		if (reagent != null) {
 			boolean success = reagent.affectPlayerSelf(stack.getOrCreateTag().getCompound(Reagent.NBT_KEY_DATA), player);
 			if (success && !player.world.isRemote) {
