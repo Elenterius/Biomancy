@@ -136,9 +136,9 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 		Reagent storedReagent = Reagent.deserialize(gunStack.getOrCreateTag());
 		if (reagentIn != null) {
 			if (storedReagent == null) {
-				CompoundNBT nbt = gunStack.getOrCreateTag();
-				Reagent.serialize(reagentIn, nbt);
-				Reagent.copyAdditionalData(ammoStack.getOrCreateTag(), nbt);
+				CompoundNBT gunNbt = gunStack.getOrCreateTag();
+				Reagent.serialize(reagentIn, gunNbt);
+				Reagent.copyAdditionalData(ammoStack.getOrCreateTag(), gunNbt);
 				setReagentAmount(gunStack, (byte) 1);
 				ammoStack.grow(-1);
 

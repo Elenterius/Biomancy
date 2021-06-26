@@ -47,7 +47,10 @@ public abstract class Reagent extends ForgeRegistryEntry<Reagent> {
 	}
 
 	public static void copyAdditionalData(CompoundNBT fromNbt, CompoundNBT toNbt) {
-		toNbt.put(NBT_KEY_DATA, fromNbt.getCompound(NBT_KEY_DATA).copy());
+		if (fromNbt.contains(NBT_KEY_DATA)) {
+			CompoundNBT data = fromNbt.getCompound(NBT_KEY_DATA);
+			if (!data.isEmpty()) toNbt.put(NBT_KEY_DATA, data.copy());
+		}
 	}
 
 	public static void serialize(Reagent reagent, CompoundNBT nbt) {
