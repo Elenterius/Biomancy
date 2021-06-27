@@ -10,7 +10,6 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
@@ -20,10 +19,8 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -84,15 +81,6 @@ public class LongRangeClawItem extends ClawWeaponItem implements IAreaHarvesting
 			return ((IFormattableTextComponent) displayName).appendString(" (").appendSibling(TextUtil.getTranslationText("tooltip", keySuffix)).appendString(")");
 		}
 		return displayName;
-	}
-
-	@Override
-	public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
-		if (isInGroup(group)) {
-			ItemStack stack = new ItemStack(this);
-			stack.addEnchantment(Enchantments.SWEEPING, 3);
-			items.add(stack);
-		}
 	}
 
 	protected Multimap<Attribute, AttributeModifier> createAttributeModifiersV2() {

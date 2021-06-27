@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModContainerTypes;
 import com.github.elenterius.biomancy.tileentity.ChewerTileEntity;
 import com.github.elenterius.biomancy.tileentity.state.ChewerStateData;
+import com.github.elenterius.biomancy.util.BiofuelUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -19,13 +20,13 @@ import org.apache.logging.log4j.MarkerManager;
 
 public class ChewerContainer extends Container {
 
-	protected final SimpleInvContents fuelContents;
+	protected final FuelInvContents fuelContents;
 	protected final SimpleInvContents inputContents;
 	protected final SimpleInvContents outputContents;
 	private final ChewerStateData stateData;
 	private final World world;
 
-	private ChewerContainer(int screenId, PlayerInventory playerInventory, SimpleInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, ChewerStateData stateData) {
+	private ChewerContainer(int screenId, PlayerInventory playerInventory, FuelInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, ChewerStateData stateData) {
 		super(ModContainerTypes.CHEWER.get(), screenId);
 		this.fuelContents = fuelContents;
 		this.inputContents = inputContents;
@@ -63,7 +64,7 @@ public class ChewerContainer extends Container {
 		addSlot(new Slot(fuelContents, 0, posX, posY) {
 			@Override
 			public boolean isItemValid(ItemStack stack) {
-				return ChewerTileEntity.isItemValidFuel(stack);
+				return BiofuelUtil.isItemValidFuel(stack);
 			}
 		});
 
@@ -72,12 +73,12 @@ public class ChewerContainer extends Container {
 		addSlot(new OutputSlot(outputContents, 0, 107, 26));
 	}
 
-	public static ChewerContainer createServerContainer(int screenId, PlayerInventory playerInventory, SimpleInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, ChewerStateData stateData) {
+	public static ChewerContainer createServerContainer(int screenId, PlayerInventory playerInventory, FuelInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, ChewerStateData stateData) {
 		return new ChewerContainer(screenId, playerInventory, fuelContents, inputContents, outputContents, stateData);
 	}
 
 	public static ChewerContainer createClientContainer(int screenId, PlayerInventory playerInventory, PacketBuffer extraData) {
-		SimpleInvContents fuelContents = SimpleInvContents.createClientContents(ChewerTileEntity.FUEL_SLOTS_COUNT);
+		FuelInvContents fuelContents = FuelInvContents.createClientContents(ChewerTileEntity.FUEL_SLOTS_COUNT);
 		SimpleInvContents inputContents = SimpleInvContents.createClientContents(ChewerTileEntity.INPUT_SLOTS_COUNT);
 		SimpleInvContents outputContents = SimpleInvContents.createClientContents(ChewerTileEntity.OUTPUT_SLOTS_COUNT);
 		ChewerStateData stateData = new ChewerStateData();
@@ -93,6 +94,10 @@ public class ChewerContainer extends Container {
 	public float getCraftingProgressNormalized() {
 		if (stateData.timeForCompletion == 0) return 0f;
 		return MathHelper.clamp(stateData.timeElapsed / (float) stateData.timeForCompletion, 0f, 1f);
+	}
+
+	public int getFuel() {
+		return stateData.fuel;
 	}
 
 	public float getFuelNormalized() {
@@ -132,10 +137,10 @@ public class ChewerContainer extends Container {
 
 			case PLAYER_HOTBAR:
 			case PLAYER_MAIN_INVENTORY:
-				if (ChewerTileEntity.getRecipeForItem(world, sourceStack).isPresent()) {
+				if (ChewerTileEntity.RECIPE_TYPE.getRecipeForItem(world, sourceStack).isPresent()) {
 					successfulTransfer = mergeInto(SlotZone.INPUT_ZONE, sourceStack, false);
 				}
-				if (!successfulTransfer && ChewerTileEntity.isItemValidFuel(sourceStack)) {
+				if (!successfulTransfer && BiofuelUtil.isItemValidFuel(sourceStack)) {
 					successfulTransfer = mergeInto(SlotZone.FUEL_ZONE, sourceStack, true);
 				}
 				if (!successfulTransfer) {

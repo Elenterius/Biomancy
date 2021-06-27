@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModContainerTypes;
 import com.github.elenterius.biomancy.tileentity.DecomposerTileEntity;
 import com.github.elenterius.biomancy.tileentity.state.DecomposerStateData;
+import com.github.elenterius.biomancy.util.BiofuelUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -19,13 +20,13 @@ import org.apache.logging.log4j.MarkerManager;
 
 public class DecomposerContainer extends Container {
 
-	protected final SimpleInvContents fuelContents;
+	protected final FuelInvContents fuelContents;
 	protected final SimpleInvContents inputContents;
 	protected final SimpleInvContents outputContents;
 	private final DecomposerStateData decomposerState;
 	private final World world;
 
-	private DecomposerContainer(int screenId, PlayerInventory playerInventory, SimpleInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, DecomposerStateData decomposerState) {
+	private DecomposerContainer(int screenId, PlayerInventory playerInventory, FuelInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, DecomposerStateData decomposerState) {
 		super(ModContainerTypes.DECOMPOSER.get(), screenId);
 		this.fuelContents = fuelContents;
 		this.inputContents = inputContents;
@@ -63,7 +64,7 @@ public class DecomposerContainer extends Container {
 		addSlot(new Slot(fuelContents, 0, posX, posY) {
 			@Override
 			public boolean isItemValid(ItemStack stack) {
-				return DecomposerTileEntity.isItemValidFuel(stack);
+				return BiofuelUtil.isItemValidFuel(stack);
 			}
 		});
 
@@ -82,12 +83,12 @@ public class DecomposerContainer extends Container {
 		addSlot(new OutputSlot(outputContents, 3, outputPosX + 18, posY + 18));
 	}
 
-	public static DecomposerContainer createServerContainer(int screenId, PlayerInventory playerInventory, SimpleInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, DecomposerStateData decomposerState) {
+	public static DecomposerContainer createServerContainer(int screenId, PlayerInventory playerInventory, FuelInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, DecomposerStateData decomposerState) {
 		return new DecomposerContainer(screenId, playerInventory, fuelContents, inputContents, outputContents, decomposerState);
 	}
 
 	public static DecomposerContainer createClientContainer(int screenId, PlayerInventory playerInventory, PacketBuffer extraData) {
-		SimpleInvContents fuelContents = SimpleInvContents.createClientContents(DecomposerTileEntity.FUEL_SLOTS_COUNT);
+		FuelInvContents fuelContents = FuelInvContents.createClientContents(DecomposerTileEntity.FUEL_SLOTS_COUNT);
 		SimpleInvContents inputContents = SimpleInvContents.createClientContents(DecomposerTileEntity.INPUT_SLOTS_COUNT);
 		SimpleInvContents outputContents = SimpleInvContents.createClientContents(DecomposerTileEntity.OUTPUT_SLOTS_COUNT);
 		DecomposerStateData decomposerState = new DecomposerStateData();
@@ -105,8 +106,12 @@ public class DecomposerContainer extends Container {
 		return MathHelper.clamp(decomposerState.timeElapsed / (float) decomposerState.timeForCompletion, 0f, 1f);
 	}
 
+	public int getFuel() {
+		return decomposerState.fuel;
+	}
+
 	public float getFuelNormalized() {
-		return MathHelper.clamp(decomposerState.mainFuel / (float) DecomposerTileEntity.MAX_FUEL, 0f, 1f);
+		return MathHelper.clamp(decomposerState.fuel / (float) DecomposerTileEntity.MAX_FUEL, 0f, 1f);
 	}
 
 	public String getFuelTranslationKey() {
@@ -146,10 +151,10 @@ public class DecomposerContainer extends Container {
 
 			case PLAYER_HOTBAR:
 			case PLAYER_MAIN_INVENTORY:
-				if (DecomposerTileEntity.getRecipeForItem(world, sourceStack).isPresent()) {
+				if (DecomposerTileEntity.RECIPE_TYPE.getRecipeForItem(world, sourceStack).isPresent()) {
 					successfulTransfer = mergeInto(SlotZone.INPUT_ZONE, sourceStack, false);
 				}
-				if (!successfulTransfer && DecomposerTileEntity.isItemValidFuel(sourceStack)) {
+				if (!successfulTransfer && BiofuelUtil.isItemValidFuel(sourceStack)) {
 					successfulTransfer = mergeInto(SlotZone.FUEL_ZONE, sourceStack, true);
 				}
 				if (!successfulTransfer) {

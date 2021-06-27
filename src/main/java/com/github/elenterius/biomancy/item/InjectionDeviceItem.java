@@ -40,10 +40,9 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).setStyle(ClientTextUtil.LORE_STYLE));
-		CompoundNBT nbt = stack.getOrCreateTag();
-		Reagent reagent = Reagent.deserialize(nbt);
+		Reagent reagent = getReagent(stack);
 		if (reagent != null) {
-			byte amount = nbt.getByte(NBT_KEY_REAGENT_AMOUNT);
+			byte amount = getReagentAmount(stack);
 			tooltip.add(new StringTextComponent(String.format("Amount: %d/4", amount)).mergeStyle(TextFormatting.GRAY));
 			reagent.addInfoToTooltip(stack, worldIn, tooltip, flagIn);
 		}
@@ -54,12 +53,17 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 	@Override
 	public ITextComponent getHighlightTip(ItemStack stack, ITextComponent displayName) {
 		if (displayName instanceof IFormattableTextComponent) {
-			Reagent reagent = Reagent.deserialize(stack.getOrCreateTag());
+			Reagent reagent = getReagent(stack);
 			if (reagent != null) {
 				return ((IFormattableTextComponent) displayName).appendString(" (").appendSibling(new TranslationTextComponent(reagent.getTranslationKey()).mergeStyle(TextFormatting.AQUA)).appendString(")");
 			}
 		}
 		return displayName;
+	}
+
+	@Nullable
+	public Reagent getReagent(ItemStack stack) {
+		return Reagent.deserialize(stack.getOrCreateTag());
 	}
 
 	public int getReagentColor(ItemStack stack) {
@@ -93,7 +97,7 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 			ItemStack offhandStack = playerIn.getHeldItemOffhand();
 			if (!offhandStack.isEmpty()) {
 				if (offhandStack.getItem() == ModItems.REAGENT.get()) {
-					if (addReagent(offhandStack, heldStack)) {
+					if (addReagent(offhandStack, heldStack, playerIn)) {
 						playSFX(worldIn, playerIn, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC);
 						return ActionResult.resultFail(heldStack);
 					}
@@ -112,7 +116,7 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 		byte amount = getReagentAmount(gunStack);
 		if (amount < 1) return false;
 
-		Reagent storedReagent = Reagent.deserialize(gunStack.getOrCreateTag());
+		Reagent storedReagent = getReagent(gunStack);
 		if (storedReagent != null) {
 			ItemStack stack = new ItemStack(ModItems.REAGENT.get());
 			Reagent.serialize(storedReagent, stack.getOrCreateTag());
@@ -128,19 +132,24 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 		return false;
 	}
 
-	private boolean addReagent(ItemStack ammoStack, ItemStack gunStack) {
+	private boolean addReagent(ItemStack ammoStack, ItemStack gunStack, PlayerEntity playerIn) {
 		byte amount = getReagentAmount(gunStack);
 		if (amount >= getMaxReagentAmount()) return false;
 
-		Reagent reagentIn = Reagent.deserialize(ammoStack.getOrCreateTag());
-		Reagent storedReagent = Reagent.deserialize(gunStack.getOrCreateTag());
+		Reagent reagentIn = getReagent(ammoStack);
+		Reagent storedReagent = getReagent(gunStack);
 		if (reagentIn != null) {
 			if (storedReagent == null) {
-				CompoundNBT nbt = gunStack.getOrCreateTag();
-				Reagent.serialize(reagentIn, nbt);
-				Reagent.copyAdditionalData(ammoStack.getOrCreateTag(), nbt);
+				CompoundNBT gunNbt = gunStack.getOrCreateTag();
+				Reagent.serialize(reagentIn, gunNbt);
+				Reagent.copyAdditionalData(ammoStack.getOrCreateTag(), gunNbt);
 				setReagentAmount(gunStack, (byte) 1);
 				ammoStack.grow(-1);
+
+				ItemStack stack = new ItemStack(ModItems.GLASS_VIAL.get());
+				if (!playerIn.addItemStackToInventory(stack)) {
+					playerIn.entityDropItem(stack);
+				}
 				return true;
 			}
 			else {
@@ -153,6 +162,11 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 						}
 						setReagentAmount(gunStack, (byte) (amount + 1));
 						ammoStack.grow(-1);
+
+						ItemStack stack = new ItemStack(ModItems.GLASS_VIAL.get());
+						if (!playerIn.addItemStackToInventory(stack)) {
+							playerIn.entityDropItem(stack);
+						}
 						return true;
 					}
 				}
@@ -167,13 +181,13 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 		if (context.getPlayer() != null && !context.getPlayer().canPlayerEdit(context.getPos().offset(context.getFace()), context.getFace(), stack))
 			return ActionResultType.FAIL;
 
-		Reagent reagent = Reagent.deserialize(stack.getOrCreateTag());
+		Reagent reagent = getReagent(stack);
 		if (reagent != null) {
 			World world = context.getWorld();
 			boolean success = reagent.affectBlock(stack.getOrCreateTag().getCompound(Reagent.NBT_KEY_DATA), context.getPlayer(), world, context.getPos(), context.getFace());
 			if (success) {
 				if (!world.isRemote) {
-					addReagentAmount(stack, (byte) -1);
+					if (context.getPlayer() == null || !context.getPlayer().isCreative()) addReagentAmount(stack, (byte) -1);
 					world.playEvent(Constants.WorldEvents.BONEMEAL_PARTICLES, context.getPos().up(), 0);
 					playSFX(world, context.getPlayer(), ModSoundEvents.INJECT.get());
 				}
@@ -189,12 +203,13 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 
 	@Override
 	public ActionResultType itemInteractionForEntity(ItemStack stack, PlayerEntity player, LivingEntity target, Hand hand) {
-		Reagent reagent = Reagent.deserialize(stack.getOrCreateTag());
+		Reagent reagent = getReagent(stack);
 		if (reagent != null) {
 			if (reagent.affectEntity(stack.getOrCreateTag().getCompound(Reagent.NBT_KEY_DATA), player, target)) {
 				if (!target.world.isRemote) {
 					if (reagent.isAttributeModifier()) reagent.applyAttributesModifiersToEntity(target);
-					addReagentAmount(stack, (byte) -1);
+					if (!player.isCreative()) addReagentAmount(stack, (byte) -1);
+
 					target.world.playEvent(Constants.WorldEvents.SPAWN_EXPLOSION_PARTICLE, target.getPosition(), 0);
 					playSFX(target.world, player, ModSoundEvents.INJECT.get());
 				}
@@ -204,7 +219,7 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 			if (player.world.isRemote) playSFX(player.world, player, SoundEvents.BLOCK_DISPENSER_FAIL);
 			return ActionResultType.FAIL;
 		}
-		else { //it's essentially empty
+		else { //the device is empty
 			if (!target.world.isRemote) {
 				CompoundNBT reagentNbt = BloodSampleReagent.getBloodSampleFromEntity(player, target);
 				if (reagentNbt != null && !reagentNbt.isEmpty()) {
@@ -228,15 +243,36 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 	}
 
 	public boolean interactWithPlayerSelf(ItemStack stack, PlayerEntity player) {
-		Reagent reagent = Reagent.deserialize(stack.getOrCreateTag());
+		Reagent reagent = getReagent(stack);
 		if (reagent != null) {
 			boolean success = reagent.affectPlayerSelf(stack.getOrCreateTag().getCompound(Reagent.NBT_KEY_DATA), player);
-			if (!player.world.isRemote && success && reagent.isAttributeModifier()) {
-				reagent.applyAttributesModifiersToEntity(player);
+			if (success && !player.world.isRemote) {
+				if (reagent.isAttributeModifier()) reagent.applyAttributesModifiersToEntity(player);
+				if (!player.isCreative()) addReagentAmount(stack, (byte) -1);
 			}
 			return success;
 		}
-		return false;
+		else { //the device is empty
+			if (!player.world.isRemote) {
+				CompoundNBT reagentNbt = BloodSampleReagent.getBloodSampleFromEntityUnchecked(player);
+				if (reagentNbt != null && !reagentNbt.isEmpty()) {
+					CompoundNBT nbt = stack.getOrCreateTag();
+					Reagent.serialize(ModReagents.BLOOD_SAMPLE.get(), nbt);
+					nbt.put(Reagent.NBT_KEY_DATA, reagentNbt);
+					setReagentAmount(stack, getMaxReagentAmount());
+
+					playSFX(player.world, player, ModSoundEvents.INJECT.get());
+					player.attackEntityFrom(DamageSource.causeBeeStingDamage(player), 0.5f);
+
+					if (player.isCreative()) {
+						player.setHeldItem(player.getActiveHand(), stack); //fix for creative mode (normally the stack is not modified in creative)
+					}
+					return true;
+				}
+				else return false;
+			}
+			else return true;
+		}
 	}
 
 	@OnlyIn(Dist.CLIENT)

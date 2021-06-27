@@ -619,11 +619,11 @@ public class ModRecipeProvider extends RecipeProvider {
 		CookingRecipeBuilder.smeltingRecipe(Ingredient.fromItems(ModItems.SILICATE_PASTE.get()), Items.GLASS_PANE, 0.1F, 100)
 				.addCriterion("has_silicate", hasItem(ModItems.SILICATE_PASTE.get())).build(consumer, new ResourceLocation(BiomancyMod.MOD_ID, "glass_pane_from_smelting_silicate"));
 
-		CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(ModItems.VILE_MELON_SLICE.get()), ModItems.COOKED_VILE_MELON_SLICE.get(), 0.35F, 100, IRecipeSerializer.SMELTING)
-				.addCriterion("has_vile_melon_slice", hasItem(ModItems.VILE_MELON_SLICE.get())).build(consumer, new ResourceLocation(BiomancyMod.MOD_ID, "vile_melon_from_smelting"));
-
-		CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(ModItems.VILE_MELON_SLICE.get()), ModItems.COOKED_VILE_MELON_SLICE.get(), 0.35F, 600, IRecipeSerializer.CAMPFIRE_COOKING)
-				.addCriterion("has_vile_melon_slice", hasItem(ModItems.VILE_MELON_SLICE.get())).build(consumer, new ResourceLocation(BiomancyMod.MOD_ID, "vile_melon_from_campfire"));
+//		CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(ModItems.VILE_MELON_SLICE.get()), ModItems.COOKED_VILE_MELON_SLICE.get(), 0.35F, 100, IRecipeSerializer.SMELTING)
+//				.addCriterion("has_vile_melon_slice", hasItem(ModItems.VILE_MELON_SLICE.get())).build(consumer, new ResourceLocation(BiomancyMod.MOD_ID, "vile_melon_from_smelting"));
+//
+//		CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(ModItems.VILE_MELON_SLICE.get()), ModItems.COOKED_VILE_MELON_SLICE.get(), 0.35F, 600, IRecipeSerializer.CAMPFIRE_COOKING)
+//				.addCriterion("has_vile_melon_slice", hasItem(ModItems.VILE_MELON_SLICE.get())).build(consumer, new ResourceLocation(BiomancyMod.MOD_ID, "vile_melon_from_campfire"));
 	}
 
 	private void registerWorkbenchRecipes(Consumer<IFinishedRecipe> consumer) {
@@ -791,9 +791,9 @@ public class ModRecipeProvider extends RecipeProvider {
 				.patternLine("SBS").patternLine("NNN")
 				.addCriterion("has_nutrient_paste", hasItem(ModItems.NUTRIENT_PASTE.get())).build(consumer);
 
-		ShapelessRecipeBuilder.shapelessRecipe(ModItems.VILE_MELON_SEEDS.get())
-				.addIngredient(ModItems.VILE_MELON_SLICE.get())
-				.addCriterion("has_vile_melon_slice", hasItem(ModItems.VILE_MELON_SLICE.get())).build(consumer);
+//		ShapelessRecipeBuilder.shapelessRecipe(ModItems.VILE_MELON_SEEDS.get())
+//				.addIngredient(ModItems.VILE_MELON_SLICE.get())
+//				.addCriterion("has_vile_melon_slice", hasItem(ModItems.VILE_MELON_SLICE.get())).build(consumer);
 
 		// misc ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		ShapelessRecipeBuilder.shapelessRecipe(Items.DIORITE)

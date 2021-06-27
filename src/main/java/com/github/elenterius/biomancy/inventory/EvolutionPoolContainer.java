@@ -63,7 +63,7 @@ public class EvolutionPoolContainer extends Container {
 		addSlot(new Slot(fuelContents, 0, posX, posY) {
 			@Override
 			public boolean isItemValid(ItemStack stack) {
-				return EvolutionPoolTileEntity.isItemValidFuel(stack);
+				return EvolutionPoolTileEntity.VALID_FUEL_ITEM.test(stack);
 			}
 		});
 
@@ -101,6 +101,10 @@ public class EvolutionPoolContainer extends Container {
 		return MathHelper.clamp(stateData.timeElapsed / (float) stateData.timeForCompletion, 0f, 1f);
 	}
 
+	public int getFuel() {
+		return stateData.fuel;
+	}
+
 	public float getFuelNormalized() {
 		return MathHelper.clamp(stateData.fuel / (float) EvolutionPoolTileEntity.MAX_FUEL, 0f, 1f);
 	}
@@ -134,10 +138,10 @@ public class EvolutionPoolContainer extends Container {
 
 			case PLAYER_HOTBAR:
 			case PLAYER_MAIN_INVENTORY:
-				if (EvolutionPoolTileEntity.getRecipeForItem(world, sourceStack).isPresent()) {
+				if (EvolutionPoolTileEntity.RECIPE_TYPE.getRecipeForItem(world, sourceStack).isPresent()) {
 					successfulTransfer = mergeInto(SlotZone.INPUT_ZONE, sourceStack, false);
 				}
-				if (!successfulTransfer && EvolutionPoolTileEntity.isItemValidFuel(sourceStack)) {
+				if (!successfulTransfer && EvolutionPoolTileEntity.VALID_FUEL_ITEM.test(sourceStack)) {
 					successfulTransfer = mergeInto(SlotZone.FUEL_ZONE, sourceStack, true);
 				}
 				if (!successfulTransfer) {

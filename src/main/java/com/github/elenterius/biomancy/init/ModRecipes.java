@@ -33,10 +33,10 @@ public final class ModRecipes {
 	public static final RegistryObject<IRecipeSerializer<DecomposerRecipe>> DECOMPOSING_SERIALIZER = RECIPE_SERIALIZERS.register("decomposing", DecomposerRecipe.Serializer::new);
 	public static final RegistryObject<IRecipeSerializer<EvolutionPoolRecipe>> EVOLUTION_POOL_SERIALIZER = RECIPE_SERIALIZERS.register("evolution_pool", EvolutionPoolRecipe.Serializer::new);
 
-	public static final IRecipeType<ChewerRecipe> CHEWER_RECIPE_TYPE = createRecipeType("chewing");
-	public static final IRecipeType<DigesterRecipe> DIGESTER_RECIPE_TYPE = createRecipeType("digesting");
-	public static final IRecipeType<DecomposerRecipe> DECOMPOSING_RECIPE_TYPE = createRecipeType("decomposing");
-	public static final IRecipeType<EvolutionPoolRecipe> EVOLUTION_POOL_RECIPE_TYPE = createRecipeType("evolution_pool");
+	public static final BioMechanicalRecipeType<ChewerRecipe> CHEWER_RECIPE_TYPE = createRecipeType("chewing");
+	public static final BioMechanicalRecipeType<DigesterRecipe> DIGESTER_RECIPE_TYPE = createRecipeType("digesting");
+	public static final BioMechanicalRecipeType<DecomposerRecipe> DECOMPOSING_RECIPE_TYPE = createRecipeType("decomposing");
+	public static final BioMechanicalRecipeType<EvolutionPoolRecipe> EVOLUTION_POOL_RECIPE_TYPE = createRecipeType("evolution_pool");
 	public static final ImmutableSet<IRecipeType<? extends IRecipe<IInventory>>> RECIPE_TYPES = ImmutableSet.of(CHEWER_RECIPE_TYPE, DIGESTER_RECIPE_TYPE, DECOMPOSING_RECIPE_TYPE, EVOLUTION_POOL_RECIPE_TYPE);
 
 	public static final ItemPredicate ANY_MEATLESS_FOOD_ITEM_PREDICATE = new ItemPredicate() {
@@ -69,13 +69,8 @@ public final class ModRecipes {
 		Registry.register(Registry.RECIPE_TYPE, BiomancyMod.createRL("evolution_pool"), EVOLUTION_POOL_RECIPE_TYPE);
 	}
 
-	private static <T extends IRecipe<?>> IRecipeType<T> createRecipeType(String name) {
-		return new IRecipeType<T>() {
-			@Override
-			public String toString() {
-				return name;
-			}
-		};
+	private static <T extends AbstractBioMechanicalRecipe> BioMechanicalRecipeType<T> createRecipeType(String name) {
+		return new BioMechanicalRecipeType<>(name);
 	}
 
 }

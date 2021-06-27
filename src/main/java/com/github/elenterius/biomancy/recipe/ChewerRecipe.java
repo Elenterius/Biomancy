@@ -4,7 +4,10 @@ import com.github.elenterius.biomancy.init.ModRecipes;
 import com.google.gson.JsonObject;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.*;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.ShapedRecipe;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.NonNullList;
@@ -14,18 +17,15 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 
-public class ChewerRecipe implements IRecipe<IInventory> {
+public class ChewerRecipe extends AbstractBioMechanicalRecipe {
 
-	private final ResourceLocation registryId;
 	private final Ingredient ingredient;
 	private final ItemStack recipeResult;
-	private final int time;
 
-	public ChewerRecipe(ResourceLocation keyIn, ItemStack result, int timeIn, Ingredient ingredientIn) {
-		registryId = keyIn;
+	public ChewerRecipe(ResourceLocation registryKey, ItemStack result, int craftingTimeIn, Ingredient ingredientIn) {
+		super(registryKey, craftingTimeIn);
 		ingredient = ingredientIn;
 		recipeResult = result;
-		time = timeIn;
 	}
 
 	@Override
@@ -56,11 +56,6 @@ public class ChewerRecipe implements IRecipe<IInventory> {
 	}
 
 	@Override
-	public ResourceLocation getId() {
-		return registryId;
-	}
-
-	@Override
 	public IRecipeSerializer<?> getSerializer() {
 		return ModRecipes.CHEWER_SERIALIZER.get();
 	}
@@ -68,10 +63,6 @@ public class ChewerRecipe implements IRecipe<IInventory> {
 	@Override
 	public IRecipeType<?> getType() {
 		return ModRecipes.CHEWER_RECIPE_TYPE;
-	}
-
-	public int getCraftingTime() {
-		return time;
 	}
 
 	public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<ChewerRecipe> {
@@ -104,7 +95,7 @@ public class ChewerRecipe implements IRecipe<IInventory> {
 		public void write(PacketBuffer buffer, ChewerRecipe recipe) {
 			//server side
 			buffer.writeItemStack(recipe.recipeResult);
-			buffer.writeInt(recipe.time);
+			buffer.writeInt(recipe.getCraftingTime());
 			recipe.ingredient.write(buffer);
 		}
 	}

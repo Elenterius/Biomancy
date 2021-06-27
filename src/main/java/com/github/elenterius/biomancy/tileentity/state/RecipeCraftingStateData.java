@@ -1,16 +1,26 @@
 package com.github.elenterius.biomancy.tileentity.state;
 
+import com.github.elenterius.biomancy.recipe.AbstractBioMechanicalRecipe;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.IIntArray;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import java.util.Optional;
 
-public abstract class RecipeCraftingStateData<T extends IRecipe<?>> {
+public abstract class RecipeCraftingStateData<T extends AbstractBioMechanicalRecipe> implements IIntArray {
 
 	public static final String NBT_KEY_RECIPE_ID = "RecipeId";
+	public static final String NBT_KEY_TIME_ELAPSED = "TimeElapsed";
+	public static final String NBT_KEY_TIME_FOR_COMPLETION = "TimeForCompletion";
+
+	public static final int TIME_INDEX = 0;
+	public static final int TIME_FOR_COMPLETION_INDEX = 1;
+
+	public int timeElapsed;
+	public int timeForCompletion;
 
 	private CraftingState craftingState = CraftingState.NONE;
 	private ResourceLocation recipeId; //we don't store the recipe reference, this way we don't have to check if the recipe was changed in the meantime
@@ -52,10 +62,13 @@ public abstract class RecipeCraftingStateData<T extends IRecipe<?>> {
 
 	public void setCraftingGoalRecipe(T recipe) {
 		recipeId = recipe.getId();
+		timeForCompletion = recipe.getCraftingTime();
 	}
 
 	public void clear() {
 		recipeId = null;
+		timeElapsed = 0;
+		timeForCompletion = 0;
 	}
 
 	public void serializeNBT(CompoundNBT nbt) {
@@ -63,6 +76,8 @@ public abstract class RecipeCraftingStateData<T extends IRecipe<?>> {
 		if (recipeId != null) {
 			nbt.putString(NBT_KEY_RECIPE_ID, recipeId.toString());
 		}
+		nbt.putInt(NBT_KEY_TIME_ELAPSED, timeElapsed);
+		nbt.putInt(NBT_KEY_TIME_FOR_COMPLETION, timeForCompletion);
 	}
 
 	public void deserializeNBT(CompoundNBT nbt) {
@@ -72,6 +87,32 @@ public abstract class RecipeCraftingStateData<T extends IRecipe<?>> {
 			recipeId = ResourceLocation.tryCreate(id);
 		}
 		else recipeId = null;
+		timeElapsed = nbt.getInt(NBT_KEY_TIME_ELAPSED);
+		timeForCompletion = nbt.getInt(NBT_KEY_TIME_FOR_COMPLETION);
 	}
+
+	protected void validateIndex(int index) {
+		if (index < 0 || index >= size()) throw new IndexOutOfBoundsException("Index out of bounds:" + index);
+	}
+
+	@Override
+	public int get(int index) {
+		validateIndex(index);
+		if (index == TIME_INDEX) return timeElapsed;
+		else if (index == TIME_FOR_COMPLETION_INDEX) return timeForCompletion;
+		return 0;
+	}
+
+	@Override
+	public void set(int index, int value) {
+		validateIndex(index);
+		if (index == TIME_INDEX) timeElapsed = value;
+		else if (index == TIME_FOR_COMPLETION_INDEX) timeForCompletion = value;
+	}
+
+	@Override
+	public int size() {
+		return 2;
+	};
 
 }

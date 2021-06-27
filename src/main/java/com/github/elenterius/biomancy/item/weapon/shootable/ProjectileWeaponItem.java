@@ -21,6 +21,7 @@ import net.minecraft.item.UseAction;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.*;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
@@ -68,14 +69,19 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).setStyle(ClientTextUtil.LORE_STYLE));
 		if (ClientTextUtil.showExtraInfo(tooltip)) {
 			DecimalFormat df = ClientTextUtil.getDecimalFormatter("#.###");
-			tooltip.add(TextUtil.getTooltipText("fire_rate").appendString(String.format(": %s (%s) RPS", df.format(getFireRate(stack)), df.format(ONE_SECOND / baseShootDelay))));
-			tooltip.add(TextUtil.getTooltipText("accuracy").appendString(String.format(": %s (%s) (InAcc: %s)", df.format(getAccuracy()), df.format(baseAccuracy), df.format(getInaccuracy()))));
-			tooltip.add(TextUtil.getTooltipText("ammo").appendString(String.format(": %d/%d (x/%d)", getAmmo(stack), getMaxAmmo(stack), baseMaxAmmo)));
-			tooltip.add(TextUtil.getTooltipText("reload_time").appendString(String.format(": %s (%s)", df.format(getReloadTime(stack) / ONE_SECOND), df.format(baseReloadTime / ONE_SECOND))));
-			tooltip.add(TextUtil.getTooltipText("projectile_damage").appendString(String.format(": %s (%s)", df.format(getProjectileDamage(stack)), df.format(baseProjectileDamage))));
+			tooltip.add(TextUtil.getTooltipText("fire_rate").appendString(String.format(": %s RPS ", df.format(getFireRate(stack)))).appendSibling(addBrackets(df.format(ONE_SECOND / baseShootDelay))));
+			tooltip.add(TextUtil.getTooltipText("accuracy").appendString(String.format(": %s ", df.format(getAccuracy()))).appendSibling(addBrackets(df.format(baseAccuracy))));
+			tooltip.add(TextUtil.getTooltipText("ammo").appendString(String.format(": %d/%d ", getAmmo(stack), getMaxAmmo(stack))).appendSibling(addBrackets("x/" + baseMaxAmmo)));
+			tooltip.add(TextUtil.getTooltipText("reload_time").appendString(String.format(": %s ", df.format(getReloadTime(stack) / ONE_SECOND))).appendSibling(addBrackets(df.format(baseReloadTime / ONE_SECOND))));
+			tooltip.add(TextUtil.getTooltipText("projectile_damage").appendString(String.format(": %s ", df.format(getProjectileDamage(stack)))).appendSibling(addBrackets(df.format(baseProjectileDamage))));
 			tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 		}
 		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextUtil.getTranslationText("tooltip", "action_reload")).mergeStyle(TextFormatting.DARK_GRAY));
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	private IFormattableTextComponent addBrackets(Object obj) {
+		return new StringTextComponent("(" + obj + ")").mergeStyle(TextFormatting.DARK_GRAY);
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -110,7 +116,7 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 
 	@Override
 	public UseAction getUseAction(ItemStack stack) {
-		return UseAction.BOW;
+		return UseAction.NONE;
 	}
 
 	@Override

@@ -3,11 +3,14 @@ package com.github.elenterius.biomancy.client.renderer;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.enchantment.AttunedDamageEnchantment;
 import com.github.elenterius.biomancy.init.ModEnchantments;
+import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.item.IAreaHarvestingItem;
 import com.github.elenterius.biomancy.item.IHighlightRayTraceResultItem;
+import com.github.elenterius.biomancy.item.InjectionDeviceItem;
 import com.github.elenterius.biomancy.item.ItemStorageBagItem;
 import com.github.elenterius.biomancy.item.weapon.shootable.ProjectileWeaponItem;
 import com.github.elenterius.biomancy.item.weapon.shootable.SinewBowItem;
+import com.github.elenterius.biomancy.reagent.Reagent;
 import com.github.elenterius.biomancy.util.PlayerInteractionUtil;
 import com.github.elenterius.biomancy.util.RayTraceUtil;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -142,6 +145,9 @@ public final class ClientRenderHandler {
 			else if (item instanceof ItemStorageBagItem) {
 				renderItemStorageBagOverlay(matrix, scaledWidth, scaledHeight, mc, player, heldStack, (ItemStorageBagItem) item);
 			}
+			else if (item instanceof InjectionDeviceItem) {
+				renderInjectionDeviceOverlay(matrix, scaledWidth, scaledHeight, mc, player, heldStack, (InjectionDeviceItem) item);
+			}
 		}
 	}
 
@@ -160,7 +166,7 @@ public final class ClientRenderHandler {
 				LazyOptional<IItemHandler> capability = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
 				if (capability.isPresent()) {
 					mc.getTextureManager().bindTexture(ITEM_BAG_INDICATOR_TEX);
-					int x = scaledWidth / 2 - 33;
+					int x = scaledWidth / 2 - 16 - 8;
 					int y = scaledHeight / 2 + 9;
 					AbstractGui.blit(matrixStack, x, y, 0, mode == ItemStorageBagItem.Mode.DEVOUR ? 0 : 16, 32, 16, 32, 32);
 
@@ -185,6 +191,30 @@ public final class ClientRenderHandler {
 		AbstractGui.drawString(matrixStack, mc.fontRenderer, String.format("V: %.1f", velocity), (int) x + 18, (int) y + 6, 0xFFFEFEFE);
 //		drawCircularProgressIndicator(matrixStack, x, y, 13f, pullProgress, 0xDDF0F0F0);
 		drawRectangularProgressIndicator(matrixStack, x, y, 25f, pullProgress, 0xFFFEFEFE);
+	}
+
+	private static void renderInjectionDeviceOverlay(MatrixStack matrix, int scaledWidth, int scaledHeight, Minecraft mc, ClientPlayerEntity player, ItemStack stack, InjectionDeviceItem item) {
+		byte amount = item.getReagentAmount(stack);
+		if (amount < 1) return;
+
+		Reagent reagent = item.getReagent(stack);
+		if (reagent != null) {
+			FontRenderer fontRenderer = mc.fontRenderer;
+			String text = amount + "x";
+
+			int x = scaledWidth - 16 - 4;
+			int y = scaledHeight - 16 - 4;
+			matrix.push();
+			float scale = 1.5f; //make font bigger
+			matrix.translate(x - fontRenderer.getStringWidth(text) * scale, y + 16 - fontRenderer.FONT_HEIGHT * scale, 0);
+			matrix.scale(scale, scale, 0);
+			AbstractGui.drawString(matrix, fontRenderer, text, 0, 0, 0xFFFEFEFE);
+			matrix.pop();
+
+			ItemStack reagentStack = new ItemStack(ModItems.REAGENT.get());
+			Reagent.serialize(reagent, reagentStack.getOrCreateTag());
+			mc.getItemRenderer().renderItemIntoGUI(reagentStack, x, y);
+		}
 	}
 
 	private static void renderGunOverlay(MatrixStack matrix, int scaledWidth, int scaledHeight, Minecraft mc, ClientPlayerEntity player, ItemStack stack, ProjectileWeaponItem item) {

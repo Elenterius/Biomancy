@@ -63,7 +63,7 @@ public class RejuvenationReagent extends Reagent {
 			if (!target.world.isRemote) {
 				int slimeSize = ((SlimeEntity) target).getSlimeSize();
 				if (slimeSize > 1) {
-					((SlimeEntityAccessor) target).callSetSlimeSize(slimeSize - 1, false);
+					((SlimeEntityAccessor) target).biomancy_setSlimeSize(slimeSize - 1, false);
 				}
 			}
 			return true;
@@ -86,7 +86,7 @@ public class RejuvenationReagent extends Reagent {
 //				EntityDataManager dataManager = target.getDataManager();
 //				byte status = dataManager.get(ArmorStandEntity.STATUS);
 //				dataManager.set(ArmorStandEntity.STATUS, (byte) (status | 1)); //inverse = (byte)(status & ~1)
-				((ArmorStandEntityAccessor) target).callSetSmall(true);
+				((ArmorStandEntityAccessor) target).biomancy_setSmall(true);
 				return true;
 			}
 		}

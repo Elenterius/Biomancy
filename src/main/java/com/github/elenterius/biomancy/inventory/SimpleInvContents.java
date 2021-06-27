@@ -32,6 +32,13 @@ public class SimpleInvContents implements IInventory {
 		optionalItemStackHandler = LazyOptional.of(() -> itemStackHandler);
 	}
 
+	SimpleInvContents(ItemStackHandler itemStackHandlerIn, LazyOptional<IItemHandler> optionalItemStackHandlerIn, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
+		itemStackHandler = itemStackHandlerIn;
+		optionalItemStackHandler = optionalItemStackHandlerIn;
+		this.canPlayerAccessInventory = canPlayerAccessInventory;
+		this.markDirtyNotifier = markDirtyNotifier;
+	}
+
 	SimpleInvContents(int slotAmount, ISHandlerType handlerType) {
 		itemStackHandler = new ItemStackHandler(slotAmount);
 		switch (handlerType) {

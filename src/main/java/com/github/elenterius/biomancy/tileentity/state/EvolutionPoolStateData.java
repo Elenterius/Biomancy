@@ -2,20 +2,11 @@ package com.github.elenterius.biomancy.tileentity.state;
 
 import com.github.elenterius.biomancy.recipe.EvolutionPoolRecipe;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.IIntArray;
 
-public class EvolutionPoolStateData extends RecipeCraftingStateData<EvolutionPoolRecipe> implements IIntArray {
+public class EvolutionPoolStateData extends RecipeCraftingStateData<EvolutionPoolRecipe> {
 
-	public static final int TIME_INDEX = 0;
-	public static final int TIME_FOR_COMPLETION_INDEX = 1;
 	public static final int FUEL_INDEX = 2;
-
-	public static final String NBT_KEY_TIME_ELAPSED = "TimeElapsed";
-	public static final String NBT_KEY_TIME_FOR_COMPLETION = "TimeForCompletion";
 	public static final String NBT_KEY_FUEL = "Fuel";
-
-	public int timeElapsed;
-	public int timeForCompletion;
 	public short fuel; //mutagenic bile
 
 	@Override
@@ -24,36 +15,15 @@ public class EvolutionPoolStateData extends RecipeCraftingStateData<EvolutionPoo
 	}
 
 	@Override
-	public void setCraftingGoalRecipe(EvolutionPoolRecipe recipe) {
-		super.setCraftingGoalRecipe(recipe);
-		timeForCompletion = recipe.getCraftingTime();
-	}
-
-	@Override
-	public void clear() {
-		timeElapsed = 0;
-		timeForCompletion = 0;
-		super.clear();
-	}
-
-	@Override
 	public void serializeNBT(CompoundNBT nbt) {
 		super.serializeNBT(nbt);
-		nbt.putInt(NBT_KEY_TIME_ELAPSED, timeElapsed);
-		nbt.putInt(NBT_KEY_TIME_FOR_COMPLETION, timeForCompletion);
 		nbt.putShort(NBT_KEY_FUEL, fuel);
 	}
 
 	@Override
 	public void deserializeNBT(CompoundNBT nbt) {
 		super.deserializeNBT(nbt);
-		timeElapsed = nbt.getInt(NBT_KEY_TIME_ELAPSED);
-		timeForCompletion = nbt.getInt(NBT_KEY_TIME_FOR_COMPLETION);
 		fuel = nbt.getShort(NBT_KEY_FUEL);
-	}
-
-	private void validateIndex(int index) {
-		if (index < 0 || index >= size()) throw new IndexOutOfBoundsException("Index out of bounds:" + index);
 	}
 
 	@Override

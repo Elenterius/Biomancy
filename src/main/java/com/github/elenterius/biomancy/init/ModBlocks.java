@@ -43,12 +43,12 @@ public final class ModBlocks {
 	public static final RegistryObject<Block> FLESH_BLOCK = BLOCKS.register("flesh_block", () -> new FleshBlock(createFleshProperties()));
 	public static final RegistryObject<SlabBlock> FLESH_BLOCK_SLAB = BLOCKS.register("flesh_block_slab", () -> new SlabBlock(createFleshProperties()));
 	public static final RegistryObject<StairsBlock> FLESH_BLOCK_STAIRS = BLOCKS.register("flesh_block_stairs", () -> new StairsBlock(() -> FLESH_BLOCK.get().getDefaultState(), createFleshProperties()));
-	public static final RegistryObject<MutatedFleshBlock> MUTATED_FLESH_BLOCK = BLOCKS.register("mutated_flesh_block", () -> new MutatedFleshBlock(createFleshProperties()));
+//	public static final RegistryObject<MutatedFleshBlock> MUTATED_FLESH_BLOCK = BLOCKS.register("mutated_flesh_block", () -> new MutatedFleshBlock(createFleshProperties()));
 	public static final RegistryObject<Block> NECROTIC_FLESH_BLOCK = BLOCKS.register("necrotic_flesh_block", () -> new FleshBlock(createFleshProperties()));
 
 	//Plant
-	public static final RegistryObject<Block> VILE_MELON_BLOCK = BLOCKS.register("vile_melon_block", () -> new Block(Block.Properties.create(Material.GOURD, MaterialColor.PINK).hardnessAndResistance(1f).sound(SoundType.WOOD)));
-	public static final RegistryObject<FleshMelonCropBlock> VILE_MELON_CROP = BLOCKS.register("vile_melon_crop", () -> new FleshMelonCropBlock(Block.Properties.create(Material.PLANTS, MaterialColor.PINK).tickRandomly().hardnessAndResistance(0.2f).sound(SoundType.STEM)));
+//	public static final RegistryObject<Block> VILE_MELON_BLOCK = BLOCKS.register("vile_melon_block", () -> new Block(Block.Properties.create(Material.GOURD, MaterialColor.PINK).hardnessAndResistance(1f).sound(SoundType.WOOD)));
+//	public static final RegistryObject<FleshMelonCropBlock> VILE_MELON_CROP = BLOCKS.register("vile_melon_crop", () -> new FleshMelonCropBlock(Block.Properties.create(Material.PLANTS, MaterialColor.PINK).tickRandomly().hardnessAndResistance(0.2f).sound(SoundType.STEM)));
 
 	//Bio-Constructs
 	public static final RegistryObject<OwnableDoorBlock> FLESHBORN_DOOR = BLOCKS.register("fleshborn_door", () -> new OwnableDoorBlock(createFleshProperties().notSolid()));

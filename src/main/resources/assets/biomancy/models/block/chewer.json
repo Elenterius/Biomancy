@@ -5,8 +5,8 @@
     "particle": "biomancy:block/flesh_bland",
     "flesh": "biomancy:block/flesh_bland",
     "neck": "biomancy:block/neck_hole",
-    "tooths": "biomancy:block/tooths",
-    "front": "biomancy:block/decomposer_front"
+    "tooths": "biomancy:block/teeth_0",
+    "front": "biomancy:block/chewer_front"
   },
   "elements": [
     {

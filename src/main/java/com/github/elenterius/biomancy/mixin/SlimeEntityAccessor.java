@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(SlimeEntity.class)
 public interface SlimeEntityAccessor {
 
-	@Invoker
-	void callSetSlimeSize(int size, boolean resetHealth);
+	@Invoker("setSlimeSize")
+	void biomancy_setSlimeSize(int size, boolean resetHealth);
 
 }

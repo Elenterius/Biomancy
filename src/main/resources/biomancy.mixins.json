@@ -6,6 +6,7 @@
   "mixins": [
     "ArmorStandEntityAccessor",
     "CapabilityProviderMixin",
+    "CauldronBlockMixin",
     "DamageSourceMixin",
     "GrindstoneContainerMixin",
     "LivingEntityMixin",
@@ -14,13 +15,14 @@
     "RecipeManagerMixinAccessor",
     "ServerPlayerEntityMixin",
     "SlimeEntityAccessor",
-    "SwordItemMixinAccessor"
+    "SwordItemMixinAccessor",
+    "ZombieVillagerEntityMixinAccessor"
   ],
   "client": [
+    "client.ClientItemStackMixinAccessor",
     "client.ClientRecipeBookMixin",
     "client.EntityMixin",
     "client.GetMouseOverMixin",
-    "client.ItemStackMixinAccessor",
     "client.LivingRendererMixin",
     "client.MinecraftMixin",
     "client.PlayerRendererMixin"

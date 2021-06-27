@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cauldron_level3",
+  "textures": {
+    "water": "biomancy:block/flesh_bland"
+  }
+}

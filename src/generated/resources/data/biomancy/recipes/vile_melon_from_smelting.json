@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": {
-    "item": "biomancy:vile_melon_slice"
-  },
-  "result": "biomancy:cooked_vile_melon_slice",
-  "experience": 0.35,
-  "cookingtime": 100
-}

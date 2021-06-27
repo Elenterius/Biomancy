@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(ArmorStandEntity.class)
 public interface ArmorStandEntityAccessor {
 
-	@Invoker
-	void callSetSmall(boolean flag);
+	@Invoker("setSmall")
+	void biomancy_setSmall(boolean flag);
 
 }

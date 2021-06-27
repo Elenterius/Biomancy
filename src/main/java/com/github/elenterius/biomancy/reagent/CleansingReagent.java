@@ -1,12 +1,17 @@
 package com.github.elenterius.biomancy.reagent;
 
 import com.github.elenterius.biomancy.entity.aberration.FleshBlobEntity;
+import com.github.elenterius.biomancy.mixin.ZombieVillagerEntityMixinAccessor;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.monster.ZombieVillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
 
@@ -26,6 +31,11 @@ public class CleansingReagent extends Reagent {
 		clearPotionEffects(target);
 		if (target instanceof FleshBlobEntity) {
 			((FleshBlobEntity) target).clearForeignEntityDNA();
+		}
+		else if (target instanceof ZombieVillagerEntity) {
+			if (!target.world.isRemote && ForgeEventFactory.canLivingConvert(target, EntityType.VILLAGER, (timer) -> {})) {
+				((ZombieVillagerEntityMixinAccessor) target).biomancy_cureZombie((ServerWorld) target.world);
+			}
 		}
 		return true;
 	}

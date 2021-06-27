@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.client.gui;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.gui.drawable.ProgressBar;
 import com.github.elenterius.biomancy.inventory.EvolutionPoolContainer;
+import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
@@ -10,9 +11,8 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraftforge.client.MinecraftForgeClient;
 
-import java.text.NumberFormat;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,9 +65,9 @@ public class EvolutionPoolContainerScreen extends ContainerScreen<EvolutionPoolC
 		List<ITextComponent> hoveringText = new ArrayList<>();
 
 		if (progressBar.isMouseInside(guiLeft, guiTop, mouseX, mouseY)) {
-			float fuel = container.getFuelNormalized();
-			NumberFormat percentFormatter = NumberFormat.getPercentInstance(MinecraftForgeClient.getLocale());
-			hoveringText.add(new TranslationTextComponent(container.getFuelTranslationKey()).appendString(": " + percentFormatter.format(fuel)));
+			int fuel = container.getFuel();
+			DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
+			hoveringText.add(new TranslationTextComponent(container.getFuelTranslationKey()).appendString(": " + df.format(fuel)));
 		}
 
 		if (!hoveringText.isEmpty()) {

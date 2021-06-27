@@ -4,7 +4,10 @@ import com.github.elenterius.biomancy.init.ModRecipes;
 import com.google.gson.JsonObject;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.*;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.ShapedRecipe;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.NonNullList;
@@ -14,20 +17,17 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 
-public class DigesterRecipe implements IRecipe<IInventory> {
+public class DigesterRecipe extends AbstractBioMechanicalRecipe {
 
-	private final ResourceLocation registryId;
 	private final Ingredient ingredient;
 	private final ItemStack result;
 	private final Byproduct byproduct;
-	private final int time;
 
-	public DigesterRecipe(ResourceLocation keyIn, ItemStack resultIn, @Nullable Byproduct byproductIn, int timeIn, Ingredient ingredientIn) {
-		registryId = keyIn;
+	public DigesterRecipe(ResourceLocation registryKey, ItemStack resultIn, @Nullable Byproduct byproductIn, int craftingTime, Ingredient ingredientIn) {
+		super(registryKey, craftingTime);
 		ingredient = ingredientIn;
 		result = resultIn;
 		byproduct = byproductIn;
-		time = timeIn;
 	}
 
 	@Override
@@ -63,11 +63,6 @@ public class DigesterRecipe implements IRecipe<IInventory> {
 	}
 
 	@Override
-	public ResourceLocation getId() {
-		return registryId;
-	}
-
-	@Override
 	public IRecipeSerializer<?> getSerializer() {
 		return ModRecipes.DIGESTER_SERIALIZER.get();
 	}
@@ -75,10 +70,6 @@ public class DigesterRecipe implements IRecipe<IInventory> {
 	@Override
 	public IRecipeType<?> getType() {
 		return ModRecipes.DIGESTER_RECIPE_TYPE;
-	}
-
-	public int getCraftingTime() {
-		return time;
 	}
 
 	public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<DigesterRecipe> {
@@ -115,7 +106,7 @@ public class DigesterRecipe implements IRecipe<IInventory> {
 		public void write(PacketBuffer buffer, DigesterRecipe recipe) {
 			//server side
 			buffer.writeItemStack(recipe.result);
-			buffer.writeInt(recipe.time);
+			buffer.writeInt(recipe.getCraftingTime());
 			recipe.ingredient.write(buffer);
 
 			boolean hasByproduct = recipe.byproduct != null;

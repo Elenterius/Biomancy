@@ -79,8 +79,8 @@ public final class ModItems {
 	public static final RegistryObject<Item> HORMONE_BILE = ITEMS.register("hormone_bile", () -> new Item(createItemProperties()));
 
 	// Food
-	public static final RegistryObject<Item> VILE_MELON_SLICE = ITEMS.register("vile_melon_slice", () -> new Item(createItemProperties().food(ModFoods.VILE_MELON_SLICE)));
-	public static final RegistryObject<Item> COOKED_VILE_MELON_SLICE = ITEMS.register("cooked_vile_melon_slice", () -> new Item(createItemProperties().food(ModFoods.COOKED_VILE_MELON_SLICE)));
+//	public static final RegistryObject<Item> VILE_MELON_SLICE = ITEMS.register("vile_melon_slice", () -> new Item(createItemProperties().food(ModFoods.VILE_MELON_SLICE)));
+//	public static final RegistryObject<Item> COOKED_VILE_MELON_SLICE = ITEMS.register("cooked_vile_melon_slice", () -> new Item(createItemProperties().food(ModFoods.COOKED_VILE_MELON_SLICE)));
 	public static final RegistryObject<Item> NUTRIENT_BAR = ITEMS.register("nutrient_bar", () -> new Item(createItemProperties().food(ModFoods.NUTRIENT_BAR)));
 
 	// Spawn Eggs
@@ -99,8 +99,8 @@ public final class ModItems {
 	/* **** Block Items ********************************************* */
 
 	//crops
-	public static final RegistryObject<Item> VILE_MELON_SEEDS = ITEMS.register("vile_melon_seeds", () -> new BlockNamedItem(ModBlocks.VILE_MELON_CROP.get(), createItemProperties()));
-	public static final RegistryObject<Item> VILE_MELON_BLOCK = ITEMS.register("vile_melon_block", () -> new BlockItem(ModBlocks.VILE_MELON_BLOCK.get(), createItemProperties()));
+//	public static final RegistryObject<Item> VILE_MELON_SEEDS = ITEMS.register("vile_melon_seeds", () -> new BlockNamedItem(ModBlocks.VILE_MELON_CROP.get(), createItemProperties()));
+//	public static final RegistryObject<Item> VILE_MELON_BLOCK = ITEMS.register("vile_melon_block", () -> new BlockItem(ModBlocks.VILE_MELON_BLOCK.get(), createItemProperties()));
 
 	//decoration blocks
 	public static final RegistryObject<BlockItem> FLESH_TENTACLE = ITEMS.register("flesh_tentacle", () -> new BlockItem(ModBlocks.FLESH_TENTACLE.get(), createItemProperties()));
@@ -109,7 +109,7 @@ public final class ModItems {
 	public static final RegistryObject<BlockItem> FLESH_BLOCK = ITEMS.register("flesh_block", () -> new BlockItem(ModBlocks.FLESH_BLOCK.get(), createItemProperties()));
 	public static final RegistryObject<BlockItem> FLESH_BLOCK_SLAB = ITEMS.register("flesh_block_slab", () -> new BlockItem(ModBlocks.FLESH_BLOCK_SLAB.get(), createItemProperties()));
 	public static final RegistryObject<BlockItem> FLESH_BLOCK_STAIRS = ITEMS.register("flesh_block_stairs", () -> new BlockItem(ModBlocks.FLESH_BLOCK_STAIRS.get(), createItemProperties()));
-	public static final RegistryObject<BlockItem> MUTATED_FLESH_BLOCK = ITEMS.register("mutated_flesh_block", () -> new BlockItem(ModBlocks.MUTATED_FLESH_BLOCK.get(), createItemProperties()));
+//	public static final RegistryObject<BlockItem> MUTATED_FLESH_BLOCK = ITEMS.register("mutated_flesh_block", () -> new BlockItem(ModBlocks.MUTATED_FLESH_BLOCK.get(), createItemProperties()));
 	public static final RegistryObject<BlockItem> NECROTIC_FLESH_BLOCK = ITEMS.register("necrotic_flesh_block", () -> new BlockItem(ModBlocks.NECROTIC_FLESH_BLOCK.get(), createItemProperties()));
 
 	//bio-construct blocks
