@@ -86,6 +86,9 @@ public final class ClientSetupHandler {
 			RenderTypeLookup.setRenderLayer(ModBlocks.FLESHBORN_TRAPDOOR.get(), RenderType.getCutout());
 
 			RenderTypeLookup.setRenderLayer(ModBlocks.EVOLUTION_POOL.get(), RenderType.getTranslucent());
+			RenderTypeLookup.setRenderLayer(ModBlocks.DECOMPOSER.get(), RenderType.getTranslucent());
+			RenderTypeLookup.setRenderLayer(ModBlocks.DIGESTER.get(), RenderType.getCutout());
+			RenderTypeLookup.setRenderLayer(ModBlocks.CHEWER.get(), RenderType.getCutout());
 
 //			RenderTypeLookup.setRenderLayer(ModBlocks.LUMINOUS_SOIL.get(), renderType -> renderType == RenderType.getCutout() || renderType == RenderType.getTranslucent());
 //			RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_PUSTULE_SMALL.get(), RenderType.getCutout());

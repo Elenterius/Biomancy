@@ -4,14 +4,15 @@ import com.github.elenterius.biomancy.tileentity.DecomposerTileEntity;
 import com.github.elenterius.biomancy.tileentity.state.DecomposerStateData;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
-import com.github.elenterius.biomancy.util.VoxelShapeUtil;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.IBooleanFunction;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -19,30 +20,31 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Stream;
 
 public class DecomposerBlock extends MachineBlock<DecomposerTileEntity> {
 
-	public static final VoxelShape NORTH_SHAPE = createVoxelShape(Direction.NORTH);
-	public static final VoxelShape SOUTH_SHAPE = createVoxelShape(Direction.SOUTH);
-	public static final VoxelShape EAST_SHAPE = createVoxelShape(Direction.EAST);
-	public static final VoxelShape WEST_SHAPE = createVoxelShape(Direction.WEST);
+	public static final VoxelShape SHAPE = createVoxelShape();
 
 	public DecomposerBlock(Properties builder) {
 		super(builder);
 	}
 
-	private static VoxelShape createVoxelShape(Direction direction) {
-		AxisAlignedBB aabb0 = VoxelShapeUtil.createUnitAABB(0, 0, 3, 16, 14, 16);
-		AxisAlignedBB aabb1 = VoxelShapeUtil.createUnitAABB(4, 14, 4, 12, 16, 12);
-		AxisAlignedBB aabb2 = VoxelShapeUtil.createUnitAABB(3, 1, 0, 13, 10, 3);
-		return Stream.of(VoxelShapeUtil.createWithFacing(direction, aabb0), VoxelShapeUtil.createWithFacing(direction, aabb1), VoxelShapeUtil.createWithFacing(direction, aabb2)).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).get();
+	private static VoxelShape createVoxelShape() {
+		return Stream.of(
+				Block.makeCuboidShape(1, 0, 1, 15, 1, 15),
+				Block.makeCuboidShape(0, 1, 0, 16, 10, 16),
+				Block.makeCuboidShape(1, 10, 1, 15, 12, 15),
+				Block.makeCuboidShape(2, 12, 2, 14, 16, 14)
+		).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).get();
 	}
 
 	@Nullable
@@ -72,17 +74,27 @@ public class DecomposerBlock extends MachineBlock<DecomposerTileEntity> {
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction facing = state.get(FACING);
-		switch (facing) {
-			case NORTH:
-				return NORTH_SHAPE;
-			case SOUTH:
-				return SOUTH_SHAPE;
-			case WEST:
-				return WEST_SHAPE;
-			case EAST:
-				return EAST_SHAPE;
+		return SHAPE;
+	}
+
+	@Override
+	@OnlyIn(Dist.CLIENT)
+	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+		if (rand.nextInt(4) == 0) {
+			boolean isCrafting = stateIn.get(CRAFTING);
+			if (isCrafting) {
+				int n = rand.nextInt(5);
+				int color = 0xc7b15d;
+				double r = (double) (color >> 16 & 255) / 255d;
+				double g = (double) (color >> 8 & 255) / 255d;
+				double b = (double) (color & 255) / 255d;
+				for (int i = 0; i < n; i++) {
+					worldIn.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + 0.2d + rand.nextFloat() - 0.2d, pos.getY() + 0.3d, pos.getZ() + 0.2d + rand.nextFloat() - 0.2d, r, g, b);
+				}
+				if (n > 0 && rand.nextInt(3) == 0) {
+					worldIn.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_TROPICAL_FISH_FLOP, SoundCategory.BLOCKS, 0.2f + rand.nextFloat() * 0.2f, 0.9f + rand.nextFloat() * 0.15f, false);
+				}
+			}
 		}
-		return VoxelShapes.fullCube();
 	}
 }
