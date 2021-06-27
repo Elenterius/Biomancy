@@ -6,6 +6,7 @@
   "mixins": [
     "ArmorStandEntityAccessor",
     "CapabilityProviderMixin",
+    "CauldronBlockMixin",
     "DamageSourceMixin",
     "GrindstoneContainerMixin",
     "LivingEntityMixin",

@@ -115,6 +115,23 @@ public class MeatsoupCauldronBlock extends Block {
 						worldIn.getPendingBlockTicks().scheduleTick(pos, state.getBlock(), 55 + 1 + worldIn.rand.nextInt(20));
 					}
 				}
+				else if (level >= MAX_LEVEL - 3 && level < MAX_LEVEL - 1) {
+					if (item instanceof PotionItem) {
+						Potion potion = PotionUtils.getPotionFromItem(stack);
+						if (potion == Potions.HEALING || potion == Potions.REGENERATION) {
+							stack.grow(-1);
+							entityIn.entityDropItem(stack.hasContainerItem() ? stack.getContainerItem() : new ItemStack(Items.GLASS_BOTTLE));
+							setSoupLevel(worldIn, pos, state, flagValue, level, 1);
+							worldIn.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1f, 1f);
+						}
+						else if (potion == Potions.STRONG_HEALING || potion == Potions.STRONG_REGENERATION || potion == Potions.LONG_REGENERATION) {
+							stack.grow(-1);
+							entityIn.entityDropItem(stack.hasContainerItem() ? stack.getContainerItem() : new ItemStack(Items.GLASS_BOTTLE));
+							setSoupLevel(worldIn, pos, state, flagValue, level, 2);
+							worldIn.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1f, 1f);
+						}
+					}
+				}
 			}
 		}
 	}
