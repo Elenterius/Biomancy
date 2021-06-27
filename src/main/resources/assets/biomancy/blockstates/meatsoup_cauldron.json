@@ -25,7 +25,7 @@
       "model": "biomancy:block/meatsoup_cauldron_level3"
     },
     "level=8": {
-      "model": "biomancy:block/meatsoup_cauldron_level3"
+      "model": "biomancy:block/meatsoup_cauldron_level4"
     }
   }
 }
