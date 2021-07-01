@@ -59,7 +59,7 @@ public class ModRecipeProvider extends RecipeProvider {
 		return hasItem(predicates);
 	}
 
-	protected final Predicate<IItemProvider> IGNORE_COMPOSTABLE_PREDICATE = iItemProvider -> iItemProvider.asItem() != ModItems.DIGESTATE.get();
+	protected final Predicate<IItemProvider> IGNORE_COMPOSTABLE_PREDICATE = iItemProvider -> (iItemProvider.asItem() != ModItems.DIGESTATE.get()) | (iItemProvider.asItem() != ModItems.DIGESTATE.get());
 
 	@Override
 	protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
@@ -454,11 +454,23 @@ public class ModRecipeProvider extends RecipeProvider {
 		ChewerRecipeBuilder.createRecipe(Items.RED_SAND, defaultChewingTime * 3, 4)
 				.setIngredient(Items.RED_SANDSTONE)
 				.addCriterion("has_red_sandstone", hasItem(Items.RED_SANDSTONE)).build(consumer, "from_red_sandstone", true);
-		
-		ChewerRecipeBuilder.createRecipe(ModItems.FLESH_LUMP.get(), defaultChewingTime, 9)
-	    		.setIngredient(ModItems.FLESH_BLOCK.get())
-	    		.addCriterion("has_flesh", hasItem(ModItems.FLESH_BLOCK.get())).build(consumer, "from_flesh_block", true);		
 
+		ChewerRecipeBuilder.createRecipe(ModItems.FLESH_LUMP.get(), defaultChewingTime, 9)
+				.setIngredient(ModItems.FLESH_BLOCK.get())
+				.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK.get()))
+				.build(consumer, "from_flesh_block", true);
+		
+		ChewerRecipeBuilder.createRecipe(ModItems.FLESH_LUMP.get(), defaultChewingTime, 4)
+		.setIngredient(ModItems.FLESH_BLOCK_SLAB.get())
+		.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK_SLAB.get()))
+		.build(consumer, "from_flesh_block_slab", true);
+		
+		
+		ChewerRecipeBuilder.createRecipe(ModItems.FLESH_LUMP.get(), defaultChewingTime, 13)
+		.setIngredient(ModItems.FLESH_BLOCK_STAIRS.get())
+		.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK_STAIRS.get()))
+		.build(consumer, "from_flesh_block_stairs", true);
+		
 		// silicates ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		ChewerRecipeBuilder.createRecipe(ModItems.SILICATE_PASTE.get(), defaultChewingTime * 4, 2)
 				.setIngredient(Items.SAND)
@@ -788,7 +800,6 @@ public class ModRecipeProvider extends RecipeProvider {
 				.key('S', Tags.Items.SEEDS)
 				.patternLine("SBS").patternLine("NNN")
 				.addCriterion("has_nutrient_paste", hasItem(ModItems.NUTRIENT_PASTE.get())).build(consumer);
-
 
 		// misc ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		ShapelessRecipeBuilder.shapelessRecipe(Items.DIORITE)

@@ -23,6 +23,30 @@
     "minecraft:nether_wart",
     "minecraft:crimson_fungus",
     "minecraft:red_mushroom",
-    "minecraft:brown_mushroom"
+    "minecraft:brown_mushroom",
+    {
+      "id": "createfa:cheese",
+      "required": false
+    },
+    {
+      "id": "createfa:mixed_egg",
+      "required": false
+    },
+    {
+      "id": "createfa:fries",
+      "required": false
+    },
+    {
+      "id": "rats:cheese",
+      "required": false
+    },
+    {
+      "id": "rats:string_cheese",
+      "required": false
+    },
+    {
+      "id": "rats:potato_kinishes",
+      "required": false
+    }
   ]
 }

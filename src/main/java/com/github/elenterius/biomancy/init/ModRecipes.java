@@ -56,6 +56,7 @@ public final class ModRecipes {
 
 	public static void registerComposterRecipes() {
 		ComposterBlock.CHANCES.putIfAbsent(ModItems.DIGESTATE.get(), 0.7f);
+		ComposterBlock.CHANCES.putIfAbsent(ModItems.NUTRIENT_PASTE.get(), 0.5f);
 	}
 
 	public static void registerCustomItemPredicates() {

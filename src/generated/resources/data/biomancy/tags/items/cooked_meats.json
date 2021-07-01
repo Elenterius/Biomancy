@@ -7,6 +7,10 @@
     "minecraft:cooked_salmon",
     "minecraft:cooked_mutton",
     "minecraft:cooked_cod",
-    "minecraft:cooked_rabbit"
+    "minecraft:cooked_rabbit",
+    {
+      "id": "rats:cooked_rat",
+      "required": false
+    }
   ]
 }
