@@ -454,6 +454,10 @@ public class ModRecipeProvider extends RecipeProvider {
 		ChewerRecipeBuilder.createRecipe(Items.RED_SAND, defaultChewingTime * 3, 4)
 				.setIngredient(Items.RED_SANDSTONE)
 				.addCriterion("has_red_sandstone", hasItem(Items.RED_SANDSTONE)).build(consumer, "from_red_sandstone", true);
+		
+		ChewerRecipeBuilder.createRecipe(ModItems.FLESH_LUMP.get(), defaultChewingTime, 9)
+	    		.setIngredient(ModItems.FLESH_BLOCK.get())
+	    		.addCriterion("has_flesh", hasItem(ModItems.FLESH_BLOCK.get())).build(consumer, "from_flesh_block", true);		
 
 		// silicates ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		ChewerRecipeBuilder.createRecipe(ModItems.SILICATE_PASTE.get(), defaultChewingTime * 4, 2)
