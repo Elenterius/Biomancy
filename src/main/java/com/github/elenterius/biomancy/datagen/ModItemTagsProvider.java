@@ -31,7 +31,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 	public ModItemTagsProvider(DataGenerator dataGenerator, BlockTagsProvider blockTagProvider, @Nullable ExistingFileHelper existingFileHelper) {
 		super(dataGenerator, blockTagProvider, BiomancyMod.MOD_ID, existingFileHelper);
 	}
-
+	
 	protected final ItemComparator ITEM_ID_COMPARATOR = new ItemComparator();
 
 	static class ItemComparator implements Comparator<IItemProvider> {
@@ -43,49 +43,66 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 		}
 	}
 
+    private static void addOptionalItemsTo(Builder<Item> builder, String... itemKeys) {
+        for (String itemKey : itemKeys) {
+            builder.addOptional(new ResourceLocation(itemKey));
+        }
+    }
+
+    private static void addOptionalTagsTo(Builder<Item> builder, String... tagKeys) {
+        for (String tagKey : tagKeys) {
+            builder.addOptionalTag(new ResourceLocation(tagKey));
+        }
+    }
+	
 	@Override
 	protected void registerTags() {
 		LOGGER.info(logMarker, "registering item tags...");
-
+		
 		getOrCreateBuilder(ModTags.Items.COOKED_MEATS)
-				.add(COOKED_BEEF, COOKED_PORKCHOP, COOKED_CHICKEN, COOKED_SALMON, COOKED_MUTTON, COOKED_COD, COOKED_RABBIT).addOptional(new ResourceLocation("rats", "cooked_rat"));
+				.add(COOKED_BEEF, COOKED_PORKCHOP, COOKED_CHICKEN, COOKED_SALMON, COOKED_MUTTON, COOKED_COD, COOKED_RABBIT).addOptional(new ResourceLocation("rats:cooked_rat"));
 
-		getOrCreateBuilder(ModTags.Items.RAW_MEATS)
+		
+		Builder<Item> rawMeats = getOrCreateBuilder(ModTags.Items.RAW_MEATS)
 				.add(BEEF, PORKCHOP, CHICKEN, COD, SALMON, RABBIT, MUTTON, TROPICAL_FISH, PUFFERFISH, ModItems.FLESH_LUMP.get(),
-				ModItems.OCULUS.get(), ModItems.OCULUS_KEY.get(), ModItems.STOMACH.get(), ModItems.ARTIFICIAL_STOMACH.get()).addOptional(new ResourceLocation("createfa", 
-				"ground_beef")).addOptional(new ResourceLocation("createfa", "ground_chicken")).addOptional(new ResourceLocation("rats", 
-				"raw_rat")).addOptional(new ResourceLocation("evilcraft", "flesh_humanoid")).addOptional(new ResourceLocation("evilcraft", "flesh_werewolf"));
+				ModItems.OCULUS.get(), ModItems.OCULUS_KEY.get(), ModItems.STOMACH.get(), ModItems.ARTIFICIAL_STOMACH.get());
 
-		getOrCreateBuilder(ModTags.Items.SUGARS)
+		addOptionalItemsTo( rawMeats, "createfa:ground_chicken","createfa:ground_beef","circus:clown", "rats:raw_rat", "evilcraft:flesh_humanoid", "evilcraft:flesh_werewolf");
+		
+		Builder<Item> sSugars = getOrCreateBuilder(ModTags.Items.SUGARS)
 				.add(SUGAR, COOKIE, CAKE, HONEYCOMB, HONEY_BLOCK, HONEYCOMB_BLOCK, HONEY_BOTTLE, SWEET_BERRIES, COCOA_BEANS);
 
+		addOptionalItemsTo( sSugars ,"create:sweet_roll", "create:chocolate_glazed_berries", 
+				"create:honeyed_apple", "create:bar_of_chocolate", "createaddition:chocolate_cake");
+		
 		getOrCreateBuilder(ModTags.Items.POOR_BIOMASS)
 				.addTag(ItemTags.FLOWERS).addTag(Tags.Items.SEEDS).addTag(ItemTags.LEAVES)
-				.add(SWEET_BERRIES, SUGAR_CANE, KELP, DRIED_KELP, GRASS, SEAGRASS, VINE, FERN, BAMBOO, ModItems.SKIN_CHUNK.get()).addOptional(new ResourceLocation("rats", "contaminated_food"));
-
-		getOrCreateBuilder(ModTags.Items.AVERAGE_BIOMASS)
+				.add(SWEET_BERRIES, SUGAR_CANE, KELP, DRIED_KELP, GRASS, SEAGRASS, VINE, FERN, BAMBOO, ModItems.SKIN_CHUNK.get()).addOptional(new ResourceLocation("rats:contaminated_food"));
+		
+		Builder<Item> avgBiomass = getOrCreateBuilder(ModTags.Items.AVERAGE_BIOMASS)
 				.addTag(ItemTags.SAPLINGS)
 				.add(WHEAT, BEETROOT, POTATO, CARROT, COOKIE, CACTUS, APPLE, CHORUS_FRUIT, MELON_SLICE, SPIDER_EYE, WARPED_FUNGUS,
 						NETHER_SPROUTS, WEEPING_VINES, TWISTING_VINES, LARGE_FERN, TALL_GRASS, WARPED_ROOTS, CRIMSON_ROOTS, NETHER_WART,
-						CRIMSON_FUNGUS, RED_MUSHROOM, BROWN_MUSHROOM).addOptional(new ResourceLocation("createfa", "cheese")).addOptional(new ResourceLocation("createfa", 
-						"mixed_egg")).addOptional(new ResourceLocation("createfa", "fries")).addOptional(new ResourceLocation("rats", 
-								"cheese")).addOptional(new ResourceLocation("rats", "string_cheese")).addOptional(new ResourceLocation("rats", "potato_kinishes"));
+						CRIMSON_FUNGUS, RED_MUSHROOM, BROWN_MUSHROOM);
 
-		getOrCreateBuilder(ModTags.Items.GOOD_BIOMASS)
+		addOptionalItemsTo( avgBiomass, "createfa:cheese", "createfa:mixed_egg", "createfa:fries", "rats:cheese", 
+				"rats:string_cheese", "rats:potato_kinishes");
+		
+		Builder<Item> goodBiomass = getOrCreateBuilder(ModTags.Items.GOOD_BIOMASS)
 				.add(BREAD, MUSHROOM_STEM, SUSPICIOUS_STEW, COCOA_BEANS, BAKED_POTATO, HONEYCOMB, HONEY_BOTTLE, MELON, PUMPKIN, DRIED_KELP_BLOCK,
 						SEA_PICKLE, LILY_PAD, CARVED_PUMPKIN, WARPED_WART_BLOCK, NETHER_WART_BLOCK, RED_MUSHROOM_BLOCK, BROWN_MUSHROOM_BLOCK,
-						SHROOMLIGHT, MUSHROOM_STEM).addOptional(new ResourceLocation("create", 
-								"bar_of_chocolate")).addOptional(new ResourceLocation("createfa", "hamburger")).addOptional(new ResourceLocation("createfa", 
-								"schnitzel")).addOptional(new ResourceLocation("createfa", "meatballs")).addOptional(new ResourceLocation("createfa", 
-								"chicken_nuggets")).addOptional(new ResourceLocation("rats", "blue_cheese"));
+						SHROOMLIGHT, MUSHROOM_STEM);
 
-		getOrCreateBuilder(ModTags.Items.SUPERB_BIOMASS)
-				.add(CAKE, PUMPKIN_PIE, RABBIT_STEW, BEETROOT_SOUP, POISONOUS_POTATO, HAY_BLOCK).addOptional(new ResourceLocation("create", 
-						"sweet_roll")).addOptional(new ResourceLocation("create", "chocolate_glazed_berries")).addOptional(new ResourceLocation("create", 
-								"honeyed_apple")).addOptional(new ResourceLocation("createfa", "cheeseburger")).addOptional(new ResourceLocation("rats", 
-								"assorted_vegetables")).addOptional(new ResourceLocation("rats", "rat_burger")).addOptional(new ResourceLocation("rats", 
-										"potato_pancake")).addOptional(new ResourceLocation("rats", "confit_byaldi")).addOptional(new ResourceLocation("createaddition", "chocolate_cake"));
+		addOptionalItemsTo( goodBiomass ,"create:bar_of_chocolate", "createfa:hamburger", "createfa:schnitzel", "createfa:meatballs", 
+				"createfa:chicken_nuggets", "rats:blue_cheese");
+		
+		Builder<Item> spbBiomass =getOrCreateBuilder(ModTags.Items.SUPERB_BIOMASS)
+				.add(CAKE, PUMPKIN_PIE, RABBIT_STEW, BEETROOT_SOUP, POISONOUS_POTATO, HAY_BLOCK);
 
+		addOptionalItemsTo( spbBiomass , "create:sweet_roll", "create:chocolate_glazed_berries", 
+				"create:honeyed_apple", "createfa:cheeseburger", "rats:assorted_vegetables", "rats:rat_burger", 
+				"rats:potato_pancake", "rats:confit_byaldi", "createaddition:chocolate_cake");
+		
 		Builder<Item> builder = getOrCreateBuilder(ModTags.Items.BIOMASS);
 //		ComposterBlock.CHANCES.keySet().stream().sorted(ITEM_ID_COMPARATOR).map(IItemProvider::asItem).forEach(builder::addItemEntry);
 		builder.addOptionalTag(ModTags.Items.POOR_BIOMASS.getName());
@@ -120,6 +137,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 				.addOptional(new ResourceLocation("minecraft", "glow_ink_sac"));
 	}
 
+
+	
 	@Override
 	public String getName() {
 		return StringUtils.capitalize(modId) + " " + super.getName();

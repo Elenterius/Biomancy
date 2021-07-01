@@ -16,11 +16,15 @@
     "biomancy:stomach",
     "biomancy:artificial_stomach",
     {
+      "id": "createfa:ground_chicken",
+      "required": false
+    },
+    {
       "id": "createfa:ground_beef",
       "required": false
     },
     {
-      "id": "createfa:ground_chicken",
+      "id": "circus:clown",
       "required": false
     },
     {
