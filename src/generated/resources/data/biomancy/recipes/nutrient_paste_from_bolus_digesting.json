@@ -4,13 +4,14 @@
     "item": "biomancy:bolus"
   },
   "result": {
-    "item": "biomancy:nutrient_paste"
+    "item": "biomancy:nutrient_paste",
+    "count": 2
   },
-  "time": 200,
+  "time": 100,
   "byproduct": {
     "result": {
       "item": "biomancy:digestate"
     },
-    "chance": 1.0
+    "chance": 0.85
   }
 }

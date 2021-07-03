@@ -7,7 +7,7 @@
     "item": "biomancy:nutrient_paste",
     "count": 4
   },
-  "time": 800,
+  "time": 540,
   "byproduct": {
     "result": {
       "item": "biomancy:digestate"
