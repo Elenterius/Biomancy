@@ -125,7 +125,7 @@ public class DigesterRecipeBuilder {
 
 	private void validate(ResourceLocation id) {
 		if (advancementBuilder.getCriteria().isEmpty()) {
-			throw new IllegalStateException("No way of obtaining recipe " + id);
+			throw new IllegalStateException("No way of obtaining recipe " + id + " because Criteria are empty.");
 		}
 	}
 
