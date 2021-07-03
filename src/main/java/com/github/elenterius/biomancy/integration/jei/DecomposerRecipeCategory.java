@@ -7,6 +7,7 @@ import com.github.elenterius.biomancy.recipe.Byproduct;
 import com.github.elenterius.biomancy.recipe.DecomposerRecipe;
 import com.github.elenterius.biomancy.tileentity.DecomposerTileEntity;
 import com.github.elenterius.biomancy.util.TextUtil;
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -31,8 +32,8 @@ import java.util.List;
 public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecipe> {
 
 	public static final ResourceLocation ID = BiomancyMod.createRL("jei_" + ModRecipes.DECOMPOSING_RECIPE_TYPE);
-	private static final int OUTPUT_SLOT = 0;
-	private static final int INPUT_SLOT = 4;
+	private static final int INPUT_SLOT = 0;
+	private static final int OUTPUT_SLOT = 1;
 	private final IDrawable background;
 	private final IDrawable icon;
 
@@ -68,7 +69,16 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 
 	@Override
 	public void setIngredients(DecomposerRecipe recipe, IIngredients ingredients) {
-		ingredients.setInputIngredients(recipe.getIngredients());
+		List<List<ItemStack>> inputs = ImmutableList.of(new ArrayList<>());
+		List<ItemStack> slot = inputs.get(0);
+		ItemStack[] possibleStacks = recipe.getIngredient().getMatchingStacks();
+		for (ItemStack stack : possibleStacks) {
+			ItemStack copy = stack.copy();
+			copy.setCount(recipe.getIngredientCount());
+			slot.add(copy);
+		}
+		ingredients.setInputLists(VanillaTypes.ITEM, inputs);
+
 		List<ItemStack> outputs = new ArrayList<>();
 		outputs.add(recipe.getRecipeOutput());
 		for (Byproduct byproduct : recipe.getByproducts()) {
@@ -79,25 +89,20 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 
 	@Override
 	public void setRecipe(IRecipeLayout layout, DecomposerRecipe recipe, IIngredients ingredients) {
-		layout.setShapeless();
-
 		IGuiItemStackGroup guiISGroup = layout.getItemStacks();
+		guiISGroup.init(INPUT_SLOT, true, 0, 9);
+
 		guiISGroup.init(OUTPUT_SLOT, false, 94, 18);
 		guiISGroup.init(OUTPUT_SLOT + 1, false, 90, 42);
 		guiISGroup.init(OUTPUT_SLOT + 2, false, 90 + 18, 42);
 		guiISGroup.init(OUTPUT_SLOT + 3, false, 90 + 18 * 2, 42);
-
-		int idx = INPUT_SLOT;
-		for (int y = 0; y < 2; y++) {
-			for (int x = 0; x < 3; x++) {
-				guiISGroup.init(idx++, true, x * 18, 9 + y * 18);
-			}
-		}
+		guiISGroup.init(OUTPUT_SLOT + 4, false, 90, 42 + 18);
+		guiISGroup.init(OUTPUT_SLOT + 5, false,90 + 18, 42 + 18);
 
 		guiISGroup.set(ingredients);
 
 		guiISGroup.addTooltipCallback((index, input, stack, tooltip) -> {
-			if (index > OUTPUT_SLOT && index < INPUT_SLOT) {
+			if (index > OUTPUT_SLOT && index < OUTPUT_SLOT + 6) {
 				if (!stack.isEmpty()) {
 					int chance = 100;
 					for (Byproduct byproduct : recipe.getByproducts()) {

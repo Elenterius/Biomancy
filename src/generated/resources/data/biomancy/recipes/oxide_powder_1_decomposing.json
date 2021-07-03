@@ -1,25 +1,11 @@
 {
   "type": "biomancy:decomposing",
-  "ingredients": [
-    {
+  "input": {
+    "ingredient": {
       "item": "minecraft:turtle_egg"
     },
-    {
-      "item": "minecraft:turtle_egg"
-    },
-    {
-      "item": "minecraft:turtle_egg"
-    },
-    {
-      "item": "minecraft:turtle_egg"
-    },
-    {
-      "item": "minecraft:turtle_egg"
-    },
-    {
-      "item": "minecraft:turtle_egg"
-    }
-  ],
+    "count": 6
+  },
   "byproducts": [
     {
       "result": {

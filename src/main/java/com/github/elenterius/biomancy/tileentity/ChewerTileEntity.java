@@ -29,7 +29,8 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class ChewerTileEntity extends MachineTileEntity<ChewerRecipe, ChewerStateData> {
+public class
+ChewerTileEntity extends MachineTileEntity<ChewerRecipe, ChewerStateData> {
 
 	public static final int FUEL_SLOTS_COUNT = 1;
 	public static final int INPUT_SLOTS_COUNT = 1;

@@ -1,25 +1,11 @@
 {
   "type": "biomancy:decomposing",
-  "ingredients": [
-    {
+  "input": {
+    "ingredient": {
       "item": "minecraft:kelp"
     },
-    {
-      "item": "minecraft:kelp"
-    },
-    {
-      "item": "minecraft:kelp"
-    },
-    {
-      "item": "minecraft:kelp"
-    },
-    {
-      "item": "minecraft:kelp"
-    },
-    {
-      "item": "minecraft:kelp"
-    }
-  ],
+    "count": 6
+  },
   "byproducts": [
     {
       "result": {

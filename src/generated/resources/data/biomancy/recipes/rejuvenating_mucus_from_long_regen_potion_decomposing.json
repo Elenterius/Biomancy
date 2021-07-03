@@ -1,13 +1,14 @@
 {
   "type": "biomancy:decomposing",
-  "ingredients": [
-    {
+  "input": {
+    "ingredient": {
       "type": "forge:nbt",
       "item": "minecraft:potion",
       "count": 1,
       "nbt": "{Potion:\"minecraft:long_regeneration\"}"
-    }
-  ],
+    },
+    "count": 1
+  },
   "byproducts": [],
   "result": {
     "item": "biomancy:rejuvenating_mucus",

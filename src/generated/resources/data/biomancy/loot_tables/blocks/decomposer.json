@@ -16,13 +16,8 @@
               "source": "block_entity",
               "ops": [
                 {
-                  "source": "MainFuel",
-                  "target": "BlockEntityTag.MainFuel",
-                  "op": "replace"
-                },
-                {
-                  "source": "SpeedFuel",
-                  "target": "BlockEntityTag.SpeedFuel",
+                  "source": "Fuel",
+                  "target": "BlockEntityTag.Fuel",
                   "op": "replace"
                 },
                 {

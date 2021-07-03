@@ -1,10 +1,11 @@
 {
   "type": "biomancy:decomposing",
-  "ingredients": [
-    {
+  "input": {
+    "ingredient": {
       "item": "minecraft:suspicious_stew"
-    }
-  ],
+    },
+    "count": 1
+  },
   "byproducts": [
     {
       "result": {
