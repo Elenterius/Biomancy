@@ -2,10 +2,8 @@
   "replace": false,
   "values": [
     "#minecraft:saplings",
-    "minecraft:wheat",
-    "minecraft:beetroot",
-    "minecraft:potato",
-    "minecraft:carrot",
+    "#forge:crops",
+    "#forge:mushrooms",
     "minecraft:cookie",
     "minecraft:cactus",
     "minecraft:apple",
@@ -20,10 +18,7 @@
     "minecraft:tall_grass",
     "minecraft:warped_roots",
     "minecraft:crimson_roots",
-    "minecraft:nether_wart",
     "minecraft:crimson_fungus",
-    "minecraft:red_mushroom",
-    "minecraft:brown_mushroom",
     {
       "id": "createfa:cheese",
       "required": false

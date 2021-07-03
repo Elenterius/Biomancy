@@ -588,10 +588,6 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addByproduct(ModItems.MUTAGENIC_BILE.get(), 0.15f)
 				.addCriterion("has_suspicious_stew", hasItem(Items.SUSPICIOUS_STEW)).build(consumer);
 
-		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime)
-				.addIngredient(ModTags.Items.COOKED_MEATS)
-				.addCriterion("has_cooked_meat", hasItem(ModTags.Items.COOKED_MEATS)).build(consumer, "from_cooked_meat", true);
-
 //		DecomposingRecipeBuilder.decomposingRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime)
 //				.addIngredient(new AnyMeatlessFoodIngredient()) //TODO: fix this
 //				.addCriterion("has_any_meatless_food", hasItem(ModRecipes.ANY_MEATLESS_FOOD_ITEM_PREDICATE)).build(consumer, "from_meatless_food", true);
@@ -626,6 +622,11 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addByproduct(ModItems.ERODING_BILE.get())
 				.addByproduct(ModItems.FLESH_LUMP.get(), 0.2f)
 				.addCriterion("has_zombie_head", hasItem(Items.ZOMBIE_HEAD)).build(consumer);
+
+		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime)
+		.addIngredient(ModTags.Items.COOKED_MEATS)
+		.addCriterion("has_cooked_meat", hasItem(ModTags.Items.COOKED_MEATS)).build(consumer, "from_cooked_meat", true);
+
 	}
 
 	private void registerCookingRecipes(Consumer<IFinishedRecipe> consumer) {

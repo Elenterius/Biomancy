@@ -43,6 +43,10 @@
     {
       "id": "rats:blue_cheese",
       "required": false
+    },
+    {
+      "id": "#forge:bread",
+      "required": false
     }
   ]
 }

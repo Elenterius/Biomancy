@@ -16,6 +16,16 @@
         ]
       }
     },
+    "has_zombie_head": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:zombie_head"
+          }
+        ]
+      }
+    },
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
@@ -26,6 +36,7 @@
   "requirements": [
     [
       "has_cooked_meat",
+      "has_zombie_head",
       "has_the_recipe"
     ]
   ]

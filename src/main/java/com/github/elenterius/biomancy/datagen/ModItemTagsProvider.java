@@ -1,6 +1,8 @@
 package com.github.elenterius.biomancy.datagen;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+
+import net.minecraft.tags.ITag.INamedTag;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModTags;
 import net.minecraft.data.BlockTagsProvider;
@@ -59,9 +61,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 	protected void registerTags() {
 		LOGGER.info(logMarker, "registering item tags...");
 		
-		getOrCreateBuilder(ModTags.Items.COOKED_MEATS)
+		Builder<Item> cookedMeats = getOrCreateBuilder(ModTags.Items.COOKED_MEATS)
 				.add(COOKED_BEEF, COOKED_PORKCHOP, COOKED_CHICKEN, COOKED_SALMON, COOKED_MUTTON, COOKED_COD, COOKED_RABBIT).addOptional(new ResourceLocation("rats:cooked_rat"));
 
+		//addOptionalTagsTo( cookedMeats ,"forge:bread");
 		
 		Builder<Item> rawMeats = getOrCreateBuilder(ModTags.Items.RAW_MEATS)
 				.add(BEEF, PORKCHOP, CHICKEN, COD, SALMON, RABBIT, MUTTON, TROPICAL_FISH, PUFFERFISH, ModItems.FLESH_LUMP.get(),
@@ -69,24 +72,29 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
 		addOptionalItemsTo( rawMeats, "createfa:ground_chicken","createfa:ground_beef","circus:clown", "rats:raw_rat", "evilcraft:flesh_humanoid", "evilcraft:flesh_werewolf");
 		
+		
+		
 		Builder<Item> sSugars = getOrCreateBuilder(ModTags.Items.SUGARS)
 				.add(SUGAR, COOKIE, CAKE, HONEYCOMB, HONEY_BLOCK, HONEYCOMB_BLOCK, HONEY_BOTTLE, SWEET_BERRIES, COCOA_BEANS);
 
 		addOptionalItemsTo( sSugars ,"create:sweet_roll", "create:chocolate_glazed_berries", 
 				"create:honeyed_apple", "create:bar_of_chocolate", "createaddition:chocolate_cake");
 		
+		//addOptionalTagsTo( sSugars ,"#forge:fruits");
+		
 		getOrCreateBuilder(ModTags.Items.POOR_BIOMASS)
 				.addTag(ItemTags.FLOWERS).addTag(Tags.Items.SEEDS).addTag(ItemTags.LEAVES)
 				.add(SWEET_BERRIES, SUGAR_CANE, KELP, DRIED_KELP, GRASS, SEAGRASS, VINE, FERN, BAMBOO, ModItems.SKIN_CHUNK.get()).addOptional(new ResourceLocation("rats:contaminated_food"));
 		
 		Builder<Item> avgBiomass = getOrCreateBuilder(ModTags.Items.AVERAGE_BIOMASS)
-				.addTag(ItemTags.SAPLINGS)
-				.add(WHEAT, BEETROOT, POTATO, CARROT, COOKIE, CACTUS, APPLE, CHORUS_FRUIT, MELON_SLICE, SPIDER_EYE, WARPED_FUNGUS,
-						NETHER_SPROUTS, WEEPING_VINES, TWISTING_VINES, LARGE_FERN, TALL_GRASS, WARPED_ROOTS, CRIMSON_ROOTS, NETHER_WART,
-						CRIMSON_FUNGUS, RED_MUSHROOM, BROWN_MUSHROOM);
+				.addTag(ItemTags.SAPLINGS).addTag(Tags.Items.CROPS).addTag(Tags.Items.MUSHROOMS)
+				.add(COOKIE, CACTUS, APPLE, CHORUS_FRUIT, MELON_SLICE, SPIDER_EYE, WARPED_FUNGUS,
+						NETHER_SPROUTS, WEEPING_VINES, TWISTING_VINES, LARGE_FERN, TALL_GRASS, WARPED_ROOTS, CRIMSON_ROOTS, CRIMSON_FUNGUS);
 
 		addOptionalItemsTo( avgBiomass, "createfa:cheese", "createfa:mixed_egg", "createfa:fries", "rats:cheese", 
 				"rats:string_cheese", "rats:potato_kinishes");
+
+		//addOptionalTagsTo( avgBiomass ,"#forge:carbs");
 		
 		Builder<Item> goodBiomass = getOrCreateBuilder(ModTags.Items.GOOD_BIOMASS)
 				.add(BREAD, MUSHROOM_STEM, SUSPICIOUS_STEW, COCOA_BEANS, BAKED_POTATO, HONEYCOMB, HONEY_BOTTLE, MELON, PUMPKIN, DRIED_KELP_BLOCK,
@@ -95,6 +103,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
 		addOptionalItemsTo( goodBiomass ,"create:bar_of_chocolate", "createfa:hamburger", "createfa:schnitzel", "createfa:meatballs", 
 				"createfa:chicken_nuggets", "rats:blue_cheese");
+		
+		addOptionalTagsTo( goodBiomass ,"forge:bread");
 		
 		Builder<Item> spbBiomass =getOrCreateBuilder(ModTags.Items.SUPERB_BIOMASS)
 				.add(CAKE, PUMPKIN_PIE, RABBIT_STEW, BEETROOT_SOUP, POISONOUS_POTATO, HAY_BLOCK);
