@@ -68,10 +68,10 @@ public class DecomposerContainer extends Container {
 			}
 		});
 
-		int inputPosX = posX + 18 * 2;
+		int inputPosX = 62;
 		addSlot(new Slot(inputContents, 0, inputPosX, posY));
 
-		int outputPosX = inputPosX + 18 * 4;
+		int outputPosX = 98;
 		addSlot(new OutputSlot(outputContents, 0, outputPosX, posY));
 		addSlot(new OutputSlot(outputContents, 1, outputPosX + 18, posY));
 		addSlot(new OutputSlot(outputContents, 2, outputPosX, posY + 18));
