@@ -74,10 +74,10 @@ public class DecomposerContainer extends Container {
 		int outputPosX = 98;
 		addSlot(new OutputSlot(outputContents, 0, outputPosX, posY));
 		addSlot(new OutputSlot(outputContents, 1, outputPosX + 18, posY));
-		addSlot(new OutputSlot(outputContents, 2, outputPosX, posY + 18));
-		addSlot(new OutputSlot(outputContents, 3, outputPosX + 18, posY + 18));
-		addSlot(new OutputSlot(outputContents, 4, outputPosX + 18 * 2, posY + 18));
-		addSlot(new OutputSlot(outputContents, 5, outputPosX + 18 * 2, posY));
+		addSlot(new OutputSlot(outputContents, 2, outputPosX + 18 * 2, posY));
+		addSlot(new OutputSlot(outputContents, 3, outputPosX, posY + 18));
+		addSlot(new OutputSlot(outputContents, 4, outputPosX + 18, posY + 18));
+		addSlot(new OutputSlot(outputContents, 5, outputPosX + 18 * 2, posY + 18));
 	}
 
 	public static DecomposerContainer createServerContainer(int screenId, PlayerInventory playerInventory, FuelInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, DecomposerStateData decomposerState) {

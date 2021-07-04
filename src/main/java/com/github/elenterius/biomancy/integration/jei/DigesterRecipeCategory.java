@@ -37,7 +37,7 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 
 	public DigesterRecipeCategory(IGuiHelper guiHelper) {
 		icon = guiHelper.createDrawableIngredient(new ItemStack(ModBlocks.DIGESTER.get()));
-		background = guiHelper.drawableBuilder(BiomancyMod.createRL("textures/gui/jei/gui_digester.png"), 0, 0, 100, 37).setTextureSize(100, 37).build();
+		background = guiHelper.drawableBuilder(BiomancyMod.createRL("textures/gui/jei/gui_digester.png"), 0, 0, 100, 47).setTextureSize(100, 47).build();
 	}
 
 	@Override
@@ -75,9 +75,9 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 	@Override
 	public void setRecipe(IRecipeLayout layout, DigesterRecipe recipe, IIngredients ingredients) {
 		IGuiItemStackGroup guiISGroup = layout.getItemStacks();
-		guiISGroup.init(OUTPUT_SLOT, false, 58, 4);
-		guiISGroup.init(BYPRODUCT_SLOT, false, 82, 8);
-		guiISGroup.init(INPUT_SLOT, true, 0, 3);
+		guiISGroup.init(OUTPUT_SLOT, false, 58, 14);
+		guiISGroup.init(BYPRODUCT_SLOT, false, 82, 18);
+		guiISGroup.init(INPUT_SLOT, true, 0, 13);
 
 		guiISGroup.set(ingredients);
 
@@ -103,7 +103,7 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 			TranslationTextComponent timeString = new TranslationTextComponent("gui.jei.category.smelting.time.seconds", seconds);
 			FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
 			int stringWidth = fontRenderer.getStringPropertyWidth(timeString);
-			fontRenderer.drawText(matrixStack, timeString, background.getWidth() - stringWidth, background.getHeight() - fontRenderer.FONT_HEIGHT, 0xff808080);
+			fontRenderer.drawText(matrixStack, timeString, background.getWidth() - stringWidth, 0, 0xff808080);
 			int waterCost = ticks * DigesterTileEntity.FUEL_COST;
 			IFormattableTextComponent costText = new StringTextComponent("+" + waterCost + " ").appendSibling(new TranslationTextComponent("tooltip.biomancy.water"));
 			fontRenderer.drawText(matrixStack, costText, 0, background.getHeight() - fontRenderer.FONT_HEIGHT, 0xff808080);
