@@ -60,8 +60,6 @@ public class ModRecipeProvider extends RecipeProvider {
 		return hasItem(predicates);
 	}
 
-	protected final Predicate<IItemProvider> IGNORE_COMPOSTABLE_PREDICATE = iItemProvider -> iItemProvider.asItem() != ModItems.DIGESTATE.get();
-
 	@Override
 	protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
 		LOGGER.info(logMarker, "registering workbench recipes...");
@@ -439,7 +437,7 @@ public class ModRecipeProvider extends RecipeProvider {
 		ChewerRecipeBuilder.createRecipe(Items.COBBLESTONE, defaultChewingTime)
 				.setIngredient(Items.STONE)
 				.addCriterion("has_stone", hasItem(Items.STONE)).build(consumer, "from_stone", true);
-
+		
 		ChewerRecipeBuilder.createRecipe(Items.GRAVEL, defaultChewingTime * 2)
 				.setIngredient(Items.COBBLESTONE)
 				.addCriterion("has_cobble", hasItem(Items.COBBLESTONE)).build(consumer, "from_cobblestone", true);
@@ -456,6 +454,22 @@ public class ModRecipeProvider extends RecipeProvider {
 				.setIngredient(Items.RED_SANDSTONE)
 				.addCriterion("has_red_sandstone", hasItem(Items.RED_SANDSTONE)).build(consumer, "from_red_sandstone", true);
 
+		ChewerRecipeBuilder.createRecipe(ModItems.FLESH_LUMP.get(), defaultChewingTime, 9)
+				.setIngredient(ModItems.FLESH_BLOCK.get())
+				.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK.get()))
+				.build(consumer, "from_flesh_block", true);
+		
+		ChewerRecipeBuilder.createRecipe(ModItems.FLESH_LUMP.get(), defaultChewingTime, 4)
+		.setIngredient(ModItems.FLESH_BLOCK_SLAB.get())
+		.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK_SLAB.get()))
+		.build(consumer, "from_flesh_block_slab", true);
+		
+		
+		ChewerRecipeBuilder.createRecipe(ModItems.FLESH_LUMP.get(), defaultChewingTime, 13)
+		.setIngredient(ModItems.FLESH_BLOCK_STAIRS.get())
+		.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK_STAIRS.get()))
+		.build(consumer, "from_flesh_block_stairs", true);
+		
 		// silicates ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		ChewerRecipeBuilder.createRecipe(ModItems.SILICATE_PASTE.get(), defaultChewingTime * 4, 2)
 				.setIngredient(Items.SAND)
@@ -556,10 +570,6 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addByproduct(ModItems.MUTAGENIC_BILE.get(), 0.15f)
 				.addCriterion("has_suspicious_stew", hasItem(Items.SUSPICIOUS_STEW)).build(consumer);
 
-		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime)
-				.setIngredient(ModTags.Items.COOKED_MEATS)
-				.addCriterion("has_cooked_meat", hasItem(ModTags.Items.COOKED_MEATS)).build(consumer, "from_cooked_meat", true);
-
 //		DecomposingRecipeBuilder.decomposingRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime)
 //				.addIngredient(new AnyMeatlessFoodIngredient()) //TODO: fix this
 //				.addCriterion("has_any_meatless_food", hasItem(ModRecipes.ANY_MEATLESS_FOOD_ITEM_PREDICATE)).build(consumer, "from_meatless_food", true);
@@ -599,6 +609,11 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addByproduct(ModItems.ERODING_BILE.get())
 				.addByproduct(ModItems.FLESH_LUMP.get(), 0.2f)
 				.addCriterion("has_zombie_head", hasItem(Items.ZOMBIE_HEAD)).build(consumer);
+
+		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime)
+		.addIngredient(ModTags.Items.COOKED_MEATS)
+		.addCriterion("has_cooked_meat", hasItem(ModTags.Items.COOKED_MEATS)).build(consumer, "from_cooked_meat", true);
+
 	}
 
 	private void registerCookingRecipes(Consumer<IFinishedRecipe> consumer) {
@@ -607,12 +622,6 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		CookingRecipeBuilder.smeltingRecipe(Ingredient.fromItems(ModItems.SILICATE_PASTE.get()), Items.GLASS_PANE, 0.1F, 100)
 				.addCriterion("has_silicate", hasItem(ModItems.SILICATE_PASTE.get())).build(consumer, new ResourceLocation(BiomancyMod.MOD_ID, "glass_pane_from_smelting_silicate"));
-
-//		CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(ModItems.VILE_MELON_SLICE.get()), ModItems.COOKED_VILE_MELON_SLICE.get(), 0.35F, 100, IRecipeSerializer.SMELTING)
-//				.addCriterion("has_vile_melon_slice", hasItem(ModItems.VILE_MELON_SLICE.get())).build(consumer, new ResourceLocation(BiomancyMod.MOD_ID, "vile_melon_from_smelting"));
-//
-//		CookingRecipeBuilder.cookingRecipe(Ingredient.fromItems(ModItems.VILE_MELON_SLICE.get()), ModItems.COOKED_VILE_MELON_SLICE.get(), 0.35F, 600, IRecipeSerializer.CAMPFIRE_COOKING)
-//				.addCriterion("has_vile_melon_slice", hasItem(ModItems.VILE_MELON_SLICE.get())).build(consumer, new ResourceLocation(BiomancyMod.MOD_ID, "vile_melon_from_campfire"));
 	}
 
 	private void registerWorkbenchRecipes(Consumer<IFinishedRecipe> consumer) {
@@ -779,10 +788,6 @@ public class ModRecipeProvider extends RecipeProvider {
 				.key('S', Tags.Items.SEEDS)
 				.patternLine("SBS").patternLine("NNN")
 				.addCriterion("has_nutrient_paste", hasItem(ModItems.NUTRIENT_PASTE.get())).build(consumer);
-
-//		ShapelessRecipeBuilder.shapelessRecipe(ModItems.VILE_MELON_SEEDS.get())
-//				.addIngredient(ModItems.VILE_MELON_SLICE.get())
-//				.addCriterion("has_vile_melon_slice", hasItem(ModItems.VILE_MELON_SLICE.get())).build(consumer);
 
 		// misc ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		ShapelessRecipeBuilder.shapelessRecipe(Items.DIORITE)
