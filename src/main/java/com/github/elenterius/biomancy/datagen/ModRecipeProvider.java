@@ -36,7 +36,6 @@ import org.apache.logging.log4j.MarkerManager;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 public class ModRecipeProvider extends RecipeProvider {
 
@@ -611,7 +610,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addCriterion("has_zombie_head", hasItem(Items.ZOMBIE_HEAD)).build(consumer);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime)
-		.addIngredient(ModTags.Items.COOKED_MEATS)
+		.setIngredient(ModTags.Items.COOKED_MEATS)
 		.addCriterion("has_cooked_meat", hasItem(ModTags.Items.COOKED_MEATS)).build(consumer, "from_cooked_meat", true);
 
 	}
