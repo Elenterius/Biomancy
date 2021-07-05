@@ -59,8 +59,6 @@ public class ModRecipeProvider extends RecipeProvider {
 		return hasItem(predicates);
 	}
 
-	protected final Predicate<IItemProvider> IGNORE_COMPOSTABLE_PREDICATE = iItemProvider -> (iItemProvider.asItem() != ModItems.DIGESTATE.get()) | (iItemProvider.asItem() != ModItems.DIGESTATE.get());
-
 	@Override
 	protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
 		LOGGER.info(logMarker, "registering workbench recipes...");
