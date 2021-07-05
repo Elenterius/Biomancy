@@ -13,12 +13,21 @@ public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> {
 
 	public static final String NBT_KEY_FUEL = "Fuel";
 	public static final int FUEL_INDEX = 2;
+	public static final String NBT_KEY_OUTPUT = "FluidOutput";
+	public static final int FLUID_OUTPUT_INDEX = 3;
 
-	public FluidTank fuel = new FluidTank(DigesterTileEntity.MAX_FUEL, fluidStack -> fluidStack.getFluid() == Fluids.WATER);
-	private final LazyOptional<IFluidHandler> optionalFluidHandler = LazyOptional.of(() -> fuel);
+	public FluidTank waterTank = new FluidTank(DigesterTileEntity.MAX_FUEL, fluidStack -> fluidStack.getFluid() == Fluids.WATER);
+	private final LazyOptional<IFluidHandler> optionalWaterFluidHandler = LazyOptional.of(() -> waterTank);
 
-	public LazyOptional<IFluidHandler> getOptionalFluidHandler() {
-		return optionalFluidHandler;
+	public FluidTank outputTank = new FluidTank(DigesterTileEntity.MAX_FUEL);
+	private final LazyOptional<IFluidHandler> optionalOutputFluidHandler = LazyOptional.of(() -> outputTank);
+
+	public LazyOptional<IFluidHandler> getOptionalInputFluidHandler() {
+		return optionalWaterFluidHandler;
+	}
+
+	public LazyOptional<IFluidHandler> getOptionalOutputFluidHandler() {
+		return optionalOutputFluidHandler;
 	}
 
 	@Override
@@ -29,13 +38,15 @@ public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> {
 	@Override
 	public void serializeNBT(CompoundNBT nbt) {
 		super.serializeNBT(nbt);
-		nbt.put(NBT_KEY_FUEL, fuel.writeToNBT(new CompoundNBT()));
+		nbt.put(NBT_KEY_FUEL, waterTank.writeToNBT(new CompoundNBT()));
+		nbt.put(NBT_KEY_OUTPUT, outputTank.writeToNBT(new CompoundNBT()));
 	}
 
 	@Override
 	public void deserializeNBT(CompoundNBT nbt) {
 		super.deserializeNBT(nbt);
-		fuel.readFromNBT(nbt.getCompound(NBT_KEY_FUEL));
+		waterTank.readFromNBT(nbt.getCompound(NBT_KEY_FUEL));
+		outputTank.readFromNBT(nbt.getCompound(NBT_KEY_OUTPUT));
 	}
 
 	@Override
@@ -43,7 +54,8 @@ public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> {
 		validateIndex(index);
 		if (index == TIME_INDEX) return timeElapsed;
 		else if (index == TIME_FOR_COMPLETION_INDEX) return timeForCompletion;
-		else if (index == FUEL_INDEX) return fuel.getFluidAmount();
+		else if (index == FUEL_INDEX) return waterTank.getFluidAmount();
+		else if (index == FLUID_OUTPUT_INDEX) return outputTank.getFluidAmount();
 		return 0;
 	}
 
@@ -53,18 +65,23 @@ public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> {
 		if (index == TIME_INDEX) timeElapsed = value;
 		else if (index == TIME_FOR_COMPLETION_INDEX) timeForCompletion = value;
 		else if (index == FUEL_INDEX) {
-			if (fuel.isEmpty()) {
-				fuel.setFluid(new FluidStack(Fluids.WATER, value));
+			if (waterTank.isEmpty()) {
+				waterTank.setFluid(new FluidStack(Fluids.WATER, value));
 			}
 			else {
-				fuel.getFluid().setAmount(value);
+				waterTank.getFluid().setAmount(value);
+			}
+		}
+		else if (index == FLUID_OUTPUT_INDEX) {
+			if (!outputTank.isEmpty()) {
+				outputTank.getFluid().setAmount(value);
 			}
 		}
 	}
 
 	@Override
 	public int size() {
-		return 3;
+		return 4;
 	}
 
 }

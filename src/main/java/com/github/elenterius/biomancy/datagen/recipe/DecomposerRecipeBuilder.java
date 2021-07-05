@@ -28,7 +28,8 @@ public class DecomposerRecipeBuilder {
 
 	private final Item result;
 	private final int count;
-	private final List<Ingredient> ingredients = new ArrayList<>();
+	private Ingredient ingredient = null;
+	private int ingredientCount = 0;
 	private final List<Byproduct> byproducts = new ArrayList<>();
 	private final int craftingTime;
 	private final Advancement.Builder advancementBuilder = Advancement.Builder.builder();
@@ -51,29 +52,30 @@ public class DecomposerRecipeBuilder {
 		return new DecomposerRecipeBuilder(resultIn, craftingTimeIn, countIn);
 	}
 
-	public DecomposerRecipeBuilder addIngredient(ITag<Item> tagIn) {
-		return addIngredient(Ingredient.fromTag(tagIn));
+	public DecomposerRecipeBuilder setIngredient(ITag<Item> tagIn) {
+		return setIngredient(Ingredient.fromTag(tagIn));
 	}
 
-	public DecomposerRecipeBuilder addIngredients(ITag<Item> tagIn, int quantity) {
-		return addIngredients(Ingredient.fromTag(tagIn), quantity);
+	public DecomposerRecipeBuilder setIngredient(ITag<Item> tagIn, int quantity) {
+		return setIngredient(Ingredient.fromTag(tagIn), quantity);
 	}
 
-	public DecomposerRecipeBuilder addIngredient(IItemProvider itemIn) {
-		return addIngredients(itemIn, 1);
+	public DecomposerRecipeBuilder setIngredient(IItemProvider itemIn) {
+		return setIngredient(itemIn, 1);
 	}
 
-	public DecomposerRecipeBuilder addIngredient(Ingredient ingredientIn) {
-		return addIngredients(ingredientIn, 1);
+	public DecomposerRecipeBuilder setIngredient(Ingredient ingredientIn) {
+		return setIngredient(ingredientIn, 1);
 	}
 
-	public DecomposerRecipeBuilder addIngredients(Ingredient ingredientIn, int quantity) {
-		for (int i = 0; i < quantity; i++) ingredients.add(ingredientIn);
+	public DecomposerRecipeBuilder setIngredient(IItemProvider itemIn, int quantity) {
+		setIngredient(Ingredient.fromItems(itemIn), quantity);
 		return this;
 	}
 
-	public DecomposerRecipeBuilder addIngredients(IItemProvider itemIn, int quantity) {
-		for (int i = 0; i < quantity; i++) addIngredient(Ingredient.fromItems(itemIn));
+	public DecomposerRecipeBuilder setIngredient(Ingredient ingredientIn, int quantity) {
+		ingredient = ingredientIn;
+		ingredientCount = quantity;
 		return this;
 	}
 
@@ -141,19 +143,20 @@ public class DecomposerRecipeBuilder {
 	private void build(Consumer<IFinishedRecipe> consumerIn, ResourceLocation id) {
 		validate(id);
 		advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.create(id)).withRewards(AdvancementRewards.Builder.recipe(id)).withRequirementsStrategy(IRequirementsStrategy.OR);
-		consumerIn.accept(new Result(id, result, craftingTime, count, this.group == null ? "" : group, ingredients, byproducts, advancementBuilder, new ResourceLocation(id.getNamespace(), "recipes/" + (result.getGroup() != null ? result.getGroup().getPath() : BiomancyMod.MOD_ID) + "/" + id.getPath())));
+		consumerIn.accept(new Result(id, result, craftingTime, count, this.group == null ? "" : group, ingredient, ingredientCount, byproducts, advancementBuilder, new ResourceLocation(id.getNamespace(), "recipes/" + (result.getGroup() != null ? result.getGroup().getPath() : BiomancyMod.MOD_ID) + "/" + id.getPath())));
 	}
 
 	private void validate(ResourceLocation id) {
 		if (advancementBuilder.getCriteria().isEmpty()) {
-			throw new IllegalStateException("No way of obtaining recipe " + id);
+			throw new IllegalStateException("No way of obtaining recipe " + id + " because Criteria are empty.");
 		}
 	}
 
 	public static class Result implements IFinishedRecipe {
 		private final ResourceLocation id;
 		private final String group;
-		private final List<Ingredient> ingredients;
+		private final Ingredient ingredient;
+		private final int ingredientCount;
 		private final List<Byproduct> byproducts;
 		private final Item result;
 		private final int count;
@@ -161,10 +164,11 @@ public class DecomposerRecipeBuilder {
 		private final Advancement.Builder advancementBuilder;
 		private final ResourceLocation advancementId;
 
-		public Result(ResourceLocation idIn, Item resultIn, int craftingTimeIn, int countIn, String groupIn, List<Ingredient> ingredientsIn, List<Byproduct> byproductsIn, Advancement.Builder advancementBuilderIn, ResourceLocation advancementIdIn) {
+		public Result(ResourceLocation idIn, Item resultIn, int craftingTimeIn, int countIn, String groupIn, Ingredient ingredientIn, int ingredientCountIn, List<Byproduct> byproductsIn, Advancement.Builder advancementBuilderIn, ResourceLocation advancementIdIn) {
 			id = idIn;
 			group = groupIn;
-			ingredients = ingredientsIn;
+			ingredient = ingredientIn;
+			ingredientCount = ingredientCountIn;
 			byproducts = byproductsIn;
 			result = resultIn;
 			count = countIn;
@@ -178,13 +182,12 @@ public class DecomposerRecipeBuilder {
 				json.addProperty("group", this.group);
 			}
 
-			JsonArray jsonArray = new JsonArray();
-			for (Ingredient ingredient : ingredients) {
-				jsonArray.add(ingredient.serialize());
-			}
-			json.add("ingredients", jsonArray);
+			JsonObject input = new JsonObject();
+			input.add("ingredient", ingredient.serialize());
+			if (ingredientCount > 0) input.addProperty("count", ingredientCount);
+			json.add("input", input);
 
-			jsonArray = new JsonArray();
+			JsonArray jsonArray = new JsonArray();
 			for (Byproduct byproduct : byproducts) {
 				jsonArray.add(byproduct.serialize());
 			}
@@ -192,9 +195,7 @@ public class DecomposerRecipeBuilder {
 
 			JsonObject jsonobject = new JsonObject();
 			jsonobject.addProperty("item", Registry.ITEM.getKey(result).toString());
-			if (count > 1) {
-				jsonobject.addProperty("count", count);
-			}
+			if (count > 1) jsonobject.addProperty("count", count);
 			json.add("result", jsonobject);
 
 			json.addProperty("time", craftingTime);

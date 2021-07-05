@@ -1,10 +1,11 @@
 {
   "type": "biomancy:decomposing",
-  "ingredients": [
-    {
+  "input": {
+    "ingredient": {
       "item": "minecraft:zombie_head"
-    }
-  ],
+    },
+    "count": 1
+  },
   "byproducts": [
     {
       "result": {

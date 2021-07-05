@@ -1,10 +1,11 @@
 {
   "type": "biomancy:decomposing",
-  "ingredients": [
-    {
+  "input": {
+    "ingredient": {
       "item": "minecraft:phantom_membrane"
-    }
-  ],
+    },
+    "count": 1
+  },
   "byproducts": [],
   "result": {
     "item": "biomancy:keratin_filaments",

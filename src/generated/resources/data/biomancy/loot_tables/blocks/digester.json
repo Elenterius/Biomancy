@@ -21,6 +21,11 @@
                   "op": "replace"
                 },
                 {
+                  "source": "FluidOutput",
+                  "target": "BlockEntityTag.FluidOutput",
+                  "op": "replace"
+                },
+                {
                   "source": "OwnerUUID",
                   "target": "BlockEntityTag.OwnerUUID",
                   "op": "replace"

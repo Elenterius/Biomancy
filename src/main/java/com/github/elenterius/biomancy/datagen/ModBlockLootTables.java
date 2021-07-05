@@ -47,13 +47,13 @@ public class ModBlockLootTables extends BlockLootTables {
 				)));
 	}
 
-	protected static LootTable.Builder droppingWithSpecialFuel(Block itemContainer) {
+	protected static LootTable.Builder droppingWithFluids(Block itemContainer) {
 		return LootTable.builder().addLootPool(withSurvivesExplosion(itemContainer, LootPool.builder().rolls(ConstantRange.of(1))
 				.addEntry(ItemLootEntry.builder(itemContainer)
 						.acceptFunction(CopyName.builder(CopyName.Source.BLOCK_ENTITY))
 						.acceptFunction(CopyNbt.builder(CopyNbt.Source.BLOCK_ENTITY)
-								.replaceOperation("MainFuel", "BlockEntityTag.MainFuel")
-								.replaceOperation("SpeedFuel", "BlockEntityTag.SpeedFuel")
+								.replaceOperation("Fuel", "BlockEntityTag.Fuel")
+								.replaceOperation("FluidOutput", "BlockEntityTag.FluidOutput")
 								.replaceOperation("OwnerUUID", "BlockEntityTag.OwnerUUID")
 								.replaceOperation("UserList", "BlockEntityTag.UserList")
 						)
@@ -113,8 +113,8 @@ public class ModBlockLootTables extends BlockLootTables {
 		registerLootTable(ModBlocks.GULGE.get(), ModBlockLootTables::droppingWithInventory);
 		registerLootTable(ModBlocks.FLESHBORN_CHEST.get(), ModBlockLootTables::droppingWithInventory);
 		registerLootTable(ModBlocks.CHEWER.get(), ModBlockLootTables::droppingWithFuel);
-		registerLootTable(ModBlocks.DIGESTER.get(), ModBlockLootTables::droppingWithFuel);
-		registerLootTable(ModBlocks.DECOMPOSER.get(), ModBlockLootTables::droppingWithSpecialFuel);
+		registerLootTable(ModBlocks.DIGESTER.get(), ModBlockLootTables::droppingWithFluids);
+		registerLootTable(ModBlocks.DECOMPOSER.get(), ModBlockLootTables::droppingWithFuel);
 		registerLootTable(ModBlocks.EVOLUTION_POOL.get(), dropping(ModBlocks.FLESH_BLOCK_STAIRS.get()));
 
 //		registerLootTable(ModBlocks.LUMINOUS_SOIL.get(), (soil) -> droppingWithSilkTouch(soil, withExplosionDecay(soil, ItemLootEntry.builder(ModItems.LUMINESCENT_SPORES.get())

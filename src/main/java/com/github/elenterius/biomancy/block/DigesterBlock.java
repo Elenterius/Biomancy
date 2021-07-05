@@ -59,11 +59,17 @@ public class DigesterBlock extends MachineBlock<DigesterTileEntity> {
 		CompoundNBT nbt = stack.getChildTag("BlockEntityTag");
 		if (nbt != null) {
 			tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
+			DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
+
 			CompoundNBT fuelNbt = nbt.getCompound(DigesterStateData.NBT_KEY_FUEL);
 			int fuel = fuelNbt.getInt("Amount");
 			String translationKey = "fluid." + fuelNbt.getString("FluidName").replace(":", ".").replace("/", ".");
-			DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
 			tooltip.add(new TranslationTextComponent(translationKey).appendString(String.format(": %s/%s", df.format(fuel), df.format(DigesterTileEntity.MAX_FUEL))));
+
+			CompoundNBT fluidNbt = nbt.getCompound(DigesterStateData.NBT_KEY_OUTPUT);
+			int fluid = fluidNbt.getInt("Amount");
+			translationKey = "fluid." + fluidNbt.getString("FluidName").replace(":", ".").replace("/", ".");
+			tooltip.add(new TranslationTextComponent(translationKey).appendString(String.format(": %s/%s", df.format(fluid), df.format(DigesterTileEntity.MAX_FUEL))));
 		}
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 	}

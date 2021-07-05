@@ -1,10 +1,11 @@
 {
   "type": "biomancy:decomposing",
-  "ingredients": [
-    {
+  "input": {
+    "ingredient": {
       "tag": "biomancy:raw_meats"
-    }
-  ],
+    },
+    "count": 1
+  },
   "byproducts": [
     {
       "result": {

@@ -69,7 +69,6 @@ public class DigesterContainer extends Container {
 		addSlot(new Slot(inputContents, 0, 71, 26));
 
 		addSlot(new OutputSlot(outputContents, 0, 107, 26));
-		addSlot(new OutputSlot(outputContents, 1, 107 + 18, 26));
 
 		addSlot(new OutputSlot(fuelOutContents, 0, 17, 44));
 	}
@@ -99,16 +98,28 @@ public class DigesterContainer extends Container {
 	}
 
 	public int getFuel() {
-		return stateData.fuel.getFluidAmount();
+		return stateData.waterTank.getFluidAmount();
 	}
 
 	public float getFuelNormalized() {
-		return MathHelper.clamp(stateData.fuel.getFluidAmount() / (float) stateData.fuel.getCapacity(), 0f, 1f);
+		return MathHelper.clamp(stateData.waterTank.getFluidAmount() / (float) stateData.waterTank.getCapacity(), 0f, 1f);
 	}
 
 	public String getFuelTranslationKey() {
 //		return stateData.fuel.getFluid().getTranslationKey();
 		return "fluid.minecraft.water";
+	}
+
+	public int getFluidOutput() {
+		return stateData.outputTank.getFluidAmount(); //TODO: sync tank contents to client
+	}
+
+	public float getFluidOutputNormalized() {
+		return MathHelper.clamp(stateData.outputTank.getFluidAmount() / (float) stateData.outputTank.getCapacity(), 0f, 1f);
+	}
+
+	public String getFluidOutputTranslationKey() {
+		return stateData.outputTank.getFluid().getTranslationKey();
 	}
 
 	/**
@@ -176,6 +187,7 @@ public class DigesterContainer extends Container {
 	}
 
 	private enum SlotZone {
+		//FIXME: brittle system, dependant on correct order of added slots
 		PLAYER_HOTBAR(0, 9),
 		PLAYER_MAIN_INVENTORY(9, 3 * 9),
 		FUEL_ZONE(9 + 3 * 9, DigesterTileEntity.FUEL_SLOTS_COUNT),

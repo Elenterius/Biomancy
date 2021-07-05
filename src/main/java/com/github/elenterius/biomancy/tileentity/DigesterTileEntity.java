@@ -44,7 +44,7 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 	public static final int FUEL_SLOTS_COUNT = 1;
 	public static final int FUEL_OUT_SLOTS_COUNT = 1;
 	public static final int INPUT_SLOTS_COUNT = 1;
-	public static final int OUTPUT_SLOTS_COUNT = 2;
+	public static final int OUTPUT_SLOTS_COUNT = 1;
 
 	public static final int MAX_FUEL = 32_000;
 	public static final short FUEL_COST = 1;
@@ -80,26 +80,26 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 
 	@Override
 	public int getFuelAmount() {
-		return stateData.fuel.getFluidAmount();
+		return stateData.waterTank.getFluidAmount();
 	}
 
 	@Override
 	public void setFuelAmount(int newAmount) {
-		if (stateData.fuel.isEmpty()) {
-			stateData.fuel.setFluid(new FluidStack(Fluids.WATER, newAmount));
+		if (stateData.waterTank.isEmpty()) {
+			stateData.waterTank.setFluid(new FluidStack(Fluids.WATER, newAmount));
 		}
 		else {
-			stateData.fuel.getFluid().setAmount(newAmount);
+			stateData.waterTank.getFluid().setAmount(newAmount);
 		}
 	}
 
 	@Override
 	public void addFuelAmount(int addAmount) {
-		if (stateData.fuel.isEmpty()) {
-			if (addAmount > 0) stateData.fuel.setFluid(new FluidStack(Fluids.WATER, addAmount));
+		if (stateData.waterTank.isEmpty()) {
+			if (addAmount > 0) stateData.waterTank.setFluid(new FluidStack(Fluids.WATER, addAmount));
 		}
 		else {
-			stateData.fuel.getFluid().grow(addAmount);
+			stateData.waterTank.getFluid().grow(addAmount);
 		}
 	}
 
@@ -143,18 +143,23 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 	}
 
 	@Override
+	protected boolean doesFluidFitIntoOutputTank(FluidStack stackToCraft) {
+		return stateData.outputTank.fill(stackToCraft, IFluidHandler.FluidAction.SIMULATE) == stackToCraft.getAmount();
+	}
+
+	@Override
 	protected boolean craftRecipe(DigesterRecipe recipeToCraft, World world) {
-		ItemStack result = recipeToCraft.getCraftingResult(inputContents);
-		if (!result.isEmpty() && outputContents.doesItemStackFit(0, result)) {
+		FluidStack result = recipeToCraft.getFluidResult();
+		if (!result.isEmpty() && stateData.outputTank.fill(result, IFluidHandler.FluidAction.SIMULATE) == result.getAmount()) {
 			for (int idx = 0; idx < inputContents.getSizeInventory(); idx++) {
 				inputContents.decrStackSize(idx, 1);
 			}
-			outputContents.insertItemStack(0, result);
+			stateData.outputTank.fill(result, IFluidHandler.FluidAction.EXECUTE);
 
 			Byproduct byproduct = recipeToCraft.getByproduct();
 			if (byproduct != null && world.rand.nextFloat() <= byproduct.getChance()) {
 				ItemStack stack = byproduct.getItemStack();
-				for (int idx = 1; idx < outputContents.getSizeInventory(); idx++) { //index 0 is reserved for the main crafting output
+				for (int idx = 0; idx < outputContents.getSizeInventory(); idx++) { //index 0 is reserved for the main crafting output
 					stack = outputContents.insertItemStack(idx, stack); //update stack with remainder
 					if (stack.isEmpty()) break;
 				}
@@ -168,8 +173,8 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 
 	@Override
 	public void refuel() {
-		int fluidAmount = stateData.fuel.getFluidAmount();
-		int maxFluidAmount = stateData.fuel.getCapacity();
+		int fluidAmount = stateData.waterTank.getFluidAmount();
+		int maxFluidAmount = stateData.waterTank.getCapacity();
 		if (fluidAmount < maxFluidAmount) {
 			ItemStack stack = fuelContents.getStackInSlot(0);
 			if (stack.isEmpty()) return;
@@ -178,7 +183,7 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 				if (stack.getItem() == Items.POTION && PotionUtils.getPotionFromItem(stack) == Potions.WATER) {
 					ItemStack outStack = fuelOutContents.getStackInSlot(0);
 					if (fluidAmount < maxFluidAmount - 333 && (outStack.isEmpty() || outStack.getItem() == Items.GLASS_BOTTLE)) {
-						stateData.fuel.fill(new FluidStack(Fluids.WATER, 334), IFluidHandler.FluidAction.EXECUTE);
+						stateData.waterTank.fill(new FluidStack(Fluids.WATER, 334), IFluidHandler.FluidAction.EXECUTE);
 						stack.shrink(1);
 						if (outStack.isEmpty()) fuelOutContents.setInventorySlotContents(0, new ItemStack(Items.GLASS_BOTTLE));
 						else outStack.grow(1);
@@ -186,7 +191,7 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 					}
 				}
 				else {
-					FluidActionResult fluidAction = FluidUtil.tryEmptyContainerAndStow(stack, stateData.fuel, fuelOutContents.getItemStackHandler(), maxFluidAmount - fluidAmount, null, true);
+					FluidActionResult fluidAction = FluidUtil.tryEmptyContainerAndStow(stack, stateData.waterTank, fuelOutContents.getItemStackHandler(), maxFluidAmount - fluidAmount, null, true);
 					if (fluidAction.isSuccess()) {
 						fuelContents.setInventorySlotContents(0, fluidAction.getResult());
 						markDirty();
@@ -269,7 +274,8 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 				return fuelContents.getOptionalItemStackHandler().cast();
 			}
 			else if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-				return stateData.getOptionalFluidHandler().cast();
+				if (side == Direction.DOWN || side == Direction.UP) return stateData.getOptionalInputFluidHandler().cast();
+				else return stateData.getOptionalOutputFluidHandler().cast();
 			}
 		return super.getCapability(cap, side);
 	}

@@ -1,13 +1,11 @@
 {
   "type": "biomancy:decomposing",
-  "ingredients": [
-    {
+  "input": {
+    "ingredient": {
       "item": "minecraft:granite"
     },
-    {
-      "item": "minecraft:granite"
-    }
-  ],
+    "count": 2
+  },
   "byproducts": [
     {
       "result": {

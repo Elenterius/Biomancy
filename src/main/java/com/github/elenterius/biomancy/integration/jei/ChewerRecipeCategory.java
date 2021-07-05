@@ -32,7 +32,7 @@ public class ChewerRecipeCategory implements IRecipeCategory<ChewerRecipe> {
 
 	public ChewerRecipeCategory(IGuiHelper guiHelper) {
 		icon = guiHelper.createDrawableIngredient(new ItemStack(ModBlocks.CHEWER.get()));
-		background = guiHelper.drawableBuilder(BiomancyMod.createRL("textures/gui/jei/gui_chewer.png"), 0, 0, 80, 37).setTextureSize(80, 37).build();
+		background = guiHelper.drawableBuilder(BiomancyMod.createRL("textures/gui/jei/gui_chewer.png"), 0, 0, 80, 47).setTextureSize(80, 47).build();
 	}
 
 	@Override
@@ -69,8 +69,8 @@ public class ChewerRecipeCategory implements IRecipeCategory<ChewerRecipe> {
 	@Override
 	public void setRecipe(IRecipeLayout layout, ChewerRecipe recipe, IIngredients ingredients) {
 		IGuiItemStackGroup guiISGroup = layout.getItemStacks();
-		guiISGroup.init(OUTPUT_SLOT, false, 58, 4);
-		guiISGroup.init(INPUT_SLOT, true, 0, 3);
+		guiISGroup.init(INPUT_SLOT, true, 0, 13);
+		guiISGroup.init(OUTPUT_SLOT, false, 58, 14);
 
 		guiISGroup.set(ingredients);
 	}
@@ -82,7 +82,7 @@ public class ChewerRecipeCategory implements IRecipeCategory<ChewerRecipe> {
 			int seconds = ticks / 20;
 			TranslationTextComponent timeString = new TranslationTextComponent("gui.jei.category.smelting.time.seconds", seconds);
 			FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
-			fontRenderer.drawText(matrixStack, timeString, background.getWidth() - fontRenderer.getStringPropertyWidth(timeString), background.getHeight() - fontRenderer.FONT_HEIGHT, 0xff808080);
+			fontRenderer.drawText(matrixStack, timeString, background.getWidth() - fontRenderer.getStringPropertyWidth(timeString), 0, 0xff808080);
 			int fuelCost = ticks * ChewerTileEntity.FUEL_COST;
 			IFormattableTextComponent costText = new StringTextComponent("+" + fuelCost + " ").appendSibling(new TranslationTextComponent("tooltip.biomancy.biofuel"));
 			fontRenderer.drawText(matrixStack, costText, 0, background.getHeight() - fontRenderer.FONT_HEIGHT, 0xff808080);

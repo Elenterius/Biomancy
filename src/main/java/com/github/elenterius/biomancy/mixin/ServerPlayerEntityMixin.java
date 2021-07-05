@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.mixin;
 
-import com.github.elenterius.biomancy.handler.ItemDecayHandler;
+import com.github.elenterius.biomancy.handler.event.ItemDecayHandler;
 import com.github.elenterius.biomancy.init.ModAttributes;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.Entity;

@@ -29,11 +29,11 @@ public final class BiomancyMod {
 
 		ModItems.ITEMS.register(modEventBus);
 		ModBlocks.BLOCKS.register(modEventBus);
+		ModFluids.FLUIDS.register(modEventBus);
 		ModEnchantments.ENCHANTMENTS.register(modEventBus);
 		ModRecipes.RECIPE_SERIALIZERS.register(modEventBus);
 		ModTileEntityTypes.TILE_ENTITIES.register(modEventBus);
 		ModContainerTypes.CONTAINERS.register(modEventBus);
-
 		ModAttributes.ATTRIBUTES.register(modEventBus);
 		ModEffects.EFFECTS.register(modEventBus);
 		ModEntityTypes.ENTITIES.register(modEventBus);

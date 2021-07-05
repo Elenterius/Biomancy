@@ -117,7 +117,7 @@ public class DecomposerTileEntity extends MachineTileEntity<DecomposerRecipe, De
 		ItemStack result = recipeToCraft.getCraftingResult(inputContents);
 		if (!result.isEmpty() && outputContents.doesItemStackFit(0, result)) {
 			for (int idx = 0; idx < inputContents.getSizeInventory(); idx++) {
-				inputContents.decrStackSize(idx, 1); //consume input
+				inputContents.decrStackSize(idx, recipeToCraft.getIngredientCount()); //consume input
 			}
 
 			outputContents.insertItemStack(0, result); //output result
@@ -132,6 +132,7 @@ public class DecomposerTileEntity extends MachineTileEntity<DecomposerRecipe, De
 					}
 				}
 			}
+
 			markDirty();
 			return true;
 		}
@@ -152,14 +153,6 @@ public class DecomposerTileEntity extends MachineTileEntity<DecomposerRecipe, De
 	@Override
 	public Container createMenu(int screenId, PlayerInventory playerInv, PlayerEntity player) {
 		return DecomposerContainer.createServerContainer(screenId, playerInv, fuelContents, inputContents, outputContents, stateData);
-	}
-
-	private boolean consumeSpeedFuel() {
-		if (stateData.speedFuel >= FUEL_COST + 5) {
-			stateData.speedFuel -= FUEL_COST + 5;
-			return true;
-		}
-		return false;
 	}
 
 	@Override
@@ -195,10 +188,11 @@ public class DecomposerTileEntity extends MachineTileEntity<DecomposerRecipe, De
 	@Override
 	public CompoundNBT writeToItemBlockEntityTag(CompoundNBT nbt) {
 		super.writeToItemBlockEntityTag(nbt);
-		stateData.serializeNBT(nbt);
-		if (!fuelContents.isEmpty()) nbt.put("FuelSlots", fuelContents.serializeNBT());
-		if (!inputContents.isEmpty()) nbt.put("InputSlots", inputContents.serializeNBT());
-		if (!outputContents.isEmpty()) nbt.put("OutputSlots", outputContents.serializeNBT());
+		//TODO: decide if we want this for creative players, would lead to inventory clutter
+//		stateData.serializeNBT(nbt);
+//		if (!fuelContents.isEmpty()) nbt.put("FuelSlots", fuelContents.serializeNBT());
+//		if (!inputContents.isEmpty()) nbt.put("InputSlots", inputContents.serializeNBT());
+//		if (!outputContents.isEmpty()) nbt.put("OutputSlots", outputContents.serializeNBT());
 		return nbt;
 	}
 

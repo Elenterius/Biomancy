@@ -68,19 +68,16 @@ public class DecomposerContainer extends Container {
 			}
 		});
 
-		int inputPosX = posX + 18 * 2;
+		int inputPosX = 62;
 		addSlot(new Slot(inputContents, 0, inputPosX, posY));
-		addSlot(new Slot(inputContents, 1, inputPosX + 18, posY));
-		addSlot(new Slot(inputContents, 2, inputPosX + 18 * 2, posY));
-		addSlot(new Slot(inputContents, 3, inputPosX, posY + 18));
-		addSlot(new Slot(inputContents, 4, inputPosX + 18, posY + 18));
-		addSlot(new Slot(inputContents, 5, inputPosX + 18 * 2, posY + 18));
 
-		int outputPosX = inputPosX + 18 * 4;
+		int outputPosX = 98;
 		addSlot(new OutputSlot(outputContents, 0, outputPosX, posY));
 		addSlot(new OutputSlot(outputContents, 1, outputPosX + 18, posY));
-		addSlot(new OutputSlot(outputContents, 2, outputPosX, posY + 18));
-		addSlot(new OutputSlot(outputContents, 3, outputPosX + 18, posY + 18));
+		addSlot(new OutputSlot(outputContents, 2, outputPosX + 18 * 2, posY));
+		addSlot(new OutputSlot(outputContents, 3, outputPosX, posY + 18));
+		addSlot(new OutputSlot(outputContents, 4, outputPosX + 18, posY + 18));
+		addSlot(new OutputSlot(outputContents, 5, outputPosX + 18 * 2, posY + 18));
 	}
 
 	public static DecomposerContainer createServerContainer(int screenId, PlayerInventory playerInventory, FuelInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, DecomposerStateData decomposerState) {
@@ -116,10 +113,6 @@ public class DecomposerContainer extends Container {
 
 	public String getFuelTranslationKey() {
 		return TextUtil.getTranslationKey("tooltip", "biofuel");
-	}
-
-	public float getSpeedFuelNormalized() {
-		return MathHelper.clamp(decomposerState.speedFuel / (float) DecomposerTileEntity.MAX_FUEL, 0f, 1f);
 	}
 
 	/**
