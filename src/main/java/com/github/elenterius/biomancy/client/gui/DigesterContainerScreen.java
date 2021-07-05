@@ -19,7 +19,8 @@ import java.util.List;
 public class DigesterContainerScreen extends ContainerScreen<DigesterContainer> {
 
 	private static final ResourceLocation BACKGROUND_TEXTURE = BiomancyMod.createRL("textures/gui/digester_gui.png");
-	private final ProgressBar progressBar = new ProgressBar(39, 17, 5, 60 - 17, 0xFF2E58D3);
+	private final ProgressBar fuelBar = new ProgressBar(39, 17, 5, 60 - 17, 0xFF2E58D3);
+	private final ProgressBar fluidOutputBar = new ProgressBar(129, 17, 5, 60 - 17, 0xFF60963A);
 
 	public DigesterContainerScreen(DigesterContainer container, PlayerInventory inv, ITextComponent titleIn) {
 		super(container, inv, titleIn);
@@ -53,8 +54,11 @@ public class DigesterContainerScreen extends ContainerScreen<DigesterContainer> 
 		int edgeSpacingY = (height - ySize) / 2;
 		blit(matrixStack, edgeSpacingX, edgeSpacingY, 0, 0, xSize, ySize);
 
-		progressBar.setProgress(container.getFuelNormalized());
-		progressBar.draw(matrixStack, guiLeft, guiTop, mouseX, mouseY);
+		fuelBar.setProgress(container.getFuelNormalized());
+		fuelBar.draw(matrixStack, guiLeft, guiTop, mouseX, mouseY);
+
+		fluidOutputBar.setProgress(container.getFluidOutputNormalized());
+		fluidOutputBar.draw(matrixStack, guiLeft, guiTop, mouseX, mouseY);
 	}
 
 	@Override
@@ -64,10 +68,15 @@ public class DigesterContainerScreen extends ContainerScreen<DigesterContainer> 
 
 		List<ITextComponent> hoveringText = new ArrayList<>();
 
-		if (progressBar.isMouseInside(guiLeft, guiTop, mouseX, mouseY)) {
+		if (fuelBar.isMouseInside(guiLeft, guiTop, mouseX, mouseY)) {
 			int fuel = container.getFuel();
 			DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
 			hoveringText.add(new TranslationTextComponent(container.getFuelTranslationKey()).appendString(": " + df.format(fuel)));
+		}
+		else if (fluidOutputBar.isMouseInside(guiLeft, guiTop, mouseX, mouseY)) {
+			int fluid = container.getFluidOutput();
+			DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
+			hoveringText.add(new TranslationTextComponent(container.getFluidOutputTranslationKey()).appendString(": " + df.format(fluid)));
 		}
 
 		if (!hoveringText.isEmpty()) {

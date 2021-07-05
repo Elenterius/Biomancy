@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.capabilities;
+package com.github.elenterius.biomancy.handler.item;
 
 import com.github.elenterius.biomancy.block.FleshChestBlock;
 import com.github.elenterius.biomancy.block.GulgeBlock;

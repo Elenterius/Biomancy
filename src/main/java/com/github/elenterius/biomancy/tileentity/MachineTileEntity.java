@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.tileentity;
 import com.github.elenterius.biomancy.block.MachineBlock;
 import com.github.elenterius.biomancy.recipe.AbstractBioMechanicalRecipe;
 import com.github.elenterius.biomancy.recipe.BioMechanicalRecipeType;
+import com.github.elenterius.biomancy.recipe.IFluidRecipe;
 import com.github.elenterius.biomancy.tileentity.state.CraftingState;
 import com.github.elenterius.biomancy.tileentity.state.RecipeCraftingStateData;
 import net.minecraft.block.BlockState;
@@ -16,6 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
@@ -49,6 +51,8 @@ public abstract class MachineTileEntity<R extends AbstractBioMechanicalRecipe, S
 	public abstract void setStackInFuelSlot(ItemStack stack);
 
 	protected abstract boolean doesItemFitIntoOutputInventory(ItemStack stackToCraft);
+
+	protected boolean doesFluidFitIntoOutputTank(FluidStack stackToCraft) { return false; }
 
 	protected abstract boolean craftRecipe(R recipeToCraft, World world);
 
@@ -116,30 +120,61 @@ public abstract class MachineTileEntity<R extends AbstractBioMechanicalRecipe, S
 			state.cancelCrafting();
 		}
 		else {
-			ItemStack itemToCraft = craftingGoal.getRecipeOutput(); // this should be a ItemStack.copy()
-			if (itemToCraft.isEmpty()) {
-				state.cancelCrafting();
-			}
-			else {
-				if (doesItemFitIntoOutputInventory(itemToCraft)) {
-					if (state.getCraftingState() == CraftingState.NONE) { // nothing is being crafted, try to start crafting
-						int totalFuelCost = craftingGoal.getCraftingTime() * getFuelCost();
-						if (getFuelAmount() >= totalFuelCost) { //make sure there is enough fuel to craft the recipe
-							state.setCraftingState(CraftingState.IN_PROGRESS);
-							state.clear(); //safe guard, shouldn't be needed
-							state.setCraftingGoalRecipe(craftingGoal); // this also sets the time required for crafting
+			if (craftingGoal instanceof IFluidRecipe) {
+				FluidStack fluidToCraft = ((IFluidRecipe) craftingGoal).getFluidOutput();
+				if (fluidToCraft.isEmpty()) {
+					state.cancelCrafting();
+				}
+				else {
+					if (doesFluidFitIntoOutputTank(fluidToCraft)) {
+						if (state.getCraftingState() == CraftingState.NONE) { // nothing is being crafted, try to start crafting
+							int totalFuelCost = craftingGoal.getCraftingTime() * getFuelCost();
+							if (getFuelAmount() >= totalFuelCost) { //make sure there is enough fuel to craft the recipe
+								state.setCraftingState(CraftingState.IN_PROGRESS);
+								state.clear(); //safe guard, shouldn't be needed
+								state.setCraftingGoalRecipe(craftingGoal); // this also sets the time required for crafting
+							}
+						}
+						else if (!state.isCraftingCanceled()) { // something is being crafted, check that the crafting goals match
+							R prevCraftingGoal = state.getCraftingGoalRecipe(world).orElse(null);
+							if (prevCraftingGoal == null || !craftingGoal.areRecipesEqual(prevCraftingGoal, true)) {
+								state.cancelCrafting();
+							}
 						}
 					}
-					else if (!state.isCraftingCanceled()) { // something is being crafted, check that the crafting goals match
-						R prevCraftingGoal = state.getCraftingGoalRecipe(world).orElse(null);
-						if (prevCraftingGoal == null || !craftingGoal.areRecipesEqual(prevCraftingGoal, true)) {
+					else {
+						if (state.getCraftingState() != CraftingState.COMPLETED) {
 							state.cancelCrafting();
 						}
 					}
 				}
+			}
+			else {
+				ItemStack itemToCraft = craftingGoal.getRecipeOutput();
+				if (itemToCraft.isEmpty()) {
+					state.cancelCrafting();
+				}
 				else {
-					if (state.getCraftingState() != CraftingState.COMPLETED) {
-						state.cancelCrafting();
+					if (doesItemFitIntoOutputInventory(itemToCraft)) {
+						if (state.getCraftingState() == CraftingState.NONE) { // nothing is being crafted, try to start crafting
+							int totalFuelCost = craftingGoal.getCraftingTime() * getFuelCost();
+							if (getFuelAmount() >= totalFuelCost) { //make sure there is enough fuel to craft the recipe
+								state.setCraftingState(CraftingState.IN_PROGRESS);
+								state.clear(); //safe guard, shouldn't be needed
+								state.setCraftingGoalRecipe(craftingGoal); // this also sets the time required for crafting
+							}
+						}
+						else if (!state.isCraftingCanceled()) { // something is being crafted, check that the crafting goals match
+							R prevCraftingGoal = state.getCraftingGoalRecipe(world).orElse(null);
+							if (prevCraftingGoal == null || !craftingGoal.areRecipesEqual(prevCraftingGoal, true)) {
+								state.cancelCrafting();
+							}
+						}
+					}
+					else {
+						if (state.getCraftingState() != CraftingState.COMPLETED) {
+							state.cancelCrafting();
+						}
 					}
 				}
 			}

@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.inventory;
 
-import com.github.elenterius.biomancy.capabilities.LargeSingleItemStackHandler;
+import com.github.elenterius.biomancy.handler.item.LargeSingleItemStackHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;

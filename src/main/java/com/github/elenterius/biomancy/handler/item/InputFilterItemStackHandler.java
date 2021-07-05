@@ -1,32 +1,39 @@
-package com.github.elenterius.biomancy.capabilities;
+package com.github.elenterius.biomancy.handler.item;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
+import java.util.function.Predicate;
 
 /**
- * Delegator that prevents item insertion. <br>
- * Used to expose inventory capabilities that only allow item extraction (output slots).
+ * Delegator that only allows item insertion of valid items. <br>
+ * Used to expose inventory capabilities that only allow item insertion of specific items.
  */
-public class NoInsertItemStackHandler implements IItemHandler {
+public class InputFilterItemStackHandler implements IItemHandler {
 
 	private final ItemStackHandler itemStackHandler;
+	private final Predicate<ItemStack> validItems;
 
-	public NoInsertItemStackHandler(ItemStackHandler itemStackHandler) {
+	public InputFilterItemStackHandler(ItemStackHandler itemStackHandler, Predicate<ItemStack> validItems) {
 		this.itemStackHandler = itemStackHandler;
+		this.validItems = validItems;
 	}
 
 	@Override
 	public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-		return false;
+		return validItems.test(stack);
 	}
 
 	@Override
 	@Nonnull
 	public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-		return stack;
+		if (!validItems.test(stack)) {
+			return stack;
+		}
+
+		return itemStackHandler.insertItem(slot, stack, simulate);
 	}
 
 	@Override

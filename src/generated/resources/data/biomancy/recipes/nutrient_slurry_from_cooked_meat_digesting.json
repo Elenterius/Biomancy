@@ -1,17 +1,17 @@
 {
   "type": "biomancy:digesting",
   "ingredient": {
-    "tag": "biomancy:raw_meats"
+    "tag": "biomancy:cooked_meats"
   },
   "result": {
-    "item": "biomancy:nutrient_paste",
-    "count": 2
+    "fluid": "biomancy:nutrient_slurry",
+    "amount": 600
   },
-  "time": 351,
+  "time": 490,
   "byproduct": {
     "result": {
       "item": "biomancy:digestate"
     },
-    "chance": 0.3
+    "chance": 0.5
   }
 }

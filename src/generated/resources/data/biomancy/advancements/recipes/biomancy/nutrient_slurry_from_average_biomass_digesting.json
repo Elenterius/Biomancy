@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:nutrient_paste_from_average_biomass_digesting"
+      "biomancy:nutrient_slurry_from_average_biomass_digesting"
     ]
   },
   "criteria": {
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:nutrient_paste_from_average_biomass_digesting"
+        "recipe": "biomancy:nutrient_slurry_from_average_biomass_digesting"
       }
     }
   },

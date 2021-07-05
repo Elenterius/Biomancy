@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.handler;
+package com.github.elenterius.biomancy.handler.event;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.entity.ai.goal.DreadPanicGoal;

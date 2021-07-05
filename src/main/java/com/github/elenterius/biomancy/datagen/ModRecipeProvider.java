@@ -7,6 +7,7 @@ import com.github.elenterius.biomancy.item.ReagentItem;
 import com.github.elenterius.biomancy.recipe.ItemStackIngredient;
 import com.github.elenterius.biomancy.tileentity.ChewerTileEntity;
 import com.github.elenterius.biomancy.tileentity.EvolutionPoolTileEntity;
+import com.github.elenterius.biomancy.util.BiofuelUtil;
 import net.minecraft.advancements.criterion.EnchantmentPredicate;
 import net.minecraft.advancements.criterion.InventoryChangeTrigger;
 import net.minecraft.advancements.criterion.ItemPredicate;
@@ -491,38 +492,39 @@ public class ModRecipeProvider extends RecipeProvider {
 	}
 
 	private void registerDigesterRecipes(Consumer<IFinishedRecipe> consumer) {
+		final int defaultFuelAmount = BiofuelUtil.DEFAULT_FUEL_VALUE * BiofuelUtil.NUTRIENT_PASTE_MULTIPLIER;
 
-		DigesterRecipeBuilder.createRecipe(ModItems.NUTRIENT_PASTE.get(), 100, 2)
+		DigesterRecipeBuilder.createRecipe(ModFluids.NUTRIENT_SLURRY.get(), 100, 2 * defaultFuelAmount)
 				.setIngredient(ModItems.BOLUS.get())
 				.setByproduct(ModItems.DIGESTATE.get(), 0.85f)
 				.addCriterion("has_crushed_biomass", hasItem(ModItems.BOLUS.get())).build(consumer, "from_bolus", true);
 
-		DigesterRecipeBuilder.createRecipe(ModItems.NUTRIENT_PASTE.get(), 189)
+		DigesterRecipeBuilder.createRecipe(ModFluids.NUTRIENT_SLURRY.get(), 189, defaultFuelAmount)
 				.setIngredient(ModTags.Items.POOR_BIOMASS)
 				.setByproduct(ModItems.DIGESTATE.get(), 0.15f)
 				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_poor_biomass", true);
 
-		DigesterRecipeBuilder.createRecipe(ModItems.NUTRIENT_PASTE.get(), 351, 2)
+		DigesterRecipeBuilder.createRecipe(ModFluids.NUTRIENT_SLURRY.get(), 351, 2 * defaultFuelAmount)
 				.setIngredient(ModTags.Items.AVERAGE_BIOMASS)
 				.setByproduct(ModItems.DIGESTATE.get(), 0.3f)
 				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_average_biomass", true);
 
-		DigesterRecipeBuilder.createRecipe(ModItems.NUTRIENT_PASTE.get(), 351, 2)
+		DigesterRecipeBuilder.createRecipe(ModFluids.NUTRIENT_SLURRY.get(), 351, 2 * defaultFuelAmount)
 				.setIngredient(ModTags.Items.RAW_MEATS)
 				.setByproduct(ModItems.DIGESTATE.get(), 0.3f)
 				.addCriterion("has_raw_meat", hasItem(ModTags.Items.RAW_MEATS)).build(consumer, "from_raw_meat", true);
 
-		DigesterRecipeBuilder.createRecipe(ModItems.NUTRIENT_PASTE.get(), 490, 3)
+		DigesterRecipeBuilder.createRecipe(ModFluids.NUTRIENT_SLURRY.get(), 490, 3 * defaultFuelAmount)
 				.setIngredient(ModTags.Items.GOOD_BIOMASS)
 				.setByproduct(ModItems.DIGESTATE.get(), 0.5f)
 				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_good_biomass", true);
 
-		DigesterRecipeBuilder.createRecipe(ModItems.NUTRIENT_PASTE.get(), 490, 3)
+		DigesterRecipeBuilder.createRecipe(ModFluids.NUTRIENT_SLURRY.get(), 490, 3 * defaultFuelAmount)
 				.setIngredient(ModTags.Items.COOKED_MEATS)
 				.setByproduct(ModItems.DIGESTATE.get(), 0.5f)
 				.addCriterion("has_cooked_meat", hasItem(ModTags.Items.COOKED_MEATS)).build(consumer, "from_cooked_meat", true);
 
-		DigesterRecipeBuilder.createRecipe(ModItems.NUTRIENT_PASTE.get(), 540, 4)
+		DigesterRecipeBuilder.createRecipe(ModFluids.NUTRIENT_SLURRY.get(), 540, 4 * defaultFuelAmount)
 				.setIngredient(ModTags.Items.SUPERB_BIOMASS)
 				.setByproduct(ModItems.DIGESTATE.get(), 0.6f)
 				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_superb_biomass", true);

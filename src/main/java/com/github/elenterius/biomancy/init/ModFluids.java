@@ -21,7 +21,7 @@ public final class ModFluids {
 
 	private static ForgeFlowingFluid.Properties createNutrientSlurryProp() {
 		return new ForgeFlowingFluid.Properties(NUTRIENT_SLURRY, NUTRIENT_SLURRY_FLOWING,
-				createFluidAttribute("nutrient_slurry").color(0x63b521FF).viscosity(1024).density(1024))
+				createFluidAttribute("nutrient_slurry")/*.color(0xFF60963A)*/.viscosity(1024).density(1024))
 				.bucket(ModItems.NUTRIENT_SLURRY_BUCKET)
 				.block(ModBlocks.NUTRIENT_SLURRY_FLUID);
 	}

@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.inventory;
 
-import com.github.elenterius.biomancy.capabilities.NoInsertItemStackHandler;
-import com.github.elenterius.biomancy.capabilities.NonNestingItemStackHandler;
+import com.github.elenterius.biomancy.handler.item.NoInsertItemStackHandler;
+import com.github.elenterius.biomancy.handler.item.NonNestingItemStackHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;

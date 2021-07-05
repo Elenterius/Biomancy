@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:nutrient_paste_from_bolus_digesting"
+      "biomancy:nutrient_slurry_from_good_biomass_digesting"
     ]
   },
   "criteria": {
-    "has_crushed_biomass": {
+    "has_biomass": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "biomancy:bolus"
+            "tag": "biomancy:biomass"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:nutrient_paste_from_bolus_digesting"
+        "recipe": "biomancy:nutrient_slurry_from_good_biomass_digesting"
       }
     }
   },
   "requirements": [
     [
-      "has_crushed_biomass",
+      "has_biomass",
       "has_the_recipe"
     ]
   ]

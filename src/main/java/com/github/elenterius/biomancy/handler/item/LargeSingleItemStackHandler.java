@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.capabilities;
+package com.github.elenterius.biomancy.handler.item;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;

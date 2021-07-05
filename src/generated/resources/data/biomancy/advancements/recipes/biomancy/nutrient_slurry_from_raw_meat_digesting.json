@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:nutrient_paste_from_cooked_meat_digesting"
+      "biomancy:nutrient_slurry_from_raw_meat_digesting"
     ]
   },
   "criteria": {
-    "has_cooked_meat": {
+    "has_raw_meat": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "biomancy:cooked_meats"
+            "tag": "biomancy:raw_meats"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:nutrient_paste_from_cooked_meat_digesting"
+        "recipe": "biomancy:nutrient_slurry_from_raw_meat_digesting"
       }
     }
   },
   "requirements": [
     [
-      "has_cooked_meat",
+      "has_raw_meat",
       "has_the_recipe"
     ]
   ]

@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.inventory;
 
-import com.github.elenterius.biomancy.capabilities.InputFilterItemStackHandler;
+import com.github.elenterius.biomancy.handler.item.InputFilterItemStackHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.LazyOptional;
