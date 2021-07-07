@@ -436,7 +436,7 @@ public class ModRecipeProvider extends RecipeProvider {
 		ChewerRecipeBuilder.createRecipe(Items.COBBLESTONE, defaultChewingTime)
 				.setIngredient(Items.STONE)
 				.addCriterion("has_stone", hasItem(Items.STONE)).build(consumer, "from_stone", true);
-		
+
 		ChewerRecipeBuilder.createRecipe(Items.GRAVEL, defaultChewingTime * 2)
 				.setIngredient(Items.COBBLESTONE)
 				.addCriterion("has_cobble", hasItem(Items.COBBLESTONE)).build(consumer, "from_cobblestone", true);
@@ -457,18 +457,18 @@ public class ModRecipeProvider extends RecipeProvider {
 				.setIngredient(ModItems.FLESH_BLOCK.get())
 				.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK.get()))
 				.build(consumer, "from_flesh_block", true);
-		
+
 		ChewerRecipeBuilder.createRecipe(ModItems.FLESH_LUMP.get(), defaultChewingTime, 4)
-		.setIngredient(ModItems.FLESH_BLOCK_SLAB.get())
-		.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK_SLAB.get()))
-		.build(consumer, "from_flesh_block_slab", true);
-		
-		
+				.setIngredient(ModItems.FLESH_BLOCK_SLAB.get())
+				.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK_SLAB.get()))
+				.build(consumer, "from_flesh_block_slab", true);
+
+
 		ChewerRecipeBuilder.createRecipe(ModItems.FLESH_LUMP.get(), defaultChewingTime, 13)
-		.setIngredient(ModItems.FLESH_BLOCK_STAIRS.get())
-		.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK_STAIRS.get()))
-		.build(consumer, "from_flesh_block_stairs", true);
-		
+				.setIngredient(ModItems.FLESH_BLOCK_STAIRS.get())
+				.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK_STAIRS.get()))
+				.build(consumer, "from_flesh_block_stairs", true);
+
 		// silicates ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		ChewerRecipeBuilder.createRecipe(ModItems.SILICATE_PASTE.get(), defaultChewingTime * 4, 2)
 				.setIngredient(Items.SAND)
@@ -506,6 +506,14 @@ public class ModRecipeProvider extends RecipeProvider {
 
 	private void registerDigesterRecipes(Consumer<IFinishedRecipe> consumer) {
 		final int defaultFuelAmount = BiofuelUtil.DEFAULT_FUEL_VALUE * BiofuelUtil.NUTRIENT_PASTE_MULTIPLIER;
+
+		DigesterRecipeBuilder.createRecipe(ModFluids.NUTRIENT_SLURRY.get(), 100, defaultFuelAmount)
+				.setIngredient(ModItems.NUTRIENT_PASTE.get())
+				.addCriterion("has_nutrient_paste", hasItem(ModItems.NUTRIENT_PASTE.get())).build(consumer, "from_nutrient_paste", true);
+
+		DigesterRecipeBuilder.createRecipe(ModFluids.NUTRIENT_SLURRY.get(), 600, BiofuelUtil.DEFAULT_FUEL_VALUE * BiofuelUtil.NUTRIENT_BAR_MULTIPLIER)
+				.setIngredient(ModItems.NUTRIENT_BAR.get())
+				.addCriterion("has_nutrient_bar", hasItem(ModItems.NUTRIENT_BAR.get())).build(consumer, "from_nutrient_bar", true);
 
 		DigesterRecipeBuilder.createRecipe(ModFluids.NUTRIENT_SLURRY.get(), 100, 2 * defaultFuelAmount)
 				.setIngredient(ModItems.BOLUS.get())
@@ -610,8 +618,8 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addCriterion("has_zombie_head", hasItem(Items.ZOMBIE_HEAD)).build(consumer);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime)
-		.setIngredient(ModTags.Items.COOKED_MEATS)
-		.addCriterion("has_cooked_meat", hasItem(ModTags.Items.COOKED_MEATS)).build(consumer, "from_cooked_meat", true);
+				.setIngredient(ModTags.Items.COOKED_MEATS)
+				.addCriterion("has_cooked_meat", hasItem(ModTags.Items.COOKED_MEATS)).build(consumer, "from_cooked_meat", true);
 
 	}
 

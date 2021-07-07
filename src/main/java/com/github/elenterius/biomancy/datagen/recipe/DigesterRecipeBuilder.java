@@ -25,10 +25,10 @@ public class DigesterRecipeBuilder {
 
 	private final Fluid result;
 	private final int amount;
-	private Ingredient ingredient = null;
-	private Byproduct byproduct = null;
 	private final int craftingTime;
 	private final Advancement.Builder advancementBuilder = Advancement.Builder.builder();
+	private Ingredient ingredient = null;
+	private Byproduct byproduct = null;
 	private String group;
 
 	private DigesterRecipeBuilder(Fluid resultIn, int craftingTimeIn, int amountIn) {
@@ -143,7 +143,7 @@ public class DigesterRecipeBuilder {
 		private final Advancement.Builder advancementBuilder;
 		private final ResourceLocation advancementId;
 
-		public Result(ResourceLocation idIn, Fluid resultIn, int craftingTimeIn, int amountIn, Byproduct byproductIn, String groupIn, Ingredient ingredientIn, Advancement.Builder advancementBuilderIn, ResourceLocation advancementIdIn) {
+		public Result(ResourceLocation idIn, Fluid resultIn, int craftingTimeIn, int amountIn, @Nullable Byproduct byproductIn, String groupIn, Ingredient ingredientIn, Advancement.Builder advancementBuilderIn, ResourceLocation advancementIdIn) {
 			id = idIn;
 			group = groupIn;
 			ingredient = ingredientIn;
@@ -173,7 +173,7 @@ public class DigesterRecipeBuilder {
 
 			json.addProperty("time", craftingTime);
 
-			json.add("byproduct", byproduct.serialize());
+			if (byproduct != null) json.add("byproduct", byproduct.serialize());
 		}
 
 		public IRecipeSerializer<?> getSerializer() {

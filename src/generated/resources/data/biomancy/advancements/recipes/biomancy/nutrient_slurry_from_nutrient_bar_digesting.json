@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:rejuvenating_mucus_from_cooked_meat_decomposing"
+      "biomancy:nutrient_slurry_from_nutrient_bar_digesting"
     ]
   },
   "criteria": {
-    "has_cooked_meat": {
+    "has_nutrient_bar": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "biomancy:cooked_meats"
+            "item": "biomancy:nutrient_bar"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:rejuvenating_mucus_from_cooked_meat_decomposing"
+        "recipe": "biomancy:nutrient_slurry_from_nutrient_bar_digesting"
       }
     }
   },
   "requirements": [
     [
-      "has_cooked_meat",
+      "has_nutrient_bar",
       "has_the_recipe"
     ]
   ]
