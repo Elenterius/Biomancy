@@ -1,19 +1,11 @@
 {
   "type": "biomancy:decomposing",
-  "ingredients": [
-    {
+  "input": {
+    "ingredient": {
       "tag": "forge:feathers"
     },
-    {
-      "tag": "forge:feathers"
-    },
-    {
-      "tag": "forge:feathers"
-    },
-    {
-      "tag": "forge:feathers"
-    }
-  ],
+    "count": 4
+  },
   "byproducts": [],
   "result": {
     "item": "biomancy:keratin_filaments"

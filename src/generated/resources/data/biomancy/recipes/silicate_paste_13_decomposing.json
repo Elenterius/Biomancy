@@ -1,10 +1,11 @@
 {
   "type": "biomancy:decomposing",
-  "ingredients": [
-    {
+  "input": {
+    "ingredient": {
       "item": "minecraft:dried_kelp_block"
-    }
-  ],
+    },
+    "count": 1
+  },
   "byproducts": [
     {
       "result": {

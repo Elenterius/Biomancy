@@ -1,10 +1,11 @@
 {
   "type": "biomancy:decomposing",
-  "ingredients": [
-    {
+  "input": {
+    "ingredient": {
       "item": "minecraft:ghast_tear"
-    }
-  ],
+    },
+    "count": 1
+  },
   "byproducts": [],
   "result": {
     "item": "biomancy:hormone_bile",

@@ -1,25 +1,11 @@
 {
   "type": "biomancy:decomposing",
-  "ingredients": [
-    {
+  "input": {
+    "ingredient": {
       "tag": "forge:eggs"
     },
-    {
-      "tag": "forge:eggs"
-    },
-    {
-      "tag": "forge:eggs"
-    },
-    {
-      "tag": "forge:eggs"
-    },
-    {
-      "tag": "forge:eggs"
-    },
-    {
-      "tag": "forge:eggs"
-    }
-  ],
+    "count": 6
+  },
   "byproducts": [
     {
       "result": {

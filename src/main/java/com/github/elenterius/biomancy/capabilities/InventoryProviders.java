@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.capabilities;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.handler.item.SpecialSingleItemStackHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;

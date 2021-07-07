@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.item;
 
 import com.github.elenterius.biomancy.capabilities.InventoryProviders;
-import com.github.elenterius.biomancy.capabilities.SpecialSingleItemStackHandler;
+import com.github.elenterius.biomancy.handler.item.SpecialSingleItemStackHandler;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.client.util.ITooltipFlag;

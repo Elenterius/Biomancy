@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.inventory;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.capabilities.NonNestingItemStackHandler;
+import com.github.elenterius.biomancy.handler.item.NonNestingItemStackHandler;
 import com.github.elenterius.biomancy.init.ModContainerTypes;
 import com.github.elenterius.biomancy.tileentity.FleshbornChestTileEntity;
 import net.minecraft.entity.player.PlayerEntity;

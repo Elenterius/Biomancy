@@ -1,14 +1,22 @@
 {
   "type": "biomancy:decomposing",
-  "ingredients": [
-    {
+  "input": {
+    "ingredient": {
       "type": "forge:nbt",
       "item": "minecraft:potion",
       "count": 1,
       "nbt": "{Potion:\"minecraft:strong_regeneration\"}"
+    },
+    "count": 1
+  },
+  "byproducts": [
+    {
+      "result": {
+        "item": "minecraft:glass_bottle"
+      },
+      "chance": 1.0
     }
   ],
-  "byproducts": [],
   "result": {
     "item": "biomancy:rejuvenating_mucus",
     "count": 5

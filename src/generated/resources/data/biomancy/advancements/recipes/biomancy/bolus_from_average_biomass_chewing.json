@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "has_biomass": {
+    "has_average_biomass": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "biomancy:biomass"
+            "tag": "biomancy:average_biomass"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_biomass",
+      "has_average_biomass",
       "has_the_recipe"
     ]
   ]

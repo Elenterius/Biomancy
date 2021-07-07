@@ -29,6 +29,7 @@
   "item.biomancy.sewing_kit": "Bone Needle & String",
   "item.biomancy.sewing_kit_empty": "Bone Needle",
   "item.biomancy.glass_vial": "Glass Vial",
+  "item.biomancy.nutrient_slurry_bucket": "Nutrient Slurry Bucket",
 
   "item.biomancy.mutagenic_bile": "Mutagenic Bile",
   "item.biomancy.rejuvenating_mucus": "Rejuvenating Mucus",
@@ -52,10 +53,6 @@
   "item.biomancy.oculus": "Oculus",
   "item.biomancy.stomach": "Stomach",
 
-  "item.biomancy.vile_melon_seeds": "Vile-Melon Seeds",
-  "item.biomancy.vile_melon_slice": "Vile-Melon Slice",
-  "item.biomancy.cooked_vile_melon_slice": "Cooked Vile-Melon Slice",
-
   "item.biomancy.flesh_blob_spawn_egg": "Flesh Blob Spawn Egg",
   "item.biomancy.fleshkin_spawn_egg": "Fleshkin Spawn Egg",
   "item.biomancy.boomling_spawn_egg": "Boomling Spawn Egg",
@@ -66,9 +63,10 @@
   "item.biomancy.beetling_spawn_egg": "Beetling Spawn Egg",
   "item.biomancy.brood_mother_spawn_egg": "Brood Mother Spawn Egg",
 
+  "fluid.minecraft.water": "Water",
+  "fluid.biomancy.nutrient_slurry": "Nutrient Slurry",
+
   "block.biomancy.meat_berry_bush": "Meat-Berry Bush",
-  "block.biomancy.vile_melon_block": "Vile Melon Block",
-  "block.biomancy.vile_melon_crop": "Vile Melon",
   "block.biomancy.flesh_tentacle": "Flesh Tentacle",
 
   "block.biomancy.flesh_block": "Flesh Block",
@@ -236,7 +234,6 @@
   "jei.biomancy.recipe.decomposer": "Decomposer Recipes",
   "jei.biomancy.recipe.evolution_pool": "Evolution Pool Recipes",
 
-  "fluid.minecraft.water": "Water",
   "keyboard.ctrl": "ctrl",
   "keyboard.alt": "alt"
 }
