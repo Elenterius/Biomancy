@@ -96,7 +96,7 @@ public class ChewerContainer extends Container {
 		return MathHelper.clamp(stateData.timeElapsed / (float) stateData.timeForCompletion, 0f, 1f);
 	}
 
-	public int getFuel() {
+	public int getFuelAmount() {
 		return stateData.fuel;
 	}
 

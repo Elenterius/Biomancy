@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.PlayerInvWrapper;
 import org.apache.logging.log4j.MarkerManager;
@@ -97,7 +98,7 @@ public class DigesterContainer extends Container {
 		return MathHelper.clamp(stateData.timeElapsed / (float) stateData.timeForCompletion, 0f, 1f);
 	}
 
-	public int getFuel() {
+	public int getFuelAmount() {
 		return stateData.waterTank.getFluidAmount();
 	}
 
@@ -110,16 +111,8 @@ public class DigesterContainer extends Container {
 		return "fluid.minecraft.water";
 	}
 
-	public int getFluidOutput() {
-		return stateData.outputTank.getFluidAmount(); //TODO: sync tank contents to client
-	}
-
-	public float getFluidOutputNormalized() {
-		return MathHelper.clamp(stateData.outputTank.getFluidAmount() / (float) stateData.outputTank.getCapacity(), 0f, 1f);
-	}
-
-	public String getFluidOutputTranslationKey() {
-		return stateData.outputTank.getFluid().getTranslationKey();
+	public FluidTank getOutputTank() {
+		return stateData.outputTank;
 	}
 
 	/**

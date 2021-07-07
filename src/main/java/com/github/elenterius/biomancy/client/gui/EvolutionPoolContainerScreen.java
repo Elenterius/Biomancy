@@ -54,7 +54,7 @@ public class EvolutionPoolContainerScreen extends ContainerScreen<EvolutionPoolC
 		blit(matrixStack, edgeSpacingX, edgeSpacingY, 0, 0, xSize, ySize);
 
 		progressBar.setProgress(container.getFuelNormalized());
-		progressBar.draw(matrixStack, guiLeft, guiTop, mouseX, mouseY);
+		progressBar.draw(minecraft, matrixStack, guiLeft, guiTop, mouseX, mouseY);
 	}
 
 	@Override

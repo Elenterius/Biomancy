@@ -103,7 +103,7 @@ public class DecomposerContainer extends Container {
 		return MathHelper.clamp(decomposerState.timeElapsed / (float) decomposerState.timeForCompletion, 0f, 1f);
 	}
 
-	public int getFuel() {
+	public int getFuelAmount() {
 		return decomposerState.fuel;
 	}
 

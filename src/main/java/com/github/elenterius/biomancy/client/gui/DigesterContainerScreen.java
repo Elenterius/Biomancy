@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.client.gui.drawable.FluidTankBar;
 import com.github.elenterius.biomancy.client.gui.drawable.ProgressBar;
 import com.github.elenterius.biomancy.inventory.DigesterContainer;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
@@ -20,7 +21,7 @@ public class DigesterContainerScreen extends ContainerScreen<DigesterContainer> 
 
 	private static final ResourceLocation BACKGROUND_TEXTURE = BiomancyMod.createRL("textures/gui/digester_gui.png");
 	private final ProgressBar fuelBar = new ProgressBar(39, 17, 5, 60 - 17, 0xFF2E58D3);
-	private final ProgressBar fluidOutputBar = new ProgressBar(129, 17, 5, 60 - 17, 0xFF60963A);
+	private final FluidTankBar outputTankBar = new FluidTankBar(129, 17, 5, 60 - 17);
 
 	public DigesterContainerScreen(DigesterContainer container, PlayerInventory inv, ITextComponent titleIn) {
 		super(container, inv, titleIn);
@@ -47,7 +48,7 @@ public class DigesterContainerScreen extends ContainerScreen<DigesterContainer> 
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
-		RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.color4f(1f, 1f, 1f, 1f);
 		//noinspection ConstantConditions
 		minecraft.getTextureManager().bindTexture(BACKGROUND_TEXTURE);
 		int edgeSpacingX = (width - xSize) / 2;
@@ -55,10 +56,10 @@ public class DigesterContainerScreen extends ContainerScreen<DigesterContainer> 
 		blit(matrixStack, edgeSpacingX, edgeSpacingY, 0, 0, xSize, ySize);
 
 		fuelBar.setProgress(container.getFuelNormalized());
-		fuelBar.draw(matrixStack, guiLeft, guiTop, mouseX, mouseY);
+		fuelBar.draw(minecraft, matrixStack, guiLeft, guiTop, mouseX, mouseY);
 
-		fluidOutputBar.setProgress(container.getFluidOutputNormalized());
-		fluidOutputBar.draw(matrixStack, guiLeft, guiTop, mouseX, mouseY);
+		outputTankBar.update(container.getOutputTank());
+		outputTankBar.draw(minecraft, matrixStack, guiLeft, guiTop, mouseX, mouseY);
 	}
 
 	@Override
@@ -69,14 +70,24 @@ public class DigesterContainerScreen extends ContainerScreen<DigesterContainer> 
 		List<ITextComponent> hoveringText = new ArrayList<>();
 
 		if (fuelBar.isMouseInside(guiLeft, guiTop, mouseX, mouseY)) {
-			int fuel = container.getFuel();
-			DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
-			hoveringText.add(new TranslationTextComponent(container.getFuelTranslationKey()).appendString(": " + df.format(fuel)));
+			int amount = container.getFuelAmount();
+			if (amount > 0) {
+				DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
+				hoveringText.add(new TranslationTextComponent(container.getFuelTranslationKey()).appendString(": " + df.format(amount) + " mb"));
+			}
+			else {
+				hoveringText.add(ClientTextUtil.getTooltipText("empty"));
+			}
 		}
-		else if (fluidOutputBar.isMouseInside(guiLeft, guiTop, mouseX, mouseY)) {
-			int fluid = container.getFluidOutput();
-			DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
-			hoveringText.add(new TranslationTextComponent(container.getFluidOutputTranslationKey()).appendString(": " + df.format(fluid)));
+		else if (outputTankBar.isMouseInside(guiLeft, guiTop, mouseX, mouseY)) {
+			int amount = container.getOutputTank().getFluidAmount();
+			if (amount > 0) {
+				DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
+				hoveringText.add(new TranslationTextComponent(container.getOutputTank().getFluid().getTranslationKey()).appendString(": " + df.format(amount) + " mb"));
+			}
+			else {
+				hoveringText.add(ClientTextUtil.getTooltipText("empty"));
+			}
 		}
 
 		if (!hoveringText.isEmpty()) {

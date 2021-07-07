@@ -2,19 +2,27 @@ package com.github.elenterius.biomancy.tileentity.state;
 
 import com.github.elenterius.biomancy.recipe.DigesterRecipe;
 import com.github.elenterius.biomancy.tileentity.DigesterTileEntity;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.ForgeRegistry;
 
 public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> {
 
 	public static final String NBT_KEY_FUEL = "Fuel";
 	public static final int FUEL_INDEX = 2;
+
 	public static final String NBT_KEY_OUTPUT = "FluidOutput";
-	public static final int FLUID_OUTPUT_INDEX = 3;
+	//for the IIntArray sync to client to properly work the index for fluid id has to be smaller than fluid amount index
+	// --> the fluid has to be set before the amount
+	//TODO: reevaluate this and consider if we instead send a dedicated network package to client containing the fluid registry key
+	public static final int FLUID_AMOUNT_INDEX = 4;
+	public static final int FLUID_ID_INDEX = 3;
 
 	public FluidTank waterTank = new FluidTank(DigesterTileEntity.MAX_FUEL, fluidStack -> fluidStack.getFluid() == Fluids.WATER);
 	private final LazyOptional<IFluidHandler> optionalWaterFluidHandler = LazyOptional.of(() -> waterTank);
@@ -55,7 +63,11 @@ public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> {
 		if (index == TIME_INDEX) return timeElapsed;
 		else if (index == TIME_FOR_COMPLETION_INDEX) return timeForCompletion;
 		else if (index == FUEL_INDEX) return waterTank.getFluidAmount();
-		else if (index == FLUID_OUTPUT_INDEX) return outputTank.getFluidAmount();
+		else if (index == FLUID_AMOUNT_INDEX) return outputTank.getFluidAmount();
+		else if (index == FLUID_ID_INDEX) {
+			ForgeRegistry<Fluid> reg = (ForgeRegistry<Fluid>) ForgeRegistries.FLUIDS;
+			return reg.getID(outputTank.getFluid().getFluid());
+		}
 		return 0;
 	}
 
@@ -72,8 +84,13 @@ public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> {
 				waterTank.getFluid().setAmount(value);
 			}
 		}
-		else if (index == FLUID_OUTPUT_INDEX) {
-			if (!outputTank.isEmpty()) {
+		else if (index == FLUID_ID_INDEX) { //index order matters, fluid id has to be set first, before the fluid amount
+			ForgeRegistry<Fluid> reg = (ForgeRegistry<Fluid>) ForgeRegistries.FLUIDS;
+			Fluid fluid = reg.getValue(value);
+			outputTank.setFluid(new FluidStack(fluid, outputTank.getFluidAmount()));
+		}
+		else if (index == FLUID_AMOUNT_INDEX) {
+			if (outputTank.getFluid().getRawFluid() != Fluids.EMPTY) {
 				outputTank.getFluid().setAmount(value);
 			}
 		}
@@ -81,7 +98,7 @@ public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> {
 
 	@Override
 	public int size() {
-		return 4;
+		return 5;
 	}
 
 }

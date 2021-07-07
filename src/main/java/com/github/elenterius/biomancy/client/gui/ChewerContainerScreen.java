@@ -54,7 +54,7 @@ public class ChewerContainerScreen extends ContainerScreen<ChewerContainer> {
 		blit(matrixStack, edgeSpacingX, edgeSpacingY, 0, 0, xSize, ySize);
 
 		progressBar.setProgress(container.getFuelNormalized());
-		progressBar.draw(matrixStack, guiLeft, guiTop, mouseX, mouseY);
+		progressBar.draw(minecraft, matrixStack, guiLeft, guiTop, mouseX, mouseY);
 	}
 
 	@Override
@@ -65,9 +65,9 @@ public class ChewerContainerScreen extends ContainerScreen<ChewerContainer> {
 		List<ITextComponent> hoveringText = new ArrayList<>();
 
 		if (progressBar.isMouseInside(guiLeft, guiTop, mouseX, mouseY)) {
-			int fuel = container.getFuel();
+			int amount = container.getFuelAmount();
 			DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
-			hoveringText.add(new TranslationTextComponent(container.getFuelTranslationKey()).appendString(": " + df.format(fuel)));
+			hoveringText.add(new TranslationTextComponent(container.getFuelTranslationKey()).appendString(": " + df.format(amount) + " mb"));
 		}
 
 		if (!hoveringText.isEmpty()) {

@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.client.gui.drawable;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 
 public class ProgressBar extends Drawable {
@@ -26,7 +27,7 @@ public class ProgressBar extends Drawable {
 	}
 
 	@Override
-	public void draw(MatrixStack matrixStack, int guiLeft, int guiTop, int mouseX, int mouseY) {
+	public void draw(Minecraft mc, MatrixStack matrixStack, int guiLeft, int guiTop, int mouseX, int mouseY) {
 		int posX = guiLeft + x;
 		int posY = guiTop + y;
 		int maxPosY = posY + height;
