@@ -63,6 +63,26 @@ public class MeatsoupCauldronBlock extends Block {
 		}
 	}
 
+	public void NeighborNotifyEvent (World world,
+            BlockPos pos,
+            BlockState state) {
+		int level = state.get(LEVEL);
+		TryToUseHopper(world, pos, state, level);
+	}
+	
+	
+	public void TryToUseHopper(World worldIn, BlockPos pos, BlockState state, int level) {
+		if (level == MAX_LEVEL) {
+			Block neighbourBlock = worldIn.getBlockState(pos.down()).getBlock();
+			if (neighbourBlock == Blocks.HOPPER) {
+				ItemStack resultStack = new ItemStack(ModItems.NECROTIC_FLESH.get(),9);
+				spawnAsEntity(worldIn, pos.add(0.5d, 0.5d, 0.5d), resultStack);
+				worldIn.playSound(null, pos, SoundEvents.ENTITY_ITEM_FRAME_REMOVE_ITEM, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				worldIn.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
+			}
+		}
+	}
+	
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 		int level = state.get(LEVEL);
@@ -83,11 +103,14 @@ public class MeatsoupCauldronBlock extends Block {
 			}
 			else {
 				if (level < MAX_LEVEL) {
+					level = MAX_LEVEL;
 					worldIn.setBlockState(pos, state.with(LEVEL, MAX_LEVEL), Constants.BlockFlags.BLOCK_UPDATE);
 					worldIn.playSound(null, pos, SoundEvents.BLOCK_SLIME_BLOCK_PLACE, SoundCategory.BLOCKS, 1.0F, 0.5F);
+					
 				}
 			}
 		}
+		TryToUseHopper(worldIn, pos, state, level);
 	}
 
 	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
@@ -116,11 +139,13 @@ public class MeatsoupCauldronBlock extends Block {
 					}
 				}
 				else if (level >= MAX_LEVEL - 3 && level < MAX_LEVEL - 1) {
-					if (item instanceof PotionItem) {
+					if (item instanceof PotionItem || item == ModItems.REJUVENATING_MUCUS.get()) {
 						Potion potion = PotionUtils.getPotionFromItem(stack);
-						if (potion == Potions.HEALING || potion == Potions.REGENERATION) {
+						if (potion == Potions.HEALING || potion == Potions.REGENERATION || item == ModItems.REJUVENATING_MUCUS.get()) {
 							stack.grow(-1);
-							entityIn.entityDropItem(stack.hasContainerItem() ? stack.getContainerItem() : new ItemStack(Items.GLASS_BOTTLE));
+							if (item != ModItems.REJUVENATING_MUCUS.get()) {
+								entityIn.entityDropItem(stack.hasContainerItem() ? stack.getContainerItem() : new ItemStack(Items.GLASS_BOTTLE));
+							}
 							setSoupLevel(worldIn, pos, state, flagValue, level, 1);
 							worldIn.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1f, 1f);
 						}
@@ -130,6 +155,7 @@ public class MeatsoupCauldronBlock extends Block {
 							setSoupLevel(worldIn, pos, state, flagValue, level, 2);
 							worldIn.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1f, 1f);
 						}
+					
 					}
 				}
 			}
@@ -142,7 +168,7 @@ public class MeatsoupCauldronBlock extends Block {
 		if (level >= MAX_LEVEL) {
 			if (!worldIn.isRemote) {
 				worldIn.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
-				ItemStack resultStack = new ItemStack(ModItems.FLESH_BLOCK.get());
+				ItemStack resultStack = new ItemStack(ModItems.NECROTIC_FLESH.get(),9);
 				if (!player.addItemStackToInventory(resultStack)) {
 					spawnAsEntity(worldIn, pos.add(0d, 0.5d, 0d), resultStack);
 					worldIn.playSound(null, pos, SoundEvents.ENTITY_ITEM_FRAME_REMOVE_ITEM, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -198,13 +224,13 @@ public class MeatsoupCauldronBlock extends Block {
 				return ActionResultType.func_233537_a_(worldIn.isRemote);
 			}
 			else if (level >= MAX_LEVEL - 3 && level < MAX_LEVEL - 1) {
-				if (item instanceof PotionItem) {
+				if (item instanceof PotionItem || item == ModItems.REJUVENATING_MUCUS.get()) {
 					Potion potion = PotionUtils.getPotionFromItem(stack);
-					if (potion == Potions.HEALING || potion == Potions.REGENERATION) {
+					if (potion == Potions.HEALING || potion == Potions.REGENERATION|| item == ModItems.REJUVENATING_MUCUS.get()) {
 						if (!worldIn.isRemote) {
 							if (!player.abilities.isCreativeMode) {
 								stack.grow(-1);
-								if (stack.isEmpty()) {
+								if (stack.isEmpty() || item != ModItems.REJUVENATING_MUCUS.get()) {
 									player.setHeldItem(handIn, stack.hasContainerItem() ? stack.getContainerItem() : new ItemStack(Items.GLASS_BOTTLE));
 								}
 							}
