@@ -42,7 +42,7 @@ public class ChewerBlock extends MachineBlock<ChewerTileEntity> {
 		AxisAlignedBB aabb0 = VoxelShapeUtil.createUnitAABB(0, 0, 3, 16, 14, 16);
 		AxisAlignedBB aabb1 = VoxelShapeUtil.createUnitAABB(4, 14, 4, 12, 16, 12);
 		AxisAlignedBB aabb2 = VoxelShapeUtil.createUnitAABB(3, 1, 0, 13, 10, 3);
-		return Stream.of(VoxelShapeUtil.createWithFacing(direction, aabb0), VoxelShapeUtil.createWithFacing(direction, aabb1), VoxelShapeUtil.createWithFacing(direction, aabb2)).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).get();
+		return Stream.of(VoxelShapeUtil.rotateYTo(direction, aabb0), VoxelShapeUtil.rotateYTo(direction, aabb1), VoxelShapeUtil.rotateYTo(direction, aabb2)).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).get();
 	}
 
 	@Nullable
@@ -72,7 +72,7 @@ public class ChewerBlock extends MachineBlock<ChewerTileEntity> {
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction facing = state.get(FACING);
+		Direction facing = state.get(HORIZONTAL_FACING);
 		switch (facing) {
 			case NORTH:
 				return NORTH_SHAPE;

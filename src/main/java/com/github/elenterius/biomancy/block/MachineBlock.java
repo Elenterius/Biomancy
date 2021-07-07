@@ -25,15 +25,19 @@ import net.minecraftforge.fml.network.NetworkHooks;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public abstract class MachineBlock<T extends MachineTileEntity<?,?>> extends OwnableContainerBlock {
+public abstract class MachineBlock<T extends MachineTileEntity<?, ?>> extends OwnableContainerBlock {
 
 	public static final BooleanProperty CRAFTING = ModBlocks.CRAFTING_PROPERTY;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
-	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+	public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
+
+	protected MachineBlock(Properties builder, boolean noDefaultSate) {
+		super(builder);
+	}
 
 	protected MachineBlock(Properties builder) {
 		super(builder);
-		setDefaultState(stateContainer.getBaseState().with(POWERED, false).with(CRAFTING, false).with(FACING, Direction.NORTH));
+		setDefaultState(stateContainer.getBaseState().with(POWERED, false).with(CRAFTING, false).with(HORIZONTAL_FACING, Direction.NORTH));
 	}
 
 	@Nullable
@@ -42,12 +46,12 @@ public abstract class MachineBlock<T extends MachineTileEntity<?,?>> extends Own
 
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		builder.add(POWERED, CRAFTING, FACING);
+		builder.add(POWERED, CRAFTING, HORIZONTAL_FACING);
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
+		return getDefaultState().with(HORIZONTAL_FACING, context.getPlacementHorizontalFacing().getOpposite());
 	}
 
 	@Override
@@ -88,8 +92,8 @@ public abstract class MachineBlock<T extends MachineTileEntity<?,?>> extends Own
 				updateNeighbors(worldIn, pos);
 			}
 			TileEntity tileEntity = worldIn.getTileEntity(pos);
-			if (tileEntity instanceof MachineTileEntity<?,?>) {
-				((MachineTileEntity<?,?>) tileEntity).dropAllInvContents(worldIn, pos);
+			if (tileEntity instanceof MachineTileEntity<?, ?>) {
+				((MachineTileEntity<?, ?>) tileEntity).dropAllInvContents(worldIn, pos);
 			}
 			if (state.get(CRAFTING)) {
 				worldIn.updateComparatorOutputLevel(pos, this);
@@ -136,11 +140,11 @@ public abstract class MachineBlock<T extends MachineTileEntity<?,?>> extends Own
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.with(FACING, rot.rotate(state.get(FACING)));
+		return state.with(HORIZONTAL_FACING, rot.rotate(state.get(HORIZONTAL_FACING)));
 	}
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirrorIn) {
-		return state.rotate(mirrorIn.toRotation(state.get(FACING)));
+		return state.rotate(mirrorIn.toRotation(state.get(HORIZONTAL_FACING)));
 	}
 }
