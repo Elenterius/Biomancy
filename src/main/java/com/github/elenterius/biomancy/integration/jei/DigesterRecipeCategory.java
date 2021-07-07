@@ -6,12 +6,14 @@ import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.recipe.Byproduct;
 import com.github.elenterius.biomancy.recipe.DigesterRecipe;
 import com.github.elenterius.biomancy.tileentity.DigesterTileEntity;
+import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
 import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IGuiFluidStackGroup;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
@@ -25,6 +27,8 @@ import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+
+import java.text.DecimalFormat;
 
 public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 
@@ -68,18 +72,29 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 	@Override
 	public void setIngredients(DigesterRecipe recipe, IIngredients ingredients) {
 		ingredients.setInputIngredients(recipe.getIngredients());
-		ItemStack stack = recipe.getByproduct() != null ? recipe.getByproduct().getItemStack() : ItemStack.EMPTY;
-		ingredients.setOutputs(VanillaTypes.ITEM, Lists.newArrayList(recipe.getRecipeOutput(), stack));
+		if (recipe.getByproduct() != null) {
+			ingredients.setOutputs(VanillaTypes.ITEM, Lists.newArrayList(recipe.getByproduct().getItemStack()));
+		}
+		ingredients.setOutputs(VanillaTypes.FLUID, Lists.newArrayList(recipe.getFluidOutput()));
 	}
 
 	@Override
 	public void setRecipe(IRecipeLayout layout, DigesterRecipe recipe, IIngredients ingredients) {
 		IGuiItemStackGroup guiISGroup = layout.getItemStacks();
-		guiISGroup.init(OUTPUT_SLOT, false, 58, 14);
-		guiISGroup.init(BYPRODUCT_SLOT, false, 82, 18);
 		guiISGroup.init(INPUT_SLOT, true, 0, 13);
-
+		guiISGroup.init(BYPRODUCT_SLOT, false, 82, 18);
 		guiISGroup.set(ingredients);
+
+		IGuiFluidStackGroup guiFSGroup = layout.getFluidStacks();
+		guiFSGroup.init(OUTPUT_SLOT, false, 59, 15);
+		guiFSGroup.set(ingredients);
+
+		guiFSGroup.addTooltipCallback((index, input, ingredient, tooltip) -> {
+			if (index == OUTPUT_SLOT) {
+				DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
+				tooltip.add(new StringTextComponent(df.format(ingredient.getAmount()) + " mb").mergeStyle(TextFormatting.GRAY));
+			}
+		});
 
 		guiISGroup.addTooltipCallback((index, input, stack, tooltip) -> {
 			if (index == BYPRODUCT_SLOT) {
