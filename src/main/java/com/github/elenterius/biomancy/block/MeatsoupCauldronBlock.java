@@ -76,6 +76,8 @@ public class MeatsoupCauldronBlock extends Block {
 		}
 	}
 	
+	
+	
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 		int level = state.get(LEVEL);
@@ -223,7 +225,7 @@ public class MeatsoupCauldronBlock extends Block {
 						if (!worldIn.isRemote) {
 							if (!player.abilities.isCreativeMode) {
 								stack.grow(-1);
-								if (stack.isEmpty() || item != ModItems.REJUVENATING_MUCUS.get()) {
+								if (stack.isEmpty() && item != ModItems.REJUVENATING_MUCUS.get()) {
 									player.setHeldItem(handIn, stack.hasContainerItem() ? stack.getContainerItem() : new ItemStack(Items.GLASS_BOTTLE));
 								}
 							}
