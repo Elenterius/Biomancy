@@ -70,6 +70,8 @@ public class ModRecipeProvider extends RecipeProvider {
 		registerChewerRecipes(consumer);
 		LOGGER.info(logMarker, "registering digester recipes...");
 		registerDigesterRecipes(consumer);
+		LOGGER.info(logMarker, "registering digester recipes...");
+		registerSolidifierRecipes(consumer);
 		LOGGER.info(logMarker, "registering decomposer recipes...");
 		registerDecomposerRecipes(consumer);
 
@@ -549,6 +551,13 @@ public class ModRecipeProvider extends RecipeProvider {
 				.setIngredient(ModTags.Items.SUPERB_BIOMASS)
 				.setByproduct(ModItems.DIGESTATE.get(), 0.6f)
 				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_superb_biomass", true);
+	}
+
+	private void registerSolidifierRecipes(Consumer<IFinishedRecipe> consumer) {
+		final int defaultFuelAmount = BiofuelUtil.DEFAULT_FUEL_VALUE * BiofuelUtil.NUTRIENT_PASTE_MULTIPLIER;
+		SolidifierRecipeBuilder.createRecipe(ModItems.NUTRIENT_PASTE.get(), 40, 1)
+				.setFluidIngredient(ModFluids.NUTRIENT_SLURRY.get(), defaultFuelAmount)
+				.addCriterion("has_nutrient_slurry", hasItem(ModItems.NUTRIENT_SLURRY_BUCKET.get())).build(consumer, "from_nutrient_slurry", true);
 	}
 
 	private void registerDecomposerRecipes(Consumer<IFinishedRecipe> consumer) {
