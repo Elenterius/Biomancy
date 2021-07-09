@@ -5,16 +5,15 @@ import com.github.elenterius.biomancy.init.ModTileEntityTypes;
 import com.github.elenterius.biomancy.inventory.DigesterContainer;
 import com.github.elenterius.biomancy.inventory.FuelInvContents;
 import com.github.elenterius.biomancy.inventory.SimpleInvContents;
-import com.github.elenterius.biomancy.recipe.BioMechanicalRecipeType;
 import com.github.elenterius.biomancy.recipe.Byproduct;
 import com.github.elenterius.biomancy.recipe.DigesterRecipe;
+import com.github.elenterius.biomancy.recipe.RecipeType;
 import com.github.elenterius.biomancy.tileentity.state.DigesterStateData;
 import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluids;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
@@ -52,7 +51,7 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 		if (stack.getItem() == Items.POTION && PotionUtils.getPotionFromItem(stack) == Potions.WATER) return true;
 		return FluidUtil.getFluidContained(stack).map(DigesterTileEntity::isFluidValidFuel).orElse(false);
 	};
-	public static final BioMechanicalRecipeType<DigesterRecipe> RECIPE_TYPE = ModRecipes.DIGESTER_RECIPE_TYPE;
+	public static final RecipeType.ItemStackRecipeType<DigesterRecipe> RECIPE_TYPE = ModRecipes.DIGESTER_RECIPE_TYPE;
 
 	private final DigesterStateData stateData = new DigesterStateData();
 	private final FuelInvContents fuelContents;
@@ -71,11 +70,6 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 	@Override
 	protected DigesterStateData getStateData() {
 		return stateData;
-	}
-
-	@Override
-	public BioMechanicalRecipeType<DigesterRecipe> getRecipeType() {
-		return RECIPE_TYPE;
 	}
 
 	@Override
@@ -206,9 +200,10 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 		}
 	}
 
+	@Nullable
 	@Override
-	protected IInventory getInputInventory() {
-		return inputContents;
+	protected DigesterRecipe resolveRecipeFromInput(World world) {
+		return RECIPE_TYPE.getRecipeFromInventory(world, inputContents).orElse(null);
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.client.gui.drawable;
 
-import com.github.elenterius.biomancy.util.FluidRenderUtil;
+import com.github.elenterius.biomancy.fluid.FluidRenderUtil;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;

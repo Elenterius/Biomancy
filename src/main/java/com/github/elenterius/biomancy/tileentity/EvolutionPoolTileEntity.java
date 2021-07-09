@@ -7,15 +7,14 @@ import com.github.elenterius.biomancy.init.ModTileEntityTypes;
 import com.github.elenterius.biomancy.inventory.EvolutionPoolContainer;
 import com.github.elenterius.biomancy.inventory.FuelInvContents;
 import com.github.elenterius.biomancy.inventory.SimpleInvContents;
-import com.github.elenterius.biomancy.recipe.BioMechanicalRecipeType;
 import com.github.elenterius.biomancy.recipe.EvolutionPoolRecipe;
+import com.github.elenterius.biomancy.recipe.RecipeType;
 import com.github.elenterius.biomancy.tileentity.state.CraftingState;
 import com.github.elenterius.biomancy.tileentity.state.EvolutionPoolStateData;
 import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
@@ -40,7 +39,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 
-public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolRecipe, EvolutionPoolStateData>{
+public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolRecipe, EvolutionPoolStateData> {
 
 	public static final int FUEL_SLOTS_COUNT = 1;
 	public static final int INPUT_SLOTS_COUNT = 6;
@@ -51,7 +50,7 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 	public static final short FUEL_COST = 2;
 	public static final float ITEM_FUEL_VALUE = 200; // FUEL_COST * DEFAULT_TIME / 4f
 	public static final Predicate<ItemStack> VALID_FUEL_ITEM = stack -> stack.getItem() == ModItems.MUTAGENIC_BILE.get();
-	public static final BioMechanicalRecipeType<EvolutionPoolRecipe> RECIPE_TYPE = ModRecipes.EVOLUTION_POOL_RECIPE_TYPE;
+	public static final RecipeType.ItemStackRecipeType<EvolutionPoolRecipe> RECIPE_TYPE = ModRecipes.EVOLUTION_POOL_RECIPE_TYPE;
 
 	private final EvolutionPoolStateData stateData = new EvolutionPoolStateData();
 	private final FuelInvContents fuelContents;
@@ -70,11 +69,6 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 	@Override
 	protected EvolutionPoolStateData getStateData() {
 		return stateData;
-	}
-
-	@Override
-	public BioMechanicalRecipeType<EvolutionPoolRecipe> getRecipeType() {
-		return RECIPE_TYPE;
 	}
 
 	@Override
@@ -141,9 +135,10 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 		return false;
 	}
 
+	@Nullable
 	@Override
-	protected IInventory getInputInventory() {
-		return inputContents;
+	protected EvolutionPoolRecipe resolveRecipeFromInput(World world) {
+		return RECIPE_TYPE.getRecipeFromInventory(world, inputContents).orElse(null);
 	}
 
 	@Override

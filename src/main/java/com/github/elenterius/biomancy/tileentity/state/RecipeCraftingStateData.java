@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.tileentity.state;
 
-import com.github.elenterius.biomancy.recipe.AbstractBioMechanicalRecipe;
+import com.github.elenterius.biomancy.recipe.AbstractProductionRecipe;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.RecipeManager;
 import net.minecraft.nbt.CompoundNBT;
@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 
 import java.util.Optional;
 
-public abstract class RecipeCraftingStateData<T extends AbstractBioMechanicalRecipe> implements IIntArray {
+public abstract class RecipeCraftingStateData<T extends AbstractProductionRecipe> implements IIntArray {
 
 	public static final String NBT_KEY_RECIPE_ID = "RecipeId";
 	public static final String NBT_KEY_TIME_ELAPSED = "TimeElapsed";
@@ -113,6 +113,8 @@ public abstract class RecipeCraftingStateData<T extends AbstractBioMechanicalRec
 	@Override
 	public int size() {
 		return 2;
-	};
+	}
+
+	;
 
 }

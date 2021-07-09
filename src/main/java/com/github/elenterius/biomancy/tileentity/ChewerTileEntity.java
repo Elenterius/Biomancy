@@ -5,15 +5,14 @@ import com.github.elenterius.biomancy.init.ModTileEntityTypes;
 import com.github.elenterius.biomancy.inventory.ChewerContainer;
 import com.github.elenterius.biomancy.inventory.FuelInvContents;
 import com.github.elenterius.biomancy.inventory.SimpleInvContents;
-import com.github.elenterius.biomancy.recipe.BioMechanicalRecipeType;
 import com.github.elenterius.biomancy.recipe.ChewerRecipe;
+import com.github.elenterius.biomancy.recipe.RecipeType;
 import com.github.elenterius.biomancy.tileentity.state.ChewerStateData;
 import com.github.elenterius.biomancy.util.BiofuelUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
@@ -29,8 +28,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class
-ChewerTileEntity extends MachineTileEntity<ChewerRecipe, ChewerStateData> {
+public class ChewerTileEntity extends MachineTileEntity<ChewerRecipe, ChewerStateData> {
 
 	public static final int FUEL_SLOTS_COUNT = 1;
 	public static final int INPUT_SLOTS_COUNT = 1;
@@ -39,7 +37,7 @@ ChewerTileEntity extends MachineTileEntity<ChewerRecipe, ChewerStateData> {
 	public static final int DEFAULT_TIME = 200;
 	public static final int MAX_FUEL = 32_000;
 	public static final short FUEL_COST = 2;
-	public static final BioMechanicalRecipeType<ChewerRecipe> RECIPE_TYPE = ModRecipes.CHEWER_RECIPE_TYPE;
+	public static final RecipeType.ItemStackRecipeType<ChewerRecipe> RECIPE_TYPE = ModRecipes.CHEWER_RECIPE_TYPE;
 
 	private final ChewerStateData stateData = new ChewerStateData();
 	private final FuelInvContents fuelContents;
@@ -56,11 +54,6 @@ ChewerTileEntity extends MachineTileEntity<ChewerRecipe, ChewerStateData> {
 	@Override
 	protected ChewerStateData getStateData() {
 		return stateData;
-	}
-
-	@Override
-	public BioMechanicalRecipeType<ChewerRecipe> getRecipeType() {
-		return RECIPE_TYPE;
 	}
 
 	@Override
@@ -127,9 +120,10 @@ ChewerTileEntity extends MachineTileEntity<ChewerRecipe, ChewerStateData> {
 		return false;
 	}
 
+	@Nullable
 	@Override
-	protected IInventory getInputInventory() {
-		return inputContents;
+	protected ChewerRecipe resolveRecipeFromInput(World world) {
+		return RECIPE_TYPE.getRecipeFromInventory(world, inputContents).orElse(null);
 	}
 
 	@Override

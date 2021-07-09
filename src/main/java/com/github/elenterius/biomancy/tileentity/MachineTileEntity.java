@@ -1,13 +1,11 @@
 package com.github.elenterius.biomancy.tileentity;
 
 import com.github.elenterius.biomancy.block.MachineBlock;
-import com.github.elenterius.biomancy.recipe.AbstractBioMechanicalRecipe;
-import com.github.elenterius.biomancy.recipe.BioMechanicalRecipeType;
-import com.github.elenterius.biomancy.recipe.IFluidRecipe;
+import com.github.elenterius.biomancy.recipe.AbstractProductionRecipe;
+import com.github.elenterius.biomancy.recipe.IFluidResultRecipe;
 import com.github.elenterius.biomancy.tileentity.state.CraftingState;
 import com.github.elenterius.biomancy.tileentity.state.RecipeCraftingStateData;
 import net.minecraft.block.BlockState;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
@@ -22,15 +20,13 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
 
-public abstract class MachineTileEntity<R extends AbstractBioMechanicalRecipe, S extends RecipeCraftingStateData<R>> extends OwnableTileEntity implements INamedContainerProvider, ITickableTileEntity {
+public abstract class MachineTileEntity<R extends AbstractProductionRecipe, S extends RecipeCraftingStateData<R>> extends OwnableTileEntity implements INamedContainerProvider, ITickableTileEntity {
 
 	public MachineTileEntity(TileEntityType<?> entityType) {
 		super(entityType);
 	}
 
 	protected abstract S getStateData();
-
-	public abstract BioMechanicalRecipeType<R> getRecipeType();
 
 	public abstract int getFuelAmount();
 
@@ -57,11 +53,7 @@ public abstract class MachineTileEntity<R extends AbstractBioMechanicalRecipe, S
 	protected abstract boolean craftRecipe(R recipeToCraft, World world);
 
 	@Nullable
-	protected R resolveRecipeFromInventory(World world, IInventory inputInv) {
-		return getRecipeType().getRecipeFromInventory(world, inputInv).orElse(null);
-	}
-
-	protected abstract IInventory getInputInventory();
+	protected abstract R resolveRecipeFromInput(World world);
 
 	public abstract void dropAllInvContents(World world, BlockPos pos);
 
@@ -113,15 +105,15 @@ public abstract class MachineTileEntity<R extends AbstractBioMechanicalRecipe, S
 			refuel();
 		}
 
-		R craftingGoal = resolveRecipeFromInventory(world, getInputInventory()); //get the currently possible crafting goal
+		R craftingGoal = resolveRecipeFromInput(world); //get the currently possible crafting goal
 		S state = getStateData();
 		boolean emitRedstoneSignal = false;
 		if (craftingGoal == null) {
 			state.cancelCrafting();
 		}
 		else {
-			if (craftingGoal instanceof IFluidRecipe) {
-				FluidStack fluidToCraft = ((IFluidRecipe) craftingGoal).getFluidOutput();
+			if (craftingGoal instanceof IFluidResultRecipe) {
+				FluidStack fluidToCraft = ((IFluidResultRecipe) craftingGoal).getFluidOutput();
 				if (fluidToCraft.isEmpty()) {
 					state.cancelCrafting();
 				}

@@ -1,8 +1,11 @@
 package com.github.elenterius.biomancy.recipe;
 
+import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
-import com.google.gson.*;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.inventory.IInventory;
@@ -24,7 +27,7 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 
-public class DigesterRecipe extends AbstractBioMechanicalRecipe implements IFluidRecipe {
+public class DigesterRecipe extends AbstractProductionRecipe implements IFluidResultRecipe {
 
 	private final Ingredient ingredient;
 	private final FluidStack result;
@@ -40,11 +43,11 @@ public class DigesterRecipe extends AbstractBioMechanicalRecipe implements IFlui
 	}
 
 	@Override
-	public boolean areRecipesEqual(AbstractBioMechanicalRecipe other, boolean relaxed) {
-		if (!(other instanceof IFluidRecipe)) return false;
+	public boolean areRecipesEqual(AbstractProductionRecipe other, boolean relaxed) {
+		if (!(other instanceof IFluidResultRecipe)) return false;
 
 		boolean flag = getId().equals(other.getId());
-		if (!relaxed && !getFluidOutput().isFluidEqual(((IFluidRecipe) other).getFluidOutput()) && !ItemHandlerHelper.canItemStacksStack(getRecipeOutput(), other.getRecipeOutput())) {
+		if (!relaxed && !getFluidOutput().isFluidEqual(((IFluidResultRecipe) other).getFluidOutput()) && !ItemHandlerHelper.canItemStacksStack(getRecipeOutput(), other.getRecipeOutput())) {
 			return false;
 		}
 		return flag;
@@ -109,8 +112,6 @@ public class DigesterRecipe extends AbstractBioMechanicalRecipe implements IFlui
 			else return Ingredient.deserialize(JSONUtils.getJsonObject(jsonObj, "ingredient"));
 		}
 
-		private static Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
-
 		private static FluidStack readFluid(JsonObject jsonObj) {
 			ResourceLocation fluidName = new ResourceLocation(JSONUtils.getString(jsonObj, "fluid"));
 			Fluid fluid = ForgeRegistries.FLUIDS.getValue(fluidName);
@@ -118,16 +119,13 @@ public class DigesterRecipe extends AbstractBioMechanicalRecipe implements IFlui
 			FluidStack stack = new FluidStack(fluid, JSONUtils.getInt(jsonObj, "amount", 1));
 
 			if (jsonObj.has("nbt")) {
-				try
-				{
+				try {
 					JsonElement element = jsonObj.get("nbt");
 					CompoundNBT nbt;
-					if(element.isJsonObject()) nbt = JsonToNBT.getTagFromJson(GSON.toJson(element));
+					if (element.isJsonObject()) nbt = JsonToNBT.getTagFromJson(BiomancyMod.GSON.toJson(element));
 					else nbt = JsonToNBT.getTagFromJson(JSONUtils.getString(element, "nbt"));
 					stack.setTag(nbt);
-				}
-				catch (CommandSyntaxException exception)
-				{
+				} catch (CommandSyntaxException exception) {
 					throw new JsonSyntaxException("Invalid NBT Entry: " + exception);
 				}
 			}

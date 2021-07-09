@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.recipe;
 
 import net.minecraftforge.fluids.FluidStack;
 
-public interface IFluidRecipe {
+public interface IFluidResultRecipe {
 
 	/**
 	 * @return copy of internal FluidStack, safe for modification

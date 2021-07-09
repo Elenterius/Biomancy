@@ -5,16 +5,15 @@ import com.github.elenterius.biomancy.init.ModTileEntityTypes;
 import com.github.elenterius.biomancy.inventory.DecomposerContainer;
 import com.github.elenterius.biomancy.inventory.FuelInvContents;
 import com.github.elenterius.biomancy.inventory.SimpleInvContents;
-import com.github.elenterius.biomancy.recipe.BioMechanicalRecipeType;
 import com.github.elenterius.biomancy.recipe.Byproduct;
 import com.github.elenterius.biomancy.recipe.DecomposerRecipe;
+import com.github.elenterius.biomancy.recipe.RecipeType;
 import com.github.elenterius.biomancy.tileentity.state.DecomposerStateData;
 import com.github.elenterius.biomancy.util.BiofuelUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
@@ -38,7 +37,7 @@ public class DecomposerTileEntity extends MachineTileEntity<DecomposerRecipe, De
 
 	public static final int MAX_FUEL = 32_000;
 	public static final short FUEL_COST = 5;
-	public static final BioMechanicalRecipeType<DecomposerRecipe> RECIPE_TYPE = ModRecipes.DECOMPOSING_RECIPE_TYPE;
+	public static final RecipeType.ItemStackRecipeType<DecomposerRecipe> RECIPE_TYPE = ModRecipes.DECOMPOSING_RECIPE_TYPE;
 
 	private final DecomposerStateData stateData = new DecomposerStateData();
 	private final FuelInvContents fuelContents;
@@ -55,11 +54,6 @@ public class DecomposerTileEntity extends MachineTileEntity<DecomposerRecipe, De
 	@Override
 	protected DecomposerStateData getStateData() {
 		return stateData;
-	}
-
-	@Override
-	public BioMechanicalRecipeType<DecomposerRecipe> getRecipeType() {
-		return RECIPE_TYPE;
 	}
 
 	@Override
@@ -139,9 +133,10 @@ public class DecomposerTileEntity extends MachineTileEntity<DecomposerRecipe, De
 		return false;
 	}
 
+	@Nullable
 	@Override
-	protected IInventory getInputInventory() {
-		return inputContents;
+	protected DecomposerRecipe resolveRecipeFromInput(World world) {
+		return RECIPE_TYPE.getRecipeFromInventory(world, inputContents).orElse(null);
 	}
 
 	@Override

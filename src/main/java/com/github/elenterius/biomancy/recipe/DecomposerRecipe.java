@@ -20,7 +20,7 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DecomposerRecipe extends AbstractBioMechanicalRecipe {
+public class DecomposerRecipe extends AbstractProductionRecipe {
 
 	public static final int MAX_INGREDIENTS = 1;
 	public static final int MAX_BYPRODUCTS = 5;
