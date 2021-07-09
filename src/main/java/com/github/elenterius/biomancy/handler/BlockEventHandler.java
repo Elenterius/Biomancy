@@ -34,7 +34,7 @@ public final class BlockEventHandler {
 
 	private BlockEventHandler() {}
 	@SubscribeEvent
-	public void onNeighborNotify(BlockEvent.NeighborNotifyEvent event) {
+	public static void onNeighborNotify(BlockEvent.NeighborNotifyEvent event) {
 		if (event.getState().matchesBlock(ModBlocks.MEATSOUP_CAULDRON.get())) {
 			System.out.println("meat beaten!");
 			BiomancyMod.LOGGER.info("meat beaten!");
