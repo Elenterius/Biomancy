@@ -29,6 +29,8 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
@@ -40,7 +42,7 @@ import java.util.Random;
 
 public class MeatsoupCauldronBlock extends Block {
 
-	public static final IntegerProperty LEVEL = BlockStateProperties.LEVEL_0_8;
+	public static IntegerProperty LEVEL = BlockStateProperties.LEVEL_0_8;
 	public static final IntegerProperty FLAGS = IntegerProperty.create("flags", 0, Flags.getMaxNumber());
 	public static final int MAX_LEVEL = 8;
 	private static final VoxelShape INSIDE = makeCuboidShape(2.0D, 4.0D, 2.0D, 14.0D, 16.0D, 14.0D);
@@ -50,6 +52,25 @@ public class MeatsoupCauldronBlock extends Block {
 		super(properties);
 		setDefaultState(stateContainer.getBaseState().with(LEVEL, 0));
 	}
+
+
+	
+	@Override
+	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn,
+			BlockPos currentPos, BlockPos facingPos) {
+		int level = stateIn.get(LEVEL);
+		if (TryToUseHopper((World) worldIn, currentPos, stateIn, level)) {
+			return Blocks.CAULDRON.getDefaultState();
+		}
+		else {
+			return stateIn;
+		}
+	}
+
+
+
+
+	
 
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
@@ -64,16 +85,24 @@ public class MeatsoupCauldronBlock extends Block {
 		}
 	}
 	
-	public void TryToUseHopper(World worldIn, BlockPos pos, BlockState state, int level) {
+	public boolean TryToUseHopper(World worldIn, BlockPos pos, BlockState state, int level) {
+		boolean r = true;
 		if (level == MAX_LEVEL) {
 			Block neighbourBlock = worldIn.getBlockState(pos.down()).getBlock();
 			if (neighbourBlock == Blocks.HOPPER) {
 				ItemStack resultStack = new ItemStack(ModItems.NECROTIC_FLESH.get(),9);
+				worldIn.setBlockState(pos, state.with(LEVEL, 0));
 				spawnAsEntity(worldIn, pos.add(0.5d, 0.5d, 0.5d), resultStack);
 				worldIn.playSound(null, pos, SoundEvents.ENTITY_ITEM_FRAME_REMOVE_ITEM, SoundCategory.BLOCKS, 1.0F, 1.0F);
 				worldIn.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
+				
 			}
+			else {
+				r = false;
+			}
+		
 		}
+		return r;
 	}
 	
 	
@@ -325,4 +354,9 @@ public class MeatsoupCauldronBlock extends Block {
 			return bitPosition;
 		}
 	}
+
+	public static IntegerProperty getLevel() {
+		return LEVEL;
+	}
+
 }
