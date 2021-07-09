@@ -27,6 +27,7 @@ public final class BiomancyMod {
 	public BiomancyMod() {
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+
 		ModItems.ITEMS.register(modEventBus);
 		ModBlocks.BLOCKS.register(modEventBus);
 		ModEnchantments.ENCHANTMENTS.register(modEventBus);
