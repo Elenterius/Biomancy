@@ -5,11 +5,15 @@ import com.github.elenterius.biomancy.block.*;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.entity.EntityType;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.PlantType;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.fml.RegistryObject;
@@ -46,7 +50,7 @@ public final class ModBlocks {
 	public static final RegistryObject<Block> FLESH_BLOCK = BLOCKS.register("flesh_block", () -> new FleshBlock(createFleshProperties()));
 	public static final RegistryObject<SlabBlock> FLESH_BLOCK_SLAB = BLOCKS.register("flesh_block_slab", () -> new SlabBlock(createFleshProperties()));
 	public static final RegistryObject<StairsBlock> FLESH_BLOCK_STAIRS = BLOCKS.register("flesh_block_stairs", () -> new StairsBlock(() -> FLESH_BLOCK.get().getDefaultState(), createFleshProperties()));
-//	public static final RegistryObject<MutatedFleshBlock> MUTATED_FLESH_BLOCK = BLOCKS.register("mutated_flesh_block", () -> new MutatedFleshBlock(createFleshProperties()));
+	//	public static final RegistryObject<MutatedFleshBlock> MUTATED_FLESH_BLOCK = BLOCKS.register("mutated_flesh_block", () -> new MutatedFleshBlock(createFleshProperties()));
 	public static final RegistryObject<Block> NECROTIC_FLESH_BLOCK = BLOCKS.register("necrotic_flesh_block", () -> new FleshBlock(createFleshProperties()));
 
 	//Plant
@@ -68,10 +72,29 @@ public final class ModBlocks {
 	//machine containers
 	public static final RegistryObject<ChewerBlock> CHEWER = BLOCKS.register("chewer", () -> new ChewerBlock(createFleshProperties()));
 	public static final RegistryObject<DigesterBlock> DIGESTER = BLOCKS.register("digester", () -> new DigesterBlock(createFleshProperties()));
+	public static final RegistryObject<SolidifierBlock> SOLIDIFIER = BLOCKS.register("solidifier", () -> new SolidifierBlock(createFleshProperties()));
 	public static final RegistryObject<DecomposerBlock> DECOMPOSER = BLOCKS.register("decomposer", () -> new DecomposerBlock(createFleshProperties()));
 	public static final RegistryObject<EvolutionPoolBlock> EVOLUTION_POOL = BLOCKS.register("evolution_pool", () -> new EvolutionPoolBlock(createFleshProperties()));
 
 	private ModBlocks() {}
+
+	@OnlyIn(Dist.CLIENT)
+	protected static void setRenderLayers() {
+		RenderTypeLookup.setRenderLayer(ModBlocks.FLESH_TENTACLE.get(), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(ModBlocks.FLESHBORN_DOOR.get(), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(ModBlocks.FLESHBORN_TRAPDOOR.get(), RenderType.getCutout());
+
+		RenderTypeLookup.setRenderLayer(ModBlocks.EVOLUTION_POOL.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(ModBlocks.DECOMPOSER.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(ModBlocks.NUTRIENT_SLURRY_FLUID.get(), RenderType.getTranslucent());
+
+		RenderTypeLookup.setRenderLayer(ModBlocks.DIGESTER.get(), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(ModBlocks.CHEWER.get(), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(ModBlocks.SOLIDIFIER.get(), RenderType.getCutout());
+
+		//block with "glowing" overlay texture, also needs a overlay model see onModelBakeEvent() in ClientSetupHandler
+		//RenderTypeLookup.setRenderLayer(ModBlocks.FOOBAR.get(), renderType -> renderType == RenderType.getCutout() || renderType == RenderType.getTranslucent());
+	}
 
 	public static AbstractBlock.Properties createFleshProperties() {
 		return AbstractBlock.Properties.create(FLESH_MATERIAL).harvestTool(ToolType.SHOVEL).hardnessAndResistance(3.0F, 3.0F).sound(SoundType.SLIME).setAllowsSpawn(ModBlocks::limitEntitySpawnToFlesh);

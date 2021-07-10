@@ -2,10 +2,8 @@ package com.github.elenterius.biomancy.inventory;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModContainerTypes;
-import com.github.elenterius.biomancy.tileentity.ChewerTileEntity;
-import com.github.elenterius.biomancy.tileentity.state.ChewerStateData;
-import com.github.elenterius.biomancy.util.BiofuelUtil;
-import com.github.elenterius.biomancy.util.TextUtil;
+import com.github.elenterius.biomancy.tileentity.SolidifierTileEntity;
+import com.github.elenterius.biomancy.tileentity.state.SolidifierStateData;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -13,82 +11,82 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.PlayerInvWrapper;
 import org.apache.logging.log4j.MarkerManager;
 
-public class ChewerContainer extends Container {
+public class SolidifierContainer extends Container {
 
-	protected final FluidItemInvContents fuelContents;
-	protected final SimpleInvContents inputContents;
-	protected final SimpleInvContents outputContents;
-	private final ChewerStateData stateData;
-	private final World world;
+	protected final SimpleInvContents filledBucketInventory;
+	protected final SimpleInvContents emptyBucketInventory;
+	protected final SimpleInvContents outputInventory;
+	private final SolidifierStateData stateData;
 
-	private ChewerContainer(int screenId, PlayerInventory playerInventory, FluidItemInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, ChewerStateData stateData) {
-		super(ModContainerTypes.CHEWER.get(), screenId);
-		this.fuelContents = fuelContents;
-		this.inputContents = inputContents;
-		this.outputContents = outputContents;
+	private SolidifierContainer(int screenId, PlayerInventory playerInventory, SimpleInvContents filledBucketInventory, SimpleInvContents emptyBucketInventory, SimpleInvContents outputInventory, SolidifierStateData stateData) {
+		super(ModContainerTypes.SOLIDIFIER.get(), screenId);
+		this.filledBucketInventory = filledBucketInventory;
+		this.emptyBucketInventory = emptyBucketInventory;
+		this.outputInventory = outputInventory;
 		this.stateData = stateData;
-		world = playerInventory.player.world;
 
 		trackIntArray(stateData);
 
+		initPlayerInvSlots(playerInventory);
+
+		addSlot(new Slot(filledBucketInventory, 0, 51, 17) {
+			@Override
+			public boolean isItemValid(ItemStack stack) {
+				return FluidItemInvContents.VALID_FLUID_ITEM.test(stack);
+			}
+		});
+		addSlot(new OutputSlot(emptyBucketInventory, 0, 51, 44));
+
+		addSlot(new OutputSlot(outputInventory, 0, 98, 30));
+	}
+
+	private void initPlayerInvSlots(PlayerInventory playerInventory) {
 		PlayerInvWrapper playerInventoryForge = new PlayerInvWrapper(playerInventory);
 
-		final int HOT_BAR_SIZE = 9;
+		final int POS_X = 8;
+		final int INV_POS_Y = 84;
+		final int HOTBAR_POS_Y = 142;
+		final int SLOTS_PER_ROW = 9;
 		final int SLOT_X_SPACING = 18;
 		final int SLOT_Y_SPACING = 18;
 
 		// Add the players hotbar
-		for (int idx = 0; idx < HOT_BAR_SIZE; idx++) { //hotbar
-			addSlot(new SlotItemHandler(playerInventoryForge, idx, 8 + SLOT_X_SPACING * idx, 142));
+		for (int idx = 0; idx < SLOTS_PER_ROW; idx++) {
+			addSlot(new SlotItemHandler(playerInventoryForge, idx, POS_X + SLOT_X_SPACING * idx, HOTBAR_POS_Y));
 		}
 
 		// Add the players main inventory
-		final int PLAYER_INVENTORY_POS_X = 8;
-		final int PLAYER_INVENTORY_POS_Y = 84;
 		for (int y = 0; y < 3; y++) {
-			for (int x = 0; x < 9; x++) {
-				int slotNumber = HOT_BAR_SIZE + y * 9 + x;
-				int posX = PLAYER_INVENTORY_POS_X + x * SLOT_X_SPACING;
-				int posY = PLAYER_INVENTORY_POS_Y + y * SLOT_Y_SPACING;
+			for (int x = 0; x < SLOTS_PER_ROW; x++) {
+				int slotNumber = SLOTS_PER_ROW + y * SLOTS_PER_ROW + x;
+				int posX = POS_X + x * SLOT_X_SPACING;
+				int posY = INV_POS_Y + y * SLOT_Y_SPACING;
 				addSlot(new SlotItemHandler(playerInventoryForge, slotNumber, posX, posY));
 			}
 		}
-
-		int posX = 17;
-		int posY = 17;
-		addSlot(new Slot(fuelContents, 0, posX, posY) {
-			@Override
-			public boolean isItemValid(ItemStack stack) {
-				return BiofuelUtil.isItemValidFuel(stack);
-			}
-		});
-
-		addSlot(new Slot(inputContents, 0, 71, 26));
-
-		addSlot(new OutputSlot(outputContents, 0, 107, 26));
 	}
 
-	public static ChewerContainer createServerContainer(int screenId, PlayerInventory playerInventory, FluidItemInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, ChewerStateData stateData) {
-		return new ChewerContainer(screenId, playerInventory, fuelContents, inputContents, outputContents, stateData);
+	public static SolidifierContainer createServerContainer(int screenId, PlayerInventory playerInventory, SimpleInvContents filledBucketInventory, SimpleInvContents emptyBucketInventory, SimpleInvContents outputInventory, SolidifierStateData stateData) {
+		return new SolidifierContainer(screenId, playerInventory, filledBucketInventory, emptyBucketInventory, outputInventory, stateData);
 	}
 
-	public static ChewerContainer createClientContainer(int screenId, PlayerInventory playerInventory, PacketBuffer extraData) {
-		FluidItemInvContents fuelContents = FluidItemInvContents.createClientContents(ChewerTileEntity.FUEL_SLOTS_COUNT);
-		SimpleInvContents inputContents = SimpleInvContents.createClientContents(ChewerTileEntity.INPUT_SLOTS_COUNT);
-		SimpleInvContents outputContents = SimpleInvContents.createClientContents(ChewerTileEntity.OUTPUT_SLOTS_COUNT);
-		ChewerStateData stateData = new ChewerStateData();
-		return new ChewerContainer(screenId, playerInventory, fuelContents, inputContents, outputContents, stateData);
+	public static SolidifierContainer createClientContainer(int screenId, PlayerInventory playerInventory, PacketBuffer extraData) {
+		SimpleInvContents filledBucketInventory = SimpleInvContents.createClientContents(SolidifierTileEntity.FILLED_BUCKET_SLOTS);
+		SimpleInvContents emptyBucketInventory = SimpleInvContents.createClientContents(SolidifierTileEntity.EMPTY_BUCKET_SLOTS);
+		SimpleInvContents outputInventory = SimpleInvContents.createClientContents(SolidifierTileEntity.OUTPUT_SLOTS);
+		SolidifierStateData stateData = new SolidifierStateData();
+		return new SolidifierContainer(screenId, playerInventory, filledBucketInventory, emptyBucketInventory, outputInventory, stateData);
 	}
 
 	@Override
 	public boolean canInteractWith(PlayerEntity playerIn) {
-		//we don't check all three inventories because they all call the same method in the decomposer tile entity
-		return inputContents.isUsableByPlayer(playerIn);
+		//we don't check all three inventories because they all call the same method in the tile entity
+		return filledBucketInventory.isUsableByPlayer(playerIn);
 	}
 
 	public float getCraftingProgressNormalized() {
@@ -96,16 +94,8 @@ public class ChewerContainer extends Container {
 		return MathHelper.clamp(stateData.timeElapsed / (float) stateData.timeForCompletion, 0f, 1f);
 	}
 
-	public int getFuelAmount() {
-		return stateData.fuel;
-	}
-
-	public float getFuelNormalized() {
-		return MathHelper.clamp(stateData.fuel / (float) ChewerTileEntity.MAX_FUEL, 0f, 1f);
-	}
-
-	public String getFuelTranslationKey() {
-		return TextUtil.getTranslationKey("tooltip", "biofuel");
+	public FluidTank getInputTank() {
+		return stateData.inputTank;
 	}
 
 	/**
@@ -129,19 +119,16 @@ public class ChewerContainer extends Container {
 				if (successfulTransfer) sourceSlot.onSlotChange(sourceStack, copyOfSourceStack);
 				break;
 
-			case INPUT_ZONE:
-			case FUEL_ZONE:
+			case EMPTY_BUCKET_ZONE:
+			case FILLED_BUCKET_ZONE:
 				successfulTransfer = mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, sourceStack, false);
 				if (!successfulTransfer) successfulTransfer = mergeInto(SlotZone.PLAYER_HOTBAR, sourceStack, false);
 				break;
 
 			case PLAYER_HOTBAR:
 			case PLAYER_MAIN_INVENTORY:
-				if (ChewerTileEntity.RECIPE_TYPE.getRecipeForItem(world, sourceStack).isPresent()) {
-					successfulTransfer = mergeInto(SlotZone.INPUT_ZONE, sourceStack, false);
-				}
-				if (!successfulTransfer && BiofuelUtil.isItemValidFuel(sourceStack)) {
-					successfulTransfer = mergeInto(SlotZone.FUEL_ZONE, sourceStack, true);
+				if (FluidItemInvContents.VALID_FLUID_ITEM.test(sourceStack)) {
+					successfulTransfer = mergeInto(SlotZone.FILLED_BUCKET_ZONE, sourceStack, true);
 				}
 				if (!successfulTransfer) {
 					if (sourceZone == SlotZone.PLAYER_HOTBAR) successfulTransfer = mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, sourceStack, false);
@@ -173,10 +160,10 @@ public class ChewerContainer extends Container {
 
 	private enum SlotZone {
 		PLAYER_HOTBAR(0, 9),
-		PLAYER_MAIN_INVENTORY(9, 3 * 9),
-		FUEL_ZONE(9 + 3 * 9, ChewerTileEntity.FUEL_SLOTS_COUNT),
-		INPUT_ZONE(9 + 3 * 9 + ChewerTileEntity.FUEL_SLOTS_COUNT, ChewerTileEntity.INPUT_SLOTS_COUNT),
-		OUTPUT_ZONE(9 + 3 * 9 + ChewerTileEntity.FUEL_SLOTS_COUNT + ChewerTileEntity.INPUT_SLOTS_COUNT, ChewerTileEntity.OUTPUT_SLOTS_COUNT);
+		PLAYER_MAIN_INVENTORY(9, 27), // 3 * 9
+		FILLED_BUCKET_ZONE(9 + 27, SolidifierTileEntity.FILLED_BUCKET_SLOTS),
+		EMPTY_BUCKET_ZONE(9 + 27 + SolidifierTileEntity.FILLED_BUCKET_SLOTS, SolidifierTileEntity.EMPTY_BUCKET_SLOTS),
+		OUTPUT_ZONE(9 + 27 + SolidifierTileEntity.FILLED_BUCKET_SLOTS + SolidifierTileEntity.EMPTY_BUCKET_SLOTS, SolidifierTileEntity.OUTPUT_SLOTS);
 
 		public final int firstIndex;
 		public final int slotCount;

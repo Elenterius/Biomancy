@@ -3,7 +3,6 @@ package com.github.elenterius.biomancy.recipe;
 import com.github.elenterius.biomancy.fluid.simibubi.FluidIngredient;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.google.gson.JsonObject;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.item.crafting.IRecipeType;
@@ -34,7 +33,7 @@ public class SolidifierRecipe extends AbstractProductionRecipe.FluidInput {
 	}
 
 	@Override
-	public ItemStack getCraftingResult(IInventory inv) {
+	public ItemStack getFluidCraftingResult() {
 		return result.copy();
 	}
 

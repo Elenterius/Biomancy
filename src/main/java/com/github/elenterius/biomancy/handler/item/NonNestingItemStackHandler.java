@@ -10,6 +10,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
@@ -18,7 +19,7 @@ import javax.annotation.Nonnull;
  * Delegator that prevents nesting of items with an inventory (ITEM_HANDLER_CAPABILITY). <br>
  * Used to expose inventory capabilities that only allow item extraction (output slots).
  */
-public class NonNestingItemStackHandler implements IItemHandler {
+public class NonNestingItemStackHandler implements IItemHandler, IItemHandlerModifiable {
 
 	private final ItemStackHandler itemStackHandler;
 
@@ -116,4 +117,8 @@ public class NonNestingItemStackHandler implements IItemHandler {
 		return itemStackHandler.getSlotLimit(slot);
 	}
 
+	@Override
+	public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
+		itemStackHandler.setStackInSlot(slot, stack);
+	}
 }

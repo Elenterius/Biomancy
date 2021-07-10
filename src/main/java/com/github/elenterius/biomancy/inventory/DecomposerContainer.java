@@ -20,13 +20,13 @@ import org.apache.logging.log4j.MarkerManager;
 
 public class DecomposerContainer extends Container {
 
-	protected final FuelInvContents fuelContents;
+	protected final FluidItemInvContents fuelContents;
 	protected final SimpleInvContents inputContents;
 	protected final SimpleInvContents outputContents;
 	private final DecomposerStateData decomposerState;
 	private final World world;
 
-	private DecomposerContainer(int screenId, PlayerInventory playerInventory, FuelInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, DecomposerStateData decomposerState) {
+	private DecomposerContainer(int screenId, PlayerInventory playerInventory, FluidItemInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, DecomposerStateData decomposerState) {
 		super(ModContainerTypes.DECOMPOSER.get(), screenId);
 		this.fuelContents = fuelContents;
 		this.inputContents = inputContents;
@@ -80,12 +80,12 @@ public class DecomposerContainer extends Container {
 		addSlot(new OutputSlot(outputContents, 5, outputPosX + 18 * 2, posY + 18));
 	}
 
-	public static DecomposerContainer createServerContainer(int screenId, PlayerInventory playerInventory, FuelInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, DecomposerStateData decomposerState) {
+	public static DecomposerContainer createServerContainer(int screenId, PlayerInventory playerInventory, FluidItemInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, DecomposerStateData decomposerState) {
 		return new DecomposerContainer(screenId, playerInventory, fuelContents, inputContents, outputContents, decomposerState);
 	}
 
 	public static DecomposerContainer createClientContainer(int screenId, PlayerInventory playerInventory, PacketBuffer extraData) {
-		FuelInvContents fuelContents = FuelInvContents.createClientContents(DecomposerTileEntity.FUEL_SLOTS_COUNT);
+		FluidItemInvContents fuelContents = FluidItemInvContents.createClientContents(DecomposerTileEntity.FUEL_SLOTS_COUNT);
 		SimpleInvContents inputContents = SimpleInvContents.createClientContents(DecomposerTileEntity.INPUT_SLOTS_COUNT);
 		SimpleInvContents outputContents = SimpleInvContents.createClientContents(DecomposerTileEntity.OUTPUT_SLOTS_COUNT);
 		DecomposerStateData decomposerState = new DecomposerStateData();

@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=up": {
+      "model": "biomancy:block/solidifier"
+    },
+    "facing=down": {
+      "model": "biomancy:block/solidifier",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "biomancy:block/solidifier",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "biomancy:block/solidifier",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "biomancy:block/solidifier",
+      "x": -90
+    },
+    "facing=west": {
+      "model": "biomancy:block/solidifier",
+      "x": 90,
+      "y": -90
+    }
+  }
+}
+

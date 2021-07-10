@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.handler.item;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
@@ -10,7 +11,7 @@ import javax.annotation.Nonnull;
  * Delegator that prevents item insertion. <br>
  * Used to expose inventory capabilities that only allow item extraction (output slots).
  */
-public class NoInsertItemStackHandler implements IItemHandler {
+public class NoInsertItemStackHandler implements IItemHandler, IItemHandlerModifiable {
 
 	private final ItemStackHandler itemStackHandler;
 
@@ -51,4 +52,8 @@ public class NoInsertItemStackHandler implements IItemHandler {
 		return itemStackHandler.getSlotLimit(slot);
 	}
 
+	@Override
+	public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
+		itemStackHandler.setStackInSlot(slot, stack);
+	}
 }

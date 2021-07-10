@@ -29,6 +29,7 @@ public class BiomancyPlugin implements IModPlugin {
 		registration.addRecipeCategories(new DigesterRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
 		registration.addRecipeCategories(new DecomposerRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
 		registration.addRecipeCategories(new SmallEvolutionPoolRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+		registration.addRecipeCategories(new SolidifierRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
 	}
 
 	@Override
@@ -38,6 +39,7 @@ public class BiomancyPlugin implements IModPlugin {
 		registration.addRecipes(ImmutableSet.copyOf(world.getRecipeManager().getRecipesForType(ModRecipes.DIGESTER_RECIPE_TYPE)), DigesterRecipeCategory.ID);
 		registration.addRecipes(ImmutableSet.copyOf(world.getRecipeManager().getRecipesForType(ModRecipes.DECOMPOSING_RECIPE_TYPE)), DecomposerRecipeCategory.ID);
 		registration.addRecipes(ImmutableSet.copyOf(world.getRecipeManager().getRecipesForType(ModRecipes.EVOLUTION_POOL_RECIPE_TYPE)), SmallEvolutionPoolRecipeCategory.ID);
+		registration.addRecipes(ImmutableSet.copyOf(world.getRecipeManager().getRecipesForType(ModRecipes.SOLIDIFIER_RECIPE_TYPE)), SolidifierRecipeCategory.ID);
 	}
 
 }

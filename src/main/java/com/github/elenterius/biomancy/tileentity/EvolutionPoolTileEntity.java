@@ -5,7 +5,7 @@ import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.init.ModTileEntityTypes;
 import com.github.elenterius.biomancy.inventory.EvolutionPoolContainer;
-import com.github.elenterius.biomancy.inventory.FuelInvContents;
+import com.github.elenterius.biomancy.inventory.FluidItemInvContents;
 import com.github.elenterius.biomancy.inventory.SimpleInvContents;
 import com.github.elenterius.biomancy.recipe.EvolutionPoolRecipe;
 import com.github.elenterius.biomancy.recipe.RecipeType;
@@ -53,7 +53,7 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 	public static final RecipeType.ItemStackRecipeType<EvolutionPoolRecipe> RECIPE_TYPE = ModRecipes.EVOLUTION_POOL_RECIPE_TYPE;
 
 	private final EvolutionPoolStateData stateData = new EvolutionPoolStateData();
-	private final FuelInvContents fuelContents;
+	private final FluidItemInvContents fuelContents;
 	private final SimpleInvContents inputContents;
 	private final SimpleInvContents outputContents;
 	private final Set<BlockPos> subTiles = new HashSet<>();
@@ -61,7 +61,7 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 
 	public EvolutionPoolTileEntity() {
 		super(ModTileEntityTypes.EVOLUTION_POOL.get());
-		fuelContents = FuelInvContents.createServerContents(FUEL_SLOTS_COUNT, this::isItemValidFuel, this::canPlayerOpenInv, this::markDirty);
+		fuelContents = FluidItemInvContents.createServerContents(FUEL_SLOTS_COUNT, this::isItemValidFuel, this::canPlayerOpenInv, this::markDirty);
 		inputContents = SimpleInvContents.createServerContents(INPUT_SLOTS_COUNT, this::canPlayerOpenInv, this::markDirty);
 		outputContents = SimpleInvContents.createServerContents(OUTPUT_SLOTS_COUNT, SimpleInvContents.ISHandlerType.NO_INSERT, this::canPlayerOpenInv, this::markDirty);
 	}

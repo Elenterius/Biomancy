@@ -1,7 +1,6 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.client.gui.*;
 import com.github.elenterius.biomancy.client.renderer.block.FullBrightOverlayBakedModel;
 import com.github.elenterius.biomancy.client.renderer.entity.*;
 import com.github.elenterius.biomancy.client.renderer.tileentity.FleshChestTileEntityRenderer;
@@ -9,11 +8,8 @@ import com.github.elenterius.biomancy.item.weapon.LongRangeClawItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.BlockModelShapes;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.entity.SheepRenderer;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.client.renderer.model.IBakedModel;
@@ -66,12 +62,7 @@ public final class ClientSetupHandler {
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.WITHER_SKULL_PROJECTILE.get(), WitherSkullProjectileRenderer::new);
 
 		event.enqueueWork(() -> {
-			ScreenManager.registerFactory(ModContainerTypes.GULGE.get(), GulgeContainerScreen::new);
-			ScreenManager.registerFactory(ModContainerTypes.FLESHBORN_CHEST.get(), FleshChestContainerScreen::new);
-			ScreenManager.registerFactory(ModContainerTypes.CHEWER.get(), ChewerContainerScreen::new);
-			ScreenManager.registerFactory(ModContainerTypes.DIGESTER.get(), DigesterContainerScreen::new);
-			ScreenManager.registerFactory(ModContainerTypes.DECOMPOSER.get(), DecomposerContainerScreen::new);
-			ScreenManager.registerFactory(ModContainerTypes.EVOLUTION_POOL.get(), EvolutionPoolContainerScreen::new);
+			ModContainerTypes.registerContainerScreens();
 
 			ItemModelsProperties.registerProperty(ModItems.LONG_RANGE_CLAW.get(), new ResourceLocation("extended"), (stack, clientWorld, livingEntity) -> LongRangeClawItem.isClawExtended(stack) ? 1f : 0f);
 			ItemModelsProperties.registerProperty(ModItems.SINGLE_ITEM_BAG_ITEM.get(), new ResourceLocation("fullness"), (stack, clientWorld, livingEntity) -> ModItems.SINGLE_ITEM_BAG_ITEM.get().getFullness(stack));
@@ -80,18 +71,7 @@ public final class ClientSetupHandler {
 //			ItemModelsProperties.registerProperty(ModItems.SINEW_BOW.get(), new ResourceLocation("pulling"), (stack, clientWorld, livingEntity) -> livingEntity != null && livingEntity.isHandActive() && livingEntity.getActiveItemStack() == stack ? 1f : 0f);
 			ItemModelsProperties.registerProperty(ModItems.BONE_SCRAPS.get(), new ResourceLocation("type"), (stack, clientWorld, livingEntity) -> stack.getOrCreateTag().getInt("ScrapType"));
 
-			RenderTypeLookup.setRenderLayer(ModBlocks.FLESH_TENTACLE.get(), RenderType.getCutout());
-//			RenderTypeLookup.setRenderLayer(ModBlocks.VILE_MELON_CROP.get(), RenderType.getCutout());
-			RenderTypeLookup.setRenderLayer(ModBlocks.FLESHBORN_DOOR.get(), RenderType.getCutout());
-			RenderTypeLookup.setRenderLayer(ModBlocks.FLESHBORN_TRAPDOOR.get(), RenderType.getCutout());
-
-			RenderTypeLookup.setRenderLayer(ModBlocks.EVOLUTION_POOL.get(), RenderType.getTranslucent());
-			RenderTypeLookup.setRenderLayer(ModBlocks.DECOMPOSER.get(), RenderType.getTranslucent());
-			RenderTypeLookup.setRenderLayer(ModBlocks.DIGESTER.get(), RenderType.getCutout());
-			RenderTypeLookup.setRenderLayer(ModBlocks.CHEWER.get(), RenderType.getCutout());
-
-//			RenderTypeLookup.setRenderLayer(ModBlocks.LUMINOUS_SOIL.get(), renderType -> renderType == RenderType.getCutout() || renderType == RenderType.getTranslucent());
-//			RenderTypeLookup.setRenderLayer(ModBlocks.BLIGHT_PUSTULE_SMALL.get(), RenderType.getCutout());
+			ModBlocks.setRenderLayers();
 		});
 	}
 
@@ -126,7 +106,8 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void onModelBakeEvent(ModelBakeEvent event) {
-//		addFullBrightOverlayBakedModel(ModBlocks.LUMINOUS_SOIL.get(), event);
+		//block with "glowing" overlay texture
+		//addFullBrightOverlayBakedModel(ModBlocks.FOOBAR.get(), event);
 	}
 
 	private static void addFullBrightOverlayBakedModel(Block block, ModelBakeEvent event) {

@@ -83,6 +83,7 @@
 
   "block.biomancy.chewer": "Chewer",
   "block.biomancy.digester": "Digester",
+  "block.biomancy.solidifier": "Gland",
   "block.biomancy.decomposer": "Decomposer",
   "block.biomancy.meatsoup_cauldron": "Fleshpot",
   "block.biomancy.evolution_pool": "Evolution Pool",
@@ -93,6 +94,7 @@
   "container.biomancy.fleshborn_chest": "Fleshborn Chest",
   "container.biomancy.chewer": "Chewer",
   "container.biomancy.digester": "Digester",
+  "container.biomancy.solidifier": "Gland",
   "container.biomancy.decomposer": "Decomposer",
   "container.biomancy.evolution_pool": "Evolution Pool",
 
@@ -160,7 +162,8 @@
   "tooltip.biomancy.fleshborn_chest": "Keeps Inventory.",
   "tooltip.biomancy.gulge": "Stores 32k of a single item, keeps inventory.",
   "tooltip.biomancy.chewer": "Uses Nutrient Paste/Bar as Fuel.",
-  "tooltip.biomancy.digester": "Uses Water as fuel.",
+  "tooltip.biomancy.digester": "Consumes water to convert biomass into nutrient slurry.",
+  "tooltip.biomancy.solidifier": "Solidifies fluids into solid Items.",
   "tooltip.biomancy.decomposer": "Uses Nutrient Paste/Bar as Fuel.",
   "tooltip.biomancy.evolution_pool": "Uses Mutagenic Bile as fuel.",
 
@@ -231,6 +234,7 @@
 
   "jei.biomancy.recipe.chewer": "Chewer Recipes",
   "jei.biomancy.recipe.digester": "Digester Recipes",
+  "jei.biomancy.recipe.solidifier": "Gland Recipes",
   "jei.biomancy.recipe.decomposer": "Decomposer Recipes",
   "jei.biomancy.recipe.evolution_pool": "Evolution Pool Recipes",
 

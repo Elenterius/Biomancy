@@ -185,7 +185,7 @@ public class SimpleInvContents implements IInventory {
 		}
 	}
 
-	public IItemHandler getItemStackHandler() {
+	public ItemStackHandler getItemStackHandler() {
 		return itemStackHandler;
 	}
 
