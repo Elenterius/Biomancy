@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package com.github.elenterius.biomancy.handler.item;
+package com.github.elenterius.biomancy.inventory.itemhandler;
 
 import mcp.MethodsReturnNonnullByDefault;
 

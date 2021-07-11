@@ -20,13 +20,13 @@ import org.apache.logging.log4j.MarkerManager;
 
 public class ChewerContainer extends Container {
 
-	protected final FluidItemInvContents fuelContents;
+	protected final SimpleInvContents fuelContents;
 	protected final SimpleInvContents inputContents;
 	protected final SimpleInvContents outputContents;
 	private final ChewerStateData stateData;
 	private final World world;
 
-	private ChewerContainer(int screenId, PlayerInventory playerInventory, FluidItemInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, ChewerStateData stateData) {
+	private ChewerContainer(int screenId, PlayerInventory playerInventory, SimpleInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, ChewerStateData stateData) {
 		super(ModContainerTypes.CHEWER.get(), screenId);
 		this.fuelContents = fuelContents;
 		this.inputContents = inputContents;
@@ -73,12 +73,12 @@ public class ChewerContainer extends Container {
 		addSlot(new OutputSlot(outputContents, 0, 107, 26));
 	}
 
-	public static ChewerContainer createServerContainer(int screenId, PlayerInventory playerInventory, FluidItemInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, ChewerStateData stateData) {
+	public static ChewerContainer createServerContainer(int screenId, PlayerInventory playerInventory, SimpleInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, ChewerStateData stateData) {
 		return new ChewerContainer(screenId, playerInventory, fuelContents, inputContents, outputContents, stateData);
 	}
 
 	public static ChewerContainer createClientContainer(int screenId, PlayerInventory playerInventory, PacketBuffer extraData) {
-		FluidItemInvContents fuelContents = FluidItemInvContents.createClientContents(ChewerTileEntity.FUEL_SLOTS_COUNT);
+		SimpleInvContents fuelContents = SimpleInvContents.createClientContents(ChewerTileEntity.FUEL_SLOTS_COUNT);
 		SimpleInvContents inputContents = SimpleInvContents.createClientContents(ChewerTileEntity.INPUT_SLOTS_COUNT);
 		SimpleInvContents outputContents = SimpleInvContents.createClientContents(ChewerTileEntity.OUTPUT_SLOTS_COUNT);
 		ChewerStateData stateData = new ChewerStateData();

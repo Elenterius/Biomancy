@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.block.FleshChestBlock;
 import com.github.elenterius.biomancy.init.ModTileEntityTypes;
 import com.github.elenterius.biomancy.inventory.FleshChestContainer;
 import com.github.elenterius.biomancy.inventory.SimpleInvContents;
+import com.github.elenterius.biomancy.inventory.itemhandler.behavior.ItemHandlerBehavior;
 import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -48,7 +49,7 @@ public class FleshbornChestTileEntity extends OwnableTileEntity implements IName
 
 	public FleshbornChestTileEntity() {
 		super(ModTileEntityTypes.FLESH_CHEST.get());
-		invContents = SimpleInvContents.createServerContents(INV_SLOTS_COUNT, SimpleInvContents.ISHandlerType.NON_NESTING, this::canPlayerOpenInv, this::markDirty);
+		invContents = SimpleInvContents.createServerContents(INV_SLOTS_COUNT, ItemHandlerBehavior::denyItemWithFilledInventory, this::canPlayerOpenInv, this::markDirty);
 		invContents.setOpenInventoryConsumer(this::onOpenInventory);
 		invContents.setCloseInventoryConsumer(this::onCloseInventory);
 	}

@@ -3,8 +3,8 @@ package com.github.elenterius.biomancy.tileentity;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.init.ModTileEntityTypes;
 import com.github.elenterius.biomancy.inventory.DecomposerContainer;
-import com.github.elenterius.biomancy.inventory.FluidItemInvContents;
 import com.github.elenterius.biomancy.inventory.SimpleInvContents;
+import com.github.elenterius.biomancy.inventory.itemhandler.behavior.ItemHandlerBehavior;
 import com.github.elenterius.biomancy.recipe.Byproduct;
 import com.github.elenterius.biomancy.recipe.DecomposerRecipe;
 import com.github.elenterius.biomancy.recipe.RecipeType;
@@ -40,15 +40,15 @@ public class DecomposerTileEntity extends MachineTileEntity<DecomposerRecipe, De
 	public static final RecipeType.ItemStackRecipeType<DecomposerRecipe> RECIPE_TYPE = ModRecipes.DECOMPOSING_RECIPE_TYPE;
 
 	private final DecomposerStateData stateData = new DecomposerStateData();
-	private final FluidItemInvContents fuelContents;
+	private final SimpleInvContents fuelContents;
 	private final SimpleInvContents inputContents;
 	private final SimpleInvContents outputContents;
 
 	public DecomposerTileEntity() {
 		super(ModTileEntityTypes.DECOMPOSER.get());
-		fuelContents = FluidItemInvContents.createServerContents(FUEL_SLOTS_COUNT, this::isItemValidFuel, this::canPlayerOpenInv, this::markDirty);
+		fuelContents = SimpleInvContents.createServerContents(FUEL_SLOTS_COUNT, ItemHandlerBehavior::filterBiofuel, this::canPlayerOpenInv, this::markDirty);
 		inputContents = SimpleInvContents.createServerContents(INPUT_SLOTS_COUNT, this::canPlayerOpenInv, this::markDirty);
-		outputContents = SimpleInvContents.createServerContents(OUTPUT_SLOTS_COUNT, SimpleInvContents.ISHandlerType.NO_INSERT, this::canPlayerOpenInv, this::markDirty);
+		outputContents = SimpleInvContents.createServerContents(OUTPUT_SLOTS_COUNT, ItemHandlerBehavior::denyInput, this::canPlayerOpenInv, this::markDirty);
 	}
 
 	@Override

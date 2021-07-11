@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.inventory;
 
-import com.github.elenterius.biomancy.handler.item.LargeSingleItemStackHandler;
+import com.github.elenterius.biomancy.inventory.itemhandler.LargeSingleItemStackHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -107,8 +107,7 @@ public class GulgeContents implements IInventory, IIntArray {
 	}
 
 	@Override
-	public int getInventoryStackLimit()
-	{
+	public int getInventoryStackLimit() {
 		return itemStackHandler.getMaxAmount();
 	}
 
@@ -143,23 +142,23 @@ public class GulgeContents implements IInventory, IIntArray {
 
 	/**
 	 * get tracked value
+	 *
 	 * @param index tracking-index
 	 * @return tracked value by index
 	 */
 	@Override
-	public int get(int index)
-	{
+	public int get(int index) {
 		validateTrackingIndex(index);
 		return itemStackHandler.getAmount();
 	}
 
 	/**
 	 * update value of tracked value
+	 *
 	 * @param index tracking-index
 	 */
 	@Override
-	public void set(int index, int value)
-	{
+	public void set(int index, int value) {
 		validateTrackingIndex(index);
 		itemStackHandler.setAmount((short) value);
 	}
@@ -168,8 +167,7 @@ public class GulgeContents implements IInventory, IIntArray {
 	 * @return tracking IntArray Size
 	 */
 	@Override
-	public int size()
-	{
+	public int size() {
 		return 1;
 	}
 }

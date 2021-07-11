@@ -3,8 +3,8 @@ package com.github.elenterius.biomancy.tileentity;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.init.ModTileEntityTypes;
 import com.github.elenterius.biomancy.inventory.ChewerContainer;
-import com.github.elenterius.biomancy.inventory.FluidItemInvContents;
 import com.github.elenterius.biomancy.inventory.SimpleInvContents;
+import com.github.elenterius.biomancy.inventory.itemhandler.behavior.ItemHandlerBehavior;
 import com.github.elenterius.biomancy.recipe.ChewerRecipe;
 import com.github.elenterius.biomancy.recipe.RecipeType;
 import com.github.elenterius.biomancy.tileentity.state.ChewerStateData;
@@ -40,15 +40,15 @@ public class ChewerTileEntity extends MachineTileEntity<ChewerRecipe, ChewerStat
 	public static final RecipeType.ItemStackRecipeType<ChewerRecipe> RECIPE_TYPE = ModRecipes.CHEWER_RECIPE_TYPE;
 
 	private final ChewerStateData stateData = new ChewerStateData();
-	private final FluidItemInvContents fuelContents;
+	private final SimpleInvContents fuelContents;
 	private final SimpleInvContents inputContents;
 	private final SimpleInvContents outputContents;
 
 	public ChewerTileEntity() {
 		super(ModTileEntityTypes.CHEWER.get());
-		fuelContents = FluidItemInvContents.createServerContents(FUEL_SLOTS_COUNT, this::isItemValidFuel, this::canPlayerOpenInv, this::markDirty);
+		fuelContents = SimpleInvContents.createServerContents(FUEL_SLOTS_COUNT, ItemHandlerBehavior::filterBiofuel, this::canPlayerOpenInv, this::markDirty);
 		inputContents = SimpleInvContents.createServerContents(INPUT_SLOTS_COUNT, this::canPlayerOpenInv, this::markDirty);
-		outputContents = SimpleInvContents.createServerContents(OUTPUT_SLOTS_COUNT, SimpleInvContents.ISHandlerType.NO_INSERT, this::canPlayerOpenInv, this::markDirty);
+		outputContents = SimpleInvContents.createServerContents(OUTPUT_SLOTS_COUNT, ItemHandlerBehavior::denyInput, this::canPlayerOpenInv, this::markDirty);
 	}
 
 	@Override

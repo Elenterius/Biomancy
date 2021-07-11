@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.inventory;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.handler.item.NonNestingItemStackHandler;
 import com.github.elenterius.biomancy.init.ModContainerTypes;
+import com.github.elenterius.biomancy.inventory.itemhandler.behavior.ItemHandlerBehavior;
 import com.github.elenterius.biomancy.tileentity.FleshbornChestTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -100,7 +100,7 @@ public class FleshChestContainer extends Container {
 
 			case PLAYER_HOTBAR:
 			case PLAYER_MAIN_INVENTORY:
-				if (NonNestingItemStackHandler.isItemStackInventoryEmpty(sourceStack)) {
+				if (ItemHandlerBehavior.EMPTY_ITEM_INVENTORY_PREDICATE.test(sourceStack)) {
 					successfulTransfer = mergeInto(SlotZone.CHEST_INVENTORY, sourceStack, false);
 				}
 				if (!successfulTransfer) {

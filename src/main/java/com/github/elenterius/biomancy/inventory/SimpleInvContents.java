@@ -1,7 +1,5 @@
 package com.github.elenterius.biomancy.inventory;
 
-import com.github.elenterius.biomancy.handler.item.NoInsertItemStackHandler;
-import com.github.elenterius.biomancy.handler.item.NonNestingItemStackHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -11,6 +9,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
@@ -32,6 +31,11 @@ public class SimpleInvContents implements IInventory {
 		optionalItemStackHandler = LazyOptional.of(() -> itemStackHandler);
 	}
 
+	SimpleInvContents(int slotAmount, Function<ItemStackHandler, LazyOptional<IItemHandler>> func) {
+		itemStackHandler = new ItemStackHandler(slotAmount);
+		optionalItemStackHandler = func.apply(itemStackHandler);
+	}
+
 	SimpleInvContents(ItemStackHandler itemStackHandlerIn, LazyOptional<IItemHandler> optionalItemStackHandlerIn, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
 		itemStackHandler = itemStackHandlerIn;
 		optionalItemStackHandler = optionalItemStackHandlerIn;
@@ -39,22 +43,8 @@ public class SimpleInvContents implements IInventory {
 		this.markDirtyNotifier = markDirtyNotifier;
 	}
 
-	SimpleInvContents(int slotAmount, ISHandlerType handlerType) {
-		itemStackHandler = new ItemStackHandler(slotAmount);
-		switch (handlerType) {
-			case NO_INSERT:
-				optionalItemStackHandler = LazyOptional.of(() -> new NoInsertItemStackHandler(itemStackHandler));
-				break;
-			case NON_NESTING:
-				optionalItemStackHandler = LazyOptional.of(() -> new NonNestingItemStackHandler(itemStackHandler));
-				break;
-			default:
-				optionalItemStackHandler = LazyOptional.of(() -> itemStackHandler);
-		}
-	}
-
-	SimpleInvContents(int slotAmount, ISHandlerType type, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
-		this(slotAmount, type);
+	SimpleInvContents(int slotAmount, Function<ItemStackHandler, LazyOptional<IItemHandler>> func, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
+		this(slotAmount, func);
 		this.canPlayerAccessInventory = canPlayerAccessInventory;
 		this.markDirtyNotifier = markDirtyNotifier;
 	}
@@ -65,12 +55,8 @@ public class SimpleInvContents implements IInventory {
 		this.markDirtyNotifier = markDirtyNotifier;
 	}
 
-	public static SimpleInvContents createServerContents(int slotAmount, ISHandlerType type, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
-		return new SimpleInvContents(slotAmount, type, canPlayerAccessInventory, markDirtyNotifier);
-	}
-
-	public static SimpleInvContents createClientContents(int slotAmount, ISHandlerType type) {
-		return new SimpleInvContents(slotAmount, type);
+	public static SimpleInvContents createServerContents(int slotAmount, Function<ItemStackHandler, LazyOptional<IItemHandler>> func, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
+		return new SimpleInvContents(slotAmount, func, canPlayerAccessInventory, markDirtyNotifier);
 	}
 
 	public static SimpleInvContents createServerContents(int slotAmount, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
@@ -189,14 +175,4 @@ public class SimpleInvContents implements IInventory {
 		return itemStackHandler;
 	}
 
-	public enum ISHandlerType {
-		/**
-		 * prevents insertion of items
-		 */
-		NO_INSERT,
-		/**
-		 * prevents nesting of items with an inventory (ITEM_HANDLER_CAPABILITY and Shulker Boxes)
-		 */
-		NON_NESTING
-	}
 }

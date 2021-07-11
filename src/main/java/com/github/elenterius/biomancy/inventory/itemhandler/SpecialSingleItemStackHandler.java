@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.handler.item;
+package com.github.elenterius.biomancy.inventory.itemhandler;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

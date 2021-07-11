@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.inventory;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModContainerTypes;
+import com.github.elenterius.biomancy.inventory.itemhandler.behavior.ItemHandlerBehavior;
 import com.github.elenterius.biomancy.tileentity.SolidifierTileEntity;
 import com.github.elenterius.biomancy.tileentity.state.SolidifierStateData;
 import net.minecraft.entity.player.PlayerEntity;
@@ -37,7 +38,7 @@ public class SolidifierContainer extends Container {
 		addSlot(new Slot(filledBucketInventory, 0, 51, 17) {
 			@Override
 			public boolean isItemValid(ItemStack stack) {
-				return FluidItemInvContents.VALID_FLUID_ITEM.test(stack);
+				return ItemHandlerBehavior.FILLED_FLUID_ITEM_PREDICATE.test(stack);
 			}
 		});
 		addSlot(new OutputSlot(emptyBucketInventory, 0, 51, 44));
@@ -127,7 +128,7 @@ public class SolidifierContainer extends Container {
 
 			case PLAYER_HOTBAR:
 			case PLAYER_MAIN_INVENTORY:
-				if (FluidItemInvContents.VALID_FLUID_ITEM.test(sourceStack)) {
+				if (ItemHandlerBehavior.FILLED_FLUID_ITEM_PREDICATE.test(sourceStack)) {
 					successfulTransfer = mergeInto(SlotZone.FILLED_BUCKET_ZONE, sourceStack, true);
 				}
 				if (!successfulTransfer) {
