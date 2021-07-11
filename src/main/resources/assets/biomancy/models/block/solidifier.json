@@ -1,5 +1,6 @@
 {
   "credit": "Made by Selea",
+  "parent": "block/block",
   "textures": {
     "particle": "biomancy:block/flesh_bland",
     "base": "biomancy:block/flesh_bland",

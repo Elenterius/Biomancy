@@ -86,10 +86,10 @@ public abstract class MachineTileEntity<R extends AbstractProductionRecipe, S ex
 			float itemFuelValue = getItemFuelValue(stackIn);
 			if (itemFuelValue <= 0f) return stackIn;
 
-			int itemsNeeded = Math.round(Math.max(0, getMaxFuelAmount() - getFuelAmount()) / itemFuelValue);
+			int itemsNeeded = MathHelper.floor(Math.max(0, getMaxFuelAmount() - getFuelAmount()) / itemFuelValue);
 			int consumeAmount = Math.min(stackIn.getCount(), itemsNeeded);
 			if (consumeAmount > 0) {
-				short newFuel = (short) MathHelper.clamp(getFuelAmount() + itemFuelValue * consumeAmount, 0, getMaxFuelAmount() + itemFuelValue);
+				short newFuel = (short) MathHelper.clamp(getFuelAmount() + itemFuelValue * consumeAmount, 0, getMaxFuelAmount());
 				setFuelAmount(newFuel);
 				return ItemHandlerHelper.copyStackWithSize(stackIn, stackIn.getCount() - consumeAmount);
 			}

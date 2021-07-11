@@ -67,9 +67,9 @@ public class DigesterContainer extends Container {
 			}
 		});
 
-		addSlot(new Slot(inputContents, 0, 71, 26));
+		addSlot(new Slot(inputContents, 0, 62, 26));
 
-		addSlot(new OutputSlot(outputContents, 0, 107, 26));
+		addSlot(new OutputSlot(outputContents, 0, 98, 26));
 
 		addSlot(new OutputSlot(fuelOutContents, 0, 17, 44));
 	}

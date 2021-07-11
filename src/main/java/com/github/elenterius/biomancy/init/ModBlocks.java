@@ -86,7 +86,9 @@ public final class ModBlocks {
 
 		RenderTypeLookup.setRenderLayer(ModBlocks.EVOLUTION_POOL.get(), RenderType.getTranslucent());
 		RenderTypeLookup.setRenderLayer(ModBlocks.DECOMPOSER.get(), RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(ModBlocks.NUTRIENT_SLURRY_FLUID.get(), RenderType.getTranslucent());
+//		RenderTypeLookup.setRenderLayer(ModBlocks.NUTRIENT_SLURRY_FLUID.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(ModFluids.NUTRIENT_SLURRY.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(ModFluids.NUTRIENT_SLURRY_FLOWING.get(), RenderType.getTranslucent());
 
 		RenderTypeLookup.setRenderLayer(ModBlocks.DIGESTER.get(), RenderType.getCutout());
 		RenderTypeLookup.setRenderLayer(ModBlocks.CHEWER.get(), RenderType.getCutout());

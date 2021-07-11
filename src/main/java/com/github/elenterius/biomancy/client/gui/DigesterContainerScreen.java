@@ -21,7 +21,7 @@ public class DigesterContainerScreen extends ContainerScreen<DigesterContainer> 
 
 	private static final ResourceLocation BACKGROUND_TEXTURE = BiomancyMod.createRL("textures/gui/digester_gui.png");
 	private final ProgressBar fuelBar = new ProgressBar(39, 17, 5, 60 - 17, 0xFF2E58D3);
-	private final FluidTankBar outputTankBar = new FluidTankBar(129, 17, 5, 60 - 17);
+	private final FluidTankBar outputTankBar = new FluidTankBar(120, 17, 5, 60 - 17);
 
 	public DigesterContainerScreen(DigesterContainer container, PlayerInventory inv, ITextComponent titleIn) {
 		super(container, inv, titleIn);
