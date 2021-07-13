@@ -2,7 +2,6 @@ package com.github.elenterius.biomancy.inventory;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModContainerTypes;
-import com.github.elenterius.biomancy.inventory.itemhandler.behavior.ItemHandlerBehavior;
 import com.github.elenterius.biomancy.tileentity.SolidifierTileEntity;
 import com.github.elenterius.biomancy.tileentity.state.SolidifierStateData;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,12 +18,12 @@ import org.apache.logging.log4j.MarkerManager;
 
 public class SolidifierContainer extends Container {
 
-	protected final SimpleInvContents filledBucketInventory;
-	protected final SimpleInvContents emptyBucketInventory;
-	protected final SimpleInvContents outputInventory;
+	protected final SimpleInventory filledBucketInventory;
+	protected final SimpleInventory emptyBucketInventory;
+	protected final SimpleInventory outputInventory;
 	private final SolidifierStateData stateData;
 
-	private SolidifierContainer(int screenId, PlayerInventory playerInventory, SimpleInvContents filledBucketInventory, SimpleInvContents emptyBucketInventory, SimpleInvContents outputInventory, SolidifierStateData stateData) {
+	private SolidifierContainer(int screenId, PlayerInventory playerInventory, SimpleInventory filledBucketInventory, SimpleInventory emptyBucketInventory, SimpleInventory outputInventory, SolidifierStateData stateData) {
 		super(ModContainerTypes.SOLIDIFIER.get(), screenId);
 		this.filledBucketInventory = filledBucketInventory;
 		this.emptyBucketInventory = emptyBucketInventory;
@@ -38,7 +37,7 @@ public class SolidifierContainer extends Container {
 		addSlot(new Slot(filledBucketInventory, 0, 51, 17) {
 			@Override
 			public boolean isItemValid(ItemStack stack) {
-				return ItemHandlerBehavior.FILLED_FLUID_ITEM_PREDICATE.test(stack);
+				return HandlerBehaviors.FILLED_FLUID_ITEM_PREDICATE.test(stack);
 			}
 		});
 		addSlot(new OutputSlot(emptyBucketInventory, 0, 51, 44));
@@ -72,14 +71,14 @@ public class SolidifierContainer extends Container {
 		}
 	}
 
-	public static SolidifierContainer createServerContainer(int screenId, PlayerInventory playerInventory, SimpleInvContents filledBucketInventory, SimpleInvContents emptyBucketInventory, SimpleInvContents outputInventory, SolidifierStateData stateData) {
+	public static SolidifierContainer createServerContainer(int screenId, PlayerInventory playerInventory, SimpleInventory filledBucketInventory, SimpleInventory emptyBucketInventory, SimpleInventory outputInventory, SolidifierStateData stateData) {
 		return new SolidifierContainer(screenId, playerInventory, filledBucketInventory, emptyBucketInventory, outputInventory, stateData);
 	}
 
 	public static SolidifierContainer createClientContainer(int screenId, PlayerInventory playerInventory, PacketBuffer extraData) {
-		SimpleInvContents filledBucketInventory = SimpleInvContents.createClientContents(SolidifierTileEntity.FILLED_BUCKET_SLOTS);
-		SimpleInvContents emptyBucketInventory = SimpleInvContents.createClientContents(SolidifierTileEntity.EMPTY_BUCKET_SLOTS);
-		SimpleInvContents outputInventory = SimpleInvContents.createClientContents(SolidifierTileEntity.OUTPUT_SLOTS);
+		SimpleInventory filledBucketInventory = SimpleInventory.createClientContents(SolidifierTileEntity.FILLED_BUCKET_SLOTS);
+		SimpleInventory emptyBucketInventory = SimpleInventory.createClientContents(SolidifierTileEntity.EMPTY_BUCKET_SLOTS);
+		SimpleInventory outputInventory = SimpleInventory.createClientContents(SolidifierTileEntity.OUTPUT_SLOTS);
 		SolidifierStateData stateData = new SolidifierStateData();
 		return new SolidifierContainer(screenId, playerInventory, filledBucketInventory, emptyBucketInventory, outputInventory, stateData);
 	}
@@ -128,7 +127,7 @@ public class SolidifierContainer extends Container {
 
 			case PLAYER_HOTBAR:
 			case PLAYER_MAIN_INVENTORY:
-				if (ItemHandlerBehavior.FILLED_FLUID_ITEM_PREDICATE.test(sourceStack)) {
+				if (HandlerBehaviors.FILLED_FLUID_ITEM_PREDICATE.test(sourceStack)) {
 					successfulTransfer = mergeInto(SlotZone.FILLED_BUCKET_ZONE, sourceStack, true);
 				}
 				if (!successfulTransfer) {

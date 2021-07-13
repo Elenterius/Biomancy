@@ -33,7 +33,7 @@ public class SolidifierStateData extends RecipeCraftingStateData<SolidifierRecip
 	@Override
 	public void serializeNBT(CompoundNBT nbt) {
 		super.serializeNBT(nbt);
-		nbt.put(NBT_KEY_FLUID, inputTank.writeToNBT(new CompoundNBT()));
+		if (!inputTank.isEmpty()) nbt.put(NBT_KEY_FLUID, inputTank.writeToNBT(new CompoundNBT()));
 	}
 
 	@Override

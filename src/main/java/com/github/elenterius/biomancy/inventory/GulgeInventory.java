@@ -12,7 +12,7 @@ import net.minecraftforge.items.IItemHandler;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public class GulgeContents implements IInventory, IIntArray {
+public class GulgeInventory implements IInventory, IIntArray {
 
 	private final LargeSingleItemStackHandler itemStackHandler;
 	private final LazyOptional<IItemHandler> optionalItemStackHandler;
@@ -22,23 +22,23 @@ public class GulgeContents implements IInventory, IIntArray {
 	private Consumer<PlayerEntity> onOpenInventory = (player) -> {};
 	private Consumer<PlayerEntity> closeInventoryNotifier = (player) -> {};
 
-	private GulgeContents(short maxItemAmount) {
+	private GulgeInventory(short maxItemAmount) {
 		itemStackHandler = new LargeSingleItemStackHandler(maxItemAmount);
 		optionalItemStackHandler = LazyOptional.of(() -> itemStackHandler);
 	}
 
-	private GulgeContents(short maxItemAmount, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
+	private GulgeInventory(short maxItemAmount, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
 		this(maxItemAmount);
 		this.canPlayerAccessInventory = canPlayerAccessInventory;
 		this.markDirtyNotifier = markDirtyNotifier;
 	}
 
-	public static GulgeContents createServerContents(short maxItemAmount, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
-		return new GulgeContents(maxItemAmount, canPlayerAccessInventory, markDirtyNotifier);
+	public static GulgeInventory createServerContents(short maxItemAmount, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
+		return new GulgeInventory(maxItemAmount, canPlayerAccessInventory, markDirtyNotifier);
 	}
 
-	public static GulgeContents createClientContents(short maxItemAmount) {
-		return new GulgeContents(maxItemAmount);
+	public static GulgeInventory createClientContents(short maxItemAmount) {
+		return new GulgeInventory(maxItemAmount);
 	}
 
 	public CompoundNBT serializeNBT() {

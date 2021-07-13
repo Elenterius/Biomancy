@@ -5,8 +5,6 @@ import com.github.elenterius.biomancy.datagen.recipe.*;
 import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.item.ReagentItem;
 import com.github.elenterius.biomancy.recipe.ItemStackIngredient;
-import com.github.elenterius.biomancy.tileentity.ChewerTileEntity;
-import com.github.elenterius.biomancy.tileentity.EvolutionPoolTileEntity;
 import com.github.elenterius.biomancy.util.BiofuelUtil;
 import net.minecraft.advancements.criterion.EnchantmentPredicate;
 import net.minecraft.advancements.criterion.InventoryChangeTrigger;
@@ -80,7 +78,7 @@ public class ModRecipeProvider extends RecipeProvider {
 	}
 
 	private void registerEvolutionPoolRecipes(Consumer<IFinishedRecipe> consumer) {
-		final int defaultTime = EvolutionPoolTileEntity.DEFAULT_TIME;
+		final int defaultTime = 400;
 
 		// Duplication /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		EvolutionPoolRecipeBuilder.createRecipe(Items.IRON_NUGGET, defaultTime, 5)
@@ -415,7 +413,7 @@ public class ModRecipeProvider extends RecipeProvider {
 	}
 
 	private void registerChewerRecipes(Consumer<IFinishedRecipe> consumer) {
-		final int defaultChewingTime = ChewerTileEntity.DEFAULT_TIME;
+		final int defaultChewingTime = 200;
 
 		// crushed biomass /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		ChewerRecipeBuilder.createRecipe(ModItems.BOLUS.get(), 105, 2)

@@ -2,7 +2,6 @@ package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.gui.drawable.FluidTankBar;
-import com.github.elenterius.biomancy.client.gui.drawable.ProgressBar;
 import com.github.elenterius.biomancy.inventory.DigesterContainer;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -20,7 +19,7 @@ import java.util.List;
 public class DigesterContainerScreen extends ContainerScreen<DigesterContainer> {
 
 	private static final ResourceLocation BACKGROUND_TEXTURE = BiomancyMod.createRL("textures/gui/digester_gui.png");
-	private final ProgressBar fuelBar = new ProgressBar(39, 17, 5, 60 - 17, 0xFF2E58D3);
+	private final FluidTankBar fuelTankBar = new FluidTankBar(39, 17, 5, 60 - 17);
 	private final FluidTankBar outputTankBar = new FluidTankBar(120, 17, 5, 60 - 17);
 
 	public DigesterContainerScreen(DigesterContainer container, PlayerInventory inv, ITextComponent titleIn) {
@@ -55,9 +54,8 @@ public class DigesterContainerScreen extends ContainerScreen<DigesterContainer> 
 		int edgeSpacingY = (height - ySize) / 2;
 		blit(matrixStack, edgeSpacingX, edgeSpacingY, 0, 0, xSize, ySize);
 
-		fuelBar.setProgress(container.getFuelNormalized());
-		fuelBar.draw(minecraft, matrixStack, guiLeft, guiTop, mouseX, mouseY);
-
+		fuelTankBar.update(container.getFuelTank());
+		fuelTankBar.draw(minecraft, matrixStack, guiLeft, guiTop, mouseX, mouseY);
 		outputTankBar.update(container.getOutputTank());
 		outputTankBar.draw(minecraft, matrixStack, guiLeft, guiTop, mouseX, mouseY);
 	}
@@ -69,11 +67,11 @@ public class DigesterContainerScreen extends ContainerScreen<DigesterContainer> 
 
 		List<ITextComponent> hoveringText = new ArrayList<>();
 
-		if (fuelBar.isMouseInside(guiLeft, guiTop, mouseX, mouseY)) {
-			int amount = container.getFuelAmount();
+		if (fuelTankBar.isMouseInside(guiLeft, guiTop, mouseX, mouseY)) {
+			int amount = container.getFuelTank().getFluidAmount();
 			if (amount > 0) {
 				DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
-				hoveringText.add(new TranslationTextComponent(container.getFuelTranslationKey()).appendString(": " + df.format(amount) + " mb"));
+				hoveringText.add(new TranslationTextComponent(container.getFuelTank().getFluid().getTranslationKey()).appendString(": " + df.format(amount) + " mb"));
 			}
 			else {
 				hoveringText.add(ClientTextUtil.getTooltipText("empty"));

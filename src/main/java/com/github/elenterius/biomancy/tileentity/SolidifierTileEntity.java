@@ -1,12 +1,13 @@
 package com.github.elenterius.biomancy.tileentity;
 
+import com.github.elenterius.biomancy.block.DigesterBlock;
 import com.github.elenterius.biomancy.fluid.simibubi.FluidIngredient;
 import com.github.elenterius.biomancy.init.ModFluids;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.init.ModTileEntityTypes;
-import com.github.elenterius.biomancy.inventory.SimpleInvContents;
+import com.github.elenterius.biomancy.inventory.HandlerBehaviors;
+import com.github.elenterius.biomancy.inventory.SimpleInventory;
 import com.github.elenterius.biomancy.inventory.SolidifierContainer;
-import com.github.elenterius.biomancy.inventory.itemhandler.behavior.ItemHandlerBehavior;
 import com.github.elenterius.biomancy.recipe.RecipeType;
 import com.github.elenterius.biomancy.recipe.SolidifierRecipe;
 import com.github.elenterius.biomancy.tileentity.state.SolidifierStateData;
@@ -46,15 +47,15 @@ public class SolidifierTileEntity extends MachineTileEntity<SolidifierRecipe, So
 	public static final RecipeType.FluidStackRecipeType<SolidifierRecipe> RECIPE_TYPE = ModRecipes.SOLIDIFIER_RECIPE_TYPE;
 	public final LazyOptional<IItemHandler> combinedInventory;
 	private final SolidifierStateData stateData = new SolidifierStateData();
-	private final SimpleInvContents filledBucketInventory;
-	private final SimpleInvContents emptyBucketInventory;
-	private final SimpleInvContents outputInventory;
+	private final SimpleInventory filledBucketInventory;
+	private final SimpleInventory emptyBucketInventory;
+	private final SimpleInventory outputInventory;
 
 	public SolidifierTileEntity() {
 		super(ModTileEntityTypes.SOLIDIFIER.get());
-		filledBucketInventory = SimpleInvContents.createServerContents(FILLED_BUCKET_SLOTS, ItemHandlerBehavior::filterFilledFluidContainer, this::canPlayerOpenInv, this::markDirty);
-		emptyBucketInventory = SimpleInvContents.createServerContents(EMPTY_BUCKET_SLOTS, ItemHandlerBehavior::denyInput, this::canPlayerOpenInv, this::markDirty);
-		outputInventory = SimpleInvContents.createServerContents(OUTPUT_SLOTS, ItemHandlerBehavior::denyInput, this::canPlayerOpenInv, this::markDirty);
+		filledBucketInventory = SimpleInventory.createServerContents(FILLED_BUCKET_SLOTS, HandlerBehaviors::filterFilledFluidContainer, this::canPlayerOpenInv, this::markDirty);
+		emptyBucketInventory = SimpleInventory.createServerContents(EMPTY_BUCKET_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::markDirty);
+		outputInventory = SimpleInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::markDirty);
 		combinedInventory = LazyOptional.of(() -> new CombinedInvWrapper(filledBucketInventory.getItemStackHandler(), emptyBucketInventory.getItemStackHandler(), outputInventory.getItemStackHandler()));
 	}
 
@@ -100,7 +101,7 @@ public class SolidifierTileEntity extends MachineTileEntity<SolidifierRecipe, So
 
 	@Override
 	public boolean isItemValidFuel(ItemStack stack) {
-		return ItemHandlerBehavior.FILLED_FLUID_ITEM_PREDICATE.test(stack);
+		return HandlerBehaviors.FILLED_FLUID_ITEM_PREDICATE.test(stack);
 	}
 
 	@Override
@@ -121,6 +122,17 @@ public class SolidifierTileEntity extends MachineTileEntity<SolidifierRecipe, So
 	@Override
 	protected boolean doesItemFitIntoOutputInventory(ItemStack stackToCraft) {
 		return outputInventory.doesItemStackFit(0, stackToCraft);
+	}
+
+	@Override
+	public void tick() {
+		if (world != null && !world.isRemote) {
+			if (ticks % 42 == 0) {
+				tryToGetFluidFromAttachedBlock(world);
+			}
+		}
+
+		super.tick();
 	}
 
 	@Override
@@ -148,7 +160,7 @@ public class SolidifierTileEntity extends MachineTileEntity<SolidifierRecipe, So
 			ItemStack stack = filledBucketInventory.getStackInSlot(0);
 			if (stack.isEmpty()) return;
 
-			if (ItemHandlerBehavior.FILLED_FLUID_ITEM_PREDICATE.test(stack)) {
+			if (HandlerBehaviors.FILLED_FLUID_ITEM_PREDICATE.test(stack)) {
 				FluidActionResult fluidAction = FluidUtil.tryEmptyContainerAndStow(stack, stateData.inputTank, emptyBucketInventory.getItemStackHandler(), maxFluidAmount - fluidAmount, null, true);
 				if (fluidAction.isSuccess()) {
 					filledBucketInventory.setInventorySlotContents(0, fluidAction.getResult());
@@ -167,6 +179,15 @@ public class SolidifierTileEntity extends MachineTileEntity<SolidifierRecipe, So
 	@Override
 	protected SolidifierRecipe resolveRecipeFromInput(World world) {
 		return RECIPE_TYPE.getRecipeFromFluidTank(world, stateData.inputTank).orElse(null);
+	}
+
+	protected void tryToGetFluidFromAttachedBlock(World world) {
+		Direction direction = getBlockState().get(DigesterBlock.FACING).getOpposite();
+		BlockPos blockPos = getPos().offset(direction);
+		LazyOptional<IFluidHandler> capability = FluidUtil.getFluidHandler(world, blockPos, Direction.DOWN);
+		if (capability.isPresent()) {
+			//TODO: implement
+		}
 	}
 
 	@Override

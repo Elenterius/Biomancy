@@ -20,17 +20,17 @@ public class GulgeContainer extends Container {
 
 	private static final int VANILLA_SLOT_COUNT = 9 + 3 * 9;
 	private static final int INPUT_SLOT_INDEX = VANILLA_SLOT_COUNT;
-	protected final GulgeContents gulgeContents;
+	protected final GulgeInventory gulgeInventory;
 	protected final IInventory redirectedInput = new Inventory(1);
 	protected final IInventory redirectedOutput = new Inventory(1);
 
-	private GulgeContainer(int screenId, PlayerInventory playerInventory, GulgeContents gulgeContents) {
+	private GulgeContainer(int screenId, PlayerInventory playerInventory, GulgeInventory gulgeInventory) {
 		super(ModContainerTypes.GULGE.get(), screenId);
-		this.gulgeContents = gulgeContents;
+		this.gulgeInventory = gulgeInventory;
 
 		// track item count and sync to client.
 		// We do this because ItemStack size is serialized using a signed byte and thus can't store values larger than 127
-		trackIntArray(gulgeContents);
+		trackIntArray(gulgeInventory);
 
 		PlayerInvWrapper playerInventoryForge = new PlayerInvWrapper(playerInventory);
 
@@ -58,17 +58,17 @@ public class GulgeContainer extends Container {
 		addSlot(new Slot(redirectedInput, 0, 80 - 18, 35) {
 			@Override
 			public boolean isItemValid(ItemStack stack) {
-				return gulgeContents.isEmpty() || ItemHandlerHelper.canItemStacksStack(stack, gulgeContents.getStackInSlot(0));
+				return gulgeInventory.isEmpty() || ItemHandlerHelper.canItemStacksStack(stack, gulgeInventory.getStackInSlot(0));
 			}
 
 			@Override
 			public void putStack(ItemStack stack) {
-				if (gulgeContents.getOptionalItemStackHandler().isPresent()) {
-					gulgeContents.getOptionalItemStackHandler().ifPresent(itemHandler -> {
+				if (gulgeInventory.getOptionalItemStackHandler().isPresent()) {
+					gulgeInventory.getOptionalItemStackHandler().ifPresent(itemHandler -> {
 						ItemStack remainder = itemHandler.insertItem(0, stack, false);  //redirect stack into gulge inventory
 						inventory.setInventorySlotContents(0, remainder);
 					});
-					gulgeContents.markDirty();
+					gulgeInventory.markDirty();
 					updateOutputSlot();
 				}
 				else {
@@ -88,8 +88,8 @@ public class GulgeContainer extends Container {
 			public ItemStack onTake(PlayerEntity playerIn, ItemStack stack) {
 				//server & client side
 
-				if (gulgeContents.getOptionalItemStackHandler().isPresent()) {
-					gulgeContents.getOptionalItemStackHandler().ifPresent(itemHandler -> {
+				if (gulgeInventory.getOptionalItemStackHandler().isPresent()) {
+					gulgeInventory.getOptionalItemStackHandler().ifPresent(itemHandler -> {
 						ItemStack gulgeStack = itemHandler.getStackInSlot(0);
 						if (!gulgeStack.isEmpty()) { // check if there still is something left to take
 							itemHandler.extractItem(0, 1, false); //actually extract the item
@@ -98,7 +98,7 @@ public class GulgeContainer extends Container {
 							updateOutputSlot(gulgeStack);
 						}
 					});
-					gulgeContents.markDirty();
+					gulgeInventory.markDirty();
 				}
 
 				onSlotChanged();
@@ -107,22 +107,22 @@ public class GulgeContainer extends Container {
 		});
 	}
 
-	public static GulgeContainer createServerContainer(int screenId, PlayerInventory playerInventory, GulgeContents contents) {
+	public static GulgeContainer createServerContainer(int screenId, PlayerInventory playerInventory, GulgeInventory contents) {
 		return new GulgeContainer(screenId, playerInventory, contents);
 	}
 
 	public static GulgeContainer createClientContainer(int screenId, PlayerInventory playerInventory, PacketBuffer extraData) {
-		GulgeContents contents = GulgeContents.createClientContents(GulgeTileEntity.MAX_ITEM_AMOUNT);
+		GulgeInventory contents = GulgeInventory.createClientContents(GulgeTileEntity.MAX_ITEM_AMOUNT);
 		return new GulgeContainer(screenId, playerInventory, contents);
 	}
 
 	@Override
 	public boolean canInteractWith(PlayerEntity playerIn) {
-		return gulgeContents.isUsableByPlayer(playerIn);
+		return gulgeInventory.isUsableByPlayer(playerIn);
 	}
 
 	private void updateOutputSlot() {
-		updateOutputSlot(gulgeContents.getStackInSlot(0));
+		updateOutputSlot(gulgeInventory.getStackInSlot(0));
 	}
 
 	private void updateOutputSlot(ItemStack storedStack) {
@@ -190,11 +190,11 @@ public class GulgeContainer extends Container {
 	}
 
 	public int getStoredItemCount() {
-		return gulgeContents.get(0);
+		return gulgeInventory.get(0);
 	}
 
 	public int getMaxItemCount() {
-		return gulgeContents.getInventoryStackLimit();
+		return gulgeInventory.getInventoryStackLimit();
 	}
 
 	public ItemStack getStoredItemStack() {

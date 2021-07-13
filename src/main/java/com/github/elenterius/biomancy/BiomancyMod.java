@@ -20,6 +20,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
+import java.util.Random;
 
 @Mod(BiomancyMod.MOD_ID)
 public final class BiomancyMod {
@@ -27,6 +28,7 @@ public final class BiomancyMod {
 	public static final String MOD_ID = "biomancy";
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+	public static final Random GLOBAL_RANDOM = new Random();
 
 	public BiomancyMod() {
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();

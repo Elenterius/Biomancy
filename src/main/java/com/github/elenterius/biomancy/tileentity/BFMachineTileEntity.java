@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.tileentity;
 
 import com.github.elenterius.biomancy.init.ModFluids;
-import com.github.elenterius.biomancy.inventory.SimpleInvContents;
+import com.github.elenterius.biomancy.inventory.SimpleInventory;
 import com.github.elenterius.biomancy.recipe.AbstractProductionRecipe;
 import com.github.elenterius.biomancy.tileentity.state.RecipeCraftingStateData;
 import com.github.elenterius.biomancy.util.BiofuelUtil;
@@ -54,7 +54,7 @@ public abstract class BFMachineTileEntity<R extends AbstractProductionRecipe, S 
 		return BiofuelUtil.getItemFuelValue(stackIn);
 	}
 
-	protected abstract SimpleInvContents getEmptyBucketInventory();
+	protected abstract SimpleInventory getEmptyBucketInventory();
 
 	@Override
 	public void refuel() {
@@ -64,14 +64,14 @@ public abstract class BFMachineTileEntity<R extends AbstractProductionRecipe, S 
 			ItemStack stack = getStackInFuelSlot();
 			if (stack.isEmpty()) return;
 
-			if (BiofuelUtil.VALID_SOLID_FUEL.test(stack)) {
+			if (BiofuelUtil.VALID_FUEL_ITEMS.test(stack)) {
 				ItemStack remainder = addFuel(stack);
 				if (remainder.getCount() != stack.getCount()) {
 					setStackInFuelSlot(remainder);
 					markDirty();
 				}
 			}
-			else if (BiofuelUtil.VALID_FLUID_FUEL.test(stack)) {
+			else if (BiofuelUtil.VALID_FUEL_CONTAINERS.test(stack)) {
 				FluidActionResult fluidAction = FluidUtil.tryEmptyContainerAndStow(stack, getFuelTank(), getEmptyBucketInventory().getItemStackHandler(), maxFluidAmount - fluidAmount, null, true);
 				if (fluidAction.isSuccess()) {
 					setStackInFuelSlot(fluidAction.getResult());

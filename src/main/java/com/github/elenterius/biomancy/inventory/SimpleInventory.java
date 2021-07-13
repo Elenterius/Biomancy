@@ -16,7 +16,7 @@ import java.util.function.Predicate;
  * Based on FurnaceZoneContents class from author TGG <br>
  * link: https://github.com/TheGreyGhost/MinecraftByExample/blob/1-16-3-final/src/main/java/minecraftbyexample/mbe31_inventory_furnace/FurnaceZoneContents.java"
  */
-public class SimpleInvContents implements IInventory {
+public class SimpleInventory implements IInventory {
 
 	private final ItemStackHandler itemStackHandler;
 	private final LazyOptional<IItemHandler> optionalItemStackHandler;
@@ -26,45 +26,45 @@ public class SimpleInvContents implements IInventory {
 	private Consumer<PlayerEntity> onOpenInventory = (player) -> {};
 	private Consumer<PlayerEntity> onCloseInventory = (player) -> {};
 
-	SimpleInvContents(int slotAmount) {
+	SimpleInventory(int slotAmount) {
 		itemStackHandler = new ItemStackHandler(slotAmount);
 		optionalItemStackHandler = LazyOptional.of(() -> itemStackHandler);
 	}
 
-	SimpleInvContents(int slotAmount, Function<ItemStackHandler, LazyOptional<IItemHandler>> func) {
+	SimpleInventory(int slotAmount, Function<ItemStackHandler, LazyOptional<IItemHandler>> func) {
 		itemStackHandler = new ItemStackHandler(slotAmount);
 		optionalItemStackHandler = func.apply(itemStackHandler);
 	}
 
-	SimpleInvContents(ItemStackHandler itemStackHandlerIn, LazyOptional<IItemHandler> optionalItemStackHandlerIn, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
+	SimpleInventory(ItemStackHandler itemStackHandlerIn, LazyOptional<IItemHandler> optionalItemStackHandlerIn, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
 		itemStackHandler = itemStackHandlerIn;
 		optionalItemStackHandler = optionalItemStackHandlerIn;
 		this.canPlayerAccessInventory = canPlayerAccessInventory;
 		this.markDirtyNotifier = markDirtyNotifier;
 	}
 
-	SimpleInvContents(int slotAmount, Function<ItemStackHandler, LazyOptional<IItemHandler>> func, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
+	SimpleInventory(int slotAmount, Function<ItemStackHandler, LazyOptional<IItemHandler>> func, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
 		this(slotAmount, func);
 		this.canPlayerAccessInventory = canPlayerAccessInventory;
 		this.markDirtyNotifier = markDirtyNotifier;
 	}
 
-	SimpleInvContents(int slotAmount, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
+	SimpleInventory(int slotAmount, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
 		this(slotAmount);
 		this.canPlayerAccessInventory = canPlayerAccessInventory;
 		this.markDirtyNotifier = markDirtyNotifier;
 	}
 
-	public static SimpleInvContents createServerContents(int slotAmount, Function<ItemStackHandler, LazyOptional<IItemHandler>> func, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
-		return new SimpleInvContents(slotAmount, func, canPlayerAccessInventory, markDirtyNotifier);
+	public static SimpleInventory createServerContents(int slotAmount, Function<ItemStackHandler, LazyOptional<IItemHandler>> func, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
+		return new SimpleInventory(slotAmount, func, canPlayerAccessInventory, markDirtyNotifier);
 	}
 
-	public static SimpleInvContents createServerContents(int slotAmount, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
-		return new SimpleInvContents(slotAmount, canPlayerAccessInventory, markDirtyNotifier);
+	public static SimpleInventory createServerContents(int slotAmount, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
+		return new SimpleInventory(slotAmount, canPlayerAccessInventory, markDirtyNotifier);
 	}
 
-	public static SimpleInvContents createClientContents(int slotAmount) {
-		return new SimpleInvContents(slotAmount);
+	public static SimpleInventory createClientContents(int slotAmount) {
+		return new SimpleInventory(slotAmount);
 	}
 
 	public LazyOptional<IItemHandler> getOptionalItemStackHandler() {

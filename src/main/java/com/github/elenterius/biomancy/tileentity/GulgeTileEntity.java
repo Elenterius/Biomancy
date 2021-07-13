@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.tileentity;
 
 import com.github.elenterius.biomancy.init.ModTileEntityTypes;
 import com.github.elenterius.biomancy.inventory.GulgeContainer;
-import com.github.elenterius.biomancy.inventory.GulgeContents;
+import com.github.elenterius.biomancy.inventory.GulgeInventory;
 import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,19 +22,19 @@ import javax.annotation.Nullable;
 public class GulgeTileEntity extends OwnableTileEntity implements INamedContainerProvider {
 
 	public static final short MAX_ITEM_AMOUNT = 32_000;
-	private final GulgeContents gulgeContents;
+	private final GulgeInventory gulgeInventory;
 
 	public GulgeTileEntity() {
 		super(ModTileEntityTypes.GULGE.get());
-		gulgeContents = GulgeContents.createServerContents(MAX_ITEM_AMOUNT, this::canPlayerOpenInv, this::markDirty);
-		gulgeContents.setOpenInventoryConsumer(this::onOpenInventory);
-		gulgeContents.setCloseInventoryConsumer(this::onCloseInventory);
+		gulgeInventory = GulgeInventory.createServerContents(MAX_ITEM_AMOUNT, this::canPlayerOpenInv, this::markDirty);
+		gulgeInventory.setOpenInventoryConsumer(this::onOpenInventory);
+		gulgeInventory.setCloseInventoryConsumer(this::onCloseInventory);
 	}
 
 	@Nullable
 	@Override
 	public Container createMenu(int screenId, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-		return GulgeContainer.createServerContainer(screenId, playerInventory, gulgeContents);
+		return GulgeContainer.createServerContainer(screenId, playerInventory, gulgeInventory);
 	}
 
 	public void onOpenInventory(PlayerEntity player) {
@@ -50,32 +50,32 @@ public class GulgeTileEntity extends OwnableTileEntity implements INamedContaine
 	}
 
 	public boolean isEmpty() {
-		return gulgeContents.isEmpty();
+		return gulgeInventory.isEmpty();
 	}
 
 	@Override
 	public CompoundNBT write(CompoundNBT nbt) {
 		super.write(nbt);
-		nbt.put("Inventory", gulgeContents.serializeNBT());
+		nbt.put("Inventory", gulgeInventory.serializeNBT());
 		return nbt;
 	}
 
 	@Override
 	public void read(BlockState state, CompoundNBT nbt) {
 		super.read(state, nbt);
-		gulgeContents.deserializeNBT(nbt.getCompound("Inventory"));
+		gulgeInventory.deserializeNBT(nbt.getCompound("Inventory"));
 	}
 
 	@Override
 	public CompoundNBT writeToItemBlockEntityTag(CompoundNBT nbt) {
 		super.writeToItemBlockEntityTag(nbt);
-		if (!gulgeContents.isEmpty()) nbt.put("Inventory", gulgeContents.serializeNBT());
+		if (!gulgeInventory.isEmpty()) nbt.put("Inventory", gulgeInventory.serializeNBT());
 		return nbt;
 	}
 
 	@Override
 	public void invalidateCaps() {
-		gulgeContents.getOptionalItemStackHandler().invalidate();
+		gulgeInventory.getOptionalItemStackHandler().invalidate();
 		super.invalidateCaps();
 	}
 
@@ -83,7 +83,7 @@ public class GulgeTileEntity extends OwnableTileEntity implements INamedContaine
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
 		if (!removed && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			return gulgeContents.getOptionalItemStackHandler().cast();
+			return gulgeInventory.getOptionalItemStackHandler().cast();
 		}
 		return super.getCapability(cap, side);
 	}

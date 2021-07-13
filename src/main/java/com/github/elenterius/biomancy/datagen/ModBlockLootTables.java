@@ -47,7 +47,19 @@ public class ModBlockLootTables extends BlockLootTables {
 				)));
 	}
 
-	protected static LootTable.Builder droppingWithFluids(Block itemContainer) {
+	protected static LootTable.Builder droppingWithFluidInput(Block itemContainer) {
+		return LootTable.builder().addLootPool(withSurvivesExplosion(itemContainer, LootPool.builder().rolls(ConstantRange.of(1))
+				.addEntry(ItemLootEntry.builder(itemContainer)
+						.acceptFunction(CopyName.builder(CopyName.Source.BLOCK_ENTITY))
+						.acceptFunction(CopyNbt.builder(CopyNbt.Source.BLOCK_ENTITY)
+								.replaceOperation("FluidInput", "BlockEntityTag.FluidInput")
+								.replaceOperation("OwnerUUID", "BlockEntityTag.OwnerUUID")
+								.replaceOperation("UserList", "BlockEntityTag.UserList")
+						)
+				)));
+	}
+
+	protected static LootTable.Builder droppingWithFuelAndFluidOutput(Block itemContainer) {
 		return LootTable.builder().addLootPool(withSurvivesExplosion(itemContainer, LootPool.builder().rolls(ConstantRange.of(1))
 				.addEntry(ItemLootEntry.builder(itemContainer)
 						.acceptFunction(CopyName.builder(CopyName.Source.BLOCK_ENTITY))
@@ -112,8 +124,10 @@ public class ModBlockLootTables extends BlockLootTables {
 		registerLootTable(ModBlocks.MEATSOUP_CAULDRON.get(), dropping(Blocks.CAULDRON));
 		registerLootTable(ModBlocks.GULGE.get(), ModBlockLootTables::droppingWithInventory);
 		registerLootTable(ModBlocks.FLESHBORN_CHEST.get(), ModBlockLootTables::droppingWithInventory);
+
 		registerLootTable(ModBlocks.CHEWER.get(), ModBlockLootTables::droppingWithFuel);
-		registerLootTable(ModBlocks.DIGESTER.get(), ModBlockLootTables::droppingWithFluids);
+		registerLootTable(ModBlocks.DIGESTER.get(), ModBlockLootTables::droppingWithFuelAndFluidOutput);
+		registerLootTable(ModBlocks.SOLIDIFIER.get(), ModBlockLootTables::droppingWithFluidInput);
 		registerLootTable(ModBlocks.DECOMPOSER.get(), ModBlockLootTables::droppingWithFuel);
 		registerLootTable(ModBlocks.EVOLUTION_POOL.get(), dropping(ModBlocks.FLESH_BLOCK_STAIRS.get()));
 

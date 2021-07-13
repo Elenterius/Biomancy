@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.block;
 
 import com.github.elenterius.biomancy.tileentity.DigesterTileEntity;
 import com.github.elenterius.biomancy.tileentity.SolidifierTileEntity;
-import com.github.elenterius.biomancy.tileentity.state.DigesterStateData;
+import com.github.elenterius.biomancy.tileentity.state.SolidifierStateData;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.VoxelShapeUtil;
 import net.minecraft.block.Block;
@@ -79,14 +79,14 @@ public class SolidifierBlock extends MachineBlock<SolidifierTileEntity> {
 	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()).setStyle(ClientTextUtil.LORE_STYLE));
 		CompoundNBT nbt = stack.getChildTag("BlockEntityTag");
-		if (nbt != null) {
+		if (nbt != null && nbt.contains(SolidifierStateData.NBT_KEY_FLUID)) {
 			tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 			DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
 
-			CompoundNBT fuelNbt = nbt.getCompound(DigesterStateData.NBT_KEY_FUEL);
+			CompoundNBT fuelNbt = nbt.getCompound(SolidifierStateData.NBT_KEY_FLUID);
 			int fuel = fuelNbt.getInt("Amount");
 			String translationKey = "fluid." + fuelNbt.getString("FluidName").replace(":", ".").replace("/", ".");
-			tooltip.add(new TranslationTextComponent(translationKey).appendString(String.format(": %s/%s", df.format(fuel), df.format(DigesterTileEntity.MAX_FUEL))));
+			tooltip.add(new TranslationTextComponent(translationKey).appendString(String.format(": %s/%s", df.format(fuel), df.format(DigesterTileEntity.MAX_FLUID))));
 		}
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 	}

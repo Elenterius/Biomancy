@@ -1,5 +1,7 @@
 package com.github.elenterius.biomancy.tileentity.state;
 
+import com.github.elenterius.biomancy.fluid.simibubi.CombinedTankWrapper;
+import com.github.elenterius.biomancy.inventory.fluidhandler.FluidHandlerDelegator;
 import com.github.elenterius.biomancy.recipe.DigesterRecipe;
 import com.github.elenterius.biomancy.tileentity.DigesterTileEntity;
 import net.minecraft.fluid.Fluid;
@@ -17,25 +19,19 @@ public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> {
 	public static final String NBT_KEY_FUEL = "Fuel";
 	public static final int FUEL_INDEX = 2;
 
-	public static final String NBT_KEY_OUTPUT = "FluidOutput";
+	public static final String NBT_KEY_FLUID_OUT = "FluidOutput";
 	//for the IIntArray sync to client to properly work the index for fluid id has to be smaller than fluid amount index
 	// --> the fluid has to be set before the amount
 	//TODO: reevaluate this and consider if we instead send a dedicated network package to client containing the fluid registry key
 	public static final int FLUID_AMOUNT_INDEX = 4;
 	public static final int FLUID_ID_INDEX = 3;
 
-	public FluidTank waterTank = new FluidTank(DigesterTileEntity.MAX_FUEL, fluidStack -> fluidStack.getFluid() == Fluids.WATER);
-	private final LazyOptional<IFluidHandler> optionalWaterFluidHandler = LazyOptional.of(() -> waterTank);
+	public FluidTank fuelTank = new FluidTank(DigesterTileEntity.MAX_FLUID, fluidStack -> fluidStack.getFluid() == Fluids.WATER);
+	public FluidTank outputTank = new FluidTank(DigesterTileEntity.MAX_FLUID);
+	private final LazyOptional<IFluidHandler> optionalCombinedFluidHandlers = LazyOptional.of(() -> new CombinedTankWrapper(fuelTank, new FluidHandlerDelegator.DenyInput<>(outputTank)));
 
-	public FluidTank outputTank = new FluidTank(DigesterTileEntity.MAX_FUEL);
-	private final LazyOptional<IFluidHandler> optionalOutputFluidHandler = LazyOptional.of(() -> outputTank);
-
-	public LazyOptional<IFluidHandler> getOptionalInputFluidHandler() {
-		return optionalWaterFluidHandler;
-	}
-
-	public LazyOptional<IFluidHandler> getOptionalOutputFluidHandler() {
-		return optionalOutputFluidHandler;
+	public LazyOptional<IFluidHandler> getCombinedFluidHandlers() {
+		return optionalCombinedFluidHandlers;
 	}
 
 	@Override
@@ -46,15 +42,15 @@ public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> {
 	@Override
 	public void serializeNBT(CompoundNBT nbt) {
 		super.serializeNBT(nbt);
-		nbt.put(NBT_KEY_FUEL, waterTank.writeToNBT(new CompoundNBT()));
-		nbt.put(NBT_KEY_OUTPUT, outputTank.writeToNBT(new CompoundNBT()));
+		if (!fuelTank.isEmpty()) nbt.put(NBT_KEY_FUEL, fuelTank.writeToNBT(new CompoundNBT()));
+		if (!outputTank.isEmpty()) nbt.put(NBT_KEY_FLUID_OUT, outputTank.writeToNBT(new CompoundNBT()));
 	}
 
 	@Override
 	public void deserializeNBT(CompoundNBT nbt) {
 		super.deserializeNBT(nbt);
-		waterTank.readFromNBT(nbt.getCompound(NBT_KEY_FUEL));
-		outputTank.readFromNBT(nbt.getCompound(NBT_KEY_OUTPUT));
+		fuelTank.readFromNBT(nbt.getCompound(NBT_KEY_FUEL));
+		outputTank.readFromNBT(nbt.getCompound(NBT_KEY_FLUID_OUT));
 	}
 
 	@Override
@@ -62,7 +58,7 @@ public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> {
 		validateIndex(index);
 		if (index == TIME_INDEX) return timeElapsed;
 		else if (index == TIME_FOR_COMPLETION_INDEX) return timeForCompletion;
-		else if (index == FUEL_INDEX) return waterTank.getFluidAmount();
+		else if (index == FUEL_INDEX) return fuelTank.getFluidAmount();
 		else if (index == FLUID_AMOUNT_INDEX) return outputTank.getFluidAmount();
 		else if (index == FLUID_ID_INDEX) {
 			ForgeRegistry<Fluid> reg = (ForgeRegistry<Fluid>) ForgeRegistries.FLUIDS;
@@ -77,11 +73,11 @@ public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> {
 		if (index == TIME_INDEX) timeElapsed = value;
 		else if (index == TIME_FOR_COMPLETION_INDEX) timeForCompletion = value;
 		else if (index == FUEL_INDEX) {
-			if (waterTank.isEmpty()) {
-				waterTank.setFluid(new FluidStack(Fluids.WATER, value));
+			if (fuelTank.isEmpty()) {
+				fuelTank.setFluid(new FluidStack(Fluids.WATER, value));
 			}
 			else {
-				waterTank.getFluid().setAmount(value);
+				fuelTank.getFluid().setAmount(value);
 			}
 		}
 		else if (index == FLUID_ID_INDEX) { //index order matters, fluid id has to be set first, before the fluid amount

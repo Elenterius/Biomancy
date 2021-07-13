@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.tileentity;
 
+import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.MachineBlock;
 import com.github.elenterius.biomancy.recipe.AbstractProductionRecipe;
 import com.github.elenterius.biomancy.recipe.IFluidResultRecipe;
@@ -22,8 +23,22 @@ import javax.annotation.Nullable;
 
 public abstract class MachineTileEntity<R extends AbstractProductionRecipe, S extends RecipeCraftingStateData<R>> extends OwnableTileEntity implements INamedContainerProvider, ITickableTileEntity {
 
+	/**
+	 * Even though this value is available on both logical sides it is not synced.<br>
+	 * On client side it is used for timing of animations, particles, audio, etc.<br>
+	 * On host side it is used for timing refueling, etc.<br>
+	 * <br>
+	 * The value is initialized with an offset to further mitigate all machines refueling on the same game tick.
+	 */
+	protected final int tickOffset = BiomancyMod.GLOBAL_RANDOM.nextInt(20);
+	protected int ticks = tickOffset;
+
 	public MachineTileEntity(TileEntityType<?> entityType) {
 		super(entityType);
+	}
+
+	public int getTicks() {
+		return ticks - tickOffset;
 	}
 
 	protected abstract S getStateData();
@@ -99,9 +114,11 @@ public abstract class MachineTileEntity<R extends AbstractProductionRecipe, S ex
 
 	@Override
 	public void tick() {
-		if (world == null || world.isRemote) return;
+		if (world == null) return;
+		ticks++;
+		if (world.isRemote) return;
 
-		if (world.getGameTime() % 10L == 0L) {
+		if (ticks % 10 == 0) {
 			refuel();
 		}
 

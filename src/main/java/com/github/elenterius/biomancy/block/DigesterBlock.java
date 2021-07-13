@@ -79,18 +79,26 @@ public class DigesterBlock extends MachineBlock<DigesterTileEntity> {
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()).setStyle(ClientTextUtil.LORE_STYLE));
 		CompoundNBT nbt = stack.getChildTag("BlockEntityTag");
 		if (nbt != null) {
-			tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
-			DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
+			boolean hasFuel = nbt.contains(DigesterStateData.NBT_KEY_FUEL);
+			boolean hasFluid = nbt.contains(DigesterStateData.NBT_KEY_FLUID_OUT);
+			if (hasFuel || hasFluid) {
+				tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
+				DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
 
-			CompoundNBT fuelNbt = nbt.getCompound(DigesterStateData.NBT_KEY_FUEL);
-			int fuel = fuelNbt.getInt("Amount");
-			String translationKey = "fluid." + fuelNbt.getString("FluidName").replace(":", ".").replace("/", ".");
-			tooltip.add(new TranslationTextComponent(translationKey).appendString(String.format(": %s/%s", df.format(fuel), df.format(DigesterTileEntity.MAX_FUEL))));
+				if (hasFuel) {
+					CompoundNBT fuelNbt = nbt.getCompound(DigesterStateData.NBT_KEY_FUEL);
+					int fuel = fuelNbt.getInt("Amount");
+					String translationKey = "fluid." + fuelNbt.getString("FluidName").replace(":", ".").replace("/", ".");
+					tooltip.add(new TranslationTextComponent(translationKey).appendString(String.format(": %s/%s", df.format(fuel), df.format(DigesterTileEntity.MAX_FLUID))));
+				}
 
-			CompoundNBT fluidNbt = nbt.getCompound(DigesterStateData.NBT_KEY_OUTPUT);
-			int fluid = fluidNbt.getInt("Amount");
-			translationKey = "fluid." + fluidNbt.getString("FluidName").replace(":", ".").replace("/", ".");
-			tooltip.add(new TranslationTextComponent(translationKey).appendString(String.format(": %s/%s", df.format(fluid), df.format(DigesterTileEntity.MAX_FUEL))));
+				if (hasFluid) {
+					CompoundNBT fluidNbt = nbt.getCompound(DigesterStateData.NBT_KEY_FLUID_OUT);
+					int fluid = fluidNbt.getInt("Amount");
+					String translationKey = "fluid." + fluidNbt.getString("FluidName").replace(":", ".").replace("/", ".");
+					tooltip.add(new TranslationTextComponent(translationKey).appendString(String.format(": %s/%s", df.format(fluid), df.format(DigesterTileEntity.MAX_FLUID))));
+				}
+			}
 		}
 		super.addInformation(stack, worldIn, tooltip, flagIn);
 	}

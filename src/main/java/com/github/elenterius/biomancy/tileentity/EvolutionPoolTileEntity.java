@@ -5,8 +5,8 @@ import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.init.ModTileEntityTypes;
 import com.github.elenterius.biomancy.inventory.EvolutionPoolContainer;
-import com.github.elenterius.biomancy.inventory.SimpleInvContents;
-import com.github.elenterius.biomancy.inventory.itemhandler.behavior.ItemHandlerBehavior;
+import com.github.elenterius.biomancy.inventory.HandlerBehaviors;
+import com.github.elenterius.biomancy.inventory.SimpleInventory;
 import com.github.elenterius.biomancy.recipe.EvolutionPoolRecipe;
 import com.github.elenterius.biomancy.recipe.RecipeType;
 import com.github.elenterius.biomancy.tileentity.state.CraftingState;
@@ -41,29 +41,28 @@ import java.util.function.Predicate;
 
 public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolRecipe, EvolutionPoolStateData> {
 
-	public static final int FUEL_SLOTS_COUNT = 1;
-	public static final int INPUT_SLOTS_COUNT = 6;
-	public static final int OUTPUT_SLOTS_COUNT = 1;
+	public static final int FUEL_SLOTS = 1;
+	public static final int INPUT_SLOTS = 6;
+	public static final int OUTPUT_SLOTS = 1;
 
-	public static final int DEFAULT_TIME = 400;
 	public static final int MAX_FUEL = 32_000;
 	public static final short FUEL_COST = 2;
-	public static final float ITEM_FUEL_VALUE = 200; // FUEL_COST * DEFAULT_TIME / 4f
+	public static final float ITEM_FUEL_VALUE = 200; // FUEL_COST * 400 / 4f
 	public static final Predicate<ItemStack> VALID_FUEL_ITEM = stack -> stack.getItem() == ModItems.MUTAGENIC_BILE.get();
 	public static final RecipeType.ItemStackRecipeType<EvolutionPoolRecipe> RECIPE_TYPE = ModRecipes.EVOLUTION_POOL_RECIPE_TYPE;
 
 	private final EvolutionPoolStateData stateData = new EvolutionPoolStateData();
-	private final SimpleInvContents fuelContents;
-	private final SimpleInvContents inputContents;
-	private final SimpleInvContents outputContents;
+	private final SimpleInventory fuelInventory;
+	private final SimpleInventory inputInventory;
+	private final SimpleInventory outputInventory;
 	private final Set<BlockPos> subTiles = new HashSet<>();
 	private boolean isValidMultiBlock = false;
 
 	public EvolutionPoolTileEntity() {
 		super(ModTileEntityTypes.EVOLUTION_POOL.get());
-		fuelContents = SimpleInvContents.createServerContents(FUEL_SLOTS_COUNT, itemStackHandler -> ItemHandlerBehavior.filterInput(itemStackHandler, this::isItemValidFuel), this::canPlayerOpenInv, this::markDirty);
-		inputContents = SimpleInvContents.createServerContents(INPUT_SLOTS_COUNT, this::canPlayerOpenInv, this::markDirty);
-		outputContents = SimpleInvContents.createServerContents(OUTPUT_SLOTS_COUNT, ItemHandlerBehavior::denyInput, this::canPlayerOpenInv, this::markDirty);
+		fuelInventory = SimpleInventory.createServerContents(FUEL_SLOTS, itemStackHandler -> HandlerBehaviors.filterInput(itemStackHandler, this::isItemValidFuel), this::canPlayerOpenInv, this::markDirty);
+		inputInventory = SimpleInventory.createServerContents(INPUT_SLOTS, this::canPlayerOpenInv, this::markDirty);
+		outputInventory = SimpleInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::markDirty);
 	}
 
 	@Override
@@ -108,27 +107,27 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 
 	@Override
 	public ItemStack getStackInFuelSlot() {
-		return fuelContents.getStackInSlot(0);
+		return fuelInventory.getStackInSlot(0);
 	}
 
 	@Override
 	public void setStackInFuelSlot(ItemStack stack) {
-		fuelContents.setInventorySlotContents(0, stack);
+		fuelInventory.setInventorySlotContents(0, stack);
 	}
 
 	@Override
 	protected boolean doesItemFitIntoOutputInventory(ItemStack stackToCraft) {
-		return outputContents.doesItemStackFit(0, stackToCraft);
+		return outputInventory.doesItemStackFit(0, stackToCraft);
 	}
 
 	@Override
 	protected boolean craftRecipe(EvolutionPoolRecipe recipeToCraft, World world) {
-		ItemStack result = recipeToCraft.getCraftingResult(inputContents);
-		if (!result.isEmpty() && outputContents.doesItemStackFit(0, result)) {
-			for (int idx = 0; idx < inputContents.getSizeInventory(); idx++) {
-				inputContents.decrStackSize(idx, 1);
+		ItemStack result = recipeToCraft.getCraftingResult(inputInventory);
+		if (!result.isEmpty() && outputInventory.doesItemStackFit(0, result)) {
+			for (int idx = 0; idx < inputInventory.getSizeInventory(); idx++) {
+				inputInventory.decrStackSize(idx, 1);
 			}
-			outputContents.insertItemStack(0, result);
+			outputInventory.insertItemStack(0, result);
 			markDirty();
 			return true;
 		}
@@ -138,7 +137,7 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 	@Nullable
 	@Override
 	protected EvolutionPoolRecipe resolveRecipeFromInput(World world) {
-		return RECIPE_TYPE.getRecipeFromInventory(world, inputContents).orElse(null);
+		return RECIPE_TYPE.getRecipeFromInventory(world, inputInventory).orElse(null);
 	}
 
 	@Override
@@ -149,7 +148,7 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 	@Nullable
 	@Override
 	public Container createMenu(int screenId, PlayerInventory playerInv, PlayerEntity player) {
-		return EvolutionPoolContainer.createServerContainer(screenId, playerInv, fuelContents, inputContents, outputContents, stateData);
+		return EvolutionPoolContainer.createServerContainer(screenId, playerInv, fuelInventory, inputInventory, outputInventory, stateData);
 	}
 
 	public void addSubTile(BlockPos pos) {
@@ -286,18 +285,18 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 
 	@Override
 	public void dropAllInvContents(World world, BlockPos pos) {
-		InventoryHelper.dropInventoryItems(world, pos, fuelContents);
-		InventoryHelper.dropInventoryItems(world, pos, inputContents);
-		InventoryHelper.dropInventoryItems(world, pos, outputContents);
+		InventoryHelper.dropInventoryItems(world, pos, fuelInventory);
+		InventoryHelper.dropInventoryItems(world, pos, inputInventory);
+		InventoryHelper.dropInventoryItems(world, pos, outputInventory);
 	}
 
 	@Override
 	public CompoundNBT write(CompoundNBT nbt) {
 		super.write(nbt);
 		stateData.serializeNBT(nbt);
-		nbt.put("FuelSlots", fuelContents.serializeNBT());
-		nbt.put("InputSlots", inputContents.serializeNBT());
-		nbt.put("OutputSlots", outputContents.serializeNBT());
+		nbt.put("FuelSlots", fuelInventory.serializeNBT());
+		nbt.put("InputSlots", inputInventory.serializeNBT());
+		nbt.put("OutputSlots", outputInventory.serializeNBT());
 
 		nbt.putBoolean("ValidMultiBlock", isValidMultiBlock);
 		if (subTiles.size() > 0) {
@@ -315,11 +314,11 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 	public void read(BlockState state, CompoundNBT nbt) {
 		super.read(state, nbt);
 		stateData.deserializeNBT(nbt);
-		fuelContents.deserializeNBT(nbt.getCompound("FuelSlots"));
-		inputContents.deserializeNBT(nbt.getCompound("InputSlots"));
-		outputContents.deserializeNBT(nbt.getCompound("OutputSlots"));
+		fuelInventory.deserializeNBT(nbt.getCompound("FuelSlots"));
+		inputInventory.deserializeNBT(nbt.getCompound("InputSlots"));
+		outputInventory.deserializeNBT(nbt.getCompound("OutputSlots"));
 
-		if (fuelContents.getSizeInventory() != FUEL_SLOTS_COUNT || inputContents.getSizeInventory() != INPUT_SLOTS_COUNT || outputContents.getSizeInventory() != OUTPUT_SLOTS_COUNT) {
+		if (fuelInventory.getSizeInventory() != FUEL_SLOTS || inputInventory.getSizeInventory() != INPUT_SLOTS || outputInventory.getSizeInventory() != OUTPUT_SLOTS) {
 			throw new IllegalArgumentException("Corrupted NBT: Number of inventory slots did not match expected count.");
 		}
 
@@ -337,9 +336,9 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 
 	@Override
 	public void invalidateCaps() {
-		fuelContents.getOptionalItemStackHandler().invalidate();
-		inputContents.getOptionalItemStackHandler().invalidate();
-		outputContents.getOptionalItemStackHandler().invalidate();
+		fuelInventory.getOptionalItemStackHandler().invalidate();
+		inputInventory.getOptionalItemStackHandler().invalidate();
+		outputInventory.getOptionalItemStackHandler().invalidate();
 		super.invalidateCaps();
 	}
 
@@ -347,9 +346,9 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
 		if (!removed && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			if (side == Direction.UP) return inputContents.getOptionalItemStackHandler().cast();
-			if (side == null || side == Direction.DOWN) return outputContents.getOptionalItemStackHandler().cast();
-			return fuelContents.getOptionalItemStackHandler().cast();
+			if (side == Direction.UP) return inputInventory.getOptionalItemStackHandler().cast();
+			if (side == null || side == Direction.DOWN) return outputInventory.getOptionalItemStackHandler().cast();
+			return fuelInventory.getOptionalItemStackHandler().cast();
 		}
 		return super.getCapability(cap, side);
 	}
