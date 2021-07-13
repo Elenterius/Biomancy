@@ -71,16 +71,11 @@
 			}
 		},
 		{
-			"name": "fluid",
 			"from": [1, 6, 1],
 			"to": [15, 6, 15],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 6, 8]},
 			"faces": {
-				"north": {"uv": [0, 0, 14, 0], "texture": "#fluid"},
-				"east": {"uv": [0, 0, 14, 0], "texture": "#fluid"},
-				"south": {"uv": [0, 0, 14, 0], "texture": "#fluid"},
-				"west": {"uv": [0, 0, 14, 0], "texture": "#fluid"},
-				"up": {"uv": [14, 14, 0, 0], "texture": "#fluid"}
+				"up": {"uv": [15, 15, 1, 1], "texture": "#fluid"}
 			}
 		},
 		{
@@ -660,25 +655,30 @@
 		{
 			"name": "base",
 			"origin": [8, 8, 8],
+			"color": 0,
 			"children": [0, 1, 2, 3, 4, 5,
 				{
 					"name": "jaw1",
 					"origin": [0, 0, 0],
+					"color": 0,
 					"children": [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 				},
 				{
 					"name": "jaw2",
 					"origin": [0, 0, 0],
+					"color": 0,
 					"children": [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]
 				},
 				{
 					"name": "jaw3",
 					"origin": [0, 0, 0],
+					"color": 0,
 					"children": [28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]
 				},
 				{
 					"name": "jaw4",
 					"origin": [0, 0, 0],
+					"color": 0,
 					"children": [39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49]
 				}
 			]

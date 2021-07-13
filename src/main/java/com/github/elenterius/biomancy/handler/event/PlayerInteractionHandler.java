@@ -41,32 +41,37 @@ public final class PlayerInteractionHandler {
 
 	@SubscribeEvent
 	public static void onPlayerRightClickBlock(final PlayerInteractEvent.RightClickBlock event) {
-		if (event.getWorld().isRemote()) return;
-
 		if (!event.getItemStack().isEmpty()) {
 			Item item = event.getItemStack().getItem();
 			if (item.isIn(ModTags.Items.RAW_MEATS)) {
-				BlockState blockState = event.getWorld().getBlockState(event.getPos());
-				if (blockState.matchesBlock(Blocks.CAULDRON) && blockState == Blocks.CAULDRON.getDefaultState()) {
-					if (!event.getPlayer().abilities.isCreativeMode) {
-						event.getItemStack().grow(-1);
-					}
-					event.getPlayer().addStat(Stats.USE_CAULDRON);
+				if (!event.getWorld().isRemote()) {
+					BlockState blockState = event.getWorld().getBlockState(event.getPos());
+					if (blockState.matchesBlock(Blocks.CAULDRON) && blockState == Blocks.CAULDRON.getDefaultState()) {
+						if (!event.getPlayer().abilities.isCreativeMode) {
+							event.getItemStack().grow(-1);
+						}
+						event.getPlayer().addStat(Stats.USE_CAULDRON);
 
-					BlockState meatState = ModBlocks.MEATSOUP_CAULDRON.get().getDefaultState().with(MeatsoupCauldronBlock.LEVEL, 1);
-					event.getWorld().setBlockState(event.getPos(), meatState, Constants.BlockFlags.BLOCK_UPDATE);
-					event.getWorld().playSound(null, event.getPos(), SoundEvents.ENTITY_SLIME_SQUISH_SMALL, SoundCategory.BLOCKS, 1.0F, 0.5F);
+						BlockState meatState = ModBlocks.MEATSOUP_CAULDRON.get().getDefaultState().with(MeatsoupCauldronBlock.LEVEL, 1);
+						event.getWorld().setBlockState(event.getPos(), meatState, Constants.BlockFlags.BLOCK_UPDATE);
+						event.getWorld().playSound(null, event.getPos(), SoundEvents.ENTITY_SLIME_SQUISH_SMALL, SoundCategory.BLOCKS, 1.0F, 0.5F);
+					}
 				}
 			}
 			else if (item == ModItems.MUTAGENIC_BILE.get()) {
 				BlockPos pos = event.getPos();
 				BlockState blockState = event.getWorld().getBlockState(pos);
-				if (EvolutionPoolBlock.tryToCreate2x2EvolutionPool(event.getWorld(), blockState, pos)) {
-					if (!event.getPlayer().abilities.isCreativeMode) {
-						event.getItemStack().grow(-1);
+				if (EvolutionPoolBlock.isValidStairsBlock(blockState)) {
+					if (!event.getWorld().isRemote()) {
+						if (EvolutionPoolBlock.tryToCreate2x2EvolutionPool(event.getWorld(), blockState, pos)) {
+							if (!event.getPlayer().abilities.isCreativeMode) {
+								event.getItemStack().grow(-1);
+							}
+							event.getWorld().playSound(null, pos, SoundEvents.ENTITY_SLIME_SQUISH_SMALL, SoundCategory.BLOCKS, 1.0F, 0.5F);
+						}
 					}
-					event.getWorld().playSound(null, pos, SoundEvents.ENTITY_SLIME_SQUISH_SMALL, SoundCategory.BLOCKS, 1.0F, 0.5F);
 					event.setCanceled(true);
+					event.setCancellationResult(ActionResultType.FAIL);
 				}
 			}
 		}

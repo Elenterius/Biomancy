@@ -80,7 +80,6 @@ public final class ModBlocks {
 		RenderTypeLookup.setRenderLayer(DIGESTER.get(), RenderType.getCutout());
 		RenderTypeLookup.setRenderLayer(CHEWER.get(), RenderType.getCutout());
 		RenderTypeLookup.setRenderLayer(SOLIDIFIER.get(), RenderType.getCutout());
-		RenderTypeLookup.setRenderLayer(DECOMPOSER.get(), renderType -> renderType == RenderType.getCutout() || renderType == RenderType.getTranslucent());
 		RenderTypeLookup.setRenderLayer(EVOLUTION_POOL.get(), RenderType.getTranslucent());
 
 		//block with "glowing" overlay texture, also needs a overlay model see onModelBakeEvent() in ClientSetupHandler
