@@ -72,6 +72,7 @@ public final class ClientSetupHandler {
 			ItemModelsProperties.registerProperty(ModItems.BONE_SCRAPS.get(), new ResourceLocation("type"), (stack, clientWorld, livingEntity) -> stack.getOrCreateTag().getInt("ScrapType"));
 
 			ModBlocks.setRenderLayers();
+			ModFluids.setRenderLayers();
 		});
 	}
 

@@ -28,7 +28,8 @@ public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> {
 
 	public FluidTank fuelTank = new FluidTank(DigesterTileEntity.MAX_FLUID, fluidStack -> fluidStack.getFluid() == Fluids.WATER);
 	public FluidTank outputTank = new FluidTank(DigesterTileEntity.MAX_FLUID);
-	private final LazyOptional<IFluidHandler> optionalCombinedFluidHandlers = LazyOptional.of(() -> new CombinedTankWrapper(fuelTank, new FluidHandlerDelegator.DenyInput<>(outputTank)));
+	private final LazyOptional<IFluidHandler> optionalCombinedFluidHandlers =
+			LazyOptional.of(() -> new CombinedTankWrapper(new FluidHandlerDelegator.DenyOutput<>(fuelTank), new FluidHandlerDelegator.DenyInput<>(outputTank)));
 
 	public LazyOptional<IFluidHandler> getCombinedFluidHandlers() {
 		return optionalCombinedFluidHandlers;

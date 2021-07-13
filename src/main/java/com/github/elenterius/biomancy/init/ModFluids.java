@@ -2,8 +2,12 @@ package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.util.TextUtil;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.util.SoundEvents;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.fml.RegistryObject;
@@ -18,6 +22,12 @@ public final class ModFluids {
 	public static final RegistryObject<ForgeFlowingFluid> NUTRIENT_SLURRY_FLOWING = FLUIDS.register("nutrient_slurry_flowing", () -> new ForgeFlowingFluid.Flowing(createNutrientSlurryProp()));
 
 	private ModFluids() {}
+
+	@OnlyIn(Dist.CLIENT)
+	protected static void setRenderLayers() {
+		RenderTypeLookup.setRenderLayer(NUTRIENT_SLURRY.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(NUTRIENT_SLURRY_FLOWING.get(), RenderType.getTranslucent());
+	}
 
 	private static ForgeFlowingFluid.Properties createNutrientSlurryProp() {
 		return new ForgeFlowingFluid.Properties(NUTRIENT_SLURRY, NUTRIENT_SLURRY_FLOWING,

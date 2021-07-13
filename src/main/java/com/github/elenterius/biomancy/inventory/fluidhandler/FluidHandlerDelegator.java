@@ -71,6 +71,26 @@ public abstract class FluidHandlerDelegator<FH extends IFluidHandler> implements
 
 	}
 
+	public static class DenyOutput<FH extends IFluidHandler> extends FluidHandlerDelegator<FH> {
+
+		public DenyOutput(FH fluidHandlerIn) {
+			super(fluidHandlerIn);
+		}
+
+		@Nonnull
+		@Override
+		public FluidStack drain(FluidStack resource, FluidAction action) {
+			return FluidStack.EMPTY;
+		}
+
+		@Nonnull
+		@Override
+		public FluidStack drain(int maxDrain, FluidAction action) {
+			return FluidStack.EMPTY;
+		}
+
+	}
+
 	public static class FilterInput<FH extends IFluidHandler> extends FluidHandlerDelegator<FH> {
 
 		private final Predicate<Fluid> validFluids;

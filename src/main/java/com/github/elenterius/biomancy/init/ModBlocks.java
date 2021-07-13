@@ -35,13 +35,6 @@ public final class ModBlocks {
 
 	//Decoration Blocks
 	public static final RegistryObject<FleshPlantBlock> FLESH_TENTACLE = BLOCKS.register("flesh_tentacle", () -> new FleshPlantBlock(createFleshPlantProperties()));
-//	public static final RegistryObject<BlightPlantBlock> HAIR = BLOCKS.register("hair", () -> new BlightPlantBlock(true, blighPlantProperties()));
-//	public static final RegistryObject<BlightPlantBlock> OCULUS_LAMP = BLOCKS.register("oculus_lamp", () -> new BlightPlantBlock(true, blighPlantProperties()));
-
-//	public static final RegistryObject<BlightPustuleBlock> BLIGHT_PUSTULE_SMALL = BLOCKS.register("blight_pustule_0", () -> new BlightPustuleBlock(glowingPlantProperties(3)));
-//	public static final RegistryObject<BlightPustuleBlock> BLIGHT_PUSTULE_BIG = BLOCKS.register("blight_pustule_1", () -> new BlightPustuleBlock(glowingPlantProperties(9)));
-//	public static final RegistryObject<BlightPustuleBlock> BLIGHT_PUSTULE_BIG_AND_SMALL = BLOCKS.register("blight_pustule_2", () -> new BlightPustuleBlock(glowingPlantProperties(12)));
-//	public static final RegistryObject<BlightPustuleBlock> BLIGHT_PUSTULE_SMALL_GROUP = BLOCKS.register("blight_pustule_3", () -> new BlightPustuleBlock(glowingPlantProperties(7)));
 
 	//Fluids
 	public static RegistryObject<FlowingFluidBlock> NUTRIENT_SLURRY_FLUID = BLOCKS.register("nutrient_slurry_fluid", () -> new FlowingFluidBlock(ModFluids.NUTRIENT_SLURRY, AbstractBlock.Properties.create(Material.WATER).doesNotBlockMovement().hardnessAndResistance(100f).noDrops()));
@@ -80,19 +73,15 @@ public final class ModBlocks {
 
 	@OnlyIn(Dist.CLIENT)
 	protected static void setRenderLayers() {
-		RenderTypeLookup.setRenderLayer(ModBlocks.FLESH_TENTACLE.get(), RenderType.getCutout());
-		RenderTypeLookup.setRenderLayer(ModBlocks.FLESHBORN_DOOR.get(), RenderType.getCutout());
-		RenderTypeLookup.setRenderLayer(ModBlocks.FLESHBORN_TRAPDOOR.get(), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(FLESH_TENTACLE.get(), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(FLESHBORN_DOOR.get(), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(FLESHBORN_TRAPDOOR.get(), RenderType.getCutout());
 
-		RenderTypeLookup.setRenderLayer(ModBlocks.EVOLUTION_POOL.get(), RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(ModBlocks.DECOMPOSER.get(), RenderType.getTranslucent());
-//		RenderTypeLookup.setRenderLayer(ModBlocks.NUTRIENT_SLURRY_FLUID.get(), RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(ModFluids.NUTRIENT_SLURRY.get(), RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(ModFluids.NUTRIENT_SLURRY_FLOWING.get(), RenderType.getTranslucent());
-
-		RenderTypeLookup.setRenderLayer(ModBlocks.DIGESTER.get(), RenderType.getCutout());
-		RenderTypeLookup.setRenderLayer(ModBlocks.CHEWER.get(), RenderType.getCutout());
-		RenderTypeLookup.setRenderLayer(ModBlocks.SOLIDIFIER.get(), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(DIGESTER.get(), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(CHEWER.get(), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(SOLIDIFIER.get(), RenderType.getCutout());
+		RenderTypeLookup.setRenderLayer(DECOMPOSER.get(), renderType -> renderType == RenderType.getCutout() || renderType == RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(EVOLUTION_POOL.get(), RenderType.getTranslucent());
 
 		//block with "glowing" overlay texture, also needs a overlay model see onModelBakeEvent() in ClientSetupHandler
 		//RenderTypeLookup.setRenderLayer(ModBlocks.FOOBAR.get(), renderType -> renderType == RenderType.getCutout() || renderType == RenderType.getTranslucent());
