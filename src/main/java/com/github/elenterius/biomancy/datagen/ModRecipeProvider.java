@@ -405,11 +405,6 @@ public class ModRecipeProvider extends RecipeProvider {
 				.setIngredient(Items.WARPED_ROOTS, 2)
 				.addByproduct(ModItems.DIGESTATE.get(), 0.4f)
 				.addCriterion("has_warped_roots", hasItem(Items.WARPED_ROOTS)).build(consumer, "" + id, true);
-
-//		DecomposerRecipeBuilder.createRecipe(ModItems.MUTAGENIC_BILE.get(), defaultDecomposingTime, 6)
-//				.addIngredient(ModItems.TWISTED_HEART.get())
-//				.addByproduct(ModItems.KERATIN_FILAMENTS.get(), 2, 0.5f)
-//				.addCriterion("has_twisted_heart", hasItem(ModItems.TWISTED_HEART.get())).build(consumer, "" + id, true);
 	}
 
 	private void registerChewerRecipes(Consumer<IFinishedRecipe> consumer) {
@@ -567,8 +562,6 @@ public class ModRecipeProvider extends RecipeProvider {
 		registerKeratinsRecipes(consumer);
 		registerHormonesRecipes(consumer);
 
-		// misc ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 		//removed mutagenic bile from raw chicken recipe due to recipe clash with flesh lumps from RAW_MEATS item tag
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.FLESH_LUMP.get(), defaultDecomposingTime, 2)
@@ -582,34 +575,54 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addByproduct(ModItems.MUTAGENIC_BILE.get(), 0.15f)
 				.addCriterion("has_suspicious_stew", hasItem(Items.SUSPICIOUS_STEW)).build(consumer);
 
-//		DecomposingRecipeBuilder.decomposingRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime)
-//				.addIngredient(new AnyMeatlessFoodIngredient()) //TODO: fix this
-//				.addCriterion("has_any_meatless_food", hasItem(ModRecipes.ANY_MEATLESS_FOOD_ITEM_PREDICATE)).build(consumer, "from_meatless_food", true);
+		//rejuvenating mucus from biomass
+		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime, 1)
+				.setIngredient(ModTags.Items.POOR_BIOMASS, 4)
+				.addCriterion("has_poor_biomass", hasItem(ModTags.Items.POOR_BIOMASS)).build(consumer, "from_poor_biomass", true);
 
-		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime, 3)
+		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime, 2)
+				.setIngredient(ModTags.Items.AVERAGE_BIOMASS, 3)
+				.addCriterion("has_average_biomass", hasItem(ModTags.Items.AVERAGE_BIOMASS)).build(consumer, "from_average_biomass", true);
+
+		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), 272, 3)
+				.setIngredient(ModTags.Items.GOOD_BIOMASS, 2)
+				.addCriterion("has_good_biomass", hasItem(ModTags.Items.GOOD_BIOMASS)).build(consumer, "from_good_biomass", true);
+
+		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), 300, 4)
+				.setIngredient(ModTags.Items.SUPERB_BIOMASS)
+				.addCriterion("has_superb_biomass", hasItem(ModTags.Items.SUPERB_BIOMASS)).build(consumer, "from_superb_biomass", true);
+
+		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), 300)
+				.setIngredient(ModTags.Items.COOKED_MEATS, 3)
+				.addCriterion("has_cooked_meat", hasItem(ModTags.Items.COOKED_MEATS)).build(consumer, "from_cooked_meat", true);
+
+		//rejuvenating mucus from healing/health potions
+		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime/2, 4)
 				.setIngredient(new ItemStackIngredient(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.REGENERATION)))
 				.addByproduct(Items.GLASS_BOTTLE)
 				.addCriterion("has_potion", hasItem(Items.POTION)).build(consumer, "from_regen_potion", true);
 
-		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime, 5)
+		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime/2, 6)
 				.setIngredient(new ItemStackIngredient(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.LONG_REGENERATION)))
 				.addByproduct(Items.GLASS_BOTTLE)
 				.addCriterion("has_potion", hasItem(Items.POTION)).build(consumer, "from_long_regen_potion", true);
 
-		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime, 5)
+		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime/2, 6)
 				.setIngredient(new ItemStackIngredient(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.STRONG_REGENERATION)))
 				.addByproduct(Items.GLASS_BOTTLE)
 				.addCriterion("has_potion", hasItem(Items.POTION)).build(consumer, "from_strong_regen_potion", true);
 
-		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime, 3)
+		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime/2, 4)
 				.setIngredient(new ItemStackIngredient(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.HEALING)))
 				.addByproduct(Items.GLASS_BOTTLE)
 				.addCriterion("has_potion", hasItem(Items.POTION)).build(consumer, "from_healing_potion", true);
 
-		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime, 5)
+		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime/2, 6)
 				.setIngredient(new ItemStackIngredient(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.STRONG_HEALING)))
 				.addByproduct(Items.GLASS_BOTTLE)
 				.addCriterion("has_potion", hasItem(Items.POTION)).build(consumer, "from_strong_healing_potion", true);
+
+		//misc
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.ERODING_BILE.get(), defaultDecomposingTime)
 				.setIngredient(Items.ROTTEN_FLESH)
@@ -621,11 +634,6 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addByproduct(ModItems.ERODING_BILE.get())
 				.addByproduct(ModItems.FLESH_LUMP.get(), 0.2f)
 				.addCriterion("has_zombie_head", hasItem(Items.ZOMBIE_HEAD)).build(consumer);
-
-		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime)
-				.setIngredient(ModTags.Items.COOKED_MEATS)
-				.addCriterion("has_cooked_meat", hasItem(ModTags.Items.COOKED_MEATS)).build(consumer, "from_cooked_meat", true);
-
 	}
 
 	private void registerCookingRecipes(Consumer<IFinishedRecipe> consumer) {

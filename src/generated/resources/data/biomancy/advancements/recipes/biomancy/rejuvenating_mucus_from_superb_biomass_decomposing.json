@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:rejuvenating_mucus_from_superb_biomass_decomposing"
+    ]
+  },
+  "criteria": {
+    "has_superb_biomass": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "biomancy:superb_biomass"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:rejuvenating_mucus_from_superb_biomass_decomposing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_superb_biomass",
+      "has_the_recipe"
+    ]
+  ]
+}

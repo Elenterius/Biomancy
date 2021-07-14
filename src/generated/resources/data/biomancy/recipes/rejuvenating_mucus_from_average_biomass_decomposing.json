@@ -2,13 +2,14 @@
   "type": "biomancy:decomposing",
   "input": {
     "ingredient": {
-      "tag": "biomancy:cooked_meats"
+      "tag": "biomancy:average_biomass"
     },
     "count": 3
   },
   "byproducts": [],
   "result": {
-    "item": "biomancy:rejuvenating_mucus"
+    "item": "biomancy:rejuvenating_mucus",
+    "count": 2
   },
-  "time": 300
+  "time": 200
 }
