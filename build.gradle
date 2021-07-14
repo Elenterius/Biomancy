@@ -124,10 +124,9 @@ dependencies {
 
     //curse.maven:<descriptor, can be anything>-<curseforge project id>:<curseforge file id>
     runtimeOnly fg.deobf("curse.maven:create-328085:3278516") //https://www.curseforge.com/minecraft/mc-mods/create/files/3278516
-    runtimeOnly fg.deobf("curse.maven:simple-farming-327554:3339467") //https://www.curseforge.com/minecraft/mc-mods/simple-farming/files/3339467
-    runtimeOnly fg.deobf("curse.maven:extended-item-information-285166:3324259") //https://www.curseforge.com/minecraft/mc-mods/simple-farming/files/3339467
+    //runtimeOnly fg.deobf("curse.maven:simple-farming-327554:3339467") //https://www.curseforge.com/minecraft/mc-mods/simple-farming/files/3339467
+    //runtimeOnly fg.deobf("curse.maven:extended-item-information-285166:3324259") //https://www.curseforge.com/minecraft/mc-mods/simple-farming/files/3339467
 }
-
 
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
