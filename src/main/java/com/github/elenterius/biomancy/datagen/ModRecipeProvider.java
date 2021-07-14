@@ -221,12 +221,12 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.OXIDE_POWDER.get(), defaultDecomposingTime - 100)
 				.setIngredient(Tags.Items.EGGS, 6)
-				.addByproduct(ModItems.MUTAGENIC_BILE.get(), 0.05f)
+				.addByproduct(ModItems.MUTAGENIC_BILE.get(), 0.1f)
 				.addCriterion("has_oxide", hasItem(ModTags.Items.OXIDES)).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.OXIDE_POWDER.get(), defaultDecomposingTime - 100)
 				.setIngredient(Items.TURTLE_EGG, 6)
-				.addByproduct(ModItems.MUTAGENIC_BILE.get(), 0.05f)
+				.addByproduct(ModItems.MUTAGENIC_BILE.get(), 0.2f)
 				.addCriterion("has_oxide", hasItem(ModTags.Items.OXIDES)).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.OXIDE_POWDER.get(), defaultDecomposingTime - 100)
@@ -568,10 +568,8 @@ public class ModRecipeProvider extends RecipeProvider {
 		registerHormonesRecipes(consumer);
 
 		// misc ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		DecomposerRecipeBuilder.createRecipe(ModItems.FLESH_LUMP.get(), defaultDecomposingTime)
-				.setIngredient(Items.CHICKEN)
-				.addByproduct(ModItems.MUTAGENIC_BILE.get(), 0.3f)
-				.addCriterion("has_chicken", hasItem(Items.CHICKEN)).build(consumer);
+
+		//removed mutagenic bile from raw chicken recipe due to recipe clash with flesh lumps from RAW_MEATS item tag
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.FLESH_LUMP.get(), defaultDecomposingTime, 2)
 				.setIngredient(ModTags.Items.RAW_MEATS)
