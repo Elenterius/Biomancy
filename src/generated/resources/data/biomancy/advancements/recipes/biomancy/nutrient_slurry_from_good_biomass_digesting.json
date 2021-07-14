@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:nutrient_slurry_from_good_biomass_digesting"
+    ]
+  },
+  "criteria": {
+    "has_biomass": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "biomancy:biomass"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:nutrient_slurry_from_good_biomass_digesting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_biomass",
+      "has_the_recipe"
+    ]
+  ]
+}

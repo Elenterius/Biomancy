@@ -1,18 +1,31 @@
 package com.github.elenterius.biomancy.tileentity.state;
 
+import com.github.elenterius.biomancy.inventory.HandlerBehaviors;
 import com.github.elenterius.biomancy.recipe.DecomposerRecipe;
+import com.github.elenterius.biomancy.tileentity.ChewerTileEntity;
+import com.github.elenterius.biomancy.util.BiofuelUtil;
+import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.ForgeRegistry;
 
 public class DecomposerStateData extends RecipeCraftingStateData<DecomposerRecipe> {
 
-	public static final int FUEL_INDEX = 2;
-	public static final int SPEED_FUEL_INDEX = 3;
+	public static final String NBT_KEY_FUEL = "Fuel";
+	public static final int FUEL_ID_INDEX = 2;
+	public static final int FUEL_AMOUNT_INDEX = 3;
 
-	public static final String NBT_KEY_MAIN_FUEL = "MainFuel";
-	public static final String NBT_KEY_SPEED_FUEL = "SpeedFuel";
+	public final FluidTank fuelTank = new FluidTank(ChewerTileEntity.MAX_FUEL, BiofuelUtil.VALID_FLUID_STACK);
+	private final LazyOptional<IFluidHandler> optionalFluidHandler = HandlerBehaviors.standard(fuelTank);
 
-	public short fuel; //raw-meat (fake "saturation", we use the food healing value instead)
-	public short speedFuel; //glucose ("candy", food that contains sugar)
+	public LazyOptional<IFluidHandler> getOptionalFuelHandler() {
+		return optionalFluidHandler;
+	}
 
 	@Override
 	Class<DecomposerRecipe> getRecipeType() {
@@ -22,15 +35,13 @@ public class DecomposerStateData extends RecipeCraftingStateData<DecomposerRecip
 	@Override
 	public void serializeNBT(CompoundNBT nbt) {
 		super.serializeNBT(nbt);
-		if (fuel > 0) nbt.putShort(NBT_KEY_MAIN_FUEL, fuel);
-		if (speedFuel > 0) nbt.putShort(NBT_KEY_SPEED_FUEL, speedFuel);
+		if (!fuelTank.isEmpty()) nbt.put(NBT_KEY_FUEL, fuelTank.writeToNBT(new CompoundNBT()));
 	}
 
 	@Override
 	public void deserializeNBT(CompoundNBT nbt) {
 		super.deserializeNBT(nbt);
-		fuel = nbt.getShort(NBT_KEY_MAIN_FUEL);
-		speedFuel = nbt.getShort(NBT_KEY_SPEED_FUEL);
+		fuelTank.readFromNBT(nbt.getCompound(NBT_KEY_FUEL));
 	}
 
 	@Override
@@ -38,8 +49,11 @@ public class DecomposerStateData extends RecipeCraftingStateData<DecomposerRecip
 		validateIndex(index);
 		if (index == TIME_INDEX) return timeElapsed;
 		else if (index == TIME_FOR_COMPLETION_INDEX) return timeForCompletion;
-		else if (index == FUEL_INDEX) return fuel;
-		else if (index == SPEED_FUEL_INDEX) return speedFuel;
+		else if (index == FUEL_ID_INDEX) {
+			ForgeRegistry<Fluid> reg = (ForgeRegistry<Fluid>) ForgeRegistries.FLUIDS;
+			return reg.getID(fuelTank.getFluid().getFluid());
+		}
+		else if (index == FUEL_AMOUNT_INDEX) return fuelTank.getFluidAmount();
 		else return 0;
 	}
 
@@ -48,8 +62,16 @@ public class DecomposerStateData extends RecipeCraftingStateData<DecomposerRecip
 		validateIndex(index);
 		if (index == TIME_INDEX) timeElapsed = value;
 		else if (index == TIME_FOR_COMPLETION_INDEX) timeForCompletion = value;
-		else if (index == FUEL_INDEX) fuel = (short) value;
-		else if (index == SPEED_FUEL_INDEX) speedFuel = (short) value;
+		else if (index == FUEL_ID_INDEX) {
+			ForgeRegistry<Fluid> reg = (ForgeRegistry<Fluid>) ForgeRegistries.FLUIDS;
+			Fluid fluid = reg.getValue(value);
+			fuelTank.setFluid(new FluidStack(fluid, fuelTank.getFluidAmount()));
+		}
+		else if (index == FUEL_AMOUNT_INDEX) {
+			if (fuelTank.getFluid().getRawFluid() != Fluids.EMPTY) {
+				fuelTank.getFluid().setAmount(value);
+			}
+		}
 	}
 
 	@Override

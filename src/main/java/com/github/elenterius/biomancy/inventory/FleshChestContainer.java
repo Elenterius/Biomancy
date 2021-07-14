@@ -1,7 +1,6 @@
 package com.github.elenterius.biomancy.inventory;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.capabilities.NonNestingItemStackHandler;
 import com.github.elenterius.biomancy.init.ModContainerTypes;
 import com.github.elenterius.biomancy.tileentity.FleshbornChestTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -16,9 +15,9 @@ import org.apache.logging.log4j.MarkerManager;
 
 public class FleshChestContainer extends Container {
 
-	protected final SimpleInvContents invContents;
+	protected final SimpleInventory invContents;
 
-	private FleshChestContainer(int screenId, PlayerInventory playerInventory, SimpleInvContents invContents) {
+	private FleshChestContainer(int screenId, PlayerInventory playerInventory, SimpleInventory invContents) {
 		super(ModContainerTypes.FLESHBORN_CHEST.get(), screenId);
 		this.invContents = invContents;
 		PlayerInvWrapper playerInventoryForge = new PlayerInvWrapper(playerInventory);
@@ -58,12 +57,12 @@ public class FleshChestContainer extends Container {
 		}
 	}
 
-	public static FleshChestContainer createServerContainer(int screenId, PlayerInventory playerInventory, SimpleInvContents invContents) {
+	public static FleshChestContainer createServerContainer(int screenId, PlayerInventory playerInventory, SimpleInventory invContents) {
 		return new FleshChestContainer(screenId, playerInventory, invContents);
 	}
 
 	public static FleshChestContainer createClientContainer(int screenId, PlayerInventory playerInventory, PacketBuffer extraData) {
-		SimpleInvContents invContents = SimpleInvContents.createClientContents(FleshbornChestTileEntity.INV_SLOTS_COUNT);
+		SimpleInventory invContents = SimpleInventory.createClientContents(FleshbornChestTileEntity.INV_SLOTS_COUNT);
 		return new FleshChestContainer(screenId, playerInventory, invContents);
 	}
 
@@ -100,7 +99,7 @@ public class FleshChestContainer extends Container {
 
 			case PLAYER_HOTBAR:
 			case PLAYER_MAIN_INVENTORY:
-				if (NonNestingItemStackHandler.isItemStackInventoryEmpty(sourceStack)) {
+				if (HandlerBehaviors.EMPTY_ITEM_INVENTORY_PREDICATE.test(sourceStack)) {
 					successfulTransfer = mergeInto(SlotZone.CHEST_INVENTORY, sourceStack, false);
 				}
 				if (!successfulTransfer) {

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:nutrient_slurry_from_raw_meat_digesting"
+    ]
+  },
+  "criteria": {
+    "has_raw_meat": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "biomancy:raw_meats"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:nutrient_slurry_from_raw_meat_digesting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_raw_meat",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "type": "biomancy:chewing",
+  "ingredient": {
+    "item": "biomancy:flesh_block_slab"
+  },
+  "result": {
+    "item": "biomancy:flesh_lump",
+    "count": 4
+  },
+  "time": 200
+}

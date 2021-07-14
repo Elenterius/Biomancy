@@ -1,6 +1,8 @@
 package com.github.elenterius.biomancy;
 
 import com.github.elenterius.biomancy.init.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.item.EnchantedBookItem;
@@ -18,22 +20,26 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
+import java.util.Random;
 
 @Mod(BiomancyMod.MOD_ID)
 public final class BiomancyMod {
+
 	public static final String MOD_ID = "biomancy";
 	public static final Logger LOGGER = LogManager.getLogger();
+	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
+	public static final Random GLOBAL_RANDOM = new Random();
 
 	public BiomancyMod() {
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
 		ModItems.ITEMS.register(modEventBus);
 		ModBlocks.BLOCKS.register(modEventBus);
+		ModFluids.FLUIDS.register(modEventBus);
 		ModEnchantments.ENCHANTMENTS.register(modEventBus);
 		ModRecipes.RECIPE_SERIALIZERS.register(modEventBus);
 		ModTileEntityTypes.TILE_ENTITIES.register(modEventBus);
 		ModContainerTypes.CONTAINERS.register(modEventBus);
-
 		ModAttributes.ATTRIBUTES.register(modEventBus);
 		ModEffects.EFFECTS.register(modEventBus);
 		ModEntityTypes.ENTITIES.register(modEventBus);

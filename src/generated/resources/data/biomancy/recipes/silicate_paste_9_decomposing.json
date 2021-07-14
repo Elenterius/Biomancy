@@ -1,10 +1,11 @@
 {
   "type": "biomancy:decomposing",
-  "ingredients": [
-    {
+  "input": {
+    "ingredient": {
       "tag": "forge:gems/quartz"
-    }
-  ],
+    },
+    "count": 1
+  },
   "byproducts": [
     {
       "result": {

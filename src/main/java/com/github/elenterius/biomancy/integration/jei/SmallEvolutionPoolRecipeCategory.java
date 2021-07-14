@@ -95,7 +95,7 @@ public class SmallEvolutionPoolRecipeCategory implements IRecipeCategory<Evoluti
 			IFormattableTextComponent costText = new StringTextComponent("+" + mutagenCost + " ").appendSibling(new TranslationTextComponent("tooltip.biomancy.mutagen"));
 			FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
 			fontRenderer.drawText(matrixStack, timeText, background.getWidth() - fontRenderer.getStringPropertyWidth(timeText), 42, 0xff808080);
-			fontRenderer.drawText(matrixStack, costText, 0, 47, 0xff808080);
+			fontRenderer.drawText(matrixStack, costText, 0, 48, 0xff808080);
 		}
 	}
 }

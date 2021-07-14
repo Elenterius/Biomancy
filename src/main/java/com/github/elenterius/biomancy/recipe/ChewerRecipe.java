@@ -17,7 +17,7 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 
-public class ChewerRecipe extends AbstractBioMechanicalRecipe {
+public class ChewerRecipe extends AbstractProductionRecipe {
 
 	private final Ingredient ingredient;
 	private final ItemStack recipeResult;

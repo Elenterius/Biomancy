@@ -1,25 +1,11 @@
 {
   "type": "biomancy:decomposing",
-  "ingredients": [
-    {
+  "input": {
+    "ingredient": {
       "item": "minecraft:glowstone_dust"
     },
-    {
-      "item": "minecraft:glowstone_dust"
-    },
-    {
-      "item": "minecraft:glowstone_dust"
-    },
-    {
-      "item": "minecraft:glowstone_dust"
-    },
-    {
-      "item": "minecraft:glowstone_dust"
-    },
-    {
-      "item": "minecraft:glowstone_dust"
-    }
-  ],
+    "count": 6
+  },
   "byproducts": [],
   "result": {
     "item": "biomancy:silicate_paste"

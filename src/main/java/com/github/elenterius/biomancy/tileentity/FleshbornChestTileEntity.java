@@ -3,7 +3,8 @@ package com.github.elenterius.biomancy.tileentity;
 import com.github.elenterius.biomancy.block.FleshChestBlock;
 import com.github.elenterius.biomancy.init.ModTileEntityTypes;
 import com.github.elenterius.biomancy.inventory.FleshChestContainer;
-import com.github.elenterius.biomancy.inventory.SimpleInvContents;
+import com.github.elenterius.biomancy.inventory.HandlerBehaviors;
+import com.github.elenterius.biomancy.inventory.SimpleInventory;
 import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -39,7 +40,7 @@ public class FleshbornChestTileEntity extends OwnableTileEntity implements IName
 
 	public static final int INV_SLOTS_COUNT = 6 * 9;
 
-	private final SimpleInvContents invContents;
+	private final SimpleInventory inventory;
 
 	protected float lidAngle;
 	protected float prevLidAngle;
@@ -48,9 +49,9 @@ public class FleshbornChestTileEntity extends OwnableTileEntity implements IName
 
 	public FleshbornChestTileEntity() {
 		super(ModTileEntityTypes.FLESH_CHEST.get());
-		invContents = SimpleInvContents.createServerContents(INV_SLOTS_COUNT, SimpleInvContents.ISHandlerType.NON_NESTING, this::canPlayerOpenInv, this::markDirty);
-		invContents.setOpenInventoryConsumer(this::onOpenInventory);
-		invContents.setCloseInventoryConsumer(this::onCloseInventory);
+		inventory = SimpleInventory.createServerContents(INV_SLOTS_COUNT, HandlerBehaviors::denyItemWithFilledInventory, this::canPlayerOpenInv, this::markDirty);
+		inventory.setOpenInventoryConsumer(this::onOpenInventory);
+		inventory.setCloseInventoryConsumer(this::onCloseInventory);
 	}
 
 	public static void playSound(World worldIn, SoundEvent soundIn, BlockPos posIn) {
@@ -74,7 +75,7 @@ public class FleshbornChestTileEntity extends OwnableTileEntity implements IName
 	@Nullable
 	@Override
 	public Container createMenu(int screenId, PlayerInventory playerInventory, PlayerEntity playerEntity) {
-		return FleshChestContainer.createServerContainer(screenId, playerInventory, invContents);
+		return FleshChestContainer.createServerContainer(screenId, playerInventory, inventory);
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -149,15 +150,15 @@ public class FleshbornChestTileEntity extends OwnableTileEntity implements IName
 	@Override
 	public CompoundNBT write(CompoundNBT nbt) {
 		super.write(nbt);
-		if (!invContents.isEmpty()) nbt.put("Inventory", invContents.serializeNBT());
+		if (!inventory.isEmpty()) nbt.put("Inventory", inventory.serializeNBT());
 		return nbt;
 	}
 
 	@Override
 	public void read(BlockState state, CompoundNBT nbt) {
 		super.read(state, nbt);
-		invContents.deserializeNBT(nbt.getCompound("Inventory"));
-		if (invContents.getSizeInventory() != INV_SLOTS_COUNT) {
+		inventory.deserializeNBT(nbt.getCompound("Inventory"));
+		if (inventory.getSizeInventory() != INV_SLOTS_COUNT) {
 			throw new IllegalArgumentException("Corrupted NBT: Number of inventory slots did not match expected count.");
 		}
 	}
@@ -165,26 +166,26 @@ public class FleshbornChestTileEntity extends OwnableTileEntity implements IName
 	@Override
 	public CompoundNBT writeToItemBlockEntityTag(CompoundNBT nbt) {
 		super.writeToItemBlockEntityTag(nbt);
-		if (!invContents.isEmpty()) nbt.put("Inventory", invContents.serializeNBT());
+		if (!inventory.isEmpty()) nbt.put("Inventory", inventory.serializeNBT());
 		return nbt;
 	}
 
 	@Override
 	public void invalidateCaps() {
-		invContents.getOptionalItemStackHandler().invalidate();
+		inventory.getOptionalItemStackHandler().invalidate();
 		super.invalidateCaps();
 	}
 
 	@Nullable
 	public IInventory getInventory() {
-		return !removed ? invContents : null;
+		return !removed ? inventory : null;
 	}
 
 	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
 		if (!removed && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			return invContents.getOptionalItemStackHandler().cast();
+			return inventory.getOptionalItemStackHandler().cast();
 		}
 		return super.getCapability(cap, side);
 	}

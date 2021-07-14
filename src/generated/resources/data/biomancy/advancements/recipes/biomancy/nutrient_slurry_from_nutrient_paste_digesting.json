@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:nutrient_slurry_from_nutrient_paste_digesting"
+    ]
+  },
+  "criteria": {
+    "has_nutrient_paste": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "biomancy:nutrient_paste"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:nutrient_slurry_from_nutrient_paste_digesting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_nutrient_paste",
+      "has_the_recipe"
+    ]
+  ]
+}

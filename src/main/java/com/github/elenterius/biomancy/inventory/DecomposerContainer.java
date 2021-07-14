@@ -5,121 +5,83 @@ import com.github.elenterius.biomancy.init.ModContainerTypes;
 import com.github.elenterius.biomancy.tileentity.DecomposerTileEntity;
 import com.github.elenterius.biomancy.tileentity.state.DecomposerStateData;
 import com.github.elenterius.biomancy.util.BiofuelUtil;
-import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.items.SlotItemHandler;
-import net.minecraftforge.items.wrapper.PlayerInvWrapper;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import org.apache.logging.log4j.MarkerManager;
 
-public class DecomposerContainer extends Container {
+public class DecomposerContainer extends MachineContainer {
 
-	protected final FuelInvContents fuelContents;
-	protected final SimpleInvContents inputContents;
-	protected final SimpleInvContents outputContents;
-	private final DecomposerStateData decomposerState;
+	protected final SimpleInventory fuelInventory;
+	protected final SimpleInventory emptyBucketInventory;
+	protected final SimpleInventory inputInventory;
+	protected final SimpleInventory outputInventory;
+	private final DecomposerStateData stateData;
 	private final World world;
 
-	private DecomposerContainer(int screenId, PlayerInventory playerInventory, FuelInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, DecomposerStateData decomposerState) {
-		super(ModContainerTypes.DECOMPOSER.get(), screenId);
-		this.fuelContents = fuelContents;
-		this.inputContents = inputContents;
-		this.outputContents = outputContents;
-		this.decomposerState = decomposerState;
+	private DecomposerContainer(int screenId, PlayerInventory playerInventory, SimpleInventory fuelInventory, SimpleInventory emptyBucketInventory, SimpleInventory inputInventory, SimpleInventory outputInventory, DecomposerStateData stateData) {
+		super(ModContainerTypes.DECOMPOSER.get(), screenId, playerInventory);
 		world = playerInventory.player.world;
 
-		trackIntArray(decomposerState);
+		this.fuelInventory = fuelInventory;
+		this.emptyBucketInventory = emptyBucketInventory;
+		this.inputInventory = inputInventory;
+		this.outputInventory = outputInventory;
+		this.stateData = stateData;
 
-		PlayerInvWrapper playerInventoryForge = new PlayerInvWrapper(playerInventory);
+		trackIntArray(stateData);
 
-		final int HOT_BAR_SIZE = 9;
-		final int SLOT_X_SPACING = 18;
-		final int SLOT_Y_SPACING = 18;
-
-		// Add the players hotbar
-		for (int idx = 0; idx < HOT_BAR_SIZE; idx++) { //hotbar
-			addSlot(new SlotItemHandler(playerInventoryForge, idx, 8 + SLOT_X_SPACING * idx, 142));
-		}
-
-		// Add the players main inventory
-		final int PLAYER_INVENTORY_POS_X = 8;
-		final int PLAYER_INVENTORY_POS_Y = 84;
-		for (int y = 0; y < 3; y++) {
-			for (int x = 0; x < 9; x++) {
-				int slotNumber = HOT_BAR_SIZE + y * 9 + x;
-				int posX = PLAYER_INVENTORY_POS_X + x * SLOT_X_SPACING;
-				int posY = PLAYER_INVENTORY_POS_Y + y * SLOT_Y_SPACING;
-				addSlot(new SlotItemHandler(playerInventoryForge, slotNumber, posX, posY));
-			}
-		}
-
-		int posX = 17;
 		int posY = 17;
-		addSlot(new Slot(fuelContents, 0, posX, posY) {
+		addSlot(new Slot(fuelInventory, 0, 17, posY) {
 			@Override
 			public boolean isItemValid(ItemStack stack) {
 				return BiofuelUtil.isItemValidFuel(stack);
 			}
 		});
+		addSlot(new OutputSlot(emptyBucketInventory, 0, 17, 44));
 
-		int inputPosX = posX + 18 * 2;
-		addSlot(new Slot(inputContents, 0, inputPosX, posY));
-		addSlot(new Slot(inputContents, 1, inputPosX + 18, posY));
-		addSlot(new Slot(inputContents, 2, inputPosX + 18 * 2, posY));
-		addSlot(new Slot(inputContents, 3, inputPosX, posY + 18));
-		addSlot(new Slot(inputContents, 4, inputPosX + 18, posY + 18));
-		addSlot(new Slot(inputContents, 5, inputPosX + 18 * 2, posY + 18));
+		addSlot(new Slot(inputInventory, 0, 62, posY));
 
-		int outputPosX = inputPosX + 18 * 4;
-		addSlot(new OutputSlot(outputContents, 0, outputPosX, posY));
-		addSlot(new OutputSlot(outputContents, 1, outputPosX + 18, posY));
-		addSlot(new OutputSlot(outputContents, 2, outputPosX, posY + 18));
-		addSlot(new OutputSlot(outputContents, 3, outputPosX + 18, posY + 18));
+		int outputPosX = 98;
+		addSlot(new OutputSlot(outputInventory, 0, outputPosX, posY));
+		addSlot(new OutputSlot(outputInventory, 1, outputPosX + 18, posY));
+		addSlot(new OutputSlot(outputInventory, 2, outputPosX + 18 * 2, posY));
+		addSlot(new OutputSlot(outputInventory, 3, outputPosX, posY + 18));
+		addSlot(new OutputSlot(outputInventory, 4, outputPosX + 18, posY + 18));
+		addSlot(new OutputSlot(outputInventory, 5, outputPosX + 18 * 2, posY + 18));
 	}
 
-	public static DecomposerContainer createServerContainer(int screenId, PlayerInventory playerInventory, FuelInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, DecomposerStateData decomposerState) {
-		return new DecomposerContainer(screenId, playerInventory, fuelContents, inputContents, outputContents, decomposerState);
+	public static DecomposerContainer createServerContainer(int screenId, PlayerInventory playerInventory, SimpleInventory fuelInventory, SimpleInventory emptyBucketInventory, SimpleInventory inputInventory, SimpleInventory outputInventory, DecomposerStateData stateData) {
+		return new DecomposerContainer(screenId, playerInventory, fuelInventory, emptyBucketInventory, inputInventory, outputInventory, stateData);
 	}
 
 	public static DecomposerContainer createClientContainer(int screenId, PlayerInventory playerInventory, PacketBuffer extraData) {
-		FuelInvContents fuelContents = FuelInvContents.createClientContents(DecomposerTileEntity.FUEL_SLOTS_COUNT);
-		SimpleInvContents inputContents = SimpleInvContents.createClientContents(DecomposerTileEntity.INPUT_SLOTS_COUNT);
-		SimpleInvContents outputContents = SimpleInvContents.createClientContents(DecomposerTileEntity.OUTPUT_SLOTS_COUNT);
-		DecomposerStateData decomposerState = new DecomposerStateData();
-		return new DecomposerContainer(screenId, playerInventory, fuelContents, inputContents, outputContents, decomposerState);
+		SimpleInventory fuelInventory = SimpleInventory.createClientContents(DecomposerTileEntity.FUEL_SLOTS);
+		SimpleInventory emptyBucketInventory = SimpleInventory.createClientContents(DecomposerTileEntity.EMPTY_BUCKET_SLOTS);
+		SimpleInventory inputInventory = SimpleInventory.createClientContents(DecomposerTileEntity.INPUT_SLOTS);
+		SimpleInventory outputInventory = SimpleInventory.createClientContents(DecomposerTileEntity.OUTPUT_SLOTS);
+		DecomposerStateData stateData = new DecomposerStateData();
+		return new DecomposerContainer(screenId, playerInventory, fuelInventory, emptyBucketInventory, inputInventory, outputInventory, stateData);
 	}
 
 	@Override
 	public boolean canInteractWith(PlayerEntity playerIn) {
 		//we don't check all three inventories because they all call the same method in the decomposer tile entity
-		return inputContents.isUsableByPlayer(playerIn);
+		return inputInventory.isUsableByPlayer(playerIn);
 	}
 
 	public float getCraftingProgressNormalized() {
-		if (decomposerState.timeForCompletion == 0) return 0f;
-		return MathHelper.clamp(decomposerState.timeElapsed / (float) decomposerState.timeForCompletion, 0f, 1f);
+		if (stateData.timeForCompletion == 0) return 0f;
+		return MathHelper.clamp(stateData.timeElapsed / (float) stateData.timeForCompletion, 0f, 1f);
 	}
 
-	public int getFuel() {
-		return decomposerState.fuel;
-	}
-
-	public float getFuelNormalized() {
-		return MathHelper.clamp(decomposerState.fuel / (float) DecomposerTileEntity.MAX_FUEL, 0f, 1f);
-	}
-
-	public String getFuelTranslationKey() {
-		return TextUtil.getTranslationKey("tooltip", "biofuel");
-	}
-
-	public float getSpeedFuelNormalized() {
-		return MathHelper.clamp(decomposerState.speedFuel / (float) DecomposerTileEntity.MAX_FUEL, 0f, 1f);
+	public FluidTank getFuelTank() {
+		return stateData.fuelTank;
 	}
 
 	/**
@@ -187,10 +149,11 @@ public class DecomposerContainer extends Container {
 
 	private enum SlotZone {
 		PLAYER_HOTBAR(0, 9),
-		PLAYER_MAIN_INVENTORY(9, 3 * 9),
-		FUEL_ZONE(9 + 3 * 9, DecomposerTileEntity.FUEL_SLOTS_COUNT),
-		INPUT_ZONE(9 + 3 * 9 + DecomposerTileEntity.FUEL_SLOTS_COUNT, DecomposerTileEntity.INPUT_SLOTS_COUNT),
-		OUTPUT_ZONE(9 + 3 * 9 + DecomposerTileEntity.FUEL_SLOTS_COUNT + DecomposerTileEntity.INPUT_SLOTS_COUNT, DecomposerTileEntity.OUTPUT_SLOTS_COUNT);
+		PLAYER_MAIN_INVENTORY(9, 27), // 27 = 3 * 9
+		FUEL_ZONE(36, DecomposerTileEntity.FUEL_SLOTS), // 36 = 9 + 27
+		EMPTY_BUCKET_ZONE(36 + DecomposerTileEntity.FUEL_SLOTS, DecomposerTileEntity.EMPTY_BUCKET_SLOTS),
+		INPUT_ZONE(36 + DecomposerTileEntity.FUEL_SLOTS + DecomposerTileEntity.EMPTY_BUCKET_SLOTS, DecomposerTileEntity.INPUT_SLOTS),
+		OUTPUT_ZONE(36 + DecomposerTileEntity.FUEL_SLOTS + DecomposerTileEntity.EMPTY_BUCKET_SLOTS + DecomposerTileEntity.INPUT_SLOTS, DecomposerTileEntity.OUTPUT_SLOTS);
 
 		public final int firstIndex;
 		public final int slotCount;

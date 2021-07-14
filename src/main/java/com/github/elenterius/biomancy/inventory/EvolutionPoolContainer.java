@@ -19,17 +19,17 @@ import org.apache.logging.log4j.MarkerManager;
 
 public class EvolutionPoolContainer extends Container {
 
-	protected final SimpleInvContents fuelContents;
-	protected final SimpleInvContents inputContents;
-	protected final SimpleInvContents outputContents;
+	protected final SimpleInventory fuelInventory;
+	protected final SimpleInventory inputInventory;
+	protected final SimpleInventory outputInventory;
 	private final EvolutionPoolStateData stateData;
 	private final World world;
 
-	private EvolutionPoolContainer(int screenId, PlayerInventory playerInventory, SimpleInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, EvolutionPoolStateData stateData) {
+	private EvolutionPoolContainer(int screenId, PlayerInventory playerInventory, SimpleInventory fuelInventory, SimpleInventory inputInventory, SimpleInventory outputInventory, EvolutionPoolStateData stateData) {
 		super(ModContainerTypes.EVOLUTION_POOL.get(), screenId);
-		this.fuelContents = fuelContents;
-		this.inputContents = inputContents;
-		this.outputContents = outputContents;
+		this.fuelInventory = fuelInventory;
+		this.inputInventory = inputInventory;
+		this.outputInventory = outputInventory;
 		this.stateData = stateData;
 		world = playerInventory.player.world;
 
@@ -60,7 +60,7 @@ public class EvolutionPoolContainer extends Container {
 
 		int posX = 17;
 		int posY = 17;
-		addSlot(new Slot(fuelContents, 0, posX, posY) {
+		addSlot(new Slot(fuelInventory, 0, posX, posY) {
 			@Override
 			public boolean isItemValid(ItemStack stack) {
 				return EvolutionPoolTileEntity.VALID_FUEL_ITEM.test(stack);
@@ -68,32 +68,32 @@ public class EvolutionPoolContainer extends Container {
 		});
 
 		int inputPosX = posX + 18 * 2;
-		addSlot(new Slot(inputContents, 0, inputPosX, posY));
-		addSlot(new Slot(inputContents, 1, inputPosX + 18, posY));
-		addSlot(new Slot(inputContents, 2, inputPosX + 18 * 2, posY));
-		addSlot(new Slot(inputContents, 3, inputPosX, posY + 18));
-		addSlot(new Slot(inputContents, 4, inputPosX + 18, posY + 18));
-		addSlot(new Slot(inputContents, 5, inputPosX + 18 * 2, posY + 18));
+		addSlot(new Slot(inputInventory, 0, inputPosX, posY));
+		addSlot(new Slot(inputInventory, 1, inputPosX + 18, posY));
+		addSlot(new Slot(inputInventory, 2, inputPosX + 18 * 2, posY));
+		addSlot(new Slot(inputInventory, 3, inputPosX, posY + 18));
+		addSlot(new Slot(inputInventory, 4, inputPosX + 18, posY + 18));
+		addSlot(new Slot(inputInventory, 5, inputPosX + 18 * 2, posY + 18));
 
-		addSlot(new OutputSlot(outputContents, 0, 125, 26));
+		addSlot(new OutputSlot(outputInventory, 0, 125, 26));
 	}
 
-	public static EvolutionPoolContainer createServerContainer(int screenId, PlayerInventory playerInventory, SimpleInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, EvolutionPoolStateData stateData) {
-		return new EvolutionPoolContainer(screenId, playerInventory, fuelContents, inputContents, outputContents, stateData);
+	public static EvolutionPoolContainer createServerContainer(int screenId, PlayerInventory playerInventory, SimpleInventory fuelInventory, SimpleInventory inputInventory, SimpleInventory outputInventory, EvolutionPoolStateData stateData) {
+		return new EvolutionPoolContainer(screenId, playerInventory, fuelInventory, inputInventory, outputInventory, stateData);
 	}
 
 	public static EvolutionPoolContainer createClientContainer(int screenId, PlayerInventory playerInventory, PacketBuffer extraData) {
-		SimpleInvContents fuelContents = SimpleInvContents.createClientContents(EvolutionPoolTileEntity.FUEL_SLOTS_COUNT);
-		SimpleInvContents inputContents = SimpleInvContents.createClientContents(EvolutionPoolTileEntity.INPUT_SLOTS_COUNT);
-		SimpleInvContents outputContents = SimpleInvContents.createClientContents(EvolutionPoolTileEntity.OUTPUT_SLOTS_COUNT);
+		SimpleInventory fuelInventory = SimpleInventory.createClientContents(EvolutionPoolTileEntity.FUEL_SLOTS);
+		SimpleInventory inputInventory = SimpleInventory.createClientContents(EvolutionPoolTileEntity.INPUT_SLOTS);
+		SimpleInventory outputInventory = SimpleInventory.createClientContents(EvolutionPoolTileEntity.OUTPUT_SLOTS);
 		EvolutionPoolStateData stateData = new EvolutionPoolStateData();
-		return new EvolutionPoolContainer(screenId, playerInventory, fuelContents, inputContents, outputContents, stateData);
+		return new EvolutionPoolContainer(screenId, playerInventory, fuelInventory, inputInventory, outputInventory, stateData);
 	}
 
 	@Override
 	public boolean canInteractWith(PlayerEntity playerIn) {
 		//we don't check all three inventories because they all call the same method in the decomposer tile entity
-		return inputContents.isUsableByPlayer(playerIn);
+		return inputInventory.isUsableByPlayer(playerIn);
 	}
 
 	public float getCraftingProgressNormalized() {
@@ -179,9 +179,9 @@ public class EvolutionPoolContainer extends Container {
 	private enum SlotZone {
 		PLAYER_HOTBAR(0, 9),
 		PLAYER_MAIN_INVENTORY(9, 3 * 9),
-		FUEL_ZONE(9 + 3 * 9, EvolutionPoolTileEntity.FUEL_SLOTS_COUNT),
-		INPUT_ZONE(9 + 3 * 9 + EvolutionPoolTileEntity.FUEL_SLOTS_COUNT, EvolutionPoolTileEntity.INPUT_SLOTS_COUNT),
-		OUTPUT_ZONE(9 + 3 * 9 + EvolutionPoolTileEntity.FUEL_SLOTS_COUNT + EvolutionPoolTileEntity.INPUT_SLOTS_COUNT, EvolutionPoolTileEntity.OUTPUT_SLOTS_COUNT);
+		FUEL_ZONE(9 + 3 * 9, EvolutionPoolTileEntity.FUEL_SLOTS),
+		INPUT_ZONE(9 + 3 * 9 + EvolutionPoolTileEntity.FUEL_SLOTS, EvolutionPoolTileEntity.INPUT_SLOTS),
+		OUTPUT_ZONE(9 + 3 * 9 + EvolutionPoolTileEntity.FUEL_SLOTS + EvolutionPoolTileEntity.INPUT_SLOTS, EvolutionPoolTileEntity.OUTPUT_SLOTS);
 
 		public final int firstIndex;
 		public final int slotCount;

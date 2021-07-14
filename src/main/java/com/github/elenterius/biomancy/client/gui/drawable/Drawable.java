@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.client.gui.drawable;
 
 import com.github.elenterius.biomancy.util.GuiUtil;
 import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.Minecraft;
 
 public abstract class Drawable {
 
@@ -21,6 +22,6 @@ public abstract class Drawable {
 		return GuiUtil.isInRect(guiLeft + x, guiTop + y, width, height, mouseX, mouseY);
 	}
 
-	public abstract void draw(MatrixStack matrixStack, int guiLeft, int guiTop, int mouseX, int mouseY);
+	public abstract void draw(Minecraft mc, MatrixStack matrixStack, int guiLeft, int guiTop, int mouseX, int mouseY);
 
 }

@@ -6,6 +6,7 @@
     "minecraft:suspicious_stew",
     "minecraft:cocoa_beans",
     "minecraft:baked_potato",
+    "minecraft:honeycomb",
     "minecraft:honey_bottle",
     "minecraft:melon",
     "minecraft:pumpkin",
@@ -18,6 +19,34 @@
     "minecraft:red_mushroom_block",
     "minecraft:brown_mushroom_block",
     "minecraft:shroomlight",
-    "minecraft:mushroom_stem"
+    "minecraft:mushroom_stem",
+    {
+      "id": "create:bar_of_chocolate",
+      "required": false
+    },
+    {
+      "id": "createfa:hamburger",
+      "required": false
+    },
+    {
+      "id": "createfa:schnitzel",
+      "required": false
+    },
+    {
+      "id": "createfa:meatballs",
+      "required": false
+    },
+    {
+      "id": "createfa:chicken_nuggets",
+      "required": false
+    },
+    {
+      "id": "rats:blue_cheese",
+      "required": false
+    },
+    {
+      "id": "#forge:bread",
+      "required": false
+    }
   ]
 }

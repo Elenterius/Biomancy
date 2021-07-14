@@ -6,52 +6,42 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.*;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.item.crafting.ShapedRecipe;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.RecipeMatcher;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DecomposerRecipe extends AbstractBioMechanicalRecipe {
+public class DecomposerRecipe extends AbstractProductionRecipe {
 
-	public static final int MAX_INGREDIENTS = 2 * 3;
-	public static final int MAX_BYPRODUCTS = 3;
+	public static final int MAX_INGREDIENTS = 1;
+	public static final int MAX_BYPRODUCTS = 5;
 
-	private final NonNullList<Ingredient> recipeIngredients;
+	private final Ingredient ingredient;
+	private final int ingredientCount;
 	private final ItemStack recipeResult;
 	private final List<Byproduct> byproducts;
-	private final boolean isSimple;
 
-	public DecomposerRecipe(ResourceLocation registryKey, ItemStack result, int craftingTime, NonNullList<Ingredient> ingredients, List<Byproduct> byproducts) {
+	public DecomposerRecipe(ResourceLocation registryKey, ItemStack result, int craftingTime, Ingredient ingredientIn, int ingredientCountIn, List<Byproduct> byproductsIn) {
 		super(registryKey, craftingTime);
-		recipeIngredients = ingredients;
+		ingredient = ingredientIn;
 		recipeResult = result;
-		this.byproducts = byproducts;
-		isSimple = ingredients.stream().allMatch(Ingredient::isSimple);
+		ingredientCount = ingredientCountIn;
+		byproducts = byproductsIn;
 	}
 
 	@Override
 	public boolean matches(IInventory inv, World worldIn) {
-		RecipeItemHelper recipeItemHelper = new RecipeItemHelper();
-		ArrayList<ItemStack> inputs = new ArrayList<>();
-		int ingredientCount = 0;
-
-		for (int idx = 0; idx < inv.getSizeInventory(); idx++) {
-			ItemStack stack = inv.getStackInSlot(idx);
-			if (!stack.isEmpty()) {
-				ingredientCount++;
-				if (isSimple) recipeItemHelper.func_221264_a(stack, 1);
-				else inputs.add(stack);
-			}
-		}
-
-		return ingredientCount == recipeIngredients.size() && (isSimple ? recipeItemHelper.canCraft(this, null) : RecipeMatcher.findMatches(inputs, recipeIngredients) != null);
+		ItemStack stack = inv.getStackInSlot(0);
+		return ingredient.test(stack) && stack.getCount() >= ingredientCount;
 	}
 
 	@Override
@@ -61,12 +51,22 @@ public class DecomposerRecipe extends AbstractBioMechanicalRecipe {
 
 	@Override
 	public boolean canFit(int width, int height) {
-		return width * height >= recipeIngredients.size();
+		return width * height == 1;
 	}
 
 	@Override
 	public NonNullList<Ingredient> getIngredients() {
-		return recipeIngredients;
+		NonNullList<Ingredient> list = NonNullList.create();
+		list.add(ingredient);
+		return list;
+	}
+
+	public Ingredient getIngredient() {
+		return ingredient;
+	}
+
+	public int getIngredientCount() {
+		return ingredientCount;
 	}
 
 	public List<Byproduct> getByproducts() {
@@ -90,15 +90,9 @@ public class DecomposerRecipe extends AbstractBioMechanicalRecipe {
 
 	public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<DecomposerRecipe> {
 
-		private static NonNullList<Ingredient> readIngredients(JsonArray jsonArray) {
-			NonNullList<Ingredient> list = NonNullList.create();
-			for (int i = 0; i < jsonArray.size(); i++) {
-				Ingredient ingredient = Ingredient.deserialize(jsonArray.get(i));
-				if (!ingredient.hasNoMatchingItems()) {
-					list.add(ingredient);
-				}
-			}
-			return list;
+		private static Ingredient readIngredient(JsonObject jsonObj) {
+			if (JSONUtils.isJsonArray(jsonObj, "ingredient")) return Ingredient.deserialize(JSONUtils.getJsonArray(jsonObj, "ingredient"));
+			else return Ingredient.deserialize(JSONUtils.getJsonObject(jsonObj, "ingredient"));
 		}
 
 		private static List<Byproduct> readByproducts(JsonArray jsonArray) {
@@ -111,14 +105,9 @@ public class DecomposerRecipe extends AbstractBioMechanicalRecipe {
 
 		@Override
 		public DecomposerRecipe read(ResourceLocation recipeId, JsonObject json) {
-			NonNullList<Ingredient> ingredients = readIngredients(JSONUtils.getJsonArray(json, "ingredients"));
-
-			if (ingredients.isEmpty()) {
-				throw new JsonParseException("No ingredients found for " + getRegistryName() + " recipe");
-			}
-			else if (ingredients.size() > MAX_INGREDIENTS) {
-				throw new JsonParseException(String.format("Too many ingredients for %s recipe. Max amount is %d", getRegistryName(), MAX_INGREDIENTS));
-			}
+			JsonObject input = JSONUtils.getJsonObject(json, "input");
+			Ingredient ingredient = readIngredient(input);
+			int ingredientCount = JSONUtils.getInt(input, "count", 1);
 
 			List<Byproduct> byproducts = readByproducts(JSONUtils.getJsonArray(json, "byproducts"));
 			if (byproducts.size() > MAX_BYPRODUCTS) {
@@ -128,7 +117,7 @@ public class DecomposerRecipe extends AbstractBioMechanicalRecipe {
 			ItemStack resultStack = ShapedRecipe.deserializeItem(JSONUtils.getJsonObject(json, "result"));
 			int time = JSONUtils.getInt(json, "time", 100);
 
-			return new DecomposerRecipe(recipeId, resultStack, time, ingredients, byproducts);
+			return new DecomposerRecipe(recipeId, resultStack, time, ingredient, ingredientCount, byproducts);
 		}
 
 		@Override
@@ -143,13 +132,10 @@ public class DecomposerRecipe extends AbstractBioMechanicalRecipe {
 				byproducts.add(Byproduct.read(buffer));
 			}
 
+			Ingredient ingredient = Ingredient.read(buffer);
 			int ingredientCount = buffer.readVarInt();
-			NonNullList<Ingredient> ingredients = NonNullList.withSize(ingredientCount, Ingredient.EMPTY);
-			for (int j = 0; j < ingredients.size(); ++j) {
-				ingredients.set(j, Ingredient.read(buffer));
-			}
 
-			return new DecomposerRecipe(recipeId, resultStack, time, ingredients, byproducts);
+			return new DecomposerRecipe(recipeId, resultStack, time, ingredient, ingredientCount, byproducts);
 		}
 
 		@Override
@@ -163,10 +149,8 @@ public class DecomposerRecipe extends AbstractBioMechanicalRecipe {
 				byproduct.write(buffer);
 			}
 
-			buffer.writeVarInt(recipe.recipeIngredients.size());
-			for (Ingredient ingredient : recipe.recipeIngredients) {
-				ingredient.write(buffer);
-			}
+			recipe.ingredient.write(buffer);
+			buffer.writeVarInt(recipe.ingredientCount);
 		}
 	}
 

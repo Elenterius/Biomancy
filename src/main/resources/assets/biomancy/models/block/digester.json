@@ -1,92 +1,454 @@
 {
-	"credit": "Made by Selea & Modified by Elenterius",
-	"parent": "block/block",
-	"textures": {
-		"tendrils": "biomancy:block/flesh_tendrils",
-		"top": "biomancy:block/flesh_hole",
-		"mouth": "biomancy:block/digester_mouth",
-		"particle": "biomancy:block/flesh_rough_1",
-		"skin": "biomancy:block/flesh_rough_1"
-	},
-	"elements": [
-		{
-			"from": [3, 5, 3],
-			"to": [13, 13, 13],
-			"rotation": {"angle": 45, "axis": "y", "origin": [8, 9, 8]},
-			"faces": {
-				"north": {"uv": [0, 7, 10, 15], "texture": "#skin"},
-				"east": {"uv": [0, 4, 10, 12], "texture": "#skin"},
-				"south": {"uv": [3, 7, 13, 15], "texture": "#skin"},
-				"west": {"uv": [5, 0, 15, 8], "texture": "#skin"},
-				"up": {"uv": [4, 3, 14, 13], "texture": "#skin"},
-				"down": {"uv": [3, 2, 13, 12], "texture": "#skin"}
-			}
-		},
-		{
-			"from": [3, 4, 3],
-			"to": [13, 14, 13],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8, 9, 8]},
-			"faces": {
-				"north": {"uv": [5, 0, 15, 10], "texture": "#skin"},
-				"east": {"uv": [4, 4, 14, 14], "texture": "#skin"},
-				"south": {"uv": [4, 0, 14, 10], "texture": "#skin"},
-				"west": {"uv": [0, 4, 10, 14], "texture": "#skin"},
-				"up": {"uv": [3, 3, 13, 13], "texture": "#top"},
-				"down": {"uv": [1, 0, 11, 10], "texture": "#skin"}
-			}
-		},
-		{
-			"name": "mouth",
-			"from": [4.94975, 14, 4.94975],
-			"to": [10.94975, 16, 10.94975],
-			"rotation": {"angle": -45, "axis": "y", "origin": [7.94975, 15, 7.94975]},
-			"faces": {
-				"north": {"uv": [0, 6, 6, 8], "texture": "#mouth"},
-				"east": {"uv": [6, 0, 12, 2], "texture": "#mouth"},
-				"south": {"uv": [6, 2, 12, 4], "texture": "#mouth"},
-				"west": {"uv": [6, 4, 12, 6], "texture": "#mouth"},
-				"up": {"uv": [6, 6, 0, 0], "texture": "#mouth"}
-			}
-		},
-		{
-			"name": "base",
-			"from": [4, 1, 4],
-			"to": [12, 4, 12],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8, 3.5, 8]},
-			"faces": {
-				"north": {"uv": [6, 0, 14, 3], "texture": "#skin"},
-				"east": {"uv": [1, 9, 9, 12], "texture": "#skin"},
-				"south": {"uv": [5, 8, 13, 11], "texture": "#skin"},
-				"west": {"uv": [3, 2, 11, 5], "texture": "#skin"},
-				"down": {"uv": [7, 0, 15, 8], "texture": "#skin"}
-			}
-		},
-		{
-			"name": "base",
-			"from": [5, 0, 5],
-			"to": [11, 1, 11],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8, 3.5, 8]},
-			"faces": {
-				"north": {"uv": [6, 0, 12, 1], "texture": "#skin"},
-				"east": {"uv": [1, 9, 7, 10], "texture": "#skin"},
-				"south": {"uv": [5, 8, 11, 9], "texture": "#skin"},
-				"west": {"uv": [3, 2, 9, 3], "texture": "#skin"},
-				"down": {"uv": [7, 0, 13, 6], "texture": "#skin"}
-			}
-		},
-		{
-			"name": "tendrils",
-			"from": [0, 0.001, 0],
-			"to": [16, 0.001, 16],
-			"rotation": {"angle": 0, "axis": "y", "origin": [8, 0.001, 8]},
-			"faces": {
-				"north": {"uv": [0, 0, 16, 0], "texture": "#missing"},
-				"east": {"uv": [0, 0, 16, 0], "texture": "#missing"},
-				"south": {"uv": [0, 0, 16, 0], "texture": "#missing"},
-				"west": {"uv": [0, 0, 16, 0], "texture": "#missing"},
-				"up": {"uv": [0, 0, 16, 16], "texture": "#tendrils"},
-				"down": {"uv": [16, 0, 0, 16], "rotation": 180, "texture": "#tendrils", "cullface": "down"}
-			}
-		}
-	]
+  "credit": "Made by Selea & Modified by Elenterius",
+  "parent": "block/block",
+  "textures": {
+    "tendrils": "biomancy:block/flesh_tendrils",
+    "top": "biomancy:block/flesh_hole",
+    "mouth": "biomancy:block/digester_mouth",
+    "particle": "biomancy:block/flesh_rough_1",
+    "skin": "biomancy:block/flesh_rough_1"
+  },
+  "elements": [
+    {
+      "from": [
+        3,
+        5,
+        3
+      ],
+      "to": [
+        13,
+        13,
+        13
+      ],
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [
+          8,
+          9,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            7,
+            10,
+            15
+          ],
+          "texture": "#skin"
+        },
+        "east": {
+          "uv": [
+            0,
+            4,
+            10,
+            12
+          ],
+          "texture": "#skin"
+        },
+        "south": {
+          "uv": [
+            3,
+            7,
+            13,
+            15
+          ],
+          "texture": "#skin"
+        },
+        "west": {
+          "uv": [
+            5,
+            0,
+            15,
+            8
+          ],
+          "texture": "#skin"
+        },
+        "up": {
+          "uv": [
+            4,
+            3,
+            14,
+            13
+          ],
+          "texture": "#skin"
+        },
+        "down": {
+          "uv": [
+            3,
+            2,
+            13,
+            12
+          ],
+          "texture": "#skin"
+        }
+      }
+    },
+    {
+      "from": [
+        3,
+        4,
+        3
+      ],
+      "to": [
+        13,
+        14,
+        13
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          8,
+          9,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            5,
+            0,
+            15,
+            10
+          ],
+          "texture": "#skin"
+        },
+        "east": {
+          "uv": [
+            4,
+            4,
+            14,
+            14
+          ],
+          "texture": "#skin"
+        },
+        "south": {
+          "uv": [
+            4,
+            0,
+            14,
+            10
+          ],
+          "texture": "#skin"
+        },
+        "west": {
+          "uv": [
+            0,
+            4,
+            10,
+            14
+          ],
+          "texture": "#skin"
+        },
+        "up": {
+          "uv": [
+            3,
+            3,
+            13,
+            13
+          ],
+          "texture": "#top"
+        },
+        "down": {
+          "uv": [
+            1,
+            0,
+            11,
+            10
+          ],
+          "texture": "#skin"
+        }
+      }
+    },
+    {
+      "name": "mouth",
+      "from": [
+        4.94975,
+        14,
+        4.94975
+      ],
+      "to": [
+        10.94975,
+        16,
+        10.94975
+      ],
+      "rotation": {
+        "angle": -45,
+        "axis": "y",
+        "origin": [
+          7.94975,
+          15,
+          7.94975
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            6,
+            6,
+            8
+          ],
+          "texture": "#mouth"
+        },
+        "east": {
+          "uv": [
+            6,
+            0,
+            12,
+            2
+          ],
+          "texture": "#mouth"
+        },
+        "south": {
+          "uv": [
+            6,
+            2,
+            12,
+            4
+          ],
+          "texture": "#mouth"
+        },
+        "west": {
+          "uv": [
+            6,
+            4,
+            12,
+            6
+          ],
+          "texture": "#mouth"
+        },
+        "up": {
+          "uv": [
+            6,
+            6,
+            0,
+            0
+          ],
+          "texture": "#mouth"
+        }
+      }
+    },
+    {
+      "name": "base",
+      "from": [
+        4,
+        1,
+        4
+      ],
+      "to": [
+        12,
+        4,
+        12
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          8,
+          3.5,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            6,
+            0,
+            14,
+            3
+          ],
+          "texture": "#skin"
+        },
+        "east": {
+          "uv": [
+            1,
+            9,
+            9,
+            12
+          ],
+          "texture": "#skin"
+        },
+        "south": {
+          "uv": [
+            5,
+            8,
+            13,
+            11
+          ],
+          "texture": "#skin"
+        },
+        "west": {
+          "uv": [
+            3,
+            2,
+            11,
+            5
+          ],
+          "texture": "#skin"
+        },
+        "down": {
+          "uv": [
+            7,
+            0,
+            15,
+            8
+          ],
+          "texture": "#skin"
+        }
+      }
+    },
+    {
+      "name": "base",
+      "from": [
+        5,
+        0,
+        5
+      ],
+      "to": [
+        11,
+        1,
+        11
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          8,
+          3.5,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            6,
+            0,
+            12,
+            1
+          ],
+          "texture": "#skin"
+        },
+        "east": {
+          "uv": [
+            1,
+            9,
+            7,
+            10
+          ],
+          "texture": "#skin"
+        },
+        "south": {
+          "uv": [
+            5,
+            8,
+            11,
+            9
+          ],
+          "texture": "#skin"
+        },
+        "west": {
+          "uv": [
+            3,
+            2,
+            9,
+            3
+          ],
+          "texture": "#skin"
+        },
+        "down": {
+          "uv": [
+            7,
+            0,
+            13,
+            6
+          ],
+          "texture": "#skin"
+        }
+      }
+    },
+    {
+      "name": "tendrils",
+      "from": [
+        0,
+        0.01,
+        0
+      ],
+      "to": [
+        16,
+        0.01,
+        16
+      ],
+      "rotation": {
+        "angle": 0,
+        "axis": "y",
+        "origin": [
+          8,
+          0.001,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            0
+          ],
+          "texture": "#missing"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            0
+          ],
+          "texture": "#missing"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            0
+          ],
+          "texture": "#missing"
+        },
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            0
+          ],
+          "texture": "#missing"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#tendrils"
+        },
+        "down": {
+          "uv": [
+            16,
+            0,
+            0,
+            16
+          ],
+          "rotation": 180,
+          "texture": "#tendrils",
+          "cullface": "down"
+        }
+      }
+    }
+  ]
 }

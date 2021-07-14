@@ -5,90 +5,66 @@ import com.github.elenterius.biomancy.init.ModContainerTypes;
 import com.github.elenterius.biomancy.tileentity.ChewerTileEntity;
 import com.github.elenterius.biomancy.tileentity.state.ChewerStateData;
 import com.github.elenterius.biomancy.util.BiofuelUtil;
-import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.items.SlotItemHandler;
-import net.minecraftforge.items.wrapper.PlayerInvWrapper;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import org.apache.logging.log4j.MarkerManager;
 
-public class ChewerContainer extends Container {
+public class ChewerContainer extends MachineContainer {
 
-	protected final FuelInvContents fuelContents;
-	protected final SimpleInvContents inputContents;
-	protected final SimpleInvContents outputContents;
+	protected final SimpleInventory fuelInventory;
+	protected final SimpleInventory emptyBucketInventory;
+	protected final SimpleInventory inputInventory;
+	protected final SimpleInventory outputInventory;
 	private final ChewerStateData stateData;
 	private final World world;
 
-	private ChewerContainer(int screenId, PlayerInventory playerInventory, FuelInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, ChewerStateData stateData) {
-		super(ModContainerTypes.CHEWER.get(), screenId);
-		this.fuelContents = fuelContents;
-		this.inputContents = inputContents;
-		this.outputContents = outputContents;
-		this.stateData = stateData;
+	private ChewerContainer(int screenId, PlayerInventory playerInventory, SimpleInventory fuelInventory, SimpleInventory emptyBucketInventory, SimpleInventory inputInventory, SimpleInventory outputInventory, ChewerStateData stateData) {
+		super(ModContainerTypes.CHEWER.get(), screenId, playerInventory);
 		world = playerInventory.player.world;
+
+		this.fuelInventory = fuelInventory;
+		this.emptyBucketInventory = emptyBucketInventory;
+		this.inputInventory = inputInventory;
+		this.outputInventory = outputInventory;
+		this.stateData = stateData;
 
 		trackIntArray(stateData);
 
-		PlayerInvWrapper playerInventoryForge = new PlayerInvWrapper(playerInventory);
-
-		final int HOT_BAR_SIZE = 9;
-		final int SLOT_X_SPACING = 18;
-		final int SLOT_Y_SPACING = 18;
-
-		// Add the players hotbar
-		for (int idx = 0; idx < HOT_BAR_SIZE; idx++) { //hotbar
-			addSlot(new SlotItemHandler(playerInventoryForge, idx, 8 + SLOT_X_SPACING * idx, 142));
-		}
-
-		// Add the players main inventory
-		final int PLAYER_INVENTORY_POS_X = 8;
-		final int PLAYER_INVENTORY_POS_Y = 84;
-		for (int y = 0; y < 3; y++) {
-			for (int x = 0; x < 9; x++) {
-				int slotNumber = HOT_BAR_SIZE + y * 9 + x;
-				int posX = PLAYER_INVENTORY_POS_X + x * SLOT_X_SPACING;
-				int posY = PLAYER_INVENTORY_POS_Y + y * SLOT_Y_SPACING;
-				addSlot(new SlotItemHandler(playerInventoryForge, slotNumber, posX, posY));
-			}
-		}
-
-		int posX = 17;
-		int posY = 17;
-		addSlot(new Slot(fuelContents, 0, posX, posY) {
+		addSlot(new Slot(fuelInventory, 0, 17, 17) {
 			@Override
 			public boolean isItemValid(ItemStack stack) {
 				return BiofuelUtil.isItemValidFuel(stack);
 			}
 		});
+		addSlot(new OutputSlot(emptyBucketInventory, 0, 17, 44));
 
-		addSlot(new Slot(inputContents, 0, 71, 26));
-
-		addSlot(new OutputSlot(outputContents, 0, 107, 26));
+		addSlot(new Slot(inputInventory, 0, 71, 26));
+		addSlot(new OutputSlot(outputInventory, 0, 107, 26));
 	}
 
-	public static ChewerContainer createServerContainer(int screenId, PlayerInventory playerInventory, FuelInvContents fuelContents, SimpleInvContents inputContents, SimpleInvContents outputContents, ChewerStateData stateData) {
-		return new ChewerContainer(screenId, playerInventory, fuelContents, inputContents, outputContents, stateData);
+	public static ChewerContainer createServerContainer(int screenId, PlayerInventory playerInventory, SimpleInventory fuelInventory, SimpleInventory emptyBucketInventory, SimpleInventory inputInventory, SimpleInventory outputInventory, ChewerStateData stateData) {
+		return new ChewerContainer(screenId, playerInventory, fuelInventory, emptyBucketInventory, inputInventory, outputInventory, stateData);
 	}
 
 	public static ChewerContainer createClientContainer(int screenId, PlayerInventory playerInventory, PacketBuffer extraData) {
-		FuelInvContents fuelContents = FuelInvContents.createClientContents(ChewerTileEntity.FUEL_SLOTS_COUNT);
-		SimpleInvContents inputContents = SimpleInvContents.createClientContents(ChewerTileEntity.INPUT_SLOTS_COUNT);
-		SimpleInvContents outputContents = SimpleInvContents.createClientContents(ChewerTileEntity.OUTPUT_SLOTS_COUNT);
+		SimpleInventory fuelInventory = SimpleInventory.createClientContents(ChewerTileEntity.FUEL_SLOTS);
+		SimpleInventory emptyBucketInventory = SimpleInventory.createClientContents(ChewerTileEntity.EMPTY_BUCKET_SLOTS);
+		SimpleInventory inputInventory = SimpleInventory.createClientContents(ChewerTileEntity.INPUT_SLOTS);
+		SimpleInventory outputInventory = SimpleInventory.createClientContents(ChewerTileEntity.OUTPUT_SLOTS);
 		ChewerStateData stateData = new ChewerStateData();
-		return new ChewerContainer(screenId, playerInventory, fuelContents, inputContents, outputContents, stateData);
+		return new ChewerContainer(screenId, playerInventory, fuelInventory, emptyBucketInventory, inputInventory, outputInventory, stateData);
 	}
 
 	@Override
 	public boolean canInteractWith(PlayerEntity playerIn) {
 		//we don't check all three inventories because they all call the same method in the decomposer tile entity
-		return inputContents.isUsableByPlayer(playerIn);
+		return inputInventory.isUsableByPlayer(playerIn);
 	}
 
 	public float getCraftingProgressNormalized() {
@@ -96,16 +72,8 @@ public class ChewerContainer extends Container {
 		return MathHelper.clamp(stateData.timeElapsed / (float) stateData.timeForCompletion, 0f, 1f);
 	}
 
-	public int getFuel() {
-		return stateData.fuel;
-	}
-
-	public float getFuelNormalized() {
-		return MathHelper.clamp(stateData.fuel / (float) ChewerTileEntity.MAX_FUEL, 0f, 1f);
-	}
-
-	public String getFuelTranslationKey() {
-		return TextUtil.getTranslationKey("tooltip", "biofuel");
+	public FluidTank getFuelTank() {
+		return stateData.fuelTank;
 	}
 
 	/**
@@ -131,6 +99,7 @@ public class ChewerContainer extends Container {
 
 			case INPUT_ZONE:
 			case FUEL_ZONE:
+			case EMPTY_BUCKET_ZONE:
 				successfulTransfer = mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, sourceStack, false);
 				if (!successfulTransfer) successfulTransfer = mergeInto(SlotZone.PLAYER_HOTBAR, sourceStack, false);
 				break;
@@ -173,10 +142,11 @@ public class ChewerContainer extends Container {
 
 	private enum SlotZone {
 		PLAYER_HOTBAR(0, 9),
-		PLAYER_MAIN_INVENTORY(9, 3 * 9),
-		FUEL_ZONE(9 + 3 * 9, ChewerTileEntity.FUEL_SLOTS_COUNT),
-		INPUT_ZONE(9 + 3 * 9 + ChewerTileEntity.FUEL_SLOTS_COUNT, ChewerTileEntity.INPUT_SLOTS_COUNT),
-		OUTPUT_ZONE(9 + 3 * 9 + ChewerTileEntity.FUEL_SLOTS_COUNT + ChewerTileEntity.INPUT_SLOTS_COUNT, ChewerTileEntity.OUTPUT_SLOTS_COUNT);
+		PLAYER_MAIN_INVENTORY(9, 27), // 27 = 3 * 9
+		FUEL_ZONE(36, ChewerTileEntity.FUEL_SLOTS), // 36 = 9 + 27
+		EMPTY_BUCKET_ZONE(36 + ChewerTileEntity.FUEL_SLOTS, ChewerTileEntity.EMPTY_BUCKET_SLOTS),
+		INPUT_ZONE(36 + ChewerTileEntity.FUEL_SLOTS + ChewerTileEntity.EMPTY_BUCKET_SLOTS, ChewerTileEntity.INPUT_SLOTS),
+		OUTPUT_ZONE(36 + ChewerTileEntity.FUEL_SLOTS + ChewerTileEntity.EMPTY_BUCKET_SLOTS + ChewerTileEntity.INPUT_SLOTS, ChewerTileEntity.OUTPUT_SLOTS);
 
 		public final int firstIndex;
 		public final int slotCount;

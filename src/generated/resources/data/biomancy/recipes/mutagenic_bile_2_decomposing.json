@@ -1,13 +1,11 @@
 {
   "type": "biomancy:decomposing",
-  "ingredients": [
-    {
+  "input": {
+    "ingredient": {
       "item": "minecraft:warped_roots"
     },
-    {
-      "item": "minecraft:warped_roots"
-    }
-  ],
+    "count": 2
+  },
   "byproducts": [
     {
       "result": {

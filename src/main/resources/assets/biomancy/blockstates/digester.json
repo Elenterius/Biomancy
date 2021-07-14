@@ -1,19 +1,30 @@
 {
   "variants": {
+    "facing=up": {
+      "model": "biomancy:block/digester"
+    },
+    "facing=down": {
+      "model": "biomancy:block/digester",
+      "x": 180
+    },
     "facing=east": {
       "model": "biomancy:block/digester",
+      "x": 90,
       "y": 90
     },
     "facing=north": {
-      "model": "biomancy:block/digester"
+      "model": "biomancy:block/digester",
+      "x": 90
     },
     "facing=south": {
       "model": "biomancy:block/digester",
-      "y": 180
+      "x": -90
     },
     "facing=west": {
       "model": "biomancy:block/digester",
-      "y": 270
+      "x": 90,
+      "y": -90
     }
   }
 }
+

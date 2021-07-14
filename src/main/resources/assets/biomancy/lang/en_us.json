@@ -29,6 +29,7 @@
   "item.biomancy.sewing_kit": "Bone Needle & String",
   "item.biomancy.sewing_kit_empty": "Bone Needle",
   "item.biomancy.glass_vial": "Glass Vial",
+  "item.biomancy.nutrient_slurry_bucket": "Nutrient Slurry Bucket",
 
   "item.biomancy.mutagenic_bile": "Mutagenic Bile",
   "item.biomancy.rejuvenating_mucus": "Rejuvenating Mucus",
@@ -52,10 +53,6 @@
   "item.biomancy.oculus": "Oculus",
   "item.biomancy.stomach": "Stomach",
 
-  "item.biomancy.vile_melon_seeds": "Vile-Melon Seeds",
-  "item.biomancy.vile_melon_slice": "Vile-Melon Slice",
-  "item.biomancy.cooked_vile_melon_slice": "Cooked Vile-Melon Slice",
-
   "item.biomancy.flesh_blob_spawn_egg": "Flesh Blob Spawn Egg",
   "item.biomancy.fleshkin_spawn_egg": "Fleshkin Spawn Egg",
   "item.biomancy.boomling_spawn_egg": "Boomling Spawn Egg",
@@ -66,9 +63,10 @@
   "item.biomancy.beetling_spawn_egg": "Beetling Spawn Egg",
   "item.biomancy.brood_mother_spawn_egg": "Brood Mother Spawn Egg",
 
+  "fluid.minecraft.water": "Water",
+  "fluid.biomancy.nutrient_slurry": "Nutrient Slurry",
+
   "block.biomancy.meat_berry_bush": "Meat-Berry Bush",
-  "block.biomancy.vile_melon_block": "Vile Melon Block",
-  "block.biomancy.vile_melon_crop": "Vile Melon",
   "block.biomancy.flesh_tentacle": "Flesh Tentacle",
 
   "block.biomancy.flesh_block": "Flesh Block",
@@ -85,6 +83,7 @@
 
   "block.biomancy.chewer": "Chewer",
   "block.biomancy.digester": "Digester",
+  "block.biomancy.solidifier": "Gland",
   "block.biomancy.decomposer": "Decomposer",
   "block.biomancy.meatsoup_cauldron": "Fleshpot",
   "block.biomancy.evolution_pool": "Evolution Pool",
@@ -95,6 +94,7 @@
   "container.biomancy.fleshborn_chest": "Fleshborn Chest",
   "container.biomancy.chewer": "Chewer",
   "container.biomancy.digester": "Digester",
+  "container.biomancy.solidifier": "Gland",
   "container.biomancy.decomposer": "Decomposer",
   "container.biomancy.evolution_pool": "Evolution Pool",
 
@@ -160,11 +160,12 @@
   "tooltip.biomancy.fleshborn_trapdoor": "Auto resets.\nSneak click to change mode.",
   "tooltip.biomancy.fleshborn_pressure_plate": "Sneak click to change mode.\nAble to activate ownable blocks.",
   "tooltip.biomancy.fleshborn_chest": "Keeps Inventory.",
-  "tooltip.biomancy.gulge": "Stores 32k of a single item, keeps inventory.",
-  "tooltip.biomancy.chewer": "Uses Nutrient Paste/Bar as Fuel.",
-  "tooltip.biomancy.digester": "Uses Water as fuel.",
-  "tooltip.biomancy.decomposer": "Uses Nutrient Paste/Bar as Fuel.",
-  "tooltip.biomancy.evolution_pool": "Uses Mutagenic Bile as fuel.",
+  "tooltip.biomancy.gulge": "A deep storage sac that stores up to 32k items of a single type and keeps it's inventory when mined.",
+  "tooltip.biomancy.chewer": "A bio-machine that crushes items into smaller parts by chewing them.\nThe bio-machine consumes nutrient slurry/paste/bars to function.",
+  "tooltip.biomancy.digester": "A bio-machine that consumes water to process biomass into nutrient slurry.\nThe bio-machine will pull biomass from the block it is attached to.",
+  "tooltip.biomancy.solidifier": "A gland like bio-machine that coagulates fluids into solid Items.\nThe bio-machine will pull fluid from the bock it is attached to.",
+  "tooltip.biomancy.decomposer": "A bio-machine that deconstructs items into their base components.\nThe bio-machine consumes nutrient slurry/paste/bars to function.",
+  "tooltip.biomancy.evolution_pool": "A organic pool filled with mutagen that is used to craft organic items.",
 
   "tooltip.biomancy.riding_bonus": "When Riding an Entity:",
   "tooltip.biomancy.mining_bonus": "When mining %1$s:",
@@ -233,10 +234,10 @@
 
   "jei.biomancy.recipe.chewer": "Chewer Recipes",
   "jei.biomancy.recipe.digester": "Digester Recipes",
+  "jei.biomancy.recipe.solidifier": "Gland Recipes",
   "jei.biomancy.recipe.decomposer": "Decomposer Recipes",
   "jei.biomancy.recipe.evolution_pool": "Evolution Pool Recipes",
 
-  "fluid.minecraft.water": "Water",
   "keyboard.ctrl": "ctrl",
   "keyboard.alt": "alt"
 }

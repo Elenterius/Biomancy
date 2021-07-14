@@ -18,7 +18,7 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 
-public class EvolutionPoolRecipe extends AbstractBioMechanicalRecipe {
+public class EvolutionPoolRecipe extends AbstractProductionRecipe {
 
 	public static final int MAX_INGREDIENTS = 6;
 

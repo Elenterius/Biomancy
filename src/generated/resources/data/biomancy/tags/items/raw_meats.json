@@ -9,6 +9,35 @@
     "minecraft:rabbit",
     "minecraft:mutton",
     "minecraft:tropical_fish",
-    "minecraft:pufferfish"
+    "minecraft:pufferfish",
+    "biomancy:flesh_lump",
+    "biomancy:oculus",
+    "biomancy:oculus_key",
+    "biomancy:stomach",
+    "biomancy:artificial_stomach",
+    {
+      "id": "createfa:ground_chicken",
+      "required": false
+    },
+    {
+      "id": "createfa:ground_beef",
+      "required": false
+    },
+    {
+      "id": "circus:clown",
+      "required": false
+    },
+    {
+      "id": "rats:raw_rat",
+      "required": false
+    },
+    {
+      "id": "evilcraft:flesh_humanoid",
+      "required": false
+    },
+    {
+      "id": "evilcraft:flesh_werewolf",
+      "required": false
+    }
   ]
 }
