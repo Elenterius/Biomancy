@@ -12,7 +12,7 @@ displayName = "Biomancy"
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/biomancy" #optional
 logoFile = "text_logo.png" #optional
 logoBlur = false
-credits = "I'm grateful to Selea for their feedback and help with models & mod design choices. Furthermore I thank GPT-Neo 1.3B for helping me to find the right words ;)"
+credits = "I'm grateful to Selea for their feedback and help. Mezz for fluid render code. Simibubi for fluid ingredient and fluid tank code."
 authors = "Elenterius" #optional
 description = '''Biopunk and Flesh Magic inspired tech-magic mod that has a fleshy art theme.'''
 
