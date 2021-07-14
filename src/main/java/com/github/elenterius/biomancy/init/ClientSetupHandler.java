@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.block.MeatsoupCauldronBlock;
 import com.github.elenterius.biomancy.client.renderer.block.FullBrightOverlayBakedModel;
 import com.github.elenterius.biomancy.client.renderer.entity.*;
 import com.github.elenterius.biomancy.client.renderer.tileentity.FleshChestTileEntityRenderer;
@@ -81,8 +82,6 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void onItemColorRegistry(final ColorHandlerEvent.Item event) {
-//		event.getItemColors().register((stack, index) -> 0xff6981, ModItems.VILE_MELON_BLOCK.get(), ModItems.VILE_MELON_SEEDS.get(), ModItems.VILE_MELON_SLICE.get());
-//		event.getItemColors().register((stack, index) -> 0x6c2e1f, ModItems.COOKED_VILE_MELON_SLICE.get());
 		event.getItemColors().register((stack, index) -> 0x8d758c, ModItems.NECROTIC_FLESH.get(), ModItems.NECROTIC_FLESH_BLOCK.get());
 
 		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.INJECTION_DEVICE.get().getReagentColor(stack) : -1, ModItems.INJECTION_DEVICE.get());
@@ -92,8 +91,8 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void onItemColorRegistry(final ColorHandlerEvent.Block event) {
-//		event.getBlockColors().register((state, displayReader, pos, index) -> 0xff6981, ModBlocks.VILE_MELON_BLOCK.get(), ModBlocks.VILE_MELON_CROP.get());
 		event.getBlockColors().register((state, displayReader, pos, index) -> 0x8d758c, ModBlocks.NECROTIC_FLESH_BLOCK.get());
+		event.getBlockColors().register((state, displayReader, pos, index) -> state.get(MeatsoupCauldronBlock.LEVEL) == MeatsoupCauldronBlock.MAX_LEVEL ? 0x8d758c : -1, ModBlocks.MEATSOUP_CAULDRON.get());
 	}
 
 	@SubscribeEvent

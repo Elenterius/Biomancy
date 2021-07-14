@@ -6,12 +6,30 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:explosion_decay"
+            }
+          ],
           "name": "minecraft:cauldron"
+        }
+      ]
+    },
+    {
+      "rolls": 9,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "biomancy:necrotic_flesh"
         }
       ],
       "conditions": [
         {
-          "condition": "minecraft:survives_explosion"
+          "condition": "minecraft:block_state_property",
+          "block": "biomancy:meatsoup_cauldron",
+          "properties": {
+            "level": "8"
+          }
         }
       ]
     }

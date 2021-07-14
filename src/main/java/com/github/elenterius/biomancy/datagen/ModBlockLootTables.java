@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.datagen;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.block.MeatsoupCauldronBlock;
 import com.github.elenterius.biomancy.block.MutatedFleshBlock;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModItems;
@@ -9,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.DoorBlock;
 import net.minecraft.data.loot.BlockLootTables;
+import net.minecraft.item.Items;
 import net.minecraft.loot.*;
 import net.minecraft.loot.conditions.BlockStateProperty;
 import net.minecraft.loot.functions.CopyBlockState;
@@ -93,6 +95,7 @@ public class ModBlockLootTables extends BlockLootTables {
 								.replaceOperation("UserList", "BlockEntityTag.UserList")
 						)
 				)));
+
 	}
 
 	protected static LootTable.Builder droppingMutatedFlesh(Block flesh) {
@@ -100,10 +103,15 @@ public class ModBlockLootTables extends BlockLootTables {
 				.addEntry(ItemLootEntry.builder(flesh).acceptFunction(CopyBlockState.func_227545_a_(flesh).func_227552_a_(MutatedFleshBlock.MUTATION_TYPE)))));
 	}
 
-//	protected static LootTable.Builder droppingFruitWithBonusOrSeeds(Block block, Item fruit, Item seeds) {
-//		ILootCondition.IBuilder conditionBuilder = BlockStateProperty.builder(ModBlocks.VILE_MELON_CROP.get()).fromProperties(StatePropertiesPredicate.Builder.newBuilder().withIntProp(CropsBlock.AGE, 7));
-//		return withExplosionDecay(block, LootTable.builder().addLootPool(LootPool.builder().addEntry(ItemLootEntry.builder(fruit).acceptCondition(conditionBuilder).alternatively(ItemLootEntry.builder(seeds)))));
-//	}
+	protected static LootTable.Builder droppingCauldronWithFlesh() {
+		return LootTable.builder()
+				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1))
+						.addEntry(withExplosionDecay(Blocks.CAULDRON, ItemLootEntry.builder(Items.CAULDRON))))
+				.addLootPool(LootPool.builder().rolls(ConstantRange.of(9))
+						.addEntry(ItemLootEntry.builder(ModItems.NECROTIC_FLESH.get()))
+						.acceptCondition(BlockStateProperty.builder(ModBlocks.MEATSOUP_CAULDRON.get())
+								.fromProperties(StatePropertiesPredicate.Builder.newBuilder().withIntProp(MeatsoupCauldronBlock.LEVEL, MeatsoupCauldronBlock.MAX_LEVEL))));
+	}
 
 	@Override
 	protected void addTables() {
@@ -121,7 +129,7 @@ public class ModBlockLootTables extends BlockLootTables {
 		registerLootTable(ModBlocks.FLESHBORN_TRAPDOOR.get(), ModBlockLootTables::droppingSimpleOwnable);
 		registerLootTable(ModBlocks.FLESHBORN_PRESSURE_PLATE.get(), ModBlockLootTables::droppingSimpleOwnable);
 
-		registerLootTable(ModBlocks.MEATSOUP_CAULDRON.get(), dropping(Blocks.CAULDRON));
+		registerLootTable(ModBlocks.MEATSOUP_CAULDRON.get(), droppingCauldronWithFlesh());
 		registerLootTable(ModBlocks.GULGE.get(), ModBlockLootTables::droppingWithInventory);
 		registerLootTable(ModBlocks.FLESHBORN_CHEST.get(), ModBlockLootTables::droppingWithInventory);
 
