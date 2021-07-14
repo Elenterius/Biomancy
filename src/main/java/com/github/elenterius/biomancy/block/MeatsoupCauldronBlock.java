@@ -29,17 +29,20 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.event.world.BlockEvent;
 
 import java.util.Random;
 
 public class MeatsoupCauldronBlock extends Block {
 
-	public static final IntegerProperty LEVEL = BlockStateProperties.LEVEL_0_8;
+	public static IntegerProperty LEVEL = BlockStateProperties.LEVEL_0_8;
 	public static final IntegerProperty FLAGS = IntegerProperty.create("flags", 0, Flags.getMaxNumber());
 	public static final int MAX_LEVEL = 8;
 	private static final VoxelShape INSIDE = makeCuboidShape(2.0D, 4.0D, 2.0D, 14.0D, 16.0D, 14.0D);
@@ -49,6 +52,25 @@ public class MeatsoupCauldronBlock extends Block {
 		super(properties);
 		setDefaultState(stateContainer.getBaseState().with(LEVEL, 0));
 	}
+
+
+	
+	@Override
+	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn,
+			BlockPos currentPos, BlockPos facingPos) {
+		int level = stateIn.get(LEVEL);
+		if (TryToUseHopper((World) worldIn, currentPos, stateIn, level)) {
+			return Blocks.CAULDRON.getDefaultState();
+		}
+		else {
+			return stateIn;
+		}
+	}
+
+
+
+
+	
 
 	@Override
 	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
@@ -62,7 +84,29 @@ public class MeatsoupCauldronBlock extends Block {
 			worldIn.getPendingBlockTicks().scheduleTick(pos, state.getBlock(), (modifier > 1 ? 45 : 55) + 1 + worldIn.rand.nextInt(modifier > 1 ? 15 : 25));
 		}
 	}
-
+	
+	public boolean TryToUseHopper(World worldIn, BlockPos pos, BlockState state, int level) {
+		boolean r = true;
+		if (level == MAX_LEVEL) {
+			Block neighbourBlock = worldIn.getBlockState(pos.down()).getBlock();
+			if (neighbourBlock == Blocks.HOPPER) {
+				ItemStack resultStack = new ItemStack(ModItems.NECROTIC_FLESH.get(),9);
+				worldIn.setBlockState(pos, state.with(LEVEL, 0));
+				spawnAsEntity(worldIn, pos.add(0.5d, 0.5d, 0.5d), resultStack);
+				worldIn.playSound(null, pos, SoundEvents.ENTITY_ITEM_FRAME_REMOVE_ITEM, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				worldIn.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
+				
+			}
+			else {
+				r = false;
+			}
+		
+		}
+		return r;
+	}
+	
+	
+	
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
 		int level = state.get(LEVEL);
@@ -83,11 +127,14 @@ public class MeatsoupCauldronBlock extends Block {
 			}
 			else {
 				if (level < MAX_LEVEL) {
+					level = MAX_LEVEL;
 					worldIn.setBlockState(pos, state.with(LEVEL, MAX_LEVEL), Constants.BlockFlags.BLOCK_UPDATE);
 					worldIn.playSound(null, pos, SoundEvents.BLOCK_SLIME_BLOCK_PLACE, SoundCategory.BLOCKS, 1.0F, 0.5F);
+					
 				}
 			}
 		}
+		TryToUseHopper(worldIn, pos, state, level);
 	}
 
 	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
@@ -116,11 +163,13 @@ public class MeatsoupCauldronBlock extends Block {
 					}
 				}
 				else if (level >= MAX_LEVEL - 3 && level < MAX_LEVEL - 1) {
-					if (item instanceof PotionItem) {
+					if (item instanceof PotionItem || item == ModItems.REJUVENATING_MUCUS.get()) {
 						Potion potion = PotionUtils.getPotionFromItem(stack);
-						if (potion == Potions.HEALING || potion == Potions.REGENERATION) {
+						if (potion == Potions.HEALING || potion == Potions.REGENERATION || item == ModItems.REJUVENATING_MUCUS.get()) {
 							stack.grow(-1);
-							entityIn.entityDropItem(stack.hasContainerItem() ? stack.getContainerItem() : new ItemStack(Items.GLASS_BOTTLE));
+							if (item != ModItems.REJUVENATING_MUCUS.get()) {
+								entityIn.entityDropItem(stack.hasContainerItem() ? stack.getContainerItem() : new ItemStack(Items.GLASS_BOTTLE));
+							}
 							setSoupLevel(worldIn, pos, state, flagValue, level, 1);
 							worldIn.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1f, 1f);
 						}
@@ -130,6 +179,7 @@ public class MeatsoupCauldronBlock extends Block {
 							setSoupLevel(worldIn, pos, state, flagValue, level, 2);
 							worldIn.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1f, 1f);
 						}
+					
 					}
 				}
 			}
@@ -142,7 +192,7 @@ public class MeatsoupCauldronBlock extends Block {
 		if (level >= MAX_LEVEL) {
 			if (!worldIn.isRemote) {
 				worldIn.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
-				ItemStack resultStack = new ItemStack(ModItems.FLESH_BLOCK.get());
+				ItemStack resultStack = new ItemStack(ModItems.NECROTIC_FLESH.get(),9);
 				if (!player.addItemStackToInventory(resultStack)) {
 					spawnAsEntity(worldIn, pos.add(0d, 0.5d, 0d), resultStack);
 					worldIn.playSound(null, pos, SoundEvents.ENTITY_ITEM_FRAME_REMOVE_ITEM, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -198,13 +248,13 @@ public class MeatsoupCauldronBlock extends Block {
 				return ActionResultType.func_233537_a_(worldIn.isRemote);
 			}
 			else if (level >= MAX_LEVEL - 3 && level < MAX_LEVEL - 1) {
-				if (item instanceof PotionItem) {
+				if (item instanceof PotionItem || item == ModItems.REJUVENATING_MUCUS.get()) {
 					Potion potion = PotionUtils.getPotionFromItem(stack);
-					if (potion == Potions.HEALING || potion == Potions.REGENERATION) {
+					if (potion == Potions.HEALING || potion == Potions.REGENERATION|| item == ModItems.REJUVENATING_MUCUS.get()) {
 						if (!worldIn.isRemote) {
 							if (!player.abilities.isCreativeMode) {
 								stack.grow(-1);
-								if (stack.isEmpty()) {
+								if (stack.isEmpty() && item != ModItems.REJUVENATING_MUCUS.get()) {
 									player.setHeldItem(handIn, stack.hasContainerItem() ? stack.getContainerItem() : new ItemStack(Items.GLASS_BOTTLE));
 								}
 							}
@@ -304,4 +354,9 @@ public class MeatsoupCauldronBlock extends Block {
 			return bitPosition;
 		}
 	}
+
+	public static IntegerProperty getLevel() {
+		return LEVEL;
+	}
+
 }
