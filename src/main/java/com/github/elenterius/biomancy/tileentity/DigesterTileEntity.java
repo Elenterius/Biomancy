@@ -35,6 +35,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
@@ -166,6 +167,8 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 
 			if (ticks % 42 == 0) {
 				tryToGetItemsFromAttachedBlock(world);
+			}
+			if (ticks % 60 == 0) {
 				tryToSuckWater(world);
 			}
 		}
@@ -266,7 +269,7 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 			BlockPos blockPos = getPos().offset(direction);
 			Block neighbourBlock = world.getBlockState(blockPos).getBlock();
 			if (neighbourBlock == Blocks.WET_SPONGE) {
-				world.setBlockState(blockPos, Blocks.SPONGE.getDefaultState(), 3);
+				world.setBlockState(blockPos, Blocks.SPONGE.getDefaultState(), Constants.BlockFlags.BLOCK_UPDATE);
 				addFuelAmount(1000);
 			}
 		}
@@ -275,7 +278,7 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 	protected void tryToInjectFluid(World world) {
 		Direction direction = getBlockState().get(DigesterBlock.FACING).getOpposite();
 		BlockPos blockPos = getPos().offset(direction);
-		LazyOptional<IFluidHandler> capability = FluidUtil.getFluidHandler(world, blockPos, Direction.DOWN);
+		LazyOptional<IFluidHandler> capability = FluidUtil.getFluidHandler(world, blockPos, Direction.UP);
 		capability.ifPresent(fluidHandler -> {
 			FluidStack fluidStack = FluidUtil.tryFluidTransfer(fluidHandler, stateData.outputTank, 1000, true);
 		});
