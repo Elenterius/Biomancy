@@ -13,7 +13,10 @@ import com.github.elenterius.biomancy.recipe.DigesterRecipe;
 import com.github.elenterius.biomancy.recipe.RecipeType;
 import com.github.elenterius.biomancy.tileentity.state.DigesterStateData;
 import com.github.elenterius.biomancy.util.TextUtil;
+
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluids;
@@ -163,6 +166,7 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 
 			if (ticks % 42 == 0) {
 				tryToGetItemsFromAttachedBlock(world);
+				tryToSuckWater(world);
 			}
 		}
 
@@ -183,6 +187,7 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 				inputInventory.decrStackSize(idx, 1);
 			}
 			stateData.outputTank.fill(result, IFluidHandler.FluidAction.EXECUTE);
+			tryToInjectFluid(world);
 
 			Byproduct byproduct = recipeToCraft.getByproduct();
 			if (byproduct != null && world.rand.nextFloat() <= byproduct.getChance()) {
@@ -252,7 +257,30 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 			}
 		}
 	}
-
+	
+	protected void tryToSuckWater(World world) {
+		int fluidAmount = stateData.fuelTank.getFluidAmount();
+		int maxFluidAmount = stateData.fuelTank.getCapacity();
+		if (fluidAmount <= maxFluidAmount-1000) {
+			Direction direction = getBlockState().get(DigesterBlock.FACING);
+			BlockPos blockPos = getPos().offset(direction);
+			Block neighbourBlock = world.getBlockState(blockPos).getBlock();
+			if (neighbourBlock == Blocks.WET_SPONGE) {
+				world.setBlockState(blockPos, Blocks.SPONGE.getDefaultState(), 3);
+				addFuelAmount(1000);
+			}
+		}
+	}
+	
+	protected void tryToInjectFluid(World world) {
+		Direction direction = getBlockState().get(DigesterBlock.FACING).getOpposite();
+		BlockPos blockPos = getPos().offset(direction);
+		LazyOptional<IFluidHandler> capability = FluidUtil.getFluidHandler(world, blockPos, Direction.DOWN);
+		capability.ifPresent(fluidHandler -> {
+			FluidStack fluidStack = FluidUtil.tryFluidTransfer(fluidHandler, stateData.outputTank, 1000, true);
+		});
+	}
+	
 	protected void tryToGetItemsFromAttachedBlock(World world) {
 		Direction direction = getBlockState().get(DigesterBlock.FACING).getOpposite();
 		BlockPos blockPos = getPos().offset(direction);
