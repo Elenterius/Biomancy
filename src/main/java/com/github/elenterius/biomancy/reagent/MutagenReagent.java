@@ -15,6 +15,7 @@ import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.Direction;
@@ -147,7 +148,12 @@ public class MutagenReagent extends Reagent {
 						EntityType<?> typeA = entityDNAs.get(0);
 						EntityType<?> typeB = entityDNAs.get(1);
 						if ((typeA == EntityType.CAVE_SPIDER && typeB == EntityType.CREEPER) || (typeB == EntityType.CAVE_SPIDER && typeA == EntityType.CREEPER)) {
-							return MobUtil.convertMobEntityTo(world, target, ModEntityTypes.BOOMLING.get(), false);
+							return MobUtil.convertMobEntityTo(world, target, ModEntityTypes.BOOMLING.get(), false, (fleshBlobEntity, boomlingEntity) -> {
+								//set owner to make it possible for the owner to pick it up
+								if (source != null) boomlingEntity.setOwnerUUID(source.getUniqueID());
+								//because boomlingEntity.onInitialSpawn() was called by MobUtil.convertMobEntityTo() we need to reset the potion
+								boomlingEntity.setStoredPotion(ItemStack.EMPTY);
+							});
 						}
 					}
 					else {
