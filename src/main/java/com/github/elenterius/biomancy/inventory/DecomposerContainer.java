@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.inventory;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModContainerTypes;
+import com.github.elenterius.biomancy.inventory.slot.OutputSlot;
 import com.github.elenterius.biomancy.tileentity.DecomposerTileEntity;
 import com.github.elenterius.biomancy.tileentity.state.DecomposerStateData;
 import com.github.elenterius.biomancy.util.BiofuelUtil;
@@ -100,15 +101,13 @@ public class DecomposerContainer extends MachineContainer {
 
 		switch (sourceZone) {
 			case OUTPUT_ZONE:
-				successfulTransfer = mergeInto(SlotZone.PLAYER_HOTBAR, sourceStack, true);
-				if (!successfulTransfer) successfulTransfer = mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, sourceStack, true);
+				successfulTransfer = mergeInto(SlotZone.PLAYER_HOTBAR, sourceStack, true) || mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, sourceStack, true);
 				if (successfulTransfer) sourceSlot.onSlotChange(sourceStack, copyOfSourceStack);
 				break;
 
 			case INPUT_ZONE:
 			case FUEL_ZONE:
-				successfulTransfer = mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, sourceStack, false);
-				if (!successfulTransfer) successfulTransfer = mergeInto(SlotZone.PLAYER_HOTBAR, sourceStack, false);
+				successfulTransfer = mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, sourceStack, false) || mergeInto(SlotZone.PLAYER_HOTBAR, sourceStack, false);
 				break;
 
 			case PLAYER_HOTBAR:
@@ -149,11 +148,11 @@ public class DecomposerContainer extends MachineContainer {
 
 	private enum SlotZone {
 		PLAYER_HOTBAR(0, 9),
-		PLAYER_MAIN_INVENTORY(9, 27), // 27 = 3 * 9
-		FUEL_ZONE(36, DecomposerTileEntity.FUEL_SLOTS), // 36 = 9 + 27
-		EMPTY_BUCKET_ZONE(36 + DecomposerTileEntity.FUEL_SLOTS, DecomposerTileEntity.EMPTY_BUCKET_SLOTS),
-		INPUT_ZONE(36 + DecomposerTileEntity.FUEL_SLOTS + DecomposerTileEntity.EMPTY_BUCKET_SLOTS, DecomposerTileEntity.INPUT_SLOTS),
-		OUTPUT_ZONE(36 + DecomposerTileEntity.FUEL_SLOTS + DecomposerTileEntity.EMPTY_BUCKET_SLOTS + DecomposerTileEntity.INPUT_SLOTS, DecomposerTileEntity.OUTPUT_SLOTS);
+		PLAYER_MAIN_INVENTORY(PLAYER_HOTBAR.lastIndexPlus1, 3 * 9),
+		FUEL_ZONE(PLAYER_MAIN_INVENTORY.lastIndexPlus1, DecomposerTileEntity.FUEL_SLOTS),
+		EMPTY_BUCKET_ZONE(FUEL_ZONE.lastIndexPlus1, DecomposerTileEntity.EMPTY_BUCKET_SLOTS),
+		INPUT_ZONE(EMPTY_BUCKET_ZONE.lastIndexPlus1, DecomposerTileEntity.INPUT_SLOTS),
+		OUTPUT_ZONE(INPUT_ZONE.lastIndexPlus1, DecomposerTileEntity.OUTPUT_SLOTS);
 
 		public final int firstIndex;
 		public final int slotCount;

@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.inventory;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModContainerTypes;
+import com.github.elenterius.biomancy.inventory.slot.OutputSlot;
 import com.github.elenterius.biomancy.tileentity.DigesterTileEntity;
 import com.github.elenterius.biomancy.tileentity.state.DigesterStateData;
 import net.minecraft.entity.player.PlayerEntity;
@@ -113,8 +114,7 @@ public class DigesterContainer extends MachineContainer {
 
 		switch (sourceZone) {
 			case OUTPUT_ZONE:
-				successfulTransfer = mergeInto(SlotZone.PLAYER_HOTBAR, sourceStack, true);
-				if (!successfulTransfer) successfulTransfer = mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, sourceStack, true);
+				successfulTransfer = mergeInto(SlotZone.PLAYER_HOTBAR, sourceStack, true) || mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, sourceStack, true);
 				if (successfulTransfer) sourceSlot.onSlotChange(sourceStack, copyOfSourceStack);
 				break;
 
@@ -123,8 +123,7 @@ public class DigesterContainer extends MachineContainer {
 			case EMPTY_BUCKET_OUT_ZONE:
 			case EMPTY_BUCKET_IN_ZONE:
 			case FILLED_BUCKET_OUT_ZONE:
-				successfulTransfer = mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, sourceStack, false);
-				if (!successfulTransfer) successfulTransfer = mergeInto(SlotZone.PLAYER_HOTBAR, sourceStack, false);
+				successfulTransfer = mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, sourceStack, false) || mergeInto(SlotZone.PLAYER_HOTBAR, sourceStack, false);
 				break;
 
 			case PLAYER_HOTBAR:

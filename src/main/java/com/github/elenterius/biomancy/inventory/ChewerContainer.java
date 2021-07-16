@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.inventory;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModContainerTypes;
+import com.github.elenterius.biomancy.inventory.slot.OutputSlot;
 import com.github.elenterius.biomancy.tileentity.ChewerTileEntity;
 import com.github.elenterius.biomancy.tileentity.state.ChewerStateData;
 import com.github.elenterius.biomancy.util.BiofuelUtil;
@@ -92,16 +93,14 @@ public class ChewerContainer extends MachineContainer {
 
 		switch (sourceZone) {
 			case OUTPUT_ZONE:
-				successfulTransfer = mergeInto(SlotZone.PLAYER_HOTBAR, sourceStack, true);
-				if (!successfulTransfer) successfulTransfer = mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, sourceStack, true);
+				successfulTransfer = mergeInto(SlotZone.PLAYER_HOTBAR, sourceStack, true) || mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, sourceStack, true);
 				if (successfulTransfer) sourceSlot.onSlotChange(sourceStack, copyOfSourceStack);
 				break;
 
 			case INPUT_ZONE:
 			case FUEL_ZONE:
 			case EMPTY_BUCKET_ZONE:
-				successfulTransfer = mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, sourceStack, false);
-				if (!successfulTransfer) successfulTransfer = mergeInto(SlotZone.PLAYER_HOTBAR, sourceStack, false);
+				successfulTransfer = mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, sourceStack, false) || mergeInto(SlotZone.PLAYER_HOTBAR, sourceStack, false);
 				break;
 
 			case PLAYER_HOTBAR:
@@ -113,8 +112,8 @@ public class ChewerContainer extends MachineContainer {
 					successfulTransfer = mergeInto(SlotZone.FUEL_ZONE, sourceStack, true);
 				}
 				if (!successfulTransfer) {
-					if (sourceZone == SlotZone.PLAYER_HOTBAR) successfulTransfer = mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, sourceStack, false);
-					else successfulTransfer = mergeInto(SlotZone.PLAYER_HOTBAR, sourceStack, false);
+					SlotZone targetZone = sourceZone == SlotZone.PLAYER_HOTBAR ? SlotZone.PLAYER_MAIN_INVENTORY : SlotZone.PLAYER_HOTBAR;
+					successfulTransfer = mergeInto(targetZone, sourceStack, false);
 				}
 				break;
 
@@ -142,11 +141,11 @@ public class ChewerContainer extends MachineContainer {
 
 	private enum SlotZone {
 		PLAYER_HOTBAR(0, 9),
-		PLAYER_MAIN_INVENTORY(9, 27), // 27 = 3 * 9
-		FUEL_ZONE(36, ChewerTileEntity.FUEL_SLOTS), // 36 = 9 + 27
-		EMPTY_BUCKET_ZONE(36 + ChewerTileEntity.FUEL_SLOTS, ChewerTileEntity.EMPTY_BUCKET_SLOTS),
-		INPUT_ZONE(36 + ChewerTileEntity.FUEL_SLOTS + ChewerTileEntity.EMPTY_BUCKET_SLOTS, ChewerTileEntity.INPUT_SLOTS),
-		OUTPUT_ZONE(36 + ChewerTileEntity.FUEL_SLOTS + ChewerTileEntity.EMPTY_BUCKET_SLOTS + ChewerTileEntity.INPUT_SLOTS, ChewerTileEntity.OUTPUT_SLOTS);
+		PLAYER_MAIN_INVENTORY(PLAYER_HOTBAR.lastIndexPlus1, 3 * 9),
+		FUEL_ZONE(PLAYER_MAIN_INVENTORY.lastIndexPlus1, ChewerTileEntity.FUEL_SLOTS),
+		EMPTY_BUCKET_ZONE(FUEL_ZONE.lastIndexPlus1, ChewerTileEntity.EMPTY_BUCKET_SLOTS),
+		INPUT_ZONE(EMPTY_BUCKET_ZONE.lastIndexPlus1, ChewerTileEntity.INPUT_SLOTS),
+		OUTPUT_ZONE(INPUT_ZONE.lastIndexPlus1, ChewerTileEntity.OUTPUT_SLOTS);
 
 		public final int firstIndex;
 		public final int slotCount;

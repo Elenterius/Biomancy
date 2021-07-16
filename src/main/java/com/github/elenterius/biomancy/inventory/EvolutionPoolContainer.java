@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.inventory;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModContainerTypes;
+import com.github.elenterius.biomancy.inventory.slot.OutputSlot;
 import com.github.elenterius.biomancy.tileentity.EvolutionPoolTileEntity;
 import com.github.elenterius.biomancy.tileentity.state.EvolutionPoolStateData;
 import com.github.elenterius.biomancy.util.TextUtil;
@@ -178,10 +179,10 @@ public class EvolutionPoolContainer extends Container {
 
 	private enum SlotZone {
 		PLAYER_HOTBAR(0, 9),
-		PLAYER_MAIN_INVENTORY(9, 3 * 9),
-		FUEL_ZONE(9 + 3 * 9, EvolutionPoolTileEntity.FUEL_SLOTS),
-		INPUT_ZONE(9 + 3 * 9 + EvolutionPoolTileEntity.FUEL_SLOTS, EvolutionPoolTileEntity.INPUT_SLOTS),
-		OUTPUT_ZONE(9 + 3 * 9 + EvolutionPoolTileEntity.FUEL_SLOTS + EvolutionPoolTileEntity.INPUT_SLOTS, EvolutionPoolTileEntity.OUTPUT_SLOTS);
+		PLAYER_MAIN_INVENTORY(PLAYER_HOTBAR.lastIndexPlus1, 3 * 9),
+		FUEL_ZONE(PLAYER_MAIN_INVENTORY.lastIndexPlus1, EvolutionPoolTileEntity.FUEL_SLOTS),
+		INPUT_ZONE(FUEL_ZONE.lastIndexPlus1, EvolutionPoolTileEntity.INPUT_SLOTS),
+		OUTPUT_ZONE(INPUT_ZONE.lastIndexPlus1, EvolutionPoolTileEntity.OUTPUT_SLOTS);
 
 		public final int firstIndex;
 		public final int slotCount;

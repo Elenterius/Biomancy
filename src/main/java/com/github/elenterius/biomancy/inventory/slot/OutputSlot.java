@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.inventory;
+package com.github.elenterius.biomancy.inventory.slot;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Slot;

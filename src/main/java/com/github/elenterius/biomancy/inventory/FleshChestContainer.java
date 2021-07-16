@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.inventory;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModContainerTypes;
+import com.github.elenterius.biomancy.inventory.slot.NonNestingSlot;
 import com.github.elenterius.biomancy.tileentity.FleshbornChestTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -132,8 +133,8 @@ public class FleshChestContainer extends Container {
 
 	private enum SlotZone {
 		PLAYER_HOTBAR(0, 9),
-		PLAYER_MAIN_INVENTORY(9, 3 * 9),
-		CHEST_INVENTORY(9 + 3 * 9, FleshbornChestTileEntity.INV_SLOTS_COUNT);
+		PLAYER_MAIN_INVENTORY(PLAYER_HOTBAR.lastIndexPlus1, 3 * 9),
+		CHEST_INVENTORY(PLAYER_MAIN_INVENTORY.lastIndexPlus1, FleshbornChestTileEntity.INV_SLOTS_COUNT);
 
 		public final int firstIndex;
 		public final int slotCount;

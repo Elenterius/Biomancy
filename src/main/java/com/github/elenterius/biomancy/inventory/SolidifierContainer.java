@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.inventory;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModContainerTypes;
+import com.github.elenterius.biomancy.inventory.slot.OutputSlot;
 import com.github.elenterius.biomancy.tileentity.SolidifierTileEntity;
 import com.github.elenterius.biomancy.tileentity.state.SolidifierStateData;
 import net.minecraft.entity.player.PlayerEntity;
@@ -114,15 +115,13 @@ public class SolidifierContainer extends Container {
 
 		switch (sourceZone) {
 			case OUTPUT_ZONE:
-				successfulTransfer = mergeInto(SlotZone.PLAYER_HOTBAR, sourceStack, true);
-				if (!successfulTransfer) successfulTransfer = mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, sourceStack, true);
+				successfulTransfer = mergeInto(SlotZone.PLAYER_HOTBAR, sourceStack, true) || mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, sourceStack, true);
 				if (successfulTransfer) sourceSlot.onSlotChange(sourceStack, copyOfSourceStack);
 				break;
 
 			case EMPTY_BUCKET_ZONE:
 			case FILLED_BUCKET_ZONE:
-				successfulTransfer = mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, sourceStack, false);
-				if (!successfulTransfer) successfulTransfer = mergeInto(SlotZone.PLAYER_HOTBAR, sourceStack, false);
+				successfulTransfer = mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, sourceStack, false) || mergeInto(SlotZone.PLAYER_HOTBAR, sourceStack, false);
 				break;
 
 			case PLAYER_HOTBAR:
@@ -160,10 +159,10 @@ public class SolidifierContainer extends Container {
 
 	private enum SlotZone {
 		PLAYER_HOTBAR(0, 9),
-		PLAYER_MAIN_INVENTORY(9, 27), // 3 * 9
-		FILLED_BUCKET_ZONE(9 + 27, SolidifierTileEntity.FILLED_BUCKET_SLOTS),
-		EMPTY_BUCKET_ZONE(9 + 27 + SolidifierTileEntity.FILLED_BUCKET_SLOTS, SolidifierTileEntity.EMPTY_BUCKET_SLOTS),
-		OUTPUT_ZONE(9 + 27 + SolidifierTileEntity.FILLED_BUCKET_SLOTS + SolidifierTileEntity.EMPTY_BUCKET_SLOTS, SolidifierTileEntity.OUTPUT_SLOTS);
+		PLAYER_MAIN_INVENTORY(PLAYER_HOTBAR.lastIndexPlus1, 3 * 9),
+		FILLED_BUCKET_ZONE(PLAYER_MAIN_INVENTORY.lastIndexPlus1, SolidifierTileEntity.FILLED_BUCKET_SLOTS),
+		EMPTY_BUCKET_ZONE(FILLED_BUCKET_ZONE.lastIndexPlus1, SolidifierTileEntity.EMPTY_BUCKET_SLOTS),
+		OUTPUT_ZONE(EMPTY_BUCKET_ZONE.lastIndexPlus1, SolidifierTileEntity.OUTPUT_SLOTS);
 
 		public final int firstIndex;
 		public final int slotCount;
