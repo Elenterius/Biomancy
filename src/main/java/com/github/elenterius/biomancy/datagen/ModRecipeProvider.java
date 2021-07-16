@@ -756,6 +756,13 @@ public class ModRecipeProvider extends RecipeProvider {
 				.patternLine("FLF").patternLine("FSF").patternLine("FLF")
 				.addCriterion("has_stomach", hasItem(ModTags.Items.STOMACHS)).build(consumer);
 
+		ShapedRecipeBuilder.shapedRecipe(ModItems.SOLIDIFIER.get())
+				.key('S', Items.SMOKER)
+				.key('F', ModItems.FLESH_BLOCK.get())
+				.key('L', ModItems.FLESH_BLOCK_SLAB.get())
+				.patternLine("FLF").patternLine("FSF").patternLine("FLF")
+				.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK.get())).build(consumer);
+
 		// reagents ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		//noinspection ConstantConditions

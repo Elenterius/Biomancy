@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FLF",
+    "FSF",
+    "FLF"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:smoker"
+    },
+    "F": {
+      "item": "biomancy:flesh_block"
+    },
+    "L": {
+      "item": "biomancy:flesh_block_slab"
+    }
+  },
+  "result": {
+    "item": "biomancy:solidifier"
+  }
+}
