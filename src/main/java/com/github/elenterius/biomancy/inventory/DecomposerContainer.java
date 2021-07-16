@@ -107,6 +107,7 @@ public class DecomposerContainer extends MachineContainer {
 
 			case INPUT_ZONE:
 			case FUEL_ZONE:
+			case EMPTY_BUCKET_ZONE:
 				successfulTransfer = mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, sourceStack, false) || mergeInto(SlotZone.PLAYER_HOTBAR, sourceStack, false);
 				break;
 
