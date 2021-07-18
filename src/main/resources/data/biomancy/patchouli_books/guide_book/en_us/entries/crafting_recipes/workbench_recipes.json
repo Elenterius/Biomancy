@@ -20,7 +20,8 @@
     },
     {
       "type": "crafting",
-      "recipe": "biomancy:decomposer"
+      "recipe": "biomancy:decomposer",
+      "recipe2": "biomancy:solidifier"
     }
   ]
 }

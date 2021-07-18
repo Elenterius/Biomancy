@@ -132,7 +132,7 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 			FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
 			fontRenderer.drawText(matrixStack, timeString, (float) (background.getWidth() - fontRenderer.getStringPropertyWidth(timeString)), 0, 0xff808080);
 			int fuelCost = ticks * DecomposerTileEntity.FUEL_COST;
-			IFormattableTextComponent costText = new StringTextComponent("+" + fuelCost + " ").appendSibling(new TranslationTextComponent("tooltip.biomancy.biofuel"));
+			IFormattableTextComponent costText = new StringTextComponent("+" + fuelCost + "mb ").appendSibling(new TranslationTextComponent("fluid.biomancy.nutrient_slurry"));
 			fontRenderer.drawText(matrixStack, costText, 0, background.getHeight() - fontRenderer.FONT_HEIGHT, 0xff808080);
 		}
 	}
