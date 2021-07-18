@@ -9,7 +9,7 @@
       "item": "biomancy:flesh_lump"
     },
     "B": {
-      "item": "minecraft:bone"
+      "tag": "forge:bones"
     },
     "O": {
       "item": "biomancy:oculus"

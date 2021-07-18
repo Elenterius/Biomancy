@@ -7,7 +7,6 @@
     "minecraft:cocoa_beans",
     "minecraft:baked_potato",
     "minecraft:honeycomb",
-    "minecraft:honey_bottle",
     "minecraft:melon",
     "minecraft:pumpkin",
     "minecraft:dried_kelp_block",
@@ -22,22 +21,6 @@
     "minecraft:mushroom_stem",
     {
       "id": "create:bar_of_chocolate",
-      "required": false
-    },
-    {
-      "id": "createfa:hamburger",
-      "required": false
-    },
-    {
-      "id": "createfa:schnitzel",
-      "required": false
-    },
-    {
-      "id": "createfa:meatballs",
-      "required": false
-    },
-    {
-      "id": "createfa:chicken_nuggets",
       "required": false
     },
     {

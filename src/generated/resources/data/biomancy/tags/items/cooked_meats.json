@@ -11,6 +11,18 @@
     {
       "id": "rats:cooked_rat",
       "required": false
+    },
+    {
+      "id": "createfa:schnitzel",
+      "required": false
+    },
+    {
+      "id": "createfa:meatballs",
+      "required": false
+    },
+    {
+      "id": "createfa:chicken_nuggets",
+      "required": false
     }
   ]
 }

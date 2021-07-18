@@ -230,7 +230,7 @@
   "sounds.biomancy.impactsplat": "Impact Splat",
 
   "guide_book.biomancy.name": "Vionomicon",
-  "guide_book.biomancy.landing_text": "Disclaimer: This whole guide is WIP and lacking lots of information.",
+  "guide_book.biomancy.landing_text": "Disclaimer: This whole guide is a WIP. Use the Wiki instead!\nWiki: https://github.com/Elenterius/Biomancy/wiki",
 
   "jei.biomancy.recipe.chewer": "Chewer Recipes",
   "jei.biomancy.recipe.digester": "Digester Recipes",

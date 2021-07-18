@@ -24,6 +24,10 @@
       "required": false
     },
     {
+      "id": "createfa:hamburger",
+      "required": false
+    },
+    {
       "id": "rats:assorted_vegetables",
       "required": false
     },

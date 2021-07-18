@@ -1,0 +1,23 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:golden_apple"
+    },
+    "count": 1
+  },
+  "byproducts": [
+    {
+      "result": {
+        "item": "biomancy:oxide_powder",
+        "count": 16
+      },
+      "chance": 1.0
+    }
+  ],
+  "result": {
+    "item": "biomancy:rejuvenating_mucus",
+    "count": 6
+  },
+  "time": 200
+}

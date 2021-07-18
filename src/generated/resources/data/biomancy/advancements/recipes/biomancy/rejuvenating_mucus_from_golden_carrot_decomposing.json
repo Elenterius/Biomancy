@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:rejuvenating_mucus_from_cooked_meat_decomposing"
+      "biomancy:rejuvenating_mucus_from_golden_carrot_decomposing"
     ]
   },
   "criteria": {
-    "has_cooked_meat": {
+    "has_golden_carrot": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "biomancy:cooked_meats"
+            "item": "minecraft:golden_carrot"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:rejuvenating_mucus_from_cooked_meat_decomposing"
+        "recipe": "biomancy:rejuvenating_mucus_from_golden_carrot_decomposing"
       }
     }
   },
   "requirements": [
     [
-      "has_cooked_meat",
+      "has_golden_carrot",
       "has_the_recipe"
     ]
   ]

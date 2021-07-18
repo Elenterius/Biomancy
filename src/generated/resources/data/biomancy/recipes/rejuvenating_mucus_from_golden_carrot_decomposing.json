@@ -1,0 +1,23 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:golden_carrot"
+    },
+    "count": 1
+  },
+  "byproducts": [
+    {
+      "result": {
+        "item": "biomancy:oxide_powder",
+        "count": 4
+      },
+      "chance": 1.0
+    }
+  ],
+  "result": {
+    "item": "biomancy:rejuvenating_mucus",
+    "count": 2
+  },
+  "time": 200
+}

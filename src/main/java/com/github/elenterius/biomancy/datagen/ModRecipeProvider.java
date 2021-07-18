@@ -139,7 +139,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESH_CHEST.get(), defaultTime)
-				.addIngredients(Items.CHEST, 2).addIngredient(ModItems.BIOMETAL.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get())
+				.addIngredients(Tags.Items.CHESTS_WOODEN, 2).addIngredient(ModItems.BIOMETAL.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		// Tools ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -148,7 +148,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.ENTITY_STORAGE_ITEM.get(), defaultTime + 150)
-				.addIngredients(ModTags.Items.STOMACHS, 2).addIngredient(Items.EGG).addIngredient(Items.ENDER_CHEST).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2)
+				.addIngredients(ModTags.Items.STOMACHS, 2).addIngredient(Items.EGG).addIngredient(Tags.Items.CHESTS_ENDER).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2)
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.OCULI_OF_UNVEILING.get(), defaultTime * 2)
@@ -156,15 +156,15 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addCriterion("has_mutagenic_bile", hasItems(ModItems.MUTAGENIC_BILE.get(), ModItems.MENISCUS_LENS.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESHBORN_AXE.get(), defaultTime)
-				.addIngredient(Items.IRON_AXE).addIngredient(Items.BONE).addIngredients(ModItems.BIOMETAL.get(), 3).addIngredient(ModItems.HORMONE_BILE.get())
+				.addIngredient(Items.IRON_AXE).addIngredient(Tags.Items.BONES).addIngredients(ModItems.BIOMETAL.get(), 3).addIngredient(ModItems.HORMONE_BILE.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESHBORN_SHOVEL.get(), defaultTime)
-				.addIngredient(Items.IRON_SHOVEL).addIngredient(Items.BONE).addIngredient(ModItems.BIOMETAL.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get())
+				.addIngredient(Items.IRON_SHOVEL).addIngredient(Tags.Items.BONES).addIngredient(ModItems.BIOMETAL.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESHBORN_PICKAXE.get(), defaultTime)
-				.addIngredient(Items.IRON_PICKAXE).addIngredient(Items.BONE).addIngredients(ModItems.BIOMETAL.get(), 3).addIngredient(ModItems.HORMONE_BILE.get())
+				.addIngredient(Items.IRON_PICKAXE).addIngredient(Tags.Items.BONES).addIngredients(ModItems.BIOMETAL.get(), 3).addIngredient(ModItems.HORMONE_BILE.get())
 				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		// Weapons /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -185,7 +185,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		ItemStackIngredient maxBaneBook = new ItemStackIngredient(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(ModEnchantments.ATTUNED_BANE.get(), ModEnchantments.ATTUNED_BANE.get().getMaxLevel())));
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESHBORN_GUAN_DAO.get(), defaultTime * 2)
-				.addIngredient(ModItems.OCULUS.get()).addIngredient(maxBaneBook).addIngredient(Items.BONE).addIngredient(Items.DIAMOND_SWORD).addIngredient(Items.DIAMOND_AXE).addIngredient(ModItems.BIOMETAL.get())
+				.addIngredient(ModItems.OCULUS.get()).addIngredient(maxBaneBook).addIngredient(Tags.Items.BONES).addIngredient(Items.DIAMOND_SWORD).addIngredient(Items.DIAMOND_AXE).addIngredient(ModItems.BIOMETAL.get())
 				.addCriterion("has_oculus", hasItem(ModItems.OCULUS.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.TOOTH_GUN.get(), defaultTime * 2)
@@ -575,26 +575,21 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addByproduct(ModItems.MUTAGENIC_BILE.get(), 0.15f)
 				.addCriterion("has_suspicious_stew", hasItem(Items.SUSPICIOUS_STEW)).build(consumer);
 
-		//rejuvenating mucus from biomass
-		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime, 1)
-				.setIngredient(ModTags.Items.POOR_BIOMASS, 4)
-				.addCriterion("has_poor_biomass", hasItem(ModTags.Items.POOR_BIOMASS)).build(consumer, "from_poor_biomass", true);
-
+		//rejuvenating mucus from golden food
 		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime, 2)
-				.setIngredient(ModTags.Items.AVERAGE_BIOMASS, 3)
-				.addCriterion("has_average_biomass", hasItem(ModTags.Items.AVERAGE_BIOMASS)).build(consumer, "from_average_biomass", true);
+				.setIngredient(Items.GOLDEN_CARROT)
+				.addByproduct(ModItems.OXIDE_POWDER.get(), 4, 1f)
+				.addCriterion("has_golden_carrot", hasItem(Items.GOLDEN_CARROT)).build(consumer, "from_golden_carrot", true);
 
-		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), 272, 3)
-				.setIngredient(ModTags.Items.GOOD_BIOMASS, 2)
-				.addCriterion("has_good_biomass", hasItem(ModTags.Items.GOOD_BIOMASS)).build(consumer, "from_good_biomass", true);
+		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime, 6)
+				.setIngredient(Items.GOLDEN_APPLE)
+				.addByproduct(ModItems.OXIDE_POWDER.get(), 8 * 2, 1f)
+				.addCriterion("has_golden_apple", hasItem(Items.GOLDEN_APPLE)).build(consumer, "from_golden_apple", true);
 
-		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), 300, 4)
-				.setIngredient(ModTags.Items.SUPERB_BIOMASS)
-				.addCriterion("has_superb_biomass", hasItem(ModTags.Items.SUPERB_BIOMASS)).build(consumer, "from_superb_biomass", true);
-
-		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), 300)
-				.setIngredient(ModTags.Items.COOKED_MEATS, 3)
-				.addCriterion("has_cooked_meat", hasItem(ModTags.Items.COOKED_MEATS)).build(consumer, "from_cooked_meat", true);
+		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime, 8)
+				.setIngredient(Items.ENCHANTED_GOLDEN_APPLE)
+				.addByproduct(ModItems.OXIDE_POWDER.get(), 8 * 2, 1f)
+				.addCriterion("has_enchanted_golden_apple", hasItem(Items.ENCHANTED_GOLDEN_APPLE)).build(consumer, "from_enchanted_golden_apple", true);
 
 		//rejuvenating mucus from healing/health potions
 		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime/2, 4)
@@ -623,7 +618,6 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addCriterion("has_potion", hasItem(Items.POTION)).build(consumer, "from_strong_healing_potion", true);
 
 		//misc
-
 		DecomposerRecipeBuilder.createRecipe(ModItems.ERODING_BILE.get(), defaultDecomposingTime)
 				.setIngredient(Items.ROTTEN_FLESH)
 				.addByproduct(ModItems.FLESH_LUMP.get(), 0.2f)
@@ -647,7 +641,7 @@ public class ModRecipeProvider extends RecipeProvider {
 	private void registerWorkbenchRecipes(Consumer<IFinishedRecipe> consumer) {
 
 		ShapedRecipeBuilder.shapedRecipe(ModItems.OCULUS_KEY.get())
-				.key('F', ModItems.FLESH_LUMP.get()).key('B', Items.BONE).key('O', ModItems.OCULUS.get()).key('S', ModItems.BONE_SCRAPS.get())
+				.key('F', ModItems.FLESH_LUMP.get()).key('B', Tags.Items.BONES).key('O', ModItems.OCULUS.get()).key('S', ModItems.BONE_SCRAPS.get())
 				.patternLine("FBO").patternLine("SS ")
 				.addCriterion("has_oculus", hasItem(ModItems.OCULUS.get())).build(consumer);
 

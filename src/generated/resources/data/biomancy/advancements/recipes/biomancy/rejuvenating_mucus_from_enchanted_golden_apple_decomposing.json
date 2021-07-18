@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:rejuvenating_mucus_from_superb_biomass_decomposing"
+      "biomancy:rejuvenating_mucus_from_enchanted_golden_apple_decomposing"
     ]
   },
   "criteria": {
-    "has_superb_biomass": {
+    "has_enchanted_golden_apple": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "biomancy:superb_biomass"
+            "item": "minecraft:enchanted_golden_apple"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:rejuvenating_mucus_from_superb_biomass_decomposing"
+        "recipe": "biomancy:rejuvenating_mucus_from_enchanted_golden_apple_decomposing"
       }
     }
   },
   "requirements": [
     [
-      "has_superb_biomass",
+      "has_enchanted_golden_apple",
       "has_the_recipe"
     ]
   ]

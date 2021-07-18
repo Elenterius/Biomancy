@@ -5,7 +5,7 @@
       "item": "minecraft:iron_pickaxe"
     },
     {
-      "item": "minecraft:bone"
+      "tag": "forge:bones"
     },
     {
       "item": "biomancy:biometal"

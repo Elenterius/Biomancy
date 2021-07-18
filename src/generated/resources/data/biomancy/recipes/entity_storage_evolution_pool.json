@@ -11,7 +11,7 @@
       "item": "minecraft:egg"
     },
     {
-      "item": "minecraft:ender_chest"
+      "tag": "forge:chests/ender"
     },
     {
       "item": "biomancy:keratin_filaments"

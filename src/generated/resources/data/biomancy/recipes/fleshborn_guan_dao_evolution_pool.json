@@ -11,7 +11,7 @@
       "nbt": "{StoredEnchantments:[{lvl:5s,id:\"biomancy:attuned_bane\"}]}"
     },
     {
-      "item": "minecraft:bone"
+      "tag": "forge:bones"
     },
     {
       "item": "minecraft:diamond_sword"
