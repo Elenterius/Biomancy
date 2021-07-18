@@ -36,6 +36,7 @@ public class DataGenerators {
 		generator.addProvider(new ModItemTagsProvider(generator, blockTags, existingFileHelper));
 
 		generator.addProvider(new ModRecipeProvider(generator));
+		generator.addProvider(new ModAdvancementProvider(generator));
 	}
 
 	public static class ModLootTableProvider extends LootTableProvider {
