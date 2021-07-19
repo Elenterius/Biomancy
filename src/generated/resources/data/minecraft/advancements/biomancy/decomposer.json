@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:biomancy/digester",
+  "display": {
+    "icon": {
+      "item": "biomancy:decomposer"
+    },
+    "title": {
+      "translate": "advancements.biomancy.decomposer.title"
+    },
+    "description": {
+      "translate": "advancements.biomancy.decomposer.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "has_decomposer": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "biomancy:decomposer"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_decomposer"
+    ]
+  ]
+}

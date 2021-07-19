@@ -120,7 +120,7 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 			int stringWidth = fontRenderer.getStringPropertyWidth(timeString);
 			fontRenderer.drawText(matrixStack, timeString, background.getWidth() - stringWidth, 0, 0xff808080);
 			int waterCost = ticks * DigesterTileEntity.FUEL_COST;
-			IFormattableTextComponent costText = new StringTextComponent("+" + waterCost + " ").appendSibling(new TranslationTextComponent("tooltip.biomancy.water"));
+			IFormattableTextComponent costText = new StringTextComponent("+" + waterCost + "mb ").appendSibling(new TranslationTextComponent("fluid.minecraft.water"));
 			fontRenderer.drawText(matrixStack, costText, 0, background.getHeight() - fontRenderer.FONT_HEIGHT, 0xff808080);
 		}
 	}
