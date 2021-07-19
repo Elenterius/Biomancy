@@ -1,8 +1,0 @@
-{
-  "parent": "biomancy:block/gourd_1_template",
-  "textures": {
-    "top": "minecraft:block/melon_top",
-    "side": "minecraft:block/melon_side",
-    "leaves": "biomancy:block/vile_melon_leaves"
-  }
-}

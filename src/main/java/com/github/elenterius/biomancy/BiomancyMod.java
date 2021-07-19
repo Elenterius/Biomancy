@@ -12,6 +12,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
@@ -31,6 +32,8 @@ public final class BiomancyMod {
 	public static final Random GLOBAL_RANDOM = new Random();
 
 	public BiomancyMod() {
+		ForgeMod.enableMilkFluid();
+
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
 		ModItems.ITEMS.register(modEventBus);
@@ -66,19 +69,8 @@ public final class BiomancyMod {
 				Enchantment enchantment = entry.get();
 				items.add(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(enchantment, enchantment.getMaxLevel())));
 			}
-
-			//add placeholder potions
-//			for (RegistryObject<Effect> effect : ModEffects.EFFECTS.getEntries()) {
-//				ItemStack potionStack = PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.WATER);
-//				CompoundNBT compoundnbt = potionStack.getOrCreateTag();
-//				ListNBT listnbt = compoundnbt.getList("CustomPotionEffects", Constants.NBT.TAG_LIST);
-//				EffectInstance effectInstance = new EffectInstance(effect.get(), 20 * 30);
-//				listnbt.add(effectInstance.write(new CompoundNBT()));
-//				compoundnbt.put("CustomPotionEffects", listnbt);
-//				potionStack.setDisplayName(new StringTextComponent("[PH] Sliver of ").appendSibling(new TranslationTextComponent(effect.get().getName())));
-//				items.add(potionStack);
-//			}
 		}
+
 	};
 
 }

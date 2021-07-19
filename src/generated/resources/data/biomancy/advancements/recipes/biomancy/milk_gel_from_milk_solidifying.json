@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:nutrient_slurry_from_good_biomass_digesting"
+      "biomancy:milk_gel_from_milk_solidifying"
     ]
   },
   "criteria": {
-    "has_good_biomass": {
+    "has_milk": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "biomancy:good_biomass"
+            "item": "minecraft:milk_bucket"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:nutrient_slurry_from_good_biomass_digesting"
+        "recipe": "biomancy:milk_gel_from_milk_solidifying"
       }
     }
   },
   "requirements": [
     [
-      "has_good_biomass",
+      "has_milk",
       "has_the_recipe"
     ]
   ]

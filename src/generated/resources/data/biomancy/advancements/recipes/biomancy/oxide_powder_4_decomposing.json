@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:nutrient_slurry_from_good_biomass_digesting"
+      "biomancy:oxide_powder_4_decomposing"
     ]
   },
   "criteria": {
-    "has_good_biomass": {
+    "has_oxide": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "biomancy:good_biomass"
+            "tag": "biomancy:oxides"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:nutrient_slurry_from_good_biomass_digesting"
+        "recipe": "biomancy:oxide_powder_4_decomposing"
       }
     }
   },
   "requirements": [
     [
-      "has_good_biomass",
+      "has_oxide",
       "has_the_recipe"
     ]
   ]
