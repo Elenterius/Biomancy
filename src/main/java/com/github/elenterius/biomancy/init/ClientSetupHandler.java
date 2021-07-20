@@ -37,7 +37,8 @@ import org.lwjgl.glfw.GLFW;
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = BiomancyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class ClientSetupHandler {
-	private ClientSetupHandler() {}
+	private ClientSetupHandler() {
+	}
 
 	public static final KeyBinding ITEM_DEFAULT_KEY_BINDING = new KeyBinding(String.format("key.%s.item_default", BiomancyMod.MOD_ID), KeyConflictContext.UNIVERSAL, InputMappings.Type.KEYSYM, GLFW.GLFW_KEY_V, "key.categories." + BiomancyMod.MOD_ID);
 
@@ -50,14 +51,14 @@ public final class ClientSetupHandler {
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.FLESH_BLOB.get(), FleshBlobRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.FLESHKIN.get(), FleshkinRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BOOMLING.get(), BoomlingRenderer::new);
-//		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.MASON_BEETLE.get(), BlockBeetleRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BEETLING.get(), BeetlingRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BROOD_MOTHER.get(), BroodmotherRenderer::new);
 
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.FAILED_SHEEP.get(), FailedSheepRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.CHROMA_SHEEP.get(), ChromaSheepRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.SILKY_WOOL_SHEEP.get(), SheepRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.THICK_WOOL_SHEEP.get(), ThickWoolSheepRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BEETLING.get(), BeetlingRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BROOD_MOTHER.get(), BroodmotherRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.NUTRIENT_SLURRY_COW.get(), NutrientSlurryCowRenderer::new);
 
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.TOOTH_PROJECTILE.get(), manager -> new SpriteRenderer<>(manager, Minecraft.getInstance().getItemRenderer()));
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.WITHER_SKULL_PROJECTILE.get(), WitherSkullProjectileRenderer::new);
@@ -78,7 +79,8 @@ public final class ClientSetupHandler {
 	}
 
 	@SubscribeEvent
-	public static void onBlockModelRegistry(final ModelRegistryEvent event) {}
+	public static void onBlockModelRegistry(final ModelRegistryEvent event) {
+	}
 
 	@SubscribeEvent
 	public static void onItemColorRegistry(final ColorHandlerEvent.Item event) {
