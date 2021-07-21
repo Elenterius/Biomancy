@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.entity.BeetlingEntity;
+import com.github.elenterius.biomancy.entity.aberration.FailedCowEntity;
 import com.github.elenterius.biomancy.entity.aberration.FailedSheepEntity;
 import com.github.elenterius.biomancy.entity.aberration.FleshBlobEntity;
 import com.github.elenterius.biomancy.entity.golem.BoomlingEntity;
@@ -32,6 +33,7 @@ public final class ModEntityTypes {
 	//Aberrations
 	public static final RegistryObject<EntityType<FleshBlobEntity>> FLESH_BLOB = register("flesh_blob", EntityType.Builder.create(FleshBlobEntity::new, EntityClassification.CREATURE).size(0.75F, 0.75F));
 	public static final RegistryObject<EntityType<FailedSheepEntity>> FAILED_SHEEP = register("failed_sheep", EntityType.Builder.create(FailedSheepEntity::new, EntityClassification.CREATURE).size(0.9f, 1.3f).trackingRange(10));
+	public static final RegistryObject<EntityType<FailedCowEntity>> FAILED_COW = register("failed_cow", EntityType.Builder.create(FailedCowEntity::new, EntityClassification.CREATURE).size(0.9f, 1.4f).trackingRange(10));
 
 	//Golems & Pets
 	public static final RegistryObject<EntityType<FleshkinEntity>> FLESHKIN = register("fleshkin", EntityType.Builder.create(FleshkinEntity::new, EntityClassification.MONSTER).size(0.6f, 1.95f).trackingRange(10));
@@ -66,6 +68,7 @@ public final class ModEntityTypes {
 		GlobalEntityTypeAttributes.put(SILKY_WOOL_SHEEP.get(), SilkyWoolSheepEntity.createAttributes().create());
 		GlobalEntityTypeAttributes.put(THICK_WOOL_SHEEP.get(), ThickWoolSheepEntity.createAttributes().create());
 		GlobalEntityTypeAttributes.put(NUTRIENT_SLURRY_COW.get(), CowEntity.registerAttributes().create());
+		GlobalEntityTypeAttributes.put(FAILED_COW.get(), CowEntity.registerAttributes().create());
 
 		GlobalEntityTypeAttributes.put(FLESHKIN.get(), FleshkinEntity.createAttributes().create());
 
