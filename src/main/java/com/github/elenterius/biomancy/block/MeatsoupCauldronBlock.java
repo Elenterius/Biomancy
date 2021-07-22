@@ -319,7 +319,7 @@ public class MeatsoupCauldronBlock extends Block {
 		private final int bitPosition = 1 << ordinal();
 
 		public static int getMaxNumber() {
-			return (int) Math.pow(2, Flags.values().length);
+			return (int) Math.pow(2, Flags.values().length) - 1;
 		}
 
 		public static boolean isFlagSet(int value, Flags flag) {
