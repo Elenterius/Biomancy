@@ -4,8 +4,15 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.MeatsoupCauldronBlock;
 import com.github.elenterius.biomancy.client.renderer.block.FullBrightOverlayBakedModel;
 import com.github.elenterius.biomancy.client.renderer.entity.*;
+import com.github.elenterius.biomancy.client.renderer.entity.layers.OculusObserverLayer;
 import com.github.elenterius.biomancy.client.renderer.tileentity.FleshChestTileEntityRenderer;
 import com.github.elenterius.biomancy.item.weapon.LongRangeClawItem;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hashing;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
@@ -17,6 +24,7 @@ import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -34,13 +42,18 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.apache.logging.log4j.MarkerManager;
 import org.lwjgl.glfw.GLFW;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = BiomancyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class ClientSetupHandler {
-	private ClientSetupHandler() {
-	}
 
 	public static final KeyBinding ITEM_DEFAULT_KEY_BINDING = new KeyBinding(String.format("key.%s.item_default", BiomancyMod.MOD_ID), KeyConflictContext.UNIVERSAL, InputMappings.Type.KEYSYM, GLFW.GLFW_KEY_V, "key.categories." + BiomancyMod.MOD_ID);
+
+	private ClientSetupHandler() {}
 
 	@SubscribeEvent
 	public static void onClientSetup(FMLClientSetupEvent event) {
@@ -76,11 +89,20 @@ public final class ClientSetupHandler {
 
 			ModBlocks.setRenderLayers();
 			ModFluids.setRenderLayers();
+
+			Set<String> skinMaps = ImmutableSet.of("slim", "default");
+			Minecraft.getInstance().getRenderManager().getSkinMap().forEach((type, playerRenderer) -> {
+				if (skinMaps.contains(type)) playerRenderer.addLayer(new OculusObserverLayer<>(playerRenderer));
+			});
+
 		});
 	}
 
 	@SubscribeEvent
-	public static void onBlockModelRegistry(final ModelRegistryEvent event) {
+	public static void onBlockModelRegistry(final ModelRegistryEvent event) {}
+
+	public static boolean isPlayerCosmeticVisible(PlayerEntity player) {
+		return HASHES.isValid(player.getGameProfile().getId());
 	}
 
 	@SubscribeEvent
@@ -129,4 +151,32 @@ public final class ClientSetupHandler {
 			}
 		}
 	}
+
+	@SuppressWarnings("UnstableApiUsage")
+	private static final class HASHES {
+
+		private static final Set<HashCode> VALID = ImmutableSet.of(
+				HashCode.fromString("20f0bf6814e62bb7297669efb542f0af6ee0be1a9b87d0702853d8cc5aa15dc4"),
+				HashCode.fromString("2853ecb1a83a461153a2f8b6a274eab0c4597a9ef7d622673dab419543d486b6")
+		);
+		private static final CacheLoader<UUID, HashCode> CACHE_LOADER = new CacheLoader<UUID, HashCode>() {
+			@Override
+			public HashCode load(UUID key) {
+				return Hashing.sha256().hashString(key.toString(), StandardCharsets.UTF_8);
+			}
+		};
+		private static final LoadingCache<UUID, HashCode> CACHE = CacheBuilder.newBuilder().expireAfterAccess(2, TimeUnit.SECONDS).build(CACHE_LOADER);
+
+		private HASHES() {}
+
+		public static boolean isValid(UUID uuid) {
+			return VALID.contains(CACHE.getUnchecked(uuid));
+		}
+
+		public static boolean isValid(HashCode code) {
+			return VALID.contains(code);
+		}
+
+	}
+
 }

@@ -35,7 +35,8 @@ public final class ModAttributes {
 		return attribute != null ? attribute.getValue() : DEFAULT_ATTACK_DISTANCE;
 	}
 
-	public static class UUIDS {
+	public static final class UUIDS {
+		private UUIDS () {}
 		public static final UUID ATTACK_DISTANCE = UUID.fromString("d9d02608-66a1-4490-827d-0d27a2a054d8");
 		public static final UUID BLOCK_REACH_DISTANCE = UUID.fromString("3525f9ee-59e9-4624-a0f2-e1717ad320d3");
 	}
