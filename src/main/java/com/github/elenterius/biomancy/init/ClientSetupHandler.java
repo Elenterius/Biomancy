@@ -76,6 +76,7 @@ public final class ClientSetupHandler {
 
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.TOOTH_PROJECTILE.get(), manager -> new SpriteRenderer<>(manager, Minecraft.getInstance().getItemRenderer()));
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.WITHER_SKULL_PROJECTILE.get(), WitherSkullProjectileRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BOOMLING_PROJECTILE.get(), BoomlingProjectileRenderer::new);
 
 		event.enqueueWork(() -> {
 			ModContainerTypes.registerContainerScreens();

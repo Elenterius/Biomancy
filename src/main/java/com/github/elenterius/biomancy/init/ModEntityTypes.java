@@ -12,6 +12,7 @@ import com.github.elenterius.biomancy.entity.mutation.ChromaSheepEntity;
 import com.github.elenterius.biomancy.entity.mutation.NutrientSlurryCowEntity;
 import com.github.elenterius.biomancy.entity.mutation.SilkyWoolSheepEntity;
 import com.github.elenterius.biomancy.entity.mutation.ThickWoolSheepEntity;
+import com.github.elenterius.biomancy.entity.projectile.BoomlingProjectileEntity;
 import com.github.elenterius.biomancy.entity.projectile.ToothProjectileEntity;
 import com.github.elenterius.biomancy.entity.projectile.WitherSkullProjectileEntity;
 import net.minecraft.entity.Entity;
@@ -51,6 +52,7 @@ public final class ModEntityTypes {
 	//Projectiles
 	public static final RegistryObject<EntityType<ToothProjectileEntity>> TOOTH_PROJECTILE = register("tooth_projectile", EntityType.Builder.<ToothProjectileEntity>create(ToothProjectileEntity::new, EntityClassification.MISC).size(0.25f, 0.25f).updateInterval(10));
 	public static final RegistryObject<EntityType<WitherSkullProjectileEntity>> WITHER_SKULL_PROJECTILE = register("wither_skull", EntityType.Builder.<WitherSkullProjectileEntity>create(WitherSkullProjectileEntity::new, EntityClassification.MISC).size(0.3125f, 0.3125f).updateInterval(10));
+	public static final RegistryObject<EntityType<BoomlingProjectileEntity>> BOOMLING_PROJECTILE = register("boomling_projectile", EntityType.Builder.<BoomlingProjectileEntity>create(BoomlingProjectileEntity::new, EntityClassification.MISC).size(0.4f, 0.35f).updateInterval(10));
 
 	private ModEntityTypes() {
 	}

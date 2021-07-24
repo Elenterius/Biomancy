@@ -19,9 +19,9 @@ import javax.annotation.Nonnull;
 
 @OnlyIn(Dist.CLIENT)
 public class BoomlingRenderer extends MobRenderer<BoomlingEntity, BoomlingModel<BoomlingEntity>> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(BiomancyMod.MOD_ID, "textures/entity/boomling.png");
-	private static final ResourceLocation OVERLAY_TEXTURE = new ResourceLocation(BiomancyMod.MOD_ID, "textures/entity/boomling_overlay.png");
-	private static final RenderType RENDER_TYPE = RenderType.getEyes(OVERLAY_TEXTURE);
+	public static final ResourceLocation TEXTURE = new ResourceLocation(BiomancyMod.MOD_ID, "textures/entity/boomling.png");
+	public static final ResourceLocation OVERLAY_TEXTURE = new ResourceLocation(BiomancyMod.MOD_ID, "textures/entity/boomling_overlay.png");
+	public static final RenderType RENDER_TYPE = RenderType.getEyes(OVERLAY_TEXTURE);
 
 	public BoomlingRenderer(EntityRendererManager renderManagerIn) {
 		super(renderManagerIn, new BoomlingModel<>(), 0.2F);

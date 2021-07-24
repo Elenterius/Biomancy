@@ -23,6 +23,9 @@ import net.minecraftforge.common.ForgeHooks;
 import java.util.Random;
 import java.util.function.Predicate;
 
+/**
+ * dev-gun, for experiments etc
+ */
 public class InfestedRifleItem extends ProjectileWeaponItem {
 
 	public InfestedRifleItem(Properties builder) {

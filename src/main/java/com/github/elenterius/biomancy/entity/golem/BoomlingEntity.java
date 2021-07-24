@@ -35,6 +35,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -173,42 +174,57 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 			Potion potion = PotionUtils.getPotionFromItem(stack);
 			List<EffectInstance> effects = PotionUtils.getEffectsFromStack(stack);
 			if (potion == Potions.WATER && effects.isEmpty()) {
-				AxisAlignedBB axisalignedbb = getBoundingBox().grow(4d, 2d, 4d);
-				List<LivingEntity> entities = world.getEntitiesWithinAABB(LivingEntity.class, axisalignedbb, PotionEntity.WATER_SENSITIVE);
-				if (!entities.isEmpty()) {
-					Optional<PlayerEntity> owner = getOwner();
-					LivingEntity shooter = owner.isPresent() ? owner.get() : this;
-					for (LivingEntity livingEntity : entities) {
-						if (getDistanceSq(livingEntity) < 16d) {
-							livingEntity.attackEntityFrom(DamageSource.causeIndirectMagicDamage(livingEntity, shooter), 1f);
-						}
-					}
-				}
+				causeWaterAOE();
 			}
 			else if (!effects.isEmpty()) {
-				AreaEffectCloudEntity aoeCloud = new AreaEffectCloudEntity(world, getPositionVec().x, getPositionVec().y, getPositionVec().z);
-				Optional<PlayerEntity> owner = getOwner();
-				aoeCloud.setOwner(owner.isPresent() ? owner.get() : this);
+				spawnEffectAOE(stack, potion);
+			}
+		}
+	}
 
-				aoeCloud.setRadius(3f);
-				aoeCloud.setRadiusOnUse(-0.5f);
-				aoeCloud.setWaitTime(10);
-				aoeCloud.setRadiusPerTick(-aoeCloud.getRadius() / (float) aoeCloud.getDuration());
-				aoeCloud.setPotion(potion);
+	private void spawnEffectAOE(ItemStack stack, Potion potion) {
+		Optional<PlayerEntity> owner = getOwner();
+		LivingEntity shooter = owner.isPresent() ? owner.get() : this;
+		CompoundNBT nbt = stack.getTag();
+		int color = PotionUtils.getColor(stack);
+		if (nbt != null && nbt.contains("CustomPotionColor", Constants.NBT.TAG_ANY_NUMERIC)) {
+			color = nbt.getInt("CustomPotionColor");
+		}
+		List<EffectInstance> effects = PotionUtils.getFullEffectsFromItem(stack);
+		spawnEffectAOE(world, shooter, getPositionVec(), potion, effects, color);
+	}
 
-				for (EffectInstance effect : PotionUtils.getFullEffectsFromItem(stack)) {
-					aoeCloud.addEffect(new EffectInstance(effect));
+	public static void spawnEffectAOE(World world, @Nullable LivingEntity attacker, Vector3d pos, Potion potion, Collection<EffectInstance> effects, int color) {
+		AreaEffectCloudEntity aoeCloud = new AreaEffectCloudEntity(world, pos.x, pos.y, pos.z);
+		aoeCloud.setOwner(attacker);
+		aoeCloud.setRadius(3f);
+		aoeCloud.setRadiusOnUse(-0.5f);
+		aoeCloud.setWaitTime(10);
+		aoeCloud.setRadiusPerTick(-aoeCloud.getRadius() / aoeCloud.getDuration());
+		aoeCloud.setColor(color);
+		aoeCloud.setPotion(potion);
+		for (EffectInstance effect : effects) aoeCloud.addEffect(new EffectInstance(effect));
+
+		world.addEntity(aoeCloud);
+
+		int event = potion.hasInstantEffect() ? Constants.WorldEvents.POTION_IMPACT : Constants.WorldEvents.POTION_IMPACT_INSTANT;
+		world.playEvent(event, new BlockPos(pos), color);
+	}
+
+	private void causeWaterAOE() {
+		Optional<PlayerEntity> owner = getOwner();
+		LivingEntity shooter = owner.isPresent() ? owner.get() : this;
+		causeWaterAOE(world, shooter);
+	}
+
+	public static void causeWaterAOE(World world, Entity attacker) {
+		AxisAlignedBB axisalignedbb = attacker.getBoundingBox().grow(4d, 2d, 4d);
+		List<LivingEntity> entities = world.getEntitiesWithinAABB(LivingEntity.class, axisalignedbb, PotionEntity.WATER_SENSITIVE);
+		if (!entities.isEmpty()) {
+			for (LivingEntity victim : entities) {
+				if (attacker.getDistanceSq(victim) < 16d) {
+					victim.attackEntityFrom(DamageSource.causeIndirectMagicDamage(victim, attacker), 1f);
 				}
-
-				CompoundNBT nbt = stack.getTag();
-				if (nbt != null && nbt.contains("CustomPotionColor", Constants.NBT.TAG_ANY_NUMERIC)) {
-					aoeCloud.setColor(nbt.getInt("CustomPotionColor"));
-				}
-
-				world.addEntity(aoeCloud);
-
-				int event = potion.hasInstantEffect() ? Constants.WorldEvents.POTION_IMPACT : Constants.WorldEvents.POTION_IMPACT_INSTANT;
-				world.playEvent(event, getPosition(), PotionUtils.getColor(stack));
 			}
 		}
 	}

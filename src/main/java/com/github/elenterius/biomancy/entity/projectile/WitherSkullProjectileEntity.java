@@ -74,8 +74,8 @@ public class WitherSkullProjectileEntity extends AbstractProjectileEntity {
 	protected void onImpact(RayTraceResult result) {
 		super.onImpact(result);
 		if (!world.isRemote) {
-			Explosion.Mode explosion$mode = ForgeEventFactory.getMobGriefingEvent(world, getShooter()) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
-			world.createExplosion(this, getPosX(), getPosY(), getPosZ(), 1.0F, false, explosion$mode);
+			Explosion.Mode explosionMode = ForgeEventFactory.getMobGriefingEvent(world, getShooter()) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
+			world.createExplosion(this, getPosX(), getPosY(), getPosZ(), 1.0F, false, explosionMode);
 			remove();
 		}
 	}
