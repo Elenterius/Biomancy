@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.block;
 
 import com.github.elenterius.biomancy.entity.aberration.FleshBlobEntity;
+import com.github.elenterius.biomancy.entity.aberration.OculusObserverEntity;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModTags;
@@ -101,13 +102,22 @@ public class MeatsoupCauldronBlock extends Block {
 			if (worldIn.rand.nextFloat() <= p) {
 				worldIn.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
 
-				FleshBlobEntity blobEntity = ModEntityTypes.FLESH_BLOB.get().create(worldIn);
-				if (blobEntity != null) {
-					blobEntity.setLocationAndAngles(pos.getX() + 0.5f, pos.getY() + 4f / 16f, pos.getZ() + 0.5f, 0, 0);
-					if (p > 0.4f && worldIn.rand.nextFloat() < 0.55f) {
-						blobEntity.setCustomEntityData((byte) 1);
+				if (p > 0.4f && worldIn.rand.nextFloat() < 0.2f) {
+					OculusObserverEntity entity = ModEntityTypes.OCULUS_OBSERVER.get().create(worldIn);
+					if (entity != null) {
+						entity.setLocationAndAngles(pos.getX() + 0.5f, pos.getY() + 4f / 16f, pos.getZ() + 0.5f, 0, 0);
+						worldIn.addEntity(entity);
 					}
-					worldIn.addEntity(blobEntity);
+				}
+				else {
+					FleshBlobEntity blobEntity = ModEntityTypes.FLESH_BLOB.get().create(worldIn);
+					if (blobEntity != null) {
+						blobEntity.setLocationAndAngles(pos.getX() + 0.5f, pos.getY() + 4f / 16f, pos.getZ() + 0.5f, 0, 0);
+						if (p > 0.4f && worldIn.rand.nextFloat() < 0.55f) {
+							blobEntity.setHangry();
+						}
+						worldIn.addEntity(blobEntity);
+					}
 				}
 			}
 			else {
@@ -121,6 +131,7 @@ public class MeatsoupCauldronBlock extends Block {
 		tryToUseHopper(worldIn, pos, state, level);
 	}
 
+	@Override
 	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
 		if (!worldIn.isRemote && entityIn instanceof ItemEntity) {
 			ItemStack stack = ((ItemEntity) entityIn).getItem();

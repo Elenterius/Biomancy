@@ -10,7 +10,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class OculusObserverModel extends EntityModel<Entity> {
+public class OculusObserverModel<T extends Entity> extends EntityModel<T> {
 
 	public final ModelRenderer body;
 	public final ModelRenderer eastWing;
@@ -56,7 +56,7 @@ public class OculusObserverModel extends EntityModel<Entity> {
 	}
 
 	@Override
-	public void setRotationAngles(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+	public void setRotationAngles(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 		boolean isNotMoving = entity.isOnGround() && entity.getMotion().lengthSquared() < 1.0E-07;
 		if (isNotMoving) {
 			westWing.rotateAngleY = eastWing.rotateAngleY = 0;

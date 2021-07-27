@@ -19,7 +19,7 @@ public final class MobUtil {
 	}
 
 	public static <E extends MobEntity, T extends MobEntity> boolean convertMobEntityTo(ServerWorld world, E oldEntity, EntityType<T> outcomeType, boolean copyEquipment, BiConsumer<E, T> onConvert) {
-		if (ForgeEventFactory.canLivingConvert(oldEntity, outcomeType, (timer) -> {})) {
+		if (ForgeEventFactory.canLivingConvert(oldEntity, outcomeType, timer -> {})) {
 			T newEntity = oldEntity.func_233656_b_(outcomeType, copyEquipment);// create new entity with same settings & equipment and remove old entity
 			if (newEntity != null) {
 				newEntity.onInitialSpawn(world, world.getDifficultyForLocation(oldEntity.getPosition()), SpawnReason.CONVERSION, null, null);
@@ -40,7 +40,7 @@ public final class MobUtil {
 			if (entity instanceof LivingEntity) {
 				//noinspection unchecked
 				EntityType<? extends LivingEntity> entityType = (EntityType<? extends LivingEntity>) outcomeType;
-				if (ForgeEventFactory.canLivingConvert(oldEntity, entityType, (timer) -> {})) {
+				if (ForgeEventFactory.canLivingConvert(oldEntity, entityType, timer -> {})) {
 					entity.copyLocationAndAnglesFrom(oldEntity);
 					oldEntity.remove();
 					world.addEntity(entity);

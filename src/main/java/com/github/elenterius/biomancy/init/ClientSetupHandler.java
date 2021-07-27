@@ -62,6 +62,7 @@ public final class ClientSetupHandler {
 		ClientRegistry.bindTileEntityRenderer(ModTileEntityTypes.FLESH_CHEST.get(), FleshChestTileEntityRenderer::new);
 
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.FLESH_BLOB.get(), FleshBlobRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.OCULUS_OBSERVER.get(), OculusObserverRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.FLESHKIN.get(), FleshkinRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BOOMLING.get(), BoomlingRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BEETLING.get(), BeetlingRenderer::new);

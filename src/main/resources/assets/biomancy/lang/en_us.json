@@ -55,6 +55,7 @@
   "item.biomancy.stomach": "Stomach",
 
   "item.biomancy.flesh_blob_spawn_egg": "Flesh Blob Spawn Egg",
+  "item.biomancy.oculus_observer_spawn_egg": "Oculus Observer Spawn Egg",
   "item.biomancy.fleshkin_spawn_egg": "Fleshkin Spawn Egg",
   "item.biomancy.boomling_spawn_egg": "Boomling Spawn Egg",
   "item.biomancy.failed_sheep_spawn_egg": "Failed Sheep Spawn Egg",
@@ -99,6 +100,7 @@
   "container.biomancy.evolution_pool": "Evolution Pool",
 
   "entity.biomancy.flesh_blob": "Flesh Blob",
+  "entity.biomancy.oculus_observer": "Oculus Observer",
   "entity.biomancy.fleshkin": "Fleshkin",
   "entity.biomancy.boomling": "Boomling",
   "entity.biomancy.failed_sheep": "Failed Sheep",

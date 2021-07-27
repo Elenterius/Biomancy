@@ -1,7 +1,8 @@
 package com.github.elenterius.biomancy.client.renderer.entity.layers;
 
-import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.client.renderer.entity.OculusObserverRenderer;
 import com.github.elenterius.biomancy.client.renderer.entity.model.OculusObserverModel;
+import com.github.elenterius.biomancy.entity.aberration.OculusObserverEntity;
 import com.github.elenterius.biomancy.init.ClientSetupHandler;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.blaze3d.matrix.MatrixStack;
@@ -12,7 +13,6 @@ import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -22,11 +22,10 @@ import java.util.Set;
 @OnlyIn(Dist.CLIENT)
 public class OculusObserverLayer<T extends PlayerEntity> extends LayerRenderer<T, PlayerModel<T>> {
 
-	private static final ResourceLocation TEXTURE = new ResourceLocation(BiomancyMod.MOD_ID, "textures/entity/oculus_observer.png");
 	private static final Set<String> NAMES = ImmutableSet.of("Dev", "Dev2");
 	private static final float SHOULDER_OFFSET = 0.5f;
 
-	private final OculusObserverModel model = new OculusObserverModel();
+	private final OculusObserverModel<OculusObserverEntity> model = new OculusObserverModel<>();
 	private final boolean leftShoulder = true;
 
 	public OculusObserverLayer(IEntityRenderer<T, PlayerModel<T>> entityRendererIn) {
@@ -64,7 +63,7 @@ public class OculusObserverLayer<T extends PlayerEntity> extends LayerRenderer<T
 			matrixStackIn.push();
 			verticalOffset += -1f + (livingEntity.isCrouching() ? (double) -1.3f : -1.5d);
 			matrixStackIn.translate(leftShoulder ? SHOULDER_OFFSET + horizontalOffset : -SHOULDER_OFFSET - horizontalOffset, verticalOffset + MathHelper.cos(livingEntity.ticksExisted * 0.8f) * (float) Math.PI * 0.015f, 0);
-			IVertexBuilder buffer = bufferIn.getBuffer(model.getRenderType(TEXTURE));
+			IVertexBuilder buffer = bufferIn.getBuffer(model.getRenderType(OculusObserverRenderer.TEXTURE));
 			model.renderOnPlayer(OculusObserverModel.State.HOVERING, matrixStackIn, buffer, packedLightIn, OverlayTexture.NO_OVERLAY, limbSwing, limbSwingAmount, netHeadYaw, headPitch, livingEntity.ticksExisted);
 			matrixStackIn.pop();
 		}
