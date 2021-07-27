@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -30,12 +31,22 @@ public class BoomlingRenderer extends MobRenderer<BoomlingEntity, BoomlingModel<
 			public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, BoomlingEntity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 				IVertexBuilder ivertexbuilder = bufferIn.getBuffer(RENDER_TYPE);
 				int rgb = entity.getColor();
-				float r = (float) (rgb >> 16 & 255) / 255f;
-				float g = (float) (rgb >> 8 & 255) / 255f;
-				float b = (float) (rgb & 255) / 255f;
+				float r = (rgb >> 16 & 255) / 255f;
+				float g = (rgb >> 8 & 255) / 255f;
+				float b = (rgb & 255) / 255f;
 				getEntityModel().render(matrixStackIn, ivertexbuilder, 0xf00000, OverlayTexture.NO_OVERLAY, r, g, b, 1f);
 			}
 		});
+	}
+
+	@Override
+	protected void preRenderCallback(BoomlingEntity entity, MatrixStack matrixStackIn, float partialTicks) {
+		float v = entity.getFuseFlashIntensity(partialTicks);
+		float w = 1f + MathHelper.sin(v * 100f) * v * 0.01f;
+		v = MathHelper.clamp(v, 0f, 1f);
+		v = (v * v) * (v * v);
+		float xz = (1f + v * 0.4f) * w;
+		matrixStackIn.scale(xz, (1f + v * 0.1f) / w, xz);
 	}
 
 	@Override

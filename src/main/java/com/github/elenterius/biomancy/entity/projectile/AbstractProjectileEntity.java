@@ -166,7 +166,7 @@ public abstract class AbstractProjectileEntity extends ProjectileEntity implemen
 
 	@Override
 	protected void onImpact(RayTraceResult result) {
-		super.onImpact(result);
+		super.onImpact(result); //call onEntityHit and onBlockHit before removing the projectile
 		if (!world.isRemote) remove();
 	}
 

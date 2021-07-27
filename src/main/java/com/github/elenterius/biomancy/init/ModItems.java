@@ -3,7 +3,10 @@ package com.github.elenterius.biomancy.init;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.renderer.tileentity.FleshbornChestTileEntityRender;
 import com.github.elenterius.biomancy.item.*;
-import com.github.elenterius.biomancy.item.weapon.*;
+import com.github.elenterius.biomancy.item.weapon.FleshbornGuanDaoItem;
+import com.github.elenterius.biomancy.item.weapon.LeechClawItem;
+import com.github.elenterius.biomancy.item.weapon.LongRangeClawItem;
+import com.github.elenterius.biomancy.item.weapon.WarAxeItem;
 import com.github.elenterius.biomancy.item.weapon.shootable.BeeHiveGunItem;
 import com.github.elenterius.biomancy.item.weapon.shootable.BoomlingHiveGunItem;
 import com.github.elenterius.biomancy.item.weapon.shootable.ToothGunItem;
@@ -29,8 +32,8 @@ public final class ModItems {
 	public static final RegistryObject<BoomlingHiveGunItem> BOOMLING_HIVE_GUN = ITEMS.register("boomling_hive_gun", () -> new BoomlingHiveGunItem(createItemProperties().maxStackSize(1).maxDamage(ModItemTier.BIOMETAL.getMaxUses()).rarity(Rarity.EPIC)));
 	public static final RegistryObject<BeeHiveGunItem> BEE_HIVE_GUN = ITEMS.register("bee_hive_gun", () -> new BeeHiveGunItem(createItemProperties().maxStackSize(1).maxDamage(ModItemTier.BIOMETAL.getMaxUses()).rarity(Rarity.EPIC)));
 
-	// Weapon-Creature
-	public static final RegistryObject<ThrowableBoomlingItem> BOOMLING_GRENADE = ITEMS.register("boomling_grenade", () -> new ThrowableBoomlingItem(createItemProperties().maxStackSize(1), 20f));
+	// Creature
+	public static final RegistryObject<BoomlingItem> BOOMLING = ITEMS.register("boomling", () -> new BoomlingItem(createItemProperties().maxStackSize(1)));
 
 	// Tools
 	public static final RegistryObject<ItemStorageBagItem> SINGLE_ITEM_BAG_ITEM = ITEMS.register("single_item_bag", () -> new ItemStorageBagItem(createItemProperties().maxStackSize(1).rarity(Rarity.UNCOMMON)));

@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.recipe;
 
 import com.github.elenterius.biomancy.init.ModRecipes;
-import com.github.elenterius.biomancy.item.weapon.ThrowableBoomlingItem;
+import com.github.elenterius.biomancy.item.BoomlingItem;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.*;
 import net.minecraft.item.crafting.IRecipeSerializer;
@@ -16,21 +16,22 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 
-public class BoomlingGrenadeRecipe extends SpecialRecipe {
+public class InfuseBoomlingWithPotionRecipe extends SpecialRecipe {
 
-	public BoomlingGrenadeRecipe(ResourceLocation id) {
+	public InfuseBoomlingWithPotionRecipe(ResourceLocation id) {
 		super(id);
 	}
 
 	@Override
 	public boolean matches(CraftingInventory inv, World worldIn) {
-		int potions = 0, beetles = 0;
+		int potions = 0;
+		int beetles = 0;
 		Potion potion = Potions.EMPTY;
 
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
 			if (!stack.isEmpty()) {
-				if (stack.getItem() instanceof ThrowableBoomlingItem) {
+				if (stack.getItem() instanceof BoomlingItem) {
 					potion = PotionUtils.getPotionFromItem(stack);
 					if (++beetles > 1) return false;
 				}
@@ -48,7 +49,7 @@ public class BoomlingGrenadeRecipe extends SpecialRecipe {
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
 			if (!stack.isEmpty()) {
-				if (stack.getItem() instanceof ThrowableBoomlingItem) {
+				if (stack.getItem() instanceof BoomlingItem) {
 					beetleStack = stack;
 				}
 				else {
@@ -89,6 +90,6 @@ public class BoomlingGrenadeRecipe extends SpecialRecipe {
 
 	@Override
 	public IRecipeSerializer<?> getSerializer() {
-		return ModRecipes.CRAFTING_SPECIAL_BOOMLING_GRENADE.get();
+		return ModRecipes.CRAFTING_SPECIAL_BOOMLING.get();
 	}
 }

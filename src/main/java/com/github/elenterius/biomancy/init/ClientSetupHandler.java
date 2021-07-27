@@ -113,7 +113,7 @@ public final class ClientSetupHandler {
 
 		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.INJECTION_DEVICE.get().getReagentColor(stack) : -1, ModItems.INJECTION_DEVICE.get());
 		event.getItemColors().register((stack, index) -> index == 0 ? ModItems.REAGENT.get().getReagentColor(stack) : -1, ModItems.REAGENT.get());
-		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.BOOMLING_GRENADE.get().getPotionColor(stack) : -1, ModItems.BOOMLING_GRENADE.get());
+		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.BOOMLING.get().getPotionColor(stack) : -1, ModItems.BOOMLING.get());
 	}
 
 	@SubscribeEvent

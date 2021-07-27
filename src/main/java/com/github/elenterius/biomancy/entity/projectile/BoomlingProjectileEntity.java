@@ -19,8 +19,9 @@ import net.minecraft.potion.PotionUtils;
 import net.minecraft.potion.Potions;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -65,7 +66,7 @@ public class BoomlingProjectileEntity extends AbstractProjectileEntity {
 		return 0.98f;
 	}
 
-	private void spawnBoomling(@Nullable BlockPos targetPos, @Nullable LivingEntity targetEntity) {
+	private void spawnBoomling(Vector3d hitVec, @Nullable BlockPos targetPos, @Nullable LivingEntity targetEntity) {
 		BoomlingEntity entity = ModEntityTypes.BOOMLING.get().create(world);
 		if (entity != null) {
 			entity.enablePersistence();
@@ -73,6 +74,12 @@ public class BoomlingProjectileEntity extends AbstractProjectileEntity {
 			Entity shooter = getShooter();
 			if (shooter instanceof LivingEntity) {
 				entity.setOwnerUUID(shooter.getUniqueID());
+				if (targetEntity != null && entity.shouldAttackEntity(targetEntity, (LivingEntity) shooter)) {
+					entity.setAttackTarget(targetEntity);
+				}
+			}
+			else {
+				entity.setAttackTarget(targetEntity);
 			}
 
 			if (customEffects.isEmpty() && potion == Potions.EMPTY) {
@@ -85,12 +92,10 @@ public class BoomlingProjectileEntity extends AbstractProjectileEntity {
 				entity.setStoredPotion(stack);
 			}
 			entity.setTargetBlockPos(targetPos);
-			entity.setAttackTarget(targetEntity);
-			entity.setLocationAndAngles(getPosX(), getPosY(), getPosZ(), (float) (Math.PI * 2 * rand.nextFloat()), 0);
 
-			if (world.addEntity(entity)) {
-				entity.playAmbientSound();
-			}
+			entity.setLocationAndAngles(hitVec.x, hitVec.y, hitVec.z, (float) (Math.PI * 2 * rand.nextFloat()), 0);
+
+			if (world.addEntity(entity)) entity.playAmbientSound();
 		}
 	}
 
@@ -98,27 +103,19 @@ public class BoomlingProjectileEntity extends AbstractProjectileEntity {
 	protected void onEntityHit(EntityRayTraceResult result) {
 		super.onEntityHit(result);
 		if (!world.isRemote) {
-			remove();
-			Entity shooter = getShooter();
-			if (potion == Potions.WATER && customEffects.isEmpty()) {
-				BoomlingEntity.causeWaterAOE(world, shooter == null ? this : shooter);
-			}
-			else {
-				LivingEntity attacker = shooter instanceof LivingEntity ? (LivingEntity) shooter : null;
-				BoomlingEntity.spawnEffectAOE(world, attacker, result.getHitVec(), potion, customEffects, getColor());
-			}
-			customEffects.clear(); //reset potions & effects
-			potion = Potions.EMPTY;
 			LivingEntity victim = result.getEntity() instanceof LivingEntity ? (LivingEntity) result.getEntity() : null;
-			spawnBoomling(null, victim);
+			spawnBoomling(result.getHitVec(), null, victim);
 		}
 	}
 
+	/**
+	 * onBlockHit
+	 */
 	@Override
-	protected void onImpact(RayTraceResult result) {
-		super.onImpact(result);
-		if (!world.isRemote) {
-			spawnBoomling(getPosition(), null);
+	protected void func_230299_a_(BlockRayTraceResult result) {
+		super.func_230299_a_(result);
+		if (!world.isRemote && !removed) {
+			spawnBoomling(result.getHitVec(), getPosition(), null);
 		}
 	}
 

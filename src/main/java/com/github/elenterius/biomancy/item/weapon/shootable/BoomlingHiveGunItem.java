@@ -10,10 +10,10 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.server.ServerWorld;
 
-import java.util.Collections;
 import java.util.function.Predicate;
 
 public class BoomlingHiveGunItem extends ProjectileWeaponItem {
+
 
 	public BoomlingHiveGunItem(Properties builder) {
 		super(builder, 0.75f, 0.8f, 0f, 6, 5 * 20);
@@ -21,10 +21,11 @@ public class BoomlingHiveGunItem extends ProjectileWeaponItem {
 
 	public static void fireProjectile(ServerWorld worldIn, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, float damage, float inaccuracy) {
 		BoomlingProjectileEntity projectile = new BoomlingProjectileEntity(worldIn, shooter);
-		projectile.setPotionAndEffect(Potions.HARMING, Collections.emptyList(), -1);
+		projectile.setPotionAndEffect(Potions.HARMING, Potions.HARMING.getEffects(), -1);
 
 		Vector3d direction = shooter.getLookVec();
-		projectile.shoot(direction.getX(), direction.getY(), direction.getZ(), 0.85f, inaccuracy);
+		//slightly aim up
+		projectile.shoot(direction.getX(), direction.getY() * 1.02d, direction.getZ(), 0.852f, inaccuracy);
 
 		projectileWeapon.damageItem(1, shooter, entity -> entity.sendBreakAnimation(hand));
 
