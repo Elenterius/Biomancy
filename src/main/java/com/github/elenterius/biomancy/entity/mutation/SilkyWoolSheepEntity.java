@@ -8,7 +8,6 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
@@ -35,15 +34,15 @@ public class SilkyWoolSheepEntity extends SheepEntity {
 		return MobEntity.func_233666_p_().createMutableAttribute(Attributes.MAX_HEALTH, 8d).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.23d);
 	}
 
-	@Override
-	public DyeColor getFleeceColor() {
-		return DyeColor.WHITE;
-	}
-
-	@Override
-	public void setFleeceColor(DyeColor color) {
-		super.setFleeceColor(DyeColor.WHITE);
-	}
+//	@Override
+//	public DyeColor getFleeceColor() {
+//		return DyeColor.WHITE;
+//	}
+//
+//	@Override
+//	public void setFleeceColor(DyeColor color) {
+//		super.setFleeceColor(DyeColor.WHITE);
+//	}
 
 	@Override
 	public ResourceLocation getLootTable() {
