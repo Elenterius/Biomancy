@@ -10,7 +10,6 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.text.ITextComponent;
@@ -24,9 +23,9 @@ import java.util.UUID;
 
 public class LeechClawItem extends ClawWeaponItem {
 
-	public static final String NBT_KEY = "LastCriticalHitTime";
-	public static AttributeModifier ATTACK_DISTANCE_MODIFIER = new AttributeModifier(ModAttributes.UUIDS.ATTACK_DISTANCE, "attack_distance_modifier", -0.55f, AttributeModifier.Operation.ADDITION);
-	public static AttributeModifier MOVEMENT_MODIFIER = new AttributeModifier(UUID.fromString("0823f523-d756-4725-9a6a-098059458c4b"), "movement_modifier", 0.1f, AttributeModifier.Operation.MULTIPLY_BASE);
+	public static final AttributeModifier ATTACK_DISTANCE_MODIFIER = new AttributeModifier(ModAttributes.UUIDS.ATTACK_DISTANCE_MODIFIER, "attack_distance_modifier", -1.5f, AttributeModifier.Operation.ADDITION);
+	public static final AttributeModifier MAX_HEALTH_MODIFIER = new AttributeModifier(UUID.fromString("00ec2879-aec7-4023-8668-07c940ae8f8a"), "max_health_modifier", -4f, AttributeModifier.Operation.ADDITION);
+	public static final AttributeModifier MOVEMENT_MODIFIER = new AttributeModifier(UUID.fromString("0823f523-d756-4725-9a6a-098059458c4b"), "movement_modifier", 0.1f, AttributeModifier.Operation.MULTIPLY_BASE);
 
 	public LeechClawItem(IItemTier tier, int attackDamageIn, float attackSpeedIn, Properties builderIn) {
 		super(tier, attackDamageIn, attackSpeedIn, builderIn);
@@ -42,10 +41,12 @@ public class LeechClawItem extends ClawWeaponItem {
 	@Override
 	protected void addAdditionalAttributeModifiers(ImmutableMultimap.Builder<Attribute, AttributeModifier> builder) {
 		super.addAdditionalAttributeModifiers(builder);
-		builder.put(ModAttributes.getAttackDistance(), ATTACK_DISTANCE_MODIFIER);
+		builder.put(ModAttributes.getAttackDistanceModifier(), ATTACK_DISTANCE_MODIFIER);
 		builder.put(Attributes.MOVEMENT_SPEED, MOVEMENT_MODIFIER);
+		builder.put(Attributes.MAX_HEALTH, MAX_HEALTH_MODIFIER);
 	}
 
+	@Override
 	public void onCriticalHitEntity(ItemStack stack, LivingEntity attacker, LivingEntity target) {
 		super.onCriticalHitEntity(stack, attacker, target);
 
@@ -56,10 +57,6 @@ public class LeechClawItem extends ClawWeaponItem {
 		else {
 			attacker.addPotionEffect(new EffectInstance(Effects.ABSORPTION, 15 * 20, 0));
 		}
-
-		if (!attacker.world.isRemote()) {
-			stack.getOrCreateTag().putLong(NBT_KEY, attacker.world.getGameTime());
-		}
 	}
 
 	@Override
@@ -67,12 +64,8 @@ public class LeechClawItem extends ClawWeaponItem {
 		super.onDamageEntity(stack, attacker, target, amount);
 
 		if (!attacker.world.isRemote()) {
-			CompoundNBT nbt = stack.getOrCreateTag();
-			long elapsedTime = attacker.world.getGameTime() - nbt.getLong(NBT_KEY);
-			if (elapsedTime <= 20) {
-				nbt.putLong(NBT_KEY, nbt.getLong(NBT_KEY) - 21);
-				attacker.heal(amount * 0.1f); // Heal the wielder by 10% of the damage dealt
-			}
+			attacker.heal(amount * 0.1f); // Heal the wielder by 10% of the damage dealt
 		}
 	}
+
 }

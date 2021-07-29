@@ -24,23 +24,24 @@ public final class EquipmentHandler {
 	@SubscribeEvent
 	public static void onLivingEquipmentChange(final LivingEquipmentChangeEvent event) {
 		if (!event.getEntityLiving().isServerWorld()) return;
+		LivingEntity entity = event.getEntityLiving();
 
 		if (event.getSlot() == EquipmentSlotType.HEAD) {
 			OculiGogglesArmorItem goggles = ModItems.OCULI_OF_UNVEILING.get();
 			if (event.getFrom().getItem() == goggles && event.getTo().getItem() != goggles) { // un-equip
-				goggles.cancelEffect(event.getEntityLiving());
+				goggles.cancelEffect(entity);
 			}
 		}
 
 		if (event.getSlot() == EquipmentSlotType.MAINHAND) {
 			//old item
 			if (event.getFrom().getItem() instanceof KhopeshItem) {
-				KhopeshItem.removeSpecialAttributeModifiers(event.getEntityLiving());
+				KhopeshItem.removeSpecialAttributeModifiers(entity);
 			}
 
 			//new item
-			if (event.getTo().getItem() instanceof KhopeshItem && event.getEntityLiving().isPassenger()) {
-				KhopeshItem.applySpecialAttributeModifiers(event.getEntityLiving());
+			if (event.getTo().getItem() instanceof KhopeshItem && entity.isPassenger()) {
+				KhopeshItem.applySpecialAttributeModifiers(entity);
 			}
 		}
 	}

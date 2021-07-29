@@ -15,8 +15,8 @@ import java.util.UUID;
 public final class ModAttributes {
 	public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(Attribute.class, BiomancyMod.MOD_ID);
 
-	public static final double DEFAULT_ATTACK_DISTANCE = 3d;
-	public static final RegistryObject<Attribute> ATTACK_DISTANCE = ATTRIBUTES.register("attack_distance", () -> new RangedAttribute("attribute.generic.attack_distance", DEFAULT_ATTACK_DISTANCE, 0.0D, 6.0D).setShouldWatch(true));
+	@Deprecated //TODO: remove when forge merges https://github.com/MinecraftForge/MinecraftForge/pull/7808
+	public static final RegistryObject<Attribute> ATTACK_DISTANCE_MODIFIER = ATTRIBUTES.register("attack_distance", () -> new RangedAttribute("attribute.generic.attack_distance", 0, -5, 5).setShouldWatch(true));
 
 	private ModAttributes() {}
 
@@ -24,20 +24,45 @@ public final class ModAttributes {
 		return ForgeMod.REACH_DISTANCE.get();
 	}
 
-	public static Attribute getAttackDistance() {
-		return ATTACK_DISTANCE.get();
+	@Deprecated
+	public static Attribute getAttackDistanceModifier() {
+		return ATTACK_DISTANCE_MODIFIER.get();
 	}
 
-	public static double getAttackReachDistance(@Nullable PlayerEntity playerEntity) {
-		if (playerEntity == null) return DEFAULT_ATTACK_DISTANCE;
+	public static double getValue(@Nullable PlayerEntity playerEntity, Attribute attribute) {
+		if (playerEntity == null) return attribute.getDefaultValue();
 
-		ModifiableAttributeInstance attribute = playerEntity.getAttribute(ATTACK_DISTANCE.get());
-		return attribute != null ? attribute.getValue() : DEFAULT_ATTACK_DISTANCE;
+		ModifiableAttributeInstance instance = playerEntity.getAttribute(attribute);
+		return instance != null ? instance.getValue() : attribute.getDefaultValue();
+	}
+
+	@Deprecated
+	public static double getAttackReachDistanceModifier(@Nullable PlayerEntity playerEntity) {
+		return getValue(playerEntity, getAttackDistanceModifier());
+	}
+
+	public static double getBlockReachDistance(@Nullable PlayerEntity playerEntity) {
+		return getValue(playerEntity, getBlockReachDistance());
+	}
+
+	@Deprecated
+	public static double getDefaultCombinedReachDistance() {
+		return getBlockReachDistance().getDefaultValue() + getAttackDistanceModifier().getDefaultValue() - 0.5d;
+	}
+
+	@Deprecated
+	public static double getCombinedReachDistance(@Nullable PlayerEntity playerEntity) {
+		if (playerEntity == null) return getDefaultCombinedReachDistance();
+		double reachDistance = getBlockReachDistance(playerEntity);
+		double modifier = getAttackReachDistanceModifier(playerEntity);
+		return reachDistance + modifier - (playerEntity.isCreative() ? 0 : 0.5d);
 	}
 
 	public static final class UUIDS {
-		private UUIDS () {}
-		public static final UUID ATTACK_DISTANCE = UUID.fromString("d9d02608-66a1-4490-827d-0d27a2a054d8");
+		private UUIDS() {}
+
+		public static final UUID ATTACK_DISTANCE_MODIFIER = UUID.fromString("d9d02608-66a1-4490-827d-0d27a2a054d8");
 		public static final UUID BLOCK_REACH_DISTANCE = UUID.fromString("3525f9ee-59e9-4624-a0f2-e1717ad320d3");
 	}
+
 }
