@@ -2,27 +2,24 @@ package com.github.elenterius.biomancy.entity.projectile;
 
 import com.github.elenterius.biomancy.entity.golem.BoomlingEntity;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
+import com.github.elenterius.biomancy.util.PotionUtilExt;
 import com.google.common.collect.Sets;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionUtils;
 import net.minecraft.potion.Potions;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
@@ -33,6 +30,7 @@ import java.util.Set;
 
 public class BoomlingProjectileEntity extends AbstractProjectileEntity {
 
+	public static final String NBT_KEY_COLOR = "Color";
 	private static final DataParameter<Integer> COLOR = EntityDataManager.createKey(BoomlingProjectileEntity.class, DataSerializers.VARINT);
 	private final Set<EffectInstance> customEffects = Sets.newHashSet();
 	private Potion potion = Potions.EMPTY;
@@ -86,9 +84,7 @@ public class BoomlingProjectileEntity extends AbstractProjectileEntity {
 				entity.setStoredPotion(ItemStack.EMPTY);
 			}
 			else {
-				ItemStack stack = new ItemStack(Items.POTION);
-				PotionUtils.addPotionToItemStack(stack, potion);
-				PotionUtils.appendEffects(stack, customEffects);
+				ItemStack stack = PotionUtilExt.getPotionItemStack(potion, customEffects);
 				entity.setStoredPotion(stack);
 			}
 			entity.setTargetBlockPos(targetPos);
@@ -138,18 +134,18 @@ public class BoomlingProjectileEntity extends AbstractProjectileEntity {
 		return dataManager.get(COLOR);
 	}
 
-	public void setPotionAndEffect(Potion potionIn, Collection<EffectInstance> effectsIn, int color) {
+	public void setPotion(Potion potionIn, @Nullable Collection<EffectInstance> customEffectsIn, int color) {
 		potion = potionIn;
-		if (!effectsIn.isEmpty()) {
-			for (EffectInstance effect : effectsIn) customEffects.add(new EffectInstance(effect));
+		if (customEffectsIn != null && !customEffectsIn.isEmpty()) {
+			for (EffectInstance effect : customEffectsIn) customEffects.add(new EffectInstance(effect));
 		}
 		if (color == -1) updateColor();
 		else setCustomColor(color);
 	}
 
-	public void setPotionStack(ItemStack stack) {
-		potion = PotionUtils.getPotionFromItem(stack);
-		List<EffectInstance> effects = PotionUtils.getFullEffectsFromItem(stack);
+	public void setPotion(ItemStack stack) {
+		potion = PotionUtilExt.getPotionFromItem(stack);
+		List<EffectInstance> effects = PotionUtilExt.getFullEffectsFromItem(stack);
 		if (!effects.isEmpty()) {
 			for (EffectInstance effect : effects) {
 				customEffects.add(new EffectInstance(effect));
@@ -157,8 +153,8 @@ public class BoomlingProjectileEntity extends AbstractProjectileEntity {
 		}
 
 		CompoundNBT nbt = stack.getTag();
-		if (nbt != null && nbt.contains("CustomPotionColor", Constants.NBT.TAG_ANY_NUMERIC)) {
-			int color = nbt.getInt("CustomPotionColor");
+		if (nbt != null && PotionUtilExt.hasCustomColor(nbt)) {
+			int color = PotionUtilExt.readCustomColor(nbt);
 			if (color == -1) updateColor();
 			else setCustomColor(color);
 		}
@@ -175,52 +171,43 @@ public class BoomlingProjectileEntity extends AbstractProjectileEntity {
 			dataManager.set(COLOR, -1);
 		}
 		else {
-			dataManager.set(COLOR, PotionUtils.getPotionColorFromEffectList(PotionUtils.mergeEffects(potion, customEffects)));
+			dataManager.set(COLOR, PotionUtilExt.getMergedColor(potion, customEffects));
 		}
 	}
 
-	public void addEffect(EffectInstance effect) {
+	public void addCustomEffect(EffectInstance effect) {
+		addCustomEffectRaw(new EffectInstance(effect));
+	}
+
+	public void addCustomEffectRaw(EffectInstance effect) {
 		customEffects.add(effect);
-		getDataManager().set(COLOR, PotionUtils.getPotionColorFromEffectList(PotionUtils.mergeEffects(potion, customEffects)));
+		getDataManager().set(COLOR, PotionUtilExt.getMergedColor(potion, customEffects));
 	}
 
 	@Override
 	public void writeAdditional(CompoundNBT compound) {
 		super.writeAdditional(compound);
 
-		if (potion != Potions.EMPTY && potion != null) {
-			compound.putString("Potion", Registry.POTION.getKey(potion).toString());
-		}
+		PotionUtilExt.writePotion(compound, potion);
+		PotionUtilExt.writeCustomEffects(compound, customEffects);
 
-		if (!customEffects.isEmpty()) {
-			ListNBT list = new ListNBT();
-			for (EffectInstance effect : customEffects) {
-				list.add(effect.write(new CompoundNBT()));
-			}
-			compound.put("CustomPotionEffects", list);
-		}
-
-		if (customColor) compound.putInt("Color", getColor());
+		if (customColor) compound.putInt(NBT_KEY_COLOR, getColor());
 	}
 
 	@Override
 	public void readAdditional(CompoundNBT compound) {
 		super.readAdditional(compound);
 
-		if (compound.contains("Potion", Constants.NBT.TAG_STRING)) {
-			potion = PotionUtils.getPotionTypeFromNBT(compound);
-		}
+		potion = PotionUtilExt.readPotion(compound);
 
-		for (EffectInstance effectinstance : PotionUtils.getFullEffectsFromTag(compound)) {
-			addEffect(effectinstance);
-		}
+		customEffects.clear();
+		customEffects.addAll(PotionUtilExt.getFullEffectsFromTag(compound));
+		getDataManager().set(COLOR, PotionUtilExt.getMergedColor(potion, customEffects));
 
-		if (compound.contains("Color", Constants.NBT.TAG_ANY_NUMERIC)) {
-			setCustomColor(compound.getInt("Color"));
+		if (compound.contains(NBT_KEY_COLOR, Constants.NBT.TAG_ANY_NUMERIC)) {
+			setCustomColor(compound.getInt(NBT_KEY_COLOR));
 		}
-		else {
-			this.updateColor();
-		}
+		else updateColor();
 	}
 
 }

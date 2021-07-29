@@ -14,7 +14,6 @@ import net.minecraft.loot.conditions.KilledByPlayer;
 import net.minecraft.loot.functions.LootingEnchantBonus;
 import net.minecraft.loot.functions.SetCount;
 import net.minecraft.loot.functions.Smelt;
-import net.minecraft.util.IItemProvider;
 import net.minecraftforge.fml.RegistryObject;
 import org.apache.logging.log4j.MarkerManager;
 
@@ -23,11 +22,11 @@ import java.util.stream.Collectors;
 
 public class ModEntityLootTables extends EntityLootTables {
 
-	private static LootTable.Builder sheepLootTableBuilderWithDrop(IItemProvider wool) {
-		return LootTable.builder()
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(wool)))
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(TableLootEntry.builder(EntityType.SHEEP.getLootTable())));
-	}
+//	private static LootTable.Builder sheepLootTableBuilderWithDrop(IItemProvider wool) {
+//		return LootTable.builder()
+//				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(wool)))
+//				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(TableLootEntry.builder(EntityType.SHEEP.getLootTable())));
+//	}
 
 	private static LootTable.Builder fleshBlobLootTableBuilderWithDrop(int rolls) {
 		return LootTable.builder()
@@ -37,9 +36,7 @@ public class ModEntityLootTables extends EntityLootTables {
 
 	@Override
 	protected void addTables() {
-		registerLootTable(ModEntityTypes.BOOMLING.get(), LootTable.builder()
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(ModItems.SKIN_CHUNK.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-1f, 1f)))))
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(ModItems.ERODING_BILE.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-2f, 1f))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))).acceptCondition(KilledByPlayer.builder())));
+		registerLootTable(ModEntityTypes.BOOMLING.get(), LootTable.builder()); //no item drops
 
 		registerLootTable(ModEntityTypes.BROOD_MOTHER.get(), LootTable.builder()
 				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(Items.STRING).acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 2.0F))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))))

@@ -53,7 +53,7 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 	/**
 	 * @param accuracy from 0.0 to 1.0
 	 */
-	public ProjectileWeaponItem(Properties builder, float fireRate, float accuracy, float damage, int maxAmmo, int reloadTime) {
+	protected ProjectileWeaponItem(Properties builder, float fireRate, float accuracy, float damage, int maxAmmo, int reloadTime) {
 		super(builder);
 		assert accuracy >= 0f && accuracy <= 1f;
 		baseShootDelay = Math.max(1, Math.round(ONE_SECOND / fireRate));
@@ -148,11 +148,11 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 			State state = getState(stack);
 			if (state == State.SHOOTING) {
 				if (hasAmmo(stack)) {
-					float elapsedTime = getUseDuration(stack) - timeLeft;
+					float elapsedTime = (getUseDuration(stack) - timeLeft);
 
 					int shootDelay = getShootDelay(stack);
 					if (elapsedTime == 0) { //prevent right click spam attack by user
-						if (world.getGameTime() - stack.getOrCreateTag().getLong(NBT_KEY_SHOOT_TIMESTAMP) < shootDelay) {
+						if (world.getGameTime() - getShootTimestamp(stack) < shootDelay) {
 							playSFX(world, shooter, SoundEvents.BLOCK_DISPENSER_FAIL);
 							return;
 						}
@@ -172,6 +172,10 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 				}
 			}
 		}
+	}
+
+	public long getShootTimestamp(ItemStack stack) {
+		return stack.getOrCreateTag().getLong(NBT_KEY_SHOOT_TIMESTAMP);
 	}
 
 	@Override
@@ -335,7 +339,7 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 	/**
 	 * value shouldn't be larger than max ItemStack size of 64
 	 */
-	public int getAmmoReloadCost() { return 1; }
+	public int getAmmoReloadCost() {return 1;}
 
 	public boolean hasAmmo(ItemStack stack) {
 		return getAmmo(stack) > 0;

@@ -859,6 +859,7 @@ public class ModRecipeProvider extends RecipeProvider {
 		// special /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		CustomRecipeBuilder.customRecipe(ModRecipes.REPAIR_SPECIAL_SEWING_KIT.get()).build(consumer, BiomancyMod.MOD_ID + ":" + "sewing_kit_nbt");
 		CustomRecipeBuilder.customRecipe(ModRecipes.CRAFTING_SPECIAL_BOOMLING.get()).build(consumer, BiomancyMod.MOD_ID + ":" + "boomling");
+		CustomRecipeBuilder.customRecipe(ModRecipes.CRAFTING_SPECIAL_BOOMLING_GUN.get()).build(consumer, BiomancyMod.MOD_ID + ":" + "boomling_gun");
 		CustomRecipeBuilder.customRecipe(ModRecipes.CRAFTING_SPECIAL_ADD_USER_TO_KEY.get()).build(consumer, BiomancyMod.MOD_ID + ":" + "add_user_to_key");
 	}
 

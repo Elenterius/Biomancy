@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.entity.golem;
 
 import com.github.elenterius.biomancy.init.ModItems;
+import com.github.elenterius.biomancy.util.PotionUtilExt;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
@@ -22,7 +23,6 @@ import net.minecraft.pathfinding.ClimberPathNavigator;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionUtils;
 import net.minecraft.potion.Potions;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -152,7 +152,7 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 				if (--n <= 0) {
 					Potion potion = ForgeRegistries.POTION_TYPES.getValue(key);
 					if (potion != null && potion != Potions.EMPTY) {
-						setStoredPotion(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), potion));
+						setStoredPotion(PotionUtilExt.addPotionToItemStack(new ItemStack(Items.POTION), potion));
 						break;
 					}
 				}
@@ -216,7 +216,7 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 
 	public void setStoredPotion(ItemStack stack) {
 		setItemStackToSlot(EquipmentSlotType.MAINHAND, stack);
-		getDataManager().set(COLOR, stack.isEmpty() ? 0 : PotionUtils.getColor(stack));
+		getDataManager().set(COLOR, stack.isEmpty() ? 0 : PotionUtilExt.getColor(stack));
 	}
 
 	public byte getState() {
@@ -276,8 +276,8 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 		ItemStack stack = getStoredPotion();
 		if (stack.isEmpty()) return;
 
-		Potion potion = PotionUtils.getPotionFromItem(stack);
-		List<EffectInstance> effects = PotionUtils.getEffectsFromStack(stack);
+		Potion potion = PotionUtilExt.getPotionFromItem(stack);
+		List<EffectInstance> effects = PotionUtilExt.getEffectsFromStack(stack);
 		if (potion == Potions.WATER && effects.isEmpty()) {
 			causeWaterAOE();
 			remove();
@@ -292,11 +292,11 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 		Optional<PlayerEntity> owner = getOwner();
 		LivingEntity shooter = owner.isPresent() ? owner.get() : this;
 		CompoundNBT nbt = stack.getTag();
-		int color = PotionUtils.getColor(stack);
+		int color = PotionUtilExt.getColor(stack);
 		if (nbt != null && nbt.contains("CustomPotionColor", Constants.NBT.TAG_ANY_NUMERIC)) {
 			color = nbt.getInt("CustomPotionColor");
 		}
-		List<EffectInstance> effects = PotionUtils.getFullEffectsFromItem(stack);
+		List<EffectInstance> effects = PotionUtilExt.getFullEffectsFromItem(stack);
 		spawnEffectAOE(world, shooter, getPositionVec(), potion, effects, color);
 	}
 
@@ -312,7 +312,7 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 
 		if (!player.world.isRemote() && player.isSneaking()) {
 			setDead();
-			ItemStack stack = ModItems.BOOMLING.get().setPotionItemStack(new ItemStack(ModItems.BOOMLING.get()), getStoredPotion().copy());
+			ItemStack stack = PotionUtilExt.setPotionOfHost(new ItemStack(ModItems.BOOMLING.get()), getStoredPotion().copy());
 			if (hasCustomName()) stack.setDisplayName(getCustomName());
 			if (!player.addItemStackToInventory(stack)) {
 				entityDropItem(stack);

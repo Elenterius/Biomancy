@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.client.renderer;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.enchantment.AttunedDamageEnchantment;
+import com.github.elenterius.biomancy.entity.projectile.ToothProjectileEntity;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.item.IAreaHarvestingItem;
@@ -31,6 +32,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -45,6 +47,7 @@ import net.minecraftforge.client.event.DrawHighlightEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -102,9 +105,9 @@ public final class ClientRenderHandler {
 				IVertexBuilder buffer = iRenderTypeBuffer.getBuffer(RenderType.getLines());
 
 				int color = iHighlighter.getColorForBlock(heldStack, blockPos);
-				float red = (float) (color >> 16 & 255) / 255f;
-				float green = (float) (color >> 8 & 255) / 255f;
-				float blue = (float) (color & 255) / 255f;
+				float red = (color >> 16 & 255) / 255f;
+				float green = (color >> 8 & 255) / 255f;
+				float blue = (color & 255) / 255f;
 				float alpha = 0.5f;
 				WorldRenderer.drawBoundingBox(event.getMatrixStack(), buffer, axisAlignedBB, red, green, blue, alpha);
 				iRenderTypeBuffer.finish(RenderType.getLines());
@@ -184,14 +187,15 @@ public final class ClientRenderHandler {
 		int timeLeft = player.getItemInUseCount();
 		if (timeLeft == 0) timeLeft = stack.getUseDuration();
 		int charge = stack.getUseDuration() - timeLeft;
-		float pullProgress = Math.min((float) charge / item.drawTime, 1f);
+		float pullProgress = Math.min(charge / item.drawTime, 1f);
 		float velocity = item.getArrowVelocity(stack, charge) * item.baseVelocity;
 		float x = scaledWidth * 0.5f;
 		float y = scaledHeight * 0.5f;
 		AbstractGui.drawString(matrixStack, mc.fontRenderer, String.format("V: %.1f", velocity), (int) x + 18, (int) y + 6, 0xFFFEFEFE);
-//		drawCircularProgressIndicator(matrixStack, x, y, 13f, pullProgress, 0xDDF0F0F0);
 		drawRectangularProgressIndicator(matrixStack, x, y, 25f, pullProgress, 0xFFFEFEFE);
 	}
+
+	private static final Lazy<ItemStack> REAGENT_STACK = Lazy.of(() -> new ItemStack(ModItems.REAGENT.get()));
 
 	private static void renderInjectionDeviceOverlay(MatrixStack matrix, int scaledWidth, int scaledHeight, Minecraft mc, ClientPlayerEntity player, ItemStack stack, InjectionDeviceItem item) {
 		byte amount = item.getReagentAmount(stack);
@@ -211,27 +215,35 @@ public final class ClientRenderHandler {
 			AbstractGui.drawString(matrix, fontRenderer, text, 0, 0, 0xFFFEFEFE);
 			matrix.pop();
 
-			ItemStack reagentStack = new ItemStack(ModItems.REAGENT.get());
+			ItemStack reagentStack = REAGENT_STACK.get();
 			Reagent.serialize(reagent, reagentStack.getOrCreateTag());
 			mc.getItemRenderer().renderItemIntoGUI(reagentStack, x, y);
 		}
 	}
 
+	public static final ResourceLocation HUD_0_TEXTURE = BiomancyMod.createRL("textures/gui/hud_0.png");
+//	public static final ResourceLocation HUD_1_TEXTURE = BiomancyMod.createRL("textures/gui/hud_1.png");
+
+	private static final Lazy<ItemStack> WITHER_SKULL_STACK = Lazy.of(() -> new ItemStack(Items.WITHER_SKELETON_SKULL));
+
 	private static void renderGunOverlay(MatrixStack matrix, int scaledWidth, int scaledHeight, Minecraft mc, ClientPlayerEntity player, ItemStack stack, ProjectileWeaponItem item) {
 		FontRenderer fontRenderer = mc.fontRenderer;
 
-		//draw ammunition count
-		String maxAmmo = "/" + item.getMaxAmmo(stack);
-		String ammo = "" + item.getAmmo(stack);
-		int x = scaledWidth - fontRenderer.getStringWidth(maxAmmo) - 4;
-		int y = scaledHeight - fontRenderer.FONT_HEIGHT - 4;
-		AbstractGui.drawString(matrix, fontRenderer, maxAmmo, x, y, 0xFF9E9E9E);
-		matrix.push();
-		float scale = 1.5f; //make font bigger
-		matrix.translate(x - fontRenderer.getStringWidth(ammo) * scale, y - fontRenderer.FONT_HEIGHT * scale * 0.5f, 0);
-		matrix.scale(scale, scale, 0);
-		AbstractGui.drawString(matrix, fontRenderer, ammo, 0, 0, 0xFFFEFEFE);
-		matrix.pop();
+		mc.getTextureManager().bindTexture(HUD_0_TEXTURE);
+//		AbstractGui.blit(matrix, scaledWidth - 44, scaledHeight - 46, 0, 0, 44, 46, 44, 46); // hud 1
+		AbstractGui.blit(matrix, scaledWidth - 44, scaledHeight - 28, 0, 0, 44, 28, 44, 28); // hud 0
+
+		if (item == ModItems.TOOTH_GUN.get()) {
+			mc.getItemRenderer().renderItemIntoGUI(ToothProjectileEntity.getItemForRendering(), scaledWidth - 16 - 4, scaledHeight - 28 - 8);
+		}
+		else if (item == ModItems.WITHERSHOT.get()) {
+			mc.getItemRenderer().renderItemIntoGUI(WITHER_SKULL_STACK.get(), scaledWidth - 16 - 4, scaledHeight - 28 - 8);
+		}
+		else if (item == ModItems.BOOMLING_HIVE_GUN.get()) {
+			mc.getItemRenderer().renderItemIntoGUI(new ItemStack(ModItems.BOOMLING.get()), scaledWidth - 16 - 4, scaledHeight - 28 - 8);
+		}
+
+		drawAmmoCount(matrix, fontRenderer, scaledWidth, scaledHeight, item.getMaxAmmo(stack), item.getAmmo(stack), 0xFFFEFEFE, 0xFF9E9E9E);
 
 		GameSettings gamesettings = mc.gameSettings;
 		if (gamesettings.getPointOfView().func_243192_a() && !gamesettings.showDebugInfo) { // is in first person view
@@ -239,29 +251,44 @@ public final class ClientRenderHandler {
 			if (gunState == ProjectileWeaponItem.State.RELOADING) {
 				long elapsedTime = player.worldClient.getGameTime() - item.getReloadStartTime(stack);
 				float reloadProgress = item.getReloadProgress(elapsedTime, item.getReloadTime(stack));
-				drawRectangularProgressIndicator(matrix, scaledWidth * 0.5f, scaledHeight * 0.5f, 20f, reloadProgress, 0xFF9E9E9E);
+				drawRectangularProgressIndicator(matrix, scaledWidth * 0.5f, scaledHeight * 0.5f, 20f, reloadProgress, 0xFF404040);
 			}
 			else {
-				long elapsedTime = player.worldClient.getGameTime() - stack.getOrCreateTag().getLong(ProjectileWeaponItem.NBT_KEY_SHOOT_TIMESTAMP);
-				int shootDelay = item.getShootDelay(stack);
-				if (elapsedTime < shootDelay) {
-					if (canDrawAttackIndicator(mc, player)) {
-						float progress = (float) elapsedTime / shootDelay;
-						if (progress < 1f) {
-							mc.getTextureManager().bindTexture(AbstractGui.GUI_ICONS_LOCATION);
-							RenderSystem.enableBlend();
-							RenderSystem.enableAlphaTest();
-							RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+				long elapsedTime = player.worldClient.getGameTime() - item.getShootTimestamp(stack);
+				drawAttackIndicator(matrix, scaledWidth, scaledHeight, mc, player, elapsedTime, item.getShootDelay(stack));
+			}
+		}
+	}
 
-							x = scaledWidth / 2 - 8;
-							y = scaledHeight / 2 - 7 + 16;
-							mc.ingameGUI.blit(matrix, x, y, 36, 94, 16, 4);
-							mc.ingameGUI.blit(matrix, x, y, 52, 94, (int) (progress * 17f), 4);
+	private static void drawAmmoCount(MatrixStack matrix, FontRenderer fontRenderer, int scaledWidth, int scaledHeight, int maxAmmoIn, int ammoIn, int primaryColor, int secondaryColor) {
+		String maxAmmo = "/" + maxAmmoIn;
+		String ammo = "" + ammoIn;
+		int x = scaledWidth - fontRenderer.getStringWidth(maxAmmo) - 4;
+		int y = scaledHeight - fontRenderer.FONT_HEIGHT - 4;
+		AbstractGui.drawString(matrix, fontRenderer, maxAmmo, x, y, secondaryColor);
+		matrix.push();
+		float scale = 1.5f; //make font bigger
+		matrix.translate(x - fontRenderer.getStringWidth(ammo) * scale, y - fontRenderer.FONT_HEIGHT * scale * 0.5f, 0);
+		matrix.scale(scale, scale, 0);
+		AbstractGui.drawString(matrix, fontRenderer, ammo, 0, 0, primaryColor);
+		matrix.pop();
+	}
 
-							RenderSystem.defaultBlendFunc();
-						}
-					}
-				}
+	private static void drawAttackIndicator(MatrixStack matrix, int scaledWidth, int scaledHeight, Minecraft mc, ClientPlayerEntity player, long elapsedTime, int shootDelay) {
+		if (elapsedTime < shootDelay && canDrawAttackIndicator(mc, player)) {
+			float progress = (float) elapsedTime / shootDelay;
+			if (progress < 1f) {
+				mc.getTextureManager().bindTexture(AbstractGui.GUI_ICONS_LOCATION);
+				RenderSystem.enableBlend();
+				RenderSystem.enableAlphaTest();
+				RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+
+				int x = scaledWidth / 2 - 8;
+				int y = scaledHeight / 2 - 7 + 16;
+				mc.ingameGUI.blit(matrix, x, y, 36, 94, 16, 4);
+				mc.ingameGUI.blit(matrix, x, y, 52, 94, (int) (progress * 17f), 4);
+
+				RenderSystem.defaultBlendFunc();
 			}
 		}
 	}
@@ -278,10 +305,10 @@ public final class ClientRenderHandler {
 
 	private static void drawRectangularProgressIndicator(MatrixStack matrixStack, float cx, float cy, float lengthA, float progress, int color) {
 		Matrix4f matrix = matrixStack.getLast().getMatrix();
-		float alpha = (float) (color >> 24 & 255) / 255f;
-		float red = (float) (color >> 16 & 255) / 255f;
-		float green = (float) (color >> 8 & 255) / 255f;
-		float blue = (float) (color & 255) / 255f;
+		float alpha = (color >> 24 & 255) / 255f;
+		float red = (color >> 16 & 255) / 255f;
+		float green = (color >> 8 & 255) / 255f;
+		float blue = (color & 255) / 255f;
 
 		BufferBuilder bufferbuilder = Tessellator.getInstance().getBuffer();
 		RenderSystem.enableBlend();
@@ -356,10 +383,10 @@ public final class ClientRenderHandler {
 
 	private static void drawArc(MatrixStack matrixStack, float cx, float cy, float radius, float startAngle, float endAngle, int color) {
 		Matrix4f matrix = matrixStack.getLast().getMatrix();
-		float alpha = (float) (color >> 24 & 255) / 255f;
-		float red = (float) (color >> 16 & 255) / 255f;
-		float green = (float) (color >> 8 & 255) / 255f;
-		float blue = (float) (color & 255) / 255f;
+		float alpha = (color >> 24 & 255) / 255f;
+		float red = (color >> 16 & 255) / 255f;
+		float green = (color >> 8 & 255) / 255f;
+		float blue = (color & 255) / 255f;
 
 		float angleOffset = (float) (Math.PI * 0.5f);
 		startAngle -= angleOffset;

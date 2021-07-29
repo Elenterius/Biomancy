@@ -1,5 +1,7 @@
 package com.github.elenterius.biomancy.item;
 
+import com.github.elenterius.biomancy.mixin.EntityAccessor;
+import com.github.elenterius.biomancy.util.MobUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -21,6 +23,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -35,6 +38,10 @@ public class EntityStorageBagItem extends BagItem {
 
 	public EntityStorageBagItem(Properties properties) {
 		super(properties);
+	}
+
+	public static boolean isBossMob(Entity entity) {
+		return !entity.canChangeDimension(); //TODO: use boss entity tag instead
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -76,11 +83,9 @@ public class EntityStorageBagItem extends BagItem {
 			if (nbt.contains(NBT_KEY_ENTITY)) {
 				CompoundNBT entityNbt = nbt.getCompound(NBT_KEY_ENTITY);
 				if (context.getWorld().isBlockModifiable(player, context.getPos()) && player.canPlayerEdit(context.getPos(), context.getFace(), stack)) {
-					Entity newEntity = EntityType.loadEntityAndExecute(entityNbt.getCompound(NBT_KEY_ENTITY_DATA), context.getWorld(), (entity) -> {
-						float widthFactor = entity.getWidth() * 0.6f; //prevent mobs from suffocating in walls as much as possible
-						float yOffset = context.getFace().getYOffset();
-						float heightModifier = yOffset < 0f ? -entity.getHeight() : yOffset > 0f ? 0f : entity.getHeight() * 0.5f;
-						Vector3d pos = context.getHitVec().add(context.getFace().getXOffset() * widthFactor, heightModifier, context.getFace().getZOffset() * widthFactor);
+
+					Entity newEntity = EntityType.loadEntityAndExecute(entityNbt.getCompound(NBT_KEY_ENTITY_DATA), context.getWorld(), entity -> {
+						Vector3d pos = MobUtil.getSimpleOffsetPosition(context.getHitVec(), context.getFace(), entity);
 						entity.setLocationAndAngles(pos.x, pos.y, pos.z, MathHelper.wrapDegrees(context.getWorld().rand.nextFloat() * 360f), 0f);
 
 						if (entity instanceof MobEntity) {
@@ -95,9 +100,16 @@ public class EntityStorageBagItem extends BagItem {
 					});
 
 					if (newEntity != null) {
+						if (MobUtil.hasDuplicateEntity((ServerWorld) context.getWorld(), newEntity)) {
+							//reset UUID to prevent "Trying to add entity with duplicated UUID" issue
+							//this only happens if the item stack was copied (e.g. in creative mode) or if the original mob wasn't removed from the world
+							newEntity.setUniqueId(MathHelper.getRandomUUID(((EntityAccessor) newEntity).biomancy_rand()));
+							//TODO: trigger secret achievement: Paradox! - There can't be two identical entities in the same world.
+						}
+
 						if (context.getWorld().addEntity(newEntity)) {
 							nbt.remove(NBT_KEY_ENTITY);
-							context.getWorld().playSound(null, context.getPos(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.75F, 0.35f + context.getWorld().rand.nextFloat() * 0.25f);
+							context.getWorld().playSound(null, context.getPos(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.75f, 0.35f + context.getWorld().rand.nextFloat() * 0.25f);
 							return ActionResultType.SUCCESS;
 						}
 					}
@@ -115,10 +127,6 @@ public class EntityStorageBagItem extends BagItem {
 
 	public boolean canStoreEntity(Entity entity) {
 		return entity.isAlive() && !(entity instanceof PlayerEntity) && entity.canChangeDimension() && entity.getType().isSummonable() && entity.getType().isSerializable();
-	}
-
-	public static boolean isBossMob(Entity entity) {
-		return !entity.canChangeDimension(); //TODO: use boss entity tag instead
 	}
 
 	@Override
@@ -164,7 +172,7 @@ public class EntityStorageBagItem extends BagItem {
 		List<Entity> cachedPassengers = null;
 		if (entityToStore.isBeingRidden()) {
 			if (storePassengers) {
-				boolean hasPlayerPassengers = entityToStore.getRecursivePassengers().stream().anyMatch(passenger -> passenger instanceof PlayerEntity);
+				boolean hasPlayerPassengers = entityToStore.getRecursivePassengers().stream().anyMatch(PlayerEntity.class::isInstance);
 				if (hasPlayerPassengers) return false;
 			}
 			else {
@@ -175,10 +183,6 @@ public class EntityStorageBagItem extends BagItem {
 
 		CompoundNBT entityData = new CompoundNBT();
 		if (entityToStore.writeUnlessRemoved(entityData)) {
-			if (!removeEntity) {
-				entityData.remove("UUID"); //remove UUID to prevent "Trying to add entity with duplicated UUID" issue
-			}
-
 			CompoundNBT nbt = new CompoundNBT();
 			nbt.put(NBT_KEY_ENTITY_DATA, entityData);
 			nbt.putString(NBT_KEY_ENTITY_NAME, entityToStore.getType().getTranslationKey());
