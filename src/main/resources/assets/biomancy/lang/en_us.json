@@ -149,7 +149,7 @@
   "tooltip.biomancy.injection_device": "Allows you to force inject Mobs or Blocks with reagents (some reagents can't be injected into everything).\nLoaded/Unloaded via glass-vials/reagents in offhand and sneak clicking.\nWhen empty it can extract blood from entities.",
   "tooltip.biomancy.tooth_gun": "Shoots small teeth.\nUses nutrient paste to regrow ammo.",
   "tooltip.biomancy.withershot": "Shoots small and deadly wither skulls. Restores the shooters health if the victim was killed.\nUses wither skulls to reload ammo.",
-  "tooltip.biomancy.boomling": "A placeable and living proximity trap. Once a target is acquired the boomling will leap at its victims and explode into an AOE Potion Effect.\nCombine with a potion in crafting table to set the potion effect.\nSneak click to pick back up once placed.",
+  "tooltip.biomancy.boomling": "A placeable and living proximity trap. Once a target is acquired the boomling will leap at its victims and explode into an AOE Potion Effect.\n\nCombine with a potion in crafting table to set the potion effect.\nSneak click to pick back up once placed.",
   "tooltip.biomancy.reagent": "Some kind of exotic substance affecting Mobs & Blocks once injected.",
   "tooltip.biomancy.growth_serum": "Induces growth, even for reeds, cactus & nether wart.",
   "tooltip.biomancy.rejuvenation_serum": "Reverses growth of Plants and Mobs.",
@@ -203,6 +203,7 @@
   "tooltip.biomancy.ammo": "Ammo",
   "tooltip.biomancy.reload_time": "Reload Time",
   "tooltip.biomancy.projectile_damage": "Projectile Damage",
+  "tooltip.biomancy.riding_bonus": "When riding:",
 
   "enum.biomancy.mode.none": "None",
   "enum.biomancy.mode.devour": "Devour",
