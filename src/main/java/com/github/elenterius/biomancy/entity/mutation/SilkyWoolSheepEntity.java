@@ -1,6 +1,8 @@
 package com.github.elenterius.biomancy.entity.mutation;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.init.ModEntityTypes;
+import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -15,6 +17,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -81,6 +84,11 @@ public class SilkyWoolSheepEntity extends SheepEntity {
 				itemEntity.setMotion(itemEntity.getMotion().add((rand.nextFloat() - rand.nextFloat()) * 0.1f, rand.nextFloat() * 0.05f, (rand.nextFloat() - rand.nextFloat()) * 0.1f));
 			}
 		}
+	}
+
+	@Override
+	public SilkyWoolSheepEntity createChild(ServerWorld world, AgeableEntity mate) {
+		return ModEntityTypes.SILKY_WOOL_SHEEP.get().create(world);
 	}
 
 }

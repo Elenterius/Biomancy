@@ -1,6 +1,8 @@
 package com.github.elenterius.biomancy.entity.mutation;
 
+import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModItems;
+import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.passive.CowEntity;
@@ -18,6 +20,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -61,6 +64,11 @@ public class NutrientSlurryCowEntity extends CowEntity {
 	public void livingTick() {
 		if (world.isRemote) eatGrassTimer = Math.max(0, eatGrassTimer - 1);
 		super.livingTick();
+	}
+
+	@Override
+	public NutrientSlurryCowEntity createChild(ServerWorld world, AgeableEntity mate) {
+		return ModEntityTypes.NUTRIENT_SLURRY_COW.get().create(world);
 	}
 
 	@Override
