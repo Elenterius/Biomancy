@@ -4,7 +4,6 @@ import com.github.elenterius.biomancy.client.renderer.entity.OculusObserverRende
 import com.github.elenterius.biomancy.client.renderer.entity.model.OculusObserverModel;
 import com.github.elenterius.biomancy.entity.aberration.OculusObserverEntity;
 import com.github.elenterius.biomancy.init.ClientSetupHandler;
-import com.google.common.collect.ImmutableSet;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -17,12 +16,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import java.util.Set;
-
 @OnlyIn(Dist.CLIENT)
 public class OculusObserverLayer<T extends PlayerEntity> extends LayerRenderer<T, PlayerModel<T>> {
 
-	private static final Set<String> NAMES = ImmutableSet.of("Dev", "Dev2");
+	//	private static final Set<String> NAMES = ImmutableSet.of("Dev", "Dev2");
 	private static final float SHOULDER_OFFSET = 0.5f;
 
 	private final OculusObserverModel<OculusObserverEntity> model = new OculusObserverModel<>();
@@ -34,7 +31,7 @@ public class OculusObserverLayer<T extends PlayerEntity> extends LayerRenderer<T
 
 	@Override
 	public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, T livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-		if (NAMES.contains(livingEntity.getGameProfile().getName()) || ClientSetupHandler.isPlayerCosmeticVisible(livingEntity)) {
+		if (/*NAMES.contains(livingEntity.getGameProfile().getName()) ||*/ ClientSetupHandler.isPlayerCosmeticVisible(livingEntity)) {
 
 			boolean isFlying = livingEntity.getTicksElytraFlying() > 4;
 			boolean isSwimming = livingEntity.isActualySwimming();

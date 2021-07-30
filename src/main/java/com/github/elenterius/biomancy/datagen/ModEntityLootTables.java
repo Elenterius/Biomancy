@@ -39,28 +39,28 @@ public class ModEntityLootTables extends EntityLootTables {
 		registerLootTable(ModEntityTypes.BOOMLING.get(), LootTable.builder()); //no item drops
 
 		registerLootTable(ModEntityTypes.BROOD_MOTHER.get(), LootTable.builder()
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(Items.STRING).acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 2.0F))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))))
+				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(Items.STRING).acceptFunction(SetCount.builder(RandomValueRange.of(0f, 2f))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f)))))
 				.addLootPool(LootPool.builder().rolls(ConstantRange.of(2))
-						.addEntry(ItemLootEntry.builder(ModItems.MENISCUS_LENS.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-1.0F, 1.0F))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 2.0F))))
+						.addEntry(ItemLootEntry.builder(ModItems.HORMONE_BILE.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-1f, 2f))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 2f))))
 						.acceptCondition(KilledByPlayer.builder())));
 
 		registerLootTable(ModEntityTypes.BEETLING.get(), LootTable.builder()
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(ModItems.ERODING_BILE.get()).acceptFunction(SetCount.builder(RandomValueRange.of(0.0F, 1.0F))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))))
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(ModItems.MENISCUS_LENS.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-2.0F, 1.0F))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))).acceptCondition(KilledByPlayer.builder())));
+				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(ModItems.ERODING_BILE.get()).acceptFunction(SetCount.builder(RandomValueRange.of(0f, 1f))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f)))))
+				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(ModItems.MENISCUS_LENS.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-2f, 1f))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f)))).acceptCondition(KilledByPlayer.builder())));
 
 		registerLootTable(ModEntityTypes.FLESHKIN.get(), LootTable.builder()
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(ModItems.FLESH_BLOCK.get())
-						.acceptFunction(SetCount.builder(ConstantRange.of(1))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0.0F, 1.0F)))))
+				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(ModItems.NECROTIC_FLESH.get())
+						.acceptFunction(SetCount.builder(RandomValueRange.of(6f, 9f))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f)))))
 		);
 
 		registerLootTable(ModEntityTypes.FLESH_BLOB.get(), LootTable.builder()
 				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(ModItems.FLESH_BLOCK.get())
 						.acceptFunction(SetCount.builder(ConstantRange.of(1))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f)))))
 				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1))
-						.addEntry(ItemLootEntry.builder(ModItems.OCULUS.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-3f, 1f))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f))))
+						.addEntry(ItemLootEntry.builder(ModItems.OCULUS.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-4f, 1f))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f))))
 						.acceptCondition(KilledByPlayer.builder()))
 				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1))
-						.addEntry(ItemLootEntry.builder(ModItems.STOMACH.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-3f, 1f))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f)))))
+						.addEntry(ItemLootEntry.builder(ModItems.STOMACH.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-2f, 1f))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f)))))
 		);
 		registerLootTable(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_2, fleshBlobLootTableBuilderWithDrop(1));
 		registerLootTable(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_3, fleshBlobLootTableBuilderWithDrop(2));
@@ -77,7 +77,7 @@ public class ModEntityLootTables extends EntityLootTables {
 						.addEntry(ItemLootEntry.builder(ModItems.OCULUS.get()).acceptFunction(SetCount.builder(RandomValueRange.of(0f, 1f))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f))))
 						.acceptCondition(KilledByPlayer.builder()))
 				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1))
-						.addEntry(ItemLootEntry.builder(ModItems.STOMACH.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-2f, 1f))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f)))))
+						.addEntry(ItemLootEntry.builder(ModItems.MENISCUS_LENS.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-2f, 1f))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f)))))
 		);
 
 		registerLootTable(ModEntityTypes.FAILED_SHEEP.get(), LootTable.builder()

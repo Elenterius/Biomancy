@@ -142,10 +142,10 @@ public final class ClientSetupHandler {
 			ModelResourceLocation modelLocation = BlockModelShapes.getModelLocation(blockState);
 			IBakedModel bakedModel = event.getModelRegistry().get(modelLocation);
 			if (bakedModel == null) {
-				BiomancyMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Did not find any vanilla baked models for " + block.getRegistryName());
+				BiomancyMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Did not find any vanilla baked models for {}", block.getRegistryName());
 			}
 			else if (bakedModel instanceof FullBrightOverlayBakedModel) {
-				BiomancyMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Attempted to replace already existing FullBrightOverlayBakedModel for " + block.getRegistryName());
+				BiomancyMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Attempted to replace already existing FullBrightOverlayBakedModel for {}", block.getRegistryName());
 			}
 			else {
 				FullBrightOverlayBakedModel customModel = new FullBrightOverlayBakedModel(bakedModel);
@@ -158,8 +158,7 @@ public final class ClientSetupHandler {
 	private static final class HASHES {
 
 		private static final Set<HashCode> VALID = ImmutableSet.of(
-				HashCode.fromString("20f0bf6814e62bb7297669efb542f0af6ee0be1a9b87d0702853d8cc5aa15dc4"),
-				HashCode.fromString("2853ecb1a83a461153a2f8b6a274eab0c4597a9ef7d622673dab419543d486b6")
+				HashCode.fromString("20f0bf6814e62bb7297669efb542f0af6ee0be1a9b87d0702853d8cc5aa15dc4")
 		);
 		private static final CacheLoader<UUID, HashCode> CACHE_LOADER = new CacheLoader<UUID, HashCode>() {
 			@Override
