@@ -30,7 +30,7 @@ public class ChromaSheepWoolLayer extends LayerRenderer<ChromaSheepEntity, Sheep
 			int colorTicks = entity.ticksExisted / 25 + entity.getEntityId();
 			float[] colorA = SheepEntity.getDyeRgb(DyeColor.byId(colorTicks % nColors));
 			float[] colorB = SheepEntity.getDyeRgb(DyeColor.byId((colorTicks + 1) % nColors));
-			float shift = ((float) (entity.ticksExisted % 25) + partialTicks) / 25f;
+			float shift = ((entity.ticksExisted % 25) + partialTicks) / 25f;
 			float r = colorA[0] * (1f - shift) + colorB[0] * shift;
 			float g = colorA[1] * (1f - shift) + colorB[1] * shift;
 			float b = colorA[2] * (1f - shift) + colorB[2] * shift;

@@ -6,10 +6,12 @@ import com.github.elenterius.biomancy.block.MeatsoupCauldronBlock;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModTags;
+import com.github.elenterius.biomancy.init.ModTriggers;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.ActionResultType;
@@ -64,10 +66,13 @@ public final class PlayerInteractionHandler {
 				if (EvolutionPoolBlock.isValidStairsBlock(blockState)) {
 					if (!event.getWorld().isRemote()) {
 						if (EvolutionPoolBlock.tryToCreate2x2EvolutionPool(event.getWorld(), blockState, pos)) {
-							if (!event.getPlayer().abilities.isCreativeMode) {
-								event.getItemStack().grow(-1);
-							}
+							if (!event.getPlayer().abilities.isCreativeMode) event.getItemStack().grow(-1);
+
 							event.getWorld().playSound(null, pos, SoundEvents.ENTITY_SLIME_SQUISH_SMALL, SoundCategory.BLOCKS, 1.0F, 0.5F);
+
+							if (event.getPlayer() instanceof ServerPlayerEntity) {
+								ModTriggers.EVOLUTION_POOL_CREATED.trigger((ServerPlayerEntity) event.getPlayer());
+							}
 						}
 					}
 					event.setCanceled(true);

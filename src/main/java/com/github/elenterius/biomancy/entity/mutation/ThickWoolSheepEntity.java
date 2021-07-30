@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.entity.mutation;
 
+import com.github.elenterius.biomancy.init.ModEntityTypes;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -12,6 +13,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ForgeMod;
 
 import javax.annotation.Nullable;
@@ -98,6 +100,17 @@ public class ThickWoolSheepEntity extends SheepEntity {
 	}
 
 	@Override
+	public void eatGrassBonus() {
+		if (isChild()) {
+			if (getSheared()) setSheared(false);
+			else addGrowth(60);
+		}
+		else {
+			setSheared(false);
+		}
+	}
+
+	@Override
 	public void setSheared(boolean removeWool) {
 		if (removeWool) {
 			int woolSize = getWoolSize() - 1;
@@ -111,6 +124,11 @@ public class ThickWoolSheepEntity extends SheepEntity {
 			if (woolSize < MAX_WOOL_SIZE) setWoolSize((byte) (woolSize + 1));
 			super.setSheared(false);
 		}
+	}
+
+	@Override
+	public ThickWoolSheepEntity createChild(ServerWorld world, AgeableEntity mate) {
+		return ModEntityTypes.THICK_WOOL_SHEEP.get().create(world);
 	}
 
 }

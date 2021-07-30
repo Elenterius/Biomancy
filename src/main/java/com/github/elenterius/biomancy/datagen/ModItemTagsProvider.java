@@ -60,7 +60,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
 		Builder<Item> avgBiomass = getOrCreateBuilder(ModTags.Items.AVERAGE_BIOMASS)
 				.addTag(ItemTags.SAPLINGS).addTag(Tags.Items.CROPS).addTag(Tags.Items.MUSHROOMS)
-				.add(COOKIE, CACTUS, APPLE, CHORUS_FRUIT, MELON_SLICE, SPIDER_EYE, WARPED_FUNGUS,
+				.add(COOKIE, CACTUS, APPLE, CHORUS_FRUIT, MELON_SLICE, SPIDER_EYE, WARPED_FUNGUS, ModItems.MILK_GEL.get(),
 						NETHER_SPROUTS, WEEPING_VINES, TWISTING_VINES, LARGE_FERN, TALL_GRASS, WARPED_ROOTS, CRIMSON_ROOTS, CRIMSON_FUNGUS);
 		addOptionalItemsTo(avgBiomass, "createfa:cheese", "createfa:mixed_egg", "createfa:fries", "rats:cheese", "rats:string_cheese", "rats:potato_kinishes");
 

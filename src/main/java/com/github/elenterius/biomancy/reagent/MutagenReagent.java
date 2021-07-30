@@ -125,49 +125,47 @@ public class MutagenReagent extends Reagent {
 	}
 
 	private boolean convertFleshBlob(ServerWorld world, @Nullable LivingEntity source, FleshBlobEntity target) {
-		if (world.rand.nextFloat() < 0.7f && target.getBlobSize() < 6) {
-			if (target.hasForeignEntityDNA()) {
-				List<EntityType<?>> entityDNAs = target.getForeignEntityDNA();
-				if (entityDNAs != null) {
-					int dnaCount = entityDNAs.size();
-					if (dnaCount == 1) {
-						EntityType<?> entityType = entityDNAs.get(0);
-						if (entityType == EntityType.PLAYER) {
-							return MobUtil.convertMobEntityTo(world, target, ModEntityTypes.FLESHKIN.get(), false, (fleshBlob, fleshkin) -> {
-								if (!fleshBlob.isHangry()) {
-									if (source != null) fleshkin.setOwnerUUID(source.getUniqueID());
-								}
-								fleshkin.setChild(target.getBlobSize() < 5);
-							});
-						}
-						else {
-							return MobUtil.convertLivingEntityTo(world, target, entityType);
-						}
+		if (world.rand.nextFloat() < 0.7f && target.getBlobSize() < 6 && target.hasForeignEntityDNA()) {
+			List<EntityType<?>> entityDNAs = target.getForeignEntityDNA();
+			if (entityDNAs != null) {
+				int dnaCount = entityDNAs.size();
+				if (dnaCount == 1) {
+					EntityType<?> entityType = entityDNAs.get(0);
+					if (entityType == EntityType.PLAYER) {
+						return MobUtil.convertMobEntityTo(world, target, ModEntityTypes.FLESHKIN.get(), false, (fleshBlob, fleshkin) -> {
+							if (!fleshBlob.isHangry() && source != null) fleshkin.setOwnerUUID(source.getUniqueID());
+							fleshkin.setChild(target.getBlobSize() < 5);
+						});
 					}
-					else if (dnaCount == 2) {
-						EntityType<?> typeA = entityDNAs.get(0);
-						EntityType<?> typeB = entityDNAs.get(1);
-						if ((typeA == EntityType.CAVE_SPIDER && typeB == EntityType.CREEPER) || (typeB == EntityType.CAVE_SPIDER && typeA == EntityType.CREEPER)) {
-							return MobUtil.convertMobEntityTo(world, target, ModEntityTypes.BOOMLING.get(), false, (fleshBlobEntity, boomlingEntity) -> {
-								//set owner to make it possible for the owner to pick it up
-								if (source != null) boomlingEntity.setOwnerUUID(source.getUniqueID());
-								//because boomlingEntity.onInitialSpawn() was called by MobUtil.convertMobEntityTo() we need to reset the potion
-								boomlingEntity.setStoredPotion(ItemStack.EMPTY);
-							});
-						}
-					}
-					else {
-						if (!target.isHangry()) {
-							target.setHangry();
-						}
+					else if (entityType == EntityType.BAT && world.rand.nextFloat() < 0.2f) {
+						return MobUtil.convertLivingEntityTo(world, target, ModEntityTypes.OCULUS_OBSERVER.get());
 					}
 
-					float v = 0.15f + 0.07f * dnaCount;
-					if (world.rand.nextFloat() < v) {
-						Explosion.Mode mode = ForgeEventFactory.getMobGriefingEvent(world, target) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
-						world.createExplosion(target, target.getPosX(), target.getPosY(), target.getPosZ(), target.getBlobSize() + 4f * v, mode);
-						target.remove();
+					return MobUtil.convertLivingEntityTo(world, target, entityType);
+				}
+				else if (dnaCount == 2) {
+					EntityType<?> typeA = entityDNAs.get(0);
+					EntityType<?> typeB = entityDNAs.get(1);
+					if ((typeA == EntityType.CAVE_SPIDER && typeB == EntityType.CREEPER) || (typeB == EntityType.CAVE_SPIDER && typeA == EntityType.CREEPER)) {
+						return MobUtil.convertMobEntityTo(world, target, ModEntityTypes.BOOMLING.get(), false, (fleshBlobEntity, boomlingEntity) -> {
+							//set owner to make it possible for the owner to pick it up
+							if (source != null) boomlingEntity.setOwnerUUID(source.getUniqueID());
+							//because boomlingEntity.onInitialSpawn() was called by MobUtil.convertMobEntityTo() we need to reset the potion
+							boomlingEntity.setStoredPotion(ItemStack.EMPTY);
+						});
 					}
+				}
+				else {
+					if (!target.isHangry()) {
+						target.setHangry();
+					}
+				}
+
+				float v = 0.15f + 0.07f * dnaCount;
+				if (world.rand.nextFloat() < v) {
+					Explosion.Mode mode = ForgeEventFactory.getMobGriefingEvent(world, target) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
+					world.createExplosion(target, target.getPosX(), target.getPosY(), target.getPosZ(), target.getBlobSize() + 4f * v, mode);
+					target.remove();
 				}
 			}
 		}

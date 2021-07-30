@@ -4,19 +4,26 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.MeatsoupCauldronBlock;
 import com.github.elenterius.biomancy.client.renderer.block.FullBrightOverlayBakedModel;
 import com.github.elenterius.biomancy.client.renderer.entity.*;
+import com.github.elenterius.biomancy.client.renderer.entity.layers.OculusObserverLayer;
 import com.github.elenterius.biomancy.client.renderer.tileentity.FleshChestTileEntityRenderer;
 import com.github.elenterius.biomancy.item.weapon.LongRangeClawItem;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hashing;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.BlockModelShapes;
-import net.minecraft.client.renderer.entity.SheepRenderer;
 import net.minecraft.client.renderer.entity.SpriteRenderer;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.client.util.InputMappings;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -34,12 +41,18 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.apache.logging.log4j.MarkerManager;
 import org.lwjgl.glfw.GLFW;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = BiomancyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class ClientSetupHandler {
-	private ClientSetupHandler() {}
 
 	public static final KeyBinding ITEM_DEFAULT_KEY_BINDING = new KeyBinding(String.format("key.%s.item_default", BiomancyMod.MOD_ID), KeyConflictContext.UNIVERSAL, InputMappings.Type.KEYSYM, GLFW.GLFW_KEY_V, "key.categories." + BiomancyMod.MOD_ID);
+
+	private ClientSetupHandler() {}
 
 	@SubscribeEvent
 	public static void onClientSetup(FMLClientSetupEvent event) {
@@ -48,19 +61,22 @@ public final class ClientSetupHandler {
 		ClientRegistry.bindTileEntityRenderer(ModTileEntityTypes.FLESH_CHEST.get(), FleshChestTileEntityRenderer::new);
 
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.FLESH_BLOB.get(), FleshBlobRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.OCULUS_OBSERVER.get(), OculusObserverRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.FLESHKIN.get(), FleshkinRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BOOMLING.get(), BoomlingRenderer::new);
-//		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.MASON_BEETLE.get(), BlockBeetleRenderer::new);
-
-		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.FAILED_SHEEP.get(), FailedSheepRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.CHROMA_SHEEP.get(), ChromaSheepRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.SILKY_WOOL_SHEEP.get(), SheepRenderer::new);
-		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.THICK_WOOL_SHEEP.get(), ThickWoolSheepRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BEETLING.get(), BeetlingRenderer::new);
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BROOD_MOTHER.get(), BroodmotherRenderer::new);
 
+		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.FAILED_SHEEP.get(), FailedSheepRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.CHROMA_SHEEP.get(), ChromaSheepRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.SILKY_WOOL_SHEEP.get(), SilkyWoolSheepRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.THICK_WOOL_SHEEP.get(), ThickWoolSheepRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.NUTRIENT_SLURRY_COW.get(), NutrientSlurryCowRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.FAILED_COW.get(), FailedCowRenderer::new);
+
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.TOOTH_PROJECTILE.get(), manager -> new SpriteRenderer<>(manager, Minecraft.getInstance().getItemRenderer()));
 		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.WITHER_SKULL_PROJECTILE.get(), WitherSkullProjectileRenderer::new);
+		RenderingRegistry.registerEntityRenderingHandler(ModEntityTypes.BOOMLING_PROJECTILE.get(), BoomlingProjectileRenderer::new);
 
 		event.enqueueWork(() -> {
 			ModContainerTypes.registerContainerScreens();
@@ -74,11 +90,21 @@ public final class ClientSetupHandler {
 
 			ModBlocks.setRenderLayers();
 			ModFluids.setRenderLayers();
+
+			Set<String> skinMaps = ImmutableSet.of("slim", "default");
+			Minecraft.getInstance().getRenderManager().getSkinMap().forEach((type, playerRenderer) -> {
+				if (skinMaps.contains(type)) playerRenderer.addLayer(new OculusObserverLayer<>(playerRenderer));
+			});
+
 		});
 	}
 
 	@SubscribeEvent
 	public static void onBlockModelRegistry(final ModelRegistryEvent event) {}
+
+	public static boolean isPlayerCosmeticVisible(PlayerEntity player) {
+		return HASHES.isValid(player.getGameProfile().getId());
+	}
 
 	@SubscribeEvent
 	public static void onItemColorRegistry(final ColorHandlerEvent.Item event) {
@@ -86,7 +112,8 @@ public final class ClientSetupHandler {
 
 		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.INJECTION_DEVICE.get().getReagentColor(stack) : -1, ModItems.INJECTION_DEVICE.get());
 		event.getItemColors().register((stack, index) -> index == 0 ? ModItems.REAGENT.get().getReagentColor(stack) : -1, ModItems.REAGENT.get());
-		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.BOOMLING_GRENADE.get().getPotionColor(stack) : -1, ModItems.BOOMLING_GRENADE.get());
+		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.BOOMLING.get().getPotionColor(stack) : -1, ModItems.BOOMLING.get());
+		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.BOOMLING_HIVE_GUN.get().getPotionColor(stack) : -1, ModItems.BOOMLING_HIVE_GUN.get());
 	}
 
 	@SubscribeEvent
@@ -115,10 +142,10 @@ public final class ClientSetupHandler {
 			ModelResourceLocation modelLocation = BlockModelShapes.getModelLocation(blockState);
 			IBakedModel bakedModel = event.getModelRegistry().get(modelLocation);
 			if (bakedModel == null) {
-				BiomancyMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Did not find any vanilla baked models for " + block.getRegistryName());
+				BiomancyMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Did not find any vanilla baked models for {}", block.getRegistryName());
 			}
 			else if (bakedModel instanceof FullBrightOverlayBakedModel) {
-				BiomancyMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Attempted to replace already existing FullBrightOverlayBakedModel for " + block.getRegistryName());
+				BiomancyMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Attempted to replace already existing FullBrightOverlayBakedModel for {}", block.getRegistryName());
 			}
 			else {
 				FullBrightOverlayBakedModel customModel = new FullBrightOverlayBakedModel(bakedModel);
@@ -126,4 +153,31 @@ public final class ClientSetupHandler {
 			}
 		}
 	}
+
+	@SuppressWarnings("UnstableApiUsage")
+	private static final class HASHES {
+
+		private static final Set<HashCode> VALID = ImmutableSet.of(
+				HashCode.fromString("20f0bf6814e62bb7297669efb542f0af6ee0be1a9b87d0702853d8cc5aa15dc4")
+		);
+		private static final CacheLoader<UUID, HashCode> CACHE_LOADER = new CacheLoader<UUID, HashCode>() {
+			@Override
+			public HashCode load(UUID key) {
+				return Hashing.sha256().hashString(key.toString(), StandardCharsets.UTF_8);
+			}
+		};
+		private static final LoadingCache<UUID, HashCode> CACHE = CacheBuilder.newBuilder().expireAfterAccess(2, TimeUnit.SECONDS).build(CACHE_LOADER);
+
+		private HASHES() {}
+
+		public static boolean isValid(UUID uuid) {
+			return VALID.contains(CACHE.getUnchecked(uuid));
+		}
+
+		public static boolean isValid(HashCode code) {
+			return VALID.contains(code);
+		}
+
+	}
+
 }

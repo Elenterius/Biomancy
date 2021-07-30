@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.item.ReagentItem;
 import com.github.elenterius.biomancy.recipe.ItemStackIngredient;
 import com.github.elenterius.biomancy.util.BiofuelUtil;
+import net.minecraft.advancements.ICriterionInstance;
 import net.minecraft.advancements.criterion.EnchantmentPredicate;
 import net.minecraft.advancements.criterion.InventoryChangeTrigger;
 import net.minecraft.advancements.criterion.ItemPredicate;
@@ -27,6 +28,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.util.IItemProvider;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.fluids.FluidAttributes;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
@@ -37,8 +39,21 @@ import java.util.function.Consumer;
 
 public class ModRecipeProvider extends RecipeProvider {
 
-	public final Logger LOGGER = BiomancyMod.LOGGER;
-	public final Marker logMarker = MarkerManager.getMarker("RecipeProvider");
+	public static final Logger LOGGER = BiomancyMod.LOGGER;
+	public static final Marker LOG_MARKER = MarkerManager.getMarker("RecipeProvider");
+
+	private static final String HAS_OCULUS = "has_oculus";
+	private static final String HAS_MUTAGENIC_BILE = "has_mutagenic_bile";
+	private static final String HAS_KERATINS = "has_keratins";
+	private static final String HAS_HORMONES = "has_hormones";
+	private static final String HAS_FLESH_BLOCK = "has_flesh_block";
+	private static final String HAS_GLASS_VIAL = "has_glass_vial";
+	private static final String HAS_SILICATE_PASTE = "has_silicate_paste";
+	private static final String HAS_OXIDE = "has_oxide";
+	private static final String HAS_SILICATES = "has_silicates";
+	private static final String HAS_OXIDE_POWDER = "has_oxide_powder";
+	private static final ICriterionInstance OXIDE_CRITERION = hasItem(ModTags.Items.OXIDES);
+	private static final ICriterionInstance SILICATES_CRITERION = hasItem(ModTags.Items.SILICATES);
 
 	public ModRecipeProvider(DataGenerator generatorIn) {
 		super(generatorIn);
@@ -59,21 +74,21 @@ public class ModRecipeProvider extends RecipeProvider {
 
 	@Override
 	protected void registerRecipes(Consumer<IFinishedRecipe> consumer) {
-		LOGGER.info(logMarker, "registering workbench recipes...");
+		LOGGER.info(LOG_MARKER, "registering workbench recipes...");
 		registerWorkbenchRecipes(consumer);
-		LOGGER.info(logMarker, "registering cooking recipes...");
+		LOGGER.info(LOG_MARKER, "registering cooking recipes...");
 		registerCookingRecipes(consumer);
 
-		LOGGER.info(logMarker, "registering chewer recipes...");
+		LOGGER.info(LOG_MARKER, "registering chewer recipes...");
 		registerChewerRecipes(consumer);
-		LOGGER.info(logMarker, "registering digester recipes...");
+		LOGGER.info(LOG_MARKER, "registering digester recipes...");
 		registerDigesterRecipes(consumer);
-		LOGGER.info(logMarker, "registering digester recipes...");
+		LOGGER.info(LOG_MARKER, "registering solidifier recipes...");
 		registerSolidifierRecipes(consumer);
-		LOGGER.info(logMarker, "registering decomposer recipes...");
+		LOGGER.info(LOG_MARKER, "registering decomposer recipes...");
 		registerDecomposerRecipes(consumer);
 
-		LOGGER.info(logMarker, "registering evolution pool recipes...");
+		LOGGER.info(LOG_MARKER, "registering evolution pool recipes...");
 		registerEvolutionPoolRecipes(consumer);
 	}
 
@@ -83,20 +98,20 @@ public class ModRecipeProvider extends RecipeProvider {
 		// Duplication /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		EvolutionPoolRecipeBuilder.createRecipe(Items.IRON_NUGGET, defaultTime, 5)
 				.addIngredient(Items.IRON_NUGGET).addIngredients(ModItems.OXIDE_POWDER.get(), 5)
-				.addCriterion("has_oxide_powder", hasItem(ModItems.OXIDE_POWDER.get())).build(consumer);
+				.addCriterion(HAS_OXIDE_POWDER, hasItem(ModItems.OXIDE_POWDER.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(Items.GOLD_NUGGET, defaultTime, 5)
 				.addIngredient(Items.GOLD_NUGGET).addIngredients(ModItems.OXIDE_POWDER.get(), 5)
-				.addCriterion("has_oxide_powder", hasItem(ModItems.OXIDE_POWDER.get())).build(consumer);
+				.addCriterion(HAS_OXIDE_POWDER, hasItem(ModItems.OXIDE_POWDER.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(Items.QUARTZ, defaultTime, 3)
 				.addIngredient(Items.QUARTZ).addIngredients(ModItems.SILICATE_PASTE.get(), 5)
-				.addCriterion("has_silicate_paste", hasItem(ModItems.SILICATE_PASTE.get())).build(consumer);
+				.addCriterion(HAS_SILICATE_PASTE, hasItem(ModItems.SILICATE_PASTE.get())).build(consumer);
 
 		// Transmutation////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		EvolutionPoolRecipeBuilder.createRecipe(Items.PRISMARINE_CRYSTALS, defaultTime * 2)
 				.addIngredient(Items.QUARTZ).addIngredient(Items.LAPIS_LAZULI).addIngredients(ModItems.SILICATE_PASTE.get(), 2).addIngredient(ItemTags.FISHES)
-				.addCriterion("has_silicate_paste", hasItem(ModItems.SILICATE_PASTE.get())).build(consumer);
+				.addCriterion(HAS_SILICATE_PASTE, hasItem(ModItems.SILICATE_PASTE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(Items.PRISMARINE_SHARD, defaultTime * 2)
 				.addIngredient(Items.QUARTZ).addIngredient(Items.LAPIS_LAZULI).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ItemTags.FISHES)
@@ -104,7 +119,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		EvolutionPoolRecipeBuilder.createRecipe(Items.SHULKER_SHELL, defaultTime * 2)
 				.addIngredients(Items.POPPED_CHORUS_FRUIT, 2).addIngredients(ModItems.SILICATE_PASTE.get(), 4)
-				.addCriterion("has_silicate_paste", hasItem(ModItems.SILICATE_PASTE.get())).build(consumer);
+				.addCriterion(HAS_SILICATE_PASTE, hasItem(ModItems.SILICATE_PASTE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(Items.ZOMBIE_HEAD, defaultTime * 2)
 				.addIngredient(Items.PLAYER_HEAD).addIngredients(ModItems.ERODING_BILE.get(), 2).addIngredient(Items.ROTTEN_FLESH)
@@ -119,53 +134,53 @@ public class ModRecipeProvider extends RecipeProvider {
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIOMETAL.get(), defaultTime)
 				.addIngredient(Items.IRON_INGOT).addIngredient(ModItems.FLESH_BLOCK.get()).addIngredients(ModItems.OXIDE_POWDER.get(), 2)
 				.addIngredient(ModItems.KERATIN_FILAMENTS.get()).addIngredient(ModItems.HORMONE_BILE.get())
-				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
+				.addCriterion(HAS_MUTAGENIC_BILE, hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		// Blocks //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESHBORN_DOOR.get(), defaultTime)
 				.addIngredient(Items.IRON_DOOR).addIngredient(ModItems.BIOMETAL.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get())
-				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
+				.addCriterion(HAS_MUTAGENIC_BILE, hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESHBORN_TRAPDOOR.get(), defaultTime)
 				.addIngredient(Items.IRON_TRAPDOOR).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.BIOMETAL.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get())
-				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
+				.addCriterion(HAS_MUTAGENIC_BILE, hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESHBORN_PRESSURE_PLATE.get(), defaultTime)
 				.addIngredient(Items.HEAVY_WEIGHTED_PRESSURE_PLATE).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.BIOMETAL.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get())
-				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
+				.addCriterion(HAS_MUTAGENIC_BILE, hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.GULGE.get(), defaultTime * 2)
 				.addIngredient(ModItems.FLESH_CHEST.get()).addIngredients(ModTags.Items.STOMACHS, 4).addIngredient(ModItems.BIOMETAL.get())
-				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
+				.addCriterion(HAS_MUTAGENIC_BILE, hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESH_CHEST.get(), defaultTime)
 				.addIngredients(Tags.Items.CHESTS_WOODEN, 2).addIngredient(ModItems.BIOMETAL.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get())
-				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
+				.addCriterion(HAS_MUTAGENIC_BILE, hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		// Tools ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.SINGLE_ITEM_BAG_ITEM.get(), defaultTime + 150)
 				.addIngredients(ModTags.Items.STOMACHS, 2).addIngredient(Items.HOPPER).addIngredient(ModItems.FLESH_CHEST.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2)
-				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
+				.addCriterion(HAS_MUTAGENIC_BILE, hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.ENTITY_STORAGE_ITEM.get(), defaultTime + 150)
 				.addIngredients(ModTags.Items.STOMACHS, 2).addIngredient(Items.EGG).addIngredient(Tags.Items.CHESTS_ENDER).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2)
-				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
+				.addCriterion(HAS_MUTAGENIC_BILE, hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.OCULI_OF_UNVEILING.get(), defaultTime * 2)
 				.addIngredient(Items.IRON_HELMET).addIngredients(ModItems.OCULUS.get(), 4).addIngredient(ModItems.BIOMETAL.get())
-				.addCriterion("has_mutagenic_bile", hasItems(ModItems.MUTAGENIC_BILE.get(), ModItems.MENISCUS_LENS.get())).build(consumer);
+				.addCriterion(HAS_MUTAGENIC_BILE, hasItems(ModItems.MUTAGENIC_BILE.get(), ModItems.MENISCUS_LENS.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESHBORN_AXE.get(), defaultTime)
 				.addIngredient(Items.IRON_AXE).addIngredient(Tags.Items.BONES).addIngredients(ModItems.BIOMETAL.get(), 3).addIngredient(ModItems.HORMONE_BILE.get())
-				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
+				.addCriterion(HAS_MUTAGENIC_BILE, hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESHBORN_SHOVEL.get(), defaultTime)
 				.addIngredient(Items.IRON_SHOVEL).addIngredient(Tags.Items.BONES).addIngredient(ModItems.BIOMETAL.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get())
-				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
+				.addCriterion(HAS_MUTAGENIC_BILE, hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESHBORN_PICKAXE.get(), defaultTime)
 				.addIngredient(Items.IRON_PICKAXE).addIngredient(Tags.Items.BONES).addIngredients(ModItems.BIOMETAL.get(), 3).addIngredient(ModItems.HORMONE_BILE.get())
-				.addCriterion("has_mutagenic_bile", hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
+				.addCriterion(HAS_MUTAGENIC_BILE, hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		// Weapons /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESHBORN_WAR_AXE.get(), defaultTime * 2)
@@ -176,17 +191,17 @@ public class ModRecipeProvider extends RecipeProvider {
 		ItemStackIngredient sweepingBook = new ItemStackIngredient(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(Enchantments.SWEEPING, Enchantments.SWEEPING.getMaxLevel())));
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.LONG_RANGE_CLAW.get(), defaultTime * 2)
 				.addIngredient(ModItems.OCULUS.get()).addIngredient(sweepingBook).addIngredients(ModItems.SHARP_BONE.get(), 2).addIngredient(Items.DIAMOND_SWORD).addIngredient(ModItems.BIOMETAL.get())
-				.addCriterion("has_oculus", hasItem(ModItems.OCULUS.get())).build(consumer);
+				.addCriterion(HAS_OCULUS, hasItem(ModItems.OCULUS.get())).build(consumer);
 
 		ItemStackIngredient mendingBook = new ItemStackIngredient(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(Enchantments.MENDING, Enchantments.MENDING.getMaxLevel())));
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.LEECH_CLAW.get(), defaultTime * 2)
 				.addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.INJECTION_DEVICE.get()).addIngredient(mendingBook).addIngredient(Items.DIAMOND_SWORD).addIngredient(ModItems.BIOMETAL.get())
-				.addCriterion("has_oculus", hasItem(ModItems.OCULUS.get())).build(consumer);
+				.addCriterion(HAS_OCULUS, hasItem(ModItems.OCULUS.get())).build(consumer);
 
 		ItemStackIngredient maxBaneBook = new ItemStackIngredient(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(ModEnchantments.ATTUNED_BANE.get(), ModEnchantments.ATTUNED_BANE.get().getMaxLevel())));
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESHBORN_GUAN_DAO.get(), defaultTime * 2)
 				.addIngredient(ModItems.OCULUS.get()).addIngredient(maxBaneBook).addIngredient(Tags.Items.BONES).addIngredient(Items.DIAMOND_SWORD).addIngredient(Items.DIAMOND_AXE).addIngredient(ModItems.BIOMETAL.get())
-				.addCriterion("has_oculus", hasItem(ModItems.OCULUS.get())).build(consumer);
+				.addCriterion(HAS_OCULUS, hasItem(ModItems.OCULUS.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.TOOTH_GUN.get(), defaultTime * 2)
 				.addIngredient(ModItems.INJECTION_DEVICE.get()).addIngredient(Items.SKELETON_SKULL).addIngredient(Items.CROSSBOW).addIngredient(ModTags.Items.STOMACHS).addIngredient(ModItems.BIOMETAL.get()).addIngredient(ModItems.SILICATE_PASTE.get())
@@ -222,20 +237,24 @@ public class ModRecipeProvider extends RecipeProvider {
 		DecomposerRecipeBuilder.createRecipe(ModItems.OXIDE_POWDER.get(), defaultDecomposingTime - 100)
 				.setIngredient(Tags.Items.EGGS, 6)
 				.addByproduct(ModItems.MUTAGENIC_BILE.get(), 0.1f)
-				.addCriterion("has_oxide", hasItem(ModTags.Items.OXIDES)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_OXIDE, OXIDE_CRITERION).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.OXIDE_POWDER.get(), defaultDecomposingTime - 100)
 				.setIngredient(Items.TURTLE_EGG, 6)
 				.addByproduct(ModItems.MUTAGENIC_BILE.get(), 0.2f)
-				.addCriterion("has_oxide", hasItem(ModTags.Items.OXIDES)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_OXIDE, OXIDE_CRITERION).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.OXIDE_POWDER.get(), defaultDecomposingTime - 100)
 				.setIngredient(Tags.Items.BONES, 2)
-				.addCriterion("has_oxide", hasItem(ModTags.Items.OXIDES)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_OXIDE, OXIDE_CRITERION).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.OXIDE_POWDER.get(), defaultDecomposingTime - 100)
 				.setIngredient(Items.BONE_MEAL, 6)
-				.addCriterion("has_oxide", hasItem(ModTags.Items.OXIDES)).build(consumer, "" + id, true);
+				.addCriterion(HAS_OXIDE, OXIDE_CRITERION).build(consumer, "" + id++, true);
+
+		DecomposerRecipeBuilder.createRecipe(ModItems.OXIDE_POWDER.get(), defaultDecomposingTime - 100)
+				.setIngredient(ModItems.MILK_GEL.get(), 2)
+				.addCriterion(HAS_OXIDE, OXIDE_CRITERION).build(consumer, "" + id, true);
 	}
 
 	private void registerSilicatesRecipes(Consumer<IFinishedRecipe> consumer) {
@@ -244,66 +263,66 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.SILICATE_PASTE.get(), defaultDecomposingTime * 2)
 				.setIngredient(Items.ANDESITE, 2)
-				.addCriterion("has_silicates", hasItem(ModTags.Items.SILICATES)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_SILICATES, SILICATES_CRITERION).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.SILICATE_PASTE.get(), defaultDecomposingTime * 2)
 				.setIngredient(Items.DIORITE, 2)
-				.addCriterion("has_silicates", hasItem(ModTags.Items.SILICATES)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_SILICATES, SILICATES_CRITERION).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.SILICATE_PASTE.get(), defaultDecomposingTime * 2)
 				.setIngredient(Items.GRANITE, 2)
 				.addByproduct(ModItems.SILICATE_PASTE.get(), 0.5f)
-				.addCriterion("has_silicates", hasItem(ModTags.Items.SILICATES)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_SILICATES, SILICATES_CRITERION).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.SILICATE_PASTE.get(), defaultDecomposingTime + 150)
 				.setIngredient(Items.REDSTONE, 6)
-				.addCriterion("has_silicates", hasItem(ModTags.Items.SILICATES)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_SILICATES, SILICATES_CRITERION).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.SILICATE_PASTE.get(), defaultDecomposingTime, 3)
 				.setIngredient(Items.NAUTILUS_SHELL)
 				.addByproduct(ModItems.MUTAGENIC_BILE.get(), 2, 1f)
-				.addCriterion("has_silicates", hasItem(ModTags.Items.SILICATES)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_SILICATES, SILICATES_CRITERION).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.SILICATE_PASTE.get(), defaultDecomposingTime, 4)
 				.setIngredient(Items.SHULKER_SHELL)
-				.addCriterion("has_silicates", hasItem(ModTags.Items.SILICATES)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_SILICATES, SILICATES_CRITERION).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.SILICATE_PASTE.get(), defaultDecomposingTime + 150)
 				.setIngredient(Items.GLOWSTONE_DUST, 6)
-				.addCriterion("has_silicates", hasItem(ModTags.Items.SILICATES)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_SILICATES, SILICATES_CRITERION).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.SILICATE_PASTE.get(), defaultDecomposingTime * 2, 3)
 				.setIngredient(Tags.Items.GEMS_EMERALD)
-				.addCriterion("has_silicates", hasItem(ModTags.Items.SILICATES)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_SILICATES, SILICATES_CRITERION).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.SILICATE_PASTE.get(), defaultDecomposingTime * 2)
 				.setIngredient(Tags.Items.GEMS_LAPIS)
-				.addCriterion("has_silicates", hasItem(ModTags.Items.SILICATES)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_SILICATES, SILICATES_CRITERION).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.SILICATE_PASTE.get(), defaultDecomposingTime * 2)
 				.setIngredient(Tags.Items.GEMS_QUARTZ)
 				.addByproduct(ModItems.SILICATE_PASTE.get(), 0.5f)
-				.addCriterion("has_silicates", hasItem(ModTags.Items.SILICATES)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_SILICATES, SILICATES_CRITERION).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.SILICATE_PASTE.get(), defaultDecomposingTime * 2, 3)
 				.setIngredient(Tags.Items.GEMS_PRISMARINE)
-				.addCriterion("has_silicates", hasItem(ModTags.Items.SILICATES)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_SILICATES, SILICATES_CRITERION).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.SILICATE_PASTE.get(), defaultDecomposingTime + 100)
 				.setIngredient(Items.KELP, 6)
 				.addByproduct(ModItems.DIGESTATE.get(), 0.3f)
-				.addCriterion("has_silicates", hasItem(ModTags.Items.SILICATES)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_SILICATES, SILICATES_CRITERION).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.SILICATE_PASTE.get(), defaultDecomposingTime)
 				.setIngredient(Items.DRIED_KELP, 6)
 				.addByproduct(ModItems.DIGESTATE.get(), 0.3f)
-				.addCriterion("has_silicates", hasItem(ModTags.Items.SILICATES)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_SILICATES, SILICATES_CRITERION).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.SILICATE_PASTE.get(), defaultDecomposingTime)
 				.setIngredient(Items.DRIED_KELP_BLOCK)
 				.addByproduct(ModItems.SILICATE_PASTE.get(), 0.5f)
 				.addByproduct(ModItems.DIGESTATE.get(), 0.4f)
-				.addCriterion("has_silicates", hasItem(ModTags.Items.SILICATES)).build(consumer, "" + id, true);
+				.addCriterion(HAS_SILICATES, SILICATES_CRITERION).build(consumer, "" + id, true);
 	}
 
 	private void registerKeratinsRecipes(Consumer<IFinishedRecipe> consumer) {
@@ -312,43 +331,43 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.KERATIN_FILAMENTS.get(), defaultDecomposingTime * 2, 3)
 				.setIngredient(Items.SCUTE)
-				.addCriterion("has_keratins", hasItem(ModTags.Items.KERATINS)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_KERATINS, hasItem(ModTags.Items.KERATINS)).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.KERATIN_FILAMENTS.get(), defaultDecomposingTime)
 				.setIngredient(Tags.Items.LEATHER)
-				.addCriterion("has_keratins", hasItem(ModTags.Items.KERATINS)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_KERATINS, hasItem(ModTags.Items.KERATINS)).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.KERATIN_FILAMENTS.get(), defaultDecomposingTime, 2)
 				.setIngredient(Items.RABBIT_HIDE)
-				.addCriterion("has_keratins", hasItem(ModTags.Items.KERATINS)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_KERATINS, hasItem(ModTags.Items.KERATINS)).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.KERATIN_FILAMENTS.get(), defaultDecomposingTime)
 				.setIngredient(Tags.Items.FEATHERS, 4)
-				.addCriterion("has_keratins", hasItem(ModTags.Items.KERATINS)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_KERATINS, hasItem(ModTags.Items.KERATINS)).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.KERATIN_FILAMENTS.get(), defaultDecomposingTime)
 				.setIngredient(Tags.Items.STRING, 4)
-				.addCriterion("has_keratins", hasItem(ModTags.Items.KERATINS)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_KERATINS, hasItem(ModTags.Items.KERATINS)).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.KERATIN_FILAMENTS.get(), defaultDecomposingTime)
 				.setIngredient(ItemTags.WOOL)
-				.addCriterion("has_keratins", hasItem(ModTags.Items.KERATINS)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_KERATINS, hasItem(ModTags.Items.KERATINS)).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.KERATIN_FILAMENTS.get(), defaultDecomposingTime)
 				.setIngredient(ItemTags.CARPETS)
-				.addCriterion("has_keratins", hasItem(ModTags.Items.KERATINS)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_KERATINS, hasItem(ModTags.Items.KERATINS)).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.KERATIN_FILAMENTS.get(), defaultDecomposingTime)
 				.setIngredient(Items.LEAD)
-				.addCriterion("has_keratins", hasItem(ModTags.Items.KERATINS)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_KERATINS, hasItem(ModTags.Items.KERATINS)).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.KERATIN_FILAMENTS.get(), defaultDecomposingTime * 2, 3)
 				.setIngredient(Items.PHANTOM_MEMBRANE)
-				.addCriterion("has_keratins", hasItem(ModTags.Items.KERATINS)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_KERATINS, hasItem(ModTags.Items.KERATINS)).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.KERATIN_FILAMENTS.get(), defaultDecomposingTime * 2)
 				.setIngredient(Items.PRISMARINE_SHARD)
-				.addCriterion("has_keratins", hasItem(ModTags.Items.KERATINS)).build(consumer, "" + id, true);
+				.addCriterion(HAS_KERATINS, hasItem(ModTags.Items.KERATINS)).build(consumer, "" + id, true);
 	}
 
 	private void registerHormonesRecipes(Consumer<IFinishedRecipe> consumer) {
@@ -357,27 +376,27 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.HORMONE_BILE.get(), defaultDecomposingTime)
 				.setIngredient(Items.INK_SAC, 2)
-				.addCriterion("has_hormones", hasItem(ModTags.Items.HORMONES)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_HORMONES, hasItem(ModTags.Items.HORMONES)).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.HORMONE_BILE.get(), defaultDecomposingTime, 3)
 				.setIngredient(Items.RABBIT_FOOT)
-				.addCriterion("has_hormones", hasItem(ModTags.Items.HORMONES)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_HORMONES, hasItem(ModTags.Items.HORMONES)).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.HORMONE_BILE.get(), defaultDecomposingTime, 3)
 				.setIngredient(Items.GHAST_TEAR)
-				.addCriterion("has_hormones", hasItem(ModTags.Items.HORMONES)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_HORMONES, hasItem(ModTags.Items.HORMONES)).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.HORMONE_BILE.get(), defaultDecomposingTime * 3)
 				.setIngredient(Items.SPIDER_EYE, 6)
-				.addCriterion("has_hormones", hasItem(ModTags.Items.HORMONES)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_HORMONES, hasItem(ModTags.Items.HORMONES)).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.HORMONE_BILE.get(), defaultDecomposingTime * 2)
 				.setIngredient(Items.FERMENTED_SPIDER_EYE, 4)
-				.addCriterion("has_hormones", hasItem(ModTags.Items.HORMONES)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_HORMONES, hasItem(ModTags.Items.HORMONES)).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.HORMONE_BILE.get(), defaultDecomposingTime)
 				.setIngredient(Items.HONEYCOMB, 2)
-				.addCriterion("has_hormones", hasItem(ModTags.Items.HORMONES)).build(consumer, "" + id++, true);
+				.addCriterion(HAS_HORMONES, hasItem(ModTags.Items.HORMONES)).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.HORMONE_BILE.get(), defaultDecomposingTime)
 				.setIngredient(Items.SLIME_BALL)
@@ -450,19 +469,15 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		ChewerRecipeBuilder.createRecipe(ModItems.FLESH_LUMP.get(), defaultChewingTime, 9)
 				.setIngredient(ModItems.FLESH_BLOCK.get())
-				.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK.get()))
-				.build(consumer, "from_flesh_block", true);
+				.addCriterion(HAS_FLESH_BLOCK, hasItem(ModItems.FLESH_BLOCK.get())).build(consumer, "from_flesh_block", true);
 
 		ChewerRecipeBuilder.createRecipe(ModItems.FLESH_LUMP.get(), defaultChewingTime, 4)
 				.setIngredient(ModItems.FLESH_BLOCK_SLAB.get())
-				.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK_SLAB.get()))
-				.build(consumer, "from_flesh_block_slab", true);
-
+				.addCriterion(HAS_FLESH_BLOCK, hasItem(ModItems.FLESH_BLOCK_SLAB.get())).build(consumer, "from_flesh_block_slab", true);
 
 		ChewerRecipeBuilder.createRecipe(ModItems.FLESH_LUMP.get(), defaultChewingTime, 13)
 				.setIngredient(ModItems.FLESH_BLOCK_STAIRS.get())
-				.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK_STAIRS.get()))
-				.build(consumer, "from_flesh_block_stairs", true);
+				.addCriterion(HAS_FLESH_BLOCK, hasItem(ModItems.FLESH_BLOCK_STAIRS.get())).build(consumer, "from_flesh_block_stairs", true);
 
 		// silicates ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		ChewerRecipeBuilder.createRecipe(ModItems.SILICATE_PASTE.get(), defaultChewingTime * 4, 2)
@@ -476,27 +491,27 @@ public class ModRecipeProvider extends RecipeProvider {
 		// oxides //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		ChewerRecipeBuilder.createRecipe(ModItems.OXIDE_POWDER.get(), defaultChewingTime * 3, 9)
 				.setIngredient(Tags.Items.INGOTS_IRON)
-				.addCriterion("has_oxide", hasItem(ModTags.Items.OXIDES)).build(consumer, "from_iron_ingot", true);
+				.addCriterion(HAS_OXIDE, OXIDE_CRITERION).build(consumer, "from_iron_ingot", true);
 
 		ChewerRecipeBuilder.createRecipe(ModItems.OXIDE_POWDER.get(), defaultChewingTime)
 				.setIngredient(Tags.Items.NUGGETS_IRON)
-				.addCriterion("has_oxide", hasItem(ModTags.Items.OXIDES)).build(consumer, "from_iron_nugget", true);
+				.addCriterion(HAS_OXIDE, OXIDE_CRITERION).build(consumer, "from_iron_nugget", true);
 
 		ChewerRecipeBuilder.createRecipe(ModItems.OXIDE_POWDER.get(), defaultChewingTime * 3, 9)
 				.setIngredient(Tags.Items.INGOTS_GOLD)
-				.addCriterion("has_oxide", hasItem(ModTags.Items.OXIDES)).build(consumer, "from_gold_ingot", true);
+				.addCriterion(HAS_OXIDE, OXIDE_CRITERION).build(consumer, "from_gold_ingot", true);
 
 		ChewerRecipeBuilder.createRecipe(ModItems.OXIDE_POWDER.get(), defaultChewingTime)
 				.setIngredient(Tags.Items.NUGGETS_GOLD)
-				.addCriterion("has_oxide", hasItem(ModTags.Items.OXIDES)).build(consumer, "from_gold_nugget", true);
+				.addCriterion(HAS_OXIDE, OXIDE_CRITERION).build(consumer, "from_gold_nugget", true);
 
 		ChewerRecipeBuilder.createRecipe(ModItems.OXIDE_POWDER.get(), defaultChewingTime, 6)
 				.setIngredient(Items.NETHERITE_SCRAP)
-				.addCriterion("has_oxide", hasItem(ModTags.Items.OXIDES)).build(consumer, "from_netherite_scrap", true);
+				.addCriterion(HAS_OXIDE, OXIDE_CRITERION).build(consumer, "from_netherite_scrap", true);
 
 		ChewerRecipeBuilder.createRecipe(ModItems.OXIDE_POWDER.get(), defaultChewingTime * 3, 4 * 6 + 4 * 9)
 				.setIngredient(Tags.Items.INGOTS_NETHERITE)
-				.addCriterion("has_oxide", hasItem(ModTags.Items.OXIDES)).build(consumer, "from_netherite_ingot", true);
+				.addCriterion(HAS_OXIDE, OXIDE_CRITERION).build(consumer, "from_netherite_ingot", true);
 	}
 
 	private void registerDigesterRecipes(Consumer<IFinishedRecipe> consumer) {
@@ -518,12 +533,12 @@ public class ModRecipeProvider extends RecipeProvider {
 		DigesterRecipeBuilder.createRecipe(ModFluids.NUTRIENT_SLURRY.get(), 189, defaultFuelAmount)
 				.setIngredient(ModTags.Items.POOR_BIOMASS)
 				.setByproduct(ModItems.DIGESTATE.get(), 0.15f)
-				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_poor_biomass", true);
+				.addCriterion("has_poor_biomass", hasItem(ModTags.Items.POOR_BIOMASS)).build(consumer, "from_poor_biomass", true);
 
 		DigesterRecipeBuilder.createRecipe(ModFluids.NUTRIENT_SLURRY.get(), 351, 2 * defaultFuelAmount)
 				.setIngredient(ModTags.Items.AVERAGE_BIOMASS)
 				.setByproduct(ModItems.DIGESTATE.get(), 0.3f)
-				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_average_biomass", true);
+				.addCriterion("has_average_biomass", hasItem(ModTags.Items.AVERAGE_BIOMASS)).build(consumer, "from_average_biomass", true);
 
 		DigesterRecipeBuilder.createRecipe(ModFluids.NUTRIENT_SLURRY.get(), 351, 2 * defaultFuelAmount)
 				.setIngredient(ModTags.Items.RAW_MEATS)
@@ -533,7 +548,7 @@ public class ModRecipeProvider extends RecipeProvider {
 		DigesterRecipeBuilder.createRecipe(ModFluids.NUTRIENT_SLURRY.get(), 490, 3 * defaultFuelAmount)
 				.setIngredient(ModTags.Items.GOOD_BIOMASS)
 				.setByproduct(ModItems.DIGESTATE.get(), 0.5f)
-				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_good_biomass", true);
+				.addCriterion("has_good_biomass", hasItem(ModTags.Items.GOOD_BIOMASS)).build(consumer, "from_good_biomass", true);
 
 		DigesterRecipeBuilder.createRecipe(ModFluids.NUTRIENT_SLURRY.get(), 490, 3 * defaultFuelAmount)
 				.setIngredient(ModTags.Items.COOKED_MEATS)
@@ -543,7 +558,7 @@ public class ModRecipeProvider extends RecipeProvider {
 		DigesterRecipeBuilder.createRecipe(ModFluids.NUTRIENT_SLURRY.get(), 540, 4 * defaultFuelAmount)
 				.setIngredient(ModTags.Items.SUPERB_BIOMASS)
 				.setByproduct(ModItems.DIGESTATE.get(), 0.6f)
-				.addCriterion("has_biomass", hasItem(ModTags.Items.BIOMASS)).build(consumer, "from_superb_biomass", true);
+				.addCriterion("has_superb_biomass", hasItem(ModTags.Items.SUPERB_BIOMASS)).build(consumer, "from_superb_biomass", true);
 	}
 
 	private void registerSolidifierRecipes(Consumer<IFinishedRecipe> consumer) {
@@ -551,6 +566,10 @@ public class ModRecipeProvider extends RecipeProvider {
 		SolidifierRecipeBuilder.createRecipe(ModItems.NUTRIENT_PASTE.get(), 40, 1)
 				.setFluidIngredient(ModFluids.NUTRIENT_SLURRY.get(), defaultFuelAmount)
 				.addCriterion("has_nutrient_slurry", hasItem(ModItems.NUTRIENT_SLURRY_BUCKET.get())).build(consumer, "from_nutrient_slurry", true);
+
+		SolidifierRecipeBuilder.createRecipe(ModItems.MILK_GEL.get(), 200, 1)
+				.setFluidIngredient(Tags.Fluids.MILK, FluidAttributes.BUCKET_VOLUME)
+				.addCriterion("has_milk", hasItem(Items.MILK_BUCKET)).build(consumer, "from_milk", true);
 	}
 
 	private void registerDecomposerRecipes(Consumer<IFinishedRecipe> consumer) {
@@ -592,27 +611,27 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addCriterion("has_enchanted_golden_apple", hasItem(Items.ENCHANTED_GOLDEN_APPLE)).build(consumer, "from_enchanted_golden_apple", true);
 
 		//rejuvenating mucus from healing/health potions
-		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime/2, 4)
+		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime / 2, 4)
 				.setIngredient(new ItemStackIngredient(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.REGENERATION)))
 				.addByproduct(Items.GLASS_BOTTLE)
 				.addCriterion("has_potion", hasItem(Items.POTION)).build(consumer, "from_regen_potion", true);
 
-		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime/2, 6)
+		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime / 2, 6)
 				.setIngredient(new ItemStackIngredient(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.LONG_REGENERATION)))
 				.addByproduct(Items.GLASS_BOTTLE)
 				.addCriterion("has_potion", hasItem(Items.POTION)).build(consumer, "from_long_regen_potion", true);
 
-		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime/2, 6)
+		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime / 2, 6)
 				.setIngredient(new ItemStackIngredient(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.STRONG_REGENERATION)))
 				.addByproduct(Items.GLASS_BOTTLE)
 				.addCriterion("has_potion", hasItem(Items.POTION)).build(consumer, "from_strong_regen_potion", true);
 
-		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime/2, 4)
+		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime / 2, 4)
 				.setIngredient(new ItemStackIngredient(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.HEALING)))
 				.addByproduct(Items.GLASS_BOTTLE)
 				.addCriterion("has_potion", hasItem(Items.POTION)).build(consumer, "from_healing_potion", true);
 
-		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime/2, 6)
+		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime / 2, 6)
 				.setIngredient(new ItemStackIngredient(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.STRONG_HEALING)))
 				.addByproduct(Items.GLASS_BOTTLE)
 				.addCriterion("has_potion", hasItem(Items.POTION)).build(consumer, "from_strong_healing_potion", true);
@@ -643,7 +662,7 @@ public class ModRecipeProvider extends RecipeProvider {
 		ShapedRecipeBuilder.shapedRecipe(ModItems.OCULUS_KEY.get())
 				.key('F', ModItems.FLESH_LUMP.get()).key('B', Tags.Items.BONES).key('O', ModItems.OCULUS.get()).key('S', ModItems.BONE_SCRAPS.get())
 				.patternLine("FBO").patternLine("SS ")
-				.addCriterion("has_oculus", hasItem(ModItems.OCULUS.get())).build(consumer);
+				.addCriterion(HAS_OCULUS, hasItem(ModItems.OCULUS.get())).build(consumer);
 
 		ShapedRecipeBuilder.shapedRecipe(ModItems.OCULUS.get())
 				.key('F', ModItems.FLESH_LUMP.get()).key('R', ModItems.REJUVENATING_MUCUS.get()).key('L', ModItems.MENISCUS_LENS.get()).key('E', Items.SPIDER_EYE)
@@ -676,7 +695,7 @@ public class ModRecipeProvider extends RecipeProvider {
 		ShapedRecipeBuilder.shapedRecipe(ModItems.INJECTION_DEVICE.get())
 				.key('B', ModItems.GLASS_VIAL.get()).key('S', ModItems.SEWING_KIT_EMPTY.get()).key('I', Items.IRON_INGOT).key('N', Items.IRON_NUGGET)
 				.patternLine("SBN").patternLine("NII").patternLine("  I")
-				.addCriterion("has_glass_vial", hasItem(ModItems.GLASS_VIAL.get())).build(consumer);
+				.addCriterion(HAS_GLASS_VIAL, hasItem(ModItems.GLASS_VIAL.get())).build(consumer);
 
 		ShapelessRecipeBuilder.shapelessRecipe(Items.BONE_MEAL)
 				.addIngredient(ModItems.BONE_SCRAPS.get(), 4)
@@ -698,14 +717,14 @@ public class ModRecipeProvider extends RecipeProvider {
 		ShapedRecipeBuilder.shapedRecipe(ModItems.FLESH_BLOCK_SLAB.get(), 3 * 2)
 				.key('F', ModItems.FLESH_BLOCK.get())
 				.patternLine("FFF")
-				.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK.get())).build(consumer);
+				.addCriterion(HAS_FLESH_BLOCK, hasItem(ModItems.FLESH_BLOCK.get())).build(consumer);
 
 		ShapedRecipeBuilder.shapedRecipe(ModItems.FLESH_BLOCK_STAIRS.get(), 4)
 				.key('F', ModItems.FLESH_BLOCK.get())
 				.patternLine("F  ")
 				.patternLine("FF ")
 				.patternLine("FFF")
-				.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK.get())).build(consumer);
+				.addCriterion(HAS_FLESH_BLOCK, hasItem(ModItems.FLESH_BLOCK.get())).build(consumer);
 
 		ShapelessRecipeBuilder.shapelessRecipe(ModItems.NECROTIC_FLESH.get(), 9)
 				.addIngredient(ModItems.NECROTIC_FLESH_BLOCK.get())
@@ -721,7 +740,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		ShapelessRecipeBuilder.shapelessRecipe(ModItems.FLESH_LUMP.get(), 9)
 				.addIngredient(ModItems.FLESH_BLOCK.get())
-				.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK.get())).build(consumer);
+				.addCriterion(HAS_FLESH_BLOCK, hasItem(ModItems.FLESH_BLOCK.get())).build(consumer);
 
 		ShapelessRecipeBuilder.shapelessRecipe(ModItems.FLESH_LUMP.get())
 				.addIngredient(ModItems.NECROTIC_FLESH.get()).addIngredient(ModItems.REJUVENATING_MUCUS.get())
@@ -741,7 +760,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.key('F', ModItems.FLESH_BLOCK.get())
 				.key('L', ModItems.FLESH_BLOCK_SLAB.get())
 				.patternLine("FLF").patternLine("FSF").patternLine("FLF")
-				.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK.get())).build(consumer);
+				.addCriterion(HAS_FLESH_BLOCK, hasItem(ModItems.FLESH_BLOCK.get())).build(consumer);
 
 		ShapedRecipeBuilder.shapedRecipe(ModItems.DIGESTER.get())
 				.key('S', ModTags.Items.STOMACHS)
@@ -755,51 +774,53 @@ public class ModRecipeProvider extends RecipeProvider {
 				.key('F', ModItems.FLESH_BLOCK.get())
 				.key('L', ModItems.FLESH_BLOCK_SLAB.get())
 				.patternLine("FLF").patternLine("FSF").patternLine("FLF")
-				.addCriterion("has_flesh_block", hasItem(ModItems.FLESH_BLOCK.get())).build(consumer);
+				.addCriterion(HAS_FLESH_BLOCK, hasItem(ModItems.FLESH_BLOCK.get())).build(consumer);
 
 		// reagents ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		String vialSuffix = "_vial";
 
 		//noinspection ConstantConditions
 		ShapelessNbtRecipeBuilder.shapelessRecipe(ReagentItem.getReagentItemStack(ModReagents.MUTAGEN_SERUM.get()))
 				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(ModItems.MUTAGENIC_BILE.get()).addIngredient(ModItems.HORMONE_BILE.get())
-				.addCriterion("has_glass_vial", hasItem(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.MUTAGEN_SERUM.get().getRegistryName().getPath() + "_vial"));
+				.addCriterion(HAS_GLASS_VIAL, hasItem(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.MUTAGEN_SERUM.get().getRegistryName().getPath() + vialSuffix));
 
 		//noinspection ConstantConditions
 		ShapelessNbtRecipeBuilder.shapelessRecipe(ReagentItem.getReagentItemStack(ModReagents.REJUVENATION_SERUM.get()))
 				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(ModItems.REJUVENATING_MUCUS.get()).addIngredient(ModItems.HORMONE_BILE.get()).addIngredient(ModItems.NUTRIENT_PASTE.get())
-				.addCriterion("has_glass_vial", hasItem(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.REJUVENATION_SERUM.get().getRegistryName().getPath() + "_vial"));
+				.addCriterion(HAS_GLASS_VIAL, hasItem(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.REJUVENATION_SERUM.get().getRegistryName().getPath() + vialSuffix));
 
 		//noinspection ConstantConditions
 		ShapelessNbtRecipeBuilder.shapelessRecipe(ReagentItem.getReagentItemStack(ModReagents.GROWTH_SERUM.get()))
 				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(ModItems.NUTRIENT_PASTE.get()).addIngredient(ModItems.HORMONE_BILE.get()).addIngredient(Items.BONE_MEAL)
-				.addCriterion("has_glass_vial", hasItem(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.GROWTH_SERUM.get().getRegistryName().getPath() + "_vial"));
+				.addCriterion(HAS_GLASS_VIAL, hasItem(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.GROWTH_SERUM.get().getRegistryName().getPath() + vialSuffix));
 
 		//noinspection ConstantConditions
 		ShapelessNbtRecipeBuilder.shapelessRecipe(ReagentItem.getReagentItemStack(ModReagents.DECAY_AGENT.get()))
 				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(ModItems.ERODING_BILE.get()).addIngredient(ModItems.HORMONE_BILE.get())
-				.addCriterion("has_glass_vial", hasItem(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.DECAY_AGENT.get().getRegistryName().getPath() + "_vial"));
+				.addCriterion(HAS_GLASS_VIAL, hasItem(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.DECAY_AGENT.get().getRegistryName().getPath() + vialSuffix));
 
 		//noinspection ConstantConditions
 		ShapelessNbtRecipeBuilder.shapelessRecipe(ReagentItem.getReagentItemStack(ModReagents.BREEDING_STIMULANT.get()))
 				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(ModItems.NUTRIENT_BAR.get()).addIngredient(ModItems.HORMONE_BILE.get())
-				.addCriterion("has_glass_vial", hasItem(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.BREEDING_STIMULANT.get().getRegistryName().getPath() + "_vial"));
+				.addCriterion(HAS_GLASS_VIAL, hasItem(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.BREEDING_STIMULANT.get().getRegistryName().getPath() + vialSuffix));
 
 		//noinspection ConstantConditions
 		ShapelessNbtRecipeBuilder.shapelessRecipe(ReagentItem.getReagentItemStack(ModReagents.CLEANSING_SERUM.get()))
-				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(ModItems.REJUVENATING_MUCUS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get()).addIngredient(Items.MILK_BUCKET, 2)
-				.addCriterion("has_glass_vial", hasItem(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.CLEANSING_SERUM.get().getRegistryName().getPath() + "_vial"));
+				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(ModItems.REJUVENATING_MUCUS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get()).addIngredient(ModItems.MILK_GEL.get(), 2)
+				.addCriterion(HAS_GLASS_VIAL, hasItem(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.CLEANSING_SERUM.get().getRegistryName().getPath() + vialSuffix));
 
 		//noinspection ConstantConditions
 		ShapelessNbtRecipeBuilder.shapelessRecipe(ReagentItem.getReagentItemStack(ModReagents.INSOMNIA_CURE.get()))
 				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(ModItems.REJUVENATING_MUCUS.get(), 3).addIngredient(ModItems.HORMONE_BILE.get())
 				.addIngredient(ReagentItem.getReagentItemStack(ModReagents.CLEANSING_SERUM.get())).addIngredient(ModItems.NUTRIENT_PASTE.get())
-				.addCriterion("has_glass_vial", hasItem(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.INSOMNIA_CURE.get().getRegistryName().getPath() + "_vial"));
+				.addCriterion(HAS_GLASS_VIAL, hasItem(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.INSOMNIA_CURE.get().getRegistryName().getPath() + vialSuffix));
 
 		//noinspection ConstantConditions
 		ShapelessNbtRecipeBuilder.shapelessRecipe(ReagentItem.getReagentItemStack(ModReagents.ABSORPTION_BOOST.get()))
 				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(ModItems.ERODING_BILE.get()).addIngredient(ModItems.HORMONE_BILE.get())
 				.addIngredient(ReagentItem.getReagentItemStack(ModReagents.GROWTH_SERUM.get())).addIngredient(Items.GOLDEN_APPLE)
-				.addCriterion("has_glass_vial", hasItem(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.ABSORPTION_BOOST.get().getRegistryName().getPath() + "_vial"));
+				.addCriterion(HAS_GLASS_VIAL, hasItem(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.ABSORPTION_BOOST.get().getRegistryName().getPath() + vialSuffix));
 
 		// food ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -813,11 +834,11 @@ public class ModRecipeProvider extends RecipeProvider {
 		// misc ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		ShapelessRecipeBuilder.shapelessRecipe(Items.DIORITE)
 				.addIngredient(Items.COBBLESTONE).addIngredient(ModItems.SILICATE_PASTE.get()).addIngredient(ModItems.SILICATE_PASTE.get())
-				.addCriterion("has_silicate_paste", hasItem(ModItems.SILICATE_PASTE.get())).build(consumer, BiomancyMod.createRL("diorite_from_silicate"));
+				.addCriterion(HAS_SILICATE_PASTE, hasItem(ModItems.SILICATE_PASTE.get())).build(consumer, BiomancyMod.createRL("diorite_from_silicate"));
 
 		ShapelessRecipeBuilder.shapelessRecipe(Items.RED_SAND)
 				.addIngredient(Items.SAND).addIngredient(ModItems.OXIDE_POWDER.get()).addIngredient(ModItems.OXIDE_POWDER.get())
-				.addCriterion("has_oxide_powder", hasItem(ModItems.OXIDE_POWDER.get())).build(consumer, BiomancyMod.createRL("red_sand_from_oxide"));
+				.addCriterion(HAS_OXIDE_POWDER, hasItem(ModItems.OXIDE_POWDER.get())).build(consumer, BiomancyMod.createRL("red_sand_from_oxide"));
 
 		ShapedRecipeBuilder.shapedRecipe(Items.DIRT)
 				.key('S', Items.SAND)
@@ -833,12 +854,12 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		ShapelessRecipeBuilder.shapelessRecipe(Items.GUNPOWDER, 2)
 				.addIngredient(Items.CHARCOAL).addIngredient(ModItems.SILICATE_PASTE.get(), 3).addIngredient(Items.BLAZE_POWDER, 2)
-				.addCriterion("has_silicate_paste", hasItem(ModItems.SILICATE_PASTE.get())).build(consumer, BiomancyMod.createRL("gunpowder_from_silicate_blaze"));
+				.addCriterion(HAS_SILICATE_PASTE, hasItem(ModItems.SILICATE_PASTE.get())).build(consumer, BiomancyMod.createRL("gunpowder_from_silicate_blaze"));
 
 		// special /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		CustomRecipeBuilder.customRecipe(ModRecipes.REPAIR_SPECIAL_SEWING_KIT.get()).build(consumer, BiomancyMod.MOD_ID + ":" + "sewing_kit_nbt");
-		CustomRecipeBuilder.customRecipe(ModRecipes.CRAFTING_SPECIAL_BOOMLING_GRENADE.get()).build(consumer, BiomancyMod.MOD_ID + ":" + "boomling_grenade");
-		CustomRecipeBuilder.customRecipe(ModRecipes.CRAFTING_SPECIAL_MASON_BEETLE.get()).build(consumer, BiomancyMod.MOD_ID + ":" + "mason_beetle");
+		CustomRecipeBuilder.customRecipe(ModRecipes.CRAFTING_SPECIAL_BOOMLING.get()).build(consumer, BiomancyMod.MOD_ID + ":" + "boomling");
+		CustomRecipeBuilder.customRecipe(ModRecipes.CRAFTING_SPECIAL_BOOMLING_GUN.get()).build(consumer, BiomancyMod.MOD_ID + ":" + "boomling_gun");
 		CustomRecipeBuilder.customRecipe(ModRecipes.CRAFTING_SPECIAL_ADD_USER_TO_KEY.get()).build(consumer, BiomancyMod.MOD_ID + ":" + "add_user_to_key");
 	}
 

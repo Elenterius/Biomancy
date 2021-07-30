@@ -22,6 +22,9 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 public abstract class AbstractProjectileEntity extends ProjectileEntity implements IEntityAdditionalSpawnData {
 
+	public static final float DEFAULT_DRAG = 0.99f;
+	public static final float DEFAULT_WATER_DRAG = 0.8f;
+
 	private float damage = 2f;
 	private byte knockback = 0;
 
@@ -29,24 +32,22 @@ public abstract class AbstractProjectileEntity extends ProjectileEntity implemen
 //	private double accelerationY = 0;
 //	private double accelerationZ = 0;
 
-	public AbstractProjectileEntity(EntityType<? extends AbstractProjectileEntity> entityType, World world) {
+	protected AbstractProjectileEntity(EntityType<? extends AbstractProjectileEntity> entityType, World world) {
 		super(entityType, world);
 	}
 
-	public AbstractProjectileEntity(EntityType<? extends AbstractProjectileEntity> entityType, World world, double x, double y, double z) {
+	protected AbstractProjectileEntity(EntityType<? extends AbstractProjectileEntity> entityType, World world, double x, double y, double z) {
 		this(entityType, world);
 		setPosition(x, y, z);
 	}
 
-	public AbstractProjectileEntity(EntityType<? extends AbstractProjectileEntity> entityType, World world, LivingEntity shooter) {
+	protected AbstractProjectileEntity(EntityType<? extends AbstractProjectileEntity> entityType, World world, LivingEntity shooter) {
 		this(entityType, world, shooter.getPosX(), shooter.getPosYEye() - 0.1f, shooter.getPosZ());
 		setShooter(shooter);
 	}
 
 	@Override
-	protected void registerData() {
-
-	}
+	protected void registerData() {}
 
 	@Override
 	public IPacket<?> createSpawnPacket() {
@@ -104,20 +105,20 @@ public abstract class AbstractProjectileEntity extends ProjectileEntity implemen
 		damage = damageIn;
 	}
 
-	public void setKnockback(byte knockbackIn) {
-		knockback = knockbackIn;
-	}
-
 	public byte getKnockback() {
 		return knockback;
 	}
 
+	public void setKnockback(byte knockbackIn) {
+		knockback = knockbackIn;
+	}
+
 	public float getDrag() {
-		return 0.99f;
+		return DEFAULT_DRAG;
 	}
 
 	public float getWaterDrag() {
-		return 0.8f;
+		return DEFAULT_WATER_DRAG;
 	}
 
 	public float getGravity() {
@@ -165,10 +166,8 @@ public abstract class AbstractProjectileEntity extends ProjectileEntity implemen
 
 	@Override
 	protected void onImpact(RayTraceResult result) {
-		super.onImpact(result);
-		if (!world.isRemote) {
-			remove();
-		}
+		super.onImpact(result); //call onEntityHit and onBlockHit before removing the projectile
+		if (!world.isRemote) remove();
 	}
 
 	public void spawnParticle(double x, double y, double z) {

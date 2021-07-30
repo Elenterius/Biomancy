@@ -1,0 +1,11 @@
+{
+  "type": "biomancy:solidifying",
+  "ingredient": {
+    "fluidTag": "forge:milk",
+    "amount": 1000
+  },
+  "result": {
+    "item": "biomancy:milk_gel"
+  },
+  "time": 200
+}

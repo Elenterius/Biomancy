@@ -1,6 +1,8 @@
 package com.github.elenterius.biomancy.entity.mutation;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.init.ModEntityTypes;
+import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -8,7 +10,6 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
@@ -16,6 +17,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -35,15 +37,15 @@ public class SilkyWoolSheepEntity extends SheepEntity {
 		return MobEntity.func_233666_p_().createMutableAttribute(Attributes.MAX_HEALTH, 8d).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.23d);
 	}
 
-	@Override
-	public DyeColor getFleeceColor() {
-		return DyeColor.WHITE;
-	}
-
-	@Override
-	public void setFleeceColor(DyeColor color) {
-		super.setFleeceColor(DyeColor.WHITE);
-	}
+//	@Override
+//	public DyeColor getFleeceColor() {
+//		return DyeColor.WHITE;
+//	}
+//
+//	@Override
+//	public void setFleeceColor(DyeColor color) {
+//		super.setFleeceColor(DyeColor.WHITE);
+//	}
 
 	@Override
 	public ResourceLocation getLootTable() {
@@ -82,6 +84,11 @@ public class SilkyWoolSheepEntity extends SheepEntity {
 				itemEntity.setMotion(itemEntity.getMotion().add((rand.nextFloat() - rand.nextFloat()) * 0.1f, rand.nextFloat() * 0.05f, (rand.nextFloat() - rand.nextFloat()) * 0.1f));
 			}
 		}
+	}
+
+	@Override
+	public SilkyWoolSheepEntity createChild(ServerWorld world, AgeableEntity mate) {
+		return ModEntityTypes.SILKY_WOOL_SHEEP.get().create(world);
 	}
 
 }

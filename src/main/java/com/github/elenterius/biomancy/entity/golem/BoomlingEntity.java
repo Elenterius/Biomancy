@@ -1,13 +1,15 @@
 package com.github.elenterius.biomancy.entity.golem;
 
 import com.github.elenterius.biomancy.init.ModItems;
+import com.github.elenterius.biomancy.util.PotionUtilExt;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.passive.CatEntity;
+import net.minecraft.entity.passive.OcelotEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PotionEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -21,28 +23,32 @@ import net.minecraft.pathfinding.ClimberPathNavigator;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionUtils;
 import net.minecraft.potion.Potions;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 public class BoomlingEntity extends OwnableCreatureEntity {
 
 	private static final DataParameter<Byte> CLIMBING = EntityDataManager.createKey(BoomlingEntity.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte> STATE = EntityDataManager.createKey(BoomlingEntity.class, DataSerializers.BYTE);
 	private static final DataParameter<Integer> COLOR = EntityDataManager.createKey(BoomlingEntity.class, DataSerializers.VARINT);
+	private int prevFuseTimer;
+	private int fuseTimer;
+	private short maxFuseTimer = 22;
 
 	public BoomlingEntity(EntityType<? extends BoomlingEntity> entityType, World world) {
 		super(entityType, world);
@@ -55,6 +61,35 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 1d);
 	}
 
+	public static void spawnEffectAOE(World world, @Nullable LivingEntity attacker, Vector3d pos, Potion potion, Collection<EffectInstance> effects, int color) {
+		AreaEffectCloudEntity aoeCloud = new AreaEffectCloudEntity(world, pos.x, pos.y, pos.z);
+		aoeCloud.setOwner(attacker);
+		aoeCloud.setRadius(3f);
+		aoeCloud.setRadiusOnUse(-0.5f);
+		aoeCloud.setWaitTime(10);
+		aoeCloud.setRadiusPerTick(-aoeCloud.getRadius() / aoeCloud.getDuration());
+		aoeCloud.setColor(color);
+		aoeCloud.setPotion(potion);
+		for (EffectInstance effect : effects) aoeCloud.addEffect(new EffectInstance(effect));
+
+		world.addEntity(aoeCloud);
+
+		int event = potion.hasInstantEffect() ? Constants.WorldEvents.POTION_IMPACT : Constants.WorldEvents.POTION_IMPACT_INSTANT;
+		world.playEvent(event, new BlockPos(pos), color);
+	}
+
+	public static void causeWaterAOE(World world, Entity attacker) {
+		AxisAlignedBB axisalignedbb = attacker.getBoundingBox().grow(4d, 2d, 4d);
+		List<LivingEntity> entities = world.getEntitiesWithinAABB(LivingEntity.class, axisalignedbb, PotionEntity.WATER_SENSITIVE);
+		if (!entities.isEmpty()) {
+			for (LivingEntity victim : entities) {
+				if (attacker.getDistanceSq(victim) < 16d) {
+					victim.attackEntityFrom(DamageSource.causeIndirectMagicDamage(victim, attacker), 1f);
+				}
+			}
+		}
+	}
+
 	@Override
 	public CreatureAttribute getCreatureAttribute() {
 		return CreatureAttribute.ARTHROPOD;
@@ -63,28 +98,18 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 	@Override
 	protected void registerGoals() {
 		goalSelector.addGoal(1, new SwimGoal(this));
-		goalSelector.addGoal(3, new LeapAtTargetGoal(this, 0.4f));
-		goalSelector.addGoal(4, new MeleeAttackGoal(this, 1f, true));
-		goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 0.8f));
+		goalSelector.addGoal(2, new ExplodeGoal());
+		goalSelector.addGoal(3, new AvoidEntityGoal<>(this, OcelotEntity.class, 6f, 1d, 1.2d));
+		goalSelector.addGoal(3, new AvoidEntityGoal<>(this, CatEntity.class, 6f, 1d, 1.2d));
+		goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4f));
+		goalSelector.addGoal(5, new MeleeAttackGoal(this, 1f, true));
+		goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 0.8f));
+		goalSelector.addGoal(7, new LookRandomlyGoal(this));
+		goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 8f));
 
-		goalSelector.addGoal(6, new LookRandomlyGoal(this));
-		goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 8f));
-
-		targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 10, true, false, (target) ->
-				getOwner().map(owner -> shouldAttackEntity(target, owner)).orElse(true)));
-		targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, (target) -> {
-			if (target instanceof IMob) {
-				if (target instanceof IOwnableCreature) {
-					Optional<PlayerEntity> owner = getOwner();
-					if (owner.isPresent()) {
-						return shouldAttackEntity(target, owner.get());
-					}
-				}
-				return true;
-			}
-			return false;
-		}));
+		targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, -1, true, false,
+				target -> getOwner().map(owner -> shouldAttackEntity(target, owner)).orElse(true)));
+		targetSelector.addGoal(2, new HurtByTargetGoal(this));
 	}
 
 	@Override
@@ -92,6 +117,23 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 		super.registerData();
 		dataManager.register(CLIMBING, (byte) 0);
 		dataManager.register(COLOR, 0);
+		dataManager.register(STATE, (byte) Flags.setFlag(0, Flags.IDLE));
+	}
+
+	@Override
+	public void writeAdditional(CompoundNBT nbt) {
+		super.writeAdditional(nbt);
+		nbt.putShort("MaxFuseTime", maxFuseTimer);
+		nbt.putBoolean("Ignited", isIgnited());
+	}
+
+	@Override
+	public void readAdditional(CompoundNBT nbt) {
+		super.readAdditional(nbt);
+		if (nbt.contains("MaxFuseTime", Constants.NBT.TAG_ANY_NUMERIC)) {
+			maxFuseTimer = nbt.getShort("MaxFuseTime");
+		}
+		setIgnited(nbt.getBoolean("Ignited"));
 	}
 
 	@Override
@@ -110,7 +152,7 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 				if (--n <= 0) {
 					Potion potion = ForgeRegistries.POTION_TYPES.getValue(key);
 					if (potion != null && potion != Potions.EMPTY) {
-						setStoredPotion(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), potion));
+						setStoredPotion(PotionUtilExt.addPotionToItemStack(new ItemStack(Items.POTION), potion));
 						break;
 					}
 				}
@@ -121,8 +163,31 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 
 	@Override
 	public void tick() {
+		if (isAlive()) {
+			prevFuseTimer = fuseTimer;
+			if (isIgnited()) {
+				setIdle(false);
+			}
+
+			if (!isIdle()) {
+				if (fuseTimer == 0) playSound(SoundEvents.ENTITY_CREEPER_PRIMED, 1f, 0.5f);
+				if (++fuseTimer >= maxFuseTimer) {
+					fuseTimer = maxFuseTimer;
+					explode();
+				}
+			}
+			else {
+				if (--fuseTimer < 0) fuseTimer = 0;
+			}
+		}
+
 		super.tick();
 		if (!world.isRemote) setBesideClimbableBlock(collidedHorizontally);
+	}
+
+	@Override
+	public boolean attackEntityAsMob(Entity entityIn) {
+		return true;
 	}
 
 	public boolean isBesideClimbableBlock() {
@@ -151,7 +216,41 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 
 	public void setStoredPotion(ItemStack stack) {
 		setItemStackToSlot(EquipmentSlotType.MAINHAND, stack);
-		getDataManager().set(COLOR, stack.isEmpty() ? 0 : PotionUtils.getColor(stack));
+		getDataManager().set(COLOR, stack.isEmpty() ? 0 : PotionUtilExt.getColor(stack));
+	}
+
+	public byte getState() {
+		return getDataManager().get(STATE);
+	}
+
+	public boolean isIdle() {
+		return Flags.isFlagSet(getDataManager().get(STATE), Flags.IDLE);
+	}
+
+	public void setIdle(boolean bool) {
+		setStateFlag(Flags.IDLE, bool);
+	}
+
+	public boolean isIgnited() {
+		return Flags.isFlagSet(getDataManager().get(STATE), Flags.IGNITED);
+	}
+
+	public void setIgnited(boolean bool) {
+		setStateFlag(Flags.IGNITED, bool);
+	}
+
+	public void setStateFlag(Flags flag, boolean bool) {
+		byte value = getDataManager().get(STATE);
+		byte flags = (byte) (bool ? Flags.setFlag(value, flag) : Flags.unsetFlag(value, flag));
+		getDataManager().set(STATE, flags);
+	}
+
+	public short getMaxFuseTimer() {
+		return maxFuseTimer;
+	}
+
+	public void setMaxFuseTimer(short maxFuseTimer) {
+		this.maxFuseTimer = maxFuseTimer;
 	}
 
 	public int getColor() {
@@ -167,50 +266,44 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 	public void onDeath(@Nonnull DamageSource cause) {
 		super.onDeath(cause);
 		if (!world.isRemote && !cause.isMagicDamage() && !cause.isFireDamage() && !cause.isExplosion()) {
-			ItemStack stack = getStoredPotion();
-			if (stack.isEmpty()) return;
-
-			Potion potion = PotionUtils.getPotionFromItem(stack);
-			List<EffectInstance> effects = PotionUtils.getEffectsFromStack(stack);
-			if (potion == Potions.WATER && effects.isEmpty()) {
-				AxisAlignedBB axisalignedbb = getBoundingBox().grow(4d, 2d, 4d);
-				List<LivingEntity> entities = world.getEntitiesWithinAABB(LivingEntity.class, axisalignedbb, PotionEntity.WATER_SENSITIVE);
-				if (!entities.isEmpty()) {
-					Optional<PlayerEntity> owner = getOwner();
-					LivingEntity shooter = owner.isPresent() ? owner.get() : this;
-					for (LivingEntity livingEntity : entities) {
-						if (getDistanceSq(livingEntity) < 16d) {
-							livingEntity.attackEntityFrom(DamageSource.causeIndirectMagicDamage(livingEntity, shooter), 1f);
-						}
-					}
-				}
-			}
-			else if (!effects.isEmpty()) {
-				AreaEffectCloudEntity aoeCloud = new AreaEffectCloudEntity(world, getPositionVec().x, getPositionVec().y, getPositionVec().z);
-				Optional<PlayerEntity> owner = getOwner();
-				aoeCloud.setOwner(owner.isPresent() ? owner.get() : this);
-
-				aoeCloud.setRadius(3f);
-				aoeCloud.setRadiusOnUse(-0.5f);
-				aoeCloud.setWaitTime(10);
-				aoeCloud.setRadiusPerTick(-aoeCloud.getRadius() / (float) aoeCloud.getDuration());
-				aoeCloud.setPotion(potion);
-
-				for (EffectInstance effect : PotionUtils.getFullEffectsFromItem(stack)) {
-					aoeCloud.addEffect(new EffectInstance(effect));
-				}
-
-				CompoundNBT nbt = stack.getTag();
-				if (nbt != null && nbt.contains("CustomPotionColor", Constants.NBT.TAG_ANY_NUMERIC)) {
-					aoeCloud.setColor(nbt.getInt("CustomPotionColor"));
-				}
-
-				world.addEntity(aoeCloud);
-
-				int event = potion.hasInstantEffect() ? Constants.WorldEvents.POTION_IMPACT : Constants.WorldEvents.POTION_IMPACT_INSTANT;
-				world.playEvent(event, getPosition(), PotionUtils.getColor(stack));
-			}
+			explode();
 		}
+	}
+
+	private void explode() {
+		if (world.isRemote) return;
+
+		ItemStack stack = getStoredPotion();
+		if (stack.isEmpty()) return;
+
+		Potion potion = PotionUtilExt.getPotionFromItem(stack);
+		List<EffectInstance> effects = PotionUtilExt.getEffectsFromStack(stack);
+		if (potion == Potions.WATER && effects.isEmpty()) {
+			causeWaterAOE();
+			remove();
+		}
+		else if (!effects.isEmpty()) {
+			spawnEffectAOE(stack, potion);
+			remove();
+		}
+	}
+
+	private void spawnEffectAOE(ItemStack stack, Potion potion) {
+		Optional<PlayerEntity> owner = getOwner();
+		LivingEntity shooter = owner.isPresent() ? owner.get() : this;
+		CompoundNBT nbt = stack.getTag();
+		int color = PotionUtilExt.getColor(stack);
+		if (nbt != null && nbt.contains("CustomPotionColor", Constants.NBT.TAG_ANY_NUMERIC)) {
+			color = nbt.getInt("CustomPotionColor");
+		}
+		List<EffectInstance> effects = PotionUtilExt.getFullEffectsFromItem(stack);
+		spawnEffectAOE(world, shooter, getPositionVec(), potion, effects, color);
+	}
+
+	private void causeWaterAOE() {
+		Optional<PlayerEntity> owner = getOwner();
+		LivingEntity shooter = owner.isPresent() ? owner.get() : this;
+		causeWaterAOE(world, shooter);
 	}
 
 	@Override
@@ -219,12 +312,9 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 
 		if (!player.world.isRemote() && player.isSneaking()) {
 			setDead();
-			ItemStack stack = ModItems.BOOMLING_GRENADE.get().setPotionItemStack(new ItemStack(ModItems.BOOMLING_GRENADE.get()), getStoredPotion().copy());
+			ItemStack stack = PotionUtilExt.setPotionOfHost(new ItemStack(ModItems.BOOMLING.get()), getStoredPotion().copy());
 			if (hasCustomName()) stack.setDisplayName(getCustomName());
-			if (player.addItemStackToInventory(stack)) {
-				setStoredPotion(ItemStack.EMPTY);
-			}
-			else {
+			if (!player.addItemStackToInventory(stack)) {
 				entityDropItem(stack);
 			}
 		}
@@ -281,6 +371,57 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 	@Override
 	public boolean tryToReturnIntoPlayerInventory() {
 		return false;
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public float getFuseFlashIntensity(float partialTicks) {
+		return MathHelper.lerp(partialTicks, prevFuseTimer, fuseTimer) / (maxFuseTimer - 2f);
+	}
+
+	public enum Flags {
+		IGNITED, IDLE;
+
+		private final int bitPosition = 1 << ordinal();
+
+		public static boolean isFlagSet(int value, Flags flag) {
+			return (value & flag.bitPosition) != 0;
+		}
+
+		public static int setFlag(int value, Flags flag) {
+			return value | flag.bitPosition;
+		}
+
+		public static int unsetFlag(int value, Flags flag) {
+			return value & ~flag.bitPosition;
+		}
+
+	}
+
+	class ExplodeGoal extends Goal {
+
+		public ExplodeGoal() {
+			setMutexFlags(EnumSet.of(Flag.MOVE));
+		}
+
+		@Override
+		public boolean shouldExecute() {
+			return !isIdle() || getAttackTarget() != null && getDistanceSq(getAttackTarget()) < 9d;
+		}
+
+		@Override
+		public void startExecuting() {
+			navigator.clearPath();
+		}
+
+		@Override
+		public void tick() {
+			if (getAttackTarget() == null || getDistanceSq(getAttackTarget()) > 49d) {
+				setIdle(true);
+			}
+			else {
+				setIdle(!getEntitySenses().canSee(getAttackTarget()));
+			}
+		}
 	}
 
 }

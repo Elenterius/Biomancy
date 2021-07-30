@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:biomancy/solidifier",
+  "display": {
+    "icon": {
+      "item": "biomancy:nutrient_paste"
+    },
+    "title": {
+      "translate": "advancements.biomancy.nutrient_paste.title"
+    },
+    "description": {
+      "translate": "advancements.biomancy.nutrient_paste.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "has_nutrient_paste": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "biomancy:nutrient_paste"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_nutrient_paste"
+    ]
+  ]
+}

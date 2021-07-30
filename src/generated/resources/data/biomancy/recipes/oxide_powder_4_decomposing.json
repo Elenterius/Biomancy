@@ -1,0 +1,14 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "biomancy:milk_gel"
+    },
+    "count": 2
+  },
+  "byproducts": [],
+  "result": {
+    "item": "biomancy:oxide_powder"
+  },
+  "time": 200
+}

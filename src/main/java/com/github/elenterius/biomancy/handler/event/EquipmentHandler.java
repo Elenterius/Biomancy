@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.item.OculiGogglesArmorItem;
+import com.github.elenterius.biomancy.item.weapon.FleshbornGuanDaoItem;
 import com.github.elenterius.biomancy.item.weapon.KhopeshItem;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
@@ -24,23 +25,24 @@ public final class EquipmentHandler {
 	@SubscribeEvent
 	public static void onLivingEquipmentChange(final LivingEquipmentChangeEvent event) {
 		if (!event.getEntityLiving().isServerWorld()) return;
+		LivingEntity entity = event.getEntityLiving();
 
 		if (event.getSlot() == EquipmentSlotType.HEAD) {
 			OculiGogglesArmorItem goggles = ModItems.OCULI_OF_UNVEILING.get();
 			if (event.getFrom().getItem() == goggles && event.getTo().getItem() != goggles) { // un-equip
-				goggles.cancelEffect(event.getEntityLiving());
+				goggles.cancelEffect(entity);
 			}
 		}
 
 		if (event.getSlot() == EquipmentSlotType.MAINHAND) {
 			//old item
-			if (event.getFrom().getItem() instanceof KhopeshItem) {
-				KhopeshItem.removeSpecialAttributeModifiers(event.getEntityLiving());
+			if (event.getFrom().getItem() instanceof FleshbornGuanDaoItem) {
+				FleshbornGuanDaoItem.removeSpecialAttributeModifiers(entity);
 			}
 
 			//new item
-			if (event.getTo().getItem() instanceof KhopeshItem && event.getEntityLiving().isPassenger()) {
-				KhopeshItem.applySpecialAttributeModifiers(event.getEntityLiving());
+			if (event.getTo().getItem() instanceof FleshbornGuanDaoItem && entity.isPassenger()) {
+				FleshbornGuanDaoItem.applySpecialAttributeModifiers(entity);
 			}
 		}
 	}

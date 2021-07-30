@@ -17,7 +17,7 @@ import java.util.function.Predicate;
 
 public class ToothGunItem extends ProjectileWeaponItem {
 
-	public static final Predicate<ItemStack> VALID_AMMO_ITEM = (stack) -> stack.getItem() == ModItems.NUTRIENT_PASTE.get();
+	public static final Predicate<ItemStack> VALID_AMMO_ITEM = stack -> stack.getItem() == ModItems.NUTRIENT_PASTE.get();
 
 	public ToothGunItem(Properties builder) {
 		super(builder, 1.25f, 0.92f, 5f, 6, 4 * 20);

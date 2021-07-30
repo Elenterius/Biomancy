@@ -9,7 +9,11 @@
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": 1
+              "count": {
+                "min": 6.0,
+                "max": 9.0,
+                "type": "minecraft:uniform"
+              }
             },
             {
               "function": "minecraft:looting_enchant",
@@ -19,7 +23,7 @@
               }
             }
           ],
-          "name": "biomancy:flesh_block"
+          "name": "biomancy:necrotic_flesh"
         }
       ]
     }

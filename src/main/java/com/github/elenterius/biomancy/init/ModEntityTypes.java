@@ -2,20 +2,25 @@ package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.entity.BeetlingEntity;
+import com.github.elenterius.biomancy.entity.aberration.FailedCowEntity;
 import com.github.elenterius.biomancy.entity.aberration.FailedSheepEntity;
 import com.github.elenterius.biomancy.entity.aberration.FleshBlobEntity;
+import com.github.elenterius.biomancy.entity.aberration.OculusObserverEntity;
 import com.github.elenterius.biomancy.entity.golem.BoomlingEntity;
 import com.github.elenterius.biomancy.entity.golem.FleshkinEntity;
 import com.github.elenterius.biomancy.entity.hybrid.CrocospiderEntity;
 import com.github.elenterius.biomancy.entity.mutation.ChromaSheepEntity;
+import com.github.elenterius.biomancy.entity.mutation.NutrientSlurryCowEntity;
 import com.github.elenterius.biomancy.entity.mutation.SilkyWoolSheepEntity;
 import com.github.elenterius.biomancy.entity.mutation.ThickWoolSheepEntity;
+import com.github.elenterius.biomancy.entity.projectile.BoomlingProjectileEntity;
 import com.github.elenterius.biomancy.entity.projectile.ToothProjectileEntity;
 import com.github.elenterius.biomancy.entity.projectile.WitherSkullProjectileEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
+import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.passive.SheepEntity;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
@@ -29,26 +34,30 @@ public final class ModEntityTypes {
 
 	//Aberrations
 	public static final RegistryObject<EntityType<FleshBlobEntity>> FLESH_BLOB = register("flesh_blob", EntityType.Builder.create(FleshBlobEntity::new, EntityClassification.CREATURE).size(0.75F, 0.75F));
+	public static final RegistryObject<EntityType<OculusObserverEntity>> OCULUS_OBSERVER = register("oculus_observer", EntityType.Builder.create(OculusObserverEntity::new, EntityClassification.CREATURE).size(0.6F, 0.5F));
 	public static final RegistryObject<EntityType<FailedSheepEntity>> FAILED_SHEEP = register("failed_sheep", EntityType.Builder.create(FailedSheepEntity::new, EntityClassification.CREATURE).size(0.9f, 1.3f).trackingRange(10));
+	public static final RegistryObject<EntityType<FailedCowEntity>> FAILED_COW = register("failed_cow", EntityType.Builder.create(FailedCowEntity::new, EntityClassification.CREATURE).size(0.9f, 1.4f).trackingRange(10));
 
 	//Golems & Pets
 	public static final RegistryObject<EntityType<FleshkinEntity>> FLESHKIN = register("fleshkin", EntityType.Builder.create(FleshkinEntity::new, EntityClassification.MONSTER).size(0.6f, 1.95f).trackingRange(10));
 	public static final RegistryObject<EntityType<BoomlingEntity>> BOOMLING = register("boomling", EntityType.Builder.create(BoomlingEntity::new, EntityClassification.MONSTER).size(0.4F, 0.35F));
 
 	public static final RegistryObject<EntityType<BeetlingEntity>> BEETLING = register("beetling", EntityType.Builder.create(BeetlingEntity::new, EntityClassification.CREATURE).size(0.475F, 0.34F));
-	//	public static final RegistryObject<EntityType<MasonBeetleEntity>> MASON_BEETLE = register("mason_beetle", EntityType.Builder.create(MasonBeetleEntity::new, EntityClassification.CREATURE).size(0.475F, 0.34F));
 	public static final RegistryObject<EntityType<CrocospiderEntity>> BROOD_MOTHER = register("brood_mother", EntityType.Builder.create(CrocospiderEntity::new, EntityClassification.MONSTER).size(1.6F, 0.7F));
 
 	//GMOs
 	public static final RegistryObject<EntityType<ChromaSheepEntity>> CHROMA_SHEEP = register("chroma_sheep", EntityType.Builder.create(ChromaSheepEntity::new, EntityClassification.CREATURE).size(0.9f, 1.3f).trackingRange(10));
 	public static final RegistryObject<EntityType<SilkyWoolSheepEntity>> SILKY_WOOL_SHEEP = register("silky_wool_sheep", EntityType.Builder.create(SilkyWoolSheepEntity::new, EntityClassification.CREATURE).size(0.9f, 1.3f).trackingRange(10));
 	public static final RegistryObject<EntityType<ThickWoolSheepEntity>> THICK_WOOL_SHEEP = register("thick_wool_sheep", EntityType.Builder.create(ThickWoolSheepEntity::new, EntityClassification.CREATURE).size(0.9f, 1.3f).trackingRange(10));
+	public static final RegistryObject<EntityType<NutrientSlurryCowEntity>> NUTRIENT_SLURRY_COW = register("nutrient_slurry_cow", EntityType.Builder.create(NutrientSlurryCowEntity::new, EntityClassification.CREATURE).size(0.9f, 1.4f).trackingRange(10));
 
 	//Projectiles
 	public static final RegistryObject<EntityType<ToothProjectileEntity>> TOOTH_PROJECTILE = register("tooth_projectile", EntityType.Builder.<ToothProjectileEntity>create(ToothProjectileEntity::new, EntityClassification.MISC).size(0.25f, 0.25f).updateInterval(10));
 	public static final RegistryObject<EntityType<WitherSkullProjectileEntity>> WITHER_SKULL_PROJECTILE = register("wither_skull", EntityType.Builder.<WitherSkullProjectileEntity>create(WitherSkullProjectileEntity::new, EntityClassification.MISC).size(0.3125f, 0.3125f).updateInterval(10));
+	public static final RegistryObject<EntityType<BoomlingProjectileEntity>> BOOMLING_PROJECTILE = register("boomling_projectile", EntityType.Builder.<BoomlingProjectileEntity>create(BoomlingProjectileEntity::new, EntityClassification.MISC).size(0.4f, 0.35f).updateInterval(10));
 
-	private ModEntityTypes() {}
+	private ModEntityTypes() {
+	}
 
 	private static <T extends Entity> RegistryObject<EntityType<T>> register(String name, EntityType.Builder<T> builder) {
 		return ENTITIES.register(name, () -> builder.build(BiomancyMod.MOD_ID + ":" + name));
@@ -58,17 +67,19 @@ public final class ModEntityTypes {
 		BiomancyMod.LOGGER.debug(MarkerManager.getMarker("ENTITIES"), "creating attributes...");
 
 		GlobalEntityTypeAttributes.put(FLESH_BLOB.get(), FleshBlobEntity.createAttributes().create());
+		GlobalEntityTypeAttributes.put(OCULUS_OBSERVER.get(), OculusObserverEntity.createAttributes().create());
 		GlobalEntityTypeAttributes.put(FAILED_SHEEP.get(), SheepEntity.registerAttributes().create());
 		GlobalEntityTypeAttributes.put(CHROMA_SHEEP.get(), ChromaSheepEntity.createAttributes().create());
 		GlobalEntityTypeAttributes.put(SILKY_WOOL_SHEEP.get(), SilkyWoolSheepEntity.createAttributes().create());
 		GlobalEntityTypeAttributes.put(THICK_WOOL_SHEEP.get(), ThickWoolSheepEntity.createAttributes().create());
+		GlobalEntityTypeAttributes.put(NUTRIENT_SLURRY_COW.get(), CowEntity.registerAttributes().create());
+		GlobalEntityTypeAttributes.put(FAILED_COW.get(), CowEntity.registerAttributes().create());
 
 		GlobalEntityTypeAttributes.put(FLESHKIN.get(), FleshkinEntity.createAttributes().create());
 
 		GlobalEntityTypeAttributes.put(BOOMLING.get(), BoomlingEntity.createAttributes().create());
 		GlobalEntityTypeAttributes.put(BROOD_MOTHER.get(), CrocospiderEntity.createAttributes().create());
 		GlobalEntityTypeAttributes.put(BEETLING.get(), BeetlingEntity.createAttributes().create());
-//		GlobalEntityTypeAttributes.put(MASON_BEETLE.get(), MasonBeetleEntity.createAttributes().create());
 
 //		BiomancyMod.LOGGER.debug(MarkerManager.getMarker("ENTITIES"), "registering spawn placement predicates...");
 //		EntitySpawnPlacementRegistry.register(BLOBLING.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, ModEntityTypes::canMonsterSpawn);

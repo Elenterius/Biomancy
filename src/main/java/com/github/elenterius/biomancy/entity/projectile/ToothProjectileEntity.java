@@ -21,6 +21,7 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.Lazy;
 
 @OnlyIn(value = Dist.CLIENT, _interface = IRendersAsItem.class)
 public class ToothProjectileEntity extends AbstractProjectileEntity implements IRendersAsItem {
@@ -92,22 +93,21 @@ public class ToothProjectileEntity extends AbstractProjectileEntity implements I
 		return ParticleTypes.POOF;
 	}
 
-	private static ItemStack ITEM_TO_RENDER;
-
-	@OnlyIn(Dist.CLIENT)
-	private static ItemStack getItemForRendering() {
+	private static final Lazy<ItemStack> ITEM_TO_RENDER = Lazy.of(() -> {
 		ItemStack stack = new ItemStack(ModItems.BONE_SCRAPS.get());
 		stack.getOrCreateTag().putInt("ScrapType", 1);
 		return stack;
+	});
+
+	@OnlyIn(Dist.CLIENT)
+	public static ItemStack getItemForRendering() {
+		return ITEM_TO_RENDER.get();
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public ItemStack getItem() {
-		if (ITEM_TO_RENDER == null) {
-			ITEM_TO_RENDER = getItemForRendering();
-		}
-		return ITEM_TO_RENDER;
+		return ITEM_TO_RENDER.get();
 	}
 
 }

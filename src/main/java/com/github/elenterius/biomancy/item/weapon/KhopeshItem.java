@@ -67,7 +67,7 @@ public class KhopeshItem extends AxeItem {
 		if (modifiableAttributeInstance != null && modifiableAttributeInstance.hasModifier(ATTACK_DAMAGE_RIDING_MODIFIER)) {
 			modifiableAttributeInstance.removeModifier(ATTACK_DAMAGE_RIDING_MODIFIER);
 		}
-		modifiableAttributeInstance = livingEntity.getAttributeManager().createInstanceIfAbsent(ModAttributes.getAttackDistance());
+		modifiableAttributeInstance = livingEntity.getAttributeManager().createInstanceIfAbsent(ModAttributes.getAttackDistanceModifier());
 		if (modifiableAttributeInstance != null && modifiableAttributeInstance.hasModifier(ATTACK_DIST_RIDING_MODIFIER)) {
 			modifiableAttributeInstance.removeModifier(ATTACK_DIST_RIDING_MODIFIER);
 		}
@@ -78,7 +78,7 @@ public class KhopeshItem extends AxeItem {
 		if (modifiableAttributeInstance != null && !modifiableAttributeInstance.hasModifier(ATTACK_DAMAGE_RIDING_MODIFIER)) {
 			modifiableAttributeInstance.applyNonPersistentModifier(ATTACK_DAMAGE_RIDING_MODIFIER);
 		}
-		modifiableAttributeInstance = livingEntity.getAttributeManager().createInstanceIfAbsent(ModAttributes.getAttackDistance());
+		modifiableAttributeInstance = livingEntity.getAttributeManager().createInstanceIfAbsent(ModAttributes.getAttackDistanceModifier());
 		if (modifiableAttributeInstance != null && !modifiableAttributeInstance.hasModifier(ATTACK_DIST_RIDING_MODIFIER)) {
 			modifiableAttributeInstance.applyNonPersistentModifier(ATTACK_DIST_RIDING_MODIFIER);
 		}
