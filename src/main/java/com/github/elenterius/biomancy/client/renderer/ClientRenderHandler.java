@@ -222,7 +222,7 @@ public final class ClientRenderHandler {
 	}
 
 	public static final ResourceLocation HUD_0_TEXTURE = BiomancyMod.createRL("textures/gui/hud_0.png");
-//	public static final ResourceLocation HUD_1_TEXTURE = BiomancyMod.createRL("textures/gui/hud_1.png");
+//	public static final ResourceLocation HUD_FLUID_0_TEXTURE = BiomancyMod.createRL("textures/gui/hud_fluid_0.png");
 
 	private static final Lazy<ItemStack> WITHER_SKULL_STACK = Lazy.of(() -> new ItemStack(Items.WITHER_SKELETON_SKULL));
 
