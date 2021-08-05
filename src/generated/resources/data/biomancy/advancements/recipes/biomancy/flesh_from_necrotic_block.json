@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:flesh_from_necrotic_block"
+    ]
+  },
+  "criteria": {
+    "has_necrotic_flesh_block": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "biomancy:necrotic_flesh_block"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:flesh_from_necrotic_block"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_necrotic_flesh_block",
+      "has_the_recipe"
+    ]
+  ]
+}

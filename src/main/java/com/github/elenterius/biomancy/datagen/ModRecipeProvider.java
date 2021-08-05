@@ -138,15 +138,18 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		// Blocks //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESHBORN_DOOR.get(), defaultTime)
-				.addIngredient(Items.IRON_DOOR).addIngredient(ModItems.BIOMETAL.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get())
+				.addIngredient(Items.IRON_DOOR).addIngredient(ModItems.BIOMETAL.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2)
+				.addIngredient(ModItems.HORMONE_BILE.get()).addIngredient(ModItems.BONE_GEAR.get())
 				.addCriterion(HAS_MUTAGENIC_BILE, hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESHBORN_TRAPDOOR.get(), defaultTime)
-				.addIngredient(Items.IRON_TRAPDOOR).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.BIOMETAL.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get())
+				.addIngredient(Items.IRON_TRAPDOOR).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.BIOMETAL.get())
+				.addIngredient(ModItems.KERATIN_FILAMENTS.get()).addIngredient(ModItems.HORMONE_BILE.get()).addIngredient(ModItems.BONE_GEAR.get())
 				.addCriterion(HAS_MUTAGENIC_BILE, hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESHBORN_PRESSURE_PLATE.get(), defaultTime)
-				.addIngredient(Items.HEAVY_WEIGHTED_PRESSURE_PLATE).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.BIOMETAL.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get())
+				.addIngredient(Items.HEAVY_WEIGHTED_PRESSURE_PLATE).addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.BIOMETAL.get())
+				.addIngredient(ModItems.KERATIN_FILAMENTS.get()).addIngredient(ModItems.HORMONE_BILE.get()).addIngredient(ModItems.BONE_GEAR.get())
 				.addCriterion(HAS_MUTAGENIC_BILE, hasItem(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.GULGE.get(), defaultTime * 2)
@@ -204,11 +207,12 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addCriterion(HAS_OCULUS, hasItem(ModItems.OCULUS.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.TOOTH_GUN.get(), defaultTime * 2)
-				.addIngredient(ModItems.INJECTION_DEVICE.get()).addIngredient(Items.SKELETON_SKULL).addIngredient(Items.CROSSBOW).addIngredient(ModTags.Items.STOMACHS).addIngredient(ModItems.BIOMETAL.get()).addIngredient(ModItems.SILICATE_PASTE.get())
+				.addIngredient(ModItems.INJECTION_DEVICE.get()).addIngredient(Items.SKELETON_SKULL).addIngredient(Items.CROSSBOW)
+				.addIngredient(ModTags.Items.STOMACHS).addIngredient(ModItems.BIOMETAL.get()).addIngredient(ModItems.BONE_GEAR.get())
 				.addCriterion("has_injection_device", hasItem(ModItems.INJECTION_DEVICE.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.WITHERSHOT.get(), defaultTime * 2)
-				.addIngredient(ModItems.TOOTH_GUN.get()).addIngredient(Items.NETHER_STAR).addIngredient(ModItems.ERODING_BILE.get()).addIngredient(Items.WITHER_SKELETON_SKULL)
+				.addIngredient(ModItems.TOOTH_GUN.get()).addIngredient(Items.NETHER_STAR).addIngredient(ModItems.ERODING_BILE.get()).addIngredient(Items.WITHER_SKELETON_SKULL).addIngredient(ModItems.BONE_GEAR.get())
 				.addCriterion("has_tooth_gun", hasItem(ModItems.TOOTH_GUN.get())).build(consumer);
 
 		// Enchantments ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -746,34 +750,49 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addIngredient(ModItems.NECROTIC_FLESH.get()).addIngredient(ModItems.REJUVENATING_MUCUS.get())
 				.addCriterion("has_necrotic_flesh", hasItem(ModItems.NECROTIC_FLESH.get())).build(consumer, BiomancyMod.createRL("flesh_from_necrotic"));
 
+		ShapelessRecipeBuilder.shapelessRecipe(ModItems.FLESH_BLOCK.get())
+				.addIngredient(ModItems.NECROTIC_FLESH_BLOCK.get()).addIngredient(ModItems.REJUVENATING_MUCUS.get(), 6)
+				.addCriterion("has_necrotic_flesh_block", hasItem(ModItems.NECROTIC_FLESH_BLOCK.get())).build(consumer, BiomancyMod.createRL("flesh_from_necrotic_block"));
+
+		ShapedRecipeBuilder.shapedRecipe(ModItems.BONE_GEAR.get(), 1)
+				.key('B', Tags.Items.BONES)
+				.patternLine(" B ")
+				.patternLine("B B")
+				.patternLine(" B ")
+				.addCriterion("has_bone", hasItem(Tags.Items.BONES)).build(consumer);
+
 		// machines ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		ShapedRecipeBuilder.shapedRecipe(ModItems.DECOMPOSER.get())
 				.key('S', ModItems.DIGESTER.get())
 				.key('F', ModItems.FLESH_BLOCK.get())
 				.key('L', ModItems.FLESH_BLOCK_SLAB.get())
-				.patternLine("FLF").patternLine("FSF").patternLine("FLF")
+				.key('B', ModItems.BONE_GEAR.get())
+				.patternLine("FLF").patternLine("BSB").patternLine("FLF")
 				.addCriterion("has_digester", hasItem(ModItems.DIGESTER.get())).build(consumer);
 
 		ShapedRecipeBuilder.shapedRecipe(ModItems.CHEWER.get())
 				.key('S', Items.STONECUTTER)
 				.key('F', ModItems.FLESH_BLOCK.get())
 				.key('L', ModItems.FLESH_BLOCK_SLAB.get())
-				.patternLine("FLF").patternLine("FSF").patternLine("FLF")
+				.key('B', ModItems.BONE_GEAR.get())
+				.patternLine("FLF").patternLine("BSB").patternLine("FLF")
 				.addCriterion(HAS_FLESH_BLOCK, hasItem(ModItems.FLESH_BLOCK.get())).build(consumer);
 
 		ShapedRecipeBuilder.shapedRecipe(ModItems.DIGESTER.get())
 				.key('S', ModTags.Items.STOMACHS)
 				.key('F', ModItems.FLESH_BLOCK.get())
 				.key('L', ModItems.FLESH_BLOCK_SLAB.get())
-				.patternLine("FLF").patternLine("FSF").patternLine("FLF")
+				.key('B', ModItems.BONE_GEAR.get())
+				.patternLine("FLF").patternLine("BSB").patternLine("FLF")
 				.addCriterion("has_stomach", hasItem(ModTags.Items.STOMACHS)).build(consumer);
 
 		ShapedRecipeBuilder.shapedRecipe(ModItems.SOLIDIFIER.get())
 				.key('S', Items.SMOKER)
 				.key('F', ModItems.FLESH_BLOCK.get())
 				.key('L', ModItems.FLESH_BLOCK_SLAB.get())
-				.patternLine("FLF").patternLine("FSF").patternLine("FLF")
+				.key('B', ModItems.BONE_GEAR.get())
+				.patternLine("FLF").patternLine("BSB").patternLine("FLF")
 				.addCriterion(HAS_FLESH_BLOCK, hasItem(ModItems.FLESH_BLOCK.get())).build(consumer);
 
 		// reagents ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " B ",
+    "B B",
+    " B "
+  ],
+  "key": {
+    "B": {
+      "tag": "forge:bones"
+    }
+  },
+  "result": {
+    "item": "biomancy:bone_gear"
+  }
+}

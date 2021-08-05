@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "FLF",
-    "FSF",
+    "BSB",
     "FLF"
   ],
   "key": {
@@ -14,6 +14,9 @@
     },
     "L": {
       "item": "biomancy:flesh_block_slab"
+    },
+    "B": {
+      "item": "biomancy:bone_gear"
     }
   },
   "result": {

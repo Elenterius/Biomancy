@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "biomancy:necrotic_flesh_block"
+    },
+    {
+      "item": "biomancy:rejuvenating_mucus"
+    },
+    {
+      "item": "biomancy:rejuvenating_mucus"
+    },
+    {
+      "item": "biomancy:rejuvenating_mucus"
+    },
+    {
+      "item": "biomancy:rejuvenating_mucus"
+    },
+    {
+      "item": "biomancy:rejuvenating_mucus"
+    },
+    {
+      "item": "biomancy:rejuvenating_mucus"
+    }
+  ],
+  "result": {
+    "item": "biomancy:flesh_block"
+  }
+}
