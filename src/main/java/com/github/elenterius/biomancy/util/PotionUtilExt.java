@@ -45,7 +45,7 @@ public final class PotionUtilExt extends PotionUtils {
 		if (potion != Potions.EMPTY) {
 			List<EffectInstance> effects = PotionUtils.getFullEffectsFromItem(stackIn);
 			Item potionItem = ForgeRegistries.ITEMS.getValue(ResourceLocation.tryCreate(stackIn.getOrCreateTag().getString(NBT_KEY_POTION_ITEM)));
-			ItemStack stack = new ItemStack(potionItem instanceof PotionItem ? potionItem : Items.POTION);
+			ItemStack stack = new ItemStack(potionItem != Items.AIR ? potionItem : Items.POTION);
 			PotionUtils.addPotionToItemStack(stack, potion);
 			PotionUtils.appendEffects(stack, effects);
 			return stack;

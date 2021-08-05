@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.recipe;
 
 import com.github.elenterius.biomancy.init.ModRecipes;
-import com.github.elenterius.biomancy.item.BoomlingItem;
+import com.github.elenterius.biomancy.item.weapon.BoomlingItem;
 import com.github.elenterius.biomancy.util.PotionUtilExt;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;

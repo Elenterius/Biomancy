@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.entity.projectile.ToothProjectileEntity;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.item.InjectionDeviceItem;
 import com.github.elenterius.biomancy.item.ItemStorageBagItem;
+import com.github.elenterius.biomancy.item.weapon.shootable.BoomlingHiveGunItem;
 import com.github.elenterius.biomancy.item.weapon.shootable.ProjectileWeaponItem;
 import com.github.elenterius.biomancy.item.weapon.shootable.SinewBowItem;
 import com.github.elenterius.biomancy.reagent.Reagent;
@@ -295,7 +296,7 @@ public final class HudRenderUtil {
 		int count = ModItems.BOOMLING_HIVE_GUN.get().getPotionCount(stack);
 		if (count > 0) {
 			int color = ModItems.BOOMLING_HIVE_GUN.get().getPotionColor(stack);
-			int offset = (int) ((25 - 8) * (1f - count / 32f));
+			int offset = (int) ((25 - 8) * (1f - count / (float) BoomlingHiveGunItem.MAX_POTION_COUNT));
 			if (offset == 25 - 8) offset--;
 			AbstractGui.fill(matrix, x + 10, y + 8 + offset, x + 16, y + 25, color | 0xFF000000);
 
@@ -315,6 +316,12 @@ public final class HudRenderUtil {
 		mc.getTextureManager().bindTexture(HUD_FLUID_0_TEXTURE);
 		AbstractGui.blit(matrix, x, y, 0, 0, 23, 32, 23, 32);
 		mc.getItemRenderer().renderItemIntoGUI(new ItemStack(ModItems.BOOMLING.get()), scaledWidth - 16 - 4, scaledHeight - 28 - 8);
+		if (count > 0) {
+			String countStr = String.valueOf(count);
+			x = scaledWidth - fontRenderer.getStringWidth(countStr) - 2;
+			y = y + 32 - fontRenderer.FONT_HEIGHT + 1;
+			AbstractGui.drawString(matrix, fontRenderer, countStr, x, y, 0xFFFEFEFE);
+		}
 	}
 
 	private static void drawAmmoCount(MatrixStack matrix, FontRenderer fontRenderer, int scaledWidth, int scaledHeight, int maxAmmoIn, int ammoIn, int primaryColor, int secondaryColor) {

@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.recipe;
 
+import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.item.weapon.shootable.BoomlingHiveGunItem;
 import com.github.elenterius.biomancy.util.PotionUtilExt;
@@ -23,20 +24,32 @@ public class AddPotionToBoomlingGunRecipe extends SpecialRecipe {
 	public boolean matches(CraftingInventory inv, World worldIn) {
 		int potions = 0;
 		int gun = 0;
-		Potion potion = Potions.EMPTY;
+		Potion storedPotion = Potions.EMPTY;
+		Potion otherPotion = Potions.EMPTY;
 
 		for (int i = 0; i < inv.getSizeInventory(); i++) {
 			ItemStack stack = inv.getStackInSlot(i);
 			if (!stack.isEmpty()) {
 				if (stack.getItem() instanceof BoomlingHiveGunItem) {
-					potion = PotionUtilExt.getPotionFromItem(stack);
+					storedPotion = PotionUtilExt.getPotionFromItem(stack);
+					if (((BoomlingHiveGunItem) stack.getItem()).getPotionCount(stack) >= BoomlingHiveGunItem.MAX_POTION_COUNT) return false;
 					if (++gun > 1) return false;
 				}
-				else if (!(stack.getItem() instanceof PotionItem) || ++potions > 1) return false;
+				else if (!(stack.getItem() instanceof PotionItem)) {
+					return false;
+				}
+				else {
+					if (++potions > 1) return false;
+					otherPotion = PotionUtilExt.getPotionFromItem(stack);
+				}
 			}
 		}
 
-		return (gun == 1 && potions == 1 && potion == Potions.EMPTY) || (gun == 1 && potions == 0 && potion != Potions.EMPTY);
+		if (gun == 1 && potions == 1) {
+			return storedPotion == Potions.EMPTY || storedPotion == otherPotion;
+		}
+
+		return gun == 1;
 	}
 
 	@Override
@@ -53,12 +66,22 @@ public class AddPotionToBoomlingGunRecipe extends SpecialRecipe {
 
 		if (!potionStack.isEmpty()) {
 			ItemStack stack = gunStack.copy();
-			PotionUtilExt.setPotionOfHost(stack, potionStack);
+			ItemStack storedPotionStack = PotionUtilExt.getPotionItemStack(stack);
+			if (storedPotionStack.isEmpty()) {
+				PotionUtilExt.setPotionOfHost(stack, potionStack);
+				ModItems.BOOMLING_HIVE_GUN.get().setPotionCount(stack, 1);
+			}
+			else if (ItemStack.areItemStackTagsEqual(storedPotionStack, potionStack)) {
+				PotionUtilExt.setPotionOfHost(stack, potionStack);
+				ModItems.BOOMLING_HIVE_GUN.get().growPotionCount(stack, 1);
+			}
 			return stack;
 		}
 		else {
-			ItemStack stack = PotionUtilExt.getPotionItemStack(gunStack);
-			return !stack.isEmpty() ? stack : PotionUtilExt.getPotionItemStack(Potions.EMPTY);
+			ItemStack stack = gunStack.copy();
+			PotionUtilExt.removePotionFromHost(stack);
+			ModItems.BOOMLING_HIVE_GUN.get().setPotionCount(stack, 0);
+			return stack;
 		}
 	}
 

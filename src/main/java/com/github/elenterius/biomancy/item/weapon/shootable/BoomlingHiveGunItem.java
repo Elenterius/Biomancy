@@ -2,18 +2,26 @@ package com.github.elenterius.biomancy.item.weapon.shootable;
 
 import com.github.elenterius.biomancy.entity.projectile.BoomlingProjectileEntity;
 import com.github.elenterius.biomancy.util.PotionUtilExt;
+import com.github.elenterius.biomancy.util.TextUtil;
 import com.google.common.primitives.UnsignedBytes;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionUtils;
 import net.minecraft.potion.Potions;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
@@ -24,6 +32,7 @@ public class BoomlingHiveGunItem extends ProjectileWeaponItem {
 
 	public static final Predicate<ItemStack> VALID_AMMO_ITEM = ToothGunItem.VALID_AMMO_ITEM;
 	public static final String NBT_KEY_POTION_COUNT = "PotionCount";
+	public static final byte MAX_POTION_COUNT = 32;
 
 	public BoomlingHiveGunItem(Properties builder) {
 		super(builder, 0.75f, 0.8f, 0f, 6, 5 * 20);
@@ -33,7 +42,7 @@ public class BoomlingHiveGunItem extends ProjectileWeaponItem {
 		BoomlingProjectileEntity projectile = new BoomlingProjectileEntity(worldIn, shooter);
 
 		Potion potion = PotionUtilExt.getPotionFromItem(projectileWeapon);
-		List<EffectInstance> customEffects = PotionUtils.getFullEffectsFromItem(projectileWeapon);
+		List<EffectInstance> customEffects = PotionUtilExt.getFullEffectsFromItem(projectileWeapon);
 		projectile.setPotion(potion, customEffects, -1);
 
 		Vector3d direction = shooter.getLookVec();
@@ -47,15 +56,28 @@ public class BoomlingHiveGunItem extends ProjectileWeaponItem {
 		}
 	}
 
+	@OnlyIn(Dist.CLIENT)
+	@Override
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		super.addInformation(stack, worldIn, tooltip, flagIn);
+		int potionCount = getPotionCount(stack);
+		if (potionCount > 0) {
+			tooltip.add(new StringTextComponent(String.format("Amount: %d/%d", potionCount, MAX_POTION_COUNT)).mergeStyle(TextFormatting.GRAY));
+		}
+		else tooltip.add(TextUtil.getTranslationText("tooltip", "contains_nothing").mergeStyle(TextFormatting.GRAY));
+		PotionUtilExt.addPotionTooltip(stack, tooltip, 1f);
+	}
+
 	@Override
 	public void shoot(ServerWorld worldIn, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, float damage, float inaccuracy) {
 		fireProjectile(worldIn, shooter, hand, projectileWeapon, inaccuracy);
 		consumeAmmo(shooter, projectileWeapon, 1);
+		growPotionCount(projectileWeapon, -1);
 	}
 
 	@Override
 	public boolean hasAmmo(ItemStack stack) {
-		return hasPotion(stack) && super.hasAmmo(stack);
+		return hasPotion(stack) && getPotionCount(stack) > 0 && super.hasAmmo(stack);
 	}
 
 	@Override
@@ -78,7 +100,11 @@ public class BoomlingHiveGunItem extends ProjectileWeaponItem {
 
 	public void growPotionCount(ItemStack stack, int amount) {
 		int count = getPotionCount(stack);
-		stack.getOrCreateTag().putByte(NBT_KEY_POTION_COUNT, UnsignedBytes.saturatedCast(count + amount)); //saturated cast clamps to 0-255
+		int value = MathHelper.clamp(count + amount, 0, MAX_POTION_COUNT);
+		stack.getOrCreateTag().putByte(NBT_KEY_POTION_COUNT, UnsignedBytes.saturatedCast(value)); //saturated cast clamps to 0-255
+		if (value == 0) {
+			PotionUtilExt.removePotionFromHost(stack);
+		}
 	}
 
 	public int getPotionCount(ItemStack stack) {
