@@ -15,14 +15,15 @@ public abstract class DamageSourceMixin {
 
 	@Inject(method = "causePlayerDamage", at = @At("HEAD"), cancellable = true)
 	private static void biomancy_onCausePlayerDamage(PlayerEntity player, CallbackInfoReturnable<DamageSource> cir) {
-		if (player.getHeldItemMainhand().getItem() == ModItems.FLESHBORN_WAR_AXE.get()) {
+		//we have to check for nullability because some mods are passing in null values even though the parameter is not annotated as nullable
+		if (player != null && player.getHeldItemMainhand().getItem() == ModItems.FLESHBORN_WAR_AXE.get()) {
 			cir.setReturnValue(ModDamageSources.createBlightThornDamage("player", player));
 		}
 	}
 
 	@Inject(method = "causeMobDamage", at = @At("HEAD"), cancellable = true)
 	private static void biomancy_onCauseMobDamage(LivingEntity mob, CallbackInfoReturnable<DamageSource> cir) {
-		if (mob.getHeldItemMainhand().getItem() == ModItems.FLESHBORN_WAR_AXE.get()) {
+		if (mob != null && mob.getHeldItemMainhand().getItem() == ModItems.FLESHBORN_WAR_AXE.get()) {
 			cir.setReturnValue(ModDamageSources.createBlightThornDamage("mob", mob));
 		}
 	}
