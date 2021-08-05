@@ -58,6 +58,10 @@ public final class ClientTextUtil extends TextUtil {
 		return new TranslationTextComponent(TextUtil.getTranslationKey("tooltip", "press_button_to"), key.mergeStyle(TextFormatting.AQUA), action);
 	}
 
+	public static IFormattableTextComponent getAltKey() {
+		return ALT_KEY_TEXT.copyRaw();
+	}
+
 	public static IFormattableTextComponent getCtrlKey() {
 		return CTRL_KEY_TEXT.copyRaw();
 	}

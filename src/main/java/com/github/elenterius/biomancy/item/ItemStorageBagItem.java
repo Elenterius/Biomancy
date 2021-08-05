@@ -122,6 +122,34 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 		return 0f;
 	}
 
+	public short getStoredItemAmount(ItemStack stack) {
+		CompoundNBT nbt = stack.getOrCreateTag();
+		if (nbt.contains(NBT_KEY_INVENTORY)) {
+			return nbt.getCompound(NBT_KEY_INVENTORY).getShort(NBT_KEY_AMOUNT);
+		}
+		return 0;
+	}
+
+	public short getStoredItemMaxAmount(ItemStack stack) {
+		CompoundNBT nbt = stack.getOrCreateTag();
+		if (nbt.contains(NBT_KEY_INVENTORY)) {
+			return nbt.getCompound(NBT_KEY_INVENTORY).getShort(NBT_KEY_MAX_AMOUNT);
+		}
+		return 0;
+	}
+
+	public ItemStack getStoredItem(ItemStack stack) {
+		CompoundNBT nbt = stack.getOrCreateTag();
+		if (nbt.contains(NBT_KEY_INVENTORY)) {
+			CompoundNBT invNbt = nbt.getCompound(ItemStorageBagItem.NBT_KEY_INVENTORY);
+			int amount = invNbt.getShort(NBT_KEY_AMOUNT);
+			ItemStack storedStack = ItemStack.read(invNbt.getCompound(ItemStorageBagItem.NBT_KEY_ITEM));
+			storedStack.setCount(amount);
+			return storedStack;
+		}
+		return ItemStack.EMPTY;
+	}
+
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
 		if (!worldIn.isRemote() && handIn == Hand.MAIN_HAND && playerIn.isSneaking()) {
@@ -334,7 +362,7 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 		DEVOUR(1, ItemStorageBagItem::storeItems, ItemStorageBagItem::extractItemsFromTileEntity),
 		REPLENISH(2, ItemStorageBagItem::replenishItems, ItemStorageBagItem::insertItemsIntoTileEntity);
 
-		final byte id;
+		public final byte id;
 		final InventoryTickConsumer tickConsumer;
 		final ItemUseFirstFunction useFirstFunction;
 
