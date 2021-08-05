@@ -51,6 +51,7 @@
   "item.biomancy.artificial_stomach": "Stitched Stomach",
   "item.biomancy.oculus": "Oculus",
   "item.biomancy.stomach": "Stomach",
+  "item.biomancy.bone_gear": "Bone Gear",
 
   "item.biomancy.flesh_blob_spawn_egg": "Flesh Blob Spawn Egg",
   "item.biomancy.oculus_observer_spawn_egg": "Oculus Observer Spawn Egg",
@@ -84,7 +85,6 @@
   "block.biomancy.meatsoup_cauldron": "Fleshpot",
   "block.biomancy.evolution_pool": "Evolution Pool",
 
-  "tile.biomancy.ownable": "Ownable Tile Entity",
   "container.biomancy.gulge": "Deep Gulge",
   "container.biomancy.fleshborn_chest": "Fleshborn Chest",
   "container.biomancy.chewer": "Chewer",
@@ -101,6 +101,8 @@
   "entity.biomancy.chroma_sheep": "Chroma Sheep",
   "entity.biomancy.silky_wool_sheep": "Silky Wool Sheep",
   "entity.biomancy.thick_wool_sheep": "Cloud Wool Sheep",
+  "entity.biomancy.failed_cow": "Failed Cow",
+  "entity.biomancy.nutrient_slurry_cow": "Nutrient Slurry Cow",
   "entity.biomancy.brood_mother": "Brood Mother",
 
   "enchantment.biomancy.climbing": "Millipedes",
@@ -163,6 +165,7 @@
   "tooltip.biomancy.solidifier": "A gland like bio-machine that coagulates fluids into solid Items.\nThe bio-machine will pull fluid from the bock it is attached to.",
   "tooltip.biomancy.decomposer": "A bio-machine that deconstructs items into their base components.\nThe bio-machine consumes nutrient slurry/paste/bars to function.",
   "tooltip.biomancy.evolution_pool": "A organic pool filled with mutagen that is used to craft organic items.",
+  "tooltip.biomancy.boomling_hive_gun": "[WIP] Combine with potion in crafting Table. Uses Nutrient Paste to reload.",
 
   "tooltip.biomancy.mining_bonus": "When mining %1$s:",
   "tooltip.biomancy.item_is_inert": "The Fleshborn is Inert",
@@ -254,5 +257,9 @@
   "jei.biomancy.recipe.evolution_pool": "Evolution Pool Recipes",
 
   "keyboard.ctrl": "ctrl",
-  "keyboard.alt": "alt"
+  "keyboard.alt": "alt",
+
+  "#comment": "unused, ignore for now",
+  "item.biomancy.brood_mother_spawn_egg": "Brood Mother Spawn Egg",
+  "item.biomancy.chroma_sheep_spawn_egg": "Chroma Sheep Spawn Egg"
 }
