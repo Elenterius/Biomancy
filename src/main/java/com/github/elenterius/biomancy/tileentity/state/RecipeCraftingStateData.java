@@ -48,7 +48,7 @@ public abstract class RecipeCraftingStateData<T extends AbstractProductionRecipe
 		if (recipeId == null) return Optional.empty();
 
 		RecipeManager recipeManager = world.getRecipeManager();
-		Optional<? extends IRecipe<?>> optional = recipeManager.getRecipe(recipeId);
+		Optional<? extends IRecipe<?>> optional = recipeManager.byKey(recipeId);
 		if (optional.isPresent()) {
 			IRecipe<?> iRecipe = optional.get();
 			if (getRecipeType().isInstance(iRecipe)) {
@@ -84,7 +84,7 @@ public abstract class RecipeCraftingStateData<T extends AbstractProductionRecipe
 		craftingState = CraftingState.deserialize(nbt);
 		if (nbt.contains(NBT_KEY_RECIPE_ID)) {
 			String id = nbt.getString(NBT_KEY_RECIPE_ID);
-			recipeId = ResourceLocation.tryCreate(id);
+			recipeId = ResourceLocation.tryParse(id);
 		}
 		else recipeId = null;
 		timeElapsed = nbt.getInt(NBT_KEY_TIME_ELAPSED);
@@ -92,7 +92,7 @@ public abstract class RecipeCraftingStateData<T extends AbstractProductionRecipe
 	}
 
 	protected void validateIndex(int index) {
-		if (index < 0 || index >= size()) throw new IndexOutOfBoundsException("Index out of bounds:" + index);
+		if (index < 0 || index >= getCount()) throw new IndexOutOfBoundsException("Index out of bounds:" + index);
 	}
 
 	@Override
@@ -111,7 +111,7 @@ public abstract class RecipeCraftingStateData<T extends AbstractProductionRecipe
 	}
 
 	@Override
-	public int size() {
+	public int getCount() {
 		return 2;
 	}
 

@@ -23,7 +23,7 @@ public class FindAttackTargetGoal<T extends CreatureEntity & IGolem, M extends L
 	}
 
 	@Override
-	public boolean shouldExecute() {
-		return !entity.isGolemInactive() && entity.getGolemCommand() != IGolem.Command.HOLD_POSITION && super.shouldExecute();
+	public boolean canUse() {
+		return !entity.isGolemInactive() && entity.getGolemCommand() != IGolem.Command.HOLD_POSITION && super.canUse();
 	}
 }

@@ -28,7 +28,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class FleshChestTileEntityRenderer<T extends TileEntity & IChestLid> extends TileEntityRenderer<T> {
 
 	public static final ResourceLocation FLESH_CHEST_TEXTURE = BiomancyMod.createRL("entity/flesh_chest");
-	public static final RenderMaterial FLESH_CHEST_MATERIAL = new RenderMaterial(Atlases.CHEST_ATLAS, FLESH_CHEST_TEXTURE);
+	public static final RenderMaterial FLESH_CHEST_MATERIAL = new RenderMaterial(Atlases.CHEST_SHEET, FLESH_CHEST_TEXTURE);
 
 	private final ModelRenderer chestLid;
 	private final ModelRenderer chestBottom;
@@ -40,36 +40,36 @@ public class FleshChestTileEntityRenderer<T extends TileEntity & IChestLid> exte
 		chestBottom.addBox(1.0F, 0.0F, 1.0F, 14.0F, 10.0F, 14.0F, 0.0F);
 		chestLid = new ModelRenderer(64, 64, 0, 0);
 		chestLid.addBox(1.0F, 0.0F, 0.0F, 14.0F, 5.0F, 14.0F, 0.0F);
-		chestLid.rotationPointY = 9.0F;
-		chestLid.rotationPointZ = 1.0F;
+		chestLid.y = 9.0F;
+		chestLid.z = 1.0F;
 		chestLatch = new ModelRenderer(64, 64, 0, 0);
 		chestLatch.addBox(7.0F, -1.0F, 15.0F, 2.0F, 4.0F, 1.0F, 0.0F);
-		chestLatch.rotationPointY = 8.0F;
+		chestLatch.y = 8.0F;
 	}
 
 	@Override
 	public void render(T tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
-		World world = tileEntityIn.getWorld();
-		BlockState state = world != null ? tileEntityIn.getBlockState() : ModBlocks.FLESHBORN_CHEST.get().getDefaultState().with(ChestBlock.FACING, Direction.SOUTH);
+		World world = tileEntityIn.getLevel();
+		BlockState state = world != null ? tileEntityIn.getBlockState() : ModBlocks.FLESHBORN_CHEST.get().defaultBlockState().setValue(ChestBlock.FACING, Direction.SOUTH);
 		Block block = state.getBlock();
 		if (block instanceof FleshChestBlock) {
-			matrixStackIn.push();
+			matrixStackIn.pushPose();
 
-			float angle = state.get(FleshChestBlock.FACING).getHorizontalAngle();
+			float angle = state.getValue(FleshChestBlock.FACING).toYRot();
 			matrixStackIn.translate(0.5d, 0.5d, 0.5d);
-			matrixStackIn.rotate(Vector3f.YP.rotationDegrees(-angle));
+			matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-angle));
 			matrixStackIn.translate(-0.5d, -0.5d, -0.5d);
 
-			float lidAngle = 1f - (float) Math.pow(1f - tileEntityIn.getLidAngle(partialTicks), 3);
-			chestLid.rotateAngleX = -(lidAngle * ((float) Math.PI / 2f));
-			chestLatch.rotateAngleX = chestLid.rotateAngleX;
+			float lidAngle = 1f - (float) Math.pow(1f - tileEntityIn.getOpenNess(partialTicks), 3);
+			chestLid.xRot = -(lidAngle * ((float) Math.PI / 2f));
+			chestLatch.xRot = chestLid.xRot;
 
-			IVertexBuilder ivertexbuilder = FLESH_CHEST_MATERIAL.getBuffer(bufferIn, RenderType::getEntityCutout);
+			IVertexBuilder ivertexbuilder = FLESH_CHEST_MATERIAL.buffer(bufferIn, RenderType::entityCutout);
 			chestLid.render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn);
 			chestLatch.render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn);
 			chestBottom.render(matrixStackIn, ivertexbuilder, combinedLightIn, combinedOverlayIn);
 
-			matrixStackIn.pop();
+			matrixStackIn.popPose();
 		}
 	}
 }

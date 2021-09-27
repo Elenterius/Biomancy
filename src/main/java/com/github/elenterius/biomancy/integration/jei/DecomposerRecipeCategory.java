@@ -54,7 +54,7 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 
 	@Override
 	public String getTitle() {
-		return I18n.format("jei.biomancy.recipe.decomposer");
+		return I18n.get("jei.biomancy.recipe.decomposer");
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 		if (recipe.getIngredientCount() > 1) {
 			List<List<ItemStack>> inputs = ImmutableList.of(new ArrayList<>());
 			List<ItemStack> slot = inputs.get(0);
-			ItemStack[] possibleStacks = recipe.getIngredient().getMatchingStacks();
+			ItemStack[] possibleStacks = recipe.getIngredient().getItems();
 			for (ItemStack stack : possibleStacks) {
 				ItemStack copy = stack.copy();
 				copy.setCount(recipe.getIngredientCount());
@@ -85,7 +85,7 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 		}
 
 		List<ItemStack> outputs = new ArrayList<>();
-		outputs.add(recipe.getRecipeOutput());
+		outputs.add(recipe.getResultItem());
 		for (Byproduct byproduct : recipe.getByproducts()) {
 			outputs.add(byproduct.getItemStack());
 		}
@@ -102,7 +102,7 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 		guiISGroup.init(OUTPUT_SLOT + 2, false, 98 + 18, 18);
 		guiISGroup.init(OUTPUT_SLOT + 3, false, 80, 36);
 		guiISGroup.init(OUTPUT_SLOT + 4, false, 80 + 18, 36);
-		guiISGroup.init(OUTPUT_SLOT + 5, false,80 + 18 + 18, 36);
+		guiISGroup.init(OUTPUT_SLOT + 5, false, 80 + 18 + 18, 36);
 
 		guiISGroup.set(ingredients);
 
@@ -117,7 +117,7 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 						}
 					}
 //					tooltip.add(new TranslationTextComponent(BiomancyMod.getTranslationKey("tooltip", "byproduct")));
-					tooltip.add(new StringTextComponent(chance + "% ").appendSibling(new TranslationTextComponent(TextUtil.getTranslationKey("tooltip", "chance"))).mergeStyle(TextFormatting.GRAY));
+					tooltip.add(new StringTextComponent(chance + "% ").append(new TranslationTextComponent(TextUtil.getTranslationKey("tooltip", "chance"))).withStyle(TextFormatting.GRAY));
 				}
 			}
 		});
@@ -129,11 +129,11 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 		if (ticks > 0) {
 			int seconds = ticks / 20;
 			TranslationTextComponent timeString = new TranslationTextComponent("gui.jei.category.smelting.time.seconds", seconds);
-			FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
-			fontRenderer.drawText(matrixStack, timeString, (float) (background.getWidth() - fontRenderer.getStringPropertyWidth(timeString)), 0, 0xff808080);
+			FontRenderer fontRenderer = Minecraft.getInstance().font;
+			fontRenderer.draw(matrixStack, timeString, (float) (background.getWidth() - fontRenderer.width(timeString)), 0, 0xff808080);
 			int fuelCost = ticks * DecomposerTileEntity.FUEL_COST;
-			IFormattableTextComponent costText = new StringTextComponent("+" + fuelCost + "mb ").appendSibling(new TranslationTextComponent("fluid.biomancy.nutrient_slurry"));
-			fontRenderer.drawText(matrixStack, costText, 0, background.getHeight() - fontRenderer.FONT_HEIGHT, 0xff808080);
+			IFormattableTextComponent costText = new StringTextComponent("+" + fuelCost + "mb ").append(new TranslationTextComponent("fluid.biomancy.nutrient_slurry"));
+			fontRenderer.draw(matrixStack, costText, 0, background.getHeight() - fontRenderer.lineHeight, 0xff808080);
 		}
 	}
 }

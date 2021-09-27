@@ -68,21 +68,21 @@ public abstract class BFMachineTileEntity<R extends AbstractProductionRecipe, S 
 				ItemStack remainder = addFuel(stack);
 				if (remainder.getCount() != stack.getCount()) {
 					setStackInFuelSlot(remainder);
-					markDirty();
+					setChanged();
 				}
 			}
 			else if (BiofuelUtil.VALID_FUEL_CONTAINERS.test(stack)) {
-				FluidActionResult fluidAction = FluidUtil.tryEmptyContainerAndStow(stack, getFuelTank(), getEmptyBucketInventory().getItemStackHandler(), maxFluidAmount - fluidAmount, null, true);
+				FluidActionResult fluidAction = FluidUtil.tryEmptyContainerAndStow(stack, getFuelTank(), getEmptyBucketInventory().getItemHandler(), maxFluidAmount - fluidAmount, null, true);
 				if (fluidAction.isSuccess()) {
 					setStackInFuelSlot(fluidAction.getResult());
-					markDirty();
+					setChanged();
 				}
 			}
 			else { //the slot doesn't contain a valid fuel item
 				//we try to put it into the output slot for empty fluid containers
 				ItemStack remainder = getEmptyBucketInventory().insertItemStack(0, stack);
 				setStackInFuelSlot(remainder);
-				markDirty();
+				setChanged();
 			}
 		}
 	}

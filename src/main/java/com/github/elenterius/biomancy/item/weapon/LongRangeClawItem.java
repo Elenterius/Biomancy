@@ -60,16 +60,16 @@ public class LongRangeClawItem extends ClawWeaponItem implements IAreaHarvesting
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).setStyle(ClientTextUtil.LORE_STYLE));
 		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 
 		int timeLeft = stack.getOrCreateTag().getInt(NBT_KEY);
 		if (timeLeft > 0) {
-			tooltip.add(TextUtil.getTranslationText("tooltip", "item_is_excited").appendString(" (" + timeLeft + ")").mergeStyle(TextFormatting.GRAY));
+			tooltip.add(TextUtil.getTranslationText("tooltip", "item_is_excited").append(" (" + timeLeft + ")").withStyle(TextFormatting.GRAY));
 		}
 		else {
-			tooltip.add(TextUtil.getTranslationText("tooltip", "item_is_dormant").mergeStyle(TextFormatting.GRAY));
+			tooltip.add(TextUtil.getTranslationText("tooltip", "item_is_dormant").withStyle(TextFormatting.GRAY));
 		}
 		if (stack.isEnchanted()) tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 	}
@@ -78,7 +78,7 @@ public class LongRangeClawItem extends ClawWeaponItem implements IAreaHarvesting
 	public ITextComponent getHighlightTip(ItemStack stack, ITextComponent displayName) {
 		if (displayName instanceof IFormattableTextComponent) {
 			String keySuffix = stack.getOrCreateTag().getInt(NBT_KEY) > 0 ? "excited" : "dormant";
-			return ((IFormattableTextComponent) displayName).appendString(" (").appendSibling(TextUtil.getTranslationText("tooltip", keySuffix)).appendString(")");
+			return ((IFormattableTextComponent) displayName).append(" (").append(TextUtil.getTranslationText("tooltip", keySuffix)).append(")");
 		}
 		return displayName;
 	}
@@ -108,17 +108,17 @@ public class LongRangeClawItem extends ClawWeaponItem implements IAreaHarvesting
 
 	public void onCriticalHitEntity(ItemStack stack, LivingEntity attacker, LivingEntity target) {
 		super.onCriticalHitEntity(stack, attacker, target);
-		if (!attacker.world.isRemote()) {
+		if (!attacker.level.isClientSide()) {
 			stack.getOrCreateTag().putInt(NBT_KEY, abilityDuration);
 		}
 		else {
-			attacker.playSound(SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 1f, 1f / (random.nextFloat() * 0.5f + 1f) + 0.2f);
+			attacker.playSound(SoundEvents.ARMOR_EQUIP_LEATHER, 1f, 1f / (random.nextFloat() * 0.5f + 1f) + 0.2f);
 		}
 	}
 
 	@Override
 	public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		if (!worldIn.isRemote() && worldIn.getGameTime() % 20L == 0L) {
+		if (!worldIn.isClientSide() && worldIn.getGameTime() % 20L == 0L) {
 			CompoundNBT nbt = stack.getOrCreateTag();
 			int timeLeft = nbt.getInt(NBT_KEY);
 			if (timeLeft > 0) {
@@ -135,11 +135,11 @@ public class LongRangeClawItem extends ClawWeaponItem implements IAreaHarvesting
 	@Override
 	public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, PlayerEntity player) {
 		byte harvestRange = getBlockHarvestRange(stack);
-		if (!player.isSneaking() && harvestRange > 0 && !player.world.isRemote && player instanceof ServerPlayerEntity) {
-			ServerWorld world = (ServerWorld) player.world;
+		if (!player.isShiftKeyDown() && harvestRange > 0 && !player.level.isClientSide && player instanceof ServerPlayerEntity) {
+			ServerWorld world = (ServerWorld) player.level;
 			ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
 			BlockState blockState = world.getBlockState(pos);
-			BlockRayTraceResult rayTraceResult = Item.rayTrace(world, player, RayTraceContext.FluidMode.NONE);
+			BlockRayTraceResult rayTraceResult = Item.getPlayerPOVHitResult(world, player, RayTraceContext.FluidMode.NONE);
 			if (PlayerInteractionUtil.harvestBlock(world, serverPlayer, blockState, pos)) {
 				List<BlockPos> blockNeighbors = PlayerInteractionUtil.findBlockNeighbors(world, rayTraceResult, blockState, pos, harvestRange, getHarvestShape(stack));
 				for (BlockPos neighborPos : blockNeighbors) {

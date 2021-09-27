@@ -27,7 +27,7 @@ public class FleshkinRenderer<T extends FleshkinEntity> extends BipedRenderer<T,
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getTextureLocation(T entity) {
 		return TEXTURE;
 	}
 }

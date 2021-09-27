@@ -30,14 +30,14 @@ public class FullBrightOverlayBakedModel implements IBakedModel {
 	@Override
 	public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random rand, IModelData extraData) {
 		List<BakedQuad> quads = baseModel.getQuads(state, side, rand);
-		if (MinecraftForgeClient.getRenderLayer() == RenderType.getTranslucent()) {
+		if (MinecraftForgeClient.getRenderLayer() == RenderType.translucent()) {
 			for (int i = 0; i < quads.size(); i++) {
 				BakedQuad quad = quads.get(i);
-				int[] vertexData = quad.getVertexData();
+				int[] vertexData = quad.getVertices();
 				for (int j = 0; j < 4; j++) {
 					vertexData[8 * j + 6] = getLightValue(15, 15);
 				}
-				quads.set(i, new BakedQuad(vertexData, quad.getTintIndex(), quad.getFace(), quad.getSprite(), quad.applyDiffuseLighting()));
+				quads.set(i, new BakedQuad(vertexData, quad.getTintIndex(), quad.getDirection(), quad.getSprite(), quad.isShade()));
 			}
 		}
 		return quads;
@@ -51,8 +51,8 @@ public class FullBrightOverlayBakedModel implements IBakedModel {
 // old IBakedModel stuff //
 
 	@Override
-	public boolean isAmbientOcclusion() {
-		return baseModel.isAmbientOcclusion();
+	public boolean useAmbientOcclusion() {
+		return baseModel.useAmbientOcclusion();
 	}
 
 	@Override
@@ -61,13 +61,13 @@ public class FullBrightOverlayBakedModel implements IBakedModel {
 	}
 
 	@Override
-	public boolean isSideLit() {
-		return baseModel.isSideLit();
+	public boolean usesBlockLight() {
+		return baseModel.usesBlockLight();
 	}
 
 	@Override
-	public boolean isBuiltInRenderer() {
-		return baseModel.isBuiltInRenderer();
+	public boolean isCustomRenderer() {
+		return baseModel.isCustomRenderer();
 	}
 
 	@Override
@@ -77,8 +77,8 @@ public class FullBrightOverlayBakedModel implements IBakedModel {
 
 	//deprecated
 	@Override
-	public ItemCameraTransforms getItemCameraTransforms() {
-		return baseModel.getItemCameraTransforms();
+	public ItemCameraTransforms getTransforms() {
+		return baseModel.getTransforms();
 	}
 
 	//deprecated
@@ -89,8 +89,8 @@ public class FullBrightOverlayBakedModel implements IBakedModel {
 
 	//deprecated
 	@Override
-	public TextureAtlasSprite getParticleTexture() {
-		return baseModel.getParticleTexture();
+	public TextureAtlasSprite getParticleIcon() {
+		return baseModel.getParticleIcon();
 	}
 
 }

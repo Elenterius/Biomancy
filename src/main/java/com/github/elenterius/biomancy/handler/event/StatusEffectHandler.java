@@ -24,7 +24,7 @@ public final class StatusEffectHandler {
 
 	@SubscribeEvent
 	public static void onLivingSpawn(final EntityJoinWorldEvent event) {
-		if (event.getWorld().isRemote()) return;
+		if (event.getWorld().isClientSide()) return;
 
 		Entity entity = event.getEntity();
 		if (entity instanceof MobEntity) {

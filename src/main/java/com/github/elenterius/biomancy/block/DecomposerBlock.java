@@ -40,24 +40,24 @@ public class DecomposerBlock extends MachineBlock<DecomposerTileEntity> {
 
 	private static VoxelShape createVoxelShape() {
 		return Stream.of(
-				Block.makeCuboidShape(1, 0, 1, 15, 1, 15),
-				Block.makeCuboidShape(0, 1, 0, 16, 10, 16),
-				Block.makeCuboidShape(1, 10, 1, 15, 12, 15),
-				Block.makeCuboidShape(2, 12, 2, 14, 16, 14)
-		).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).get();
+				Block.box(1, 0, 1, 15, 1, 15),
+				Block.box(0, 1, 0, 16, 10, 16),
+				Block.box(1, 10, 1, 15, 12, 15),
+				Block.box(2, 12, 2, 14, 16, 14)
+		).reduce((v1, v2) -> VoxelShapes.join(v1, v2, IBooleanFunction.OR)).get();
 	}
 
 	@Nullable
 	@Override
-	public DecomposerTileEntity createNewTileEntity(IBlockReader worldIn) {
+	public DecomposerTileEntity newBlockEntity(IBlockReader worldIn) {
 		return new DecomposerTileEntity();
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()).setStyle(ClientTextUtil.LORE_STYLE));
-		CompoundNBT nbt = stack.getChildTag("BlockEntityTag");
+		CompoundNBT nbt = stack.getTagElement("BlockEntityTag");
 		if (nbt != null && nbt.contains(DecomposerStateData.NBT_KEY_FUEL)) {
 			tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 			DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
@@ -65,13 +65,13 @@ public class DecomposerBlock extends MachineBlock<DecomposerTileEntity> {
 			CompoundNBT fuelNbt = nbt.getCompound(DecomposerStateData.NBT_KEY_FUEL);
 			int fuel = fuelNbt.getInt("Amount");
 			String translationKey = "fluid." + fuelNbt.getString("FluidName").replace(":", ".").replace("/", ".");
-			tooltip.add(new TranslationTextComponent(translationKey).appendString(String.format(": %s/%s", df.format(fuel), df.format(DecomposerTileEntity.MAX_FUEL))));
+			tooltip.add(new TranslationTextComponent(translationKey).append(String.format(": %s/%s", df.format(fuel), df.format(DecomposerTileEntity.MAX_FUEL))));
 		}
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 	}
 
 	@Override
-	public BlockRenderType getRenderType(BlockState state) {
+	public BlockRenderType getRenderShape(BlockState state) {
 		return BlockRenderType.MODEL;
 	}
 
@@ -84,7 +84,7 @@ public class DecomposerBlock extends MachineBlock<DecomposerTileEntity> {
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
 		if (rand.nextInt(4) == 0) {
-			boolean isCrafting = stateIn.get(CRAFTING);
+			boolean isCrafting = stateIn.getValue(CRAFTING);
 			if (isCrafting) {
 				int n = rand.nextInt(5);
 				int color = 0xc7b15d;
@@ -95,7 +95,7 @@ public class DecomposerBlock extends MachineBlock<DecomposerTileEntity> {
 					worldIn.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + 0.2d + rand.nextFloat() - 0.2d, pos.getY() + 0.3d, pos.getZ() + 0.2d + rand.nextFloat() - 0.2d, r, g, b);
 				}
 				if (n > 0 && rand.nextInt(3) == 0) {
-					worldIn.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_TROPICAL_FISH_FLOP, SoundCategory.BLOCKS, 0.2f + rand.nextFloat() * 0.2f, 0.9f + rand.nextFloat() * 0.15f, false);
+					worldIn.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.TROPICAL_FISH_FLOP, SoundCategory.BLOCKS, 0.2f + rand.nextFloat() * 0.2f, 0.9f + rand.nextFloat() * 0.15f, false);
 				}
 			}
 		}

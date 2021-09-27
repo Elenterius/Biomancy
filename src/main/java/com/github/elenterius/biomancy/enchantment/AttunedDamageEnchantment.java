@@ -38,10 +38,10 @@ public class AttunedDamageEnchantment extends Enchantment {
 
 	public static void setAttunedTarget(ItemStack stack, Entity target) {
 		ResourceLocation registryName = target.getType().getRegistryName();
-		CompoundNBT nbt = stack.getOrCreateChildTag(NBT_KEY);
+		CompoundNBT nbt = stack.getOrCreateTagElement(NBT_KEY);
 		nbt.putString("EntityType", registryName != null ? registryName.toString() : "");
 		if (target instanceof PlayerEntity) {
-			nbt.putUniqueId("PlayerUUID", target.getUniqueID());
+			nbt.putUUID("PlayerUUID", target.getUUID());
 			nbt.putString("PlayerName", ((PlayerEntity) target).getGameProfile().getName());
 		}
 		else {
@@ -53,7 +53,7 @@ public class AttunedDamageEnchantment extends Enchantment {
 	@Nullable
 	public static ResourceLocation getAttunedTarget(ItemStack stack) {
 		String key = stack.getOrCreateTag().getCompound(NBT_KEY).getString("EntityType");
-		return ResourceLocation.tryCreate(key);
+		return ResourceLocation.tryParse(key);
 	}
 
 	@Override
@@ -62,54 +62,54 @@ public class AttunedDamageEnchantment extends Enchantment {
 	}
 
 	@Override
-	public boolean canGenerateInLoot() {
+	public boolean isDiscoverable() {
 		return false;
 	}
 
 	@Override
-	public boolean canVillagerTrade() {
+	public boolean isTradeable() {
 		return false;
 	}
 
 	@Override
-	public boolean canApply(ItemStack stack) {
+	public boolean canEnchant(ItemStack stack) {
 		Item item = stack.getItem();
-		return item instanceof AxeItem || item instanceof TridentItem || super.canApply(stack);
+		return item instanceof AxeItem || item instanceof TridentItem || super.canEnchant(stack);
 	}
 
 	@Override
-	protected boolean canApplyTogether(Enchantment enchantment) {
+	protected boolean checkCompatibility(Enchantment enchantment) {
 		return !(enchantment instanceof DamageEnchantment);
 	}
 
 	public ITextComponent getDisplayName(int level, ItemStack stack) {
 		ITextComponent name = null;
 		CompoundNBT nbt = stack.getOrCreateTag().getCompound(NBT_KEY);
-		if (nbt.hasUniqueId("PlayerUUID")) {
+		if (nbt.hasUUID("PlayerUUID")) {
 //			name = Minecraft.getInstance().world.getPlayerByUuid(nbt.getUniqueId("playerUUID")).getDisplayName();
 			name = new StringTextComponent(nbt.getString("PlayerName"));
 		}
 		else {
-			ResourceLocation registryName = ResourceLocation.tryCreate(nbt.getString("EntityType"));
+			ResourceLocation registryName = ResourceLocation.tryParse(nbt.getString("EntityType"));
 			if (registryName != null) {
 				EntityType<?> entityType = ForgeRegistries.ENTITIES.getValue(registryName);
 				if (entityType != null) {
-					name = entityType.getName();
+					name = entityType.getDescription();
 				}
 			}
 		}
-		IFormattableTextComponent textComponent = new TranslationTextComponent("enchantment.biomancy.attuned_bane_of", name != null ? name : new StringTextComponent("null").mergeStyle(TextFormatting.OBFUSCATED, TextFormatting.RED));
+		IFormattableTextComponent textComponent = new TranslationTextComponent("enchantment.biomancy.attuned_bane_of", name != null ? name : new StringTextComponent("null").withStyle(TextFormatting.OBFUSCATED, TextFormatting.RED));
 
 		if (level != 1 || getMaxLevel() != 1) {
-			textComponent.appendString(" ").appendSibling(new TranslationTextComponent("enchantment.level." + level));
+			textComponent.append(" ").append(new TranslationTextComponent("enchantment.level." + level));
 		}
 
-		return textComponent.mergeStyle(TextFormatting.GRAY);
+		return textComponent.withStyle(TextFormatting.GRAY);
 	}
 
 	public float getAttackDamageModifier(ItemStack stack, LivingEntity attacker, Entity target) {
 		if (!stack.isEmpty()) {
-			int level = EnchantmentHelper.getEnchantmentLevel(this, stack);
+			int level = EnchantmentHelper.getItemEnchantmentLevel(this, stack);
 			if (level > 0f) {
 				ResourceLocation targetKey = target.getType().getRegistryName();
 				if (targetKey != null && targetKey.equals(getAttunedTarget(stack))) {
@@ -121,15 +121,15 @@ public class AttunedDamageEnchantment extends Enchantment {
 	}
 
 	@Override
-	public void onEntityDamaged(LivingEntity attacker, Entity target, int level) {
+	public void doPostAttack(LivingEntity attacker, Entity target, int level) {
 		if (target instanceof LivingEntity) {
-			ItemStack heldStack = attacker.getHeldItemMainhand();
+			ItemStack heldStack = attacker.getMainHandItem();
 			if (!heldStack.isEmpty() && isAttuned(heldStack)) {
 				ResourceLocation targetKey = target.getType().getRegistryName();
 				if (targetKey != null && targetKey.equals(getAttunedTarget(heldStack))) {
-					int ticks = 20 + attacker.getRNG().nextInt(10 * level);
+					int ticks = 20 + attacker.getRandom().nextInt(10 * level);
 					int amplifier = 1 + level >> 1; // 6,5 => 3; 4,3 => 2; 2,1 => 1
-					((LivingEntity) target).addPotionEffect(new EffectInstance(ModEffects.DREAD.get(), ticks, amplifier));
+					((LivingEntity) target).addEffect(new EffectInstance(ModEffects.DREAD.get(), ticks, amplifier));
 				}
 			}
 		}

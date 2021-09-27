@@ -33,15 +33,15 @@ public abstract class OwnableTileEntity extends SimpleSyncedTileEntity implement
 	}
 
 	public boolean canPlayerOpenInv(PlayerEntity player) {
-		if (world == null || world.getTileEntity(pos) != this) return false;
-		return player.getDistanceSq(Vector3d.copyCentered(pos)) < 8d * 8d && isUserAuthorized(player);
+		if (level == null || level.getBlockEntity(worldPosition) != this) return false;
+		return player.distanceToSqr(Vector3d.atCenterOf(worldPosition)) < 8d * 8d && isUserAuthorized(player);
 	}
 
 	public boolean canPlayerUse(PlayerEntity player) {
 		if (!player.isSpectator() && !isUserAuthorized(player)) {
-			if (!player.world.isRemote()) {
-				player.sendStatusMessage(new TranslationTextComponent("container.isLocked", getDefaultName()).mergeStyle(TextFormatting.RED), true);
-				player.playSound(SoundEvents.BLOCK_CHEST_LOCKED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+			if (!player.level.isClientSide()) {
+				player.displayClientMessage(new TranslationTextComponent("container.isLocked", getDefaultName()).withStyle(TextFormatting.RED), true);
+				player.playNotifySound(SoundEvents.CHEST_LOCKED, SoundCategory.BLOCKS, 1.0F, 1.0F);
 			}
 			return false;
 		}
@@ -63,13 +63,13 @@ public abstract class OwnableTileEntity extends SimpleSyncedTileEntity implement
 	@Override
 	public void setOwner(UUID uuid) {
 		owner = uuid;
-		markDirty();
+		setChanged();
 	}
 
 	@Override
 	public void removeOwner() {
 		owner = null;
-		markDirty();
+		setChanged();
 	}
 
 	@Override
@@ -95,22 +95,22 @@ public abstract class OwnableTileEntity extends SimpleSyncedTileEntity implement
 
 	public void setCustomName(ITextComponent name) {
 		customName = name;
-		markDirty();
+		setChanged();
 	}
 
 	protected abstract ITextComponent getDefaultName();
 
 	@Override
-	public void read(BlockState state, CompoundNBT nbt) {
-		super.read(state, nbt);
+	public void load(BlockState state, CompoundNBT nbt) {
+		super.load(state, nbt);
 		if (nbt.contains("CustomName", Constants.NBT.TAG_STRING)) {
-			customName = ITextComponent.Serializer.getComponentFromJson(nbt.getString("CustomName"));
+			customName = ITextComponent.Serializer.fromJson(nbt.getString("CustomName"));
 		}
 		else {
 			customName = null;
 		}
 
-		if (nbt.hasUniqueId("OwnerUUID")) owner = nbt.getUniqueId("OwnerUUID");
+		if (nbt.hasUUID("OwnerUUID")) owner = nbt.getUUID("OwnerUUID");
 		else owner = null;
 
 		userAuthorityLevelMap.clear();
@@ -118,7 +118,7 @@ public abstract class OwnableTileEntity extends SimpleSyncedTileEntity implement
 			ListNBT nbtList = nbt.getList("UserList", Constants.NBT.TAG_COMPOUND);
 			for (int i = 0; i < nbtList.size(); i++) {
 				CompoundNBT nbtEntry = nbtList.getCompound(i);
-				UUID userUUID = nbtEntry.getUniqueId("UserUUID");
+				UUID userUUID = nbtEntry.getUUID("UserUUID");
 				UserAuthorization.AuthorityLevel authority = UserAuthorization.AuthorityLevel.deserialize(nbtEntry);
 				userAuthorityLevelMap.put(userUUID, authority);
 			}
@@ -126,17 +126,17 @@ public abstract class OwnableTileEntity extends SimpleSyncedTileEntity implement
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT nbt) {
-		super.write(nbt);
+	public CompoundNBT save(CompoundNBT nbt) {
+		super.save(nbt);
 		if (customName != null) nbt.putString("CustomName", ITextComponent.Serializer.toJson(customName));
 
-		if (owner != null) nbt.putUniqueId("OwnerUUID", owner);
+		if (owner != null) nbt.putUUID("OwnerUUID", owner);
 
 		if (userAuthorityLevelMap.size() > 0) {
 			ListNBT listNBT = new ListNBT();
 			for (Map.Entry<UUID, UserAuthorization.AuthorityLevel> entry : userAuthorityLevelMap.entrySet()) {
 				CompoundNBT nbtEntry = new CompoundNBT();
-				nbtEntry.putUniqueId("UserUUID", entry.getKey());
+				nbtEntry.putUUID("UserUUID", entry.getKey());
 				entry.getValue().serialize(nbtEntry);
 				listNBT.add(nbtEntry);
 			}
@@ -148,12 +148,12 @@ public abstract class OwnableTileEntity extends SimpleSyncedTileEntity implement
 	public CompoundNBT writeToItemBlockEntityTag(CompoundNBT nbt) {
 
 		if (userAuthorityLevelMap.size() > 0) {
-			if (owner != null) nbt.putUniqueId("OwnerUUID", owner);
+			if (owner != null) nbt.putUUID("OwnerUUID", owner);
 
 			ListNBT listNBT = new ListNBT();
 			for (Map.Entry<UUID, UserAuthorization.AuthorityLevel> entry : userAuthorityLevelMap.entrySet()) {
 				CompoundNBT nbtEntry = new CompoundNBT();
-				nbtEntry.putUniqueId("UserUUID", entry.getKey());
+				nbtEntry.putUUID("UserUUID", entry.getKey());
 				entry.getValue().serialize(nbtEntry);
 				listNBT.add(nbtEntry);
 			}

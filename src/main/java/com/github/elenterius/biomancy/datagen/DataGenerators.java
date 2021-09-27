@@ -45,7 +45,7 @@ public class DataGenerators {
 //            Pair.of(ChestLootTables::new, LootParameterSets.CHEST),
 				Pair.of(ModEntityLootTables::new, LootParameterSets.ENTITY),
 				Pair.of(ModBlockLootTables::new, LootParameterSets.BLOCK)
-//            Pair.of(PiglinBarteringAddition::new, LootParameterSets.field_237453_h_),
+//            Pair.of(PiglinBarteringAddition::new, LootParameterSets.PIGLIN_BARTER),
 //            Pair.of(GiftLootTables::new, LootParameterSets.GIFT)
 		);
 

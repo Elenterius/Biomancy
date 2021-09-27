@@ -10,19 +10,19 @@ public class RavenousMeleeAttackGoal extends MeleeAttackGoal {
 	}
 
 	@Override
-	public boolean shouldExecute() {
+	public boolean canUse() {
 		//noinspection ConstantConditions
-		if (attacker.isPotionActive(ModEffects.RAVENOUS_HUNGER.get()) && attacker.getActivePotionEffect(ModEffects.RAVENOUS_HUNGER.get()).getDuration() > 0) {
-			return super.shouldExecute();
+		if (mob.hasEffect(ModEffects.RAVENOUS_HUNGER.get()) && mob.getEffect(ModEffects.RAVENOUS_HUNGER.get()).getDuration() > 0) {
+			return super.canUse();
 		}
 		return false;
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
+	public boolean canContinueToUse() {
 		//noinspection ConstantConditions
-		if (attacker.isPotionActive(ModEffects.RAVENOUS_HUNGER.get()) && attacker.getActivePotionEffect(ModEffects.RAVENOUS_HUNGER.get()).getDuration() > 0) {
-			return super.shouldContinueExecuting();
+		if (mob.hasEffect(ModEffects.RAVENOUS_HUNGER.get()) && mob.getEffect(ModEffects.RAVENOUS_HUNGER.get()).getDuration() > 0) {
+			return super.canContinueToUse();
 		}
 		return false;
 	}

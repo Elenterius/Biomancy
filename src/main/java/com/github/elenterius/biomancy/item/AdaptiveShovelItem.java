@@ -35,7 +35,7 @@ public class AdaptiveShovelItem extends ShovelItem implements IAdaptiveEfficienc
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).setStyle(ClientTextUtil.LORE_STYLE));
 		IAdaptiveEfficiencyItem.addAdaptiveEfficiencyTooltip(stack, tooltip);
 	}
@@ -43,28 +43,28 @@ public class AdaptiveShovelItem extends ShovelItem implements IAdaptiveEfficienc
 	@Override
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
 		float currEfficiency = super.getDestroySpeed(stack, state);
-		if (currEfficiency >= efficiency) {
+		if (currEfficiency >= speed) {
 			return Math.min(currEfficiency + IAdaptiveEfficiencyItem.getEfficiencyModifier(stack, state), MAX_EFFICIENCY);
 		}
 		return currEfficiency;
 	}
 
 	@Override
-	public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity livingEntity) {
-		if (!worldIn.isRemote && state.getBlockHardness(worldIn, pos) != 0.0F) {
-			IAdaptiveEfficiencyItem.updateEfficiencyModifier(stack, state, efficiency, super.getDestroySpeed(stack, state));
+	public boolean mineBlock(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity livingEntity) {
+		if (!worldIn.isClientSide && state.getDestroySpeed(worldIn, pos) != 0.0F) {
+			IAdaptiveEfficiencyItem.updateEfficiencyModifier(stack, state, speed, super.getDestroySpeed(stack, state));
 		}
-		return super.onBlockDestroyed(stack, worldIn, state, pos, livingEntity);
+		return super.mineBlock(stack, worldIn, state, pos, livingEntity);
 	}
 
 	@Override
 	public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, PlayerEntity player) {
 
-		if (!player.isSneaking() && getBlockHarvestRange(stack) > 0 && !player.world.isRemote && player instanceof ServerPlayerEntity) {
-			ServerWorld world = (ServerWorld) player.world;
+		if (!player.isShiftKeyDown() && getBlockHarvestRange(stack) > 0 && !player.level.isClientSide && player instanceof ServerPlayerEntity) {
+			ServerWorld world = (ServerWorld) player.level;
 			ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
 			BlockState blockState = world.getBlockState(pos);
-			BlockRayTraceResult rayTraceResult = Item.rayTrace(world, player, RayTraceContext.FluidMode.NONE);
+			BlockRayTraceResult rayTraceResult = Item.getPlayerPOVHitResult(world, player, RayTraceContext.FluidMode.NONE);
 			if (PlayerInteractionUtil.harvestBlock(world, serverPlayer, blockState, pos)) {
 				List<BlockPos> blockNeighbors = PlayerInteractionUtil.findBlockNeighbors(world, rayTraceResult, blockState, pos, getBlockHarvestRange(stack));
 				for (BlockPos neighborPos : blockNeighbors) {
@@ -79,45 +79,46 @@ public class AdaptiveShovelItem extends ShovelItem implements IAdaptiveEfficienc
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext context) {
-		if (context.getFace() == Direction.DOWN) return ActionResultType.PASS;
+	public ActionResultType useOn(ItemUseContext context) {
+		if (context.getClickedFace() == Direction.DOWN) return ActionResultType.PASS;
 
 		PlayerEntity player = context.getPlayer();
-		World world = context.getWorld();
-		BlockPos blockPos = context.getPos();
+		World world = context.getLevel();
+		BlockPos blockPos = context.getClickedPos();
 		BlockState originalState = world.getBlockState(blockPos);
 
-		BlockState modifiedState = originalState.getToolModifiedState(world, blockPos, player, context.getItem(), ToolType.SHOVEL);
-		if (modifiedState != null && world.isAirBlock(blockPos.up())) {
-			world.playSound(player, blockPos, SoundEvents.ITEM_SHOVEL_FLATTEN, SoundCategory.BLOCKS, 1f, 1f);
-			if (!world.isRemote) {
+		BlockState modifiedState = originalState.getToolModifiedState(world, blockPos, player, context.getItemInHand(), ToolType.SHOVEL);
+		if (modifiedState != null && world.isEmptyBlock(blockPos.above())) {
+			world.playSound(player, blockPos, SoundEvents.SHOVEL_FLATTEN, SoundCategory.BLOCKS, 1f, 1f);
+			if (!world.isClientSide) {
 				int durabilityCost = 1;
 
-				if (player != null && !player.isSneaking()) {
-					List<BlockPos> blockNeighbors = PlayerInteractionUtil.findBlockNeighbors(world, context.getFace(), originalState, blockPos, getBlockHarvestRange(context.getItem()));
+				if (player != null && !player.isShiftKeyDown()) {
+					List<BlockPos> blockNeighbors = PlayerInteractionUtil.findBlockNeighbors(world, context.getClickedFace(), originalState, blockPos, getBlockHarvestRange(context.getItemInHand()));
 					for (BlockPos neighborPos : blockNeighbors) {
-						BlockState modifiedNeighbor = world.getBlockState(neighborPos).getToolModifiedState(world, neighborPos, player, context.getItem(), ToolType.SHOVEL);
-						if (modifiedNeighbor != null && world.isAirBlock(blockPos.up())) {
-							world.setBlockState(neighborPos, modifiedNeighbor, Constants.BlockFlags.DEFAULT_AND_RERENDER);
+						BlockState modifiedNeighbor = world.getBlockState(neighborPos).getToolModifiedState(world, neighborPos, player, context.getItemInHand(), ToolType.SHOVEL);
+						if (modifiedNeighbor != null && world.isEmptyBlock(blockPos.above())) {
+							world.setBlock(neighborPos, modifiedNeighbor, Constants.BlockFlags.DEFAULT_AND_RERENDER);
 							durabilityCost++;
 						}
 					}
 				}
 
-				world.setBlockState(blockPos, modifiedState, Constants.BlockFlags.DEFAULT_AND_RERENDER);
-				if (player != null) context.getItem().damageItem(durabilityCost, player, (playerEntity) -> playerEntity.sendBreakAnimation(context.getHand()));
+				world.setBlock(blockPos, modifiedState, Constants.BlockFlags.DEFAULT_AND_RERENDER);
+				if (player != null)
+					context.getItemInHand().hurtAndBreak(durabilityCost, player, (playerEntity) -> playerEntity.broadcastBreakEvent(context.getHand()));
 			}
-			return ActionResultType.func_233537_a_(world.isRemote);
+			return ActionResultType.sidedSuccess(world.isClientSide);
 		}
-		else if (originalState.getBlock() instanceof CampfireBlock && originalState.get(CampfireBlock.LIT)) {
-			if (!world.isRemote()) world.playEvent(null, Constants.WorldEvents.FIRE_EXTINGUISH_SOUND, blockPos, 0);
-			CampfireBlock.extinguish(world, blockPos, originalState);
-			BlockState newState = originalState.with(CampfireBlock.LIT, Boolean.FALSE);
-			if (!world.isRemote) {
-				world.setBlockState(blockPos, newState, Constants.BlockFlags.DEFAULT_AND_RERENDER);
-				if (player != null) context.getItem().damageItem(1, player, (playerEntity) -> playerEntity.sendBreakAnimation(context.getHand()));
+		else if (originalState.getBlock() instanceof CampfireBlock && originalState.getValue(CampfireBlock.LIT)) {
+			if (!world.isClientSide()) world.levelEvent(null, Constants.WorldEvents.FIRE_EXTINGUISH_SOUND, blockPos, 0);
+			CampfireBlock.dowse(world, blockPos, originalState);
+			BlockState newState = originalState.setValue(CampfireBlock.LIT, Boolean.FALSE);
+			if (!world.isClientSide) {
+				world.setBlock(blockPos, newState, Constants.BlockFlags.DEFAULT_AND_RERENDER);
+				if (player != null) context.getItemInHand().hurtAndBreak(1, player, (playerEntity) -> playerEntity.broadcastBreakEvent(context.getHand()));
 			}
-			return ActionResultType.func_233537_a_(world.isRemote);
+			return ActionResultType.sidedSuccess(world.isClientSide);
 		}
 
 		return ActionResultType.PASS;

@@ -41,18 +41,18 @@ public class DecomposerTileEntity extends BFMachineTileEntity<DecomposerRecipe, 
 	public static final short FUEL_COST = 5;
 	public static final RecipeType.ItemStackRecipeType<DecomposerRecipe> RECIPE_TYPE = ModRecipes.DECOMPOSING_RECIPE_TYPE;
 
-	private final SimpleInventory fuelInventory;
-	private final SimpleInventory emptyBucketInventory;
-	private final SimpleInventory inputInventory;
-	private final SimpleInventory outputInventory;
+	private final SimpleInventory<?> fuelInventory;
+	private final SimpleInventory<?> emptyBucketInventory;
+	private final SimpleInventory<?> inputInventory;
+	private final SimpleInventory<?> outputInventory;
 	private final DecomposerStateData stateData = new DecomposerStateData();
 
 	public DecomposerTileEntity() {
 		super(ModTileEntityTypes.DECOMPOSER.get());
-		fuelInventory = SimpleInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterBiofuel, this::canPlayerOpenInv, this::markDirty);
-		emptyBucketInventory = SimpleInventory.createServerContents(EMPTY_BUCKET_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::markDirty);
-		inputInventory = SimpleInventory.createServerContents(INPUT_SLOTS, this::canPlayerOpenInv, this::markDirty);
-		outputInventory = SimpleInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::markDirty);
+		fuelInventory = SimpleInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterBiofuel, this::canPlayerOpenInv, this::setChanged);
+		emptyBucketInventory = SimpleInventory.createServerContents(EMPTY_BUCKET_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
+		inputInventory = SimpleInventory.createServerContents(INPUT_SLOTS, this::canPlayerOpenInv, this::setChanged);
+		outputInventory = SimpleInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
 	}
 
 	@Override
@@ -82,12 +82,12 @@ public class DecomposerTileEntity extends BFMachineTileEntity<DecomposerRecipe, 
 
 	@Override
 	public ItemStack getStackInFuelSlot() {
-		return fuelInventory.getStackInSlot(0);
+		return fuelInventory.getItem(0);
 	}
 
 	@Override
 	public void setStackInFuelSlot(ItemStack stack) {
-		fuelInventory.setInventorySlotContents(0, stack);
+		fuelInventory.setItem(0, stack);
 	}
 
 	@Override
@@ -97,26 +97,26 @@ public class DecomposerTileEntity extends BFMachineTileEntity<DecomposerRecipe, 
 
 	@Override
 	protected boolean craftRecipe(DecomposerRecipe recipeToCraft, World world) {
-		ItemStack result = recipeToCraft.getCraftingResult(inputInventory);
+		ItemStack result = recipeToCraft.assemble(inputInventory);
 		if (!result.isEmpty() && outputInventory.doesItemStackFit(0, result)) {
-			for (int idx = 0; idx < inputInventory.getSizeInventory(); idx++) {
-				inputInventory.decrStackSize(idx, recipeToCraft.getIngredientCount()); //consume input
+			for (int idx = 0; idx < inputInventory.getContainerSize(); idx++) {
+				inputInventory.removeItem(idx, recipeToCraft.getIngredientCount()); //consume input
 			}
 
 			outputInventory.insertItemStack(0, result); //output result
 
 			//output optional byproducts
 			for (Byproduct byproduct : recipeToCraft.getByproducts()) {
-				if (world.rand.nextFloat() <= byproduct.getChance()) {
+				if (world.random.nextFloat() <= byproduct.getChance()) {
 					ItemStack stack = byproduct.getItemStack();
-					for (int idx = 1; idx < outputInventory.getSizeInventory(); idx++) { //index 0 is reserved for the main crafting output
+					for (int idx = 1; idx < outputInventory.getContainerSize(); idx++) { //index 0 is reserved for the main crafting output
 						stack = outputInventory.insertItemStack(idx, stack); //update stack with remainder
 						if (stack.isEmpty()) break;
 					}
 				}
 			}
 
-			markDirty();
+			setChanged();
 			return true;
 		}
 		return false;
@@ -141,15 +141,15 @@ public class DecomposerTileEntity extends BFMachineTileEntity<DecomposerRecipe, 
 
 	@Override
 	public void dropAllInvContents(World world, BlockPos pos) {
-		InventoryHelper.dropInventoryItems(world, pos, fuelInventory);
-		InventoryHelper.dropInventoryItems(world, pos, emptyBucketInventory);
-		InventoryHelper.dropInventoryItems(world, pos, inputInventory);
-		InventoryHelper.dropInventoryItems(world, pos, outputInventory);
+		InventoryHelper.dropContents(world, pos, fuelInventory);
+		InventoryHelper.dropContents(world, pos, emptyBucketInventory);
+		InventoryHelper.dropContents(world, pos, inputInventory);
+		InventoryHelper.dropContents(world, pos, outputInventory);
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT nbt) {
-		super.write(nbt);
+	public CompoundNBT save(CompoundNBT nbt) {
+		super.save(nbt);
 		stateData.serializeNBT(nbt);
 		nbt.put("FuelSlots", fuelInventory.serializeNBT());
 		nbt.put("EmptyBucketSlots", emptyBucketInventory.serializeNBT());
@@ -159,16 +159,16 @@ public class DecomposerTileEntity extends BFMachineTileEntity<DecomposerRecipe, 
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT nbt) {
-		super.read(state, nbt);
+	public void load(BlockState state, CompoundNBT nbt) {
+		super.load(state, nbt);
 		stateData.deserializeNBT(nbt);
 		fuelInventory.deserializeNBT(nbt.getCompound("FuelSlots"));
 		emptyBucketInventory.deserializeNBT(nbt.getCompound("EmptyBucketSlots"));
 		inputInventory.deserializeNBT(nbt.getCompound("InputSlots"));
 		outputInventory.deserializeNBT(nbt.getCompound("OutputSlots"));
 
-		if (fuelInventory.getSizeInventory() != FUEL_SLOTS || inputInventory.getSizeInventory() != INPUT_SLOTS
-				|| outputInventory.getSizeInventory() != OUTPUT_SLOTS || emptyBucketInventory.getSizeInventory() != EMPTY_BUCKET_SLOTS) {
+		if (fuelInventory.getContainerSize() != FUEL_SLOTS || inputInventory.getContainerSize() != INPUT_SLOTS
+				|| outputInventory.getContainerSize() != OUTPUT_SLOTS || emptyBucketInventory.getContainerSize() != EMPTY_BUCKET_SLOTS) {
 			throw new IllegalArgumentException("Corrupted NBT: Number of inventory slots did not match expected count.");
 		}
 	}
@@ -197,7 +197,7 @@ public class DecomposerTileEntity extends BFMachineTileEntity<DecomposerRecipe, 
 	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-		if (!removed)
+		if (!remove)
 			if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 				if (side == Direction.UP) return inputInventory.getOptionalItemStackHandler().cast();
 				if (side == null || side == Direction.DOWN) return outputInventory.getOptionalItemStackHandler().cast();

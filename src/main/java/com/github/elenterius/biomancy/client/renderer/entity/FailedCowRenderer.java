@@ -20,7 +20,7 @@ public class FailedCowRenderer extends MobRenderer<FailedCowEntity, CowModel<Fai
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(FailedCowEntity entity) {
+	public ResourceLocation getTextureLocation(FailedCowEntity entity) {
 		return TEXTURE;
 	}
 

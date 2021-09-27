@@ -39,7 +39,7 @@ public class FluidTankBar extends Drawable {
 		FluidStack fluidStack = fluidTank.getFluid();
 		Fluid fluid = fluidStack.getFluid();
 		FluidAttributes fluidAttributes = fluid.getAttributes();
-		TextureAtlasSprite fluidTexture = Minecraft.getInstance().getAtlasSpriteGetter(PlayerContainer.LOCATION_BLOCKS_TEXTURE).apply(fluidAttributes.getStillTexture(fluidStack));
+		TextureAtlasSprite fluidTexture = Minecraft.getInstance().getTextureAtlas(PlayerContainer.BLOCK_ATLAS).apply(fluidAttributes.getStillTexture(fluidStack));
 		int color = fluidAttributes.getColor(fluidStack);
 
 		int scaledHeight = (int) (height * amountNormalized);

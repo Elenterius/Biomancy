@@ -46,8 +46,8 @@ public class ClawWeaponItem extends SwordItem {
 	protected void addAdditionalAttributeModifiers(ImmutableMultimap.Builder<Attribute, AttributeModifier> builder) {}
 
 	@Override
-	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot) {
-		return equipmentSlot == EquipmentSlotType.MAINHAND ? lazyAttributeModifiers.get() : super.getAttributeModifiers(equipmentSlot);
+	public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlotType equipmentSlot) {
+		return equipmentSlot == EquipmentSlotType.MAINHAND ? lazyAttributeModifiers.get() : super.getDefaultAttributeModifiers(equipmentSlot);
 	}
 
 	public void onCriticalHitEntity(ItemStack stack, LivingEntity attacker, LivingEntity target) {}
@@ -56,28 +56,28 @@ public class ClawWeaponItem extends SwordItem {
 
 	@Override
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
-		if (!state.matchesBlock(Blocks.COBWEB) && !state.isIn(BlockTags.LEAVES)) {
-			return state.isIn(BlockTags.WOOL) ? 5.0F : super.getDestroySpeed(stack, state);
+		if (!state.is(Blocks.COBWEB) && !state.is(BlockTags.LEAVES)) {
+			return state.is(BlockTags.WOOL) ? 5.0F : super.getDestroySpeed(stack, state);
 		}
 		return 15.0F;
 	}
 
 	@Override
-	public ActionResultType itemInteractionForEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity livingEntity, Hand hand) {
-		if (livingEntity.world.isRemote()) return ActionResultType.PASS;
+	public ActionResultType interactLivingEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity livingEntity, Hand hand) {
+		if (livingEntity.level.isClientSide()) return ActionResultType.PASS;
 		if (livingEntity instanceof IForgeShearable) {
-			BlockPos pos = new BlockPos(livingEntity.getPosX(), livingEntity.getPosY(), livingEntity.getPosZ());
+			BlockPos pos = new BlockPos(livingEntity.getX(), livingEntity.getY(), livingEntity.getZ());
 			IForgeShearable iShearable = (IForgeShearable) livingEntity;
-			if (iShearable.isShearable(stack, livingEntity.world, pos)) {
-				List<ItemStack> drops = iShearable.onSheared(playerIn, stack, livingEntity.world, pos, EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, stack));
+			if (iShearable.isShearable(stack, livingEntity.level, pos)) {
+				List<ItemStack> drops = iShearable.onSheared(playerIn, stack, livingEntity.level, pos, EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, stack));
 				Random rand = new Random();
 				drops.forEach(lootStack -> {
-					ItemEntity itemEntity = livingEntity.entityDropItem(lootStack, 1.0F);
+					ItemEntity itemEntity = livingEntity.spawnAtLocation(lootStack, 1.0F);
 					if (itemEntity != null) {
-						itemEntity.setMotion(itemEntity.getMotion().add((rand.nextFloat() - rand.nextFloat()) * 0.1F, rand.nextFloat() * 0.05F, (rand.nextFloat() - rand.nextFloat()) * 0.1F));
+						itemEntity.setDeltaMovement(itemEntity.getDeltaMovement().add((rand.nextFloat() - rand.nextFloat()) * 0.1F, rand.nextFloat() * 0.05F, (rand.nextFloat() - rand.nextFloat()) * 0.1F));
 					}
 				});
-				stack.damageItem(1, livingEntity, entity -> entity.sendBreakAnimation(hand));
+				stack.hurtAndBreak(1, livingEntity, entity -> entity.broadcastBreakEvent(hand));
 			}
 			return ActionResultType.SUCCESS;
 		}

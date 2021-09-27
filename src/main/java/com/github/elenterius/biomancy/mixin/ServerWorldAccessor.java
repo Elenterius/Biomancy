@@ -10,7 +10,7 @@ import java.util.UUID;
 @Mixin(ServerWorld.class)
 public interface ServerWorldAccessor {
 
-	@Invoker("getLoadedOrPendingEntity")
+	@Invoker("findAddedOrPendingEntity")
 	Entity biomancy_getLoadedOrPendingEntity(UUID uuid);
 
 }

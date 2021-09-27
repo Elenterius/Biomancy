@@ -11,14 +11,14 @@ public interface IOwnableItem {
 
 	default Optional<UUID> getOwner(ItemStack stack) {
 		CompoundNBT nbt = stack.getOrCreateTag();
-		if (nbt.hasUniqueId(NBT_KEY)) {
-			return Optional.of(nbt.getUniqueId(NBT_KEY));
+		if (nbt.hasUUID(NBT_KEY)) {
+			return Optional.of(nbt.getUUID(NBT_KEY));
 		}
 		return Optional.empty();
 	}
 
 	default void setOwner(ItemStack stack, UUID uuid) {
-		stack.getOrCreateTag().putUniqueId(NBT_KEY, uuid);
+		stack.getOrCreateTag().putUUID(NBT_KEY, uuid);
 	}
 
 	default void removeOwner(ItemStack stack) {
@@ -26,7 +26,7 @@ public interface IOwnableItem {
 	}
 
 	default boolean hasOwner(ItemStack stack) {
-		return stack.getOrCreateTag().hasUniqueId(NBT_KEY);
+		return stack.getOrCreateTag().hasUUID(NBT_KEY);
 	}
 
 	default boolean isOwner(ItemStack stack, UUID uuid) {

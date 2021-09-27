@@ -33,7 +33,7 @@ public abstract class RecipeType<T extends AbstractProductionRecipe> implements 
 
 		public Optional<R> getRecipeFromInventory(World world, IInventory inputInv) {
 			RecipeManager recipeManager = world.getRecipeManager();
-			return recipeManager.getRecipe(this, inputInv, world);
+			return recipeManager.getRecipeFor(this, inputInv, world);
 		}
 
 		public Optional<R> getRecipeForItem(World world, ItemStack stack) {
@@ -63,7 +63,7 @@ public abstract class RecipeType<T extends AbstractProductionRecipe> implements 
 			RecipeManagerMixinAccessor recipeManager = (RecipeManagerMixinAccessor) world.getRecipeManager();
 			//noinspection unchecked
 			return recipeManager.biomancy_getRecipes(this).values().stream()
-					.flatMap((recipe) -> Util.streamOptional(matches((R) recipe, world, fluidHandler)))
+					.flatMap((recipe) -> Util.toStream(matches((R) recipe, world, fluidHandler)))
 					.findFirst();
 		}
 

@@ -56,26 +56,26 @@ public final class ItemDecayImpl {
 
 		@Override
 		public void onItemDecay(ItemStack stack, ServerWorld world, Entity entity, int oldCount, int newCount) {
-			if (stack.isEmpty() || newCount != oldCount && world.rand.nextFloat() < 0.4f) {
+			if (stack.isEmpty() || newCount != oldCount && world.random.nextFloat() < 0.4f) {
 				int difference = MathHelper.clamp(MathHelper.abs(oldCount - newCount), 1, stack.getMaxStackSize());
 				float p = ((float) difference / (float) stack.getMaxStackSize());
 				if (entity instanceof LivingEntity && p < 0.46f) {
-					Collection<EffectInstance> effects = ((LivingEntity) entity).getActivePotionEffects();
+					Collection<EffectInstance> effects = ((LivingEntity) entity).getActiveEffects();
 					int amplifier = 0;
 					int duration = 0;
 					for (EffectInstance effectInstance : effects) {
-						if (effectInstance.getPotion() == ModEffects.FLESH_EATING_DISEASE.get()) {
+						if (effectInstance.getEffect() == ModEffects.FLESH_EATING_DISEASE.get()) {
 							amplifier = effectInstance.getAmplifier();
 							duration = effectInstance.getDuration();
 							break;
 						}
 					}
 					EffectInstance effectInstance = new EffectInstance(ModEffects.FLESH_EATING_DISEASE.get(), Math.min(difference, 5) * 120 + duration, Math.round(p) * 2 + amplifier);
-					((LivingEntity) entity).addPotionEffect(effectInstance);
+					((LivingEntity) entity).addEffect(effectInstance);
 				}
 				else {
 					EffectInstance effectInstance = new EffectInstance(ModEffects.FLESH_EATING_DISEASE.get(), Math.min(difference, 5) * 120, Math.round(p) * 2);
-					Vector3d pos = entity.getPositionVec();
+					Vector3d pos = entity.position();
 					AreaEffectCloudEntity aoeCloud = new AreaEffectCloudEntity(world, pos.x, pos.y, pos.z);
 					aoeCloud.setDuration(30 * 20);
 					aoeCloud.setRadius(1.25F);
@@ -83,7 +83,7 @@ public final class ItemDecayImpl {
 					aoeCloud.setWaitTime(10);
 					aoeCloud.setRadiusPerTick(-aoeCloud.getRadius() / (float) aoeCloud.getDuration());
 					aoeCloud.addEffect(effectInstance);
-					world.addEntity(aoeCloud);
+					world.addFreshEntity(aoeCloud);
 				}
 			}
 		}

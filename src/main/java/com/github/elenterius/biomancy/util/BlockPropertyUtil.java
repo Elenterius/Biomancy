@@ -17,12 +17,12 @@ public final class BlockPropertyUtil {
 	static {
 		//we can't know if someone might have manipulated the properties, so we search for the max value
 		maxAgeMappings = ImmutableMap.<IntegerProperty, Integer>builder()
-				.put(BlockStateProperties.AGE_0_1, BlockStateProperties.AGE_0_1.getAllowedValues().stream().max(Integer::compareTo).orElse(1))
-				.put(BlockStateProperties.AGE_0_3, BlockStateProperties.AGE_0_3.getAllowedValues().stream().max(Integer::compareTo).orElse(3))
-				.put(BlockStateProperties.AGE_0_5, BlockStateProperties.AGE_0_5.getAllowedValues().stream().max(Integer::compareTo).orElse(5))
-				.put(BlockStateProperties.AGE_0_7, BlockStateProperties.AGE_0_7.getAllowedValues().stream().max(Integer::compareTo).orElse(7))
-				.put(BlockStateProperties.AGE_0_15, BlockStateProperties.AGE_0_15.getAllowedValues().stream().max(Integer::compareTo).orElse(15))
-				.put(BlockStateProperties.AGE_0_25, BlockStateProperties.AGE_0_25.getAllowedValues().stream().max(Integer::compareTo).orElse(25))
+				.put(BlockStateProperties.AGE_1, BlockStateProperties.AGE_1.getPossibleValues().stream().max(Integer::compareTo).orElse(1))
+				.put(BlockStateProperties.AGE_3, BlockStateProperties.AGE_3.getPossibleValues().stream().max(Integer::compareTo).orElse(3))
+				.put(BlockStateProperties.AGE_5, BlockStateProperties.AGE_5.getPossibleValues().stream().max(Integer::compareTo).orElse(5))
+				.put(BlockStateProperties.AGE_7, BlockStateProperties.AGE_7.getPossibleValues().stream().max(Integer::compareTo).orElse(7))
+				.put(BlockStateProperties.AGE_15, BlockStateProperties.AGE_15.getPossibleValues().stream().max(Integer::compareTo).orElse(15))
+				.put(BlockStateProperties.AGE_25, BlockStateProperties.AGE_25.getPossibleValues().stream().max(Integer::compareTo).orElse(25))
 				.build();
 	}
 
@@ -34,7 +34,7 @@ public final class BlockPropertyUtil {
 		}
 		else {
 			//we can't use the last element of the collection since the order of the underlying HashSet is not guaranteed to remain constant
-			return property.getAllowedValues().stream().max(Integer::compareTo).orElse(0);
+			return property.getPossibleValues().stream().max(Integer::compareTo).orElse(0);
 		}
 	}
 
@@ -51,19 +51,19 @@ public final class BlockPropertyUtil {
 	}
 
 	public static int getAge(BlockState state) {
-		return getAgeProperty(state).map(state::get).orElse(0);
+		return getAgeProperty(state).map(state::getValue).orElse(0);
 	}
 
 	public static Optional<int[]> getCurrentAgeAndMaxAge(BlockState state) {
 		if (state.getBlock() instanceof CropsBlock) {
 			CropsBlock block = (CropsBlock) state.getBlock();
-			return Optional.of(new int[]{state.get(block.getAgeProperty()), block.getMaxAge()});
+			return Optional.of(new int[]{state.getValue(block.getAgeProperty()), block.getMaxAge()});
 		}
 
 		for (Property<?> prop : state.getProperties()) {
 			if (prop.getName().equals(AGE_PROPERTY) && prop instanceof IntegerProperty) {
 				IntegerProperty ageProperty = (IntegerProperty) prop;
-				return Optional.of(new int[]{state.get(ageProperty), getMaxAge(ageProperty)});
+				return Optional.of(new int[]{state.getValue(ageProperty), getMaxAge(ageProperty)});
 			}
 		}
 

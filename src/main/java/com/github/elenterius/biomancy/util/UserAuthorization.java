@@ -42,14 +42,14 @@ public class UserAuthorization implements INBTSerializable<CompoundNBT> {
 	@Override
 	public CompoundNBT serializeNBT() {
 		CompoundNBT nbt = new CompoundNBT();
-		nbt.putUniqueId("UserUUID", userUUID);
+		nbt.putUUID("UserUUID", userUUID);
 		authority.serialize(nbt);
 		return nbt;
 	}
 
 	@Override
 	public void deserializeNBT(CompoundNBT nbt) {
-		userUUID = nbt.getUniqueId("UserUUID");
+		userUUID = nbt.getUUID("UserUUID");
 		authority = AuthorityLevel.deserialize(nbt);
 	}
 

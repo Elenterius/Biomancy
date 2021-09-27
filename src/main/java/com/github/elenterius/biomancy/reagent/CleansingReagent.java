@@ -33,8 +33,8 @@ public class CleansingReagent extends Reagent {
 			((FleshBlobEntity) target).clearForeignEntityDNA();
 		}
 		else if (target instanceof ZombieVillagerEntity) {
-			if (!target.world.isRemote && ForgeEventFactory.canLivingConvert(target, EntityType.VILLAGER, (timer) -> {})) {
-				((ZombieVillagerEntityMixinAccessor) target).biomancy_cureZombie((ServerWorld) target.world);
+			if (!target.level.isClientSide && ForgeEventFactory.canLivingConvert(target, EntityType.VILLAGER, (timer) -> {})) {
+				((ZombieVillagerEntityMixinAccessor) target).biomancy_cureZombie((ServerWorld) target.level);
 			}
 		}
 		return true;
@@ -46,7 +46,7 @@ public class CleansingReagent extends Reagent {
 	}
 
 	private boolean clearPotionEffects(LivingEntity target) {
-		if (!target.world.isRemote) target.clearActivePotions();
+		if (!target.level.isClientSide) target.removeAllEffects();
 		return true;
 	}
 

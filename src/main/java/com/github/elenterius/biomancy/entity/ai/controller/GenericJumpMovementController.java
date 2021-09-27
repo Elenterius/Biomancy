@@ -19,7 +19,7 @@ public class GenericJumpMovementController extends MovementController {
 		if (mob.isOnGround() && !jumpMovementState.isJumping(jumpMoveMob) && !(jumpMovementState.jumpController.isJumping())) {
 			jumpMovementState.setMovementSpeed(jumpMoveMob, 0d);
 		}
-		else if (isUpdating()) {
+		else if (hasWanted()) {
 			jumpMovementState.setMovementSpeed(jumpMoveMob, nextJumpSpeed);
 		}
 
@@ -27,12 +27,12 @@ public class GenericJumpMovementController extends MovementController {
 	}
 
 	@Override
-	public void setMoveTo(double x, double y, double z, double speedIn) {
+	public void setWantedPosition(double x, double y, double z, double speedIn) {
 		if (mob.isInWater()) {
 			speedIn = 1.5D;
 		}
 
-		super.setMoveTo(x, y, z, speedIn);
+		super.setWantedPosition(x, y, z, speedIn);
 		if (speedIn > 0.0D) {
 			nextJumpSpeed = speedIn;
 		}

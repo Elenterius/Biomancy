@@ -58,16 +58,16 @@ public final class BiomancyMod {
 	public static final ItemGroup ITEM_GROUP = new ItemGroup(MOD_ID) {
 
 		@OnlyIn(Dist.CLIENT)
-		public ItemStack createIcon() {
+		public ItemStack makeIcon() {
 			return new ItemStack(ModItems.OCULUS.get());
 		}
 
 		@Override
-		public void fill(@Nonnull NonNullList<ItemStack> items) {
-			super.fill(items);
+		public void fillItemList(@Nonnull NonNullList<ItemStack> items) {
+			super.fillItemList(items);
 			for (RegistryObject<Enchantment> entry : ModEnchantments.ENCHANTMENTS.getEntries()) {
 				Enchantment enchantment = entry.get();
-				items.add(EnchantedBookItem.getEnchantedItemStack(new EnchantmentData(enchantment, enchantment.getMaxLevel())));
+				items.add(EnchantedBookItem.createForEnchantment(new EnchantmentData(enchantment, enchantment.getMaxLevel())));
 			}
 		}
 

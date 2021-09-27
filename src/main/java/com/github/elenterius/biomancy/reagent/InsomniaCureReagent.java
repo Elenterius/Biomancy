@@ -40,11 +40,11 @@ public class InsomniaCureReagent extends Reagent {
 	public boolean affectPlayerSelf(CompoundNBT nbt, PlayerEntity targetSelf) {
 //		if (!targetSelf.world.getGameRules().getBoolean(GameRules.DO_INSOMNIA)) return false; // doesn't work on client side anyways
 
-		if (!targetSelf.world.isRemote) {
+		if (!targetSelf.level.isClientSide) {
 			ServerStatisticsManager statisticsManager = ((ServerPlayerEntity) targetSelf).getStats();
 			int timeSinceRest = MathHelper.clamp(statisticsManager.getValue(Stats.CUSTOM.get(Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE);
 			if (timeSinceRest > 20 * 60) {
-				targetSelf.takeStat(Stats.CUSTOM.get(Stats.TIME_SINCE_REST)); //reset insomnia
+				targetSelf.resetStat(Stats.CUSTOM.get(Stats.TIME_SINCE_REST)); //reset insomnia
 				return true;
 			}
 		}
@@ -53,7 +53,7 @@ public class InsomniaCureReagent extends Reagent {
 			int timeSinceRest = MathHelper.clamp(statisticsManager.getValue(Stats.CUSTOM.get(Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE);
 			if (timeSinceRest > 20 * 60) return true;
 
-			targetSelf.sendStatusMessage(new TranslationTextComponent("msg.biomancy.not_sleepy").mergeStyle(TextFormatting.RED), true);
+			targetSelf.displayClientMessage(new TranslationTextComponent("msg.biomancy.not_sleepy").withStyle(TextFormatting.RED), true);
 		}
 
 		return false;

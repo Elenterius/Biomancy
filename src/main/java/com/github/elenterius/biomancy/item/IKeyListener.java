@@ -20,14 +20,14 @@ public interface IKeyListener {
 	static void onReceiveKeybindingPacket(ServerWorld world, ServerPlayerEntity player, int slotIndex, byte flag) {
 		EquipmentSlotType slotType = getEquipmentSlotTypeFrom(slotIndex);
 		if (slotType != null) {
-			ItemStack heldStack = player.getItemStackFromSlot(slotType);
-			if ((heldStack.getItem() instanceof IKeyListener) && !(player.getCooldownTracker().hasCooldown(heldStack.getItem()))) {
+			ItemStack heldStack = player.getItemBySlot(slotType);
+			if ((heldStack.getItem() instanceof IKeyListener) && !(player.getCooldowns().isOnCooldown(heldStack.getItem()))) {
 				((IKeyListener) heldStack.getItem()).onServerReceiveKeyPress(heldStack, world, player, flag);
 			}
 		}
 		else {
-			ItemStack stackInSlot = player.inventory.getStackInSlot(slotIndex);
-			if (!stackInSlot.isEmpty() && stackInSlot.getItem() instanceof IKeyListener && !(player.getCooldownTracker().hasCooldown(stackInSlot.getItem()))) {
+			ItemStack stackInSlot = player.inventory.getItem(slotIndex);
+			if (!stackInSlot.isEmpty() && stackInSlot.getItem() instanceof IKeyListener && !(player.getCooldowns().isOnCooldown(stackInSlot.getItem()))) {
 				((IKeyListener) stackInSlot.getItem()).onServerReceiveKeyPress(stackInSlot, world, player, flag);
 			}
 		}
@@ -37,7 +37,7 @@ public interface IKeyListener {
 	static EquipmentSlotType getEquipmentSlotTypeFrom(int slotIndex) {
 		if (slotIndex < 0 || slotIndex > 5) return null;
 		for (EquipmentSlotType equipmentSlotType : EquipmentSlotType.values()) {
-			if (equipmentSlotType.getSlotIndex() == slotIndex) {
+			if (equipmentSlotType.getFilterFlag() == slotIndex) {
 				return equipmentSlotType;
 			}
 		}

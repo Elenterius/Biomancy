@@ -25,12 +25,12 @@ public class BreedingReagent extends Reagent {
 	public boolean affectEntity(CompoundNBT nbt, @Nullable LivingEntity source, LivingEntity target) {
 		if (!(target instanceof AnimalEntity)) return false;
 		AnimalEntity animal = (AnimalEntity) target;
-		int growingAge = animal.getGrowingAge();
+		int growingAge = animal.getAge();
 		if (growingAge >= 0 && animal.canFallInLove()) {
-			if (!animal.world.isRemote) {
-				if (growingAge > 0) animal.setGrowingAge(0); //growing age has to be 0 for animals to keep staying in love, else the in love state gets reset
+			if (!animal.level.isClientSide) {
+				if (growingAge > 0) animal.setAge(0); //growing age has to be 0 for animals to keep staying in love, else the in love state gets reset
 				animal.setInLove(source instanceof PlayerEntity ? (PlayerEntity) source : null);
-				animal.setInLove(animal.func_234178_eO_() * 2); //twice as much time to find a breading mate
+				animal.setInLoveTime(animal.getInLoveTime() * 2); //twice as much time to find a breading mate
 			}
 			return true;
 		}

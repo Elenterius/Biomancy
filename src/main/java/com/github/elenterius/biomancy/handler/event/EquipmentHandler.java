@@ -24,7 +24,7 @@ public final class EquipmentHandler {
 
 	@SubscribeEvent
 	public static void onLivingEquipmentChange(final LivingEquipmentChangeEvent event) {
-		if (!event.getEntityLiving().isServerWorld()) return;
+		if (!event.getEntityLiving().isEffectiveAi()) return;
 		LivingEntity entity = event.getEntityLiving();
 
 		if (event.getSlot() == EquipmentSlotType.HEAD) {
@@ -49,7 +49,7 @@ public final class EquipmentHandler {
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public static void onEntityMount(final EntityMountEvent event) {
-		if (event.getEntityMounting().getEntityWorld().isRemote()) return;
+		if (event.getEntityMounting().getCommandSenderWorld().isClientSide()) return;
 
 		//on dismounting make sure the riding modifiers are removed
 		if (event.isDismounting() && event.getEntityMounting() instanceof LivingEntity) {
@@ -58,7 +58,7 @@ public final class EquipmentHandler {
 
 		//on mounting add modifiers when holding a khopesh weapon
 		if (event.isMounting() && event.getEntityMounting() instanceof LivingEntity) {
-			ItemStack stack = ((LivingEntity) event.getEntityMounting()).getHeldItemMainhand();
+			ItemStack stack = ((LivingEntity) event.getEntityMounting()).getMainHandItem();
 			if (!stack.isEmpty() && stack.getItem() instanceof KhopeshItem) {
 				KhopeshItem.applySpecialAttributeModifiers((LivingEntity) event.getEntityMounting());
 			}
@@ -69,7 +69,7 @@ public final class EquipmentHandler {
 	public static void onLivingUpdate(final LivingEvent.LivingUpdateEvent event) {
 		if (!(event.getEntityLiving() instanceof PlayerEntity)) return;
 
-		if (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.CLIMBING.get(), event.getEntityLiving().getItemStackFromSlot(EquipmentSlotType.FEET)) > 0) {
+		if (EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.CLIMBING.get(), event.getEntityLiving().getItemBySlot(EquipmentSlotType.FEET)) > 0) {
 			ModEnchantments.CLIMBING.get().tryToClimb((PlayerEntity) event.getEntityLiving());
 		}
 	}
@@ -79,9 +79,9 @@ public final class EquipmentHandler {
 		if (!(event.getEntityLiving() instanceof PlayerEntity)) return;
 		PlayerEntity player = (PlayerEntity) event.getEntityLiving();
 
-		if (!player.isPassenger() && (player.getFoodStats().getFoodLevel() > 6.0F || player.abilities.isCreativeMode)) {
-			int bulletJumpLevel = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.BULLET_JUMP.get(), player.getItemStackFromSlot(EquipmentSlotType.LEGS));
-			if (bulletJumpLevel > 0 && event.getEntityLiving().isSneaking()) {
+		if (!player.isPassenger() && (player.getFoodData().getFoodLevel() > 6.0F || player.abilities.instabuild)) {
+			int bulletJumpLevel = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.BULLET_JUMP.get(), player.getItemBySlot(EquipmentSlotType.LEGS));
+			if (bulletJumpLevel > 0 && event.getEntityLiving().isShiftKeyDown()) {
 				ModEnchantments.BULLET_JUMP.get().executeBulletJump(player, bulletJumpLevel, true);
 			}
 		}

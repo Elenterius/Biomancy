@@ -18,16 +18,16 @@ public class ChromaSheepEntity extends SheepEntity {
 	}
 
 	public static AttributeModifierMap.MutableAttribute createAttributes() {
-		return MobEntity.func_233666_p_().createMutableAttribute(Attributes.MAX_HEALTH, 8d).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.23d);
+		return MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 8d).add(Attributes.MOVEMENT_SPEED, 0.23d);
 	}
 
 	@Override
-	public DyeColor getFleeceColor() {
-		return DyeColor.byId(rand.nextInt(16));
+	public DyeColor getColor() {
+		return DyeColor.byId(random.nextInt(16));
 	}
 
 	@Override
-	public ChromaSheepEntity createChild(ServerWorld world, AgeableEntity mate) {
+	public ChromaSheepEntity getBreedOffspring(ServerWorld world, AgeableEntity mate) {
 		return ModEntityTypes.CHROMA_SHEEP.get().create(world);
 	}
 

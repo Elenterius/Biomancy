@@ -22,11 +22,11 @@ public class PatrolAreaGoal<T extends CreatureEntity & IOwnableCreature & IGolem
 	}
 
 	@Override
-	public boolean shouldExecute() {
+	public boolean canUse() {
 		if (!entity.isGolemInactive()) {
 			IGolem.Command command = entity.getGolemCommand();
 			if (command == IGolem.Command.PATROL_AREA || command == IGolem.Command.DEFEND_OWNER) {
-				return super.shouldExecute();
+				return super.canUse();
 			}
 		}
 		return false;
@@ -37,9 +37,9 @@ public class PatrolAreaGoal<T extends CreatureEntity & IOwnableCreature & IGolem
 	protected Vector3d getPosition() {
 		if (entity.getGolemCommand() == IGolem.Command.DEFEND_OWNER) {
 			Optional<PlayerEntity> owner = entity.getOwner();
-			return owner.isPresent() ? findPosTowards(owner.get().getPositionVec()) : findPosNearby();
+			return owner.isPresent() ? findPosTowards(owner.get().position()) : findPosNearby();
 		}
-		if (creature.world.rand.nextFloat() < 0.3F) {
+		if (mob.level.random.nextFloat() < 0.3F) {
 			return findPosNearby();
 		}
 		else {
@@ -50,20 +50,20 @@ public class PatrolAreaGoal<T extends CreatureEntity & IOwnableCreature & IGolem
 
 	@Nullable
 	private Vector3d findPosTowards(Vector3d pos) {
-		return RandomPositionGenerator.func_234133_a_(creature, 10, 7, pos); // includes water
+		return RandomPositionGenerator.getLandPosTowards(mob, 10, 7, pos); // includes water
 	}
 
 	@Nullable
 	private Vector3d findPosNearby() {
-		return RandomPositionGenerator.getLandPos(creature, 10, 7);
+		return RandomPositionGenerator.getLandPos(mob, 10, 7);
 	}
 
 	@Nullable
 	private Vector3d findPosTowardsRandomPlayer() {
-		List<PlayerEntity> list = creature.world.getEntitiesWithinAABB(PlayerEntity.class, creature.getBoundingBox().grow(32d));
+		List<PlayerEntity> list = mob.level.getEntitiesOfClass(PlayerEntity.class, mob.getBoundingBox().inflate(32d));
 		if (!list.isEmpty()) {
-			PlayerEntity player = list.get(creature.world.rand.nextInt(list.size()));
-			return RandomPositionGenerator.func_234133_a_(creature, 10, 7, player.getPositionVec());
+			PlayerEntity player = list.get(mob.level.random.nextInt(list.size()));
+			return RandomPositionGenerator.getLandPosTowards(mob, 10, 7, player.position());
 		}
 		return null;
 	}

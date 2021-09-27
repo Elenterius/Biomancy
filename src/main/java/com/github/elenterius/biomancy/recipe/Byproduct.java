@@ -57,19 +57,19 @@ public class Byproduct {
 	}
 
 	public static Byproduct read(PacketBuffer buffer) {
-		return new Byproduct(buffer.readItemStack(), buffer.readFloat());
+		return new Byproduct(buffer.readItem(), buffer.readFloat());
 	}
 
 	public static Byproduct deserialize(JsonObject jsonObject) {
-		ItemStack stack = ShapedRecipe.deserializeItem(JSONUtils.getJsonObject(jsonObject, "result"));
-		float chance = JSONUtils.getFloat(jsonObject, "chance", 1f);
+		ItemStack stack = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(jsonObject, "result"));
+		float chance = JSONUtils.getAsFloat(jsonObject, "chance", 1f);
 		if (chance <= 0f || chance > 1f) throw new JsonParseException(String.format("Chance %f is outside interval (0, 1]", chance));
 		if (stack.isEmpty()) throw new JsonParseException("Defined byproduct can't be Empty");
 		return new Byproduct(stack, chance);
 	}
 
 	public void write(PacketBuffer buffer) {
-		buffer.writeItemStack(getItemStack());
+		buffer.writeItem(getItemStack());
 		buffer.writeFloat(chance);
 	}
 
@@ -82,7 +82,7 @@ public class Byproduct {
 			jsonObject.addProperty("count", count);
 		}
 		if (nbt != null && !nbt.isEmpty()) {
-			jsonObject.addProperty("nbt", nbt.getString());
+			jsonObject.addProperty("nbt", nbt.getAsString());
 		}
 		parent.add("result", jsonObject);
 
@@ -106,7 +106,7 @@ public class Byproduct {
 		return stack;
 	}
 
-	public int getCount() { return count; }
+	public int getCount() {return count;}
 
 	public float getChance() {
 		return chance;

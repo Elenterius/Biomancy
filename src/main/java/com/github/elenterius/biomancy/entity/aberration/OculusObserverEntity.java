@@ -34,22 +34,22 @@ public class OculusObserverEntity extends CreatureEntity implements IFlyingAnima
 
 	public OculusObserverEntity(EntityType<? extends CreatureEntity> type, World worldIn) {
 		super(type, worldIn);
-		moveController = new FlyingMovementController(this, 20 /* max pitch? */, true);
-		setPathPriority(PathNodeType.DANGER_FIRE, -1f);
-		setPathPriority(PathNodeType.WATER, -1f);
-		setPathPriority(PathNodeType.WATER_BORDER, 16f);
-		setPathPriority(PathNodeType.FENCE, -1f);
+		moveControl = new FlyingMovementController(this, 20 /* max pitch? */, true);
+		setPathfindingMalus(PathNodeType.DANGER_FIRE, -1f);
+		setPathfindingMalus(PathNodeType.WATER, -1f);
+		setPathfindingMalus(PathNodeType.WATER_BORDER, 16f);
+		setPathfindingMalus(PathNodeType.FENCE, -1f);
 	}
 
 	public static AttributeModifierMap.MutableAttribute createAttributes() {
-		return MobEntity.func_233666_p_()
-				.createMutableAttribute(Attributes.MAX_HEALTH, 12d)
-				.createMutableAttribute(Attributes.FLYING_SPEED, 0.6d)
-				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.3d)
-				.createMutableAttribute(Attributes.FOLLOW_RANGE, 32d)
-				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 2d)
-				.createMutableAttribute(Attributes.ARMOR, 15d) //2 + 5 + 6 + 2 = equal to full iron armor
-				.createMutableAttribute(Attributes.ARMOR_TOUGHNESS, 0.5d);
+		return MobEntity.createMobAttributes()
+				.add(Attributes.MAX_HEALTH, 12d)
+				.add(Attributes.FLYING_SPEED, 0.6d)
+				.add(Attributes.MOVEMENT_SPEED, 0.3d)
+				.add(Attributes.FOLLOW_RANGE, 32d)
+				.add(Attributes.ATTACK_DAMAGE, 2d)
+				.add(Attributes.ARMOR, 15d) //2 + 5 + 6 + 2 = equal to full iron armor
+				.add(Attributes.ARMOR_TOUGHNESS, 0.5d);
 	}
 
 	@Override
@@ -62,39 +62,39 @@ public class OculusObserverEntity extends CreatureEntity implements IFlyingAnima
 	}
 
 	@Override
-	public float getBlockPathWeight(BlockPos pos, IWorldReader worldIn) {
+	public float getWalkTargetValue(BlockPos pos, IWorldReader worldIn) {
 		return worldIn.getBlockState(pos).isAir() ? 10f : 0f;
 	}
 
 	@Override
-	protected PathNavigator createNavigator(World worldIn) {
+	protected PathNavigator createNavigation(World worldIn) {
 		FlyingPathNavigator pathNavigator = new FlyingPathNavigator(this, worldIn);
 		pathNavigator.setCanOpenDoors(false);
-		pathNavigator.setCanSwim(false);
-		pathNavigator.setCanEnterDoors(true);
+		pathNavigator.setCanFloat(false);
+		pathNavigator.setCanPassDoors(true);
 		return pathNavigator;
 	}
 
 	@Override
-	public boolean onLivingFall(float distance, float damageMultiplier) {
+	public boolean causeFallDamage(float distance, float damageMultiplier) {
 		return false;
 	}
 
 	@Override
-	protected void updateFallState(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
+	protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
 		//prevent updating of fallDistance and stuff related to falling
 	}
 
 	@Override
-	protected void handleFluidJump(ITag<Fluid> fluidTag) {
-		setMotion(getMotion().add(0d, 0.01d, 0d));
+	protected void jumpInLiquid(ITag<Fluid> fluidTag) {
+		setDeltaMovement(getDeltaMovement().add(0d, 0.01d, 0d));
 	}
 
 	@Override
-	protected void updateAITasks() {
-		if (isInWaterOrBubbleColumn()) ++underWaterTicks;
+	protected void customServerAiStep() {
+		if (isInWaterOrBubble()) ++underWaterTicks;
 		else underWaterTicks = 0;
-		if (underWaterTicks > 20) attackEntityFrom(DamageSource.DROWN, 1f);
+		if (underWaterTicks > 20) hurt(DamageSource.DROWN, 1f);
 	}
 
 	@Override
@@ -104,13 +104,13 @@ public class OculusObserverEntity extends CreatureEntity implements IFlyingAnima
 
 	@Override
 	protected float playFlySound(float volume) {
-		playSound(SoundEvents.ENTITY_PARROT_FLY, 0.15f, 0.8f);
+		playSound(SoundEvents.PARROT_FLY, 0.15f, 0.8f);
 		return volume;
 	}
 
 	@Override
-	protected float getSoundPitch() {
-		return super.getSoundPitch() - 1f;
+	protected float getVoicePitch() {
+		return super.getVoicePitch() - 1f;
 	}
 
 	@Override

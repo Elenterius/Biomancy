@@ -46,11 +46,11 @@ public class ModAdvancementProvider implements IDataProvider {
 	}
 
 	protected static InventoryChangeTrigger.Instance hasItems(IItemProvider... items) {
-		return InventoryChangeTrigger.Instance.forItems(items);
+		return InventoryChangeTrigger.Instance.hasItems(items);
 	}
 
 	protected static InventoryChangeTrigger.Instance hasTag(ITag<Item> tag) {
-		return InventoryChangeTrigger.Instance.forItems(ItemPredicate.Builder.create().tag(tag).build());
+		return InventoryChangeTrigger.Instance.hasItems(ItemPredicate.Builder.item().of(tag).build());
 	}
 
 	public TranslationTextComponent createTitle(String name) {
@@ -62,7 +62,7 @@ public class ModAdvancementProvider implements IDataProvider {
 	}
 
 	@Override
-	public void act(DirectoryCache cache) throws IOException {
+	public void run(DirectoryCache cache) throws IOException {
 		Path outputFolder = generator.getOutputFolder();
 		Set<ResourceLocation> set = Sets.newHashSet();
 		Consumer<Advancement> consumer = (advancement) -> {
@@ -72,7 +72,7 @@ public class ModAdvancementProvider implements IDataProvider {
 			else {
 				Path path = getPath(outputFolder, advancement);
 				try {
-					IDataProvider.save(GSON, cache, advancement.copy().serialize(), path);
+					IDataProvider.save(GSON, cache, advancement.deconstruct().serializeToJson(), path);
 				} catch (IOException ioexception) {
 					LOGGER.error("Couldn't save advancement {}", path, ioexception);
 				}
@@ -90,52 +90,52 @@ public class ModAdvancementProvider implements IDataProvider {
 	}
 
 	protected void registerAdvancements(Consumer<Advancement> consumer) {
-		Advancement root = Advancement.Builder.builder().withDisplay(ModItems.OCULUS.get(), createTitle("root"), createDescription("root"), new ResourceLocation("textures/gui/advancements/backgrounds/stone.png"),
-				FrameType.TASK, true, false, false).withCriterion("has_raw_meats", hasTag(ModTags.Items.RAW_MEATS)).register(consumer, BiomancyMod.MOD_ID + "/root");
+		Advancement root = Advancement.Builder.advancement().display(ModItems.OCULUS.get(), createTitle("root"), createDescription("root"), new ResourceLocation("textures/gui/advancements/backgrounds/stone.png"),
+				FrameType.TASK, true, false, false).addCriterion("has_raw_meats", hasTag(ModTags.Items.RAW_MEATS)).save(consumer, BiomancyMod.MOD_ID + "/root");
 
-		Advancement nodeA1 = Advancement.Builder.builder().withParent(root).withDisplay(Items.CAULDRON, createTitle("flesh"), createDescription("flesh"), null,
+		Advancement nodeA1 = Advancement.Builder.advancement().parent(root).display(Items.CAULDRON, createTitle("flesh"), createDescription("flesh"), null,
 						FrameType.TASK, true, false, false)
-				.withCriterion("has_flesh_block", hasItems(ModItems.FLESH_BLOCK.get())).register(consumer, BiomancyMod.MOD_ID + "/flesh");
+				.addCriterion("has_flesh_block", hasItems(ModItems.FLESH_BLOCK.get())).save(consumer, BiomancyMod.MOD_ID + "/flesh");
 
-		Advancement nodeA2 = Advancement.Builder.builder().withParent(nodeA1).withDisplay(ModItems.STOMACH.get(), createTitle("stomach"), createDescription("stomach"), null,
+		Advancement nodeA2 = Advancement.Builder.advancement().parent(nodeA1).display(ModItems.STOMACH.get(), createTitle("stomach"), createDescription("stomach"), null,
 						FrameType.TASK, true, false, false)
-				.withCriterion("has_stomachs", hasTag(ModTags.Items.STOMACHS)).register(consumer, BiomancyMod.MOD_ID + "/stomach");
+				.addCriterion("has_stomachs", hasTag(ModTags.Items.STOMACHS)).save(consumer, BiomancyMod.MOD_ID + "/stomach");
 
-		Advancement nodeA3 = Advancement.Builder.builder().withParent(nodeA2).withDisplay(ModItems.DIGESTER.get(), createTitle("digester"), createDescription("digester"), null,
+		Advancement nodeA3 = Advancement.Builder.advancement().parent(nodeA2).display(ModItems.DIGESTER.get(), createTitle("digester"), createDescription("digester"), null,
 						FrameType.TASK, true, false, false)
-				.withCriterion("has_digester", hasItems(ModItems.DIGESTER.get())).register(consumer, BiomancyMod.MOD_ID + "/digester");
+				.addCriterion("has_digester", hasItems(ModItems.DIGESTER.get())).save(consumer, BiomancyMod.MOD_ID + "/digester");
 
-		Advancement nodeE0 = Advancement.Builder.builder().withParent(nodeA3).withDisplay(ModItems.CHEWER.get(), createTitle("chewer"), createDescription("chewer"), null,
+		Advancement nodeE0 = Advancement.Builder.advancement().parent(nodeA3).display(ModItems.CHEWER.get(), createTitle("chewer"), createDescription("chewer"), null,
 						FrameType.TASK, true, false, false)
-				.withCriterion("has_chewer", hasItems(ModItems.CHEWER.get())).register(consumer, BiomancyMod.MOD_ID + "/chewer");
+				.addCriterion("has_chewer", hasItems(ModItems.CHEWER.get())).save(consumer, BiomancyMod.MOD_ID + "/chewer");
 
-		Advancement nodeE1 = Advancement.Builder.builder().withParent(nodeE0).withDisplay(ModItems.BOLUS.get(), createTitle("crushed_biomass"), createDescription("crushed_biomass"), null,
+		Advancement nodeE1 = Advancement.Builder.advancement().parent(nodeE0).display(ModItems.BOLUS.get(), createTitle("crushed_biomass"), createDescription("crushed_biomass"), null,
 						FrameType.TASK, true, false, false)
-				.withCriterion("has_crushed_biomass", hasItems(ModItems.BOLUS.get())).register(consumer, BiomancyMod.MOD_ID + "/crushed_biomass");
+				.addCriterion("has_crushed_biomass", hasItems(ModItems.BOLUS.get())).save(consumer, BiomancyMod.MOD_ID + "/crushed_biomass");
 
-		Advancement nodeD0 = Advancement.Builder.builder().withParent(nodeA3).withDisplay(ModItems.SOLIDIFIER.get(), createTitle("solidifier"), createDescription("solidifier"), null,
+		Advancement nodeD0 = Advancement.Builder.advancement().parent(nodeA3).display(ModItems.SOLIDIFIER.get(), createTitle("solidifier"), createDescription("solidifier"), null,
 						FrameType.TASK, true, false, false)
-				.withCriterion("has_solidifier", hasItems(ModItems.SOLIDIFIER.get())).register(consumer, BiomancyMod.MOD_ID + "/solidifier");
+				.addCriterion("has_solidifier", hasItems(ModItems.SOLIDIFIER.get())).save(consumer, BiomancyMod.MOD_ID + "/solidifier");
 
-		Advancement nodeD1 = Advancement.Builder.builder().withParent(nodeD0).withDisplay(ModItems.NUTRIENT_PASTE.get(), createTitle("nutrient_paste"), createDescription("nutrient_paste"), null,
+		Advancement nodeD1 = Advancement.Builder.advancement().parent(nodeD0).display(ModItems.NUTRIENT_PASTE.get(), createTitle("nutrient_paste"), createDescription("nutrient_paste"), null,
 						FrameType.TASK, true, false, false)
-				.withCriterion("has_nutrient_paste", hasItems(ModItems.NUTRIENT_PASTE.get())).register(consumer, BiomancyMod.MOD_ID + "/nutrient_paste");
+				.addCriterion("has_nutrient_paste", hasItems(ModItems.NUTRIENT_PASTE.get())).save(consumer, BiomancyMod.MOD_ID + "/nutrient_paste");
 
-		Advancement nodeA4c = Advancement.Builder.builder().withParent(nodeA3).withDisplay(ModItems.DECOMPOSER.get(), createTitle("decomposer"), createDescription("decomposer"), null,
+		Advancement nodeA4c = Advancement.Builder.advancement().parent(nodeA3).display(ModItems.DECOMPOSER.get(), createTitle("decomposer"), createDescription("decomposer"), null,
 						FrameType.TASK, true, false, false)
-				.withCriterion("has_decomposer", hasItems(ModItems.DECOMPOSER.get())).register(consumer, BiomancyMod.MOD_ID + "/decomposer");
+				.addCriterion("has_decomposer", hasItems(ModItems.DECOMPOSER.get())).save(consumer, BiomancyMod.MOD_ID + "/decomposer");
 
-		Advancement nodeB1 = Advancement.Builder.builder().withParent(nodeA4c)
-				.withDisplay(ModItems.MUTAGENIC_BILE.get(), createTitle("evolution_pool"), createDescription("evolution_pool"), null, FrameType.TASK, true, false, false)
-				.withCriterion("create_evolution_pool", EvolutionPoolCreatedTrigger.Instance.create()).register(consumer, BiomancyMod.MOD_ID + "/evolution_pool");
+		Advancement nodeB1 = Advancement.Builder.advancement().parent(nodeA4c)
+				.display(ModItems.MUTAGENIC_BILE.get(), createTitle("evolution_pool"), createDescription("evolution_pool"), null, FrameType.TASK, true, false, false)
+				.addCriterion("create_evolution_pool", EvolutionPoolCreatedTrigger.Instance.create()).save(consumer, BiomancyMod.MOD_ID + "/evolution_pool");
 
-		Advancement nodeB2 = Advancement.Builder.builder().withParent(nodeB1).withDisplay(ModItems.BIOMETAL.get(), createTitle("biometal"), createDescription("biometal"), null,
+		Advancement nodeB2 = Advancement.Builder.advancement().parent(nodeB1).display(ModItems.BIOMETAL.get(), createTitle("biometal"), createDescription("biometal"), null,
 						FrameType.TASK, true, false, false)
-				.withCriterion("has_biometal", hasItems(ModItems.BIOMETAL.get())).register(consumer, BiomancyMod.MOD_ID + "/biometal");
+				.addCriterion("has_biometal", hasItems(ModItems.BIOMETAL.get())).save(consumer, BiomancyMod.MOD_ID + "/biometal");
 
-		Advancement nodeC1 = Advancement.Builder.builder().withParent(nodeA4c).withDisplay(ModItems.REAGENT.get(), createTitle("reagent"), createDescription("reagent"), null,
+		Advancement nodeC1 = Advancement.Builder.advancement().parent(nodeA4c).display(ModItems.REAGENT.get(), createTitle("reagent"), createDescription("reagent"), null,
 						FrameType.TASK, true, false, false)
-				.withCriterion("has_reagent", hasItems(ModItems.REAGENT.get())).register(consumer, BiomancyMod.MOD_ID + "/reagent");
+				.addCriterion("has_reagent", hasItems(ModItems.REAGENT.get())).save(consumer, BiomancyMod.MOD_ID + "/reagent");
 	}
 
 }

@@ -26,7 +26,7 @@ public class GulgeTileEntity extends OwnableTileEntity implements INamedContaine
 
 	public GulgeTileEntity() {
 		super(ModTileEntityTypes.GULGE.get());
-		gulgeInventory = GulgeInventory.createServerContents(MAX_ITEM_AMOUNT, this::canPlayerOpenInv, this::markDirty);
+		gulgeInventory = GulgeInventory.createServerContents(MAX_ITEM_AMOUNT, this::canPlayerOpenInv, this::setChanged);
 		gulgeInventory.setOpenInventoryConsumer(this::onOpenInventory);
 		gulgeInventory.setCloseInventoryConsumer(this::onCloseInventory);
 	}
@@ -54,15 +54,15 @@ public class GulgeTileEntity extends OwnableTileEntity implements INamedContaine
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT nbt) {
-		super.write(nbt);
+	public CompoundNBT save(CompoundNBT nbt) {
+		super.save(nbt);
 		nbt.put("Inventory", gulgeInventory.serializeNBT());
 		return nbt;
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT nbt) {
-		super.read(state, nbt);
+	public void load(BlockState state, CompoundNBT nbt) {
+		super.load(state, nbt);
 		gulgeInventory.deserializeNBT(nbt.getCompound("Inventory"));
 	}
 
@@ -82,7 +82,7 @@ public class GulgeTileEntity extends OwnableTileEntity implements INamedContaine
 	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-		if (!removed && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+		if (!remove && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return gulgeInventory.getOptionalItemStackHandler().cast();
 		}
 		return super.getCapability(cap, side);

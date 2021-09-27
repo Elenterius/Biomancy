@@ -21,27 +21,27 @@ public class CopyOwnerAttackTargetGoal<T extends CreatureEntity & IOwnableCreatu
 	public CopyOwnerAttackTargetGoal(T goalOwner) {
 		super(goalOwner, false);
 		entity = goalOwner;
-		setMutexFlags(EnumSet.of(Goal.Flag.TARGET));
+		setFlags(EnumSet.of(Goal.Flag.TARGET));
 	}
 
 	@Override
-	public boolean shouldExecute() {
+	public boolean canUse() {
 		if (!entity.isGolemInactive() && entity.getGolemCommand() == IGolem.Command.DEFEND_OWNER) {
 			Optional<PlayerEntity> entityOwner = entity.getOwner();
 			if (entityOwner.isPresent()) {
-				attacker = entityOwner.get().getLastAttackedEntity();
-				int attackTimer = entityOwner.get().getLastAttackedEntityTime();
-				return attackTimer != lastAttackTime && isSuitableTarget(attacker, EntityPredicate.DEFAULT) && entity.shouldAttackEntity(attacker, entityOwner.get());
+				attacker = entityOwner.get().getLastHurtMob();
+				int attackTimer = entityOwner.get().getLastHurtMobTimestamp();
+				return attackTimer != lastAttackTime && canAttack(attacker, EntityPredicate.DEFAULT) && entity.shouldAttackEntity(attacker, entityOwner.get());
 			}
 		}
 		return false;
 	}
 
 	@Override
-	public void startExecuting() {
-		goalOwner.setAttackTarget(attacker);
+	public void start() {
+		mob.setTarget(attacker);
 		Optional<PlayerEntity> optional = entity.getOwner();
-		optional.ifPresent(playerEntity -> lastAttackTime = playerEntity.getLastAttackedEntityTime());
-		super.startExecuting();
+		optional.ifPresent(playerEntity -> lastAttackTime = playerEntity.getLastHurtMobTimestamp());
+		super.start();
 	}
 }

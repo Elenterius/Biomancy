@@ -19,7 +19,7 @@ public class ThrowPotionAtPositionGoal extends Goal {
 		this.potionThrower = goalOwner;
 		this.goalOwner = (MobEntity) goalOwner;
 		this.speed = speedMultiplier;
-		setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+		setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
 	}
 
 	private Vector3d getPosition() {
@@ -27,7 +27,7 @@ public class ThrowPotionAtPositionGoal extends Goal {
 	}
 
 	@Override
-	public boolean shouldExecute() {
+	public boolean canUse() {
 		Vector3d pos = getPosition();
 		if (pos == null || !potionThrower.hasThrowablePotion()) return false;
 		targetPos = new Vector3d(pos.x, pos.y, pos.z); //make copy
@@ -35,8 +35,8 @@ public class ThrowPotionAtPositionGoal extends Goal {
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
-		boolean hasPath = goalOwner.getNavigator().hasPath();
+	public boolean canContinueToUse() {
+		boolean hasPath = goalOwner.getNavigation().isInProgress();
 		if (!hasPath && getPosition() != null) {
 			if (++idleTime > 50) {
 				potionThrower.setTargetPos(null);
@@ -48,21 +48,21 @@ public class ThrowPotionAtPositionGoal extends Goal {
 	}
 
 	public void tick() {
-		goalOwner.getLookController().setLookPosition(targetPos.x, targetPos.y, targetPos.z, 75F, 75f);
-		goalOwner.getNavigator().tryMoveToXYZ(targetPos.x, targetPos.y, targetPos.z, speed);
+		goalOwner.getLookControl().setLookAt(targetPos.x, targetPos.y, targetPos.z, 75F, 75f);
+		goalOwner.getNavigation().moveTo(targetPos.x, targetPos.y, targetPos.z, speed);
 
-		double distSq = goalOwner.getDistanceSq(targetPos.x, targetPos.y, targetPos.z);
+		double distSq = goalOwner.distanceToSqr(targetPos.x, targetPos.y, targetPos.z);
 		if (distSq <= 4d * 4d && RayTraceUtil.canEntitySeePosition(goalOwner, targetPos)) {
 			if (potionThrower.tryToThrowPotionAtPosition(targetPos)) {
 				potionThrower.setTargetPos(null);
 			}
-			goalOwner.getNavigator().clearPath();
+			goalOwner.getNavigation().stop();
 		}
 	}
 
 	@Override
-	public void resetTask() {
-		goalOwner.getNavigator().clearPath();
+	public void stop() {
+		goalOwner.getNavigation().stop();
 		idleTime = 0;
 		targetPos = null;
 	}

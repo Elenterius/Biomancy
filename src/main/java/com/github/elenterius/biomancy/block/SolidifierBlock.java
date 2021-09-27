@@ -47,7 +47,7 @@ public class SolidifierBlock extends MachineBlock<SolidifierTileEntity> {
 
 	public SolidifierBlock(Properties builder) {
 		super(builder, true);
-		setDefaultState(stateContainer.getBaseState().with(POWERED, false).with(CRAFTING, false).with(FACING, Direction.UP));
+		registerDefaultState(stateDefinition.any().setValue(POWERED, false).setValue(CRAFTING, false).setValue(FACING, Direction.UP));
 	}
 
 	private static VoxelShape createVoxelShape(Direction direction) {
@@ -55,30 +55,30 @@ public class SolidifierBlock extends MachineBlock<SolidifierTileEntity> {
 				VoxelShapeUtil.createXZRotatedTowards(direction, 4, 5, 4, 12, 6, 12),
 				VoxelShapeUtil.createXZRotatedTowards(direction, 3, 1, 3, 13, 5, 13),
 				VoxelShapeUtil.createXZRotatedTowards(direction, 5, 0, 5, 11, 1, 11)
-		).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).get();
+		).reduce((v1, v2) -> VoxelShapes.join(v1, v2, IBooleanFunction.OR)).get();
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(POWERED, CRAFTING, FACING); //override with different facing property
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return getDefaultState().with(FACING, context.getFace());
+		return defaultBlockState().setValue(FACING, context.getClickedFace());
 	}
 
 	@Nullable
 	@Override
-	public SolidifierTileEntity createNewTileEntity(IBlockReader worldIn) {
+	public SolidifierTileEntity newBlockEntity(IBlockReader worldIn) {
 		return new SolidifierTileEntity();
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()).setStyle(ClientTextUtil.LORE_STYLE));
-		CompoundNBT nbt = stack.getChildTag("BlockEntityTag");
+		CompoundNBT nbt = stack.getTagElement("BlockEntityTag");
 		if (nbt != null && nbt.contains(SolidifierStateData.NBT_KEY_FLUID)) {
 			tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 			DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
@@ -86,19 +86,19 @@ public class SolidifierBlock extends MachineBlock<SolidifierTileEntity> {
 			CompoundNBT fuelNbt = nbt.getCompound(SolidifierStateData.NBT_KEY_FLUID);
 			int fuel = fuelNbt.getInt("Amount");
 			String translationKey = "fluid." + fuelNbt.getString("FluidName").replace(":", ".").replace("/", ".");
-			tooltip.add(new TranslationTextComponent(translationKey).appendString(String.format(": %s/%s", df.format(fuel), df.format(DigesterTileEntity.MAX_FLUID))));
+			tooltip.add(new TranslationTextComponent(translationKey).append(String.format(": %s/%s", df.format(fuel), df.format(DigesterTileEntity.MAX_FLUID))));
 		}
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 	}
 
 	@Override
-	public BlockRenderType getRenderType(BlockState state) {
+	public BlockRenderType getRenderShape(BlockState state) {
 		return BlockRenderType.MODEL;
 	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		switch (state.get(FACING)) {
+		switch (state.getValue(FACING)) {
 			case UP:
 			default:
 				return SHAPE_UP;
@@ -117,12 +117,12 @@ public class SolidifierBlock extends MachineBlock<SolidifierTileEntity> {
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.with(FACING, rot.rotate(state.get(FACING)));
+		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirrorIn) {
-		return state.rotate(mirrorIn.toRotation(state.get(FACING)));
+		return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
 	}
 
 }

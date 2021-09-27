@@ -16,12 +16,12 @@ public class OculusObserverRenderer extends MobRenderer<OculusObserverEntity, Oc
 	}
 
 	@Override
-	protected float getDeathMaxRotation(OculusObserverEntity entityLivingBaseIn) {
+	protected float getFlipDegrees(OculusObserverEntity entityLivingBaseIn) {
 		return 180f;
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(OculusObserverEntity entity) {
+	public ResourceLocation getTextureLocation(OculusObserverEntity entity) {
 		return TEXTURE;
 	}
 

@@ -12,7 +12,7 @@ import java.util.function.Predicate;
 
 public class FindItemGoal extends Goal {
 
-	public static final Predicate<ItemEntity> ITEM_ENTITY_FILTER = (itemEntity) -> !itemEntity.cannotPickup() && itemEntity.isAlive();
+	public static final Predicate<ItemEntity> ITEM_ENTITY_FILTER = (itemEntity) -> !itemEntity.hasPickUpDelay() && itemEntity.isAlive();
 
 	protected final CreatureEntity creature;
 	protected final float searchDistance;
@@ -30,17 +30,17 @@ public class FindItemGoal extends Goal {
 		creature = creatureIn;
 		searchDistance = searchDistanceIn;
 		itemFilter = itemFilterIn;
-		setMutexFlags(EnumSet.of(Goal.Flag.MOVE));
+		setFlags(EnumSet.of(Goal.Flag.MOVE));
 	}
 
 	@Override
-	public boolean shouldExecute() {
-		boolean handIsEmpty = creature.getItemStackFromSlot(EquipmentSlotType.MAINHAND).isEmpty();
+	public boolean canUse() {
+		boolean handIsEmpty = creature.getItemBySlot(EquipmentSlotType.MAINHAND).isEmpty();
 		if (!handIsEmpty) {
 			return false;
 		}
-		else if (creature.getAttackTarget() == null && creature.getRevengeTarget() == null) {
-			if (creature.getRNG().nextInt(10) != 0) return false;
+		else if (creature.getTarget() == null && creature.getLastHurtByMob() == null) {
+			if (creature.getRandom().nextInt(10) != 0) return false;
 			return !findItems(searchDistance, itemFilter).isEmpty();
 		}
 
@@ -49,22 +49,22 @@ public class FindItemGoal extends Goal {
 
 	@Override
 	public void tick() {
-		ItemStack heldStack = creature.getItemStackFromSlot(EquipmentSlotType.MAINHAND);
+		ItemStack heldStack = creature.getItemBySlot(EquipmentSlotType.MAINHAND);
 		if (heldStack.isEmpty()) {
 			List<ItemEntity> list = findItems(searchDistance, itemFilter);
-			if (!list.isEmpty()) creature.getNavigator().tryMoveToEntityLiving(list.get(0), 1.2f);
+			if (!list.isEmpty()) creature.getNavigation().moveTo(list.get(0), 1.2f);
 		}
 	}
 
 	@Override
-	public void startExecuting() {
+	public void start() {
 		List<ItemEntity> list = findItems(searchDistance, itemFilter);
 		if (!list.isEmpty()) {
-			creature.getNavigator().tryMoveToEntityLiving(list.get(0), 1.2f);
+			creature.getNavigation().moveTo(list.get(0), 1.2f);
 		}
 	}
 
 	public List<ItemEntity> findItems(double distance, Predicate<ItemEntity> filter) {
-		return creature.world.getEntitiesWithinAABB(ItemEntity.class, creature.getBoundingBox().grow(distance, distance, distance), filter);
+		return creature.level.getEntitiesOfClass(ItemEntity.class, creature.getBoundingBox().inflate(distance, distance, distance), filter);
 	}
 }

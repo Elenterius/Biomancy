@@ -28,10 +28,10 @@ public final class MobUtil {
 
 	public static <E extends MobEntity, T extends MobEntity> boolean convertMobEntityTo(ServerWorld world, E oldEntity, EntityType<T> outcomeType, boolean copyEquipment, BiConsumer<E, T> onConvert) {
 		if (ForgeEventFactory.canLivingConvert(oldEntity, outcomeType, timer -> {})) {
-			T newEntity = oldEntity.func_233656_b_(outcomeType, copyEquipment);// create new entity with same settings & equipment and remove old entity
+			T newEntity = oldEntity.convertTo(outcomeType, copyEquipment);// create new entity with same settings & equipment and remove old entity
 			if (newEntity != null) {
-				newEntity.onInitialSpawn(world, world.getDifficultyForLocation(oldEntity.getPosition()), SpawnReason.CONVERSION, null, null);
-				newEntity.hurtResistantTime = 60;
+				newEntity.finalizeSpawn(world, world.getCurrentDifficultyAt(oldEntity.blockPosition()), SpawnReason.CONVERSION, null, null);
+				newEntity.invulnerableTime = 60;
 				onConvert.accept(oldEntity, newEntity);
 				ForgeEventFactory.onLivingConvert(oldEntity, newEntity);
 				return true;
@@ -49,13 +49,13 @@ public final class MobUtil {
 				//noinspection unchecked
 				EntityType<? extends LivingEntity> entityType = (EntityType<? extends LivingEntity>) outcomeType;
 				if (ForgeEventFactory.canLivingConvert(oldEntity, entityType, timer -> {})) {
-					entity.copyLocationAndAnglesFrom(oldEntity);
-					if (world.addEntity(entity)) {
+					entity.copyPosition(oldEntity);
+					if (world.addFreshEntity(entity)) {
 						oldEntity.remove();
 						if (entity instanceof MobEntity) {
-							((MobEntity) entity).onInitialSpawn(world, world.getDifficultyForLocation(oldEntity.getPosition()), SpawnReason.CONVERSION, null, null);
+							((MobEntity) entity).finalizeSpawn(world, world.getCurrentDifficultyAt(oldEntity.blockPosition()), SpawnReason.CONVERSION, null, null);
 						}
-						entity.hurtResistantTime = 60;
+						entity.invulnerableTime = 60;
 						ForgeEventFactory.onLivingConvert(oldEntity, (LivingEntity) entity);
 						return true;
 					}
@@ -68,22 +68,22 @@ public final class MobUtil {
 	}
 
 	public static <T extends MobEntity> boolean tryToSpawnEntitySafely(EntityType<T> entityType, ServerWorld world, PlayerEntity player, Vector3d hitVec, BlockPos blockPos, Direction facing, ItemStack stack) {
-		if (world.isBlockModifiable(player, blockPos) && player.canPlayerEdit(blockPos, facing, stack)) {
+		if (world.mayInteract(player, blockPos) && player.mayUseItemAt(blockPos, facing, stack)) {
 			T entity = entityType.create(world);
 			if (entity != null) {
 				Vector3d pos = getSimpleOffsetPosition(hitVec, facing, entity);
-				entity.setLocationAndAngles(pos.x, pos.y, pos.z, MathHelper.wrapDegrees(world.rand.nextFloat() * 360f), 0f);
-				entity.rotationYawHead = entity.rotationYaw;
-				entity.renderYawOffset = entity.rotationYaw;
-				entity.setMotion(0, 0, 0);
+				entity.moveTo(pos.x, pos.y, pos.z, MathHelper.wrapDegrees(world.random.nextFloat() * 360f), 0f);
+				entity.yHeadRot = entity.yRot;
+				entity.yBodyRot = entity.yRot;
+				entity.setDeltaMovement(0, 0, 0);
 				entity.fallDistance = 0;
 
-				if (stack.hasDisplayName()) {
-					entity.setCustomName(stack.getDisplayName());
+				if (stack.hasCustomHoverName()) {
+					entity.setCustomName(stack.getHoverName());
 					entity.setCustomNameVisible(true);
 				}
 
-				if (world.addEntity(entity)) {
+				if (world.addFreshEntity(entity)) {
 					entity.playAmbientSound();
 					return true;
 				}
@@ -99,17 +99,17 @@ public final class MobUtil {
 	 */
 	public static <T extends Entity> Vector3d getSimpleOffsetPosition(Vector3d hitVec, Direction facing, T entity) {
 		float yPos;
-		if (facing.getYOffset() < 0f) yPos = -entity.getHeight();
-		else if (facing.getYOffset() > 0f) yPos = 0f;
-		else yPos = entity.getHeight() * 0.5f;
+		if (facing.getStepY() < 0f) yPos = -entity.getBbHeight();
+		else if (facing.getStepY() > 0f) yPos = 0f;
+		else yPos = entity.getBbHeight() * 0.5f;
 
-		float widthFactor = entity.getWidth() * 0.6f; //prevent mobs from suffocating in walls as much as possible
+		float widthFactor = entity.getBbWidth() * 0.6f; //prevent mobs from suffocating in walls as much as possible
 
-		return hitVec.add(facing.getXOffset() * widthFactor, yPos, facing.getZOffset() * widthFactor);
+		return hitVec.add(facing.getStepX() * widthFactor, yPos, facing.getStepZ() * widthFactor);
 	}
 
 	public static boolean hasDuplicateEntity(ServerWorld world, Entity entityIn) {
-		return hasDuplicateEntity(world, entityIn.getUniqueID());
+		return hasDuplicateEntity(world, entityIn.getUUID());
 	}
 
 	public static boolean hasDuplicateEntity(ServerWorld world, UUID uuid) {

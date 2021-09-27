@@ -44,47 +44,47 @@ public class ToothProjectileEntity extends AbstractProjectileEntity implements I
 	}
 
 	@Override
-	protected void onEntityHit(EntityRayTraceResult result) {
-		super.onEntityHit(result);
+	protected void onHitEntity(EntityRayTraceResult result) {
+		super.onHitEntity(result);
 		Entity victim = result.getEntity();
-		Entity shooter = getShooter();
+		Entity shooter = getOwner();
 		if (shooter instanceof LivingEntity) {
-			((LivingEntity) shooter).setLastAttackedEntity(victim);
+			((LivingEntity) shooter).setLastHurtMob(victim);
 		}
-		boolean success = victim.attackEntityFrom(ModDamageSources.createToothProjectileDamage(this, shooter != null ? shooter : this), getDamage());
+		boolean success = victim.hurt(ModDamageSources.createToothProjectileDamage(this, shooter != null ? shooter : this), getDamage());
 		if (success && victim instanceof LivingEntity) {
-			if (!world.isRemote) {
+			if (!level.isClientSide) {
 				if (getKnockback() > 0) {
-					Vector3d vector3d = getMotion().mul(1d, 0d, 1d).normalize().scale((double) getKnockback() * 0.6d);
-					if (vector3d.lengthSquared() > 0d) {
-						victim.addVelocity(vector3d.x, 0.1d, vector3d.z);
+					Vector3d vector3d = getDeltaMovement().multiply(1d, 0d, 1d).normalize().scale((double) getKnockback() * 0.6d);
+					if (vector3d.lengthSqr() > 0d) {
+						victim.push(vector3d.x, 0.1d, vector3d.z);
 					}
 				}
 				if (shooter instanceof LivingEntity) {
-					applyEnchantments((LivingEntity) shooter, victim); //thorn & arthropod damage
+					doEnchantDamageEffects((LivingEntity) shooter, victim); //thorn & arthropod damage
 				}
 				if (!isSilent() && victim != shooter && victim instanceof PlayerEntity && shooter instanceof ServerPlayerEntity) {
-					((ServerPlayerEntity) shooter).connection.sendPacket(new SChangeGameStatePacket(SChangeGameStatePacket.HIT_PLAYER_ARROW, 0f));
+					((ServerPlayerEntity) shooter).connection.send(new SChangeGameStatePacket(SChangeGameStatePacket.ARROW_HIT_PLAYER, 0f));
 				}
 			}
 		}
-		playSound(SoundEvents.ENTITY_ARROW_HIT, 1f, 1.2f / (rand.nextFloat() * 0.2f + 0.9f));
+		playSound(SoundEvents.ARROW_HIT, 1f, 1.2f / (random.nextFloat() * 0.2f + 0.9f));
 	}
 
 	//onBlockHit
 	@Override
-	protected void func_230299_a_(BlockRayTraceResult result) {
-		super.func_230299_a_(result);
-		playSound(SoundEvents.ENTITY_ARROW_HIT, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+	protected void onHitBlock(BlockRayTraceResult result) {
+		super.onHitBlock(result);
+		playSound(SoundEvents.ARROW_HIT, 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource source, float amount) {
+	public boolean hurt(DamageSource source, float amount) {
 		return false;
 	}
 
 	@Override
-	public boolean canBeCollidedWith() {
+	public boolean isPickable() {
 		return false;
 	}
 

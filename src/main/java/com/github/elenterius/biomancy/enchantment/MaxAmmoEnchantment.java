@@ -10,11 +10,11 @@ public class MaxAmmoEnchantment extends Enchantment {
 		super(rarityIn, ModEnchantments.PROJECTILE_WEAPON_TYPE, slotTypes);
 	}
 
-	public int getMinEnchantability(int enchantmentLevel) {
+	public int getMinCost(int enchantmentLevel) {
 		return 12 + (enchantmentLevel - 1) * 20;
 	}
 
-	public int getMaxEnchantability(int enchantmentLevel) {
+	public int getMaxCost(int enchantmentLevel) {
 		return 50;
 	}
 

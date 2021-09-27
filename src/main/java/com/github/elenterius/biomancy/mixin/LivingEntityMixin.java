@@ -14,16 +14,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
-	@Shadow
-	public abstract AttributeModifierManager getAttributeManager();
 
 	@Shadow
-	public abstract boolean isPotionActive(Effect potionIn);
+	public abstract AttributeModifierManager getAttributes();
+
+	@Shadow
+	public abstract boolean hasEffect(Effect potionIn);
 
 	@Inject(method = "getAttributeValue", at = @At("HEAD"), cancellable = true)
 	protected void biomancy_onGetAttributeValue(Attribute attribute, CallbackInfoReturnable<Double> cir) {
-		if (attribute == Attributes.ATTACK_DAMAGE && !getAttributeManager().hasAttributeInstance(Attributes.ATTACK_DAMAGE)) {
-			cir.setReturnValue(isPotionActive(ModEffects.RAVENOUS_HUNGER.get()) ? 0.25d : 0d);
+		if (attribute == Attributes.ATTACK_DAMAGE && !getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE)) {
+			cir.setReturnValue(hasEffect(ModEffects.RAVENOUS_HUNGER.get()) ? 0.25d : 0d);
 		}
 	}
+
 }

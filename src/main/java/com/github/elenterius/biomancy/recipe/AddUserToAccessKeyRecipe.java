@@ -28,8 +28,8 @@ public class AddUserToAccessKeyRecipe extends SpecialRecipe {
 	public boolean matches(CraftingInventory inv, World worldIn) {
 		int dna = 0, key = 0;
 
-		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			ItemStack stack = inv.getStackInSlot(i);
+		for (int i = 0; i < inv.getContainerSize(); i++) {
+			ItemStack stack = inv.getItem(i);
 			if (!stack.isEmpty()) {
 				if (stack.getItem() instanceof AccessKeyItem) {
 					if (++key > 1) return false;
@@ -45,12 +45,12 @@ public class AddUserToAccessKeyRecipe extends SpecialRecipe {
 	}
 
 	@Override
-	public ItemStack getCraftingResult(CraftingInventory inv) {
+	public ItemStack assemble(CraftingInventory inv) {
 		ItemStack key = ItemStack.EMPTY;
 		ItemStack reagentStack = ItemStack.EMPTY;
 
-		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			ItemStack stack = inv.getStackInSlot(i);
+		for (int i = 0; i < inv.getContainerSize(); i++) {
+			ItemStack stack = inv.getItem(i);
 			if (!stack.isEmpty()) {
 				if (stack.getItem() instanceof AccessKeyItem) {
 					key = stack;
@@ -71,12 +71,12 @@ public class AddUserToAccessKeyRecipe extends SpecialRecipe {
 		if (reagentNbt.contains(Reagent.NBT_KEY_DATA)) {
 			CompoundNBT entityNBT = reagentNbt.getCompound(Reagent.NBT_KEY_DATA);
 			if (entityNBT.contains("EntityUUID")) {
-				UUID userUUID = entityNBT.getUniqueId("EntityUUID");
+				UUID userUUID = entityNBT.getUUID("EntityUUID");
 
-				CompoundNBT keyNbt = stack.getOrCreateChildTag(AccessKeyItem.NBT_KEY);
+				CompoundNBT keyNbt = stack.getOrCreateTagElement(AccessKeyItem.NBT_KEY);
 				ListNBT nbtList = keyNbt.getList("UserList", Constants.NBT.TAG_COMPOUND);
 				CompoundNBT nbtEntry = new CompoundNBT();
-				nbtEntry.putUniqueId("UserUUID", userUUID);
+				nbtEntry.putUUID("UserUUID", userUUID);
 				UserAuthorization.AuthorityLevel.USER.serialize(nbtEntry);
 				nbtList.add(nbtEntry);
 				keyNbt.put("UserList", nbtList);
@@ -89,7 +89,7 @@ public class AddUserToAccessKeyRecipe extends SpecialRecipe {
 	}
 
 	@Override
-	public boolean canFit(int width, int height) {
+	public boolean canCraftInDimensions(int width, int height) {
 		return width * height >= 2;
 	}
 

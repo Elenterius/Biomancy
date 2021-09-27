@@ -50,11 +50,11 @@ public interface ISwarmGroupMember<T extends MobEntity> {
 	}
 
 	default boolean inRangeOfLeader(T leader) {
-		return asMobEntity().getDistanceSq(leader) <= 128D;
+		return asMobEntity().distanceToSqr(leader) <= 128D;
 	}
 
 	default void moveToLeader() {
-		if (hasLeader() && getLeader() != null) asMobEntity().getNavigator().tryMoveToEntityLiving(getLeader().asMobEntity(), 1.0D);
+		if (hasLeader() && getLeader() != null) asMobEntity().getNavigation().moveTo(getLeader().asMobEntity(), 1.0D);
 	}
 
 	default void addGroupMembers(Stream<T> entityStream) {

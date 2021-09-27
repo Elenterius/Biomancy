@@ -41,20 +41,20 @@ public class EntityStorageBagItem extends BagItem {
 	}
 
 	public static boolean isBossMob(Entity entity) {
-		return !entity.canChangeDimension(); //TODO: use boss entity tag instead
+		return !entity.canChangeDimensions(); //TODO: use boss entity tag instead
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
 		CompoundNBT nbt = stack.getOrCreateTag();
 		if (nbt.contains(NBT_KEY_ENTITY)) {
 			TranslationTextComponent entityName = new TranslationTextComponent(nbt.getCompound(NBT_KEY_ENTITY).getString(NBT_KEY_ENTITY_NAME));
-			tooltip.add(TextUtil.getTooltipText("contains", entityName).mergeStyle(TextFormatting.GRAY));
+			tooltip.add(TextUtil.getTooltipText("contains", entityName).withStyle(TextFormatting.GRAY));
 		}
-		else tooltip.add(TextUtil.getTooltipText("contains_nothing").mergeStyle(TextFormatting.GRAY));
+		else tooltip.add(TextUtil.getTooltipText("contains_nothing").withStyle(TextFormatting.GRAY));
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class EntityStorageBagItem extends BagItem {
 		CompoundNBT nbt = stack.getOrCreateTag();
 		if (nbt.contains(NBT_KEY_ENTITY)) {
 			TranslationTextComponent entityName = new TranslationTextComponent(nbt.getCompound(NBT_KEY_ENTITY).getString(NBT_KEY_ENTITY_NAME));
-			return new StringTextComponent("").appendSibling(displayName).appendString(" (").appendSibling(entityName).appendString(")");
+			return new StringTextComponent("").append(displayName).append(" (").append(entityName).append(")");
 		}
 		return super.getHighlightTip(stack, displayName);
 	}
@@ -74,7 +74,7 @@ public class EntityStorageBagItem extends BagItem {
 
 	@Override
 	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
-		if (context.getWorld().isRemote()) return ActionResultType.PASS;
+		if (context.getLevel().isClientSide()) return ActionResultType.PASS;
 
 		PlayerEntity player = context.getPlayer();
 		if (player != null) {
@@ -82,43 +82,43 @@ public class EntityStorageBagItem extends BagItem {
 			CompoundNBT nbt = stack.getOrCreateTag();
 			if (nbt.contains(NBT_KEY_ENTITY)) {
 				CompoundNBT entityNbt = nbt.getCompound(NBT_KEY_ENTITY);
-				if (context.getWorld().isBlockModifiable(player, context.getPos()) && player.canPlayerEdit(context.getPos(), context.getFace(), stack)) {
+				if (context.getLevel().mayInteract(player, context.getClickedPos()) && player.mayUseItemAt(context.getClickedPos(), context.getClickedFace(), stack)) {
 
-					Entity newEntity = EntityType.loadEntityAndExecute(entityNbt.getCompound(NBT_KEY_ENTITY_DATA), context.getWorld(), entity -> {
-						Vector3d pos = MobUtil.getSimpleOffsetPosition(context.getHitVec(), context.getFace(), entity);
-						entity.setLocationAndAngles(pos.x, pos.y, pos.z, MathHelper.wrapDegrees(context.getWorld().rand.nextFloat() * 360f), 0f);
+					Entity newEntity = EntityType.loadEntityRecursive(entityNbt.getCompound(NBT_KEY_ENTITY_DATA), context.getLevel(), entity -> {
+						Vector3d pos = MobUtil.getSimpleOffsetPosition(context.getClickLocation(), context.getClickedFace(), entity);
+						entity.moveTo(pos.x, pos.y, pos.z, MathHelper.wrapDegrees(context.getLevel().random.nextFloat() * 360f), 0f);
 
 						if (entity instanceof MobEntity) {
 							MobEntity mobentity = (MobEntity) entity;
-							mobentity.rotationYawHead = mobentity.rotationYaw;
-							mobentity.renderYawOffset = mobentity.rotationYaw;
+							mobentity.yHeadRot = mobentity.yRot;
+							mobentity.yBodyRot = mobentity.yRot;
 						}
 
-						entity.setMotion(0, 0, 0);
+						entity.setDeltaMovement(0, 0, 0);
 						entity.fallDistance = 0;
 						return entity;
 					});
 
 					if (newEntity != null) {
-						if (MobUtil.hasDuplicateEntity((ServerWorld) context.getWorld(), newEntity)) {
+						if (MobUtil.hasDuplicateEntity((ServerWorld) context.getLevel(), newEntity)) {
 							//reset UUID to prevent "Trying to add entity with duplicated UUID" issue
 							//this only happens if the item stack was copied (e.g. in creative mode) or if the original mob wasn't removed from the world
-							newEntity.setUniqueId(MathHelper.getRandomUUID(((EntityAccessor) newEntity).biomancy_rand()));
+							newEntity.setUUID(MathHelper.createInsecureUUID(((EntityAccessor) newEntity).biomancy_rand()));
 							//TODO: trigger secret achievement: Paradox! - There can't be two identical entities in the same world.
 						}
 
-						if (context.getWorld().addEntity(newEntity)) {
+						if (context.getLevel().addFreshEntity(newEntity)) {
 							nbt.remove(NBT_KEY_ENTITY);
-							context.getWorld().playSound(null, context.getPos(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.75f, 0.35f + context.getWorld().rand.nextFloat() * 0.25f);
+							context.getLevel().playSound(null, context.getClickedPos(), SoundEvents.PLAYER_BURP, SoundCategory.PLAYERS, 0.75f, 0.35f + context.getLevel().random.nextFloat() * 0.25f);
 							return ActionResultType.SUCCESS;
 						}
 					}
 
 					TranslationTextComponent entityName = new TranslationTextComponent(entityNbt.getString(NBT_KEY_ENTITY_NAME));
-					player.sendStatusMessage(TextUtil.getFailureMsgText("failed_to_spawn", entityName), true);
+					player.displayClientMessage(TextUtil.getFailureMsgText("failed_to_spawn", entityName), true);
 					return ActionResultType.FAIL;
 				}
-				player.sendStatusMessage(TextUtil.getFailureMsgText("not_allowed"), true);
+				player.displayClientMessage(TextUtil.getFailureMsgText("not_allowed"), true);
 				return ActionResultType.FAIL;
 			}
 		}
@@ -126,12 +126,12 @@ public class EntityStorageBagItem extends BagItem {
 	}
 
 	public boolean canStoreEntity(Entity entity) {
-		return entity.isAlive() && !(entity instanceof PlayerEntity) && entity.canChangeDimension() && entity.getType().isSummonable() && entity.getType().isSerializable();
+		return entity.isAlive() && !(entity instanceof PlayerEntity) && entity.canChangeDimensions() && entity.getType().canSummon() && entity.getType().canSerialize();
 	}
 
 	@Override
-	public ActionResultType itemInteractionForEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity target, Hand hand) {
-		if (playerIn.world.isRemote()) return ActionResultType.PASS;
+	public ActionResultType interactLivingEntity(ItemStack stack, PlayerEntity playerIn, LivingEntity target, Hand hand) {
+		if (playerIn.level.isClientSide()) return ActionResultType.PASS;
 		onPlayerInteractWithItem(stack, playerIn);
 
 		boolean isValidTarget = canStoreEntity(target) && (!isBossMob(target) || playerIn.isCreative()); // blame creative player if something breaks due to storing boss mobs
@@ -139,18 +139,18 @@ public class EntityStorageBagItem extends BagItem {
 			boolean isAnyEntityStored = stack.getOrCreateTag().contains(NBT_KEY_ENTITY);
 			if (!isAnyEntityStored) {
 				if (setStoredEntity(stack, target, true, true)) {
-					playerIn.world.playSound(null, playerIn.getPosition(), SoundEvents.ENTITY_GENERIC_EAT, SoundCategory.PLAYERS, 0.9F, 0.3f + playerIn.world.rand.nextFloat() * 0.25f);
+					playerIn.level.playSound(null, playerIn.blockPosition(), SoundEvents.GENERIC_EAT, SoundCategory.PLAYERS, 0.9F, 0.3f + playerIn.level.random.nextFloat() * 0.25f);
 					if (playerIn.isCreative()) {
-						playerIn.setHeldItem(hand, stack); //fix for creative mode (normally the stack is not modified in creative)
+						playerIn.setItemInHand(hand, stack); //fix for creative mode (normally the stack is not modified in creative)
 					}
 					return ActionResultType.SUCCESS;
 				}
 				else {
-					playerIn.sendStatusMessage(TextUtil.getFailureMsgText("failed_to_store"), true);
+					playerIn.displayClientMessage(TextUtil.getFailureMsgText("failed_to_store"), true);
 				}
 			}
 			else {
-				playerIn.sendStatusMessage(TextUtil.getFailureMsgText("already_full"), true);
+				playerIn.displayClientMessage(TextUtil.getFailureMsgText("already_full"), true);
 			}
 		}
 
@@ -165,32 +165,32 @@ public class EntityStorageBagItem extends BagItem {
 	protected boolean setStoredEntity(ItemStack stack, Entity entityToStore, boolean removeEntity, boolean storePassengers) {
 
 		if (removeEntity && entityToStore.isPassenger()) {
-			entityToStore.dismount();
+			entityToStore.removeVehicle();
 			if (entityToStore.isPassenger()) return false;
 		}
 
 		List<Entity> cachedPassengers = null;
-		if (entityToStore.isBeingRidden()) {
+		if (entityToStore.isVehicle()) {
 			if (storePassengers) {
-				boolean hasPlayerPassengers = entityToStore.getRecursivePassengers().stream().anyMatch(PlayerEntity.class::isInstance);
+				boolean hasPlayerPassengers = entityToStore.getIndirectPassengers().stream().anyMatch(PlayerEntity.class::isInstance);
 				if (hasPlayerPassengers) return false;
 			}
 			else {
 				cachedPassengers = entityToStore.getPassengers();
-				entityToStore.removePassengers();
+				entityToStore.ejectPassengers();
 			}
 		}
 
 		CompoundNBT entityData = new CompoundNBT();
-		if (entityToStore.writeUnlessRemoved(entityData)) {
+		if (entityToStore.saveAsPassenger(entityData)) {
 			CompoundNBT nbt = new CompoundNBT();
 			nbt.put(NBT_KEY_ENTITY_DATA, entityData);
-			nbt.putString(NBT_KEY_ENTITY_NAME, entityToStore.getType().getTranslationKey());
+			nbt.putString(NBT_KEY_ENTITY_NAME, entityToStore.getType().getDescriptionId());
 			stack.getOrCreateTag().put(NBT_KEY_ENTITY, nbt);
 
 			if (removeEntity) {
 				if (storePassengers) {
-					entityToStore.getRecursivePassengers().forEach(Entity::remove);
+					entityToStore.getIndirectPassengers().forEach(Entity::remove);
 				}
 				entityToStore.remove();
 			}

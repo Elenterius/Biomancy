@@ -94,7 +94,7 @@ public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> {
 	}
 
 	@Override
-	public int size() {
+	public int getCount() {
 		return 5;
 	}
 

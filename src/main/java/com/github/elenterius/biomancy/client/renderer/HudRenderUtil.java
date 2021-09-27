@@ -56,11 +56,11 @@ public final class HudRenderUtil {
 	private HudRenderUtil() {}
 
 	public static boolean canDrawAttackIndicator(Minecraft mc, ClientPlayerEntity player) {
-		if (mc.gameSettings.attackIndicator != AttackIndicatorStatus.CROSSHAIR) return true;
+		if (mc.options.attackIndicator != AttackIndicatorStatus.CROSSHAIR) return true;
 		boolean isVisible = false;
-		float attackStrength = player.getCooledAttackStrength(0f);
-		if (mc.pointedEntity instanceof LivingEntity && attackStrength >= 1f) {
-			isVisible = player.getCooldownPeriod() > 5f && mc.pointedEntity.isAlive();
+		float attackStrength = player.getAttackStrengthScale(0f);
+		if (mc.crosshairPickEntity instanceof LivingEntity && attackStrength >= 1f) {
+			isVisible = player.getCurrentItemAttackStrengthDelay() > 5f && mc.crosshairPickEntity.isAlive();
 		}
 		return !isVisible && attackStrength >= 1f;
 	}
@@ -69,15 +69,15 @@ public final class HudRenderUtil {
 		if (elapsedTime < shootDelay && canDrawAttackIndicator(mc, player)) {
 			float progress = (float) elapsedTime / shootDelay;
 			if (progress < 1f) {
-				mc.getTextureManager().bindTexture(AbstractGui.GUI_ICONS_LOCATION);
+				mc.getTextureManager().bind(AbstractGui.GUI_ICONS_LOCATION);
 				RenderSystem.enableBlend();
 				RenderSystem.enableAlphaTest();
 				RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 
 				int x = scaledWidth / 2 - 8;
 				int y = scaledHeight / 2 - 7 + 16;
-				mc.ingameGUI.blit(matrix, x, y, 36, 94, 16, 4);
-				mc.ingameGUI.blit(matrix, x, y, 52, 94, (int) (progress * 17f), 4);
+				mc.gui.blit(matrix, x, y, 36, 94, 16, 4);
+				mc.gui.blit(matrix, x, y, 52, 94, (int) (progress * 17f), 4);
 
 				RenderSystem.defaultBlendFunc();
 			}
@@ -85,13 +85,13 @@ public final class HudRenderUtil {
 	}
 
 	static void drawRectangularProgressIndicator(MatrixStack matrixStack, float cx, float cy, float lengthA, float progress, int color) {
-		Matrix4f matrix = matrixStack.getLast().getMatrix();
+		Matrix4f matrix = matrixStack.last().pose();
 		float alpha = (color >> 24 & 255) / 255f;
 		float red = (color >> 16 & 255) / 255f;
 		float green = (color >> 8 & 255) / 255f;
 		float blue = (color & 255) / 255f;
 
-		BufferBuilder bufferbuilder = Tessellator.getInstance().getBuffer();
+		BufferBuilder bufferbuilder = Tessellator.getInstance().getBuilder();
 		RenderSystem.enableBlend();
 		RenderSystem.disableTexture();
 
@@ -109,8 +109,8 @@ public final class HudRenderUtil {
 		float dist = Math.min(currentLength, halfLength);
 		if (dist > 0) {
 			float y = cy - halfLength;
-			bufferbuilder.pos(matrix, cx, y, 0f).color(red, green, blue, alpha).endVertex();
-			bufferbuilder.pos(matrix, cx + halfLength, y, 0f).color(red, green, blue, alpha).endVertex();
+			bufferbuilder.vertex(matrix, cx, y, 0f).color(red, green, blue, alpha).endVertex();
+			bufferbuilder.vertex(matrix, cx + halfLength, y, 0f).color(red, green, blue, alpha).endVertex();
 		}
 
 		// right line
@@ -118,7 +118,7 @@ public final class HudRenderUtil {
 		if (dist > 0) {
 			float x = cx + halfLength;
 			float y = cy - halfLength;
-			bufferbuilder.pos(matrix, x, y + dist, 0f).color(red, green, blue, alpha).endVertex();
+			bufferbuilder.vertex(matrix, x, y + dist, 0f).color(red, green, blue, alpha).endVertex();
 		}
 
 		// bottom line
@@ -126,7 +126,7 @@ public final class HudRenderUtil {
 		if (dist > 0) {
 			float x = cx + halfLength;
 			float y = cy + halfLength;
-			bufferbuilder.pos(matrix, x - dist, y, 0f).color(red, green, blue, alpha).endVertex();
+			bufferbuilder.vertex(matrix, x - dist, y, 0f).color(red, green, blue, alpha).endVertex();
 		}
 
 		// left line
@@ -134,7 +134,7 @@ public final class HudRenderUtil {
 		if (dist > 0) {
 			float x = cx - halfLength;
 			float y = cy + halfLength;
-			bufferbuilder.pos(matrix, x, y - dist, 0f).color(red, green, blue, alpha).endVertex();
+			bufferbuilder.vertex(matrix, x, y - dist, 0f).color(red, green, blue, alpha).endVertex();
 		}
 
 		// top left line
@@ -142,12 +142,12 @@ public final class HudRenderUtil {
 		if (dist > 0) {
 			float x = cx - halfLength;
 			float y = cy - halfLength;
-			bufferbuilder.pos(matrix, x, y, 0f).color(red, green, blue, alpha).endVertex();
-			bufferbuilder.pos(matrix, x + halfLength, y, 0f).color(red, green, blue, alpha).endVertex();
+			bufferbuilder.vertex(matrix, x, y, 0f).color(red, green, blue, alpha).endVertex();
+			bufferbuilder.vertex(matrix, x + halfLength, y, 0f).color(red, green, blue, alpha).endVertex();
 		}
 
-		bufferbuilder.finishDrawing();
-		WorldVertexBufferUploader.draw(bufferbuilder);
+		bufferbuilder.end();
+		WorldVertexBufferUploader.end(bufferbuilder);
 		RenderSystem.enableTexture();
 		RenderSystem.defaultBlendFunc();
 	}
@@ -157,7 +157,7 @@ public final class HudRenderUtil {
 	}
 
 	static void drawArc(MatrixStack matrixStack, float cx, float cy, float radius, float startAngle, float endAngle, int color) {
-		Matrix4f matrix = matrixStack.getLast().getMatrix();
+		Matrix4f matrix = matrixStack.last().pose();
 		float alpha = (color >> 24 & 255) / 255f;
 		float red = (color >> 16 & 255) / 255f;
 		float green = (color >> 8 & 255) / 255f;
@@ -167,7 +167,7 @@ public final class HudRenderUtil {
 		startAngle -= angleOffset;
 		endAngle -= angleOffset;
 
-		BufferBuilder bufferbuilder = Tessellator.getInstance().getBuffer();
+		BufferBuilder bufferbuilder = Tessellator.getInstance().getBuilder();
 		RenderSystem.enableBlend();
 		RenderSystem.disableTexture();
 		RenderSystem.enableAlphaTest();
@@ -179,14 +179,14 @@ public final class HudRenderUtil {
 		for (float theta = startAngle; theta < endAngle; theta += step) {
 			float x = radius * MathHelper.cos(theta) + cx;
 			float y = radius * MathHelper.sin(theta) + cy;
-			bufferbuilder.pos(matrix, x, y, 0f).color(red, green, blue, alpha).endVertex();
+			bufferbuilder.vertex(matrix, x, y, 0f).color(red, green, blue, alpha).endVertex();
 		}
 		float x = radius * MathHelper.cos(endAngle) + cx;
 		float y = radius * MathHelper.sin(endAngle) + cy;
-		bufferbuilder.pos(matrix, x, y, 0f).color(red, green, blue, alpha).endVertex();
+		bufferbuilder.vertex(matrix, x, y, 0f).color(red, green, blue, alpha).endVertex();
 
-		bufferbuilder.finishDrawing();
-		WorldVertexBufferUploader.draw(bufferbuilder);
+		bufferbuilder.end();
+		WorldVertexBufferUploader.end(bufferbuilder);
 		RenderSystem.enableTexture();
 		RenderSystem.defaultBlendFunc();
 	}
@@ -195,19 +195,19 @@ public final class HudRenderUtil {
 		ItemStorageBagItem.Mode mode = item.getMode(stack);
 		ItemStack storedStack = item.getStoredItem(stack);
 
-		mc.getTextureManager().bindTexture(HUD_0_TEXTURE);
+		mc.getTextureManager().bind(HUD_0_TEXTURE);
 		AbstractGui.blit(matrixStack, scaledWidth - 44, scaledHeight - 28, 0, 0, 44, 28, 44, 28);
-		mc.getItemRenderer().renderItemAndEffectIntoGUI(player, storedStack, scaledWidth - 16 - 4, scaledHeight - 16 - 4);
-		mc.getItemRenderer().renderItemOverlayIntoGUI(mc.fontRenderer, storedStack, scaledWidth - 16 - 4, scaledHeight - 16 - 4, null);
-		mc.getTextureManager().bindTexture(ITEM_BAG_INDICATOR_TEX);
+		mc.getItemRenderer().renderAndDecorateItem(player, storedStack, scaledWidth - 16 - 4, scaledHeight - 16 - 4);
+		mc.getItemRenderer().renderGuiItemDecorations(mc.font, storedStack, scaledWidth - 16 - 4, scaledHeight - 16 - 4, null);
+		mc.getTextureManager().bind(ITEM_BAG_INDICATOR_TEX);
 		AbstractGui.blit(matrixStack, scaledWidth - 16 - 4, scaledHeight - 28 - 8, 16, mode.id * 16f, 16, 16, 32, 48);
 
 		if (!canDrawAttackIndicator(mc, player)) return;
 		if (storedStack.isEmpty() || (mode == ItemStorageBagItem.Mode.DEVOUR && item.getFullness(stack) >= 1f)) return;
 
-		if (mc.objectMouseOver != null && mc.objectMouseOver.getType() == RayTraceResult.Type.BLOCK) {
-			BlockRayTraceResult rayTraceResult = (BlockRayTraceResult) mc.objectMouseOver;
-			TileEntity tile = player.world.getTileEntity(rayTraceResult.getPos());
+		if (mc.hitResult != null && mc.hitResult.getType() == RayTraceResult.Type.BLOCK) {
+			BlockRayTraceResult rayTraceResult = (BlockRayTraceResult) mc.hitResult;
+			TileEntity tile = player.level.getBlockEntity(rayTraceResult.getBlockPos());
 			if (tile != null) {
 				LazyOptional<IItemHandler> capability = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
 				if (capability.isPresent()) {
@@ -215,21 +215,21 @@ public final class HudRenderUtil {
 					int x = scaledWidth / 2 - 16 - 8;
 					int y = scaledHeight / 2 + 9;
 					AbstractGui.blit(matrixStack, x, y, 0, mode.id * 16f, 32, 16, 32, 48);
-					mc.getItemRenderer().renderItemAndEffectIntoGUI(player, storedStack, x + 32, y);
+					mc.getItemRenderer().renderAndDecorateItem(player, storedStack, x + 32, y);
 				}
 			}
 		}
 	}
 
 	static void drawBowOverlay(MatrixStack matrixStack, int scaledWidth, int scaledHeight, Minecraft mc, ClientPlayerEntity player, ItemStack stack, SinewBowItem item) {
-		int timeLeft = player.getItemInUseCount();
+		int timeLeft = player.getUseItemRemainingTicks();
 		if (timeLeft == 0) timeLeft = stack.getUseDuration();
 		int charge = stack.getUseDuration() - timeLeft;
 		float pullProgress = Math.min(charge / item.drawTime, 1f);
 		float velocity = item.getArrowVelocity(stack, charge) * item.baseVelocity;
 		float x = scaledWidth * 0.5f;
 		float y = scaledHeight * 0.5f;
-		AbstractGui.drawString(matrixStack, mc.fontRenderer, String.format("V: %.1f", velocity), (int) x + 18, (int) y + 6, 0xFFFEFEFE);
+		AbstractGui.drawString(matrixStack, mc.font, String.format("V: %.1f", velocity), (int) x + 18, (int) y + 6, 0xFFFEFEFE);
 		drawRectangularProgressIndicator(matrixStack, x, y, 25f, pullProgress, 0xFFFEFEFE);
 	}
 
@@ -239,35 +239,35 @@ public final class HudRenderUtil {
 
 		Reagent reagent = item.getReagent(stack);
 		if (reagent != null) {
-			FontRenderer fontRenderer = mc.fontRenderer;
+			FontRenderer fontRenderer = mc.font;
 			String text = amount + "x";
 
 			int x = scaledWidth - 16 - 4;
 			int y = scaledHeight - 16 - 4;
-			matrix.push();
+			matrix.pushPose();
 			float scale = 1.5f; //make font bigger
-			matrix.translate(x - fontRenderer.getStringWidth(text) * scale, y + 16 - fontRenderer.FONT_HEIGHT * scale, 0);
+			matrix.translate(x - fontRenderer.width(text) * scale, y + 16 - fontRenderer.lineHeight * scale, 0);
 			matrix.scale(scale, scale, 0);
 			AbstractGui.drawString(matrix, fontRenderer, text, 0, 0, 0xFFFEFEFE);
-			matrix.pop();
+			matrix.popPose();
 
 			ItemStack reagentStack = REAGENT_STACK.get();
 			Reagent.serialize(reagent, reagentStack.getOrCreateTag());
-			mc.getItemRenderer().renderItemIntoGUI(reagentStack, x, y);
+			mc.getItemRenderer().renderGuiItem(reagentStack, x, y);
 		}
 	}
 
 	static void drawGunOverlay(MatrixStack matrix, int scaledWidth, int scaledHeight, Minecraft mc, ClientPlayerEntity player, ItemStack stack, ProjectileWeaponItem item) {
-		FontRenderer fontRenderer = mc.fontRenderer;
+		FontRenderer fontRenderer = mc.font;
 
-		mc.getTextureManager().bindTexture(HUD_0_TEXTURE);
+		mc.getTextureManager().bind(HUD_0_TEXTURE);
 		AbstractGui.blit(matrix, scaledWidth - 44, scaledHeight - 28, 0, 0, 44, 28, 44, 28);
 
 		if (item == ModItems.TOOTH_GUN.get()) {
-			mc.getItemRenderer().renderItemIntoGUI(ToothProjectileEntity.getItemForRendering(), scaledWidth - 16 - 4, scaledHeight - 28 - 8);
+			mc.getItemRenderer().renderGuiItem(ToothProjectileEntity.getItemForRendering(), scaledWidth - 16 - 4, scaledHeight - 28 - 8);
 		}
 		else if (item == ModItems.WITHERSHOT.get()) {
-			mc.getItemRenderer().renderItemIntoGUI(WITHER_SKULL_STACK.get(), scaledWidth - 16 - 4, scaledHeight - 28 - 8);
+			mc.getItemRenderer().renderGuiItem(WITHER_SKULL_STACK.get(), scaledWidth - 16 - 4, scaledHeight - 28 - 8);
 		}
 		else if (item == ModItems.BOOMLING_HIVE_GUN.get()) {
 			drawBoomlingGunOverlay(matrix, scaledWidth, scaledHeight, mc, stack, fontRenderer);
@@ -275,16 +275,16 @@ public final class HudRenderUtil {
 
 		drawAmmoCount(matrix, fontRenderer, scaledWidth, scaledHeight, item.getMaxAmmo(stack), item.getAmmo(stack), 0xFFFEFEFE, 0xFF9E9E9E);
 
-		GameSettings gamesettings = mc.gameSettings;
-		if (gamesettings.getPointOfView().func_243192_a() && !gamesettings.showDebugInfo) { // is in first person view
+		GameSettings gamesettings = mc.options;
+		if (gamesettings.getCameraType().isFirstPerson() && !gamesettings.renderDebug) { // is in first person view
 			ProjectileWeaponItem.State gunState = item.getState(stack);
 			if (gunState == ProjectileWeaponItem.State.RELOADING) {
-				long elapsedTime = player.worldClient.getGameTime() - item.getReloadStartTime(stack);
+				long elapsedTime = player.clientLevel.getGameTime() - item.getReloadStartTime(stack);
 				float reloadProgress = item.getReloadProgress(elapsedTime, item.getReloadTime(stack));
 				drawRectangularProgressIndicator(matrix, scaledWidth * 0.5f, scaledHeight * 0.5f, 20f, reloadProgress, 0xFFFFFFFF);
 			}
 			else {
-				long elapsedTime = player.worldClient.getGameTime() - item.getShootTimestamp(stack);
+				long elapsedTime = player.clientLevel.getGameTime() - item.getShootTimestamp(stack);
 				drawAttackIndicator(matrix, scaledWidth, scaledHeight, mc, player, elapsedTime, item.getShootDelay(stack));
 			}
 		}
@@ -305,21 +305,21 @@ public final class HudRenderUtil {
 				PotionUtilExt.addPotionTooltip(stack, lines, 1f);
 			}
 			else {
-				lines.add(new StringTextComponent("[").appendSibling(ClientTextUtil.getAltKey()).appendString("]").mergeStyle(TextFormatting.AQUA));
+				lines.add(new StringTextComponent("[").append(ClientTextUtil.getAltKey()).append("]").withStyle(TextFormatting.AQUA));
 			}
-			int hOffset = lines.size() * fontRenderer.FONT_HEIGHT;
+			int hOffset = lines.size() * fontRenderer.lineHeight;
 			for (int i = 0; i < lines.size(); i++) {
 				ITextComponent text = lines.get(i);
-				AbstractGui.drawString(matrix, fontRenderer, text, x - fontRenderer.getStringPropertyWidth(text), y + 32 - hOffset + i * fontRenderer.FONT_HEIGHT, 0xFF9E9E9E);
+				AbstractGui.drawString(matrix, fontRenderer, text, x - fontRenderer.width(text), y + 32 - hOffset + i * fontRenderer.lineHeight, 0xFF9E9E9E);
 			}
 		}
-		mc.getTextureManager().bindTexture(HUD_FLUID_0_TEXTURE);
+		mc.getTextureManager().bind(HUD_FLUID_0_TEXTURE);
 		AbstractGui.blit(matrix, x, y, 0, 0, 23, 32, 23, 32);
-		mc.getItemRenderer().renderItemIntoGUI(new ItemStack(ModItems.BOOMLING.get()), scaledWidth - 16 - 4, scaledHeight - 28 - 8);
+		mc.getItemRenderer().renderGuiItem(new ItemStack(ModItems.BOOMLING.get()), scaledWidth - 16 - 4, scaledHeight - 28 - 8);
 		if (count > 0) {
 			String countStr = String.valueOf(count);
-			x = scaledWidth - fontRenderer.getStringWidth(countStr) - 2;
-			y = y + 32 - fontRenderer.FONT_HEIGHT + 1;
+			x = scaledWidth - fontRenderer.width(countStr) - 2;
+			y = y + 32 - fontRenderer.lineHeight + 1;
 			AbstractGui.drawString(matrix, fontRenderer, countStr, x, y, 0xFFFEFEFE);
 		}
 	}
@@ -327,15 +327,15 @@ public final class HudRenderUtil {
 	private static void drawAmmoCount(MatrixStack matrix, FontRenderer fontRenderer, int scaledWidth, int scaledHeight, int maxAmmoIn, int ammoIn, int primaryColor, int secondaryColor) {
 		String maxAmmo = "/" + maxAmmoIn;
 		String ammo = "" + ammoIn;
-		int x = scaledWidth - fontRenderer.getStringWidth(maxAmmo) - 4;
-		int y = scaledHeight - fontRenderer.FONT_HEIGHT - 4;
+		int x = scaledWidth - fontRenderer.width(maxAmmo) - 4;
+		int y = scaledHeight - fontRenderer.lineHeight - 4;
 		AbstractGui.drawString(matrix, fontRenderer, maxAmmo, x, y, secondaryColor);
-		matrix.push();
+		matrix.pushPose();
 		float scale = 1.5f; //make font bigger
-		matrix.translate(x - fontRenderer.getStringWidth(ammo) * scale, y - fontRenderer.FONT_HEIGHT * scale * 0.5f, 0);
+		matrix.translate(x - fontRenderer.width(ammo) * scale, y - fontRenderer.lineHeight * scale * 0.5f, 0);
 		matrix.scale(scale, scale, 0);
 		AbstractGui.drawString(matrix, fontRenderer, ammo, 0, 0, primaryColor);
-		matrix.pop();
+		matrix.popPose();
 	}
 
 }

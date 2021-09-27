@@ -31,7 +31,7 @@ public class AbsorptionReagent extends Reagent {
 	}
 
 	private boolean addAbsorption(LivingEntity target) {
-		if (!target.world.isRemote) {
+		if (!target.level.isClientSide) {
 			target.setAbsorptionAmount(target.getAbsorptionAmount() + 8);
 		}
 		return true;

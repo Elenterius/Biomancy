@@ -64,7 +64,7 @@ public abstract class Reagent extends ForgeRegistryEntry<Reagent> {
 	@Nullable
 	public static Reagent deserialize(CompoundNBT nbt) {
 		if (nbt.contains(NBT_KEY_ID)) {
-			ResourceLocation key = ResourceLocation.tryCreate(nbt.getString(NBT_KEY_ID));
+			ResourceLocation key = ResourceLocation.tryParse(nbt.getString(NBT_KEY_ID));
 			if (key != null) return ModReagents.REGISTRY.get().getValue(key);
 		}
 		return null;
@@ -90,10 +90,10 @@ public abstract class Reagent extends ForgeRegistryEntry<Reagent> {
 	@OnlyIn(Dist.CLIENT)
 	public void addInfoToTooltip(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		if (stack.getItem() != ModItems.REAGENT.get()) {
-			tooltip.add(ClientTextUtil.getTooltipText("contains", new TranslationTextComponent(getTranslationKey())).mergeStyle(TextFormatting.GRAY));
+			tooltip.add(ClientTextUtil.getTooltipText("contains", new TranslationTextComponent(getTranslationKey())).withStyle(TextFormatting.GRAY));
 		}
 		if (ClientTextUtil.showExtraInfo(tooltip)) {
-			tooltip.add(new TranslationTextComponent(getTranslationKey().replace("reagent", "tooltip")).mergeStyle(ClientTextUtil.LORE_STYLE));
+			tooltip.add(new TranslationTextComponent(getTranslationKey().replace("reagent", "tooltip")).withStyle(ClientTextUtil.LORE_STYLE));
 		}
 	}
 
@@ -106,7 +106,7 @@ public abstract class Reagent extends ForgeRegistryEntry<Reagent> {
 		return color;
 	}
 
-	public boolean isAttributeModifier() { return attributeModifiers != null; }
+	public boolean isAttributeModifier() {return attributeModifiers != null;}
 
 	public abstract boolean affectBlock(CompoundNBT nbt, @Nullable LivingEntity source, World world, BlockPos pos, Direction facing);
 
@@ -123,10 +123,10 @@ public abstract class Reagent extends ForgeRegistryEntry<Reagent> {
 	}
 
 	public void removeAttributesModifiersFromEntity(LivingEntity livingEntity) {
-		if (attributeModifiers != null) livingEntity.getAttributeManager().removeModifiers(attributeModifiers);
+		if (attributeModifiers != null) livingEntity.getAttributes().removeAttributeModifiers(attributeModifiers);
 	}
 
 	public void applyAttributesModifiersToEntity(LivingEntity livingEntity) {
-		if (attributeModifiers != null) livingEntity.getAttributeManager().reapplyModifiers(attributeModifiers);
+		if (attributeModifiers != null) livingEntity.getAttributes().addTransientAttributeModifiers(attributeModifiers);
 	}
 }

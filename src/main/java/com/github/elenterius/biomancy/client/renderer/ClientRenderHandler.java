@@ -59,7 +59,7 @@ public final class ClientRenderHandler {
 		ClientPlayerEntity player = Minecraft.getInstance().player;
 		if (player == null || player.isSpectator()) return;
 
-		ItemStack heldStack = player.getHeldItemMainhand();
+		ItemStack heldStack = player.getMainHandItem();
 		if (!heldStack.isEmpty() && heldStack.getItem() instanceof IHighlightRayTraceResultItem) {
 			IHighlightRayTraceResultItem iHighlighter = (IHighlightRayTraceResultItem) heldStack.getItem();
 			boolean canHighlightEntities = iHighlighter.canHighlightLivingEntities(heldStack);
@@ -76,22 +76,22 @@ public final class ClientRenderHandler {
 
 			if (canHighlightBlocks && rayTraceResult.getType() == RayTraceResult.Type.BLOCK && rayTraceResult instanceof BlockRayTraceResult) {
 				BlockRayTraceResult traceResult = (BlockRayTraceResult) rayTraceResult;
-				BlockPos blockPos = traceResult.getPos().offset(traceResult.getFace());
-				Vector3d pos = Vector3d.copy(blockPos);
+				BlockPos blockPos = traceResult.getBlockPos().relative(traceResult.getDirection());
+				Vector3d pos = Vector3d.atLowerCornerOf(blockPos);
 				HIGHLIGHTED_BLOCK_POS = blockPos;
 
-				Vector3d pView = Minecraft.getInstance().gameRenderer.getActiveRenderInfo().getProjectedView();
-				AxisAlignedBB axisAlignedBB = AxisAlignedBB.fromVector(pos).offset(-pView.x, -pView.y, -pView.z);
-				IRenderTypeBuffer.Impl iRenderTypeBuffer = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
-				IVertexBuilder buffer = iRenderTypeBuffer.getBuffer(RenderType.getLines());
+				Vector3d pView = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
+				AxisAlignedBB axisAlignedBB = AxisAlignedBB.unitCubeFromLowerCorner(pos).move(-pView.x, -pView.y, -pView.z);
+				IRenderTypeBuffer.Impl iRenderTypeBuffer = Minecraft.getInstance().renderBuffers().bufferSource();
+				IVertexBuilder buffer = iRenderTypeBuffer.getBuffer(RenderType.lines());
 
 				int color = iHighlighter.getColorForBlock(heldStack, blockPos);
 				float red = (color >> 16 & 255) / 255f;
 				float green = (color >> 8 & 255) / 255f;
 				float blue = (color & 255) / 255f;
 				float alpha = 0.5f;
-				WorldRenderer.drawBoundingBox(event.getMatrixStack(), buffer, axisAlignedBB, red, green, blue, alpha);
-				iRenderTypeBuffer.finish(RenderType.getLines());
+				WorldRenderer.renderLineBox(event.getMatrixStack(), buffer, axisAlignedBB, red, green, blue, alpha);
+				iRenderTypeBuffer.endBatch(RenderType.lines());
 //                iRenderTypeBuffer.finish();
 			}
 			else if (canHighlightEntities && rayTraceResult.getType() == RayTraceResult.Type.ENTITY && rayTraceResult instanceof EntityRayTraceResult) {
@@ -109,7 +109,7 @@ public final class ClientRenderHandler {
 			ClientPlayerEntity player = mc.player;
 			if (player == null || player.isSpectator()) return;
 
-			ItemStack heldStack = player.getHeldItemMainhand();
+			ItemStack heldStack = player.getMainHandItem();
 			Item item = heldStack.getItem();
 
 			if (item instanceof IHighlightRayTraceResultItem && (HIGHLIGHTED_ENTITY != null || HIGHLIGHTED_BLOCK_POS != null)) {
@@ -117,8 +117,8 @@ public final class ClientRenderHandler {
 			}
 
 			MatrixStack matrix = event.getMatrixStack();
-			final int scaledWidth = event.getWindow().getScaledWidth();
-			final int scaledHeight = event.getWindow().getScaledHeight();
+			final int scaledWidth = event.getWindow().getGuiScaledWidth();
+			final int scaledHeight = event.getWindow().getGuiScaledHeight();
 
 			if (item instanceof SinewBowItem) {
 				HudRenderUtil.drawBowOverlay(matrix, scaledWidth, scaledHeight, mc, player, heldStack, (SinewBowItem) item);
@@ -140,23 +140,23 @@ public final class ClientRenderHandler {
 		ClientPlayerEntity player = Minecraft.getInstance().player;
 		if (player == null) return;
 
-		ItemStack heldStack = player.getHeldItemMainhand();
-		if (!player.isSneaking() && !heldStack.isEmpty() && heldStack.getItem() instanceof IAreaHarvestingItem) {
+		ItemStack heldStack = player.getMainHandItem();
+		if (!player.isShiftKeyDown() && !heldStack.isEmpty() && heldStack.getItem() instanceof IAreaHarvestingItem) {
 			IAreaHarvestingItem aoeHarvester = (IAreaHarvestingItem) heldStack.getItem();
 			byte blockHarvestRange = aoeHarvester.getBlockHarvestRange(heldStack);
 			if (blockHarvestRange > 0) {
-				BlockPos pos = event.getTarget().getPos();
-				BlockState blockState = player.worldClient.getBlockState(pos);
-				if (blockState.isAir(player.worldClient, pos)) return;
+				BlockPos pos = event.getTarget().getBlockPos();
+				BlockState blockState = player.clientLevel.getBlockState(pos);
+				if (blockState.isAir(player.clientLevel, pos)) return;
 
-				Vector3d pView = event.getInfo().getProjectedView();
-				IVertexBuilder vertexBuilder = event.getBuffers().getBuffer(RenderType.getLines());
+				Vector3d pView = event.getInfo().getPosition();
+				IVertexBuilder vertexBuilder = event.getBuffers().getBuffer(RenderType.lines());
 
-				List<BlockPos> neighbors = PlayerInteractionUtil.findBlockNeighbors(player.worldClient, event.getTarget(), blockState, pos, blockHarvestRange, aoeHarvester.getHarvestShape(heldStack));
+				List<BlockPos> neighbors = PlayerInteractionUtil.findBlockNeighbors(player.clientLevel, event.getTarget(), blockState, pos, blockHarvestRange, aoeHarvester.getHarvestShape(heldStack));
 				for (BlockPos neighborPos : neighbors) {
-					if (player.worldClient.getWorldBorder().contains(neighborPos)) {
-						AxisAlignedBB axisAlignedBB = new AxisAlignedBB(neighborPos).offset(-pView.x, -pView.y, -pView.z);
-						WorldRenderer.drawBoundingBox(event.getMatrix(), vertexBuilder, axisAlignedBB, 0f, 0f, 0f, 0.3f);
+					if (player.clientLevel.getWorldBorder().isWithinBounds(neighborPos)) {
+						AxisAlignedBB axisAlignedBB = new AxisAlignedBB(neighborPos).move(-pView.x, -pView.y, -pView.z);
+						WorldRenderer.renderLineBox(event.getMatrix(), vertexBuilder, axisAlignedBB, 0f, 0f, 0f, 0.3f);
 					}
 				}
 			}
@@ -166,7 +166,7 @@ public final class ClientRenderHandler {
 	@SubscribeEvent
 	public static void onRenderTooltipColor(final RenderTooltipEvent.Color event) {
 		ItemStack stack = event.getStack();
-		if (!stack.isEmpty() && stack.getItem().getGroup() == BiomancyMod.ITEM_GROUP) {
+		if (!stack.isEmpty() && stack.getItem().getItemCategory() == BiomancyMod.ITEM_GROUP) {
 			event.setBackground(0xED000000);
 			int borderColorStart = 0xFFAAAAAA;
 			int borderColorEnd = (borderColorStart & 0xFEFEFE) >> 1 | borderColorStart & 0xFF000000;
@@ -178,12 +178,12 @@ public final class ClientRenderHandler {
 	@SubscribeEvent
 	public static void onItemTooltip(final ItemTooltipEvent event) {
 		ItemStack stack = event.getItemStack();
-		int level = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.ATTUNED_BANE.get(), stack);
+		int level = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.ATTUNED_BANE.get(), stack);
 		if (level > 0 && AttunedDamageEnchantment.isAttuned(stack)) {
 			List<ITextComponent> list = event.getToolTip();
 			for (int i = 0; i < list.size(); i++) {
 				ITextComponent iTextComponent = list.get(i);
-				if (iTextComponent instanceof TranslationTextComponent && ((TranslationTextComponent) iTextComponent).getKey().equals(ModEnchantments.ATTUNED_BANE.get().getName())) {
+				if (iTextComponent instanceof TranslationTextComponent && ((TranslationTextComponent) iTextComponent).getKey().equals(ModEnchantments.ATTUNED_BANE.get().getDescriptionId())) {
 					list.set(i, ModEnchantments.ATTUNED_BANE.get().getDisplayName(level, stack));
 					break;
 				}

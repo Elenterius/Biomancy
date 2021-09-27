@@ -52,17 +52,17 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 	public static final RecipeType.ItemStackRecipeType<EvolutionPoolRecipe> RECIPE_TYPE = ModRecipes.EVOLUTION_POOL_RECIPE_TYPE;
 
 	private final EvolutionPoolStateData stateData = new EvolutionPoolStateData();
-	private final SimpleInventory fuelInventory;
-	private final SimpleInventory inputInventory;
-	private final SimpleInventory outputInventory;
+	private final SimpleInventory<?> fuelInventory;
+	private final SimpleInventory<?> inputInventory;
+	private final SimpleInventory<?> outputInventory;
 	private final Set<BlockPos> subTiles = new HashSet<>();
 	private boolean isValidMultiBlock = false;
 
 	public EvolutionPoolTileEntity() {
 		super(ModTileEntityTypes.EVOLUTION_POOL.get());
-		fuelInventory = SimpleInventory.createServerContents(FUEL_SLOTS, itemStackHandler -> HandlerBehaviors.filterInput(itemStackHandler, this::isItemValidFuel), this::canPlayerOpenInv, this::markDirty);
-		inputInventory = SimpleInventory.createServerContents(INPUT_SLOTS, this::canPlayerOpenInv, this::markDirty);
-		outputInventory = SimpleInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::markDirty);
+		fuelInventory = SimpleInventory.createServerContents(FUEL_SLOTS, itemStackHandler -> HandlerBehaviors.filterInput(itemStackHandler, this::isItemValidFuel), this::canPlayerOpenInv, this::setChanged);
+		inputInventory = SimpleInventory.createServerContents(INPUT_SLOTS, this::canPlayerOpenInv, this::setChanged);
+		outputInventory = SimpleInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
 	}
 
 	@Override
@@ -107,12 +107,12 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 
 	@Override
 	public ItemStack getStackInFuelSlot() {
-		return fuelInventory.getStackInSlot(0);
+		return fuelInventory.getItem(0);
 	}
 
 	@Override
 	public void setStackInFuelSlot(ItemStack stack) {
-		fuelInventory.setInventorySlotContents(0, stack);
+		fuelInventory.setItem(0, stack);
 	}
 
 	@Override
@@ -122,13 +122,13 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 
 	@Override
 	protected boolean craftRecipe(EvolutionPoolRecipe recipeToCraft, World world) {
-		ItemStack result = recipeToCraft.getCraftingResult(inputInventory);
+		ItemStack result = recipeToCraft.assemble(inputInventory);
 		if (!result.isEmpty() && outputInventory.doesItemStackFit(0, result)) {
-			for (int idx = 0; idx < inputInventory.getSizeInventory(); idx++) {
-				inputInventory.decrStackSize(idx, 1);
+			for (int idx = 0; idx < inputInventory.getContainerSize(); idx++) {
+				inputInventory.removeItem(idx, 1);
 			}
 			outputInventory.insertItemStack(0, result);
-			markDirty();
+			setChanged();
 			return true;
 		}
 		return false;
@@ -156,11 +156,11 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 	}
 
 	public void addSubTile(OwnableTileEntityDelegator delegator) {
-		addSubTile(delegator.getPos());
+		addSubTile(delegator.getBlockPos());
 	}
 
 	public void removeSubTile(OwnableTileEntityDelegator delegator) {
-		removeSubTile(delegator.getPos());
+		removeSubTile(delegator.getBlockPos());
 	}
 
 	public void removeSubTile(BlockPos posIn) {
@@ -172,19 +172,19 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 	}
 
 	public void scheduleMultiBlockDeconstruction(boolean isController) {
-		if (world == null) return;
+		if (level == null) return;
 
 		for (BlockPos subPos : subTiles) {
-			TileEntity tile = world.getTileEntity(subPos);
+			TileEntity tile = level.getBlockEntity(subPos);
 			if (tile instanceof OwnableTileEntityDelegator) {
 				((OwnableTileEntityDelegator) tile).setDelegate(null);
-				world.getPendingBlockTicks().scheduleTick(subPos, ModBlocks.EVOLUTION_POOL.get(), 1, TickPriority.EXTREMELY_HIGH); //schedule tick asap in order to trigger self-destruct of block
+				level.getBlockTicks().scheduleTick(subPos, ModBlocks.EVOLUTION_POOL.get(), 1, TickPriority.EXTREMELY_HIGH); //schedule tick asap in order to trigger self-destruct of block
 			}
 		}
 		subTiles.clear();
 		isValidMultiBlock = false;
 		if (!isController)
-			world.getPendingBlockTicks().scheduleTick(this.pos, ModBlocks.EVOLUTION_POOL.get(), 1, TickPriority.EXTREMELY_HIGH); //schedule tick asap in order to trigger self-destruct of block
+			level.getBlockTicks().scheduleTick(this.worldPosition, ModBlocks.EVOLUTION_POOL.get(), 1, TickPriority.EXTREMELY_HIGH); //schedule tick asap in order to trigger self-destruct of block
 	}
 
 	public boolean isValidMultiBlock() {
@@ -195,10 +195,10 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 		isValidMultiBlock = false;
 		int size = subTiles.size();
 
-		if (world == null || world.isRemote) return false;
+		if (level == null || level.isClientSide) return false;
 
 		if (size == 4 - 1) {
-			if (validate2x2Pattern(world)) {
+			if (validate2x2Pattern(level)) {
 				isValidMultiBlock = true;
 				return true;
 			}
@@ -213,28 +213,28 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 
 	public boolean validate2x2Pattern(World worldIn) {
 		Direction direction = Direction.NORTH;
-		BlockPos posOffset = pos.offset(direction);
+		BlockPos posOffset = worldPosition.relative(direction);
 		if (subTiles.contains(posOffset) && validateSubTile(worldIn, posOffset)) {
-			BlockPos rightPos = pos.offset(direction.rotateY());
-			BlockPos leftPos = pos.offset(direction.rotateYCCW());
-			if (subTiles.contains(rightPos) && subTiles.contains(rightPos.offset(direction))) {
-				return validateSubTile(worldIn, rightPos) && validateSubTile(worldIn, rightPos.offset(direction));
+			BlockPos rightPos = worldPosition.relative(direction.getClockWise());
+			BlockPos leftPos = worldPosition.relative(direction.getCounterClockWise());
+			if (subTiles.contains(rightPos) && subTiles.contains(rightPos.relative(direction))) {
+				return validateSubTile(worldIn, rightPos) && validateSubTile(worldIn, rightPos.relative(direction));
 			}
-			else if (subTiles.contains(leftPos) && subTiles.contains(leftPos.offset(direction))) {
-				return validateSubTile(worldIn, leftPos) && validateSubTile(worldIn, leftPos.offset(direction));
+			else if (subTiles.contains(leftPos) && subTiles.contains(leftPos.relative(direction))) {
+				return validateSubTile(worldIn, leftPos) && validateSubTile(worldIn, leftPos.relative(direction));
 			}
 		}
 
 		direction = direction.getOpposite(); //south
-		posOffset = pos.offset(direction);
+		posOffset = worldPosition.relative(direction);
 		if (subTiles.contains(posOffset) && validateSubTile(worldIn, posOffset)) {
-			BlockPos rightPos = pos.offset(direction.rotateY());
-			BlockPos leftPos = pos.offset(direction.rotateYCCW());
-			if (subTiles.contains(rightPos) && subTiles.contains(rightPos.offset(direction))) {
-				return validateSubTile(worldIn, rightPos) && validateSubTile(worldIn, rightPos.offset(direction));
+			BlockPos rightPos = worldPosition.relative(direction.getClockWise());
+			BlockPos leftPos = worldPosition.relative(direction.getCounterClockWise());
+			if (subTiles.contains(rightPos) && subTiles.contains(rightPos.relative(direction))) {
+				return validateSubTile(worldIn, rightPos) && validateSubTile(worldIn, rightPos.relative(direction));
 			}
-			else if (subTiles.contains(leftPos) && subTiles.contains(leftPos.offset(direction))) {
-				return validateSubTile(worldIn, leftPos) && validateSubTile(worldIn, leftPos.offset(direction));
+			else if (subTiles.contains(leftPos) && subTiles.contains(leftPos.relative(direction))) {
+				return validateSubTile(worldIn, leftPos) && validateSubTile(worldIn, leftPos.relative(direction));
 			}
 		}
 
@@ -243,16 +243,16 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 
 	public boolean validateSubTile(World worldIn, BlockPos posIn) {
 		BlockState state = worldIn.getBlockState(posIn);
-		TileEntity tileEntity = worldIn.getTileEntity(posIn);
+		TileEntity tileEntity = worldIn.getBlockEntity(posIn);
 		if (tileEntity instanceof OwnableTileEntityDelegator) {
-			return state.matchesBlock(ModBlocks.EVOLUTION_POOL.get()) && ((OwnableTileEntityDelegator) tileEntity).getDelegatePos().equals(this.pos);
+			return state.is(ModBlocks.EVOLUTION_POOL.get()) && ((OwnableTileEntityDelegator) tileEntity).getDelegatePos().equals(this.worldPosition);
 		}
 		return false;
 	}
 
 	@Override
 	public void tick() {
-		if (world == null || world.isRemote || !isValidMultiBlock) return;
+		if (level == null || level.isClientSide || !isValidMultiBlock) return;
 		super.tick();
 	}
 
@@ -264,35 +264,35 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 	private void updateMultiBlockStates(World worldIn, boolean isCraftingInProgress) {
 		boolean isDirty = false;
 
-		BlockState oldBlockState = worldIn.getBlockState(pos);
-		BlockState newBlockState = oldBlockState.with(getIsCraftingBlockStateProperty(), isCraftingInProgress);
+		BlockState oldBlockState = worldIn.getBlockState(worldPosition);
+		BlockState newBlockState = oldBlockState.setValue(getIsCraftingBlockStateProperty(), isCraftingInProgress);
 		if (!newBlockState.equals(oldBlockState)) {
-			worldIn.setBlockState(pos, newBlockState, Constants.BlockFlags.BLOCK_UPDATE);
+			worldIn.setBlock(worldPosition, newBlockState, Constants.BlockFlags.BLOCK_UPDATE);
 			isDirty = true;
 		}
 
 		for (BlockPos subPos : subTiles) {
 			oldBlockState = worldIn.getBlockState(subPos);
-			newBlockState = oldBlockState.with(getIsCraftingBlockStateProperty(), isCraftingInProgress);
+			newBlockState = oldBlockState.setValue(getIsCraftingBlockStateProperty(), isCraftingInProgress);
 			if (!newBlockState.equals(oldBlockState)) {
-				worldIn.setBlockState(subPos, newBlockState, Constants.BlockFlags.BLOCK_UPDATE);
+				worldIn.setBlock(subPos, newBlockState, Constants.BlockFlags.BLOCK_UPDATE);
 				isDirty = true;
 			}
 		}
 
-		if (isDirty) markDirty();
+		if (isDirty) setChanged();
 	}
 
 	@Override
 	public void dropAllInvContents(World world, BlockPos pos) {
-		InventoryHelper.dropInventoryItems(world, pos, fuelInventory);
-		InventoryHelper.dropInventoryItems(world, pos, inputInventory);
-		InventoryHelper.dropInventoryItems(world, pos, outputInventory);
+		InventoryHelper.dropContents(world, pos, fuelInventory);
+		InventoryHelper.dropContents(world, pos, inputInventory);
+		InventoryHelper.dropContents(world, pos, outputInventory);
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT nbt) {
-		super.write(nbt);
+	public CompoundNBT save(CompoundNBT nbt) {
+		super.save(nbt);
 		stateData.serializeNBT(nbt);
 		nbt.put("FuelSlots", fuelInventory.serializeNBT());
 		nbt.put("InputSlots", inputInventory.serializeNBT());
@@ -302,7 +302,7 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 		if (subTiles.size() > 0) {
 			ListNBT listNBT = new ListNBT();
 			for (BlockPos pos : subTiles) {
-				listNBT.add(LongNBT.valueOf(pos.toLong()));
+				listNBT.add(LongNBT.valueOf(pos.asLong()));
 			}
 			nbt.put("SubTilesPos", listNBT);
 		}
@@ -311,14 +311,14 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT nbt) {
-		super.read(state, nbt);
+	public void load(BlockState state, CompoundNBT nbt) {
+		super.load(state, nbt);
 		stateData.deserializeNBT(nbt);
 		fuelInventory.deserializeNBT(nbt.getCompound("FuelSlots"));
 		inputInventory.deserializeNBT(nbt.getCompound("InputSlots"));
 		outputInventory.deserializeNBT(nbt.getCompound("OutputSlots"));
 
-		if (fuelInventory.getSizeInventory() != FUEL_SLOTS || inputInventory.getSizeInventory() != INPUT_SLOTS || outputInventory.getSizeInventory() != OUTPUT_SLOTS) {
+		if (fuelInventory.getContainerSize() != FUEL_SLOTS || inputInventory.getContainerSize() != INPUT_SLOTS || outputInventory.getContainerSize() != OUTPUT_SLOTS) {
 			throw new IllegalArgumentException("Corrupted NBT: Number of inventory slots did not match expected count.");
 		}
 
@@ -328,7 +328,7 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 			ListNBT nbtList = nbt.getList("SubTilesPos", Constants.NBT.TAG_LONG);
 			for (INBT nbtEntry : nbtList) {
 				if (nbtEntry instanceof LongNBT) {
-					subTiles.add(BlockPos.fromLong(((LongNBT) nbtEntry).getLong()));
+					subTiles.add(BlockPos.of(((LongNBT) nbtEntry).getAsLong()));
 				}
 			}
 		}
@@ -345,7 +345,7 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-		if (!removed && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+		if (!remove && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			if (side == Direction.UP) return inputInventory.getOptionalItemStackHandler().cast();
 			if (side == null || side == Direction.DOWN) return outputInventory.getOptionalItemStackHandler().cast();
 			return fuelInventory.getOptionalItemStackHandler().cast();

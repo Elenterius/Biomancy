@@ -19,7 +19,7 @@ public abstract class MinecraftMixin {
 	@Nullable
 	public ClientPlayerEntity player;
 
-	@Inject(method = "isEntityGlowing", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "shouldEntityAppearGlowing", at = @At("HEAD"), cancellable = true)
 	protected void biomancy_onIsEntityGlowing(Entity entity, CallbackInfoReturnable<Boolean> cir) {
 		if (entity == ClientRenderHandler.HIGHLIGHTED_ENTITY || (entity != player && IEntityUnveilerHeadSlotItem.canUnveilEntity(player, entity))) {
 			cir.setReturnValue(true);

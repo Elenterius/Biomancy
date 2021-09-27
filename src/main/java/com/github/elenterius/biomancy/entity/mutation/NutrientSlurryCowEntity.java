@@ -26,7 +26,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class NutrientSlurryCowEntity extends CowEntity {
 
-	private static final DataParameter<Byte> SLURRY_AMOUNT = EntityDataManager.createKey(NutrientSlurryCowEntity.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte> SLURRY_AMOUNT = EntityDataManager.defineId(NutrientSlurryCowEntity.class, DataSerializers.BYTE);
 	private int eatGrassTimer;
 	private EatGrassGoal eatGrassGoal;
 
@@ -35,9 +35,9 @@ public class NutrientSlurryCowEntity extends CowEntity {
 	}
 
 	@Override
-	protected void registerData() {
-		super.registerData();
-		dataManager.register(SLURRY_AMOUNT, (byte) 0);
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(SLURRY_AMOUNT, (byte) 0);
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class NutrientSlurryCowEntity extends CowEntity {
 		goalSelector.addGoal(0, new SwimGoal(this));
 		goalSelector.addGoal(1, new PanicGoal(this, 2d));
 		goalSelector.addGoal(2, new BreedGoal(this, 1d));
-		goalSelector.addGoal(3, new TemptGoal(this, 1.25d, Ingredient.fromItems(Items.WHEAT), false));
+		goalSelector.addGoal(3, new TemptGoal(this, 1.25d, Ingredient.of(Items.WHEAT), false));
 		goalSelector.addGoal(4, new FollowParentGoal(this, 1.25d));
 		goalSelector.addGoal(5, eatGrassGoal);
 		goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1d));
@@ -55,76 +55,76 @@ public class NutrientSlurryCowEntity extends CowEntity {
 	}
 
 	@Override
-	protected void updateAITasks() {
-		eatGrassTimer = eatGrassGoal.getEatingGrassTimer();
-		super.updateAITasks();
+	protected void customServerAiStep() {
+		eatGrassTimer = eatGrassGoal.getEatAnimationTick();
+		super.customServerAiStep();
 	}
 
 	@Override
-	public void livingTick() {
-		if (world.isRemote) eatGrassTimer = Math.max(0, eatGrassTimer - 1);
-		super.livingTick();
+	public void aiStep() {
+		if (level.isClientSide) eatGrassTimer = Math.max(0, eatGrassTimer - 1);
+		super.aiStep();
 	}
 
 	@Override
-	public NutrientSlurryCowEntity createChild(ServerWorld world, AgeableEntity mate) {
+	public NutrientSlurryCowEntity getBreedOffspring(ServerWorld world, AgeableEntity mate) {
 		return ModEntityTypes.NUTRIENT_SLURRY_COW.get().create(world);
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT compound) {
-		super.writeAdditional(compound);
-		compound.putByte("SlurryAmount", dataManager.get(SLURRY_AMOUNT));
+	public void addAdditionalSaveData(CompoundNBT compound) {
+		super.addAdditionalSaveData(compound);
+		compound.putByte("SlurryAmount", entityData.get(SLURRY_AMOUNT));
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT compound) {
-		super.readAdditional(compound);
-		dataManager.set(SLURRY_AMOUNT, compound.getByte("SlurryAmount"));
+	public void readAdditionalSaveData(CompoundNBT compound) {
+		super.readAdditionalSaveData(compound);
+		entityData.set(SLURRY_AMOUNT, compound.getByte("SlurryAmount"));
 	}
 
 	@Override
-	public void eatGrassBonus() {
-		if (isChild()) addGrowth(60);
+	public void ate() {
+		if (isBaby()) ageUp(60);
 		else growSlurry();
 	}
 
 	public void growSlurry() {
-		byte amount = dataManager.get(SLURRY_AMOUNT);
-		if (amount <= 90) dataManager.set(SLURRY_AMOUNT, (byte) (amount + 10));
+		byte amount = entityData.get(SLURRY_AMOUNT);
+		if (amount <= 90) entityData.set(SLURRY_AMOUNT, (byte) (amount + 10));
 	}
 
 	public int getSlurryAmount() {
-		return dataManager.get(SLURRY_AMOUNT);
+		return entityData.get(SLURRY_AMOUNT);
 	}
 
 	public void reduceSlurry() {
-		byte amount = dataManager.get(SLURRY_AMOUNT);
-		dataManager.set(SLURRY_AMOUNT, (byte) (Math.max(0, amount - 100)));
+		byte amount = entityData.get(SLURRY_AMOUNT);
+		entityData.set(SLURRY_AMOUNT, (byte) (Math.max(0, amount - 100)));
 	}
 
 	@Override
-	public ActionResultType getEntityInteractionResult(PlayerEntity playerIn, Hand hand) {
-		ItemStack stack = playerIn.getHeldItem(hand);
+	public ActionResultType mobInteract(PlayerEntity playerIn, Hand hand) {
+		ItemStack stack = playerIn.getItemInHand(hand);
 		if (stack.getItem() == Items.BUCKET) {
-			if (!isChild() && getSlurryAmount() >= 100) {
-				playerIn.playSound(SoundEvents.ENTITY_COW_MILK, 1f, 1f);
-				ItemStack filledBucket = DrinkHelper.fill(stack, playerIn, ModItems.NUTRIENT_SLURRY_BUCKET.get().getDefaultInstance());
-				playerIn.setHeldItem(hand, filledBucket);
+			if (!isBaby() && getSlurryAmount() >= 100) {
+				playerIn.playSound(SoundEvents.COW_MILK, 1f, 1f);
+				ItemStack filledBucket = DrinkHelper.createFilledResult(stack, playerIn, ModItems.NUTRIENT_SLURRY_BUCKET.get().getDefaultInstance());
+				playerIn.setItemInHand(hand, filledBucket);
 				reduceSlurry();
-				return ActionResultType.func_233537_a_(world.isRemote);
+				return ActionResultType.sidedSuccess(level.isClientSide);
 			}
 			else return ActionResultType.PASS;
 		}
 
-		return super.getEntityInteractionResult(playerIn, hand);
+		return super.mobInteract(playerIn, hand);
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void handleStatusUpdate(byte id) {
+	public void handleEntityEvent(byte id) {
 		if (id == 0xA) eatGrassTimer = 40;
-		else super.handleStatusUpdate(id);
+		else super.handleEntityEvent(id);
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -140,6 +140,6 @@ public class NutrientSlurryCowEntity extends CowEntity {
 			float f = ((float) (eatGrassTimer - 4) - partialTick) / 32f;
 			return ((float) Math.PI / 5f) + 0.21991149f * MathHelper.sin(f * 28.7f);
 		}
-		else return eatGrassTimer > 0 ? ((float) Math.PI / 5f) : rotationPitch * ((float) Math.PI / 180f);
+		else return eatGrassTimer > 0 ? ((float) Math.PI / 5f) : xRot * ((float) Math.PI / 180f);
 	}
 }

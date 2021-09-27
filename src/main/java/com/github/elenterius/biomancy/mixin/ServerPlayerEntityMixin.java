@@ -20,13 +20,13 @@ public abstract class ServerPlayerEntityMixin {
 	@Unique
 	private static double getSphericalDistSqBetween(Entity entityA, Entity entityB) {
 		//point distances
-		double distX = entityA.getPosX() - entityB.getPosX();
-		double distY = (entityA.getPosY() + entityA.getHeight() * 0.5d) - (entityB.getPosY() + entityB.getHeight() * 0.5d); //y position is centered
-		double distZ = entityA.getPosZ() - entityB.getPosZ();
+		double distX = entityA.getX() - entityB.getX();
+		double distY = (entityA.getY() + entityA.getBbHeight() * 0.5d) - (entityB.getY() + entityB.getBbHeight() * 0.5d); //y position is centered
+		double distZ = entityA.getZ() - entityB.getZ();
 
 		//inscribed circle radius distances
-		double icrWSum = entityA.getWidth() * 0.5d + entityB.getWidth() * 0.5d;
-		double icrHSum = entityA.getHeight() * 0.5d + entityB.getHeight() * 0.5d;
+		double icrWSum = entityA.getBbWidth() * 0.5d + entityB.getBbWidth() * 0.5d;
+		double icrHSum = entityA.getBbHeight() * 0.5d + entityB.getBbHeight() * 0.5d;
 		double x = Math.max(Math.abs(distX) - icrWSum, 0);
 		double y = Math.max(Math.abs(distY) - icrHSum, 0);
 		double z = Math.max(Math.abs(distZ) - icrWSum, 0);
@@ -34,17 +34,17 @@ public abstract class ServerPlayerEntityMixin {
 		return Math.min(x * x + y * y + z * z, distX * distX + distY * distY + distZ * distZ);
 	}
 
-	@Inject(method = "openContainer", at = @At(value = "INVOKE", shift = At.Shift.BEFORE, remap = false, target = "Lnet/minecraftforge/eventbus/api/IEventBus;post(Lnet/minecraftforge/eventbus/api/Event;)Z"))
+	@Inject(method = "openMenu", at = @At(value = "INVOKE", shift = At.Shift.BEFORE, remap = false, target = "Lnet/minecraftforge/eventbus/api/IEventBus;post(Lnet/minecraftforge/eventbus/api/Event;)Z"))
 	protected void biomancy_onContainerOpen(INamedContainerProvider containerProvider, CallbackInfoReturnable<OptionalInt> cir) {
 		ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
-		ItemDecayHandler.decayItemsInContainer(player, player.openContainer, containerProvider);
+		ItemDecayHandler.decayItemsInContainer(player, player.containerMenu, containerProvider);
 	}
 
 	/**
 	 * Injects a max attack distance check. When the players attack distance is reduced and can't reach the target anymore this mixin cancels the attacks.
 	 */
 	@Deprecated //TODO: remove once forge merges the attack distance pull request
-	@Inject(method = "attackTargetEntityWithCurrentItem", cancellable = true, at = @At(value = "INVOKE", shift = At.Shift.BEFORE, target = "Lnet/minecraft/entity/player/PlayerEntity;attackTargetEntityWithCurrentItem(Lnet/minecraft/entity/Entity;)V"))
+	@Inject(method = "attack", cancellable = true, at = @At(value = "INVOKE", shift = At.Shift.BEFORE, target = "Lnet/minecraft/entity/player/PlayerEntity;attack(Lnet/minecraft/entity/Entity;)V"))
 	protected void biomancy_onAttackTargetEntityWithCurrentItem(Entity targetEntity, CallbackInfo ci) {
 		ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 		double maxDist = ModAttributes.getCombinedReachDistance(player); // the max attack distance can be smaller than the default value of 3

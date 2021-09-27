@@ -41,30 +41,30 @@ public class BoomlingHiveGunItem extends ProjectileWeaponItem {
 	public static void fireProjectile(ServerWorld worldIn, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, float inaccuracy) {
 		BoomlingProjectileEntity projectile = new BoomlingProjectileEntity(worldIn, shooter);
 
-		Potion potion = PotionUtilExt.getPotionFromItem(projectileWeapon);
-		List<EffectInstance> customEffects = PotionUtilExt.getFullEffectsFromItem(projectileWeapon);
+		Potion potion = PotionUtilExt.getPotion(projectileWeapon);
+		List<EffectInstance> customEffects = PotionUtilExt.getCustomEffects(projectileWeapon);
 		projectile.setPotion(potion, customEffects, -1);
 
-		Vector3d direction = shooter.getLookVec();
+		Vector3d direction = shooter.getLookAngle();
 		//slightly aim up
-		projectile.shoot(direction.getX(), direction.getY() * 1.02d, direction.getZ(), 0.852f, inaccuracy);
+		projectile.shoot(direction.x(), direction.y() * 1.02d, direction.z(), 0.852f, inaccuracy);
 
-		projectileWeapon.damageItem(1, shooter, entity -> entity.sendBreakAnimation(hand));
+		projectileWeapon.hurtAndBreak(1, shooter, entity -> entity.broadcastBreakEvent(hand));
 
-		if (worldIn.addEntity(projectile)) {
-			worldIn.playSound(null, shooter.getPosX(), shooter.getPosY(), shooter.getPosZ(), SoundEvents.ENTITY_WITHER_SHOOT, SoundCategory.PLAYERS, 1f, 1.4f);
+		if (worldIn.addFreshEntity(projectile)) {
+			worldIn.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.WITHER_SHOOT, SoundCategory.PLAYERS, 1f, 1.4f);
 		}
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		int potionCount = getPotionCount(stack);
 		if (potionCount > 0) {
-			tooltip.add(new StringTextComponent(String.format("Amount: %d/%d", potionCount, MAX_POTION_COUNT)).mergeStyle(TextFormatting.GRAY));
+			tooltip.add(new StringTextComponent(String.format("Amount: %d/%d", potionCount, MAX_POTION_COUNT)).withStyle(TextFormatting.GRAY));
 		}
-		else tooltip.add(TextUtil.getTranslationText("tooltip", "contains_nothing").mergeStyle(TextFormatting.GRAY));
+		else tooltip.add(TextUtil.getTranslationText("tooltip", "contains_nothing").withStyle(TextFormatting.GRAY));
 		PotionUtilExt.addPotionTooltip(stack, tooltip, 1f);
 	}
 
@@ -81,12 +81,12 @@ public class BoomlingHiveGunItem extends ProjectileWeaponItem {
 	}
 
 	@Override
-	public Predicate<ItemStack> getInventoryAmmoPredicate() {
+	public Predicate<ItemStack> getAllSupportedProjectiles() {
 		return VALID_AMMO_ITEM;
 	}
 
 	@Override
-	public int func_230305_d_() {
+	public int getDefaultProjectileRange() {
 		return 20; //max range
 	}
 
@@ -112,7 +112,7 @@ public class BoomlingHiveGunItem extends ProjectileWeaponItem {
 	}
 
 	public Potion getPotion(ItemStack stack) {
-		return PotionUtilExt.getPotionFromItem(stack);
+		return PotionUtilExt.getPotion(stack);
 	}
 
 	public void setPotion(ItemStack stack, Potion potion, @Nullable Collection<EffectInstance> customEffects) {

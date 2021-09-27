@@ -32,8 +32,8 @@ public class AnimalDropStomachLootModifier extends LootModifier {
 	@Nonnull
 	@Override
 	protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
-		Entity entity = context.get(LootParameters.THIS_ENTITY);
-		if (entity instanceof AnimalEntity && !((AnimalEntity) entity).isChild()) {
+		Entity entity = context.getParamOrNull(LootParameters.THIS_ENTITY);
+		if (entity instanceof AnimalEntity && !((AnimalEntity) entity).isBaby()) {
 			if (context.getRandom().nextFloat() < chance) {
 				generatedLoot.add(loot.copy());
 			}
@@ -41,14 +41,13 @@ public class AnimalDropStomachLootModifier extends LootModifier {
 		return generatedLoot;
 	}
 
-	public static class Serializer extends GlobalLootModifierSerializer<AnimalDropStomachLootModifier>
-	{
+	public static class Serializer extends GlobalLootModifierSerializer<AnimalDropStomachLootModifier> {
 		@Override
 		public AnimalDropStomachLootModifier read(ResourceLocation name, JsonObject json, ILootCondition[] conditionsIn) {
-			float chance = JSONUtils.getFloat(json, "chance");
+			float chance = JSONUtils.getAsFloat(json, "chance");
 			if (chance <= 0f || chance > 1f) throw new JsonParseException(String.format("Chance %f is outside interval (0, 1]", chance));
 
-			ItemStack loot = ShapedRecipe.deserializeItem(JSONUtils.getJsonObject(json, "loot"));
+			ItemStack loot = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "loot"));
 			return new AnimalDropStomachLootModifier(conditionsIn, loot, chance);
 		}
 

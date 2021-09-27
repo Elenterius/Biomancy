@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.inventory.GulgeContainer;
+import com.github.elenterius.biomancy.inventory.ItemBagContainer;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -13,11 +13,11 @@ import net.minecraft.util.text.ITextComponent;
 import java.awt.*;
 import java.text.DecimalFormat;
 
-public class GulgeContainerScreen extends ContainerScreen<GulgeContainer> {
+public class ItemBagContainerScreen extends ContainerScreen<ItemBagContainer> {
 
 	private static final ResourceLocation BACKGROUND_TEXTURE = BiomancyMod.createRL("textures/gui/gulge_gui.png");
 
-	public GulgeContainerScreen(GulgeContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
+	public ItemBagContainerScreen(ItemBagContainer screenContainer, PlayerInventory inv, ITextComponent titleIn) {
 		super(screenContainer, inv, titleIn);
 		//texture size
 		imageWidth = 176;

@@ -39,23 +39,23 @@ public abstract class OwnableBlock extends Block implements IOwnableBlock {
 
 	@OnlyIn(Dist.CLIENT)
 	public static void addOwnableTooltip(ItemStack stack, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		CompoundNBT nbt = stack.getChildTag("BlockEntityTag");
+		CompoundNBT nbt = stack.getTagElement("BlockEntityTag");
 		if (nbt != null) {
-			if (nbt.hasUniqueId(IOwnableBlock.NBT_KEY_OWNER)) {
+			if (nbt.hasUUID(IOwnableBlock.NBT_KEY_OWNER)) {
 				tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
-				StringTextComponent ownerName = new StringTextComponent(ClientTextUtil.tryToGetPlayerNameOnClientSide(nbt.getUniqueId(IOwnableBlock.NBT_KEY_OWNER)));
-				ownerName.mergeStyle(TextFormatting.WHITE);
-				tooltip.add(ClientTextUtil.getTooltipText("owner", ownerName).mergeStyle(TextFormatting.GRAY));
+				StringTextComponent ownerName = new StringTextComponent(ClientTextUtil.tryToGetPlayerNameOnClientSide(nbt.getUUID(IOwnableBlock.NBT_KEY_OWNER)));
+				ownerName.withStyle(TextFormatting.WHITE);
+				tooltip.add(ClientTextUtil.getTooltipText("owner", ownerName).withStyle(TextFormatting.GRAY));
 
 				if (nbt.contains(IOwnableBlock.NBT_KEY_USER_LIST)) {
 					ListNBT nbtList = nbt.getList(IOwnableBlock.NBT_KEY_USER_LIST, Constants.NBT.TAG_COMPOUND);
-					tooltip.add(new StringTextComponent("Users: ").mergeStyle(TextFormatting.GRAY));
+					tooltip.add(new StringTextComponent("Users: ").withStyle(TextFormatting.GRAY));
 					int limit = Screen.hasControlDown() ? Math.min(5, nbtList.size()) : nbtList.size();
 					for (int i = 0; i < limit; i++) {
 						CompoundNBT userNbt = nbtList.getCompound(i);
-						String userName = ClientTextUtil.tryToGetPlayerNameOnClientSide(userNbt.getUniqueId(IOwnableBlock.NBT_KEY_USER));
+						String userName = ClientTextUtil.tryToGetPlayerNameOnClientSide(userNbt.getUUID(IOwnableBlock.NBT_KEY_USER));
 						UserAuthorization.AuthorityLevel level = UserAuthorization.AuthorityLevel.deserialize(userNbt);
-						tooltip.add(new StringTextComponent(String.format(" - %s (%s)", userName, level.name().toLowerCase(Locale.ROOT))).mergeStyle(TextFormatting.GRAY));
+						tooltip.add(new StringTextComponent(String.format(" - %s (%s)", userName, level.name().toLowerCase(Locale.ROOT))).withStyle(TextFormatting.GRAY));
 					}
 					int remainder = nbtList.size() - limit;
 					if (remainder > 0) {
@@ -67,35 +67,35 @@ public abstract class OwnableBlock extends Block implements IOwnableBlock {
 	}
 
 	public static void attachDataToOwnableTile(World worldIn, OwnableTileEntity ownableTile, @Nullable LivingEntity placer, ItemStack stack) {
-		if (stack.hasDisplayName()) {
-			ownableTile.setCustomName(stack.getDisplayName());
+		if (stack.hasCustomHoverName()) {
+			ownableTile.setCustomName(stack.getHoverName());
 		}
 
-		CompoundNBT nbt = stack.getChildTag("BlockEntityTag"); //make sure we don't overwrite the previous owner
+		CompoundNBT nbt = stack.getTagElement("BlockEntityTag"); //make sure we don't overwrite the previous owner
 		if (nbt == null && !ownableTile.hasOwner() && placer instanceof PlayerEntity) {
-			ownableTile.setOwner(placer.getUniqueID());
+			ownableTile.setOwner(placer.getUUID());
 		}
 	}
 
 	public static void dropForCreativePlayer(World worldIn, Block block, BlockPos pos, PlayerEntity player) {
-		if (!worldIn.isRemote() && player.isCreative()) { // drop item for creative player
-			if (worldIn.getGameRules().getBoolean(GameRules.DO_TILE_DROPS)) {
-				TileEntity tileEntity = worldIn.getTileEntity(pos);
+		if (!worldIn.isClientSide() && player.isCreative()) { // drop item for creative player
+			if (worldIn.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS)) {
+				TileEntity tileEntity = worldIn.getBlockEntity(pos);
 				if (tileEntity instanceof OwnableTileEntity) {
 					OwnableTileEntity tile = (OwnableTileEntity) tileEntity;
 
 					ItemStack stack = new ItemStack(block);
 					CompoundNBT nbt = tile.writeToItemBlockEntityTag(new CompoundNBT());
 					if (!nbt.isEmpty()) {
-						stack.setTagInfo("BlockEntityTag", nbt);
+						stack.addTagElement("BlockEntityTag", nbt);
 
 						if (tile.hasCustomName()) {
-							stack.setDisplayName(tile.getCustomName());
+							stack.setHoverName(tile.getCustomName());
 						}
 
 						ItemEntity itemEntity = new ItemEntity(worldIn, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, stack);
-						itemEntity.setDefaultPickupDelay();
-						worldIn.addEntity(itemEntity);
+						itemEntity.setDefaultPickUpDelay();
+						worldIn.addFreshEntity(itemEntity);
 					}
 				}
 			}
@@ -104,39 +104,39 @@ public abstract class OwnableBlock extends Block implements IOwnableBlock {
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		addOwnableTooltip(stack, tooltip, flagIn);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-		TileEntity tileEntity = worldIn.getTileEntity(pos);
+	public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+		super.setPlacedBy(worldIn, pos, state, placer, stack);
+		TileEntity tileEntity = worldIn.getBlockEntity(pos);
 		if (tileEntity instanceof OwnableTileEntity) {
 			attachDataToOwnableTile(worldIn, (OwnableTileEntity) tileEntity, placer, stack);
 		}
 	}
 
 	@Override
-	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+	public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
 		dropForCreativePlayer(worldIn, this, pos, player);
-		super.onBlockHarvested(worldIn, pos, state, player);
+		super.playerWillDestroy(worldIn, pos, state, player);
 	}
 
 	@Override
-	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader worldIn, BlockPos pos) {
-		TileEntity tileEntity = worldIn.getTileEntity(pos);
+	public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader worldIn, BlockPos pos) {
+		TileEntity tileEntity = worldIn.getBlockEntity(pos);
 		if (tileEntity instanceof IOwnableTile) {
 			if (((IOwnableTile) tileEntity).isUserAuthorized(player)) { //only allow authorized players to mine the block
-				return super.getPlayerRelativeBlockHardness(state, player, worldIn, pos);
+				return super.getDestroyProgress(state, player, worldIn, pos);
 			}
 		}
 		return 0f;
 	}
 
 	@Override
-	public PushReaction getPushReaction(BlockState state) {
+	public PushReaction getPistonPushReaction(BlockState state) {
 		return PushReaction.BLOCK;
 	}
 

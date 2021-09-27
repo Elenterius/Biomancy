@@ -48,23 +48,23 @@ public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableBlock
 	protected static final AxisAlignedBB TOP_AABB_VOLUME = new AxisAlignedBB(0d, 0.75d, 0d, 1d, 1.25d, 1d);
 	protected static final AxisAlignedBB BOTTOM_AABB_VOLUME = new AxisAlignedBB(0d, -0.25d, 0d, 1d, 0.25d, 1d);
 	protected static final AxisAlignedBB INFLATED_AABB_VOLUME = new AxisAlignedBB(-0.125d, -0.25d, -0.125d, 1.125d, 1.25d, 1.125d);
-	protected static final VoxelShape BOTTOM_COLLISION_SHAPE = Block.makeCuboidShape(0.0D, 0.1D, 0.0D, 16.0D, 3.0D, 16.0D);
+	protected static final VoxelShape BOTTOM_COLLISION_SHAPE = Block.box(0.0D, 0.1D, 0.0D, 16.0D, 3.0D, 16.0D);
 
 	public OwnableTrapDoorBlock(Properties properties) {
 		super(properties);
-		setDefaultState(getDefaultState().with(SENSITIVITY, UserSensitivity.NONE));
+		registerDefaultState(defaultBlockState().setValue(SENSITIVITY, UserSensitivity.NONE));
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
 		builder.add(SENSITIVITY);
 	}
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		if (!state.get(OPEN) && state.get(HALF) == Half.BOTTOM) {
-			return canCollide ? BOTTOM_COLLISION_SHAPE : VoxelShapes.empty(); //substitute collision shape to enable entity collision from below
+		if (!state.getValue(OPEN) && state.getValue(HALF) == Half.BOTTOM) {
+			return hasCollision ? BOTTOM_COLLISION_SHAPE : VoxelShapes.empty(); //substitute collision shape to enable entity collision from below
 			//Note: onEntityCollision is only called when the entity intersects a "block pos" (collided block positions ~= floor(entityAABB.minPos), ..., floor(entityAABB.maxPos))
 		}
 		return super.getCollisionShape(state, worldIn, pos, context);
@@ -72,66 +72,66 @@ public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableBlock
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()).setStyle(ClientTextUtil.LORE_STYLE));
 		OwnableBlock.addOwnableTooltip(stack, tooltip, flagIn);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-		TileEntity tileEntity = worldIn.getTileEntity(pos);
+	public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+		super.setPlacedBy(worldIn, pos, state, placer, stack);
+		TileEntity tileEntity = worldIn.getBlockEntity(pos);
 		if (tileEntity instanceof SimpleOwnableTileEntity) {
 			OwnableBlock.attachDataToOwnableTile(worldIn, (SimpleOwnableTileEntity) tileEntity, placer, stack);
 		}
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		TileEntity tileEntity = worldIn.getTileEntity(pos);
+	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+		TileEntity tileEntity = worldIn.getBlockEntity(pos);
 		if (tileEntity instanceof SimpleOwnableTileEntity) {
 			if (((SimpleOwnableTileEntity) tileEntity).canPlayerUse(player)) { //only interact with authorized players
-				if (player.isSneaking()) {
-					state = state.cycleValue(SENSITIVITY);
-					worldIn.setBlockState(pos, state, Constants.BlockFlags.BLOCK_UPDATE);
-					if (state.get(WATERLOGGED)) {
-						worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+				if (player.isShiftKeyDown()) {
+					state = state.cycle(SENSITIVITY);
+					worldIn.setBlock(pos, state, Constants.BlockFlags.BLOCK_UPDATE);
+					if (state.getValue(WATERLOGGED)) {
+						worldIn.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
 					}
-					return ActionResultType.func_233537_a_(worldIn.isRemote);
+					return ActionResultType.sidedSuccess(worldIn.isClientSide);
 				}
 
-				state = state.cycleValue(OPEN);
-				worldIn.setBlockState(pos, state, Constants.BlockFlags.BLOCK_UPDATE);
-				if (state.get(WATERLOGGED)) {
-					worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+				state = state.cycle(OPEN);
+				worldIn.setBlock(pos, state, Constants.BlockFlags.BLOCK_UPDATE);
+				if (state.getValue(WATERLOGGED)) {
+					worldIn.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
 				}
-				playSound(player, worldIn, pos, state.get(OPEN));
-				return ActionResultType.func_233537_a_(worldIn.isRemote);
+				playSound(player, worldIn, pos, state.getValue(OPEN));
+				return ActionResultType.sidedSuccess(worldIn.isClientSide);
 			}
 		}
-		if (state.get(WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+		if (state.getValue(WATERLOGGED)) {
+			worldIn.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
 		}
 		return ActionResultType.PASS;
 	}
 
 	@Override
 	protected void playSound(@Nullable PlayerEntity player, World worldIn, BlockPos pos, boolean isOpened) {
-		worldIn.playEvent(player, isOpened ? Constants.WorldEvents.WOODEN_TRAPDOOR_OPEN_SOUND : Constants.WorldEvents.WOODEN_TRAPDOOR_CLOSE_SOUND, pos, 0);
+		worldIn.levelEvent(player, isOpened ? Constants.WorldEvents.WOODEN_TRAPDOOR_OPEN_SOUND : Constants.WorldEvents.WOODEN_TRAPDOOR_CLOSE_SOUND, pos, 0);
 	}
 
 	@Override
 	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean isMoving) {
-		if (worldIn.isRemote()) return;
+		if (worldIn.isClientSide()) return;
 
-		TileEntity tileEntity = worldIn.getTileEntity(pos);
+		TileEntity tileEntity = worldIn.getBlockEntity(pos);
 		if (tileEntity instanceof SimpleOwnableTileEntity) {
 			boolean isLocked = ((SimpleOwnableTileEntity) tileEntity).isLocked();
 
 			//when the block is locked, check if th owner of the neighbor is authorized to interact with this block (only works with "direct" neighbors)
-			if (isLocked && neighborBlock instanceof IOwnableBlock && worldIn.getBlockState(neighborPos).matchesBlock(neighborBlock)) { //only allow "direct" neighbors
-				TileEntity neighborTile = worldIn.getTileEntity(neighborPos);
+			if (isLocked && neighborBlock instanceof IOwnableBlock && worldIn.getBlockState(neighborPos).is(neighborBlock)) { //only allow "direct" neighbors
+				TileEntity neighborTile = worldIn.getBlockEntity(neighborPos);
 				if (neighborTile instanceof IOwnableTile) {
 					Optional<UUID> neighborOwner = ((IOwnableTile) neighborTile).getOwner();
 					if (neighborOwner.isPresent()) {
@@ -140,32 +140,32 @@ public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableBlock
 				}
 			}
 
-			boolean isPowered = worldIn.isBlockPowered(pos);
+			boolean isPowered = worldIn.hasNeighborSignal(pos);
 
 			if (!isLocked) { //normal vanilla behavior
-				if (isPowered != state.get(POWERED)) {
-					if (isPowered != state.get(OPEN)) {
-						state = state.with(OPEN, isPowered);
+				if (isPowered != state.getValue(POWERED)) {
+					if (isPowered != state.getValue(OPEN)) {
+						state = state.setValue(OPEN, isPowered);
 						playSound(null, worldIn, pos, isPowered);
 					}
-					worldIn.setBlockState(pos, state.with(POWERED, isPowered), Constants.BlockFlags.BLOCK_UPDATE);
-					if (state.get(WATERLOGGED)) {
-						worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+					worldIn.setBlock(pos, state.setValue(POWERED, isPowered), Constants.BlockFlags.BLOCK_UPDATE);
+					if (state.getValue(WATERLOGGED)) {
+						worldIn.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
 					}
 				}
 			}
 			else {
-				if (isPowered != state.get(POWERED)) {
-					if (state.get(OPEN)) {
-						state = state.with(OPEN, false);
+				if (isPowered != state.getValue(POWERED)) {
+					if (state.getValue(OPEN)) {
+						state = state.setValue(OPEN, false);
 						playSound(null, worldIn, pos, false);
 					}
-					else if (isPowered && !state.get(OPEN)) {
-						worldIn.playSound(null, pos, SoundEvents.BLOCK_CHEST_LOCKED, SoundCategory.BLOCKS, 1.0F, 1.0F);
+					else if (isPowered && !state.getValue(OPEN)) {
+						worldIn.playSound(null, pos, SoundEvents.CHEST_LOCKED, SoundCategory.BLOCKS, 1.0F, 1.0F);
 					}
-					worldIn.setBlockState(pos, state.with(POWERED, isPowered), Constants.BlockFlags.BLOCK_UPDATE);
-					if (state.get(WATERLOGGED)) {
-						worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+					worldIn.setBlock(pos, state.setValue(POWERED, isPowered), Constants.BlockFlags.BLOCK_UPDATE);
+					if (state.getValue(WATERLOGGED)) {
+						worldIn.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
 					}
 				}
 			}
@@ -174,27 +174,27 @@ public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableBlock
 
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-		if (state.get(OPEN)) {
-			UserSensitivity sensitivity = state.get(SENSITIVITY);
+		if (state.getValue(OPEN)) {
+			UserSensitivity sensitivity = state.getValue(SENSITIVITY);
 			if (!sensitivity.isNone()) {
-				TileEntity tileEntity = worldIn.getTileEntity(pos);
+				TileEntity tileEntity = worldIn.getBlockEntity(pos);
 				if (tileEntity instanceof SimpleOwnableTileEntity) {
-					AxisAlignedBB aabb = INFLATED_AABB_VOLUME.offset(pos);
-					List<LivingEntity> list = worldIn.getEntitiesWithinAABB(LivingEntity.class, aabb);
+					AxisAlignedBB aabb = INFLATED_AABB_VOLUME.move(pos);
+					List<LivingEntity> list = worldIn.getEntitiesOfClass(LivingEntity.class, aabb);
 					if (!list.isEmpty()) {
 						for (Entity entity : list) {
 							if (!entity.isSteppingCarefully()) {
 								if (sensitivity == UserSensitivity.UNAUTHORIZED) {
-									if (!((SimpleOwnableTileEntity) tileEntity).isUserAuthorized(entity.getUniqueID())) {
+									if (!((SimpleOwnableTileEntity) tileEntity).isUserAuthorized(entity.getUUID())) {
 										// if block is inverted keep door open when not authorized (trap mode)
-										worldIn.getPendingBlockTicks().scheduleTick(pos, state.getBlock(), 60); //schedule tick for the next close attempt (~3sec)
+										worldIn.getBlockTicks().scheduleTick(pos, state.getBlock(), 60); //schedule tick for the next close attempt (~3sec)
 										return;
 									}
 								}
 								else {
-									if (((SimpleOwnableTileEntity) tileEntity).isUserAuthorized(entity.getUniqueID())) {
+									if (((SimpleOwnableTileEntity) tileEntity).isUserAuthorized(entity.getUUID())) {
 										// when normal only keep door open for authorized users
-										worldIn.getPendingBlockTicks().scheduleTick(pos, state.getBlock(), 60); //schedule tick for the next close attempt (~3sec)
+										worldIn.getBlockTicks().scheduleTick(pos, state.getBlock(), 60); //schedule tick for the next close attempt (~3sec)
 										return;
 									}
 								}
@@ -204,19 +204,19 @@ public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableBlock
 				}
 			}
 
-			worldIn.setBlockState(pos, state.with(OPEN, false), Constants.BlockFlags.BLOCK_UPDATE);
-			worldIn.playSound(null, pos, SoundEvents.BLOCK_WOODEN_TRAPDOOR_CLOSE, SoundCategory.BLOCKS, 1.0F, 1.0F);
+			worldIn.setBlock(pos, state.setValue(OPEN, false), Constants.BlockFlags.BLOCK_UPDATE);
+			worldIn.playSound(null, pos, SoundEvents.WOODEN_TRAPDOOR_CLOSE, SoundCategory.BLOCKS, 1.0F, 1.0F);
 		}
 	}
 
 	@Override
-	public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn) {
-		if (worldIn.isRemote()) return;
+	public void stepOn(World worldIn, BlockPos pos, Entity entityIn) {
+		if (worldIn.isClientSide()) return;
 		openDoorOnEntityCollision(worldIn.getBlockState(pos), worldIn, pos, entityIn);
 	}
 
 	@Override
-	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
+	public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
 		openDoorOnEntityCollision(state, worldIn, pos, entityIn);
 	}
 
@@ -226,26 +226,26 @@ public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableBlock
 	}
 
 	protected void openDoorOnEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
-		if (!worldIn.isRemote() && entityIn instanceof LivingEntity && !state.get(OPEN)) {
-			UserSensitivity sensitivity = state.get(SENSITIVITY);
+		if (!worldIn.isClientSide() && entityIn instanceof LivingEntity && !state.getValue(OPEN)) {
+			UserSensitivity sensitivity = state.getValue(SENSITIVITY);
 			if (sensitivity.isNone()) return;
 
-			TileEntity tileEntity = worldIn.getTileEntity(pos);
+			TileEntity tileEntity = worldIn.getBlockEntity(pos);
 			if (tileEntity instanceof SimpleOwnableTileEntity) {
 				SimpleOwnableTileEntity ownableTile = (SimpleOwnableTileEntity) tileEntity;
 
-				AxisAlignedBB aabb = state.get(HALF) == Half.TOP ? TOP_AABB_VOLUME.offset(pos) : BOTTOM_AABB_VOLUME.offset(pos);
-				List<LivingEntity> list = worldIn.getEntitiesWithinAABB(LivingEntity.class, aabb);
+				AxisAlignedBB aabb = state.getValue(HALF) == Half.TOP ? TOP_AABB_VOLUME.move(pos) : BOTTOM_AABB_VOLUME.move(pos);
+				List<LivingEntity> list = worldIn.getEntitiesOfClass(LivingEntity.class, aabb);
 				if (!list.isEmpty()) {
 					for (Entity entity : list) {
 						if (!entity.isSteppingCarefully()) {
 							if (sensitivity == UserSensitivity.UNAUTHORIZED) {
-								if (!ownableTile.isUserAuthorized(entity.getUniqueID())) {
+								if (!ownableTile.isUserAuthorized(entity.getUUID())) {
 									openTrapDoor(worldIn, state, pos, true);
 									return;
 								}
 							}
-							else if (ownableTile.isUserAuthorized(entity.getUniqueID())) {
+							else if (ownableTile.isUserAuthorized(entity.getUUID())) {
 								openTrapDoor(worldIn, state, pos, true);
 								return;
 							}
@@ -257,36 +257,36 @@ public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableBlock
 	}
 
 	public void openTrapDoor(World worldIn, BlockState state, BlockPos pos, boolean autoClose) {
-		if (!worldIn.isRemote() && !state.get(OPEN)) {
-			state = state.with(OPEN, true);
-			worldIn.setBlockState(pos, state, Constants.BlockFlags.BLOCK_UPDATE);
-			if (autoClose) worldIn.getPendingBlockTicks().scheduleTick(pos, state.getBlock(), 40); //schedule tick to auto-close door after (~2sec)
-			if (state.get(WATERLOGGED)) {
-				worldIn.getPendingFluidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+		if (!worldIn.isClientSide() && !state.getValue(OPEN)) {
+			state = state.setValue(OPEN, true);
+			worldIn.setBlock(pos, state, Constants.BlockFlags.BLOCK_UPDATE);
+			if (autoClose) worldIn.getBlockTicks().scheduleTick(pos, state.getBlock(), 40); //schedule tick to auto-close door after (~2sec)
+			if (state.getValue(WATERLOGGED)) {
+				worldIn.getLiquidTicks().scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
 			}
-			worldIn.playSound(null, pos, SoundEvents.BLOCK_WOODEN_TRAPDOOR_OPEN, SoundCategory.BLOCKS, 1.0F, 1.0F);
+			worldIn.playSound(null, pos, SoundEvents.WOODEN_TRAPDOOR_OPEN, SoundCategory.BLOCKS, 1.0F, 1.0F);
 		}
 	}
 
 	@Override
-	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+	public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
 		OwnableBlock.dropForCreativePlayer(worldIn, this, pos, player);
-		super.onBlockHarvested(worldIn, pos, state, player);
+		super.playerWillDestroy(worldIn, pos, state, player);
 	}
 
 	@Override
-	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader worldIn, BlockPos pos) {
-		TileEntity tileEntity = worldIn.getTileEntity(pos);
+	public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader worldIn, BlockPos pos) {
+		TileEntity tileEntity = worldIn.getBlockEntity(pos);
 		if (tileEntity instanceof SimpleOwnableTileEntity) {
 			if (((SimpleOwnableTileEntity) tileEntity).isUserAuthorized(player)) { //only allow authorized players to mine the block
-				return super.getPlayerRelativeBlockHardness(state, player, worldIn, pos);
+				return super.getDestroyProgress(state, player, worldIn, pos);
 			}
 		}
 		return 0f;
 	}
 
 	@Override
-	public PushReaction getPushReaction(BlockState state) {
+	public PushReaction getPistonPushReaction(BlockState state) {
 		return PushReaction.BLOCK;
 	}
 

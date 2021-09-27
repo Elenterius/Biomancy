@@ -55,10 +55,10 @@ public class SolidifierTileEntity extends MachineTileEntity<SolidifierRecipe, So
 
 	public SolidifierTileEntity() {
 		super(ModTileEntityTypes.SOLIDIFIER.get());
-		filledBucketInventory = SimpleInventory.createServerContents(FILLED_BUCKET_SLOTS, HandlerBehaviors::filterFilledFluidContainer, this::canPlayerOpenInv, this::markDirty);
-		emptyBucketInventory = SimpleInventory.createServerContents(EMPTY_BUCKET_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::markDirty);
-		outputInventory = SimpleInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::markDirty);
-		combinedInventory = LazyOptional.of(() -> new CombinedInvWrapper(filledBucketInventory.getItemStackHandler(), emptyBucketInventory.getItemStackHandler(), outputInventory.getItemStackHandler()));
+		filledBucketInventory = SimpleInventory.createServerContents(FILLED_BUCKET_SLOTS, HandlerBehaviors::filterFilledFluidContainer, this::canPlayerOpenInv, this::setChanged);
+		emptyBucketInventory = SimpleInventory.createServerContents(EMPTY_BUCKET_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
+		outputInventory = SimpleInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
+		combinedInventory = LazyOptional.of(() -> new CombinedInvWrapper(filledBucketInventory.getIItemHandlerModifiable(), emptyBucketInventory.getIItemHandlerModifiable(), outputInventory.getIItemHandlerModifiable()));
 	}
 
 	@Override
@@ -113,12 +113,12 @@ public class SolidifierTileEntity extends MachineTileEntity<SolidifierRecipe, So
 
 	@Override
 	public ItemStack getStackInFuelSlot() {
-		return filledBucketInventory.getStackInSlot(0);
+		return filledBucketInventory.getItem(0);
 	}
 
 	@Override
 	public void setStackInFuelSlot(ItemStack stack) {
-		filledBucketInventory.setInventorySlotContents(0, stack);
+		filledBucketInventory.setItem(0, stack);
 	}
 
 	@Override
@@ -128,9 +128,9 @@ public class SolidifierTileEntity extends MachineTileEntity<SolidifierRecipe, So
 
 	@Override
 	public void tick() {
-		if (world != null && !world.isRemote) {
+		if (level != null && !level.isClientSide) {
 			if (ticks % 42 == 0) {
-				tryToGetFluidFromAttachedBlock(world);
+				tryToGetFluidFromAttachedBlock(level);
 			}
 		}
 
@@ -147,7 +147,7 @@ public class SolidifierTileEntity extends MachineTileEntity<SolidifierRecipe, So
 			if (ingredient.test(drained) && drained.getAmount() == requiredAmount) {
 				stateData.inputTank.drain(requiredAmount, IFluidHandler.FluidAction.EXECUTE);
 				outputInventory.insertItemStack(0, result);
-				markDirty();
+				setChanged();
 				return true;
 			}
 		}
@@ -159,20 +159,20 @@ public class SolidifierTileEntity extends MachineTileEntity<SolidifierRecipe, So
 		int fluidAmount = stateData.inputTank.getFluidAmount();
 		int maxFluidAmount = stateData.inputTank.getCapacity();
 		if (fluidAmount < maxFluidAmount) {
-			ItemStack stack = filledBucketInventory.getStackInSlot(0);
+			ItemStack stack = filledBucketInventory.getItem(0);
 			if (stack.isEmpty()) return;
 
 			if (HandlerBehaviors.FILLED_FLUID_ITEM_PREDICATE.test(stack)) {
-				FluidActionResult fluidAction = FluidUtil.tryEmptyContainerAndStow(stack, stateData.inputTank, emptyBucketInventory.getItemStackHandler(), maxFluidAmount - fluidAmount, null, true);
+				FluidActionResult fluidAction = FluidUtil.tryEmptyContainerAndStow(stack, stateData.inputTank, emptyBucketInventory.getItemHandler(), maxFluidAmount - fluidAmount, null, true);
 				if (fluidAction.isSuccess()) {
-					filledBucketInventory.setInventorySlotContents(0, fluidAction.getResult());
-					markDirty();
+					filledBucketInventory.setItem(0, fluidAction.getResult());
+					setChanged();
 				}
 			}
 			else {
 				ItemStack remainder = emptyBucketInventory.insertItemStack(0, stack);
-				filledBucketInventory.setInventorySlotContents(0, remainder);
-				markDirty();
+				filledBucketInventory.setItem(0, remainder);
+				setChanged();
 			}
 		}
 	}
@@ -184,22 +184,22 @@ public class SolidifierTileEntity extends MachineTileEntity<SolidifierRecipe, So
 	}
 
 	protected void tryToGetFluidFromAttachedBlock(World world) {
-		Direction direction = getBlockState().get(DigesterBlock.FACING).getOpposite();
-		BlockPos blockPos = getPos().offset(direction);
+		Direction direction = getBlockState().getValue(DigesterBlock.FACING).getOpposite();
+		BlockPos blockPos = getBlockPos().relative(direction);
 		LazyOptional<IFluidHandler> capability = FluidUtil.getFluidHandler(world, blockPos, Direction.DOWN);
 		capability.ifPresent(fluidHandler -> {
 			FluidStack fluidStack = FluidUtil.tryFluidTransfer(stateData.inputTank, fluidHandler, 1000, true);
 			if (!fluidStack.isEmpty()) {
-				world.playSound(null, getPos(), SoundEvents.ENTITY_WANDERING_TRADER_DRINK_MILK, SoundCategory.PLAYERS, 0.9F, 0.3f + world.rand.nextFloat() * 0.25f);
+				world.playSound(null, getBlockPos(), SoundEvents.WANDERING_TRADER_DRINK_MILK, SoundCategory.PLAYERS, 0.9F, 0.3f + world.random.nextFloat() * 0.25f);
 			}
 		});
 	}
 
 	@Override
 	public void dropAllInvContents(World world, BlockPos pos) {
-		InventoryHelper.dropInventoryItems(world, pos, filledBucketInventory);
-		InventoryHelper.dropInventoryItems(world, pos, emptyBucketInventory);
-		InventoryHelper.dropInventoryItems(world, pos, outputInventory);
+		InventoryHelper.dropContents(world, pos, filledBucketInventory);
+		InventoryHelper.dropContents(world, pos, emptyBucketInventory);
+		InventoryHelper.dropContents(world, pos, outputInventory);
 	}
 
 	@Override
@@ -214,8 +214,8 @@ public class SolidifierTileEntity extends MachineTileEntity<SolidifierRecipe, So
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT nbt) {
-		super.write(nbt);
+	public CompoundNBT save(CompoundNBT nbt) {
+		super.save(nbt);
 		stateData.serializeNBT(nbt);
 		nbt.put("FilledBucketSlots", filledBucketInventory.serializeNBT());
 		nbt.put("EmptyBucketSlots", emptyBucketInventory.serializeNBT());
@@ -224,14 +224,14 @@ public class SolidifierTileEntity extends MachineTileEntity<SolidifierRecipe, So
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT nbt) {
-		super.read(state, nbt);
+	public void load(BlockState state, CompoundNBT nbt) {
+		super.load(state, nbt);
 		stateData.deserializeNBT(nbt);
 		filledBucketInventory.deserializeNBT(nbt.getCompound("FilledBucketSlots"));
 		emptyBucketInventory.deserializeNBT(nbt.getCompound("EmptyBucketSlots"));
 		outputInventory.deserializeNBT(nbt.getCompound("OutputSlots"));
 
-		if (filledBucketInventory.getSizeInventory() != FILLED_BUCKET_SLOTS || emptyBucketInventory.getSizeInventory() != EMPTY_BUCKET_SLOTS || outputInventory.getSizeInventory() != OUTPUT_SLOTS) {
+		if (filledBucketInventory.getContainerSize() != FILLED_BUCKET_SLOTS || emptyBucketInventory.getContainerSize() != EMPTY_BUCKET_SLOTS || outputInventory.getContainerSize() != OUTPUT_SLOTS) {
 			throw new IllegalArgumentException("Corrupted NBT: Number of inventory slots did not match expected count.");
 		}
 	}
@@ -249,7 +249,7 @@ public class SolidifierTileEntity extends MachineTileEntity<SolidifierRecipe, So
 	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-		if (!removed)
+		if (!remove)
 			if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 				if (side == Direction.DOWN) return outputInventory.getOptionalItemStackHandler().cast();
 				return combinedInventory.cast();

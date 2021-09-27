@@ -31,24 +31,24 @@ public class RejuvenationReagent extends Reagent {
 
 			Block block = state.getBlock();
 			if (block == Blocks.GRASS) {
-				if (!world.isRemote) {
-					world.setBlockState(pos, Blocks.DIRT.getDefaultState());
+				if (!world.isClientSide) {
+					world.setBlockAndUpdate(pos, Blocks.DIRT.defaultBlockState());
 				}
 				return true;
 			}
 			else if (!(block instanceof DoublePlantBlock)) {
-				BlockState defaultState = block.getDefaultState();
+				BlockState defaultState = block.defaultBlockState();
 				if (state != defaultState) {
-					if (!world.isRemote) {
-						world.setBlockState(pos, defaultState);
+					if (!world.isClientSide) {
+						world.setBlockAndUpdate(pos, defaultState);
 					}
 					return true;
 				}
 			}
 		}
 		else if (state.getBlock() == ModBlocks.NECROTIC_FLESH_BLOCK.get()) {
-			if (!world.isRemote) {
-				world.setBlockState(pos, ModBlocks.FLESH_BLOCK.get().getDefaultState());
+			if (!world.isClientSide) {
+				world.setBlockAndUpdate(pos, ModBlocks.FLESH_BLOCK.get().defaultBlockState());
 			}
 			return true;
 		}
@@ -60,8 +60,8 @@ public class RejuvenationReagent extends Reagent {
 	public boolean affectEntity(CompoundNBT nbt, @Nullable LivingEntity source, LivingEntity target) {
 		if (target instanceof SlimeEntity) // & magma cube
 		{
-			if (!target.world.isRemote) {
-				int slimeSize = ((SlimeEntity) target).getSlimeSize();
+			if (!target.level.isClientSide) {
+				int slimeSize = ((SlimeEntity) target).getSize();
 				if (slimeSize > 1) {
 					((SlimeEntityAccessor) target).biomancy_setSlimeSize(slimeSize - 1, false);
 				}
@@ -69,7 +69,7 @@ public class RejuvenationReagent extends Reagent {
 			return true;
 		}
 		else if (target instanceof FleshBlobEntity) {
-			if (!target.world.isRemote) {
+			if (!target.level.isClientSide) {
 				byte blobSize = ((FleshBlobEntity) target).getBlobSize();
 				if (blobSize > 1) {
 					((FleshBlobEntity) target).setBlobSize((byte) (blobSize - 1), false);
@@ -77,10 +77,10 @@ public class RejuvenationReagent extends Reagent {
 			}
 			return true;
 		}
-		else if (!target.isChild()) {
+		else if (!target.isBaby()) {
 			if (target instanceof MobEntity) { // includes animals, villagers, zombies, etc..
-				((MobEntity) target).setChild(true);
-				return target.isChild(); //validate it was successful
+				((MobEntity) target).setBaby(true);
+				return target.isBaby(); //validate it was successful
 			}
 			else if (target instanceof ArmorStandEntity) {
 //				EntityDataManager dataManager = target.getDataManager();

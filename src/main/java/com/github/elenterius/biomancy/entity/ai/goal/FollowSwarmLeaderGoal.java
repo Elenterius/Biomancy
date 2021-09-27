@@ -18,23 +18,26 @@ public class FollowSwarmLeaderGoal extends Goal {
 	}
 
 	protected int rndDelay(SwarmGroupMemberEntity taskOwner) {
-		return 200 + taskOwner.getRNG().nextInt(200) % 20;
+		return 200 + taskOwner.getRandom().nextInt(200) % 20;
 	}
 
 	@Override
-	public boolean shouldExecute() {
+	public boolean canUse() {
 		if (taskOwner.isLeader()) {
 			return false;
-		} else if (taskOwner.hasLeader()) {
+		}
+		else if (taskOwner.hasLeader()) {
 			return true;
-		} else if (joinGroupDelay > 0) {
+		}
+		else if (joinGroupDelay > 0) {
 			--joinGroupDelay;
 			return false;
-		} else {
+		}
+		else {
 			joinGroupDelay = rndDelay(taskOwner);
 			Predicate<SwarmGroupMemberEntity> predicate = (groupMember) -> groupMember.canGroupGrow() || !groupMember.hasLeader();
 			MobEntity ownerEntity = taskOwner.asMobEntity();
-			List<SwarmGroupMemberEntity> list = ownerEntity.world.getEntitiesWithinAABB(SwarmGroupMemberEntity.class, ownerEntity.getBoundingBox().grow(8.0D, 8.0D, 8.0D), predicate);
+			List<SwarmGroupMemberEntity> list = ownerEntity.level.getEntitiesOfClass(SwarmGroupMemberEntity.class, ownerEntity.getBoundingBox().inflate(8.0D, 8.0D, 8.0D), predicate);
 			SwarmGroupMemberEntity groupLeader = list.stream().filter(SwarmGroupMemberEntity::canGroupGrow).findAny().orElse(taskOwner);
 			groupLeader.addGroupMembers(list.stream().filter((entity) -> !entity.hasLeader()));
 			return taskOwner.hasLeader();
@@ -42,17 +45,17 @@ public class FollowSwarmLeaderGoal extends Goal {
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
+	public boolean canContinueToUse() {
 		return taskOwner.hasLeader() && taskOwner.inRangeOfLeader((SwarmGroupMemberEntity) taskOwner.getLeader().asMobEntity());
 	}
 
 	@Override
-	public void startExecuting() {
+	public void start() {
 		navigateTimer = 0;
 	}
 
 	@Override
-	public void resetTask() {
+	public void stop() {
 		taskOwner.leaveGroup();
 	}
 
@@ -62,10 +65,10 @@ public class FollowSwarmLeaderGoal extends Goal {
 			navigateTimer = 10;
 			if (taskOwner.hasLeader()) {
 				MobEntity leader = taskOwner.getLeader().asMobEntity();
-				if (taskOwner.getAttackTarget() == null && leader.getAttackTarget() != null && leader.getAttackTarget().isAlive()) {
-					taskOwner.setAttackTarget(leader.getAttackTarget());
+				if (taskOwner.getTarget() == null && leader.getTarget() != null && leader.getTarget().isAlive()) {
+					taskOwner.setTarget(leader.getTarget());
 				}
-				if (taskOwner.getDistanceSq(leader) >= 16D) {
+				if (taskOwner.distanceToSqr(leader) >= 16D) {
 					taskOwner.moveToLeader();
 				}
 			}

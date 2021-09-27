@@ -17,7 +17,7 @@ public class FleshbornChestTileEntityRender extends ItemStackTileEntityRenderer 
 	private final Lazy<FleshbornChestTileEntity> tileEntityLazy = Lazy.of(FleshbornChestTileEntity::new);
 
 	@Override
-	public void func_239207_a_(ItemStack stack, ItemCameraTransforms.TransformType type, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
+	public void renderByItem(ItemStack stack, ItemCameraTransforms.TransformType type, MatrixStack matrixStack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
 		TileEntityRendererDispatcher.instance.renderItem(tileEntityLazy.get(), matrixStack, buffer, combinedLight, combinedOverlay);
 	}
 

@@ -39,59 +39,59 @@ public class WitherSkullProjectileEntity extends AbstractProjectileEntity {
 	}
 
 	@Override
-	protected void onEntityHit(EntityRayTraceResult result) {
-		super.onEntityHit(result);
-		if (!world.isRemote) {
+	protected void onHitEntity(EntityRayTraceResult result) {
+		super.onHitEntity(result);
+		if (!level.isClientSide) {
 			Entity victim = result.getEntity();
-			Entity shooter = getShooter();
+			Entity shooter = getOwner();
 			if (shooter instanceof LivingEntity) {
 				LivingEntity livingentity = (LivingEntity) shooter;
-				if (victim.attackEntityFrom(ModDamageSources.createWitherSkullDamage(this, livingentity), getDamage())) {
+				if (victim.hurt(ModDamageSources.createWitherSkullDamage(this, livingentity), getDamage())) {
 					if (!victim.isAlive()) {
 						livingentity.heal(0.625f * getDamage());
 						return;
 					}
 
-					applyEnchantments(livingentity, victim);
+					doEnchantDamageEffects(livingentity, victim);
 					if (victim instanceof LivingEntity) {
-						int duration = (world.getDifficulty().getId() - 1) * 20;
+						int duration = (level.getDifficulty().getId() - 1) * 20;
 						if (duration > 0) {
-							((LivingEntity) victim).addPotionEffect(new EffectInstance(Effects.WITHER, 20 * duration, 1));
+							((LivingEntity) victim).addEffect(new EffectInstance(Effects.WITHER, 20 * duration, 1));
 						}
 					}
 				}
 			}
-			else if (victim.attackEntityFrom(DamageSource.MAGIC, 0.625f * getDamage()) && victim instanceof LivingEntity) {
-				int duration = (world.getDifficulty().getId() - 1) * 20;
+			else if (victim.hurt(DamageSource.MAGIC, 0.625f * getDamage()) && victim instanceof LivingEntity) {
+				int duration = (level.getDifficulty().getId() - 1) * 20;
 				if (duration > 0) {
-					((LivingEntity) victim).addPotionEffect(new EffectInstance(Effects.WITHER, 20 * duration, 1));
+					((LivingEntity) victim).addEffect(new EffectInstance(Effects.WITHER, 20 * duration, 1));
 				}
 			}
 		}
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult result) {
-		super.onImpact(result);
-		if (!world.isRemote) {
-			Explosion.Mode explosionMode = ForgeEventFactory.getMobGriefingEvent(world, getShooter()) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
-			world.createExplosion(this, getPosX(), getPosY(), getPosZ(), 1.0F, false, explosionMode);
+	protected void onHit(RayTraceResult result) {
+		super.onHit(result);
+		if (!level.isClientSide) {
+			Explosion.Mode explosionMode = ForgeEventFactory.getMobGriefingEvent(level, getOwner()) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
+			level.explode(this, getX(), getY(), getZ(), 1.0F, false, explosionMode);
 			remove();
 		}
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource source, float amount) {
+	public boolean hurt(DamageSource source, float amount) {
 		return false;
 	}
 
 	@Override
-	public boolean canBeCollidedWith() {
+	public boolean isPickable() {
 		return false;
 	}
 
 	@Override
-	public boolean isBurning() {
+	public boolean isOnFire() {
 		return false;
 	}
 }

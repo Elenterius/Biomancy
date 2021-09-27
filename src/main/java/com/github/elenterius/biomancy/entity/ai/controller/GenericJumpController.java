@@ -13,7 +13,7 @@ public class GenericJumpController extends JumpController {
 	}
 
 	public boolean isJumping() {
-		return isJumping;
+		return jump;
 	}
 
 	public boolean canJump() {
@@ -26,9 +26,9 @@ public class GenericJumpController extends JumpController {
 
 	@Override
 	public void tick() {
-		if (isJumping) {
+		if (jump) {
 			jumpMoveMob.startJumping();
-			isJumping = false;
+			jump = false;
 		}
 	}
 }

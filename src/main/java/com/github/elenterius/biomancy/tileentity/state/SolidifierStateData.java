@@ -73,7 +73,7 @@ public class SolidifierStateData extends RecipeCraftingStateData<SolidifierRecip
 	}
 
 	@Override
-	public int size() {
+	public int getCount() {
 		return 4;
 	}
 

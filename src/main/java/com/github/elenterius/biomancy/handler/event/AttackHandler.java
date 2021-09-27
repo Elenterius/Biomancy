@@ -34,7 +34,7 @@ public final class AttackHandler {
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onLivingAttack(final LivingAttackEvent event) {
-		if (!event.getEntityLiving().isServerWorld()) return;
+		if (!event.getEntityLiving().isEffectiveAi()) return;
 
 		DamageSource damageSource = event.getSource();
 		if (!event.isCanceled() && damageSource instanceof ModEntityDamageSource) {
@@ -44,7 +44,7 @@ public final class AttackHandler {
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onLivingDamageAfterDamageReduction(final LivingDamageEvent event) {
-		if (!event.getEntityLiving().isServerWorld()) return;
+		if (!event.getEntityLiving().isEffectiveAi()) return;
 
 		//if this is called the victims armor didn't block all damage
 
@@ -54,13 +54,13 @@ public final class AttackHandler {
 
 			ModifiableAttributeInstance healthAttribute = event.getEntityLiving().getAttribute(Attributes.MAX_HEALTH);
 			if (healthAttribute != null) {
-				Entity attacker = damageSource.getTrueSource();
+				Entity attacker = damageSource.getEntity();
 				if (attacker instanceof LivingEntity) {
 					LivingEntity victim = event.getEntityLiving();
-					if (((LivingEntity) attacker).getHealth() < victim.getMaxHealth() * 0.75f && victim.getRNG().nextFloat() < 0.6f) {
-						healthAttribute.applyNonPersistentModifier(new AttributeModifier("health reduction", -0.3F, AttributeModifier.Operation.MULTIPLY_BASE));
+					if (((LivingEntity) attacker).getHealth() < victim.getMaxHealth() * 0.75f && victim.getRandom().nextFloat() < 0.6f) {
+						healthAttribute.addTransientModifier(new AttributeModifier("health reduction", -0.3F, AttributeModifier.Operation.MULTIPLY_BASE));
 //                        victim.playSound(ModSoundEvents.IMPACT_SPLAT, 0.25f, 0.8f);
-						victim.playSound(SoundEvents.ENTITY_IRON_GOLEM_DAMAGE, 0.4f, 0.45f);
+						victim.playSound(SoundEvents.IRON_GOLEM_DAMAGE, 0.4f, 0.45f);
 					}
 				}
 			}
@@ -69,10 +69,10 @@ public final class AttackHandler {
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public static void onLivingDamageAfterDamageReductionLast(final LivingDamageEvent event) {
-		if (event.getAmount() > 0f && event.getSource().getImmediateSource() instanceof LivingEntity) {
-			ItemStack heldStack = ((LivingEntity) event.getSource().getImmediateSource()).getHeldItemMainhand();
+		if (event.getAmount() > 0f && event.getSource().getDirectEntity() instanceof LivingEntity) {
+			ItemStack heldStack = ((LivingEntity) event.getSource().getDirectEntity()).getMainHandItem();
 			if (heldStack.getItem() instanceof ClawWeaponItem) {
-				((ClawWeaponItem) heldStack.getItem()).onDamageEntity(heldStack, (LivingEntity) event.getSource().getImmediateSource(), event.getEntityLiving(), event.getAmount());
+				((ClawWeaponItem) heldStack.getItem()).onDamageEntity(heldStack, (LivingEntity) event.getSource().getDirectEntity(), event.getEntityLiving(), event.getAmount());
 			}
 		}
 	}
@@ -80,7 +80,7 @@ public final class AttackHandler {
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public static void onCriticalHit(final CriticalHitEvent event) {
 		if (event.getDamageModifier() > 0 && event.getTarget() instanceof LivingEntity && (event.getResult() == Event.Result.ALLOW || event.isVanillaCritical() && event.getResult() == Event.Result.DEFAULT)) {
-			ItemStack heldStack = event.getEntityLiving().getHeldItemMainhand();
+			ItemStack heldStack = event.getEntityLiving().getMainHandItem();
 			if (heldStack.getItem() instanceof ClawWeaponItem) {
 				((ClawWeaponItem) heldStack.getItem()).onCriticalHitEntity(heldStack, event.getPlayer(), (LivingEntity) event.getTarget());
 			}
@@ -89,19 +89,19 @@ public final class AttackHandler {
 
 	@SubscribeEvent
 	public static void onAttackEntity(final AttackEntityEvent event) {
-		if (event.getTarget().canBeAttackedWithItem()) {
-			ItemStack heldStack = event.getPlayer().getHeldItemMainhand();
+		if (event.getTarget().isAttackable()) {
+			ItemStack heldStack = event.getPlayer().getMainHandItem();
 			if (!heldStack.isEmpty()) {
-				if (heldStack.getItem() == ModItems.FLESHBORN_GUAN_DAO.get() && event.getPlayer().getCooledAttackStrength(0.5f) > 0.8f) {
+				if (heldStack.getItem() == ModItems.FLESHBORN_GUAN_DAO.get() && event.getPlayer().getAttackStrengthScale(0.5f) > 0.8f) {
 					FleshbornGuanDaoItem.adaptAttackDamageToTarget(heldStack, event.getPlayer(), event.getTarget());
 				}
-				if (EnchantmentHelper.getEnchantmentLevel(ModEnchantments.ATTUNED_BANE.get(), heldStack) > 0) {
+				if (EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.ATTUNED_BANE.get(), heldStack) > 0) {
 					if (!AttunedDamageEnchantment.isAttuned(heldStack)) {
-						if (!event.getPlayer().world.isRemote()) {
+						if (!event.getPlayer().level.isClientSide()) {
 							AttunedDamageEnchantment.setAttunedTarget(heldStack, event.getTarget());
 						}
 						else {
-							event.getPlayer().playSound(SoundEvents.BLOCK_ENCHANTMENT_TABLE_USE, 1f, 1f);
+							event.getPlayer().playSound(SoundEvents.ENCHANTMENT_TABLE_USE, 1f, 1f);
 						}
 					}
 				}

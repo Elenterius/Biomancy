@@ -44,7 +44,7 @@ public class EvolutionPoolStateData extends RecipeCraftingStateData<EvolutionPoo
 	}
 
 	@Override
-	public int size() {
+	public int getCount() {
 		return 3;
 	}
 

@@ -56,7 +56,7 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 
 	@Override
 	public String getTitle() {
-		return I18n.format("jei.biomancy.recipe.digester");
+		return I18n.get("jei.biomancy.recipe.digester");
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 		guiFSGroup.addTooltipCallback((index, input, ingredient, tooltip) -> {
 			if (index == OUTPUT_SLOT) {
 				DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
-				tooltip.add(new StringTextComponent(df.format(ingredient.getAmount()) + " mb").mergeStyle(TextFormatting.GRAY));
+				tooltip.add(new StringTextComponent(df.format(ingredient.getAmount()) + " mb").withStyle(TextFormatting.GRAY));
 			}
 		});
 
@@ -104,7 +104,7 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 					if (byproduct != null && byproduct.getItem() == stack.getItem()) {
 						chance = Math.round(byproduct.getChance() * 100);
 					}
-					tooltip.add(new StringTextComponent(chance + "% ").appendSibling(new TranslationTextComponent(TextUtil.getTranslationKey("tooltip", "chance"))).mergeStyle(TextFormatting.GRAY));
+					tooltip.add(new StringTextComponent(chance + "% ").append(new TranslationTextComponent(TextUtil.getTranslationKey("tooltip", "chance"))).withStyle(TextFormatting.GRAY));
 				}
 			}
 		});
@@ -116,12 +116,12 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 		if (ticks > 0) {
 			int seconds = ticks / 20;
 			TranslationTextComponent timeString = new TranslationTextComponent("gui.jei.category.smelting.time.seconds", seconds);
-			FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
-			int stringWidth = fontRenderer.getStringPropertyWidth(timeString);
-			fontRenderer.drawText(matrixStack, timeString, background.getWidth() - stringWidth, 0, 0xff808080);
+			FontRenderer fontRenderer = Minecraft.getInstance().font;
+			int stringWidth = fontRenderer.width(timeString);
+			fontRenderer.draw(matrixStack, timeString, background.getWidth() - stringWidth, 0, 0xff808080);
 			int waterCost = ticks * DigesterTileEntity.FUEL_COST;
-			IFormattableTextComponent costText = new StringTextComponent("+" + waterCost + "mb ").appendSibling(new TranslationTextComponent("fluid.minecraft.water"));
-			fontRenderer.drawText(matrixStack, costText, 0, background.getHeight() - fontRenderer.FONT_HEIGHT, 0xff808080);
+			IFormattableTextComponent costText = new StringTextComponent("+" + waterCost + "mb ").append(new TranslationTextComponent("fluid.minecraft.water"));
+			fontRenderer.draw(matrixStack, costText, 0, background.getHeight() - fontRenderer.lineHeight, 0xff808080);
 		}
 	}
 }

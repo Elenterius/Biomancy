@@ -29,20 +29,20 @@ public abstract class CauldronBlockMixin {
 	@Final
 	public static IntegerProperty LEVEL;
 
-	@Inject(method = "onEntityCollision", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "entityInside", at = @At("HEAD"), cancellable = true)
 	protected void biomancy_onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn, CallbackInfo ci) {
-		if (!worldIn.isRemote && entityIn instanceof ItemEntity) {
-			int waterLevel = state.get(LEVEL);
+		if (!worldIn.isClientSide && entityIn instanceof ItemEntity) {
+			int waterLevel = state.getValue(LEVEL);
 			if (waterLevel == 0) {
 				ItemStack stack = ((ItemEntity) entityIn).getItem();
 				Item item = stack.getItem();
-				if (item.isIn(ModTags.Items.RAW_MEATS)) {
+				if (item.is(ModTags.Items.RAW_MEATS)) {
 					int amount = Math.min(stack.getCount(), 5);
 					((ItemEntity) entityIn).getItem().grow(-amount);
 
-					BlockState meatState = ModBlocks.MEATSOUP_CAULDRON.get().getDefaultState().with(MeatsoupCauldronBlock.LEVEL, amount);
-					worldIn.setBlockState(pos, meatState, Constants.BlockFlags.BLOCK_UPDATE);
-					worldIn.playSound(null, pos, SoundEvents.ENTITY_SLIME_SQUISH_SMALL, SoundCategory.BLOCKS, 1f, 0.5f);
+					BlockState meatState = ModBlocks.MEATSOUP_CAULDRON.get().defaultBlockState().setValue(MeatsoupCauldronBlock.LEVEL, amount);
+					worldIn.setBlock(pos, meatState, Constants.BlockFlags.BLOCK_UPDATE);
+					worldIn.playSound(null, pos, SoundEvents.SLIME_SQUISH_SMALL, SoundCategory.BLOCKS, 1f, 0.5f);
 
 					ci.cancel();
 				}

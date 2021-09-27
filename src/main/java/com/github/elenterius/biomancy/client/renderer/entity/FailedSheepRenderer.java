@@ -20,7 +20,7 @@ public class FailedSheepRenderer extends MobRenderer<FailedSheepEntity, SheepMod
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(FailedSheepEntity entity) {
+	public ResourceLocation getTextureLocation(FailedSheepEntity entity) {
 		return TEXTURE;
 	}
 

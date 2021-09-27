@@ -30,7 +30,7 @@ public class GulgeContainer extends Container {
 
 		// track item count and sync to client.
 		// We do this because ItemStack size is serialized using a signed byte and thus can't store values larger than 127
-		trackIntArray(gulgeInventory);
+		addDataSlots(gulgeInventory);
 
 		PlayerInvWrapper playerInventoryForge = new PlayerInvWrapper(playerInventory);
 
@@ -57,30 +57,30 @@ public class GulgeContainer extends Container {
 		//we use input/output slots to manipulate the inv contents in order to avoid the headache of syncing ItemStacks with an item count larger than Byte.MAX_VALUE
 		addSlot(new Slot(redirectedInput, 0, 80 - 18, 35) {
 			@Override
-			public boolean isItemValid(ItemStack stack) {
-				return gulgeInventory.isEmpty() || ItemHandlerHelper.canItemStacksStack(stack, gulgeInventory.getStackInSlot(0));
+			public boolean mayPlace(ItemStack stack) {
+				return gulgeInventory.isEmpty() || ItemHandlerHelper.canItemStacksStack(stack, gulgeInventory.getItem(0));
 			}
 
 			@Override
-			public void putStack(ItemStack stack) {
+			public void set(ItemStack stack) {
 				if (gulgeInventory.getOptionalItemStackHandler().isPresent()) {
 					gulgeInventory.getOptionalItemStackHandler().ifPresent(itemHandler -> {
 						ItemStack remainder = itemHandler.insertItem(0, stack, false);  //redirect stack into gulge inventory
-						inventory.setInventorySlotContents(0, remainder);
+						container.setItem(0, remainder);
 					});
-					gulgeInventory.markDirty();
+					gulgeInventory.setChanged();
 					updateOutputSlot();
 				}
 				else {
-					inventory.setInventorySlotContents(0, stack);
+					container.setItem(0, stack);
 				}
-				onSlotChanged();
+				setChanged();
 			}
 		});
 		addSlot(new Slot(redirectedOutput, 0, 80 + 18, 35) {
 
 			@Override
-			public boolean isItemValid(ItemStack stack) {
+			public boolean mayPlace(ItemStack stack) {
 				return false; //prevent insertion
 			}
 
@@ -98,10 +98,10 @@ public class GulgeContainer extends Container {
 							updateOutputSlot(gulgeStack);
 						}
 					});
-					gulgeInventory.markDirty();
+					gulgeInventory.setChanged();
 				}
 
-				onSlotChanged();
+				setChanged();
 				return stack;
 			}
 		});
@@ -117,58 +117,58 @@ public class GulgeContainer extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(PlayerEntity playerIn) {
-		return gulgeInventory.isUsableByPlayer(playerIn);
+	public boolean stillValid(PlayerEntity playerIn) {
+		return gulgeInventory.stillValid(playerIn);
 	}
 
 	private void updateOutputSlot() {
-		updateOutputSlot(gulgeInventory.getStackInSlot(0));
+		updateOutputSlot(gulgeInventory.getItem(0));
 	}
 
 	private void updateOutputSlot(ItemStack storedStack) {
 		//prime cheese ;)
 		//this avoids the need of syncing "Big-ItemStacks" (item count is larger than Byte.MAX_VALUE) to the client
-		//instead we only sync an ItemStack copy with a item count of 1
+		//instead we only sync an ItemStack copy with an item count of 1
 
-		ItemStack outputStack = redirectedOutput.getStackInSlot(0);
+		ItemStack outputStack = redirectedOutput.getItem(0);
 		if (storedStack.isEmpty()) {
-			if (!outputStack.isEmpty()) redirectedOutput.setInventorySlotContents(0, ItemStack.EMPTY);
+			if (!outputStack.isEmpty()) redirectedOutput.setItem(0, ItemStack.EMPTY);
 		}
 		else if (outputStack.isEmpty()) {
-			redirectedOutput.setInventorySlotContents(0, ItemHandlerHelper.copyStackWithSize(storedStack, 1));
+			redirectedOutput.setItem(0, ItemHandlerHelper.copyStackWithSize(storedStack, 1));
 		}
 	}
 
 	@Override
-	public void detectAndSendChanges() {
+	public void broadcastChanges() {
 		updateOutputSlot();
-		super.detectAndSendChanges();
+		super.broadcastChanges();
 	}
 
 	@Override
-	public void onContainerClosed(PlayerEntity playerIn) {
-		super.onContainerClosed(playerIn);
-		if (!playerIn.world.isRemote()) {
-			clearContainer(playerIn, playerIn.world, redirectedInput);
+	public void removed(PlayerEntity playerIn) {
+		super.removed(playerIn);
+		if (!playerIn.level.isClientSide()) {
+			clearContainer(playerIn, playerIn.level, redirectedInput);
 		}
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(PlayerEntity playerIn, int sourceSlotIndex) {
+	public ItemStack quickMoveStack(PlayerEntity playerIn, int sourceSlotIndex) {
 
-		Slot sourceSlot = inventorySlots.get(sourceSlotIndex); // side-effect: throws error if the sourceSlotIndex is out of range (index < 0 || index >= size())
-		if (sourceSlot == null || !sourceSlot.getHasStack()) return ItemStack.EMPTY;
-		ItemStack sourceStack = sourceSlot.getStack();
+		Slot sourceSlot = slots.get(sourceSlotIndex); // side-effect: throws error if the sourceSlotIndex is out of range (index < 0 || index >= size())
+		if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;
+		ItemStack sourceStack = sourceSlot.getItem();
 		ItemStack copyOfSourceStack = sourceStack.copy();
 
 		// Check if the slot clicked is one of the vanilla container slots
 		if (sourceSlotIndex < INPUT_SLOT_INDEX) {  //vanilla container
-			if (!mergeItemStack(sourceStack, INPUT_SLOT_INDEX, INPUT_SLOT_INDEX + 1, false)) {
+			if (!moveItemStackTo(sourceStack, INPUT_SLOT_INDEX, INPUT_SLOT_INDEX + 1, false)) {
 				return ItemStack.EMPTY;
 			}
 		}
 		else if (sourceSlotIndex == 37 || sourceSlotIndex == 36) { //virtual input & output slot
-			if (!mergeItemStack(sourceStack, 0, INPUT_SLOT_INDEX, false)) { //skip input slot
+			if (!moveItemStackTo(sourceStack, 0, INPUT_SLOT_INDEX, false)) { //skip input slot
 				return ItemStack.EMPTY;
 			}
 		}
@@ -179,10 +179,10 @@ public class GulgeContainer extends Container {
 
 		// If stack size == 0 (the entire stack was moved) set slot contents to null
 		if (sourceStack.getCount() == 0) {
-			sourceSlot.putStack(ItemStack.EMPTY);
+			sourceSlot.set(ItemStack.EMPTY);
 		}
 		else {
-			sourceSlot.onSlotChanged();
+			sourceSlot.setChanged();
 		}
 
 		sourceSlot.onTake(playerIn, sourceStack);
@@ -194,10 +194,10 @@ public class GulgeContainer extends Container {
 	}
 
 	public int getMaxItemCount() {
-		return gulgeInventory.getInventoryStackLimit();
+		return gulgeInventory.getMaxStackSize();
 	}
 
 	public ItemStack getStoredItemStack() {
-		return redirectedOutput.getStackInSlot(0); //reflects the stored ItemStack but clamped to a count size of 0 or 1
+		return redirectedOutput.getItem(0); //reflects the stored ItemStack but clamped to a count size of 0 or 1
 	}
 }

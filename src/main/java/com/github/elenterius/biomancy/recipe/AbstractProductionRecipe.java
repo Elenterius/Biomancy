@@ -32,7 +32,7 @@ public abstract class AbstractProductionRecipe implements IRecipe<IInventory> {
 
 	public boolean areRecipesEqual(AbstractProductionRecipe other, boolean relaxed) {
 		boolean flag = registryKey.equals(other.getId());
-		if (!relaxed && !ItemHandlerHelper.canItemStacksStack(getRecipeOutput(), other.getRecipeOutput())) {
+		if (!relaxed && !ItemHandlerHelper.canItemStacksStack(getResultItem(), other.getResultItem())) {
 			return false;
 		}
 		return flag;
@@ -62,12 +62,12 @@ public abstract class AbstractProductionRecipe implements IRecipe<IInventory> {
 		public abstract ItemStack getFluidCraftingResult();
 
 		@Override
-		public ItemStack getCraftingResult(@Nullable IInventory inv) {
+		public ItemStack assemble(@Nullable IInventory inv) {
 			return getFluidCraftingResult();
 		}
 
 		@Override
-		public boolean canFit(int width, int height) {
+		public boolean canCraftInDimensions(int width, int height) {
 			return true;
 		}
 

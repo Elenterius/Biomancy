@@ -20,7 +20,7 @@ public class SilkyWoolSheepRenderer extends MobRenderer<SilkyWoolSheepEntity, Sh
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(SilkyWoolSheepEntity entity) {
+	public ResourceLocation getTextureLocation(SilkyWoolSheepEntity entity) {
 		return TEXTURE;
 	}
 

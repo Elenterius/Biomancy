@@ -32,7 +32,7 @@ public class EvolutionPoolRecipeBuilder {
 	private final int count;
 	private final List<Ingredient> ingredients = new ArrayList<>();
 	private final int craftingTime;
-	private final Advancement.Builder advancementBuilder = Advancement.Builder.builder();
+	private final Advancement.Builder advancementBuilder = Advancement.Builder.advancement();
 	private String group;
 
 	private EvolutionPoolRecipeBuilder(IItemProvider resultIn, NbtString resultNbtIn, int craftingTimeIn, int countIn) {
@@ -70,11 +70,11 @@ public class EvolutionPoolRecipeBuilder {
 	}
 
 	public EvolutionPoolRecipeBuilder addIngredient(ITag<Item> tagIn) {
-		return addIngredient(Ingredient.fromTag(tagIn));
+		return addIngredient(Ingredient.of(tagIn));
 	}
 
 	public EvolutionPoolRecipeBuilder addIngredients(ITag<Item> tagIn, int quantity) {
-		return addIngredients(Ingredient.fromTag(tagIn), quantity);
+		return addIngredients(Ingredient.of(tagIn), quantity);
 	}
 
 	public EvolutionPoolRecipeBuilder addIngredient(IItemProvider itemIn) {
@@ -91,12 +91,12 @@ public class EvolutionPoolRecipeBuilder {
 	}
 
 	public EvolutionPoolRecipeBuilder addIngredients(IItemProvider itemIn, int quantity) {
-		for (int i = 0; i < quantity; i++) addIngredient(Ingredient.fromItems(itemIn));
+		for (int i = 0; i < quantity; i++) addIngredient(Ingredient.of(itemIn));
 		return this;
 	}
 
 	public EvolutionPoolRecipeBuilder addCriterion(String name, ICriterionInstance criterionIn) {
-		advancementBuilder.withCriterion(name, criterionIn);
+		advancementBuilder.addCriterion(name, criterionIn);
 		return this;
 	}
 
@@ -136,8 +136,8 @@ public class EvolutionPoolRecipeBuilder {
 
 	private void build(Consumer<IFinishedRecipe> consumerIn, ResourceLocation id) {
 		validate(id);
-		advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.create(id)).withRewards(AdvancementRewards.Builder.recipe(id)).withRequirementsStrategy(IRequirementsStrategy.OR);
-		consumerIn.accept(new Result(id, result, resultNbt, craftingTime, count, group == null ? "" : group, ingredients, advancementBuilder, new ResourceLocation(id.getNamespace(), "recipes/" + (result.getGroup() != null ? result.getGroup().getPath() : BiomancyMod.MOD_ID) + "/" + id.getPath())));
+		advancementBuilder.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id)).rewards(AdvancementRewards.Builder.recipe(id)).requirements(IRequirementsStrategy.OR);
+		consumerIn.accept(new Result(id, result, resultNbt, craftingTime, count, group == null ? "" : group, ingredients, advancementBuilder, new ResourceLocation(id.getNamespace(), "recipes/" + (result.getItemCategory() != null ? result.getItemCategory().getRecipeFolderName() : BiomancyMod.MOD_ID) + "/" + id.getPath())));
 	}
 
 	private void validate(ResourceLocation id) {
@@ -151,7 +151,7 @@ public class EvolutionPoolRecipeBuilder {
 
 		final String nbtStr;
 
-		private NbtString() { nbtStr = null; }
+		private NbtString() {nbtStr = null;}
 
 		public NbtString(CompoundNBT nbt) {
 			if (!nbt.isEmpty()) nbtStr = nbt.toString();
@@ -190,14 +190,14 @@ public class EvolutionPoolRecipeBuilder {
 			advancementId = advancementIdIn;
 		}
 
-		public void serialize(JsonObject json) {
+		public void serializeRecipeData(JsonObject json) {
 			if (!group.isEmpty()) {
 				json.addProperty("group", group);
 			}
 
 			JsonArray jsonArray = new JsonArray();
 			for (Ingredient ingredient : ingredients) {
-				jsonArray.add(ingredient.serialize());
+				jsonArray.add(ingredient.toJson());
 			}
 			json.add("ingredients", jsonArray);
 
@@ -214,21 +214,21 @@ public class EvolutionPoolRecipeBuilder {
 			json.addProperty("time", craftingTime);
 		}
 
-		public IRecipeSerializer<?> getSerializer() {
+		public IRecipeSerializer<?> getType() {
 			return ModRecipes.EVOLUTION_POOL_SERIALIZER.get();
 		}
 
-		public ResourceLocation getID() {
+		public ResourceLocation getId() {
 			return id;
 		}
 
 		@Nullable
-		public JsonObject getAdvancementJson() {
-			return advancementBuilder.serialize();
+		public JsonObject serializeAdvancement() {
+			return advancementBuilder.serializeToJson();
 		}
 
 		@Nullable
-		public ResourceLocation getAdvancementID() {
+		public ResourceLocation getAdvancementId() {
 			return advancementId;
 		}
 	}

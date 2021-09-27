@@ -32,9 +32,9 @@ public class EvolutionPoolContainer extends Container {
 		this.inputInventory = inputInventory;
 		this.outputInventory = outputInventory;
 		this.stateData = stateData;
-		world = playerInventory.player.world;
+		world = playerInventory.player.level;
 
-		trackIntArray(stateData);
+		addDataSlots(stateData);
 
 		PlayerInvWrapper playerInventoryForge = new PlayerInvWrapper(playerInventory);
 
@@ -63,7 +63,7 @@ public class EvolutionPoolContainer extends Container {
 		int posY = 17;
 		addSlot(new Slot(fuelInventory, 0, posX, posY) {
 			@Override
-			public boolean isItemValid(ItemStack stack) {
+			public boolean mayPlace(ItemStack stack) {
 				return EvolutionPoolTileEntity.VALID_FUEL_ITEM.test(stack);
 			}
 		});
@@ -92,9 +92,9 @@ public class EvolutionPoolContainer extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(PlayerEntity playerIn) {
+	public boolean stillValid(PlayerEntity playerIn) {
 		//we don't check all three inventories because they all call the same method in the decomposer tile entity
-		return inputInventory.isUsableByPlayer(playerIn);
+		return inputInventory.stillValid(playerIn);
 	}
 
 	public float getCraftingProgressNormalized() {
@@ -114,11 +114,11 @@ public class EvolutionPoolContainer extends Container {
 	 * copied from: https://github.com/TheGreyGhost/MinecraftByExample/blob/1-16-3-final/src/main/java/minecraftbyexample/mbe31_inventory_furnace/ContainerFurnace.java
 	 */
 	@Override
-	public ItemStack transferStackInSlot(PlayerEntity playerIn, int sourceSlotIndex) {
+	public ItemStack quickMoveStack(PlayerEntity playerIn, int sourceSlotIndex) {
 
-		Slot sourceSlot = inventorySlots.get(sourceSlotIndex); // side-effect: throws error if the sourceSlotIndex is out of range (index < 0 || index >= size())
-		if (sourceSlot == null || !sourceSlot.getHasStack()) return ItemStack.EMPTY;
-		ItemStack sourceStack = sourceSlot.getStack();
+		Slot sourceSlot = slots.get(sourceSlotIndex); // side-effect: throws error if the sourceSlotIndex is out of range (index < 0 || index >= size())
+		if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;
+		ItemStack sourceStack = sourceSlot.getItem();
 		ItemStack copyOfSourceStack = sourceStack.copy();
 
 		boolean successfulTransfer = false;
@@ -128,7 +128,7 @@ public class EvolutionPoolContainer extends Container {
 			case OUTPUT_ZONE:
 				successfulTransfer = mergeInto(SlotZone.PLAYER_HOTBAR, sourceStack, true);
 				if (!successfulTransfer) successfulTransfer = mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, sourceStack, true);
-				if (successfulTransfer) sourceSlot.onSlotChange(sourceStack, copyOfSourceStack);
+				if (successfulTransfer) sourceSlot.onQuickCraft(sourceStack, copyOfSourceStack);
 				break;
 
 			case INPUT_ZONE:
@@ -157,8 +157,8 @@ public class EvolutionPoolContainer extends Container {
 
 		if (!successfulTransfer) return ItemStack.EMPTY;
 
-		if (sourceStack.isEmpty()) sourceSlot.putStack(ItemStack.EMPTY);
-		else sourceSlot.onSlotChanged();
+		if (sourceStack.isEmpty()) sourceSlot.set(ItemStack.EMPTY);
+		else sourceSlot.setChanged();
 
 		if (sourceStack.getCount() == copyOfSourceStack.getCount()) {
 			BiomancyMod.LOGGER.warn(MarkerManager.getMarker(getClass().getSimpleName()), "Stack transfer failed in an unexpected way!");
@@ -170,7 +170,7 @@ public class EvolutionPoolContainer extends Container {
 	}
 
 	private boolean mergeInto(SlotZone destinationZone, ItemStack sourceStack, boolean fillFromEnd) {
-		return mergeItemStack(sourceStack, destinationZone.firstIndex, destinationZone.lastIndexPlus1, fillFromEnd);
+		return moveItemStackTo(sourceStack, destinationZone.firstIndex, destinationZone.lastIndexPlus1, fillFromEnd);
 	}
 
 	public String getFuelTranslationKey() {

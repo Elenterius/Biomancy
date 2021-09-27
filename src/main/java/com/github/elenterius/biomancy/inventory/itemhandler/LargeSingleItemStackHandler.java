@@ -7,6 +7,8 @@ import javax.annotation.Nonnull;
 
 public class LargeSingleItemStackHandler extends SingleItemStackHandler {
 
+	public static final String NBT_KEY_ITEM_AMOUNT = "ItemAmount";
+
 	private final short maxItemAmount;
 	private short itemAmount;
 
@@ -30,12 +32,15 @@ public class LargeSingleItemStackHandler extends SingleItemStackHandler {
 
 	public void setAmount(short amount) {
 		itemAmount = amount;
-		if (!cachedStack.isEmpty()) cachedStack.setCount(amount);
+		if (!cachedStack.isEmpty()) {
+			cachedStack.setCount(amount);
+			onContentsChanged();
+		}
 	}
 
 	@Override
-	public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
-		super.setStackInSlot(slot, stack);
+	public void setStack(ItemStack stack) {
+		super.setStack(stack);
 		itemAmount = (short) cachedStack.getCount();
 	}
 
@@ -61,12 +66,12 @@ public class LargeSingleItemStackHandler extends SingleItemStackHandler {
 
 	@Override
 	public void serializeItemAmount(CompoundNBT nbt) {
-		nbt.putShort("ItemAmount", itemAmount);
+		nbt.putShort(NBT_KEY_ITEM_AMOUNT, itemAmount);
 	}
 
 	@Override
 	public int deserializeItemAmount(CompoundNBT nbt) {
-		itemAmount = nbt.getShort("ItemAmount");
+		itemAmount = nbt.getShort(NBT_KEY_ITEM_AMOUNT);
 		return itemAmount;
 	}
 
@@ -77,11 +82,11 @@ public class LargeSingleItemStackHandler extends SingleItemStackHandler {
 			serializeItemAmount(nbt);
 			if (itemAmount > Byte.MAX_VALUE) {
 				cachedStack.setCount(Byte.MAX_VALUE); //prevent byte overflow
-				nbt.put("Item", cachedStack.write(new CompoundNBT()));
+				nbt.put(NBT_KEY_ITEM, cachedStack.save(new CompoundNBT()));
 				cachedStack.setCount(itemAmount); //restore item count
 			}
 			else {
-				nbt.put("Item", cachedStack.write(new CompoundNBT()));
+				nbt.put(NBT_KEY_ITEM, cachedStack.save(new CompoundNBT()));
 			}
 		}
 		return nbt;
@@ -89,10 +94,11 @@ public class LargeSingleItemStackHandler extends SingleItemStackHandler {
 
 	@Override
 	public void deserializeNBT(CompoundNBT nbt) {
-		cachedStack = nbt.contains("Item") ? ItemStack.read(nbt.getCompound("Item")) : ItemStack.EMPTY;
+		cachedStack = nbt.contains(NBT_KEY_ITEM) ? ItemStack.of(nbt.getCompound(NBT_KEY_ITEM)) : ItemStack.EMPTY;
 		if (!cachedStack.isEmpty()) {
 			int itemAmount = deserializeItemAmount(nbt);
 			cachedStack.setCount(itemAmount); //restore item amount
 		}
 	}
+
 }

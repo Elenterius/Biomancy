@@ -23,19 +23,19 @@ public class FleshkinHeadLayer<T extends LivingEntity, M extends EntityModel<T> 
 
 	@Override
 	public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-		matrixStackIn.push();
+		matrixStackIn.pushPose();
 //			matrixStackIn.scale(1f, 1f, 1f);
-		if (entity.isChild()) {
+		if (entity.isBaby()) {
 			matrixStackIn.translate(0d, 0.03125d, 0d);
 			matrixStackIn.scale(0.7f, 0.7f, 0.7f);
 			matrixStackIn.translate(0d, 1d, 0d);
 		}
-		getEntityModel().getModelHead().translateRotate(matrixStackIn);
+		getParentModel().getHead().translateAndRotate(matrixStackIn);
 		matrixStackIn.translate(0d, -0.25d, 0d);
-		matrixStackIn.rotate(Vector3f.YP.rotationDegrees(180f));
+		matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180f));
 		matrixStackIn.scale(0.625f, -0.625f, -0.625f);
-		Minecraft.getInstance().getFirstPersonRenderer().renderItemSide(entity, blockToRender, ItemCameraTransforms.TransformType.HEAD, false, matrixStackIn, bufferIn, packedLightIn);
-		matrixStackIn.pop();
+		Minecraft.getInstance().getItemInHandRenderer().renderItem(entity, blockToRender, ItemCameraTransforms.TransformType.HEAD, false, matrixStackIn, bufferIn, packedLightIn);
+		matrixStackIn.popPose();
 	}
 
 }

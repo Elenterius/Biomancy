@@ -42,51 +42,51 @@ import java.util.Random;
 public class MeatsoupCauldronBlock extends Block {
 
 	public static final IntegerProperty FLAGS = IntegerProperty.create("flags", 0, Flags.getMaxNumber());
-	public static final IntegerProperty LEVEL = BlockStateProperties.LEVEL_0_8;
+	public static final IntegerProperty LEVEL = BlockStateProperties.LEVEL_COMPOSTER;
 	public static final int MAX_LEVEL = 8;
-	private static final VoxelShape INSIDE = makeCuboidShape(2.0D, 4.0D, 2.0D, 14.0D, 16.0D, 14.0D);
-	protected static final VoxelShape SHAPE = VoxelShapes.combineAndSimplify(VoxelShapes.fullCube(), VoxelShapes.or(
-			makeCuboidShape(0.0D, 0.0D, 4.0D, 16.0D, 3.0D, 12.0D),
-			makeCuboidShape(4.0D, 0.0D, 0.0D, 12.0D, 3.0D, 16.0D),
-			makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 3.0D, 14.0D),
+	private static final VoxelShape INSIDE = box(2.0D, 4.0D, 2.0D, 14.0D, 16.0D, 14.0D);
+	protected static final VoxelShape SHAPE = VoxelShapes.join(VoxelShapes.block(), VoxelShapes.or(
+			box(0.0D, 0.0D, 4.0D, 16.0D, 3.0D, 12.0D),
+			box(4.0D, 0.0D, 0.0D, 12.0D, 3.0D, 16.0D),
+			box(2.0D, 0.0D, 2.0D, 14.0D, 3.0D, 14.0D),
 			INSIDE), IBooleanFunction.ONLY_FIRST);
 
 	public MeatsoupCauldronBlock(Properties properties) {
 		super(properties);
-		setDefaultState(stateContainer.getBaseState().with(LEVEL, 0));
+		registerDefaultState(stateDefinition.any().setValue(LEVEL, 0));
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(LEVEL, FLAGS);
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-		if (tryToUseHopper((World) worldIn, currentPos, stateIn, stateIn.get(LEVEL))) {
-			return Blocks.CAULDRON.getDefaultState();
+	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+		if (tryToUseHopper((World) worldIn, currentPos, stateIn, stateIn.getValue(LEVEL))) {
+			return Blocks.CAULDRON.defaultBlockState();
 		}
 
 		return stateIn;
 	}
 
 	public void setSoupLevel(World worldIn, BlockPos pos, BlockState state, int flagValue, int level, int modifier) {
-		worldIn.setBlockState(pos, state.with(LEVEL, MathHelper.clamp(level + modifier, 0, MAX_LEVEL - 1)), Constants.BlockFlags.BLOCK_UPDATE);
-		worldIn.updateComparatorOutputLevel(pos, this);
+		worldIn.setBlock(pos, state.setValue(LEVEL, MathHelper.clamp(level + modifier, 0, MAX_LEVEL - 1)), Constants.BlockFlags.BLOCK_UPDATE);
+		worldIn.updateNeighbourForOutputSignal(pos, this);
 		if (level + modifier >= MAX_LEVEL - 1 && Flags.isFlagSet(flagValue, Flags.BONE_MEAL)) {
-			worldIn.getPendingBlockTicks().scheduleTick(pos, state.getBlock(), (modifier > 1 ? 45 : 55) + 1 + worldIn.rand.nextInt(modifier > 1 ? 15 : 25));
+			worldIn.getBlockTicks().scheduleTick(pos, state.getBlock(), (modifier > 1 ? 45 : 55) + 1 + worldIn.random.nextInt(modifier > 1 ? 15 : 25));
 		}
 	}
 
 	public boolean tryToUseHopper(World worldIn, BlockPos pos, BlockState state, int level) {
 		if (level == MAX_LEVEL) {
-			Block neighbourBlock = worldIn.getBlockState(pos.down()).getBlock();
+			Block neighbourBlock = worldIn.getBlockState(pos.below()).getBlock();
 			if (neighbourBlock == Blocks.HOPPER) {
 				ItemStack resultStack = new ItemStack(ModItems.NECROTIC_FLESH.get(), 9);
-				worldIn.setBlockState(pos, state.with(LEVEL, 0));
-				spawnAsEntity(worldIn, pos.add(0.5d, 0.5d, 0.5d), resultStack);
-				worldIn.playSound(null, pos, SoundEvents.ENTITY_ITEM_FRAME_REMOVE_ITEM, SoundCategory.BLOCKS, 1.0F, 1.0F);
-				worldIn.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
+				worldIn.setBlockAndUpdate(pos, state.setValue(LEVEL, 0));
+				popResource(worldIn, pos.offset(0.5d, 0.5d, 0.5d), resultStack);
+				worldIn.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				worldIn.setBlockAndUpdate(pos, Blocks.CAULDRON.defaultBlockState());
 				return true;
 			}
 		}
@@ -95,36 +95,36 @@ public class MeatsoupCauldronBlock extends Block {
 
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-		int level = state.get(LEVEL);
+		int level = state.getValue(LEVEL);
 		if (level >= MAX_LEVEL - 1) {
-			int flagValue = state.get(FLAGS);
+			int flagValue = state.getValue(FLAGS);
 			float p = Flags.isFlagSet(flagValue, Flags.ROTTEN_FLESH) ? 0.6f : 0.4f;
-			if (worldIn.rand.nextFloat() <= p) {
-				worldIn.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
+			if (worldIn.random.nextFloat() <= p) {
+				worldIn.setBlockAndUpdate(pos, Blocks.CAULDRON.defaultBlockState());
 
-				if (p > 0.4f && worldIn.rand.nextFloat() < 0.2f) {
+				if (p > 0.4f && worldIn.random.nextFloat() < 0.2f) {
 					OculusObserverEntity entity = ModEntityTypes.OCULUS_OBSERVER.get().create(worldIn);
 					if (entity != null) {
-						entity.setLocationAndAngles(pos.getX() + 0.5f, pos.getY() + 4f / 16f, pos.getZ() + 0.5f, 0, 0);
-						worldIn.addEntity(entity);
+						entity.moveTo(pos.getX() + 0.5f, pos.getY() + 4f / 16f, pos.getZ() + 0.5f, 0, 0);
+						worldIn.addFreshEntity(entity);
 					}
 				}
 				else {
 					FleshBlobEntity blobEntity = ModEntityTypes.FLESH_BLOB.get().create(worldIn);
 					if (blobEntity != null) {
-						blobEntity.setLocationAndAngles(pos.getX() + 0.5f, pos.getY() + 4f / 16f, pos.getZ() + 0.5f, 0, 0);
-						if (p > 0.4f && worldIn.rand.nextFloat() < 0.55f) {
+						blobEntity.moveTo(pos.getX() + 0.5f, pos.getY() + 4f / 16f, pos.getZ() + 0.5f, 0, 0);
+						if (p > 0.4f && worldIn.random.nextFloat() < 0.55f) {
 							blobEntity.setHangry();
 						}
-						worldIn.addEntity(blobEntity);
+						worldIn.addFreshEntity(blobEntity);
 					}
 				}
 			}
 			else {
 				if (level < MAX_LEVEL) {
 					level = MAX_LEVEL;
-					worldIn.setBlockState(pos, state.with(LEVEL, MAX_LEVEL), Constants.BlockFlags.BLOCK_UPDATE);
-					worldIn.playSound(null, pos, SoundEvents.BLOCK_SLIME_BLOCK_PLACE, SoundCategory.BLOCKS, 1.0F, 0.5F);
+					worldIn.setBlock(pos, state.setValue(LEVEL, MAX_LEVEL), Constants.BlockFlags.BLOCK_UPDATE);
+					worldIn.playSound(null, pos, SoundEvents.SLIME_BLOCK_PLACE, SoundCategory.BLOCKS, 1.0F, 0.5F);
 				}
 			}
 		}
@@ -132,47 +132,47 @@ public class MeatsoupCauldronBlock extends Block {
 	}
 
 	@Override
-	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
-		if (!worldIn.isRemote && entityIn instanceof ItemEntity) {
+	public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
+		if (!worldIn.isClientSide && entityIn instanceof ItemEntity) {
 			ItemStack stack = ((ItemEntity) entityIn).getItem();
 			if (!stack.isEmpty()) {
-				int level = state.get(LEVEL);
-				int flagValue = state.get(FLAGS);
+				int level = state.getValue(LEVEL);
+				int flagValue = state.getValue(FLAGS);
 				Item item = stack.getItem();
-				if (level < MAX_LEVEL - 3 && item.isIn(ModTags.Items.RAW_MEATS)) {
+				if (level < MAX_LEVEL - 3 && item.is(ModTags.Items.RAW_MEATS)) {
 					stack.grow(-1);
 					setSoupLevel(worldIn, pos, state, flagValue, level, 1);
-					worldIn.playSound(null, pos, SoundEvents.ENTITY_SLIME_SQUISH_SMALL, SoundCategory.BLOCKS, 1.0F, 0.5F);
+					worldIn.playSound(null, pos, SoundEvents.SLIME_SQUISH_SMALL, SoundCategory.BLOCKS, 1.0F, 0.5F);
 				}
 				else if (!Flags.isFlagSet(flagValue, Flags.ROTTEN_FLESH) && (item == Items.ROTTEN_FLESH || item == ModItems.MUTAGENIC_BILE.get())) {
 					stack.grow(-1);
-					worldIn.setBlockState(pos, state.with(FLAGS, Flags.setFlag(flagValue, Flags.ROTTEN_FLESH)));
-					worldIn.playSound(null, pos, SoundEvents.ENTITY_SLIME_SQUISH_SMALL, SoundCategory.BLOCKS, 1.0F, 0.5F);
+					worldIn.setBlockAndUpdate(pos, state.setValue(FLAGS, Flags.setFlag(flagValue, Flags.ROTTEN_FLESH)));
+					worldIn.playSound(null, pos, SoundEvents.SLIME_SQUISH_SMALL, SoundCategory.BLOCKS, 1.0F, 0.5F);
 				}
 				else if (!Flags.isFlagSet(flagValue, Flags.BONE_MEAL) && item instanceof BoneMealItem) {
 					stack.grow(-1);
-					worldIn.setBlockState(pos, state.with(FLAGS, Flags.setFlag(flagValue, Flags.BONE_MEAL)));
-					worldIn.playSound(null, pos, SoundEvents.ENTITY_SLIME_SQUISH_SMALL, SoundCategory.BLOCKS, 1.0F, 0.5F);
+					worldIn.setBlockAndUpdate(pos, state.setValue(FLAGS, Flags.setFlag(flagValue, Flags.BONE_MEAL)));
+					worldIn.playSound(null, pos, SoundEvents.SLIME_SQUISH_SMALL, SoundCategory.BLOCKS, 1.0F, 0.5F);
 					if (level >= MAX_LEVEL - 1) {
-						worldIn.getPendingBlockTicks().scheduleTick(pos, state.getBlock(), 55 + 1 + worldIn.rand.nextInt(20));
+						worldIn.getBlockTicks().scheduleTick(pos, state.getBlock(), 55 + 1 + worldIn.random.nextInt(20));
 					}
 				}
 				else if (level >= MAX_LEVEL - 3 && level < MAX_LEVEL - 1) {
 					if (item instanceof PotionItem || item == ModItems.REJUVENATING_MUCUS.get()) {
-						Potion potion = PotionUtils.getPotionFromItem(stack);
+						Potion potion = PotionUtils.getPotion(stack);
 						if (potion == Potions.HEALING || potion == Potions.REGENERATION || item == ModItems.REJUVENATING_MUCUS.get()) {
 							stack.grow(-1);
 							if (item != ModItems.REJUVENATING_MUCUS.get()) {
-								entityIn.entityDropItem(stack.hasContainerItem() ? stack.getContainerItem() : new ItemStack(Items.GLASS_BOTTLE));
+								entityIn.spawnAtLocation(stack.hasContainerItem() ? stack.getContainerItem() : new ItemStack(Items.GLASS_BOTTLE));
 							}
 							setSoupLevel(worldIn, pos, state, flagValue, level, 1);
-							worldIn.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1f, 1f);
+							worldIn.playSound(null, pos, SoundEvents.BOTTLE_EMPTY, SoundCategory.BLOCKS, 1f, 1f);
 						}
 						else if (potion == Potions.STRONG_HEALING || potion == Potions.STRONG_REGENERATION || potion == Potions.LONG_REGENERATION) {
 							stack.grow(-1);
-							entityIn.entityDropItem(stack.hasContainerItem() ? stack.getContainerItem() : new ItemStack(Items.GLASS_BOTTLE));
+							entityIn.spawnAtLocation(stack.hasContainerItem() ? stack.getContainerItem() : new ItemStack(Items.GLASS_BOTTLE));
 							setSoupLevel(worldIn, pos, state, flagValue, level, 2);
-							worldIn.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1f, 1f);
+							worldIn.playSound(null, pos, SoundEvents.BOTTLE_EMPTY, SoundCategory.BLOCKS, 1f, 1f);
 						}
 					}
 				}
@@ -181,101 +181,101 @@ public class MeatsoupCauldronBlock extends Block {
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		int level = state.get(LEVEL);
+	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+		int level = state.getValue(LEVEL);
 
 		if (level >= MAX_LEVEL) {
-			if (!worldIn.isRemote) {
-				worldIn.setBlockState(pos, Blocks.CAULDRON.getDefaultState());
+			if (!worldIn.isClientSide) {
+				worldIn.setBlockAndUpdate(pos, Blocks.CAULDRON.defaultBlockState());
 				ItemStack resultStack = new ItemStack(ModItems.NECROTIC_FLESH.get(), 9);
-				if (!player.addItemStackToInventory(resultStack)) {
-					spawnAsEntity(worldIn, pos.add(0d, 0.5d, 0d), resultStack);
-					worldIn.playSound(null, pos, SoundEvents.ENTITY_ITEM_FRAME_REMOVE_ITEM, SoundCategory.BLOCKS, 1.0F, 1.0F);
+				if (!player.addItem(resultStack)) {
+					popResource(worldIn, pos.offset(0d, 0.5d, 0d), resultStack);
+					worldIn.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundCategory.BLOCKS, 1.0F, 1.0F);
 				}
 			}
-			return ActionResultType.func_233537_a_(worldIn.isRemote);
+			return ActionResultType.sidedSuccess(worldIn.isClientSide);
 		}
 
-		ItemStack stack = player.getHeldItem(handIn);
+		ItemStack stack = player.getItemInHand(handIn);
 		if (!stack.isEmpty()) {
-			int flagValue = state.get(FLAGS);
+			int flagValue = state.getValue(FLAGS);
 			Item item = stack.getItem();
 			if (!Flags.isFlagSet(flagValue, Flags.ROTTEN_FLESH) && (item == Items.ROTTEN_FLESH || item == ModItems.MUTAGENIC_BILE.get())) {
-				if (!worldIn.isRemote) {
-					if (!player.abilities.isCreativeMode) {
+				if (!worldIn.isClientSide) {
+					if (!player.abilities.instabuild) {
 						stack.grow(-1);
 					}
 
-					player.addStat(Stats.USE_CAULDRON);
-					worldIn.setBlockState(pos, state.with(FLAGS, Flags.setFlag(flagValue, Flags.ROTTEN_FLESH)));
-					worldIn.playSound(null, pos, SoundEvents.ENTITY_SLIME_SQUISH_SMALL, SoundCategory.BLOCKS, 1.0F, 0.5F);
+					player.awardStat(Stats.USE_CAULDRON);
+					worldIn.setBlockAndUpdate(pos, state.setValue(FLAGS, Flags.setFlag(flagValue, Flags.ROTTEN_FLESH)));
+					worldIn.playSound(null, pos, SoundEvents.SLIME_SQUISH_SMALL, SoundCategory.BLOCKS, 1.0F, 0.5F);
 				}
 
-				return ActionResultType.func_233537_a_(worldIn.isRemote);
+				return ActionResultType.sidedSuccess(worldIn.isClientSide);
 			}
 			else if (!Flags.isFlagSet(flagValue, Flags.BONE_MEAL) && item instanceof BoneMealItem) {
-				if (!worldIn.isRemote) {
-					if (!player.abilities.isCreativeMode) {
+				if (!worldIn.isClientSide) {
+					if (!player.abilities.instabuild) {
 						stack.grow(-1);
 					}
 
-					player.addStat(Stats.USE_CAULDRON);
-					worldIn.setBlockState(pos, state.with(FLAGS, Flags.setFlag(flagValue, Flags.BONE_MEAL)));
-					worldIn.playSound(null, pos, SoundEvents.ENTITY_SLIME_SQUISH_SMALL, SoundCategory.BLOCKS, 1.0F, 0.5F);
+					player.awardStat(Stats.USE_CAULDRON);
+					worldIn.setBlockAndUpdate(pos, state.setValue(FLAGS, Flags.setFlag(flagValue, Flags.BONE_MEAL)));
+					worldIn.playSound(null, pos, SoundEvents.SLIME_SQUISH_SMALL, SoundCategory.BLOCKS, 1.0F, 0.5F);
 					if (level >= MAX_LEVEL - 1) {
-						worldIn.getPendingBlockTicks().scheduleTick(pos, state.getBlock(), 55 + 1 + worldIn.rand.nextInt(20));
+						worldIn.getBlockTicks().scheduleTick(pos, state.getBlock(), 55 + 1 + worldIn.random.nextInt(20));
 					}
 				}
 
-				return ActionResultType.func_233537_a_(worldIn.isRemote);
+				return ActionResultType.sidedSuccess(worldIn.isClientSide);
 			}
-			else if (level < MAX_LEVEL - 3 && item.isIn(ModTags.Items.RAW_MEATS)) {
-				if (!worldIn.isRemote) {
-					if (!player.abilities.isCreativeMode) {
+			else if (level < MAX_LEVEL - 3 && item.is(ModTags.Items.RAW_MEATS)) {
+				if (!worldIn.isClientSide) {
+					if (!player.abilities.instabuild) {
 						stack.grow(-1);
 					}
 
-					player.addStat(Stats.USE_CAULDRON);
+					player.awardStat(Stats.USE_CAULDRON);
 					setSoupLevel(worldIn, pos, state, flagValue, level, 1);
-					worldIn.playSound(null, pos, SoundEvents.ENTITY_SLIME_SQUISH_SMALL, SoundCategory.BLOCKS, 1.0F, 0.5F);
+					worldIn.playSound(null, pos, SoundEvents.SLIME_SQUISH_SMALL, SoundCategory.BLOCKS, 1.0F, 0.5F);
 				}
 
-				return ActionResultType.func_233537_a_(worldIn.isRemote);
+				return ActionResultType.sidedSuccess(worldIn.isClientSide);
 			}
 			else if (level >= MAX_LEVEL - 3 && level < MAX_LEVEL - 1) {
 				if (item instanceof PotionItem || item == ModItems.REJUVENATING_MUCUS.get()) {
-					Potion potion = PotionUtils.getPotionFromItem(stack);
+					Potion potion = PotionUtils.getPotion(stack);
 					if (potion == Potions.HEALING || potion == Potions.REGENERATION || item == ModItems.REJUVENATING_MUCUS.get()) {
-						if (!worldIn.isRemote) {
-							if (!player.abilities.isCreativeMode) {
+						if (!worldIn.isClientSide) {
+							if (!player.abilities.instabuild) {
 								stack.grow(-1);
 								if (stack.isEmpty() && item != ModItems.REJUVENATING_MUCUS.get()) {
-									player.setHeldItem(handIn, stack.hasContainerItem() ? stack.getContainerItem() : new ItemStack(Items.GLASS_BOTTLE));
+									player.setItemInHand(handIn, stack.hasContainerItem() ? stack.getContainerItem() : new ItemStack(Items.GLASS_BOTTLE));
 								}
 							}
 
-							player.addStat(Stats.USE_CAULDRON);
+							player.awardStat(Stats.USE_CAULDRON);
 							setSoupLevel(worldIn, pos, state, flagValue, level, 1);
-							worldIn.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+							worldIn.playSound(null, pos, SoundEvents.BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
 						}
 
-						return ActionResultType.func_233537_a_(worldIn.isRemote);
+						return ActionResultType.sidedSuccess(worldIn.isClientSide);
 					}
 					else if (potion == Potions.STRONG_HEALING || potion == Potions.STRONG_REGENERATION || potion == Potions.LONG_REGENERATION) {
-						if (!worldIn.isRemote) {
-							if (!player.abilities.isCreativeMode) {
+						if (!worldIn.isClientSide) {
+							if (!player.abilities.instabuild) {
 								stack.grow(-1);
 								if (stack.isEmpty()) {
-									player.setHeldItem(handIn, stack.hasContainerItem() ? stack.getContainerItem() : new ItemStack(Items.GLASS_BOTTLE));
+									player.setItemInHand(handIn, stack.hasContainerItem() ? stack.getContainerItem() : new ItemStack(Items.GLASS_BOTTLE));
 								}
 							}
 
-							player.addStat(Stats.USE_CAULDRON);
+							player.awardStat(Stats.USE_CAULDRON);
 							setSoupLevel(worldIn, pos, state, flagValue, level, 2);
-							worldIn.playSound(null, pos, SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
+							worldIn.playSound(null, pos, SoundEvents.BOTTLE_EMPTY, SoundCategory.BLOCKS, 1.0F, 1.0F);
 						}
 
-						return ActionResultType.func_233537_a_(worldIn.isRemote);
+						return ActionResultType.sidedSuccess(worldIn.isClientSide);
 					}
 				}
 			}
@@ -287,7 +287,7 @@ public class MeatsoupCauldronBlock extends Block {
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
 		if (rand.nextInt(4) == 0) {
-			int level = stateIn.get(LEVEL);
+			int level = stateIn.getValue(LEVEL);
 			if (level > MAX_LEVEL - 3) {
 				BlockState blockstate = worldIn.getBlockState(pos);
 				double yOffset = blockstate.getShape(worldIn, pos).max(Direction.Axis.Y, 0.5d, 0.5d) + 0.03125d;
@@ -304,22 +304,22 @@ public class MeatsoupCauldronBlock extends Block {
 	}
 
 	@Override
-	public VoxelShape getRaytraceShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
+	public VoxelShape getInteractionShape(BlockState state, IBlockReader worldIn, BlockPos pos) {
 		return INSIDE;
 	}
 
 	@Override
-	public boolean hasComparatorInputOverride(BlockState state) {
+	public boolean hasAnalogOutputSignal(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
-		return blockState.get(LEVEL);
+	public int getAnalogOutputSignal(BlockState blockState, World worldIn, BlockPos pos) {
+		return blockState.getValue(LEVEL);
 	}
 
 	@Override
-	public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
+	public boolean isPathfindable(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
 		return false;
 	}
 

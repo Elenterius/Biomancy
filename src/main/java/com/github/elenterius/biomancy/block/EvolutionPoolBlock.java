@@ -51,44 +51,44 @@ public class EvolutionPoolBlock extends OwnableContainerBlock {
 	public static final BooleanProperty CONTROLLER = BooleanProperty.create("controller");
 	public static final Direction8[] SORTED_POS_OFFSETS = new Direction8[]{Direction8.NORTH, Direction8.SOUTH, Direction8.WEST, Direction8.EAST, Direction8.NORTH_WEST, Direction8.NORTH_WEST, Direction8.SOUTH_WEST, Direction8.SOUTH_EAST};
 
-	public static final VoxelShape FLOOR_SHAPE = Block.makeCuboidShape(0, 0, 0, 16, 3, 16);
-	public static final VoxelShape SE_CORNER_SHAPE = VoxelShapes.combineAndSimplify(
-			Block.makeCuboidShape(0, 3, 0, 12, 16, 12), VoxelShapes.fullCube(), IBooleanFunction.ONLY_SECOND);
-	public static final VoxelShape SW_CORNER_SHAPE = VoxelShapes.combineAndSimplify(
-			Block.makeCuboidShape(4, 3, 0, 16, 16, 12), VoxelShapes.fullCube(), IBooleanFunction.ONLY_SECOND);
-	public static final VoxelShape NE_CORNER_SHAPE = VoxelShapes.combineAndSimplify(
-			Block.makeCuboidShape(0, 3, 4, 12, 16, 16), VoxelShapes.fullCube(), IBooleanFunction.ONLY_SECOND);
-	public static final VoxelShape NW_CORNER_SHAPE = VoxelShapes.combineAndSimplify(
-			Block.makeCuboidShape(4, 3, 4, 16, 16, 16), VoxelShapes.fullCube(), IBooleanFunction.ONLY_SECOND);
+	public static final VoxelShape FLOOR_SHAPE = Block.box(0, 0, 0, 16, 3, 16);
+	public static final VoxelShape SE_CORNER_SHAPE = VoxelShapes.join(
+			Block.box(0, 3, 0, 12, 16, 12), VoxelShapes.block(), IBooleanFunction.ONLY_SECOND);
+	public static final VoxelShape SW_CORNER_SHAPE = VoxelShapes.join(
+			Block.box(4, 3, 0, 16, 16, 12), VoxelShapes.block(), IBooleanFunction.ONLY_SECOND);
+	public static final VoxelShape NE_CORNER_SHAPE = VoxelShapes.join(
+			Block.box(0, 3, 4, 12, 16, 16), VoxelShapes.block(), IBooleanFunction.ONLY_SECOND);
+	public static final VoxelShape NW_CORNER_SHAPE = VoxelShapes.join(
+			Block.box(4, 3, 4, 16, 16, 16), VoxelShapes.block(), IBooleanFunction.ONLY_SECOND);
 
-	public static final VoxelShape EAST_WALL_SHAPE = VoxelShapes.combineAndSimplify(
-			Block.makeCuboidShape(0, 3, 0, 12, 16, 16), VoxelShapes.fullCube(), IBooleanFunction.ONLY_SECOND);
-	public static final VoxelShape WEST_WALL_SHAPE = VoxelShapes.combineAndSimplify(
-			Block.makeCuboidShape(4, 3, 0, 16, 16, 16), VoxelShapes.fullCube(), IBooleanFunction.ONLY_SECOND);
-	public static final VoxelShape NORTH_WALL_SHAPE = VoxelShapes.combineAndSimplify(
-			Block.makeCuboidShape(0, 3, 4, 16, 16, 16), VoxelShapes.fullCube(), IBooleanFunction.ONLY_SECOND);
-	public static final VoxelShape SOUTH_WALL_SHAPE = VoxelShapes.combineAndSimplify(
-			Block.makeCuboidShape(0, 3, 0, 16, 16, 12), VoxelShapes.fullCube(), IBooleanFunction.ONLY_SECOND);
+	public static final VoxelShape EAST_WALL_SHAPE = VoxelShapes.join(
+			Block.box(0, 3, 0, 12, 16, 16), VoxelShapes.block(), IBooleanFunction.ONLY_SECOND);
+	public static final VoxelShape WEST_WALL_SHAPE = VoxelShapes.join(
+			Block.box(4, 3, 0, 16, 16, 16), VoxelShapes.block(), IBooleanFunction.ONLY_SECOND);
+	public static final VoxelShape NORTH_WALL_SHAPE = VoxelShapes.join(
+			Block.box(0, 3, 4, 16, 16, 16), VoxelShapes.block(), IBooleanFunction.ONLY_SECOND);
+	public static final VoxelShape SOUTH_WALL_SHAPE = VoxelShapes.join(
+			Block.box(0, 3, 0, 16, 16, 12), VoxelShapes.block(), IBooleanFunction.ONLY_SECOND);
 
 	public EvolutionPoolBlock(Properties properties) {
 		super(properties);
-		setDefaultState(stateContainer.getBaseState().with(MULTI_BLOCK_PART, MultiBlockPart.MIDDLE).with(CONTROLLER, false).with(MachineBlock.CRAFTING, false));
+		registerDefaultState(stateDefinition.any().setValue(MULTI_BLOCK_PART, MultiBlockPart.MIDDLE).setValue(CONTROLLER, false).setValue(MachineBlock.CRAFTING, false));
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(MULTI_BLOCK_PART, CONTROLLER, MachineBlock.CRAFTING);
 	}
 
 	@Nullable
 	@Override
 	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
-		return state.get(CONTROLLER) ? new EvolutionPoolTileEntity() : new OwnableTileEntityDelegator();
+		return state.getValue(CONTROLLER) ? new EvolutionPoolTileEntity() : new OwnableTileEntityDelegator();
 	}
 
 	@Nullable
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader worldIn) {
+	public TileEntity newBlockEntity(IBlockReader worldIn) {
 		return new OwnableTileEntityDelegator();
 	}
 
@@ -99,8 +99,8 @@ public class EvolutionPoolBlock extends OwnableContainerBlock {
 
 	@Nullable
 	@Override
-	public INamedContainerProvider getContainer(BlockState state, World worldIn, BlockPos pos) {
-		TileEntity tile = worldIn.getTileEntity(pos);
+	public INamedContainerProvider getMenuProvider(BlockState state, World worldIn, BlockPos pos) {
+		TileEntity tile = worldIn.getBlockEntity(pos);
 		if (tile instanceof OwnableTileEntityDelegator) {
 			tile = ((OwnableTileEntityDelegator) tile).getDelegate();
 		}
@@ -108,10 +108,10 @@ public class EvolutionPoolBlock extends OwnableContainerBlock {
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		if (worldIn.isRemote()) return ActionResultType.SUCCESS;
+	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+		if (worldIn.isClientSide()) return ActionResultType.SUCCESS;
 
-		INamedContainerProvider containerProvider = getContainer(state, worldIn, pos);
+		INamedContainerProvider containerProvider = getMenuProvider(state, worldIn, pos);
 		if (containerProvider != null && player instanceof ServerPlayerEntity) {
 			ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
 			NetworkHooks.openGui(serverPlayerEntity, containerProvider, (packetBuffer) -> {});
@@ -122,8 +122,8 @@ public class EvolutionPoolBlock extends OwnableContainerBlock {
 	}
 
 	@Override
-	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-		TileEntity tile = worldIn.getTileEntity(pos);
+	public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+		TileEntity tile = worldIn.getBlockEntity(pos);
 		if (tile instanceof OwnableTileEntityDelegator) {
 			TileEntity delegate = ((OwnableTileEntityDelegator) tile).getDelegate();
 			if (delegate instanceof EvolutionPoolTileEntity) {
@@ -133,13 +133,13 @@ public class EvolutionPoolBlock extends OwnableContainerBlock {
 		else if (tile instanceof EvolutionPoolTileEntity) {
 			((EvolutionPoolTileEntity) tile).scheduleMultiBlockDeconstruction(true);
 		}
-		worldIn.playEvent(player, 2001, pos, getStateId(state));
+		worldIn.levelEvent(player, 2001, pos, getId(state));
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+	public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() != newState.getBlock()) {
-			TileEntity tile = worldIn.getTileEntity(pos);
+			TileEntity tile = worldIn.getBlockEntity(pos);
 			if (tile instanceof OwnableTileEntityDelegator) {
 				TileEntity delegate = ((OwnableTileEntityDelegator) tile).getDelegate();
 				if (delegate instanceof EvolutionPoolTileEntity) {
@@ -150,16 +150,16 @@ public class EvolutionPoolBlock extends OwnableContainerBlock {
 				((EvolutionPoolTileEntity) tile).dropAllInvContents(worldIn, pos);
 				((EvolutionPoolTileEntity) tile).scheduleMultiBlockDeconstruction(true);
 			}
-			if (state.get(MachineBlock.CRAFTING)) {
-				worldIn.updateComparatorOutputLevel(pos, this);
+			if (state.getValue(MachineBlock.CRAFTING)) {
+				worldIn.updateNeighbourForOutputSignal(pos, this);
 			}
-			super.onReplaced(state, worldIn, pos, newState, isMoving);
+			super.onRemove(state, worldIn, pos, newState, isMoving);
 		}
 	}
 
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-		TileEntity tile = worldIn.getTileEntity(pos);
+		TileEntity tile = worldIn.getBlockEntity(pos);
 		if (tile instanceof OwnableTileEntityDelegator) {
 			TileEntity delegate = ((OwnableTileEntityDelegator) tile).getDelegate();
 			if (delegate == null) {
@@ -175,42 +175,42 @@ public class EvolutionPoolBlock extends OwnableContainerBlock {
 
 	public static boolean tryToCreate2x2EvolutionPool(World world, BlockState stateIn, BlockPos pos1) {
 		if (isValidStairsBlock(stateIn)) {
-			final StairsShape stairsShape = stateIn.get(StairsBlock.SHAPE);
+			final StairsShape stairsShape = stateIn.getValue(StairsBlock.SHAPE);
 			if (stairsShape == StairsShape.INNER_LEFT || stairsShape == StairsShape.INNER_RIGHT) { // 1
-				Direction direction1 = stateIn.get(StairsBlock.FACING).getOpposite();
-				BlockPos pos2 = pos1.offset(direction1);
+				Direction direction1 = stateIn.getValue(StairsBlock.FACING).getOpposite();
+				BlockPos pos2 = pos1.relative(direction1);
 				BlockState nextState = world.getBlockState(pos2);
 				if (isValidStairsBlock(nextState, stairsShape)) { // 2
-					Direction direction2 = nextState.get(StairsBlock.FACING).getOpposite();
-					BlockPos pos3 = pos2.offset(direction2);
+					Direction direction2 = nextState.getValue(StairsBlock.FACING).getOpposite();
+					BlockPos pos3 = pos2.relative(direction2);
 					nextState = world.getBlockState(pos3);
 					if (isValidStairsBlock(nextState, stairsShape)) { // 3
-						Direction direction3 = nextState.get(StairsBlock.FACING).getOpposite();
-						BlockPos pos4 = pos3.offset(direction3);
+						Direction direction3 = nextState.getValue(StairsBlock.FACING).getOpposite();
+						BlockPos pos4 = pos3.relative(direction3);
 						nextState = world.getBlockState(pos4);
 						if (isValidStairsBlock(nextState, stairsShape)) { // 4
-							Direction direction4 = nextState.get(StairsBlock.FACING).getOpposite();
-							if (pos4.offset(direction4).equals(pos1)) {
-								world.setBlockState(pos1, getBlockStateFor(stairsShape, direction1).with(CONTROLLER, true), BLOCK_UPDATE_FLAG);
-								world.setBlockState(pos2, getBlockStateFor(stairsShape, direction2), BLOCK_UPDATE_FLAG);
-								world.setBlockState(pos3, getBlockStateFor(stairsShape, direction3), BLOCK_UPDATE_FLAG);
-								world.setBlockState(pos4, getBlockStateFor(stairsShape, direction4), BLOCK_UPDATE_FLAG);
-								TileEntity mainTile = world.getTileEntity(pos1);
-								TileEntity subTile = world.getTileEntity(pos2);
+							Direction direction4 = nextState.getValue(StairsBlock.FACING).getOpposite();
+							if (pos4.relative(direction4).equals(pos1)) {
+								world.setBlock(pos1, getBlockStateFor(stairsShape, direction1).setValue(CONTROLLER, true), BLOCK_UPDATE_FLAG);
+								world.setBlock(pos2, getBlockStateFor(stairsShape, direction2), BLOCK_UPDATE_FLAG);
+								world.setBlock(pos3, getBlockStateFor(stairsShape, direction3), BLOCK_UPDATE_FLAG);
+								world.setBlock(pos4, getBlockStateFor(stairsShape, direction4), BLOCK_UPDATE_FLAG);
+								TileEntity mainTile = world.getBlockEntity(pos1);
+								TileEntity subTile = world.getBlockEntity(pos2);
 								if (subTile instanceof OwnableTileEntityDelegator) {
 									((OwnableTileEntityDelegator) subTile).setDelegate(mainTile);
 									if (mainTile instanceof EvolutionPoolTileEntity) {
 										((EvolutionPoolTileEntity) mainTile).addSubTile((OwnableTileEntityDelegator) subTile);
 									}
 								}
-								subTile = world.getTileEntity(pos3);
+								subTile = world.getBlockEntity(pos3);
 								if (subTile instanceof OwnableTileEntityDelegator) {
 									((OwnableTileEntityDelegator) subTile).setDelegate(mainTile);
 									if (mainTile instanceof EvolutionPoolTileEntity) {
 										((EvolutionPoolTileEntity) mainTile).addSubTile((OwnableTileEntityDelegator) subTile);
 									}
 								}
-								subTile = world.getTileEntity(pos4);
+								subTile = world.getBlockEntity(pos4);
 								if (subTile instanceof OwnableTileEntityDelegator) {
 									((OwnableTileEntityDelegator) subTile).setDelegate(mainTile);
 									if (mainTile instanceof EvolutionPoolTileEntity) {
@@ -232,42 +232,42 @@ public class EvolutionPoolBlock extends OwnableContainerBlock {
 	}
 
 	public static void revertMultiBlockPart(World world, BlockState state, BlockPos pos) {
-		if (!state.matchesBlock(ModBlocks.EVOLUTION_POOL.get())) return;
+		if (!state.is(ModBlocks.EVOLUTION_POOL.get())) return;
 
-		EvolutionPoolBlock.MultiBlockPart multiBlockPart = state.get(EvolutionPoolBlock.MULTI_BLOCK_PART);
+		EvolutionPoolBlock.MultiBlockPart multiBlockPart = state.getValue(EvolutionPoolBlock.MULTI_BLOCK_PART);
 		switch (multiBlockPart) {
 			case NORTH_WEST_CORNER:
-				world.setBlockState(pos, ModBlocks.FLESH_BLOCK_STAIRS.get().getDefaultState().with(StairsBlock.SHAPE, StairsShape.INNER_LEFT).with(StairsBlock.FACING, Direction.NORTH), BLOCK_UPDATE_FLAG);
+				world.setBlock(pos, ModBlocks.FLESH_BLOCK_STAIRS.get().defaultBlockState().setValue(StairsBlock.SHAPE, StairsShape.INNER_LEFT).setValue(StairsBlock.FACING, Direction.NORTH), BLOCK_UPDATE_FLAG);
 				break;
 			case NORTH_WALL:
-				world.setBlockState(pos, ModBlocks.FLESH_BLOCK_STAIRS.get().getDefaultState().with(StairsBlock.FACING, Direction.NORTH), BLOCK_UPDATE_FLAG);
+				world.setBlock(pos, ModBlocks.FLESH_BLOCK_STAIRS.get().defaultBlockState().setValue(StairsBlock.FACING, Direction.NORTH), BLOCK_UPDATE_FLAG);
 				break;
 			case NORTH_EAST_CORNER:
-				world.setBlockState(pos, ModBlocks.FLESH_BLOCK_STAIRS.get().getDefaultState().with(StairsBlock.SHAPE, StairsShape.INNER_LEFT).with(StairsBlock.FACING, Direction.EAST), BLOCK_UPDATE_FLAG);
+				world.setBlock(pos, ModBlocks.FLESH_BLOCK_STAIRS.get().defaultBlockState().setValue(StairsBlock.SHAPE, StairsShape.INNER_LEFT).setValue(StairsBlock.FACING, Direction.EAST), BLOCK_UPDATE_FLAG);
 				break;
 			case EAST_WALL:
-				world.setBlockState(pos, ModBlocks.FLESH_BLOCK_STAIRS.get().getDefaultState().with(StairsBlock.FACING, Direction.EAST), BLOCK_UPDATE_FLAG);
+				world.setBlock(pos, ModBlocks.FLESH_BLOCK_STAIRS.get().defaultBlockState().setValue(StairsBlock.FACING, Direction.EAST), BLOCK_UPDATE_FLAG);
 				break;
 			case SOUTH_EAST_CORNER:
-				world.setBlockState(pos, ModBlocks.FLESH_BLOCK_STAIRS.get().getDefaultState().with(StairsBlock.SHAPE, StairsShape.INNER_LEFT).with(StairsBlock.FACING, Direction.SOUTH), BLOCK_UPDATE_FLAG);
+				world.setBlock(pos, ModBlocks.FLESH_BLOCK_STAIRS.get().defaultBlockState().setValue(StairsBlock.SHAPE, StairsShape.INNER_LEFT).setValue(StairsBlock.FACING, Direction.SOUTH), BLOCK_UPDATE_FLAG);
 				break;
 			case SOUTH_WALL:
-				world.setBlockState(pos, ModBlocks.FLESH_BLOCK_STAIRS.get().getDefaultState().with(StairsBlock.FACING, Direction.SOUTH), BLOCK_UPDATE_FLAG);
+				world.setBlock(pos, ModBlocks.FLESH_BLOCK_STAIRS.get().defaultBlockState().setValue(StairsBlock.FACING, Direction.SOUTH), BLOCK_UPDATE_FLAG);
 				break;
 			case SOUTH_WEST_CORNER:
-				world.setBlockState(pos, ModBlocks.FLESH_BLOCK_STAIRS.get().getDefaultState().with(StairsBlock.SHAPE, StairsShape.INNER_LEFT).with(StairsBlock.FACING, Direction.WEST), BLOCK_UPDATE_FLAG);
+				world.setBlock(pos, ModBlocks.FLESH_BLOCK_STAIRS.get().defaultBlockState().setValue(StairsBlock.SHAPE, StairsShape.INNER_LEFT).setValue(StairsBlock.FACING, Direction.WEST), BLOCK_UPDATE_FLAG);
 				break;
 			case WEST_WALL:
-				world.setBlockState(pos, ModBlocks.FLESH_BLOCK_STAIRS.get().getDefaultState().with(StairsBlock.FACING, Direction.WEST), BLOCK_UPDATE_FLAG);
+				world.setBlock(pos, ModBlocks.FLESH_BLOCK_STAIRS.get().defaultBlockState().setValue(StairsBlock.FACING, Direction.WEST), BLOCK_UPDATE_FLAG);
 				break;
 			case MIDDLE:
-				world.setBlockState(pos, ModBlocks.FLESH_BLOCK_SLAB.get().getDefaultState(), BLOCK_UPDATE_FLAG);
+				world.setBlock(pos, ModBlocks.FLESH_BLOCK_SLAB.get().defaultBlockState(), BLOCK_UPDATE_FLAG);
 				break;
 		}
 	}
 
 	public static BlockState getBlockStateFor(StairsShape stairsShape, Direction direction) {
-		BlockState defaultState = ModBlocks.EVOLUTION_POOL.get().getDefaultState();
+		BlockState defaultState = ModBlocks.EVOLUTION_POOL.get().defaultBlockState();
 		EvolutionPoolBlock.MultiBlockPart multiBlockPart = MultiBlockPart.MIDDLE;
 		switch (direction) {
 			case NORTH:
@@ -286,22 +286,22 @@ public class EvolutionPoolBlock extends OwnableContainerBlock {
 			default:
 				break;
 		}
-		return defaultState.with(EvolutionPoolBlock.MULTI_BLOCK_PART, multiBlockPart);
+		return defaultState.setValue(EvolutionPoolBlock.MULTI_BLOCK_PART, multiBlockPart);
 	}
 
 	public static boolean isValidStairsBlock(BlockState stateIn) {
-		return stateIn.matchesBlock(ModBlocks.FLESH_BLOCK_STAIRS.get()) && stateIn.get(StairsBlock.HALF) == Half.BOTTOM;
+		return stateIn.is(ModBlocks.FLESH_BLOCK_STAIRS.get()) && stateIn.getValue(StairsBlock.HALF) == Half.BOTTOM;
 	}
 
 	public static boolean isValidStairsBlock(BlockState stateIn, StairsShape stairsShapeIn) {
-		return stateIn.matchesBlock(ModBlocks.FLESH_BLOCK_STAIRS.get()) && stateIn.get(StairsBlock.HALF) == Half.BOTTOM && stateIn.get(StairsBlock.SHAPE) == stairsShapeIn;
+		return stateIn.is(ModBlocks.FLESH_BLOCK_STAIRS.get()) && stateIn.getValue(StairsBlock.HALF) == Half.BOTTOM && stateIn.getValue(StairsBlock.SHAPE) == stairsShapeIn;
 	}
 
-	public void onEntityCollision(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
-		if (!worldIn.isRemote && entityIn instanceof ItemEntity && worldIn.getGameTime() % 10 == 0) {
+	public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entityIn) {
+		if (!worldIn.isClientSide && entityIn instanceof ItemEntity && worldIn.getGameTime() % 10 == 0) {
 			ItemStack stack = ((ItemEntity) entityIn).getItem();
 			if (!stack.isEmpty()) {
-				TileEntity tile = worldIn.getTileEntity(pos);
+				TileEntity tile = worldIn.getBlockEntity(pos);
 				if (tile instanceof OwnableTileEntityDelegator) {
 					tile = ((OwnableTileEntityDelegator) tile).getDelegate();
 				}
@@ -323,7 +323,7 @@ public class EvolutionPoolBlock extends OwnableContainerBlock {
 								}
 							}
 							if (remainder.getCount() != stack.getCount()) {
-								worldIn.playSound(entityIn.getPosX(), entityIn.getPosY(), entityIn.getPosZ(), SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.5f, 1f, false);
+								worldIn.playLocalSound(entityIn.getX(), entityIn.getY(), entityIn.getZ(), SoundEvents.ITEM_PICKUP, SoundCategory.BLOCKS, 0.5f, 1f, false);
 								((ItemEntity) entityIn).setItem(remainder);
 							}
 						});
@@ -334,18 +334,18 @@ public class EvolutionPoolBlock extends OwnableContainerBlock {
 	}
 
 	@Override
-	public boolean hasComparatorInputOverride(BlockState state) {
+	public boolean hasAnalogOutputSignal(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
-		return blockState.get(MachineBlock.CRAFTING) ? 15 : 0;
+	public int getAnalogOutputSignal(BlockState blockState, World worldIn, BlockPos pos) {
+		return blockState.getValue(MachineBlock.CRAFTING) ? 15 : 0;
 	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		MultiBlockPart part = state.get(MULTI_BLOCK_PART);
+		MultiBlockPart part = state.getValue(MULTI_BLOCK_PART);
 		switch (part) {
 			case NORTH_WEST_CORNER:
 				return NW_CORNER_SHAPE;
@@ -366,17 +366,17 @@ public class EvolutionPoolBlock extends OwnableContainerBlock {
 			case MIDDLE:
 				return FLOOR_SHAPE;
 		}
-		return VoxelShapes.fullCube();
+		return VoxelShapes.block();
 	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
 		if (rand.nextInt(4) == 0) {
-			boolean isCrafting = stateIn.get(MachineBlock.CRAFTING);
+			boolean isCrafting = stateIn.getValue(MachineBlock.CRAFTING);
 			if (isCrafting) {
 				int n = rand.nextInt(5);
-				MultiBlockPart part = stateIn.get(MULTI_BLOCK_PART);
+				MultiBlockPart part = stateIn.getValue(MULTI_BLOCK_PART);
 				double zOffset = part == MultiBlockPart.NORTH_EAST_CORNER || part == MultiBlockPart.NORTH_WEST_CORNER ? 1d : 0d;
 				double xOffset = part == MultiBlockPart.NORTH_WEST_CORNER || part == MultiBlockPart.SOUTH_WEST_CORNER ? 1d : 0d;
 
@@ -384,22 +384,22 @@ public class EvolutionPoolBlock extends OwnableContainerBlock {
 					worldIn.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + xOffset + 0.75f * rand.nextFloat() - 0.3525d, pos.getY() + 0.3d, pos.getZ() + zOffset + 0.75f * rand.nextFloat() - 0.3525d, 1.376f, 1.588f, 1.227f);
 				}
 				if (n > 0 && rand.nextInt(4) == 0) {
-					worldIn.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_TROPICAL_FISH_FLOP, SoundCategory.BLOCKS, 0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
+					worldIn.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.TROPICAL_FISH_FLOP, SoundCategory.BLOCKS, 0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
 				}
 			}
 		}
 
 		if (rand.nextInt(200) == 0) {
-			worldIn.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_LAVA_AMBIENT, SoundCategory.BLOCKS, 0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
+			worldIn.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.LAVA_AMBIENT, SoundCategory.BLOCKS, 0.2F + rand.nextFloat() * 0.2F, 0.9F + rand.nextFloat() * 0.15F, false);
 		}
 	}
 
 	@Override
-	public BlockRenderType getRenderType(BlockState state) {
+	public BlockRenderType getRenderShape(BlockState state) {
 		return BlockRenderType.MODEL;
 	}
 
-	public boolean isTransparent(BlockState state) {
+	public boolean useShapeForLightOcclusion(BlockState state) {
 		return true;
 	}
 
@@ -424,7 +424,7 @@ public class EvolutionPoolBlock extends OwnableContainerBlock {
 		MultiBlockPart(String name) {this.name = name;}
 
 		@Override
-		public String getString() {
+		public String getSerializedName() {
 			return name;
 		}
 	}

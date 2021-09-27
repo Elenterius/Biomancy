@@ -43,7 +43,7 @@ public class SolidifierRecipe extends AbstractProductionRecipe.FluidInput {
 	}
 
 	@Override
-	public ItemStack getRecipeOutput() {
+	public ItemStack getResultItem() {
 		return result;
 	}
 
@@ -60,27 +60,27 @@ public class SolidifierRecipe extends AbstractProductionRecipe.FluidInput {
 	public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<SolidifierRecipe> {
 
 		@Override
-		public SolidifierRecipe read(ResourceLocation recipeId, JsonObject json) {
-			FluidIngredient fluidIngredient = FluidIngredient.deserialize(JSONUtils.getJsonObject(json, "ingredient"));
-			ItemStack resultStack = ShapedRecipe.deserializeItem(JSONUtils.getJsonObject(json, "result"));
-			int time = JSONUtils.getInt(json, "time", 100);
+		public SolidifierRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
+			FluidIngredient fluidIngredient = FluidIngredient.deserialize(JSONUtils.getAsJsonObject(json, "ingredient"));
+			ItemStack resultStack = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "result"));
+			int time = JSONUtils.getAsInt(json, "time", 100);
 			return new SolidifierRecipe(recipeId, resultStack, time, fluidIngredient);
 		}
 
 		@Nullable
 		@Override
-		public SolidifierRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
+		public SolidifierRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer) {
 			//client side
-			ItemStack resultStack = buffer.readItemStack();
+			ItemStack resultStack = buffer.readItem();
 			FluidIngredient fluidIngredient = FluidIngredient.read(buffer);
 			int time = buffer.readVarInt();
 			return new SolidifierRecipe(recipeId, resultStack, time, fluidIngredient);
 		}
 
 		@Override
-		public void write(PacketBuffer buffer, SolidifierRecipe recipe) {
+		public void toNetwork(PacketBuffer buffer, SolidifierRecipe recipe) {
 			//server side
-			buffer.writeItemStack(recipe.result);
+			buffer.writeItem(recipe.result);
 			recipe.fluidIngredient.write(buffer);
 			buffer.writeVarInt(recipe.getCraftingTime());
 		}

@@ -25,10 +25,10 @@ public class SewingKitRepairRecipe extends SpecialRecipe {
 		int repairCount = 0, damagedSewingKit = 0;
 
 		//find sewing kit first
-		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			ItemStack stack = inv.getStackInSlot(i);
+		for (int i = 0; i < inv.getContainerSize(); i++) {
+			ItemStack stack = inv.getItem(i);
 			if (!stack.isEmpty() && stack.getItem() instanceof SewingKitItem) {
-				if (stack.getDamage() == 0 || ++damagedSewingKit > 1) return false;
+				if (stack.getDamageValue() == 0 || ++damagedSewingKit > 1) return false;
 				sewingKitStack = stack;
 			}
 		}
@@ -36,8 +36,8 @@ public class SewingKitRepairRecipe extends SpecialRecipe {
 		//find valid repair material
 		if (sewingKitStack.isEmpty() || !(sewingKitStack.getItem() instanceof SewingKitItem)) return false;
 		SewingKitItem item = (SewingKitItem) sewingKitStack.getItem();
-		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			ItemStack stack = inv.getStackInSlot(i);
+		for (int i = 0; i < inv.getContainerSize(); i++) {
+			ItemStack stack = inv.getItem(i);
 			if (!stack.isEmpty() && !(stack.getItem() instanceof SewingKitItem)) {
 				if (!item.isRepairableWith(sewingKitStack, stack) || ++repairCount > maxRepairCount) return false;
 			}
@@ -48,10 +48,10 @@ public class SewingKitRepairRecipe extends SpecialRecipe {
 
 	@Override
 	public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv) {
-		NonNullList<ItemStack> list = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
+		NonNullList<ItemStack> list = NonNullList.withSize(inv.getContainerSize(), ItemStack.EMPTY);
 
 		for (int i = 0; i < list.size(); ++i) {
-			ItemStack stack = inv.getStackInSlot(i);
+			ItemStack stack = inv.getItem(i);
 			if (stack.hasContainerItem() && !(stack.getItem() instanceof SewingKitItem)) {
 				list.set(i, stack.getContainerItem());
 			}
@@ -61,11 +61,11 @@ public class SewingKitRepairRecipe extends SpecialRecipe {
 	}
 
 	@Override
-	public ItemStack getCraftingResult(CraftingInventory inv) {
+	public ItemStack assemble(CraftingInventory inv) {
 		ItemStack damagedSewingKit = ItemStack.EMPTY;
 		int itemCount = 0;
-		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			ItemStack stack = inv.getStackInSlot(i);
+		for (int i = 0; i < inv.getContainerSize(); i++) {
+			ItemStack stack = inv.getItem(i);
 			if (!stack.isEmpty()) {
 				if (stack.getItem() instanceof SewingKitItem) {
 					damagedSewingKit = stack;
@@ -80,13 +80,13 @@ public class SewingKitRepairRecipe extends SpecialRecipe {
 
 		if (itemCount > 0) {
 			int repairPerItem = MathHelper.floor(damagedSewingKit.getMaxDamage() / (float) maxRepairCount);
-			int damage = damagedSewingKit.getDamage() - itemCount * repairPerItem;
+			int damage = damagedSewingKit.getDamageValue() - itemCount * repairPerItem;
 			if (damage < -repairPerItem) { // protect player against too much over-repair
 				return ItemStack.EMPTY;
 			}
 
 			ItemStack stack = damagedSewingKit.copy();
-			stack.setDamage(damage);
+			stack.setDamageValue(damage);
 			return stack;
 		}
 		else {
@@ -95,7 +95,7 @@ public class SewingKitRepairRecipe extends SpecialRecipe {
 	}
 
 	@Override
-	public boolean canFit(int width, int height) {
+	public boolean canCraftInDimensions(int width, int height) {
 		return width * height >= 2;
 	}
 

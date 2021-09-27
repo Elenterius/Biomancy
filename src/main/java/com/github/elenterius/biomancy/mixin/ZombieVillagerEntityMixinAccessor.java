@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(ZombieVillagerEntity.class)
 public interface ZombieVillagerEntityMixinAccessor {
 
-	@Invoker("cureZombie")
+	@Invoker("finishConversion")
 	void biomancy_cureZombie(ServerWorld world);
 
 }

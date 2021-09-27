@@ -27,11 +27,11 @@ public class AddPotionToBoomlingGunRecipe extends SpecialRecipe {
 		Potion storedPotion = Potions.EMPTY;
 		Potion otherPotion = Potions.EMPTY;
 
-		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			ItemStack stack = inv.getStackInSlot(i);
+		for (int i = 0; i < inv.getContainerSize(); i++) {
+			ItemStack stack = inv.getItem(i);
 			if (!stack.isEmpty()) {
 				if (stack.getItem() instanceof BoomlingHiveGunItem) {
-					storedPotion = PotionUtilExt.getPotionFromItem(stack);
+					storedPotion = PotionUtilExt.getPotion(stack);
 					if (((BoomlingHiveGunItem) stack.getItem()).getPotionCount(stack) >= BoomlingHiveGunItem.MAX_POTION_COUNT) return false;
 					if (++gun > 1) return false;
 				}
@@ -40,7 +40,7 @@ public class AddPotionToBoomlingGunRecipe extends SpecialRecipe {
 				}
 				else {
 					if (++potions > 1) return false;
-					otherPotion = PotionUtilExt.getPotionFromItem(stack);
+					otherPotion = PotionUtilExt.getPotion(stack);
 				}
 			}
 		}
@@ -53,11 +53,11 @@ public class AddPotionToBoomlingGunRecipe extends SpecialRecipe {
 	}
 
 	@Override
-	public ItemStack getCraftingResult(CraftingInventory inv) {
+	public ItemStack assemble(CraftingInventory inv) {
 		ItemStack gunStack = ItemStack.EMPTY;
 		ItemStack potionStack = ItemStack.EMPTY;
-		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			ItemStack stack = inv.getStackInSlot(i);
+		for (int i = 0; i < inv.getContainerSize(); i++) {
+			ItemStack stack = inv.getItem(i);
 			if (!stack.isEmpty()) {
 				if (stack.getItem() instanceof BoomlingHiveGunItem) gunStack = stack;
 				else potionStack = stack;
@@ -71,7 +71,7 @@ public class AddPotionToBoomlingGunRecipe extends SpecialRecipe {
 				PotionUtilExt.setPotionOfHost(stack, potionStack);
 				ModItems.BOOMLING_HIVE_GUN.get().setPotionCount(stack, 1);
 			}
-			else if (ItemStack.areItemStackTagsEqual(storedPotionStack, potionStack)) {
+			else if (ItemStack.tagMatches(storedPotionStack, potionStack)) {
 				PotionUtilExt.setPotionOfHost(stack, potionStack);
 				ModItems.BOOMLING_HIVE_GUN.get().growPotionCount(stack, 1);
 			}
@@ -86,7 +86,7 @@ public class AddPotionToBoomlingGunRecipe extends SpecialRecipe {
 	}
 
 	@Override
-	public boolean canFit(int width, int height) {
+	public boolean canCraftInDimensions(int width, int height) {
 		return width * height >= 2;
 	}
 

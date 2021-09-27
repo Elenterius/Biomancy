@@ -20,29 +20,29 @@ public class FailedCowEntity extends CowEntity {
 	}
 
 	@Override
-	public ActionResultType getEntityInteractionResult(PlayerEntity playerIn, Hand hand) {
-		ItemStack itemstack = playerIn.getHeldItem(hand);
+	public ActionResultType mobInteract(PlayerEntity playerIn, Hand hand) {
+		ItemStack itemstack = playerIn.getItemInHand(hand);
 		if (itemstack.getItem() == Items.BUCKET) {
 			return ActionResultType.PASS;
 		}
-		return super.getEntityInteractionResult(playerIn, hand);
+		return super.mobInteract(playerIn, hand);
 	}
 
 	@Override
-	protected float getSoundPitch() {
-		return super.getSoundPitch() - 1f;
+	protected float getVoicePitch() {
+		return super.getVoicePitch() - 1f;
 	}
 
 	@Override
-	public CowEntity createChild(ServerWorld world, AgeableEntity mate) {
-		if (mate.getClass() != getClass() && rand.nextFloat() < 0.15f) {
-			return (CowEntity) mate.createChild(world, this);
+	public CowEntity getBreedOffspring(ServerWorld world, AgeableEntity mate) {
+		if (mate.getClass() != getClass() && random.nextFloat() < 0.15f) {
+			return (CowEntity) mate.getBreedOffspring(world, this);
 		}
 		return ModEntityTypes.FAILED_COW.get().create(world);
 	}
 
 	@Override
-	public boolean canMateWith(AnimalEntity otherAnimal) {
+	public boolean canMate(AnimalEntity otherAnimal) {
 		if (otherAnimal == this) return false;
 		return otherAnimal instanceof CowEntity && isInLove() && otherAnimal.isInLove();
 	}

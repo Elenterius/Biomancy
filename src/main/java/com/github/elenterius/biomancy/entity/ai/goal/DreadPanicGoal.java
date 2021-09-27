@@ -10,7 +10,7 @@ public class DreadPanicGoal extends PanicGoal {
 	}
 
 	@Override
-	public boolean shouldExecute() {
-		return creature.isPotionActive(ModEffects.DREAD.get()) && findRandomPosition();
+	public boolean canUse() {
+		return mob.hasEffect(ModEffects.DREAD.get()) && findRandomPosition();
 	}
 }

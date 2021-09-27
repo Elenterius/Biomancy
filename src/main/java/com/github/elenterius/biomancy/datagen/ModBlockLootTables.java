@@ -26,91 +26,91 @@ import java.util.stream.Collectors;
 public class ModBlockLootTables extends BlockLootTables {
 
 	protected static LootTable.Builder droppingWithInventory(Block itemContainer) {
-		return LootTable.builder().addLootPool(withSurvivesExplosion(itemContainer, LootPool.builder().rolls(ConstantRange.of(1))
-				.addEntry(ItemLootEntry.builder(itemContainer)
-						.acceptFunction(CopyName.builder(CopyName.Source.BLOCK_ENTITY))
-						.acceptFunction(CopyNbt.builder(CopyNbt.Source.BLOCK_ENTITY)
-								.replaceOperation("Inventory", "BlockEntityTag.Inventory")
-								.replaceOperation("OwnerUUID", "BlockEntityTag.OwnerUUID")
-								.replaceOperation("UserList", "BlockEntityTag.UserList")
+		return LootTable.lootTable().withPool(applyExplosionCondition(itemContainer, LootPool.lootPool().setRolls(ConstantRange.exactly(1))
+				.add(ItemLootEntry.lootTableItem(itemContainer)
+						.apply(CopyName.copyName(CopyName.Source.BLOCK_ENTITY))
+						.apply(CopyNbt.copyData(CopyNbt.Source.BLOCK_ENTITY)
+								.copy("Inventory", "BlockEntityTag.Inventory")
+								.copy("OwnerUUID", "BlockEntityTag.OwnerUUID")
+								.copy("UserList", "BlockEntityTag.UserList")
 						)
 				)));
 	}
 
 	protected static LootTable.Builder droppingWithFuel(Block itemContainer) {
-		return LootTable.builder().addLootPool(withSurvivesExplosion(itemContainer, LootPool.builder().rolls(ConstantRange.of(1))
-				.addEntry(ItemLootEntry.builder(itemContainer)
-						.acceptFunction(CopyName.builder(CopyName.Source.BLOCK_ENTITY))
-						.acceptFunction(CopyNbt.builder(CopyNbt.Source.BLOCK_ENTITY)
-								.replaceOperation("Fuel", "BlockEntityTag.Fuel")
-								.replaceOperation("OwnerUUID", "BlockEntityTag.OwnerUUID")
-								.replaceOperation("UserList", "BlockEntityTag.UserList")
+		return LootTable.lootTable().withPool(applyExplosionCondition(itemContainer, LootPool.lootPool().setRolls(ConstantRange.exactly(1))
+				.add(ItemLootEntry.lootTableItem(itemContainer)
+						.apply(CopyName.copyName(CopyName.Source.BLOCK_ENTITY))
+						.apply(CopyNbt.copyData(CopyNbt.Source.BLOCK_ENTITY)
+								.copy("Fuel", "BlockEntityTag.Fuel")
+								.copy("OwnerUUID", "BlockEntityTag.OwnerUUID")
+								.copy("UserList", "BlockEntityTag.UserList")
 						)
 				)));
 	}
 
 	protected static LootTable.Builder droppingWithFluidInput(Block itemContainer) {
-		return LootTable.builder().addLootPool(withSurvivesExplosion(itemContainer, LootPool.builder().rolls(ConstantRange.of(1))
-				.addEntry(ItemLootEntry.builder(itemContainer)
-						.acceptFunction(CopyName.builder(CopyName.Source.BLOCK_ENTITY))
-						.acceptFunction(CopyNbt.builder(CopyNbt.Source.BLOCK_ENTITY)
-								.replaceOperation("FluidInput", "BlockEntityTag.FluidInput")
-								.replaceOperation("OwnerUUID", "BlockEntityTag.OwnerUUID")
-								.replaceOperation("UserList", "BlockEntityTag.UserList")
+		return LootTable.lootTable().withPool(applyExplosionCondition(itemContainer, LootPool.lootPool().setRolls(ConstantRange.exactly(1))
+				.add(ItemLootEntry.lootTableItem(itemContainer)
+						.apply(CopyName.copyName(CopyName.Source.BLOCK_ENTITY))
+						.apply(CopyNbt.copyData(CopyNbt.Source.BLOCK_ENTITY)
+								.copy("FluidInput", "BlockEntityTag.FluidInput")
+								.copy("OwnerUUID", "BlockEntityTag.OwnerUUID")
+								.copy("UserList", "BlockEntityTag.UserList")
 						)
 				)));
 	}
 
 	protected static LootTable.Builder droppingWithFuelAndFluidOutput(Block itemContainer) {
-		return LootTable.builder().addLootPool(withSurvivesExplosion(itemContainer, LootPool.builder().rolls(ConstantRange.of(1))
-				.addEntry(ItemLootEntry.builder(itemContainer)
-						.acceptFunction(CopyName.builder(CopyName.Source.BLOCK_ENTITY))
-						.acceptFunction(CopyNbt.builder(CopyNbt.Source.BLOCK_ENTITY)
-								.replaceOperation("Fuel", "BlockEntityTag.Fuel")
-								.replaceOperation("FluidOutput", "BlockEntityTag.FluidOutput")
-								.replaceOperation("OwnerUUID", "BlockEntityTag.OwnerUUID")
-								.replaceOperation("UserList", "BlockEntityTag.UserList")
+		return LootTable.lootTable().withPool(applyExplosionCondition(itemContainer, LootPool.lootPool().setRolls(ConstantRange.exactly(1))
+				.add(ItemLootEntry.lootTableItem(itemContainer)
+						.apply(CopyName.copyName(CopyName.Source.BLOCK_ENTITY))
+						.apply(CopyNbt.copyData(CopyNbt.Source.BLOCK_ENTITY)
+								.copy("Fuel", "BlockEntityTag.Fuel")
+								.copy("FluidOutput", "BlockEntityTag.FluidOutput")
+								.copy("OwnerUUID", "BlockEntityTag.OwnerUUID")
+								.copy("UserList", "BlockEntityTag.UserList")
 						)
 				)));
 	}
 
 	protected static LootTable.Builder droppingSimpleOwnableDoor(Block ownableDoor) {
-		return LootTable.builder().addLootPool(withSurvivesExplosion(ownableDoor, LootPool.builder().rolls(ConstantRange.of(1))
-				.addEntry(ItemLootEntry.builder(ownableDoor)
-						.acceptFunction(CopyName.builder(CopyName.Source.BLOCK_ENTITY))
-						.acceptFunction(CopyNbt.builder(CopyNbt.Source.BLOCK_ENTITY)
-								.replaceOperation("OwnerUUID", "BlockEntityTag.OwnerUUID")
-								.replaceOperation("UserList", "BlockEntityTag.UserList")
+		return LootTable.lootTable().withPool(applyExplosionCondition(ownableDoor, LootPool.lootPool().setRolls(ConstantRange.exactly(1))
+				.add(ItemLootEntry.lootTableItem(ownableDoor)
+						.apply(CopyName.copyName(CopyName.Source.BLOCK_ENTITY))
+						.apply(CopyNbt.copyData(CopyNbt.Source.BLOCK_ENTITY)
+								.copy("OwnerUUID", "BlockEntityTag.OwnerUUID")
+								.copy("UserList", "BlockEntityTag.UserList")
 						)
-						.acceptCondition(BlockStateProperty.builder(ownableDoor).fromProperties(StatePropertiesPredicate.Builder.newBuilder().withProp(DoorBlock.HALF, DoubleBlockHalf.LOWER)))
+						.when(BlockStateProperty.hasBlockStateProperties(ownableDoor).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(DoorBlock.HALF, DoubleBlockHalf.LOWER)))
 				)));
 	}
 
 	protected static LootTable.Builder droppingSimpleOwnable(Block ownableBock) {
-		return LootTable.builder().addLootPool(withSurvivesExplosion(ownableBock, LootPool.builder().rolls(ConstantRange.of(1))
-				.addEntry(ItemLootEntry.builder(ownableBock)
-						.acceptFunction(CopyName.builder(CopyName.Source.BLOCK_ENTITY))
-						.acceptFunction(CopyNbt.builder(CopyNbt.Source.BLOCK_ENTITY)
-								.replaceOperation("OwnerUUID", "BlockEntityTag.OwnerUUID")
-								.replaceOperation("UserList", "BlockEntityTag.UserList")
+		return LootTable.lootTable().withPool(applyExplosionCondition(ownableBock, LootPool.lootPool().setRolls(ConstantRange.exactly(1))
+				.add(ItemLootEntry.lootTableItem(ownableBock)
+						.apply(CopyName.copyName(CopyName.Source.BLOCK_ENTITY))
+						.apply(CopyNbt.copyData(CopyNbt.Source.BLOCK_ENTITY)
+								.copy("OwnerUUID", "BlockEntityTag.OwnerUUID")
+								.copy("UserList", "BlockEntityTag.UserList")
 						)
 				)));
 
 	}
 
 	protected static LootTable.Builder droppingMutatedFlesh(Block flesh) {
-		return LootTable.builder().addLootPool(withSurvivesExplosion(flesh, LootPool.builder().rolls(ConstantRange.of(1))
-				.addEntry(ItemLootEntry.builder(flesh).acceptFunction(CopyBlockState.func_227545_a_(flesh).func_227552_a_(MutatedFleshBlock.MUTATION_TYPE)))));
+		return LootTable.lootTable().withPool(applyExplosionCondition(flesh, LootPool.lootPool().setRolls(ConstantRange.exactly(1))
+				.add(ItemLootEntry.lootTableItem(flesh).apply(CopyBlockState.copyState(flesh).copy(MutatedFleshBlock.MUTATION_TYPE)))));
 	}
 
 	protected static LootTable.Builder droppingCauldronWithFlesh() {
-		return LootTable.builder()
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1))
-						.addEntry(withExplosionDecay(Blocks.CAULDRON, ItemLootEntry.builder(Items.CAULDRON))))
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(9))
-						.addEntry(ItemLootEntry.builder(ModItems.NECROTIC_FLESH.get()))
-						.acceptCondition(BlockStateProperty.builder(ModBlocks.MEATSOUP_CAULDRON.get())
-								.fromProperties(StatePropertiesPredicate.Builder.newBuilder().withIntProp(MeatsoupCauldronBlock.LEVEL, MeatsoupCauldronBlock.MAX_LEVEL))));
+		return LootTable.lootTable()
+				.withPool(LootPool.lootPool().setRolls(ConstantRange.exactly(1))
+						.add(applyExplosionDecay(Blocks.CAULDRON, ItemLootEntry.lootTableItem(Items.CAULDRON))))
+				.withPool(LootPool.lootPool().setRolls(ConstantRange.exactly(9))
+						.add(ItemLootEntry.lootTableItem(ModItems.NECROTIC_FLESH.get()))
+						.when(BlockStateProperty.hasBlockStateProperties(ModBlocks.MEATSOUP_CAULDRON.get())
+								.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(MeatsoupCauldronBlock.LEVEL, MeatsoupCauldronBlock.MAX_LEVEL))));
 	}
 
 	@Override
@@ -119,25 +119,25 @@ public class ModBlockLootTables extends BlockLootTables {
 //		registerDropSelfLootTable(ModBlocks.VILE_MELON_BLOCK.get());
 //		registerLootTable(ModBlocks.VILE_MELON_CROP.get(), droppingFruitWithBonusOrSeeds(ModBlocks.VILE_MELON_CROP.get(), ModItems.VILE_MELON_BLOCK.get(), ModItems.VILE_MELON_SEEDS.get()));
 
-		registerDropSelfLootTable(ModBlocks.FLESH_TENTACLE.get());
-		registerDropSelfLootTable(ModBlocks.FLESH_BLOCK.get());
-		registerLootTable(ModBlocks.NECROTIC_FLESH_BLOCK.get(), droppingRandomly(ModItems.NECROTIC_FLESH.get(), BinomialRange.of(9, 0.5f)));
-		registerLootTable(ModBlocks.FLESH_BLOCK_SLAB.get(), BlockLootTables::droppingSlab);
-		registerDropSelfLootTable(ModBlocks.FLESH_BLOCK_STAIRS.get());
+		dropSelf(ModBlocks.FLESH_TENTACLE.get());
+		dropSelf(ModBlocks.FLESH_BLOCK.get());
+		add(ModBlocks.NECROTIC_FLESH_BLOCK.get(), createSingleItemTable(ModItems.NECROTIC_FLESH.get(), BinomialRange.binomial(9, 0.5f)));
+		add(ModBlocks.FLESH_BLOCK_SLAB.get(), BlockLootTables::createSlabItemTable);
+		dropSelf(ModBlocks.FLESH_BLOCK_STAIRS.get());
 //		registerLootTable(ModBlocks.MUTATED_FLESH_BLOCK.get(), ModBlockLootTables::droppingMutatedFlesh);
-		registerLootTable(ModBlocks.FLESHBORN_DOOR.get(), ModBlockLootTables::droppingSimpleOwnableDoor);
-		registerLootTable(ModBlocks.FLESHBORN_TRAPDOOR.get(), ModBlockLootTables::droppingSimpleOwnable);
-		registerLootTable(ModBlocks.FLESHBORN_PRESSURE_PLATE.get(), ModBlockLootTables::droppingSimpleOwnable);
+		add(ModBlocks.FLESHBORN_DOOR.get(), ModBlockLootTables::droppingSimpleOwnableDoor);
+		add(ModBlocks.FLESHBORN_TRAPDOOR.get(), ModBlockLootTables::droppingSimpleOwnable);
+		add(ModBlocks.FLESHBORN_PRESSURE_PLATE.get(), ModBlockLootTables::droppingSimpleOwnable);
 
-		registerLootTable(ModBlocks.MEATSOUP_CAULDRON.get(), droppingCauldronWithFlesh());
-		registerLootTable(ModBlocks.GULGE.get(), ModBlockLootTables::droppingWithInventory);
-		registerLootTable(ModBlocks.FLESHBORN_CHEST.get(), ModBlockLootTables::droppingWithInventory);
+		add(ModBlocks.MEATSOUP_CAULDRON.get(), droppingCauldronWithFlesh());
+		add(ModBlocks.GULGE.get(), ModBlockLootTables::droppingWithInventory);
+		add(ModBlocks.FLESHBORN_CHEST.get(), ModBlockLootTables::droppingWithInventory);
 
-		registerLootTable(ModBlocks.CHEWER.get(), ModBlockLootTables::droppingWithFuel);
-		registerLootTable(ModBlocks.DIGESTER.get(), ModBlockLootTables::droppingWithFuelAndFluidOutput);
-		registerLootTable(ModBlocks.SOLIDIFIER.get(), ModBlockLootTables::droppingWithFluidInput);
-		registerLootTable(ModBlocks.DECOMPOSER.get(), ModBlockLootTables::droppingWithFuel);
-		registerLootTable(ModBlocks.EVOLUTION_POOL.get(), dropping(ModBlocks.FLESH_BLOCK_STAIRS.get()));
+		add(ModBlocks.CHEWER.get(), ModBlockLootTables::droppingWithFuel);
+		add(ModBlocks.DIGESTER.get(), ModBlockLootTables::droppingWithFuelAndFluidOutput);
+		add(ModBlocks.SOLIDIFIER.get(), ModBlockLootTables::droppingWithFluidInput);
+		add(ModBlocks.DECOMPOSER.get(), ModBlockLootTables::droppingWithFuel);
+		add(ModBlocks.EVOLUTION_POOL.get(), createSingleItemTable(ModBlocks.FLESH_BLOCK_STAIRS.get()));
 
 //		registerLootTable(ModBlocks.LUMINOUS_SOIL.get(), (soil) -> droppingWithSilkTouch(soil, withExplosionDecay(soil, ItemLootEntry.builder(ModItems.LUMINESCENT_SPORES.get())
 //				.acceptFunction(SetCount.builder(RandomValueRange.of(4.0F, 5.0F))).acceptFunction(ApplyBonus.uniformBonusCount(Enchantments.FORTUNE)))));

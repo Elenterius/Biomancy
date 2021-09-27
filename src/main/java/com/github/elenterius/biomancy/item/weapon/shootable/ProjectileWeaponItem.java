@@ -65,23 +65,23 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).setStyle(ClientTextUtil.LORE_STYLE));
 		if (ClientTextUtil.showExtraInfo(tooltip)) {
 			DecimalFormat df = ClientTextUtil.getDecimalFormatter("#.###");
-			tooltip.add(TextUtil.getTooltipText("fire_rate").appendString(String.format(": %s RPS ", df.format(getFireRate(stack)))).appendSibling(addBrackets(df.format(ONE_SECOND / baseShootDelay))));
-			tooltip.add(TextUtil.getTooltipText("accuracy").appendString(String.format(": %s ", df.format(getAccuracy()))).appendSibling(addBrackets(df.format(baseAccuracy))));
-			tooltip.add(TextUtil.getTooltipText("ammo").appendString(String.format(": %d/%d ", getAmmo(stack), getMaxAmmo(stack))).appendSibling(addBrackets("x/" + baseMaxAmmo)));
-			tooltip.add(TextUtil.getTooltipText("reload_time").appendString(String.format(": %s ", df.format(getReloadTime(stack) / ONE_SECOND))).appendSibling(addBrackets(df.format(baseReloadTime / ONE_SECOND))));
-			tooltip.add(TextUtil.getTooltipText("projectile_damage").appendString(String.format(": %s ", df.format(getProjectileDamage(stack)))).appendSibling(addBrackets(df.format(baseProjectileDamage))));
+			tooltip.add(TextUtil.getTooltipText("fire_rate").append(String.format(": %s RPS ", df.format(getFireRate(stack)))).append(addBrackets(df.format(ONE_SECOND / baseShootDelay))));
+			tooltip.add(TextUtil.getTooltipText("accuracy").append(String.format(": %s ", df.format(getAccuracy()))).append(addBrackets(df.format(baseAccuracy))));
+			tooltip.add(TextUtil.getTooltipText("ammo").append(String.format(": %d/%d ", getAmmo(stack), getMaxAmmo(stack))).append(addBrackets("x/" + baseMaxAmmo)));
+			tooltip.add(TextUtil.getTooltipText("reload_time").append(String.format(": %s ", df.format(getReloadTime(stack) / ONE_SECOND))).append(addBrackets(df.format(baseReloadTime / ONE_SECOND))));
+			tooltip.add(TextUtil.getTooltipText("projectile_damage").append(String.format(": %s ", df.format(getProjectileDamage(stack)))).append(addBrackets(df.format(baseProjectileDamage))));
 			tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 		}
-		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextUtil.getTranslationText("tooltip", "action_reload")).mergeStyle(TextFormatting.DARK_GRAY));
+		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextUtil.getTranslationText("tooltip", "action_reload")).withStyle(TextFormatting.DARK_GRAY));
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	private IFormattableTextComponent addBrackets(Object obj) {
-		return new StringTextComponent("(" + obj + ")").mergeStyle(TextFormatting.DARK_GRAY);
+		return new StringTextComponent("(" + obj + ")").withStyle(TextFormatting.DARK_GRAY);
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -89,13 +89,13 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 	public ActionResult<Byte> onClientKeyPress(ItemStack stack, ClientWorld world, PlayerEntity player, byte flags) {
 		State state = getState(stack);
 		if (state == State.NONE && !canReload(stack, player)) {
-			playSFX(world, player, SoundEvents.BLOCK_DISPENSER_FAIL);
-			return ActionResult.resultFail(flags); //don't send button press to server
+			playSFX(world, player, SoundEvents.DISPENSER_FAIL);
+			return ActionResult.fail(flags); //don't send button press to server
 		}
 
-		if (state == State.SHOOTING) return ActionResult.resultFail(flags); //don't send button press to server
+		if (state == State.SHOOTING) return ActionResult.fail(flags); //don't send button press to server
 
-		return ActionResult.resultSuccess(flags);
+		return ActionResult.success(flags);
 	}
 
 	@Override
@@ -115,7 +115,7 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 	}
 
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
+	public UseAction getUseAnimation(ItemStack stack) {
 		return UseAction.NONE;
 	}
 
@@ -125,25 +125,25 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-		ItemStack stack = player.getHeldItem(hand);
+	public ActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+		ItemStack stack = player.getItemInHand(hand);
 		if (hasAmmo(stack)) {
 			State state = getState(stack);
 			if (state == State.RELOADING) {
 				if (world instanceof ServerWorld) cancelReload(stack, (ServerWorld) world, player);
 			}
 			setState(stack, State.SHOOTING);
-			player.setActiveHand(hand);
-			return ActionResult.resultConsume(stack);
+			player.startUsingItem(hand);
+			return ActionResult.consume(stack);
 		}
 		else {
-			player.sendStatusMessage(new StringTextComponent("Not Enough Ammo").mergeStyle(TextFormatting.RED), true);
-			return ActionResult.resultFail(stack);
+			player.displayClientMessage(new StringTextComponent("Not Enough Ammo").withStyle(TextFormatting.RED), true);
+			return ActionResult.fail(stack);
 		}
 	}
 
 	@Override
-	public void onUse(World world, LivingEntity shooter, ItemStack stack, int timeLeft) {
+	public void onUseTick(World world, LivingEntity shooter, ItemStack stack, int timeLeft) {
 		if (world instanceof ServerWorld) {
 			State state = getState(stack);
 			if (state == State.SHOOTING) {
@@ -153,21 +153,21 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 					int shootDelay = getShootDelay(stack);
 					if (elapsedTime == 0) { //prevent right click spam attack by user
 						if (world.getGameTime() - getShootTimestamp(stack) < shootDelay) {
-							playSFX(world, shooter, SoundEvents.BLOCK_DISPENSER_FAIL);
+							playSFX(world, shooter, SoundEvents.DISPENSER_FAIL);
 							return;
 						}
 					}
 
 					if (elapsedTime % shootDelay == 0) {
-						shoot((ServerWorld) world, shooter, shooter.getActiveHand(), stack, getProjectileDamage(stack), getInaccuracy());
+						shoot((ServerWorld) world, shooter, shooter.getUsedItemHand(), stack, getProjectileDamage(stack), getInaccuracy());
 						stack.getOrCreateTag().putLong(NBT_KEY_SHOOT_TIMESTAMP, world.getGameTime());
 					}
 				}
 				else {
 					if (shooter instanceof PlayerEntity) {
-						((PlayerEntity) shooter).sendStatusMessage(new StringTextComponent("Out of Ammo").mergeStyle(TextFormatting.RED), true);
+						((PlayerEntity) shooter).displayClientMessage(new StringTextComponent("Out of Ammo").withStyle(TextFormatting.RED), true);
 					}
-					shooter.stopActiveHand();
+					shooter.releaseUsingItem();
 					stopShooting(stack, (ServerWorld) world, shooter);
 				}
 			}
@@ -179,7 +179,7 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 	}
 
 	@Override
-	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity shooter, int timeLeft) {
+	public void releaseUsing(ItemStack stack, World worldIn, LivingEntity shooter, int timeLeft) {
 		setState(stack, State.NONE);
 	}
 
@@ -231,14 +231,14 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 			onReloadStarted(stack, world, shooter);
 		}
 		else {
-			playSFX(world, shooter, SoundEvents.BLOCK_DISPENSER_FAIL);
+			playSFX(world, shooter, SoundEvents.DISPENSER_FAIL);
 		}
 	}
 
 	public void finishReload(ItemStack stack, ServerWorld world, LivingEntity shooter) {
 		setState(stack, State.NONE);
 
-		if (shooter instanceof PlayerEntity && ((PlayerEntity) shooter).abilities.isCreativeMode) {
+		if (shooter instanceof PlayerEntity && ((PlayerEntity) shooter).abilities.instabuild) {
 			setAmmo(stack, getMaxAmmo(stack));
 			onReloadFinished(stack, world, shooter);
 			return;
@@ -251,7 +251,7 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 			onReloadFinished(stack, world, shooter);
 		}
 		else {
-			playSFX(world, shooter, SoundEvents.BLOCK_DISPENSER_FAIL);
+			playSFX(world, shooter, SoundEvents.DISPENSER_FAIL);
 		}
 	}
 
@@ -266,21 +266,21 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 	}
 
 	public void onReloadStarted(ItemStack stack, ServerWorld world, LivingEntity shooter) {
-		playSFX(world, shooter, SoundEvents.ITEM_CROSSBOW_LOADING_START);
+		playSFX(world, shooter, SoundEvents.CROSSBOW_LOADING_START);
 	}
 
 	public void onReloadTick(ItemStack stack, ServerWorld world, LivingEntity shooter, long elapsedTime) {}
 
 	public void onReloadStopped(ItemStack stack, ServerWorld world, LivingEntity shooter) {
-		playSFX(world, shooter, SoundEvents.ITEM_CROSSBOW_LOADING_END);
+		playSFX(world, shooter, SoundEvents.CROSSBOW_LOADING_END);
 	}
 
 	public void onReloadCanceled(ItemStack stack, ServerWorld world, LivingEntity shooter) {
-		playSFX(world, shooter, SoundEvents.ITEM_CROSSBOW_LOADING_END);
+		playSFX(world, shooter, SoundEvents.CROSSBOW_LOADING_END);
 	}
 
 	public void onReloadFinished(ItemStack stack, ServerWorld world, LivingEntity shooter) {
-		playSFX(world, shooter, SoundEvents.ITEM_CROSSBOW_LOADING_END);
+		playSFX(world, shooter, SoundEvents.CROSSBOW_LOADING_END);
 	}
 
 	public float getReloadProgress(long elapsedTime, long reloadTime) {
@@ -302,7 +302,7 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 	}
 
 	public int getShootDelay(ItemStack stack) {
-		return baseShootDelay - 2 * EnchantmentHelper.getEnchantmentLevel(ModEnchantments.QUICK_SHOT.get(), stack);
+		return baseShootDelay - 2 * EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.QUICK_SHOT.get(), stack);
 	}
 
 	public float getFireRate(ItemStack stack) {
@@ -310,27 +310,27 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 	}
 
 	public int getReloadTime(ItemStack stack) {
-		return baseReloadTime - 5 * EnchantmentHelper.getEnchantmentLevel(Enchantments.QUICK_CHARGE, stack);
+		return baseReloadTime - 5 * EnchantmentHelper.getItemEnchantmentLevel(Enchantments.QUICK_CHARGE, stack);
 	}
 
 	public float getProjectileDamage(ItemStack stack) {
-		return baseProjectileDamage + 0.6f * EnchantmentHelper.getEnchantmentLevel(Enchantments.POWER, stack);
+		return baseProjectileDamage + 0.6f * EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
 	}
 
 	public int getMaxAmmo(ItemStack stack) {
-		return MathHelper.floor(baseMaxAmmo + baseMaxAmmo * 0.5f * EnchantmentHelper.getEnchantmentLevel(ModEnchantments.MAX_AMMO.get(), stack));
+		return MathHelper.floor(baseMaxAmmo + baseMaxAmmo * 0.5f * EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.MAX_AMMO.get(), stack));
 	}
 
 	public ItemStack findAmmoInInv(ItemStack stack, LivingEntity shooter) {
-		ItemStack ammo = shooter.findAmmo(stack); //vanilla mobs only look for held ammo (i.e. in off-hand)
+		ItemStack ammo = shooter.getProjectile(stack); //vanilla mobs only look for held ammo (i.e. in off-hand)
 		if (ammo.getItem() == Items.ARROW) { //if mobs/creative players can't find any ammo they will return arrows
-			if (shooter instanceof PlayerEntity && ((PlayerEntity) shooter).abilities.isCreativeMode) {
+			if (shooter instanceof PlayerEntity && ((PlayerEntity) shooter).abilities.instabuild) {
 				ammo = ammo.copy();
 				ammo.setCount(getAmmoReloadCost());
 				return ammo;
 			}
 
-			if (getAmmoPredicate().test(ammo) || getInventoryAmmoPredicate().test(ammo)) return ammo;
+			if (getSupportedHeldProjectiles().test(ammo) || getAllSupportedProjectiles().test(ammo)) return ammo;
 			return ItemStack.EMPTY;
 		}
 		return ammo;
@@ -365,17 +365,17 @@ public abstract class ProjectileWeaponItem extends ShootableItem implements IVan
 	}
 
 	public void consumeAmmo(LivingEntity shooter, ItemStack stack, int amount) {
-		if (!(shooter instanceof PlayerEntity) || !((PlayerEntity) shooter).abilities.isCreativeMode) addAmmo(stack, -amount);
+		if (!(shooter instanceof PlayerEntity) || !((PlayerEntity) shooter).abilities.instabuild) addAmmo(stack, -amount);
 	}
 
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return enchantment == Enchantments.POWER || enchantment == Enchantments.QUICK_CHARGE || super.canApplyAtEnchantingTable(stack, enchantment);
+		return enchantment == Enchantments.POWER_ARROWS || enchantment == Enchantments.QUICK_CHARGE || super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 	public void playSFX(World world, LivingEntity shooter, SoundEvent soundEvent) {
 		SoundCategory soundcategory = shooter instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE;
-		world.playSound(null, shooter.getPosX(), shooter.getPosY(), shooter.getPosZ(), soundEvent, soundcategory, 1f, 1f / (random.nextFloat() * 0.5f + 1f) + 0.2f);
+		world.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), soundEvent, soundcategory, 1f, 1f / (random.nextFloat() * 0.5f + 1f) + 0.2f);
 	}
 
 	public enum State {

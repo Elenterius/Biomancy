@@ -11,12 +11,13 @@ import net.minecraft.fluid.Fluid;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
 import java.util.function.Predicate;
 
@@ -30,7 +31,7 @@ public final class HandlerBehaviors {
 	/**
 	 * default item handler behavior
 	 */
-	public static LazyOptional<IItemHandler> standard(ItemStackHandler itemStackHandler) {
+	public static <ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> LazyOptional<IItemHandler> standard(ISH itemStackHandler) {
 		return LazyOptional.of(() -> itemStackHandler);
 	}
 
@@ -44,7 +45,7 @@ public final class HandlerBehaviors {
 	/**
 	 * prevents item insertion, only item extraction is possible (e.g. output inventories)
 	 */
-	public static LazyOptional<IItemHandler> denyInput(ItemStackHandler itemStackHandler) {
+	public static <ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> LazyOptional<IItemHandler> denyInput(ISH itemStackHandler) {
 		return LazyOptional.of(() -> new ItemHandlerDelegator.DenyInput<>(itemStackHandler));
 	}
 
@@ -58,7 +59,7 @@ public final class HandlerBehaviors {
 	/**
 	 * only allows item insertion of valid items
 	 */
-	public static LazyOptional<IItemHandler> filterInput(ItemStackHandler itemStackHandler, Predicate<ItemStack> validItems) {
+	public static <ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> LazyOptional<IItemHandler> filterInput(ISH itemStackHandler, Predicate<ItemStack> validItems) {
 		return LazyOptional.of(() -> new ItemHandlerDelegator.FilterInput<>(itemStackHandler, validItems));
 	}
 
@@ -73,10 +74,10 @@ public final class HandlerBehaviors {
 		if (stack.getItem() instanceof BlockItem) {
 			Block block = ((BlockItem) stack.getItem()).getBlock();
 			if (block instanceof ShulkerBoxBlock) {
-				return stack.getChildTag("BlockEntityTag") == null;
+				return stack.getTagElement("BlockEntityTag") == null;
 			}
 			else if (block instanceof FleshChestBlock || block instanceof GulgeBlock) {
-				CompoundNBT nbt = stack.getChildTag("BlockEntityTag");
+				CompoundNBT nbt = stack.getTagElement("BlockEntityTag");
 				if (nbt == null) return true;
 				return nbt.getCompound("Inventory").isEmpty();
 			}
@@ -86,6 +87,11 @@ public final class HandlerBehaviors {
 		final boolean[] isEmpty = {true};
 		capability.ifPresent(itemHandler -> {
 			int slots = itemHandler.getSlots();
+			if (slots > 1000) { //if we have more than 1000 slots we don't bother checking them and just return false
+				isEmpty[0] = false;
+				return;
+			}
+			//ItemHandler cap doesn't have a isEmpty() method which forces us to sequentially check every slot if it is empty
 			for (int i = 0; i < slots; i++) {
 				if (!itemHandler.getStackInSlot(i).isEmpty()) {
 					isEmpty[0] = false;
@@ -100,7 +106,7 @@ public final class HandlerBehaviors {
 	 * prevents nesting of items with inventories,<br>
 	 * i.e. insertion of filled shulker boxes and items with filled inventories (item handler capability)
 	 */
-	public static LazyOptional<IItemHandler> denyItemWithFilledInventory(ItemStackHandler itemStackHandler) {
+	public static <ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> LazyOptional<IItemHandler> denyItemWithFilledInventory(ISH itemStackHandler) {
 		return LazyOptional.of(() -> new ItemHandlerDelegator.FilterInput<>(itemStackHandler, EMPTY_ITEM_INVENTORY_PREDICATE));
 	}
 
@@ -109,7 +115,7 @@ public final class HandlerBehaviors {
 	/**
 	 * only allows the insertion of items that contain any fluid (fluid handler capability), e.g. water buckets
 	 */
-	public static LazyOptional<IItemHandler> filterFilledFluidContainer(ItemStackHandler itemStackHandler) {
+	public static <ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> LazyOptional<IItemHandler> filterFilledFluidContainer(ISH itemStackHandler) {
 		return LazyOptional.of(() -> new ItemHandlerDelegator.FilterInput<>(itemStackHandler, FILLED_FLUID_ITEM_PREDICATE));
 	}
 
@@ -118,14 +124,14 @@ public final class HandlerBehaviors {
 	/**
 	 * only allows the insertion of items are not full fluid containers (fluid handler capability), e.g. buckets
 	 */
-	public static LazyOptional<IItemHandler> filterFluidContainer(ItemStackHandler itemStackHandler) {
+	public static <ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> LazyOptional<IItemHandler> filterFluidContainer(ISH itemStackHandler) {
 		return LazyOptional.of(() -> new ItemHandlerDelegator.FilterInput<>(itemStackHandler, FLUID_CONTAINER_ITEM_PREDICATE));
 	}
 
 	/**
 	 * only allows the insertion of items that are biofuel (solid & fluid container)
 	 */
-	public static LazyOptional<IItemHandler> filterBiofuel(ItemStackHandler itemStackHandler) {
+	public static <ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> LazyOptional<IItemHandler> filterBiofuel(ISH itemStackHandler) {
 		return LazyOptional.of(() -> new ItemHandlerDelegator.FilterInput<>(itemStackHandler, BiofuelUtil::isItemValidFuel));
 	}
 

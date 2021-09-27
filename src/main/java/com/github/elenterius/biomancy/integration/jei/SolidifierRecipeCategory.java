@@ -50,7 +50,7 @@ public class SolidifierRecipeCategory implements IRecipeCategory<SolidifierRecip
 
 	@Override
 	public String getTitle() {
-		return I18n.format("jei.biomancy.recipe.solidifier");
+		return I18n.get("jei.biomancy.recipe.solidifier");
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class SolidifierRecipeCategory implements IRecipeCategory<SolidifierRecip
 	@Override
 	public void setIngredients(SolidifierRecipe recipe, IIngredients ingredients) {
 		ingredients.setInputs(VanillaTypes.FLUID, recipe.getFluidIngredient().getMatchingFluidStacks());
-		ingredients.setOutput(VanillaTypes.ITEM, recipe.getRecipeOutput());
+		ingredients.setOutput(VanillaTypes.ITEM, recipe.getResultItem());
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class SolidifierRecipeCategory implements IRecipeCategory<SolidifierRecip
 		guiFSGroup.addTooltipCallback((index, input, ingredient, tooltip) -> {
 			if (index == INPUT_SLOT) {
 				DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
-				tooltip.add(new StringTextComponent(df.format(ingredient.getAmount()) + " mb").mergeStyle(TextFormatting.GRAY));
+				tooltip.add(new StringTextComponent(df.format(ingredient.getAmount()) + " mb").withStyle(TextFormatting.GRAY));
 			}
 		});
 
@@ -93,8 +93,8 @@ public class SolidifierRecipeCategory implements IRecipeCategory<SolidifierRecip
 		if (ticks > 0) {
 			int seconds = ticks / 20;
 			TranslationTextComponent timeString = new TranslationTextComponent("gui.jei.category.smelting.time.seconds", seconds);
-			FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
-			fontRenderer.drawText(matrixStack, timeString, background.getWidth() - fontRenderer.getStringPropertyWidth(timeString), 0, 0xff808080);
+			FontRenderer fontRenderer = Minecraft.getInstance().font;
+			fontRenderer.draw(matrixStack, timeString, background.getWidth() - fontRenderer.width(timeString), 0, 0xff808080);
 		}
 	}
 }

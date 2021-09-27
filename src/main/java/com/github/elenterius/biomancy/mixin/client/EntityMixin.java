@@ -25,7 +25,7 @@ public abstract class EntityMixin {
 	@Nullable
 	public abstract Team getTeam();
 
-	@Inject(method = "isInvisibleToPlayer", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "isInvisibleTo", at = @At("HEAD"), cancellable = true)
 	protected void biomancy_onIsInvisibleToPlayer(PlayerEntity player, CallbackInfoReturnable<Boolean> cir) {
 		if (IEntityUnveilerHeadSlotItem.canUnveilEntity(player, (Entity) (Object) this)) {
 			cir.setReturnValue(false);
@@ -41,13 +41,13 @@ public abstract class EntityMixin {
 			Team team = getTeam();
 			if (team == null) cir.setReturnValue(ClientRenderHandler.COLOR_ENEMY);
 			else {
-				if (!getTeam().isSameTeam(team)) cir.setReturnValue(ClientRenderHandler.COLOR_ENEMY);
+				if (!getTeam().isAlliedTo(team)) cir.setReturnValue(ClientRenderHandler.COLOR_ENEMY);
 				else cir.setReturnValue(ClientRenderHandler.COLOR_FRIENDLY);
 			}
 		}
 		else if (getTeam() == null && IEntityUnveilerHeadSlotItem.canUnveilEntity(Minecraft.getInstance().player, entity)) {
-			if (getType().getClassification() == EntityClassification.MONSTER) cir.setReturnValue(0xCE0018);
-			else if (getType().getClassification() == EntityClassification.CREATURE) cir.setReturnValue(0x00ff00);
+			if (getType().getCategory() == EntityClassification.MONSTER) cir.setReturnValue(0xCE0018);
+			else if (getType().getCategory() == EntityClassification.CREATURE) cir.setReturnValue(0x00ff00);
 			else cir.setReturnValue(getType() == EntityType.PLAYER ? 0xffd700 : 0xffffff);
 		}
 	}

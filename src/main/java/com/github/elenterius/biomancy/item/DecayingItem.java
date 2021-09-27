@@ -35,7 +35,7 @@ public class DecayingItem extends Item {
 	@Override
 	public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entity) {
 		LazyOptional<IItemDecayTracker> capability = stack.getCapability(ModCapabilities.ITEM_DECAY_CAPABILITY);
-		capability.ifPresent(decayTracker -> decayTracker.onUpdate(stack, entity.world, entity, halfTime * 20L, decayFactor, false));
+		capability.ifPresent(decayTracker -> decayTracker.onUpdate(stack, entity.level, entity, halfTime * 20L, decayFactor, false));
 		return false;
 	}
 

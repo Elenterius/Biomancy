@@ -14,24 +14,24 @@ public class NutrientSlurryCowModel extends CowModel<NutrientSlurryCowEntity> {
 	private static final int color = 0xCCD65B;
 
 	@Override
-	public void setLivingAnimations(NutrientSlurryCowEntity entityIn, float limbSwing, float limbSwingAmount, float partialTick) {
-		super.setLivingAnimations(entityIn, limbSwing, limbSwingAmount, partialTick);
-		headModel.rotationPointY = 4f + entityIn.getHeadRotationPointY(partialTick) * 9f;
+	public void prepareMobModel(NutrientSlurryCowEntity entityIn, float limbSwing, float limbSwingAmount, float partialTick) {
+		super.prepareMobModel(entityIn, limbSwing, limbSwingAmount, partialTick);
+		head.y = 4f + entityIn.getHeadRotationPointY(partialTick) * 9f;
 		headRotationAngleX = entityIn.getHeadRotationAngleX(partialTick);
 	}
 
 	@Override
-	public void setRotationAngles(NutrientSlurryCowEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-		super.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-		headModel.rotateAngleX = headRotationAngleX;
+	public void setupAnim(NutrientSlurryCowEntity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		super.setupAnim(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+		head.xRot = headRotationAngleX;
 	}
 
 	@Override
-	public void render(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
 		red = (float) (color >> 16 & 255) / 255f;
 		green = (float) (color >> 8 & 255) / 255f;
 		blue = (float) (color & 255) / 255f;
-		super.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		super.renderToBuffer(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 	}
 
 }

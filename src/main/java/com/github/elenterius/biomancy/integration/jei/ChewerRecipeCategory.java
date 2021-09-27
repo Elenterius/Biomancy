@@ -47,7 +47,7 @@ public class ChewerRecipeCategory implements IRecipeCategory<ChewerRecipe> {
 
 	@Override
 	public String getTitle() {
-		return I18n.format("jei.biomancy.recipe.chewer");
+		return I18n.get("jei.biomancy.recipe.chewer");
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class ChewerRecipeCategory implements IRecipeCategory<ChewerRecipe> {
 	@Override
 	public void setIngredients(ChewerRecipe recipe, IIngredients ingredients) {
 		ingredients.setInputIngredients(recipe.getIngredients());
-		ingredients.setOutput(VanillaTypes.ITEM, recipe.getRecipeOutput());
+		ingredients.setOutput(VanillaTypes.ITEM, recipe.getResultItem());
 	}
 
 	@Override
@@ -81,11 +81,11 @@ public class ChewerRecipeCategory implements IRecipeCategory<ChewerRecipe> {
 		if (ticks > 0) {
 			int seconds = ticks / 20;
 			TranslationTextComponent timeString = new TranslationTextComponent("gui.jei.category.smelting.time.seconds", seconds);
-			FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
-			fontRenderer.drawText(matrixStack, timeString, background.getWidth() - fontRenderer.getStringPropertyWidth(timeString), 0, 0xff808080);
+			FontRenderer fontRenderer = Minecraft.getInstance().font;
+			fontRenderer.draw(matrixStack, timeString, background.getWidth() - fontRenderer.width(timeString), 0, 0xff808080);
 			int fuelCost = ticks * ChewerTileEntity.FUEL_COST;
-			IFormattableTextComponent costText = new StringTextComponent("+" + fuelCost + "mb ").appendSibling(new TranslationTextComponent("fluid.biomancy.nutrient_slurry"));
-			fontRenderer.drawText(matrixStack, costText, 0, background.getHeight() - fontRenderer.FONT_HEIGHT, 0xff808080);
+			IFormattableTextComponent costText = new StringTextComponent("+" + fuelCost + "mb ").append(new TranslationTextComponent("fluid.biomancy.nutrient_slurry"));
+			fontRenderer.draw(matrixStack, costText, 0, background.getHeight() - fontRenderer.lineHeight, 0xff808080);
 		}
 	}
 }

@@ -51,17 +51,17 @@ public class FluidHelper {
 	}
 
 	public static FluidStack deserializeFluidStack(JsonObject json) {
-		ResourceLocation id = new ResourceLocation(JSONUtils.getString(json, "fluid"));
+		ResourceLocation id = new ResourceLocation(JSONUtils.getAsString(json, "fluid"));
 		Fluid fluid = ForgeRegistries.FLUIDS.getValue(id);
 		if (fluid == null) throw new JsonSyntaxException("Unknown fluid '" + id + "'");
-		int amount = JSONUtils.getInt(json, "amount");
+		int amount = JSONUtils.getAsInt(json, "amount");
 		FluidStack stack = new FluidStack(fluid, amount);
 
 		if (!json.has("nbt")) return stack;
 
 		try {
 			JsonElement element = json.get("nbt");
-			stack.setTag(JsonToNBT.getTagFromJson(element.isJsonObject() ? BiomancyMod.GSON.toJson(element) : JSONUtils.getString(element, "nbt")));
+			stack.setTag(JsonToNBT.parseTag(element.isJsonObject() ? BiomancyMod.GSON.toJson(element) : JSONUtils.convertToString(element, "nbt")));
 		} catch (CommandSyntaxException e) {
 			e.printStackTrace();
 		}

@@ -31,7 +31,7 @@ public class AdaptivePickaxeItem extends PickaxeItem implements IAdaptiveEfficie
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).setStyle(ClientTextUtil.LORE_STYLE));
 		IAdaptiveEfficiencyItem.addAdaptiveEfficiencyTooltip(stack, tooltip);
 	}
@@ -39,28 +39,28 @@ public class AdaptivePickaxeItem extends PickaxeItem implements IAdaptiveEfficie
 	@Override
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
 		float currEfficiency = super.getDestroySpeed(stack, state);
-		if (currEfficiency >= this.efficiency) {
+		if (currEfficiency >= this.speed) {
 			return Math.min(currEfficiency + IAdaptiveEfficiencyItem.getEfficiencyModifier(stack, state), MAX_EFFICIENCY);
 		}
 		return currEfficiency;
 	}
 
 	@Override
-	public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity livingEntity) {
-		if (!worldIn.isRemote && state.getBlockHardness(worldIn, pos) != 0.0F) {
-			IAdaptiveEfficiencyItem.updateEfficiencyModifier(stack, state, efficiency, super.getDestroySpeed(stack, state));
+	public boolean mineBlock(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity livingEntity) {
+		if (!worldIn.isClientSide && state.getDestroySpeed(worldIn, pos) != 0.0F) {
+			IAdaptiveEfficiencyItem.updateEfficiencyModifier(stack, state, speed, super.getDestroySpeed(stack, state));
 		}
-		return super.onBlockDestroyed(stack, worldIn, state, pos, livingEntity);
+		return super.mineBlock(stack, worldIn, state, pos, livingEntity);
 	}
 
 	@Override
 	public boolean onBlockStartBreak(ItemStack stack, BlockPos pos, PlayerEntity player) {
 
-		if (!player.isSneaking() && getBlockHarvestRange(stack) > 0 && !player.world.isRemote && player instanceof ServerPlayerEntity) {
-			ServerWorld world = (ServerWorld) player.world;
+		if (!player.isShiftKeyDown() && getBlockHarvestRange(stack) > 0 && !player.level.isClientSide && player instanceof ServerPlayerEntity) {
+			ServerWorld world = (ServerWorld) player.level;
 			ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
 			BlockState blockState = world.getBlockState(pos);
-			BlockRayTraceResult rayTraceResult = Item.rayTrace(world, player, RayTraceContext.FluidMode.NONE);
+			BlockRayTraceResult rayTraceResult = Item.getPlayerPOVHitResult(world, player, RayTraceContext.FluidMode.NONE);
 			if (PlayerInteractionUtil.harvestBlock(world, serverPlayer, blockState, pos)) {
 				List<BlockPos> blockNeighbors = PlayerInteractionUtil.findBlockNeighbors(world, rayTraceResult, blockState, pos, getBlockHarvestRange(stack));
 				for (BlockPos neighborPos : blockNeighbors) {

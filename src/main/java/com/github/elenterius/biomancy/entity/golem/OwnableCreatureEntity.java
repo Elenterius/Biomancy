@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public abstract class OwnableCreatureEntity extends CreatureEntity implements IOwnableCreature {
-	protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.createKey(OwnableCreatureEntity.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+	protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.defineId(OwnableCreatureEntity.class, DataSerializers.OPTIONAL_UUID);
 	private BlockPos targetBlockPos;
 
 	protected OwnableCreatureEntity(EntityType<? extends CreatureEntity> type, World worldIn) {
@@ -29,41 +29,41 @@ public abstract class OwnableCreatureEntity extends CreatureEntity implements IO
 	}
 
 	@Override
-	protected void registerData() {
-		super.registerData();
-		dataManager.register(OWNER_UNIQUE_ID, Optional.empty());
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(OWNER_UNIQUE_ID, Optional.empty());
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT compound) {
-		super.writeAdditional(compound);
-		if (getOwnerUUID().isPresent()) compound.putUniqueId("OwnerUUID", getOwnerUUID().get());
+	public void addAdditionalSaveData(CompoundNBT compound) {
+		super.addAdditionalSaveData(compound);
+		if (getOwnerUUID().isPresent()) compound.putUUID("OwnerUUID", getOwnerUUID().get());
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT compound) {
-		super.readAdditional(compound);
-		if (compound.hasUniqueId("OwnerUUID")) setOwnerUUID(compound.getUniqueId("OwnerUUID"));
+	public void readAdditionalSaveData(CompoundNBT compound) {
+		super.readAdditionalSaveData(compound);
+		if (compound.hasUUID("OwnerUUID")) setOwnerUUID(compound.getUUID("OwnerUUID"));
 	}
 
 	@Override
 	public Optional<UUID> getOwnerUUID() {
-		return dataManager.get(OWNER_UNIQUE_ID);
+		return entityData.get(OWNER_UNIQUE_ID);
 	}
 
 	@Override
 	public void setOwnerUUID(@Nullable UUID uuid) {
-		dataManager.set(OWNER_UNIQUE_ID, Optional.ofNullable(uuid));
+		entityData.set(OWNER_UNIQUE_ID, Optional.ofNullable(uuid));
 	}
 
 	@Override
 	public Optional<PlayerEntity> getOwner() {
-		return getOwnerUUID().map(value -> world.getPlayerByUuid(value));
+		return getOwnerUUID().map(value -> level.getPlayerByUUID(value));
 	}
 
 	@Override
 	public void setOwner(PlayerEntity entity) {
-		setOwnerUUID(entity.getUniqueID());
+		setOwnerUUID(entity.getUUID());
 	}
 
 	@Override
@@ -76,29 +76,29 @@ public abstract class OwnableCreatureEntity extends CreatureEntity implements IO
 	}
 
 	@Override
-	public boolean isOnSameTeam(Entity entityIn) {
+	public boolean isAlliedTo(Entity entityIn) {
 		Optional<PlayerEntity> optional = getOwner();
 		if (optional.isPresent()) {
 			if (optional.get() == entityIn) return true;
-			return optional.get().isOnSameTeam(entityIn);
+			return optional.get().isAlliedTo(entityIn);
 		}
-		return super.isOnSameTeam(entityIn);
+		return super.isAlliedTo(entityIn);
 	}
 
 	@Override
-	public void onDeath(DamageSource cause) {
-		if (!world.isRemote && world.getGameRules().getBoolean(GameRules.SHOW_DEATH_MESSAGES)) {
+	public void die(DamageSource cause) {
+		if (!level.isClientSide && level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES)) {
 			Optional<PlayerEntity> optional = getOwner();
 			if (optional.isPresent() && optional.get() instanceof ServerPlayerEntity) {
-				optional.get().sendMessage(getCombatTracker().getDeathMessage(), Util.DUMMY_UUID);
+				optional.get().sendMessage(getCombatTracker().getDeathMessage(), Util.NIL_UUID);
 			}
 		}
-		super.onDeath(cause);
+		super.die(cause);
 	}
 
 	@Override
-	public boolean canBeLeashedTo(PlayerEntity player) {
-		return !getLeashed() && player == getOwner().orElse(null);
+	public boolean canBeLeashed(PlayerEntity player) {
+		return !isLeashed() && player == getOwner().orElse(null);
 	}
 
 	@Nullable

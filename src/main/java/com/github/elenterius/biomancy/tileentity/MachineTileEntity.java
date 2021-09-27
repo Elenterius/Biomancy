@@ -63,7 +63,7 @@ public abstract class MachineTileEntity<R extends AbstractProductionRecipe, S ex
 
 	protected abstract boolean doesItemFitIntoOutputInventory(ItemStack stackToCraft);
 
-	protected boolean doesFluidFitIntoOutputTank(FluidStack stackToCraft) { return false; }
+	protected boolean doesFluidFitIntoOutputTank(FluidStack stackToCraft) {return false;}
 
 	protected abstract boolean craftRecipe(R recipeToCraft, World world);
 
@@ -88,14 +88,14 @@ public abstract class MachineTileEntity<R extends AbstractProductionRecipe, S ex
 				ItemStack remainder = addFuel(stack);
 				if (remainder.getCount() != stack.getCount()) {
 					setStackInFuelSlot(remainder);
-					markDirty();
+					setChanged();
 				}
 			}
 		}
 	}
 
 	public ItemStack addFuel(ItemStack stackIn) {
-		if (world == null || world.isRemote()) return stackIn;
+		if (level == null || level.isClientSide()) return stackIn;
 
 		if (!stackIn.isEmpty() && getFuelAmount() < getMaxFuelAmount()) {
 			float itemFuelValue = getItemFuelValue(stackIn);
@@ -114,15 +114,15 @@ public abstract class MachineTileEntity<R extends AbstractProductionRecipe, S ex
 
 	@Override
 	public void tick() {
-		if (world == null) return;
+		if (level == null) return;
 		ticks++;
-		if (world.isRemote) return;
+		if (level.isClientSide) return;
 
 		if (ticks % 10 == 0) {
 			refuel();
 		}
 
-		R craftingGoal = resolveRecipeFromInput(world); //get the currently possible crafting goal
+		R craftingGoal = resolveRecipeFromInput(level); //get the currently possible crafting goal
 		S state = getStateData();
 		boolean emitRedstoneSignal = false;
 		if (craftingGoal == null) {
@@ -145,7 +145,7 @@ public abstract class MachineTileEntity<R extends AbstractProductionRecipe, S ex
 							}
 						}
 						else if (!state.isCraftingCanceled()) { // something is being crafted, check that the crafting goals match
-							R prevCraftingGoal = state.getCraftingGoalRecipe(world).orElse(null);
+							R prevCraftingGoal = state.getCraftingGoalRecipe(level).orElse(null);
 							if (prevCraftingGoal == null || !craftingGoal.areRecipesEqual(prevCraftingGoal, true)) {
 								state.cancelCrafting();
 							}
@@ -159,7 +159,7 @@ public abstract class MachineTileEntity<R extends AbstractProductionRecipe, S ex
 				}
 			}
 			else {
-				ItemStack itemToCraft = craftingGoal.getRecipeOutput();
+				ItemStack itemToCraft = craftingGoal.getResultItem();
 				if (itemToCraft.isEmpty()) {
 					state.cancelCrafting();
 				}
@@ -174,7 +174,7 @@ public abstract class MachineTileEntity<R extends AbstractProductionRecipe, S ex
 							}
 						}
 						else if (!state.isCraftingCanceled()) { // something is being crafted, check that the crafting goals match
-							R prevCraftingGoal = state.getCraftingGoalRecipe(world).orElse(null);
+							R prevCraftingGoal = state.getCraftingGoalRecipe(level).orElse(null);
 							if (prevCraftingGoal == null || !craftingGoal.areRecipesEqual(prevCraftingGoal, true)) {
 								state.cancelCrafting();
 							}
@@ -200,7 +200,7 @@ public abstract class MachineTileEntity<R extends AbstractProductionRecipe, S ex
 			if (state.getCraftingState() == CraftingState.IN_PROGRESS || state.getCraftingState() == CraftingState.COMPLETED) {
 				if (state.timeElapsed >= state.timeForCompletion) {
 					state.setCraftingState(CraftingState.COMPLETED);
-					if (craftRecipe(craftingGoal, world)) {
+					if (craftRecipe(craftingGoal, level)) {
 						emitRedstoneSignal = true;
 						state.setCraftingState(CraftingState.NONE);
 					}
@@ -218,7 +218,7 @@ public abstract class MachineTileEntity<R extends AbstractProductionRecipe, S ex
 		}
 
 		//update BlockState to reflect tile state
-		updateBlockState(world, state, emitRedstoneSignal);
+		updateBlockState(level, state, emitRedstoneSignal);
 	}
 
 	protected BooleanProperty getIsCraftingBlockStateProperty() {
@@ -226,22 +226,22 @@ public abstract class MachineTileEntity<R extends AbstractProductionRecipe, S ex
 	}
 
 	protected void updateBlockState(World world, S tileState, boolean redstoneSignal) {
-		BlockState oldBlockState = world.getBlockState(pos);
-		BlockState newBlockState = oldBlockState.with(getIsCraftingBlockStateProperty(), tileState.getCraftingState() == CraftingState.IN_PROGRESS);
+		BlockState oldBlockState = world.getBlockState(worldPosition);
+		BlockState newBlockState = oldBlockState.setValue(getIsCraftingBlockStateProperty(), tileState.getCraftingState() == CraftingState.IN_PROGRESS);
 		if (!newBlockState.equals(oldBlockState)) {
 			if (redstoneSignal) {
 				if (newBlockState.getBlock() instanceof MachineBlock) {
-					((MachineBlock<?>) newBlockState.getBlock()).powerBlock(world, pos, newBlockState);
+					((MachineBlock<?>) newBlockState.getBlock()).powerBlock(world, worldPosition, newBlockState);
 				}
 			}
 			else {
-				world.setBlockState(pos, newBlockState, Constants.BlockFlags.BLOCK_UPDATE);
+				world.setBlock(worldPosition, newBlockState, Constants.BlockFlags.BLOCK_UPDATE);
 			}
-			markDirty();
+			setChanged();
 		}
 		else if (redstoneSignal) {
 			if (newBlockState.getBlock() instanceof MachineBlock) {
-				((MachineBlock<?>) newBlockState.getBlock()).powerBlock(world, pos, oldBlockState);
+				((MachineBlock<?>) newBlockState.getBlock()).powerBlock(world, worldPosition, oldBlockState);
 			}
 		}
 	}

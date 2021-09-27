@@ -41,17 +41,17 @@ public class ChewerTileEntity extends BFMachineTileEntity<ChewerRecipe, ChewerSt
 	public static final RecipeType.ItemStackRecipeType<ChewerRecipe> RECIPE_TYPE = ModRecipes.CHEWER_RECIPE_TYPE;
 
 	private final ChewerStateData stateData = new ChewerStateData();
-	private final SimpleInventory fuelInventory;
-	private final SimpleInventory emptyBucketInventory;
-	private final SimpleInventory inputInventory;
-	private final SimpleInventory outputInventory;
+	private final SimpleInventory<?> fuelInventory;
+	private final SimpleInventory<?> emptyBucketInventory;
+	private final SimpleInventory<?> inputInventory;
+	private final SimpleInventory<?> outputInventory;
 
 	public ChewerTileEntity() {
 		super(ModTileEntityTypes.CHEWER.get());
-		fuelInventory = SimpleInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterBiofuel, this::canPlayerOpenInv, this::markDirty);
-		emptyBucketInventory = SimpleInventory.createServerContents(EMPTY_BUCKET_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::markDirty);
-		inputInventory = SimpleInventory.createServerContents(INPUT_SLOTS, this::canPlayerOpenInv, this::markDirty);
-		outputInventory = SimpleInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::markDirty);
+		fuelInventory = SimpleInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterBiofuel, this::canPlayerOpenInv, this::setChanged);
+		emptyBucketInventory = SimpleInventory.createServerContents(EMPTY_BUCKET_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
+		inputInventory = SimpleInventory.createServerContents(INPUT_SLOTS, this::canPlayerOpenInv, this::setChanged);
+		outputInventory = SimpleInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
 	}
 
 	@Override
@@ -81,12 +81,12 @@ public class ChewerTileEntity extends BFMachineTileEntity<ChewerRecipe, ChewerSt
 
 	@Override
 	public ItemStack getStackInFuelSlot() {
-		return fuelInventory.getStackInSlot(0);
+		return fuelInventory.getItem(0);
 	}
 
 	@Override
 	public void setStackInFuelSlot(ItemStack stack) {
-		fuelInventory.setInventorySlotContents(0, stack);
+		fuelInventory.setItem(0, stack);
 	}
 
 	@Override
@@ -96,13 +96,13 @@ public class ChewerTileEntity extends BFMachineTileEntity<ChewerRecipe, ChewerSt
 
 	@Override
 	protected boolean craftRecipe(ChewerRecipe recipeToCraft, World world) {
-		ItemStack result = recipeToCraft.getCraftingResult(inputInventory);
+		ItemStack result = recipeToCraft.assemble(inputInventory);
 		if (!result.isEmpty() && outputInventory.doesItemStackFit(0, result)) {
-			for (int idx = 0; idx < inputInventory.getSizeInventory(); idx++) {
-				inputInventory.decrStackSize(idx, 1);
+			for (int idx = 0; idx < inputInventory.getContainerSize(); idx++) {
+				inputInventory.removeItem(idx, 1);
 			}
 			outputInventory.insertItemStack(0, result);
-			markDirty();
+			setChanged();
 			return true;
 		}
 		return false;
@@ -127,15 +127,15 @@ public class ChewerTileEntity extends BFMachineTileEntity<ChewerRecipe, ChewerSt
 
 	@Override
 	public void dropAllInvContents(World world, BlockPos pos) {
-		InventoryHelper.dropInventoryItems(world, pos, fuelInventory);
-		InventoryHelper.dropInventoryItems(world, pos, emptyBucketInventory);
-		InventoryHelper.dropInventoryItems(world, pos, inputInventory);
-		InventoryHelper.dropInventoryItems(world, pos, outputInventory);
+		InventoryHelper.dropContents(world, pos, fuelInventory);
+		InventoryHelper.dropContents(world, pos, emptyBucketInventory);
+		InventoryHelper.dropContents(world, pos, inputInventory);
+		InventoryHelper.dropContents(world, pos, outputInventory);
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT nbt) {
-		super.write(nbt);
+	public CompoundNBT save(CompoundNBT nbt) {
+		super.save(nbt);
 		stateData.serializeNBT(nbt);
 		nbt.put("FuelSlots", fuelInventory.serializeNBT());
 		nbt.put("EmptyBucketSlots", emptyBucketInventory.serializeNBT());
@@ -145,16 +145,16 @@ public class ChewerTileEntity extends BFMachineTileEntity<ChewerRecipe, ChewerSt
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT nbt) {
-		super.read(state, nbt);
+	public void load(BlockState state, CompoundNBT nbt) {
+		super.load(state, nbt);
 		stateData.deserializeNBT(nbt);
 		fuelInventory.deserializeNBT(nbt.getCompound("FuelSlots"));
 		emptyBucketInventory.deserializeNBT(nbt.getCompound("EmptyBucketSlots"));
 		inputInventory.deserializeNBT(nbt.getCompound("InputSlots"));
 		outputInventory.deserializeNBT(nbt.getCompound("OutputSlots"));
 
-		if (fuelInventory.getSizeInventory() != FUEL_SLOTS || inputInventory.getSizeInventory() != INPUT_SLOTS
-				|| outputInventory.getSizeInventory() != OUTPUT_SLOTS || emptyBucketInventory.getSizeInventory() != EMPTY_BUCKET_SLOTS) {
+		if (fuelInventory.getContainerSize() != FUEL_SLOTS || inputInventory.getContainerSize() != INPUT_SLOTS
+				|| outputInventory.getContainerSize() != OUTPUT_SLOTS || emptyBucketInventory.getContainerSize() != EMPTY_BUCKET_SLOTS) {
 			throw new IllegalArgumentException("Corrupted NBT: Number of inventory slots did not match expected count.");
 		}
 	}
@@ -172,7 +172,7 @@ public class ChewerTileEntity extends BFMachineTileEntity<ChewerRecipe, ChewerSt
 	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-		if (!removed) {
+		if (!remove) {
 			if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 				if (side == Direction.UP) return inputInventory.getOptionalItemStackHandler().cast();
 				if (side == null || side == Direction.DOWN) return outputInventory.getOptionalItemStackHandler().cast();

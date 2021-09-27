@@ -25,8 +25,8 @@ public final class ModFluids {
 
 	@OnlyIn(Dist.CLIENT)
 	protected static void setRenderLayers() {
-		RenderTypeLookup.setRenderLayer(NUTRIENT_SLURRY.get(), RenderType.getTranslucent());
-		RenderTypeLookup.setRenderLayer(NUTRIENT_SLURRY_FLOWING.get(), RenderType.getTranslucent());
+		RenderTypeLookup.setRenderLayer(NUTRIENT_SLURRY.get(), RenderType.translucent());
+		RenderTypeLookup.setRenderLayer(NUTRIENT_SLURRY_FLOWING.get(), RenderType.translucent());
 	}
 
 	private static ForgeFlowingFluid.Properties createNutrientSlurryProp() {
@@ -39,7 +39,7 @@ public final class ModFluids {
 	private static FluidAttributes.Builder createFluidAttribute(String name) {
 		return FluidAttributes.builder(BiomancyMod.createRL(String.format("block/%s_still", name)), BiomancyMod.createRL(String.format("block/%s_flowing", name)))
 				.translationKey(TextUtil.getTranslationKey("fluid", name))
-				.sound(SoundEvents.ITEM_BUCKET_FILL, SoundEvents.ITEM_BUCKET_EMPTY)
+				.sound(SoundEvents.BUCKET_FILL, SoundEvents.BUCKET_EMPTY)
 				.overlay(BiomancyMod.createRL(String.format("block/%s_overlay", name)));
 	}
 

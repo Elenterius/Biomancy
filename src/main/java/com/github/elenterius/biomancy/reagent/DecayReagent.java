@@ -36,7 +36,7 @@ public class DecayReagent extends Reagent {
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 		if (block == ModBlocks.FLESH_BLOCK.get()) {
-			if (!world.isRemote) world.setBlockState(pos, ModBlocks.NECROTIC_FLESH_BLOCK.get().getDefaultState());
+			if (!world.isClientSide) world.setBlockAndUpdate(pos, ModBlocks.NECROTIC_FLESH_BLOCK.get().defaultBlockState());
 			return true;
 		}
 		return false;
@@ -44,12 +44,12 @@ public class DecayReagent extends Reagent {
 
 	@Override
 	public boolean affectEntity(CompoundNBT nbt, @Nullable LivingEntity source, LivingEntity target) {
-		if (!target.world.isRemote) {
-			Collection<EffectInstance> effects = target.getActivePotionEffects();
+		if (!target.level.isClientSide) {
+			Collection<EffectInstance> effects = target.getActiveEffects();
 			int amplifier = 0;
 			int duration = 0;
 			for (EffectInstance effectInstance : effects) {
-				if (effectInstance.getPotion() == ModEffects.FLESH_EATING_DISEASE.get()) {
+				if (effectInstance.getEffect() == ModEffects.FLESH_EATING_DISEASE.get()) {
 					amplifier = effectInstance.getAmplifier() + 1;
 					duration = effectInstance.getDuration();
 					break;
@@ -57,9 +57,9 @@ public class DecayReagent extends Reagent {
 			}
 			duration += 5 * 120;
 
-			if (!convertLivingEntity((ServerWorld) target.world, target, amplifier)) {
+			if (!convertLivingEntity((ServerWorld) target.level, target, amplifier)) {
 				EffectInstance effectInstance = new EffectInstance(ModEffects.FLESH_EATING_DISEASE.get(), duration, amplifier);
-				target.addPotionEffect(effectInstance);
+				target.addEffect(effectInstance);
 			}
 		}
 		return true;
@@ -67,19 +67,19 @@ public class DecayReagent extends Reagent {
 
 	@Override
 	public boolean affectPlayerSelf(CompoundNBT nbt, PlayerEntity targetSelf) {
-		if (!targetSelf.world.isRemote) {
-			Collection<EffectInstance> effects = targetSelf.getActivePotionEffects();
+		if (!targetSelf.level.isClientSide) {
+			Collection<EffectInstance> effects = targetSelf.getActiveEffects();
 			int amplifier = 0;
 			int duration = 0;
 			for (EffectInstance effectInstance : effects) {
-				if (effectInstance.getPotion() == ModEffects.FLESH_EATING_DISEASE.get()) {
+				if (effectInstance.getEffect() == ModEffects.FLESH_EATING_DISEASE.get()) {
 					amplifier = effectInstance.getAmplifier() + 1;
 					duration = effectInstance.getDuration();
 					break;
 				}
 			}
 			EffectInstance effectInstance = new EffectInstance(ModEffects.FLESH_EATING_DISEASE.get(), 5 * 120 + duration, amplifier);
-			targetSelf.addPotionEffect(effectInstance);
+			targetSelf.addEffect(effectInstance);
 		}
 		return true;
 	}
@@ -88,30 +88,30 @@ public class DecayReagent extends Reagent {
 		if (amplifier < 1) return false;
 
 		if (target instanceof ZombieEntity && ForgeEventFactory.canLivingConvert(target, EntityType.SKELETON, (timer) -> {})) {
-			SkeletonEntity skeleton = ((ZombieEntity) target).func_233656_b_(EntityType.SKELETON, true); // create new entity with same settings & equipment and remove old entity
+			SkeletonEntity skeleton = ((ZombieEntity) target).convertTo(EntityType.SKELETON, true); // create new entity with same settings & equipment and remove old entity
 			if (skeleton != null) {
-				skeleton.onInitialSpawn(world, world.getDifficultyForLocation(target.getPosition()), SpawnReason.CONVERSION, null, null);
-				skeleton.hurtResistantTime = 60;
+				skeleton.finalizeSpawn(world, world.getCurrentDifficultyAt(target.blockPosition()), SpawnReason.CONVERSION, null, null);
+				skeleton.invulnerableTime = 60;
 				ForgeEventFactory.onLivingConvert(target, skeleton);
 				if (!target.isSilent()) {
-					world.playEvent(null, Constants.WorldEvents.ZOMBIE_INFECT_SOUND, target.getPosition(), 0);
+					world.levelEvent(null, Constants.WorldEvents.ZOMBIE_INFECT_SOUND, target.blockPosition(), 0);
 				}
 				return true;
 			}
 		}
 		else if (target instanceof ZombieHorseEntity && ForgeEventFactory.canLivingConvert(target, EntityType.SKELETON_HORSE, (timer) -> {})) {
-			SkeletonHorseEntity horse = ((ZombieHorseEntity) target).func_233656_b_(EntityType.SKELETON_HORSE, true); // create new entity with same settings & equipment and remove old entity
+			SkeletonHorseEntity horse = ((ZombieHorseEntity) target).convertTo(EntityType.SKELETON_HORSE, true); // create new entity with same settings & equipment and remove old entity
 			if (horse != null) {
-				horse.onInitialSpawn(world, world.getDifficultyForLocation(target.getPosition()), SpawnReason.CONVERSION, null, null);
-				horse.hurtResistantTime = 60;
-				UUID owner = ((ZombieHorseEntity) target).getOwnerUniqueId();
+				horse.finalizeSpawn(world, world.getCurrentDifficultyAt(target.blockPosition()), SpawnReason.CONVERSION, null, null);
+				horse.invulnerableTime = 60;
+				UUID owner = ((ZombieHorseEntity) target).getOwnerUUID();
 				if (owner != null) {
-					horse.setOwnerUniqueId(owner);
+					horse.setOwnerUUID(owner);
 				}
-				horse.setHorseTamed(((ZombieHorseEntity) target).isTame());
+				horse.setTamed(((ZombieHorseEntity) target).isTamed());
 				ForgeEventFactory.onLivingConvert(target, horse);
 				if (!target.isSilent()) {
-					world.playEvent(null, Constants.WorldEvents.ZOMBIE_INFECT_SOUND, target.getPosition(), 0);
+					world.levelEvent(null, Constants.WorldEvents.ZOMBIE_INFECT_SOUND, target.blockPosition(), 0);
 				}
 				return true;
 			}

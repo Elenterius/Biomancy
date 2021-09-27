@@ -26,7 +26,7 @@ public class ChewerRecipeBuilder {
 	private final int count;
 	private Ingredient ingredient = null;
 	private final int craftingTime;
-	private final Advancement.Builder advancementBuilder = Advancement.Builder.builder();
+	private final Advancement.Builder advancementBuilder = Advancement.Builder.advancement();
 	private String group;
 
 	private ChewerRecipeBuilder(IItemProvider resultIn, int craftingTimeIn, int countIn) {
@@ -47,11 +47,11 @@ public class ChewerRecipeBuilder {
 	}
 
 	public ChewerRecipeBuilder setIngredient(ITag<Item> tagIn) {
-		return setIngredient(Ingredient.fromTag(tagIn));
+		return setIngredient(Ingredient.of(tagIn));
 	}
 
 	public ChewerRecipeBuilder setIngredient(IItemProvider itemIn) {
-		return setIngredient(Ingredient.fromItems(itemIn));
+		return setIngredient(Ingredient.of(itemIn));
 	}
 
 	public ChewerRecipeBuilder setIngredient(Ingredient ingredientIn) {
@@ -60,7 +60,7 @@ public class ChewerRecipeBuilder {
 	}
 
 	public ChewerRecipeBuilder addCriterion(String name, ICriterionInstance criterionIn) {
-		advancementBuilder.withCriterion(name, criterionIn);
+		advancementBuilder.addCriterion(name, criterionIn);
 		return this;
 	}
 
@@ -100,8 +100,8 @@ public class ChewerRecipeBuilder {
 
 	private void build(Consumer<IFinishedRecipe> consumerIn, ResourceLocation id) {
 		validate(id);
-		advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.create(id)).withRewards(AdvancementRewards.Builder.recipe(id)).withRequirementsStrategy(IRequirementsStrategy.OR);
-		consumerIn.accept(new Result(id, result, craftingTime, count, this.group == null ? "" : group, ingredient, advancementBuilder, new ResourceLocation(id.getNamespace(), "recipes/" + (result.getGroup() != null ? result.getGroup().getPath() : BiomancyMod.MOD_ID) + "/" + id.getPath())));
+		advancementBuilder.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id)).rewards(AdvancementRewards.Builder.recipe(id)).requirements(IRequirementsStrategy.OR);
+		consumerIn.accept(new Result(id, result, craftingTime, count, this.group == null ? "" : group, ingredient, advancementBuilder, new ResourceLocation(id.getNamespace(), "recipes/" + (result.getItemCategory() != null ? result.getItemCategory().getRecipeFolderName() : BiomancyMod.MOD_ID) + "/" + id.getPath())));
 	}
 
 	private void validate(ResourceLocation id) {
@@ -131,12 +131,12 @@ public class ChewerRecipeBuilder {
 			advancementId = advancementIdIn;
 		}
 
-		public void serialize(JsonObject json) {
+		public void serializeRecipeData(JsonObject json) {
 			if (!this.group.isEmpty()) {
 				json.addProperty("group", this.group);
 			}
 
-			json.add("ingredient", ingredient.serialize());
+			json.add("ingredient", ingredient.toJson());
 
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.addProperty("item", Registry.ITEM.getKey(result).toString());
@@ -148,21 +148,21 @@ public class ChewerRecipeBuilder {
 			json.addProperty("time", craftingTime);
 		}
 
-		public IRecipeSerializer<?> getSerializer() {
+		public IRecipeSerializer<?> getType() {
 			return ModRecipes.CHEWER_SERIALIZER.get();
 		}
 
-		public ResourceLocation getID() {
+		public ResourceLocation getId() {
 			return id;
 		}
 
 		@Nullable
-		public JsonObject getAdvancementJson() {
-			return advancementBuilder.serialize();
+		public JsonObject serializeAdvancement() {
+			return advancementBuilder.serializeToJson();
 		}
 
 		@Nullable
-		public ResourceLocation getAdvancementID() {
+		public ResourceLocation getAdvancementId() {
 			return advancementId;
 		}
 	}

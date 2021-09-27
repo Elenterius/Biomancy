@@ -37,29 +37,29 @@ public abstract class MachineBlock<T extends MachineTileEntity<?, ?>> extends Ow
 
 	protected MachineBlock(Properties builder) {
 		super(builder);
-		setDefaultState(stateContainer.getBaseState().with(POWERED, false).with(CRAFTING, false).with(HORIZONTAL_FACING, Direction.NORTH));
+		registerDefaultState(stateDefinition.any().setValue(POWERED, false).setValue(CRAFTING, false).setValue(HORIZONTAL_FACING, Direction.NORTH));
 	}
 
 	@Nullable
 	@Override
-	public abstract T createNewTileEntity(IBlockReader worldIn);
+	public abstract T newBlockEntity(IBlockReader worldIn);
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(POWERED, CRAFTING, HORIZONTAL_FACING);
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return getDefaultState().with(HORIZONTAL_FACING, context.getPlacementHorizontalFacing().getOpposite());
+		return defaultBlockState().setValue(HORIZONTAL_FACING, context.getHorizontalDirection().getOpposite());
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		if (worldIn.isRemote()) return ActionResultType.SUCCESS;
+	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+		if (worldIn.isClientSide()) return ActionResultType.SUCCESS;
 
 		//TODO: verify that authorization works
-		INamedContainerProvider containerProvider = getContainer(state, worldIn, pos);
+		INamedContainerProvider containerProvider = getMenuProvider(state, worldIn, pos);
 		if (containerProvider != null && player instanceof ServerPlayerEntity) {
 			ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
 			NetworkHooks.openGui(serverPlayerEntity, containerProvider, (packetBuffer) -> {});
@@ -70,7 +70,7 @@ public abstract class MachineBlock<T extends MachineTileEntity<?, ?>> extends Ow
 	}
 
 	protected int getRedstoneLevel(BlockState state) {
-		return state.get(POWERED) ? 15 : 0;
+		return state.getValue(POWERED) ? 15 : 0;
 	}
 
 	protected int getPoweredDuration() {
@@ -79,72 +79,72 @@ public abstract class MachineBlock<T extends MachineTileEntity<?, ?>> extends Ow
 
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-		if (state.get(POWERED)) { //after pending block update deactivate redstone
-			worldIn.setBlockState(pos, state.with(POWERED, Boolean.FALSE), Constants.BlockFlags.DEFAULT);
+		if (state.getValue(POWERED)) { //after pending block update deactivate redstone
+			worldIn.setBlock(pos, state.setValue(POWERED, Boolean.FALSE), Constants.BlockFlags.DEFAULT);
 			updateNeighbors(worldIn, pos);
 		}
 	}
 
 	@Override
-	public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!isMoving && !state.matchesBlock(newState.getBlock())) {
-			if (state.get(POWERED)) {
+	public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!isMoving && !state.is(newState.getBlock())) {
+			if (state.getValue(POWERED)) {
 				updateNeighbors(worldIn, pos);
 			}
-			TileEntity tileEntity = worldIn.getTileEntity(pos);
+			TileEntity tileEntity = worldIn.getBlockEntity(pos);
 			if (tileEntity instanceof MachineTileEntity<?, ?>) {
 				((MachineTileEntity<?, ?>) tileEntity).dropAllInvContents(worldIn, pos);
 			}
-			if (state.get(CRAFTING)) {
-				worldIn.updateComparatorOutputLevel(pos, this);
+			if (state.getValue(CRAFTING)) {
+				worldIn.updateNeighbourForOutputSignal(pos, this);
 			}
-			super.onReplaced(state, worldIn, pos, newState, isMoving);
+			super.onRemove(state, worldIn, pos, newState, isMoving);
 		}
 	}
 
 	public void powerBlock(World worldIn, BlockPos pos, BlockState state) {
-		worldIn.setBlockState(pos, state.with(POWERED, Boolean.TRUE), Constants.BlockFlags.DEFAULT);
+		worldIn.setBlock(pos, state.setValue(POWERED, Boolean.TRUE), Constants.BlockFlags.DEFAULT);
 		updateNeighbors(worldIn, pos);
-		worldIn.getPendingBlockTicks().scheduleTick(pos, this, getPoweredDuration());
+		worldIn.getBlockTicks().scheduleTick(pos, this, getPoweredDuration());
 	}
 
 	@Override
-	public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+	public int getSignal(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
 		return getRedstoneLevel(blockState);
 	}
 
 	@Override
-	public int getStrongPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
+	public int getDirectSignal(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side) {
 		return getRedstoneLevel(blockState);
 	}
 
 	@Override
-	public boolean canProvidePower(BlockState state) {
+	public boolean isSignalSource(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public boolean hasComparatorInputOverride(BlockState state) {
+	public boolean hasAnalogOutputSignal(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
-		return blockState.get(CRAFTING) ? 15 : 0;
+	public int getAnalogOutputSignal(BlockState blockState, World worldIn, BlockPos pos) {
+		return blockState.getValue(CRAFTING) ? 15 : 0;
 	}
 
 	protected void updateNeighbors(World worldIn, BlockPos pos) {
-		worldIn.notifyNeighborsOfStateChange(pos, this);
+		worldIn.updateNeighborsAt(pos, this);
 //		worldIn.notifyNeighborsOfStateChange(pos.down(), this);
 	}
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.with(HORIZONTAL_FACING, rot.rotate(state.get(HORIZONTAL_FACING)));
+		return state.setValue(HORIZONTAL_FACING, rot.rotate(state.getValue(HORIZONTAL_FACING)));
 	}
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirrorIn) {
-		return state.rotate(mirrorIn.toRotation(state.get(HORIZONTAL_FACING)));
+		return state.rotate(mirrorIn.getRotation(state.getValue(HORIZONTAL_FACING)));
 	}
 }

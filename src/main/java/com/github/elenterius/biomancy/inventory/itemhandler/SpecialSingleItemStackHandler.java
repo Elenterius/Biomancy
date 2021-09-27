@@ -13,17 +13,19 @@ import javax.annotation.Nullable;
 
 public class SpecialSingleItemStackHandler implements IItemHandler, IItemHandlerModifiable, INBTSerializable<CompoundNBT> {
 
-	private static final CompoundNBT EMPTY_COMPOUND_NBT = new CompoundNBT();
 	public static final String NBT_KEY_INVENTORY = "SingleItemInv";
 	public static final String NBT_KEY_ITEM = "Item";
 	public static final String NBT_KEY_AMOUNT = "Amount";
 	public static final String NBT_KEY_MAX_AMOUNT = "MaxAmount";
 	public static final String NBT_KEY_IS_DIRTY = "IsDirty";
+	private static final CompoundNBT EMPTY_COMPOUND_NBT = new CompoundNBT();
 
 	private final ItemStack hostStack;
 	private final int maxItemAmount;
 	private ItemStack cachedStack;
 	private int itemAmount;
+
+	private boolean isDirty = true;
 
 	public SpecialSingleItemStackHandler(ItemStack hostStack, short maxAmount) {
 		this.maxItemAmount = maxAmount;
@@ -141,9 +143,11 @@ public class SpecialSingleItemStackHandler implements IItemHandler, IItemHandler
 		invNbt.putShort(NBT_KEY_MAX_AMOUNT, (short) maxItemAmount); // for client display
 		invNbt.putShort(NBT_KEY_AMOUNT, (short) itemAmount);
 		if (cachedStack.getCount() > 64) cachedStack.setCount(64); // prevent byte overflow
-		invNbt.put(NBT_KEY_ITEM, cachedStack.write(new CompoundNBT()));
+		invNbt.put(NBT_KEY_ITEM, cachedStack.save(new CompoundNBT()));
 		if (cachedStack.getCount() != itemAmount) cachedStack.setCount(itemAmount); //restore correct item amount
 		hostStack.getOrCreateTag().put(NBT_KEY_INVENTORY, invNbt); //cheese cap sync
+
+		onContentsChanged();
 		return EMPTY_COMPOUND_NBT;
 	}
 
@@ -155,7 +159,7 @@ public class SpecialSingleItemStackHandler implements IItemHandler, IItemHandler
 	}
 
 	private void readNBT(CompoundNBT invNbt) {
-		cachedStack = ItemStack.read(invNbt.getCompound(NBT_KEY_ITEM)); //cheese cap sync
+		cachedStack = ItemStack.of(invNbt.getCompound(NBT_KEY_ITEM)); //cheese cap sync
 		itemAmount = invNbt.getShort(NBT_KEY_AMOUNT);
 		if (cachedStack.getCount() != itemAmount) cachedStack.setCount(itemAmount); //restore correct item amount
 		if (!invNbt.contains(NBT_KEY_MAX_AMOUNT)) {
@@ -181,4 +185,15 @@ public class SpecialSingleItemStackHandler implements IItemHandler, IItemHandler
 		cachedStack = ItemStack.EMPTY;
 		itemAmount = 0;
 	}
+
+	protected void onContentsChanged() {
+		isDirty = true;
+	}
+
+	public boolean isDirty() {
+		boolean flag = isDirty;
+		isDirty = false;
+		return flag;
+	}
+
 }

@@ -42,20 +42,20 @@ public class ChewerBlock extends MachineBlock<ChewerTileEntity> {
 		AxisAlignedBB aabb0 = VoxelShapeUtil.createUnitAABB(0, 0, 3, 16, 14, 16);
 		AxisAlignedBB aabb1 = VoxelShapeUtil.createUnitAABB(4, 14, 4, 12, 16, 12);
 		AxisAlignedBB aabb2 = VoxelShapeUtil.createUnitAABB(3, 1, 0, 13, 10, 3);
-		return Stream.of(VoxelShapeUtil.rotateYTo(direction, aabb0), VoxelShapeUtil.rotateYTo(direction, aabb1), VoxelShapeUtil.rotateYTo(direction, aabb2)).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).get();
+		return Stream.of(VoxelShapeUtil.rotateYTo(direction, aabb0), VoxelShapeUtil.rotateYTo(direction, aabb1), VoxelShapeUtil.rotateYTo(direction, aabb2)).reduce((v1, v2) -> VoxelShapes.join(v1, v2, IBooleanFunction.OR)).get();
 	}
 
 	@Nullable
 	@Override
-	public ChewerTileEntity createNewTileEntity(IBlockReader worldIn) {
+	public ChewerTileEntity newBlockEntity(IBlockReader worldIn) {
 		return new ChewerTileEntity();
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()).setStyle(ClientTextUtil.LORE_STYLE));
-		CompoundNBT nbt = stack.getChildTag("BlockEntityTag");
+		CompoundNBT nbt = stack.getTagElement("BlockEntityTag");
 		if (nbt != null && nbt.contains(ChewerStateData.NBT_KEY_FUEL)) {
 			tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 			DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
@@ -63,19 +63,19 @@ public class ChewerBlock extends MachineBlock<ChewerTileEntity> {
 			CompoundNBT fuelNbt = nbt.getCompound(ChewerStateData.NBT_KEY_FUEL);
 			int fuel = fuelNbt.getInt("Amount");
 			String translationKey = "fluid." + fuelNbt.getString("FluidName").replace(":", ".").replace("/", ".");
-			tooltip.add(new TranslationTextComponent(translationKey).appendString(String.format(": %s/%s", df.format(fuel), df.format(ChewerTileEntity.MAX_FUEL))));
+			tooltip.add(new TranslationTextComponent(translationKey).append(String.format(": %s/%s", df.format(fuel), df.format(ChewerTileEntity.MAX_FUEL))));
 		}
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 	}
 
 	@Override
-	public BlockRenderType getRenderType(BlockState state) {
+	public BlockRenderType getRenderShape(BlockState state) {
 		return BlockRenderType.MODEL;
 	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		Direction facing = state.get(HORIZONTAL_FACING);
+		Direction facing = state.getValue(HORIZONTAL_FACING);
 		switch (facing) {
 			case NORTH:
 				return NORTH_SHAPE;
@@ -86,6 +86,6 @@ public class ChewerBlock extends MachineBlock<ChewerTileEntity> {
 			case EAST:
 				return EAST_SHAPE;
 		}
-		return VoxelShapes.fullCube();
+		return VoxelShapes.block();
 	}
 }

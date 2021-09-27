@@ -25,11 +25,11 @@ public class AddPotionToBoomlingRecipe extends SpecialRecipe {
 		int boomling = 0;
 		Potion potion = Potions.EMPTY;
 
-		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			ItemStack stack = inv.getStackInSlot(i);
+		for (int i = 0; i < inv.getContainerSize(); i++) {
+			ItemStack stack = inv.getItem(i);
 			if (!stack.isEmpty()) {
 				if (stack.getItem() instanceof BoomlingItem) {
-					potion = PotionUtilExt.getPotionFromItem(stack);
+					potion = PotionUtilExt.getPotion(stack);
 					if (++boomling > 1) return false;
 				}
 				else if (!(stack.getItem() instanceof PotionItem) || ++potions > 1) return false;
@@ -40,11 +40,11 @@ public class AddPotionToBoomlingRecipe extends SpecialRecipe {
 	}
 
 	@Override
-	public ItemStack getCraftingResult(CraftingInventory inv) {
+	public ItemStack assemble(CraftingInventory inv) {
 		ItemStack boomlingStack = ItemStack.EMPTY;
 		ItemStack potionStack = ItemStack.EMPTY;
-		for (int i = 0; i < inv.getSizeInventory(); i++) {
-			ItemStack stack = inv.getStackInSlot(i);
+		for (int i = 0; i < inv.getContainerSize(); i++) {
+			ItemStack stack = inv.getItem(i);
 			if (!stack.isEmpty()) {
 				if (stack.getItem() instanceof BoomlingItem) boomlingStack = stack;
 				else potionStack = stack;
@@ -63,7 +63,7 @@ public class AddPotionToBoomlingRecipe extends SpecialRecipe {
 	}
 
 	@Override
-	public boolean canFit(int width, int height) {
+	public boolean canCraftInDimensions(int width, int height) {
 		return width * height >= 2;
 	}
 

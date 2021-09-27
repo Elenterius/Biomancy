@@ -57,9 +57,9 @@ public class FleshBlobEntity extends CreatureEntity implements IJumpMovementMob<
 	public static final byte EATING_STATE_ID = 61; // any id > 55 should be future compatible. see handleStatusUpdate()
 	public static final byte JUMPING_STATE_ID = 60;
 
-	private static final DataParameter<Byte> BLOB_SIZE = EntityDataManager.createKey(FleshBlobEntity.class, DataSerializers.BYTE);
-	private static final DataParameter<Byte> FLESH_BLOB_DATA = EntityDataManager.createKey(FleshBlobEntity.class, DataSerializers.BYTE);
-	public static final Predicate<ItemEntity> ITEM_ENTITY_FILTER = itemEntity -> FindItemGoal.ITEM_ENTITY_FILTER.test(itemEntity) && itemEntity.getItem().isFood();
+	private static final DataParameter<Byte> BLOB_SIZE = EntityDataManager.defineId(FleshBlobEntity.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte> FLESH_BLOB_DATA = EntityDataManager.defineId(FleshBlobEntity.class, DataSerializers.BYTE);
+	public static final Predicate<ItemEntity> ITEM_ENTITY_FILTER = itemEntity -> FindItemGoal.ITEM_ENTITY_FILTER.test(itemEntity) && itemEntity.getItem().isEdible();
 
 	protected GenericJumpMovementHelper<FleshBlobEntity> jumpMovementState;
 	private int eatTimer;
@@ -74,11 +74,11 @@ public class FleshBlobEntity extends CreatureEntity implements IJumpMovementMob<
 	}
 
 	public static AttributeModifierMap.MutableAttribute createAttributes() {
-		return MobEntity.func_233666_p_()
-				.createMutableAttribute(Attributes.MAX_HEALTH, 10d)
-				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.3d)
-				.createMutableAttribute(Attributes.ARMOR, 8d)
-				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 3d);
+		return MobEntity.createMobAttributes()
+				.add(Attributes.MAX_HEALTH, 10d)
+				.add(Attributes.MOVEMENT_SPEED, 0.3d)
+				.add(Attributes.ARMOR, 8d)
+				.add(Attributes.ATTACK_DAMAGE, 3d);
 	}
 
 	@Override
@@ -92,17 +92,17 @@ public class FleshBlobEntity extends CreatureEntity implements IJumpMovementMob<
 	}
 
 	@Override
-	protected void registerData() {
-		super.registerData();
-		dataManager.register(FLESH_BLOB_DATA, (byte) 0);
-		dataManager.register(BLOB_SIZE, (byte) 1);
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(FLESH_BLOB_DATA, (byte) 0);
+		entityData.define(BLOB_SIZE, (byte) 1);
 	}
 
 	public void setBlobSize(byte size, boolean resetHealth) {
 		size = (byte) MathHelper.clamp(size, 1, 10);
-		dataManager.set(BLOB_SIZE, size);
-		recenterBoundingBox();
-		recalculateSize();
+		entityData.set(BLOB_SIZE, size);
+		reapplyPosition();
+		refreshDimensions();
 		//noinspection ConstantConditions
 		getAttribute(Attributes.MAX_HEALTH).setBaseValue(size * 10);
 		//noinspection ConstantConditions
@@ -112,22 +112,22 @@ public class FleshBlobEntity extends CreatureEntity implements IJumpMovementMob<
 		//noinspection ConstantConditions
 		getAttribute(Attributes.ARMOR).setBaseValue(size * 3);
 		if (resetHealth) setHealth(getMaxHealth());
-		experienceValue = size;
+		xpReward = size;
 	}
 
 	public byte getBlobSize() {
-		return dataManager.get(BLOB_SIZE);
+		return entityData.get(BLOB_SIZE);
 	}
 
 	@Override
-	public EntitySize getSize(Pose poseIn) {
-		return super.getSize(poseIn).scale(0.5f + getBlobSize() * 0.5f);
+	public EntitySize getDimensions(Pose poseIn) {
+		return super.getDimensions(poseIn).scale(0.5f + getBlobSize() * 0.5f);
 	}
 
 	@Nullable
 	@Override
-	public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-		byte flag = (byte) (rand.nextFloat() < 0.45 ? 1 : 0);
+	public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+		byte flag = (byte) (random.nextFloat() < 0.45 ? 1 : 0);
 		if (spawnDataIn instanceof FleshBlobData) {
 			flag = ((FleshBlobData) spawnDataIn).flag;
 		}
@@ -136,15 +136,15 @@ public class FleshBlobEntity extends CreatureEntity implements IJumpMovementMob<
 		}
 
 		setCustomEntityData(flag);
-		return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+		return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
 	}
 
 	public byte getFleshBlobData() {
-		return dataManager.get(FLESH_BLOB_DATA);
+		return entityData.get(FLESH_BLOB_DATA);
 	}
 
 	public boolean isHangry() {
-		return dataManager.get(FLESH_BLOB_DATA) == 1;
+		return entityData.get(FLESH_BLOB_DATA) == 1;
 	}
 
 	public void setHangry() {
@@ -164,12 +164,12 @@ public class FleshBlobEntity extends CreatureEntity implements IJumpMovementMob<
 			//noinspection ConstantConditions
 			getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(getBlobSize() + 3d);
 		}
-		dataManager.set(FLESH_BLOB_DATA, flag);
+		entityData.set(FLESH_BLOB_DATA, flag);
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT compound) {
-		super.readAdditional(compound);
+	public void readAdditionalSaveData(CompoundNBT compound) {
+		super.readAdditionalSaveData(compound);
 		setCustomEntityData(compound.getByte("FleshBlobData"));
 		setBlobSize(compound.getByte("Size"), false);
 		ListNBT storedDNAs = compound.getList("InjectedDNAs", Constants.NBT.TAG_STRING);
@@ -183,15 +183,15 @@ public class FleshBlobEntity extends CreatureEntity implements IJumpMovementMob<
 			for (int i = 0; i < storedDNAs.size(); i++) {
 				String entityTypeId = storedDNAs.getString(i);
 				if (!entityTypeId.isEmpty()) {
-					EntityType.byKey(entityTypeId).ifPresent(type -> injectedDNAs.add(type));
+					EntityType.byString(entityTypeId).ifPresent(type -> injectedDNAs.add(type));
 				}
 			}
 		}
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT compound) {
-		super.writeAdditional(compound);
+	public void addAdditionalSaveData(CompoundNBT compound) {
+		super.addAdditionalSaveData(compound);
 		compound.putByte("FleshBlobData", getFleshBlobData());
 		compound.putByte("Size", getBlobSize());
 
@@ -199,7 +199,7 @@ public class FleshBlobEntity extends CreatureEntity implements IJumpMovementMob<
 		if (injectedDNAs != null && !injectedDNAs.isEmpty()) {
 			for (EntityType<?> entityType : injectedDNAs) {
 				ResourceLocation rl = EntityType.getKey(entityType);
-				if (entityType.isSerializable()) listnbt.add(StringNBT.valueOf(rl.toString()));
+				if (entityType.canSerialize()) listnbt.add(StringNBT.valueOf(rl.toString()));
 			}
 		}
 		compound.put("InjectedDNAs", listnbt);
@@ -210,8 +210,8 @@ public class FleshBlobEntity extends CreatureEntity implements IJumpMovementMob<
 		injectedDNAs.add(entityType);
 
 		if (injectedDNAs.size() > 5) { //prevent storing of too many DNAs
-			Explosion.Mode mode = ForgeEventFactory.getMobGriefingEvent(world, this) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
-			world.createExplosion(this, getPosX(), getPosY(), getPosZ(), getBlobSize() + 4f * 1.25f, mode);
+			Explosion.Mode mode = ForgeEventFactory.getMobGriefingEvent(level, this) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
+			level.explode(this, getX(), getY(), getZ(), getBlobSize() + 4f * 1.25f, mode);
 			remove();
 		}
 	}
@@ -230,41 +230,41 @@ public class FleshBlobEntity extends CreatureEntity implements IJumpMovementMob<
 	}
 
 	@Override
-	public void recalculateSize() {
-		double x = getPosX();
-		double y = getPosY();
-		double z = getPosZ();
-		super.recalculateSize();
-		setPosition(x, y, z);
+	public void refreshDimensions() {
+		double x = getX();
+		double y = getY();
+		double z = getZ();
+		super.refreshDimensions();
+		setPos(x, y, z);
 	}
 
 	@Override
-	public void notifyDataManagerChange(DataParameter<?> key) {
+	public void onSyncedDataUpdated(DataParameter<?> key) {
 		if (BLOB_SIZE.equals(key)) {
-			recalculateSize();
-			rotationYaw = rotationYawHead;
-			renderYawOffset = rotationYawHead;
-			if (isInWater() && rand.nextFloat() < 0.05f) {
+			refreshDimensions();
+			yRot = yHeadRot;
+			yBodyRot = yHeadRot;
+			if (isInWater() && random.nextFloat() < 0.05f) {
 				doWaterSplashEffect();
 			}
 		}
-		super.notifyDataManagerChange(key);
+		super.onSyncedDataUpdated(key);
 	}
 
 	@Override
-	protected void jump() {
-		super.jump();
+	protected void jumpFromGround() {
+		super.jumpFromGround();
 		jumpMovementState.updateJump(this);
 	}
 
 	@Override
-	protected void updateAITasks() {
+	protected void customServerAiStep() {
 		jumpMovementState.updateAIMovement(this);
 	}
 
 	@Override
 	public void updateRotationYaw(double x, double z) {
-		rotationYaw = (float) (MathHelper.atan2(z - getPosZ(), x - getPosX()) * (double) (180F / (float) Math.PI)) - 90.0F;
+		yRot = (float) (MathHelper.atan2(z - getZ(), x - getX()) * (double) (180F / (float) Math.PI)) - 90.0F;
 	}
 
 	@Override
@@ -273,80 +273,80 @@ public class FleshBlobEntity extends CreatureEntity implements IJumpMovementMob<
 	}
 
 	@Override
-	public void livingTick() {
-		if (!world.isRemote && isAlive() && isServerWorld()) {
+	public void aiStep() {
+		if (!level.isClientSide && isAlive() && isEffectiveAi()) {
 			eatTimer++;
-			ItemStack heldStack = getItemStackFromSlot(EquipmentSlotType.MAINHAND);
-			if (heldStack.getItem().isFood() && getAttackTarget() == null) {
+			ItemStack heldStack = getItemBySlot(EquipmentSlotType.MAINHAND);
+			if (heldStack.getItem().isEdible() && getTarget() == null) {
 				if (eatTimer > 600) {
-					Food food = heldStack.getItem().getFood();
-					ItemStack eatenStack = heldStack.onItemUseFinish(world, this);
+					Food food = heldStack.getItem().getFoodProperties();
+					ItemStack eatenStack = heldStack.finishUsingItem(level, this);
 					if (!eatenStack.isEmpty()) {
-						setItemStackToSlot(EquipmentSlotType.MAINHAND, eatenStack);
+						setItemSlot(EquipmentSlotType.MAINHAND, eatenStack);
 					}
-					float modifier = food != null ? (food.getHealing() * (food.isMeat() ? 0.5f : 0.25f)) / 10f : 0f;
-					if (rand.nextFloat() < 0.4f + modifier) {
+					float modifier = food != null ? (food.getNutrition() * (food.isMeat() ? 0.5f : 0.25f)) / 10f : 0f;
+					if (random.nextFloat() < 0.4f + modifier) {
 						byte blobSize = getBlobSize();
 						if (blobSize < 10) setBlobSize((byte) (blobSize + 1), true);
 						else heal(getMaxHealth() - getHealth()); //if the blob is already at max size, heal up to max health instead
 					}
 					eatTimer = 0;
 				}
-				else if (eatTimer > 500 && rand.nextFloat() < 0.1f) {
-					playSound(getEatSound(heldStack), 1f, 1f);
-					world.setEntityState(this, EATING_STATE_ID);
+				else if (eatTimer > 500 && random.nextFloat() < 0.1f) {
+					playSound(getEatingSound(heldStack), 1f, 1f);
+					level.broadcastEntityEvent(this, EATING_STATE_ID);
 				}
 			}
 		}
 
-		super.livingTick();
+		super.aiStep();
 		jumpMovementState.updateTick(this);
 	}
 
 	@Override
-	public boolean canPickUpItem(ItemStack stack) {
+	public boolean canTakeItem(ItemStack stack) {
 		if (!canPickUpLoot()) return false;
-		EquipmentSlotType slotType = MobEntity.getSlotForItemStack(stack);
-		return slotType == EquipmentSlotType.MAINHAND && getItemStackFromSlot(slotType).isEmpty();
+		EquipmentSlotType slotType = MobEntity.getEquipmentSlotForItem(stack);
+		return slotType == EquipmentSlotType.MAINHAND && getItemBySlot(slotType).isEmpty();
 	}
 
 	@Override
-	public boolean canEquipItem(ItemStack stack) {
+	public boolean canHoldItem(ItemStack stack) {
 		Item item = stack.getItem();
-		ItemStack heldStack = getItemStackFromSlot(EquipmentSlotType.MAINHAND);
-		return eatTimer > 0 && item.isFood() && (heldStack.isEmpty() || !heldStack.getItem().isFood());
+		ItemStack heldStack = getItemBySlot(EquipmentSlotType.MAINHAND);
+		return eatTimer > 0 && item.isEdible() && (heldStack.isEmpty() || !heldStack.getItem().isEdible());
 	}
 
 	@Override
-	protected void updateEquipmentIfNeeded(ItemEntity itemEntity) {
+	protected void pickUpItem(ItemEntity itemEntity) {
 		ItemStack stack = itemEntity.getItem();
-		if (canEquipItem(stack)) {
-			triggerItemPickupTrigger(itemEntity);
-			setItemStackToSlot(EquipmentSlotType.MAINHAND, stack);
-			inventoryHandsDropChances[EquipmentSlotType.MAINHAND.getIndex()] = 2f;
-			onItemPickup(itemEntity, stack.getCount());
+		if (canHoldItem(stack)) {
+			onItemPickup(itemEntity);
+			setItemSlot(EquipmentSlotType.MAINHAND, stack);
+			handDropChances[EquipmentSlotType.MAINHAND.getIndex()] = 2f;
+			take(itemEntity, stack.getCount());
 			itemEntity.remove();
 			eatTimer = 0;
 		}
 	}
 
 	@Override
-	protected void spawnDrops(DamageSource damageSourceIn) {
-		ItemStack stack = getItemStackFromSlot(EquipmentSlotType.MAINHAND);
+	protected void dropAllDeathLoot(DamageSource damageSourceIn) {
+		ItemStack stack = getItemBySlot(EquipmentSlotType.MAINHAND);
 		if (!stack.isEmpty()) {
-			entityDropItem(stack);
-			setItemStackToSlot(EquipmentSlotType.MAINHAND, ItemStack.EMPTY);
+			spawnAtLocation(stack);
+			setItemSlot(EquipmentSlotType.MAINHAND, ItemStack.EMPTY);
 		}
 
-		super.spawnDrops(damageSourceIn);
+		super.dropAllDeathLoot(damageSourceIn);
 	}
 
 	@Override
-	public ResourceLocation getLootTable() {
+	public ResourceLocation getDefaultLootTable() {
 		switch (getBlobSize()) {
 			default:
 			case 1:
-				return getType().getLootTable();
+				return getType().getDefaultLootTable();
 			case 2:
 				return LOOT_TABLE_FOR_SIZE_2;
 			case 3:
@@ -370,62 +370,62 @@ public class FleshBlobEntity extends CreatureEntity implements IJumpMovementMob<
 
 
 	@OnlyIn(Dist.CLIENT)
-	public void handleStatusUpdate(byte id) {
+	public void handleEntityEvent(byte id) {
 		if (id == jumpMovementState.stateUpdateId) {
-			handleRunningEffect();
+			spawnSprintParticle();
 			jumpMovementState.onEntityStateUpdate();
 		}
 		else if (id == EATING_STATE_ID) {
-			ItemStack stack = getItemStackFromSlot(EquipmentSlotType.MAINHAND);
+			ItemStack stack = getItemBySlot(EquipmentSlotType.MAINHAND);
 			if (!stack.isEmpty()) {
-				float pitch = -rotationPitch * ((float) Math.PI / 180f);
-				float yaw = -rotationYaw * ((float) Math.PI / 180f);
+				float pitch = -xRot * ((float) Math.PI / 180f);
+				float yaw = -yRot * ((float) Math.PI / 180f);
 				for (int i = 0; i < 8; ++i) {
-					Vector3d vector3d = new Vector3d((rand.nextFloat() - 0.5d) * 0.1d, rand.nextFloat() * 0.1d + 0.1d, 0d).rotatePitch(pitch).rotateYaw(yaw);
-					world.addParticle(new ItemParticleData(ParticleTypes.ITEM, stack), getPosX() + getLookVec().x / 2d, getPosY(), getPosZ() + getLookVec().z / 2d, vector3d.x, vector3d.y + 0.05d, vector3d.z);
+					Vector3d vector3d = new Vector3d((random.nextFloat() - 0.5d) * 0.1d, random.nextFloat() * 0.1d + 0.1d, 0d).xRot(pitch).yRot(yaw);
+					level.addParticle(new ItemParticleData(ParticleTypes.ITEM, stack), getX() + getLookAngle().x / 2d, getY(), getZ() + getLookAngle().z / 2d, vector3d.x, vector3d.y + 0.05d, vector3d.z);
 				}
 			}
 		}
 		else {
-			super.handleStatusUpdate(id);
+			super.handleEntityEvent(id);
 		}
 	}
 
 	@Override
 	public boolean isJumping() {
-		return isJumping;
+		return jumping;
 	}
 
 	@Override
 	public void setJumping(boolean jumping) {
 		super.setJumping(jumping);
 		if (jumping) {
-			playSound(getJumpSound(), getSoundVolume(), ((rand.nextFloat() - rand.nextFloat()) * 0.2F + 1.0F) * 0.8F);
+			playSound(getJumpSound(), getSoundVolume(), ((random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F) * 0.8F);
 		}
 	}
 
 	@Override
 	public void setMovementController(GenericJumpMovementController controller) {
-		moveController = controller;
+		moveControl = controller;
 	}
 
 	@Override
 	public void setJumpController(GenericJumpController controller) {
-		jumpController = controller;
+		jumpControl = controller;
 	}
 
 	@Override
-	public boolean shouldSpawnRunningEffects() {
+	public boolean canSpawnSprintParticle() {
 		return false;
 	}
 
 	@Override
 	public SoundEvent getJumpSound() {
-		return SoundEvents.ENTITY_SLIME_JUMP;
+		return SoundEvents.SLIME_JUMP;
 	}
 
 	@Override
-	public SoundCategory getSoundCategory() {
+	public SoundCategory getSoundSource() {
 		return getFleshBlobData() == 1 ? SoundCategory.HOSTILE : SoundCategory.NEUTRAL;
 	}
 
@@ -441,7 +441,7 @@ public class FleshBlobEntity extends CreatureEntity implements IJumpMovementMob<
 		}
 
 		protected double getAttackReachSqr(LivingEntity attackTarget) {
-			return 2f + attackTarget.getWidth();
+			return 2f + attackTarget.getBbWidth();
 		}
 
 	}
@@ -456,7 +456,7 @@ public class FleshBlobEntity extends CreatureEntity implements IJumpMovementMob<
 
 		public void tick() {
 			super.tick();
-			jumpMoveMob.getJumpMovementState().setMovementSpeed(jumpMoveMob, speed);
+			jumpMoveMob.getJumpMovementState().setMovementSpeed(jumpMoveMob, speedModifier);
 		}
 	}
 
@@ -468,8 +468,8 @@ public class FleshBlobEntity extends CreatureEntity implements IJumpMovementMob<
 			blobEntity = blobEntityIn;
 		}
 
-		public boolean shouldExecute() {
-			return blobEntity.getFleshBlobData() != 1 && super.shouldExecute();
+		public boolean canUse() {
+			return blobEntity.getFleshBlobData() != 1 && super.canUse();
 		}
 	}
 

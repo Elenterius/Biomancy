@@ -8,9 +8,9 @@ import net.minecraftforge.items.wrapper.PlayerInvWrapper;
 
 import javax.annotation.Nullable;
 
-public abstract class MachineContainer extends Container {
+public abstract class ContainerWithPlayerInv extends Container {
 
-	protected MachineContainer(@Nullable ContainerType<?> containerType, int screenId, PlayerInventory playerInventory) {
+	protected ContainerWithPlayerInv(@Nullable ContainerType<?> containerType, int screenId, PlayerInventory playerInventory) {
 		super(containerType, screenId);
 		initPlayerInvSlots(playerInventory);
 	}

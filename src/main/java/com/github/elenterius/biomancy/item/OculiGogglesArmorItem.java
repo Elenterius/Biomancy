@@ -32,18 +32,18 @@ public class OculiGogglesArmorItem extends ArmorItem implements IEntityUnveilerH
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).mergeStyle(ClientTextUtil.LORE_STYLE));
+	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).withStyle(ClientTextUtil.LORE_STYLE));
 		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 		if (stack.getOrCreateTag().getBoolean(NBT_KEY)) {
-			tooltip.add(TextUtil.getTranslationText("tooltip", "item_is_awake").mergeStyle(TextFormatting.GRAY));
-			tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextUtil.getTranslationText("tooltip", "action_deactivate")).mergeStyle(TextFormatting.DARK_GRAY));
+			tooltip.add(TextUtil.getTranslationText("tooltip", "item_is_awake").withStyle(TextFormatting.GRAY));
+			tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextUtil.getTranslationText("tooltip", "action_deactivate")).withStyle(TextFormatting.DARK_GRAY));
 		}
 		else {
-			tooltip.add(TextUtil.getTranslationText("tooltip", "item_is_inert").mergeStyle(TextFormatting.GRAY));
-			tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextUtil.getTranslationText("tooltip", "action_activate")).mergeStyle(TextFormatting.DARK_GRAY));
+			tooltip.add(TextUtil.getTranslationText("tooltip", "item_is_inert").withStyle(TextFormatting.GRAY));
+			tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextUtil.getTranslationText("tooltip", "action_activate")).withStyle(TextFormatting.DARK_GRAY));
 		}
-		tooltip.add(new StringTextComponent("If equipped, use ").appendSibling(ClientTextUtil.getCtrlKey()).appendString(" + ").appendSibling(ClientTextUtil.getDefaultKey().appendString(" instead.")).mergeStyle(TextFormatting.DARK_GRAY));
+		tooltip.add(new StringTextComponent("If equipped, use ").append(ClientTextUtil.getCtrlKey()).append(" + ").append(ClientTextUtil.getDefaultKey().append(" instead.")).withStyle(TextFormatting.DARK_GRAY));
 		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 	}
 
@@ -51,7 +51,7 @@ public class OculiGogglesArmorItem extends ArmorItem implements IEntityUnveilerH
 	public ITextComponent getHighlightTip(ItemStack stack, ITextComponent displayName) {
 		if (displayName instanceof IFormattableTextComponent) {
 			String key = stack.getOrCreateTag().getBoolean(NBT_KEY) ? TextUtil.getTranslationKey("tooltip", "awake") : TextUtil.getTranslationKey("tooltip", "inert");
-			return ((IFormattableTextComponent) displayName).appendString(" (").appendSibling(new TranslationTextComponent(key)).appendString(")");
+			return ((IFormattableTextComponent) displayName).append(" (").append(new TranslationTextComponent(key)).append(")");
 		}
 		return displayName;
 	}
@@ -64,29 +64,29 @@ public class OculiGogglesArmorItem extends ArmorItem implements IEntityUnveilerH
 
 	@Override
 	public void onArmorTick(ItemStack stack, World world, PlayerEntity player) {
-		if (world.isRemote()) return;
+		if (world.isClientSide()) return;
 
-		if (player.isPotionActive(Effects.BLINDNESS)) {
-			player.removePotionEffect(Effects.BLINDNESS);
+		if (player.hasEffect(Effects.BLINDNESS)) {
+			player.removeEffect(Effects.BLINDNESS);
 		}
 
-		EffectInstance activeEffect = player.getActivePotionEffect(Effects.NIGHT_VISION);
+		EffectInstance activeEffect = player.getEffect(Effects.NIGHT_VISION);
 		if (activeEffect == null) {
 			EffectInstance effectInstance = new EffectInstance(Effects.NIGHT_VISION, Integer.MAX_VALUE, 0, false, false);
-			if (player.isPotionApplicable(effectInstance)) {
-				player.addPotionEffect(effectInstance);
+			if (player.canBeAffected(effectInstance)) {
+				player.addEffect(effectInstance);
 			}
 		}
-		else if (player.ticksExisted % 1200 == 0 && activeEffect.getDuration() < Integer.MAX_VALUE - 2000) {
+		else if (player.tickCount % 1200 == 0 && activeEffect.getDuration() < Integer.MAX_VALUE - 2000) {
 			EffectInstance effectInstance = new EffectInstance(Effects.NIGHT_VISION, Integer.MAX_VALUE, 0, false, false);
-			if (player.isPotionApplicable(effectInstance)) {
-				player.addPotionEffect(effectInstance);
+			if (player.canBeAffected(effectInstance)) {
+				player.addEffect(effectInstance);
 			}
 		}
 	}
 
 	public void cancelEffect(LivingEntity entity) {
-		if (entity.isPotionActive(Effects.NIGHT_VISION)) entity.removePotionEffect(Effects.NIGHT_VISION);
+		if (entity.hasEffect(Effects.NIGHT_VISION)) entity.removeEffect(Effects.NIGHT_VISION);
 	}
 
 	@Nullable
@@ -96,7 +96,7 @@ public class OculiGogglesArmorItem extends ArmorItem implements IEntityUnveilerH
 	}
 
 	@Override
-	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+	public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair) {
 		return ModItems.MENISCUS_LENS.get() == repair.getItem();
 	}
 }

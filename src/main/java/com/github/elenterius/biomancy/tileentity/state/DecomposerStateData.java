@@ -75,7 +75,7 @@ public class DecomposerStateData extends RecipeCraftingStateData<DecomposerRecip
 	}
 
 	@Override
-	public int size() {
+	public int getCount() {
 		return 4;
 	}
 }

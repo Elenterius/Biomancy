@@ -17,26 +17,26 @@ import javax.annotation.Nonnull;
 public class BeetlingRenderer extends MobRenderer<BeetlingEntity, BeetlingModel<BeetlingEntity>> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(BiomancyMod.MOD_ID, "textures/entity/beetle.png");
 	private static final ResourceLocation OVERLAY_TEXTURE = new ResourceLocation(BiomancyMod.MOD_ID, "textures/entity/beetle_overlay.png");
-	private static final RenderType EYE_RENDER_TYPE = RenderType.getEyes(OVERLAY_TEXTURE);
+	private static final RenderType EYE_RENDER_TYPE = RenderType.eyes(OVERLAY_TEXTURE);
 
 	public BeetlingRenderer(EntityRendererManager renderManagerIn) {
 		super(renderManagerIn, new BeetlingModel<>(), 0.24F);
 		addLayer(new AbstractEyesLayer<BeetlingEntity, BeetlingModel<BeetlingEntity>>(this) {
 			@Override
-			public RenderType getRenderType() {
+			public RenderType renderType() {
 				return EYE_RENDER_TYPE;
 			}
 		});
 	}
 
 	@Override
-	protected float getDeathMaxRotation(BeetlingEntity entity) {
+	protected float getFlipDegrees(BeetlingEntity entity) {
 		return 180.0F;
 	}
 
 	@Override
 	@Nonnull
-	public ResourceLocation getEntityTexture(BeetlingEntity entity) {
+	public ResourceLocation getTextureLocation(BeetlingEntity entity) {
 		return TEXTURE;
 	}
 }

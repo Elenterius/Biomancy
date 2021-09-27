@@ -46,7 +46,7 @@ public class DigesterBlock extends MachineBlock<DigesterTileEntity> {
 
 	public DigesterBlock(Properties builder) {
 		super(builder, true);
-		setDefaultState(stateContainer.getBaseState().with(POWERED, false).with(CRAFTING, false).with(FACING, Direction.UP));
+		registerDefaultState(stateDefinition.any().setValue(POWERED, false).setValue(CRAFTING, false).setValue(FACING, Direction.UP));
 	}
 
 	private static VoxelShape createVoxelShape(Direction direction) {
@@ -54,30 +54,30 @@ public class DigesterBlock extends MachineBlock<DigesterTileEntity> {
 				VoxelShapeUtil.createXZRotatedTowards(direction, 4.5, 14, 4.5, 11.5, 16, 11.5),
 				VoxelShapeUtil.createXZRotatedTowards(direction, 3, 4, 3, 13, 14, 13),
 				VoxelShapeUtil.createXZRotatedTowards(direction, 4, 0, 4, 12, 4, 12)
-		).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, IBooleanFunction.OR)).get();
+		).reduce((v1, v2) -> VoxelShapes.join(v1, v2, IBooleanFunction.OR)).get();
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(POWERED, CRAFTING, FACING); //override with different facing property
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return getDefaultState().with(FACING, context.getFace());
+		return defaultBlockState().setValue(FACING, context.getClickedFace());
 	}
 
 	@Nullable
 	@Override
-	public DigesterTileEntity createNewTileEntity(IBlockReader worldIn) {
+	public DigesterTileEntity newBlockEntity(IBlockReader worldIn) {
 		return new DigesterTileEntity();
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()).setStyle(ClientTextUtil.LORE_STYLE));
-		CompoundNBT nbt = stack.getChildTag("BlockEntityTag");
+		CompoundNBT nbt = stack.getTagElement("BlockEntityTag");
 		if (nbt != null) {
 			boolean hasFuel = nbt.contains(DigesterStateData.NBT_KEY_FUEL);
 			boolean hasFluid = nbt.contains(DigesterStateData.NBT_KEY_FLUID_OUT);
@@ -89,28 +89,28 @@ public class DigesterBlock extends MachineBlock<DigesterTileEntity> {
 					CompoundNBT fuelNbt = nbt.getCompound(DigesterStateData.NBT_KEY_FUEL);
 					int fuel = fuelNbt.getInt("Amount");
 					String translationKey = "fluid." + fuelNbt.getString("FluidName").replace(":", ".").replace("/", ".");
-					tooltip.add(new TranslationTextComponent(translationKey).appendString(String.format(": %s/%s", df.format(fuel), df.format(DigesterTileEntity.MAX_FLUID))));
+					tooltip.add(new TranslationTextComponent(translationKey).append(String.format(": %s/%s", df.format(fuel), df.format(DigesterTileEntity.MAX_FLUID))));
 				}
 
 				if (hasFluid) {
 					CompoundNBT fluidNbt = nbt.getCompound(DigesterStateData.NBT_KEY_FLUID_OUT);
 					int fluid = fluidNbt.getInt("Amount");
 					String translationKey = "fluid." + fluidNbt.getString("FluidName").replace(":", ".").replace("/", ".");
-					tooltip.add(new TranslationTextComponent(translationKey).appendString(String.format(": %s/%s", df.format(fluid), df.format(DigesterTileEntity.MAX_FLUID))));
+					tooltip.add(new TranslationTextComponent(translationKey).append(String.format(": %s/%s", df.format(fluid), df.format(DigesterTileEntity.MAX_FLUID))));
 				}
 			}
 		}
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 	}
 
 	@Override
-	public BlockRenderType getRenderType(BlockState state) {
+	public BlockRenderType getRenderShape(BlockState state) {
 		return BlockRenderType.MODEL;
 	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		switch (state.get(FACING)) {
+		switch (state.getValue(FACING)) {
 			case UP:
 			default:
 				return SHAPE_UP;
@@ -129,12 +129,12 @@ public class DigesterBlock extends MachineBlock<DigesterTileEntity> {
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.with(FACING, rot.rotate(state.get(FACING)));
+		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirrorIn) {
-		return state.rotate(mirrorIn.toRotation(state.get(FACING)));
+		return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
 	}
 
 
@@ -142,9 +142,9 @@ public class DigesterBlock extends MachineBlock<DigesterTileEntity> {
 	@OnlyIn(Dist.CLIENT)
 	public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand) {
 		if (worldIn.getGameTime() % 10L == 0 && rand.nextInt(2) == 0) {
-			boolean isCrafting = stateIn.get(CRAFTING);
+			boolean isCrafting = stateIn.getValue(CRAFTING);
 			if (isCrafting) {
-				worldIn.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.BLOCKS, 0.3f + rand.nextFloat() * 0.2f, 0.75f + rand.nextFloat() * 0.5f, false);
+				worldIn.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.PLAYER_BURP, SoundCategory.BLOCKS, 0.3f + rand.nextFloat() * 0.2f, 0.75f + rand.nextFloat() * 0.5f, false);
 			}
 		}
 	}

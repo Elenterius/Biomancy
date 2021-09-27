@@ -30,21 +30,21 @@ public class ChewerRecipe extends AbstractProductionRecipe {
 
 	@Override
 	public boolean matches(IInventory inv, World worldIn) {
-		return ingredient.test(inv.getStackInSlot(0));
+		return ingredient.test(inv.getItem(0));
 	}
 
 	@Override
-	public ItemStack getCraftingResult(IInventory inv) {
+	public ItemStack assemble(IInventory inv) {
 		return recipeResult.copy();
 	}
 
 	@Override
-	public boolean canFit(int width, int height) {
+	public boolean canCraftInDimensions(int width, int height) {
 		return true;
 	}
 
 	@Override
-	public ItemStack getRecipeOutput() {
+	public ItemStack getResultItem() {
 		return recipeResult;
 	}
 
@@ -68,35 +68,35 @@ public class ChewerRecipe extends AbstractProductionRecipe {
 	public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<ChewerRecipe> {
 
 		private static Ingredient readIngredient(JsonObject jsonObj) {
-			if (JSONUtils.isJsonArray(jsonObj, "ingredient")) return Ingredient.deserialize(JSONUtils.getJsonArray(jsonObj, "ingredient"));
-			else return Ingredient.deserialize(JSONUtils.getJsonObject(jsonObj, "ingredient"));
+			if (JSONUtils.isArrayNode(jsonObj, "ingredient")) return Ingredient.fromJson(JSONUtils.getAsJsonArray(jsonObj, "ingredient"));
+			else return Ingredient.fromJson(JSONUtils.getAsJsonObject(jsonObj, "ingredient"));
 		}
 
 		@Override
-		public ChewerRecipe read(ResourceLocation recipeId, JsonObject json) {
+		public ChewerRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
 			Ingredient ingredient = readIngredient(json);
-			ItemStack resultStack = ShapedRecipe.deserializeItem(JSONUtils.getJsonObject(json, "result"));
-			int time = JSONUtils.getInt(json, "time", 100);
+			ItemStack resultStack = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "result"));
+			int time = JSONUtils.getAsInt(json, "time", 100);
 			return new ChewerRecipe(recipeId, resultStack, time, ingredient);
 		}
 
 		@Nullable
 		@Override
-		public ChewerRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
+		public ChewerRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer) {
 			//client side
-			ItemStack resultStack = buffer.readItemStack();
+			ItemStack resultStack = buffer.readItem();
 			int time = buffer.readInt();
-			Ingredient ingredient = Ingredient.read(buffer);
+			Ingredient ingredient = Ingredient.fromNetwork(buffer);
 
 			return new ChewerRecipe(recipeId, resultStack, time, ingredient);
 		}
 
 		@Override
-		public void write(PacketBuffer buffer, ChewerRecipe recipe) {
+		public void toNetwork(PacketBuffer buffer, ChewerRecipe recipe) {
 			//server side
-			buffer.writeItemStack(recipe.recipeResult);
+			buffer.writeItem(recipe.recipeResult);
 			buffer.writeInt(recipe.getCraftingTime());
-			recipe.ingredient.write(buffer);
+			recipe.ingredient.toNetwork(buffer);
 		}
 	}
 }

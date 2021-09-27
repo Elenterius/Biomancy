@@ -29,77 +29,77 @@ public class ModEntityLootTables extends EntityLootTables {
 //	}
 
 	private static LootTable.Builder fleshBlobLootTableBuilderWithDrop(int rolls) {
-		return LootTable.builder()
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(rolls)).addEntry(ItemLootEntry.builder(ModItems.FLESH_BLOCK.get())))
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(TableLootEntry.builder(ModEntityTypes.FLESH_BLOB.get().getLootTable())));
+		return LootTable.lootTable()
+				.withPool(LootPool.lootPool().setRolls(ConstantRange.exactly(rolls)).add(ItemLootEntry.lootTableItem(ModItems.FLESH_BLOCK.get())))
+				.withPool(LootPool.lootPool().setRolls(ConstantRange.exactly(1)).add(TableLootEntry.lootTableReference(ModEntityTypes.FLESH_BLOB.get().getDefaultLootTable())));
 	}
 
 	@Override
 	protected void addTables() {
-		registerLootTable(ModEntityTypes.BOOMLING.get(), LootTable.builder()); //no item drops
+		add(ModEntityTypes.BOOMLING.get(), LootTable.lootTable()); //no item drops
 
-		registerLootTable(ModEntityTypes.BROOD_MOTHER.get(), LootTable.builder()
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(Items.STRING).acceptFunction(SetCount.builder(RandomValueRange.of(0f, 2f))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f)))))
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(2))
-						.addEntry(ItemLootEntry.builder(ModItems.HORMONE_BILE.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-1f, 2f))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 2f))))
-						.acceptCondition(KilledByPlayer.builder())));
+		add(ModEntityTypes.BROOD_MOTHER.get(), LootTable.lootTable()
+				.withPool(LootPool.lootPool().setRolls(ConstantRange.exactly(1)).add(ItemLootEntry.lootTableItem(Items.STRING).apply(SetCount.setCount(RandomValueRange.between(0f, 2f))).apply(LootingEnchantBonus.lootingMultiplier(RandomValueRange.between(0f, 1f)))))
+				.withPool(LootPool.lootPool().setRolls(ConstantRange.exactly(2))
+						.add(ItemLootEntry.lootTableItem(ModItems.HORMONE_BILE.get()).apply(SetCount.setCount(RandomValueRange.between(-1f, 2f))).apply(LootingEnchantBonus.lootingMultiplier(RandomValueRange.between(0f, 2f))))
+						.when(KilledByPlayer.killedByPlayer())));
 
-		registerLootTable(ModEntityTypes.BEETLING.get(), LootTable.builder()
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(ModItems.ERODING_BILE.get()).acceptFunction(SetCount.builder(RandomValueRange.of(0f, 1f))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f)))))
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(ModItems.MENISCUS_LENS.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-2f, 1f))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f)))).acceptCondition(KilledByPlayer.builder())));
+		add(ModEntityTypes.BEETLING.get(), LootTable.lootTable()
+				.withPool(LootPool.lootPool().setRolls(ConstantRange.exactly(1)).add(ItemLootEntry.lootTableItem(ModItems.ERODING_BILE.get()).apply(SetCount.setCount(RandomValueRange.between(0f, 1f))).apply(LootingEnchantBonus.lootingMultiplier(RandomValueRange.between(0f, 1f)))))
+				.withPool(LootPool.lootPool().setRolls(ConstantRange.exactly(1)).add(ItemLootEntry.lootTableItem(ModItems.MENISCUS_LENS.get()).apply(SetCount.setCount(RandomValueRange.between(-2f, 1f))).apply(LootingEnchantBonus.lootingMultiplier(RandomValueRange.between(0f, 1f)))).when(KilledByPlayer.killedByPlayer())));
 
-		registerLootTable(ModEntityTypes.FLESHKIN.get(), LootTable.builder()
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(ModItems.NECROTIC_FLESH.get())
-						.acceptFunction(SetCount.builder(RandomValueRange.of(6f, 9f))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f)))))
+		add(ModEntityTypes.FLESHKIN.get(), LootTable.lootTable()
+				.withPool(LootPool.lootPool().setRolls(ConstantRange.exactly(1)).add(ItemLootEntry.lootTableItem(ModItems.NECROTIC_FLESH.get())
+						.apply(SetCount.setCount(RandomValueRange.between(6f, 9f))).apply(LootingEnchantBonus.lootingMultiplier(RandomValueRange.between(0f, 1f)))))
 		);
 
-		registerLootTable(ModEntityTypes.FLESH_BLOB.get(), LootTable.builder()
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(ModItems.FLESH_BLOCK.get())
-						.acceptFunction(SetCount.builder(ConstantRange.of(1))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f)))))
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1))
-						.addEntry(ItemLootEntry.builder(ModItems.OCULUS.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-4f, 1f))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f))))
-						.acceptCondition(KilledByPlayer.builder()))
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1))
-						.addEntry(ItemLootEntry.builder(ModItems.STOMACH.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-2f, 1f))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f)))))
+		add(ModEntityTypes.FLESH_BLOB.get(), LootTable.lootTable()
+				.withPool(LootPool.lootPool().setRolls(ConstantRange.exactly(1)).add(ItemLootEntry.lootTableItem(ModItems.FLESH_BLOCK.get())
+						.apply(SetCount.setCount(ConstantRange.exactly(1))).apply(LootingEnchantBonus.lootingMultiplier(RandomValueRange.between(0f, 1f)))))
+				.withPool(LootPool.lootPool().setRolls(ConstantRange.exactly(1))
+						.add(ItemLootEntry.lootTableItem(ModItems.OCULUS.get()).apply(SetCount.setCount(RandomValueRange.between(-4f, 1f))).apply(LootingEnchantBonus.lootingMultiplier(RandomValueRange.between(0f, 1f))))
+						.when(KilledByPlayer.killedByPlayer()))
+				.withPool(LootPool.lootPool().setRolls(ConstantRange.exactly(1))
+						.add(ItemLootEntry.lootTableItem(ModItems.STOMACH.get()).apply(SetCount.setCount(RandomValueRange.between(-2f, 1f))).apply(LootingEnchantBonus.lootingMultiplier(RandomValueRange.between(0f, 1f)))))
 		);
-		registerLootTable(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_2, fleshBlobLootTableBuilderWithDrop(1));
-		registerLootTable(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_3, fleshBlobLootTableBuilderWithDrop(2));
-		registerLootTable(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_4, fleshBlobLootTableBuilderWithDrop(3));
-		registerLootTable(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_5, fleshBlobLootTableBuilderWithDrop(4));
-		registerLootTable(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_6, fleshBlobLootTableBuilderWithDrop(5));
-		registerLootTable(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_7, fleshBlobLootTableBuilderWithDrop(6));
-		registerLootTable(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_8, fleshBlobLootTableBuilderWithDrop(7));
-		registerLootTable(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_9, fleshBlobLootTableBuilderWithDrop(8));
-		registerLootTable(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_10, fleshBlobLootTableBuilderWithDrop(9));
+		add(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_2, fleshBlobLootTableBuilderWithDrop(1));
+		add(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_3, fleshBlobLootTableBuilderWithDrop(2));
+		add(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_4, fleshBlobLootTableBuilderWithDrop(3));
+		add(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_5, fleshBlobLootTableBuilderWithDrop(4));
+		add(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_6, fleshBlobLootTableBuilderWithDrop(5));
+		add(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_7, fleshBlobLootTableBuilderWithDrop(6));
+		add(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_8, fleshBlobLootTableBuilderWithDrop(7));
+		add(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_9, fleshBlobLootTableBuilderWithDrop(8));
+		add(FleshBlobEntity.LOOT_TABLE_FOR_SIZE_10, fleshBlobLootTableBuilderWithDrop(9));
 
-		registerLootTable(ModEntityTypes.OCULUS_OBSERVER.get(), LootTable.builder()
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1))
-						.addEntry(ItemLootEntry.builder(ModItems.OCULUS.get()).acceptFunction(SetCount.builder(RandomValueRange.of(0f, 1f))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f))))
-						.acceptCondition(KilledByPlayer.builder()))
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1))
-						.addEntry(ItemLootEntry.builder(ModItems.MENISCUS_LENS.get()).acceptFunction(SetCount.builder(RandomValueRange.of(-2f, 1f))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f)))))
+		add(ModEntityTypes.OCULUS_OBSERVER.get(), LootTable.lootTable()
+				.withPool(LootPool.lootPool().setRolls(ConstantRange.exactly(1))
+						.add(ItemLootEntry.lootTableItem(ModItems.OCULUS.get()).apply(SetCount.setCount(RandomValueRange.between(0f, 1f))).apply(LootingEnchantBonus.lootingMultiplier(RandomValueRange.between(0f, 1f))))
+						.when(KilledByPlayer.killedByPlayer()))
+				.withPool(LootPool.lootPool().setRolls(ConstantRange.exactly(1))
+						.add(ItemLootEntry.lootTableItem(ModItems.MENISCUS_LENS.get()).apply(SetCount.setCount(RandomValueRange.between(-2f, 1f))).apply(LootingEnchantBonus.lootingMultiplier(RandomValueRange.between(0f, 1f)))))
 		);
 
-		registerLootTable(ModEntityTypes.FAILED_SHEEP.get(), LootTable.builder()
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(ModItems.FLESH_LUMP.get()).acceptFunction(SetCount.builder(RandomValueRange.of(1, 3))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f)))))
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(ModItems.SKIN_CHUNK.get()).acceptFunction(SetCount.builder(RandomValueRange.of(2, 4))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f))))));
-		registerLootTable(ModEntityTypes.CHROMA_SHEEP.get(), LootTable.builder().addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(Items.MUTTON).acceptFunction(SetCount.builder(RandomValueRange.of(1, 2))).acceptFunction(Smelt.func_215953_b().acceptCondition(EntityHasProperty.builder(LootContext.EntityTarget.THIS, ON_FIRE))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f))))));
-		registerLootTable(ModEntityTypes.THICK_WOOL_SHEEP.get(), LootTable.builder().addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(Items.MUTTON).acceptFunction(SetCount.builder(RandomValueRange.of(1, 2))).acceptFunction(Smelt.func_215953_b().acceptCondition(EntityHasProperty.builder(LootContext.EntityTarget.THIS, ON_FIRE))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f))))));
+		add(ModEntityTypes.FAILED_SHEEP.get(), LootTable.lootTable()
+				.withPool(LootPool.lootPool().setRolls(ConstantRange.exactly(1)).add(ItemLootEntry.lootTableItem(ModItems.FLESH_LUMP.get()).apply(SetCount.setCount(RandomValueRange.between(1, 3))).apply(LootingEnchantBonus.lootingMultiplier(RandomValueRange.between(0f, 1f)))))
+				.withPool(LootPool.lootPool().setRolls(ConstantRange.exactly(1)).add(ItemLootEntry.lootTableItem(ModItems.SKIN_CHUNK.get()).apply(SetCount.setCount(RandomValueRange.between(2, 4))).apply(LootingEnchantBonus.lootingMultiplier(RandomValueRange.between(0f, 1f))))));
+		add(ModEntityTypes.CHROMA_SHEEP.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantRange.exactly(1)).add(ItemLootEntry.lootTableItem(Items.MUTTON).apply(SetCount.setCount(RandomValueRange.between(1, 2))).apply(Smelt.smelted().when(EntityHasProperty.hasProperties(LootContext.EntityTarget.THIS, ENTITY_ON_FIRE))).apply(LootingEnchantBonus.lootingMultiplier(RandomValueRange.between(0f, 1f))))));
+		add(ModEntityTypes.THICK_WOOL_SHEEP.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantRange.exactly(1)).add(ItemLootEntry.lootTableItem(Items.MUTTON).apply(SetCount.setCount(RandomValueRange.between(1, 2))).apply(Smelt.smelted().when(EntityHasProperty.hasProperties(LootContext.EntityTarget.THIS, ENTITY_ON_FIRE))).apply(LootingEnchantBonus.lootingMultiplier(RandomValueRange.between(0f, 1f))))));
 
-		registerLootTable(ModEntityTypes.SILKY_WOOL_SHEEP.get(), LootTable.builder().addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(Items.MUTTON).acceptFunction(SetCount.builder(RandomValueRange.of(2, 3))).acceptFunction(Smelt.func_215953_b().acceptCondition(EntityHasProperty.builder(LootContext.EntityTarget.THIS, ON_FIRE))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f))))));
-		registerLootTable(SilkyWoolSheepEntity.SILKY_WOOL_LOOT_TABLE, LootTable.builder()
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(Items.STRING).acceptFunction(SetCount.builder(RandomValueRange.of(0, 3)))))
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(TableLootEntry.builder(ModEntityTypes.SILKY_WOOL_SHEEP.get().getLootTable()))));
+		add(ModEntityTypes.SILKY_WOOL_SHEEP.get(), LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantRange.exactly(1)).add(ItemLootEntry.lootTableItem(Items.MUTTON).apply(SetCount.setCount(RandomValueRange.between(2, 3))).apply(Smelt.smelted().when(EntityHasProperty.hasProperties(LootContext.EntityTarget.THIS, ENTITY_ON_FIRE))).apply(LootingEnchantBonus.lootingMultiplier(RandomValueRange.between(0f, 1f))))));
+		add(SilkyWoolSheepEntity.SILKY_WOOL_LOOT_TABLE, LootTable.lootTable()
+				.withPool(LootPool.lootPool().setRolls(ConstantRange.exactly(1)).add(ItemLootEntry.lootTableItem(Items.STRING).apply(SetCount.setCount(RandomValueRange.between(0, 3)))))
+				.withPool(LootPool.lootPool().setRolls(ConstantRange.exactly(1)).add(TableLootEntry.lootTableReference(ModEntityTypes.SILKY_WOOL_SHEEP.get().getDefaultLootTable()))));
 
-		registerLootTable(ModEntityTypes.FAILED_COW.get(), LootTable.builder()
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(ModItems.FLESH_LUMP.get()).acceptFunction(SetCount.builder(RandomValueRange.of(1, 3))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f)))))
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(ModItems.SKIN_CHUNK.get()).acceptFunction(SetCount.builder(RandomValueRange.of(2, 4))).acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f))))));
-		registerLootTable(ModEntityTypes.NUTRIENT_SLURRY_COW.get(), LootTable.builder()
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(Items.LEATHER).acceptFunction(SetCount.builder(RandomValueRange.of(0f, 2f)))
-						.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f)))))
-				.addLootPool(LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(Items.BEEF).acceptFunction(SetCount.builder(RandomValueRange.of(1f, 3f)))
-						.acceptFunction(Smelt.func_215953_b().acceptCondition(EntityHasProperty.builder(LootContext.EntityTarget.THIS, ON_FIRE)))
-						.acceptFunction(LootingEnchantBonus.builder(RandomValueRange.of(0f, 1f))))));
+		add(ModEntityTypes.FAILED_COW.get(), LootTable.lootTable()
+				.withPool(LootPool.lootPool().setRolls(ConstantRange.exactly(1)).add(ItemLootEntry.lootTableItem(ModItems.FLESH_LUMP.get()).apply(SetCount.setCount(RandomValueRange.between(1, 3))).apply(LootingEnchantBonus.lootingMultiplier(RandomValueRange.between(0f, 1f)))))
+				.withPool(LootPool.lootPool().setRolls(ConstantRange.exactly(1)).add(ItemLootEntry.lootTableItem(ModItems.SKIN_CHUNK.get()).apply(SetCount.setCount(RandomValueRange.between(2, 4))).apply(LootingEnchantBonus.lootingMultiplier(RandomValueRange.between(0f, 1f))))));
+		add(ModEntityTypes.NUTRIENT_SLURRY_COW.get(), LootTable.lootTable()
+				.withPool(LootPool.lootPool().setRolls(ConstantRange.exactly(1)).add(ItemLootEntry.lootTableItem(Items.LEATHER).apply(SetCount.setCount(RandomValueRange.between(0f, 2f)))
+						.apply(LootingEnchantBonus.lootingMultiplier(RandomValueRange.between(0f, 1f)))))
+				.withPool(LootPool.lootPool().setRolls(ConstantRange.exactly(1)).add(ItemLootEntry.lootTableItem(Items.BEEF).apply(SetCount.setCount(RandomValueRange.between(1f, 3f)))
+						.apply(Smelt.smelted().when(EntityHasProperty.hasProperties(LootContext.EntityTarget.THIS, ENTITY_ON_FIRE)))
+						.apply(LootingEnchantBonus.lootingMultiplier(RandomValueRange.between(0f, 1f))))));
 	}
 
 	@Override

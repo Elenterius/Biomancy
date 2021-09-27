@@ -13,15 +13,15 @@ public class BlockPlacementTarget {
 
 	public BlockPlacementTarget(BlockRayTraceResult rayTraceResult, Direction horizontalFacing) {
 		this.rayTraceResult = rayTraceResult;
-		this.targetPos = rayTraceResult.getPos().offset(rayTraceResult.getFace());
+		this.targetPos = rayTraceResult.getBlockPos().relative(rayTraceResult.getDirection());
 		this.horizontalFacing = horizontalFacing;
 	}
 
 	public BlockPlacementTarget copy() {
-		Vector3d hitVec = new Vector3d(rayTraceResult.getHitVec().x, rayTraceResult.getHitVec().y, rayTraceResult.getHitVec().z);
+		Vector3d hitVec = new Vector3d(rayTraceResult.getLocation().x, rayTraceResult.getLocation().y, rayTraceResult.getLocation().z);
 		if (rayTraceResult.getType() == RayTraceResult.Type.MISS)
-			return new BlockPlacementTarget(BlockRayTraceResult.createMiss(hitVec, rayTraceResult.getFace(), new BlockPos(rayTraceResult.getPos())), horizontalFacing);
+			return new BlockPlacementTarget(BlockRayTraceResult.miss(hitVec, rayTraceResult.getDirection(), new BlockPos(rayTraceResult.getBlockPos())), horizontalFacing);
 		else
-			return new BlockPlacementTarget(new BlockRayTraceResult(hitVec, rayTraceResult.getFace(), new BlockPos(rayTraceResult.getPos()), rayTraceResult.isInside()), horizontalFacing);
+			return new BlockPlacementTarget(new BlockRayTraceResult(hitVec, rayTraceResult.getDirection(), new BlockPos(rayTraceResult.getBlockPos()), rayTraceResult.isInside()), horizontalFacing);
 	}
 }

@@ -46,7 +46,7 @@ public class SmallEvolutionPoolRecipeCategory implements IRecipeCategory<Evoluti
 
 	@Override
 	public String getTitle() {
-		return I18n.format("jei.biomancy.recipe.evolution_pool");
+		return I18n.get("jei.biomancy.recipe.evolution_pool");
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class SmallEvolutionPoolRecipeCategory implements IRecipeCategory<Evoluti
 	@Override
 	public void setIngredients(EvolutionPoolRecipe recipe, IIngredients ingredients) {
 		ingredients.setInputIngredients(recipe.getIngredients());
-		ingredients.setOutput(VanillaTypes.ITEM, recipe.getRecipeOutput());
+		ingredients.setOutput(VanillaTypes.ITEM, recipe.getResultItem());
 	}
 
 	private static final int OUTPUT_SLOT = 0;
@@ -92,10 +92,10 @@ public class SmallEvolutionPoolRecipeCategory implements IRecipeCategory<Evoluti
 			int seconds = ticks / 20;
 			int mutagenCost = ticks * EvolutionPoolTileEntity.FUEL_COST;
 			TranslationTextComponent timeText = new TranslationTextComponent("gui.jei.category.smelting.time.seconds", seconds);
-			IFormattableTextComponent costText = new StringTextComponent("+" + mutagenCost + " ").appendSibling(new TranslationTextComponent("tooltip.biomancy.mutagen"));
-			FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
-			fontRenderer.drawText(matrixStack, timeText, background.getWidth() - fontRenderer.getStringPropertyWidth(timeText), 42, 0xff808080);
-			fontRenderer.drawText(matrixStack, costText, 0, 48, 0xff808080);
+			IFormattableTextComponent costText = new StringTextComponent("+" + mutagenCost + " ").append(new TranslationTextComponent("tooltip.biomancy.mutagen"));
+			FontRenderer fontRenderer = Minecraft.getInstance().font;
+			fontRenderer.draw(matrixStack, timeText, background.getWidth() - fontRenderer.width(timeText), 42, 0xff808080);
+			fontRenderer.draw(matrixStack, costText, 0, 48, 0xff808080);
 		}
 	}
 }

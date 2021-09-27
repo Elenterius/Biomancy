@@ -33,10 +33,10 @@ public abstract class TextUtil {
 	}
 
 	public static IFormattableTextComponent getFailureMsgText(String msgKey) {
-		return getMsgText(msgKey).mergeStyle(TextFormatting.RED);
+		return getMsgText(msgKey).withStyle(TextFormatting.RED);
 	}
 
 	public static IFormattableTextComponent getFailureMsgText(String msgKey, Object... formatArgs) {
-		return getMsgText(msgKey, formatArgs).mergeStyle(TextFormatting.RED);
+		return getMsgText(msgKey, formatArgs).withStyle(TextFormatting.RED);
 	}
 }

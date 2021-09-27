@@ -20,24 +20,24 @@ public abstract class SimpleSyncedTileEntity extends TileEntity {
 	@Nullable
 	public SUpdateTileEntityPacket getUpdatePacket() {
 		// on (client side call of) World.notifyBlockUpdate(...) resynchronize client with this packet
-		return new SUpdateTileEntityPacket(this.pos, -1, getUpdateTag());
+		return new SUpdateTileEntityPacket(this.worldPosition, -1, getUpdateTag());
 	}
 
 	@Override
 	public CompoundNBT getUpdateTag() {
 		// synchronizing on initial chunk load, or when many blocks change at once
-		return write(new CompoundNBT());
+		return save(new CompoundNBT());
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
-		BlockState state = world != null ? world.getBlockState(pos) : Blocks.AIR.getDefaultState();
-		handleUpdateTag(state, pkt.getNbtCompound());
+		BlockState state = level != null ? level.getBlockState(worldPosition) : Blocks.AIR.defaultBlockState();
+		handleUpdateTag(state, pkt.getTag());
 	}
 
 	@Override
 	public void handleUpdateTag(BlockState blockState, CompoundNBT tag) {
-		read(blockState, tag);
+		load(blockState, tag);
 	}
 
 }

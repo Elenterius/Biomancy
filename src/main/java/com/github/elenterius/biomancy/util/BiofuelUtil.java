@@ -21,12 +21,12 @@ public final class BiofuelUtil {
 	public static final Predicate<ItemStack> VALID_FUEL_ITEMS = stack -> stack.getItem() == ModItems.NUTRIENT_PASTE.get() || stack.getItem() == ModItems.NUTRIENT_BAR.get();
 
 	public static final Predicate<ItemStack> VALID_FUEL_CONTAINERS = stack -> FluidUtil.getFluidContained(stack)
-			.filter(fluidStack -> fluidStack.getFluid().isEquivalentTo(ModFluids.NUTRIENT_SLURRY.get()))
+			.filter(fluidStack -> fluidStack.getFluid().isSame(ModFluids.NUTRIENT_SLURRY.get()))
 			.isPresent();
 
-	public static final Predicate<Fluid> VALID_FLUID = fluid -> fluid.isEquivalentTo(ModFluids.NUTRIENT_SLURRY.get());
+	public static final Predicate<Fluid> VALID_FLUID = fluid -> fluid.isSame(ModFluids.NUTRIENT_SLURRY.get());
 
-	public static final Predicate<FluidStack> VALID_FLUID_STACK = fluidStack -> fluidStack.getFluid().isEquivalentTo(ModFluids.NUTRIENT_SLURRY.get());
+	public static final Predicate<FluidStack> VALID_FLUID_STACK = fluidStack -> fluidStack.getFluid().isSame(ModFluids.NUTRIENT_SLURRY.get());
 
 	public static boolean isItemValidFuel(ItemStack stackIn) {
 		return VALID_FUEL_ITEMS.test(stackIn) || VALID_FUEL_CONTAINERS.test(stackIn);

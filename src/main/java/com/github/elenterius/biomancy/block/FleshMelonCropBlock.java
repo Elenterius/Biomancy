@@ -12,10 +12,10 @@ import net.minecraft.world.IBlockReader;
 
 public class FleshMelonCropBlock extends FleshCropBlock {
 
-	public static final VoxelShape SHAPE_0 = Block.makeCuboidShape(0.5D, 0.0D, 0.5D, 15.5D, 2.0D, 15.5D);
-	public static final VoxelShape SHAPE_1 = Block.makeCuboidShape(6.0D, 0.0D, 6.0D, 10.0D, 4.0D, 10.0D);
-	public static final VoxelShape SHAPE_2 = Block.makeCuboidShape(4.0D, 0.0D, 4.0D, 12.0D, 8.0D, 12.0D);
-	public static final VoxelShape SHAPE_3 = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 12.0D, 14.0D);
+	public static final VoxelShape SHAPE_0 = Block.box(0.5D, 0.0D, 0.5D, 15.5D, 2.0D, 15.5D);
+	public static final VoxelShape SHAPE_1 = Block.box(6.0D, 0.0D, 6.0D, 10.0D, 4.0D, 10.0D);
+	public static final VoxelShape SHAPE_2 = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 8.0D, 12.0D);
+	public static final VoxelShape SHAPE_3 = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 12.0D, 14.0D);
 	public static final VoxelShape[] SHAPES = new VoxelShape[]{SHAPE_0, SHAPE_1, SHAPE_1, SHAPE_1, SHAPE_2, SHAPE_2, SHAPE_2, SHAPE_3};
 
 	public FleshMelonCropBlock(Properties builder) {
@@ -34,7 +34,7 @@ public class FleshMelonCropBlock extends FleshCropBlock {
 	}
 
 	@Override
-	public IItemProvider getSeedsItem() {
+	public IItemProvider getBaseSeedId() {
 		return Items.AIR; //TODO: revert this
 //		return ModItems.VILE_MELON_SEEDS.get();
 	}

@@ -40,7 +40,7 @@ public class FleshbornChestTileEntity extends OwnableTileEntity implements IName
 
 	public static final int INV_SLOTS_COUNT = 6 * 9;
 
-	private final SimpleInventory inventory;
+	private final SimpleInventory<?> inventory;
 
 	protected float lidAngle;
 	protected float prevLidAngle;
@@ -49,13 +49,13 @@ public class FleshbornChestTileEntity extends OwnableTileEntity implements IName
 
 	public FleshbornChestTileEntity() {
 		super(ModTileEntityTypes.FLESH_CHEST.get());
-		inventory = SimpleInventory.createServerContents(INV_SLOTS_COUNT, HandlerBehaviors::denyItemWithFilledInventory, this::canPlayerOpenInv, this::markDirty);
+		inventory = SimpleInventory.createServerContents(INV_SLOTS_COUNT, HandlerBehaviors::denyItemWithFilledInventory, this::canPlayerOpenInv, this::setChanged);
 		inventory.setOpenInventoryConsumer(this::onOpenInventory);
 		inventory.setCloseInventoryConsumer(this::onCloseInventory);
 	}
 
 	public static void playSound(World worldIn, SoundEvent soundIn, BlockPos posIn) {
-		worldIn.playSound(null, posIn.getX() + 0.5d, posIn.getY() + 0.5d, posIn.getZ() + 0.5d, soundIn, SoundCategory.BLOCKS, 0.5f, worldIn.rand.nextFloat() * 0.1f + 0.9f);
+		worldIn.playSound(null, posIn.getX() + 0.5d, posIn.getY() + 0.5d, posIn.getZ() + 0.5d, soundIn, SoundCategory.BLOCKS, 0.5f, worldIn.random.nextFloat() * 0.1f + 0.9f);
 	}
 
 	public static int calculatePlayersUsing(World worldIn, float x, float y, float z) {
@@ -64,8 +64,8 @@ public class FleshbornChestTileEntity extends OwnableTileEntity implements IName
 
 	public static int calculatePlayersUsing(World worldIn, float x, float y, float z, float range) {
 		int i = 0;
-		for (PlayerEntity player : worldIn.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(x - range, y - range, z - range, x + range + 1f, y + range + 1f, z + range + 1f))) {
-			if (player.openContainer instanceof ChestContainer) {
+		for (PlayerEntity player : worldIn.getEntitiesOfClass(PlayerEntity.class, new AxisAlignedBB(x - range, y - range, z - range, x + range + 1f, y + range + 1f, z + range + 1f))) {
+			if (player.containerMenu instanceof ChestContainer) {
 				i++;
 			}
 		}
@@ -80,7 +80,7 @@ public class FleshbornChestTileEntity extends OwnableTileEntity implements IName
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public float getLidAngle(float partialTicks) {
+	public float getOpenNess(float partialTicks) {
 		return MathHelper.lerp(partialTicks, prevLidAngle, lidAngle);
 	}
 
@@ -103,38 +103,38 @@ public class FleshbornChestTileEntity extends OwnableTileEntity implements IName
 	}
 
 	@Override
-	public boolean receiveClientEvent(int id, int data) {
+	public boolean triggerEvent(int id, int data) {
 		if (id == 1) {
 			numPlayersUsing = data;
 			return true;
 		}
 		else {
-			return super.receiveClientEvent(id, data);
+			return super.triggerEvent(id, data);
 		}
 	}
 
 	protected void sendToClient() {
-		if (world != null && !world.isRemote) {
+		if (level != null && !level.isClientSide) {
 			Block block = getBlockState().getBlock();
 			if (block instanceof FleshChestBlock) {
-				world.addBlockEvent(pos, block, 1, numPlayersUsing);
+				level.blockEvent(worldPosition, block, 1, numPlayersUsing);
 			}
 		}
 	}
 
 	@Override
 	public void tick() {
-		if (world == null) return;
+		if (level == null) return;
 
-		if (!world.isRemote) {
+		if (!level.isClientSide) {
 			ticks++;
 			if (ticks % 200 == 0) {
-				numPlayersUsing = calculatePlayersUsing(world, pos.getX(), pos.getY(), pos.getZ());
+				numPlayersUsing = calculatePlayersUsing(level, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ());
 			}
 		}
 		prevLidAngle = lidAngle;
 		if (numPlayersUsing > 0 && lidAngle == 0f) {
-			playSound(world, SoundEvents.BLOCK_CHEST_OPEN, pos);
+			playSound(level, SoundEvents.CHEST_OPEN, worldPosition);
 		}
 
 		if (numPlayersUsing == 0 && lidAngle > 0f || numPlayersUsing > 0 && lidAngle < 1f) {
@@ -142,23 +142,23 @@ public class FleshbornChestTileEntity extends OwnableTileEntity implements IName
 			lidAngle += numPlayersUsing > 0 ? 0.1f : -0.1f;
 			lidAngle = MathHelper.clamp(lidAngle, 0f, 1f);
 			if (lidAngle < 0.5f && prevLidAngle >= 0.5f) {
-				playSound(world, SoundEvents.BLOCK_CHEST_CLOSE, pos);
+				playSound(level, SoundEvents.CHEST_CLOSE, worldPosition);
 			}
 		}
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT nbt) {
-		super.write(nbt);
+	public CompoundNBT save(CompoundNBT nbt) {
+		super.save(nbt);
 		if (!inventory.isEmpty()) nbt.put("Inventory", inventory.serializeNBT());
 		return nbt;
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT nbt) {
-		super.read(state, nbt);
+	public void load(BlockState state, CompoundNBT nbt) {
+		super.load(state, nbt);
 		inventory.deserializeNBT(nbt.getCompound("Inventory"));
-		if (inventory.getSizeInventory() != INV_SLOTS_COUNT) {
+		if (inventory.getContainerSize() != INV_SLOTS_COUNT) {
 			throw new IllegalArgumentException("Corrupted NBT: Number of inventory slots did not match expected count.");
 		}
 	}
@@ -178,13 +178,13 @@ public class FleshbornChestTileEntity extends OwnableTileEntity implements IName
 
 	@Nullable
 	public IInventory getInventory() {
-		return !removed ? inventory : null;
+		return !remove ? inventory : null;
 	}
 
 	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-		if (!removed && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+		if (!remove && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return inventory.getOptionalItemStackHandler().cast();
 		}
 		return super.getCapability(cap, side);

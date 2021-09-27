@@ -41,68 +41,68 @@ public class GrowthReagent extends Reagent {
 		if (block instanceof IGrowable) // "power" grow plant to maturity
 		{
 			IGrowable igrowable = (IGrowable) block;
-			if (igrowable.canGrow(world, pos, state, world.isRemote)) {
-				if (!world.isRemote && world instanceof ServerWorld) {
+			if (igrowable.isValidBonemealTarget(world, pos, state, world.isClientSide)) {
+				if (!world.isClientSide && world instanceof ServerWorld) {
 					Optional<IntegerProperty> property = BlockPropertyUtil.getAgeProperty(state);
 					if (property.isPresent()) {
 						IntegerProperty ageProperty = property.get();
-						int age = state.get(ageProperty);
+						int age = state.getValue(ageProperty);
 						int maxAge = BlockPropertyUtil.getMaxAge(ageProperty);
 						if (age < maxAge) {
-							world.setBlockState(pos, state.with(ageProperty, maxAge), Constants.BlockFlags.BLOCK_UPDATE);
-							world.playEvent(Constants.WorldEvents.BONEMEAL_PARTICLES, pos, 5);
+							world.setBlock(pos, state.setValue(ageProperty, maxAge), Constants.BlockFlags.BLOCK_UPDATE);
+							world.levelEvent(Constants.WorldEvents.BONEMEAL_PARTICLES, pos, 5);
 						}
 					}
 					else {
-						igrowable.grow((ServerWorld) world, world.rand, pos, state); //fall back
+						igrowable.performBonemeal((ServerWorld) world, world.random, pos, state); //fall back
 					}
 				}
 				return true;
 			}
 		}
 		else if (block == Blocks.DIRT) {
-			if (!world.isRemote) {
-				BlockState stateAbove = world.getBlockState(pos.up());
-				if (world.getLightValue(pos.up()) >= 4 && stateAbove.getOpacity(world, pos.up()) <= 2) {
-					world.setBlockState(pos, Blocks.GRASS.getDefaultState());
-					world.playEvent(Constants.WorldEvents.BONEMEAL_PARTICLES, pos, 5);
+			if (!world.isClientSide) {
+				BlockState stateAbove = world.getBlockState(pos.above());
+				if (world.getLightEmission(pos.above()) >= 4 && stateAbove.getLightBlock(world, pos.above()) <= 2) {
+					world.setBlockAndUpdate(pos, Blocks.GRASS.defaultBlockState());
+					world.levelEvent(Constants.WorldEvents.BONEMEAL_PARTICLES, pos, 5);
 				}
 			}
 			return true;
 		}
 		else if (block == Blocks.SUGAR_CANE) {
 			if (SugarCaneUtil.canGrow(world, pos, state)) {
-				if (!world.isRemote && world instanceof ServerWorld) {
-					SugarCaneUtil.grow((ServerWorld) world, world.rand, pos, state);
-					world.playEvent(Constants.WorldEvents.BONEMEAL_PARTICLES, pos, 5);
+				if (!world.isClientSide && world instanceof ServerWorld) {
+					SugarCaneUtil.grow((ServerWorld) world, world.random, pos, state);
+					world.levelEvent(Constants.WorldEvents.BONEMEAL_PARTICLES, pos, 5);
 				}
 				return true;
 			}
 		}
 		else if (block == Blocks.CACTUS) {
 			if (CactusUtil.canGrow(world, pos, state)) {
-				if (!world.isRemote && world instanceof ServerWorld) {
-					CactusUtil.grow((ServerWorld) world, world.rand, pos, state);
-					world.playEvent(Constants.WorldEvents.BONEMEAL_PARTICLES, pos, 5);
+				if (!world.isClientSide && world instanceof ServerWorld) {
+					CactusUtil.grow((ServerWorld) world, world.random, pos, state);
+					world.levelEvent(Constants.WorldEvents.BONEMEAL_PARTICLES, pos, 5);
 				}
 				return true;
 			}
 		}
 		else if (block instanceof IPlantable) { //e.g. nether wart
-			if (!world.isRemote) {
+			if (!world.isClientSide) {
 				Optional<IntegerProperty> property = BlockPropertyUtil.getAgeProperty(state);
 				if (property.isPresent()) {
 					IntegerProperty ageProperty = property.get();
-					int age = state.get(ageProperty);
+					int age = state.getValue(ageProperty);
 					int maxAge = BlockPropertyUtil.getMaxAge(ageProperty);
 					if (age < maxAge) {
-						world.setBlockState(pos, state.with(ageProperty, maxAge), Constants.BlockFlags.BLOCK_UPDATE);
-						world.playEvent(Constants.WorldEvents.BONEMEAL_PARTICLES, pos, 5);
+						world.setBlock(pos, state.setValue(ageProperty, maxAge), Constants.BlockFlags.BLOCK_UPDATE);
+						world.levelEvent(Constants.WorldEvents.BONEMEAL_PARTICLES, pos, 5);
 					}
 				}
-				else if (block.ticksRandomly(state) && !world.getPendingBlockTicks().isTickPending(pos, block)) {
-					world.getPendingBlockTicks().scheduleTick(pos, block, 2);
-					world.playEvent(Constants.WorldEvents.BONEMEAL_PARTICLES, pos, 5);
+				else if (block.isRandomlyTicking(state) && !world.getBlockTicks().willTickThisTick(pos, block)) {
+					world.getBlockTicks().scheduleTick(pos, block, 2);
+					world.levelEvent(Constants.WorldEvents.BONEMEAL_PARTICLES, pos, 5);
 				}
 			}
 			return true;
@@ -114,19 +114,19 @@ public class GrowthReagent extends Reagent {
 	@Override
 	public boolean affectEntity(CompoundNBT nbt, @Nullable LivingEntity source, LivingEntity target) {
 		if (target instanceof SlimeEntity) {
-			if (!target.world.isRemote) {
-				int slimeSize = ((SlimeEntity) target).getSlimeSize();
+			if (!target.level.isClientSide) {
+				int slimeSize = ((SlimeEntity) target).getSize();
 				if (slimeSize < 25) {
 					((SlimeEntityAccessor) target).biomancy_setSlimeSize(slimeSize + 1, false);
 				}
 				else {
-					target.attackEntityFrom(DamageSource.causeExplosionDamage(source), target.getHealth()); //"explode" slime
+					target.hurt(DamageSource.explosion(source), target.getHealth()); //"explode" slime
 				}
 			}
 			return true;
 		}
 		else if (target instanceof FleshBlobEntity) {
-			if (!target.world.isRemote) {
+			if (!target.level.isClientSide) {
 				byte blobSize = ((FleshBlobEntity) target).getBlobSize();
 				if (blobSize < 10) {
 					((FleshBlobEntity) target).setBlobSize((byte) (blobSize + 1), false);
@@ -134,10 +134,10 @@ public class GrowthReagent extends Reagent {
 			}
 			return true;
 		}
-		else if (target.isChild()) {
+		else if (target.isBaby()) {
 			if (target instanceof MobEntity) { //includes animals, zombies, piglins, etc...
-				((MobEntity) target).setChild(false);
-				return !target.isChild();
+				((MobEntity) target).setBaby(false);
+				return !target.isBaby();
 			}
 			else if (target instanceof ArmorStandEntity) {
 //				EntityDataManager dataManager = target.getDataManager();

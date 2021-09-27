@@ -24,9 +24,9 @@ public class SheepSilkLayer<T extends SheepEntity> extends LayerRenderer<T, Shee
 
 	@Override
 	public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, T entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-		if (!entity.getSheared() && !entity.isInvisible()) {
-			float[] color = SheepEntity.getDyeRgb(entity.getFleeceColor());
-			renderCopyCutoutModel(getEntityModel(), silkModel, TEXTURE, matrixStackIn, bufferIn, packedLightIn, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, partialTicks, color[0], color[1], color[2]);
+		if (!entity.isSheared() && !entity.isInvisible()) {
+			float[] color = SheepEntity.getColorArray(entity.getColor());
+			coloredCutoutModelCopyLayerRender(getParentModel(), silkModel, TEXTURE, matrixStackIn, bufferIn, packedLightIn, entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, partialTicks, color[0], color[1], color[2]);
 		}
 	}
 

@@ -30,24 +30,24 @@ public final class PotionUtilExt extends PotionUtils {
 	private PotionUtilExt() {}
 
 	public static ItemStack getPotionItemStack(Potion potion) {
-		return PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), potion);
+		return PotionUtils.setPotion(new ItemStack(Items.POTION), potion);
 	}
 
 	public static ItemStack getPotionItemStack(Potion potion, Collection<EffectInstance> customEffects) {
 		ItemStack stack = new ItemStack(Items.POTION);
-		PotionUtils.addPotionToItemStack(stack, potion);
-		PotionUtils.appendEffects(stack, customEffects);
+		PotionUtils.setPotion(stack, potion);
+		PotionUtils.setCustomEffects(stack, customEffects);
 		return stack;
 	}
 
 	public static ItemStack getPotionItemStack(ItemStack stackIn) {
-		Potion potion = PotionUtils.getPotionFromItem(stackIn);
+		Potion potion = PotionUtils.getPotion(stackIn);
 		if (potion != Potions.EMPTY) {
-			List<EffectInstance> effects = PotionUtils.getFullEffectsFromItem(stackIn);
-			Item potionItem = ForgeRegistries.ITEMS.getValue(ResourceLocation.tryCreate(stackIn.getOrCreateTag().getString(NBT_KEY_POTION_ITEM)));
+			List<EffectInstance> effects = PotionUtils.getCustomEffects(stackIn);
+			Item potionItem = ForgeRegistries.ITEMS.getValue(ResourceLocation.tryParse(stackIn.getOrCreateTag().getString(NBT_KEY_POTION_ITEM)));
 			ItemStack stack = new ItemStack(potionItem != Items.AIR ? potionItem : Items.POTION);
-			PotionUtils.addPotionToItemStack(stack, potion);
-			PotionUtils.appendEffects(stack, effects);
+			PotionUtils.setPotion(stack, potion);
+			PotionUtils.setCustomEffects(stack, effects);
 			return stack;
 		}
 		return ItemStack.EMPTY;
@@ -55,30 +55,30 @@ public final class PotionUtilExt extends PotionUtils {
 
 	public static ItemStack setPotionOfHost(ItemStack hostStack, Potion potion, @Nullable Collection<EffectInstance> customEffects) {
 		if (!hostStack.isEmpty()) {
-			PotionUtils.addPotionToItemStack(hostStack, potion);
-			if (customEffects != null) PotionUtils.appendEffects(hostStack, customEffects);
-			hostStack.getOrCreateTag().putString(NBT_KEY_POTION_NAME, potion.getNamePrefixed(Items.POTION.getTranslationKey() + ".effect."));
+			PotionUtils.setPotion(hostStack, potion);
+			if (customEffects != null) PotionUtils.setCustomEffects(hostStack, customEffects);
+			hostStack.getOrCreateTag().putString(NBT_KEY_POTION_NAME, potion.getName(Items.POTION.getDescriptionId() + ".effect."));
 		}
 		return hostStack;
 	}
 
 	public static ItemStack setPotionOfHost(ItemStack hostStack, ItemStack potionStack) {
 		if (!hostStack.isEmpty() && !potionStack.isEmpty() && potionStack.getItem() instanceof PotionItem) {
-			Potion potion = PotionUtils.getPotionFromItem(potionStack);
-			List<EffectInstance> effects = PotionUtils.getFullEffectsFromItem(potionStack);
-			PotionUtils.addPotionToItemStack(hostStack, potion);
-			PotionUtils.appendEffects(hostStack, effects);
+			Potion potion = PotionUtils.getPotion(potionStack);
+			List<EffectInstance> effects = PotionUtils.getCustomEffects(potionStack);
+			PotionUtils.setPotion(hostStack, potion);
+			PotionUtils.setCustomEffects(hostStack, effects);
 			ResourceLocation registryKey = ForgeRegistries.ITEMS.getKey(potionStack.getItem());
 			if (registryKey != null) hostStack.getOrCreateTag().putString(NBT_KEY_POTION_ITEM, registryKey.toString());
-			hostStack.getOrCreateTag().putString(NBT_KEY_POTION_NAME, potionStack.getTranslationKey());
+			hostStack.getOrCreateTag().putString(NBT_KEY_POTION_NAME, potionStack.getDescriptionId());
 		}
 		return hostStack;
 	}
 
 	public static void removePotionFromHost(ItemStack stack) {
-		stack.removeChildTag(NBT_KEY_POTION);
-		stack.removeChildTag(NBT_KEY_POTION_ITEM);
-		stack.removeChildTag(NBT_KEY_POTION_NAME);
+		stack.removeTagKey(NBT_KEY_POTION);
+		stack.removeTagKey(NBT_KEY_POTION_ITEM);
+		stack.removeTagKey(NBT_KEY_POTION_NAME);
 	}
 
 	public static String getPotionTranslationKeyFromHost(ItemStack stack) {
@@ -86,15 +86,15 @@ public final class PotionUtilExt extends PotionUtils {
 	}
 
 	public static int getPotionColor(ItemStack stack) {
-		Potion potion = PotionUtils.getPotionFromItem(stack);
+		Potion potion = PotionUtils.getPotion(stack);
 		if (potion != Potions.EMPTY) {
-			return PotionUtils.getPotionColorFromEffectList(PotionUtils.getEffectsFromStack(stack));
+			return PotionUtils.getColor(PotionUtils.getMobEffects(stack));
 		}
 		return -1;
 	}
 
 	public static int getMergedColor(Potion potion, Collection<EffectInstance> effects) {
-		return PotionUtils.getPotionColorFromEffectList(PotionUtils.mergeEffects(potion, effects));
+		return PotionUtils.getColor(PotionUtils.getAllEffects(potion, effects));
 	}
 
 	public static boolean hasCustomColor(CompoundNBT nbt) {
@@ -107,7 +107,7 @@ public final class PotionUtilExt extends PotionUtils {
 
 	public static Potion readPotion(CompoundNBT nbt) {
 		if (nbt.contains(NBT_KEY_POTION, Constants.NBT.TAG_STRING)) {
-			return PotionUtils.getPotionTypeFromNBT(nbt);
+			return PotionUtils.getPotion(nbt);
 		}
 		return Potions.EMPTY;
 	}
@@ -125,7 +125,7 @@ public final class PotionUtilExt extends PotionUtils {
 		if (!customEffects.isEmpty()) {
 			ListNBT list = new ListNBT();
 			for (EffectInstance effect : customEffects) {
-				list.add(effect.write(new CompoundNBT()));
+				list.add(effect.save(new CompoundNBT()));
 			}
 			nbt.put(NBT_KEY_CUSTOM_POTION_EFFECTS, list);
 		}

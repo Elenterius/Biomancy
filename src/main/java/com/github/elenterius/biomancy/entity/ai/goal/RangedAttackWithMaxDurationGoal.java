@@ -16,9 +16,9 @@ public class RangedAttackWithMaxDurationGoal extends RangedAttackGoal {
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
-		if (chaseTicks >= maxTicks) goalOwner.setAttackTarget(null);
-		return super.shouldContinueExecuting();
+	public boolean canContinueToUse() {
+		if (chaseTicks >= maxTicks) goalOwner.setTarget(null);
+		return super.canContinueToUse();
 	}
 
 	@Override
@@ -28,8 +28,8 @@ public class RangedAttackWithMaxDurationGoal extends RangedAttackGoal {
 	}
 
 	@Override
-	public void resetTask() {
-		super.resetTask();
+	public void stop() {
+		super.stop();
 		chaseTicks = 0;
 	}
 }

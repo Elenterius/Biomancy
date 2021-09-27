@@ -24,7 +24,7 @@ import java.util.UUID;
 @OnlyIn(Dist.CLIENT)
 public final class ClientTextUtil extends TextUtil {
 
-	public static final Style LORE_STYLE = Style.EMPTY.setFormatting(TextFormatting.DARK_GRAY).setItalic(true);
+	public static final Style LORE_STYLE = Style.EMPTY.withColor(TextFormatting.DARK_GRAY).withItalic(true);
 
 	private static final TranslationTextComponent CTRL_KEY_TEXT = new TranslationTextComponent("keyboard.ctrl");
 	private static final TranslationTextComponent ALT_KEY_TEXT = new TranslationTextComponent("keyboard.alt");
@@ -45,29 +45,29 @@ public final class ClientTextUtil extends TextUtil {
 	}
 
 	public static IFormattableTextComponent getItemInfoTooltip(Item item) {
-		return Screen.hasControlDown() ? new TranslationTextComponent(Util.makeTranslationKey("tooltip", ForgeRegistries.ITEMS.getKey(item))) : pressButtonTo(CTRL_KEY_TEXT.copyRaw(), "show Info");
+		return Screen.hasControlDown() ? new TranslationTextComponent(Util.makeDescriptionId("tooltip", ForgeRegistries.ITEMS.getKey(item))) : pressButtonTo(CTRL_KEY_TEXT.plainCopy(), "show Info");
 	}
 
 	public static boolean showExtraInfo(List<ITextComponent> tooltip) {
 		boolean flag = Screen.hasAltDown();
-		if (!flag) tooltip.add(pressButtonTo(ALT_KEY_TEXT.copyRaw(), "show Info").mergeStyle(LORE_STYLE));
+		if (!flag) tooltip.add(pressButtonTo(ALT_KEY_TEXT.plainCopy(), "show Info").withStyle(LORE_STYLE));
 		return flag;
 	}
 
 	public static IFormattableTextComponent pressButtonTo(IFormattableTextComponent key, Object action) {
-		return new TranslationTextComponent(TextUtil.getTranslationKey("tooltip", "press_button_to"), key.mergeStyle(TextFormatting.AQUA), action);
+		return new TranslationTextComponent(TextUtil.getTranslationKey("tooltip", "press_button_to"), key.withStyle(TextFormatting.AQUA), action);
 	}
 
 	public static IFormattableTextComponent getAltKey() {
-		return ALT_KEY_TEXT.copyRaw();
+		return ALT_KEY_TEXT.plainCopy();
 	}
 
 	public static IFormattableTextComponent getCtrlKey() {
-		return CTRL_KEY_TEXT.copyRaw();
+		return CTRL_KEY_TEXT.plainCopy();
 	}
 
 	public static IFormattableTextComponent getDefaultKey() {
-		return ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.func_238171_j_().copyRaw();
+		return ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.getTranslatedKeyMessage().plainCopy();
 	}
 
 	public static int getHideFlags(ItemStack stack) {
@@ -81,13 +81,13 @@ public final class ClientTextUtil extends TextUtil {
 
 	public static void setTooltipVisible(ItemStack stack, ItemStack.TooltipDisplayFlags tooltipDisplay) {
 		if (stack.hasTag() && stack.getTag() != null && stack.getTag().contains("HideFlags", Constants.NBT.TAG_ANY_NUMERIC)) {
-			stack.getTag().putInt("HideFlags", stack.getTag().getInt("HideFlags") & ~tooltipDisplay.func_242397_a());
+			stack.getTag().putInt("HideFlags", stack.getTag().getInt("HideFlags") & ~tooltipDisplay.getMask());
 		}
 	}
 
 	public static String tryToGetPlayerNameOnClientSide(UUID uuid) {
-		if (Minecraft.getInstance().world != null) {
-			PlayerEntity player = Minecraft.getInstance().world.getPlayerByUuid(uuid);
+		if (Minecraft.getInstance().level != null) {
+			PlayerEntity player = Minecraft.getInstance().level.getPlayerByUUID(uuid);
 			if (player != null) {
 				return player.getGameProfile().getName();
 			}

@@ -20,27 +20,27 @@ public class FailedSheepEntity extends SheepEntity {
 	}
 
 	@Override
-	public boolean getSheared() {
+	public boolean isSheared() {
 		return true; // the failed sheep is hairless
 	}
 
 	@Override
-	protected float getSoundPitch() {
-		return super.getSoundPitch() - 1f;
+	protected float getVoicePitch() {
+		return super.getVoicePitch() - 1f;
 	}
 
 	@Override
-	public SheepEntity createChild(ServerWorld world, AgeableEntity mate) {
+	public SheepEntity getBreedOffspring(ServerWorld world, AgeableEntity mate) {
 		if (mate.getClass() != getClass()) {
-			float p = rand.nextFloat();
+			float p = random.nextFloat();
 			if (p < 0.05f) return ModEntityTypes.SILKY_WOOL_SHEEP.get().create(world);
-			if (p < 0.3f) return (SheepEntity) mate.createChild(world, this);
+			if (p < 0.3f) return (SheepEntity) mate.getBreedOffspring(world, this);
 		}
 		return ModEntityTypes.FAILED_SHEEP.get().create(world);
 	}
 
 	@Override
-	public boolean canMateWith(AnimalEntity otherAnimal) {
+	public boolean canMate(AnimalEntity otherAnimal) {
 		if (otherAnimal == this) return false;
 		return otherAnimal instanceof SheepEntity && isInLove() && otherAnimal.isInLove();
 	}

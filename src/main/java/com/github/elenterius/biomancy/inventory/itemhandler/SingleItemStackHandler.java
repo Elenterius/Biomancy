@@ -12,7 +12,10 @@ import javax.annotation.Nonnull;
 
 public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifiable, INBTSerializable<CompoundNBT> {
 
+	public static final String NBT_KEY_ITEM = "Item";
+
 	protected ItemStack cachedStack = ItemStack.EMPTY;
+	private boolean isDirty = true;
 
 	public SingleItemStackHandler() {}
 
@@ -51,6 +54,10 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 		return cachedStack.getItem();
 	}
 
+	public ItemStack getStack() {
+		return cachedStack;
+	}
+
 	@Nonnull
 	@Override
 	public ItemStack getStackInSlot(int slot) {
@@ -58,10 +65,15 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 		return cachedStack;
 	}
 
+	public void setStack(ItemStack stack) {
+		cachedStack = stack;
+		onContentsChanged();
+	}
+
 	@Override
 	public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
 		validateSlotIndex(slot);
-		cachedStack = stack;
+		setStack(stack);
 	}
 
 	@Nonnull
@@ -82,6 +94,7 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 			int insertAmount = overflow > 0 ? insertGoal - overflow : insertGoal;
 			if (cachedStack.isEmpty()) cachedStack = ItemHandlerHelper.copyStackWithSize(stackIn, insertAmount);
 			else cachedStack.grow(insertAmount);
+			onContentsChanged();
 		}
 
 		return overflow > 0 ? ItemHandlerHelper.copyStackWithSize(stackIn, overflow) : ItemStack.EMPTY;
@@ -100,6 +113,7 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 			if (!simulate) {
 				ItemStack stack = cachedStack;
 				cachedStack = ItemStack.EMPTY;
+				onContentsChanged();
 				return stack;
 			}
 			else return cachedStack.copy();
@@ -107,6 +121,7 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 		else {
 			if (!simulate) {
 				cachedStack.grow(-extractGoal);
+				onContentsChanged();
 			}
 			return ItemHandlerHelper.copyStackWithSize(cachedStack, extractGoal);
 		}
@@ -125,7 +140,7 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 		if (!cachedStack.isEmpty()) {
 			int count = cachedStack.getCount();
 			if (count > 64) cachedStack.setCount(64); //prevent byte overflow
-			nbt.put("Item", cachedStack.write(new CompoundNBT()));
+			nbt.put(NBT_KEY_ITEM, cachedStack.save(new CompoundNBT()));
 			if (count != cachedStack.getCount()) cachedStack.setCount(count); //restore item count
 		}
 		return nbt;
@@ -133,13 +148,23 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 
 	@Override
 	public void deserializeNBT(CompoundNBT nbt) {
-		if (nbt.contains("Item")) cachedStack = ItemStack.read(nbt.getCompound("Item"));
+		if (nbt.contains(NBT_KEY_ITEM)) cachedStack = ItemStack.of(nbt.getCompound(NBT_KEY_ITEM));
 		else cachedStack = ItemStack.EMPTY;
 
 		int itemAmount = deserializeItemAmount(nbt);
 		if (itemAmount > cachedStack.getCount()) {
 			cachedStack.setCount(itemAmount); //restore item amount
 		}
+	}
+
+	protected void onContentsChanged() {
+		isDirty = true;
+	}
+
+	public boolean isDirty() {
+		boolean flag = isDirty;
+		isDirty = false;
+		return flag;
 	}
 
 }

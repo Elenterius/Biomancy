@@ -31,13 +31,13 @@ public final class PlayerInteractionHandler {
 	public static void onPlayerInteraction(final PlayerInteractEvent.EntityInteractSpecific event) {
 		//workaround for interacting with armor stands
 		if (event.getTarget() instanceof ArmorStandEntity && event.getItemStack().getItem() == ModItems.INJECTION_DEVICE.get()) {
-			if (event.getWorld().isRemote()) return; //TODO: figure out what to do on the client side to make it work the correct way
+			if (event.getWorld().isClientSide()) return; //TODO: figure out what to do on the client side to make it work the correct way
 
 			event.setCanceled(true);
 			event.setCancellationResult(ActionResultType.FAIL);
 
 			//manually call the function
-			ModItems.INJECTION_DEVICE.get().itemInteractionForEntity(event.getItemStack(), event.getPlayer(), (LivingEntity) event.getTarget(), event.getHand());
+			ModItems.INJECTION_DEVICE.get().interactLivingEntity(event.getItemStack(), event.getPlayer(), (LivingEntity) event.getTarget(), event.getHand());
 		}
 	}
 
@@ -45,18 +45,18 @@ public final class PlayerInteractionHandler {
 	public static void onPlayerRightClickBlock(final PlayerInteractEvent.RightClickBlock event) {
 		if (!event.getItemStack().isEmpty()) {
 			Item item = event.getItemStack().getItem();
-			if (item.isIn(ModTags.Items.RAW_MEATS)) {
-				if (!event.getWorld().isRemote()) {
+			if (item.is(ModTags.Items.RAW_MEATS)) {
+				if (!event.getWorld().isClientSide()) {
 					BlockState blockState = event.getWorld().getBlockState(event.getPos());
-					if (blockState.matchesBlock(Blocks.CAULDRON) && blockState == Blocks.CAULDRON.getDefaultState()) {
-						if (!event.getPlayer().abilities.isCreativeMode) {
+					if (blockState.is(Blocks.CAULDRON) && blockState == Blocks.CAULDRON.defaultBlockState()) {
+						if (!event.getPlayer().abilities.instabuild) {
 							event.getItemStack().grow(-1);
 						}
-						event.getPlayer().addStat(Stats.USE_CAULDRON);
+						event.getPlayer().awardStat(Stats.USE_CAULDRON);
 
-						BlockState meatState = ModBlocks.MEATSOUP_CAULDRON.get().getDefaultState().with(MeatsoupCauldronBlock.LEVEL, 1);
-						event.getWorld().setBlockState(event.getPos(), meatState, Constants.BlockFlags.BLOCK_UPDATE);
-						event.getWorld().playSound(null, event.getPos(), SoundEvents.ENTITY_SLIME_SQUISH_SMALL, SoundCategory.BLOCKS, 1.0F, 0.5F);
+						BlockState meatState = ModBlocks.MEATSOUP_CAULDRON.get().defaultBlockState().setValue(MeatsoupCauldronBlock.LEVEL, 1);
+						event.getWorld().setBlock(event.getPos(), meatState, Constants.BlockFlags.BLOCK_UPDATE);
+						event.getWorld().playSound(null, event.getPos(), SoundEvents.SLIME_SQUISH_SMALL, SoundCategory.BLOCKS, 1.0F, 0.5F);
 					}
 				}
 			}
@@ -64,11 +64,11 @@ public final class PlayerInteractionHandler {
 				BlockPos pos = event.getPos();
 				BlockState blockState = event.getWorld().getBlockState(pos);
 				if (EvolutionPoolBlock.isValidStairsBlock(blockState)) {
-					if (!event.getWorld().isRemote()) {
+					if (!event.getWorld().isClientSide()) {
 						if (EvolutionPoolBlock.tryToCreate2x2EvolutionPool(event.getWorld(), blockState, pos)) {
-							if (!event.getPlayer().abilities.isCreativeMode) event.getItemStack().grow(-1);
+							if (!event.getPlayer().abilities.instabuild) event.getItemStack().grow(-1);
 
-							event.getWorld().playSound(null, pos, SoundEvents.ENTITY_SLIME_SQUISH_SMALL, SoundCategory.BLOCKS, 1.0F, 0.5F);
+							event.getWorld().playSound(null, pos, SoundEvents.SLIME_SQUISH_SMALL, SoundCategory.BLOCKS, 1.0F, 0.5F);
 
 							if (event.getPlayer() instanceof ServerPlayerEntity) {
 								ModTriggers.EVOLUTION_POOL_CREATED.trigger((ServerPlayerEntity) event.getPlayer());

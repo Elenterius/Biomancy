@@ -30,28 +30,28 @@ public class FleshBlock extends Block {
 
 	@Override
 	public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction facing, IPlantable plantable) {
-		PlantType type = plantable.getPlantType(world, pos.offset(facing));
+		PlantType type = plantable.getPlantType(world, pos.relative(facing));
 		return type == ModBlocks.FLESH_PLANT_TYPE;
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		if (this == ModBlocks.NECROTIC_FLESH_BLOCK.get() && state.matchesBlock(ModBlocks.NECROTIC_FLESH_BLOCK.get())) {
-			ItemStack stack = player.getHeldItem(handIn);
+	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+		if (this == ModBlocks.NECROTIC_FLESH_BLOCK.get() && state.is(ModBlocks.NECROTIC_FLESH_BLOCK.get())) {
+			ItemStack stack = player.getItemInHand(handIn);
 			if (stack.getItem() == ModItems.REJUVENATING_MUCUS.get()) {
-				if (!worldIn.isRemote) {
-					if (!player.abilities.isCreativeMode) {
+				if (!worldIn.isClientSide) {
+					if (!player.abilities.instabuild) {
 						stack.shrink(1);
 					}
-					if (worldIn.rand.nextFloat() < 0.45f) {
-						worldIn.setBlockState(pos, ModBlocks.FLESH_BLOCK.get().getDefaultState(), Constants.BlockFlags.BLOCK_UPDATE);
+					if (worldIn.random.nextFloat() < 0.45f) {
+						worldIn.setBlock(pos, ModBlocks.FLESH_BLOCK.get().defaultBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
 					}
 				}
 				else {
-					spawnHealingParticles(worldIn, pos, hit.getFace(), worldIn.rand);
+					spawnHealingParticles(worldIn, pos, hit.getDirection(), worldIn.random);
 				}
 
-				return ActionResultType.func_233537_a_(worldIn.isRemote);
+				return ActionResultType.sidedSuccess(worldIn.isClientSide);
 			}
 		}
 
@@ -64,9 +64,9 @@ public class FleshBlock extends Block {
 			double xSpeed = random.nextGaussian() * 0.02D;
 			double ySpeed = random.nextGaussian() * 0.02D;
 			double zSpeed = random.nextGaussian() * 0.02D;
-			double x = pos.getX() + 0.5d + face.getXOffset() * 0.55d + face.getZOffset() * random.nextGaussian() * 0.3d + face.getYOffset() * random.nextGaussian() * 0.3d;
-			double y = pos.getY() + 0.5d + face.getYOffset() * 0.55d + face.getZOffset() * random.nextGaussian() * 0.3d + face.getXOffset() * random.nextGaussian() * 0.3d;
-			double z = pos.getZ() + 0.5d + face.getZOffset() * 0.55d + face.getXOffset() * random.nextGaussian() * 0.3d + face.getYOffset() * random.nextGaussian() * 0.3d;
+			double x = pos.getX() + 0.5d + face.getStepX() * 0.55d + face.getStepZ() * random.nextGaussian() * 0.3d + face.getStepY() * random.nextGaussian() * 0.3d;
+			double y = pos.getY() + 0.5d + face.getStepY() * 0.55d + face.getStepZ() * random.nextGaussian() * 0.3d + face.getStepX() * random.nextGaussian() * 0.3d;
+			double z = pos.getZ() + 0.5d + face.getStepZ() * 0.55d + face.getStepX() * random.nextGaussian() * 0.3d + face.getStepY() * random.nextGaussian() * 0.3d;
 			worldIn.addParticle(ParticleTypes.HAPPY_VILLAGER, x, y, z, xSpeed, ySpeed, zSpeed);
 		}
 	}

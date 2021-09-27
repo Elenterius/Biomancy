@@ -26,7 +26,7 @@ public class DigesterRecipeBuilder {
 	private final Fluid result;
 	private final int amount;
 	private final int craftingTime;
-	private final Advancement.Builder advancementBuilder = Advancement.Builder.builder();
+	private final Advancement.Builder advancementBuilder = Advancement.Builder.advancement();
 	private Ingredient ingredient = null;
 	private Byproduct byproduct = null;
 	private String group;
@@ -49,11 +49,11 @@ public class DigesterRecipeBuilder {
 	}
 
 	public DigesterRecipeBuilder setIngredient(ITag<Item> tagIn) {
-		return setIngredient(Ingredient.fromTag(tagIn));
+		return setIngredient(Ingredient.of(tagIn));
 	}
 
 	public DigesterRecipeBuilder setIngredient(IItemProvider itemIn) {
-		return setIngredient(Ingredient.fromItems(itemIn));
+		return setIngredient(Ingredient.of(itemIn));
 	}
 
 	public DigesterRecipeBuilder setIngredient(Ingredient ingredientIn) {
@@ -79,7 +79,7 @@ public class DigesterRecipeBuilder {
 	}
 
 	public DigesterRecipeBuilder addCriterion(String name, ICriterionInstance criterionIn) {
-		advancementBuilder.withCriterion(name, criterionIn);
+		advancementBuilder.addCriterion(name, criterionIn);
 		return this;
 	}
 
@@ -122,7 +122,7 @@ public class DigesterRecipeBuilder {
 
 	private void build(Consumer<IFinishedRecipe> consumerIn, ResourceLocation id) {
 		validate(id);
-		advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.create(id)).withRewards(AdvancementRewards.Builder.recipe(id)).withRequirementsStrategy(IRequirementsStrategy.OR);
+		advancementBuilder.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id)).rewards(AdvancementRewards.Builder.recipe(id)).requirements(IRequirementsStrategy.OR);
 		consumerIn.accept(new Result(id, result, craftingTime, amount, byproduct, group == null ? "" : group, ingredient, advancementBuilder, new ResourceLocation(id.getNamespace(), "recipes/" + BiomancyMod.MOD_ID + "/" + id.getPath())));
 	}
 
@@ -155,12 +155,12 @@ public class DigesterRecipeBuilder {
 			advancementId = advancementIdIn;
 		}
 
-		public void serialize(JsonObject json) {
+		public void serializeRecipeData(JsonObject json) {
 			if (!this.group.isEmpty()) {
 				json.addProperty("group", this.group);
 			}
 
-			json.add("ingredient", ingredient.serialize());
+			json.add("ingredient", ingredient.toJson());
 
 			JsonObject jsonObject = new JsonObject();
 			//noinspection ConstantConditions
@@ -176,21 +176,21 @@ public class DigesterRecipeBuilder {
 			if (byproduct != null) json.add("byproduct", byproduct.serialize());
 		}
 
-		public IRecipeSerializer<?> getSerializer() {
+		public IRecipeSerializer<?> getType() {
 			return ModRecipes.DIGESTER_SERIALIZER.get();
 		}
 
-		public ResourceLocation getID() {
+		public ResourceLocation getId() {
 			return id;
 		}
 
 		@Nullable
-		public JsonObject getAdvancementJson() {
-			return advancementBuilder.serialize();
+		public JsonObject serializeAdvancement() {
+			return advancementBuilder.serializeToJson();
 		}
 
 		@Nullable
-		public ResourceLocation getAdvancementID() {
+		public ResourceLocation getAdvancementId() {
 			return advancementId;
 		}
 	}

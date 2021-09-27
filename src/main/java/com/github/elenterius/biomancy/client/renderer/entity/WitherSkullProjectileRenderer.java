@@ -23,29 +23,29 @@ public class WitherSkullProjectileRenderer extends EntityRenderer<WitherSkullPro
 
 	public WitherSkullProjectileRenderer(EntityRendererManager renderManager) {
 		super(renderManager);
-		skullModel.func_225603_a_(0, -90f, 0);
+		skullModel.setupAnim(0, -90f, 0);
 	}
 
 	@Override
-	protected int getBlockLight(WitherSkullProjectileEntity entityIn, BlockPos pos) {
+	protected int getBlockLightLevel(WitherSkullProjectileEntity entityIn, BlockPos pos) {
 		return 15;
 	}
 
 	@Override
 	public void render(WitherSkullProjectileEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-		matrixStackIn.push();
+		matrixStackIn.pushPose();
 		matrixStackIn.translate(0, 0.5F, 0);
-		matrixStackIn.rotate(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entityIn.prevRotationYaw, entityIn.rotationYaw) - 90f));
-		matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, entityIn.prevRotationPitch, entityIn.rotationPitch)));
+		matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entityIn.yRotO, entityIn.yRot) - 90f));
+		matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, entityIn.xRotO, entityIn.xRot)));
 
-		IVertexBuilder vertexBuilder = bufferIn.getBuffer(skullModel.getRenderType(getEntityTexture(entityIn)));
-		skullModel.render(matrixStackIn, vertexBuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
-		matrixStackIn.pop();
+		IVertexBuilder vertexBuilder = bufferIn.getBuffer(skullModel.renderType(getTextureLocation(entityIn)));
+		skullModel.renderToBuffer(matrixStackIn, vertexBuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
+		matrixStackIn.popPose();
 		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(WitherSkullProjectileEntity entity) {
+	public ResourceLocation getTextureLocation(WitherSkullProjectileEntity entity) {
 		return TEXTURE;
 	}
 

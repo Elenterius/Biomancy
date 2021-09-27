@@ -9,13 +9,13 @@ import java.util.function.Supplier;
 
 public enum ModItemTier implements IItemTier {
 	BONE(1, 131, 4f, 1f, 5, () -> {
-		return Ingredient.fromItems(Items.BONE_MEAL, ModItems.BONE_SCRAPS.get());
+		return Ingredient.of(Items.BONE_MEAL, ModItems.BONE_SCRAPS.get());
 	}),
 	LESSER_BIOMETAL(3, 1650, 6f, 2f, 14, () -> {
-		return Ingredient.fromItems(ModItems.FLESH_BLOCK.get());
+		return Ingredient.of(ModItems.FLESH_BLOCK.get());
 	}),
 	BIOMETAL(4, 2031, 9f, 4f, 15, () -> {
-		return Ingredient.fromItems(ModItems.BIOMETAL.get());
+		return Ingredient.of(ModItems.BIOMETAL.get());
 	});
 
 	private final int harvestLevel;
@@ -35,32 +35,32 @@ public enum ModItemTier implements IItemTier {
 	}
 
 	@Override
-	public int getMaxUses() {
+	public int getUses() {
 		return this.maxUses;
 	}
 
 	@Override
-	public float getEfficiency() {
+	public float getSpeed() {
 		return this.efficiency;
 	}
 
 	@Override
-	public float getAttackDamage() {
+	public float getAttackDamageBonus() {
 		return this.attackDamage;
 	}
 
 	@Override
-	public int getHarvestLevel() {
+	public int getLevel() {
 		return this.harvestLevel;
 	}
 
 	@Override
-	public int getEnchantability() {
+	public int getEnchantmentValue() {
 		return this.enchantability;
 	}
 
 	@Override
-	public Ingredient getRepairMaterial() {
-		return this.repairMaterial.getValue();
+	public Ingredient getRepairIngredient() {
+		return this.repairMaterial.get();
 	}
 }

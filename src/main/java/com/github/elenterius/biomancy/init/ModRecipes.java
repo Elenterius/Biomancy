@@ -43,13 +43,13 @@ public final class ModRecipes {
 
 	public static final ItemPredicate ANY_MEATLESS_FOOD_ITEM_PREDICATE = new ItemPredicate() {
 		@Override
-		public boolean test(ItemStack stack) {
+		public boolean matches(ItemStack stack) {
 			Item item = stack.getItem();
-			return item.isFood() && item.getFood() != null && !item.getFood().isMeat();
+			return item.isEdible() && item.getFoodProperties() != null && !item.getFoodProperties().isMeat();
 		}
 
 		@Override
-		public JsonElement serialize() {
+		public JsonElement serializeToJson() {
 			return JsonNull.INSTANCE;
 		}
 	};
@@ -57,8 +57,8 @@ public final class ModRecipes {
 	private ModRecipes() {}
 
 	public static void registerComposterRecipes() {
-		ComposterBlock.CHANCES.putIfAbsent(ModItems.DIGESTATE.get(), 0.7f);
-		ComposterBlock.CHANCES.putIfAbsent(ModItems.NUTRIENT_PASTE.get(), 0.5f);
+		ComposterBlock.COMPOSTABLES.putIfAbsent(ModItems.DIGESTATE.get(), 0.7f);
+		ComposterBlock.COMPOSTABLES.putIfAbsent(ModItems.NUTRIENT_PASTE.get(), 0.5f);
 	}
 
 	public static void registerCustomItemPredicates() {

@@ -20,7 +20,7 @@ public class ChromaSheepRenderer extends MobRenderer<ChromaSheepEntity, SheepMod
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(ChromaSheepEntity entity) {
+	public ResourceLocation getTextureLocation(ChromaSheepEntity entity) {
 		return TEXTURE;
 	}
 

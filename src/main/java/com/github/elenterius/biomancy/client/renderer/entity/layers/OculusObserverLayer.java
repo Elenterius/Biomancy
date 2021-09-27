@@ -33,36 +33,36 @@ public class OculusObserverLayer<T extends PlayerEntity> extends LayerRenderer<T
 	public void render(MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn, T livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 		if (/*NAMES.contains(livingEntity.getGameProfile().getName()) ||*/ ClientSetupHandler.isPlayerCosmeticVisible(livingEntity)) {
 
-			boolean isFlying = livingEntity.getTicksElytraFlying() > 4;
-			boolean isSwimming = livingEntity.isActualySwimming();
+			boolean isFlying = livingEntity.getFallFlyingTicks() > 4;
+			boolean isSwimming = livingEntity.isVisuallySwimming();
 
-			float swimAnimation = livingEntity.getSwimAnimation(partialTicks);
+			float swimAnimation = livingEntity.getSwimAmount(partialTicks);
 			float partialAngle = (float) Math.PI / 180f;
 			double verticalOffset = 0;
 			double horizontalOffset = 0;
 
-			model.body.rotateAngleY = netHeadYaw * partialAngle;
+			model.body.yRot = netHeadYaw * partialAngle;
 			if (isFlying) {
-				model.body.rotateAngleX = (-(float) Math.PI / 4f);
+				model.body.xRot = (-(float) Math.PI / 4f);
 				verticalOffset = 3;
 				horizontalOffset = 0.5f;
 			}
 			else if (swimAnimation > 0f) {
 				if (isSwimming) {
-					model.body.rotateAngleX = lerpAngle(swimAnimation, model.body.rotateAngleX, (-(float) Math.PI / 4f));
+					model.body.xRot = lerpAngle(swimAnimation, model.body.xRot, (-(float) Math.PI / 4f));
 					verticalOffset = 3;
 					horizontalOffset = 0.5f;
 				}
-				else model.body.rotateAngleX = lerpAngle(swimAnimation, model.body.rotateAngleX, headPitch * partialAngle);
+				else model.body.xRot = lerpAngle(swimAnimation, model.body.xRot, headPitch * partialAngle);
 			}
-			else model.body.rotateAngleX = headPitch * partialAngle;
+			else model.body.xRot = headPitch * partialAngle;
 
-			matrixStackIn.push();
+			matrixStackIn.pushPose();
 			verticalOffset += -1f + (livingEntity.isCrouching() ? (double) -1.3f : -1.5d);
-			matrixStackIn.translate(leftShoulder ? SHOULDER_OFFSET + horizontalOffset : -SHOULDER_OFFSET - horizontalOffset, verticalOffset + MathHelper.cos(livingEntity.ticksExisted * 0.8f) * (float) Math.PI * 0.015f, 0);
-			IVertexBuilder buffer = bufferIn.getBuffer(model.getRenderType(OculusObserverRenderer.TEXTURE));
-			model.renderOnPlayer(OculusObserverModel.State.HOVERING, matrixStackIn, buffer, packedLightIn, OverlayTexture.NO_OVERLAY, limbSwing, limbSwingAmount, netHeadYaw, headPitch, livingEntity.ticksExisted);
-			matrixStackIn.pop();
+			matrixStackIn.translate(leftShoulder ? SHOULDER_OFFSET + horizontalOffset : -SHOULDER_OFFSET - horizontalOffset, verticalOffset + MathHelper.cos(livingEntity.tickCount * 0.8f) * (float) Math.PI * 0.015f, 0);
+			IVertexBuilder buffer = bufferIn.getBuffer(model.renderType(OculusObserverRenderer.TEXTURE));
+			model.renderOnPlayer(OculusObserverModel.State.HOVERING, matrixStackIn, buffer, packedLightIn, OverlayTexture.NO_OVERLAY, limbSwing, limbSwingAmount, netHeadYaw, headPitch, livingEntity.tickCount);
+			matrixStackIn.popPose();
 		}
 	}
 

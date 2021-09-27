@@ -43,9 +43,9 @@ import java.util.*;
 
 public class BoomlingEntity extends OwnableCreatureEntity {
 
-	private static final DataParameter<Byte> CLIMBING = EntityDataManager.createKey(BoomlingEntity.class, DataSerializers.BYTE);
-	private static final DataParameter<Byte> STATE = EntityDataManager.createKey(BoomlingEntity.class, DataSerializers.BYTE);
-	private static final DataParameter<Integer> COLOR = EntityDataManager.createKey(BoomlingEntity.class, DataSerializers.VARINT);
+	private static final DataParameter<Byte> CLIMBING = EntityDataManager.defineId(BoomlingEntity.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte> STATE = EntityDataManager.defineId(BoomlingEntity.class, DataSerializers.BYTE);
+	private static final DataParameter<Integer> COLOR = EntityDataManager.defineId(BoomlingEntity.class, DataSerializers.INT);
 	private int prevFuseTimer;
 	private int fuseTimer;
 	private short maxFuseTimer = 22;
@@ -55,10 +55,10 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 	}
 
 	public static AttributeModifierMap.MutableAttribute createAttributes() {
-		return MobEntity.func_233666_p_()
-				.createMutableAttribute(Attributes.MAX_HEALTH, 6.5d)
-				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.3d)
-				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 1d);
+		return MobEntity.createMobAttributes()
+				.add(Attributes.MAX_HEALTH, 6.5d)
+				.add(Attributes.MOVEMENT_SPEED, 0.3d)
+				.add(Attributes.ATTACK_DAMAGE, 1d);
 	}
 
 	public static void spawnEffectAOE(World world, @Nullable LivingEntity attacker, Vector3d pos, Potion potion, Collection<EffectInstance> effects, int color) {
@@ -68,30 +68,30 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 		aoeCloud.setRadiusOnUse(-0.5f);
 		aoeCloud.setWaitTime(10);
 		aoeCloud.setRadiusPerTick(-aoeCloud.getRadius() / aoeCloud.getDuration());
-		aoeCloud.setColor(color);
+		aoeCloud.setFixedColor(color);
 		aoeCloud.setPotion(potion);
 		for (EffectInstance effect : effects) aoeCloud.addEffect(new EffectInstance(effect));
 
-		world.addEntity(aoeCloud);
+		world.addFreshEntity(aoeCloud);
 
-		int event = potion.hasInstantEffect() ? Constants.WorldEvents.POTION_IMPACT : Constants.WorldEvents.POTION_IMPACT_INSTANT;
-		world.playEvent(event, new BlockPos(pos), color);
+		int event = potion.hasInstantEffects() ? Constants.WorldEvents.POTION_IMPACT : Constants.WorldEvents.POTION_IMPACT_INSTANT;
+		world.levelEvent(event, new BlockPos(pos), color);
 	}
 
 	public static void causeWaterAOE(World world, Entity attacker) {
-		AxisAlignedBB axisalignedbb = attacker.getBoundingBox().grow(4d, 2d, 4d);
-		List<LivingEntity> entities = world.getEntitiesWithinAABB(LivingEntity.class, axisalignedbb, PotionEntity.WATER_SENSITIVE);
+		AxisAlignedBB axisalignedbb = attacker.getBoundingBox().inflate(4d, 2d, 4d);
+		List<LivingEntity> entities = world.getEntitiesOfClass(LivingEntity.class, axisalignedbb, PotionEntity.WATER_SENSITIVE);
 		if (!entities.isEmpty()) {
 			for (LivingEntity victim : entities) {
-				if (attacker.getDistanceSq(victim) < 16d) {
-					victim.attackEntityFrom(DamageSource.causeIndirectMagicDamage(victim, attacker), 1f);
+				if (attacker.distanceToSqr(victim) < 16d) {
+					victim.hurt(DamageSource.indirectMagic(victim, attacker), 1f);
 				}
 			}
 		}
 	}
 
 	@Override
-	public CreatureAttribute getCreatureAttribute() {
+	public CreatureAttribute getMobType() {
 		return CreatureAttribute.ARTHROPOD;
 	}
 
@@ -113,23 +113,23 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 	}
 
 	@Override
-	protected void registerData() {
-		super.registerData();
-		dataManager.register(CLIMBING, (byte) 0);
-		dataManager.register(COLOR, 0);
-		dataManager.register(STATE, (byte) Flags.setFlag(0, Flags.IDLE));
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(CLIMBING, (byte) 0);
+		entityData.define(COLOR, 0);
+		entityData.define(STATE, (byte) Flags.setFlag(0, Flags.IDLE));
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT nbt) {
-		super.writeAdditional(nbt);
+	public void addAdditionalSaveData(CompoundNBT nbt) {
+		super.addAdditionalSaveData(nbt);
 		nbt.putShort("MaxFuseTime", maxFuseTimer);
 		nbt.putBoolean("Ignited", isIgnited());
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT nbt) {
-		super.readAdditional(nbt);
+	public void readAdditionalSaveData(CompoundNBT nbt) {
+		super.readAdditionalSaveData(nbt);
 		if (nbt.contains("MaxFuseTime", Constants.NBT.TAG_ANY_NUMERIC)) {
 			maxFuseTimer = nbt.getShort("MaxFuseTime");
 		}
@@ -137,14 +137,14 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 	}
 
 	@Override
-	protected PathNavigator createNavigator(World worldIn) {
+	protected PathNavigator createNavigation(World worldIn) {
 		return new ClimberPathNavigator(this, worldIn);
 	}
 
 	@Nullable
 	@Override
-	public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-		ILivingEntityData data = super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+	public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+		ILivingEntityData data = super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
 		if (getStoredPotion().isEmpty()) {
 			Set<ResourceLocation> keys = ForgeRegistries.POTION_TYPES.getKeys();
 			int n = worldIn.getRandom().nextInt(keys.size());
@@ -152,7 +152,7 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 				if (--n <= 0) {
 					Potion potion = ForgeRegistries.POTION_TYPES.getValue(key);
 					if (potion != null && potion != Potions.EMPTY) {
-						setStoredPotion(PotionUtilExt.addPotionToItemStack(new ItemStack(Items.POTION), potion));
+						setStoredPotion(PotionUtilExt.setPotion(new ItemStack(Items.POTION), potion));
 						break;
 					}
 				}
@@ -170,7 +170,7 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 			}
 
 			if (!isIdle()) {
-				if (fuseTimer == 0) playSound(SoundEvents.ENTITY_CREEPER_PRIMED, 1f, 0.5f);
+				if (fuseTimer == 0) playSound(SoundEvents.CREEPER_PRIMED, 1f, 0.5f);
 				if (++fuseTimer >= maxFuseTimer) {
 					fuseTimer = maxFuseTimer;
 					explode();
@@ -182,49 +182,49 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 		}
 
 		super.tick();
-		if (!world.isRemote) setBesideClimbableBlock(collidedHorizontally);
+		if (!level.isClientSide) setBesideClimbableBlock(horizontalCollision);
 	}
 
 	@Override
-	public boolean attackEntityAsMob(Entity entityIn) {
+	public boolean doHurtTarget(Entity entityIn) {
 		return true;
 	}
 
 	public boolean isBesideClimbableBlock() {
-		return (dataManager.get(CLIMBING) & 0x1) != 0;
+		return (entityData.get(CLIMBING) & 0x1) != 0;
 	}
 
 	public void setBesideClimbableBlock(boolean isClimbing) {
-		byte flag = dataManager.get(CLIMBING);
+		byte flag = entityData.get(CLIMBING);
 		flag = isClimbing ? (byte) (flag | 0x1) : (byte) (flag & 0xfffffffe);
-		dataManager.set(CLIMBING, flag);
+		entityData.set(CLIMBING, flag);
 	}
 
 	@Override
-	public boolean isOnLadder() {
+	public boolean onClimbable() {
 		return isBesideClimbableBlock();
 	}
 
 	@Override
-	public void setMotionMultiplier(BlockState state, Vector3d motionMultiplierIn) {
-		if (!state.matchesBlock(Blocks.COBWEB)) super.setMotionMultiplier(state, motionMultiplierIn);
+	public void makeStuckInBlock(BlockState state, Vector3d motionMultiplierIn) {
+		if (!state.is(Blocks.COBWEB)) super.makeStuckInBlock(state, motionMultiplierIn);
 	}
 
 	public ItemStack getStoredPotion() {
-		return getItemStackFromSlot(EquipmentSlotType.MAINHAND);
+		return getItemBySlot(EquipmentSlotType.MAINHAND);
 	}
 
 	public void setStoredPotion(ItemStack stack) {
-		setItemStackToSlot(EquipmentSlotType.MAINHAND, stack);
-		getDataManager().set(COLOR, stack.isEmpty() ? 0 : PotionUtilExt.getColor(stack));
+		setItemSlot(EquipmentSlotType.MAINHAND, stack);
+		getEntityData().set(COLOR, stack.isEmpty() ? 0 : PotionUtilExt.getColor(stack));
 	}
 
 	public byte getState() {
-		return getDataManager().get(STATE);
+		return getEntityData().get(STATE);
 	}
 
 	public boolean isIdle() {
-		return Flags.isFlagSet(getDataManager().get(STATE), Flags.IDLE);
+		return Flags.isFlagSet(getEntityData().get(STATE), Flags.IDLE);
 	}
 
 	public void setIdle(boolean bool) {
@@ -232,7 +232,7 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 	}
 
 	public boolean isIgnited() {
-		return Flags.isFlagSet(getDataManager().get(STATE), Flags.IGNITED);
+		return Flags.isFlagSet(getEntityData().get(STATE), Flags.IGNITED);
 	}
 
 	public void setIgnited(boolean bool) {
@@ -240,9 +240,9 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 	}
 
 	public void setStateFlag(Flags flag, boolean bool) {
-		byte value = getDataManager().get(STATE);
+		byte value = getEntityData().get(STATE);
 		byte flags = (byte) (bool ? Flags.setFlag(value, flag) : Flags.unsetFlag(value, flag));
-		getDataManager().set(STATE, flags);
+		getEntityData().set(STATE, flags);
 	}
 
 	public short getMaxFuseTimer() {
@@ -254,30 +254,30 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 	}
 
 	public int getColor() {
-		return getDataManager().get(COLOR);
+		return getEntityData().get(COLOR);
 	}
 
 	@Override
-	public boolean isPotionApplicable(EffectInstance effectInstance) {
+	public boolean canBeAffected(EffectInstance effectInstance) {
 		return false;
 	}
 
 	@Override
-	public void onDeath(@Nonnull DamageSource cause) {
-		super.onDeath(cause);
-		if (!world.isRemote && !cause.isMagicDamage() && !cause.isFireDamage() && !cause.isExplosion()) {
+	public void die(@Nonnull DamageSource cause) {
+		super.die(cause);
+		if (!level.isClientSide && !cause.isMagic() && !cause.isFire() && !cause.isExplosion()) {
 			explode();
 		}
 	}
 
 	private void explode() {
-		if (world.isRemote) return;
+		if (level.isClientSide) return;
 
 		ItemStack stack = getStoredPotion();
 		if (stack.isEmpty()) return;
 
-		Potion potion = PotionUtilExt.getPotionFromItem(stack);
-		List<EffectInstance> effects = PotionUtilExt.getEffectsFromStack(stack);
+		Potion potion = PotionUtilExt.getPotion(stack);
+		List<EffectInstance> effects = PotionUtilExt.getMobEffects(stack);
 		if (potion == Potions.WATER && effects.isEmpty()) {
 			causeWaterAOE();
 			remove();
@@ -296,29 +296,29 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 		if (nbt != null && nbt.contains("CustomPotionColor", Constants.NBT.TAG_ANY_NUMERIC)) {
 			color = nbt.getInt("CustomPotionColor");
 		}
-		List<EffectInstance> effects = PotionUtilExt.getFullEffectsFromItem(stack);
-		spawnEffectAOE(world, shooter, getPositionVec(), potion, effects, color);
+		List<EffectInstance> effects = PotionUtilExt.getCustomEffects(stack);
+		spawnEffectAOE(level, shooter, position(), potion, effects, color);
 	}
 
 	private void causeWaterAOE() {
 		Optional<PlayerEntity> owner = getOwner();
 		LivingEntity shooter = owner.isPresent() ? owner.get() : this;
-		causeWaterAOE(world, shooter);
+		causeWaterAOE(level, shooter);
 	}
 
 	@Override
-	protected ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
+	protected ActionResultType mobInteract(PlayerEntity player, Hand hand) {
 		if (!isOwner(player)) return ActionResultType.PASS;
 
-		if (!player.world.isRemote() && player.isSneaking()) {
-			setDead();
+		if (!player.level.isClientSide() && player.isShiftKeyDown()) {
+			removeAfterChangingDimensions();
 			ItemStack stack = PotionUtilExt.setPotionOfHost(new ItemStack(ModItems.BOOMLING.get()), getStoredPotion().copy());
-			if (hasCustomName()) stack.setDisplayName(getCustomName());
-			if (!player.addItemStackToInventory(stack)) {
-				entityDropItem(stack);
+			if (hasCustomName()) stack.setHoverName(getCustomName());
+			if (!player.addItem(stack)) {
+				spawnAtLocation(stack);
 			}
 		}
-		return ActionResultType.func_233537_a_(world.isRemote());
+		return ActionResultType.sidedSuccess(level.isClientSide());
 	}
 
 	@Override
@@ -335,37 +335,37 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 	public void playAmbientSound() {
 		SoundEvent soundevent = getAmbientSound();
 		if (soundevent != null) {
-			playSound(soundevent, getSoundVolume(), getSoundPitch() * 1.2f);
+			playSound(soundevent, getSoundVolume(), getVoicePitch() * 1.2f);
 		}
 	}
 
 	@Override
 	protected void playHurtSound(DamageSource source) {
-		livingSoundTime = -getTalkInterval();
+		ambientSoundTime = -getAmbientSoundInterval();
 		SoundEvent soundevent = getHurtSound(source);
 		if (soundevent != null) {
-			playSound(soundevent, getSoundVolume(), getSoundPitch() * 1.2f);
+			playSound(soundevent, getSoundVolume(), getVoicePitch() * 1.2f);
 		}
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState blockIn) {
-		playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.1f, 1.2f);
+		playSound(SoundEvents.SPIDER_STEP, 0.1f, 1.2f);
 	}
 
 	@Override
 	protected SoundEvent getAmbientSound() {
-		return SoundEvents.ENTITY_SPIDER_AMBIENT;
+		return SoundEvents.SPIDER_AMBIENT;
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-		return SoundEvents.ENTITY_SLIME_HURT_SMALL;
+		return SoundEvents.SLIME_HURT_SMALL;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return SoundEvents.ENTITY_SLIME_DEATH_SMALL;
+		return SoundEvents.SLIME_DEATH_SMALL;
 	}
 
 	@Override
@@ -400,26 +400,26 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 	class ExplodeGoal extends Goal {
 
 		public ExplodeGoal() {
-			setMutexFlags(EnumSet.of(Flag.MOVE));
+			setFlags(EnumSet.of(Flag.MOVE));
 		}
 
 		@Override
-		public boolean shouldExecute() {
-			return !isIdle() || getAttackTarget() != null && getDistanceSq(getAttackTarget()) < 9d;
+		public boolean canUse() {
+			return !isIdle() || getTarget() != null && distanceToSqr(getTarget()) < 9d;
 		}
 
 		@Override
-		public void startExecuting() {
-			navigator.clearPath();
+		public void start() {
+			navigation.stop();
 		}
 
 		@Override
 		public void tick() {
-			if (getAttackTarget() == null || getDistanceSq(getAttackTarget()) > 49d) {
+			if (getTarget() == null || distanceToSqr(getTarget()) > 49d) {
 				setIdle(true);
 			}
 			else {
-				setIdle(!getEntitySenses().canSee(getAttackTarget()));
+				setIdle(!getSensing().canSee(getTarget()));
 			}
 		}
 	}

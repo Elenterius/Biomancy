@@ -19,19 +19,19 @@ public interface IOwnableCreature {
 	Optional<PlayerEntity> getOwner();
 
 	default boolean shouldAttackEntity(LivingEntity target, LivingEntity owner) {
-		if (target.getUniqueID().equals(owner.getUniqueID())) return false;
+		if (target.getUUID().equals(owner.getUUID())) return false;
 
 		if (target instanceof IOwnableCreature) {
 			return !((IOwnableCreature) target).isOwner(owner);
 		}
 		else if (target instanceof TameableEntity) {
-			return !owner.getUniqueID().equals(((TameableEntity) target).getOwnerId());
+			return !owner.getUUID().equals(((TameableEntity) target).getOwnerUUID());
 		}
-		else return !(target instanceof PlayerEntity) || !(owner instanceof PlayerEntity) || ((PlayerEntity) owner).canAttackPlayer((PlayerEntity) target);
+		else return !(target instanceof PlayerEntity) || !(owner instanceof PlayerEntity) || ((PlayerEntity) owner).canHarmPlayer((PlayerEntity) target);
 	}
 
 	default boolean isOwner(LivingEntity entity) {
-		return getOwnerUUID().map(uuid -> uuid.equals(entity.getUniqueID())).orElse(false);
+		return getOwnerUUID().map(uuid -> uuid.equals(entity.getUUID())).orElse(false);
 	}
 
 	boolean tryToReturnIntoPlayerInventory();

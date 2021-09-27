@@ -15,13 +15,13 @@ public class BulletJumpEnchantment extends Enchantment {
 	}
 
 	@Override
-	public int getMinEnchantability(int enchantmentLevel) {
+	public int getMinCost(int enchantmentLevel) {
 		return enchantmentLevel * 10;
 	}
 
 	@Override
-	public int getMaxEnchantability(int enchantmentLevel) {
-		return getMinEnchantability(enchantmentLevel) + 15;
+	public int getMaxCost(int enchantmentLevel) {
+		return getMinCost(enchantmentLevel) + 15;
 	}
 
 	@Override
@@ -30,31 +30,31 @@ public class BulletJumpEnchantment extends Enchantment {
 	}
 
 	@Override
-	public boolean isTreasureEnchantment() {
+	public boolean isTreasureOnly() {
 		return true;
 	}
 
 	@Override
-	public boolean canVillagerTrade() {
+	public boolean isTradeable() {
 		return false;
 	}
 
 	@Override
-	public boolean canGenerateInLoot() {
+	public boolean isDiscoverable() {
 		return false;
 	}
 
 	public void executeBulletJump(PlayerEntity player, int level, boolean applySneakFix) {
-		Vector3d lookVec = player.getLookVec();
-		Vector3d motion = player.getMotion();
+		Vector3d lookVec = player.getLookAngle();
+		Vector3d motion = player.getDeltaMovement();
 
 		boolean startedFaLlFlying = tryToStartFallFlying(player); // get free boosted elytra takeoff without rockets :)
 
 		if (!startedFaLlFlying) {
 			float maxLevel = getMaxLevel();
 			float factor = 3f * ((1f + (float) level) / (maxLevel + 1f));
-			player.setMotion(motion.x + lookVec.x * factor, 0d + lookVec.y * factor, motion.z + lookVec.z * factor); // we ignore y motion, because we don't want jump boost etc to affected the leap
-			player.startSpinAttack(20);
+			player.setDeltaMovement(motion.x + lookVec.x * factor, 0d + lookVec.y * factor, motion.z + lookVec.z * factor); // we ignore y motion, because we don't want jump boost etc to affected the leap
+			player.startAutoSpinAttack(20);
 			if (player.isOnGround()) {
 				player.move(MoverType.SELF, new Vector3d(0d, 1.1999999f, 0d));
 			}
@@ -62,20 +62,20 @@ public class BulletJumpEnchantment extends Enchantment {
 		else {
 			float factor = 0.3f;
 			double jumpMotion = motion.y + factor * level + 0.15f;
-			player.setMotion(motion.x + lookVec.x * jumpMotion, motion.y + lookVec.y * ((factor - 0.1f) * level), motion.z + lookVec.z * jumpMotion);
+			player.setDeltaMovement(motion.x + lookVec.x * jumpMotion, motion.y + lookVec.y * ((factor - 0.1f) * level), motion.z + lookVec.z * jumpMotion);
 
 			//WARNING: "player moved wrongly!" --> caused by sneaking and trying to jump off block ledge (fall off prevention)
-			if (applySneakFix) player.setSneaking(false); // the fix
+			if (applySneakFix) player.setShiftKeyDown(false); // the fix
 		}
-		player.isAirBorne = true;
+		player.hasImpulse = true;
 //		player.world.playMovingSound(null, player, SoundEvents.ITEM_TRIDENT_RIPTIDE_3, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
-		player.addExhaustion(0.6F * (float) level);
+		player.causeFoodExhaustion(0.6F * (float) level);
 	}
 
 	private static boolean tryToStartFallFlying(PlayerEntity player) {
-		if (!player.isElytraFlying() && !player.isInWater() && !player.isPotionActive(Effects.LEVITATION)) {
-			ItemStack itemstack = player.getItemStackFromSlot(EquipmentSlotType.CHEST);
+		if (!player.isFallFlying() && !player.isInWater() && !player.hasEffect(Effects.LEVITATION)) {
+			ItemStack itemstack = player.getItemBySlot(EquipmentSlotType.CHEST);
 			if (itemstack.canElytraFly(player)) {
 				player.startFallFlying();
 				return true;

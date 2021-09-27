@@ -19,13 +19,13 @@ public class ReturnToHomePosGoal<T extends CreatureEntity & IGolem> extends Rand
 	}
 
 	@Override
-	public boolean shouldExecute() {
+	public boolean canUse() {
 		if (entity.isGolemInactive()) return false;
 
 		IGolem.Command command = entity.getGolemCommand();
 		if (command == IGolem.Command.HOLD_POSITION || command == IGolem.Command.PATROL_AREA) {
-			BlockPos pos = creature.getPosition();
-			return !pos.equals(creature.getHomePosition()) && super.shouldExecute();
+			BlockPos pos = mob.blockPosition();
+			return !pos.equals(mob.getRestrictCenter()) && super.canUse();
 		}
 		return false;
 	}
@@ -33,14 +33,14 @@ public class ReturnToHomePosGoal<T extends CreatureEntity & IGolem> extends Rand
 	@Override
 	@Nullable
 	protected Vector3d getPosition() {
-		BlockPos pos = creature.getPosition();
-		if (!pos.equals(creature.getHomePosition())) {
+		BlockPos pos = mob.blockPosition();
+		if (!pos.equals(mob.getRestrictCenter())) {
 			IGolem.Command command = entity.getGolemCommand();
 			if (command == IGolem.Command.PATROL_AREA) {
-				return RandomPositionGenerator.findRandomTargetBlockTowards(creature, 10, 7, Vector3d.copyCenteredHorizontally(creature.getHomePosition())); // doesn't include fluids
+				return RandomPositionGenerator.getPosTowards(mob, 10, 7, Vector3d.atBottomCenterOf(mob.getRestrictCenter())); // doesn't include fluids
 			}
 			if (command == IGolem.Command.HOLD_POSITION) {
-				return Vector3d.copyCenteredHorizontally(creature.getHomePosition());
+				return Vector3d.atBottomCenterOf(mob.getRestrictCenter());
 			}
 		}
 		return null;

@@ -31,13 +31,13 @@ public class SolidifierContainer extends Container {
 		this.outputInventory = outputInventory;
 		this.stateData = stateData;
 
-		trackIntArray(stateData);
+		addDataSlots(stateData);
 
 		initPlayerInvSlots(playerInventory);
 
 		addSlot(new Slot(filledBucketInventory, 0, 51, 17) {
 			@Override
-			public boolean isItemValid(ItemStack stack) {
+			public boolean mayPlace(ItemStack stack) {
 				return HandlerBehaviors.FILLED_FLUID_ITEM_PREDICATE.test(stack);
 			}
 		});
@@ -85,9 +85,9 @@ public class SolidifierContainer extends Container {
 	}
 
 	@Override
-	public boolean canInteractWith(PlayerEntity playerIn) {
+	public boolean stillValid(PlayerEntity playerIn) {
 		//we don't check all three inventories because they all call the same method in the tile entity
-		return filledBucketInventory.isUsableByPlayer(playerIn);
+		return filledBucketInventory.stillValid(playerIn);
 	}
 
 	public float getCraftingProgressNormalized() {
@@ -103,11 +103,11 @@ public class SolidifierContainer extends Container {
 	 * copied from: https://github.com/TheGreyGhost/MinecraftByExample/blob/1-16-3-final/src/main/java/minecraftbyexample/mbe31_inventory_furnace/ContainerFurnace.java
 	 */
 	@Override
-	public ItemStack transferStackInSlot(PlayerEntity playerIn, int sourceSlotIndex) {
+	public ItemStack quickMoveStack(PlayerEntity playerIn, int sourceSlotIndex) {
 
-		Slot sourceSlot = inventorySlots.get(sourceSlotIndex); // side-effect: throws error if the sourceSlotIndex is out of range (index < 0 || index >= size())
-		if (sourceSlot == null || !sourceSlot.getHasStack()) return ItemStack.EMPTY;
-		ItemStack sourceStack = sourceSlot.getStack();
+		Slot sourceSlot = slots.get(sourceSlotIndex); // side-effect: throws error if the sourceSlotIndex is out of range (index < 0 || index >= size())
+		if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;
+		ItemStack sourceStack = sourceSlot.getItem();
 		ItemStack copyOfSourceStack = sourceStack.copy();
 
 		boolean successfulTransfer = false;
@@ -116,7 +116,7 @@ public class SolidifierContainer extends Container {
 		switch (sourceZone) {
 			case OUTPUT_ZONE:
 				successfulTransfer = mergeInto(SlotZone.PLAYER_HOTBAR, sourceStack, true) || mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, sourceStack, true);
-				if (successfulTransfer) sourceSlot.onSlotChange(sourceStack, copyOfSourceStack);
+				if (successfulTransfer) sourceSlot.onQuickCraft(sourceStack, copyOfSourceStack);
 				break;
 
 			case EMPTY_BUCKET_ZONE:
@@ -141,8 +141,8 @@ public class SolidifierContainer extends Container {
 
 		if (!successfulTransfer) return ItemStack.EMPTY;
 
-		if (sourceStack.isEmpty()) sourceSlot.putStack(ItemStack.EMPTY);
-		else sourceSlot.onSlotChanged();
+		if (sourceStack.isEmpty()) sourceSlot.set(ItemStack.EMPTY);
+		else sourceSlot.setChanged();
 
 		if (sourceStack.getCount() == copyOfSourceStack.getCount()) {
 			BiomancyMod.LOGGER.warn(MarkerManager.getMarker(getClass().getSimpleName()), "Stack transfer failed in an unexpected way!");
@@ -154,7 +154,7 @@ public class SolidifierContainer extends Container {
 	}
 
 	private boolean mergeInto(SlotZone destinationZone, ItemStack sourceStack, boolean fillFromEnd) {
-		return mergeItemStack(sourceStack, destinationZone.firstIndex, destinationZone.lastIndexPlus1, fillFromEnd);
+		return moveItemStackTo(sourceStack, destinationZone.firstIndex, destinationZone.lastIndexPlus1, fillFromEnd);
 	}
 
 	private enum SlotZone {

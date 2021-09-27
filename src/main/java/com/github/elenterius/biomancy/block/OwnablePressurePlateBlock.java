@@ -38,46 +38,46 @@ public class OwnablePressurePlateBlock extends PressurePlateBlock implements IOw
 
 	public OwnablePressurePlateBlock(Properties propertiesIn) {
 		super(Sensitivity.MOBS, propertiesIn);
-		setDefaultState(getDefaultState().with(USER_SENSITIVITY, UserSensitivity.AUTHORIZED));
+		registerDefaultState(defaultBlockState().setValue(USER_SENSITIVITY, UserSensitivity.AUTHORIZED));
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
-		super.fillStateContainer(builder);
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+		super.createBlockStateDefinition(builder);
 		builder.add(USER_SENSITIVITY);
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()).setStyle(ClientTextUtil.LORE_STYLE));
 		OwnableBlock.addOwnableTooltip(stack, tooltip, flagIn);
 	}
 
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-		super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-		TileEntity tileEntity = worldIn.getTileEntity(pos);
+	public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+		super.setPlacedBy(worldIn, pos, state, placer, stack);
+		TileEntity tileEntity = worldIn.getBlockEntity(pos);
 		if (tileEntity instanceof SimpleOwnableTileEntity) {
 			OwnableBlock.attachDataToOwnableTile(worldIn, (SimpleOwnableTileEntity) tileEntity, placer, stack);
 		}
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
 		return stateIn; //don't check if pressure plate is standing on a block, let it float
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		TileEntity tileEntity = worldIn.getTileEntity(pos);
+	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+		TileEntity tileEntity = worldIn.getBlockEntity(pos);
 		if (tileEntity instanceof SimpleOwnableTileEntity) {
 			if (((SimpleOwnableTileEntity) tileEntity).canPlayerUse(player)) { //only interact with authorized players
-				if (player.isSneaking()) {
-					state = state.with(USER_SENSITIVITY, state.get(USER_SENSITIVITY).switchAuth());
-					worldIn.setBlockState(pos, state, Constants.BlockFlags.BLOCK_UPDATE);
-					return ActionResultType.func_233537_a_(worldIn.isRemote);
+				if (player.isShiftKeyDown()) {
+					state = state.setValue(USER_SENSITIVITY, state.getValue(USER_SENSITIVITY).switchAuth());
+					worldIn.setBlock(pos, state, Constants.BlockFlags.BLOCK_UPDATE);
+					return ActionResultType.sidedSuccess(worldIn.isClientSide);
 				}
 			}
 		}
@@ -85,26 +85,26 @@ public class OwnablePressurePlateBlock extends PressurePlateBlock implements IOw
 	}
 
 	@Override
-	protected int computeRedstoneStrength(World worldIn, BlockPos pos) {
-		TileEntity tileEntity = worldIn.getTileEntity(pos);
+	protected int getSignalStrength(World worldIn, BlockPos pos) {
+		TileEntity tileEntity = worldIn.getBlockEntity(pos);
 		if (tileEntity instanceof SimpleOwnableTileEntity) {
 			SimpleOwnableTileEntity ownableTile = (SimpleOwnableTileEntity) tileEntity;
 
-			AxisAlignedBB axisalignedbb = PRESSURE_AABB.offset(pos);
-			List<? extends Entity> list = worldIn.getEntitiesWithinAABB(LivingEntity.class, axisalignedbb);
+			AxisAlignedBB axisalignedbb = TOUCH_AABB.move(pos);
+			List<? extends Entity> list = worldIn.getEntitiesOfClass(LivingEntity.class, axisalignedbb);
 
 			if (!list.isEmpty()) {
 				BlockState state = worldIn.getBlockState(pos);
-				UserSensitivity sensitivity = state.get(USER_SENSITIVITY);
+				UserSensitivity sensitivity = state.getValue(USER_SENSITIVITY);
 
 				for (Entity entity : list) {
-					if (!entity.doesEntityNotTriggerPressurePlate()) {
+					if (!entity.isIgnoringBlockTriggers()) {
 						if (sensitivity == UserSensitivity.UNAUTHORIZED) {
-							if (!ownableTile.isUserAuthorized(entity.getUniqueID())) {
+							if (!ownableTile.isUserAuthorized(entity.getUUID())) {
 								return 15;
 							}
 						}
-						else if (ownableTile.isUserAuthorized(entity.getUniqueID())) {
+						else if (ownableTile.isUserAuthorized(entity.getUUID())) {
 							return 15;
 						}
 					}
@@ -116,24 +116,24 @@ public class OwnablePressurePlateBlock extends PressurePlateBlock implements IOw
 	}
 
 	@Override
-	public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+	public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
 		OwnableBlock.dropForCreativePlayer(worldIn, this, pos, player);
-		super.onBlockHarvested(worldIn, pos, state, player);
+		super.playerWillDestroy(worldIn, pos, state, player);
 	}
 
 	@Override
-	public float getPlayerRelativeBlockHardness(BlockState state, PlayerEntity player, IBlockReader worldIn, BlockPos pos) {
-		TileEntity tileEntity = worldIn.getTileEntity(pos);
+	public float getDestroyProgress(BlockState state, PlayerEntity player, IBlockReader worldIn, BlockPos pos) {
+		TileEntity tileEntity = worldIn.getBlockEntity(pos);
 		if (tileEntity instanceof SimpleOwnableTileEntity) {
 			if (((SimpleOwnableTileEntity) tileEntity).isUserAuthorized(player)) { //only allow authorized players to mine the block
-				return super.getPlayerRelativeBlockHardness(state, player, worldIn, pos);
+				return super.getDestroyProgress(state, player, worldIn, pos);
 			}
 		}
 		return 0f;
 	}
 
 	@Override
-	public PushReaction getPushReaction(BlockState state) {
+	public PushReaction getPistonPushReaction(BlockState state) {
 		return PushReaction.BLOCK;
 	}
 

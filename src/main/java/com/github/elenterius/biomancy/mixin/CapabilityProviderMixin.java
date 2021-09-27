@@ -18,15 +18,13 @@ public abstract class CapabilityProviderMixin {
 	 */
 	@Inject(method = "areCapsCompatible(Lnet/minecraftforge/common/capabilities/CapabilityProvider;)Z", at = @At("HEAD"), remap = false, cancellable = true)
 	protected void biomancy_onAreCapsCompatible(CapabilityProvider<?> other, CallbackInfoReturnable<Boolean> cir) {
-		Object _this = this;
+		Object thisObj = this;
 		//noinspection ConstantConditions
-		if (_this instanceof ItemStack && other instanceof ItemStack) {
-			if (((ItemStack) _this).getItem() == ((ItemStack) other).getItem()) {
-				LazyOptional<IItemDecayTracker> capA = ((ItemStack) _this).getCapability(ModCapabilities.ITEM_DECAY_CAPABILITY);
-				LazyOptional<IItemDecayTracker> capB = other.getCapability(ModCapabilities.ITEM_DECAY_CAPABILITY);
-				if (capA.isPresent() && capB.isPresent()) {
-					cir.setReturnValue(true);
-				}
+		if (thisObj instanceof ItemStack && other instanceof ItemStack && ((ItemStack) thisObj).getItem() == ((ItemStack) other).getItem()) {
+			LazyOptional<IItemDecayTracker> capA = ((ItemStack) thisObj).getCapability(ModCapabilities.ITEM_DECAY_CAPABILITY);
+			LazyOptional<IItemDecayTracker> capB = other.getCapability(ModCapabilities.ITEM_DECAY_CAPABILITY);
+			if (capA.isPresent() && capB.isPresent()) {
+				cir.setReturnValue(true);
 			}
 		}
 	}

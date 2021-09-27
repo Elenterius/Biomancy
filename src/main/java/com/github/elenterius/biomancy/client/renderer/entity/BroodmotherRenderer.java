@@ -15,20 +15,20 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BroodmotherRenderer extends MobRenderer<CrocospiderEntity, BroodmotherModel<CrocospiderEntity>> {
 	private static final ResourceLocation TEXTURE = new ResourceLocation(BiomancyMod.MOD_ID, "textures/entity/broodmother.png");
 	private static final ResourceLocation OVERLAY_TEXTURE = new ResourceLocation(BiomancyMod.MOD_ID, "textures/entity/broodmother_overlay.png");
-	private static final RenderType EYE_RENDER_TYPE = RenderType.getEyes(OVERLAY_TEXTURE);
+	private static final RenderType EYE_RENDER_TYPE = RenderType.eyes(OVERLAY_TEXTURE);
 
 	public BroodmotherRenderer(EntityRendererManager rendererManager) {
 		super(rendererManager, new BroodmotherModel<>(), 0.8F);
 		addLayer(new AbstractEyesLayer<CrocospiderEntity, BroodmotherModel<CrocospiderEntity>>(this) {
 			@Override
-			public RenderType getRenderType() {
+			public RenderType renderType() {
 				return EYE_RENDER_TYPE;
 			}
 		});
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(CrocospiderEntity entity) {
+	public ResourceLocation getTextureLocation(CrocospiderEntity entity) {
 		return TEXTURE;
 	}
 }

@@ -25,20 +25,18 @@ public abstract class BagItem extends Item implements IOwnableItem {
 	}
 
 	/**
-	 * @return fullness as percentage (0 - 1.0)
+	 * @return fullness of bag as percentage (0 - 1.0)
 	 */
-	public float getFullness(ItemStack stack) {
-		return 0f;
-	}
+	abstract float getFullness(ItemStack stack);
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		if (flagIn.isAdvanced() && worldIn != null) {
 			Optional<UUID> owner = getOwner(stack);
 			owner.ifPresent(uuid -> {
-				PlayerEntity player = worldIn.getPlayerByUuid(uuid);
-				tooltip.add(new StringTextComponent("Owner: ").appendSibling(player != null ? player.getDisplayName() : new StringTextComponent(owner.toString())));
+				PlayerEntity player = worldIn.getPlayerByUUID(uuid);
+				tooltip.add(new StringTextComponent("Owner: ").append(player != null ? player.getDisplayName() : new StringTextComponent(owner.toString())));
 			});
 		}
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).setStyle(ClientTextUtil.LORE_STYLE));
@@ -46,8 +44,8 @@ public abstract class BagItem extends Item implements IOwnableItem {
 	}
 
 	public void onPlayerInteractWithItem(ItemStack stack, LivingEntity entity) {
-		if (hasOwner(stack) && !isOwner(stack, entity.getUniqueID())) {
-			entity.attackEntityFrom(ModDamageSources.SYMBIONT_BITE, 1.5f);
+		if (hasOwner(stack) && !isOwner(stack, entity.getUUID())) {
+			entity.hurt(ModDamageSources.SYMBIONT_BITE, 1.5f);
 		}
 	}
 

@@ -47,7 +47,7 @@ public class DigesterRecipe extends AbstractProductionRecipe implements IFluidRe
 		if (!(other instanceof IFluidResultRecipe)) return false;
 
 		boolean flag = getId().equals(other.getId());
-		if (!relaxed && !getFluidOutput().isFluidEqual(((IFluidResultRecipe) other).getFluidOutput()) && !ItemHandlerHelper.canItemStacksStack(getRecipeOutput(), other.getRecipeOutput())) {
+		if (!relaxed && !getFluidOutput().isFluidEqual(((IFluidResultRecipe) other).getFluidOutput()) && !ItemHandlerHelper.canItemStacksStack(getResultItem(), other.getResultItem())) {
 			return false;
 		}
 		return flag;
@@ -55,11 +55,11 @@ public class DigesterRecipe extends AbstractProductionRecipe implements IFluidRe
 
 	@Override
 	public boolean matches(IInventory inv, World worldIn) {
-		return ingredient.test(inv.getStackInSlot(0));
+		return ingredient.test(inv.getItem(0));
 	}
 
 	@Override
-	public ItemStack getCraftingResult(IInventory inv) {
+	public ItemStack assemble(IInventory inv) {
 		return ItemStack.EMPTY.copy();
 	}
 
@@ -74,12 +74,12 @@ public class DigesterRecipe extends AbstractProductionRecipe implements IFluidRe
 	}
 
 	@Override
-	public boolean canFit(int width, int height) {
+	public boolean canCraftInDimensions(int width, int height) {
 		return true;
 	}
 
 	@Override
-	public ItemStack getRecipeOutput() {
+	public ItemStack getResultItem() {
 		return byproductStack;
 	}
 
@@ -108,22 +108,22 @@ public class DigesterRecipe extends AbstractProductionRecipe implements IFluidRe
 	public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<DigesterRecipe> {
 
 		private static Ingredient readIngredient(JsonObject jsonObj) {
-			if (JSONUtils.isJsonArray(jsonObj, "ingredient")) return Ingredient.deserialize(JSONUtils.getJsonArray(jsonObj, "ingredient"));
-			else return Ingredient.deserialize(JSONUtils.getJsonObject(jsonObj, "ingredient"));
+			if (JSONUtils.isArrayNode(jsonObj, "ingredient")) return Ingredient.fromJson(JSONUtils.getAsJsonArray(jsonObj, "ingredient"));
+			else return Ingredient.fromJson(JSONUtils.getAsJsonObject(jsonObj, "ingredient"));
 		}
 
 		private static FluidStack readFluid(JsonObject jsonObj) {
-			ResourceLocation fluidName = new ResourceLocation(JSONUtils.getString(jsonObj, "fluid"));
+			ResourceLocation fluidName = new ResourceLocation(JSONUtils.getAsString(jsonObj, "fluid"));
 			Fluid fluid = ForgeRegistries.FLUIDS.getValue(fluidName);
 			if (fluid == null) throw new JsonSyntaxException("Fluid cannot be empty");
-			FluidStack stack = new FluidStack(fluid, JSONUtils.getInt(jsonObj, "amount", 1));
+			FluidStack stack = new FluidStack(fluid, JSONUtils.getAsInt(jsonObj, "amount", 1));
 
 			if (jsonObj.has("nbt")) {
 				try {
 					JsonElement element = jsonObj.get("nbt");
 					CompoundNBT nbt;
-					if (element.isJsonObject()) nbt = JsonToNBT.getTagFromJson(BiomancyMod.GSON.toJson(element));
-					else nbt = JsonToNBT.getTagFromJson(JSONUtils.getString(element, "nbt"));
+					if (element.isJsonObject()) nbt = JsonToNBT.parseTag(BiomancyMod.GSON.toJson(element));
+					else nbt = JsonToNBT.parseTag(JSONUtils.convertToString(element, "nbt"));
 					stack.setTag(nbt);
 				} catch (CommandSyntaxException exception) {
 					throw new JsonSyntaxException("Invalid NBT Entry: " + exception);
@@ -134,21 +134,21 @@ public class DigesterRecipe extends AbstractProductionRecipe implements IFluidRe
 		}
 
 		@Override
-		public DigesterRecipe read(ResourceLocation recipeId, JsonObject json) {
+		public DigesterRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
 			Ingredient ingredient = readIngredient(json);
-			FluidStack resultStack = readFluid(JSONUtils.getJsonObject(json, "result"));
-			Byproduct byproduct = json.has("byproduct") ? Byproduct.deserialize(JSONUtils.getJsonObject(json, "byproduct")) : null;
-			int time = JSONUtils.getInt(json, "time", 100);
+			FluidStack resultStack = readFluid(JSONUtils.getAsJsonObject(json, "result"));
+			Byproduct byproduct = json.has("byproduct") ? Byproduct.deserialize(JSONUtils.getAsJsonObject(json, "byproduct")) : null;
+			int time = JSONUtils.getAsInt(json, "time", 100);
 			return new DigesterRecipe(recipeId, resultStack, byproduct, time, ingredient);
 		}
 
 		@Nullable
 		@Override
-		public DigesterRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
+		public DigesterRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer) {
 			//client side
 			FluidStack resultStack = FluidStack.readFromPacket(buffer);
 			int time = buffer.readInt();
-			Ingredient ingredient = Ingredient.read(buffer);
+			Ingredient ingredient = Ingredient.fromNetwork(buffer);
 
 			boolean hasByproduct = buffer.readBoolean();
 			Byproduct byproduct = hasByproduct ? Byproduct.read(buffer) : null;
@@ -157,11 +157,11 @@ public class DigesterRecipe extends AbstractProductionRecipe implements IFluidRe
 		}
 
 		@Override
-		public void write(PacketBuffer buffer, DigesterRecipe recipe) {
+		public void toNetwork(PacketBuffer buffer, DigesterRecipe recipe) {
 			//server side
 			recipe.result.writeToPacket(buffer);
 			buffer.writeInt(recipe.getCraftingTime());
-			recipe.ingredient.write(buffer);
+			recipe.ingredient.toNetwork(buffer);
 
 			boolean hasByproduct = recipe.byproduct != null;
 			buffer.writeBoolean(hasByproduct);

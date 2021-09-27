@@ -50,7 +50,7 @@ public class GulgeInventory implements IInventory, IIntArray {
 	}
 
 	@Override
-	public void markDirty() {
+	public void setChanged() {
 		markDirtyNotifier.invoke();
 	}
 
@@ -59,12 +59,12 @@ public class GulgeInventory implements IInventory, IIntArray {
 	}
 
 	@Override
-	public void openInventory(PlayerEntity player) {
+	public void startOpen(PlayerEntity player) {
 		onOpenInventory.accept(player);
 	}
 
 	@Override
-	public void closeInventory(PlayerEntity player) {
+	public void stopOpen(PlayerEntity player) {
 		closeInventoryNotifier.accept(player);
 	}
 
@@ -87,17 +87,17 @@ public class GulgeInventory implements IInventory, IIntArray {
 	// vanilla container stuff for manipulating the inventory
 
 	@Override
-	public boolean isUsableByPlayer(PlayerEntity player) {
+	public boolean stillValid(PlayerEntity player) {
 		return canPlayerAccessInventory.test(player);
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int index, ItemStack stack) {
+	public boolean canPlaceItem(int index, ItemStack stack) {
 		return itemStackHandler.isItemValid(index, stack);
 	}
 
 	@Override
-	public int getSizeInventory() {
+	public int getContainerSize() {
 		return itemStackHandler.getSlots();
 	}
 
@@ -107,37 +107,37 @@ public class GulgeInventory implements IInventory, IIntArray {
 	}
 
 	@Override
-	public int getInventoryStackLimit() {
+	public int getMaxStackSize() {
 		return itemStackHandler.getMaxAmount();
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int index) {
+	public ItemStack getItem(int index) {
 		return itemStackHandler.getStackInSlot(index);
 	}
 
 	@Override
-	public ItemStack decrStackSize(int index, int count) {
+	public ItemStack removeItem(int index, int count) {
 		return itemStackHandler.extractItem(index, count, false);
 	}
 
 	@Override
-	public ItemStack removeStackFromSlot(int index) {
+	public ItemStack removeItemNoUpdate(int index) {
 		return itemStackHandler.extractItem(index, itemStackHandler.getMaxAmount(), false);
 	}
 
 	@Override
-	public void setInventorySlotContents(int index, ItemStack stack) {
+	public void setItem(int index, ItemStack stack) {
 		itemStackHandler.setStackInSlot(index, stack);
 	}
 
 	@Override
-	public void clear() {
+	public void clearContent() {
 		itemStackHandler.setStackInSlot(0, ItemStack.EMPTY);
 	}
 
 	private void validateTrackingIndex(int index) {
-		if (index < 0 || index >= size()) throw new IndexOutOfBoundsException("Index out of bounds:" + index);
+		if (index < 0 || index >= getCount()) throw new IndexOutOfBoundsException("Index out of bounds:" + index);
 	}
 
 	/**
@@ -167,7 +167,7 @@ public class GulgeInventory implements IInventory, IIntArray {
 	 * @return tracking IntArray Size
 	 */
 	@Override
-	public int size() {
+	public int getCount() {
 		return 1;
 	}
 }

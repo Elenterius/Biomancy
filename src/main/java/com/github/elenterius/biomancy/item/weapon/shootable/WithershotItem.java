@@ -23,18 +23,18 @@ public class WithershotItem extends ProjectileWeaponItem {
 	public static void fireProjectile(ServerWorld worldIn, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, float damage, float inaccuracy) {
 		WitherSkullProjectileEntity projectile = new WitherSkullProjectileEntity(worldIn, shooter);
 		projectile.setDamage(damage);
-		int level = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, projectileWeapon);
+		int level = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PUNCH_ARROWS, projectileWeapon);
 		if (level > 0) {
 			projectile.setKnockback((byte) level);
 		}
 
-		Vector3d direction = shooter.getLookVec();
-		projectile.shoot(direction.getX(), direction.getY(), direction.getZ(), 0.8f, inaccuracy);
+		Vector3d direction = shooter.getLookAngle();
+		projectile.shoot(direction.x(), direction.y(), direction.z(), 0.8f, inaccuracy);
 
-		projectileWeapon.damageItem(1, shooter, (entity) -> entity.sendBreakAnimation(hand));
+		projectileWeapon.hurtAndBreak(1, shooter, (entity) -> entity.broadcastBreakEvent(hand));
 
-		if (worldIn.addEntity(projectile)) {
-			worldIn.playSound(null, shooter.getPosX(), shooter.getPosY(), shooter.getPosZ(), SoundEvents.ENTITY_WITHER_SHOOT, SoundCategory.PLAYERS, 1f, 1.4f);
+		if (worldIn.addFreshEntity(projectile)) {
+			worldIn.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.WITHER_SHOOT, SoundCategory.PLAYERS, 1f, 1.4f);
 		}
 	}
 
@@ -45,12 +45,12 @@ public class WithershotItem extends ProjectileWeaponItem {
 	}
 
 	@Override
-	public Predicate<ItemStack> getInventoryAmmoPredicate() {
+	public Predicate<ItemStack> getAllSupportedProjectiles() {
 		return stack -> stack.getItem() == Items.WITHER_SKELETON_SKULL;
 	}
 
 	@Override
-	public int func_230305_d_() {
+	public int getDefaultProjectileRange() {
 		return 20; //max range
 	}
 

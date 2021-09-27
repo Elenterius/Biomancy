@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 
 public class ThickWoolSheepEntity extends SheepEntity {
 
-	private static final DataParameter<Byte> WOOL_SIZE = EntityDataManager.createKey(ThickWoolSheepEntity.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte> WOOL_SIZE = EntityDataManager.defineId(ThickWoolSheepEntity.class, DataSerializers.BYTE);
 	public static final byte MAX_WOOL_SIZE = 10;
 
 	public ThickWoolSheepEntity(EntityType<? extends SheepEntity> type, World worldIn) {
@@ -28,51 +28,51 @@ public class ThickWoolSheepEntity extends SheepEntity {
 	}
 
 	public static AttributeModifierMap.MutableAttribute createAttributes() {
-		return MobEntity.func_233666_p_()
-				.createMutableAttribute(Attributes.MAX_HEALTH, 8d)
-				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.23d);
+		return MobEntity.createMobAttributes()
+				.add(Attributes.MAX_HEALTH, 8d)
+				.add(Attributes.MOVEMENT_SPEED, 0.23d);
 	}
 
 	@Override
-	protected void registerData() {
-		super.registerData();
-		dataManager.register(WOOL_SIZE, (byte) 1);
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(WOOL_SIZE, (byte) 1);
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT compound) {
-		super.writeAdditional(compound);
+	public void addAdditionalSaveData(CompoundNBT compound) {
+		super.addAdditionalSaveData(compound);
 		compound.putByte("WoolSize", (byte) getWoolSize());
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT compound) {
-		super.readAdditional(compound);
+	public void readAdditionalSaveData(CompoundNBT compound) {
+		super.readAdditionalSaveData(compound);
 		setWoolSize(compound.getByte("WoolSize"));
 	}
 
 	@Override
-	public EntitySize getSize(Pose poseIn) {
-		return super.getSize(poseIn).scale(1f + ((float) getWoolSize() / MAX_WOOL_SIZE) * 0.5f, 1f);
+	public EntitySize getDimensions(Pose poseIn) {
+		return super.getDimensions(poseIn).scale(1f + ((float) getWoolSize() / MAX_WOOL_SIZE) * 0.5f, 1f);
 	}
 
 	@Nullable
 	@Override
-	public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
-		ILivingEntityData entityData = super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
-		setWoolSize(!getSheared() ? (byte) 1 : (byte) 0);
+	public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+		ILivingEntityData entityData = super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+		setWoolSize(!isSheared() ? (byte) 1 : (byte) 0);
 		return entityData;
 	}
 
 	public int getWoolSize() {
-		return dataManager.get(WOOL_SIZE);
+		return entityData.get(WOOL_SIZE);
 	}
 
 	protected void setWoolSize(byte size) {
 		size = (byte) MathHelper.clamp(size, 0, Byte.MAX_VALUE);
-		dataManager.set(WOOL_SIZE, size);
-		recenterBoundingBox();
-		recalculateSize();
+		entityData.set(WOOL_SIZE, size);
+		reapplyPosition();
+		refreshDimensions();
 		double pct = (double) size / MAX_WOOL_SIZE;
 		getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.23d - 0.16d * pct);
 		getAttribute(ForgeMod.ENTITY_GRAVITY.get()).setBaseValue(0.08d + 0.16d * pct);
@@ -81,29 +81,29 @@ public class ThickWoolSheepEntity extends SheepEntity {
 	}
 
 	@Override
-	public void recalculateSize() {
-		double d0 = getPosX();
-		double d1 = getPosY();
-		double d2 = getPosZ();
-		super.recalculateSize();
-		setPosition(d0, d1, d2);
+	public void refreshDimensions() {
+		double d0 = getX();
+		double d1 = getY();
+		double d2 = getZ();
+		super.refreshDimensions();
+		setPos(d0, d1, d2);
 	}
 
 	@Override
-	public void notifyDataManagerChange(DataParameter<?> key) {
+	public void onSyncedDataUpdated(DataParameter<?> key) {
 		if (WOOL_SIZE.equals(key)) {
-			recalculateSize();
-			rotationYaw = rotationYawHead;
-			renderYawOffset = rotationYawHead;
+			refreshDimensions();
+			yRot = yHeadRot;
+			yBodyRot = yHeadRot;
 		}
-		super.notifyDataManagerChange(key);
+		super.onSyncedDataUpdated(key);
 	}
 
 	@Override
-	public void eatGrassBonus() {
-		if (isChild()) {
-			if (getSheared()) setSheared(false);
-			else addGrowth(60);
+	public void ate() {
+		if (isBaby()) {
+			if (isSheared()) setSheared(false);
+			else ageUp(60);
 		}
 		else {
 			setSheared(false);
@@ -127,7 +127,7 @@ public class ThickWoolSheepEntity extends SheepEntity {
 	}
 
 	@Override
-	public ThickWoolSheepEntity createChild(ServerWorld world, AgeableEntity mate) {
+	public ThickWoolSheepEntity getBreedOffspring(ServerWorld world, AgeableEntity mate) {
 		return ModEntityTypes.THICK_WOOL_SHEEP.get().create(world);
 	}
 

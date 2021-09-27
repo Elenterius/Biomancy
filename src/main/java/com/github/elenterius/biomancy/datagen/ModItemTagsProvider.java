@@ -46,73 +46,73 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 	}
 
 	@Override
-	protected void registerTags() {
+	protected void addTags() {
 		LOGGER.info(logMarker, "registering item tags...");
 
-		Builder<Item> sugars = getOrCreateBuilder(ModTags.Items.SUGARS)
+		Builder<Item> sugars = tag(ModTags.Items.SUGARS)
 				.add(SUGAR, COOKIE, CAKE, HONEYCOMB, HONEY_BLOCK, HONEYCOMB_BLOCK, HONEY_BOTTLE, SWEET_BERRIES, COCOA_BEANS);
 		addOptionalItemsTo(sugars, "create:sweet_roll", "create:chocolate_glazed_berries", "create:honeyed_apple", "create:bar_of_chocolate", "createaddition:chocolate_cake");
 
-		getOrCreateBuilder(ModTags.Items.POOR_BIOMASS)
+		tag(ModTags.Items.POOR_BIOMASS)
 				.addTag(ItemTags.FLOWERS).addTag(Tags.Items.SEEDS).addTag(ItemTags.LEAVES)
 				.add(SWEET_BERRIES, SUGAR_CANE, KELP, DRIED_KELP, GRASS, SEAGRASS, VINE, FERN, BAMBOO, ModItems.SKIN_CHUNK.get())
 				.addOptional(new ResourceLocation("rats:contaminated_food"));
 
-		Builder<Item> avgBiomass = getOrCreateBuilder(ModTags.Items.AVERAGE_BIOMASS)
+		Builder<Item> avgBiomass = tag(ModTags.Items.AVERAGE_BIOMASS)
 				.addTag(ItemTags.SAPLINGS).addTag(Tags.Items.CROPS).addTag(Tags.Items.MUSHROOMS)
 				.add(COOKIE, CACTUS, APPLE, CHORUS_FRUIT, MELON_SLICE, SPIDER_EYE, WARPED_FUNGUS, ModItems.MILK_GEL.get(),
 						NETHER_SPROUTS, WEEPING_VINES, TWISTING_VINES, LARGE_FERN, TALL_GRASS, WARPED_ROOTS, CRIMSON_ROOTS, CRIMSON_FUNGUS);
 		addOptionalItemsTo(avgBiomass, "createfa:cheese", "createfa:mixed_egg", "createfa:fries", "rats:cheese", "rats:string_cheese", "rats:potato_kinishes");
 
-		Builder<Item> rawMeats = getOrCreateBuilder(ModTags.Items.RAW_MEATS)
+		Builder<Item> rawMeats = tag(ModTags.Items.RAW_MEATS)
 				.add(BEEF, PORKCHOP, CHICKEN, COD, SALMON, RABBIT, MUTTON, TROPICAL_FISH, PUFFERFISH, ModItems.FLESH_LUMP.get(),
 						ModItems.OCULUS.get(), ModItems.OCULUS_KEY.get(), ModItems.STOMACH.get(), ModItems.ARTIFICIAL_STOMACH.get());
 		addOptionalItemsTo(rawMeats, "createfa:ground_chicken", "createfa:ground_beef", "circus:clown", "rats:raw_rat", "evilcraft:flesh_humanoid", "evilcraft:flesh_werewolf");
 
-		Builder<Item> goodBiomass = getOrCreateBuilder(ModTags.Items.GOOD_BIOMASS)
+		Builder<Item> goodBiomass = tag(ModTags.Items.GOOD_BIOMASS)
 				.add(BREAD, MUSHROOM_STEM, SUSPICIOUS_STEW, COCOA_BEANS, BAKED_POTATO, HONEYCOMB, MELON, PUMPKIN, DRIED_KELP_BLOCK, SEA_PICKLE, LILY_PAD,
 						CARVED_PUMPKIN, WARPED_WART_BLOCK, NETHER_WART_BLOCK, RED_MUSHROOM_BLOCK, BROWN_MUSHROOM_BLOCK, SHROOMLIGHT, MUSHROOM_STEM);
 		addOptionalItemsTo(goodBiomass, "create:bar_of_chocolate", "rats:blue_cheese");
 		addOptionalTagsTo(goodBiomass, "forge:bread");
 
-		Builder<Item> cookedMeats = getOrCreateBuilder(ModTags.Items.COOKED_MEATS)
+		Builder<Item> cookedMeats = tag(ModTags.Items.COOKED_MEATS)
 				.add(COOKED_BEEF, COOKED_PORKCHOP, COOKED_CHICKEN, COOKED_SALMON, COOKED_MUTTON, COOKED_COD, COOKED_RABBIT);
 		addOptionalItemsTo(cookedMeats, "rats:cooked_rat", "createfa:schnitzel", "createfa:meatballs", "createfa:chicken_nuggets");
 
-		Builder<Item> superbBiomass = getOrCreateBuilder(ModTags.Items.SUPERB_BIOMASS)
+		Builder<Item> superbBiomass = tag(ModTags.Items.SUPERB_BIOMASS)
 				.add(CAKE, PUMPKIN_PIE, RABBIT_STEW, BEETROOT_SOUP, POISONOUS_POTATO, HAY_BLOCK);
 		addOptionalItemsTo(superbBiomass, "create:sweet_roll", "create:chocolate_glazed_berries", "create:honeyed_apple", "createfa:cheeseburger", "createfa:hamburger",
 				"rats:assorted_vegetables", "rats:rat_burger", "rats:potato_pancake", "rats:confit_byaldi", "createaddition:chocolate_cake");
 
-		Builder<Item> builder = getOrCreateBuilder(ModTags.Items.BIOMASS);
+		Builder<Item> builder = tag(ModTags.Items.BIOMASS);
 		builder.addOptionalTag(ModTags.Items.POOR_BIOMASS.getName());
 		builder.addOptionalTag(ModTags.Items.AVERAGE_BIOMASS.getName());
 		builder.addOptionalTag(ModTags.Items.GOOD_BIOMASS.getName());
 		builder.addOptionalTag(ModTags.Items.SUPERB_BIOMASS.getName());
 
-		getOrCreateBuilder(ModTags.Items.STOMACHS)
+		tag(ModTags.Items.STOMACHS)
 				.add(ModItems.ARTIFICIAL_STOMACH.get(), ModItems.STOMACH.get());
 
 		LOGGER.info(logMarker, "registering secretion item tags...");
-		getOrCreateBuilder(ModTags.Items.OXIDES)
+		tag(ModTags.Items.OXIDES)
 				.add(NETHERITE_SCRAP, TURTLE_EGG, BONE_MEAL)
 				.addTag(Tags.Items.INGOTS_IRON).addTag(Tags.Items.NUGGETS_IRON)
 				.addTag(Tags.Items.INGOTS_GOLD).addTag(Tags.Items.NUGGETS_GOLD)
 				.addTag(Tags.Items.INGOTS_NETHERITE)
 				.addTag(Tags.Items.EGGS).addTag(Tags.Items.BONES);
 
-		getOrCreateBuilder(ModTags.Items.SILICATES)
+		tag(ModTags.Items.SILICATES)
 				.add(ANDESITE, DIORITE, GRANITE, REDSTONE, KELP, DRIED_KELP, NAUTILUS_SHELL, SHULKER_SHELL, GLOWSTONE_DUST)
 				.addTag(Tags.Items.GEMS_EMERALD).addTag(Tags.Items.GEMS_LAPIS).addTag(Tags.Items.GEMS_QUARTZ).addTag(Tags.Items.GEMS_PRISMARINE)
 				.addOptional(new ResourceLocation("minecraft", "amethyst_shard"));
 
-		getOrCreateBuilder(ModTags.Items.KERATINS)
+		tag(ModTags.Items.KERATINS)
 				.add(SCUTE, LEAD, PHANTOM_MEMBRANE, RABBIT_HIDE, PRISMARINE_SHARD)
 				.addTag(Tags.Items.STRING).addTag(ItemTags.WOOL).addTag(ItemTags.CARPETS)
 				.addTag(Tags.Items.FEATHERS).addTag(Tags.Items.LEATHER)
 				.addOptional(new ResourceLocation("minecraft", "goat_horn"));
 
-		getOrCreateBuilder(ModTags.Items.HORMONES)
+		tag(ModTags.Items.HORMONES)
 				.add(INK_SAC, RABBIT_FOOT, SPIDER_EYE, GHAST_TEAR, FERMENTED_SPIDER_EYE, HONEYCOMB, SLIME_BALL)
 				.addOptional(new ResourceLocation("minecraft", "glow_ink_sac"));
 	}

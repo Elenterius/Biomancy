@@ -30,7 +30,7 @@ public class ShapelessNbtRecipeBuilder {
 	private final CompoundNBT resultNbt;
 	private final int count;
 	private final List<Ingredient> ingredients = Lists.newArrayList();
-	private final Advancement.Builder advancementBuilder = Advancement.Builder.builder();
+	private final Advancement.Builder advancementBuilder = Advancement.Builder.advancement();
 	private String group;
 
 	public ShapelessNbtRecipeBuilder(IItemProvider resultIn, CompoundNBT resultNbtIn, int countIn) {
@@ -56,7 +56,7 @@ public class ShapelessNbtRecipeBuilder {
 	}
 
 	public ShapelessNbtRecipeBuilder addIngredient(ITag<Item> tagIn) {
-		return addIngredient(Ingredient.fromTag(tagIn));
+		return addIngredient(Ingredient.of(tagIn));
 	}
 
 	public ShapelessNbtRecipeBuilder addIngredient(IItemProvider itemIn) {
@@ -65,7 +65,7 @@ public class ShapelessNbtRecipeBuilder {
 
 	public ShapelessNbtRecipeBuilder addIngredient(IItemProvider itemIn, int quantity) {
 		for (int i = 0; i < quantity; ++i) {
-			addIngredient(Ingredient.fromItems(itemIn));
+			addIngredient(Ingredient.of(itemIn));
 		}
 		return this;
 	}
@@ -90,7 +90,7 @@ public class ShapelessNbtRecipeBuilder {
 	}
 
 	public ShapelessNbtRecipeBuilder addCriterion(String name, ICriterionInstance criterionIn) {
-		advancementBuilder.withCriterion(name, criterionIn);
+		advancementBuilder.addCriterion(name, criterionIn);
 		return this;
 	}
 
@@ -115,8 +115,8 @@ public class ShapelessNbtRecipeBuilder {
 
 	public void build(Consumer<IFinishedRecipe> consumerIn, ResourceLocation id) {
 		validate(id);
-		advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.create(id)).withRewards(AdvancementRewards.Builder.recipe(id)).withRequirementsStrategy(IRequirementsStrategy.OR);
-		consumerIn.accept(new ShapelessNbtRecipeBuilder.Result(id, result, resultNbt, count, group == null ? "" : group, ingredients, advancementBuilder, new ResourceLocation(id.getNamespace(), "recipes/" + result.getGroup().getPath() + "/" + id.getPath())));
+		advancementBuilder.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id)).rewards(AdvancementRewards.Builder.recipe(id)).requirements(IRequirementsStrategy.OR);
+		consumerIn.accept(new ShapelessNbtRecipeBuilder.Result(id, result, resultNbt, count, group == null ? "" : group, ingredients, advancementBuilder, new ResourceLocation(id.getNamespace(), "recipes/" + result.getItemCategory().getRecipeFolderName() + "/" + id.getPath())));
 	}
 
 	private void validate(ResourceLocation id) {
@@ -146,14 +146,14 @@ public class ShapelessNbtRecipeBuilder {
 			advancementId = advancementIdIn;
 		}
 
-		public void serialize(JsonObject json) {
+		public void serializeRecipeData(JsonObject json) {
 			if (!group.isEmpty()) {
 				json.addProperty("group", group);
 			}
 
 			JsonArray jsonArray = new JsonArray();
 			for (Ingredient ingredient : ingredients) {
-				jsonArray.add(ingredient.serialize());
+				jsonArray.add(ingredient.toJson());
 			}
 			json.add("ingredients", jsonArray);
 
@@ -168,21 +168,21 @@ public class ShapelessNbtRecipeBuilder {
 			json.add("result", jsonObject);
 		}
 
-		public IRecipeSerializer<?> getSerializer() {
-			return IRecipeSerializer.CRAFTING_SHAPELESS;
+		public IRecipeSerializer<?> getType() {
+			return IRecipeSerializer.SHAPELESS_RECIPE;
 		}
 
-		public ResourceLocation getID() {
+		public ResourceLocation getId() {
 			return id;
 		}
 
 		@Nullable
-		public JsonObject getAdvancementJson() {
-			return advancementBuilder.serialize();
+		public JsonObject serializeAdvancement() {
+			return advancementBuilder.serializeToJson();
 		}
 
 		@Nullable
-		public ResourceLocation getAdvancementID() {
+		public ResourceLocation getAdvancementId() {
 			return advancementId;
 		}
 	}

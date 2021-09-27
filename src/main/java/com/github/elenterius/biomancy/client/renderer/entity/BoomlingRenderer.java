@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 public class BoomlingRenderer extends MobRenderer<BoomlingEntity, BoomlingModel<BoomlingEntity>> {
 	public static final ResourceLocation TEXTURE = new ResourceLocation(BiomancyMod.MOD_ID, "textures/entity/boomling.png");
 	public static final ResourceLocation OVERLAY_TEXTURE = new ResourceLocation(BiomancyMod.MOD_ID, "textures/entity/boomling_overlay.png");
-	public static final RenderType RENDER_TYPE = RenderType.getEyes(OVERLAY_TEXTURE);
+	public static final RenderType RENDER_TYPE = RenderType.eyes(OVERLAY_TEXTURE);
 
 	public BoomlingRenderer(EntityRendererManager renderManagerIn) {
 		super(renderManagerIn, new BoomlingModel<>(), 0.2F);
@@ -34,13 +34,13 @@ public class BoomlingRenderer extends MobRenderer<BoomlingEntity, BoomlingModel<
 				float r = (rgb >> 16 & 255) / 255f;
 				float g = (rgb >> 8 & 255) / 255f;
 				float b = (rgb & 255) / 255f;
-				getEntityModel().render(matrixStackIn, ivertexbuilder, 0xf00000, OverlayTexture.NO_OVERLAY, r, g, b, 1f);
+				getParentModel().renderToBuffer(matrixStackIn, ivertexbuilder, 0xf00000, OverlayTexture.NO_OVERLAY, r, g, b, 1f);
 			}
 		});
 	}
 
 	@Override
-	protected void preRenderCallback(BoomlingEntity entity, MatrixStack matrixStackIn, float partialTicks) {
+	protected void scale(BoomlingEntity entity, MatrixStack matrixStackIn, float partialTicks) {
 		float v = entity.getFuseFlashIntensity(partialTicks);
 		float w = 1f + MathHelper.sin(v * 100f) * v * 0.01f;
 		v = MathHelper.clamp(v, 0f, 1f);
@@ -50,13 +50,13 @@ public class BoomlingRenderer extends MobRenderer<BoomlingEntity, BoomlingModel<
 	}
 
 	@Override
-	protected float getDeathMaxRotation(BoomlingEntity entity) {
+	protected float getFlipDegrees(BoomlingEntity entity) {
 		return 180f;
 	}
 
 	@Override
 	@Nonnull
-	public ResourceLocation getEntityTexture(BoomlingEntity entity) {
+	public ResourceLocation getTextureLocation(BoomlingEntity entity) {
 		return TEXTURE;
 	}
 }

@@ -34,12 +34,12 @@ public class BiomancyPlugin implements IModPlugin {
 
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
-		ClientWorld world = Objects.requireNonNull(Minecraft.getInstance().world);
-		registration.addRecipes(ImmutableSet.copyOf(world.getRecipeManager().getRecipesForType(ModRecipes.CHEWER_RECIPE_TYPE)), ChewerRecipeCategory.ID);
-		registration.addRecipes(ImmutableSet.copyOf(world.getRecipeManager().getRecipesForType(ModRecipes.DIGESTER_RECIPE_TYPE)), DigesterRecipeCategory.ID);
-		registration.addRecipes(ImmutableSet.copyOf(world.getRecipeManager().getRecipesForType(ModRecipes.DECOMPOSING_RECIPE_TYPE)), DecomposerRecipeCategory.ID);
-		registration.addRecipes(ImmutableSet.copyOf(world.getRecipeManager().getRecipesForType(ModRecipes.EVOLUTION_POOL_RECIPE_TYPE)), SmallEvolutionPoolRecipeCategory.ID);
-		registration.addRecipes(ImmutableSet.copyOf(world.getRecipeManager().getRecipesForType(ModRecipes.SOLIDIFIER_RECIPE_TYPE)), SolidifierRecipeCategory.ID);
+		ClientWorld world = Objects.requireNonNull(Minecraft.getInstance().level);
+		registration.addRecipes(ImmutableSet.copyOf(world.getRecipeManager().getAllRecipesFor(ModRecipes.CHEWER_RECIPE_TYPE)), ChewerRecipeCategory.ID);
+		registration.addRecipes(ImmutableSet.copyOf(world.getRecipeManager().getAllRecipesFor(ModRecipes.DIGESTER_RECIPE_TYPE)), DigesterRecipeCategory.ID);
+		registration.addRecipes(ImmutableSet.copyOf(world.getRecipeManager().getAllRecipesFor(ModRecipes.DECOMPOSING_RECIPE_TYPE)), DecomposerRecipeCategory.ID);
+		registration.addRecipes(ImmutableSet.copyOf(world.getRecipeManager().getAllRecipesFor(ModRecipes.EVOLUTION_POOL_RECIPE_TYPE)), SmallEvolutionPoolRecipeCategory.ID);
+		registration.addRecipes(ImmutableSet.copyOf(world.getRecipeManager().getAllRecipesFor(ModRecipes.SOLIDIFIER_RECIPE_TYPE)), SolidifierRecipeCategory.ID);
 	}
 
 }

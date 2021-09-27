@@ -9,7 +9,7 @@ import java.util.Random;
 @Mixin(Entity.class)
 public interface EntityAccessor {
 
-	@Accessor("rand")
+	@Accessor("random")
 	Random biomancy_rand();
 
 }

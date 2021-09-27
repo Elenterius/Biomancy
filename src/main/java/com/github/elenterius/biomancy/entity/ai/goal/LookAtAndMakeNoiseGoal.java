@@ -23,14 +23,14 @@ public class LookAtAndMakeNoiseGoal extends LookAtGoal {
 	@Override
 	public void tick() {
 		super.tick();
-		if (entity.livingSoundTime >= -1) {
-			entity.livingSoundTime = -40; //reset sound timer
+		if (mob.ambientSoundTime >= -1) {
+			mob.ambientSoundTime = -40; //reset sound timer
 		}
 
-		float multiplier = (MathHelper.sin(0.1501f * entity.ticksExisted) * 0.5f + 0.5f); // from 0 to 1
-		float angle = multiplier * (3.5f + MathHelper.abs(entity.rotationPitch) * 0.8f);
-		if (entity.livingSoundTime > -20 && angle > 10f) {
-			entity.livingSoundTime = -40; //reset sound timer
+		float multiplier = (MathHelper.sin(0.1501f * mob.tickCount) * 0.5f + 0.5f); // from 0 to 1
+		float angle = multiplier * (3.5f + MathHelper.abs(mob.xRot) * 0.8f);
+		if (mob.ambientSoundTime > -20 && angle > 10f) {
+			mob.ambientSoundTime = -40; //reset sound timer
 			swarmEntity.playSound(soundEvent, multiplier);
 		}
 	}

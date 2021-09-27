@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-import static net.minecraft.item.ItemStack.DECIMALFORMAT;
+import static net.minecraft.item.ItemStack.ATTRIBUTE_MODIFIER_FORMAT;
 
 public class KhopeshItem extends AxeItem {
 
@@ -35,52 +35,52 @@ public class KhopeshItem extends AxeItem {
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).setStyle(ClientTextUtil.LORE_STYLE));
 
 		if (stack.isEnchanted()) {
 			if (ClientTextUtil.isToolTipVisible(stack, ItemStack.TooltipDisplayFlags.ENCHANTMENTS)) {
-				stack.func_242395_a(ItemStack.TooltipDisplayFlags.ENCHANTMENTS); //hide enchantment tooltip
+				stack.hideTooltipPart(ItemStack.TooltipDisplayFlags.ENCHANTMENTS); //hide enchantment tooltip
 			}
 			tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
-			ItemStack.addEnchantmentTooltips(tooltip, stack.getEnchantmentTagList()); //add enchantments before custom modifiers
+			ItemStack.appendEnchantmentNames(tooltip, stack.getEnchantmentTags()); //add enchantments before custom modifiers
 		}
 
 		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
-		tooltip.add(TextUtil.getTranslationText("tooltip", "riding_bonus").setStyle(Style.EMPTY.applyFormatting(TextFormatting.GRAY)));
-		tooltip.add((new StringTextComponent(" ")).appendSibling(new TranslationTextComponent("attribute.modifier.plus." + ATTACK_DAMAGE_RIDING_MODIFIER.getOperation().getId(), DECIMALFORMAT.format(ATTACK_DAMAGE_RIDING_MODIFIER.getAmount()), new TranslationTextComponent("attribute.name.generic.attack_damage"))).mergeStyle(TextFormatting.BLUE));
-		tooltip.add((new StringTextComponent(" ")).appendSibling(new TranslationTextComponent("attribute.modifier.plus." + ATTACK_DIST_RIDING_MODIFIER.getOperation().getId(), DECIMALFORMAT.format(ATTACK_DIST_RIDING_MODIFIER.getAmount()), new TranslationTextComponent("attribute.generic.attack_distance"))).mergeStyle(TextFormatting.BLUE));
+		tooltip.add(TextUtil.getTranslationText("tooltip", "riding_bonus").setStyle(Style.EMPTY.applyFormat(TextFormatting.GRAY)));
+		tooltip.add((new StringTextComponent(" ")).append(new TranslationTextComponent("attribute.modifier.plus." + ATTACK_DAMAGE_RIDING_MODIFIER.getOperation().toValue(), ATTRIBUTE_MODIFIER_FORMAT.format(ATTACK_DAMAGE_RIDING_MODIFIER.getAmount()), new TranslationTextComponent("attribute.name.generic.attack_damage"))).withStyle(TextFormatting.BLUE));
+		tooltip.add((new StringTextComponent(" ")).append(new TranslationTextComponent("attribute.modifier.plus." + ATTACK_DIST_RIDING_MODIFIER.getOperation().toValue(), ATTRIBUTE_MODIFIER_FORMAT.format(ATTACK_DIST_RIDING_MODIFIER.getAmount()), new TranslationTextComponent("attribute.generic.attack_distance"))).withStyle(TextFormatting.BLUE));
 	}
 
 	@Override
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
-		return state.matchesBlock(Blocks.COBWEB) ? 25f : super.getDestroySpeed(stack, state);
+		return state.is(Blocks.COBWEB) ? 25f : super.getDestroySpeed(stack, state);
 	}
 
 	@Override
-	public boolean canHarvestBlock(BlockState blockIn) {
-		return blockIn.matchesBlock(Blocks.COBWEB) || super.canHarvestBlock(blockIn);
+	public boolean isCorrectToolForDrops(BlockState blockIn) {
+		return blockIn.is(Blocks.COBWEB) || super.isCorrectToolForDrops(blockIn);
 	}
 
 	public static void removeSpecialAttributeModifiers(LivingEntity livingEntity) {
-		ModifiableAttributeInstance modifiableAttributeInstance = livingEntity.getAttributeManager().createInstanceIfAbsent(Attributes.ATTACK_DAMAGE);
+		ModifiableAttributeInstance modifiableAttributeInstance = livingEntity.getAttributes().getInstance(Attributes.ATTACK_DAMAGE);
 		if (modifiableAttributeInstance != null && modifiableAttributeInstance.hasModifier(ATTACK_DAMAGE_RIDING_MODIFIER)) {
 			modifiableAttributeInstance.removeModifier(ATTACK_DAMAGE_RIDING_MODIFIER);
 		}
-		modifiableAttributeInstance = livingEntity.getAttributeManager().createInstanceIfAbsent(ModAttributes.getAttackDistanceModifier());
+		modifiableAttributeInstance = livingEntity.getAttributes().getInstance(ModAttributes.getAttackDistanceModifier());
 		if (modifiableAttributeInstance != null && modifiableAttributeInstance.hasModifier(ATTACK_DIST_RIDING_MODIFIER)) {
 			modifiableAttributeInstance.removeModifier(ATTACK_DIST_RIDING_MODIFIER);
 		}
 	}
 
 	public static void applySpecialAttributeModifiers(LivingEntity livingEntity) {
-		ModifiableAttributeInstance modifiableAttributeInstance = livingEntity.getAttributeManager().createInstanceIfAbsent(Attributes.ATTACK_DAMAGE);
+		ModifiableAttributeInstance modifiableAttributeInstance = livingEntity.getAttributes().getInstance(Attributes.ATTACK_DAMAGE);
 		if (modifiableAttributeInstance != null && !modifiableAttributeInstance.hasModifier(ATTACK_DAMAGE_RIDING_MODIFIER)) {
-			modifiableAttributeInstance.applyNonPersistentModifier(ATTACK_DAMAGE_RIDING_MODIFIER);
+			modifiableAttributeInstance.addTransientModifier(ATTACK_DAMAGE_RIDING_MODIFIER);
 		}
-		modifiableAttributeInstance = livingEntity.getAttributeManager().createInstanceIfAbsent(ModAttributes.getAttackDistanceModifier());
+		modifiableAttributeInstance = livingEntity.getAttributes().getInstance(ModAttributes.getAttackDistanceModifier());
 		if (modifiableAttributeInstance != null && !modifiableAttributeInstance.hasModifier(ATTACK_DIST_RIDING_MODIFIER)) {
-			modifiableAttributeInstance.applyNonPersistentModifier(ATTACK_DIST_RIDING_MODIFIER);
+			modifiableAttributeInstance.addTransientModifier(ATTACK_DIST_RIDING_MODIFIER);
 		}
 	}
 }

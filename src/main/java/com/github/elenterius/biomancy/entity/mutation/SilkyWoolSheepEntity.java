@@ -34,7 +34,7 @@ public class SilkyWoolSheepEntity extends SheepEntity {
 	}
 
 	public static AttributeModifierMap.MutableAttribute createAttributes() {
-		return MobEntity.func_233666_p_().createMutableAttribute(Attributes.MAX_HEALTH, 8d).createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.23d);
+		return MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 8d).add(Attributes.MOVEMENT_SPEED, 0.23d);
 	}
 
 //	@Override
@@ -48,9 +48,9 @@ public class SilkyWoolSheepEntity extends SheepEntity {
 //	}
 
 	@Override
-	public ResourceLocation getLootTable() {
-		if (getSheared()) {
-			return getType().getLootTable();
+	public ResourceLocation getDefaultLootTable() {
+		if (isSheared()) {
+			return getType().getDefaultLootTable();
 		}
 		else {
 			return SILKY_WOOL_LOOT_TABLE;
@@ -60,10 +60,10 @@ public class SilkyWoolSheepEntity extends SheepEntity {
 	@Nonnull
 	@Override
 	public List<ItemStack> onSheared(@Nullable PlayerEntity player, @Nonnull ItemStack item, World world, BlockPos pos, int fortune) {
-		world.playMovingSound(null, this, SoundEvents.ENTITY_SHEEP_SHEAR, player == null ? SoundCategory.BLOCKS : SoundCategory.PLAYERS, 1f, 1f);
-		if (!world.isRemote) {
+		world.playSound(null, this, SoundEvents.SHEEP_SHEAR, player == null ? SoundCategory.BLOCKS : SoundCategory.PLAYERS, 1f, 1f);
+		if (!world.isClientSide) {
 			setSheared(true);
-			int n = 1 + rand.nextInt(3);
+			int n = 1 + random.nextInt(3);
 			List<ItemStack> items = new ArrayList<>();
 			for (int i = 0; i < n; i++) {
 				items.add(new ItemStack(Items.STRING));
@@ -75,19 +75,19 @@ public class SilkyWoolSheepEntity extends SheepEntity {
 
 	@Override
 	public void shear(SoundCategory category) {
-		world.playMovingSound(null, this, SoundEvents.ENTITY_SHEEP_SHEAR, category, 1f, 1f);
+		level.playSound(null, this, SoundEvents.SHEEP_SHEAR, category, 1f, 1f);
 		setSheared(true);
-		int n = 1 + rand.nextInt(3);
+		int n = 1 + random.nextInt(3);
 		for (int i = 0; i < n; i++) {
-			ItemEntity itemEntity = entityDropItem(Items.STRING, 1);
+			ItemEntity itemEntity = spawnAtLocation(Items.STRING, 1);
 			if (itemEntity != null) {
-				itemEntity.setMotion(itemEntity.getMotion().add((rand.nextFloat() - rand.nextFloat()) * 0.1f, rand.nextFloat() * 0.05f, (rand.nextFloat() - rand.nextFloat()) * 0.1f));
+				itemEntity.setDeltaMovement(itemEntity.getDeltaMovement().add((random.nextFloat() - random.nextFloat()) * 0.1f, random.nextFloat() * 0.05f, (random.nextFloat() - random.nextFloat()) * 0.1f));
 			}
 		}
 	}
 
 	@Override
-	public SilkyWoolSheepEntity createChild(ServerWorld world, AgeableEntity mate) {
+	public SilkyWoolSheepEntity getBreedOffspring(ServerWorld world, AgeableEntity mate) {
 		return ModEntityTypes.SILKY_WOOL_SHEEP.get().create(world);
 	}
 

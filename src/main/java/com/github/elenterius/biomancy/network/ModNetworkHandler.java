@@ -14,7 +14,7 @@ public final class ModNetworkHandler {
 	private ModNetworkHandler() {}
 
 	public static void sendKeyBindPressToServer(EquipmentSlotType slotType, byte flag) {
-		SIMPLE_NETWORK_CHANNEL.sendToServer(new KeyBindPacket(slotType.getSlotIndex(), flag));
+		SIMPLE_NETWORK_CHANNEL.sendToServer(new KeyBindPacket(slotType.getFilterFlag(), flag));
 	}
 
 	public static void sendKeyBindPressToServer(int slotIndex, byte flag) {

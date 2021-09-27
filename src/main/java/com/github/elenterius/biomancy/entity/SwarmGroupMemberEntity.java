@@ -45,15 +45,16 @@ public abstract class SwarmGroupMemberEntity extends SpiderEntity implements ISw
 	}
 
 	@Nullable
-	public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+	public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
 		ModifiableAttributeInstance attribute = getAttribute(Attributes.FOLLOW_RANGE);
 		if (attribute != null) {
-			attribute.applyPersistentModifier(new AttributeModifier("Random spawn bonus", rand.nextGaussian() * 0.05D, AttributeModifier.Operation.MULTIPLY_BASE));
+			attribute.addPermanentModifier(new AttributeModifier("Random spawn bonus", random.nextGaussian() * 0.05D, AttributeModifier.Operation.MULTIPLY_BASE));
 		}
 
 		if (spawnDataIn == null) {
 			spawnDataIn = new SwarmGroupData(this);
-		} else {
+		}
+		else {
 			joinGroup((SwarmGroupMemberEntity) ((SwarmGroupData) spawnDataIn).leader);
 		}
 
@@ -66,7 +67,7 @@ public abstract class SwarmGroupMemberEntity extends SpiderEntity implements ISw
 	}
 
 	@Override
-	public int getMaxSpawnedInChunk() {
+	public int getMaxSpawnClusterSize() {
 		return getMaxGroupSize();
 	}
 
@@ -101,26 +102,26 @@ public abstract class SwarmGroupMemberEntity extends SpiderEntity implements ISw
 	}
 
 	@Override
-	public void setAttackTarget(@Nullable LivingEntity entityIn) {
-		super.setAttackTarget(entityIn);
+	public void setTarget(@Nullable LivingEntity entityIn) {
+		super.setTarget(entityIn);
 		//noinspection ConstantConditions
-		if (entityIn != null && entityIn.isAlive() && hasLeader() && getLeader().asMobEntity().getAttackTarget() == null) {
-			getLeader().asMobEntity().setAttackTarget(entityIn);
+		if (entityIn != null && entityIn.isAlive() && hasLeader() && getLeader().asMobEntity().getTarget() == null) {
+			getLeader().asMobEntity().setTarget(entityIn);
 		}
 	}
 
 	@Override
 	public void tick() {
 		super.tick();
-		if (isLeader() && world.rand.nextInt(200) == 1) {
-			List<SwarmGroupMemberEntity> list = world.getEntitiesWithinAABB(getClass(), getBoundingBox().grow(8.0D, 8.0D, 8.0D));
+		if (isLeader() && level.random.nextInt(200) == 1) {
+			List<SwarmGroupMemberEntity> list = level.getEntitiesOfClass(getClass(), getBoundingBox().inflate(8.0D, 8.0D, 8.0D));
 			if (list.size() <= 1) groupSize = 1;
 		}
 	}
 
 	public void playSound(@Nullable SoundEvent soundevent, float volumeMultiplier) {
 		if (soundevent != null && volumeMultiplier > 0f) {
-			playSound(soundevent, getSoundVolume() * volumeMultiplier, getSoundPitch());
+			playSound(soundevent, getSoundVolume() * volumeMultiplier, getVoicePitch());
 		}
 	}
 
@@ -129,12 +130,12 @@ public abstract class SwarmGroupMemberEntity extends SpiderEntity implements ISw
 			super(entity, 1.0D, true);
 		}
 
-		public boolean shouldExecute() {
-			return super.shouldExecute() && !attacker.isBeingRidden();
+		public boolean canUse() {
+			return super.canUse() && !mob.isVehicle();
 		}
 
 		protected double getAttackReachSqr(LivingEntity attackTarget) {
-			return 4f + attackTarget.getWidth();
+			return 4f + attackTarget.getBbWidth();
 		}
 	}
 }

@@ -40,7 +40,7 @@ public final class PlayerInteractionUtil {
 	private PlayerInteractionUtil() {}
 
 	public static boolean harvestBlock(ServerWorld world, ServerPlayerEntity player, BlockState blockState, BlockPos pos) {
-		GameType gameType = player.interactionManager.getGameType();
+		GameType gameType = player.gameMode.getGameModeForPlayer();
 
 		int exp = ForgeHooks.onBlockBreakEvent(world, gameType, player, pos);
 		if (exp == -1) return false; //check if block break event is canceled
@@ -51,22 +51,22 @@ public final class PlayerInteractionUtil {
 			return true;
 		}
 
-		TileEntity tileEntity = world.getTileEntity(pos);
+		TileEntity tileEntity = world.getBlockEntity(pos);
 		Block block = blockState.getBlock();
 
-		ItemStack heldStack = player.getHeldItemMainhand();
+		ItemStack heldStack = player.getMainHandItem();
 		ItemStack stackCopy = heldStack.copy();
 		boolean canHarvest = blockState.canHarvestBlock(world, pos, player);
-		heldStack.onBlockDestroyed(world, blockState, pos, player);
+		heldStack.mineBlock(world, blockState, pos, player);
 		if (heldStack.isEmpty() && !stackCopy.isEmpty()) ForgeEventFactory.onPlayerDestroyItem(player, stackCopy, Hand.MAIN_HAND);
 		boolean isRemoved = removeBlock(world, player, blockState, pos, canHarvest);
 
 		if (isRemoved && canHarvest) {
-			block.harvestBlock(world, player, pos, blockState, tileEntity, stackCopy);
+			block.playerDestroy(world, player, pos, blockState, tileEntity, stackCopy);
 		}
 
 		if (isRemoved && exp > 0) {
-			block.dropXpOnBlockBreak(world, pos, exp);
+			block.popExperience(world, pos, exp);
 		}
 
 		return isRemoved;
@@ -74,7 +74,7 @@ public final class PlayerInteractionUtil {
 
 	private static boolean removeBlock(World world, ServerPlayerEntity player, BlockState blockState, BlockPos pos, boolean canHarvest) {
 		boolean removed = blockState.removedByPlayer(world, pos, player, canHarvest, world.getFluidState(pos));
-		if (removed) blockState.getBlock().onPlayerDestroy(world, pos, blockState);
+		if (removed) blockState.getBlock().destroy(world, pos, blockState);
 		return removed;
 	}
 
@@ -97,7 +97,7 @@ public final class PlayerInteractionUtil {
 	}
 
 	public static List<BlockPos> findBlockNeighborsCube(World world, BlockRayTraceResult rayTraceResult, BlockState targetState, BlockPos startPos, int range) {
-		if (rayTraceResult.getType() == RayTraceResult.Type.MISS || !rayTraceResult.getPos().equals(startPos)) {
+		if (rayTraceResult.getType() == RayTraceResult.Type.MISS || !rayTraceResult.getBlockPos().equals(startPos)) {
 			return Collections.emptyList();
 		}
 
@@ -108,8 +108,8 @@ public final class PlayerInteractionUtil {
 			for (int z = -range; z <= range; z++) {
 				for (int y = -range; y <= range; y++) {
 					if (x == 0 && z == 0 && y == 0) continue;
-					BlockPos pos = startPos.add(x, y, z);
-					if (world.getBlockState(pos).matchesBlock(targetBlock)) neighbors.add(pos);
+					BlockPos pos = startPos.offset(x, y, z);
+					if (world.getBlockState(pos).is(targetBlock)) neighbors.add(pos);
 				}
 			}
 		}
@@ -118,11 +118,11 @@ public final class PlayerInteractionUtil {
 	}
 
 	public static List<BlockPos> findBlockNeighbors(World world, BlockRayTraceResult rayTraceResult, BlockState targetState, BlockPos startPos, int range) {
-		if (rayTraceResult.getType() == RayTraceResult.Type.MISS || !rayTraceResult.getPos().equals(startPos)) {
+		if (rayTraceResult.getType() == RayTraceResult.Type.MISS || !rayTraceResult.getBlockPos().equals(startPos)) {
 			return Collections.emptyList();
 		}
 
-		return findBlockNeighbors(world, rayTraceResult.getFace(), targetState, startPos, range);
+		return findBlockNeighbors(world, rayTraceResult.getDirection(), targetState, startPos, range);
 	}
 
 	public static List<BlockPos> findBlockNeighbors(World world, Direction direction, BlockState targetState, BlockPos startPos, int range) {
@@ -135,8 +135,8 @@ public final class PlayerInteractionUtil {
 			for (int x = -range; x <= range; x++) {
 				for (int z = -range; z <= range; z++) {
 					if (x == 0 && z == 0) continue;
-					BlockPos pos = startPos.add(x, y, z);
-					if (world.getBlockState(pos).matchesBlock(targetBlock)) neighbors.add(pos);
+					BlockPos pos = startPos.offset(x, y, z);
+					if (world.getBlockState(pos).is(targetBlock)) neighbors.add(pos);
 				}
 			}
 		}
@@ -145,8 +145,8 @@ public final class PlayerInteractionUtil {
 			for (int x = -range; x <= range; x++) {
 				for (int z = -range; z <= range; z++) {
 					if (x == 0 && z == 0) continue;
-					BlockPos pos = startPos.add(x, z, y);
-					if (world.getBlockState(pos).matchesBlock(targetBlock)) neighbors.add(pos);
+					BlockPos pos = startPos.offset(x, z, y);
+					if (world.getBlockState(pos).is(targetBlock)) neighbors.add(pos);
 				}
 			}
 		}
@@ -155,8 +155,8 @@ public final class PlayerInteractionUtil {
 			for (int x = -range; x <= range; x++) {
 				for (int z = -range; z <= range; z++) {
 					if (x == 0 && z == 0) continue;
-					BlockPos pos = startPos.add(y, x, z);
-					if (world.getBlockState(pos).matchesBlock(targetBlock)) neighbors.add(pos);
+					BlockPos pos = startPos.offset(y, x, z);
+					if (world.getBlockState(pos).is(targetBlock)) neighbors.add(pos);
 				}
 			}
 		}
@@ -165,14 +165,14 @@ public final class PlayerInteractionUtil {
 	}
 
 	public static ActionResultType tryToPlaceBlock(ServerPlayerEntity playerIn, ItemStack stackIn, Hand handIn, BlockRayTraceResult rayTraceResult, Direction horizontalFacing) {
-		BlockPos blockpos = rayTraceResult.getPos();
-		PlayerInteractEvent.RightClickBlock event = ForgeHooks.onRightClickBlock(playerIn, handIn, blockpos, rayTraceResult.getFace());
+		BlockPos blockpos = rayTraceResult.getBlockPos();
+		PlayerInteractEvent.RightClickBlock event = ForgeHooks.onRightClickBlock(playerIn, handIn, blockpos, rayTraceResult.getDirection());
 		if (event.isCanceled()) return event.getCancellationResult();
 		if (playerIn.isSpectator()) return ActionResultType.PASS;
 
 		ItemUseContext itemUseContext = new ItemUseContext(playerIn, handIn, rayTraceResult) {
 			@Override
-			public Direction getPlacementHorizontalFacing() {
+			public Direction getHorizontalDirection() {
 				return horizontalFacing;
 			}
 		};
@@ -181,13 +181,13 @@ public final class PlayerInteractionUtil {
 			if (result != ActionResultType.PASS) return result;
 		}
 		ItemStack stackCopy = stackIn.copy();
-		if (!stackIn.isEmpty() && !playerIn.getCooldownTracker().hasCooldown(stackIn.getItem())) {
+		if (!stackIn.isEmpty() && !playerIn.getCooldowns().isOnCooldown(stackIn.getItem())) {
 			if (event.getUseItem() == Event.Result.DENY) return ActionResultType.PASS;
-			ActionResultType actionResultType = stackIn.onItemUse(itemUseContext);
+			ActionResultType actionResultType = stackIn.useOn(itemUseContext);
 			if (playerIn.isCreative()) stackIn.setCount(stackCopy.getCount());
 
-			if (actionResultType.isSuccessOrConsume())
-				CriteriaTriggers.RIGHT_CLICK_BLOCK_WITH_ITEM.test(playerIn, blockpos, stackCopy);
+			if (actionResultType.consumesAction())
+				CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger(playerIn, blockpos, stackCopy);
 
 			return actionResultType;
 
@@ -203,7 +203,7 @@ public final class PlayerInteractionUtil {
 		private final ServerPlayerEntity owner;
 
 		private PlayerSurrogate(ServerPlayerEntity player, LivingEntity surrogate) {
-			super(player.getServerWorld(), player.getGameProfile());
+			super(player.getLevel(), player.getGameProfile());
 			this.owner = player;
 			this.surrogate = surrogate;
 			setHealth(surrogate.getHealth());
@@ -214,8 +214,8 @@ public final class PlayerInteractionUtil {
 		}
 
 		@Override
-		public void sendStatusMessage(ITextComponent chatComponent, boolean actionBar) {
-			owner.sendStatusMessage(chatComponent, actionBar);
+		public void displayClientMessage(ITextComponent chatComponent, boolean actionBar) {
+			owner.displayClientMessage(chatComponent, actionBar);
 		}
 
 		@Override
@@ -224,13 +224,13 @@ public final class PlayerInteractionUtil {
 		}
 
 		@Override
-		public void addStat(Stat stat, int amount) {
-			owner.addStat(stat, amount);
+		public void awardStat(Stat stat, int amount) {
+			owner.awardStat(stat, amount);
 		}
 
 		@Override
-		public boolean canAttackPlayer(PlayerEntity player) {
-			return owner.canAttackPlayer(player);
+		public boolean canHarmPlayer(PlayerEntity player) {
+			return owner.canHarmPlayer(player);
 		}
 
 		@Override
@@ -249,13 +249,13 @@ public final class PlayerInteractionUtil {
 		}
 
 		@Override
-		public Vector3d getPositionVec() {
-			return surrogate.getPositionVec();
+		public Vector3d position() {
+			return surrogate.position();
 		}
 
 		@Override
-		public BlockPos getPosition() {
-			return surrogate.getPosition();
+		public BlockPos blockPosition() {
+			return surrogate.blockPosition();
 		}
 
 		@Override
@@ -264,23 +264,23 @@ public final class PlayerInteractionUtil {
 		}
 
 		@Override
-		public ItemStack getHeldItem(Hand hand) {
-			return surrogate.getHeldItem(hand);
+		public ItemStack getItemInHand(Hand hand) {
+			return surrogate.getItemInHand(hand);
 		}
 
 		@Override
-		public ItemStack getHeldItemMainhand() {
-			return surrogate.getHeldItemMainhand();
+		public ItemStack getMainHandItem() {
+			return surrogate.getMainHandItem();
 		}
 
 		@Override
-		public ItemStack getHeldItemOffhand() {
-			return surrogate.getHeldItemOffhand();
+		public ItemStack getOffhandItem() {
+			return surrogate.getOffhandItem();
 		}
 
 		@Override
-		public Direction getHorizontalFacing() {
-			return surrogate.getHorizontalFacing();
+		public Direction getDirection() {
+			return surrogate.getDirection();
 		}
 
 		@Override
@@ -289,8 +289,8 @@ public final class PlayerInteractionUtil {
 		}
 
 		@Override
-		public double getPosYEye() {
-			return surrogate.getPosYEye();
+		public double getEyeY() {
+			return surrogate.getEyeY();
 		}
 
 		@Override
@@ -304,13 +304,13 @@ public final class PlayerInteractionUtil {
 		}
 
 		@Override
-		public boolean shouldHeal() {
+		public boolean isHurt() {
 			return getHealth() > 0.0F && getHealth() < surrogate.getMaxHealth();
 		}
 
 		@Override
-		public boolean attackEntityFrom(DamageSource source, float amount) {
-			return surrogate.attackEntityFrom(source, amount);
+		public boolean hurt(DamageSource source, float amount) {
+			return surrogate.hurt(source, amount);
 		}
 	}
 }

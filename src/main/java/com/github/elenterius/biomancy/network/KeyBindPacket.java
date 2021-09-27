@@ -33,9 +33,9 @@ public class KeyBindPacket {
 	public static void handle(KeyBindPacket packet, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			NetworkEvent.Context context = ctx.get();
-			INetHandler handler = context.getNetworkManager().getNetHandler();
+			INetHandler handler = context.getNetworkManager().getPacketListener();
 			if (handler instanceof ServerPlayNetHandler) {
-				ServerWorld world = (ServerWorld) ((ServerPlayNetHandler) handler).player.world;
+				ServerWorld world = (ServerWorld) ((ServerPlayNetHandler) handler).player.level;
 				ServerPlayerEntity playerEntity = ((ServerPlayNetHandler) handler).player;
 				IKeyListener.onReceiveKeybindingPacket(world, playerEntity, UnsignedBytes.toInt(packet.slotIndex), packet.flag); //TODO: add version which is not tied to EquipmentSlotType
 			}

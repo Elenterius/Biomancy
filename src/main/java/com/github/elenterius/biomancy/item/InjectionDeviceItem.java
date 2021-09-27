@@ -38,16 +38,16 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).setStyle(ClientTextUtil.LORE_STYLE));
 		Reagent reagent = getReagent(stack);
 		if (reagent != null) {
 			byte amount = getReagentAmount(stack);
-			tooltip.add(new StringTextComponent(String.format("Amount: %d/4", amount)).mergeStyle(TextFormatting.GRAY));
+			tooltip.add(new StringTextComponent(String.format("Amount: %d/4", amount)).withStyle(TextFormatting.GRAY));
 			reagent.addInfoToTooltip(stack, worldIn, tooltip, flagIn);
 		}
-		else tooltip.add(TextUtil.getTranslationText("tooltip", "contains_nothing").mergeStyle(TextFormatting.GRAY));
-		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextUtil.getTranslationText("tooltip", "action_self_inject")).mergeStyle(TextFormatting.DARK_GRAY));
+		else tooltip.add(TextUtil.getTranslationText("tooltip", "contains_nothing").withStyle(TextFormatting.GRAY));
+		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextUtil.getTranslationText("tooltip", "action_self_inject")).withStyle(TextFormatting.DARK_GRAY));
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 		if (displayName instanceof IFormattableTextComponent) {
 			Reagent reagent = getReagent(stack);
 			if (reagent != null) {
-				return ((IFormattableTextComponent) displayName).appendString(" (").appendSibling(new TranslationTextComponent(reagent.getTranslationKey()).mergeStyle(TextFormatting.AQUA)).appendString(")");
+				return ((IFormattableTextComponent) displayName).append(" (").append(new TranslationTextComponent(reagent.getTranslationKey()).withStyle(TextFormatting.AQUA)).append(")");
 			}
 		}
 		return displayName;
@@ -91,25 +91,25 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-		if (!worldIn.isRemote && handIn == Hand.MAIN_HAND && playerIn.isSneaking()) {
-			ItemStack heldStack = playerIn.getHeldItem(handIn);
-			ItemStack offhandStack = playerIn.getHeldItemOffhand();
+	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+		if (!worldIn.isClientSide && handIn == Hand.MAIN_HAND && playerIn.isShiftKeyDown()) {
+			ItemStack heldStack = playerIn.getItemInHand(handIn);
+			ItemStack offhandStack = playerIn.getOffhandItem();
 			if (!offhandStack.isEmpty()) {
 				if (offhandStack.getItem() == ModItems.REAGENT.get()) {
 					if (addReagent(offhandStack, heldStack, playerIn)) {
-						playSFX(worldIn, playerIn, SoundEvents.ITEM_ARMOR_EQUIP_GENERIC);
-						return ActionResult.resultFail(heldStack);
+						playSFX(worldIn, playerIn, SoundEvents.ARMOR_EQUIP_GENERIC);
+						return ActionResult.fail(heldStack);
 					}
 				}
 				else if (offhandStack.getItem() == ModItems.GLASS_VIAL.get()) {
 					if (extractReagent(offhandStack, heldStack, playerIn)) {
-						return ActionResult.resultFail(heldStack);
+						return ActionResult.fail(heldStack);
 					}
 				}
 			}
 		}
-		return super.onItemRightClick(worldIn, playerIn, handIn);
+		return super.use(worldIn, playerIn, handIn);
 	}
 
 	private boolean extractReagent(ItemStack containerStack, ItemStack gunStack, PlayerEntity playerIn) {
@@ -123,8 +123,8 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 			Reagent.copyAdditionalData(gunStack.getOrCreateTag(), stack.getOrCreateTag());
 			setReagentAmount(gunStack, (byte) (amount - 1));
 			containerStack.grow(-1);
-			if (!playerIn.addItemStackToInventory(stack)) {
-				playerIn.entityDropItem(stack);
+			if (!playerIn.addItem(stack)) {
+				playerIn.spawnAtLocation(stack);
 			}
 			return true;
 		}
@@ -147,8 +147,8 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 				ammoStack.grow(-1);
 
 				ItemStack stack = new ItemStack(ModItems.GLASS_VIAL.get());
-				if (!playerIn.addItemStackToInventory(stack)) {
-					playerIn.entityDropItem(stack);
+				if (!playerIn.addItem(stack)) {
+					playerIn.spawnAtLocation(stack);
 				}
 				return true;
 			}
@@ -164,8 +164,8 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 						ammoStack.grow(-1);
 
 						ItemStack stack = new ItemStack(ModItems.GLASS_VIAL.get());
-						if (!playerIn.addItemStackToInventory(stack)) {
-							playerIn.entityDropItem(stack);
+						if (!playerIn.addItem(stack)) {
+							playerIn.spawnAtLocation(stack);
 						}
 						return true;
 					}
@@ -176,25 +176,25 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 	}
 
 	@Override
-	public ActionResultType onItemUse(ItemUseContext context) {
-		ItemStack stack = context.getItem();
-		if (context.getPlayer() != null && !context.getPlayer().canPlayerEdit(context.getPos().offset(context.getFace()), context.getFace(), stack))
+	public ActionResultType useOn(ItemUseContext context) {
+		ItemStack stack = context.getItemInHand();
+		if (context.getPlayer() != null && !context.getPlayer().mayUseItemAt(context.getClickedPos().relative(context.getClickedFace()), context.getClickedFace(), stack))
 			return ActionResultType.FAIL;
 
 		Reagent reagent = getReagent(stack);
 		if (reagent != null) {
-			World world = context.getWorld();
-			boolean success = reagent.affectBlock(stack.getOrCreateTag().getCompound(Reagent.NBT_KEY_DATA), context.getPlayer(), world, context.getPos(), context.getFace());
+			World world = context.getLevel();
+			boolean success = reagent.affectBlock(stack.getOrCreateTag().getCompound(Reagent.NBT_KEY_DATA), context.getPlayer(), world, context.getClickedPos(), context.getClickedFace());
 			if (success) {
-				if (!world.isRemote) {
+				if (!world.isClientSide) {
 					if (context.getPlayer() == null || !context.getPlayer().isCreative()) addReagentAmount(stack, (byte) -1);
-					world.playEvent(Constants.WorldEvents.BONEMEAL_PARTICLES, context.getPos().up(), 0);
+					world.levelEvent(Constants.WorldEvents.BONEMEAL_PARTICLES, context.getClickedPos().above(), 0);
 					playSFX(world, context.getPlayer(), ModSoundEvents.INJECT.get());
 				}
-				return ActionResultType.func_233537_a_(world.isRemote);
+				return ActionResultType.sidedSuccess(world.isClientSide);
 			}
 
-			if (world.isRemote) playSFX(world, context.getPlayer(), SoundEvents.BLOCK_DISPENSER_FAIL);
+			if (world.isClientSide) playSFX(world, context.getPlayer(), SoundEvents.DISPENSER_FAIL);
 			return ActionResultType.FAIL;
 		}
 
@@ -202,25 +202,25 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 	}
 
 	@Override
-	public ActionResultType itemInteractionForEntity(ItemStack stack, PlayerEntity player, LivingEntity target, Hand hand) {
+	public ActionResultType interactLivingEntity(ItemStack stack, PlayerEntity player, LivingEntity target, Hand hand) {
 		Reagent reagent = getReagent(stack);
 		if (reagent != null) {
 			if (reagent.affectEntity(stack.getOrCreateTag().getCompound(Reagent.NBT_KEY_DATA), player, target)) {
-				if (!target.world.isRemote) {
+				if (!target.level.isClientSide) {
 					if (reagent.isAttributeModifier()) reagent.applyAttributesModifiersToEntity(target);
 					if (!player.isCreative()) addReagentAmount(stack, (byte) -1);
 
-					target.world.playEvent(Constants.WorldEvents.SPAWN_EXPLOSION_PARTICLE, target.getPosition(), 0);
-					playSFX(target.world, player, ModSoundEvents.INJECT.get());
+					target.level.levelEvent(Constants.WorldEvents.SPAWN_EXPLOSION_PARTICLE, target.blockPosition(), 0);
+					playSFX(target.level, player, ModSoundEvents.INJECT.get());
 				}
-				return ActionResultType.func_233537_a_(target.world.isRemote);
+				return ActionResultType.sidedSuccess(target.level.isClientSide);
 			}
 
-			if (player.world.isRemote) playSFX(player.world, player, SoundEvents.BLOCK_DISPENSER_FAIL);
+			if (player.level.isClientSide) playSFX(player.level, player, SoundEvents.DISPENSER_FAIL);
 			return ActionResultType.FAIL;
 		}
 		else { //the device is empty
-			if (!target.world.isRemote) {
+			if (!target.level.isClientSide) {
 				CompoundNBT reagentNbt = BloodSampleReagent.getBloodSampleFromEntity(player, target);
 				if (reagentNbt != null && !reagentNbt.isEmpty()) {
 					CompoundNBT nbt = stack.getOrCreateTag();
@@ -228,11 +228,11 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 					nbt.put(Reagent.NBT_KEY_DATA, reagentNbt);
 					setReagentAmount(stack, getMaxReagentAmount());
 
-					playSFX(target.world, player, ModSoundEvents.INJECT.get());
-					target.attackEntityFrom(DamageSource.causeBeeStingDamage(player), 0.5f);
+					playSFX(target.level, player, ModSoundEvents.INJECT.get());
+					target.hurt(DamageSource.sting(player), 0.5f);
 
 					if (player.isCreative()) {
-						player.setHeldItem(hand, stack); //fix for creative mode (normally the stack is not modified in creative)
+						player.setItemInHand(hand, stack); //fix for creative mode (normally the stack is not modified in creative)
 					}
 					return ActionResultType.SUCCESS;
 				}
@@ -246,14 +246,14 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 		Reagent reagent = getReagent(stack);
 		if (reagent != null) {
 			boolean success = reagent.affectPlayerSelf(stack.getOrCreateTag().getCompound(Reagent.NBT_KEY_DATA), player);
-			if (success && !player.world.isRemote) {
+			if (success && !player.level.isClientSide) {
 				if (reagent.isAttributeModifier()) reagent.applyAttributesModifiersToEntity(player);
 				if (!player.isCreative()) addReagentAmount(stack, (byte) -1);
 			}
 			return success;
 		}
 		else { //the device is empty
-			if (!player.world.isRemote) {
+			if (!player.level.isClientSide) {
 				CompoundNBT reagentNbt = BloodSampleReagent.getBloodSampleFromEntityUnchecked(player);
 				if (reagentNbt != null && !reagentNbt.isEmpty()) {
 					CompoundNBT nbt = stack.getOrCreateTag();
@@ -261,11 +261,11 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 					nbt.put(Reagent.NBT_KEY_DATA, reagentNbt);
 					setReagentAmount(stack, getMaxReagentAmount());
 
-					playSFX(player.world, player, ModSoundEvents.INJECT.get());
-					player.attackEntityFrom(DamageSource.causeBeeStingDamage(player), 0.5f);
+					playSFX(player.level, player, ModSoundEvents.INJECT.get());
+					player.hurt(DamageSource.sting(player), 0.5f);
 
 					if (player.isCreative()) {
-						player.setHeldItem(player.getActiveHand(), stack); //fix for creative mode (normally the stack is not modified in creative)
+						player.setItemInHand(player.getUsedItemHand(), stack); //fix for creative mode (normally the stack is not modified in creative)
 					}
 					return true;
 				}
@@ -279,10 +279,10 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 	@Override
 	public ActionResult<Byte> onClientKeyPress(ItemStack stack, ClientWorld world, PlayerEntity player, byte flags) {
 		if (!interactWithPlayerSelf(stack, player)) {
-			playSFX(world, player, SoundEvents.BLOCK_DISPENSER_FAIL);
-			return ActionResult.resultFail(flags); //don't send button press to server
+			playSFX(world, player, SoundEvents.DISPENSER_FAIL);
+			return ActionResult.fail(flags); //don't send button press to server
 		}
-		return ActionResult.resultSuccess(flags);
+		return ActionResult.success(flags);
 	}
 
 	@Override
@@ -291,12 +291,12 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 			playSFX(world, player, ModSoundEvents.INJECT.get());
 		}
 		else {
-			playSFX(world, player, SoundEvents.BLOCK_DISPENSER_FAIL);
+			playSFX(world, player, SoundEvents.DISPENSER_FAIL);
 		}
 	}
 
 	public void playSFX(World world, LivingEntity shooter, SoundEvent soundEvent) {
 		SoundCategory soundcategory = shooter instanceof PlayerEntity ? SoundCategory.PLAYERS : SoundCategory.HOSTILE;
-		world.playSound(world.isRemote && shooter instanceof PlayerEntity ? (PlayerEntity) shooter : null, shooter.getPosX(), shooter.getPosY(), shooter.getPosZ(), soundEvent, soundcategory, 0.8f, 1f / (random.nextFloat() * 0.5f + 1f) + 0.2f);
+		world.playSound(world.isClientSide && shooter instanceof PlayerEntity ? (PlayerEntity) shooter : null, shooter.getX(), shooter.getY(), shooter.getZ(), soundEvent, soundcategory, 0.8f, 1f / (random.nextFloat() * 0.5f + 1f) + 0.2f);
 	}
 }

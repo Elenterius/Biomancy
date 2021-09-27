@@ -37,10 +37,10 @@ import java.util.UUID;
 
 public class FleshkinEntity extends OwnableMonsterEntity implements IGolem {
 
-	private static final DataParameter<Boolean> IS_CHILD = EntityDataManager.createKey(FleshkinEntity.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Boolean> IS_CHILD = EntityDataManager.defineId(FleshkinEntity.class, DataSerializers.BOOLEAN);
 
-	private static final DataParameter<Byte> GOLEM_COMMAND = EntityDataManager.createKey(FleshkinEntity.class, DataSerializers.BYTE);
-	private static final DataParameter<Boolean> IS_CHARGING_CROSSBOW = EntityDataManager.createKey(FleshkinEntity.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Byte> GOLEM_COMMAND = EntityDataManager.defineId(FleshkinEntity.class, DataSerializers.BYTE);
+	private static final DataParameter<Boolean> IS_CHARGING_CROSSBOW = EntityDataManager.defineId(FleshkinEntity.class, DataSerializers.BOOLEAN);
 
 	private static final UUID SPEED_BOOST_UUID = UUID.fromString("7ac9f8fa-3d7c-48e5-9690-fa7025723b04");
 	private static final AttributeModifier SPEED_MODIFIER = new AttributeModifier(SPEED_BOOST_UUID, "speed boost", 0.2F, AttributeModifier.Operation.MULTIPLY_BASE);
@@ -51,20 +51,20 @@ public class FleshkinEntity extends OwnableMonsterEntity implements IGolem {
 	}
 
 	public static AttributeModifierMap.MutableAttribute createAttributes() {
-		return MonsterEntity.func_234295_eP_()
-				.createMutableAttribute(Attributes.FOLLOW_RANGE, 35d)
-				.createMutableAttribute(Attributes.MAX_HEALTH, 20d)
-				.createMutableAttribute(Attributes.ARMOR, 2d)
-				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.35d)
-				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 4d);
+		return MonsterEntity.createMonsterAttributes()
+				.add(Attributes.FOLLOW_RANGE, 35d)
+				.add(Attributes.MAX_HEALTH, 20d)
+				.add(Attributes.ARMOR, 2d)
+				.add(Attributes.MOVEMENT_SPEED, 0.35d)
+				.add(Attributes.ATTACK_DAMAGE, 4d);
 	}
 
 	@Override
-	protected void registerData() {
-		super.registerData();
-		dataManager.register(IS_CHILD, true);
-		dataManager.register(GOLEM_COMMAND, Command.DEFEND_OWNER.serialize());
-		dataManager.register(IS_CHARGING_CROSSBOW, false);
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(IS_CHILD, true);
+		entityData.define(GOLEM_COMMAND, Command.DEFEND_OWNER.serialize());
+		entityData.define(IS_CHARGING_CROSSBOW, false);
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class FleshkinEntity extends OwnableMonsterEntity implements IGolem {
 
 		targetSelector.addGoal(1, new CopyOwnerRevengeTargetGoal<>(this));
 		targetSelector.addGoal(2, new CopyOwnerAttackTargetGoal<>(this));
-		targetSelector.addGoal(3, new HurtByTargetGoal(this).setCallsForHelp());
+		targetSelector.addGoal(3, new HurtByTargetGoal(this).setAlertOthers());
 		targetSelector.addGoal(4, new FindAttackTargetGoal<>(this, MobEntity.class, 5, false, false, (target) -> {
 			if (target instanceof IMob) {
 				if (target instanceof IOwnableCreature) {
@@ -96,56 +96,56 @@ public class FleshkinEntity extends OwnableMonsterEntity implements IGolem {
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource source, float amount) {
+	public boolean hurt(DamageSource source, float amount) {
 		if (isInvulnerableTo(source)) {
 			return false;
 		}
 		else if (getGolemCommand() == Command.SIT) {
 			setGolemCommand(Command.PATROL_AREA);
 		}
-		return super.attackEntityFrom(source, amount);
+		return super.hurt(source, amount);
 	}
 
 	@Override
-	protected ActionResultType getEntityInteractionResult(PlayerEntity player, Hand hand) {
-		if (player.isCreative() && player.getHeldItemMainhand().getItem() == Items.DEBUG_STICK) {
+	protected ActionResultType mobInteract(PlayerEntity player, Hand hand) {
+		if (player.isCreative() && player.getMainHandItem().getItem() == Items.DEBUG_STICK) {
 			setOwner(player);
-			player.sendStatusMessage(new StringTextComponent("You are now the owner of this creature!").mergeStyle(TextFormatting.RED), true);
+			player.displayClientMessage(new StringTextComponent("You are now the owner of this creature!").withStyle(TextFormatting.RED), true);
 		}
 
-		if (!player.getHeldItemMainhand().isEmpty() || !isOwner(player)) return ActionResultType.PASS;
+		if (!player.getMainHandItem().isEmpty() || !isOwner(player)) return ActionResultType.PASS;
 
-		if (!player.world.isRemote() && player.isSneaking()) {
+		if (!player.level.isClientSide() && player.isShiftKeyDown()) {
 			Command newCommand = getGolemCommand().cycle();
 			if (newCommand == Command.SIT) {
-				setHomePosAndDistance(getPosition(), 4);
+				restrictTo(blockPosition(), 4);
 			}
 			else if (newCommand == Command.PATROL_AREA) {
-				setHomePosAndDistance(getPosition(), 24);
+				restrictTo(blockPosition(), 24);
 			}
 			else if (newCommand == Command.HOLD_POSITION) {
-				setHomePosAndDistance(getPosition(), 8);
+				restrictTo(blockPosition(), 8);
 			}
 
 			setGolemCommand(newCommand);
-			IFormattableTextComponent cmd = new StringTextComponent(newCommand.toString()).mergeStyle(TextFormatting.DARK_AQUA);
+			IFormattableTextComponent cmd = new StringTextComponent(newCommand.toString()).withStyle(TextFormatting.DARK_AQUA);
 			TranslationTextComponent text = new TranslationTextComponent(TextUtil.getTranslationKey("msg", "set_golem_command"), getName(), cmd);
-			text.mergeStyle(TextFormatting.WHITE);
-			player.sendStatusMessage(text, true);
+			text.withStyle(TextFormatting.WHITE);
+			player.displayClientMessage(text, true);
 		}
-		return ActionResultType.func_233537_a_(world.isRemote());
+		return ActionResultType.sidedSuccess(level.isClientSide());
 	}
 
 	@Override
 	public Command getGolemCommand() {
-		return Command.deserialize((byte) (dataManager.get(GOLEM_COMMAND) & 0xF));
+		return Command.deserialize((byte) (entityData.get(GOLEM_COMMAND) & 0xF));
 	}
 
 	@Override
 	public void setGolemCommand(Command commandIn) {
-		int prevCommand = (dataManager.get(GOLEM_COMMAND) & 0xF) << 4;
+		int prevCommand = (entityData.get(GOLEM_COMMAND) & 0xF) << 4;
 		int newCommand = commandIn.serialize();
-		dataManager.set(GOLEM_COMMAND, (byte) (prevCommand | newCommand));
+		entityData.set(GOLEM_COMMAND, (byte) (prevCommand | newCommand));
 	}
 
 	public Command getGolemCommand(byte packedCommands) {
@@ -157,52 +157,52 @@ public class FleshkinEntity extends OwnableMonsterEntity implements IGolem {
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT compound) {
-		super.writeAdditional(compound);
-		compound.putBoolean("IsBaby", isChild());
-		compound.putByte("GolemCommand", dataManager.get(GOLEM_COMMAND));
+	public void addAdditionalSaveData(CompoundNBT compound) {
+		super.addAdditionalSaveData(compound);
+		compound.putBoolean("IsBaby", isBaby());
+		compound.putByte("GolemCommand", entityData.get(GOLEM_COMMAND));
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT compound) {
-		super.readAdditional(compound);
-		setChild(compound.getBoolean("IsBaby"));
-		dataManager.set(GOLEM_COMMAND, compound.getByte("GolemCommand"));
+	public void readAdditionalSaveData(CompoundNBT compound) {
+		super.readAdditionalSaveData(compound);
+		setBaby(compound.getBoolean("IsBaby"));
+		entityData.set(GOLEM_COMMAND, compound.getByte("GolemCommand"));
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void handleStatusUpdate(byte id) {
-		super.handleStatusUpdate(id);
+	public void handleEntityEvent(byte id) {
+		super.handleEntityEvent(id);
 	}
 
 	@Override
-	public void notifyDataManagerChange(DataParameter<?> key) {
-		super.notifyDataManagerChange(key);
+	public void onSyncedDataUpdated(DataParameter<?> key) {
+		super.onSyncedDataUpdated(key);
 		if (IS_CHILD.equals(key)) {
-			recalculateSize();
+			refreshDimensions();
 		}
 	}
 
 	@Override
-	protected float getDropChance(EquipmentSlotType slotIn) {
+	protected float getEquipmentDropChance(EquipmentSlotType slotIn) {
 		return 2f;
 	}
 
 	@Override
-	public boolean isChild() {
-		return dataManager.get(IS_CHILD);
+	public boolean isBaby() {
+		return entityData.get(IS_CHILD);
 	}
 
 	@Override
-	public void setChild(boolean isChild) {
-		dataManager.set(IS_CHILD, isChild);
-		if (!world.isRemote) {
+	public void setBaby(boolean isChild) {
+		entityData.set(IS_CHILD, isChild);
+		if (!level.isClientSide) {
 			ModifiableAttributeInstance attribute = getAttribute(Attributes.MOVEMENT_SPEED);
 			if (attribute != null) {
 				attribute.removeModifier(SPEED_MODIFIER);
 				if (isChild) {
-					attribute.applyNonPersistentModifier(SPEED_MODIFIER);
+					attribute.addTransientModifier(SPEED_MODIFIER);
 				}
 			}
 		}
@@ -210,30 +210,30 @@ public class FleshkinEntity extends OwnableMonsterEntity implements IGolem {
 
 	@Override
 	protected float getStandingEyeHeight(Pose poseIn, EntitySize sizeIn) {
-		return isChild() ? 0.93f : 1.74f;
+		return isBaby() ? 0.93f : 1.74f;
 	}
 
 	@Override
-	public boolean func_230293_i_(ItemStack stack) {
+	public boolean wantsToPickUp(ItemStack stack) {
 		Item item = stack.getItem();
 		return (item instanceof ArmorItem || item instanceof TieredItem || item instanceof ShieldItem || item instanceof ShootableItem);
 	}
 
 	@Override
-	public boolean func_230280_a_(ShootableItem item) {
+	public boolean canFireProjectileWeapon(ShootableItem item) {
 		return item == Items.CROSSBOW;
 	}
 
 	private boolean isChargingCrossbow() {
-		return dataManager.get(IS_CHARGING_CROSSBOW);
+		return entityData.get(IS_CHARGING_CROSSBOW);
 	}
 
 	public void setChargingCrossbow(boolean isCharging) {
-		dataManager.set(IS_CHARGING_CROSSBOW, isCharging);
+		entityData.set(IS_CHARGING_CROSSBOW, isCharging);
 	}
 
 	public boolean isHoldingMeleeWeapon() {
-		return getHeldItemMainhand().getItem() instanceof TieredItem;
+		return getMainHandItem().getItem() instanceof TieredItem;
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -246,7 +246,7 @@ public class FleshkinEntity extends OwnableMonsterEntity implements IGolem {
 			return IGolem.Action.CROSSBOW_CHARGE;
 		}
 		else {
-			return isAggressive() && canEquip(Items.CROSSBOW) ? IGolem.Action.CROSSBOW_HOLD : IGolem.Action.IDLE;
+			return isAggressive() && isHolding(Items.CROSSBOW) ? IGolem.Action.CROSSBOW_HOLD : IGolem.Action.IDLE;
 		}
 	}
 

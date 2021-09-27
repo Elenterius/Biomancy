@@ -28,10 +28,10 @@ public class CrocospiderEntity extends SwarmGroupMemberEntity {
 	}
 
 	public static AttributeModifierMap.MutableAttribute createAttributes() {
-		return MobEntity.func_233666_p_()
-				.createMutableAttribute(Attributes.MAX_HEALTH, 20.0D)
-				.createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25D)
-				.createMutableAttribute(Attributes.ATTACK_DAMAGE, 3.0D);
+		return MobEntity.createMobAttributes()
+				.add(Attributes.MAX_HEALTH, 20.0D)
+				.add(Attributes.MOVEMENT_SPEED, 0.25D)
+				.add(Attributes.ATTACK_DAMAGE, 3.0D);
 	}
 
 	@Override
@@ -46,38 +46,38 @@ public class CrocospiderEntity extends SwarmGroupMemberEntity {
 	}
 
 	@Override
-	public void livingTick() {
-		if (!world.isRemote() && ticksExisted % 20 == 0) {
+	public void aiStep() {
+		if (!level.isClientSide() && tickCount % 20 == 0) {
 			if (canGroupGrow() && getHealth() < getMaxHealth() * 0.8f) {
-				if (++timer > 6 && getAttackTarget() != null) {
+				if (++timer > 6 && getTarget() != null) {
 					timer = 0;
 					spawnBlobling();
 				}
 			}
 		}
-		super.livingTick();
+		super.aiStep();
 	}
 
 	private void spawnBlobling() {
-		BoomlingEntity entity = ModEntityTypes.BOOMLING.get().create(world);
+		BoomlingEntity entity = ModEntityTypes.BOOMLING.get().create(level);
 		if (entity != null) {
-			Vector3d pos = getPositionVec().add(4D * rand.nextDouble() - 2D, 0.5D, 4D * rand.nextDouble() - 2D);
-			entity.setLocationAndAngles(pos.x, pos.y, pos.z, rand.nextFloat() * 360.0F, 0.0F);
-			entity.onInitialSpawn((IServerWorld) world, world.getDifficultyForLocation(new BlockPos(pos)), SpawnReason.REINFORCEMENT, new SwarmGroupData(this), null);
+			Vector3d pos = position().add(4D * random.nextDouble() - 2D, 0.5D, 4D * random.nextDouble() - 2D);
+			entity.moveTo(pos.x, pos.y, pos.z, random.nextFloat() * 360.0F, 0.0F);
+			entity.finalizeSpawn((IServerWorld) level, level.getCurrentDifficultyAt(new BlockPos(pos)), SpawnReason.REINFORCEMENT, new SwarmGroupData(this), null);
 
-			if (isNoDespawnRequired()) {
-				entity.enablePersistence();
+			if (isPersistenceRequired()) {
+				entity.setPersistenceRequired();
 			}
-			entity.setNoAI(isAIDisabled());
+			entity.setNoAi(isNoAi());
 			entity.setInvulnerable(isInvulnerable());
 			if (hasCustomName()) {
 				//noinspection ConstantConditions
-				entity.setCustomName(new StringTextComponent("Little ").appendSibling(getCustomName()));
+				entity.setCustomName(new StringTextComponent("Little ").append(getCustomName()));
 				entity.setCustomNameVisible(isCustomNameVisible());
 			}
 
-			world.addEntity(entity);
-			entity.playSound(SoundEvents.ENTITY_SLIME_SQUISH_SMALL, 0.4f, 1f);
+			level.addFreshEntity(entity);
+			entity.playSound(SoundEvents.SLIME_SQUISH_SMALL, 0.4f, 1f);
 		}
 	}
 
@@ -90,7 +90,7 @@ public class CrocospiderEntity extends SwarmGroupMemberEntity {
 	public void playAmbientSound() {
 		SoundEvent soundevent = getAmbientSound();
 		if (soundevent != null) {
-			playSound(soundevent, getSoundVolume(), getSoundPitch() * 0.5f);
+			playSound(soundevent, getSoundVolume(), getVoicePitch() * 0.5f);
 		}
 	}
 }

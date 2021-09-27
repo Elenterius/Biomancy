@@ -38,26 +38,26 @@ public abstract class AbstractProjectileEntity extends ProjectileEntity implemen
 
 	protected AbstractProjectileEntity(EntityType<? extends AbstractProjectileEntity> entityType, World world, double x, double y, double z) {
 		this(entityType, world);
-		setPosition(x, y, z);
+		setPos(x, y, z);
 	}
 
 	protected AbstractProjectileEntity(EntityType<? extends AbstractProjectileEntity> entityType, World world, LivingEntity shooter) {
-		this(entityType, world, shooter.getPosX(), shooter.getPosYEye() - 0.1f, shooter.getPosZ());
-		setShooter(shooter);
+		this(entityType, world, shooter.getX(), shooter.getEyeY() - 0.1f, shooter.getZ());
+		setOwner(shooter);
 	}
 
 	@Override
-	protected void registerData() {}
+	protected void defineSynchedData() {}
 
 	@Override
-	public IPacket<?> createSpawnPacket() {
+	public IPacket<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
 	@Override
 	public void writeSpawnData(PacketBuffer buffer) {
-		Entity shooter = getShooter();
-		buffer.writeVarInt(shooter == null ? 0 : shooter.getEntityId());
+		Entity shooter = getOwner();
+		buffer.writeVarInt(shooter == null ? 0 : shooter.getId());
 //		buffer.writeDouble(accelerationX);
 //		buffer.writeDouble(accelerationY);
 //		buffer.writeDouble(accelerationZ);
@@ -65,23 +65,23 @@ public abstract class AbstractProjectileEntity extends ProjectileEntity implemen
 
 	@Override
 	public void readSpawnData(PacketBuffer buffer) {
-		Entity shooter = world.getEntityByID(buffer.readVarInt());
-		setShooter(shooter);
+		Entity shooter = level.getEntity(buffer.readVarInt());
+		setOwner(shooter);
 //		accelerationX = buffer.readDouble();
 //		accelerationY = buffer.readDouble();
 //		accelerationZ = buffer.readDouble();
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT compound) {
-		super.writeAdditional(compound);
+	public void addAdditionalSaveData(CompoundNBT compound) {
+		super.addAdditionalSaveData(compound);
 		compound.putFloat("damage", damage);
 		compound.putByte("knockback", knockback);
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT compound) {
-		super.readAdditional(compound);
+	public void readAdditionalSaveData(CompoundNBT compound) {
+		super.readAdditionalSaveData(compound);
 		damage = compound.contains("damage") ? compound.getFloat("damage") : 5f;
 		knockback = compound.getByte("knockback");
 	}
@@ -126,38 +126,38 @@ public abstract class AbstractProjectileEntity extends ProjectileEntity implemen
 	}
 
 	public void tick() {
-		Entity shooter = getShooter();
-		if (world.isRemote || ((shooter == null || !shooter.removed) && world.isBlockLoaded(getPosition()))) {
+		Entity shooter = getOwner();
+		if (level.isClientSide || ((shooter == null || !shooter.removed) && level.hasChunkAt(blockPosition()))) {
 			super.tick();
 
-			if (isWet()) extinguish();
+			if (isInWaterOrRain()) clearFire();
 
-			RayTraceResult raytraceresult = ProjectileHelper.func_234618_a_(this, this::func_230298_a_);
+			RayTraceResult raytraceresult = ProjectileHelper.getHitResult(this, this::canHitEntity);
 			if (raytraceresult.getType() != RayTraceResult.Type.MISS && !ForgeEventFactory.onProjectileImpact(this, raytraceresult)) {
-				onImpact(raytraceresult);
+				onHit(raytraceresult);
 			}
-			doBlockCollisions();
+			checkInsideBlocks();
 
-			Vector3d motion = getMotion();
-			double posX = getPosX() + motion.x;
-			double posY = getPosY() + motion.y;
-			double posZ = getPosZ() + motion.z;
-			updatePitchAndYaw();
+			Vector3d motion = getDeltaMovement();
+			double posX = getX() + motion.x;
+			double posY = getY() + motion.y;
+			double posZ = getZ() + motion.z;
+			updateRotation();
 
 			float drag = getDrag();
 			if (isInWater()) {
 				for (int i = 0; i < 4; ++i) {
-					world.addParticle(ParticleTypes.BUBBLE, posX - motion.x * 0.25f, posY - motion.y * 0.25f, posZ - motion.z * 0.25f, motion.x, motion.y, motion.z);
+					level.addParticle(ParticleTypes.BUBBLE, posX - motion.x * 0.25f, posY - motion.y * 0.25f, posZ - motion.z * 0.25f, motion.x, motion.y, motion.z);
 				}
 				drag = getWaterDrag();
 			}
 
-			setMotion(motion.scale(drag));
-			if (!hasNoGravity()) {
-				setMotion(getMotion().add(0, -getGravity(), 0));
+			setDeltaMovement(motion.scale(drag));
+			if (!isNoGravity()) {
+				setDeltaMovement(getDeltaMovement().add(0, -getGravity(), 0));
 			}
 			spawnParticle(posX, posY, posZ);
-			setPosition(posX, posY, posZ);
+			setPos(posX, posY, posZ);
 		}
 		else {
 			remove();
@@ -165,13 +165,13 @@ public abstract class AbstractProjectileEntity extends ProjectileEntity implemen
 	}
 
 	@Override
-	protected void onImpact(RayTraceResult result) {
-		super.onImpact(result); //call onEntityHit and onBlockHit before removing the projectile
-		if (!world.isRemote) remove();
+	protected void onHit(RayTraceResult result) {
+		super.onHit(result); //call onEntityHit and onBlockHit before removing the projectile
+		if (!level.isClientSide) remove();
 	}
 
 	public void spawnParticle(double x, double y, double z) {
-		world.addParticle(getParticle(), x, y + 0.5d, z, 0, 0, 0);
+		level.addParticle(getParticle(), x, y + 0.5d, z, 0, 0, 0);
 	}
 
 	protected IParticleData getParticle() {
@@ -179,17 +179,17 @@ public abstract class AbstractProjectileEntity extends ProjectileEntity implemen
 	}
 
 	@Override
-	protected boolean func_230298_a_(Entity entityIn) {
-		return super.func_230298_a_(entityIn) && !entityIn.noClip;
+	protected boolean canHitEntity(Entity entityIn) {
+		return super.canHitEntity(entityIn) && !entityIn.noPhysics;
 	}
 
 	@Override
-	public boolean canBeCollidedWith() {
+	public boolean isPickable() {
 		return true;
 	}
 
 	@Override
-	public float getCollisionBorderSize() {
+	public float getPickRadius() {
 		return 1f;
 	}
 
@@ -200,10 +200,10 @@ public abstract class AbstractProjectileEntity extends ProjectileEntity implemen
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public boolean isInRangeToRenderDist(double distance) {
-		double dist = getBoundingBox().getAverageEdgeLength() * 10d;
+	public boolean shouldRenderAtSqrDistance(double distance) {
+		double dist = getBoundingBox().getSize() * 10d;
 		if (Double.isNaN(dist)) dist = 1d;
-		dist = dist * 64d * getRenderDistanceWeight();
+		dist = dist * 64d * getViewScale();
 		return distance < dist * dist;
 	}
 }

@@ -23,15 +23,15 @@ public class FleshCropBlock extends CropsBlock {
 	@Override
 	public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
 		if (!worldIn.isAreaLoaded(pos, 1)) return;
-		BlockPos downPos = pos.down();
-		if (worldIn.getBlockState(downPos).matchesBlock(ModBlocks.FLESH_BLOCK.get()) && worldIn.getLightSubtracted(pos, 0) >= 8) {
+		BlockPos downPos = pos.below();
+		if (worldIn.getBlockState(downPos).is(ModBlocks.FLESH_BLOCK.get()) && worldIn.getRawBrightness(pos, 0) >= 8) {
 			int age = getAge(state);
 			if (age < getMaxAge()) {
-				if (ForgeHooks.onCropsGrowPre(worldIn, pos, state, random.nextInt((int) (25f / getGrowthChance(this, worldIn, pos)) + 1) == 0)) {
+				if (ForgeHooks.onCropsGrowPre(worldIn, pos, state, random.nextInt((int) (25f / getGrowthSpeed(this, worldIn, pos)) + 1) == 0)) {
 					if (age + 1 == getMaxAge()) {
-						worldIn.setBlockState(downPos, ModBlocks.NECROTIC_FLESH_BLOCK.get().getDefaultState(), Constants.BlockFlags.BLOCK_UPDATE);
+						worldIn.setBlock(downPos, ModBlocks.NECROTIC_FLESH_BLOCK.get().defaultBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
 					}
-					worldIn.setBlockState(pos, withAge(age + 1), Constants.BlockFlags.BLOCK_UPDATE);
+					worldIn.setBlock(pos, getStateForAge(age + 1), Constants.BlockFlags.BLOCK_UPDATE);
 					ForgeHooks.onCropsGrowPost(worldIn, pos, state);
 				}
 			}
@@ -39,21 +39,21 @@ public class FleshCropBlock extends CropsBlock {
 	}
 
 	@Override
-	public void grow(World worldIn, BlockPos pos, BlockState state) {
+	public void growCrops(World worldIn, BlockPos pos, BlockState state) {
 		int newAge = MathHelper.clamp(getAge(state) + getBonemealAgeIncrease(worldIn), 0, getMaxAge());
 		if (newAge == getMaxAge()) {
-			BlockPos downPos = pos.down();
-			if (worldIn.getBlockState(downPos).matchesBlock(ModBlocks.FLESH_BLOCK.get())) {
-				worldIn.setBlockState(downPos, ModBlocks.NECROTIC_FLESH_BLOCK.get().getDefaultState(), Constants.BlockFlags.BLOCK_UPDATE);
+			BlockPos downPos = pos.below();
+			if (worldIn.getBlockState(downPos).is(ModBlocks.FLESH_BLOCK.get())) {
+				worldIn.setBlock(downPos, ModBlocks.NECROTIC_FLESH_BLOCK.get().defaultBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
 			}
 		}
 
-		worldIn.setBlockState(pos, withAge(newAge), Constants.BlockFlags.BLOCK_UPDATE);
+		worldIn.setBlock(pos, getStateForAge(newAge), Constants.BlockFlags.BLOCK_UPDATE);
 	}
 
 	@Override
-	public boolean canGrow(IBlockReader worldIn, BlockPos pos, BlockState state, boolean isClient) {
-		return worldIn.getBlockState(pos.down()).matchesBlock(ModBlocks.FLESH_BLOCK.get()) && super.canGrow(worldIn, pos, state, isClient);
+	public boolean isValidBonemealTarget(IBlockReader worldIn, BlockPos pos, BlockState state, boolean isClient) {
+		return worldIn.getBlockState(pos.below()).is(ModBlocks.FLESH_BLOCK.get()) && super.isValidBonemealTarget(worldIn, pos, state, isClient);
 	}
 
 	@Override
@@ -62,8 +62,8 @@ public class FleshCropBlock extends CropsBlock {
 	}
 
 	@Override
-	protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		return state.matchesBlock(ModBlocks.FLESH_BLOCK.get()) || state.matchesBlock(ModBlocks.NECROTIC_FLESH_BLOCK.get());
+	protected boolean mayPlaceOn(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		return state.is(ModBlocks.FLESH_BLOCK.get()) || state.is(ModBlocks.NECROTIC_FLESH_BLOCK.get());
 	}
 
 	@Override

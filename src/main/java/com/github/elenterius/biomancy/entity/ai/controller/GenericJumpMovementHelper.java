@@ -25,8 +25,8 @@ public class GenericJumpMovementHelper<T extends IJumpMovementMob<? extends MobE
 	}
 
 	public void setMovementSpeed(IJumpMovementMob<?> mob, double speed) {
-		mob.getJumpingEntity().getNavigator().setSpeed(speed);
-		moveController.setMoveTo(moveController.getX(), moveController.getY(), moveController.getZ(), speed);
+		mob.getJumpingEntity().getNavigation().setSpeedModifier(speed);
+		moveController.setWantedPosition(moveController.getWantedX(), moveController.getWantedY(), moveController.getWantedZ(), speed);
 	}
 
 	public void updateAIMovement(IJumpMovementMob<?> mob) {
@@ -41,11 +41,11 @@ public class GenericJumpMovementHelper<T extends IJumpMovementMob<? extends MobE
 			}
 
 			if (!jumpController.isJumping()) {
-				if (moveController.isUpdating() && currentMoveTypeDuration == 0) {
-					Path path = mob.getJumpingEntity().getNavigator().getPath();
-					Vector3d heading = new Vector3d(moveController.getX(), moveController.getY(), moveController.getZ());
-					if (path != null && !path.isFinished()) {
-						heading = path.getPosition(mob.getJumpingEntity());
+				if (moveController.hasWanted() && currentMoveTypeDuration == 0) {
+					Path path = mob.getJumpingEntity().getNavigation().getPath();
+					Vector3d heading = new Vector3d(moveController.getWantedX(), moveController.getWantedY(), moveController.getWantedZ());
+					if (path != null && !path.isDone()) {
+						heading = path.getNextEntityPos(mob.getJumpingEntity());
 					}
 
 					mob.updateRotationYaw(heading.x, heading.z);
@@ -72,14 +72,14 @@ public class GenericJumpMovementHelper<T extends IJumpMovementMob<? extends MobE
 	}
 
 	public void updateJump(IJumpMovementMob<?> mob) {
-		if (moveController.getSpeed() > 0.0D) {
-			if (Entity.horizontalMag(mob.getJumpingEntity().getMotion()) < 0.01D) {
+		if (moveController.getSpeedModifier() > 0.0D) {
+			if (Entity.getHorizontalDistanceSqr(mob.getJumpingEntity().getDeltaMovement()) < 0.01D) {
 				mob.getJumpingEntity().moveRelative(0.1F, new Vector3d(0.0D, 0.0D, 1.0D));
 			}
 		}
 
-		if (!mob.getJumpingEntity().world.isRemote) {
-			mob.getJumpingEntity().world.setEntityState(mob.getJumpingEntity(), stateUpdateId);
+		if (!mob.getJumpingEntity().level.isClientSide) {
+			mob.getJumpingEntity().level.broadcastEntityEvent(mob.getJumpingEntity(), stateUpdateId);
 		}
 	}
 
@@ -89,7 +89,7 @@ public class GenericJumpMovementHelper<T extends IJumpMovementMob<? extends MobE
 	}
 
 	private void updateMoveTypeDuration() {
-		if (moveController.getSpeed() < 2.2D) {
+		if (moveController.getSpeedModifier() < 2.2D) {
 			currentMoveTypeDuration = 10;
 		}
 		else {

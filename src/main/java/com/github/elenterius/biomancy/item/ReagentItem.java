@@ -31,7 +31,7 @@ public class ReagentItem extends Item {
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		Reagent reagent = Reagent.deserialize(stack.getOrCreateTag());
 		if (reagent != null) {
 			reagent.addInfoToTooltip(stack, worldIn, tooltip, flagIn);
@@ -40,8 +40,8 @@ public class ReagentItem extends Item {
 	}
 
 	@Override
-	public void fillItemGroup(ItemGroup group, NonNullList<ItemStack> items) {
-		if (isInGroup(group)) {
+	public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> items) {
+		if (allowdedIn(group)) {
 			for (Reagent reagent : ModReagents.REGISTRY.get()) {
 				items.add(ReagentItem.getReagentItemStack(reagent));
 			}
@@ -49,12 +49,12 @@ public class ReagentItem extends Item {
 	}
 
 	@Override
-	public String getTranslationKey(ItemStack stack) {
+	public String getDescriptionId(ItemStack stack) {
 		Reagent reagent = Reagent.deserialize(stack.getOrCreateTag());
 		if (reagent != null) {
 			return reagent.getTranslationKey();
 		}
-		return super.getTranslationKey(stack);
+		return super.getDescriptionId(stack);
 	}
 
 	public int getReagentColor(ItemStack stack) {

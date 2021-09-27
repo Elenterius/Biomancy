@@ -75,7 +75,7 @@ public class ChewerStateData extends RecipeCraftingStateData<ChewerRecipe> {
 	}
 
 	@Override
-	public int size() {
+	public int getCount() {
 		return 4;
 	}
 

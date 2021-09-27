@@ -13,7 +13,6 @@ import com.github.elenterius.biomancy.recipe.DigesterRecipe;
 import com.github.elenterius.biomancy.recipe.RecipeType;
 import com.github.elenterius.biomancy.tileentity.state.DigesterStateData;
 import com.github.elenterius.biomancy.util.TextUtil;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -61,7 +60,7 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 	public static final int MAX_FLUID = 32_000;
 	public static final short FUEL_COST = 1;
 	public static final Predicate<ItemStack> VALID_FUEL_ITEM = stack -> {
-		if (stack.getItem() == Items.POTION && PotionUtils.getPotionFromItem(stack) == Potions.WATER) return true;
+		if (stack.getItem() == Items.POTION && PotionUtils.getPotion(stack) == Potions.WATER) return true;
 		return FluidUtil.getFluidContained(stack).map(DigesterTileEntity::isFluidValidFuel).orElse(false);
 	};
 	public static final RecipeType.ItemStackRecipeType<DigesterRecipe> RECIPE_TYPE = ModRecipes.DIGESTER_RECIPE_TYPE;
@@ -76,12 +75,12 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 
 	public DigesterTileEntity() {
 		super(ModTileEntityTypes.DIGESTER.get());
-		fuelInventory = SimpleInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterBiofuel, this::canPlayerOpenInv, this::markDirty);
-		emptyBucketOutInventory = SimpleInventory.createServerContents(EMPTY_BUCKET_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::markDirty);
-		inputInventory = SimpleInventory.createServerContents(INPUT_SLOTS, this::canPlayerOpenInv, this::markDirty);
-		outputInventory = SimpleInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::markDirty);
-		emptyBucketInInventory = SimpleInventory.createServerContents(BUCKET_SLOTS, HandlerBehaviors::filterFluidContainer, this::canPlayerOpenInv, this::markDirty);
-		filledBucketOutInventory = SimpleInventory.createServerContents(BUCKET_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::markDirty);
+		fuelInventory = SimpleInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterBiofuel, this::canPlayerOpenInv, this::setChanged);
+		emptyBucketOutInventory = SimpleInventory.createServerContents(EMPTY_BUCKET_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
+		inputInventory = SimpleInventory.createServerContents(INPUT_SLOTS, this::canPlayerOpenInv, this::setChanged);
+		outputInventory = SimpleInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
+		emptyBucketInInventory = SimpleInventory.createServerContents(BUCKET_SLOTS, HandlerBehaviors::filterFluidContainer, this::canPlayerOpenInv, this::setChanged);
+		filledBucketOutInventory = SimpleInventory.createServerContents(BUCKET_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
 	}
 
 	@Override
@@ -140,12 +139,12 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 
 	@Override
 	public ItemStack getStackInFuelSlot() {
-		return fuelInventory.getStackInSlot(0);
+		return fuelInventory.getItem(0);
 	}
 
 	@Override
 	public void setStackInFuelSlot(ItemStack stack) {
-		fuelInventory.setInventorySlotContents(0, stack);
+		fuelInventory.setItem(0, stack);
 	}
 
 	@Override
@@ -160,16 +159,16 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 
 	@Override
 	public void tick() {
-		if (world != null && !world.isRemote) {
+		if (level != null && !level.isClientSide) {
 			if (ticks % 8 == 0) {
 				fillFluidContainerItem();
 			}
 
 			if (ticks % 42 == 0) {
-				tryToGetItemsFromAttachedBlock(world);
+				tryToGetItemsFromAttachedBlock(level);
 			}
 			if (ticks % 60 == 0) {
-				tryToSuckWater(world);
+				tryToSuckWater(level);
 			}
 		}
 
@@ -186,22 +185,22 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 	protected boolean craftRecipe(DigesterRecipe recipeToCraft, World world) {
 		FluidStack result = recipeToCraft.getFluidResult();
 		if (!result.isEmpty() && stateData.outputTank.fill(result, IFluidHandler.FluidAction.SIMULATE) == result.getAmount()) {
-			for (int idx = 0; idx < inputInventory.getSizeInventory(); idx++) {
-				inputInventory.decrStackSize(idx, 1);
+			for (int idx = 0; idx < inputInventory.getContainerSize(); idx++) {
+				inputInventory.removeItem(idx, 1);
 			}
 			stateData.outputTank.fill(result, IFluidHandler.FluidAction.EXECUTE);
 			tryToInjectFluid(world);
 
 			Byproduct byproduct = recipeToCraft.getByproduct();
-			if (byproduct != null && world.rand.nextFloat() <= byproduct.getChance()) {
+			if (byproduct != null && world.random.nextFloat() <= byproduct.getChance()) {
 				ItemStack stack = byproduct.getItemStack();
-				for (int idx = 0; idx < outputInventory.getSizeInventory(); idx++) { //index 0 is reserved for the main crafting output
+				for (int idx = 0; idx < outputInventory.getContainerSize(); idx++) { //index 0 is reserved for the main crafting output
 					stack = outputInventory.insertItemStack(idx, stack); //update stack with remainder
 					if (stack.isEmpty()) break;
 				}
 			}
 
-			markDirty();
+			setChanged();
 			return true;
 		}
 		return false;
@@ -212,86 +211,86 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 		int fluidAmount = stateData.fuelTank.getFluidAmount();
 		int maxFluidAmount = stateData.fuelTank.getCapacity();
 		if (fluidAmount < maxFluidAmount) {
-			ItemStack stack = fuelInventory.getStackInSlot(0);
+			ItemStack stack = fuelInventory.getItem(0);
 			if (stack.isEmpty()) return;
 
 			if (isItemValidFuel(stack)) {
-				if (stack.getItem() == Items.POTION && PotionUtils.getPotionFromItem(stack) == Potions.WATER) {
-					ItemStack outStack = emptyBucketOutInventory.getStackInSlot(0);
+				if (stack.getItem() == Items.POTION && PotionUtils.getPotion(stack) == Potions.WATER) {
+					ItemStack outStack = emptyBucketOutInventory.getItem(0);
 					if (fluidAmount < maxFluidAmount - 333 && (outStack.isEmpty() || outStack.getItem() == Items.GLASS_BOTTLE)) {
 						stateData.fuelTank.fill(new FluidStack(Fluids.WATER, 334), IFluidHandler.FluidAction.EXECUTE);
 						stack.shrink(1);
-						if (outStack.isEmpty()) emptyBucketOutInventory.setInventorySlotContents(0, new ItemStack(Items.GLASS_BOTTLE));
+						if (outStack.isEmpty()) emptyBucketOutInventory.setItem(0, new ItemStack(Items.GLASS_BOTTLE));
 						else outStack.grow(1);
-						markDirty();
+						setChanged();
 					}
 				}
 				else {
-					FluidActionResult fluidAction = FluidUtil.tryEmptyContainerAndStow(stack, stateData.fuelTank, emptyBucketOutInventory.getItemStackHandler(), maxFluidAmount - fluidAmount, null, true);
+					FluidActionResult fluidAction = FluidUtil.tryEmptyContainerAndStow(stack, stateData.fuelTank, emptyBucketOutInventory.getItemHandler(), maxFluidAmount - fluidAmount, null, true);
 					if (fluidAction.isSuccess()) {
-						fuelInventory.setInventorySlotContents(0, fluidAction.getResult());
-						markDirty();
+						fuelInventory.setItem(0, fluidAction.getResult());
+						setChanged();
 					}
 				}
 			}
 			else {
 				ItemStack remainder = emptyBucketOutInventory.insertItemStack(0, stack);
-				fuelInventory.setInventorySlotContents(0, remainder);
-				markDirty();
+				fuelInventory.setItem(0, remainder);
+				setChanged();
 			}
 		}
 	}
 
 	public void fillFluidContainerItem() {
 		if (stateData.outputTank.getFluidAmount() > 0) {
-			ItemStack stack = emptyBucketInInventory.getStackInSlot(0);
+			ItemStack stack = emptyBucketInInventory.getItem(0);
 			if (stack.isEmpty()) return;
 
 			if (HandlerBehaviors.FLUID_CONTAINER_ITEM_PREDICATE.test(stack)) {
-				FluidActionResult fluidAction = FluidUtil.tryFillContainerAndStow(stack, stateData.outputTank, filledBucketOutInventory.getItemStackHandler(), MAX_FLUID, null, true);
+				FluidActionResult fluidAction = FluidUtil.tryFillContainerAndStow(stack, stateData.outputTank, filledBucketOutInventory.getItemHandler(), MAX_FLUID, null, true);
 				if (fluidAction.isSuccess()) {
-					emptyBucketInInventory.setInventorySlotContents(0, fluidAction.getResult());
+					emptyBucketInInventory.setItem(0, fluidAction.getResult());
 				}
 				else if (FluidUtil.getFluidContained(stack).isPresent()) {
 					ItemStack remainder = filledBucketOutInventory.insertItemStack(0, stack);
-					emptyBucketInInventory.setInventorySlotContents(0, remainder);
+					emptyBucketInInventory.setItem(0, remainder);
 				}
-				markDirty();
+				setChanged();
 			}
 		}
 	}
-	
+
 	protected void tryToSuckWater(World world) {
 		int fluidAmount = stateData.fuelTank.getFluidAmount();
 		int maxFluidAmount = stateData.fuelTank.getCapacity();
-		if (fluidAmount <= maxFluidAmount-1000) {
-			Direction direction = getBlockState().get(DigesterBlock.FACING);
-			BlockPos blockPos = getPos().offset(direction);
+		if (fluidAmount <= maxFluidAmount - 1000) {
+			Direction direction = getBlockState().getValue(DigesterBlock.FACING);
+			BlockPos blockPos = getBlockPos().relative(direction);
 			Block neighbourBlock = world.getBlockState(blockPos).getBlock();
 			if (neighbourBlock == Blocks.WET_SPONGE) {
-				world.setBlockState(blockPos, Blocks.SPONGE.getDefaultState(), Constants.BlockFlags.BLOCK_UPDATE);
+				world.setBlock(blockPos, Blocks.SPONGE.defaultBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
 				addFuelAmount(1000);
 			}
 		}
 	}
-	
+
 	protected void tryToInjectFluid(World world) {
-		Direction direction = getBlockState().get(DigesterBlock.FACING).getOpposite();
-		BlockPos blockPos = getPos().offset(direction);
+		Direction direction = getBlockState().getValue(DigesterBlock.FACING).getOpposite();
+		BlockPos blockPos = getBlockPos().relative(direction);
 		LazyOptional<IFluidHandler> capability = FluidUtil.getFluidHandler(world, blockPos, Direction.UP);
 		capability.ifPresent(fluidHandler -> {
 			FluidStack fluidStack = FluidUtil.tryFluidTransfer(fluidHandler, stateData.outputTank, 1000, true);
 		});
 	}
-	
+
 	protected void tryToGetItemsFromAttachedBlock(World world) {
-		Direction direction = getBlockState().get(DigesterBlock.FACING).getOpposite();
-		BlockPos blockPos = getPos().offset(direction);
-		int maxAmount = inputInventory.getItemStackHandler().getSlotLimit(0);
-		ItemStack storedStack = inputInventory.getStackInSlot(0);
+		Direction direction = getBlockState().getValue(DigesterBlock.FACING).getOpposite();
+		BlockPos blockPos = getBlockPos().relative(direction);
+		int maxAmount = inputInventory.getItemHandler().getSlotLimit(0);
+		ItemStack storedStack = inputInventory.getItem(0);
 		int oldAmount = storedStack.getCount();
 		if (oldAmount < maxAmount / 2) {
-			TileEntity tile = world.getTileEntity(blockPos);
+			TileEntity tile = world.getBlockEntity(blockPos);
 			if (tile != null) {
 				LazyOptional<IItemHandler> capability = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, Direction.DOWN);
 				if (capability.isPresent()) {
@@ -316,8 +315,8 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 							if (amount >= maxAmount) break;
 						}
 						if (amount != oldAmount) {
-							markDirty();
-							world.playSound(null, getPos(), SoundEvents.ENTITY_GENERIC_EAT, SoundCategory.PLAYERS, 0.9F, 0.3f + world.rand.nextFloat() * 0.25f);
+							setChanged();
+							world.playSound(null, getBlockPos(), SoundEvents.GENERIC_EAT, SoundCategory.PLAYERS, 0.9F, 0.3f + world.random.nextFloat() * 0.25f);
 						}
 					});
 				}
@@ -338,17 +337,17 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 
 	@Override
 	public void dropAllInvContents(World world, BlockPos pos) {
-		InventoryHelper.dropInventoryItems(world, pos, fuelInventory);
-		InventoryHelper.dropInventoryItems(world, pos, emptyBucketOutInventory);
-		InventoryHelper.dropInventoryItems(world, pos, inputInventory);
-		InventoryHelper.dropInventoryItems(world, pos, outputInventory);
-		InventoryHelper.dropInventoryItems(world, pos, emptyBucketInInventory);
-		InventoryHelper.dropInventoryItems(world, pos, filledBucketOutInventory);
+		InventoryHelper.dropContents(world, pos, fuelInventory);
+		InventoryHelper.dropContents(world, pos, emptyBucketOutInventory);
+		InventoryHelper.dropContents(world, pos, inputInventory);
+		InventoryHelper.dropContents(world, pos, outputInventory);
+		InventoryHelper.dropContents(world, pos, emptyBucketInInventory);
+		InventoryHelper.dropContents(world, pos, filledBucketOutInventory);
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT nbt) {
-		super.write(nbt);
+	public CompoundNBT save(CompoundNBT nbt) {
+		super.save(nbt);
 		stateData.serializeNBT(nbt);
 		nbt.put("FuelSlots", fuelInventory.serializeNBT());
 		nbt.put("EmptyBucketOutSlots", emptyBucketOutInventory.serializeNBT());
@@ -360,8 +359,8 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT nbt) {
-		super.read(state, nbt);
+	public void load(BlockState state, CompoundNBT nbt) {
+		super.load(state, nbt);
 		stateData.deserializeNBT(nbt);
 		fuelInventory.deserializeNBT(nbt.getCompound("FuelSlots"));
 		emptyBucketOutInventory.deserializeNBT(nbt.getCompound("EmptyBucketOutSlots"));
@@ -370,9 +369,9 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 		emptyBucketInInventory.deserializeNBT(nbt.getCompound("EmptyBucketInSlots"));
 		filledBucketOutInventory.deserializeNBT(nbt.getCompound("FilledBucketOutSlots"));
 
-		if (fuelInventory.getSizeInventory() != FUEL_SLOTS || fuelInventory.getSizeInventory() != EMPTY_BUCKET_SLOTS
-				|| inputInventory.getSizeInventory() != INPUT_SLOTS || outputInventory.getSizeInventory() != OUTPUT_SLOTS
-				|| emptyBucketInInventory.getSizeInventory() != BUCKET_SLOTS || filledBucketOutInventory.getSizeInventory() != BUCKET_SLOTS) {
+		if (fuelInventory.getContainerSize() != FUEL_SLOTS || fuelInventory.getContainerSize() != EMPTY_BUCKET_SLOTS
+				|| inputInventory.getContainerSize() != INPUT_SLOTS || outputInventory.getContainerSize() != OUTPUT_SLOTS
+				|| emptyBucketInInventory.getContainerSize() != BUCKET_SLOTS || filledBucketOutInventory.getContainerSize() != BUCKET_SLOTS) {
 			throw new IllegalArgumentException("Corrupted NBT: Number of inventory slots did not match expected count.");
 		}
 	}
@@ -392,7 +391,7 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-		if (!removed) {
+		if (!remove) {
 			if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 				if (side == Direction.UP) return inputInventory.getOptionalItemStackHandler().cast();
 				if (side == null || side == Direction.DOWN) return outputInventory.getOptionalItemStackHandler().cast();

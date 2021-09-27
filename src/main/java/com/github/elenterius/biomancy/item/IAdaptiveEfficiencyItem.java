@@ -24,13 +24,13 @@ public interface IAdaptiveEfficiencyItem {
 
 	@OnlyIn(Dist.CLIENT)
 	static void addAdaptiveEfficiencyTooltip(ItemStack stack, List<ITextComponent> tooltip) {
-		CompoundNBT nbt = stack.getOrCreateChildTag(NBT_KEY);
+		CompoundNBT nbt = stack.getOrCreateTagElement(NBT_KEY);
 		String blockName = nbt.getString("BlockName");
 		if (!blockName.isEmpty()) {
 			float modifier = nbt.getByte("Level") * 0.5f;
 			tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
-			tooltip.add(new TranslationTextComponent(TextUtil.getTranslationKey("tooltip", "mining_bonus"), new TranslationTextComponent(blockName)).mergeStyle(TextFormatting.GRAY));
-			tooltip.add(new StringTextComponent(" +" + modifier + " ").appendSibling(new TranslationTextComponent("enchantment.minecraft.efficiency")).mergeStyle(TextFormatting.BLUE));
+			tooltip.add(new TranslationTextComponent(TextUtil.getTranslationKey("tooltip", "mining_bonus"), new TranslationTextComponent(blockName)).withStyle(TextFormatting.GRAY));
+			tooltip.add(new StringTextComponent(" +" + modifier + " ").append(new TranslationTextComponent("enchantment.minecraft.efficiency")).withStyle(TextFormatting.BLUE));
 			tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 		}
 	}
@@ -38,7 +38,7 @@ public interface IAdaptiveEfficiencyItem {
 	static float getEfficiencyModifier(ItemStack stack, BlockState state) {
 		ResourceLocation targetBlockId = state.getBlock().getRegistryName();
 		if (targetBlockId != null) {
-			CompoundNBT nbt = stack.getOrCreateChildTag(NBT_KEY);
+			CompoundNBT nbt = stack.getOrCreateTagElement(NBT_KEY);
 			if (targetBlockId.toString().equals(nbt.getString("BlockId"))) {
 				return nbt.getByte("Level") * 0.5f;
 			}
@@ -49,7 +49,7 @@ public interface IAdaptiveEfficiencyItem {
 	static void updateEfficiencyModifier(ItemStack stack, BlockState state, float baseEfficiency, float efficiencyIn) {
 		ResourceLocation targetBlockId = state.getBlock().getRegistryName();
 		if (targetBlockId != null) {
-			CompoundNBT nbt = stack.getOrCreateChildTag(NBT_KEY);
+			CompoundNBT nbt = stack.getOrCreateTagElement(NBT_KEY);
 			if (efficiencyIn >= baseEfficiency) {
 				if (targetBlockId.toString().equals(nbt.getString("BlockId"))) {
 					int level = nbt.getByte("Level");
@@ -57,7 +57,7 @@ public interface IAdaptiveEfficiencyItem {
 				}
 				else {
 					nbt.putString("BlockId", targetBlockId.toString());
-					nbt.putString("BlockName", state.getBlock().getTranslationKey());
+					nbt.putString("BlockName", state.getBlock().getDescriptionId());
 					nbt.putByte("Level", (byte) 1);
 				}
 			}

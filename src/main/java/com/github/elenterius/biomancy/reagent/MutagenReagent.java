@@ -44,12 +44,12 @@ public class MutagenReagent extends Reagent {
 
 	@Override
 	public boolean affectEntity(CompoundNBT nbt, @Nullable LivingEntity source, LivingEntity target) {
-		if (!target.world.isRemote) {
-			Collection<EffectInstance> effects = target.getActivePotionEffects();
+		if (!target.level.isClientSide) {
+			Collection<EffectInstance> effects = target.getActiveEffects();
 			int amplifier = 0;
 			int duration = 0;
 			for (EffectInstance effectInstance : effects) {
-				if (effectInstance.getPotion() == ModEffects.RAVENOUS_HUNGER.get()) {
+				if (effectInstance.getEffect() == ModEffects.RAVENOUS_HUNGER.get()) {
 					amplifier = effectInstance.getAmplifier();
 					duration = effectInstance.getDuration();
 					break;
@@ -59,11 +59,11 @@ public class MutagenReagent extends Reagent {
 			duration += 5 * 120;
 
 			if (convertLivingEntity(source, target, amplifier)) {
-				if (!target.isSilent()) target.world.playEvent(null, Constants.WorldEvents.ZOMBIE_INFECT_SOUND, target.getPosition(), 0);
+				if (!target.isSilent()) target.level.levelEvent(null, Constants.WorldEvents.ZOMBIE_INFECT_SOUND, target.blockPosition(), 0);
 			}
 			else {
 				EffectInstance effectInstance = new EffectInstance(ModEffects.RAVENOUS_HUNGER.get(), duration, amplifier);
-				target.addPotionEffect(effectInstance);
+				target.addEffect(effectInstance);
 			}
 		}
 		return true;
@@ -71,25 +71,25 @@ public class MutagenReagent extends Reagent {
 
 	@Override
 	public boolean affectPlayerSelf(CompoundNBT nbt, PlayerEntity targetSelf) {
-		if (!targetSelf.world.isRemote) {
-			Collection<EffectInstance> effects = targetSelf.getActivePotionEffects();
+		if (!targetSelf.level.isClientSide) {
+			Collection<EffectInstance> effects = targetSelf.getActiveEffects();
 			int amplifier = 0;
 			int duration = 0;
 			for (EffectInstance effectInstance : effects) {
-				if (effectInstance.getPotion() == ModEffects.RAVENOUS_HUNGER.get()) {
+				if (effectInstance.getEffect() == ModEffects.RAVENOUS_HUNGER.get()) {
 					amplifier = effectInstance.getAmplifier() + 1;
 					duration = effectInstance.getDuration();
 					break;
 				}
 			}
 			EffectInstance effectInstance = new EffectInstance(ModEffects.RAVENOUS_HUNGER.get(), 5 * 120 + duration, amplifier);
-			targetSelf.addPotionEffect(effectInstance);
+			targetSelf.addEffect(effectInstance);
 		}
 		return true;
 	}
 
 	private boolean convertLivingEntity(@Nullable LivingEntity source, LivingEntity target, int amplifier) {
-		ServerWorld world = (ServerWorld) target.world;
+		ServerWorld world = (ServerWorld) target.level;
 		if (amplifier < 1) return false;
 
 		if (target instanceof GuardianEntity) {
@@ -99,7 +99,7 @@ public class MutagenReagent extends Reagent {
 			return MobUtil.convertMobEntityTo(world, (VillagerEntity) target, EntityType.PILLAGER, false);
 		}
 		else if (target instanceof SheepEntity && !(target instanceof FailedSheepEntity)) {
-			float v = world.rand.nextFloat();
+			float v = world.random.nextFloat();
 			if (v < 0.04f)
 				return MobUtil.convertMobEntityTo(world, (SheepEntity) target, ModEntityTypes.CHROMA_SHEEP.get());
 			else if (v < 0.2f)
@@ -113,9 +113,9 @@ public class MutagenReagent extends Reagent {
 			return convertFleshBlob(world, source, (FleshBlobEntity) target);
 		}
 		else if (target instanceof AnimalEntity && !(target instanceof TameableEntity) && !(target instanceof IOwnableCreature)) {
-			if (world.rand.nextFloat() < 0.4f) {
+			if (world.random.nextFloat() < 0.4f) {
 				return MobUtil.convertMobEntityTo(world, (AnimalEntity) target, ModEntityTypes.FLESH_BLOB.get(), true, (oldEntity, outcome) -> {
-					int size = MathHelper.clamp(Math.round(oldEntity.getSize(Pose.STANDING).height), 1, 10);
+					int size = MathHelper.clamp(Math.round(oldEntity.getDimensions(Pose.STANDING).height), 1, 10);
 					if (size > 1) outcome.setBlobSize((byte) size, true);
 				});
 			}
@@ -125,7 +125,7 @@ public class MutagenReagent extends Reagent {
 	}
 
 	private boolean convertFleshBlob(ServerWorld world, @Nullable LivingEntity source, FleshBlobEntity target) {
-		if (world.rand.nextFloat() < 0.7f && target.getBlobSize() < 6 && target.hasForeignEntityDNA()) {
+		if (world.random.nextFloat() < 0.7f && target.getBlobSize() < 6 && target.hasForeignEntityDNA()) {
 			List<EntityType<?>> entityDNAs = target.getForeignEntityDNA();
 			if (entityDNAs != null) {
 				int dnaCount = entityDNAs.size();
@@ -133,11 +133,11 @@ public class MutagenReagent extends Reagent {
 					EntityType<?> entityType = entityDNAs.get(0);
 					if (entityType == EntityType.PLAYER) {
 						return MobUtil.convertMobEntityTo(world, target, ModEntityTypes.FLESHKIN.get(), false, (fleshBlob, fleshkin) -> {
-							if (!fleshBlob.isHangry() && source != null) fleshkin.setOwnerUUID(source.getUniqueID());
-							fleshkin.setChild(target.getBlobSize() < 5);
+							if (!fleshBlob.isHangry() && source != null) fleshkin.setOwnerUUID(source.getUUID());
+							fleshkin.setBaby(target.getBlobSize() < 5);
 						});
 					}
-					else if (entityType == EntityType.BAT && world.rand.nextFloat() < 0.2f) {
+					else if (entityType == EntityType.BAT && world.random.nextFloat() < 0.2f) {
 						return MobUtil.convertLivingEntityTo(world, target, ModEntityTypes.OCULUS_OBSERVER.get());
 					}
 
@@ -149,7 +149,7 @@ public class MutagenReagent extends Reagent {
 					if ((typeA == EntityType.CAVE_SPIDER && typeB == EntityType.CREEPER) || (typeB == EntityType.CAVE_SPIDER && typeA == EntityType.CREEPER)) {
 						return MobUtil.convertMobEntityTo(world, target, ModEntityTypes.BOOMLING.get(), false, (fleshBlobEntity, boomlingEntity) -> {
 							//set owner to make it possible for the owner to pick it up
-							if (source != null) boomlingEntity.setOwnerUUID(source.getUniqueID());
+							if (source != null) boomlingEntity.setOwnerUUID(source.getUUID());
 							//because boomlingEntity.onInitialSpawn() was called by MobUtil.convertMobEntityTo() we need to reset the potion
 							boomlingEntity.setStoredPotion(ItemStack.EMPTY);
 						});
@@ -162,9 +162,9 @@ public class MutagenReagent extends Reagent {
 				}
 
 				float v = 0.15f + 0.07f * dnaCount;
-				if (world.rand.nextFloat() < v) {
+				if (world.random.nextFloat() < v) {
 					Explosion.Mode mode = ForgeEventFactory.getMobGriefingEvent(world, target) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
-					world.createExplosion(target, target.getPosX(), target.getPosY(), target.getPosZ(), target.getBlobSize() + 4f * v, mode);
+					world.explode(target, target.getX(), target.getY(), target.getZ(), target.getBlobSize() + 4f * v, mode);
 					target.remove();
 				}
 			}

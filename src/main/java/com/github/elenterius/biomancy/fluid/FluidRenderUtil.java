@@ -44,8 +44,8 @@ public final class FluidRenderUtil {
 	private FluidRenderUtil() {}
 
 	public static void drawTiledSprite(Minecraft mc, MatrixStack matrixStack, final int xPos, final int yPos, final int width, final int height, int color, int scaledAmount, TextureAtlasSprite sprite) {
-		mc.getTextureManager().bindTexture(PlayerContainer.LOCATION_BLOCKS_TEXTURE);
-		Matrix4f matrix = matrixStack.getLast().getMatrix();
+		mc.getTextureManager().bind(PlayerContainer.BLOCK_ATLAS);
+		Matrix4f matrix = matrixStack.last().pose();
 
 		float red = (color >> 16 & 0xFF) / 255f;
 		float green = (color >> 8 & 0xFF) / 255f;
@@ -74,20 +74,20 @@ public final class FluidRenderUtil {
 	}
 
 	private static void drawSpriteWithMasking(Matrix4f matrix, float x1, float y1, int maskTop, int maskRight, float zLevel, TextureAtlasSprite sprite) {
-		float minU = sprite.getMinU();
-		float maxU = sprite.getMaxU();
-		float minV = sprite.getMinV();
-		float maxV = sprite.getMaxV();
+		float minU = sprite.getU0();
+		float maxU = sprite.getU1();
+		float minV = sprite.getV0();
+		float maxV = sprite.getV1();
 		maxU = maxU - (maskRight / 16f * (maxU - minU));
 		maxV = maxV - (maskTop / 16f * (maxV - minV));
 
 		Tessellator tessellator = Tessellator.getInstance();
-		BufferBuilder bufferBuilder = tessellator.getBuffer();
+		BufferBuilder bufferBuilder = tessellator.getBuilder();
 		bufferBuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-		bufferBuilder.pos(matrix, x1, y1 + 16, zLevel).tex(minU, maxV).endVertex();
-		bufferBuilder.pos(matrix, x1 + 16 - maskRight, y1 + 16, zLevel).tex(maxU, maxV).endVertex();
-		bufferBuilder.pos(matrix, x1 + 16 - maskRight, y1 + maskTop, zLevel).tex(maxU, minV).endVertex();
-		bufferBuilder.pos(matrix, x1, y1 + maskTop, zLevel).tex(minU, minV).endVertex();
-		tessellator.draw();
+		bufferBuilder.vertex(matrix, x1, y1 + 16, zLevel).uv(minU, maxV).endVertex();
+		bufferBuilder.vertex(matrix, x1 + 16 - maskRight, y1 + 16, zLevel).uv(maxU, maxV).endVertex();
+		bufferBuilder.vertex(matrix, x1 + 16 - maskRight, y1 + maskTop, zLevel).uv(maxU, minV).endVertex();
+		bufferBuilder.vertex(matrix, x1, y1 + maskTop, zLevel).uv(minU, minV).endVertex();
+		tessellator.end();
 	}
 }

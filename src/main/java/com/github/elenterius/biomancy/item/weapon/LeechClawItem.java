@@ -33,7 +33,7 @@ public class LeechClawItem extends ClawWeaponItem {
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).setStyle(ClientTextUtil.LORE_STYLE));
 		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 	}
@@ -50,12 +50,12 @@ public class LeechClawItem extends ClawWeaponItem {
 	public void onCriticalHitEntity(ItemStack stack, LivingEntity attacker, LivingEntity target) {
 		super.onCriticalHitEntity(stack, attacker, target);
 
-		EffectInstance effect = attacker.getActivePotionEffect(Effects.ABSORPTION);
+		EffectInstance effect = attacker.getEffect(Effects.ABSORPTION);
 		if (effect != null) {
-			attacker.addPotionEffect(new EffectInstance(Effects.ABSORPTION, 15 * 20, Math.min(4, effect.getAmplifier() + 1)));
+			attacker.addEffect(new EffectInstance(Effects.ABSORPTION, 15 * 20, Math.min(4, effect.getAmplifier() + 1)));
 		}
 		else {
-			attacker.addPotionEffect(new EffectInstance(Effects.ABSORPTION, 15 * 20, 0));
+			attacker.addEffect(new EffectInstance(Effects.ABSORPTION, 15 * 20, 0));
 		}
 	}
 
@@ -63,7 +63,7 @@ public class LeechClawItem extends ClawWeaponItem {
 	public void onDamageEntity(ItemStack stack, LivingEntity attacker, LivingEntity target, float amount) {
 		super.onDamageEntity(stack, attacker, target, amount);
 
-		if (!attacker.world.isRemote()) {
+		if (!attacker.level.isClientSide()) {
 			attacker.heal(amount * 0.1f); // Heal the wielder by 10% of the damage dealt
 		}
 	}

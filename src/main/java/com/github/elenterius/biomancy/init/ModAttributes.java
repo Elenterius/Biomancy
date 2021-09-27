@@ -16,7 +16,7 @@ public final class ModAttributes {
 	public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(Attribute.class, BiomancyMod.MOD_ID);
 
 	@Deprecated //TODO: remove when forge merges https://github.com/MinecraftForge/MinecraftForge/pull/7808
-	public static final RegistryObject<Attribute> ATTACK_DISTANCE_MODIFIER = ATTRIBUTES.register("attack_distance", () -> new RangedAttribute("attribute.generic.attack_distance", 0, -5, 5).setShouldWatch(true));
+	public static final RegistryObject<Attribute> ATTACK_DISTANCE_MODIFIER = ATTRIBUTES.register("attack_distance", () -> new RangedAttribute("attribute.generic.attack_distance", 0, -5, 5).setSyncable(true));
 
 	private ModAttributes() {}
 

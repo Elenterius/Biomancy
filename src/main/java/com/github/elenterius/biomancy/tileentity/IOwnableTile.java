@@ -57,6 +57,6 @@ public interface IOwnableTile {
 
 	default boolean isUserAuthorized(PlayerEntity player) {
 		if (player.isCreative()) return true;
-		return isUserAuthorized(player.getUniqueID());
+		return isUserAuthorized(player.getUUID());
 	}
 }

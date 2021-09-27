@@ -23,28 +23,28 @@ public class MutatedFleshBlock extends FleshBlock {
 
 	public MutatedFleshBlock(Properties properties) {
 		super(properties);
-		setDefaultState(stateContainer.getBaseState().with(MUTATION_TYPE, MutationType.EYE_0));
+		registerDefaultState(stateDefinition.any().setValue(MUTATION_TYPE, MutationType.EYE_0));
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(MUTATION_TYPE);
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		ItemStack stack = player.getHeldItem(handIn);
+	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+		ItemStack stack = player.getItemInHand(handIn);
 		if (stack.getItem() == ModItems.MUTAGENIC_BILE.get()) {
-			if (!worldIn.isRemote) {
-				if (!player.abilities.isCreativeMode) {
+			if (!worldIn.isClientSide) {
+				if (!player.abilities.instabuild) {
 					stack.shrink(1);
 				}
-				BlockState newState = state.with(MUTATION_TYPE, MutationType.pickRandom(worldIn.rand));
+				BlockState newState = state.setValue(MUTATION_TYPE, MutationType.pickRandom(worldIn.random));
 				if (newState != state) {
-					worldIn.setBlockState(pos, newState, Constants.BlockFlags.BLOCK_UPDATE);
+					worldIn.setBlock(pos, newState, Constants.BlockFlags.BLOCK_UPDATE);
 				}
 			}
-			return ActionResultType.func_233537_a_(worldIn.isRemote);
+			return ActionResultType.sidedSuccess(worldIn.isClientSide);
 		}
 		else {
 			return ActionResultType.PASS;
@@ -75,7 +75,7 @@ public class MutatedFleshBlock extends FleshBlock {
 		}
 
 		@Override
-		public String getString() {
+		public String getSerializedName() {
 			return name;
 		}
 

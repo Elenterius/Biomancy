@@ -11,27 +11,27 @@ public class RavenousHungerTargetGoal<T extends LivingEntity> extends NearestAtt
 	}
 
 	@Override
-	public boolean shouldExecute() {
+	public boolean canUse() {
 		//noinspection ConstantConditions
-		if (goalOwner.isPotionActive(ModEffects.RAVENOUS_HUNGER.get()) && goalOwner.getActivePotionEffect(ModEffects.RAVENOUS_HUNGER.get()).getDuration() > 0) {
-			return super.shouldExecute();
+		if (mob.hasEffect(ModEffects.RAVENOUS_HUNGER.get()) && mob.getEffect(ModEffects.RAVENOUS_HUNGER.get()).getDuration() > 0) {
+			return super.canUse();
 		}
 		return false;
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
+	public boolean canContinueToUse() {
 		//noinspection ConstantConditions
-		if (!goalOwner.isPotionActive(ModEffects.RAVENOUS_HUNGER.get()) || goalOwner.getActivePotionEffect(ModEffects.RAVENOUS_HUNGER.get()).getDuration() < 1) {
-			resetTask();
+		if (!mob.hasEffect(ModEffects.RAVENOUS_HUNGER.get()) || mob.getEffect(ModEffects.RAVENOUS_HUNGER.get()).getDuration() < 1) {
+			stop();
 			return false;
 		}
-		return super.shouldContinueExecuting();
+		return super.canContinueToUse();
 	}
 
 	@Override
-	public void resetTask() {
-		setNearestTarget(null);
-		super.resetTask();
+	public void stop() {
+		setTarget(null);
+		super.stop();
 	}
 }

@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(SwordItem.class)
 public interface SwordItemMixinAccessor {
 
-	@Accessor("attributeModifiers")
+	@Accessor("defaultModifiers")
 	Multimap<Attribute, AttributeModifier> biomancy_attributeModifiers();
 
 }

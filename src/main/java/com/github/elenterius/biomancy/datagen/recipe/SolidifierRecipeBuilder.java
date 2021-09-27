@@ -27,7 +27,7 @@ public class SolidifierRecipeBuilder {
 	private final Item result;
 	private final int count;
 	private final int craftingTime;
-	private final Advancement.Builder advancementBuilder = Advancement.Builder.builder();
+	private final Advancement.Builder advancementBuilder = Advancement.Builder.advancement();
 	private FluidIngredient fluidIngredient;
 	private String group;
 
@@ -70,7 +70,7 @@ public class SolidifierRecipeBuilder {
 	}
 
 	public SolidifierRecipeBuilder addCriterion(String name, ICriterionInstance criterionIn) {
-		advancementBuilder.withCriterion(name, criterionIn);
+		advancementBuilder.addCriterion(name, criterionIn);
 		return this;
 	}
 
@@ -113,8 +113,8 @@ public class SolidifierRecipeBuilder {
 
 	private void build(Consumer<IFinishedRecipe> consumerIn, ResourceLocation id) {
 		validate(id);
-		advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.create(id)).withRewards(AdvancementRewards.Builder.recipe(id)).withRequirementsStrategy(IRequirementsStrategy.OR);
-		consumerIn.accept(new Result(id, result, craftingTime, count, group == null ? "" : group, fluidIngredient, advancementBuilder, new ResourceLocation(id.getNamespace(), "recipes/" + (result.getGroup() != null ? result.getGroup().getPath() : BiomancyMod.MOD_ID) + "/" + id.getPath())));
+		advancementBuilder.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id)).rewards(AdvancementRewards.Builder.recipe(id)).requirements(IRequirementsStrategy.OR);
+		consumerIn.accept(new Result(id, result, craftingTime, count, group == null ? "" : group, fluidIngredient, advancementBuilder, new ResourceLocation(id.getNamespace(), "recipes/" + (result.getItemCategory() != null ? result.getItemCategory().getRecipeFolderName() : BiomancyMod.MOD_ID) + "/" + id.getPath())));
 	}
 
 	private void validate(ResourceLocation id) {
@@ -144,7 +144,7 @@ public class SolidifierRecipeBuilder {
 			advancementId = advancementIdIn;
 		}
 
-		public void serialize(JsonObject json) {
+		public void serializeRecipeData(JsonObject json) {
 			if (!group.isEmpty()) json.addProperty("group", group);
 
 			json.add("ingredient", ingredient.serialize());
@@ -159,21 +159,21 @@ public class SolidifierRecipeBuilder {
 			json.addProperty("time", craftingTime);
 		}
 
-		public IRecipeSerializer<?> getSerializer() {
+		public IRecipeSerializer<?> getType() {
 			return ModRecipes.SOLIDIFIER_SERIALIZER.get();
 		}
 
-		public ResourceLocation getID() {
+		public ResourceLocation getId() {
 			return id;
 		}
 
 		@Nullable
-		public JsonObject getAdvancementJson() {
-			return advancementBuilder.serialize();
+		public JsonObject serializeAdvancement() {
+			return advancementBuilder.serializeToJson();
 		}
 
 		@Nullable
-		public ResourceLocation getAdvancementID() {
+		public ResourceLocation getAdvancementId() {
 			return advancementId;
 		}
 	}

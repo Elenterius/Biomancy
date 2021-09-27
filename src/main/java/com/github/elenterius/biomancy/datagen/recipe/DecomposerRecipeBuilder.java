@@ -32,7 +32,7 @@ public class DecomposerRecipeBuilder {
 	private int ingredientCount = 0;
 	private final List<Byproduct> byproducts = new ArrayList<>();
 	private final int craftingTime;
-	private final Advancement.Builder advancementBuilder = Advancement.Builder.builder();
+	private final Advancement.Builder advancementBuilder = Advancement.Builder.advancement();
 	private String group;
 
 	private DecomposerRecipeBuilder(IItemProvider resultIn, int craftingTimeIn, int countIn) {
@@ -53,11 +53,11 @@ public class DecomposerRecipeBuilder {
 	}
 
 	public DecomposerRecipeBuilder setIngredient(ITag<Item> tagIn) {
-		return setIngredient(Ingredient.fromTag(tagIn));
+		return setIngredient(Ingredient.of(tagIn));
 	}
 
 	public DecomposerRecipeBuilder setIngredient(ITag<Item> tagIn, int quantity) {
-		return setIngredient(Ingredient.fromTag(tagIn), quantity);
+		return setIngredient(Ingredient.of(tagIn), quantity);
 	}
 
 	public DecomposerRecipeBuilder setIngredient(IItemProvider itemIn) {
@@ -69,7 +69,7 @@ public class DecomposerRecipeBuilder {
 	}
 
 	public DecomposerRecipeBuilder setIngredient(IItemProvider itemIn, int quantity) {
-		setIngredient(Ingredient.fromItems(itemIn), quantity);
+		setIngredient(Ingredient.of(itemIn), quantity);
 		return this;
 	}
 
@@ -102,7 +102,7 @@ public class DecomposerRecipeBuilder {
 	}
 
 	public DecomposerRecipeBuilder addCriterion(String name, ICriterionInstance criterionIn) {
-		advancementBuilder.withCriterion(name, criterionIn);
+		advancementBuilder.addCriterion(name, criterionIn);
 		return this;
 	}
 
@@ -142,8 +142,8 @@ public class DecomposerRecipeBuilder {
 
 	private void build(Consumer<IFinishedRecipe> consumerIn, ResourceLocation id) {
 		validate(id);
-		advancementBuilder.withParentId(new ResourceLocation("recipes/root")).withCriterion("has_the_recipe", RecipeUnlockedTrigger.create(id)).withRewards(AdvancementRewards.Builder.recipe(id)).withRequirementsStrategy(IRequirementsStrategy.OR);
-		consumerIn.accept(new Result(id, result, craftingTime, count, this.group == null ? "" : group, ingredient, ingredientCount, byproducts, advancementBuilder, new ResourceLocation(id.getNamespace(), "recipes/" + (result.getGroup() != null ? result.getGroup().getPath() : BiomancyMod.MOD_ID) + "/" + id.getPath())));
+		advancementBuilder.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id)).rewards(AdvancementRewards.Builder.recipe(id)).requirements(IRequirementsStrategy.OR);
+		consumerIn.accept(new Result(id, result, craftingTime, count, this.group == null ? "" : group, ingredient, ingredientCount, byproducts, advancementBuilder, new ResourceLocation(id.getNamespace(), "recipes/" + (result.getItemCategory() != null ? result.getItemCategory().getRecipeFolderName() : BiomancyMod.MOD_ID) + "/" + id.getPath())));
 	}
 
 	private void validate(ResourceLocation id) {
@@ -177,13 +177,13 @@ public class DecomposerRecipeBuilder {
 			advancementId = advancementIdIn;
 		}
 
-		public void serialize(JsonObject json) {
+		public void serializeRecipeData(JsonObject json) {
 			if (!this.group.isEmpty()) {
 				json.addProperty("group", this.group);
 			}
 
 			JsonObject input = new JsonObject();
-			input.add("ingredient", ingredient.serialize());
+			input.add("ingredient", ingredient.toJson());
 			if (ingredientCount > 0) input.addProperty("count", ingredientCount);
 			json.add("input", input);
 
@@ -201,21 +201,21 @@ public class DecomposerRecipeBuilder {
 			json.addProperty("time", craftingTime);
 		}
 
-		public IRecipeSerializer<?> getSerializer() {
+		public IRecipeSerializer<?> getType() {
 			return ModRecipes.DECOMPOSING_SERIALIZER.get();
 		}
 
-		public ResourceLocation getID() {
+		public ResourceLocation getId() {
 			return id;
 		}
 
 		@Nullable
-		public JsonObject getAdvancementJson() {
-			return advancementBuilder.serialize();
+		public JsonObject serializeAdvancement() {
+			return advancementBuilder.serializeToJson();
 		}
 
 		@Nullable
-		public ResourceLocation getAdvancementID() {
+		public ResourceLocation getAdvancementId() {
 			return advancementId;
 		}
 	}

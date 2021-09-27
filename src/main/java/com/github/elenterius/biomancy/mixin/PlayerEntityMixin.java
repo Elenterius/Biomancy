@@ -23,16 +23,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class PlayerEntityMixin {
 
 	@Deprecated
-	@Inject(method = "func_234570_el_", at = @At(value = "RETURN"))
+	@Inject(method = "createAttributes", at = @At(value = "RETURN"))
 	private static void biomancy_onRegisterAttributes(CallbackInfoReturnable<AttributeModifierMap.MutableAttribute> cir) {
 		BiomancyMod.LOGGER.debug(MarkerManager.getMarker("ATTRIBUTE INJECTION"), "adding attack distance attribute to player...");
-		cir.getReturnValue().createMutableAttribute(ModAttributes.getAttackDistanceModifier());
+		cir.getReturnValue().add(ModAttributes.getAttackDistanceModifier());
 	}
 
 	@Deprecated
-	@Redirect(method = "attackTargetEntityWithCurrentItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;getDistanceSq(Lnet/minecraft/entity/Entity;)D"))
+	@Redirect(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;distanceToSqr(Lnet/minecraft/entity/Entity;)D"))
 	protected double biomancy_transformSweepDistSq(PlayerEntity playerEntity, Entity entityIn) {
-		double distSq = playerEntity.getDistanceSq(entityIn);
+		double distSq = playerEntity.distanceToSqr(entityIn);
 		double maxDist = ModAttributes.getCombinedReachDistance(playerEntity);
 		if (distSq < maxDist * maxDist) {
 			return distSq < 9d ? distSq : 8.99d; //hack to allow sweep attacks with attack distance greater than 3/4 ?
@@ -40,7 +40,7 @@ public abstract class PlayerEntityMixin {
 		return distSq;
 	}
 
-	@Redirect(method = "attackTargetEntityWithCurrentItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getModifierForCreature(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/CreatureAttribute;)F"))
+	@Redirect(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/enchantment/EnchantmentHelper;getDamageBonus(Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/CreatureAttribute;)F"))
 	protected float biomancy_transformExtraDamageModifier(ItemStack stack, CreatureAttribute creatureAttribute, Entity targetEntity) {
 		if (!stack.isEmpty()) {
 			float modifier = 0f;
@@ -49,10 +49,10 @@ public abstract class PlayerEntityMixin {
 			if (stack.getItem() == ModItems.FLESHBORN_GUAN_DAO.get())
 				modifier += FleshbornGuanDaoItem.getAttackDamageModifier(stack, (PlayerEntity) (Object) this, targetEntity);
 
-			return EnchantmentHelper.getModifierForCreature(stack, creatureAttribute) + modifier;
+			return EnchantmentHelper.getDamageBonus(stack, creatureAttribute) + modifier;
 		}
 		else {
-			return EnchantmentHelper.getModifierForCreature(stack, creatureAttribute);
+			return EnchantmentHelper.getDamageBonus(stack, creatureAttribute);
 		}
 	}
 

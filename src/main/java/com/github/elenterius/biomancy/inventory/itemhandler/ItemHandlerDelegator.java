@@ -1,6 +1,8 @@
 package com.github.elenterius.biomancy.inventory.itemhandler;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
@@ -12,7 +14,7 @@ import java.util.function.Predicate;
  *
  * @param <ISH> the ItemStackHandler to delegate
  */
-public abstract class ItemHandlerDelegator<ISH extends IItemHandler & IItemHandlerModifiable> implements IItemHandler, IItemHandlerModifiable {
+public abstract class ItemHandlerDelegator<ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> implements IItemHandler, IItemHandlerModifiable, INBTSerializable<CompoundNBT> {
 
 	protected final ISH itemStackHandler;
 
@@ -58,10 +60,20 @@ public abstract class ItemHandlerDelegator<ISH extends IItemHandler & IItemHandl
 		return itemStackHandler.isItemValid(slot, stack);
 	}
 
+	@Override
+	public CompoundNBT serializeNBT() {
+		return itemStackHandler.serializeNBT();
+	}
+
+	@Override
+	public void deserializeNBT(CompoundNBT nbt) {
+		itemStackHandler.deserializeNBT(nbt);
+	}
+
 	/**
 	 * prevents item insertion, therefore only allowing item extraction (e.g. output slots).
 	 */
-	public static class DenyInput<ISH extends IItemHandler & IItemHandlerModifiable> extends ItemHandlerDelegator<ISH> {
+	public static class DenyInput<ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> extends ItemHandlerDelegator<ISH> {
 
 		public DenyInput(ISH itemStackHandlerIn) {
 			super(itemStackHandlerIn);
@@ -83,7 +95,7 @@ public abstract class ItemHandlerDelegator<ISH extends IItemHandler & IItemHandl
 	/**
 	 * only allows item insertion of matching items
 	 */
-	public static class FilterInput<ISH extends IItemHandler & IItemHandlerModifiable> extends ItemHandlerDelegator<ISH> {
+	public static class FilterInput<ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> extends ItemHandlerDelegator<ISH> {
 
 		private final Predicate<ItemStack> validItems;
 

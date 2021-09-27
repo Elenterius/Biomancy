@@ -24,12 +24,12 @@ public class FleshBlobRenderer extends MobRenderer<FleshBlobEntity, FleshBlobMod
 
 	@Override
 	public void render(FleshBlobEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-		shadowSize = 0.65f * (0.5f + entityIn.getBlobSize() * 0.5f);
+		shadowRadius = 0.65f * (0.5f + entityIn.getBlobSize() * 0.5f);
 		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 	}
 
 	@Override
-	protected void preRenderCallback(FleshBlobEntity entity, MatrixStack matrixStackIn, float partialTickTime) {
+	protected void scale(FleshBlobEntity entity, MatrixStack matrixStackIn, float partialTickTime) {
 		matrixStackIn.scale(0.999f, 0.999f, 0.999f);
 		matrixStackIn.translate(0, 0.001f, 0);
 		float x = 0.5f + entity.getBlobSize() * 0.5f;
@@ -38,7 +38,7 @@ public class FleshBlobRenderer extends MobRenderer<FleshBlobEntity, FleshBlobMod
 
 	@Override
 	@Nonnull
-	public ResourceLocation getEntityTexture(FleshBlobEntity entity) {
+	public ResourceLocation getTextureLocation(FleshBlobEntity entity) {
 		return entity.getFleshBlobData() == 1 ? AGGRESSIVE_TEXTURE : TEXTURE;
 	}
 

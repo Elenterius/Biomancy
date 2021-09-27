@@ -12,7 +12,7 @@ public class NonNestingSlot extends Slot {
 	}
 
 	@Override
-	public boolean isItemValid(ItemStack stack) {
+	public boolean mayPlace(ItemStack stack) {
 		//only allow empty item inventories
 		return HandlerBehaviors.EMPTY_ITEM_INVENTORY_PREDICATE.test(stack);
 	}

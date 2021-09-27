@@ -40,17 +40,17 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 
 	@Override
 	public boolean matches(IInventory inv, World worldIn) {
-		ItemStack stack = inv.getStackInSlot(0);
+		ItemStack stack = inv.getItem(0);
 		return ingredient.test(stack) && stack.getCount() >= ingredientCount;
 	}
 
 	@Override
-	public ItemStack getCraftingResult(IInventory inv) {
+	public ItemStack assemble(IInventory inv) {
 		return recipeResult.copy();
 	}
 
 	@Override
-	public boolean canFit(int width, int height) {
+	public boolean canCraftInDimensions(int width, int height) {
 		return width * height == 1;
 	}
 
@@ -74,7 +74,7 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 	}
 
 	@Override
-	public ItemStack getRecipeOutput() {
+	public ItemStack getResultItem() {
 		return recipeResult;
 	}
 
@@ -91,8 +91,8 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 	public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<DecomposerRecipe> {
 
 		private static Ingredient readIngredient(JsonObject jsonObj) {
-			if (JSONUtils.isJsonArray(jsonObj, "ingredient")) return Ingredient.deserialize(JSONUtils.getJsonArray(jsonObj, "ingredient"));
-			else return Ingredient.deserialize(JSONUtils.getJsonObject(jsonObj, "ingredient"));
+			if (JSONUtils.isArrayNode(jsonObj, "ingredient")) return Ingredient.fromJson(JSONUtils.getAsJsonArray(jsonObj, "ingredient"));
+			else return Ingredient.fromJson(JSONUtils.getAsJsonObject(jsonObj, "ingredient"));
 		}
 
 		private static List<Byproduct> readByproducts(JsonArray jsonArray) {
@@ -104,26 +104,26 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 		}
 
 		@Override
-		public DecomposerRecipe read(ResourceLocation recipeId, JsonObject json) {
-			JsonObject input = JSONUtils.getJsonObject(json, "input");
+		public DecomposerRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
+			JsonObject input = JSONUtils.getAsJsonObject(json, "input");
 			Ingredient ingredient = readIngredient(input);
-			int ingredientCount = JSONUtils.getInt(input, "count", 1);
+			int ingredientCount = JSONUtils.getAsInt(input, "count", 1);
 
-			List<Byproduct> byproducts = readByproducts(JSONUtils.getJsonArray(json, "byproducts"));
+			List<Byproduct> byproducts = readByproducts(JSONUtils.getAsJsonArray(json, "byproducts"));
 			if (byproducts.size() > MAX_BYPRODUCTS) {
 				throw new JsonParseException(String.format("Too many byproducts for %s recipe. Max amount is %d", getRegistryName(), MAX_BYPRODUCTS));
 			}
 
-			ItemStack resultStack = ShapedRecipe.deserializeItem(JSONUtils.getJsonObject(json, "result"));
-			int time = JSONUtils.getInt(json, "time", 100);
+			ItemStack resultStack = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "result"));
+			int time = JSONUtils.getAsInt(json, "time", 100);
 
 			return new DecomposerRecipe(recipeId, resultStack, time, ingredient, ingredientCount, byproducts);
 		}
 
 		@Override
-		public DecomposerRecipe read(ResourceLocation recipeId, PacketBuffer buffer) {
+		public DecomposerRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer) {
 			//client side
-			ItemStack resultStack = buffer.readItemStack();
+			ItemStack resultStack = buffer.readItem();
 			int time = buffer.readInt();
 
 			int byproductCount = buffer.readVarInt();
@@ -132,16 +132,16 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 				byproducts.add(Byproduct.read(buffer));
 			}
 
-			Ingredient ingredient = Ingredient.read(buffer);
+			Ingredient ingredient = Ingredient.fromNetwork(buffer);
 			int ingredientCount = buffer.readVarInt();
 
 			return new DecomposerRecipe(recipeId, resultStack, time, ingredient, ingredientCount, byproducts);
 		}
 
 		@Override
-		public void write(PacketBuffer buffer, DecomposerRecipe recipe) {
+		public void toNetwork(PacketBuffer buffer, DecomposerRecipe recipe) {
 			//server side
-			buffer.writeItemStack(recipe.recipeResult);
+			buffer.writeItem(recipe.recipeResult);
 			buffer.writeInt(recipe.getCraftingTime());
 
 			buffer.writeVarInt(recipe.byproducts.size());
@@ -149,7 +149,7 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 				byproduct.write(buffer);
 			}
 
-			recipe.ingredient.write(buffer);
+			recipe.ingredient.toNetwork(buffer);
 			buffer.writeVarInt(recipe.ingredientCount);
 		}
 	}

@@ -31,8 +31,8 @@ public class OwnableTileEntityDelegator extends SimpleSyncedTileEntity implement
 
 	@Nullable
 	public TileEntity getDelegate() {
-		if (world != null && isValid && !removed) {
-			TileEntity tileEntity = world.getTileEntity(delegatePos);
+		if (level != null && isValid && !remove) {
+			TileEntity tileEntity = level.getBlockEntity(delegatePos);
 			if (tileEntity != null && (tileEntity == this || tileEntity.isRemoved())) { //catch self reference
 				setDelegate(null);
 				return null;
@@ -51,28 +51,28 @@ public class OwnableTileEntityDelegator extends SimpleSyncedTileEntity implement
 			isValid = false;
 		}
 		if (tileEntity != null) {
-			delegatePos = tileEntity.getPos();
+			delegatePos = tileEntity.getBlockPos();
 			isValid = true;
 		}
 	}
 
 	@Override
-	public void read(BlockState state, CompoundNBT nbt) {
-		super.read(state, nbt);
+	public void load(BlockState state, CompoundNBT nbt) {
+		super.load(state, nbt);
 
 		isValid = false;
 		if (nbt.contains("DelegatePos")) {
-			delegatePos = BlockPos.fromLong(nbt.getLong("DelegatePos"));
+			delegatePos = BlockPos.of(nbt.getLong("DelegatePos"));
 			isValid = true;
 		}
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT nbt) {
-		nbt = super.write(nbt);
+	public CompoundNBT save(CompoundNBT nbt) {
+		nbt = super.save(nbt);
 
 		if (isValid) {
-			nbt.putLong("DelegatePos", delegatePos.toLong());
+			nbt.putLong("DelegatePos", delegatePos.asLong());
 		}
 		return nbt;
 	}
@@ -80,7 +80,7 @@ public class OwnableTileEntityDelegator extends SimpleSyncedTileEntity implement
 	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-		if (!removed) {
+		if (!remove) {
 			TileEntity delegate = getDelegate();
 			if (delegate != null && !delegate.isRemoved()) {
 				return delegate.getCapability(cap, side);

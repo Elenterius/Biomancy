@@ -40,61 +40,61 @@ import java.util.List;
 public class GulgeBlock extends OwnableContainerBlock {
 	public static final EnumProperty<Direction> FACING = DirectionalBlock.FACING;
 
-	protected static final VoxelShape SHAPE_UD = Block.makeCuboidShape(3d, 0d, 3d, 13d, 16d, 13d);
-	protected static final VoxelShape SHAPE_NS = Block.makeCuboidShape(3d, 3d, 0d, 13d, 13d, 16d);
-	protected static final VoxelShape SHAPE_WE = Block.makeCuboidShape(0d, 3d, 3d, 16d, 13d, 13d);
+	protected static final VoxelShape SHAPE_UD = Block.box(3d, 0d, 3d, 13d, 16d, 13d);
+	protected static final VoxelShape SHAPE_NS = Block.box(3d, 3d, 0d, 13d, 13d, 16d);
+	protected static final VoxelShape SHAPE_WE = Block.box(0d, 3d, 3d, 16d, 13d, 13d);
 
 	public GulgeBlock(Properties builder) {
 		super(builder);
-		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.UP));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.UP));
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		return this.getDefaultState().with(FACING, context.getFace());
+		return this.defaultBlockState().setValue(FACING, context.getClickedFace());
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(FACING);
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 
-		CompoundNBT nbt = stack.getChildTag("BlockEntityTag");
+		CompoundNBT nbt = stack.getTagElement("BlockEntityTag");
 		if (nbt != null) {
 			CompoundNBT contents = nbt.getCompound("Inventory");
 			if (!contents.isEmpty()) {
-				ItemStack storedStack = contents.contains("Item") ? ItemStack.read(contents.getCompound("Item")) : ItemStack.EMPTY;
+				ItemStack storedStack = contents.contains("Item") ? ItemStack.of(contents.getCompound("Item")) : ItemStack.EMPTY;
 				if (!storedStack.isEmpty()) {
 					int itemAmount = storedStack.getCount();
 					if (contents.contains("ItemAmount")) {
 						INBT inbt = contents.get("ItemAmount");
 						if (inbt instanceof NumberNBT) {
-							itemAmount = ((NumberNBT) inbt).getInt();
+							itemAmount = ((NumberNBT) inbt).getAsInt();
 						}
 					}
-					tooltip.add(TextUtil.getTooltipText("contains", storedStack.getDisplayName().deepCopy()).mergeStyle(TextFormatting.GRAY));
+					tooltip.add(TextUtil.getTooltipText("contains", storedStack.getHoverName().copy()).withStyle(TextFormatting.GRAY));
 					DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
-					tooltip.add(new StringTextComponent(df.format(itemAmount) + "/" + df.format(GulgeTileEntity.MAX_ITEM_AMOUNT)).mergeStyle(TextFormatting.GRAY));
+					tooltip.add(new StringTextComponent(df.format(itemAmount) + "/" + df.format(GulgeTileEntity.MAX_ITEM_AMOUNT)).withStyle(TextFormatting.GRAY));
 					return;
 				}
 			}
 		}
 
-		tooltip.add(TextUtil.getTooltipText("empty").mergeStyle(TextFormatting.GRAY));
+		tooltip.add(TextUtil.getTooltipText("empty").withStyle(TextFormatting.GRAY));
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		if (worldIn.isRemote()) return ActionResultType.SUCCESS;
+	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+		if (worldIn.isClientSide()) return ActionResultType.SUCCESS;
 
 		//TODO: verify that authorization works
-		INamedContainerProvider containerProvider = getContainer(state, worldIn, pos);
+		INamedContainerProvider containerProvider = getMenuProvider(state, worldIn, pos);
 		if (containerProvider != null && player instanceof ServerPlayerEntity) {
 			ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
 			NetworkHooks.openGui(serverPlayerEntity, containerProvider, (packetBuffer) -> {});
@@ -106,22 +106,22 @@ public class GulgeBlock extends OwnableContainerBlock {
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.with(FACING, rot.rotate(state.get(FACING)));
+		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirrorIn) {
-		return state.rotate(mirrorIn.toRotation(state.get(FACING)));
+		return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
 	}
 
 	@Override
-	public BlockRenderType getRenderType(BlockState state) {
+	public BlockRenderType getRenderShape(BlockState state) {
 		return BlockRenderType.MODEL;
 	}
 
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		switch (state.get(FACING)) {
+		switch (state.getValue(FACING)) {
 			case UP:
 			case DOWN:
 			default:
@@ -137,7 +137,7 @@ public class GulgeBlock extends OwnableContainerBlock {
 
 	@Nullable
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader worldIn) {
+	public TileEntity newBlockEntity(IBlockReader worldIn) {
 		return new GulgeTileEntity();
 	}
 

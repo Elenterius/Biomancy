@@ -18,7 +18,6 @@ import net.minecraft.world.server.ServerWorld;
 
 import java.util.function.Predicate;
 
-//Prototype (Terraria)
 public class BeeHiveGunItem extends ProjectileWeaponItem {
 
 	public final float maxDistance;
@@ -29,14 +28,14 @@ public class BeeHiveGunItem extends ProjectileWeaponItem {
 	}
 
 	public static void fireProjectile(ServerWorld worldIn, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, double maxDistance) {
-		RayTraceResult rayTraceResult = RayTraceUtil.rayTrace(shooter, target -> !target.isSpectator() && target.isAlive() && target.canBeCollidedWith() && target instanceof LivingEntity && !shooter.isRidingSameEntity(target), maxDistance);
+		RayTraceResult rayTraceResult = RayTraceUtil.rayTrace(shooter, target -> !target.isSpectator() && target.isAlive() && target.isPickable() && target instanceof LivingEntity && !shooter.isPassengerOfSameVehicle(target), maxDistance);
 		if (rayTraceResult.getType() == RayTraceResult.Type.MISS) return;
 
 		BlockPos targetBlockPos = null;
 		LivingEntity targetEntity = null;
 		if (rayTraceResult.getType() == RayTraceResult.Type.BLOCK && rayTraceResult instanceof BlockRayTraceResult) {
 			BlockRayTraceResult rayTrace = (BlockRayTraceResult) rayTraceResult;
-			targetBlockPos = rayTrace.getPos().offset(rayTrace.getFace());
+			targetBlockPos = rayTrace.getBlockPos().relative(rayTrace.getDirection());
 			if (!worldIn.getFluidState(targetBlockPos).isEmpty()) return;
 		}
 		else if (rayTraceResult.getType() == RayTraceResult.Type.ENTITY && rayTraceResult instanceof EntityRayTraceResult) {
@@ -50,27 +49,27 @@ public class BeeHiveGunItem extends ProjectileWeaponItem {
 		//TODO: implement our own light weight bee entity/projectile that behaves more like homing missiles
 		BeeEntity entity = EntityType.BEE.create(worldIn);
 		if (entity != null) {
-			entity.enablePersistence();
+			entity.setPersistenceRequired();
 			if (targetEntity != null) {
-				entity.setRevengeTarget(targetEntity);
-				entity.setAttackTarget(targetEntity);
+				entity.setLastHurtByMob(targetEntity);
+				entity.setTarget(targetEntity);
 			}
 			else if (targetBlockPos != null) {
-				entity.getNavigator().tryMoveToXYZ(targetBlockPos.getX(), targetBlockPos.getY(), targetBlockPos.getZ(), 1.25d);
+				entity.getNavigation().moveTo(targetBlockPos.getX(), targetBlockPos.getY(), targetBlockPos.getZ(), 1.25d);
 			}
 
 			//force move the bee towards the target
-			EntitySize size = entity.getSize(Pose.FALL_FLYING);
-			Vector3d posVec = shooter.getEyePosition(1f).add(0d, -0.1d, 0d).add(shooter.getLookVec().rotateYaw(-15f).normalize().add(size.width * 0.5f, 0, size.width * 0.5f));
-			entity.setPosition(posVec.x, posVec.y, posVec.z);
-			Vector3d direction = shooter.getLookVec().normalize().scale(2.55f);
+			EntitySize size = entity.getDimensions(Pose.FALL_FLYING);
+			Vector3d posVec = shooter.getEyePosition(1f).add(0d, -0.1d, 0d).add(shooter.getLookAngle().yRot(-15f).normalize().add(size.width * 0.5f, 0, size.width * 0.5f));
+			entity.setPos(posVec.x, posVec.y, posVec.z);
+			Vector3d direction = shooter.getLookAngle().normalize().scale(2.55f);
 			entity.lookAt(EntityAnchorArgument.Type.FEET, direction);
-			entity.setMotion(direction);
-			Vector3d playerMotion = shooter.getMotion();
-			entity.setMotion(entity.getMotion().add(playerMotion.x, shooter.isOnGround() ? 0d : playerMotion.y, playerMotion.z));
+			entity.setDeltaMovement(direction);
+			Vector3d playerMotion = shooter.getDeltaMovement();
+			entity.setDeltaMovement(entity.getDeltaMovement().add(playerMotion.x, shooter.isOnGround() ? 0d : playerMotion.y, playerMotion.z));
 
-			projectileWeapon.damageItem(1, shooter, livingEntity -> livingEntity.sendBreakAnimation(hand));
-			if (worldIn.addEntity(entity)) {
+			projectileWeapon.hurtAndBreak(1, shooter, livingEntity -> livingEntity.broadcastBreakEvent(hand));
+			if (worldIn.addFreshEntity(entity)) {
 				entity.playAmbientSound();
 			}
 		}
@@ -83,12 +82,12 @@ public class BeeHiveGunItem extends ProjectileWeaponItem {
 	}
 
 	@Override
-	public Predicate<ItemStack> getInventoryAmmoPredicate() {
+	public Predicate<ItemStack> getAllSupportedProjectiles() {
 		return stack -> false;
 	}
 
 	@Override
-	public int func_230305_d_() {
+	public int getDefaultProjectileRange() {
 		return 20; //max range
 	}
 

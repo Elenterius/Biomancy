@@ -27,7 +27,7 @@ public interface IEntityUnveilerHeadSlotItem extends IKeyListener {
 	@OnlyIn(Dist.CLIENT)
 	static boolean canUnveilEntity(@Nullable PlayerEntity player, @Nullable Entity invisibleEntity) {
 		if (player != null) {
-			ItemStack stack = player.inventory.armorInventory.get(EquipmentSlotType.HEAD.getSlotIndex() - 1);
+			ItemStack stack = player.inventory.armor.get(EquipmentSlotType.HEAD.getFilterFlag() - 1);
 			if (!stack.isEmpty() && stack.getItem() instanceof IEntityUnveilerHeadSlotItem) {
 				CompoundNBT nbt = stack.getOrCreateTag();
 				if (!stack.hasTag() || !nbt.contains(NBT_KEY)) {
@@ -53,14 +53,14 @@ public interface IEntityUnveilerHeadSlotItem extends IKeyListener {
 		byte flag = isActive ? (byte) 0 : (byte) 1;
 		stack.getOrCreateTag().putBoolean(NBT_KEY, flag == 1);
 
-		SoundEvent soundEvent = SoundEvents.ITEM_ARMOR_EQUIP_GENERIC;
+		SoundEvent soundEvent = SoundEvents.ARMOR_EQUIP_GENERIC;
 		Item item = stack.getItem();
 		if (item instanceof ArmorItem) {
-			soundEvent = ((ArmorItem) item).getArmorMaterial().getSoundEvent();
+			soundEvent = ((ArmorItem) item).getMaterial().getEquipSound();
 		}
 		player.playSound(soundEvent, 1.0F, 1.0F);
 
-		return ActionResult.resultSuccess(flag);
+		return ActionResult.success(flag);
 	}
 
 	@Override

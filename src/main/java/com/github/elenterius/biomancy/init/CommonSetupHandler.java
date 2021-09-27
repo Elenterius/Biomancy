@@ -59,10 +59,10 @@ public final class CommonSetupHandler {
 	public static void onRegisterEntityType(final RegistryEvent.Register<EntityType<?>> event) {
 		DefaultDispenseItemBehavior behavior = new DefaultDispenseItemBehavior() {
 			@Override
-			protected ItemStack dispenseStack(IBlockSource iBlockSource, ItemStack stack) {
+			protected ItemStack execute(IBlockSource iBlockSource, ItemStack stack) {
 				EntityType<?> entityType = ((SpawnEggItem) stack.getItem()).getType(stack.getTag());
-				Direction direction = iBlockSource.getBlockState().get(DispenserBlock.FACING);
-				entityType.spawn(iBlockSource.getWorld(), stack, null, iBlockSource.getBlockPos().offset(direction), SpawnReason.DISPENSER, direction != Direction.UP, false);
+				Direction direction = iBlockSource.getBlockState().getValue(DispenserBlock.FACING);
+				entityType.spawn(iBlockSource.getLevel(), stack, null, iBlockSource.getPos().relative(direction), SpawnReason.DISPENSER, direction != Direction.UP, false);
 				stack.shrink(1);
 				return stack;
 			}
@@ -70,13 +70,13 @@ public final class CommonSetupHandler {
 
 		//hacky fix for spawn eggs and deferred entity types
 		BiomancyMod.LOGGER.info("Injecting EntityType into SpawnEggs...");
-		final Map<EntityType<?>, SpawnEggItem> EGGS = ObfuscationReflectionHelper.getPrivateValue(SpawnEggItem.class, null, "field_195987_b");
+		final Map<EntityType<?>, SpawnEggItem> EGGS = ObfuscationReflectionHelper.getPrivateValue(SpawnEggItem.class, null, "BY_ID");
 		Objects.requireNonNull(EGGS);
 		for (RegistryObject<Item> entry : ModItems.ITEMS.getEntries()) {
 			if (entry.get() instanceof SpawnEggItem) {
 				SpawnEggItem item = (SpawnEggItem) entry.get();
 				EGGS.put(item.getType(null), item);
-				DispenserBlock.registerDispenseBehavior(item, behavior);
+				DispenserBlock.registerBehavior(item, behavior);
 			}
 		}
 	}

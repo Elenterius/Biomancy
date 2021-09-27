@@ -62,6 +62,6 @@ public interface IItemDecayTracker extends INBTSerializable<LongNBT> {
 
 	@Override
 	default void deserializeNBT(LongNBT nbt) {
-		setStartTime(nbt.getLong());
+		setStartTime(nbt.getAsLong());
 	}
 }

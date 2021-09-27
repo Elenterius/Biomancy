@@ -26,18 +26,18 @@ public class ToothGunItem extends ProjectileWeaponItem {
 	public static void fireProjectile(ServerWorld worldIn, LivingEntity shooter, Hand hand, ItemStack projectileWeapon, float damage, float inaccuracy) {
 		ToothProjectileEntity projectile = new ToothProjectileEntity(worldIn, shooter);
 		projectile.setDamage(damage);
-		int level = EnchantmentHelper.getEnchantmentLevel(Enchantments.PUNCH, projectileWeapon);
+		int level = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PUNCH_ARROWS, projectileWeapon);
 		if (level > 0) {
 			projectile.setKnockback((byte) level);
 		}
 
-		Vector3d direction = shooter.getLookVec();
-		projectile.shoot(direction.getX(), direction.getY(), direction.getZ(), 1.75f, inaccuracy);
+		Vector3d direction = shooter.getLookAngle();
+		projectile.shoot(direction.x(), direction.y(), direction.z(), 1.75f, inaccuracy);
 
-		projectileWeapon.damageItem(1, shooter, (entity) -> entity.sendBreakAnimation(hand));
+		projectileWeapon.hurtAndBreak(1, shooter, (entity) -> entity.broadcastBreakEvent(hand));
 
-		if (worldIn.addEntity(projectile)) {
-			worldIn.playSound(null, shooter.getPosX(), shooter.getPosY(), shooter.getPosZ(), SoundEvents.ITEM_CROSSBOW_SHOOT, SoundCategory.PLAYERS, 1f, 1.4f);
+		if (worldIn.addFreshEntity(projectile)) {
+			worldIn.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundCategory.PLAYERS, 1f, 1.4f);
 		}
 	}
 
@@ -59,42 +59,42 @@ public class ToothGunItem extends ProjectileWeaponItem {
 
 	@Override
 	public void onReloadTick(ItemStack stack, ServerWorld world, LivingEntity shooter, long elapsedTime) {
-		if (elapsedTime % 20L == 0L) playSFX(world, shooter, SoundEvents.ENTITY_GENERIC_EAT);
+		if (elapsedTime % 20L == 0L) playSFX(world, shooter, SoundEvents.GENERIC_EAT);
 	}
 
 	@Override
 	public void onReloadStarted(ItemStack stack, ServerWorld world, LivingEntity shooter) {
-		playSFX(world, shooter, SoundEvents.ENTITY_GENERIC_EAT);
+		playSFX(world, shooter, SoundEvents.GENERIC_EAT);
 	}
 
 	@Override
 	public void onReloadCanceled(ItemStack stack, ServerWorld world, LivingEntity shooter) {
-		playSFX(world, shooter, SoundEvents.BLOCK_DISPENSER_FAIL);
+		playSFX(world, shooter, SoundEvents.DISPENSER_FAIL);
 	}
 
 	@Override
 	public void onReloadStopped(ItemStack stack, ServerWorld world, LivingEntity shooter) {
-		playSFX(world, shooter, SoundEvents.BLOCK_DISPENSER_FAIL);
+		playSFX(world, shooter, SoundEvents.DISPENSER_FAIL);
 	}
 
 	@Override
 	public void onReloadFinished(ItemStack stack, ServerWorld world, LivingEntity shooter) {
-		playSFX(world, shooter, SoundEvents.ENTITY_PLAYER_BURP);
+		playSFX(world, shooter, SoundEvents.PLAYER_BURP);
 	}
 
 	@Override
-	public Predicate<ItemStack> getInventoryAmmoPredicate() {
+	public Predicate<ItemStack> getAllSupportedProjectiles() {
 		return VALID_AMMO_ITEM;
 	}
 
 	@Override
-	public int func_230305_d_() {
+	public int getDefaultProjectileRange() {
 		return 10; //max range
 	}
 
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return enchantment == Enchantments.PUNCH || super.canApplyAtEnchantingTable(stack, enchantment);
+		return enchantment == Enchantments.PUNCH_ARROWS || super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 }

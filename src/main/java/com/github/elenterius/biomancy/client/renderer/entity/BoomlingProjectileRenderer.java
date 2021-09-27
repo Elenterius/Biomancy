@@ -25,24 +25,24 @@ public class BoomlingProjectileRenderer<T extends BoomlingProjectileEntity> exte
 	}
 
 	@Override
-	protected int getBlockLight(T entityIn, BlockPos pos) {
+	protected int getBlockLightLevel(T entityIn, BlockPos pos) {
 		return 15;
 	}
 
 	@Override
 	public void render(T entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-		matrixStackIn.push();
+		matrixStackIn.pushPose();
 
-		matrixStackIn.rotate(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entityIn.prevRotationYaw, entityIn.rotationYaw)));
-		matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, entityIn.prevRotationPitch, entityIn.rotationPitch)));
-		matrixStackIn.rotate(Vector3f.XP.rotationDegrees(90f)); //rotate, so we see the bottom of the boomling
+		matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(MathHelper.lerp(partialTicks, entityIn.yRotO, entityIn.yRot)));
+		matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(MathHelper.lerp(partialTicks, entityIn.xRotO, entityIn.xRot)));
+		matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90f)); //rotate, so we see the bottom of the boomling
 
 		matrixStackIn.translate(0, 1.351f, -0.15f); //"center"
 		matrixStackIn.scale(-1, -1, 1); //flip
 
 		//render normal model
-		IVertexBuilder vertexBuffer = bufferIn.getBuffer(model.getRenderType(getEntityTexture(entityIn)));
-		model.render(matrixStackIn, vertexBuffer, packedLightIn, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
+		IVertexBuilder vertexBuffer = bufferIn.getBuffer(model.renderType(getTextureLocation(entityIn)));
+		model.renderToBuffer(matrixStackIn, vertexBuffer, packedLightIn, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
 
 		//render full-bright colored overlay
 		vertexBuffer = bufferIn.getBuffer(BoomlingRenderer.RENDER_TYPE);
@@ -50,15 +50,15 @@ public class BoomlingProjectileRenderer<T extends BoomlingProjectileEntity> exte
 		float r = (rgb >> 16 & 255) / 255f;
 		float g = (rgb >> 8 & 255) / 255f;
 		float b = (rgb & 255) / 255f;
-		model.render(matrixStackIn, vertexBuffer, 0xf00000, OverlayTexture.NO_OVERLAY, r, g, b, 1f);
+		model.renderToBuffer(matrixStackIn, vertexBuffer, 0xf00000, OverlayTexture.NO_OVERLAY, r, g, b, 1f);
 
-		matrixStackIn.pop();
+		matrixStackIn.popPose();
 
 		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(T entity) {
+	public ResourceLocation getTextureLocation(T entity) {
 		return BoomlingRenderer.TEXTURE;
 	}
 

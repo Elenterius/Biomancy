@@ -20,7 +20,7 @@ public class PlaceBlockAtPositionGoal extends Goal {
 		this.blockPlacer = goalOwner;
 		this.goalOwner = (MobEntity) goalOwner;
 		this.speed = speedMultiplier;
-		setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+		setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
 	}
 
 	private BlockPlacementTarget getPlacementTarget() {
@@ -28,7 +28,7 @@ public class PlaceBlockAtPositionGoal extends Goal {
 	}
 
 	@Override
-	public boolean shouldExecute() {
+	public boolean canUse() {
 		BlockPlacementTarget placementTarget = getPlacementTarget();
 		if (placementTarget == null || !blockPlacer.hasPlaceableBlock()) return false;
 		this.placementTarget = placementTarget.copy();
@@ -36,8 +36,8 @@ public class PlaceBlockAtPositionGoal extends Goal {
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
-		boolean hasPath = goalOwner.getNavigator().hasPath();
+	public boolean canContinueToUse() {
+		boolean hasPath = goalOwner.getNavigation().isInProgress();
 		if (!hasPath && getPlacementTarget() != null) {
 			if (++idleTime > 50) {
 				blockPlacer.setBlockPlacementTarget(null);
@@ -53,21 +53,21 @@ public class PlaceBlockAtPositionGoal extends Goal {
 		int y = placementTarget.targetPos.getY();
 		int z = placementTarget.targetPos.getZ();
 
-		goalOwner.getLookController().setLookPosition(x, y, z, 75F, 75f);
-		goalOwner.getNavigator().tryMoveToXYZ(x, y, z, speed);
+		goalOwner.getLookControl().setLookAt(x, y, z, 75F, 75f);
+		goalOwner.getNavigation().moveTo(x, y, z, speed);
 
-		double distSq = goalOwner.getDistanceSq(x + 0.5d, y + 0.5d, z + 0.5d);
-		if (distSq <= 4d * 4d && RayTraceUtil.canEntitySeePosition(goalOwner, Vector3d.copyCentered(placementTarget.targetPos))) {
+		double distSq = goalOwner.distanceToSqr(x + 0.5d, y + 0.5d, z + 0.5d);
+		if (distSq <= 4d * 4d && RayTraceUtil.canEntitySeePosition(goalOwner, Vector3d.atCenterOf(placementTarget.targetPos))) {
 			if (blockPlacer.tryToPlaceBlockAtPosition(placementTarget.rayTraceResult, placementTarget.horizontalFacing)) {
 				blockPlacer.setBlockPlacementTarget(null);
 			}
-			goalOwner.getNavigator().clearPath();
+			goalOwner.getNavigation().stop();
 		}
 	}
 
 	@Override
-	public void resetTask() {
-		goalOwner.getNavigator().clearPath();
+	public void stop() {
+		goalOwner.getNavigation().stop();
 		idleTime = 0;
 		placementTarget = null;
 	}

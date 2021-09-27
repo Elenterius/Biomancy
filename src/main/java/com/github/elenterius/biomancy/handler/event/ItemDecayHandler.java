@@ -41,46 +41,48 @@ public final class ItemDecayHandler {
 	 */
 	public static void decayItemsInContainer(ServerPlayerEntity playerEntity, Container container, INamedContainerProvider containerProvider) {
 		if (containerProvider instanceof TileEntity) {
-			decayItemsInTileContainer(container, playerEntity.getServerWorld(), (TileEntity) containerProvider);
-		} else if (containerProvider instanceof Entity) {
-			decayItemsInEntityContainer(container, playerEntity.getServerWorld(), (Entity) containerProvider);
-		} else if (!(container instanceof MerchantContainer) && containerProvider instanceof SimpleNamedContainerProvider) {
-			decayItemsInEntityContainer(container, playerEntity.getServerWorld(), playerEntity); // e.g. Ender-Chest
+			decayItemsInTileContainer(container, playerEntity.getLevel(), (TileEntity) containerProvider);
+		}
+		else if (containerProvider instanceof Entity) {
+			decayItemsInEntityContainer(container, playerEntity.getLevel(), (Entity) containerProvider);
+		}
+		else if (!(container instanceof MerchantContainer) && containerProvider instanceof SimpleNamedContainerProvider) {
+			decayItemsInEntityContainer(container, playerEntity.getLevel(), playerEntity); // e.g. Ender-Chest
 		}
 		//anything else is not supported
 	}
 
 	private static void decayItemsInEntityContainer(Container container, ServerWorld world, Entity entity) {
-		for (ItemStack stack : container.getInventory()) {
+		for (ItemStack stack : container.getItems()) {
 			if (!stack.isEmpty() && stack.getItem() instanceof DecayingItem) {
 				LazyOptional<IItemDecayTracker> capability = stack.getCapability(ModCapabilities.ITEM_DECAY_CAPABILITY);
 				capability.ifPresent(decayTracker -> decayTracker.onUpdate(stack, world, entity, ((DecayingItem) stack.getItem()).halfTime * 20L, ((DecayingItem) stack.getItem()).decayFactor, true));
 			}
 		}
-		container.detectAndSendChanges();
+		container.broadcastChanges();
 	}
 
 	private static void decayItemsInTileContainer(Container container, ServerWorld world, TileEntity entity) {
 		AtomicInteger decayAmount = new AtomicInteger();
-		for (ItemStack stack : container.getInventory()) {
+		for (ItemStack stack : container.getItems()) {
 			if (!stack.isEmpty() && stack.getItem() instanceof DecayingItem) {
 				LazyOptional<IItemDecayTracker> capability = stack.getCapability(ModCapabilities.ITEM_DECAY_CAPABILITY);
 				capability.ifPresent(decayTracker -> decayAmount.addAndGet(doDecay(decayTracker, world, stack, ((DecayingItem) stack.getItem()).halfTime * 20L, ((DecayingItem) stack.getItem()).decayFactor)));
 			}
 		}
-		container.detectAndSendChanges();
+		container.broadcastChanges();
 
 		if (decayAmount.get() > 1) {
 			int n = MathHelper.ceil(decayAmount.get() / 32f);
 			EffectInstance effectInstance = new EffectInstance(ModEffects.FLESH_EATING_DISEASE.get(), n * 10 * 20, n);
-			Vector3d pos = Vector3d.copyCentered(entity.getPos());
+			Vector3d pos = Vector3d.atCenterOf(entity.getBlockPos());
 			AreaEffectCloudEntity aoeCloud = new AreaEffectCloudEntity(world, pos.x, pos.y, pos.z);
 			aoeCloud.setDuration(n * 30 * 20);
 			aoeCloud.setRadius(1.45F);
 			aoeCloud.setWaitTime(10);
 			aoeCloud.setRadiusPerTick(-aoeCloud.getRadius() / (float) aoeCloud.getDuration());
 			aoeCloud.addEffect(effectInstance);
-			world.addEntity(aoeCloud);
+			world.addFreshEntity(aoeCloud);
 		}
 	}
 
@@ -88,7 +90,8 @@ public final class ItemDecayHandler {
 		if (decayTracker.canDecay(stack) && stack.getCount() > 0) {
 			if (decayTracker.getStartTime() == 0) {
 				decayTracker.setStartTime(world.getGameTime());
-			} else {
+			}
+			else {
 				int oldCount = stack.getCount();
 				decayTracker.performDecayStep(stack, world, halfTime, decayFactor);
 				return oldCount - stack.getCount();

@@ -14,8 +14,8 @@ import net.minecraft.world.IBlockReader;
 import net.minecraftforge.common.PlantType;
 
 public class FleshPlantBlock extends BushBlock {
-	protected static final VoxelShape SHAPE = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 14.0D, 14.0D);
-	protected static final VoxelShape SHAPE_SMALL = Block.makeCuboidShape(2.0D, 0.0D, 2.0D, 14.0D, 8.0D, 14.0D);
+	protected static final VoxelShape SHAPE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 14.0D, 14.0D);
+	protected static final VoxelShape SHAPE_SMALL = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 8.0D, 14.0D);
 	private final boolean isSmall;
 
 	public FleshPlantBlock(boolean isSmall, Properties properties) {
@@ -29,9 +29,9 @@ public class FleshPlantBlock extends BushBlock {
 	}
 
 	@Override
-	protected boolean isValidGround(BlockState state, IBlockReader worldIn, BlockPos pos) {
-		if (state.matchesBlock(ModBlocks.FLESH_BLOCK.get())) return true;
-		if (state.matchesBlock(ModBlocks.FLESH_BLOCK_SLAB.get())) return state.get(SlabBlock.TYPE) != SlabType.BOTTOM;
+	protected boolean mayPlaceOn(BlockState state, IBlockReader worldIn, BlockPos pos) {
+		if (state.is(ModBlocks.FLESH_BLOCK.get())) return true;
+		if (state.is(ModBlocks.FLESH_BLOCK_SLAB.get())) return state.getValue(SlabBlock.TYPE) != SlabType.BOTTOM;
 		return false;
 	}
 
@@ -43,7 +43,7 @@ public class FleshPlantBlock extends BushBlock {
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		Vector3d vec = state.getOffset(worldIn, pos);
-		return (isSmall ? SHAPE_SMALL : SHAPE).withOffset(vec.x, vec.y, vec.z);
+		return (isSmall ? SHAPE_SMALL : SHAPE).move(vec.x, vec.y, vec.z);
 	}
 
 	@Override

@@ -14,11 +14,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class PanicGoalMixin {
 	@Shadow
 	@Final
-	protected CreatureEntity creature;
+	protected CreatureEntity mob;
 
-	@Inject(method = "shouldExecute", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "canUse", at = @At("HEAD"), cancellable = true)
 	protected void biomancy_onShouldExecute(CallbackInfoReturnable<Boolean> cir) {
-		if (creature.isPotionActive(ModEffects.RAVENOUS_HUNGER.get())) {
+		if (mob.hasEffect(ModEffects.RAVENOUS_HUNGER.get())) {
 			cir.setReturnValue(false);
 		}
 	}

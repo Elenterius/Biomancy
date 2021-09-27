@@ -31,7 +31,7 @@ import java.util.Set;
 public class BoomlingProjectileEntity extends AbstractProjectileEntity {
 
 	public static final String NBT_KEY_COLOR = "Color";
-	private static final DataParameter<Integer> COLOR = EntityDataManager.createKey(BoomlingProjectileEntity.class, DataSerializers.VARINT);
+	private static final DataParameter<Integer> COLOR = EntityDataManager.defineId(BoomlingProjectileEntity.class, DataSerializers.INT);
 	private final Set<EffectInstance> customEffects = Sets.newHashSet();
 	private Potion potion = Potions.EMPTY;
 	private boolean customColor;
@@ -49,9 +49,9 @@ public class BoomlingProjectileEntity extends AbstractProjectileEntity {
 	}
 
 	@Override
-	protected void registerData() {
-		super.registerData();
-		dataManager.register(COLOR, -1);
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		entityData.define(COLOR, -1);
 	}
 
 	@Override
@@ -65,19 +65,19 @@ public class BoomlingProjectileEntity extends AbstractProjectileEntity {
 	}
 
 	private void spawnBoomling(Vector3d hitVec, @Nullable BlockPos targetPos, @Nullable LivingEntity targetEntity) {
-		BoomlingEntity entity = ModEntityTypes.BOOMLING.get().create(world);
+		BoomlingEntity entity = ModEntityTypes.BOOMLING.get().create(level);
 		if (entity != null) {
-			entity.enablePersistence();
+			entity.setPersistenceRequired();
 
-			Entity shooter = getShooter();
+			Entity shooter = getOwner();
 			if (shooter instanceof LivingEntity) {
-				entity.setOwnerUUID(shooter.getUniqueID());
+				entity.setOwnerUUID(shooter.getUUID());
 				if (targetEntity != null && entity.shouldAttackEntity(targetEntity, (LivingEntity) shooter)) {
-					entity.setAttackTarget(targetEntity);
+					entity.setTarget(targetEntity);
 				}
 			}
 			else {
-				entity.setAttackTarget(targetEntity);
+				entity.setTarget(targetEntity);
 			}
 
 			if (customEffects.isEmpty() && potion == Potions.EMPTY) {
@@ -89,18 +89,18 @@ public class BoomlingProjectileEntity extends AbstractProjectileEntity {
 			}
 			entity.setTargetBlockPos(targetPos);
 
-			entity.setLocationAndAngles(hitVec.x, hitVec.y, hitVec.z, (float) (Math.PI * 2 * rand.nextFloat()), 0);
+			entity.moveTo(hitVec.x, hitVec.y, hitVec.z, (float) (Math.PI * 2 * random.nextFloat()), 0);
 
-			if (world.addEntity(entity)) entity.playAmbientSound();
+			if (level.addFreshEntity(entity)) entity.playAmbientSound();
 		}
 	}
 
 	@Override
-	protected void onEntityHit(EntityRayTraceResult result) {
-		super.onEntityHit(result);
-		if (!world.isRemote) {
+	protected void onHitEntity(EntityRayTraceResult result) {
+		super.onHitEntity(result);
+		if (!level.isClientSide) {
 			LivingEntity victim = result.getEntity() instanceof LivingEntity ? (LivingEntity) result.getEntity() : null;
-			spawnBoomling(result.getHitVec(), null, victim);
+			spawnBoomling(result.getLocation(), null, victim);
 		}
 	}
 
@@ -108,30 +108,30 @@ public class BoomlingProjectileEntity extends AbstractProjectileEntity {
 	 * onBlockHit
 	 */
 	@Override
-	protected void func_230299_a_(BlockRayTraceResult result) {
-		super.func_230299_a_(result);
-		if (!world.isRemote && !removed) {
-			spawnBoomling(result.getHitVec(), getPosition(), null);
+	protected void onHitBlock(BlockRayTraceResult result) {
+		super.onHitBlock(result);
+		if (!level.isClientSide && !removed) {
+			spawnBoomling(result.getLocation(), blockPosition(), null);
 		}
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource source, float amount) {
+	public boolean hurt(DamageSource source, float amount) {
 		return false;
 	}
 
 	@Override
-	public boolean canBeCollidedWith() {
+	public boolean isPickable() {
 		return true;
 	}
 
 	@Override
-	public boolean isBurning() {
+	public boolean isOnFire() {
 		return false;
 	}
 
 	public int getColor() {
-		return dataManager.get(COLOR);
+		return entityData.get(COLOR);
 	}
 
 	public void setPotion(Potion potionIn, @Nullable Collection<EffectInstance> customEffectsIn, int color) {
@@ -144,8 +144,8 @@ public class BoomlingProjectileEntity extends AbstractProjectileEntity {
 	}
 
 	public void setPotion(ItemStack stack) {
-		potion = PotionUtilExt.getPotionFromItem(stack);
-		List<EffectInstance> effects = PotionUtilExt.getFullEffectsFromItem(stack);
+		potion = PotionUtilExt.getPotion(stack);
+		List<EffectInstance> effects = PotionUtilExt.getCustomEffects(stack);
 		if (!effects.isEmpty()) {
 			for (EffectInstance effect : effects) {
 				customEffects.add(new EffectInstance(effect));
@@ -162,16 +162,16 @@ public class BoomlingProjectileEntity extends AbstractProjectileEntity {
 
 	private void setCustomColor(int color) {
 		customColor = true;
-		dataManager.set(COLOR, color);
+		entityData.set(COLOR, color);
 	}
 
 	private void updateColor() {
 		customColor = false;
 		if (potion == Potions.EMPTY && customEffects.isEmpty()) {
-			dataManager.set(COLOR, -1);
+			entityData.set(COLOR, -1);
 		}
 		else {
-			dataManager.set(COLOR, PotionUtilExt.getMergedColor(potion, customEffects));
+			entityData.set(COLOR, PotionUtilExt.getMergedColor(potion, customEffects));
 		}
 	}
 
@@ -181,12 +181,12 @@ public class BoomlingProjectileEntity extends AbstractProjectileEntity {
 
 	public void addCustomEffectRaw(EffectInstance effect) {
 		customEffects.add(effect);
-		getDataManager().set(COLOR, PotionUtilExt.getMergedColor(potion, customEffects));
+		getEntityData().set(COLOR, PotionUtilExt.getMergedColor(potion, customEffects));
 	}
 
 	@Override
-	public void writeAdditional(CompoundNBT compound) {
-		super.writeAdditional(compound);
+	public void addAdditionalSaveData(CompoundNBT compound) {
+		super.addAdditionalSaveData(compound);
 
 		PotionUtilExt.writePotion(compound, potion);
 		PotionUtilExt.writeCustomEffects(compound, customEffects);
@@ -195,14 +195,14 @@ public class BoomlingProjectileEntity extends AbstractProjectileEntity {
 	}
 
 	@Override
-	public void readAdditional(CompoundNBT compound) {
-		super.readAdditional(compound);
+	public void readAdditionalSaveData(CompoundNBT compound) {
+		super.readAdditionalSaveData(compound);
 
 		potion = PotionUtilExt.readPotion(compound);
 
 		customEffects.clear();
-		customEffects.addAll(PotionUtilExt.getFullEffectsFromTag(compound));
-		getDataManager().set(COLOR, PotionUtilExt.getMergedColor(potion, customEffects));
+		customEffects.addAll(PotionUtilExt.getCustomEffects(compound));
+		getEntityData().set(COLOR, PotionUtilExt.getMergedColor(potion, customEffects));
 
 		if (compound.contains(NBT_KEY_COLOR, Constants.NBT.TAG_ANY_NUMERIC)) {
 			setCustomColor(compound.getInt(NBT_KEY_COLOR));

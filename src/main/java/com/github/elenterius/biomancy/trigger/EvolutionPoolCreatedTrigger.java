@@ -19,12 +19,12 @@ public class EvolutionPoolCreatedTrigger extends AbstractCriterionTrigger<Evolut
 	}
 
 	@Override
-	protected EvolutionPoolCreatedTrigger.Instance deserializeTrigger(JsonObject json, EntityPredicate.AndPredicate entityPredicate, ConditionArrayParser conditionsParser) {
+	protected EvolutionPoolCreatedTrigger.Instance createInstance(JsonObject json, EntityPredicate.AndPredicate entityPredicate, ConditionArrayParser conditionsParser) {
 		return new EvolutionPoolCreatedTrigger.Instance(entityPredicate);
 	}
 
 	public void trigger(ServerPlayerEntity player) {
-		triggerListeners(player, Instance::test);
+		trigger(player, Instance::test);
 	}
 
 	public static class Instance extends CriterionInstance {
@@ -34,7 +34,7 @@ public class EvolutionPoolCreatedTrigger extends AbstractCriterionTrigger<Evolut
 		}
 
 		public static EvolutionPoolCreatedTrigger.Instance create() {
-			return new EvolutionPoolCreatedTrigger.Instance(EntityPredicate.AndPredicate.ANY_AND);
+			return new EvolutionPoolCreatedTrigger.Instance(EntityPredicate.AndPredicate.ANY);
 		}
 
 		public boolean test() {

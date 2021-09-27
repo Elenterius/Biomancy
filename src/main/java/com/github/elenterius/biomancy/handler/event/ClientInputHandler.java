@@ -29,27 +29,27 @@ public final class ClientInputHandler {
 	public static void onKeyInput(final InputEvent.KeyInputEvent event) {
 		Minecraft mc = Minecraft.getInstance();
 		ClientPlayerEntity player = mc.player;
-		if (!(mc.currentScreen instanceof InventoryScreen) && mc.currentScreen != null) return;
+		if (!(mc.screen instanceof InventoryScreen) && mc.screen != null) return;
 
-		if (player != null && event.getKey() == ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.getKey().getKeyCode() && event.getAction() == GLFW.GLFW_RELEASE) {
+		if (player != null && event.getKey() == ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.getKey().getValue() && event.getAction() == GLFW.GLFW_RELEASE) {
 			if (event.getModifiers() == GLFW.GLFW_MOD_CONTROL) {
 				for (EquipmentSlotType slotType : armorSlotTypes) { //worst case this will send 4 packets to the server
-					ItemStack armorStack = player.getItemStackFromSlot(slotType);
+					ItemStack armorStack = player.getItemBySlot(slotType);
 					if (!armorStack.isEmpty() && armorStack.getItem() instanceof IKeyListener) {
-						ActionResult<Byte> result = ((IKeyListener) armorStack.getItem()).onClientKeyPress(armorStack, player.worldClient, player, (byte) 0);
-						if (result.getType().isSuccess()) {
-							ModNetworkHandler.sendKeyBindPressToServer(slotType, result.getResult());
+						ActionResult<Byte> result = ((IKeyListener) armorStack.getItem()).onClientKeyPress(armorStack, player.clientLevel, player, (byte) 0);
+						if (result.getResult().shouldSwing()) {
+							ModNetworkHandler.sendKeyBindPressToServer(slotType, result.getObject());
 						}
 					}
 				}
 			}
 			else {
 				for (EquipmentSlotType slotType : handSlotTypes) { //worst case this will send 2 packets to the server
-					ItemStack heldStack = player.getItemStackFromSlot(slotType);
+					ItemStack heldStack = player.getItemBySlot(slotType);
 					if (!heldStack.isEmpty() && heldStack.getItem() instanceof IKeyListener) {
-						ActionResult<Byte> result = ((IKeyListener) heldStack.getItem()).onClientKeyPress(heldStack, player.worldClient, player, (byte) 0);
-						if (result.getType().isSuccess()) {
-							ModNetworkHandler.sendKeyBindPressToServer(slotType, result.getResult());
+						ActionResult<Byte> result = ((IKeyListener) heldStack.getItem()).onClientKeyPress(heldStack, player.clientLevel, player, (byte) 0);
+						if (result.getResult().shouldSwing()) {
+							ModNetworkHandler.sendKeyBindPressToServer(slotType, result.getObject());
 						}
 					}
 				}

@@ -22,7 +22,7 @@ public class NutrientSlurryCowRenderer extends MobRenderer<NutrientSlurryCowEnti
 	}
 
 	@Override
-	public ResourceLocation getEntityTexture(NutrientSlurryCowEntity entity) {
+	public ResourceLocation getTextureLocation(NutrientSlurryCowEntity entity) {
 		return TEXTURE;
 	}
 

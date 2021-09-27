@@ -21,10 +21,10 @@ public class SewingKitItem extends Item {
 	public ItemStack getContainerItem(ItemStack stackIn) {
 		//this way we don't need to implement custom crafting recipes for all the item crafting that use the sewing kit
 
-		int damage = stackIn.getDamage() + 1;
+		int damage = stackIn.getDamageValue() + 1;
 		if (damage < getMaxDamage(stackIn)) {
 			ItemStack stack = new ItemStack(this);
-			stack.setDamage(damage);
+			stack.setDamageValue(damage);
 			return stack;
 		}
 		else return new ItemStack(ModItems.SEWING_KIT_EMPTY.get());
@@ -32,14 +32,16 @@ public class SewingKitItem extends Item {
 
 	/**
 	 * we use our own repair recipe implementation
+	 *
 	 * @see SewingKitRepairRecipe
 	 */
 	public boolean isRepairableWith(ItemStack damagedStack, ItemStack materialStack) {
-		return materialStack.getItem().isIn(Tags.Items.STRING);
+		return materialStack.getItem().is(Tags.Items.STRING);
 	}
 
 	/**
 	 * disables workbench repair crafting
+	 *
 	 * @return false
 	 */
 	@Override
@@ -48,7 +50,7 @@ public class SewingKitItem extends Item {
 	}
 
 	@Override
-	public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+	public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair) {
 		return false; // can't be repaired in an anvil, save the player from wasting exp (its false by default anyways, just for context here)
 	}
 }

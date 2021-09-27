@@ -15,34 +15,34 @@ public class FleeFromAttackerFlyGoal extends RandomFlyGoal {
 	}
 
 	@Override
-	public boolean shouldExecute() {
-		return goalOwner.getRevengeTarget() != null;
+	public boolean canUse() {
+		return goalOwner.getLastHurtByMob() != null;
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
-		return goalOwner.getRevengeTarget() != null && super.shouldContinueExecuting();
+	public boolean canContinueToUse() {
+		return goalOwner.getLastHurtByMob() != null && super.canContinueToUse();
 	}
 
 	@Override
-	public void startExecuting() {
+	public void start() {
 		Vector3d vec = getRandomPos();
-		if (vec != null) goalOwner.getNavigator().setPath(goalOwner.getNavigator().getPathToPos(new BlockPos(vec), 0), speed);
+		if (vec != null) goalOwner.getNavigation().moveTo(goalOwner.getNavigation().createPath(new BlockPos(vec), 0), speed);
 	}
 
 	@Nullable
 	@Override
 	protected Vector3d getRandomPos() {
-		LivingEntity revengeTarget = goalOwner.getRevengeTarget();
+		LivingEntity revengeTarget = goalOwner.getLastHurtByMob();
 		if (revengeTarget == null) return null;
 
 		//findRandomAirTargetAwayFromPos
-		Vector3d vec = RandomPositionGenerator.func_234133_a_(goalOwner, 32, 8, revengeTarget.getPositionVec());
+		Vector3d vec = RandomPositionGenerator.getLandPosTowards(goalOwner, 32, 8, revengeTarget.position());
 		if (vec == null) {
-			vec = RandomPositionGenerator.findRandomTargetBlockAwayFrom(goalOwner, 32, 8, revengeTarget.getPositionVec());
+			vec = RandomPositionGenerator.getPosAvoid(goalOwner, 32, 8, revengeTarget.position());
 		}
 
-		if (vec != null && revengeTarget.getDistanceSq(vec.x, vec.y, vec.z) < revengeTarget.getDistanceSq(goalOwner)) {
+		if (vec != null && revengeTarget.distanceToSqr(vec.x, vec.y, vec.z) < revengeTarget.distanceToSqr(goalOwner)) {
 			return null;
 		}
 

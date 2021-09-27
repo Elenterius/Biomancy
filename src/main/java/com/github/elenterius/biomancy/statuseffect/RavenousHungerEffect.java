@@ -19,9 +19,9 @@ public class RavenousHungerEffect extends StatusEffect {
 	}
 
 	@Override
-	public void performEffect(LivingEntity livingEntity, int amplifier) {
+	public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
 		if (livingEntity instanceof PlayerEntity) {
-			FoodStats foodStats = ((PlayerEntity) livingEntity).getFoodStats();
+			FoodStats foodStats = ((PlayerEntity) livingEntity).getFoodData();
 			if (foodStats.getSaturationLevel() > 0f) {
 				foodStats.addExhaustion(4f);
 				int foodLevel = foodStats.getFoodLevel();
@@ -29,12 +29,12 @@ public class RavenousHungerEffect extends StatusEffect {
 			}
 		}
 		else {
-			if (livingEntity.getHealth() > 1f) livingEntity.attackEntityFrom(ModDamageSources.RAVENOUS_HUNGER, 1f);
+			if (livingEntity.getHealth() > 1f) livingEntity.hurt(ModDamageSources.RAVENOUS_HUNGER, 1f);
 		}
 	}
 
 	@Override
-	public boolean isReady(int duration, int amplifier) {
+	public boolean isDurationEffectTick(int duration, int amplifier) {
 		int nTicks = 40 >> amplifier;
 		return nTicks <= 0 || duration % nTicks == 0;
 	}

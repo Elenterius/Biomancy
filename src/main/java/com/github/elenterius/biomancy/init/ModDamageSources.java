@@ -14,11 +14,11 @@ import javax.annotation.Nullable;
 
 public final class ModDamageSources {
 
-	public static final DamageSource DISEASE = createGenericDamage("disease").setDamageBypassesArmor().setDamageIsAbsolute();
-	public static final DamageSource RAVENOUS_HUNGER = createGenericDamage("ravenous_hunger").setDamageBypassesArmor().setDamageIsAbsolute();
+	public static final DamageSource DISEASE = createGenericDamage("disease").bypassArmor().bypassMagic();
+	public static final DamageSource RAVENOUS_HUNGER = createGenericDamage("ravenous_hunger").bypassArmor().bypassMagic();
 
-	public static final DamageSource SYMBIONT_EAT = createGenericDamage("symbiont_eat").setDamageBypassesArmor().setDamageIsAbsolute();
-	public static final DamageSource SYMBIONT_BITE = createGenericDamage("symbiont_bite").setDamageBypassesArmor();
+	public static final DamageSource SYMBIONT_EAT = createGenericDamage("symbiont_eat").bypassArmor().bypassMagic();
+	public static final DamageSource SYMBIONT_BITE = createGenericDamage("symbiont_bite").bypassArmor();
 	public static final DamageSource SYMBIONT_GENERIC_ATTACK = createGenericDamage("symbiont_generic");
 
 	private ModDamageSources() {}
@@ -29,7 +29,7 @@ public final class ModDamageSources {
 
 	public static ModEntityDamageSource createBlightThornDamage(String damageCause, LivingEntity attacker) {
 		ModEntityDamageSource damageSource = new ModEntityDamageSource(damageCause, "blight_thorn", attacker, (float) attacker.getAttributeValue(Attributes.ATTACK_DAMAGE));
-		damageSource.setIsThornsDamage().setMagicDamage();
+		damageSource.setThorns().setMagic();
 		return damageSource;
 	}
 

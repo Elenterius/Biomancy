@@ -1,6 +1,11 @@
 package com.github.elenterius.biomancy.item;
 
+import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.capabilities.InventoryProviders;
+import com.github.elenterius.biomancy.inventory.HandlerBehaviors;
+import com.github.elenterius.biomancy.inventory.ItemBagContainer;
+import com.github.elenterius.biomancy.inventory.SimpleInventory;
+import com.github.elenterius.biomancy.inventory.itemhandler.LargeSingleItemStackHandler;
 import com.github.elenterius.biomancy.inventory.itemhandler.SpecialSingleItemStackHandler;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
@@ -10,6 +15,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
@@ -25,9 +32,11 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
@@ -37,72 +46,81 @@ import java.util.Locale;
 
 public class ItemStorageBagItem extends BagItem implements IKeyListener {
 
-	public static final String NBT_KEY_INVENTORY = SpecialSingleItemStackHandler.NBT_KEY_INVENTORY;
-	public static final String NBT_KEY_ITEM = SpecialSingleItemStackHandler.NBT_KEY_ITEM;
-	public static final String NBT_KEY_AMOUNT = SpecialSingleItemStackHandler.NBT_KEY_AMOUNT;
-	public static final String NBT_KEY_MAX_AMOUNT = SpecialSingleItemStackHandler.NBT_KEY_MAX_AMOUNT;
-	public static final String NBT_KEY_IS_DIRTY = SpecialSingleItemStackHandler.NBT_KEY_IS_DIRTY;
+	public static final short SLOT_SIZE = 64 * 64; //4096
+	public static final String STACK_NBT_KEY = "StackNbt";
+	public static final String CAPABILITY_NBT_KEY = "CapNbt";
+	public static final String UUID_NBT_KEY = "BagId";
 
 	public ItemStorageBagItem(Properties properties) {
 		super(properties);
 	}
 
 	@Nullable
+	public static LargeSingleItemStackHandler getItemHandler(ItemStack stack) {
+		LazyOptional<IItemHandler> lazyOptional = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+		if (lazyOptional.isPresent()) {
+			IItemHandler itemHandler = lazyOptional.orElse(null);
+			if (itemHandler instanceof LargeSingleItemStackHandler) return (LargeSingleItemStackHandler) itemHandler;
+		}
+
+		BiomancyMod.LOGGER.error("Item is missing expected ITEM_HANDLER_CAPABILITY");
+		return null;
+	}
+
+	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-		return !stack.isEmpty() ? new InventoryProviders.ItemStackInvProvider(stack) : null;
+		return !stack.isEmpty() ? new InventoryProviders.LargeSingleItemHandlerProvider(SLOT_SIZE) : null;
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
-		CompoundNBT nbt = stack.getOrCreateTag();
-		if (nbt.contains(NBT_KEY_INVENTORY)) {
-			CompoundNBT invNbt = nbt.getCompound(NBT_KEY_INVENTORY);
-			ItemStack storedStack = ItemStack.read(invNbt.getCompound(NBT_KEY_ITEM));
-			int amount = invNbt.getShort(NBT_KEY_AMOUNT);
-			if (!storedStack.isEmpty() && amount > 0) {
-				int maxAmount = invNbt.getShort(NBT_KEY_MAX_AMOUNT);
-				tooltip.add(TextUtil.getTooltipText("contains", storedStack.getDisplayName()).mergeStyle(TextFormatting.GRAY));
+		LargeSingleItemStackHandler itemHandler = getItemHandler(stack);
+		if (itemHandler != null) {
+			ItemStack storedStack = itemHandler.getStack();
+			if (!storedStack.isEmpty()) {
+				int amount = itemHandler.getAmount();
+				int maxAmount = itemHandler.getMaxAmount();
+				tooltip.add(TextUtil.getTooltipText("contains", storedStack.getHoverName()).withStyle(TextFormatting.GRAY));
 				DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
-				tooltip.add(new StringTextComponent(df.format(amount) + "/" + df.format(maxAmount)).mergeStyle(TextFormatting.GRAY));
+				tooltip.add(new StringTextComponent(df.format(amount) + "/" + df.format(maxAmount)).withStyle(TextFormatting.GRAY));
 			}
-			else tooltip.add(TextUtil.getTooltipText("contains_nothing").mergeStyle(TextFormatting.GRAY));
+			else tooltip.add(TextUtil.getTooltipText("contains_nothing").withStyle(TextFormatting.GRAY));
 		}
-		else tooltip.add(TextUtil.getTooltipText("contains_nothing").mergeStyle(TextFormatting.GRAY));
+		else tooltip.add(TextUtil.getTooltipText("contains_nothing").withStyle(TextFormatting.GRAY));
 
 		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
-		tooltip.add(new StringTextComponent("Mode: ").mergeStyle(TextFormatting.GRAY)
-				.appendSibling(new TranslationTextComponent(getMode(stack).getTranslationKey()).mergeStyle(TextFormatting.AQUA)));
-		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextUtil.getTooltipText("action_cycle")).mergeStyle(TextFormatting.DARK_GRAY));
+		tooltip.add(new StringTextComponent("Mode: ").withStyle(TextFormatting.GRAY)
+				.append(new TranslationTextComponent(getMode(stack).getTranslationKey()).withStyle(TextFormatting.AQUA)));
+		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextUtil.getTooltipText("action_cycle")).withStyle(TextFormatting.DARK_GRAY));
 	}
 
 	@Override
 	public ITextComponent getHighlightTip(ItemStack stack, ITextComponent displayName) {
-		CompoundNBT nbt = stack.getOrCreateTag();
-		if (nbt.contains(NBT_KEY_INVENTORY)) {
-			CompoundNBT invNbt = nbt.getCompound(NBT_KEY_INVENTORY);
-			ItemStack storedStack = ItemStack.read(invNbt.getCompound(NBT_KEY_ITEM));
+		LargeSingleItemStackHandler itemHandler = getItemHandler(stack);
+		if (itemHandler != null) {
+			ItemStack storedStack = itemHandler.getStack();
 			if (!storedStack.isEmpty()) {
-				int amount = invNbt.getShort(NBT_KEY_AMOUNT);
-				return new StringTextComponent("").appendSibling(displayName).appendString(" (")
-						.appendSibling(new TranslationTextComponent(getMode(stack).getTranslationKey()))
-						.appendString(", " + amount + "x ").appendSibling(storedStack.getDisplayName()).appendString(")");
+				int amount = itemHandler.getAmount();
+				return new StringTextComponent("").append(displayName).append(" (")
+						.append(new TranslationTextComponent(getMode(stack).getTranslationKey()))
+						.append(", " + amount + "x ").append(storedStack.getHoverName()).append(")");
 			}
 		}
 
-		return new StringTextComponent("").appendSibling(displayName).appendString(" (")
-				.appendSibling(new TranslationTextComponent(getMode(stack).getTranslationKey())).appendString(", Empty)");
+		return new StringTextComponent("").append(displayName).append(" (")
+				.append(new TranslationTextComponent(getMode(stack).getTranslationKey())).append(", Empty)");
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public ActionResult<Byte> onClientKeyPress(ItemStack stack, ClientWorld world, PlayerEntity player, byte flags) {
 		Mode bagMode = getMode(stack).cycle();
-		player.playSound(SoundEvents.ENTITY_GENERIC_HURT, 0.8F, 0.25f + world.rand.nextFloat() * 0.25f);
-		return ActionResult.resultSuccess(bagMode.id);
+		player.playSound(SoundEvents.GENERIC_HURT, 0.8F, 0.25f + world.random.nextFloat() * 0.25f);
+		return ActionResult.success(bagMode.id);
 	}
 
 	@Override
@@ -112,82 +130,93 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 
 	@Override
 	public float getFullness(ItemStack stack) {
-		CompoundNBT nbt = stack.getOrCreateTag();
-		if (nbt.contains(NBT_KEY_INVENTORY)) {
-			CompoundNBT invNBT = nbt.getCompound(NBT_KEY_INVENTORY);
-			float amount = invNBT.getShort(NBT_KEY_AMOUNT);
-			float maxAmount = invNBT.getShort(NBT_KEY_MAX_AMOUNT);
+		LargeSingleItemStackHandler itemHandler = getItemHandler(stack);
+		if (itemHandler != null) {
+			float amount = itemHandler.getAmount();
+			float maxAmount = itemHandler.getMaxAmount();
 			return MathHelper.clamp(amount / maxAmount, 0f, 1f);
 		}
 		return 0f;
 	}
 
 	public short getStoredItemAmount(ItemStack stack) {
-		CompoundNBT nbt = stack.getOrCreateTag();
-		if (nbt.contains(NBT_KEY_INVENTORY)) {
-			return nbt.getCompound(NBT_KEY_INVENTORY).getShort(NBT_KEY_AMOUNT);
+		LargeSingleItemStackHandler itemHandler = getItemHandler(stack);
+		if (itemHandler != null) {
+			return (short) itemHandler.getAmount();
 		}
 		return 0;
 	}
 
 	public short getStoredItemMaxAmount(ItemStack stack) {
-		CompoundNBT nbt = stack.getOrCreateTag();
-		if (nbt.contains(NBT_KEY_INVENTORY)) {
-			return nbt.getCompound(NBT_KEY_INVENTORY).getShort(NBT_KEY_MAX_AMOUNT);
+		LargeSingleItemStackHandler itemHandler = getItemHandler(stack);
+		if (itemHandler != null) {
+			return (short) itemHandler.getMaxAmount();
 		}
 		return 0;
 	}
 
 	public ItemStack getStoredItem(ItemStack stack) {
-		CompoundNBT nbt = stack.getOrCreateTag();
-		if (nbt.contains(NBT_KEY_INVENTORY)) {
-			CompoundNBT invNbt = nbt.getCompound(ItemStorageBagItem.NBT_KEY_INVENTORY);
-			int amount = invNbt.getShort(NBT_KEY_AMOUNT);
-			ItemStack storedStack = ItemStack.read(invNbt.getCompound(ItemStorageBagItem.NBT_KEY_ITEM));
-			storedStack.setCount(amount);
-			return storedStack;
+		LargeSingleItemStackHandler itemHandler = getItemHandler(stack);
+		if (itemHandler != null) {
+			return itemHandler.getStack();
 		}
 		return ItemStack.EMPTY;
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-		if (!worldIn.isRemote() && handIn == Hand.MAIN_HAND && playerIn.isSneaking()) {
-			ItemStack heldStack = playerIn.getHeldItem(handIn);
-			onPlayerInteractWithItem(heldStack, playerIn);
-			ItemStack offhandStack = playerIn.getHeldItemOffhand();
+	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+		if (!worldIn.isClientSide()) {
+			if (playerIn.isShiftKeyDown() && handIn == Hand.MAIN_HAND) {
+				ItemStack heldStack = playerIn.getItemInHand(handIn);
+				onPlayerInteractWithItem(heldStack, playerIn);
+				ItemStack offhandStack = playerIn.getOffhandItem();
 
-			if (!offhandStack.isEmpty()) { //extract stored item and put it in offhand
-				if (offhandStack.getItem() != this) {
-					LazyOptional<IItemHandler> capability = heldStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
-					capability.ifPresent(itemHandler -> {
-						if (itemHandler instanceof SpecialSingleItemStackHandler) {
+				if (!offhandStack.isEmpty()) {
+					//get item from offhand and store it
+					if (HandlerBehaviors.EMPTY_ITEM_INVENTORY_PREDICATE.test(offhandStack)) { //prevent nesting of items with non-empty inventories
+						LargeSingleItemStackHandler itemHandler = getItemHandler(heldStack);
+						if (itemHandler != null) {
 							int count = offhandStack.getCount();
 							ItemStack remainder = itemHandler.insertItem(0, offhandStack.copy(), false);
 							offhandStack.setCount(remainder.getCount());
 							if (count != offhandStack.getCount()) {
-								playerIn.world.playSound(null, playerIn.getPosition(), SoundEvents.ENTITY_GENERIC_EAT, SoundCategory.PLAYERS, 0.8F, 0.25f + playerIn.world.rand.nextFloat() * 0.25f);
+								playerIn.level.playSound(null, playerIn.blockPosition(), SoundEvents.GENERIC_EAT, SoundCategory.PLAYERS, 0.8F, 0.25f + playerIn.level.random.nextFloat() * 0.25f);
 							}
 						}
-					});
-					return ActionResult.resultFail(heldStack);
+						return ActionResult.fail(heldStack);
+					}
 				}
-			}
-			else { //get item from offhand and store it
-				LazyOptional<IItemHandler> capability = heldStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
-				capability.ifPresent(itemHandler -> {
-					if (itemHandler instanceof SpecialSingleItemStackHandler && !((SpecialSingleItemStackHandler) itemHandler).isEmpty()) {
+				else {
+					//extract stored item and put it in offhand
+					LargeSingleItemStackHandler itemHandler = getItemHandler(heldStack);
+					if (itemHandler != null && !itemHandler.isEmpty()) {
 						ItemStack result = itemHandler.extractItem(0, offhandStack.getMaxStackSize(), false);
 						if (!result.isEmpty()) {
-							playerIn.setHeldItem(Hand.OFF_HAND, result);
-							playerIn.world.playSound(null, playerIn.getPosition(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.8F, 0.25f + playerIn.world.rand.nextFloat() * 0.25f);
+							playerIn.setItemInHand(Hand.OFF_HAND, result);
+							playerIn.level.playSound(null, playerIn.blockPosition(), SoundEvents.PLAYER_BURP, SoundCategory.PLAYERS, 0.8F, 0.25f + playerIn.level.random.nextFloat() * 0.25f);
 						}
 					}
-				});
-				return ActionResult.resultFail(heldStack);
+					return ActionResult.fail(heldStack);
+				}
+			}
+			else {
+				ItemStack heldStack = playerIn.getItemInHand(handIn);
+				//TODO: rework?
+//				CompoundNBT nbt = heldStack.getOrCreateTag();
+//				UUID bagId;
+//				if (nbt.hasUUID(UUID_NBT_KEY)) {
+//					bagId = nbt.getUUID(UUID_NBT_KEY);
+//				}
+//				else {
+//					bagId = UUID.randomUUID();
+//					nbt.putUUID(UUID_NBT_KEY, bagId);
+//				}
+//				INamedContainerProvider containerProvider = new ItemBagContainerProvider<>(heldStack);
+//				NetworkHooks.openGui((ServerPlayerEntity) playerIn, containerProvider, packetBuffer -> packetBuffer.writeUUID(bagId));
+				return ActionResult.success(heldStack);
 			}
 		}
-		return super.onItemRightClick(worldIn, playerIn, handIn);
+		return super.use(worldIn, playerIn, handIn);
 	}
 
 	public Mode getMode(ItemStack stack) {
@@ -200,7 +229,7 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 
 	@Override
 	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
-		if (!context.getWorld().isRemote() && context.getPlayer() != null) {
+		if (!context.getLevel().isClientSide() && context.getPlayer() != null) {
 			onPlayerInteractWithItem(stack, context.getPlayer());
 		}
 
@@ -209,74 +238,72 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 
 	@Override
 	public void inventoryTick(ItemStack stack, World worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
-		if (!worldIn.isRemote() && entityIn instanceof PlayerEntity && PlayerInventory.isHotbar(itemSlot) && worldIn.getGameTime() % 20L == 0L) {
+		if (!worldIn.isClientSide() && entityIn instanceof PlayerEntity && PlayerInventory.isHotbarSlot(itemSlot) && worldIn.getGameTime() % 20L == 0L) {
 //			onPlayerInteractWithItem(stack, context.getPlayer());
 			getMode(stack).onInventoryTick(this, stack, (PlayerEntity) entityIn);
 		}
 	}
 
 	public ActionResultType extractItemsFromTileEntity(ItemStack stack, ItemUseContext context) {
-		final CompoundNBT nbt = stack.getOrCreateTag();
-		if (nbt.contains(NBT_KEY_INVENTORY)) {
-			if (!context.getWorld().isRemote()) {
-				final CompoundNBT invNbt = nbt.getCompound(NBT_KEY_INVENTORY);
-				final int maxAmount = invNbt.getShort(NBT_KEY_MAX_AMOUNT);
-				final int oldAmount = invNbt.getShort(NBT_KEY_AMOUNT);
-				final ItemStack storedStack = ItemStack.read(invNbt.getCompound(NBT_KEY_ITEM));
+		LargeSingleItemStackHandler itemHandler = getItemHandler(stack);
+		if (itemHandler != null) {
+			if (!context.getLevel().isClientSide()) {
+				final int maxAmount = itemHandler.getMaxAmount();
+				final int oldAmount = itemHandler.getAmount();
+				final ItemStack storedStack = itemHandler.getStack();
 				if (oldAmount < maxAmount && !storedStack.isEmpty()) {
-					TileEntity tile = context.getWorld().getTileEntity(context.getPos());
+					TileEntity tile = context.getLevel().getBlockEntity(context.getClickedPos());
 					if (tile != null) {
 						LazyOptional<IItemHandler> capability = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
 						if (capability.isPresent()) {
-							capability.ifPresent(itemHandler -> {
+							capability.ifPresent(otherItemHandler -> {
 								int amount = oldAmount;
-								int nSlots = itemHandler.getSlots();
+								int nSlots = otherItemHandler.getSlots();
 								for (int i = 0; i < nSlots; i++) {
-									if (!ItemHandlerHelper.canItemStacksStack(itemHandler.getStackInSlot(i), storedStack)) continue;
-									int extractAmount = Math.min(itemHandler.getSlotLimit(i), maxAmount - amount);
-									ItemStack result = itemHandler.extractItem(i, extractAmount, false);
+									if (!ItemHandlerHelper.canItemStacksStack(otherItemHandler.getStackInSlot(i), storedStack)) continue;
+									int extractAmount = Math.min(otherItemHandler.getSlotLimit(i), maxAmount - amount);
+									ItemStack result = otherItemHandler.extractItem(i, extractAmount, false);
 									if (!result.isEmpty()) {
 										amount += result.getCount();
 									}
 									if (amount >= maxAmount) break;
 								}
 								if (amount > oldAmount) {
-									invNbt.putShort(NBT_KEY_AMOUNT, (short) MathHelper.clamp(amount, 0, maxAmount));
-									invNbt.putBoolean(NBT_KEY_IS_DIRTY, true);
+									itemHandler.setAmount((short) MathHelper.clamp(amount, 0, maxAmount));
 								}
+								tile.setChanged();
 							});
-							context.getWorld().playSound(null, context.getPos(), SoundEvents.ENTITY_GENERIC_EAT, SoundCategory.PLAYERS, 0.9F, 0.3f + context.getWorld().rand.nextFloat() * 0.25f);
+							context.getLevel().playSound(null, context.getClickedPos(), SoundEvents.GENERIC_EAT, SoundCategory.PLAYERS, 0.9F, 0.3f + context.getLevel().random.nextFloat() * 0.25f);
 							return ActionResultType.SUCCESS;
 						}
 						else return ActionResultType.FAIL;
 					}
 				}
 			}
-			return ActionResultType.func_233537_a_(context.getWorld().isRemote());
+			return ActionResultType.sidedSuccess(context.getLevel().isClientSide());
 		}
 
 		return ActionResultType.PASS;
 	}
 
 	public ActionResultType insertItemsIntoTileEntity(ItemStack stack, ItemUseContext context) {
-		final CompoundNBT nbt = stack.getOrCreateTag();
-		if (nbt.contains(NBT_KEY_INVENTORY)) {
-			if (!context.getWorld().isRemote()) {
-				final CompoundNBT invNbt = nbt.getCompound(NBT_KEY_INVENTORY);
-				if (invNbt.getShort(NBT_KEY_AMOUNT) > 0) {
-					TileEntity tile = context.getWorld().getTileEntity(context.getPos());
+		LargeSingleItemStackHandler itemHandler = getItemHandler(stack);
+		if (itemHandler != null) {
+			if (!context.getLevel().isClientSide()) {
+				ItemStack storedStack = itemHandler.getStack();
+				if (!storedStack.isEmpty()) {
+					TileEntity tile = context.getLevel().getBlockEntity(context.getClickedPos());
 					if (tile != null) {
 						LazyOptional<IItemHandler> capability = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
 						if (capability.isPresent()) {
-							capability.ifPresent(itemHandler -> {
-								ItemStack storedStack = ItemStack.read(invNbt.getCompound(NBT_KEY_ITEM));
-								int amount = invNbt.getShort(NBT_KEY_AMOUNT);
-								int nSlots = itemHandler.getSlots();
+							capability.ifPresent(otherItemHandler -> {
+								int amount = itemHandler.getAmount();
+								int nSlots = otherItemHandler.getSlots();
 								for (int i = 0; i < nSlots; i++) {
-									int insertAmount = Math.min(itemHandler.getSlotLimit(i), amount);
+									int insertAmount = Math.min(otherItemHandler.getSlotLimit(i), amount);
 									ItemStack insertStack = ItemHandlerHelper.copyStackWithSize(storedStack, insertAmount);
-									if (itemHandler.isItemValid(i, insertStack)) {
-										ItemStack remainder = itemHandler.insertItem(i, insertStack, false);
+									if (otherItemHandler.isItemValid(i, insertStack)) {
+										ItemStack remainder = otherItemHandler.insertItem(i, insertStack, false);
 										if (!remainder.isEmpty()) {
 											insertAmount -= remainder.getCount();
 										}
@@ -285,19 +312,19 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 									if (amount <= 0) break;
 								}
 								if (amount > 0) {
-									invNbt.putShort(NBT_KEY_AMOUNT, (short) amount);
-									invNbt.putBoolean(NBT_KEY_IS_DIRTY, true);
+									itemHandler.setAmount((short) amount);
 								}
-								else nbt.remove(NBT_KEY_INVENTORY);
+								else itemHandler.setStack(ItemStack.EMPTY);
+								tile.setChanged();
 							});
-							context.getWorld().playSound(null, context.getPos(), SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.8f, 0.25f + context.getWorld().rand.nextFloat() * 0.25f);
+							context.getLevel().playSound(null, context.getClickedPos(), SoundEvents.PLAYER_BURP, SoundCategory.PLAYERS, 0.8f, 0.25f + context.getLevel().random.nextFloat() * 0.25f);
 							return ActionResultType.SUCCESS;
 						}
 						else return ActionResultType.FAIL;
 					}
 				}
 			}
-			return ActionResultType.func_233537_a_(context.getWorld().isRemote());
+			return ActionResultType.sidedSuccess(context.getLevel().isClientSide());
 		}
 
 		return ActionResultType.PASS;
@@ -308,7 +335,7 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 		capability.ifPresent(handler -> {
 			if (handler instanceof SpecialSingleItemStackHandler) {
 				SpecialSingleItemStackHandler itemHandler = (SpecialSingleItemStackHandler) handler;
-				Iterable<ItemStack> heldEquipment = player.getHeldEquipment();
+				Iterable<ItemStack> heldEquipment = player.getHandSlots();
 				ItemStack unsafeStack = itemHandler.getStackInSlot(0);
 				for (ItemStack activeItemStack : heldEquipment) {
 					if (!activeItemStack.isEmpty() && itemHandler.getCount() > 0 && activeItemStack.getCount() < activeItemStack.getMaxStackSize() && ItemHandlerHelper.canItemStacksStack(unsafeStack, activeItemStack)) {
@@ -329,7 +356,7 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 				ItemStack unsafeStack = itemHandler.getStackInSlot(0);
 				int maxStackSize = itemHandler.getSlotLimit(0);
 				if (!unsafeStack.isEmpty() && itemHandler.getCount() < maxStackSize) {
-					NonNullList<ItemStack> inventory = player.inventory.mainInventory;
+					NonNullList<ItemStack> inventory = player.inventory.items;
 					int counter = 0;
 					for (int i = 0; i < inventory.size(); i++) {
 						ItemStack currStack = inventory.get(i);
@@ -351,10 +378,41 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 						}
 						if (counter >= 8 || itemHandler.getCount() >= maxStackSize) break;
 					}
-					player.inventory.markDirty();
+					player.inventory.setChanged();
 				}
 			}
 		});
+	}
+
+	@Override
+	public void readShareTag(ItemStack stack, @Nullable CompoundNBT nbt) {
+		if (nbt == null) {
+			stack.setTag(null);
+			return;
+		}
+		CompoundNBT stackNbt = nbt.getCompound(STACK_NBT_KEY);
+		CompoundNBT cpaNbt = nbt.getCompound(CAPABILITY_NBT_KEY);
+		stack.setTag(stackNbt);
+		LargeSingleItemStackHandler itemHandler = getItemHandler(stack);
+		if (itemHandler != null) {
+			itemHandler.deserializeNBT(cpaNbt);
+		}
+	}
+
+	@Nullable
+	@Override
+	public CompoundNBT getShareTag(ItemStack stack) {
+		LargeSingleItemStackHandler itemHandler = getItemHandler(stack);
+		if (itemHandler != null) {
+			CompoundNBT nbt = new CompoundNBT();
+			CompoundNBT stackNbt = stack.getTag();
+			CompoundNBT capNbt = itemHandler.serializeNBT();
+			if (stackNbt != null) nbt.put(STACK_NBT_KEY, stackNbt);
+			nbt.put(CAPABILITY_NBT_KEY, capNbt);
+			return nbt;
+		}
+
+		return super.getShareTag(stack);
 	}
 
 	public enum Mode {
@@ -417,6 +475,31 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 		@FunctionalInterface
 		public interface ItemUseFirstFunction {
 			ActionResultType apply(ItemStorageBagItem item, ItemStack stack, ItemUseContext context);
+		}
+	}
+
+	static class ItemBagContainerProvider<ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> implements INamedContainerProvider {
+
+		private final ItemStack cachedStack;
+
+		public ItemBagContainerProvider(ItemStack bagStackIn) {
+			cachedStack = bagStackIn;
+		}
+
+		@Override
+		public ITextComponent getDisplayName() {
+			return cachedStack.getHoverName();
+		}
+
+		@Nullable
+		@Override
+		public Container createMenu(int screenId, PlayerInventory playerInv, PlayerEntity playerIn) {
+			IItemHandler itemHandler = cachedStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(null);
+			if (itemHandler instanceof IItemHandlerModifiable && itemHandler instanceof INBTSerializable) {
+				SimpleInventory<ISH> inv = SimpleInventory.createServerContents((ISH) itemHandler, player -> true, () -> {});
+				return ItemBagContainer.createServerContainer(screenId, playerInv, inv, cachedStack);
+			}
+			return null;
 		}
 	}
 

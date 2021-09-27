@@ -81,22 +81,26 @@ public final class ClientSetupHandler {
 		event.enqueueWork(() -> {
 			ModContainerTypes.registerContainerScreens();
 
-			ItemModelsProperties.registerProperty(ModItems.LONG_RANGE_CLAW.get(), new ResourceLocation("extended"), (stack, clientWorld, livingEntity) -> LongRangeClawItem.isClawExtended(stack) ? 1f : 0f);
-			ItemModelsProperties.registerProperty(ModItems.SINGLE_ITEM_BAG_ITEM.get(), new ResourceLocation("fullness"), (stack, clientWorld, livingEntity) -> ModItems.SINGLE_ITEM_BAG_ITEM.get().getFullness(stack));
-			ItemModelsProperties.registerProperty(ModItems.ENTITY_STORAGE_ITEM.get(), new ResourceLocation("fullness"), (stack, clientWorld, livingEntity) -> ModItems.ENTITY_STORAGE_ITEM.get().getFullness(stack));
-//			ItemModelsProperties.registerProperty(ModItems.SINEW_BOW.get(), new ResourceLocation("pull"), (stack, clientWorld, livingEntity) -> livingEntity == null || livingEntity.getActiveItemStack() != stack ? 0f : ModItems.SINEW_BOW.get().getPullProgress(stack, livingEntity));
-//			ItemModelsProperties.registerProperty(ModItems.SINEW_BOW.get(), new ResourceLocation("pulling"), (stack, clientWorld, livingEntity) -> livingEntity != null && livingEntity.isHandActive() && livingEntity.getActiveItemStack() == stack ? 1f : 0f);
-			ItemModelsProperties.registerProperty(ModItems.BONE_SCRAPS.get(), new ResourceLocation("type"), (stack, clientWorld, livingEntity) -> stack.getOrCreateTag().getInt("ScrapType"));
+			registerItemModelProperties();
 
 			ModBlocks.setRenderLayers();
 			ModFluids.setRenderLayers();
 
 			Set<String> skinMaps = ImmutableSet.of("slim", "default");
-			Minecraft.getInstance().getRenderManager().getSkinMap().forEach((type, playerRenderer) -> {
+			Minecraft.getInstance().getEntityRenderDispatcher().getSkinMap().forEach((type, playerRenderer) -> {
 				if (skinMaps.contains(type)) playerRenderer.addLayer(new OculusObserverLayer<>(playerRenderer));
 			});
 
 		});
+	}
+
+	private static void registerItemModelProperties() {
+		ItemModelsProperties.register(ModItems.LONG_RANGE_CLAW.get(), new ResourceLocation("extended"), (stack, clientWorld, livingEntity) -> LongRangeClawItem.isClawExtended(stack) ? 1f : 0f);
+		ItemModelsProperties.register(ModItems.SINGLE_ITEM_BAG_ITEM.get(), new ResourceLocation("fullness"), (stack, clientWorld, livingEntity) -> ModItems.SINGLE_ITEM_BAG_ITEM.get().getFullness(stack));
+		ItemModelsProperties.register(ModItems.ENTITY_STORAGE_ITEM.get(), new ResourceLocation("fullness"), (stack, clientWorld, livingEntity) -> ModItems.ENTITY_STORAGE_ITEM.get().getFullness(stack));
+//			ItemModelsProperties.registerProperty(ModItems.SINEW_BOW.get(), new ResourceLocation("pull"), (stack, clientWorld, livingEntity) -> livingEntity == null || livingEntity.getActiveItemStack() != stack ? 0f : ModItems.SINEW_BOW.get().getPullProgress(stack, livingEntity));
+//			ItemModelsProperties.registerProperty(ModItems.SINEW_BOW.get(), new ResourceLocation("pulling"), (stack, clientWorld, livingEntity) -> livingEntity != null && livingEntity.isHandActive() && livingEntity.getActiveItemStack() == stack ? 1f : 0f);
+		ItemModelsProperties.register(ModItems.BONE_SCRAPS.get(), new ResourceLocation("type"), (stack, clientWorld, livingEntity) -> stack.getOrCreateTag().getInt("ScrapType"));
 	}
 
 	@SubscribeEvent
@@ -119,12 +123,12 @@ public final class ClientSetupHandler {
 	@SubscribeEvent
 	public static void onItemColorRegistry(final ColorHandlerEvent.Block event) {
 		event.getBlockColors().register((state, displayReader, pos, index) -> 0x8d758c, ModBlocks.NECROTIC_FLESH_BLOCK.get());
-		event.getBlockColors().register((state, displayReader, pos, index) -> state.get(MeatsoupCauldronBlock.LEVEL) == MeatsoupCauldronBlock.MAX_LEVEL ? 0x8d758c : -1, ModBlocks.MEATSOUP_CAULDRON.get());
+		event.getBlockColors().register((state, displayReader, pos, index) -> state.getValue(MeatsoupCauldronBlock.LEVEL) == MeatsoupCauldronBlock.MAX_LEVEL ? 0x8d758c : -1, ModBlocks.MEATSOUP_CAULDRON.get());
 	}
 
 	@SubscribeEvent
 	public static void onStitch(TextureStitchEvent.Pre event) {
-		if (!event.getMap().getTextureLocation().equals(Atlases.CHEST_ATLAS)) {
+		if (!event.getMap().location().equals(Atlases.CHEST_SHEET)) {
 			return;
 		}
 
@@ -138,8 +142,8 @@ public final class ClientSetupHandler {
 	}
 
 	private static void addFullBrightOverlayBakedModel(Block block, ModelBakeEvent event) {
-		for (BlockState blockState : block.getStateContainer().getValidStates()) {
-			ModelResourceLocation modelLocation = BlockModelShapes.getModelLocation(blockState);
+		for (BlockState blockState : block.getStateDefinition().getPossibleStates()) {
+			ModelResourceLocation modelLocation = BlockModelShapes.stateToModelLocation(blockState);
 			IBakedModel bakedModel = event.getModelRegistry().get(modelLocation);
 			if (bakedModel == null) {
 				BiomancyMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Did not find any vanilla baked models for {}", block.getRegistryName());

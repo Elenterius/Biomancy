@@ -23,17 +23,17 @@ public class StatusEffect extends Effect {
 	}
 
 	@Override
-	public void performEffect(LivingEntity livingEntity, int amplifier) {
+	public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
 		//do nothing
 	}
 
 	@Override
-	public void affectEntity(@Nullable Entity source, @Nullable Entity indirectSource, LivingEntity entityLivingBaseIn, int amplifier, double health) {
+	public void applyInstantenousEffect(@Nullable Entity source, @Nullable Entity indirectSource, LivingEntity entityLivingBaseIn, int amplifier, double health) {
 		//do nothing
 	}
 
 	@Override
-	public boolean isReady(int duration, int amplifier) {
+	public boolean isDurationEffectTick(int duration, int amplifier) {
 		return false;
 	}
 

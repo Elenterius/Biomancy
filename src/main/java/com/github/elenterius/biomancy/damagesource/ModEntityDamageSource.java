@@ -32,11 +32,11 @@ public class ModEntityDamageSource extends EntityDamageSource {
 	}
 
 	@Override
-	public ITextComponent getDeathMessage(LivingEntity entityLivingBaseIn) {
-		ItemStack itemstack = damageSourceEntity instanceof LivingEntity ? ((LivingEntity) damageSourceEntity).getHeldItemMainhand() : ItemStack.EMPTY;
-		String str = "death.attack." + BiomancyMod.MOD_ID + "." + damageType;
-		ITextComponent entityDisplayName = damageSourceEntity != null ? damageSourceEntity.getDisplayName() : new StringTextComponent("Foobar").setStyle(Style.EMPTY.setObfuscated(true));
-		return !itemstack.isEmpty() && itemstack.hasDisplayName() ? new TranslationTextComponent(str + ".item", entityLivingBaseIn.getDisplayName(), entityDisplayName, itemstack.getTextComponent()) : new TranslationTextComponent(str, entityLivingBaseIn.getDisplayName(), entityDisplayName);
+	public ITextComponent getLocalizedDeathMessage(LivingEntity entityLivingBaseIn) {
+		ItemStack itemstack = entity instanceof LivingEntity ? ((LivingEntity) entity).getMainHandItem() : ItemStack.EMPTY;
+		String str = "death.attack." + BiomancyMod.MOD_ID + "." + msgId;
+		ITextComponent entityDisplayName = entity != null ? entity.getDisplayName() : new StringTextComponent("Foobar").setStyle(Style.EMPTY.setObfuscated(true));
+		return !itemstack.isEmpty() && itemstack.hasCustomHoverName() ? new TranslationTextComponent(str + ".item", entityLivingBaseIn.getDisplayName(), entityDisplayName, itemstack.getDisplayName()) : new TranslationTextComponent(str, entityLivingBaseIn.getDisplayName(), entityDisplayName);
 	}
 
 }

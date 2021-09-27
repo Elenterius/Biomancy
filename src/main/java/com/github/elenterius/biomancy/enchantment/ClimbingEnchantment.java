@@ -13,13 +13,13 @@ public class ClimbingEnchantment extends Enchantment {
 	}
 
 	@Override
-	public int getMinEnchantability(int enchantmentLevel) {
+	public int getMinCost(int enchantmentLevel) {
 		return enchantmentLevel * 10;
 	}
 
 	@Override
-	public int getMaxEnchantability(int enchantmentLevel) {
-		return getMinEnchantability(enchantmentLevel) + 15;
+	public int getMaxCost(int enchantmentLevel) {
+		return getMinCost(enchantmentLevel) + 15;
 	}
 
 	@Override
@@ -28,34 +28,34 @@ public class ClimbingEnchantment extends Enchantment {
 	}
 
 	@Override
-	public boolean isTreasureEnchantment() {
+	public boolean isTreasureOnly() {
 		return true;
 	}
 
 	@Override
-	public boolean canVillagerTrade() {
+	public boolean isTradeable() {
 		return true;
 	}
 
 	@Override
-	public boolean canGenerateInLoot() {
+	public boolean isDiscoverable() {
 		return true;
 	}
 
 	public boolean tryToClimb(PlayerEntity entity) {
-		if (entity.collidedHorizontally && (entity.getFoodStats().getFoodLevel() > 6.0F || entity.abilities.isCreativeMode)) {
-			if (!entity.isOnLadder()) {  // normal climbing
-				Vector3d motion = entity.getMotion();
+		if (entity.horizontalCollision && (entity.getFoodData().getFoodLevel() > 6.0F || entity.abilities.instabuild)) {
+			if (!entity.onClimbable()) {  // normal climbing
+				Vector3d motion = entity.getDeltaMovement();
 				double minmax = 0.015f;
 				double mx = MathHelper.clamp(motion.x, -minmax, minmax);
 				double mz = MathHelper.clamp(motion.z, -minmax, minmax);
-				double my = entity.isSneaking() ? Math.max(motion.y, 0d) : 0.1d; //stick to wall when sneaking
+				double my = entity.isShiftKeyDown() ? Math.max(motion.y, 0d) : 0.1d; //stick to wall when sneaking
 				entity.fallDistance = 0f;
-				entity.setMotion(mx, my, mz);
+				entity.setDeltaMovement(mx, my, mz);
 				return true;
 			}
-			else if (!entity.isSneaking()) { // ladder climbing
-				entity.setMotion(entity.getMotion().add(0d, 0.08700634D, 0d));
+			else if (!entity.isShiftKeyDown()) { // ladder climbing
+				entity.setDeltaMovement(entity.getDeltaMovement().add(0d, 0.08700634D, 0d));
 				return true;
 			}
 		}

@@ -33,12 +33,12 @@ public class BoomlingItem extends Item {
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).setStyle(ClientTextUtil.LORE_STYLE));
 		if (stack.hasTag() && stack.getTag() != null) {
 			String potionTranslationKey = PotionUtilExt.getPotionTranslationKeyFromHost(stack);
 			if (!potionTranslationKey.isEmpty())
-				tooltip.add(new TranslationTextComponent(potionTranslationKey).setStyle(Style.EMPTY.setFormatting(TextFormatting.GRAY)));
+				tooltip.add(new TranslationTextComponent(potionTranslationKey).setStyle(Style.EMPTY.withColor(TextFormatting.GRAY)));
 		}
 		PotionUtilExt.addPotionTooltip(stack, tooltip, 1f);
 	}
@@ -61,7 +61,7 @@ public class BoomlingItem extends Item {
 	}
 
 	public boolean containsPotion(ItemStack stack) {
-		return PotionUtilExt.getPotionFromItem(stack) != Potions.EMPTY;
+		return PotionUtilExt.getPotion(stack) != Potions.EMPTY;
 	}
 
 	public int getPotionColor(ItemStack stack) {
@@ -70,29 +70,29 @@ public class BoomlingItem extends Item {
 
 	@Override
 	public ActionResultType onItemUseFirst(ItemStack stack, ItemUseContext context) {
-		if (context.getWorld().isRemote()) return ActionResultType.PASS;
+		if (context.getLevel().isClientSide()) return ActionResultType.PASS;
 
 		PlayerEntity player = context.getPlayer();
 		if (player != null) {
-			if (context.getWorld().isBlockModifiable(player, context.getPos()) && player.canPlayerEdit(context.getPos(), context.getFace(), stack)) {
-				BoomlingEntity entity = ModEntityTypes.BOOMLING.get().create(context.getWorld());
+			if (context.getLevel().mayInteract(player, context.getClickedPos()) && player.mayUseItemAt(context.getClickedPos(), context.getClickedFace(), stack)) {
+				BoomlingEntity entity = ModEntityTypes.BOOMLING.get().create(context.getLevel());
 				if (entity != null) {
-					Vector3d pos = MobUtil.getSimpleOffsetPosition(context.getHitVec(), context.getFace(), entity);
-					entity.setLocationAndAngles(pos.x, pos.y, pos.z, MathHelper.wrapDegrees(context.getWorld().rand.nextFloat() * 360f), 0f);
-					entity.rotationYawHead = entity.rotationYaw;
-					entity.renderYawOffset = entity.rotationYaw;
-					entity.setMotion(0, 0, 0);
+					Vector3d pos = MobUtil.getSimpleOffsetPosition(context.getClickLocation(), context.getClickedFace(), entity);
+					entity.moveTo(pos.x, pos.y, pos.z, MathHelper.wrapDegrees(context.getLevel().random.nextFloat() * 360f), 0f);
+					entity.yHeadRot = entity.yRot;
+					entity.yBodyRot = entity.yRot;
+					entity.setDeltaMovement(0, 0, 0);
 					entity.fallDistance = 0;
 
-					entity.enablePersistence();
-					if (stack.hasDisplayName()) {
-						entity.setCustomName(stack.getDisplayName());
+					entity.setPersistenceRequired();
+					if (stack.hasCustomHoverName()) {
+						entity.setCustomName(stack.getHoverName());
 						entity.setCustomNameVisible(true);
 					}
 					entity.setOwner(player);
 					entity.setStoredPotion(PotionUtilExt.getPotionItemStack(stack));
 
-					if (context.getWorld().addEntity(entity)) {
+					if (context.getLevel().addFreshEntity(entity)) {
 						entity.playAmbientSound();
 						stack.shrink(1);
 						return ActionResultType.SUCCESS;

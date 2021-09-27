@@ -16,40 +16,41 @@ public class ReturnToOwnerGoal extends Goal {
 	public ReturnToOwnerGoal(OwnableCreatureEntity entity, double speed) {
 		this.goalOwner = entity;
 		this.speed = speed;
-		setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+		setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
 	}
 
 	@Override
-	public boolean shouldExecute() {
-		if (goalOwner.getTargetBlockPos() != null || goalOwner.getAttackTarget() != null) return false;
+	public boolean canUse() {
+		if (goalOwner.getTargetBlockPos() != null || goalOwner.getTarget() != null) return false;
 		PlayerEntity playerEntity = goalOwner.getOwner().orElse(null);
 		if (playerEntity == null || playerEntity.isSpectator() || !playerEntity.isAlive()) return false;
-		if (goalOwner.getDistanceSq(playerEntity) < 3d * 3d) return false;
+		if (goalOwner.distanceToSqr(playerEntity) < 3d * 3d) return false;
 		entityOwner = playerEntity;
 		return true;
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
-		return goalOwner.getNavigator().hasPath() && entityOwner.isAlive() && goalOwner.getDistanceSq(entityOwner) > 1.25d * 1.25d;
+	public boolean canContinueToUse() {
+		return goalOwner.getNavigation().isInProgress() && entityOwner.isAlive() && goalOwner.distanceToSqr(entityOwner) > 1.25d * 1.25d;
 	}
 
 	@Override
 	public void tick() {
-		goalOwner.getLookController().setLookPositionWithEntity(entityOwner, 10.0F, goalOwner.getVerticalFaceSpeed());
-		goalOwner.getNavigator().tryMoveToEntityLiving(entityOwner, speed);
-		if (goalOwner.getDistanceSq(entityOwner) < 1.5d * 1.5d && --delayTime <= 0) {
+		goalOwner.getLookControl().setLookAt(entityOwner, 10.0F, goalOwner.getMaxHeadXRot());
+		goalOwner.getNavigation().moveTo(entityOwner, speed);
+		if (goalOwner.distanceToSqr(entityOwner) < 1.5d * 1.5d && --delayTime <= 0) {
 			if (goalOwner.tryToReturnIntoPlayerInventory()) {
-				goalOwner.getNavigator().clearPath();
-			} else {
+				goalOwner.getNavigation().stop();
+			}
+			else {
 				delayTime = 10;
 			}
 		}
 	}
 
 	@Override
-	public void resetTask() {
-		goalOwner.getNavigator().clearPath();
+	public void stop() {
+		goalOwner.getNavigation().stop();
 		entityOwner = null;
 		delayTime = 0;
 	}

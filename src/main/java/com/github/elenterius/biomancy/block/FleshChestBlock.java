@@ -38,22 +38,22 @@ import java.util.List;
 
 public class FleshChestBlock extends OwnableContainerBlock implements IWaterLoggable {
 
-	public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
+	public static final DirectionProperty FACING = HorizontalBlock.FACING;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	protected static final VoxelShape SHAPE = Block.makeCuboidShape(1d, 0d, 1d, 15d, 14d, 15d);
+	protected static final VoxelShape SHAPE = Block.box(1d, 0d, 1d, 15d, 14d, 15d);
 
 	public FleshChestBlock(Properties builder) {
 		super(builder);
-		setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(WATERLOGGED, false));
+		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stackIn, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stackIn, worldIn, tooltip, flagIn);
+	public void appendHoverText(ItemStack stackIn, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		super.appendHoverText(stackIn, worldIn, tooltip, flagIn);
 
-		CompoundNBT nbt = stackIn.getChildTag("BlockEntityTag");
+		CompoundNBT nbt = stackIn.getTagElement("BlockEntityTag");
 		if (nbt != null) {
 
 			CompoundNBT invNbt = nbt.getCompound("Inventory");
@@ -70,53 +70,53 @@ public class FleshChestBlock extends OwnableContainerBlock implements IWaterLogg
 							totalCount++;
 							if (count <= 4) {
 								count++;
-								IFormattableTextComponent textComponent = stack.getDisplayName().deepCopy();
-								textComponent.appendString(" x").appendString(String.valueOf(stack.getCount())).mergeStyle(TextFormatting.GRAY);
+								IFormattableTextComponent textComponent = stack.getHoverName().copy();
+								textComponent.append(" x").append(String.valueOf(stack.getCount())).withStyle(TextFormatting.GRAY);
 								tooltip.add(textComponent);
 							}
 						}
 					}
 
 					if (totalCount - count > 0) {
-						tooltip.add((new TranslationTextComponent("container.shulkerBox.more", totalCount - count)).mergeStyle(TextFormatting.ITALIC, TextFormatting.GRAY));
+						tooltip.add((new TranslationTextComponent("container.shulkerBox.more", totalCount - count)).withStyle(TextFormatting.ITALIC, TextFormatting.GRAY));
 					}
 					tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
-					tooltip.add(new StringTextComponent(String.format("%d/%d ", totalCount, FleshbornChestTileEntity.INV_SLOTS_COUNT)).appendSibling(new TranslationTextComponent("tooltip.biomancy.slots")).mergeStyle(TextFormatting.GRAY));
+					tooltip.add(new StringTextComponent(String.format("%d/%d ", totalCount, FleshbornChestTileEntity.INV_SLOTS_COUNT)).append(new TranslationTextComponent("tooltip.biomancy.slots")).withStyle(TextFormatting.GRAY));
 				}
 			}
 		}
 	}
 
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+	protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
 		builder.add(FACING, WATERLOGGED);
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext context) {
-		FluidState fluidstate = context.getWorld().getFluidState(context.getPos());
-		return getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite()).with(WATERLOGGED, fluidstate.getFluid() == Fluids.WATER);
+		FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
+		return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite()).setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
 	}
 
 	@Override
-	public BlockState updatePostPlacement(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-		if (stateIn.get(WATERLOGGED)) {
-			worldIn.getPendingFluidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickRate(worldIn));
+	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+		if (stateIn.getValue(WATERLOGGED)) {
+			worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
 		}
-		return super.updatePostPlacement(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+		return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
 	}
 
 	@Override
 	public FluidState getFluidState(BlockState state) {
-		return state.get(WATERLOGGED) ? Fluids.WATER.getStillFluidState(false) : super.getFluidState(state);
+		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	@Override
-	public ActionResultType onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		if (worldIn.isRemote()) return ActionResultType.SUCCESS;
+	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+		if (worldIn.isClientSide()) return ActionResultType.SUCCESS;
 
-		if (!ChestBlock.isBlocked(worldIn, pos)) {
-			INamedContainerProvider containerProvider = getContainer(state, worldIn, pos);
+		if (!ChestBlock.isChestBlockedAt(worldIn, pos)) {
+			INamedContainerProvider containerProvider = getMenuProvider(state, worldIn, pos);
 			if (containerProvider != null && player instanceof ServerPlayerEntity) {
 				ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
 				NetworkHooks.openGui(serverPlayerEntity, containerProvider, (packetBuffer) -> {});
@@ -128,31 +128,31 @@ public class FleshChestBlock extends OwnableContainerBlock implements IWaterLogg
 	}
 
 	@Override
-	public boolean hasComparatorInputOverride(BlockState state) {
+	public boolean hasAnalogOutputSignal(BlockState state) {
 		return true;
 	}
 
 	@Override
-	public int getComparatorInputOverride(BlockState blockState, World worldIn, BlockPos pos) {
-		TileEntity tileEntity = worldIn.getTileEntity(pos);
+	public int getAnalogOutputSignal(BlockState blockState, World worldIn, BlockPos pos) {
+		TileEntity tileEntity = worldIn.getBlockEntity(pos);
 		if (tileEntity instanceof FleshbornChestTileEntity) {
-			return Container.calcRedstoneFromInventory(((FleshbornChestTileEntity) tileEntity).getInventory());
+			return Container.getRedstoneSignalFromContainer(((FleshbornChestTileEntity) tileEntity).getInventory());
 		}
 		return 0;
 	}
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.with(FACING, rot.rotate(state.get(FACING)));
+		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
 	}
 
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirrorIn) {
-		return state.rotate(mirrorIn.toRotation(state.get(FACING)));
+		return state.rotate(mirrorIn.getRotation(state.getValue(FACING)));
 	}
 
 	@Override
-	public BlockRenderType getRenderType(BlockState state) {
+	public BlockRenderType getRenderShape(BlockState state) {
 		return BlockRenderType.ENTITYBLOCK_ANIMATED;
 	}
 
@@ -162,13 +162,13 @@ public class FleshChestBlock extends OwnableContainerBlock implements IWaterLogg
 	}
 
 	@Override
-	public boolean allowsMovement(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
+	public boolean isPathfindable(BlockState state, IBlockReader worldIn, BlockPos pos, PathType type) {
 		return false;
 	}
 
 	@Nullable
 	@Override
-	public TileEntity createNewTileEntity(IBlockReader worldIn) {
+	public TileEntity newBlockEntity(IBlockReader worldIn) {
 		return new FleshbornChestTileEntity();
 	}
 

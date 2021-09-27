@@ -29,7 +29,7 @@ public class BloodSampleReagent extends Reagent {
 	}
 
 	private static boolean isNonBoss(LivingEntity target) {
-		return target.canChangeDimension(); //TODO: use boss entity tag
+		return target.canChangeDimensions(); //TODO: use boss entity tag
 	}
 
 	@Nullable
@@ -41,12 +41,12 @@ public class BloodSampleReagent extends Reagent {
 	@Nullable
 	public static CompoundNBT getBloodSampleFromEntityUnchecked(LivingEntity target) {
 		CompoundNBT nbt = new CompoundNBT();
-		String typeId = target instanceof PlayerEntity ? getPlayerTypeId((PlayerEntity) target) : target.getEntityString();
+		String typeId = target instanceof PlayerEntity ? getPlayerTypeId((PlayerEntity) target) : target.getEncodeId();
 		if (typeId != null) {
 			nbt.putString("EntityTypeId", typeId);
-			nbt.putString("Name", target.getType().getTranslationKey());
+			nbt.putString("Name", target.getType().getDescriptionId());
 			nbt.putBoolean("IsPlayer", target instanceof PlayerEntity);
-			nbt.putUniqueId("EntityUUID", target.getUniqueID());
+			nbt.putUUID("EntityUUID", target.getUUID());
 			return nbt;
 		}
 		return null;
@@ -63,13 +63,14 @@ public class BloodSampleReagent extends Reagent {
 		if (nbt.contains(NBT_KEY_DATA)) {
 			CompoundNBT reagentNbt = nbt.getCompound(NBT_KEY_DATA);
 			if (reagentNbt.getBoolean("IsPlayer")) {
-				String playerName =  " " + ClientTextUtil.tryToGetPlayerNameOnClientSide(reagentNbt.getUniqueId("EntityUUID"));
-				tooltip.add(ClientTextUtil.getTooltipText("contains_dna", new TranslationTextComponent(reagentNbt.getString("Name")).appendString(playerName)).mergeStyle(TextFormatting.GRAY));
+				String playerName = " " + ClientTextUtil.tryToGetPlayerNameOnClientSide(reagentNbt.getUUID("EntityUUID"));
+				tooltip.add(ClientTextUtil.getTooltipText("contains_dna", new TranslationTextComponent(reagentNbt.getString("Name")).append(playerName)).withStyle(TextFormatting.GRAY));
 			}
-			else tooltip.add(ClientTextUtil.getTooltipText("contains_dna", new TranslationTextComponent(reagentNbt.getString("Name"))).mergeStyle(TextFormatting.GRAY));
+			else
+				tooltip.add(ClientTextUtil.getTooltipText("contains_dna", new TranslationTextComponent(reagentNbt.getString("Name"))).withStyle(TextFormatting.GRAY));
 		}
 		if (ClientTextUtil.showExtraInfo(tooltip)) {
-			tooltip.add(new TranslationTextComponent(getTranslationKey().replace("reagent", "tooltip")).mergeStyle(ClientTextUtil.LORE_STYLE));
+			tooltip.add(new TranslationTextComponent(getTranslationKey().replace("reagent", "tooltip")).withStyle(ClientTextUtil.LORE_STYLE));
 		}
 	}
 
@@ -82,9 +83,9 @@ public class BloodSampleReagent extends Reagent {
 	public boolean affectEntity(CompoundNBT nbt, @Nullable LivingEntity source, LivingEntity target) {
 		if (target instanceof FleshBlobEntity) {
 			if (!nbt.isEmpty()) {
-				EntityType<?> entityType = ForgeRegistries.ENTITIES.getValue(ResourceLocation.tryCreate(nbt.getString("EntityTypeId")));
+				EntityType<?> entityType = ForgeRegistries.ENTITIES.getValue(ResourceLocation.tryParse(nbt.getString("EntityTypeId")));
 				if (entityType != null) {
-					if (!target.world.isRemote) {
+					if (!target.level.isClientSide) {
 						((FleshBlobEntity) target).addForeignEntityDNA(entityType);
 					}
 					return true;

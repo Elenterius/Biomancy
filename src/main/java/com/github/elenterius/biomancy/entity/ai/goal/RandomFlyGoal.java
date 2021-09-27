@@ -17,30 +17,30 @@ public class RandomFlyGoal extends Goal {
 	public RandomFlyGoal(CreatureEntity entityIn, double speedIn) {
 		goalOwner = entityIn;
 		speed = speedIn;
-		setMutexFlags(EnumSet.of(Flag.MOVE));
+		setFlags(EnumSet.of(Flag.MOVE));
 	}
 
 	@Override
-	public boolean shouldExecute() {
-		return goalOwner.getNavigator().noPath() && goalOwner.getRNG().nextInt(12) == 0;
+	public boolean canUse() {
+		return goalOwner.getNavigation().isDone() && goalOwner.getRandom().nextInt(12) == 0;
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
-		return goalOwner.getNavigator().hasPath();
+	public boolean canContinueToUse() {
+		return goalOwner.getNavigation().isInProgress();
 	}
 
 	@Override
-	public void startExecuting() {
+	public void start() {
 		Vector3d vec = getRandomPos();
-		if (vec != null) goalOwner.getNavigator().setPath(goalOwner.getNavigator().getPathToPos(new BlockPos(vec), 1), speed);
+		if (vec != null) goalOwner.getNavigation().moveTo(goalOwner.getNavigation().createPath(new BlockPos(vec), 1), speed);
 	}
 
 	@Nullable
 	protected Vector3d getRandomPos() {
-		Vector3d lookVec = goalOwner.getLook(0f);
-		Vector3d posVec = RandomPositionGenerator.findAirTarget(goalOwner, 8, 7, lookVec, ((float) Math.PI / 2F), 2, 1);
-		return posVec != null ? posVec : RandomPositionGenerator.findGroundTarget(goalOwner, 8, 4, -2, lookVec, (float) Math.PI / 2F);
+		Vector3d lookVec = goalOwner.getViewVector(0f);
+		Vector3d posVec = RandomPositionGenerator.getAboveLandPos(goalOwner, 8, 7, lookVec, ((float) Math.PI / 2F), 2, 1);
+		return posVec != null ? posVec : RandomPositionGenerator.getAirPos(goalOwner, 8, 4, -2, lookVec, (float) Math.PI / 2F);
 	}
 
 }
