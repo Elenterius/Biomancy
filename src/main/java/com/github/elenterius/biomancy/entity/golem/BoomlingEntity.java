@@ -134,6 +134,10 @@ public class BoomlingEntity extends OwnableCreatureEntity {
 			maxFuseTimer = nbt.getShort("MaxFuseTime");
 		}
 		setIgnited(nbt.getBoolean("Ignited"));
+		ItemStack storedPotion = getStoredPotion();
+		if (!storedPotion.isEmpty()) {
+			getEntityData().set(COLOR, PotionUtilExt.getColor(storedPotion)); //restore color
+		}
 	}
 
 	@Override
