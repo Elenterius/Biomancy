@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:entity_storage_evolution_pool"
+      "biomancy:small_entity_bag_evolution_pool"
     ]
   },
   "criteria": {
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:entity_storage_evolution_pool"
+        "recipe": "biomancy:small_entity_bag_evolution_pool"
       }
     }
   },

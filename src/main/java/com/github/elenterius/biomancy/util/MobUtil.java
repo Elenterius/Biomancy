@@ -71,7 +71,7 @@ public final class MobUtil {
 		if (world.mayInteract(player, blockPos) && player.mayUseItemAt(blockPos, facing, stack)) {
 			T entity = entityType.create(world);
 			if (entity != null) {
-				Vector3d pos = getSimpleOffsetPosition(hitVec, facing, entity);
+				Vector3d pos = getAdjustedSpawnPositionFor(blockPos, hitVec, facing, entity);
 				entity.moveTo(pos.x, pos.y, pos.z, MathHelper.wrapDegrees(world.random.nextFloat() * 360f), 0f);
 				entity.yHeadRot = entity.yRot;
 				entity.yBodyRot = entity.yRot;
@@ -92,20 +92,69 @@ public final class MobUtil {
 		return false;
 	}
 
+	public static <T extends Entity> Vector3d adjustSpawnPositionFor(Vector3d hitVec, Direction facing, T entity) {
+		float yPos;
+		if (facing.getStepY() < 0) yPos = -entity.getBbHeight();
+		else if (facing.getStepY() > 0) yPos = 0f;
+		else yPos = -(entity.getBbHeight() * 0.5f); // facing.getStepY() == 0
+
+		float widthFactor = entity.getBbWidth() * 0.5f;
+		return hitVec.add(facing.getStepX() * widthFactor, yPos, facing.getStepZ() * widthFactor);
+	}
+
 	/**
-	 * This should return a modified hitVec that can be used to more safely spawn entities as it should prevent entities getting stuck in walls.<br>
+	 * This should return a position vector that can be used to more safely spawn entities as it should mitigate entities getting stuck in walls.<br>
 	 *
 	 * @return a position that is offset based on the hit direction and the entity size
 	 */
-	public static <T extends Entity> Vector3d getSimpleOffsetPosition(Vector3d hitVec, Direction facing, T entity) {
-		float yPos;
-		if (facing.getStepY() < 0f) yPos = -entity.getBbHeight();
-		else if (facing.getStepY() > 0f) yPos = 0f;
-		else yPos = entity.getBbHeight() * 0.5f;
+	public static <T extends Entity> Vector3d getAdjustedSpawnPositionFor(BlockPos posVec, Vector3d hitVec, Direction facing, T entity) {
 
-		float widthFactor = entity.getBbWidth() * 0.6f; //prevent mobs from suffocating in walls as much as possible
+		//check if neighbor blocks are not empty
+		BlockPos offsetPos = posVec.offset(facing.getNormal());
+		int down = entity.level.getBlockState(offsetPos.below()).isAir() ? 0 : 1;
+		int up = entity.level.getBlockState(offsetPos.above()).isAir() ? 0 : 1;
+		int north = entity.level.getBlockState(offsetPos.north()).isAir() ? 0 : 1;
+		int south = entity.level.getBlockState(offsetPos.south()).isAir() ? 0 : 1;
+		int west = entity.level.getBlockState(offsetPos.west()).isAir() ? 0 : 1;
+		int east = entity.level.getBlockState(offsetPos.east()).isAir() ? 0 : 1;
 
-		return hitVec.add(facing.getStepX() * widthFactor, yPos, facing.getStepZ() * widthFactor);
+		float halfBBWidth = entity.getBbWidth() * 0.5f;
+		float halfBBHeight = entity.getBbHeight() * 0.5f;
+		double x = hitVec.x;
+		double y = hitVec.y - halfBBHeight; //offset to center entity
+		double z = hitVec.z;
+
+		if (west + east == 2) x = offsetPos.getX() + 0.5d;
+		else if (east == 1) {
+			x = offsetPos.getX() + 1f - halfBBWidth;
+			if (hitVec.x < x) x = hitVec.x;
+		}
+		else if (west == 1) {
+			x = offsetPos.getX() + halfBBWidth;
+			if (hitVec.x > x) x = hitVec.x;
+		}
+
+		if (north + south == 2) z = offsetPos.getZ() + 0.5d;
+		else if (south == 1) {
+			z = offsetPos.getZ() + 1f - halfBBWidth;
+			if (hitVec.z < z) z = hitVec.z;
+		}
+		else if (north == 1) {
+			z = offsetPos.getZ() + halfBBWidth;
+			if (hitVec.z > z) z = hitVec.z;
+		}
+
+		if (down + up == 2) y = offsetPos.getY() + 0.5d - halfBBHeight;
+		else if (down == 1) {
+			y = offsetPos.getY();
+			if (hitVec.y - halfBBHeight > y) y = hitVec.y - halfBBHeight;
+		}
+		else if (up == 1) {
+			y = offsetPos.getY() + 1f - entity.getBbHeight();
+			if (hitVec.y - halfBBHeight < y) y = hitVec.y - halfBBHeight;
+		}
+
+		return new Vector3d(x, y, z);
 	}
 
 	public static boolean hasDuplicateEntity(ServerWorld world, Entity entityIn) {

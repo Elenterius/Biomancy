@@ -165,9 +165,13 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addIngredients(ModTags.Items.STOMACHS, 2).addIngredient(Items.HOPPER).addIngredient(ModItems.FLESH_CHEST.get()).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2)
 				.addCriterion(HAS_MUTAGENIC_BILE, has(ModItems.MUTAGENIC_BILE.get())).build(consumer);
 
-		EvolutionPoolRecipeBuilder.createRecipe(ModItems.ENTITY_STORAGE_ITEM.get(), defaultTime + 150)
+		EvolutionPoolRecipeBuilder.createRecipe(ModItems.SMALL_ENTITY_BAG_ITEM.get(), defaultTime + 150)
 				.addIngredients(ModTags.Items.STOMACHS, 2).addIngredient(Items.EGG).addIngredient(Tags.Items.CHESTS_ENDER).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2)
 				.addCriterion(HAS_MUTAGENIC_BILE, has(ModItems.MUTAGENIC_BILE.get())).build(consumer);
+
+		EvolutionPoolRecipeBuilder.createRecipe(ModItems.LARGE_ENTITY_BAG_ITEM.get(), defaultTime + 210)
+				.addIngredients(ModItems.SMALL_ENTITY_BAG_ITEM.get(), 3).addIngredients(ModItems.KERATIN_FILAMENTS.get(), 3)
+				.addCriterion("has_entity_bag", has(ModItems.SMALL_ENTITY_BAG_ITEM.get())).build(consumer);
 
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.OCULI_OF_UNVEILING.get(), defaultTime * 2)
 				.addIngredient(Items.IRON_HELMET).addIngredients(ModItems.OCULUS.get(), 4).addIngredient(ModItems.BIOMETAL.get())

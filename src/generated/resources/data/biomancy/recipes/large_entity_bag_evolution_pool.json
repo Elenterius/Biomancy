@@ -1,0 +1,27 @@
+{
+  "type": "biomancy:evolution_pool",
+  "ingredients": [
+    {
+      "item": "biomancy:small_entity_bag"
+    },
+    {
+      "item": "biomancy:small_entity_bag"
+    },
+    {
+      "item": "biomancy:small_entity_bag"
+    },
+    {
+      "item": "biomancy:keratin_filaments"
+    },
+    {
+      "item": "biomancy:keratin_filaments"
+    },
+    {
+      "item": "biomancy:keratin_filaments"
+    }
+  ],
+  "result": {
+    "item": "biomancy:large_entity_bag"
+  },
+  "time": 610
+}

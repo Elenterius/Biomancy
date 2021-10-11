@@ -77,7 +77,7 @@ public class BoomlingItem extends Item {
 			if (context.getLevel().mayInteract(player, context.getClickedPos()) && player.mayUseItemAt(context.getClickedPos(), context.getClickedFace(), stack)) {
 				BoomlingEntity entity = ModEntityTypes.BOOMLING.get().create(context.getLevel());
 				if (entity != null) {
-					Vector3d pos = MobUtil.getSimpleOffsetPosition(context.getClickLocation(), context.getClickedFace(), entity);
+					Vector3d pos = MobUtil.getAdjustedSpawnPositionFor(context.getClickedPos(), context.getClickLocation(), context.getClickedFace(), entity);
 					entity.moveTo(pos.x, pos.y, pos.z, MathHelper.wrapDegrees(context.getLevel().random.nextFloat() * 360f), 0f);
 					entity.yHeadRot = entity.yRot;
 					entity.yBodyRot = entity.yRot;

@@ -85,6 +85,8 @@ public final class ModEntityTypes {
 //		EntitySpawnPlacementRegistry.register(BLOBLING.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, ModEntityTypes::canMonsterSpawn);
 //		EntitySpawnPlacementRegistry.register(BROOD_MOTHER.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, ModEntityTypes::canMonsterSpawn);
 //		EntitySpawnPlacementRegistry.register(BEETLING.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, ModEntityTypes::canAnimalSpawn);
+
+//		ForgeRegistries.ENTITIES.getValues().forEach(entityType -> BiomancyMod.LOGGER.debug(MarkerManager.getMarker("Entity Volume"), MessageFormat.format("{0}: {1} m³", entityType.getRegistryName(), entityType.getWidth() * entityType.getWidth() * entityType.getHeight())));
 	}
 
 //	public static boolean canMonsterSpawn(EntityType<? extends MonsterEntity> type, IServerWorld worldIn, SpawnReason reason, BlockPos pos, Random randomIn) {

@@ -38,6 +38,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.apache.logging.log4j.MarkerManager;
 
 import javax.annotation.Nullable;
 import java.text.DecimalFormat;
@@ -63,7 +64,7 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 			if (itemHandler instanceof LargeSingleItemStackHandler) return (LargeSingleItemStackHandler) itemHandler;
 		}
 
-		BiomancyMod.LOGGER.error("Item is missing expected ITEM_HANDLER_CAPABILITY");
+		BiomancyMod.LOGGER.error(MarkerManager.getMarker("ItemStorageBagItem"), "Item is missing expected ITEM_HANDLER_CAPABILITY");
 		return null;
 	}
 
