@@ -18,14 +18,14 @@ import org.apache.logging.log4j.MarkerManager;
 
 public class DecomposerContainer extends ContainerWithPlayerInv {
 
-	protected final SimpleInventory fuelInventory;
-	protected final SimpleInventory emptyBucketInventory;
-	protected final SimpleInventory inputInventory;
-	protected final SimpleInventory outputInventory;
+	protected final SimpleInventory<?> fuelInventory;
+	protected final SimpleInventory<?> emptyBucketInventory;
+	protected final SimpleInventory<?> inputInventory;
+	protected final SimpleInventory<?> outputInventory;
 	private final DecomposerStateData stateData;
 	private final World world;
 
-	private DecomposerContainer(int screenId, PlayerInventory playerInventory, SimpleInventory fuelInventory, SimpleInventory emptyBucketInventory, SimpleInventory inputInventory, SimpleInventory outputInventory, DecomposerStateData stateData) {
+	private DecomposerContainer(int screenId, PlayerInventory playerInventory, SimpleInventory<?> fuelInventory, SimpleInventory<?> emptyBucketInventory, SimpleInventory<?> inputInventory, SimpleInventory<?> outputInventory, DecomposerStateData stateData) {
 		super(ModContainerTypes.DECOMPOSER.get(), screenId, playerInventory);
 		world = playerInventory.player.level;
 
@@ -57,15 +57,15 @@ public class DecomposerContainer extends ContainerWithPlayerInv {
 		addSlot(new OutputSlot(outputInventory, 5, outputPosX + 18 * 2, posY + 18));
 	}
 
-	public static DecomposerContainer createServerContainer(int screenId, PlayerInventory playerInventory, SimpleInventory fuelInventory, SimpleInventory emptyBucketInventory, SimpleInventory inputInventory, SimpleInventory outputInventory, DecomposerStateData stateData) {
+	public static DecomposerContainer createServerContainer(int screenId, PlayerInventory playerInventory, SimpleInventory<?> fuelInventory, SimpleInventory<?> emptyBucketInventory, SimpleInventory<?> inputInventory, SimpleInventory<?> outputInventory, DecomposerStateData stateData) {
 		return new DecomposerContainer(screenId, playerInventory, fuelInventory, emptyBucketInventory, inputInventory, outputInventory, stateData);
 	}
 
 	public static DecomposerContainer createClientContainer(int screenId, PlayerInventory playerInventory, PacketBuffer extraData) {
-		SimpleInventory fuelInventory = SimpleInventory.createClientContents(DecomposerTileEntity.FUEL_SLOTS);
-		SimpleInventory emptyBucketInventory = SimpleInventory.createClientContents(DecomposerTileEntity.EMPTY_BUCKET_SLOTS);
-		SimpleInventory inputInventory = SimpleInventory.createClientContents(DecomposerTileEntity.INPUT_SLOTS);
-		SimpleInventory outputInventory = SimpleInventory.createClientContents(DecomposerTileEntity.OUTPUT_SLOTS);
+		SimpleInventory<?> fuelInventory = SimpleInventory.createClientContents(DecomposerTileEntity.FUEL_SLOTS);
+		SimpleInventory<?> emptyBucketInventory = SimpleInventory.createClientContents(DecomposerTileEntity.EMPTY_BUCKET_SLOTS);
+		SimpleInventory<?> inputInventory = SimpleInventory.createClientContents(DecomposerTileEntity.INPUT_SLOTS);
+		SimpleInventory<?> outputInventory = SimpleInventory.createClientContents(DecomposerTileEntity.OUTPUT_SLOTS);
 		DecomposerStateData stateData = new DecomposerStateData();
 		return new DecomposerContainer(screenId, playerInventory, fuelInventory, emptyBucketInventory, inputInventory, outputInventory, stateData);
 	}
@@ -143,11 +143,7 @@ public class DecomposerContainer extends ContainerWithPlayerInv {
 		return copyOfSourceStack;
 	}
 
-	private boolean mergeInto(SlotZone destinationZone, ItemStack sourceStack, boolean fillFromEnd) {
-		return moveItemStackTo(sourceStack, destinationZone.firstIndex, destinationZone.lastIndexPlus1, fillFromEnd);
-	}
-
-	private enum SlotZone {
+	public enum SlotZone implements ISlotZone {
 		PLAYER_HOTBAR(0, 9),
 		PLAYER_MAIN_INVENTORY(PLAYER_HOTBAR.lastIndexPlus1, 3 * 9),
 		FUEL_ZONE(PLAYER_MAIN_INVENTORY.lastIndexPlus1, DecomposerTileEntity.FUEL_SLOTS),
@@ -170,6 +166,21 @@ public class DecomposerContainer extends ContainerWithPlayerInv {
 				if (slotIndex >= slotZone.firstIndex && slotIndex < slotZone.lastIndexPlus1) return slotZone;
 			}
 			throw new IndexOutOfBoundsException("Unexpected slotIndex");
+		}
+
+		@Override
+		public int getFirstIndex() {
+			return firstIndex;
+		}
+
+		@Override
+		public int getLastIndexPlus1() {
+			return lastIndexPlus1;
+		}
+
+		@Override
+		public int getSlotCount() {
+			return slotCount;
 		}
 	}
 }

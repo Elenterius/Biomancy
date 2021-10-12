@@ -8,7 +8,6 @@ import com.github.elenterius.biomancy.recipe.DigesterRecipe;
 import com.github.elenterius.biomancy.tileentity.DigesterTileEntity;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
-import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -21,12 +20,13 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.text.DecimalFormat;
 
@@ -36,12 +36,13 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 	private static final int OUTPUT_SLOT = 0;
 	private static final int BYPRODUCT_SLOT = 1;
 	private static final int INPUT_SLOT = 2;
+	private static final int INPUT_SLOT_WATER = 3;
 	private final IDrawable background;
 	private final IDrawable icon;
 
 	public DigesterRecipeCategory(IGuiHelper guiHelper) {
 		icon = guiHelper.createDrawableIngredient(new ItemStack(ModBlocks.DIGESTER.get()));
-		background = guiHelper.drawableBuilder(BiomancyMod.createRL("textures/gui/jei/gui_digester.png"), 0, 0, 100, 47).setTextureSize(100, 47).build();
+		background = guiHelper.drawableBuilder(BiomancyMod.createRL("textures/gui/jei/gui_digester.png"), 0, 0, 136, 47).setTextureSize(136, 47).build();
 	}
 
 	@Override
@@ -72,25 +73,30 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 	@Override
 	public void setIngredients(DigesterRecipe recipe, IIngredients ingredients) {
 		ingredients.setInputIngredients(recipe.getIngredients());
+
+		int waterCost = recipe.getCraftingTime() * DigesterTileEntity.FUEL_COST;
+		ingredients.setInput(VanillaTypes.FLUID, new FluidStack(Fluids.WATER, waterCost));
+
 		if (recipe.getByproduct() != null) {
-			ingredients.setOutputs(VanillaTypes.ITEM, Lists.newArrayList(recipe.getByproduct().getItemStack()));
+			ingredients.setOutput(VanillaTypes.ITEM, recipe.getByproduct().getItemStack());
 		}
-		ingredients.setOutputs(VanillaTypes.FLUID, Lists.newArrayList(recipe.getFluidOutput()));
+		ingredients.setOutput(VanillaTypes.FLUID, recipe.getFluidOutput());
 	}
 
 	@Override
 	public void setRecipe(IRecipeLayout layout, DigesterRecipe recipe, IIngredients ingredients) {
 		IGuiItemStackGroup guiISGroup = layout.getItemStacks();
-		guiISGroup.init(INPUT_SLOT, true, 0, 13);
-		guiISGroup.init(BYPRODUCT_SLOT, false, 82, 18);
+		guiISGroup.init(INPUT_SLOT, true, 36, 13);
+		guiISGroup.init(BYPRODUCT_SLOT, false, 82 + 36, 18);
 		guiISGroup.set(ingredients);
 
 		IGuiFluidStackGroup guiFSGroup = layout.getFluidStacks();
-		guiFSGroup.init(OUTPUT_SLOT, false, 59, 15);
+		guiFSGroup.init(INPUT_SLOT_WATER, true, 1, 14);
+		guiFSGroup.init(OUTPUT_SLOT, false, 59 + 36, 15);
 		guiFSGroup.set(ingredients);
 
 		guiFSGroup.addTooltipCallback((index, input, ingredient, tooltip) -> {
-			if (index == OUTPUT_SLOT) {
+			if (index == OUTPUT_SLOT || index == INPUT_SLOT_WATER) {
 				DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
 				tooltip.add(new StringTextComponent(df.format(ingredient.getAmount()) + " mb").withStyle(TextFormatting.GRAY));
 			}
@@ -119,9 +125,6 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 			FontRenderer fontRenderer = Minecraft.getInstance().font;
 			int stringWidth = fontRenderer.width(timeString);
 			fontRenderer.draw(matrixStack, timeString, background.getWidth() - stringWidth, 0, 0xff808080);
-			int waterCost = ticks * DigesterTileEntity.FUEL_COST;
-			IFormattableTextComponent costText = new StringTextComponent("+" + waterCost + "mb ").append(new TranslationTextComponent("fluid.minecraft.water"));
-			fontRenderer.draw(matrixStack, costText, 0, background.getHeight() - fontRenderer.lineHeight, 0xff808080);
 		}
 	}
 }

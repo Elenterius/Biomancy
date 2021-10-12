@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.inventory;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.SlotItemHandler;
 import net.minecraftforge.items.wrapper.PlayerInvWrapper;
 
@@ -39,6 +40,10 @@ public abstract class ContainerWithPlayerInv extends Container {
 				addSlot(new SlotItemHandler(playerInventoryForge, slotNumber, posX, posY));
 			}
 		}
+	}
+
+	protected boolean mergeInto(ISlotZone destinationZone, ItemStack sourceStack, boolean fillFromEnd) {
+		return moveItemStackTo(sourceStack, destinationZone.getFirstIndex(), destinationZone.getLastIndexPlus1(), fillFromEnd);
 	}
 
 }

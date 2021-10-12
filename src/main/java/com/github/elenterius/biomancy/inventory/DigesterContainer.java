@@ -17,16 +17,16 @@ import org.apache.logging.log4j.MarkerManager;
 
 public class DigesterContainer extends ContainerWithPlayerInv {
 
-	protected final SimpleInventory fuelInventory;
-	protected final SimpleInventory emptyBucketOutInventory;
-	protected final SimpleInventory inputInventory;
-	protected final SimpleInventory outputInventory;
-	protected final SimpleInventory emptyBucketInInventory;
-	protected final SimpleInventory filledBucketOutInventory;
+	protected final SimpleInventory<?> fuelInventory;
+	protected final SimpleInventory<?> emptyBucketOutInventory;
+	protected final SimpleInventory<?> inputInventory;
+	protected final SimpleInventory<?> outputInventory;
+	protected final SimpleInventory<?> emptyBucketInInventory;
+	protected final SimpleInventory<?> filledBucketOutInventory;
 	private final DigesterStateData stateData;
 	private final World world;
 
-	private DigesterContainer(int screenId, PlayerInventory playerInventory, SimpleInventory fuelInventory, SimpleInventory emptyBucketOutInventory, SimpleInventory inputInventory, SimpleInventory outputInventory, SimpleInventory emptyBucketInInventory, SimpleInventory filledBucketOutInventory, DigesterStateData stateData) {
+	private DigesterContainer(int screenId, PlayerInventory playerInventory, SimpleInventory<?> fuelInventory, SimpleInventory<?> emptyBucketOutInventory, SimpleInventory<?> inputInventory, SimpleInventory<?> outputInventory, SimpleInventory<?> emptyBucketInInventory, SimpleInventory<?> filledBucketOutInventory, DigesterStateData stateData) {
 		super(ModContainerTypes.DIGESTER.get(), screenId, playerInventory);
 		world = playerInventory.player.level;
 
@@ -62,19 +62,19 @@ public class DigesterContainer extends ContainerWithPlayerInv {
 		addSlot(new OutputSlot(filledBucketOutInventory, 0, 131, 44));
 	}
 
-	public static DigesterContainer createServerContainer(int screenId, PlayerInventory playerInventory, SimpleInventory fuelInventory, SimpleInventory emptyBucketOutInventory,
-														  SimpleInventory inputInventory, SimpleInventory outputInventory, SimpleInventory emptyBucketInInventory,
-														  SimpleInventory filledBucketOutInventory, DigesterStateData stateData) {
+	public static DigesterContainer createServerContainer(int screenId, PlayerInventory playerInventory, SimpleInventory<?> fuelInventory, SimpleInventory<?> emptyBucketOutInventory,
+														  SimpleInventory<?> inputInventory, SimpleInventory<?> outputInventory, SimpleInventory<?> emptyBucketInInventory,
+														  SimpleInventory<?> filledBucketOutInventory, DigesterStateData stateData) {
 		return new DigesterContainer(screenId, playerInventory, fuelInventory, emptyBucketOutInventory, inputInventory, outputInventory, emptyBucketInInventory, filledBucketOutInventory, stateData);
 	}
 
 	public static DigesterContainer createClientContainer(int screenId, PlayerInventory playerInventory, PacketBuffer extraData) {
-		SimpleInventory fuelInventory = SimpleInventory.createClientContents(DigesterTileEntity.FUEL_SLOTS);
-		SimpleInventory emptyBucketOutInventory = SimpleInventory.createClientContents(DigesterTileEntity.EMPTY_BUCKET_SLOTS);
-		SimpleInventory inputInventory = SimpleInventory.createClientContents(DigesterTileEntity.INPUT_SLOTS);
-		SimpleInventory outputInventory = SimpleInventory.createClientContents(DigesterTileEntity.OUTPUT_SLOTS);
-		SimpleInventory emptyBucketInInventory = SimpleInventory.createClientContents(DigesterTileEntity.BUCKET_SLOTS);
-		SimpleInventory filledBucketOutInventory = SimpleInventory.createClientContents(DigesterTileEntity.BUCKET_SLOTS);
+		SimpleInventory<?> fuelInventory = SimpleInventory.createClientContents(DigesterTileEntity.FUEL_SLOTS);
+		SimpleInventory<?> emptyBucketOutInventory = SimpleInventory.createClientContents(DigesterTileEntity.EMPTY_BUCKET_SLOTS);
+		SimpleInventory<?> inputInventory = SimpleInventory.createClientContents(DigesterTileEntity.INPUT_SLOTS);
+		SimpleInventory<?> outputInventory = SimpleInventory.createClientContents(DigesterTileEntity.OUTPUT_SLOTS);
+		SimpleInventory<?> emptyBucketInInventory = SimpleInventory.createClientContents(DigesterTileEntity.BUCKET_SLOTS);
+		SimpleInventory<?> filledBucketOutInventory = SimpleInventory.createClientContents(DigesterTileEntity.BUCKET_SLOTS);
 		DigesterStateData stateData = new DigesterStateData();
 		return new DigesterContainer(screenId, playerInventory, fuelInventory, emptyBucketOutInventory, inputInventory, outputInventory, emptyBucketInInventory, filledBucketOutInventory, stateData);
 	}
@@ -161,11 +161,7 @@ public class DigesterContainer extends ContainerWithPlayerInv {
 		return copyOfSourceStack;
 	}
 
-	private boolean mergeInto(SlotZone destinationZone, ItemStack sourceStack, boolean fillFromEnd) {
-		return moveItemStackTo(sourceStack, destinationZone.firstIndex, destinationZone.lastIndexPlus1, fillFromEnd);
-	}
-
-	private enum SlotZone {
+	public enum SlotZone implements ISlotZone {
 		PLAYER_HOTBAR(0, 9),
 		PLAYER_MAIN_INVENTORY(PLAYER_HOTBAR.lastIndexPlus1, 3 * 9),
 		FUEL_ZONE(PLAYER_MAIN_INVENTORY.lastIndexPlus1, DigesterTileEntity.FUEL_SLOTS),
@@ -190,6 +186,21 @@ public class DigesterContainer extends ContainerWithPlayerInv {
 				if (slotIndex >= slotZone.firstIndex && slotIndex < slotZone.lastIndexPlus1) return slotZone;
 			}
 			throw new IndexOutOfBoundsException("Unexpected slotIndex");
+		}
+
+		@Override
+		public int getFirstIndex() {
+			return firstIndex;
+		}
+
+		@Override
+		public int getLastIndexPlus1() {
+			return lastIndexPlus1;
+		}
+
+		@Override
+		public int getSlotCount() {
+			return slotCount;
 		}
 	}
 }

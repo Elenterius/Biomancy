@@ -40,8 +40,8 @@ public class SolidifierContainerScreen extends ContainerScreen<SolidifierContain
 		final float FONT_Y_SPACING = 12;
 		font.draw(matrixStack, title, 10, 18 - FONT_Y_SPACING, 0xFFFFFF);
 
-		String craftingProgress = (int) (menu.getCraftingProgressNormalized() * 100) + "%";
-		font.draw(matrixStack, craftingProgress, 155 - font.width(craftingProgress), 52 + 6, 0xFFFFFF);
+//		String craftingProgress = (int) (menu.getCraftingProgressNormalized() * 100) + "%";
+//		font.draw(matrixStack, craftingProgress, 155 - font.width(craftingProgress), 52 + 6, 0xFFFFFF);
 	}
 
 	@Override
@@ -52,6 +52,10 @@ public class SolidifierContainerScreen extends ContainerScreen<SolidifierContain
 		int edgeSpacingX = (width - imageWidth) / 2;
 		int edgeSpacingY = (height - imageHeight) / 2;
 		blit(matrixStack, edgeSpacingX, edgeSpacingY, 0, 0, imageWidth, imageHeight);
+
+		float craftingProgress = menu.getCraftingProgressNormalized();
+		int uWidth = (int) (craftingProgress * 14) + (craftingProgress > 0 ? 1 : 0);
+		blit(matrixStack, leftPos + 81, topPos + 35, 176, 0, uWidth, 7);
 
 		inputTankBar.update(menu.getInputTank());
 		inputTankBar.draw(minecraft, matrixStack, leftPos, topPos, mouseX, mouseY);

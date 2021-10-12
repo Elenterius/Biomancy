@@ -8,56 +8,31 @@ import com.github.elenterius.biomancy.tileentity.state.EvolutionPoolStateData;
 import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.items.SlotItemHandler;
-import net.minecraftforge.items.wrapper.PlayerInvWrapper;
 import org.apache.logging.log4j.MarkerManager;
 
-public class EvolutionPoolContainer extends Container {
+public class EvolutionPoolContainer extends ContainerWithPlayerInv {
 
-	protected final SimpleInventory fuelInventory;
-	protected final SimpleInventory inputInventory;
-	protected final SimpleInventory outputInventory;
+	protected final SimpleInventory<?> fuelInventory;
+	protected final SimpleInventory<?> inputInventory;
+	protected final SimpleInventory<?> outputInventory;
 	private final EvolutionPoolStateData stateData;
 	private final World world;
 
-	private EvolutionPoolContainer(int screenId, PlayerInventory playerInventory, SimpleInventory fuelInventory, SimpleInventory inputInventory, SimpleInventory outputInventory, EvolutionPoolStateData stateData) {
-		super(ModContainerTypes.EVOLUTION_POOL.get(), screenId);
+	private EvolutionPoolContainer(int screenId, PlayerInventory playerInventory, SimpleInventory<?> fuelInventory, SimpleInventory<?> inputInventory, SimpleInventory<?> outputInventory, EvolutionPoolStateData stateData) {
+		super(ModContainerTypes.EVOLUTION_POOL.get(), screenId, playerInventory);
+		world = playerInventory.player.level;
+
 		this.fuelInventory = fuelInventory;
 		this.inputInventory = inputInventory;
 		this.outputInventory = outputInventory;
 		this.stateData = stateData;
-		world = playerInventory.player.level;
 
 		addDataSlots(stateData);
-
-		PlayerInvWrapper playerInventoryForge = new PlayerInvWrapper(playerInventory);
-
-		final int HOT_BAR_SIZE = 9;
-		final int SLOT_X_SPACING = 18;
-		final int SLOT_Y_SPACING = 18;
-
-		// Add the players hotbar
-		for (int idx = 0; idx < HOT_BAR_SIZE; idx++) { //hotbar
-			addSlot(new SlotItemHandler(playerInventoryForge, idx, 8 + SLOT_X_SPACING * idx, 142));
-		}
-
-		// Add the players main inventory
-		final int PLAYER_INVENTORY_POS_X = 8;
-		final int PLAYER_INVENTORY_POS_Y = 84;
-		for (int y = 0; y < 3; y++) {
-			for (int x = 0; x < 9; x++) {
-				int slotNumber = HOT_BAR_SIZE + y * 9 + x;
-				int posX = PLAYER_INVENTORY_POS_X + x * SLOT_X_SPACING;
-				int posY = PLAYER_INVENTORY_POS_Y + y * SLOT_Y_SPACING;
-				addSlot(new SlotItemHandler(playerInventoryForge, slotNumber, posX, posY));
-			}
-		}
 
 		int posX = 17;
 		int posY = 17;
@@ -79,14 +54,14 @@ public class EvolutionPoolContainer extends Container {
 		addSlot(new OutputSlot(outputInventory, 0, 125, 26));
 	}
 
-	public static EvolutionPoolContainer createServerContainer(int screenId, PlayerInventory playerInventory, SimpleInventory fuelInventory, SimpleInventory inputInventory, SimpleInventory outputInventory, EvolutionPoolStateData stateData) {
+	public static EvolutionPoolContainer createServerContainer(int screenId, PlayerInventory playerInventory, SimpleInventory<?> fuelInventory, SimpleInventory<?> inputInventory, SimpleInventory<?> outputInventory, EvolutionPoolStateData stateData) {
 		return new EvolutionPoolContainer(screenId, playerInventory, fuelInventory, inputInventory, outputInventory, stateData);
 	}
 
 	public static EvolutionPoolContainer createClientContainer(int screenId, PlayerInventory playerInventory, PacketBuffer extraData) {
-		SimpleInventory fuelInventory = SimpleInventory.createClientContents(EvolutionPoolTileEntity.FUEL_SLOTS);
-		SimpleInventory inputInventory = SimpleInventory.createClientContents(EvolutionPoolTileEntity.INPUT_SLOTS);
-		SimpleInventory outputInventory = SimpleInventory.createClientContents(EvolutionPoolTileEntity.OUTPUT_SLOTS);
+		SimpleInventory<?> fuelInventory = SimpleInventory.createClientContents(EvolutionPoolTileEntity.FUEL_SLOTS);
+		SimpleInventory<?> inputInventory = SimpleInventory.createClientContents(EvolutionPoolTileEntity.INPUT_SLOTS);
+		SimpleInventory<?> outputInventory = SimpleInventory.createClientContents(EvolutionPoolTileEntity.OUTPUT_SLOTS);
 		EvolutionPoolStateData stateData = new EvolutionPoolStateData();
 		return new EvolutionPoolContainer(screenId, playerInventory, fuelInventory, inputInventory, outputInventory, stateData);
 	}
@@ -169,15 +144,11 @@ public class EvolutionPoolContainer extends Container {
 		return copyOfSourceStack;
 	}
 
-	private boolean mergeInto(SlotZone destinationZone, ItemStack sourceStack, boolean fillFromEnd) {
-		return moveItemStackTo(sourceStack, destinationZone.firstIndex, destinationZone.lastIndexPlus1, fillFromEnd);
-	}
-
 	public String getFuelTranslationKey() {
 		return TextUtil.getTranslationKey("tooltip", "mutagen");
 	}
 
-	private enum SlotZone {
+	public enum SlotZone implements ISlotZone {
 		PLAYER_HOTBAR(0, 9),
 		PLAYER_MAIN_INVENTORY(PLAYER_HOTBAR.lastIndexPlus1, 3 * 9),
 		FUEL_ZONE(PLAYER_MAIN_INVENTORY.lastIndexPlus1, EvolutionPoolTileEntity.FUEL_SLOTS),
@@ -199,6 +170,21 @@ public class EvolutionPoolContainer extends Container {
 				if (slotIndex >= slotZone.firstIndex && slotIndex < slotZone.lastIndexPlus1) return slotZone;
 			}
 			throw new IndexOutOfBoundsException("Unexpected slotIndex");
+		}
+
+		@Override
+		public int getFirstIndex() {
+			return firstIndex;
+		}
+
+		@Override
+		public int getLastIndexPlus1() {
+			return lastIndexPlus1;
+		}
+
+		@Override
+		public int getSlotCount() {
+			return slotCount;
 		}
 	}
 }

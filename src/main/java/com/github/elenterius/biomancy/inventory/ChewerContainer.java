@@ -18,14 +18,14 @@ import org.apache.logging.log4j.MarkerManager;
 
 public class ChewerContainer extends ContainerWithPlayerInv {
 
-	protected final SimpleInventory fuelInventory;
-	protected final SimpleInventory emptyBucketInventory;
-	protected final SimpleInventory inputInventory;
-	protected final SimpleInventory outputInventory;
+	protected final SimpleInventory<?> fuelInventory;
+	protected final SimpleInventory<?> emptyBucketInventory;
+	protected final SimpleInventory<?> inputInventory;
+	protected final SimpleInventory<?> outputInventory;
 	private final ChewerStateData stateData;
 	private final World world;
 
-	private ChewerContainer(int screenId, PlayerInventory playerInventory, SimpleInventory fuelInventory, SimpleInventory emptyBucketInventory, SimpleInventory inputInventory, SimpleInventory outputInventory, ChewerStateData stateData) {
+	private ChewerContainer(int screenId, PlayerInventory playerInventory, SimpleInventory<?> fuelInventory, SimpleInventory<?> emptyBucketInventory, SimpleInventory<?> inputInventory, SimpleInventory<?> outputInventory, ChewerStateData stateData) {
 		super(ModContainerTypes.CHEWER.get(), screenId, playerInventory);
 		world = playerInventory.player.level;
 
@@ -49,15 +49,15 @@ public class ChewerContainer extends ContainerWithPlayerInv {
 		addSlot(new OutputSlot(outputInventory, 0, 107, 26));
 	}
 
-	public static ChewerContainer createServerContainer(int screenId, PlayerInventory playerInventory, SimpleInventory fuelInventory, SimpleInventory emptyBucketInventory, SimpleInventory inputInventory, SimpleInventory outputInventory, ChewerStateData stateData) {
+	public static ChewerContainer createServerContainer(int screenId, PlayerInventory playerInventory, SimpleInventory<?> fuelInventory, SimpleInventory<?> emptyBucketInventory, SimpleInventory<?> inputInventory, SimpleInventory<?> outputInventory, ChewerStateData stateData) {
 		return new ChewerContainer(screenId, playerInventory, fuelInventory, emptyBucketInventory, inputInventory, outputInventory, stateData);
 	}
 
 	public static ChewerContainer createClientContainer(int screenId, PlayerInventory playerInventory, PacketBuffer extraData) {
-		SimpleInventory fuelInventory = SimpleInventory.createClientContents(ChewerTileEntity.FUEL_SLOTS);
-		SimpleInventory emptyBucketInventory = SimpleInventory.createClientContents(ChewerTileEntity.EMPTY_BUCKET_SLOTS);
-		SimpleInventory inputInventory = SimpleInventory.createClientContents(ChewerTileEntity.INPUT_SLOTS);
-		SimpleInventory outputInventory = SimpleInventory.createClientContents(ChewerTileEntity.OUTPUT_SLOTS);
+		SimpleInventory<?> fuelInventory = SimpleInventory.createClientContents(ChewerTileEntity.FUEL_SLOTS);
+		SimpleInventory<?> emptyBucketInventory = SimpleInventory.createClientContents(ChewerTileEntity.EMPTY_BUCKET_SLOTS);
+		SimpleInventory<?> inputInventory = SimpleInventory.createClientContents(ChewerTileEntity.INPUT_SLOTS);
+		SimpleInventory<?> outputInventory = SimpleInventory.createClientContents(ChewerTileEntity.OUTPUT_SLOTS);
 		ChewerStateData stateData = new ChewerStateData();
 		return new ChewerContainer(screenId, playerInventory, fuelInventory, emptyBucketInventory, inputInventory, outputInventory, stateData);
 	}
@@ -135,11 +135,7 @@ public class ChewerContainer extends ContainerWithPlayerInv {
 		return copyOfSourceStack;
 	}
 
-	private boolean mergeInto(SlotZone destinationZone, ItemStack sourceStack, boolean fillFromEnd) {
-		return moveItemStackTo(sourceStack, destinationZone.firstIndex, destinationZone.lastIndexPlus1, fillFromEnd);
-	}
-
-	private enum SlotZone {
+	public enum SlotZone implements ISlotZone {
 		PLAYER_HOTBAR(0, 9),
 		PLAYER_MAIN_INVENTORY(PLAYER_HOTBAR.lastIndexPlus1, 3 * 9),
 		FUEL_ZONE(PLAYER_MAIN_INVENTORY.lastIndexPlus1, ChewerTileEntity.FUEL_SLOTS),
@@ -163,5 +159,21 @@ public class ChewerContainer extends ContainerWithPlayerInv {
 			}
 			throw new IndexOutOfBoundsException("Unexpected slotIndex");
 		}
+
+		@Override
+		public int getFirstIndex() {
+			return firstIndex;
+		}
+
+		@Override
+		public int getLastIndexPlus1() {
+			return lastIndexPlus1;
+		}
+
+		@Override
+		public int getSlotCount() {
+			return slotCount;
+		}
+
 	}
 }
