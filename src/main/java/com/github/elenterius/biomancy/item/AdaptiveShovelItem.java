@@ -50,6 +50,11 @@ public class AdaptiveShovelItem extends ShovelItem implements IAdaptiveEfficienc
 	}
 
 	@Override
+	public boolean isAreaSelectionVisibleFor(ItemStack stack, BlockPos pos, BlockState state) {
+		return super.getDestroySpeed(stack, state) >= speed;
+	}
+
+	@Override
 	public boolean mineBlock(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity livingEntity) {
 		if (!worldIn.isClientSide && state.getDestroySpeed(worldIn, pos) != 0.0F) {
 			IAdaptiveEfficiencyItem.updateEfficiencyModifier(stack, state, speed, super.getDestroySpeed(stack, state));
@@ -65,7 +70,7 @@ public class AdaptiveShovelItem extends ShovelItem implements IAdaptiveEfficienc
 			ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
 			BlockState blockState = world.getBlockState(pos);
 			BlockRayTraceResult rayTraceResult = Item.getPlayerPOVHitResult(world, player, RayTraceContext.FluidMode.NONE);
-			if (PlayerInteractionUtil.harvestBlock(world, serverPlayer, blockState, pos)) {
+			if (PlayerInteractionUtil.harvestBlock(world, serverPlayer, blockState, pos) && super.getDestroySpeed(stack, blockState) >= speed) {
 				List<BlockPos> blockNeighbors = PlayerInteractionUtil.findBlockNeighbors(world, rayTraceResult, blockState, pos, getBlockHarvestRange(stack));
 				for (BlockPos neighborPos : blockNeighbors) {
 					PlayerInteractionUtil.harvestBlock(world, serverPlayer, blockState, neighborPos);

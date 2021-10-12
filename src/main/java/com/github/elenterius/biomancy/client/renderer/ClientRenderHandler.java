@@ -147,7 +147,7 @@ public final class ClientRenderHandler {
 			if (blockHarvestRange > 0) {
 				BlockPos pos = event.getTarget().getBlockPos();
 				BlockState blockState = player.clientLevel.getBlockState(pos);
-				if (blockState.isAir(player.clientLevel, pos)) return;
+				if (blockState.isAir(player.clientLevel, pos) || !aoeHarvester.isAreaSelectionVisibleFor(heldStack, pos, blockState)) return;
 
 				Vector3d pView = event.getInfo().getPosition();
 				IVertexBuilder vertexBuilder = event.getBuffers().getBuffer(RenderType.lines());

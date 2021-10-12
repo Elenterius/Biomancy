@@ -140,7 +140,7 @@ public class LongRangeClawItem extends ClawWeaponItem implements IAreaHarvesting
 			ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
 			BlockState blockState = world.getBlockState(pos);
 			BlockRayTraceResult rayTraceResult = Item.getPlayerPOVHitResult(world, player, RayTraceContext.FluidMode.NONE);
-			if (PlayerInteractionUtil.harvestBlock(world, serverPlayer, blockState, pos)) {
+			if (PlayerInteractionUtil.harvestBlock(world, serverPlayer, blockState, pos) && getDestroySpeed(stack, blockState) > 1f) {
 				List<BlockPos> blockNeighbors = PlayerInteractionUtil.findBlockNeighbors(world, rayTraceResult, blockState, pos, harvestRange, getHarvestShape(stack));
 				for (BlockPos neighborPos : blockNeighbors) {
 					PlayerInteractionUtil.harvestBlock(world, serverPlayer, blockState, neighborPos);
@@ -151,6 +151,11 @@ public class LongRangeClawItem extends ClawWeaponItem implements IAreaHarvesting
 
 		//only called on client side
 		return super.onBlockStartBreak(stack, pos, player);
+	}
+
+	@Override
+	public boolean isAreaSelectionVisibleFor(ItemStack stack, BlockPos pos, BlockState state) {
+		return super.getDestroySpeed(stack, state) > 1f;
 	}
 
 	@Override
