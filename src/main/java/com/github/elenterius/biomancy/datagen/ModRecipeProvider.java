@@ -775,6 +775,14 @@ public class ModRecipeProvider extends RecipeProvider {
 				.pattern("FLF").pattern("BSB").pattern("FLF")
 				.unlockedBy("has_digester", has(ModItems.DIGESTER.get())).save(consumer);
 
+		DecomposerRecipeBuilder.createRecipe(ModItems.FLESH_BLOCK.get(), 600, 4)
+				.setIngredient(ModItems.DECOMPOSER.get())
+				.addByproduct(ModItems.BONE_SCRAPS.get(), 0.3f)
+				.addByproduct(ModItems.FLESH_LUMP.get(), 1, 0.65f)
+				.addByproduct(ModItems.FLESH_LUMP.get(), 2, 0.45f)
+				.addByproduct(ModItems.FLESH_LUMP.get(), 4, 0.3f)
+				.addCriterion("has_decomposer", has(ModItems.DECOMPOSER.get())).build(consumer, "from_decomposer", true);
+
 		ShapedRecipeBuilder.shaped(ModItems.CHEWER.get())
 				.define('S', Items.STONECUTTER)
 				.define('F', ModItems.FLESH_BLOCK.get())
@@ -782,6 +790,14 @@ public class ModRecipeProvider extends RecipeProvider {
 				.define('B', ModItems.BONE_GEAR.get())
 				.pattern("FLF").pattern("BSB").pattern("FLF")
 				.unlockedBy(HAS_FLESH_BLOCK, has(ModItems.FLESH_BLOCK.get())).save(consumer);
+
+		DecomposerRecipeBuilder.createRecipe(ModItems.FLESH_BLOCK.get(), 500, 3)
+				.setIngredient(ModItems.CHEWER.get())
+				.addByproduct(ModItems.BONE_SCRAPS.get(), 0.3f)
+				.addByproduct(ModItems.FLESH_LUMP.get(), 1, 0.65f)
+				.addByproduct(ModItems.FLESH_LUMP.get(), 2, 0.45f)
+				.addByproduct(ModItems.FLESH_LUMP.get(), 4, 0.3f)
+				.addCriterion("has_chewer", has(ModItems.CHEWER.get())).build(consumer, "from_chewer", true);
 
 		ShapedRecipeBuilder.shaped(ModItems.DIGESTER.get())
 				.define('S', ModTags.Items.STOMACHS)
@@ -791,6 +807,14 @@ public class ModRecipeProvider extends RecipeProvider {
 				.pattern("FLF").pattern("BSB").pattern("FLF")
 				.unlockedBy("has_stomach", has(ModTags.Items.STOMACHS)).save(consumer);
 
+		DecomposerRecipeBuilder.createRecipe(ModItems.FLESH_BLOCK.get(), 500, 3)
+				.setIngredient(ModItems.DIGESTER.get())
+				.addByproduct(ModItems.BONE_SCRAPS.get(), 0.3f)
+				.addByproduct(ModItems.FLESH_LUMP.get(), 1, 0.65f)
+				.addByproduct(ModItems.FLESH_LUMP.get(), 2, 0.45f)
+				.addByproduct(ModItems.FLESH_LUMP.get(), 4, 0.3f)
+				.addCriterion("has_digester", has(ModItems.DIGESTER.get())).build(consumer, "from_digester", true);
+
 		ShapedRecipeBuilder.shaped(ModItems.SOLIDIFIER.get())
 				.define('S', Items.SMOKER)
 				.define('F', ModItems.FLESH_BLOCK.get())
@@ -798,6 +822,14 @@ public class ModRecipeProvider extends RecipeProvider {
 				.define('B', ModItems.BONE_GEAR.get())
 				.pattern("FLF").pattern("BSB").pattern("FLF")
 				.unlockedBy(HAS_FLESH_BLOCK, has(ModItems.FLESH_BLOCK.get())).save(consumer);
+
+		DecomposerRecipeBuilder.createRecipe(ModItems.FLESH_BLOCK.get(), 500, 3)
+				.setIngredient(ModItems.SOLIDIFIER.get())
+				.addByproduct(ModItems.BONE_SCRAPS.get(), 0.3f)
+				.addByproduct(ModItems.FLESH_LUMP.get(), 1, 0.65f)
+				.addByproduct(ModItems.FLESH_LUMP.get(), 2, 0.45f)
+				.addByproduct(ModItems.FLESH_LUMP.get(), 4, 0.3f)
+				.addCriterion("has_solidifier", has(ModItems.SOLIDIFIER.get())).build(consumer, "from_solidifier", true);
 
 		// reagents ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

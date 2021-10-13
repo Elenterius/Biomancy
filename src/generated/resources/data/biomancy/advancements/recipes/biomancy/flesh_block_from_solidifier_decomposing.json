@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:flesh_block_from_solidifier_decomposing"
+    ]
+  },
+  "criteria": {
+    "has_solidifier": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "biomancy:solidifier"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:flesh_block_from_solidifier_decomposing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_solidifier",
+      "has_the_recipe"
+    ]
+  ]
+}

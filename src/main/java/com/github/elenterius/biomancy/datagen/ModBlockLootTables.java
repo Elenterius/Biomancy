@@ -113,6 +113,11 @@ public class ModBlockLootTables extends BlockLootTables {
 								.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(MeatsoupCauldronBlock.LEVEL, MeatsoupCauldronBlock.MAX_LEVEL))));
 	}
 
+	//fix for reflection issue with jdk 16
+	protected static LootTable.Builder createSlabItemTable(Block block) {
+		return BlockLootTables.createSlabItemTable(block);
+	}
+
 	@Override
 	protected void addTables() {
 
@@ -122,7 +127,7 @@ public class ModBlockLootTables extends BlockLootTables {
 		dropSelf(ModBlocks.FLESH_TENTACLE.get());
 		dropSelf(ModBlocks.FLESH_BLOCK.get());
 		add(ModBlocks.NECROTIC_FLESH_BLOCK.get(), createSingleItemTable(ModItems.NECROTIC_FLESH.get(), BinomialRange.binomial(9, 0.5f)));
-		add(ModBlocks.FLESH_BLOCK_SLAB.get(), BlockLootTables::createSlabItemTable);
+		add(ModBlocks.FLESH_BLOCK_SLAB.get(), ModBlockLootTables::createSlabItemTable);
 		dropSelf(ModBlocks.FLESH_BLOCK_STAIRS.get());
 //		registerLootTable(ModBlocks.MUTATED_FLESH_BLOCK.get(), ModBlockLootTables::droppingMutatedFlesh);
 		add(ModBlocks.FLESHBORN_DOOR.get(), ModBlockLootTables::droppingSimpleOwnableDoor);
