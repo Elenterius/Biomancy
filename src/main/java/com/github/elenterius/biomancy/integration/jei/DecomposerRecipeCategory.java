@@ -115,18 +115,14 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 		guiISGroup.set(ingredients);
 
 		guiISGroup.addTooltipCallback((index, input, stack, tooltip) -> {
-			if (index > OUTPUT_SLOT && index < OUTPUT_SLOT + 6) {
-				if (!stack.isEmpty()) {
-					int chance = 100;
-					for (Byproduct byproduct : recipe.getByproducts()) {
-						if (byproduct.getItem() == stack.getItem()) {
-							chance = Math.round(byproduct.getChance() * 100);
-							break;
-						}
-					}
-//					tooltip.add(new TranslationTextComponent(BiomancyMod.getTranslationKey("tooltip", "byproduct")));
-					tooltip.add(new StringTextComponent(chance + "% ").append(new TranslationTextComponent(TextUtil.getTranslationKey("tooltip", "chance"))).withStyle(TextFormatting.GRAY));
+			if (index > OUTPUT_SLOT && index < OUTPUT_SLOT + 6 && !stack.isEmpty()) {
+				int chance = 100;
+				int idx = index - OUTPUT_SLOT - 1;
+				if (idx < recipe.getByproducts().size()) {
+					Byproduct byproduct = recipe.getByproducts().get(idx);
+					chance = Math.round(byproduct.getChance() * 100);
 				}
+				tooltip.add(new StringTextComponent(chance + "% ").append(new TranslationTextComponent(TextUtil.getTranslationKey("tooltip", "chance"))).withStyle(TextFormatting.GRAY));
 			}
 		});
 
