@@ -7,6 +7,8 @@ import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.Property;
 import net.minecraft.state.properties.BlockStateProperties;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Optional;
 
 public final class BlockPropertyUtil {
@@ -17,12 +19,12 @@ public final class BlockPropertyUtil {
 	static {
 		//we can't know if someone might have manipulated the properties, so we search for the max value
 		maxAgeMappings = ImmutableMap.<IntegerProperty, Integer>builder()
-				.put(BlockStateProperties.AGE_1, BlockStateProperties.AGE_1.getPossibleValues().stream().max(Integer::compareTo).orElse(1))
-				.put(BlockStateProperties.AGE_3, BlockStateProperties.AGE_3.getPossibleValues().stream().max(Integer::compareTo).orElse(3))
-				.put(BlockStateProperties.AGE_5, BlockStateProperties.AGE_5.getPossibleValues().stream().max(Integer::compareTo).orElse(5))
-				.put(BlockStateProperties.AGE_7, BlockStateProperties.AGE_7.getPossibleValues().stream().max(Integer::compareTo).orElse(7))
-				.put(BlockStateProperties.AGE_15, BlockStateProperties.AGE_15.getPossibleValues().stream().max(Integer::compareTo).orElse(15))
-				.put(BlockStateProperties.AGE_25, BlockStateProperties.AGE_25.getPossibleValues().stream().max(Integer::compareTo).orElse(25))
+				.put(BlockStateProperties.AGE_1, findLast(BlockStateProperties.AGE_1.getPossibleValues()))
+				.put(BlockStateProperties.AGE_3, findLast(BlockStateProperties.AGE_3.getPossibleValues()))
+				.put(BlockStateProperties.AGE_5, findLast(BlockStateProperties.AGE_5.getPossibleValues()))
+				.put(BlockStateProperties.AGE_7, findLast(BlockStateProperties.AGE_7.getPossibleValues()))
+				.put(BlockStateProperties.AGE_15, findLast(BlockStateProperties.AGE_15.getPossibleValues()))
+				.put(BlockStateProperties.AGE_25, findLast(BlockStateProperties.AGE_25.getPossibleValues()))
 				.build();
 	}
 
@@ -33,9 +35,12 @@ public final class BlockPropertyUtil {
 			return maxAgeMappings.get(property);
 		}
 		else {
-			//we can't use the last element of the collection since the order of the underlying HashSet is not guaranteed to remain constant
-			return property.getPossibleValues().stream().max(Integer::compareTo).orElse(0);
+			return findLast(property.getPossibleValues());
 		}
+	}
+
+	public static int getMinAge(IntegerProperty property) {
+		return property.getPossibleValues().iterator().next();
 	}
 
 	public static Optional<IntegerProperty> getAgeProperty(BlockState state) {
@@ -69,4 +74,30 @@ public final class BlockPropertyUtil {
 
 		return Optional.empty();
 	}
+
+	public static <T extends Comparable<T>> T getPrevious(Property<T> property, T value) {
+		return findPrevious(property.getPossibleValues(), value);
+	}
+
+	public static <T> T findPrevious(Collection<T> collection, T value) {
+		Iterator<T> iterator = collection.iterator();
+		T previous = null;
+
+		while (iterator.hasNext()) {
+			T next = iterator.next();
+			if (next.equals(value) && previous != null) {
+				return previous;
+			}
+			previous = next;
+		}
+
+		return previous != null ? previous : value; //returns the last value of the collection if possible
+	}
+
+	public static <T> T findLast(Collection<T> collection) {
+		T value = collection.iterator().next();
+		for (T t : collection) value = t;
+		return value;
+	}
+
 }

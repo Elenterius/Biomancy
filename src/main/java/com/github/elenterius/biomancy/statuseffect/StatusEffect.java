@@ -2,6 +2,8 @@ package com.github.elenterius.biomancy.statuseffect;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.Attribute;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
@@ -13,13 +15,18 @@ import java.util.List;
 public class StatusEffect extends Effect {
 	private final boolean isCurable;
 
-	public StatusEffect(EffectType type, int liquidColor) {
-		this(type, liquidColor, true);
+	public StatusEffect(EffectType type, int color) {
+		this(type, color, true);
 	}
 
-	public StatusEffect(EffectType type, int liquidColor, boolean isCurable) {
-		super(type, liquidColor);
+	public StatusEffect(EffectType type, int color, boolean isCurable) {
+		super(type, color);
 		this.isCurable = isCurable;
+	}
+
+	public <E extends StatusEffect> E addModifier(Attribute attribute, String uuid, double amount, AttributeModifier.Operation operation) {
+		//noinspection unchecked
+		return (E) addAttributeModifier(attribute, uuid, amount, operation);
 	}
 
 	@Override
@@ -28,7 +35,7 @@ public class StatusEffect extends Effect {
 	}
 
 	@Override
-	public void applyInstantenousEffect(@Nullable Entity source, @Nullable Entity indirectSource, LivingEntity entityLivingBaseIn, int amplifier, double health) {
+	public void applyInstantenousEffect(@Nullable Entity source, @Nullable Entity indirectSource, LivingEntity livingEntity, int amplifier, double health) {
 		//do nothing
 	}
 

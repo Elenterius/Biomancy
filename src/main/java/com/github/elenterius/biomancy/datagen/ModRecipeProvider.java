@@ -765,6 +765,11 @@ public class ModRecipeProvider extends RecipeProvider {
 				.pattern(" B ")
 				.unlockedBy("has_bone", has(Tags.Items.BONES)).save(consumer);
 
+		ShapedRecipeBuilder.shaped(ModItems.COPYCAT_FLUTE.get())
+				.define('B', ModItems.BONE_GEAR.get()).define('F', ModItems.FLESH_LUMP.get())
+				.pattern("BFB").pattern(" B ").pattern(" B ")
+				.unlockedBy("has_bone_gear", has(ModItems.BONE_GEAR.get())).save(consumer);
+
 		// machines ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		ShapedRecipeBuilder.shaped(ModItems.DECOMPOSER.get())
@@ -830,6 +835,37 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addByproduct(ModItems.FLESH_LUMP.get(), 2, 0.45f)
 				.addByproduct(ModItems.FLESH_LUMP.get(), 4, 0.3f)
 				.addCriterion("has_solidifier", has(ModItems.SOLIDIFIER.get())).build(consumer, "from_solidifier", true);
+
+		ShapedRecipeBuilder.shaped(ModItems.SCENT_DIFFUSER.get())
+				.define('S', ModItems.SOLIDIFIER.get())
+				.define('F', ModItems.FLESH_BLOCK.get())
+				.define('L', ModItems.FLESH_BLOCK_SLAB.get())
+				.define('B', ModItems.BONE_GEAR.get())
+				.pattern("FLF").pattern("BSB").pattern("FLF")
+				.unlockedBy(HAS_FLESH_BLOCK, has(ModItems.FLESH_BLOCK.get())).save(consumer);
+
+		DecomposerRecipeBuilder.createRecipe(ModItems.FLESH_BLOCK.get(), 500, 3)
+				.setIngredient(ModItems.SCENT_DIFFUSER.get())
+				.addByproduct(ModItems.BONE_SCRAPS.get(), 0.3f)
+				.addByproduct(ModItems.FLESH_LUMP.get(), 1, 0.65f)
+				.addByproduct(ModItems.FLESH_LUMP.get(), 2, 0.45f)
+				.addByproduct(ModItems.FLESH_LUMP.get(), 4, 0.3f)
+				.addCriterion("has_scent_diffuser", has(ModItems.SCENT_DIFFUSER.get())).build(consumer, "from_scent_diffuser", true);
+
+		ShapedRecipeBuilder.shaped(ModItems.VOICE_BOX.get())
+				.define('S', Items.NOTE_BLOCK)
+				.define('F', ModItems.FLESH_LUMP.get())
+				.define('L', ModItems.FLESH_BLOCK_SLAB.get())
+				.define('B', ModItems.BONE_GEAR.get())
+				.pattern("FLF").pattern("BSB").pattern("FFF")
+				.unlockedBy(HAS_FLESH_BLOCK, has(ModItems.FLESH_BLOCK.get())).save(consumer);
+
+		DecomposerRecipeBuilder.createRecipe(Items.NOTE_BLOCK, 250)
+				.setIngredient(ModItems.VOICE_BOX.get())
+				.addByproduct(ModItems.FLESH_LUMP.get(), 3, 0.65f)
+				.addByproduct(ModItems.FLESH_LUMP.get(), 0.45f)
+				.addByproduct(ModItems.BONE_SCRAPS.get(), 0.3f)
+				.addCriterion("has_voice_box", has(ModItems.VOICE_BOX.get())).build(consumer, "from_voice_box", true);
 
 		// reagents ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

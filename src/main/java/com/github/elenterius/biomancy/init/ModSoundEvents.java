@@ -12,7 +12,7 @@ public final class ModSoundEvents {
 
 	public static final RegistryObject<SoundEvent> WAH_WAH = registerSoundEvent("wahwah");
 	public static final RegistryObject<SoundEvent> INJECT = registerSoundEvent("inject");
-	//    public static final RegistryObject<SoundEvent> IMPACT_SPLAT = registerSoundEvent"impactsplat");
+	public static final RegistryObject<SoundEvent> SQUISH_0 = registerSoundEvent("squish_0");
 
 	private ModSoundEvents() {}
 

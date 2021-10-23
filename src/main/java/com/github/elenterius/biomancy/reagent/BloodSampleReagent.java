@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.reagent;
 import com.github.elenterius.biomancy.entity.aberration.FleshBlobEntity;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,12 +25,22 @@ import java.util.List;
 
 public class BloodSampleReagent extends Reagent {
 
+	public static final String NBT_KEY_ENTITY_TYPE = "EntityTypeId";
+
 	public BloodSampleReagent(int colorIn) {
 		super(colorIn);
 	}
 
 	private static boolean isNonBoss(LivingEntity target) {
 		return target.canChangeDimensions(); //TODO: use boss entity tag
+	}
+
+	@Nullable
+	public static <T extends Entity> EntityType<T> getEntityType(ItemStack stack) {
+		CompoundNBT reagentNbt = stack.getOrCreateTag().getCompound(Reagent.NBT_KEY_DATA);
+		EntityType<?> value = ForgeRegistries.ENTITIES.getValue(ResourceLocation.tryParse(reagentNbt.getString(NBT_KEY_ENTITY_TYPE)));
+		//noinspection unchecked
+		return value != null ? (EntityType<T>) value : null;
 	}
 
 	@Nullable
@@ -43,7 +54,7 @@ public class BloodSampleReagent extends Reagent {
 		CompoundNBT nbt = new CompoundNBT();
 		String typeId = target instanceof PlayerEntity ? getPlayerTypeId((PlayerEntity) target) : target.getEncodeId();
 		if (typeId != null) {
-			nbt.putString("EntityTypeId", typeId);
+			nbt.putString(NBT_KEY_ENTITY_TYPE, typeId);
 			nbt.putString("Name", target.getType().getDescriptionId());
 			nbt.putBoolean("IsPlayer", target instanceof PlayerEntity);
 			nbt.putUUID("EntityUUID", target.getUUID());
@@ -81,15 +92,13 @@ public class BloodSampleReagent extends Reagent {
 
 	@Override
 	public boolean affectEntity(CompoundNBT nbt, @Nullable LivingEntity source, LivingEntity target) {
-		if (target instanceof FleshBlobEntity) {
-			if (!nbt.isEmpty()) {
-				EntityType<?> entityType = ForgeRegistries.ENTITIES.getValue(ResourceLocation.tryParse(nbt.getString("EntityTypeId")));
-				if (entityType != null) {
-					if (!target.level.isClientSide) {
-						((FleshBlobEntity) target).addForeignEntityDNA(entityType);
-					}
-					return true;
+		if (target instanceof FleshBlobEntity && !nbt.isEmpty()) {
+			EntityType<?> entityType = ForgeRegistries.ENTITIES.getValue(ResourceLocation.tryParse(nbt.getString(NBT_KEY_ENTITY_TYPE)));
+			if (entityType != null) {
+				if (!target.level.isClientSide) {
+					((FleshBlobEntity) target).addForeignEntityDNA(entityType);
 				}
+				return true;
 			}
 		}
 

@@ -9,7 +9,7 @@ import net.minecraftforge.registries.RegistryBuilder;
 
 import java.util.function.Supplier;
 
-public class ModReagents {
+public final class ModReagents {
 
 	public static final DeferredRegister<Reagent> REAGENTS = DeferredRegister.create(Reagent.class, BiomancyMod.MOD_ID);
 	public static final Supplier<IForgeRegistry<Reagent>> REGISTRY = REAGENTS.makeRegistry("reagent", RegistryBuilder::new);
@@ -23,5 +23,7 @@ public class ModReagents {
 	public static final RegistryObject<DecayReagent> DECAY_AGENT = REAGENTS.register("decay_agent", () -> new DecayReagent(0x8d4e85));
 	public static final RegistryObject<MutagenReagent> MUTAGEN_SERUM = REAGENTS.register("mutagen_serum", () -> new MutagenReagent(0x60963a));
 	public static final RegistryObject<BloodSampleReagent> BLOOD_SAMPLE = REAGENTS.register("blood_sample", () -> new BloodSampleReagent(0x660000));
+
+	private ModReagents() {}
 
 }

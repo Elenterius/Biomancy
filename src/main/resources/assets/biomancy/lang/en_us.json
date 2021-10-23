@@ -28,6 +28,7 @@
   "item.biomancy.sewing_kit": "Bone Needle & String",
   "item.biomancy.sewing_kit_empty": "Bone Needle",
   "item.biomancy.glass_vial": "Glass Vial",
+  "item.biomancy.larynx_flute": "Larynx Flute",
 
   "item.biomancy.nutrient_slurry_bucket": "Nutrient Slurry Bucket",
   "item.biomancy.mutagenic_bile": "Mutagenic Bile",
@@ -85,6 +86,8 @@
   "block.biomancy.decomposer": "Decomposer",
   "block.biomancy.meatsoup_cauldron": "Fleshpot",
   "block.biomancy.evolution_pool": "Evolution Pool",
+  "block.biomancy.voice_box": "Voice Box",
+  "block.biomancy.scent_diffuser": "Scent Diffuser",
 
   "container.biomancy.gulge": "Deep Gulge",
   "container.biomancy.fleshborn_chest": "Fleshborn Chest",
@@ -113,9 +116,13 @@
   "enchantment.biomancy.quick_shot": "Quick Shot",
   "enchantment.biomancy.max_ammo": "Max Ammo",
 
-  "effect.biomancy.dread": "Frightened",
+  "effect.biomancy.repulsed": "Repulsed",
+  "effect.biomancy.attracted": "Attracted",
   "effect.biomancy.ravenous_hunger": "Ravenous Hunger",
   "effect.biomancy.flesh_eating_disease": "Necrotizing Flesh",
+  "effect.biomancy.frightened": "Frightened",
+  "effect.biomancy.adrenalin_rush": "Adrenalin Rush",
+  "effect.biomancy.muscle_weakness": "Muscle Weakness",
 
   "reagent.biomancy.growth_serum": "Growth Serum",
   "reagent.biomancy.rejuvenation_serum": "Rejuvenation Serum",
@@ -168,6 +175,9 @@
   "tooltip.biomancy.decomposer": "A bio-machine that deconstructs items into their base components.\nThe bio-machine consumes nutrient slurry/paste/bars to function.",
   "tooltip.biomancy.evolution_pool": "A organic pool filled with mutagen that is used to craft organic items.",
   "tooltip.biomancy.boomling_hive_gun": "[WIP] Combine with potion in crafting Table. Uses Nutrient Paste to reload.",
+  "tooltip.biomancy.larynx_flute": "A flute made of bones and meat that is able to copy the sounds of a mob by imitating the larynx of the target.",
+  "tooltip.biomancy.voice_box": "A box that is capable to hold and play a larynx flute with its internal stomach bellow.",
+  "tooltip.biomancy.scent_diffuser": "A Gland that produces mob specific bait or repellent from the blood and hormone rich bile it is feed.\nIt diffuses the resulting substance as scent into it's nearby surroundings.",
 
   "tooltip.biomancy.mining_bonus": "When mining %1$s:",
   "tooltip.biomancy.item_is_inert": "The Fleshborn is Inert",
@@ -202,10 +212,16 @@
   "tooltip.biomancy.reload_time": "Reload Time",
   "tooltip.biomancy.projectile_damage": "Projectile Damage",
   "tooltip.biomancy.riding_bonus": "When Riding:",
+  "tooltip.biomancy.flute_of_the_x": "%1$s of the %2$s",
+  "tooltip.biomancy.sound": "Sound",
 
   "enum.biomancy.mode.none": "None",
   "enum.biomancy.mode.devour": "Devour",
   "enum.biomancy.mode.replenish": "Replenish",
+  "enum.biomancy.voice_type.none": "None",
+  "enum.biomancy.voice_type.ambient": "Living",
+  "enum.biomancy.voice_type.hurt": "Hurting",
+  "enum.biomancy.voice_type.death": "Dying",
 
   "msg.biomancy.already_full": "Already Full",
   "msg.biomancy.not_sleepy": "You don't feel sleepy...",

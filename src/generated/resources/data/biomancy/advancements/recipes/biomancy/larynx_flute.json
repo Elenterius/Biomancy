@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:larynx_flute"
+    ]
+  },
+  "criteria": {
+    "has_bone_gear": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "biomancy:bone_gear"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:larynx_flute"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_bone_gear",
+      "has_the_recipe"
+    ]
+  ]
+}

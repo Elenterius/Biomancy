@@ -1,0 +1,34 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "biomancy:voice_box"
+    },
+    "count": 1
+  },
+  "byproducts": [
+    {
+      "result": {
+        "item": "biomancy:flesh_lump",
+        "count": 3
+      },
+      "chance": 0.65
+    },
+    {
+      "result": {
+        "item": "biomancy:flesh_lump"
+      },
+      "chance": 0.45
+    },
+    {
+      "result": {
+        "item": "biomancy:bone_scraps"
+      },
+      "chance": 0.3
+    }
+  ],
+  "result": {
+    "item": "minecraft:note_block"
+  },
+  "time": 250
+}

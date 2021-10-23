@@ -143,6 +143,8 @@ public class ModBlockLootTables extends BlockLootTables {
 		add(ModBlocks.SOLIDIFIER.get(), ModBlockLootTables::droppingWithFluidInput);
 		add(ModBlocks.DECOMPOSER.get(), ModBlockLootTables::droppingWithFuel);
 		add(ModBlocks.EVOLUTION_POOL.get(), createSingleItemTable(ModBlocks.FLESH_BLOCK_STAIRS.get()));
+		dropSelf(ModBlocks.SCENT_DIFFUSER.get());
+		dropSelf(ModBlocks.VOICE_BOX.get());
 
 //		registerLootTable(ModBlocks.LUMINOUS_SOIL.get(), (soil) -> droppingWithSilkTouch(soil, withExplosionDecay(soil, ItemLootEntry.builder(ModItems.LUMINESCENT_SPORES.get())
 //				.acceptFunction(SetCount.builder(RandomValueRange.of(4.0F, 5.0F))).acceptFunction(ApplyBonus.uniformBonusCount(Enchantments.FORTUNE)))));
