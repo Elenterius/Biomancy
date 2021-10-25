@@ -36,10 +36,9 @@ public class FleeFromAttackerFlyGoal extends RandomFlyGoal {
 		LivingEntity revengeTarget = goalOwner.getLastHurtByMob();
 		if (revengeTarget == null) return null;
 
-		//findRandomAirTargetAwayFromPos
-		Vector3d vec = RandomPositionGenerator.getLandPosTowards(goalOwner, 32, 8, revengeTarget.position());
+		Vector3d vec = RandomPositionGenerator.getPosAvoid(goalOwner, 32, 8, revengeTarget.position());
 		if (vec == null) {
-			vec = RandomPositionGenerator.getPosAvoid(goalOwner, 32, 8, revengeTarget.position());
+			vec = RandomPositionGenerator.getLandPosAvoid(goalOwner, 32, 8, revengeTarget.position());
 		}
 
 		if (vec != null && revengeTarget.distanceToSqr(vec.x, vec.y, vec.z) < revengeTarget.distanceToSqr(goalOwner)) {

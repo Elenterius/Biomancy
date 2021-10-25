@@ -21,8 +21,8 @@ import java.util.List;
 
 public class FleshEatingDiseaseEffect extends StatusEffect {
 
-	public FleshEatingDiseaseEffect(EffectType type, int liquidColor) {
-		super(type, liquidColor);
+	public FleshEatingDiseaseEffect(EffectType type, int color) {
+		super(type, color);
 	}
 
 	@Override

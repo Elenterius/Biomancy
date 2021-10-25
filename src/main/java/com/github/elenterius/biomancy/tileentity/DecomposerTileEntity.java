@@ -197,7 +197,7 @@ public class DecomposerTileEntity extends BFMachineTileEntity<DecomposerRecipe, 
 	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-		if (!remove)
+		if (!remove) {
 			if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 				if (side == Direction.UP) return inputInventory.getOptionalItemStackHandler().cast();
 				if (side == null || side == Direction.DOWN) return outputInventory.getOptionalItemStackHandler().cast();
@@ -206,6 +206,7 @@ public class DecomposerTileEntity extends BFMachineTileEntity<DecomposerRecipe, 
 			else if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
 				return stateData.getOptionalFuelHandler().cast();
 			}
+		}
 		return super.getCapability(cap, side);
 	}
 

@@ -11,13 +11,9 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
 
-/**
- * Based on FurnaceZoneContents class from author TGG <br>
- * link: https://github.com/TheGreyGhost/MinecraftByExample/blob/1-16-3-final/src/main/java/minecraftbyexample/mbe31_inventory_furnace/FurnaceZoneContents.java"
- */
 public class SimpleInventory<ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> implements IInventory {
 
 	private final ISH itemStackHandler;
@@ -31,7 +27,14 @@ public class SimpleInventory<ISH extends IItemHandler & IItemHandlerModifiable &
 	private Consumer<PlayerEntity> onCloseInventory = player -> {};
 
 	SimpleInventory(int slotAmount) {
-		itemStackHandler = (ISH) new ItemStackHandler(slotAmount);
+		//noinspection unchecked
+		itemStackHandler = (ISH) new ItemStackHandler(slotAmount) {
+			@Override
+			protected void onContentsChanged(int slot) {
+				super.onContentsChanged(slot);
+				setChanged();
+			}
+		};
 		optionalItemStackHandler = LazyOptional.of(() -> itemStackHandler);
 	}
 
@@ -40,9 +43,17 @@ public class SimpleInventory<ISH extends IItemHandler & IItemHandlerModifiable &
 		optionalItemStackHandler = LazyOptional.of(() -> itemStackHandler);
 	}
 
-	SimpleInventory(int slotAmount, Function<ISH, LazyOptional<IItemHandler>> func) {
-		itemStackHandler = (ISH) new ItemStackHandler(slotAmount);
-		optionalItemStackHandler = func.apply(itemStackHandler);
+	SimpleInventory(int slotAmount, UnaryOperator<ISH> operator) {
+		//noinspection unchecked
+		ISH ish = (ISH) new ItemStackHandler(slotAmount) {
+			@Override
+			protected void onContentsChanged(int slot) {
+				super.onContentsChanged(slot);
+				setChanged();
+			}
+		};
+		itemStackHandler = operator.apply(ish);
+		optionalItemStackHandler = LazyOptional.of(() -> itemStackHandler);
 	}
 
 	SimpleInventory(ISH itemStackHandlerIn, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
@@ -51,15 +62,8 @@ public class SimpleInventory<ISH extends IItemHandler & IItemHandlerModifiable &
 		this.markDirtyNotifier = markDirtyNotifier;
 	}
 
-	SimpleInventory(ISH itemStackHandlerIn, LazyOptional<IItemHandler> optionalItemStackHandlerIn, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
-		itemStackHandler = itemStackHandlerIn;
-		optionalItemStackHandler = optionalItemStackHandlerIn;
-		this.canPlayerAccessInventory = canPlayerAccessInventory;
-		this.markDirtyNotifier = markDirtyNotifier;
-	}
-
-	SimpleInventory(int slotAmount, Function<ISH, LazyOptional<IItemHandler>> func, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
-		this(slotAmount, func);
+	SimpleInventory(int slotAmount, UnaryOperator<ISH> operator, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
+		this(slotAmount, operator);
 		this.canPlayerAccessInventory = canPlayerAccessInventory;
 		this.markDirtyNotifier = markDirtyNotifier;
 	}
@@ -74,8 +78,8 @@ public class SimpleInventory<ISH extends IItemHandler & IItemHandlerModifiable &
 		return new SimpleInventory<>(itemStackHandlerIn, canPlayerAccessInventory, markDirtyNotifier);
 	}
 
-	public static <ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> SimpleInventory<ISH> createServerContents(int slotAmount, Function<ISH, LazyOptional<IItemHandler>> func, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
-		return new SimpleInventory<>(slotAmount, func, canPlayerAccessInventory, markDirtyNotifier);
+	public static <ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> SimpleInventory<ISH> createServerContents(int slotAmount, UnaryOperator<ISH> operator, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
+		return new SimpleInventory<>(slotAmount, operator, canPlayerAccessInventory, markDirtyNotifier);
 	}
 
 	public static <ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> SimpleInventory<ISH> createServerContents(int slotAmount, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
@@ -196,10 +200,6 @@ public class SimpleInventory<ISH extends IItemHandler & IItemHandlerModifiable &
 	}
 
 	public ISH getItemHandler() {
-		return itemStackHandler;
-	}
-
-	public IItemHandlerModifiable getIItemHandlerModifiable() {
 		return itemStackHandler;
 	}
 

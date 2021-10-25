@@ -33,7 +33,6 @@ import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 
 import javax.annotation.Nonnull;
@@ -47,18 +46,18 @@ public class SolidifierTileEntity extends MachineTileEntity<SolidifierRecipe, So
 
 	public static final int MAX_FLUID = 32_000;
 	public static final RecipeType.FluidStackRecipeType<SolidifierRecipe> RECIPE_TYPE = ModRecipes.SOLIDIFIER_RECIPE_TYPE;
-	public final LazyOptional<IItemHandler> combinedInventory;
 	private final SolidifierStateData stateData = new SolidifierStateData();
-	private final SimpleInventory filledBucketInventory;
-	private final SimpleInventory emptyBucketInventory;
-	private final SimpleInventory outputInventory;
+	private final SimpleInventory<?> filledBucketInventory;
+	private final SimpleInventory<?> emptyBucketInventory;
+	private final SimpleInventory<?> outputInventory;
+	private final LazyOptional<CombinedInvWrapper> combinedInventory;
 
 	public SolidifierTileEntity() {
 		super(ModTileEntityTypes.SOLIDIFIER.get());
 		filledBucketInventory = SimpleInventory.createServerContents(FILLED_BUCKET_SLOTS, HandlerBehaviors::filterFilledFluidContainer, this::canPlayerOpenInv, this::setChanged);
 		emptyBucketInventory = SimpleInventory.createServerContents(EMPTY_BUCKET_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
 		outputInventory = SimpleInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
-		combinedInventory = LazyOptional.of(() -> new CombinedInvWrapper(filledBucketInventory.getIItemHandlerModifiable(), emptyBucketInventory.getIItemHandlerModifiable(), outputInventory.getIItemHandlerModifiable()));
+		combinedInventory = LazyOptional.of(() -> new CombinedInvWrapper(filledBucketInventory.getItemHandler(), emptyBucketInventory.getItemHandler(), outputInventory.getItemHandler()));
 	}
 
 	@Override

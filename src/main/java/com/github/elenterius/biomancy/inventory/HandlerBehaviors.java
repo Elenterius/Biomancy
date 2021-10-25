@@ -31,43 +31,24 @@ public final class HandlerBehaviors {
 	/**
 	 * default item handler behavior
 	 */
-	public static <ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> LazyOptional<IItemHandler> standard(ISH itemStackHandler) {
-		return LazyOptional.of(() -> itemStackHandler);
-	}
-
-	/**
-	 * default fluid handler behavior
-	 */
-	public static LazyOptional<IFluidHandler> standard(IFluidHandler fluidHandler) {
-		return LazyOptional.of(() -> fluidHandler);
+	public static <ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> ISH standard(ISH itemStackHandler) {
+		return itemStackHandler;
 	}
 
 	/**
 	 * prevents item insertion, only item extraction is possible (e.g. output inventories)
 	 */
-	public static <ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> LazyOptional<IItemHandler> denyInput(ISH itemStackHandler) {
-		return LazyOptional.of(() -> new ItemHandlerDelegator.DenyInput<>(itemStackHandler));
-	}
-
-	/**
-	 * prevents fluid insertion, only fluid extraction is possible (e.g. output tank)
-	 */
-	public static LazyOptional<IFluidHandler> denyInput(IFluidHandler fluidHandler) {
-		return LazyOptional.of(() -> new FluidHandlerDelegator.DenyInput<>(fluidHandler));
+	public static <ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> ISH denyInput(ISH itemStackHandler) {
+		//noinspection unchecked
+		return (ISH) new ItemHandlerDelegator.DenyInput<>(itemStackHandler);
 	}
 
 	/**
 	 * only allows item insertion of valid items
 	 */
-	public static <ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> LazyOptional<IItemHandler> filterInput(ISH itemStackHandler, Predicate<ItemStack> validItems) {
-		return LazyOptional.of(() -> new ItemHandlerDelegator.FilterInput<>(itemStackHandler, validItems));
-	}
-
-	/**
-	 * only allows fluid insertion of valid fluids
-	 */
-	public static LazyOptional<IFluidHandler> filterInput(IFluidHandler fluidHandler, Predicate<Fluid> validFluids) {
-		return LazyOptional.of(() -> new FluidHandlerDelegator.FilterInput<>(fluidHandler, validFluids));
+	public static <ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> ISH filterInput(ISH itemStackHandler, Predicate<ItemStack> validItems) {
+		//noinspection unchecked
+		return (ISH) new ItemHandlerDelegator.FilterInput<>(itemStackHandler, validItems);
 	}
 
 	public static final Predicate<ItemStack> EMPTY_ITEM_INVENTORY_PREDICATE = stack -> {
@@ -106,8 +87,9 @@ public final class HandlerBehaviors {
 	 * prevents nesting of items with inventories,<br>
 	 * i.e. insertion of filled shulker boxes and items with filled inventories (item handler capability)
 	 */
-	public static <ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> LazyOptional<IItemHandler> denyItemWithFilledInventory(ISH itemStackHandler) {
-		return LazyOptional.of(() -> new ItemHandlerDelegator.FilterInput<>(itemStackHandler, EMPTY_ITEM_INVENTORY_PREDICATE));
+	public static <ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> ISH denyItemWithFilledInventory(ISH itemStackHandler) {
+		//noinspection unchecked
+		return (ISH) new ItemHandlerDelegator.FilterInput<>(itemStackHandler, EMPTY_ITEM_INVENTORY_PREDICATE);
 	}
 
 	public static final Predicate<ItemStack> FILLED_FLUID_ITEM_PREDICATE = stack -> FluidUtil.getFluidContained(stack).isPresent();
@@ -115,8 +97,9 @@ public final class HandlerBehaviors {
 	/**
 	 * only allows the insertion of items that contain any fluid (fluid handler capability), e.g. water buckets
 	 */
-	public static <ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> LazyOptional<IItemHandler> filterFilledFluidContainer(ISH itemStackHandler) {
-		return LazyOptional.of(() -> new ItemHandlerDelegator.FilterInput<>(itemStackHandler, FILLED_FLUID_ITEM_PREDICATE));
+	public static <ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> ISH filterFilledFluidContainer(ISH itemStackHandler) {
+		//noinspection unchecked
+		return (ISH) new ItemHandlerDelegator.FilterInput<>(itemStackHandler, FILLED_FLUID_ITEM_PREDICATE);
 	}
 
 	public static final Predicate<ItemStack> FLUID_CONTAINER_ITEM_PREDICATE = stack -> FluidUtil.getFluidHandler(stack).isPresent();
@@ -124,22 +107,45 @@ public final class HandlerBehaviors {
 	/**
 	 * only allows the insertion of items are not full fluid containers (fluid handler capability), e.g. buckets
 	 */
-	public static <ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> LazyOptional<IItemHandler> filterFluidContainer(ISH itemStackHandler) {
-		return LazyOptional.of(() -> new ItemHandlerDelegator.FilterInput<>(itemStackHandler, FLUID_CONTAINER_ITEM_PREDICATE));
+	public static <ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> ISH filterFluidContainer(ISH itemStackHandler) {
+		//noinspection unchecked
+		return (ISH) new ItemHandlerDelegator.FilterInput<>(itemStackHandler, FLUID_CONTAINER_ITEM_PREDICATE);
 	}
 
 	/**
 	 * only allows the insertion of items that are biofuel (solid & fluid container)
 	 */
-	public static <ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> LazyOptional<IItemHandler> filterBiofuel(ISH itemStackHandler) {
-		return LazyOptional.of(() -> new ItemHandlerDelegator.FilterInput<>(itemStackHandler, BiofuelUtil::isItemValidFuel));
+	public static <ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> ISH filterBiofuel(ISH itemStackHandler) {
+		//noinspection unchecked
+		return (ISH) new ItemHandlerDelegator.FilterInput<>(itemStackHandler, BiofuelUtil::isItemValidFuel);
+	}
+
+	/**
+	 * default fluid handler behavior
+	 */
+	public static IFluidHandler standard(IFluidHandler fluidHandler) {
+		return fluidHandler;
+	}
+
+	/**
+	 * prevents fluid insertion, only fluid extraction is possible (e.g. output tank)
+	 */
+	public static IFluidHandler denyInput(IFluidHandler fluidHandler) {
+		return new FluidHandlerDelegator.DenyInput<>(fluidHandler);
+	}
+
+	/**
+	 * only allows fluid insertion of valid fluids
+	 */
+	public static IFluidHandler filterInput(IFluidHandler fluidHandler, Predicate<Fluid> validFluids) {
+		return new FluidHandlerDelegator.FilterInput<>(fluidHandler, validFluids);
 	}
 
 	/**
 	 * only allows the insertion of fluid that is biofuel
 	 */
-	public static LazyOptional<IFluidHandler> filterBiofuel(IFluidHandler fluidHandler) {
-		return LazyOptional.of(() -> new FluidHandlerDelegator.FilterInput<>(fluidHandler, BiofuelUtil.VALID_FLUID));
+	public static IFluidHandler filterBiofuel(IFluidHandler fluidHandler) {
+		return new FluidHandlerDelegator.FilterInput<>(fluidHandler, BiofuelUtil.VALID_FLUID);
 	}
 
 }

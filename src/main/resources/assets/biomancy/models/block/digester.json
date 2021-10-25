@@ -399,7 +399,7 @@
             16,
             0
           ],
-          "texture": "#missing"
+          "texture": "#tendrils"
         },
         "east": {
           "uv": [
@@ -408,7 +408,7 @@
             16,
             0
           ],
-          "texture": "#missing"
+          "texture": "#tendrils"
         },
         "south": {
           "uv": [
@@ -417,7 +417,7 @@
             16,
             0
           ],
-          "texture": "#missing"
+          "texture": "#tendrils"
         },
         "west": {
           "uv": [
@@ -426,7 +426,7 @@
             16,
             0
           ],
-          "texture": "#missing"
+          "texture": "#tendrils"
         },
         "up": {
           "uv": [

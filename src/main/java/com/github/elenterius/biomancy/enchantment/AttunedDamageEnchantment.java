@@ -1,7 +1,6 @@
 package com.github.elenterius.biomancy.enchantment;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.init.ModEffects;
 import net.minecraft.enchantment.DamageEnchantment;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -16,7 +15,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.TridentItem;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.*;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -122,16 +120,16 @@ public class AttunedDamageEnchantment extends Enchantment {
 
 	@Override
 	public void doPostAttack(LivingEntity attacker, Entity target, int level) {
-		if (target instanceof LivingEntity) {
-			ItemStack heldStack = attacker.getMainHandItem();
-			if (!heldStack.isEmpty() && isAttuned(heldStack)) {
-				ResourceLocation targetKey = target.getType().getRegistryName();
-				if (targetKey != null && targetKey.equals(getAttunedTarget(heldStack))) {
-					int ticks = 20 + attacker.getRandom().nextInt(10 * level);
-					int amplifier = 1 + level >> 1; // 6,5 => 3; 4,3 => 2; 2,1 => 1
-					((LivingEntity) target).addEffect(new EffectInstance(ModEffects.DREAD.get(), ticks, amplifier));
-				}
-			}
-		}
+// 		if (target instanceof LivingEntity) {
+//			ItemStack heldStack = attacker.getMainHandItem();
+//			if (!heldStack.isEmpty() && isAttuned(heldStack)) {
+//				ResourceLocation targetKey = target.getType().getRegistryName();
+//				if (targetKey != null && targetKey.equals(getAttunedTarget(heldStack))) {
+//					int ticks = 20 + attacker.getRandom().nextInt(10 * level);
+//					int amplifier = 1 + level >> 1; // 6,5 => 3; 4,3 => 2; 2,1 => 1
+//					((LivingEntity) target).addEffect(new EffectInstance(ModEffects.ARMOR_BRITTLENESS.get(), ticks, amplifier));
+//				}
+//			}
+//		}
 	}
 }

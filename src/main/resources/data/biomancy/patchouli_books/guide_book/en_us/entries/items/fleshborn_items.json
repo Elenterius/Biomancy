@@ -16,9 +16,16 @@
     },
     {
       "type": "spotlight",
-      "item": "biomancy:entity_storage",
+      "item": "biomancy:small_entity_bag",
       "text": {
-        "translate": "tooltip.biomancy.entity_storage"
+        "translate": "tooltip.biomancy.small_entity_bag"
+      }
+    },
+    {
+      "type": "spotlight",
+      "item": "biomancy:large_entity_bag",
+      "text": {
+        "translate": "tooltip.biomancy.large_entity_bag"
       }
     },
     {

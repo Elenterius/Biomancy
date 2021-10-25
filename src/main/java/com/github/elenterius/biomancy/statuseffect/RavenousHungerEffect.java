@@ -14,8 +14,8 @@ import java.util.List;
 
 public class RavenousHungerEffect extends StatusEffect {
 
-	public RavenousHungerEffect(EffectType type, int liquidColor) {
-		super(type, liquidColor);
+	public RavenousHungerEffect(EffectType type, int color) {
+		super(type, color);
 	}
 
 	@Override

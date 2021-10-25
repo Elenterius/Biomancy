@@ -1,0 +1,5 @@
+<root>
+    <item name='net.minecraft.pathfinding.PathNavigator net.minecraft.util.math.BlockPos getTargetPos()'>
+        <annotation name='org.jetbrains.annotations.Nullable'/>
+    </item>
+</root>

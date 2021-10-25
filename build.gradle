@@ -1,3 +1,5 @@
+import java.time.Clock
+
 buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
@@ -22,13 +24,15 @@ version = "${mc_version}-${mod_version}-forge"
 group = 'com.github.elenterius.biomancy'
 archivesBaseName = 'biomancy'
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(8) //Gradle 7 & FG v5.1+ are compatible with JDK 16 but for minecraft versions pre-1.17 we have to target Java 8
+//Gradle 7 & FG v5.1+ are compatible with JDK 16 but for minecraft versions pre-1.17 we have to target Java 8
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+
 minecraft {
-//    mappings channel: 'snapshot', version: "20210309-1.16.5"
-//    mappings channel: 'official', version: "${mc_version}"
-    mappings channel: 'parchment', version: "2021.10.03-${mc_version}"
+//  mappings channel: 'snapshot', version: "20210309-1.16.5"            // mcp mappings were discontinued and can be only used for mc versions <= 1.16.5
+//  mappings channel: 'official', version: "${mc_version}"              // official mojang mappings for class and method names
+    mappings channel: 'parchment', version: "2021.10.17-${mc_version}"  // official mappings augmented with parameter names and javadocs
 
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
@@ -44,7 +48,6 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
-//            arg "-mixin.config=biomancy.mixins.json"
             mods {
                 biomancy {
                     source sourceSets.main
@@ -59,7 +62,6 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
-//            arg "-mixin.config=biomancy.mixins.json"
             mods {
                 biomancy {
                     source sourceSets.main
@@ -94,8 +96,6 @@ if (System.getProperty("idea.sync.active") == "true") {
 }
 
 mixin {
-//    defaultObfuscationEnv "notch"
-
     // MixinGradle Settings
     add sourceSets.main, "mixins.biomancy.refmap.json"
     config 'mixins.biomancy.json'
@@ -134,27 +134,38 @@ dependencies {
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.4-50:api")
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.4-50")
 
+    //helper classes for Patchouli datagen
+    compileOnly fg.deobf("xyz.brassgoggledcoders:PatchouliProvider:1.16.5-1.0.3-Snapshot.4")
+
     //curse.maven:<descriptor, can be anything>-<curseforge project id>:<curseforge file id>
     //runtimeOnly fg.deobf("curse.maven:create-328085:3278516") //https://www.curseforge.com/minecraft/mc-mods/create/files/3278516
     //runtimeOnly fg.deobf("curse.maven:simple-farming-327554:3339467") //https://www.curseforge.com/minecraft/mc-mods/simple-farming/files/3339467
     //runtimeOnly fg.deobf("curse.maven:extended-item-information-285166:3324259") //https://www.curseforge.com/minecraft/mc-mods/simple-farming/files/3339467
 }
 
+import java.util.concurrent.TimeUnit
 processResources {
     exclude '.cache'
     exclude '**/*.psd'
     exclude '**/*.bbmodel'
     doLast {
-        println("minimizing JSONs...")
-        for (File file in fileTree(dir: outputs.files.asPath, include: "**/*.json")) {
-            try {
-                file.text = groovy.json.JsonOutput.toJson(new groovy.json.JsonSlurper().parse(file))
-            }
-            catch (Exception e) {
-                throw new Exception("Failed to minimize " + file, e)
-            }
+        minifyJsons(processResources.outputs.files.asPath)
+    }
+}
+
+void minifyJsons(String fdir) {
+    print "minmizing jsons..."
+    long startTime = System.nanoTime()
+    for (File file in fileTree(dir: fdir, include: "**/*.json")) {
+        try {
+            file.text = groovy.json.JsonOutput.toJson(new groovy.json.JsonSlurper().parse(file))
+        }
+        catch (Exception e) {
+            throw new Exception("Failed to minimize " + file, e)
         }
     }
+    long ms = TimeUnit.MILLISECONDS.convert(System.nanoTime() - startTime, TimeUnit.NANOSECONDS)
+    printf "%7s sec, %s ms \n", (int)(ms/1000), ms%1000
 }
 
 build {

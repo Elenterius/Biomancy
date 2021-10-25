@@ -20,8 +20,9 @@ public class DecomposerStateData extends RecipeCraftingStateData<DecomposerRecip
 	public static final int FUEL_ID_INDEX = 2;
 	public static final int FUEL_AMOUNT_INDEX = 3;
 
+	//TODO: implement simple fluid tank?
 	public final FluidTank fuelTank = new FluidTank(ChewerTileEntity.MAX_FUEL, BiofuelUtil.VALID_FLUID_STACK);
-	private final LazyOptional<IFluidHandler> optionalFluidHandler = HandlerBehaviors.standard(fuelTank);
+	private final LazyOptional<IFluidHandler> optionalFluidHandler = LazyOptional.of(() -> HandlerBehaviors.standard(fuelTank));
 
 	public LazyOptional<IFluidHandler> getOptionalFuelHandler() {
 		return optionalFluidHandler;
