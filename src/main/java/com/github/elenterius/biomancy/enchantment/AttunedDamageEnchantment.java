@@ -105,10 +105,10 @@ public class AttunedDamageEnchantment extends Enchantment {
 		return textComponent.withStyle(TextFormatting.GRAY);
 	}
 
-	public float getAttackDamageModifier(ItemStack stack, LivingEntity attacker, Entity target) {
+	public float getAttackDamageModifier(ItemStack stack, @Nullable LivingEntity attacker, Entity target) {
 		if (!stack.isEmpty()) {
 			int level = EnchantmentHelper.getItemEnchantmentLevel(this, stack);
-			if (level > 0f) {
+			if (level > 0) {
 				ResourceLocation targetKey = target.getType().getRegistryName();
 				if (targetKey != null && targetKey.equals(getAttunedTarget(stack))) {
 					return 1f + Math.max(0, level - 1) * 0.5f;

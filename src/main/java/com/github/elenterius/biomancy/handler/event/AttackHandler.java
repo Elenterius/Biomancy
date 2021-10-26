@@ -18,6 +18,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvents;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.eventbus.api.Event;
@@ -95,16 +96,34 @@ public final class AttackHandler {
 				if (heldStack.getItem() == ModItems.FLESHBORN_GUAN_DAO.get() && event.getPlayer().getAttackStrengthScale(0.5f) > 0.8f) {
 					FleshbornGuanDaoItem.adaptAttackDamageToTarget(heldStack, event.getPlayer(), event.getTarget());
 				}
-				if (EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.ATTUNED_BANE.get(), heldStack) > 0) {
-					if (!AttunedDamageEnchantment.isAttuned(heldStack)) {
-						if (!event.getPlayer().level.isClientSide()) {
-							AttunedDamageEnchantment.setAttunedTarget(heldStack, event.getTarget());
-						}
-						else {
-							event.getPlayer().playSound(SoundEvents.ENCHANTMENT_TABLE_USE, 1f, 1f);
-						}
+				if (EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.ATTUNED_BANE.get(), heldStack) > 0 && !AttunedDamageEnchantment.isAttuned(heldStack)) {
+					if (!event.getPlayer().level.isClientSide()) {
+						AttunedDamageEnchantment.setAttunedTarget(heldStack, event.getTarget());
+					}
+					else {
+						event.getPlayer().playSound(SoundEvents.ENCHANTMENT_TABLE_USE, 1f, 1f);
 					}
 				}
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void onLivingHurt(final LivingHurtEvent event) {
+		float damage = event.getAmount();
+		LivingEntity victim = event.getEntityLiving();
+		Entity attacker = event.getSource().getEntity();
+		if (attacker instanceof LivingEntity) {
+			ItemStack heldStack = ((LivingEntity) attacker).getMainHandItem();
+			if (!heldStack.isEmpty()) {
+				float modifier = 0f;
+				if (AttunedDamageEnchantment.isAttuned(heldStack)) {
+					modifier = ModEnchantments.ATTUNED_BANE.get().getAttackDamageModifier(heldStack, (LivingEntity) attacker, victim);
+				}
+				if (heldStack.getItem() == ModItems.FLESHBORN_GUAN_DAO.get()) {
+					modifier += FleshbornGuanDaoItem.getAttackDamageModifier(heldStack, (LivingEntity) attacker, victim);
+				}
+				event.setAmount(damage + modifier);
 			}
 		}
 	}
