@@ -1,12 +1,12 @@
 {
-  "version": 1,
-  "creative_tab": "biomancy",
-  "advancements_tab": "biomancy",
   "name": "guide_book.biomancy.name",
   "landing_text": "guide_book.biomancy.landing_text",
   "book_texture": "patchouli:textures/gui/book_gray.png",
   "model": "patchouli:book_gray",
   "show_progress": false,
+  "version": "1",
+  "creative_tab": "biomancy",
+  "advancements_tab": "biomancy",
   "macros": {
     "\n": "$(br)"
   }

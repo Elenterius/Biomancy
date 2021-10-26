@@ -1,7 +1,7 @@
 {
   "name": "Sewing Recipes",
-  "icon": "biomancy:sewing_kit",
   "category": "biomancy:crafting_recipes",
+  "icon": "biomancy:sewing_kit",
   "pages": [
     {
       "type": "crafting",

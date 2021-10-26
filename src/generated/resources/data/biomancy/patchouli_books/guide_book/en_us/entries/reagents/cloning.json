@@ -1,7 +1,7 @@
 {
   "name": "Cloning",
-  "icon": "biomancy:injection_device",
   "category": "biomancy:reagents",
+  "icon": "biomancy:injection_device",
   "pages": [
     {
       "type": "text",

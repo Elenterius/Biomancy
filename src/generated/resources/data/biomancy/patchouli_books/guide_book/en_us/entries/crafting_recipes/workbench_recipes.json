@@ -1,7 +1,7 @@
 {
   "name": "Workbench Recipes",
-  "icon": "minecraft:crafting_table",
   "category": "biomancy:crafting_recipes",
+  "icon": "minecraft:crafting_table",
   "pages": [
     {
       "type": "crafting",
@@ -22,6 +22,11 @@
       "type": "crafting",
       "recipe": "biomancy:decomposer",
       "recipe2": "biomancy:solidifier"
+    },
+    {
+      "type": "crafting",
+      "recipe": "biomancy:scent_diffuser",
+      "recipe2": "biomancy:voice_box"
     }
   ]
 }

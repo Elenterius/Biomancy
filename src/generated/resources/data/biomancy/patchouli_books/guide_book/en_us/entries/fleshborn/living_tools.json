@@ -1,0 +1,15 @@
+{
+  "name": "Living Tools",
+  "category": "biomancy:fleshborn",
+  "icon": "biomancy:fleshborn_shovel",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Living tools known under the common name of fleshborn are in part, a product of the experimentation with parasitic organisms found in pig and cow flesh. A fleshborn tool is a living organism fused with biometal, that was born to fulfill a very specific purpose.\nFleshborn items are generally regarded to be inferior to living beings, having no"
+    },
+    {
+      "type": "text",
+      "text": "intelligence or soul, but they have been known to have a higher than average level of longevity and resilience. While they are not considered to be sapient, some tools do seem to possess life-like characteristics."
+    }
+  ]
+}

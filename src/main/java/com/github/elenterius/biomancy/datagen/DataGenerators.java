@@ -23,7 +23,9 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(modid = BiomancyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class DataGenerators {
+public final class DataGenerators {
+
+	private DataGenerators() {}
 
 	@SubscribeEvent
 	public static void gatherData(GatherDataEvent event) {
@@ -37,6 +39,8 @@ public class DataGenerators {
 
 		generator.addProvider(new ModRecipeProvider(generator));
 		generator.addProvider(new ModAdvancementProvider(generator));
+
+		generator.addProvider(new PatchouliProvider(generator));
 	}
 
 	public static class ModLootTableProvider extends LootTableProvider {

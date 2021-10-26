@@ -1,7 +1,7 @@
 {
   "name": "Fleshborn Tools",
-  "icon": "biomancy:fleshborn_pickaxe",
   "category": "biomancy:items",
+  "icon": "biomancy:fleshborn_pickaxe",
   "pages": [
     {
       "type": "text",
@@ -9,21 +9,21 @@
     },
     {
       "type": "spotlight",
-      "item": "biomancy:fleshborn_pickaxe",
+      "item": "biomancy:fleshborn_pickaxe{\"Damage\":0}",
       "text": {
         "translate": "tooltip.biomancy.fleshborn_pickaxe"
       }
     },
     {
       "type": "spotlight",
-      "item": "biomancy:fleshborn_axe",
+      "item": "biomancy:fleshborn_axe{\"Damage\":0}",
       "text": {
         "translate": "tooltip.biomancy.fleshborn_axe"
       }
     },
     {
       "type": "spotlight",
-      "item": "biomancy:fleshborn_shovel",
+      "item": "biomancy:fleshborn_shovel{\"Damage\":0}",
       "text": {
         "translate": "tooltip.biomancy.fleshborn_shovel"
       }

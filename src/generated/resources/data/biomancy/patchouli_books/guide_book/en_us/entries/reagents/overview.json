@@ -1,7 +1,7 @@
 {
   "name": "Overview",
-  "icon": "biomancy:mutagenic_bile",
   "category": "biomancy:reagents",
+  "icon": "biomancy:mutagenic_bile",
   "pages": [
     {
       "type": "text",

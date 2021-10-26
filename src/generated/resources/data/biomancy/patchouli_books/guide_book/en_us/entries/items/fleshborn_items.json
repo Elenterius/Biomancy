@@ -1,7 +1,7 @@
 {
   "name": "Fleshborn Items",
-  "icon": "biomancy:oculus_key",
   "category": "biomancy:items",
+  "icon": "biomancy:oculus_key",
   "pages": [
     {
       "type": "text",

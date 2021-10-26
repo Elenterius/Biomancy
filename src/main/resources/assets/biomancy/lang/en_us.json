@@ -252,7 +252,7 @@
   "advancements.biomancy.solidifier.title": "Making things thick",
   "advancements.biomancy.solidifier.description": "Craft a Solidifier to coagulate fluids into solids",
   "advancements.biomancy.decomposer.title": "Deconstructing Things",
-  "advancements.biomancy.decomposer.description": "Create a Decomposer",
+  "advancements.biomancy.decomposer.description": "Create a Decomposer. Who needs a composter, when you can use a semi-living thing with a stomach to decompose things into other things.",
   "advancements.biomancy.evolution_pool.title": "Inducing Mutations",
   "advancements.biomancy.evolution_pool.description": "Create a Evolution Pool by applying mutagenic bile to Flesh Stairs in a 2x2 well configuration",
   "advancements.biomancy.biometal.title": "Semi-Living Metal?",
@@ -268,7 +268,7 @@
   "sounds.biomancy.inject": "Inject Reagent",
 
   "guide_book.biomancy.name": "Vionomicon",
-  "guide_book.biomancy.landing_text": "Disclaimer: This whole guide is a WIP. Use the Wiki instead!\nWiki: https://github.com/Elenterius/Biomancy/wiki",
+  "guide_book.biomancy.landing_text": "Disclaimer: This whole guide is a WIP.\n\nUse the Wiki instead!\n\n$(l:https://github.com/Elenterius/Biomancy/wiki)Wiki Link$(/l)",
 
   "jei.biomancy.recipe.chewer": "Chewer Recipes",
   "jei.biomancy.recipe.digester": "Digester Recipes",

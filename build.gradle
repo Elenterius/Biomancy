@@ -1,5 +1,3 @@
-import java.time.Clock
-
 buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
@@ -110,6 +108,9 @@ mixin {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
+    flatDir {
+        dirs 'libs'
+    }
     maven {
         // JEI files
         name = "Progwml6 maven"
@@ -120,8 +121,8 @@ repositories {
         name = "ModMaven"
         url = "https://modmaven.k-4u.nl"
     }
-    maven { url 'https://maven.blamejared.com' }
-    maven { url "https://www.cursemaven.com" }
+    maven { url = 'https://maven.blamejared.com' }
+    maven { url = "https://www.cursemaven.com" }
 }
 
 dependencies {
@@ -131,16 +132,17 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-1.16.4:7.6.1.71:api") // compile against the JEI API but do not include it at runtime
     runtimeOnly fg.deobf("mezz.jei:jei-1.16.4:7.6.1.71") // at runtime, use the full JEI jar
 
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.4-50:api")
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.4-50")
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.4-51:api")
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.4-51")
 
-    //helper classes for Patchouli datagen
-    compileOnly fg.deobf("xyz.brassgoggledcoders:PatchouliProvider:1.16.5-1.0.3-Snapshot.4")
+    //Custom Build of the PatchouliProvider https://github.com/Elenterius/PatchouliProvider
+    implementation fg.deobf('xyz.brassgoggledcoders:PatchouliProvider:1.16.5-1.0.3-CUSTOM')
 
-    //curse.maven:<descriptor, can be anything>-<curseforge project id>:<curseforge file id>
-    //runtimeOnly fg.deobf("curse.maven:create-328085:3278516") //https://www.curseforge.com/minecraft/mc-mods/create/files/3278516
-    //runtimeOnly fg.deobf("curse.maven:simple-farming-327554:3339467") //https://www.curseforge.com/minecraft/mc-mods/simple-farming/files/3339467
-    //runtimeOnly fg.deobf("curse.maven:extended-item-information-285166:3324259") //https://www.curseforge.com/minecraft/mc-mods/simple-farming/files/3339467
+//    curse.maven:<descriptor, can be anything>-<CurseForge project id>:<CurseForge file id>
+//    runtimeOnly fg.deobf("curse.maven:create-328085:3278516")                     //https://www.curseforge.com/minecraft/mc-mods/create/files/3278516
+//    runtimeOnly fg.deobf("curse.maven:simple-farming-327554:3339467")             //https://www.curseforge.com/minecraft/mc-mods/simple-farming/files/3339467
+//    runtimeOnly fg.deobf("curse.maven:extended-item-information-285166:3324259")  //https://www.curseforge.com/minecraft/mc-mods/simple-farming/files/3339467
+//    runtimeOnly fg.deobf("curse.maven:sneaky-magic-322733:3238487")               //https://www.curseforge.com/minecraft/mc-mods/sneaky-magic/files/3238487
 }
 
 import java.util.concurrent.TimeUnit
