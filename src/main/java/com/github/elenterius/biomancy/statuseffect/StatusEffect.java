@@ -13,7 +13,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class StatusEffect extends Effect {
-	private final boolean isCurable;
+
+	protected final boolean isCurable;
 
 	public StatusEffect(EffectType type, int color) {
 		this(type, color, true);

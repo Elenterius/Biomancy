@@ -913,6 +913,13 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addIngredient(ReagentItem.getReagentItemStack(ModReagents.GROWTH_SERUM.get())).addIngredient(Items.GOLDEN_APPLE)
 				.addCriterion(HAS_GLASS_VIAL, has(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.ABSORPTION_BOOST.get().getRegistryName().getPath() + vialSuffix));
 
+		//noinspection ConstantConditions
+		ShapelessNbtRecipeBuilder.shapelessRecipe(ReagentItem.getReagentItemStack(ModReagents.ADRENALINE_SERUM.get()))
+				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(Items.HONEY_BOTTLE).addIngredient(ModItems.HORMONE_BILE.get(), 2)
+				.addIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_STRENGTH))
+				.addIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_SWIFTNESS))
+				.addCriterion(HAS_GLASS_VIAL, has(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.ADRENALINE_SERUM.get().getRegistryName().getPath() + vialSuffix));
+
 		// food ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		ShapedRecipeBuilder.shaped(ModItems.NUTRIENT_BAR.get())

@@ -10,6 +10,7 @@
     "minecraft:honey_bottle",
     "minecraft:sweet_berries",
     "minecraft:cocoa_beans",
+    "minecraft:apple",
     {
       "id": "create:sweet_roll",
       "required": false

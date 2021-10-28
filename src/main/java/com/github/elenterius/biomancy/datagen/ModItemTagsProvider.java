@@ -50,7 +50,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 		LOGGER.info(logMarker, "registering item tags...");
 
 		Builder<Item> sugars = tag(ModTags.Items.SUGARS)
-				.add(SUGAR, COOKIE, CAKE, HONEYCOMB, HONEY_BLOCK, HONEYCOMB_BLOCK, HONEY_BOTTLE, SWEET_BERRIES, COCOA_BEANS);
+				.add(SUGAR, COOKIE, CAKE, HONEYCOMB, HONEY_BLOCK, HONEYCOMB_BLOCK, HONEY_BOTTLE, SWEET_BERRIES, COCOA_BEANS, APPLE);
 		addOptionalItemsTo(sugars, "create:sweet_roll", "create:chocolate_glazed_berries", "create:honeyed_apple", "create:bar_of_chocolate", "createaddition:chocolate_cake");
 
 		tag(ModTags.Items.POOR_BIOMASS)

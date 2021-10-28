@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModEffects;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
@@ -14,10 +15,12 @@ import net.minecraft.entity.passive.horse.ZombieHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.event.ForgeEventFactory;
 
@@ -37,6 +40,17 @@ public class DecayReagent extends Reagent {
 		Block block = state.getBlock();
 		if (block == ModBlocks.FLESH_BLOCK.get()) {
 			if (!world.isClientSide) world.setBlockAndUpdate(pos, ModBlocks.NECROTIC_FLESH_BLOCK.get().defaultBlockState());
+			return true;
+		}
+		else if (block == Blocks.SWEET_BERRY_BUSH || BlockTags.SAPLINGS.contains(block)) {
+			if (!world.isClientSide) world.setBlockAndUpdate(pos, Blocks.DEAD_BUSH.defaultBlockState());
+			return true;
+		}
+		else if (block == Blocks.SPRUCE_LEAVES && world.getBlockState(pos.below()).is(Tags.Blocks.DIRT)) {
+			if (!world.isClientSide) {
+				world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+				world.setBlockAndUpdate(pos.below(), Blocks.PODZOL.defaultBlockState());
+			}
 			return true;
 		}
 		return false;
@@ -87,7 +101,7 @@ public class DecayReagent extends Reagent {
 	private boolean convertLivingEntity(ServerWorld world, LivingEntity target, int amplifier) {
 		if (amplifier < 1) return false;
 
-		if (target instanceof ZombieEntity && ForgeEventFactory.canLivingConvert(target, EntityType.SKELETON, (timer) -> {})) {
+		if (target instanceof ZombieEntity && ForgeEventFactory.canLivingConvert(target, EntityType.SKELETON, timer -> {})) {
 			SkeletonEntity skeleton = ((ZombieEntity) target).convertTo(EntityType.SKELETON, true); // create new entity with same settings & equipment and remove old entity
 			if (skeleton != null) {
 				skeleton.finalizeSpawn(world, world.getCurrentDifficultyAt(target.blockPosition()), SpawnReason.CONVERSION, null, null);
@@ -99,7 +113,7 @@ public class DecayReagent extends Reagent {
 				return true;
 			}
 		}
-		else if (target instanceof ZombieHorseEntity && ForgeEventFactory.canLivingConvert(target, EntityType.SKELETON_HORSE, (timer) -> {})) {
+		else if (target instanceof ZombieHorseEntity && ForgeEventFactory.canLivingConvert(target, EntityType.SKELETON_HORSE, timer -> {})) {
 			SkeletonHorseEntity horse = ((ZombieHorseEntity) target).convertTo(EntityType.SKELETON_HORSE, true); // create new entity with same settings & equipment and remove old entity
 			if (horse != null) {
 				horse.finalizeSpawn(world, world.getCurrentDifficultyAt(target.blockPosition()), SpawnReason.CONVERSION, null, null);

@@ -121,8 +121,8 @@
   "effect.biomancy.ravenous_hunger": "Ravenous Hunger",
   "effect.biomancy.flesh_eating_disease": "Necrotizing Flesh",
   "effect.biomancy.frightened": "Frightened",
-  "effect.biomancy.adrenalin_rush": "Adrenalin Rush",
-  "effect.biomancy.muscle_weakness": "Muscle Weakness",
+  "effect.biomancy.adrenaline_rush": "Adrenaline Rush",
+  "effect.biomancy.adrenal_fatigue": "Adrenal Fatigue",
 
   "reagent.biomancy.growth_serum": "Growth Serum",
   "reagent.biomancy.rejuvenation_serum": "Rejuvenation Serum",
@@ -133,6 +133,7 @@
   "reagent.biomancy.decay_agent": "Decay Serum",
   "reagent.biomancy.mutagen_serum": "Mutagen Serum",
   "reagent.biomancy.blood_sample": "Blood Sample",
+  "reagent.biomancy.adrenaline_serum": "Adrenaline Serum",
 
   "attribute.generic.attack_distance": "Attack Distance",
 
@@ -164,6 +165,7 @@
   "tooltip.biomancy.decay_agent": "Causes flesh eating disease and strongly affects zombies.",
   "tooltip.biomancy.mutagen_serum": "Induces mutations in flesh blobs and some other mobs (Villagers, Animals, Guardians).",
   "tooltip.biomancy.blood_sample": "Contains genetic material, inject a flesh blob with it with an two doses of mutagen.",
+  "tooltip.biomancy.adrenaline_serum": "Floods your body with additional Adrenaline giving you a temporary power boost for a price...",
   "tooltip.biomancy.fleshborn_door": "",
   "tooltip.biomancy.fleshborn_trapdoor": "Auto resets.\nSneak click to change mode.",
   "tooltip.biomancy.fleshborn_pressure_plate": "Sneak click to change mode.\nAble to activate ownable blocks.",
