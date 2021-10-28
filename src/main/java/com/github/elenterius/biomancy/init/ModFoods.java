@@ -18,6 +18,7 @@ public final class ModFoods {
 	public static final Food STOMACH = new Food.Builder().nutrition(1).saturationMod(0.2F).meat().build();
 	public static final Food ARTIFICIAL_STOMACH = new Food.Builder().nutrition(1).saturationMod(0.2F).meat().build();
 	public static final Food NUTRIENT_BAR = new Food.Builder().nutrition(4).saturationMod(0.3F).build();
+	public static final Food PROTEIN_BAR = new Food.Builder().nutrition(5).saturationMod(0.4F).meat().build();
 	public static final Food MEAT_BERRY = new Food.Builder().nutrition(3).saturationMod(0.4F).meat().build();
 	public static final Food MILK_GEL = new Food.Builder().alwaysEat().build();
 }

@@ -5,16 +5,19 @@
       "item": "biomancy:glass_vial"
     },
     {
-      "item": "biomancy:rejuvenating_mucus"
-    },
-    {
-      "item": "biomancy:rejuvenating_mucus"
-    },
-    {
-      "item": "biomancy:rejuvenating_mucus"
-    },
-    {
       "item": "biomancy:hormone_bile"
+    },
+    {
+      "item": "minecraft:cocoa_beans"
+    },
+    {
+      "item": "minecraft:cocoa_beans"
+    },
+    {
+      "item": "biomancy:rejuvenating_mucus"
+    },
+    {
+      "item": "biomancy:rejuvenating_mucus"
     },
     {
       "type": "forge:nbt",

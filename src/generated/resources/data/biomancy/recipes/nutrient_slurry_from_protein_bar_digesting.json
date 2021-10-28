@@ -1,0 +1,11 @@
+{
+  "type": "biomancy:digesting",
+  "ingredient": {
+    "item": "biomancy:protein_bar"
+  },
+  "result": {
+    "fluid": "biomancy:nutrient_slurry",
+    "amount": 1200
+  },
+  "time": 600
+}

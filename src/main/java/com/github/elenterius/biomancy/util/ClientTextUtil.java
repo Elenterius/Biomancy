@@ -37,9 +37,9 @@ public final class ClientTextUtil extends TextUtil {
 	private ClientTextUtil() {super();}
 
 	/**
-	 * When the tooltip text is too long it gets wrapped and {@link StringTextComponent#EMPTY} components (empty strings) are eaten up.<br>
+	 * When the tooltip text is too long it gets wrapped and {@link StringTextComponent#EMPTY} components (empty strings) are discarded.<br>
+	 * Is this a bug or intended vanilla behavior?
 	 */
-	// Is this a bug or intended vanilla behavior?
 	public static ITextComponent EMPTY_LINE_HACK() {
 		return Screen.hasControlDown() ? FAKE_EMPTY_LINE : StringTextComponent.EMPTY;
 	}

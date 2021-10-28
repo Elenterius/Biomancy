@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:nutrient_slurry_from_protein_bar_digesting"
+    ]
+  },
+  "criteria": {
+    "has_protein_bar": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "biomancy:protein_bar"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:nutrient_slurry_from_protein_bar_digesting"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_protein_bar",
+      "has_the_recipe"
+    ]
+  ]
+}

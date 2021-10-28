@@ -533,6 +533,10 @@ public class ModRecipeProvider extends RecipeProvider {
 				.setIngredient(ModItems.NUTRIENT_BAR.get())
 				.addCriterion("has_nutrient_bar", has(ModItems.NUTRIENT_BAR.get())).build(consumer, "from_nutrient_bar", true);
 
+		DigesterRecipeBuilder.createRecipe(ModFluids.NUTRIENT_SLURRY.get(), 600, BiofuelUtil.DEFAULT_FUEL_VALUE * BiofuelUtil.NUTRIENT_BAR_MULTIPLIER)
+				.setIngredient(ModItems.PROTEIN_BAR.get())
+				.addCriterion("has_protein_bar", has(ModItems.PROTEIN_BAR.get())).build(consumer, "from_protein_bar", true);
+
 		DigesterRecipeBuilder.createRecipe(ModFluids.NUTRIENT_SLURRY.get(), 100, 2 * defaultFuelAmount)
 				.setIngredient(ModItems.BOLUS.get())
 				.setByproduct(ModItems.DIGESTATE.get(), 0.85f)
@@ -893,17 +897,19 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		//noinspection ConstantConditions
 		ShapelessNbtRecipeBuilder.shapelessRecipe(ReagentItem.getReagentItemStack(ModReagents.BREEDING_STIMULANT.get()))
-				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(ModItems.NUTRIENT_BAR.get()).addIngredient(ModItems.HORMONE_BILE.get())
+				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(ModItems.NUTRIENT_BAR.get()).addIngredient(ModItems.HORMONE_BILE.get()).addIngredient(Items.SUGAR)
 				.addCriterion(HAS_GLASS_VIAL, has(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.BREEDING_STIMULANT.get().getRegistryName().getPath() + vialSuffix));
 
 		//noinspection ConstantConditions
 		ShapelessNbtRecipeBuilder.shapelessRecipe(ReagentItem.getReagentItemStack(ModReagents.CLEANSING_SERUM.get()))
-				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(ModItems.REJUVENATING_MUCUS.get(), 2).addIngredient(ModItems.HORMONE_BILE.get()).addIngredient(ModItems.MILK_GEL.get(), 2)
+				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(ModItems.REJUVENATING_MUCUS.get(), 2)
+				.addIngredient(ModItems.HORMONE_BILE.get()).addIngredient(ModItems.MILK_GEL.get(), 2).addIngredient(Items.HONEY_BOTTLE)
 				.addCriterion(HAS_GLASS_VIAL, has(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.CLEANSING_SERUM.get().getRegistryName().getPath() + vialSuffix));
 
 		//noinspection ConstantConditions
 		ShapelessNbtRecipeBuilder.shapelessRecipe(ReagentItem.getReagentItemStack(ModReagents.INSOMNIA_CURE.get()))
-				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(ModItems.REJUVENATING_MUCUS.get(), 3).addIngredient(ModItems.HORMONE_BILE.get())
+				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(ModItems.HORMONE_BILE.get()).addIngredient(Items.COCOA_BEANS, 2)
+				.addIngredient(ModItems.REJUVENATING_MUCUS.get(), 2)
 				.addIngredient(ReagentItem.getReagentItemStack(ModReagents.CLEANSING_SERUM.get())).addIngredient(ModItems.NUTRIENT_PASTE.get())
 				.addCriterion(HAS_GLASS_VIAL, has(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.INSOMNIA_CURE.get().getRegistryName().getPath() + vialSuffix));
 
@@ -915,7 +921,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		//noinspection ConstantConditions
 		ShapelessNbtRecipeBuilder.shapelessRecipe(ReagentItem.getReagentItemStack(ModReagents.ADRENALINE_SERUM.get()))
-				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(Items.HONEY_BOTTLE).addIngredient(ModItems.HORMONE_BILE.get(), 2)
+				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(Items.COCOA_BEANS, 2).addIngredient(ModItems.HORMONE_BILE.get(), 2)
 				.addIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_STRENGTH))
 				.addIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_SWIFTNESS))
 				.addCriterion(HAS_GLASS_VIAL, has(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.ADRENALINE_SERUM.get().getRegistryName().getPath() + vialSuffix));
@@ -925,6 +931,13 @@ public class ModRecipeProvider extends RecipeProvider {
 		ShapedRecipeBuilder.shaped(ModItems.NUTRIENT_BAR.get())
 				.define('N', ModItems.NUTRIENT_PASTE.get())
 				.define('B', Items.SWEET_BERRIES)
+				.define('S', Tags.Items.SEEDS)
+				.pattern("SBS").pattern("NNN")
+				.unlockedBy("has_nutrient_paste", has(ModItems.NUTRIENT_PASTE.get())).save(consumer);
+
+		ShapedRecipeBuilder.shaped(ModItems.PROTEIN_BAR.get())
+				.define('N', ModItems.NUTRIENT_PASTE.get())
+				.define('B', ModItems.FLESH_LUMP.get())
 				.define('S', Tags.Items.SEEDS)
 				.pattern("SBS").pattern("NNN")
 				.unlockedBy("has_nutrient_paste", has(ModItems.NUTRIENT_PASTE.get())).save(consumer);
