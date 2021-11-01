@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.inventory.itemhandler;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -15,7 +16,6 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 	public static final String NBT_KEY_ITEM = "Item";
 
 	protected ItemStack cachedStack = ItemStack.EMPTY;
-	private boolean isDirty = true;
 
 	public SingleItemStackHandler() {}
 
@@ -44,6 +44,13 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 
 	public int getAmount() {
 		return cachedStack.getCount();
+	}
+
+	public void setAmount(short amount) {
+		if (!cachedStack.isEmpty()) {
+			cachedStack.setCount(MathHelper.clamp(amount, 0, getMaxAmount()));
+			onContentsChanged();
+		}
 	}
 
 	public int getMaxAmount() {
@@ -158,13 +165,7 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 	}
 
 	protected void onContentsChanged() {
-		isDirty = true;
-	}
-
-	public boolean isDirty() {
-		boolean flag = isDirty;
-		isDirty = false;
-		return flag;
+		// to be overridden
 	}
 
 }

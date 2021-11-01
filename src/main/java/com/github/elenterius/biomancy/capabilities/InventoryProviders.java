@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.capabilities;
 
 import com.github.elenterius.biomancy.inventory.itemhandler.LargeSingleItemStackHandler;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
@@ -17,18 +17,26 @@ public final class InventoryProviders {
 
 	private InventoryProviders() {}
 
-	public static class LargeSingleItemHandlerProvider implements ICapabilitySerializable<INBT> {
+	public static class LargeSingleItemHandlerProvider implements ICapabilitySerializable<CompoundNBT> {
 
-		private final short slotSize;
-		private IItemHandler cachedItemHandler;
+		private final short maxSlotSize;
+		private final ItemStack cachedHostStack;
+		private LargeSingleItemStackHandler cachedItemHandler;
 		private final LazyOptional<IItemHandler> lazySupplier = LazyOptional.of(this::getCachedItemHandler);
 
-		public LargeSingleItemHandlerProvider(short slotSizeIn) {
-			slotSize = slotSizeIn;
+		public LargeSingleItemHandlerProvider(short slotSize, ItemStack hostStack) {
+			maxSlotSize = slotSize;
+			cachedHostStack = hostStack;
 		}
 
-		private IItemHandler getCachedItemHandler() {
-			if (cachedItemHandler == null) cachedItemHandler = new LargeSingleItemStackHandler(slotSize);
+		private LargeSingleItemStackHandler getCachedItemHandler() {
+			if (cachedItemHandler == null) cachedItemHandler = new LargeSingleItemStackHandler(maxSlotSize) {
+				@Override
+				public void onContentsChanged() {
+					CompoundNBT nbt = cachedHostStack.getOrCreateTag();
+					nbt.putInt("CapSyncCheese", nbt.getInt("CapSyncCheese") + 1);
+				}
+			};
 			return cachedItemHandler;
 		}
 
@@ -40,15 +48,17 @@ public final class InventoryProviders {
 		}
 
 		@Override
-		public INBT serializeNBT() {
-			INBT inbt = CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.writeNBT(getCachedItemHandler(), null);
-			return inbt == null ? new CompoundNBT() : inbt;
+		public CompoundNBT serializeNBT() {
+			//Note: don't use ITEM_HANDLER_CAPABILITY, it's only capable of saving ItemStacks (byte overflow issue)
+			return getCachedItemHandler().serializeNBT();
 		}
 
 		@Override
-		public void deserializeNBT(INBT nbt) {
-			CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.readNBT(getCachedItemHandler(), null, nbt);
+		public void deserializeNBT(CompoundNBT nbt) {
+			//Note: don't use ITEM_HANDLER_CAPABILITY, it's only capable of restoring ItemStacks
+			getCachedItemHandler().deserializeNBT(nbt);
 		}
+
 	}
 
 }
