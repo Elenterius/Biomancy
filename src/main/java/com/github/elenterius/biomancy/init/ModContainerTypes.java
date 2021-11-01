@@ -24,7 +24,6 @@ public final class ModContainerTypes {
 	public static final RegistryObject<ContainerType<DigesterContainer>> DIGESTER = CONTAINERS.register("digester", () -> IForgeContainerType.create(DigesterContainer::createClientContainer));
 	public static final RegistryObject<ContainerType<SolidifierContainer>> SOLIDIFIER = CONTAINERS.register("solidifier", () -> IForgeContainerType.create(SolidifierContainer::createClientContainer));
 	public static final RegistryObject<ContainerType<EvolutionPoolContainer>> EVOLUTION_POOL = CONTAINERS.register("evolution_pool", () -> IForgeContainerType.create(EvolutionPoolContainer::createClientContainer));
-	public static final RegistryObject<ContainerType<ItemBagContainer>> ITEM_BAG = CONTAINERS.register("item_bag", () -> IForgeContainerType.create(ItemBagContainer::createClientContainer));
 
 	@OnlyIn(Dist.CLIENT)
 	static void registerContainerScreens() {
@@ -35,7 +34,6 @@ public final class ModContainerTypes {
 		ScreenManager.register(SOLIDIFIER.get(), SolidifierContainerScreen::new);
 		ScreenManager.register(DECOMPOSER.get(), DecomposerContainerScreen::new);
 		ScreenManager.register(EVOLUTION_POOL.get(), EvolutionPoolContainerScreen::new);
-		ScreenManager.register(ITEM_BAG.get(), ItemBagContainerScreen::new);
 	}
 
 }

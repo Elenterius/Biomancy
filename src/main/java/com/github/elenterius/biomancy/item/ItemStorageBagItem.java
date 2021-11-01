@@ -3,10 +3,7 @@ package com.github.elenterius.biomancy.item;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.capabilities.InventoryProviders;
 import com.github.elenterius.biomancy.inventory.HandlerBehaviors;
-import com.github.elenterius.biomancy.inventory.ItemBagContainer;
-import com.github.elenterius.biomancy.inventory.SimpleInventory;
 import com.github.elenterius.biomancy.inventory.itemhandler.LargeSingleItemStackHandler;
-import com.github.elenterius.biomancy.inventory.itemhandler.SpecialSingleItemStackHandler;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.client.util.ITooltipFlag;
@@ -15,8 +12,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
@@ -32,11 +27,9 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.apache.logging.log4j.MarkerManager;
 
@@ -47,10 +40,9 @@ import java.util.Locale;
 
 public class ItemStorageBagItem extends BagItem implements IKeyListener {
 
-	public static final short SLOT_SIZE = 64 * 64; //4096
+	public static final short MAX_SLOT_SIZE = 64 * 64; //4096
 	public static final String STACK_NBT_KEY = "StackNbt";
 	public static final String CAPABILITY_NBT_KEY = "CapNbt";
-	public static final String UUID_NBT_KEY = "BagId";
 
 	public ItemStorageBagItem(Properties properties) {
 		super(properties);
@@ -64,14 +56,14 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 			if (itemHandler instanceof LargeSingleItemStackHandler) return (LargeSingleItemStackHandler) itemHandler;
 		}
 
-		BiomancyMod.LOGGER.error(MarkerManager.getMarker("ItemStorageBagItem"), "Item is missing expected ITEM_HANDLER_CAPABILITY");
+		BiomancyMod.LOGGER.error(MarkerManager.getMarker("ItemStorageBagItem"), "ItemStorageBagItem is missing expected ITEM_HANDLER_CAPABILITY");
 		return null;
 	}
 
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-		return !stack.isEmpty() ? new InventoryProviders.LargeSingleItemHandlerProvider(SLOT_SIZE) : null;
+		return !stack.isEmpty() ? new InventoryProviders.LargeSingleItemHandlerProvider(MAX_SLOT_SIZE, stack) : null;
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -174,18 +166,10 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 
 				if (!offhandStack.isEmpty()) {
 					//get item from offhand and store it
-					if (HandlerBehaviors.EMPTY_ITEM_INVENTORY_PREDICATE.test(offhandStack)) { //prevent nesting of items with non-empty inventories
-						LargeSingleItemStackHandler itemHandler = getItemHandler(heldStack);
-						if (itemHandler != null) {
-							int count = offhandStack.getCount();
-							ItemStack remainder = itemHandler.insertItem(0, offhandStack.copy(), false);
-							offhandStack.setCount(remainder.getCount());
-							if (count != offhandStack.getCount()) {
-								playerIn.level.playSound(null, playerIn.blockPosition(), SoundEvents.GENERIC_EAT, SoundCategory.PLAYERS, 0.8F, 0.25f + playerIn.level.random.nextFloat() * 0.25f);
-							}
-						}
-						return ActionResult.fail(heldStack);
+					if (storeItemStack(heldStack, offhandStack)) {
+						playInsertSound(playerIn);
 					}
+					else return ActionResult.fail(heldStack);
 				}
 				else {
 					//extract stored item and put it in offhand
@@ -194,30 +178,58 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 						ItemStack result = itemHandler.extractItem(0, offhandStack.getMaxStackSize(), false);
 						if (!result.isEmpty()) {
 							playerIn.setItemInHand(Hand.OFF_HAND, result);
-							playerIn.level.playSound(null, playerIn.blockPosition(), SoundEvents.PLAYER_BURP, SoundCategory.PLAYERS, 0.8F, 0.25f + playerIn.level.random.nextFloat() * 0.25f);
+							playExtractSound(playerIn);
 						}
 					}
 					return ActionResult.fail(heldStack);
 				}
 			}
-			else {
-				ItemStack heldStack = playerIn.getItemInHand(handIn);
-				//TODO: rework?
-//				CompoundNBT nbt = heldStack.getOrCreateTag();
-//				UUID bagId;
-//				if (nbt.hasUUID(UUID_NBT_KEY)) {
-//					bagId = nbt.getUUID(UUID_NBT_KEY);
-//				}
-//				else {
-//					bagId = UUID.randomUUID();
-//					nbt.putUUID(UUID_NBT_KEY, bagId);
-//				}
-//				INamedContainerProvider containerProvider = new ItemBagContainerProvider<>(heldStack);
-//				NetworkHooks.openGui((ServerPlayerEntity) playerIn, containerProvider, packetBuffer -> packetBuffer.writeUUID(bagId));
-				return ActionResult.success(heldStack);
-			}
+			return ActionResult.pass(playerIn.getItemInHand(handIn));
 		}
 		return super.use(worldIn, playerIn, handIn);
+	}
+
+	public static void playInsertSound(PlayerEntity player) {
+		playSoundEffect(player, SoundEvents.GENERIC_EAT);
+	}
+
+	public static void playExtractSound(PlayerEntity player) {
+		playSoundEffect(player, SoundEvents.PLAYER_BURP);
+	}
+
+	public static void playSoundEffect(PlayerEntity player, SoundEvent soundEvent) {
+		player.level.playSound(player.level.isClientSide ? player : null, player.blockPosition(), soundEvent, SoundCategory.PLAYERS, 0.8F, 0.25f + player.level.random.nextFloat() * 0.25f);
+	}
+
+	public boolean storeItemStack(ItemStack itemBagStack, ItemStack inputStack) {
+		if (!inputStack.isEmpty() && HandlerBehaviors.EMPTY_ITEM_INVENTORY_PREDICATE.test(inputStack)) { //prevent nesting of items with non-empty inventories
+			LargeSingleItemStackHandler itemHandler = getItemHandler(itemBagStack);
+			if (itemHandler != null) {
+				int count = inputStack.getCount();
+				ItemStack remainder = itemHandler.insertItem(0, inputStack.copy(), false);
+				int remainderCount = remainder.getCount();
+				if (count != remainderCount) {
+					inputStack.setCount(remainderCount);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public ItemStack extractItemStack(ItemStack itemBagStack, ItemStack outputStack) {
+		LargeSingleItemStackHandler itemHandler = getItemHandler(itemBagStack);
+		if (itemHandler != null && (outputStack.isEmpty() || ItemHandlerHelper.canItemStacksStack(itemHandler.getStack(), outputStack))) {
+			int maxStackSize = !outputStack.isEmpty() ? outputStack.getMaxStackSize() : itemHandler.getStack().getMaxStackSize();
+			int extractAmount = maxStackSize - outputStack.getCount();
+			if (extractAmount > 0) {
+				ItemStack result = itemHandler.extractItem(0, extractAmount, false);
+				if (outputStack.isEmpty()) return result;
+				outputStack.grow(result.getCount());
+				return outputStack;
+			}
+		}
+		return ItemStack.EMPTY;
 	}
 
 	public Mode getMode(ItemStack stack) {
@@ -334,12 +346,12 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 	private void replenishItems(ItemStack stack, PlayerEntity player) {
 		LazyOptional<IItemHandler> capability = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
 		capability.ifPresent(handler -> {
-			if (handler instanceof SpecialSingleItemStackHandler) {
-				SpecialSingleItemStackHandler itemHandler = (SpecialSingleItemStackHandler) handler;
+			if (handler instanceof LargeSingleItemStackHandler) {
+				LargeSingleItemStackHandler itemHandler = (LargeSingleItemStackHandler) handler;
 				Iterable<ItemStack> heldEquipment = player.getHandSlots();
 				ItemStack unsafeStack = itemHandler.getStackInSlot(0);
 				for (ItemStack activeItemStack : heldEquipment) {
-					if (!activeItemStack.isEmpty() && itemHandler.getCount() > 0 && activeItemStack.getCount() < activeItemStack.getMaxStackSize() && ItemHandlerHelper.canItemStacksStack(unsafeStack, activeItemStack)) {
+					if (!activeItemStack.isEmpty() && itemHandler.getAmount() > 0 && activeItemStack.getCount() < activeItemStack.getMaxStackSize() && ItemHandlerHelper.canItemStacksStack(unsafeStack, activeItemStack)) {
 						int replenishAmount = Math.min(8, activeItemStack.getMaxStackSize() - activeItemStack.getCount());
 						ItemStack extracted = itemHandler.extractItem(0, replenishAmount, false);
 						activeItemStack.grow(extracted.getCount());
@@ -352,11 +364,11 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 	private void storeItems(ItemStack stack, PlayerEntity player) {
 		LazyOptional<IItemHandler> capability = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
 		capability.ifPresent(handler -> {
-			if (handler instanceof SpecialSingleItemStackHandler) {
-				SpecialSingleItemStackHandler itemHandler = (SpecialSingleItemStackHandler) handler;
+			if (handler instanceof LargeSingleItemStackHandler) {
+				LargeSingleItemStackHandler itemHandler = (LargeSingleItemStackHandler) handler;
 				ItemStack unsafeStack = itemHandler.getStackInSlot(0);
 				int maxStackSize = itemHandler.getSlotLimit(0);
-				if (!unsafeStack.isEmpty() && itemHandler.getCount() < maxStackSize) {
+				if (!unsafeStack.isEmpty() && itemHandler.getAmount() < maxStackSize) {
 					NonNullList<ItemStack> inventory = player.inventory.items;
 					int counter = 0;
 					for (int i = 0; i < inventory.size(); i++) {
@@ -377,7 +389,7 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 								inventory.set(i, remainder);
 							}
 						}
-						if (counter >= 8 || itemHandler.getCount() >= maxStackSize) break;
+						if (counter >= 8 || itemHandler.getAmount() >= maxStackSize) break;
 					}
 					player.inventory.setChanged();
 				}
@@ -476,31 +488,6 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 		@FunctionalInterface
 		public interface ItemUseFirstFunction {
 			ActionResultType apply(ItemStorageBagItem item, ItemStack stack, ItemUseContext context);
-		}
-	}
-
-	static class ItemBagContainerProvider<ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> implements INamedContainerProvider {
-
-		private final ItemStack cachedStack;
-
-		public ItemBagContainerProvider(ItemStack bagStackIn) {
-			cachedStack = bagStackIn;
-		}
-
-		@Override
-		public ITextComponent getDisplayName() {
-			return cachedStack.getHoverName();
-		}
-
-		@Nullable
-		@Override
-		public Container createMenu(int screenId, PlayerInventory playerInv, PlayerEntity playerIn) {
-			IItemHandler itemHandler = cachedStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(null);
-			if (itemHandler instanceof IItemHandlerModifiable && itemHandler instanceof INBTSerializable) {
-				SimpleInventory<ISH> inv = SimpleInventory.createServerContents((ISH) itemHandler, player -> true, () -> {});
-				return ItemBagContainer.createServerContainer(screenId, playerInv, inv, cachedStack);
-			}
-			return null;
 		}
 	}
 
