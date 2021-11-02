@@ -80,8 +80,8 @@ public final class ModItems {
 	public static final RegistryObject<Item> HORMONE_BILE = ITEMS.register("hormone_bile", () -> new Item(createItemProperties()));
 
 	// Food
-	public static final RegistryObject<Item> NUTRIENT_BAR = ITEMS.register("nutrient_bar", () -> new Item(createItemProperties().food(ModFoods.NUTRIENT_BAR)));
-	public static final RegistryObject<Item> PROTEIN_BAR = ITEMS.register("protein_bar", () -> new Item(createItemProperties().food(ModFoods.PROTEIN_BAR)));
+	public static final RegistryObject<Item> NUTRIENT_BAR = ITEMS.register("nutrient_bar", () -> new EffectCureItem(createItemProperties().food(ModFoods.NUTRIENT_BAR)));
+	public static final RegistryObject<Item> PROTEIN_BAR = ITEMS.register("protein_bar", () -> new EffectCureItem(createItemProperties().food(ModFoods.PROTEIN_BAR)));
 
 	// Spawn Eggs
 	public static final RegistryObject<ModSpawnEggItem> FLESH_BLOB_SPAWN_EGG = ITEMS.register("flesh_blob_spawn_egg", () -> new ModSpawnEggItem(ModEntityTypes.FLESH_BLOB, 0xe9967a, 0xf6d2c6, createItemProperties()));

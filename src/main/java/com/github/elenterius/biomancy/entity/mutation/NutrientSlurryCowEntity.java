@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.entity.mutation;
 
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModItems;
+import com.google.common.primitives.UnsignedBytes;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.*;
@@ -26,7 +27,10 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class NutrientSlurryCowEntity extends CowEntity {
 
+	public static final int BUCKET_FILLING_COST = 100;
+
 	private static final DataParameter<Byte> SLURRY_AMOUNT = EntityDataManager.defineId(NutrientSlurryCowEntity.class, DataSerializers.BYTE);
+
 	private int eatGrassTimer;
 	private EatGrassGoal eatGrassGoal;
 
@@ -90,24 +94,29 @@ public class NutrientSlurryCowEntity extends CowEntity {
 	}
 
 	public void growSlurry() {
-		byte amount = entityData.get(SLURRY_AMOUNT);
-		if (amount <= 90) entityData.set(SLURRY_AMOUNT, (byte) (amount + 10));
+		int oldAmount = getSlurryAmount();
+		if (oldAmount < 255) {
+			setSlurryAmount(oldAmount + 20); // 5 * 20 = 1 Bucket of Nutrient Slurry
+		}
 	}
 
 	public int getSlurryAmount() {
-		return entityData.get(SLURRY_AMOUNT);
+		return UnsignedBytes.toInt(entityData.get(SLURRY_AMOUNT));
+	}
+
+	public void setSlurryAmount(int amount) {
+		entityData.set(SLURRY_AMOUNT, UnsignedBytes.saturatedCast(amount));
 	}
 
 	public void reduceSlurry() {
-		byte amount = entityData.get(SLURRY_AMOUNT);
-		entityData.set(SLURRY_AMOUNT, (byte) (Math.max(0, amount - 100)));
+		setSlurryAmount(getSlurryAmount() - BUCKET_FILLING_COST);
 	}
 
 	@Override
 	public ActionResultType mobInteract(PlayerEntity playerIn, Hand hand) {
 		ItemStack stack = playerIn.getItemInHand(hand);
 		if (stack.getItem() == Items.BUCKET) {
-			if (!isBaby() && getSlurryAmount() >= 100) {
+			if (!isBaby() && getSlurryAmount() >= BUCKET_FILLING_COST) {
 				playerIn.playSound(SoundEvents.COW_MILK, 1f, 1f);
 				ItemStack filledBucket = DrinkHelper.createFilledResult(stack, playerIn, ModItems.NUTRIENT_SLURRY_BUCKET.get().getDefaultInstance());
 				playerIn.setItemInHand(hand, filledBucket);
@@ -131,15 +140,15 @@ public class NutrientSlurryCowEntity extends CowEntity {
 	public float getHeadRotationPointY(float partialTick) {
 		if (eatGrassTimer <= 0) return 0;
 		else if (eatGrassTimer >= 4 && eatGrassTimer <= 36) return 1f;
-		else return eatGrassTimer < 4 ? ((float) eatGrassTimer - partialTick) / 4f : -((float) (eatGrassTimer - 40) - partialTick) / 4f;
+		else return (eatGrassTimer < 4) ? (eatGrassTimer - partialTick) / 4f : -(eatGrassTimer - 40f - partialTick) / 4f;
 	}
 
 	@OnlyIn(Dist.CLIENT)
 	public float getHeadRotationAngleX(float partialTick) {
 		if (eatGrassTimer > 4 && eatGrassTimer <= 36) {
-			float f = ((float) (eatGrassTimer - 4) - partialTick) / 32f;
+			float f = (eatGrassTimer - 4f - partialTick) / 32f;
 			return ((float) Math.PI / 5f) + 0.21991149f * MathHelper.sin(f * 28.7f);
 		}
-		else return eatGrassTimer > 0 ? ((float) Math.PI / 5f) : xRot * ((float) Math.PI / 180f);
+		else return eatGrassTimer > 0 ? (float) Math.PI / 5f : xRot * ((float) Math.PI / 180f);
 	}
 }

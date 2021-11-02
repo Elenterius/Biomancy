@@ -2,8 +2,10 @@ package com.github.elenterius.biomancy.reagent;
 
 import com.github.elenterius.biomancy.entity.aberration.FleshBlobEntity;
 import com.github.elenterius.biomancy.mixin.ZombieVillagerEntityMixinAccessor;
+import com.github.elenterius.biomancy.util.MobUtil;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.monster.WitherSkeletonEntity;
 import net.minecraft.entity.monster.ZombieVillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -32,11 +34,18 @@ public class CleansingReagent extends Reagent {
 		if (target instanceof FleshBlobEntity) {
 			((FleshBlobEntity) target).clearForeignEntityDNA();
 		}
-		else if (target instanceof ZombieVillagerEntity) {
-			if (!target.level.isClientSide && ForgeEventFactory.canLivingConvert(target, EntityType.VILLAGER, timer -> {})) {
-				((ZombieVillagerEntityMixinAccessor) target).biomancy_cureZombie((ServerWorld) target.level);
+
+		if (!target.level.isClientSide) {
+			if (target instanceof ZombieVillagerEntity) {
+				if (ForgeEventFactory.canLivingConvert(target, EntityType.VILLAGER, timer -> {})) {
+					((ZombieVillagerEntityMixinAccessor) target).biomancy_cureZombie((ServerWorld) target.level);
+				}
+			}
+			else if (target instanceof WitherSkeletonEntity) {
+				MobUtil.convertMobEntityTo((ServerWorld) target.level, (WitherSkeletonEntity) target, EntityType.SKELETON);
 			}
 		}
+
 		return true;
 	}
 

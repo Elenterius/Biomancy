@@ -17,6 +17,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.*;
 import net.minecraft.world.World;
@@ -34,6 +36,44 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 
 	public InjectionDeviceItem(Properties properties) {
 		super(properties);
+	}
+
+	public static boolean dispenserInjectLivingEntity(ServerWorld level, BlockPos pos, ItemStack stack) {
+		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AxisAlignedBB(pos), EntityPredicates.NO_SPECTATORS);
+		if (!entities.isEmpty() && dispenserAffectEntity(level, stack, entities.get(0))) {
+			level.playSound(null, pos, ModSoundEvents.INJECT.get(), SoundCategory.BLOCKS, 0.8f, 1f / (random.nextFloat() * 0.5f + 1f) + 0.2f);
+			return true;
+		}
+		return false;
+	}
+
+	private static boolean dispenserAffectEntity(ServerWorld level, ItemStack stack, LivingEntity target) {
+		InjectionDeviceItem item = ModItems.INJECTION_DEVICE.get();
+		Reagent reagent = item.getReagent(stack);
+		if (reagent != null) {
+			if (reagent.affectEntity(stack.getOrCreateTag().getCompound(Reagent.NBT_KEY_DATA), null, target)) {
+				if (reagent.isAttributeModifier()) reagent.applyAttributesModifiersToEntity(target);
+				item.addReagentAmount(stack, (byte) -1);
+				level.levelEvent(Constants.WorldEvents.SPAWN_EXPLOSION_PARTICLE, target.blockPosition(), 0);
+				return true;
+			}
+		}
+		else { //the device is empty
+			if (target.isAlive() && BloodSampleReagent.isNonBoss(target)) {
+				CompoundNBT reagentNbt = BloodSampleReagent.getBloodSampleFromEntityUnchecked(target);
+				if (reagentNbt != null && !reagentNbt.isEmpty()) {
+					CompoundNBT nbt = stack.getOrCreateTag();
+					Reagent.serialize(ModReagents.BLOOD_SAMPLE.get(), nbt);
+					nbt.put(Reagent.NBT_KEY_DATA, reagentNbt);
+					item.setReagentAmount(stack, item.getMaxReagentAmount());
+
+					target.hurt(new EntityDamageSource("sting", null), 0.5f);
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	@OnlyIn(Dist.CLIENT)

@@ -1,9 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "BFB",
-    " B ",
-    " B "
+    " KF",
+    " BK",
+    "B  "
   ],
   "key": {
     "B": {
@@ -11,6 +11,9 @@
     },
     "F": {
       "item": "biomancy:flesh_lump"
+    },
+    "K": {
+      "item": "biomancy:keratin_filaments"
     }
   },
   "result": {

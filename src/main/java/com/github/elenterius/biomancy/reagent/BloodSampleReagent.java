@@ -31,7 +31,7 @@ public class BloodSampleReagent extends Reagent {
 		super(colorIn);
 	}
 
-	private static boolean isNonBoss(LivingEntity target) {
+	public static boolean isNonBoss(LivingEntity target) {
 		return target.canChangeDimensions(); //TODO: use boss entity tag
 	}
 

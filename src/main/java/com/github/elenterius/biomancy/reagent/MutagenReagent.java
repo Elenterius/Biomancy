@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.reagent;
 
+import com.github.elenterius.biomancy.entity.aberration.FailedCowEntity;
 import com.github.elenterius.biomancy.entity.aberration.FailedSheepEntity;
 import com.github.elenterius.biomancy.entity.aberration.FleshBlobEntity;
 import com.github.elenterius.biomancy.entity.golem.IOwnableCreature;
@@ -12,6 +13,7 @@ import net.minecraft.entity.Pose;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.GuardianEntity;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -109,6 +111,13 @@ public class MutagenReagent extends Reagent {
 			else if (v < 0.8f)
 				return MobUtil.convertMobEntityTo(world, (SheepEntity) target, ModEntityTypes.FAILED_SHEEP.get());
 		}
+		else if (target instanceof CowEntity && !(target instanceof FailedCowEntity)) {
+			float v = world.random.nextFloat();
+			if (v < 0.25f)
+				return MobUtil.convertMobEntityTo(world, (CowEntity) target, ModEntityTypes.NUTRIENT_SLURRY_COW.get());
+			else if (v < 0.8f)
+				return MobUtil.convertMobEntityTo(world, (CowEntity) target, ModEntityTypes.FAILED_COW.get());
+		}
 		else if (target instanceof FleshBlobEntity) {
 			return convertFleshBlob(world, source, (FleshBlobEntity) target);
 		}
@@ -146,13 +155,16 @@ public class MutagenReagent extends Reagent {
 				else if (dnaCount == 2) {
 					EntityType<?> typeA = entityDNAs.get(0);
 					EntityType<?> typeB = entityDNAs.get(1);
-					if ((typeA == EntityType.CAVE_SPIDER && typeB == EntityType.CREEPER) || (typeB == EntityType.CAVE_SPIDER && typeA == EntityType.CREEPER)) {
+					if (anyMatch(EntityType.CAVE_SPIDER, typeA, typeB) && anyMatch(EntityType.CREEPER, typeA, typeB)) {
 						return MobUtil.convertMobEntityTo(world, target, ModEntityTypes.BOOMLING.get(), false, (fleshBlobEntity, boomlingEntity) -> {
 							//set owner to make it possible for the owner to pick it up
 							if (source != null) boomlingEntity.setOwnerUUID(source.getUUID());
 							//because boomlingEntity.onInitialSpawn() was called by MobUtil.convertMobEntityTo() we need to reset the potion
 							boomlingEntity.setStoredPotion(ItemStack.EMPTY);
 						});
+					}
+					else if (anyMatch(EntityType.VILLAGER, typeA, typeB) && anyMatch(EntityType.COW, typeA, typeB)) {
+						return MobUtil.convertMobEntityTo(world, target, EntityType.RAVAGER, false, (fleshBlobEntity, ravager) -> {});
 					}
 				}
 				else {
@@ -172,4 +184,7 @@ public class MutagenReagent extends Reagent {
 		return false;
 	}
 
+	private boolean anyMatch(EntityType<?> target, EntityType<?> a, EntityType<?> b) {
+		return a == target || b == target;
+	}
 }

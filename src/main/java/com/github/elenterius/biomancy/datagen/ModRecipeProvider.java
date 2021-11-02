@@ -130,6 +130,12 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addCriterion("has_eroding_bile_and_wither_rose", inventoryTrigger(createPredicate(ModItems.ERODING_BILE.get()), createPredicate(Items.WITHER_ROSE)))
 				.build(consumer);
 
+		ItemStackIngredient reagentIngredient = new ItemStackIngredient(ReagentItem.getReagentItemStack(ModReagents.CLEANSING_SERUM.get()));
+		EvolutionPoolRecipeBuilder.createRecipe(Items.SKELETON_SKULL, defaultTime * 3)
+				.addIngredient(Items.WITHER_SKELETON_SKULL).addIngredients(reagentIngredient, 1)
+				.addCriterion("has_cleansing_serum", hasItems(Items.SKELETON_SKULL))
+				.build(consumer);
+
 		// Biometal ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.BIOMETAL.get(), defaultTime)
 				.addIngredient(Items.IRON_INGOT).addIngredient(ModItems.FLESH_BLOCK.get()).addIngredients(ModItems.OXIDE_POWDER.get(), 2)
@@ -336,6 +342,10 @@ public class ModRecipeProvider extends RecipeProvider {
 	private void registerKeratinsRecipes(Consumer<IFinishedRecipe> consumer) {
 		final int defaultDecomposingTime = 200;
 		int id = 0;
+
+		// 1.17
+		// biomesoplenty:flesh_tendons
+		// biomesoplenty:flesh_tendons_strand
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.KERATIN_FILAMENTS.get(), defaultDecomposingTime * 2, 3)
 				.setIngredient(Items.SCUTE)
@@ -659,6 +669,12 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addByproduct(ModItems.ERODING_BILE.get())
 				.addByproduct(ModItems.FLESH_LUMP.get(), 0.2f)
 				.addCriterion("has_zombie_head", has(Items.ZOMBIE_HEAD)).build(consumer);
+
+		// 1.16
+		// biomesoplenty:flesh
+
+		// 1.17
+		// biomesoplenty.porous_flesh
 	}
 
 	private void registerCookingRecipes(Consumer<IFinishedRecipe> consumer) {
@@ -770,8 +786,8 @@ public class ModRecipeProvider extends RecipeProvider {
 				.unlockedBy("has_bone", has(Tags.Items.BONES)).save(consumer);
 
 		ShapedRecipeBuilder.shaped(ModItems.COPYCAT_FLUTE.get())
-				.define('B', ModItems.BONE_GEAR.get()).define('F', ModItems.FLESH_LUMP.get())
-				.pattern("BFB").pattern(" B ").pattern(" B ")
+				.define('B', ModItems.BONE_GEAR.get()).define('F', ModItems.FLESH_LUMP.get()).define('K', ModItems.KERATIN_FILAMENTS.get())
+				.pattern(" KF").pattern(" BK").pattern("B  ")
 				.unlockedBy("has_bone_gear", has(ModItems.BONE_GEAR.get())).save(consumer);
 
 		// machines ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

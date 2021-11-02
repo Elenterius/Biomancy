@@ -42,7 +42,7 @@ public class EntityEventPacket {
 					ClientWorld world = ((ClientPlayNetHandler) handler).getLevel();
 					Entity entity = world.getEntity(packet.entityId);
 					if (entity != null) {
-						CustomClientEventHandler.onEntityEvent(entity, packet.eventId);
+						CustomClientEventHandler.onEntityEvent(entity, UnsignedBytes.toInt(packet.eventId));
 					}
 				}
 			});

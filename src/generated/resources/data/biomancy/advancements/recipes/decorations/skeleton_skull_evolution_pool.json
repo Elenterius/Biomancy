@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:skeleton_skull_evolution_pool"
+    ]
+  },
+  "criteria": {
+    "has_cleansing_serum": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:skeleton_skull"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:skeleton_skull_evolution_pool"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_cleansing_serum",
+      "has_the_recipe"
+    ]
+  ]
+}

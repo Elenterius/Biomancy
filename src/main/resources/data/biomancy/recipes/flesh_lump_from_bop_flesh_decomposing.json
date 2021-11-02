@@ -1,0 +1,28 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "biomesoplenty:flesh"
+    },
+    "count": 1
+  },
+  "byproducts": [
+    {
+      "result": {
+        "item": "biomancy:bone_scraps"
+      },
+      "chance": 0.2
+    }
+  ],
+  "result": {
+    "item": "biomancy:flesh_lump",
+    "count": 4
+  },
+  "time": 200,
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "biomesoplenty"
+    }
+  ]
+}

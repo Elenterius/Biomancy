@@ -4,16 +4,20 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.capabilities.IItemDecayTracker;
 import com.github.elenterius.biomancy.capabilities.ItemDecayImpl;
 import com.github.elenterius.biomancy.handler.AnimalDropStomachLootModifier;
+import com.github.elenterius.biomancy.item.InjectionDeviceItem;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.dispenser.IBlockSource;
+import net.minecraft.dispenser.OptionalDispenseBehavior;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.RegistryEvent;
@@ -45,6 +49,8 @@ public final class CommonSetupHandler {
 			ModRecipes.registerRecipeTypes();
 			ModRecipes.registerCustomItemPredicates();
 			ModRecipes.registerComposterRecipes();
+
+			registerDispenserBehaviors();
 
 			ModEntityTypes.onPostSetup();
 		});
@@ -80,4 +86,18 @@ public final class CommonSetupHandler {
 			}
 		}
 	}
+
+	private static void registerDispenserBehaviors() {
+		OptionalDispenseBehavior behavior = new OptionalDispenseBehavior() {
+			@Override
+			protected ItemStack execute(IBlockSource source, ItemStack stack) {
+				ServerWorld world = source.getLevel();
+				BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+				setSuccess(InjectionDeviceItem.dispenserInjectLivingEntity(world, pos, stack));
+				return stack;
+			}
+		};
+		DispenserBlock.registerBehavior(ModItems.INJECTION_DEVICE.get(), behavior);
+	}
+
 }

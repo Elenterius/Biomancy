@@ -6,7 +6,6 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.potion.EffectType;
 import net.minecraft.util.FoodStats;
 
@@ -41,7 +40,7 @@ public class RavenousHungerEffect extends StatusEffect {
 
 	@Override
 	public List<ItemStack> getCurativeItems() {
-//		ModTags.Items.RAW_MEATS.getAllElements().stream().map(ItemStack::new).collect(Collectors.toList());
-		return ImmutableList.of(new ItemStack(Items.MELON_SLICE), new ItemStack(Items.HONEY_BOTTLE), new ItemStack(ModItems.NUTRIENT_BAR.get()), new ItemStack(ModItems.PROTEIN_BAR.get()) /*, new ItemStack(ModItems.VILE_MELON_SLICE.get()), new ItemStack(ModItems.COOKED_VILE_MELON_SLICE.get())*/);
+		return ImmutableList.of(new ItemStack(ModItems.NUTRIENT_BAR.get()), new ItemStack(ModItems.PROTEIN_BAR.get()));
 	}
+
 }
