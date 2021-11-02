@@ -20,31 +20,28 @@ public final class InventoryProviders {
 	public static class LargeSingleItemHandlerProvider implements ICapabilitySerializable<CompoundNBT> {
 
 		private final short maxSlotSize;
-		private final ItemStack cachedHostStack;
 		private LargeSingleItemStackHandler cachedItemHandler;
 		private final LazyOptional<IItemHandler> lazySupplier = LazyOptional.of(this::getCachedItemHandler);
 
-		public LargeSingleItemHandlerProvider(short slotSize, ItemStack hostStack) {
+		public LargeSingleItemHandlerProvider(short slotSize) {
 			maxSlotSize = slotSize;
-			cachedHostStack = hostStack;
 		}
 
 		private LargeSingleItemStackHandler getCachedItemHandler() {
-			if (cachedItemHandler == null) cachedItemHandler = new LargeSingleItemStackHandler(maxSlotSize) {
-				@Override
-				public void onContentsChanged() {
-					CompoundNBT nbt = cachedHostStack.getOrCreateTag();
-					nbt.putInt("CapSyncCheese", nbt.getInt("CapSyncCheese") + 1);
-				}
-			};
+			if (cachedItemHandler == null) cachedItemHandler = new LargeSingleItemStackHandler(maxSlotSize);
 			return cachedItemHandler;
+		}
+
+		public static LargeSingleItemStackHandler getItemHandler(ItemStack stack) {
+			IItemHandler itemHandler = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).orElse(new LargeSingleItemStackHandler((short) 1));
+			return (LargeSingleItemStackHandler) itemHandler;
 		}
 
 		@Nonnull
 		@Override
 		public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-			if (CapabilityItemHandler.ITEM_HANDLER_CAPABILITY == null) return LazyOptional.empty(); //mitigates NPE on startup
-			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.orEmpty(cap, lazySupplier);
+			if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) return lazySupplier.cast();
+			return LazyOptional.empty();
 		}
 
 		@Override

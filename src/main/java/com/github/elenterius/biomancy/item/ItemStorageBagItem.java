@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.item;
 
-import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.capabilities.InventoryProviders;
 import com.github.elenterius.biomancy.inventory.HandlerBehaviors;
 import com.github.elenterius.biomancy.inventory.itemhandler.LargeSingleItemStackHandler;
@@ -31,39 +30,27 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
-import org.apache.logging.log4j.MarkerManager;
 
 import javax.annotation.Nullable;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Locale;
 
+import static com.github.elenterius.biomancy.capabilities.InventoryProviders.LargeSingleItemHandlerProvider.getItemHandler;
+
 public class ItemStorageBagItem extends BagItem implements IKeyListener {
 
 	public static final short MAX_SLOT_SIZE = 64 * 64; //4096
-	public static final String STACK_NBT_KEY = "StackNbt";
-	public static final String CAPABILITY_NBT_KEY = "CapNbt";
+	public static final String CAPABILITY_NBT_KEY = "BiomancyCapNbt";
 
 	public ItemStorageBagItem(Properties properties) {
 		super(properties);
 	}
 
 	@Nullable
-	public static LargeSingleItemStackHandler getItemHandler(ItemStack stack) {
-		LazyOptional<IItemHandler> lazyOptional = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
-		if (lazyOptional.isPresent()) {
-			IItemHandler itemHandler = lazyOptional.orElse(null);
-			if (itemHandler instanceof LargeSingleItemStackHandler) return (LargeSingleItemStackHandler) itemHandler;
-		}
-
-		BiomancyMod.LOGGER.error(MarkerManager.getMarker("ItemStorageBagItem"), "ItemStorageBagItem is missing expected ITEM_HANDLER_CAPABILITY");
-		return null;
-	}
-
-	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-		return !stack.isEmpty() ? new InventoryProviders.LargeSingleItemHandlerProvider(MAX_SLOT_SIZE, stack) : null;
+		return !stack.isEmpty() ? new InventoryProviders.LargeSingleItemHandlerProvider(MAX_SLOT_SIZE) : null;
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -72,16 +59,13 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 
 		LargeSingleItemStackHandler itemHandler = getItemHandler(stack);
-		if (itemHandler != null) {
-			ItemStack storedStack = itemHandler.getStack();
-			if (!storedStack.isEmpty()) {
-				int amount = itemHandler.getAmount();
-				int maxAmount = itemHandler.getMaxAmount();
-				tooltip.add(TextUtil.getTooltipText("contains", storedStack.getHoverName()).withStyle(TextFormatting.GRAY));
-				DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
-				tooltip.add(new StringTextComponent(df.format(amount) + "/" + df.format(maxAmount)).withStyle(TextFormatting.GRAY));
-			}
-			else tooltip.add(TextUtil.getTooltipText("contains_nothing").withStyle(TextFormatting.GRAY));
+		ItemStack storedStack = itemHandler.getStack();
+		if (!storedStack.isEmpty()) {
+			int amount = itemHandler.getAmount();
+			int maxAmount = itemHandler.getMaxAmount();
+			tooltip.add(TextUtil.getTooltipText("contains", storedStack.getHoverName()).withStyle(TextFormatting.GRAY));
+			DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
+			tooltip.add(new StringTextComponent(df.format(amount) + "/" + df.format(maxAmount)).withStyle(TextFormatting.GRAY));
 		}
 		else tooltip.add(TextUtil.getTooltipText("contains_nothing").withStyle(TextFormatting.GRAY));
 
@@ -94,14 +78,12 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 	@Override
 	public ITextComponent getHighlightTip(ItemStack stack, ITextComponent displayName) {
 		LargeSingleItemStackHandler itemHandler = getItemHandler(stack);
-		if (itemHandler != null) {
-			ItemStack storedStack = itemHandler.getStack();
-			if (!storedStack.isEmpty()) {
-				int amount = itemHandler.getAmount();
-				return new StringTextComponent("").append(displayName).append(" (")
-						.append(new TranslationTextComponent(getMode(stack).getTranslationKey()))
-						.append(", " + amount + "x ").append(storedStack.getHoverName()).append(")");
-			}
+		ItemStack storedStack = itemHandler.getStack();
+		if (!storedStack.isEmpty()) {
+			int amount = itemHandler.getAmount();
+			return new StringTextComponent("").append(displayName).append(" (")
+					.append(new TranslationTextComponent(getMode(stack).getTranslationKey()))
+					.append(", " + amount + "x ").append(storedStack.getHoverName()).append(")");
 		}
 
 		return new StringTextComponent("").append(displayName).append(" (")
@@ -124,36 +106,24 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 	@Override
 	public float getFullness(ItemStack stack) {
 		LargeSingleItemStackHandler itemHandler = getItemHandler(stack);
-		if (itemHandler != null) {
-			float amount = itemHandler.getAmount();
-			float maxAmount = itemHandler.getMaxAmount();
-			return MathHelper.clamp(amount / maxAmount, 0f, 1f);
-		}
-		return 0f;
+		float amount = itemHandler.getAmount();
+		float maxAmount = itemHandler.getMaxAmount();
+		return MathHelper.clamp(amount / maxAmount, 0f, 1f);
 	}
 
 	public short getStoredItemAmount(ItemStack stack) {
 		LargeSingleItemStackHandler itemHandler = getItemHandler(stack);
-		if (itemHandler != null) {
-			return (short) itemHandler.getAmount();
-		}
-		return 0;
+		return (short) itemHandler.getAmount();
 	}
 
 	public short getStoredItemMaxAmount(ItemStack stack) {
 		LargeSingleItemStackHandler itemHandler = getItemHandler(stack);
-		if (itemHandler != null) {
-			return (short) itemHandler.getMaxAmount();
-		}
-		return 0;
+		return (short) itemHandler.getMaxAmount();
 	}
 
 	public ItemStack getStoredItem(ItemStack stack) {
 		LargeSingleItemStackHandler itemHandler = getItemHandler(stack);
-		if (itemHandler != null) {
-			return itemHandler.getStack();
-		}
-		return ItemStack.EMPTY;
+		return itemHandler.getStack();
 	}
 
 	@Override
@@ -174,7 +144,7 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 				else {
 					//extract stored item and put it in offhand
 					LargeSingleItemStackHandler itemHandler = getItemHandler(heldStack);
-					if (itemHandler != null && !itemHandler.isEmpty()) {
+					if (!itemHandler.isEmpty()) {
 						ItemStack result = itemHandler.extractItem(0, offhandStack.getMaxStackSize(), false);
 						if (!result.isEmpty()) {
 							playerIn.setItemInHand(Hand.OFF_HAND, result);
@@ -204,14 +174,12 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 	public boolean storeItemStack(ItemStack itemBagStack, ItemStack inputStack) {
 		if (!inputStack.isEmpty() && HandlerBehaviors.EMPTY_ITEM_INVENTORY_PREDICATE.test(inputStack)) { //prevent nesting of items with non-empty inventories
 			LargeSingleItemStackHandler itemHandler = getItemHandler(itemBagStack);
-			if (itemHandler != null) {
-				int count = inputStack.getCount();
-				ItemStack remainder = itemHandler.insertItem(0, inputStack.copy(), false);
-				int remainderCount = remainder.getCount();
-				if (count != remainderCount) {
-					inputStack.setCount(remainderCount);
-					return true;
-				}
+			int count = inputStack.getCount();
+			ItemStack remainder = itemHandler.insertItem(0, inputStack.copy(), false);
+			int remainderCount = remainder.getCount();
+			if (count != remainderCount) {
+				inputStack.setCount(remainderCount);
+				return true;
 			}
 		}
 		return false;
@@ -219,7 +187,7 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 
 	public ItemStack extractItemStack(ItemStack itemBagStack, ItemStack outputStack) {
 		LargeSingleItemStackHandler itemHandler = getItemHandler(itemBagStack);
-		if (itemHandler != null && (outputStack.isEmpty() || ItemHandlerHelper.canItemStacksStack(itemHandler.getStack(), outputStack))) {
+		if (outputStack.isEmpty() || ItemHandlerHelper.canItemStacksStack(itemHandler.getStack(), outputStack)) {
 			int maxStackSize = !outputStack.isEmpty() ? outputStack.getMaxStackSize() : itemHandler.getStack().getMaxStackSize();
 			int extractAmount = maxStackSize - outputStack.getCount();
 			if (extractAmount > 0) {
@@ -259,88 +227,82 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 
 	public ActionResultType extractItemsFromTileEntity(ItemStack stack, ItemUseContext context) {
 		LargeSingleItemStackHandler itemHandler = getItemHandler(stack);
-		if (itemHandler != null) {
-			if (!context.getLevel().isClientSide()) {
-				final int maxAmount = itemHandler.getMaxAmount();
-				final int oldAmount = itemHandler.getAmount();
-				final ItemStack storedStack = itemHandler.getStack();
-				if (oldAmount < maxAmount && !storedStack.isEmpty()) {
-					TileEntity tile = context.getLevel().getBlockEntity(context.getClickedPos());
-					if (tile != null) {
-						LazyOptional<IItemHandler> capability = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
-						if (capability.isPresent()) {
-							capability.ifPresent(otherItemHandler -> {
-								int amount = oldAmount;
-								int nSlots = otherItemHandler.getSlots();
-								for (int i = 0; i < nSlots; i++) {
-									if (!ItemHandlerHelper.canItemStacksStack(otherItemHandler.getStackInSlot(i), storedStack)) continue;
-									int extractAmount = Math.min(otherItemHandler.getSlotLimit(i), maxAmount - amount);
-									ItemStack result = otherItemHandler.extractItem(i, extractAmount, false);
-									if (!result.isEmpty()) {
-										amount += result.getCount();
-									}
-									if (amount >= maxAmount) break;
+		if (!context.getLevel().isClientSide()) {
+			final int maxAmount = itemHandler.getMaxAmount();
+			final int oldAmount = itemHandler.getAmount();
+			final ItemStack storedStack = itemHandler.getStack();
+			if (oldAmount < maxAmount && !storedStack.isEmpty()) {
+				TileEntity tile = context.getLevel().getBlockEntity(context.getClickedPos());
+				if (tile != null) {
+					LazyOptional<IItemHandler> capability = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+					if (capability.isPresent()) {
+						capability.ifPresent(otherItemHandler -> {
+							int amount = oldAmount;
+							int nSlots = otherItemHandler.getSlots();
+							for (int i = 0; i < nSlots; i++) {
+								if (!ItemHandlerHelper.canItemStacksStack(otherItemHandler.getStackInSlot(i), storedStack)) continue;
+								int extractAmount = Math.min(otherItemHandler.getSlotLimit(i), maxAmount - amount);
+								ItemStack result = otherItemHandler.extractItem(i, extractAmount, false);
+								if (!result.isEmpty()) {
+									amount += result.getCount();
 								}
-								if (amount > oldAmount) {
-									itemHandler.setAmount((short) MathHelper.clamp(amount, 0, maxAmount));
-								}
-								tile.setChanged();
-							});
-							context.getLevel().playSound(null, context.getClickedPos(), SoundEvents.GENERIC_EAT, SoundCategory.PLAYERS, 0.9F, 0.3f + context.getLevel().random.nextFloat() * 0.25f);
-							return ActionResultType.SUCCESS;
-						}
-						else return ActionResultType.FAIL;
+								if (amount >= maxAmount) break;
+							}
+							if (amount > oldAmount) {
+								itemHandler.setAmount((short) MathHelper.clamp(amount, 0, maxAmount));
+							}
+							tile.setChanged();
+						});
+						context.getLevel().playSound(null, context.getClickedPos(), SoundEvents.GENERIC_EAT, SoundCategory.PLAYERS, 0.9F, 0.3f + context.getLevel().random.nextFloat() * 0.25f);
+						return ActionResultType.SUCCESS;
 					}
+					else return ActionResultType.FAIL;
 				}
 			}
-			return ActionResultType.sidedSuccess(context.getLevel().isClientSide());
 		}
+		return ActionResultType.sidedSuccess(context.getLevel().isClientSide());
 
-		return ActionResultType.PASS;
 	}
 
 	public ActionResultType insertItemsIntoTileEntity(ItemStack stack, ItemUseContext context) {
 		LargeSingleItemStackHandler itemHandler = getItemHandler(stack);
-		if (itemHandler != null) {
-			if (!context.getLevel().isClientSide()) {
-				ItemStack storedStack = itemHandler.getStack();
-				if (!storedStack.isEmpty()) {
-					TileEntity tile = context.getLevel().getBlockEntity(context.getClickedPos());
-					if (tile != null) {
-						LazyOptional<IItemHandler> capability = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
-						if (capability.isPresent()) {
-							capability.ifPresent(otherItemHandler -> {
-								int amount = itemHandler.getAmount();
-								int nSlots = otherItemHandler.getSlots();
-								for (int i = 0; i < nSlots; i++) {
-									int insertAmount = Math.min(otherItemHandler.getSlotLimit(i), amount);
-									ItemStack insertStack = ItemHandlerHelper.copyStackWithSize(storedStack, insertAmount);
-									if (otherItemHandler.isItemValid(i, insertStack)) {
-										ItemStack remainder = otherItemHandler.insertItem(i, insertStack, false);
-										if (!remainder.isEmpty()) {
-											insertAmount -= remainder.getCount();
-										}
-										amount -= insertAmount;
+		if (!context.getLevel().isClientSide()) {
+			ItemStack storedStack = itemHandler.getStack();
+			if (!storedStack.isEmpty()) {
+				TileEntity tile = context.getLevel().getBlockEntity(context.getClickedPos());
+				if (tile != null) {
+					LazyOptional<IItemHandler> capability = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+					if (capability.isPresent()) {
+						capability.ifPresent(otherItemHandler -> {
+							int amount = itemHandler.getAmount();
+							int nSlots = otherItemHandler.getSlots();
+							for (int i = 0; i < nSlots; i++) {
+								int insertAmount = Math.min(otherItemHandler.getSlotLimit(i), amount);
+								ItemStack insertStack = ItemHandlerHelper.copyStackWithSize(storedStack, insertAmount);
+								if (otherItemHandler.isItemValid(i, insertStack)) {
+									ItemStack remainder = otherItemHandler.insertItem(i, insertStack, false);
+									if (!remainder.isEmpty()) {
+										insertAmount -= remainder.getCount();
 									}
-									if (amount <= 0) break;
+									amount -= insertAmount;
 								}
-								if (amount > 0) {
-									itemHandler.setAmount((short) amount);
-								}
-								else itemHandler.setStack(ItemStack.EMPTY);
-								tile.setChanged();
-							});
-							context.getLevel().playSound(null, context.getClickedPos(), SoundEvents.PLAYER_BURP, SoundCategory.PLAYERS, 0.8f, 0.25f + context.getLevel().random.nextFloat() * 0.25f);
-							return ActionResultType.SUCCESS;
-						}
-						else return ActionResultType.FAIL;
+								if (amount <= 0) break;
+							}
+							if (amount > 0) {
+								itemHandler.setAmount((short) amount);
+							}
+							else itemHandler.setStack(ItemStack.EMPTY);
+							tile.setChanged();
+						});
+						context.getLevel().playSound(null, context.getClickedPos(), SoundEvents.PLAYER_BURP, SoundCategory.PLAYERS, 0.8f, 0.25f + context.getLevel().random.nextFloat() * 0.25f);
+						return ActionResultType.SUCCESS;
 					}
+					else return ActionResultType.FAIL;
 				}
 			}
-			return ActionResultType.sidedSuccess(context.getLevel().isClientSide());
 		}
+		return ActionResultType.sidedSuccess(context.getLevel().isClientSide());
 
-		return ActionResultType.PASS;
 	}
 
 	private void replenishItems(ItemStack stack, PlayerEntity player) {
@@ -399,33 +361,24 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 
 	@Override
 	public void readShareTag(ItemStack stack, @Nullable CompoundNBT nbt) {
-		if (nbt == null) {
-			stack.setTag(null);
-			return;
+		if (nbt != null && nbt.contains(CAPABILITY_NBT_KEY)) {
+			CompoundNBT compound = nbt.getCompound(CAPABILITY_NBT_KEY);
+			getItemHandler(stack).deserializeNBT(compound);
 		}
-		CompoundNBT stackNbt = nbt.getCompound(STACK_NBT_KEY);
-		CompoundNBT cpaNbt = nbt.getCompound(CAPABILITY_NBT_KEY);
-		stack.setTag(stackNbt);
-		LargeSingleItemStackHandler itemHandler = getItemHandler(stack);
-		if (itemHandler != null) {
-			itemHandler.deserializeNBT(cpaNbt);
-		}
+
+		super.readShareTag(stack, nbt);
 	}
 
 	@Nullable
 	@Override
 	public CompoundNBT getShareTag(ItemStack stack) {
-		LargeSingleItemStackHandler itemHandler = getItemHandler(stack);
-		if (itemHandler != null) {
-			CompoundNBT nbt = new CompoundNBT();
-			CompoundNBT stackNbt = stack.getTag();
-			CompoundNBT capNbt = itemHandler.serializeNBT();
-			if (stackNbt != null) nbt.put(STACK_NBT_KEY, stackNbt);
-			nbt.put(CAPABILITY_NBT_KEY, capNbt);
-			return nbt;
-		}
+		CompoundNBT nbt = super.getShareTag(stack);
+		if (nbt == null) nbt = new CompoundNBT();
 
-		return super.getShareTag(stack);
+		CompoundNBT compound = getItemHandler(stack).serializeNBT();
+		nbt.put(CAPABILITY_NBT_KEY, compound);
+
+		return nbt;
 	}
 
 	public enum Mode {

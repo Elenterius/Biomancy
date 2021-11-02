@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.handler.event;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.capabilities.InventoryProviders;
 import com.github.elenterius.biomancy.inventory.HandlerBehaviors;
 import com.github.elenterius.biomancy.inventory.itemhandler.LargeSingleItemStackHandler;
 import com.github.elenterius.biomancy.inventory.itemhandler.SingleItemStackHandler;
@@ -62,8 +63,8 @@ public final class InventoryContainerHandler {
 			if (slot.isActive() && slot.mayPickup(player) && slot.mayPlace(carriedStack) && slot.getItem().getCount() < slot.getMaxStackSize()) {
 				int slotIndex = getSlotIndex(slot, player, screen);
 				if (slotIndex > -1) {
-					LargeSingleItemStackHandler itemHandler = ItemStorageBagItem.getItemHandler(carriedStack);
-					if (itemHandler != null && !itemHandler.isEmpty()) {
+					LargeSingleItemStackHandler itemHandler = InventoryProviders.LargeSingleItemHandlerProvider.getItemHandler(carriedStack);
+					if (!itemHandler.isEmpty()) {
 						ItemStack slotStack = slot.getItem();
 						if (slotStack.isEmpty() || ItemHandlerHelper.canItemStacksStack(itemHandler.getStack(), slotStack)) {
 							ModNetworkHandler.sendCarriedItemToServer(screen, player, carriedStack, slotIndex, Flags.EXTRACT_FROM_BAG.getValue());
@@ -77,8 +78,8 @@ public final class InventoryContainerHandler {
 			if (slot.getItem().getItem() instanceof ItemStorageBagItem && slot.isActive() && slot.mayPickup(player) && slot.mayPlace(carriedStack)) {
 				int slotIndex = getSlotIndex(slot, player, screen);
 				if (slotIndex > -1) {
-					LargeSingleItemStackHandler itemHandler = ItemStorageBagItem.getItemHandler(carriedStack);
-					if (itemHandler != null && !itemHandler.isEmpty()) {
+					LargeSingleItemStackHandler itemHandler = InventoryProviders.LargeSingleItemHandlerProvider.getItemHandler(carriedStack);
+					if (!itemHandler.isEmpty()) {
 						ModNetworkHandler.sendCarriedItemToServer(screen, player, carriedStack, slotIndex, Flags.EXTRACT_FROM_BAG.getValue());
 						return true;
 					}
@@ -95,8 +96,8 @@ public final class InventoryContainerHandler {
 			int slotIndex = getSlotIndex(slot, player, screen);
 			if (slotIndex > -1) {
 				if (carriedStack.getItem() instanceof ItemStorageBagItem) {
-					LargeSingleItemStackHandler itemHandler = ItemStorageBagItem.getItemHandler(carriedStack);
-					if (itemHandler != null && canInsertIntoItemHandler(itemHandler, slot.getItem())) {
+					LargeSingleItemStackHandler itemHandler = InventoryProviders.LargeSingleItemHandlerProvider.getItemHandler(carriedStack);
+					if (canInsertIntoItemHandler(itemHandler, slot.getItem())) {
 						ModNetworkHandler.sendCarriedItemToServer(screen, player, carriedStack, slotIndex, Flags.INSERT_INTO_BAG.getValue());
 						return true; //cancel mouse click event
 					}

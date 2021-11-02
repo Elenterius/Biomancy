@@ -104,8 +104,7 @@ public class LargeSingleItemStackHandler extends SingleItemStackHandler {
 	public void deserializeNBT(CompoundNBT nbt) {
 		cachedStack = nbt.contains(NBT_KEY_ITEM) ? ItemStack.of(nbt.getCompound(NBT_KEY_ITEM)) : ItemStack.EMPTY;
 		if (!cachedStack.isEmpty()) {
-			int itemAmount = deserializeItemAmount(nbt);
-			cachedStack.setCount(itemAmount); //restore item amount
+			cachedStack.setCount(deserializeItemAmount(nbt)); //restore item amount
 		}
 	}
 
