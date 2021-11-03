@@ -1,6 +1,8 @@
 package com.github.elenterius.biomancy.block;
 
+import com.github.elenterius.biomancy.inventory.itemhandler.LargeSingleItemStackHandler;
 import com.github.elenterius.biomancy.tileentity.GulgeTileEntity;
+import com.github.elenterius.biomancy.tileentity.IOwnableTile;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.block.Block;
@@ -14,8 +16,6 @@ import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
-import net.minecraft.nbt.NumberNBT;
 import net.minecraft.state.EnumProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
@@ -62,43 +62,41 @@ public class GulgeBlock extends OwnableContainerBlock {
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.appendHoverText(stack, worldIn, tooltip, flagIn);
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()).setStyle(ClientTextUtil.LORE_STYLE));
 		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 
 		CompoundNBT nbt = stack.getTagElement("BlockEntityTag");
 		if (nbt != null) {
-			CompoundNBT contents = nbt.getCompound("Inventory");
-			if (!contents.isEmpty()) {
-				ItemStack storedStack = contents.contains("Item") ? ItemStack.of(contents.getCompound("Item")) : ItemStack.EMPTY;
+			CompoundNBT invNbt = nbt.getCompound(GulgeTileEntity.NBT_KEY_INVENTORY);
+			if (!invNbt.isEmpty()) {
+				ItemStack storedStack = invNbt.contains("Item") ? ItemStack.of(invNbt.getCompound("Item")) : ItemStack.EMPTY;
 				if (!storedStack.isEmpty()) {
-					int itemAmount = storedStack.getCount();
-					if (contents.contains("ItemAmount")) {
-						INBT inbt = contents.get("ItemAmount");
-						if (inbt instanceof NumberNBT) {
-							itemAmount = ((NumberNBT) inbt).getAsInt();
-						}
-					}
+					short itemAmount = invNbt.getShort(LargeSingleItemStackHandler.NBT_KEY_ITEM_AMOUNT);
 					tooltip.add(TextUtil.getTooltipText("contains", storedStack.getHoverName().copy()).withStyle(TextFormatting.GRAY));
 					DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
 					tooltip.add(new StringTextComponent(df.format(itemAmount) + "/" + df.format(GulgeTileEntity.MAX_ITEM_AMOUNT)).withStyle(TextFormatting.GRAY));
+					super.appendHoverText(stack, worldIn, tooltip, flagIn);
 					return;
 				}
 			}
 		}
 
 		tooltip.add(TextUtil.getTooltipText("empty").withStyle(TextFormatting.GRAY));
+		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 	}
 
 	@Override
 	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
 		if (worldIn.isClientSide()) return ActionResultType.SUCCESS;
 
-		//TODO: verify that authorization works
-		INamedContainerProvider containerProvider = getMenuProvider(state, worldIn, pos);
-		if (containerProvider != null && player instanceof ServerPlayerEntity) {
-			ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
-			NetworkHooks.openGui(serverPlayerEntity, containerProvider, (packetBuffer) -> {});
-			return ActionResultType.SUCCESS;
+		TileEntity tileEntity = worldIn.getBlockEntity(pos);
+		if (tileEntity instanceof IOwnableTile && ((IOwnableTile) tileEntity).canPlayerUse(player)) {
+			INamedContainerProvider containerProvider = getMenuProvider(state, worldIn, pos);
+			if (containerProvider != null && player instanceof ServerPlayerEntity) {
+				ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
+				NetworkHooks.openGui(serverPlayerEntity, containerProvider, packetBuffer -> {});
+				return ActionResultType.SUCCESS;
+			}
 		}
 
 		return ActionResultType.FAIL;

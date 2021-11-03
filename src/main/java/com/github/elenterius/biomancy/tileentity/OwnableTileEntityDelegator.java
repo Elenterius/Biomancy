@@ -7,6 +7,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -121,5 +123,14 @@ public class OwnableTileEntityDelegator extends SimpleSyncedTileEntity implement
 			return ((IOwnableTile) delegate).getUserAuthorityLevelMap();
 		}
 		return new HashMap<>(8);
+	}
+
+	@Override
+	public ITextComponent getDefaultName() {
+		TileEntity delegate = getDelegate();
+		if (delegate instanceof IOwnableTile) {
+			return ((IOwnableTile) delegate).getDefaultName();
+		}
+		return new StringTextComponent("unknown");
 	}
 }

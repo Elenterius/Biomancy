@@ -8,7 +8,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 
 import javax.annotation.Nullable;
 
-
 @Mixin(LivingEntity.class)
 public interface LivingEntityAccessor {
 

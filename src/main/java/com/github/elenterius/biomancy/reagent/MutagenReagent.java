@@ -113,6 +113,8 @@ public class MutagenReagent extends Reagent {
 		}
 		else if (target instanceof CowEntity && !(target instanceof FailedCowEntity)) {
 			float v = world.random.nextFloat();
+			if (v < 0.05)
+				return MobUtil.convertMobEntityTo(world, (CowEntity) target, EntityType.MOOSHROOM);
 			if (v < 0.25f)
 				return MobUtil.convertMobEntityTo(world, (CowEntity) target, ModEntityTypes.NUTRIENT_SLURRY_COW.get());
 			else if (v < 0.8f)
@@ -164,7 +166,7 @@ public class MutagenReagent extends Reagent {
 						});
 					}
 					else if (anyMatch(EntityType.VILLAGER, typeA, typeB) && anyMatch(EntityType.COW, typeA, typeB)) {
-						return MobUtil.convertMobEntityTo(world, target, EntityType.RAVAGER, false, (fleshBlobEntity, ravager) -> {});
+						return MobUtil.convertMobEntityTo(world, target, EntityType.RAVAGER, false);
 					}
 				}
 				else {

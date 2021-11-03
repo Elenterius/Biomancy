@@ -129,7 +129,7 @@ public class DecomposerTileEntity extends BFMachineTileEntity<DecomposerRecipe, 
 	}
 
 	@Override
-	protected ITextComponent getDefaultName() {
+	public ITextComponent getDefaultName() {
 		return TextUtil.getTranslationText("container", "decomposer");
 	}
 

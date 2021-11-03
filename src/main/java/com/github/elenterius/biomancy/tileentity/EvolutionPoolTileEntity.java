@@ -141,7 +141,7 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 	}
 
 	@Override
-	protected ITextComponent getDefaultName() {
+	public ITextComponent getDefaultName() {
 		return TextUtil.getTranslationText("container", "evolution_pool");
 	}
 

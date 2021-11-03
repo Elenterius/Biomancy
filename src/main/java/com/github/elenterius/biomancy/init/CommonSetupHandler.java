@@ -76,7 +76,7 @@ public final class CommonSetupHandler {
 
 		//hacky fix for spawn eggs and deferred entity types
 		BiomancyMod.LOGGER.info("Injecting EntityType into SpawnEggs...");
-		final Map<EntityType<?>, SpawnEggItem> EGGS = ObfuscationReflectionHelper.getPrivateValue(SpawnEggItem.class, null, "BY_ID");
+		final Map<EntityType<?>, SpawnEggItem> EGGS = ObfuscationReflectionHelper.getPrivateValue(SpawnEggItem.class, null, "field_195987_b");
 		Objects.requireNonNull(EGGS);
 		for (RegistryObject<Item> entry : ModItems.ITEMS.getEntries()) {
 			if (entry.get() instanceof SpawnEggItem) {

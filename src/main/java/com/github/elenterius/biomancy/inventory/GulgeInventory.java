@@ -19,11 +19,18 @@ public class GulgeInventory implements IInventory, IIntArray {
 
 	private Predicate<PlayerEntity> canPlayerAccessInventory = x -> true;
 	private Notify markDirtyNotifier = () -> {};
-	private Consumer<PlayerEntity> onOpenInventory = (player) -> {};
-	private Consumer<PlayerEntity> closeInventoryNotifier = (player) -> {};
+	private Consumer<PlayerEntity> onOpenInventory = player -> {};
+	private Consumer<PlayerEntity> closeInventoryNotifier = player -> {};
+	private int trackedItemAmount = 0;
 
 	private GulgeInventory(short maxItemAmount) {
-		itemStackHandler = new LargeSingleItemStackHandler(maxItemAmount);
+		itemStackHandler = new LargeSingleItemStackHandler(maxItemAmount) {
+			@Override
+			protected void onContentsChanged() {
+				super.onContentsChanged();
+				setChanged();
+			}
+		};
 		optionalItemStackHandler = LazyOptional.of(() -> itemStackHandler);
 	}
 
@@ -47,10 +54,12 @@ public class GulgeInventory implements IInventory, IIntArray {
 
 	public void deserializeNBT(CompoundNBT nbt) {
 		itemStackHandler.deserializeNBT(nbt);
+		trackedItemAmount = itemStackHandler.getAmount();
 	}
 
 	@Override
 	public void setChanged() {
+		trackedItemAmount = itemStackHandler.getAmount();
 		markDirtyNotifier.invoke();
 	}
 
@@ -80,11 +89,11 @@ public class GulgeInventory implements IInventory, IIntArray {
 		onOpenInventory = consumer;
 	}
 
+	// vanilla container stuff for manipulating the inventory
+
 	public void setCloseInventoryConsumer(Consumer<PlayerEntity> consumer) {
 		closeInventoryNotifier = consumer;
 	}
-
-	// vanilla container stuff for manipulating the inventory
 
 	@Override
 	public boolean stillValid(PlayerEntity player) {
@@ -149,7 +158,8 @@ public class GulgeInventory implements IInventory, IIntArray {
 	@Override
 	public int get(int index) {
 		validateTrackingIndex(index);
-		return itemStackHandler.getAmount();
+//		return itemStackHandler.getAmount();
+		return trackedItemAmount;
 	}
 
 	/**
@@ -160,7 +170,8 @@ public class GulgeInventory implements IInventory, IIntArray {
 	@Override
 	public void set(int index, int value) {
 		validateTrackingIndex(index);
-		itemStackHandler.setAmount((short) value);
+//		itemStackHandler.setAmount((short) value);
+		trackedItemAmount = value;
 	}
 
 	/**

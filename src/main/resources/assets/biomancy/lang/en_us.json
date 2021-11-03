@@ -97,6 +97,7 @@
   "container.biomancy.solidifier": "Gland",
   "container.biomancy.decomposer": "Decomposer",
   "container.biomancy.evolution_pool": "Evolution Pool",
+  "tile.biomancy.ownable": "Ownable Block",
 
   "entity.biomancy.flesh_blob": "Flesh Blob",
   "entity.biomancy.oculus_observer": "Oculus Observer",
@@ -170,7 +171,7 @@
   "tooltip.biomancy.fleshborn_door": "",
   "tooltip.biomancy.fleshborn_trapdoor": "Auto resets.\nSneak click to change mode.",
   "tooltip.biomancy.fleshborn_pressure_plate": "Sneak click to change mode.\nAble to activate ownable blocks.",
-  "tooltip.biomancy.fleshborn_chest": "Keeps Inventory.",
+  "tooltip.biomancy.fleshborn_chest": "Keeps its inventory when mined.",
   "tooltip.biomancy.gulge": "A deep storage sac that stores up to 32k items of a single type and keeps it's inventory when mined.",
   "tooltip.biomancy.chewer": "A bio-machine that crushes items into smaller parts by chewing them.\nThe bio-machine consumes nutrient slurry/paste/bars to function.",
   "tooltip.biomancy.digester": "A bio-machine that consumes water to process biomass into nutrient slurry.\nThe bio-machine will pull biomass from the block it is attached to.",

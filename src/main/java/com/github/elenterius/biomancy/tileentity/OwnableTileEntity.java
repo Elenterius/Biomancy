@@ -7,12 +7,8 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.INameable;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
@@ -35,19 +31,6 @@ public abstract class OwnableTileEntity extends SimpleSyncedTileEntity implement
 	public boolean canPlayerOpenInv(PlayerEntity player) {
 		if (level == null || level.getBlockEntity(worldPosition) != this) return false;
 		return player.distanceToSqr(Vector3d.atCenterOf(worldPosition)) < 8d * 8d && isUserAuthorized(player);
-	}
-
-	public boolean canPlayerUse(PlayerEntity player) {
-		if (!player.isSpectator() && !isUserAuthorized(player)) {
-			if (!player.level.isClientSide()) {
-				player.displayClientMessage(new TranslationTextComponent("container.isLocked", getDefaultName()).withStyle(TextFormatting.RED), true);
-				player.playNotifySound(SoundEvents.CHEST_LOCKED, SoundCategory.BLOCKS, 1.0F, 1.0F);
-			}
-			return false;
-		}
-		else {
-			return true;
-		}
 	}
 
 	@Override
@@ -97,8 +80,6 @@ public abstract class OwnableTileEntity extends SimpleSyncedTileEntity implement
 		customName = name;
 		setChanged();
 	}
-
-	protected abstract ITextComponent getDefaultName();
 
 	@Override
 	public void load(BlockState state, CompoundNBT nbt) {

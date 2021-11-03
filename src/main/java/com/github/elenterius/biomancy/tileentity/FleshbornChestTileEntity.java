@@ -191,7 +191,7 @@ public class FleshbornChestTileEntity extends OwnableTileEntity implements IName
 	}
 
 	@Override
-	protected ITextComponent getDefaultName() {
+	public ITextComponent getDefaultName() {
 		return TextUtil.getTranslationText("container", "fleshborn_chest");
 	}
 

@@ -22,6 +22,7 @@ import javax.annotation.Nullable;
 public class GulgeTileEntity extends OwnableTileEntity implements INamedContainerProvider {
 
 	public static final short MAX_ITEM_AMOUNT = 32_000;
+	public static final String NBT_KEY_INVENTORY = "Inventory";
 	private final GulgeInventory gulgeInventory;
 
 	public GulgeTileEntity() {
@@ -37,17 +38,9 @@ public class GulgeTileEntity extends OwnableTileEntity implements INamedContaine
 		return GulgeContainer.createServerContainer(screenId, playerInventory, gulgeInventory);
 	}
 
-	public void onOpenInventory(PlayerEntity player) {
-//		if (!player.isSpectator()) {
-//
-//		}
-	}
+	public void onOpenInventory(PlayerEntity player) {}
 
-	public void onCloseInventory(PlayerEntity player) {
-//		if (!player.isSpectator()) {
-//
-//		}
-	}
+	public void onCloseInventory(PlayerEntity player) {}
 
 	public boolean isEmpty() {
 		return gulgeInventory.isEmpty();
@@ -56,20 +49,20 @@ public class GulgeTileEntity extends OwnableTileEntity implements INamedContaine
 	@Override
 	public CompoundNBT save(CompoundNBT nbt) {
 		super.save(nbt);
-		nbt.put("Inventory", gulgeInventory.serializeNBT());
+		nbt.put(NBT_KEY_INVENTORY, gulgeInventory.serializeNBT());
 		return nbt;
 	}
 
 	@Override
 	public void load(BlockState state, CompoundNBT nbt) {
 		super.load(state, nbt);
-		gulgeInventory.deserializeNBT(nbt.getCompound("Inventory"));
+		gulgeInventory.deserializeNBT(nbt.getCompound(NBT_KEY_INVENTORY));
 	}
 
 	@Override
 	public CompoundNBT writeToItemBlockEntityTag(CompoundNBT nbt) {
 		super.writeToItemBlockEntityTag(nbt);
-		if (!gulgeInventory.isEmpty()) nbt.put("Inventory", gulgeInventory.serializeNBT());
+		if (!gulgeInventory.isEmpty()) nbt.put(NBT_KEY_INVENTORY, gulgeInventory.serializeNBT());
 		return nbt;
 	}
 
@@ -89,7 +82,8 @@ public class GulgeTileEntity extends OwnableTileEntity implements INamedContaine
 	}
 
 	@Override
-	protected ITextComponent getDefaultName() {
+	public ITextComponent getDefaultName() {
 		return TextUtil.getTranslationText("container", "gulge");
 	}
+
 }

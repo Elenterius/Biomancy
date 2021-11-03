@@ -115,7 +115,7 @@ public class ChewerTileEntity extends BFMachineTileEntity<ChewerRecipe, ChewerSt
 	}
 
 	@Override
-	protected ITextComponent getDefaultName() {
+	public ITextComponent getDefaultName() {
 		return TextUtil.getTranslationText("container", "chewer");
 	}
 

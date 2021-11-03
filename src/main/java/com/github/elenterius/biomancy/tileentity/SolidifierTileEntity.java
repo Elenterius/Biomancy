@@ -202,7 +202,7 @@ public class SolidifierTileEntity extends MachineTileEntity<SolidifierRecipe, So
 	}
 
 	@Override
-	protected ITextComponent getDefaultName() {
+	public ITextComponent getDefaultName() {
 		return TextUtil.getTranslationText("container", "solidifier");
 	}
 

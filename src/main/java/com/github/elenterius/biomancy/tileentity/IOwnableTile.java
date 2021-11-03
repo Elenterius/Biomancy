@@ -2,6 +2,11 @@ package com.github.elenterius.biomancy.tileentity;
 
 import com.github.elenterius.biomancy.util.UserAuthorization;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.HashMap;
 import java.util.Optional;
@@ -59,4 +64,23 @@ public interface IOwnableTile {
 		if (player.isCreative()) return true;
 		return isUserAuthorized(player.getUUID());
 	}
+
+	default boolean canPlayerUse(PlayerEntity player) {
+		if (!player.isSpectator() && !isUserAuthorized(player)) {
+			if (!player.level.isClientSide()) {
+				player.displayClientMessage(new TranslationTextComponent("container.isLocked", getDefaultName()).withStyle(TextFormatting.RED), true);
+				player.playNotifySound(SoundEvents.CHEST_LOCKED, SoundCategory.BLOCKS, 1f, 1f);
+			}
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+
+	/**
+	 * gets the default name of the tile entity / container
+	 */
+	ITextComponent getDefaultName();
+
 }

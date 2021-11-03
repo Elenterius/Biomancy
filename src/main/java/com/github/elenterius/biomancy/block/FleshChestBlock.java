@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.block;
 
 import com.github.elenterius.biomancy.tileentity.FleshbornChestTileEntity;
+import com.github.elenterius.biomancy.tileentity.IOwnableTile;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
 import net.minecraft.block.*;
 import net.minecraft.client.util.ITooltipFlag;
@@ -31,6 +32,7 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nullable;
@@ -50,39 +52,37 @@ public class FleshChestBlock extends OwnableContainerBlock implements IWaterLogg
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void appendHoverText(ItemStack stackIn, @Nullable IBlockReader worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
-		super.appendHoverText(stackIn, worldIn, tooltip, flagIn);
+	public void appendHoverText(ItemStack stack, @Nullable IBlockReader level, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()).setStyle(ClientTextUtil.LORE_STYLE));
+		super.appendHoverText(stack, level, tooltip, flagIn);
 
-		CompoundNBT nbt = stackIn.getTagElement("BlockEntityTag");
+		CompoundNBT nbt = stack.getTagElement("BlockEntityTag");
 		if (nbt != null) {
-
 			CompoundNBT invNbt = nbt.getCompound("Inventory");
-			if (!invNbt.isEmpty()) {
-				if (invNbt.contains("Items", 9)) {
-					int size = invNbt.contains("Size") ? invNbt.getInt("Size") : FleshbornChestTileEntity.INV_SLOTS_COUNT;
-					NonNullList<ItemStack> itemList = NonNullList.withSize(size, ItemStack.EMPTY);
-					ItemStackHelper.loadAllItems(invNbt, itemList);
-					int count = 0;
-					int totalCount = 0;
+			if (!invNbt.isEmpty() && invNbt.contains("Items", Constants.NBT.TAG_LIST)) {
+				int size = invNbt.contains("Size") ? invNbt.getInt("Size") : FleshbornChestTileEntity.INV_SLOTS_COUNT;
+				NonNullList<ItemStack> itemList = NonNullList.withSize(size, ItemStack.EMPTY);
+				ItemStackHelper.loadAllItems(invNbt, itemList);
+				int count = 0;
+				int totalCount = 0;
 
-					for (ItemStack stack : itemList) {
-						if (!stack.isEmpty()) {
-							totalCount++;
-							if (count <= 4) {
-								count++;
-								IFormattableTextComponent textComponent = stack.getHoverName().copy();
-								textComponent.append(" x").append(String.valueOf(stack.getCount())).withStyle(TextFormatting.GRAY);
-								tooltip.add(textComponent);
-							}
+				for (ItemStack storedStack : itemList) {
+					if (!storedStack.isEmpty()) {
+						totalCount++;
+						if (count < 5) {
+							count++;
+							IFormattableTextComponent textComponent = storedStack.getHoverName().copy();
+							textComponent.append(" x").append(String.valueOf(storedStack.getCount())).withStyle(TextFormatting.GRAY);
+							tooltip.add(textComponent);
 						}
 					}
-
-					if (totalCount - count > 0) {
-						tooltip.add((new TranslationTextComponent("container.shulkerBox.more", totalCount - count)).withStyle(TextFormatting.ITALIC, TextFormatting.GRAY));
-					}
-					tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
-					tooltip.add(new StringTextComponent(String.format("%d/%d ", totalCount, FleshbornChestTileEntity.INV_SLOTS_COUNT)).append(new TranslationTextComponent("tooltip.biomancy.slots")).withStyle(TextFormatting.GRAY));
 				}
+
+				if (totalCount - count > 0) {
+					tooltip.add((new TranslationTextComponent("container.shulkerBox.more", totalCount - count)).withStyle(TextFormatting.ITALIC, TextFormatting.GRAY));
+				}
+				tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
+				tooltip.add(new StringTextComponent(String.format("%d/%d ", totalCount, FleshbornChestTileEntity.INV_SLOTS_COUNT)).append(new TranslationTextComponent("tooltip.biomancy.slots")).withStyle(TextFormatting.GRAY));
 			}
 		}
 	}
@@ -99,16 +99,16 @@ public class FleshChestBlock extends OwnableContainerBlock implements IWaterLogg
 	}
 
 	@Override
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
-		if (stateIn.getValue(WATERLOGGED)) {
+	public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+		if (Boolean.TRUE.equals(state.getValue(WATERLOGGED))) {
 			worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
 		}
-		return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+		return super.updateShape(state, facing, facingState, worldIn, currentPos, facingPos);
 	}
 
 	@Override
 	public FluidState getFluidState(BlockState state) {
-		return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+		return Boolean.TRUE.equals(state.getValue(WATERLOGGED)) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	@Override
@@ -116,11 +116,14 @@ public class FleshChestBlock extends OwnableContainerBlock implements IWaterLogg
 		if (worldIn.isClientSide()) return ActionResultType.SUCCESS;
 
 		if (!ChestBlock.isChestBlockedAt(worldIn, pos)) {
-			INamedContainerProvider containerProvider = getMenuProvider(state, worldIn, pos);
-			if (containerProvider != null && player instanceof ServerPlayerEntity) {
-				ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
-				NetworkHooks.openGui(serverPlayerEntity, containerProvider, (packetBuffer) -> {});
-				return ActionResultType.SUCCESS;
+			TileEntity tileEntity = worldIn.getBlockEntity(pos);
+			if (tileEntity instanceof IOwnableTile && ((IOwnableTile) tileEntity).canPlayerUse(player)) {
+				INamedContainerProvider containerProvider = getMenuProvider(state, worldIn, pos);
+				if (containerProvider != null && player instanceof ServerPlayerEntity) {
+					ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
+					NetworkHooks.openGui(serverPlayerEntity, containerProvider, (packetBuffer) -> {});
+					return ActionResultType.SUCCESS;
+				}
 			}
 		}
 

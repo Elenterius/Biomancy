@@ -51,14 +51,14 @@ public final class ModEffects {
 			.addModifier(Attributes.MAX_HEALTH, "99DD10E5-2682-4C0D-8F8D-0FED3CE2D3F9", -0.1f, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
 	public static final RegistryObject<AdrenalineEffect> ADRENALINE_RUSH = EFFECTS.register("adrenaline_rush", () -> new AdrenalineEffect(EffectType.BENEFICIAL, 0xff9532)
-			.addAttackDamageModifier("1f1fb00f-d6bc-4b42-8533-422054cea63d", 3f, 0, AttributeModifier.Operation.ADDITION)
-			.addModifier(Attributes.MOVEMENT_SPEED, "14e2a39c-abb5-43a4-9449-522eec57ff2e", 0.25f, AttributeModifier.Operation.MULTIPLY_TOTAL)
-			.addModifier(Attributes.ATTACK_SPEED, "08a20d5b-60ce-4769-9e67-71cab0abe989", 0.15f, AttributeModifier.Operation.MULTIPLY_TOTAL));
+			.addAttackDamageModifier("1f1fb00f-d6bc-4b42-8533-422054cea63d", 4f, 0, AttributeModifier.Operation.ADDITION)
+			.addModifier(Attributes.MOVEMENT_SPEED, "14e2a39c-abb5-43a4-9449-522eec57ff2e", 0.225f, AttributeModifier.Operation.MULTIPLY_TOTAL)
+			.addModifier(Attributes.ATTACK_SPEED, "08a20d5b-60ce-4769-9e67-71cab0abe989", 0.175f, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
 	public static final RegistryObject<AdrenalineEffect> ADRENAL_FATIGUE = EFFECTS.register("adrenal_fatigue", () -> new AdrenalineEffect(EffectType.HARMFUL, 0x60443f)
 			.addAttackDamageModifier("8dadcbe5-9098-4545-b07c-3e9120c84232", -4, 0, AttributeModifier.Operation.ADDITION)
-			.addModifier(Attributes.MOVEMENT_SPEED, "0f1be88c-cbb2-455c-8559-0b420caa980d", -0.2f, AttributeModifier.Operation.MULTIPLY_TOTAL)
-			.addModifier(Attributes.ATTACK_SPEED, "ab116bd1-196b-4bf8-a136-6c24e7c0e80d", -0.1f, AttributeModifier.Operation.MULTIPLY_TOTAL));
+			.addModifier(Attributes.MOVEMENT_SPEED, "0f1be88c-cbb2-455c-8559-0b420caa980d", -0.225f, AttributeModifier.Operation.MULTIPLY_TOTAL)
+			.addModifier(Attributes.ATTACK_SPEED, "ab116bd1-196b-4bf8-a136-6c24e7c0e80d", -0.125f, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
 	private ModEffects() {}
 }

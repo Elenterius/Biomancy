@@ -325,7 +325,7 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 	}
 
 	@Override
-	protected ITextComponent getDefaultName() {
+	public ITextComponent getDefaultName() {
 		return TextUtil.getTranslationText("container", "digester");
 	}
 

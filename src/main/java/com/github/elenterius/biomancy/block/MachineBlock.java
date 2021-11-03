@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.block;
 
 import com.github.elenterius.biomancy.init.ModBlocks;
+import com.github.elenterius.biomancy.tileentity.IOwnableTile;
 import com.github.elenterius.biomancy.tileentity.MachineTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -55,22 +56,24 @@ public abstract class MachineBlock<T extends MachineTileEntity<?, ?>> extends Ow
 	}
 
 	@Override
-	public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-		if (worldIn.isClientSide()) return ActionResultType.SUCCESS;
+	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+		if (level.isClientSide()) return ActionResultType.SUCCESS;
 
-		//TODO: verify that authorization works
-		INamedContainerProvider containerProvider = getMenuProvider(state, worldIn, pos);
-		if (containerProvider != null && player instanceof ServerPlayerEntity) {
-			ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
-			NetworkHooks.openGui(serverPlayerEntity, containerProvider, (packetBuffer) -> {});
-			return ActionResultType.SUCCESS;
+		TileEntity tileEntity = level.getBlockEntity(pos);
+		if (tileEntity instanceof IOwnableTile && ((IOwnableTile) tileEntity).canPlayerUse(player)) {
+			INamedContainerProvider containerProvider = getMenuProvider(state, level, pos);
+			if (containerProvider != null && player instanceof ServerPlayerEntity) {
+				ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) player;
+				NetworkHooks.openGui(serverPlayerEntity, containerProvider, packetBuffer -> {});
+				return ActionResultType.SUCCESS;
+			}
 		}
 
 		return ActionResultType.FAIL;
 	}
 
 	protected int getRedstoneLevel(BlockState state) {
-		return state.getValue(POWERED) ? 15 : 0;
+		return Boolean.TRUE.equals(state.getValue(POWERED)) ? 15 : 0;
 	}
 
 	protected int getPoweredDuration() {
@@ -79,7 +82,7 @@ public abstract class MachineBlock<T extends MachineTileEntity<?, ?>> extends Ow
 
 	@Override
 	public void tick(BlockState state, ServerWorld worldIn, BlockPos pos, Random rand) {
-		if (state.getValue(POWERED)) { //after pending block update deactivate redstone
+		if (Boolean.TRUE.equals(state.getValue(POWERED))) { //after pending block update deactivate red-stone
 			worldIn.setBlock(pos, state.setValue(POWERED, Boolean.FALSE), Constants.BlockFlags.DEFAULT);
 			updateNeighbors(worldIn, pos);
 		}
@@ -88,14 +91,14 @@ public abstract class MachineBlock<T extends MachineTileEntity<?, ?>> extends Ow
 	@Override
 	public void onRemove(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!isMoving && !state.is(newState.getBlock())) {
-			if (state.getValue(POWERED)) {
+			if (Boolean.TRUE.equals(state.getValue(POWERED))) {
 				updateNeighbors(worldIn, pos);
 			}
 			TileEntity tileEntity = worldIn.getBlockEntity(pos);
 			if (tileEntity instanceof MachineTileEntity<?, ?>) {
 				((MachineTileEntity<?, ?>) tileEntity).dropAllInvContents(worldIn, pos);
 			}
-			if (state.getValue(CRAFTING)) {
+			if (Boolean.TRUE.equals(state.getValue(CRAFTING))) {
 				worldIn.updateNeighbourForOutputSignal(pos, this);
 			}
 			super.onRemove(state, worldIn, pos, newState, isMoving);
@@ -130,7 +133,7 @@ public abstract class MachineBlock<T extends MachineTileEntity<?, ?>> extends Ow
 
 	@Override
 	public int getAnalogOutputSignal(BlockState blockState, World worldIn, BlockPos pos) {
-		return blockState.getValue(CRAFTING) ? 15 : 0;
+		return Boolean.TRUE.equals(blockState.getValue(CRAFTING)) ? 15 : 0;
 	}
 
 	protected void updateNeighbors(World worldIn, BlockPos pos) {

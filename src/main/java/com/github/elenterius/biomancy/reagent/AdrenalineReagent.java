@@ -52,7 +52,13 @@ public class AdrenalineReagent extends Reagent {
 
 	public boolean addStatusEffect(LivingEntity target) {
 		if (!target.level.isClientSide) {
-			target.addEffect(new EffectInstance(ModEffects.ADRENALINE_RUSH.get(), DURATION, AMPLIFIER));
+			int duration = DURATION;
+			EffectInstance effectInstance = target.getEffect(ModEffects.ADRENAL_FATIGUE.get());
+			if (effectInstance != null) {
+				duration -= Math.min(effectInstance.getDuration() / 2, 20 * 30);
+				target.removeEffect(ModEffects.ADRENAL_FATIGUE.get());
+			}
+			target.addEffect(new EffectInstance(ModEffects.ADRENALINE_RUSH.get(), duration, AMPLIFIER));
 		}
 		return true;
 	}

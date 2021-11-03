@@ -11,7 +11,7 @@ public class SimpleOwnableTileEntity extends OwnableTileEntity {
 	}
 
 	@Override
-	protected ITextComponent getDefaultName() {
+	public ITextComponent getDefaultName() {
 		return TextUtil.getTranslationText("tile", "ownable");
 	}
 

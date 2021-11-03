@@ -107,13 +107,13 @@ public class GulgeContainer extends Container {
 		});
 	}
 
-	public static GulgeContainer createServerContainer(int screenId, PlayerInventory playerInventory, GulgeInventory contents) {
-		return new GulgeContainer(screenId, playerInventory, contents);
+	public static GulgeContainer createServerContainer(int screenId, PlayerInventory playerInventory, GulgeInventory inventory) {
+		return new GulgeContainer(screenId, playerInventory, inventory);
 	}
 
 	public static GulgeContainer createClientContainer(int screenId, PlayerInventory playerInventory, PacketBuffer extraData) {
-		GulgeInventory contents = GulgeInventory.createClientContents(GulgeTileEntity.MAX_ITEM_AMOUNT);
-		return new GulgeContainer(screenId, playerInventory, contents);
+		GulgeInventory inventory = GulgeInventory.createClientContents(GulgeTileEntity.MAX_ITEM_AMOUNT);
+		return new GulgeContainer(screenId, playerInventory, inventory);
 	}
 
 	@Override
