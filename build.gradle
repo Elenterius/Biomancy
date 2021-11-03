@@ -39,6 +39,10 @@ minecraft {
         client {
             workingDirectory project.file('run')
 
+            // options for Dcevm JVM (https://github.com/TravaOpenJDK/trava-jdk-11-dcevm)
+            // enable HotSwap Agent (needed for Dcevm version >= 11.0.9)
+            jvmArg '-XX:HotswapAgent=core' //[fatjar,core,external]
+
             // "SCAN": For mods scan.
             // "REGISTRIES": For firing of registry events.
             // "REGISTRYDUMP": For getting the contents of all registries.

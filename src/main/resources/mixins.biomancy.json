@@ -11,6 +11,7 @@
     "DamageSourceMixin",
     "EntityAccessor",
     "GrindstoneContainerMixin",
+    "ItemStackAccessor",
     "LivingEntityAccessor",
     "LivingEntityMixin",
     "MobEntityAccessor",

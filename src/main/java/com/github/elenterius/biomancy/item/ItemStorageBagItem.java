@@ -1,8 +1,10 @@
 package com.github.elenterius.biomancy.item;
 
+import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.capabilities.InventoryProviders;
 import com.github.elenterius.biomancy.inventory.HandlerBehaviors;
 import com.github.elenterius.biomancy.inventory.itemhandler.LargeSingleItemStackHandler;
+import com.github.elenterius.biomancy.mixin.ItemStackAccessor;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.client.util.ITooltipFlag;
@@ -30,6 +32,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.apache.logging.log4j.MarkerManager;
 
 import javax.annotation.Nullable;
 import java.text.DecimalFormat;
@@ -49,8 +52,55 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 
 	@Nullable
 	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT nbt) {
-		return !stack.isEmpty() ? new InventoryProviders.LargeSingleItemHandlerProvider(MAX_SLOT_SIZE) : null;
+	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundNBT capNbt) {
+		fixOldNbt(stack, capNbt);
+		return new InventoryProviders.LargeSingleItemHandlerProvider(MAX_SLOT_SIZE);
+	}
+
+	@Deprecated
+	private static void fixOldNbt(ItemStack stack, @Nullable CompoundNBT capNbt) {
+		//transfers old nbt data (mod version <= beta.7) to new capability nbt (beta.8)
+		CompoundNBT nbt = stack.getTag();
+		if (nbt != null && nbt.contains("SingleItemInv")) {
+			CompoundNBT invNbt = nbt.getCompound("SingleItemInv");
+			if (invNbt.contains("Item")) {
+				ItemStack storedStack = ItemStack.of(invNbt.getCompound("Item"));
+				if (!storedStack.isEmpty()) {
+					if (capNbt == null) {
+						capNbt = new CompoundNBT();
+						((ItemStackAccessor) (Object) stack).biomancy_setCapNbt(capNbt);
+					}
+					CompoundNBT parentNbt = capNbt.getCompound("Parent");
+					parentNbt.put(LargeSingleItemStackHandler.NBT_KEY_ITEM, storedStack.save(new CompoundNBT()));
+					parentNbt.putShort(LargeSingleItemStackHandler.NBT_KEY_ITEM_AMOUNT, invNbt.getShort("Amount"));
+					if (!capNbt.contains("Parent")) capNbt.put("Parent", parentNbt);
+				}
+			}
+			nbt.remove("SingleItemInv");
+			BiomancyMod.LOGGER.info(MarkerManager.getMarker("NBT-DATA-FIXER"), "transferred nbt data to capability");
+		}
+	}
+
+	@Override
+	public void readShareTag(ItemStack stack, @Nullable CompoundNBT nbt) {
+		if (nbt != null && nbt.contains(CAPABILITY_NBT_KEY)) {
+			CompoundNBT compound = nbt.getCompound(CAPABILITY_NBT_KEY);
+			getItemHandler(stack).deserializeNBT(compound);
+		}
+
+		super.readShareTag(stack, nbt);
+	}
+
+	@Nullable
+	@Override
+	public CompoundNBT getShareTag(ItemStack stack) {
+		CompoundNBT nbt = super.getShareTag(stack);
+		if (nbt == null) nbt = new CompoundNBT();
+
+		CompoundNBT compound = getItemHandler(stack).serializeNBT();
+		nbt.put(CAPABILITY_NBT_KEY, compound);
+
+		return nbt;
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -357,28 +407,6 @@ public class ItemStorageBagItem extends BagItem implements IKeyListener {
 				}
 			}
 		});
-	}
-
-	@Override
-	public void readShareTag(ItemStack stack, @Nullable CompoundNBT nbt) {
-		if (nbt != null && nbt.contains(CAPABILITY_NBT_KEY)) {
-			CompoundNBT compound = nbt.getCompound(CAPABILITY_NBT_KEY);
-			getItemHandler(stack).deserializeNBT(compound);
-		}
-
-		super.readShareTag(stack, nbt);
-	}
-
-	@Nullable
-	@Override
-	public CompoundNBT getShareTag(ItemStack stack) {
-		CompoundNBT nbt = super.getShareTag(stack);
-		if (nbt == null) nbt = new CompoundNBT();
-
-		CompoundNBT compound = getItemHandler(stack).serializeNBT();
-		nbt.put(CAPABILITY_NBT_KEY, compound);
-
-		return nbt;
 	}
 
 	public enum Mode {
