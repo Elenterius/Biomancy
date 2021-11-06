@@ -44,6 +44,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -66,21 +67,25 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 	public static final RecipeType.ItemStackRecipeType<DigesterRecipe> RECIPE_TYPE = ModRecipes.DIGESTER_RECIPE_TYPE;
 
 	private final DigesterStateData stateData = new DigesterStateData();
-	private final SimpleInventory fuelInventory;
-	private final SimpleInventory emptyBucketOutInventory;
-	private final SimpleInventory inputInventory;
-	private final SimpleInventory outputInventory;
-	private final SimpleInventory emptyBucketInInventory;
-	private final SimpleInventory filledBucketOutInventory;
+	private final SimpleInventory<?> fuelInventory;
+	private final SimpleInventory<?> inputInventory;
+	private final SimpleInventory<?> emptyBucketInInventory;
+
+	private final SimpleInventory<?> emptyBucketOutInventory;
+	private final SimpleInventory<?> filledBucketOutInventory;
+	private final SimpleInventory<?> outputInventory;
+	private final LazyOptional<CombinedInvWrapper> combinedOutputInventory;
 
 	public DigesterTileEntity() {
 		super(ModTileEntityTypes.DIGESTER.get());
-		fuelInventory = SimpleInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterBiofuel, this::canPlayerOpenInv, this::setChanged);
-		emptyBucketOutInventory = SimpleInventory.createServerContents(EMPTY_BUCKET_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
+		fuelInventory = SimpleInventory.createServerContents(FUEL_SLOTS, ish -> HandlerBehaviors.filterInput(ish, VALID_FUEL_ITEM), this::canPlayerOpenInv, this::setChanged);
 		inputInventory = SimpleInventory.createServerContents(INPUT_SLOTS, this::canPlayerOpenInv, this::setChanged);
-		outputInventory = SimpleInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
 		emptyBucketInInventory = SimpleInventory.createServerContents(BUCKET_SLOTS, HandlerBehaviors::filterFluidContainer, this::canPlayerOpenInv, this::setChanged);
+
 		filledBucketOutInventory = SimpleInventory.createServerContents(BUCKET_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
+		emptyBucketOutInventory = SimpleInventory.createServerContents(EMPTY_BUCKET_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
+		outputInventory = SimpleInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
+		combinedOutputInventory = LazyOptional.of(() -> new CombinedInvWrapper(filledBucketOutInventory.getItemHandlerWithBehavior(), emptyBucketOutInventory.getItemHandlerWithBehavior(), outputInventory.getItemHandlerWithBehavior()));
 	}
 
 	@Override
@@ -378,13 +383,14 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 
 	@Override
 	public void invalidateCaps() {
-		fuelInventory.getOptionalItemStackHandler().invalidate();
-		emptyBucketOutInventory.getOptionalItemStackHandler().invalidate();
-		inputInventory.getOptionalItemStackHandler().invalidate();
-		outputInventory.getOptionalItemStackHandler().invalidate();
-		emptyBucketInInventory.getOptionalItemStackHandler().invalidate();
-		filledBucketOutInventory.getOptionalItemStackHandler().invalidate();
+		fuelInventory.getOptionalItemHandlerWithBehavior().invalidate();
+		emptyBucketOutInventory.getOptionalItemHandlerWithBehavior().invalidate();
+		inputInventory.getOptionalItemHandlerWithBehavior().invalidate();
+		outputInventory.getOptionalItemHandlerWithBehavior().invalidate();
+		emptyBucketInInventory.getOptionalItemHandlerWithBehavior().invalidate();
+		filledBucketOutInventory.getOptionalItemHandlerWithBehavior().invalidate();
 		stateData.getCombinedFluidHandlers().invalidate();
+		combinedOutputInventory.invalidate();
 		super.invalidateCaps();
 	}
 
@@ -393,9 +399,9 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
 		if (!remove) {
 			if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-				if (side == Direction.UP) return inputInventory.getOptionalItemStackHandler().cast();
-				if (side == null || side == Direction.DOWN) return outputInventory.getOptionalItemStackHandler().cast();
-				return fuelInventory.getOptionalItemStackHandler().cast();
+				if (side == null || side == Direction.DOWN) return combinedOutputInventory.cast();
+				if (side == Direction.UP) return inputInventory.getOptionalItemHandlerWithBehavior().cast();
+				return fuelInventory.getOptionalItemHandlerWithBehavior().cast();
 			}
 			else if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
 				return stateData.getCombinedFluidHandlers().cast();

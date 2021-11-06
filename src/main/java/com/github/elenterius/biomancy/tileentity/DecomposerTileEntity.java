@@ -26,6 +26,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -41,18 +42,20 @@ public class DecomposerTileEntity extends BFMachineTileEntity<DecomposerRecipe, 
 	public static final short FUEL_COST = 5;
 	public static final RecipeType.ItemStackRecipeType<DecomposerRecipe> RECIPE_TYPE = ModRecipes.DECOMPOSING_RECIPE_TYPE;
 
-	private final SimpleInventory<?> fuelInventory;
-	private final SimpleInventory<?> emptyBucketInventory;
-	private final SimpleInventory<?> inputInventory;
-	private final SimpleInventory<?> outputInventory;
 	private final DecomposerStateData stateData = new DecomposerStateData();
+	private final SimpleInventory<?> fuelInventory;
+	private final SimpleInventory<?> inputInventory;
+	private final SimpleInventory<?> emptyBucketInventory;
+	private final SimpleInventory<?> outputInventory;
+	private final LazyOptional<CombinedInvWrapper> combinedOutputInventory;
 
 	public DecomposerTileEntity() {
 		super(ModTileEntityTypes.DECOMPOSER.get());
 		fuelInventory = SimpleInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterBiofuel, this::canPlayerOpenInv, this::setChanged);
-		emptyBucketInventory = SimpleInventory.createServerContents(EMPTY_BUCKET_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
 		inputInventory = SimpleInventory.createServerContents(INPUT_SLOTS, this::canPlayerOpenInv, this::setChanged);
+		emptyBucketInventory = SimpleInventory.createServerContents(EMPTY_BUCKET_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
 		outputInventory = SimpleInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
+		combinedOutputInventory = LazyOptional.of(() -> new CombinedInvWrapper(emptyBucketInventory.getItemHandlerWithBehavior(), outputInventory.getItemHandlerWithBehavior()));
 	}
 
 	@Override
@@ -186,11 +189,12 @@ public class DecomposerTileEntity extends BFMachineTileEntity<DecomposerRecipe, 
 
 	@Override
 	public void invalidateCaps() {
-		fuelInventory.getOptionalItemStackHandler().invalidate();
-		emptyBucketInventory.getOptionalItemStackHandler().invalidate();
-		inputInventory.getOptionalItemStackHandler().invalidate();
-		outputInventory.getOptionalItemStackHandler().invalidate();
+		fuelInventory.getOptionalItemHandlerWithBehavior().invalidate();
+		emptyBucketInventory.getOptionalItemHandlerWithBehavior().invalidate();
+		inputInventory.getOptionalItemHandlerWithBehavior().invalidate();
+		outputInventory.getOptionalItemHandlerWithBehavior().invalidate();
 		stateData.getOptionalFuelHandler().invalidate();
+		combinedOutputInventory.invalidate();
 		super.invalidateCaps();
 	}
 
@@ -199,9 +203,9 @@ public class DecomposerTileEntity extends BFMachineTileEntity<DecomposerRecipe, 
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
 		if (!remove) {
 			if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-				if (side == Direction.UP) return inputInventory.getOptionalItemStackHandler().cast();
-				if (side == null || side == Direction.DOWN) return outputInventory.getOptionalItemStackHandler().cast();
-				return fuelInventory.getOptionalItemStackHandler().cast();
+				if (side == null || side == Direction.DOWN) return combinedOutputInventory.cast();
+				if (side == Direction.UP) return inputInventory.getOptionalItemHandlerWithBehavior().cast();
+				return fuelInventory.getOptionalItemHandlerWithBehavior().cast();
 			}
 			else if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
 				return stateData.getOptionalFuelHandler().cast();

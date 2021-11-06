@@ -73,7 +73,7 @@ public class VoiceBoxTileEntity extends SimpleSyncedTileEntity {
 
 	@Override
 	public void invalidateCaps() {
-		inventory.getOptionalItemStackHandler().invalidate();
+		inventory.getOptionalItemHandlerWithBehavior().invalidate();
 		super.invalidateCaps();
 	}
 
@@ -81,7 +81,7 @@ public class VoiceBoxTileEntity extends SimpleSyncedTileEntity {
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
 		if (!remove && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			return inventory.getOptionalItemStackHandler().cast();
+			return inventory.getOptionalItemHandlerWithBehavior().cast();
 		}
 		return super.getCapability(cap, side);
 	}

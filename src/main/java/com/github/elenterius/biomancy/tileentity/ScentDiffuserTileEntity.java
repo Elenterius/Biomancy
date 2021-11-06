@@ -52,7 +52,7 @@ public class ScentDiffuserTileEntity extends SimpleSyncedTileEntity implements I
 		super(ModTileEntityTypes.SCENT_DIFFUSER_TILE.get());
 		reagentInv = SimpleInventory.createServerContents(1, ish -> HandlerBehaviors.filterInput(ish, VALID_REAGENT_ITEM), player -> false, this::setChanged);
 		bileInv = SimpleInventory.createServerContents(1, ish -> HandlerBehaviors.filterInput(ish, VALID_BILE_ITEM), player -> false, this::setChanged);
-		combinedInventory = LazyOptional.of(() -> new CombinedInvWrapper(bileInv.getItemHandler(), reagentInv.getItemHandler()));
+		combinedInventory = LazyOptional.of(() -> new CombinedInvWrapper(bileInv.getItemHandlerWithBehavior(), reagentInv.getItemHandlerWithBehavior()));
 	}
 
 	private static void baitEntityToPos(CreatureEntity entity, double x, double y, double z, int distance) {
@@ -146,8 +146,8 @@ public class ScentDiffuserTileEntity extends SimpleSyncedTileEntity implements I
 
 	@Override
 	public void invalidateCaps() {
-		reagentInv.getOptionalItemStackHandler().invalidate();
-		bileInv.getOptionalItemStackHandler().invalidate();
+		reagentInv.getOptionalItemHandlerWithBehavior().invalidate();
+		bileInv.getOptionalItemHandlerWithBehavior().invalidate();
 		combinedInventory.invalidate();
 		super.invalidateCaps();
 	}

@@ -14,11 +14,11 @@ public final class BiofuelUtil {
 
 	private BiofuelUtil() {}
 
-	public static short DEFAULT_FUEL_VALUE = 200;
-	public static byte NUTRIENT_PASTE_MULTIPLIER = 1;
-	public static byte NUTRIENT_BAR_MULTIPLIER = 6;
+	public static final short DEFAULT_FUEL_VALUE = 200;
+	public static final byte NUTRIENT_PASTE_MULTIPLIER = 1;
+	public static final byte NUTRIENT_BAR_MULTIPLIER = 6;
 
-	public static final Predicate<ItemStack> VALID_FUEL_ITEMS = stack -> stack.getItem() == ModItems.NUTRIENT_PASTE.get() || stack.getItem() == ModItems.NUTRIENT_BAR.get();
+	public static final Predicate<ItemStack> VALID_FUEL_ITEMS = stack -> stack.getItem() == ModItems.NUTRIENT_PASTE.get() || stack.getItem() == ModItems.NUTRIENT_BAR.get() || stack.getItem() == ModItems.PROTEIN_BAR.get();
 
 	public static final Predicate<ItemStack> VALID_FUEL_CONTAINERS = stack -> FluidUtil.getFluidContained(stack)
 			.filter(fluidStack -> fluidStack.getFluid().isSame(ModFluids.NUTRIENT_SLURRY.get()))
@@ -35,6 +35,7 @@ public final class BiofuelUtil {
 	public static float getItemFuelValue(ItemStack stackIn) {
 		Item item = stackIn.getItem();
 		if (item == ModItems.NUTRIENT_BAR.get()) return DEFAULT_FUEL_VALUE * NUTRIENT_BAR_MULTIPLIER;
+		if (item == ModItems.PROTEIN_BAR.get()) return DEFAULT_FUEL_VALUE * NUTRIENT_BAR_MULTIPLIER;
 		if (item == ModItems.NUTRIENT_PASTE.get()) return DEFAULT_FUEL_VALUE * NUTRIENT_PASTE_MULTIPLIER;
 		return 0;
 	}

@@ -16,8 +16,9 @@ import java.util.function.UnaryOperator;
 
 public class SimpleInventory<ISH extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundNBT>> implements IInventory {
 
-	private final ISH itemStackHandler;
-	private final LazyOptional<IItemHandler> optionalItemStackHandler;
+	private final ISH itemHandler;
+	private final ISH behavioralItemHandler;
+	private final LazyOptional<IItemHandler> optionalItemHandler;
 
 	private Predicate<PlayerEntity> canPlayerAccessInventory = x -> true;
 
@@ -28,19 +29,21 @@ public class SimpleInventory<ISH extends IItemHandler & IItemHandlerModifiable &
 
 	SimpleInventory(int slotAmount) {
 		//noinspection unchecked
-		itemStackHandler = (ISH) new ItemStackHandler(slotAmount) {
+		itemHandler = (ISH) new ItemStackHandler(slotAmount) {
 			@Override
 			protected void onContentsChanged(int slot) {
 				super.onContentsChanged(slot);
 				setChanged();
 			}
 		};
-		optionalItemStackHandler = LazyOptional.of(() -> itemStackHandler);
+		behavioralItemHandler = itemHandler;
+		optionalItemHandler = LazyOptional.of(() -> behavioralItemHandler);
 	}
 
 	SimpleInventory(ISH itemStackHandlerIn) {
-		itemStackHandler = itemStackHandlerIn;
-		optionalItemStackHandler = LazyOptional.of(() -> itemStackHandler);
+		itemHandler = itemStackHandlerIn;
+		behavioralItemHandler = itemHandler;
+		optionalItemHandler = LazyOptional.of(() -> behavioralItemHandler);
 	}
 
 	SimpleInventory(int slotAmount, UnaryOperator<ISH> operator) {
@@ -52,8 +55,9 @@ public class SimpleInventory<ISH extends IItemHandler & IItemHandlerModifiable &
 				setChanged();
 			}
 		};
-		itemStackHandler = operator.apply(ish);
-		optionalItemStackHandler = LazyOptional.of(() -> itemStackHandler);
+		itemHandler = ish;
+		behavioralItemHandler = operator.apply(ish);
+		optionalItemHandler = LazyOptional.of(() -> behavioralItemHandler);
 	}
 
 	SimpleInventory(ISH itemStackHandlerIn, Predicate<PlayerEntity> canPlayerAccessInventory, Notify markDirtyNotifier) {
@@ -95,11 +99,11 @@ public class SimpleInventory<ISH extends IItemHandler & IItemHandlerModifiable &
 	}
 
 	public CompoundNBT serializeNBT() {
-		return itemStackHandler.serializeNBT();
+		return itemHandler.serializeNBT();
 	}
 
 	public void deserializeNBT(CompoundNBT nbt) {
-		itemStackHandler.deserializeNBT(nbt);
+		itemHandler.deserializeNBT(nbt);
 	}
 
 	@Override
@@ -140,71 +144,75 @@ public class SimpleInventory<ISH extends IItemHandler & IItemHandlerModifiable &
 
 	@Override
 	public boolean canPlaceItem(int index, ItemStack stack) {
-		return itemStackHandler.isItemValid(index, stack);
+		return itemHandler.isItemValid(index, stack);
 	}
 
 	public ItemStack insertItemStack(int index, ItemStack insertStack) {
-		return itemStackHandler.insertItem(index, insertStack, false);
+		return itemHandler.insertItem(index, insertStack, false);
 	}
 
 	public boolean doesItemStackFit(int index, ItemStack insertStack) {
-		ItemStack remainder = itemStackHandler.insertItem(index, insertStack, true);
+		ItemStack remainder = itemHandler.insertItem(index, insertStack, true);
 		return remainder.isEmpty();
 	}
 
 	@Override
 	public int getContainerSize() {
-		return itemStackHandler.getSlots();
+		return itemHandler.getSlots();
 	}
 
 	@Override
 	public int getMaxStackSize() {
-		return itemStackHandler.getSlotLimit(0);
+		return itemHandler.getSlotLimit(0);
 	}
 
 	@Override
 	public boolean isEmpty() {
-		for (int i = 0; i < itemStackHandler.getSlots(); ++i) {
-			if (!itemStackHandler.getStackInSlot(i).isEmpty()) return false;
+		for (int i = 0; i < itemHandler.getSlots(); ++i) {
+			if (!itemHandler.getStackInSlot(i).isEmpty()) return false;
 		}
 		return true;
 	}
 
 	@Override
 	public ItemStack getItem(int index) {
-		return itemStackHandler.getStackInSlot(index);
+		return itemHandler.getStackInSlot(index);
 	}
 
 	@Override
 	public ItemStack removeItem(int index, int count) {
 		if (count < 0) throw new IllegalArgumentException("count should be >= 0:" + count);
-		return itemStackHandler.extractItem(index, count, false);
+		return itemHandler.extractItem(index, count, false);
 	}
 
 	@Override
 	public ItemStack removeItemNoUpdate(int index) {
-		int maxPossibleItemStackSize = itemStackHandler.getSlotLimit(index);
-		return itemStackHandler.extractItem(index, maxPossibleItemStackSize, false);
+		int maxPossibleItemStackSize = itemHandler.getSlotLimit(index);
+		return itemHandler.extractItem(index, maxPossibleItemStackSize, false);
 	}
 
 	@Override
 	public void setItem(int index, ItemStack stack) {
-		itemStackHandler.setStackInSlot(index, stack);
+		itemHandler.setStackInSlot(index, stack);
 	}
 
 	@Override
 	public void clearContent() {
-		for (int i = 0; i < itemStackHandler.getSlots(); ++i) {
-			itemStackHandler.setStackInSlot(i, ItemStack.EMPTY);
+		for (int i = 0; i < itemHandler.getSlots(); ++i) {
+			itemHandler.setStackInSlot(i, ItemStack.EMPTY);
 		}
 	}
 
 	public ISH getItemHandler() {
-		return itemStackHandler;
+		return itemHandler;
 	}
 
-	public LazyOptional<IItemHandler> getOptionalItemStackHandler() {
-		return optionalItemStackHandler;
+	public ISH getItemHandlerWithBehavior() {
+		return behavioralItemHandler;
+	}
+
+	public LazyOptional<IItemHandler> getOptionalItemHandlerWithBehavior() {
+		return optionalItemHandler;
 	}
 
 }

@@ -336,9 +336,9 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 
 	@Override
 	public void invalidateCaps() {
-		fuelInventory.getOptionalItemStackHandler().invalidate();
-		inputInventory.getOptionalItemStackHandler().invalidate();
-		outputInventory.getOptionalItemStackHandler().invalidate();
+		fuelInventory.getOptionalItemHandlerWithBehavior().invalidate();
+		inputInventory.getOptionalItemHandlerWithBehavior().invalidate();
+		outputInventory.getOptionalItemHandlerWithBehavior().invalidate();
 		super.invalidateCaps();
 	}
 
@@ -346,9 +346,9 @@ public class EvolutionPoolTileEntity extends MachineTileEntity<EvolutionPoolReci
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
 		if (!remove && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			if (side == Direction.UP) return inputInventory.getOptionalItemStackHandler().cast();
-			if (side == null || side == Direction.DOWN) return outputInventory.getOptionalItemStackHandler().cast();
-			return fuelInventory.getOptionalItemStackHandler().cast();
+			if (side == Direction.UP) return inputInventory.getOptionalItemHandlerWithBehavior().cast();
+			if (side == null || side == Direction.DOWN) return outputInventory.getOptionalItemHandlerWithBehavior().cast();
+			return fuelInventory.getOptionalItemHandlerWithBehavior().cast();
 		}
 		return super.getCapability(cap, side);
 	}
