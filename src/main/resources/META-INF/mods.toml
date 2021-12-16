@@ -17,10 +17,17 @@ credits = "I'm grateful to Selea for their feedback and help. Mezz for fluid ren
 authors = "Elenterius" #optional
 description = '''Biopunk and Flesh Magic inspired tech-magic mod that has a fleshy art theme.'''
 
-[[dependencies.biomancy]] #optional
+[[dependencies.biomancy]]
+modId = "combat_commons"
+mandatory = true
+versionRange = "[0.1.1-beta-1.16.5-forge,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.biomancy]]
 modId = "forge"
 mandatory = true
-versionRange = "[36,)"
+versionRange = "[36.2,)"
 ordering = "NONE"
 side = "BOTH" # BOTH, CLIENT or SERVER
 

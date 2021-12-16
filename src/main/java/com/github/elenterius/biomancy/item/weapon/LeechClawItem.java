@@ -23,7 +23,7 @@ import java.util.UUID;
 
 public class LeechClawItem extends ClawWeaponItem {
 
-	public static final AttributeModifier ATTACK_DISTANCE_MODIFIER = new AttributeModifier(ModAttributes.UUIDS.ATTACK_DISTANCE_MODIFIER, "attack_distance_modifier", -1.5f, AttributeModifier.Operation.ADDITION);
+	public static final AttributeModifier ATTACK_REACH_MODIFIER = new AttributeModifier(ModAttributes.UUIDS.ATTACK_REACH, "Weapon Modifier", -1.5f, AttributeModifier.Operation.ADDITION);
 	public static final AttributeModifier MAX_HEALTH_MODIFIER = new AttributeModifier(UUID.fromString("00ec2879-aec7-4023-8668-07c940ae8f8a"), "max_health_modifier", -4f, AttributeModifier.Operation.ADDITION);
 	public static final AttributeModifier MOVEMENT_MODIFIER = new AttributeModifier(UUID.fromString("0823f523-d756-4725-9a6a-098059458c4b"), "movement_modifier", 0.1f, AttributeModifier.Operation.MULTIPLY_BASE);
 
@@ -41,7 +41,7 @@ public class LeechClawItem extends ClawWeaponItem {
 	@Override
 	protected void addAdditionalAttributeModifiers(ImmutableMultimap.Builder<Attribute, AttributeModifier> builder) {
 		super.addAdditionalAttributeModifiers(builder);
-		builder.put(ModAttributes.getAttackDistanceModifier(), ATTACK_DISTANCE_MODIFIER);
+		builder.put(ModAttributes.getAttackReach(), ATTACK_REACH_MODIFIER);
 		builder.put(Attributes.MOVEMENT_SPEED, MOVEMENT_MODIFIER);
 		builder.put(Attributes.MAX_HEALTH, MAX_HEALTH_MODIFIER);
 	}

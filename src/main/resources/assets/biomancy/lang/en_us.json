@@ -136,8 +136,8 @@
   "reagent.biomancy.mutagen_serum": "Mutagen Serum",
   "reagent.biomancy.blood_sample": "Blood Sample",
   "reagent.biomancy.adrenaline_serum": "Adrenaline Serum",
-
-  "attribute.generic.attack_distance": "Attack Distance",
+  "reagent.biomancy.rotten_blood": "Rotten Blood",
+  "reagent.biomancy.bone_marrow": "Corrupted Bone Marrow",
 
   "tooltip.biomancy.unveiling_oculi": "Grants you peering sight, revealing the unseen to you. You can't be blinded by night nor magic.",
   "tooltip.biomancy.fleshborn_war_axe": "A ornery Axe that has a 60% chance to cleave away 30% of its enemies max health when the wielders health is below 75% of the max health of the enemy.",

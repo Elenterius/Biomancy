@@ -2,7 +2,11 @@
   "required": true,
   "package": "com.github.elenterius.biomancy.mixin",
   "compatibilityLevel": "JAVA_8",
+  "minVersion": "0.8.4",
   "refmap": "mixins.biomancy.refmap.json",
+  "injectors": {
+    "defaultRequire": 1
+  },
   "mixins": [
     "ArmorStandEntityAccessor",
     "CakeBlockMixin",
@@ -28,14 +32,9 @@
     "client.ClientItemStackMixinAccessor",
     "client.ClientRecipeBookMixin",
     "client.EntityMixin",
-    "client.GetMouseOverMixin",
     "client.LivingRendererMixin",
     "client.MinecraftMixin",
     "client.PlayerRendererMixin"
   ],
-  "server": [],
-  "injectors": {
-    "defaultRequire": 1
-  },
-  "minVersion": "0.8.2"
+  "server": []
 }

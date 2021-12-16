@@ -41,8 +41,8 @@ import java.util.UUID;
 public class LongRangeClawItem extends ClawWeaponItem implements IAreaHarvestingItem {
 
 	public static final String NBT_KEY = "LongClawTimeLeft";
-	public static AttributeModifier RETRACTED_CLAW_REACH_MODIFIER = new AttributeModifier(UUID.fromString("d76adb08-2bb3-4e88-997d-766a919f0f6b"), "attack_distance_modifier", 0.5f, AttributeModifier.Operation.ADDITION);
-	public static AttributeModifier EXTENDED_CLAW_REACH_MODIFIER = new AttributeModifier(UUID.fromString("29ace568-4e32-4809-840c-3c9a0e1ebcd4"), "attack_distance_modifier", 2f, AttributeModifier.Operation.ADDITION);
+	public static AttributeModifier RETRACTED_CLAW_REACH_MODIFIER = new AttributeModifier(UUID.fromString("d76adb08-2bb3-4e88-997d-766a919f0f6b"), "Weapon modifier", 1f, AttributeModifier.Operation.ADDITION);
+	public static AttributeModifier EXTENDED_CLAW_REACH_MODIFIER = new AttributeModifier(UUID.fromString("29ace568-4e32-4809-840c-3c9a0e1ebcd4"), "Weapon modifier", 3f, AttributeModifier.Operation.ADDITION);
 
 	private final Lazy<Multimap<Attribute, AttributeModifier>> lazyAttributeModifiersV2;
 
@@ -91,14 +91,14 @@ public class LongRangeClawItem extends ClawWeaponItem implements IAreaHarvesting
 				builder.put(attribute, attributeModifier);
 			}
 		});
-		builder.put(ModAttributes.getAttackDistanceModifier(), EXTENDED_CLAW_REACH_MODIFIER);
+		builder.put(ModAttributes.getAttackReach(), EXTENDED_CLAW_REACH_MODIFIER);
 		return builder.build();
 	}
 
 	@Override
 	protected void addAdditionalAttributeModifiers(ImmutableMultimap.Builder<Attribute, AttributeModifier> builder) {
 		super.addAdditionalAttributeModifiers(builder);
-		builder.put(ModAttributes.getAttackDistanceModifier(), RETRACTED_CLAW_REACH_MODIFIER);
+		builder.put(ModAttributes.getAttackReach(), RETRACTED_CLAW_REACH_MODIFIER);
 	}
 
 	@Override
