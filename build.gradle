@@ -15,10 +15,11 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'org.spongepowered.mixin'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
 
-version = "${mc_version}-${mod_version}-forge"
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
+
+version = "${mod_version}-${mc_version}-forge"
 group = 'com.github.elenterius.biomancy'
 archivesBaseName = 'biomancy'
 
@@ -28,7 +29,6 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 
 minecraft {
-//  mappings channel: 'snapshot', version: "20210309-1.16.5"            // mcp mappings were discontinued and can be only used for mc versions <= 1.16.5
 //  mappings channel: 'official', version: "${mc_version}"              // official mojang mappings for class and method names
     mappings channel: 'parchment', version: "2021.10.17-${mc_version}"  // official mappings augmented with parameter names and javadocs
 
@@ -40,7 +40,7 @@ minecraft {
             workingDirectory project.file('run')
 
             // options for Dcevm JVM (https://github.com/TravaOpenJDK/trava-jdk-11-dcevm)
-            // enable HotSwap Agent (needed for Dcevm version >= 11.0.9)
+            // enables HotSwap Agent (needed for Dcevm version >= 11.0.9)
             jvmArg '-XX:HotswapAgent=core' //[fatjar,core,external]
 
             // "SCAN": For mods scan.
@@ -127,6 +127,7 @@ repositories {
     }
     maven { url = 'https://maven.blamejared.com' }
     maven { url = "https://www.cursemaven.com" }
+    maven { url = "https://jitpack.io" }
 }
 
 dependencies {
@@ -147,6 +148,9 @@ dependencies {
 //    runtimeOnly fg.deobf("curse.maven:simple-farming-327554:3339467")             //https://www.curseforge.com/minecraft/mc-mods/simple-farming/files/3339467
 //    runtimeOnly fg.deobf("curse.maven:extended-item-information-285166:3324259")  //https://www.curseforge.com/minecraft/mc-mods/simple-farming/files/3339467
 //    runtimeOnly fg.deobf("curse.maven:sneaky-magic-322733:3238487")               //https://www.curseforge.com/minecraft/mc-mods/sneaky-magic/files/3238487
+
+//    implementation fg.deobf("com.github.Virtuoel:Pehkui:3.0.0-forge")
+    implementation fg.deobf('com.github.Elenterius:Combat-Commons:0.1.1-beta-1.16.5-forge')
 }
 
 import java.util.concurrent.TimeUnit
@@ -195,13 +199,14 @@ jar {
     exclude("com/github/elenterius/biomancy/datagen/**")
 
     // manifest properties for reading on runtime
+    //noinspection GroovyAssignabilityCheck
     manifest {
         attributes([
                 "Specification-Title"     : "biomancy",
                 "Specification-Vendor"    : "Elenterius",
                 "Specification-Version"   : "1", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,
-                "Implementation-Version"  : "${mod_version}",
+                "Implementation-Version"  : project.version,
                 "Implementation-Vendor"   : "Elenterius",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
                 "MixinConfigs"            : "mixins.biomancy.json"
@@ -214,6 +219,18 @@ jar.finalizedBy('reobfJar')
 // However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
 //publish.dependsOn('reobfJar')
 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact jar
+        }
+    }
+    repositories {
+        maven {
+            url "file:///${project.projectDir}/mcmodsrepo"
+        }
+    }
+}
 
 //task copyMCClientJar(type: Copy) {
 //    doLast {
