@@ -3,12 +3,11 @@ package com.github.elenterius.biomancy.tileentity;
 import com.github.elenterius.biomancy.block.ScentDiffuserBlock;
 import com.github.elenterius.biomancy.init.ModEffects;
 import com.github.elenterius.biomancy.init.ModItems;
-import com.github.elenterius.biomancy.init.ModReagents;
 import com.github.elenterius.biomancy.init.ModTileEntityTypes;
 import com.github.elenterius.biomancy.inventory.HandlerBehaviors;
 import com.github.elenterius.biomancy.inventory.SimpleInventory;
 import com.github.elenterius.biomancy.item.ReagentItem;
-import com.github.elenterius.biomancy.reagent.BloodSampleReagent;
+import com.github.elenterius.biomancy.reagent.DNASampleReagent;
 import com.github.elenterius.biomancy.reagent.Reagent;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.CreatureEntity;
@@ -97,8 +96,8 @@ public class ScentDiffuserTileEntity extends SimpleSyncedTileEntity implements I
 			ItemStack reagentStack = reagentInv.getItem(0);
 			if (reagentStack.getCount() > 0 && VALID_REAGENT_ITEM.test(reagentStack)) {
 				Reagent reagent = Reagent.deserialize(reagentStack.getOrCreateTag());
-				if (reagent == ModReagents.BLOOD_SAMPLE.get()) {
-					EntityType<Entity> entityType = BloodSampleReagent.getEntityType(reagentStack);
+				if (reagent instanceof DNASampleReagent) {
+					EntityType<Entity> entityType = ((DNASampleReagent) reagent).getEntityType(reagentStack);
 					if (entityType != null) {
 						double x = pos.getX() + 0.5d;
 						double y = pos.getY() + 0.5d;

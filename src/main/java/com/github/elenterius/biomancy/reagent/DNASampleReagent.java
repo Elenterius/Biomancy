@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.reagent;
 
 import com.github.elenterius.biomancy.entity.aberration.FleshBlobEntity;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
+import com.github.elenterius.biomancy.util.MobUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -23,20 +24,20 @@ import net.minecraftforge.registries.ForgeRegistries;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BloodSampleReagent extends Reagent {
+public class DNASampleReagent extends Reagent {
 
 	public static final String NBT_KEY_ENTITY_TYPE = "EntityTypeId";
 
-	public BloodSampleReagent(int colorIn) {
+	public DNASampleReagent(int colorIn) {
 		super(colorIn);
 	}
 
-	public static boolean isNonBoss(LivingEntity target) {
-		return target.canChangeDimensions(); //TODO: use boss entity tag
+	public boolean isValidSamplingTarget(LivingEntity target) {
+		return MobUtil.isNotUndead(target);
 	}
 
 	@Nullable
-	public static <T extends Entity> EntityType<T> getEntityType(ItemStack stack) {
+	public <T extends Entity> EntityType<T> getEntityType(ItemStack stack) {
 		CompoundNBT reagentNbt = stack.getOrCreateTag().getCompound(Reagent.NBT_KEY_DATA);
 		EntityType<?> value = ForgeRegistries.ENTITIES.getValue(ResourceLocation.tryParse(reagentNbt.getString(NBT_KEY_ENTITY_TYPE)));
 		//noinspection unchecked
@@ -44,13 +45,13 @@ public class BloodSampleReagent extends Reagent {
 	}
 
 	@Nullable
-	public static CompoundNBT getBloodSampleFromEntity(PlayerEntity player, LivingEntity target) {
-		boolean isValidEntity = target.isAlive() && (isNonBoss(target) || player.isCreative());
-		return isValidEntity ? getBloodSampleFromEntityUnchecked(target) : null;
+	public CompoundNBT getDNAFromEntity(LivingEntity target) {
+		boolean isValidEntity = target.isAlive() && isValidSamplingTarget(target);
+		return isValidEntity ? getDNAFromEntityUnchecked(target) : null;
 	}
 
 	@Nullable
-	public static CompoundNBT getBloodSampleFromEntityUnchecked(LivingEntity target) {
+	public CompoundNBT getDNAFromEntityUnchecked(LivingEntity target) {
 		CompoundNBT nbt = new CompoundNBT();
 		String typeId = target instanceof PlayerEntity ? getPlayerTypeId((PlayerEntity) target) : target.getEncodeId();
 		if (typeId != null) {
@@ -63,7 +64,7 @@ public class BloodSampleReagent extends Reagent {
 		return null;
 	}
 
-	private static String getPlayerTypeId(PlayerEntity playerEntity) {
+	private String getPlayerTypeId(PlayerEntity playerEntity) {
 		return EntityType.getKey(playerEntity.getType()).toString();
 	}
 

@@ -55,6 +55,10 @@ public final class BiomancyMod {
 		return new ResourceLocation(MOD_ID, path);
 	}
 
+	public static String createRLString(String path) {
+		return MOD_ID + ":" + path;
+	}
+
 	public static final ItemGroup ITEM_GROUP = new ItemGroup(MOD_ID) {
 
 		@OnlyIn(Dist.CLIENT)

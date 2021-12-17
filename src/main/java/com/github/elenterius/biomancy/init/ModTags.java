@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.Tags;
@@ -43,6 +44,9 @@ public final class ModTags {
 
 	public static final class EntityTypes {
 		public static final Tags.IOptionalNamedTag<EntityType<?>> INFERNAL = EntityTypeTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "infernal"));
+
+		public static final ITag.INamedTag<EntityType<?>> BOSSES = EntityTypeTags.bind("forge:bosses");
+		public static final ITag.INamedTag<EntityType<?>> NOT_CLONEABLE = EntityTypeTags.bind(BiomancyMod.createRLString("not_cloneable"));
 
 		private EntityTypes() {}
 

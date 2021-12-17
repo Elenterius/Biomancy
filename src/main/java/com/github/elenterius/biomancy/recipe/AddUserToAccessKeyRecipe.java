@@ -1,9 +1,9 @@
 package com.github.elenterius.biomancy.recipe;
 
 import com.github.elenterius.biomancy.init.ModItems;
-import com.github.elenterius.biomancy.init.ModReagents;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.item.AccessKeyItem;
+import com.github.elenterius.biomancy.reagent.DNASampleReagent;
 import com.github.elenterius.biomancy.reagent.Reagent;
 import com.github.elenterius.biomancy.util.UserAuthorization;
 import net.minecraft.inventory.CraftingInventory;
@@ -36,7 +36,7 @@ public class AddUserToAccessKeyRecipe extends SpecialRecipe {
 				}
 				else if (stack.getItem() == ModItems.REAGENT.get()) {
 					Reagent reagent = Reagent.deserialize(stack.getOrCreateTag());
-					if (reagent == null || reagent != ModReagents.BLOOD_SAMPLE.get() || ++dna > 1) return false;
+					if (!(reagent instanceof DNASampleReagent) || ++dna > 1) return false;
 				}
 			}
 		}
@@ -57,7 +57,7 @@ public class AddUserToAccessKeyRecipe extends SpecialRecipe {
 				}
 				else if (stack.getItem() == ModItems.REAGENT.get()) {
 					Reagent temp = Reagent.deserialize(stack.getOrCreateTag());
-					if (temp != null && temp == ModReagents.BLOOD_SAMPLE.get()) {
+					if (temp instanceof DNASampleReagent) {
 						reagentStack = stack;
 					}
 				}

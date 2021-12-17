@@ -167,6 +167,8 @@
   "tooltip.biomancy.decay_agent": "Causes flesh eating disease and strongly affects zombies.",
   "tooltip.biomancy.mutagen_serum": "Induces mutations in flesh blobs and some other mobs (Villagers, Animals, Guardians).",
   "tooltip.biomancy.blood_sample": "Contains genetic material, inject a flesh blob with it with an two doses of mutagen.",
+  "tooltip.biomancy.rotten_blood": "Contains rotten blood of an Undead.",
+  "tooltip.biomancy.bone_marrow": "Contains corrupted bone marrow extracted from the bones of an Skeleton",
   "tooltip.biomancy.adrenaline_serum": "Floods your body with additional Adrenaline giving you a temporary power boost for a price...",
   "tooltip.biomancy.fleshborn_door": "",
   "tooltip.biomancy.fleshborn_trapdoor": "Auto resets.\nSneak click to change mode.",
@@ -181,7 +183,7 @@
   "tooltip.biomancy.boomling_hive_gun": "[WIP] Combine with potion in crafting Table. Uses Nutrient Paste to reload.",
   "tooltip.biomancy.larynx_flute": "A flute made of bones and meat that is able to copy the sounds of a mob by imitating the larynx of the target.",
   "tooltip.biomancy.voice_box": "A box that is capable to hold and play a larynx flute with its internal stomach bellow.",
-  "tooltip.biomancy.scent_diffuser": "A Gland that produces mob specific bait or repellent from the blood and hormone rich bile it is feed.\nIt diffuses the resulting substance as scent into it's nearby surroundings.",
+  "tooltip.biomancy.scent_diffuser": "A Gland that produces mob specific bait or repellent from the blood and hormone rich bile it is fed.\nIt diffuses the resulting substance as scent into it's nearby surroundings.",
 
   "tooltip.biomancy.mining_bonus": "When mining %1$s:",
   "tooltip.biomancy.item_is_inert": "The Fleshborn is Inert",

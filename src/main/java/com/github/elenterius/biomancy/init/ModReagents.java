@@ -22,8 +22,11 @@ public final class ModReagents {
 	public static final RegistryObject<CleansingReagent> CLEANSING_SERUM = REAGENTS.register("cleansing_serum", () -> new CleansingReagent(0x97a399));
 	public static final RegistryObject<DecayReagent> DECAY_AGENT = REAGENTS.register("decay_agent", () -> new DecayReagent(0x8d4e85));
 	public static final RegistryObject<MutagenReagent> MUTAGEN_SERUM = REAGENTS.register("mutagen_serum", () -> new MutagenReagent(0x60963a));
-	public static final RegistryObject<BloodSampleReagent> BLOOD_SAMPLE = REAGENTS.register("blood_sample", () -> new BloodSampleReagent(0x660000));
 	public static final RegistryObject<AdrenalineReagent> ADRENALINE_SERUM = REAGENTS.register("adrenaline_serum", () -> new AdrenalineReagent(0xff9532));
+
+	public static final RegistryObject<DNASampleReagent> BLOOD_SAMPLE = REAGENTS.register("blood_sample", () -> new DNASampleReagent(0x660000));
+	public static final RegistryObject<RottenBloodReagent> ROTTEN_BLOOD_SAMPLE = REAGENTS.register("rotten_blood", () -> new RottenBloodReagent(0x470000));
+	public static final RegistryObject<BoneMarrowReagent> BONE_MARROW_SAMPLE = REAGENTS.register("bone_marrow", () -> new BoneMarrowReagent(0xefd9a8));
 
 	private ModReagents() {}
 

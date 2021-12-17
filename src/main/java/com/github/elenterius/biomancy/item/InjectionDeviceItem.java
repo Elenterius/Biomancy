@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.item;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModReagents;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
-import com.github.elenterius.biomancy.reagent.BloodSampleReagent;
+import com.github.elenterius.biomancy.reagent.DNASampleReagent;
 import com.github.elenterius.biomancy.reagent.Reagent;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
@@ -48,7 +48,7 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 	}
 
 	private static boolean dispenserAffectEntity(ServerWorld level, ItemStack stack, LivingEntity target) {
-		InjectionDeviceItem item = ModItems.INJECTION_DEVICE.get();
+		InjectionDeviceItem item = (InjectionDeviceItem) stack.getItem();
 		Reagent reagent = item.getReagent(stack);
 		if (reagent != null) {
 			if (reagent.affectEntity(stack.getOrCreateTag().getCompound(Reagent.NBT_KEY_DATA), null, target)) {
@@ -59,20 +59,35 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 			}
 		}
 		else { //the device is empty
-			if (target.isAlive() && BloodSampleReagent.isNonBoss(target)) {
-				CompoundNBT reagentNbt = BloodSampleReagent.getBloodSampleFromEntityUnchecked(target);
-				if (reagentNbt != null && !reagentNbt.isEmpty()) {
-					CompoundNBT nbt = stack.getOrCreateTag();
-					Reagent.serialize(ModReagents.BLOOD_SAMPLE.get(), nbt);
-					nbt.put(Reagent.NBT_KEY_DATA, reagentNbt);
-					item.setReagentAmount(stack, item.getMaxReagentAmount());
-
-					target.hurt(new EntityDamageSource("sting", null), 0.5f);
-					return true;
-				}
-			}
+			return extractDNASample(stack, null, target);
 		}
 
+		return false;
+	}
+
+	private static boolean extractDNASample(ItemStack stack, @Nullable PlayerEntity source, LivingEntity target) {
+		if (target.isAlive()) {
+			InjectionDeviceItem item = (InjectionDeviceItem) stack.getItem();
+			if (extractDNASample(stack, item, source, target, ModReagents.BLOOD_SAMPLE.get())) return true;
+			if (extractDNASample(stack, item, source, target, ModReagents.ROTTEN_BLOOD_SAMPLE.get())) return true;
+			return extractDNASample(stack, item, source, target, ModReagents.BONE_MARROW_SAMPLE.get());
+		}
+		return false;
+	}
+
+	private static boolean extractDNASample(ItemStack stack, InjectionDeviceItem item, @Nullable PlayerEntity source, LivingEntity target, DNASampleReagent sample) {
+		if (sample.isValidSamplingTarget(target)) {
+			CompoundNBT reagentNbt = sample.getDNAFromEntity(target);
+			if (reagentNbt != null && !reagentNbt.isEmpty()) {
+				CompoundNBT nbt = stack.getOrCreateTag();
+				Reagent.serialize(sample, nbt);
+				nbt.put(Reagent.NBT_KEY_DATA, reagentNbt);
+				item.setReagentAmount(stack, item.getMaxReagentAmount());
+
+				target.hurt(new EntityDamageSource("sting", source), 0.5f);
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -246,14 +261,13 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 		Reagent reagent = getReagent(stack);
 		if (reagent != null) {
 			if (reagent.affectEntity(stack.getOrCreateTag().getCompound(Reagent.NBT_KEY_DATA), player, target)) {
-				if (!target.level.isClientSide) {
-					if (reagent.isAttributeModifier()) reagent.applyAttributesModifiersToEntity(target);
-					if (!player.isCreative()) addReagentAmount(stack, (byte) -1);
+				if (target.level.isClientSide) return ActionResultType.SUCCESS;
 
-					target.level.levelEvent(Constants.WorldEvents.SPAWN_EXPLOSION_PARTICLE, target.blockPosition(), 0);
-					playSFX(target.level, player, ModSoundEvents.INJECT.get());
-				}
-				return ActionResultType.sidedSuccess(target.level.isClientSide);
+				if (reagent.isAttributeModifier()) reagent.applyAttributesModifiersToEntity(target);
+				if (!player.isCreative()) addReagentAmount(stack, (byte) -1);
+				target.level.levelEvent(Constants.WorldEvents.SPAWN_EXPLOSION_PARTICLE, target.blockPosition(), 0);
+				playSFX(target.level, player, ModSoundEvents.INJECT.get());
+				return ActionResultType.CONSUME;
 			}
 
 			if (player.level.isClientSide) playSFX(player.level, player, SoundEvents.DISPENSER_FAIL);
@@ -261,19 +275,12 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 		}
 		else { //the device is empty
 			if (!target.level.isClientSide) {
-				CompoundNBT reagentNbt = BloodSampleReagent.getBloodSampleFromEntity(player, target);
-				if (reagentNbt != null && !reagentNbt.isEmpty()) {
-					CompoundNBT nbt = stack.getOrCreateTag();
-					Reagent.serialize(ModReagents.BLOOD_SAMPLE.get(), nbt);
-					nbt.put(Reagent.NBT_KEY_DATA, reagentNbt);
-					setReagentAmount(stack, getMaxReagentAmount());
-
+				if (extractDNASample(stack, player, target)) {
 					playSFX(target.level, player, ModSoundEvents.INJECT.get());
-					target.hurt(DamageSource.sting(player), 0.5f);
 
-					if (player.isCreative()) {
-						player.setItemInHand(hand, stack); //fix for creative mode (normally the stack is not modified in creative)
-					}
+					//fix for creative mode (normally the stack is not modified in creative)
+					if (player.isCreative()) player.setItemInHand(hand, stack);
+
 					return ActionResultType.SUCCESS;
 				}
 			}
@@ -293,25 +300,14 @@ public class InjectionDeviceItem extends Item implements IKeyListener {
 			return success;
 		}
 		else { //the device is empty
-			if (!player.level.isClientSide) {
-				CompoundNBT reagentNbt = BloodSampleReagent.getBloodSampleFromEntityUnchecked(player);
-				if (reagentNbt != null && !reagentNbt.isEmpty()) {
-					CompoundNBT nbt = stack.getOrCreateTag();
-					Reagent.serialize(ModReagents.BLOOD_SAMPLE.get(), nbt);
-					nbt.put(Reagent.NBT_KEY_DATA, reagentNbt);
-					setReagentAmount(stack, getMaxReagentAmount());
+			if (player.level.isClientSide) return true;
 
-					playSFX(player.level, player, ModSoundEvents.INJECT.get());
-					player.hurt(DamageSource.sting(player), 0.5f);
-
-					if (player.isCreative()) {
-						player.setItemInHand(player.getUsedItemHand(), stack); //fix for creative mode (normally the stack is not modified in creative)
-					}
-					return true;
-				}
-				else return false;
+			if (extractDNASample(stack, player, player)) {
+				//fix for creative mode (normally the stack is not modified in creative)
+				if (player.isCreative()) player.setItemInHand(player.getUsedItemHand(), stack);
+				return true;
 			}
-			else return true;
+			return false;
 		}
 	}
 

@@ -52,10 +52,6 @@ public class EntityStorageBagItem extends BagItem {
 		maxEntities = 1;
 	}
 
-	public static boolean isBossMob(Entity entity) {
-		return !entity.canChangeDimensions(); //TODO: use boss entity tag instead
-	}
-
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
@@ -202,7 +198,7 @@ public class EntityStorageBagItem extends BagItem {
 		if (playerIn.level.isClientSide()) return ActionResultType.PASS;
 		onPlayerInteractWithItem(stack, playerIn);
 
-		boolean isValidTarget = isValidEntity(target) && (!isBossMob(target) || playerIn.isCreative()); // blame creative player if something breaks due to storing boss mobs
+		boolean isValidTarget = isValidEntity(target) && (!MobUtil.isBoss(target) || playerIn.isCreative()); // blame creative player if something breaks due to storing boss mobs
 		if (isValidTarget) {
 			boolean hasSpaceForEntity = hasSpaceForEntity(stack, target);
 			boolean hasSlotForEntity = hasSlotForEntity(stack, target);

@@ -37,6 +37,9 @@ public final class DataGenerators {
 		generator.addProvider(blockTags);
 		generator.addProvider(new ModItemTagsProvider(generator, blockTags, existingFileHelper));
 
+		generator.addProvider(new ForgeEntityTypeTagsProvider(generator, existingFileHelper));
+		generator.addProvider(new ModEntityTypeTagsProvider(generator, existingFileHelper));
+
 		generator.addProvider(new ModRecipeProvider(generator));
 		generator.addProvider(new ModAdvancementProvider(generator));
 

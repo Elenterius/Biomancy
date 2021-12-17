@@ -1,9 +1,13 @@
 package com.github.elenterius.biomancy.util;
 
+import com.github.elenterius.biomancy.init.ModTags;
 import com.github.elenterius.biomancy.mixin.ServerWorldAccessor;
 import net.minecraft.entity.*;
+import net.minecraft.entity.monster.AbstractSkeletonEntity;
+import net.minecraft.entity.passive.horse.SkeletonHorseEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -13,11 +17,13 @@ import net.minecraftforge.event.ForgeEventFactory;
 
 import java.util.UUID;
 import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 
 public final class MobUtil {
 
 	private MobUtil() {}
 
+	//converts mob entity to other mob entity
 	public static <E extends MobEntity, T extends MobEntity> boolean convertMobEntityTo(ServerWorld world, E entityIn, EntityType<T> outcomeType) {
 		return convertMobEntityTo(world, entityIn, outcomeType, true);
 	}
@@ -40,12 +46,13 @@ public final class MobUtil {
 		return false;
 	}
 
-	public static boolean convertLivingEntityTo(ServerWorld world, LivingEntity oldEntity, EntityType<?> outcomeType) {
+	//converts living entity to other living entity
+	public static boolean convertLivingEntityTo(ServerWorld world, LivingEntity oldEntity, EntityType<?> outcomeType, Predicate<LivingEntity> validEntity) {
 		if (oldEntity.removed) return false;
 
 		Entity entity = outcomeType.create(world);
 		if (entity != null) {
-			if (entity instanceof LivingEntity) {
+			if (entity instanceof LivingEntity && validEntity.test((LivingEntity) entity)) {
 				//noinspection unchecked
 				EntityType<? extends LivingEntity> entityType = (EntityType<? extends LivingEntity>) outcomeType;
 				if (ForgeEventFactory.canLivingConvert(oldEntity, entityType, timer -> {})) {
@@ -163,6 +170,26 @@ public final class MobUtil {
 
 	public static boolean hasDuplicateEntity(ServerWorld world, UUID uuid) {
 		return ((ServerWorldAccessor) world).biomancy_getLoadedOrPendingEntity(uuid) != null;
+	}
+
+	public static boolean isBoss(LivingEntity entity) {
+		return isBoss(entity.getType());
+	}
+
+	public static boolean isBoss(EntityType<?> entityType) {
+		return ModTags.EntityTypes.BOSSES.contains(entityType);
+	}
+
+	public static boolean isSkeleton(LivingEntity entity) {
+		return entity instanceof AbstractSkeletonEntity || entity instanceof SkeletonHorseEntity || EntityTypeTags.SKELETONS.contains(entity.getType());
+	}
+
+	public static boolean isUndead(LivingEntity entity) {
+		return entity.getMobType() == CreatureAttribute.UNDEAD;
+	}
+
+	public static boolean isNotUndead(LivingEntity entity) {
+		return !isUndead(entity);
 	}
 
 }

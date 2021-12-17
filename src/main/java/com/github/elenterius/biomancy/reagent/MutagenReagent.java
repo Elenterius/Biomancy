@@ -6,10 +6,14 @@ import com.github.elenterius.biomancy.entity.aberration.FleshBlobEntity;
 import com.github.elenterius.biomancy.entity.golem.IOwnableCreature;
 import com.github.elenterius.biomancy.init.ModEffects;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
+import com.github.elenterius.biomancy.init.ModItems;
+import com.github.elenterius.biomancy.init.ModTags;
 import com.github.elenterius.biomancy.util.MobUtil;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Pose;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.merchant.villager.VillagerEntity;
 import net.minecraft.entity.monster.GuardianEntity;
 import net.minecraft.entity.passive.AnimalEntity;
@@ -94,7 +98,10 @@ public class MutagenReagent extends Reagent {
 		ServerWorld world = (ServerWorld) target.level;
 		if (amplifier < 1) return false;
 
-		if (target instanceof GuardianEntity) {
+		if (target instanceof FleshBlobEntity) {
+			return convertFleshBlob(world, source, (FleshBlobEntity) target);
+		}
+		else if (target instanceof GuardianEntity) {
 			return MobUtil.convertMobEntityTo(world, (GuardianEntity) target, EntityType.ELDER_GUARDIAN);
 		}
 		else if (target instanceof VillagerEntity) {
@@ -120,9 +127,6 @@ public class MutagenReagent extends Reagent {
 			else if (v < 0.8f)
 				return MobUtil.convertMobEntityTo(world, (CowEntity) target, ModEntityTypes.FAILED_COW.get());
 		}
-		else if (target instanceof FleshBlobEntity) {
-			return convertFleshBlob(world, source, (FleshBlobEntity) target);
-		}
 		else if (target instanceof AnimalEntity && !(target instanceof TameableEntity) && !(target instanceof IOwnableCreature)) {
 			if (world.random.nextFloat() < 0.4f) {
 				return MobUtil.convertMobEntityTo(world, (AnimalEntity) target, ModEntityTypes.FLESH_BLOB.get(), true, (oldEntity, outcome) -> {
@@ -135,55 +139,97 @@ public class MutagenReagent extends Reagent {
 		return false;
 	}
 
-	private boolean convertFleshBlob(ServerWorld world, @Nullable LivingEntity source, FleshBlobEntity target) {
-		if (world.random.nextFloat() < 0.7f && target.getBlobSize() < 6 && target.hasForeignEntityDNA()) {
+	private boolean convertFleshBlob(ServerWorld level, @Nullable LivingEntity source, FleshBlobEntity target) {
+		if (level.random.nextFloat() < 0.7f && target.getBlobSize() < 6 && target.hasForeignEntityDNA()) {
 			List<EntityType<?>> entityDNAs = target.getForeignEntityDNA();
 			if (entityDNAs != null) {
 				int dnaCount = entityDNAs.size();
 				if (dnaCount == 1) {
 					EntityType<?> entityType = entityDNAs.get(0);
 					if (entityType == EntityType.PLAYER) {
-						return MobUtil.convertMobEntityTo(world, target, ModEntityTypes.FLESHKIN.get(), false, (fleshBlob, fleshkin) -> {
+						return MobUtil.convertMobEntityTo(level, target, ModEntityTypes.FLESHKIN.get(), false, (fleshBlob, fleshkin) -> {
 							if (!fleshBlob.isHangry() && source != null) fleshkin.setOwnerUUID(source.getUUID());
-							fleshkin.setBaby(target.getBlobSize() < 5);
+							fleshkin.setBaby(fleshBlob.getBlobSize() < 5);
 						});
 					}
-					else if (entityType == EntityType.BAT && world.random.nextFloat() < 0.2f) {
-						return MobUtil.convertLivingEntityTo(world, target, ModEntityTypes.OCULUS_OBSERVER.get());
+					else if (entityType == EntityType.BAT && level.random.nextFloat() < 0.2f) {
+						return MobUtil.convertMobEntityTo(level, target, ModEntityTypes.OCULUS_OBSERVER.get());
 					}
 
-					return MobUtil.convertLivingEntityTo(world, target, entityType);
+					if (isCloneable(entityType)) {
+						return createClone(level, target, entityType);
+					}
 				}
 				else if (dnaCount == 2) {
-					EntityType<?> typeA = entityDNAs.get(0);
-					EntityType<?> typeB = entityDNAs.get(1);
-					if (anyMatch(EntityType.CAVE_SPIDER, typeA, typeB) && anyMatch(EntityType.CREEPER, typeA, typeB)) {
-						return MobUtil.convertMobEntityTo(world, target, ModEntityTypes.BOOMLING.get(), false, (fleshBlobEntity, boomlingEntity) -> {
-							//set owner to make it possible for the owner to pick it up
-							if (source != null) boomlingEntity.setOwnerUUID(source.getUUID());
-							//because boomlingEntity.onInitialSpawn() was called by MobUtil.convertMobEntityTo() we need to reset the potion
-							boomlingEntity.setStoredPotion(ItemStack.EMPTY);
-						});
-					}
-					else if (anyMatch(EntityType.VILLAGER, typeA, typeB) && anyMatch(EntityType.COW, typeA, typeB)) {
-						return MobUtil.convertMobEntityTo(world, target, EntityType.RAVAGER, false);
-					}
-				}
-				else {
-					if (!target.isHangry()) {
-						target.setHangry();
-					}
+					if (createChimera(level, source, target, entityDNAs)) return true;
+					else target.setHangry();
 				}
 
 				float v = 0.15f + 0.07f * dnaCount;
-				if (world.random.nextFloat() < v) {
-					Explosion.Mode mode = ForgeEventFactory.getMobGriefingEvent(world, target) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
-					world.explode(target, target.getX(), target.getY(), target.getZ(), target.getBlobSize() + 4f * v, mode);
-					target.remove();
+				if (level.random.nextFloat() < v) {
+					explodeFleshBlob(level, target, v);
 				}
 			}
 		}
 		return false;
+	}
+
+	//TODO: white flashing for cloning process? (pokemon evolution)
+	private boolean createClone(ServerWorld level, FleshBlobEntity fleshBlob, EntityType<?> entityType) {
+		float blobVolume = getVolume(fleshBlob);
+		float cloneVolume = getVolume(entityType);
+
+		if (blobVolume / cloneVolume < 0.8f) {
+			fleshBlob.setHangry(); //TODO: better indicator that the blob is too small
+			if (level.random.nextFloat() < 0.25f) explodeFleshBlob(level, fleshBlob, 0f);
+			return false;
+		}
+
+		boolean success = MobUtil.convertLivingEntityTo(level, fleshBlob, entityType, MobUtil::isNotUndead);
+		float diff = blobVolume - cloneVolume;
+		if (success && diff > 0.11f) {
+			//drop excess flesh blob volume as flesh lumps
+			int count = Math.max(Math.round(diff * 9f), 1); // 9 flesh == 1 flesh block (1 m³)
+			ItemEntity itementity = new ItemEntity(level, fleshBlob.getX(), fleshBlob.getY() + 0.5f, fleshBlob.getZ(), new ItemStack(ModItems.FLESH_LUMP.get(), count));
+			itementity.setDefaultPickUpDelay();
+			level.addFreshEntity(itementity);
+		}
+		return success;
+	}
+
+	private boolean createChimera(ServerWorld level, @Nullable LivingEntity source, FleshBlobEntity target, List<EntityType<?>> entityDNAs) {
+		EntityType<?> typeA = entityDNAs.get(0);
+		EntityType<?> typeB = entityDNAs.get(1);
+		if (anyMatch(EntityType.CAVE_SPIDER, typeA, typeB) && anyMatch(EntityType.CREEPER, typeA, typeB)) {
+			return MobUtil.convertMobEntityTo(level, target, ModEntityTypes.BOOMLING.get(), false, (fleshBlob, boomling) -> {
+				//set owner to make it possible for the owner to pick it up
+				if (source != null) boomling.setOwnerUUID(source.getUUID());
+				//because boomlingEntity.onInitialSpawn() was called by MobUtil.convertMobEntityTo() we need to reset the potion
+				boomling.setStoredPotion(ItemStack.EMPTY);
+			});
+		}
+		else if (anyMatch(EntityType.VILLAGER, typeA, typeB) && anyMatch(EntityType.COW, typeA, typeB)) {
+			return MobUtil.convertMobEntityTo(level, target, EntityType.RAVAGER, false);
+		}
+		return false;
+	}
+
+	private void explodeFleshBlob(ServerWorld level, FleshBlobEntity target, float v) {
+		Explosion.Mode mode = ForgeEventFactory.getMobGriefingEvent(level, target) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
+		level.explode(target, target.getX(), target.getY(), target.getZ(), target.getBlobSize() + 4f * v, mode);
+		target.remove();
+	}
+
+	private float getVolume(EntityType<?> entityType) {
+		return entityType.getWidth() * entityType.getWidth() * entityType.getHeight();
+	}
+
+	private float getVolume(Entity entity) {
+		return entity.getBbWidth() * entity.getBbWidth() * entity.getBbHeight();
+	}
+
+	private boolean isCloneable(EntityType<?> entityType) {
+		return !ModTags.EntityTypes.NOT_CLONEABLE.contains(entityType);
 	}
 
 	private boolean anyMatch(EntityType<?> target, EntityType<?> a, EntityType<?> b) {
