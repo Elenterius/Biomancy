@@ -109,7 +109,7 @@ public class ScentDiffuserBlock extends Block {
 	@Override
 	public void animateTick(BlockState state, World level, BlockPos pos, Random random) {
 		if (Boolean.FALSE.equals(state.getValue(POWERED))) return;
-		level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, pos.getX() + 0.5d, pos.getY() + 1d, pos.getZ() + 0.5d, 0, 0.07d, 0);
+		level.addParticle(ParticleTypes.ASH, pos.getX() + 0.5d, pos.getY() + 1d, pos.getZ() + 0.5d, 0, 0, 0);
 	}
 
 	@Override

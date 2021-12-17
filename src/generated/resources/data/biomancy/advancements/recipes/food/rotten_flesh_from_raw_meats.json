@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:rotten_flesh_from_raw_meats"
+    ]
+  },
+  "criteria": {
+    "has_raw_meats": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "biomancy:raw_meats"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:rotten_flesh_from_raw_meats"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_raw_meats",
+      "has_the_recipe"
+    ]
+  ]
+}

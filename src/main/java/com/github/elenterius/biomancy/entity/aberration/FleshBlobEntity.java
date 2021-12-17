@@ -148,7 +148,7 @@ public class FleshBlobEntity extends CreatureEntity implements IJumpMovementMob<
 	}
 
 	public void setHangry() {
-		setCustomEntityData((byte) 1);
+		if (!isHangry()) setCustomEntityData((byte) 1);
 	}
 
 	public void setCustomEntityData(byte flag) {

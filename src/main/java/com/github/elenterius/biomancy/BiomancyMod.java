@@ -27,7 +27,7 @@ import java.util.Random;
 public final class BiomancyMod {
 
 	public static final String MOD_ID = "biomancy";
-	public static final Logger LOGGER = LogManager.getLogger();
+	public static final Logger LOGGER = LogManager.getLogger("Biomancy");
 	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 	public static final Random GLOBAL_RANDOM = new Random();
 

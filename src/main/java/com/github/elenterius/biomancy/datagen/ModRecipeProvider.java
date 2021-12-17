@@ -11,6 +11,7 @@ import net.minecraft.advancements.criterion.EnchantmentPredicate;
 import net.minecraft.advancements.criterion.InventoryChangeTrigger;
 import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.advancements.criterion.MinMaxBounds;
+import net.minecraft.block.Blocks;
 import net.minecraft.data.*;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
@@ -267,7 +268,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addCriterion(HAS_OXIDE, OXIDE_CRITERION).build(consumer, "" + id++, true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.OXIDE_POWDER.get(), defaultDecomposingTime - 100)
-				.setIngredient(ModItems.MILK_GEL.get(), 2)
+				.setIngredient(ModItems.MILK_GEL.get(), 6)
 				.addCriterion(HAS_OXIDE, OXIDE_CRITERION).build(consumer, "" + id, true);
 	}
 
@@ -778,6 +779,16 @@ public class ModRecipeProvider extends RecipeProvider {
 				.requires(ModItems.NECROTIC_FLESH_BLOCK.get()).requires(ModItems.REJUVENATING_MUCUS.get(), 6)
 				.unlockedBy("has_necrotic_flesh_block", has(ModItems.NECROTIC_FLESH_BLOCK.get())).save(consumer, BiomancyMod.createRL("flesh_from_necrotic_block"));
 
+		ShapelessRecipeBuilder.shapeless(Items.ROTTEN_FLESH)
+				.requires(ModItems.NECROTIC_FLESH.get())
+				.requires(new ItemStackIngredient(ReagentItem.getReagentItemStack(ModReagents.ROTTEN_BLOOD_SAMPLE.get())))
+				.unlockedBy("has_necrotic_flesh", has(ModItems.NECROTIC_FLESH.get())).save(consumer, BiomancyMod.createRL("rotten_flesh_from_necrotic_flesh"));
+
+		ShapelessRecipeBuilder.shapeless(Items.ROTTEN_FLESH)
+				.requires(ModTags.Items.RAW_MEATS).requires(ModItems.ERODING_BILE.get())
+				.requires(new ItemStackIngredient(ReagentItem.getReagentItemStack(ModReagents.ROTTEN_BLOOD_SAMPLE.get())))
+				.unlockedBy("has_raw_meats", has(ModTags.Items.RAW_MEATS)).save(consumer, BiomancyMod.createRL("rotten_flesh_from_raw_meats"));
+
 		ShapedRecipeBuilder.shaped(ModItems.BONE_GEAR.get(), 1)
 				.define('B', Tags.Items.BONES)
 				.pattern(" B ")
@@ -957,6 +968,23 @@ public class ModRecipeProvider extends RecipeProvider {
 				.define('S', Tags.Items.SEEDS)
 				.pattern("SBS").pattern("NNN")
 				.unlockedBy("has_nutrient_paste", has(ModItems.NUTRIENT_PASTE.get())).save(consumer);
+
+		ShapedRecipeBuilder.shaped(Blocks.CAKE)
+				.define('M', ModItems.MILK_GEL.get())
+				.define('S', Items.SUGAR)
+				.define('W', Items.WHEAT)
+				.define('E', Items.EGG)
+				.pattern("MMM").pattern("SES").pattern("WWW")
+				.unlockedBy("has_milk_gel", has(ModItems.MILK_GEL.get())).save(consumer, BiomancyMod.createRL("cake_from_milk_gel"));
+
+		//TODO: replace with nutrient cake?
+		ShapedRecipeBuilder.shaped(Blocks.CAKE)
+				.define('M', ModItems.MILK_GEL.get())
+				.define('S', Items.SUGAR)
+				.define('W', ModItems.NUTRIENT_PASTE.get())
+				.define('E', Items.EGG)
+				.pattern("MMM").pattern("SES").pattern("WWW")
+				.unlockedBy("has_milk_gel", has(ModItems.MILK_GEL.get())).save(consumer, BiomancyMod.createRL("cake_from_paste_and_milk_gel"));
 
 		// misc ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		ShapelessRecipeBuilder.shapeless(Items.DIORITE)
