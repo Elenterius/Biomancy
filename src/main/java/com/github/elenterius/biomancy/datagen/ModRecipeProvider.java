@@ -204,7 +204,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		ItemStackIngredient sweepingBook = new ItemStackIngredient(EnchantedBookItem.createForEnchantment(new EnchantmentData(Enchantments.SWEEPING_EDGE, Enchantments.SWEEPING_EDGE.getMaxLevel())));
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.LONG_RANGE_CLAW.get(), defaultTime * 2)
-				.addIngredient(ModItems.OCULUS.get()).addIngredient(sweepingBook).addIngredients(ModItems.SHARP_BONE.get(), 2).addIngredient(Items.DIAMOND_SWORD).addIngredient(ModItems.BIOMETAL.get())
+				.addIngredient(ModItems.OCULUS.get()).addIngredient(sweepingBook).addIngredients(ModItems.BONE_SWORD.get(), 2).addIngredient(Items.DIAMOND_SWORD).addIngredient(ModItems.BIOMETAL.get())
 				.addCriterion(HAS_OCULUS, has(ModItems.OCULUS.get())).build(consumer);
 
 		ItemStackIngredient mendingBook = new ItemStackIngredient(EnchantedBookItem.createForEnchantment(new EnchantmentData(Enchantments.MENDING, Enchantments.MENDING.getMaxLevel())));
@@ -703,45 +703,19 @@ public class ModRecipeProvider extends RecipeProvider {
 				.pattern(" P ").pattern("PQP").pattern(" P ")
 				.unlockedBy("has_quartz", has(Items.QUARTZ)).save(consumer);
 
-		ShapelessRecipeBuilder.shapeless(ModItems.SEWING_KIT_EMPTY.get())
-				.requires(Tags.Items.BONES).requires(Items.FLINT)
+		ShapedRecipeBuilder.shaped(ModItems.BONE_SWORD.get())
+				.define('S', Tags.Items.RODS_WOODEN).define('B', Tags.Items.BONES).define('C', ModItems.BONE_SCRAPS.get())
+				.pattern(" B ").pattern("CBC").pattern(" S ")
 				.unlockedBy("has_bone", has(Tags.Items.BONES)).save(consumer);
-
-		ShapedRecipeBuilder.shaped(ModItems.SHARP_BONE.get())
-				.define('S', ModItems.SEWING_KIT_EMPTY.get()).define('B', Tags.Items.BONES)
-				.pattern("S").pattern("B")
-				.unlockedBy("has_bone", has(Tags.Items.BONES)).save(consumer);
-
-		ShapelessRecipeBuilder.shapeless(ModItems.SEWING_KIT.get())
-				.requires(ModItems.SEWING_KIT_EMPTY.get()).requires(Tags.Items.STRING).requires(Tags.Items.STRING).requires(Tags.Items.STRING)
-				.unlockedBy("has_empty_sewing_kit", has(ModItems.SEWING_KIT_EMPTY.get())).save(consumer);
 
 		ShapedRecipeBuilder.shaped(ModItems.GLASS_VIAL.get(), 8)
 				.define('G', Tags.Items.GLASS).define('T', ItemTags.WOODEN_SLABS)
 				.pattern("GTG").pattern("G G").pattern(" G ")
 				.unlockedBy("has_glass", has(Tags.Items.GLASS)).save(consumer);
 
-		ShapedRecipeBuilder.shaped(ModItems.INJECTION_DEVICE.get())
-				.define('B', ModItems.GLASS_VIAL.get()).define('S', ModItems.SEWING_KIT_EMPTY.get()).define('I', Items.IRON_INGOT).define('N', Items.IRON_NUGGET)
-				.pattern("SBN").pattern("NII").pattern("  I")
-				.unlockedBy(HAS_GLASS_VIAL, has(ModItems.GLASS_VIAL.get())).save(consumer);
-
 		ShapelessRecipeBuilder.shapeless(Items.BONE_MEAL)
 				.requires(ModItems.BONE_SCRAPS.get(), 4)
 				.unlockedBy("has_bone_scraps", has(ModItems.BONE_SCRAPS.get())).save(consumer, BiomancyMod.createRL("bone_meal_from_bone_scraps"));
-
-		ShapedRecipeBuilder.shaped(ModItems.MENDED_SKIN.get())
-				.define('S', ModItems.SEWING_KIT.get())
-				.define('C', ModItems.SKIN_CHUNK.get())
-				.pattern("CC ").pattern("CC ").pattern("CCS")
-				.unlockedBy("has_skin_chunk", has(ModItems.SKIN_CHUNK.get())).save(consumer);
-
-		ShapedRecipeBuilder.shaped(ModItems.ARTIFICIAL_STOMACH.get())
-				.define('S', ModItems.SEWING_KIT.get())
-				.define('M', ModItems.MENDED_SKIN.get())
-				.define('C', ModItems.SKIN_CHUNK.get())
-				.pattern("  C").pattern("MMC").pattern("MMS")
-				.unlockedBy("has_mended_skin", has(ModItems.MENDED_SKIN.get())).save(consumer);
 
 		ShapedRecipeBuilder.shaped(ModItems.FLESH_BLOCK_SLAB.get(), 3 * 2)
 				.define('F', ModItems.FLESH_BLOCK.get())
@@ -1012,7 +986,6 @@ public class ModRecipeProvider extends RecipeProvider {
 				.unlockedBy(HAS_SILICATE_PASTE, has(ModItems.SILICATE_PASTE.get())).save(consumer, BiomancyMod.createRL("gunpowder_from_silicate_blaze"));
 
 		// special /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		CustomRecipeBuilder.special(ModRecipes.REPAIR_SPECIAL_SEWING_KIT.get()).save(consumer, BiomancyMod.MOD_ID + ":" + "sewing_kit_nbt");
 		CustomRecipeBuilder.special(ModRecipes.CRAFTING_SPECIAL_BOOMLING.get()).save(consumer, BiomancyMod.MOD_ID + ":" + "boomling");
 		CustomRecipeBuilder.special(ModRecipes.CRAFTING_SPECIAL_BOOMLING_GUN.get()).save(consumer, BiomancyMod.MOD_ID + ":" + "boomling_gun");
 		CustomRecipeBuilder.special(ModRecipes.CRAFTING_SPECIAL_ADD_USER_TO_KEY.get()).save(consumer, BiomancyMod.MOD_ID + ":" + "add_user_to_key");

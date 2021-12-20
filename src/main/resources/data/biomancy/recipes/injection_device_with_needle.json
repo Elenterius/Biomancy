@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "sewingkit"
+    }
+  ],
+  "pattern": [
+    "SBN",
+    "NII",
+    "  I"
+  ],
+  "key": {
+    "B": {
+      "item": "biomancy:glass_vial"
+    },
+    "S": {
+      "item": "sewingkit:iron_sewing_needle"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "N": {
+      "item": "minecraft:iron_nugget"
+    }
+  },
+  "result": {
+    "item": "biomancy:injection_device"
+  }
+}

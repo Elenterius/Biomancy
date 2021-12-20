@@ -9,12 +9,6 @@
     },
     {
       "type": "spotlight",
-      "item": "biomancy:sewing_kit{\"Damage\":0}",
-      "link_recipe": true,
-      "text": "Allows you to stitch things together..."
-    },
-    {
-      "type": "spotlight",
       "item": "biomancy:sharp_bone{\"Damage\":0}",
       "text": "A sharpened bone that can be used as a sword."
     },

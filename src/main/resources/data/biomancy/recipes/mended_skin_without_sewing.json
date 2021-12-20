@@ -1,13 +1,22 @@
 {
   "type": "minecraft:crafting_shaped",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:mod_loaded",
+        "modid": "sewingkit"
+      }
+    }
+  ],
   "pattern": [
     "CC ",
     "CC ",
-    "CCS"
+    "CC "
   ],
   "key": {
     "S": {
-      "item": "biomancy:sewing_kit"
+      "item": "minecraft:string"
     },
     "C": {
       "item": "biomancy:skin_chunk"

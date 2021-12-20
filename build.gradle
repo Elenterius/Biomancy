@@ -150,6 +150,7 @@ dependencies {
 
 //    implementation fg.deobf("com.github.Virtuoel:Pehkui:3.0.0-forge")
     implementation fg.deobf('com.github.Elenterius:Combat-Commons:0.2.0-beta-1.16.5-forge')
+    runtimeOnly fg.deobf("curse.maven:sewing-kit-411896:3202871")
 }
 
 import java.util.concurrent.TimeUnit

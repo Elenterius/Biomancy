@@ -1,5 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:mod_loaded",
+        "modid": "sewingkit"
+      }
+    }
+  ],
   "pattern": [
     "SBN",
     "NII",
@@ -10,7 +19,7 @@
       "item": "biomancy:glass_vial"
     },
     "S": {
-      "item": "biomancy:sewing_kit_empty"
+      "item": "minecraft:flint"
     },
     "I": {
       "item": "minecraft:iron_ingot"

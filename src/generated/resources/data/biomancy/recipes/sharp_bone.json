@@ -1,15 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "S",
-    "B"
+    " B ",
+    "CBC",
+    " S "
   ],
   "key": {
     "S": {
-      "item": "biomancy:sewing_kit_empty"
+      "tag": "forge:rods/wooden"
     },
     "B": {
       "tag": "forge:bones"
+    },
+    "C": {
+      "item": "biomancy:bone_scraps"
     }
   },
   "result": {

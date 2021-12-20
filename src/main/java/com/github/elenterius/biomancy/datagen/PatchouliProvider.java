@@ -70,8 +70,7 @@ public class PatchouliProvider extends PatchouliBookProvider {
 		CategoryBuilder category = book.addCategory("items", "Items", "Contains item descriptions and instruction on how to use them.", "biomancy:oculus");
 		category.addEntry("normal_tools", "Common Tools", "biomancy:injection_device")
 				.addSimpleTextPage("These things are cold and dead...")
-				.addSpotlightPage(SEWING_KIT.get()).setText("Allows you to stitch things together...").setLinkRecipe(true).build()
-				.addSpotlightPage(SHARP_BONE.get()).setText("A sharpened bone that can be used as a sword.").build()
+				.addSpotlightPage(BONE_SWORD.get()).setText("A sharpened bone that can be used as a sword.").build()
 				.addCustomPage(entry -> createSpotlightPage(INJECTION_DEVICE.get(), entry));
 
 		EntryBuilder entry1 = category.addEntry("fleshborn_items", "Fleshborn Items", "biomancy:oculus_key")
@@ -89,18 +88,12 @@ public class PatchouliProvider extends PatchouliBookProvider {
 
 	private void addCraftingRecipeCategory(BookBuilder book) {
 		CategoryBuilder category = book.addCategory("crafting_recipes", "Crafting Recipes", "These Chapters contain recipes for crafting.", "minecraft:crafting_table");
-		EntryBuilder entry = category.addEntry("sewing_recipes", "Sewing Recipes", "biomancy:sewing_kit");
-		addRecipePagesFor(entry,
-				new ResourceLocation("biomancy", "sewing_kit_empty"),
-				new ResourceLocation("biomancy", "sewing_kit"),
-				new ResourceLocation("biomancy", "mended_skin"),
-				new ResourceLocation("biomancy", "artificial_stomach"));
 
 		category.addEntry("leather_from_skin", "Leather from Skin", "minecraft:leather")
 				.addSimpleTextPage("Chunks of skin can be sown together into stitched skin, which in turn can be smoked into leather.")
 				.addCraftingPage(new ResourceLocation("biomancy", "leather_from_smoking"));
 
-		entry = category.addEntry("workbench_recipes", "Workbench Recipes", "minecraft:crafting_table");
+		EntryBuilder entry = category.addEntry("workbench_recipes", "Workbench Recipes", "minecraft:crafting_table");
 		addRecipePagesFor(entry,
 				new ResourceLocation("biomancy", "lens"),
 				new ResourceLocation("biomancy", "oculus"),
