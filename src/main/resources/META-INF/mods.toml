@@ -20,7 +20,7 @@ description = '''Biopunk and Flesh Magic inspired tech-magic mod that has a fles
 [[dependencies.biomancy]]
 modId = "combat_commons"
 mandatory = true
-versionRange = "[0.1.1-beta-1.16.5-forge,)"
+versionRange = "[0.2.0-beta,)"
 ordering = "AFTER"
 side = "BOTH"
 
