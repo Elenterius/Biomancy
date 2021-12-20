@@ -13,7 +13,6 @@ import com.github.elenterius.biomancy.recipe.DigesterRecipe;
 import com.github.elenterius.biomancy.recipe.RecipeType;
 import com.github.elenterius.biomancy.tileentity.state.DigesterStateData;
 import com.github.elenterius.biomancy.util.TextUtil;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
@@ -34,7 +33,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
@@ -172,9 +170,9 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 			if (ticks % 42 == 0) {
 				tryToGetItemsFromAttachedBlock(level);
 			}
-			if (ticks % 60 == 0) {
-				tryToSuckWater(level);
-			}
+//			if (ticks % 60 == 0) {
+//				tryToSuckWater(level);
+//			}
 		}
 
 		super.tick();
@@ -270,10 +268,10 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 		int maxFluidAmount = stateData.fuelTank.getCapacity();
 		if (fluidAmount <= maxFluidAmount - 1000) {
 			Direction direction = getBlockState().getValue(DigesterBlock.FACING);
-			BlockPos blockPos = getBlockPos().relative(direction);
-			Block neighbourBlock = world.getBlockState(blockPos).getBlock();
-			if (neighbourBlock == Blocks.WET_SPONGE) {
-				world.setBlock(blockPos, Blocks.SPONGE.defaultBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+			if (world.getBlockState(getBlockPos().relative(direction.getOpposite())).getBlock() == Blocks.WATER) {
+				addFuelAmount(1000);
+			}
+			else if (world.getBlockState(getBlockPos().relative(direction)).getBlock() == Blocks.WATER) {
 				addFuelAmount(1000);
 			}
 		}
