@@ -13,7 +13,7 @@ import net.minecraftforge.common.util.Lazy;
 
 public class PoleWeaponItem extends SwordItem {
 
-	public static AttributeModifier ATTACK_REACH_MODIFIER = new AttributeModifier(ModAttributes.UUIDS.ATTACK_REACH, "Weapon modifier", 3f, AttributeModifier.Operation.ADDITION);
+	public static AttributeModifier ATTACK_REACH_MODIFIER = new AttributeModifier(ModAttributes.UUIDS.ATTACK_REACH, "Weapon modifier", 2f, AttributeModifier.Operation.ADDITION);
 	public static AttributeModifier BLOCK_REACH_MODIFIER = new AttributeModifier(ModAttributes.UUIDS.BLOCK_REACH, "Tool modifier", 2f, AttributeModifier.Operation.ADDITION);
 
 	final Lazy<Multimap<Attribute, AttributeModifier>> lazyAttributeModifiers; //is needed if we want to add forge block reach distance
