@@ -1,16 +1,7 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.damagesource.ModEntityDamageSource;
-import com.github.elenterius.biomancy.entity.projectile.AbstractProjectileEntity;
-import com.github.elenterius.biomancy.entity.projectile.ToothProjectileEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.IndirectEntityDamageSource;
-
-import javax.annotation.Nullable;
+import net.minecraft.world.damagesource.DamageSource;
 
 public final class ModDamageSources {
 
@@ -27,17 +18,12 @@ public final class ModDamageSources {
 		return new DamageSource(BiomancyMod.MOD_ID + "." + name);
 	}
 
-	public static ModEntityDamageSource createBlightThornDamage(String damageCause, LivingEntity attacker) {
-		ModEntityDamageSource damageSource = new ModEntityDamageSource(damageCause, "blight_thorn", attacker, (float) attacker.getAttributeValue(Attributes.ATTACK_DAMAGE));
-		damageSource.setThorns().setMagic();
-		return damageSource;
-	}
+//	public static DamageSource createToothProjectileDamage(ToothProjectileEntity projectile, @Nullable Entity shooter) {
+//		return new IndirectEntityDamageSource(BiomancyMod.MOD_ID + "." + "tooth_projectile", projectile, shooter).setProjectile();
+//	}
+//
+//	public static DamageSource createWitherSkullDamage(AbstractProjectileEntity projectile, Entity shooter) {
+//		return new IndirectEntityDamageSource("witherSkull", projectile, shooter).setProjectile();
+//	}
 
-	public static DamageSource createToothProjectileDamage(ToothProjectileEntity projectile, @Nullable Entity shooter) {
-		return new IndirectEntityDamageSource(BiomancyMod.MOD_ID + "." + "tooth_projectile", projectile, shooter).setProjectile();
-	}
-
-	public static DamageSource createWitherSkullDamage(AbstractProjectileEntity projectile, Entity shooter) {
-		return new IndirectEntityDamageSource("witherSkull", projectile, shooter).setProjectile();
-	}
 }

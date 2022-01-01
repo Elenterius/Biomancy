@@ -1,24 +1,27 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.block.*;
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialColor;
+import com.github.elenterius.biomancy.world.block.CreatorBlock;
+import com.github.elenterius.biomancy.world.block.FleshBlock;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.entity.EntityType;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.PlantType;
-import net.minecraftforge.common.ToolType;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public final class ModBlocks {
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, BiomancyMod.MOD_ID);
@@ -29,77 +32,46 @@ public final class ModBlocks {
 	//Materials
 	public static final Material FLESH_MATERIAL = new Material.Builder(MaterialColor.COLOR_PINK).build();
 
-	//BlockState Properties
-	public static final EnumProperty<UserSensitivity> USER_SENSITIVITY_PROPERTY = EnumProperty.create("sensitivity", UserSensitivity.class);
-	public static final BooleanProperty CRAFTING_PROPERTY = BooleanProperty.create("crafting");
-
-	//Decoration Blocks
-	public static final RegistryObject<FleshPlantBlock> FLESH_TENTACLE = BLOCKS.register("flesh_tentacle", () -> new FleshPlantBlock(createFleshPlantProperties()));
-
-	//Fluid Blocks
-	public static final RegistryObject<FlowingFluidBlock> NUTRIENT_SLURRY_FLUID = BLOCKS.register("nutrient_slurry_fluid", () -> new FlowingFluidBlock(ModFluids.NUTRIENT_SLURRY, AbstractBlock.Properties.of(Material.WATER).noCollission().strength(100f).noDrops()));
-
-	//Material Blocks
+	//# Blocks
 	public static final RegistryObject<Block> FLESH_BLOCK = BLOCKS.register("flesh_block", () -> new FleshBlock(createFleshProperties()));
 	public static final RegistryObject<SlabBlock> FLESH_BLOCK_SLAB = BLOCKS.register("flesh_block_slab", () -> new SlabBlock(createFleshProperties()));
-	public static final RegistryObject<StairsBlock> FLESH_BLOCK_STAIRS = BLOCKS.register("flesh_block_stairs", () -> new StairsBlock(() -> FLESH_BLOCK.get().defaultBlockState(), createFleshProperties()));
-	//	public static final RegistryObject<MutatedFleshBlock> MUTATED_FLESH_BLOCK = BLOCKS.register("mutated_flesh_block", () -> new MutatedFleshBlock(createFleshProperties()));
+	public static final RegistryObject<StairBlock> FLESH_BLOCK_STAIRS = BLOCKS.register("flesh_block_stairs", () -> new StairBlock(() -> FLESH_BLOCK.get().defaultBlockState(), createFleshProperties()));
 	public static final RegistryObject<Block> NECROTIC_FLESH_BLOCK = BLOCKS.register("necrotic_flesh_block", () -> new FleshBlock(createFleshProperties()));
 
-	//Plant
-//	public static final RegistryObject<Block> VILE_MELON_BLOCK = BLOCKS.register("vile_melon_block", () -> new Block(Block.Properties.create(Material.GOURD, MaterialColor.PINK).hardnessAndResistance(1f).sound(SoundType.WOOD)));
-//	public static final RegistryObject<FleshMelonCropBlock> VILE_MELON_CROP = BLOCKS.register("vile_melon_crop", () -> new FleshMelonCropBlock(Block.Properties.create(Material.PLANTS, MaterialColor.PINK).tickRandomly().hardnessAndResistance(0.2f).sound(SoundType.STEM)));
-
-	//Bio-Constructs
-	public static final RegistryObject<OwnableDoorBlock> FLESHBORN_DOOR = BLOCKS.register("fleshborn_door", () -> new OwnableDoorBlock(createFleshProperties().noOcclusion()));
-	public static final RegistryObject<OwnableTrapDoorBlock> FLESHBORN_TRAPDOOR = BLOCKS.register("fleshborn_trapdoor", () -> new OwnableTrapDoorBlock(createFleshProperties().noOcclusion().isValidSpawn(ModBlocks::neverAllowSpawn)));
-	public static final RegistryObject<OwnablePressurePlateBlock> FLESHBORN_PRESSURE_PLATE = BLOCKS.register("fleshborn_pressure_plate", () -> new OwnablePressurePlateBlock(createFleshProperties().noCollission()));
-	public static final RegistryObject<VoiceBoxBlock> VOICE_BOX = BLOCKS.register("voice_box", () -> new VoiceBoxBlock(createFleshProperties()));
-	public static final RegistryObject<ScentDiffuserBlock> SCENT_DIFFUSER = BLOCKS.register("scent_diffuser", () -> new ScentDiffuserBlock(createFleshProperties()));
-
-	//Semi-Container
-	public static final RegistryObject<MeatsoupCauldronBlock> MEATSOUP_CAULDRON = BLOCKS.register("meatsoup_cauldron", () -> new MeatsoupCauldronBlock(AbstractBlock.Properties.of(Material.METAL, MaterialColor.STONE).requiresCorrectToolForDrops().strength(2f).noOcclusion()));
-
-	//Containers
-	public static final RegistryObject<FleshChestBlock> FLESHBORN_CHEST = BLOCKS.register("fleshborn_chest", () -> new FleshChestBlock(createFleshProperties()));
-	public static final RegistryObject<GulgeBlock> GULGE = BLOCKS.register("gulge", () -> new GulgeBlock(createFleshProperties()));
-
-	//machine containers
-	public static final RegistryObject<ChewerBlock> CHEWER = BLOCKS.register("chewer", () -> new ChewerBlock(createFleshProperties()));
-	public static final RegistryObject<DigesterBlock> DIGESTER = BLOCKS.register("digester", () -> new DigesterBlock(createFleshProperties()));
-	public static final RegistryObject<SolidifierBlock> SOLIDIFIER = BLOCKS.register("solidifier", () -> new SolidifierBlock(createFleshProperties()));
-	public static final RegistryObject<DecomposerBlock> DECOMPOSER = BLOCKS.register("decomposer", () -> new DecomposerBlock(createFleshProperties()));
-	public static final RegistryObject<EvolutionPoolBlock> EVOLUTION_POOL = BLOCKS.register("evolution_pool", () -> new EvolutionPoolBlock(createFleshProperties()));
+	//## Machines
+	public static final RegistryObject<CreatorBlock> CREATOR = BLOCKS.register("creator", () -> new CreatorBlock(createFleshProperties()));
 
 	private ModBlocks() {}
 
 	@OnlyIn(Dist.CLIENT)
 	static void setRenderLayers() {
-		RenderTypeLookup.setRenderLayer(FLESH_TENTACLE.get(), RenderType.cutout());
-		RenderTypeLookup.setRenderLayer(FLESHBORN_DOOR.get(), RenderType.cutout());
-		RenderTypeLookup.setRenderLayer(FLESHBORN_TRAPDOOR.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(CREATOR.get(), RenderType.cutout());
 
-		RenderTypeLookup.setRenderLayer(DIGESTER.get(), RenderType.cutout());
-		RenderTypeLookup.setRenderLayer(CHEWER.get(), RenderType.cutout());
-		RenderTypeLookup.setRenderLayer(SOLIDIFIER.get(), RenderType.cutout());
-		RenderTypeLookup.setRenderLayer(EVOLUTION_POOL.get(), RenderType.translucent());
-		RenderTypeLookup.setRenderLayer(SCENT_DIFFUSER.get(), RenderType.cutout());
-		RenderTypeLookup.setRenderLayer(VOICE_BOX.get(), RenderType.translucent());
+//		ItemBlockRenderTypes.setRenderLayer(FLESH_TENTACLE.get(), RenderType.cutout());
+//		ItemBlockRenderTypes.setRenderLayer(FLESHBORN_DOOR.get(), RenderType.cutout());
+//		ItemBlockRenderTypes.setRenderLayer(FLESHBORN_TRAPDOOR.get(), RenderType.cutout());
+//
+//		ItemBlockRenderTypes.setRenderLayer(DIGESTER.get(), RenderType.cutout());
+//		ItemBlockRenderTypes.setRenderLayer(CHEWER.get(), RenderType.cutout());
+//		ItemBlockRenderTypes.setRenderLayer(SOLIDIFIER.get(), RenderType.cutout());
+//		ItemBlockRenderTypes.setRenderLayer(EVOLUTION_POOL.get(), RenderType.translucent());
+//		ItemBlockRenderTypes.setRenderLayer(SCENT_DIFFUSER.get(), RenderType.cutout());
+//		ItemBlockRenderTypes.setRenderLayer(VOICE_BOX.get(), RenderType.translucent());
 
 		//block with "glowing" overlay texture, also needs a overlay model see onModelBakeEvent() in ClientSetupHandler
-		//RenderTypeLookup.setRenderLayer(ModBlocks.FOOBAR.get(), renderType -> renderType == RenderType.getCutout() || renderType == RenderType.getTranslucent());
+		//ItemBlockRenderTypes.setRenderLayer(ModBlocks.FOOBAR.get(), renderType -> renderType == RenderType.getCutout() || renderType == RenderType.getTranslucent());
 	}
 
-	public static AbstractBlock.Properties createFleshProperties() {
-		return AbstractBlock.Properties.of(FLESH_MATERIAL).harvestTool(ToolType.SHOVEL).strength(3.0F, 3.0F).sound(SoundType.SLIME_BLOCK).isValidSpawn(ModBlocks::limitEntitySpawnToFlesh);
+	public static BlockBehaviour.Properties createFleshProperties() {
+		return BlockBehaviour.Properties.of(FLESH_MATERIAL).strength(3f, 3f).sound(SoundType.SLIME_BLOCK).isValidSpawn(ModBlocks::limitEntitySpawnToFlesh);
 	}
 
-	public static AbstractBlock.Properties createGlowingPlantProperties(int i) {
-		return AbstractBlock.Properties.of(Material.PLANT).noCollission().strength(0.2F).sound(SoundType.GRASS).lightLevel(v -> i);
+	public static BlockBehaviour.Properties createGlowingPlantProperties(int i) {
+		return BlockBehaviour.Properties.of(Material.PLANT).noCollission().strength(0.2f).sound(SoundType.GRASS).lightLevel(v -> i);
 	}
 
-	public static AbstractBlock.Properties createFleshPlantProperties() {
-		return AbstractBlock.Properties.of(getReplaceablePlantMat(), MaterialColor.COLOR_PINK).noCollission().strength(0.0F).sound(SoundType.SLIME_BLOCK);
+	public static BlockBehaviour.Properties createFleshPlantProperties() {
+		return BlockBehaviour.Properties.of(getReplaceablePlantMat(), MaterialColor.COLOR_PINK).noCollission().strength(0f).sound(SoundType.SLIME_BLOCK);
 	}
 
 	private static Material getReplaceablePlantMat() {
@@ -110,12 +82,12 @@ public final class ModBlocks {
 		return Material.PLANT; // is not replaceable nor flammable
 	}
 
-	public static boolean limitEntitySpawnToFlesh(BlockState state, IBlockReader reader, BlockPos pos, EntityType<?> entityType) {
+	public static boolean limitEntitySpawnToFlesh(BlockState state, BlockGetter level, BlockPos pos, EntityType<?> entityType) {
 //		entityType.getTags().contains(); //TODO: implement this
 		return false;
 	}
 
-	private static boolean neverAllowSpawn(BlockState state, IBlockReader reader, BlockPos pos, EntityType<?> entityType) {
+	private static boolean neverAllowSpawn(BlockState state, BlockGetter level, BlockPos pos, EntityType<?> entityType) {
 		return false;
 	}
 

@@ -1,18 +1,15 @@
 package com.github.elenterius.biomancy.util;
 
-import com.github.elenterius.biomancy.init.ClientSetupHandler;
-import com.github.elenterius.biomancy.mixin.client.ClientItemStackMixinAccessor;
+import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Util;
-import net.minecraft.util.text.*;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.*;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.text.DecimalFormat;
@@ -22,72 +19,57 @@ import java.util.Locale;
 import java.util.UUID;
 
 @OnlyIn(Dist.CLIENT)
-public final class ClientTextUtil extends TextUtil {
+public final class ClientTextUtil {
 
-	public static final Style LORE_STYLE = Style.EMPTY.withColor(TextFormatting.DARK_GRAY).withItalic(true);
+	public static final Style LORE_STYLE = Style.EMPTY.withColor(ChatFormatting.DARK_GRAY).withItalic(true);
 
-	private static final TranslationTextComponent CTRL_KEY_TEXT = new TranslationTextComponent("keyboard.ctrl");
-	private static final TranslationTextComponent ALT_KEY_TEXT = new TranslationTextComponent("keyboard.alt");
-	private static final ITextComponent FAKE_EMPTY_LINE = new StringTextComponent(" ");
+	private static final TranslatableComponent CTRL_KEY_TEXT = new TranslatableComponent("keyboard.ctrl");
+	private static final TranslatableComponent ALT_KEY_TEXT = new TranslatableComponent("keyboard.alt");
+	private static final TextComponent FAKE_EMPTY_LINE = new TextComponent(" ");
 
 	private static DecimalFormat decimalFormat = null;
 	private static String prevPattern = "";
 	private static Locale prevLocale = MinecraftForgeClient.getLocale();
 
-	private ClientTextUtil() {super();}
+	private ClientTextUtil() {}
 
 	/**
-	 * When the tooltip text is too long it gets wrapped and {@link StringTextComponent#EMPTY} components (empty strings) are discarded.<br>
+	 * When the tooltip text is too long it gets wrapped and {@link TextComponent#EMPTY} components (empty strings) are discarded.<br>
 	 * Is this a bug or intended vanilla behavior?
 	 */
-	public static ITextComponent EMPTY_LINE_HACK() {
-		return Screen.hasControlDown() ? FAKE_EMPTY_LINE : StringTextComponent.EMPTY;
+	public static Component EMPTY_LINE_HACK() {
+		return Screen.hasControlDown() ? FAKE_EMPTY_LINE : TextComponent.EMPTY;
 	}
 
-	public static IFormattableTextComponent getItemInfoTooltip(Item item) {
-		return Screen.hasControlDown() ? new TranslationTextComponent(Util.makeDescriptionId("tooltip", ForgeRegistries.ITEMS.getKey(item))) : pressButtonTo(CTRL_KEY_TEXT.plainCopy(), "show Info");
+	public static MutableComponent getItemInfoTooltip(Item item) {
+		return Screen.hasControlDown() ? new TranslatableComponent(Util.makeDescriptionId("tooltip", ForgeRegistries.ITEMS.getKey(item))) : pressButtonTo(CTRL_KEY_TEXT.plainCopy(), "show Info");
 	}
 
-	public static boolean showExtraInfo(List<ITextComponent> tooltip) {
+	public static boolean showExtraInfo(List<Component> tooltip) {
 		boolean flag = Screen.hasAltDown();
 		if (!flag) tooltip.add(pressButtonTo(ALT_KEY_TEXT.plainCopy(), "show Info").withStyle(LORE_STYLE));
 		return flag;
 	}
 
-	public static IFormattableTextComponent pressButtonTo(IFormattableTextComponent key, Object action) {
-		return new TranslationTextComponent(TextUtil.getTranslationKey("tooltip", "press_button_to"), key.withStyle(TextFormatting.AQUA), action);
+	public static MutableComponent pressButtonTo(MutableComponent key, Object action) {
+		return new TranslatableComponent(TextComponentUtil.getTranslationKey("tooltip", "press_button_to"), key.withStyle(ChatFormatting.AQUA), action);
 	}
 
-	public static IFormattableTextComponent getAltKey() {
+	public static MutableComponent getAltKey() {
 		return ALT_KEY_TEXT.plainCopy();
 	}
 
-	public static IFormattableTextComponent getCtrlKey() {
+	public static MutableComponent getCtrlKey() {
 		return CTRL_KEY_TEXT.plainCopy();
 	}
 
-	public static IFormattableTextComponent getDefaultKey() {
-		return ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.getTranslatedKeyMessage().plainCopy();
-	}
-
-	public static int getHideFlags(ItemStack stack) {
-		//noinspection ConstantConditions
-		return ((ClientItemStackMixinAccessor) (Object) stack).biomancy_getHideFlags();
-	}
-
-	public static boolean isToolTipVisible(ItemStack stack, ItemStack.TooltipDisplayFlags flags) {
-		return ClientItemStackMixinAccessor.biomancy_isToolTipVisible(getHideFlags(stack), flags);
-	}
-
-	public static void setTooltipVisible(ItemStack stack, ItemStack.TooltipDisplayFlags tooltipDisplay) {
-		if (stack.hasTag() && stack.getTag() != null && stack.getTag().contains("HideFlags", Constants.NBT.TAG_ANY_NUMERIC)) {
-			stack.getTag().putInt("HideFlags", stack.getTag().getInt("HideFlags") & ~tooltipDisplay.getMask());
-		}
-	}
+//	public static MutableComponent getDefaultKey() {
+//		return ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.getTranslatedKeyMessage().plainCopy();
+//	}
 
 	public static String tryToGetPlayerNameOnClientSide(UUID uuid) {
 		if (Minecraft.getInstance().level != null) {
-			PlayerEntity player = Minecraft.getInstance().level.getPlayerByUUID(uuid);
+			Player player = Minecraft.getInstance().level.getPlayerByUUID(uuid);
 			if (player != null) {
 				return player.getGameProfile().getName();
 			}

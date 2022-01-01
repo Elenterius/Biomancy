@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "biomancy:block/creator",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "biomancy:block/creator"
+    },
+    "facing=south": {
+      "model": "biomancy:block/creator",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "biomancy:block/creator",
+      "y": 270
+    }
+  }
+}

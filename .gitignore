@@ -26,4 +26,4 @@ forge*changelog.txt
 
 logs
 /src/generated/resources/.cache/
-/src_old
+/src_old/

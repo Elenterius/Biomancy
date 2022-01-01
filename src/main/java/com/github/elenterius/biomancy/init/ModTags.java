@@ -1,12 +1,12 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.Item;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.tags.ITag;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.tags.Tag;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.common.Tags;
 
 public final class ModTags {
@@ -20,7 +20,6 @@ public final class ModTags {
 
 	public static final class Items {
 		public static final Tags.IOptionalNamedTag<Item> RAW_MEATS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "raw_meats"));
-		//		public static final Tags.IOptionalNamedTag<Item> FLESH = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "flesh"));
 		public static final Tags.IOptionalNamedTag<Item> COOKED_MEATS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "cooked_meats"));
 		public static final Tags.IOptionalNamedTag<Item> SUGARS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "sugars"));
 
@@ -45,8 +44,8 @@ public final class ModTags {
 	public static final class EntityTypes {
 		public static final Tags.IOptionalNamedTag<EntityType<?>> INFERNAL = EntityTypeTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "infernal"));
 
-		public static final ITag.INamedTag<EntityType<?>> BOSSES = EntityTypeTags.bind("forge:bosses");
-		public static final ITag.INamedTag<EntityType<?>> NOT_CLONEABLE = EntityTypeTags.bind(BiomancyMod.createRLString("not_cloneable"));
+		public static final Tag.Named<EntityType<?>> BOSSES = EntityTypeTags.bind("forge:bosses");
+		public static final Tag.Named<EntityType<?>> NOT_CLONEABLE = EntityTypeTags.bind(BiomancyMod.createRLString("not_cloneable"));
 
 		private EntityTypes() {}
 
