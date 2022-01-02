@@ -8,9 +8,9 @@
   "item.biomancy.bio_polymers": "Bio-Polymer Fibers",
   "item.biomancy.plant_matter": "Plant Matter",
   "item.biomancy.bio_lumens": "Bioluminescent Goo",
-  "item.biomancy.oxide_dust": "Oxide Powder",
+  "item.biomancy.oxide_dust": "Oxides",
   "item.biomancy.lithic_dust": "Lithic Powder",
-  "item.biomancy.lapidary_dust": "Lapidary Powder",
+  "item.biomancy.lapidary_dust": "Lapides",
   "item.biomancy.potent_dust": "Potent Powder",
   "item.biomancy.exotic_matter": "Exotic Matter",
 
@@ -26,6 +26,8 @@
   "item.biomancy.serum": "Serum",
   "item.biomancy.bone_sword": "Sharpened Bone",
 
+  "block.biomancy.creator": "Flesh Crucible",
+
   "block.biomancy.flesh_block": "Flesh Block",
   "block.biomancy.flesh_block_slab": "Flesh Block Slab",
   "block.biomancy.flesh_block_stairs": "Flesh Block Stairs",
@@ -33,6 +35,8 @@
   "block.biomancy.necrotic_flesh_block": "Necrotic Flesh Block",
 
   "effect.biomancy.flesh_eating_disease": "Necrotizing Flesh",
+
+  "tooltip.biomancy.creator": "Offer adequate Tributes to the Flesh Lord and summon forth primordial messengers of exquisite flesh.",
 
   "#comment": "///////////////// outdated past this //////////////////////////////////////////////////////////////////////////",
 

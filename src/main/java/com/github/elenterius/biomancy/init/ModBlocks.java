@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.api.distmarker.Dist;
@@ -26,11 +27,14 @@ import net.minecraftforge.registries.RegistryObject;
 public final class ModBlocks {
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, BiomancyMod.MOD_ID);
 
-	//Plant Types
+	//# Plant Types
 	public static final PlantType FLESH_PLANT_TYPE = PlantType.get("flesh");
 
-	//Materials
+	//# Materials
 	public static final Material FLESH_MATERIAL = new Material.Builder(MaterialColor.COLOR_PINK).build();
+
+	//# Block Properties
+	public static final BooleanProperty CRAFTING_PROPERTY = BooleanProperty.create("crafting");
 
 	//# Blocks
 	public static final RegistryObject<Block> FLESH_BLOCK = BLOCKS.register("flesh_block", () -> new FleshBlock(createFleshProperties()));

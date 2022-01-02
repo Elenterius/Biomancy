@@ -8,6 +8,8 @@ public final class ModDamageSources {
 	public static final DamageSource DISEASE = createGenericDamage("disease").bypassArmor().bypassMagic();
 	public static final DamageSource RAVENOUS_HUNGER = createGenericDamage("ravenous_hunger").bypassArmor().bypassMagic();
 
+	public static final DamageSource CREATOR_SPIKES = createGenericDamage("creator_spikes").bypassArmor();
+
 	public static final DamageSource SYMBIONT_EAT = createGenericDamage("symbiont_eat").bypassArmor().bypassMagic();
 	public static final DamageSource SYMBIONT_BITE = createGenericDamage("symbiont_bite").bypassArmor();
 	public static final DamageSource SYMBIONT_GENERIC_ATTACK = createGenericDamage("symbiont_generic");

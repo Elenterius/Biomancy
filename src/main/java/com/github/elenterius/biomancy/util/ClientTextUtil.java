@@ -42,7 +42,7 @@ public final class ClientTextUtil {
 	}
 
 	public static MutableComponent getItemInfoTooltip(Item item) {
-		return Screen.hasControlDown() ? new TranslatableComponent(Util.makeDescriptionId("tooltip", ForgeRegistries.ITEMS.getKey(item))) : pressButtonTo(CTRL_KEY_TEXT.plainCopy(), "show Info");
+		return Screen.hasControlDown() ? new TranslatableComponent(Util.makeDescriptionId("tooltip", ForgeRegistries.ITEMS.getKey(item))).withStyle(LORE_STYLE) : pressButtonTo(CTRL_KEY_TEXT.plainCopy(), "show Info").withStyle(LORE_STYLE);
 	}
 
 	public static boolean showExtraInfo(List<Component> tooltip) {
