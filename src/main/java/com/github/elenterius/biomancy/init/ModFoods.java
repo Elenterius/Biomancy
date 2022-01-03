@@ -14,10 +14,11 @@ public final class ModFoods {
 			.effect(() -> new MobEffectInstance(MobEffects.HUNGER, 560, 0), 1f)
 			.effect(() -> new MobEffectInstance(MobEffects.NIGHT_VISION, 550, 0), 0.35f)
 			.build();
+	public static final FoodProperties NUTRIENT_BAR = new FoodProperties.Builder().nutrition(4).saturationMod(0.3F).build();
+	public static final FoodProperties PROTEIN_BAR = new FoodProperties.Builder().nutrition(5).saturationMod(0.4F).meat().build();
+
 //	public static final FoodProperties STOMACH = new FoodProperties.Builder().nutrition(1).saturationMod(0.2F).meat().build();
 //	public static final FoodProperties ARTIFICIAL_STOMACH = new FoodProperties.Builder().nutrition(1).saturationMod(0.2F).meat().build();
-//	public static final FoodProperties NUTRIENT_BAR = new FoodProperties.Builder().nutrition(4).saturationMod(0.3F).build();
-//	public static final FoodProperties PROTEIN_BAR = new FoodProperties.Builder().nutrition(5).saturationMod(0.4F).meat().build();
 //	public static final FoodProperties MEAT_BERRY = new FoodProperties.Builder().nutrition(3).saturationMod(0.4F).meat().build();
 //	public static final FoodProperties MILK_GEL = new FoodProperties.Builder().alwaysEat().build();
 

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "F  ",
+    "FF ",
+    "FFF"
+  ],
+  "key": {
+    "F": {
+      "item": "biomancy:flesh_block"
+    }
+  },
+  "result": {
+    "item": "biomancy:flesh_block_stairs",
+    "count": 4
+  }
+}

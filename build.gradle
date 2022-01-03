@@ -32,7 +32,8 @@ minecraft {
     mappings channel: 'parchment', version: "${parchment_version}-${mc_version}"  // official mappings augmented with parameter names and javadocs
 
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
-//    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
         client {
@@ -148,6 +149,7 @@ dependencies {
 }
 
 import java.util.concurrent.TimeUnit
+
 processResources {
     exclude '.cache'
     exclude '**/*.psd'
@@ -169,7 +171,7 @@ void minifyJsons(String fdir) {
         }
     }
     long ms = TimeUnit.MILLISECONDS.convert(System.nanoTime() - startTime, TimeUnit.NANOSECONDS)
-    printf "%7s sec, %s ms \n", (int)(ms/1000), ms%1000
+    printf "%7s sec, %s ms \n", (int) (ms / 1000), ms % 1000
 }
 
 build {
@@ -198,7 +200,7 @@ jar {
         attributes([
                 "Specification-Title"     : "biomancy",
                 "Specification-Vendor"    : "Elenterius",
-                "Specification-Version"   : "1", // We are version 1 of ourselves
+                "Specification-Version"   : "1",
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.mod_version,
                 "Implementation-Vendor"   : "Elenterius",

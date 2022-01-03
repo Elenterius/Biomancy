@@ -1,0 +1,40 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:beef",
+    "minecraft:porkchop",
+    "minecraft:chicken",
+    "minecraft:cod",
+    "minecraft:salmon",
+    "minecraft:rabbit",
+    "minecraft:mutton",
+    "minecraft:tropical_fish",
+    "minecraft:pufferfish",
+    "biomancy:flesh_scraps",
+    "biomancy:oculus",
+    {
+      "id": "createfa:ground_chicken",
+      "required": false
+    },
+    {
+      "id": "createfa:ground_beef",
+      "required": false
+    },
+    {
+      "id": "circus:clown",
+      "required": false
+    },
+    {
+      "id": "rats:raw_rat",
+      "required": false
+    },
+    {
+      "id": "evilcraft:flesh_humanoid",
+      "required": false
+    },
+    {
+      "id": "evilcraft:flesh_werewolf",
+      "required": false
+    }
+  ]
+}

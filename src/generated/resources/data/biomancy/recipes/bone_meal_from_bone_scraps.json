@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "biomancy:bone_scraps"
+    },
+    {
+      "item": "biomancy:bone_scraps"
+    },
+    {
+      "item": "biomancy:bone_scraps"
+    },
+    {
+      "item": "biomancy:bone_scraps"
+    }
+  ],
+  "result": {
+    "item": "minecraft:bone_meal"
+  }
+}

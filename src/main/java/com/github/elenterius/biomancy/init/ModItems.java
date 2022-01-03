@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.world.item.CreatorBlockItem;
+import com.github.elenterius.biomancy.world.item.EffectCureItem;
 import com.github.elenterius.biomancy.world.item.SerumItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -16,26 +17,32 @@ public final class ModItems {
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, BiomancyMod.MOD_ID);
 
 	//# Material
-	public static final RegistryObject<Item> NECROTIC_FLESH = ITEMS.register("necrotic_flesh_lump", () -> new Item(createProperties().food(ModFoods.NECROTIC_FLESH_LUMP)));
+	public static final RegistryObject<Item> NECROTIC_FLESH_LUMP = ITEMS.register("necrotic_flesh_lump", () -> new Item(createProperties().food(ModFoods.NECROTIC_FLESH_LUMP)));
 	public static final RegistryObject<Item> SKIN_CHUNK = ITEMS.register("skin_chunk", () -> new Item(createProperties()));
 
 	//## Components
-	public static final RegistryObject<Item> FLESH_LUMP = ITEMS.register("flesh_lump", () -> new Item(createProperties().food(ModFoods.FLESH_LUMP)));
+	public static final RegistryObject<Item> FLESH_SCRAPS = ITEMS.register("flesh_scraps", () -> new Item(createProperties().food(ModFoods.FLESH_LUMP)));
 	public static final RegistryObject<Item> BONE_SCRAPS = ITEMS.register("bone_scraps", () -> new Item(createProperties()));
 	public static final RegistryObject<Item> BIO_POLYMERS = ITEMS.register("bio_polymers", () -> new Item(createProperties()));
 	public static final RegistryObject<Item> BIO_LUMENS = ITEMS.register("bio_lumens", () -> new Item(createProperties()));
 	public static final RegistryObject<Item> PLANT_MATTER = ITEMS.register("plant_matter", () -> new Item(createProperties()));
-	public static final RegistryObject<Item> OXIDE_DUST = ITEMS.register("oxide_dust", () -> new Item(createProperties()));
-	public static final RegistryObject<Item> LITHIC_DUST = ITEMS.register("lithic_dust", () -> new Item(createProperties()));
-	public static final RegistryObject<Item> LAPIDARY_DUST = ITEMS.register("lapidary_dust", () -> new Item(createProperties()));
+	public static final RegistryObject<Item> OXIDES = ITEMS.register("oxides", () -> new Item(createProperties()));
+	public static final RegistryObject<Item> LITHICS = ITEMS.register("lithics", () -> new Item(createProperties()));
+	public static final RegistryObject<Item> LAPIDS = ITEMS.register("lapids", () -> new Item(createProperties()));
 	public static final RegistryObject<Item> POTENT_DUST = ITEMS.register("potent_dust", () -> new Item(createProperties()));
-	public static final RegistryObject<Item> EXOTIC_MATTER = ITEMS.register("exotic_matter", () -> new Item(createProperties()));
 
-	//## Complex Components
-	public static final RegistryObject<Item> NUTRIENT_PASTE = ITEMS.register("nutrient_paste", () -> new Item(createProperties()));
+	//### Complex Byproduct
+	public static final RegistryObject<Item> TOXINS = ITEMS.register("toxins", () -> new Item(createProperties()));
 	public static final RegistryObject<Item> BILE = ITEMS.register("bile", () -> new Item(createProperties()));
-	public static final RegistryObject<Item> OCULUS = ITEMS.register("oculus", () -> new Item(createProperties().food(ModFoods.OCULUS)));
+
+	//### Complex Crafted
+	public static final RegistryObject<Item> NUTRIENT_PASTE = ITEMS.register("nutrient_paste", () -> new Item(createProperties()));
 	public static final RegistryObject<Item> BIOMETAL = ITEMS.register("biometal_ingot", () -> new Item(createProperties()));
+	public static final RegistryObject<Item> OCULUS = ITEMS.register("oculus", () -> new Item(createProperties().food(ModFoods.OCULUS)));
+
+	//# Food
+	public static final RegistryObject<Item> NUTRIENT_BAR = ITEMS.register("nutrient_bar", () -> new EffectCureItem(createProperties().food(ModFoods.NUTRIENT_BAR)));
+	public static final RegistryObject<Item> PROTEIN_BAR = ITEMS.register("protein_bar", () -> new EffectCureItem(createProperties().food(ModFoods.PROTEIN_BAR)));
 
 	//# Tools
 	public static final RegistryObject<Item> GLASS_VIAL = ITEMS.register("glass_vial", () -> new Item(createProperties()));
@@ -70,10 +77,6 @@ public final class ModItems {
 //	public static final RegistryObject<Item> REJUVENATING_MUCUS = ITEMS.register("rejuvenating_mucus", () -> new Item(createItemProperties()));
 //	public static final RegistryObject<DecayingItem> ERODING_BILE = ITEMS.register("eroding_bile", () -> new DecayingItem(6 * 60, 0.5f, createItemProperties()));
 //	public static final RegistryObject<Item> HORMONE_BILE = ITEMS.register("hormone_bile", () -> new Item(createItemProperties()));
-
-	//# Food
-//	public static final RegistryObject<Item> NUTRIENT_BAR = ITEMS.register("nutrient_bar", () -> new EffectCureItem(createItemProperties().food(ModFoods.NUTRIENT_BAR)));
-//	public static final RegistryObject<Item> PROTEIN_BAR = ITEMS.register("protein_bar", () -> new EffectCureItem(createItemProperties().food(ModFoods.PROTEIN_BAR)));
 
 	//# Armor
 //	public static final RegistryObject<OculiGogglesArmorItem> OCULI_OF_UNVEILING = ITEMS.register("unveiling_oculi", () -> new OculiGogglesArmorItem(ArmorMaterial.IRON, createItemProperties().rarity(Rarity.EPIC)));

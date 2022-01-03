@@ -21,11 +21,7 @@ public final class CommonSetupHandler {
 		event.enqueueWork(() -> {
 			ModTags.init();
 			ModTriggers.register();
-
-			ModRecipes.registerRecipeTypes();
-			ModRecipes.registerCustomItemPredicates();
-			ModRecipes.registerComposterRecipes();
-
+			ModRecipes.register();
 			registerDispenserBehaviors();
 		});
 	}

@@ -54,7 +54,7 @@ public class SerumItem extends Item {
 		return super.getDescriptionId(stack);
 	}
 
-	public int getReagentColor(ItemStack stack) {
+	public int getSerumColor(ItemStack stack) {
 		return Serum.getColor(stack.getOrCreateTag());
 	}
 

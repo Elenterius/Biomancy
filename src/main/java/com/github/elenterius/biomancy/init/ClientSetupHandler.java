@@ -83,19 +83,18 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void onItemColorRegistry(final ColorHandlerEvent.Item event) {
-		event.getItemColors().register((stack, index) -> 0x8d758c, ModItems.NECROTIC_FLESH.get(), ModItems.NECROTIC_FLESH_BLOCK.get());
-//		event.getItemColors().register((stack, index) -> 0xedaeaa, ModItems.PROTEIN_BAR.get());
-//
+		event.getItemColors().register((stack, index) -> index == 0 ? ModItems.SERUM.get().getSerumColor(stack) : -1, ModItems.SERUM.get());
 //		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.INJECTION_DEVICE.get().getReagentColor(stack) : -1, ModItems.INJECTION_DEVICE.get());
-//		event.getItemColors().register((stack, index) -> index == 0 ? ModItems.REAGENT.get().getReagentColor(stack) : -1, ModItems.REAGENT.get());
 //		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.BOOMLING.get().getPotionColor(stack) : -1, ModItems.BOOMLING.get());
 //		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.BOOMLING_HIVE_GUN.get().getPotionColor(stack) : -1, ModItems.BOOMLING_HIVE_GUN.get());
+
+		event.getItemColors().register((stack, index) -> 0x8d758c, ModItems.NECROTIC_FLESH_LUMP.get(), ModItems.NECROTIC_FLESH_BLOCK.get());
+		event.getItemColors().register((stack, index) -> 0xedaeaa, ModItems.PROTEIN_BAR.get());
 	}
 
 	@SubscribeEvent
 	public static void onItemColorRegistry(final ColorHandlerEvent.Block event) {
 		event.getBlockColors().register((state, displayReader, pos, index) -> 0x8d758c, ModBlocks.NECROTIC_FLESH_BLOCK.get());
-//		event.getBlockColors().register((state, displayReader, pos, index) -> state.getValue(MeatsoupCauldronBlock.LEVEL) == MeatsoupCauldronBlock.MAX_LEVEL ? 0x8d758c : -1, ModBlocks.MEATSOUP_CAULDRON.get());
 	}
 
 	@SubscribeEvent

@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "biomancy:necrotic_flesh_block"
+    },
+    {
+      "item": "biomancy:nutrient_paste"
+    },
+    {
+      "item": "biomancy:nutrient_paste"
+    },
+    {
+      "item": "biomancy:nutrient_paste"
+    },
+    {
+      "item": "biomancy:nutrient_paste"
+    },
+    {
+      "item": "biomancy:nutrient_paste"
+    },
+    {
+      "item": "biomancy:nutrient_paste"
+    }
+  ],
+  "result": {
+    "item": "biomancy:flesh_block"
+  }
+}

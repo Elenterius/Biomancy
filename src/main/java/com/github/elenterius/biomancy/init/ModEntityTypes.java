@@ -12,6 +12,7 @@ import org.apache.logging.log4j.MarkerManager;
 
 @Mod.EventBusSubscriber(modid = BiomancyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class ModEntityTypes {
+
 	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, BiomancyMod.MOD_ID);
 
 //	//Aberrations

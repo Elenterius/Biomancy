@@ -30,7 +30,7 @@ public class FleshEatingDiseaseEffect extends StatusEffect {
 		boolean attackSuccessful = livingEntity.hurt(ModDamageSources.DISEASE, damage);
 
 		if (!livingEntity.level.isClientSide() && livingEntity.level.random.nextFloat() < 0.15f) {
-			ItemStack stack = new ItemStack(livingEntity.level.random.nextFloat() < 0.55f ? ModItems.NECROTIC_FLESH.get() : ModItems.SKIN_CHUNK.get());
+			ItemStack stack = new ItemStack(livingEntity.level.random.nextFloat() < 0.55f ? ModItems.NECROTIC_FLESH_LUMP.get() : ModItems.SKIN_CHUNK.get());
 			dropItem(livingEntity.level, stack, livingEntity.getX(), livingEntity.getY() + 0.5f, livingEntity.getZ());
 		}
 

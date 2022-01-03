@@ -1,0 +1,35 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:bread",
+    "minecraft:mushroom_stem",
+    "minecraft:suspicious_stew",
+    "minecraft:cocoa_beans",
+    "minecraft:baked_potato",
+    "minecraft:honeycomb",
+    "minecraft:melon",
+    "minecraft:pumpkin",
+    "minecraft:dried_kelp_block",
+    "minecraft:sea_pickle",
+    "minecraft:lily_pad",
+    "minecraft:carved_pumpkin",
+    "minecraft:warped_wart_block",
+    "minecraft:nether_wart_block",
+    "minecraft:red_mushroom_block",
+    "minecraft:brown_mushroom_block",
+    "minecraft:shroomlight",
+    "minecraft:mushroom_stem",
+    {
+      "id": "create:bar_of_chocolate",
+      "required": false
+    },
+    {
+      "id": "rats:blue_cheese",
+      "required": false
+    },
+    {
+      "id": "#forge:bread",
+      "required": false
+    }
+  ]
+}

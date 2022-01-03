@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "biomancy:necrotic_flesh_lump"
+    },
+    {
+      "item": "biomancy:nutrient_paste"
+    }
+  ],
+  "result": {
+    "item": "biomancy:flesh_scraps"
+  }
+}

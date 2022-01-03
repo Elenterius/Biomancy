@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " B ",
+    "CBC",
+    " S "
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:rods/wooden"
+    },
+    "B": {
+      "tag": "forge:bones"
+    },
+    "C": {
+      "item": "biomancy:bone_scraps"
+    }
+  },
+  "result": {
+    "item": "biomancy:bone_sword"
+  }
+}

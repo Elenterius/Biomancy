@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "LPL",
+    "PLP",
+    "LPL"
+  ],
+  "key": {
+    "P": {
+      "item": "biomancy:plant_matter"
+    },
+    "L": {
+      "item": "biomancy:lapids"
+    }
+  },
+  "result": {
+    "item": "minecraft:dirt"
+  }
+}

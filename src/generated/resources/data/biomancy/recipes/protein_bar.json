@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SBS",
+    "NNN"
+  ],
+  "key": {
+    "N": {
+      "item": "biomancy:nutrient_paste"
+    },
+    "B": {
+      "item": "biomancy:flesh_scraps"
+    },
+    "S": {
+      "tag": "forge:seeds"
+    }
+  },
+  "result": {
+    "item": "biomancy:protein_bar"
+  }
+}

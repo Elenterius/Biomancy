@@ -3,21 +3,26 @@
   "key.categories.biomancy": "Biomancy Mod",
   "key.biomancy.item_default": "Enable/Disable/Toggle Item Ability/Action",
 
-  "item.biomancy.flesh_lump": "Lump of Flesh",
+  "item.biomancy.flesh_scraps": "Flesh Scraps",
   "item.biomancy.bone_scraps": "Bone Scraps",
   "item.biomancy.bio_polymers": "Bio-Polymer Fibers",
   "item.biomancy.plant_matter": "Plant Matter",
   "item.biomancy.bio_lumens": "Bioluminescent Goo",
-  "item.biomancy.oxide_dust": "Oxides",
-  "item.biomancy.lithic_dust": "Lithic Powder",
-  "item.biomancy.lapidary_dust": "Lapides",
-  "item.biomancy.potent_dust": "Potent Powder",
-  "item.biomancy.exotic_matter": "Exotic Matter",
+  "item.biomancy.oxides": "Oxides",
+  "item.biomancy.lithics": "Lithics",
+  "item.biomancy.lapids": "Lapids",
+  "item.biomancy.potent_dust": "Potent Dust",
 
+  "item.biomancy.toxins": "Toxins",
+  "item.biomancy.nectar": "Nectar",
   "item.biomancy.bile": "Bile",
-  "item.biomancy.oculus": "Oculus",
-  "item.biomancy.nutrient_paste": "Nutrient Paste",
+
   "item.biomancy.biometal_ingot": "Biometal Ingot",
+  "item.biomancy.oculus": "Oculus",
+
+  "item.biomancy.nutrient_paste": "Nutrient Paste",
+  "item.biomancy.nutrient_bar": "Nutrient Bar",
+  "item.biomancy.protein_bar": "Meaty Granola Bar",
 
   "item.biomancy.necrotic_flesh_lump": "Necrotic Lump of Flesh",
   "item.biomancy.skin_chunk": "Chunk of Skin",
@@ -36,7 +41,14 @@
 
   "effect.biomancy.flesh_eating_disease": "Necrotizing Flesh",
 
+  "death.attack.biomancy.creator_spikes": "%1$s offered the wrong Tribute to the Flesh Lord and was impaled by bone spikes",
+
   "tooltip.biomancy.creator": "Offer adequate Tributes to the Flesh Lord and summon forth primordial messengers of exquisite flesh.",
+
+  "advancements.biomancy.root.title": "Biomancy",
+  "advancements.biomancy.root.description": "Raw Meat is useful...",
+  "advancements.biomancy.flesh.title": "Meaty Sacrifice",
+  "advancements.biomancy.flesh.description": "Use the Flesh Crucible to sacrifice items to the Flesh Lord",
 
   "#comment": "///////////////// outdated past this //////////////////////////////////////////////////////////////////////////",
 
@@ -70,8 +82,6 @@
   "item.biomancy.hormone_bile": "Hormone Rich Bile",
   "item.biomancy.bolus": "Crushed Biomass",
   "item.biomancy.digestate": "Digestate",
-  "item.biomancy.nutrient_bar": "Nutrient Bar",
-  "item.biomancy.protein_bar": "Meaty Granola Bar",
   "item.biomancy.milk_gel": "Milk Coagulum",
   "item.biomancy.lens": "Meniscus Lens",
   "item.biomancy.mended_skin": "Stitched Skin",
@@ -263,10 +273,6 @@
   "death.attack.biomancy.tooth_projectile": "%1$s was forcefully implanted with teeth by %2$s",
   "death.attack.biomancy.tooth_projectile.item": "%1$s received a lethal dental implant by %2$s using %3$s",
 
-  "advancements.biomancy.root.title": "Biomancy",
-  "advancements.biomancy.root.description": "Raw Meat is useful...",
-  "advancements.biomancy.flesh.title": "Flesh Crafting",
-  "advancements.biomancy.flesh.description": "Fill a cauldron with raw meats, some bone meal and a potion of healing",
   "advancements.biomancy.stomach.title": "Organic Food Converter?",
   "advancements.biomancy.stomach.description": "Kill some animals or flesh blobs for a stomach",
   "advancements.biomancy.digester.title": "Organic Fuel Production",

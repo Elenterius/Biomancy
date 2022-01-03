@@ -1,0 +1,37 @@
+{
+  "parent": "minecraft:biomancy/root",
+  "display": {
+    "icon": {
+      "item": "biomancy:creator"
+    },
+    "title": {
+      "translate": "advancements.biomancy.flesh.title"
+    },
+    "description": {
+      "translate": "advancements.biomancy.flesh.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "has_flesh_block": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:flesh_block"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_flesh_block"
+    ]
+  ]
+}

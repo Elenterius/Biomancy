@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "biomancy:flesh_scraps"
+    },
+    {
+      "item": "biomancy:flesh_scraps"
+    },
+    {
+      "item": "biomancy:flesh_scraps"
+    },
+    {
+      "item": "biomancy:flesh_scraps"
+    },
+    {
+      "item": "biomancy:flesh_scraps"
+    },
+    {
+      "item": "biomancy:flesh_scraps"
+    },
+    {
+      "item": "biomancy:flesh_scraps"
+    },
+    {
+      "item": "biomancy:flesh_scraps"
+    },
+    {
+      "item": "biomancy:flesh_scraps"
+    }
+  ],
+  "result": {
+    "item": "biomancy:flesh_block"
+  }
+}

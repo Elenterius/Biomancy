@@ -1,0 +1,116 @@
+package com.github.elenterius.biomancy.recipe;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import javax.annotation.Nullable;
+import java.util.Objects;
+import java.util.Random;
+
+public class VariableProductionOutput {
+
+	private final Item item;
+	private final @Nullable
+	CompoundTag tag;
+	private final ItemCountRange countRange;
+
+	public VariableProductionOutput(ItemStack stack) {
+		this(stack, stack.getCount());
+	}
+
+	public VariableProductionOutput(ItemStack stack, int count) {
+		this(stack.getItem(), stack.getTag(), new ItemCountRange.ConstantValue(count));
+	}
+
+	public VariableProductionOutput(ItemStack stack, int min, int max) {
+		this(stack.getItem(), stack.getTag(), new ItemCountRange.UniformRange(min, max));
+	}
+
+	public VariableProductionOutput(ItemLike item) {
+		this(item, 1);
+	}
+
+	public VariableProductionOutput(ItemLike item, int count) {
+		this(item, new ItemCountRange.ConstantValue(count));
+	}
+
+	public VariableProductionOutput(ItemLike item, int min, int max) {
+		this(item, new ItemCountRange.UniformRange(min, max));
+	}
+
+	public VariableProductionOutput(ItemStack stack, ItemCountRange countRange) {
+		this(stack.getItem(), stack.getTag(), countRange);
+	}
+
+	public VariableProductionOutput(ItemLike item, ItemCountRange countRange) {
+		this(item, null, countRange);
+	}
+
+	public VariableProductionOutput(ItemLike item, @Nullable CompoundTag tag, ItemCountRange countRange) {
+		this.item = item.asItem();
+		this.tag = tag;
+		this.countRange = countRange;
+	}
+
+	public Item getItem() {
+		return item;
+	}
+
+	public ItemStack getItemStack() {
+		ItemStack stack = new ItemStack(item);
+		if (tag != null && !tag.isEmpty()) {
+			stack.setTag(tag.copy());
+		}
+		return stack;
+	}
+
+	public int getCount(Random rng) {
+		return countRange.getCount(rng);
+	}
+
+	public ItemCountRange getCountRange() {return countRange;}
+
+	public JsonObject serialize() {
+		JsonObject parent = new JsonObject();
+
+		JsonObject result = new JsonObject();
+		result.addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)).toString());
+
+		JsonObject obj = new JsonObject();
+		ItemCountRange.toJson(obj, countRange);
+		result.add("count_range", obj);
+
+		if (tag != null && !tag.isEmpty()) {
+			result.addProperty("nbt", tag.getAsString());
+		}
+		parent.add("result", result);
+
+		return parent;
+	}
+
+	public static VariableProductionOutput deserialize(JsonObject jsonObject) {
+		JsonObject result = GsonHelper.getAsJsonObject(jsonObject, "result");
+		ItemStack stack = ShapedRecipe.itemStackFromJson(result);
+		ItemCountRange countRange = ItemCountRange.fromJson(GsonHelper.getAsJsonObject(result, "count_range"));
+		if (stack.isEmpty()) throw new JsonParseException("Result can't be Empty");
+		return new VariableProductionOutput(stack, countRange);
+	}
+
+	public void write(FriendlyByteBuf buffer) {
+		buffer.writeItem(getItemStack());
+		ItemCountRange.toNetwork(buffer, countRange);
+	}
+
+	public static VariableProductionOutput read(FriendlyByteBuf buffer) {
+		return new VariableProductionOutput(buffer.readItem(), ItemCountRange.fromNetwork(buffer));
+	}
+
+}
