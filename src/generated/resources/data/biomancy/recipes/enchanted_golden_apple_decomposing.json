@@ -21,9 +21,8 @@
       "result": {
         "item": "biomancy:oxides",
         "count_range": {
-          "type": "uniform",
-          "min": 78,
-          "max": 81
+          "type": "constant",
+          "value": 1
         }
       }
     },

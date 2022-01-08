@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.world.item;
 
-import com.github.elenterius.biomancy.client.renderer.item.CreatorBlockItemRenderer;
+import com.github.elenterius.biomancy.client.renderer.item.BEWLRenderer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
@@ -18,11 +18,9 @@ public class CreatorBlockItem extends BlockItem {
 	@Override
 	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
 		consumer.accept(new IItemRenderProperties() {
-			private final CreatorBlockItemRenderer renderer = new CreatorBlockItemRenderer();
-
 			@Override
 			public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-				return renderer;
+				return BEWLRenderer.INSTANCE;
 			}
 		});
 	}

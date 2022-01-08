@@ -2,9 +2,15 @@ package com.github.elenterius.biomancy.world.block.entity;
 
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModDamageSources;
+import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModTags;
+import com.github.elenterius.biomancy.world.entity.flesh.FleshBlob;
+import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.ChatType;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -81,7 +87,7 @@ public class CreatorBlockEntity extends BlockEntity implements IAnimatable {
 		int meatItems = inv.countMeatItems();
 		int uniqueMeats = inv.countUniqueMeatItems();
 		float penalty = 1f - (float) meatItems / MAX_ITEMS; //other items
-		float chance = (uniqueMeats < 3 ? 1f : 0.85f) - penalty;
+		float chance = (uniqueMeats < 3 ? 0.85f : 1f) - penalty;
 
 		//clear inventory
 		inv.setSize(MAX_ITEMS);
@@ -92,24 +98,28 @@ public class CreatorBlockEntity extends BlockEntity implements IAnimatable {
 		level.sendBlockUpdated(pos, getBlockState(), getBlockState(), 2);
 
 		if (level.random.nextFloat() < chance) {
-			spawnMob(level, pos);
+			TextComponent textComponent = new TextComponent("The Flesh Lord is pleased...");
+			level.getServer().getPlayerList().broadcastMessage(textComponent.withStyle(ChatFormatting.LIGHT_PURPLE), ChatType.SYSTEM, Util.NIL_UUID);
+			spawnMob(level, pos, penalty);
 			level.playSound(null, pos, SoundEvents.PLAYER_BURP, SoundSource.BLOCKS, 1f, level.random.nextFloat(0.25f, 0.75f));
 		}
 		else {
+			TextComponent textComponent = new TextComponent("Someone angered the Flesh Lord...");
+			level.getServer().getPlayerList().broadcastMessage(textComponent.withStyle(ChatFormatting.LIGHT_PURPLE), ChatType.SYSTEM, Util.NIL_UUID);
 			attackAOE(level, pos);
 			level.playSound(null, pos, SoundEvents.GOAT_SCREAMING_RAM_IMPACT, SoundSource.BLOCKS, 1f, 0.5f);
 		}
 	}
 
-	public void spawnMob(ServerLevel level, BlockPos pos) {
-//		FleshBlobEntity blobEntity = ModEntityTypes.FLESH_BLOB.get().create(level);
-//		if (blobEntity != null) {
-//			blobEntity.moveTo(pos.getX() + 0.5f, pos.getY() + 4f / 16f, pos.getZ() + 0.5f, 0, 0);
-//			if (chance < 0.60f) {
-//				blobEntity.setHangry();
-//			}
-//			level.addFreshEntity(blobEntity);
-//		}
+	public void spawnMob(ServerLevel level, BlockPos pos, float penalty) {
+		FleshBlob fleshBlob = ModEntityTypes.FLESH_BLOB.get().create(level);
+		if (fleshBlob != null) {
+			fleshBlob.moveTo(pos.getX() + 0.5f, pos.getY() + 4f / 16f + 0.5f, pos.getZ() + 0.5f, 0, 0);
+			if (penalty >= 0.5f) {
+				fleshBlob.setHangry();
+			}
+			level.addFreshEntity(fleshBlob);
+		}
 //			OculusObserverEntity entity = ModEntityTypes.OCULUS_OBSERVER.get().create(worldIn);
 //			if (entity != null) {
 //				entity.moveTo(pos.getX() + 0.5f, pos.getY() + 4f / 16f, pos.getZ() + 0.5f, 0, 0);

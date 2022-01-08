@@ -71,19 +71,13 @@ public final class ModBlocks {
 	}
 
 	public static BlockBehaviour.Properties createGlowingPlantProperties(int i) {
+		// is not replaceable nor flammable
 		return BlockBehaviour.Properties.of(Material.PLANT).noCollission().strength(0.2f).sound(SoundType.GRASS).lightLevel(v -> i);
 	}
 
 	public static BlockBehaviour.Properties createFleshPlantProperties() {
-		return BlockBehaviour.Properties.of(getReplaceablePlantMat(), MaterialColor.COLOR_PINK).noCollission().strength(0f).sound(SoundType.SLIME_BLOCK);
-	}
-
-	private static Material getReplaceablePlantMat() {
-		return Material.REPLACEABLE_PLANT; //is flammable
-	}
-
-	private static Material getPlantMat() {
-		return Material.PLANT; // is not replaceable nor flammable
+		//is flammable
+		return BlockBehaviour.Properties.of(Material.REPLACEABLE_PLANT, MaterialColor.COLOR_PINK).noCollission().strength(0f).sound(SoundType.SLIME_BLOCK);
 	}
 
 	public static boolean limitEntitySpawnToFlesh(BlockState state, BlockGetter level, BlockPos pos, EntityType<?> entityType) {

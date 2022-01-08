@@ -203,8 +203,8 @@ public class ModRecipeProvider extends RecipeProvider {
 		DecomposerRecipeBuilder.create(getItemName(Items.ENCHANTED_GOLDEN_APPLE))
 				.setIngredient(Items.ENCHANTED_GOLDEN_APPLE)
 				.setCraftingTime(720)
-				.addOutput(ModItems.BIO_LUMENS.get(), 1, 3)
-				.addOutput(ModItems.OXIDES.get(), 78, 81)
+				.addOutput(ModItems.BIO_LUMENS.get(), 1, 3) //uniform
+				.addOutput(ModItems.OXIDES.get(), 1) // constant value
 				.addOutput(ModItems.PLANT_MATTER.get(), 1, 3)
 				.addOutput(ModItems.POTENT_DUST.get(), 15, 20)
 				.addByproduct(Items.SUGAR, 2, 4)

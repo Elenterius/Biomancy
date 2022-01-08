@@ -1,9 +1,8 @@
 {
-  "credit": "Made by Elenterius",
   "parent": "builtin/entity",
   "texture_size": [
-    128,
-    128
+    64,
+    64
   ],
   "display": {
     "thirdperson_righthand": {
@@ -84,7 +83,7 @@
       ],
       "translation": [
         0,
-        -3.5,
+        0,
         0
       ],
       "scale": [
