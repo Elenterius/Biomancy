@@ -3,24 +3,30 @@
   "key.categories.biomancy": "Biomancy Mod",
   "key.biomancy.item_default": "Enable/Disable/Toggle Item Ability/Action",
 
-  "item.biomancy.flesh_scraps": "Flesh Scraps",
+  "item.biomancy.flesh_bits": "Flesh Bits",
   "item.biomancy.bone_scraps": "Bone Scraps",
-  "item.biomancy.bio_polymers": "Bio-Polymer Fibers",
+  "item.biomancy.elastic_tissue": "Elastic Tissue",
+  "item.biomancy.mineral_fragments": "Mineral Fragments",
+  "item.biomancy.gem_fragments": "Gem Fragments",
+  "item.biomancy.sediment_fragments": "Sediment Fragments",
   "item.biomancy.plant_matter": "Plant Matter",
+  "item.biomancy.keratin_filaments": "Keratin Filaments",
   "item.biomancy.bio_lumens": "Bioluminescent Goo",
+
+  "item.biomancy.nutrient_paste": "Nutrient Paste",
+  "item.biomancy.biotic_matter": "Biotic Matter",
+  "item.biomancy.exotic_dust": "Exotic Dust",
+  "item.biomancy.bio_minerals": "Bio-Minerals",
   "item.biomancy.oxides": "Oxides",
-  "item.biomancy.lithics": "Lithics",
-  "item.biomancy.lapids": "Lapids",
-  "item.biomancy.potent_dust": "Potent Dust",
+  "item.biomancy.lapidary_dust": "Lapidary Dust",
+  "item.biomancy.lithic_powder": "Lithic Powder",
 
   "item.biomancy.toxins": "Toxins",
-  "item.biomancy.nectar": "Nectar",
   "item.biomancy.bile": "Bile",
 
   "item.biomancy.biometal_ingot": "Biometal Ingot",
   "item.biomancy.oculus": "Oculus",
 
-  "item.biomancy.nutrient_paste": "Nutrient Paste",
   "item.biomancy.nutrient_bar": "Nutrient Bar",
   "item.biomancy.protein_bar": "Meaty Granola Bar",
 

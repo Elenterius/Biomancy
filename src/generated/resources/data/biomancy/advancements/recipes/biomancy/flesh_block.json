@@ -6,13 +6,13 @@
     ]
   },
   "criteria": {
-    "has_flesh_scraps": {
+    "has_flesh_bits": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:flesh_scraps"
+              "biomancy:flesh_bits"
             ]
           }
         ]
@@ -27,7 +27,7 @@
   },
   "requirements": [
     [
-      "has_flesh_scraps",
+      "has_flesh_bits",
       "has_the_recipe"
     ]
   ]

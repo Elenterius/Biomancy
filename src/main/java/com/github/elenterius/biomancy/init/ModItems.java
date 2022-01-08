@@ -22,23 +22,30 @@ public final class ModItems {
 	public static final RegistryObject<Item> SKIN_CHUNK = ITEMS.register("skin_chunk", () -> new Item(createProperties()));
 
 	//## Components
-	public static final RegistryObject<Item> FLESH_SCRAPS = ITEMS.register("flesh_scraps", () -> new Item(createProperties().food(ModFoods.FLESH_LUMP)));
+	public static final RegistryObject<Item> FLESH_BITS = ITEMS.register("flesh_bits", () -> new Item(createProperties().food(ModFoods.FLESH_LUMP)));
 	public static final RegistryObject<Item> BONE_SCRAPS = ITEMS.register("bone_scraps", () -> new Item(createProperties()));
-	public static final RegistryObject<Item> BIO_POLYMERS = ITEMS.register("bio_polymers", () -> new Item(createProperties()));
-	public static final RegistryObject<Item> BIO_LUMENS = ITEMS.register("bio_lumens", () -> new Item(createProperties()));
+	public static final RegistryObject<Item> ELASTIC_TISSUE = ITEMS.register("elastic_tissue", () -> new Item(createProperties()));
+	public static final RegistryObject<Item> MINERAL_FRAGMENTS = ITEMS.register("mineral_fragments", () -> new Item(createProperties()));
+	public static final RegistryObject<Item> GEM_FRAGMENTS = ITEMS.register("gem_fragments", () -> new Item(createProperties()));
+	public static final RegistryObject<Item> SEDIMENT_FRAGMENTS = ITEMS.register("sediment_fragments", () -> new Item(createProperties()));
 	public static final RegistryObject<Item> PLANT_MATTER = ITEMS.register("plant_matter", () -> new Item(createProperties()));
+	public static final RegistryObject<Item> KERATIN_FILAMENTS = ITEMS.register("keratin_filaments", () -> new Item(createProperties()));
+	public static final RegistryObject<Item> BIO_LUMENS = ITEMS.register("bio_lumens", () -> new Item(createProperties()));
+
+	public static final RegistryObject<Item> NUTRIENT_PASTE = ITEMS.register("nutrient_paste", () -> new Item(createProperties()));
+	public static final RegistryObject<Item> BIOTIC_MATTER = ITEMS.register("biotic_matter", () -> new Item(createProperties()));
+	public static final RegistryObject<Item> EXOTIC_DUST = ITEMS.register("exotic_dust", () -> new Item(createProperties()));
+	public static final RegistryObject<Item> BIO_MINERALS = ITEMS.register("bio_minerals", () -> new Item(createProperties()));
 	public static final RegistryObject<Item> OXIDES = ITEMS.register("oxides", () -> new Item(createProperties()));
-	public static final RegistryObject<Item> LITHICS = ITEMS.register("lithics", () -> new Item(createProperties()));
-	public static final RegistryObject<Item> LAPIDS = ITEMS.register("lapids", () -> new Item(createProperties()));
-	public static final RegistryObject<Item> POTENT_DUST = ITEMS.register("potent_dust", () -> new Item(createProperties()));
+	public static final RegistryObject<Item> LAPIDARY_DUST = ITEMS.register("lapidary_dust", () -> new Item(createProperties()));
+	public static final RegistryObject<Item> LITHIC_POWDER = ITEMS.register("lithic_powder", () -> new Item(createProperties()));
 
 	//### Complex Byproduct
 	public static final RegistryObject<Item> TOXINS = ITEMS.register("toxins", () -> new Item(createProperties()));
 	public static final RegistryObject<Item> BILE = ITEMS.register("bile", () -> new Item(createProperties()));
 
 	//### Complex Crafted
-	public static final RegistryObject<Item> NUTRIENT_PASTE = ITEMS.register("nutrient_paste", () -> new Item(createProperties()));
-	public static final RegistryObject<Item> BIOMETAL = ITEMS.register("biometal_ingot", () -> new Item(createProperties()));
+	public static final RegistryObject<Item> BIOMETAL_INGOT = ITEMS.register("biometal_ingot", () -> new Item(createProperties()));
 	public static final RegistryObject<Item> OCULUS = ITEMS.register("oculus", () -> new Item(createProperties().food(ModFoods.OCULUS)));
 
 	//# Food

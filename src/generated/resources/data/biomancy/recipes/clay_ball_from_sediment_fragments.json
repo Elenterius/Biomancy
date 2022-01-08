@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:water_bucket"
+    },
+    {
+      "item": "biomancy:sediment_fragments"
+    },
+    {
+      "item": "biomancy:sediment_fragments"
+    },
+    {
+      "item": "biomancy:sediment_fragments"
+    },
+    {
+      "item": "biomancy:sediment_fragments"
+    },
+    {
+      "item": "biomancy:sediment_fragments"
+    },
+    {
+      "item": "biomancy:sediment_fragments"
+    },
+    {
+      "item": "biomancy:sediment_fragments"
+    },
+    {
+      "item": "biomancy:sediment_fragments"
+    }
+  ],
+  "result": {
+    "item": "minecraft:clay_ball"
+  }
+}

@@ -38,7 +38,7 @@
     },
     {
       "result": {
-        "item": "biomancy:potent_dust",
+        "item": "biomancy:exotic_dust",
         "count_range": {
           "type": "uniform",
           "min": 15,

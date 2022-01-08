@@ -1,7 +1,7 @@
 {
   "type": "minecraft:blasting",
   "ingredient": {
-    "item": "biomancy:lapids"
+    "item": "biomancy:sediment_fragments"
   },
   "result": "minecraft:glass_pane",
   "experience": 0.1,

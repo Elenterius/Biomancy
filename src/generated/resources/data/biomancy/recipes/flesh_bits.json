@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "biomancy:flesh_block"
+    }
+  ],
+  "result": {
+    "item": "biomancy:flesh_bits",
+    "count": 9
+  }
+}

@@ -6,13 +6,13 @@
     ]
   },
   "criteria": {
-    "has_lapids": {
+    "has_sediment_fragments": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:lapids"
+              "biomancy:sediment_fragments"
             ]
           }
         ]
@@ -27,7 +27,7 @@
   },
   "requirements": [
     [
-      "has_lapids",
+      "has_sediment_fragments",
       "has_the_recipe"
     ]
   ]

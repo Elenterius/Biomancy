@@ -114,7 +114,7 @@ public class CreatorBlockEntity extends BlockEntity implements IAnimatable {
 	public void spawnMob(ServerLevel level, BlockPos pos, float penalty) {
 		FleshBlob fleshBlob = ModEntityTypes.FLESH_BLOB.get().create(level);
 		if (fleshBlob != null) {
-			fleshBlob.moveTo(pos.getX() + 0.5f, pos.getY() + 4f / 16f + 0.5f, pos.getZ() + 0.5f, 0, 0);
+			fleshBlob.moveTo(pos.getX() + 0.5f, pos.getY() + 4f / 16f, pos.getZ() + 0.5f, 0, 0);
 			if (penalty >= 0.5f) {
 				fleshBlob.setHangry();
 			}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:cobblestone"
+    },
+    {
+      "item": "biomancy:sediment_fragments"
+    },
+    {
+      "item": "biomancy:lithic_powder"
+    }
+  ],
+  "result": {
+    "item": "minecraft:diorite"
+  }
+}
