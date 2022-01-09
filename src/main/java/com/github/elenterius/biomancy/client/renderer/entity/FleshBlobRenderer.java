@@ -2,12 +2,13 @@ package com.github.elenterius.biomancy.client.renderer.entity;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.model.entity.FleshBlobModel;
-import com.github.elenterius.biomancy.world.entity.flesh.FleshBlob;
+import com.github.elenterius.biomancy.world.entity.fleshblob.FleshBlob;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 public class FleshBlobRenderer extends MobRenderer<FleshBlob, FleshBlobModel<FleshBlob>> {
 
@@ -25,12 +26,13 @@ public class FleshBlobRenderer extends MobRenderer<FleshBlob, FleshBlobModel<Fle
 	}
 
 	@Override
-	protected void scale(FleshBlob livingEntity, PoseStack matrixStack, float partialTickTime) {
+	protected void scale(FleshBlob fleshBlob, PoseStack matrixStack, float partialTickTime) {
 		matrixStack.scale(0.999f, 0.999f, 0.999f);
 		matrixStack.translate(0, 0.001f, 0);
-		float v = 0.5f + livingEntity.getBlobSize() * 0.5f;
-		matrixStack.scale(v, v, v);
-		super.scale(livingEntity, matrixStack, partialTickTime);
+		float blobSize = fleshBlob.getBlobSize();
+		float v = 0.5f + blobSize * 0.5f;
+		float squish = 0.5f / (Mth.lerp(partialTickTime, fleshBlob.squishTracker.prevSquish, fleshBlob.squishTracker.squish) / v + 0.5f);
+		matrixStack.scale(blobSize * squish, blobSize * squish, blobSize * squish);
 	}
 
 	@Override

@@ -4,7 +4,7 @@ import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModDamageSources;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModTags;
-import com.github.elenterius.biomancy.world.entity.flesh.FleshBlob;
+import com.github.elenterius.biomancy.world.entity.fleshblob.FleshBlob;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;

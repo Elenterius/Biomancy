@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.world.entity.ai.goal;
 
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -14,19 +14,19 @@ public class FindItemGoal extends Goal {
 
 	public static final Predicate<ItemEntity> ITEM_ENTITY_FILTER = itemEntity -> !itemEntity.hasPickUpDelay() && itemEntity.isAlive();
 
-	protected final PathfinderMob mob;
+	protected final Mob mob;
 	protected final float searchDistance;
 	protected final Predicate<ItemEntity> itemFilter;
 
-	public FindItemGoal(PathfinderMob mob) {
+	public FindItemGoal(Mob mob) {
 		this(mob, 8f, ITEM_ENTITY_FILTER);
 	}
 
-	public FindItemGoal(PathfinderMob mob, float searchDistance) {
+	public FindItemGoal(Mob mob, float searchDistance) {
 		this(mob, searchDistance, ITEM_ENTITY_FILTER);
 	}
 
-	public FindItemGoal(PathfinderMob mob, float searchDistance, Predicate<ItemEntity> itemFilter) {
+	public FindItemGoal(Mob mob, float searchDistance, Predicate<ItemEntity> itemFilter) {
 		this.mob = mob;
 		this.searchDistance = searchDistance;
 		this.itemFilter = itemFilter;

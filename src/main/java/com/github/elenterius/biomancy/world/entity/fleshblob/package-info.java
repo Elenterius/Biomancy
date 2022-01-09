@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package com.github.elenterius.biomancy.world.entity.flesh;
+package com.github.elenterius.biomancy.world.entity.fleshblob;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 
