@@ -42,8 +42,13 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 	}
 
 	@Override
+	public boolean isSpecial() {
+		return true;
+	}
+
+	@Override
 	public ItemStack getResultItem() {
-		return ItemStack.EMPTY;
+		return outputs.get(0).getItemStack();
 	}
 
 	@Override

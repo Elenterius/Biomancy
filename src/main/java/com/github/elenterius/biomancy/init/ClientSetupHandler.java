@@ -35,7 +35,7 @@ public final class ClientSetupHandler {
 	public static void onClientSetup(FMLClientSetupEvent event) {
 //		ClientRegistry.registerKeyBinding(ITEM_DEFAULT_KEY_BINDING);
 		event.enqueueWork(() -> {
-			ModContainerTypes.registerContainerScreens();
+			ModMenuTypes.registerMenuScreens();
 			registerItemModelProperties();
 			ModBlocks.setRenderLayers();
 		});
@@ -83,9 +83,7 @@ public final class ClientSetupHandler {
 	}
 
 	@SubscribeEvent
-	public static void registerLayers(final EntityRenderersEvent.AddLayers event) {
-
-	}
+	public static void registerLayers(final EntityRenderersEvent.AddLayers event) {}
 
 	@SubscribeEvent
 	public static void onBlockModelRegistry(final ModelRegistryEvent event) {}

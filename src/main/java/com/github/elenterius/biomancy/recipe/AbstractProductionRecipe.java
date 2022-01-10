@@ -23,12 +23,12 @@ public abstract class AbstractProductionRecipe implements Recipe<Container> {
 		return time;
 	}
 
-	public boolean areRecipesEqual(AbstractProductionRecipe other) {
+	public boolean isRecipeEqual(AbstractProductionRecipe other) {
 		return registryKey.equals(other.getId());
 	}
 
 	public static boolean areRecipesEqual(AbstractProductionRecipe recipeA, AbstractProductionRecipe recipeB) {
-		return recipeA.areRecipesEqual(recipeB);
+		return recipeA.isRecipeEqual(recipeB);
 	}
 
 }

@@ -17,12 +17,14 @@ import org.apache.logging.log4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
 
 import javax.annotation.Nonnull;
+import java.util.Random;
 
 @Mod(BiomancyMod.MOD_ID)
 public final class BiomancyMod {
 
 	public static final String MOD_ID = "biomancy";
 	public static final Logger LOGGER = LogManager.getLogger("Biomancy");
+	public static final Random GLOBAL_RANDOM = new Random();
 
 	public BiomancyMod() {
 		GeckoLib.initialize();
@@ -34,7 +36,7 @@ public final class BiomancyMod {
 		ModEnchantments.ENCHANTMENTS.register(modEventBus);
 		ModRecipes.RECIPE_SERIALIZERS.register(modEventBus);
 		ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
-		ModContainerTypes.CONTAINERS.register(modEventBus);
+		ModMenuTypes.MENUS.register(modEventBus);
 		ModAttributes.ATTRIBUTES.register(modEventBus);
 		ModMobEffects.EFFECTS.register(modEventBus);
 		ModEntityTypes.ENTITIES.register(modEventBus);

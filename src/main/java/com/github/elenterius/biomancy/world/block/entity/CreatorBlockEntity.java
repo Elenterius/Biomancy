@@ -11,13 +11,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -32,11 +32,10 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreatorBlockEntity extends BlockEntity implements IAnimatable {
+public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnimatable {
 
 	private static final int MAX_ITEMS = 6;
 
@@ -55,7 +54,7 @@ public class CreatorBlockEntity extends BlockEntity implements IAnimatable {
 		for (int i = 0; i < inv.getSlots(); i++) {
 			stack = inv.insertItem(i, stack, false);
 			if (stack.isEmpty() || stack.getCount() < count) {
-				level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 2);
+				level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
 				return true;
 			}
 		}
@@ -95,7 +94,7 @@ public class CreatorBlockEntity extends BlockEntity implements IAnimatable {
 		setChanged();
 
 		BlockPos pos = getBlockPos();
-		level.sendBlockUpdated(pos, getBlockState(), getBlockState(), 2);
+		syncToClient();
 
 		if (level.random.nextFloat() < chance) {
 			TextComponent textComponent = new TextComponent("The Flesh Lord is pleased...");
@@ -133,15 +132,13 @@ public class CreatorBlockEntity extends BlockEntity implements IAnimatable {
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
+	protected void serialize(CompoundTag tag) {
 		tag.putByte("FillLevel", (byte) inv.countNonEmptySlots());
 		tag.put("Inventory", inv.serializeNBT());
 	}
 
 	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
+	protected void deserialize(CompoundTag tag) {
 		if (tag.contains("FillLevel")) {
 			fillLevel = tag.getByte("FillLevel");
 		}
@@ -150,17 +147,6 @@ public class CreatorBlockEntity extends BlockEntity implements IAnimatable {
 			inv.deserializeNBT(tag.getCompound("Inventory"));
 			fillLevel = (byte) inv.countNonEmptySlots();
 		}
-	}
-
-	@Override
-	public CompoundTag getUpdateTag() {
-		return saveWithoutMetadata();
-	}
-
-	@Override
-	@Nullable
-	public ClientboundBlockEntityDataPacket getUpdatePacket() {
-		return ClientboundBlockEntityDataPacket.create(this);
 	}
 
 	private <E extends BlockEntity & IAnimatable> PlayState handleIdleAnim(AnimationEvent<E> event) {

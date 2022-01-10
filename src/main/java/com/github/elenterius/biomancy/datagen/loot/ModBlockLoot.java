@@ -21,6 +21,7 @@ public class ModBlockLoot extends BlockLoot {
 		LOGGER.info(logMarker, "registering block loot...");
 
 		dropSelf(ModBlocks.CREATOR.get());
+		dropSelf(ModBlocks.DECOMPOSER.get());
 
 		dropSelf(ModBlocks.FLESH_BLOCK.get());
 		dropSelf(ModBlocks.FLESH_BLOCK_STAIRS.get());

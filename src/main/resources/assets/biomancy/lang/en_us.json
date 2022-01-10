@@ -37,7 +37,10 @@
   "item.biomancy.serum": "Serum",
   "item.biomancy.bone_sword": "Sharpened Bone",
 
+  "item.biomancy.flesh_blob_spawn_egg": "Flesh Blob Spawn Egg",
+
   "block.biomancy.creator": "Flesh Crucible",
+  "block.biomancy.decomposer": "Decomposer",
 
   "block.biomancy.flesh_block": "Flesh Block",
   "block.biomancy.flesh_block_slab": "Flesh Block Slab",
@@ -45,16 +48,24 @@
   "block.biomancy.flesh_block_wall": "Flesh Block Wall",
   "block.biomancy.necrotic_flesh_block": "Necrotic Flesh Block",
 
+  "entity.biomancy.flesh_blob": "Flesh Blob",
+
   "effect.biomancy.flesh_eating_disease": "Necrotizing Flesh",
 
   "death.attack.biomancy.creator_spikes": "%1$s offered the wrong Tribute to the Flesh Lord and was impaled by bone spikes",
 
   "tooltip.biomancy.creator": "Offer adequate Tributes to the Flesh Lord and summon forth primordial messengers of exquisite flesh.",
+  "tooltip.biomancy.decomposer": "A bio-machine that deconstructs items into their base components.\nThe bio-machine consumes nutrients to function.",
+
+  "tooltip.biomancy.empty": "Empty",
+  "tooltip.biomancy.nutrients": "Nutrients",
 
   "advancements.biomancy.root.title": "Biomancy",
   "advancements.biomancy.root.description": "Raw Meat is useful...",
   "advancements.biomancy.flesh.title": "Meaty Sacrifice",
   "advancements.biomancy.flesh.description": "Use the Flesh Crucible to sacrifice items to the Flesh Lord",
+  "advancements.biomancy.decomposer.title": "Deconstructing Things",
+  "advancements.biomancy.decomposer.description": "Create a Decomposer. Who needs a composter, when you can use a semi-living thing with a stomach to decompose things into other things.",
 
   "#comment": "///////////////// outdated past this //////////////////////////////////////////////////////////////////////////",
 
@@ -95,7 +106,6 @@
   "item.biomancy.stomach": "Stomach",
   "item.biomancy.bone_gear": "Bone Gear",
 
-  "item.biomancy.flesh_blob_spawn_egg": "Flesh Blob Spawn Egg",
   "item.biomancy.oculus_observer_spawn_egg": "Oculus Observer Spawn Egg",
   "item.biomancy.fleshkin_spawn_egg": "Fleshkin Spawn Egg",
   "item.biomancy.boomling_spawn_egg": "Boomling Spawn Egg",
@@ -119,7 +129,6 @@
   "block.biomancy.chewer": "Chewer",
   "block.biomancy.digester": "Digester",
   "block.biomancy.solidifier": "Gland",
-  "block.biomancy.decomposer": "Decomposer",
   "block.biomancy.meatsoup_cauldron": "Fleshpot",
   "block.biomancy.evolution_pool": "Evolution Pool",
   "block.biomancy.voice_box": "Voice Box",
@@ -134,7 +143,6 @@
   "container.biomancy.evolution_pool": "Evolution Pool",
   "tile.biomancy.ownable": "Ownable Block",
 
-  "entity.biomancy.flesh_blob": "Flesh Blob",
   "entity.biomancy.oculus_observer": "Oculus Observer",
   "entity.biomancy.fleshkin": "Fleshkin",
   "entity.biomancy.boomling": "Boomling",
@@ -212,7 +220,6 @@
   "tooltip.biomancy.chewer": "A bio-machine that crushes items into smaller parts by chewing them.\nThe bio-machine consumes nutrient slurry/paste/bars to function.",
   "tooltip.biomancy.digester": "A bio-machine that consumes water to process biomass into nutrient slurry.\nThe bio-machine will pull biomass from the block it is attached to.",
   "tooltip.biomancy.solidifier": "A gland like bio-machine that coagulates fluids into solid Items.\nThe bio-machine will pull fluid from the bock it is attached to.",
-  "tooltip.biomancy.decomposer": "A bio-machine that deconstructs items into their base components.\nThe bio-machine consumes nutrient slurry/paste/bars to function.",
   "tooltip.biomancy.evolution_pool": "A organic pool filled with mutagen that is used to craft organic items.",
   "tooltip.biomancy.boomling_hive_gun": "[WIP] Combine with potion in crafting Table. Uses Nutrient Paste to reload.",
   "tooltip.biomancy.larynx_flute": "A flute made of bones and meat that is able to copy the sounds of a mob by imitating the larynx of the target.",
@@ -240,7 +247,6 @@
   "tooltip.biomancy.contains": "Contains: %1$s",
   "tooltip.biomancy.contains_dna": "Contains: Genetic Material of %1$s",
   "tooltip.biomancy.contains_nothing": "Contains: Nothing",
-  "tooltip.biomancy.empty": "Empty",
   "tooltip.biomancy.owner": "Owner: %1$s",
   "tooltip.biomancy.mutagen": "Mutagen",
   "tooltip.biomancy.slots": "Slots",
@@ -287,8 +293,6 @@
   "advancements.biomancy.chewer.description": "Build a Chewer to crush things into a more edible size",
   "advancements.biomancy.solidifier.title": "Making things thick",
   "advancements.biomancy.solidifier.description": "Craft a Solidifier to coagulate fluids into solids",
-  "advancements.biomancy.decomposer.title": "Deconstructing Things",
-  "advancements.biomancy.decomposer.description": "Create a Decomposer. Who needs a composter, when you can use a semi-living thing with a stomach to decompose things into other things.",
   "advancements.biomancy.evolution_pool.title": "Inducing Mutations",
   "advancements.biomancy.evolution_pool.description": "Create a Evolution Pool by applying mutagenic bile to Flesh Stairs in a 2x2 well configuration",
   "advancements.biomancy.biometal.title": "Semi-Living Metal?",
