@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "biomancy:item/mineral_fragments"
+    "layer0": "biomancy:item/tough_filaments"
   }
 }

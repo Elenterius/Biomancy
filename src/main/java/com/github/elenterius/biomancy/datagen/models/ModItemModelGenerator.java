@@ -35,12 +35,12 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 	public void run() {
 		generateFlat(ModItems.FLESH_BITS.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.BONE_SCRAPS.get(), ModelTemplates.FLAT_ITEM);
-		generateFlat(ModItems.ELASTIC_TISSUE.get(), ModelTemplates.FLAT_ITEM);
-		generateFlat(ModItems.MINERAL_FRAGMENTS.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.ELASTIC_FIBERS.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.MINERAL_DUST.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.GEM_FRAGMENTS.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.SEDIMENT_FRAGMENTS.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.PLANT_MATTER.get(), ModelTemplates.FLAT_ITEM);
-		generateFlat(ModItems.KERATIN_FILAMENTS.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.TOUGH_FILAMENTS.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.BIO_LUMENS.get(), ModelTemplates.FLAT_ITEM);
 
 		generateFlat(ModItems.NUTRIENT_PASTE.get(), ModelTemplates.FLAT_ITEM);
