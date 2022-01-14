@@ -41,12 +41,20 @@
 
   "block.biomancy.creator": "Flesh Crucible",
   "block.biomancy.decomposer": "Decomposer",
+  "block.biomancy.gland": "Appendix Gland",
+  "block.biomancy.gulge": "Deep Gulge",
+  "block.biomancy.sac": "Storage Sac",
 
   "block.biomancy.flesh_block": "Flesh Block",
   "block.biomancy.flesh_block_slab": "Flesh Block Slab",
   "block.biomancy.flesh_block_stairs": "Flesh Block Stairs",
   "block.biomancy.flesh_block_wall": "Flesh Block Wall",
   "block.biomancy.necrotic_flesh_block": "Necrotic Flesh Block",
+
+  "container.biomancy.decomposer": "Decomposer",
+  "container.biomancy.gland": "Gland",
+  "container.biomancy.gulge": "Gulge Inventory",
+  "container.biomancy.sac": "Sac Inventory",
 
   "entity.biomancy.flesh_blob": "Flesh Blob",
 
@@ -56,6 +64,9 @@
 
   "tooltip.biomancy.creator": "Offer adequate Tributes to the Flesh Lord and summon forth primordial messengers of exquisite flesh.",
   "tooltip.biomancy.decomposer": "A bio-machine that deconstructs items into their base components.\nThe bio-machine consumes nutrients to function.",
+  "tooltip.biomancy.gland": "A gland like appendix for the Decomposer that extracts additional components from decomposing items.",
+  "tooltip.biomancy.sac": "A storage sac which is similar to an hopper except its faster and only extracts items from the output slot of containers",
+  "tooltip.biomancy.gulge": "A deep storage sac that stores up to 8k items of a single type and keeps it's inventory when mined.",
 
   "tooltip.biomancy.empty": "Empty",
   "tooltip.biomancy.nutrients": "Nutrients",
@@ -125,21 +136,15 @@
   "block.biomancy.fleshborn_trapdoor": "Fleshborn Trap Door",
   "block.biomancy.fleshborn_pressure_plate": "Fleshborn Pressure Plate",
   "block.biomancy.fleshborn_chest": "Fleshborn Chest",
-  "block.biomancy.gulge": "Deep Gulge",
   "block.biomancy.chewer": "Chewer",
   "block.biomancy.digester": "Digester",
-  "block.biomancy.solidifier": "Gland",
   "block.biomancy.meatsoup_cauldron": "Fleshpot",
   "block.biomancy.evolution_pool": "Evolution Pool",
   "block.biomancy.voice_box": "Voice Box",
   "block.biomancy.scent_diffuser": "Scent Diffuser",
 
-  "container.biomancy.gulge": "Deep Gulge",
   "container.biomancy.fleshborn_chest": "Fleshborn Chest",
-  "container.biomancy.chewer": "Chewer",
   "container.biomancy.digester": "Digester",
-  "container.biomancy.solidifier": "Gland",
-  "container.biomancy.decomposer": "Decomposer",
   "container.biomancy.evolution_pool": "Evolution Pool",
   "tile.biomancy.ownable": "Ownable Block",
 
@@ -216,10 +221,8 @@
   "tooltip.biomancy.fleshborn_trapdoor": "Auto resets.\nSneak click to change mode.",
   "tooltip.biomancy.fleshborn_pressure_plate": "Sneak click to change mode.\nAble to activate ownable blocks.",
   "tooltip.biomancy.fleshborn_chest": "Keeps its inventory when mined.",
-  "tooltip.biomancy.gulge": "A deep storage sac that stores up to 32k items of a single type and keeps it's inventory when mined.",
   "tooltip.biomancy.chewer": "A bio-machine that crushes items into smaller parts by chewing them.\nThe bio-machine consumes nutrient slurry/paste/bars to function.",
   "tooltip.biomancy.digester": "A bio-machine that consumes water to process biomass into nutrient slurry.\nThe bio-machine will pull biomass from the block it is attached to.",
-  "tooltip.biomancy.solidifier": "A gland like bio-machine that coagulates fluids into solid Items.\nThe bio-machine will pull fluid from the bock it is attached to.",
   "tooltip.biomancy.evolution_pool": "A organic pool filled with mutagen that is used to craft organic items.",
   "tooltip.biomancy.boomling_hive_gun": "[WIP] Combine with potion in crafting Table. Uses Nutrient Paste to reload.",
   "tooltip.biomancy.larynx_flute": "A flute made of bones and meat that is able to copy the sounds of a mob by imitating the larynx of the target.",

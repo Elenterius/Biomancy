@@ -4,7 +4,10 @@ import com.github.elenterius.biomancy.init.ModBlocks;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.predicate.BlockMaterialPredicate;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
@@ -18,17 +21,19 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 	}
 
 	@Override
-	protected void addTags() {
-		tag(BlockTags.MINEABLE_WITH_HOE).add(
-				ModBlocks.FLESH_BLOCK.get(), ModBlocks.FLESH_BLOCK_SLAB.get(), ModBlocks.FLESH_BLOCK_STAIRS.get(),
-				ModBlocks.NECROTIC_FLESH_BLOCK.get(),
-				ModBlocks.CREATOR.get()
-		);
+	public String getName() {
+		return StringUtils.capitalize(modId) + " " + super.getName();
 	}
 
 	@Override
-	public String getName() {
-		return StringUtils.capitalize(modId) + " " + super.getName();
+	protected void addTags() {
+		addFleshyBlocksToHoeTag();
+	}
+
+	private void addFleshyBlocksToHoeTag() {
+		BlockMaterialPredicate predicate = BlockMaterialPredicate.forMaterial(ModBlocks.FLESH_MATERIAL);
+		TagAppender<Block> tag = tag(BlockTags.MINEABLE_WITH_HOE);
+		ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).filter(block -> predicate.test(block.defaultBlockState())).forEach(tag::add);
 	}
 
 }

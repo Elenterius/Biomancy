@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.world.inventory;
+package com.github.elenterius.biomancy.world.inventory.itemhandler;
 
 import com.github.elenterius.biomancy.util.FuelUtil;
 import net.minecraft.nbt.CompoundTag;

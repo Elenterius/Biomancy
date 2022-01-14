@@ -14,13 +14,14 @@ import net.minecraft.world.Nameable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class MachineBlockEntity<R extends AbstractProductionRecipe, S extends RecipeCraftingStateData<R>> extends SimpleSyncedBlockEntity implements Nameable {
+public abstract class MachineBlockEntity<R extends AbstractProductionRecipe, S extends RecipeCraftingStateData<R>> extends BlockEntity implements Nameable {
 
 	protected final int tickOffset = BiomancyMod.GLOBAL_RANDOM.nextInt(20);
 	protected int ticks = tickOffset;

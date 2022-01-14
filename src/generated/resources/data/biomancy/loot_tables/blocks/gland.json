@@ -13,7 +13,7 @@
               "source": "block_entity"
             }
           ],
-          "name": "biomancy:decomposer"
+          "name": "biomancy:gland"
         }
       ],
       "conditions": [

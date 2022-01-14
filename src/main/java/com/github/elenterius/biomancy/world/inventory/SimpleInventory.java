@@ -147,19 +147,35 @@ public class SimpleInventory<T extends IItemHandler & IItemHandlerModifiable & I
 		return itemHandler.isItemValid(index, stack);
 	}
 
-	public ItemStack insertItemStack(int index, ItemStack insertStack) {
-		return itemHandler.insertItem(index, insertStack, false);
+	public ItemStack insertItemStack(int index, ItemStack stack) {
+		return insertItemStack(index, stack, false);
 	}
 
-	public boolean doesItemStackFit(int index, ItemStack insertStack) {
-		ItemStack remainder = itemHandler.insertItem(index, insertStack, true);
+	public ItemStack insertItemStack(int index, ItemStack stack, boolean simulate) {
+		return itemHandler.insertItem(index, stack, simulate);
+	}
+
+	public ItemStack insertItemStack(ItemStack stack) {
+		return insertItemStack(stack, false);
+	}
+
+	public ItemStack insertItemStack(ItemStack stack, boolean simulate) {
+		for (int i = 0; i < itemHandler.getSlots(); i++) {
+			stack = itemHandler.insertItem(i, stack, simulate);
+			if (stack.isEmpty()) return ItemStack.EMPTY;
+		}
+		return stack;
+	}
+
+	public boolean doesItemStackFit(int index, ItemStack stack) {
+		ItemStack remainder = itemHandler.insertItem(index, stack, true);
 		return remainder.isEmpty();
 	}
 
-	public boolean doesItemStackFit(ItemStack insertStack) {
+	public boolean doesItemStackFit(ItemStack stack) {
 		for (int i = 0; i < itemHandler.getSlots(); i++) {
-			insertStack = itemHandler.insertItem(i, insertStack, true);
-			if (insertStack.isEmpty()) return true;
+			stack = itemHandler.insertItem(i, stack, true);
+			if (stack.isEmpty()) return true;
 		}
 		return false;
 	}
@@ -178,6 +194,14 @@ public class SimpleInventory<T extends IItemHandler & IItemHandlerModifiable & I
 	public boolean isEmpty() {
 		for (int i = 0; i < itemHandler.getSlots(); i++) {
 			if (!itemHandler.getStackInSlot(i).isEmpty()) return false;
+		}
+		return true;
+	}
+
+	public boolean isFull() {
+		for (int i = 0; i < itemHandler.getSlots(); i++) {
+			ItemStack stack = itemHandler.getStackInSlot(i);
+			if (stack.isEmpty() || stack.getCount() < itemHandler.getSlotLimit(i)) return false;
 		}
 		return true;
 	}

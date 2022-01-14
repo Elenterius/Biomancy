@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.world.inventory;
+package com.github.elenterius.biomancy.world.inventory.itemhandler;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;

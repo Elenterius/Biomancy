@@ -132,17 +132,23 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 	}
 
 	@Override
-	protected void serialize(CompoundTag tag) {
+	protected void saveAdditional(CompoundTag tag) {
+		super.saveAdditional(tag);
 		tag.putByte("FillLevel", (byte) inv.countNonEmptySlots());
 		tag.put("Inventory", inv.serializeNBT());
 	}
 
 	@Override
-	protected void deserialize(CompoundTag tag) {
+	protected void saveForSyncToClient(CompoundTag tag) {
+		tag.putByte("FillLevel", (byte) inv.countNonEmptySlots());
+	}
+
+	@Override
+	public void load(CompoundTag tag) {
+		super.load(tag);
 		if (tag.contains("FillLevel")) {
 			fillLevel = tag.getByte("FillLevel");
 		}
-
 		if (tag.contains("Inventory")) {
 			inv.deserializeNBT(tag.getCompound("Inventory"));
 			fillLevel = (byte) inv.countNonEmptySlots();

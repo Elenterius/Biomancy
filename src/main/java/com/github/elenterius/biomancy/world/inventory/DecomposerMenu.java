@@ -42,8 +42,8 @@ public class DecomposerMenu extends PlayerContainerMenu {
 		int outputPosX = 98;
 		addSlot(new OutputSlot(outputInventory, 0, outputPosX, posY));
 		addSlot(new OutputSlot(outputInventory, 1, outputPosX + 18, posY));
-		addSlot(new OutputSlot(outputInventory, 2, outputPosX + 18 * 2, posY));
-		addSlot(new OutputSlot(outputInventory, 3, outputPosX, posY + 18));
+		addSlot(new OutputSlot(outputInventory, 2, outputPosX, posY + 18));
+		addSlot(new OutputSlot(outputInventory, 3, outputPosX + 18, posY + 18));
 
 		addDataSlots(stateData);
 	}

@@ -1,9 +1,7 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.block.CreatorBlock;
-import com.github.elenterius.biomancy.world.block.DecomposerBlock;
-import com.github.elenterius.biomancy.world.block.FleshBlock;
+import com.github.elenterius.biomancy.world.block.*;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
@@ -47,19 +45,22 @@ public final class ModBlocks {
 	public static final RegistryObject<CreatorBlock> CREATOR = BLOCKS.register("creator", () -> new CreatorBlock(createFleshProperties()));
 	public static final RegistryObject<DecomposerBlock> DECOMPOSER = BLOCKS.register("decomposer", () -> new DecomposerBlock(createFleshProperties()));
 
+	public static final RegistryObject<GlandBlock> GLAND = BLOCKS.register("gland", () -> new GlandBlock(createFleshProperties()));
+	public static final RegistryObject<SacBlock> SAC = BLOCKS.register("sac", () -> new SacBlock(createFleshProperties()));
+	public static final RegistryObject<GulgeBlock> GULGE = BLOCKS.register("gulge", () -> new GulgeBlock(createFleshProperties()));
+
 	private ModBlocks() {}
 
 	@OnlyIn(Dist.CLIENT)
 	static void setRenderLayers() {
 		ItemBlockRenderTypes.setRenderLayer(CREATOR.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(GLAND.get(), RenderType.cutout());
 
 //		ItemBlockRenderTypes.setRenderLayer(FLESH_TENTACLE.get(), RenderType.cutout());
 //		ItemBlockRenderTypes.setRenderLayer(FLESHBORN_DOOR.get(), RenderType.cutout());
 //		ItemBlockRenderTypes.setRenderLayer(FLESHBORN_TRAPDOOR.get(), RenderType.cutout());
 //
 //		ItemBlockRenderTypes.setRenderLayer(DIGESTER.get(), RenderType.cutout());
-//		ItemBlockRenderTypes.setRenderLayer(CHEWER.get(), RenderType.cutout());
-//		ItemBlockRenderTypes.setRenderLayer(SOLIDIFIER.get(), RenderType.cutout());
 //		ItemBlockRenderTypes.setRenderLayer(EVOLUTION_POOL.get(), RenderType.translucent());
 //		ItemBlockRenderTypes.setRenderLayer(SCENT_DIFFUSER.get(), RenderType.cutout());
 //		ItemBlockRenderTypes.setRenderLayer(VOICE_BOX.get(), RenderType.translucent());

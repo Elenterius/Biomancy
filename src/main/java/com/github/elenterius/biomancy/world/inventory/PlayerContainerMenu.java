@@ -11,24 +11,26 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class PlayerContainerMenu extends AbstractContainerMenu {
 
-	protected PlayerContainerMenu(@Nullable MenuType<?> type, int id, Inventory playerInventory) {
-		super(type, id);
-		initPlayerInvSlots(playerInventory);
+	protected PlayerContainerMenu(@Nullable MenuType<?> type, int containerId, Inventory playerInventory) {
+		this(type, containerId, playerInventory, 84, 142);
 	}
 
-	protected void initPlayerInvSlots(Inventory playerInventory) {
+	protected PlayerContainerMenu(@Nullable MenuType<?> type, int containerId, Inventory playerInventory, final int invPosY, final int hotbarPosY) {
+		super(type, containerId);
+		initPlayerInvSlots(playerInventory, invPosY, hotbarPosY);
+	}
+
+	protected void initPlayerInvSlots(Inventory playerInventory, final int invPosY, final int hotbarPosY) {
 		PlayerInvWrapper playerInventoryForge = new PlayerInvWrapper(playerInventory);
 
 		final int POS_X = 8;
-		final int INV_POS_Y = 84;
-		final int HOTBAR_POS_Y = 142;
 		final int SLOTS_PER_ROW = 9;
 		final int SLOT_X_SPACING = 18;
 		final int SLOT_Y_SPACING = 18;
 
 		// Add the players hotbar
 		for (int idx = 0; idx < SLOTS_PER_ROW; idx++) {
-			addSlot(new SlotItemHandler(playerInventoryForge, idx, POS_X + SLOT_X_SPACING * idx, HOTBAR_POS_Y));
+			addSlot(new SlotItemHandler(playerInventoryForge, idx, POS_X + SLOT_X_SPACING * idx, hotbarPosY));
 		}
 
 		// Add the players main inventory
@@ -36,7 +38,7 @@ public abstract class PlayerContainerMenu extends AbstractContainerMenu {
 			for (int x = 0; x < SLOTS_PER_ROW; x++) {
 				int slotNumber = SLOTS_PER_ROW + y * SLOTS_PER_ROW + x;
 				int posX = POS_X + x * SLOT_X_SPACING;
-				int posY = INV_POS_Y + y * SLOT_Y_SPACING;
+				int posY = invPosY + y * SLOT_Y_SPACING;
 				addSlot(new SlotItemHandler(playerInventoryForge, slotNumber, posX, posY));
 			}
 		}

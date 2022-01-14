@@ -68,7 +68,10 @@ public final class ModItems {
 
 	//## Machine
 	public static final RegistryObject<CreatorBlockItem> CREATOR = ITEMS.register("creator", () -> new CreatorBlockItem(ModBlocks.CREATOR.get(), createProperties().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<BlockItem> DECOMPOSER = ITEMS.register("decomposer", () -> new CreatorBlockItem(ModBlocks.DECOMPOSER.get(), createProperties().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<BlockItem> DECOMPOSER = ITEMS.register("decomposer", () -> new BlockItem(ModBlocks.DECOMPOSER.get(), createProperties().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<BlockItem> GLAND = ITEMS.register("gland", () -> new BlockItem(ModBlocks.GLAND.get(), createProperties().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<BlockItem> SAC = ITEMS.register("sac", () -> new BlockItem(ModBlocks.SAC.get(), createProperties().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<BlockItem> GULGE = ITEMS.register("gulge", () -> new BlockItem(ModBlocks.GULGE.get(), createProperties().rarity(Rarity.UNCOMMON)));
 
 	//# Spawn Eggs
 	public static final RegistryObject<ForgeSpawnEggItem> FLESH_BLOB_SPAWN_EGG = ITEMS.register("flesh_blob_spawn_egg", () -> new ForgeSpawnEggItem(ModEntityTypes.FLESH_BLOB, 0xe9967a, 0xf6d2c6, createProperties()));

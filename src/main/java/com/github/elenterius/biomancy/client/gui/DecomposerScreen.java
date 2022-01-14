@@ -25,71 +25,67 @@ public class DecomposerScreen extends AbstractContainerScreen<DecomposerMenu> {
 	private static final ResourceLocation BACKGROUND_TEXTURE = BiomancyMod.createRL("textures/gui/decomposer_gui.png");
 	private final ProgressBar fuelBar = new ProgressBar(39, 17, 5, 60 - 17, 0xFFb8ba87);
 
-	public DecomposerScreen(DecomposerMenu screenContainer, Inventory inv, Component title) {
-		super(screenContainer, inv, title);
-		//texture size
-		imageWidth = 176;
-		imageHeight = 166;
+	public DecomposerScreen(DecomposerMenu menu, Inventory playerInventory, Component title) {
+		super(menu, playerInventory, title);
 	}
 
 	@Override
-	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		renderBackground(matrixStack);
-		super.render(matrixStack, mouseX, mouseY, partialTicks);
-		renderTooltip(matrixStack, mouseX, mouseY);
+	public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+		renderBackground(poseStack);
+		super.render(poseStack, mouseX, mouseY, partialTick);
+		renderTooltip(poseStack, mouseX, mouseY);
 	}
 
 	@Override
-	protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
+	protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
 		final float FONT_Y_SPACING = 12;
-		font.draw(matrixStack, title, 10, 18 - FONT_Y_SPACING, 0xFFFFFF);
+		font.draw(poseStack, title, 10, 18 - FONT_Y_SPACING, 0xFFFFFF);
 
 //		String craftingProgress = (int) (menu.getCraftingProgressNormalized() * 100) + "%";
-//		font.draw(matrixStack, craftingProgress, 155f - font.width(craftingProgress), 52f + 6, 0xFFFFFF);
+//		font.draw(poseStack, craftingProgress, 155f - font.width(craftingProgress), 52f + 6, 0xFFFFFF);
 	}
 
 	@Override
-	protected void renderBg(PoseStack matrixStack, float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(PoseStack poseStack, float partialTick, int mouseX, int mouseY) {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1, 1, 1, 1);
 		RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
 
 		int edgeSpacingX = (width - imageWidth) / 2;
 		int edgeSpacingY = (height - imageHeight) / 2;
-		blit(matrixStack, edgeSpacingX, edgeSpacingY, 0, 0, imageWidth, imageHeight);
+		blit(poseStack, edgeSpacingX, edgeSpacingY, 0, 0, imageWidth, imageHeight);
 
 		float craftingProgress = menu.getCraftingProgressNormalized();
 		int uWidth = (int) (craftingProgress * 14) + (craftingProgress > 0 ? 1 : 0);
-		blit(matrixStack, leftPos + 81, topPos + 22, 176, 0, uWidth, 7);
+		blit(poseStack, leftPos + 81, topPos + 22, 176, 0, uWidth, 7);
 
 		fuelBar.setProgress(menu.getFuelAmountNormalized());
-		fuelBar.draw(Objects.requireNonNull(minecraft), matrixStack, leftPos, topPos, mouseX, mouseY);
+		fuelBar.draw(Objects.requireNonNull(minecraft), poseStack, leftPos, topPos, mouseX, mouseY);
 	}
 
 	@Override
-	protected void renderTooltip(PoseStack matrixStack, int mouseX, int mouseY) {
-		//noinspection ConstantConditions
-		if (!minecraft.player.getInventory().getSelected().isEmpty()) return;
+	protected void renderTooltip(PoseStack poseStack, int mouseX, int mouseY) {
+		if (menu.getCarried().isEmpty()) {
+			List<Component> hoveringText = new ArrayList<>();
 
-		List<Component> hoveringText = new ArrayList<>();
-
-		if (fuelBar.isMouseInside(leftPos, topPos, mouseX, mouseY)) {
-			int amount = menu.getFuelAmount();
-			if (amount > 0) {
-				DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
-				hoveringText.add(TextComponentUtil.getTooltipText("nutrients").append(": " + df.format(amount) + " u"));
+			if (fuelBar.isMouseInside(leftPos, topPos, mouseX, mouseY)) {
+				int amount = menu.getFuelAmount();
+				if (amount > 0) {
+					DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
+					hoveringText.add(TextComponentUtil.getTooltipText("nutrients").append(": " + df.format(amount) + " u"));
+				}
+				else {
+					hoveringText.add(TextComponentUtil.getTooltipText("empty"));
+				}
 			}
-			else {
-				hoveringText.add(TextComponentUtil.getTooltipText("empty"));
+
+			if (!hoveringText.isEmpty()) {
+				renderComponentTooltip(poseStack, hoveringText, mouseX, mouseY);
+				return;
 			}
 		}
 
-		if (!hoveringText.isEmpty()) {
-			renderComponentTooltip(matrixStack, hoveringText, mouseX, mouseY);
-		}
-		else {
-			super.renderTooltip(matrixStack, mouseX, mouseY);
-		}
+		super.renderTooltip(poseStack, mouseX, mouseY);
 	}
 
 }

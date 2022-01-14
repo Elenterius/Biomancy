@@ -16,9 +16,7 @@ public abstract class SimpleSyncedBlockEntity extends BlockEntity {
 		super(type, pos, state);
 	}
 
-	protected abstract void serialize(CompoundTag tag);
-
-	protected abstract void deserialize(CompoundTag tag);
+	protected abstract void saveForSyncToClient(CompoundTag tag);
 
 	protected void syncToClient() {
 		if (level != null && !level.isClientSide) {
@@ -28,19 +26,10 @@ public abstract class SimpleSyncedBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag tag) {
-		serialize(tag);
-	}
-
-	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
-		deserialize(tag);
-	}
-
-	@Override
 	public CompoundTag getUpdateTag() {
-		return saveWithoutMetadata();
+		CompoundTag tag = new CompoundTag();
+		saveForSyncToClient(tag);
+		return tag;
 	}
 
 	@Override

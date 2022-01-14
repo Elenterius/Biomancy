@@ -1,0 +1,88 @@
+package com.github.elenterius.biomancy.world.block.entity;
+
+import com.github.elenterius.biomancy.init.ModBlockEntities;
+import com.github.elenterius.biomancy.recipe.DecomposerRecipe;
+import com.github.elenterius.biomancy.util.TextComponentUtil;
+import com.github.elenterius.biomancy.world.inventory.GlandMenu;
+import com.github.elenterius.biomancy.world.inventory.SimpleInventory;
+import com.github.elenterius.biomancy.world.inventory.itemhandler.HandlerBehaviors;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.Containers;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.CapabilityItemHandler;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+public class GlandBlockEntity extends CustomContainerBlockEntity {
+
+	public static final int OUTPUT_SLOTS = DecomposerRecipe.MAX_OUTPUTS;
+	private final SimpleInventory<?> outputInventory;
+
+	public GlandBlockEntity(BlockPos pos, BlockState state) {
+		super(ModBlockEntities.GLAND.get(), pos, state);
+		outputInventory = SimpleInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenContainer, this::setChanged);
+	}
+
+	public Component getDefaultName() {
+		return TextComponentUtil.getTranslationText("container", "gland");
+	}
+
+	@Nullable
+	@Override
+	public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
+		return GlandMenu.createServerMenu(containerId, playerInventory, outputInventory);
+	}
+
+	public ItemStack insertItemStack(ItemStack stack) {
+		return outputInventory.insertItemStack(stack);
+	}
+
+	@Override
+	protected void saveAdditional(CompoundTag tag) {
+		super.saveAdditional(tag);
+		tag.put("OutputSlots", outputInventory.serializeNBT());
+	}
+
+	@Override
+	public void load(CompoundTag tag) {
+		super.load(tag);
+		outputInventory.deserializeNBT(tag.getCompound("OutputSlots"));
+	}
+
+	@Override
+	public void dropContainerContents(Level level, BlockPos pos) {
+		Containers.dropContents(level, pos, outputInventory);
+	}
+
+	@NotNull
+	@Override
+	public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+		if (!remove && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+			return outputInventory.getOptionalItemHandlerWithBehavior().cast();
+		}
+		return super.getCapability(cap, side);
+	}
+
+	@Override
+	public void invalidateCaps() {
+		super.invalidateCaps();
+		outputInventory.invalidate();
+	}
+
+	@Override
+	public void reviveCaps() {
+		super.reviveCaps();
+		outputInventory.revive();
+	}
+
+}
