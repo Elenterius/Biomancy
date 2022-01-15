@@ -32,6 +32,7 @@
 
   "item.biomancy.necrotic_flesh_lump": "Necrotic Lump of Flesh",
   "item.biomancy.skin_chunk": "Chunk of Skin",
+  "item.biomancy.sharp_tooth": "Sharp Tooth",
 
   "item.biomancy.glass_vial": "Glass Vial",
   "item.biomancy.serum": "Serum",
@@ -57,6 +58,8 @@
   "container.biomancy.sac": "Sac Inventory",
 
   "entity.biomancy.flesh_blob": "Flesh Blob",
+
+  "enchantment.biomancy.despoil": "Despoil",
 
   "effect.biomancy.flesh_eating_disease": "Necrotizing Flesh",
 

@@ -32,15 +32,16 @@ public final class BiomancyMod {
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
 		ModItems.ITEMS.register(modEventBus);
-		ModBlocks.BLOCKS.register(modEventBus);
+		ModSerums.SERUMS.register(modEventBus);
 		ModEnchantments.ENCHANTMENTS.register(modEventBus);
-		ModRecipes.RECIPE_SERIALIZERS.register(modEventBus);
+		ModBlocks.BLOCKS.register(modEventBus);
 		ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
 		ModMenuTypes.MENUS.register(modEventBus);
+		ModEntityTypes.ENTITIES.register(modEventBus);
 		ModAttributes.ATTRIBUTES.register(modEventBus);
 		ModMobEffects.EFFECTS.register(modEventBus);
-		ModEntityTypes.ENTITIES.register(modEventBus);
-		ModSerums.SERUMS.register(modEventBus);
+		ModRecipes.RECIPE_SERIALIZERS.register(modEventBus);
+		ModLoot.GLOBAL_MODIFIERS.register(modEventBus);
 		ModSoundEvents.SOUND_EVENTS.register(modEventBus);
 	}
 

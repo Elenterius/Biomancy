@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.datagen;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.datagen.loot.ModGlobalLootModifierProvider;
 import com.github.elenterius.biomancy.datagen.loot.ModLootTableProvider;
 import com.github.elenterius.biomancy.datagen.models.ModModelProvider;
 import com.github.elenterius.biomancy.datagen.recipes.ModRecipeProvider;
@@ -24,9 +25,6 @@ public final class DataGenerators {
 		DataGenerator generator = event.getGenerator();
 		ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 
-		//loot
-		generator.addProvider(new ModLootTableProvider(generator));
-
 		//tags
 		ModBlockTagsProvider blockTags = new ModBlockTagsProvider(generator, existingFileHelper);
 		generator.addProvider(blockTags);
@@ -36,6 +34,10 @@ public final class DataGenerators {
 
 		//recipes
 		generator.addProvider(new ModRecipeProvider(generator));
+
+		//loot
+		generator.addProvider(new ModLootTableProvider(generator));
+		generator.addProvider(new ModGlobalLootModifierProvider(generator));
 
 		//advancements
 		generator.addProvider(new ModAdvancementProvider(generator, existingFileHelper));

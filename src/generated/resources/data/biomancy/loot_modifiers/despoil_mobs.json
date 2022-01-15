@@ -1,0 +1,17 @@
+{
+  "conditions": [
+    {
+      "condition": "minecraft:entity_properties",
+      "predicate": {
+        "flags": {
+          "is_baby": false
+        }
+      },
+      "entity": "this"
+    },
+    {
+      "condition": "minecraft:killed_by_player"
+    }
+  ],
+  "type": "biomancy:despoil_mob_loot"
+}

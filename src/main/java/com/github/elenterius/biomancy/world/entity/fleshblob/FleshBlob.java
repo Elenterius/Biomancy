@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.world.entity.fleshblob;
 
-import com.github.elenterius.biomancy.init.ModLootTables;
+import com.github.elenterius.biomancy.init.ModLoot;
 import com.github.elenterius.biomancy.world.entity.JumpMoveMob;
 import com.github.elenterius.biomancy.world.entity.MobUtil;
 import com.github.elenterius.biomancy.world.entity.ai.control.GenericJumpControl;
@@ -327,15 +327,15 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 	@Override
 	protected ResourceLocation getDefaultLootTable() {
 		return switch (getBlobSize()) {
-			case 2 -> ModLootTables.FLESH_BLOB_SIZE_2;
-			case 3 -> ModLootTables.FLESH_BLOB_SIZE_3;
-			case 4 -> ModLootTables.FLESH_BLOB_SIZE_4;
-			case 5 -> ModLootTables.FLESH_BLOB_SIZE_5;
-			case 6 -> ModLootTables.FLESH_BLOB_SIZE_6;
-			case 7 -> ModLootTables.FLESH_BLOB_SIZE_7;
-			case 8 -> ModLootTables.FLESH_BLOB_SIZE_8;
-			case 9 -> ModLootTables.FLESH_BLOB_SIZE_9;
-			case 10 -> ModLootTables.FLESH_BLOB_SIZE_10;
+			case 2 -> ModLoot.Entity.FLESH_BLOB_SIZE_2;
+			case 3 -> ModLoot.Entity.FLESH_BLOB_SIZE_3;
+			case 4 -> ModLoot.Entity.FLESH_BLOB_SIZE_4;
+			case 5 -> ModLoot.Entity.FLESH_BLOB_SIZE_5;
+			case 6 -> ModLoot.Entity.FLESH_BLOB_SIZE_6;
+			case 7 -> ModLoot.Entity.FLESH_BLOB_SIZE_7;
+			case 8 -> ModLoot.Entity.FLESH_BLOB_SIZE_8;
+			case 9 -> ModLoot.Entity.FLESH_BLOB_SIZE_9;
+			case 10 -> ModLoot.Entity.FLESH_BLOB_SIZE_10;
 			default -> getType().getDefaultLootTable();
 		};
 	}

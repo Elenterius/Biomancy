@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.datagen.loot;
 
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModItems;
-import com.github.elenterius.biomancy.init.ModLootTables;
+import com.github.elenterius.biomancy.init.ModLoot;
 import net.minecraft.data.loot.EntityLoot;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -38,15 +38,15 @@ public class ModEntityLoot extends EntityLoot {
 						.add(LootItem.lootTableItem(ModItems.OCULUS.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(-4f, 1f))).apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0f, 1f))))
 						.when(LootItemKilledByPlayerCondition.killedByPlayer()))
 		);
-		add(ModLootTables.FLESH_BLOB_SIZE_2, fleshBlobLootTableBuilderWithDrop(1));
-		add(ModLootTables.FLESH_BLOB_SIZE_3, fleshBlobLootTableBuilderWithDrop(2));
-		add(ModLootTables.FLESH_BLOB_SIZE_4, fleshBlobLootTableBuilderWithDrop(3));
-		add(ModLootTables.FLESH_BLOB_SIZE_5, fleshBlobLootTableBuilderWithDrop(4));
-		add(ModLootTables.FLESH_BLOB_SIZE_6, fleshBlobLootTableBuilderWithDrop(5));
-		add(ModLootTables.FLESH_BLOB_SIZE_7, fleshBlobLootTableBuilderWithDrop(6));
-		add(ModLootTables.FLESH_BLOB_SIZE_8, fleshBlobLootTableBuilderWithDrop(7));
-		add(ModLootTables.FLESH_BLOB_SIZE_9, fleshBlobLootTableBuilderWithDrop(8));
-		add(ModLootTables.FLESH_BLOB_SIZE_10, fleshBlobLootTableBuilderWithDrop(9));
+		add(ModLoot.Entity.FLESH_BLOB_SIZE_2, fleshBlobLootTableBuilderWithDrop(1));
+		add(ModLoot.Entity.FLESH_BLOB_SIZE_3, fleshBlobLootTableBuilderWithDrop(2));
+		add(ModLoot.Entity.FLESH_BLOB_SIZE_4, fleshBlobLootTableBuilderWithDrop(3));
+		add(ModLoot.Entity.FLESH_BLOB_SIZE_5, fleshBlobLootTableBuilderWithDrop(4));
+		add(ModLoot.Entity.FLESH_BLOB_SIZE_6, fleshBlobLootTableBuilderWithDrop(5));
+		add(ModLoot.Entity.FLESH_BLOB_SIZE_7, fleshBlobLootTableBuilderWithDrop(6));
+		add(ModLoot.Entity.FLESH_BLOB_SIZE_8, fleshBlobLootTableBuilderWithDrop(7));
+		add(ModLoot.Entity.FLESH_BLOB_SIZE_9, fleshBlobLootTableBuilderWithDrop(8));
+		add(ModLoot.Entity.FLESH_BLOB_SIZE_10, fleshBlobLootTableBuilderWithDrop(9));
 	}
 
 	@Override

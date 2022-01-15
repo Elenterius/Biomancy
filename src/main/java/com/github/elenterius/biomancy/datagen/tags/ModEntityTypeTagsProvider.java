@@ -25,6 +25,11 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 				.add(EntityType.IRON_GOLEM, EntityType.SNOW_GOLEM)
 				.addOptional(new ResourceLocation("strawgolem", "strawgolem"))
 				.addOptional(new ResourceLocation("strawgolem", "strawnggolem"));
+
+		tag(ModTags.EntityTypes.SHARP_TEETH)
+				.add(EntityType.CAT, EntityType.OCELOT, EntityType.WOLF, EntityType.FOX, EntityType.DOLPHIN, EntityType.POLAR_BEAR, EntityType.PANDA,
+						EntityType.BAT, EntityType.HOGLIN, EntityType.ZOGLIN, EntityType.ENDER_DRAGON);
+
 	}
 
 	@Override

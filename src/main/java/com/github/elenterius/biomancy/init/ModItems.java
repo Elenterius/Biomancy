@@ -21,6 +21,7 @@ public final class ModItems {
 	//# Material / Mob Loot
 	public static final RegistryObject<Item> NECROTIC_FLESH_LUMP = ITEMS.register("necrotic_flesh_lump", () -> new Item(createProperties().food(ModFoods.NECROTIC_FLESH_LUMP)));
 	public static final RegistryObject<Item> SKIN_CHUNK = ITEMS.register("skin_chunk", () -> new Item(createProperties()));
+	public static final RegistryObject<Item> SHARP_TOOTH = ITEMS.register("sharp_tooth", () -> new Item(createProperties()));
 
 	//## Decomposer Components
 	//### Complex
