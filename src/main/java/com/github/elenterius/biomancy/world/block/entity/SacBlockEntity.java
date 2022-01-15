@@ -3,8 +3,8 @@ package com.github.elenterius.biomancy.world.block.entity;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
 import com.github.elenterius.biomancy.world.block.SacBlock;
-import com.github.elenterius.biomancy.world.inventory.SacMenu;
 import com.github.elenterius.biomancy.world.inventory.SimpleInventory;
+import com.github.elenterius.biomancy.world.inventory.menu.SacMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -29,7 +29,7 @@ public class SacBlockEntity extends CustomContainerBlockEntity {
 
 	public static final int SLOTS = 5;
 	public static final int ITEM_TRANSFER_AMOUNT = 8;
-	private final SimpleInventory<?> inventory;
+	private final SimpleInventory inventory;
 	private int ticks;
 
 	public SacBlockEntity(BlockPos pos, BlockState state) {
@@ -114,7 +114,7 @@ public class SacBlockEntity extends CustomContainerBlockEntity {
 	@Override
 	public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
 		if (!remove && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			return inventory.getOptionalItemHandlerWithBehavior().cast();
+			return inventory.getOptionalItemHandler().cast();
 		}
 		return super.getCapability(cap, side);
 	}

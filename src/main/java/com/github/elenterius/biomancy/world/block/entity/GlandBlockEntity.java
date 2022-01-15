@@ -3,9 +3,9 @@ package com.github.elenterius.biomancy.world.block.entity;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.recipe.DecomposerRecipe;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
-import com.github.elenterius.biomancy.world.inventory.GlandMenu;
-import com.github.elenterius.biomancy.world.inventory.SimpleInventory;
+import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.world.inventory.itemhandler.HandlerBehaviors;
+import com.github.elenterius.biomancy.world.inventory.menu.GlandMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -26,11 +26,11 @@ import org.jetbrains.annotations.Nullable;
 public class GlandBlockEntity extends CustomContainerBlockEntity {
 
 	public static final int OUTPUT_SLOTS = DecomposerRecipe.MAX_OUTPUTS;
-	private final SimpleInventory<?> outputInventory;
+	private final BehavioralInventory<?> outputInventory;
 
 	public GlandBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.GLAND.get(), pos, state);
-		outputInventory = SimpleInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenContainer, this::setChanged);
+		outputInventory = BehavioralInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenContainer, this::setChanged);
 	}
 
 	public Component getDefaultName() {
@@ -68,7 +68,7 @@ public class GlandBlockEntity extends CustomContainerBlockEntity {
 	@Override
 	public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
 		if (!remove && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			return outputInventory.getOptionalItemHandlerWithBehavior().cast();
+			return outputInventory.getOptionalItemHandler().cast();
 		}
 		return super.getCapability(cap, side);
 	}

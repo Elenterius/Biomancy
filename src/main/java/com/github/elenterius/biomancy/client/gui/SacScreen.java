@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.client.gui;
 
-import com.github.elenterius.biomancy.world.inventory.SacMenu;
+import com.github.elenterius.biomancy.world.inventory.menu.SacMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;

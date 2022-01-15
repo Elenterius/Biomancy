@@ -1,8 +1,9 @@
-package com.github.elenterius.biomancy.world.inventory;
+package com.github.elenterius.biomancy.world.inventory.menu;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
 import com.github.elenterius.biomancy.world.block.entity.GulgeBlockEntity;
+import com.github.elenterius.biomancy.world.inventory.GulgeInventory;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;

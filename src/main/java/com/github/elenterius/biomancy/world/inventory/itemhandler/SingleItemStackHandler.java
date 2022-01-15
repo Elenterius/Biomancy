@@ -42,6 +42,10 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 		return cachedStack.isEmpty();
 	}
 
+	public boolean isFull() {
+		return !isEmpty() && getAmount() >= getMaxAmount();
+	}
+
 	public int getAmount() {
 		return cachedStack.getCount();
 	}

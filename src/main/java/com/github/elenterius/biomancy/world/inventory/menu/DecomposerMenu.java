@@ -1,10 +1,11 @@
-package com.github.elenterius.biomancy.world.inventory;
+package com.github.elenterius.biomancy.world.inventory.menu;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
 import com.github.elenterius.biomancy.util.FuelUtil;
 import com.github.elenterius.biomancy.world.block.entity.DecomposerBlockEntity;
 import com.github.elenterius.biomancy.world.block.entity.state.DecomposerStateData;
+import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.world.inventory.slot.FuelSlot;
 import com.github.elenterius.biomancy.world.inventory.slot.ISlotZone;
 import com.github.elenterius.biomancy.world.inventory.slot.OutputSlot;
@@ -19,13 +20,13 @@ import org.apache.logging.log4j.MarkerManager;
 
 public class DecomposerMenu extends PlayerContainerMenu {
 
-	private final SimpleInventory<?> fuelInventory;
-	private final SimpleInventory<?> inputInventory;
-	private final SimpleInventory<?> outputInventory;
+	private final BehavioralInventory<?> fuelInventory;
+	private final BehavioralInventory<?> inputInventory;
+	private final BehavioralInventory<?> outputInventory;
 	private final DecomposerStateData stateData;
 	protected final Level level;
 
-	protected DecomposerMenu(int id, Inventory playerInventory, SimpleInventory<?> fuelInventory, SimpleInventory<?> inputInventory, SimpleInventory<?> outputInventory, DecomposerStateData stateData) {
+	protected DecomposerMenu(int id, Inventory playerInventory, BehavioralInventory<?> fuelInventory, BehavioralInventory<?> inputInventory, BehavioralInventory<?> outputInventory, DecomposerStateData stateData) {
 		super(ModMenuTypes.DECOMPOSER.get(), id, playerInventory);
 		level = playerInventory.player.level;
 
@@ -48,14 +49,14 @@ public class DecomposerMenu extends PlayerContainerMenu {
 		addDataSlots(stateData);
 	}
 
-	public static DecomposerMenu createServerMenu(int screenId, Inventory playerInventory, SimpleInventory<?> fuelInventory, SimpleInventory<?> inputInventory, SimpleInventory<?> outputInventory, DecomposerStateData stateData) {
+	public static DecomposerMenu createServerMenu(int screenId, Inventory playerInventory, BehavioralInventory<?> fuelInventory, BehavioralInventory<?> inputInventory, BehavioralInventory<?> outputInventory, DecomposerStateData stateData) {
 		return new DecomposerMenu(screenId, playerInventory, fuelInventory, inputInventory, outputInventory, stateData);
 	}
 
 	public static DecomposerMenu createClientMenu(int screenId, Inventory playerInventory, FriendlyByteBuf extraData) {
-		SimpleInventory<?> fuelInventory = SimpleInventory.createClientContents(DecomposerBlockEntity.FUEL_SLOTS);
-		SimpleInventory<?> inputInventory = SimpleInventory.createClientContents(DecomposerBlockEntity.INPUT_SLOTS);
-		SimpleInventory<?> outputInventory = SimpleInventory.createClientContents(DecomposerBlockEntity.OUTPUT_SLOTS);
+		BehavioralInventory<?> fuelInventory = BehavioralInventory.createClientContents(DecomposerBlockEntity.FUEL_SLOTS);
+		BehavioralInventory<?> inputInventory = BehavioralInventory.createClientContents(DecomposerBlockEntity.INPUT_SLOTS);
+		BehavioralInventory<?> outputInventory = BehavioralInventory.createClientContents(DecomposerBlockEntity.OUTPUT_SLOTS);
 		return new DecomposerMenu(screenId, playerInventory, fuelInventory, inputInventory, outputInventory, new DecomposerStateData());
 	}
 

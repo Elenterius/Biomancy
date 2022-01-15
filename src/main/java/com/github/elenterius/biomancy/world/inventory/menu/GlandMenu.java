@@ -1,9 +1,11 @@
-package com.github.elenterius.biomancy.world.inventory;
+package com.github.elenterius.biomancy.world.inventory.menu;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
-import com.github.elenterius.biomancy.world.block.entity.SacBlockEntity;
+import com.github.elenterius.biomancy.world.block.entity.GlandBlockEntity;
+import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.world.inventory.slot.ISlotZone;
+import com.github.elenterius.biomancy.world.inventory.slot.OutputSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -12,36 +14,37 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.apache.logging.log4j.MarkerManager;
 
-public class SacMenu extends PlayerContainerMenu {
+public class GlandMenu extends PlayerContainerMenu {
 
-	private final SimpleInventory<?> inventory;
+	private final BehavioralInventory<?> outputInventory;
 	protected final Level level;
 
-	protected SacMenu(int id, Inventory playerInventory, SimpleInventory<?> inventory) {
-		super(ModMenuTypes.SAC.get(), id, playerInventory, 51, 109);
+	protected GlandMenu(int id, Inventory playerInventory, BehavioralInventory<?> outputInventory) {
+		super(ModMenuTypes.GLAND.get(), id, playerInventory);
 		level = playerInventory.player.level;
 
-		this.inventory = inventory;
+		this.outputInventory = outputInventory;
 
-		int posY = 20;
-		int posX = 44;
-		for (int i = 0; i < 5; i++) {
-			addSlot(new Slot(inventory, i, posX + i * 18, posY));
-		}
+		int posY = 17;
+		int posX = 98;
+		addSlot(new OutputSlot(outputInventory, 0, posX, posY));
+		addSlot(new OutputSlot(outputInventory, 1, posX + 18, posY));
+		addSlot(new OutputSlot(outputInventory, 2, posX, posY + 18));
+		addSlot(new OutputSlot(outputInventory, 3, posX + 18, posY + 18));
 	}
 
-	public static SacMenu createServerMenu(int screenId, Inventory playerInventory, SimpleInventory<?> inventory) {
-		return new SacMenu(screenId, playerInventory, inventory);
+	public static GlandMenu createServerMenu(int screenId, Inventory playerInventory, BehavioralInventory<?> outputInventory) {
+		return new GlandMenu(screenId, playerInventory, outputInventory);
 	}
 
-	public static SacMenu createClientMenu(int screenId, Inventory playerInventory, FriendlyByteBuf extraData) {
-		SimpleInventory<?> inventory = SimpleInventory.createClientContents(SacBlockEntity.SLOTS);
-		return new SacMenu(screenId, playerInventory, inventory);
+	public static GlandMenu createClientMenu(int screenId, Inventory playerInventory, FriendlyByteBuf extraData) {
+		BehavioralInventory<?> outputInventory = BehavioralInventory.createClientContents(GlandBlockEntity.OUTPUT_SLOTS);
+		return new GlandMenu(screenId, playerInventory, outputInventory);
 	}
 
 	@Override
 	public boolean stillValid(Player player) {
-		return inventory.stillValid(player);
+		return outputInventory.stillValid(player);
 	}
 
 	@Override
@@ -55,9 +58,9 @@ public class SacMenu extends PlayerContainerMenu {
 		SlotZone slotZone = SlotZone.getZoneFromIndex(index);
 
 		switch (slotZone) {
-			case INVENTORY -> successfulTransfer = mergeIntoEither(SlotZone.PLAYER_HOTBAR, SlotZone.PLAYER_MAIN_INVENTORY, stackInSlot, true);
-			case PLAYER_HOTBAR -> successfulTransfer = mergeIntoEither(SlotZone.INVENTORY, SlotZone.PLAYER_MAIN_INVENTORY, stackInSlot, false);
-			case PLAYER_MAIN_INVENTORY -> successfulTransfer = mergeIntoEither(SlotZone.INVENTORY, SlotZone.PLAYER_HOTBAR, stackInSlot, false);
+			case OUTPUT_ZONE -> successfulTransfer = mergeIntoEither(SlotZone.PLAYER_HOTBAR, SlotZone.PLAYER_MAIN_INVENTORY, stackInSlot, true);
+			case PLAYER_HOTBAR -> successfulTransfer = mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, stackInSlot, false);
+			case PLAYER_MAIN_INVENTORY -> successfulTransfer = mergeInto(SlotZone.PLAYER_HOTBAR, stackInSlot, false);
 			default -> throw new IllegalArgumentException("unexpected SlotZone:" + slotZone);
 		}
 
@@ -78,7 +81,7 @@ public class SacMenu extends PlayerContainerMenu {
 	public enum SlotZone implements ISlotZone {
 		PLAYER_HOTBAR(0, 9),
 		PLAYER_MAIN_INVENTORY(PLAYER_HOTBAR.lastIndexPlus1, 3 * 9),
-		INVENTORY(PLAYER_MAIN_INVENTORY.lastIndexPlus1, SacBlockEntity.SLOTS);
+		OUTPUT_ZONE(PLAYER_MAIN_INVENTORY.lastIndexPlus1, GlandBlockEntity.OUTPUT_SLOTS);
 
 		public final int firstIndex;
 		public final int slotCount;

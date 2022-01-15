@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.world.block.entity;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
 import com.github.elenterius.biomancy.world.inventory.GulgeInventory;
-import com.github.elenterius.biomancy.world.inventory.GulgeMenu;
+import com.github.elenterius.biomancy.world.inventory.menu.GulgeMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

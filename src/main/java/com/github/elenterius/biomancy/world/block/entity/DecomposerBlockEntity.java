@@ -7,9 +7,9 @@ import com.github.elenterius.biomancy.recipe.RecipeTypeImpl;
 import com.github.elenterius.biomancy.recipe.VariableProductionOutput;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
 import com.github.elenterius.biomancy.world.block.entity.state.DecomposerStateData;
-import com.github.elenterius.biomancy.world.inventory.DecomposerMenu;
-import com.github.elenterius.biomancy.world.inventory.SimpleInventory;
+import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.world.inventory.itemhandler.HandlerBehaviors;
+import com.github.elenterius.biomancy.world.inventory.menu.DecomposerMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -49,17 +49,17 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	public static final RecipeTypeImpl.ItemStackRecipeType<DecomposerRecipe> RECIPE_TYPE = ModRecipes.DECOMPOSING_RECIPE_TYPE;
 
 	private final DecomposerStateData stateData = new DecomposerStateData();
-	private final SimpleInventory<?> fuelInventory;
-	private final SimpleInventory<?> inputInventory;
-	private final SimpleInventory<?> outputInventory;
+	private final BehavioralInventory<?> fuelInventory;
+	private final BehavioralInventory<?> inputInventory;
+	private final BehavioralInventory<?> outputInventory;
 
 	private final Set<BlockPos> subEntities = new HashSet<>();
 
 	public DecomposerBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.DECOMPOSER.get(), pos, state);
-		fuelInventory = SimpleInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterFuel, this::canPlayerOpenInv, this::setChanged);
-		inputInventory = SimpleInventory.createServerContents(INPUT_SLOTS, this::canPlayerOpenInv, this::setChanged);
-		outputInventory = SimpleInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
+		fuelInventory = BehavioralInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterFuel, this::canPlayerOpenInv, this::setChanged);
+		inputInventory = BehavioralInventory.createServerContents(INPUT_SLOTS, this::canPlayerOpenInv, this::setChanged);
+		outputInventory = BehavioralInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
 	}
 
 	@Override
@@ -252,9 +252,9 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
 		if (!remove && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			if (side == null || side == Direction.DOWN) return outputInventory.getOptionalItemHandlerWithBehavior().cast();
-			if (side == Direction.UP) return inputInventory.getOptionalItemHandlerWithBehavior().cast();
-			return fuelInventory.getOptionalItemHandlerWithBehavior().cast();
+			if (side == null || side == Direction.DOWN) return outputInventory.getOptionalItemHandler().cast();
+			if (side == Direction.UP) return inputInventory.getOptionalItemHandler().cast();
+			return fuelInventory.getOptionalItemHandler().cast();
 		}
 		return super.getCapability(cap, side);
 	}
