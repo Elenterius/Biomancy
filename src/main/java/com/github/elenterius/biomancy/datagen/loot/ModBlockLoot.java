@@ -43,9 +43,13 @@ public class ModBlockLoot extends BlockLoot {
 		LOGGER.info(logMarker, "registering block loot...");
 
 		dropSelf(ModBlocks.CREATOR.get());
+		dropSelf(ModBlocks.BIO_FORGE.get());
+		dropSelf(ModBlocks.TONGUE.get());
+
 		add(ModBlocks.DECOMPOSER.get(), BlockLoot::createNameableBlockEntityTable);
 		add(ModBlocks.GLAND.get(), BlockLoot::createNameableBlockEntityTable);
 		add(ModBlocks.SAC.get(), BlockLoot::createNameableBlockEntityTable);
+
 		add(ModBlocks.GULGE.get(), ModBlockLoot::dropWithInventory);
 
 		dropSelf(ModBlocks.FLESH_BLOCK.get());

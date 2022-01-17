@@ -15,8 +15,9 @@ public final class ModBlockEntities {
 	public static final RegistryObject<BlockEntityType<CreatorBlockEntity>> CREATOR = BLOCK_ENTITIES.register("creator", () -> BlockEntityType.Builder.of(CreatorBlockEntity::new, ModBlocks.CREATOR.get()).build(noDataFixer()));
 	public static final RegistryObject<BlockEntityType<DecomposerBlockEntity>> DECOMPOSER = BLOCK_ENTITIES.register("decomposer", () -> BlockEntityType.Builder.of(DecomposerBlockEntity::new, ModBlocks.DECOMPOSER.get()).build(noDataFixer()));
 	public static final RegistryObject<BlockEntityType<GlandBlockEntity>> GLAND = BLOCK_ENTITIES.register("gland", () -> BlockEntityType.Builder.of(GlandBlockEntity::new, ModBlocks.GLAND.get()).build(noDataFixer()));
-	public static final RegistryObject<BlockEntityType<SacBlockEntity>> SAC = BLOCK_ENTITIES.register("sac", () -> BlockEntityType.Builder.of(SacBlockEntity::new, ModBlocks.SAC.get()).build(noDataFixer()));
 	public static final RegistryObject<BlockEntityType<GulgeBlockEntity>> GULGE = BLOCK_ENTITIES.register("gulge", () -> BlockEntityType.Builder.of(GulgeBlockEntity::new, ModBlocks.GULGE.get()).build(noDataFixer()));
+	public static final RegistryObject<BlockEntityType<SacBlockEntity>> SAC = BLOCK_ENTITIES.register("sac", () -> BlockEntityType.Builder.of(SacBlockEntity::new, ModBlocks.SAC.get()).build(noDataFixer()));
+	public static final RegistryObject<BlockEntityType<TongueBlockEntity>> TONGUE = BLOCK_ENTITIES.register("tongue", () -> BlockEntityType.Builder.of(TongueBlockEntity::new, ModBlocks.TONGUE.get()).build(noDataFixer()));
 
 	//	// Misc
 	//	public static final RegistryObject<TileEntityType<VoiceBoxTileEntity>> VOICE_BOX_TILE = TILE_ENTITIES.register("voice_box", () -> TileEntityType.Builder.of(VoiceBoxTileEntity::new, ModBlocks.VOICE_BOX.get()).build(NO_DATA_FIXER));

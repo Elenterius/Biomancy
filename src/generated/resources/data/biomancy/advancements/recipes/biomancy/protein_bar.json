@@ -6,13 +6,13 @@
     ]
   },
   "criteria": {
-    "has_nutrient_paste": {
+    "has_nutrients": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:nutrient_paste"
+              "biomancy:nutrients"
             ]
           }
         ]
@@ -27,7 +27,7 @@
   },
   "requirements": [
     [
-      "has_nutrient_paste",
+      "has_nutrients",
       "has_the_recipe"
     ]
   ]

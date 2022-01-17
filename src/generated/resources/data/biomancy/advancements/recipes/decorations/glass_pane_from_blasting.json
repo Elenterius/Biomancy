@@ -6,13 +6,13 @@
     ]
   },
   "criteria": {
-    "has_sediment_fragments": {
+    "has_lithic_powder": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:sediment_fragments"
+              "biomancy:lithic_powder"
             ]
           }
         ]
@@ -27,7 +27,7 @@
   },
   "requirements": [
     [
-      "has_sediment_fragments",
+      "has_lithic_powder",
       "has_the_recipe"
     ]
   ]

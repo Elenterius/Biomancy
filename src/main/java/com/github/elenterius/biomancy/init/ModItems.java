@@ -27,7 +27,7 @@ public final class ModItems {
 	//### Complex
 	public static final RegistryObject<Item> FLESH_BITS = ITEMS.register("flesh_bits", () -> new SimpleItem(createProperties().food(ModFoods.FLESH_LUMP)));
 	public static final RegistryObject<Item> BONE_SCRAPS = ITEMS.register("bone_scraps", () -> new SimpleItem(createProperties()));
-	public static final RegistryObject<Item> TOUGH_FILAMENTS = ITEMS.register("tough_filaments", () -> new SimpleItem(createProperties()));
+	public static final RegistryObject<Item> TOUGH_FIBERS = ITEMS.register("tough_fibers", () -> new SimpleItem(createProperties()));
 	public static final RegistryObject<Item> ELASTIC_FIBERS = ITEMS.register("elastic_fibers", () -> new SimpleItem(createProperties()));
 	//### Non-Craft-able
 	public static final RegistryObject<Item> PLANT_MATTER = ITEMS.register("plant_matter", () -> new SimpleItem(createProperties()));
@@ -35,18 +35,17 @@ public final class ModItems {
 	public static final RegistryObject<Item> LAPIDARY_DUST = ITEMS.register("lapidary_dust", () -> new SimpleItem(createProperties()));
 	//### Simple
 	public static final RegistryObject<Item> LITHIC_POWDER = ITEMS.register("lithic_powder", () -> new SimpleItem(createProperties()));
-	public static final RegistryObject<Item> GEM_FRAGMENTS = ITEMS.register("gem_fragments", () -> new SimpleItem(createProperties()));
-	public static final RegistryObject<Item> SEDIMENT_FRAGMENTS = ITEMS.register("sediment_fragments", () -> new SimpleItem(createProperties()));
+	public static final RegistryObject<Item> BIOTIC_MATTER = ITEMS.register("biotic_matter", () -> new SimpleItem(createProperties()));
 
 	//## Gland Components
 	//### Core
-	public static final RegistryObject<Item> NUTRIENT_PASTE = ITEMS.register("nutrient_paste", () -> new SimpleItem(createProperties()));
+	public static final RegistryObject<Item> NUTRIENTS = ITEMS.register("nutrients", () -> new SimpleItem(createProperties()));
 	public static final RegistryObject<Item> BIO_LUMENS = ITEMS.register("bio_lumens", () -> new SimpleItem(createProperties()));
 	public static final RegistryObject<Item> EXOTIC_DUST = ITEMS.register("exotic_dust", () -> new SimpleItem(createProperties()));
 	//### Secondary
+	public static final RegistryObject<Item> PHEROMONES = ITEMS.register("pheromones", () -> new SimpleItem(createProperties()));
 	public static final RegistryObject<Item> BIO_MINERALS = ITEMS.register("bio_minerals", () -> new SimpleItem(createProperties()));
 	public static final RegistryObject<Item> OXIDES = ITEMS.register("oxides", () -> new SimpleItem(createProperties()));
-	public static final RegistryObject<Item> BIOTIC_MATTER = ITEMS.register("biotic_matter", () -> new SimpleItem(createProperties()));
 	//### Misc
 	public static final RegistryObject<Item> TOXINS = ITEMS.register("toxins", () -> new Item(createProperties()));
 	public static final RegistryObject<Item> BILE = ITEMS.register("bile", () -> new Item(createProperties()));
@@ -79,6 +78,7 @@ public final class ModItems {
 	public static final RegistryObject<BlockItem> GLAND = ITEMS.register("gland", () -> new BlockItem(ModBlocks.GLAND.get(), createProperties().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<BlockItem> SAC = ITEMS.register("sac", () -> new BlockItem(ModBlocks.SAC.get(), createProperties().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<BlockItem> GULGE = ITEMS.register("gulge", () -> new BlockItem(ModBlocks.GULGE.get(), createProperties().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<BlockItem> TONGUE = ITEMS.register("tongue", () -> new BlockItem(ModBlocks.TONGUE.get(), createProperties().rarity(Rarity.UNCOMMON)));
 
 	//# Spawn Eggs
 	public static final RegistryObject<ForgeSpawnEggItem> FLESH_BLOB_SPAWN_EGG = ITEMS.register("flesh_blob_spawn_egg", () -> new ForgeSpawnEggItem(ModEntityTypes.FLESH_BLOB, 0xe9967a, 0xf6d2c6, createProperties()));
@@ -98,7 +98,6 @@ public final class ModItems {
 //	public static final RegistryObject<Item> MUTAGENIC_BILE = ITEMS.register("mutagenic_bile", () -> new Item(createItemProperties()));
 //	public static final RegistryObject<Item> REJUVENATING_MUCUS = ITEMS.register("rejuvenating_mucus", () -> new Item(createItemProperties()));
 //	public static final RegistryObject<DecayingItem> ERODING_BILE = ITEMS.register("eroding_bile", () -> new DecayingItem(6 * 60, 0.5f, createItemProperties()));
-//	public static final RegistryObject<Item> HORMONE_BILE = ITEMS.register("hormone_bile", () -> new Item(createItemProperties()));
 
 	//# Armor
 //	public static final RegistryObject<OculiGogglesArmorItem> OCULI_OF_UNVEILING = ITEMS.register("unveiling_oculi", () -> new OculiGogglesArmorItem(ArmorMaterial.IRON, createItemProperties().rarity(Rarity.EPIC)));

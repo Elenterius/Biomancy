@@ -7,8 +7,9 @@
     "biomancy:necrotic_flesh_block",
     "biomancy:creator",
     "biomancy:decomposer",
-    "biomancy:gland",
     "biomancy:sac",
+    "biomancy:tongue",
+    "biomancy:gland",
     "biomancy:gulge"
   ]
 }

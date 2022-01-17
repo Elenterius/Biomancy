@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=up": {
+      "model": "biomancy:block/tongue"
+    },
+    "facing=down": {
+      "model": "biomancy:block/tongue",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "biomancy:block/tongue",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "biomancy:block/tongue",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "biomancy:block/tongue",
+      "x": -90
+    },
+    "facing=west": {
+      "model": "biomancy:block/tongue",
+      "x": 90,
+      "y": -90
+    }
+  }
+}
+

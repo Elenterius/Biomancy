@@ -19,10 +19,19 @@ public class SimpleInventory extends BaseInventory<ItemStackHandler> {
 		optionalItemHandler = LazyOptional.of(() -> itemHandler);
 	}
 
+	private SimpleInventory(int slotAmount, Notify markDirtyNotifier) {
+		this(slotAmount);
+		this.markDirtyNotifier = markDirtyNotifier;
+	}
+
 	private SimpleInventory(int slotAmount, Predicate<Player> canPlayerAccessInventory, Notify markDirtyNotifier) {
 		this(slotAmount);
 		this.canPlayerAccessInventory = canPlayerAccessInventory;
 		this.markDirtyNotifier = markDirtyNotifier;
+	}
+
+	public static SimpleInventory createServerContents(int slotAmount, Notify markDirtyNotifier) {
+		return new SimpleInventory(slotAmount, markDirtyNotifier);
 	}
 
 	public static SimpleInventory createServerContents(int slotAmount, Predicate<Player> canPlayerAccessInventory, Notify markDirtyNotifier) {

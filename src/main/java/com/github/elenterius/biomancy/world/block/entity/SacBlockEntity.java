@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.world.block.entity;
 
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
+import com.github.elenterius.biomancy.world.WorldUtil;
 import com.github.elenterius.biomancy.world.block.SacBlock;
 import com.github.elenterius.biomancy.world.inventory.SimpleInventory;
 import com.github.elenterius.biomancy.world.inventory.menu.SacMenu;
@@ -16,7 +17,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -54,7 +54,7 @@ public class SacBlockEntity extends CustomContainerBlockEntity {
 		if (!inventory.isFull()) {
 			BlockPos relativePos = pos.relative(state.getValue(SacBlock.FACING).getOpposite());
 			if (level.isLoaded(relativePos)) {
-				getItemHandler(level, relativePos, Direction.DOWN).ifPresent(this::tryToExtractItems);
+				WorldUtil.getItemHandler(level, relativePos, Direction.DOWN).ifPresent(this::tryToExtractItems);
 			}
 		}
 	}
@@ -76,17 +76,6 @@ public class SacBlockEntity extends CustomContainerBlockEntity {
 				}
 			}
 		}
-	}
-
-	private LazyOptional<IItemHandler> getItemHandler(ServerLevel level, BlockPos pos, Direction direction) {
-		BlockState state = level.getBlockState(pos);
-		if (state.hasBlockEntity()) {
-			BlockEntity blockEntity = level.getBlockEntity(pos);
-			if (blockEntity != null) {
-				return blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, direction);
-			}
-		}
-		return LazyOptional.empty();
 	}
 
 	public Component getDefaultName() {

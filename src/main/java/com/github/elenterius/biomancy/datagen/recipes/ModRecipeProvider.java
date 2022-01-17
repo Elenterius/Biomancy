@@ -92,8 +92,8 @@ public class ModRecipeProvider extends RecipeProvider {
 	}
 
 	private void registerCookingRecipes(Consumer<FinishedRecipe> consumer) {
-		SimpleCookingRecipeBuilder.blasting(Ingredient.of(ModItems.SEDIMENT_FRAGMENTS.get()), Items.GLASS_PANE, 0.1F, 100)
-				.unlockedBy(hasName(ModItems.SEDIMENT_FRAGMENTS.get()), has(ModItems.SEDIMENT_FRAGMENTS.get())).save(consumer, getBlastingRecipeId(Items.GLASS_PANE));
+		SimpleCookingRecipeBuilder.blasting(Ingredient.of(ModItems.LITHIC_POWDER.get()), Items.GLASS_PANE, 0.1F, 100)
+				.unlockedBy(hasName(ModItems.LITHIC_POWDER.get()), has(ModItems.LITHIC_POWDER.get())).save(consumer, getBlastingRecipeId(Items.GLASS_PANE));
 	}
 
 	private void registerWorkbenchRecipes(Consumer<FinishedRecipe> consumer) {
@@ -141,11 +141,11 @@ public class ModRecipeProvider extends RecipeProvider {
 				.unlockedBy(hasName(ModItems.FLESH_BLOCK.get()), has(ModItems.FLESH_BLOCK.get())).save(consumer);
 
 		ShapelessRecipeBuilder.shapeless(ModItems.FLESH_BITS.get())
-				.requires(ModItems.NECROTIC_FLESH_LUMP.get()).requires(ModItems.NUTRIENT_PASTE.get())
+				.requires(ModItems.NECROTIC_FLESH_LUMP.get()).requires(ModItems.NUTRIENTS.get())
 				.unlockedBy(hasName(ModItems.NECROTIC_FLESH_LUMP.get()), has(ModItems.NECROTIC_FLESH_LUMP.get())).save(consumer, getConversionRecipeId(ModItems.FLESH_BITS.get(), ModItems.NECROTIC_FLESH_LUMP.get()));
 
 		ShapelessRecipeBuilder.shapeless(ModItems.FLESH_BLOCK.get())
-				.requires(ModItems.NECROTIC_FLESH_BLOCK.get()).requires(ModItems.NUTRIENT_PASTE.get(), 6)
+				.requires(ModItems.NECROTIC_FLESH_BLOCK.get()).requires(ModItems.NUTRIENTS.get(), 6)
 				.unlockedBy(hasName(ModItems.NECROTIC_FLESH_BLOCK.get()), has(ModItems.NECROTIC_FLESH_BLOCK.get())).save(consumer, getConversionRecipeId(ModItems.FLESH_BLOCK.get(), ModItems.NECROTIC_FLESH_BLOCK.get()));
 
 		// machines ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -161,22 +161,22 @@ public class ModRecipeProvider extends RecipeProvider {
 		// food ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		ShapedRecipeBuilder.shaped(ModItems.NUTRIENT_BAR.get())
-				.define('N', ModItems.NUTRIENT_PASTE.get())
+				.define('N', ModItems.NUTRIENTS.get())
 				.define('B', Items.SWEET_BERRIES)
 				.define('S', Tags.Items.SEEDS)
 				.pattern("SBS").pattern("NNN")
-				.unlockedBy(hasName(ModItems.NUTRIENT_PASTE.get()), has(ModItems.NUTRIENT_PASTE.get())).save(consumer);
+				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get())).save(consumer);
 
 		ShapedRecipeBuilder.shaped(ModItems.PROTEIN_BAR.get())
-				.define('N', ModItems.NUTRIENT_PASTE.get())
+				.define('N', ModItems.NUTRIENTS.get())
 				.define('B', ModItems.FLESH_BITS.get())
 				.define('S', Tags.Items.SEEDS)
 				.pattern("SBS").pattern("NNN")
-				.unlockedBy(hasName(ModItems.NUTRIENT_PASTE.get()), has(ModItems.NUTRIENT_PASTE.get())).save(consumer);
+				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get())).save(consumer);
 
 		// misc ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		ShapelessRecipeBuilder.shapeless(Items.DIORITE)
-				.requires(Items.COBBLESTONE).requires(ModItems.SEDIMENT_FRAGMENTS.get()).requires(ModItems.LITHIC_POWDER.get())
+				.requires(Items.COBBLESTONE).requires(ModItems.MINERAL_DUST.get()).requires(ModItems.LITHIC_POWDER.get())
 				.unlockedBy(hasName(ModItems.LITHIC_POWDER.get()), has(ModItems.LITHIC_POWDER.get())).save(consumer, getConversionRecipeId(Items.DIORITE, ModItems.LITHIC_POWDER.get()));
 
 		ShapelessRecipeBuilder.shapeless(Items.RED_SAND)
@@ -185,14 +185,14 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		ShapedRecipeBuilder.shaped(Items.DIRT)
 				.define('P', ModItems.PLANT_MATTER.get())
-				.define('L', ModItems.SEDIMENT_FRAGMENTS.get())
+				.define('L', ModItems.LITHIC_POWDER.get())
 				.pattern("LPL").pattern("PLP").pattern("LPL")
-				.unlockedBy(hasName(ModItems.PLANT_MATTER.get()), has(ModItems.PLANT_MATTER.get())).save(consumer, getConversionRecipeId(Items.DIRT, ModItems.SEDIMENT_FRAGMENTS.get()));
+				.unlockedBy(hasName(ModItems.PLANT_MATTER.get()), has(ModItems.PLANT_MATTER.get())).save(consumer, getConversionRecipeId(Items.DIRT, ModItems.LITHIC_POWDER.get()));
 
 		ShapelessRecipeBuilder.shapeless(Items.CLAY_BALL)
 				.requires(Items.WATER_BUCKET)
-				.requires(ModItems.SEDIMENT_FRAGMENTS.get(), 8)
-				.unlockedBy(hasName(ModItems.SEDIMENT_FRAGMENTS.get()), has(ModItems.SEDIMENT_FRAGMENTS.get())).save(consumer, getConversionRecipeId(Items.CLAY_BALL, ModItems.SEDIMENT_FRAGMENTS.get()));
+				.requires(ModItems.LITHIC_POWDER.get(), 8)
+				.unlockedBy(hasName(ModItems.LITHIC_POWDER.get()), has(ModItems.LITHIC_POWDER.get())).save(consumer, getConversionRecipeId(Items.CLAY_BALL, ModItems.LITHIC_POWDER.get()));
 
 		ShapelessRecipeBuilder.shapeless(Items.GUNPOWDER, 2)
 				.requires(Items.CHARCOAL).requires(ModItems.EXOTIC_DUST.get(), 4).requires(Items.BLAZE_POWDER, 2)
@@ -202,7 +202,7 @@ public class ModRecipeProvider extends RecipeProvider {
 	private void registerDecomposingRecipes(Consumer<FinishedRecipe> consumer) {
 		DecomposerRecipeBuilder.create(getItemName(Items.ENCHANTED_GOLDEN_APPLE))
 				.setIngredient(Items.ENCHANTED_GOLDEN_APPLE)
-				.setCraftingTime(720)
+				.setCraftingTime(200)
 				.addOutput(ModItems.BIO_LUMENS.get(), 1, 3) //uniform
 				.addOutput(ModItems.OXIDES.get(), 1) // constant value
 				.addOutput(ModItems.PLANT_MATTER.get(), 1, 3)

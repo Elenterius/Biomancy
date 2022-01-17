@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:clay_ball_from_sediment_fragments"
+      "biomancy:dirt_from_lithic_powder"
     ]
   },
   "criteria": {
-    "has_sediment_fragments": {
+    "has_plant_matter": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:sediment_fragments"
+              "biomancy:plant_matter"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:clay_ball_from_sediment_fragments"
+        "recipe": "biomancy:dirt_from_lithic_powder"
       }
     }
   },
   "requirements": [
     [
-      "has_sediment_fragments",
+      "has_plant_matter",
       "has_the_recipe"
     ]
   ]

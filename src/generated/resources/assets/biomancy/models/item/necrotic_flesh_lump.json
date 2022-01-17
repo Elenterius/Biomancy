@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "biomancy:item/flesh_bits"
+    "layer0": "biomancy:item/necrotic_flesh_lump"
   }
 }
