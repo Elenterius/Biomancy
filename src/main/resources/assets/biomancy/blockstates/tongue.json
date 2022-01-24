@@ -18,7 +18,8 @@
     },
     "facing=south": {
       "model": "biomancy:block/tongue",
-      "x": -90
+      "x": 90,
+      "y": -180
     },
     "facing=west": {
       "model": "biomancy:block/tongue",

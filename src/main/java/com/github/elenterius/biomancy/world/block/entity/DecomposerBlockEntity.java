@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.recipe.DecomposerRecipe;
 import com.github.elenterius.biomancy.recipe.RecipeTypeImpl;
 import com.github.elenterius.biomancy.recipe.VariableProductionOutput;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
+import com.github.elenterius.biomancy.world.block.MachineBlock;
 import com.github.elenterius.biomancy.world.block.entity.state.DecomposerStateData;
 import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.world.inventory.itemhandler.HandlerBehaviors;
@@ -25,12 +26,20 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -38,7 +47,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, DecomposerStateData> implements MenuProvider {
+public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, DecomposerStateData> implements MenuProvider, IAnimatable {
 
 	public static final int FUEL_SLOTS = 1;
 	public static final int INPUT_SLOTS = DecomposerRecipe.MAX_INGREDIENTS;
@@ -54,6 +63,8 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	private final BehavioralInventory<?> outputInventory;
 
 	private final Set<BlockPos> subEntities = new HashSet<>();
+
+	private final AnimationFactory animationFactory = new AnimationFactory(this);
 
 	public DecomposerBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.DECOMPOSER.get(), pos, state);
@@ -273,6 +284,27 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 		fuelInventory.revive();
 		inputInventory.revive();
 		outputInventory.revive();
+	}
+
+	private <E extends BlockEntity & IAnimatable> PlayState handleIdleAnim(AnimationEvent<E> event) {
+		Boolean isCrafting = event.getAnimatable().getBlockState().getValue(MachineBlock.CRAFTING);
+		if (Boolean.TRUE.equals(isCrafting)) {
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("decomposer.anim.working", true));
+		}
+		else {
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("decomposer.anim.idle.normal", true));
+		}
+		return PlayState.CONTINUE;
+	}
+
+	@Override
+	public void registerControllers(AnimationData data) {
+		data.addAnimationController(new AnimationController<>(this, "idle_controller", 10, this::handleIdleAnim));
+	}
+
+	@Override
+	public AnimationFactory getFactory() {
+		return animationFactory;
 	}
 
 }

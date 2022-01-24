@@ -30,10 +30,9 @@ import java.util.stream.Stream;
 public class DecomposerBlock extends HorizontalDirectionalMachineBlock {
 
 	protected static final VoxelShape AABB = Stream.of(
-			Block.box(1, 0, 1, 15, 1, 15),
-			Block.box(0, 1, 0, 16, 10, 16),
-			Block.box(1, 10, 1, 15, 12, 15),
-			Block.box(2, 12, 2, 14, 16, 14)
+			Block.box(0, 0, 0, 16, 14, 16),
+			Block.box(1, 14, 1, 15, 17, 15),
+			Block.box(2, 17, 2, 14, 18, 14)
 	).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
 
 	public DecomposerBlock(Properties properties) {
@@ -69,7 +68,7 @@ public class DecomposerBlock extends HorizontalDirectionalMachineBlock {
 
 	@Override
 	public RenderShape getRenderShape(BlockState state) {
-		return RenderShape.MODEL;
+		return RenderShape.ENTITYBLOCK_ANIMATED;
 	}
 
 	@Override

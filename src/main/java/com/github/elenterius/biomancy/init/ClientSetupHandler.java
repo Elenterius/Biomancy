@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.init;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.model.entity.FleshBlobModel;
 import com.github.elenterius.biomancy.client.renderer.block.CreatorBlockEntityRenderer;
+import com.github.elenterius.biomancy.client.renderer.block.DecomposerBlockEntityRenderer;
 import com.github.elenterius.biomancy.client.renderer.entity.FleshBlobRenderer;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -44,6 +45,7 @@ public final class ClientSetupHandler {
 	@SubscribeEvent
 	public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
 		event.registerBlockEntityRenderer(ModBlockEntities.CREATOR.get(), CreatorBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntities.DECOMPOSER.get(), DecomposerBlockEntityRenderer::new);
 
 		event.registerEntityRenderer(ModEntityTypes.FLESH_BLOB.get(), FleshBlobRenderer::new);
 
@@ -147,7 +149,6 @@ public final class ClientSetupHandler {
 		);
 
 		private static final CacheLoader<UUID, HashCode> CACHE_LOADER = new CacheLoader<>() {
-			@SuppressWarnings("NullableProblems")
 			@Override
 			public HashCode load(UUID key) {
 				//noinspection UnstableApiUsage

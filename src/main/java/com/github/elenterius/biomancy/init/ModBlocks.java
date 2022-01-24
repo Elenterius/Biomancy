@@ -60,6 +60,8 @@ public final class ModBlocks {
 		ItemBlockRenderTypes.setRenderLayer(CREATOR.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(GLAND.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(TONGUE.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(GULGE.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(DECOMPOSER.get(), RenderType.translucent());
 
 //		ItemBlockRenderTypes.setRenderLayer(FLESH_TENTACLE.get(), RenderType.cutout());
 //		ItemBlockRenderTypes.setRenderLayer(FLESHBORN_DOOR.get(), RenderType.cutout());
