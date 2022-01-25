@@ -89,6 +89,9 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		LOGGER.info(logMarker, "registering decomposing recipes...");
 		registerDecomposingRecipes(consumer);
+
+		LOGGER.info(logMarker, "registering bio-forge recipes...");
+		registerBioForgeRecipes(consumer);
 	}
 
 	private void registerCookingRecipes(Consumer<FinishedRecipe> consumer) {
@@ -210,6 +213,14 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addByproduct(Items.SUGAR, 2, 4)
 				.addByproduct(ModItems.BILE.get(), 2, 4)
 				.unlockedBy(hasName(Items.ENCHANTED_GOLDEN_APPLE), has(Items.ENCHANTED_GOLDEN_APPLE))
+				.save(consumer);
+	}
+
+	private void registerBioForgeRecipes(Consumer<FinishedRecipe> consumer) {
+		BioForgeRecipeBuilder.create(new ItemData(ModItems.OCULUS.get()))
+				.addIngredient(ModItems.FLESH_BITS.get(), 20)
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 10)
+				.unlockedBy(hasName(ModItems.ELASTIC_FIBERS.get()), has(ModItems.ELASTIC_FIBERS.get()))
 				.save(consumer);
 	}
 

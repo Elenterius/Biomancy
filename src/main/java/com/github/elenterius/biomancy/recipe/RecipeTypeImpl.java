@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 
 import java.util.Optional;
 
-public abstract class RecipeTypeImpl<T extends AbstractProductionRecipe> implements RecipeType<T> {
+public abstract class RecipeTypeImpl<T extends Recipe<Container>> implements RecipeType<T> {
 
 	private final String identifier;
 
@@ -18,12 +18,16 @@ public abstract class RecipeTypeImpl<T extends AbstractProductionRecipe> impleme
 		this.identifier = identifier;
 	}
 
+	public String getId() {
+		return identifier;
+	}
+
 	@Override
 	public String toString() {
 		return identifier;
 	}
 
-	public static class ItemStackRecipeType<R extends AbstractProductionRecipe> extends RecipeTypeImpl<R> {
+	public static class ItemStackRecipeType<R extends Recipe<Container>> extends RecipeTypeImpl<R> {
 
 		public ItemStackRecipeType(String identifier) {
 			super(identifier);

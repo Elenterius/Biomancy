@@ -1,0 +1,20 @@
+{
+  "type": "biomancy:bio_forging",
+  "inputs": [
+    {
+      "ingredient": {
+        "item": "biomancy:flesh_bits"
+      },
+      "count": 20
+    },
+    {
+      "ingredient": {
+        "item": "biomancy:elastic_fibers"
+      },
+      "count": 10
+    }
+  ],
+  "result": {
+    "item": "biomancy:oculus"
+  }
+}
