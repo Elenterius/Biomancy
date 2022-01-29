@@ -34,6 +34,8 @@
 
   "item.biomancy.glass_vial": "Glass Vial",
   "item.biomancy.serum": "Serum",
+  "item.biomancy.essence": "Essence",
+  "item.biomancy.bio_extractor": "Bio-Extractor",
   "item.biomancy.bone_sword": "Sharpened Bone",
 
   "item.biomancy.flesh_blob_spawn_egg": "Flesh Blob Spawn Egg",
@@ -60,8 +62,10 @@
   "entity.biomancy.flesh_blob": "Flesh Blob",
 
   "enchantment.biomancy.despoil": "Despoil",
+  "enchantment.biomancy.anesthetic": "Anesthetic",
 
   "effect.biomancy.flesh_eating_disease": "Necrotizing Flesh",
+  "effect.biomancy.essence_anemia": "Essence Anemia",
 
   "death.attack.biomancy.creator_spikes": "%1$s offered the wrong Tribute to the Flesh Lord and was impaled by bone spikes",
 
@@ -87,8 +91,11 @@
   "tooltip.biomancy.exotic_dust": "Used as a main component in Ichor and related crafting. Basic component, only obtained in Gland.",
   "tooltip.biomancy.biotic_matter": "Used as a main component in complex component and related crafting. Basic component, only obtained in Gland.",
 
+  "tooltip.biomancy.bio_extractor": "Used to forcefully extract Essence from living beings.",
+
   "tooltip.biomancy.empty": "Empty",
   "tooltip.biomancy.nutrients_fuel": "Nutrients",
+  "tooltip.biomancy.contains_unique_dna": "Contains Unique Genetic Sequences",
 
   "advancements.biomancy.root.title": "Biomancy",
   "advancements.biomancy.root.description": "Raw Meat is useful...",

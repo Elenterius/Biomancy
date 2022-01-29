@@ -1,10 +1,7 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.item.CreatorBlockItem;
-import com.github.elenterius.biomancy.world.item.EffectCureItem;
-import com.github.elenterius.biomancy.world.item.SerumItem;
-import com.github.elenterius.biomancy.world.item.SimpleItem;
+import com.github.elenterius.biomancy.world.item.*;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -46,21 +43,23 @@ public final class ModItems {
 	public static final RegistryObject<Item> PHEROMONES = ITEMS.register("pheromones", () -> new SimpleItem(createProperties()));
 	public static final RegistryObject<Item> BIO_MINERALS = ITEMS.register("bio_minerals", () -> new SimpleItem(createProperties()));
 	public static final RegistryObject<Item> OXIDES = ITEMS.register("oxides", () -> new SimpleItem(createProperties()));
-	//### Misc
+
 	public static final RegistryObject<Item> TOXINS = ITEMS.register("toxins", () -> new Item(createProperties()));
-	public static final RegistryObject<Item> BILE = ITEMS.register("bile", () -> new Item(createProperties()));
 
 	//# Bio-Forge
 	public static final RegistryObject<Item> BIOMETAL_INGOT = ITEMS.register("biometal_ingot", () -> new Item(createProperties()));
 	public static final RegistryObject<Item> OCULUS = ITEMS.register("oculus", () -> new Item(createProperties().food(ModFoods.OCULUS)));
+	public static final RegistryObject<Item> BILE = ITEMS.register("bile", () -> new Item(createProperties()));
 
 	//# Food
 	public static final RegistryObject<Item> NUTRIENT_BAR = ITEMS.register("nutrient_bar", () -> new EffectCureItem(createProperties().food(ModFoods.NUTRIENT_BAR)));
 	public static final RegistryObject<Item> PROTEIN_BAR = ITEMS.register("protein_bar", () -> new EffectCureItem(createProperties().food(ModFoods.PROTEIN_BAR)));
 
-	//# Tools
+	//# Misc
 	public static final RegistryObject<Item> GLASS_VIAL = ITEMS.register("glass_vial", () -> new Item(createProperties()));
 	public static final RegistryObject<SerumItem> SERUM = ITEMS.register("serum", () -> new SerumItem(createProperties().stacksTo(8)));
+	public static final RegistryObject<EssenceItem> ESSENCE = ITEMS.register("essence", () -> new EssenceItem(createProperties()));
+	public static final RegistryObject<BioExtractorItem> BIO_EXTRACTOR = ITEMS.register("bio_extractor", () -> new BioExtractorItem(createProperties().durability(200)));
 
 	//# Weapons
 	public static final RegistryObject<SwordItem> BONE_SWORD = ITEMS.register("bone_sword", () -> new SwordItem(ModTiers.BONE, 3, -2.4f, createProperties()));

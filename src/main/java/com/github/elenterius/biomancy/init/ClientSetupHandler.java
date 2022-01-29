@@ -10,14 +10,19 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import org.lwjgl.glfw.GLFW;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Set;
@@ -28,13 +33,19 @@ import java.util.concurrent.TimeUnit;
 @Mod.EventBusSubscriber(modid = BiomancyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class ClientSetupHandler {
 
-//	public static final KeyBinding ITEM_DEFAULT_KEY_BINDING = new KeyBinding(String.format("key.%s.item_default", BiomancyMod.MOD_ID), KeyConflictContext.UNIVERSAL, InputMappings.Type.KEYSYM, GLFW.GLFW_KEY_V, "key.categories." + BiomancyMod.MOD_ID);
+	public static final KeyMapping ITEM_DEFAULT_KEY_BINDING = new KeyMapping(
+			String.format("key.%s.item_default", BiomancyMod.MOD_ID),
+			KeyConflictContext.UNIVERSAL,
+			InputConstants.Type.KEYSYM,
+			GLFW.GLFW_KEY_V,
+			"key.categories." + BiomancyMod.MOD_ID
+	);
 
 	private ClientSetupHandler() {}
 
 	@SubscribeEvent
 	public static void onClientSetup(FMLClientSetupEvent event) {
-//		ClientRegistry.registerKeyBinding(ITEM_DEFAULT_KEY_BINDING);
+		ClientRegistry.registerKeyBinding(ITEM_DEFAULT_KEY_BINDING);
 		event.enqueueWork(() -> {
 			ModMenuTypes.registerMenuScreens();
 			registerItemModelProperties();
@@ -97,6 +108,8 @@ public final class ClientSetupHandler {
 	@SubscribeEvent
 	public static void onItemColorRegistry(final ColorHandlerEvent.Item event) {
 		event.getItemColors().register((stack, index) -> index == 0 ? ModItems.SERUM.get().getSerumColor(stack) : -1, ModItems.SERUM.get());
+		event.getItemColors().register((stack, index) -> ModItems.ESSENCE.get().getColor(stack, index), ModItems.ESSENCE.get());
+
 //		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.INJECTION_DEVICE.get().getReagentColor(stack) : -1, ModItems.INJECTION_DEVICE.get());
 //		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.BOOMLING.get().getPotionColor(stack) : -1, ModItems.BOOMLING.get());
 //		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.BOOMLING_HIVE_GUN.get().getPotionColor(stack) : -1, ModItems.BOOMLING_HIVE_GUN.get());

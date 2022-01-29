@@ -1,7 +1,9 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.world.enchantment.AnestheticEnchantment;
 import com.github.elenterius.biomancy.world.enchantment.DespoilEnchantment;
+import com.github.elenterius.biomancy.world.item.BioExtractorItem;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
@@ -11,11 +13,13 @@ import net.minecraftforge.registries.RegistryObject;
 
 public final class ModEnchantments {
 
+	public static final EnchantmentCategory SYRINGE_CATEGORY = EnchantmentCategory.create("syringe", BioExtractorItem.class::isInstance);
+
 	public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, BiomancyMod.MOD_ID);
+	public static final RegistryObject<DespoilEnchantment> DESPOIL = ENCHANTMENTS.register("despoil", () -> new DespoilEnchantment(Enchantment.Rarity.RARE, EnchantmentCategory.WEAPON, EquipmentSlot.MAINHAND));
+	public static final RegistryObject<AnestheticEnchantment> ANESTHETIC = ENCHANTMENTS.register("anesthetic", () -> new AnestheticEnchantment(Enchantment.Rarity.RARE, SYRINGE_CATEGORY, EquipmentSlot.MAINHAND));
 
 	private ModEnchantments() {}
-
-	public static final RegistryObject<DespoilEnchantment> DESPOIL = ENCHANTMENTS.register("despoil", () -> new DespoilEnchantment(Enchantment.Rarity.RARE, EnchantmentCategory.WEAPON, EquipmentSlot.MAINHAND));
 
 //	public static final RegistryObject<ClimbingEnchantment> CLIMBING = ENCHANTMENTS.register("climbing", () -> new ClimbingEnchantment(Enchantment.Rarity.RARE));
 //	public static final RegistryObject<BulletJumpEnchantment> BULLET_JUMP = ENCHANTMENTS.register("bullet_jump", () -> new BulletJumpEnchantment(Enchantment.Rarity.VERY_RARE));

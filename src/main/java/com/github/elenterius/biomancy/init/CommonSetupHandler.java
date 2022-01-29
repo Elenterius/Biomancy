@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -11,7 +12,7 @@ public final class CommonSetupHandler {
 
 	@SubscribeEvent
 	public static void onSetup(final FMLCommonSetupEvent event) {
-//		ModNetworkHandler.register();
+		ModNetworkHandler.register();
 
 		// do stuff after common setup event on single thread
 		event.enqueueWork(() -> {

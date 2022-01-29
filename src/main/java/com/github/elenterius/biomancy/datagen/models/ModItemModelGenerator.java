@@ -55,6 +55,9 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 		generateFlat(ModItems.BIOMETAL_INGOT.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.OCULUS.get(), ModelTemplates.FLAT_ITEM);
 
+		generateFlat(ModItems.ESSENCE.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.BIO_EXTRACTOR.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+
 		generateFlat(ModItems.SHARP_TOOTH.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.SKIN_CHUNK.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.NECROTIC_FLESH_LUMP.get(), ModelTemplates.FLAT_ITEM);

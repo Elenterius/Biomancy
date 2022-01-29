@@ -1,0 +1,47 @@
+package com.github.elenterius.biomancy.network;
+
+import com.github.elenterius.biomancy.world.item.IKeyListener;
+import com.google.common.primitives.UnsignedBytes;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.network.NetworkEvent;
+
+import java.util.function.Supplier;
+
+public class KeyPressMessage {
+
+	public final byte slotIndex; //unsigned byte (0 - 255)
+	public final byte flag;
+
+	public KeyPressMessage(int slotIndex, byte flag) {
+		this.slotIndex = UnsignedBytes.checkedCast(slotIndex);
+		this.flag = flag;
+	}
+
+	public KeyPressMessage(byte slotIndex, byte flag) {
+		this.slotIndex = slotIndex;
+		this.flag = flag;
+	}
+
+	public static KeyPressMessage decode(final FriendlyByteBuf byteBuf) {
+		return new KeyPressMessage(byteBuf.readByte(), byteBuf.readByte());
+	}
+
+	public static void handle(KeyPressMessage packet, Supplier<NetworkEvent.Context> ctx) {
+		ctx.get().enqueueWork(() -> {
+			ServerPlayer player = ctx.get().getSender();
+			if (player != null) {
+				ServerLevel world = player.getLevel();
+				IKeyListener.onReceiveKeybindingPacket(world, player, UnsignedBytes.toInt(packet.slotIndex), packet.flag); //TODO: add version which is not tied to EquipmentSlotType
+			}
+		});
+		ctx.get().setPacketHandled(true);
+	}
+
+	public void encode(final FriendlyByteBuf byteBuf) {
+		byteBuf.writeByte(slotIndex);
+		byteBuf.writeByte(flag);
+	}
+
+}
