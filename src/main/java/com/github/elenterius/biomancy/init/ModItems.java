@@ -60,6 +60,7 @@ public final class ModItems {
 	public static final RegistryObject<SerumItem> SERUM = ITEMS.register("serum", () -> new SerumItem(createProperties().stacksTo(8)));
 	public static final RegistryObject<EssenceItem> ESSENCE = ITEMS.register("essence", () -> new EssenceItem(createProperties()));
 	public static final RegistryObject<BioExtractorItem> BIO_EXTRACTOR = ITEMS.register("bio_extractor", () -> new BioExtractorItem(createProperties().durability(200)));
+	public static final RegistryObject<BioInjectorItem> BIO_INJECTOR = ITEMS.register("bio_injector", () -> new BioInjectorItem(createProperties().durability(200)));
 
 	//# Weapons
 	public static final RegistryObject<SwordItem> BONE_SWORD = ITEMS.register("bone_sword", () -> new SwordItem(ModTiers.BONE, 3, -2.4f, createProperties()));

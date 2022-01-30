@@ -2,12 +2,20 @@ package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
+import com.github.elenterius.biomancy.world.item.BioExtractorItem;
+import com.github.elenterius.biomancy.world.item.BioInjectorItem;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.BlockSource;
+import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 @Mod.EventBusSubscriber(modid = BiomancyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class CommonSetupHandler {
+
 	private CommonSetupHandler() {}
 
 	@SubscribeEvent
@@ -23,33 +31,24 @@ public final class CommonSetupHandler {
 		});
 	}
 
-//	@SubscribeEvent(priority = EventPriority.LOWEST)
-//	public static void onRegisterEntityType(final RegistryEvent.Register<EntityType<?>> event) {
-//		DefaultDispenseItemBehavior behavior = new DefaultDispenseItemBehavior() {
-//			@Override
-//			protected ItemStack execute(IBlockSource iBlockSource, ItemStack stack) {
-//				EntityType<?> entityType = ((SpawnEggItem) stack.getItem()).getType(stack.getTag());
-//				Direction direction = iBlockSource.getBlockState().getValue(DispenserBlock.FACING);
-//				entityType.spawn(iBlockSource.getLevel(), stack, null, iBlockSource.getPos().relative(direction), SpawnReason.DISPENSER, direction != Direction.UP, false);
-//				stack.shrink(1);
-//				return stack;
-//			}
-//		};
-//	}
-
 	private static void registerDispenserBehaviors() {
-//		OptionalDispenseBehavior behavior = new OptionalDispenseBehavior() {
-//			@Override
-//			protected ItemStack execute(IBlockSource source, ItemStack stack) {
-//				ServerWorld world = source.getLevel();
-//				BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
-//				setSuccess(InjectionDeviceItem.dispenserInjectLivingEntity(world, pos, stack));
-//				return stack;
-//			}
-//		};
-//		DispenserBlock.registerBehavior(ModItems.INJECTION_DEVICE.get(), behavior);
+		DispenserBlock.registerBehavior(ModItems.BIO_EXTRACTOR.get(), new OptionalDispenseItemBehavior() {
+			@Override
+			protected ItemStack execute(BlockSource source, ItemStack stack) {
+				BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+				setSuccess(BioExtractorItem.tryExtractEssence(source.getLevel(), pos, stack));
+				return stack;
+			}
+		});
 
-		//register dispenser behavior for entity storage bag?
+		DispenserBlock.registerBehavior(ModItems.BIO_INJECTOR.get(), new OptionalDispenseItemBehavior() {
+			@Override
+			protected ItemStack execute(BlockSource source, ItemStack stack) {
+				BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+				setSuccess(BioInjectorItem.tryInjectLivingEntity(source.getLevel(), pos, stack));
+				return stack;
+			}
+		});
 	}
 
 }

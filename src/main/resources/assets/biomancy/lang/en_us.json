@@ -36,6 +36,7 @@
   "item.biomancy.serum": "Serum",
   "item.biomancy.essence": "Essence",
   "item.biomancy.bio_extractor": "Bio-Extractor",
+  "item.biomancy.bio_injector": "Bio-Injector",
   "item.biomancy.bone_sword": "Sharpened Bone",
 
   "item.biomancy.flesh_blob_spawn_egg": "Flesh Blob Spawn Egg",
@@ -91,11 +92,15 @@
   "tooltip.biomancy.exotic_dust": "Used as a main component in Ichor and related crafting. Basic component, only obtained in Gland.",
   "tooltip.biomancy.biotic_matter": "Used as a main component in complex component and related crafting. Basic component, only obtained in Gland.",
 
-  "tooltip.biomancy.bio_extractor": "Used to forcefully extract Essence from living beings.",
+  "tooltip.biomancy.bio_extractor": "A intricate device which is used to extract Essence from living beings.",
+  "tooltip.biomancy.bio_injector": "A simple device which utilizes a razor sharp needle to quickly and forcefully inject Serums into various things such as Mobs, Players and Blocks.",
 
   "tooltip.biomancy.empty": "Empty",
   "tooltip.biomancy.nutrients_fuel": "Nutrients",
   "tooltip.biomancy.contains_unique_dna": "Contains Unique Genetic Sequences",
+  "tooltip.biomancy.press_button_to": "Press %1$s to %2$s",
+  "tooltip.biomancy.action_self_inject": "inject yourself",
+  "tooltip.biomancy.action_self_extract": "extract from yourself",
 
   "advancements.biomancy.root.title": "Biomancy",
   "advancements.biomancy.root.description": "Raw Meat is useful...",
@@ -267,12 +272,10 @@
   "tooltip.biomancy.excited": "Excited",
   "tooltip.biomancy.exalted": "Exalted",
   "tooltip.biomancy.hit_count": "Hit Count: %1$sx",
-  "tooltip.biomancy.press_button_to": "Press %1$s to %2$s",
   "tooltip.biomancy.action_activate": "activate",
   "tooltip.biomancy.action_deactivate": "deactivate",
   "tooltip.biomancy.action_reload": "reload",
   "tooltip.biomancy.action_cycle": "cycle",
-  "tooltip.biomancy.action_self_inject": "inject yourself",
   "tooltip.biomancy.contains": "Contains: %1$s",
   "tooltip.biomancy.contains_dna": "Contains: Genetic Material of %1$s",
   "tooltip.biomancy.contains_nothing": "Contains: Nothing",

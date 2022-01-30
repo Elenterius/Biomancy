@@ -30,42 +30,46 @@ import java.util.UUID;
 
 public abstract class Serum extends ForgeRegistryEntry<Serum> {
 
-	public static final String NBT_KEY_ID = "ReagentId";
-	public static final String NBT_KEY_DATA = "ReagentData";
-	public static final String NBT_KEY_COLOR = "ReagentColor";
+	public static final String ID_TAG = "SerumId";
+	public static final String DATA_TAG = "SerumData";
+	public static final String COLOR_TAG = "SerumColor";
 	private final int color;
 	@Nullable
 	private Multimap<Attribute, AttributeModifier> attributeModifiers = null;
 
-	public Serum(int colorIn) {
+	protected Serum(int colorIn) {
 		color = colorIn;
 	}
 
+	public static CompoundTag getDataTag(ItemStack stack) {
+		return stack.getOrCreateTag().getCompound(DATA_TAG);
+	}
+
 	public static void remove(CompoundTag nbt) {
-		nbt.remove(NBT_KEY_ID);
-		nbt.remove(NBT_KEY_DATA);
-		nbt.remove(NBT_KEY_COLOR);
+		nbt.remove(ID_TAG);
+		nbt.remove(DATA_TAG);
+		nbt.remove(COLOR_TAG);
 	}
 
 	public static void copyAdditionalData(CompoundTag fromNbt, CompoundTag toNbt) {
-		if (fromNbt.contains(NBT_KEY_DATA)) {
-			CompoundTag data = fromNbt.getCompound(NBT_KEY_DATA);
-			if (!data.isEmpty()) toNbt.put(NBT_KEY_DATA, data.copy());
+		if (fromNbt.contains(DATA_TAG)) {
+			CompoundTag data = fromNbt.getCompound(DATA_TAG);
+			if (!data.isEmpty()) toNbt.put(DATA_TAG, data.copy());
 		}
 	}
 
 	public static void serialize(Serum reagent, CompoundTag nbt) {
 		ResourceLocation key = ModSerums.REGISTRY.get().getKey(reagent);
 		if (key != null) {
-			nbt.putString(NBT_KEY_ID, key.toString());
-			nbt.putInt(NBT_KEY_COLOR, reagent.getColor());
+			nbt.putString(ID_TAG, key.toString());
+			nbt.putInt(COLOR_TAG, reagent.getColor());
 		}
 	}
 
 	@Nullable
 	public static Serum deserialize(CompoundTag nbt) {
-		if (nbt.contains(NBT_KEY_ID)) {
-			ResourceLocation key = ResourceLocation.tryParse(nbt.getString(NBT_KEY_ID));
+		if (nbt.contains(ID_TAG)) {
+			ResourceLocation key = ResourceLocation.tryParse(nbt.getString(ID_TAG));
 			if (key != null) return ModSerums.REGISTRY.get().getValue(key);
 		}
 		return null;
@@ -73,8 +77,8 @@ public abstract class Serum extends ForgeRegistryEntry<Serum> {
 
 	@Nullable
 	public static String getTranslationKey(CompoundTag nbt) {
-		if (nbt.contains(NBT_KEY_ID)) {
-			String str = nbt.getString(NBT_KEY_ID);
+		if (nbt.contains(ID_TAG)) {
+			String str = nbt.getString(ID_TAG);
 			return str.isEmpty() ? null : "reagent." + str.replace(":", ".").replace("/", ".");
 		}
 		return null;
@@ -85,7 +89,7 @@ public abstract class Serum extends ForgeRegistryEntry<Serum> {
 	}
 
 	public static int getColor(CompoundTag nbt) {
-		return nbt.contains(NBT_KEY_COLOR) ? nbt.getInt(NBT_KEY_COLOR) : -1;
+		return nbt.contains(COLOR_TAG) ? nbt.getInt(COLOR_TAG) : -1;
 	}
 
 	@OnlyIn(Dist.CLIENT)

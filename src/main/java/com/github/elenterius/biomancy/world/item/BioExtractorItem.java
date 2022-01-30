@@ -5,11 +5,13 @@ import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
+import com.github.elenterius.biomancy.util.TextComponentUtil;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -17,6 +19,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -27,12 +30,12 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Random;
 
 public class BioExtractorItem extends Item implements IKeyListener {
 
@@ -40,20 +43,13 @@ public class BioExtractorItem extends Item implements IKeyListener {
 		super(properties);
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	@Override
-	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, ClientLevel level, Player player, byte flags) {
-		//TODO: add cooldown?
-		if (!interactWithPlayerSelf(stack, player)) {
-			playSFX(level, player, SoundEvents.DISPENSER_FAIL);
-			return InteractionResultHolder.fail(flags); //don't send button press to server
+	public static boolean tryExtractEssence(ServerLevel level, BlockPos pos, ItemStack stack) {
+		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos), EntitySelector.NO_SPECTATORS);
+		if (!entities.isEmpty() && extractEssence(stack, null, entities.get(0))) {
+			level.playSound(null, pos, ModSoundEvents.INJECT.get(), SoundSource.BLOCKS, 0.8f, 1f / (level.random.nextFloat() * 0.5f + 1f) + 0.2f);
+			return true;
 		}
-		return InteractionResultHolder.success(flags);
-	}
-
-	@Override
-	public void onServerReceiveKeyPress(ItemStack stack, ServerLevel level, Player player, byte flags) {
-		playSFX(level, player, interactWithPlayerSelf(stack, player) ? ModSoundEvents.INJECT.get() : SoundEvents.DISPENSER_FAIL);
+		return false;
 	}
 
 	private static boolean extractEssence(ItemStack stack, @Nullable Player player, LivingEntity targetEntity) {
@@ -84,11 +80,27 @@ public class BioExtractorItem extends Item implements IKeyListener {
 		return false;
 	}
 
+	@OnlyIn(Dist.CLIENT)
+	@Override
+	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, ClientLevel level, Player player, byte flags) {
+		//TODO: add cooldown?
+		if (!interactWithPlayerSelf(stack, player)) {
+			ModSoundEvents.playItemSFX(level, player, ModSoundEvents.FAIL);
+			return InteractionResultHolder.fail(flags); //don't send button press to server
+		}
+		return InteractionResultHolder.success(flags);
+	}
+
+	@Override
+	public void onServerReceiveKeyPress(ItemStack stack, ServerLevel level, Player player, byte flags) {
+		ModSoundEvents.playItemSFX(level, player, interactWithPlayerSelf(stack, player) ? ModSoundEvents.INJECT.get() : ModSoundEvents.FAIL);
+	}
+
 	@Override
 	public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity interactionTarget, InteractionHand usedHand) {
 		//the device is empty
 		if (!interactionTarget.level.isClientSide && extractEssence(stack, player, interactionTarget)) {
-			playSFX(interactionTarget.level, player, ModSoundEvents.INJECT.get());
+			ModSoundEvents.playItemSFX(interactionTarget.level, player, ModSoundEvents.INJECT.get());
 
 			//fix for creative mode (normally the stack is not modified in creative)
 			if (player.isCreative()) player.setItemInHand(usedHand, stack);
@@ -115,15 +127,11 @@ public class BioExtractorItem extends Item implements IKeyListener {
 		return enchantment == Enchantments.MOB_LOOTING || super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
-	public void playSFX(Level world, LivingEntity shooter, SoundEvent soundEvent) {
-		SoundSource soundSource = shooter instanceof Player ? SoundSource.PLAYERS : SoundSource.HOSTILE;
-		Random random = world.random;
-		world.playSound(world.isClientSide && shooter instanceof Player player ? player : null, shooter.getX(), shooter.getY(), shooter.getZ(), soundEvent, soundSource, 0.8f, 1f / (random.nextFloat() * 0.5f + 1f) + 0.2f);
-	}
-
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
+		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTranslationText("tooltip", "action_self_extract")).withStyle(ChatFormatting.DARK_GRAY));
+		if (stack.isEnchanted()) tooltip.add(TextComponent.EMPTY);
 	}
 
 }

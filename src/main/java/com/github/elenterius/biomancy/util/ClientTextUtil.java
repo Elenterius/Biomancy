@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.util;
 
+import com.github.elenterius.biomancy.init.ClientSetupHandler;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -63,9 +64,9 @@ public final class ClientTextUtil {
 		return CTRL_KEY_TEXT.plainCopy();
 	}
 
-//	public static MutableComponent getDefaultKey() {
-//		return ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.getTranslatedKeyMessage().plainCopy();
-//	}
+	public static MutableComponent getDefaultKey() {
+		return ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.getTranslatedKeyMessage().plainCopy();
+	}
 
 	public static String tryToGetPlayerNameOnClientSide(UUID uuid) {
 		if (Minecraft.getInstance().level != null) {

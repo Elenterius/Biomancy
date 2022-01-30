@@ -109,8 +109,8 @@ public final class ClientSetupHandler {
 	public static void onItemColorRegistry(final ColorHandlerEvent.Item event) {
 		event.getItemColors().register((stack, index) -> index == 0 ? ModItems.SERUM.get().getSerumColor(stack) : -1, ModItems.SERUM.get());
 		event.getItemColors().register((stack, index) -> ModItems.ESSENCE.get().getColor(stack, index), ModItems.ESSENCE.get());
+		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.BIO_INJECTOR.get().getSerumColor(stack) : -1, ModItems.BIO_INJECTOR.get());
 
-//		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.INJECTION_DEVICE.get().getReagentColor(stack) : -1, ModItems.INJECTION_DEVICE.get());
 //		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.BOOMLING.get().getPotionColor(stack) : -1, ModItems.BOOMLING.get());
 //		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.BOOMLING_HIVE_GUN.get().getPotionColor(stack) : -1, ModItems.BOOMLING_HIVE_GUN.get());
 
