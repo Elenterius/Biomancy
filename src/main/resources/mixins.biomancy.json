@@ -8,7 +8,9 @@
     "defaultRequire": 1
   },
   "mixins": [
-
+    "ArmorStandAccessor",
+    "SlimeAccessor",
+    "ZombieVillagerMixinAccessor"
   ],
   "client": [
 

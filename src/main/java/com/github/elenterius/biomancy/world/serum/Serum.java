@@ -30,9 +30,12 @@ import java.util.UUID;
 
 public abstract class Serum extends ForgeRegistryEntry<Serum> {
 
+	public static final String PREFIX = "serum.";
+
 	public static final String ID_TAG = "SerumId";
 	public static final String DATA_TAG = "SerumData";
 	public static final String COLOR_TAG = "SerumColor";
+
 	private final int color;
 	@Nullable
 	private Multimap<Attribute, AttributeModifier> attributeModifiers = null;
@@ -79,13 +82,13 @@ public abstract class Serum extends ForgeRegistryEntry<Serum> {
 	public static String getTranslationKey(CompoundTag nbt) {
 		if (nbt.contains(ID_TAG)) {
 			String str = nbt.getString(ID_TAG);
-			return str.isEmpty() ? null : "reagent." + str.replace(":", ".").replace("/", ".");
+			return str.isEmpty() ? null : PREFIX + str.replace(":", ".").replace("/", ".");
 		}
 		return null;
 	}
 
 	public static String getTranslationKey(ResourceLocation registryKey) {
-		return "reagent." + registryKey.getNamespace() + "." + registryKey.getPath().replace("/", ".");
+		return PREFIX + registryKey.getNamespace() + "." + registryKey.getPath().replace("/", ".");
 	}
 
 	public static int getColor(CompoundTag nbt) {
@@ -98,7 +101,7 @@ public abstract class Serum extends ForgeRegistryEntry<Serum> {
 			tooltip.add(TextComponentUtil.getTooltipText("contains", new TranslatableComponent(getTranslationKey())).withStyle(ChatFormatting.GRAY));
 		}
 		if (ClientTextUtil.showExtraInfo(tooltip)) {
-			tooltip.add(new TranslatableComponent(getTranslationKey().replace("reagent", "tooltip")).withStyle(ClientTextUtil.LORE_STYLE));
+			tooltip.add(new TranslatableComponent(getTranslationKey().replace(PREFIX, "tooltip.")).withStyle(ClientTextUtil.LORE_STYLE));
 		}
 	}
 

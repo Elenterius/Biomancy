@@ -184,6 +184,10 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 		}
 	}
 
+	public void clearStoredDNA() {
+		storedDNA.clear();
+	}
+
 	public DNAStorage getStoredDNA() {
 		return storedDNA;
 	}

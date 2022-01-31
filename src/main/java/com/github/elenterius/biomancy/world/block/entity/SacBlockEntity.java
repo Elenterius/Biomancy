@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.world.block.entity;
 
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
-import com.github.elenterius.biomancy.world.WorldUtil;
+import com.github.elenterius.biomancy.world.LevelUtil;
 import com.github.elenterius.biomancy.world.block.SacBlock;
 import com.github.elenterius.biomancy.world.inventory.SimpleInventory;
 import com.github.elenterius.biomancy.world.inventory.menu.SacMenu;
@@ -54,7 +54,7 @@ public class SacBlockEntity extends CustomContainerBlockEntity {
 		if (!inventory.isFull()) {
 			BlockPos relativePos = pos.relative(state.getValue(SacBlock.FACING).getOpposite());
 			if (level.isLoaded(relativePos)) {
-				WorldUtil.getItemHandler(level, relativePos, Direction.DOWN).ifPresent(this::tryToExtractItems);
+				LevelUtil.getItemHandler(level, relativePos, Direction.DOWN).ifPresent(this::tryToExtractItems);
 			}
 		}
 	}

@@ -5,16 +5,18 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public final class WorldUtil {
+public final class LevelUtil {
 
-	private WorldUtil() {}
+	private LevelUtil() {}
 
 	public static LazyOptional<IItemHandler> getItemHandler(ServerLevel level, BlockPos pos, Direction direction) {
 		BlockState state = level.getBlockState(pos);
@@ -39,6 +41,18 @@ public final class WorldUtil {
 		float dZ = facing.getStepZ() * force;
 		itemEntity.setDeltaMovement(dX, dY, dZ);
 		level.addFreshEntity(itemEntity);
+	}
+
+	public static int getNumOfBlocksAbove(BlockGetter level, BlockPos pos, Block targetBlock, int maxHeight) {
+		int i = 0;
+		while (i < maxHeight && level.getBlockState(pos.above(i + 1)).getBlock() == targetBlock) i++;
+		return i;
+	}
+
+	public static int getNumOfBlocksBelow(BlockGetter level, BlockPos pos, Block targetBlock, int maxHeight) {
+		int i = 0;
+		while (i < maxHeight && level.getBlockState(pos.below(i + 1)).getBlock() == targetBlock) i++;
+		return i;
 	}
 
 }

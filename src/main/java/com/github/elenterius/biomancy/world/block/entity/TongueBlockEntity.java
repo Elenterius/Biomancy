@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.world.block.entity;
 
 import com.github.elenterius.biomancy.init.ModBlockEntities;
-import com.github.elenterius.biomancy.world.WorldUtil;
+import com.github.elenterius.biomancy.world.LevelUtil;
 import com.github.elenterius.biomancy.world.block.SacBlock;
 import com.github.elenterius.biomancy.world.inventory.itemhandler.SingleItemStackHandler;
 import net.minecraft.core.BlockPos;
@@ -47,7 +47,7 @@ public class TongueBlockEntity extends BlockEntity {
 		Direction facing = state.getValue(SacBlock.FACING);
 		BlockPos relativePos = pos.relative(facing.getOpposite());
 		if (level.isLoaded(relativePos)) {
-			WorldUtil.getItemHandler(level, relativePos, Direction.DOWN).ifPresent(this::tryToExtractItems);
+			LevelUtil.getItemHandler(level, relativePos, Direction.DOWN).ifPresent(this::tryToExtractItems);
 		}
 		dropItems(level, pos, facing);
 	}
@@ -77,7 +77,7 @@ public class TongueBlockEntity extends BlockEntity {
 			double x = (pos.getX() + 0.5d) - facing.getStepX() * 0.5d + facing.getStepX() * (4d / 16d);
 			double y = (pos.getY() + 0.5d) - facing.getStepY() * 0.5d + facing.getStepY() * (4d / 16d);
 			double z = (pos.getZ() + 0.5d) - facing.getStepZ() * 0.5d + facing.getStepZ() * (4d / 16d);
-			WorldUtil.dropItemStack(level, x, y, z, facing, 0.05f, stack);
+			LevelUtil.dropItemStack(level, x, y, z, facing, 0.05f, stack);
 		}
 	}
 
