@@ -1,41 +1,30 @@
 package com.github.elenterius.biomancy.client.model.entity;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.world.entity.Entity;
+import com.github.elenterius.biomancy.world.entity.fleshblob.FleshBlob;
+import net.minecraft.resources.ResourceLocation;
+import software.bernie.geckolib3.model.AnimatedGeoModel;
 
-public class FleshBlobModel<T extends Entity> extends EntityModel<T> {
+public class FleshBlobModel<T extends FleshBlob> extends AnimatedGeoModel<T> {
 
-	public static final ModelLayerLocation MODEL_LAYER = new ModelLayerLocation(BiomancyMod.createRL("flesh_blob"), "main");
+	protected static final ResourceLocation[] TEXTURES = new ResourceLocation[]{
+			BiomancyMod.createRL("textures/entity/fleshkin_blob_0.png"),
+			BiomancyMod.createRL("textures/entity/fleshkin_blob_1.png"),
+	};
 
-	private final ModelPart bone;
-
-	public FleshBlobModel(ModelPart root) {
-		this.bone = root.getChild("bone");
-	}
-
-	public static LayerDefinition createBodyLayer() {
-		MeshDefinition meshdefinition = new MeshDefinition();
-		PartDefinition partdefinition = meshdefinition.getRoot();
-
-		PartDefinition bone = partdefinition.addOrReplaceChild("bone", CubeListBuilder.create().texOffs(0, 0)
-				.addBox(-6f, -12f, -6f, 12f, 12f, 12f, new CubeDeformation(0f)), PartPose.offset(0f, 24f, 0f));
-
-		return LayerDefinition.create(meshdefinition, 64, 64);
+	@Override
+	public ResourceLocation getModelLocation(FleshBlob fleshBlob) {
+		return BiomancyMod.createRL("geo/entity/fleshkin_blob.geo.json");
 	}
 
 	@Override
-	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {}
+	public ResourceLocation getTextureLocation(FleshBlob fleshBlob) {
+		return TEXTURES[fleshBlob.getBlobType()];
+	}
 
 	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		bone.render(poseStack, buffer, packedLight, packedOverlay);
+	public ResourceLocation getAnimationFileLocation(FleshBlob fleshBlob) {
+		return BiomancyMod.createRL("animations/entity/fleshkin_blob.animation.json");
 	}
 
 }

@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.init.ModDamageSources;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModTags;
 import com.github.elenterius.biomancy.world.entity.fleshblob.FleshBlob;
+import com.github.elenterius.biomancy.world.entity.fleshblob.TumorFlag;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -99,7 +100,7 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 		if (level.random.nextFloat() < chance) {
 			TextComponent textComponent = new TextComponent("The Flesh Lord is pleased...");
 			level.getServer().getPlayerList().broadcastMessage(textComponent.withStyle(ChatFormatting.LIGHT_PURPLE), ChatType.SYSTEM, Util.NIL_UUID);
-			spawnMob(level, pos, penalty);
+			spawnMob(level, pos, penalty, 1f - (float) uniqueMeats / MAX_ITEMS);
 			level.playSound(null, pos, SoundEvents.PLAYER_BURP, SoundSource.BLOCKS, 1f, level.random.nextFloat(0.25f, 0.75f));
 		}
 		else {
@@ -110,12 +111,19 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 		}
 	}
 
-	public void spawnMob(ServerLevel level, BlockPos pos, float penalty) {
+	public void spawnMob(ServerLevel level, BlockPos pos, float penalty, float tumorFactor) {
 		FleshBlob fleshBlob = ModEntityTypes.FLESH_BLOB.get().create(level);
 		if (fleshBlob != null) {
 			fleshBlob.moveTo(pos.getX() + 0.5f, pos.getY() + 4f / 16f, pos.getZ() + 0.5f, 0, 0);
 			if (penalty >= 0.5f) {
 				fleshBlob.setHangry();
+			}
+			if (tumorFactor > 0) {
+				int flags = 0;
+				for (TumorFlag flag : TumorFlag.values()) {
+					if (level.random.nextFloat() < tumorFactor) flags = TumorFlag.setFlag(flags, flag);
+				}
+				fleshBlob.setTumorFlags((byte) flags);
 			}
 			level.addFreshEntity(fleshBlob);
 		}

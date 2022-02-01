@@ -19,7 +19,7 @@ public final class ModEntityTypes {
 	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, BiomancyMod.MOD_ID);
 
 	//	//Aberrations
-	public static final RegistryObject<EntityType<FleshBlob>> FLESH_BLOB = register("flesh_blob", EntityType.Builder.of(FleshBlob::new, MobCategory.CREATURE).sized(0.75F, 0.75F));
+	public static final RegistryObject<EntityType<FleshBlob>> FLESH_BLOB = register("flesh_blob", EntityType.Builder.of(FleshBlob::new, MobCategory.CREATURE).sized(1F, 1F));
 //	public static final RegistryObject<EntityType<OculusObserverEntity>> OCULUS_OBSERVER = register("oculus_observer", EntityType.Builder.of(OculusObserverEntity::new, EntityClassification.CREATURE).sized(0.6F, 0.5F));
 //	public static final RegistryObject<EntityType<FailedSheepEntity>> FAILED_SHEEP = register("failed_sheep", EntityType.Builder.of(FailedSheepEntity::new, EntityClassification.CREATURE).sized(0.9f, 1.3f).clientTrackingRange(10));
 //	public static final RegistryObject<EntityType<FailedCowEntity>> FAILED_COW = register("failed_cow", EntityType.Builder.of(FailedCowEntity::new, EntityClassification.CREATURE).sized(0.9f, 1.4f).clientTrackingRange(10));

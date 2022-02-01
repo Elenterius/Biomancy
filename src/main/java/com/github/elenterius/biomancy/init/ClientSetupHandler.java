@@ -1,7 +1,6 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.client.model.entity.FleshBlobModel;
 import com.github.elenterius.biomancy.client.renderer.block.CreatorBlockEntityRenderer;
 import com.github.elenterius.biomancy.client.renderer.block.DecomposerBlockEntityRenderer;
 import com.github.elenterius.biomancy.client.renderer.entity.FleshBlobRenderer;
@@ -82,7 +81,7 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void registerLayerDefinitions(final EntityRenderersEvent.RegisterLayerDefinitions event) {
-		event.registerLayerDefinition(FleshBlobModel.MODEL_LAYER, FleshBlobModel::createBodyLayer);
+//		event.registerLayerDefinition(FleshBlobModel.MODEL_LAYER, FleshBlobModel::createBodyLayer);
 	}
 
 	private static void registerItemModelProperties() {

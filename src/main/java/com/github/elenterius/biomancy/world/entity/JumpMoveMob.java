@@ -22,7 +22,7 @@ public interface JumpMoveMob<T extends PathfinderMob> {
 
 	default void startJumping() {
 		getJumpingEntity().setJumping(true);
-		getJumpMoveState().onStartJumping(10);
+		getJumpMoveState().onStartJumping(GenericJumpMoveHelper.MAX_JUMP_DURATION);
 	}
 
 	GenericJumpMoveHelper<? extends JumpMoveMob<T>> getJumpMoveState();

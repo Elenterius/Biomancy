@@ -7,7 +7,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class GenericJumpMoveHelper<T extends JumpMoveMob<? extends PathfinderMob>> {
 
-	public static final int MAX_JUMP_DURATION = 10;
+	public static final int MAX_JUMP_DURATION = 20;
 
 	private final byte stateUpdateId;
 

@@ -39,24 +39,34 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.items.ItemHandlerHelper;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
 import java.util.function.Predicate;
 
-public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<FleshBlob> {
+public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<FleshBlob>, IAnimatable {
 
-	public static final byte EATING_STATE_ID = 61;
+	public static final byte EATING_STATE_ID = 60;
 	public static final byte JUMPING_STATE_ID = 61;
 
 	public static final Predicate<ItemEntity> ITEM_ENTITY_FILTER = itemEntity -> FindItemGoal.ITEM_ENTITY_FILTER.test(itemEntity) && itemEntity.getItem().isEdible();
 	public static final int MAX_SIZE = 10;
+
 	private static final EntityDataAccessor<Byte> BLOB_SIZE = SynchedEntityData.defineId(FleshBlob.class, EntityDataSerializers.BYTE);
-	private static final EntityDataAccessor<Byte> FLESH_BLOB_DATA = SynchedEntityData.defineId(FleshBlob.class, EntityDataSerializers.BYTE);
+	private static final EntityDataAccessor<Byte> TUMORS = SynchedEntityData.defineId(FleshBlob.class, EntityDataSerializers.BYTE);
+	private static final EntityDataAccessor<Byte> BLOB_TYPE = SynchedEntityData.defineId(FleshBlob.class, EntityDataSerializers.BYTE);
 
 	private final DNAStorage storedDNA = new DNAStorage(4);
-	public SquishHelper squishTracker = new SquishHelper();
 	protected GenericJumpMoveHelper<FleshBlob> jumpMoveState;
 	private int eatTimer;
+
+	private final AnimationFactory animationFactory = new AnimationFactory(this);
 
 	public FleshBlob(EntityType<? extends FleshBlob> entityType, Level level) {
 		super(entityType, level);
@@ -75,14 +85,15 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		entityData.define(FLESH_BLOB_DATA, (byte) 0);
+		entityData.define(BLOB_TYPE, (byte) 0);
 		entityData.define(BLOB_SIZE, (byte) 1);
+		entityData.define(TUMORS, TumorFlag.randomFlags(random));
 	}
 
 	@Override
 	protected void registerGoals() {
 		goalSelector.addGoal(0, new FloatGoal(this));
-		goalSelector.addGoal(1, new PanicGoal(this, 1.5d));
+		goalSelector.addGoal(1, new CustomPanicGoal(this, 1.5d));
 		goalSelector.addGoal(2, new CustomAttackGoal(this, 1.2d));
 		goalSelector.addGoal(3, new FindItemGoal(this, 8f, ITEM_ENTITY_FILTER));
 		goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 1d));
@@ -102,13 +113,6 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 		jumpMoveState.onAiStep(this);
 	}
 
-	@Override
-	public void tick() {
-		squishTracker.onPreTick();
-		super.tick();
-		squishTracker.onPostTick(this);
-	}
-
 	public void setBlobSize(byte size, boolean resetHealth) {
 		size = (byte) Mth.clamp(size, 1, MAX_SIZE);
 		entityData.set(BLOB_SIZE, size);
@@ -116,7 +120,7 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 		refreshDimensions();
 		MobUtil.setAttributeBaseValue(this, Attributes.MAX_HEALTH, size * 10d);
 		MobUtil.setAttributeBaseValue(this, Attributes.MOVEMENT_SPEED, 0.2f + 0.1f * size);
-		MobUtil.setAttributeBaseValue(this, Attributes.ATTACK_DAMAGE, size + (getFleshBlobData() == 1 ? 8d : 3d));
+		MobUtil.setAttributeBaseValue(this, Attributes.ATTACK_DAMAGE, size + (getBlobType() == 1 ? 8d : 3d));
 		MobUtil.setAttributeBaseValue(this, Attributes.ARMOR, size * 3d);
 		if (resetHealth) setHealth(getMaxHealth());
 		xpReward = size;
@@ -126,32 +130,40 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 		return entityData.get(BLOB_SIZE);
 	}
 
+	public void randomizeTumors() {
+		entityData.set(TUMORS, (byte) random.nextInt(Byte.MAX_VALUE + 1));
+	}
+
+	public byte getTumorFlags() {
+		return entityData.get(TUMORS);
+	}
+
+	public void setTumorFlags(byte flags) {
+		entityData.set(TUMORS, flags);
+	}
+
 	@Override
 	public EntityDimensions getDimensions(Pose pose) {
 		return super.getDimensions(pose).scale(0.5f + getBlobSize() * 0.5f);
 	}
 
-	public byte getFleshBlobData() {
-		return entityData.get(FLESH_BLOB_DATA);
-	}
-
 	public boolean isHangry() {
-		return entityData.get(FLESH_BLOB_DATA) == 1;
+		return entityData.get(BLOB_TYPE) == 1;
 	}
 
 	public void setHangry() {
-		if (!isHangry()) setCustomEntityData((byte) 1);
+		if (!isHangry()) setBlobType((byte) 1);
 	}
 
-	public void setCustomEntityData(byte flag) {
-		if (flag == 1) {
-			MobUtil.setAttributeBaseValue(this, Attributes.ATTACK_DAMAGE, getBlobSize() + 8d);
-		}
-		else if (flag == 0) {
-			MobUtil.setAttributeBaseValue(this, Attributes.ATTACK_DAMAGE, getBlobSize() + 3d);
-		}
+	public byte getBlobType() {
+		return entityData.get(BLOB_TYPE);
+	}
 
-		entityData.set(FLESH_BLOB_DATA, flag);
+	public void setBlobType(byte flag) {
+		double damageModifier = flag == 1 ? 8d : 3d;
+		double baseDamage = getBlobSize();
+		MobUtil.setAttributeBaseValue(this, Attributes.ATTACK_DAMAGE, baseDamage + damageModifier);
+		entityData.set(BLOB_TYPE, flag);
 	}
 
 	@Override
@@ -303,19 +315,19 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
-		tag.putByte("FleshBlobData", getFleshBlobData());
+		tag.putByte("BlobType", getBlobType());
 		tag.putByte("Size", getBlobSize());
+		tag.putByte("Tumors", getTumorFlags());
 		tag.put("StoredDNA", storedDNA.toJson());
-		squishTracker.toJson(tag);
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
-		setCustomEntityData(tag.getByte("FleshBlobData"));
+		setBlobType(tag.getByte("BlobType"));
 		setBlobSize(tag.getByte("Size"), false);
+		setTumorFlags(tag.getByte("Tumors"));
 		storedDNA.fromJson(tag.getCompound("StoredDNA"));
-		squishTracker.fromJson(tag);
 	}
 
 	@Override
@@ -347,13 +359,16 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 	@Nullable
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {
-		if (spawnData instanceof FleshBlobData data) {
-			setCustomEntityData(data.flag);
+		if (spawnData instanceof SpawnData data) {
+			setBlobType(data.customFlags);
+			setTumorFlags(data.tumorFlags);
 		}
 		else {
-			byte flag = (byte) (random.nextFloat() < 0.45 ? 1 : 0);
-			spawnData = new FleshBlobData(flag);
-			setCustomEntityData(flag);
+			final byte customFlags = (byte) (random.nextFloat() < 0.45 ? 1 : 0);
+			final byte tumorFlags = TumorFlag.randomFlags(random);
+			setBlobType(customFlags);
+			setTumorFlags(tumorFlags);
+			spawnData = new SpawnData(customFlags, tumorFlags);
 		}
 
 		return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
@@ -412,51 +427,42 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 		return SoundEvents.SLIME_JUMP;
 	}
 
-	public static class SquishHelper {
-		public float squish;
-		public float prevSquish;
-		private float targetSquish;
-		private boolean wasOnGround;
-
-		public void onPreTick() {
-			squish += (targetSquish - squish) * 0.5F;
-			prevSquish = squish;
-		}
-
-		public void onPostTick(FleshBlob mob) {
-			boolean isOnGround = mob.isOnGround();
-			if (isOnGround && !wasOnGround) {
-				mob.playSound(getSound());
-				targetSquish = -0.5f;
-			}
-			else if (!isOnGround && wasOnGround) {
-				targetSquish = 1f;
-			}
-			targetSquish *= 0.6f;
-			wasOnGround = isOnGround;
-		}
-
-		public SoundEvent getSound() {
-			return SoundEvents.SLIME_SQUISH;
-		}
-
-		public void toJson(CompoundTag tag) {
-			tag.putBoolean("WasOnGround", wasOnGround);
-		}
-
-		public void fromJson(CompoundTag tag) {
-			wasOnGround = tag.getBoolean("WasOnGround");
-		}
-
+	public SoundEvent getImpactSound() {
+		return SoundEvents.SLIME_SQUISH;
 	}
 
-	public static class FleshBlobData implements SpawnGroupData {
-		public final byte flag;
-
-		public FleshBlobData(byte flagIn) {
-			flag = flagIn;
+	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+		float jumpPct = jumpMoveState.getJumpCompletionPct(event.getPartialTick());
+		if (jumpPct > 0) {
+			event.getController().transitionLengthTicks = 0;
+			if (jumpPct <= 0.28f) {
+				event.getController().setAnimation(new AnimationBuilder().addAnimation("fleshkin_blob.jump.startup").addAnimation("fleshkin_blob.jump.air.loop", false));
+			}
+			else if (jumpPct < 0.72f) {
+				event.getController().setAnimation(new AnimationBuilder().addAnimation("fleshkin_blob.jump.air.loop", true));
+			}
+			else {
+				event.getController().setAnimation(new AnimationBuilder().addAnimation("fleshkin_blob.jump.impact"));
+			}
 		}
+		else {
+			event.getController().transitionLengthTicks = 10;
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("fleshkin_blob.ground.loop", true));
+		}
+		return PlayState.CONTINUE;
 	}
+
+	@Override
+	public void registerControllers(AnimationData data) {
+		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
+	}
+
+	@Override
+	public AnimationFactory getFactory() {
+		return animationFactory;
+	}
+
+	public record SpawnData(byte customFlags, byte tumorFlags) implements SpawnGroupData {}
 
 	static class CustomAttackGoal extends MeleeAttackGoal {
 
@@ -466,19 +472,40 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 
 		@Override
 		public boolean canContinueToUse() {
-			if (!((FleshBlob) mob).isHangry() && mob.getRandom().nextFloat() < 0.2f) {
+			FleshBlob fleshBlob = (FleshBlob) mob;
+			if (!fleshBlob.isHangry() && mob.getRandom().nextFloat() < 0.2f) {
 				mob.setTarget(null);
 				return false;
 			}
-			else {
-				return super.canContinueToUse();
-			}
+			return super.canContinueToUse();
 		}
 
 		@Override
 		protected double getAttackReachSqr(LivingEntity attackTarget) {
 			return 2f + attackTarget.getBbWidth();
 		}
+	}
+
+	static class CustomPanicGoal extends PanicGoal {
+
+		public CustomPanicGoal(FleshBlob mob, double speedModifier) {
+			super(mob, speedModifier);
+		}
+
+		@Override
+		public boolean canUse() {
+			FleshBlob fleshBlob = (FleshBlob) mob;
+			if (!fleshBlob.isHangry() || mob.isOnFire()) return super.canUse();
+			return false;
+		}
+
+		@Override
+		public boolean canContinueToUse() {
+			FleshBlob fleshBlob = (FleshBlob) mob;
+			if (!fleshBlob.isHangry() || mob.isOnFire()) return super.canContinueToUse();
+			return false;
+		}
+
 	}
 
 }
