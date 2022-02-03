@@ -1,0 +1,37 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "placeholder.anim.idle": {
+      "loop": true,
+      "animation_length": 1.04,
+      "bones": {
+        "bone_main": {
+          "scale": {
+            "0.0": {
+              "vector": [
+                1,
+                1,
+                1
+              ]
+            },
+            "0.52": {
+              "vector": [
+                1.15,
+                1.15,
+                1.15
+              ]
+            },
+            "1.04": {
+              "vector": [
+                1,
+                1,
+                1
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "geckolib_format_version": 2
+}

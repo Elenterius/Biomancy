@@ -1,6 +1,8 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.client.renderer.block.BioForgeBlockEntityRenderer;
+import com.github.elenterius.biomancy.client.renderer.block.BioLabBlockEntityRenderer;
 import com.github.elenterius.biomancy.client.renderer.block.CreatorBlockEntityRenderer;
 import com.github.elenterius.biomancy.client.renderer.block.DecomposerBlockEntityRenderer;
 import com.github.elenterius.biomancy.client.renderer.entity.FleshBlobRenderer;
@@ -56,6 +58,8 @@ public final class ClientSetupHandler {
 	public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
 		event.registerBlockEntityRenderer(ModBlockEntities.CREATOR.get(), CreatorBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.DECOMPOSER.get(), DecomposerBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntities.BIO_FORGE.get(), BioForgeBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntities.BIO_LAB.get(), BioLabBlockEntityRenderer::new);
 
 		event.registerEntityRenderer(ModEntityTypes.FLESH_BLOB.get(), FleshBlobRenderer::new);
 

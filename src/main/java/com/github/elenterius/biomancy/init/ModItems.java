@@ -73,13 +73,14 @@ public final class ModItems {
 	public static final RegistryObject<BlockItem> NECROTIC_FLESH_BLOCK = ITEMS.register("necrotic_flesh_block", () -> new BlockItem(ModBlocks.NECROTIC_FLESH_BLOCK.get(), createProperties()));
 
 	//## Machine
-	public static final RegistryObject<CreatorBlockItem> CREATOR = ITEMS.register("creator", () -> new CreatorBlockItem(ModBlocks.CREATOR.get(), createProperties().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<BlockItem> BIO_FORGE = ITEMS.register("bio_forge", () -> new BlockItem(ModBlocks.BIO_FORGE.get(), createProperties().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<BlockItem> DECOMPOSER = ITEMS.register("decomposer", () -> new BlockItem(ModBlocks.DECOMPOSER.get(), createProperties().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<CreatorBlockItem> CREATOR = ITEMS.register("creator", () -> new CreatorBlockItem(ModBlocks.CREATOR.get(), createProperties().rarity(Rarity.EPIC)));
+	public static final RegistryObject<BlockItem> BIO_FORGE = ITEMS.register("bio_forge", () -> new BlockItem(ModBlocks.BIO_FORGE.get(), createProperties().rarity(Rarity.RARE)));
+	public static final RegistryObject<BlockItem> DECOMPOSER = ITEMS.register("decomposer", () -> new BlockItem(ModBlocks.DECOMPOSER.get(), createProperties().rarity(Rarity.RARE)));
 	public static final RegistryObject<BlockItem> GLAND = ITEMS.register("gland", () -> new BlockItem(ModBlocks.GLAND.get(), createProperties().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<BlockItem> SAC = ITEMS.register("sac", () -> new BlockItem(ModBlocks.SAC.get(), createProperties().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<BlockItem> GULGE = ITEMS.register("gulge", () -> new BlockItem(ModBlocks.GULGE.get(), createProperties().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<BlockItem> GULGE = ITEMS.register("gulge", () -> new BlockItem(ModBlocks.GULGE.get(), createProperties().rarity(Rarity.RARE)));
 	public static final RegistryObject<BlockItem> TONGUE = ITEMS.register("tongue", () -> new BlockItem(ModBlocks.TONGUE.get(), createProperties().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<BlockItem> BIO_LAB = ITEMS.register("bio_lab", () -> new BlockItem(ModBlocks.BIO_LAB.get(), createProperties().rarity(Rarity.RARE)));
 
 	//# Spawn Eggs
 	public static final RegistryObject<ForgeSpawnEggItem> FLESH_BLOB_SPAWN_EGG = ITEMS.register("flesh_blob_spawn_egg", () -> new ForgeSpawnEggItem(ModEntityTypes.FLESH_BLOB, 0xe9967a, 0xf6d2c6, createProperties()));

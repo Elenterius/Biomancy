@@ -47,6 +47,7 @@ public final class ModBlocks {
 
 	//## Machine
 	public static final RegistryObject<DecomposerBlock> DECOMPOSER = BLOCKS.register("decomposer", () -> new DecomposerBlock(createFleshProperties()));
+	public static final RegistryObject<BioLabBlock> BIO_LAB = BLOCKS.register("bio_lab", () -> new BioLabBlock(createFleshProperties()));
 
 	//## Automation
 	public static final RegistryObject<SacBlock> SAC = BLOCKS.register("sac", () -> new SacBlock(createFleshProperties()));

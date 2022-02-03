@@ -18,6 +18,8 @@ public final class ModBlockEntities {
 	public static final RegistryObject<BlockEntityType<GulgeBlockEntity>> GULGE = BLOCK_ENTITIES.register("gulge", () -> BlockEntityType.Builder.of(GulgeBlockEntity::new, ModBlocks.GULGE.get()).build(noDataFixer()));
 	public static final RegistryObject<BlockEntityType<SacBlockEntity>> SAC = BLOCK_ENTITIES.register("sac", () -> BlockEntityType.Builder.of(SacBlockEntity::new, ModBlocks.SAC.get()).build(noDataFixer()));
 	public static final RegistryObject<BlockEntityType<TongueBlockEntity>> TONGUE = BLOCK_ENTITIES.register("tongue", () -> BlockEntityType.Builder.of(TongueBlockEntity::new, ModBlocks.TONGUE.get()).build(noDataFixer()));
+	public static final RegistryObject<BlockEntityType<BioForgeBlockEntity>> BIO_FORGE = BLOCK_ENTITIES.register("bio_forge", () -> BlockEntityType.Builder.of(BioForgeBlockEntity::new, ModBlocks.BIO_FORGE.get()).build(noDataFixer()));
+	public static final RegistryObject<BlockEntityType<BioLabBlockEntity>> BIO_LAB = BLOCK_ENTITIES.register("bio_lab", () -> BlockEntityType.Builder.of(BioLabBlockEntity::new, ModBlocks.BIO_LAB.get()).build(noDataFixer()));
 
 	//	// Misc
 	//	public static final RegistryObject<TileEntityType<VoiceBoxTileEntity>> VOICE_BOX_TILE = TILE_ENTITIES.register("voice_box", () -> TileEntityType.Builder.of(VoiceBoxTileEntity::new, ModBlocks.VOICE_BOX.get()).build(NO_DATA_FIXER));

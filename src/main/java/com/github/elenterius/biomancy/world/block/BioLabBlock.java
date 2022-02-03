@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.world.block;
 
-import com.github.elenterius.biomancy.world.block.entity.BioForgeBlockEntity;
+import com.github.elenterius.biomancy.world.block.entity.BioLabBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -14,12 +14,12 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class BioForgeBlock extends BaseEntityBlock {
+public class BioLabBlock extends BaseEntityBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final VoxelShape AABB = Block.box(1, 0, 1, 15, 15, 15);
 
-	public BioForgeBlock(Properties properties) {
+	public BioLabBlock(Properties properties) {
 		super(properties);
 	}
 
@@ -37,7 +37,7 @@ public class BioForgeBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new BioForgeBlockEntity(pos, state);
+		return new BioLabBlockEntity(pos, state);
 	}
 
 	@Override
