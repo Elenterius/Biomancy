@@ -84,11 +84,15 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 		addOptionalItemsTo(superbBiomass, "create:sweet_roll", "create:chocolate_glazed_berries", "create:honeyed_apple", "createfa:cheeseburger", "createfa:hamburger",
 				"rats:assorted_vegetables", "rats:rat_burger", "rats:potato_pancake", "rats:confit_byaldi", "createaddition:chocolate_cake");
 
+		//Beware: optional tags inside optional tags don't tend to work, so when defining tags inside an optional tag they should be required
 		Builder<Item> builder = tag(ModTags.Items.BIOMASS);
-		builder.addOptionalTag(ModTags.Items.POOR_BIOMASS.getName());
-		builder.addOptionalTag(ModTags.Items.AVERAGE_BIOMASS.getName());
-		builder.addOptionalTag(ModTags.Items.GOOD_BIOMASS.getName());
-		builder.addOptionalTag(ModTags.Items.SUPERB_BIOMASS.getName());
+		builder.addTag(ModTags.Items.POOR_BIOMASS);
+		builder.addTag(ModTags.Items.AVERAGE_BIOMASS);
+		builder.addTag(ModTags.Items.GOOD_BIOMASS);
+		builder.addTag(ModTags.Items.SUPERB_BIOMASS);
+		builder.addTag(ModTags.Items.SUPERB_BIOMASS);
+		builder.addTag(ModTags.Items.RAW_MEATS);
+		builder.addTag(ModTags.Items.COOKED_MEATS);
 
 		tag(ModTags.Items.STOMACHS)
 				.add(ModItems.ARTIFICIAL_STOMACH.get(), ModItems.STOMACH.get());
