@@ -20,6 +20,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.Container;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
@@ -278,7 +279,7 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 	}
 
 	protected void tryToInjectFluid(World world) {
-		Direction direction = getBlockState().getValue(DigesterBlock.FACING).getOpposite();
+		Direction direction = getFacingDirection().getOpposite();
 		BlockPos blockPos = getBlockPos().relative(direction);
 		LazyOptional<IFluidHandler> capability = FluidUtil.getFluidHandler(world, blockPos, Direction.UP);
 		capability.ifPresent(fluidHandler -> {
@@ -287,7 +288,7 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 	}
 
 	protected void tryToGetItemsFromAttachedBlock(World world) {
-		Direction direction = getBlockState().getValue(DigesterBlock.FACING).getOpposite();
+		Direction direction = getFacingDirection().getOpposite();
 		BlockPos blockPos = getBlockPos().relative(direction);
 		int maxAmount = inputInventory.getItemHandler().getSlotLimit(0);
 		ItemStack storedStack = inputInventory.getItem(0);
@@ -301,22 +302,25 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 						int amount = oldAmount;
 						int nSlots = itemHandler.getSlots();
 						for (int i = 0; i < nSlots; i++) {
-							if (!storedStack.isEmpty()) {
-								if (!ItemHandlerHelper.canItemStacksStack(itemHandler.getStackInSlot(i), storedStack)) continue;
-							}
-							else {
-								ItemStack foundStack = itemHandler.getStackInSlot(i);
-								if (foundStack.getItem() != ModItems.BOLUS.get() && !ModTags.Items.BIOMASS.contains(foundStack.getItem())) continue;
-							}
+							ItemStack stackInSlot = itemHandler.getStackInSlot(i);
+							if (!stackInSlot.isEmpty()) {
+								if (!storedStack.isEmpty()) {
+									if (!ItemHandlerHelper.canItemStacksStack(stackInSlot, storedStack)) continue;
+								}
+								else {
+									if (!isValidInputItem(stackInSlot.getItem())) continue;
+								}
 
-							int extractAmount = Math.min(itemHandler.getSlotLimit(i), maxAmount - amount);
-							ItemStack result = itemHandler.extractItem(i, extractAmount, false);
-							if (!result.isEmpty()) {
-								amount += result.getCount();
-								inputInventory.insertItemStack(0, result.copy());
+								int extractAmount = Math.min(itemHandler.getSlotLimit(i), maxAmount - amount);
+								ItemStack result = itemHandler.extractItem(i, extractAmount, false);
+								if (!result.isEmpty()) {
+									amount += result.getCount();
+									inputInventory.insertItemStack(0, result.copy());
+								}
+								if (amount >= maxAmount) break;
 							}
-							if (amount >= maxAmount) break;
 						}
+
 						if (amount != oldAmount) {
 							setChanged();
 							world.playSound(null, getBlockPos(), SoundEvents.GENERIC_EAT, SoundCategory.PLAYERS, 0.9F, 0.3f + world.random.nextFloat() * 0.25f);
@@ -325,6 +329,17 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 				}
 			}
 		}
+	}
+
+	private Direction getFacingDirection() {
+		return getBlockState().getValue(DigesterBlock.FACING);
+	}
+
+	private boolean isValidInputItem(Item item) {
+		if (item == ModItems.BOLUS.get()) return true;
+		if (item.is(ModTags.Items.RAW_MEATS)) return true;
+		if (item.is(ModTags.Items.COOKED_MEATS)) return true;
+		return item.is(ModTags.Items.BIOMASS);
 	}
 
 	@Override
@@ -398,7 +413,12 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 		if (!remove) {
 			if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 				if (side == null || side == Direction.DOWN) return combinedOutputInventory.cast();
-				if (side == Direction.UP) return inputInventory.getOptionalItemHandlerWithBehavior().cast();
+
+				Direction.Axis axis = getFacingDirection().getAxis();
+				if (axis.isHorizontal()) {
+					if (side.getAxis() == axis) return inputInventory.getOptionalItemHandlerWithBehavior().cast();
+				}
+				else if (side == Direction.UP) return inputInventory.getOptionalItemHandlerWithBehavior().cast();
 				return fuelInventory.getOptionalItemHandlerWithBehavior().cast();
 			}
 			else if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {

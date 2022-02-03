@@ -1,21 +1,12 @@
 {
   "replace": false,
   "values": [
-    {
-      "id": "#biomancy:poor_biomass",
-      "required": false
-    },
-    {
-      "id": "#biomancy:average_biomass",
-      "required": false
-    },
-    {
-      "id": "#biomancy:good_biomass",
-      "required": false
-    },
-    {
-      "id": "#biomancy:superb_biomass",
-      "required": false
-    }
+    "#biomancy:poor_biomass",
+    "#biomancy:average_biomass",
+    "#biomancy:good_biomass",
+    "#biomancy:superb_biomass",
+    "#biomancy:superb_biomass",
+    "#biomancy:raw_meats",
+    "#biomancy:cooked_meats"
   ]
 }
