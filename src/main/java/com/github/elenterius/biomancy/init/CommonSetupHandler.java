@@ -37,6 +37,9 @@ public final class CommonSetupHandler {
 			protected ItemStack execute(BlockSource source, ItemStack stack) {
 				BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
 				setSuccess(BioExtractorItem.tryExtractEssence(source.getLevel(), pos, stack));
+				if (isSuccess() && stack.hurt(1, source.getLevel().getRandom(), null)) {
+					stack.setCount(0);
+				}
 				return stack;
 			}
 		});
@@ -46,6 +49,9 @@ public final class CommonSetupHandler {
 			protected ItemStack execute(BlockSource source, ItemStack stack) {
 				BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
 				setSuccess(BioInjectorItem.tryInjectLivingEntity(source.getLevel(), pos, stack));
+				if (isSuccess() && stack.hurt(1, source.getLevel().getRandom(), null)) {
+					stack.setCount(0);
+				}
 				return stack;
 			}
 		});

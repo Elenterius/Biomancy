@@ -8,7 +8,7 @@ import java.util.function.Predicate;
 
 public class SimpleInventory extends BaseInventory<ItemStackHandler> {
 
-	private SimpleInventory(int slotAmount) {
+	SimpleInventory(int slotAmount) {
 		itemHandler = new ItemStackHandler(slotAmount) {
 			@Override
 			protected void onContentsChanged(int slot) {
@@ -19,12 +19,12 @@ public class SimpleInventory extends BaseInventory<ItemStackHandler> {
 		optionalItemHandler = LazyOptional.of(() -> itemHandler);
 	}
 
-	private SimpleInventory(int slotAmount, Notify markDirtyNotifier) {
+	SimpleInventory(int slotAmount, Notify markDirtyNotifier) {
 		this(slotAmount);
 		this.markDirtyNotifier = markDirtyNotifier;
 	}
 
-	private SimpleInventory(int slotAmount, Predicate<Player> canPlayerAccessInventory, Notify markDirtyNotifier) {
+	SimpleInventory(int slotAmount, Predicate<Player> canPlayerAccessInventory, Notify markDirtyNotifier) {
 		this(slotAmount);
 		this.canPlayerAccessInventory = canPlayerAccessInventory;
 		this.markDirtyNotifier = markDirtyNotifier;

@@ -4,11 +4,16 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModTags;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.horse.SkeletonHorse;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
@@ -117,6 +122,12 @@ public final class MobUtil {
 		}
 
 		return false;
+	}
+
+	public static boolean canPierceThroughArmor(ItemStack stack, LivingEntity target) {
+		int pierceLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PIERCING, stack);
+		float pct = CombatRules.getDamageAfterAbsorb(20f, target.getArmorValue(), (float) target.getAttributeValue(Attributes.ARMOR_TOUGHNESS)) / 20f;
+		return target.getRandom().nextFloat() < pct + 0.075f * pierceLevel;
 	}
 
 }

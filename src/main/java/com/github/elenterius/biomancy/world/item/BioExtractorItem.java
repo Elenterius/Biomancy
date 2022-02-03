@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
+import com.github.elenterius.biomancy.world.entity.MobUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -54,27 +55,32 @@ public class BioExtractorItem extends Item implements IKeyListener {
 
 	private static boolean extractEssence(ItemStack stack, @Nullable Player player, LivingEntity targetEntity) {
 		if (targetEntity.isAlive() && !targetEntity.hasEffect(ModMobEffects.ESSENCE_ANEMIA.get())) {
-			EssenceItem essenceItem = ModItems.ESSENCE.get();
-			int lootingLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MOB_LOOTING, stack);
-			ItemStack essenceStack = new ItemStack(essenceItem, 1 + targetEntity.getRandom().nextInt(0, 1 + lootingLevel));
+			if (MobUtil.canPierceThroughArmor(stack, targetEntity)) {
+				EssenceItem essenceItem = ModItems.ESSENCE.get();
+				int lootingLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MOB_LOOTING, stack);
+				ItemStack essenceStack = new ItemStack(essenceItem, 1 + targetEntity.getRandom().nextInt(0, 1 + lootingLevel));
 
-			if (essenceItem.setEntityType(essenceStack, targetEntity)) {
-				if (player != null) {
-					if (!player.addItem(essenceStack)) {
-						player.drop(essenceStack, false);
+				if (essenceItem.setEntityType(essenceStack, targetEntity)) {
+					if (player != null) {
+						if (!player.addItem(essenceStack)) {
+							player.drop(essenceStack, false);
+						}
+						stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
 					}
-					stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
-				}
-				else {
-					Containers.dropItemStack(targetEntity.level, targetEntity.getX(), targetEntity.getY(), targetEntity.getZ(), essenceStack);
-				}
+					else {
+						Containers.dropItemStack(targetEntity.level, targetEntity.getX(), targetEntity.getY(), targetEntity.getZ(), essenceStack);
+					}
 
-				if (EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.ANESTHETIC.get(), stack) <= 0) {
-					targetEntity.hurt(new EntityDamageSource("sting", player), 0.5f);
-				}
+					if (EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.ANESTHETIC.get(), stack) <= 0) {
+						targetEntity.hurt(new EntityDamageSource("sting", player), 0.5f);
+					}
 
-				targetEntity.addEffect(new MobEffectInstance(ModMobEffects.ESSENCE_ANEMIA.get(), 2400));
-				return true;
+					targetEntity.addEffect(new MobEffectInstance(ModMobEffects.ESSENCE_ANEMIA.get(), 2400));
+					return true;
+				}
+			}
+			else if (player != null) {
+				stack.hurtAndBreak(2, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
 			}
 		}
 		return false;
@@ -125,6 +131,11 @@ public class BioExtractorItem extends Item implements IKeyListener {
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
 		return enchantment == Enchantments.MOB_LOOTING || super.canApplyAtEnchantingTable(stack, enchantment);
+	}
+
+	@Override
+	public int getEnchantmentValue() {
+		return 15;
 	}
 
 	@Override
