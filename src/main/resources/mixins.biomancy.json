@@ -10,6 +10,7 @@
   "mixins": [
     "ArmorStandAccessor",
     "SlimeAccessor",
+    "TextureSlotAccessor",
     "ZombieVillagerMixinAccessor"
   ],
   "client": [

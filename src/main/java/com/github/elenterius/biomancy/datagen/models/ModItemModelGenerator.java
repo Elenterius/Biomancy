@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.datagen.models;
 
 import com.github.elenterius.biomancy.init.ModItems;
+import com.github.elenterius.biomancy.mixin.TextureSlotAccessor;
 import com.google.gson.JsonElement;
 import net.minecraft.data.models.model.*;
 import net.minecraft.resources.ResourceLocation;
@@ -14,10 +15,18 @@ import java.util.function.Supplier;
 
 public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonElement>> modelOutput) {
 
-	private static final ModelTemplate EGG_MODEL_TEMPLATE = createTemplate("template_spawn_egg");
+	private static final TextureSlot LAYER_1 = TextureSlotAccessor.callCreate("layer1");
 
-	private static ModelTemplate createTemplate(String id, TextureSlot... requiredSlots) {
+	private static final ModelTemplate EGG_MODEL_TEMPLATE = createVanillaTemplate("template_spawn_egg");
+	private static final ModelTemplate GUN_TEMPLATE = createTemplate("handheld_gun", TextureSlot.LAYER0, LAYER_1);
+	private static final ModelTemplate OVERLAY_TEMPLATE = createVanillaTemplate("generated", TextureSlot.LAYER0, LAYER_1);
+
+	private static ModelTemplate createVanillaTemplate(String id, TextureSlot... requiredSlots) {
 		return new ModelTemplate(Optional.of(new ResourceLocation("minecraft", "item/" + id)), Optional.empty(), requiredSlots);
+	}
+
+	private static ModelTemplate createTemplate(String id, TextureSlot... pRequiredSlots) {
+		return new ModelTemplate(Optional.of(new ResourceLocation("biomancy", "item/" + id)), Optional.empty(), pRequiredSlots);
 	}
 
 	private void generateFlat(Item item, ModelTemplate modelTemplate) {
@@ -30,6 +39,12 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 
 	private void generateFlat(Item item, Item displayItem, ModelTemplate modelTemplate) {
 		modelTemplate.create(ModelLocationUtils.getModelLocation(item), TextureMapping.layer0(displayItem), modelOutput);
+	}
+
+	private void generateFlatWithOverlay(Item item, ModelTemplate modelTemplate) {
+		ResourceLocation itemTexture = TextureMapping.getItemTexture(item);
+		ResourceLocation overlayTexture = new ResourceLocation(itemTexture.getNamespace(), itemTexture.getPath() + "_overlay");
+		modelTemplate.create(ModelLocationUtils.getModelLocation(item), TextureMapping.layer0(itemTexture).put(LAYER_1, overlayTexture), modelOutput);
 	}
 
 	public void run() {
@@ -55,8 +70,11 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 		generateFlat(ModItems.BIOMETAL_INGOT.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.OCULUS.get(), ModelTemplates.FLAT_ITEM);
 
-		generateFlat(ModItems.ESSENCE.get(), ModelTemplates.FLAT_ITEM);
+		generateFlatWithOverlay(ModItems.ESSENCE.get(), OVERLAY_TEMPLATE);
 		generateFlat(ModItems.BIO_EXTRACTOR.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		generateFlatWithOverlay(ModItems.BIO_INJECTOR.get(), GUN_TEMPLATE);
+		generateFlat(ModItems.GLASS_VIAL.get(), ModelTemplates.FLAT_ITEM);
+		generateFlatWithOverlay(ModItems.SERUM.get(), OVERLAY_TEMPLATE);
 
 		generateFlat(ModItems.SHARP_TOOTH.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.SKIN_CHUNK.get(), ModelTemplates.FLAT_ITEM);

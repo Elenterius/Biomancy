@@ -44,6 +44,7 @@ public class ModBlockLoot extends BlockLoot {
 
 		dropSelf(ModBlocks.CREATOR.get());
 		dropSelf(ModBlocks.BIO_FORGE.get());
+		dropSelf(ModBlocks.BIO_LAB.get());
 		dropSelf(ModBlocks.TONGUE.get());
 
 		add(ModBlocks.DECOMPOSER.get(), BlockLoot::createNameableBlockEntityTable);
