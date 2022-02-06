@@ -27,6 +27,12 @@ public abstract class RecipeTypeImpl<T extends Recipe<Container>> implements Rec
 		return identifier;
 	}
 
+	public static class SimpleRecipeType<R extends Recipe<Container>> extends RecipeTypeImpl<R> {
+		public SimpleRecipeType(String identifier) {
+			super(identifier);
+		}
+	}
+
 	public static class ItemStackRecipeType<R extends Recipe<Container>> extends RecipeTypeImpl<R> {
 
 		public ItemStackRecipeType(String identifier) {

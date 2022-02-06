@@ -1,0 +1,25 @@
+{
+  "type": "biomancy:bio_brewing",
+  "ingredients": [
+    {
+      "item": "minecraft:cocoa_beans"
+    },
+    {
+      "item": "minecraft:cocoa_beans"
+    },
+    {
+      "type": "forge:nbt",
+      "item": "biomancy:serum",
+      "count": 1,
+      "nbt": "{SerumColor:9937817,SerumId:\"biomancy:cleansing_serum\"}"
+    },
+    {
+      "item": "biomancy:nutrients"
+    }
+  ],
+  "result": {
+    "item": "biomancy:serum",
+    "nbt": "{SerumColor:10984609,SerumId:\"biomancy:insomnia_cure\"}"
+  },
+  "time": 160
+}

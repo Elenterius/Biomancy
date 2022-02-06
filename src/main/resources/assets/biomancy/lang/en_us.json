@@ -43,7 +43,7 @@
 
   "block.biomancy.creator": "Flesh Crucible",
   "block.biomancy.bio_forge": "Bio-Forge [NYI]",
-  "block.biomancy.bio_lab": "Bio-Lab [NYI]",
+  "block.biomancy.bio_lab": "Bio-Lab",
   "block.biomancy.decomposer": "Decomposer",
   "block.biomancy.gland": "Appendix Gland",
   "block.biomancy.gulge": "Deep Gulge",
@@ -57,6 +57,7 @@
   "block.biomancy.necrotic_flesh_block": "Necrotic Flesh Block",
 
   "container.biomancy.decomposer": "Decomposer",
+  "container.biomancy.bio_lab": "Bio-Lab",
   "container.biomancy.gland": "Gland",
   "container.biomancy.gulge": "Gulge Inventory",
   "container.biomancy.sac": "Sac Inventory",

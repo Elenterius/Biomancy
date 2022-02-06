@@ -1,0 +1,19 @@
+{
+  "type": "biomancy:bio_brewing",
+  "ingredients": [
+    {
+      "item": "biomancy:exotic_dust"
+    },
+    {
+      "item": "biomancy:pheromones"
+    },
+    {
+      "item": "biomancy:nutrients"
+    }
+  ],
+  "result": {
+    "item": "biomancy:serum",
+    "nbt": "{SerumColor:5028631,SerumId:\"biomancy:rejuvenation_serum\"}"
+  },
+  "time": 100
+}

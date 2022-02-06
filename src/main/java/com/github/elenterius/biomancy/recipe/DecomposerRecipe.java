@@ -1,7 +1,6 @@
 package com.github.elenterius.biomancy.recipe;
 
 import com.github.elenterius.biomancy.init.ModRecipes;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.core.NonNullList;
@@ -28,8 +27,8 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 	private final List<VariableProductionOutput> outputs;
 	private final List<VariableProductionOutput> byproducts;
 
-	public DecomposerRecipe(ResourceLocation registryKey, List<VariableProductionOutput> outputs, List<VariableProductionOutput> byproducts, IngredientQuantity ingredientQuantity, int craftingTime) {
-		super(registryKey, craftingTime);
+	public DecomposerRecipe(ResourceLocation id, List<VariableProductionOutput> outputs, List<VariableProductionOutput> byproducts, IngredientQuantity ingredientQuantity, int craftingTime) {
+		super(id, craftingTime);
 		this.ingredientQuantity = ingredientQuantity;
 		this.outputs = outputs;
 		this.byproducts = byproducts;
@@ -94,25 +93,17 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 
 	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<DecomposerRecipe> {
 
-		private static List<VariableProductionOutput> readVariableProductionOutput(JsonArray jsonArray) {
-			List<VariableProductionOutput> list = new ArrayList<>();
-			for (int i = 0; i < jsonArray.size(); i++) {
-				list.add(VariableProductionOutput.deserialize(jsonArray.get(i).getAsJsonObject()));
-			}
-			return list;
-		}
-
 		@Override
 		public DecomposerRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
 			JsonObject input = GsonHelper.getAsJsonObject(json, "input");
 			IngredientQuantity ingredientQuantity = IngredientQuantity.fromJson(input);
 
-			List<VariableProductionOutput> outputs = readVariableProductionOutput(GsonHelper.getAsJsonArray(json, "outputs"));
+			List<VariableProductionOutput> outputs = RecipeUtil.readVariableProductionOutputs(GsonHelper.getAsJsonArray(json, "outputs"));
 			if (outputs.size() > MAX_OUTPUTS) {
 				throw new JsonParseException(String.format("Too many outputs for %s recipe. Max amount is %d", getRegistryName(), MAX_OUTPUTS));
 			}
 
-			List<VariableProductionOutput> byproducts = readVariableProductionOutput(GsonHelper.getAsJsonArray(json, "byproducts"));
+			List<VariableProductionOutput> byproducts = RecipeUtil.readVariableProductionOutputs(GsonHelper.getAsJsonArray(json, "byproducts"));
 			if (byproducts.size() > MAX_OUTPUTS) {
 				throw new JsonParseException(String.format("Too many byproducts for %s recipe. Max amount is %d", getRegistryName(), MAX_OUTPUTS));
 			}

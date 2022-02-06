@@ -1,0 +1,22 @@
+{
+  "type": "biomancy:bio_brewing",
+  "ingredients": [
+    {
+      "item": "minecraft:rotten_flesh"
+    },
+    {
+      "item": "minecraft:rotten_flesh"
+    },
+    {
+      "item": "biomancy:pheromones"
+    },
+    {
+      "item": "biomancy:toxins"
+    }
+  ],
+  "result": {
+    "item": "biomancy:serum",
+    "nbt": "{SerumColor:9260677,SerumId:\"biomancy:decay_agent\"}"
+  },
+  "time": 160
+}

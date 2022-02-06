@@ -1,0 +1,28 @@
+{
+  "type": "biomancy:bio_brewing",
+  "ingredients": [
+    {
+      "type": "forge:nbt",
+      "item": "biomancy:serum",
+      "count": 1,
+      "nbt": "{SerumColor:5028631,SerumId:\"biomancy:rejuvenation_serum\"}"
+    },
+    {
+      "type": "forge:nbt",
+      "item": "biomancy:serum",
+      "count": 1,
+      "nbt": "{SerumColor:5028631,SerumId:\"biomancy:rejuvenation_serum\"}"
+    },
+    {
+      "item": "biomancy:pheromones"
+    },
+    {
+      "item": "biomancy:nutrients"
+    }
+  ],
+  "result": {
+    "item": "biomancy:serum",
+    "nbt": "{SerumColor:9937817,SerumId:\"biomancy:cleansing_serum\"}"
+  },
+  "time": 160
+}

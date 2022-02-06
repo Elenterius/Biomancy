@@ -1,0 +1,22 @@
+{
+  "type": "biomancy:bio_brewing",
+  "ingredients": [
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "biomancy:pheromones"
+    },
+    {
+      "item": "biomancy:pheromones"
+    },
+    {
+      "item": "biomancy:nutrients"
+    }
+  ],
+  "result": {
+    "item": "biomancy:serum",
+    "nbt": "{SerumColor:14968206,SerumId:\"biomancy:breeding_stimulant\"}"
+  },
+  "time": 100
+}

@@ -1,7 +1,6 @@
 package com.github.elenterius.biomancy.recipe;
 
 import com.github.elenterius.biomancy.init.ModRecipes;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.core.NonNullList;
@@ -84,20 +83,9 @@ public class BioForgeRecipe implements Recipe<Container> {
 
 	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<BioForgeRecipe> {
 
-		private static List<IngredientQuantity> ingredientsFromJson(JsonArray jsonArray) {
-			List<IngredientQuantity> list = new ArrayList<>();
-			for (int i = 0; i < jsonArray.size(); ++i) {
-				IngredientQuantity ingredientQuantity = IngredientQuantity.fromJson(jsonArray.get(i).getAsJsonObject());
-				if (!ingredientQuantity.ingredient().isEmpty()) {
-					list.add(ingredientQuantity);
-				}
-			}
-			return list;
-		}
-
 		@Override
 		public BioForgeRecipe fromJson(ResourceLocation recipeId, JsonObject jsonObject) {
-			List<IngredientQuantity> list = ingredientsFromJson(GsonHelper.getAsJsonArray(jsonObject, "inputs"));
+			List<IngredientQuantity> list = RecipeUtil.readQuantitativeIngredients(GsonHelper.getAsJsonArray(jsonObject, "inputs"));
 			if (list.isEmpty()) {
 				throw new JsonParseException("No ingredients for recipe");
 			}

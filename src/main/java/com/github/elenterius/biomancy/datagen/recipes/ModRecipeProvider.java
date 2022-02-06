@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.datagen.recipes;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
+import com.github.elenterius.biomancy.init.ModSerums;
 import com.github.elenterius.biomancy.init.ModTags;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
@@ -10,7 +11,10 @@ import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.Tag;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
@@ -92,6 +96,9 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		LOGGER.info(logMarker, "registering bio-forge recipes...");
 		registerBioForgeRecipes(consumer);
+
+		LOGGER.info(logMarker, "registering bio-lab recipes...");
+		registerBioLabRecipes(consumer);
 	}
 
 	private void registerCookingRecipes(Consumer<FinishedRecipe> consumer) {
@@ -221,6 +228,73 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addIngredient(ModItems.FLESH_BITS.get(), 20)
 				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 10)
 				.unlockedBy(hasName(ModItems.ELASTIC_FIBERS.get()), has(ModItems.ELASTIC_FIBERS.get()))
+				.save(consumer);
+	}
+
+	private void registerBioLabRecipes(Consumer<FinishedRecipe> consumer) {
+		BioLabRecipeBuilder.create(ModSerums.REJUVENATION_SERUM.get())
+				.addIngredient(ModItems.EXOTIC_DUST.get())
+				.addIngredient(ModItems.PHEROMONES.get())
+				.addIngredient(ModItems.NUTRIENTS.get())
+				.setCraftingTime(5 * 20)
+				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
+				.save(consumer);
+
+		BioLabRecipeBuilder.create(ModSerums.GROWTH_SERUM.get())
+				.addIngredient(Items.BONE_MEAL)
+				.addIngredient(ModItems.PHEROMONES.get())
+				.addIngredient(ModItems.NUTRIENTS.get())
+				.setCraftingTime(5 * 20)
+				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
+				.save(consumer);
+
+		BioLabRecipeBuilder.create(ModSerums.BREEDING_STIMULANT.get())
+				.addIngredient(Items.SUGAR)
+				.addIngredients(ModItems.PHEROMONES.get(), 2)
+				.addIngredient(ModItems.NUTRIENTS.get())
+				.setCraftingTime(5 * 20)
+				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
+				.save(consumer);
+
+		BioLabRecipeBuilder.create(ModSerums.CLEANSING_SERUM.get())
+				.addIngredients(ModSerums.REJUVENATION_SERUM.get(), 2)
+				.addIngredient(ModItems.PHEROMONES.get())
+				.addIngredient(ModItems.NUTRIENTS.get())
+				.setCraftingTime(8 * 20)
+				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
+				.save(consumer);
+
+		BioLabRecipeBuilder.create(ModSerums.INSOMNIA_CURE.get())
+				.addIngredients(Items.COCOA_BEANS, 2)
+				.addIngredient(ModSerums.CLEANSING_SERUM.get())
+				.addIngredient(ModItems.NUTRIENTS.get())
+				.setCraftingTime(8 * 20)
+				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
+				.save(consumer);
+
+		BioLabRecipeBuilder.create(ModSerums.ABSORPTION_BOOST.get())
+				.addIngredient(Items.GOLDEN_APPLE)
+				.addIngredients(ModItems.TOUGH_FIBERS.get(), 2)
+				.addIngredient(ModSerums.GROWTH_SERUM.get())
+				.setCraftingTime(8 * 20)
+				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
+				.save(consumer);
+
+		BioLabRecipeBuilder.create(ModSerums.ADRENALINE_SERUM.get())
+				.addIngredient(Items.COCOA_BEANS)
+				.addIngredient(ModItems.PHEROMONES.get())
+				.addIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_STRENGTH))
+				.addIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_SWIFTNESS))
+				.setCraftingTime(12 * 20)
+				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
+				.save(consumer);
+
+		BioLabRecipeBuilder.create(ModSerums.DECAY_AGENT.get())
+				.addIngredients(Items.ROTTEN_FLESH, 2)
+				.addIngredient(ModItems.PHEROMONES.get())
+				.addIngredient(ModItems.TOXINS.get())
+				.setCraftingTime(8 * 20)
+				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
 				.save(consumer);
 	}
 

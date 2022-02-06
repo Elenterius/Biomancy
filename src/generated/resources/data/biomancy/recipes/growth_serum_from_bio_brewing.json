@@ -1,0 +1,19 @@
+{
+  "type": "biomancy:bio_brewing",
+  "ingredients": [
+    {
+      "item": "minecraft:bone_meal"
+    },
+    {
+      "item": "biomancy:pheromones"
+    },
+    {
+      "item": "biomancy:nutrients"
+    }
+  ],
+  "result": {
+    "item": "biomancy:serum",
+    "nbt": "{SerumColor:12179138,SerumId:\"biomancy:growth_serum\"}"
+  },
+  "time": 100
+}
