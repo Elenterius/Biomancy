@@ -47,6 +47,8 @@ public class ModEntityLoot extends EntityLoot {
 		add(ModLoot.Entity.FLESH_BLOB_SIZE_8, fleshBlobLootTableBuilderWithDrop(7));
 		add(ModLoot.Entity.FLESH_BLOB_SIZE_9, fleshBlobLootTableBuilderWithDrop(8));
 		add(ModLoot.Entity.FLESH_BLOB_SIZE_10, fleshBlobLootTableBuilderWithDrop(9));
+
+		add(ModEntityTypes.BOOMLING.get(), LootTable.lootTable()); //no item drops
 	}
 
 	@Override

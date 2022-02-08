@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.world.entity.fleshblob.FleshBlob;
+import com.github.elenterius.biomancy.world.entity.ownable.Boomling;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -18,15 +19,15 @@ public final class ModEntityTypes {
 
 	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, BiomancyMod.MOD_ID);
 
-	//	//Aberrations
+	//# Aberrations
 	public static final RegistryObject<EntityType<FleshBlob>> FLESH_BLOB = register("flesh_blob", EntityType.Builder.of(FleshBlob::new, MobCategory.CREATURE).sized(1F, 1F));
 //	public static final RegistryObject<EntityType<OculusObserverEntity>> OCULUS_OBSERVER = register("oculus_observer", EntityType.Builder.of(OculusObserverEntity::new, EntityClassification.CREATURE).sized(0.6F, 0.5F));
 //	public static final RegistryObject<EntityType<FailedSheepEntity>> FAILED_SHEEP = register("failed_sheep", EntityType.Builder.of(FailedSheepEntity::new, EntityClassification.CREATURE).sized(0.9f, 1.3f).clientTrackingRange(10));
 //	public static final RegistryObject<EntityType<FailedCowEntity>> FAILED_COW = register("failed_cow", EntityType.Builder.of(FailedCowEntity::new, EntityClassification.CREATURE).sized(0.9f, 1.4f).clientTrackingRange(10));
 
-//	//Golems & Pets
+	//# Ownable
+	public static final RegistryObject<EntityType<Boomling>> BOOMLING = register("boomling", EntityType.Builder.of(Boomling::new, MobCategory.MONSTER).sized(0.4F, 0.35F));
 //	public static final RegistryObject<EntityType<FleshkinEntity>> FLESHKIN = register("fleshkin", EntityType.Builder.of(FleshkinEntity::new, EntityClassification.MONSTER).sized(0.6f, 1.95f).clientTrackingRange(10));
-//	public static final RegistryObject<EntityType<BoomlingEntity>> BOOMLING = register("boomling", EntityType.Builder.of(BoomlingEntity::new, EntityClassification.MONSTER).sized(0.4F, 0.35F));
 //
 //	public static final RegistryObject<EntityType<BeetlingEntity>> BEETLING = register("beetling", EntityType.Builder.of(BeetlingEntity::new, EntityClassification.CREATURE).sized(0.475F, 0.34F));
 //	public static final RegistryObject<EntityType<CrocospiderEntity>> BROOD_MOTHER = register("brood_mother", EntityType.Builder.of(CrocospiderEntity::new, EntityClassification.MONSTER).sized(1.6F, 0.7F));
@@ -52,6 +53,7 @@ public final class ModEntityTypes {
 	public static void onAttributeCreation(final EntityAttributeCreationEvent event) {
 		BiomancyMod.LOGGER.debug(MarkerManager.getMarker("ENTITIES"), "creating attributes...");
 		event.put(FLESH_BLOB.get(), FleshBlob.createAttributes().build());
+		event.put(BOOMLING.get(), Boomling.createAttributes().build());
 //		event.put(OCULUS_OBSERVER.get(), OculusObserverEntity.createAttributes().build());
 //		event.put(FAILED_SHEEP.get(), SheepEntity.createAttributes().build());
 //		event.put(CHROMA_SHEEP.get(), ChromaSheepEntity.createAttributes().build());
@@ -60,7 +62,6 @@ public final class ModEntityTypes {
 //		event.put(NUTRIENT_SLURRY_COW.get(), CowEntity.createAttributes().build());
 //		event.put(FAILED_COW.get(), CowEntity.createAttributes().build());
 //		event.put(FLESHKIN.get(), FleshkinEntity.createAttributes().build());
-//		event.put(BOOMLING.get(), BoomlingEntity.createAttributes().build());
 //		event.put(BROOD_MOTHER.get(), CrocospiderEntity.createAttributes().build());
 //		event.put(BEETLING.get(), BeetlingEntity.createAttributes().build());
 	}

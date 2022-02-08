@@ -40,6 +40,7 @@
   "item.biomancy.bone_sword": "Sharpened Bone",
 
   "item.biomancy.flesh_blob_spawn_egg": "Flesh Blob Spawn Egg",
+  "item.biomancy.boomling_spawn_egg": "Boomling Spawn Egg",
 
   "block.biomancy.creator": "Flesh Crucible",
   "block.biomancy.bio_forge": "Bio-Forge [NYI]",
@@ -63,6 +64,7 @@
   "container.biomancy.sac": "Sac Inventory",
 
   "entity.biomancy.flesh_blob": "Flesh Blob",
+  "entity.biomancy.boomling": "Boomling",
 
   "enchantment.biomancy.despoil": "Despoil",
   "enchantment.biomancy.anesthetic": "Anesthetic",
@@ -148,7 +150,6 @@
   "item.biomancy.small_entity_bag": "Small Entity Gulge-Sac",
   "item.biomancy.large_entity_bag": "Large Entity Gulge-Sac",
   "item.biomancy.oculus_key": "Oculus Key",
-  "item.biomancy.injection_device": "Injection Device",
   "item.biomancy.fleshborn_pickaxe": "Fleshborn Pickaxe",
   "item.biomancy.fleshborn_axe": "Fleshborn Axe",
   "item.biomancy.fleshborn_shovel": "Fleshborn Shovel",
@@ -181,7 +182,6 @@
 
   "item.biomancy.oculus_observer_spawn_egg": "Oculus Observer Spawn Egg",
   "item.biomancy.fleshkin_spawn_egg": "Fleshkin Spawn Egg",
-  "item.biomancy.boomling_spawn_egg": "Boomling Spawn Egg",
   "item.biomancy.failed_sheep_spawn_egg": "Failed Sheep Spawn Egg",
   "item.biomancy.failed_cow_spawn_egg": "Failed Cow Spawn Egg",
   "item.biomancy.silky_wool_sheep_spawn_egg": "Silky Wool Sheep Spawn Egg",
@@ -211,7 +211,6 @@
 
   "entity.biomancy.oculus_observer": "Oculus Observer",
   "entity.biomancy.fleshkin": "Fleshkin",
-  "entity.biomancy.boomling": "Boomling",
   "entity.biomancy.failed_sheep": "Failed Sheep",
   "entity.biomancy.chroma_sheep": "Chroma Sheep",
   "entity.biomancy.silky_wool_sheep": "Silky Wool Sheep",

@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.client.renderer.block.BioForgeBlockEntityR
 import com.github.elenterius.biomancy.client.renderer.block.BioLabBlockEntityRenderer;
 import com.github.elenterius.biomancy.client.renderer.block.CreatorBlockEntityRenderer;
 import com.github.elenterius.biomancy.client.renderer.block.DecomposerBlockEntityRenderer;
+import com.github.elenterius.biomancy.client.renderer.entity.BoomlingRenderer;
 import com.github.elenterius.biomancy.client.renderer.entity.FleshBlobRenderer;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -62,12 +63,12 @@ public final class ClientSetupHandler {
 		event.registerBlockEntityRenderer(ModBlockEntities.BIO_LAB.get(), BioLabBlockEntityRenderer::new);
 
 		event.registerEntityRenderer(ModEntityTypes.FLESH_BLOB.get(), FleshBlobRenderer::new);
+		event.registerEntityRenderer(ModEntityTypes.BOOMLING.get(), BoomlingRenderer::new);
 
 		//event.registerBlockEntityRenderer(ModBlockEntities.FLESH_CHEST.get(), FleshChestTileEntityRenderer::new);
 //
 //		event.registerEntityRenderer(ModEntityTypes.OCULUS_OBSERVER.get(), OculusObserverRenderer::new);
 //		event.registerEntityRenderer(ModEntityTypes.FLESHKIN.get(), FleshkinRenderer::new);
-//		event.registerEntityRenderer(ModEntityTypes.BOOMLING.get(), BoomlingRenderer::new);
 //		event.registerEntityRenderer(ModEntityTypes.BEETLING.get(), BeetlingRenderer::new);
 //		event.registerEntityRenderer(ModEntityTypes.BROOD_MOTHER.get(), BroodmotherRenderer::new);
 //
