@@ -237,7 +237,6 @@ public class BioInjectorItem extends Item implements IKeyListener {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
-		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTranslationText("tooltip", "action_self_inject")).withStyle(ChatFormatting.DARK_GRAY));
 
 		CompoundTag tag = stack.getOrCreateTag();
 		if (tag.contains(INVENTORY_TAG)) {
@@ -250,7 +249,11 @@ public class BioInjectorItem extends Item implements IKeyListener {
 				serum.addInfoToTooltip(stack, level, tooltip, isAdvanced);
 			}
 		}
-		else tooltip.add(TextComponentUtil.getTranslationText("tooltip", "contains_nothing").withStyle(ChatFormatting.GRAY));
+		else tooltip.add(TextComponentUtil.getTooltipText("contains_nothing").withStyle(ChatFormatting.GRAY));
+
+		tooltip.add(TextComponent.EMPTY);
+		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action_self_inject")).withStyle(ChatFormatting.DARK_GRAY));
+		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getShiftKey().append(" + ").append(ClientTextUtil.getRightMouseKey()), TextComponentUtil.getTooltipText("action_open_inventory")).withStyle(ChatFormatting.DARK_GRAY));
 	}
 
 	@Override

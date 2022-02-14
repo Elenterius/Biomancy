@@ -27,7 +27,7 @@ public class BreedingSerum extends Serum {
 	public boolean affectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
 		if (target instanceof Animal animal && !animal.isBaby()) {
 			if (!animal.level.isClientSide) {
-				animal.addEffect(new MobEffectInstance(ModMobEffects.LIBIDO.get(), 20 * 20, 1, false, true));
+				animal.addEffect(new MobEffectInstance(ModMobEffects.LIBIDO.get(), 12 * 20, 1, false, true));
 			}
 			return true;
 		}

@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.world.block.entity;
 
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.world.LevelUtil;
-import com.github.elenterius.biomancy.world.block.SacBlock;
+import com.github.elenterius.biomancy.world.block.TongueBlock;
 import com.github.elenterius.biomancy.world.inventory.itemhandler.SingleItemStackHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,10 +26,12 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 public class TongueBlockEntity extends SimpleSyncedBlockEntity implements IAnimatable {
 
 	public static final int ITEM_TRANSFER_AMOUNT = 3;
-	private final SingleItemStackHandler inventory;
-	private int ticks;
+	public static final String INVENTORY_TAG = "Inventory";
 
+	private final SingleItemStackHandler inventory;
 	private final AnimationFactory animationFactory = new AnimationFactory(this);
+
+	private int ticks;
 
 	public TongueBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.TONGUE.get(), pos, state);
@@ -55,12 +57,12 @@ public class TongueBlockEntity extends SimpleSyncedBlockEntity implements IAnima
 
 	private void serverTick(ServerLevel level, BlockPos pos, BlockState state) {
 		if (!inventory.isEmpty()) {
-			Direction facing = state.getValue(SacBlock.FACING);
+			Direction facing = state.getValue(TongueBlock.FACING);
 			dropItems(level, pos, facing);
 			return;
 		}
 
-		Direction facing = state.getValue(SacBlock.FACING);
+		Direction facing = state.getValue(TongueBlock.FACING);
 		BlockPos relativePos = pos.relative(facing.getOpposite());
 		if (level.isLoaded(relativePos)) {
 			LevelUtil.getItemHandler(level, relativePos, Direction.DOWN).ifPresent(this::tryToExtractItems);
@@ -91,10 +93,11 @@ public class TongueBlockEntity extends SimpleSyncedBlockEntity implements IAnima
 		ItemStack stack = inventory.extractItem(0, ITEM_TRANSFER_AMOUNT, false);
 		if (!stack.isEmpty()) {
 			double x = (pos.getX() + 0.5d) - facing.getStepX() * 0.5d + facing.getStepX() * (11d / 16d);
-			double y = pos.getY() + 2d / 16d;
+			double y = pos.getY() + 1d / 16d;
 			double z = (pos.getZ() + 0.5d) - facing.getStepZ() * 0.5d + facing.getStepZ() * (11d / 16d);
 			ItemEntity itemEntity = new ItemEntity(level, x, y, z, stack);
 			itemEntity.setDefaultPickUpDelay();
+			itemEntity.setDeltaMovement(0, 0, 0);
 			level.addFreshEntity(itemEntity);
 			syncToClient();
 		}
@@ -107,18 +110,18 @@ public class TongueBlockEntity extends SimpleSyncedBlockEntity implements IAnima
 	@Override
 	protected void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
-		tag.put("Inventory", inventory.serializeNBT());
+		tag.put(INVENTORY_TAG, inventory.serializeNBT());
 	}
 
 	@Override
 	public void load(CompoundTag tag) {
 		super.load(tag);
-		inventory.deserializeNBT(tag.getCompound("Inventory"));
+		inventory.deserializeNBT(tag.getCompound(INVENTORY_TAG));
 	}
 
 	@Override
 	protected void saveForSyncToClient(CompoundTag tag) {
-		tag.put("Inventory", inventory.serializeNBT());
+		tag.put(INVENTORY_TAG, inventory.serializeNBT());
 	}
 
 	public void dropContainerContents(Level level, BlockPos pos) {

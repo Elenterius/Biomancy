@@ -125,10 +125,12 @@
 
   "tooltip.biomancy.empty": "Empty",
   "tooltip.biomancy.nutrients_fuel": "Nutrients",
+  "tooltip.biomancy.bile_fuel": "Bile",
   "tooltip.biomancy.contains_unique_dna": "Contains Unique Genetic Sequences",
   "tooltip.biomancy.press_button_to": "Press %1$s to %2$s",
   "tooltip.biomancy.action_self_inject": "inject yourself",
   "tooltip.biomancy.action_self_extract": "extract from yourself",
+  "tooltip.biomancy.action_open_inventory": "open its inventory",
 
   "msg.biomancy.not_sleepy": "You don't feel sleepy...",
 
@@ -141,6 +143,11 @@
 
   "jei.biomancy.recipe.bio_lab": "Bio-Lab Recipes",
   "jei.biomancy.recipe.decomposer": "Decomposer Recipes",
+
+  "keyboard.biomancy.ctrl": "ctrl",
+  "keyboard.biomancy.alt": "alt",
+  "keyboard.biomancy.shift": "shift",
+  "keyboard.biomancy.right_mouse": "right mouse",
 
   "#comment": "///////////////// outdated past this //////////////////////////////////////////////////////////////////////////",
 
@@ -345,9 +352,6 @@
   "jei.biomancy.recipe.chewer": "Chewer Recipes",
   "jei.biomancy.recipe.digester": "Digester Recipes",
   "jei.biomancy.recipe.solidifier": "Gland Recipes",
-
-  "keyboard.ctrl": "ctrl",
-  "keyboard.alt": "alt",
 
   "item.biomancy.brood_mother_spawn_egg": "Brood Mother Spawn Egg",
   "item.biomancy.chroma_sheep_spawn_egg": "Chroma Sheep Spawn Egg"

@@ -5,8 +5,7 @@
     64
   ],
   "textures": {
-    "0": "biomancy:block/decomposer",
-    "particle": "biomancy:block/decomposer"
+    "0": "biomancy:block/decomposer"
   },
   "elements": [
     {

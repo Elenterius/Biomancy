@@ -72,7 +72,7 @@ public class DecomposerScreen extends AbstractContainerScreen<DecomposerMenu> {
 				int amount = menu.getFuelAmount();
 				if (amount > 0) {
 					DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
-					hoveringText.add(TextComponentUtil.getTooltipText("nutrients").append(": " + df.format(amount) + " u"));
+					hoveringText.add(TextComponentUtil.getTooltipText("nutrients_fuel").append(": " + df.format(amount) + " u"));
 				}
 				else {
 					hoveringText.add(TextComponentUtil.getTooltipText("empty"));

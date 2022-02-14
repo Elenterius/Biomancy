@@ -72,7 +72,7 @@ public class BioLabScreen extends AbstractContainerScreen<BioLabMenu> {
 				int amount = menu.getFuelAmount();
 				if (amount > 0) {
 					DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
-					hoveringText.add(TextComponentUtil.getTooltipText("bile").append(": " + df.format(amount) + " u"));
+					hoveringText.add(TextComponentUtil.getTooltipText("bile_fuel").append(": " + df.format(amount) + " u"));
 				}
 				else {
 					hoveringText.add(TextComponentUtil.getTooltipText("empty"));

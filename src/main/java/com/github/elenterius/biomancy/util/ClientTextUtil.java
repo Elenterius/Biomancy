@@ -24,8 +24,10 @@ public final class ClientTextUtil {
 
 	public static final Style LORE_STYLE = Style.EMPTY.withColor(ChatFormatting.DARK_GRAY).withItalic(true);
 
-	private static final TranslatableComponent CTRL_KEY_TEXT = new TranslatableComponent("keyboard.ctrl");
-	private static final TranslatableComponent ALT_KEY_TEXT = new TranslatableComponent("keyboard.alt");
+	private static final TranslatableComponent CTRL_KEY_TEXT = new TranslatableComponent("keyboard.biomancy.ctrl");
+	private static final TranslatableComponent ALT_KEY_TEXT = new TranslatableComponent("keyboard.biomancy.alt");
+	private static final TranslatableComponent SHIFT_KEY_TEXT = new TranslatableComponent("keyboard.biomancy.shift");
+	private static final TranslatableComponent RIGHT_MOUSE_KEY_TEXT = new TranslatableComponent("keyboard.biomancy.right_mouse");
 	private static final TextComponent FAKE_EMPTY_LINE = new TextComponent(" ");
 
 	private static DecimalFormat decimalFormat = null;
@@ -62,6 +64,14 @@ public final class ClientTextUtil {
 
 	public static MutableComponent getCtrlKey() {
 		return CTRL_KEY_TEXT.plainCopy();
+	}
+
+	public static MutableComponent getShiftKey() {
+		return SHIFT_KEY_TEXT.plainCopy();
+	}
+
+	public static MutableComponent getRightMouseKey() {
+		return RIGHT_MOUSE_KEY_TEXT.plainCopy();
 	}
 
 	public static MutableComponent getDefaultKey() {
