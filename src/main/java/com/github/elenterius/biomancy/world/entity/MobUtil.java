@@ -2,22 +2,30 @@ package com.github.elenterius.biomancy.world.entity;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModTags;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.damagesource.CombatRules;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.horse.SkeletonHorse;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
+import net.minecraft.world.entity.projectile.ThrownPotion;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
@@ -128,6 +136,73 @@ public final class MobUtil {
 		int pierceLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PIERCING, stack);
 		float pct = CombatRules.getDamageAfterAbsorb(20f, target.getArmorValue(), (float) target.getAttributeValue(Attributes.ARMOR_TOUGHNESS)) / 20f;
 		return target.getRandom().nextFloat() < pct + 0.075f * pierceLevel;
+	}
+
+	/**
+	 * This should return a position vector that can be used to more safely spawn entities as it should mitigate entities getting stuck in walls.<br>
+	 *
+	 * @return a position that is offset based on the hit direction and the entity size
+	 */
+	public static Vec3 getAdjustedSpawnPositionFor(BlockPos pos, Vec3 clickLocation, Direction clickedFace, Entity entity) {
+		//check if neighbor blocks are not empty
+		BlockPos offsetPos = pos.offset(clickedFace.getNormal());
+		int down = entity.level.getBlockState(offsetPos.below()).isAir() ? 0 : 1;
+		int up = entity.level.getBlockState(offsetPos.above()).isAir() ? 0 : 1;
+		int north = entity.level.getBlockState(offsetPos.north()).isAir() ? 0 : 1;
+		int south = entity.level.getBlockState(offsetPos.south()).isAir() ? 0 : 1;
+		int west = entity.level.getBlockState(offsetPos.west()).isAir() ? 0 : 1;
+		int east = entity.level.getBlockState(offsetPos.east()).isAir() ? 0 : 1;
+
+		float halfBBWidth = entity.getBbWidth() * 0.5f;
+		float halfBBHeight = entity.getBbHeight() * 0.5f;
+		double x = clickLocation.x;
+		double y = clickLocation.y - halfBBHeight; //offset to center entity
+		double z = clickLocation.z;
+
+		if (west + east == 2) x = offsetPos.getX() + 0.5d;
+		else if (east == 1) {
+			x = offsetPos.getX() + 1f - halfBBWidth;
+			if (clickLocation.x < x) x = clickLocation.x;
+		}
+		else if (west == 1) {
+			x = offsetPos.getX() + halfBBWidth;
+			if (clickLocation.x > x) x = clickLocation.x;
+		}
+
+		if (north + south == 2) z = offsetPos.getZ() + 0.5d;
+		else if (south == 1) {
+			z = offsetPos.getZ() + 1f - halfBBWidth;
+			if (clickLocation.z < z) z = clickLocation.z;
+		}
+		else if (north == 1) {
+			z = offsetPos.getZ() + halfBBWidth;
+			if (clickLocation.z > z) z = clickLocation.z;
+		}
+
+		if (down + up == 2) y = offsetPos.getY() + 0.5d - halfBBHeight;
+		else if (down == 1) {
+			y = offsetPos.getY();
+			if (clickLocation.y - halfBBHeight > y) y = clickLocation.y - halfBBHeight;
+		}
+		else if (up == 1) {
+			y = offsetPos.getY() + 1f - entity.getBbHeight();
+			if (clickLocation.y - halfBBHeight < y) y = clickLocation.y - halfBBHeight;
+		}
+
+		return new Vec3(x, y, z);
+	}
+
+	public static void performWaterAOE(Level world, Entity attacker, double maxDistance) {
+		AABB aabb = attacker.getBoundingBox().inflate(maxDistance, maxDistance / 2d, maxDistance);
+		List<LivingEntity> entities = world.getEntitiesOfClass(LivingEntity.class, aabb, ThrownPotion.WATER_SENSITIVE);
+		if (!entities.isEmpty()) {
+			double maxDistSq = maxDistance * maxDistance;
+			for (LivingEntity victim : entities) {
+				if (attacker.distanceToSqr(victim) < maxDistSq) {
+					victim.hurt(DamageSource.indirectMagic(victim, attacker), 1f);
+				}
+			}
+		}
 	}
 
 }

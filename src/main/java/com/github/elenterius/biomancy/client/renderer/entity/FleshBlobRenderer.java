@@ -21,17 +21,14 @@ public class FleshBlobRenderer extends GeoEntityRenderer<FleshBlob> {
 	}
 
 	@Override
-	public void render(FleshBlob entity, float entityYaw, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int packedLight) {
-		shadowRadius = 0.65f * (0.5f + entity.getBlobSize() * 0.5f);
-		super.render(entity, entityYaw, partialTicks, matrixStack, buffer, packedLight);
-	}
+	public void renderEarly(FleshBlob entity, PoseStack poseStack, float ticks, @Nullable MultiBufferSource renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLight, int packedOverlay, float red, float green, float blue, float partialTicks) {
+		float scale = FleshBlob.getScaleMultiplier(entity);
+		shadowRadius = 0.65f * scale;
 
-	@Override
-	public void renderEarly(FleshBlob fleshBlob, PoseStack poseStack, float ticks, @Nullable MultiBufferSource renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLight, int packedOverlay, float red, float green, float blue, float partialTicks) {
 		FleshBlobModel<FleshBlob> fleshBlobModel = (FleshBlobModel<FleshBlob>) getGeoModelProvider();
 		AnimationProcessor<?> animationProcessor = fleshBlobModel.getAnimationProcessor();
 
-		int flag = fleshBlob.getTumorFlags();
+		int flag = entity.getTumorFlags();
 		for (TumorFlag tumorFlag : TumorFlag.values()) {
 			IBone tumor = animationProcessor.getBone(tumorFlag.getBoneId());
 			tumor.setHidden(tumorFlag.isNotSet(flag));
@@ -39,10 +36,9 @@ public class FleshBlobRenderer extends GeoEntityRenderer<FleshBlob> {
 
 		poseStack.scale(0.999f, 0.999f, 0.999f);
 		poseStack.translate(0, 0.001f, 0);
-		float v = 0.5f + fleshBlob.getBlobSize() * 0.5f;
-		poseStack.scale(v, v, v);
+		poseStack.scale(scale, scale, scale);
 
-		super.renderEarly(fleshBlob, poseStack, ticks, renderTypeBuffer, vertexBuilder, packedLight, packedOverlay, red, green, blue, partialTicks);
+		super.renderEarly(entity, poseStack, ticks, renderTypeBuffer, vertexBuilder, packedLight, packedOverlay, red, green, blue, partialTicks);
 	}
 
 }

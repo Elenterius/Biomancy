@@ -1,6 +1,8 @@
 package com.github.elenterius.biomancy.world.entity.ownable;
 
+import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.util.PotionUtilExt;
+import com.github.elenterius.biomancy.world.entity.MobUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -27,7 +29,6 @@ import net.minecraft.world.entity.ai.navigation.WallClimberNavigation;
 import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.animal.Ocelot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ThrownPotion;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
@@ -37,10 +38,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistries;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -52,13 +50,19 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 public class Boomling extends OwnableMob implements IAnimatable {
 
 	private static final EntityDataAccessor<Byte> CLIMBING = SynchedEntityData.defineId(Boomling.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Byte> STATE = SynchedEntityData.defineId(Boomling.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Integer> COLOR = SynchedEntityData.defineId(Boomling.class, EntityDataSerializers.INT);
+
+	private static final double MAX_TRIGGER_DIST_SQ = 3.5d * 3.5d;
+
 	private int prevFuseTimer;
 	private int fuseTimer;
 	private short maxFuseTimer = 22;
@@ -71,6 +75,7 @@ public class Boomling extends OwnableMob implements IAnimatable {
 
 	public static AttributeSupplier.Builder createAttributes() {
 		return Mob.createMobAttributes()
+				.add(Attributes.FOLLOW_RANGE, 7.5d)
 				.add(Attributes.MAX_HEALTH, 6.5d)
 				.add(Attributes.MOVEMENT_SPEED, 0.3d)
 				.add(Attributes.ATTACK_DAMAGE, 1d);
@@ -93,18 +98,6 @@ public class Boomling extends OwnableMob implements IAnimatable {
 		world.levelEvent(event, new BlockPos(pos), color);
 	}
 
-	public static void causeWaterAOE(Level world, Entity attacker) {
-		AABB aabb = attacker.getBoundingBox().inflate(4d, 2d, 4d);
-		List<LivingEntity> entities = world.getEntitiesOfClass(LivingEntity.class, aabb, ThrownPotion.WATER_SENSITIVE);
-		if (!entities.isEmpty()) {
-			for (LivingEntity victim : entities) {
-				if (attacker.distanceToSqr(victim) < 16d) {
-					victim.hurt(DamageSource.indirectMagic(victim, attacker), 1f);
-				}
-			}
-		}
-	}
-
 	@Override
 	public MobType getMobType() {
 		return MobType.ARTHROPOD;
@@ -116,15 +109,14 @@ public class Boomling extends OwnableMob implements IAnimatable {
 		goalSelector.addGoal(2, new ExplodeGoal());
 		goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Ocelot.class, 6f, 1d, 1.2d));
 		goalSelector.addGoal(3, new AvoidEntityGoal<>(this, Cat.class, 6f, 1d, 1.2d));
-		goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4f));
-		goalSelector.addGoal(5, new MeleeAttackGoal(this, 1f, true));
-		goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 0.8f));
-		goalSelector.addGoal(7, new RandomLookAroundGoal(this));
+		goalSelector.addGoal(4, new MeleeAttackGoal(this, 1d, false));
+		goalSelector.addGoal(5, new LeapAtTargetGoal(this, 0.4f));
 		goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8f));
+		goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 
-		targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class, -1, true, false,
+		targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 5, true, false,
 				target -> getOwner().map(owner -> shouldAttackEntity(target, owner)).orElse(true)));
+		targetSelector.addGoal(2, new HurtByTargetGoal(this));
 	}
 
 	@Override
@@ -205,6 +197,7 @@ public class Boomling extends OwnableMob implements IAnimatable {
 
 	@Override
 	public boolean doHurtTarget(Entity entity) {
+		//disables melee attack
 		return true;
 	}
 
@@ -321,24 +314,22 @@ public class Boomling extends OwnableMob implements IAnimatable {
 	private void causeWaterAOE() {
 		Optional<Player> owner = getOwner();
 		LivingEntity shooter = owner.isPresent() ? owner.get() : this;
-		causeWaterAOE(level, shooter);
+		MobUtil.performWaterAOE(level, shooter, 4d);
 	}
 
 	@Override
 	protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-		return InteractionResult.PASS;
+		if (!isOwner(player)) return InteractionResult.PASS;
 
-//		if (!isOwner(player)) return InteractionResult.PASS;
-//
-//		if (!player.level.isClientSide() && player.isShiftKeyDown()) {
-//			removeAfterChangingDimensions();
-//			ItemStack stack = PotionUtilExt.setPotionOfHost(new ItemStack(ModItems.BOOMLING.get()), getStoredPotion().copy());
-//			if (hasCustomName()) stack.setHoverName(getCustomName());
-//			if (!player.addItem(stack)) {
-//				spawnAtLocation(stack);
-//			}
-//		}
-//		return InteractionResult.sidedSuccess(level.isClientSide());
+		if (!player.level.isClientSide() && player.isShiftKeyDown()) {
+			removeAfterChangingDimensions();
+			ItemStack stack = PotionUtilExt.setPotionOfHost(new ItemStack(ModItems.BOOMLING.get()), getStoredPotion().copy());
+			if (hasCustomName()) stack.setHoverName(getCustomName());
+			if (!player.addItem(stack)) {
+				spawnAtLocation(stack);
+			}
+		}
+		return InteractionResult.sidedSuccess(level.isClientSide());
 	}
 
 	@Override
@@ -393,25 +384,31 @@ public class Boomling extends OwnableMob implements IAnimatable {
 		return false;
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	public float getFuseFlashIntensity(float partialTicks) {
+	public float getExplodeProgress(float partialTicks) {
 		return Mth.lerp(partialTicks, prevFuseTimer, fuseTimer) / (maxFuseTimer - 2f);
 	}
 
-	private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+	private <E extends IAnimatable> PlayState handleAnim(AnimationEvent<E> event) {
+		event.getController().transitionLengthTicks = 0;
+
+		if (!isIdle() && getExplodeProgress(event.getPartialTick()) > 0) {
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("boomling.anim.explode"));
+			return PlayState.CONTINUE;
+		}
+
 		if (event.isMoving()) {
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("boomling.anim.armed"));
+			return PlayState.CONTINUE;
 		}
-		else {
-			event.getController().transitionLengthTicks = 10;
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("boomling.anim.idle", true));
-		}
+
+		event.getController().transitionLengthTicks = 5;
+		event.getController().setAnimation(new AnimationBuilder().addAnimation("boomling.anim.idle", true));
 		return PlayState.CONTINUE;
 	}
 
 	@Override
 	public void registerControllers(AnimationData data) {
-		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
+		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::handleAnim));
 	}
 
 	@Override
@@ -440,27 +437,29 @@ public class Boomling extends OwnableMob implements IAnimatable {
 
 	class ExplodeGoal extends Goal {
 
-		public ExplodeGoal() {
-			setFlags(EnumSet.of(Flag.MOVE));
-		}
-
 		@Override
 		public boolean canUse() {
-			return !isIdle() || getTarget() != null && distanceToSqr(getTarget()) < 9d;
+			return getTarget() != null && distanceToSqr(getTarget()) < MAX_TRIGGER_DIST_SQ;
 		}
 
 		@Override
-		public void start() {
-			navigation.stop();
+		public boolean requiresUpdateEveryTick() {
+			return true;
 		}
 
 		@Override
 		public void tick() {
-			if (getTarget() == null || distanceToSqr(getTarget()) > 49d) {
+			LivingEntity target = getTarget();
+			if (target == null) {
 				setIdle(true);
 			}
 			else {
-				setIdle(!getSensing().hasLineOfSight(getTarget()));
+				if (distanceToSqr(target) > MAX_TRIGGER_DIST_SQ) {
+					setIdle(true);
+				}
+				else {
+					setIdle(!getSensing().hasLineOfSight(target));
+				}
 			}
 		}
 	}

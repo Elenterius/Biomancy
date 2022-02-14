@@ -63,10 +63,9 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 	private static final EntityDataAccessor<Byte> BLOB_TYPE = SynchedEntityData.defineId(FleshBlob.class, EntityDataSerializers.BYTE);
 
 	private final DNAStorage storedDNA = new DNAStorage(4);
+	private final AnimationFactory animationFactory = new AnimationFactory(this);
 	protected GenericJumpMoveHelper<FleshBlob> jumpMoveState;
 	private int eatTimer;
-
-	private final AnimationFactory animationFactory = new AnimationFactory(this);
 
 	public FleshBlob(EntityType<? extends FleshBlob> entityType, Level level) {
 		super(entityType, level);
@@ -80,6 +79,10 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 				.add(Attributes.MOVEMENT_SPEED, 0.2f)
 				.add(Attributes.ARMOR, 8)
 				.add(Attributes.ATTACK_DAMAGE, 3);
+	}
+
+	public static float getScaleMultiplier(FleshBlob fleshBlob) {
+		return 0.5f + fleshBlob.getBlobSize() * 0.25f;
 	}
 
 	@Override
@@ -144,7 +147,7 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 
 	@Override
 	public EntityDimensions getDimensions(Pose pose) {
-		return super.getDimensions(pose).scale(0.5f + getBlobSize() * 0.5f);
+		return super.getDimensions(pose).scale(getScaleMultiplier(this));
 	}
 
 	public boolean isHangry() {

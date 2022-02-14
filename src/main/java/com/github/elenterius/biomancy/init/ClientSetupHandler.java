@@ -1,9 +1,11 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.client.model.entity.FleshkinModel;
 import com.github.elenterius.biomancy.client.renderer.block.*;
 import com.github.elenterius.biomancy.client.renderer.entity.BoomlingRenderer;
 import com.github.elenterius.biomancy.client.renderer.entity.FleshBlobRenderer;
+import com.github.elenterius.biomancy.client.renderer.entity.FleshkinRenderer;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -11,6 +13,10 @@ import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.geom.LayerDefinitions;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
@@ -66,7 +72,7 @@ public final class ClientSetupHandler {
 		//event.registerBlockEntityRenderer(ModBlockEntities.FLESH_CHEST.get(), FleshChestTileEntityRenderer::new);
 //
 //		event.registerEntityRenderer(ModEntityTypes.OCULUS_OBSERVER.get(), OculusObserverRenderer::new);
-//		event.registerEntityRenderer(ModEntityTypes.FLESHKIN.get(), FleshkinRenderer::new);
+		event.registerEntityRenderer(ModEntityTypes.FLESHKIN.get(), FleshkinRenderer::new);
 //		event.registerEntityRenderer(ModEntityTypes.BROOD_MOTHER.get(), BroodmotherRenderer::new);
 //
 //		event.registerEntityRenderer(ModEntityTypes.FAILED_SHEEP.get(), FailedSheepRenderer::new);
@@ -83,7 +89,12 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void registerLayerDefinitions(final EntityRenderersEvent.RegisterLayerDefinitions event) {
-//		event.registerLayerDefinition(FleshBlobModel.MODEL_LAYER, FleshBlobModel::createBodyLayer);
+		LayerDefinition humanoidBase = LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 32);
+		LayerDefinition humanoidOuterArmor = LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0), 64, 32);
+		LayerDefinition humanoidInnerArmor = LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.INNER_ARMOR_DEFORMATION, 0), 64, 32);
+		event.registerLayerDefinition(FleshkinModel.MODEL_LAYER, () -> humanoidBase);
+		event.registerLayerDefinition(FleshkinModel.INNER_ARMOR_LAYER, () -> humanoidInnerArmor);
+		event.registerLayerDefinition(FleshkinModel.OUTER_ARMOR_LAYER, () -> humanoidOuterArmor);
 	}
 
 	private static void registerItemModelProperties() {
@@ -111,9 +122,7 @@ public final class ClientSetupHandler {
 		event.getItemColors().register((stack, index) -> index == 0 ? ModItems.SERUM.get().getSerumColor(stack) : -1, ModItems.SERUM.get());
 		event.getItemColors().register((stack, index) -> ModItems.ESSENCE.get().getColor(stack, index), ModItems.ESSENCE.get());
 		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.BIO_INJECTOR.get().getSerumColor(stack) : -1, ModItems.BIO_INJECTOR.get());
-
-//		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.BOOMLING.get().getPotionColor(stack) : -1, ModItems.BOOMLING.get());
-//		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.BOOMLING_HIVE_GUN.get().getPotionColor(stack) : -1, ModItems.BOOMLING_HIVE_GUN.get());
+		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.BOOMLING.get().getPotionColor(stack) : -1, ModItems.BOOMLING.get());
 
 		event.getItemColors().register((stack, index) -> 0x8d758c, ModItems.NECROTIC_FLESH_LUMP.get(), ModItems.NECROTIC_FLESH_BLOCK.get());
 		event.getItemColors().register((stack, index) -> 0xedaeaa, ModItems.PROTEIN_BAR.get());
