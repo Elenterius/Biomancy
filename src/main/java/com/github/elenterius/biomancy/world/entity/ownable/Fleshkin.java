@@ -1,13 +1,14 @@
 package com.github.elenterius.biomancy.world.entity.ownable;
 
+import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
 import com.github.elenterius.biomancy.world.entity.ai.goal.controllable.FollowOwnerGoal;
 import com.github.elenterius.biomancy.world.entity.ai.goal.controllable.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -32,11 +33,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.util.Optional;
 import java.util.UUID;
 
-public class Fleshkin extends OwnableMonster implements IControllableMob {
+public class Fleshkin extends OwnableMonster implements IControllableMob<Fleshkin> {
 
 	private static final EntityDataAccessor<Boolean> IS_CHILD = SynchedEntityData.defineId(Fleshkin.class, EntityDataSerializers.BOOLEAN);
 
-	private static final EntityDataAccessor<Byte> GOLEM_COMMAND = SynchedEntityData.defineId(Fleshkin.class, EntityDataSerializers.BYTE);
+	private static final EntityDataAccessor<Byte> BEHAVIOR_COMMAND = SynchedEntityData.defineId(Fleshkin.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Boolean> IS_CHARGING_CROSSBOW = SynchedEntityData.defineId(Fleshkin.class, EntityDataSerializers.BOOLEAN);
 
 	private static final UUID SPEED_BOOST_UUID = UUID.fromString("7ac9f8fa-3d7c-48e5-9690-fa7025723b04");
@@ -60,7 +61,7 @@ public class Fleshkin extends OwnableMonster implements IControllableMob {
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		entityData.define(IS_CHILD, true);
-		entityData.define(GOLEM_COMMAND, Command.DEFEND_OWNER.serialize());
+		entityData.define(BEHAVIOR_COMMAND, Command.DEFEND_OWNER.serialize());
 		entityData.define(IS_CHARGING_CROSSBOW, false);
 	}
 
@@ -95,8 +96,8 @@ public class Fleshkin extends OwnableMonster implements IControllableMob {
 		if (isInvulnerableTo(source)) {
 			return false;
 		}
-		else if (getGolemCommand() == Command.SIT) {
-			setGolemCommand(Command.PATROL_AREA);
+		else if (getActiveCommand() == Command.SIT) {
+			setActiveCommand(Command.PATROL_AREA);
 		}
 		return super.hurt(source, amount);
 	}
@@ -104,44 +105,41 @@ public class Fleshkin extends OwnableMonster implements IControllableMob {
 	@Override
 	protected InteractionResult mobInteract(Player player, InteractionHand hand) {
 		//debug stuff
-		if (player.isCreative() && player.getMainHandItem().getItem() == Items.DEBUG_STICK) {
-			setOwner(player);
-			player.displayClientMessage(new TextComponent("You are now the owner of this creature!").withStyle(ChatFormatting.RED), true);
+		if (player.isCreative()) {
+			Item item = player.getMainHandItem().getItem();
+			if (item == Items.DEBUG_STICK || item == ModItems.CONTROL_STAFF.get()) {
+				setOwner(player);
+				player.displayClientMessage(new TextComponent("You are now the owner of this creature!").withStyle(ChatFormatting.RED), true);
+			}
 		}
 
 		if (!player.getMainHandItem().isEmpty() || !isOwner(player)) return InteractionResult.PASS;
 
 		if (!player.level.isClientSide() && player.isShiftKeyDown()) {
-			Command newCommand = getGolemCommand().cycle();
-			if (newCommand == Command.SIT) {
-				restrictTo(blockPosition(), 4);
-			}
-			else if (newCommand == Command.PATROL_AREA) {
-				restrictTo(blockPosition(), 24);
-			}
-			else if (newCommand == Command.HOLD_POSITION) {
-				restrictTo(blockPosition(), 8);
-			}
-
-			setGolemCommand(newCommand);
-			MutableComponent cmd = new TextComponent(newCommand.toString()).withStyle(ChatFormatting.DARK_AQUA);
-			TranslatableComponent text = TextComponentUtil.getMsgText("set_golem_command", getName(), cmd);
-			text.withStyle(ChatFormatting.WHITE);
-			player.displayClientMessage(text, true);
+			Command newCommand = getActiveCommand().cycle();
+			updateRestriction(newCommand);
+			setActiveCommand(newCommand);
+			displayCommandSetMsg(player, getName(), newCommand);
 		}
 		return InteractionResult.sidedSuccess(level.isClientSide());
 	}
 
-	@Override
-	public Command getGolemCommand() {
-		return Command.deserialize((byte) (entityData.get(GOLEM_COMMAND) & 0xF));
+	public static void displayCommandSetMsg(Player player, Component name, Command newCommand) {
+		MutableComponent cmd = new TextComponent(newCommand.toString()).withStyle(ChatFormatting.DARK_AQUA);
+		MutableComponent text = TextComponentUtil.getMsgText("set_behavior_command", name, cmd).withStyle(ChatFormatting.WHITE);
+		player.displayClientMessage(text, true);
 	}
 
 	@Override
-	public void setGolemCommand(Command commandIn) {
-		int prevCommand = (entityData.get(GOLEM_COMMAND) & 0xF) << 4;
+	public Command getActiveCommand() {
+		return Command.deserialize((byte) (entityData.get(BEHAVIOR_COMMAND) & 0xF));
+	}
+
+	@Override
+	public void setActiveCommand(Command commandIn) {
+		int prevCommand = (entityData.get(BEHAVIOR_COMMAND) & 0xF) << 4;
 		int newCommand = commandIn.serialize();
-		entityData.set(GOLEM_COMMAND, (byte) (prevCommand | newCommand));
+		entityData.set(BEHAVIOR_COMMAND, (byte) (prevCommand | newCommand));
 	}
 
 	public Command getGolemCommand(byte packedCommands) {
@@ -156,14 +154,14 @@ public class Fleshkin extends OwnableMonster implements IControllableMob {
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
 		tag.putBoolean("IsBaby", isBaby());
-		tag.putByte("GolemCommand", entityData.get(GOLEM_COMMAND));
+		tag.putByte("GolemCommand", entityData.get(BEHAVIOR_COMMAND));
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
 		setBaby(tag.getBoolean("IsBaby"));
-		entityData.set(GOLEM_COMMAND, tag.getByte("GolemCommand"));
+		entityData.set(BEHAVIOR_COMMAND, tag.getByte("GolemCommand"));
 	}
 
 	//client side

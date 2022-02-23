@@ -51,6 +51,9 @@ public final class ClientSetupHandler {
 	@SubscribeEvent
 	public static void onClientSetup(FMLClientSetupEvent event) {
 		ClientRegistry.registerKeyBinding(ITEM_DEFAULT_KEY_BINDING);
+
+		IngameOverlays.registerGameOverlays();
+
 		event.enqueueWork(() -> {
 			ModMenuTypes.registerMenuScreens();
 			registerItemModelProperties();

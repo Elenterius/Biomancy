@@ -48,7 +48,7 @@ public class FollowOwnerGoal<T extends Mob & IOwnableMob & IControllableMob> ext
 
 	@Override
 	public boolean canUse() {
-		if (entity.isGolemInactive() || entity.getGolemCommand() != IControllableMob.Command.DEFEND_OWNER) {
+		if (!entity.canExecuteCommand() || entity.getActiveCommand() != IControllableMob.Command.DEFEND_OWNER) {
 			return false;
 		}
 
@@ -67,7 +67,7 @@ public class FollowOwnerGoal<T extends Mob & IOwnableMob & IControllableMob> ext
 
 	@Override
 	public boolean canContinueToUse() {
-		if (entity.isGolemInactive() || entity.getGolemCommand() != IControllableMob.Command.DEFEND_OWNER) {
+		if (!entity.canExecuteCommand() || entity.getActiveCommand() != IControllableMob.Command.DEFEND_OWNER) {
 			return false;
 		}
 

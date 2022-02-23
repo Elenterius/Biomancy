@@ -23,8 +23,8 @@ public class PatrolAreaGoal<T extends PathfinderMob & IOwnableMob & IControllabl
 
 	@Override
 	public boolean canUse() {
-		if (!entity.isGolemInactive()) {
-			IControllableMob.Command command = entity.getGolemCommand();
+		if (entity.canExecuteCommand()) {
+			IControllableMob.Command command = entity.getActiveCommand();
 			if (command == IControllableMob.Command.PATROL_AREA || command == IControllableMob.Command.DEFEND_OWNER) {
 				return super.canUse();
 			}
@@ -35,7 +35,7 @@ public class PatrolAreaGoal<T extends PathfinderMob & IOwnableMob & IControllabl
 	@Override
 	@Nullable
 	protected Vec3 getPosition() {
-		if (entity.getGolemCommand() == IControllableMob.Command.DEFEND_OWNER) {
+		if (entity.getActiveCommand() == IControllableMob.Command.DEFEND_OWNER) {
 			Optional<Player> owner = entity.getOwner();
 			return owner.isPresent() ? findPosTowards(owner.get().position()) : findPosNearby();
 		}

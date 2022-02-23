@@ -26,7 +26,7 @@ public class CopyOwnerAttackTargetGoal<T extends Mob & IOwnableMob & IControllab
 
 	@Override
 	public boolean canUse() {
-		if (!entity.isGolemInactive() && entity.getGolemCommand() == IControllableMob.Command.DEFEND_OWNER) {
+		if (entity.canExecuteCommand() && entity.getActiveCommand() == IControllableMob.Command.DEFEND_OWNER) {
 			Optional<Player> entityOwner = entity.getOwner();
 			if (entityOwner.isPresent()) {
 				attacker = entityOwner.get().getLastHurtMob();

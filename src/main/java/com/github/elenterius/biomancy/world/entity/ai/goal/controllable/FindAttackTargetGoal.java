@@ -24,7 +24,7 @@ public class FindAttackTargetGoal<T extends Mob & IControllableMob, M extends Li
 
 	@Override
 	public boolean canUse() {
-		return !entity.isGolemInactive() && entity.getGolemCommand() != IControllableMob.Command.HOLD_POSITION && super.canUse();
+		return entity.canExecuteCommand() && entity.getActiveCommand() != IControllableMob.Command.HOLD_POSITION && super.canUse();
 	}
 
 }

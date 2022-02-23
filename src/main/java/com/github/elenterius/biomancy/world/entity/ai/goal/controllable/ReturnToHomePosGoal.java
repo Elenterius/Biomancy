@@ -20,9 +20,9 @@ public class ReturnToHomePosGoal<T extends PathfinderMob & IControllableMob> ext
 
 	@Override
 	public boolean canUse() {
-		if (entity.isGolemInactive()) return false;
+		if (!entity.canExecuteCommand()) return false;
 
-		IControllableMob.Command command = entity.getGolemCommand();
+		IControllableMob.Command command = entity.getActiveCommand();
 		if (command == IControllableMob.Command.HOLD_POSITION || command == IControllableMob.Command.PATROL_AREA) {
 			BlockPos pos = mob.blockPosition();
 			return !pos.equals(mob.getRestrictCenter()) && super.canUse();
@@ -36,7 +36,7 @@ public class ReturnToHomePosGoal<T extends PathfinderMob & IControllableMob> ext
 	protected Vec3 getPosition() {
 		BlockPos pos = mob.blockPosition();
 		if (!pos.equals(mob.getRestrictCenter())) {
-			IControllableMob.Command command = entity.getGolemCommand();
+			IControllableMob.Command command = entity.getActiveCommand();
 			if (command == IControllableMob.Command.PATROL_AREA) {
 				return LandRandomPos.getPosTowards(mob, 10, 7, Vec3.atBottomCenterOf(mob.getRestrictCenter()));
 			}

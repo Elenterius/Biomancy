@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.world.item.*;
+import com.github.elenterius.biomancy.world.item.weapon.*;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -63,6 +64,7 @@ public final class ModItems {
 	public static final RegistryObject<EssenceItem> ESSENCE = ITEMS.register("essence", () -> new EssenceItem(createProperties()));
 	public static final RegistryObject<BioExtractorItem> BIO_EXTRACTOR = ITEMS.register("bio_extractor", () -> new BioExtractorItem(createProperties().durability(200)));
 	public static final RegistryObject<BioInjectorItem> BIO_INJECTOR = ITEMS.register("bio_injector", () -> new BioInjectorItem(createProperties().durability(200)));
+	public static final RegistryObject<ControlStaffItem> CONTROL_STAFF = ITEMS.register("control_staff", () -> new ControlStaffItem(createProperties().stacksTo(1)));
 
 	//# Weapons
 	public static final RegistryObject<SwordItem> BONE_SWORD = ITEMS.register("bone_sword", () -> new SwordItem(ModTiers.BONE, 3, -2.4f, createProperties()));
