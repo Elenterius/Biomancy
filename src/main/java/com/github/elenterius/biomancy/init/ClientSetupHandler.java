@@ -1,11 +1,14 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.client.gui.IngameOverlays;
 import com.github.elenterius.biomancy.client.model.entity.FleshkinModel;
 import com.github.elenterius.biomancy.client.renderer.block.*;
 import com.github.elenterius.biomancy.client.renderer.entity.BoomlingRenderer;
 import com.github.elenterius.biomancy.client.renderer.entity.FleshBlobRenderer;
 import com.github.elenterius.biomancy.client.renderer.entity.FleshkinRenderer;
+import com.github.elenterius.biomancy.client.renderer.entity.WitherProjectileRenderer;
+import com.github.elenterius.biomancy.world.item.weapon.LongClawItem;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -17,6 +20,10 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.renderer.entity.WitherSkullRenderer;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
@@ -69,24 +76,23 @@ public final class ClientSetupHandler {
 		event.registerBlockEntityRenderer(ModBlockEntities.BIO_LAB.get(), BioLabBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.TONGUE.get(), TongueBlockEntityRenderer::new);
 
+		//event.registerBlockEntityRenderer(ModBlockEntities.FLESH_CHEST.get(), FleshChestTileEntityRenderer::new);
+
 		event.registerEntityRenderer(ModEntityTypes.FLESH_BLOB.get(), FleshBlobRenderer::new);
+		event.registerEntityRenderer(ModEntityTypes.FLESHKIN.get(), FleshkinRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.BOOMLING.get(), BoomlingRenderer::new);
 
-		//event.registerBlockEntityRenderer(ModBlockEntities.FLESH_CHEST.get(), FleshChestTileEntityRenderer::new);
-//
 //		event.registerEntityRenderer(ModEntityTypes.OCULUS_OBSERVER.get(), OculusObserverRenderer::new);
-		event.registerEntityRenderer(ModEntityTypes.FLESHKIN.get(), FleshkinRenderer::new);
 //		event.registerEntityRenderer(ModEntityTypes.BROOD_MOTHER.get(), BroodmotherRenderer::new);
-//
 //		event.registerEntityRenderer(ModEntityTypes.FAILED_SHEEP.get(), FailedSheepRenderer::new);
 //		event.registerEntityRenderer(ModEntityTypes.CHROMA_SHEEP.get(), ChromaSheepRenderer::new);
 //		event.registerEntityRenderer(ModEntityTypes.SILKY_WOOL_SHEEP.get(), SilkyWoolSheepRenderer::new);
 //		event.registerEntityRenderer(ModEntityTypes.THICK_WOOL_SHEEP.get(), ThickWoolSheepRenderer::new);
 //		event.registerEntityRenderer(ModEntityTypes.NUTRIENT_SLURRY_COW.get(), NutrientSlurryCowRenderer::new);
 //		event.registerEntityRenderer(ModEntityTypes.FAILED_COW.get(), FailedCowRenderer::new);
-//
-//		event.registerEntityRenderer(ModEntityTypes.TOOTH_PROJECTILE.get(), manager -> new SpriteRenderer<>(manager, Minecraft.getInstance().getItemRenderer()));
-//		event.registerEntityRenderer(ModEntityTypes.WITHER_SKULL_PROJECTILE.get(), WitherSkullProjectileRenderer::new);
+
+		event.registerEntityRenderer(ModEntityTypes.TOOTH_PROJECTILE.get(), ThrownItemRenderer::new);
+		event.registerEntityRenderer(ModEntityTypes.WITHER_SKULL_PROJECTILE.get(), WitherProjectileRenderer::new);
 //		event.registerEntityRenderer(ModEntityTypes.BOOMLING_PROJECTILE.get(), BoomlingProjectileRenderer::new);
 	}
 
@@ -98,16 +104,15 @@ public final class ClientSetupHandler {
 		event.registerLayerDefinition(FleshkinModel.MODEL_LAYER, () -> humanoidBase);
 		event.registerLayerDefinition(FleshkinModel.INNER_ARMOR_LAYER, () -> humanoidInnerArmor);
 		event.registerLayerDefinition(FleshkinModel.OUTER_ARMOR_LAYER, () -> humanoidOuterArmor);
+
+		event.registerLayerDefinition(WitherProjectileRenderer.MODEL_LAYER, WitherSkullRenderer::createSkullLayer);
 	}
 
 	private static void registerItemModelProperties() {
-//		ItemModelsProperties.register(ModItems.LONG_RANGE_CLAW.get(), new ResourceLocation("extended"), (stack, clientWorld, livingEntity) -> LongRangeClawItem.isClawExtended(stack) ? 1f : 0f);
-//		ItemModelsProperties.register(ModItems.SINGLE_ITEM_BAG_ITEM.get(), new ResourceLocation("fullness"), (stack, clientWorld, livingEntity) -> ModItems.SINGLE_ITEM_BAG_ITEM.get().getFullness(stack));
-//		ItemModelsProperties.register(ModItems.SMALL_ENTITY_BAG_ITEM.get(), new ResourceLocation("fullness"), (stack, clientWorld, livingEntity) -> ModItems.SMALL_ENTITY_BAG_ITEM.get().getFullness(stack));
-//		ItemModelsProperties.register(ModItems.LARGE_ENTITY_BAG_ITEM.get(), new ResourceLocation("fullness"), (stack, clientWorld, livingEntity) -> ModItems.LARGE_ENTITY_BAG_ITEM.get().getFullness(stack));
-//			ItemModelsProperties.registerProperty(ModItems.SINEW_BOW.get(), new ResourceLocation("pull"), (stack, clientWorld, livingEntity) -> livingEntity == null || livingEntity.getActiveItemStack() != stack ? 0f : ModItems.SINEW_BOW.get().getPullProgress(stack, livingEntity));
-//			ItemModelsProperties.registerProperty(ModItems.SINEW_BOW.get(), new ResourceLocation("pulling"), (stack, clientWorld, livingEntity) -> livingEntity != null && livingEntity.isHandActive() && livingEntity.getActiveItemStack() == stack ? 1f : 0f);
-//		ItemModelsProperties.register(ModItems.BONE_SCRAPS.get(), new ResourceLocation("type"), (stack, clientWorld, livingEntity) -> stack.getOrCreateTag().getInt("ScrapType"));
+		ItemProperties.register(ModItems.LONG_CLAW.get(), new ResourceLocation("extended"), (stack, level, entity, seed) -> LongClawItem.isClawExtended(stack) ? 1f : 0f);
+//		ItemProperties.register(ModItems.SINGLE_ITEM_BAG_ITEM.get(), new ResourceLocation("fullness"), (stack, clientWorld, livingEntity) -> ModItems.SINGLE_ITEM_BAG_ITEM.get().getFullness(stack));
+//		ItemProperties.register(ModItems.SMALL_ENTITY_BAG_ITEM.get(), new ResourceLocation("fullness"), (stack, clientWorld, livingEntity) -> ModItems.SMALL_ENTITY_BAG_ITEM.get().getFullness(stack));
+//		ItemProperties.register(ModItems.LARGE_ENTITY_BAG_ITEM.get(), new ResourceLocation("fullness"), (stack, clientWorld, livingEntity) -> ModItems.LARGE_ENTITY_BAG_ITEM.get().getFullness(stack));
 	}
 
 	@SubscribeEvent

@@ -40,6 +40,10 @@
   "item.biomancy.bio_extractor": "Bio-Extractor",
   "item.biomancy.bio_injector": "Bio-Injector",
   "item.biomancy.bone_sword": "Sharpened Bone",
+  "item.biomancy.long_range_claw": "Marfanoid Claw",
+  "item.biomancy.withershot": "Withershot",
+  "item.biomancy.tooth_gun": "Tooth Gun",
+  "item.biomancy.boomling": "Boomling",
 
   "item.biomancy.flesh_blob_spawn_egg": "Flesh Blob Spawn Egg",
   "item.biomancy.boomling_spawn_egg": "Boomling Spawn Egg",
@@ -67,9 +71,12 @@
 
   "entity.biomancy.flesh_blob": "Flesh Blob",
   "entity.biomancy.boomling": "Boomling",
+  "entity.biomancy.fleshkin": "Fleshkin",
 
   "enchantment.biomancy.despoil": "Despoil",
   "enchantment.biomancy.anesthetic": "Anesthetic",
+  "enchantment.biomancy.quick_shot": "Quick Shot",
+  "enchantment.biomancy.max_ammo": "Max Ammo",
 
   "effect.biomancy.flesh_eating_disease": "Necrotizing Flesh",
   "effect.biomancy.essence_anemia": "Essence Anemia",
@@ -113,6 +120,10 @@
 
   "tooltip.biomancy.bio_extractor": "A intricate device which is used to extract Essence from living beings.",
   "tooltip.biomancy.bio_injector": "A simple device which utilizes a razor sharp needle to quickly and forcefully inject Serums into various things such as Mobs, Players and Blocks.",
+  "tooltip.biomancy.boomling": "A placeable and living proximity trap. Once a target is acquired the boomling will leap at its victims and explode into an AOE Potion Effect.\n\nCombine with a potion in crafting table to set the potion effect.\nSneak click to pick back up once placed.",
+  "tooltip.biomancy.tooth_gun": "Shoots small teeth.\nUses nutrient paste to regrow ammo.",
+  "tooltip.biomancy.withershot": "Shoots small and deadly wither skulls. Restores the shooters health if the victim was killed.\nUses wither skulls to reload ammo.",
+  "tooltip.biomancy.long_range_claw": "A Fleshborn Claw with higher attack distance. Excite the Fleshborn with critical hits and it will extends its claws.",
 
   "tooltip.biomancy.serum": "Some kind of exotic substance affecting Mobs & Blocks once injected.",
   "tooltip.biomancy.growth_serum": "Induces growth, even for reeds, cactus & nether wart.",
@@ -135,6 +146,8 @@
   "tooltip.biomancy.action_open_inventory": "open its inventory",
 
   "msg.biomancy.not_sleepy": "You don't feel sleepy...",
+  "msg.biomancy.set_behavior_command": "%1$s will now execute the %2$s command",
+  "msg.biomancy.not_enough_ammo": "Not enough Ammo",
 
   "advancements.biomancy.root.title": "Biomancy",
   "advancements.biomancy.root.description": "Raw Meat is useful...",
@@ -163,13 +176,9 @@
   "item.biomancy.fleshborn_axe": "Fleshborn Axe",
   "item.biomancy.fleshborn_shovel": "Fleshborn Shovel",
   "item.biomancy.leech_claw": "Hirudinean Claw",
-  "item.biomancy.long_range_claw": "Marfanoid Claw",
   "item.biomancy.fleshborn_war_axe": "Axe of the Blightbringer",
   "item.biomancy.fleshborn_sword": "Ravenous Blade",
   "item.biomancy.fleshborn_guan_dao": "Guan Dao of Sinew",
-  "item.biomancy.withershot": "Withershot",
-  "item.biomancy.tooth_gun": "Tooth Gun",
-  "item.biomancy.boomling": "Boomling",
   "item.biomancy.boomling_hive_gun": "[WIP] Boomsling",
   "item.biomancy.bee_hive_gun": "[WIP] Bee-Launcher",
   "item.biomancy.larynx_flute": "Larynx Flute",
@@ -185,8 +194,6 @@
   "item.biomancy.milk_gel": "Milk Coagulum",
   "item.biomancy.lens": "Meniscus Lens",
   "item.biomancy.mended_skin": "Stitched Skin",
-  "item.biomancy.artificial_stomach": "Stitched Stomach",
-  "item.biomancy.stomach": "Stomach",
   "item.biomancy.bone_gear": "Bone Gear",
 
   "item.biomancy.oculus_observer_spawn_egg": "Oculus Observer Spawn Egg",
@@ -197,7 +204,6 @@
   "item.biomancy.thick_wool_sheep_spawn_egg": "Thick Wool Sheep Spawn Egg",
   "item.biomancy.nutrient_slurry_cow_spawn_egg": "Nutrient Slurry Cow Spawn Egg",
 
-  "fluid.minecraft.water": "Water",
   "fluid.biomancy.nutrient_slurry": "Nutrient Slurry",
 
   "block.biomancy.meat_berry_bush": "Meat-Berry Bush",
@@ -219,7 +225,6 @@
   "tile.biomancy.ownable": "Ownable Block",
 
   "entity.biomancy.oculus_observer": "Oculus Observer",
-  "entity.biomancy.fleshkin": "Fleshkin",
   "entity.biomancy.failed_sheep": "Failed Sheep",
   "entity.biomancy.chroma_sheep": "Chroma Sheep",
   "entity.biomancy.silky_wool_sheep": "Silky Wool Sheep",
@@ -232,8 +237,6 @@
   "enchantment.biomancy.bullet_jump": "Copepod's Leap",
   "enchantment.biomancy.attuned_bane": "Attuning Bane",
   "enchantment.biomancy.attuned_bane_of": "Bane of %1$s",
-  "enchantment.biomancy.quick_shot": "Quick Shot",
-  "enchantment.biomancy.max_ammo": "Max Ammo",
 
   "effect.biomancy.repulsed": "Repulsed",
   "effect.biomancy.attracted": "Attracted",
@@ -245,7 +248,6 @@
   "tooltip.biomancy.fleshborn_khopesh": "A sickle sword which evolved from axes.",
   "tooltip.biomancy.blood_curse_axe": "An Axe which attacks faster the less health the wielder has.",
   "tooltip.biomancy.leech_claw": "A close combat Claw that reduces the max-health of the the wielder and heals them by 10% of the damage dealt to their victim.\n\nAdditionally grants 15s of Absorption on critical hit, the effect potency can stack up to 5 times.",
-  "tooltip.biomancy.long_range_claw": "A Fleshborn Claw with higher attack distance. Excite the Fleshborn with critical hits and it will extends its claws.",
   "tooltip.biomancy.fleshborn_guan_dao": "A Fleshborn Guan Dao which features superior reach and adaptation. Striking the same target repeatedly with heavy attacks will increase the damage against it.",
   "tooltip.biomancy.single_item_bag": "A Fleshborn that can store a large amount of a single item type.\nIt features Devouring behavior that will try to eat all items of the same type from the users inventory.\nIn Replenish mode the Fleshborn will try to fill up items in the main or off hand.",
   "tooltip.biomancy.small_entity_bag": "A Fleshborn stomach that is able to swallow up to 4m\u00B3 of a single living Entity and paralyzing them with conservative mucous.\nTo resuscitate the victim, the stomach can be forced to regurgitate its contents, returning perfectly undamaged goods...",
@@ -254,10 +256,6 @@
   "tooltip.biomancy.fleshborn_axe": "A Fleshborn Axe that features 3x3 aoe harvest (sneak to disable) and adapts to the block they are harvesting.",
   "tooltip.biomancy.fleshborn_shovel": "A Fleshborn Shovel that features 3x3 aoe harvest (sneak to disable) and adapts to the block they are harvesting.",
   "tooltip.biomancy.oculus_key": "Used to assign Users to ownable Blocks. To add Users, combine with a Blood Sample in a Crafting table.",
-  "tooltip.biomancy.injection_device": "Allows you to force inject Mobs or Blocks with reagents (some reagents can't be injected into everything).\nLoaded/Unloaded via glass-vials/reagents in offhand and sneak clicking.\nWhen empty it can extract blood from entities.",
-  "tooltip.biomancy.tooth_gun": "Shoots small teeth.\nUses nutrient paste to regrow ammo.",
-  "tooltip.biomancy.withershot": "Shoots small and deadly wither skulls. Restores the shooters health if the victim was killed.\nUses wither skulls to reload ammo.",
-  "tooltip.biomancy.boomling": "A placeable and living proximity trap. Once a target is acquired the boomling will leap at its victims and explode into an AOE Potion Effect.\n\nCombine with a potion in crafting table to set the potion effect.\nSneak click to pick back up once placed.",
   "tooltip.biomancy.fleshborn_door": "",
   "tooltip.biomancy.fleshborn_trapdoor": "Auto resets.\nSneak click to change mode.",
   "tooltip.biomancy.fleshborn_pressure_plate": "Sneak click to change mode.\nAble to activate ownable blocks.",
@@ -316,7 +314,6 @@
   "msg.biomancy.failed_to_spawn": "Failed to Spawn %1$s",
   "msg.biomancy.failed_to_store": "Failed to store Entity",
   "msg.biomancy.entity_too_large": "Entity is too large",
-  "msg.biomancy.set_golem_command": "%1$s will now execute the %2$s command",
 
   "death.attack.biomancy.blight_thorn": "%1$s was mauled to death by %2$s",
   "death.attack.biomancy.blight_thorn.item": "%1$s was mauled to death by %2$s using %3$s",

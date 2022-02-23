@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.world.item;
+package com.github.elenterius.biomancy.world.item.weapon;
 
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.util.ClientTextUtil;

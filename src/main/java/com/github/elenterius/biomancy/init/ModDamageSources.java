@@ -1,7 +1,13 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.world.entity.projectile.ToothProjectile;
+import com.github.elenterius.biomancy.world.entity.projectile.WitherProjectile;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.IndirectEntityDamageSource;
+import net.minecraft.world.entity.Entity;
+
+import javax.annotation.Nullable;
 
 public final class ModDamageSources {
 
@@ -20,12 +26,12 @@ public final class ModDamageSources {
 		return new DamageSource(BiomancyMod.MOD_ID + "." + name);
 	}
 
-//	public static DamageSource createToothProjectileDamage(ToothProjectileEntity projectile, @Nullable Entity shooter) {
-//		return new IndirectEntityDamageSource(BiomancyMod.MOD_ID + "." + "tooth_projectile", projectile, shooter).setProjectile();
-//	}
-//
-//	public static DamageSource createWitherSkullDamage(AbstractProjectileEntity projectile, Entity shooter) {
-//		return new IndirectEntityDamageSource("witherSkull", projectile, shooter).setProjectile();
-//	}
+	public static DamageSource createToothProjectileDamage(ToothProjectile projectile, @Nullable Entity shooter) {
+		return new IndirectEntityDamageSource(BiomancyMod.MOD_ID + "." + "tooth_projectile", projectile, shooter).setProjectile();
+	}
+
+	public static DamageSource createWitherSkullDamage(WitherProjectile projectile, @Nullable Entity shooter) {
+		return new IndirectEntityDamageSource("witherSkull", projectile, shooter).setProjectile();
+	}
 
 }

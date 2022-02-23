@@ -68,6 +68,10 @@ public final class ModItems {
 
 	//# Weapons
 	public static final RegistryObject<SwordItem> BONE_SWORD = ITEMS.register("bone_sword", () -> new SwordItem(ModTiers.BONE, 3, -2.4f, createProperties()));
+	public static final RegistryObject<ToothGunItem> TOOTH_GUN = ITEMS.register("tooth_gun", () -> new ToothGunItem(createProperties().stacksTo(1).durability(ModTiers.LESSER_BIOMETAL.getUses()).rarity(Rarity.EPIC)));
+	public static final RegistryObject<WithershotItem> WITHERSHOT = ITEMS.register("withershot", () -> new WithershotItem(createProperties().stacksTo(1).durability(ModTiers.BIOMETAL.getUses()).rarity(Rarity.EPIC)));
+	public static final RegistryObject<LongClawItem> LONG_CLAW = ITEMS.register("long_range_claw", () -> new LongClawItem(ModTiers.BIOMETAL, 3, -2.4f, 60, createProperties().rarity(Rarity.EPIC)));
+
 	//# Creature
 	public static final RegistryObject<BoomlingItem> BOOMLING = ITEMS.register("boomling", () -> new BoomlingItem(createProperties().stacksTo(1)));
 
@@ -83,21 +87,19 @@ public final class ModItems {
 	public static final RegistryObject<BlockItem> BIO_FORGE = ITEMS.register("bio_forge", () -> new BlockItem(ModBlocks.BIO_FORGE.get(), createProperties().rarity(Rarity.RARE)));
 	public static final RegistryObject<BlockItem> DECOMPOSER = ITEMS.register("decomposer", () -> new BlockItem(ModBlocks.DECOMPOSER.get(), createProperties().rarity(Rarity.RARE)));
 	public static final RegistryObject<BlockItem> GLAND = ITEMS.register("gland", () -> new BlockItem(ModBlocks.GLAND.get(), createProperties().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<BlockItem> SAC = ITEMS.register("sac", () -> new BlockItem(ModBlocks.SAC.get(), createProperties().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<BlockItem> GULGE = ITEMS.register("gulge", () -> new BlockItem(ModBlocks.GULGE.get(), createProperties().rarity(Rarity.RARE)));
-	public static final RegistryObject<BlockItem> TONGUE = ITEMS.register("tongue", () -> new BlockItem(ModBlocks.TONGUE.get(), createProperties().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<BlockItem> BIO_LAB = ITEMS.register("bio_lab", () -> new BlockItem(ModBlocks.BIO_LAB.get(), createProperties().rarity(Rarity.RARE)));
+
+	//## Storage & Automation
+	public static final RegistryObject<BlockItem> TONGUE = ITEMS.register("tongue", () -> new BlockItem(ModBlocks.TONGUE.get(), createProperties().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<BlockItem> GULGE = ITEMS.register("gulge", () -> new BlockItem(ModBlocks.GULGE.get(), createProperties().rarity(Rarity.RARE)));
+	public static final RegistryObject<BlockItem> SAC = ITEMS.register("sac", () -> new BlockItem(ModBlocks.SAC.get(), createProperties().rarity(Rarity.UNCOMMON)));
+	//	public static final RegistryObject<BlockItem> FLESH_CHEST = ITEMS.register("fleshborn_chest", () -> new BlockItem(ModBlocks.FLESHBORN_CHEST.get(), createItemProperties().rarity(Rarity.UNCOMMON).setISTER(() -> FleshbornChestTileEntityRender::new)));
 
 	//# Spawn Eggs
 	public static final RegistryObject<ForgeSpawnEggItem> FLESH_BLOB_SPAWN_EGG = ITEMS.register("flesh_blob_spawn_egg", () -> new ForgeSpawnEggItem(ModEntityTypes.FLESH_BLOB, 0xe9967a, 0xf6d2c6, createProperties()));
 	public static final RegistryObject<ForgeSpawnEggItem> BOOMLING_SPAWN_EGG = ITEMS.register("boomling_spawn_egg", () -> new ForgeSpawnEggItem(ModEntityTypes.BOOMLING, 0x3e3e3e, 0xcfcfcf, createProperties()));
 	public static final RegistryObject<ForgeSpawnEggItem> FLESHKIN_SPAWN_EGG = ITEMS.register("fleshkin_spawn_egg", () -> new ForgeSpawnEggItem(ModEntityTypes.FLESHKIN, 0xe9967a, 0xf6d2c6, createProperties()));
 
-
-	//	public static final RegistryObject<Item> STOMACH = ITEMS.register("stomach", () -> new Item(createItemProperties().food(ModFoods.STOMACH)));
-//	public static final RegistryObject<Item> MENISCUS_LENS = ITEMS.register("lens", () -> new Item(createItemProperties()));
-//	public static final RegistryObject<Item> MENDED_SKIN = ITEMS.register("mended_skin", () -> new Item(createItemProperties()));
-//	public static final RegistryObject<Item> ARTIFICIAL_STOMACH = ITEMS.register("artificial_stomach", () -> new Item(createItemProperties().food(ModFoods.ARTIFICIAL_STOMACH)));
 //	public static final RegistryObject<Item> BONE_GEAR = ITEMS.register("bone_gear", () -> new Item(createItemProperties()));
 //	public static final RegistryObject<Item> SILICATE_PASTE = ITEMS.register("silicate_paste", () -> new Item(createItemProperties()));
 //	public static final RegistryObject<Item> BOLUS = ITEMS.register("bolus", () -> new Item(createItemProperties())); //crushed biomass
@@ -111,11 +113,7 @@ public final class ModItems {
 //	public static final RegistryObject<OculiGogglesArmorItem> OCULI_OF_UNVEILING = ITEMS.register("unveiling_oculi", () -> new OculiGogglesArmorItem(ArmorMaterial.IRON, createItemProperties().rarity(Rarity.EPIC)));
 
 	//# Weapons
-//	public static final RegistryObject<WarAxeItem> FLESHBORN_WAR_AXE = ITEMS.register("fleshborn_war_axe", () -> new WarAxeItem(ModItemTier.BIOMETAL, 5F, -3.15F, createItemProperties().rarity(Rarity.EPIC)));
-//	public static final RegistryObject<WithershotItem> WITHERSHOT = ITEMS.register("withershot", () -> new WithershotItem(createItemProperties().stacksTo(1).durability(ModItemTier.BIOMETAL.getUses()).rarity(Rarity.EPIC)));
-//	public static final RegistryObject<ToothGunItem> TOOTH_GUN = ITEMS.register("tooth_gun", () -> new ToothGunItem(createItemProperties().stacksTo(1).durability(ModItemTier.LESSER_BIOMETAL.getUses()).rarity(Rarity.EPIC)));
 //	public static final RegistryObject<LeechClawItem> LEECH_CLAW = ITEMS.register("leech_claw", () -> new LeechClawItem(ModItemTier.BIOMETAL, 3, -2.2f, createItemProperties().rarity(Rarity.EPIC)));
-//	public static final RegistryObject<LongRangeClawItem> LONG_RANGE_CLAW = ITEMS.register("long_range_claw", () -> new LongRangeClawItem(ModItemTier.BIOMETAL, 3, -2.4f, 60, createItemProperties().rarity(Rarity.EPIC)));
 //	public static final RegistryObject<FleshbornGuanDaoItem> FLESHBORN_GUAN_DAO = ITEMS.register("fleshborn_guan_dao", () -> new FleshbornGuanDaoItem(ModItemTier.BIOMETAL, 4, -3F, createItemProperties().rarity(Rarity.EPIC)));
 //	public static final RegistryObject<BoomlingHiveGunItem> BOOMLING_HIVE_GUN = ITEMS.register("boomling_hive_gun", () -> new BoomlingHiveGunItem(createItemProperties().stacksTo(1).durability(ModItemTier.BIOMETAL.getUses()).rarity(Rarity.EPIC)));
 //	public static final RegistryObject<BeeHiveGunItem> BEE_HIVE_GUN = ITEMS.register("bee_hive_gun", () -> new BeeHiveGunItem(createItemProperties().maxStackSize(1).maxDamage(ModItemTier.BIOMETAL.getMaxUses()).rarity(Rarity.EPIC)));
@@ -147,10 +145,6 @@ public final class ModItems {
 
 	/* **** Block Items ********************************************* */
 
-	//crops
-//	public static final RegistryObject<Item> VILE_MELON_SEEDS = ITEMS.register("vile_melon_seeds", () -> new BlockNamedItem(ModBlocks.VILE_MELON_CROP.get(), createItemProperties()));
-//	public static final RegistryObject<Item> VILE_MELON_BLOCK = ITEMS.register("vile_melon_block", () -> new BlockItem(ModBlocks.VILE_MELON_BLOCK.get(), createItemProperties()));
-
 	//decoration blocks
 //	public static final RegistryObject<BlockItem> FLESH_TENTACLE = ITEMS.register("flesh_tentacle", () -> new BlockItem(ModBlocks.FLESH_TENTACLE.get(), createItemProperties()));
 
@@ -161,15 +155,10 @@ public final class ModItems {
 //	public static final RegistryObject<BlockItem> VOICE_BOX = ITEMS.register("voice_box", () -> new BlockItem(ModBlocks.VOICE_BOX.get(), createItemProperties()));
 //	public static final RegistryObject<BlockItem> SCENT_DIFFUSER = ITEMS.register("scent_diffuser", () -> new BlockItem(ModBlocks.SCENT_DIFFUSER.get(), createItemProperties()));
 
-	//semi-container blocks
-
 	//container blocks
-//	public static final RegistryObject<BlockItem> GULGE = ITEMS.register("gulge", () -> new BlockItem(ModBlocks.GULGE.get(), createItemProperties().rarity(Rarity.EPIC)));
-//	public static final RegistryObject<BlockItem> FLESH_CHEST = ITEMS.register("fleshborn_chest", () -> new BlockItem(ModBlocks.FLESHBORN_CHEST.get(), createItemProperties().rarity(Rarity.UNCOMMON).setISTER(() -> FleshbornChestTileEntityRender::new)));
 //	public static final RegistryObject<BlockItem> CHEWER = ITEMS.register("chewer", () -> new BlockItem(ModBlocks.CHEWER.get(), createItemProperties().rarity(Rarity.UNCOMMON)));
 //	public static final RegistryObject<BlockItem> DIGESTER = ITEMS.register("digester", () -> new BlockItem(ModBlocks.DIGESTER.get(), createItemProperties().rarity(Rarity.UNCOMMON)));
 //	public static final RegistryObject<BlockItem> SOLIDIFIER = ITEMS.register("solidifier", () -> new BlockItem(ModBlocks.SOLIDIFIER.get(), createItemProperties().rarity(Rarity.UNCOMMON)));
-//	public static final RegistryObject<BlockItem> DECOMPOSER = ITEMS.register("decomposer", () -> new BlockItem(ModBlocks.DECOMPOSER.get(), createItemProperties().rarity(Rarity.UNCOMMON)));
 
 	private ModItems() {}
 
