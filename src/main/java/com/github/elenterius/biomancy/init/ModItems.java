@@ -16,13 +16,15 @@ public final class ModItems {
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, BiomancyMod.MOD_ID);
 
 	//# Material / Mob Loot
-	public static final RegistryObject<Item> NECROTIC_FLESH_LUMP = ITEMS.register("necrotic_flesh_lump", () -> new Item(createProperties().food(ModFoods.NECROTIC_FLESH_LUMP)));
+	public static final RegistryObject<Item> NECROTIC_FLESH_LUMP = ITEMS.register("necrotic_flesh_lump", () -> new Item(createProperties().food(ModFoods.NECROTIC_FLESH)));
 	public static final RegistryObject<Item> SKIN_CHUNK = ITEMS.register("skin_chunk", () -> new Item(createProperties()));
 	public static final RegistryObject<Item> SHARP_TOOTH = ITEMS.register("sharp_tooth", () -> new Item(createProperties()));
+	public static final RegistryObject<Item> STOMACH = ITEMS.register("stomach", () -> new Item(createProperties().food(ModFoods.AVERAGE_FLESH)));
+	public static final RegistryObject<Item> ANCIENT_STOMACH = ITEMS.register("ancient_stomach", () -> new SimpleItem.WithFoilItem(createProperties().food(ModFoods.AVERAGE_FLESH).rarity(Rarity.EPIC)));
 
 	//## Decomposer Components
 	//### Complex
-	public static final RegistryObject<Item> FLESH_BITS = ITEMS.register("flesh_bits", () -> new SimpleItem(createProperties().food(ModFoods.FLESH_LUMP)));
+	public static final RegistryObject<Item> FLESH_BITS = ITEMS.register("flesh_bits", () -> new SimpleItem(createProperties().food(ModFoods.POOR_FLESH)));
 	public static final RegistryObject<Item> BONE_SCRAPS = ITEMS.register("bone_scraps", () -> new SimpleItem(createProperties()));
 	public static final RegistryObject<Item> TOUGH_FIBERS = ITEMS.register("tough_fibers", () -> new SimpleItem(createProperties()));
 	public static final RegistryObject<Item> ELASTIC_FIBERS = ITEMS.register("elastic_fibers", () -> new SimpleItem(createProperties()));

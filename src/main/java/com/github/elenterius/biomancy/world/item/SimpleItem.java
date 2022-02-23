@@ -21,4 +21,15 @@ public class SimpleItem extends Item {
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
 	}
 
+	public static class WithFoilItem extends SimpleItem {
+		public WithFoilItem(Properties properties) {
+			super(properties);
+		}
+
+		@Override
+		public boolean isFoil(ItemStack stack) {
+			return true;
+		}
+	}
+
 }

@@ -10,6 +10,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.monster.ElderGuardian;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -47,9 +50,27 @@ public class DespoilMobLootModifier extends LootModifier {
 			int despoilLevel = getDespoilLevel(context);
 			if (despoilLevel > 0) {
 				float chance = 0.25f + despoilLevel * 0.2f;
-				if (context.getRandom().nextFloat() < chance && livingEntity.getType().is(ModTags.EntityTypes.SHARP_TEETH)) {
-					int amount = Mth.nextInt(context.getRandom(), -1, despoilLevel + 1);
-					if (amount > 0) generatedLoot.add(new ItemStack(ModItems.SHARP_TOOTH.get(), amount));
+				int poolSize = Mth.nextInt(context.getRandom(), 1, despoilLevel + 1);
+
+				if (livingEntity.getType().is(ModTags.EntityTypes.SHARP_TEETH) && context.getRandom().nextFloat() < chance) {
+					int amount = Mth.nextInt(context.getRandom(), -1, context.getLootingModifier() + 1);
+					if (amount > 0) {
+						generatedLoot.add(new ItemStack(ModItems.SHARP_TOOTH.get(), amount));
+						poolSize--;
+					}
+				}
+
+				if (poolSize > 0 && context.getRandom().nextFloat() < chance) {
+					Item item = ModItems.STOMACH.get();
+					if (victim instanceof ElderGuardian || victim instanceof EnderDragon) {
+						item = ModItems.ANCIENT_STOMACH.get();
+					}
+					generatedLoot.add(new ItemStack(item)); //only 1 stomach per entity possible
+					poolSize--;
+				}
+
+				if (poolSize > 0 && context.getRandom().nextFloat() < chance) {
+					//TODO: do something
 				}
 			}
 		}

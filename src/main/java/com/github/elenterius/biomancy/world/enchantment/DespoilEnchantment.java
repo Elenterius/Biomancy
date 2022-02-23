@@ -28,7 +28,7 @@ public class DespoilEnchantment extends Enchantment {
 
 	@Override
 	protected boolean checkCompatibility(Enchantment other) {
-		return super.checkCompatibility(other) && other != Enchantments.MOB_LOOTING && other != Enchantments.SILK_TOUCH;
+		return super.checkCompatibility(other) && other != Enchantments.SILK_TOUCH;
 	}
 
 }
