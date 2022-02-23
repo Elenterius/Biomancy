@@ -6,8 +6,8 @@
     64
   ],
   "textures": {
-    "particle": "biomancy:block/deep_gulge_texture3",
-    "0": "biomancy:block/deep_gulge_texture3"
+    "0": "biomancy:block/deep_gulge",
+    "particle": "biomancy:block/flesh_particle"
   },
   "elements": [
     {
