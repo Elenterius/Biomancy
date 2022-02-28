@@ -21,19 +21,19 @@ public final class ModBlockEntities {
 	public static final RegistryObject<BlockEntityType<BioForgeBlockEntity>> BIO_FORGE = BLOCK_ENTITIES.register("bio_forge", () -> BlockEntityType.Builder.of(BioForgeBlockEntity::new, ModBlocks.BIO_FORGE.get()).build(noDataFixer()));
 	public static final RegistryObject<BlockEntityType<BioLabBlockEntity>> BIO_LAB = BLOCK_ENTITIES.register("bio_lab", () -> BlockEntityType.Builder.of(BioLabBlockEntity::new, ModBlocks.BIO_LAB.get()).build(noDataFixer()));
 
-	//	// Misc
-	//	public static final RegistryObject<TileEntityType<VoiceBoxTileEntity>> VOICE_BOX_TILE = TILE_ENTITIES.register("voice_box", () -> TileEntityType.Builder.of(VoiceBoxTileEntity::new, ModBlocks.VOICE_BOX.get()).build(NO_DATA_FIXER));
-//	public static final RegistryObject<TileEntityType<SimpleOwnableTileEntity>> SIMPLE_OWNABLE_TILE = TILE_ENTITIES.register("ownable_tile", () -> TileEntityType.Builder.of(SimpleOwnableTileEntity::new, ModBlocks.FLESHBORN_DOOR.get(), ModBlocks.FLESHBORN_TRAPDOOR.get(), ModBlocks.FLESHBORN_PRESSURE_PLATE.get()).build(NO_DATA_FIXER));
-//	public static final RegistryObject<TileEntityType<ScentDiffuserTileEntity>> SCENT_DIFFUSER_TILE = TILE_ENTITIES.register("scent_diffuser", () -> TileEntityType.Builder.of(ScentDiffuserTileEntity::new, ModBlocks.SCENT_DIFFUSER.get()).build(NO_DATA_FIXER));
+	//# Misc
+	public static final RegistryObject<BlockEntityType<VoiceBoxBlockEntity>> VOICE_BOX = BLOCK_ENTITIES.register("voice_box", () -> BlockEntityType.Builder.of(VoiceBoxBlockEntity::new, ModBlocks.VOICE_BOX.get()).build(noDataFixer()));
+//	public static final RegistryObject<BlockEntityType<SimpleOwnableTileEntity>> SIMPLE_OWNABLE_TILE = BLOCK_ENTITIES.register("ownable_tile", () -> TileEntityType.Builder.of(SimpleOwnableTileEntity::new, ModBlocks.FLESHBORN_DOOR.get(), ModBlocks.FLESHBORN_TRAPDOOR.get(), ModBlocks.FLESHBORN_PRESSURE_PLATE.get()).build(noDataFixer()));
+//	public static final RegistryObject<BlockEntityType<ScentDiffuserTileEntity>> SCENT_DIFFUSER_TILE = BLOCK_ENTITIES.register("scent_diffuser", () -> TileEntityType.Builder.of(ScentDiffuserTileEntity::new, ModBlocks.SCENT_DIFFUSER.get()).build(noDataFixer()));
 //
 //	// Inv Storage
-//	public static final RegistryObject<TileEntityType<FleshbornChestTileEntity>> FLESH_CHEST = TILE_ENTITIES.register("fleshborn_chest", () -> TileEntityType.Builder.of(FleshbornChestTileEntity::new, ModBlocks.FLESHBORN_CHEST.get()).build(NO_DATA_FIXER));
+//	public static final RegistryObject<BlockEntityType<FleshbornChestTileEntity>> FLESH_CHEST = BLOCK_ENTITIES.register("fleshborn_chest", () -> TileEntityType.Builder.of(FleshbornChestTileEntity::new, ModBlocks.FLESHBORN_CHEST.get()).build(noDataFixer()));
 //
-//	public static final RegistryObject<TileEntityType<DigesterTileEntity>> DIGESTER = TILE_ENTITIES.register("digester", () -> TileEntityType.Builder.of(DigesterTileEntity::new, ModBlocks.DIGESTER.get()).build(NO_DATA_FIXER));
-//	public static final RegistryObject<TileEntityType<EvolutionPoolTileEntity>> EVOLUTION_POOL = TILE_ENTITIES.register("evolution_pool", () -> TileEntityType.Builder.of(EvolutionPoolTileEntity::new, ModBlocks.EVOLUTION_POOL.get()).build(NO_DATA_FIXER));
+//	public static final RegistryObject<BlockEntityType<DigesterTileEntity>> DIGESTER = BLOCK_ENTITIES.register("digester", () -> TileEntityType.Builder.of(DigesterTileEntity::new, ModBlocks.DIGESTER.get()).build(noDataFixer()));
+//	public static final RegistryObject<BlockEntityType<EvolutionPoolTileEntity>> EVOLUTION_POOL = BLOCK_ENTITIES.register("evolution_pool", () -> TileEntityType.Builder.of(EvolutionPoolTileEntity::new, ModBlocks.EVOLUTION_POOL.get()).build(noDataFixer()));
 //
 //	// Multi-Block Tile Delegator
-//	public static final RegistryObject<TileEntityType<OwnableTileEntityDelegator>> TILE_DELEGATOR = TILE_ENTITIES.register("tile_delegator", () -> TileEntityType.Builder.of(OwnableTileEntityDelegator::new, ModBlocks.EVOLUTION_POOL.get(), ModBlocks.FLESHBORN_DOOR.get()).build(NO_DATA_FIXER));
+//	public static final RegistryObject<BlockEntityType<OwnableTileEntityDelegator>> TILE_DELEGATOR = BLOCK_ENTITIES.register("tile_delegator", () -> TileEntityType.Builder.of(OwnableTileEntityDelegator::new, ModBlocks.EVOLUTION_POOL.get(), ModBlocks.FLESHBORN_DOOR.get()).build(noDataFixer()));
 
 	private ModBlockEntities() {}
 

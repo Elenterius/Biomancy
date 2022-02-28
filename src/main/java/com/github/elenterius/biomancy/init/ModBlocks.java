@@ -57,6 +57,9 @@ public final class ModBlocks {
 	public static final RegistryObject<GlandBlock> GLAND = BLOCKS.register("gland", () -> new GlandBlock(createFleshProperties()));
 	public static final RegistryObject<GulgeBlock> GULGE = BLOCKS.register("gulge", () -> new GulgeBlock(createFleshProperties()));
 
+	//## Misc
+	public static final RegistryObject<VoiceBoxBlock> VOICE_BOX = BLOCKS.register("voice_box", () -> new VoiceBoxBlock(createFleshProperties()));
+
 	private ModBlocks() {}
 
 	@OnlyIn(Dist.CLIENT)
@@ -74,7 +77,7 @@ public final class ModBlocks {
 //		ItemBlockRenderTypes.setRenderLayer(DIGESTER.get(), RenderType.cutout());
 //		ItemBlockRenderTypes.setRenderLayer(EVOLUTION_POOL.get(), RenderType.translucent());
 //		ItemBlockRenderTypes.setRenderLayer(SCENT_DIFFUSER.get(), RenderType.cutout());
-//		ItemBlockRenderTypes.setRenderLayer(VOICE_BOX.get(), RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(VOICE_BOX.get(), RenderType.translucent());
 
 		//block with "glowing" overlay texture, also needs a overlay model see onModelBakeEvent() in ClientSetupHandler
 		//ItemBlockRenderTypes.setRenderLayer(ModBlocks.FOOBAR.get(), renderType -> renderType == RenderType.getCutout() || renderType == RenderType.getTranslucent());

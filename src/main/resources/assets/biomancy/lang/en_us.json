@@ -33,6 +33,8 @@
   "item.biomancy.sharp_tooth": "Sharp Tooth",
   "item.biomancy.stomach": "Stomach",
   "item.biomancy.ancient_stomach": "Ancient Stomach",
+  "item.biomancy.larynx": "Larynx",
+  "item.biomancy.larynx.mob": "%1$s Larynx",
 
   "item.biomancy.glass_vial": "Glass Vial",
   "item.biomancy.serum": "Serum",
@@ -56,6 +58,7 @@
   "block.biomancy.gulge": "Deep Gulge",
   "block.biomancy.sac": "Storage Sac",
   "block.biomancy.tongue": "Tongue",
+  "block.biomancy.voice_box": "Voice Box",
 
   "block.biomancy.flesh_block": "Flesh Block",
   "block.biomancy.flesh_block_slab": "Flesh Block Slab",
@@ -102,6 +105,7 @@
   "tooltip.biomancy.sac": "A storage sac which is similar to an hopper except its faster and only extracts items from the output slot of containers",
   "tooltip.biomancy.gulge": "A deep storage sac that stores up to 8k items of a single type and keeps it's inventory when mined.",
   "tooltip.biomancy.tongue": "Extracts up to 16 items of the same type from containers its attached to and drops them.",
+  "tooltip.biomancy.voice_box": "A box that is capable to hold and play a larynx flute with its internal stomach bellow.",
 
   "tooltip.biomancy.flesh_bits": "Used for crafting as a main component, can be decomposed into biotic matter for extra usages. Can be crafted with biotic matter.",
   "tooltip.biomancy.bone_scraps": "Used for crafting as a main component, can be decomposed into biotic matter and bio minerals for extra usages. Can be crafted with biotic matter and bio minerals.",
@@ -181,7 +185,6 @@
   "item.biomancy.fleshborn_guan_dao": "Guan Dao of Sinew",
   "item.biomancy.boomling_hive_gun": "[WIP] Boomsling",
   "item.biomancy.bee_hive_gun": "[WIP] Bee-Launcher",
-  "item.biomancy.larynx_flute": "Larynx Flute",
 
   "item.biomancy.nutrient_slurry_bucket": "Nutrient Slurry Bucket",
   "item.biomancy.mutagenic_bile": "Mutagenic Bile",
@@ -216,7 +219,6 @@
   "block.biomancy.chewer": "Chewer",
   "block.biomancy.digester": "Digester",
   "block.biomancy.evolution_pool": "Evolution Pool",
-  "block.biomancy.voice_box": "Voice Box",
   "block.biomancy.scent_diffuser": "Scent Diffuser",
 
   "container.biomancy.fleshborn_chest": "Fleshborn Chest",
@@ -265,7 +267,6 @@
   "tooltip.biomancy.evolution_pool": "A organic pool filled with mutagen that is used to craft organic items.",
   "tooltip.biomancy.boomling_hive_gun": "[WIP] Combine with potion in crafting Table. Uses Nutrient Paste to reload.",
   "tooltip.biomancy.larynx_flute": "A flute made of bones and meat that is able to copy the sounds of a mob by imitating the larynx of the target.",
-  "tooltip.biomancy.voice_box": "A box that is capable to hold and play a larynx flute with its internal stomach bellow.",
   "tooltip.biomancy.scent_diffuser": "A Gland that produces mob specific bait or repellent from the blood and hormone rich bile it is fed.\nIt diffuses the resulting substance as scent into it's nearby surroundings.",
 
   "tooltip.biomancy.mining_bonus": "When mining %1$s:",
@@ -298,7 +299,6 @@
   "tooltip.biomancy.reload_time": "Reload Time",
   "tooltip.biomancy.projectile_damage": "Projectile Damage",
   "tooltip.biomancy.riding_bonus": "When Riding:",
-  "tooltip.biomancy.flute_of_the_x": "%1$s of the %2$s",
   "tooltip.biomancy.sound": "Sound",
 
   "enum.biomancy.mode.none": "None",

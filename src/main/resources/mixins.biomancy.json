@@ -9,6 +9,8 @@
   },
   "mixins": [
     "ArmorStandAccessor",
+    "LivingEntityAccessor",
+    "MobEntityAccessor",
     "SlimeAccessor",
     "SwordItemMixinAccessor",
     "TextureSlotAccessor",

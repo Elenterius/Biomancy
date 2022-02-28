@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.loot;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModTags;
+import com.github.elenterius.biomancy.world.item.LarynxItem;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.critereon.EntityFlagsPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
@@ -45,32 +46,34 @@ public class DespoilMobLootModifier extends LootModifier {
 	@NotNull
 	@Override
 	protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
-		Entity victim = context.getParamOrNull(LootContextParams.THIS_ENTITY);
-		if (victim instanceof LivingEntity livingEntity) {
+		if (context.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof LivingEntity victim) {
 			int despoilLevel = getDespoilLevel(context);
 			if (despoilLevel > 0) {
 				float chance = 0.25f + despoilLevel * 0.2f;
-				int poolSize = Mth.nextInt(context.getRandom(), 1, despoilLevel + 1);
+				int lootRolls = Mth.nextInt(context.getRandom(), 1, despoilLevel + 1);
 
-				if (livingEntity.getType().is(ModTags.EntityTypes.SHARP_TEETH) && context.getRandom().nextFloat() < chance) {
+				if (victim.getType().is(ModTags.EntityTypes.SHARP_TEETH) && context.getRandom().nextFloat() < chance) {
 					int amount = Mth.nextInt(context.getRandom(), -1, context.getLootingModifier() + 1);
 					if (amount > 0) {
 						generatedLoot.add(new ItemStack(ModItems.SHARP_TOOTH.get(), amount));
-						poolSize--;
+						lootRolls--;
 					}
 				}
 
-				if (poolSize > 0 && context.getRandom().nextFloat() < chance) {
+				if (lootRolls > 0 && context.getRandom().nextFloat() < chance) {
 					Item item = ModItems.STOMACH.get();
 					if (victim instanceof ElderGuardian || victim instanceof EnderDragon) {
 						item = ModItems.ANCIENT_STOMACH.get();
 					}
 					generatedLoot.add(new ItemStack(item)); //only 1 stomach per entity possible
-					poolSize--;
+					lootRolls--;
 				}
 
-				if (poolSize > 0 && context.getRandom().nextFloat() < chance) {
-					//TODO: do something
+				if (lootRolls > 0 && context.getRandom().nextFloat() < chance) {
+					ItemStack stack = new ItemStack(ModItems.LARYNX.get());
+					LarynxItem.saveSounds(stack, victim);
+					generatedLoot.add(stack); //only 1 larynx per entity possible
+					lootRolls--;
 				}
 			}
 		}

@@ -81,6 +81,8 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 		generateFlat(ModItems.NECROTIC_FLESH_LUMP.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.STOMACH.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.ANCIENT_STOMACH.get(), ModItems.STOMACH.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.LARYNX.get(), ModelTemplates.FLAT_ITEM);
+
 		generateFlat(ModItems.NUTRIENT_BAR.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.PROTEIN_BAR.get(), ModItems.NUTRIENT_BAR.get(), ModelTemplates.FLAT_ITEM);
 
