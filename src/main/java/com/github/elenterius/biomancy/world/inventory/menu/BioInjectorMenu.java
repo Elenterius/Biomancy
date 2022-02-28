@@ -49,15 +49,11 @@ public class BioInjectorMenu extends PlayerContainerMenu {
 		ItemStack stackInSlot = slot.getItem();
 		ItemStack copyOfStack = stackInSlot.copy();
 
-		boolean successfulTransfer;
-		SlotZone slotZone = SlotZone.getZoneFromIndex(index);
-
-		switch (slotZone) {
-			case INVENTORY -> successfulTransfer = mergeIntoEither(SlotZone.PLAYER_HOTBAR, SlotZone.PLAYER_MAIN_INVENTORY, stackInSlot, true);
-			case PLAYER_HOTBAR -> successfulTransfer = mergeIntoEither(SlotZone.INVENTORY, SlotZone.PLAYER_MAIN_INVENTORY, stackInSlot, false);
-			case PLAYER_MAIN_INVENTORY -> successfulTransfer = mergeIntoEither(SlotZone.INVENTORY, SlotZone.PLAYER_HOTBAR, stackInSlot, false);
-			default -> throw new IllegalArgumentException("unexpected SlotZone:" + slotZone);
-		}
+		boolean successfulTransfer = switch (SlotZone.getZoneFromIndex(index)) {
+			case INVENTORY -> mergeIntoEither(SlotZone.PLAYER_HOTBAR, SlotZone.PLAYER_MAIN_INVENTORY, stackInSlot, true);
+			case PLAYER_HOTBAR -> mergeIntoEither(SlotZone.INVENTORY, SlotZone.PLAYER_MAIN_INVENTORY, stackInSlot, false);
+			case PLAYER_MAIN_INVENTORY -> mergeIntoEither(SlotZone.INVENTORY, SlotZone.PLAYER_HOTBAR, stackInSlot, false);
+		};
 
 		if (!successfulTransfer) return ItemStack.EMPTY;
 

@@ -94,33 +94,15 @@ public class BioLabMenu extends PlayerContainerMenu {
 		ItemStack stackInSlot = slot.getItem();
 		ItemStack copyOfStack = stackInSlot.copy();
 
-		boolean successfulTransfer = false;
-		SlotZone sourceZone = SlotZone.getZoneFromIndex(index);
-
-		switch (sourceZone) {
-			case OUTPUT_ZONE -> {
-				successfulTransfer = mergeIntoEither(SlotZone.PLAYER_HOTBAR, SlotZone.PLAYER_MAIN_INVENTORY, stackInSlot, true);
-				if (successfulTransfer) slot.onQuickCraft(stackInSlot, copyOfStack);
-			}
-			case INPUT_ZONE, FUEL_ZONE -> {
-				successfulTransfer = mergeIntoEither(SlotZone.PLAYER_MAIN_INVENTORY, SlotZone.PLAYER_HOTBAR, stackInSlot, false);
-			}
-			case PLAYER_HOTBAR, PLAYER_MAIN_INVENTORY -> {
-				if (BioLabBlockEntity.RECIPE_TYPE.getRecipeForIngredient(level, stackInSlot).isPresent()) {
-					successfulTransfer = mergeInto(SlotZone.INPUT_ZONE, stackInSlot, false);
-				}
-				if (!successfulTransfer && FuelUtil.isItemValidFuel(stackInSlot)) {
-					successfulTransfer = mergeInto(SlotZone.FUEL_ZONE, stackInSlot, true);
-				}
-				if (!successfulTransfer) {
-					if (sourceZone == SlotZone.PLAYER_HOTBAR) successfulTransfer = mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, stackInSlot, false);
-					else successfulTransfer = mergeInto(SlotZone.PLAYER_HOTBAR, stackInSlot, false);
-				}
-			}
-			default -> throw new IllegalArgumentException("unexpected sourceZone:" + sourceZone);
-		}
+		SlotZone slotZone = SlotZone.getZoneFromIndex(index);
+		boolean successfulTransfer = switch (slotZone) {
+			case OUTPUT_ZONE -> mergeIntoEither(SlotZone.PLAYER_HOTBAR, SlotZone.PLAYER_MAIN_INVENTORY, stackInSlot, true);
+			case INPUT_ZONE, FUEL_ZONE -> mergeIntoEither(SlotZone.PLAYER_MAIN_INVENTORY, SlotZone.PLAYER_HOTBAR, stackInSlot, false);
+			case PLAYER_HOTBAR, PLAYER_MAIN_INVENTORY -> mergeIntoInputZone(stackInSlot) || mergeIntoFuelZone(stackInSlot) || mergeIntoPlayerZone(slotZone, stackInSlot);
+		};
 
 		if (!successfulTransfer) return ItemStack.EMPTY;
+		if (slotZone == SlotZone.OUTPUT_ZONE) slot.onQuickCraft(stackInSlot, copyOfStack);
 
 		if (stackInSlot.isEmpty()) slot.set(ItemStack.EMPTY);
 		else slot.setChanged();
@@ -132,6 +114,27 @@ public class BioLabMenu extends PlayerContainerMenu {
 
 		slot.onTake(player, stackInSlot);
 		return copyOfStack;
+	}
+
+	private boolean mergeIntoInputZone(ItemStack stackInSlot) {
+		if (BioLabBlockEntity.RECIPE_TYPE.getRecipeForIngredient(level, stackInSlot).isPresent()) {
+			return mergeInto(SlotZone.INPUT_ZONE, stackInSlot, false);
+		}
+		return false;
+	}
+
+	private boolean mergeIntoFuelZone(ItemStack stackInSlot) {
+		if (FuelUtil.isItemValidFuel(stackInSlot)) {
+			return mergeInto(SlotZone.FUEL_ZONE, stackInSlot, true);
+		}
+		return false;
+	}
+
+	private boolean mergeIntoPlayerZone(SlotZone slotZone, ItemStack stackInSlot) {
+		if (slotZone == SlotZone.PLAYER_HOTBAR) {
+			return mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, stackInSlot, false);
+		}
+		return mergeInto(SlotZone.PLAYER_HOTBAR, stackInSlot, false);
 	}
 
 	public enum SlotZone implements ISlotZone {

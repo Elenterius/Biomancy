@@ -54,15 +54,11 @@ public class GlandMenu extends PlayerContainerMenu {
 		ItemStack stackInSlot = slot.getItem();
 		ItemStack copyOfStack = stackInSlot.copy();
 
-		boolean successfulTransfer;
-		SlotZone slotZone = SlotZone.getZoneFromIndex(index);
-
-		switch (slotZone) {
-			case OUTPUT_ZONE -> successfulTransfer = mergeIntoEither(SlotZone.PLAYER_HOTBAR, SlotZone.PLAYER_MAIN_INVENTORY, stackInSlot, true);
-			case PLAYER_HOTBAR -> successfulTransfer = mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, stackInSlot, false);
-			case PLAYER_MAIN_INVENTORY -> successfulTransfer = mergeInto(SlotZone.PLAYER_HOTBAR, stackInSlot, false);
-			default -> throw new IllegalArgumentException("unexpected SlotZone:" + slotZone);
-		}
+		boolean successfulTransfer = switch (SlotZone.getZoneFromIndex(index)) {
+			case OUTPUT_ZONE -> mergeIntoEither(SlotZone.PLAYER_HOTBAR, SlotZone.PLAYER_MAIN_INVENTORY, stackInSlot, true);
+			case PLAYER_HOTBAR -> mergeInto(SlotZone.PLAYER_MAIN_INVENTORY, stackInSlot, false);
+			case PLAYER_MAIN_INVENTORY -> mergeInto(SlotZone.PLAYER_HOTBAR, stackInSlot, false);
+		};
 
 		if (!successfulTransfer) return ItemStack.EMPTY;
 
