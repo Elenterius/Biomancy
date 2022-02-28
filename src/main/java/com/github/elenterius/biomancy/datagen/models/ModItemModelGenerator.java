@@ -88,6 +88,7 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 
 		generateFlat(ModItems.BONE_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		generateFlatWithOverlay(ModItems.BOOMLING.get(), OVERLAY_TEMPLATE);
+		generateFlat(ModItems.CONTROL_STAFF.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 
 		//generate models for all eggs
 		ModItems.ITEMS.getEntries().stream().map(RegistryObject::get).filter(SpawnEggItem.class::isInstance).forEach(item -> generateFlat(item, EGG_MODEL_TEMPLATE));
