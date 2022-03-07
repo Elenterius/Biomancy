@@ -12,6 +12,8 @@
     "biomancy:sac",
     "biomancy:tongue",
     "biomancy:gland",
-    "biomancy:gulge"
+    "biomancy:gulge",
+    "biomancy:voice_box",
+    "biomancy:flesh_chest"
   ]
 }

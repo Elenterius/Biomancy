@@ -75,8 +75,7 @@ public final class ClientSetupHandler {
 		event.registerBlockEntityRenderer(ModBlockEntities.BIO_FORGE.get(), BioForgeBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.BIO_LAB.get(), BioLabBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.TONGUE.get(), TongueBlockEntityRenderer::new);
-
-		//event.registerBlockEntityRenderer(ModBlockEntities.FLESH_CHEST.get(), FleshChestTileEntityRenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntities.FLESH_CHEST.get(), FleshChestBlockEntityRenderer::new);
 
 		event.registerEntityRenderer(ModEntityTypes.FLESH_BLOB.get(), FleshBlobRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.FLESHKIN.get(), FleshkinRenderer::new);

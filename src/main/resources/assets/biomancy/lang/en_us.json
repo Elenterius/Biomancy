@@ -59,6 +59,7 @@
   "block.biomancy.sac": "Storage Sac",
   "block.biomancy.tongue": "Tongue",
   "block.biomancy.voice_box": "Voice Box",
+  "block.biomancy.flesh_chest": "Flesh Chest",
 
   "block.biomancy.flesh_block": "Flesh Block",
   "block.biomancy.flesh_block_slab": "Flesh Block Slab",
@@ -71,6 +72,7 @@
   "container.biomancy.gland": "Gland",
   "container.biomancy.gulge": "Gulge Inventory",
   "container.biomancy.sac": "Sac Inventory",
+  "container.biomancy.flesh_chest": "Flesh Chest Inventory",
 
   "entity.biomancy.flesh_blob": "Flesh Blob",
   "entity.biomancy.boomling": "Boomling",

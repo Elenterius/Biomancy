@@ -59,6 +59,7 @@ public final class ModBlocks {
 
 	//## Misc
 	public static final RegistryObject<VoiceBoxBlock> VOICE_BOX = BLOCKS.register("voice_box", () -> new VoiceBoxBlock(createFleshProperties()));
+	public static final RegistryObject<FleshChestBlock> FLESH_CHEST = BLOCKS.register("flesh_chest", () -> new FleshChestBlock(createFleshProperties()));
 
 	private ModBlocks() {}
 
@@ -69,6 +70,7 @@ public final class ModBlocks {
 		ItemBlockRenderTypes.setRenderLayer(TONGUE.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(GULGE.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(DECOMPOSER.get(), RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(FLESH_CHEST.get(), RenderType.cutout());
 
 //		ItemBlockRenderTypes.setRenderLayer(FLESH_TENTACLE.get(), RenderType.cutout());
 //		ItemBlockRenderTypes.setRenderLayer(FLESHBORN_DOOR.get(), RenderType.cutout());

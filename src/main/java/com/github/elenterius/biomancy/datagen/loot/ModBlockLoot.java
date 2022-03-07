@@ -46,12 +46,14 @@ public class ModBlockLoot extends BlockLoot {
 		dropSelf(ModBlocks.BIO_FORGE.get());
 		dropSelf(ModBlocks.BIO_LAB.get());
 		dropSelf(ModBlocks.TONGUE.get());
+		dropSelf(ModBlocks.VOICE_BOX.get());
 
 		add(ModBlocks.DECOMPOSER.get(), BlockLoot::createNameableBlockEntityTable);
 		add(ModBlocks.GLAND.get(), BlockLoot::createNameableBlockEntityTable);
 		add(ModBlocks.SAC.get(), BlockLoot::createNameableBlockEntityTable);
 
 		add(ModBlocks.GULGE.get(), ModBlockLoot::dropWithInventory);
+		add(ModBlocks.FLESH_CHEST.get(), ModBlockLoot::dropWithInventory);
 
 		dropSelf(ModBlocks.FLESH_BLOCK.get());
 		dropSelf(ModBlocks.FLESH_BLOCK_STAIRS.get());

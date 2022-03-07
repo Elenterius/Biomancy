@@ -24,6 +24,7 @@ public final class ModMenuTypes {
 	public static final RegistryObject<MenuType<SacMenu>> SAC = MENUS.register("sac", () -> IForgeMenuType.create(SacMenu::createClientMenu));
 	public static final RegistryObject<MenuType<GulgeMenu>> GULGE = MENUS.register("gulge", () -> IForgeMenuType.create(GulgeMenu::createClientMenu));
 	public static final RegistryObject<MenuType<BioInjectorMenu>> BIO_INJECTOR = MENUS.register("bio_injector", () -> IForgeMenuType.create(BioInjectorMenu::createClientMenu));
+	public static final RegistryObject<MenuType<FleshChestMenu>> FLESH_CHEST = MENUS.register("flesh_chest", () -> IForgeMenuType.create(FleshChestMenu::createClientMenu));
 
 	@OnlyIn(Dist.CLIENT)
 	static void registerMenuScreens() {
@@ -33,6 +34,7 @@ public final class ModMenuTypes {
 		MenuScreens.register(SAC.get(), SacScreen::new);
 		MenuScreens.register(GULGE.get(), GulgeScreen::new);
 		MenuScreens.register(BIO_INJECTOR.get(), BioInjectorScreen::new);
+		MenuScreens.register(FLESH_CHEST.get(), FleshChestScreen::new);
 	}
 
 }
