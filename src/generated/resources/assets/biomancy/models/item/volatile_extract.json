@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "biomancy:item/biotic_matter"
+    "layer0": "biomancy:item/volatile_extract"
   }
 }

@@ -46,7 +46,10 @@ public final class ModTags {
 
 		public static final Tag.Named<EntityType<?>> BOSSES = EntityTypeTags.bind("forge:bosses");
 		public static final Tag.Named<EntityType<?>> NOT_CLONEABLE = EntityTypeTags.bind(BiomancyMod.createRLString("not_cloneable"));
-		public static final Tag.Named<EntityType<?>> SHARP_TEETH = EntityTypeTags.bind(BiomancyMod.createRLString("sharp_teeth"));
+		public static final Tag.Named<EntityType<?>> SHARP_FANG = EntityTypeTags.bind(BiomancyMod.createRLString("sharp_fang"));
+		public static final Tag.Named<EntityType<?>> SHARP_CLAW = EntityTypeTags.bind(BiomancyMod.createRLString("sharp_claw"));
+		public static final Tag.Named<EntityType<?>> VENOM_GLAND = EntityTypeTags.bind(BiomancyMod.createRLString("venom_gland"));
+		public static final Tag.Named<EntityType<?>> VOLATILE_GLAND = EntityTypeTags.bind(BiomancyMod.createRLString("volatile_gland"));
 
 		private EntityTypes() {}
 

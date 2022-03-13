@@ -92,7 +92,7 @@ public class BioLabRecipeCategory implements IRecipeCategory<BioLabRecipe> {
 			int seconds = ticks / 20;
 			int mutagenCost = ticks * BioLabBlockEntity.FUEL_COST;
 			Component timeText = new TranslatableComponent("gui.jei.category.smelting.time.seconds", seconds);
-			Component costText = new TextComponent("+" + mutagenCost + " ").append(new TranslatableComponent("tooltip.biomancy.bile"));
+			Component costText = new TextComponent("+" + mutagenCost + " ").append(new TranslatableComponent("tooltip.biomancy.bile_fuel"));
 			Font fontRenderer = Minecraft.getInstance().font;
 			fontRenderer.draw(poseStack, timeText, (float) background.getWidth() - fontRenderer.width(timeText), 42, 0xff808080);
 			fontRenderer.draw(poseStack, costText, 0, 48, 0xff808080);

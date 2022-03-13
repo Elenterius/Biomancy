@@ -50,7 +50,7 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 	public static final int MAX_FUEL = 32_000;
 	public static final short FUEL_COST = 2;
 	public static final float ITEM_FUEL_VALUE = 200; // FUEL_COST * 400 / 4f
-	public static final Predicate<ItemStack> VALID_FUEL_ITEM = stack -> stack.getItem() == ModItems.BILE.get();
+	public static final Predicate<ItemStack> VALID_FUEL_ITEM = stack -> stack.getItem() == ModItems.BILE_EXTRACT.get();
 	public static final RecipeTypeImpl.ItemStackRecipeType<BioLabRecipe> RECIPE_TYPE = ModRecipes.BIO_BREWING_RECIPE_TYPE;
 
 	private final BioLabStateData stateData = new BioLabStateData();

@@ -10,10 +10,8 @@ import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
-import net.minecraft.world.entity.monster.ElderGuardian;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -26,6 +24,8 @@ import net.minecraftforge.common.loot.LootModifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Random;
+import java.util.function.Supplier;
 
 public class DespoilMobLootModifier extends LootModifier {
 
@@ -49,27 +49,67 @@ public class DespoilMobLootModifier extends LootModifier {
 		if (context.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof LivingEntity victim) {
 			int despoilLevel = getDespoilLevel(context);
 			if (despoilLevel > 0) {
-				float chance = 0.25f + despoilLevel * 0.2f;
-				int lootRolls = Mth.nextInt(context.getRandom(), 1, despoilLevel + 1);
+				Random random = context.getRandom();
 
-				if (victim.getType().is(ModTags.EntityTypes.SHARP_TEETH) && context.getRandom().nextFloat() < chance) {
-					int amount = Mth.nextInt(context.getRandom(), -1, context.getLootingModifier() + 1);
+				float chance = 0.25f + despoilLevel * 0.2f;
+				int lootRolls = Mth.nextInt(random, 1, despoilLevel + 1);
+
+				EntityType<?> victimType = victim.getType();
+
+				Supplier<Boolean> rollDice = () -> random.nextFloat() < chance;
+
+				if (victimType.is(ModTags.EntityTypes.SHARP_FANG) && rollDice.get()) {
+					int amount = Mth.nextInt(random, -1, context.getLootingModifier() + 1);
 					if (amount > 0) {
-						generatedLoot.add(new ItemStack(ModItems.SHARP_TOOTH.get(), amount));
+						generatedLoot.add(new ItemStack(ModItems.MOB_FANG.get(), amount));
 						lootRolls--;
 					}
 				}
 
-				if (lootRolls > 0 && context.getRandom().nextFloat() < chance) {
-					Item item = ModItems.STOMACH.get();
-					if (victim instanceof ElderGuardian || victim instanceof EnderDragon) {
-						item = ModItems.ANCIENT_STOMACH.get();
+				if (lootRolls > 0 && victimType.is(ModTags.EntityTypes.SHARP_CLAW) && rollDice.get()) {
+					int amount = Mth.nextInt(random, -1, context.getLootingModifier() + 1);
+					if (amount > 0) {
+						generatedLoot.add(new ItemStack(ModItems.MOB_CLAW.get(), amount));
+						lootRolls--;
 					}
-					generatedLoot.add(new ItemStack(item)); //only 1 stomach per entity possible
+				}
+
+				if (lootRolls > 0 && rollDice.get()) {
+					int amount = Mth.nextInt(random, -1, context.getLootingModifier() + 2);
+					if (amount > 0) {
+						generatedLoot.add(new ItemStack(ModItems.MOB_SINEW.get(), amount));
+						lootRolls--;
+					}
+				}
+
+				boolean hasSpecialGland = false;
+
+				if (lootRolls > 0 && victimType.is(ModTags.EntityTypes.VENOM_GLAND) && rollDice.get()) {
+					generatedLoot.add(new ItemStack(ModItems.VENOM_GLAND.get()));
+					hasSpecialGland = true;
 					lootRolls--;
 				}
 
-				if (lootRolls > 0 && context.getRandom().nextFloat() < chance) {
+				if (lootRolls > 0 && victimType.is(ModTags.EntityTypes.VOLATILE_GLAND) && rollDice.get()) {
+					generatedLoot.add(new ItemStack(ModItems.VOLATILE_GLAND.get()));
+					hasSpecialGland = true;
+					lootRolls--;
+				}
+
+				if (lootRolls > 0 && !hasSpecialGland && random.nextFloat() < chance - 0.05) {
+					generatedLoot.add(new ItemStack(ModItems.MOB_GLAND.get()));
+					lootRolls--;
+				}
+
+				if (lootRolls > 0 && rollDice.get()) {
+					int amount = Mth.nextInt(random, -1, context.getLootingModifier() + 2);
+					if (amount > 0) {
+						generatedLoot.add(new ItemStack(ModItems.MOB_MARROW.get(), amount));
+						lootRolls--;
+					}
+				}
+
+				if (lootRolls > 0 && rollDice.get()) {
 					ItemStack stack = new ItemStack(ModItems.LARYNX.get());
 					LarynxItem.saveSounds(stack, victim);
 					generatedLoot.add(stack); //only 1 larynx per entity possible

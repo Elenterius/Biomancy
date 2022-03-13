@@ -218,8 +218,40 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addOutput(ModItems.PLANT_MATTER.get(), 1, 3)
 				.addOutput(ModItems.EXOTIC_DUST.get(), 15, 20)
 				.addByproduct(Items.SUGAR, 2, 4)
-				.addByproduct(ModItems.BILE.get(), 2, 4)
+				.addByproduct(ModItems.BILE_EXTRACT.get(), 2, 4)
 				.unlockedBy(hasName(Items.ENCHANTED_GOLDEN_APPLE), has(Items.ENCHANTED_GOLDEN_APPLE))
+				.save(consumer);
+
+		DecomposerRecipeBuilder.create(getItemName(ModItems.MOB_SINEW.get()))
+				.setIngredient(ModItems.MOB_SINEW.get())
+				.addOutput(ModItems.FLESH_BITS.get(), 1, 3)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2)
+				.unlockedBy(hasName(ModItems.MOB_SINEW.get()), has(ModItems.MOB_SINEW.get()))
+				.save(consumer);
+
+		DecomposerRecipeBuilder.create(getItemName(ModItems.LARYNX.get()))
+				.setIngredient(ModItems.LARYNX.get())
+				.addOutput(ModItems.FLESH_BITS.get(), 1, 2)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 2, 4)
+				.addByproduct(ModItems.BILE_EXTRACT.get(), 1, 2)
+				.unlockedBy(hasName(ModItems.LARYNX.get()), has(ModItems.LARYNX.get()))
+				.save(consumer);
+
+		DecomposerRecipeBuilder.create(getItemName(ModItems.EXALTED_LIVING_FLESH.get()))
+				.setIngredient(ModItems.LIVING_FLESH.get())
+				.addOutput(ModItems.FLESH_BITS.get(), 2, 5)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 4)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 4, 8)
+				.addByproduct(ModItems.BILE_EXTRACT.get(), 2, 4)
+				.unlockedBy(hasName(ModItems.EXALTED_LIVING_FLESH.get()), has(ModItems.EXALTED_LIVING_FLESH.get()))
+				.save(consumer);
+
+		DecomposerRecipeBuilder.create("raw_meats")
+				.setIngredient(ModTags.Items.RAW_MEATS)
+				.addOutput(ModItems.FLESH_BITS.get(), 2, 4)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 0, 1)
+				.addOutput(ModItems.BONE_SCRAPS.get(), 0, 2)
+				.unlockedBy("has_raw_meats", has(ModTags.Items.RAW_MEATS))
 				.save(consumer);
 	}
 
@@ -234,7 +266,7 @@ public class ModRecipeProvider extends RecipeProvider {
 	private void registerBioLabRecipes(Consumer<FinishedRecipe> consumer) {
 		BioLabRecipeBuilder.create(ModSerums.REJUVENATION_SERUM.get())
 				.addIngredient(ModItems.EXOTIC_DUST.get())
-				.addIngredient(ModItems.PHEROMONES.get())
+				.addIngredient(ModItems.REJUVENATING_MUCUS.get())
 				.addIngredient(ModItems.NUTRIENTS.get())
 				.setCraftingTime(5 * 20)
 				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
@@ -242,7 +274,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		BioLabRecipeBuilder.create(ModSerums.GROWTH_SERUM.get())
 				.addIngredient(Items.BONE_MEAL)
-				.addIngredient(ModItems.PHEROMONES.get())
+				.addIngredient(ModItems.REJUVENATING_MUCUS.get())
 				.addIngredient(ModItems.NUTRIENTS.get())
 				.setCraftingTime(5 * 20)
 				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
@@ -250,7 +282,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		BioLabRecipeBuilder.create(ModSerums.BREEDING_STIMULANT.get())
 				.addIngredient(Items.SUGAR)
-				.addIngredients(ModItems.PHEROMONES.get(), 2)
+				.addIngredients(ModItems.REJUVENATING_MUCUS.get(), 2)
 				.addIngredient(ModItems.NUTRIENTS.get())
 				.setCraftingTime(5 * 20)
 				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
@@ -258,7 +290,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		BioLabRecipeBuilder.create(ModSerums.CLEANSING_SERUM.get())
 				.addIngredients(ModSerums.REJUVENATION_SERUM.get(), 2)
-				.addIngredient(ModItems.PHEROMONES.get())
+				.addIngredient(ModItems.REJUVENATING_MUCUS.get())
 				.addIngredient(ModItems.NUTRIENTS.get())
 				.setCraftingTime(8 * 20)
 				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
@@ -282,7 +314,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		BioLabRecipeBuilder.create(ModSerums.ADRENALINE_SERUM.get())
 				.addIngredient(Items.COCOA_BEANS)
-				.addIngredient(ModItems.PHEROMONES.get())
+				.addIngredient(ModItems.REJUVENATING_MUCUS.get())
 				.addIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_STRENGTH))
 				.addIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_SWIFTNESS))
 				.setCraftingTime(12 * 20)
@@ -291,8 +323,8 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		BioLabRecipeBuilder.create(ModSerums.DECAY_AGENT.get())
 				.addIngredients(Items.ROTTEN_FLESH, 2)
-				.addIngredient(ModItems.PHEROMONES.get())
-				.addIngredient(ModItems.TOXINS.get())
+				.addIngredient(ModItems.REJUVENATING_MUCUS.get())
+				.addIngredient(ModItems.VENOM_EXTRACT.get())
 				.setCraftingTime(8 * 20)
 				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
 				.save(consumer);

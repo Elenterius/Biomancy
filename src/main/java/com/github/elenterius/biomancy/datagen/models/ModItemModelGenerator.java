@@ -60,28 +60,36 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 		generateFlat(ModItems.OXIDES.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.BIO_LUMENS.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.NUTRIENTS.get(), ModelTemplates.FLAT_ITEM);
-		generateFlat(ModItems.LAPIDARY_DUST.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.GEM_DUST.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.LITHIC_POWDER.get(), ModelTemplates.FLAT_ITEM);
-		generateFlat(ModItems.PHEROMONES.get(), ModelTemplates.FLAT_ITEM);
 
-		generateFlat(ModItems.TOXINS.get(), ModelTemplates.FLAT_ITEM);
-		generateFlat(ModItems.BILE.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.REJUVENATING_MUCUS.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.HORMONE_SECRETION.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.VENOM_EXTRACT.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.VOLATILE_EXTRACT.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.BILE_EXTRACT.get(), ModelTemplates.FLAT_ITEM);
 
-		generateFlat(ModItems.BIOMETAL_INGOT.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.SKIN_CHUNK.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.NECROTIC_FLESH_LUMP.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.LARYNX.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.MOB_FANG.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.MOB_CLAW.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.MOB_SINEW.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.MOB_MARROW.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.MOB_GLAND.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.VENOM_GLAND.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.VOLATILE_GLAND.get(), ModelTemplates.FLAT_ITEM);
+
+		generateFlat(ModItems.LIVING_FLESH.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.EXALTED_LIVING_FLESH.get(), ModItems.LIVING_FLESH.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.OCULUS.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.BIOMETAL_INGOT.get(), ModelTemplates.FLAT_ITEM);
 
 		generateFlatWithOverlay(ModItems.ESSENCE.get(), OVERLAY_TEMPLATE);
 		generateFlat(ModItems.BIO_EXTRACTOR.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		generateFlatWithOverlay(ModItems.BIO_INJECTOR.get(), GUN_TEMPLATE);
 		generateFlat(ModItems.GLASS_VIAL.get(), ModelTemplates.FLAT_ITEM);
 		generateFlatWithOverlay(ModItems.SERUM.get(), OVERLAY_TEMPLATE);
-
-		generateFlat(ModItems.SHARP_TOOTH.get(), ModelTemplates.FLAT_ITEM);
-		generateFlat(ModItems.SKIN_CHUNK.get(), ModelTemplates.FLAT_ITEM);
-		generateFlat(ModItems.NECROTIC_FLESH_LUMP.get(), ModelTemplates.FLAT_ITEM);
-		generateFlat(ModItems.STOMACH.get(), ModelTemplates.FLAT_ITEM);
-		generateFlat(ModItems.ANCIENT_STOMACH.get(), ModItems.STOMACH.get(), ModelTemplates.FLAT_ITEM);
-		generateFlat(ModItems.LARYNX.get(), ModelTemplates.FLAT_ITEM);
 
 		generateFlat(ModItems.NUTRIENT_BAR.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.PROTEIN_BAR.get(), ModItems.NUTRIENT_BAR.get(), ModelTemplates.FLAT_ITEM);

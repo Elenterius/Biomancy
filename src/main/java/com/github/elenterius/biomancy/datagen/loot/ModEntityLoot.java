@@ -25,14 +25,14 @@ public class ModEntityLoot extends EntityLoot {
 
 	private static LootTable.Builder fleshBlobLootTableBuilderWithDrop(int rolls) {
 		return LootTable.lootTable()
-				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(rolls)).add(LootItem.lootTableItem(ModItems.FLESH_BLOCK.get())))
+				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(rolls)).add(LootItem.lootTableItem(ModItems.LIVING_FLESH.get())))
 				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootTableReference.lootTableReference(ModEntityTypes.FLESH_BLOB.get().getDefaultLootTable())));
 	}
 
 	@Override
 	protected void addTables() {
 		add(ModEntityTypes.FLESH_BLOB.get(), LootTable.lootTable()
-				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(ModItems.FLESH_BLOCK.get())
+				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(ModItems.LIVING_FLESH.get())
 						.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1))).apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0f, 1f)))))
 				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
 						.add(LootItem.lootTableItem(ModItems.OCULUS.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(-4f, 1f))).apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0f, 1f))))
@@ -52,8 +52,8 @@ public class ModEntityLoot extends EntityLoot {
 
 		add(ModEntityTypes.FLESHKIN.get(), LootTable.lootTable()
 				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-						.add(LootItem.lootTableItem(ModItems.NECROTIC_FLESH_LUMP.get())
-								.apply(SetItemCountFunction.setCount(UniformGenerator.between(6f, 9f)))
+						.add(LootItem.lootTableItem(ModItems.LIVING_FLESH.get())
+								.apply(SetItemCountFunction.setCount(UniformGenerator.between(2f, 4f)))
 								.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0f, 1f)))))
 		);
 	}

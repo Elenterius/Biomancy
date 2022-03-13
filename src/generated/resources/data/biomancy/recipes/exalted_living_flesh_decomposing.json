@@ -2,37 +2,28 @@
   "type": "biomancy:decomposing",
   "input": {
     "ingredient": {
-      "item": "minecraft:enchanted_golden_apple"
+      "item": "biomancy:living_flesh"
     },
     "count": 1
   },
   "outputs": [
     {
       "result": {
-        "item": "biomancy:bio_lumens",
+        "item": "biomancy:flesh_bits",
         "count_range": {
           "type": "uniform",
-          "min": 1,
-          "max": 3
+          "min": 2,
+          "max": 5
         }
       }
     },
     {
       "result": {
-        "item": "biomancy:oxides",
-        "count_range": {
-          "type": "constant",
-          "value": 1
-        }
-      }
-    },
-    {
-      "result": {
-        "item": "biomancy:plant_matter",
+        "item": "biomancy:elastic_fibers",
         "count_range": {
           "type": "uniform",
           "min": 1,
-          "max": 3
+          "max": 4
         }
       }
     },
@@ -41,23 +32,13 @@
         "item": "biomancy:exotic_dust",
         "count_range": {
           "type": "uniform",
-          "min": 15,
-          "max": 20
+          "min": 4,
+          "max": 8
         }
       }
     }
   ],
   "byproducts": [
-    {
-      "result": {
-        "item": "minecraft:sugar",
-        "count_range": {
-          "type": "uniform",
-          "min": 2,
-          "max": 4
-        }
-      }
-    },
     {
       "result": {
         "item": "biomancy:bile_extract",
@@ -69,5 +50,5 @@
       }
     }
   ],
-  "time": 200
+  "time": 80
 }

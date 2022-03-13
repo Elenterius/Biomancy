@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:larynx_decomposing"
+    ]
+  },
+  "criteria": {
+    "has_larynx": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:larynx"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:larynx_decomposing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_larynx",
+      "has_the_recipe"
+    ]
+  ]
+}

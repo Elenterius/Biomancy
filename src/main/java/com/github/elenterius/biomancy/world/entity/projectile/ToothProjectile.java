@@ -90,7 +90,7 @@ public class ToothProjectile extends BaseProjectile implements ItemSupplier {
 		return ParticleTypes.POOF;
 	}
 
-	private static final Lazy<ItemStack> ITEM_TO_RENDER = Lazy.of(() -> new ItemStack(ModItems.SHARP_TOOTH.get()));
+	private static final Lazy<ItemStack> ITEM_TO_RENDER = Lazy.of(() -> new ItemStack(ModItems.MOB_FANG.get()));
 
 	public ItemStack getItem() {
 		return ITEM_TO_RENDER.get();

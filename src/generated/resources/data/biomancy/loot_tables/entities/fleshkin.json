@@ -12,8 +12,8 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 6.0,
-                "max": 9.0
+                "min": 2.0,
+                "max": 4.0
               },
               "add": false
             },
@@ -26,7 +26,7 @@
               }
             }
           ],
-          "name": "biomancy:necrotic_flesh_lump"
+          "name": "biomancy:living_flesh"
         }
       ]
     }

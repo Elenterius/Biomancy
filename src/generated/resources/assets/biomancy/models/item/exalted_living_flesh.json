@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "biomancy:item/pheromones"
+    "layer0": "biomancy:item/living_flesh"
   }
 }

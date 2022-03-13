@@ -88,7 +88,7 @@ public class ToothGunItem extends BaseGunItem {
 
 	@Override
 	public ItemStack getAmmoItemForOverlayRender(ItemStack stack) {
-		return new ItemStack(ModItems.SHARP_TOOTH.get());
+		return new ItemStack(ModItems.MOB_FANG.get());
 	}
 
 	@Override

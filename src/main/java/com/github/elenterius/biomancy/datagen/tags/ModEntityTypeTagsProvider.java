@@ -26,10 +26,19 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 				.addOptional(new ResourceLocation("strawgolem", "strawgolem"))
 				.addOptional(new ResourceLocation("strawgolem", "strawnggolem"));
 
-		tag(ModTags.EntityTypes.SHARP_TEETH)
+		tag(ModTags.EntityTypes.SHARP_FANG)
 				.add(EntityType.CAT, EntityType.OCELOT, EntityType.WOLF, EntityType.FOX, EntityType.DOLPHIN, EntityType.POLAR_BEAR, EntityType.PANDA,
 						EntityType.BAT, EntityType.HOGLIN, EntityType.ZOGLIN, EntityType.ENDER_DRAGON);
 
+		tag(ModTags.EntityTypes.SHARP_CLAW)
+				.add(EntityType.CAT, EntityType.OCELOT, EntityType.POLAR_BEAR, EntityType.PANDA,
+						EntityType.BAT, EntityType.ENDER_DRAGON);
+
+		tag(ModTags.EntityTypes.VENOM_GLAND)
+				.add(EntityType.CAVE_SPIDER, EntityType.PUFFERFISH, EntityType.BEE);
+
+		tag(ModTags.EntityTypes.VOLATILE_GLAND)
+				.add(EntityType.CREEPER, EntityType.GHAST, EntityType.WITHER, EntityType.BLAZE, EntityType.ENDER_DRAGON);
 	}
 
 	@Override
