@@ -62,7 +62,7 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 
 	@Override
 	public NonNullList<Ingredient> getIngredients() {
-		return NonNullList.of(ingredientQuantity.ingredient());
+		return NonNullList.of(Ingredient.EMPTY, ingredientQuantity.ingredient());
 	}
 
 	public Ingredient getIngredient() {
