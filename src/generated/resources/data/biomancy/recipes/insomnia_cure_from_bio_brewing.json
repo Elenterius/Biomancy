@@ -9,7 +9,7 @@
     },
     {
       "type": "forge:nbt",
-      "item": "biomancy:serum",
+      "item": "biomancy:generic_serum",
       "count": 1,
       "nbt": "{SerumColor:9937817,SerumId:\"biomancy:cleansing_serum\"}"
     },
@@ -18,7 +18,7 @@
     }
   ],
   "result": {
-    "item": "biomancy:serum",
+    "item": "biomancy:generic_serum",
     "nbt": "{SerumColor:10984609,SerumId:\"biomancy:insomnia_cure\"}"
   },
   "time": 160

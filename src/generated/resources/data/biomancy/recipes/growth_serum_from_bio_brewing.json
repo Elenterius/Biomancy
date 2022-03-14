@@ -12,7 +12,7 @@
     }
   ],
   "result": {
-    "item": "biomancy:serum",
+    "item": "biomancy:generic_serum",
     "nbt": "{SerumColor:12179138,SerumId:\"biomancy:growth_serum\"}"
   },
   "time": 100

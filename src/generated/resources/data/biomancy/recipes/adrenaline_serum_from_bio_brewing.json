@@ -21,7 +21,7 @@
     }
   ],
   "result": {
-    "item": "biomancy:serum",
+    "item": "biomancy:generic_serum",
     "nbt": "{SerumColor:16749874,SerumId:\"biomancy:adrenaline_serum\"}"
   },
   "time": 240

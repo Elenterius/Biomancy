@@ -8,6 +8,7 @@ import com.github.elenterius.biomancy.client.renderer.entity.BoomlingRenderer;
 import com.github.elenterius.biomancy.client.renderer.entity.FleshBlobRenderer;
 import com.github.elenterius.biomancy.client.renderer.entity.FleshkinRenderer;
 import com.github.elenterius.biomancy.client.renderer.entity.WitherProjectileRenderer;
+import com.github.elenterius.biomancy.world.item.SerumItem;
 import com.github.elenterius.biomancy.world.item.weapon.LongClawItem;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -126,7 +127,7 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void onItemColorRegistry(final ColorHandlerEvent.Item event) {
-		event.getItemColors().register((stack, index) -> index == 0 ? ModItems.SERUM.get().getSerumColor(stack) : -1, ModItems.SERUM.get());
+		event.getItemColors().register((stack, index) -> index == 0 ? SerumItem.getSerumColor(stack) : -1, ModItems.GENERIC_SERUM.get());
 		event.getItemColors().register((stack, index) -> ModItems.ESSENCE.get().getColor(stack, index), ModItems.ESSENCE.get());
 		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.BIO_INJECTOR.get().getSerumColor(stack) : -1, ModItems.BIO_INJECTOR.get());
 		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.BOOMLING.get().getPotionColor(stack) : -1, ModItems.BOOMLING.get());

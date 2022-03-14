@@ -17,16 +17,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @OnlyIn(Dist.CLIENT)
 public class DecomposerScreen extends AbstractContainerScreen<DecomposerMenu> {
 
-	private static final ResourceLocation BACKGROUND_TEXTURE = BiomancyMod.createRL("textures/gui/decomposer_gui.png");
-	private final ProgressBar fuelBar = new ProgressBar(39, 17, 5, 60 - 17, 0xFFb8ba87);
+	private static final ResourceLocation BACKGROUND_TEXTURE = BiomancyMod.createRL("textures/gui/menu_decomposer.png");
 
 	public DecomposerScreen(DecomposerMenu menu, Inventory playerInventory, Component title) {
 		super(menu, playerInventory, title);
+		imageHeight = 193;
 	}
 
 	@Override
@@ -38,11 +37,8 @@ public class DecomposerScreen extends AbstractContainerScreen<DecomposerMenu> {
 
 	@Override
 	protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
-		final float FONT_Y_SPACING = 12;
-		font.draw(poseStack, title, 10, 18 - FONT_Y_SPACING, 0xFFFFFF);
-
-//		String craftingProgress = (int) (menu.getCraftingProgressNormalized() * 100) + "%";
-//		font.draw(poseStack, craftingProgress, 155f - font.width(craftingProgress), 52f + 6, 0xFFFFFF);
+		int posX = imageWidth / 2 - font.width(title) / 2;
+		font.draw(poseStack, title, posX, -12, 0xFFFFFF);
 	}
 
 	@Override
@@ -51,16 +47,22 @@ public class DecomposerScreen extends AbstractContainerScreen<DecomposerMenu> {
 		RenderSystem.setShaderColor(1, 1, 1, 1);
 		RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
 
-		int edgeSpacingX = (width - imageWidth) / 2;
-		int edgeSpacingY = (height - imageHeight) / 2;
-		blit(poseStack, edgeSpacingX, edgeSpacingY, 0, 0, imageWidth, imageHeight);
+		blit(poseStack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		drawProgressBar(poseStack, menu.getCraftingProgressNormalized());
+		drawFuelBar(poseStack, menu.getFuelAmountNormalized());
+	}
 
-		float craftingProgress = menu.getCraftingProgressNormalized();
-		int uWidth = (int) (craftingProgress * 14) + (craftingProgress > 0 ? 1 : 0);
-		blit(poseStack, leftPos + 81, topPos + 22, 176, 0, uWidth, 7);
+	private void drawProgressBar(PoseStack poseStack, float craftingPct) {
+		int uWidth = (int) (craftingPct * 20) + (craftingPct > 0 ? 1 : 0);
+		blit(poseStack, leftPos + 75, topPos + 23, 194, 0, uWidth, 2);
+	}
 
-		fuelBar.setProgress(menu.getFuelAmountNormalized());
-		fuelBar.draw(Objects.requireNonNull(minecraft), poseStack, leftPos, topPos, mouseX, mouseY);
+	private void drawFuelBar(PoseStack poseStack, float fuelPct) {
+		//fuel blob
+		int vHeight = (int) (fuelPct * 18) + (fuelPct > 0 ? 1 : 0);
+		blit(poseStack, leftPos + 52, topPos + 20 + 18 - vHeight, 176, 18 - vHeight, 18, vHeight);
+		//glass highlight
+		blit(poseStack, leftPos + 55, topPos + 23, 214, 0, 12, 13);
 	}
 
 	@Override
@@ -68,7 +70,12 @@ public class DecomposerScreen extends AbstractContainerScreen<DecomposerMenu> {
 		if (menu.getCarried().isEmpty()) {
 			List<Component> hoveringText = new ArrayList<>();
 
-			if (fuelBar.isMouseInside(leftPos, topPos, mouseX, mouseY)) {
+//			if (GuiUtil.isInRect(leftPos + 75, topPos + 22, 20, 4, mouseX, mouseY)) {
+//				float progress = menu.getCraftingProgressNormalized() * 100;
+//				hoveringText.add(new TextComponent(progress + "%"));
+//			}
+
+			if (GuiUtil.isInRect(leftPos + 52, topPos + 20, 17, 17, mouseX, mouseY)) {
 				int amount = menu.getFuelAmount();
 				if (amount > 0) {
 					DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");

@@ -66,7 +66,7 @@ public class BioLabRecipeBuilder {
 	}
 
 	public static BioLabRecipeBuilder create(Serum result) {
-		ItemData itemData = new ItemData(SerumItem.getReagentItemStack(result));
+		ItemData itemData = new ItemData(SerumItem.getSerumItemStack(result));
 		ResourceLocation rl = BiomancyMod.createRL(Objects.requireNonNull(result.getRegistryName()).getPath() + SUFFIX);
 		return new BioLabRecipeBuilder(rl, itemData);
 	}
@@ -94,11 +94,11 @@ public class BioLabRecipeBuilder {
 	}
 
 	public BioLabRecipeBuilder addIngredient(Serum serum) {
-		return addIngredients(new ItemStackIngredient(SerumItem.getReagentItemStack(serum)), 1);
+		return addIngredients(new ItemStackIngredient(SerumItem.getSerumItemStack(serum)), 1);
 	}
 
 	public BioLabRecipeBuilder addIngredients(Serum serum, int quantity) {
-		return addIngredients(new ItemStackIngredient(SerumItem.getReagentItemStack(serum)), quantity);
+		return addIngredients(new ItemStackIngredient(SerumItem.getSerumItemStack(serum)), quantity);
 	}
 
 	public BioLabRecipeBuilder addIngredient(Ingredient ingredient) {

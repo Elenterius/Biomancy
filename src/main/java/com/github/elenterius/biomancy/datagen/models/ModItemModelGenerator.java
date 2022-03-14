@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.datagen.models;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.mixin.TextureSlotAccessor;
 import com.google.gson.JsonElement;
+import net.minecraft.core.Registry;
 import net.minecraft.data.models.model.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -20,6 +21,16 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 	private static final ModelTemplate EGG_MODEL_TEMPLATE = createVanillaTemplate("template_spawn_egg");
 	private static final ModelTemplate GUN_TEMPLATE = createTemplate("handheld_gun", TextureSlot.LAYER0, LAYER_1);
 	private static final ModelTemplate OVERLAY_TEMPLATE = createVanillaTemplate("generated", TextureSlot.LAYER0, LAYER_1);
+
+	private static ResourceLocation getItemTexture(Item pItem, String folder) {
+		ResourceLocation resourcelocation = Registry.ITEM.getKey(pItem);
+		return new ResourceLocation(resourcelocation.getNamespace(), "item/" + folder + "/" + resourcelocation.getPath());
+	}
+
+	private static ResourceLocation getItemTexture(Item pItem, String folder, String suffix) {
+		ResourceLocation resourcelocation = Registry.ITEM.getKey(pItem);
+		return new ResourceLocation(resourcelocation.getNamespace(), "item/" + folder + "/" + resourcelocation.getPath() + suffix);
+	}
 
 	private static ModelTemplate createVanillaTemplate(String id, TextureSlot... requiredSlots) {
 		return new ModelTemplate(Optional.of(new ResourceLocation("minecraft", "item/" + id)), Optional.empty(), requiredSlots);
@@ -80,16 +91,25 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 		generateFlat(ModItems.VENOM_GLAND.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.VOLATILE_GLAND.get(), ModelTemplates.FLAT_ITEM);
 
+		generateFlat(ModItems.NUTRIENT_PASTE.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.LIVING_FLESH.get(), ModelTemplates.FLAT_ITEM);
-		generateFlat(ModItems.EXALTED_LIVING_FLESH.get(), ModItems.LIVING_FLESH.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.EXALTED_LIVING_FLESH.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.OCULUS.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.BIOMETAL_INGOT.get(), ModelTemplates.FLAT_ITEM);
-
 		generateFlatWithOverlay(ModItems.ESSENCE.get(), OVERLAY_TEMPLATE);
 		generateFlat(ModItems.BIO_EXTRACTOR.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		generateFlatWithOverlay(ModItems.BIO_INJECTOR.get(), GUN_TEMPLATE);
+
 		generateFlat(ModItems.GLASS_VIAL.get(), ModelTemplates.FLAT_ITEM);
-		generateFlatWithOverlay(ModItems.SERUM.get(), OVERLAY_TEMPLATE);
+		generateFlatWithOverlay(ModItems.GENERIC_SERUM.get(), OVERLAY_TEMPLATE);
+		generateFlat(ModItems.REJUVENATION_SERUM.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.GROWTH_SERUM.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.BREEDING_STIMULANT.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.ABSORPTION_BOOST.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.CLEANSING_SERUM.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.INSOMNIA_CURE.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.ADRENALINE_SERUM.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.DECAY_AGENT.get(), ModelTemplates.FLAT_ITEM);
 
 		generateFlat(ModItems.NUTRIENT_BAR.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.PROTEIN_BAR.get(), ModItems.NUTRIENT_BAR.get(), ModelTemplates.FLAT_ITEM);

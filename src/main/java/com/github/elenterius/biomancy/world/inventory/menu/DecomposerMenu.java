@@ -27,7 +27,7 @@ public class DecomposerMenu extends PlayerContainerMenu {
 	protected final Level level;
 
 	protected DecomposerMenu(int id, Inventory playerInventory, BehavioralInventory<?> fuelInventory, BehavioralInventory<?> inputInventory, BehavioralInventory<?> outputInventory, DecomposerStateData stateData) {
-		super(ModMenuTypes.DECOMPOSER.get(), id, playerInventory);
+		super(ModMenuTypes.DECOMPOSER.get(), id, playerInventory, 111, 169);
 		level = playerInventory.player.level;
 
 		this.fuelInventory = fuelInventory;
@@ -35,16 +35,15 @@ public class DecomposerMenu extends PlayerContainerMenu {
 		this.outputInventory = outputInventory;
 		this.stateData = stateData;
 
-		int posY = 17;
+		addSlot(new FuelSlot(fuelInventory, 0, 54, 59));
+		addSlot(new Slot(inputInventory, 0, 77, 30));
 
-		addSlot(new FuelSlot(fuelInventory, 0, 17, posY));
-		addSlot(new Slot(inputInventory, 0, 62, posY));
-
-		int outputPosX = 98;
-		addSlot(new OutputSlot(outputInventory, 0, outputPosX, posY));
-		addSlot(new OutputSlot(outputInventory, 1, outputPosX + 18, posY));
-		addSlot(new OutputSlot(outputInventory, 2, outputPosX, posY + 18));
-		addSlot(new OutputSlot(outputInventory, 3, outputPosX + 18, posY + 18));
+		int posY = 52;
+		int posX = 99;
+		addSlot(new OutputSlot(outputInventory, 0, posX, posY));
+		addSlot(new OutputSlot(outputInventory, 1, posX + 18, posY));
+		addSlot(new OutputSlot(outputInventory, 2, posX, posY + 18));
+		addSlot(new OutputSlot(outputInventory, 3, posX + 18, posY + 18));
 
 		addDataSlots(stateData);
 	}

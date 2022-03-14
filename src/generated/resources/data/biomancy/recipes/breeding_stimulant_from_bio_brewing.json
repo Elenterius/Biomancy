@@ -15,7 +15,7 @@
     }
   ],
   "result": {
-    "item": "biomancy:serum",
+    "item": "biomancy:generic_serum",
     "nbt": "{SerumColor:14968206,SerumId:\"biomancy:breeding_stimulant\"}"
   },
   "time": 100

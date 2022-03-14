@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "biomancy:item/generic_serum",
+    "layer1": "biomancy:item/generic_serum_overlay"
+  }
+}

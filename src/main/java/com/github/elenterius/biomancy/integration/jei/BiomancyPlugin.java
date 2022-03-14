@@ -31,7 +31,7 @@ public class BiomancyPlugin implements IModPlugin {
 
 	@Override
 	public void registerItemSubtypes(ISubtypeRegistration registration) {
-		registration.registerSubtypeInterpreter(ModItems.SERUM.get(), SerumSubtypeInterpreter.INSTANCE);
+		registration.registerSubtypeInterpreter(ModItems.GENERIC_SERUM.get(), SerumSubtypeInterpreter.INSTANCE);
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class BiomancyPlugin implements IModPlugin {
 
 	@Override
 	public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-		registration.addRecipeClickArea(DecomposerScreen.class, 81, 20, 14, 10, DecomposerRecipeCategory.ID);
+		registration.addRecipeClickArea(DecomposerScreen.class, 75, 23, 20, 4, DecomposerRecipeCategory.ID);
 		registration.addRecipeClickArea(BioLabScreen.class, 108, 29, 14, 10, BioLabRecipeCategory.ID);
 	}
 

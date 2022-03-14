@@ -1,9 +1,9 @@
 package com.github.elenterius.biomancy.world.serum;
 
-import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
+import com.github.elenterius.biomancy.world.item.SerumItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -67,7 +67,7 @@ public class AdrenalineSerum extends Serum {
 	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void addInfoToTooltip(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
-		if (stack.getItem() != ModItems.SERUM.get()) {
+		if (!(stack.getItem() instanceof SerumItem)) {
 			tooltip.add(TextComponentUtil.getTooltipText("contains", new TranslatableComponent(getTranslationKey())).withStyle(ChatFormatting.GRAY));
 		}
 

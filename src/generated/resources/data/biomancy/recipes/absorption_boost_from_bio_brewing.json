@@ -12,13 +12,13 @@
     },
     {
       "type": "forge:nbt",
-      "item": "biomancy:serum",
+      "item": "biomancy:generic_serum",
       "count": 1,
       "nbt": "{SerumColor:12179138,SerumId:\"biomancy:growth_serum\"}"
     }
   ],
   "result": {
-    "item": "biomancy:serum",
+    "item": "biomancy:generic_serum",
     "nbt": "{SerumColor:15187266,SerumId:\"biomancy:absorption_boost\"}"
   },
   "time": 160

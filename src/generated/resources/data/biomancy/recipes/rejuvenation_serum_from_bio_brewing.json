@@ -12,7 +12,7 @@
     }
   ],
   "result": {
-    "item": "biomancy:serum",
+    "item": "biomancy:generic_serum",
     "nbt": "{SerumColor:5028631,SerumId:\"biomancy:rejuvenation_serum\"}"
   },
   "time": 100

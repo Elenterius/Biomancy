@@ -3,13 +3,13 @@
   "ingredients": [
     {
       "type": "forge:nbt",
-      "item": "biomancy:serum",
+      "item": "biomancy:generic_serum",
       "count": 1,
       "nbt": "{SerumColor:5028631,SerumId:\"biomancy:rejuvenation_serum\"}"
     },
     {
       "type": "forge:nbt",
-      "item": "biomancy:serum",
+      "item": "biomancy:generic_serum",
       "count": 1,
       "nbt": "{SerumColor:5028631,SerumId:\"biomancy:rejuvenation_serum\"}"
     },
@@ -21,7 +21,7 @@
     }
   ],
   "result": {
-    "item": "biomancy:serum",
+    "item": "biomancy:generic_serum",
     "nbt": "{SerumColor:9937817,SerumId:\"biomancy:cleansing_serum\"}"
   },
   "time": 160
