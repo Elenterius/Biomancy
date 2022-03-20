@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.inventory.menu.FleshChestMenu;
+import com.github.elenterius.biomancy.world.inventory.menu.FleshkinChestMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -13,19 +13,19 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class FleshChestScreen extends AbstractContainerScreen<FleshChestMenu> {
+public class FleshkinChestScreen extends AbstractContainerScreen<FleshkinChestMenu> {
 
-	private static final ResourceLocation BACKGROUND_TEXTURE = BiomancyMod.createRL("textures/gui/flesh_chest_gui.png");
+	private static final ResourceLocation BACKGROUND_TEXTURE = BiomancyMod.createRL("textures/gui/menu_fleshkin_chest.png");
 
-	public FleshChestScreen(FleshChestMenu menu, Inventory playerInventory, Component title) {
+	public FleshkinChestScreen(FleshkinChestMenu menu, Inventory playerInventory, Component title) {
 		super(menu, playerInventory, title);
 		imageHeight = 232;
-		titleLabelX = 10;
 	}
 
 	@Override
 	protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
-		font.draw(poseStack, title, titleLabelX, titleLabelY, 0xFFFFFF);
+		int posX = imageWidth / 2 - font.width(title) / 2;
+		font.draw(poseStack, title, posX, -12, 0xFFFFFF);
 	}
 
 	@Override

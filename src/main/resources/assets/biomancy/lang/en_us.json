@@ -71,7 +71,7 @@
   "block.biomancy.sac": "Storage Sac",
   "block.biomancy.tongue": "Tongue",
   "block.biomancy.voice_box": "Voice Box",
-  "block.biomancy.flesh_chest": "Flesh Chest",
+  "block.biomancy.fleshkin_chest": "Fleshkin Chest",
 
   "block.biomancy.flesh_block": "Flesh Block",
   "block.biomancy.flesh_block_slab": "Flesh Block Slab",
@@ -84,7 +84,7 @@
   "container.biomancy.gland": "Gland",
   "container.biomancy.gulge": "Gulge Inventory",
   "container.biomancy.sac": "Sac Inventory",
-  "container.biomancy.flesh_chest": "Flesh Chest Inventory",
+  "container.biomancy.fleshkin_chest": "Fleshkin Inventory",
 
   "entity.biomancy.flesh_blob": "Flesh Blob",
   "entity.biomancy.boomling": "Boomling",
@@ -120,7 +120,7 @@
   "tooltip.biomancy.gulge": "A deep storage sac that stores up to 8k items of a single type and keeps it's inventory when mined.",
   "tooltip.biomancy.tongue": "Extracts up to 3 items of the same type every 24 ticks from containers its attached to and drops them on the ground.",
   "tooltip.biomancy.voice_box": "A box that is capable of holding and playing a larynx with its internal bellow, allowing you to reproduce mob sounds.",
-  "tooltip.biomancy.flesh_chest": "Mimic like flesh chest with sharp teeth and a resilient stomach allowing it to keeps its contents when mined.",
+  "tooltip.biomancy.fleshkin_chest": "Mimic like fleshkin chest with sharp teeth and a resilient stomach allowing it to keeps its contents when mined.",
 
   "tooltip.biomancy.flesh_bits": "Used for crafting as a main component, can be decomposed into biotic matter for extra usages. Can be crafted with biotic matter.",
   "tooltip.biomancy.bone_scraps": "Used for crafting as a main component, can be decomposed into biotic matter and bio minerals for extra usages. Can be crafted with biotic matter and bio minerals.",

@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.world.block.entity;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
 import com.github.elenterius.biomancy.world.inventory.SimpleInventory;
-import com.github.elenterius.biomancy.world.inventory.menu.FleshChestMenu;
+import com.github.elenterius.biomancy.world.inventory.menu.FleshkinChestMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -32,12 +32,13 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class FleshChestBlockEntity extends CustomContainerBlockEntity implements IAnimatable {
+public class FleshkinChestBlockEntity extends CustomContainerBlockEntity implements IAnimatable {
 
 	public static final int SLOTS = 9 * 6;
 
 	private final SimpleInventory inventory;
 	private boolean isLidOpen = false;
+//	private boolean isAngry = false;
 
 	private final AnimationFactory animationFactory = new AnimationFactory(this);
 
@@ -54,21 +55,21 @@ public class FleshChestBlockEntity extends CustomContainerBlockEntity implements
 
 		@Override
 		protected void openerCountChanged(Level level, BlockPos pos, BlockState state, int prevOpenCount, int openCount) {
-			level.blockEvent(FleshChestBlockEntity.this.worldPosition, state.getBlock(), 1, openCount);
+			level.blockEvent(FleshkinChestBlockEntity.this.worldPosition, state.getBlock(), 1, openCount);
 		}
 
 		@Override
 		protected boolean isOwnContainer(Player player) {
-			if (player.containerMenu instanceof FleshChestMenu menu) {
+			if (player.containerMenu instanceof FleshkinChestMenu menu) {
 				Container container = menu.getContainer();
-				return container == FleshChestBlockEntity.this.inventory;
+				return container == FleshkinChestBlockEntity.this.inventory;
 			}
 			return false;
 		}
 	};
 
-	public FleshChestBlockEntity(BlockPos pos, BlockState state) {
-		super(ModBlockEntities.FLESH_CHEST.get(), pos, state);
+	public FleshkinChestBlockEntity(BlockPos pos, BlockState state) {
+		super(ModBlockEntities.FLESHKIN_CHEST.get(), pos, state);
 		inventory = SimpleInventory.createServerContents(SLOTS, this::canPlayerOpenContainer, this::setChanged);
 		inventory.setOpenInventoryConsumer(this::startOpen);
 		inventory.setCloseInventoryConsumer(this::stopOpen);
@@ -103,13 +104,13 @@ public class FleshChestBlockEntity extends CustomContainerBlockEntity implements
 	}
 
 	public Component getDefaultName() {
-		return TextComponentUtil.getTranslationText("container", "flesh_chest");
+		return TextComponentUtil.getTranslationText("container", "fleshkin_chest");
 	}
 
 	@Nullable
 	@Override
 	public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
-		return FleshChestMenu.createServerMenu(containerId, playerInventory, inventory);
+		return FleshkinChestMenu.createServerMenu(containerId, playerInventory, inventory);
 	}
 
 	public Container getInventory() {
@@ -160,17 +161,22 @@ public class FleshChestBlockEntity extends CustomContainerBlockEntity implements
 
 	private <E extends BlockEntity & IAnimatable> PlayState handleIdleAnim(AnimationEvent<E> event) {
 		if (isLidOpen) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("chest.anim.opened"));
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("fleshkin_chest.open").addAnimation("fleshkin_chest.opened"));
 		}
 		else {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("chest.anim.closed"));
+			//TODO: add bite attack
+//			if (isAngry) {
+//				event.getController().setAnimation(new AnimationBuilder().addAnimation("fleshkin_chest.bite"));
+//			}
+//			else
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("fleshkin_chest.close").addAnimation("fleshkin_chest.closed"));
 		}
 		return PlayState.CONTINUE;
 	}
 
 	@Override
 	public void registerControllers(AnimationData data) {
-		data.addAnimationController(new AnimationController<>(this, "controller", 10, this::handleIdleAnim));
+		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::handleIdleAnim));
 	}
 
 	@Override

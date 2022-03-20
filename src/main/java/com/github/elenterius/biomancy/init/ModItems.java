@@ -107,7 +107,7 @@ public final class ModItems {
 	public static final RegistryObject<BlockItem> TONGUE = ITEMS.register("tongue", () -> new BlockItem(ModBlocks.TONGUE.get(), createProperties().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<BlockItem> GULGE = ITEMS.register("gulge", () -> new BlockItem(ModBlocks.GULGE.get(), createProperties().rarity(Rarity.RARE)));
 	public static final RegistryObject<BlockItem> SAC = ITEMS.register("sac", () -> new BlockItem(ModBlocks.SAC.get(), createProperties().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<BlockItem> FLESH_CHEST = ITEMS.register("flesh_chest", () -> new BlockItem(ModBlocks.FLESH_CHEST.get(), createProperties().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<BlockItem> FLESHKIN_CHEST = ITEMS.register("fleshkin_chest", () -> new BlockItem(ModBlocks.FLESH_CHEST.get(), createProperties().rarity(Rarity.UNCOMMON)));
 
 	//## Misc
 	public static final RegistryObject<BlockItem> VOICE_BOX = ITEMS.register("voice_box", () -> new BlockItem(ModBlocks.VOICE_BOX.get(), createProperties()));

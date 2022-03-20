@@ -76,7 +76,7 @@ public final class ClientSetupHandler {
 		event.registerBlockEntityRenderer(ModBlockEntities.BIO_FORGE.get(), BioForgeBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.BIO_LAB.get(), BioLabBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.TONGUE.get(), TongueBlockEntityRenderer::new);
-		event.registerBlockEntityRenderer(ModBlockEntities.FLESH_CHEST.get(), FleshChestBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntities.FLESHKIN_CHEST.get(), FleshkinChestBlockRenderer::new);
 
 		event.registerEntityRenderer(ModEntityTypes.FLESH_BLOB.get(), FleshBlobRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.FLESHKIN.get(), FleshkinRenderer::new);
@@ -139,15 +139,6 @@ public final class ClientSetupHandler {
 	@SubscribeEvent
 	public static void onItemColorRegistry(final ColorHandlerEvent.Block event) {
 		event.getBlockColors().register((state, displayReader, pos, index) -> 0x8d758c, ModBlocks.NECROTIC_FLESH_BLOCK.get());
-	}
-
-	@SubscribeEvent
-	public static void onStitch(TextureStitchEvent.Pre event) {
-//		if (!event.getAtlas().location().equals()) {
-//			return;
-//		}
-//
-//		event.addSprite(FleshChestTileEntityRenderer.FLESH_CHEST_TEXTURE);
 	}
 
 	@SubscribeEvent

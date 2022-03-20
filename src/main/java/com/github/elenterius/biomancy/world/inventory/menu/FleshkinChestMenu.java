@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.world.inventory.menu;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
-import com.github.elenterius.biomancy.world.block.entity.FleshChestBlockEntity;
+import com.github.elenterius.biomancy.world.block.entity.FleshkinChestBlockEntity;
 import com.github.elenterius.biomancy.world.inventory.SimpleInventory;
 import com.github.elenterius.biomancy.world.inventory.slot.ISlotZone;
 import net.minecraft.network.FriendlyByteBuf;
@@ -14,20 +14,20 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.apache.logging.log4j.MarkerManager;
 
-public class FleshChestMenu extends PlayerContainerMenu {
+public class FleshkinChestMenu extends PlayerContainerMenu {
 
 	private final SimpleInventory inventory;
 	protected final Level level;
 
-	protected FleshChestMenu(int id, Inventory playerInventory, SimpleInventory inventory) {
-		super(ModMenuTypes.FLESH_CHEST.get(), id, playerInventory, 150, 208);
+	protected FleshkinChestMenu(int id, Inventory playerInventory, SimpleInventory inventory) {
+		super(ModMenuTypes.FLESHKIN_CHEST.get(), id, playerInventory, 150, 208);
 		level = playerInventory.player.level;
 
 		this.inventory = inventory;
 		inventory.startOpen(playerInventory.player);
 
 		final int posX = 8;
-		final int posY = 17;
+		final int posY = 24;
 		for (int y = 0; y < 6; y++) {
 			for (int x = 0; x < 9; x++) {
 				addSlot(new Slot(inventory, y * 9 + x, posX + x * 18, posY + y * 18));
@@ -35,13 +35,13 @@ public class FleshChestMenu extends PlayerContainerMenu {
 		}
 	}
 
-	public static FleshChestMenu createServerMenu(int screenId, Inventory playerInventory, SimpleInventory inventory) {
-		return new FleshChestMenu(screenId, playerInventory, inventory);
+	public static FleshkinChestMenu createServerMenu(int screenId, Inventory playerInventory, SimpleInventory inventory) {
+		return new FleshkinChestMenu(screenId, playerInventory, inventory);
 	}
 
-	public static FleshChestMenu createClientMenu(int screenId, Inventory playerInventory, FriendlyByteBuf extraData) {
-		SimpleInventory inventory = SimpleInventory.createClientContents(FleshChestBlockEntity.SLOTS);
-		return new FleshChestMenu(screenId, playerInventory, inventory);
+	public static FleshkinChestMenu createClientMenu(int screenId, Inventory playerInventory, FriendlyByteBuf extraData) {
+		SimpleInventory inventory = SimpleInventory.createClientContents(FleshkinChestBlockEntity.SLOTS);
+		return new FleshkinChestMenu(screenId, playerInventory, inventory);
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class FleshChestMenu extends PlayerContainerMenu {
 	public enum SlotZone implements ISlotZone {
 		PLAYER_HOTBAR(0, 9),
 		PLAYER_MAIN_INVENTORY(PLAYER_HOTBAR.lastIndexPlus1, 3 * 9),
-		INVENTORY(PLAYER_MAIN_INVENTORY.lastIndexPlus1, FleshChestBlockEntity.SLOTS);
+		INVENTORY(PLAYER_MAIN_INVENTORY.lastIndexPlus1, FleshkinChestBlockEntity.SLOTS);
 
 		public final int firstIndex;
 		public final int slotCount;

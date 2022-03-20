@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.world.block;
 
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
-import com.github.elenterius.biomancy.world.block.entity.FleshChestBlockEntity;
+import com.github.elenterius.biomancy.world.block.entity.FleshkinChestBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -43,6 +43,7 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 
@@ -50,14 +51,15 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class FleshChestBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
+public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-	protected static final VoxelShape SHAPE = Block.box(1d, 0d, 1d, 15d, 14d, 15d);
+	public static final VoxelShape SHAPE_NORTH_OR_SOUTH = Block.box(0, 0, 1, 16, 13, 15);
+	public static final VoxelShape SHAPE_WEST_OR_EAST = Block.box(1, 0, 0, 15, 13, 16);
 
-	public FleshChestBlock(Properties builder) {
+	public FleshkinChestBlock(Properties builder) {
 		super(builder);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
 	}
@@ -75,7 +77,7 @@ public class FleshChestBlock extends BaseEntityBlock implements SimpleWaterlogge
 
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-		if (stack.hasCustomHoverName() && level.getBlockEntity(pos) instanceof FleshChestBlockEntity chest) {
+		if (stack.hasCustomHoverName() && level.getBlockEntity(pos) instanceof FleshkinChestBlockEntity chest) {
 			chest.setCustomName(stack.getHoverName());
 		}
 	}
@@ -83,7 +85,7 @@ public class FleshChestBlock extends BaseEntityBlock implements SimpleWaterlogge
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return ModBlockEntities.FLESH_CHEST.get().create(pos, state);
+		return ModBlockEntities.FLESHKIN_CHEST.get().create(pos, state);
 	}
 
 	@Override
@@ -106,7 +108,7 @@ public class FleshChestBlock extends BaseEntityBlock implements SimpleWaterlogge
 
 		if (player instanceof ServerPlayer serverPlayer && !ChestBlock.isChestBlockedAt(level, pos)) {
 			BlockEntity tileEntity = level.getBlockEntity(pos);
-			if (tileEntity instanceof FleshChestBlockEntity chest && chest.canPlayerOpenContainer(player)) {
+			if (tileEntity instanceof FleshkinChestBlockEntity chest && chest.canPlayerOpenContainer(player)) {
 				MenuProvider menuProvider = getMenuProvider(state, level, pos);
 				if (menuProvider != null) {
 					NetworkHooks.openGui(serverPlayer, menuProvider, byteBuffer -> {});
@@ -120,7 +122,7 @@ public class FleshChestBlock extends BaseEntityBlock implements SimpleWaterlogge
 
 	@Override
 	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-		if (!level.isClientSide && player.isCreative() && level.getBlockEntity(pos) instanceof FleshChestBlockEntity chest && !chest.isEmpty()) {
+		if (!level.isClientSide && player.isCreative() && level.getBlockEntity(pos) instanceof FleshkinChestBlockEntity chest && !chest.isEmpty()) {
 			ItemStack stack = new ItemStack(this);
 			chest.saveToItem(stack);
 			if (chest.hasCustomName()) stack.setHoverName(chest.getCustomName());
@@ -135,7 +137,7 @@ public class FleshChestBlock extends BaseEntityBlock implements SimpleWaterlogge
 	@Override
 	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
 		ItemStack stack = super.getCloneItemStack(state, target, level, pos, player);
-		if (level.getBlockEntity(pos) instanceof FleshChestBlockEntity chest) {
+		if (level.getBlockEntity(pos) instanceof FleshkinChestBlockEntity chest) {
 			chest.saveToItem(stack);
 		}
 		return stack;
@@ -148,7 +150,7 @@ public class FleshChestBlock extends BaseEntityBlock implements SimpleWaterlogge
 
 	@Override
 	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
-		if (level.getBlockEntity(pos) instanceof FleshChestBlockEntity chest) {
+		if (level.getBlockEntity(pos) instanceof FleshkinChestBlockEntity chest) {
 			return AbstractContainerMenu.getRedstoneSignalFromContainer(chest.getInventory());
 		}
 		return 0;
@@ -171,7 +173,11 @@ public class FleshChestBlock extends BaseEntityBlock implements SimpleWaterlogge
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		return SHAPE;
+		return switch (state.getValue(FACING)) {
+			case NORTH, SOUTH -> SHAPE_NORTH_OR_SOUTH;
+			case WEST, EAST -> SHAPE_WEST_OR_EAST;
+			default -> Shapes.block();
+		};
 	}
 
 	@Override
@@ -187,7 +193,7 @@ public class FleshChestBlock extends BaseEntityBlock implements SimpleWaterlogge
 		if (tag != null) {
 			CompoundTag inventoryTag = tag.getCompound("Inventory");
 			if (!inventoryTag.isEmpty() && inventoryTag.contains("Items", Tag.TAG_LIST)) {
-				int size = inventoryTag.contains("Size") ? inventoryTag.getInt("Size") : FleshChestBlockEntity.SLOTS;
+				int size = inventoryTag.contains("Size") ? inventoryTag.getInt("Size") : FleshkinChestBlockEntity.SLOTS;
 				NonNullList<ItemStack> itemList = NonNullList.withSize(size, ItemStack.EMPTY);
 				ContainerHelper.loadAllItems(inventoryTag, itemList);
 				int count = 0;
@@ -209,14 +215,14 @@ public class FleshChestBlock extends BaseEntityBlock implements SimpleWaterlogge
 					tooltip.add((new TranslatableComponent("container.shulkerBox.more", totalCount - count)).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
 				}
 				tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
-				tooltip.add(new TextComponent(String.format("%d/%d ", totalCount, FleshChestBlockEntity.SLOTS)).append(new TranslatableComponent("tooltip.biomancy.slots")).withStyle(ChatFormatting.GRAY));
+				tooltip.add(new TextComponent(String.format("%d/%d ", totalCount, FleshkinChestBlockEntity.SLOTS)).append(new TranslatableComponent("tooltip.biomancy.slots")).withStyle(ChatFormatting.GRAY));
 			}
 		}
 	}
 
 	@Override
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
-		if (level.getBlockEntity(pos) instanceof FleshChestBlockEntity chest) {
+		if (level.getBlockEntity(pos) instanceof FleshkinChestBlockEntity chest) {
 			chest.recheckOpen();
 		}
 	}
