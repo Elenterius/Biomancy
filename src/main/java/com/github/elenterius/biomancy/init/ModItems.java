@@ -97,11 +97,11 @@ public final class ModItems {
 	public static final RegistryObject<BlockItem> NECROTIC_FLESH_BLOCK = ITEMS.register("necrotic_flesh_block", () -> new BlockItem(ModBlocks.NECROTIC_FLESH_BLOCK.get(), createProperties()));
 
 	//## Machine
-	public static final RegistryObject<CreatorBlockItem> CREATOR = ITEMS.register("creator", () -> new CreatorBlockItem(ModBlocks.CREATOR.get(), createProperties().rarity(Rarity.EPIC)));
+	public static final RegistryObject<BEWLBlockItem> CREATOR = ITEMS.register("creator", () -> new BEWLBlockItem(ModBlocks.CREATOR.get(), createProperties().rarity(Rarity.EPIC)));
 	public static final RegistryObject<BlockItem> BIO_FORGE = ITEMS.register("bio_forge", () -> new BlockItem(ModBlocks.BIO_FORGE.get(), createProperties().rarity(Rarity.RARE)));
 	public static final RegistryObject<BlockItem> DECOMPOSER = ITEMS.register("decomposer", () -> new BlockItem(ModBlocks.DECOMPOSER.get(), createProperties().rarity(Rarity.RARE)));
 	public static final RegistryObject<BlockItem> GLAND = ITEMS.register("gland", () -> new BlockItem(ModBlocks.GLAND.get(), createProperties().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<BlockItem> BIO_LAB = ITEMS.register("bio_lab", () -> new BlockItem(ModBlocks.BIO_LAB.get(), createProperties().rarity(Rarity.RARE)));
+	public static final RegistryObject<BEWLBlockItem> BIO_LAB = ITEMS.register("bio_lab", () -> new BEWLBlockItem(ModBlocks.BIO_LAB.get(), createProperties().rarity(Rarity.RARE)));
 
 	//## Storage & Automation
 	public static final RegistryObject<BlockItem> TONGUE = ITEMS.register("tongue", () -> new BlockItem(ModBlocks.TONGUE.get(), createProperties().rarity(Rarity.UNCOMMON)));

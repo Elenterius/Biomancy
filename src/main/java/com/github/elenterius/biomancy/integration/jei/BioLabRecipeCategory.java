@@ -20,6 +20,9 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+
+import java.util.ArrayList;
 
 public class BioLabRecipeCategory implements IRecipeCategory<BioLabRecipe> {
 
@@ -29,8 +32,8 @@ public class BioLabRecipeCategory implements IRecipeCategory<BioLabRecipe> {
 	private final IDrawable icon;
 
 	public BioLabRecipeCategory(IGuiHelper guiHelper) {
-		icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(ModItems.GLASS_VIAL.get()));
-		background = guiHelper.drawableBuilder(BiomancyMod.createRL("textures/gui/jei/bio_lab_jei_gui.png"), 0, 0, 116, 54).setTextureSize(116, 54).addPadding(0, 4, 0, 0).build();
+		icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(ModItems.BIO_LAB.get()));
+		background = guiHelper.drawableBuilder(BiomancyMod.createRL("textures/gui/jei/bio_lab_jei_gui.png"), 0, 0, 134, 54).setTextureSize(134, 54).addPadding(0, 4, 0, 0).build();
 	}
 
 	@Override
@@ -60,27 +63,33 @@ public class BioLabRecipeCategory implements IRecipeCategory<BioLabRecipe> {
 
 	@Override
 	public void setIngredients(BioLabRecipe recipe, IIngredients ingredients) {
-		ingredients.setInputIngredients(recipe.getIngredients());
+		ArrayList<Ingredient> list = new ArrayList<>(recipe.getIngredients());
+		int emptySlots = BioLabRecipe.MAX_INGREDIENTS - list.size();
+		for (int i = 0; i < emptySlots; i++) {
+			list.add(Ingredient.EMPTY);
+		}
+		list.add(recipe.getReactant());
+
+		ingredients.setInputIngredients(list);
 		ingredients.setOutput(VanillaTypes.ITEM, recipe.getResultItem());
 	}
-
-	private static final int OUTPUT_SLOT = 0;
-	private static final int INPUT_SLOT = 1;
 
 	@Override
 	public void setRecipe(IRecipeLayout layout, BioLabRecipe recipe, IIngredients ingredients) {
 		layout.setShapeless();
-
 		IGuiItemStackGroup guiISGroup = layout.getItemStacks();
-		guiISGroup.init(OUTPUT_SLOT, false, 94, 18);
 
-		int index = INPUT_SLOT;
-		for (int x = 0; x < 3; x++) {
-			guiISGroup.init(index++, true, x * 18, 9);
-		}
-		for (int x = 0; x < 2; x++) {
-			guiISGroup.init(index++, true, x * 18, 9 + 18);
-		}
+		int index = 0;
+
+		//ingredients
+		guiISGroup.init(index++, true, 0, 9);
+		guiISGroup.init(index++, true, 18, 9);
+		guiISGroup.init(index++, true, 0, 9 + 18);
+		guiISGroup.init(index++, true, 18, 9 + 18);
+
+		guiISGroup.init(index++, true, 54, 18); //reactant
+
+		guiISGroup.init(index, false, 112, 18); //result
 
 		guiISGroup.set(ingredients);
 	}
@@ -90,9 +99,9 @@ public class BioLabRecipeCategory implements IRecipeCategory<BioLabRecipe> {
 		int ticks = recipe.getCraftingTime();
 		if (ticks > 0) {
 			int seconds = ticks / 20;
-			int mutagenCost = ticks * BioLabBlockEntity.FUEL_COST;
+			int fuelCost = ticks * BioLabBlockEntity.FUEL_COST;
 			Component timeText = new TranslatableComponent("gui.jei.category.smelting.time.seconds", seconds);
-			Component costText = new TextComponent("+" + mutagenCost + " ").append(new TranslatableComponent("tooltip.biomancy.bile_fuel"));
+			Component costText = new TextComponent("+" + fuelCost + " ").append(new TranslatableComponent("tooltip.biomancy.nutrients_fuel"));
 			Font fontRenderer = Minecraft.getInstance().font;
 			fontRenderer.draw(poseStack, timeText, (float) background.getWidth() - fontRenderer.width(timeText), 42, 0xff808080);
 			fontRenderer.draw(poseStack, costText, 0, 48, 0xff808080);

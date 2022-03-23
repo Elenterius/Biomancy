@@ -11,9 +11,9 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.renderers.geo.GeoBlockRenderer;
 
-public class BioLabBlockEntityRenderer extends GeoBlockRenderer<BioLabBlockEntity> {
+public class BioLabBlockRenderer extends GeoBlockRenderer<BioLabBlockEntity> {
 
-	public BioLabBlockEntityRenderer(BlockEntityRendererProvider.Context rendererDispatcher) {
+	public BioLabBlockRenderer(BlockEntityRendererProvider.Context rendererDispatcher) {
 		super(rendererDispatcher, new BioLabModel());
 	}
 

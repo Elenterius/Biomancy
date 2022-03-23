@@ -1,7 +1,7 @@
 {
   "format_version": "1.8.0",
   "animations": {
-    "placeholder.anim.idle": {
+    "bio_lab.idle": {
       "loop": true,
       "animation_length": 2.08,
       "bones": {
@@ -15,132 +15,96 @@
               ]
             },
             "1.04": {
-              "post": {
-                "vector": [
-                  1,
-                  0.97,
-                  0.97
-                ]
-              },
-              "lerp_mode": "catmullrom"
+              "vector": [
+                1,
+                0.96,
+                0.96
+              ]
             },
             "2.08": {
-              "post": {
-                "vector": [
-                  1,
-                  1,
-                  1
-                ]
-              },
-              "lerp_mode": "catmullrom"
+              "vector": [
+                1,
+                1,
+                1
+              ]
             }
           }
         },
         "bone_canister_right": {
           "scale": {
             "0.0": {
-              "post": {
-                "vector": [
-                  1,
-                  1,
-                  1
-                ]
-              },
-              "lerp_mode": "catmullrom"
+              "vector": [
+                1,
+                1,
+                1
+              ]
             },
             "0.52": {
-              "post": {
-                "vector": [
-                  1,
-                  1,
-                  0.8
-                ]
-              },
-              "lerp_mode": "catmullrom"
+              "vector": [
+                1,
+                1,
+                0.8
+              ]
             },
             "1.04": {
-              "post": {
-                "vector": [
-                  1,
-                  1,
-                  1
-                ]
-              },
-              "lerp_mode": "catmullrom"
+              "vector": [
+                1,
+                1,
+                1
+              ]
             },
             "1.56": {
-              "post": {
-                "vector": [
-                  1,
-                  1,
-                  0.8
-                ]
-              },
-              "lerp_mode": "catmullrom"
+              "vector": [
+                1,
+                1,
+                0.8
+              ]
             },
             "2.08": {
-              "post": {
-                "vector": [
-                  1,
-                  1,
-                  1
-                ]
-              },
-              "lerp_mode": "catmullrom"
+              "vector": [
+                1,
+                1,
+                1
+              ]
             }
           }
         },
         "bone_canister_left": {
           "scale": {
             "0.0": {
-              "post": {
-                "vector": [
-                  1,
-                  1,
-                  1
-                ]
-              },
-              "lerp_mode": "catmullrom"
+              "vector": [
+                1,
+                1,
+                1
+              ]
             },
             "0.52": {
-              "post": {
-                "vector": [
-                  1,
-                  1,
-                  0.8
-                ]
-              },
-              "lerp_mode": "catmullrom"
+              "vector": [
+                1,
+                1,
+                0.8
+              ]
             },
             "1.04": {
-              "post": {
-                "vector": [
-                  1,
-                  1,
-                  1
-                ]
-              },
-              "lerp_mode": "catmullrom"
+              "vector": [
+                1,
+                1,
+                1
+              ]
             },
             "1.56": {
-              "post": {
-                "vector": [
-                  1,
-                  1,
-                  0.8
-                ]
-              },
-              "lerp_mode": "catmullrom"
+              "vector": [
+                1,
+                1,
+                0.8
+              ]
             },
             "2.08": {
-              "post": {
-                "vector": [
-                  1,
-                  1,
-                  1
-                ]
-              },
-              "lerp_mode": "catmullrom"
+              "vector": [
+                1,
+                1,
+                1
+              ]
             }
           }
         }

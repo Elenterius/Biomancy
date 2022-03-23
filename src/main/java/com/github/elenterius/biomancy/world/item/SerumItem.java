@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.world.item;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModSerums;
+import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
 import com.github.elenterius.biomancy.world.serum.Serum;
 import net.minecraft.core.NonNullList;
@@ -51,27 +52,7 @@ public class SerumItem extends Item {
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		Serum serum = Serum.deserialize(stack.getOrCreateTag());
-		if (serum != null) {
-			serum.addInfoToTooltip(stack, level, tooltip, isAdvanced);
-		}
-		else tooltip.add(TextComponentUtil.getTooltipText("contains_nothing"));
-	}
-
-	@Override
-	public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
-		if (allowdedIn(category) && serumSupplier != null) {
-			items.add(SerumItem.getSerumItemStack(serumSupplier.get()));
-		}
-	}
-
-	@Override
-	public String getDescriptionId(ItemStack stack) {
-		Serum serum = Serum.deserialize(stack.getOrCreateTag());
-		if (serum != null) {
-			return serum.getTranslationKey();
-		}
-		return super.getDescriptionId(stack);
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
 	}
 
 	@Override
@@ -99,6 +80,15 @@ public class SerumItem extends Item {
 		}
 
 		@Override
+		public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
+			Serum serum = Serum.deserialize(stack.getOrCreateTag());
+			if (serum != null) {
+				serum.addInfoToTooltip(stack, level, tooltip, isAdvanced);
+			}
+			else tooltip.add(TextComponentUtil.getTooltipText("contains_nothing"));
+		}
+
+		@Override
 		public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
 			if (allowdedIn(category)) {
 				for (Serum serum : ModSerums.REGISTRY.get()) {
@@ -109,6 +99,16 @@ public class SerumItem extends Item {
 				}
 			}
 		}
+
+		@Override
+		public String getDescriptionId(ItemStack stack) {
+			Serum serum = Serum.deserialize(stack.getOrCreateTag());
+			if (serum != null) {
+				return serum.getTranslationKey();
+			}
+			return super.getDescriptionId(stack);
+		}
+
 	}
 
 }

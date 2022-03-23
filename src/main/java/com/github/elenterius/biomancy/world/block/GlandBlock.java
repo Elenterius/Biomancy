@@ -87,10 +87,6 @@ public class GlandBlock extends BaseEntityBlock {
 			if (stack.hasCustomHoverName()) {
 				gland.setCustomName(stack.getHoverName());
 			}
-			BlockPos relativePos = pos.relative(state.getValue(FACING).getOpposite());
-			if (level.getBlockEntity(relativePos) instanceof DecomposerBlockEntity decomposer) {
-				decomposer.addSubEntity(gland);
-			}
 		}
 	}
 
@@ -100,10 +96,6 @@ public class GlandBlock extends BaseEntityBlock {
 			if (level.getBlockEntity(pos) instanceof GlandBlockEntity gland) {
 				gland.dropContainerContents(level, pos);
 //				level.updateNeighbourForOutputSignal(pos, this);
-				BlockPos relativePos = pos.relative(state.getValue(FACING).getOpposite());
-				if (level.getBlockEntity(relativePos) instanceof DecomposerBlockEntity decomposer) {
-					decomposer.removeSubEntity(pos);
-				}
 			}
 			super.onRemove(state, level, pos, newState, isMoving);
 		}

@@ -37,7 +37,7 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 
 	public DecomposerRecipeCategory(IGuiHelper guiHelper) {
 		icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(ModBlocks.DECOMPOSER.get()));
-		background = guiHelper.drawableBuilder(BiomancyMod.createRL("textures/gui/jei/decomposer_jei_gui.png"), 0, 0, 162, 60).setTextureSize(162, 60).build();
+		background = guiHelper.drawableBuilder(BiomancyMod.createRL("textures/gui/jei/decomposer_jei_gui.png"), 0, 0, 126, 60).setTextureSize(126, 60).build();
 	}
 
 	@Override
@@ -96,53 +96,33 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 		for (VariableProductionOutput output : recipe.getOutputs()) {
 			outputs.add(output.getItemStack());
 		}
-		for (VariableProductionOutput byproducts : recipe.getByproducts()) {
-			outputs.add(byproducts.getItemStack());
-		}
 		ingredients.setOutputs(VanillaTypes.ITEM, outputs);
 	}
 
 	@Override
 	public void setRecipe(IRecipeLayout layout, DecomposerRecipe recipe, IIngredients ingredients) {
 		IGuiItemStackGroup guiISGroup = layout.getItemStacks();
-		guiISGroup.init(INPUT_SLOT, true, 9, 11);
+		int posY = 11;
+		guiISGroup.init(INPUT_SLOT, true, 9, posY);
 
-		guiISGroup.init(OUTPUT_SLOT, false, 62, 11);
-		guiISGroup.init(OUTPUT_SLOT + 1, false, 62 + 18, 11);
-		guiISGroup.init(OUTPUT_SLOT + 2, false, 62, 29);
-		guiISGroup.init(OUTPUT_SLOT + 3, false, 62 + 18, 29);
-
-		guiISGroup.init(OUTPUT_SLOT + 4, false, 116, 11);
-		guiISGroup.init(OUTPUT_SLOT + 5, false, 116 + 18, 11);
-		guiISGroup.init(OUTPUT_SLOT + 6, false, 116, 29);
-		guiISGroup.init(OUTPUT_SLOT + 7, false, 116 + 18, 29);
+		int posX = 62;
+		int slotIdx = OUTPUT_SLOT;
+		guiISGroup.init(slotIdx++, false, posX, posY);
+		guiISGroup.init(slotIdx++, false, posX, posY + 18);
+		guiISGroup.init(slotIdx++, false, posX + 18, posY);
+		guiISGroup.init(slotIdx++, false, posX + 18, posY + 18);
+		guiISGroup.init(slotIdx++, false, posX + 18 * 2, posY);
+		guiISGroup.init(slotIdx, false, posX + 18 * 2, posY + 18);
 
 		guiISGroup.set(ingredients);
+		final int lastSlotIdx = slotIdx;
 
 		guiISGroup.addTooltipCallback((index, input, stack, tooltip) -> {
-			if (index >= OUTPUT_SLOT && index <= OUTPUT_SLOT + 3 && !stack.isEmpty()) {
+			if (index >= OUTPUT_SLOT && index <= lastSlotIdx && !stack.isEmpty()) {
 				int idx = index - OUTPUT_SLOT;
 				if (idx < recipe.getOutputs().size()) {
 					VariableProductionOutput output = recipe.getOutputs().get(idx);
 					ItemCountRange countRange = output.getCountRange();
-					if (countRange instanceof ItemCountRange.UniformRange uniform) {
-						tooltip.add(new TextComponent(uniform.min() + "-" + uniform.max()).withStyle(ChatFormatting.GRAY));
-					}
-					else if (countRange instanceof ItemCountRange.ConstantValue constant) {
-						tooltip.add(new TextComponent(constant.value() + "").withStyle(ChatFormatting.GRAY));
-					}
-					else if (countRange instanceof ItemCountRange.BinomialRange binomialRange) {
-						tooltip.add(new TextComponent("n: " + binomialRange.n() + ", p: " + binomialRange.p()).withStyle(ChatFormatting.GRAY));
-					}
-				}
-				return;
-			}
-
-			if (index >= OUTPUT_SLOT + 4 && index <= OUTPUT_SLOT + 7 && !stack.isEmpty()) {
-				int idx = index - OUTPUT_SLOT - 4;
-				if (idx < recipe.getOutputs().size()) {
-					VariableProductionOutput byproduct = recipe.getByproducts().get(idx);
-					ItemCountRange countRange = byproduct.getCountRange();
 					if (countRange instanceof ItemCountRange.UniformRange uniform) {
 						tooltip.add(new TextComponent(uniform.min() + "-" + uniform.max()).withStyle(ChatFormatting.GRAY));
 					}

@@ -11,9 +11,9 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.renderers.geo.GeoBlockRenderer;
 
-public class BioForgeBlockEntityRenderer extends GeoBlockRenderer<BioForgeBlockEntity> {
+public class BioForgeBlockRenderer extends GeoBlockRenderer<BioForgeBlockEntity> {
 
-	public BioForgeBlockEntityRenderer(BlockEntityRendererProvider.Context rendererDispatcher) {
+	public BioForgeBlockRenderer(BlockEntityRendererProvider.Context rendererDispatcher) {
 		super(rendererDispatcher, new BioForgeModel());
 	}
 

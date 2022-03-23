@@ -14,9 +14,6 @@ import com.github.elenterius.biomancy.world.inventory.menu.DecomposerMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.LongTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
@@ -42,10 +39,6 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, DecomposerStateData> implements MenuProvider, IAnimatable {
 
@@ -61,8 +54,6 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	private final BehavioralInventory<?> fuelInventory;
 	private final BehavioralInventory<?> inputInventory;
 	private final BehavioralInventory<?> outputInventory;
-
-	private final Set<BlockPos> subEntities = new HashSet<>();
 
 	private final AnimationFactory animationFactory = new AnimationFactory(this);
 
@@ -151,7 +142,6 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 				inputInventory.removeItem(idx, recipeToCraft.getIngredientCount()); //consume input
 			}
 
-			//primary output result
 			for (VariableProductionOutput output : recipeToCraft.getOutputs()) {
 				int count = output.getCount(level.random);
 				if (count > 0) {
@@ -160,29 +150,6 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 					for (int idx = 0; idx < outputInventory.getContainerSize(); idx++) {
 						stack = outputInventory.insertItemStack(idx, stack); //update stack with remainder
 						if (stack.isEmpty()) break;
-					}
-				}
-			}
-
-			//gland output result
-			List<VariableProductionOutput> byproducts = recipeToCraft.getByproducts();
-			List<ItemStack> outputs = new ArrayList<>(byproducts.size());
-			for (VariableProductionOutput byproduct : byproducts) {
-				int count = byproduct.getCount(level.random);
-				if (count > 0) {
-					ItemStack stack = byproduct.getItemStack();
-					stack.setCount(count);
-					outputs.add(stack);
-				}
-			}
-
-			if (!outputs.isEmpty()) {
-				for (BlockPos pos : subEntities) {
-					for (int i = 0; i < outputs.size(); i++) {
-						ItemStack stack = outputs.get(i);
-						if (!stack.isEmpty() && level.getBlockEntity(pos) instanceof GlandBlockEntity gland) {
-							outputs.set(i, gland.insertItemStack(stack));
-						}
 					}
 				}
 			}
@@ -198,24 +165,6 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 		return RECIPE_TYPE.getRecipeFromContainer(level, inputInventory).orElse(null);
 	}
 
-	public void addSubEntity(BlockPos pos) {
-		subEntities.add(pos);
-		setChanged();
-	}
-
-	public void addSubEntity(GlandBlockEntity gland) {
-		addSubEntity(gland.getBlockPos());
-	}
-
-	public void removeSubEntity(GlandBlockEntity gland) {
-		removeSubEntity(gland.getBlockPos());
-	}
-
-	public void removeSubEntity(BlockPos pos) {
-		subEntities.remove(pos);
-		setChanged();
-	}
-
 	@Override
 	protected void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
@@ -223,14 +172,6 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 		tag.put("FuelSlots", fuelInventory.serializeNBT());
 		tag.put("InputSlots", inputInventory.serializeNBT());
 		tag.put("OutputSlots", outputInventory.serializeNBT());
-
-		if (!subEntities.isEmpty()) {
-			ListTag listNBT = new ListTag();
-			for (BlockPos pos : subEntities) {
-				listNBT.add(LongTag.valueOf(pos.asLong()));
-			}
-			tag.put("SubEntitiesPos", listNBT);
-		}
 	}
 
 	@Override
@@ -240,16 +181,6 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 		fuelInventory.deserializeNBT(tag.getCompound("FuelSlots"));
 		inputInventory.deserializeNBT(tag.getCompound("InputSlots"));
 		outputInventory.deserializeNBT(tag.getCompound("OutputSlots"));
-
-		subEntities.clear();
-		if (tag.contains("SubEntitiesPos")) {
-			ListTag list = tag.getList("SubEntitiesPos", Tag.TAG_LONG);
-			for (Tag entry : list) {
-				if (entry instanceof LongTag longTag) {
-					subEntities.add(BlockPos.of(longTag.getAsLong()));
-				}
-			}
-		}
 	}
 
 	@Override

@@ -29,13 +29,10 @@ import java.util.function.Consumer;
 public class DecomposerRecipeBuilder {
 
 	private final ResourceLocation recipeId;
+	private final List<VariableProductionOutput> outputs = new ArrayList<>();
+	private final Advancement.Builder advancement = Advancement.Builder.advancement();
 	private IngredientQuantity ingredientQuantity = null;
 	private int craftingTime = 4 * 20;
-
-	private final List<VariableProductionOutput> outputs = new ArrayList<>();
-	private final List<VariableProductionOutput> byproducts = new ArrayList<>();
-
-	private final Advancement.Builder advancement = Advancement.Builder.advancement();
 	@Nullable
 	private String group;
 
@@ -112,28 +109,6 @@ public class DecomposerRecipeBuilder {
 		return this;
 	}
 
-	public DecomposerRecipeBuilder addByproduct(ItemLike resultIn) {
-		return addByproduct(resultIn, 1);
-	}
-
-	public DecomposerRecipeBuilder addByproduct(ItemLike resultIn, int count) {
-		return addByproduct(new VariableProductionOutput(resultIn, count));
-	}
-
-	public DecomposerRecipeBuilder addByproduct(ItemLike resultIn, int min, int max) {
-		return addByproduct(new VariableProductionOutput(resultIn, min, max));
-	}
-
-	public DecomposerRecipeBuilder addByproduct(VariableProductionOutput byproduct) {
-		byproducts.add(byproduct);
-		return this;
-	}
-
-	public DecomposerRecipeBuilder addByproducts(VariableProductionOutput... byproductsIn) {
-		byproducts.addAll(Arrays.asList(byproductsIn));
-		return this;
-	}
-
 	public DecomposerRecipeBuilder unlockedBy(String name, CriterionTriggerInstance criterionTrigger) {
 		advancement.addCriterion(name, criterionTrigger);
 		return this;
@@ -155,7 +130,7 @@ public class DecomposerRecipeBuilder {
 				.rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
 		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(),
 				"recipes/" + (itemCategory != null ? itemCategory.getRecipeFolderName() : BiomancyMod.MOD_ID) + "/" + recipeId.getPath());
-		consumer.accept(new Result(recipeId, group == null ? "" : group, ingredientQuantity, craftingTime, outputs, byproducts, advancement, advancementId));
+		consumer.accept(new Result(recipeId, group == null ? "" : group, ingredientQuantity, craftingTime, outputs, advancement, advancementId));
 	}
 
 	private void validateCriteria(ResourceLocation id) {
@@ -170,18 +145,16 @@ public class DecomposerRecipeBuilder {
 		private final String group;
 		private final IngredientQuantity ingredientQuantity;
 		private final List<VariableProductionOutput> outputs;
-		private final List<VariableProductionOutput> byproducts;
 		private final int craftingTime;
 		private final Advancement.Builder advancementBuilder;
 		private final ResourceLocation advancementId;
 
-		public Result(ResourceLocation idIn, String groupIn, IngredientQuantity ingredientQuantityIn, int craftingTimeIn, List<VariableProductionOutput> outputsIn, List<VariableProductionOutput> byproductsIn, Advancement.Builder advancementBuilderIn, ResourceLocation advancementIdIn) {
+		public Result(ResourceLocation idIn, String groupIn, IngredientQuantity ingredientQuantityIn, int craftingTimeIn, List<VariableProductionOutput> outputsIn, Advancement.Builder advancementBuilderIn, ResourceLocation advancementIdIn) {
 			id = idIn;
 			group = groupIn;
 			ingredientQuantity = ingredientQuantityIn;
 			craftingTime = craftingTimeIn;
 			outputs = outputsIn;
-			byproducts = byproductsIn;
 			advancementBuilder = advancementBuilderIn;
 			advancementId = advancementIdIn;
 		}
@@ -198,12 +171,6 @@ public class DecomposerRecipeBuilder {
 				jsonArray.add(output.serialize());
 			}
 			json.add("outputs", jsonArray);
-
-			jsonArray = new JsonArray();
-			for (VariableProductionOutput byproduct : byproducts) {
-				jsonArray.add(byproduct.serialize());
-			}
-			json.add("byproducts", jsonArray);
 
 			json.addProperty("time", craftingTime);
 		}

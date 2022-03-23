@@ -11,7 +11,7 @@
   "item.biomancy.mineral_dust": "Mineral Dust",
   "item.biomancy.gem_dust": "Lapidary Dust",
 
-  "item.biomancy.nutrients": "Nutrient Paste",
+  "item.biomancy.nutrients": "Nutrients",
   "item.biomancy.organic_matter": "Biotic Matter",
   "item.biomancy.bio_lumens": "Bio-Lumens",
   "item.biomancy.exotic_dust": "Exotic Dust",
@@ -19,9 +19,8 @@
   "item.biomancy.oxides": "Oxides",
   "item.biomancy.lithic_powder": "Lithic Powder",
 
-  "item.biomancy.rejuvenating_mucus": "Invigorating Mucus",
+  "item.biomancy.rejuvenating_mucus": "Vitalizing Mucus",
   "item.biomancy.hormone_secretion": "Hormone Secretion",
-  "item.biomancy.hormone_bile": "Hormone Rich Bile",
   "item.biomancy.venom_extract": "Venom Extract",
   "item.biomancy.volatile_extract": "Volatile Extract",
   "item.biomancy.bile_extract": "Bile Extract",
@@ -30,6 +29,7 @@
   "item.biomancy.exalted_living_flesh": "Exalted Living Flesh",
   "item.biomancy.biometal_ingot": "Biometal Ingot",
   "item.biomancy.oculus": "Oculus",
+  "item.biomancy.nutrient_paste": "Nutrient Paste",
   "item.biomancy.nutrient_bar": "Nutrient Bar",
   "item.biomancy.protein_bar": "Meaty Granola Bar",
 
@@ -47,11 +47,30 @@
   "item.biomancy.venom_gland": "Venom Gland",
   "item.biomancy.volatile_gland": "Volatile Gland",
 
+  "item.biomancy.growth_serum": "Growth Serum",
+  "item.biomancy.rejuvenation_serum": "Rejuvenation Serum",
+  "item.biomancy.breeding_stimulant": "Breeding Stimulant",
+  "item.biomancy.absorption_boost": "Absorption Stimulant",
+  "item.biomancy.insomnia_cure": "Insomnia Cure",
+  "item.biomancy.cleansing_serum": "Cleansing Serum",
+  "item.biomancy.decay_agent": "Decay Serum",
+  "item.biomancy.mutagen_serum": "Mutagen Serum",
+  "item.biomancy.adrenaline_serum": "Adrenaline Serum",
+  "item.biomancy.ichor_serum": "[NYI] Vial of Ichor",
+
+  "item.biomancy.organic_compound": "Organic Compound",
+  "item.biomancy.corrosive_compound": "Corrosive Compound",
+  "item.biomancy.vitalizing_compound": "Vitalizing Compound",
+  "item.biomancy.hormone_compound": "Hormone Compound",
+  "item.biomancy.exotic_compound": "Exotic Compound",
+
   "item.biomancy.glass_vial": "Glass Vial",
   "item.biomancy.serum": "Serum",
-  "item.biomancy.essence": "Essence",
-  "item.biomancy.bio_extractor": "Bio-Extractor",
   "item.biomancy.bio_injector": "Bio-Injector",
+
+  "item.biomancy.bio_extractor": "Bio-Extractor",
+  "item.biomancy.essence": "Essence",
+
   "item.biomancy.bone_sword": "Sharpened Bone",
   "item.biomancy.long_range_claw": "Marfanoid Claws",
   "item.biomancy.withershot": "Withershot",
@@ -63,7 +82,7 @@
   "item.biomancy.boomling_spawn_egg": "Boomling Spawn Egg",
 
   "block.biomancy.creator": "Flesh Crucible",
-  "block.biomancy.bio_forge": "Bio-Forge [NYI]",
+  "block.biomancy.bio_forge": "[NYI] Bio-Forge",
   "block.biomancy.bio_lab": "Bio-Lab",
   "block.biomancy.decomposer": "Decomposer",
   "block.biomancy.gland": "Appendix Gland",
@@ -80,8 +99,8 @@
   "block.biomancy.necrotic_flesh_block": "Necrotic Flesh Block",
 
   "container.biomancy.decomposer": "Decomposer Inventory",
-  "container.biomancy.bio_lab": "Bio-Lab",
-  "container.biomancy.gland": "Gland",
+  "container.biomancy.bio_lab": "Bio-Lab Inventory",
+  "container.biomancy.gland": "Gland Inventory",
   "container.biomancy.gulge": "Gulge Inventory",
   "container.biomancy.sac": "Sac Inventory",
   "container.biomancy.fleshkin_chest": "Fleshkin Inventory",

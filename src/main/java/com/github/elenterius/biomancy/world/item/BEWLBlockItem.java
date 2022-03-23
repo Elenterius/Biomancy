@@ -9,10 +9,10 @@ import net.minecraftforge.client.IItemRenderProperties;
 import java.util.function.Consumer;
 
 //implements IAnimatable
-public class CreatorBlockItem extends BlockItem {
+public class BEWLBlockItem extends BlockItem {
 
-	public CreatorBlockItem(Block pBlock, Properties pProperties) {
-		super(pBlock, pProperties);
+	public BEWLBlockItem(Block block, Properties properties) {
+		super(block, properties);
 	}
 
 	@Override

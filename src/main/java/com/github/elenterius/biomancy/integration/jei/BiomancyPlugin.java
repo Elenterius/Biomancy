@@ -3,7 +3,6 @@ package com.github.elenterius.biomancy.integration.jei;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.gui.BioLabScreen;
 import com.github.elenterius.biomancy.client.gui.DecomposerScreen;
-import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.world.inventory.menu.BioLabMenu;
 import com.github.elenterius.biomancy.world.inventory.menu.DecomposerMenu;
@@ -31,7 +30,7 @@ public class BiomancyPlugin implements IModPlugin {
 
 	@Override
 	public void registerItemSubtypes(ISubtypeRegistration registration) {
-		registration.registerSubtypeInterpreter(ModItems.GENERIC_SERUM.get(), SerumSubtypeInterpreter.INSTANCE);
+//		registration.registerSubtypeInterpreter(ModItems.GENERIC_SERUM.get(), SerumSubtypeInterpreter.INSTANCE);
 	}
 
 	@Override
@@ -50,7 +49,7 @@ public class BiomancyPlugin implements IModPlugin {
 	@Override
 	public void registerGuiHandlers(IGuiHandlerRegistration registration) {
 		registration.addRecipeClickArea(DecomposerScreen.class, 75, 23, 20, 4, DecomposerRecipeCategory.ID);
-		registration.addRecipeClickArea(BioLabScreen.class, 108, 29, 14, 10, BioLabRecipeCategory.ID);
+		registration.addRecipeClickArea(BioLabScreen.class, 98, 67, 11, 19, BioLabRecipeCategory.ID);
 	}
 
 	@Override

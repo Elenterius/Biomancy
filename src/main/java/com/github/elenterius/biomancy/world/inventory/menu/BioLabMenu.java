@@ -7,7 +7,9 @@ import com.github.elenterius.biomancy.world.block.entity.BioLabBlockEntity;
 import com.github.elenterius.biomancy.world.block.entity.state.BioLabStateData;
 import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.world.inventory.SimpleInventory;
+import com.github.elenterius.biomancy.world.inventory.slot.FuelSlot;
 import com.github.elenterius.biomancy.world.inventory.slot.ISlotZone;
+import com.github.elenterius.biomancy.world.inventory.slot.OutputSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
@@ -19,14 +21,14 @@ import org.apache.logging.log4j.MarkerManager;
 
 public class BioLabMenu extends PlayerContainerMenu {
 
+	protected final Level level;
 	private final BehavioralInventory<?> fuelInventory;
 	private final SimpleInventory inputInventory;
 	private final BehavioralInventory<?> outputInventory;
 	private final BioLabStateData stateData;
-	protected final Level level;
 
 	protected BioLabMenu(int id, Inventory playerInventory, BehavioralInventory<?> fuelInventory, SimpleInventory inputInventory, BehavioralInventory<?> outputInventory, BioLabStateData stateData) {
-		super(ModMenuTypes.BIO_LAB.get(), id, playerInventory);
+		super(ModMenuTypes.BIO_LAB.get(), id, playerInventory, 115, 173);
 		level = playerInventory.player.level;
 
 		this.fuelInventory = fuelInventory;
@@ -34,25 +36,16 @@ public class BioLabMenu extends PlayerContainerMenu {
 		this.outputInventory = outputInventory;
 		this.stateData = stateData;
 
-		int posY = 17;
-		addSlot(new Slot(fuelInventory, 0, 17, posY) {
-			@Override
-			public boolean mayPlace(ItemStack stack) {
-				return BioLabBlockEntity.VALID_FUEL_ITEM.test(stack);
-			}
-		});
+		addSlot(new FuelSlot(fuelInventory, 0, 43, 80));
 
-		int posX = 62;
-		addSlot(new Slot(inputInventory, 0, posX, posY));
-		addSlot(new Slot(inputInventory, 1, posX + 18, posY));
-		addSlot(new Slot(inputInventory, 2, posX + 18 * 2, posY));
-		addSlot(new Slot(inputInventory, 3, posX + 18 * 3, posY));
-		addSlot(new Slot(inputInventory, 4, posX + 18 * 4, posY));
+		addSlot(new Slot(inputInventory, 0, 50, 19));
+		addSlot(new Slot(inputInventory, 1, 70, 16));
+		addSlot(new Slot(inputInventory, 2, 90, 16));
+		addSlot(new Slot(inputInventory, 3, 110, 19));
 
-		posY += 18 * 2;
-		addSlot(new Slot(outputInventory, 0, posX, posY));
-		addSlot(new Slot(outputInventory, 1, posX + 18, posY));
-		addSlot(new Slot(outputInventory, 2, posX + 18 * 2, posY));
+		addSlot(new Slot(inputInventory, 4, 80, 50)); //mixture/vial slot
+
+		addSlot(new OutputSlot(outputInventory, 0, 80, 76));
 
 		addDataSlots(stateData);
 	}
@@ -77,6 +70,10 @@ public class BioLabMenu extends PlayerContainerMenu {
 	public float getCraftingProgressNormalized() {
 		if (stateData.timeForCompletion == 0) return 0f;
 		return Mth.clamp(stateData.timeElapsed / (float) stateData.timeForCompletion, 0f, 1f);
+	}
+
+	public int getTotalFuelCost() {
+		return stateData.timeForCompletion * BioLabBlockEntity.FUEL_COST;
 	}
 
 	public float getFuelAmountNormalized() {

@@ -21,17 +21,15 @@ import java.util.List;
 public class DecomposerRecipe extends AbstractProductionRecipe {
 
 	public static final int MAX_INGREDIENTS = 1;
-	public static final int MAX_OUTPUTS = 4;
+	public static final int MAX_OUTPUTS = 6;
 
 	private final IngredientQuantity ingredientQuantity;
 	private final List<VariableProductionOutput> outputs;
-	private final List<VariableProductionOutput> byproducts;
 
-	public DecomposerRecipe(ResourceLocation id, List<VariableProductionOutput> outputs, List<VariableProductionOutput> byproducts, IngredientQuantity ingredientQuantity, int craftingTime) {
+	public DecomposerRecipe(ResourceLocation id, List<VariableProductionOutput> outputs, IngredientQuantity ingredientQuantity, int craftingTime) {
 		super(id, craftingTime);
 		this.ingredientQuantity = ingredientQuantity;
 		this.outputs = outputs;
-		this.byproducts = byproducts;
 	}
 
 	@Override
@@ -77,10 +75,6 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 		return outputs;
 	}
 
-	public List<VariableProductionOutput> getByproducts() {
-		return byproducts;
-	}
-
 	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return ModRecipes.DECOMPOSING_SERIALIZER.get();
@@ -103,14 +97,9 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 				throw new JsonParseException(String.format("Too many outputs for %s recipe. Max amount is %d", getRegistryName(), MAX_OUTPUTS));
 			}
 
-			List<VariableProductionOutput> byproducts = RecipeUtil.readVariableProductionOutputs(GsonHelper.getAsJsonArray(json, "byproducts"));
-			if (byproducts.size() > MAX_OUTPUTS) {
-				throw new JsonParseException(String.format("Too many byproducts for %s recipe. Max amount is %d", getRegistryName(), MAX_OUTPUTS));
-			}
-
 			int time = GsonHelper.getAsInt(json, "time", 100);
 
-			return new DecomposerRecipe(recipeId, outputs, byproducts, ingredientQuantity, time);
+			return new DecomposerRecipe(recipeId, outputs, ingredientQuantity, time);
 		}
 
 		@Override
@@ -125,13 +114,7 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 				outputs.add(VariableProductionOutput.read(buffer));
 			}
 
-			int byproductCount = buffer.readVarInt();
-			List<VariableProductionOutput> byproducts = new ArrayList<>();
-			for (int j = 0; j < byproductCount; ++j) {
-				byproducts.add(VariableProductionOutput.read(buffer));
-			}
-
-			return new DecomposerRecipe(recipeId, outputs, byproducts, ingredientQuantity, time);
+			return new DecomposerRecipe(recipeId, outputs, ingredientQuantity, time);
 		}
 
 		@Override
@@ -143,11 +126,6 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 			buffer.writeVarInt(recipe.outputs.size());
 			for (VariableProductionOutput output : recipe.outputs) {
 				output.write(buffer);
-			}
-
-			buffer.writeVarInt(recipe.byproducts.size());
-			for (VariableProductionOutput byproduct : recipe.byproducts) {
-				byproduct.write(buffer);
 			}
 		}
 	}

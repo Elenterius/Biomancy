@@ -1,7 +1,6 @@
 package com.github.elenterius.biomancy.world.block.entity;
 
 import com.github.elenterius.biomancy.init.ModBlockEntities;
-import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.recipe.BioLabRecipe;
 import com.github.elenterius.biomancy.recipe.RecipeTypeImpl;
@@ -39,18 +38,15 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
-import java.util.function.Predicate;
 
 public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabStateData> implements MenuProvider, IAnimatable {
 
 	public static final int FUEL_SLOTS = 1;
-	public static final int INPUT_SLOTS = BioLabRecipe.MAX_INGREDIENTS;
-	public static final int OUTPUT_SLOTS = 3;
+	public static final int INPUT_SLOTS = BioLabRecipe.MAX_INGREDIENTS + BioLabRecipe.MAX_REACTANT;
+	public static final int OUTPUT_SLOTS = 1;
 
 	public static final int MAX_FUEL = 32_000;
 	public static final short FUEL_COST = 2;
-	public static final float ITEM_FUEL_VALUE = 200; // FUEL_COST * 400 / 4f
-	public static final Predicate<ItemStack> VALID_FUEL_ITEM = stack -> stack.getItem() == ModItems.BILE_EXTRACT.get();
 	public static final RecipeTypeImpl.ItemStackRecipeType<BioLabRecipe> RECIPE_TYPE = ModRecipes.BIO_BREWING_RECIPE_TYPE;
 
 	private final BioLabStateData stateData = new BioLabStateData();
@@ -62,9 +58,13 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 
 	public BioLabBlockEntity(BlockPos worldPosition, BlockState blockState) {
 		super(ModBlockEntities.BIO_LAB.get(), worldPosition, blockState);
-		fuelInventory = BehavioralInventory.createServerContents(FUEL_SLOTS, ish -> HandlerBehaviors.filterInput(ish, VALID_FUEL_ITEM), this::canPlayerOpenInv, this::setChanged);
+		fuelInventory = BehavioralInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterFuel, this::canPlayerOpenInv, this::setChanged);
 		inputInventory = SimpleInventory.createServerContents(INPUT_SLOTS, this::canPlayerOpenInv, this::setChanged);
 		outputInventory = BehavioralInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
+	}
+
+	public static void serverTick(Level level, BlockPos pos, BlockState state, BioLabBlockEntity bioLab) {
+		bioLab.serverTick((ServerLevel) level);
 	}
 
 	@Override
@@ -81,10 +81,6 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 	@Override
 	public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
 		return BioLabMenu.createServerMenu(containerId, playerInventory, fuelInventory, inputInventory, outputInventory, stateData);
-	}
-
-	public static void serverTick(Level level, BlockPos pos, BlockState state, BioLabBlockEntity bioLab) {
-		bioLab.serverTick((ServerLevel) level);
 	}
 
 	public boolean canPlayerOpenInv(Player player) {
@@ -123,16 +119,6 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 	}
 
 	@Override
-	public boolean isItemValidFuel(ItemStack stack) {
-		return VALID_FUEL_ITEM.test(stack);
-	}
-
-	@Override
-	public float getItemFuelValue(ItemStack stackIn) {
-		return ITEM_FUEL_VALUE;
-	}
-
-	@Override
 	public ItemStack getStackInFuelSlot() {
 		return fuelInventory.getItem(0);
 	}
@@ -144,39 +130,23 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 
 	@Override
 	protected boolean doesItemFitIntoOutputInventory(ItemStack stackToCraft) {
-		int emptyCount = 0;
-		int containerSize = outputInventory.getContainerSize();
-		for (int i = 0; i < containerSize; i++) {
-			ItemStack stackInSlot = outputInventory.getItem(i);
-			boolean isEmpty = stackInSlot.isEmpty();
-			if (isEmpty) emptyCount++;
-			else if (!stackInSlot.is(ModItems.GLASS_VIAL.get()) && !outputInventory.doesItemStackFit(i, stackToCraft)) return false;
-		}
-		return emptyCount < containerSize;
+		return outputInventory.getItem(0).isEmpty() || outputInventory.doesItemStackFit(0, stackToCraft);
 	}
 
 	@Override
 	protected boolean craftRecipe(BioLabRecipe recipeToCraft, Level level) {
 		ItemStack result = recipeToCraft.assemble(inputInventory);
-		if (!result.isEmpty() && doesItemFitIntoOutputInventory(result)) {
-			for (int i = 0; i < outputInventory.getContainerSize(); i++) {
-				ItemStack stackInSlot = outputInventory.getItem(i);
-				if (stackInSlot.isEmpty()) continue;
-
-				if (stackInSlot.is(ModItems.GLASS_VIAL.get())) {
-					outputInventory.setItem(i, result.copy());
-				}
-				else if (outputInventory.doesItemStackFit(i, result)) {
-					outputInventory.insertItemStack(i, result.copy());
-				}
-			}
-			for (int idx = 0; idx < inputInventory.getContainerSize(); idx++) {
-				inputInventory.removeItem(idx, 1);
-			}
-			setChanged();
-			return true;
+		if (result.isEmpty() || !doesItemFitIntoOutputInventory(result)) {
+			return false;
 		}
-		return false;
+
+		outputInventory.insertItemStack(0, result.copy());
+
+		for (int idx = 0; idx < inputInventory.getContainerSize(); idx++) {
+			inputInventory.removeItem(idx, 1);
+		}
+		setChanged();
+		return true;
 	}
 
 	@Nullable
@@ -238,13 +208,13 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 	}
 
 	private <E extends BlockEntity & IAnimatable> PlayState handlePlaceholderAnim(AnimationEvent<E> event) {
-		event.getController().setAnimation(new AnimationBuilder().addAnimation("placeholder.anim.idle", true));
+		event.getController().setAnimation(new AnimationBuilder().addAnimation("bio_lab.idle"));
 		return PlayState.CONTINUE;
 	}
 
 	@Override
 	public void registerControllers(AnimationData data) {
-		data.addAnimationController(new AnimationController<>(this, "placeholder_controller", 0, this::handlePlaceholderAnim));
+		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::handlePlaceholderAnim));
 	}
 
 	@Override

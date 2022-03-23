@@ -23,26 +23,32 @@ import java.util.ArrayList;
 
 public class BioLabRecipe extends AbstractProductionRecipe {
 
-	public static final int MAX_INGREDIENTS = 5;
+	public static final int MAX_INGREDIENTS = 4;
+	public static final int MAX_REACTANT = 1;
 
 	private final NonNullList<Ingredient> recipeIngredients;
+	private final Ingredient recipeReactant;
 	private final ItemStack recipeResult;
 	private final boolean isSimple;
 
-	public BioLabRecipe(ResourceLocation id, ItemStack result, int craftingTime, NonNullList<Ingredient> ingredients) {
+	public BioLabRecipe(ResourceLocation id, ItemStack result, int craftingTime, NonNullList<Ingredient> ingredients, Ingredient reactant) {
 		super(id, craftingTime);
 		recipeIngredients = ingredients;
+		recipeReactant = reactant;
 		recipeResult = result;
 		isSimple = ingredients.stream().allMatch(Ingredient::isSimple);
 	}
 
 	@Override
 	public boolean matches(Container inv, Level worldIn) {
+		int index = inv.getContainerSize() - 1;
+		if (!recipeReactant.test(inv.getItem(index))) return false;
+
 		StackedContents stackedContents = new StackedContents();
 		ArrayList<ItemStack> inputs = new ArrayList<>();
 		int ingredientCount = 0;
 
-		for (int idx = 0; idx < inv.getContainerSize(); idx++) {
+		for (int idx = 0; idx < index; idx++) {
 			ItemStack stack = inv.getItem(idx);
 			if (!stack.isEmpty()) {
 				ingredientCount++;
@@ -74,6 +80,10 @@ public class BioLabRecipe extends AbstractProductionRecipe {
 		return recipeIngredients;
 	}
 
+	public Ingredient getReactant() {
+		return recipeReactant;
+	}
+
 	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return ModRecipes.BIO_BREWING_SERIALIZER.get();
@@ -97,10 +107,12 @@ public class BioLabRecipe extends AbstractProductionRecipe {
 				throw new JsonParseException(String.format("Too many ingredients for %s recipe. Max amount is %d", getRegistryName(), MAX_INGREDIENTS));
 			}
 
+			Ingredient reactant = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "reactant"));
+
 			ItemStack resultStack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
 			int time = GsonHelper.getAsInt(json, "time", 100);
 
-			return new BioLabRecipe(recipeId, resultStack, time, ingredients);
+			return new BioLabRecipe(recipeId, resultStack, time, ingredients, reactant);
 		}
 
 		@Nullable
@@ -110,13 +122,15 @@ public class BioLabRecipe extends AbstractProductionRecipe {
 			ItemStack resultStack = buffer.readItem();
 			int time = buffer.readInt();
 
+			Ingredient reactant = Ingredient.fromNetwork(buffer);
+
 			int ingredientCount = buffer.readVarInt();
 			NonNullList<Ingredient> ingredients = NonNullList.withSize(ingredientCount, Ingredient.EMPTY);
 			for (int j = 0; j < ingredients.size(); ++j) {
 				ingredients.set(j, Ingredient.fromNetwork(buffer));
 			}
 
-			return new BioLabRecipe(recipeId, resultStack, time, ingredients);
+			return new BioLabRecipe(recipeId, resultStack, time, ingredients, reactant);
 		}
 
 		@Override
@@ -124,6 +138,8 @@ public class BioLabRecipe extends AbstractProductionRecipe {
 			//server side
 			buffer.writeItem(recipe.recipeResult);
 			buffer.writeInt(recipe.getCraftingTime());
+
+			recipe.recipeReactant.toNetwork(buffer);
 
 			buffer.writeVarInt(recipe.recipeIngredients.size());
 			for (Ingredient ingredient : recipe.recipeIngredients) {

@@ -1,10 +1,9 @@
 package com.github.elenterius.biomancy.datagen.recipes;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.recipe.ItemStackIngredient;
-import com.github.elenterius.biomancy.world.item.SerumItem;
-import com.github.elenterius.biomancy.world.serum.Serum;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;
@@ -35,9 +34,9 @@ public class BioLabRecipeBuilder {
 	private final ResourceLocation recipeId;
 	private final ItemData result;
 	private final List<Ingredient> ingredients = new ArrayList<>();
-	private int craftingTime = 4 * 20;
-
 	private final Advancement.Builder advancement = Advancement.Builder.advancement();
+	private Ingredient reactant = Ingredient.of(ModItems.GLASS_VIAL.get());
+	private int craftingTime = 4 * 20;
 	@Nullable
 	private String group;
 
@@ -65,15 +64,32 @@ public class BioLabRecipeBuilder {
 		return new BioLabRecipeBuilder(rl, result);
 	}
 
-	public static BioLabRecipeBuilder create(Serum result) {
-		ItemData itemData = new ItemData(SerumItem.getSerumItemStack(result));
-		ResourceLocation rl = BiomancyMod.createRL(Objects.requireNonNull(result.getRegistryName()).getPath() + SUFFIX);
+	public static BioLabRecipeBuilder create(ItemLike item) {
+		ItemData itemData = new ItemData(new ItemStack(item));
+		ResourceLocation rl = BiomancyMod.createRL(Objects.requireNonNull(item.asItem().getRegistryName()).getPath() + SUFFIX);
 		return new BioLabRecipeBuilder(rl, itemData);
 	}
 
 	public BioLabRecipeBuilder setCraftingTime(int time) {
 		if (time < 0) throw new IllegalArgumentException("Invalid crafting time: " + time);
 		craftingTime = time;
+		return this;
+	}
+
+	public BioLabRecipeBuilder setReactant(ItemLike item) {
+		return setReactant(Ingredient.of(item));
+	}
+
+	public BioLabRecipeBuilder setReactant(Tag<Item> tag) {
+		return setReactant(Ingredient.of(tag));
+	}
+
+	public BioLabRecipeBuilder setReactant(ItemStack stack) {
+		return setReactant(new ItemStackIngredient(stack));
+	}
+
+	public BioLabRecipeBuilder setReactant(Ingredient ingredient) {
+		reactant = ingredient;
 		return this;
 	}
 
@@ -91,14 +107,6 @@ public class BioLabRecipeBuilder {
 
 	public BioLabRecipeBuilder addIngredient(ItemStack stack) {
 		return addIngredients(new ItemStackIngredient(stack), 1);
-	}
-
-	public BioLabRecipeBuilder addIngredient(Serum serum) {
-		return addIngredients(new ItemStackIngredient(SerumItem.getSerumItemStack(serum)), 1);
-	}
-
-	public BioLabRecipeBuilder addIngredients(Serum serum, int quantity) {
-		return addIngredients(new ItemStackIngredient(SerumItem.getSerumItemStack(serum)), quantity);
 	}
 
 	public BioLabRecipeBuilder addIngredient(Ingredient ingredient) {
@@ -131,12 +139,9 @@ public class BioLabRecipeBuilder {
 
 	public void save(Consumer<FinishedRecipe> consumer, @Nullable CreativeModeTab itemCategory) {
 		validateCriteria(recipeId);
-		advancement.parent(new ResourceLocation("recipes/root"))
-				.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId))
-				.rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
-		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(),
-				"recipes/" + (itemCategory != null ? itemCategory.getRecipeFolderName() : BiomancyMod.MOD_ID) + "/" + recipeId.getPath());
-		consumer.accept(new Result(recipeId, group == null ? "" : group, result, craftingTime, ingredients, advancement, advancementId));
+		advancement.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
+		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(), "recipes/" + (itemCategory != null ? itemCategory.getRecipeFolderName() : BiomancyMod.MOD_ID) + "/" + recipeId.getPath());
+		consumer.accept(new Result(recipeId, group == null ? "" : group, result, craftingTime, ingredients, reactant, advancement, advancementId));
 	}
 
 	private void validateCriteria(ResourceLocation id) {
@@ -150,18 +155,20 @@ public class BioLabRecipeBuilder {
 		private final String group;
 
 		private final List<Ingredient> ingredients;
+		private final Ingredient reactant;
 		private final ItemData result;
 		private final int craftingTime;
 
 		private final Advancement.Builder advancementBuilder;
 		private final ResourceLocation advancementId;
 
-		public Result(ResourceLocation recipeId, String group, ItemData result, int craftingTimeIn, List<Ingredient> ingredientsIn, Advancement.Builder advancement, ResourceLocation advancementId) {
+		public Result(ResourceLocation recipeId, String group, ItemData result, int craftingTime, List<Ingredient> ingredients, Ingredient reactant, Advancement.Builder advancement, ResourceLocation advancementId) {
 			id = recipeId;
 			this.group = group;
-			ingredients = ingredientsIn;
+			this.ingredients = ingredients;
+			this.reactant = reactant;
 			this.result = result;
-			craftingTime = craftingTimeIn;
+			this.craftingTime = craftingTime;
 			advancementBuilder = advancement;
 			this.advancementId = advancementId;
 		}
@@ -176,6 +183,8 @@ public class BioLabRecipeBuilder {
 				jsonArray.add(ingredient.toJson());
 			}
 			json.add("ingredients", jsonArray);
+
+			json.add("reactant", reactant.toJson());
 
 			json.add("result", result.toJson());
 
