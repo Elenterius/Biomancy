@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "biomancy:item/tough_fibers"
+    "layer0": "biomancy:item/component/tough_fibers"
   }
 }

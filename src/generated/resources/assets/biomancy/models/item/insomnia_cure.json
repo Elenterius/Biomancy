@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "biomancy:item/insomnia_cure"
+    "layer0": "biomancy:item/serum/insomnia_cure"
   }
 }

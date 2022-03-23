@@ -34,7 +34,7 @@ public final class ModMenuTypes {
 		MenuScreens.register(SAC.get(), SacScreen::new);
 		MenuScreens.register(GULGE.get(), GulgeScreen::new);
 		MenuScreens.register(BIO_INJECTOR.get(), BioInjectorScreen::new);
-		MenuScreens.register(FLESH_CHEST.get(), FleshChestScreen::new);
+		MenuScreens.register(FLESHKIN_CHEST.get(), FleshkinChestScreen::new);
 	}
 
 }

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "biomancy:item/plant_matter"
+    "layer0": "biomancy:item/serum/organic_compound"
   }
 }

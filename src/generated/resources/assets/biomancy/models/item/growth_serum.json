@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "biomancy:item/growth_serum"
+    "layer0": "biomancy:item/serum/growth_serum"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "biomancy:item/decay_agent"
+    "layer0": "biomancy:item/serum/decay_agent"
   }
 }

@@ -5,8 +5,8 @@
     32
   ],
   "textures": {
-    "particle": "biomancy:item/long_range_claw",
-    "texture": "biomancy:item/long_range_claw",
+    "particle": "biomancy:item/weapon/long_range_claw",
+    "texture": "biomancy:item/weapon/long_range_claw",
     "eye": "biomancy:item/eye_excited"
   },
   "elements": [

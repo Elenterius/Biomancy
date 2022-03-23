@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "biomancy:item/oxides"
+    "layer0": "biomancy:item/serum/hormone_compound"
   }
 }

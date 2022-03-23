@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "biomancy:item/boomling",
-    "layer1": "biomancy:item/boomling_overlay"
+    "layer0": "biomancy:item/weapon/boomling",
+    "layer1": "biomancy:item/weapon/boomling_overlay"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "biomancy:item/nutrients"
+    "layer0": "biomancy:item/component/nutrients"
   }
 }
