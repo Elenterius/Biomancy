@@ -67,6 +67,8 @@ public final class ModItems {
 	public static final RegistryObject<SerumItem> ADRENALINE_SERUM = ITEMS.register("adrenaline_serum", () -> new SerumItem(createProperties().stacksTo(8), ModSerums.ADRENALINE_SERUM));
 	public static final RegistryObject<SerumItem> DECAY_AGENT = ITEMS.register("decay_agent", () -> new SerumItem(createProperties().stacksTo(8), ModSerums.DECAY_AGENT));
 
+	public static final RegistryObject<Item> ICHOR_SERUM = ITEMS.register("ichor_serum", () -> new SimpleItem.WithFoilItem(createProperties()));
+
 	//# Misc
 	public static final RegistryObject<Item> OCULUS = ITEMS.register("oculus", () -> new Item(createProperties().food(ModFoods.OCULUS)));
 	public static final RegistryObject<Item> BIOMETAL_INGOT = ITEMS.register("biometal_ingot", () -> new Item(createProperties()));
@@ -102,6 +104,7 @@ public final class ModItems {
 	public static final RegistryObject<BlockItem> DECOMPOSER = ITEMS.register("decomposer", () -> new BlockItem(ModBlocks.DECOMPOSER.get(), createProperties().rarity(Rarity.RARE)));
 	public static final RegistryObject<BlockItem> GLAND = ITEMS.register("gland", () -> new BlockItem(ModBlocks.GLAND.get(), createProperties().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<BEWLBlockItem> BIO_LAB = ITEMS.register("bio_lab", () -> new BEWLBlockItem(ModBlocks.BIO_LAB.get(), createProperties().rarity(Rarity.RARE)));
+	public static final RegistryObject<BlockItem> DIGESTER = ITEMS.register("digester", () -> new BlockItem(ModBlocks.DIGESTER.get(), createProperties().rarity(Rarity.UNCOMMON)));
 
 	//## Storage & Automation
 	public static final RegistryObject<BlockItem> TONGUE = ITEMS.register("tongue", () -> new BlockItem(ModBlocks.TONGUE.get(), createProperties().rarity(Rarity.UNCOMMON)));

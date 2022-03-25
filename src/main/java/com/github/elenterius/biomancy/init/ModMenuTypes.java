@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.gui.*;
 import com.github.elenterius.biomancy.world.inventory.menu.*;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -11,6 +12,8 @@ import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
+import java.util.Set;
 
 public final class ModMenuTypes {
 
@@ -25,6 +28,13 @@ public final class ModMenuTypes {
 	public static final RegistryObject<MenuType<GulgeMenu>> GULGE = MENUS.register("gulge", () -> IForgeMenuType.create(GulgeMenu::createClientMenu));
 	public static final RegistryObject<MenuType<BioInjectorMenu>> BIO_INJECTOR = MENUS.register("bio_injector", () -> IForgeMenuType.create(BioInjectorMenu::createClientMenu));
 	public static final RegistryObject<MenuType<FleshkinChestMenu>> FLESHKIN_CHEST = MENUS.register("flesh_chest", () -> IForgeMenuType.create(FleshkinChestMenu::createClientMenu));
+	public static final RegistryObject<MenuType<DigesterMenu>> DIGESTER = MENUS.register("digester", () -> IForgeMenuType.create(DigesterMenu::createClientMenu));
+
+	@OnlyIn(Dist.CLIENT)
+	public static final Set<Class<? extends Screen>> SCREENS = Set.of(
+			DecomposerScreen.class, BioLabScreen.class, GlandScreen.class, SacScreen.class,
+			GulgeScreen.class, BioInjectorScreen.class, FleshkinChestScreen.class, DigesterScreen.class
+	);
 
 	@OnlyIn(Dist.CLIENT)
 	static void registerMenuScreens() {
@@ -35,6 +45,7 @@ public final class ModMenuTypes {
 		MenuScreens.register(GULGE.get(), GulgeScreen::new);
 		MenuScreens.register(BIO_INJECTOR.get(), BioInjectorScreen::new);
 		MenuScreens.register(FLESHKIN_CHEST.get(), FleshkinChestScreen::new);
+		MenuScreens.register(DIGESTER.get(), DigesterScreen::new);
 	}
 
 }

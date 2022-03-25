@@ -1,10 +1,7 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.recipe.AbstractProductionRecipe;
-import com.github.elenterius.biomancy.recipe.BioForgeRecipe;
-import com.github.elenterius.biomancy.recipe.BioLabRecipe;
-import com.github.elenterius.biomancy.recipe.DecomposerRecipe;
+import com.github.elenterius.biomancy.recipe.*;
 import com.github.elenterius.biomancy.recipe.RecipeTypeImpl.ItemStackRecipeType;
 import com.github.elenterius.biomancy.recipe.RecipeTypeImpl.SimpleRecipeType;
 import net.minecraft.core.Registry;
@@ -29,12 +26,14 @@ public final class ModRecipes {
 	public static final ItemStackRecipeType<DecomposerRecipe> DECOMPOSING_RECIPE_TYPE = createItemStackRecipeType("decomposing");
 	public static final ItemStackRecipeType<BioLabRecipe> BIO_BREWING_RECIPE_TYPE = createItemStackRecipeType("bio_brewing");
 	public static final SimpleRecipeType<BioForgeRecipe> BIO_FORGING_RECIPE_TYPE = createSimpleRecipeType("bio_forging");
+	public static final ItemStackRecipeType<DigesterRecipe> DIGESTING_RECIPE_TYPE = createItemStackRecipeType("digesting");
 	public static final Set<RecipeType<? extends Recipe<Container>>> RECIPE_TYPES = Set.of(DECOMPOSING_RECIPE_TYPE, BIO_FORGING_RECIPE_TYPE, BIO_BREWING_RECIPE_TYPE);
 
 	public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, BiomancyMod.MOD_ID);
 	public static final RegistryObject<RecipeSerializer<DecomposerRecipe>> DECOMPOSING_SERIALIZER = RECIPE_SERIALIZERS.register(DECOMPOSING_RECIPE_TYPE.getId(), DecomposerRecipe.Serializer::new);
 	public static final RegistryObject<RecipeSerializer<BioLabRecipe>> BIO_BREWING_SERIALIZER = RECIPE_SERIALIZERS.register(BIO_BREWING_RECIPE_TYPE.getId(), BioLabRecipe.Serializer::new);
 	public static final RegistryObject<RecipeSerializer<BioForgeRecipe>> BIO_FORGING_SERIALIZER = RECIPE_SERIALIZERS.register(BIO_FORGING_RECIPE_TYPE.getId(), BioForgeRecipe.Serializer::new);
+	public static final RegistryObject<RecipeSerializer<DigesterRecipe>> DIGESTING_SERIALIZER = RECIPE_SERIALIZERS.register(DIGESTING_RECIPE_TYPE.getId(), DigesterRecipe.Serializer::new);
 
 	private ModRecipes() {}
 
@@ -42,6 +41,20 @@ public final class ModRecipes {
 		registerRecipeTypes();
 		registerItemPredicates();
 		registerComposterRecipes();
+	}
+
+	private static void registerRecipeTypes() {
+		registerRecipeType(BIO_BREWING_RECIPE_TYPE);
+		registerRecipeType(DECOMPOSING_RECIPE_TYPE);
+		registerRecipeType(DIGESTING_RECIPE_TYPE);
+	}
+
+	private static void registerItemPredicates() {
+//		ItemPredicate.register(BiomancyMod.createRL("any_meatless_food"), jsonObject -> ANY_MEATLESS_FOOD_ITEM_PREDICATE);
+	}
+
+	private static void registerComposterRecipes() {
+		ComposterBlock.COMPOSTABLES.putIfAbsent(ModItems.ORGANIC_MATTER.get(), 0.25f);
 	}
 
 	private static <T extends AbstractProductionRecipe> ItemStackRecipeType<T> createItemStackRecipeType(String identifier) {
@@ -52,17 +65,8 @@ public final class ModRecipes {
 		return new SimpleRecipeType<>(identifier);
 	}
 
-	private static void registerRecipeTypes() {
-		Registry.register(Registry.RECIPE_TYPE, BiomancyMod.createRL(BIO_BREWING_RECIPE_TYPE.getId()), BIO_BREWING_RECIPE_TYPE);
-		Registry.register(Registry.RECIPE_TYPE, BiomancyMod.createRL(DECOMPOSING_RECIPE_TYPE.getId()), DECOMPOSING_RECIPE_TYPE);
-	}
-
-	private static void registerItemPredicates() {
-//		ItemPredicate.register(BiomancyMod.createRL("any_meatless_food"), jsonObject -> ANY_MEATLESS_FOOD_ITEM_PREDICATE);
-	}
-
-	private static void registerComposterRecipes() {
-		ComposterBlock.COMPOSTABLES.putIfAbsent(ModItems.PLANT_MATTER.get(), 0.25f);
+	private static void registerRecipeType(RecipeTypeImpl<?> recipeType) {
+		Registry.register(Registry.RECIPE_TYPE, BiomancyMod.createRL(recipeType.getId()), recipeType);
 	}
 
 }

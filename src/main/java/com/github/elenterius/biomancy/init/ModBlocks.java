@@ -48,6 +48,7 @@ public final class ModBlocks {
 	//## Machine
 	public static final RegistryObject<DecomposerBlock> DECOMPOSER = BLOCKS.register("decomposer", () -> new DecomposerBlock(createFleshProperties()));
 	public static final RegistryObject<BioLabBlock> BIO_LAB = BLOCKS.register("bio_lab", () -> new BioLabBlock(createFleshProperties()));
+	public static final RegistryObject<DigesterBlock> DIGESTER = BLOCKS.register("digester", () -> new DigesterBlock(createFleshProperties()));
 
 	//## Automation
 	public static final RegistryObject<SacBlock> SAC = BLOCKS.register("sac", () -> new SacBlock(createFleshProperties()));
@@ -69,14 +70,16 @@ public final class ModBlocks {
 		ItemBlockRenderTypes.setRenderLayer(GLAND.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(TONGUE.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(GULGE.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(FLESHKIN_CHEST.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(DECOMPOSER.get(), RenderType.translucent());
-		ItemBlockRenderTypes.setRenderLayer(FLESH_CHEST.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(BIO_LAB.get(), RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(BIO_FORGE.get(), RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(DIGESTER.get(), RenderType.cutout());
 
 //		ItemBlockRenderTypes.setRenderLayer(FLESH_TENTACLE.get(), RenderType.cutout());
 //		ItemBlockRenderTypes.setRenderLayer(FLESHBORN_DOOR.get(), RenderType.cutout());
 //		ItemBlockRenderTypes.setRenderLayer(FLESHBORN_TRAPDOOR.get(), RenderType.cutout());
 //
-//		ItemBlockRenderTypes.setRenderLayer(DIGESTER.get(), RenderType.cutout());
 //		ItemBlockRenderTypes.setRenderLayer(EVOLUTION_POOL.get(), RenderType.translucent());
 //		ItemBlockRenderTypes.setRenderLayer(SCENT_DIFFUSER.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(VOICE_BOX.get(), RenderType.translucent());

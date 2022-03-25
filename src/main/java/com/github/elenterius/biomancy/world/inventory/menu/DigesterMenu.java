@@ -3,10 +3,9 @@ package com.github.elenterius.biomancy.world.inventory.menu;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
 import com.github.elenterius.biomancy.util.FuelUtil;
-import com.github.elenterius.biomancy.world.block.entity.BioLabBlockEntity;
-import com.github.elenterius.biomancy.world.block.entity.state.BioLabStateData;
+import com.github.elenterius.biomancy.world.block.entity.DigesterBlockEntity;
+import com.github.elenterius.biomancy.world.block.entity.state.DigesterStateData;
 import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
-import com.github.elenterius.biomancy.world.inventory.SimpleInventory;
 import com.github.elenterius.biomancy.world.inventory.slot.FuelSlot;
 import com.github.elenterius.biomancy.world.inventory.slot.ISlotZone;
 import com.github.elenterius.biomancy.world.inventory.slot.OutputSlot;
@@ -19,16 +18,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.apache.logging.log4j.MarkerManager;
 
-public class BioLabMenu extends PlayerContainerMenu {
+public class DigesterMenu extends PlayerContainerMenu {
 
 	protected final Level level;
 	private final BehavioralInventory<?> fuelInventory;
-	private final SimpleInventory inputInventory;
+	private final BehavioralInventory<?> inputInventory;
 	private final BehavioralInventory<?> outputInventory;
-	private final BioLabStateData stateData;
+	private final DigesterStateData stateData;
 
-	protected BioLabMenu(int id, Inventory playerInventory, BehavioralInventory<?> fuelInventory, SimpleInventory inputInventory, BehavioralInventory<?> outputInventory, BioLabStateData stateData) {
-		super(ModMenuTypes.BIO_LAB.get(), id, playerInventory, 115, 173);
+	protected DigesterMenu(int id, Inventory playerInventory, BehavioralInventory<?> fuelInventory, BehavioralInventory<?> inputInventory, BehavioralInventory<?> outputInventory, DigesterStateData stateData) {
+		super(ModMenuTypes.DIGESTER.get(), id, playerInventory, 111, 169);
 		level = playerInventory.player.level;
 
 		this.fuelInventory = fuelInventory;
@@ -36,29 +35,27 @@ public class BioLabMenu extends PlayerContainerMenu {
 		this.outputInventory = outputInventory;
 		this.stateData = stateData;
 
-		addSlot(new FuelSlot(fuelInventory, 0, 43, 92));
+		addSlot(new FuelSlot(fuelInventory, 0, 54, 59));
 
-		addSlot(new Slot(inputInventory, 0, 50, 31));
-		addSlot(new Slot(inputInventory, 1, 70, 28));
-		addSlot(new Slot(inputInventory, 2, 90, 28));
-		addSlot(new Slot(inputInventory, 3, 110, 31));
+		addSlot(new Slot(inputInventory, 0, 77, 30));
 
-		addSlot(new Slot(inputInventory, 4, 80, 62)); //mixture/vial slot
-
-		addSlot(new OutputSlot(outputInventory, 0, 80, 88));
+		int posY = 52;
+		int posX = 99;
+		addSlot(new OutputSlot(outputInventory, 0, posX, posY));
+		addSlot(new OutputSlot(outputInventory, 1, posX + 18, posY));
 
 		addDataSlots(stateData);
 	}
 
-	public static BioLabMenu createServerMenu(int screenId, Inventory playerInventory, BehavioralInventory<?> fuelInventory, SimpleInventory inputInventory, BehavioralInventory<?> outputInventory, BioLabStateData stateData) {
-		return new BioLabMenu(screenId, playerInventory, fuelInventory, inputInventory, outputInventory, stateData);
+	public static DigesterMenu createServerMenu(int screenId, Inventory playerInventory, BehavioralInventory<?> fuelInventory, BehavioralInventory<?> inputInventory, BehavioralInventory<?> outputInventory, DigesterStateData stateData) {
+		return new DigesterMenu(screenId, playerInventory, fuelInventory, inputInventory, outputInventory, stateData);
 	}
 
-	public static BioLabMenu createClientMenu(int screenId, Inventory playerInventory, FriendlyByteBuf extraData) {
-		BehavioralInventory<?> fuelInventory = BehavioralInventory.createClientContents(BioLabBlockEntity.FUEL_SLOTS);
-		SimpleInventory inputInventory = SimpleInventory.createClientContents(BioLabBlockEntity.INPUT_SLOTS);
-		BehavioralInventory<?> outputInventory = BehavioralInventory.createClientContents(BioLabBlockEntity.OUTPUT_SLOTS);
-		return new BioLabMenu(screenId, playerInventory, fuelInventory, inputInventory, outputInventory, new BioLabStateData());
+	public static DigesterMenu createClientMenu(int screenId, Inventory playerInventory, FriendlyByteBuf extraData) {
+		BehavioralInventory<?> fuelInventory = BehavioralInventory.createClientContents(DigesterBlockEntity.FUEL_SLOTS);
+		BehavioralInventory<?> inputInventory = BehavioralInventory.createClientContents(DigesterBlockEntity.INPUT_SLOTS);
+		BehavioralInventory<?> outputInventory = BehavioralInventory.createClientContents(DigesterBlockEntity.OUTPUT_SLOTS);
+		return new DigesterMenu(screenId, playerInventory, fuelInventory, inputInventory, outputInventory, new DigesterStateData());
 	}
 
 	@Override
@@ -72,12 +69,8 @@ public class BioLabMenu extends PlayerContainerMenu {
 		return Mth.clamp(stateData.timeElapsed / (float) stateData.timeForCompletion, 0f, 1f);
 	}
 
-	public int getTotalFuelCost() {
-		return stateData.timeForCompletion * BioLabBlockEntity.FUEL_COST;
-	}
-
 	public float getFuelAmountNormalized() {
-		return Mth.clamp((float) stateData.getFuelAmount() / BioLabBlockEntity.MAX_FUEL, 0f, 1f);
+		return Mth.clamp((float) stateData.getFuelAmount() / DigesterBlockEntity.MAX_FUEL, 0f, 1f);
 	}
 
 	public int getFuelAmount() {
@@ -114,7 +107,7 @@ public class BioLabMenu extends PlayerContainerMenu {
 	}
 
 	private boolean mergeIntoInputZone(ItemStack stackInSlot) {
-		if (BioLabBlockEntity.RECIPE_TYPE.getRecipeForIngredient(level, stackInSlot).isPresent()) {
+		if (DigesterBlockEntity.RECIPE_TYPE.getRecipeForIngredient(level, stackInSlot).isPresent()) {
 			return mergeInto(SlotZone.INPUT_ZONE, stackInSlot, false);
 		}
 		return false;
@@ -137,9 +130,9 @@ public class BioLabMenu extends PlayerContainerMenu {
 	public enum SlotZone implements ISlotZone {
 		PLAYER_HOTBAR(0, 9),
 		PLAYER_MAIN_INVENTORY(PLAYER_HOTBAR.lastIndexPlus1, 3 * 9),
-		FUEL_ZONE(PLAYER_MAIN_INVENTORY.lastIndexPlus1, BioLabBlockEntity.FUEL_SLOTS),
-		INPUT_ZONE(FUEL_ZONE.lastIndexPlus1, BioLabBlockEntity.INPUT_SLOTS),
-		OUTPUT_ZONE(INPUT_ZONE.lastIndexPlus1, BioLabBlockEntity.OUTPUT_SLOTS);
+		FUEL_ZONE(PLAYER_MAIN_INVENTORY.lastIndexPlus1, DigesterBlockEntity.FUEL_SLOTS),
+		INPUT_ZONE(FUEL_ZONE.lastIndexPlus1, DigesterBlockEntity.INPUT_SLOTS),
+		OUTPUT_ZONE(INPUT_ZONE.lastIndexPlus1, DigesterBlockEntity.OUTPUT_SLOTS);
 
 		public final int firstIndex;
 		public final int slotCount;

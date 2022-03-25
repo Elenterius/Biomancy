@@ -19,15 +19,17 @@ public class SacMenu extends PlayerContainerMenu {
 	protected final Level level;
 
 	protected SacMenu(int id, Inventory playerInventory, SimpleInventory inventory) {
-		super(ModMenuTypes.SAC.get(), id, playerInventory, 51, 109);
+		super(ModMenuTypes.SAC.get(), id, playerInventory, 88, 146);
 		level = playerInventory.player.level;
 
 		this.inventory = inventory;
 
-		int posY = 20;
-		int posX = 44;
-		for (int i = 0; i < 5; i++) {
-			addSlot(new Slot(inventory, i, posX + i * 18, posY));
+		int posX = 35;
+		int posY = 17;
+		for (int y = 0; y < 3; y++) {
+			for (int x = 0; x < 5; x++) {
+				addSlot(new Slot(inventory, x + 5 * y, posX + x * 18, posY + y * 18));
+			}
 		}
 	}
 

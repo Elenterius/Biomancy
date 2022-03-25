@@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class SacBlockEntity extends CustomContainerBlockEntity {
 
-	public static final int SLOTS = 5;
+	public static final int SLOTS = 5 * 3;
 	public static final int ITEM_TRANSFER_AMOUNT = 8;
 	private final SimpleInventory inventory;
 	private int ticks;

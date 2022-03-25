@@ -35,11 +35,11 @@ public class DecomposerMenu extends PlayerContainerMenu {
 		this.outputInventory = outputInventory;
 		this.stateData = stateData;
 
-		addSlot(new FuelSlot(fuelInventory, 0, 54, 59));
-		addSlot(new Slot(inputInventory, 0, 77, 30));
+		addSlot(new FuelSlot(fuelInventory, 0, 46, 57));
+		addSlot(new Slot(inputInventory, 0, 69, 28));
 
-		int posY = 52;
-		int posX = 99;
+		int posY = 50;
+		int posX = 91;
 		addSlot(new OutputSlot(outputInventory, 0, posX, posY));
 		addSlot(new OutputSlot(outputInventory, 1, posX, posY + 18));
 		addSlot(new OutputSlot(outputInventory, 2, posX + 18, posY));
@@ -78,6 +78,10 @@ public class DecomposerMenu extends PlayerContainerMenu {
 
 	public int getFuelAmount() {
 		return stateData.getFuelAmount();
+	}
+
+	public int getTotalFuelCost() {
+		return stateData.timeForCompletion * DecomposerBlockEntity.FUEL_COST;
 	}
 
 	@Override

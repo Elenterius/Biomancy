@@ -7,7 +7,7 @@ public class BioLabStateData extends RecipeCraftingStateData<BioLabRecipe> {
 
 	public static final int FUEL_INDEX = 2;
 	public static final String NBT_KEY_FUEL = "Fuel";
-	private short fuelAmount; //bile
+	private short fuelAmount;
 
 	public int getFuelAmount() {
 		return fuelAmount;

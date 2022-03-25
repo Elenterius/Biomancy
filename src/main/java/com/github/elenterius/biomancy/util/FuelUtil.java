@@ -13,6 +13,7 @@ public final class FuelUtil {
 
 	public static final short DEFAULT_FUEL_VALUE = 200;
 	public static final byte NUTRIENT_BAR_MULTIPLIER = 6;
+	public static final byte NUTRIENTS_FUEL_VALUE = DEFAULT_FUEL_VALUE / 4;
 
 	public static final Set<Item> FUEL_ITEMS = Set.of(
 			ModItems.NUTRIENTS.get(),
@@ -30,17 +31,24 @@ public final class FuelUtil {
 		return false;
 	}
 
-	public static float getItemFuelValue(ItemStack stack) {
-		Item item = stack.getItem();
-		if (item == ModItems.NUTRIENT_BAR.get()) return (float) DEFAULT_FUEL_VALUE * NUTRIENT_BAR_MULTIPLIER;
-//		if (item == ModItems.PROTEIN_BAR.get()) return (float) DEFAULT_FUEL_VALUE * NUTRIENT_BAR_MULTIPLIER;
+	public static int getItemFuelValue(ItemStack stack) {
+		return getItemFuelValue(stack.getItem());
+	}
+
+	public static int getItemFuelValue(Item item) {
+		if (item == ModItems.NUTRIENT_BAR.get()) return DEFAULT_FUEL_VALUE * NUTRIENT_BAR_MULTIPLIER;
+//		if (item == ModItems.PROTEIN_BAR.get()) return DEFAULT_FUEL_VALUE * NUTRIENT_BAR_MULTIPLIER;
 		if (item == ModItems.NUTRIENT_PASTE.get()) return DEFAULT_FUEL_VALUE;
-		if (item == ModItems.NUTRIENTS.get()) return (float) DEFAULT_FUEL_VALUE / 4;
-		if (stack.isEdible()) {
-			FoodProperties foodProperties = stack.getItem().getFoodProperties();
+		if (item == ModItems.NUTRIENTS.get()) return NUTRIENTS_FUEL_VALUE;
+		if (item.isEdible()) {
+			FoodProperties foodProperties = item.getFoodProperties();
 			return foodProperties != null ? foodProperties.getNutrition() * 10 : 0;
 		}
 		return 0;
+	}
+
+	public static int getNutrientsFromFuelItem(Item item) {
+		return getItemFuelValue(item) / NUTRIENTS_FUEL_VALUE;
 	}
 
 }

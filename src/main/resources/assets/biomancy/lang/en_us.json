@@ -104,6 +104,7 @@
   "container.biomancy.gulge": "Gulge Inventory",
   "container.biomancy.sac": "Sac Inventory",
   "container.biomancy.fleshkin_chest": "Fleshkin Inventory",
+  "container.biomancy.digester": "Digester Inventory",
 
   "entity.biomancy.flesh_blob": "Flesh Blob",
   "entity.biomancy.boomling": "Boomling",
@@ -140,6 +141,7 @@
   "tooltip.biomancy.tongue": "Extracts up to 3 items of the same type every 24 ticks from containers its attached to and drops them on the ground.",
   "tooltip.biomancy.voice_box": "A box that is capable of holding and playing a larynx with its internal bellow, allowing you to reproduce mob sounds.",
   "tooltip.biomancy.fleshkin_chest": "Mimic like fleshkin chest with sharp teeth and a resilient stomach allowing it to keeps its contents when mined.",
+  "tooltip.biomancy.digester": "A bio-machine that converts food and plants into nutrients.",
 
   "tooltip.biomancy.flesh_bits": "Used for crafting as a main component, can be decomposed into biotic matter for extra usages. Can be crafted with biotic matter.",
   "tooltip.biomancy.bone_scraps": "Used for crafting as a main component, can be decomposed into biotic matter and bio minerals for extra usages. Can be crafted with biotic matter and bio minerals.",
@@ -205,6 +207,7 @@
 
   "jei.biomancy.recipe.bio_lab": "Bio-Lab Recipes",
   "jei.biomancy.recipe.decomposer": "Decomposer Recipes",
+  "jei.biomancy.recipe.digester": "Digester Recipes",
 
   "keyboard.biomancy.ctrl": "ctrl",
   "keyboard.biomancy.alt": "alt",
@@ -298,7 +301,6 @@
   "tooltip.biomancy.fleshborn_trapdoor": "Auto resets.\nSneak click to change mode.",
   "tooltip.biomancy.fleshborn_pressure_plate": "Sneak click to change mode.\nAble to activate ownable blocks.",
   "tooltip.biomancy.chewer": "A bio-machine that crushes items into smaller parts by chewing them.\nThe bio-machine consumes nutrient slurry/paste/bars to function.",
-  "tooltip.biomancy.digester": "A bio-machine that consumes water to process biomass into nutrient slurry.\nThe bio-machine will pull biomass from the block it is attached to.",
   "tooltip.biomancy.evolution_pool": "A organic pool filled with mutagen that is used to craft organic items.",
   "tooltip.biomancy.boomling_hive_gun": "[WIP] Combine with potion in crafting Table. Uses Nutrient Paste to reload.",
   "tooltip.biomancy.scent_diffuser": "A Gland that produces mob specific bait or repellent from the blood and hormone rich bile it is fed.\nIt diffuses the resulting substance as scent into it's nearby surroundings.",
@@ -377,7 +379,6 @@
   "guide_book.biomancy.landing_text": "Disclaimer: This whole guide is a WIP.\n\nUse the Wiki instead!\n\n$(l:https://github.com/Elenterius/Biomancy/wiki)Wiki Link$(/l)",
 
   "jei.biomancy.recipe.chewer": "Chewer Recipes",
-  "jei.biomancy.recipe.digester": "Digester Recipes",
   "jei.biomancy.recipe.solidifier": "Gland Recipes",
 
   "item.biomancy.brood_mother_spawn_egg": "Brood Mother Spawn Egg",
