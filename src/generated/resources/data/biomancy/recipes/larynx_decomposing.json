@@ -26,9 +26,7 @@
           "max": 4
         }
       }
-    }
-  ],
-  "byproducts": [
+    },
     {
       "result": {
         "item": "biomancy:bile_extract",

@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:red_sand_from_oxides"
+      "biomancy:corrosive_compound_from_bio_brewing"
     ]
   },
   "criteria": {
-    "has_oxides": {
+    "has_volatile_extract": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:oxides"
+              "biomancy:volatile_extract"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:red_sand_from_oxides"
+        "recipe": "biomancy:corrosive_compound_from_bio_brewing"
       }
     }
   },
   "requirements": [
     [
-      "has_oxides",
+      "has_volatile_extract",
       "has_the_recipe"
     ]
   ]

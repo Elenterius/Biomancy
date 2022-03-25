@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:protein_bar"
+      "biomancy:nutrients_from_digesting_average_biomass"
     ]
   },
   "criteria": {
-    "has_nutrients": {
+    "has_average_biomass": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "biomancy:nutrients"
-            ]
+            "tag": "biomancy:average_biomass"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:protein_bar"
+        "recipe": "biomancy:nutrients_from_digesting_average_biomass"
       }
     }
   },
   "requirements": [
     [
-      "has_nutrients",
+      "has_average_biomass",
       "has_the_recipe"
     ]
   ]

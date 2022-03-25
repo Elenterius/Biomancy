@@ -56,7 +56,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
 		TagsProvider.TagAppender<Item> rawMeats = tag(ModTags.Items.RAW_MEATS)
 				.add(BEEF, PORKCHOP, CHICKEN, RABBIT, MUTTON, COD, SALMON, TROPICAL_FISH, PUFFERFISH)
-				.add(ModItems.FLESH_BITS.get(), ModItems.OCULUS.get());
+				.add(ModItems.OCULUS.get());
 		addOptionalItemsTo(rawMeats, "createfa:ground_chicken", "createfa:ground_beef", "circus:clown", "rats:raw_rat", "evilcraft:flesh_humanoid", "evilcraft:flesh_werewolf");
 
 		TagsProvider.TagAppender<Item> goodBiomass = tag(ModTags.Items.GOOD_BIOMASS)

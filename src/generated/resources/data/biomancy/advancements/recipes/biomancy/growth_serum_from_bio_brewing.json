@@ -6,13 +6,13 @@
     ]
   },
   "criteria": {
-    "has_nutrients": {
+    "has_vitalizing_compound": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:nutrients"
+              "biomancy:vitalizing_compound"
             ]
           }
         ]
@@ -27,7 +27,7 @@
   },
   "requirements": [
     [
-      "has_nutrients",
+      "has_vitalizing_compound",
       "has_the_recipe"
     ]
   ]

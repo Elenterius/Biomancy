@@ -1,0 +1,24 @@
+{
+  "type": "biomancy:bio_brewing",
+  "ingredients": [
+    {
+      "item": "minecraft:slime_ball"
+    },
+    {
+      "item": "biomancy:volatile_extract"
+    },
+    {
+      "item": "biomancy:volatile_extract"
+    },
+    {
+      "item": "biomancy:venom_extract"
+    }
+  ],
+  "reactant": {
+    "item": "biomancy:glass_vial"
+  },
+  "result": {
+    "item": "biomancy:corrosive_compound"
+  },
+  "time": 100
+}

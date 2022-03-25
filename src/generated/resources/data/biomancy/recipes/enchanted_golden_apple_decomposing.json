@@ -19,7 +19,7 @@
     },
     {
       "result": {
-        "item": "biomancy:oxides",
+        "item": "biomancy:mineral_dust",
         "count_range": {
           "type": "constant",
           "value": 1
@@ -28,7 +28,7 @@
     },
     {
       "result": {
-        "item": "biomancy:plant_matter",
+        "item": "biomancy:organic_matter",
         "count_range": {
           "type": "uniform",
           "min": 1,
@@ -45,9 +45,7 @@
           "max": 20
         }
       }
-    }
-  ],
-  "byproducts": [
+    },
     {
       "result": {
         "item": "minecraft:sugar",

@@ -6,13 +6,13 @@
     ]
   },
   "criteria": {
-    "has_plant_matter": {
+    "has_organic_matter": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:plant_matter"
+              "biomancy:organic_matter"
             ]
           }
         ]
@@ -27,7 +27,7 @@
   },
   "requirements": [
     [
-      "has_plant_matter",
+      "has_organic_matter",
       "has_the_recipe"
     ]
   ]

@@ -10,7 +10,6 @@
     "minecraft:salmon",
     "minecraft:tropical_fish",
     "minecraft:pufferfish",
-    "biomancy:flesh_bits",
     "biomancy:oculus",
     {
       "id": "createfa:ground_chicken",

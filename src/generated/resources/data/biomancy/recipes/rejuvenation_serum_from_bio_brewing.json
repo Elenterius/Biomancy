@@ -5,15 +5,20 @@
       "item": "biomancy:exotic_dust"
     },
     {
+      "item": "biomancy:exotic_dust"
+    },
+    {
       "item": "biomancy:rejuvenating_mucus"
     },
     {
-      "item": "biomancy:nutrients"
+      "item": "biomancy:rejuvenating_mucus"
     }
   ],
+  "reactant": {
+    "item": "biomancy:vitalizing_compound"
+  },
   "result": {
-    "item": "biomancy:generic_serum",
-    "nbt": "{SerumColor:5028631,SerumId:\"biomancy:rejuvenation_serum\"}"
+    "item": "biomancy:rejuvenation_serum"
   },
   "time": 100
 }

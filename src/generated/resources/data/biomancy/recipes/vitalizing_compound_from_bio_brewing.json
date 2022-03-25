@@ -1,0 +1,24 @@
+{
+  "type": "biomancy:bio_brewing",
+  "ingredients": [
+    {
+      "item": "biomancy:exotic_dust"
+    },
+    {
+      "item": "biomancy:rejuvenating_mucus"
+    },
+    {
+      "item": "biomancy:rejuvenating_mucus"
+    },
+    {
+      "item": "biomancy:nutrients"
+    }
+  ],
+  "reactant": {
+    "item": "biomancy:glass_vial"
+  },
+  "result": {
+    "item": "biomancy:vitalizing_compound"
+  },
+  "time": 100
+}

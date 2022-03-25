@@ -65,7 +65,13 @@ public class BioLabRecipeBuilder {
 	}
 
 	public static BioLabRecipeBuilder create(ItemLike item) {
-		ItemData itemData = new ItemData(new ItemStack(item));
+		ItemData itemData = new ItemData(item);
+		ResourceLocation rl = BiomancyMod.createRL(Objects.requireNonNull(item.asItem().getRegistryName()).getPath() + SUFFIX);
+		return new BioLabRecipeBuilder(rl, itemData);
+	}
+
+	public static BioLabRecipeBuilder create(ItemLike item, int count) {
+		ItemData itemData = new ItemData(item, count);
 		ResourceLocation rl = BiomancyMod.createRL(Objects.requireNonNull(item.asItem().getRegistryName()).getPath() + SUFFIX);
 		return new BioLabRecipeBuilder(rl, itemData);
 	}

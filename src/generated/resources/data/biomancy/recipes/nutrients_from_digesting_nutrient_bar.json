@@ -1,0 +1,11 @@
+{
+  "type": "biomancy:digesting",
+  "ingredient": {
+    "item": "biomancy:nutrient_bar"
+  },
+  "result": {
+    "item": "biomancy:nutrients",
+    "count": 24
+  },
+  "time": 600
+}

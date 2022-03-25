@@ -6,13 +6,13 @@
     ]
   },
   "criteria": {
-    "has_nutrients": {
+    "has_cleansing_serum": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:nutrients"
+              "biomancy:cleansing_serum"
             ]
           }
         ]
@@ -27,7 +27,7 @@
   },
   "requirements": [
     [
-      "has_nutrients",
+      "has_cleansing_serum",
       "has_the_recipe"
     ]
   ]

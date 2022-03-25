@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:red_sand_from_mineral_dust"
+    ]
+  },
+  "criteria": {
+    "has_mineral_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:mineral_dust"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:red_sand_from_mineral_dust"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_mineral_dust",
+      "has_the_recipe"
+    ]
+  ]
+}

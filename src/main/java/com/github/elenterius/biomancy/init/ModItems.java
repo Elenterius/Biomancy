@@ -35,18 +35,16 @@ public final class ModItems {
 	//## Complex
 	public static final RegistryObject<Item> FLESH_BITS = ITEMS.register("flesh_bits", () -> new SimpleItem(createProperties().food(ModFoods.POOR_FLESH)));
 	public static final RegistryObject<Item> BONE_SCRAPS = ITEMS.register("bone_scraps", () -> new SimpleItem(createProperties()));
-	public static final RegistryObject<Item> PLANT_MATTER = ITEMS.register("plant_matter", () -> new SimpleItem(createProperties()));
 	public static final RegistryObject<Item> TOUGH_FIBERS = ITEMS.register("tough_fibers", () -> new SimpleItem(createProperties()));
 	public static final RegistryObject<Item> ELASTIC_FIBERS = ITEMS.register("elastic_fibers", () -> new SimpleItem(createProperties()));
 	public static final RegistryObject<Item> MINERAL_DUST = ITEMS.register("mineral_dust", () -> new SimpleItem(createProperties()));
 	public static final RegistryObject<Item> GEM_DUST = ITEMS.register("gem_dust", () -> new SimpleItem(createProperties()));
 	//## Basic
 	public static final RegistryObject<Item> NUTRIENTS = ITEMS.register("nutrients", () -> new SimpleItem(createProperties()));
-	public static final RegistryObject<Item> BIOTIC_MATTER = ITEMS.register("organic_matter", () -> new SimpleItem(createProperties()));
+	public static final RegistryObject<Item> ORGANIC_MATTER = ITEMS.register("organic_matter", () -> new SimpleItem(createProperties()));
 	public static final RegistryObject<Item> BIO_LUMENS = ITEMS.register("bio_lumens", () -> new SimpleItem(createProperties()));
 	public static final RegistryObject<Item> EXOTIC_DUST = ITEMS.register("exotic_dust", () -> new SimpleItem(createProperties()));
 	public static final RegistryObject<Item> BIO_MINERALS = ITEMS.register("bio_minerals", () -> new SimpleItem(createProperties()));
-	public static final RegistryObject<Item> OXIDES = ITEMS.register("oxides", () -> new SimpleItem(createProperties()));
 	public static final RegistryObject<Item> LITHIC_POWDER = ITEMS.register("lithic_powder", () -> new SimpleItem(createProperties()));
 	//## Specific
 	public static final RegistryObject<Item> REJUVENATING_MUCUS = ITEMS.register("rejuvenating_mucus", () -> new SimpleItem(createProperties()));
@@ -57,6 +55,12 @@ public final class ModItems {
 
 	//# Serum
 	public static final RegistryObject<Item> GLASS_VIAL = ITEMS.register("glass_vial", () -> new Item(createProperties()));
+	public static final RegistryObject<Item> ORGANIC_COMPOUND = ITEMS.register("organic_compound", () -> new SimpleItem(createProperties()));
+	public static final RegistryObject<Item> CORROSIVE_COMPOUND = ITEMS.register("corrosive_compound", () -> new SimpleItem(createProperties()));
+	public static final RegistryObject<Item> VITALIZING_COMPOUND = ITEMS.register("vitalizing_compound", () -> new SimpleItem(createProperties()));
+	public static final RegistryObject<Item> HORMONE_COMPOUND = ITEMS.register("hormone_compound", () -> new SimpleItem(createProperties()));
+	public static final RegistryObject<Item> EXOTIC_COMPOUND = ITEMS.register("exotic_compound", () -> new SimpleItem(createProperties()));
+
 	public static final RegistryObject<SerumItem> GENERIC_SERUM = ITEMS.register("generic_serum", () -> new SerumItem.Generic(createProperties().stacksTo(8)));
 	public static final RegistryObject<SerumItem> REJUVENATION_SERUM = ITEMS.register("rejuvenation_serum", () -> new SerumItem(createProperties().stacksTo(8), ModSerums.REJUVENATION_SERUM));
 	public static final RegistryObject<SerumItem> GROWTH_SERUM = ITEMS.register("growth_serum", () -> new SerumItem(createProperties().stacksTo(8), ModSerums.GROWTH_SERUM));
@@ -89,7 +93,7 @@ public final class ModItems {
 	//# Food/Fuel
 	public static final RegistryObject<Item> NUTRIENT_PASTE = ITEMS.register("nutrient_paste", () -> new SimpleItem(createProperties()));
 	public static final RegistryObject<Item> NUTRIENT_BAR = ITEMS.register("nutrient_bar", () -> new EffectCureItem(createProperties().food(ModFoods.NUTRIENT_BAR)));
-	public static final RegistryObject<Item> PROTEIN_BAR = ITEMS.register("protein_bar", () -> new EffectCureItem(createProperties().food(ModFoods.PROTEIN_BAR)));
+//	public static final RegistryObject<Item> PROTEIN_BAR = ITEMS.register("protein_bar", () -> new EffectCureItem(createProperties().food(ModFoods.PROTEIN_BAR)));
 
 	//# Block Items
 	//## Material
@@ -110,7 +114,7 @@ public final class ModItems {
 	public static final RegistryObject<BlockItem> TONGUE = ITEMS.register("tongue", () -> new BlockItem(ModBlocks.TONGUE.get(), createProperties().rarity(Rarity.UNCOMMON)));
 	public static final RegistryObject<BlockItem> GULGE = ITEMS.register("gulge", () -> new BlockItem(ModBlocks.GULGE.get(), createProperties().rarity(Rarity.RARE)));
 	public static final RegistryObject<BlockItem> SAC = ITEMS.register("sac", () -> new BlockItem(ModBlocks.SAC.get(), createProperties().rarity(Rarity.UNCOMMON)));
-	public static final RegistryObject<BlockItem> FLESHKIN_CHEST = ITEMS.register("fleshkin_chest", () -> new BlockItem(ModBlocks.FLESH_CHEST.get(), createProperties().rarity(Rarity.UNCOMMON)));
+	public static final RegistryObject<BlockItem> FLESHKIN_CHEST = ITEMS.register("fleshkin_chest", () -> new BlockItem(ModBlocks.FLESHKIN_CHEST.get(), createProperties().rarity(Rarity.UNCOMMON)));
 
 	//## Misc
 	public static final RegistryObject<BlockItem> VOICE_BOX = ITEMS.register("voice_box", () -> new BlockItem(ModBlocks.VOICE_BOX.get(), createProperties()));

@@ -33,7 +33,7 @@ public class BioLabRecipeCategory implements IRecipeCategory<BioLabRecipe> {
 
 	public BioLabRecipeCategory(IGuiHelper guiHelper) {
 		icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(ModItems.BIO_LAB.get()));
-		background = guiHelper.drawableBuilder(BiomancyMod.createRL("textures/gui/jei/bio_lab_jei_gui.png"), 0, 0, 134, 54).setTextureSize(134, 54).addPadding(0, 4, 0, 0).build();
+		background = guiHelper.drawableBuilder(BiomancyMod.createRL("textures/gui/jei/bio_lab_recipe.png"), 0, 0, 134, 54).setTextureSize(134, 54).addPadding(0, 4, 0, 0).build();
 	}
 
 	@Override

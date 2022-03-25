@@ -57,10 +57,10 @@ public final class ModBlocks {
 	//## Storage
 	public static final RegistryObject<GlandBlock> GLAND = BLOCKS.register("gland", () -> new GlandBlock(createFleshProperties()));
 	public static final RegistryObject<GulgeBlock> GULGE = BLOCKS.register("gulge", () -> new GulgeBlock(createFleshProperties()));
+	public static final RegistryObject<FleshkinChestBlock> FLESHKIN_CHEST = BLOCKS.register("fleshkin_chest", () -> new FleshkinChestBlock(createFleshProperties()));
 
 	//## Misc
 	public static final RegistryObject<VoiceBoxBlock> VOICE_BOX = BLOCKS.register("voice_box", () -> new VoiceBoxBlock(createFleshProperties()));
-	public static final RegistryObject<FleshkinChestBlock> FLESH_CHEST = BLOCKS.register("fleshkin_chest", () -> new FleshkinChestBlock(createFleshProperties()));
 
 	private ModBlocks() {}
 

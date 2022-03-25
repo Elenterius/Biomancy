@@ -2,8 +2,8 @@ package com.github.elenterius.biomancy.datagen.recipes;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
-import com.github.elenterius.biomancy.init.ModSerums;
 import com.github.elenterius.biomancy.init.ModTags;
+import com.github.elenterius.biomancy.util.FuelUtil;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.DataGenerator;
@@ -91,6 +91,9 @@ public class ModRecipeProvider extends RecipeProvider {
 		LOGGER.info(logMarker, "registering cooking recipes...");
 		registerCookingRecipes(consumer);
 
+		LOGGER.info(logMarker, "registering digesting recipes...");
+		registerDigestingRecipes(consumer);
+
 		LOGGER.info(logMarker, "registering decomposing recipes...");
 		registerDecomposingRecipes(consumer);
 
@@ -177,12 +180,12 @@ public class ModRecipeProvider extends RecipeProvider {
 				.pattern("SBS").pattern("NNN")
 				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get())).save(consumer);
 
-		ShapedRecipeBuilder.shaped(ModItems.PROTEIN_BAR.get())
-				.define('N', ModItems.NUTRIENTS.get())
-				.define('B', ModItems.FLESH_BITS.get())
-				.define('S', Tags.Items.SEEDS)
-				.pattern("SBS").pattern("NNN")
-				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get())).save(consumer);
+//		ShapedRecipeBuilder.shaped(ModItems.PROTEIN_BAR.get())
+//				.define('N', ModItems.NUTRIENTS.get())
+//				.define('B', ModItems.FLESH_BITS.get())
+//				.define('S', Tags.Items.SEEDS)
+//				.pattern("SBS").pattern("NNN")
+//				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get())).save(consumer);
 
 		// misc ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		ShapelessRecipeBuilder.shapeless(Items.DIORITE)
@@ -207,6 +210,51 @@ public class ModRecipeProvider extends RecipeProvider {
 		ShapelessRecipeBuilder.shapeless(Items.GUNPOWDER, 2)
 				.requires(Items.CHARCOAL).requires(ModItems.EXOTIC_DUST.get(), 4).requires(Items.BLAZE_POWDER, 2)
 				.unlockedBy(hasName(ModItems.EXOTIC_DUST.get()), has(ModItems.EXOTIC_DUST.get())).save(consumer, getConversionRecipeId(Items.GUNPOWDER, ModItems.EXOTIC_DUST.get()));
+	}
+
+	private void registerDigestingRecipes(Consumer<FinishedRecipe> consumer) {
+
+		DigesterRecipeBuilder.create(ModItems.NUTRIENTS.get(), FuelUtil.getNutrientsFromFuelItem(ModItems.NUTRIENT_PASTE.get()), "nutrient_paste")
+				.setIngredient(ModItems.NUTRIENT_PASTE.get())
+				.setCraftingTime(100)
+				.unlockedBy(hasName(ModItems.NUTRIENT_PASTE.get()), has(ModItems.NUTRIENT_PASTE.get())).save(consumer);
+
+		DigesterRecipeBuilder.create(ModItems.NUTRIENTS.get(), FuelUtil.getNutrientsFromFuelItem(ModItems.NUTRIENT_BAR.get()), "nutrient_bar")
+				.setIngredient(ModItems.NUTRIENT_BAR.get())
+				.setCraftingTime(600)
+				.unlockedBy(hasName(ModItems.NUTRIENT_BAR.get()), has(ModItems.NUTRIENT_BAR.get())).save(consumer);
+
+		final int itemCount = FuelUtil.DEFAULT_FUEL_VALUE / FuelUtil.NUTRIENTS_FUEL_VALUE;
+
+		DigesterRecipeBuilder.create(ModItems.NUTRIENTS.get(), 2 * itemCount, "poor_biomass")
+				.setIngredient(ModTags.Items.POOR_BIOMASS)
+				.setCraftingTime(189)
+				.unlockedBy("has_poor_biomass", has(ModTags.Items.POOR_BIOMASS)).save(consumer);
+
+		DigesterRecipeBuilder.create(ModItems.NUTRIENTS.get(), 4 * 2 * itemCount, "average_biomass")
+				.setIngredient(ModTags.Items.AVERAGE_BIOMASS)
+				.setCraftingTime(351)
+				.unlockedBy("has_average_biomass", has(ModTags.Items.AVERAGE_BIOMASS)).save(consumer);
+
+		DigesterRecipeBuilder.create(ModItems.NUTRIENTS.get(), 4 * 2 * itemCount, "raw_meat")
+				.setIngredient(ModTags.Items.RAW_MEATS)
+				.setCraftingTime(351)
+				.unlockedBy("has_raw_meat", has(ModTags.Items.RAW_MEATS)).save(consumer);
+
+		DigesterRecipeBuilder.create(ModItems.NUTRIENTS.get(), 6 * 3 * itemCount, "good_biomass")
+				.setIngredient(ModTags.Items.GOOD_BIOMASS)
+				.setCraftingTime(490)
+				.unlockedBy("has_good_biomass", has(ModTags.Items.GOOD_BIOMASS)).save(consumer);
+
+		DigesterRecipeBuilder.create(ModItems.NUTRIENTS.get(), 6 * 3 * itemCount, "cooked_meat")
+				.setIngredient(ModTags.Items.COOKED_MEATS)
+				.setCraftingTime(490)
+				.unlockedBy("has_cooked_meat", has(ModTags.Items.COOKED_MEATS)).save(consumer);
+
+		DigesterRecipeBuilder.create(ModItems.NUTRIENTS.get(), 8 * 4 * itemCount, "superb_biomass")
+				.setIngredient(ModTags.Items.SUPERB_BIOMASS)
+				.setCraftingTime(540)
+				.unlockedBy("has_superb_biomass", has(ModTags.Items.SUPERB_BIOMASS)).save(consumer);
 	}
 
 	private void registerDecomposingRecipes(Consumer<FinishedRecipe> consumer) {

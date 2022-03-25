@@ -5,18 +5,14 @@
       "item": "minecraft:sugar"
     },
     {
-      "item": "biomancy:rejuvenating_mucus"
-    },
-    {
-      "item": "biomancy:rejuvenating_mucus"
-    },
-    {
       "item": "biomancy:nutrients"
     }
   ],
+  "reactant": {
+    "item": "biomancy:vitalizing_compound"
+  },
   "result": {
-    "item": "biomancy:generic_serum",
-    "nbt": "{SerumColor:14968206,SerumId:\"biomancy:breeding_stimulant\"}"
+    "item": "biomancy:breeding_stimulant"
   },
   "time": 100
 }

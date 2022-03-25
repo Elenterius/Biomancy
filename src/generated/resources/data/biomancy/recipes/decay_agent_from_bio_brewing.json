@@ -8,15 +8,17 @@
       "item": "minecraft:rotten_flesh"
     },
     {
-      "item": "biomancy:rejuvenating_mucus"
+      "item": "minecraft:rotten_flesh"
     },
     {
-      "item": "biomancy:venom_extract"
+      "item": "minecraft:rotten_flesh"
     }
   ],
+  "reactant": {
+    "item": "biomancy:corrosive_compound"
+  },
   "result": {
-    "item": "biomancy:generic_serum",
-    "nbt": "{SerumColor:9260677,SerumId:\"biomancy:decay_agent\"}"
+    "item": "biomancy:decay_agent"
   },
   "time": 160
 }

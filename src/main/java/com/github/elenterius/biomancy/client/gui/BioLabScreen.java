@@ -57,7 +57,7 @@ public class BioLabScreen extends AbstractContainerScreen<BioLabMenu> {
 
 	private void drawProgressBar(PoseStack poseStack, float craftingPct) {
 		int vHeight = (int) (craftingPct * 20) + (craftingPct > 0 ? 1 : 0);
-		blit(poseStack, leftPos + 68, topPos + 66, 176, 0, 40, vHeight);
+		blit(poseStack, leftPos + 68, topPos + 78, 176, 0, 40, vHeight);
 	}
 
 
@@ -65,17 +65,16 @@ public class BioLabScreen extends AbstractContainerScreen<BioLabMenu> {
 		int yOffset = 20;
 		//fuel blob
 		int vHeight = (int) (fuelPct * 18) + (fuelPct > 0 ? 1 : 0);
-		blit(poseStack, leftPos + 41, topPos + 40 + 18 - vHeight, 176, 18 - vHeight + yOffset, 18, vHeight);
+		blit(poseStack, leftPos + 41, topPos + 52 + 18 - vHeight, 176, 18 - vHeight + yOffset, 18, vHeight);
 		//glass highlight
-		blit(poseStack, leftPos + 44, topPos + 43, 214, yOffset, 12, 13);
+		blit(poseStack, leftPos + 44, topPos + 55, 214, yOffset, 12, 13);
 	}
 
 	@Override
 	protected void renderTooltip(PoseStack poseStack, int mouseX, int mouseY) {
 		if (menu.getCarried().isEmpty()) {
-			List<Component> hoveringText = new ArrayList<>();
-
-			if (GuiUtil.isInRect(leftPos + 41, topPos + 40, 17, 17, mouseX, mouseY)) {
+			if (GuiUtil.isInRect(leftPos + 41, topPos + 52, 17, 17, mouseX, mouseY)) {
+				List<Component> hoveringText = new ArrayList<>();
 				DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
 
 				hoveringText.add(new TextComponent("Max Fuel: " + df.format(BioLabBlockEntity.MAX_FUEL) + " u"));
@@ -88,9 +87,7 @@ public class BioLabScreen extends AbstractContainerScreen<BioLabMenu> {
 				}
 
 				hoveringText.add(new TextComponent("Cost:  " + df.format(menu.getTotalFuelCost()) + " u"));
-			}
 
-			if (!hoveringText.isEmpty()) {
 				renderComponentTooltip(poseStack, hoveringText, mouseX, mouseY);
 				return;
 			}

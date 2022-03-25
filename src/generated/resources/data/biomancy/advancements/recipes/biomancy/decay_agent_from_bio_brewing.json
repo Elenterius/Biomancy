@@ -6,13 +6,13 @@
     ]
   },
   "criteria": {
-    "has_nutrients": {
+    "has_corrosive_compound": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:nutrients"
+              "biomancy:corrosive_compound"
             ]
           }
         ]
@@ -27,7 +27,7 @@
   },
   "requirements": [
     [
-      "has_nutrients",
+      "has_corrosive_compound",
       "has_the_recipe"
     ]
   ]

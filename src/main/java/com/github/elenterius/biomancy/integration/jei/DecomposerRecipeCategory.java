@@ -37,7 +37,7 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 
 	public DecomposerRecipeCategory(IGuiHelper guiHelper) {
 		icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(ModBlocks.DECOMPOSER.get()));
-		background = guiHelper.drawableBuilder(BiomancyMod.createRL("textures/gui/jei/decomposer_jei_gui.png"), 0, 0, 126, 60).setTextureSize(126, 60).build();
+		background = guiHelper.drawableBuilder(BiomancyMod.createRL("textures/gui/jei/decomposer_recipe.png"), 0, 0, 126, 60).setTextureSize(126, 60).build();
 	}
 
 	@Override

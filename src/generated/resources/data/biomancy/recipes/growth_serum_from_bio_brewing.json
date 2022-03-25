@@ -5,15 +5,20 @@
       "item": "minecraft:bone_meal"
     },
     {
-      "item": "biomancy:rejuvenating_mucus"
+      "item": "minecraft:bone_meal"
+    },
+    {
+      "item": "biomancy:nutrients"
     },
     {
       "item": "biomancy:nutrients"
     }
   ],
+  "reactant": {
+    "item": "biomancy:vitalizing_compound"
+  },
   "result": {
-    "item": "biomancy:generic_serum",
-    "nbt": "{SerumColor:12179138,SerumId:\"biomancy:growth_serum\"}"
+    "item": "biomancy:growth_serum"
   },
   "time": 100
 }

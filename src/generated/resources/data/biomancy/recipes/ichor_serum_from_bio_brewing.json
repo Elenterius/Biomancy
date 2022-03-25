@@ -1,0 +1,24 @@
+{
+  "type": "biomancy:bio_brewing",
+  "ingredients": [
+    {
+      "item": "biomancy:exotic_dust"
+    },
+    {
+      "item": "biomancy:exotic_dust"
+    },
+    {
+      "item": "minecraft:honeycomb"
+    },
+    {
+      "item": "minecraft:honeycomb"
+    }
+  ],
+  "reactant": {
+    "item": "biomancy:exotic_compound"
+  },
+  "result": {
+    "item": "biomancy:ichor_serum"
+  },
+  "time": 240
+}
