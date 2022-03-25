@@ -217,44 +217,44 @@ public class ModRecipeProvider extends RecipeProvider {
 		DigesterRecipeBuilder.create(ModItems.NUTRIENTS.get(), FuelUtil.getNutrientsFromFuelItem(ModItems.NUTRIENT_PASTE.get()), "nutrient_paste")
 				.setIngredient(ModItems.NUTRIENT_PASTE.get())
 				.setCraftingTime(100)
-				.unlockedBy(hasName(ModItems.NUTRIENT_PASTE.get()), has(ModItems.NUTRIENT_PASTE.get())).save(consumer);
+				.unlockedBy(ModItems.NUTRIENT_PASTE.get()).save(consumer);
 
 		DigesterRecipeBuilder.create(ModItems.NUTRIENTS.get(), FuelUtil.getNutrientsFromFuelItem(ModItems.NUTRIENT_BAR.get()), "nutrient_bar")
 				.setIngredient(ModItems.NUTRIENT_BAR.get())
 				.setCraftingTime(600)
-				.unlockedBy(hasName(ModItems.NUTRIENT_BAR.get()), has(ModItems.NUTRIENT_BAR.get())).save(consumer);
+				.unlockedBy(ModItems.NUTRIENT_BAR.get()).save(consumer);
 
 		final int itemCount = FuelUtil.DEFAULT_FUEL_VALUE / FuelUtil.NUTRIENTS_FUEL_VALUE;
 
 		DigesterRecipeBuilder.create(ModItems.NUTRIENTS.get(), 2 * itemCount, "poor_biomass")
 				.setIngredient(ModTags.Items.POOR_BIOMASS)
 				.setCraftingTime(189)
-				.unlockedBy("has_poor_biomass", has(ModTags.Items.POOR_BIOMASS)).save(consumer);
+				.unlockedBy(ModTags.Items.POOR_BIOMASS).save(consumer);
 
 		DigesterRecipeBuilder.create(ModItems.NUTRIENTS.get(), 4 * 2 * itemCount, "average_biomass")
 				.setIngredient(ModTags.Items.AVERAGE_BIOMASS)
 				.setCraftingTime(351)
-				.unlockedBy("has_average_biomass", has(ModTags.Items.AVERAGE_BIOMASS)).save(consumer);
+				.unlockedBy(ModTags.Items.AVERAGE_BIOMASS).save(consumer);
 
 		DigesterRecipeBuilder.create(ModItems.NUTRIENTS.get(), 4 * 2 * itemCount, "raw_meat")
 				.setIngredient(ModTags.Items.RAW_MEATS)
 				.setCraftingTime(351)
-				.unlockedBy("has_raw_meat", has(ModTags.Items.RAW_MEATS)).save(consumer);
+				.unlockedBy(ModTags.Items.RAW_MEATS).save(consumer);
 
 		DigesterRecipeBuilder.create(ModItems.NUTRIENTS.get(), 6 * 3 * itemCount, "good_biomass")
 				.setIngredient(ModTags.Items.GOOD_BIOMASS)
 				.setCraftingTime(490)
-				.unlockedBy("has_good_biomass", has(ModTags.Items.GOOD_BIOMASS)).save(consumer);
+				.unlockedBy(ModTags.Items.GOOD_BIOMASS).save(consumer);
 
 		DigesterRecipeBuilder.create(ModItems.NUTRIENTS.get(), 6 * 3 * itemCount, "cooked_meat")
 				.setIngredient(ModTags.Items.COOKED_MEATS)
 				.setCraftingTime(490)
-				.unlockedBy("has_cooked_meat", has(ModTags.Items.COOKED_MEATS)).save(consumer);
+				.unlockedBy(ModTags.Items.COOKED_MEATS).save(consumer);
 
 		DigesterRecipeBuilder.create(ModItems.NUTRIENTS.get(), 8 * 4 * itemCount, "superb_biomass")
 				.setIngredient(ModTags.Items.SUPERB_BIOMASS)
 				.setCraftingTime(540)
-				.unlockedBy("has_superb_biomass", has(ModTags.Items.SUPERB_BIOMASS)).save(consumer);
+				.unlockedBy(ModTags.Items.SUPERB_BIOMASS).save(consumer);
 	}
 
 	private void registerDecomposingRecipes(Consumer<FinishedRecipe> consumer) {
@@ -267,14 +267,14 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addOutput(ModItems.EXOTIC_DUST.get(), 15, 20)
 				.addOutput(Items.SUGAR, 2, 4)
 				.addOutput(ModItems.BILE_EXTRACT.get(), 2, 4)
-				.unlockedBy(hasName(Items.ENCHANTED_GOLDEN_APPLE), has(Items.ENCHANTED_GOLDEN_APPLE))
+				.unlockedBy(Items.ENCHANTED_GOLDEN_APPLE)
 				.save(consumer);
 
 		DecomposerRecipeBuilder.create(getItemName(ModItems.MOB_SINEW.get()))
 				.setIngredient(ModItems.MOB_SINEW.get())
 				.addOutput(ModItems.FLESH_BITS.get(), 1, 3)
 				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2)
-				.unlockedBy(hasName(ModItems.MOB_SINEW.get()), has(ModItems.MOB_SINEW.get()))
+				.unlockedBy(ModItems.MOB_SINEW.get())
 				.save(consumer);
 
 		DecomposerRecipeBuilder.create(getItemName(ModItems.LARYNX.get()))
@@ -282,7 +282,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addOutput(ModItems.FLESH_BITS.get(), 1, 2)
 				.addOutput(ModItems.ELASTIC_FIBERS.get(), 2, 4)
 				.addOutput(ModItems.BILE_EXTRACT.get(), 1, 2)
-				.unlockedBy(hasName(ModItems.LARYNX.get()), has(ModItems.LARYNX.get()))
+				.unlockedBy(ModItems.LARYNX.get())
 				.save(consumer);
 
 		DecomposerRecipeBuilder.create(getItemName(ModItems.EXALTED_LIVING_FLESH.get()))
@@ -291,7 +291,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 4)
 				.addOutput(ModItems.EXOTIC_DUST.get(), 4, 8)
 				.addOutput(ModItems.BILE_EXTRACT.get(), 2, 4)
-				.unlockedBy(hasName(ModItems.EXALTED_LIVING_FLESH.get()), has(ModItems.EXALTED_LIVING_FLESH.get()))
+				.unlockedBy(ModItems.EXALTED_LIVING_FLESH.get())
 				.save(consumer);
 
 		DecomposerRecipeBuilder.create("raw_meats")
@@ -299,7 +299,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addOutput(ModItems.FLESH_BITS.get(), 2, 4)
 				.addOutput(ModItems.ELASTIC_FIBERS.get(), 0, 1)
 				.addOutput(ModItems.BONE_SCRAPS.get(), 0, 2)
-				.unlockedBy("has_raw_meats", has(ModTags.Items.RAW_MEATS))
+				.unlockedBy(ModTags.Items.RAW_MEATS)
 				.save(consumer);
 	}
 
@@ -307,7 +307,7 @@ public class ModRecipeProvider extends RecipeProvider {
 		BioForgeRecipeBuilder.create(new ItemData(ModItems.OCULUS.get()))
 				.addIngredient(ModItems.FLESH_BITS.get(), 20)
 				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 10)
-				.unlockedBy(hasName(ModItems.ELASTIC_FIBERS.get()), has(ModItems.ELASTIC_FIBERS.get()))
+				.unlockedBy(ModItems.ELASTIC_FIBERS.get())
 				.save(consumer);
 	}
 
@@ -318,32 +318,28 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addIngredients(ModItems.REJUVENATING_MUCUS.get(), 2)
 				.addIngredient(ModItems.NUTRIENTS.get())
 				.setCraftingTime(5 * 20)
-				.unlockedBy(hasName(ModItems.REJUVENATING_MUCUS.get()), has(ModItems.REJUVENATING_MUCUS.get()))
-				.save(consumer);
+				.unlockedBy(ModItems.REJUVENATING_MUCUS.get()).save(consumer);
 
 		BioLabRecipeBuilder.create(ModItems.GROWTH_SERUM.get())
 				.addIngredients(Items.BONE_MEAL, 2)
 				.addIngredients(ModItems.NUTRIENTS.get(), 2)
 				.setReactant(ModItems.VITALIZING_COMPOUND.get())
 				.setCraftingTime(5 * 20)
-				.unlockedBy(hasName(ModItems.VITALIZING_COMPOUND.get()), has(ModItems.VITALIZING_COMPOUND.get()))
-				.save(consumer);
+				.unlockedBy(ModItems.VITALIZING_COMPOUND.get()).save(consumer);
 
 		BioLabRecipeBuilder.create(ModItems.BREEDING_STIMULANT.get())
 				.addIngredient(Items.SUGAR)
 				.addIngredient(ModItems.NUTRIENTS.get())
 				.setReactant(ModItems.VITALIZING_COMPOUND.get())
 				.setCraftingTime(5 * 20)
-				.unlockedBy(hasName(ModItems.VITALIZING_COMPOUND.get()), has(ModItems.VITALIZING_COMPOUND.get()))
-				.save(consumer);
+				.unlockedBy(ModItems.VITALIZING_COMPOUND.get()).save(consumer);
 
 		BioLabRecipeBuilder.create(ModItems.REJUVENATION_SERUM.get())
 				.addIngredients(ModItems.EXOTIC_DUST.get(), 2)
 				.addIngredients(ModItems.REJUVENATING_MUCUS.get(), 2)
 				.setReactant(ModItems.VITALIZING_COMPOUND.get())
 				.setCraftingTime(5 * 20)
-				.unlockedBy(hasName(ModItems.VITALIZING_COMPOUND.get()), has(ModItems.VITALIZING_COMPOUND.get()))
-				.save(consumer);
+				.unlockedBy(ModItems.VITALIZING_COMPOUND.get()).save(consumer);
 
 		BioLabRecipeBuilder.create(ModItems.CLEANSING_SERUM.get())
 				.addIngredients(ModItems.REJUVENATING_MUCUS.get(), 2)
@@ -351,24 +347,21 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addIngredient(Items.MILK_BUCKET)
 				.setReactant(ModItems.VITALIZING_COMPOUND.get())
 				.setCraftingTime(8 * 20)
-				.unlockedBy(hasName(ModItems.VITALIZING_COMPOUND.get()), has(ModItems.VITALIZING_COMPOUND.get()))
-				.save(consumer);
+				.unlockedBy(ModItems.VITALIZING_COMPOUND.get()).save(consumer);
 
 		BioLabRecipeBuilder.create(ModItems.INSOMNIA_CURE.get())
 				.addIngredients(Items.COCOA_BEANS, 2)
 				.addIngredient(ModItems.NUTRIENTS.get())
 				.setReactant(ModItems.CLEANSING_SERUM.get())
 				.setCraftingTime(8 * 20)
-				.unlockedBy(hasName(ModItems.CLEANSING_SERUM.get()), has(ModItems.CLEANSING_SERUM.get()))
-				.save(consumer);
+				.unlockedBy(ModItems.CLEANSING_SERUM.get()).save(consumer);
 
 		BioLabRecipeBuilder.create(ModItems.ABSORPTION_BOOST.get())
 				.addIngredient(Items.GOLDEN_APPLE)
 				.addIngredients(ModItems.TOUGH_FIBERS.get(), 2)
 				.setReactant(ModItems.GROWTH_SERUM.get())
 				.setCraftingTime(8 * 20)
-				.unlockedBy(hasName(ModItems.GROWTH_SERUM.get()), has(ModItems.GROWTH_SERUM.get()))
-				.save(consumer);
+				.unlockedBy(ModItems.GROWTH_SERUM.get()).save(consumer);
 
 		BioLabRecipeBuilder.create(ModItems.ADRENALINE_SERUM.get())
 				.addIngredient(Items.COCOA_BEANS)
@@ -376,39 +369,34 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_STRENGTH))
 				.addIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_SWIFTNESS))
 				.setCraftingTime(12 * 20)
-				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
-				.save(consumer);
+				.unlockedBy(ModItems.NUTRIENTS.get()).save(consumer);
 
 		BioLabRecipeBuilder.create(ModItems.CORROSIVE_COMPOUND.get())
 				.addIngredient(Items.SLIME_BALL)
 				.addIngredients(ModItems.VOLATILE_EXTRACT.get(), 2)
 				.addIngredient(ModItems.VENOM_EXTRACT.get())
 				.setCraftingTime(5 * 20)
-				.unlockedBy(hasName(ModItems.VOLATILE_EXTRACT.get()), has(ModItems.VOLATILE_EXTRACT.get()))
-				.save(consumer);
+				.unlockedBy(ModItems.VOLATILE_EXTRACT.get()).save(consumer);
 
 		BioLabRecipeBuilder.create(ModItems.DECAY_AGENT.get())
 				.addIngredients(Items.ROTTEN_FLESH, 4)
 				.setReactant(ModItems.CORROSIVE_COMPOUND.get())
 				.setCraftingTime(8 * 20)
-				.unlockedBy(hasName(ModItems.CORROSIVE_COMPOUND.get()), has(ModItems.CORROSIVE_COMPOUND.get()))
-				.save(consumer);
+				.unlockedBy(ModItems.CORROSIVE_COMPOUND.get()).save(consumer);
 
 		BioLabRecipeBuilder.create(ModItems.EXOTIC_COMPOUND.get())
 				.addIngredients(ModItems.EXOTIC_DUST.get(), 2)
 				.addIngredient(ModItems.NUTRIENTS.get())
 				.addIngredient(ModItems.BILE_EXTRACT.get())
 				.setCraftingTime(8 * 20)
-				.unlockedBy(hasName(ModItems.EXOTIC_DUST.get()), has(ModItems.EXOTIC_DUST.get()))
-				.save(consumer);
+				.unlockedBy(ModItems.EXOTIC_DUST.get()).save(consumer);
 
 		BioLabRecipeBuilder.create(ModItems.ICHOR_SERUM.get())
 				.addIngredients(ModItems.EXOTIC_DUST.get(), 2)
 				.addIngredients(Items.HONEYCOMB, 2)
 				.setReactant(ModItems.EXOTIC_COMPOUND.get())
 				.setCraftingTime(12 * 20)
-				.unlockedBy(hasName(ModItems.EXOTIC_COMPOUND.get()), has(ModItems.EXOTIC_COMPOUND.get()))
-				.save(consumer);
+				.unlockedBy(ModItems.EXOTIC_COMPOUND.get()).save(consumer);
 	}
 
 }

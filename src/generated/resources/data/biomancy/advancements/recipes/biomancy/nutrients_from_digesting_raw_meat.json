@@ -6,7 +6,7 @@
     ]
   },
   "criteria": {
-    "has_raw_meat": {
+    "has_raw_meats": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_raw_meat",
+      "has_raw_meats",
       "has_the_recipe"
     ]
   ]

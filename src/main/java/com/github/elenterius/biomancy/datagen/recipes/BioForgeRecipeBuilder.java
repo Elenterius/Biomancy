@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class BioForgeRecipeBuilder {
+public class BioForgeRecipeBuilder implements IRecipeBuilder {
 
 	public static final String SUFFIX = "_from_bio_forging";
 
@@ -86,6 +86,7 @@ public class BioForgeRecipeBuilder {
 		return this;
 	}
 
+	@Override
 	public BioForgeRecipeBuilder unlockedBy(String name, CriterionTriggerInstance criterionTrigger) {
 		advancement.addCriterion(name, criterionTrigger);
 		return this;
@@ -96,10 +97,7 @@ public class BioForgeRecipeBuilder {
 		return this;
 	}
 
-	public void save(Consumer<FinishedRecipe> consumer) {
-		save(consumer, null);
-	}
-
+	@Override
 	public void save(Consumer<FinishedRecipe> consumer, @Nullable CreativeModeTab itemCategory) {
 		validateCriteria(recipeId);
 		advancement.parent(new ResourceLocation("recipes/root"))

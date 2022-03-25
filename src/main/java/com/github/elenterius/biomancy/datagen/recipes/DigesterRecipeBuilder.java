@@ -22,7 +22,7 @@ import net.minecraft.world.level.ItemLike;
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
-public class DigesterRecipeBuilder {
+public class DigesterRecipeBuilder implements IRecipeBuilder {
 
 	public static final String SUFFIX = "_from_digesting";
 
@@ -100,6 +100,7 @@ public class DigesterRecipeBuilder {
 		return this;
 	}
 
+	@Override
 	public DigesterRecipeBuilder unlockedBy(String name, CriterionTriggerInstance criterionTrigger) {
 		advancement.addCriterion(name, criterionTrigger);
 		return this;
@@ -110,10 +111,7 @@ public class DigesterRecipeBuilder {
 		return this;
 	}
 
-	public void save(Consumer<FinishedRecipe> consumer) {
-		save(consumer, null);
-	}
-
+	@Override
 	public void save(Consumer<FinishedRecipe> consumer, @Nullable CreativeModeTab itemCategory) {
 		validateCriteria(recipeId);
 		advancement.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);

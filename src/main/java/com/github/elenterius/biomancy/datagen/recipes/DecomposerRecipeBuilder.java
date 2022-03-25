@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class DecomposerRecipeBuilder {
+public class DecomposerRecipeBuilder implements IRecipeBuilder {
 
 	private final ResourceLocation recipeId;
 	private final List<VariableProductionOutput> outputs = new ArrayList<>();
@@ -109,6 +109,7 @@ public class DecomposerRecipeBuilder {
 		return this;
 	}
 
+	@Override
 	public DecomposerRecipeBuilder unlockedBy(String name, CriterionTriggerInstance criterionTrigger) {
 		advancement.addCriterion(name, criterionTrigger);
 		return this;
@@ -119,10 +120,7 @@ public class DecomposerRecipeBuilder {
 		return this;
 	}
 
-	public void save(Consumer<FinishedRecipe> consumer) {
-		save(consumer, null);
-	}
-
+	@Override
 	public void save(Consumer<FinishedRecipe> consumer, @Nullable CreativeModeTab itemCategory) {
 		validateCriteria(recipeId);
 		advancement.parent(new ResourceLocation("recipes/root"))

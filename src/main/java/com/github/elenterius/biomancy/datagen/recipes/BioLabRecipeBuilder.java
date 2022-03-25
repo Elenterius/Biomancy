@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-public class BioLabRecipeBuilder {
+public class BioLabRecipeBuilder implements IRecipeBuilder {
 
 	public static final String SUFFIX = "_from_bio_brewing";
 
@@ -129,6 +129,7 @@ public class BioLabRecipeBuilder {
 		return this;
 	}
 
+	@Override
 	public BioLabRecipeBuilder unlockedBy(String name, CriterionTriggerInstance criterionTrigger) {
 		advancement.addCriterion(name, criterionTrigger);
 		return this;
@@ -139,10 +140,7 @@ public class BioLabRecipeBuilder {
 		return this;
 	}
 
-	public void save(Consumer<FinishedRecipe> consumer) {
-		save(consumer, null);
-	}
-
+	@Override
 	public void save(Consumer<FinishedRecipe> consumer, @Nullable CreativeModeTab itemCategory) {
 		validateCriteria(recipeId);
 		advancement.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
