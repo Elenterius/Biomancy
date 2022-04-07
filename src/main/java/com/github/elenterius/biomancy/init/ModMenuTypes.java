@@ -5,6 +5,8 @@ import com.github.elenterius.biomancy.client.gui.*;
 import com.github.elenterius.biomancy.world.inventory.menu.*;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.MenuAccess;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -13,6 +15,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public final class ModMenuTypes {
@@ -29,23 +32,28 @@ public final class ModMenuTypes {
 	public static final RegistryObject<MenuType<BioInjectorMenu>> BIO_INJECTOR = MENUS.register("bio_injector", () -> IForgeMenuType.create(BioInjectorMenu::createClientMenu));
 	public static final RegistryObject<MenuType<FleshkinChestMenu>> FLESHKIN_CHEST = MENUS.register("flesh_chest", () -> IForgeMenuType.create(FleshkinChestMenu::createClientMenu));
 	public static final RegistryObject<MenuType<DigesterMenu>> DIGESTER = MENUS.register("digester", () -> IForgeMenuType.create(DigesterMenu::createClientMenu));
+	public static final RegistryObject<MenuType<BioForgeMenu>> BIO_FORGE = MENUS.register("bio_forge", () -> IForgeMenuType.create(BioForgeMenu::createClientMenu));
 
 	@OnlyIn(Dist.CLIENT)
-	public static final Set<Class<? extends Screen>> SCREENS = Set.of(
-			DecomposerScreen.class, BioLabScreen.class, GlandScreen.class, SacScreen.class,
-			GulgeScreen.class, BioInjectorScreen.class, FleshkinChestScreen.class, DigesterScreen.class
-	);
+	public static final Set<Class<? extends Screen>> SCREENS = new HashSet<>();
+
+	@OnlyIn(Dist.CLIENT)
+	private static <M extends AbstractContainerMenu, U extends Screen & MenuAccess<M>> void registerMenuScreen(RegistryObject<MenuType<M>> registryObject, MenuScreens.ScreenConstructor<M, U> factory, Class<U> clazz) {
+		MenuScreens.register(registryObject.get(), factory);
+		SCREENS.add(clazz);
+	}
 
 	@OnlyIn(Dist.CLIENT)
 	static void registerMenuScreens() {
-		MenuScreens.register(DECOMPOSER.get(), DecomposerScreen::new);
-		MenuScreens.register(BIO_LAB.get(), BioLabScreen::new);
-		MenuScreens.register(GLAND.get(), GlandScreen::new);
-		MenuScreens.register(SAC.get(), SacScreen::new);
-		MenuScreens.register(GULGE.get(), GulgeScreen::new);
-		MenuScreens.register(BIO_INJECTOR.get(), BioInjectorScreen::new);
-		MenuScreens.register(FLESHKIN_CHEST.get(), FleshkinChestScreen::new);
-		MenuScreens.register(DIGESTER.get(), DigesterScreen::new);
+		registerMenuScreen(DECOMPOSER, DecomposerScreen::new, DecomposerScreen.class);
+		registerMenuScreen(BIO_LAB, BioLabScreen::new, BioLabScreen.class);
+		registerMenuScreen(GLAND, GlandScreen::new, GlandScreen.class);
+		registerMenuScreen(SAC, SacScreen::new, SacScreen.class);
+		registerMenuScreen(GULGE, GulgeScreen::new, GulgeScreen.class);
+		registerMenuScreen(BIO_INJECTOR, BioInjectorScreen::new, BioInjectorScreen.class);
+		registerMenuScreen(FLESHKIN_CHEST, FleshkinChestScreen::new, FleshkinChestScreen.class);
+		registerMenuScreen(DIGESTER, DigesterScreen::new, DigesterScreen.class);
+		registerMenuScreen(BIO_FORGE, BioForgeScreen::new, BioForgeScreen.class);
 	}
 
 }

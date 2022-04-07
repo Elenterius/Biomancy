@@ -2,15 +2,17 @@ package com.github.elenterius.biomancy.world.inventory.menu;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
+import com.github.elenterius.biomancy.recipe.BioForgeRecipe;
 import com.github.elenterius.biomancy.util.FuelUtil;
-import com.github.elenterius.biomancy.world.block.entity.BioLabBlockEntity;
-import com.github.elenterius.biomancy.world.block.entity.state.BioLabStateData;
+import com.github.elenterius.biomancy.world.block.entity.BioForgeBlockEntity;
+import com.github.elenterius.biomancy.world.block.entity.state.BioForgeStateData;
 import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.world.inventory.SimpleInventory;
 import com.github.elenterius.biomancy.world.inventory.slot.FuelSlot;
 import com.github.elenterius.biomancy.world.inventory.slot.ISlotZone;
 import com.github.elenterius.biomancy.world.inventory.slot.OutputSlot;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -19,46 +21,63 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.apache.logging.log4j.MarkerManager;
 
-public class BioLabMenu extends PlayerContainerMenu {
+import javax.annotation.Nullable;
+import java.util.function.Consumer;
+
+public class BioForgeMenu extends PlayerContainerMenu {
+
+	public static final int X_OFFSET = 176;
 
 	protected final Level level;
 	private final BehavioralInventory<?> fuelInventory;
 	private final SimpleInventory inputInventory;
 	private final BehavioralInventory<?> outputInventory;
-	private final BioLabStateData stateData;
+	private final BioForgeStateData stateData;
 
-	protected BioLabMenu(int id, Inventory playerInventory, BehavioralInventory<?> fuelInventory, SimpleInventory inputInventory, BehavioralInventory<?> outputInventory, BioLabStateData stateData) {
-		super(ModMenuTypes.BIO_LAB.get(), id, playerInventory, 137, 195);
+	public final Consumer<BioForgeRecipe> selectedRecipeConsumer;
+
+	protected BioForgeMenu(int id, Inventory playerInventory, BehavioralInventory<?> fuelInventory, SimpleInventory inputInventory, BehavioralInventory<?> outputInventory, BioForgeStateData stateData, Consumer<BioForgeRecipe> selectedRecipeConsumer) {
+		super(ModMenuTypes.BIO_FORGE.get(), id, playerInventory, 8 + X_OFFSET, 137, 195);
 		level = playerInventory.player.level;
+
+		this.selectedRecipeConsumer = selectedRecipeConsumer;
 
 		this.fuelInventory = fuelInventory;
 		this.inputInventory = inputInventory;
 		this.outputInventory = outputInventory;
 		this.stateData = stateData;
 
-		addSlot(new FuelSlot(fuelInventory, 0, 43, 92));
+		addSlot(new FuelSlot(fuelInventory, 0, 27 + X_OFFSET, 56));
 
-		addSlot(new Slot(inputInventory, 0, 50, 31));
-		addSlot(new Slot(inputInventory, 1, 70, 28));
-		addSlot(new Slot(inputInventory, 2, 90, 28));
-		addSlot(new Slot(inputInventory, 3, 110, 31));
+		addSlot(new Slot(inputInventory, 0, 52 + X_OFFSET, 67));
+		addSlot(new Slot(inputInventory, 1, 58 + X_OFFSET, 89));
+		addSlot(new Slot(inputInventory, 2, 80 + X_OFFSET, 97));
+		addSlot(new Slot(inputInventory, 3, 102 + X_OFFSET, 89));
+		addSlot(new Slot(inputInventory, 4, 108 + X_OFFSET, 67));
 
-		addSlot(new Slot(inputInventory, 4, 80, 62)); //mixture/vial slot
+		addSlot(new Slot(inputInventory, 5, 80 + X_OFFSET, 67)); //reactant slot
 
-		addSlot(new OutputSlot(outputInventory, 0, 80, 88));
+		addSlot(new OutputSlot(outputInventory, 0, 80 + X_OFFSET, 19));
 
 		addDataSlots(stateData);
 	}
 
-	public static BioLabMenu createServerMenu(int screenId, Inventory playerInventory, BehavioralInventory<?> fuelInventory, SimpleInventory inputInventory, BehavioralInventory<?> outputInventory, BioLabStateData stateData) {
-		return new BioLabMenu(screenId, playerInventory, fuelInventory, inputInventory, outputInventory, stateData);
+	public static BioForgeMenu createServerMenu(int screenId, Inventory playerInventory, BehavioralInventory<?> fuelInventory, SimpleInventory inputInventory, BehavioralInventory<?> outputInventory, BioForgeStateData stateData, Consumer<BioForgeRecipe> selectedRecipeConsumer) {
+		return new BioForgeMenu(screenId, playerInventory, fuelInventory, inputInventory, outputInventory, stateData, selectedRecipeConsumer);
 	}
 
-	public static BioLabMenu createClientMenu(int screenId, Inventory playerInventory, FriendlyByteBuf extraData) {
-		BehavioralInventory<?> fuelInventory = BehavioralInventory.createClientContents(BioLabBlockEntity.FUEL_SLOTS);
-		SimpleInventory inputInventory = SimpleInventory.createClientContents(BioLabBlockEntity.INPUT_SLOTS);
-		BehavioralInventory<?> outputInventory = BehavioralInventory.createClientContents(BioLabBlockEntity.OUTPUT_SLOTS);
-		return new BioLabMenu(screenId, playerInventory, fuelInventory, inputInventory, outputInventory, new BioLabStateData());
+	public static BioForgeMenu createClientMenu(int screenId, Inventory playerInventory, FriendlyByteBuf buffer) {
+		BehavioralInventory<?> fuelInventory = BehavioralInventory.createClientContents(BioForgeBlockEntity.FUEL_SLOTS);
+		SimpleInventory inputInventory = SimpleInventory.createClientContents(BioForgeBlockEntity.INPUT_SLOTS);
+		BehavioralInventory<?> outputInventory = BehavioralInventory.createClientContents(BioForgeBlockEntity.OUTPUT_SLOTS);
+
+		BioForgeStateData stateData;
+		if (playerInventory.player.level.getBlockEntity(buffer.readBlockPos()) instanceof BioForgeBlockEntity bioForge) {
+			stateData = bioForge.getStateData();
+		}
+		else stateData = new BioForgeStateData();
+
+		return new BioForgeMenu(screenId, playerInventory, fuelInventory, inputInventory, outputInventory, stateData, recipeId -> {});
 	}
 
 	@Override
@@ -67,21 +86,30 @@ public class BioLabMenu extends PlayerContainerMenu {
 		return inputInventory.stillValid(player);
 	}
 
+	@Nullable
+	public ResourceLocation getSelectedRecipeId() {
+		return stateData.selectedRecipeId;
+	}
+
 	public float getCraftingProgressNormalized() {
 		if (stateData.timeForCompletion == 0) return 0f;
 		return Mth.clamp(stateData.timeElapsed / (float) stateData.timeForCompletion, 0f, 1f);
 	}
 
 	public int getTotalFuelCost() {
-		return stateData.timeForCompletion * BioLabBlockEntity.FUEL_COST;
+		return stateData.timeForCompletion * BioForgeBlockEntity.FUEL_COST;
 	}
 
 	public float getFuelAmountNormalized() {
-		return Mth.clamp((float) stateData.getFuelAmount() / BioLabBlockEntity.MAX_FUEL, 0f, 1f);
+		return Mth.clamp((float) stateData.getFuelAmount() / BioForgeBlockEntity.MAX_FUEL, 0f, 1f);
 	}
 
 	public int getFuelAmount() {
 		return stateData.getFuelAmount();
+	}
+
+	public boolean isOutputEmpty() {
+		return outputInventory.isEmpty();
 	}
 
 	@Override
@@ -114,7 +142,7 @@ public class BioLabMenu extends PlayerContainerMenu {
 	}
 
 	private boolean mergeIntoInputZone(ItemStack stackInSlot) {
-		if (BioLabBlockEntity.RECIPE_TYPE.getRecipeForIngredient(level, stackInSlot).isPresent()) {
+		if (BioForgeBlockEntity.RECIPE_TYPE.getRecipeForIngredient(level, stackInSlot).isPresent()) {
 			return mergeInto(SlotZone.INPUT_ZONE, stackInSlot, false);
 		}
 		return false;
@@ -137,9 +165,9 @@ public class BioLabMenu extends PlayerContainerMenu {
 	public enum SlotZone implements ISlotZone {
 		PLAYER_HOTBAR(0, 9),
 		PLAYER_MAIN_INVENTORY(PLAYER_HOTBAR.lastIndexPlus1, 3 * 9),
-		FUEL_ZONE(PLAYER_MAIN_INVENTORY.lastIndexPlus1, BioLabBlockEntity.FUEL_SLOTS),
-		INPUT_ZONE(FUEL_ZONE.lastIndexPlus1, BioLabBlockEntity.INPUT_SLOTS),
-		OUTPUT_ZONE(INPUT_ZONE.lastIndexPlus1, BioLabBlockEntity.OUTPUT_SLOTS);
+		FUEL_ZONE(PLAYER_MAIN_INVENTORY.lastIndexPlus1, BioForgeBlockEntity.FUEL_SLOTS),
+		INPUT_ZONE(FUEL_ZONE.lastIndexPlus1, BioForgeBlockEntity.INPUT_SLOTS),
+		OUTPUT_ZONE(INPUT_ZONE.lastIndexPlus1, BioForgeBlockEntity.OUTPUT_SLOTS);
 
 		public final int firstIndex;
 		public final int slotCount;

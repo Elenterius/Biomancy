@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Nameable;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,6 +30,15 @@ public abstract class MachineBlockEntity<R extends AbstractProductionRecipe, S e
 
 	protected MachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
+	}
+
+	public static <R extends AbstractProductionRecipe, S extends RecipeCraftingStateData<R>> void serverTick(Level level, BlockPos pos, BlockState state, MachineBlockEntity<R, S> entity) {
+		entity.serverTick((ServerLevel) level);
+	}
+
+	public boolean canPlayerOpenInv(Player player) {
+		if (level == null || level.getBlockEntity(worldPosition) != this) return false;
+		return player.distanceToSqr(Vec3.atCenterOf(worldPosition)) < 8d * 8d;
 	}
 
 	public int getTicks() {
@@ -110,7 +121,7 @@ public abstract class MachineBlockEntity<R extends AbstractProductionRecipe, S e
 	protected void serverTick(ServerLevel level) {
 		ticks++;
 
-		if (ticks % 10 == 0) {
+		if (ticks % 8 == 0) {
 			refuel();
 		}
 

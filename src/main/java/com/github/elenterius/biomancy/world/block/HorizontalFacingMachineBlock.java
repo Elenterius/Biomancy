@@ -10,11 +10,11 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class HorizontalDirectionalMachineBlock extends MachineBlock {
+public abstract class HorizontalFacingMachineBlock extends MachineBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-	protected HorizontalDirectionalMachineBlock(Properties properties) {
+	protected HorizontalFacingMachineBlock(Properties properties) {
 		super(properties);
 	}
 

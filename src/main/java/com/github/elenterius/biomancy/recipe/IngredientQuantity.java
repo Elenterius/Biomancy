@@ -3,7 +3,10 @@ package com.github.elenterius.biomancy.recipe;
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+
+import javax.annotation.Nullable;
 
 public record IngredientQuantity(Ingredient ingredient, int count) {
 
@@ -24,6 +27,10 @@ public record IngredientQuantity(Ingredient ingredient, int count) {
 		Ingredient ingredient = Ingredient.fromNetwork(buffer);
 		int count = buffer.readVarInt();
 		return new IngredientQuantity(ingredient, count);
+	}
+
+	public boolean testItem(@Nullable ItemStack stack) {
+		return ingredient.test(stack);
 	}
 
 	public JsonObject toJson() {

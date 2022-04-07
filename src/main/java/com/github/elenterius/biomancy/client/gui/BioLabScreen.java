@@ -1,8 +1,6 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.util.ClientTextUtil;
-import com.github.elenterius.biomancy.util.TextComponentUtil;
 import com.github.elenterius.biomancy.world.block.entity.BioLabBlockEntity;
 import com.github.elenterius.biomancy.world.inventory.menu.BioLabMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -10,15 +8,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 public class BioLabScreen extends AbstractContainerScreen<BioLabMenu> {
@@ -27,7 +20,7 @@ public class BioLabScreen extends AbstractContainerScreen<BioLabMenu> {
 
 	public BioLabScreen(BioLabMenu menu, Inventory playerInventory, Component title) {
 		super(menu, playerInventory, title);
-		imageHeight = 197;
+		imageHeight = 219;
 	}
 
 	@Override
@@ -74,26 +67,18 @@ public class BioLabScreen extends AbstractContainerScreen<BioLabMenu> {
 	protected void renderTooltip(PoseStack poseStack, int mouseX, int mouseY) {
 		if (menu.getCarried().isEmpty()) {
 			if (GuiUtil.isInRect(leftPos + 41, topPos + 52, 17, 17, mouseX, mouseY)) {
-				List<Component> hoveringText = new ArrayList<>();
-				DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
-
-				hoveringText.add(new TextComponent("Max Fuel: " + df.format(BioLabBlockEntity.MAX_FUEL) + " u"));
-				int amount = menu.getFuelAmount();
-				if (amount > 0) {
-					hoveringText.add(new TextComponent("Current:  " + df.format(amount) + " u"));
-				}
-				else {
-					hoveringText.add(TextComponentUtil.getTooltipText("empty"));
-				}
-
-				hoveringText.add(new TextComponent("Cost:  " + df.format(menu.getTotalFuelCost()) + " u"));
-
-				renderComponentTooltip(poseStack, hoveringText, mouseX, mouseY);
-				return;
+				drawFuelTooltip(poseStack, mouseX, mouseY);
 			}
 		}
 
 		super.renderTooltip(poseStack, mouseX, mouseY);
+	}
+
+	private void drawFuelTooltip(PoseStack poseStack, int mouseX, int mouseY) {
+		int maxFuel = BioLabBlockEntity.MAX_FUEL;
+		int fuelAmount = menu.getFuelAmount();
+		int totalFuelCost = menu.getTotalFuelCost();
+		GuiUtil.drawFuelTooltip(this, poseStack, mouseX, mouseY, maxFuel, fuelAmount, totalFuelCost);
 	}
 
 }

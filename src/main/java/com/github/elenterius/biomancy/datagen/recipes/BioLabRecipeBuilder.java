@@ -34,9 +34,10 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 	private final ResourceLocation recipeId;
 	private final ItemData result;
 	private final List<Ingredient> ingredients = new ArrayList<>();
-	private final Advancement.Builder advancement = Advancement.Builder.advancement();
 	private Ingredient reactant = Ingredient.of(ModItems.GLASS_VIAL.get());
 	private int craftingTime = 4 * 20;
+
+	private final Advancement.Builder advancement = Advancement.Builder.advancement();
 	@Nullable
 	private String group;
 
@@ -169,10 +170,12 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 		public Result(ResourceLocation recipeId, String group, ItemData result, int craftingTime, List<Ingredient> ingredients, Ingredient reactant, Advancement.Builder advancement, ResourceLocation advancementId) {
 			id = recipeId;
 			this.group = group;
+
 			this.ingredients = ingredients;
 			this.reactant = reactant;
 			this.result = result;
 			this.craftingTime = craftingTime;
+
 			advancementBuilder = advancement;
 			this.advancementId = advancementId;
 		}
@@ -188,7 +191,9 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 			}
 			json.add("ingredients", jsonArray);
 
-			json.add("reactant", reactant.toJson());
+			if (!reactant.isEmpty()) {
+				json.add("reactant", reactant.toJson());
+			}
 
 			json.add("result", result.toJson());
 

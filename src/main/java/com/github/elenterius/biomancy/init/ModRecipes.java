@@ -25,7 +25,7 @@ public final class ModRecipes {
 
 	public static final ItemStackRecipeType<DecomposerRecipe> DECOMPOSING_RECIPE_TYPE = createItemStackRecipeType("decomposing");
 	public static final ItemStackRecipeType<BioLabRecipe> BIO_BREWING_RECIPE_TYPE = createItemStackRecipeType("bio_brewing");
-	public static final SimpleRecipeType<BioForgeRecipe> BIO_FORGING_RECIPE_TYPE = createSimpleRecipeType("bio_forging");
+	public static final ItemStackRecipeType<BioForgeRecipe> BIO_FORGING_RECIPE_TYPE = createItemStackRecipeType("bio_forging");
 	public static final ItemStackRecipeType<DigesterRecipe> DIGESTING_RECIPE_TYPE = createItemStackRecipeType("digesting");
 	public static final Set<RecipeType<? extends Recipe<Container>>> RECIPE_TYPES = Set.of(DECOMPOSING_RECIPE_TYPE, BIO_FORGING_RECIPE_TYPE, BIO_BREWING_RECIPE_TYPE);
 

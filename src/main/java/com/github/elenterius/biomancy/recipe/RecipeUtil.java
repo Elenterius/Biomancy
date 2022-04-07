@@ -1,7 +1,9 @@
 package com.github.elenterius.biomancy.recipe;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.ArrayList;
@@ -10,6 +12,10 @@ import java.util.List;
 public final class RecipeUtil {
 
 	private RecipeUtil() {}
+
+	public static Ingredient readIngredient(JsonObject json, String memberName) {
+		return Ingredient.fromJson((GsonHelper.isArrayNode(json, memberName) ? GsonHelper.getAsJsonArray(json, memberName) : GsonHelper.getAsJsonObject(json, memberName)));
+	}
 
 	public static NonNullList<Ingredient> readIngredients(JsonArray jsonArray) {
 		NonNullList<Ingredient> list = NonNullList.create();

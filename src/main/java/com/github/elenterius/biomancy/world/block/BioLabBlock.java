@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.world.block;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.util.VoxelShapeUtil;
 import com.github.elenterius.biomancy.world.block.entity.BioLabBlockEntity;
+import com.github.elenterius.biomancy.world.block.entity.MachineBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -10,9 +11,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -24,7 +23,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class BioLabBlock extends HorizontalDirectionalMachineBlock {
+public class BioLabBlock extends HorizontalFacingMachineBlock {
 
 	public static final VoxelShape SHAPE_NORTH = makeShape(Direction.NORTH);
 	public static final VoxelShape SHAPE_SOUTH = makeShape(Direction.SOUTH);
@@ -53,13 +52,13 @@ public class BioLabBlock extends HorizontalDirectionalMachineBlock {
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new BioLabBlockEntity(pos, state);
+		return ModBlockEntities.BIO_LAB.get().create(pos, state);
 	}
 
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-		return level.isClientSide ? null : createTickerHelper(blockEntityType, ModBlockEntities.BIO_LAB.get(), BioLabBlockEntity::serverTick);
+		return level.isClientSide ? null : createTickerHelper(blockEntityType, ModBlockEntities.BIO_LAB.get(), MachineBlockEntity::serverTick);
 	}
 
 	@Override
@@ -70,16 +69,6 @@ public class BioLabBlock extends HorizontalDirectionalMachineBlock {
 			player.openMenu(bioLab);
 		}
 		return InteractionResult.CONSUME;
-	}
-
-	@Override
-	public BlockState rotate(BlockState state, Rotation rotation) {
-		return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
-	}
-
-	@Override
-	public BlockState mirror(BlockState state, Mirror mirror) {
-		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 
 	@Override

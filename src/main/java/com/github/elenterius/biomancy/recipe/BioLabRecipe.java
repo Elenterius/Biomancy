@@ -107,7 +107,7 @@ public class BioLabRecipe extends AbstractProductionRecipe {
 				throw new JsonParseException(String.format("Too many ingredients for %s recipe. Max amount is %d", getRegistryName(), MAX_INGREDIENTS));
 			}
 
-			Ingredient reactant = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "reactant"));
+			Ingredient reactant = json.has("reactant") ? RecipeUtil.readIngredient(json, "reactant") : Ingredient.EMPTY;
 
 			ItemStack resultStack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
 			int time = GsonHelper.getAsInt(json, "time", 100);
@@ -120,9 +120,8 @@ public class BioLabRecipe extends AbstractProductionRecipe {
 		public BioLabRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
 			//client side
 			ItemStack resultStack = buffer.readItem();
-			int time = buffer.readInt();
-
 			Ingredient reactant = Ingredient.fromNetwork(buffer);
+			int time = buffer.readVarInt();
 
 			int ingredientCount = buffer.readVarInt();
 			NonNullList<Ingredient> ingredients = NonNullList.withSize(ingredientCount, Ingredient.EMPTY);
@@ -137,9 +136,8 @@ public class BioLabRecipe extends AbstractProductionRecipe {
 		public void toNetwork(FriendlyByteBuf buffer, BioLabRecipe recipe) {
 			//server side
 			buffer.writeItem(recipe.recipeResult);
-			buffer.writeInt(recipe.getCraftingTime());
-
 			recipe.recipeReactant.toNetwork(buffer);
+			buffer.writeVarInt(recipe.getCraftingTime());
 
 			buffer.writeVarInt(recipe.recipeIngredients.size());
 			for (Ingredient ingredient : recipe.recipeIngredients) {

@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.world.block;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.util.VoxelShapeUtil;
 import com.github.elenterius.biomancy.world.block.entity.DigesterBlockEntity;
+import com.github.elenterius.biomancy.world.block.entity.MachineBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -24,7 +25,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class DigesterBlock extends HorizontalDirectionalMachineBlock {
+public class DigesterBlock extends HorizontalFacingMachineBlock {
 
 	public static final VoxelShape SHAPE_NORTH = makeShape(Direction.NORTH);
 	public static final VoxelShape SHAPE_SOUTH = makeShape(Direction.SOUTH);
@@ -59,7 +60,7 @@ public class DigesterBlock extends HorizontalDirectionalMachineBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-		return level.isClientSide ? null : createTickerHelper(blockEntityType, ModBlockEntities.DIGESTER.get(), DigesterBlockEntity::serverTick);
+		return level.isClientSide ? null : createTickerHelper(blockEntityType, ModBlockEntities.DIGESTER.get(), MachineBlockEntity::serverTick);
 	}
 
 	@Override

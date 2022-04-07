@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.recipe;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -8,6 +9,7 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 
 public abstract class RecipeTypeImpl<T extends Recipe<Container>> implements RecipeType<T> {
@@ -39,12 +41,18 @@ public abstract class RecipeTypeImpl<T extends Recipe<Container>> implements Rec
 			super(identifier);
 		}
 
+		public Optional<R> getRecipeById(Level level, ResourceLocation id) {
+			RecipeManager recipeManager = level.getRecipeManager();
+			return Optional.ofNullable(castRecipe(recipeManager.byType(this).get(id)));
+		}
+
 		public Optional<R> getRecipeFromContainer(Level level, Container inputInv) {
 			RecipeManager recipeManager = level.getRecipeManager();
 			return recipeManager.getRecipeFor(this, inputInv, level);
 		}
 
-		private R castRecipe(Recipe<Container> recipe) {
+		@Nullable
+		private R castRecipe(@Nullable Recipe<Container> recipe) {
 			//noinspection unchecked
 			return (R) recipe;
 		}

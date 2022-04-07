@@ -82,7 +82,7 @@
   "item.biomancy.boomling_spawn_egg": "Boomling Spawn Egg",
 
   "block.biomancy.creator": "Flesh Crucible",
-  "block.biomancy.bio_forge": "[NYI] Bio-Forge",
+  "block.biomancy.bio_forge": "Bio-Forge",
   "block.biomancy.bio_lab": "Bio-Lab",
   "block.biomancy.decomposer": "Decomposer",
   "block.biomancy.gland": "Appendix Gland",
@@ -100,6 +100,7 @@
 
   "container.biomancy.decomposer": "Decomposer Inventory",
   "container.biomancy.bio_lab": "Bio-Lab Inventory",
+  "container.biomancy.bio_forge": "Bio-Forge Inventory",
   "container.biomancy.gland": "Gland Inventory",
   "container.biomancy.gulge": "Gulge Inventory",
   "container.biomancy.sac": "Sac Inventory",

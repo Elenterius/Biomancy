@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.world.block;
 
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.world.block.entity.DecomposerBlockEntity;
+import com.github.elenterius.biomancy.world.block.entity.MachineBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
@@ -27,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Random;
 import java.util.stream.Stream;
 
-public class DecomposerBlock extends HorizontalDirectionalMachineBlock {
+public class DecomposerBlock extends HorizontalFacingMachineBlock {
 
 	protected static final VoxelShape AABB = Stream.of(
 			Block.box(0, 0, 0, 16, 14, 16),
@@ -42,13 +43,13 @@ public class DecomposerBlock extends HorizontalDirectionalMachineBlock {
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new DecomposerBlockEntity(pos, state);
+		return ModBlockEntities.DECOMPOSER.get().create(pos, state);
 	}
 
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-		return level.isClientSide ? null : createTickerHelper(blockEntityType, ModBlockEntities.DECOMPOSER.get(), DecomposerBlockEntity::serverTick);
+		return level.isClientSide ? null : createTickerHelper(blockEntityType, ModBlockEntities.DECOMPOSER.get(), MachineBlockEntity::serverTick);
 	}
 
 	@Override

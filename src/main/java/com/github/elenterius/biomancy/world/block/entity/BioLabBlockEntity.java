@@ -14,7 +14,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -24,7 +23,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -63,10 +61,6 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 		outputInventory = BehavioralInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
 	}
 
-	public static void serverTick(Level level, BlockPos pos, BlockState state, BioLabBlockEntity bioLab) {
-		bioLab.serverTick((ServerLevel) level);
-	}
-
 	@Override
 	public Component getDisplayName() {
 		return getName();
@@ -81,11 +75,6 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 	@Override
 	public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
 		return BioLabMenu.createServerMenu(containerId, playerInventory, fuelInventory, inputInventory, outputInventory, stateData);
-	}
-
-	public boolean canPlayerOpenInv(Player player) {
-		if (level == null || level.getBlockEntity(worldPosition) != this) return false;
-		return player.distanceToSqr(Vec3.atCenterOf(worldPosition)) < 8d * 8d;
 	}
 
 	@Override
@@ -207,14 +196,14 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 		outputInventory.revive();
 	}
 
-	private <E extends BlockEntity & IAnimatable> PlayState handlePlaceholderAnim(AnimationEvent<E> event) {
+	private <E extends BlockEntity & IAnimatable> PlayState handleAnim(AnimationEvent<E> event) {
 		event.getController().setAnimation(new AnimationBuilder().addAnimation("bio_lab.idle"));
 		return PlayState.CONTINUE;
 	}
 
 	@Override
 	public void registerControllers(AnimationData data) {
-		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::handlePlaceholderAnim));
+		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::handleAnim));
 	}
 
 	@Override
