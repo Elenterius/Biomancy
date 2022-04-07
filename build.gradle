@@ -134,8 +134,8 @@ dependencies {
     implementation fg.deobf('com.github.Elenterius:Combat-Commons:0.2.0-beta-1.18.1-forge')
     implementation fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.3')
 
-    compileOnly fg.deobf("mezz.jei:jei-${mc_version}:9.2.1.69:api") // compile against the JEI API but do not include it at runtime
-    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:9.2.1.69") // at runtime, use the full JEI jar
+    compileOnly fg.deobf("mezz.jei:jei-${mc_version}:9.4.1.172:api") // compile against the JEI API but do not include it at runtime
+    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:9.4.1.172") // at runtime, use the full JEI jar
 
 //    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.4-51:api")
 //    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.4-51")
