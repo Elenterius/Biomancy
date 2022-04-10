@@ -13,6 +13,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -137,7 +138,7 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 	}
 
 	public void attackAOE(ServerLevel level, BlockPos pos) {
-		List<Entity> victims = level.getEntities((Entity) null, new AABB(pos).inflate(1d), Entity::isAlive);
+		List<Entity> victims = level.getEntities((Entity) null, new AABB(pos).inflate(1.1d), EntitySelector.LIVING_ENTITY_STILL_ALIVE);
 		victims.forEach(entity -> entity.hurt(ModDamageSources.CREATOR_SPIKES, 4f));
 	}
 
