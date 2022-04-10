@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.world.block.entity.CreatorBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -35,6 +36,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Stream;
 
 public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBlock {
@@ -112,6 +114,15 @@ public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBl
 	public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, level, tooltip, flag);
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
+	}
+
+	@Override
+	public void animateTick(BlockState state, Level level, BlockPos pos, Random random) {
+		if (random.nextInt(4) == 0 && level.getBlockEntity(pos) instanceof CreatorBlockEntity creator && creator.getFillLevel() >= creator.getMaxFillLevel()) {
+			for (int i = 0; i < random.nextInt(8); i++) {
+				level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + 0.13125f + 0.7375f * random.nextFloat(), pos.getY() + 0.5f, pos.getZ() + 0.13125f + 0.7375f * random.nextFloat(), 1.8f, 1.4f, 1.4f);
+			}
+		}
 	}
 
 	@Override

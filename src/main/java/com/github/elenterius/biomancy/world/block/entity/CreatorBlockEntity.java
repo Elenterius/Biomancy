@@ -6,12 +6,9 @@ import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModTags;
 import com.github.elenterius.biomancy.world.entity.fleshblob.FleshBlob;
 import com.github.elenterius.biomancy.world.entity.fleshblob.TumorFlag;
-import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.ChatType;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -39,6 +36,7 @@ import java.util.List;
 public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnimatable {
 
 	private static final int MAX_ITEMS = 6;
+	public static final int DURATION = 20 * 4; //in ticks
 
 	private final AnimationFactory animationFactory = new AnimationFactory(this);
 	private final ItemHandler inv = new ItemHandler(getMaxFillLevel());
@@ -53,10 +51,17 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 
 		int count = stack.getCount();
 		for (int i = 0; i < inv.getSlots(); i++) {
-			stack = inv.insertItem(i, stack, false);
-			if (stack.isEmpty() || stack.getCount() < count) {
-				level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
-				return true;
+			if (inv.isItemValid(i, stack)) {
+				boolean isRawMeat = stack.is(ModTags.Items.RAW_MEATS);
+				stack = inv.insertItem(i, stack, false);
+				if (stack.isEmpty() || stack.getCount() < count) {
+					BlockPos pos = getBlockPos();
+					BlockState state = getBlockState();
+					level.sendBlockUpdated(pos, state, state, Block.UPDATE_CLIENTS);
+					int particleCount = level.random.nextInt(6, 9);
+					((ServerLevel) level).sendParticles(isRawMeat ? ParticleTypes.HAPPY_VILLAGER : ParticleTypes.ANGRY_VILLAGER, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, particleCount, 0.5d, 0.25d, 0.5d, 0);
+					return true;
+				}
 			}
 		}
 
@@ -76,7 +81,7 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 	public static void serverTick(Level level, BlockPos pos, BlockState state, CreatorBlockEntity creatorEntity) {
 		if (creatorEntity.getFillLevel() == creatorEntity.getMaxFillLevel()) {
 			creatorEntity.ticks++;
-			if (creatorEntity.ticks > 40L) {
+			if (creatorEntity.ticks > DURATION) {
 				creatorEntity.onSacrifice((ServerLevel) level);
 				creatorEntity.ticks = 0;
 			}
@@ -90,7 +95,7 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 		float chance = (uniqueMeats < 3 ? 0.85f : 1f) - penalty;
 
 		//clear inventory
-		inv.setSize(MAX_ITEMS);
+		inv.clearAllSlots();
 		fillLevel = 0;
 		setChanged();
 
@@ -98,14 +103,11 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 		syncToClient();
 
 		if (level.random.nextFloat() < chance) {
-			TextComponent textComponent = new TextComponent("The Flesh Lord is pleased...");
-			level.getServer().getPlayerList().broadcastMessage(textComponent.withStyle(ChatFormatting.LIGHT_PURPLE), ChatType.SYSTEM, Util.NIL_UUID);
 			spawnMob(level, pos, penalty, 1f - (float) uniqueMeats / MAX_ITEMS);
 			level.playSound(null, pos, SoundEvents.PLAYER_BURP, SoundSource.BLOCKS, 1f, level.random.nextFloat(0.25f, 0.75f));
+			level.sendParticles(ParticleTypes.EXPLOSION, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, 1, 0, 0, 0, 0);
 		}
 		else {
-			TextComponent textComponent = new TextComponent("Someone angered the Flesh Lord...");
-			level.getServer().getPlayerList().broadcastMessage(textComponent.withStyle(ChatFormatting.LIGHT_PURPLE), ChatType.SYSTEM, Util.NIL_UUID);
 			attackAOE(level, pos);
 			level.playSound(null, pos, SoundEvents.GOAT_SCREAMING_RAM_IMPACT, SoundSource.BLOCKS, 1f, 0.5f);
 		}
@@ -115,7 +117,7 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 		FleshBlob fleshBlob = ModEntityTypes.FLESH_BLOB.get().create(level);
 		if (fleshBlob != null) {
 			fleshBlob.moveTo(pos.getX() + 0.5f, pos.getY() + 4f / 16f, pos.getZ() + 0.5f, 0, 0);
-			if (penalty >= 0.5f) {
+			if (penalty >= 0.4f) {
 				fleshBlob.setHangry();
 			}
 			if (tumorFactor > 0) {
@@ -202,6 +204,10 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 
 		public ItemHandler(int slots) {
 			super(slots);
+		}
+
+		public void clearAllSlots() {
+			stacks.clear();
 		}
 
 		@Override
