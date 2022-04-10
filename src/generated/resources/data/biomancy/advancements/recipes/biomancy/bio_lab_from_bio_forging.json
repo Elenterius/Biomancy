@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:bio_lab_from_bio_forging"
+    ]
+  },
+  "criteria": {
+    "has_living_flesh": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:living_flesh"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:bio_lab_from_bio_forging"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_living_flesh",
+      "has_the_recipe"
+    ]
+  ]
+}

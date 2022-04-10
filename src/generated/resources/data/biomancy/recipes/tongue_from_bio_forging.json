@@ -5,27 +5,27 @@
       "ingredient": {
         "item": "biomancy:flesh_bits"
       },
-      "count": 20
+      "count": 64
+    },
+    {
+      "ingredient": {
+        "item": "biomancy:bone_scraps"
+      },
+      "count": 12
     },
     {
       "ingredient": {
         "item": "biomancy:elastic_fibers"
       },
-      "count": 10
-    },
-    {
-      "ingredient": {
-        "item": "minecraft:quartz"
-      },
-      "count": 2
+      "count": 128
     }
   ],
   "reactant": {
-    "item": "minecraft:spider_eye"
+    "item": "biomancy:living_flesh"
   },
   "result": {
-    "item": "biomancy:oculus"
+    "item": "biomancy:tongue"
   },
-  "time": 20,
-  "category": "biomancy:misc"
+  "time": 80,
+  "category": "biomancy:blocks"
 }
