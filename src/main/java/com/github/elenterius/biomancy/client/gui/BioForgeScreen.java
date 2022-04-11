@@ -11,7 +11,6 @@ import com.github.elenterius.biomancy.world.inventory.menu.BioForgeMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -266,12 +265,9 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 			ItemStack stack = recipeSelection.recipe.getResultItem();
 			int pX = leftPos + 80 + X_OFFSET;
 			int pY = topPos + 19;
-			itemRenderer.renderAndDecorateFakeItem(stack, pX, pY);
-			RenderSystem.depthFunc(516);
-			GuiComponent.fill(poseStack, pX, pY, pX + 16, pY + 16, 0x30_ff_ff_ff);
-			RenderSystem.depthFunc(515);
-//			if (i == 0) {
-//				itemRenderer.renderGuiItemDecorations(font, stack, j, k);
+			GuiRenderUtil.drawGhostItem(itemRenderer, poseStack, pX, pY, stack);
+//			if (decorate) {
+//				itemRenderer.renderGuiItemDecorations(font, stack, pX, pY);
 //			}
 		}
 	}
@@ -421,10 +417,10 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 	}
 
 	private void drawFuelTooltip(PoseStack poseStack, int mouseX, int mouseY) {
-		int maxFuel = BioForgeBlockEntity.MAX_FUEL;
+		int maxFuel = menu.getMAxFuelAmount();
 		int fuelAmount = menu.getFuelAmount();
 		int totalFuelCost = menu.getTotalFuelCost();
-		GuiUtil.drawFuelTooltip(this, poseStack, mouseX, mouseY, maxFuel, fuelAmount, totalFuelCost);
+		GuiRenderUtil.drawFuelTooltip(this, poseStack, mouseX, mouseY, maxFuel, fuelAmount, totalFuelCost);
 	}
 
 }

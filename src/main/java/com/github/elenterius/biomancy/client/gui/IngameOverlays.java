@@ -4,18 +4,13 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.world.entity.ownable.IControllableMob;
 import com.github.elenterius.biomancy.world.item.weapon.IGun;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
-import net.minecraft.client.AttackIndicatorStatus;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -72,8 +67,7 @@ public final class IngameOverlays {
 	static void renderGunOverlay(ForgeIngameGui gui, PoseStack poseStack, int screenWidth, int screenHeight, LocalPlayer player, ItemStack stack, IGun gun) {
 		renderAmmoOverlay(poseStack, screenWidth, screenHeight, stack, gun);
 
-		Minecraft minecraft = Minecraft.getInstance();
-		if (minecraft.options.getCameraType().isFirstPerson()) {
+		if (GuiUtil.isFirstPersonView()) {
 			renderReloadIndicator(gui, poseStack, screenWidth, screenHeight, player, stack, gun);
 		}
 	}
@@ -88,7 +82,7 @@ public final class IngameOverlays {
 		if (gunState == IGun.State.RELOADING) {
 			long elapsedTime = player.clientLevel.getGameTime() - gun.getReloadStartTime(stack);
 			float reloadProgress = gun.getReloadProgress(elapsedTime, gun.getReloadTime(stack));
-			renderProgressIndicator(poseStack, screenWidth * 0.5f, screenHeight * 0.5f, 20f, reloadProgress, 0xFFFFFFFF);
+			GuiRenderUtil.drawSquareProgressBar(poseStack, screenWidth / 2, screenHeight / 2, gui.getBlitOffset(), 10, reloadProgress);
 		}
 		else {
 			long elapsedTime = player.clientLevel.getGameTime() - gun.getShootTimestamp(stack);
@@ -118,91 +112,17 @@ public final class IngameOverlays {
 		poseStack.popPose();
 	}
 
-	public static boolean canDrawAttackIndicator(LocalPlayer player) {
-		Minecraft minecraft = Minecraft.getInstance();
-		if (minecraft.options.attackIndicator != AttackIndicatorStatus.CROSSHAIR) return true;
-		boolean isVisible = false;
-		float attackStrength = player.getAttackStrengthScale(0f);
-		if (minecraft.crosshairPickEntity instanceof LivingEntity && attackStrength >= 1f) {
-			isVisible = player.getCurrentItemAttackStrengthDelay() > 5f && minecraft.crosshairPickEntity.isAlive();
-		}
-		return !isVisible && attackStrength >= 1f;
-	}
-
 	public static void renderAttackIndicator(ForgeIngameGui gui, PoseStack poseStack, int screenWidth, int screenHeight, LocalPlayer player, long elapsedTime, int shootDelay) {
-		if (elapsedTime < shootDelay && canDrawAttackIndicator(player)) {
+		if (elapsedTime < shootDelay && GuiUtil.canDrawAttackIndicator(player)) {
 			float progress = (float) elapsedTime / shootDelay;
 			if (progress < 1f) {
-				RenderSystem.setShaderTexture(0, GuiComponent.GUI_ICONS_LOCATION);
-				RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 				int x = screenWidth / 2 - 8;
 				int y = screenHeight / 2 - 7 + 16;
-				gui.blit(poseStack, x, y, 36, 94, 16, 4);
-				gui.blit(poseStack, x, y, 52, 94, (int) (progress * 17f), 4);
+				GuiRenderUtil.drawAttackIndicator(gui, poseStack, x, y, progress);
 			}
 		}
 	}
 
-	static void renderProgressIndicator(PoseStack poseStack, float cx, float cy, float lengthA, float progress, int color) {
-		Matrix4f matrix = poseStack.last().pose();
-		float alpha = (color >> 24 & 255) / 255f;
-		float red = (color >> 16 & 255) / 255f;
-		float green = (color >> 8 & 255) / 255f;
-		float blue = (color & 255) / 255f;
 
-		Tesselator tesselator = Tesselator.getInstance();
-		BufferBuilder bufferbuilder = tesselator.getBuilder();
-		RenderSystem.setShader(GameRenderer::getPositionColorShader);
-		RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-		RenderSystem.lineWidth(4f);
-		bufferbuilder.begin(VertexFormat.Mode.LINE_STRIP, DefaultVertexFormat.POSITION_COLOR);
-
-		float totalLength = lengthA * 4f;
-		float halfLength = lengthA * 0.5f;
-		float currentLength = progress * totalLength;
-
-		// top right line
-		float dist = Math.min(currentLength, halfLength);
-		if (dist > 0) {
-			float y = cy - halfLength;
-			bufferbuilder.vertex(matrix, cx, y, 0f).color(red, green, blue, alpha).endVertex();
-			bufferbuilder.vertex(matrix, cx + halfLength, y, 0f).color(red, green, blue, alpha).endVertex();
-		}
-
-		// right line
-		dist = Math.min(currentLength - halfLength, lengthA);
-		if (dist > 0) {
-			float x = cx + halfLength;
-			float y = cy - halfLength;
-			bufferbuilder.vertex(matrix, x, y + dist, 0f).color(red, green, blue, alpha).endVertex();
-		}
-
-		// bottom line
-		dist = Math.min(currentLength - 3f * halfLength, lengthA);
-		if (dist > 0) {
-			float x = cx + halfLength;
-			float y = cy + halfLength;
-			bufferbuilder.vertex(matrix, x - dist, y, 0f).color(red, green, blue, alpha).endVertex();
-		}
-
-		// left line
-		dist = Math.min(currentLength - 5f * halfLength, lengthA);
-		if (dist > 0) {
-			float x = cx - halfLength;
-			float y = cy + halfLength;
-			bufferbuilder.vertex(matrix, x, y - dist, 0f).color(red, green, blue, alpha).endVertex();
-		}
-
-		// top left line
-		dist = Math.min(currentLength - 7f * halfLength, halfLength);
-		if (dist > 0) {
-			float x = cx - halfLength;
-			float y = cy - halfLength;
-			bufferbuilder.vertex(matrix, x, y, 0f).color(red, green, blue, alpha).endVertex();
-			bufferbuilder.vertex(matrix, x + halfLength, y, 0f).color(red, green, blue, alpha).endVertex();
-		}
-
-		tesselator.end();
-	}
 
 }

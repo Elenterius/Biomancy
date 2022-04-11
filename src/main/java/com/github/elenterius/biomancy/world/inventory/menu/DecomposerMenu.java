@@ -80,6 +80,10 @@ public class DecomposerMenu extends PlayerContainerMenu {
 		return stateData.getFuelAmount();
 	}
 
+	public int getMAxFuelAmount() {
+		return DecomposerBlockEntity.MAX_FUEL;
+	}
+
 	public int getTotalFuelCost() {
 		return stateData.timeForCompletion * DecomposerBlockEntity.FUEL_COST;
 	}

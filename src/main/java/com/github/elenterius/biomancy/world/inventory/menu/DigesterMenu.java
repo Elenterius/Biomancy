@@ -77,6 +77,14 @@ public class DigesterMenu extends PlayerContainerMenu {
 		return stateData.getFuelAmount();
 	}
 
+	public int getMAxFuelAmount() {
+		return DigesterBlockEntity.MAX_FUEL;
+	}
+
+	public int getTotalFuelCost() {
+		return stateData.timeForCompletion * DigesterBlockEntity.FUEL_COST;
+	}
+
 	@Override
 	public ItemStack quickMoveStack(Player player, int index) {
 		Slot slot = slots.get(index);

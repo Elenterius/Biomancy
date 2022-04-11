@@ -108,6 +108,10 @@ public class BioForgeMenu extends PlayerContainerMenu {
 		return stateData.getFuelAmount();
 	}
 
+	public int getMAxFuelAmount() {
+		return BioForgeBlockEntity.MAX_FUEL;
+	}
+
 	public boolean isOutputEmpty() {
 		return outputInventory.isEmpty();
 	}

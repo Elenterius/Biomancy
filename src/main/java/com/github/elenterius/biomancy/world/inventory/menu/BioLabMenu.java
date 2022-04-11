@@ -84,6 +84,10 @@ public class BioLabMenu extends PlayerContainerMenu {
 		return stateData.getFuelAmount();
 	}
 
+	public int getMAxFuelAmount() {
+		return BioLabBlockEntity.MAX_FUEL;
+	}
+
 	@Override
 	public ItemStack quickMoveStack(Player player, int index) {
 		Slot slot = slots.get(index);

@@ -1,7 +1,6 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.block.entity.BioLabBlockEntity;
 import com.github.elenterius.biomancy.world.inventory.menu.BioLabMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -68,6 +67,7 @@ public class BioLabScreen extends AbstractContainerScreen<BioLabMenu> {
 		if (menu.getCarried().isEmpty()) {
 			if (GuiUtil.isInRect(leftPos + 41, topPos + 52, 17, 17, mouseX, mouseY)) {
 				drawFuelTooltip(poseStack, mouseX, mouseY);
+				return;
 			}
 		}
 
@@ -75,10 +75,10 @@ public class BioLabScreen extends AbstractContainerScreen<BioLabMenu> {
 	}
 
 	private void drawFuelTooltip(PoseStack poseStack, int mouseX, int mouseY) {
-		int maxFuel = BioLabBlockEntity.MAX_FUEL;
+		int maxFuel = menu.getMAxFuelAmount();
 		int fuelAmount = menu.getFuelAmount();
 		int totalFuelCost = menu.getTotalFuelCost();
-		GuiUtil.drawFuelTooltip(this, poseStack, mouseX, mouseY, maxFuel, fuelAmount, totalFuelCost);
+		GuiRenderUtil.drawFuelTooltip(this, poseStack, mouseX, mouseY, maxFuel, fuelAmount, totalFuelCost);
 	}
 
 }

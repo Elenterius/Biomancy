@@ -1,8 +1,6 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.util.ClientTextUtil;
-import com.github.elenterius.biomancy.util.TextComponentUtil;
 import com.github.elenterius.biomancy.world.inventory.menu.DigesterMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -13,10 +11,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 public class DigesterScreen extends AbstractContainerScreen<DigesterMenu> {
@@ -68,31 +62,21 @@ public class DigesterScreen extends AbstractContainerScreen<DigesterMenu> {
 	@Override
 	protected void renderTooltip(PoseStack poseStack, int mouseX, int mouseY) {
 		if (menu.getCarried().isEmpty()) {
-			List<Component> hoveringText = new ArrayList<>();
-
-//			if (GuiUtil.isInRect(leftPos + 75, topPos + 22, 20, 4, mouseX, mouseY)) {
-//				float progress = menu.getCraftingProgressNormalized() * 100;
-//				hoveringText.add(new TextComponent(progress + "%"));
-//			}
-
 			if (GuiUtil.isInRect(leftPos + 52, topPos + 20, 17, 17, mouseX, mouseY)) {
-				int amount = menu.getFuelAmount();
-				if (amount > 0) {
-					DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
-					hoveringText.add(TextComponentUtil.getTooltipText("nutrients_fuel").append(": " + df.format(amount) + " u"));
-				}
-				else {
-					hoveringText.add(TextComponentUtil.getTooltipText("empty"));
-				}
-			}
-
-			if (!hoveringText.isEmpty()) {
-				renderComponentTooltip(poseStack, hoveringText, mouseX, mouseY);
+				drawFuelTooltip(poseStack, mouseX, mouseY);
 				return;
 			}
 		}
 
 		super.renderTooltip(poseStack, mouseX, mouseY);
 	}
+
+	private void drawFuelTooltip(PoseStack poseStack, int mouseX, int mouseY) {
+		int maxFuel = menu.getMAxFuelAmount();
+		int fuelAmount = menu.getFuelAmount();
+		int totalFuelCost = menu.getTotalFuelCost();
+		GuiRenderUtil.drawFuelTooltip(this, poseStack, mouseX, mouseY, maxFuel, fuelAmount, totalFuelCost);
+	}
+
 
 }
