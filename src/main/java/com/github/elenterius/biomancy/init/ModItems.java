@@ -24,6 +24,7 @@ public final class ModItems {
 	public static final RegistryObject<Item> MOB_CLAW = ITEMS.register("mob_claw", () -> new SimpleItem(createProperties()));
 	public static final RegistryObject<Item> MOB_SINEW = ITEMS.register("mob_sinew", () -> new SimpleItem(createProperties()));
 	public static final RegistryObject<Item> MOB_MARROW = ITEMS.register("mob_marrow", () -> new SimpleItem(createProperties()));
+	public static final RegistryObject<Item> WITHERED_MOB_MARROW = ITEMS.register("withered_mob_marrow", () -> new SimpleItem(createProperties()));
 	public static final RegistryObject<Item> MOB_GLAND = ITEMS.register("mob_gland", () -> new SimpleItem(createProperties()));
 	public static final RegistryObject<Item> VENOM_GLAND = ITEMS.register("venom_gland", () -> new SimpleItem(createProperties()));
 	public static final RegistryObject<Item> VOLATILE_GLAND = ITEMS.register("volatile_gland", () -> new SimpleItem(createProperties()));

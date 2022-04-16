@@ -116,6 +116,7 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 		generateFlat(ModItems.MOB_CLAW.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.MOB_SINEW.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.MOB_MARROW.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.WITHERED_MOB_MARROW.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.MOB_GLAND.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.VENOM_GLAND.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.VOLATILE_GLAND.get(), ModelTemplates.FLAT_ITEM);

@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.loot;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModTags;
+import com.github.elenterius.biomancy.world.entity.MobUtil;
 import com.github.elenterius.biomancy.world.item.LarynxItem;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.critereon.EntityFlagsPredicate;
@@ -12,6 +13,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -25,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Random;
-import java.util.function.Supplier;
+import java.util.function.BooleanSupplier;
 
 public class DespoilMobLootModifier extends LootModifier {
 
@@ -56,9 +58,9 @@ public class DespoilMobLootModifier extends LootModifier {
 
 				EntityType<?> victimType = victim.getType();
 
-				Supplier<Boolean> rollDice = () -> random.nextFloat() < chance;
+				BooleanSupplier rollDice = () -> random.nextFloat() < chance;
 
-				if (victimType.is(ModTags.EntityTypes.SHARP_FANG) && rollDice.get()) {
+				if (victimType.is(ModTags.EntityTypes.SHARP_FANG) && rollDice.getAsBoolean()) {
 					int amount = Mth.nextInt(random, -1, context.getLootingModifier() + 1);
 					if (amount > 0) {
 						generatedLoot.add(new ItemStack(ModItems.MOB_FANG.get(), amount));
@@ -66,7 +68,7 @@ public class DespoilMobLootModifier extends LootModifier {
 					}
 				}
 
-				if (lootRolls > 0 && victimType.is(ModTags.EntityTypes.SHARP_CLAW) && rollDice.get()) {
+				if (lootRolls > 0 && victimType.is(ModTags.EntityTypes.SHARP_CLAW) && rollDice.getAsBoolean()) {
 					int amount = Mth.nextInt(random, -1, context.getLootingModifier() + 1);
 					if (amount > 0) {
 						generatedLoot.add(new ItemStack(ModItems.MOB_CLAW.get(), amount));
@@ -74,7 +76,7 @@ public class DespoilMobLootModifier extends LootModifier {
 					}
 				}
 
-				if (lootRolls > 0 && rollDice.get()) {
+				if (lootRolls > 0 && rollDice.getAsBoolean()) {
 					int amount = Mth.nextInt(random, -1, context.getLootingModifier() + 2);
 					if (amount > 0) {
 						generatedLoot.add(new ItemStack(ModItems.MOB_SINEW.get(), amount));
@@ -84,13 +86,13 @@ public class DespoilMobLootModifier extends LootModifier {
 
 				boolean hasSpecialGland = false;
 
-				if (lootRolls > 0 && victimType.is(ModTags.EntityTypes.VENOM_GLAND) && rollDice.get()) {
+				if (lootRolls > 0 && victimType.is(ModTags.EntityTypes.VENOM_GLAND) && rollDice.getAsBoolean()) {
 					generatedLoot.add(new ItemStack(ModItems.VENOM_GLAND.get()));
 					hasSpecialGland = true;
 					lootRolls--;
 				}
 
-				if (lootRolls > 0 && victimType.is(ModTags.EntityTypes.VOLATILE_GLAND) && rollDice.get()) {
+				if (lootRolls > 0 && victimType.is(ModTags.EntityTypes.VOLATILE_GLAND) && rollDice.getAsBoolean()) {
 					generatedLoot.add(new ItemStack(ModItems.VOLATILE_GLAND.get()));
 					hasSpecialGland = true;
 					lootRolls--;
@@ -101,15 +103,16 @@ public class DespoilMobLootModifier extends LootModifier {
 					lootRolls--;
 				}
 
-				if (lootRolls > 0 && rollDice.get()) {
+				if (lootRolls > 0 && rollDice.getAsBoolean()) {
 					int amount = Mth.nextInt(random, -1, context.getLootingModifier() + 2);
 					if (amount > 0) {
-						generatedLoot.add(new ItemStack(ModItems.MOB_MARROW.get(), amount));
+						Item item = MobUtil.isWithered(victim) ? ModItems.WITHERED_MOB_MARROW.get() : ModItems.MOB_MARROW.get();
+						generatedLoot.add(new ItemStack(item, amount));
 						lootRolls--;
 					}
 				}
 
-				if (lootRolls > 0 && rollDice.get()) {
+				if (lootRolls > 0 && rollDice.getAsBoolean()) {
 					ItemStack stack = new ItemStack(ModItems.LARYNX.get());
 					LarynxItem.saveSounds(stack, victim);
 					generatedLoot.add(stack); //only 1 larynx per entity possible
