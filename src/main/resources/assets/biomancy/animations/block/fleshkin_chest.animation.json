@@ -6,113 +6,137 @@
       "bones": {
         "bone9": {
           "scale": {
-            "0.0": [
-              1,
-              1,
-              1
-            ],
-            "0.08": [
-              0.95,
-              0.95,
-              0.95
-            ],
-            "0.28": [
-              1.05,
-              1.05,
-              1.05
-            ],
-            "0.64": [
-              1,
-              1,
-              1
-            ]
+            "0.0": {
+              "vector": [
+                1,
+                1,
+                1
+              ],
+              "easing": "easeInSine"
+            },
+            "0.08": {
+              "vector": [
+                0.95,
+                0.95,
+                0.95
+              ],
+              "easing": "easeOutSine"
+            },
+            "0.28": {
+              "vector": [
+                1.05,
+                1.05,
+                1.05
+              ],
+              "easing": "easeInSine"
+            },
+            "0.64": {
+              "vector": [
+                1,
+                1,
+                1
+              ],
+              "easing": "easeOutSine"
+            }
           }
         },
         "mouth_top": {
           "rotation": {
-            "0.0": [
-              0,
-              0,
-              0
-            ],
-            "0.44": [
-              70,
-              0,
-              0
-            ],
-            "0.56": [
-              65,
-              0,
-              0
-            ]
+            "0.0": {
+              "vector": [
+                0,
+                0,
+                0
+              ]
+            },
+            "0.44": {
+              "vector": [
+                70,
+                0,
+                0
+              ],
+              "easing": "easeInOutQuad"
+            },
+            "0.56": {
+              "vector": [
+                65,
+                0,
+                0
+              ],
+              "easing": "easeOutQuad"
+            }
           }
         },
-        "bone": {
+        "tongue_0": {
           "rotation": {
-            "0.0": [
-              0,
-              0,
-              0
-            ],
-            "0.48": [
-              -12.5,
-              0,
-              0
-            ]
+            "0.0": {
+              "vector": [
+                0,
+                0,
+                0
+              ]
+            },
+            "0.48": {
+              "vector": [
+                -12.5,
+                0,
+                0
+              ],
+              "easing": "easeInOutSine"
+            }
           },
           "position": {
-            "0.0": [
-              0,
-              0,
-              0
-            ],
-            "0.36": [
-              0,
-              0,
-              3
-            ]
+            "0.0": {
+              "vector": [
+                0,
+                0,
+                0
+              ]
+            },
+            "0.36": {
+              "vector": [
+                0,
+                0,
+                3
+              ],
+              "easing": "easeInOutSine"
+            }
           }
         },
-        "bone2": {
+        "tongue_1": {
           "rotation": {
-            "0.0": [
-              55,
-              0,
-              0
-            ],
-            "0.48": [
-              30,
-              0,
-              0
-            ]
+            "0.0": {
+              "vector": [
+                55,
+                0,
+                0
+              ]
+            },
+            "0.48": {
+              "vector": [
+                30,
+                0,
+                0
+              ],
+              "easing": "easeInOutSine"
+            }
           },
           "position": {
-            "0.0": [
-              0,
-              0,
-              -3
-            ],
-            "0.2": [
-              0,
-              0,
-              0
-            ]
+            "0.0": {
+              "vector": [
+                0,
+                0,
+                -3
+              ]
+            },
+            "0.2": {
+              "vector": [
+                0,
+                0,
+                0
+              ]
+            }
           }
-        }
-      }
-    },
-    "fleshkin_chest.opened": {
-      "loop": true,
-      "bones": {
-        "bone9": {
-          "scale": 1
-        },
-        "mouth_top": {
-          "rotation": [
-            65,
-            0,
-            0
-          ]
         }
       }
     },
@@ -121,96 +145,215 @@
       "bones": {
         "bone9": {
           "scale": {
-            "0.0": [
-              1,
-              1,
-              1
-            ],
-            "0.32": [
-              1,
-              1,
-              1
-            ],
-            "0.4": [
-              0.98,
-              0.98,
-              0.98
-            ],
-            "0.64": [
-              1,
-              1,
-              1
-            ]
+            "0.0": {
+              "vector": [
+                1,
+                1,
+                1
+              ],
+              "easing": "easeInSine"
+            },
+            "0.32": {
+              "vector": [
+                1,
+                1,
+                1
+              ],
+              "easing": "easeInSine"
+            },
+            "0.4": {
+              "vector": [
+                0.98,
+                0.98,
+                0.98
+              ],
+              "easing": "easeInSine"
+            },
+            "0.64": {
+              "vector": [
+                1,
+                1,
+                1
+              ],
+              "easing": "easeInOutSine"
+            }
           }
         },
         "mouth_top": {
           "rotation": {
-            "0.0": [
+            "0.0": {
+              "vector": [
+                65,
+                0,
+                0
+              ],
+              "easing": "easeOutQuad"
+            },
+            "0.44": {
+              "vector": [
+                -5,
+                0,
+                0
+              ],
+              "easing": "easeInOutQuad"
+            },
+            "0.56": {
+              "vector": [
+                0,
+                0,
+                0
+              ],
+              "easing": "easeOutQuad"
+            }
+          }
+        },
+        "tongue_0": {
+          "rotation": {
+            "0.0": {
+              "vector": [
+                -12.5,
+                0,
+                0
+              ],
+              "easing": "easeInOutSine"
+            },
+            "0.48": {
+              "vector": [
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          "position": {
+            "0.0": {
+              "vector": [
+                0,
+                0,
+                3
+              ],
+              "easing": "easeInOutSine"
+            },
+            "0.28": {
+              "vector": [
+                0,
+                0,
+                0
+              ],
+              "easing": "easeInSine"
+            }
+          }
+        },
+        "tongue_1": {
+          "rotation": {
+            "0.0": {
+              "vector": [
+                30,
+                0,
+                0
+              ],
+              "easing": "easeInOutSine"
+            },
+            "0.6": {
+              "vector": [
+                55,
+                0,
+                0
+              ]
+            }
+          },
+          "position": {
+            "0.0": {
+              "vector": [
+                0,
+                0,
+                0
+              ]
+            },
+            "0.4": {
+              "vector": [
+                0,
+                0,
+                -3
+              ],
+              "easing": "easeInQuad"
+            }
+          }
+        }
+      }
+    },
+    "fleshkin_chest.closed": {
+      "loop": true,
+      "animation_length": 0.64,
+      "bones": {
+        "bone9": {
+          "scale": {
+            "vector": [
+              1,
+              1,
+              1
+            ],
+            "easing": "easeInOutSine"
+          }
+        }
+      }
+    },
+    "fleshkin_chest.opened": {
+      "loop": true,
+      "animation_length": 0.64,
+      "bones": {
+        "bone9": {
+          "scale": {
+            "vector": [
+              1,
+              1,
+              1
+            ],
+            "easing": "easeInSine"
+          }
+        },
+        "mouth_top": {
+          "rotation": {
+            "vector": [
               65,
               0,
               0
             ],
-            "0.44": [
-              -5,
-              0,
-              0
-            ],
-            "0.56": [
-              0,
-              0,
-              0
-            ]
+            "easing": "easeOutQuad"
           }
         },
-        "bone": {
+        "tongue_0": {
           "rotation": {
-            "0.0": [
+            "vector": [
               -12.5,
               0,
               0
             ],
-            "0.48": [
-              0,
-              0,
-              0
-            ]
+            "easing": "easeInOutSine"
           },
           "position": {
-            "0.0": [
+            "vector": [
               0,
               0,
               3
             ],
-            "0.28": [
-              0,
-              0,
-              0
-            ]
+            "easing": "easeInOutSine"
           }
         },
-        "bone2": {
+        "tongue_1": {
           "rotation": {
-            "0.0": [
+            "vector": [
               30,
               0,
               0
             ],
-            "0.6": [
-              55,
-              0,
-              0
-            ]
+            "easing": "easeInOutSine"
           },
           "position": {
-            "0.0": [
+            "vector": [
               0,
               0,
               0
-            ],
-            "0.4": [
-              0,
-              0,
-              -3
             ]
           }
         }
@@ -365,21 +508,6 @@
               ]
             }
           }
-        }
-      }
-    },
-    "fleshkin_chest.closed": {
-      "loop": true,
-      "bones": {
-        "bone9": {
-          "scale": 1
-        },
-        "mouth_top": {
-          "rotation": [
-            0,
-            0,
-            0
-          ]
         }
       }
     }
