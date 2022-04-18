@@ -41,7 +41,7 @@ public class WitherProjectileRenderer extends EntityRenderer<WitherProjectile> {
 		poseStack.pushPose();
 		poseStack.translate(0, 0.5F, 0);
 		poseStack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90f));
-		poseStack.mulPose(Vector3f.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getYRot())));
+		poseStack.mulPose(Vector3f.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot())));
 
 		VertexConsumer vertexConsumer = buffer.getBuffer(skullModel.renderType(getTextureLocation(entity)));
 		skullModel.renderToBuffer(poseStack, vertexConsumer, packedLight, OverlayTexture.NO_OVERLAY, 1f, 1f, 1f, 1f);
