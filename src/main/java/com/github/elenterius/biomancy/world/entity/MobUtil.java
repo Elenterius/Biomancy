@@ -13,7 +13,9 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.horse.SkeletonHorse;
+import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
+import net.minecraft.world.entity.monster.WitherSkeleton;
 import net.minecraft.world.entity.projectile.ThrownPotion;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -45,6 +47,10 @@ public final class MobUtil {
 
 	public static boolean isSkeleton(LivingEntity entity) {
 		return entity instanceof AbstractSkeleton || entity instanceof SkeletonHorse || EntityTypeTags.SKELETONS.contains(entity.getType());
+	}
+
+	public static boolean isWithered(LivingEntity entity) {
+		return entity instanceof WitherBoss || entity instanceof WitherSkeleton;
 	}
 
 	public static boolean isUndead(LivingEntity entity) {

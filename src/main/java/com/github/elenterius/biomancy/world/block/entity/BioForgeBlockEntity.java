@@ -78,7 +78,7 @@ public class BioForgeBlockEntity extends MachineBlockEntity<BioForgeRecipe, BioF
 		stateData.selectedRecipeId = recipe == null ? null : recipe.getId();
 
 		if (level != null && !level.isClientSide) {
-			ModNetworkHandler.sendToClientsTrackingBioForge(this, recipe);
+			ModNetworkHandler.sendBioForgeRecipeToClients(this, recipe);
 		}
 
 		setChanged();

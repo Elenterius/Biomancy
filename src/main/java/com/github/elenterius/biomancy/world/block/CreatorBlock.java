@@ -13,15 +13,11 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -37,6 +33,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Random;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBlock {
@@ -49,8 +46,19 @@ public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBl
 	).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
 	protected static final VoxelShape AABB = Shapes.join(OUTSIDE_AABB, INSIDE_AABB, BooleanOp.ONLY_FIRST);
 
+	public static final Predicate<ItemStack> EXPENSIVE_ITEMS = stack -> {
+		Item item = stack.getItem();
+		if (item instanceof BlockItem blockItem && (blockItem.getBlock() instanceof ShulkerBoxBlock || blockItem.getBlock() instanceof FleshkinChestBlock))
+			return true;
+		return stack.getItemEnchantability() > 0 || stack.hasFoil() || stack.isEnchanted() || item instanceof TieredItem || item instanceof Vanishable;
+	};
+
 	public CreatorBlock(Properties properties) {
 		super(properties);
+	}
+
+	public static float getYRotation(BlockState state) {
+		return state.getValue(FACING).toYRot();
 	}
 
 	@Override
@@ -88,6 +96,7 @@ public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBl
 		if (increaseFillLevel(player, level, pos, stackInHand)) {
 			return InteractionResult.SUCCESS;
 		}
+		level.playSound(null, pos, SoundEvents.VILLAGER_NO, SoundSource.BLOCKS, 0.75f, level.random.nextFloat(0.15f, 0.45f));
 		return InteractionResult.CONSUME;
 	}
 
@@ -100,10 +109,12 @@ public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBl
 
 	private boolean increaseFillLevel(@Nullable Player player, Level level, BlockPos pos, ItemStack stack) {
 		if (!stack.isEmpty() && !level.isClientSide()) {
+			if (EXPENSIVE_ITEMS.test(stack)) return false;
+
 			BlockEntity blockEntity = level.getBlockEntity(pos);
-			if (blockEntity instanceof CreatorBlockEntity creatorEntity && creatorEntity.insertItem(ItemHandlerHelper.copyStackWithSize(stack, 1))) {
+			if (blockEntity instanceof CreatorBlockEntity creatorEntity && !creatorEntity.isFull() && creatorEntity.insertItem(ItemHandlerHelper.copyStackWithSize(stack, 1))) {
 				if (player == null || !player.isCreative()) stack.shrink(1);
-				level.playSound(null, pos, SoundEvents.SLIME_SQUISH_SMALL, SoundSource.BLOCKS, 1f, level.random.nextFloat(0.25f, 0.5f));
+				level.playSound(null, pos, creatorEntity.isFull() ? SoundEvents.PLAYER_BURP : SoundEvents.GOAT_SCREAMING_EAT, SoundSource.BLOCKS, 1f, level.random.nextFloat(0.25f, 0.5f));
 				return true;
 			}
 		}
@@ -119,7 +130,7 @@ public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBl
 	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, Random random) {
 		if (random.nextInt(4) == 0 && level.getBlockEntity(pos) instanceof CreatorBlockEntity creator && creator.getFillLevel() >= creator.getMaxFillLevel()) {
-			for (int i = 0; i < random.nextInt(8); i++) {
+			for (int i = 0; i < random.nextInt(2, 8); i++) {
 				level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + 0.13125f + 0.7375f * random.nextFloat(), pos.getY() + 0.5f, pos.getZ() + 0.13125f + 0.7375f * random.nextFloat(), 1.8f, 1.4f, 1.4f);
 			}
 		}

@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.network;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.recipe.BioForgeRecipe;
 import com.github.elenterius.biomancy.world.block.entity.BioForgeBlockEntity;
+import com.github.elenterius.biomancy.world.block.entity.CreatorBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -12,6 +13,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 import javax.annotation.Nullable;
+import java.util.function.Supplier;
 
 public final class ModNetworkHandler {
 
@@ -32,7 +34,7 @@ public final class ModNetworkHandler {
 		SIMPLE_NETWORK_CHANNEL.sendToServer(new BioForgeRecipeMessage(containerId, recipe.getId()));
 	}
 
-	public static void sendToClientsTrackingBioForge(BioForgeBlockEntity blockEntity, @Nullable BioForgeRecipe recipe) {
+	public static void sendBioForgeRecipeToClients(BioForgeBlockEntity blockEntity, @Nullable BioForgeRecipe recipe) {
 		Level level = blockEntity.getLevel();
 		if (level != null && !level.isClientSide) {
 			BlockPos pos = blockEntity.getBlockPos();
@@ -41,11 +43,21 @@ public final class ModNetworkHandler {
 		}
 	}
 
+	public static void sendCreatorAttackAnimationToClients(CreatorBlockEntity blockEntity) {
+		Level level = blockEntity.getLevel();
+		if (level != null && !level.isClientSide) {
+			BlockPos pos = blockEntity.getBlockPos();
+			Supplier<PacketDistributor.TargetPoint> targetPoint = PacketDistributor.TargetPoint.p(pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, 48, level.dimension());
+			SIMPLE_NETWORK_CHANNEL.send(PacketDistributor.NEAR.with(targetPoint), new CreatorAttackClientMessage(pos));
+		}
+	}
+
 	public static void register() {
 		int id = 0;
 		SIMPLE_NETWORK_CHANNEL.registerMessage(id++, KeyPressMessage.class, KeyPressMessage::encode, KeyPressMessage::decode, KeyPressMessage::handle);
 		SIMPLE_NETWORK_CHANNEL.registerMessage(id++, BioForgeRecipeMessage.class, BioForgeRecipeMessage::encode, BioForgeRecipeMessage::decode, BioForgeRecipeMessage::handle);
-		SIMPLE_NETWORK_CHANNEL.registerMessage(id, BioForgeRecipeClientMessage.class, BioForgeRecipeClientMessage::encode, BioForgeRecipeClientMessage::decode, BioForgeRecipeClientMessage::handle);
+		SIMPLE_NETWORK_CHANNEL.registerMessage(id++, BioForgeRecipeClientMessage.class, BioForgeRecipeClientMessage::encode, BioForgeRecipeClientMessage::decode, BioForgeRecipeClientMessage::handle);
+		SIMPLE_NETWORK_CHANNEL.registerMessage(id, CreatorAttackClientMessage.class, CreatorAttackClientMessage::encode, CreatorAttackClientMessage::decode, CreatorAttackClientMessage::handle);
 	}
 
 }
