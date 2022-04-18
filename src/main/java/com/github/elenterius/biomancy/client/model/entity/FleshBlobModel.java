@@ -36,7 +36,7 @@ public class FleshBlobModel<T extends FleshBlob> extends AnimatedGeoModel<T> {
 				}
 			}
 		}
-		return TEXTURES[fleshBlob.getBlobType()];
+		return TEXTURES[fleshBlob.getBlobType().textureIndex];
 	}
 
 	@Override

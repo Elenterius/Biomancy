@@ -123,7 +123,7 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 		refreshDimensions();
 		MobUtil.setAttributeBaseValue(this, Attributes.MAX_HEALTH, size * 10d);
 		MobUtil.setAttributeBaseValue(this, Attributes.MOVEMENT_SPEED, 0.2f + 0.1f * size);
-		MobUtil.setAttributeBaseValue(this, Attributes.ATTACK_DAMAGE, size + (getBlobType() == 1 ? 8d : 3d));
+		MobUtil.setAttributeBaseValue(this, Attributes.ATTACK_DAMAGE, size + getBlobType().damageModifier);
 		MobUtil.setAttributeBaseValue(this, Attributes.ARMOR, size * 3d);
 		if (resetHealth) setHealth(getMaxHealth());
 		xpReward = size;
@@ -135,6 +135,16 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 
 	public void randomizeTumors() {
 		entityData.set(TUMORS, (byte) random.nextInt(Byte.MAX_VALUE + 1));
+	}
+
+	public void setTumors(float tumorFactor) {
+		int flags = 0;
+		if (tumorFactor > 0) {
+			for (TumorFlag flag : TumorFlag.values()) {
+				if (level.random.nextFloat() < tumorFactor) flags = TumorFlag.setFlag(flags, flag);
+			}
+		}
+		entityData.set(TUMORS, (byte) flags);
 	}
 
 	public byte getTumorFlags() {
@@ -150,23 +160,51 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 		return super.getDimensions(pose).scale(getScaleMultiplier(this));
 	}
 
-	public boolean isHangry() {
-		return entityData.get(BLOB_TYPE) == 1;
+	public boolean isNeutral() {
+		return getBlobType() == BlobType.NEUTRAL;
 	}
 
-	public void setHangry() {
-		if (!isHangry()) setBlobType((byte) 1);
+	public void setHostile(boolean bool) {
+		if (bool) setBlobType(BlobType.HOSTILE);
 	}
 
-	public byte getBlobType() {
-		return entityData.get(BLOB_TYPE);
+	public double getBaseDamage() {
+		return getBlobSize();
 	}
 
-	public void setBlobType(byte flag) {
-		double damageModifier = flag == 1 ? 8d : 3d;
-		double baseDamage = getBlobSize();
-		MobUtil.setAttributeBaseValue(this, Attributes.ATTACK_DAMAGE, baseDamage + damageModifier);
-		entityData.set(BLOB_TYPE, flag);
+	public BlobType getBlobType() {
+		return BlobType.from(entityData.get(BLOB_TYPE));
+	}
+
+	private void setBlobType(byte data) {
+		setBlobType(BlobType.from(data));
+	}
+
+	public void setBlobType(BlobType blobType) {
+		MobUtil.setAttributeBaseValue(this, Attributes.ATTACK_DAMAGE, getBaseDamage() + blobType.damageModifier);
+		entityData.set(BLOB_TYPE, blobType.asByte());
+	}
+
+	public enum BlobType {
+		NEUTRAL(0, 3d),
+		HOSTILE(1, 8d);
+
+		public final byte textureIndex;
+		private final double damageModifier;
+
+		BlobType(int textureIndex, double damageModifier) {
+			this.textureIndex = (byte) textureIndex;
+			this.damageModifier = damageModifier;
+		}
+
+		public byte asByte() {
+			return (byte) ordinal();
+		}
+
+		public static BlobType from(byte data) {
+			return values()[data];
+		}
+
 	}
 
 	@Override
@@ -318,7 +356,7 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
-		tag.putByte("BlobType", getBlobType());
+		tag.putByte("BlobType", getBlobType().asByte());
 		tag.putByte("Size", getBlobSize());
 		tag.putByte("Tumors", getTumorFlags());
 		tag.put("StoredDNA", storedDNA.toJson());
@@ -335,7 +373,7 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 
 	@Override
 	public SoundSource getSoundSource() {
-		return isHangry() ? SoundSource.HOSTILE : SoundSource.NEUTRAL;
+		return isNeutral() ? SoundSource.NEUTRAL : SoundSource.HOSTILE;
 	}
 
 	@Override
@@ -476,7 +514,7 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 		@Override
 		public boolean canContinueToUse() {
 			FleshBlob fleshBlob = (FleshBlob) mob;
-			if (!fleshBlob.isHangry() && mob.getRandom().nextFloat() < 0.2f) {
+			if (fleshBlob.isNeutral() && mob.getRandom().nextFloat() < 0.2f) {
 				mob.setTarget(null);
 				return false;
 			}
@@ -498,14 +536,14 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 		@Override
 		public boolean canUse() {
 			FleshBlob fleshBlob = (FleshBlob) mob;
-			if (!fleshBlob.isHangry() || mob.isOnFire()) return super.canUse();
+			if (fleshBlob.isNeutral() || mob.isOnFire()) return super.canUse();
 			return false;
 		}
 
 		@Override
 		public boolean canContinueToUse() {
 			FleshBlob fleshBlob = (FleshBlob) mob;
-			if (!fleshBlob.isHangry() || mob.isOnFire()) return super.canContinueToUse();
+			if (fleshBlob.isNeutral() || mob.isOnFire()) return super.canContinueToUse();
 			return false;
 		}
 
