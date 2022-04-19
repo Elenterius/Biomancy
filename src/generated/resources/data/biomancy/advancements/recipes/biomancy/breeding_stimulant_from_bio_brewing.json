@@ -6,13 +6,13 @@
     ]
   },
   "criteria": {
-    "has_vitalizing_compound": {
+    "has_organic_compound": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:vitalizing_compound"
+              "biomancy:organic_compound"
             ]
           }
         ]
@@ -27,7 +27,7 @@
   },
   "requirements": [
     [
-      "has_vitalizing_compound",
+      "has_organic_compound",
       "has_the_recipe"
     ]
   ]

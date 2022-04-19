@@ -35,14 +35,12 @@ public class DigesterMenu extends PlayerContainerMenu {
 		this.outputInventory = outputInventory;
 		this.stateData = stateData;
 
-		addSlot(new FuelSlot(fuelInventory, 0, 54, 59));
+		addSlot(new FuelSlot(fuelInventory, 0, 46, 57));
 
-		addSlot(new Slot(inputInventory, 0, 77, 30));
+		addSlot(new Slot(inputInventory, 0, 80, 24));
 
-		int posY = 52;
-		int posX = 99;
-		addSlot(new OutputSlot(outputInventory, 0, posX, posY));
-		addSlot(new OutputSlot(outputInventory, 1, posX + 18, posY));
+		addSlot(new OutputSlot(outputInventory, 0, 70, 68));
+		addSlot(new OutputSlot(outputInventory, 1, 91, 68));
 
 		addDataSlots(stateData);
 	}

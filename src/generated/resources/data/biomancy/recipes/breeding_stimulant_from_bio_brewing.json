@@ -9,7 +9,7 @@
     }
   ],
   "reactant": {
-    "item": "biomancy:vitalizing_compound"
+    "item": "biomancy:organic_compound"
   },
   "result": {
     "item": "biomancy:breeding_stimulant"

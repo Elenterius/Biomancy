@@ -44,7 +44,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
 		tag(ModTags.Items.POOR_BIOMASS)
 				.addTag(ItemTags.FLOWERS).addTag(Tags.Items.SEEDS).addTag(ItemTags.LEAVES)
-				.add(SWEET_BERRIES, SUGAR_CANE, KELP, DRIED_KELP, GRASS, SEAGRASS, VINE, FERN, BAMBOO, ModItems.SKIN_CHUNK.get())
+				.add(SWEET_BERRIES, SUGAR_CANE, KELP, DRIED_KELP, GRASS, SEAGRASS, VINE, FERN, BAMBOO)
 				.addOptional(new ResourceLocation("rats:contaminated_food"));
 
 		TagsProvider.TagAppender<Item> avgBiomass = tag(ModTags.Items.AVERAGE_BIOMASS)

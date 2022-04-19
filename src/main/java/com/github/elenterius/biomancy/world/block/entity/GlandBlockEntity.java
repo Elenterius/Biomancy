@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.world.block.entity;
 
-import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.recipe.DecomposerRecipe;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
 import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
@@ -16,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -28,10 +28,15 @@ public class GlandBlockEntity extends CustomContainerBlockEntity {
 	public static final int OUTPUT_SLOTS = DecomposerRecipe.MAX_OUTPUTS;
 	private final BehavioralInventory<?> outputInventory;
 
-	public GlandBlockEntity(BlockPos pos, BlockState state) {
-		super(ModBlockEntities.GLAND.get(), pos, state);
+	public GlandBlockEntity(BlockEntityType type, BlockPos pos, BlockState state) {
+		super(type, pos, state);
 		outputInventory = BehavioralInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenContainer, this::setChanged);
 	}
+
+//	public GlandBlockEntity(BlockPos pos, BlockState state) {
+//		super(ModBlockEntities.GLAND.get(), pos, state);
+//		outputInventory = BehavioralInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenContainer, this::setChanged);
+//	}
 
 	public Component getDefaultName() {
 		return TextComponentUtil.getTranslationText("container", "gland");

@@ -1,7 +1,6 @@
 package com.github.elenterius.biomancy.datagen.loot;
 
 import com.github.elenterius.biomancy.init.ModBlocks;
-import com.github.elenterius.biomancy.init.ModItems;
 import net.minecraft.data.loot.BlockLoot;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -10,7 +9,6 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.CopyNameFunction;
 import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
 import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
-import net.minecraft.world.level.storage.loot.providers.number.BinomialDistributionGenerator;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.Marker;
@@ -50,7 +48,7 @@ public class ModBlockLoot extends BlockLoot {
 		add(ModBlocks.BIO_LAB.get(), BlockLoot::createNameableBlockEntityTable);
 		add(ModBlocks.DIGESTER.get(), BlockLoot::createNameableBlockEntityTable);
 		add(ModBlocks.DECOMPOSER.get(), BlockLoot::createNameableBlockEntityTable);
-		add(ModBlocks.GLAND.get(), BlockLoot::createNameableBlockEntityTable);
+//		add(ModBlocks.GLAND.get(), BlockLoot::createNameableBlockEntityTable);
 		add(ModBlocks.SAC.get(), BlockLoot::createNameableBlockEntityTable);
 
 		add(ModBlocks.GULGE.get(), ModBlockLoot::dropWithInventory);
@@ -59,7 +57,8 @@ public class ModBlockLoot extends BlockLoot {
 		dropSelf(ModBlocks.FLESH_BLOCK.get());
 		dropSelf(ModBlocks.FLESH_BLOCK_STAIRS.get());
 		add(ModBlocks.FLESH_BLOCK_SLAB.get(), BlockLoot::createSlabItemTable);
-		add(ModBlocks.NECROTIC_FLESH_BLOCK.get(), createSingleItemTable(ModItems.NECROTIC_FLESH_LUMP.get(), BinomialDistributionGenerator.binomial(9, 0.5f)));
+//		add(ModBlocks.NECROTIC_FLESH_BLOCK.get(), createSingleItemTable(ModItems.NECROTIC_FLESH_LUMP.get(), BinomialDistributionGenerator.binomial(9, 0.5f)));
+		dropSelf(ModBlocks.NECROTIC_FLESH_BLOCK.get());
 	}
 
 }

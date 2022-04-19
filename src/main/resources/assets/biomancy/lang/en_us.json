@@ -16,7 +16,6 @@
   "item.biomancy.bio_lumens": "Bio-Lumens",
   "item.biomancy.exotic_dust": "Exotic Dust",
   "item.biomancy.bio_minerals": "Bio-Minerals",
-  "item.biomancy.oxides": "Oxides",
   "item.biomancy.lithic_powder": "Lithic Powder",
 
   "item.biomancy.rejuvenating_mucus": "Vitalizing Mucus",
@@ -27,16 +26,11 @@
 
   "item.biomancy.living_flesh": "Living Flesh",
   "item.biomancy.exalted_living_flesh": "Exalted Living Flesh",
-  "item.biomancy.biometal_ingot": "Biometal Ingot",
   "item.biomancy.oculus": "Oculus",
   "item.biomancy.nutrient_paste": "Nutrient Paste",
   "item.biomancy.nutrient_bar": "Nutrient Bar",
   "item.biomancy.protein_bar": "Meaty Granola Bar",
 
-  "item.biomancy.necrotic_flesh_lump": "Necrotic Lump of Flesh",
-  "item.biomancy.skin_chunk": "Chunk of Skin",
-  "item.biomancy.stomach": "Stomach",
-  "item.biomancy.ancient_stomach": "Ancient Stomach",
   "item.biomancy.larynx": "Larynx",
   "item.biomancy.larynx.mob": "%1$s Larynx",
   "item.biomancy.mob_fang": "Sharp Fang",
@@ -60,10 +54,8 @@
   "item.biomancy.ichor_serum": "[NYI] Vial of Ichor",
 
   "item.biomancy.organic_compound": "Organic Compound",
-  "item.biomancy.corrosive_compound": "Corrosive Compound",
-  "item.biomancy.vitalizing_compound": "Vitalizing Compound",
-  "item.biomancy.hormone_compound": "Hormone Compound",
-  "item.biomancy.exotic_compound": "Exotic Compound",
+  "item.biomancy.unstable_compound": "Unstable Compound",
+  "item.biomancy.genetic_compound": "Genetic Compound",
 
   "item.biomancy.glass_vial": "Glass Vial",
   "item.biomancy.serum": "Serum",

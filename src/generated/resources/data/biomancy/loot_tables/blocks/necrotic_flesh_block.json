@@ -7,21 +7,12 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:binomial",
-                "n": 9.0,
-                "p": 0.5
-              },
-              "add": false
-            },
-            {
-              "function": "minecraft:explosion_decay"
-            }
-          ],
-          "name": "biomancy:necrotic_flesh_lump"
+          "name": "biomancy:necrotic_flesh_block"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
         }
       ]
     }

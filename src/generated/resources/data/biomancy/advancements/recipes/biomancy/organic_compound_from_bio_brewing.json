@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:necrotic_flesh_lump"
+      "biomancy:organic_compound_from_bio_brewing"
     ]
   },
   "criteria": {
-    "has_necrotic_flesh_block": {
+    "has_bile_extract": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:necrotic_flesh_block"
+              "biomancy:bile_extract"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:necrotic_flesh_lump"
+        "recipe": "biomancy:organic_compound_from_bio_brewing"
       }
     }
   },
   "requirements": [
     [
-      "has_necrotic_flesh_block",
+      "has_bile_extract",
       "has_the_recipe"
     ]
   ]

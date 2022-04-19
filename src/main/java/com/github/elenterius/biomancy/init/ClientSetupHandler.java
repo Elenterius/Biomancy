@@ -135,7 +135,7 @@ public final class ClientSetupHandler {
 		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.BIO_INJECTOR.get().getSerumColor(stack) : -1, ModItems.BIO_INJECTOR.get());
 		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.BOOMLING.get().getPotionColor(stack) : -1, ModItems.BOOMLING.get());
 
-		event.getItemColors().register((stack, index) -> 0x8d758c, ModItems.NECROTIC_FLESH_LUMP.get(), ModItems.NECROTIC_FLESH_BLOCK.get());
+		event.getItemColors().register((stack, index) -> 0x8d758c, ModItems.NECROTIC_FLESH_BLOCK.get());
 //		event.getItemColors().register((stack, index) -> 0xedaeaa, ModItems.PROTEIN_BAR.get());
 	}
 

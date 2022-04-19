@@ -2,13 +2,13 @@
   "type": "biomancy:bio_brewing",
   "ingredients": [
     {
-      "item": "biomancy:exotic_dust"
+      "item": "biomancy:bile_extract"
     },
     {
-      "item": "biomancy:rejuvenating_mucus"
+      "item": "biomancy:bile_extract"
     },
     {
-      "item": "biomancy:rejuvenating_mucus"
+      "item": "biomancy:bile_extract"
     },
     {
       "item": "biomancy:nutrients"
@@ -18,7 +18,7 @@
     "item": "biomancy:glass_vial"
   },
   "result": {
-    "item": "biomancy:vitalizing_compound"
+    "item": "biomancy:organic_compound"
   },
-  "time": 100
+  "time": 40
 }

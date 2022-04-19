@@ -48,15 +48,15 @@ public class DigesterScreen extends AbstractContainerScreen<DigesterMenu> {
 
 	private void drawProgressBar(PoseStack poseStack, float craftingPct) {
 		int uWidth = (int) (craftingPct * 20) + (craftingPct > 0 ? 1 : 0);
-		blit(poseStack, leftPos + 75, topPos + 23, 194, 0, uWidth, 2);
+		blit(poseStack, leftPos + 78, topPos + 17, 194, 0, uWidth, 2);
 	}
 
 	private void drawFuelBar(PoseStack poseStack, float fuelPct) {
 		//fuel blob
 		int vHeight = (int) (fuelPct * 18) + (fuelPct > 0 ? 1 : 0);
-		blit(poseStack, leftPos + 52, topPos + 20 + 18 - vHeight, 176, 18 - vHeight, 18, vHeight);
+		blit(poseStack, leftPos + 44, topPos + 18 + 18 - vHeight, 176, 18 - vHeight, 18, vHeight);
 		//glass highlight
-		blit(poseStack, leftPos + 55, topPos + 23, 214, 0, 12, 13);
+		blit(poseStack, leftPos + 47, topPos + 21, 214, 0, 12, 13);
 	}
 
 	@Override

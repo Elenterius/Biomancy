@@ -104,7 +104,8 @@ public class GlandBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new GlandBlockEntity(pos, state);
+//		return new GlandBlockEntity(pos, state);
+		return null;
 	}
 
 	@Override

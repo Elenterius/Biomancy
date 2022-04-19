@@ -55,7 +55,7 @@ public final class ModBlocks {
 	public static final RegistryObject<TongueBlock> TONGUE = BLOCKS.register("tongue", () -> new TongueBlock(createFleshProperties()));
 
 	//## Storage
-	public static final RegistryObject<GlandBlock> GLAND = BLOCKS.register("gland", () -> new GlandBlock(createFleshProperties()));
+//	public static final RegistryObject<GlandBlock> GLAND = BLOCKS.register("gland", () -> new GlandBlock(createFleshProperties()));
 	public static final RegistryObject<GulgeBlock> GULGE = BLOCKS.register("gulge", () -> new GulgeBlock(createFleshProperties()));
 	public static final RegistryObject<FleshkinChestBlock> FLESHKIN_CHEST = BLOCKS.register("fleshkin_chest", () -> new FleshkinChestBlock(createFleshProperties()));
 
@@ -67,7 +67,7 @@ public final class ModBlocks {
 	@OnlyIn(Dist.CLIENT)
 	static void setRenderLayers() {
 		ItemBlockRenderTypes.setRenderLayer(CREATOR.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(GLAND.get(), RenderType.cutout());
+//		ItemBlockRenderTypes.setRenderLayer(GLAND.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(TONGUE.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(GULGE.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(FLESHKIN_CHEST.get(), RenderType.cutout());

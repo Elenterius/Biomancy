@@ -21,7 +21,7 @@
     }
   ],
   "reactant": {
-    "item": "biomancy:glass_vial"
+    "item": "biomancy:organic_compound"
   },
   "result": {
     "item": "biomancy:adrenaline_serum"

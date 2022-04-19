@@ -6,13 +6,13 @@
     ]
   },
   "criteria": {
-    "has_exotic_compound": {
+    "has_organic_compound": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:exotic_compound"
+              "biomancy:organic_compound"
             ]
           }
         ]
@@ -27,7 +27,7 @@
   },
   "requirements": [
     [
-      "has_exotic_compound",
+      "has_organic_compound",
       "has_the_recipe"
     ]
   ]

@@ -109,8 +109,6 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 		generateComponent(ModItems.VOLATILE_EXTRACT.get());
 		generateComponent(ModItems.BILE_EXTRACT.get());
 
-		generateFlat(ModItems.SKIN_CHUNK.get(), ModelTemplates.FLAT_ITEM);
-		generateFlat(ModItems.NECROTIC_FLESH_LUMP.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.LARYNX.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.MOB_FANG.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.MOB_CLAW.get(), ModelTemplates.FLAT_ITEM);
@@ -124,7 +122,6 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 		generateFlat(ModItems.LIVING_FLESH.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.EXALTED_LIVING_FLESH.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.OCULUS.get(), ModelTemplates.FLAT_ITEM);
-		generateFlat(ModItems.BIOMETAL_INGOT.get(), ModelTemplates.FLAT_ITEM);
 		generateFlatWithOverlay(ModItems.ESSENCE.get(), OVERLAY_TEMPLATE);
 		generateFlat(ModItems.BIO_EXTRACTOR.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		generateFlatWithOverlay(ModItems.BIO_INJECTOR.get(), GUN_OVERLAY_TEMPLATE);
@@ -147,10 +144,8 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 		generateSerum(ModItems.ICHOR_SERUM.get());
 
 		generateSerum(ModItems.ORGANIC_COMPOUND.get());
-		generateSerum(ModItems.CORROSIVE_COMPOUND.get());
-		generateSerum(ModItems.VITALIZING_COMPOUND.get());
-		generateSerum(ModItems.HORMONE_COMPOUND.get());
-		generateSerum(ModItems.EXOTIC_COMPOUND.get());
+		generateSerum(ModItems.UNSTABLE_COMPOUND.get());
+		generateSerum(ModItems.GENETIC_COMPOUND.get());
 
 		generateWeapon(ModItems.BONE_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		generateWeaponWithOverlay(ModItems.BOOMLING.get(), OVERLAY_TEMPLATE);
