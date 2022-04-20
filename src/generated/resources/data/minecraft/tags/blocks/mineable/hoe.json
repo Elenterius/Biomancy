@@ -14,6 +14,9 @@
     "biomancy:tongue",
     "biomancy:gulge",
     "biomancy:fleshkin_chest",
+    "biomancy:fleshkin_door",
+    "biomancy:fleshkin_trapdoor",
+    "biomancy:fleshkin_pressure_plate",
     "biomancy:voice_box"
   ]
 }

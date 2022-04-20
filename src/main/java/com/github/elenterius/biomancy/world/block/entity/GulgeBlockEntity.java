@@ -19,7 +19,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class GulgeBlockEntity extends CustomContainerBlockEntity {
+public class GulgeBlockEntity extends SimpleContainerBlockEntity {
 
 	public static final short MAX_ITEM_AMOUNT = 64 * 128;
 	private final GulgeInventory gulgeInventory;

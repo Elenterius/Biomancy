@@ -9,25 +9,31 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.function.Supplier;
 
 //client bound message
-public class CreatorAttackClientMessage {
+public class BlockEntityAnimationClientMessage {
 
 	public final BlockPos pos;
+	public final int id;
+	public final int data;
 
-	public CreatorAttackClientMessage(BlockPos pos) {
+	public BlockEntityAnimationClientMessage(BlockPos pos, int id, int data) {
 		this.pos = pos;
+		this.id = id;
+		this.data = data;
 	}
 
-	public static CreatorAttackClientMessage decode(final FriendlyByteBuf buffer) {
-		return new CreatorAttackClientMessage(buffer.readBlockPos());
+	public static BlockEntityAnimationClientMessage decode(final FriendlyByteBuf buffer) {
+		return new BlockEntityAnimationClientMessage(buffer.readBlockPos(), buffer.readVarInt(), buffer.readVarInt());
 	}
 
-	public static void handle(CreatorAttackClientMessage msg, Supplier<NetworkEvent.Context> ctx) {
+	public static void handle(BlockEntityAnimationClientMessage msg, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientPacketHandler.handlePacket(msg, ctx)));
 		ctx.get().setPacketHandled(true);
 	}
 
 	public void encode(final FriendlyByteBuf buffer) {
 		buffer.writeBlockPos(pos);
+		buffer.writeVarInt(id);
+		buffer.writeVarInt(data);
 	}
 
 }

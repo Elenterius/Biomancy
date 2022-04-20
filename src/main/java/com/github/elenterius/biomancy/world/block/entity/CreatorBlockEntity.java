@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.world.block.entity;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModDamageSources;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
+import com.github.elenterius.biomancy.network.ISyncableAnimation;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import com.github.elenterius.biomancy.world.block.CreatorBlock;
 import com.github.elenterius.biomancy.world.entity.fleshblob.FleshBlob;
@@ -35,7 +36,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnimatable {
+public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnimatable, ISyncableAnimation {
 
 	public static final int MAX_SLOTS = 6;
 	public static final int DURATION = 20 * 4; //in ticks
@@ -130,7 +131,6 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 			level.sendParticles(ParticleTypes.EXPLOSION, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, 1, 0, 0, 0, 0);
 		}
 		else {
-			ModNetworkHandler.sendCreatorAttackAnimationToClients(this);
 			attackAOE(level, pos);
 			level.playSound(null, pos, SoundEvents.GOAT_SCREAMING_RAM_IMPACT, SoundSource.BLOCKS, 1f, 0.5f);
 		}
@@ -153,7 +153,15 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 //			}
 	}
 
-	public void attackAOE(ServerLevel level, BlockPos pos) {
+	public void attackAOE() {
+		if (level != null && !level.isClientSide() && level instanceof ServerLevel serverLevel) {
+			attackAOE(serverLevel, worldPosition);
+		}
+	}
+
+	protected void attackAOE(ServerLevel level, BlockPos pos) {
+		ModNetworkHandler.sendAnimationToClients(this, 0, 0);
+
 		float maxAttackDistance = 1.5f;
 		float maxAttackDistanceSqr = maxAttackDistance * maxAttackDistance;
 		Vec3 origin = Vec3.atCenterOf(pos);
@@ -190,6 +198,11 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 			inv.deserializeNBT(tag.getCompound(INVENTORY_KEY));
 			fillLevel = (byte) inv.countUsedSlots();
 		}
+	}
+
+	@Override
+	public void onAnimationSync(int id, int data) {
+		startAttackAnimation();
 	}
 
 	public void startAttackAnimation() {

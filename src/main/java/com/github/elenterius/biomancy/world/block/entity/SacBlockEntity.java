@@ -25,7 +25,7 @@ import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class SacBlockEntity extends CustomContainerBlockEntity {
+public class SacBlockEntity extends SimpleContainerBlockEntity {
 
 	public static final int SLOTS = 5 * 3;
 	public static final int ITEM_TRANSFER_AMOUNT = 8;

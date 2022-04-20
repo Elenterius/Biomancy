@@ -14,11 +14,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class CustomContainerBlockEntity extends BlockEntity implements MenuProvider, Nameable {
+public abstract class SimpleContainerBlockEntity extends BlockEntity implements MenuProvider, Nameable {
 
 	protected Component name;
 
-	protected CustomContainerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+	protected SimpleContainerBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 	}
 

@@ -36,6 +36,24 @@ public class ModBlockLoot extends BlockLoot {
 				)));
 	}
 
+	protected static LootTable.Builder dropFleshkinChest(Block block) {
+		return LootTable.lootTable().withPool(applyExplosionCondition(block, LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+				.add(LootItem.lootTableItem(block)
+						.apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY))
+						.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("Inventory", "BlockEntityTag.Inventory"))
+						.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("OwnerUUID", "BlockEntityTag.OwnerUUID"))
+						.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("UserList", "BlockEntityTag.UserList"))
+				)));
+	}
+
+	protected static LootTable.Builder dropWithOwnableData(Block container) {
+		return LootTable.lootTable().withPool(applyExplosionCondition(container, LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+				.add(LootItem.lootTableItem(container)
+						.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("OwnerUUID", "BlockEntityTag.OwnerUUID"))
+						.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("UserList", "BlockEntityTag.UserList"))
+				)));
+	}
+
 	@Override
 	protected void addTables() {
 		LOGGER.info(logMarker, "registering block loot...");
@@ -52,7 +70,11 @@ public class ModBlockLoot extends BlockLoot {
 		add(ModBlocks.SAC.get(), BlockLoot::createNameableBlockEntityTable);
 
 		add(ModBlocks.GULGE.get(), ModBlockLoot::dropWithInventory);
-		add(ModBlocks.FLESHKIN_CHEST.get(), ModBlockLoot::dropWithInventory);
+
+		add(ModBlocks.FLESHKIN_CHEST.get(), ModBlockLoot::dropFleshkinChest);
+		add(ModBlocks.FLESHKIN_DOOR.get(), ModBlockLoot::dropWithOwnableData);
+		add(ModBlocks.FLESHKIN_TRAPDOOR.get(), ModBlockLoot::dropWithOwnableData);
+		add(ModBlocks.FLESHKIN_PRESSURE_PLATE.get(), ModBlockLoot::dropWithOwnableData);
 
 		dropSelf(ModBlocks.FLESH_BLOCK.get());
 		dropSelf(ModBlocks.FLESH_BLOCK_STAIRS.get());

@@ -3,7 +3,6 @@ package com.github.elenterius.biomancy.network;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.recipe.BioForgeRecipe;
 import com.github.elenterius.biomancy.world.block.entity.BioForgeBlockEntity;
-import com.github.elenterius.biomancy.world.block.entity.CreatorBlockEntity;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -35,11 +34,11 @@ public final class ClientPacketHandler {
 		}
 	}
 
-	static void handlePacket(CreatorAttackClientMessage msg, Supplier<NetworkEvent.Context> ctx) {
+	static void handlePacket(BlockEntityAnimationClientMessage msg, Supplier<NetworkEvent.Context> ctx) {
 		if (ctx.get().getNetworkManager().getPacketListener() instanceof ClientPacketListener netHandler) {
 			ClientLevel level = netHandler.getLevel();
-			if (level.getBlockEntity(msg.pos) instanceof CreatorBlockEntity creator) {
-				creator.startAttackAnimation();
+			if (level.getBlockEntity(msg.pos) instanceof ISyncableAnimation syncable) {
+				syncable.onAnimationSync(msg.id, msg.data);
 			}
 		}
 	}

@@ -36,7 +36,8 @@ public interface IOwnableEntityBlock extends EntityBlock {
 		if (placer == null) return;
 
 		CompoundTag entityData = BlockItem.getBlockEntityData(stack);
-		if (entityData == null && !ownable.hasOwner()) { //make sure we don't overwrite the previous owner
+		boolean containsOwner = entityData != null && entityData.hasUUID(IOwnableEntityBlock.NBT_KEY_OWNER);
+		if (!containsOwner && !ownable.hasOwner()) { //make sure we don't overwrite the previous owner
 			ownable.setOwner(placer.getUUID());
 		}
 	}
@@ -66,21 +67,21 @@ public interface IOwnableEntityBlock extends EntityBlock {
 
 	static void appendUserListToTooltip(CompoundTag entityData, List<Component> tooltip) {
 
-		String ownerName = "";
-		if (entityData.hasUUID(IOwnableEntityBlock.NBT_KEY_OWNER)) {
-			ownerName = ClientTextUtil.tryToGetPlayerNameOnClientSide(entityData.getUUID(IOwnableEntityBlock.NBT_KEY_OWNER));
+		String ownerName = "NULL";
+		if (entityData.hasUUID(NBT_KEY_OWNER)) {
+			ownerName = ClientTextUtil.tryToGetPlayerNameOnClientSide(entityData.getUUID(NBT_KEY_OWNER));
 		}
 
 		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 		tooltip.add(TextComponentUtil.getTooltipText("owner", new TextComponent(ownerName).withStyle(ChatFormatting.WHITE)).withStyle(ChatFormatting.GRAY));
 
-		if (entityData.contains(IOwnableEntityBlock.NBT_KEY_USER_LIST)) {
-			ListTag nbtList = entityData.getList(IOwnableEntityBlock.NBT_KEY_USER_LIST, Tag.TAG_COMPOUND);
+		if (entityData.contains(NBT_KEY_USER_LIST)) {
+			ListTag nbtList = entityData.getList(NBT_KEY_USER_LIST, Tag.TAG_COMPOUND);
 			tooltip.add(new TextComponent("Users: ").withStyle(ChatFormatting.GRAY));
 			int limit = Screen.hasControlDown() ? Math.min(5, nbtList.size()) : nbtList.size();
 			for (int i = 0; i < limit; i++) {
 				CompoundTag userNbt = nbtList.getCompound(i);
-				String userName = ClientTextUtil.tryToGetPlayerNameOnClientSide(userNbt.getUUID(IOwnableEntityBlock.NBT_KEY_USER));
+				String userName = ClientTextUtil.tryToGetPlayerNameOnClientSide(userNbt.getUUID(NBT_KEY_USER));
 				UserType level = UserType.deserialize(userNbt);
 				tooltip.add(new TextComponent(String.format(" - %s (%s)", userName, level.name().toLowerCase(Locale.ROOT))).withStyle(ChatFormatting.GRAY));
 			}

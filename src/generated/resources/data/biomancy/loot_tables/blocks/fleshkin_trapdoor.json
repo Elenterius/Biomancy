@@ -9,21 +9,6 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:copy_name",
-              "source": "block_entity"
-            },
-            {
-              "function": "minecraft:copy_nbt",
-              "source": "block_entity",
-              "ops": [
-                {
-                  "source": "Inventory",
-                  "target": "BlockEntityTag.Inventory",
-                  "op": "replace"
-                }
-              ]
-            },
-            {
               "function": "minecraft:copy_nbt",
               "source": "block_entity",
               "ops": [
@@ -46,7 +31,7 @@
               ]
             }
           ],
-          "name": "biomancy:fleshkin_chest"
+          "name": "biomancy:fleshkin_trapdoor"
         }
       ],
       "conditions": [

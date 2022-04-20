@@ -23,7 +23,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class GlandBlockEntity extends CustomContainerBlockEntity {
+public class GlandBlockEntity extends SimpleContainerBlockEntity {
 
 	public static final int OUTPUT_SLOTS = DecomposerRecipe.MAX_OUTPUTS;
 	private final BehavioralInventory<?> outputInventory;

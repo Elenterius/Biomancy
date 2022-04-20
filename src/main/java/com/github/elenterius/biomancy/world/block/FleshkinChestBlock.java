@@ -3,6 +3,9 @@ package com.github.elenterius.biomancy.world.block;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.world.block.entity.FleshkinChestBlockEntity;
+import com.github.elenterius.biomancy.world.ownable.IOwnableEntityBlock;
+import com.github.elenterius.biomancy.world.permission.Actions;
+import com.github.elenterius.biomancy.world.permission.IRestrictedInteraction;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -15,6 +18,8 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -51,7 +56,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 
-public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
+public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterloggedBlock, IOwnableEntityBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -77,8 +82,12 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-		if (stack.hasCustomHoverName() && level.getBlockEntity(pos) instanceof FleshkinChestBlockEntity chest) {
-			chest.setCustomName(stack.getHoverName());
+		if (level.getBlockEntity(pos) instanceof FleshkinChestBlockEntity chest) {
+			if (stack.hasCustomHoverName()) {
+				chest.setCustomName(stack.getHoverName());
+			}
+
+			IOwnableEntityBlock.setupBlockEntityOwner(level, chest, placer, stack);
 		}
 	}
 
@@ -107,12 +116,23 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 		if (level.isClientSide()) return InteractionResult.SUCCESS;
 
 		if (player instanceof ServerPlayer serverPlayer && !ChestBlock.isChestBlockedAt(level, pos)) {
-			BlockEntity tileEntity = level.getBlockEntity(pos);
-			if (tileEntity instanceof FleshkinChestBlockEntity chest && chest.canPlayerOpenContainer(player)) {
-				MenuProvider menuProvider = getMenuProvider(state, level, pos);
-				if (menuProvider != null) {
-					NetworkHooks.openGui(serverPlayer, menuProvider, byteBuffer -> {});
-					return InteractionResult.SUCCESS;
+			BlockEntity blockEntity = level.getBlockEntity(pos);
+			if (blockEntity instanceof FleshkinChestBlockEntity chest) {
+				if (chest.canPlayerOpenContainer(player)) {
+					MenuProvider menuProvider = getMenuProvider(state, level, pos);
+					if (menuProvider != null) {
+						NetworkHooks.openGui(serverPlayer, menuProvider, byteBuffer -> {});
+						return InteractionResult.SUCCESS;
+					}
+				}
+				else {
+					if (level.random.nextFloat() < 0.6f) {
+						chest.attack(state.getValue(FACING), player);
+						level.playSound(null, pos, SoundEvents.GOAT_SCREAMING_RAM_IMPACT, SoundSource.BLOCKS, 1f, 0.5f);
+					}
+					else {
+						level.playSound(null, pos, SoundEvents.VILLAGER_NO, SoundSource.BLOCKS, 0.75f, level.random.nextFloat(0.15f, 0.45f));
+					}
 				}
 			}
 		}
@@ -132,6 +152,14 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 		}
 
 		super.playerWillDestroy(level, pos, state, player);
+	}
+
+	@Override
+	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
+		if (level.getBlockEntity(pos) instanceof IRestrictedInteraction interaction && interaction.isActionAllowed(player, Actions.DESTROY_BLOCK)) {
+			return super.getDestroyProgress(state, player, level, pos);
+		}
+		return 0f;
 	}
 
 	@Override
@@ -189,6 +217,10 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 	public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flag) {
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
 		super.appendHoverText(stack, level, tooltip, flag);
+
+		IOwnableEntityBlock.appendUserListToTooltip(stack, tooltip);
+		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
+
 		CompoundTag tag = BlockItem.getBlockEntityData(stack);
 		if (tag != null) {
 			CompoundTag inventoryTag = tag.getCompound("Inventory");

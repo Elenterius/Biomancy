@@ -1,6 +1,9 @@
 package com.github.elenterius.biomancy.world.block.entity;
 
 import com.github.elenterius.biomancy.init.ModBlockEntities;
+import com.github.elenterius.biomancy.init.ModDamageSources;
+import com.github.elenterius.biomancy.network.ISyncableAnimation;
+import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
 import com.github.elenterius.biomancy.world.inventory.SimpleInventory;
 import com.github.elenterius.biomancy.world.inventory.menu.FleshkinChestMenu;
@@ -8,22 +11,27 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -32,14 +40,16 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class FleshkinChestBlockEntity extends CustomContainerBlockEntity implements IAnimatable {
+import java.util.List;
+
+public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implements IAnimatable, ISyncableAnimation {
 
 	public static final int SLOTS = 9 * 6;
 
 	private final SimpleInventory inventory;
-	private boolean isLidOpen = false;
-//	private boolean isAngry = false;
+	private boolean lidShouldBeOpen = false;
 
+	private boolean playAttackAnimation = false;
 	private final AnimationFactory animationFactory = new AnimationFactory(this);
 
 	private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
@@ -93,10 +103,27 @@ public class FleshkinChestBlockEntity extends CustomContainerBlockEntity impleme
 	@Override
 	public boolean triggerEvent(int id, int type) {
 		if (id == 1) {
-			isLidOpen = type > 0;
+			lidShouldBeOpen = type > 0;
 			return true;
 		}
 		return super.triggerEvent(id, type);
+	}
+
+	public void attack(Direction direction, @Nullable LivingEntity target) {
+		if (level != null && !level.isClientSide() && level instanceof ServerLevel serverLevel) {
+			if (target != null) target.hurt(ModDamageSources.CHEST_BITE, 4f);
+			attackAtPosition(serverLevel, getBlockPos().relative(direction), target);
+		}
+	}
+
+	protected void attackAtPosition(ServerLevel level, BlockPos pos, @Nullable LivingEntity excludedEntity) {
+		ModNetworkHandler.sendAnimationToClients(this, 0, 0);
+
+		AABB aabb = new AABB(pos).inflate(0.25f);
+		List<Entity> victims = level.getEntities(excludedEntity, aabb, EntitySelector.LIVING_ENTITY_STILL_ALIVE);
+		for (Entity entity : victims) {
+			entity.hurt(ModDamageSources.CREATOR_SPIKES, 2f);
+		}
 	}
 
 	private void playSound(Level level, BlockPos pos, SoundEvent sound) {
@@ -159,18 +186,40 @@ public class FleshkinChestBlockEntity extends CustomContainerBlockEntity impleme
 		inventory.revive();
 	}
 
-	private <E extends BlockEntity & IAnimatable> PlayState handleIdleAnim(AnimationEvent<E> event) {
-		if (isLidOpen) {
+	@Override
+	public void onAnimationSync(int id, int data) {
+		startAttackAnimation();
+	}
+
+	public void startAttackAnimation() {
+		playAttackAnimation = true;
+	}
+
+	public void stopAttackAnimation() {
+		playAttackAnimation = false;
+	}
+
+	private boolean lidIsOpen = false;
+
+	private PlayState handleIdleAnim(AnimationEvent<FleshkinChestBlockEntity> event) {
+		if (playAttackAnimation) {
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("fleshkin_chest.bite"));
+			if (event.getController().getAnimationState() != AnimationState.Stopped) return PlayState.CONTINUE;
+			stopAttackAnimation();
+		}
+
+		if (lidShouldBeOpen) {
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("fleshkin_chest.open").addAnimation("fleshkin_chest.opened"));
+			lidIsOpen = true;
+			return PlayState.CONTINUE;
 		}
-		else {
-			//TODO: add bite attack
-//			if (isAngry) {
-//				event.getController().setAnimation(new AnimationBuilder().addAnimation("fleshkin_chest.bite"));
-//			}
-//			else
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("fleshkin_chest.close").addAnimation("fleshkin_chest.closed"));
+		else if (lidIsOpen) {
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("fleshkin_chest.close"));
+			if (event.getController().getAnimationState() != AnimationState.Stopped) return PlayState.CONTINUE;
+			lidIsOpen = false;
 		}
+
+		event.getController().setAnimation(new AnimationBuilder().addAnimation("fleshkin_chest.closed"));
 		return PlayState.CONTINUE;
 	}
 
