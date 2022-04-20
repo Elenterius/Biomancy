@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "biomancy:item/fleshborn_door"
+    "layer0": "biomancy:item/fleshkin_door"
   }
 }

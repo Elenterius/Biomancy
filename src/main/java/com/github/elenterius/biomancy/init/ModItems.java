@@ -113,6 +113,11 @@ public final class ModItems {
 	//## Misc
 	public static final RegistryObject<SimpleBlockItem> VOICE_BOX = ITEMS.register("voice_box", () -> new SimpleBlockItem(ModBlocks.VOICE_BOX.get(), createBaseProperties()));
 
+	//# Ownable
+	public static final RegistryObject<SimpleBlockItem> FLESHKIN_DOOR = ITEMS.register("fleshkin_door", () -> new SimpleBlockItem(ModBlocks.FLESHKIN_DOOR.get(), createBaseProperties()));
+	public static final RegistryObject<SimpleBlockItem> FLESHKIN_TRAPDOOR = ITEMS.register("fleshkin_trapdoor", () -> new SimpleBlockItem(ModBlocks.FLESHKIN_TRAPDOOR.get(), createBaseProperties()));
+	public static final RegistryObject<SimpleBlockItem> FLESHKIN_PRESSURE_PLATE = ITEMS.register("fleshkin_pressure_plate", () -> new SimpleBlockItem(ModBlocks.FLESHKIN_PRESSURE_PLATE.get(), createBaseProperties()));
+
 	//# Spawn Eggs
 	public static final RegistryObject<ForgeSpawnEggItem> FLESH_BLOB_SPAWN_EGG = ITEMS.register("flesh_blob_spawn_egg", () -> new ForgeSpawnEggItem(ModEntityTypes.FLESH_BLOB, 0xe9967a, 0xf6d2c6, createProperties()));
 	public static final RegistryObject<ForgeSpawnEggItem> BOOMLING_SPAWN_EGG = ITEMS.register("boomling_spawn_egg", () -> new ForgeSpawnEggItem(ModEntityTypes.BOOMLING, 0x3e3e3e, 0xcfcfcf, createProperties()));
@@ -158,12 +163,7 @@ public final class ModItems {
 //	public static final RegistryObject<ModSpawnEggItem> BROOD_MOTHER_SPAWN_EGG = ITEMS.register("brood_mother_spawn_egg", () -> new ModSpawnEggItem(ModEntityTypes.BROOD_MOTHER, 0x49345e, 0xda70d6, createItemProperties()));
 //	public static final RegistryObject<ModSpawnEggItem> CHROMA_SHEEP_SPAWN_EGG = ITEMS.register("chroma_sheep_spawn_egg", () -> new ModSpawnEggItem(ModEntityTypes.CHROMA_SHEEP, 0xe9967a, 0xf6d2c6, createItemProperties()));
 
-	/* **** Block Items ********************************************* */
 
-	//bio-construct blocks
-//	public static final RegistryObject<SimpleBlockItem> FLESHBORN_DOOR = ITEMS.register("fleshborn_door", () -> new SimpleBlockItem(ModBlocks.FLESHBORN_DOOR.get(), createItemProperties()));
-//	public static final RegistryObject<SimpleBlockItem> FLESHBORN_TRAPDOOR = ITEMS.register("fleshborn_trapdoor", () -> new SimpleBlockItem(ModBlocks.FLESHBORN_TRAPDOOR.get(), createItemProperties()));
-//	public static final RegistryObject<SimpleBlockItem> FLESHBORN_PRESSURE_PLATE = ITEMS.register("fleshborn_pressure_plate", () -> new SimpleBlockItem(ModBlocks.FLESHBORN_PRESSURE_PLATE.get(), createItemProperties()));
 //	public static final RegistryObject<SimpleBlockItem> SCENT_DIFFUSER = ITEMS.register("scent_diffuser", () -> new SimpleBlockItem(ModBlocks.SCENT_DIFFUSER.get(), createItemProperties()));
 
 	private ModItems() {}

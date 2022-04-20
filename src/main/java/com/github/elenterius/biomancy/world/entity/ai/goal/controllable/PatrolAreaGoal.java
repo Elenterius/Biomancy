@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.world.entity.ai.goal.controllable;
 
 import com.github.elenterius.biomancy.world.entity.ownable.IControllableMob;
-import com.github.elenterius.biomancy.world.entity.ownable.IOwnableMob;
+import com.github.elenterius.biomancy.world.ownable.IOwnableMob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
@@ -36,7 +36,7 @@ public class PatrolAreaGoal<T extends PathfinderMob & IOwnableMob & IControllabl
 	@Nullable
 	protected Vec3 getPosition() {
 		if (entity.getActiveCommand() == IControllableMob.Command.DEFEND_OWNER) {
-			Optional<Player> owner = entity.getOwner();
+			Optional<Player> owner = entity.getOwnerAsPlayer();
 			return owner.isPresent() ? findPosTowards(owner.get().position()) : findPosNearby();
 		}
 		if (mob.level.random.nextFloat() < 0.3F) {

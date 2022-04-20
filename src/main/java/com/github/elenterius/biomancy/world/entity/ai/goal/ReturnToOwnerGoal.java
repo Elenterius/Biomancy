@@ -23,7 +23,7 @@ public class ReturnToOwnerGoal extends Goal {
 	@Override
 	public boolean canUse() {
 		if (goalOwner.getTargetBlockPos() != null || goalOwner.getTarget() != null) return false;
-		Player playerEntity = goalOwner.getOwner().orElse(null);
+		Player playerEntity = goalOwner.getOwnerAsPlayer().orElse(null);
 		if (playerEntity == null || playerEntity.isSpectator() || !playerEntity.isAlive()) return false;
 		if (goalOwner.distanceToSqr(playerEntity) < 3d * 3d) return false;
 		entityOwner = playerEntity;

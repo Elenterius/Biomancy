@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.world.entity.ai.goal.controllable;
 
 import com.github.elenterius.biomancy.world.entity.ownable.IControllableMob;
-import com.github.elenterius.biomancy.world.entity.ownable.IOwnableMob;
+import com.github.elenterius.biomancy.world.ownable.IOwnableMob;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -52,7 +52,7 @@ public class FollowOwnerGoal<T extends Mob & IOwnableMob & IControllableMob> ext
 			return false;
 		}
 
-		Optional<Player> optional = entity.getOwner();
+		Optional<Player> optional = entity.getOwnerAsPlayer();
 		if (optional.isPresent()) {
 			if (optional.get().isSpectator()) return false;
 

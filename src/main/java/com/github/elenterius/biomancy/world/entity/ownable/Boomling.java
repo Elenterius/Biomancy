@@ -115,7 +115,7 @@ public class Boomling extends OwnableMob implements IAnimatable {
 		goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 
 		targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 5, true, false,
-				target -> getOwner().map(owner -> shouldAttackEntity(target, owner)).orElse(true)));
+				target -> getOwnerAsPlayer().map(owner -> shouldAttackEntity(target, owner)).orElse(true)));
 		targetSelector.addGoal(2, new HurtByTargetGoal(this));
 	}
 
@@ -300,7 +300,7 @@ public class Boomling extends OwnableMob implements IAnimatable {
 	}
 
 	private void spawnEffectAOE(ItemStack stack, Potion potion) {
-		Optional<Player> owner = getOwner();
+		Optional<Player> owner = getOwnerAsPlayer();
 		LivingEntity shooter = owner.isPresent() ? owner.get() : this;
 		CompoundTag nbt = stack.getTag();
 		int color = PotionUtilExt.getColor(stack);
@@ -312,7 +312,7 @@ public class Boomling extends OwnableMob implements IAnimatable {
 	}
 
 	private void causeWaterAOE() {
-		Optional<Player> owner = getOwner();
+		Optional<Player> owner = getOwnerAsPlayer();
 		LivingEntity shooter = owner.isPresent() ? owner.get() : this;
 		MobUtil.performWaterAOE(level, shooter, 4d);
 	}

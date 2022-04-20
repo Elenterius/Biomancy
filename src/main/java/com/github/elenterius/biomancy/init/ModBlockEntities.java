@@ -18,7 +18,7 @@ public final class ModBlockEntities {
 	public static final RegistryObject<BlockEntityType<BioLabBlockEntity>> BIO_LAB = BLOCK_ENTITIES.register("bio_lab", () -> BlockEntityType.Builder.of(BioLabBlockEntity::new, ModBlocks.BIO_LAB.get()).build(noDataFixer()));
 	public static final RegistryObject<BlockEntityType<DigesterBlockEntity>> DIGESTER = BLOCK_ENTITIES.register("digester", () -> BlockEntityType.Builder.of(DigesterBlockEntity::new, ModBlocks.DIGESTER.get()).build(noDataFixer()));
 
-//	public static final RegistryObject<BlockEntityType<GlandBlockEntity>> GLAND = BLOCK_ENTITIES.register("gland", () -> BlockEntityType.Builder.of(GlandBlockEntity::new, ModBlocks.GLAND.get()).build(noDataFixer()));
+	//	public static final RegistryObject<BlockEntityType<GlandBlockEntity>> GLAND = BLOCK_ENTITIES.register("gland", () -> BlockEntityType.Builder.of(GlandBlockEntity::new, ModBlocks.GLAND.get()).build(noDataFixer()));
 	public static final RegistryObject<BlockEntityType<TongueBlockEntity>> TONGUE = BLOCK_ENTITIES.register("tongue", () -> BlockEntityType.Builder.of(TongueBlockEntity::new, ModBlocks.TONGUE.get()).build(noDataFixer()));
 	public static final RegistryObject<BlockEntityType<SacBlockEntity>> SAC = BLOCK_ENTITIES.register("sac", () -> BlockEntityType.Builder.of(SacBlockEntity::new, ModBlocks.SAC.get()).build(noDataFixer()));
 	public static final RegistryObject<BlockEntityType<GulgeBlockEntity>> GULGE = BLOCK_ENTITIES.register("gulge", () -> BlockEntityType.Builder.of(GulgeBlockEntity::new, ModBlocks.GULGE.get()).build(noDataFixer()));
@@ -26,15 +26,11 @@ public final class ModBlockEntities {
 
 	//# Misc
 	public static final RegistryObject<BlockEntityType<VoiceBoxBlockEntity>> VOICE_BOX = BLOCK_ENTITIES.register("voice_box", () -> BlockEntityType.Builder.of(VoiceBoxBlockEntity::new, ModBlocks.VOICE_BOX.get()).build(noDataFixer()));
+	//	public static final RegistryObject<BlockEntityType<ScentDiffuserTileEntity>> SCENT_DIFFUSER_TILE = BLOCK_ENTITIES.register("scent_diffuser", () -> BlockEntityType.Builder.of(ScentDiffuserTileEntity::new, ModBlocks.SCENT_DIFFUSER.get()).build(noDataFixer()));
 
-//	public static final RegistryObject<BlockEntityType<SimpleOwnableTileEntity>> SIMPLE_OWNABLE_TILE = BLOCK_ENTITIES.register("ownable_tile", () -> BlockEntityType.Builder.of(SimpleOwnableTileEntity::new, ModBlocks.FLESHBORN_DOOR.get(), ModBlocks.FLESHBORN_TRAPDOOR.get(), ModBlocks.FLESHBORN_PRESSURE_PLATE.get()).build(noDataFixer()));
-//	public static final RegistryObject<BlockEntityType<ScentDiffuserTileEntity>> SCENT_DIFFUSER_TILE = BLOCK_ENTITIES.register("scent_diffuser", () -> BlockEntityType.Builder.of(ScentDiffuserTileEntity::new, ModBlocks.SCENT_DIFFUSER.get()).build(noDataFixer()));
-//
-//	public static final RegistryObject<BlockEntityType<DigesterTileEntity>> DIGESTER = BLOCK_ENTITIES.register("digester", () -> BlockEntityType.Builder.of(DigesterTileEntity::new, ModBlocks.DIGESTER.get()).build(noDataFixer()));
-//	public static final RegistryObject<BlockEntityType<EvolutionPoolTileEntity>> EVOLUTION_POOL = BLOCK_ENTITIES.register("evolution_pool", () -> BlockEntityType.Builder.of(EvolutionPoolTileEntity::new, ModBlocks.EVOLUTION_POOL.get()).build(noDataFixer()));
-//
-//	// Multi-Block Tile Delegator
-//	public static final RegistryObject<BlockEntityType<OwnableTileEntityDelegator>> TILE_DELEGATOR = BLOCK_ENTITIES.register("tile_delegator", () -> BlockEntityType.Builder.of(OwnableTileEntityDelegator::new, ModBlocks.EVOLUTION_POOL.get(), ModBlocks.FLESHBORN_DOOR.get()).build(noDataFixer()));
+	//# Special
+	public static final RegistryObject<BlockEntityType<OwnableBlockEntity>> OWNABLE_BE = BLOCK_ENTITIES.register("ownable_block_entity", () -> BlockEntityType.Builder.of(OwnableBlockEntity::new, ModBlocks.FLESHKIN_DOOR.get(), ModBlocks.FLESHKIN_TRAPDOOR.get(), ModBlocks.FLESHKIN_PRESSURE_PLATE.get()).build(noDataFixer()));
+	public static final RegistryObject<BlockEntityType<BlockEntityDelegator>> BE_DELEGATOR = BLOCK_ENTITIES.register("block_entity_delegator", () -> BlockEntityType.Builder.of(BlockEntityDelegator::new, ModBlocks.FLESHKIN_DOOR.get()).build(noDataFixer()));
 
 	private ModBlockEntities() {}
 

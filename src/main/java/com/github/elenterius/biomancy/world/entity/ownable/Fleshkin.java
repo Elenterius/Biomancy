@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
 import com.github.elenterius.biomancy.world.entity.ai.goal.controllable.FollowOwnerGoal;
 import com.github.elenterius.biomancy.world.entity.ai.goal.controllable.*;
+import com.github.elenterius.biomancy.world.ownable.IOwnableMob;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -82,7 +83,7 @@ public class Fleshkin extends OwnableMonster implements IControllableMob<Fleshki
 		targetSelector.addGoal(4, new FindAttackTargetGoal<>(this, Mob.class, 5, false, false, target -> {
 			if (target instanceof Enemy) {
 				if (target instanceof IOwnableMob) {
-					Optional<Player> owner = getOwner();
+					Optional<Player> owner = getOwnerAsPlayer();
 					if (owner.isPresent()) return shouldAttackEntity(target, owner.get());
 				}
 				return true;

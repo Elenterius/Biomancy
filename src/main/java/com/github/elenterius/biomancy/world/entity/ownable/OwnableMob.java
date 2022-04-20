@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.world.entity.ownable;
 
+import com.github.elenterius.biomancy.world.ownable.IOwnableMob;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -38,43 +39,51 @@ public abstract class OwnableMob extends PathfinderMob implements IOwnableMob {
 	@Override
 	public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
-		getOwnerUUID().ifPresent(value -> compound.putUUID("OwnerUUID", value));
+		getOptionalOwnerUUID().ifPresent(value -> compound.putUUID("OwnerUUID", value));
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag compound) {
 		super.readAdditionalSaveData(compound);
-		if (compound.hasUUID("OwnerUUID")) setOwnerUUID(compound.getUUID("OwnerUUID"));
+		if (compound.hasUUID("OwnerUUID")) {
+			setOwner(compound.getUUID("OwnerUUID"));
+		}
+		else removeOwner();
 	}
 
 	@Override
-	public Optional<UUID> getOwnerUUID() {
+	public Optional<UUID> getOptionalOwnerUUID() {
 		return entityData.get(OWNER_UNIQUE_ID);
 	}
 
 	@Override
-	public void setOwnerUUID(@Nullable UUID uuid) {
-		entityData.set(OWNER_UNIQUE_ID, Optional.ofNullable(uuid));
+	public void setOwner(UUID uuid) {
+		entityData.set(OWNER_UNIQUE_ID, Optional.of(uuid));
 	}
 
 	@Override
-	public Optional<Player> getOwner() {
-		return getOwnerUUID().map(value -> level.getPlayerByUUID(value));
+	public void removeOwner() {
+		entityData.set(OWNER_UNIQUE_ID, Optional.empty());
 	}
 
 	@Override
-	public void setOwner(Player entity) {
-		setOwnerUUID(entity.getUUID());
+	public Optional<Player> getOwnerAsPlayer() {
+		return getOptionalOwnerUUID().map(value -> level.getPlayerByUUID(value));
+	}
+
+	@Override
+	public Optional<Entity> getOwnerAsEntity() {
+		return getOptionalOwnerUUID().map(value -> level.getPlayerByUUID(value));
 	}
 
 	@Override
 	public Team getTeam() {
-		return getOwner().map(Entity::getTeam).orElseGet(super::getTeam);
+		return getOwnerAsPlayer().map(Entity::getTeam).orElseGet(super::getTeam);
 	}
 
 	@Override
 	public boolean isAlliedTo(Entity entityIn) {
-		Optional<Player> optional = getOwner();
+		Optional<Player> optional = getOwnerAsPlayer();
 		if (optional.isPresent()) {
 			if (optional.get() == entityIn) return true;
 			return optional.get().isAlliedTo(entityIn);
@@ -85,7 +94,7 @@ public abstract class OwnableMob extends PathfinderMob implements IOwnableMob {
 	@Override
 	public void die(DamageSource cause) {
 		if (!level.isClientSide && level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES)) {
-			Optional<Player> optional = getOwner();
+			Optional<Player> optional = getOwnerAsPlayer();
 			if (optional.isPresent() && optional.get() instanceof ServerPlayer) {
 				optional.get().sendMessage(getCombatTracker().getDeathMessage(), Util.NIL_UUID);
 			}
@@ -95,7 +104,7 @@ public abstract class OwnableMob extends PathfinderMob implements IOwnableMob {
 
 	@Override
 	public boolean canBeLeashed(Player player) {
-		return !isLeashed() && player == getOwner().orElse(null);
+		return !isLeashed() && player == getOwnerAsPlayer().orElse(null);
 	}
 
 	@Nullable

@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.world.entity.ai.goal.controllable;
 
 import com.github.elenterius.biomancy.world.entity.ownable.IControllableMob;
-import com.github.elenterius.biomancy.world.entity.ownable.IOwnableMob;
+import com.github.elenterius.biomancy.world.ownable.IOwnableMob;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -27,7 +27,7 @@ public class CopyOwnerAttackTargetGoal<T extends Mob & IOwnableMob & IControllab
 	@Override
 	public boolean canUse() {
 		if (entity.canExecuteCommand() && entity.getActiveCommand() == IControllableMob.Command.DEFEND_OWNER) {
-			Optional<Player> entityOwner = entity.getOwner();
+			Optional<Player> entityOwner = entity.getOwnerAsPlayer();
 			if (entityOwner.isPresent()) {
 				attacker = entityOwner.get().getLastHurtMob();
 				int attackTimer = entityOwner.get().getLastHurtMobTimestamp();
@@ -40,7 +40,7 @@ public class CopyOwnerAttackTargetGoal<T extends Mob & IOwnableMob & IControllab
 	@Override
 	public void start() {
 		mob.setTarget(attacker);
-		Optional<Player> optional = entity.getOwner();
+		Optional<Player> optional = entity.getOwnerAsPlayer();
 		optional.ifPresent(player -> lastAttackTime = player.getLastHurtMobTimestamp());
 		super.start();
 	}

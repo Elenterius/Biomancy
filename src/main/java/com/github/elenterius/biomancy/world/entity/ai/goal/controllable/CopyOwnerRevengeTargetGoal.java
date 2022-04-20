@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.world.entity.ai.goal.controllable;
 
 import com.github.elenterius.biomancy.world.entity.ownable.IControllableMob;
-import com.github.elenterius.biomancy.world.entity.ownable.IOwnableMob;
+import com.github.elenterius.biomancy.world.ownable.IOwnableMob;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -27,7 +27,7 @@ public class CopyOwnerRevengeTargetGoal<T extends Mob & IOwnableMob & IControlla
 	@Override
 	public boolean canUse() {
 		if (entity.canExecuteCommand() && entity.getActiveCommand() == IControllableMob.Command.DEFEND_OWNER) {
-			Optional<Player> owner = entity.getOwner();
+			Optional<Player> owner = entity.getOwnerAsPlayer();
 			if (owner.isPresent()) {
 				attacker = owner.get().getLastHurtByMob();
 				int revengeTimer = owner.get().getLastHurtByMobTimestamp();
@@ -40,7 +40,7 @@ public class CopyOwnerRevengeTargetGoal<T extends Mob & IOwnableMob & IControlla
 	@Override
 	public void start() {
 		mob.setTarget(attacker);
-		Optional<Player> optional = entity.getOwner();
+		Optional<Player> optional = entity.getOwnerAsPlayer();
 		optional.ifPresent(player -> lastRevengeTime = player.getLastHurtByMobTimestamp());
 		super.start();
 	}

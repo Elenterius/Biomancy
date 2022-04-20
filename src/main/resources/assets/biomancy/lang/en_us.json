@@ -83,7 +83,11 @@
   "block.biomancy.sac": "Storage Sac",
   "block.biomancy.tongue": "Tongue",
   "block.biomancy.voice_box": "Voice Box",
+
   "block.biomancy.fleshkin_chest": "Fleshkin Chest",
+  "block.biomancy.fleshkin_door": "Fleshkin Door",
+  "block.biomancy.fleshkin_trapdoor": "Fleshkin Trap Door",
+  "block.biomancy.fleshkin_pressure_plate": "Fleshkin Pressure Plate",
 
   "block.biomancy.flesh_block": "Flesh Block",
   "block.biomancy.flesh_block_slab": "Flesh Block Slab",
@@ -252,12 +256,7 @@
   "block.biomancy.meat_berry_bush": "Meat-Berry Bush",
   "block.biomancy.flesh_tentacle": "Flesh Tentacle",
 
-  "block.biomancy.fleshborn_door": "Fleshborn Door",
-  "block.biomancy.fleshborn_trapdoor": "Fleshborn Trap Door",
-  "block.biomancy.fleshborn_pressure_plate": "Fleshborn Pressure Plate",
-  "block.biomancy.chewer": "Chewer",
   "block.biomancy.digester": "Digester",
-  "block.biomancy.evolution_pool": "Evolution Pool",
   "block.biomancy.scent_diffuser": "Scent Diffuser",
 
   "entity.biomancy.oculus_observer": "Oculus Observer",
