@@ -60,7 +60,6 @@ public class ModBlockLoot extends BlockLoot {
 
 		dropSelf(ModBlocks.CREATOR.get());
 		dropSelf(ModBlocks.TONGUE.get());
-		dropSelf(ModBlocks.VOICE_BOX.get());
 
 		add(ModBlocks.BIO_FORGE.get(), BlockLoot::createNameableBlockEntityTable);
 		add(ModBlocks.BIO_LAB.get(), BlockLoot::createNameableBlockEntityTable);
@@ -81,6 +80,8 @@ public class ModBlockLoot extends BlockLoot {
 		add(ModBlocks.FLESH_BLOCK_SLAB.get(), BlockLoot::createSlabItemTable);
 //		add(ModBlocks.NECROTIC_FLESH_BLOCK.get(), createSingleItemTable(ModItems.NECROTIC_FLESH_LUMP.get(), BinomialDistributionGenerator.binomial(9, 0.5f)));
 		dropSelf(ModBlocks.NECROTIC_FLESH_BLOCK.get());
+		dropSelf(ModBlocks.VOICE_BOX.get());
+		dropSelf(ModBlocks.FLESH_IRISDOOR.get());
 	}
 
 }

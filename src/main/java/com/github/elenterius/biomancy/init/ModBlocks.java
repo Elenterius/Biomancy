@@ -39,10 +39,6 @@ public final class ModBlocks {
 	public static final EnumProperty<UserSensitivity> USER_SENSITIVITY_PROPERTY = EnumProperty.create("sensitivity", UserSensitivity.class);
 
 	//# Blocks
-	public static final RegistryObject<Block> FLESH_BLOCK = BLOCKS.register("flesh_block", () -> new FleshBlock(createFleshProperties()));
-	public static final RegistryObject<SlabBlock> FLESH_BLOCK_SLAB = BLOCKS.register("flesh_block_slab", () -> new SlabBlock(createFleshProperties()));
-	public static final RegistryObject<StairBlock> FLESH_BLOCK_STAIRS = BLOCKS.register("flesh_block_stairs", () -> new StairBlock(() -> FLESH_BLOCK.get().defaultBlockState(), createFleshProperties()));
-	public static final RegistryObject<Block> NECROTIC_FLESH_BLOCK = BLOCKS.register("necrotic_flesh_block", () -> new FleshBlock(createFleshProperties()));
 
 	//## Crafting
 	public static final RegistryObject<CreatorBlock> CREATOR = BLOCKS.register("creator", () -> new CreatorBlock(createFleshProperties()));
@@ -67,6 +63,11 @@ public final class ModBlocks {
 	public static final RegistryObject<OwnablePressurePlateBlock> FLESHKIN_PRESSURE_PLATE = BLOCKS.register("fleshkin_pressure_plate", () -> new OwnablePressurePlateBlock(createFleshProperties()));
 
 	//## Misc
+	public static final RegistryObject<Block> FLESH_BLOCK = BLOCKS.register("flesh_block", () -> new FleshBlock(createFleshProperties()));
+	public static final RegistryObject<SlabBlock> FLESH_BLOCK_SLAB = BLOCKS.register("flesh_block_slab", () -> new SlabBlock(createFleshProperties()));
+	public static final RegistryObject<StairBlock> FLESH_BLOCK_STAIRS = BLOCKS.register("flesh_block_stairs", () -> new StairBlock(() -> FLESH_BLOCK.get().defaultBlockState(), createFleshProperties()));
+	public static final RegistryObject<Block> NECROTIC_FLESH_BLOCK = BLOCKS.register("necrotic_flesh_block", () -> new FleshBlock(createFleshProperties()));
+	public static final RegistryObject<IrisDoorBlock> FLESH_IRISDOOR = BLOCKS.register("flesh_irisdoor", () -> new IrisDoorBlock(createFleshProperties()));
 	public static final RegistryObject<VoiceBoxBlock> VOICE_BOX = BLOCKS.register("voice_box", () -> new VoiceBoxBlock(createFleshProperties()));
 
 	private ModBlocks() {}
@@ -74,7 +75,6 @@ public final class ModBlocks {
 	@OnlyIn(Dist.CLIENT)
 	static void setRenderLayers() {
 		ItemBlockRenderTypes.setRenderLayer(CREATOR.get(), RenderType.cutout());
-//		ItemBlockRenderTypes.setRenderLayer(GLAND.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(TONGUE.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(GULGE.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(FLESHKIN_CHEST.get(), RenderType.cutout());
@@ -83,13 +83,11 @@ public final class ModBlocks {
 		ItemBlockRenderTypes.setRenderLayer(BIO_FORGE.get(), RenderType.translucent());
 		ItemBlockRenderTypes.setRenderLayer(DIGESTER.get(), RenderType.cutout());
 
-//		ItemBlockRenderTypes.setRenderLayer(FLESH_TENTACLE.get(), RenderType.cutout());
-//		ItemBlockRenderTypes.setRenderLayer(FLESHBORN_DOOR.get(), RenderType.cutout());
-//		ItemBlockRenderTypes.setRenderLayer(FLESHBORN_TRAPDOOR.get(), RenderType.cutout());
+//		ItemBlockRenderTypes.setRenderLayer(FLESHKIN_DOOR.get(), RenderType.cutout());
+//		ItemBlockRenderTypes.setRenderLayer(FLESHKIN_TRAPDOOR.get(), RenderType.cutout());
 //
-//		ItemBlockRenderTypes.setRenderLayer(EVOLUTION_POOL.get(), RenderType.translucent());
-//		ItemBlockRenderTypes.setRenderLayer(SCENT_DIFFUSER.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(VOICE_BOX.get(), RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(FLESH_IRISDOOR.get(), RenderType.cutout());
 
 		//block with "glowing" overlay texture, also needs a overlay model see onModelBakeEvent() in ClientSetupHandler
 		//ItemBlockRenderTypes.setRenderLayer(ModBlocks.FOOBAR.get(), renderType -> renderType == RenderType.getCutout() || renderType == RenderType.getTranslucent());

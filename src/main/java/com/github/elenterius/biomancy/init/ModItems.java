@@ -90,11 +90,6 @@ public final class ModItems {
 //	public static final RegistryObject<Item> PROTEIN_BAR = ITEMS.register("protein_bar", () -> new EffectCureItem(createProperties().food(ModFoods.PROTEIN_BAR)));
 
 	//# Block Items
-	//## Material
-	public static final RegistryObject<SimpleBlockItem> FLESH_BLOCK = ITEMS.register("flesh_block", () -> new SimpleBlockItem(ModBlocks.FLESH_BLOCK.get(), createBaseProperties()));
-	public static final RegistryObject<SimpleBlockItem> FLESH_BLOCK_SLAB = ITEMS.register("flesh_block_slab", () -> new SimpleBlockItem(ModBlocks.FLESH_BLOCK_SLAB.get(), createBaseProperties()));
-	public static final RegistryObject<SimpleBlockItem> FLESH_BLOCK_STAIRS = ITEMS.register("flesh_block_stairs", () -> new SimpleBlockItem(ModBlocks.FLESH_BLOCK_STAIRS.get(), createBaseProperties()));
-	public static final RegistryObject<SimpleBlockItem> NECROTIC_FLESH_BLOCK = ITEMS.register("necrotic_flesh_block", () -> new SimpleBlockItem(ModBlocks.NECROTIC_FLESH_BLOCK.get(), createBaseProperties()));
 
 	//## Machine
 	public static final RegistryObject<BEWLBlockItem> CREATOR = ITEMS.register("creator", () -> new BEWLBlockItem(ModBlocks.CREATOR.get(), createBaseProperties().rarity(ModRarities.EXOTIC)));
@@ -110,13 +105,19 @@ public final class ModItems {
 	public static final RegistryObject<SimpleBlockItem> SAC = ITEMS.register("sac", () -> new SimpleBlockItem(ModBlocks.SAC.get(), createBaseProperties().rarity(ModRarities.UNCOMMON)));
 	public static final RegistryObject<SimpleBlockItem> FLESHKIN_CHEST = ITEMS.register("fleshkin_chest", () -> new SimpleBlockItem(ModBlocks.FLESHKIN_CHEST.get(), createBaseProperties().rarity(ModRarities.UNCOMMON)));
 
-	//## Misc
-	public static final RegistryObject<SimpleBlockItem> VOICE_BOX = ITEMS.register("voice_box", () -> new SimpleBlockItem(ModBlocks.VOICE_BOX.get(), createBaseProperties()));
-
 	//# Ownable
 	public static final RegistryObject<SimpleBlockItem> FLESHKIN_DOOR = ITEMS.register("fleshkin_door", () -> new SimpleBlockItem(ModBlocks.FLESHKIN_DOOR.get(), createBaseProperties()));
 	public static final RegistryObject<SimpleBlockItem> FLESHKIN_TRAPDOOR = ITEMS.register("fleshkin_trapdoor", () -> new SimpleBlockItem(ModBlocks.FLESHKIN_TRAPDOOR.get(), createBaseProperties()));
 	public static final RegistryObject<SimpleBlockItem> FLESHKIN_PRESSURE_PLATE = ITEMS.register("fleshkin_pressure_plate", () -> new SimpleBlockItem(ModBlocks.FLESHKIN_PRESSURE_PLATE.get(), createBaseProperties()));
+
+	//## Misc
+	public static final RegistryObject<SimpleBlockItem> FLESH_BLOCK = ITEMS.register("flesh_block", () -> new SimpleBlockItem(ModBlocks.FLESH_BLOCK.get(), createBaseProperties()));
+	public static final RegistryObject<SimpleBlockItem> FLESH_BLOCK_SLAB = ITEMS.register("flesh_block_slab", () -> new SimpleBlockItem(ModBlocks.FLESH_BLOCK_SLAB.get(), createBaseProperties()));
+	public static final RegistryObject<SimpleBlockItem> FLESH_BLOCK_STAIRS = ITEMS.register("flesh_block_stairs", () -> new SimpleBlockItem(ModBlocks.FLESH_BLOCK_STAIRS.get(), createBaseProperties()));
+	public static final RegistryObject<SimpleBlockItem> NECROTIC_FLESH_BLOCK = ITEMS.register("necrotic_flesh_block", () -> new SimpleBlockItem(ModBlocks.NECROTIC_FLESH_BLOCK.get(), createBaseProperties()));
+
+	public static final RegistryObject<SimpleBlockItem> VOICE_BOX = ITEMS.register("voice_box", () -> new SimpleBlockItem(ModBlocks.VOICE_BOX.get(), createBaseProperties()));
+	public static final RegistryObject<SimpleBlockItem> FLESH_IRISDOOR = ITEMS.register("flesh_irisdoor", () -> new SimpleBlockItem(ModBlocks.FLESH_IRISDOOR.get(), createBaseProperties()));
 
 	//# Spawn Eggs
 	public static final RegistryObject<ForgeSpawnEggItem> FLESH_BLOB_SPAWN_EGG = ITEMS.register("flesh_blob_spawn_egg", () -> new ForgeSpawnEggItem(ModEntityTypes.FLESH_BLOB, 0xe9967a, 0xf6d2c6, createProperties()));
