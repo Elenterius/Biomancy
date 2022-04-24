@@ -1,19 +1,8 @@
 {
   "variants": {
-    "facing=east": {
-      "model": "biomancy:block/decomposer",
-      "y": 90
-    },
-    "facing=north": {
+    "": {
       "model": "biomancy:block/decomposer"
-    },
-    "facing=south": {
-      "model": "biomancy:block/decomposer",
-      "y": 180
-    },
-    "facing=west": {
-      "model": "biomancy:block/decomposer",
-      "y": 270
     }
   }
 }
+
