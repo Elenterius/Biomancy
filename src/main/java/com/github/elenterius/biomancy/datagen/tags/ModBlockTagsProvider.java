@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.datagen.tags;
 
 import com.github.elenterius.biomancy.init.ModBlocks;
+import com.github.elenterius.biomancy.init.ModTags;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.BlockTags;
@@ -28,6 +29,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 	@Override
 	protected void addTags() {
 		addFleshyBlocksToHoeTag();
+		tag(ModTags.Blocks.FLESHY_FENCES).add(ModBlocks.FLESH_FENCE.get());
+		tag(BlockTags.FENCES).addTag(ModTags.Blocks.FLESHY_FENCES);
 	}
 
 	private void addFleshyBlocksToHoeTag() {

@@ -88,14 +88,14 @@
   "block.biomancy.fleshkin_door": "Fleshkin Door",
   "block.biomancy.fleshkin_trapdoor": "Fleshkin Trap Door",
   "block.biomancy.fleshkin_pressure_plate": "Fleshkin Pressure Plate",
-
   "block.biomancy.flesh_block": "Flesh Block",
   "block.biomancy.flesh_block_slab": "Flesh Block Slab",
   "block.biomancy.flesh_block_stairs": "Flesh Block Stairs",
   "block.biomancy.flesh_block_wall": "Flesh Block Wall",
   "block.biomancy.necrotic_flesh_block": "Necrotic Flesh Block",
   "block.biomancy.flesh_irisdoor": "Flesh Iris Door",
-
+  "block.biomancy.flesh_fence": "Flesh Fence",
+  "block.biomancy.flesh_ladder": "Flesh Ladder",
   "container.biomancy.decomposer": "Decomposer Inventory",
   "container.biomancy.bio_lab": "Bio-Lab Inventory",
   "container.biomancy.bio_forge": "Bio-Forge Inventory",

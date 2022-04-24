@@ -79,6 +79,8 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 		builder.addOptionalTag(ModTags.Items.AVERAGE_BIOMASS.getName());
 		builder.addOptionalTag(ModTags.Items.GOOD_BIOMASS.getName());
 		builder.addOptionalTag(ModTags.Items.SUPERB_BIOMASS.getName());
+
+//		tag(ItemTags.FENCES).getInternalBuilder().addTag(ModTags.Blocks.FLESHY_FENCES.getName(), BiomancyMod.MOD_ID);
 	}
 
 	@Override
