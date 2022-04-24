@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.PotionUtilExt;
 import com.github.elenterius.biomancy.world.entity.MobUtil;
 import com.github.elenterius.biomancy.world.entity.ownable.Boomling;
+import com.github.elenterius.biomancy.world.item.IBiomancyItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -23,7 +24,7 @@ import net.minecraft.world.phys.Vec3;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BoomlingItem extends Item {
+public class BoomlingItem extends Item implements IBiomancyItem {
 
 	public BoomlingItem(Properties properties) {
 		super(properties);

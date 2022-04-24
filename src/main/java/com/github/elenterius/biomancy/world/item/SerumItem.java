@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class SerumItem extends Item {
+public class SerumItem extends Item implements IBiomancyItem {
 
 	private static final Map<Serum, SerumItem> SERUM_MAP = new IdentityHashMap<>();
 	private static final List<SerumItem> ITEMS = new ArrayList<>();

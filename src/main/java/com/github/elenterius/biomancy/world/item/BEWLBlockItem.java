@@ -9,7 +9,7 @@ import net.minecraftforge.client.IItemRenderProperties;
 import java.util.function.Consumer;
 
 //implements IAnimatable
-public class BEWLBlockItem extends BlockItem {
+public class BEWLBlockItem extends BlockItem implements IBiomancyItem {
 
 	public BEWLBlockItem(Block block, Properties properties) {
 		super(block, properties);

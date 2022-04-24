@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class SimpleItem extends Item {
+public class SimpleItem extends Item implements IBiomancyItem {
 
 	public SimpleItem(Properties properties) {
 		super(properties);
@@ -18,7 +18,7 @@ public class SimpleItem extends Item {
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
+		ClientTextUtil.appendItemInfoTooltip(stack.getItem(), tooltip);
 	}
 
 	public static class WithFoilItem extends SimpleItem {

@@ -67,6 +67,7 @@ public final class ClientSetupHandler {
 
 		event.enqueueWork(() -> {
 			ModMenuTypes.registerMenuScreens();
+			ModMenuTypes.registerTooltipComponents();
 			registerItemModelProperties();
 			ModBlocks.setRenderLayers();
 		});

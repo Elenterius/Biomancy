@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.world.item.weapon;
 
 import com.github.elenterius.biomancy.mixin.SwordItemMixinAccessor;
+import com.github.elenterius.biomancy.world.item.IBiomancyItem;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.core.BlockPos;
@@ -26,7 +27,7 @@ import net.minecraftforge.common.util.Lazy;
 import java.util.List;
 import java.util.Random;
 
-public class ClawWeaponItem extends SwordItem {
+public class ClawWeaponItem extends SwordItem implements IBiomancyItem {
 
 	final Lazy<Multimap<Attribute, AttributeModifier>> lazyAttributeModifiers; //is needed if we want to add forge block reach distance
 

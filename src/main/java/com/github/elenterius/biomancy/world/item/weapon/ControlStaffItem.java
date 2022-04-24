@@ -4,8 +4,9 @@ import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
 import com.github.elenterius.biomancy.world.entity.ownable.Fleshkin;
 import com.github.elenterius.biomancy.world.entity.ownable.IControllableMob;
-import com.github.elenterius.biomancy.world.entity.ownable.IOwnableMob;
+import com.github.elenterius.biomancy.world.item.IBiomancyItem;
 import com.github.elenterius.biomancy.world.item.IKeyListener;
+import com.github.elenterius.biomancy.world.ownable.IOwnableMob;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -27,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ControlStaffItem extends Item implements IKeyListener {
+public class ControlStaffItem extends Item implements IKeyListener, IBiomancyItem {
 
 	public ControlStaffItem(Properties properties) {
 		super(properties);

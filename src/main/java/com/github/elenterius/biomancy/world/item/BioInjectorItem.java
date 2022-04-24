@@ -50,7 +50,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class BioInjectorItem extends Item implements IKeyListener {
+public class BioInjectorItem extends Item implements IKeyListener, IBiomancyItem {
 
 	public static final int SLOTS = 5;
 	public static final int MAX_SLOT_SIZE = 1;

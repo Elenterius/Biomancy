@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.world.item.weapon;
 
 import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
+import com.github.elenterius.biomancy.world.item.IBiomancyItem;
 import com.github.elenterius.combat_commons.entity.EntityAttributes;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
@@ -25,7 +26,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-public class LongClawItem extends ClawWeaponItem implements ICriticalHitEntity /*implements IAreaHarvestingItem*/ {
+public class LongClawItem extends ClawWeaponItem implements ICriticalHitEntity, IBiomancyItem /*implements IAreaHarvestingItem*/ {
 
 	public static final String NBT_KEY = "LongClawTimeLeft";
 	public static final AttributeModifier RETRACTED_CLAW_REACH_MODIFIER = new AttributeModifier(UUID.fromString("d76adb08-2bb3-4e88-997d-766a919f0f6b"), "Weapon modifier", 1f, AttributeModifier.Operation.ADDITION);

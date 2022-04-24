@@ -44,6 +44,12 @@ public final class ClientTextUtil {
 		return Screen.hasControlDown() ? FAKE_EMPTY_LINE : TextComponent.EMPTY;
 	}
 
+	public static void appendItemInfoTooltip(Item item, List<Component> tooltip) {
+		if (Screen.hasControlDown()) {
+			tooltip.add(new TranslatableComponent(Util.makeDescriptionId("tooltip", ForgeRegistries.ITEMS.getKey(item))).withStyle(LORE_STYLE));
+		}
+	}
+
 	public static MutableComponent getItemInfoTooltip(Item item) {
 		return Screen.hasControlDown() ? new TranslatableComponent(Util.makeDescriptionId("tooltip", ForgeRegistries.ITEMS.getKey(item))).withStyle(LORE_STYLE) : pressButtonTo(CTRL_KEY_TEXT.plainCopy(), "show Info").withStyle(LORE_STYLE);
 	}

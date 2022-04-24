@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Locale;
 
-public class LarynxItem extends Item {
+public class LarynxItem extends Item implements IBiomancyItem {
 
 	public static final String NBT_KEY_ENTITY_NAME = "EntityName";
 	public static final String NBT_KEY_ENTITY_ID = "EntityId";

@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class EffectCureItem extends Item {
+public class EffectCureItem extends Item implements IBiomancyItem {
 
 	public EffectCureItem(Properties properties) {
 		super(properties);

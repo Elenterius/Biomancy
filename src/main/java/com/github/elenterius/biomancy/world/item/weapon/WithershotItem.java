@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.world.item.weapon;
 
 import com.github.elenterius.biomancy.world.entity.projectile.WitherProjectile;
+import com.github.elenterius.biomancy.world.item.IBiomancyItem;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -14,7 +15,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Predicate;
 
-public class WithershotItem extends BaseGunItem {
+public class WithershotItem extends BaseGunItem implements IBiomancyItem {
 
 	public WithershotItem(Properties properties) {
 		super(properties, new GunProperties()

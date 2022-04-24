@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-public class EssenceItem extends Item {
+public class EssenceItem extends Item implements IBiomancyItem {
 
 	public static final String NBT_KEY_ENTITY_TYPE = "EntityType";
 	public static final String NBT_KEY_DATA = "EssenceData";

@@ -38,7 +38,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BioExtractorItem extends Item implements IKeyListener {
+public class BioExtractorItem extends Item implements IKeyListener, IBiomancyItem {
 
 	public BioExtractorItem(Properties properties) {
 		super(properties);

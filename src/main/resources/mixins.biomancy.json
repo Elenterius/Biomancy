@@ -17,6 +17,7 @@
     "ZombieVillagerMixinAccessor"
   ],
   "client": [
+    "client.ScreenMixin"
 
   ],
   "server": []

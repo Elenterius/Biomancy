@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.gui.*;
+import com.github.elenterius.biomancy.util.TabTooltipComponent;
 import com.github.elenterius.biomancy.world.inventory.menu.*;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
@@ -10,6 +11,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -54,6 +56,11 @@ public final class ModMenuTypes {
 		registerMenuScreen(FLESHKIN_CHEST, FleshkinChestScreen::new, FleshkinChestScreen.class);
 		registerMenuScreen(DIGESTER, DigesterScreen::new, DigesterScreen.class);
 		registerMenuScreen(BIO_FORGE, BioForgeScreen::new, BioForgeScreen.class);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	static void registerTooltipComponents() {
+		MinecraftForgeClient.registerTooltipComponentFactory(TabTooltipComponent.class, TabTooltipClientComponent::new);
 	}
 
 }
