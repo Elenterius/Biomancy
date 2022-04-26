@@ -119,6 +119,7 @@ public final class ModItems {
 	public static final RegistryObject<SimpleBlockItem> VOICE_BOX = ITEMS.register("voice_box", () -> new SimpleBlockItem(ModBlocks.VOICE_BOX.get(), createBaseProperties()));
 	public static final RegistryObject<SimpleBlockItem> FLESH_IRISDOOR = ITEMS.register("flesh_irisdoor", () -> new SimpleBlockItem(ModBlocks.FLESH_IRISDOOR.get(), createBaseProperties()));
 	public static final RegistryObject<SimpleBlockItem> FLESH_FENCE = ITEMS.register("flesh_fence", () -> new SimpleBlockItem(ModBlocks.FLESH_FENCE.get(), createBaseProperties()));
+	public static final RegistryObject<SimpleBlockItem> FLESH_FENCE_GATE = ITEMS.register("flesh_fence_gate", () -> new SimpleBlockItem(ModBlocks.FLESH_FENCE_GATE.get(), createBaseProperties()));
 	public static final RegistryObject<SimpleBlockItem> FLESH_LADDER = ITEMS.register("flesh_ladder", () -> new SimpleBlockItem(ModBlocks.FLESH_LADDER.get(), createBaseProperties()));
 
 	//# Spawn Eggs
