@@ -83,6 +83,7 @@ public class ModBlockLoot extends BlockLoot {
 		dropSelf(ModBlocks.VOICE_BOX.get());
 		dropSelf(ModBlocks.FLESH_IRISDOOR.get());
 		dropSelf(ModBlocks.FLESH_FENCE.get());
+		dropSelf(ModBlocks.FLESH_LADDER.get());
 	}
 
 }

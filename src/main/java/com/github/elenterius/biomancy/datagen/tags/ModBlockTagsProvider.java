@@ -29,8 +29,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 	@Override
 	protected void addTags() {
 		addFleshyBlocksToHoeTag();
+
 		tag(ModTags.Blocks.FLESHY_FENCES).add(ModBlocks.FLESH_FENCE.get());
 		tag(BlockTags.FENCES).addTag(ModTags.Blocks.FLESHY_FENCES);
+
+		tag(BlockTags.CLIMBABLE).add(ModBlocks.FLESH_LADDER.get());
 	}
 
 	private void addFleshyBlocksToHoeTag() {
