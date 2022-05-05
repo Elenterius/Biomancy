@@ -6,6 +6,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Set;
+import java.util.function.Predicate;
 
 public final class FuelUtil {
 
@@ -21,6 +22,11 @@ public final class FuelUtil {
 			ModItems.NUTRIENT_BAR.get()
 //			ModItems.PROTEIN_BAR.get()
 	);
+
+	/**
+	 * valid items for gun ammunition
+	 */
+	public static final Predicate<ItemStack> AMMO_PREDICATE = stack -> stack.getItem() == ModItems.NUTRIENT_PASTE.get();
 
 	public static boolean isItemValidFuel(ItemStack stack) {
 		if (FUEL_ITEMS.contains(stack.getItem())) return true;

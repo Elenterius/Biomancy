@@ -94,7 +94,7 @@ public final class IngameOverlays {
 		int maxAmmo = gun.getMaxAmmo(stack);
 		int ammo = gun.getAmmo(stack);
 		renderOrnateCorner(poseStack, screenWidth - 44, screenHeight - 28);
-		Minecraft.getInstance().getItemRenderer().renderGuiItem(gun.getAmmoItemForOverlayRender(stack), screenWidth - 16 - 4, screenHeight - 28 - 8);
+		Minecraft.getInstance().getItemRenderer().renderGuiItem(gun.getAmmoIcon(stack), screenWidth - 16 - 4, screenHeight - 28 - 8);
 		renderAmmoCount(poseStack, Minecraft.getInstance().font, screenWidth, screenHeight, maxAmmo, ammo, 0xFFFEFEFE, 0xFF9E9E9E);
 	}
 

@@ -14,6 +14,8 @@ import net.minecraft.world.level.Level;
 
 public interface IGun {
 
+	record ProjectileProperties(float damage, float inaccuracy, int knockBack) {}
+
 	float ONE_SECOND = 20f; //measured in ticks
 	float MAX_INACCURACY = 1f; //0.0 - 1.0
 
@@ -28,7 +30,7 @@ public interface IGun {
 
 	void stopShooting(ItemStack stack, ServerLevel level, LivingEntity shooter);
 
-	void shoot(ServerLevel level, LivingEntity shooter, InteractionHand usedHand, ItemStack projectileWeapon, float damage, float inaccuracy);
+	void shoot(ServerLevel level, LivingEntity shooter, InteractionHand usedHand, ItemStack projectileWeapon, ProjectileProperties properties);
 
 	default State getState(ItemStack stack) {
 		return State.fromId(stack.getOrCreateTag().getByte(NBT_KEY_WEAPON_STATE));
@@ -170,7 +172,7 @@ public interface IGun {
 		level.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), soundEvent, soundSource, 1f, 1f / (shooter.getRandom().nextFloat() * 0.5f + 1f) + 0.2f);
 	}
 
-	ItemStack getAmmoItemForOverlayRender(ItemStack stack);
+	ItemStack getAmmoIcon(ItemStack stack);
 
 	enum State {
 		NONE((byte) 0), SHOOTING((byte) 1), RELOADING((byte) 2);

@@ -26,8 +26,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Set;
 
 public abstract class BaseGunItem extends ProjectileWeaponItem implements IGun, IKeyListener {
+	public static final Set<Enchantment> VALID_VANILLA_ENCHANTMENTS = Set.of(Enchantments.PUNCH_ARROWS, Enchantments.POWER_ARROWS, Enchantments.QUICK_CHARGE);
 
 	private final int baseShootDelay; //measured in ticks
 	private final float baseProjectileDamage;
@@ -131,10 +133,14 @@ public abstract class BaseGunItem extends ProjectileWeaponItem implements IGun, 
 			}
 
 			if (elapsedTime % shootDelay == 0) {
-				shoot(serverLevel, shooter, shooter.getUsedItemHand(), stack, getProjectileDamage(stack), getInaccuracy());
+				shoot(serverLevel, shooter, shooter.getUsedItemHand(), stack, getProjectileProperties(stack));
 				stack.getOrCreateTag().putLong(NBT_KEY_SHOOT_TIMESTAMP, serverLevel.getGameTime());
 			}
 		}
+	}
+
+	public ProjectileProperties getProjectileProperties(ItemStack stack) {
+		return new ProjectileProperties(getProjectileDamage(stack), getInaccuracy(), getProjectileKnockBack(stack));
 	}
 
 	@Override
@@ -165,7 +171,7 @@ public abstract class BaseGunItem extends ProjectileWeaponItem implements IGun, 
 
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return enchantment == Enchantments.POWER_ARROWS || enchantment == Enchantments.QUICK_CHARGE || super.canApplyAtEnchantingTable(stack, enchantment);
+		return VALID_VANILLA_ENCHANTMENTS.contains(enchantment) || super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 	@Override
@@ -186,6 +192,10 @@ public abstract class BaseGunItem extends ProjectileWeaponItem implements IGun, 
 	@Override
 	public float getProjectileDamage(ItemStack stack) {
 		return baseProjectileDamage + 0.6f * EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
+	}
+
+	public int getProjectileKnockBack(ItemStack stack) {
+		return EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PUNCH_ARROWS, stack);
 	}
 
 	@Override

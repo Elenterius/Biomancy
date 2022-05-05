@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.world.item.weapon;
 
+import com.github.elenterius.biomancy.util.FuelUtil;
 import com.github.elenterius.biomancy.world.entity.projectile.WitherProjectile;
 import com.github.elenterius.biomancy.world.item.IBiomancyItem;
 import net.minecraft.server.level.ServerLevel;
@@ -9,7 +10,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.phys.Vec3;
 
@@ -26,16 +27,15 @@ public class WithershotItem extends BaseGunItem implements IBiomancyItem {
 				.reloadTime(3 * 20));
 	}
 
-	public static void fireProjectile(ServerLevel serverLevel, LivingEntity shooter, InteractionHand hand, ItemStack projectileWeapon, float damage, float inaccuracy) {
+	public static void fireProjectile(ServerLevel serverLevel, LivingEntity shooter, InteractionHand hand, ItemStack projectileWeapon, ProjectileProperties properties) {
 		WitherProjectile projectile = new WitherProjectile(serverLevel, shooter);
-		projectile.setDamage(damage);
-		int level = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PUNCH_ARROWS, projectileWeapon);
-		if (level > 0) {
-			projectile.setKnockback((byte) level);
+		projectile.setDamage(properties.damage());
+		if (properties.knockBack() > 0) {
+			projectile.setKnockback((byte) properties.knockBack());
 		}
 
 		Vec3 direction = shooter.getLookAngle();
-		projectile.shoot(direction.x(), direction.y(), direction.z(), 0.8f, inaccuracy);
+		projectile.shoot(direction.x(), direction.y(), direction.z(), 0.8f, properties.inaccuracy());
 
 		projectileWeapon.hurtAndBreak(1, shooter, (entity) -> entity.broadcastBreakEvent(hand));
 
@@ -45,14 +45,19 @@ public class WithershotItem extends BaseGunItem implements IBiomancyItem {
 	}
 
 	@Override
-	public void shoot(ServerLevel level, LivingEntity shooter, InteractionHand usedHand, ItemStack projectileWeapon, float damage, float inaccuracy) {
-		fireProjectile(level, shooter, usedHand, projectileWeapon, damage, inaccuracy);
+	public void shoot(ServerLevel level, LivingEntity shooter, InteractionHand usedHand, ItemStack projectileWeapon, ProjectileProperties properties) {
+		fireProjectile(level, shooter, usedHand, projectileWeapon, properties);
 		consumeAmmo(shooter, projectileWeapon, 1);
 	}
 
 	@Override
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+		return enchantment != Enchantments.PUNCH_ARROWS && super.canApplyAtEnchantingTable(stack, enchantment);
+	}
+
+	@Override
 	public Predicate<ItemStack> getAllSupportedProjectiles() {
-		return stack -> stack.getItem() == Items.WITHER_SKELETON_SKULL;
+		return FuelUtil.AMMO_PREDICATE;
 	}
 
 	@Override
@@ -61,7 +66,7 @@ public class WithershotItem extends BaseGunItem implements IBiomancyItem {
 	}
 
 	@Override
-	public ItemStack getAmmoItemForOverlayRender(ItemStack stack) {
+	public ItemStack getAmmoIcon(ItemStack stack) {
 		return new ItemStack(Items.WITHER_SKELETON_SKULL);
 	}
 
