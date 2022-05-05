@@ -1,19 +1,15 @@
 package com.github.elenterius.biomancy.world.block;
 
 import com.github.elenterius.biomancy.init.ModBlockEntities;
-import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.world.block.entity.VoiceBoxBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -27,7 +23,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 public class VoiceBoxBlock extends BaseEntityBlock {
 
@@ -123,11 +118,6 @@ public class VoiceBoxBlock extends BaseEntityBlock {
 			}
 		}
 		super.onRemove(state, level, pos, newState, isMoving);
-	}
-
-	@Override
-	public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flag) {
-		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
 	}
 
 	@Override

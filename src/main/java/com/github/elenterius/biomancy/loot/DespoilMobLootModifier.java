@@ -4,7 +4,6 @@ import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModTags;
 import com.github.elenterius.biomancy.world.entity.MobUtil;
-import com.github.elenterius.biomancy.world.item.LarynxItem;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.critereon.EntityFlagsPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
@@ -112,12 +111,6 @@ public class DespoilMobLootModifier extends LootModifier {
 					}
 				}
 
-				if (lootRolls > 0 && rollDice.getAsBoolean()) {
-					ItemStack stack = new ItemStack(ModItems.LARYNX.get());
-					LarynxItem.saveSounds(stack, victim);
-					generatedLoot.add(stack); //only 1 larynx per entity possible
-					lootRolls--;
-				}
 			}
 		}
 		return generatedLoot;

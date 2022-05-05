@@ -1,110 +1,34 @@
-package com.github.elenterius.biomancy.world.item;
+package com.github.elenterius.biomancy.util;
 
 import com.github.elenterius.biomancy.mixin.LivingEntityAccessor;
 import com.github.elenterius.biomancy.mixin.MobEntityAccessor;
-import com.github.elenterius.biomancy.util.ClientTextUtil;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Locale;
 
-public class LarynxItem extends Item implements IBiomancyItem {
+public final class MobSoundUtil {
 
-	public static final String NBT_KEY_ENTITY_NAME = "EntityName";
-	public static final String NBT_KEY_ENTITY_ID = "EntityId";
+	private MobSoundUtil() {}
 
-	public LarynxItem(Properties properties) {
-		super(properties);
+	public static void saveMobSounds(ItemStack stack, LivingEntity target) {
+		VoiceType.saveAllSounds(target, stack.getOrCreateTag());
 	}
 
-	public static void saveSounds(ItemStack stack, LivingEntity target) {
-		CompoundTag tag = stack.getOrCreateTag();
-		tag.putString(NBT_KEY_ENTITY_NAME, target.getType().getDescriptionId());
-		ResourceLocation registryName = target.getType().getRegistryName();
-		if (registryName != null) {
-			tag.putString(NBT_KEY_ENTITY_ID, registryName.toString());
-		}
-		VoiceType.saveAllSounds(target, tag);
-	}
-
-	private void playVoice(ItemStack stack, Level level, double x, double y, double z) {
-		CompoundTag tag = stack.getOrCreateTag();
-		if (!playVoice(stack, level, x, y, z, VoiceType.getVolume(tag), VoiceType.getPitch(tag))) {
-			level.playSound(null, x, y, z, SoundEvents.PLAYER_BREATH, SoundSource.RECORDS, 2f, 1f);
-		}
-	}
-
-	public boolean playVoice(ItemStack stack, Level level, double x, double y, double z, float volume, float pitch) {
-		CompoundTag tag = stack.getOrCreateTag();
-		VoiceType voice = VoiceType.deserialize(tag);
-		SoundEvent soundEvent = voice.getSound(tag);
-		if (soundEvent != null) {
-			level.playSound(null, x, y, z, soundEvent, SoundSource.RECORDS, volume, pitch);
-			return true;
-		}
-		return false;
-	}
-
-	public boolean playVoice(ItemStack stack, Level level, double x, double y, double z, float volume, float pitch, VoiceType voicetype) {
-		CompoundTag tag = stack.getOrCreateTag();
-		SoundEvent soundEvent = voicetype.getSound(tag);
-		if (soundEvent != null) {
-			level.playSound(null, x, y, z, soundEvent, SoundSource.RECORDS, volume, pitch);
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public int getUseDuration(ItemStack stack) {
-		return 16;
-	}
-
-	@Override
-	public UseAnim getUseAnimation(ItemStack stack) {
-		return UseAnim.BOW;
-	}
-
-	public VoiceType getVoiceType(ItemStack stack) {
+	public static VoiceType getVoiceType(ItemStack stack) {
 		return VoiceType.deserialize(stack.getOrCreateTag());
 	}
 
-	public void setVoiceType(ItemStack stack, VoiceType voice) {
+	public static void setVoiceType(ItemStack stack, VoiceType voice) {
 		VoiceType.serialize(stack.getOrCreateTag(), voice);
-	}
-
-	@Override
-	public Component getName(ItemStack stack) {
-		CompoundTag tag = stack.getOrCreateTag();
-		if (tag.contains(NBT_KEY_ENTITY_NAME)) {
-			TranslatableComponent mobName = new TranslatableComponent(tag.getString(NBT_KEY_ENTITY_NAME));
-			return new TranslatableComponent(getDescriptionId(stack) + ".mob", mobName);
-		}
-		return new TranslatableComponent(getDescriptionId(stack));
-	}
-
-	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
-		CompoundTag tag = stack.getOrCreateTag();
-//		tooltip.add(new TextComponent("Pitch: " + VoiceType.getPitch(tag)));
-//		tooltip.add(new TextComponent("Volume: " + VoiceType.getVolume(tag)));
 	}
 
 	public enum VoiceType {

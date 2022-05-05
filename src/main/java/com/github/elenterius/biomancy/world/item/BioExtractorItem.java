@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
+import com.github.elenterius.biomancy.util.MobSoundUtil;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
 import com.github.elenterius.biomancy.world.entity.MobUtil;
 import net.minecraft.ChatFormatting;
@@ -61,6 +62,8 @@ public class BioExtractorItem extends Item implements IKeyListener, IBiomancyIte
 				ItemStack essenceStack = new ItemStack(essenceItem, 1 + targetEntity.getRandom().nextInt(0, 1 + lootingLevel));
 
 				if (essenceItem.setEntityType(essenceStack, targetEntity)) {
+					MobSoundUtil.saveMobSounds(essenceStack, targetEntity);
+
 					if (player != null) {
 						if (!player.addItem(essenceStack)) {
 							player.drop(essenceStack, false);

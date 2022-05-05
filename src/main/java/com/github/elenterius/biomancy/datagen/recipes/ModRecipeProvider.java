@@ -278,13 +278,13 @@ public class ModRecipeProvider extends RecipeProvider {
 				.unlockedBy(ModItems.MOB_SINEW.get())
 				.save(consumer);
 
-		DecomposerRecipeBuilder.create(getItemName(ModItems.LARYNX.get()))
-				.setIngredient(ModItems.LARYNX.get())
-				.addOutput(ModItems.FLESH_BITS.get(), 1, 2)
-				.addOutput(ModItems.ELASTIC_FIBERS.get(), 2, 4)
-				.addOutput(ModItems.BILE_EXTRACT.get(), 1, 2)
-				.unlockedBy(ModItems.LARYNX.get())
-				.save(consumer);
+//		DecomposerRecipeBuilder.create(getItemName(ModItems.LARYNX.get()))
+//				.setIngredient(ModItems.LARYNX.get())
+//				.addOutput(ModItems.FLESH_BITS.get(), 1, 2)
+//				.addOutput(ModItems.ELASTIC_FIBERS.get(), 2, 4)
+//				.addOutput(ModItems.BILE_EXTRACT.get(), 1, 2)
+//				.unlockedBy(ModItems.LARYNX.get())
+//				.save(consumer);
 
 		DecomposerRecipeBuilder.create(getItemName(ModItems.EXALTED_LIVING_FLESH.get()))
 				.setIngredient(ModItems.LIVING_FLESH.get())

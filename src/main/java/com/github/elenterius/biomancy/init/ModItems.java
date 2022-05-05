@@ -15,7 +15,7 @@ public final class ModItems {
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, BiomancyMod.MOD_ID);
 
 	//# Material / Mob Loot
-	public static final RegistryObject<Item> LARYNX = ITEMS.register("larynx", () -> new LarynxItem(createBaseProperties().rarity(ModRarities.UNCOMMON)));
+//	public static final RegistryObject<Item> LARYNX = ITEMS.register("larynx", () -> new LarynxItem(createBaseProperties().rarity(ModRarities.UNCOMMON)));
 	public static final RegistryObject<Item> MOB_FANG = ITEMS.register("mob_fang", ModItems::createSimpleItem);
 	public static final RegistryObject<Item> MOB_CLAW = ITEMS.register("mob_claw", ModItems::createSimpleItem);
 	public static final RegistryObject<Item> MOB_SINEW = ITEMS.register("mob_sinew", ModItems::createSimpleItem);

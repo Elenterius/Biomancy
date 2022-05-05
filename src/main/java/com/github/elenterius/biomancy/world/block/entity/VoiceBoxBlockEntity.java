@@ -1,12 +1,15 @@
 package com.github.elenterius.biomancy.world.block.entity;
 
 import com.github.elenterius.biomancy.init.ModBlockEntities;
+import com.github.elenterius.biomancy.util.MobSoundUtil;
 import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.world.inventory.itemhandler.HandlerBehaviors;
-import com.github.elenterius.biomancy.world.item.LarynxItem;
+import com.github.elenterius.biomancy.world.item.EssenceItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -22,7 +25,7 @@ import java.util.function.Predicate;
 
 public class VoiceBoxBlockEntity extends BlockEntity {
 
-	public static final Predicate<ItemStack> VALID_ITEM = stack -> stack.getItem() instanceof LarynxItem;
+	public static final Predicate<ItemStack> VALID_ITEM = stack -> stack.getItem() instanceof EssenceItem;
 
 	private final BehavioralInventory<?> inventory;
 
@@ -49,10 +52,38 @@ public class VoiceBoxBlockEntity extends BlockEntity {
 			double x = pos.getX() + 0.5d;
 			double y = pos.getY() + 0.5d;
 			double z = pos.getZ() + 0.5d;
-			return ((LarynxItem) stack.getItem()).playVoice(stack, level, x, y, z, volume, pitch);
+			return playVoice(stack, level, x, y, z, volume, pitch);
 		}
 		return false;
 	}
+
+	public boolean playVoice(ItemStack stack, Level level, double x, double y, double z, float volume, float pitch) {
+		CompoundTag tag = stack.getOrCreateTag();
+		MobSoundUtil.VoiceType voice = MobSoundUtil.VoiceType.deserialize(tag);
+		SoundEvent soundEvent = voice.getSound(tag);
+		if (soundEvent != null) {
+			level.playSound(null, x, y, z, soundEvent, SoundSource.RECORDS, volume, pitch);
+			return true;
+		}
+		return false;
+	}
+
+//	private void playVoice(ItemStack stack, Level level, double x, double y, double z) {
+//		CompoundTag tag = stack.getOrCreateTag();
+//		if (!playVoice(stack, level, x, y, z, MobSoundUtil.VoiceType.getVolume(tag), MobSoundUtil.VoiceType.getPitch(tag))) {
+//			level.playSound(null, x, y, z, SoundEvents.PLAYER_BREATH, SoundSource.RECORDS, 2f, 1f);
+//		}
+//	}
+//
+//	public boolean playVoice(ItemStack stack, Level level, double x, double y, double z, float volume, float pitch, MobSoundUtil.VoiceType voiceType) {
+//		CompoundTag tag = stack.getOrCreateTag();
+//		SoundEvent soundEvent = voiceType.getSound(tag);
+//		if (soundEvent != null) {
+//			level.playSound(null, x, y, z, soundEvent, SoundSource.RECORDS, volume, pitch);
+//			return true;
+//		}
+//		return false;
+//	}
 
 	@Override
 	protected void saveAdditional(CompoundTag tag) {

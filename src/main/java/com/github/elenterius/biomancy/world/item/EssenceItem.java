@@ -28,8 +28,11 @@ import java.util.UUID;
 public class EssenceItem extends Item implements IBiomancyItem {
 
 	public static final String NBT_KEY_ENTITY_TYPE = "EntityType";
-	public static final String NBT_KEY_DATA = "EssenceData";
+	public static final String KEY_DATA = "EssenceData";
 	public static final String NBT_KEY_COLORS = "Colors";
+	public static final String KEY_ENTITY_NAME = "Name";
+	public static final String KEY_IS_PLAYER = "IsPlayer";
+	public static final String KEY_ENTITY_UUID = "EntityUUID";
 
 	public EssenceItem(Properties properties) {
 		super(properties);
@@ -41,7 +44,7 @@ public class EssenceItem extends Item implements IBiomancyItem {
 
 	@Nullable
 	public <T extends Entity> EntityType<T> getEntityType(ItemStack stack) {
-		CompoundTag tag = stack.getOrCreateTag().getCompound(NBT_KEY_DATA);
+		CompoundTag tag = stack.getOrCreateTag().getCompound(KEY_DATA);
 		EntityType<?> value = ForgeRegistries.ENTITIES.getValue(ResourceLocation.tryParse(tag.getString(NBT_KEY_ENTITY_TYPE)));
 		//noinspection unchecked
 		return value != null ? (EntityType<T>) value : null;
@@ -65,9 +68,16 @@ public class EssenceItem extends Item implements IBiomancyItem {
 					int highlight = spawnEggItem.getColor(1);
 					tag.putIntArray(NBT_KEY_COLORS, new int[]{background, highlight});
 				}
+				else {
+					//handle mobs that don't have spawn eggs
+					ResourceLocation key = EntityType.getKey(livingEntity.getType());
+					int background = key.hashCode() & 0xffffff;
+					int highlight = key.toString().hashCode() & 0xffffff;
+					tag.putIntArray(NBT_KEY_COLORS, new int[]{background, highlight});
+				}
 			}
 
-			tag.put(NBT_KEY_DATA, data);
+			tag.put(KEY_DATA, data);
 			return true;
 		}
 		return false;
@@ -90,14 +100,14 @@ public class EssenceItem extends Item implements IBiomancyItem {
 
 	@Nullable
 	private CompoundTag getDataFromEntityUnchecked(LivingEntity target) {
-		CompoundTag nbt = new CompoundTag();
+		CompoundTag tag = new CompoundTag();
 		String typeId = target instanceof Player player ? getPlayerTypeId(player) : target.getEncodeId();
 		if (typeId != null) {
-			nbt.putString(NBT_KEY_ENTITY_TYPE, typeId);
-			nbt.putString("Name", target.getType().getDescriptionId());
-			nbt.putBoolean("IsPlayer", target instanceof Player);
-			nbt.putUUID("EntityUUID", target.getUUID());
-			return nbt;
+			tag.putString(NBT_KEY_ENTITY_TYPE, typeId);
+			tag.putString(KEY_ENTITY_NAME, target.getType().getDescriptionId());
+			tag.putBoolean(KEY_IS_PLAYER, target instanceof Player);
+			tag.putUUID(KEY_ENTITY_UUID, target.getUUID());
+			return tag;
 		}
 		return null;
 	}
@@ -108,11 +118,13 @@ public class EssenceItem extends Item implements IBiomancyItem {
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
+
 		CompoundTag tag = stack.getOrCreateTag();
-		if (tag.contains(NBT_KEY_DATA)) {
-			CompoundTag subTag = tag.getCompound(NBT_KEY_DATA);
-			if (subTag.getBoolean("IsPlayer")) {
-				String name = ClientTextUtil.tryToGetPlayerNameOnClientSide(subTag.getUUID("EntityUUID"));
+		if (tag.contains(KEY_DATA)) {
+			CompoundTag subTag = tag.getCompound(KEY_DATA);
+			if (subTag.getBoolean(KEY_IS_PLAYER)) {
+				String name = ClientTextUtil.tryToGetPlayerNameOnClientSide(subTag.getUUID(KEY_ENTITY_UUID));
 				tooltip.add(new TextComponent(name).withStyle(ChatFormatting.GRAY));
 			}
 			tooltip.add(TextComponentUtil.getTooltipText("contains_unique_dna").withStyle(ChatFormatting.GRAY));
@@ -132,9 +144,9 @@ public class EssenceItem extends Item implements IBiomancyItem {
 	@Nullable
 	private MutableComponent getEntityName(ItemStack stack) {
 		CompoundTag tag = stack.getOrCreateTag();
-		if (tag.contains(NBT_KEY_DATA)) {
-			CompoundTag subTag = tag.getCompound(NBT_KEY_DATA);
-			return new TranslatableComponent(subTag.getString("Name"));
+		if (tag.contains(KEY_DATA)) {
+			CompoundTag subTag = tag.getCompound(KEY_DATA);
+			return new TranslatableComponent(subTag.getString(KEY_ENTITY_NAME));
 		}
 		return null;
 	}

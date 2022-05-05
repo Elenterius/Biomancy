@@ -109,7 +109,7 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 		generateComponent(ModItems.VOLATILE_EXTRACT.get());
 		generateComponent(ModItems.BILE_EXTRACT.get());
 
-		generateFlat(ModItems.LARYNX.get(), ModelTemplates.FLAT_ITEM);
+//		generateFlat(ModItems.LARYNX.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.MOB_FANG.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.MOB_CLAW.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.MOB_SINEW.get(), ModelTemplates.FLAT_ITEM);
