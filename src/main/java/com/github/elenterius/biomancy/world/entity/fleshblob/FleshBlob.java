@@ -290,6 +290,12 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 	}
 
 	@Override
+	public boolean canPickUpLoot() {
+		//delay item pickup to 5 seconds after spawn
+		return tickCount > 20 * 5 && super.canPickUpLoot(); //won't work when the tickCount wraps around
+	}
+
+	@Override
 	public boolean canTakeItem(ItemStack stack) {
 		if (!canPickUpLoot()) return false;
 		EquipmentSlot slotType = LivingEntity.getEquipmentSlotForItem(stack);
