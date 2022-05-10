@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.world.block.*;
+import com.github.elenterius.biomancy.world.block.property.Orientation;
 import com.github.elenterius.biomancy.world.block.property.UserSensitivity;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -34,6 +35,7 @@ public final class ModBlocks {
 	//# Block Properties
 	public static final BooleanProperty CRAFTING_PROPERTY = BooleanProperty.create("crafting");
 	public static final EnumProperty<UserSensitivity> USER_SENSITIVITY_PROPERTY = EnumProperty.create("sensitivity", UserSensitivity.class);
+	public static final EnumProperty<Orientation> ORIENTATION = EnumProperty.create("orientation", Orientation.class);
 
 	//# Blocks
 
@@ -65,6 +67,7 @@ public final class ModBlocks {
 	public static final RegistryObject<StairBlock> FLESH_BLOCK_STAIRS = BLOCKS.register("flesh_block_stairs", () -> new StairBlock(() -> FLESH_BLOCK.get().defaultBlockState(), createFleshProperties()));
 	public static final RegistryObject<Block> NECROTIC_FLESH_BLOCK = BLOCKS.register("necrotic_flesh_block", () -> new FleshBlock(createFleshProperties()));
 	public static final RegistryObject<IrisDoorBlock> FLESH_IRISDOOR = BLOCKS.register("flesh_irisdoor", () -> new IrisDoorBlock(createFleshProperties()));
+	public static final RegistryObject<FleshDoorBlock> FLESH_DOOR = BLOCKS.register("flesh_door", () -> new FleshDoorBlock(createFleshProperties()));
 	public static final RegistryObject<FleshFenceBlock> FLESH_FENCE = BLOCKS.register("flesh_fence", () -> new FleshFenceBlock(createFleshProperties()));
 	public static final RegistryObject<FleshFenceGateBlock> FLESH_FENCE_GATE = BLOCKS.register("flesh_fence_gate", () -> new FleshFenceGateBlock(createFleshProperties().noOcclusion()));
 	public static final RegistryObject<LadderBlock> FLESH_LADDER = BLOCKS.register("flesh_ladder", () -> new LadderBlock(createFleshProperties().noOcclusion()));
@@ -90,6 +93,7 @@ public final class ModBlocks {
 		ItemBlockRenderTypes.setRenderLayer(VOICE_BOX.get(), RenderType.translucent());
 		ItemBlockRenderTypes.setRenderLayer(FLESH_IRISDOOR.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(FLESH_FENCE.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(FLESH_DOOR.get(), RenderType.cutout());
 
 		//block with "glowing" overlay texture, also needs a overlay model see onModelBakeEvent() in ClientSetupHandler
 		//ItemBlockRenderTypes.setRenderLayer(ModBlocks.FOOBAR.get(), renderType -> renderType == RenderType.getCutout() || renderType == RenderType.getTranslucent());

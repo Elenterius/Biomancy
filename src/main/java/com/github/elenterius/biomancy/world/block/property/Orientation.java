@@ -25,12 +25,30 @@ public enum Orientation implements StringRepresentable {
 		axis = x;
 	}
 
+	public boolean isMiddle() {
+		return this == X_MIDDLE || this == Z_MIDDLE || this == Y_MIDDLE;
+	}
+
+	public boolean isPositive() {
+		return this == X_POSITIVE || this == Z_POSITIVE || this == Y_POSITIVE;
+	}
+
+	public boolean isNegative() {
+		return this == X_NEGATIVE || this == Z_NEGATIVE || this == Y_NEGATIVE;
+	}
+
 	public static Orientation getOrientationFrom(BlockPlaceContext context) {
 		Direction.Axis axis = context.getClickedFace().getAxis();
 		if (axis.isHorizontal()) return getYOrientationFrom(context.getClickedPos(), context.getClickLocation());
 		if (context.getHorizontalDirection().getAxis() == Direction.Axis.X) return getXOrientationFrom(context.getClickedPos(), context.getClickLocation());
 		if (context.getHorizontalDirection().getAxis() == Direction.Axis.Z) return getZOrientationFrom(context.getClickedPos(), context.getClickLocation());
 		return Orientation.Y_MIDDLE;
+	}
+
+	public static Orientation getXZOrientationFrom(BlockPlaceContext context) {
+		if (context.getHorizontalDirection().getAxis() == Direction.Axis.X) return getXOrientationFrom(context.getClickedPos(), context.getClickLocation());
+		if (context.getHorizontalDirection().getAxis() == Direction.Axis.Z) return getZOrientationFrom(context.getClickedPos(), context.getClickLocation());
+		return Orientation.Z_MIDDLE;
 	}
 
 	private static Orientation getZOrientationFrom(BlockPos clickPosition, Vec3 clickLocation) {

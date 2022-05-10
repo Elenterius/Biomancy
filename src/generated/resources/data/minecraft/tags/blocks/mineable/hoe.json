@@ -1,6 +1,6 @@
 {
   "replace": false,
   "values": [
-    "biomancy:creator", "biomancy:bio_forge", "biomancy:decomposer", "biomancy:bio_lab", "biomancy:digester", "biomancy:sac", "biomancy:tongue", "biomancy:gulge", "biomancy:fleshkin_chest", "biomancy:fleshkin_door", "biomancy:fleshkin_trapdoor", "biomancy:fleshkin_pressure_plate", "biomancy:flesh_block", "biomancy:flesh_block_slab", "biomancy:flesh_block_stairs", "biomancy:necrotic_flesh_block", "biomancy:flesh_irisdoor", "biomancy:flesh_fence", "biomancy:flesh_fence_gate", "biomancy:flesh_ladder", "biomancy:voice_box"
+    "biomancy:creator", "biomancy:bio_forge", "biomancy:decomposer", "biomancy:bio_lab", "biomancy:digester", "biomancy:tongue", "biomancy:fleshkin_chest", "biomancy:fleshkin_door", "biomancy:fleshkin_trapdoor", "biomancy:fleshkin_pressure_plate", "biomancy:flesh_block", "biomancy:flesh_block_slab", "biomancy:flesh_block_stairs", "biomancy:flesh_irisdoor", "biomancy:flesh_door", "biomancy:flesh_fence", "biomancy:flesh_fence_gate", "biomancy:flesh_ladder", "biomancy:voice_box"
   ]
 }

@@ -153,6 +153,9 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 		generateWeapon(ModItems.TOOTH_GUN.get(), GUN_TEMPLATE);
 		generateWeapon(ModItems.WITHERSHOT.get(), GUN_TEMPLATE);
 
+		generateFlat(ModItems.FLESH_DOOR.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.FLESHKIN_DOOR.get(), ModelTemplates.FLAT_ITEM);
+
 		//generate models for all eggs
 		ModItems.ITEMS.getEntries().stream().map(RegistryObject::get).filter(SpawnEggItem.class::isInstance).forEach(item -> generateFlat(item, EGG_MODEL_TEMPLATE));
 	}
