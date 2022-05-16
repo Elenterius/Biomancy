@@ -20,8 +20,8 @@ public final class ModBlockEntities {
 
 	//	public static final RegistryObject<BlockEntityType<GlandBlockEntity>> GLAND = BLOCK_ENTITIES.register("gland", () -> BlockEntityType.Builder.of(GlandBlockEntity::new, ModBlocks.GLAND.get()).build(noDataFixer()));
 	public static final RegistryObject<BlockEntityType<TongueBlockEntity>> TONGUE = BLOCK_ENTITIES.register("tongue", () -> BlockEntityType.Builder.of(TongueBlockEntity::new, ModBlocks.TONGUE.get()).build(noDataFixer()));
-	public static final RegistryObject<BlockEntityType<SacBlockEntity>> SAC = BLOCK_ENTITIES.register("sac", () -> BlockEntityType.Builder.of(SacBlockEntity::new, ModBlocks.SAC.get()).build(noDataFixer()));
-	public static final RegistryObject<BlockEntityType<GulgeBlockEntity>> GULGE = BLOCK_ENTITIES.register("gulge", () -> BlockEntityType.Builder.of(GulgeBlockEntity::new, ModBlocks.GULGE.get()).build(noDataFixer()));
+	//	public static final RegistryObject<BlockEntityType<SacBlockEntity>> SAC = BLOCK_ENTITIES.register("sac", () -> BlockEntityType.Builder.of(SacBlockEntity::new, ModBlocks.SAC.get()).build(noDataFixer()));
+//	public static final RegistryObject<BlockEntityType<GulgeBlockEntity>> GULGE = BLOCK_ENTITIES.register("gulge", () -> BlockEntityType.Builder.of(GulgeBlockEntity::new, ModBlocks.GULGE.get()).build(noDataFixer()));
 	public static final RegistryObject<BlockEntityType<FleshkinChestBlockEntity>> FLESHKIN_CHEST = BLOCK_ENTITIES.register("fleshkin_chest", () -> BlockEntityType.Builder.of(FleshkinChestBlockEntity::new, ModBlocks.FLESHKIN_CHEST.get()).build(noDataFixer()));
 
 	//# Misc

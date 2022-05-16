@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:unstable_compound_from_bio_brewing"
+      "biomancy:volatile_compound_from_bio_brewing"
     ]
   },
   "criteria": {
@@ -21,7 +21,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:unstable_compound_from_bio_brewing"
+        "recipe": "biomancy:volatile_compound_from_bio_brewing"
       }
     }
   },

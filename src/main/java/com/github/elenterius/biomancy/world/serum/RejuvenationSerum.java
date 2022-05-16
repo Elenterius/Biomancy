@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.world.serum;
 
-import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.mixin.ArmorStandAccessor;
 import com.github.elenterius.biomancy.mixin.SlimeAccessor;
 import com.github.elenterius.biomancy.world.entity.fleshblob.FleshBlob;
@@ -50,12 +49,12 @@ public class RejuvenationSerum extends Serum {
 				}
 			}
 		}
-		else if (state.getBlock() == ModBlocks.NECROTIC_FLESH_BLOCK.get()) {
-			if (!world.isClientSide) {
-				world.setBlockAndUpdate(pos, ModBlocks.FLESH_BLOCK.get().defaultBlockState());
-			}
-			return true;
-		}
+//		else if (state.getBlock() == ModBlocks.NECROTIC_FLESH_BLOCK.get()) {
+//			if (!world.isClientSide) {
+//				world.setBlockAndUpdate(pos, ModBlocks.FLESH_BLOCK.get().defaultBlockState());
+//			}
+//			return true;
+//		}
 
 		return false;
 	}

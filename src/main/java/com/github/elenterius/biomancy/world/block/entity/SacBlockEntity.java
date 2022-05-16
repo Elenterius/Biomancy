@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.world.block.entity;
 
-import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
 import com.github.elenterius.biomancy.world.LevelUtil;
 import com.github.elenterius.biomancy.world.block.SacBlock;
@@ -17,6 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -32,10 +32,15 @@ public class SacBlockEntity extends SimpleContainerBlockEntity {
 	private final SimpleInventory inventory;
 	private int ticks;
 
-	public SacBlockEntity(BlockPos pos, BlockState state) {
-		super(ModBlockEntities.SAC.get(), pos, state);
+	public SacBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+		super(type, pos, state);
 		inventory = SimpleInventory.createServerContents(SLOTS, this::canPlayerOpenContainer, this::setChanged);
 	}
+
+//	public SacBlockEntity(BlockPos pos, BlockState state) {
+//		super(ModBlockEntities.SAC.get(), pos, state);
+//		inventory = SimpleInventory.createServerContents(SLOTS, this::canPlayerOpenContainer, this::setChanged);
+//	}
 
 	public static void serverTick(Level level, BlockPos pos, BlockState state, SacBlockEntity sac) {
 		sac.ticks++;

@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.world.block;
 
-import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.world.block.entity.SacBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -57,13 +56,15 @@ public class SacBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new SacBlockEntity(pos, state);
+		return null;
+		//		return new SacBlockEntity(pos, state);
 	}
 
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-		return level.isClientSide ? null : createTickerHelper(blockEntityType, ModBlockEntities.SAC.get(), SacBlockEntity::serverTick);
+		return null;
+//		return level.isClientSide ? null : createTickerHelper(blockEntityType, ModBlockEntities.SAC.get(), SacBlockEntity::serverTick);
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.world.block.entity;
 
-import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
 import com.github.elenterius.biomancy.world.inventory.GulgeInventory;
 import com.github.elenterius.biomancy.world.inventory.menu.GulgeMenu;
@@ -12,6 +11,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -24,10 +24,15 @@ public class GulgeBlockEntity extends SimpleContainerBlockEntity {
 	public static final short MAX_ITEM_AMOUNT = 64 * 128;
 	private final GulgeInventory gulgeInventory;
 
-	public GulgeBlockEntity(BlockPos pos, BlockState state) {
-		super(ModBlockEntities.GULGE.get(), pos, state);
+	public GulgeBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+		super(type, pos, state);
 		gulgeInventory = GulgeInventory.createServerContents(MAX_ITEM_AMOUNT, this::canPlayerOpenContainer, this::setChanged);
 	}
+
+//	public GulgeBlockEntity(BlockPos pos, BlockState state) {
+//		super(ModBlockEntities.GULGE.get(), pos, state);
+//		gulgeInventory = GulgeInventory.createServerContents(MAX_ITEM_AMOUNT, this::canPlayerOpenContainer, this::setChanged);
+//	}
 
 	@Override
 	public @Nullable AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {

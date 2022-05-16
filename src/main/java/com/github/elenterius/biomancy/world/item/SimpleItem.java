@@ -21,8 +21,8 @@ public class SimpleItem extends Item implements IBiomancyItem {
 		ClientTextUtil.appendItemInfoTooltip(stack.getItem(), tooltip);
 	}
 
-	public static class WithFoilItem extends SimpleItem {
-		public WithFoilItem(Properties properties) {
+	public static class ShinySimpleItem extends SimpleItem {
+		public ShinySimpleItem(Properties properties) {
 			super(properties);
 		}
 

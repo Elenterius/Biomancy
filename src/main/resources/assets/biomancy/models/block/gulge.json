@@ -7,7 +7,7 @@
   ],
   "textures": {
     "0": "biomancy:block/deep_gulge",
-    "particle": "biomancy:block/flesh_particle"
+    "particle": "biomancy:block/packed_flesh"
   },
   "elements": [
     {

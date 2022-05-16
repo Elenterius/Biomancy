@@ -48,10 +48,10 @@ public class TongueBlockEntity extends SimpleSyncedBlockEntity implements IAnima
 		};
 	}
 
-	public static void serverTick(Level level, BlockPos pos, BlockState state, TongueBlockEntity sac) {
-		sac.ticks++;
-		if (sac.ticks % 24L == 0L) {
-			sac.serverTick((ServerLevel) level, pos, state);
+	public static void serverTick(Level level, BlockPos pos, BlockState state, TongueBlockEntity entity) {
+		entity.ticks++;
+		if (entity.ticks % 24L == 0L) {
+			entity.serverTick((ServerLevel) level, pos, state);
 		}
 	}
 

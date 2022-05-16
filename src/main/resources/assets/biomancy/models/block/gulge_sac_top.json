@@ -1,0 +1,6 @@
+{
+  "parent": "biomancy:block/template_gulge_sac_top",
+  "textures": {
+    "side": "biomancy:block/gulge_sac_top"
+  }
+}

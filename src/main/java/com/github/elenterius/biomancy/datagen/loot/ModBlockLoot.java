@@ -72,10 +72,6 @@ public class ModBlockLoot extends BlockLoot {
 		add(ModBlocks.BIO_LAB.get(), BlockLoot::createNameableBlockEntityTable);
 		add(ModBlocks.DIGESTER.get(), BlockLoot::createNameableBlockEntityTable);
 		add(ModBlocks.DECOMPOSER.get(), BlockLoot::createNameableBlockEntityTable);
-//		add(ModBlocks.GLAND.get(), BlockLoot::createNameableBlockEntityTable);
-//		add(ModBlocks.SAC.get(), BlockLoot::createNameableBlockEntityTable);
-
-//		add(ModBlocks.GULGE.get(), ModBlockLoot::dropWithInventory);
 
 		add(ModBlocks.FLESHKIN_CHEST.get(), ModBlockLoot::dropFleshkinChest);
 		add(ModBlocks.FLESHKIN_DOOR.get(), ModBlockLoot::dropWithOwnableData);
@@ -94,6 +90,8 @@ public class ModBlockLoot extends BlockLoot {
 		dropSelf(ModBlocks.FLESH_LADDER.get());
 
 		addCustom(ModBlocks.FLESH_DOOR.get(), ModBlockLoot::createFleshDoorTable);
+
+		//		add(ModBlocks.NECROTIC_FLESH_BLOCK.get(), createSingleItemTable(ModItems.NECROTIC_FLESH_LUMP.get(), BinomialDistributionGenerator.binomial(9, 0.5f)));
 	}
 
 	protected <T extends Block> void addCustom(T block, Function<T, LootTable.Builder> function) {

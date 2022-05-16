@@ -126,12 +126,12 @@ public class ModRecipeProvider extends RecipeProvider {
 				.requires(ModItems.BONE_SCRAPS.get(), 4)
 				.unlockedBy(hasName(ModItems.BONE_SCRAPS.get()), has(ModItems.BONE_SCRAPS.get())).save(consumer, getConversionRecipeId(Items.BONE_MEAL, ModItems.BONE_SCRAPS.get()));
 
-		ShapedRecipeBuilder.shaped(ModItems.FLESH_BLOCK_SLAB.get(), 3 * 2)
+		ShapedRecipeBuilder.shaped(ModItems.FLESH_SLAB.get(), 3 * 2)
 				.define('F', ModItems.FLESH_BLOCK.get())
 				.pattern("FFF")
 				.unlockedBy(hasName(ModItems.FLESH_BLOCK.get()), has(ModItems.FLESH_BLOCK.get())).save(consumer);
 
-		ShapedRecipeBuilder.shaped(ModItems.FLESH_BLOCK_STAIRS.get(), 4)
+		ShapedRecipeBuilder.shaped(ModItems.FLESH_STAIRS.get(), 4)
 				.define('F', ModItems.FLESH_BLOCK.get())
 				.pattern("F  ")
 				.pattern("FF ")
@@ -158,9 +158,9 @@ public class ModRecipeProvider extends RecipeProvider {
 //				.requires(ModItems.NECROTIC_FLESH_LUMP.get()).requires(ModItems.NUTRIENTS.get())
 //				.unlockedBy(hasName(ModItems.NECROTIC_FLESH_LUMP.get()), has(ModItems.NECROTIC_FLESH_LUMP.get())).save(consumer, getConversionRecipeId(ModItems.FLESH_BITS.get(), ModItems.NECROTIC_FLESH_LUMP.get()));
 
-		ShapelessRecipeBuilder.shapeless(ModItems.FLESH_BLOCK.get())
-				.requires(ModItems.NECROTIC_FLESH_BLOCK.get()).requires(ModItems.NUTRIENTS.get(), 6)
-				.unlockedBy(hasName(ModItems.NECROTIC_FLESH_BLOCK.get()), has(ModItems.NECROTIC_FLESH_BLOCK.get())).save(consumer, getConversionRecipeId(ModItems.FLESH_BLOCK.get(), ModItems.NECROTIC_FLESH_BLOCK.get()));
+//		ShapelessRecipeBuilder.shapeless(ModItems.FLESH_BLOCK.get())
+//				.requires(ModItems.NECROTIC_FLESH_BLOCK.get()).requires(ModItems.NUTRIENTS.get(), 6)
+//				.unlockedBy(hasName(ModItems.NECROTIC_FLESH_BLOCK.get()), has(ModItems.NECROTIC_FLESH_BLOCK.get())).save(consumer, getConversionRecipeId(ModItems.FLESH_BLOCK.get(), ModItems.NECROTIC_FLESH_BLOCK.get()));
 
 		// machines ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -359,17 +359,17 @@ public class ModRecipeProvider extends RecipeProvider {
 				.unlockedBy(ModItems.LIVING_FLESH.get())
 				.save(consumer);
 
-		BioForgeRecipeBuilder.create(new ItemData(ModItems.GULGE.get()))
-				.setCraftingTime(5 * 20)
-				.addIngredient(ModItems.MOB_FANG.get(), 4)
-				.addIngredient(ModItems.FLESH_BITS.get(), 32)
-				.addIngredient(ModItems.BONE_SCRAPS.get(), 22)
-				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 64)
-				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 64)
-				.setReactant(ModItems.LIVING_FLESH.get())
-				.setCategory(BioForgeCategory.BLOCKS)
-				.unlockedBy(ModItems.LIVING_FLESH.get())
-				.save(consumer);
+//		BioForgeRecipeBuilder.create(new ItemData(ModItems.GULGE.get()))
+//				.setCraftingTime(5 * 20)
+//				.addIngredient(ModItems.MOB_FANG.get(), 4)
+//				.addIngredient(ModItems.FLESH_BITS.get(), 32)
+//				.addIngredient(ModItems.BONE_SCRAPS.get(), 22)
+//				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 64)
+//				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 64)
+//				.setReactant(ModItems.LIVING_FLESH.get())
+//				.setCategory(BioForgeCategory.BLOCKS)
+//				.unlockedBy(ModItems.LIVING_FLESH.get())
+//				.save(consumer);
 
 		BioForgeRecipeBuilder.create(new ItemData(ModItems.DECOMPOSER.get()))
 				.setCraftingTime(5 * 20)
@@ -435,17 +435,17 @@ public class ModRecipeProvider extends RecipeProvider {
 				.unlockedBy(ModItems.LIVING_FLESH.get())
 				.save(consumer);
 
-		BioForgeRecipeBuilder.create(new ItemData(ModItems.SAC.get()))
-				.setCraftingTime(4 * 20)
-				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 64)
-				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 64)
-				.addIngredient(ModItems.FLESH_BITS.get(), 64)
-				.addIngredient(ModItems.BONE_SCRAPS.get(), 12)
-				.addIngredient(ModItems.MOB_FANG.get(), 8)
-				.setReactant(ModItems.LIVING_FLESH.get())
-				.setCategory(BioForgeCategory.BLOCKS)
-				.unlockedBy(ModItems.LIVING_FLESH.get())
-				.save(consumer);
+//		BioForgeRecipeBuilder.create(new ItemData(ModItems.SAC.get()))
+//				.setCraftingTime(4 * 20)
+//				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 64)
+//				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 64)
+//				.addIngredient(ModItems.FLESH_BITS.get(), 64)
+//				.addIngredient(ModItems.BONE_SCRAPS.get(), 12)
+//				.addIngredient(ModItems.MOB_FANG.get(), 8)
+//				.setReactant(ModItems.LIVING_FLESH.get())
+//				.setCategory(BioForgeCategory.BLOCKS)
+//				.unlockedBy(ModItems.LIVING_FLESH.get())
+//				.save(consumer);
 
 		BioForgeRecipeBuilder.create(new ItemData(ModItems.VOICE_BOX.get()))
 				.setCraftingTime(4 * 20)
@@ -464,13 +464,13 @@ public class ModRecipeProvider extends RecipeProvider {
 				.unlockedBy(ModItems.FLESH_BITS.get())
 				.save(consumer);
 
-		BioForgeRecipeBuilder.create(new ItemData(ModItems.FLESH_BLOCK_STAIRS.get()))
+		BioForgeRecipeBuilder.create(new ItemData(ModItems.FLESH_STAIRS.get()))
 				.addIngredient(ModItems.FLESH_BITS.get(), 24)
 				.setCategory(BioForgeCategory.BLOCKS)
 				.unlockedBy(ModItems.FLESH_BITS.get())
 				.save(consumer);
 
-		BioForgeRecipeBuilder.create(new ItemData(ModItems.FLESH_BLOCK_SLAB.get(), 2))
+		BioForgeRecipeBuilder.create(new ItemData(ModItems.FLESH_SLAB.get(), 2))
 				.addIngredient(ModItems.FLESH_BITS.get(), 32)
 				.setCategory(BioForgeCategory.BLOCKS)
 				.unlockedBy(ModItems.FLESH_BITS.get())
@@ -569,12 +569,12 @@ public class ModRecipeProvider extends RecipeProvider {
 				.setCraftingTime(8 * 20)
 				.unlockedBy(ModItems.UNSTABLE_COMPOUND.get()).save(consumer);
 
-		BioLabRecipeBuilder.create(ModItems.ICHOR_SERUM.get())
-				.addIngredients(ModItems.EXOTIC_DUST.get(), 2)
-				.addIngredients(Items.HONEYCOMB, 2)
-				.setReactant(ModItems.ORGANIC_COMPOUND.get())
-				.setCraftingTime(12 * 20)
-				.unlockedBy(ModItems.ORGANIC_COMPOUND.get()).save(consumer);
+//		BioLabRecipeBuilder.create(ModItems.ICHOR_SERUM.get())
+//				.addIngredients(ModItems.EXOTIC_DUST.get(), 2)
+//				.addIngredients(Items.HONEYCOMB, 2)
+//				.setReactant(ModItems.ORGANIC_COMPOUND.get())
+//				.setCraftingTime(12 * 20)
+//				.unlockedBy(ModItems.ORGANIC_COMPOUND.get()).save(consumer);
 	}
 
 }

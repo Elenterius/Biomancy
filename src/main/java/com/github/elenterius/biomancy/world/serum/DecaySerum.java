@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.world.serum;
 
-import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -38,11 +37,12 @@ public class DecaySerum extends Serum {
 		BlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 
-		if (block == ModBlocks.FLESH_BLOCK.get()) {
-			if (!world.isClientSide) world.setBlockAndUpdate(pos, ModBlocks.NECROTIC_FLESH_BLOCK.get().defaultBlockState());
-			return true;
-		}
-		else if (block == Blocks.SWEET_BERRY_BUSH || BlockTags.SAPLINGS.contains(block)) {
+//		if (block == ModBlocks.FLESH_BLOCK.get()) {
+//			if (!world.isClientSide) world.setBlockAndUpdate(pos, ModBlocks.NECROTIC_FLESH_BLOCK.get().defaultBlockState());
+//			return true;
+//		}
+//		else
+		if (block == Blocks.SWEET_BERRY_BUSH || BlockTags.SAPLINGS.contains(block)) {
 			if (!world.isClientSide) world.setBlockAndUpdate(pos, Blocks.DEAD_BUSH.defaultBlockState());
 			return true;
 		}

@@ -15,7 +15,7 @@
     }
   ],
   "reactant": {
-    "item": "biomancy:unstable_compound"
+    "item": "biomancy:volatile_compound"
   },
   "result": {
     "item": "biomancy:decay_agent"

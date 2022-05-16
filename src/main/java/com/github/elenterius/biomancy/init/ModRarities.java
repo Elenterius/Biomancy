@@ -17,14 +17,14 @@ import java.util.Map;
  */
 public final class ModRarities {
 
-	//can't be EnumMap due to Rarity enum implementing IExtensibleEnum
+	//EnumMap doesn't work here due to the Rarity enum being internally changed during runtime by forge
 	private static final Map<Rarity, Integer> RARITIES = new HashMap<>();
 
-	public static final Rarity COMMON = createRarity("common", 0xFFFFFF);
-	public static final Rarity UNCOMMON = createRarity("uncommon", 0xc2bdb0);
-	public static final Rarity EXOTIC = createRarity("exotic", 0x763474);
-	public static final Rarity MACHINE = createRarity("machine", 0x65b52a);
-	public static final Rarity EXALTED = createRarity("exalted", 0xccff00);
+	public static final Rarity COMMON = createRarity("common", 0x5c4432);
+	public static final Rarity UNCOMMON = createRarity("uncommon", 0xb3953a);
+	public static final Rarity RARE = createRarity("rare", 0x0f701d);
+	public static final Rarity VERY_RARE = createRarity("very_rare", 0x6f318b);
+	public static final Rarity ULTRA_RARE = createRarity("ultra_rare", 0xbb0b3f);
 
 	private ModRarities() {}
 

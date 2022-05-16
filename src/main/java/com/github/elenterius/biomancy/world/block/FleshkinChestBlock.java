@@ -215,7 +215,6 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flag) {
-		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
 		super.appendHoverText(stack, level, tooltip, flag);
 
 		IOwnableEntityBlock.appendUserListToTooltip(stack, tooltip);
