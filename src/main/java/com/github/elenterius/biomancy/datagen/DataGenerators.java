@@ -47,6 +47,9 @@ public final class DataGenerators {
 		generator.addProvider(new ModModelProvider(generator));
 		generator.addProvider(new ModBlockStateProvider(generator, existingFileHelper));
 
+		//sounds
+		generator.addProvider(new ModSoundProvider(generator, existingFileHelper));
+
 //		generator.addProvider(new PatchouliProvider(generator));
 	}
 

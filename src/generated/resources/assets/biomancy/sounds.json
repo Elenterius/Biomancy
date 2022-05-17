@@ -1,0 +1,26 @@
+{
+  "inject": {
+    "subtitle": "sounds.biomancy.inject",
+    "sounds": [
+      "biomancy:inject"
+    ]
+  },
+  "flesh_block.hit": {
+    "subtitle": "sounds.biomancy.flesh_block.hit",
+    "sounds": [
+      "biomancy:flesh_block.hit"
+    ]
+  },
+  "flesh_block.place": {
+    "subtitle": "sounds.biomancy.flesh_block.place",
+    "sounds": [
+      "biomancy:flesh_block.place"
+    ]
+  },
+  "flesh_block.step": {
+    "subtitle": "sounds.biomancy.flesh_block.step",
+    "sounds": [
+      "biomancy:flesh_block.step"
+    ]
+  }
+}
