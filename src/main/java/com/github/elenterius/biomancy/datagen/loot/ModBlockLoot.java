@@ -78,13 +78,21 @@ public class ModBlockLoot extends BlockLoot {
 		add(ModBlocks.FLESHKIN_TRAPDOOR.get(), ModBlockLoot::dropWithOwnableData);
 		add(ModBlocks.FLESHKIN_PRESSURE_PLATE.get(), ModBlockLoot::dropWithOwnableData);
 
-		dropSelf(ModBlocks.FLESH_BLOCK.get());
-		dropSelf(ModBlocks.FLESH_BLOCK_STAIRS.get());
-		add(ModBlocks.FLESH_BLOCK_SLAB.get(), BlockLoot::createSlabItemTable);
-//		add(ModBlocks.NECROTIC_FLESH_BLOCK.get(), createSingleItemTable(ModItems.NECROTIC_FLESH_LUMP.get(), BinomialDistributionGenerator.binomial(9, 0.5f)));
-//		dropSelf(ModBlocks.NECROTIC_FLESH_BLOCK.get());
+		dropSelf(ModBlocks.FLESH.get());
+		add(ModBlocks.FLESH_SLAB.get(), BlockLoot::createSlabItemTable);
+		dropSelf(ModBlocks.FLESH_STAIRS.get());
+
+		dropSelf(ModBlocks.PACKED_FLESH.get());
+		add(ModBlocks.PACKED_FLESH_SLAB.get(), BlockLoot::createSlabItemTable);
+		dropSelf(ModBlocks.PACKED_FLESH_STAIRS.get());
+
+		dropSelf(ModBlocks.PRIMAL_FLESH.get());
+		dropSelf(ModBlocks.CORRUPTED_PRIMAL_FLESH.get());
+		dropSelf(ModBlocks.MALIGNANT_FLESH.get());
+		add(ModBlocks.MALIGNANT_FLESH_VEINS.get(), BlockLoot::createGlowLichenDrops);
+
 		dropSelf(ModBlocks.VOICE_BOX.get());
-		dropSelf(ModBlocks.FLESH_IRISDOOR.get());
+		dropSelf(ModBlocks.FLESH_IRIS_DOOR.get());
 		dropSelf(ModBlocks.FLESH_FENCE.get());
 		dropSelf(ModBlocks.FLESH_FENCE_GATE.get());
 		dropSelf(ModBlocks.FLESH_LADDER.get());

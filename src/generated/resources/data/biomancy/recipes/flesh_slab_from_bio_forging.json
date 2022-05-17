@@ -1,0 +1,17 @@
+{
+  "type": "biomancy:bio_forging",
+  "ingredient_quantities": [
+    {
+      "ingredient": {
+        "item": "biomancy:flesh_bits"
+      },
+      "count": 32
+    }
+  ],
+  "result": {
+    "item": "biomancy:flesh_slab",
+    "count": 2
+  },
+  "time": 20,
+  "category": "biomancy:blocks"
+}

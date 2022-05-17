@@ -1,5 +1,0 @@
-{
-  "parent": "block/cross", "textures": {
-  "cross": "biomancy:block/flesh_tentacle"
-}
-}

@@ -15,9 +15,10 @@ public final class ModSoundEvents {
 
 	public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, BiomancyMod.MOD_ID);
 
-	public static final RegistryObject<SoundEvent> WAH_WAH = registerSoundEvent("wahwah");
 	public static final RegistryObject<SoundEvent> INJECT = registerSoundEvent("inject");
-	//	public static final RegistryObject<SoundEvent> SQUISH_0 = registerSoundEvent("squish_0");
+	public static final RegistryObject<SoundEvent> FLESH_BLOCK_PLACE = registerSoundEvent("flesh_block.place");
+	public static final RegistryObject<SoundEvent> FLESH_BLOCK_HIT = registerSoundEvent("flesh_block.hit");
+	public static final RegistryObject<SoundEvent> FLESH_BLOCK_STEP = registerSoundEvent("flesh_block.step");
 
 	public static final SoundEvent FAIL = SoundEvents.DISPENSER_FAIL;
 

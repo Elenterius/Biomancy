@@ -1,6 +1,0 @@
-{
-  "parent": "biomancy:block/template_irisdoor_middle",
-  "textures": {
-    "texture": "biomancy:block/flesh_irisdoor_open"
-  }
-}

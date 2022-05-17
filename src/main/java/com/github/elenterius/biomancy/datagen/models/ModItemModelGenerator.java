@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import net.minecraft.core.Registry;
 import net.minecraft.data.models.model.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraftforge.registries.RegistryObject;
@@ -33,6 +34,11 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 
 	private void generateFlat(Item item, ModelTemplate modelTemplate) {
 		modelTemplate.create(ModelLocationUtils.getModelLocation(item), TextureMapping.layer0(item), modelOutput);
+	}
+
+	private void generateFlatBlock(BlockItem item, ModelTemplate modelTemplate) {
+		TextureMapping textureMapping = new TextureMapping().put(TextureSlot.LAYER0, TextureMapping.getBlockTexture(item.getBlock()));
+		modelTemplate.create(ModelLocationUtils.getModelLocation(item), textureMapping, modelOutput);
 	}
 
 	private void generateFlat(Item item, String suffix, ModelTemplate modelTemplate) {
@@ -109,7 +115,6 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 		generateComponent(ModItems.VOLATILE_EXTRACT.get());
 		generateComponent(ModItems.BILE_EXTRACT.get());
 
-//		generateFlat(ModItems.LARYNX.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.MOB_FANG.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.MOB_CLAW.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.MOB_SINEW.get(), ModelTemplates.FLAT_ITEM);
@@ -141,7 +146,7 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 		generateSerum(ModItems.ADRENALINE_SERUM.get());
 		generateSerum(ModItems.DECAY_AGENT.get());
 
-		generateSerum(ModItems.ICHOR_SERUM.get());
+//		generateSerum(ModItems.ICHOR_SERUM.get());
 
 		generateSerum(ModItems.ORGANIC_COMPOUND.get());
 		generateSerum(ModItems.UNSTABLE_COMPOUND.get());
@@ -155,6 +160,8 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 
 		generateFlat(ModItems.FLESH_DOOR.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.FLESHKIN_DOOR.get(), ModelTemplates.FLAT_ITEM);
+		generateFlatBlock(ModItems.FLESH_LADDER.get(), ModelTemplates.FLAT_ITEM);
+		generateFlatBlock(ModItems.MALIGNANT_FLESH_VEINS.get(), ModelTemplates.FLAT_ITEM);
 
 		//generate models for all eggs
 		ModItems.ITEMS.getEntries().stream().map(RegistryObject::get).filter(SpawnEggItem.class::isInstance).forEach(item -> generateFlat(item, EGG_MODEL_TEMPLATE));

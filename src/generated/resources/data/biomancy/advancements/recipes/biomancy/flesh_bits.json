@@ -6,13 +6,13 @@
     ]
   },
   "criteria": {
-    "has_flesh_block": {
+    "has_flesh": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:flesh_block"
+              "biomancy:flesh"
             ]
           }
         ]
@@ -27,8 +27,7 @@
   },
   "requirements": [
     [
-      "has_flesh_block",
-      "has_the_recipe"
+      "has_flesh", "has_the_recipe"
     ]
   ]
 }
