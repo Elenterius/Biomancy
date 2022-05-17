@@ -1,9 +1,12 @@
 package com.github.elenterius.biomancy.world.block;
 
 import com.github.elenterius.biomancy.init.ModBlocks;
+import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.world.block.property.Orientation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -16,7 +19,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LadderBlock;
-import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -132,8 +134,12 @@ public class IrisDoorBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	protected void triggerEvents(@Nullable Player player, Level level, BlockPos pos, boolean open) {
-		level.levelEvent(player, open ? LevelEvent.SOUND_OPEN_WOODEN_TRAP_DOOR : LevelEvent.SOUND_CLOSE_WOODEN_TRAP_DOOR, pos, 0);
+		playSound(player, level, pos, open ? ModSoundEvents.FLESHY_DOOR_OPEN.get() : ModSoundEvents.FLESHY_DOOR_CLOSE.get());
 		level.gameEvent(player, open ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
+	}
+
+	private void playSound(@Nullable Player player, Level level, BlockPos pos, SoundEvent sound) {
+		level.playSound(player, pos, sound, SoundSource.BLOCKS, 1f, level.random.nextFloat() * 0.1f + 0.9f);
 	}
 
 	@Override
@@ -203,7 +209,7 @@ public class IrisDoorBlock extends Block implements SimpleWaterloggedBlock {
 
 	@Override
 	public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos) {
-		if (state.getValue(WATERLOGGED)) {
+		if (isWaterlogged(state)) {
 			level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
 		return super.updateShape(state, direction, neighborState, level, currentPos, neighborPos);

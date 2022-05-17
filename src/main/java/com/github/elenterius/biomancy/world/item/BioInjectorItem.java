@@ -86,7 +86,7 @@ public class BioInjectorItem extends Item implements IKeyListener, IBiomancyItem
 	@Override
 	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, ClientLevel level, Player player, byte flags) {
 		if (!interactWithPlayerSelf(stack, player)) {
-			ModSoundEvents.playItemSFX(level, player, ModSoundEvents.FAIL);
+			ModSoundEvents.localItemSFX(level, player, ModSoundEvents.FAIL);
 			return InteractionResultHolder.fail(flags); //don't send button press to server
 		}
 		return InteractionResultHolder.success(flags);
@@ -95,10 +95,10 @@ public class BioInjectorItem extends Item implements IKeyListener, IBiomancyItem
 	@Override
 	public void onServerReceiveKeyPress(ItemStack stack, ServerLevel level, Player player, byte flags) {
 		if (interactWithPlayerSelf(stack, player)) {
-			ModSoundEvents.playItemSFX(level, player, ModSoundEvents.INJECT.get());
+			ModSoundEvents.broadcastItemSFX(level, player, ModSoundEvents.INJECT.get());
 		}
 		else {
-			ModSoundEvents.playItemSFX(level, player, ModSoundEvents.FAIL);
+			ModSoundEvents.broadcastItemSFX(level, player, ModSoundEvents.FAIL);
 		}
 	}
 
@@ -118,14 +118,14 @@ public class BioInjectorItem extends Item implements IKeyListener, IBiomancyItem
 					if (player == null || !player.isCreative()) consumeSerum(stack, serum, player);
 					level.levelEvent(LevelEvent.PARTICLES_PLANT_GROWTH, context.getClickedPos().above(), 0);
 					if (player != null) {
-						ModSoundEvents.playItemSFX(level, player, ModSoundEvents.INJECT.get());
+						ModSoundEvents.broadcastItemSFX((ServerLevel) level, player, ModSoundEvents.INJECT.get());
 						stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
 					}
 				}
 				return InteractionResult.sidedSuccess(level.isClientSide);
 			}
 
-			if (level.isClientSide && player != null) ModSoundEvents.playItemSFX(level, player, ModSoundEvents.FAIL);
+			if (level.isClientSide && player != null) ModSoundEvents.localItemSFX((ClientLevel) level, player, ModSoundEvents.FAIL);
 			return InteractionResult.FAIL;
 		}
 
@@ -145,7 +145,7 @@ public class BioInjectorItem extends Item implements IKeyListener, IBiomancyItem
 					stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
 
 					interactionTarget.level.levelEvent(LevelEvent.PARTICLES_DRAGON_BLOCK_BREAK, interactionTarget.blockPosition(), 0);
-					ModSoundEvents.playItemSFX(interactionTarget.level, player, ModSoundEvents.INJECT.get());
+					ModSoundEvents.broadcastItemSFX((ServerLevel) interactionTarget.level, player, ModSoundEvents.INJECT.get());
 					return InteractionResult.CONSUME;
 				}
 			}
@@ -153,7 +153,7 @@ public class BioInjectorItem extends Item implements IKeyListener, IBiomancyItem
 				stack.hurtAndBreak(2, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
 			}
 
-			if (player.level.isClientSide) ModSoundEvents.playItemSFX(player.level, player, ModSoundEvents.FAIL);
+			if (player.level.isClientSide) ModSoundEvents.localItemSFX((ClientLevel) player.level, player, ModSoundEvents.FAIL);
 			return InteractionResult.FAIL;
 		}
 

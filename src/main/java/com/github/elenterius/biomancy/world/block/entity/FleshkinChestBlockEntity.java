@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.world.block.entity;
 
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModDamageSources;
+import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.network.ISyncableAnimation;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
@@ -13,7 +14,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.Entity;
@@ -55,12 +55,12 @@ public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implem
 	private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
 		@Override
 		protected void onOpen(Level level, BlockPos pos, BlockState state) {
-			playSound(level, pos, SoundEvents.CHEST_OPEN);
+			playSound(level, pos, ModSoundEvents.FLESHKIN_CHEST_OPEN.get());
 		}
 
 		@Override
 		protected void onClose(Level level, BlockPos pos, BlockState state) {
-			playSound(level, pos, SoundEvents.CHEST_CLOSE);
+			playSound(level, pos, ModSoundEvents.FLESHKIN_CHEST_CLOSE.get());
 		}
 
 		@Override

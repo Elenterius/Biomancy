@@ -94,7 +94,7 @@ public class BioExtractorItem extends Item implements IKeyListener, IBiomancyIte
 	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, ClientLevel level, Player player, byte flags) {
 		//TODO: add cooldown?
 		if (!interactWithPlayerSelf(stack, player)) {
-			ModSoundEvents.playItemSFX(level, player, ModSoundEvents.FAIL);
+			ModSoundEvents.localItemSFX(level, player, ModSoundEvents.FAIL);
 			return InteractionResultHolder.fail(flags); //don't send button press to server
 		}
 		return InteractionResultHolder.success(flags);
@@ -102,14 +102,14 @@ public class BioExtractorItem extends Item implements IKeyListener, IBiomancyIte
 
 	@Override
 	public void onServerReceiveKeyPress(ItemStack stack, ServerLevel level, Player player, byte flags) {
-		ModSoundEvents.playItemSFX(level, player, interactWithPlayerSelf(stack, player) ? ModSoundEvents.INJECT.get() : ModSoundEvents.FAIL);
+		ModSoundEvents.broadcastItemSFX(level, player, interactWithPlayerSelf(stack, player) ? ModSoundEvents.INJECT.get() : ModSoundEvents.FAIL);
 	}
 
 	@Override
 	public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity interactionTarget, InteractionHand usedHand) {
 		//the device is empty
-		if (!interactionTarget.level.isClientSide && extractEssence(stack, player, interactionTarget)) {
-			ModSoundEvents.playItemSFX(interactionTarget.level, player, ModSoundEvents.INJECT.get());
+		if (interactionTarget.level instanceof ServerLevel serverLevel && extractEssence(stack, player, interactionTarget)) {
+			ModSoundEvents.broadcastItemSFX(serverLevel, player, ModSoundEvents.INJECT.get());
 
 			//fix for creative mode (normally the stack is not modified in creative)
 			if (player.isCreative()) player.setItemInHand(usedHand, stack);

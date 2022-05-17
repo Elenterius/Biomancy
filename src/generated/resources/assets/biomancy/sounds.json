@@ -8,19 +8,61 @@
   "flesh_block.hit": {
     "subtitle": "sounds.biomancy.flesh_block.hit",
     "sounds": [
-      "biomancy:flesh_block.hit"
+      "biomancy:flesh_block.hit_1_2", "biomancy:flesh_block.hit_1_3", "biomancy:flesh_block.hit_1_6", "biomancy:flesh_block.hit_2_2"
     ]
   },
   "flesh_block.place": {
     "subtitle": "sounds.biomancy.flesh_block.place",
     "sounds": [
-      "biomancy:flesh_block.place"
+      "biomancy:flesh_block.place_1_4", "biomancy:flesh_block.place_3"
     ]
   },
   "flesh_block.step": {
     "subtitle": "sounds.biomancy.flesh_block.step",
     "sounds": [
-      "biomancy:flesh_block.step"
+      "biomancy:flesh_block.step_1", "biomancy:flesh_block.step_2", "biomancy:flesh_block.step_3", "biomancy:flesh_block.step_4"
+    ]
+  },
+  "flesh_block.break": {
+    "subtitle": "sounds.biomancy.flesh_block.break",
+    "sounds": [
+      "biomancy:flesh_block.break_5", "biomancy:flesh_block.break_6"
+    ]
+  },
+  "flesh_block.fall": {
+    "subtitle": "sounds.biomancy.flesh_block.fall",
+    "sounds": [
+      {
+        "name": "block.slime_block.fall",
+        "type": "event"
+      }
+    ]
+  },
+  "fleshy_door.open": {
+    "subtitle": "sounds.biomancy.fleshy_door.open",
+    "sounds": [
+      "biomancy:fleshy_door.open_1"
+    ]
+  },
+  "fleshy_door.close": {
+    "subtitle": "sounds.biomancy.fleshy_door.close",
+    "sounds": [
+      {
+        "name": "block.wooden_door.close",
+        "type": "event"
+      }
+    ]
+  },
+  "fleshkin_chest.open": {
+    "subtitle": "sounds.biomancy.fleshkin_chest.open",
+    "sounds": [
+      "biomancy:fleshkin_chest.open_1"
+    ]
+  },
+  "fleshkin_chest.close": {
+    "subtitle": "sounds.biomancy.fleshkin_chest.close",
+    "sounds": [
+      "biomancy:fleshkin_chest.close_1", "biomancy:fleshkin_chest.close_1_1"
     ]
   }
 }
