@@ -22,6 +22,7 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 	@Override
 	public void registerSounds() {
 		addSimpleSound(ModSoundEvents.INJECT);
+		addSimpleRedirect(ModSoundEvents.ACTION_FAIL, SoundEvents.DISPENSER_FAIL);
 
 		addSimpleSounds(ModSoundEvents.FLESH_BLOCK_HIT, "1_2", "1_3", "1_6", "2_2");
 		addSimpleSounds(ModSoundEvents.FLESH_BLOCK_PLACE, "1_4", "3");

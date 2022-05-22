@@ -1,0 +1,114 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "injector.anim.inject": {
+      "animation_length": 0.92,
+      "bones": {
+        "injector": {
+          "rotation": {
+            "0.0": {
+              "vector": [0, 0, 0]
+            },
+            "0.2": {
+              "vector": [0, 0, 0]
+            },
+            "0.32": {
+              "vector": [0, 0, 55],
+              "easing": "easeOutSine"
+            },
+            "0.48": {
+              "vector": [0, 0, 55]
+            },
+            "0.72": {
+              "vector": [0, 0, 0],
+              "easing": "easeOutSine"
+            }
+          },
+          "position": {
+            "0.0": {
+              "vector": [0, 0, 0]
+            },
+            "0.2": {
+              "vector": [0, 0, 1],
+              "easing": "easeOutSine"
+            },
+            "0.32": {
+              "vector": [-2, 0, -7],
+              "easing": "easeOutSine"
+            },
+            "0.48": {
+              "vector": [-2, 0, -7],
+              "easing": "easeOutSine"
+            },
+            "0.72": {
+              "vector": [0, 0, 0],
+              "easing": "easeOutSine"
+            }
+          }
+        }
+      },
+      "sound_effects": {
+        "0.32": {
+          "effect": "inject"
+        }
+      }
+    },
+    "injector.anim.inject.self": {
+      "animation_length": 0.92,
+      "bones": {
+        "injector": {
+          "rotation": {
+            "0.0": {
+              "vector": [0, 0, 0]
+            },
+            "0.2": {
+              "vector": [0, -35, 0]
+            },
+            "0.32": {
+              "vector": [0, -105, 0]
+            },
+            "0.48": {
+              "vector": [0, -105, 0]
+            },
+            "0.88": {
+              "vector": [0, 0, 0]
+            }
+          },
+          "position": {
+            "0.0": {
+              "vector": [0, 0, 0]
+            },
+            "0.08": {
+              "vector": [0, 0, 3]
+            },
+            "0.2": {
+              "vector": [-3, 0, 4],
+              "easing": "easeOutSine"
+            },
+            "0.32": {
+              "vector": [2, 0, 4],
+              "easing": "easeInSine"
+            },
+            "0.48": {
+              "vector": [2, 0, 4],
+              "easing": "easeInSine"
+            },
+            "0.68": {
+              "vector": [-1, 0, 2],
+              "easing": "easeOutSine"
+            },
+            "0.88": {
+              "vector": [0, 0, 0]
+            }
+          }
+        }
+      },
+      "sound_effects": {
+        "0.32": {
+          "effect": "inject"
+        }
+      }
+    }
+  },
+  "geckolib_format_version": 2
+}

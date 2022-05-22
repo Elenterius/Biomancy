@@ -1,11 +1,8 @@
 package com.github.elenterius.biomancy.world.serum;
 
 import com.github.elenterius.biomancy.init.ModMobEffects;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,11 +12,7 @@ import net.minecraft.world.entity.animal.horse.ZombieHorse;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
@@ -32,33 +25,34 @@ public class DecaySerum extends Serum {
 		super(colorIn);
 	}
 
-	@Override
-	public boolean affectBlock(CompoundTag tag, @Nullable LivingEntity source, Level world, BlockPos pos, Direction facing) {
-		BlockState state = world.getBlockState(pos);
-		Block block = state.getBlock();
+	//TODO: use withering ooze for this?
+//	@Override
+//	public boolean affectBlock(CompoundTag tag, @Nullable LivingEntity source, Level world, BlockPos pos, Direction facing) {
+//		BlockState state = world.getBlockState(pos);
+//		Block block = state.getBlock();
 
 //		if (block == ModBlocks.FLESH_BLOCK.get()) {
 //			if (!world.isClientSide) world.setBlockAndUpdate(pos, ModBlocks.NECROTIC_FLESH_BLOCK.get().defaultBlockState());
 //			return true;
 //		}
 //		else
-		if (block == Blocks.SWEET_BERRY_BUSH || BlockTags.SAPLINGS.contains(block)) {
-			if (!world.isClientSide) world.setBlockAndUpdate(pos, Blocks.DEAD_BUSH.defaultBlockState());
-			return true;
-		}
-		else if (block == Blocks.SPRUCE_LEAVES && world.getBlockState(pos.below()).is(BlockTags.DIRT)) {
-			if (!world.isClientSide) {
-				world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-				world.setBlockAndUpdate(pos.below(), Blocks.PODZOL.defaultBlockState());
-			}
-			return true;
-		}
-
-		return false;
-	}
+//		if (block == Blocks.SWEET_BERRY_BUSH || BlockTags.SAPLINGS.contains(block)) {
+//			if (!world.isClientSide) world.setBlockAndUpdate(pos, Blocks.DEAD_BUSH.defaultBlockState());
+//			return true;
+//		}
+//		else if (block == Blocks.SPRUCE_LEAVES && world.getBlockState(pos.below()).is(BlockTags.DIRT)) {
+//			if (!world.isClientSide) {
+//				world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+//				world.setBlockAndUpdate(pos.below(), Blocks.PODZOL.defaultBlockState());
+//			}
+//			return true;
+//		}
+//
+//		return false;
+//	}
 
 	@Override
-	public boolean affectEntity(CompoundTag nbt, @Nullable LivingEntity source, LivingEntity target) {
+	public void affectEntity(CompoundTag nbt, @Nullable LivingEntity source, LivingEntity target) {
 		if (!target.level.isClientSide) {
 			Collection<MobEffectInstance> effects = target.getActiveEffects();
 			int amplifier = 0;
@@ -77,11 +71,10 @@ public class DecaySerum extends Serum {
 				target.addEffect(effectInstance);
 			}
 		}
-		return true;
 	}
 
 	@Override
-	public boolean affectPlayerSelf(CompoundTag nbt, Player targetSelf) {
+	public void affectPlayerSelf(CompoundTag nbt, Player targetSelf) {
 		if (!targetSelf.level.isClientSide) {
 			Collection<MobEffectInstance> effects = targetSelf.getActiveEffects();
 			int amplifier = 0;
@@ -96,7 +89,6 @@ public class DecaySerum extends Serum {
 			MobEffectInstance effectInstance = new MobEffectInstance(ModMobEffects.FLESH_EATING_DISEASE.get(), 5 * 120 + duration, amplifier);
 			targetSelf.addEffect(effectInstance);
 		}
-		return true;
 	}
 
 	private boolean convertLivingEntity(ServerLevel level, LivingEntity target, int amplifier) {

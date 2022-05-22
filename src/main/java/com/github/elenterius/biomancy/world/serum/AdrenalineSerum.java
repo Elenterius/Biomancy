@@ -5,8 +5,6 @@ import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
 import com.github.elenterius.biomancy.world.item.SerumItem;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -37,21 +35,16 @@ public class AdrenalineSerum extends Serum {
 	}
 
 	@Override
-	public boolean affectBlock(CompoundTag tag, @Nullable LivingEntity source, Level level, BlockPos pos, Direction facing) {
-		return false;
+	public void affectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
+		addStatusEffect(target);
 	}
 
 	@Override
-	public boolean affectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
-		return addStatusEffect(target);
+	public void affectPlayerSelf(CompoundTag tag, Player targetSelf) {
+		addStatusEffect(targetSelf);
 	}
 
-	@Override
-	public boolean affectPlayerSelf(CompoundTag tag, Player targetSelf) {
-		return addStatusEffect(targetSelf);
-	}
-
-	public boolean addStatusEffect(LivingEntity target) {
+	public void addStatusEffect(LivingEntity target) {
 		if (!target.level.isClientSide) {
 			int duration = DURATION;
 			MobEffectInstance effectInstance = target.getEffect(ModMobEffects.ADRENAL_FATIGUE.get());
@@ -61,7 +54,6 @@ public class AdrenalineSerum extends Serum {
 			}
 			target.addEffect(new MobEffectInstance(ModMobEffects.ADRENALINE_RUSH.get(), duration, AMPLIFIER));
 		}
-		return true;
 	}
 
 	@OnlyIn(Dist.CLIENT)

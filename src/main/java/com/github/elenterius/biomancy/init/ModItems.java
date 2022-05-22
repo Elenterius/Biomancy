@@ -61,7 +61,7 @@ public final class ModItems {
 	public static final RegistryObject<SimpleItem> UNSTABLE_COMPOUND = registerSimpleItem("volatile_compound");
 	public static final RegistryObject<SimpleItem> GENETIC_COMPOUND = registerSimpleItem("genetic_compound");
 
-	public static final RegistryObject<SerumItem> GENERIC_SERUM = ITEMS.register("generic_serum", () -> new SerumItem.Generic(createBaseProperties().stacksTo(8)));
+	public static final RegistryObject<DynamicSerumItem> GENERIC_SERUM = ITEMS.register("generic_serum", () -> new DynamicSerumItem(createBaseProperties().stacksTo(8)));
 	public static final RegistryObject<SerumItem> REJUVENATION_SERUM = ITEMS.register("rejuvenation_serum", () -> new SerumItem(createBaseProperties().stacksTo(8), ModSerums.REJUVENATION_SERUM));
 	public static final RegistryObject<SerumItem> GROWTH_SERUM = ITEMS.register("growth_serum", () -> new SerumItem(createBaseProperties().stacksTo(8), ModSerums.GROWTH_SERUM));
 	public static final RegistryObject<SerumItem> BREEDING_STIMULANT = ITEMS.register("breeding_stimulant", () -> new SerumItem(createBaseProperties().stacksTo(8), ModSerums.BREEDING_STIMULANT));
@@ -77,7 +77,7 @@ public final class ModItems {
 	public static final RegistryObject<SimpleItem> OCULUS = ITEMS.register("oculus", () -> new SimpleItem(createBaseProperties().food(ModFoods.OCULUS).rarity(ModRarities.UNCOMMON)));
 	public static final RegistryObject<EssenceItem> ESSENCE = ITEMS.register("essence", () -> new EssenceItem(createBaseProperties()));
 	public static final RegistryObject<BioExtractorItem> BIO_EXTRACTOR = ITEMS.register("bio_extractor", () -> new BioExtractorItem(createBaseProperties().durability(200)));
-	public static final RegistryObject<BioInjectorItem> BIO_INJECTOR = ITEMS.register("bio_injector", () -> new BioInjectorItem(createBaseProperties().durability(200)));
+	public static final RegistryObject<InjectorItem> INJECTOR = ITEMS.register("injector", () -> new InjectorItem(createBaseProperties().durability(200)));
 	public static final RegistryObject<ControlStaffItem> CONTROL_STAFF = ITEMS.register("control_staff", () -> new ControlStaffItem(createBaseProperties().stacksTo(1).rarity(ModRarities.ULTRA_RARE)));
 
 	//# Weapons

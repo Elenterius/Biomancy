@@ -5,6 +5,15 @@
       "biomancy:inject"
     ]
   },
+  "action.fail": {
+    "subtitle": "sounds.biomancy.action.fail",
+    "sounds": [
+      {
+        "name": "block.dispenser.fail",
+        "type": "event"
+      }
+    ]
+  },
   "flesh_block.hit": {
     "subtitle": "sounds.biomancy.flesh_block.hit",
     "sounds": [

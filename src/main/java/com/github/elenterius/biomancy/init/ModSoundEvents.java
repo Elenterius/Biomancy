@@ -4,7 +4,6 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -17,6 +16,9 @@ public final class ModSoundEvents {
 	public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, BiomancyMod.MOD_ID);
 
 	public static final RegistryObject<SoundEvent> INJECT = registerSoundEvent("inject");
+	public static final RegistryObject<SoundEvent> ACTION_FAIL = registerSoundEvent("action.fail");
+
+	//# Blocks
 	public static final RegistryObject<SoundEvent> FLESH_BLOCK_PLACE = registerSoundEvent("flesh_block.place");
 	public static final RegistryObject<SoundEvent> FLESH_BLOCK_HIT = registerSoundEvent("flesh_block.hit");
 	public static final RegistryObject<SoundEvent> FLESH_BLOCK_BREAK = registerSoundEvent("flesh_block.break");
@@ -26,8 +28,6 @@ public final class ModSoundEvents {
 	public static final RegistryObject<SoundEvent> FLESHY_DOOR_CLOSE = registerSoundEvent("fleshy_door.close");
 	public static final RegistryObject<SoundEvent> FLESHKIN_CHEST_OPEN = registerSoundEvent("fleshkin_chest.open");
 	public static final RegistryObject<SoundEvent> FLESHKIN_CHEST_CLOSE = registerSoundEvent("fleshkin_chest.close");
-
-	public static final SoundEvent FAIL = SoundEvents.DISPENSER_FAIL;
 
 	private ModSoundEvents() {}
 

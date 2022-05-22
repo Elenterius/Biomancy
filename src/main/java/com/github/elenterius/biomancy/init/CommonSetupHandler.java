@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.init;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import com.github.elenterius.biomancy.world.item.BioExtractorItem;
-import com.github.elenterius.biomancy.world.item.BioInjectorItem;
+import com.github.elenterius.biomancy.world.item.InjectorItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
@@ -44,11 +44,11 @@ public final class CommonSetupHandler {
 			}
 		});
 
-		DispenserBlock.registerBehavior(ModItems.BIO_INJECTOR.get(), new OptionalDispenseItemBehavior() {
+		DispenserBlock.registerBehavior(ModItems.INJECTOR.get(), new OptionalDispenseItemBehavior() {
 			@Override
 			protected ItemStack execute(BlockSource source, ItemStack stack) {
 				BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
-				setSuccess(BioInjectorItem.tryInjectLivingEntity(source.getLevel(), pos, stack));
+				setSuccess(InjectorItem.tryInjectLivingEntity(source.getLevel(), pos, stack));
 				if (isSuccess() && stack.hurt(1, source.getLevel().getRandom(), null)) {
 					stack.setCount(0);
 				}

@@ -94,7 +94,7 @@ public class BioExtractorItem extends Item implements IKeyListener, IBiomancyIte
 	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, ClientLevel level, Player player, byte flags) {
 		//TODO: add cooldown?
 		if (!interactWithPlayerSelf(stack, player)) {
-			ModSoundEvents.localItemSFX(level, player, ModSoundEvents.FAIL);
+			ModSoundEvents.localItemSFX(level, player, ModSoundEvents.ACTION_FAIL.get());
 			return InteractionResultHolder.fail(flags); //don't send button press to server
 		}
 		return InteractionResultHolder.success(flags);
@@ -102,7 +102,7 @@ public class BioExtractorItem extends Item implements IKeyListener, IBiomancyIte
 
 	@Override
 	public void onServerReceiveKeyPress(ItemStack stack, ServerLevel level, Player player, byte flags) {
-		ModSoundEvents.broadcastItemSFX(level, player, interactWithPlayerSelf(stack, player) ? ModSoundEvents.INJECT.get() : ModSoundEvents.FAIL);
+		ModSoundEvents.broadcastItemSFX(level, player, interactWithPlayerSelf(stack, player) ? ModSoundEvents.INJECT.get() : ModSoundEvents.ACTION_FAIL.get());
 	}
 
 	@Override

@@ -1,11 +1,8 @@
 package com.github.elenterius.biomancy.world.serum;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 
@@ -16,25 +13,19 @@ public class AbsorptionSerum extends Serum {
 	}
 
 	@Override
-	public boolean affectBlock(CompoundTag tag, @Nullable LivingEntity source, Level level, BlockPos pos, Direction facing) {
-		return false;
+	public void affectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
+		addAbsorption(target);
 	}
 
 	@Override
-	public boolean affectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
-		return addAbsorption(target);
+	public void affectPlayerSelf(CompoundTag tag, Player targetSelf) {
+		addAbsorption(targetSelf);
 	}
 
-	@Override
-	public boolean affectPlayerSelf(CompoundTag tag, Player targetSelf) {
-		return addAbsorption(targetSelf);
-	}
-
-	private boolean addAbsorption(LivingEntity target) {
+	private void addAbsorption(LivingEntity target) {
 		if (!target.level.isClientSide) {
 			target.setAbsorptionAmount(target.getAbsorptionAmount() + 8);
 		}
-		return true;
 	}
 
 }

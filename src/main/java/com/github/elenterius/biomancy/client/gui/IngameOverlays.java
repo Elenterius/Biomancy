@@ -3,20 +3,33 @@ package com.github.elenterius.biomancy.client.gui;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.world.entity.ownable.IControllableMob;
+import com.github.elenterius.biomancy.world.item.ISerumProvider;
+import com.github.elenterius.biomancy.world.item.InjectorItem;
 import com.github.elenterius.biomancy.world.item.weapon.IGun;
+import com.github.elenterius.biomancy.world.serum.Serum;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.gui.IIngameOverlay;
 import net.minecraftforge.client.gui.OverlayRegistry;
+
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 public final class IngameOverlays {
@@ -49,11 +62,26 @@ public final class IngameOverlays {
 		}
 	};
 
+	public static final IIngameOverlay INJECTOR_OVERLAY = (gui, poseStack, partialTicks, screenWidth, screenHeight) -> {
+		Minecraft minecraft = Minecraft.getInstance();
+		if (!minecraft.options.hideGui && minecraft.player != null) {
+			ItemStack itemStack = minecraft.player.getMainHandItem();
+			if (itemStack.isEmpty() || !(itemStack.getItem() instanceof InjectorItem injector)) return;
+
+			gui.setupOverlayRenderState(true, false);
+			gui.setBlitOffset(-90);
+
+			//TODO: enable when ready
+//			renderInjectorOverlay(gui, poseStack, partialTicks, screenWidth, screenHeight, minecraft.player, itemStack, injector);
+		}
+	};
+
 	private IngameOverlays() {}
 
 	public static void registerGameOverlays() {
 		OverlayRegistry.registerOverlayTop("Biomancy ControlStaff", CONTROL_STAFF_OVERLAY);
 		OverlayRegistry.registerOverlayTop("Biomancy Gun", GUN_OVERLAY);
+		OverlayRegistry.registerOverlayTop("Biomancy Injector", INJECTOR_OVERLAY);
 	}
 
 	static void renderCommandOverlay(PoseStack poseStack, int screenWidth, int screenHeight, IControllableMob.Command command) {
@@ -70,6 +98,86 @@ public final class IngameOverlays {
 		if (GuiUtil.isFirstPersonView()) {
 			renderReloadIndicator(gui, poseStack, screenWidth, screenHeight, player, stack, gun);
 		}
+	}
+
+	static WheelMenuHelper wheelMenuRenderer = new WheelMenuHelper();
+
+	static void renderInjectorOverlay(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight, LocalPlayer player, ItemStack injectorStack, InjectorItem injectorItem) {
+		if (GuiUtil.isFirstPersonView() && Screen.hasControlDown()) {
+
+			List<ItemStack> foundStacks = new ArrayList<>();
+			Object2IntArrayMap<Serum> foundSerums = new Object2IntArrayMap<>();
+
+			Inventory inventory = player.getInventory();
+			int slots = inventory.getContainerSize();
+			for (int i = 0; i < slots; i++) {
+				ItemStack stack = inventory.getItem(i);
+				Item item = stack.getItem();
+				if (item instanceof ISerumProvider serumProvider && !(item instanceof InjectorItem)) {
+					Serum serum = serumProvider.getSerum(stack);
+					if (serum != null) {
+						if (!foundSerums.containsKey(serum)) foundStacks.add(stack);
+						foundSerums.mergeInt(serum, stack.getCount(), Integer::sum);
+					}
+				}
+			}
+
+			wheelMenuRenderer.ticks++;
+			wheelMenuRenderer.render(poseStack, partialTicks, screenWidth, screenHeight, foundStacks);
+		}
+		else {
+			wheelMenuRenderer.ticks -= 2;
+			wheelMenuRenderer.render(poseStack, partialTicks, screenWidth, screenHeight);
+		}
+	}
+
+	static class WheelMenuHelper {
+		static final float DIAGONAL_OF_ITEM = Mth.SQRT_OF_TWO * 32; // 16 * 2
+		static final int HALF_OFFSET = 8;
+		static final int DURATION = 25;
+		int ticks = 0;
+		List<ItemStack> cachedStacks;
+
+		void render(PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight) {
+			render(poseStack, partialTicks, screenWidth, screenHeight, cachedStacks);
+		}
+
+		void render(PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight, @Nullable List<ItemStack> stacks) {
+			if (stacks == null || stacks.isEmpty()) return;
+
+			float time = ticks + partialTicks;
+
+			if (time < 0) {
+				cachedStacks = null;
+				ticks = 0;
+				return;
+			}
+			if (time > DURATION) {
+				ticks = DURATION;
+				time = DURATION;
+			}
+			cachedStacks = stacks;
+
+			int segments = stacks.size();
+			float angleIncrement = Mth.TWO_PI / segments;
+			float baseRadius = DIAGONAL_OF_ITEM / angleIncrement;
+			int radius = Mth.floor((baseRadius + HALF_OFFSET) * (time / DURATION));
+
+			int x = screenWidth / 2;
+			int y = screenHeight / 2;
+			GuiComponent.fill(poseStack, x - radius, y - radius, x + radius, y + radius, ColorTheme.TOOLTIP_BACKGROUND_ARGB);
+
+			ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
+			radius = Mth.floor(baseRadius * (time / DURATION));
+			for (int i = 0; i < segments; i++) {
+				int v = Mth.floor(radius * Mth.cos(i * angleIncrement - Mth.HALF_PI));
+				int w = Mth.floor(radius * Mth.sin(i * angleIncrement - Mth.HALF_PI));
+				itemRenderer.renderAndDecorateFakeItem(stacks.get(i), x + v - HALF_OFFSET, y + w - HALF_OFFSET);
+			}
+
+
+		}
+
 	}
 
 	static void renderOrnateCorner(PoseStack poseStack, int x, int y) {
