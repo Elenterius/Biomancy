@@ -13,8 +13,8 @@ displayName = "Biomancy"
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/biomancy" #optional
 logoFile = "text_logo.png" #optional
 logoBlur = false
-credits = "I grateful to thank RhinoW for their artwork and game design help. Selea for feeback and help"
-authors = "Elenterius, RhinoW"
+credits = "RhinoW for artwork and game design help. Shorepion for sound desing and music. Selea for general feeback and help with version 1.0"
+authors = "Elenterius, RhinoW, Shorepion"
 description = '''Biopunk and Flesh Magic inspired tech-magic mod that has a fleshy art theme.'''
 
 [[dependencies.biomancy]]
@@ -27,7 +27,7 @@ side = "BOTH"
 [[dependencies.biomancy]]
 modId = "geckolib3"
 mandatory = true
-versionRange = "[3.0.3,)"
+versionRange = "[3.0.11,)"
 ordering = "BEFORE"
 side = "BOTH"
 
