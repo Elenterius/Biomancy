@@ -51,20 +51,21 @@ public final class TooltipRenderHandler {
 		ItemStack stack = event.getItemStack();
 
 		if (stack.isEmpty() && isBiomancyScreen(Minecraft.getInstance().screen)) {
-			event.setBackground(0xFA301020);
-			event.setBorderStart(0xFF903E55);
-			event.setBorderEnd(0xFF5A233F);
+			event.setBackground(ColorTheme.TOOLTIP_BACKGROUND_ARGB);
+			event.setBorderStart(ColorTheme.TOOLTIP_BORDER_START_ARGB);
+			event.setBorderEnd(ColorTheme.TOOLTIP_BORDER_END_ARGB);
 		}
 		else if (isBiomancyItem(stack)) {
-			event.setBackground(0xFA301020);
+			event.setBackground(ColorTheme.TOOLTIP_BACKGROUND_ARGB);
 			int customColor = ModRarities.getRGBColor(stack);
 			if (customColor > -1) {
-				event.setBorderStart(0xFF_000000 | customColor); //convert rgb to argb color
-				event.setBorderEnd(0xFE_000000 | customColor); //fake darker color with lower alpha value
+				//convert rgb to argb color
+				event.setBorderStart(0xFE_000000 | customColor); //fake color difference with lower alpha value
+				event.setBorderEnd(0xFF_000000 | customColor);
 			}
 			else {
-				event.setBorderStart(0xFF903E55);
-				event.setBorderEnd(0xFF5A233F);
+				event.setBorderStart(ColorTheme.TOOLTIP_BORDER_START_ARGB);
+				event.setBorderEnd(ColorTheme.TOOLTIP_BORDER_END_ARGB);
 			}
 		}
 	}
