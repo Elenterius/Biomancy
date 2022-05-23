@@ -131,11 +131,11 @@ dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 
-    implementation fg.deobf('com.github.Elenterius:Combat-Commons:0.2.0-beta-1.18.1-forge')
-    implementation fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.11')
+//    implementation fg.deobf('com.github.Elenterius:Combat-Commons:0.2.0-beta-1.18.1-forge')
+    implementation fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.18')
 
-    compileOnly fg.deobf("mezz.jei:jei-${mc_version}:9.4.1.172:api") // compile against the JEI API but do not include it at runtime
-    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:9.4.1.172") // at runtime, use the full JEI jar
+    compileOnly fg.deobf("mezz.jei:jei-${mc_version}:9.5.5.174:api") // compile against the JEI API but do not include it at runtime
+    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:9.5.5.174") // at runtime, use the full JEI jar
 
 //    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.4-51:api")
 //    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.4-51")
@@ -200,7 +200,7 @@ jar {
         attributes([
                 "Specification-Title"     : "biomancy",
                 "Specification-Vendor"    : "Elenterius",
-                "Specification-Version"   : "1",
+                "Specification-Version"   : "2",
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.mod_version,
                 "Implementation-Vendor"   : "Elenterius",

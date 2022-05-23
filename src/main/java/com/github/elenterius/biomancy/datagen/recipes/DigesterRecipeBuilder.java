@@ -11,7 +11,7 @@ import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -87,7 +87,7 @@ public class DigesterRecipeBuilder implements IRecipeBuilder {
 		return setIngredient(Ingredient.of(item));
 	}
 
-	public DigesterRecipeBuilder setIngredient(Tag<Item> tag) {
+	public DigesterRecipeBuilder setIngredient(TagKey<Item> tag) {
 		return setIngredient(Ingredient.of(tag));
 	}
 

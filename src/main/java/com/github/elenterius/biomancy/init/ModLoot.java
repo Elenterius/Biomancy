@@ -12,7 +12,7 @@ import static com.github.elenterius.biomancy.BiomancyMod.createRL;
 
 public final class ModLoot {
 
-	public static final DeferredRegister<GlobalLootModifierSerializer<?>> GLOBAL_MODIFIERS = DeferredRegister.create(ForgeRegistries.LOOT_MODIFIER_SERIALIZERS, BiomancyMod.MOD_ID);
+	public static final DeferredRegister<GlobalLootModifierSerializer<?>> GLOBAL_MODIFIERS = DeferredRegister.create(ForgeRegistries.Keys.LOOT_MODIFIER_SERIALIZERS, BiomancyMod.MOD_ID);
 	public static final RegistryObject<GlobalLootModifierSerializer<DespoilMobLootModifier>> DESPOIL_SERIALIZER = GLOBAL_MODIFIERS.register("despoil_mob_loot", DespoilMobLootModifier.Serializer::new);
 
 	private ModLoot() {}
@@ -30,6 +30,7 @@ public final class ModLoot {
 		public static final ResourceLocation FLESH_BLOB_SIZE_10 = createRL("entities/flesh_blob/size_10");
 
 		private Entity() {}
+
 	}
 
 }

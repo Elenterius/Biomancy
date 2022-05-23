@@ -1,14 +1,14 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.common.Tags;
 
 public final class ModTags {
 	private ModTags() {}
@@ -21,17 +21,21 @@ public final class ModTags {
 	}
 
 	public static final class Items {
-		public static final Tags.IOptionalNamedTag<Item> RAW_MEATS = ItemTags.createOptional(BiomancyMod.createRL("raw_meats"));
-		public static final Tags.IOptionalNamedTag<Item> COOKED_MEATS = ItemTags.createOptional(BiomancyMod.createRL("cooked_meats"));
-		public static final Tags.IOptionalNamedTag<Item> SUGARS = ItemTags.createOptional(BiomancyMod.createRL("sugars"));
+		public static final TagKey<Item> RAW_MEATS = tag("raw_meats");
+		public static final TagKey<Item> COOKED_MEATS = tag("cooked_meats");
+		public static final TagKey<Item> SUGARS = tag("sugars");
 
-		public static final Tags.IOptionalNamedTag<Item> BIOMASS = ItemTags.createOptional(BiomancyMod.createRL("biomass"));
-		public static final Tags.IOptionalNamedTag<Item> POOR_BIOMASS = ItemTags.createOptional(BiomancyMod.createRL("poor_biomass"));
-		public static final Tags.IOptionalNamedTag<Item> AVERAGE_BIOMASS = ItemTags.createOptional(BiomancyMod.createRL("average_biomass"));
-		public static final Tags.IOptionalNamedTag<Item> GOOD_BIOMASS = ItemTags.createOptional(BiomancyMod.createRL("good_biomass"));
-		public static final Tags.IOptionalNamedTag<Item> SUPERB_BIOMASS = ItemTags.createOptional(BiomancyMod.createRL("superb_biomass"));
+		public static final TagKey<Item> BIOMASS = tag("biomass");
+		public static final TagKey<Item> POOR_BIOMASS = tag("poor_biomass");
+		public static final TagKey<Item> AVERAGE_BIOMASS = tag("average_biomass");
+		public static final TagKey<Item> GOOD_BIOMASS = tag("good_biomass");
+		public static final TagKey<Item> SUPERB_BIOMASS = tag("superb_biomass");
 
 		private Items() {}
+
+		private static TagKey<Item> tag(String name) {
+			return ItemTags.create(BiomancyMod.createRL(name));
+		}
 
 		private static void forceInit() {
 			//internal
@@ -40,9 +44,13 @@ public final class ModTags {
 	}
 
 	public static final class Blocks {
-		public static final Tag.Named<Block> FLESHY_FENCES = BlockTags.bind(BiomancyMod.createRLString("fleshy_fences"));
+		public static final TagKey<Block> FLESHY_FENCES = tag("fleshy_fences");
 
 		private Blocks() {}
+
+		private static TagKey<Block> tag(String name) {
+			return BlockTags.create(BiomancyMod.createRL(name));
+		}
 
 		private static void forceInit() {
 			//internal
@@ -51,16 +59,20 @@ public final class ModTags {
 	}
 
 	public static final class EntityTypes {
-		public static final Tags.IOptionalNamedTag<EntityType<?>> INFERNAL = EntityTypeTags.createOptional(BiomancyMod.createRL("infernal"));
+		public static final TagKey<EntityType<?>> INFERNAL = tag("infernal");
 
-		public static final Tag.Named<EntityType<?>> BOSSES = EntityTypeTags.bind("forge:bosses");
-		public static final Tag.Named<EntityType<?>> NOT_CLONEABLE = EntityTypeTags.bind(BiomancyMod.createRLString("not_cloneable"));
-		public static final Tag.Named<EntityType<?>> SHARP_FANG = EntityTypeTags.bind(BiomancyMod.createRLString("sharp_fang"));
-		public static final Tag.Named<EntityType<?>> SHARP_CLAW = EntityTypeTags.bind(BiomancyMod.createRLString("sharp_claw"));
-		public static final Tag.Named<EntityType<?>> VENOM_GLAND = EntityTypeTags.bind(BiomancyMod.createRLString("venom_gland"));
-		public static final Tag.Named<EntityType<?>> VOLATILE_GLAND = EntityTypeTags.bind(BiomancyMod.createRLString("volatile_gland"));
+		public static final TagKey<EntityType<?>> BOSSES = TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation("forge", "bosses"));
+		public static final TagKey<EntityType<?>> NOT_CLONEABLE = tag("not_cloneable");
+		public static final TagKey<EntityType<?>> SHARP_FANG = tag("sharp_fang");
+		public static final TagKey<EntityType<?>> SHARP_CLAW = tag("sharp_claw");
+		public static final TagKey<EntityType<?>> VENOM_GLAND = tag("venom_gland");
+		public static final TagKey<EntityType<?>> VOLATILE_GLAND = tag("volatile_gland");
 
 		private EntityTypes() {}
+
+		private static TagKey<EntityType<?>> tag(String name) {
+			return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, BiomancyMod.createRL(name));
+		}
 
 		private static void forceInit() {
 			//internal

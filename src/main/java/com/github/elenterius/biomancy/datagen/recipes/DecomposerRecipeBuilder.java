@@ -13,7 +13,7 @@ import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -60,11 +60,11 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 		return this;
 	}
 
-	public DecomposerRecipeBuilder setIngredient(Tag<Item> tagIn) {
+	public DecomposerRecipeBuilder setIngredient(TagKey<Item> tagIn) {
 		return setIngredient(Ingredient.of(tagIn));
 	}
 
-	public DecomposerRecipeBuilder setIngredient(Tag<Item> tagIn, int quantity) {
+	public DecomposerRecipeBuilder setIngredient(TagKey<Item> tagIn, int quantity) {
 		return setIngredient(Ingredient.of(tagIn), quantity);
 	}
 

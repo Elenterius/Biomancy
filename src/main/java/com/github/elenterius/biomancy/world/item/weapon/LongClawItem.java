@@ -3,7 +3,6 @@ package com.github.elenterius.biomancy.world.item.weapon;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
 import com.github.elenterius.biomancy.world.item.IBiomancyItem;
-import com.github.elenterius.combat_commons.entity.EntityAttributes;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
@@ -20,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.util.Lazy;
 
 import javax.annotation.Nullable;
@@ -54,14 +54,14 @@ public class LongClawItem extends ClawWeaponItem implements ICriticalHitEntity, 
 				builder.put(attribute, attributeModifier);
 			}
 		});
-		builder.put(EntityAttributes.ATTACK_REACH.get(), EXTENDED_CLAW_REACH_MODIFIER);
+		builder.put(ForgeMod.ATTACK_RANGE.get(), EXTENDED_CLAW_REACH_MODIFIER);
 		return builder.build();
 	}
 
 	@Override
 	protected void addAdditionalAttributeModifiers(ImmutableMultimap.Builder<Attribute, AttributeModifier> builder) {
 		super.addAdditionalAttributeModifiers(builder);
-		builder.put(EntityAttributes.ATTACK_REACH.get(), RETRACTED_CLAW_REACH_MODIFIER);
+		builder.put(ForgeMod.ATTACK_RANGE.get(), RETRACTED_CLAW_REACH_MODIFIER);
 	}
 
 	@Override

@@ -11,7 +11,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -35,7 +35,7 @@ public class ModAdvancementProvider extends AdvancementProvider {
 		return InventoryChangeTrigger.TriggerInstance.hasItems(items);
 	}
 
-	protected static InventoryChangeTrigger.TriggerInstance hasTag(Tag<Item> tag) {
+	protected static InventoryChangeTrigger.TriggerInstance hasTag(TagKey<Item> tag) {
 		return InventoryChangeTrigger.TriggerInstance.hasItems(ItemPredicate.Builder.item().of(tag).build());
 	}
 

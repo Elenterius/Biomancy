@@ -10,7 +10,7 @@ import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -41,7 +41,7 @@ public class ModRecipeProvider extends RecipeProvider {
 		return ItemPredicate.Builder.item().of(item).build();
 	}
 
-	protected static ItemPredicate createPredicate(Tag<Item> tag) {
+	protected static ItemPredicate createPredicate(TagKey<Item> tag) {
 		return ItemPredicate.Builder.item().of(tag).build();
 	}
 
@@ -59,8 +59,8 @@ public class ModRecipeProvider extends RecipeProvider {
 		return key != null ? key.getPath() : "unknown";
 	}
 
-	protected static String getTagName(Tag.Named<Item> tag) {
-		return tag.getName().getPath();
+	protected static String getTagName(TagKey<Item> tag) {
+		return tag.location().getPath();
 	}
 
 	protected static ResourceLocation getSimpleRecipeId(ItemLike itemLike) {

@@ -1,28 +1,21 @@
 # The overall format is standard TOML format, v0.5.0.
 modLoader = "javafml"
-loaderVersion = "[39,)" #This is typically bumped every Minecraft version by Forge
+loaderVersion = "[40,)" #This is typically bumped every Minecraft version by Forge
 license = "MIT"
 issueTrackerURL = "https://github.com/Elenterius/Biomancy/issues" #optional
-updateJSONURL = "https://github.com/Elenterius/Biomancy/blob/main/update.json?raw=true"
 showAsResourcePack = false
 
 [[mods]]
 modId = "biomancy"
 version = "${file.jarVersion}"
 displayName = "Biomancy"
+updateJSONURL = "https://github.com/Elenterius/Biomancy/blob/main/update.json?raw=true"
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/biomancy" #optional
 logoFile = "text_logo.png" #optional
 logoBlur = false
 credits = "RhinoW for artwork and game design help. Shorepion for sound desing and music. Selea for general feeback and help with version 1.0"
-authors = "Elenterius, RhinoW, Shorepion"
+authors = "\u00A72Elenterius\u00A7r, \u00A76RhinoW\u00A7r, \u00A75Shorepion"
 description = '''Biopunk and Flesh Magic inspired tech-magic mod that has a fleshy art theme.'''
-
-[[dependencies.biomancy]]
-modId = "combat_commons"
-mandatory = true
-versionRange = "[0.2.0-beta,)"
-ordering = "AFTER"
-side = "BOTH"
 
 [[dependencies.biomancy]]
 modId = "geckolib3"
@@ -34,13 +27,13 @@ side = "BOTH"
 [[dependencies.biomancy]]
 modId = "forge"
 mandatory = true
-versionRange = "[39,)"
+versionRange = "[40.1.21,)"
 ordering = "NONE"
 side = "BOTH" # BOTH, CLIENT or SERVER
 
 [[dependencies.biomancy]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.18,1.19)"
+versionRange = "[1.18.2,1.19)"
 ordering = "NONE"
 side = "BOTH"

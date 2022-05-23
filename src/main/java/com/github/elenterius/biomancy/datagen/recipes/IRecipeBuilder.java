@@ -7,7 +7,7 @@ import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
@@ -22,7 +22,7 @@ public interface IRecipeBuilder {
 		return inventoryTrigger(ItemPredicate.Builder.item().of(itemLike).build());
 	}
 
-	private InventoryChangeTrigger.TriggerInstance has(Tag<Item> tag) {
+	private InventoryChangeTrigger.TriggerInstance has(TagKey<Item> tag) {
 		return inventoryTrigger(ItemPredicate.Builder.item().of(tag).build());
 	}
 
@@ -35,8 +35,8 @@ public interface IRecipeBuilder {
 		return key != null ? key.getPath() : "unknown";
 	}
 
-	private String getTagName(Tag.Named<Item> tag) {
-		return tag.getName().getPath();
+	private String getTagName(TagKey<Item> tag) {
+		return tag.location().getPath();
 	}
 
 	IRecipeBuilder unlockedBy(String name, CriterionTriggerInstance criterionTrigger);
@@ -49,11 +49,11 @@ public interface IRecipeBuilder {
 		return unlockedBy("has_" + getItemName(itemLike), has(itemLike));
 	}
 
-	default IRecipeBuilder unlockedBy(Tag.Named<Item> tag, CriterionTriggerInstance criterionTrigger) {
+	default IRecipeBuilder unlockedBy(TagKey<Item> tag, CriterionTriggerInstance criterionTrigger) {
 		return unlockedBy("has_" + getTagName(tag), criterionTrigger);
 	}
 
-	default IRecipeBuilder unlockedBy(Tag.Named<Item> tag) {
+	default IRecipeBuilder unlockedBy(TagKey<Item> tag) {
 		return unlockedBy("has_" + getTagName(tag), has(tag));
 	}
 

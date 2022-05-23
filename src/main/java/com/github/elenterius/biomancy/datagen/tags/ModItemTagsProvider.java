@@ -74,11 +74,11 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 		addOptionalItemsTo(superbBiomass, "create:sweet_roll", "create:chocolate_glazed_berries", "create:honeyed_apple", "createfa:cheeseburger", "createfa:hamburger",
 				"rats:assorted_vegetables", "rats:rat_burger", "rats:potato_pancake", "rats:confit_byaldi", "createaddition:chocolate_cake");
 
-		TagsProvider.TagAppender<Item> builder = tag(ModTags.Items.BIOMASS);
-		builder.addOptionalTag(ModTags.Items.POOR_BIOMASS.getName());
-		builder.addOptionalTag(ModTags.Items.AVERAGE_BIOMASS.getName());
-		builder.addOptionalTag(ModTags.Items.GOOD_BIOMASS.getName());
-		builder.addOptionalTag(ModTags.Items.SUPERB_BIOMASS.getName());
+		TagsProvider.TagAppender<Item> biomass = tag(ModTags.Items.BIOMASS);
+		biomass.addOptionalTag(ModTags.Items.POOR_BIOMASS.location());
+		biomass.addOptionalTag(ModTags.Items.AVERAGE_BIOMASS.location());
+		biomass.addOptionalTag(ModTags.Items.GOOD_BIOMASS.location());
+		biomass.addOptionalTag(ModTags.Items.SUPERB_BIOMASS.location());
 
 //		tag(ItemTags.FENCES).getInternalBuilder().addTag(ModTags.Blocks.FLESHY_FENCES.getName(), BiomancyMod.MOD_ID);
 	}

@@ -14,7 +14,7 @@ import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -93,7 +93,7 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 		return setReactant(Ingredient.of(item));
 	}
 
-	public BioForgeRecipeBuilder setReactant(Tag<Item> tag) {
+	public BioForgeRecipeBuilder setReactant(TagKey<Item> tag) {
 		return setReactant(Ingredient.of(tag));
 	}
 
@@ -106,11 +106,11 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 		return this;
 	}
 
-	public BioForgeRecipeBuilder addIngredient(Tag<Item> tagIn) {
+	public BioForgeRecipeBuilder addIngredient(TagKey<Item> tagIn) {
 		return addIngredient(Ingredient.of(tagIn));
 	}
 
-	public BioForgeRecipeBuilder addIngredient(Tag<Item> tagIn, int quantity) {
+	public BioForgeRecipeBuilder addIngredient(TagKey<Item> tagIn, int quantity) {
 		return addIngredient(Ingredient.of(tagIn), quantity);
 	}
 

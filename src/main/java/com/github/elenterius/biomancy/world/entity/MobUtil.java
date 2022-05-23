@@ -42,11 +42,11 @@ public final class MobUtil {
 	}
 
 	public static boolean isBoss(EntityType<?> entityType) {
-		return ModTags.EntityTypes.BOSSES.contains(entityType);
+		return entityType.is(ModTags.EntityTypes.BOSSES);
 	}
 
 	public static boolean isSkeleton(LivingEntity entity) {
-		return entity instanceof AbstractSkeleton || entity instanceof SkeletonHorse || EntityTypeTags.SKELETONS.contains(entity.getType());
+		return entity instanceof AbstractSkeleton || entity instanceof SkeletonHorse || entity.getType().is(EntityTypeTags.SKELETONS);
 	}
 
 	public static boolean isWithered(LivingEntity entity) {
@@ -62,7 +62,7 @@ public final class MobUtil {
 	}
 
 	public static boolean isCloneable(EntityType<?> entityType) {
-		return !ModTags.EntityTypes.NOT_CLONEABLE.contains(entityType);
+		return !entityType.is(ModTags.EntityTypes.NOT_CLONEABLE);
 	}
 
 	public static float getVolume(EntityType<?> entityType) {

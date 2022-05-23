@@ -82,14 +82,12 @@ class SacrificeHelper {
 	public static Modifier getModifier(ItemStack stack) {
 		if (stack.isEmpty()) return EMPTY_MODIFIER;
 
-		Item item = stack.getItem();
-
-		Modifier optionalModifier = ITEM_MODIFIER_MAP.get(item);
+		Modifier optionalModifier = ITEM_MODIFIER_MAP.get(stack.getItem());
 		if (optionalModifier != null) return optionalModifier;
 
-		if (Tags.Items.BONES.contains(item)) return BONES_MODIFIER;
-		if (ModTags.Items.RAW_MEATS.contains(item)) return RAW_MEATS_MODIFIER;
-		if (ModTags.Items.COOKED_MEATS.contains(item)) return COOKED_MEATS_MODIFIER;
+		if (stack.is(Tags.Items.BONES)) return BONES_MODIFIER;
+		if (stack.is(ModTags.Items.RAW_MEATS)) return RAW_MEATS_MODIFIER;
+		if (stack.is(ModTags.Items.COOKED_MEATS)) return COOKED_MEATS_MODIFIER;
 
 		return INVALID_ITEM_MODIFIER;
 	}

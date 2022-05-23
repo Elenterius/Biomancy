@@ -13,7 +13,7 @@ import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -87,7 +87,7 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 		return setReactant(Ingredient.of(item));
 	}
 
-	public BioLabRecipeBuilder setReactant(Tag<Item> tag) {
+	public BioLabRecipeBuilder setReactant(TagKey<Item> tag) {
 		return setReactant(Ingredient.of(tag));
 	}
 
@@ -100,11 +100,11 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 		return this;
 	}
 
-	public BioLabRecipeBuilder addIngredient(Tag<Item> tag) {
+	public BioLabRecipeBuilder addIngredient(TagKey<Item> tag) {
 		return addIngredient(Ingredient.of(tag));
 	}
 
-	public BioLabRecipeBuilder addIngredients(Tag<Item> tag, int quantity) {
+	public BioLabRecipeBuilder addIngredients(TagKey<Item> tag, int quantity) {
 		return addIngredients(Ingredient.of(tag), quantity);
 	}
 
