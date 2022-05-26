@@ -28,7 +28,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.AnimationState;
@@ -168,9 +167,9 @@ public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implem
 	@NotNull
 	@Override
 	public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-		if (!remove && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			return inventory.getOptionalItemHandler().cast();
-		}
+//		if (!remove && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+//			return inventory.getOptionalItemHandler().cast();
+//		}
 		return super.getCapability(cap, side);
 	}
 
