@@ -69,8 +69,11 @@ public final class ModBlocks {
 	public static final RegistryObject<StairBlock> PACKED_FLESH_STAIRS = BLOCKS.register("packed_flesh_stairs", () -> new StairBlock(() -> PACKED_FLESH.get().defaultBlockState(), createToughFleshProperties()));
 	public static final RegistryObject<SlabBlock> PACKED_FLESH_SLAB = BLOCKS.register("packed_flesh_slab", () -> new SlabBlock(createToughFleshProperties()));
 	public static final RegistryObject<FleshBlock> PRIMAL_FLESH = BLOCKS.register("primal_flesh", () -> new FleshBlock(createFleshProperties()));
+	public static final RegistryObject<SlabBlock> PRIMAL_FLESH_SLAB = BLOCKS.register("primal_flesh_slab", () -> new SlabBlock(createFleshProperties()));
 	public static final RegistryObject<FleshBlock> CORRUPTED_PRIMAL_FLESH = BLOCKS.register("corrupted_primal_flesh", () -> new FleshBlock(createFleshProperties()));
+	public static final RegistryObject<SlabBlock> CORRUPTED_PRIMAL_FLESH_SLAB = BLOCKS.register("corrupted_primal_flesh_slab", () -> new SlabBlock(createFleshProperties()));
 	public static final RegistryObject<FleshBlock> MALIGNANT_FLESH = BLOCKS.register("malignant_flesh", () -> new FleshBlock(createFleshProperties()));
+	public static final RegistryObject<SlabBlock> MALIGNANT_FLESH_SLAB = BLOCKS.register("malignant_flesh_slab", () -> new SlabBlock(createFleshProperties()));
 	public static final RegistryObject<FleshVeinsBlock> MALIGNANT_FLESH_VEINS = BLOCKS.register("malignant_flesh_veins", () -> new FleshVeinsBlock(createFleshProperties().noCollission().noOcclusion()));
 	public static final RegistryObject<IrisDoorBlock> FLESH_IRIS_DOOR = BLOCKS.register("flesh_iris_door", () -> new IrisDoorBlock(createFleshProperties()));
 	public static final RegistryObject<FleshDoorBlock> FLESH_DOOR = BLOCKS.register("flesh_door", () -> new FleshDoorBlock(createFleshProperties()));

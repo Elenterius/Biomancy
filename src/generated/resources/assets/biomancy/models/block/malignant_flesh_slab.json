@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "side": "biomancy:block/malignant_flesh",
+    "bottom": "biomancy:block/malignant_flesh",
+    "top": "biomancy:block/malignant_flesh"
+  }
+}
