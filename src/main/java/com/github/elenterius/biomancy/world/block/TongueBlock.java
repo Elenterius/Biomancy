@@ -37,6 +37,16 @@ public class TongueBlock extends HorizontalDirectionalBlock implements EntityBlo
 		return VoxelShapeUtil.createXZRotatedTowards(direction, 3, 0, 3, 13, 4, 13);
 	}
 
+	@Nullable
+	protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(BlockEntityType<A> blockEntityType, BlockEntityType<E> targetType, BlockEntityTicker<? super E> entityTicker) {
+		//noinspection unchecked
+		return targetType == blockEntityType ? (BlockEntityTicker<A>) entityTicker : null;
+	}
+
+	public static Direction getFacing(BlockState state) {
+		return state.getValue(FACING);
+	}
+
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(FACING);
@@ -58,12 +68,6 @@ public class TongueBlock extends HorizontalDirectionalBlock implements EntityBlo
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
 		return level.isClientSide ? null : createTickerHelper(blockEntityType, ModBlockEntities.TONGUE.get(), TongueBlockEntity::serverTick);
-	}
-
-	@Nullable
-	protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(BlockEntityType<A> blockEntityType, BlockEntityType<E> targetType, BlockEntityTicker<? super E> entityTicker) {
-		//noinspection unchecked
-		return targetType == blockEntityType ? (BlockEntityTicker<A>) entityTicker : null;
 	}
 
 	@Override

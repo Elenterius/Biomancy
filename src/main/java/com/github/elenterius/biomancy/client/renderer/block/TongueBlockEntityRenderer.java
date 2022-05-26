@@ -46,7 +46,6 @@ public class TongueBlockEntityRenderer extends GeoBlockRenderer<TongueBlockEntit
 		if (bone.getName().equals("item") && !heldItemStack.isEmpty()) {
 			int itemCount = Math.min(heldItemStack.getCount(), 3);
 			int seed = Item.getId(heldItemStack.getItem()) + heldItemStack.getDamageValue();
-			random.setSeed(seed);
 			renderItems(poseStack, packedLight, packedOverlay, itemCount, seed);
 			buffer = multiBufferSource.getBuffer(RenderType.entityCutout(texture));
 		}
@@ -54,18 +53,19 @@ public class TongueBlockEntityRenderer extends GeoBlockRenderer<TongueBlockEntit
 	}
 
 	private void renderItems(PoseStack poseStack, int packedLight, int packedOverlay, int itemCount, int seed) {
+		random.setSeed(seed);
+
 		poseStack.pushPose();
 
-		poseStack.mulPose(Vector3f.XP.rotationDegrees(-38));
-		poseStack.mulPose(Vector3f.YP.rotationDegrees(0));
-		poseStack.mulPose(Vector3f.ZP.rotationDegrees(-5));
-		poseStack.translate(0, 0.2d, 0.3d);
+		poseStack.translate(0, 0.385, 0);
+		poseStack.mulPose(Vector3f.XP.rotationDegrees(90));
+		poseStack.mulPose(Vector3f.YP.rotationDegrees(180));
 		poseStack.scale(0.75f, 0.75f, 0.75f);
 
 		ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 		BakedModel bakedmodel = itemRenderer.getModel(heldItemStack, null, null, seed);
 		boolean isGUI3d = bakedmodel.isGui3d();
-		if (!isGUI3d) poseStack.translate(0, 0, -0.09375f * (itemCount - 1) * 0.5f);
+		if (isGUI3d) poseStack.translate(0, 0, 0.1);
 
 		for (int i = 0; i < itemCount; i++) {
 			poseStack.pushPose();
@@ -81,7 +81,7 @@ public class TongueBlockEntityRenderer extends GeoBlockRenderer<TongueBlockEntit
 			}
 			itemRenderer.renderStatic(heldItemStack, ItemTransforms.TransformType.GROUND, packedLight, packedOverlay, poseStack, multiBufferSource, 0);
 			poseStack.popPose();
-			if (!isGUI3d) poseStack.translate(0, 0, 0.09375F);
+			if (!isGUI3d) poseStack.translate(0, 0, 0.025F);
 		}
 
 		poseStack.popPose();

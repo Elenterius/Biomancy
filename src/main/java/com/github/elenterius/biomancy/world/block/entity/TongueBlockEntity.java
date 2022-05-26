@@ -25,8 +25,10 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class TongueBlockEntity extends SimpleSyncedBlockEntity implements IAnimatable {
 
-	public static final int ITEM_TRANSFER_AMOUNT = 3;
 	public static final String INVENTORY_TAG = "Inventory";
+	public static final int ITEM_TRANSFER_AMOUNT = 3;
+	public static final int DURATION = 24;
+	public static final int DELAY = 8 + 1; //ceil(31.2) --> 32
 
 	private final SingleItemStackHandler inventory;
 	private final AnimationFactory animationFactory = new AnimationFactory(this);
@@ -49,23 +51,26 @@ public class TongueBlockEntity extends SimpleSyncedBlockEntity implements IAnima
 	}
 
 	public static void serverTick(Level level, BlockPos pos, BlockState state, TongueBlockEntity entity) {
-		entity.ticks++;
-		if (entity.ticks % 24L == 0L) {
-			entity.serverTick((ServerLevel) level, pos, state);
-		}
+		entity.serverTick((ServerLevel) level, pos, state);
 	}
 
 	private void serverTick(ServerLevel level, BlockPos pos, BlockState state) {
-		if (!inventory.isEmpty()) {
-			Direction facing = state.getValue(TongueBlock.FACING);
+		ticks++;
+
+		if (ticks % DURATION == 0 && !inventory.isEmpty()) {
+			Direction facing = TongueBlock.getFacing(state);
 			dropItems(level, pos, facing);
 			return;
 		}
 
-		Direction facing = state.getValue(TongueBlock.FACING);
-		BlockPos relativePos = pos.relative(facing.getOpposite());
-		if (level.isLoaded(relativePos)) {
-			LevelUtil.getItemHandler(level, relativePos, Direction.DOWN).ifPresent(this::tryToExtractItems);
+		if (ticks % (DURATION + DELAY) == 0 && inventory.isEmpty()) {
+			Direction facing = TongueBlock.getFacing(state);
+			BlockPos relativePos = pos.relative(facing.getOpposite());
+			if (level.isLoaded(relativePos)) {
+				LevelUtil.getItemHandler(level, relativePos, Direction.DOWN).ifPresent(this::tryToExtractItems);
+			}
+
+			if (!inventory.isEmpty()) ticks = 0;
 		}
 	}
 
@@ -130,11 +135,9 @@ public class TongueBlockEntity extends SimpleSyncedBlockEntity implements IAnima
 
 	private <E extends BlockEntity & IAnimatable> PlayState handleAnim(AnimationEvent<E> event) {
 		if (inventory.isEmpty()) {
-			event.getController().transitionLengthTicks = 4;
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("tongue.anim.none", true));
 		}
 		else {
-			event.getController().transitionLengthTicks = 0;
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("tongue.anim.stretch"));
 		}
 		return PlayState.CONTINUE;
