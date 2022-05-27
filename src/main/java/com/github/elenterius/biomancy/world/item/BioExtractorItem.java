@@ -91,7 +91,7 @@ public class BioExtractorItem extends Item implements IKeyListener, IBiomancyIte
 
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, ClientLevel level, Player player, byte flags) {
+	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, ClientLevel level, Player player, EquipmentSlot slot, byte flags) {
 		//TODO: add cooldown?
 		if (!interactWithPlayerSelf(stack, player)) {
 			ModSoundEvents.localItemSFX(level, player, ModSoundEvents.ACTION_FAIL.get());

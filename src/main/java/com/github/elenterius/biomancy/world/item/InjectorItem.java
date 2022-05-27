@@ -1,32 +1,34 @@
 package com.github.elenterius.biomancy.world.item;
 
+import com.github.elenterius.biomancy.client.gui.InjectorScreen;
 import com.github.elenterius.biomancy.client.renderer.item.InjectorRenderer;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
 import com.github.elenterius.biomancy.world.entity.MobUtil;
-import com.github.elenterius.biomancy.world.inventory.ItemInventory;
-import com.github.elenterius.biomancy.world.inventory.menu.BioInjectorMenu;
+import com.github.elenterius.biomancy.world.inventory.InjectorItemInventory;
+import com.github.elenterius.biomancy.world.inventory.itemhandler.LargeSingleItemStackHandler;
 import com.github.elenterius.biomancy.world.serum.Serum;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.*;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -48,8 +50,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PacketDistributor;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -71,11 +71,11 @@ import java.util.function.Consumer;
 
 public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem, IKeyListener, IAnimatable, ISyncable {
 
-	public static final int SLOTS = 5;
-	public static final int MAX_SLOT_SIZE = 1;
+	public static final short MAX_SLOT_SIZE = 16;
 	public static final String INVENTORY_TAG = "inventory";
-	private static final String CONTROLLER_NAME = "controller";
 	public static final int COOL_DOWN_TICKS = 25;
+	private static final String CONTROLLER_NAME = "controller";
+
 	private final AnimationFactory factory = new AnimationFactory(this);
 
 	public InjectorItem(Properties properties) {
@@ -101,49 +101,107 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 		return false;
 	}
 
-	private static boolean dispenserAffectEntity(ServerLevel level, Serum serum, ItemStack stack, InjectorItem injectorItem, LivingEntity target) {
-		if (MobUtil.canPierceThroughArmor(stack, target)) {
-			CompoundTag dataTag = Serum.getDataTag(stack);
+	private static boolean dispenserAffectEntity(ServerLevel level, Serum serum, ItemStack injectorStack, InjectorItem injectorItem, LivingEntity target) {
+		if (MobUtil.canPierceThroughArmor(injectorStack, target)) {
+			CompoundTag dataTag = Serum.getDataTag(injectorStack);
 			if (serum.canAffectEntity(dataTag, null, target)) {
 				serum.affectEntity(dataTag, null, target);
 				if (serum.isAttributeModifier()) serum.applyAttributesModifiersToEntity(target);
-				injectorItem.consumeSerum(stack, serum, null);
-				stack.hurt(1, level.getRandom(), null);
+				injectorItem.consumeSerum(injectorStack, null); //TODO: drop appropriate vials/container
+				injectorStack.hurt(1, level.getRandom(), null);
 				return true;
 			}
 		}
 		else {
-			stack.hurt(2, level.getRandom(), null);
+			injectorStack.hurt(2, level.getRandom(), null);
 			//TODO: play breaking sound
 		}
 		return false;
 	}
 
+	public static Optional<LargeSingleItemStackHandler> getItemHandler(ItemStack stack) {
+		return stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).filter(LargeSingleItemStackHandler.class::isInstance).map(LargeSingleItemStackHandler.class::cast);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	private void tryToOpenWheelMenu(InteractionHand hand) {
+		Screen currScreen = Minecraft.getInstance().screen;
+		if (currScreen == null && Minecraft.getInstance().player != null) {
+			Minecraft.getInstance().setScreen(new InjectorScreen(hand));
+			Minecraft.getInstance().player.playNotifySound(SoundEvents.SHULKER_BOX_OPEN, SoundSource.PLAYERS, 0.5f, 1f);
+		}
+	}
+
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, ClientLevel level, Player player, byte flags) {
-		if (player.getCooldowns().isOnCooldown(this)) return InteractionResultHolder.fail(flags);
-
-		if (!interactWithPlayerSelf(stack, player)) {
-			ModSoundEvents.localItemSFX(level, player, ModSoundEvents.ACTION_FAIL.get());
-			return InteractionResultHolder.fail(flags); //don't send button press to server
+	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, ClientLevel level, Player player, EquipmentSlot slot, byte flags) {
+		if (slot.getType() == EquipmentSlot.Type.HAND) {
+			InteractionHand hand = slot == EquipmentSlot.MAINHAND ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
+			tryToOpenWheelMenu(hand);
 		}
-		return InteractionResultHolder.success(flags);
+		return InteractionResultHolder.fail(flags); //don't send button press to server
 	}
 
 	@Override
 	public void onServerReceiveKeyPress(ItemStack stack, ServerLevel level, Player player, byte flags) {
-		if (player.getCooldowns().isOnCooldown(this)) return;
+		if (flags == -2) {
+			//clear out whole inventory
+			getItemHandler(stack).ifPresent(handler -> {
+				if (!handler.getStack().isEmpty()) {
+					ItemStack result = handler.extractItem(handler.getMaxAmount(), false);
+					if (!player.addItem(result)) {
+						player.drop(result, false);
+					}
+				}
+			});
+		}
 
-		if (interactWithPlayerSelf(stack, player)) {
-			setEntityHost(stack, player);
-			setEntityVictim(stack, player);
-			broadcastAnimation(level, player, stack, AnimState.INJECT_SELF.id);
-			player.getCooldowns().addCooldown(this, COOL_DOWN_TICKS);
+		if (flags >= 0) {
+			//replace whole inventory with new item
+			final int idx = flags;
+			ItemStack foundStack = player.getInventory().getItem(idx);
+			Item item = foundStack.getItem();
+			if (item instanceof ISerumProvider && !(item instanceof InjectorItem)) {
+				getItemHandler(stack).ifPresent(handler -> {
+					ItemStack oldStack = ItemStack.EMPTY;
+					if (!handler.getStack().isEmpty()) {
+						oldStack = handler.extractItem(handler.getMaxAmount(), false);
+					}
+
+					ItemStack remainder = handler.insertItem(foundStack, false);
+					player.getInventory().setItem(idx, remainder);
+
+					//eject old stuff
+					if (!oldStack.isEmpty() && !player.addItem(oldStack)) {
+						player.drop(oldStack, false);
+					}
+				});
+			}
 		}
-		else {
-			ModSoundEvents.broadcastItemSFX(level, player, ModSoundEvents.ACTION_FAIL.get());
+	}
+
+	@Override
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
+		if (player.isShiftKeyDown()) {
+			ItemStack stack = player.getItemInHand(usedHand);
+			if (player.getCooldowns().isOnCooldown(this)) return InteractionResultHolder.fail(stack);
+
+			if (interactWithPlayerSelf(stack, player)) {
+				if (!level.isClientSide) {
+					setEntityHost(stack, player);
+					setEntityVictim(stack, player);
+					broadcastAnimation((ServerLevel) level, player, stack, AnimState.INJECT_SELF.id);
+					player.getCooldowns().addCooldown(this, COOL_DOWN_TICKS);
+				}
+
+				return InteractionResultHolder.consume(stack);
+			}
+
+			ModSoundEvents.itemSFX(level, player, ModSoundEvents.ACTION_FAIL.get());
+			return InteractionResultHolder.fail(stack);
+
 		}
+		return InteractionResultHolder.pass(player.getItemInHand(usedHand));
 	}
 
 	@Override
@@ -161,7 +219,7 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 					player.getCooldowns().addCooldown(this, COOL_DOWN_TICKS);
 
 					if (serum.isAttributeModifier()) serum.applyAttributesModifiersToEntity(interactionTarget);
-					if (!player.isCreative()) consumeSerum(copyOfStack, serum, player);
+					if (!player.isCreative()) consumeSerum(copyOfStack, player);
 
 					copyOfStack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
 
@@ -193,7 +251,7 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 					serum.affectPlayerSelf(dataTag, player);
 					if (!player.level.isClientSide) {
 						if (serum.isAttributeModifier()) serum.applyAttributesModifiersToEntity(player);
-						if (!player.isCreative()) consumeSerum(stack, serum, player);
+						if (!player.isCreative()) consumeSerum(stack, player);
 						stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
 					}
 					return true;
@@ -210,15 +268,11 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 	@Override
 	@Nullable
 	public Serum getSerum(ItemStack stack) {
-		//TODO: cache selected serum, instead of looking through the whole inventory
-		Optional<IItemHandler> optional = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).resolve();
+		Optional<LargeSingleItemStackHandler> optional = getItemHandler(stack);
 		if (optional.isPresent()) {
-			IItemHandler itemHandler = optional.get();
-			for (int i = 0; i < itemHandler.getSlots(); i++) {
-				ItemStack stackInSlot = itemHandler.getStackInSlot(i);
-				if (stackInSlot.getItem() instanceof ISerumProvider serumItem) {
-					return serumItem.getSerum(stackInSlot);
-				}
+			ItemStack foundStack = optional.get().getStack();
+			if (foundStack.getItem() instanceof ISerumProvider provider) {
+				return provider.getSerum(foundStack);
 			}
 		}
 		return null;
@@ -230,49 +284,20 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 		return serum != null ? serum.getColor() : -1;
 	}
 
-	public void consumeSerum(ItemStack stack, Serum serum, @Nullable Player player) {
-		Optional<IItemHandler> optional = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).resolve();
-		if (optional.isPresent()) {
-			IItemHandler itemHandler = optional.get();
-			for (int i = 0; i < itemHandler.getSlots(); i++) {
-				ItemStack stackInSlot = itemHandler.getStackInSlot(i);
-				if (stackInSlot.getItem() instanceof ISerumProvider serumItem) {
-					Serum foundSerum = serumItem.getSerum(stackInSlot);
-					if (foundSerum == serum) {
-						ItemStack serumStack = itemHandler.extractItem(i, 1, false);
-						if (serumStack.hasContainerItem()) {
-							ItemStack containerItem = serumStack.getContainerItem();
-							ItemStack remainder = itemHandler.insertItem(i, containerItem, false);
-							if (!remainder.isEmpty() && player != null && !player.addItem(remainder)) {
-								player.drop(remainder, false);
-							}
-						}
-						break;
-					}
+	public void consumeSerum(ItemStack stack, @Nullable Player player) {
+		getItemHandler(stack).ifPresent(handler -> consumeSerum(handler, player));
+	}
+
+	private void consumeSerum(LargeSingleItemStackHandler handler, @Nullable Player player) {
+		if (handler.getStack().getItem() instanceof ISerumProvider) {
+			ItemStack stack = handler.extractItem(1, false);
+			if (stack.hasContainerItem()) {
+				ItemStack containerItem = stack.getContainerItem();
+				if (!containerItem.isEmpty() && player != null && !player.addItem(containerItem)) {
+					player.drop(containerItem, false);
 				}
 			}
 		}
-	}
-
-	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-		if (player.isShiftKeyDown()) {
-			if (!level.isClientSide) {
-				ItemStack stack = player.getItemInHand(usedHand);
-				ItemInventory inventory = ItemInventory.createServerContents(SLOTS, MAX_SLOT_SIZE, stack);
-				MenuProvider container = new SimpleMenuProvider((id, playerInv, p) -> BioInjectorMenu.createServerMenu(id, playerInv, inventory), stack.getHoverName());
-				NetworkHooks.openGui((ServerPlayer) player, container, byteBuf -> {
-					byteBuf.writeByte(SLOTS);
-					byteBuf.writeByte(MAX_SLOT_SIZE);
-					byteBuf.writeItem(stack);
-				});
-			}
-			else {
-				player.playSound(SoundEvents.ARMOR_EQUIP_IRON, 1f, 1f);
-			}
-			return InteractionResultHolder.sidedSuccess(player.getItemInHand(usedHand), level.isClientSide);
-		}
-		return InteractionResultHolder.pass(player.getItemInHand(usedHand));
 	}
 
 	@Nullable
@@ -437,8 +462,8 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 		CompoundTag tag = stack.getOrCreateTag();
 		if (tag.contains(INVENTORY_TAG)) {
 			CompoundTag inventory = tag.getCompound(INVENTORY_TAG);
-			ListTag tagList = inventory.getList("Items", Tag.TAG_COMPOUND);
-			tooltip.add(new TextComponent(String.format("Amount: %d/" + SLOTS, tagList.size())).withStyle(ChatFormatting.GRAY));
+			short amount = inventory.getShort(LargeSingleItemStackHandler.ITEM_AMOUNT_TAG);
+			tooltip.add(new TextComponent(String.format("Amount: %d/%d", amount, MAX_SLOT_SIZE)).withStyle(ChatFormatting.GRAY));
 
 			Serum serum = getSerum(stack);
 			if (serum != null) {
@@ -448,8 +473,8 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 		else tooltip.add(TextComponentUtil.getTooltipText("contains_nothing").withStyle(ChatFormatting.GRAY));
 
 		tooltip.add(TextComponent.EMPTY);
-		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action_self_inject")).withStyle(ChatFormatting.DARK_GRAY));
-		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getShiftKey().append(" + ").append(ClientTextUtil.getRightMouseKey()), TextComponentUtil.getTooltipText("action_open_inventory")).withStyle(ChatFormatting.DARK_GRAY));
+		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action_open_inventory")).withStyle(ChatFormatting.DARK_GRAY));
+		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getShiftKey().append(" + ").append(ClientTextUtil.getRightMouseKey()), TextComponentUtil.getTooltipText("action_self_inject")).withStyle(ChatFormatting.DARK_GRAY));
 	}
 
 	@Override
@@ -493,10 +518,10 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 
 	private static class InventoryCapability implements ICapabilityProvider {
 
-		private final ItemInventory itemHandler;
+		private final InjectorItemInventory itemHandler;
 
 		public InventoryCapability(ItemStack stack) {
-			itemHandler = ItemInventory.createServerContents(SLOTS, MAX_SLOT_SIZE, stack);
+			itemHandler = InjectorItemInventory.createServerContents(MAX_SLOT_SIZE, stack);
 		}
 
 		@Nonnull

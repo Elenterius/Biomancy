@@ -7,6 +7,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -33,6 +34,15 @@ public final class ModSoundEvents {
 
 	private static RegistryObject<SoundEvent> registerSoundEvent(String name) {
 		return SOUND_EVENTS.register(name, () -> new SoundEvent(BiomancyMod.createRL(name)));
+	}
+
+	public static void itemSFX(Level level, LivingEntity itemHolder, SoundEvent soundEvent) {
+		if (level instanceof ClientLevel clientLevel) {
+			localItemSFX(clientLevel, itemHolder, soundEvent);
+		}
+		else if (level instanceof ServerLevel serverLevel) {
+			broadcastItemSFX(serverLevel, itemHolder, soundEvent);
+		}
 	}
 
 	public static void localItemSFX(ClientLevel level, LivingEntity itemHolder, SoundEvent soundEvent) {

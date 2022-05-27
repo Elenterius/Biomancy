@@ -131,4 +131,23 @@ public final class GuiRenderUtil {
 		BufferUploader.end(bufferbuilder);
 	}
 
+	public static void fill(PoseStack poseStack, float minX, float minY, float maxX, float maxY, int blitOffset, int color) {
+		Matrix4f matrix4f = poseStack.last().pose();
+
+		BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
+		RenderSystem.enableBlend();
+		RenderSystem.disableTexture();
+		RenderSystem.defaultBlendFunc();
+		RenderSystem.setShader(GameRenderer::getPositionColorShader);
+		bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
+		bufferbuilder.vertex(matrix4f, minX, maxY, blitOffset).color(color).endVertex();
+		bufferbuilder.vertex(matrix4f, maxX, maxY, blitOffset).color(color).endVertex();
+		bufferbuilder.vertex(matrix4f, maxX, minY, blitOffset).color(color).endVertex();
+		bufferbuilder.vertex(matrix4f, minX, minY, blitOffset).color(color).endVertex();
+		bufferbuilder.end();
+		BufferUploader.end(bufferbuilder);
+		RenderSystem.enableTexture();
+		RenderSystem.disableBlend();
+	}
+
 }

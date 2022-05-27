@@ -17,6 +17,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -35,7 +36,7 @@ public class ControlStaffItem extends Item implements IKeyListener, IBiomancyIte
 	}
 
 	@Override
-	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, ClientLevel level, Player player, byte flags) {
+	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, ClientLevel level, Player player, EquipmentSlot slot, byte flags) {
 		IControllableMob.Command command = getCommand(stack).cycle();
 		player.playSound(SoundEvents.GENERIC_HURT, 0.8f, 0.25f + level.random.nextFloat() * 0.25f);
 		return InteractionResultHolder.success(command.serialize());

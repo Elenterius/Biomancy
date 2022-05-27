@@ -45,9 +45,9 @@ public final class ClientInputHandler {
 
 	private static void handleEquipmentSlots(EquipmentSlot[] slots, LocalPlayer player) {
 		for (EquipmentSlot slot : slots) { //worst case this will send 2 or 4 packets to the server
-			ItemStack armorStack = player.getItemBySlot(slot);
-			if (!armorStack.isEmpty() && armorStack.getItem() instanceof IKeyListener keyListener) {
-				InteractionResultHolder<Byte> result = keyListener.onClientKeyPress(armorStack, player.clientLevel, player, (byte) 0);
+			ItemStack stack = player.getItemBySlot(slot);
+			if (!stack.isEmpty() && stack.getItem() instanceof IKeyListener keyListener) {
+				InteractionResultHolder<Byte> result = keyListener.onClientKeyPress(stack, player.clientLevel, player, slot, (byte) 0);
 				if (result.getResult().shouldSwing()) {
 					ModNetworkHandler.sendKeyBindPressToServer(slot, result.getObject());
 				}

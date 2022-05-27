@@ -13,7 +13,7 @@ import javax.annotation.Nonnull;
 
 public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifiable, INBTSerializable<CompoundTag> {
 
-	public static final String NBT_KEY_ITEM = "Item";
+	public static final String ITEM_TAG = "Item";
 
 	protected ItemStack cachedStack = ItemStack.EMPTY;
 
@@ -31,6 +31,10 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 	@Override
 	public int getSlotLimit(int slot) {
 		return cachedStack.getMaxStackSize();
+	}
+
+	public boolean isItemValid(@Nonnull ItemStack stack) {
+		return isItemValid(0, stack);
 	}
 
 	@Override
@@ -87,9 +91,21 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 		setStack(stack);
 	}
 
+	public ItemStack insertItem(@Nonnull ItemStack stack, boolean simulate) {
+		return insertItem(0, stack, simulate);
+	}
+
 	@Nonnull
 	@Override
 	public ItemStack insertItem(int slot, @Nonnull ItemStack stackIn, boolean simulate) {
+		ItemStack remainder = internalInsertItem(slot, stackIn, simulate);
+		if (!simulate) {
+			onContentsChanged();
+		}
+		return remainder;
+	}
+
+	protected ItemStack internalInsertItem(int slot, @Nonnull ItemStack stackIn, boolean simulate) {
 		validateSlotIndex(slot);
 		if (stackIn.isEmpty()) return ItemStack.EMPTY;
 		if (!isItemValid(slot, stackIn)) return stackIn;
@@ -105,15 +121,26 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 			int insertAmount = overflow > 0 ? insertGoal - overflow : insertGoal;
 			if (cachedStack.isEmpty()) cachedStack = ItemHandlerHelper.copyStackWithSize(stackIn, insertAmount);
 			else cachedStack.grow(insertAmount);
-			onContentsChanged();
 		}
 
 		return overflow > 0 ? ItemHandlerHelper.copyStackWithSize(stackIn, overflow) : ItemStack.EMPTY;
 	}
 
+	public ItemStack extractItem(int amount, boolean simulate) {
+		return extractItem(0, amount, simulate);
+	}
+
 	@Nonnull
 	@Override
 	public ItemStack extractItem(int slot, int amount, boolean simulate) {
+		ItemStack remainder = internalExtractItem(slot, amount, simulate);
+		if (!simulate) {
+			onContentsChanged();
+		}
+		return remainder;
+	}
+
+	protected ItemStack internalExtractItem(int slot, int amount, boolean simulate) {
 		validateSlotIndex(slot);
 		if (amount == 0) return ItemStack.EMPTY;
 
@@ -124,7 +151,6 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 			if (!simulate) {
 				ItemStack stack = cachedStack;
 				cachedStack = ItemStack.EMPTY;
-				onContentsChanged();
 				return stack;
 			}
 			else return cachedStack.copy();
@@ -132,7 +158,6 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 		else {
 			if (!simulate) {
 				cachedStack.grow(-extractGoal);
-				onContentsChanged();
 			}
 			return ItemHandlerHelper.copyStackWithSize(cachedStack, extractGoal);
 		}
@@ -151,7 +176,7 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 		if (!cachedStack.isEmpty()) {
 			int count = cachedStack.getCount();
 			if (count > 64) cachedStack.setCount(64); //prevent byte overflow
-			nbt.put(NBT_KEY_ITEM, cachedStack.save(new CompoundTag()));
+			nbt.put(ITEM_TAG, cachedStack.save(new CompoundTag()));
 			if (count != cachedStack.getCount()) cachedStack.setCount(count); //restore item count
 		}
 		return nbt;
@@ -159,7 +184,7 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 
 	@Override
 	public void deserializeNBT(CompoundTag nbt) {
-		if (nbt.contains(NBT_KEY_ITEM)) cachedStack = ItemStack.of(nbt.getCompound(NBT_KEY_ITEM));
+		if (nbt.contains(ITEM_TAG)) cachedStack = ItemStack.of(nbt.getCompound(ITEM_TAG));
 		else cachedStack = ItemStack.EMPTY;
 
 		int itemAmount = deserializeItemAmount(nbt);

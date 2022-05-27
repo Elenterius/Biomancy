@@ -48,7 +48,7 @@ public interface IKeyListener {
 	 * If this method returns ActionResult Success, the result byte customFlags will be sent to the server
 	 */
 	@OnlyIn(Dist.CLIENT)
-	InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, ClientLevel level, Player player, byte flags);
+	InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, ClientLevel level, Player player, EquipmentSlot slot, byte flags);
 
 	void onServerReceiveKeyPress(ItemStack stack, ServerLevel level, Player player, byte flags);
 

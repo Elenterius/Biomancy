@@ -127,7 +127,7 @@ public class GulgeBlock extends BaseEntityBlock {
 			if (!invNbt.isEmpty()) {
 				ItemStack storedStack = invNbt.contains("Item") ? ItemStack.of(invNbt.getCompound("Item")) : ItemStack.EMPTY;
 				if (!storedStack.isEmpty()) {
-					short itemAmount = invNbt.getShort(LargeSingleItemStackHandler.NBT_KEY_ITEM_AMOUNT);
+					short itemAmount = invNbt.getShort(LargeSingleItemStackHandler.ITEM_AMOUNT_TAG);
 					tooltip.add(TextComponentUtil.getTooltipText("contains", storedStack.getHoverName().copy()).withStyle(ChatFormatting.GRAY));
 					DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
 					tooltip.add(new TextComponent(df.format(itemAmount) + "/" + df.format(GulgeBlockEntity.MAX_ITEM_AMOUNT)).withStyle(ChatFormatting.GRAY));

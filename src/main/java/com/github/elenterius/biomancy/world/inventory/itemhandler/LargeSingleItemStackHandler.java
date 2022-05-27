@@ -8,7 +8,7 @@ import javax.annotation.Nonnull;
 
 public class LargeSingleItemStackHandler extends SingleItemStackHandler {
 
-	public static final String NBT_KEY_ITEM_AMOUNT = "ItemAmount";
+	public static final String ITEM_AMOUNT_TAG = "ItemAmount";
 
 	private final short maxItemAmount;
 	private short itemAmount;
@@ -48,16 +48,18 @@ public class LargeSingleItemStackHandler extends SingleItemStackHandler {
 
 	@Override
 	public void setStack(ItemStack stack) {
-		super.setStack(stack);
+		cachedStack = stack;
 		itemAmount = (short) cachedStack.getCount();
+		onContentsChanged();
 	}
 
 	@Nonnull
 	@Override
 	public ItemStack insertItem(int slot, @Nonnull ItemStack stackIn, boolean simulate) {
-		ItemStack remainder = super.insertItem(slot, stackIn, simulate);
+		ItemStack remainder = internalInsertItem(slot, stackIn, simulate);
 		if (!simulate) {
 			itemAmount = (short) cachedStack.getCount();
+			onContentsChanged();
 		}
 		return remainder;
 	}
@@ -65,21 +67,22 @@ public class LargeSingleItemStackHandler extends SingleItemStackHandler {
 	@Nonnull
 	@Override
 	public ItemStack extractItem(int slot, int amount, boolean simulate) {
-		ItemStack remainder = super.extractItem(slot, amount, simulate);
+		ItemStack remainder = internalExtractItem(slot, amount, simulate);
 		if (!simulate) {
 			itemAmount = (short) cachedStack.getCount();
+			onContentsChanged();
 		}
 		return remainder;
 	}
 
 	@Override
 	public void serializeItemAmount(CompoundTag tag) {
-		tag.putShort(NBT_KEY_ITEM_AMOUNT, itemAmount);
+		tag.putShort(ITEM_AMOUNT_TAG, itemAmount);
 	}
 
 	@Override
 	public int deserializeItemAmount(CompoundTag tag) {
-		itemAmount = tag.getShort(NBT_KEY_ITEM_AMOUNT);
+		itemAmount = tag.getShort(ITEM_AMOUNT_TAG);
 		return itemAmount;
 	}
 
@@ -90,11 +93,11 @@ public class LargeSingleItemStackHandler extends SingleItemStackHandler {
 			serializeItemAmount(tag);
 			if (itemAmount > Byte.MAX_VALUE) {
 				cachedStack.setCount(Byte.MAX_VALUE); //prevent byte overflow (ItemStack serializes its item count as byte)
-				tag.put(NBT_KEY_ITEM, cachedStack.save(new CompoundTag()));
+				tag.put(ITEM_TAG, cachedStack.save(new CompoundTag()));
 				cachedStack.setCount(itemAmount); //restore item count
 			}
 			else {
-				tag.put(NBT_KEY_ITEM, cachedStack.save(new CompoundTag()));
+				tag.put(ITEM_TAG, cachedStack.save(new CompoundTag()));
 			}
 		}
 		return tag;
@@ -102,7 +105,7 @@ public class LargeSingleItemStackHandler extends SingleItemStackHandler {
 
 	@Override
 	public void deserializeNBT(CompoundTag tag) {
-		cachedStack = tag.contains(NBT_KEY_ITEM) ? ItemStack.of(tag.getCompound(NBT_KEY_ITEM)) : ItemStack.EMPTY;
+		cachedStack = tag.contains(ITEM_TAG) ? ItemStack.of(tag.getCompound(ITEM_TAG)) : ItemStack.EMPTY;
 		if (!cachedStack.isEmpty()) {
 			cachedStack.setCount(deserializeItemAmount(tag)); //restore item amount
 		}
