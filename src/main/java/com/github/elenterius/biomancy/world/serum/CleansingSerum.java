@@ -22,12 +22,10 @@ public class CleansingSerum extends Serum {
 
 	@Override
 	public void affectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
-		clearPotionEffects(target);
-		if (target instanceof FleshBlob fleshBlob) {
-			fleshBlob.clearStoredDNA();
-		}
-
 		if (!target.level.isClientSide) {
+			clearPotionEffects(target);
+			clearAbsorption(target);
+
 			if (target instanceof ZombieVillager) {
 				if (ForgeEventFactory.canLivingConvert(target, EntityType.VILLAGER, timer -> {})) {
 					((ZombieVillagerMixinAccessor) target).biomancy_cureZombie((ServerLevel) target.level);
@@ -37,15 +35,26 @@ public class CleansingSerum extends Serum {
 				MobUtil.convertMobTo((ServerLevel) target.level, skeleton, EntityType.SKELETON);
 			}
 		}
+
+		if (target instanceof FleshBlob fleshBlob) {
+			fleshBlob.clearStoredDNA();
+		}
 	}
 
 	@Override
 	public void affectPlayerSelf(CompoundTag tag, Player targetSelf) {
-		clearPotionEffects(targetSelf);
+		if (!targetSelf.level.isClientSide) {
+			clearPotionEffects(targetSelf);
+			clearAbsorption(targetSelf);
+		}
 	}
 
 	private void clearPotionEffects(LivingEntity target) {
-		if (!target.level.isClientSide) target.removeAllEffects();
+		target.removeAllEffects();
+	}
+
+	private void clearAbsorption(LivingEntity target) {
+		target.setAbsorptionAmount(0);
 	}
 
 }
