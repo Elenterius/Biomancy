@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.recipe.DigesterRecipe;
 import com.github.elenterius.biomancy.recipe.RecipeTypeImpl;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
+import com.github.elenterius.biomancy.world.block.MachineBlock;
 import com.github.elenterius.biomancy.world.block.entity.state.DigesterStateData;
 import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.world.inventory.itemhandler.HandlerBehaviors;
@@ -20,17 +21,25 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
 
-public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, DigesterStateData> implements MenuProvider {
+public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, DigesterStateData> implements MenuProvider, IAnimatable {
 
 	public static final int FUEL_SLOTS = 1;
 	public static final int INPUT_SLOTS = 1;
@@ -44,6 +53,8 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 	private final BehavioralInventory<?> fuelInventory;
 	private final BehavioralInventory<?> inputInventory;
 	private final BehavioralInventory<?> outputInventory;
+
+	private final AnimationFactory animationFactory = new AnimationFactory(this);
 
 	public DigesterBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.DIGESTER.get(), pos, state);
@@ -185,6 +196,27 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 		fuelInventory.revive();
 		inputInventory.revive();
 		outputInventory.revive();
+	}
+
+	private <E extends BlockEntity & IAnimatable> PlayState handleIdleAnim(AnimationEvent<E> event) {
+		Boolean isCrafting = event.getAnimatable().getBlockState().getValue(MachineBlock.CRAFTING);
+		if (Boolean.TRUE.equals(isCrafting)) {
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("digester.anim.working", true));
+		}
+		else {
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("digester.anim.idle", true));
+		}
+		return PlayState.CONTINUE;
+	}
+
+	@Override
+	public void registerControllers(AnimationData data) {
+		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::handleIdleAnim));
+	}
+
+	@Override
+	public AnimationFactory getFactory() {
+		return animationFactory;
 	}
 
 }
