@@ -151,7 +151,7 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 		generateSerum(ModItems.UNSTABLE_COMPOUND.get());
 		generateSerum(ModItems.GENETIC_COMPOUND.get());
 
-		generateWeapon(ModItems.BONE_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+//		generateWeapon(ModItems.BONE_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		generateWeaponWithOverlay(ModItems.BOOMLING.get(), OVERLAY_TEMPLATE);
 		generateWeapon(ModItems.CONTROL_STAFF.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		generateWeapon(ModItems.TOOTH_GUN.get(), GUN_TEMPLATE);

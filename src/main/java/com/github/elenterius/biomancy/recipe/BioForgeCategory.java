@@ -21,7 +21,7 @@ public record BioForgeCategory(ResourceLocation id, ItemStack icon) {
 	public static final BioForgeCategory MISC = new BioForgeCategory("misc", ModItems.OCULUS.get());
 	public static final BioForgeCategory BLOCKS = new BioForgeCategory("blocks", ModItems.FLESH_BLOCK.get());
 	public static final BioForgeCategory MACHINES = new BioForgeCategory("machines", ModItems.DECOMPOSER.get());
-	public static final BioForgeCategory WEAPON = new BioForgeCategory("weapon", ModItems.BONE_SWORD.get());
+	public static final BioForgeCategory WEAPON = new BioForgeCategory("weapon", ModItems.LONG_CLAW.get());
 
 	public BioForgeCategory(ResourceLocation id, ItemStack icon) {
 		this.id = id;

@@ -112,10 +112,10 @@ public class ModRecipeProvider extends RecipeProvider {
 
 	private void registerWorkbenchRecipes(Consumer<FinishedRecipe> consumer) {
 
-		ShapedRecipeBuilder.shaped(ModItems.BONE_SWORD.get())
-				.define('S', Tags.Items.RODS_WOODEN).define('B', Tags.Items.BONES).define('C', ModItems.BONE_SCRAPS.get())
-				.pattern(" B ").pattern("CBC").pattern(" S ")
-				.unlockedBy(hasName(Items.BONE), has(Tags.Items.BONES)).save(consumer);
+//		ShapedRecipeBuilder.shaped(ModItems.BONE_SWORD.get())
+//				.define('S', Tags.Items.RODS_WOODEN).define('B', Tags.Items.BONES).define('C', ModItems.BONE_SCRAPS.get())
+//				.pattern(" B ").pattern("CBC").pattern(" S ")
+//				.unlockedBy(hasName(Items.BONE), has(Tags.Items.BONES)).save(consumer);
 
 		ShapedRecipeBuilder.shaped(ModItems.GLASS_VIAL.get(), 8)
 				.define('G', Tags.Items.GLASS).define('T', Items.CLAY_BALL)
@@ -476,12 +476,12 @@ public class ModRecipeProvider extends RecipeProvider {
 				.unlockedBy(ModItems.FLESH_BITS.get())
 				.save(consumer);
 
-		BioForgeRecipeBuilder.create(new ItemData(ModItems.BONE_SWORD.get()))
-				.addIngredient(ModItems.BONE_SCRAPS.get(), 10)
-				.setReactant(ModItems.BONE_SCRAPS.get())
-				.setCategory(BioForgeCategory.WEAPON)
-				.unlockedBy(ModItems.BONE_SCRAPS.get())
-				.save(consumer);
+//		BioForgeRecipeBuilder.create(new ItemData(ModItems.BONE_SWORD.get()))
+//				.addIngredient(ModItems.BONE_SCRAPS.get(), 10)
+//				.setReactant(ModItems.BONE_SCRAPS.get())
+//				.setCategory(BioForgeCategory.WEAPON)
+//				.unlockedBy(ModItems.BONE_SCRAPS.get())
+//				.save(consumer);
 
 		BioForgeRecipeBuilder.create(new ItemData(ModItems.BOOMLING.get()))
 				.setCraftingTime(5 * 20)
