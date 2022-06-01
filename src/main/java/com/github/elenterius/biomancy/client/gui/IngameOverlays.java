@@ -17,12 +17,35 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.gui.IIngameOverlay;
 import net.minecraftforge.client.gui.OverlayRegistry;
+import net.minecraftforge.common.util.MavenVersionStringHelper;
+import net.minecraftforge.fml.ModList;
 
 @OnlyIn(Dist.CLIENT)
 public final class IngameOverlays {
 
 	public static final ResourceLocation COMMAND_ICONS = BiomancyMod.createRL("textures/gui/command_icons.png");
 	public static final ResourceLocation ORNATE_CORNER_BOTTOM_RIGHT = BiomancyMod.createRL("textures/gui/ornate_corner_br.png");
+
+	public static final IIngameOverlay WATERMARK = (gui, poseStack, partialTick, width, height) -> {
+		Minecraft minecraft = Minecraft.getInstance();
+		if (!minecraft.options.hideGui && !minecraft.options.renderDebug) {
+			gui.setupOverlayRenderState(true, false);
+			gui.setBlitOffset(-90);
+			Font font = Minecraft.getInstance().font;
+			ModList.get().getModContainerById(BiomancyMod.MOD_ID).ifPresent(modContainer -> {
+				String text = "Biomancy Dev Build";
+				String version = "Version: " + MavenVersionStringHelper.artifactVersionToString(modContainer.getModInfo().getVersion());
+				int textWidth = font.width(text);
+				int versionWidth = font.width(version);
+				int totalWidth = Math.max(textWidth, versionWidth);
+				int y = 32;
+				int x = width - 2;
+				GuiComponent.fill(poseStack, x - totalWidth - 4, y - 4, width, y + font.lineHeight * 2 + 2 + 1, 0xAA111111);
+				GuiComponent.drawString(poseStack, font, text, x - textWidth, y, 0xEEEEEE);
+				GuiComponent.drawString(poseStack, font, version, x - versionWidth, y + font.lineHeight + 1, 0xDDDDDD);
+			});
+		}
+	};
 
 	public static final IIngameOverlay CONTROL_STAFF_OVERLAY = (gui, poseStack, partialTicks, screenWidth, screenHeight) -> {
 		Minecraft minecraft = Minecraft.getInstance();
@@ -54,6 +77,7 @@ public final class IngameOverlays {
 	public static void registerGameOverlays() {
 		OverlayRegistry.registerOverlayTop("Biomancy ControlStaff", CONTROL_STAFF_OVERLAY);
 		OverlayRegistry.registerOverlayTop("Biomancy Gun", GUN_OVERLAY);
+		OverlayRegistry.registerOverlayTop("Biomancy Alpha Watermark", WATERMARK);
 	}
 
 	static void renderCommandOverlay(PoseStack poseStack, int screenWidth, int screenHeight, IControllableMob.Command command) {
