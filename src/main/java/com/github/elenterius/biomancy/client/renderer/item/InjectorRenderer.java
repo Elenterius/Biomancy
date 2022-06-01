@@ -5,9 +5,12 @@ import com.github.elenterius.biomancy.world.item.InjectorItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.geo.render.built.GeoBone;
 import software.bernie.geckolib3.renderers.geo.GeoItemRenderer;
 
@@ -84,11 +87,16 @@ public class InjectorRenderer extends GeoItemRenderer<InjectorItem> {
 			float r = FastColor.ARGB32.red(serumColor) / 255f;
 			float g = FastColor.ARGB32.green(serumColor) / 255f;
 			float b = FastColor.ARGB32.blue(serumColor) / 255f;
-			super.renderRecursively(bone, stack, buffer, packedLight, packedOverlay, r, g, b, alpha);
+			super.renderRecursively(bone, stack, buffer, packedLight, packedOverlay, r, g, b, 0.85f);
 		}
 		else {
 			super.renderRecursively(bone, stack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
 		}
+	}
+
+	@Override
+	public RenderType getRenderType(InjectorItem item, float partialTicks, PoseStack stack, @Nullable MultiBufferSource buffer, @Nullable VertexConsumer vertexBuilder, int packedLight, ResourceLocation texture) {
+		return RenderType.entityTranslucent(texture);
 	}
 
 	@Override
