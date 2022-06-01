@@ -7,9 +7,11 @@ import com.github.elenterius.biomancy.world.ownable.IOwnableEntityBlock;
 import com.github.elenterius.biomancy.world.permission.Actions;
 import com.github.elenterius.biomancy.world.permission.IRestrictedInteraction;
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -29,6 +31,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -67,6 +70,18 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 	public FleshkinChestBlock(Properties builder) {
 		super(builder);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
+	}
+
+	@Override
+	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
+		super.fillItemCategory(tab, items);
+
+		ItemStack stack = new ItemStack(this);
+		stack.setHoverName(new TextComponent("[test/nil_owner] ").append(stack.getHoverName()));
+		CompoundTag tag = new CompoundTag();
+		tag.putUUID(IOwnableEntityBlock.NBT_KEY_OWNER, Util.NIL_UUID);
+		BlockItem.setBlockEntityData(stack, ModBlockEntities.FLESHKIN_CHEST.get(), tag);
+		items.add(stack);
 	}
 
 	@Override
@@ -131,6 +146,8 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 						level.playSound(null, pos, SoundEvents.GOAT_SCREAMING_RAM_IMPACT, SoundSource.BLOCKS, 1f, 0.5f);
 					}
 					else {
+						int particleCount = level.random.nextInt(1, 3);
+						((ServerLevel) level).sendParticles(ParticleTypes.ANGRY_VILLAGER, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, particleCount, 0.5d, 0.25d, 0.5d, 0);
 						level.playSound(null, pos, SoundEvents.VILLAGER_NO, SoundSource.BLOCKS, 0.75f, level.random.nextFloat(0.15f, 0.45f));
 					}
 				}
