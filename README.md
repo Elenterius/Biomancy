@@ -1,29 +1,26 @@
-<img src="media/biomancy.png" alt="Biomancy" width="30%" style="image-rendering: crisp-edges;"/>
+<img src="media/v2/text_logo.png" alt="Biomancy" width="30%" style="image-rendering: crisp-edges;"/>
 
-[![Downloads on CurseForge](https://cf.way2muchnoise.eu/full_492939_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/biomancy)
-[![Biomancy Version](https://img.shields.io/badge/Biomancy-2.0.0--alpha.12-red)](https://github.com/Elenterius/Biomancy)
-[![Forge Version](https://img.shields.io/badge/Minecraft%20Forge-1.18.2--40.1.21-orange)](https://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.18.2.html)
+[![Downloads on CurseForge](https://cf.way2muchnoise.eu/full_492939_downloads.svg?badge_style=for_the_badge)](https://www.curseforge.com/minecraft/mc-mods/biomancy)
+[![Biomancy Version](https://img.shields.io/badge/Version-2.0.0--alpha.12-red?style=for-the-badge)](https://github.com/Elenterius/Biomancy)
+[![Forge Version](https://img.shields.io/badge/Minecraft%20Forge-1.18.2--40.1.21+-orange?style=for-the-badge)](https://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.18.2.html)
+[![Biomancy Discord](https://img.shields.io/discord/920005236645572662?logo=discord&logoColor=white&style=for-the-badge)](https://discord.gg/424awTDdJJ)
 
 Biomancy is a Biopunk inspired Mod and themed around flesh magic and bio-manipulation.
 
 **Mod Integrations**
 
 - [x] JEI
-- [ ] Patchouli WIP, use the [Wiki](https://github.com/Elenterius/Biomancy/wiki) instead
 
 ## Mod Download
 
 https://www.curseforge.com/minecraft/mc-mods/biomancy
 
+modrinth (WIP)
+
 ## Recipes & Guide Book
 
-Some things aren't yet balanced and require more play testing.<br>
-That's why some items may be too expensive to craft.<br>
+ATM I recommended the use of [JEI](https://www.curseforge.com/minecraft/mc-mods/jei) to look up recipes and the
+github [Wiki](https://github.com/Elenterius/Biomancy/wiki/v2) to understand things.
 
-ATM I recommended the use of JEI to look up recipes and the github [Wiki](https://github.com/Elenterius/Biomancy/wiki) to understand things.
-
-[Getting Started](https://github.com/Elenterius/Biomancy/wiki/Getting-Started)
-
-
-
+[Getting Started](https://github.com/Elenterius/Biomancy/wiki/v2/Getting-Started)
 
