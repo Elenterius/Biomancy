@@ -2,6 +2,8 @@ package com.github.elenterius.biomancy.world.serum;
 
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
@@ -21,11 +23,9 @@ public class BreedingSerum extends Serum {
 	}
 
 	@Override
-	public void affectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
+	public void affectEntity(ServerLevel level, CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
 		if (target instanceof Animal animal && !animal.isBaby()) {
-			if (!animal.level.isClientSide) {
-				animal.addEffect(new MobEffectInstance(ModMobEffects.LIBIDO.get(), 12 * 20, 1, false, true));
-			}
+			animal.addEffect(new MobEffectInstance(ModMobEffects.LIBIDO.get(), 12 * 20, 1, false, true));
 		}
 	}
 
@@ -35,6 +35,6 @@ public class BreedingSerum extends Serum {
 	}
 
 	@Override
-	public void affectPlayerSelf(CompoundTag tag, Player targetSelf) {}
+	public void affectPlayerSelf(CompoundTag tag, ServerPlayer targetSelf) {}
 
 }

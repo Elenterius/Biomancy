@@ -3,8 +3,8 @@ package com.github.elenterius.biomancy.world.serum;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.stats.ServerStatsCounter;
 import net.minecraft.stats.Stats;
 import net.minecraft.stats.StatsCounter;
 import net.minecraft.util.Mth;
@@ -25,30 +25,32 @@ public class InsomniaCureSerum extends Serum {
 	}
 
 	@Override
-	public void affectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
-		if (target instanceof Player player) {
-			affectPlayerSelf(tag, player);
-		}
+	public void affectEntity(ServerLevel level, CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
+		if (target instanceof ServerPlayer player) affectPlayerSelf(tag, player);
 	}
 
 	@Override
-	public void affectPlayerSelf(CompoundTag tag, Player targetSelf) {
-//		if (!targetSelf.world.getGameRules().getBoolean(GameRules.DO_INSOMNIA)) return false; // doesn't work on client side anyways
+	public boolean canAffectPlayerSelf(CompoundTag tag, Player targetSelf) {
+//		if (!targetSelf.level.isClientSide && !targetSelf.level.getGameRules().getBoolean(GameRules.RULE_DOINSOMNIA)) return false;
 
-		if (!targetSelf.level.isClientSide) {
-			ServerStatsCounter statsCounter = ((ServerPlayer) targetSelf).getStats();
-			int timeSinceRest = Mth.clamp(statsCounter.getValue(Stats.CUSTOM.get(Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE);
-			if (timeSinceRest > 20 * 60) {
-				targetSelf.resetStat(Stats.CUSTOM.get(Stats.TIME_SINCE_REST)); //reset insomnia
+		if (getTimeSinceRest(targetSelf) > 20 * 60) {
+			if (targetSelf.level.isClientSide) {
+				targetSelf.displayClientMessage(TextComponentUtil.getFailureMsgText("not_sleepy"), true);
 			}
+			return false;
 		}
-		else {
-			StatsCounter statsCounter = ((LocalPlayer) targetSelf).getStats();
-			int timeSinceRest = Mth.clamp(statsCounter.getValue(Stats.CUSTOM.get(Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE);
-			if (timeSinceRest > 20 * 60) return;
 
-			targetSelf.displayClientMessage(TextComponentUtil.getFailureMsgText("not_sleepy"), true);
-		}
+		return true;
+	}
+
+	@Override
+	public void affectPlayerSelf(CompoundTag tag, ServerPlayer targetSelf) {
+		targetSelf.resetStat(Stats.CUSTOM.get(Stats.TIME_SINCE_REST)); //reset insomnia
+	}
+
+	private int getTimeSinceRest(Player player) {
+		StatsCounter statsCounter = player.level.isClientSide ? ((LocalPlayer) player).getStats() : ((ServerPlayer) player).getStats();
+		return Mth.clamp(statsCounter.getValue(Stats.CUSTOM.get(Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE);
 	}
 
 }

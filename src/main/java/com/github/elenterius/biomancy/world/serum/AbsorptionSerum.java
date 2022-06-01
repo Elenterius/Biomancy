@@ -1,8 +1,9 @@
 package com.github.elenterius.biomancy.world.serum;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 
 import javax.annotation.Nullable;
 
@@ -13,19 +14,17 @@ public class AbsorptionSerum extends Serum {
 	}
 
 	@Override
-	public void affectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
+	public void affectEntity(ServerLevel level, CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
 		addAbsorption(target);
 	}
 
 	@Override
-	public void affectPlayerSelf(CompoundTag tag, Player targetSelf) {
+	public void affectPlayerSelf(CompoundTag tag, ServerPlayer targetSelf) {
 		addAbsorption(targetSelf);
 	}
 
 	private void addAbsorption(LivingEntity target) {
-		if (!target.level.isClientSide) {
-			target.setAbsorptionAmount(target.getAbsorptionAmount() + 8);
-		}
+		target.setAbsorptionAmount(target.getAbsorptionAmount() + 8);
 	}
 
 }

@@ -10,6 +10,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -30,10 +32,10 @@ public abstract class Serum extends ForgeRegistryEntry<Serum> {
 
 	public static final Serum EMPTY = new Serum(0) {
 		@Override
-		public void affectEntity(CompoundTag nbt, @Nullable LivingEntity source, LivingEntity target) {}
+		public void affectEntity(ServerLevel level, CompoundTag nbt, @Nullable LivingEntity source, LivingEntity target) {}
 
 		@Override
-		public void affectPlayerSelf(CompoundTag nbt, Player targetSelf) {}
+		public void affectPlayerSelf(CompoundTag nbt, ServerPlayer targetSelf) {}
 	};
 
 	public static final String PREFIX = "serum.";
@@ -94,15 +96,19 @@ public abstract class Serum extends ForgeRegistryEntry<Serum> {
 		return true;
 	}
 
-	public abstract void affectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target);
+	public void affectEntity(ServerLevel level, CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
+		if (isAttributeModifier()) applyAttributesModifiersToEntity(target);
+	}
 
 	public boolean canAffectPlayerSelf(CompoundTag tag, Player targetSelf) {
 		return true;
 	}
 
-	public abstract void affectPlayerSelf(CompoundTag tag, Player targetSelf);
+	public void affectPlayerSelf(CompoundTag tag, ServerPlayer targetSelf) {
+		if (isAttributeModifier()) applyAttributesModifiersToEntity(targetSelf);
+	}
 
-	public Serum addAttributeModifier(Attribute attribute, String uuid, double amount, AttributeModifier.Operation operation) {
+	protected final Serum addAttributeModifier(Attribute attribute, String uuid, double amount, AttributeModifier.Operation operation) {
 		if (attributeModifiers == null) attributeModifiers = HashMultimap.create();
 
 		AttributeModifier modifier = new AttributeModifier(UUID.fromString(uuid), getTranslationKey(), amount, operation);

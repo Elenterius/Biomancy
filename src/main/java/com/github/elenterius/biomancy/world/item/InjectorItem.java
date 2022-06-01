@@ -24,8 +24,10 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -75,6 +77,7 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 	public static final String INVENTORY_TAG = "inventory";
 	public static final int COOL_DOWN_TICKS = 25;
 	private static final String CONTROLLER_NAME = "controller";
+	public static final int SCHEDULE_TICKS = Mth.ceil(0.32f * 20);
 
 	private final AnimationFactory factory = new AnimationFactory(this);
 
@@ -91,7 +94,7 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 			List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos), EntitySelector.NO_SPECTATORS);
 			if (entities.isEmpty()) return false;
 			LivingEntity target = entities.get(0);
-			if (target.isAlive() && dispenserAffectEntity(level, serum, stack, injectorItem, target)) {
+			if (target.isAlive() && dispenserAffectEntity(level, pos, serum, stack, injectorItem, target)) {
 				level.playSound(null, pos, ModSoundEvents.INJECT.get(), SoundSource.BLOCKS, 0.8f, 1f / (level.random.nextFloat() * 0.5f + 1f) + 0.2f);
 				level.levelEvent(LevelEvent.PARTICLES_DRAGON_BLOCK_BREAK, target.blockPosition(), 0);
 				return true;
@@ -101,12 +104,11 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 		return false;
 	}
 
-	private static boolean dispenserAffectEntity(ServerLevel level, Serum serum, ItemStack injectorStack, InjectorItem injectorItem, LivingEntity target) {
+	private static boolean dispenserAffectEntity(ServerLevel level, BlockPos pos, Serum serum, ItemStack injectorStack, InjectorItem injectorItem, LivingEntity target) {
 		if (MobUtil.canPierceThroughArmor(injectorStack, target)) {
 			CompoundTag dataTag = Serum.getDataTag(injectorStack);
 			if (serum.canAffectEntity(dataTag, null, target)) {
-				serum.affectEntity(dataTag, null, target);
-				if (serum.isAttributeModifier()) serum.applyAttributesModifiersToEntity(target);
+				serum.affectEntity(level, dataTag, null, target);
 				injectorItem.consumeSerum(injectorStack, null); //TODO: drop appropriate vials/container
 				injectorStack.hurt(1, level.getRandom(), null);
 				return true;
@@ -114,7 +116,7 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 		}
 		else {
 			injectorStack.hurt(2, level.getRandom(), null);
-			//TODO: play breaking sound
+			level.playSound(null, pos, SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 0.5f, 1f / (level.random.nextFloat() * 0.5f + 1f) + 0.2f);
 		}
 		return false;
 	}
@@ -188,12 +190,10 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 
 			if (interactWithPlayerSelf(stack, player)) {
 				if (!level.isClientSide) {
-					setEntityHost(stack, player);
-					setEntityVictim(stack, player);
+					scheduleSerumInjection(stack, player, player, SCHEDULE_TICKS);
 					broadcastAnimation((ServerLevel) level, player, stack, AnimState.INJECT_SELF.id);
 					player.getCooldowns().addCooldown(this, COOL_DOWN_TICKS);
 				}
-
 				return InteractionResultHolder.consume(stack);
 			}
 
@@ -205,28 +205,20 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 	}
 
 	@Override
-	public InteractionResult interactLivingEntity(ItemStack copyOfStack, Player player, LivingEntity interactionTarget, InteractionHand usedHand) {
+	public InteractionResult interactLivingEntity(ItemStack copyOfStack, Player player, LivingEntity target, InteractionHand usedHand) {
 		Serum serum = getSerum(copyOfStack);
 		if (serum != null) {
-			if (MobUtil.canPierceThroughArmor(copyOfStack, interactionTarget)) {
+			if (MobUtil.canPierceThroughArmor(copyOfStack, target)) {
 				CompoundTag dataTag = Serum.getDataTag(copyOfStack);
-				if (serum.canAffectEntity(dataTag, player, interactionTarget)) {
-					serum.affectEntity(dataTag, player, interactionTarget);
+				if (serum.canAffectEntity(dataTag, player, target)) {
+					if (player.level.isClientSide) return InteractionResult.CONSUME;
 
-					if (interactionTarget.level.isClientSide) return InteractionResult.CONSUME;
-
-					if (player.getCooldowns().isOnCooldown(this)) return InteractionResult.PASS;
+					if (player.getCooldowns().isOnCooldown(this)) return InteractionResult.FAIL;
 					player.getCooldowns().addCooldown(this, COOL_DOWN_TICKS);
 
-					if (serum.isAttributeModifier()) serum.applyAttributesModifiersToEntity(interactionTarget);
-					if (!player.isCreative()) consumeSerum(copyOfStack, player);
-
-					copyOfStack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
-
 					ItemStack realStack = player.getAbilities().instabuild ? player.getItemInHand(usedHand) : copyOfStack;
-					setEntityHost(realStack, player); //who is using the item
-					setEntityVictim(realStack, interactionTarget); //who is the victim
-					broadcastAnimation((ServerLevel) interactionTarget.level, player, realStack, AnimState.INJECT_OTHER.id);
+					scheduleSerumInjection(realStack, player, target, SCHEDULE_TICKS);
+					broadcastAnimation((ServerLevel) target.level, player, realStack, AnimState.INJECT_OTHER.id);
 
 					return InteractionResult.CONSUME;
 				}
@@ -242,23 +234,62 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 		return InteractionResult.PASS;
 	}
 
+	@Override
+	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
+		if (entity instanceof ServerPlayer player && level instanceof ServerLevel serverLevel) {
+			tickInjectionScheduler(serverLevel, stack, player);
+		}
+	}
+
+	private void scheduleSerumInjection(ItemStack stack, Player player, LivingEntity target, int delayInTicks) {
+		if (stack.isEmpty() || player.level.isClientSide || getSerum(stack) == null) return;
+
+		setEntityHost(stack, player); //who is using the item
+		setEntityVictim(stack, target); //who is the victim
+
+		CompoundTag tag = stack.getOrCreateTag();
+		tag.putInt("DelayInTicks", delayInTicks);
+		tag.putLong("ScheduleTimestamp", player.level.getGameTime());
+	}
+
+	private void tickInjectionScheduler(ServerLevel level, ItemStack stack, ServerPlayer player) {
+		CompoundTag tag = stack.getOrCreateTag();
+		if (!tag.contains("ScheduleTimestamp")) return;
+
+		long delayInTicks = tag.getLong("DelayInTicks");
+		long starTimestamp = tag.getLong("ScheduleTimestamp");
+		if (player.level.getGameTime() - starTimestamp > delayInTicks) {
+			performScheduledSerumInjection(level, stack, player);
+			tag.remove("DelayInTicks");
+			tag.remove("ScheduleTimestamp");
+		}
+	}
+
+	private void performScheduledSerumInjection(ServerLevel level, ItemStack stack, ServerPlayer player) {
+		Serum serum = getSerum(stack);
+		if (serum != null) {
+			Entity victim = getEntityVictim(stack, level);
+			Entity host = getEntityHost(stack, level);
+			if (victim instanceof LivingEntity target) {
+				if (host == victim) {
+					serum.affectPlayerSelf(Serum.getDataTag(stack), player);
+				}
+				else {
+					serum.affectEntity(level, Serum.getDataTag(stack), player, target);
+				}
+			}
+			consumeSerum(stack, player);
+			stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+		}
+	}
+
 	public boolean interactWithPlayerSelf(ItemStack stack, Player player) {
 		Serum serum = getSerum(stack);
 		if (serum != null) {
 			if (MobUtil.canPierceThroughArmor(stack, player)) {
-				CompoundTag dataTag = Serum.getDataTag(stack);
-				if (serum.canAffectPlayerSelf(dataTag, player)) {
-					serum.affectPlayerSelf(dataTag, player);
-					if (!player.level.isClientSide) {
-						if (serum.isAttributeModifier()) serum.applyAttributesModifiersToEntity(player);
-						if (!player.isCreative()) consumeSerum(stack, player);
-						stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
-					}
-					return true;
-				}
+				return serum.canAffectPlayerSelf(Serum.getDataTag(stack), player);
 			}
-
-			if (!player.level.isClientSide) {
+			else if (!player.level.isClientSide) {
 				stack.hurtAndBreak(2, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
 			}
 		}
@@ -285,6 +316,7 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 	}
 
 	public void consumeSerum(ItemStack stack, @Nullable Player player) {
+		if (player != null && player.isCreative()) return;
 		getItemHandler(stack).ifPresent(handler -> consumeSerum(handler, player));
 	}
 
@@ -461,12 +493,10 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 
 		CompoundTag tag = stack.getOrCreateTag();
 		if (tag.contains(INVENTORY_TAG)) {
-			CompoundTag inventory = tag.getCompound(INVENTORY_TAG);
-			short amount = inventory.getShort(LargeSingleItemStackHandler.ITEM_AMOUNT_TAG);
-			tooltip.add(new TextComponent(String.format("Amount: %d/%d", amount, MAX_SLOT_SIZE)).withStyle(ChatFormatting.GRAY));
-
 			Serum serum = getSerum(stack);
 			if (serum != null) {
+				short amount = tag.getCompound(INVENTORY_TAG).getShort(LargeSingleItemStackHandler.ITEM_AMOUNT_TAG);
+				tooltip.add(new TextComponent(String.format("Amount: %dx", amount)).withStyle(ChatFormatting.GRAY));
 				serum.addInfoToTooltip(stack, level, tooltip, isAdvanced);
 			}
 		}

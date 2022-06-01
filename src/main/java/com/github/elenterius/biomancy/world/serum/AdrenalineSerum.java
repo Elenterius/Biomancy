@@ -8,13 +8,14 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -35,25 +36,23 @@ public class AdrenalineSerum extends Serum {
 	}
 
 	@Override
-	public void affectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
+	public void affectEntity(ServerLevel level, CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
 		addStatusEffect(target);
 	}
 
 	@Override
-	public void affectPlayerSelf(CompoundTag tag, Player targetSelf) {
+	public void affectPlayerSelf(CompoundTag tag, ServerPlayer targetSelf) {
 		addStatusEffect(targetSelf);
 	}
 
-	public void addStatusEffect(LivingEntity target) {
-		if (!target.level.isClientSide) {
-			int duration = DURATION;
-			MobEffectInstance effectInstance = target.getEffect(ModMobEffects.ADRENAL_FATIGUE.get());
-			if (effectInstance != null) {
-				duration -= Math.min(effectInstance.getDuration() / 2, 20 * 30);
-				target.removeEffect(ModMobEffects.ADRENAL_FATIGUE.get());
-			}
-			target.addEffect(new MobEffectInstance(ModMobEffects.ADRENALINE_RUSH.get(), duration, AMPLIFIER));
+	private void addStatusEffect(LivingEntity target) {
+		int duration = DURATION;
+		MobEffectInstance effectInstance = target.getEffect(ModMobEffects.ADRENAL_FATIGUE.get());
+		if (effectInstance != null) {
+			duration -= Math.min(effectInstance.getDuration() / 2, 20 * 30);
+			target.removeEffect(ModMobEffects.ADRENAL_FATIGUE.get());
 		}
+		target.addEffect(new MobEffectInstance(ModMobEffects.ADRENALINE_RUSH.get(), duration, AMPLIFIER));
 	}
 
 	@OnlyIn(Dist.CLIENT)

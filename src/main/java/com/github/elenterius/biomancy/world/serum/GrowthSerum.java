@@ -5,6 +5,8 @@ import com.github.elenterius.biomancy.mixin.ArmorStandAccessor;
 import com.github.elenterius.biomancy.mixin.SlimeAccessor;
 import com.github.elenterius.biomancy.world.entity.fleshblob.FleshBlob;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.LivingEntity;
@@ -99,30 +101,26 @@ public class GrowthSerum extends Serum {
 	}
 
 	@Override
-	public void affectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
+	public void affectEntity(ServerLevel level, CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
 		if (target instanceof Slime slime) {
-			if (!slime.level.isClientSide) {
-				int slimeSize = slime.getSize();
-				if (slimeSize < 25) {
-					((SlimeAccessor) slime).biomancy_setSlimeSize(slimeSize + 1, false);
-				}
-				else {
-					slime.hurt(DamageSource.explosion(source), slime.getHealth()); //"explode" slime
-				}
+			int slimeSize = slime.getSize();
+			if (slimeSize < 25) {
+				((SlimeAccessor) slime).biomancy_setSlimeSize(slimeSize + 1, false);
+			}
+			else {
+				slime.hurt(DamageSource.explosion(source), slime.getHealth()); //"explode" slime
 			}
 		}
 		else if (target instanceof FleshBlob fleshBlob) {
-			if (!fleshBlob.level.isClientSide) {
-				byte blobSize = fleshBlob.getBlobSize();
-				if (blobSize < 10) {
-					fleshBlob.setBlobSize((byte) (blobSize + 1), false);
-				}
+			byte blobSize = fleshBlob.getBlobSize();
+			if (blobSize < 10) {
+				fleshBlob.setBlobSize((byte) (blobSize + 1), false);
 			}
 		}
 		else if (target.isBaby()) {
 			if (target instanceof Mob mob) { //includes animals, zombies, piglins, etc...
 				mob.setBaby(false);
-				if (!target.level.isClientSide && target instanceof AgeableMob ageableMob) {
+				if (target instanceof AgeableMob ageableMob) {
 					AgeableMobAccessor accessor = (AgeableMobAccessor) ageableMob;
 					if (accessor.biomancy_getForcedAge() != 0) {
 						accessor.biomancy_setForcedAge(0); //unset forced age
@@ -141,6 +139,6 @@ public class GrowthSerum extends Serum {
 	}
 
 	@Override
-	public void affectPlayerSelf(CompoundTag tag, Player targetSelf) {}
+	public void affectPlayerSelf(CompoundTag tag, ServerPlayer targetSelf) {}
 
 }

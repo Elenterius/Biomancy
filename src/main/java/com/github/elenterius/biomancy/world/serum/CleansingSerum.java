@@ -5,11 +5,11 @@ import com.github.elenterius.biomancy.world.entity.MobUtil;
 import com.github.elenterius.biomancy.world.entity.fleshblob.FleshBlob;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.WitherSkeleton;
 import net.minecraft.world.entity.monster.ZombieVillager;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
@@ -21,19 +21,17 @@ public class CleansingSerum extends Serum {
 	}
 
 	@Override
-	public void affectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
-		if (!target.level.isClientSide) {
-			clearPotionEffects(target);
-			clearAbsorption(target);
+	public void affectEntity(ServerLevel level, CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
+		clearPotionEffects(target);
+		clearAbsorption(target);
 
-			if (target instanceof ZombieVillager) {
-				if (ForgeEventFactory.canLivingConvert(target, EntityType.VILLAGER, timer -> {})) {
-					((ZombieVillagerMixinAccessor) target).biomancy_cureZombie((ServerLevel) target.level);
-				}
+		if (target instanceof ZombieVillager) {
+			if (ForgeEventFactory.canLivingConvert(target, EntityType.VILLAGER, timer -> {})) {
+				((ZombieVillagerMixinAccessor) target).biomancy_cureZombie((ServerLevel) target.level);
 			}
-			else if (target instanceof WitherSkeleton skeleton) {
-				MobUtil.convertMobTo((ServerLevel) target.level, skeleton, EntityType.SKELETON);
-			}
+		}
+		else if (target instanceof WitherSkeleton skeleton) {
+			MobUtil.convertMobTo((ServerLevel) target.level, skeleton, EntityType.SKELETON);
 		}
 
 		if (target instanceof FleshBlob fleshBlob) {
@@ -42,11 +40,9 @@ public class CleansingSerum extends Serum {
 	}
 
 	@Override
-	public void affectPlayerSelf(CompoundTag tag, Player targetSelf) {
-		if (!targetSelf.level.isClientSide) {
-			clearPotionEffects(targetSelf);
-			clearAbsorption(targetSelf);
-		}
+	public void affectPlayerSelf(CompoundTag tag, ServerPlayer targetSelf) {
+		clearPotionEffects(targetSelf);
+		clearAbsorption(targetSelf);
 	}
 
 	private void clearPotionEffects(LivingEntity target) {

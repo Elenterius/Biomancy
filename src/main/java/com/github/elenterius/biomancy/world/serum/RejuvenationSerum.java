@@ -5,6 +5,8 @@ import com.github.elenterius.biomancy.mixin.ArmorStandAccessor;
 import com.github.elenterius.biomancy.mixin.SlimeAccessor;
 import com.github.elenterius.biomancy.world.entity.fleshblob.FleshBlob;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -60,27 +62,23 @@ public class RejuvenationSerum extends Serum {
 	}
 
 	@Override
-	public void affectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
+	public void affectEntity(ServerLevel level, CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
 		if (target instanceof Slime slime) { // includes MagmaCube
-			if (!slime.level.isClientSide) {
-				int slimeSize = slime.getSize();
-				if (slimeSize > 1) {
-					((SlimeAccessor) slime).biomancy_setSlimeSize(slimeSize - 1, false);
-				}
+			int slimeSize = slime.getSize();
+			if (slimeSize > 1) {
+				((SlimeAccessor) slime).biomancy_setSlimeSize(slimeSize - 1, false);
 			}
 		}
 		else if (target instanceof FleshBlob fleshBlob) {
-			if (!fleshBlob.level.isClientSide) {
-				byte blobSize = fleshBlob.getBlobSize();
-				if (blobSize > 1) {
-					fleshBlob.setBlobSize((byte) (blobSize - 1), false);
-				}
+			byte blobSize = fleshBlob.getBlobSize();
+			if (blobSize > 1) {
+				fleshBlob.setBlobSize((byte) (blobSize - 1), false);
 			}
 		}
 		else if (!target.isBaby()) {
 			if (target instanceof Mob mob) { // includes animals, villagers, zombies, etc..
 				mob.setBaby(true);
-				if (!target.level.isClientSide && target instanceof AgeableMob ageableMob) {
+				if (target instanceof AgeableMob ageableMob) {
 					ageableMob.setAge(AgeableMob.BABY_START_AGE);
 					((AgeableMobAccessor) ageableMob).biomancy_setForcedAge(AgeableMob.BABY_START_AGE); //should prevent mobs from growing into adults
 				}
@@ -97,6 +95,6 @@ public class RejuvenationSerum extends Serum {
 	}
 
 	@Override
-	public void affectPlayerSelf(CompoundTag tag, Player targetSelf) {}
+	public void affectPlayerSelf(CompoundTag tag, ServerPlayer targetSelf) {}
 
 }

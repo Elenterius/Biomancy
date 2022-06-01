@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.world.serum;
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -11,7 +12,6 @@ import net.minecraft.world.entity.animal.horse.SkeletonHorse;
 import net.minecraft.world.entity.animal.horse.ZombieHorse;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.Zombie;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraftforge.event.ForgeEventFactory;
 
@@ -52,43 +52,39 @@ public class DecaySerum extends Serum {
 //	}
 
 	@Override
-	public void affectEntity(CompoundTag nbt, @Nullable LivingEntity source, LivingEntity target) {
-		if (!target.level.isClientSide) {
-			Collection<MobEffectInstance> effects = target.getActiveEffects();
-			int amplifier = 0;
-			int duration = 0;
-			for (MobEffectInstance effectInstance : effects) {
-				if (effectInstance.getEffect() == ModMobEffects.FLESH_EATING_DISEASE.get()) {
-					amplifier = effectInstance.getAmplifier() + 1;
-					duration = effectInstance.getDuration();
-					break;
-				}
+	public void affectEntity(ServerLevel level, CompoundTag nbt, @Nullable LivingEntity source, LivingEntity target) {
+		Collection<MobEffectInstance> effects = target.getActiveEffects();
+		int amplifier = 0;
+		int duration = 0;
+		for (MobEffectInstance effectInstance : effects) {
+			if (effectInstance.getEffect() == ModMobEffects.FLESH_EATING_DISEASE.get()) {
+				amplifier = effectInstance.getAmplifier() + 1;
+				duration = effectInstance.getDuration();
+				break;
 			}
-			duration += 5 * 120;
+		}
+		duration += 5 * 120;
 
-			if (!convertLivingEntity((ServerLevel) target.level, target, amplifier)) {
-				MobEffectInstance effectInstance = new MobEffectInstance(ModMobEffects.FLESH_EATING_DISEASE.get(), duration, amplifier);
-				target.addEffect(effectInstance);
-			}
+		if (!convertLivingEntity((ServerLevel) target.level, target, amplifier)) {
+			MobEffectInstance effectInstance = new MobEffectInstance(ModMobEffects.FLESH_EATING_DISEASE.get(), duration, amplifier);
+			target.addEffect(effectInstance);
 		}
 	}
 
 	@Override
-	public void affectPlayerSelf(CompoundTag nbt, Player targetSelf) {
-		if (!targetSelf.level.isClientSide) {
-			Collection<MobEffectInstance> effects = targetSelf.getActiveEffects();
-			int amplifier = 0;
-			int duration = 0;
-			for (MobEffectInstance effectInstance : effects) {
-				if (effectInstance.getEffect() == ModMobEffects.FLESH_EATING_DISEASE.get()) {
-					amplifier = effectInstance.getAmplifier() + 1;
-					duration = effectInstance.getDuration();
-					break;
-				}
+	public void affectPlayerSelf(CompoundTag nbt, ServerPlayer targetSelf) {
+		Collection<MobEffectInstance> effects = targetSelf.getActiveEffects();
+		int amplifier = 0;
+		int duration = 0;
+		for (MobEffectInstance effectInstance : effects) {
+			if (effectInstance.getEffect() == ModMobEffects.FLESH_EATING_DISEASE.get()) {
+				amplifier = effectInstance.getAmplifier() + 1;
+				duration = effectInstance.getDuration();
+				break;
 			}
-			MobEffectInstance effectInstance = new MobEffectInstance(ModMobEffects.FLESH_EATING_DISEASE.get(), 5 * 120 + duration, amplifier);
-			targetSelf.addEffect(effectInstance);
 		}
+		MobEffectInstance effectInstance = new MobEffectInstance(ModMobEffects.FLESH_EATING_DISEASE.get(), 5 * 120 + duration, amplifier);
+		targetSelf.addEffect(effectInstance);
 	}
 
 	private boolean convertLivingEntity(ServerLevel level, LivingEntity target, int amplifier) {
