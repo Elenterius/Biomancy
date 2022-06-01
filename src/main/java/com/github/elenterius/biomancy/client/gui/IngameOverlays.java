@@ -1,7 +1,6 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.world.entity.ownable.IControllableMob;
 import com.github.elenterius.biomancy.world.item.weapon.IGun;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -48,16 +47,16 @@ public final class IngameOverlays {
 	};
 
 	public static final IIngameOverlay CONTROL_STAFF_OVERLAY = (gui, poseStack, partialTicks, screenWidth, screenHeight) -> {
-		Minecraft minecraft = Minecraft.getInstance();
-		if (!minecraft.options.hideGui && minecraft.options.getCameraType().isFirstPerson() && minecraft.player != null) {
-			ItemStack itemStack = minecraft.player.getMainHandItem();
-			if (itemStack.isEmpty() || !itemStack.is(ModItems.CONTROL_STAFF.get())) return;
-			IControllableMob.Command command = ModItems.CONTROL_STAFF.get().getCommand(itemStack);
-
-			gui.setupOverlayRenderState(true, false, COMMAND_ICONS);
-			gui.setBlitOffset(-90);
-			renderCommandOverlay(poseStack, screenWidth, screenHeight, command);
-		}
+//		Minecraft minecraft = Minecraft.getInstance();
+//		if (!minecraft.options.hideGui && minecraft.options.getCameraType().isFirstPerson() && minecraft.player != null) {
+//			ItemStack itemStack = minecraft.player.getMainHandItem();
+//			if (itemStack.isEmpty() || !itemStack.is(ModItems.CONTROL_STAFF.get())) return;
+//			IControllableMob.Command command = ModItems.CONTROL_STAFF.get().getCommand(itemStack);
+//
+//			gui.setupOverlayRenderState(true, false, COMMAND_ICONS);
+//			gui.setBlitOffset(-90);
+//			renderCommandOverlay(poseStack, screenWidth, screenHeight, command);
+//		}
 	};
 
 	public static final IIngameOverlay GUN_OVERLAY = (gui, poseStack, partialTicks, screenWidth, screenHeight) -> {
@@ -75,7 +74,7 @@ public final class IngameOverlays {
 	private IngameOverlays() {}
 
 	public static void registerGameOverlays() {
-		OverlayRegistry.registerOverlayTop("Biomancy ControlStaff", CONTROL_STAFF_OVERLAY);
+//		OverlayRegistry.registerOverlayTop("Biomancy ControlStaff", CONTROL_STAFF_OVERLAY);
 		OverlayRegistry.registerOverlayTop("Biomancy Gun", GUN_OVERLAY);
 		OverlayRegistry.registerOverlayTop("Biomancy Alpha Watermark", WATERMARK);
 	}

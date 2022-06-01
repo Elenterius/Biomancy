@@ -153,12 +153,12 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 
 //		generateWeapon(ModItems.BONE_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		generateWeaponWithOverlay(ModItems.BOOMLING.get(), OVERLAY_TEMPLATE);
-		generateWeapon(ModItems.CONTROL_STAFF.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+//		generateWeapon(ModItems.CONTROL_STAFF.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		generateWeapon(ModItems.TOOTH_GUN.get(), GUN_TEMPLATE);
 		generateWeapon(ModItems.WITHERSHOT.get(), GUN_TEMPLATE);
 
 		generateFlat(ModItems.FLESH_DOOR.get(), ModelTemplates.FLAT_ITEM);
-		generateFlat(ModItems.FLESHKIN_DOOR.get(), ModelTemplates.FLAT_ITEM);
+//		generateFlat(ModItems.FLESHKIN_DOOR.get(), ModelTemplates.FLAT_ITEM);
 		generateFlatBlock(ModItems.FLESH_LADDER.get(), ModelTemplates.FLAT_ITEM);
 		generateFlatBlock(ModItems.MALIGNANT_FLESH_VEINS.get(), ModelTemplates.FLAT_ITEM);
 

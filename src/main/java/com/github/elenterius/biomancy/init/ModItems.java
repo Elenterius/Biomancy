@@ -2,7 +2,10 @@ package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.world.item.*;
-import com.github.elenterius.biomancy.world.item.weapon.*;
+import com.github.elenterius.biomancy.world.item.weapon.BoomlingItem;
+import com.github.elenterius.biomancy.world.item.weapon.LongClawItem;
+import com.github.elenterius.biomancy.world.item.weapon.ToothGunItem;
+import com.github.elenterius.biomancy.world.item.weapon.WithershotItem;
 import com.github.elenterius.biomancy.world.serum.Serum;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -31,7 +34,7 @@ public final class ModItems {
 	public static final RegistryObject<SimpleItem> VOLATILE_GLAND = registerSimpleItem("volatile_gland");
 	//## Special
 	public static final RegistryObject<SimpleItem> LIVING_FLESH = registerSimpleItem("living_flesh", ModRarities.VERY_RARE);
-	public static final RegistryObject<SimpleItem.ShinySimpleItem> EXALTED_LIVING_FLESH = ITEMS.register("exalted_living_flesh", () -> new SimpleItem.ShinySimpleItem(createBaseProperties().rarity(ModRarities.ULTRA_RARE)));
+	public static final RegistryObject<SimpleItem.ShinySimpleItem> EXALTED_LIVING_FLESH = ITEMS.register("exalted_living_flesh", () -> new SimpleItem.ShinySimpleItem(createBaseProperties().rarity(ModRarities.ULTRA_RARE).tab(null)));
 
 	//# Components
 	//## Complex
@@ -78,11 +81,11 @@ public final class ModItems {
 	public static final RegistryObject<EssenceItem> ESSENCE = ITEMS.register("essence", () -> new EssenceItem(createBaseProperties()));
 	public static final RegistryObject<BioExtractorItem> BIO_EXTRACTOR = ITEMS.register("bio_extractor", () -> new BioExtractorItem(createBaseProperties().durability(200)));
 	public static final RegistryObject<InjectorItem> INJECTOR = ITEMS.register("injector", () -> new InjectorItem(createBaseProperties().durability(200)));
-	public static final RegistryObject<ControlStaffItem> CONTROL_STAFF = ITEMS.register("control_staff", () -> new ControlStaffItem(createBaseProperties().stacksTo(1).rarity(ModRarities.ULTRA_RARE)));
+//	public static final RegistryObject<ControlStaffItem> CONTROL_STAFF = ITEMS.register("control_staff", () -> new ControlStaffItem(createBaseProperties().stacksTo(1).rarity(ModRarities.ULTRA_RARE)));
 
 	//# Weapons
 //	public static final RegistryObject<SwordItem> BONE_SWORD = ITEMS.register("bone_sword", () -> new SwordItem(ModTiers.BONE, 3, -2.4f, createBaseProperties()));
-	public static final RegistryObject<ToothGunItem> TOOTH_GUN = ITEMS.register("tooth_gun", () -> new ToothGunItem(createBaseProperties().stacksTo(1).durability(ModTiers.LESSER_BIOFLESH.getUses()).rarity(ModRarities.VERY_RARE)));
+	public static final RegistryObject<ToothGunItem> TOOTH_GUN = ITEMS.register("tooth_gun", () -> new ToothGunItem(createBaseProperties().stacksTo(1).durability(ModTiers.LESSER_BIOFLESH.getUses()).rarity(ModRarities.VERY_RARE).tab(null)));
 	public static final RegistryObject<WithershotItem> WITHERSHOT = ITEMS.register("withershot", () -> new WithershotItem(createBaseProperties().stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.VERY_RARE).tab(null)));
 	public static final RegistryObject<LongClawItem> LONG_CLAW = ITEMS.register("long_range_claw", () -> new LongClawItem(ModTiers.BIOFLESH, 3, -2.4f, 60, createBaseProperties().rarity(ModRarities.VERY_RARE)));
 
@@ -108,8 +111,8 @@ public final class ModItems {
 	public static final RegistryObject<SimpleBlockItem> FLESHKIN_CHEST = registerSimpleBlockItem(ModBlocks.FLESHKIN_CHEST, ModRarities.UNCOMMON);
 
 	//## Ownable
-	public static final RegistryObject<SimpleBlockItem> FLESHKIN_DOOR = registerSimpleBlockItem(ModBlocks.FLESHKIN_DOOR);
-	public static final RegistryObject<SimpleBlockItem> FLESHKIN_TRAPDOOR = registerSimpleBlockItem(ModBlocks.FLESHKIN_TRAPDOOR);
+//	public static final RegistryObject<SimpleBlockItem> FLESHKIN_DOOR = registerSimpleBlockItem(ModBlocks.FLESHKIN_DOOR);
+//	public static final RegistryObject<SimpleBlockItem> FLESHKIN_TRAPDOOR = registerSimpleBlockItem(ModBlocks.FLESHKIN_TRAPDOOR);
 	public static final RegistryObject<SimpleBlockItem> FLESHKIN_PRESSURE_PLATE = registerSimpleBlockItem(ModBlocks.FLESHKIN_PRESSURE_PLATE);
 
 	//## Misc
@@ -129,7 +132,7 @@ public final class ModItems {
 	public static final RegistryObject<SimpleBlockItem> MALIGNANT_FLESH_SLAB = registerSimpleBlockItem(ModBlocks.MALIGNANT_FLESH_SLAB);
 	public static final RegistryObject<SimpleBlockItem> MALIGNANT_FLESH_VEINS = registerSimpleBlockItem(ModBlocks.MALIGNANT_FLESH_VEINS);
 
-	public static final RegistryObject<SimpleBlockItem> VOICE_BOX = registerSimpleBlockItem(ModBlocks.VOICE_BOX);
+	public static final RegistryObject<SimpleBlockItem> VOICE_BOX = registerSimpleBlockItem(ModBlocks.VOICE_BOX, () -> createBaseProperties().tab(null));
 	public static final RegistryObject<SimpleBlockItem> FLESH_IRIS_DOOR = registerSimpleBlockItem(ModBlocks.FLESH_IRIS_DOOR);
 	public static final RegistryObject<SimpleBlockItem> FLESH_DOOR = registerSimpleBlockItem(ModBlocks.FLESH_DOOR);
 	public static final RegistryObject<SimpleBlockItem> FLESH_FENCE = registerSimpleBlockItem(ModBlocks.FLESH_FENCE);

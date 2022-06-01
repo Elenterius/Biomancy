@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.world.entity.ownable;
 
-import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
 import com.github.elenterius.biomancy.world.entity.ai.goal.controllable.FollowOwnerGoal;
 import com.github.elenterius.biomancy.world.entity.ai.goal.controllable.*;
@@ -108,7 +107,7 @@ public class Fleshkin extends OwnableMonster implements IControllableMob<Fleshki
 		//debug stuff
 		if (player.isCreative()) {
 			Item item = player.getMainHandItem().getItem();
-			if (item == Items.DEBUG_STICK || item == ModItems.CONTROL_STAFF.get()) {
+			if (item == Items.DEBUG_STICK /*|| item == ModItems.CONTROL_STAFF.get()*/) {
 				setOwner(player);
 				player.displayClientMessage(new TextComponent("You are now the owner of this creature!").withStyle(ChatFormatting.RED), true);
 			}

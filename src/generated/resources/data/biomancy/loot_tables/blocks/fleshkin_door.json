@@ -31,7 +31,7 @@
               ]
             }
           ],
-          "name": "biomancy:fleshkin_door"
+          "name": "minecraft:air"
         }
       ],
       "conditions": [
