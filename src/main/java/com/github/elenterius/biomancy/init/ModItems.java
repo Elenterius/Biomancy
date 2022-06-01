@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.init;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.world.item.*;
 import com.github.elenterius.biomancy.world.item.weapon.*;
+import com.github.elenterius.biomancy.world.serum.Serum;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.Item;
@@ -62,14 +63,14 @@ public final class ModItems {
 	public static final RegistryObject<SimpleItem> GENETIC_COMPOUND = registerSimpleItem("genetic_compound");
 
 	public static final RegistryObject<DynamicSerumItem> GENERIC_SERUM = ITEMS.register("generic_serum", () -> new DynamicSerumItem(createBaseProperties().stacksTo(8)));
-	public static final RegistryObject<SerumItem> REJUVENATION_SERUM = ITEMS.register("rejuvenation_serum", () -> new SerumItem(createBaseProperties().stacksTo(8), ModSerums.REJUVENATION_SERUM));
-	public static final RegistryObject<SerumItem> GROWTH_SERUM = ITEMS.register("growth_serum", () -> new SerumItem(createBaseProperties().stacksTo(8), ModSerums.GROWTH_SERUM));
-	public static final RegistryObject<SerumItem> BREEDING_STIMULANT = ITEMS.register("breeding_stimulant", () -> new SerumItem(createBaseProperties().stacksTo(8), ModSerums.BREEDING_STIMULANT));
-	public static final RegistryObject<SerumItem> ABSORPTION_BOOST = ITEMS.register("absorption_boost", () -> new SerumItem(createBaseProperties().stacksTo(8), ModSerums.ABSORPTION_BOOST));
-	public static final RegistryObject<SerumItem> CLEANSING_SERUM = ITEMS.register("cleansing_serum", () -> new SerumItem(createBaseProperties().stacksTo(8), ModSerums.CLEANSING_SERUM));
-	public static final RegistryObject<SerumItem> INSOMNIA_CURE = ITEMS.register("insomnia_cure", () -> new SerumItem(createBaseProperties().stacksTo(8), ModSerums.INSOMNIA_CURE));
-	public static final RegistryObject<SerumItem> ADRENALINE_SERUM = ITEMS.register("adrenaline_serum", () -> new SerumItem(createBaseProperties().stacksTo(8), ModSerums.ADRENALINE_SERUM));
-	public static final RegistryObject<SerumItem> DECAY_AGENT = ITEMS.register("decay_agent", () -> new SerumItem(createBaseProperties().stacksTo(8), ModSerums.DECAY_AGENT));
+	public static final RegistryObject<SerumItem> REJUVENATION_SERUM = registerSerumItem(ModSerums.REJUVENATION_SERUM);
+	public static final RegistryObject<SerumItem> GROWTH_SERUM = registerSerumItem(ModSerums.GROWTH_SERUM);
+	public static final RegistryObject<SerumItem> BREEDING_STIMULANT = registerSerumItem(ModSerums.BREEDING_STIMULANT);
+	public static final RegistryObject<SerumItem> ABSORPTION_BOOST = registerSerumItem(ModSerums.ABSORPTION_BOOST);
+	public static final RegistryObject<SerumItem> CLEANSING_SERUM = registerSerumItem(ModSerums.CLEANSING_SERUM);
+	public static final RegistryObject<SerumItem> INSOMNIA_CURE = registerSerumItem(ModSerums.INSOMNIA_CURE);
+	public static final RegistryObject<SerumItem> ADRENALINE_SERUM = registerSerumItem(ModSerums.ADRENALINE_SERUM);
+	public static final RegistryObject<SerumItem> DECAY_AGENT = registerSerumItem(ModSerums.DECAY_AGENT);
 
 //	public static final RegistryObject<Item> ICHOR_SERUM = ITEMS.register("ichor_serum", () -> new SimpleItem.WithFoilItem(createBaseProperties()));
 
@@ -181,6 +182,10 @@ public final class ModItems {
 
 	private static <T extends EntityType<? extends Mob>> RegistryObject<ForgeSpawnEggItem> registerSpawnEgg(RegistryObject<T> mobHolder, int primaryColor, int accentColor, Supplier<Item.Properties> properties) {
 		return ITEMS.register(mobHolder.getId().getPath() + "_spawn_egg", () -> new ForgeSpawnEggItem(mobHolder, primaryColor, accentColor, properties.get()));
+	}
+
+	private static <T extends Serum> RegistryObject<SerumItem> registerSerumItem(RegistryObject<T> registryObject) {
+		return ITEMS.register(registryObject.getId().getPath(), () -> new SerumItem(createBaseProperties().stacksTo(8), registryObject));
 	}
 
 	private static RegistryObject<SimpleItem> registerSimpleItem(String name) {

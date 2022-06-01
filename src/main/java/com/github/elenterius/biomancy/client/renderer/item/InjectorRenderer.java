@@ -80,6 +80,7 @@ public class InjectorRenderer extends GeoItemRenderer<InjectorItem> {
 	public void renderRecursively(GeoBone bone, PoseStack stack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		if (bone.name.equals("serum") && currentItemStack.getItem() instanceof InjectorItem injector) {
 			int serumColor = injector.getSerumColor(currentItemStack);
+//			if (serumColor == -1) return; //don't render? :)
 			float r = FastColor.ARGB32.red(serumColor) / 255f;
 			float g = FastColor.ARGB32.green(serumColor) / 255f;
 			float b = FastColor.ARGB32.blue(serumColor) / 255f;
