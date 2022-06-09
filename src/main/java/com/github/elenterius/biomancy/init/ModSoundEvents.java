@@ -25,8 +25,8 @@ public final class ModSoundEvents {
 	public static final RegistryObject<SoundEvent> FLESH_BLOCK_BREAK = registerSoundEvent("flesh_block.break");
 	public static final RegistryObject<SoundEvent> FLESH_BLOCK_STEP = registerSoundEvent("flesh_block.step");
 	public static final RegistryObject<SoundEvent> FLESH_BLOCK_FALL = registerSoundEvent("flesh_block.fall");
-	public static final RegistryObject<SoundEvent> FLESHY_DOOR_OPEN = registerSoundEvent("fleshy_door.open");
-	public static final RegistryObject<SoundEvent> FLESHY_DOOR_CLOSE = registerSoundEvent("fleshy_door.close");
+	public static final RegistryObject<SoundEvent> FLESH_DOOR_OPEN = registerSoundEvent("flesh_door.open");
+	public static final RegistryObject<SoundEvent> FLESH_DOOR_CLOSE = registerSoundEvent("flesh_door.close");
 	public static final RegistryObject<SoundEvent> FLESHKIN_CHEST_OPEN = registerSoundEvent("fleshkin_chest.open");
 	public static final RegistryObject<SoundEvent> FLESHKIN_CHEST_CLOSE = registerSoundEvent("fleshkin_chest.close");
 

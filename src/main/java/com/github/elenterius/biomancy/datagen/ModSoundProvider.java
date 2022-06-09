@@ -24,17 +24,17 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 		addSimpleSound(ModSoundEvents.INJECT);
 		addSimpleRedirect(ModSoundEvents.ACTION_FAIL, SoundEvents.DISPENSER_FAIL);
 
-		addSimpleSounds(ModSoundEvents.FLESH_BLOCK_HIT, "1_2", "1_3", "1_6", "2_2");
-		addSimpleSounds(ModSoundEvents.FLESH_BLOCK_PLACE, "1_4", "3");
-		addSimpleSounds(ModSoundEvents.FLESH_BLOCK_STEP, "1", "2", "3", "4");
-		addSimpleSounds(ModSoundEvents.FLESH_BLOCK_BREAK, "5", "6");
-		addSimpleRedirect(ModSoundEvents.FLESH_BLOCK_FALL, SoundEvents.SLIME_BLOCK_FALL);
+		addSimpleSounds(ModSoundEvents.FLESH_BLOCK_HIT, 4);
+		addSimpleSounds(ModSoundEvents.FLESH_BLOCK_PLACE, 2);
+		addSimpleSounds(ModSoundEvents.FLESH_BLOCK_STEP, 4);
+		addSimpleSounds(ModSoundEvents.FLESH_BLOCK_BREAK, 4);
+        addSimpleSounds(ModSoundEvents.FLESH_BLOCK_FALL, 3);
 
-		addSimpleSounds(ModSoundEvents.FLESHY_DOOR_OPEN, "1");
-		addSimpleRedirect(ModSoundEvents.FLESHY_DOOR_CLOSE, SoundEvents.WOODEN_DOOR_CLOSE);
+		addSimpleSounds(ModSoundEvents.FLESH_DOOR_OPEN, 2);
+        addSimpleSounds(ModSoundEvents.FLESH_DOOR_CLOSE, 2);
 
-		addSimpleSounds(ModSoundEvents.FLESHKIN_CHEST_OPEN, "1");
-		addSimpleSounds(ModSoundEvents.FLESHKIN_CHEST_CLOSE, "1", "1_1");
+		addSimpleSounds(ModSoundEvents.FLESHKIN_CHEST_OPEN, 1);
+		addSimpleSounds(ModSoundEvents.FLESHKIN_CHEST_CLOSE, 2);
 	}
 
 	public String translationKey(RegistryObject<SoundEvent> soundHolder) {
@@ -44,6 +44,18 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 	public ResourceLocation extend(ResourceLocation rl, String suffix) {
 		return new ResourceLocation(rl.getNamespace(), rl.getPath() + "_" + suffix);
 	}
+
+	public ResourceLocation extend(ResourceLocation rl, int variant) {
+		return new ResourceLocation(rl.getNamespace(), rl.getPath() + variant);
+	}
+
+    protected void addSimpleSounds(RegistryObject<SoundEvent> soundHolder, int variants) {
+        SoundDefinition soundDefinition = definition().subtitle(translationKey(soundHolder));
+        for (int i = 1; i <= variants; i++) {
+	        soundDefinition.with(SoundDefinitionsProvider.sound(extend(soundHolder.getId(), i)));
+        }
+        add(soundHolder, soundDefinition);
+    }
 
 	protected void addSimpleSounds(RegistryObject<SoundEvent> soundHolder, String... suffixes) {
 		SoundDefinition soundDefinition = definition().subtitle(translationKey(soundHolder));

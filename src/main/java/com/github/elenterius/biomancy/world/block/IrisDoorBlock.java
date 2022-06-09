@@ -134,7 +134,7 @@ public class IrisDoorBlock extends Block implements SimpleWaterloggedBlock {
 	}
 
 	protected void triggerEvents(@Nullable Player player, Level level, BlockPos pos, boolean open) {
-		playSound(player, level, pos, open ? ModSoundEvents.FLESHY_DOOR_OPEN.get() : ModSoundEvents.FLESHY_DOOR_CLOSE.get());
+		playSound(player, level, pos, open ? ModSoundEvents.FLESH_DOOR_OPEN.get() : ModSoundEvents.FLESH_DOOR_CLOSE.get());
 		level.gameEvent(player, open ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
 	}
 
