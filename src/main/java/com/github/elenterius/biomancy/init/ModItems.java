@@ -77,7 +77,8 @@ public final class ModItems {
 //	public static final RegistryObject<Item> ICHOR_SERUM = ITEMS.register("ichor_serum", () -> new SimpleItem.WithFoilItem(createBaseProperties()));
 
 	//# Misc
-	public static final RegistryObject<SimpleItem> OCULUS = ITEMS.register("oculus", () -> new SimpleItem(createBaseProperties().food(ModFoods.OCULUS).rarity(ModRarities.UNCOMMON)));
+//	public static final RegistryObject<SimpleItem> OCULUS = ITEMS.register("oculus", () -> new SimpleItem(createBaseProperties().food(ModFoods.OCULUS).rarity(ModRarities.UNCOMMON)));
+	public static final RegistryObject<FertilizerItem> FERTILIZER = ITEMS.register("fertilizer", () -> new FertilizerItem(createBaseProperties().rarity(ModRarities.UNCOMMON)));
 	public static final RegistryObject<EssenceItem> ESSENCE = ITEMS.register("essence", () -> new EssenceItem(createBaseProperties()));
 	public static final RegistryObject<BioExtractorItem> BIO_EXTRACTOR = ITEMS.register("bio_extractor", () -> new BioExtractorItem(createBaseProperties().durability(200)));
 	public static final RegistryObject<InjectorItem> INJECTOR = ITEMS.register("injector", () -> new InjectorItem(createBaseProperties().durability(200)));

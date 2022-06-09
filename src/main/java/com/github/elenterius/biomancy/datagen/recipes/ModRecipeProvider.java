@@ -305,14 +305,14 @@ public class ModRecipeProvider extends RecipeProvider {
 	}
 
 	private void registerBioForgeRecipes(Consumer<FinishedRecipe> consumer) {
-		BioForgeRecipeBuilder.create(new ItemData(ModItems.OCULUS.get()))
-				.addIngredient(ModItems.FLESH_BITS.get(), 20)
-				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 10)
-				.addIngredient(Items.QUARTZ, 2)
-				.setReactant(Items.SPIDER_EYE)
-				.setCategory(BioForgeCategory.MISC)
-				.unlockedBy(ModItems.ELASTIC_FIBERS.get())
-				.save(consumer);
+//		BioForgeRecipeBuilder.create(new ItemData(ModItems.OCULUS.get()))
+//				.addIngredient(ModItems.FLESH_BITS.get(), 20)
+//				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 10)
+//				.addIngredient(Items.QUARTZ, 2)
+//				.setReactant(Items.SPIDER_EYE)
+//				.setCategory(BioForgeCategory.MISC)
+//				.unlockedBy(ModItems.ELASTIC_FIBERS.get())
+//				.save(consumer);
 
 //		BioForgeRecipeBuilder.create(new ItemData(ModItems.TOOTH_GUN.get()))
 //				.setCraftingTime(5 * 20)

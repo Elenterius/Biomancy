@@ -56,7 +56,7 @@ public class ModAdvancementProvider extends AdvancementProvider {
 	protected void registerAdvancements(Consumer<Advancement> consumer, ExistingFileHelper fileHelper) {
 		LOGGER.info(logMarker, "registering advancements...");
 
-		Advancement root = Advancement.Builder.advancement().display(ModItems.OCULUS.get(), createTitle("root"), createDescription("root"), new ResourceLocation("textures/gui/advancements/backgrounds/stone.png"),
+		Advancement root = Advancement.Builder.advancement().display(ModItems.LIVING_FLESH.get(), createTitle("root"), createDescription("root"), new ResourceLocation("textures/gui/advancements/backgrounds/stone.png"),
 				FrameType.TASK, true, false, false).addCriterion("has_raw_meats", hasTag(ModTags.Items.RAW_MEATS)).save(consumer, BiomancyMod.MOD_ID + "/root");
 
 		Advancement nodeA1 = Advancement.Builder.advancement().parent(root).display(ModItems.CREATOR.get(), createTitle("flesh"), createDescription("flesh"), null,

@@ -35,7 +35,7 @@ public class ModEntityLoot extends EntityLoot {
 				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(ModItems.LIVING_FLESH.get())
 						.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1))).apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0f, 1f)))))
 				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-						.add(LootItem.lootTableItem(ModItems.OCULUS.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(-4f, 1f))).apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0f, 1f))))
+						.add(LootItem.lootTableItem(ModItems.LIVING_FLESH.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(-4f, 1f))).apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0f, 1f))))
 						.when(LootItemKilledByPlayerCondition.killedByPlayer()))
 		);
 		add(ModLoot.Entity.FLESH_BLOB_SIZE_2, fleshBlobLootTableBuilderWithDrop(1));

@@ -57,7 +57,7 @@ public final class BiomancyMod {
 
 		@Override
 		public ItemStack makeIcon() {
-			return new ItemStack(ModItems.OCULUS.get());
+			return new ItemStack(ModItems.LIVING_FLESH.get());
 		}
 
 		@Override

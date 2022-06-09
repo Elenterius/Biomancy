@@ -1,7 +1,6 @@
 package com.github.elenterius.biomancy.datagen.tags;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModTags;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
@@ -55,8 +54,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 		addOptionalItemsTo(avgBiomass, "createfa:cheese", "createfa:mixed_egg", "createfa:fries", "rats:cheese", "rats:string_cheese", "rats:potato_kinishes");
 
 		TagsProvider.TagAppender<Item> rawMeats = tag(ModTags.Items.RAW_MEATS)
-				.add(BEEF, PORKCHOP, CHICKEN, RABBIT, MUTTON, COD, SALMON, TROPICAL_FISH, PUFFERFISH)
-				.add(ModItems.OCULUS.get());
+				.add(BEEF, PORKCHOP, CHICKEN, RABBIT, MUTTON, COD, SALMON, TROPICAL_FISH, PUFFERFISH);
 		addOptionalItemsTo(rawMeats, "createfa:ground_chicken", "createfa:ground_beef", "circus:clown", "rats:raw_rat", "evilcraft:flesh_humanoid", "evilcraft:flesh_werewolf");
 
 		TagsProvider.TagAppender<Item> goodBiomass = tag(ModTags.Items.GOOD_BIOMASS)
