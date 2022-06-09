@@ -8,8 +8,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.screens.LoadingOverlay;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -19,6 +21,8 @@ import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.common.util.MavenVersionStringHelper;
 import net.minecraftforge.fml.ModList;
 
+import java.util.Collection;
+
 @OnlyIn(Dist.CLIENT)
 public final class IngameOverlays {
 
@@ -27,7 +31,7 @@ public final class IngameOverlays {
 
 	public static final IIngameOverlay WATERMARK = (gui, poseStack, partialTick, width, height) -> {
 		Minecraft minecraft = Minecraft.getInstance();
-		if (!minecraft.options.hideGui && !minecraft.options.renderDebug) {
+		if (!minecraft.options.hideGui && !minecraft.options.renderDebug && !(minecraft.getOverlay() instanceof LoadingOverlay)) {
 			gui.setupOverlayRenderState(true, false);
 			gui.setBlitOffset(-90);
 			Font font = Minecraft.getInstance().font;
@@ -42,6 +46,24 @@ public final class IngameOverlays {
 				GuiComponent.fill(poseStack, x - totalWidth - 4, y - 4, width, y + font.lineHeight * 2 + 2 + 1, 0xAA111111);
 				GuiComponent.drawString(poseStack, font, text, x - textWidth, y, 0xEEEEEE);
 				GuiComponent.drawString(poseStack, font, version, x - versionWidth, y + font.lineHeight + 1, 0xDDDDDD);
+
+				y += 2;
+				y += font.lineHeight + 1;
+				y += font.lineHeight + 1;
+				Collection<Pack> selectedPacks = minecraft.getResourcePackRepository().getSelectedPacks();
+				int i = 0;
+				for (Pack selectedPack : selectedPacks) {
+					String id = selectedPack.getId();
+					GuiComponent.drawString(poseStack, font, id, x - font.width(id), y, 0xDDDDDD);
+					y += font.lineHeight + 1;
+					if (i >= 5) break;
+					i++;
+				}
+				int remainder = selectedPacks.size() - i;
+				if (remainder > 0) {
+					String txt = "...and " + remainder + " more";
+					GuiComponent.drawString(poseStack, font, txt, x - font.width(txt), y, 0xDDDDDD);
+				}
 			});
 		}
 	};
