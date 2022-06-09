@@ -21,20 +21,7 @@ import java.util.function.Predicate;
 
 class SacrificeHelper {
 
-	private static final ImmutableMap<Item, Modifier> ITEM_MODIFIER_MAP = new ImmutableMap.Builder<Item, Modifier>()
-			.put(Items.BONE_MEAL, new Modifier(Type.BONE, 5, 0, 0))
-			.put(ModItems.MOB_MARROW.get(), new Modifier(Type.BONE, 5, -20, -5))
-			.put(ModItems.MOB_FANG.get(), new Modifier(Type.BONE, 10, 0, 15))
-			.put(ModItems.WITHERED_MOB_MARROW.get(), new Modifier(Type.BONE, -5, 50, 5))
-			.put(ModItems.FLESH_BITS.get(), new Modifier(Type.RAW_MEAT, 2, 0, 0))
-			.put(Items.ROTTEN_FLESH, new Modifier(Type.RAW_MEAT, -5, 35, 15))
-			.put(Items.CHICKEN, new Modifier(Type.RAW_MEAT, 25, 25, 0))
-			.put(Items.RABBIT_FOOT, new Modifier(Type.RAW_MEAT, 40, 0, -5))
-			.put(Items.SPIDER_EYE, new Modifier(Type.RAW_MEAT, -5, 5, 25))
-			.put(Items.FERMENTED_SPIDER_EYE, new Modifier(Type.RAW_MEAT, -10, 8, 50))
-			.put(ModItems.VENOM_GLAND.get(), new Modifier(Type.RAW_MEAT, -8, 10, 40))
-			.put(ModItems.VOLATILE_GLAND.get(), new Modifier(Type.RAW_MEAT, -8, 30, 20))
-			.put(ModItems.MOB_GLAND.get(), new Modifier(Type.RAW_MEAT, 0, 10, 0))
+	private static final ImmutableMap<Item, Modifier> ITEM_MODIFIER_MAP = new ImmutableMap.Builder<Item, Modifier>().put(Items.BONE_MEAL, new Modifier(Type.BONE, 5, 0, 0)).put(ModItems.MOB_MARROW.get(), new Modifier(Type.BONE, 5, -20, -5)).put(ModItems.MOB_FANG.get(), new Modifier(Type.BONE, 10, 0, 15)).put(ModItems.WITHERED_MOB_MARROW.get(), new Modifier(Type.BONE, -5, 50, 5)).put(ModItems.FLESH_BITS.get(), new Modifier(Type.RAW_MEAT, 2, 0, 0)).put(Items.ROTTEN_FLESH, new Modifier(Type.RAW_MEAT, -5, 35, 15)).put(Items.CHICKEN, new Modifier(Type.RAW_MEAT, 25, 25, 0)).put(Items.RABBIT_FOOT, new Modifier(Type.RAW_MEAT, 40, 0, -5)).put(Items.SPIDER_EYE, new Modifier(Type.RAW_MEAT, -5, 5, 25)).put(Items.FERMENTED_SPIDER_EYE, new Modifier(Type.RAW_MEAT, -10, 8, 50)).put(ModItems.TOXIN_GLAND.get(), new Modifier(Type.RAW_MEAT, -8, 10, 40)).put(ModItems.VOLATILE_GLAND.get(), new Modifier(Type.RAW_MEAT, -8, 30, 20)).put(ModItems.GENERIC_MOB_GLAND.get(), new Modifier(Type.RAW_MEAT, 0, 10, 0))
 			.build();
 
 	private static final Modifier EMPTY_MODIFIER = new Modifier(Type.EMPTY, 0, 0, 0);

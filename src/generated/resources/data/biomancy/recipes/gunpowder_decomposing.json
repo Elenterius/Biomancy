@@ -9,7 +9,7 @@
   "outputs": [
     {
       "result": {
-        "item": "biomancy:volatile_extract",
+        "item": "biomancy:volatile_fluid",
         "count_range": {
           "type": "constant",
           "value": 1

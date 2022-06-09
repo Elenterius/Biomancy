@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:bone_meal_from_bone_scraps"
+      "biomancy:unstable_compound_from_bio_brewing"
     ]
   },
   "criteria": {
-    "has_bone_scraps": {
+    "has_volatile_fluid": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:bone_scraps"
+              "biomancy:volatile_fluid"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:bone_meal_from_bone_scraps"
+        "recipe": "biomancy:unstable_compound_from_bio_brewing"
       }
     }
   },
   "requirements": [
     [
-      "has_bone_scraps",
+      "has_volatile_fluid",
       "has_the_recipe"
     ]
   ]

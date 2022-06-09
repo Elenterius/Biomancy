@@ -1,7 +1,7 @@
 {
   "type": "minecraft:blasting",
   "ingredient": {
-    "item": "biomancy:lithic_powder"
+    "item": "biomancy:stone_powder"
   },
   "result": "minecraft:glass_pane",
   "experience": 0.1,

@@ -9,7 +9,7 @@
   "outputs": [
     {
       "result": {
-        "item": "biomancy:bile_extract",
+        "item": "biomancy:bile",
         "count_range": {
           "type": "constant",
           "value": 4

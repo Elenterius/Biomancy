@@ -6,13 +6,13 @@
     ]
   },
   "criteria": {
-    "has_bile_extract": {
+    "has_bile": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:bile_extract"
+              "biomancy:bile"
             ]
           }
         ]
@@ -27,7 +27,7 @@
   },
   "requirements": [
     [
-      "has_bile_extract",
+      "has_bile",
       "has_the_recipe"
     ]
   ]

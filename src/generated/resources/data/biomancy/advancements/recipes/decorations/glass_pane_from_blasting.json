@@ -6,13 +6,13 @@
     ]
   },
   "criteria": {
-    "has_lithic_powder": {
+    "has_stone_powder": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:lithic_powder"
+              "biomancy:stone_powder"
             ]
           }
         ]
@@ -27,7 +27,7 @@
   },
   "requirements": [
     [
-      "has_lithic_powder",
+      "has_stone_powder",
       "has_the_recipe"
     ]
   ]

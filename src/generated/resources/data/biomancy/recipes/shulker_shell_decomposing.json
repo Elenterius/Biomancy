@@ -27,7 +27,7 @@
     },
     {
       "result": {
-        "item": "biomancy:lithic_powder",
+        "item": "biomancy:stone_powder",
         "count_range": {
           "type": "constant",
           "value": 1

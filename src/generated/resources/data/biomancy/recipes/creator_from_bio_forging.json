@@ -9,13 +9,13 @@
     },
     {
       "ingredient": {
-        "item": "biomancy:bone_scraps"
+        "item": "biomancy:bone_fragments"
       },
       "count": 24
     },
     {
       "ingredient": {
-        "item": "biomancy:rejuvenating_mucus"
+        "item": "biomancy:regenerative_fluid"
       },
       "count": 16
     },

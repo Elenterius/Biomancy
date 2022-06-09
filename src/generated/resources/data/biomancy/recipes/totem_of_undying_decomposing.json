@@ -18,7 +18,7 @@
     },
     {
       "result": {
-        "item": "biomancy:rejuvenating_mucus",
+        "item": "biomancy:regenerative_fluid",
         "count_range": {
           "type": "constant",
           "value": 50

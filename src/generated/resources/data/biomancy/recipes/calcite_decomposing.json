@@ -9,7 +9,7 @@
   "outputs": [
     {
       "result": {
-        "item": "biomancy:lithic_powder",
+        "item": "biomancy:stone_powder",
         "count_range": {
           "type": "constant",
           "value": 3
@@ -18,7 +18,7 @@
     },
     {
       "result": {
-        "item": "biomancy:mineral_dust",
+        "item": "biomancy:mineral_fragment",
         "count_range": {
           "type": "constant",
           "value": 2
@@ -27,7 +27,7 @@
     },
     {
       "result": {
-        "item": "biomancy:gem_dust",
+        "item": "biomancy:gem_fragments",
         "count_range": {
           "type": "constant",
           "value": 1

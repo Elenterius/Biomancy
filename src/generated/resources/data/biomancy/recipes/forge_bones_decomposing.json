@@ -9,7 +9,7 @@
   "outputs": [
     {
       "result": {
-        "item": "biomancy:bone_scraps",
+        "item": "biomancy:bone_fragments",
         "count_range": {
           "type": "constant",
           "value": 6

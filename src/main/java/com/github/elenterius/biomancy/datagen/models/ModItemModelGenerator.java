@@ -97,23 +97,23 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 
 	public void run() {
 		generateComponent(ModItems.FLESH_BITS.get());
-		generateComponent(ModItems.BONE_SCRAPS.get());
+		generateComponent(ModItems.BONE_FRAGMENTS.get());
 		generateComponent(ModItems.ELASTIC_FIBERS.get());
-		generateComponent(ModItems.MINERAL_DUST.get());
+		generateComponent(ModItems.MINERAL_FRAGMENT.get());
 		generateComponent(ModItems.TOUGH_FIBERS.get());
 		generateComponent(ModItems.ORGANIC_MATTER.get());
 		generateComponent(ModItems.EXOTIC_DUST.get());
 		generateComponent(ModItems.BIO_MINERALS.get());
 		generateComponent(ModItems.BIO_LUMENS.get());
 		generateComponent(ModItems.NUTRIENTS.get());
-		generateComponent(ModItems.GEM_DUST.get());
-		generateComponent(ModItems.STONE_DUST.get());
+		generateComponent(ModItems.GEM_FRAGMENTS.get());
+		generateComponent(ModItems.STONE_POWDER.get());
 
-		generateComponent(ModItems.REJUVENATIVE_GOO.get());
+		generateComponent(ModItems.REGENERATIVE_FLUID.get());
 		generateComponent(ModItems.WITHERING_OOZE.get());
 		generateComponent(ModItems.HORMONE_SECRETION.get());
 		generateComponent(ModItems.TOXIN_EXTRACT.get());
-		generateComponent(ModItems.UNSTABLE_FLUID.get());
+		generateComponent(ModItems.VOLATILE_FLUID.get());
 		generateComponent(ModItems.BILE.get());
 
 		generateFlat(ModItems.MOB_FANG.get(), ModelTemplates.FLAT_ITEM);
@@ -121,8 +121,8 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 		generateFlat(ModItems.MOB_SINEW.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.MOB_MARROW.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.WITHERED_MOB_MARROW.get(), ModelTemplates.FLAT_ITEM);
-		generateFlat(ModItems.MOB_GLAND.get(), ModelTemplates.FLAT_ITEM);
-		generateFlat(ModItems.VENOM_GLAND.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.GENERIC_MOB_GLAND.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.TOXIN_GLAND.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.VOLATILE_GLAND.get(), ModelTemplates.FLAT_ITEM);
 
 		generateFlat(ModItems.LIVING_FLESH.get(), ModelTemplates.FLAT_ITEM);

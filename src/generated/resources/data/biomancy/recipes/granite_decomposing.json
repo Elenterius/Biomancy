@@ -9,7 +9,7 @@
   "outputs": [
     {
       "result": {
-        "item": "biomancy:mineral_dust",
+        "item": "biomancy:mineral_fragment",
         "count_range": {
           "type": "constant",
           "value": 2

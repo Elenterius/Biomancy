@@ -29,8 +29,8 @@ public final class ModItems {
 	public static final RegistryObject<SimpleItem> MOB_SINEW = registerSimpleItem("mob_sinew");
 	public static final RegistryObject<SimpleItem> MOB_MARROW = registerSimpleItem("mob_marrow");
 	public static final RegistryObject<SimpleItem> WITHERED_MOB_MARROW = registerSimpleItem("withered_mob_marrow");
-	public static final RegistryObject<SimpleItem> MOB_GLAND = registerSimpleItem("mob_gland");
-	public static final RegistryObject<SimpleItem> VENOM_GLAND = registerSimpleItem("venom_gland");
+	public static final RegistryObject<SimpleItem> GENERIC_MOB_GLAND = registerSimpleItem("mob_gland");
+	public static final RegistryObject<SimpleItem> TOXIN_GLAND = registerSimpleItem("toxin_gland");
 	public static final RegistryObject<SimpleItem> VOLATILE_GLAND = registerSimpleItem("volatile_gland");
 	//## Special
 	public static final RegistryObject<SimpleItem> LIVING_FLESH = registerSimpleItem("living_flesh", ModRarities.VERY_RARE);
@@ -39,30 +39,30 @@ public final class ModItems {
 	//# Components
 	//## Complex
 	public static final RegistryObject<SimpleItem> FLESH_BITS = registerSimpleItem("flesh_bits");
-	public static final RegistryObject<SimpleItem> BONE_SCRAPS = registerSimpleItem("bone_scraps");
+	public static final RegistryObject<SimpleItem> BONE_FRAGMENTS = registerSimpleItem("bone_fragments");
 	public static final RegistryObject<SimpleItem> TOUGH_FIBERS = registerSimpleItem("tough_fibers");
 	public static final RegistryObject<SimpleItem> ELASTIC_FIBERS = registerSimpleItem("elastic_fibers");
-	public static final RegistryObject<SimpleItem> MINERAL_DUST = registerSimpleItem("mineral_dust");
-	public static final RegistryObject<SimpleItem> GEM_DUST = registerSimpleItem("gem_dust");
+	public static final RegistryObject<SimpleItem> MINERAL_FRAGMENT = registerSimpleItem("mineral_fragment");
+	public static final RegistryObject<SimpleItem> GEM_FRAGMENTS = registerSimpleItem("gem_fragments");
 	//## Basic
 	public static final RegistryObject<SimpleItem> NUTRIENTS = registerSimpleItem("nutrients");
 	public static final RegistryObject<SimpleItem> ORGANIC_MATTER = registerSimpleItem("organic_matter");
 	public static final RegistryObject<SimpleItem> BIO_LUMENS = registerSimpleItem("bio_lumens");
 	public static final RegistryObject<SimpleItem> EXOTIC_DUST = registerSimpleItem("exotic_dust");
 	public static final RegistryObject<SimpleItem> BIO_MINERALS = registerSimpleItem("bio_minerals");
-	public static final RegistryObject<SimpleItem> STONE_DUST = registerSimpleItem("lithic_powder");
+	public static final RegistryObject<SimpleItem> STONE_POWDER = registerSimpleItem("stone_powder");
 	//## Specific
-	public static final RegistryObject<SimpleItem> REJUVENATIVE_GOO = registerSimpleItem("rejuvenating_mucus");
+	public static final RegistryObject<SimpleItem> REGENERATIVE_FLUID = registerSimpleItem("regenerative_fluid");
 	public static final RegistryObject<SimpleItem> WITHERING_OOZE = registerSimpleItem("withering_ooze");
 	public static final RegistryObject<SimpleItem> HORMONE_SECRETION = registerSimpleItem("hormone_secretion");
-	public static final RegistryObject<SimpleItem> TOXIN_EXTRACT = registerSimpleItem("venom_extract");
-	public static final RegistryObject<SimpleItem> BILE = registerSimpleItem("bile_extract");
-	public static final RegistryObject<SimpleItem> UNSTABLE_FLUID = registerSimpleItem("volatile_extract");
+	public static final RegistryObject<SimpleItem> TOXIN_EXTRACT = registerSimpleItem("toxin_extract");
+	public static final RegistryObject<SimpleItem> BILE = registerSimpleItem("bile");
+	public static final RegistryObject<SimpleItem> VOLATILE_FLUID = registerSimpleItem("volatile_fluid");
 
 	//# Serum
 	public static final RegistryObject<SimpleItem> GLASS_VIAL = registerSimpleItem("glass_vial");
 	public static final RegistryObject<SimpleItem> ORGANIC_COMPOUND = registerSimpleItem("organic_compound");
-	public static final RegistryObject<SimpleItem> UNSTABLE_COMPOUND = registerSimpleItem("volatile_compound");
+	public static final RegistryObject<SimpleItem> UNSTABLE_COMPOUND = registerSimpleItem("unstable_compound");
 	public static final RegistryObject<SimpleItem> GENETIC_COMPOUND = registerSimpleItem("genetic_compound");
 
 	public static final RegistryObject<DynamicSerumItem> GENERIC_SERUM = ITEMS.register("generic_serum", () -> new DynamicSerumItem(createBaseProperties().stacksTo(8)));

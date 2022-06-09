@@ -9,7 +9,7 @@
   "outputs": [
     {
       "result": {
-        "item": "biomancy:venom_extract",
+        "item": "biomancy:toxin_extract",
         "count_range": {
           "type": "constant",
           "value": 5

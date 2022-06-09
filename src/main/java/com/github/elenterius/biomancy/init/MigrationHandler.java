@@ -63,13 +63,13 @@ public final class MigrationHandler {
 
 				case "biometal" -> mapping.remap(ModItems.LIVING_FLESH.get());
 				case "bone_gear" -> mapping.remap(Items.BONE);
-				case "lens" -> mapping.remap(ModItems.GEM_DUST.get());
+				case "lens" -> mapping.remap(ModItems.GEM_FRAGMENTS.get());
 				case "skin_chunk", "flesh_lump", "mended_skin" -> mapping.remap(ModItems.FLESH_BITS.get());
-				case "stomach", "artificial_stomach" -> mapping.remap(ModItems.MOB_GLAND.get());
+				case "stomach", "artificial_stomach" -> mapping.remap(ModItems.GENERIC_MOB_GLAND.get());
 				case "bolus" -> mapping.remap(ModItems.NUTRIENTS.get());
 				case "keratin_filaments" -> mapping.remap(ModItems.TOUGH_FIBERS.get());
 				case "digestate" -> mapping.remap(ModItems.ORGANIC_MATTER.get());
-				case "oxide_powder", "silicate_paste" -> mapping.remap(ModItems.MINERAL_DUST.get());
+				case "oxide_powder", "silicate_paste" -> mapping.remap(ModItems.MINERAL_FRAGMENT.get());
 				case "hormone_bile" -> mapping.remap(ModItems.HORMONE_SECRETION.get());
 				default -> ignore();
 			}

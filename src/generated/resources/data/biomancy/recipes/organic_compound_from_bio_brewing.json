@@ -2,13 +2,13 @@
   "type": "biomancy:bio_brewing",
   "ingredients": [
     {
-      "item": "biomancy:bile_extract"
+      "item": "biomancy:bile"
     },
     {
-      "item": "biomancy:bile_extract"
+      "item": "biomancy:bile"
     },
     {
-      "item": "biomancy:bile_extract"
+      "item": "biomancy:bile"
     },
     {
       "item": "biomancy:nutrients"

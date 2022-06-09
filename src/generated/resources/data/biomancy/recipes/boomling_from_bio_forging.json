@@ -15,13 +15,13 @@
     },
     {
       "ingredient": {
-        "item": "biomancy:bone_scraps"
+        "item": "biomancy:bone_fragments"
       },
       "count": 10
     },
     {
       "ingredient": {
-        "item": "biomancy:volatile_extract"
+        "item": "biomancy:volatile_fluid"
       },
       "count": 24
     },

@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:volatile_compound_from_bio_brewing"
+      "biomancy:red_sand_from_mineral_fragment"
     ]
   },
   "criteria": {
-    "has_volatile_extract": {
+    "has_mineral_fragment": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:volatile_extract"
+              "biomancy:mineral_fragment"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:volatile_compound_from_bio_brewing"
+        "recipe": "biomancy:red_sand_from_mineral_fragment"
       }
     }
   },
   "requirements": [
     [
-      "has_volatile_extract",
+      "has_mineral_fragment",
       "has_the_recipe"
     ]
   ]

@@ -6,13 +6,13 @@
     ]
   },
   "criteria": {
-    "has_volatile_compound": {
+    "has_unstable_compound": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:volatile_compound"
+              "biomancy:unstable_compound"
             ]
           }
         ]
@@ -27,7 +27,8 @@
   },
   "requirements": [
     [
-      "has_volatile_compound", "has_the_recipe"
+      "has_unstable_compound",
+      "has_the_recipe"
     ]
   ]
 }

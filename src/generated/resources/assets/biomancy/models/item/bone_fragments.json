@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "biomancy:item/component/rejuvenating_mucus"
+    "layer0": "biomancy:item/component/bone_fragments"
   }
 }

@@ -9,7 +9,7 @@
   "outputs": [
     {
       "result": {
-        "item": "biomancy:bile_extract",
+        "item": "biomancy:bile",
         "count_range": {
           "type": "constant",
           "value": 3
@@ -27,7 +27,7 @@
     },
     {
       "result": {
-        "item": "biomancy:volatile_extract",
+        "item": "biomancy:volatile_fluid",
         "count_range": {
           "type": "constant",
           "value": 1

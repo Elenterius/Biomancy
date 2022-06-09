@@ -2,10 +2,10 @@
   "type": "biomancy:bio_brewing",
   "ingredients": [
     {
-      "item": "biomancy:rejuvenating_mucus"
+      "item": "biomancy:regenerative_fluid"
     },
     {
-      "item": "biomancy:rejuvenating_mucus"
+      "item": "biomancy:regenerative_fluid"
     },
     {
       "item": "biomancy:nutrients"

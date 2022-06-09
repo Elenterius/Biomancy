@@ -5,20 +5,20 @@
       "item": "minecraft:slime_ball"
     },
     {
-      "item": "biomancy:volatile_extract"
+      "item": "biomancy:volatile_fluid"
     },
     {
-      "item": "biomancy:volatile_extract"
+      "item": "biomancy:volatile_fluid"
     },
     {
-      "item": "biomancy:venom_extract"
+      "item": "biomancy:toxin_extract"
     }
   ],
   "reactant": {
     "item": "biomancy:glass_vial"
   },
   "result": {
-    "item": "biomancy:volatile_compound"
+    "item": "biomancy:unstable_compound"
   },
   "time": 100
 }

@@ -5,10 +5,10 @@
       "item": "minecraft:cobblestone"
     },
     {
-      "item": "biomancy:mineral_dust"
+      "item": "biomancy:mineral_fragment"
     },
     {
-      "item": "biomancy:lithic_powder"
+      "item": "biomancy:stone_powder"
     }
   ],
   "result": {
