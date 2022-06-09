@@ -27,7 +27,7 @@ side = "BOTH"
 [[dependencies.biomancy]]
 modId = "forge"
 mandatory = true
-versionRange = "[40.1.21,)"
+versionRange = "[40.1.34,)"
 ordering = "NONE"
 side = "BOTH" # BOTH, CLIENT or SERVER
 

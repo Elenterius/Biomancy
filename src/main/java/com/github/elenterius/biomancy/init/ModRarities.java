@@ -1,24 +1,12 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * Biomancy exclusive item rarities, the grey ChatFormatting color will be replaced with the rgbColor through the TooltipRenderHandler
- */
 public final class ModRarities {
-
-	//EnumMap doesn't work here due to the Rarity enum being internally changed during runtime by forge
-	private static final Map<Rarity, Integer> RARITIES = new HashMap<>();
 
 	public static final Rarity COMMON = createRarity("common", 0x5c4432);
 	public static final Rarity UNCOMMON = createRarity("uncommon", 0xb3953a);
@@ -29,22 +17,12 @@ public final class ModRarities {
 	private ModRarities() {}
 
 	private static Rarity createRarity(String name, int rgbColor) {
-		Rarity rarity = Rarity.create(BiomancyMod.MOD_ID + "_" + name, ChatFormatting.RED);
-		RARITIES.put(rarity, rgbColor);
-		return rarity;
+		return Rarity.create(BiomancyMod.MOD_ID + "_" + name, style -> style.withColor(rgbColor));
 	}
 
 	public static int getRGBColor(ItemStack stack) {
-		return RARITIES.getOrDefault(stack.getRarity(), -1);
-	}
-
-	public static Component getHighlightTip(ItemStack stack, Component displayName) {
-		int color = getRGBColor(stack);
-		if (color > -1) {
-			if (displayName instanceof MutableComponent mutableComponent) return mutableComponent.withStyle(Style.EMPTY.withColor(color));
-			return new TextComponent("").append(displayName).withStyle(Style.EMPTY.withColor(color));
-		}
-		return displayName;
+		TextColor color = stack.getRarity().getStyleModifier().apply(Style.EMPTY).getColor();
+		return color != null ? color.getValue() : -1;
 	}
 
 }

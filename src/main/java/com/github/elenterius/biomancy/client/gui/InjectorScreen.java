@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.client.gui;
 
-import com.github.elenterius.biomancy.init.ModRarities;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import com.github.elenterius.biomancy.world.item.ISerumProvider;
 import com.github.elenterius.biomancy.world.item.InjectorItem;
@@ -19,7 +18,6 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
@@ -202,9 +200,7 @@ public class InjectorScreen extends Screen {
 			text = new TextComponent("Cancel");
 		}
 		else {
-			int rgbColor = ModRarities.getRGBColor(stack);
-			text = (new TextComponent("")).append(stack.getHoverName());
-			if (rgbColor > -1) text.withStyle(Style.EMPTY.withColor(rgbColor));
+			text = new TextComponent("").append(stack.getHoverName()).withStyle(stack.getRarity().getStyleModifier());
 			if (stack.hasCustomHoverName()) text.withStyle(ChatFormatting.ITALIC);
 		}
 
