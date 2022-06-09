@@ -24,14 +24,16 @@ public final class PillarPlantUtil {
 	}
 
 	public static boolean applyGrowthBoost(Level level, BlockPos pos, BlockState state, Block block) {
-		if (block == SUGAR_CANE_HELPER.block())
-			return handleGrowth(SUGAR_CANE_HELPER, level, pos, state, SUGAR_CANE_HELPER.height * 2, SUGAR_CANE_HELPER.maxAge);
-		if (block == CACTUS_HELPER.block()) return handleGrowth(CACTUS_HELPER, level, pos, state, CACTUS_HELPER.height * 2, CACTUS_HELPER.maxAge);
+		if (block == SUGAR_CANE_HELPER.block()) {
+			return handleGrowth(SUGAR_CANE_HELPER, level, pos, state, SUGAR_CANE_HELPER.defaultHeight * 2, SUGAR_CANE_HELPER.maxAge);
+		} else if (block == CACTUS_HELPER.block()) {
+			return handleGrowth(CACTUS_HELPER, level, pos, state, CACTUS_HELPER.defaultHeight * 2, CACTUS_HELPER.maxAge);
+		}
 		return false;
 	}
 
 	public static boolean handleGrowth(PillarPlantHelper plantHelper, Level level, BlockPos pos, BlockState state) {
-		return handleGrowth(plantHelper, level, pos, state, plantHelper.height, level.random.nextInt(3) + 2);
+		return handleGrowth(plantHelper, level, pos, state, plantHelper.defaultHeight, level.random.nextInt(3) + 2);
 	}
 
 	private static boolean handleGrowth(PillarPlantHelper plantHelper, Level level, BlockPos pos, BlockState state, int maxHeight, int ageModifier) {
@@ -45,14 +47,14 @@ public final class PillarPlantUtil {
 		return false;
 	}
 
-	public record PillarPlantHelper(Block block, int height, IntegerProperty ageProperty, int maxAge, boolean callNeighborChanged) {
+	public record PillarPlantHelper(Block block, int defaultHeight, IntegerProperty ageProperty, int maxAge, boolean callNeighborChanged) {
 
-		public PillarPlantHelper(Block block, int height, IntegerProperty ageProperty) {
-			this(block, height, ageProperty, BlockPropertyUtil.getMaxAge(ageProperty), false);
+		public PillarPlantHelper(Block block, int defaultHeight, IntegerProperty ageProperty) {
+			this(block, defaultHeight, ageProperty, BlockPropertyUtil.getMaxAge(ageProperty), false);
 		}
 
-		public PillarPlantHelper(Block block, int height, IntegerProperty ageProperty, boolean callNeighborChanged) {
-			this(block, height, ageProperty, BlockPropertyUtil.getMaxAge(ageProperty), callNeighborChanged);
+		public PillarPlantHelper(Block block, int defaultHeight, IntegerProperty ageProperty, boolean callNeighborChanged) {
+			this(block, defaultHeight, ageProperty, BlockPropertyUtil.getMaxAge(ageProperty), callNeighborChanged);
 		}
 
 		public boolean isNotFullyGrown(BlockState state) {

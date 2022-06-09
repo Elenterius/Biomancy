@@ -58,6 +58,7 @@
   "item.biomancy.injector": "Bio-Injector",
   "item.biomancy.bio_extractor": "Bio-Extractor",
   "item.biomancy.essence": "Essence",
+  "item.biomancy.fertilizer": "Bio-Alchemical Fertilizer",
   "item.biomancy.long_range_claw": "Marfanoid Claws",
   "item.biomancy.withershot": "Withershot",
   "item.biomancy.tooth_gun": "Tooth Gun",
@@ -65,7 +66,6 @@
   "item.biomancy.control_staff": "[EXPERIMENTAL] Control Staff",
   "item.biomancy.flesh_blob_spawn_egg": "Flesh Blob Spawn Egg",
   "item.biomancy.boomling_spawn_egg": "Boomling Spawn Egg",
-
   "block.biomancy.creator": "Flesh Crucible",
   "block.biomancy.bio_forge": "Bio-Forge [Experimental/WIP]",
   "block.biomancy.bio_lab": "Bio-Lab",
