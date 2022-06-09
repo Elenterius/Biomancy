@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:weeping_vines_decomposing"
+    ]
+  },
+  "criteria": {
+    "has_weeping_vines": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:weeping_vines"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:weeping_vines_decomposing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_weeping_vines",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "tag": "minecraft:banners"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:tough_fibers",
+        "count_range": {
+          "type": "constant",
+          "value": 24
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:elastic_fibers",
+        "count_range": {
+          "type": "constant",
+          "value": 24
+        }
+      }
+    }
+  ],
+  "time": 960
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:forge_eggs_decomposing"
+    ]
+  },
+  "criteria": {
+    "has_eggs": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:eggs"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:forge_eggs_decomposing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_eggs",
+      "has_the_recipe"
+    ]
+  ]
+}

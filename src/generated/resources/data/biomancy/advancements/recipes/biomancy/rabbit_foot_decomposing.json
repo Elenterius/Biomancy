@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:rabbit_foot_decomposing"
+    ]
+  },
+  "criteria": {
+    "has_rabbit_foot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:rabbit_foot"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:rabbit_foot_decomposing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_rabbit_foot",
+      "has_the_recipe"
+    ]
+  ]
+}

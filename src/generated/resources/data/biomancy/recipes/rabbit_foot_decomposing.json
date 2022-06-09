@@ -1,0 +1,39 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:rabbit_foot"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:elastic_fibers",
+        "count_range": {
+          "type": "constant",
+          "value": 5
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:hormone_secretion",
+        "count_range": {
+          "type": "constant",
+          "value": 10
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:tough_fibers",
+        "count_range": {
+          "type": "constant",
+          "value": 4
+        }
+      }
+    }
+  ],
+  "time": 370
+}

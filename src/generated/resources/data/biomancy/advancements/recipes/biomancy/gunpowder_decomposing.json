@@ -2,16 +2,18 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:raw_meats_decomposing"
+      "biomancy:gunpowder_decomposing"
     ]
   },
   "criteria": {
-    "has_raw_meats": {
+    "has_gunpowder": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "biomancy:raw_meats"
+            "items": [
+              "minecraft:gunpowder"
+            ]
           }
         ]
       }
@@ -19,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:raw_meats_decomposing"
+        "recipe": "biomancy:gunpowder_decomposing"
       }
     }
   },
   "requirements": [
     [
-      "has_raw_meats",
+      "has_gunpowder",
       "has_the_recipe"
     ]
   ]

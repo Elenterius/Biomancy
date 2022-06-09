@@ -1,0 +1,21 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:honeycomb"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:bile_extract",
+        "count_range": {
+          "type": "constant",
+          "value": 2
+        }
+      }
+    }
+  ],
+  "time": 32
+}

@@ -1,0 +1,30 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:slime_block"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:rejuvenating_mucus",
+        "count_range": {
+          "type": "constant",
+          "value": 45
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:bile_extract",
+        "count_range": {
+          "type": "constant",
+          "value": 18
+        }
+      }
+    }
+  ],
+  "time": 1863
+}

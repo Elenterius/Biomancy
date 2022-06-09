@@ -1,0 +1,39 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:glow_ink_sac"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:bio_lumens",
+        "count_range": {
+          "type": "constant",
+          "value": 5
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:hormone_secretion",
+        "count_range": {
+          "type": "constant",
+          "value": 2
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:elastic_fibers",
+        "count_range": {
+          "type": "constant",
+          "value": 1
+        }
+      }
+    }
+  ],
+  "time": 160
+}

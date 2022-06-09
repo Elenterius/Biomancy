@@ -1,0 +1,39 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:zombie_head"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:flesh_bits",
+        "count_range": {
+          "type": "constant",
+          "value": 24
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:withering_ooze",
+        "count_range": {
+          "type": "constant",
+          "value": 3
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "minecraft:skeleton_skull",
+        "count_range": {
+          "type": "constant",
+          "value": 1
+        }
+      }
+    }
+  ],
+  "time": 527
+}

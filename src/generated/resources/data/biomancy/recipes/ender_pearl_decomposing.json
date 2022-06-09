@@ -1,0 +1,30 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:ender_pearl"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:exotic_dust",
+        "count_range": {
+          "type": "constant",
+          "value": 3
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:bile_extract",
+        "count_range": {
+          "type": "constant",
+          "value": 1
+        }
+      }
+    }
+  ],
+  "time": 166
+}

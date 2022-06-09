@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:crossbow_decomposing"
+    ]
+  },
+  "criteria": {
+    "has_crossbow": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:crossbow"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:crossbow_decomposing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_crossbow",
+      "has_the_recipe"
+    ]
+  ]
+}

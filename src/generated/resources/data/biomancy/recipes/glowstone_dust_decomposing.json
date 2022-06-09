@@ -1,0 +1,30 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:glowstone_dust"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:lithic_powder",
+        "count_range": {
+          "type": "constant",
+          "value": 2
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:exotic_dust",
+        "count_range": {
+          "type": "constant",
+          "value": 1
+        }
+      }
+    }
+  ],
+  "time": 110
+}

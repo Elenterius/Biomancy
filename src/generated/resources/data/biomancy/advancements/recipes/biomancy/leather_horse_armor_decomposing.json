@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:mob_sinew_decomposing"
+      "biomancy:leather_horse_armor_decomposing"
     ]
   },
   "criteria": {
-    "has_mob_sinew": {
+    "has_leather_horse_armor": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:mob_sinew"
+              "minecraft:leather_horse_armor"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:mob_sinew_decomposing"
+        "recipe": "biomancy:leather_horse_armor_decomposing"
       }
     }
   },
   "requirements": [
     [
-      "has_mob_sinew",
+      "has_leather_horse_armor",
       "has_the_recipe"
     ]
   ]

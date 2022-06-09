@@ -28,7 +28,8 @@ import java.util.function.Consumer;
 
 public class DecomposerRecipeBuilder implements IRecipeBuilder {
 
-	private final ResourceLocation recipeId;
+	public static final String SUFFIX = "_decomposing";
+	private ResourceLocation recipeId;
 	private final List<VariableProductionOutput> outputs = new ArrayList<>();
 	private final Advancement.Builder advancement = Advancement.Builder.advancement();
 	private IngredientQuantity ingredientQuantity = null;
@@ -40,18 +41,27 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 		this.recipeId = recipeId;
 	}
 
-	public static DecomposerRecipeBuilder create(String modId, String ingredientName) {
-		ResourceLocation rl = new ResourceLocation(modId, ingredientName + "_decomposing");
-		return new DecomposerRecipeBuilder(rl);
+//	public static DecomposerRecipeBuilder create(String modId, String ingredientName) {
+//		ResourceLocation rl = new ResourceLocation(modId, ingredientName + SUFFIX);
+//		return new DecomposerRecipeBuilder(rl);
+//	}
+//
+//	public static DecomposerRecipeBuilder create(String ingredientName) {
+//		ResourceLocation rl = BiomancyMod.createRL(ingredientName + SUFFIX);
+//		return new DecomposerRecipeBuilder(rl);
+//	}
+//
+//	public static DecomposerRecipeBuilder create(ResourceLocation recipeId) {
+//		return new DecomposerRecipeBuilder(recipeId);
+//	}
+
+	public static DecomposerRecipeBuilder create() {
+		return new DecomposerRecipeBuilder(BiomancyMod.createRL("unknown"));
 	}
 
-	public static DecomposerRecipeBuilder create(String ingredientName) {
-		ResourceLocation rl = BiomancyMod.createRL(ingredientName + "_decomposing");
-		return new DecomposerRecipeBuilder(rl);
-	}
-
-	public static DecomposerRecipeBuilder create(ResourceLocation recipeId) {
-		return new DecomposerRecipeBuilder(recipeId);
+	private static String getName(ItemLike itemLike) {
+		ResourceLocation name = itemLike.asItem().getRegistryName();
+		return name != null ? name.getPath() : "unknown";
 	}
 
 	public DecomposerRecipeBuilder setCraftingTime(int time) {
@@ -60,30 +70,31 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 		return this;
 	}
 
-	public DecomposerRecipeBuilder setIngredient(TagKey<Item> tagIn) {
-		return setIngredient(Ingredient.of(tagIn));
+	public DecomposerRecipeBuilder setIngredient(TagKey<Item> tagKey) {
+		return setIngredient(tagKey, 1);
 	}
 
-	public DecomposerRecipeBuilder setIngredient(TagKey<Item> tagIn, int quantity) {
-		return setIngredient(Ingredient.of(tagIn), quantity);
+	public DecomposerRecipeBuilder setIngredient(TagKey<Item> tagKey, int quantity) {
+		return setIngredient(Ingredient.of(tagKey), quantity, BiomancyMod.createRL(tagKey.location().toDebugFileName() + SUFFIX));
 	}
 
 	public DecomposerRecipeBuilder setIngredient(ItemLike itemIn) {
 		return setIngredient(itemIn, 1);
 	}
 
-	public DecomposerRecipeBuilder setIngredient(Ingredient ingredientIn) {
-		return setIngredient(ingredientIn, 1);
+	public DecomposerRecipeBuilder setIngredient(Ingredient ingredient, ResourceLocation recipeId) {
+		return setIngredient(ingredient, 1, recipeId);
 	}
 
-	public DecomposerRecipeBuilder setIngredient(ItemLike itemIn, int quantity) {
-		setIngredient(Ingredient.of(itemIn), quantity);
+	public DecomposerRecipeBuilder setIngredient(ItemLike itemLike, int quantity) {
+		setIngredient(Ingredient.of(itemLike), quantity, BiomancyMod.createRL(getName(itemLike) + SUFFIX));
 		return this;
 	}
 
-	public DecomposerRecipeBuilder setIngredient(Ingredient ingredient, int count) {
+	public DecomposerRecipeBuilder setIngredient(Ingredient ingredient, int count, ResourceLocation recipeId) {
 		if (ingredientQuantity != null) throw new IllegalStateException("Ingredient is already set");
 		ingredientQuantity = new IngredientQuantity(ingredient, count);
+		this.recipeId = recipeId;
 		return this;
 	}
 
@@ -122,7 +133,7 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 
 	@Override
 	public void save(Consumer<FinishedRecipe> consumer, @Nullable CreativeModeTab itemCategory) {
-		validateCriteria(recipeId);
+		validate();
 		advancement.parent(new ResourceLocation("recipes/root"))
 				.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId))
 				.rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
@@ -131,9 +142,11 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 		consumer.accept(new Result(recipeId, group == null ? "" : group, ingredientQuantity, craftingTime, outputs, advancement, advancementId));
 	}
 
-	private void validateCriteria(ResourceLocation id) {
+	private void validate() {
+		if (recipeId.getPath().equals("unknown")) throw new IllegalStateException("Invalid recipe id: " + recipeId);
+		if (ingredientQuantity == null) throw new IllegalStateException("No Ingredient was provided.");
 		if (advancement.getCriteria().isEmpty()) {
-			throw new IllegalStateException("No way of obtaining recipe " + id + " because Criteria are empty.");
+			throw new IllegalStateException("No way of obtaining recipe " + recipeId + " because Criteria are empty.");
 		}
 	}
 

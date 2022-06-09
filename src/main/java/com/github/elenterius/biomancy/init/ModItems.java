@@ -50,13 +50,14 @@ public final class ModItems {
 	public static final RegistryObject<SimpleItem> BIO_LUMENS = registerSimpleItem("bio_lumens");
 	public static final RegistryObject<SimpleItem> EXOTIC_DUST = registerSimpleItem("exotic_dust");
 	public static final RegistryObject<SimpleItem> BIO_MINERALS = registerSimpleItem("bio_minerals");
-	public static final RegistryObject<SimpleItem> LITHIC_POWDER = registerSimpleItem("lithic_powder");
+	public static final RegistryObject<SimpleItem> STONE_DUST = registerSimpleItem("lithic_powder");
 	//## Specific
-	public static final RegistryObject<SimpleItem> REJUVENATING_MUCUS = registerSimpleItem("rejuvenating_mucus");
+	public static final RegistryObject<SimpleItem> REJUVENATIVE_GOO = registerSimpleItem("rejuvenating_mucus");
+	public static final RegistryObject<SimpleItem> WITHERING_OOZE = registerSimpleItem("withering_ooze");
 	public static final RegistryObject<SimpleItem> HORMONE_SECRETION = registerSimpleItem("hormone_secretion");
-	public static final RegistryObject<SimpleItem> VENOM_EXTRACT = registerSimpleItem("venom_extract");
-	public static final RegistryObject<SimpleItem> BILE_EXTRACT = registerSimpleItem("bile_extract");
-	public static final RegistryObject<SimpleItem> VOLATILE_EXTRACT = registerSimpleItem("volatile_extract");
+	public static final RegistryObject<SimpleItem> TOXIN_EXTRACT = registerSimpleItem("venom_extract");
+	public static final RegistryObject<SimpleItem> BILE = registerSimpleItem("bile_extract");
+	public static final RegistryObject<SimpleItem> UNSTABLE_FLUID = registerSimpleItem("volatile_extract");
 
 	//# Serum
 	public static final RegistryObject<SimpleItem> GLASS_VIAL = registerSimpleItem("glass_vial");

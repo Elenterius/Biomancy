@@ -1,0 +1,30 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:end_crystal"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:exotic_dust",
+        "count_range": {
+          "type": "constant",
+          "value": 7
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:volatile_extract",
+        "count_range": {
+          "type": "constant",
+          "value": 7
+        }
+      }
+    }
+  ],
+  "time": 525
+}

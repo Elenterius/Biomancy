@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:nether_sprouts_decomposing"
+    ]
+  },
+  "criteria": {
+    "has_nether_sprouts": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:nether_sprouts"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:nether_sprouts_decomposing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_nether_sprouts",
+      "has_the_recipe"
+    ]
+  ]
+}

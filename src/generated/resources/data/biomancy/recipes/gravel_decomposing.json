@@ -1,0 +1,21 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:gravel"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:lithic_powder",
+        "count_range": {
+          "type": "constant",
+          "value": 9
+        }
+      }
+    }
+  ],
+  "time": 270
+}

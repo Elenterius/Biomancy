@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:spore_blossom_decomposing"
+    ]
+  },
+  "criteria": {
+    "has_spore_blossom": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:spore_blossom"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:spore_blossom_decomposing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_spore_blossom",
+      "has_the_recipe"
+    ]
+  ]
+}

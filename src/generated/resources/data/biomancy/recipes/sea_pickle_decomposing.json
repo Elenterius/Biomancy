@@ -1,0 +1,30 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:sea_pickle"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:bio_minerals",
+        "count_range": {
+          "type": "constant",
+          "value": 2
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:bio_lumens",
+        "count_range": {
+          "type": "constant",
+          "value": 2
+        }
+      }
+    }
+  ],
+  "time": 88
+}

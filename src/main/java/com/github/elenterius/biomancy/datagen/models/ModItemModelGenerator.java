@@ -107,13 +107,14 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 		generateComponent(ModItems.BIO_LUMENS.get());
 		generateComponent(ModItems.NUTRIENTS.get());
 		generateComponent(ModItems.GEM_DUST.get());
-		generateComponent(ModItems.LITHIC_POWDER.get());
+		generateComponent(ModItems.STONE_DUST.get());
 
-		generateComponent(ModItems.REJUVENATING_MUCUS.get());
+		generateComponent(ModItems.REJUVENATIVE_GOO.get());
+		generateComponent(ModItems.WITHERING_OOZE.get());
 		generateComponent(ModItems.HORMONE_SECRETION.get());
-		generateComponent(ModItems.VENOM_EXTRACT.get());
-		generateComponent(ModItems.VOLATILE_EXTRACT.get());
-		generateComponent(ModItems.BILE_EXTRACT.get());
+		generateComponent(ModItems.TOXIN_EXTRACT.get());
+		generateComponent(ModItems.UNSTABLE_FLUID.get());
+		generateComponent(ModItems.BILE.get());
 
 		generateFlat(ModItems.MOB_FANG.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.MOB_CLAW.get(), ModelTemplates.FLAT_ITEM);
@@ -126,7 +127,7 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 
 		generateFlat(ModItems.LIVING_FLESH.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.EXALTED_LIVING_FLESH.get(), ModelTemplates.FLAT_ITEM);
-		generateFlat(ModItems.OCULUS.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.FERTILIZER.get(), ModelTemplates.FLAT_ITEM);
 		generateFlatWithOverlay(ModItems.ESSENCE.get(), OVERLAY_TEMPLATE);
 		generateFlat(ModItems.BIO_EXTRACTOR.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 

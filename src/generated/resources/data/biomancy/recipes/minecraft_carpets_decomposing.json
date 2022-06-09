@@ -2,18 +2,17 @@
   "type": "biomancy:decomposing",
   "input": {
     "ingredient": {
-      "item": "biomancy:mob_sinew"
+      "tag": "minecraft:carpets"
     },
     "count": 1
   },
   "outputs": [
     {
       "result": {
-        "item": "biomancy:flesh_bits",
+        "item": "biomancy:tough_fibers",
         "count_range": {
-          "type": "uniform",
-          "min": 1,
-          "max": 3
+          "type": "constant",
+          "value": 2
         }
       }
     },
@@ -21,9 +20,8 @@
       "result": {
         "item": "biomancy:elastic_fibers",
         "count_range": {
-          "type": "uniform",
-          "min": 1,
-          "max": 2
+          "type": "constant",
+          "value": 2
         }
       }
     }

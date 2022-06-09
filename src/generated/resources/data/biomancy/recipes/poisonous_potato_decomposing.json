@@ -1,0 +1,21 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:poisonous_potato"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:venom_extract",
+        "count_range": {
+          "type": "constant",
+          "value": 5
+        }
+      }
+    }
+  ],
+  "time": 100
+}

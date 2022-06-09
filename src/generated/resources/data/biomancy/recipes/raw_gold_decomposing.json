@@ -1,0 +1,30 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:raw_gold"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:mineral_dust",
+        "count_range": {
+          "type": "constant",
+          "value": 9
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:lithic_powder",
+        "count_range": {
+          "type": "constant",
+          "value": 1
+        }
+      }
+    }
+  ],
+  "time": 390
+}

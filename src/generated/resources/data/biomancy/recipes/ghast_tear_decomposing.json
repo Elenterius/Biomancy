@@ -1,0 +1,30 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:ghast_tear"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:hormone_secretion",
+        "count_range": {
+          "type": "constant",
+          "value": 9
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:volatile_extract",
+        "count_range": {
+          "type": "constant",
+          "value": 5
+        }
+      }
+    }
+  ],
+  "time": 305
+}

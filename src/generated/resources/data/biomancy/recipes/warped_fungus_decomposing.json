@@ -1,0 +1,30 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:warped_fungus"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:bile_extract",
+        "count_range": {
+          "type": "constant",
+          "value": 2
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:hormone_secretion",
+        "count_range": {
+          "type": "constant",
+          "value": 2
+        }
+      }
+    }
+  ],
+  "time": 72
+}

@@ -1,0 +1,30 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:cod"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:flesh_bits",
+        "count_range": {
+          "type": "constant",
+          "value": 4
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:bone_scraps",
+        "count_range": {
+          "type": "constant",
+          "value": 2
+        }
+      }
+    }
+  ],
+  "time": 122
+}

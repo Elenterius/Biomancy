@@ -1,0 +1,21 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:tinted_glass"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:gem_dust",
+        "count_range": {
+          "type": "constant",
+          "value": 28
+        }
+      }
+    }
+  ],
+  "time": 1400
+}

@@ -1,0 +1,30 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:ender_eye"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:exotic_dust",
+        "count_range": {
+          "type": "constant",
+          "value": 5
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:bile_extract",
+        "count_range": {
+          "type": "constant",
+          "value": 2
+        }
+      }
+    }
+  ],
+  "time": 282
+}

@@ -1,0 +1,30 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:clay"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:lithic_powder",
+        "count_range": {
+          "type": "constant",
+          "value": 4
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:mineral_dust",
+        "count_range": {
+          "type": "constant",
+          "value": 4
+        }
+      }
+    }
+  ],
+  "time": 280
+}
