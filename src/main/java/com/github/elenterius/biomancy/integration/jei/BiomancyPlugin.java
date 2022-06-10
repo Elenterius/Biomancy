@@ -46,21 +46,21 @@ public class BiomancyPlugin implements IModPlugin {
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
 		ClientLevel world = Objects.requireNonNull(Minecraft.getInstance().level);
-		registration.addRecipes(ImmutableSet.copyOf(world.getRecipeManager().getAllRecipesFor(ModRecipes.DECOMPOSING_RECIPE_TYPE)), DecomposerRecipeCategory.ID);
+		registration.addRecipes(DecomposerRecipeCategory.RECIPE_TYPE, world.getRecipeManager().getAllRecipesFor(ModRecipes.DECOMPOSING_RECIPE_TYPE));
 		registration.addRecipes(BioLabRecipeCategory.RECIPE_TYPE, world.getRecipeManager().getAllRecipesFor(ModRecipes.BIO_BREWING_RECIPE_TYPE));
 		registration.addRecipes(ImmutableSet.copyOf(world.getRecipeManager().getAllRecipesFor(ModRecipes.DIGESTING_RECIPE_TYPE)), DigesterRecipeCategory.ID);
 	}
 
 	@Override
 	public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-		registration.addRecipeClickArea(DecomposerScreen.class, 176 - 5 - 10, 4, 10, 10, DecomposerRecipeCategory.ID);
+		registration.addRecipeClickArea(DecomposerScreen.class, 176 - 5 - 10, 4, 10, 10, DecomposerRecipeCategory.RECIPE_TYPE);
 		registration.addRecipeClickArea(BioLabScreen.class, 176 - 5 - 10, 4, 10, 10, BioLabRecipeCategory.RECIPE_TYPE);
 		registration.addRecipeClickArea(DigesterScreen.class, 176 - 5 - 10, 4, 10, 10, DigesterRecipeCategory.ID);
 	}
 
 	@Override
 	public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
-		registerInputSlots(registration, DecomposerMenu.class, DecomposerRecipeCategory.ID, DecomposerMenu.SlotZone.INPUT_ZONE);
+		registerInputSlots(registration, DecomposerMenu.class, DecomposerRecipeCategory.RECIPE_TYPE, DecomposerMenu.SlotZone.INPUT_ZONE);
 		registerInputSlots(registration, BioLabMenu.class, BioLabRecipeCategory.RECIPE_TYPE, BioLabMenu.SlotZone.INPUT_ZONE);
 		registerInputSlots(registration, DigesterMenu.class, DigesterRecipeCategory.ID, DigesterMenu.SlotZone.INPUT_ZONE);
 	}

@@ -48,21 +48,18 @@ public class DecomposerScreen extends AbstractContainerScreen<DecomposerMenu> {
 
 	private void drawProgressBar(PoseStack poseStack, float craftingPct) {
 		int uWidth = (int) (craftingPct * 20) + (craftingPct > 0 ? 1 : 0);
-		blit(poseStack, leftPos + 67, topPos + 21, 194, 0, uWidth, 2);
+		blit(poseStack, leftPos + 64, topPos + 19, 194, 0, uWidth, 2);
 	}
 
 	private void drawFuelBar(PoseStack poseStack, float fuelPct) {
-		//fuel blob
-		int vHeight = (int) (fuelPct * 18) + (fuelPct > 0 ? 1 : 0);
-		blit(poseStack, leftPos + 44, topPos + 18 + 18 - vHeight, 176, 18 - vHeight, 18, vHeight);
-		//glass highlight
-		blit(poseStack, leftPos + 47, topPos + 21, 214, 0, 12, 13);
+		int vHeight = (int) (fuelPct * 36) + (fuelPct > 0 ? 1 : 0);
+		blit(poseStack, leftPos + 44, topPos + 26 + 36 - vHeight, 178, 36 - vHeight, 5, vHeight);
 	}
 
 	@Override
 	protected void renderTooltip(PoseStack poseStack, int mouseX, int mouseY) {
 		if (menu.getCarried().isEmpty()) {
-			if (GuiUtil.isInRect(leftPos + 44, topPos + 18, 17, 17, mouseX, mouseY)) {
+			if (GuiUtil.isInRect(leftPos + 44, topPos + 26, 5, 36, mouseX, mouseY)) {
 				drawFuelTooltip(poseStack, mouseX, mouseY);
 				return;
 			}

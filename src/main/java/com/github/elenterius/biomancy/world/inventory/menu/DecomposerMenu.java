@@ -35,11 +35,11 @@ public class DecomposerMenu extends PlayerContainerMenu {
 		this.outputInventory = outputInventory;
 		this.stateData = stateData;
 
-		addSlot(new FuelSlot(fuelInventory, 0, 46, 57));
-		addSlot(new Slot(inputInventory, 0, 69, 28));
+		addSlot(new FuelSlot(fuelInventory, 0, 39, 66));
+		addSlot(new Slot(inputInventory, 0, 66, 26));
 
-		int posY = 50;
-		int posX = 91;
+		int posY = 48;
+		int posX = 88;
 		addSlot(new OutputSlot(outputInventory, 0, posX, posY));
 		addSlot(new OutputSlot(outputInventory, 1, posX, posY + 18));
 		addSlot(new OutputSlot(outputInventory, 2, posX + 18, posY));
