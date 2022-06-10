@@ -52,11 +52,7 @@ public class DigesterScreen extends AbstractContainerScreen<DigesterMenu> {
 	}
 
 	private void drawFuelBar(PoseStack poseStack, float fuelPct) {
-		//fuel blob
-		int vHeight = (int) (fuelPct * 18) + (fuelPct > 0 ? 1 : 0);
-		blit(poseStack, leftPos + 44, topPos + 18 + 18 - vHeight, 176, 18 - vHeight, 18, vHeight);
-		//glass highlight
-		blit(poseStack, leftPos + 47, topPos + 21, 214, 0, 12, 13);
+		//fuel bar will probably be removed
 	}
 
 	@Override

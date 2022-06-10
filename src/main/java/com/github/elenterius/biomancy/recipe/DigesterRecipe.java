@@ -49,6 +49,10 @@ public class DigesterRecipe extends AbstractProductionRecipe {
 		return recipeResult;
 	}
 
+	public Ingredient getIngredient() {
+		return recipeIngredient;
+	}
+
 	@Override
 	public NonNullList<Ingredient> getIngredients() {
 		return NonNullList.of(Ingredient.EMPTY, recipeIngredient);

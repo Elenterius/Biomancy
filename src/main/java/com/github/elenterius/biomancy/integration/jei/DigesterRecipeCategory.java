@@ -7,11 +7,13 @@ import com.github.elenterius.biomancy.recipe.DigesterRecipe;
 import com.github.elenterius.biomancy.world.block.entity.DigesterBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -23,24 +25,29 @@ import net.minecraft.world.item.ItemStack;
 
 public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 
-	public static final ResourceLocation ID = BiomancyMod.createRL("jei_" + ModRecipes.DIGESTING_RECIPE_TYPE.getId());
-
+	public static final RecipeType<DigesterRecipe> RECIPE_TYPE = new RecipeType<>(BiomancyMod.createRL(ModRecipes.DIGESTING_RECIPE_TYPE.getId()), DigesterRecipe.class);
 	private final IDrawable background;
 	private final IDrawable icon;
 
 	public DigesterRecipeCategory(IGuiHelper guiHelper) {
 		icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(ModItems.DIGESTER.get()));
-		background = guiHelper.drawableBuilder(BiomancyMod.createRL("textures/gui/jei/digester_recipe.png"), 0, 0, 80, 47).setTextureSize(80, 47).addPadding(0, 4, 0, 0).build();
+		ResourceLocation texture = BiomancyMod.createRL("textures/gui/jei/digester_recipe.png");
+		background = guiHelper.drawableBuilder(texture, 0, 0, 80, 47).setTextureSize(80, 47).addPadding(0, 4, 0, 0).build();
 	}
 
 	@Override
 	public ResourceLocation getUid() {
-		return ID;
+		return getRecipeType().getUid();
 	}
 
 	@Override
-	public Class<DigesterRecipe> getRecipeClass() {
-		return DigesterRecipe.class;
+	public RecipeType<DigesterRecipe> getRecipeType() {
+		return RECIPE_TYPE;
+	}
+
+	@Override
+	public Class<? extends DigesterRecipe> getRecipeClass() {
+		return getRecipeType().getRecipeClass();
 	}
 
 	@Override
@@ -59,24 +66,14 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 	}
 
 	@Override
-	public void setIngredients(DigesterRecipe recipe, IIngredients ingredients) {
-		ingredients.setInputIngredients(recipe.getIngredients());
-		ingredients.setOutput(VanillaTypes.ITEM, recipe.getResultItem());
+	public void setRecipe(IRecipeLayoutBuilder builder, DigesterRecipe recipe, IFocusGroup focuses) {
+		builder.setShapeless();
+		builder.addSlot(RecipeIngredientRole.INPUT, 1, 14).addIngredients(recipe.getIngredient());
+		builder.addSlot(RecipeIngredientRole.OUTPUT, 59, 15).addItemStack(recipe.getResultItem());
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayout layout, DigesterRecipe recipe, IIngredients ingredients) {
-		layout.setShapeless();
-		IGuiItemStackGroup guiISGroup = layout.getItemStacks();
-
-		guiISGroup.init(0, true, 0, 13); //ingredient
-		guiISGroup.init(1, false, 57, 13); //result
-
-		guiISGroup.set(ingredients);
-	}
-
-	@Override
-	public void draw(DigesterRecipe recipe, PoseStack poseStack, double mouseX, double mouseY) {
+	public void draw(DigesterRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
 		int ticks = recipe.getCraftingTime();
 		if (ticks > 0) {
 			int seconds = ticks / 20;
