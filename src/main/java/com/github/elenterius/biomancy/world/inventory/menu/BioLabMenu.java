@@ -36,12 +36,12 @@ public class BioLabMenu extends PlayerContainerMenu {
 		this.outputInventory = outputInventory;
 		this.stateData = stateData;
 
-		addSlot(new FuelSlot(fuelInventory, 0, 43, 92));
+		addSlot(new FuelSlot(fuelInventory, 0, 31, 88));
 
-		addSlot(new Slot(inputInventory, 0, 50, 31));
+		addSlot(new Slot(inputInventory, 0, 50, 28));
 		addSlot(new Slot(inputInventory, 1, 70, 28));
 		addSlot(new Slot(inputInventory, 2, 90, 28));
-		addSlot(new Slot(inputInventory, 3, 110, 31));
+		addSlot(new Slot(inputInventory, 3, 110, 28));
 
 		addSlot(new Slot(inputInventory, 4, 80, 62)); //mixture/vial slot
 

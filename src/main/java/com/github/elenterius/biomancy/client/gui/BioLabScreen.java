@@ -54,18 +54,15 @@ public class BioLabScreen extends AbstractContainerScreen<BioLabMenu> {
 
 
 	private void drawFuelBar(PoseStack poseStack, float fuelPct) {
-		int yOffset = 20;
-		//fuel blob
-		int vHeight = (int) (fuelPct * 18) + (fuelPct > 0 ? 1 : 0);
-		blit(poseStack, leftPos + 41, topPos + 52 + 18 - vHeight, 176, 18 - vHeight + yOffset, 18, vHeight);
-		//glass highlight
-		blit(poseStack, leftPos + 44, topPos + 55, 214, yOffset, 12, 13);
+		int vHeight = (int) (fuelPct * 36) + (fuelPct > 0 ? 1 : 0);
+
+		blit(poseStack, leftPos + 36, topPos + 48 + 36 - vHeight, 178, 58 - vHeight, 5, vHeight);
 	}
 
 	@Override
 	protected void renderTooltip(PoseStack poseStack, int mouseX, int mouseY) {
 		if (menu.getCarried().isEmpty()) {
-			if (GuiUtil.isInRect(leftPos + 41, topPos + 52, 17, 17, mouseX, mouseY)) {
+			if (GuiUtil.isInRect(leftPos + 36, topPos + 48, 5, 36, mouseX, mouseY)) {
 				drawFuelTooltip(poseStack, mouseX, mouseY);
 				return;
 			}
