@@ -3,6 +3,12 @@
   "ingredient_quantities": [
     {
       "ingredient": {
+        "item": "biomancy:living_flesh"
+      },
+      "count": 1
+    },
+    {
+      "ingredient": {
         "item": "biomancy:flesh_bits"
       },
       "count": 64
@@ -26,12 +32,8 @@
       "count": 20
     }
   ],
-  "reactant": {
-    "item": "biomancy:living_flesh"
-  },
   "result": {
     "item": "biomancy:bio_lab"
   },
-  "time": 100,
-  "category": "biomancy:machines"
+  "category": "biomancy_bio_forge_machines"
 }

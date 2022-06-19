@@ -36,7 +36,7 @@ public class BioForgeRecipeMessage {
 				RecipeManager recipeManager = sender.getLevel().getRecipeManager();
 				Map<ResourceLocation, Recipe<Container>> recipes = recipeManager.byType(ModRecipes.BIO_FORGING_RECIPE_TYPE);
 				BioForgeRecipe recipe = (BioForgeRecipe) recipes.get(packet.id);
-				menu.selectedRecipeConsumer.accept(recipe);
+				menu.setSelectedRecipe(recipe, sender);
 			}
 		});
 		ctx.get().setPacketHandled(true);

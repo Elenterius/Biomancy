@@ -1,10 +1,9 @@
 package com.github.elenterius.biomancy.datagen.recipes;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.init.ModRecipeBooks;
 import com.github.elenterius.biomancy.init.ModRecipes;
-import com.github.elenterius.biomancy.recipe.BioForgeCategory;
 import com.github.elenterius.biomancy.recipe.IngredientQuantity;
-import com.github.elenterius.biomancy.recipe.ItemStackIngredient;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;
@@ -17,7 +16,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
@@ -36,11 +34,7 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 	private final ItemData result;
 	private final List<IngredientQuantity> ingredients = new ArrayList<>();
 	private final Advancement.Builder advancement = Advancement.Builder.advancement();
-	private Ingredient reactant = Ingredient.EMPTY;
-	private int craftingTime = 20;
-	private BioForgeCategory category = BioForgeCategory.MISC;
-	@Nullable
-	private String group;
+	private ModRecipeBooks.BioForgeCategory category = ModRecipeBooks.BioForgeCategory.MISC;
 
 	private BioForgeRecipeBuilder(ResourceLocation recipeId, ItemData result) {
 		this.recipeId = recipeId;
@@ -78,31 +72,14 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 		return new BioForgeRecipeBuilder(rl, itemData);
 	}
 
-	public BioForgeRecipeBuilder setCraftingTime(int time) {
-		if (time < 0) throw new IllegalArgumentException("Invalid crafting time: " + time);
-		craftingTime = time;
-		return this;
-	}
+	//	public BioForgeRecipeBuilder setCraftingTime(int time) {
+	//		if (time < 0) throw new IllegalArgumentException("Invalid crafting time: " + time);
+	//		craftingTime = time;
+	//		return this;
+	//	}
 
-	public BioForgeRecipeBuilder setCategory(BioForgeCategory category) {
+	public BioForgeRecipeBuilder setCategory(ModRecipeBooks.BioForgeCategory category) {
 		this.category = category;
-		return this;
-	}
-
-	public BioForgeRecipeBuilder setReactant(ItemLike item) {
-		return setReactant(Ingredient.of(item));
-	}
-
-	public BioForgeRecipeBuilder setReactant(TagKey<Item> tag) {
-		return setReactant(Ingredient.of(tag));
-	}
-
-	public BioForgeRecipeBuilder setReactant(ItemStack stack) {
-		return setReactant(new ItemStackIngredient(stack));
-	}
-
-	public BioForgeRecipeBuilder setReactant(Ingredient ingredient) {
-		reactant = ingredient;
 		return this;
 	}
 
@@ -138,11 +115,6 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 		return this;
 	}
 
-	public BioForgeRecipeBuilder setGroup(@Nullable String name) {
-		group = name;
-		return this;
-	}
-
 	@Override
 	public void save(Consumer<FinishedRecipe> consumer, @Nullable CreativeModeTab itemCategory) {
 		validateCriteria(recipeId);
@@ -151,7 +123,7 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 				.rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
 		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(),
 				"recipes/" + (itemCategory != null ? itemCategory.getRecipeFolderName() : BiomancyMod.MOD_ID) + "/" + recipeId.getPath());
-		consumer.accept(new Result(recipeId, category, group == null ? "" : group, result, craftingTime, ingredients, reactant, advancement, advancementId));
+		consumer.accept(new RecipeResult(recipeId, category, result, ingredients, advancement, advancementId));
 	}
 
 	private void validateCriteria(ResourceLocation id) {
@@ -160,28 +132,20 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 		}
 	}
 
-	public static class Result implements FinishedRecipe {
+	public static class RecipeResult implements FinishedRecipe {
 		private final ResourceLocation id;
-		private final String group;
-
 		private final List<IngredientQuantity> ingredients;
-		private final Ingredient reactant;
 		private final ItemData result;
-		private final int craftingTime;
-		private final BioForgeCategory category;
+		private final ModRecipeBooks.BioForgeCategory category;
 
 		private final Advancement.Builder advancementBuilder;
 		private final ResourceLocation advancementId;
 
-		public Result(ResourceLocation recipeId, BioForgeCategory category, String group, ItemData result, int craftingTime, List<IngredientQuantity> ingredients, Ingredient reactant, Advancement.Builder advancement, ResourceLocation advancementId) {
+		public RecipeResult(ResourceLocation recipeId, ModRecipeBooks.BioForgeCategory category, ItemData result, List<IngredientQuantity> ingredients, Advancement.Builder advancement, ResourceLocation advancementId) {
 			id = recipeId;
-			this.group = group;
-
 			this.category = category;
 			this.result = result;
-			this.reactant = reactant;
 			this.ingredients = ingredients;
-			this.craftingTime = craftingTime;
 
 			advancementBuilder = advancement;
 			this.advancementId = advancementId;
@@ -189,23 +153,13 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 
 		@Override
 		public void serializeRecipeData(JsonObject json) {
-			if (!group.isEmpty()) {
-				json.addProperty("group", group);
-			}
-
 			JsonArray jsonArray = new JsonArray();
 			for (IngredientQuantity ingredient : ingredients) {
 				jsonArray.add(ingredient.toJson());
 			}
 			json.add("ingredient_quantities", jsonArray);
 
-			if (!reactant.isEmpty()) {
-				json.add("reactant", reactant.toJson());
-			}
-
 			json.add("result", result.toJson());
-
-			json.addProperty("time", craftingTime);
 
 			category.toJson(json);
 		}

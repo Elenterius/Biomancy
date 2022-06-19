@@ -3,6 +3,12 @@
   "ingredient_quantities": [
     {
       "ingredient": {
+        "item": "biomancy:living_flesh"
+      },
+      "count": 1
+    },
+    {
+      "ingredient": {
         "item": "biomancy:mob_claw"
       },
       "count": 6
@@ -23,21 +29,11 @@
       "ingredient": {
         "item": "biomancy:flesh_bits"
       },
-      "count": 12
-    },
-    {
-      "ingredient": {
-        "item": "biomancy:elastic_fibers"
-      },
-      "count": 32
+      "count": 44
     }
   ],
-  "reactant": {
-    "item": "biomancy:living_flesh"
-  },
   "result": {
     "item": "biomancy:long_range_claw"
   },
-  "time": 100,
-  "category": "biomancy:weapon"
+  "category": "biomancy_bio_forge_weapons"
 }

@@ -18,7 +18,6 @@ import java.util.Set;
 
 public final class ModRecipes {
 
-
 //	public static final RegistryObject<SpecialRecipeSerializer<AddPotionToBoomlingRecipe>> CRAFTING_SPECIAL_BOOMLING = RECIPE_SERIALIZERS.register("crafting_special_boomling", () -> new SpecialRecipeSerializer<>(AddPotionToBoomlingRecipe::new));
 //	public static final RegistryObject<SpecialRecipeSerializer<AddPotionToBoomlingGunRecipe>> CRAFTING_SPECIAL_BOOMLING_GUN = RECIPE_SERIALIZERS.register("crafting_special_boomling_gun", () -> new SpecialRecipeSerializer<>(AddPotionToBoomlingGunRecipe::new));
 //	public static final RegistryObject<SpecialRecipeSerializer<AddUserToAccessKeyRecipe>> CRAFTING_SPECIAL_ADD_USER_TO_KEY = RECIPE_SERIALIZERS.register("crafting_special_add_user_to_key", () -> new SpecialRecipeSerializer<>(AddUserToAccessKeyRecipe::new));
@@ -39,6 +38,8 @@ public final class ModRecipes {
 
 	public static void register() {
 		registerRecipeTypes();
+		ModRecipeBooks.setupCategories();
+
 		registerItemPredicates();
 		registerComposterRecipes();
 	}
@@ -57,7 +58,7 @@ public final class ModRecipes {
 		ComposterBlock.COMPOSTABLES.putIfAbsent(ModItems.ORGANIC_MATTER.get(), 0.25f);
 	}
 
-	private static <T extends AbstractProductionRecipe> ItemStackRecipeType<T> createItemStackRecipeType(String identifier) {
+	private static <T extends Recipe<Container>> ItemStackRecipeType<T> createItemStackRecipeType(String identifier) {
 		return new ItemStackRecipeType<>(identifier);
 	}
 

@@ -1,12 +1,9 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.init.ModRecipes;
-import com.github.elenterius.biomancy.network.ModNetworkHandler;
-import com.github.elenterius.biomancy.recipe.BioForgeCategory;
+import com.github.elenterius.biomancy.client.gui.component.CustomEditBox;
 import com.github.elenterius.biomancy.recipe.BioForgeRecipe;
 import com.github.elenterius.biomancy.recipe.IngredientQuantity;
-import com.github.elenterius.biomancy.world.block.entity.BioForgeBlockEntity;
 import com.github.elenterius.biomancy.world.inventory.menu.BioForgeMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -15,165 +12,99 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL11;
 
-import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 @OnlyIn(Dist.CLIENT)
 public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 
 	private static final ResourceLocation BACKGROUND_TEXTURE = BiomancyMod.createRL("textures/gui/menu_bio_forge.png");
-	private static final ResourceLocation BACKGROUND_LEFT_TEXTURE = BiomancyMod.createRL("textures/gui/menu_recipe_selector.png");
-
-	public static final int GRID_SIZE = 4 * 5;
-	public static final int X_OFFSET = 176;
-
-	record RecipeSelection(@Nullable BioForgeRecipe recipe, int tab, int index) {
-		@Nullable
-		public ResourceLocation getRecipeId() {
-			return recipe != null ? recipe.getId() : null;
-		}
-	}
-
-	private List<BioForgeRecipe> recipes = List.of();
-	private final List<BioForgeCategory> tabs = BioForgeCategory.getCategories().stream().toList();
-	private boolean setupComplete = false;
-
-	private RecipeSelection recipeSelection = new RecipeSelection(null, -1, -1);
-	private int startIndex = 0;
-	private int activeTab = 0;
-
-	private boolean scrolling = false;
-	private float scrollPct = 0;
+	private BioForgeScreenController recipeBook;
+	private CustomEditBox searchInput;
+	private boolean ignoreTextInput;
 
 	public BioForgeScreen(BioForgeMenu menu, Inventory playerInventory, Component title) {
 		super(menu, playerInventory, title);
+		imageWidth = 292;
 		imageHeight = 219;
-		imageWidth = 176 * 2;
 	}
 
-	private int ticks;
+	@Override
+	protected void init() {
+		super.init();
+
+		searchInput = new CustomEditBox(Objects.requireNonNull(minecraft).font, leftPos + 26, topPos + 16, 78, 14, new TranslatableComponent("itemGroup.search"));
+		searchInput.setMaxLength(50);
+		searchInput.setTextHint(new TranslatableComponent("gui.recipebook.search_hint").withStyle(Style.EMPTY.withItalic(true).withColor(ColorTheme.TEXT_ACCENT_FORGE_DARK)));
+		searchInput.setTextColor(ColorTheme.TEXT_ACCENT_FORGE);
+
+		recipeBook = new BioForgeScreenController(minecraft, menu);
+
+		minecraft.keyboardHandler.setSendRepeatsToGui(true);
+	}
+
+	@Override
+	public void removed() {
+		minecraft.keyboardHandler.setSendRepeatsToGui(false);
+	}
+
+	public void onRecipeBookUpdated() {
+		recipeBook.onRecipeBookUpdated();
+	}
 
 	@Override
 	protected void containerTick() {
-		if (!setupComplete) setupComplete = setupRecipes();
-
-		if (minecraft == null || minecraft.level == null) return;
-
-		if (ticks++ % 8 == 0) {
-			ResourceLocation currentRecipeId = recipeSelection.getRecipeId();
-			ResourceLocation newRecipeId = menu.getSelectedRecipeId();
-			if (currentRecipeId != newRecipeId) {
-				if (newRecipeId == null) {
-					recipeSelection = new RecipeSelection(null, -1, -1);
-					return;
-				}
-
-				if (!newRecipeId.equals(currentRecipeId)) {
-
-					BioForgeRecipe newRecipe = BioForgeBlockEntity.RECIPE_TYPE.getRecipeById(minecraft.level, newRecipeId).orElse(null);
-					if (newRecipe == null) {
-						recipeSelection = new RecipeSelection(null, -1, -1);
-						return;
-					}
-
-					int tabIndex = getTabIndex(newRecipe.getCategory());
-					int selectionIndex = -1;
-					if (tabIndex == activeTab) {
-						for (int i = 0; i < recipes.size(); i++) {
-							if (recipes.get(i) == newRecipe) {
-								selectionIndex = i;
-								break;
-							}
-						}
-					}
-					recipeSelection = new RecipeSelection(newRecipe, tabIndex, selectionIndex);
-					return;
-				}
-			}
-
-			fixSelectionIndex();
-		}
+		searchInput.tick();
+		recipeBook.tick();
 	}
 
-	private void fixSelectionIndex() {
-		if (recipeSelection.tab == activeTab && recipeSelection.recipe != null && recipeSelection.index == -1) {
-			BioForgeRecipe recipe = recipeSelection.recipe;
-			for (int i = 0; i < recipes.size(); i++) {
-				if (recipes.get(i) == recipe) {
-					recipeSelection = new RecipeSelection(recipe, activeTab, i);
-					break;
-				}
-			}
-		}
-	}
-
-	private int getTabIndex(BioForgeCategory category) {
-		for (int tabIndex = 0; tabIndex < tabs.size(); tabIndex++) {
-			if (tabs.get(tabIndex) == category) {
-				return tabIndex;
-			}
-		}
-		return 0;
-	}
-
-	private boolean setupRecipes() {
-		if (minecraft != null && minecraft.level != null) {
-			RecipeManager recipeManager = minecraft.level.getRecipeManager();
-			final BioForgeCategory category = tabs.get(activeTab);
-			recipes = recipeManager.byType(ModRecipes.BIO_FORGING_RECIPE_TYPE).values().stream().map(BioForgeRecipe.class::cast).filter(recipe -> recipe.getCategory() == category).toList();
-			return true;
-		}
-		return false;
-	}
-
-	private void setSelectedRecipe(int idx) {
-		int selectionIndex = startIndex + idx;
-		BioForgeRecipe recipe = recipes.get(selectionIndex);
-		recipeSelection = new RecipeSelection(recipe, activeTab, selectionIndex);
-
-		if (minecraft != null && minecraft.gameMode != null) {
-			ModNetworkHandler.sendBioForgeRecipeToServer(menu.containerId, recipe);
-		}
-	}
-
-	private void setActiveTab(int idx) {
-		activeTab = idx;
-		resetScrollbar();
-		setupRecipes();
+	@Override
+	protected void slotClicked(Slot slot, int slotId, int mouseButton, ClickType type) {
+		super.slotClicked(slot, slotId, mouseButton, type);
+		//if (slot != null) {
+		//	recipeBook.trackPlayerInvChanges();
+		//}
 	}
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		scrolling = GuiUtil.isInRect(leftPos + 157, topPos + 22, 6, 91, mouseX, mouseY);
+		if (searchInput.mouseClicked(mouseX, mouseY, button)) return true;
 
-		if (!recipes.isEmpty()) {
-			for (int idx = 0; idx < GRID_SIZE && idx + startIndex < recipes.size(); idx++) {
-				int pX = leftPos + 27 + (24 + 1) * (idx % 5);
-				int pY = topPos + 18 + (24 + 1) * (idx / 5);
-				if (GuiUtil.isInRect(pX, pY, 25, 25, mouseX, mouseY)) {
+		if (recipeBook.hasRecipesOnPage()) {
+			int recipes = recipeBook.getMaxRecipesOnGrid();
+			for (int i = 0; i < recipes; i++) {
+				int pX = leftPos + 13 + (20 + 5 - 2) * (i % BioForgeScreenController.COLS);
+				int pY = topPos + 37 + (20 + 5 - 2) * (i / BioForgeScreenController.COLS);
+				if (GuiUtil.isInRect(pX, pY, 24, 24, mouseX, mouseY)) {
 					Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1f));
-					setSelectedRecipe(idx);
+					recipeBook.setSelectedRecipe(i);
 					return true;
 				}
 			}
 		}
 
-		for (int idx = 0; idx < tabs.size(); idx++) {
-			int pX = leftPos - 19;
-			int pY = topPos + 4 + 22 * idx;
-			if (idx != activeTab && GuiUtil.isInRect(pX, pY, 19, 20, mouseX, mouseY)) {
+		for (int i = 0; i < recipeBook.getTabCount(); i++) {
+			int w = 24;
+			int h = 32;
+			int pX = leftPos - w;
+			int pY = topPos + 32 + h * i;
+			if (!recipeBook.isActiveTab(i) && GuiUtil.isInRect(pX, pY + 3, w, h - 3, mouseX, mouseY)) {
 				Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
-				setActiveTab(idx);
+				recipeBook.setActiveTab(i);
 				return true;
 			}
 		}
@@ -182,57 +113,53 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 	}
 
 	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-		if (scrolling) {
-			int pY = topPos + 22;
-			scrollPct = Mth.clamp((float) ((mouseY - pY) / 91d), 0f, 1f);
+	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+		ignoreTextInput = false;
 
-			int hiddenRows = Mth.ceil((recipes.size() - GRID_SIZE) / 5f);
-			startIndex = hiddenRows > 0 ? Mth.floor(scrollPct * hiddenRows) * 5 : 0;
+		if (searchInput.keyPressed(keyCode, scanCode, modifiers)) {
+			recipeBook.updateSearchString(searchInput.getValue().toLowerCase(Locale.ROOT));
 			return true;
 		}
 
-		return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+		if (searchInput.isFocused() && searchInput.isVisible() && keyCode != GLFW.GLFW_KEY_ESCAPE) {
+			return true;
+		}
+
+		if (Objects.requireNonNull(minecraft).options.keyChat.matches(keyCode, scanCode) && !searchInput.isFocused()) {
+			ignoreTextInput = true;
+			searchInput.setFocus(true);
+			return true;
+		}
+
+		return super.keyPressed(keyCode, scanCode, modifiers);
 	}
 
 	@Override
-	public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-		if (!recipes.isEmpty()) {
-			int hiddenRows = Mth.ceil((recipes.size() - GRID_SIZE) / 5f);
-			if (hiddenRows > 0) {
-				float stepSize = 1f / hiddenRows;
-				scrollPct = Mth.clamp((float) (scrollPct - delta * stepSize), 0f, 1f);
-//				int maxIndex = Math.max(recipes.size() - GRID_SIZE, 0);
-//				startIndex = Mth.clamp((int) (startIndex - delta * 5), 0, maxIndex);
-				startIndex = Mth.floor(scrollPct * hiddenRows) * 5;
-			}
-			else {
-				resetScrollbar();
-			}
+	public boolean keyReleased(int keyCode, int scanCode, int modifiers) {
+		ignoreTextInput = false;
+		return super.keyReleased(keyCode, scanCode, modifiers);
+	}
+
+	@Override
+	public boolean charTyped(char codePoint, int modifiers) {
+		if (ignoreTextInput) return false;
+
+		if (searchInput.charTyped(codePoint, modifiers)) {
+			recipeBook.updateSearchString(searchInput.getValue().toLowerCase(Locale.ROOT));
+			return true;
 		}
 
-		return true;
+		return super.charTyped(codePoint, modifiers);
 	}
 
-	private void resetScrollbar() {
-		scrolling = false;
-		startIndex = 0;
-		scrollPct = 0;
-	}
-
-	private void drawScrollbar(PoseStack poseStack) {
-		drawScrollThumb(poseStack, scrollPct);
-	}
-
-	private void drawScrollThumb(PoseStack poseStack, float scrollPct) {
-		int y = (int) (scrollPct * (91 - 14));
-		blit(poseStack, leftPos + 157, topPos + 22 + y, 221, 0, 6, 14);
+	@Override
+	public void blit(PoseStack poseStack, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight) {
+		blit(poseStack, x, y, getBlitOffset(), uOffset, vOffset, uWidth, vHeight, 512, 256);
 	}
 
 	@Override
 	protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
-		int posX = imageWidth / 2 - font.width(title) / 2;
-		font.draw(poseStack, title, posX, -12, 0xFFFFFF);
+		//don't draw any labels
 	}
 
 	@Override
@@ -247,180 +174,187 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderSystem.setShaderColor(1, 1, 1, 1);
 		RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
-		blit(poseStack, leftPos + X_OFFSET, topPos, 0, 0, X_OFFSET, imageHeight);
+		blit(poseStack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 
-		drawProgressBar(poseStack, menu.getCraftingProgressNormalized());
-		drawFuelBar(poseStack, menu.getFuelAmountNormalized());
-
-		RenderSystem.setShaderTexture(0, BACKGROUND_LEFT_TEXTURE);
-		blit(poseStack, leftPos, topPos, 0, 0, X_OFFSET, imageHeight);
-		drawScrollbar(poseStack);
+		drawFuelBar(poseStack);
 		drawTabs(poseStack);
-		drawRecipes(poseStack);
+		drawRecipeIngredients(poseStack);
 		drawGhostResult(poseStack);
+		drawRecipes(poseStack);
+
+		searchInput.render(poseStack, mouseX, mouseY, partialTick);
 	}
 
 	private void drawGhostResult(PoseStack poseStack) {
-		if (recipeSelection.recipe != null && menu.isOutputEmpty()) {
-			ItemStack stack = recipeSelection.recipe.getResultItem();
-			int pX = leftPos + 80 + X_OFFSET;
-			int pY = topPos + 19;
-			GuiRenderUtil.drawGhostItem(itemRenderer, poseStack, pX, pY, stack);
-//			if (decorate) {
-//				itemRenderer.renderGuiItemDecorations(font, stack, pX, pY);
-//			}
+		BioForgeRecipe selectedRecipe = recipeBook.getSelectedRecipe();
+		if (selectedRecipe != null && menu.isResultEmpty()) {
+			ItemStack stack = selectedRecipe.getResultItem();
+			int x = leftPos + 194 + 2;
+			int y = topPos + 33 + 2;
+			GuiRenderUtil.drawGhostItem(itemRenderer, poseStack, x, y, stack);
+			itemRenderer.renderGuiItemDecorations(font, stack, x, y);
+			RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
 		}
 	}
 
 	private void drawTabs(PoseStack poseStack) {
-		for (int i = 0; i < tabs.size(); i++) {
-			drawTab(poseStack, i, tabs.get(i).icon());
+		for (int index = 0; index < recipeBook.getTabCount(); index++) {
+			drawTab(poseStack, index, recipeBook.isActiveTab(index), recipeBook.getTabIcon(index));
 		}
 	}
 
 	private void drawRecipes(PoseStack poseStack) {
-		if (recipes.isEmpty()) return;
+		if (!recipeBook.hasRecipesOnPage()) return;
 
-		for (int i = 0; i < GRID_SIZE && startIndex + i < recipes.size(); i++) {
-			BioForgeRecipe recipe = recipes.get(startIndex + i);
-			drawRecipeTile(poseStack, i, true, recipe.getResultItem());
+		if (recipeBook.hasSelectedRecipe() && recipeBook.isSelectedRecipeVisible()) {
+			int gridIndex = recipeBook.getGridIndexOfSelectedRecipe();
+			BioForgeRecipe recipe = recipeBook.getRecipeByGrid(gridIndex);
+			boolean isCraftable = recipeBook.getRecipeCollectionByGrid(gridIndex).isCraftable(recipe);
+			drawTileSelection(poseStack, gridIndex, isCraftable);
 		}
 
-		if (recipeSelection.recipe != null) {
-			if (recipeSelection.tab == activeTab && recipeSelection.index >= startIndex && recipeSelection.index < startIndex + GRID_SIZE) {
-				drawSelectedTileHighlight(poseStack, recipeSelection.index - startIndex);
-			}
-			drawRecipeIngredients(poseStack, recipeSelection.recipe);
+		int maxRecipes = recipeBook.getMaxRecipesOnGrid();
+		for (int i = 0; i < maxRecipes; i++) {
+			BioForgeRecipe recipe = recipeBook.getRecipeByGrid(i);
+			boolean isCraftable = recipeBook.getRecipeCollectionByGrid(i).isCraftable(recipe);
+			drawRecipeTile(poseStack, i, isCraftable, recipe.getResultItem());
+		}
+
+		drawPagination(poseStack);
+	}
+
+	private void drawPagination(PoseStack poseStack) {
+		if (recipeBook.maxPages < 2) return;
+
+		int x = leftPos + 60 + 1;
+		int y = topPos + 211 - font.lineHeight * 2 - 2;
+		int currentPage = recipeBook.getCurrentPage();
+
+		if (currentPage > 1) blit(poseStack, x - 22 - 8 - 1, y, 298, 58, 8, 13);
+		if (currentPage < recipeBook.maxPages) blit(poseStack, x + 22, y, 334, 58, 8, 13);
+		String text = "%d/%d".formatted(currentPage, recipeBook.maxPages);
+		font.draw(poseStack, text, x - font.width(text) / 2f, y + 3f, ColorTheme.TEXT_ACCENT_FORGE);
+	}
+
+	private void drawRecipeIngredients(PoseStack poseStack) {
+		BioForgeRecipe selectedRecipe = recipeBook.getSelectedRecipe();
+		if (selectedRecipe != null) {
+			drawRecipeIngredients(poseStack, selectedRecipe);
 		}
 	}
 
 	private void drawRecipeIngredients(PoseStack poseStack, BioForgeRecipe recipe) {
-		int pX = leftPos + 8 + 16;
-		int pY = topPos + 134 + 8;
+		int x = leftPos + 141 + 3;
+		int y = topPos + 82 + 3;
 
-		Ingredient reactant = recipe.getReactant();
-		if (reactant.isEmpty()) {
-			drawIngredientQuantity(poseStack, ItemStack.EMPTY, 0, 0, pX, pY);
-		}
-		else {
-			drawIngredientQuantity(poseStack, reactant.getItems()[0], 1, 1, pX, pY);
-		}
-
-		int i = 1;
-		for (IngredientQuantity ingredientQuantity : recipe.getIngredientQuantities()) {
-			drawIngredientQuantity(poseStack, ingredientQuantity.ingredient().getItems()[0], ingredientQuantity.count(), ingredientQuantity.count(), pX + 70 * (i / 3), pY + (18 + 3) * (i % 3));
-			i++;
+		List<IngredientQuantity> ingredients = recipe.getIngredientQuantities();
+		for (int i = 0, size = ingredients.size(); i < size; i++) {
+			IngredientQuantity ingredientQuantity = ingredients.get(i);
+			ItemStack itemStack = ingredientQuantity.ingredient().getItems()[0];
+			drawIngredientQuantity(poseStack, itemStack, recipeBook.getTotalItemCountInPlayerInv(itemStack), ingredientQuantity.count(), x + 26 * i, y);
 		}
 	}
 
-	private void drawIngredientQuantity(PoseStack poseStack, ItemStack stack, int currentCount, int requiredCount, int pX, int pY) {
-		boolean flag = currentCount < requiredCount;
-		RenderSystem.setShaderTexture(0, BACKGROUND_LEFT_TEXTURE);
-		blit(poseStack, pX - 1, pY - 1, flag ? 224 : 203, 72, 18, 18);
-		itemRenderer.renderGuiItem(stack, pX, pY);
-		font.draw(poseStack, currentCount + "/" + requiredCount, pX + 18 + 2, pY + 18 + 1 - font.lineHeight, flag ? 0xff5555 : 0xFFFFFF);
+	private void drawIngredientQuantity(PoseStack poseStack, ItemStack stack, int currentCount, int requiredCount, int x, int y) {
+		boolean insufficient = currentCount < requiredCount;
+		blit(poseStack, x - 3, y - 3, insufficient ? 354 : 330, 74, 22, 22);
+		itemRenderer.renderGuiItem(stack, x, y);
+		String text = "x" + requiredCount;
+		font.draw(poseStack, text, x + 16 + 4f - font.width(text), y + 16 + 4f + 1, insufficient ? ColorTheme.TEXT_ERROR : ColorTheme.TEXT_SUCCESS);
+		RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
 	}
 
-	private void drawRecipeTile(PoseStack poseStack, int idx, boolean green, ItemStack stack) {
-		RenderSystem.setShaderTexture(0, BACKGROUND_LEFT_TEXTURE);
-		int pX = leftPos + 27 + (24 + 1) * (idx % 5);
-		int pY = topPos + 18 + (24 + 1) * (idx / 5);
-		blit(poseStack, pX, pY, 177, green ? 51 : 26, 24, 24);
-		itemRenderer.renderAndDecorateItem(stack, pX + 4, pY + 4);
+	private void drawRecipeTile(PoseStack poseStack, int idx, boolean isCraftable, ItemStack stack) {
+		int x = leftPos + 12 + (20 + 5) * (idx % BioForgeScreenController.COLS);
+		int y = topPos + 36 + (20 + 5) * (idx / BioForgeScreenController.COLS);
+		drawRecipeTile(poseStack, x, y, stack, !isCraftable);
 	}
 
-	private void drawSelectedTileHighlight(PoseStack poseStack, int idx) {
-		int pX = leftPos + 27 + (24 + 1) * (idx % 5);
-		int pY = topPos + 18 + (24 + 1) * (idx / 5);
-		RenderSystem.setShaderTexture(0, BACKGROUND_LEFT_TEXTURE);
-		blit(poseStack, pX, pY, 203, 26, 24, 24);
-	}
+	private void drawRecipeTile(PoseStack poseStack, int x, int y, ItemStack stack, boolean redOverlay) {
+		blit(poseStack, x, y, 295, 30, 22, 22);
 
-	private void drawTab(PoseStack poseStack, int idx, ItemStack stack) {
-		RenderSystem.setShaderTexture(0, BACKGROUND_LEFT_TEXTURE);
-
-		if (idx == activeTab) {
-			int w = 22;
-			int h = 22;
-			int pX = leftPos - w;
-			int pY = topPos + 4 + 22 * idx - 1;
-			blit(poseStack, pX, pY, 198, 0, w, h);
-			itemRenderer.renderGuiItem(stack, pX + 3, pY + 3);
+		if (redOverlay) {
+			blit(poseStack, x, y, 323, 30, 22, 22);
+			itemRenderer.renderAndDecorateItem(stack, x + 3, y + 3);
+			RenderSystem.depthFunc(GL11.GL_GREATER);
+			fill(poseStack, x, y, x + 22, y + 22, 0x40_00_00_00 | ColorTheme.TEXT_ERROR);
+			RenderSystem.depthFunc(GL11.GL_LEQUAL);
+		} else {
+			itemRenderer.renderAndDecorateItem(stack, x + 3, y + 3);
 		}
-		else {
-			int w = 19;
-			int h = 20;
-			int pX = leftPos - w;
-			int pY = topPos + 4 + 22 * idx;
-			blit(poseStack, pX, pY, 177, 0, w, h);
-			itemRenderer.renderGuiItem(stack, pX + 2, pY + 2);
-		}
+		RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
 	}
 
-	private void drawProgressBar(PoseStack poseStack, float craftingPct) {
-		int vHeight = (int) (craftingPct * 22) + (craftingPct > 0 ? 1 : 0);
-		blit(poseStack, leftPos + 86 + X_OFFSET, topPos + 41 + 22 - vHeight, 195, 22 - vHeight, 4, vHeight);
+	private void drawTileSelection(PoseStack poseStack, int idx, boolean isValid) {
+		int x = leftPos + 12 + 25 * (idx % BioForgeScreenController.COLS) - 1;
+		int y = topPos + 36 + 25 * (idx / BioForgeScreenController.COLS) - 1;
+		blit(poseStack, x, y, isValid ? 295 : 321, 2, 24, 24);
 	}
 
-	private void drawFuelBar(PoseStack poseStack, float fuelPct) {
-		//fuel blob
-		int vHeight = (int) (fuelPct * 18) + (fuelPct > 0 ? 1 : 0);
-		blit(poseStack, leftPos + 41 + X_OFFSET, topPos + 31 + 18 - vHeight, 176, 18 - vHeight, 18, vHeight);
-		//glass highlight
-		blit(poseStack, leftPos + 44 + X_OFFSET, topPos + 34, 177, 20, 12, 13);
+	private void drawTab(PoseStack poseStack, int idx, boolean isActive, ItemStack stack) {
+		int w = 24;
+		int h = 32;
+		int x = leftPos - w + 2;
+		int y = topPos + 32 + h * idx;
+		blit(poseStack, x, y, 297, isActive ? 114 : 78, w, h);
+		itemRenderer.renderGuiItem(stack, x + 5, y + 8);
+		RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
+	}
+
+	private void drawFuelBar(PoseStack poseStack) {
+		float fuelPct = menu.getFuelAmountNormalized();
+		int vHeight = (int) (fuelPct * 36) + (fuelPct > 0 ? 1 : 0);
+		blit(poseStack, leftPos + 144, topPos + 13 + 36 - vHeight, 353, 9 + 36 - vHeight, 5, vHeight);
 	}
 
 	@Override
 	protected void renderTooltip(PoseStack poseStack, int mouseX, int mouseY) {
 		if (menu.getCarried().isEmpty()) {
-			if (GuiUtil.isInRect(leftPos + 41 + X_OFFSET, topPos + 52 - 20, 17, 17, mouseX, mouseY)) {
-				drawFuelTooltip(poseStack, mouseX, mouseY);
-				return;
-			}
-
-			if (!recipes.isEmpty()) {
-				//recipe grid
-				for (int idx = 0; idx < GRID_SIZE && idx + startIndex < recipes.size(); idx++) {
-					int pX = leftPos + 27 + (24 + 1) * (idx % 5);
-					int pY = topPos + 18 + (24 + 1) * (idx / 5);
-					if (GuiUtil.isInRect(pX, pY, 25, 25, mouseX, mouseY)) {
-						drawRecipeTooltip(poseStack, mouseX, mouseY, idx);
-						return;
-					}
-				}
-
-				//selected recipe ingredients
-				if (recipeSelection.recipe != null) {
-					for (int i = 0; i < recipeSelection.recipe.getIngredientQuantities().size() + 1; i++) {
-						int pX = leftPos + 8 + 16 + 70 * (i / 3);
-						int pY = topPos + 134 + 8 + (18 + 3) * (i % 3);
-						if (GuiUtil.isInRect(pX, pY, 18, 18, mouseX, mouseY)) {
-							if (i == 0) {
-								Ingredient reactant = recipeSelection.recipe.getReactant();
-								if (!reactant.isEmpty()) renderTooltip(poseStack, reactant.getItems()[0], mouseX, mouseY);
-								return;
-							}
-
-							renderTooltip(poseStack, recipeSelection.recipe.getIngredientQuantities().get(i - 1).ingredient().getItems()[0], mouseX, mouseY);
-						}
-					}
-				}
-			}
-
+			if (drawFuelTooltip(poseStack, mouseX, mouseY)) return;
+			if (drawRecipeTooltip(poseStack, mouseX, mouseY)) return;
+			if (drawIngredientsTooltip(poseStack, mouseX, mouseY)) return;
 		}
-
 		super.renderTooltip(poseStack, mouseX, mouseY);
 	}
 
-	private void drawRecipeTooltip(PoseStack poseStack, int mouseX, int mouseY, int idx) {
-		renderTooltip(poseStack, recipes.get(startIndex + idx).getResultItem(), mouseX, mouseY);
+	private boolean drawRecipeTooltip(PoseStack poseStack, int mouseX, int mouseY) {
+		if (recipeBook.hasRecipesOnPage()) {
+			int recipes = recipeBook.getMaxRecipesOnGrid();
+			for (int idx = 0; idx < recipes; idx++) {
+				int x = leftPos + 13 + 25 * (idx % BioForgeScreenController.COLS);
+				int y = topPos + 37 + 25 * (idx / BioForgeScreenController.COLS);
+				if (GuiUtil.isInRect(x, y, 20, 20, mouseX, mouseY)) {
+					renderTooltip(poseStack, recipeBook.getRecipeByGrid(idx).getResultItem(), mouseX, mouseY);
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
-	private void drawFuelTooltip(PoseStack poseStack, int mouseX, int mouseY) {
-		int maxFuel = menu.getMAxFuelAmount();
+	private boolean drawIngredientsTooltip(PoseStack poseStack, int mouseX, int mouseY) {
+		BioForgeRecipe selectedRecipe = recipeBook.getSelectedRecipe();
+		if (selectedRecipe == null) return false;
+
+		for (int i = 0; i < selectedRecipe.getIngredientQuantities().size(); i++) {
+			int x = leftPos + 141 + 3 + 26 * i;
+			int y = topPos + 82 + 3;
+			if (GuiUtil.isInRect(x, y, 20, 20, mouseX, mouseY)) {
+				renderTooltip(poseStack, selectedRecipe.getIngredientQuantities().get(i).ingredient().getItems()[0], mouseX, mouseY);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean drawFuelTooltip(PoseStack poseStack, int mouseX, int mouseY) {
+		if (!GuiUtil.isInRect(leftPos + 144, topPos + 13, 5, 36, mouseX, mouseY)) return false;
+
+		int maxFuel = menu.getMaxFuelAmount();
 		int fuelAmount = menu.getFuelAmount();
-		int totalFuelCost = menu.getTotalFuelCost();
+		int totalFuelCost = recipeBook.hasSelectedRecipe() ? 1 : 0;
 		GuiRenderUtil.drawFuelTooltip(this, poseStack, mouseX, mouseY, maxFuel, fuelAmount, totalFuelCost);
+		return true;
 	}
 
 }

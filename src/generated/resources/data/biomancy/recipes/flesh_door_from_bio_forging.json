@@ -3,31 +3,25 @@
   "ingredient_quantities": [
     {
       "ingredient": {
-        "item": "minecraft:note_block"
-      },
-      "count": 1
-    },
-    {
-      "ingredient": {
         "item": "biomancy:flesh_bits"
       },
       "count": 64
     },
     {
       "ingredient": {
-        "item": "biomancy:bone_fragments"
+        "item": "biomancy:elastic_fibers"
       },
-      "count": 12
+      "count": 16
     },
     {
       "ingredient": {
-        "item": "biomancy:elastic_fibers"
+        "item": "biomancy:bone_fragments"
       },
-      "count": 128
+      "count": 16
     }
   ],
   "result": {
-    "item": "biomancy:voice_box"
+    "item": "biomancy:flesh_door"
   },
   "category": "biomancy_bio_forge_misc"
 }

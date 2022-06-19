@@ -9,31 +9,25 @@
     },
     {
       "ingredient": {
-        "item": "biomancy:flesh_bits"
-      },
-      "count": 64
-    },
-    {
-      "ingredient": {
         "item": "biomancy:bone_fragments"
       },
-      "count": 24
+      "count": 16
     },
     {
       "ingredient": {
-        "item": "biomancy:volatile_gland"
+        "item": "biomancy:flesh_bits"
       },
-      "count": 1
+      "count": 16
     },
     {
       "ingredient": {
-        "item": "biomancy:mob_fang"
+        "item": "biomancy:elastic_fibers"
       },
-      "count": 12
+      "count": 8
     }
   ],
   "result": {
-    "item": "biomancy:decomposer"
+    "item": "biomancy:fleshkin_pressure_plate"
   },
-  "category": "biomancy_bio_forge_machines"
+  "category": "biomancy_bio_forge_misc"
 }

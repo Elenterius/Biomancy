@@ -7,8 +7,18 @@
   "injectors": {
     "defaultRequire": 1
   },
-  "mixins": ["AgeableMobAccessor", "ArmorStandAccessor", "LivingEntityAccessor", "MobEntityAccessor", "SlimeAccessor", "SwordItemMixinAccessor", "TextureSlotAccessor", "ZombieVillagerMixinAccessor"],
+  "mixins": [
+    "AgeableMobAccessor",
+    "ArmorStandAccessor",
+    "LivingEntityAccessor",
+    "MobEntityAccessor",
+    "SlimeAccessor",
+    "SwordItemMixinAccessor",
+    "TextureSlotAccessor",
+    "ZombieVillagerMixinAccessor"
+  ],
   "client": [
+    "client.ClientPackListenerMixin",
     "client.ScreenMixin"
   ],
   "server": []

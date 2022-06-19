@@ -6,11 +6,16 @@
         "item": "biomancy:flesh_bits"
       },
       "count": 32
+    },
+    {
+      "ingredient": {
+        "item": "biomancy:bone_fragments"
+      },
+      "count": 32
     }
   ],
   "result": {
-    "item": "biomancy:flesh_slab",
-    "count": 2
+    "item": "biomancy:flesh_fence"
   },
-  "category": "biomancy_bio_forge_blocks"
+  "category": "biomancy_bio_forge_misc"
 }

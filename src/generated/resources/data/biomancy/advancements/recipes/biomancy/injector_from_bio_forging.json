@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:boomling_from_bio_forging"
+      "biomancy:injector_from_bio_forging"
     ]
   },
   "criteria": {
-    "has_living_flesh": {
+    "has_flesh_bits": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:living_flesh"
+              "biomancy:flesh_bits"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:boomling_from_bio_forging"
+        "recipe": "biomancy:injector_from_bio_forging"
       }
     }
   },
   "requirements": [
     [
-      "has_living_flesh",
+      "has_flesh_bits",
       "has_the_recipe"
     ]
   ]

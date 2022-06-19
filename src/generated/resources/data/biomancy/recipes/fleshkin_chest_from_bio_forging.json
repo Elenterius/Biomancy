@@ -3,6 +3,12 @@
   "ingredient_quantities": [
     {
       "ingredient": {
+        "item": "biomancy:living_flesh"
+      },
+      "count": 1
+    },
+    {
+      "ingredient": {
         "item": "biomancy:mob_fang"
       },
       "count": 6
@@ -21,23 +27,13 @@
     },
     {
       "ingredient": {
-        "item": "biomancy:elastic_fibers"
-      },
-      "count": 22
-    },
-    {
-      "ingredient": {
         "item": "biomancy:tough_fibers"
       },
       "count": 64
     }
   ],
-  "reactant": {
-    "item": "biomancy:living_flesh"
-  },
   "result": {
     "item": "biomancy:fleshkin_chest"
   },
-  "time": 100,
-  "category": "biomancy:blocks"
+  "category": "biomancy_bio_forge_misc"
 }

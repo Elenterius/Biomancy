@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.recipe;
 
+import com.github.elenterius.biomancy.init.ModRecipeBooks;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -8,11 +9,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import org.jetbrains.annotations.Nullable;
@@ -20,29 +19,25 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BioForgeRecipe extends AbstractProductionRecipe {
+public class BioForgeRecipe implements Recipe<Container> {
 
+	private final ResourceLocation registryKey;
 	public static final int MAX_INGREDIENTS = 5;
-	public static final int MAX_REACTANT = 1;
-
-	private final BioForgeCategory category;
+	private final ModRecipeBooks.BioForgeCategory category;
 	private final List<IngredientQuantity> ingredients;
-	private final Ingredient reactant;
 	private final ItemStack result;
 
 	private final NonNullList<Ingredient> vanillaIngredients;
-	private final boolean isSimple;
 
-	public BioForgeRecipe(ResourceLocation id, BioForgeCategory category, ItemStack result, int craftingTime, List<IngredientQuantity> ingredients, Ingredient reactant) {
-		super(id, craftingTime);
+	public BioForgeRecipe(ResourceLocation id, ModRecipeBooks.BioForgeCategory category, ItemStack result, List<IngredientQuantity> ingredients) {
+		registryKey = id;
 		this.category = category;
 		this.result = result;
 		this.ingredients = ingredients;
-		this.reactant = reactant;
-
-		isSimple = ingredients.stream().allMatch(ingredientQuantity -> ingredientQuantity.ingredient().isSimple());
+		//isSimple = ingredients.stream().allMatch(ingredientQuantity -> ingredientQuantity.ingredient().isSimple());
 
 		//TODO: remove this shite
+		//Note: we can't :(
 		List<Ingredient> unrolledIngredients = new ArrayList<>();
 		for (IngredientQuantity ingredientQuantity : ingredients) {
 			Ingredient ingredient = ingredientQuantity.ingredient();
@@ -56,12 +51,37 @@ public class BioForgeRecipe extends AbstractProductionRecipe {
 	}
 
 	@Override
-	public boolean matches(Container inv, Level level) {
-		int lastIndex = inv.getContainerSize() - 1;
-		if (!reactant.test(inv.getItem(lastIndex))) return false;
+	public ResourceLocation getId() {
+		return registryKey;
+	}
 
+	public boolean isRecipeEqual(BioForgeRecipe other) {
+		return registryKey.equals(other.getId());
+	}
+
+	public static boolean areRecipesEqual(BioForgeRecipe recipeA, BioForgeRecipe recipeB) {
+		return recipeA.isRecipeEqual(recipeB);
+	}
+
+	public boolean isCraftable(StackedContents itemCounter) {
+		//TODO: make this more precise
+		boolean isCraftable = true;
+		for (IngredientQuantity ingredientQuantity : ingredients) {
+			ItemStack stack = ingredientQuantity.ingredient().getItems()[0];
+			int requiredAmount = ingredientQuantity.count();
+			int foundAmount = itemCounter.contents.get(StackedContents.getStackingIndex(stack));
+			if (foundAmount < requiredAmount) {
+				isCraftable = false;
+				break;
+			}
+		}
+		return isCraftable;
+	}
+
+	@Override
+	public boolean matches(Container inv, Level level) {
 		int[] countedIngredients = new int[ingredients.size()];
-		for (int idx = 0; idx < lastIndex; idx++) {
+		for (int idx = 0; idx < inv.getContainerSize(); idx++) {
 			ItemStack stack = inv.getItem(idx);
 			if (!stack.isEmpty()) {
 				for (int i = 0; i < ingredients.size(); i++) {
@@ -87,7 +107,7 @@ public class BioForgeRecipe extends AbstractProductionRecipe {
 
 	@Override
 	public boolean canCraftInDimensions(int width, int height) {
-		return false;
+		return width * height >= 0;
 	}
 
 	@Override
@@ -104,11 +124,7 @@ public class BioForgeRecipe extends AbstractProductionRecipe {
 		return ingredients;
 	}
 
-	public Ingredient getReactant() {
-		return reactant;
-	}
-
-	public BioForgeCategory getCategory() {
+	public ModRecipeBooks.BioForgeCategory getCategory() {
 		return category;
 	}
 
@@ -136,21 +152,16 @@ public class BioForgeRecipe extends AbstractProductionRecipe {
 				throw new JsonParseException("Too many ingredients for recipe. The maximum is " + MAX_INGREDIENTS);
 			}
 
-			Ingredient reactant = json.has("reactant") ? RecipeUtil.readIngredient(json, "reactant") : Ingredient.EMPTY;
 			ItemStack resultStack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
-			int time = GsonHelper.getAsInt(json, "time", 100);
+			ModRecipeBooks.BioForgeCategory category = ModRecipeBooks.BioForgeCategory.fromJson(json);
 
-			BioForgeCategory category = BioForgeCategory.fromJson(json);
-
-			return new BioForgeRecipe(recipeId, category, resultStack, time, ingredients, reactant);
+			return new BioForgeRecipe(recipeId, category, resultStack, ingredients);
 		}
 
 		@Nullable
 		@Override
 		public BioForgeRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
 			ItemStack resultStack = buffer.readItem();
-			Ingredient reactant = Ingredient.fromNetwork(buffer);
-			int time = buffer.readVarInt();
 
 			int ingredientCount = buffer.readVarInt();
 			List<IngredientQuantity> ingredients = new ArrayList<>();
@@ -158,16 +169,14 @@ public class BioForgeRecipe extends AbstractProductionRecipe {
 				ingredients.add(IngredientQuantity.fromNetwork(buffer));
 			}
 
-			BioForgeCategory category = BioForgeCategory.fromNetwork(buffer);
+			ModRecipeBooks.BioForgeCategory category = ModRecipeBooks.BioForgeCategory.fromNetwork(buffer);
 
-			return new BioForgeRecipe(recipeId, category, resultStack, time, ingredients, reactant);
+			return new BioForgeRecipe(recipeId, category, resultStack, ingredients);
 		}
 
 		@Override
 		public void toNetwork(FriendlyByteBuf buffer, BioForgeRecipe recipe) {
 			buffer.writeItem(recipe.result);
-			recipe.reactant.toNetwork(buffer);
-			buffer.writeVarInt(recipe.getCraftingTime());
 
 			buffer.writeVarInt(recipe.ingredients.size());
 			for (IngredientQuantity input : recipe.ingredients) {

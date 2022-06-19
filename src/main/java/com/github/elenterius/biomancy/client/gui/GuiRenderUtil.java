@@ -28,8 +28,11 @@ public final class GuiRenderUtil {
 		DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
 
 		hoveringText.add(new TextComponent("Nutrient Fuel").withStyle(Style.EMPTY.withColor(0x65b52a)));
-		hoveringText.add(new TextComponent(df.format(fuelAmount) + "/" + df.format(maxFuel) + " u"));
-		hoveringText.add(new TextComponent("Cost:  " + df.format(totalFuelCost) + " u").withStyle(Style.EMPTY.withColor(0xe7bd42)));
+		hoveringText.add(new TextComponent("%s/%s u".formatted(df.format(fuelAmount), df.format(maxFuel))));
+		if (totalFuelCost > 0) {
+			String text = "Cost:  %s u".formatted(df.format(totalFuelCost));
+			hoveringText.add(new TextComponent(text).withStyle(Style.EMPTY.withColor(0xe7bd42)));
+		}
 
 		screen.renderComponentTooltip(poseStack, hoveringText, mouseX, mouseY);
 	}
