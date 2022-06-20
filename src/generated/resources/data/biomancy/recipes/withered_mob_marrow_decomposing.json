@@ -2,29 +2,29 @@
   "type": "biomancy:decomposing",
   "input": {
     "ingredient": {
-      "item": "minecraft:end_crystal"
+      "item": "biomancy:withered_mob_marrow"
     },
     "count": 1
   },
   "outputs": [
     {
       "result": {
-        "item": "biomancy:exotic_dust",
+        "item": "biomancy:withering_ooze",
         "count_range": {
           "type": "constant",
-          "value": 7
+          "value": 10
         }
       }
     },
     {
       "result": {
-        "item": "biomancy:volatile_fluid",
+        "item": "biomancy:bone_fragments",
         "count_range": {
           "type": "constant",
-          "value": 7
+          "value": 1
         }
       }
     }
   ],
-  "time": 525
+  "time": 275
 }

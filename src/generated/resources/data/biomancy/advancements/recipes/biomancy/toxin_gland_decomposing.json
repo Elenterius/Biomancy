@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:string_decomposing"
+      "biomancy:toxin_gland_decomposing"
     ]
   },
   "criteria": {
-    "has_string": {
+    "has_toxin_gland": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:string"
+              "biomancy:toxin_gland"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:string_decomposing"
+        "recipe": "biomancy:toxin_gland_decomposing"
       }
     }
   },
   "requirements": [
     [
-      "has_string",
+      "has_toxin_gland",
       "has_the_recipe"
     ]
   ]

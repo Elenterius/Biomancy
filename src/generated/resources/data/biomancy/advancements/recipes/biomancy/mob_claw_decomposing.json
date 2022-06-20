@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:end_crystal_decomposing"
+      "biomancy:mob_claw_decomposing"
     ]
   },
   "criteria": {
-    "has_end_crystal": {
+    "has_mob_claw": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:end_crystal"
+              "biomancy:mob_claw"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:end_crystal_decomposing"
+        "recipe": "biomancy:mob_claw_decomposing"
       }
     }
   },
   "requirements": [
     [
-      "has_end_crystal",
+      "has_mob_claw",
       "has_the_recipe"
     ]
   ]

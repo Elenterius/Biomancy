@@ -2,7 +2,7 @@
   "type": "biomancy:decomposing",
   "input": {
     "ingredient": {
-      "tag": "minecraft:banners"
+      "tag": "forge:string"
     },
     "count": 1
   },
@@ -12,7 +12,7 @@
         "item": "biomancy:tough_fibers",
         "count_range": {
           "type": "constant",
-          "value": 24
+          "value": 1
         }
       }
     },
@@ -21,10 +21,10 @@
         "item": "biomancy:elastic_fibers",
         "count_range": {
           "type": "constant",
-          "value": 24
+          "value": 1
         }
       }
     }
   ],
-  "time": 960
+  "time": 40
 }

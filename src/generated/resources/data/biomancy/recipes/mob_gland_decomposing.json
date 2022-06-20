@@ -1,0 +1,30 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "biomancy:mob_gland"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:hormone_secretion",
+        "count_range": {
+          "type": "constant",
+          "value": 32
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:flesh_bits",
+        "count_range": {
+          "type": "constant",
+          "value": 1
+        }
+      }
+    }
+  ],
+  "time": 658
+}

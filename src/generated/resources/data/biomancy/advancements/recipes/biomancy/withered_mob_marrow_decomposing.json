@@ -2,16 +2,18 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:minecraft_banners_decomposing"
+      "biomancy:withered_mob_marrow_decomposing"
     ]
   },
   "criteria": {
-    "has_banners": {
+    "has_withered_mob_marrow": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "minecraft:banners"
+            "items": [
+              "biomancy:withered_mob_marrow"
+            ]
           }
         ]
       }
@@ -19,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:minecraft_banners_decomposing"
+        "recipe": "biomancy:withered_mob_marrow_decomposing"
       }
     }
   },
   "requirements": [
     [
-      "has_banners",
+      "has_withered_mob_marrow",
       "has_the_recipe"
     ]
   ]

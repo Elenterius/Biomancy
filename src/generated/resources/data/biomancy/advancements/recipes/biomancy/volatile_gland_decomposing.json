@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:volatile_gland_decomposing"
+    ]
+  },
+  "criteria": {
+    "has_volatile_gland": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:volatile_gland"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:volatile_gland_decomposing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_volatile_gland",
+      "has_the_recipe"
+    ]
+  ]
+}

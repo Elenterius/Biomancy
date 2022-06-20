@@ -2,26 +2,17 @@
   "type": "biomancy:decomposing",
   "input": {
     "ingredient": {
-      "item": "minecraft:dragon_head"
+      "item": "biomancy:mob_claw"
     },
     "count": 1
   },
   "outputs": [
     {
       "result": {
-        "item": "biomancy:flesh_bits",
+        "item": "biomancy:bio_minerals",
         "count_range": {
           "type": "constant",
-          "value": 40
-        }
-      }
-    },
-    {
-      "result": {
-        "item": "biomancy:exotic_dust",
-        "count_range": {
-          "type": "constant",
-          "value": 50
+          "value": 6
         }
       }
     },
@@ -30,10 +21,10 @@
         "item": "biomancy:tough_fibers",
         "count_range": {
           "type": "constant",
-          "value": 30
+          "value": 4
         }
       }
     }
   ],
-  "time": 4120
+  "time": 252
 }

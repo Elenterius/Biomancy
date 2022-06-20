@@ -12,6 +12,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
@@ -47,6 +48,11 @@ public interface IRecipeBuilder {
 
 	default IRecipeBuilder unlockedBy(ItemLike itemLike) {
 		return unlockedBy("has_" + getItemName(itemLike), has(itemLike));
+	}
+
+	default IRecipeBuilder unlockedBy(RegistryObject<? extends Item> itemHolder) {
+		Item item = itemHolder.get();
+		return unlockedBy("has_" + getItemName(item), has(item));
 	}
 
 	default IRecipeBuilder unlockedBy(TagKey<Item> tag, CriterionTriggerInstance criterionTrigger) {

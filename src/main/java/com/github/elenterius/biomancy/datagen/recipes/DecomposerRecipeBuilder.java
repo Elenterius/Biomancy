@@ -19,6 +19,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -76,6 +77,10 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 
 	public DecomposerRecipeBuilder setIngredient(TagKey<Item> tagKey, int quantity) {
 		return setIngredient(Ingredient.of(tagKey), quantity, BiomancyMod.createRL(tagKey.location().toDebugFileName() + SUFFIX));
+	}
+
+	public DecomposerRecipeBuilder setIngredient(RegistryObject<? extends Item> itemHolder) {
+		return setIngredient(itemHolder.get(), 1);
 	}
 
 	public DecomposerRecipeBuilder setIngredient(ItemLike itemIn) {

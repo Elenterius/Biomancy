@@ -254,7 +254,6 @@ public class ModRecipeProvider extends RecipeProvider {
 		DecomposerRecipeBuilder.create().setIngredient(Items.SAND).addOutput(ModItems.STONE_POWDER.get(), 5).setCraftingTime(150).unlockedBy(Items.SAND).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.RED_SAND).addOutput(ModItems.STONE_POWDER.get(), 5).addOutput(ModItems.MINERAL_FRAGMENT.get(), 4).setCraftingTime(310).unlockedBy(Items.RED_SAND).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.GRAVEL).addOutput(ModItems.STONE_POWDER.get(), 9).setCraftingTime(270).unlockedBy(Items.GRAVEL).save(consumer);
-		DecomposerRecipeBuilder.create().setIngredient(Items.TINTED_GLASS).addOutput(ModItems.GEM_FRAGMENTS.get(), 28).setCraftingTime(1400).unlockedBy(Items.TINTED_GLASS).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.COBWEB).addOutput(ModItems.ELASTIC_FIBERS.get(), 9).addOutput(ModItems.TOUGH_FIBERS.get(), 9).setCraftingTime(360).unlockedBy(Items.COBWEB).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.SEA_PICKLE).addOutput(ModItems.BIO_MINERALS.get(), 2).addOutput(ModItems.BIO_LUMENS.get(), 2).setCraftingTime(88).unlockedBy(Items.SEA_PICKLE).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.WITHER_ROSE).addOutput(ModItems.WITHERING_OOZE.get(), 10).addOutput(ModItems.EXOTIC_DUST.get(), 5).setCraftingTime(500).unlockedBy(Items.WITHER_ROSE).save(consumer);
@@ -294,7 +293,7 @@ public class ModRecipeProvider extends RecipeProvider {
 		DecomposerRecipeBuilder.create().setIngredient(Items.GOLD_INGOT).addOutput(ModItems.MINERAL_FRAGMENT.get(), 9).setCraftingTime(360).unlockedBy(Items.GOLD_INGOT).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.NETHERITE_INGOT).addOutput(ModItems.MINERAL_FRAGMENT.get(), 72).setCraftingTime(2880).unlockedBy(Items.NETHERITE_INGOT).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.NETHERITE_SCRAP).addOutput(ModItems.MINERAL_FRAGMENT.get(), 9).setCraftingTime(360).unlockedBy(Items.NETHERITE_SCRAP).save(consumer);
-		DecomposerRecipeBuilder.create().setIngredient(Items.STRING).addOutput(ModItems.ELASTIC_FIBERS.get(), 1).addOutput(ModItems.TOUGH_FIBERS.get(), 1).setCraftingTime(40).unlockedBy(Items.STRING).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(Tags.Items.STRING).addOutput(ModItems.TOUGH_FIBERS.get(), 1).addOutput(ModItems.ELASTIC_FIBERS.get(), 1).setCraftingTime(40).unlockedBy(Tags.Items.STRING).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.GUNPOWDER).addOutput(ModItems.VOLATILE_FLUID.get(), 1).setCraftingTime(25).unlockedBy(Items.GUNPOWDER).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.LEATHER_HELMET).addOutput(ModItems.TOUGH_FIBERS.get(), 40).setCraftingTime(1200).unlockedBy(Items.LEATHER_HELMET).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.LEATHER_CHESTPLATE).addOutput(ModItems.TOUGH_FIBERS.get(), 70).setCraftingTime(2100).unlockedBy(Items.LEATHER_CHESTPLATE).save(consumer);
@@ -336,7 +335,7 @@ public class ModRecipeProvider extends RecipeProvider {
 		DecomposerRecipeBuilder.create().setIngredient(Items.PLAYER_HEAD).addOutput(ModItems.FLESH_BITS.get(), 32).addOutput(Items.SKELETON_SKULL, 1).setCraftingTime(596).unlockedBy(Items.PLAYER_HEAD).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.ZOMBIE_HEAD).addOutput(ModItems.FLESH_BITS.get(), 24).addOutput(ModItems.WITHERING_OOZE.get(), 3).addOutput(Items.SKELETON_SKULL, 1).setCraftingTime(527).unlockedBy(Items.ZOMBIE_HEAD).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.CREEPER_HEAD).addOutput(ModItems.FLESH_BITS.get(), 32).addOutput(Items.SKELETON_SKULL, 1).setCraftingTime(596).unlockedBy(Items.CREEPER_HEAD).save(consumer);
-		DecomposerRecipeBuilder.create().setIngredient(Items.DRAGON_HEAD).addOutput(ModItems.FLESH_BITS.get(), 40).addOutput(ModItems.EXOTIC_DUST.get(), 50).addOutput(ModItems.TOUGH_FIBERS.get(), 20).addOutput(Items.SKELETON_SKULL, 1).setCraftingTime(3820).unlockedBy(Items.DRAGON_HEAD).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(Items.DRAGON_HEAD).addOutput(ModItems.FLESH_BITS.get(), 40).addOutput(ModItems.EXOTIC_DUST.get(), 50).addOutput(ModItems.TOUGH_FIBERS.get(), 30).setCraftingTime(4120).unlockedBy(Items.DRAGON_HEAD).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.NETHER_STAR).addOutput(ModItems.EXOTIC_DUST.get(), 20).setCraftingTime(1000).unlockedBy(Items.NETHER_STAR).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.PRISMARINE_SHARD).addOutput(ModItems.BIO_MINERALS.get(), 3).setCraftingTime(66).unlockedBy(Items.PRISMARINE_SHARD).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.PRISMARINE_CRYSTALS).addOutput(ModItems.GEM_FRAGMENTS.get(), 3).addOutput(ModItems.BIO_MINERALS.get(), 1).addOutput(ModItems.BIO_LUMENS.get(), 1).setCraftingTime(194).unlockedBy(Items.PRISMARINE_CRYSTALS).save(consumer);
@@ -345,7 +344,6 @@ public class ModRecipeProvider extends RecipeProvider {
 		DecomposerRecipeBuilder.create().setIngredient(Items.RABBIT_HIDE).addOutput(ModItems.TOUGH_FIBERS.get(), 2).setCraftingTime(60).unlockedBy(Items.RABBIT_HIDE).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.LEATHER_HORSE_ARMOR).addOutput(ModItems.TOUGH_FIBERS.get(), 70).setCraftingTime(2100).unlockedBy(Items.LEATHER_HORSE_ARMOR).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.MUTTON).addOutput(ModItems.FLESH_BITS.get(), 4).setCraftingTime(72).unlockedBy(Items.MUTTON).save(consumer);
-		DecomposerRecipeBuilder.create().setIngredient(Items.END_CRYSTAL).addOutput(ModItems.EXOTIC_DUST.get(), 7).addOutput(ModItems.VOLATILE_FLUID.get(), 7).setCraftingTime(525).unlockedBy(Items.END_CRYSTAL).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.CHORUS_FRUIT).addOutput(ModItems.BIO_MINERALS.get(), 3).addOutput(ModItems.EXOTIC_DUST.get(), 2).addOutput(ModItems.BILE.get(), 1).setCraftingTime(182).unlockedBy(Items.CHORUS_FRUIT).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.POPPED_CHORUS_FRUIT).addOutput(ModItems.BIO_MINERALS.get(), 2).addOutput(ModItems.EXOTIC_DUST.get(), 2).addOutput(ModItems.STONE_POWDER.get(), 1).setCraftingTime(174).unlockedBy(Items.POPPED_CHORUS_FRUIT).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.DRAGON_BREATH).addOutput(ModItems.EXOTIC_DUST.get(), 5).addOutput(ModItems.VOLATILE_FLUID.get(), 10).addOutput(Items.GLASS_BOTTLE, 1).setCraftingTime(520).unlockedBy(Items.DRAGON_BREATH).save(consumer);
@@ -365,12 +363,19 @@ public class ModRecipeProvider extends RecipeProvider {
 		DecomposerRecipeBuilder.create().setIngredient(Items.CRYING_OBSIDIAN).addOutput(ModItems.EXOTIC_DUST.get(), 20).addOutput(Items.OBSIDIAN, 1).setCraftingTime(1020).unlockedBy(Items.CRYING_OBSIDIAN).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.GILDED_BLACKSTONE).addOutput(ModItems.MINERAL_FRAGMENT.get(), 4).addOutput(Items.BLACKSTONE, 1).setCraftingTime(180).unlockedBy(Items.GILDED_BLACKSTONE).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.POINTED_DRIPSTONE).addOutput(ModItems.STONE_POWDER.get(), 2).addOutput(ModItems.MINERAL_FRAGMENT.get(), 2).setCraftingTime(140).unlockedBy(Items.POINTED_DRIPSTONE).save(consumer);
-		DecomposerRecipeBuilder.create().setIngredient(ItemTags.BANNERS).addOutput(ModItems.TOUGH_FIBERS.get(), 24).addOutput(ModItems.ELASTIC_FIBERS.get(), 24).setCraftingTime(960).unlockedBy(ItemTags.BANNERS).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(ItemTags.WOOL).addOutput(ModItems.TOUGH_FIBERS.get(), 4).addOutput(ModItems.ELASTIC_FIBERS.get(), 4).setCraftingTime(160).unlockedBy(ItemTags.WOOL).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(ItemTags.CARPETS).addOutput(ModItems.TOUGH_FIBERS.get(), 2).addOutput(ModItems.ELASTIC_FIBERS.get(), 2).setCraftingTime(80).unlockedBy(ItemTags.CARPETS).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Tags.Items.EGGS).addOutput(ModItems.BIO_MINERALS.get(), 1).addOutput(ModItems.STONE_POWDER.get(), 1).setCraftingTime(52).unlockedBy(Tags.Items.EGGS).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Tags.Items.FEATHERS).addOutput(ModItems.TOUGH_FIBERS.get(), 3).setCraftingTime(90).unlockedBy(Tags.Items.FEATHERS).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Tags.Items.BONES).addOutput(ModItems.BONE_FRAGMENTS.get(), 6).setCraftingTime(150).unlockedBy(Tags.Items.BONES).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.MOB_FANG).addOutput(ModItems.BIO_MINERALS.get(), 2).addOutput(ModItems.BONE_FRAGMENTS.get(), 4).setCraftingTime(144).unlockedBy(ModItems.MOB_FANG).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.MOB_CLAW).addOutput(ModItems.BIO_MINERALS.get(), 6).addOutput(ModItems.TOUGH_FIBERS.get(), 4).setCraftingTime(252).unlockedBy(ModItems.MOB_CLAW).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.MOB_SINEW).addOutput(ModItems.ELASTIC_FIBERS.get(), 5).addOutput(ModItems.FLESH_BITS.get(), 2).setCraftingTime(86).unlockedBy(ModItems.MOB_SINEW).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.MOB_MARROW).addOutput(ModItems.REGENERATIVE_FLUID.get(), 5).addOutput(ModItems.BILE.get(), 5).addOutput(ModItems.BONE_FRAGMENTS.get(), 1).setCraftingTime(280).unlockedBy(ModItems.MOB_MARROW).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.WITHERED_MOB_MARROW).addOutput(ModItems.WITHERING_OOZE.get(), 10).addOutput(ModItems.BONE_FRAGMENTS.get(), 1).setCraftingTime(275).unlockedBy(ModItems.WITHERED_MOB_MARROW).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.GENERIC_MOB_GLAND).addOutput(ModItems.HORMONE_SECRETION.get(), 32).addOutput(ModItems.FLESH_BITS.get(), 1).setCraftingTime(658).unlockedBy(ModItems.GENERIC_MOB_GLAND).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.TOXIN_GLAND).addOutput(ModItems.TOXIN_EXTRACT.get(), 32).addOutput(ModItems.FLESH_BITS.get(), 1).setCraftingTime(658).unlockedBy(ModItems.TOXIN_GLAND).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.VOLATILE_GLAND).addOutput(ModItems.VOLATILE_FLUID.get(), 32).addOutput(ModItems.FLESH_BITS.get(), 1).setCraftingTime(818).unlockedBy(ModItems.VOLATILE_GLAND).save(consumer);
 	}
 
 	private void registerBioForgeRecipes(Consumer<FinishedRecipe> consumer) {
