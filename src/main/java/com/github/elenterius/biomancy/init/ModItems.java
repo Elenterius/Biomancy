@@ -46,7 +46,7 @@ public final class ModItems {
 	public static final RegistryObject<SimpleItem> GEM_FRAGMENTS = registerSimpleItem("gem_fragments");
 	//## Basic
 	public static final RegistryObject<SimpleItem> NUTRIENTS = registerSimpleItem("nutrients");
-	public static final RegistryObject<SimpleItem> ORGANIC_MATTER = registerSimpleItem("organic_matter");
+	//public static final RegistryObject<SimpleItem> ORGANIC_MATTER = registerSimpleItem("organic_matter");
 	public static final RegistryObject<SimpleItem> BIO_LUMENS = registerSimpleItem("bio_lumens");
 	public static final RegistryObject<SimpleItem> EXOTIC_DUST = registerSimpleItem("exotic_dust");
 	public static final RegistryObject<SimpleItem> BIO_MINERALS = registerSimpleItem("bio_minerals");

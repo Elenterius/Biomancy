@@ -101,7 +101,7 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 		generateComponent(ModItems.ELASTIC_FIBERS.get());
 		generateComponent(ModItems.MINERAL_FRAGMENT.get());
 		generateComponent(ModItems.TOUGH_FIBERS.get());
-		generateComponent(ModItems.ORGANIC_MATTER.get());
+		//generateComponent(ModItems.ORGANIC_MATTER.get());
 		generateComponent(ModItems.EXOTIC_DUST.get());
 		generateComponent(ModItems.BIO_MINERALS.get());
 		generateComponent(ModItems.BIO_LUMENS.get());
