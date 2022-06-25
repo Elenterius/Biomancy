@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.world.block.entity;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.recipe.BioLabRecipe;
+import com.github.elenterius.biomancy.recipe.IngredientQuantity;
 import com.github.elenterius.biomancy.recipe.RecipeTypeImpl;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
 import com.github.elenterius.biomancy.world.block.entity.state.BioLabStateData;
@@ -36,12 +37,14 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
+import java.util.List;
 
 public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabStateData> implements MenuProvider, IAnimatable {
 
 	public static final int FUEL_SLOTS = 1;
 	public static final int INPUT_SLOTS = BioLabRecipe.MAX_INGREDIENTS + BioLabRecipe.MAX_REACTANT;
-	public static final int OUTPUT_SLOTS = 1;
+	public static final int OUTPUT_SLOTS = 2;
 
 	public static final int MAX_FUEL = 32_000;
 	public static final short FUEL_COST = 2;
@@ -124,18 +127,86 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 
 	@Override
 	protected boolean craftRecipe(BioLabRecipe recipeToCraft, Level level) {
-		ItemStack result = recipeToCraft.assemble(inputInventory);
+		ItemStack result = recipeToCraft.getResultItem().copy();
 		if (result.isEmpty() || !doesItemFitIntoOutputInventory(result)) {
 			return false;
 		}
 
-		outputInventory.insertItemStack(0, result.copy());
-
-		for (int idx = 0; idx < inputInventory.getContainerSize(); idx++) {
-			inputInventory.removeItem(idx, 1);
+		//get ingredients cost
+		List<IngredientQuantity> ingredients = recipeToCraft.getIngredientQuantities();
+		int[] ingredientCost = new int[ingredients.size()];
+		for (int i = 0; i < ingredients.size(); i++) {
+			ingredientCost[i] = ingredients.get(i).count();
 		}
+
+		//check if we can output all container items
+		if (!canContainerItemsFitIntoTrashSlot(ingredients, Arrays.copyOf(ingredientCost, ingredientCost.length))) return false;
+
+		//consume reactant
+		final int lastIndex = inputInventory.getContainerSize() - 1;
+		inputInventory.removeItem(lastIndex, 1);
+
+		//consume ingredients
+		for (int idx = 0; idx < lastIndex; idx++) {
+			final ItemStack foundStack = inputInventory.getItem(idx); //do not modify this stack
+			if (!foundStack.isEmpty()) {
+				for (int i = 0; i < ingredients.size(); i++) {
+					int remainingCost = ingredientCost[i];
+					if (remainingCost > 0 && ingredients.get(i).testItem(foundStack)) {
+						int amount = Math.min(remainingCost, foundStack.getCount());
+						inputInventory.removeItem(idx, amount);
+						outputContainerItems(foundStack, amount);
+						ingredientCost[i] -= amount;
+						break;
+					}
+				}
+			}
+		}
+
+		//output result
+		outputInventory.insertItemStack(0, result);
+
 		setChanged();
 		return true;
+	}
+
+	private boolean canContainerItemsFitIntoTrashSlot(List<IngredientQuantity> ingredients, int[] ingredientCost) {
+		int lastIndex = inputInventory.getContainerSize() - 1;
+		int trashAmount = outputInventory.getItem(1).getCount();
+
+		if (trashAmount >= outputInventory.getMaxStackSize()) return false;
+		if (trashAmount < 1) return true;
+
+		for (int idx = 0; idx < lastIndex; idx++) {
+			final ItemStack foundStack = inputInventory.getItem(idx);
+			if (!foundStack.isEmpty() && foundStack.hasContainerItem()) {
+				ItemStack containerItem = foundStack.getContainerItem();
+				if (!containerItem.isEmpty()) {
+					for (int i = 0; i < ingredients.size(); i++) {
+						int remainingCost = ingredientCost[i];
+						if (remainingCost > 0 && ingredients.get(i).testItem(foundStack)) {
+							int amount = Math.min(remainingCost, foundStack.getCount());
+							ingredientCost[i] -= amount;
+							containerItem.setCount(amount);
+							if (!outputInventory.doesItemStackFit(1, containerItem)) return false;
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		return true;
+	}
+
+	private void outputContainerItems(ItemStack foundStack, int amount) {
+		if (foundStack.hasContainerItem()) {
+			ItemStack containerItem = foundStack.getContainerItem();
+			if (!containerItem.isEmpty()) {
+				containerItem.setCount(amount);
+				outputInventory.insertItemStack(1, containerItem);
+			}
+		}
 	}
 
 	@Nullable

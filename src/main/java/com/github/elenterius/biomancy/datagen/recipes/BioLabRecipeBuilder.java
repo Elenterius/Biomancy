@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.datagen.recipes;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
+import com.github.elenterius.biomancy.recipe.IngredientQuantity;
 import com.github.elenterius.biomancy.recipe.ItemStackIngredient;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -20,6 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.common.crafting.NBTIngredient;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -33,13 +35,11 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 
 	private final ResourceLocation recipeId;
 	private final ItemData result;
-	private final List<Ingredient> ingredients = new ArrayList<>();
+	private final List<IngredientQuantity> ingredients = new ArrayList<>();
 	private Ingredient reactant = Ingredient.of(ModItems.GLASS_VIAL.get());
 	private int craftingTime = 4 * 20;
 
 	private final Advancement.Builder advancement = Advancement.Builder.advancement();
-	@Nullable
-	private String group;
 
 	private BioLabRecipeBuilder(ResourceLocation recipeId, ItemData result) {
 		this.recipeId = recipeId;
@@ -104,29 +104,29 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 		return addIngredient(Ingredient.of(tag));
 	}
 
-	public BioLabRecipeBuilder addIngredients(TagKey<Item> tag, int quantity) {
-		return addIngredients(Ingredient.of(tag), quantity);
+	public BioLabRecipeBuilder addIngredient(TagKey<Item> tag, int quantity) {
+		return addIngredient(Ingredient.of(tag), quantity);
 	}
 
 	public BioLabRecipeBuilder addIngredient(ItemLike item) {
-		return addIngredients(item, 1);
+		return addIngredient(item, 1);
 	}
 
 	public BioLabRecipeBuilder addIngredient(ItemStack stack) {
-		return addIngredients(new ItemStackIngredient(stack), 1);
+		return addIngredient(NBTIngredient.of(stack), 1);
 	}
 
 	public BioLabRecipeBuilder addIngredient(Ingredient ingredient) {
-		return addIngredients(ingredient, 1);
+		return addIngredient(ingredient, 1);
 	}
 
-	public BioLabRecipeBuilder addIngredients(Ingredient ingredient, int quantity) {
-		for (int i = 0; i < quantity; i++) ingredients.add(ingredient);
+	public BioLabRecipeBuilder addIngredient(ItemLike item, int quantity) {
+		addIngredient(Ingredient.of(item), quantity);
 		return this;
 	}
 
-	public BioLabRecipeBuilder addIngredients(ItemLike itemIn, int quantity) {
-		for (int i = 0; i < quantity; i++) addIngredient(Ingredient.of(itemIn));
+	public BioLabRecipeBuilder addIngredient(Ingredient ingredient, int quantity) {
+		ingredients.add(new IngredientQuantity(ingredient, quantity));
 		return this;
 	}
 
@@ -136,30 +136,30 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 		return this;
 	}
 
-	public BioLabRecipeBuilder setGroup(@Nullable String name) {
-		this.group = name;
-		return this;
-	}
-
 	@Override
 	public void save(Consumer<FinishedRecipe> consumer, @Nullable CreativeModeTab itemCategory) {
-		validateCriteria(recipeId);
-		advancement.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
-		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(), "recipes/" + (itemCategory != null ? itemCategory.getRecipeFolderName() : BiomancyMod.MOD_ID) + "/" + recipeId.getPath());
-		consumer.accept(new Result(recipeId, group == null ? "" : group, result, craftingTime, ingredients, reactant, advancement, advancementId));
+		validateCriteria();
+		advancement.parent(new ResourceLocation("recipes/root"))
+				.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId))
+				.rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
+		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(), "recipes/%s/%s".formatted(getRecipeFolderName(itemCategory), recipeId.getPath()));
+		consumer.accept(new RecipeResult(this, advancement, advancementId));
 	}
 
-	private void validateCriteria(ResourceLocation id) {
+	private String getRecipeFolderName(@Nullable CreativeModeTab itemCategory) {
+		return itemCategory != null ? itemCategory.getRecipeFolderName() : BiomancyMod.MOD_ID;
+	}
+
+	private void validateCriteria() {
 		if (advancement.getCriteria().isEmpty()) {
-			throw new IllegalStateException("No way of obtaining recipe " + id + " because Criteria are empty.");
+			throw new IllegalStateException("No way of obtaining recipe %s because Criteria are empty.".formatted(recipeId));
 		}
 	}
 
-	public static class Result implements FinishedRecipe {
+	public static class RecipeResult implements FinishedRecipe {
 		private final ResourceLocation id;
-		private final String group;
 
-		private final List<Ingredient> ingredients;
+		private final List<IngredientQuantity> ingredients;
 		private final Ingredient reactant;
 		private final ItemData result;
 		private final int craftingTime;
@@ -167,29 +167,23 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 		private final Advancement.Builder advancementBuilder;
 		private final ResourceLocation advancementId;
 
-		public Result(ResourceLocation recipeId, String group, ItemData result, int craftingTime, List<Ingredient> ingredients, Ingredient reactant, Advancement.Builder advancement, ResourceLocation advancementId) {
-			id = recipeId;
-			this.group = group;
-
-			this.ingredients = ingredients;
-			this.reactant = reactant;
-			this.result = result;
-			this.craftingTime = craftingTime;
+		public RecipeResult(BioLabRecipeBuilder builder, Advancement.Builder advancement, ResourceLocation advancementId) {
+			id = builder.recipeId;
+			ingredients = builder.ingredients;
+			reactant = builder.reactant;
+			result = builder.result;
+			craftingTime = builder.craftingTime;
 
 			advancementBuilder = advancement;
 			this.advancementId = advancementId;
 		}
 
 		public void serializeRecipeData(JsonObject json) {
-			if (!group.isEmpty()) {
-				json.addProperty("group", group);
-			}
-
 			JsonArray jsonArray = new JsonArray();
-			for (Ingredient ingredient : ingredients) {
+			for (IngredientQuantity ingredient : ingredients) {
 				jsonArray.add(ingredient.toJson());
 			}
-			json.add("ingredients", jsonArray);
+			json.add("ingredient_quantities", jsonArray);
 
 			if (!reactant.isEmpty()) {
 				json.add("reactant", reactant.toJson());

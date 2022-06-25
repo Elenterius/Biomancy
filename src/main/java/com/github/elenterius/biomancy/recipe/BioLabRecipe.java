@@ -8,76 +8,97 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.Container;
-import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.RecipeMatcher;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class BioLabRecipe extends AbstractProductionRecipe {
 
 	public static final int MAX_INGREDIENTS = 4;
 	public static final int MAX_REACTANT = 1;
-
-	private final NonNullList<Ingredient> recipeIngredients;
+	private final List<IngredientQuantity> ingredients;
 	private final Ingredient recipeReactant;
-	private final ItemStack recipeResult;
-	private final boolean isSimple;
+	private final ItemStack result;
 
-	public BioLabRecipe(ResourceLocation id, ItemStack result, int craftingTime, NonNullList<Ingredient> ingredients, Ingredient reactant) {
+	private final NonNullList<Ingredient> vanillaIngredients;
+
+	public BioLabRecipe(ResourceLocation id, ItemStack result, int craftingTime, List<IngredientQuantity> ingredients, Ingredient reactant) {
 		super(id, craftingTime);
-		recipeIngredients = ingredients;
+		this.ingredients = ingredients;
 		recipeReactant = reactant;
-		recipeResult = result;
-		isSimple = ingredients.stream().allMatch(Ingredient::isSimple);
+		this.result = result;
+
+		List<Ingredient> flatIngredients = flattenIngredients(ingredients);
+		vanillaIngredients = NonNullList.createWithCapacity(flatIngredients.size());
+		vanillaIngredients.addAll(flatIngredients);
+	}
+
+	private List<Ingredient> flattenIngredients(List<IngredientQuantity> ingredients) {
+		List<Ingredient> unrolledIngredients = new ArrayList<>();
+		for (IngredientQuantity ingredientQuantity : ingredients) {
+			Ingredient ingredient = ingredientQuantity.ingredient();
+			for (int i = 0; i < ingredientQuantity.count(); i++) {
+				unrolledIngredients.add(ingredient);
+			}
+		}
+		return unrolledIngredients;
 	}
 
 	@Override
 	public boolean matches(Container inv, Level worldIn) {
-		int index = inv.getContainerSize() - 1;
-		if (!recipeReactant.test(inv.getItem(index))) return false;
+		int lastIndex = inv.getContainerSize() - 1;
+		if (!recipeReactant.test(inv.getItem(lastIndex))) return false;
 
-		StackedContents stackedContents = new StackedContents();
-		ArrayList<ItemStack> inputs = new ArrayList<>();
-		int ingredientCount = 0;
-
-		for (int idx = 0; idx < index; idx++) {
+		int[] countedIngredients = new int[ingredients.size()];
+		for (int idx = 0; idx < lastIndex; idx++) {
 			ItemStack stack = inv.getItem(idx);
-			if (!stack.isEmpty()) {
-				ingredientCount++;
-				if (isSimple) stackedContents.accountStack(stack, 1);
-				else inputs.add(stack);
+			if (stack.isEmpty()) continue;
+
+			for (int i = 0; i < ingredients.size(); i++) {
+				if (ingredients.get(i).testItem(stack)) {
+					countedIngredients[i] += stack.getCount();
+					break;
+				}
 			}
 		}
 
-		return ingredientCount == recipeIngredients.size() && (isSimple ? stackedContents.canCraft(this, null) : RecipeMatcher.findMatches(inputs, recipeIngredients) != null);
+		for (int i = 0; i < ingredients.size(); i++) {
+			if (countedIngredients[i] < ingredients.get(i).count()) return false;
+		}
+
+		return true;
 	}
 
 	@Override
 	public ItemStack assemble(Container inv) {
-		return recipeResult.copy();
+		return result.copy();
 	}
 
 	@Override
 	public boolean canCraftInDimensions(int width, int height) {
-		return width * height >= recipeIngredients.size();
+		return width * height >= ingredients.size();
 	}
 
 	@Override
 	public ItemStack getResultItem() {
-		return recipeResult;
+		return result;
 	}
 
 	@Override
 	public NonNullList<Ingredient> getIngredients() {
-		return recipeIngredients;
+		return vanillaIngredients;
+	}
+
+	public List<IngredientQuantity> getIngredientQuantities() {
+		return ingredients;
 	}
 
 	public Ingredient getReactant() {
@@ -98,13 +119,19 @@ public class BioLabRecipe extends AbstractProductionRecipe {
 
 		@Override
 		public BioLabRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-			NonNullList<Ingredient> ingredients = RecipeUtil.readIngredients(GsonHelper.getAsJsonArray(json, "ingredients"));
+			List<IngredientQuantity> ingredients = RecipeUtil.readQuantitativeIngredients(GsonHelper.getAsJsonArray(json, "ingredient_quantities"));
 
 			if (ingredients.isEmpty()) {
-				throw new JsonParseException("No ingredients found for " + getRegistryName() + " recipe");
+				throw new JsonParseException("No ingredients found for %s recipe".formatted(getRegistryName()));
 			}
-			else if (ingredients.size() > MAX_INGREDIENTS) {
-				throw new JsonParseException(String.format("Too many ingredients for %s recipe. Max amount is %d", getRegistryName(), MAX_INGREDIENTS));
+
+			if (ingredients.size() > MAX_INGREDIENTS) {
+				throw new JsonParseException("Too many ingredients for %s recipe. Max amount is %d".formatted(getRegistryName(), MAX_INGREDIENTS));
+			}
+
+			for (IngredientQuantity ingredientQuantity : ingredients) {
+				int count = ingredientQuantity.count();
+				if (count > 64) throw new IllegalArgumentException("Ingredient quantity of %d is larger than 64".formatted(count));
 			}
 
 			Ingredient reactant = json.has("reactant") ? RecipeUtil.readIngredient(json, "reactant") : Ingredient.EMPTY;
@@ -120,28 +147,29 @@ public class BioLabRecipe extends AbstractProductionRecipe {
 		public BioLabRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
 			//client side
 			ItemStack resultStack = buffer.readItem();
+
 			Ingredient reactant = Ingredient.fromNetwork(buffer);
-			int time = buffer.readVarInt();
+			int craftingTime = buffer.readVarInt();
 
 			int ingredientCount = buffer.readVarInt();
-			NonNullList<Ingredient> ingredients = NonNullList.withSize(ingredientCount, Ingredient.EMPTY);
-			for (int j = 0; j < ingredients.size(); ++j) {
-				ingredients.set(j, Ingredient.fromNetwork(buffer));
+			List<IngredientQuantity> ingredients = new ArrayList<>();
+			for (int i = 0; i < ingredientCount; i++) {
+				ingredients.add(IngredientQuantity.fromNetwork(buffer));
 			}
 
-			return new BioLabRecipe(recipeId, resultStack, time, ingredients, reactant);
+			return new BioLabRecipe(recipeId, resultStack, craftingTime, ingredients, reactant);
 		}
 
 		@Override
 		public void toNetwork(FriendlyByteBuf buffer, BioLabRecipe recipe) {
 			//server side
-			buffer.writeItem(recipe.recipeResult);
+			buffer.writeItem(recipe.result);
 			recipe.recipeReactant.toNetwork(buffer);
 			buffer.writeVarInt(recipe.getCraftingTime());
 
-			buffer.writeVarInt(recipe.recipeIngredients.size());
-			for (Ingredient ingredient : recipe.recipeIngredients) {
-				ingredient.toNetwork(buffer);
+			buffer.writeVarInt(recipe.ingredients.size());
+			for (IngredientQuantity input : recipe.ingredients) {
+				input.toNetwork(buffer);
 			}
 		}
 	}

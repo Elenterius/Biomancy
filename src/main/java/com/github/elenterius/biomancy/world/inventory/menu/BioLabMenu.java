@@ -43,9 +43,10 @@ public class BioLabMenu extends PlayerContainerMenu {
 		addSlot(new Slot(inputInventory, 2, 90, 28));
 		addSlot(new Slot(inputInventory, 3, 110, 28));
 
-		addSlot(new Slot(inputInventory, 4, 80, 62)); //mixture/vial slot
+		addSlot(new Slot(inputInventory, 4, 80, 62)); // reactant/vial slot
 
 		addSlot(new OutputSlot(outputInventory, 0, 80, 88));
+		addSlot(new OutputSlot(outputInventory, 1, 80 + 36, 88));
 
 		addDataSlots(stateData);
 	}
@@ -140,14 +141,18 @@ public class BioLabMenu extends PlayerContainerMenu {
 
 	public enum SlotZone implements ISlotZone {
 		PLAYER_HOTBAR(0, 9),
-		PLAYER_MAIN_INVENTORY(PLAYER_HOTBAR.lastIndexPlus1, 3 * 9),
-		FUEL_ZONE(PLAYER_MAIN_INVENTORY.lastIndexPlus1, BioLabBlockEntity.FUEL_SLOTS),
-		INPUT_ZONE(FUEL_ZONE.lastIndexPlus1, BioLabBlockEntity.INPUT_SLOTS),
-		OUTPUT_ZONE(INPUT_ZONE.lastIndexPlus1, BioLabBlockEntity.OUTPUT_SLOTS);
+		PLAYER_MAIN_INVENTORY(PLAYER_HOTBAR, 3 * 9),
+		FUEL_ZONE(PLAYER_MAIN_INVENTORY, BioLabBlockEntity.FUEL_SLOTS),
+		INPUT_ZONE(FUEL_ZONE, BioLabBlockEntity.INPUT_SLOTS),
+		OUTPUT_ZONE(INPUT_ZONE, BioLabBlockEntity.OUTPUT_SLOTS);
 
 		public final int firstIndex;
 		public final int slotCount;
 		public final int lastIndexPlus1;
+
+		SlotZone(SlotZone prevSlotZone, int numberOfSlots) {
+			this(prevSlotZone.lastIndexPlus1, numberOfSlots);
+		}
 
 		SlotZone(int firstIndex, int numberOfSlots) {
 			this.firstIndex = firstIndex;
