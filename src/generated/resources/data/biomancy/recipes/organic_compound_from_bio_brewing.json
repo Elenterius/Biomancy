@@ -1,17 +1,17 @@
 {
   "type": "biomancy:bio_brewing",
-  "ingredients": [
+  "ingredient_quantities": [
     {
-      "item": "biomancy:bile"
+      "ingredient": {
+        "item": "biomancy:bile"
+      },
+      "count": 5
     },
     {
-      "item": "biomancy:bile"
-    },
-    {
-      "item": "biomancy:bile"
-    },
-    {
-      "item": "biomancy:nutrients"
+      "ingredient": {
+        "item": "biomancy:nutrients"
+      },
+      "count": 5
     }
   ],
   "reactant": {

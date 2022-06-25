@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:breeding_stimulant_from_bio_brewing"
+      "biomancy:healing_additive_from_bio_brewing"
     ]
   },
   "criteria": {
-    "has_genetic_compound": {
+    "has_organic_compound": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:genetic_compound"
+              "biomancy:organic_compound"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:breeding_stimulant_from_bio_brewing"
+        "recipe": "biomancy:healing_additive_from_bio_brewing"
       }
     }
   },
   "requirements": [
     [
-      "has_genetic_compound",
+      "has_organic_compound",
       "has_the_recipe"
     ]
   ]

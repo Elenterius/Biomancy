@@ -13,10 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
@@ -449,72 +446,89 @@ public class ModRecipeProvider extends RecipeProvider {
 	private void registerBioLabRecipes(Consumer<FinishedRecipe> consumer) {
 
 		BioLabRecipeBuilder.create(ModItems.ORGANIC_COMPOUND.get())
-				.addIngredients(ModItems.BILE.get(), 3)
-				.addIngredient(ModItems.NUTRIENTS.get())
+				.addIngredient(ModItems.BILE.get(), 5)
+				.addIngredient(ModItems.NUTRIENTS.get(), 5)
 				.setCraftingTime(2 * 20)
 				.unlockedBy(ModItems.BILE.get()).save(consumer);
 
-		BioLabRecipeBuilder.create(ModItems.GROWTH_SERUM.get())
-				.addIngredients(Items.BONE_MEAL, 2)
-				.addIngredients(ModItems.NUTRIENTS.get(), 2)
+		BioLabRecipeBuilder.create(ModItems.EXOTIC_COMPOUND.get())
+				.addIngredient(ModItems.EXOTIC_DUST.get(), 5)
+				.addIngredient(ModItems.BIO_MINERALS.get(), 5)
 				.setReactant(ModItems.ORGANIC_COMPOUND.get())
-				.setCraftingTime(5 * 20)
+				.setCraftingTime(4 * 20)
 				.unlockedBy(ModItems.ORGANIC_COMPOUND.get()).save(consumer);
 
-		BioLabRecipeBuilder.create(ModItems.BREEDING_STIMULANT.get())
-				.addIngredient(Items.SUGAR)
-				.addIngredient(ModItems.NUTRIENTS.get())
+		BioLabRecipeBuilder.create(ModItems.GENETIC_COMPOUND.get())
+				.addIngredient(ModItems.HORMONE_SECRETION.get(), 5)
 				.setReactant(ModItems.ORGANIC_COMPOUND.get())
-				.setCraftingTime(5 * 20)
+				.setCraftingTime(4 * 20)
 				.unlockedBy(ModItems.ORGANIC_COMPOUND.get()).save(consumer);
 
-		BioLabRecipeBuilder.create(ModItems.REJUVENATION_SERUM.get()).addIngredients(ModItems.EXOTIC_DUST.get(), 2).addIngredients(ModItems.REGENERATIVE_FLUID.get(), 2)
+		BioLabRecipeBuilder.create(ModItems.UNSTABLE_COMPOUND.get())
+				.addIngredient(ModItems.VOLATILE_FLUID.get(), 5)
 				.setReactant(ModItems.ORGANIC_COMPOUND.get())
-				.setCraftingTime(5 * 20)
+				.setCraftingTime(4 * 20)
 				.unlockedBy(ModItems.ORGANIC_COMPOUND.get()).save(consumer);
 
-		BioLabRecipeBuilder.create(ModItems.CLEANSING_SERUM.get()).addIngredients(ModItems.REGENERATIVE_FLUID.get(), 2)
-				.addIngredient(ModItems.NUTRIENTS.get())
-				.addIngredient(Items.MILK_BUCKET)
+		BioLabRecipeBuilder.create(ModItems.HEALING_ADDITIVE.get())
+				.addIngredient(ModItems.REGENERATIVE_FLUID.get(), 5)
+				.addIngredient(ModItems.BILE.get(), 5)
 				.setReactant(ModItems.ORGANIC_COMPOUND.get())
-				.setCraftingTime(8 * 20)
+				.setCraftingTime(2 * 20)
+				.unlockedBy(ModItems.ORGANIC_COMPOUND.get()).save(consumer);
+
+		BioLabRecipeBuilder.create(ModItems.CORROSIVE_ADDITIVE.get())
+				.addIngredient(ModItems.WITHERING_OOZE.get(), 5)
+				.addIngredient(ModItems.BILE.get(), 5)
+				.setReactant(ModItems.ORGANIC_COMPOUND.get())
+				.setCraftingTime(2 * 20)
 				.unlockedBy(ModItems.ORGANIC_COMPOUND.get()).save(consumer);
 
 		BioLabRecipeBuilder.create(ModItems.INSOMNIA_CURE.get())
-				.addIngredients(Items.COCOA_BEANS, 2)
-				.addIngredient(ModItems.NUTRIENTS.get())
-				.setReactant(ModItems.CLEANSING_SERUM.get())
+				.addIngredient(Items.SUGAR, 5)
+				.addIngredient(ModItems.BILE.get(), 5)
+				.setReactant(ModItems.EXOTIC_COMPOUND.get())
 				.setCraftingTime(8 * 20)
-				.unlockedBy(ModItems.CLEANSING_SERUM.get()).save(consumer);
+				.unlockedBy(ModItems.EXOTIC_COMPOUND.get()).save(consumer);
 
 		BioLabRecipeBuilder.create(ModItems.ABSORPTION_BOOST.get())
-				.addIngredient(Items.GOLDEN_APPLE)
-				.addIngredients(ModItems.TOUGH_FIBERS.get(), 2)
-				.setReactant(ModItems.GROWTH_SERUM.get())
+				.addIngredient(ModItems.HEALING_ADDITIVE.get(), 5)
+				.addIngredient(ModItems.EXOTIC_DUST.get(), 5)
+				.addIngredient(ModItems.BIO_MINERALS.get(), 5)
+				.setReactant(ModItems.EXOTIC_COMPOUND.get())
 				.setCraftingTime(8 * 20)
-				.unlockedBy(ModItems.GROWTH_SERUM.get()).save(consumer);
+				.unlockedBy(ModItems.EXOTIC_COMPOUND.get()).save(consumer);
 
-		BioLabRecipeBuilder.create(ModItems.ADRENALINE_SERUM.get()).addIngredient(Items.COCOA_BEANS).addIngredient(ModItems.REGENERATIVE_FLUID.get())
-				.addIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_STRENGTH))
-				.addIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_SWIFTNESS))
-				.setReactant(ModItems.ORGANIC_COMPOUND.get())
-				.setCraftingTime(12 * 20)
-				.unlockedBy(ModItems.NUTRIENTS.get()).save(consumer);
-
-		BioLabRecipeBuilder.create(ModItems.UNSTABLE_COMPOUND.get()).addIngredient(Items.SLIME_BALL).addIngredients(ModItems.VOLATILE_FLUID.get(), 2).addIngredient(ModItems.TOXIN_EXTRACT.get()).setCraftingTime(5 * 20).unlockedBy(ModItems.VOLATILE_FLUID.get()).save(consumer);
-
-		BioLabRecipeBuilder.create(ModItems.DECAY_AGENT.get())
-				.addIngredients(Items.ROTTEN_FLESH, 4)
-				.setReactant(ModItems.UNSTABLE_COMPOUND.get())
+		BioLabRecipeBuilder.create(ModItems.CLEANSING_SERUM.get())
+				.addIngredient(ModItems.CORROSIVE_ADDITIVE.get(), 5)
+				.addIngredient(ModItems.HEALING_ADDITIVE.get(), 5)
+				.setReactant(ModItems.EXOTIC_COMPOUND.get())
 				.setCraftingTime(8 * 20)
-				.unlockedBy(ModItems.UNSTABLE_COMPOUND.get()).save(consumer);
+				.unlockedBy(ModItems.EXOTIC_COMPOUND.get()).save(consumer);
 
-//		BioLabRecipeBuilder.create(ModItems.ICHOR_SERUM.get())
-//				.addIngredients(ModItems.EXOTIC_DUST.get(), 2)
-//				.addIngredients(Items.HONEYCOMB, 2)
-//				.setReactant(ModItems.ORGANIC_COMPOUND.get())
-//				.setCraftingTime(12 * 20)
-//				.unlockedBy(ModItems.ORGANIC_COMPOUND.get()).save(consumer);
+		BioLabRecipeBuilder.create(ModItems.BREEDING_STIMULANT.get())
+				.addIngredient(ModItems.NUTRIENTS.get(), 5)
+				.addIngredient(ModItems.HORMONE_SECRETION.get(), 5)
+				.addIngredient(ItemTags.FLOWERS, 5)
+				.addIngredient(Items.COCOA_BEANS, 5)
+				.setReactant(ModItems.GENETIC_COMPOUND.get())
+				.setCraftingTime(6 * 20)
+				.unlockedBy(ModItems.GENETIC_COMPOUND.get()).save(consumer);
+
+		BioLabRecipeBuilder.create(ModItems.REJUVENATION_SERUM.get())
+				.addIngredient(ModItems.HEALING_ADDITIVE.get(), 20)
+				.addIngredient(ModItems.NUTRIENTS.get(), 20)
+				.addIngredient(ModItems.CORROSIVE_ADDITIVE.get(), 20)
+				.setReactant(ModItems.GENETIC_COMPOUND.get())
+				.setCraftingTime(8 * 20)
+				.unlockedBy(ModItems.GENETIC_COMPOUND.get()).save(consumer);
+
+		BioLabRecipeBuilder.create(ModItems.GROWTH_SERUM.get())
+				.addIngredient(ModItems.NUTRIENTS.get(), 64)
+				.addIngredient(ModItems.BIO_MINERALS.get(), 64)
+				.setReactant(ModItems.GENETIC_COMPOUND.get())
+				.setCraftingTime(5 * 20)
+				.unlockedBy(ModItems.GENETIC_COMPOUND.get()).save(consumer);
 	}
 
 }

@@ -6,13 +6,13 @@
     ]
   },
   "criteria": {
-    "has_growth_serum": {
+    "has_exotic_compound": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:growth_serum"
+              "biomancy:exotic_compound"
             ]
           }
         ]
@@ -27,7 +27,7 @@
   },
   "requirements": [
     [
-      "has_growth_serum",
+      "has_exotic_compound",
       "has_the_recipe"
     ]
   ]

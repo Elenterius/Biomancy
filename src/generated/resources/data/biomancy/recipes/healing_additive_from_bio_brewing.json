@@ -3,22 +3,22 @@
   "ingredient_quantities": [
     {
       "ingredient": {
-        "item": "biomancy:corrosive_additive"
+        "item": "biomancy:regenerative_fluid"
       },
       "count": 5
     },
     {
       "ingredient": {
-        "item": "biomancy:healing_additive"
+        "item": "biomancy:bile"
       },
       "count": 5
     }
   ],
   "reactant": {
-    "item": "biomancy:exotic_compound"
+    "item": "biomancy:organic_compound"
   },
   "result": {
-    "item": "biomancy:cleansing_serum"
+    "item": "biomancy:healing_additive"
   },
-  "time": 160
+  "time": 40
 }

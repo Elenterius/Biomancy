@@ -3,7 +3,7 @@
   "ingredient_quantities": [
     {
       "ingredient": {
-        "item": "biomancy:volatile_fluid"
+        "item": "biomancy:hormone_secretion"
       },
       "count": 5
     }
@@ -12,7 +12,7 @@
     "item": "biomancy:organic_compound"
   },
   "result": {
-    "item": "biomancy:unstable_compound"
+    "item": "biomancy:genetic_compound"
   },
   "time": 80
 }

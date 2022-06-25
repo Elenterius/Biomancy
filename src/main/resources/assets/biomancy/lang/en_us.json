@@ -2,6 +2,7 @@
   "itemGroup.biomancy": "Biomancy",
   "key.categories.biomancy": "Biomancy Mod",
   "key.biomancy.item_default": "Default Item Action",
+
   "item.biomancy.flesh_bits": "Flesh Bits",
   "item.biomancy.bone_fragments": "Bone Fragments",
   "item.biomancy.plant_matter": "Plant Matter",
@@ -15,6 +16,7 @@
   "item.biomancy.exotic_dust": "Exotic Dust",
   "item.biomancy.bio_minerals": "Bio-Minerals",
   "item.biomancy.stone_powder": "Stone Powder",
+
   "item.biomancy.regenerative_fluid": "Regenerative Fluid",
   "item.biomancy.withering_ooze": "Withering Ooze",
   "item.biomancy.hormone_secretion": "Hormone Secretion",
@@ -47,6 +49,8 @@
   "item.biomancy.organic_compound": "Organic Compound",
   "item.biomancy.unstable_compound": "Unstable Compound",
   "item.biomancy.genetic_compound": "Genetic Compound",
+  "item.biomancy.corrosive_additive": "Corrosive Additive",
+  "item.biomancy.healing_additive": "Healing Additive",
   "item.biomancy.glass_vial": "Glass Vial",
   "item.biomancy.serum": "Serum",
   "item.biomancy.injector": "Bio-Injector",
@@ -101,22 +105,18 @@
   "container.biomancy.sac": "Sac Inventory",
   "container.biomancy.fleshkin_chest": "Fleshkin Inventory",
   "container.biomancy.digester": "Digester Inventory",
-
   "entity.biomancy.flesh_blob": "Flesh Blob",
   "entity.biomancy.boomling": "Boomling",
   "entity.biomancy.fleshkin": "Fleshkin",
-
   "enchantment.biomancy.despoil": "Despoil",
-  "enchantment.biomancy.anesthetic": "Anesthetic",
+  "enchantment.biomancy.anesthetic": "Anesthetic Touch",
   "enchantment.biomancy.quick_shot": "Quick Shot",
   "enchantment.biomancy.max_ammo": "Max Ammo",
-
   "effect.biomancy.flesh_eating_disease": "Necrotizing Flesh",
   "effect.biomancy.essence_anemia": "Essence Anemia",
   "effect.biomancy.libido": "Fertility",
   "effect.biomancy.adrenaline_rush": "Adrenaline Rush",
   "effect.biomancy.adrenal_fatigue": "Adrenal Fatigue",
-
   "serum.biomancy.growth_serum": "Growth Serum",
   "serum.biomancy.rejuvenation_serum": "Rejuvenation Serum",
   "serum.biomancy.breeding_stimulant": "Breeding Stimulant",

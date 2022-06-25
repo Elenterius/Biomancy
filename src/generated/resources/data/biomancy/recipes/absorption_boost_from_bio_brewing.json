@@ -1,18 +1,27 @@
 {
   "type": "biomancy:bio_brewing",
-  "ingredients": [
+  "ingredient_quantities": [
     {
-      "item": "minecraft:golden_apple"
+      "ingredient": {
+        "item": "biomancy:healing_additive"
+      },
+      "count": 5
     },
     {
-      "item": "biomancy:tough_fibers"
+      "ingredient": {
+        "item": "biomancy:exotic_dust"
+      },
+      "count": 5
     },
     {
-      "item": "biomancy:tough_fibers"
+      "ingredient": {
+        "item": "biomancy:bio_minerals"
+      },
+      "count": 5
     }
   ],
   "reactant": {
-    "item": "biomancy:growth_serum"
+    "item": "biomancy:exotic_compound"
   },
   "result": {
     "item": "biomancy:absorption_boost"

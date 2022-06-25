@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:decay_agent_from_bio_brewing"
+      "biomancy:exotic_compound_from_bio_brewing"
     ]
   },
   "criteria": {
-    "has_unstable_compound": {
+    "has_organic_compound": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:unstable_compound"
+              "biomancy:organic_compound"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:decay_agent_from_bio_brewing"
+        "recipe": "biomancy:exotic_compound_from_bio_brewing"
       }
     }
   },
   "requirements": [
     [
-      "has_unstable_compound",
+      "has_organic_compound",
       "has_the_recipe"
     ]
   ]

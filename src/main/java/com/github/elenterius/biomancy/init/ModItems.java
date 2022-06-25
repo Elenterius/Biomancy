@@ -61,9 +61,12 @@ public final class ModItems {
 
 	//# Serum
 	public static final RegistryObject<SimpleItem> GLASS_VIAL = registerSimpleItem("glass_vial");
-	public static final RegistryObject<SimpleItem> ORGANIC_COMPOUND = registerSimpleItem("organic_compound");
-	public static final RegistryObject<SimpleItem> UNSTABLE_COMPOUND = registerSimpleItem("unstable_compound");
-	public static final RegistryObject<SimpleItem> GENETIC_COMPOUND = registerSimpleItem("genetic_compound");
+	public static final RegistryObject<SimpleItem> ORGANIC_COMPOUND = registerSimpleVialItem("organic_compound");
+	public static final RegistryObject<SimpleItem> UNSTABLE_COMPOUND = registerSimpleVialItem("unstable_compound");
+	public static final RegistryObject<SimpleItem> GENETIC_COMPOUND = registerSimpleVialItem("genetic_compound");
+	public static final RegistryObject<SimpleItem> EXOTIC_COMPOUND = registerSimpleVialItem("exotic_compound");
+	public static final RegistryObject<SimpleItem> HEALING_ADDITIVE = registerSimpleVialItem("healing_additive");
+	public static final RegistryObject<SimpleItem> CORROSIVE_ADDITIVE = registerSimpleVialItem("corrosive_additive");
 
 	public static final RegistryObject<DynamicSerumItem> GENERIC_SERUM = ITEMS.register("generic_serum", () -> new DynamicSerumItem(createBaseProperties().stacksTo(8)));
 	public static final RegistryObject<SerumItem> REJUVENATION_SERUM = registerSerumItem(ModSerums.REJUVENATION_SERUM);
@@ -72,18 +75,18 @@ public final class ModItems {
 	public static final RegistryObject<SerumItem> ABSORPTION_BOOST = registerSerumItem(ModSerums.ABSORPTION_BOOST);
 	public static final RegistryObject<SerumItem> CLEANSING_SERUM = registerSerumItem(ModSerums.CLEANSING_SERUM);
 	public static final RegistryObject<SerumItem> INSOMNIA_CURE = registerSerumItem(ModSerums.INSOMNIA_CURE);
-	public static final RegistryObject<SerumItem> ADRENALINE_SERUM = registerSerumItem(ModSerums.ADRENALINE_SERUM);
-	public static final RegistryObject<SerumItem> DECAY_AGENT = registerSerumItem(ModSerums.DECAY_AGENT);
+	//	public static final RegistryObject<SerumItem> ADRENALINE_SERUM = registerSerumItem(ModSerums.ADRENALINE_SERUM);
+	//	public static final RegistryObject<SerumItem> DECAY_AGENT = registerSerumItem(ModSerums.DECAY_AGENT);
 
-//	public static final RegistryObject<Item> ICHOR_SERUM = ITEMS.register("ichor_serum", () -> new SimpleItem.WithFoilItem(createBaseProperties()));
+	//	public static final RegistryObject<Item> ICHOR_SERUM = ITEMS.register("ichor_serum", () -> new SimpleItem.WithFoilItem(createBaseProperties()));
 
 	//# Misc
-//	public static final RegistryObject<SimpleItem> OCULUS = ITEMS.register("oculus", () -> new SimpleItem(createBaseProperties().food(ModFoods.OCULUS).rarity(ModRarities.UNCOMMON)));
+	//	public static final RegistryObject<SimpleItem> OCULUS = ITEMS.register("oculus", () -> new SimpleItem(createBaseProperties().food(ModFoods.OCULUS).rarity(ModRarities.UNCOMMON)));
 	public static final RegistryObject<FertilizerItem> FERTILIZER = ITEMS.register("fertilizer", () -> new FertilizerItem(createBaseProperties().rarity(ModRarities.UNCOMMON)));
 	public static final RegistryObject<EssenceItem> ESSENCE = ITEMS.register("essence", () -> new EssenceItem(createBaseProperties()));
 	public static final RegistryObject<BioExtractorItem> BIO_EXTRACTOR = ITEMS.register("bio_extractor", () -> new BioExtractorItem(createBaseProperties().durability(200)));
 	public static final RegistryObject<InjectorItem> INJECTOR = ITEMS.register("injector", () -> new InjectorItem(createBaseProperties().durability(200)));
-//	public static final RegistryObject<ControlStaffItem> CONTROL_STAFF = ITEMS.register("control_staff", () -> new ControlStaffItem(createBaseProperties().stacksTo(1).rarity(ModRarities.ULTRA_RARE)));
+	//	public static final RegistryObject<ControlStaffItem> CONTROL_STAFF = ITEMS.register("control_staff", () -> new ControlStaffItem(createBaseProperties().stacksTo(1).rarity(ModRarities.ULTRA_RARE)));
 
 	//# Weapons
 //	public static final RegistryObject<SwordItem> BONE_SWORD = ITEMS.register("bone_sword", () -> new SwordItem(ModTiers.BONE, 3, -2.4f, createBaseProperties()));
@@ -190,6 +193,10 @@ public final class ModItems {
 
 	private static <T extends Serum> RegistryObject<SerumItem> registerSerumItem(RegistryObject<T> registryObject) {
 		return ITEMS.register(registryObject.getId().getPath(), () -> new SerumItem(createBaseProperties().stacksTo(8), registryObject));
+	}
+
+	private static RegistryObject<SimpleItem> registerSimpleVialItem(String name) {
+		return ITEMS.register(name, () -> new SimpleItem(createBaseProperties().craftRemainder(GLASS_VIAL.get()).rarity(ModRarities.COMMON)));
 	}
 
 	private static RegistryObject<SimpleItem> registerSimpleItem(String name) {

@@ -143,23 +143,24 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 		generateSerum(ModItems.ABSORPTION_BOOST.get());
 		generateSerum(ModItems.CLEANSING_SERUM.get());
 		generateSerum(ModItems.INSOMNIA_CURE.get());
-		generateSerum(ModItems.ADRENALINE_SERUM.get());
-		generateSerum(ModItems.DECAY_AGENT.get());
-
-//		generateSerum(ModItems.ICHOR_SERUM.get());
+		//      generateSerum(ModItems.ADRENALINE_SERUM.get());
+		//		generateSerum(ModItems.ICHOR_SERUM.get());
 
 		generateSerum(ModItems.ORGANIC_COMPOUND.get());
 		generateSerum(ModItems.UNSTABLE_COMPOUND.get());
 		generateSerum(ModItems.GENETIC_COMPOUND.get());
+		generateSerum(ModItems.EXOTIC_COMPOUND.get());
+		generateSerum(ModItems.HEALING_ADDITIVE.get());
+		generateSerum(ModItems.CORROSIVE_ADDITIVE.get());
 
-//		generateWeapon(ModItems.BONE_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		//		generateWeapon(ModItems.BONE_SWORD.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		generateWeaponWithOverlay(ModItems.BOOMLING.get(), OVERLAY_TEMPLATE);
-//		generateWeapon(ModItems.CONTROL_STAFF.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
+		//		generateWeapon(ModItems.CONTROL_STAFF.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 		generateWeapon(ModItems.TOOTH_GUN.get(), GUN_TEMPLATE);
 		generateWeapon(ModItems.WITHERSHOT.get(), GUN_TEMPLATE);
 
 		generateFlat(ModItems.FLESH_DOOR.get(), ModelTemplates.FLAT_ITEM);
-//		generateFlat(ModItems.FLESHKIN_DOOR.get(), ModelTemplates.FLAT_ITEM);
+		//		generateFlat(ModItems.FLESHKIN_DOOR.get(), ModelTemplates.FLAT_ITEM);
 		generateFlatBlock(ModItems.FLESH_LADDER.get(), ModelTemplates.FLAT_ITEM);
 		generateFlatBlock(ModItems.MALIGNANT_FLESH_VEINS.get(), ModelTemplates.FLAT_ITEM);
 

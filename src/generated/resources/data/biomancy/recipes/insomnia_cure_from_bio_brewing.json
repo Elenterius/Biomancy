@@ -1,18 +1,21 @@
 {
   "type": "biomancy:bio_brewing",
-  "ingredients": [
+  "ingredient_quantities": [
     {
-      "item": "minecraft:cocoa_beans"
+      "ingredient": {
+        "item": "minecraft:sugar"
+      },
+      "count": 5
     },
     {
-      "item": "minecraft:cocoa_beans"
-    },
-    {
-      "item": "biomancy:nutrients"
+      "ingredient": {
+        "item": "biomancy:bile"
+      },
+      "count": 5
     }
   ],
   "reactant": {
-    "item": "biomancy:cleansing_serum"
+    "item": "biomancy:exotic_compound"
   },
   "result": {
     "item": "biomancy:insomnia_cure"

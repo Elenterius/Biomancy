@@ -1,24 +1,30 @@
 {
   "type": "biomancy:bio_brewing",
-  "ingredients": [
+  "ingredient_quantities": [
     {
-      "item": "biomancy:exotic_dust"
+      "ingredient": {
+        "item": "biomancy:healing_additive"
+      },
+      "count": 20
     },
     {
-      "item": "biomancy:exotic_dust"
+      "ingredient": {
+        "item": "biomancy:nutrients"
+      },
+      "count": 20
     },
     {
-      "item": "biomancy:regenerative_fluid"
-    },
-    {
-      "item": "biomancy:regenerative_fluid"
+      "ingredient": {
+        "item": "biomancy:corrosive_additive"
+      },
+      "count": 20
     }
   ],
   "reactant": {
-    "item": "biomancy:organic_compound"
+    "item": "biomancy:genetic_compound"
   },
   "result": {
     "item": "biomancy:rejuvenation_serum"
   },
-  "time": 100
+  "time": 160
 }
