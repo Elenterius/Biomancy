@@ -188,7 +188,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		ShapelessRecipeBuilder.shapeless(Items.RED_SAND).requires(Items.SAND).requires(ModItems.MINERAL_FRAGMENT.get(), 2).unlockedBy(hasName(ModItems.MINERAL_FRAGMENT.get()), has(ModItems.MINERAL_FRAGMENT.get())).save(consumer, getConversionRecipeId(Items.RED_SAND, ModItems.MINERAL_FRAGMENT.get()));
 
-		//ShapedRecipeBuilder.shaped(Items.DIRT).define('P', ModItems.ORGANIC_MATTER.get()).define('L', ModItems.STONE_POWDER.get()).pattern("LPL").pattern("PLP").pattern("LPL").unlockedBy(hasName(ModItems.ORGANIC_MATTER.get()), has(ModItems.ORGANIC_MATTER.get())).save(consumer, getConversionRecipeId(Items.DIRT, ModItems.STONE_POWDER.get()));
+		ShapedRecipeBuilder.shaped(Items.DIRT).define('P', ModItems.ORGANIC_MATTER.get()).define('L', ModItems.STONE_POWDER.get()).pattern("LPL").pattern("PLP").pattern("LPL").unlockedBy(hasName(ModItems.ORGANIC_MATTER.get()), has(ModItems.ORGANIC_MATTER.get())).save(consumer, getConversionRecipeId(Items.DIRT, ModItems.STONE_POWDER.get()));
 
 		ShapelessRecipeBuilder.shapeless(Items.CLAY_BALL).requires(Items.WATER_BUCKET).requires(ModItems.STONE_POWDER.get(), 8).unlockedBy(hasName(ModItems.STONE_POWDER.get()), has(ModItems.STONE_POWDER.get())).save(consumer, getConversionRecipeId(Items.CLAY_BALL, ModItems.STONE_POWDER.get()));
 

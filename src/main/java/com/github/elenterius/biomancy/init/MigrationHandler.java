@@ -68,7 +68,7 @@ public final class MigrationHandler {
 				case "stomach", "artificial_stomach" -> mapping.remap(ModItems.GENERIC_MOB_GLAND.get());
 				case "bolus" -> mapping.remap(ModItems.NUTRIENTS.get());
 				case "keratin_filaments" -> mapping.remap(ModItems.TOUGH_FIBERS.get());
-				//case "digestate" -> mapping.remap(ModItems.ORGANIC_MATTER.get());
+				case "digestate" -> mapping.remap(ModItems.ORGANIC_MATTER.get());
 				case "oxide_powder", "silicate_paste" -> mapping.remap(ModItems.MINERAL_FRAGMENT.get());
 				case "hormone_bile" -> mapping.remap(ModItems.HORMONE_SECRETION.get());
 				default -> ignore();
