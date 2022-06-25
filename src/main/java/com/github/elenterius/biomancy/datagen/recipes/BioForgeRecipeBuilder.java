@@ -83,29 +83,29 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 		return this;
 	}
 
-	public BioForgeRecipeBuilder addIngredient(TagKey<Item> tagIn) {
-		return addIngredient(Ingredient.of(tagIn));
+	public BioForgeRecipeBuilder addIngredient(TagKey<Item> tag) {
+		return addIngredient(Ingredient.of(tag));
 	}
 
-	public BioForgeRecipeBuilder addIngredient(TagKey<Item> tagIn, int quantity) {
-		return addIngredient(Ingredient.of(tagIn), quantity);
+	public BioForgeRecipeBuilder addIngredient(TagKey<Item> tag, int quantity) {
+		return addIngredient(Ingredient.of(tag), quantity);
 	}
 
-	public BioForgeRecipeBuilder addIngredient(ItemLike itemIn) {
-		return addIngredient(itemIn, 1);
+	public BioForgeRecipeBuilder addIngredient(ItemLike item) {
+		return addIngredient(item, 1);
 	}
 
-	public BioForgeRecipeBuilder addIngredient(Ingredient ingredientIn) {
-		return addIngredient(ingredientIn, 1);
+	public BioForgeRecipeBuilder addIngredient(Ingredient ingredient) {
+		return addIngredient(ingredient, 1);
 	}
 
-	public BioForgeRecipeBuilder addIngredient(ItemLike itemIn, int quantity) {
-		addIngredient(Ingredient.of(itemIn), quantity);
+	public BioForgeRecipeBuilder addIngredient(ItemLike item, int quantity) {
+		addIngredient(Ingredient.of(item), quantity);
 		return this;
 	}
 
-	public BioForgeRecipeBuilder addIngredient(Ingredient ingredient, int count) {
-		ingredients.add(new IngredientQuantity(ingredient, count));
+	public BioForgeRecipeBuilder addIngredient(Ingredient ingredient, int quantity) {
+		ingredients.add(new IngredientQuantity(ingredient, quantity));
 		return this;
 	}
 
@@ -117,7 +117,7 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 
 	@Override
 	public void save(Consumer<FinishedRecipe> consumer, @Nullable CreativeModeTab itemCategory) {
-		validateCriteria(recipeId);
+		validateCriteria();
 		advancement.parent(new ResourceLocation("recipes/root"))
 				.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId))
 				.rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
@@ -126,9 +126,9 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 		consumer.accept(new RecipeResult(recipeId, category, result, ingredients, advancement, advancementId));
 	}
 
-	private void validateCriteria(ResourceLocation id) {
+	private void validateCriteria() {
 		if (advancement.getCriteria().isEmpty()) {
-			throw new IllegalStateException("No way of obtaining recipe " + id + " because Criteria are empty.");
+			throw new IllegalStateException("No way of obtaining recipe %s because Criteria are empty.".formatted(recipeId));
 		}
 	}
 
