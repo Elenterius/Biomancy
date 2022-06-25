@@ -7,6 +7,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
+import java.util.List;
 
 public record IngredientQuantity(Ingredient ingredient, int count) {
 
@@ -31,6 +33,18 @@ public record IngredientQuantity(Ingredient ingredient, int count) {
 
 	public boolean testItem(@Nullable ItemStack stack) {
 		return ingredient.test(stack);
+	}
+
+	public List<ItemStack> getItemsWithCount() {
+		if (count == 1) return List.of(ingredient.getItems());
+		return Arrays.stream(ingredient.getItems()).map(this::copyStackWithCount).toList();
+	}
+
+	private ItemStack copyStackWithCount(ItemStack stack) {
+		if (count == 0) return ItemStack.EMPTY;
+		ItemStack copy = stack.copy();
+		copy.setCount(count);
+		return copy;
 	}
 
 	public JsonObject toJson() {
