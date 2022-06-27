@@ -4,7 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.recipe.BioLabRecipe;
-import com.github.elenterius.biomancy.recipe.IngredientQuantity;
+import com.github.elenterius.biomancy.recipe.IngredientStack;
 import com.github.elenterius.biomancy.world.block.entity.BioLabBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
@@ -73,7 +73,7 @@ public class BioLabRecipeCategory implements IRecipeCategory<BioLabRecipe> {
 	public void setRecipe(IRecipeLayoutBuilder builder, BioLabRecipe recipe, IFocusGroup focuses) {
 		builder.setShapeless();
 
-		List<IngredientQuantity> ingredientQuantities = recipe.getIngredientQuantities();
+		List<IngredientStack> ingredientQuantities = recipe.getIngredientQuantities();
 		addInputSlot(builder, 1, 10, ingredientQuantities, 0);
 		addInputSlot(builder, 19, 10, ingredientQuantities, 1);
 		addInputSlot(builder, 1, 10 + 18, ingredientQuantities, 2);
@@ -84,7 +84,7 @@ public class BioLabRecipeCategory implements IRecipeCategory<BioLabRecipe> {
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 113, 19).addItemStack(recipe.getResultItem());
 	}
 
-	private void addInputSlot(IRecipeLayoutBuilder builder, int x, int y, List<IngredientQuantity> ingredients, int index) {
+	private void addInputSlot(IRecipeLayoutBuilder builder, int x, int y, List<IngredientStack> ingredients, int index) {
 		assert index >= 0;
 		assert index < BioLabRecipe.MAX_INGREDIENTS;
 

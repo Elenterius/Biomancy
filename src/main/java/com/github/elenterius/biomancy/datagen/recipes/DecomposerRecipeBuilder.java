@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.datagen.recipes;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModRecipes;
-import com.github.elenterius.biomancy.recipe.IngredientQuantity;
+import com.github.elenterius.biomancy.recipe.IngredientStack;
 import com.github.elenterius.biomancy.recipe.VariableProductionOutput;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -33,7 +33,7 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 	private ResourceLocation recipeId;
 	private final List<VariableProductionOutput> outputs = new ArrayList<>();
 	private final Advancement.Builder advancement = Advancement.Builder.advancement();
-	private IngredientQuantity ingredientQuantity = null;
+	private IngredientStack ingredientStack = null;
 	private int craftingTime = 4 * 20;
 	@Nullable
 	private String group;
@@ -97,8 +97,8 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 	}
 
 	public DecomposerRecipeBuilder setIngredient(Ingredient ingredient, int count, ResourceLocation recipeId) {
-		if (ingredientQuantity != null) throw new IllegalStateException("Ingredient is already set");
-		ingredientQuantity = new IngredientQuantity(ingredient, count);
+		if (ingredientStack != null) throw new IllegalStateException("Ingredient is already set");
+		ingredientStack = new IngredientStack(ingredient, count);
 		this.recipeId = recipeId;
 		return this;
 	}
@@ -139,40 +139,43 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 	@Override
 	public void save(Consumer<FinishedRecipe> consumer, @Nullable CreativeModeTab itemCategory) {
 		validate();
+
 		advancement.parent(new ResourceLocation("recipes/root"))
 				.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId))
 				.rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
-		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(),
-				"recipes/" + (itemCategory != null ? itemCategory.getRecipeFolderName() : BiomancyMod.MOD_ID) + "/" + recipeId.getPath());
-		consumer.accept(new Result(recipeId, group == null ? "" : group, ingredientQuantity, craftingTime, outputs, advancement, advancementId));
+
+		String folder = itemCategory != null ? itemCategory.getRecipeFolderName() : BiomancyMod.MOD_ID;
+		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(), "recipes/%s/%s".formatted(folder, recipeId.getPath()));
+
+		consumer.accept(new RecipeResult(this, advancementId));
 	}
 
 	private void validate() {
 		if (recipeId.getPath().equals("unknown")) throw new IllegalStateException("Invalid recipe id: " + recipeId);
-		if (ingredientQuantity == null) throw new IllegalStateException("No Ingredient was provided.");
+		if (ingredientStack == null) throw new IllegalStateException("No Ingredient was provided.");
 		if (advancement.getCriteria().isEmpty()) {
-			throw new IllegalStateException("No way of obtaining recipe " + recipeId + " because Criteria are empty.");
+			throw new IllegalStateException("No way of obtaining recipe %s because Criteria are empty.".formatted(recipeId));
 		}
 	}
 
-	public static class Result implements FinishedRecipe {
+	public static class RecipeResult implements FinishedRecipe {
 
 		private final ResourceLocation id;
 		private final String group;
-		private final IngredientQuantity ingredientQuantity;
+		private final IngredientStack ingredientStack;
 		private final List<VariableProductionOutput> outputs;
 		private final int craftingTime;
 		private final Advancement.Builder advancementBuilder;
 		private final ResourceLocation advancementId;
 
-		public Result(ResourceLocation idIn, String groupIn, IngredientQuantity ingredientQuantityIn, int craftingTimeIn, List<VariableProductionOutput> outputsIn, Advancement.Builder advancementBuilderIn, ResourceLocation advancementIdIn) {
-			id = idIn;
-			group = groupIn;
-			ingredientQuantity = ingredientQuantityIn;
-			craftingTime = craftingTimeIn;
-			outputs = outputsIn;
-			advancementBuilder = advancementBuilderIn;
-			advancementId = advancementIdIn;
+		public RecipeResult(DecomposerRecipeBuilder builder, ResourceLocation advancementId) {
+			id = builder.recipeId;
+			group = builder.group == null ? "" : builder.group;
+			ingredientStack = builder.ingredientStack;
+			craftingTime = builder.craftingTime;
+			outputs = builder.outputs;
+			advancementBuilder = builder.advancement;
+			this.advancementId = advancementId;
 		}
 
 		public void serializeRecipeData(JsonObject json) {
@@ -180,7 +183,7 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 				json.addProperty("group", group);
 			}
 
-			json.add("input", ingredientQuantity.toJson());
+			json.add("input", ingredientStack.toJson());
 
 			JsonArray jsonArray = new JsonArray();
 			for (VariableProductionOutput output : outputs) {

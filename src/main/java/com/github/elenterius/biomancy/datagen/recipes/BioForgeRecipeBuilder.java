@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.datagen.recipes;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModRecipeBooks;
 import com.github.elenterius.biomancy.init.ModRecipes;
-import com.github.elenterius.biomancy.recipe.IngredientQuantity;
+import com.github.elenterius.biomancy.recipe.IngredientStack;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;
@@ -32,7 +32,7 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 
 	private final ResourceLocation recipeId;
 	private final ItemData result;
-	private final List<IngredientQuantity> ingredients = new ArrayList<>();
+	private final List<IngredientStack> ingredients = new ArrayList<>();
 	private final Advancement.Builder advancement = Advancement.Builder.advancement();
 	private ModRecipeBooks.BioForgeCategory category = ModRecipeBooks.BioForgeCategory.MISC;
 
@@ -105,7 +105,7 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 	}
 
 	public BioForgeRecipeBuilder addIngredient(Ingredient ingredient, int quantity) {
-		ingredients.add(new IngredientQuantity(ingredient, quantity));
+		ingredients.add(new IngredientStack(ingredient, quantity));
 		return this;
 	}
 
@@ -134,14 +134,14 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 
 	public static class RecipeResult implements FinishedRecipe {
 		private final ResourceLocation id;
-		private final List<IngredientQuantity> ingredients;
+		private final List<IngredientStack> ingredients;
 		private final ItemData result;
 		private final ModRecipeBooks.BioForgeCategory category;
 
 		private final Advancement.Builder advancementBuilder;
 		private final ResourceLocation advancementId;
 
-		public RecipeResult(ResourceLocation recipeId, ModRecipeBooks.BioForgeCategory category, ItemData result, List<IngredientQuantity> ingredients, Advancement.Builder advancement, ResourceLocation advancementId) {
+		public RecipeResult(ResourceLocation recipeId, ModRecipeBooks.BioForgeCategory category, ItemData result, List<IngredientStack> ingredients, Advancement.Builder advancement, ResourceLocation advancementId) {
 			id = recipeId;
 			this.category = category;
 			this.result = result;
@@ -154,7 +154,7 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 		@Override
 		public void serializeRecipeData(JsonObject json) {
 			JsonArray jsonArray = new JsonArray();
-			for (IngredientQuantity ingredient : ingredients) {
+			for (IngredientStack ingredient : ingredients) {
 				jsonArray.add(ingredient.toJson());
 			}
 			json.add("ingredient_quantities", jsonArray);

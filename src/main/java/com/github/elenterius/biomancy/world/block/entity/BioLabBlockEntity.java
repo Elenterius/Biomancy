@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.world.block.entity;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.recipe.BioLabRecipe;
-import com.github.elenterius.biomancy.recipe.IngredientQuantity;
+import com.github.elenterius.biomancy.recipe.IngredientStack;
 import com.github.elenterius.biomancy.recipe.RecipeTypeImpl;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
 import com.github.elenterius.biomancy.world.block.entity.state.BioLabStateData;
@@ -133,7 +133,7 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 		}
 
 		//get ingredients cost
-		List<IngredientQuantity> ingredients = recipeToCraft.getIngredientQuantities();
+		List<IngredientStack> ingredients = recipeToCraft.getIngredientQuantities();
 		int[] ingredientCost = new int[ingredients.size()];
 		for (int i = 0; i < ingredients.size(); i++) {
 			ingredientCost[i] = ingredients.get(i).count();
@@ -170,7 +170,7 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 		return true;
 	}
 
-	private boolean canContainerItemsFitIntoTrashSlot(List<IngredientQuantity> ingredients, int[] ingredientCost) {
+	private boolean canContainerItemsFitIntoTrashSlot(List<IngredientStack> ingredients, int[] ingredientCost) {
 		int lastIndex = inputInventory.getContainerSize() - 1;
 		int trashAmount = outputInventory.getItem(1).getCount();
 

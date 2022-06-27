@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.world.inventory.menu;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
 import com.github.elenterius.biomancy.recipe.BioForgeRecipe;
-import com.github.elenterius.biomancy.recipe.IngredientQuantity;
+import com.github.elenterius.biomancy.recipe.IngredientStack;
 import com.github.elenterius.biomancy.util.FuelUtil;
 import com.github.elenterius.biomancy.world.block.entity.BioForgeBlockEntity;
 import com.github.elenterius.biomancy.world.block.entity.state.BioForgeStateData;
@@ -286,7 +286,7 @@ public class BioForgeMenu extends PlayerContainerMenu {
 		Inventory inventory = player.getInventory();
 
 		//count available ingredients
-		List<IngredientQuantity> ingredients = recipe.getIngredientQuantities();
+		List<IngredientStack> ingredients = recipe.getIngredientQuantities();
 		int[] countedIngredients = new int[ingredients.size()];
 		for (int idx = 0; idx < inventory.items.size(); idx++) {
 			ItemStack foundStack = inventory.items.get(idx);
@@ -311,7 +311,7 @@ public class BioForgeMenu extends PlayerContainerMenu {
 
 	private void consumeCraftingIngredients(Player player, BioForgeRecipe recipe) {
 
-		List<IngredientQuantity> ingredients = recipe.getIngredientQuantities();
+		List<IngredientStack> ingredients = recipe.getIngredientQuantities();
 		int[] ingredientCost = new int[ingredients.size()];
 		for (int i = 0; i < ingredients.size(); i++) {
 			ingredientCost[i] = ingredients.get(i).count();

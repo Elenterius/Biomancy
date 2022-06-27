@@ -36,15 +36,27 @@ public final class RecipeUtil {
 		return list;
 	}
 
-	public static List<IngredientQuantity> readQuantitativeIngredients(JsonArray jsonArray) {
-		List<IngredientQuantity> list = new ArrayList<>();
+	public static List<IngredientStack> readIngredientStacks(JsonArray jsonArray) {
+		List<IngredientStack> list = new ArrayList<>();
 		for (int i = 0; i < jsonArray.size(); ++i) {
-			IngredientQuantity ingredientQuantity = IngredientQuantity.fromJson(jsonArray.get(i).getAsJsonObject());
-			if (!ingredientQuantity.ingredient().isEmpty()) {
-				list.add(ingredientQuantity);
+			IngredientStack ingredientStack = IngredientStack.fromJson(jsonArray.get(i).getAsJsonObject());
+			if (!ingredientStack.ingredient().isEmpty()) {
+				list.add(ingredientStack);
 			}
 		}
 		return list;
+	}
+
+
+	public static List<Ingredient> flattenIngredientStacks(List<IngredientStack> ingredients) {
+		List<Ingredient> flatIngredients = new ArrayList<>();
+		for (IngredientStack ingredientStack : ingredients) {
+			Ingredient ingredient = ingredientStack.ingredient();
+			for (int i = 0; i < ingredientStack.count(); i++) {
+				flatIngredients.add(ingredient); //insert the same ingredient instances
+			}
+		}
+		return flatIngredients;
 	}
 
 }

@@ -10,25 +10,26 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 
-public record IngredientQuantity(Ingredient ingredient, int count) {
+public record IngredientStack(Ingredient ingredient, int count) {
 
 	public static final String INGREDIENT_KEY = "ingredient";
+	public static final String COUNT_KEY = "count";
 
-	public static IngredientQuantity fromJson(JsonObject json) {
+	public static IngredientStack fromJson(JsonObject json) {
 		Ingredient ingredient = readIngredient(json);
-		int count = GsonHelper.getAsInt(json, "count", 1);
-		return new IngredientQuantity(ingredient, count);
+		int count = GsonHelper.getAsInt(json, COUNT_KEY, 1);
+		return new IngredientStack(ingredient, count);
 	}
 
-	private static Ingredient readIngredient(JsonObject jsonObj) {
-		if (GsonHelper.isArrayNode(jsonObj, INGREDIENT_KEY)) return Ingredient.fromJson(GsonHelper.getAsJsonArray(jsonObj, INGREDIENT_KEY));
-		else return Ingredient.fromJson(GsonHelper.getAsJsonObject(jsonObj, INGREDIENT_KEY));
+	private static Ingredient readIngredient(JsonObject json) {
+		if (GsonHelper.isArrayNode(json, INGREDIENT_KEY)) return Ingredient.fromJson(GsonHelper.getAsJsonArray(json, INGREDIENT_KEY));
+		else return Ingredient.fromJson(GsonHelper.getAsJsonObject(json, INGREDIENT_KEY));
 	}
 
-	public static IngredientQuantity fromNetwork(FriendlyByteBuf buffer) {
+	public static IngredientStack fromNetwork(FriendlyByteBuf buffer) {
 		Ingredient ingredient = Ingredient.fromNetwork(buffer);
 		int count = buffer.readVarInt();
-		return new IngredientQuantity(ingredient, count);
+		return new IngredientStack(ingredient, count);
 	}
 
 	public boolean testItem(@Nullable ItemStack stack) {
@@ -37,10 +38,10 @@ public record IngredientQuantity(Ingredient ingredient, int count) {
 
 	public List<ItemStack> getItemsWithCount() {
 		if (count == 1) return List.of(ingredient.getItems());
-		return Arrays.stream(ingredient.getItems()).map(this::copyStackWithCount).toList();
+		return Arrays.stream(ingredient.getItems()).map(this::copyItemStackWithCount).toList();
 	}
 
-	private ItemStack copyStackWithCount(ItemStack stack) {
+	private ItemStack copyItemStackWithCount(ItemStack stack) {
 		if (count == 0) return ItemStack.EMPTY;
 		ItemStack copy = stack.copy();
 		copy.setCount(count);
@@ -50,7 +51,7 @@ public record IngredientQuantity(Ingredient ingredient, int count) {
 	public JsonObject toJson() {
 		JsonObject json = new JsonObject();
 		json.add(INGREDIENT_KEY, ingredient.toJson());
-		if (count > 0) json.addProperty("count", count);
+		if (count > 0) json.addProperty(COUNT_KEY, count);
 		return json;
 	}
 

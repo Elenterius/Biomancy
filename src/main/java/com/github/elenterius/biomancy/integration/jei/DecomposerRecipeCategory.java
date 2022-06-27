@@ -26,9 +26,7 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.ItemHandlerHelper;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecipe> {
@@ -101,9 +99,7 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, DecomposerRecipe recipe, IFocusGroup focuses) {
 		int posY = 12;
-		int ingredientCount = recipe.getIngredientCount();
-		List<ItemStack> ingredients = ingredientCount == 1 ? List.of(recipe.getIngredient().getItems()) : Arrays.stream(recipe.getIngredient().getItems()).map(stack -> ItemHandlerHelper.copyStackWithSize(stack, ingredientCount)).toList();
-		builder.addSlot(RecipeIngredientRole.INPUT, 10, posY).addItemStacks(ingredients);
+		builder.addSlot(RecipeIngredientRole.INPUT, 10, posY).addItemStacks(recipe.getIngredientQuantity().getItemsWithCount());
 
 		int posX = 63;
 		List<VariableProductionOutput> outputs = recipe.getOutputs();

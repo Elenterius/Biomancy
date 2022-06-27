@@ -2,7 +2,6 @@ package com.github.elenterius.biomancy.datagen.recipes;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModRecipes;
-import com.github.elenterius.biomancy.recipe.ItemStackIngredient;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards;
@@ -18,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.common.crafting.NBTIngredient;
 
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
@@ -92,7 +92,7 @@ public class DigesterRecipeBuilder implements IRecipeBuilder {
 	}
 
 	public DigesterRecipeBuilder setIngredient(ItemStack stack) {
-		return setIngredient(new ItemStackIngredient(stack));
+		return setIngredient(NBTIngredient.of(stack));
 	}
 
 	public DigesterRecipeBuilder setIngredient(Ingredient ingredient) {

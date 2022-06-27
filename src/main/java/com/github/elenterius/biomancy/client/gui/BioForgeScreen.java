@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.client.gui;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.gui.component.CustomEditBox;
 import com.github.elenterius.biomancy.recipe.BioForgeRecipe;
-import com.github.elenterius.biomancy.recipe.IngredientQuantity;
+import com.github.elenterius.biomancy.recipe.IngredientStack;
 import com.github.elenterius.biomancy.world.inventory.menu.BioForgeMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -247,11 +247,11 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 		int x = leftPos + 141 + 3;
 		int y = topPos + 82 + 3;
 
-		List<IngredientQuantity> ingredients = recipe.getIngredientQuantities();
+		List<IngredientStack> ingredients = recipe.getIngredientQuantities();
 		for (int i = 0, size = ingredients.size(); i < size; i++) {
-			IngredientQuantity ingredientQuantity = ingredients.get(i);
-			ItemStack itemStack = ingredientQuantity.ingredient().getItems()[0];
-			drawIngredientQuantity(poseStack, itemStack, recipeBook.getTotalItemCountInPlayerInv(itemStack), ingredientQuantity.count(), x + 26 * i, y);
+			IngredientStack ingredientStack = ingredients.get(i);
+			ItemStack itemStack = ingredientStack.ingredient().getItems()[0];
+			drawIngredientQuantity(poseStack, itemStack, recipeBook.getTotalItemCountInPlayerInv(itemStack), ingredientStack.count(), x + 26 * i, y);
 		}
 	}
 

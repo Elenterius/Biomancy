@@ -24,32 +24,21 @@ public class BioLabRecipe extends AbstractProductionRecipe {
 
 	public static final int MAX_INGREDIENTS = 4;
 	public static final int MAX_REACTANT = 1;
-	private final List<IngredientQuantity> ingredients;
+	private final List<IngredientStack> ingredients;
 	private final Ingredient recipeReactant;
 	private final ItemStack result;
 
 	private final NonNullList<Ingredient> vanillaIngredients;
 
-	public BioLabRecipe(ResourceLocation id, ItemStack result, int craftingTime, List<IngredientQuantity> ingredients, Ingredient reactant) {
+	public BioLabRecipe(ResourceLocation id, ItemStack result, int craftingTime, List<IngredientStack> ingredients, Ingredient reactant) {
 		super(id, craftingTime);
 		this.ingredients = ingredients;
 		recipeReactant = reactant;
 		this.result = result;
 
-		List<Ingredient> flatIngredients = flattenIngredients(ingredients);
+		List<Ingredient> flatIngredients = RecipeUtil.flattenIngredientStacks(ingredients);
 		vanillaIngredients = NonNullList.createWithCapacity(flatIngredients.size());
 		vanillaIngredients.addAll(flatIngredients);
-	}
-
-	private List<Ingredient> flattenIngredients(List<IngredientQuantity> ingredients) {
-		List<Ingredient> unrolledIngredients = new ArrayList<>();
-		for (IngredientQuantity ingredientQuantity : ingredients) {
-			Ingredient ingredient = ingredientQuantity.ingredient();
-			for (int i = 0; i < ingredientQuantity.count(); i++) {
-				unrolledIngredients.add(ingredient);
-			}
-		}
-		return unrolledIngredients;
 	}
 
 	@Override
@@ -97,7 +86,7 @@ public class BioLabRecipe extends AbstractProductionRecipe {
 		return vanillaIngredients;
 	}
 
-	public List<IngredientQuantity> getIngredientQuantities() {
+	public List<IngredientStack> getIngredientQuantities() {
 		return ingredients;
 	}
 
@@ -119,7 +108,7 @@ public class BioLabRecipe extends AbstractProductionRecipe {
 
 		@Override
 		public BioLabRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-			List<IngredientQuantity> ingredients = RecipeUtil.readQuantitativeIngredients(GsonHelper.getAsJsonArray(json, "ingredient_quantities"));
+			List<IngredientStack> ingredients = RecipeUtil.readIngredientStacks(GsonHelper.getAsJsonArray(json, "ingredient_quantities"));
 
 			if (ingredients.isEmpty()) {
 				throw new JsonParseException("No ingredients found for %s recipe".formatted(getRegistryName()));
@@ -129,8 +118,8 @@ public class BioLabRecipe extends AbstractProductionRecipe {
 				throw new JsonParseException("Too many ingredients for %s recipe. Max amount is %d".formatted(getRegistryName(), MAX_INGREDIENTS));
 			}
 
-			for (IngredientQuantity ingredientQuantity : ingredients) {
-				int count = ingredientQuantity.count();
+			for (IngredientStack ingredientStack : ingredients) {
+				int count = ingredientStack.count();
 				if (count > 64) throw new IllegalArgumentException("Ingredient quantity of %d is larger than 64".formatted(count));
 			}
 
@@ -152,9 +141,9 @@ public class BioLabRecipe extends AbstractProductionRecipe {
 			int craftingTime = buffer.readVarInt();
 
 			int ingredientCount = buffer.readVarInt();
-			List<IngredientQuantity> ingredients = new ArrayList<>();
+			List<IngredientStack> ingredients = new ArrayList<>();
 			for (int i = 0; i < ingredientCount; i++) {
-				ingredients.add(IngredientQuantity.fromNetwork(buffer));
+				ingredients.add(IngredientStack.fromNetwork(buffer));
 			}
 
 			return new BioLabRecipe(recipeId, resultStack, craftingTime, ingredients, reactant);
@@ -168,7 +157,7 @@ public class BioLabRecipe extends AbstractProductionRecipe {
 			buffer.writeVarInt(recipe.getCraftingTime());
 
 			buffer.writeVarInt(recipe.ingredients.size());
-			for (IngredientQuantity input : recipe.ingredients) {
+			for (IngredientStack input : recipe.ingredients) {
 				input.toNetwork(buffer);
 			}
 		}

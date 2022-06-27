@@ -136,11 +136,10 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 
 	@Override
 	protected boolean craftRecipe(DecomposerRecipe recipeToCraft, Level level) {
+
 		ItemStack result = recipeToCraft.assemble(inputInventory);
 		if (!result.isEmpty() && outputInventory.doesItemStackFit(0, result)) {
-			for (int idx = 0; idx < inputInventory.getContainerSize(); idx++) {
-				inputInventory.removeItem(idx, recipeToCraft.getIngredientCount()); //consume input
-			}
+			inputInventory.removeItem(0, recipeToCraft.getIngredientQuantity().count()); //consume input
 
 			for (VariableProductionOutput output : recipeToCraft.getOutputs()) {
 				int count = output.getCount(level.random);

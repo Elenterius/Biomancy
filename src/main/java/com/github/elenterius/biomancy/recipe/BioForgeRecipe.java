@@ -24,30 +24,20 @@ public class BioForgeRecipe implements Recipe<Container> {
 	private final ResourceLocation registryKey;
 	public static final int MAX_INGREDIENTS = 5;
 	private final ModRecipeBooks.BioForgeCategory category;
-	private final List<IngredientQuantity> ingredients;
+	private final List<IngredientStack> ingredients;
 	private final ItemStack result;
 
 	private final NonNullList<Ingredient> vanillaIngredients;
 
-	public BioForgeRecipe(ResourceLocation id, ModRecipeBooks.BioForgeCategory category, ItemStack result, List<IngredientQuantity> ingredients) {
+	public BioForgeRecipe(ResourceLocation id, ModRecipeBooks.BioForgeCategory category, ItemStack result, List<IngredientStack> ingredients) {
 		registryKey = id;
 		this.category = category;
 		this.result = result;
 		this.ingredients = ingredients;
-		//isSimple = ingredients.stream().allMatch(ingredientQuantity -> ingredientQuantity.ingredient().isSimple());
 
-		//TODO: remove this shite
-		//Note: we can't :(
-		List<Ingredient> unrolledIngredients = new ArrayList<>();
-		for (IngredientQuantity ingredientQuantity : ingredients) {
-			Ingredient ingredient = ingredientQuantity.ingredient();
-			for (int i = 0; i < ingredientQuantity.count(); i++) {
-				unrolledIngredients.add(ingredient);
-			}
-		}
-
-		vanillaIngredients = NonNullList.createWithCapacity(unrolledIngredients.size());
-		vanillaIngredients.addAll(unrolledIngredients);
+		List<Ingredient> flatIngredients = RecipeUtil.flattenIngredientStacks(ingredients);
+		vanillaIngredients = NonNullList.createWithCapacity(flatIngredients.size());
+		vanillaIngredients.addAll(flatIngredients);
 	}
 
 	@Override
@@ -66,9 +56,9 @@ public class BioForgeRecipe implements Recipe<Container> {
 	public boolean isCraftable(StackedContents itemCounter) {
 		//TODO: make this more precise
 		boolean isCraftable = true;
-		for (IngredientQuantity ingredientQuantity : ingredients) {
-			ItemStack stack = ingredientQuantity.ingredient().getItems()[0];
-			int requiredAmount = ingredientQuantity.count();
+		for (IngredientStack ingredientStack : ingredients) {
+			ItemStack stack = ingredientStack.ingredient().getItems()[0];
+			int requiredAmount = ingredientStack.count();
 			int foundAmount = itemCounter.contents.get(StackedContents.getStackingIndex(stack));
 			if (foundAmount < requiredAmount) {
 				isCraftable = false;
@@ -120,7 +110,7 @@ public class BioForgeRecipe implements Recipe<Container> {
 		return vanillaIngredients;
 	}
 
-	public List<IngredientQuantity> getIngredientQuantities() {
+	public List<IngredientStack> getIngredientQuantities() {
 		return ingredients;
 	}
 
@@ -142,7 +132,7 @@ public class BioForgeRecipe implements Recipe<Container> {
 
 		@Override
 		public BioForgeRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-			List<IngredientQuantity> ingredients = RecipeUtil.readQuantitativeIngredients(GsonHelper.getAsJsonArray(json, "ingredient_quantities"));
+			List<IngredientStack> ingredients = RecipeUtil.readIngredientStacks(GsonHelper.getAsJsonArray(json, "ingredient_quantities"));
 
 			if (ingredients.isEmpty()) {
 				throw new JsonParseException("No ingredients for recipe");
@@ -164,9 +154,9 @@ public class BioForgeRecipe implements Recipe<Container> {
 			ItemStack resultStack = buffer.readItem();
 
 			int ingredientCount = buffer.readVarInt();
-			List<IngredientQuantity> ingredients = new ArrayList<>();
+			List<IngredientStack> ingredients = new ArrayList<>();
 			for (int j = 0; j < ingredientCount; ++j) {
-				ingredients.add(IngredientQuantity.fromNetwork(buffer));
+				ingredients.add(IngredientStack.fromNetwork(buffer));
 			}
 
 			ModRecipeBooks.BioForgeCategory category = ModRecipeBooks.BioForgeCategory.fromNetwork(buffer);
@@ -179,7 +169,7 @@ public class BioForgeRecipe implements Recipe<Container> {
 			buffer.writeItem(recipe.result);
 
 			buffer.writeVarInt(recipe.ingredients.size());
-			for (IngredientQuantity input : recipe.ingredients) {
+			for (IngredientStack input : recipe.ingredients) {
 				input.toNetwork(buffer);
 			}
 

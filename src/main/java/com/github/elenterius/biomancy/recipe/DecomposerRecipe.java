@@ -23,19 +23,24 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 	public static final int MAX_INGREDIENTS = 1;
 	public static final int MAX_OUTPUTS = 6;
 
-	private final IngredientQuantity ingredientQuantity;
+	private final IngredientStack ingredientStack;
+	private final NonNullList<Ingredient> vanillaIngredients;
 	private final List<VariableProductionOutput> outputs;
 
-	public DecomposerRecipe(ResourceLocation id, List<VariableProductionOutput> outputs, IngredientQuantity ingredientQuantity, int craftingTime) {
+	public DecomposerRecipe(ResourceLocation id, List<VariableProductionOutput> outputs, IngredientStack ingredientStack, int craftingTime) {
 		super(id, craftingTime);
-		this.ingredientQuantity = ingredientQuantity;
+		this.ingredientStack = ingredientStack;
 		this.outputs = outputs;
+
+		List<Ingredient> flatIngredients = RecipeUtil.flattenIngredientStacks(List.of(ingredientStack));
+		vanillaIngredients = NonNullList.createWithCapacity(flatIngredients.size());
+		vanillaIngredients.addAll(flatIngredients);
 	}
 
 	@Override
 	public boolean matches(Container inv, Level level) {
 		ItemStack stack = inv.getItem(0);
-		return ingredientQuantity.ingredient().test(stack) && stack.getCount() >= ingredientQuantity.count();
+		return ingredientStack.ingredient().test(stack) && stack.getCount() >= ingredientStack.count();
 	}
 
 	@Override
@@ -60,15 +65,11 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 
 	@Override
 	public NonNullList<Ingredient> getIngredients() {
-		return NonNullList.of(Ingredient.EMPTY, ingredientQuantity.ingredient());
+		return vanillaIngredients;
 	}
 
-	public Ingredient getIngredient() {
-		return ingredientQuantity.ingredient();
-	}
-
-	public int getIngredientCount() {
-		return ingredientQuantity.count();
+	public IngredientStack getIngredientQuantity() {
+		return ingredientStack;
 	}
 
 	public List<VariableProductionOutput> getOutputs() {
@@ -90,7 +91,7 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 		@Override
 		public DecomposerRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
 			JsonObject input = GsonHelper.getAsJsonObject(json, "input");
-			IngredientQuantity ingredientQuantity = IngredientQuantity.fromJson(input);
+			IngredientStack ingredientStack = IngredientStack.fromJson(input);
 
 			List<VariableProductionOutput> outputs = RecipeUtil.readVariableProductionOutputs(GsonHelper.getAsJsonArray(json, "outputs"));
 			if (outputs.size() > MAX_OUTPUTS) {
@@ -99,12 +100,12 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 
 			int time = GsonHelper.getAsInt(json, "time", 100);
 
-			return new DecomposerRecipe(recipeId, outputs, ingredientQuantity, time);
+			return new DecomposerRecipe(recipeId, outputs, ingredientStack, time);
 		}
 
 		@Override
 		public DecomposerRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-			IngredientQuantity ingredientQuantity = IngredientQuantity.fromNetwork(buffer);
+			IngredientStack ingredientStack = IngredientStack.fromNetwork(buffer);
 
 			int time = buffer.readVarInt();
 
@@ -114,12 +115,12 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 				outputs.add(VariableProductionOutput.read(buffer));
 			}
 
-			return new DecomposerRecipe(recipeId, outputs, ingredientQuantity, time);
+			return new DecomposerRecipe(recipeId, outputs, ingredientStack, time);
 		}
 
 		@Override
 		public void toNetwork(FriendlyByteBuf buffer, DecomposerRecipe recipe) {
-			recipe.ingredientQuantity.toNetwork(buffer);
+			recipe.ingredientStack.toNetwork(buffer);
 
 			buffer.writeInt(recipe.getCraftingTime());
 

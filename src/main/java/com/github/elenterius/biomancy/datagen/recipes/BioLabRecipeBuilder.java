@@ -3,8 +3,7 @@ package com.github.elenterius.biomancy.datagen.recipes;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
-import com.github.elenterius.biomancy.recipe.IngredientQuantity;
-import com.github.elenterius.biomancy.recipe.ItemStackIngredient;
+import com.github.elenterius.biomancy.recipe.IngredientStack;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;
@@ -35,7 +34,7 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 
 	private final ResourceLocation recipeId;
 	private final ItemData result;
-	private final List<IngredientQuantity> ingredients = new ArrayList<>();
+	private final List<IngredientStack> ingredients = new ArrayList<>();
 	private Ingredient reactant = Ingredient.of(ModItems.GLASS_VIAL.get());
 	private int craftingTime = 4 * 20;
 
@@ -92,7 +91,7 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 	}
 
 	public BioLabRecipeBuilder setReactant(ItemStack stack) {
-		return setReactant(new ItemStackIngredient(stack));
+		return setReactant(NBTIngredient.of(stack));
 	}
 
 	public BioLabRecipeBuilder setReactant(Ingredient ingredient) {
@@ -126,7 +125,7 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 	}
 
 	public BioLabRecipeBuilder addIngredient(Ingredient ingredient, int quantity) {
-		ingredients.add(new IngredientQuantity(ingredient, quantity));
+		ingredients.add(new IngredientStack(ingredient, quantity));
 		return this;
 	}
 
@@ -159,7 +158,7 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 	public static class RecipeResult implements FinishedRecipe {
 		private final ResourceLocation id;
 
-		private final List<IngredientQuantity> ingredients;
+		private final List<IngredientStack> ingredients;
 		private final Ingredient reactant;
 		private final ItemData result;
 		private final int craftingTime;
@@ -180,7 +179,7 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 
 		public void serializeRecipeData(JsonObject json) {
 			JsonArray jsonArray = new JsonArray();
-			for (IngredientQuantity ingredient : ingredients) {
+			for (IngredientStack ingredient : ingredients) {
 				jsonArray.add(ingredient.toJson());
 			}
 			json.add("ingredient_quantities", jsonArray);
