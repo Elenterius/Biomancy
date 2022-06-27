@@ -15,13 +15,17 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,7 +33,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -39,6 +42,10 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, DecomposerStateData> implements MenuProvider, IAnimatable {
 
@@ -56,12 +63,18 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	private final BehavioralInventory<?> outputInventory;
 
 	private final AnimationFactory animationFactory = new AnimationFactory(this);
+	@Nullable
+	private DecomposerRecipeResult computedRecipeResult;
 
 	public DecomposerBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.DECOMPOSER.get(), pos, state);
 		fuelInventory = BehavioralInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterFuel, this::canPlayerOpenInv, this::setChanged);
 		inputInventory = BehavioralInventory.createServerContents(INPUT_SLOTS, this::canPlayerOpenInv, this::setChanged);
 		outputInventory = BehavioralInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
+	}
+
+	public static void serverTick(Level level, BlockPos pos, BlockState state, DecomposerBlockEntity decomposer) {
+		decomposer.serverTick((ServerLevel) level);
 	}
 
 	@Override
@@ -78,10 +91,6 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	@Override
 	public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
 		return DecomposerMenu.createServerMenu(containerId, playerInventory, fuelInventory, inputInventory, outputInventory, stateData);
-	}
-
-	public static void serverTick(Level level, BlockPos pos, BlockState state, DecomposerBlockEntity decomposer) {
-		decomposer.serverTick((ServerLevel) level);
 	}
 
 	public boolean canPlayerOpenInv(Player player) {
@@ -130,33 +139,33 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	}
 
 	@Override
-	protected boolean doesItemFitIntoOutputInventory(ItemStack stackToCraft) {
-		return outputInventory.doesItemStackFit(stackToCraft);
+	protected boolean doesRecipeResultFitIntoOutputInv(DecomposerRecipe craftingGoal, ItemStack ignored) {
+		DecomposerRecipeResult precomputedResult = getComputedRecipeResult(craftingGoal);
+		return outputInventory.doAllItemsFit(precomputedResult.items);
 	}
 
 	@Override
 	protected boolean craftRecipe(DecomposerRecipe recipeToCraft, Level level) {
+		DecomposerRecipeResult precomputedResult = getComputedRecipeResult(recipeToCraft);
 
-		ItemStack result = recipeToCraft.assemble(inputInventory);
-		if (!result.isEmpty() && outputInventory.doesItemStackFit(0, result)) {
-			inputInventory.removeItem(0, recipeToCraft.getIngredientQuantity().count()); //consume input
+		if (!outputInventory.doAllItemsFit(precomputedResult.items)) return false;
 
-			for (VariableProductionOutput output : recipeToCraft.getOutputs()) {
-				int count = output.getCount(level.random);
-				if (count > 0) {
-					ItemStack stack = output.getItemStack();
-					stack.setCount(count);
-					for (int idx = 0; idx < outputInventory.getContainerSize(); idx++) {
-						stack = outputInventory.insertItemStack(idx, stack); //update stack with remainder
-						if (stack.isEmpty()) break;
-					}
-				}
-			}
+		inputInventory.removeItem(0, recipeToCraft.getIngredientQuantity().count()); //consume input
 
-			setChanged();
-			return true;
+		for (ItemStack stack : precomputedResult.items) {
+			outputInventory.insertItemStack(stack);
 		}
-		return false;
+
+		setChanged();
+		return true;
+	}
+
+	DecomposerRecipeResult getComputedRecipeResult(DecomposerRecipe craftingGoal) {
+		if (computedRecipeResult == null || !computedRecipeResult.recipeId.equals(craftingGoal.getId())) {
+			return DecomposerRecipeResult.computeRecipeResult(craftingGoal, level.random.nextInt());
+		}
+
+		return computedRecipeResult;
 	}
 
 	@Override
@@ -168,6 +177,9 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	protected void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 		stateData.serialize(tag);
+		if (computedRecipeResult != null) {
+			tag.put("ComputedRecipeResult", computedRecipeResult.serialize());
+		}
 		tag.put("FuelSlots", fuelInventory.serializeNBT());
 		tag.put("InputSlots", inputInventory.serializeNBT());
 		tag.put("OutputSlots", outputInventory.serializeNBT());
@@ -177,6 +189,9 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	public void load(CompoundTag tag) {
 		super.load(tag);
 		stateData.deserialize(tag);
+		if (level != null && tag.contains("ComputedRecipeResult")) {
+			computedRecipeResult = DecomposerRecipeResult.deserialize(tag.getCompound("ComputedRecipeResult"), level.getRecipeManager());
+		}
 		fuelInventory.deserializeNBT(tag.getCompound("FuelSlots"));
 		inputInventory.deserializeNBT(tag.getCompound("InputSlots"));
 		outputInventory.deserializeNBT(tag.getCompound("OutputSlots"));
@@ -220,8 +235,7 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 		Boolean isCrafting = event.getAnimatable().getBlockState().getValue(MachineBlock.CRAFTING);
 		if (Boolean.TRUE.equals(isCrafting)) {
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("decomposer.anim.working", true));
-		}
-		else {
+		} else {
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("decomposer.anim.idle.normal", true));
 		}
 		return PlayState.CONTINUE;
@@ -235,6 +249,42 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	@Override
 	public AnimationFactory getFactory() {
 		return animationFactory;
+	}
+
+	record DecomposerRecipeResult(ResourceLocation recipeId, int seed, List<ItemStack> items) {
+		@Nullable
+		public static DecomposerRecipeResult deserialize(CompoundTag tag, RecipeManager recipeManager) {
+			String id = tag.getString("recipeId");
+			ResourceLocation recipeId = ResourceLocation.tryParse(id);
+			if (recipeId == null) return null;
+
+			Recipe<Container> recipe = recipeManager.byType(RECIPE_TYPE).get(recipeId);
+			if (recipe instanceof DecomposerRecipe decomposerRecipe) {
+				return computeRecipeResult(decomposerRecipe, tag.getInt("seed"));
+			}
+
+			return null;
+		}
+
+		public static DecomposerRecipeResult computeRecipeResult(DecomposerRecipe recipe, int seed) {
+			Random random = new Random(seed);
+
+			List<ItemStack> items = new ArrayList<>();
+			for (VariableProductionOutput output : recipe.getOutputs()) {
+				ItemStack stack = output.getItemStack(random);
+				if (!stack.isEmpty()) items.add(stack);
+			}
+
+			return new DecomposerRecipeResult(recipe.getId(), seed, items);
+		}
+
+		public CompoundTag serialize() {
+			CompoundTag tag = new CompoundTag();
+			tag.putString("recipeId", recipeId().toString());
+			tag.putInt("seed", seed);
+			return tag;
+		}
+
 	}
 
 }

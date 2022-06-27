@@ -125,14 +125,14 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 	}
 
 	@Override
-	protected boolean doesItemFitIntoOutputInventory(ItemStack stackToCraft) {
+	protected boolean doesRecipeResultFitIntoOutputInv(DigesterRecipe craftingGoal, ItemStack stackToCraft) {
 		return outputInventory.doesItemStackFit(stackToCraft);
 	}
 
 	@Override
 	protected boolean craftRecipe(DigesterRecipe recipeToCraft, Level level) {
 		ItemStack result = recipeToCraft.assemble(inputInventory);
-		if (!result.isEmpty() && doesItemFitIntoOutputInventory(result)) {
+		if (!result.isEmpty() && doesRecipeResultFitIntoOutputInv(recipeToCraft, result)) {
 			inputInventory.removeItem(0, 1);
 			outputInventory.insertItemStack(result);
 			setChanged();

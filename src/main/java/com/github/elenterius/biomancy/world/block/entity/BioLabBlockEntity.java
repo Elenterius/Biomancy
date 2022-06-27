@@ -121,14 +121,14 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 	}
 
 	@Override
-	protected boolean doesItemFitIntoOutputInventory(ItemStack stackToCraft) {
+	protected boolean doesRecipeResultFitIntoOutputInv(BioLabRecipe craftingGoal, ItemStack stackToCraft) {
 		return outputInventory.getItem(0).isEmpty() || outputInventory.doesItemStackFit(0, stackToCraft);
 	}
 
 	@Override
 	protected boolean craftRecipe(BioLabRecipe recipeToCraft, Level level) {
 		ItemStack result = recipeToCraft.getResultItem().copy();
-		if (result.isEmpty() || !doesItemFitIntoOutputInventory(result)) {
+		if (result.isEmpty() || !doesRecipeResultFitIntoOutputInv(recipeToCraft, result)) {
 			return false;
 		}
 

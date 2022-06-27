@@ -72,6 +72,19 @@ public class VariableProductionOutput {
 		return stack;
 	}
 
+	public ItemStack getItemStack(Random rng) {
+		int count = getCount(rng);
+		if (count < 1) return ItemStack.EMPTY;
+
+		ItemStack stack = new ItemStack(item);
+		if (tag != null && !tag.isEmpty()) {
+			stack.setTag(tag.copy());
+		}
+		stack.setCount(count);
+
+		return stack;
+	}
+
 	public int getCount(Random rng) {
 		return countRange.getCount(rng);
 	}

@@ -69,7 +69,7 @@ public abstract class MachineBlockEntity<R extends AbstractProductionRecipe, S e
 
 	public abstract void setStackInFuelSlot(ItemStack stack);
 
-	protected abstract boolean doesItemFitIntoOutputInventory(ItemStack stackToCraft);
+	protected abstract boolean doesRecipeResultFitIntoOutputInv(R craftingGoal, ItemStack stackToCraft);
 
 	protected abstract boolean craftRecipe(R recipeToCraft, Level level);
 
@@ -138,7 +138,7 @@ public abstract class MachineBlockEntity<R extends AbstractProductionRecipe, S e
 				state.cancelCrafting();
 			}
 			else {
-				if (doesItemFitIntoOutputInventory(itemToCraft)) {
+				if (doesRecipeResultFitIntoOutputInv(craftingGoal, itemToCraft)) {
 					if (state.getCraftingState() == CraftingState.NONE) { // nothing is being crafted, try to start crafting
 						int totalFuelCost = craftingGoal.getCraftingTime() * getFuelCost();
 						if (getFuelAmount() >= totalFuelCost) { //make sure there is enough fuel to craft the recipe
@@ -146,8 +146,7 @@ public abstract class MachineBlockEntity<R extends AbstractProductionRecipe, S e
 							state.clear(); //safe guard, shouldn't be needed
 							state.setCraftingGoalRecipe(craftingGoal); // this also sets the time required for crafting
 						}
-					}
-					else if (!state.isCraftingCanceled()) { // something is being crafted, check that the crafting goals match
+					} else if (!state.isCraftingCanceled()) { // something is being crafted, check that the crafting goals match
 						R prevCraftingGoal = state.getCraftingGoalRecipe(level).orElse(null);
 						if (prevCraftingGoal == null || !craftingGoal.isRecipeEqual(prevCraftingGoal)) {
 							state.cancelCrafting();
