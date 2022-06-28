@@ -154,7 +154,7 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 			}
 		}
 
-		return InteractionResult.FAIL;
+		return InteractionResult.CONSUME; //prevent accidental placement of blocks, etc
 	}
 
 	@Override
