@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.world.inventory.menu;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
-import com.github.elenterius.biomancy.world.inventory.ItemInventory;
+import com.github.elenterius.biomancy.world.inventory.ItemStackInventory;
 import com.github.elenterius.biomancy.world.inventory.slot.ISlotZone;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -14,10 +14,10 @@ import org.apache.logging.log4j.MarkerManager;
 
 public class BioInjectorMenu extends PlayerContainerMenu {
 
-	private final ItemInventory inventory;
+	private final ItemStackInventory inventory;
 	protected final Level level;
 
-	protected BioInjectorMenu(int id, Inventory playerInventory, ItemInventory inventory) {
+	protected BioInjectorMenu(int id, Inventory playerInventory, ItemStackInventory inventory) {
 		super(ModMenuTypes.BIO_INJECTOR.get(), id, playerInventory, 51, 109);
 		level = playerInventory.player.level;
 		this.inventory = inventory;
@@ -29,12 +29,12 @@ public class BioInjectorMenu extends PlayerContainerMenu {
 		}
 	}
 
-	public static BioInjectorMenu createServerMenu(int screenId, Inventory playerInventory, ItemInventory inventory) {
+	public static BioInjectorMenu createServerMenu(int screenId, Inventory playerInventory, ItemStackInventory inventory) {
 		return new BioInjectorMenu(screenId, playerInventory, inventory);
 	}
 
 	public static BioInjectorMenu createClientMenu(int screenId, Inventory playerInventory, FriendlyByteBuf extraData) {
-		return new BioInjectorMenu(screenId, playerInventory, ItemInventory.createClientContents(extraData.readByte(), extraData.readByte(), extraData.readItem()));
+		return new BioInjectorMenu(screenId, playerInventory, ItemStackInventory.createClientContents(extraData.readByte(), extraData.readByte(), extraData.readItem()));
 	}
 
 	@Override
