@@ -18,8 +18,6 @@ import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import javax.annotation.Nullable;
-
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = BiomancyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public final class TooltipRenderHandler {
@@ -27,10 +25,6 @@ public final class TooltipRenderHandler {
 	private static final ResourceLocation TOOLTIP_OVERLAY_TEXTURE = BiomancyMod.createRL("textures/gui/ui_tooltip.png");
 
 	private TooltipRenderHandler() {}
-
-	private static boolean isBiomancyScreen(@Nullable Screen screen) {
-		return screen != null && ModMenuTypes.SCREENS.stream().anyMatch(screenClass -> screenClass.isInstance(screen));
-	}
 
 	private static boolean isBiomancyItem(ItemStack stack) {
 		if (stack.getItem() instanceof IBiomancyItem) return true;
@@ -42,12 +36,11 @@ public final class TooltipRenderHandler {
 	public static void onRenderTooltipColor(final RenderTooltipEvent.Color event) {
 		ItemStack stack = event.getItemStack();
 
-		if (stack.isEmpty() && isBiomancyScreen(Minecraft.getInstance().screen)) {
+		if (stack.isEmpty() && ModMenuTypes.isBiomancyScreen(Minecraft.getInstance().screen)) {
 			event.setBackground(ColorTheme.TOOLTIP_BACKGROUND_ARGB);
 			event.setBorderStart(ColorTheme.TOOLTIP_BORDER_START_ARGB);
 			event.setBorderEnd(ColorTheme.TOOLTIP_BORDER_END_ARGB);
-		}
-		else if (isBiomancyItem(stack)) {
+		} else if (isBiomancyItem(stack)) {
 			event.setBackground(ColorTheme.TOOLTIP_BACKGROUND_ARGB);
 			int customColor = ModRarities.getRGBColor(stack);
 			if (customColor > -1) {

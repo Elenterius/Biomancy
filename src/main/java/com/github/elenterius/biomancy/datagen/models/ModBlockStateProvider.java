@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.MultifaceBlock;
 import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -50,6 +51,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
 		irisDoor(ModBlocks.FLESH_IRIS_DOOR.get(), true);
 		fleshDoor();
+
+		storageSac(ModBlocks.STORAGE_SAC.get());
 	}
 
 	public ResourceLocation blockModel(Block block) {
@@ -88,6 +91,20 @@ public class ModBlockStateProvider extends BlockStateProvider {
 	public void existingBlockWithItem(Block block) {
 		ModelFile.ExistingModelFile existingModel = models().getExistingFile(blockModel(block));
 		simpleBlock(block, existingModel);
+		simpleBlockItem(block, existingModel);
+	}
+
+	public void storageSac(Block block) {
+		ModelFile.ExistingModelFile existingModel = models().getExistingFile(blockModel(block));
+		getVariantBuilder(block)
+				.forAllStates(state -> {
+					Direction dir = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+					return ConfiguredModel.builder()
+							.modelFile(existingModel)
+							.rotationY(((int) dir.toYRot() + 180) % 360)
+							.build();
+				});
+
 		simpleBlockItem(block, existingModel);
 	}
 

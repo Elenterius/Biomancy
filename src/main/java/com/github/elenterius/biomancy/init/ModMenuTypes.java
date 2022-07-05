@@ -17,6 +17,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,7 +30,7 @@ public final class ModMenuTypes {
 	public static final RegistryObject<MenuType<DecomposerMenu>> DECOMPOSER = MENUS.register("decomposer", () -> IForgeMenuType.create(DecomposerMenu::createClientMenu));
 	public static final RegistryObject<MenuType<BioLabMenu>> BIO_LAB = MENUS.register("bio_lab", () -> IForgeMenuType.create(BioLabMenu::createClientMenu));
 	public static final RegistryObject<MenuType<GlandMenu>> GLAND = MENUS.register("gland", () -> IForgeMenuType.create(GlandMenu::createClientMenu));
-	public static final RegistryObject<MenuType<SacMenu>> SAC = MENUS.register("sac", () -> IForgeMenuType.create(SacMenu::createClientMenu));
+	public static final RegistryObject<MenuType<StorageSacMenu>> STORAGE_SAC = MENUS.register("storage_sac", () -> IForgeMenuType.create(StorageSacMenu::createClientMenu));
 	public static final RegistryObject<MenuType<GulgeMenu>> GULGE = MENUS.register("gulge", () -> IForgeMenuType.create(GulgeMenu::createClientMenu));
 	public static final RegistryObject<MenuType<BioInjectorMenu>> BIO_INJECTOR = MENUS.register("bio_injector", () -> IForgeMenuType.create(BioInjectorMenu::createClientMenu));
 	public static final RegistryObject<MenuType<FleshkinChestMenu>> FLESHKIN_CHEST = MENUS.register("flesh_chest", () -> IForgeMenuType.create(FleshkinChestMenu::createClientMenu));
@@ -37,7 +38,12 @@ public final class ModMenuTypes {
 	public static final RegistryObject<MenuType<BioForgeMenu>> BIO_FORGE = MENUS.register("bio_forge", () -> IForgeMenuType.create(BioForgeMenu::createClientMenu));
 
 	@OnlyIn(Dist.CLIENT)
-	public static final Set<Class<? extends Screen>> SCREENS = new HashSet<>();
+	static final Set<Class<? extends Screen>> SCREENS = new HashSet<>();
+
+	@OnlyIn(Dist.CLIENT)
+	public static boolean isBiomancyScreen(@Nullable Screen screen) {
+		return screen != null && SCREENS.stream().anyMatch(screenClass -> screenClass.isInstance(screen));
+	}
 
 	@OnlyIn(Dist.CLIENT)
 	private static <M extends AbstractContainerMenu, U extends Screen & MenuAccess<M>> void registerMenuScreen(RegistryObject<MenuType<M>> registryObject, MenuScreens.ScreenConstructor<M, U> factory, Class<U> clazz) {
@@ -50,7 +56,7 @@ public final class ModMenuTypes {
 		registerMenuScreen(DECOMPOSER, DecomposerScreen::new, DecomposerScreen.class);
 		registerMenuScreen(BIO_LAB, BioLabScreen::new, BioLabScreen.class);
 		registerMenuScreen(GLAND, GlandScreen::new, GlandScreen.class);
-		registerMenuScreen(SAC, SacScreen::new, SacScreen.class);
+		registerMenuScreen(STORAGE_SAC, StorageSacScreen::new, StorageSacScreen.class);
 		registerMenuScreen(GULGE, GulgeScreen::new, GulgeScreen.class);
 		registerMenuScreen(BIO_INJECTOR, BioInjectorScreen::new, BioInjectorScreen.class);
 		registerMenuScreen(FLESHKIN_CHEST, FleshkinChestScreen::new, FleshkinChestScreen.class);

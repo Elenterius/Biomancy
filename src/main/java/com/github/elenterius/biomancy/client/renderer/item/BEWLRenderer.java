@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.world.block.entity.BioLabBlockEntity;
 import com.github.elenterius.biomancy.world.block.entity.CreatorBlockEntity;
+import com.github.elenterius.biomancy.world.block.entity.StorageSacBlockEntity;
 import com.github.elenterius.biomancy.world.item.BEWLBlockItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -23,6 +24,7 @@ public class BEWLRenderer extends BlockEntityWithoutLevelRenderer {
 
 	private final Lazy<CreatorBlockEntity> creator = Lazy.of(() -> new CreatorBlockEntity(BlockPos.ZERO, ModBlocks.CREATOR.get().defaultBlockState()));
 	private final Lazy<BioLabBlockEntity> bioLab = Lazy.of(() -> new BioLabBlockEntity(BlockPos.ZERO, ModBlocks.BIO_LAB.get().defaultBlockState()));
+	private final Lazy<StorageSacBlockEntity> storageSac = Lazy.of(() -> new StorageSacBlockEntity(BlockPos.ZERO, ModBlocks.STORAGE_SAC.get().defaultBlockState()));
 
 	public BEWLRenderer() {
 		super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());

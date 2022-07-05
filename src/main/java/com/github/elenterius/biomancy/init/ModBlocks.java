@@ -49,7 +49,7 @@ public final class ModBlocks {
 	public static final RegistryObject<DigesterBlock> DIGESTER = BLOCKS.register("digester", () -> new DigesterBlock(createFleshProperties()));
 
 	//## Automation & Storage
-//	public static final RegistryObject<SacBlock> SAC = BLOCKS.register("sac", () -> new SacBlock(createFleshProperties()));
+	public static final RegistryObject<StorageSacBlock> STORAGE_SAC = BLOCKS.register("storage_sac", () -> new StorageSacBlock(createFleshProperties()));
 	public static final RegistryObject<TongueBlock> TONGUE = BLOCKS.register("tongue", () -> new TongueBlock(createFleshProperties()));
 
 	//	public static final RegistryObject<GlandBlock> GLAND = BLOCKS.register("gland", () -> new GlandBlock(createFleshProperties()));
@@ -89,6 +89,7 @@ public final class ModBlocks {
 		ItemBlockRenderTypes.setRenderLayer(DIGESTER.get(), RenderType.cutout());
 
 		ItemBlockRenderTypes.setRenderLayer(VOICE_BOX.get(), RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(STORAGE_SAC.get(), RenderType.translucent());
 
 		ItemBlockRenderTypes.setRenderLayer(FLESH_IRIS_DOOR.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(FLESH_FENCE.get(), RenderType.cutout());

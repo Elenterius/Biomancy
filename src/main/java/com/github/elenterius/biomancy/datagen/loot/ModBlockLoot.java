@@ -31,9 +31,9 @@ public class ModBlockLoot extends BlockLoot {
 		return blocks;
 	}
 
-	protected static LootTable.Builder dropWithInventory(Block container) {
-		return LootTable.lootTable().withPool(applyExplosionCondition(container, LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-				.add(LootItem.lootTableItem(container)
+	protected static LootTable.Builder dropWithInventory(Block block) {
+		return LootTable.lootTable().withPool(applyExplosionCondition(block, LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+				.add(LootItem.lootTableItem(block)
 						.apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY))
 						.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("Inventory", "BlockEntityTag.Inventory"))
 				)));
@@ -67,6 +67,7 @@ public class ModBlockLoot extends BlockLoot {
 
 		dropSelf(ModBlocks.CREATOR.get());
 		dropSelf(ModBlocks.TONGUE.get());
+		add(ModBlocks.STORAGE_SAC.get(), ModBlockLoot::dropWithInventory);
 
 		add(ModBlocks.BIO_FORGE.get(), BlockLoot::createNameableBlockEntityTable);
 		add(ModBlocks.BIO_LAB.get(), BlockLoot::createNameableBlockEntityTable);

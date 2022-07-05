@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.world.inventory.menu;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
-import com.github.elenterius.biomancy.world.block.entity.SacBlockEntity;
+import com.github.elenterius.biomancy.world.block.entity.StorageSacBlockEntity;
 import com.github.elenterius.biomancy.world.inventory.SimpleInventory;
 import com.github.elenterius.biomancy.world.inventory.slot.ISlotZone;
 import net.minecraft.network.FriendlyByteBuf;
@@ -10,21 +10,18 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import org.apache.logging.log4j.MarkerManager;
 
-public class SacMenu extends PlayerContainerMenu {
+public class StorageSacMenu extends PlayerContainerMenu {
 
 	private final SimpleInventory inventory;
-	protected final Level level;
 
-	protected SacMenu(int id, Inventory playerInventory, SimpleInventory inventory) {
-		super(ModMenuTypes.SAC.get(), id, playerInventory, 88, 146);
-		level = playerInventory.player.level;
+	protected StorageSacMenu(int id, Inventory playerInventory, SimpleInventory inventory) {
+		super(ModMenuTypes.STORAGE_SAC.get(), id, playerInventory, 88, 146);
 
 		this.inventory = inventory;
 
-		int posX = 35;
+		int posX = 44;
 		int posY = 17;
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 5; x++) {
@@ -33,13 +30,13 @@ public class SacMenu extends PlayerContainerMenu {
 		}
 	}
 
-	public static SacMenu createServerMenu(int screenId, Inventory playerInventory, SimpleInventory inventory) {
-		return new SacMenu(screenId, playerInventory, inventory);
+	public static StorageSacMenu createServerMenu(int screenId, Inventory playerInventory, SimpleInventory inventory) {
+		return new StorageSacMenu(screenId, playerInventory, inventory);
 	}
 
-	public static SacMenu createClientMenu(int screenId, Inventory playerInventory, FriendlyByteBuf extraData) {
-		SimpleInventory inventory = SimpleInventory.createClientContents(SacBlockEntity.SLOTS);
-		return new SacMenu(screenId, playerInventory, inventory);
+	public static StorageSacMenu createClientMenu(int screenId, Inventory playerInventory, FriendlyByteBuf extraData) {
+		SimpleInventory inventory = SimpleInventory.createClientContents(StorageSacBlockEntity.SLOTS);
+		return new StorageSacMenu(screenId, playerInventory, inventory);
 	}
 
 	@Override
@@ -76,12 +73,16 @@ public class SacMenu extends PlayerContainerMenu {
 
 	public enum SlotZone implements ISlotZone {
 		PLAYER_HOTBAR(0, 9),
-		PLAYER_MAIN_INVENTORY(PLAYER_HOTBAR.lastIndexPlus1, 3 * 9),
-		INVENTORY(PLAYER_MAIN_INVENTORY.lastIndexPlus1, SacBlockEntity.SLOTS);
+		PLAYER_MAIN_INVENTORY(PLAYER_HOTBAR, 3 * 9),
+		INVENTORY(PLAYER_MAIN_INVENTORY, StorageSacBlockEntity.SLOTS);
 
 		public final int firstIndex;
 		public final int slotCount;
 		public final int lastIndexPlus1;
+
+		SlotZone(SlotZone preSlotZone, int numberOfSlots) {
+			this(preSlotZone.lastIndexPlus1, numberOfSlots);
+		}
 
 		SlotZone(int firstIndex, int numberOfSlots) {
 			this.firstIndex = firstIndex;

@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.inventory.menu.SacMenu;
+import com.github.elenterius.biomancy.world.inventory.menu.StorageSacMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -13,11 +13,11 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class SacScreen extends AbstractContainerScreen<SacMenu> {
+public class StorageSacScreen extends AbstractContainerScreen<StorageSacMenu> {
 
-	private static final ResourceLocation BACKGROUND_TEXTURE = BiomancyMod.createRL("textures/gui/menu_gulge_sac.png");
+	private static final ResourceLocation BACKGROUND_TEXTURE = BiomancyMod.createRL("textures/gui/menu_storage_sac.png");
 
-	public SacScreen(SacMenu menu, Inventory playerInventory, Component title) {
+	public StorageSacScreen(StorageSacMenu menu, Inventory playerInventory, Component title) {
 		super(menu, playerInventory, title);
 		imageHeight = 170;
 	}
