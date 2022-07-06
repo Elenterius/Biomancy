@@ -128,6 +128,7 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 		generateFlat(ModItems.LIVING_FLESH.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.EXALTED_LIVING_FLESH.get(), ModelTemplates.FLAT_ITEM);
 		generateFlat(ModItems.FERTILIZER.get(), ModelTemplates.FLAT_ITEM);
+		generateFlat(ModItems.CREATOR_MIX.get(), ModelTemplates.FLAT_ITEM);
 		generateFlatWithOverlay(ModItems.ESSENCE.get(), OVERLAY_TEMPLATE);
 		generateFlat(ModItems.BIO_EXTRACTOR.get(), ModelTemplates.FLAT_HANDHELD_ITEM);
 
