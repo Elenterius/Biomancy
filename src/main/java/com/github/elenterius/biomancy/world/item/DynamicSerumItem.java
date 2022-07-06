@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.world.item;
 
-import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModSerums;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
 import com.github.elenterius.biomancy.world.serum.Serum;
@@ -51,9 +50,9 @@ public final class DynamicSerumItem extends SerumItem {
 			for (Serum serum : ModSerums.REGISTRY.get()) {
 				SerumItem serumItem = SerumItem.getItemForSerum(serum);
 				if (serumItem == null) {
-					ItemStack stack = new ItemStack(ModItems.GENERIC_SERUM.get());
-					serialize(serum, stack.getOrCreateTag());
-					items.add(stack);
+					//					ItemStack stack = new ItemStack(ModItems.GENERIC_SERUM.get());
+					//					serialize(serum, stack.getOrCreateTag());
+					//					items.add(stack);
 				}
 			}
 		}

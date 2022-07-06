@@ -132,7 +132,7 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void onItemColorRegistry(final ColorHandlerEvent.Item event) {
-		event.getItemColors().register((stack, index) -> index == 0 ? ModItems.GENERIC_SERUM.get().getSerumColor(stack) : -1, ModItems.GENERIC_SERUM.get());
+//		event.getItemColors().register((stack, index) -> index == 0 ? ModItems.GENERIC_SERUM.get().getSerumColor(stack) : -1, ModItems.GENERIC_SERUM.get());
 		event.getItemColors().register((stack, index) -> ModItems.ESSENCE.get().getColor(stack, index), ModItems.ESSENCE.get());
 		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.BOOMLING.get().getPotionColor(stack) : -1, ModItems.BOOMLING.get());
 

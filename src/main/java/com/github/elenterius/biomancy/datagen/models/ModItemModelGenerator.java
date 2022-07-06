@@ -137,7 +137,7 @@ public record ModItemModelGenerator(BiConsumer<ResourceLocation, Supplier<JsonEl
 //		generateFlat(ModItems.PROTEIN_BAR.get(), ModItems.NUTRIENT_BAR.get(), ModelTemplates.FLAT_ITEM);
 
 		generateFlat(ModItems.GLASS_VIAL.get(), ModelTemplates.FLAT_ITEM);
-		generateFlatWithOverlay(ModItems.GENERIC_SERUM.get(), OVERLAY_TEMPLATE);
+		//		generateFlatWithOverlay(ModItems.GENERIC_SERUM.get(), OVERLAY_TEMPLATE);
 		generateSerum(ModItems.REJUVENATION_SERUM.get());
 		generateSerum(ModItems.GROWTH_SERUM.get());
 		generateSerum(ModItems.BREEDING_STIMULANT.get());
