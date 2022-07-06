@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.world.block.entity;
+package com.github.elenterius.biomancy.util;
 
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModTags;
@@ -19,16 +19,33 @@ import java.util.Random;
 import java.util.function.IntUnaryOperator;
 import java.util.function.Predicate;
 
-class SacrificeHelper {
+public class SacrificeHelper {
 
-	private static final ImmutableMap<Item, Modifier> ITEM_MODIFIER_MAP = new ImmutableMap.Builder<Item, Modifier>().put(Items.BONE_MEAL, new Modifier(Type.BONE, 5, 0, 0)).put(ModItems.MOB_MARROW.get(), new Modifier(Type.BONE, 5, -20, -5)).put(ModItems.MOB_FANG.get(), new Modifier(Type.BONE, 10, 0, 15)).put(ModItems.WITHERED_MOB_MARROW.get(), new Modifier(Type.BONE, -5, 50, 5)).put(ModItems.FLESH_BITS.get(), new Modifier(Type.RAW_MEAT, 2, 0, 0)).put(Items.ROTTEN_FLESH, new Modifier(Type.RAW_MEAT, -5, 35, 15)).put(Items.CHICKEN, new Modifier(Type.RAW_MEAT, 25, 25, 0)).put(Items.RABBIT_FOOT, new Modifier(Type.RAW_MEAT, 40, 0, -5)).put(Items.SPIDER_EYE, new Modifier(Type.RAW_MEAT, -5, 5, 25)).put(Items.FERMENTED_SPIDER_EYE, new Modifier(Type.RAW_MEAT, -10, 8, 50)).put(ModItems.TOXIN_GLAND.get(), new Modifier(Type.RAW_MEAT, -8, 10, 40)).put(ModItems.VOLATILE_GLAND.get(), new Modifier(Type.RAW_MEAT, -8, 30, 20)).put(ModItems.GENERIC_MOB_GLAND.get(), new Modifier(Type.RAW_MEAT, 0, 10, 0))
+	private static final ImmutableMap<Item, Modifier> ITEM_MODIFIER_MAP = new ImmutableMap.Builder<Item, Modifier>()
+			.put(ModItems.CREATOR_MIX.get(), new Modifier(Type.CREATOR_MIX, 15, 3, 3))
+			.put(ModItems.LIVING_FLESH.get(), new Modifier(Type.EMPTY, -99999, 0, 0))
+			.put(Items.RABBIT_FOOT, new Modifier(Type.RAW_MEAT, 40, 0, -5))
+			.put(Items.BONE_MEAL, new Modifier(Type.BONE, 5, 0, 0))
+			.put(ModItems.MOB_MARROW.get(), new Modifier(Type.BONE, 5, -20, -5))
+			.put(ModItems.MOB_FANG.get(), new Modifier(Type.BONE, 10, 0, 15))
+			.put(ModItems.MOB_CLAW.get(), new Modifier(Type.BONE, 0, 0, 20))
+			.put(ModItems.WITHERED_MOB_MARROW.get(), new Modifier(Type.BONE, -5, 50, 5))
+			.put(ModItems.FLESH_BITS.get(), new Modifier(Type.RAW_MEAT, 2, 0, 0))
+			.put(ModItems.MOB_SINEW.get(), new Modifier(Type.RAW_MEAT, 2, 0, 0))
+			.put(Items.ROTTEN_FLESH, new Modifier(Type.RAW_MEAT, -5, 35, 15))
+			.put(Items.CHICKEN, new Modifier(Type.RAW_MEAT, 25, 25, 0))
+			.put(Items.SPIDER_EYE, new Modifier(Type.RAW_MEAT, 10, 10, 10))
+			.put(Items.FERMENTED_SPIDER_EYE, new Modifier(Type.RAW_MEAT, -10, 5, 60))
+			.put(ModItems.TOXIN_GLAND.get(), new Modifier(Type.RAW_MEAT, -8, 10, 40))
+			.put(ModItems.VOLATILE_GLAND.get(), new Modifier(Type.RAW_MEAT, -8, 30, 20))
+			.put(ModItems.GENERIC_MOB_GLAND.get(), new Modifier(Type.RAW_MEAT, 0, 5, 0))
 			.build();
 
 	private static final Modifier EMPTY_MODIFIER = new Modifier(Type.EMPTY, 0, 0, 0);
 	private static final Modifier INVALID_ITEM_MODIFIER = new Modifier(Type.EMPTY, -20, 0, 20);
 	private static final Modifier BONES_MODIFIER = new Modifier(Type.BONE, 16, 4, 4);
-	private static final Modifier RAW_MEATS_MODIFIER = new Modifier(Type.RAW_MEAT, 24, 4, 4);
-	private static final Modifier COOKED_MEATS_MODIFIER = new Modifier(Type.EMPTY, -10, 0, 0);
+	private static final Modifier RAW_MEATS_MODIFIER = new Modifier(Type.RAW_MEAT, 24, 4, 0);
+	private static final Modifier COOKED_MEATS_MODIFIER = new Modifier(Type.EMPTY, -5, 0, 0);
 
 	private static final Predicate<ItemStack> VALID_INGREDIENTS = stack ->
 			ITEM_MODIFIER_MAP.containsKey(stack.getItem())
@@ -114,28 +131,11 @@ class SacrificeHelper {
 		successChance = sum / 100f;
 	}
 
-//	public int countUniqueFleshItems(NonNullList<ItemStack> items) {
-//		List<ItemStack> uniqueMeats = new ArrayList<>(items.size());
-//		for (ItemStack stack : items) {
-//			if (!stack.isEmpty() && stack.is(ModTags.Items.RAW_MEATS)) {
-//				boolean skip = false;
-//				for (ItemStack uniqueMeat : uniqueMeats) {
-//					if (ItemHandlerHelper.canItemStacksStack(stack, uniqueMeat)) {
-//						skip = true;
-//						break;
-//					}
-//				}
-//				if (skip) continue;
-//				uniqueMeats.add(stack);
-//			}
-//		}
-//		return uniqueMeats.size();
-//	}
-
 	enum Type {
 		EMPTY(0, v -> v),
-		BONE(1, v -> v < 20 ? (int) ((v / 20f - 1) * 100) : Math.min(v, 30)),
-		RAW_MEAT(2, v -> v < 66 ? (int) ((v / 66f - 1) * 100) : Math.min(v, 90));
+		BONE(1, v -> Math.min(v, 30)),
+		RAW_MEAT(2, v -> v < 66 ? (int) ((v / 66f - 1) * 100) : Math.min(v, 90)),
+		CREATOR_MIX(3, v -> v < 6 * 15 ? v : 100 + v);
 
 		private final int index;
 		private final IntUnaryOperator operator;

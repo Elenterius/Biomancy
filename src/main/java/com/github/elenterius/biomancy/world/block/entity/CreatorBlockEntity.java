@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.init.ModDamageSources;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.network.ISyncableAnimation;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
+import com.github.elenterius.biomancy.util.SacrificeHelper;
 import com.github.elenterius.biomancy.world.block.CreatorBlock;
 import com.github.elenterius.biomancy.world.entity.fleshblob.FleshBlob;
 import net.minecraft.core.BlockPos;
