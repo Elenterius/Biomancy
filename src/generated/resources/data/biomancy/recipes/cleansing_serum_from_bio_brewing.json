@@ -5,13 +5,13 @@
       "ingredient": {
         "item": "biomancy:corrosive_additive"
       },
-      "count": 5
+      "count": 1
     },
     {
       "ingredient": {
         "item": "biomancy:healing_additive"
       },
-      "count": 5
+      "count": 1
     }
   ],
   "reactant": {

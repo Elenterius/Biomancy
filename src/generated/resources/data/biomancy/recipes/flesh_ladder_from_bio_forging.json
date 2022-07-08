@@ -5,18 +5,17 @@
       "ingredient": {
         "item": "biomancy:bone_fragments"
       },
-      "count": 42
+      "count": 14
     },
     {
       "ingredient": {
         "item": "biomancy:flesh_bits"
       },
-      "count": 6
+      "count": 2
     }
   ],
   "result": {
-    "item": "biomancy:flesh_ladder",
-    "count": 3
+    "item": "biomancy:flesh_ladder"
   },
   "category": "biomancy_bio_forge_misc"
 }

@@ -5,13 +5,13 @@
       "ingredient": {
         "item": "minecraft:sugar"
       },
-      "count": 5
+      "count": 1
     },
     {
       "ingredient": {
         "item": "biomancy:bile"
       },
-      "count": 5
+      "count": 1
     }
   ],
   "reactant": {

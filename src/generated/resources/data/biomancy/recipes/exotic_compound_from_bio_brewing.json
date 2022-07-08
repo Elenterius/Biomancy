@@ -5,13 +5,13 @@
       "ingredient": {
         "item": "biomancy:exotic_dust"
       },
-      "count": 5
+      "count": 1
     },
     {
       "ingredient": {
         "item": "biomancy:bio_minerals"
       },
-      "count": 5
+      "count": 1
     }
   ],
   "reactant": {

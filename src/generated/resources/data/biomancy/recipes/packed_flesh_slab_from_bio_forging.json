@@ -5,12 +5,11 @@
       "ingredient": {
         "item": "biomancy:flesh_bits"
       },
-      "count": 64
+      "count": 8
     }
   ],
   "result": {
-    "item": "biomancy:packed_flesh_slab",
-    "count": 2
+    "item": "biomancy:packed_flesh_slab"
   },
   "category": "biomancy_bio_forge_blocks"
 }

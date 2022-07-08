@@ -5,25 +5,25 @@
       "ingredient": {
         "item": "biomancy:nutrients"
       },
-      "count": 5
+      "count": 1
     },
     {
       "ingredient": {
         "item": "biomancy:hormone_secretion"
       },
-      "count": 5
+      "count": 1
     },
     {
       "ingredient": {
         "tag": "minecraft:flowers"
       },
-      "count": 5
+      "count": 1
     },
     {
       "ingredient": {
         "item": "minecraft:cocoa_beans"
       },
-      "count": 5
+      "count": 1
     }
   ],
   "reactant": {

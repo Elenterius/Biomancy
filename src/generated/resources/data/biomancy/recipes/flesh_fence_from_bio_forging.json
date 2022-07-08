@@ -5,13 +5,13 @@
       "ingredient": {
         "item": "biomancy:flesh_bits"
       },
-      "count": 32
+      "count": 8
     },
     {
       "ingredient": {
         "item": "biomancy:bone_fragments"
       },
-      "count": 32
+      "count": 8
     }
   ],
   "result": {
