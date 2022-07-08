@@ -90,9 +90,12 @@ public abstract class MachineBlockEntity<R extends AbstractProductionRecipe, S e
 			refuel();
 		}
 
-		//TODO: use previous craftingGoalRecipe before trying to find a recipe to craft
-		R craftingGoal = resolveRecipeFromInput(level); //get the currently possible crafting goal
 		S state = getStateData();
+		R craftingGoal = state
+				.getCraftingGoalRecipe(level) //try to use the current/previous crafting goal first
+				.filter(r -> doesRecipeMatchInput(r, level)) //check if it's still matches with the ingredients in the input, if yes use it
+				.orElseGet(() -> resolveRecipeFromInput(level)); //else try to find new crafting goal
+
 		boolean emitRedstoneSignal = false;
 		if (craftingGoal == null) {
 			state.cancelCrafting();
@@ -100,8 +103,7 @@ public abstract class MachineBlockEntity<R extends AbstractProductionRecipe, S e
 			ItemStack itemToCraft = craftingGoal.getResultItem();
 			if (itemToCraft.isEmpty()) {
 				state.cancelCrafting();
-			}
-			else {
+			} else {
 				if (doesRecipeResultFitIntoOutputInv(craftingGoal, itemToCraft)) {
 					if (state.getCraftingState() == CraftingState.NONE) { // nothing is being crafted, try to start crafting
 						if (hasEnoughFuel(craftingGoal)) { //make sure there is enough fuel to craft the recipe
