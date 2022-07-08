@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.recipe.DecomposerRecipe;
 import com.github.elenterius.biomancy.recipe.ItemCountRange;
 import com.github.elenterius.biomancy.recipe.VariableProductionOutput;
+import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import com.github.elenterius.biomancy.world.block.entity.DecomposerBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
@@ -115,7 +116,7 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 	public void draw(DecomposerRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
 		int ticks = recipe.getCraftingTime();
 		if (ticks > 0) {
-			int fuelCost = ticks * DecomposerBlockEntity.FUEL_COST;
+			int fuelCost = NutrientFuelUtil.getFuelCost(DecomposerBlockEntity.BASE_COST, ticks);
 			int seconds = ticks / 20;
 			Font fontRenderer = Minecraft.getInstance().font;
 			TranslatableComponent timeString = new TranslatableComponent("gui.jei.category.smelting.time.seconds", seconds);

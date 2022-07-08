@@ -4,7 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
 import com.github.elenterius.biomancy.recipe.BioForgeRecipe;
 import com.github.elenterius.biomancy.recipe.IngredientStack;
-import com.github.elenterius.biomancy.util.FuelUtil;
+import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import com.github.elenterius.biomancy.world.block.entity.BioForgeBlockEntity;
 import com.github.elenterius.biomancy.world.block.entity.state.BioForgeStateData;
 import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
@@ -172,7 +172,7 @@ public class BioForgeMenu extends PlayerContainerMenu {
 	}
 
 	private boolean mergeIntoFuelZone(ItemStack stackInSlot) {
-		if (FuelUtil.isItemValidFuel(stackInSlot)) {
+		if (NutrientFuelUtil.isValidFuel(stackInSlot)) {
 			return mergeInto(SlotZone.FUEL_ZONE, stackInSlot, true);
 		}
 		return false;

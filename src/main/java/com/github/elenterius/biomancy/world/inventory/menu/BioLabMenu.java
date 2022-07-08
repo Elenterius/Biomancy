@@ -2,7 +2,8 @@ package com.github.elenterius.biomancy.world.inventory.menu;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
-import com.github.elenterius.biomancy.util.FuelUtil;
+import com.github.elenterius.biomancy.util.fuel.FuelHandler;
+import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import com.github.elenterius.biomancy.world.block.entity.BioLabBlockEntity;
 import com.github.elenterius.biomancy.world.block.entity.state.BioLabStateData;
 import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
@@ -19,21 +20,21 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.apache.logging.log4j.MarkerManager;
 
+import java.util.function.Predicate;
+
 public class BioLabMenu extends PlayerContainerMenu {
 
 	protected final Level level;
-	private final BehavioralInventory<?> fuelInventory;
-	private final SimpleInventory inputInventory;
-	private final BehavioralInventory<?> outputInventory;
+	private final Predicate<Player> isMenuValidPredicate;
 	private final BioLabStateData stateData;
 
 	protected BioLabMenu(int id, Inventory playerInventory, BehavioralInventory<?> fuelInventory, SimpleInventory inputInventory, BehavioralInventory<?> outputInventory, BioLabStateData stateData) {
 		super(ModMenuTypes.BIO_LAB.get(), id, playerInventory, 137, 195);
 		level = playerInventory.player.level;
 
-		this.fuelInventory = fuelInventory;
-		this.inputInventory = inputInventory;
-		this.outputInventory = outputInventory;
+		//we don't check all three inventories because they all call the same method in the decomposer tile entity
+		isMenuValidPredicate = inputInventory::stillValid;
+
 		this.stateData = stateData;
 
 		addSlot(new FuelSlot(fuelInventory, 0, 31, 88));
@@ -59,13 +60,14 @@ public class BioLabMenu extends PlayerContainerMenu {
 		BehavioralInventory<?> fuelInventory = BehavioralInventory.createClientContents(BioLabBlockEntity.FUEL_SLOTS);
 		SimpleInventory inputInventory = SimpleInventory.createClientContents(BioLabBlockEntity.INPUT_SLOTS);
 		BehavioralInventory<?> outputInventory = BehavioralInventory.createClientContents(BioLabBlockEntity.OUTPUT_SLOTS);
-		return new BioLabMenu(screenId, playerInventory, fuelInventory, inputInventory, outputInventory, new BioLabStateData());
+		FuelHandler fuelHandler = FuelHandler.createNutrientFuelHandler(BioLabBlockEntity.MAX_FUEL, BioLabBlockEntity.BASE_COST, () -> {});
+		BioLabStateData state = new BioLabStateData(fuelHandler);
+		return new BioLabMenu(screenId, playerInventory, fuelInventory, inputInventory, outputInventory, state);
 	}
 
 	@Override
 	public boolean stillValid(Player player) {
-		//we don't check all three inventories because they all call the same method in the decomposer tile entity
-		return inputInventory.stillValid(player);
+		return isMenuValidPredicate.test(player);
 	}
 
 	public float getCraftingProgressNormalized() {
@@ -73,20 +75,20 @@ public class BioLabMenu extends PlayerContainerMenu {
 		return Mth.clamp(stateData.timeElapsed / (float) stateData.timeForCompletion, 0f, 1f);
 	}
 
-	public int getTotalFuelCost() {
-		return stateData.timeForCompletion * BioLabBlockEntity.FUEL_COST;
+	public int getFuelCost() {
+		return stateData.getFuelCost();
 	}
 
 	public float getFuelAmountNormalized() {
-		return Mth.clamp((float) stateData.getFuelAmount() / BioLabBlockEntity.MAX_FUEL, 0f, 1f);
+		return Mth.clamp((float) stateData.fuelHandler.getFuelAmount() / stateData.fuelHandler.getMaxFuelAmount(), 0f, 1f);
 	}
 
 	public int getFuelAmount() {
-		return stateData.getFuelAmount();
+		return stateData.fuelHandler.getFuelAmount();
 	}
 
-	public int getMAxFuelAmount() {
-		return BioLabBlockEntity.MAX_FUEL;
+	public int getMaxFuelAmount() {
+		return stateData.fuelHandler.getMaxFuelAmount();
 	}
 
 	@Override
@@ -126,7 +128,7 @@ public class BioLabMenu extends PlayerContainerMenu {
 	}
 
 	private boolean mergeIntoFuelZone(ItemStack stackInSlot) {
-		if (FuelUtil.isItemValidFuel(stackInSlot)) {
+		if (NutrientFuelUtil.isValidFuel(stackInSlot)) {
 			return mergeInto(SlotZone.FUEL_ZONE, stackInSlot, true);
 		}
 		return false;

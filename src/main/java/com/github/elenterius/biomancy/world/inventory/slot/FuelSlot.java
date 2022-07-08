@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.world.inventory.slot;
 
-import com.github.elenterius.biomancy.util.FuelUtil;
+import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -13,7 +13,7 @@ public class FuelSlot extends Slot {
 
 	@Override
 	public boolean mayPlace(ItemStack stack) {
-		return FuelUtil.isItemValidFuel(stack);
+		return NutrientFuelUtil.isValidFuel(stack);
 	}
 
 }

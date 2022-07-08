@@ -1,14 +1,17 @@
 package com.github.elenterius.biomancy.world.block.entity.state;
 
 import com.github.elenterius.biomancy.recipe.DigesterRecipe;
-import net.minecraft.nbt.CompoundTag;
+import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 
 public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> {
 
-	public static final String NBT_KEY_FUEL = "Fuel";
 	public static final int FUEL_AMOUNT_INDEX = 2;
 
-	private int fuelAmount;
+	public final IFuelHandler fuelHandler;
+
+	public DigesterStateData(IFuelHandler fuelHandler) {
+		this.fuelHandler = fuelHandler;
+	}
 
 	@Override
 	Class<DigesterRecipe> getRecipeType() {
@@ -16,15 +19,8 @@ public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> {
 	}
 
 	@Override
-	public void serialize(CompoundTag nbt) {
-		super.serialize(nbt);
-		if (fuelAmount > 0) nbt.putInt(NBT_KEY_FUEL, fuelAmount);
-	}
-
-	@Override
-	public void deserialize(CompoundTag nbt) {
-		super.deserialize(nbt);
-		fuelAmount = nbt.getInt(NBT_KEY_FUEL);
+	public int getFuelCost() {
+		return fuelHandler.getFuelCost(timeForCompletion);
 	}
 
 	@Override
@@ -33,7 +29,7 @@ public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> {
 		return switch (index) {
 			case TIME_INDEX -> timeElapsed;
 			case TIME_FOR_COMPLETION_INDEX -> timeForCompletion;
-			case FUEL_AMOUNT_INDEX -> fuelAmount;
+			case FUEL_AMOUNT_INDEX -> fuelHandler.getFuelAmount();
 			default -> 0;
 		};
 	}
@@ -44,7 +40,7 @@ public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> {
 		switch (index) {
 			case TIME_INDEX -> timeElapsed = value;
 			case TIME_FOR_COMPLETION_INDEX -> timeForCompletion = value;
-			case FUEL_AMOUNT_INDEX -> fuelAmount = value;
+			case FUEL_AMOUNT_INDEX -> fuelHandler.setFuelAmount(value);
 			default -> throw new IllegalStateException("Unexpected value: " + index);
 		}
 	}
@@ -52,14 +48,6 @@ public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> {
 	@Override
 	public int getCount() {
 		return 3;
-	}
-
-	public int getFuelAmount() {
-		return fuelAmount;
-	}
-
-	public void setFuelAmount(int value) {
-		fuelAmount = value;
 	}
 
 }

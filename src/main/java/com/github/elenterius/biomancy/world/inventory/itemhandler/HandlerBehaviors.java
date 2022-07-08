@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.world.inventory.itemhandler;
 
-import com.github.elenterius.biomancy.util.FuelUtil;
+import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -90,7 +90,7 @@ public final class HandlerBehaviors {
 	 */
 	public static <T extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundTag>> T filterFuel(T itemStackHandler) {
 		//noinspection unchecked
-		return (T) new ItemHandlerDelegator.FilterInput<>(itemStackHandler, FuelUtil::isItemValidFuel);
+		return (T) new ItemHandlerDelegator.FilterInput<>(itemStackHandler, NutrientFuelUtil::isValidFuel);
 	}
 
 }

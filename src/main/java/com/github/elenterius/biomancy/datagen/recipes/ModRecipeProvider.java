@@ -4,7 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipeBooks;
 import com.github.elenterius.biomancy.init.ModTags;
-import com.github.elenterius.biomancy.util.FuelUtil;
+import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.DataGenerator;
@@ -199,17 +199,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
 	private void registerDigestingRecipes(Consumer<FinishedRecipe> consumer) {
 
-		DigesterRecipeBuilder.create(ModItems.NUTRIENTS.get(), FuelUtil.getNutrientsFromFuelItem(ModItems.NUTRIENT_PASTE.get()), "nutrient_paste")
-				.setIngredient(ModItems.NUTRIENT_PASTE.get())
-				.setCraftingTime(100)
-				.unlockedBy(ModItems.NUTRIENT_PASTE.get()).save(consumer);
-
-		DigesterRecipeBuilder.create(ModItems.NUTRIENTS.get(), FuelUtil.getNutrientsFromFuelItem(ModItems.NUTRIENT_BAR.get()), "nutrient_bar")
-				.setIngredient(ModItems.NUTRIENT_BAR.get())
-				.setCraftingTime(600)
-				.unlockedBy(ModItems.NUTRIENT_BAR.get()).save(consumer);
-
-		final int itemCount = FuelUtil.DEFAULT_FUEL_VALUE / FuelUtil.NUTRIENTS_FUEL_VALUE;
+		final int itemCount = NutrientFuelUtil.DEFAULT_FUEL_VALUE;
 
 		DigesterRecipeBuilder.create(ModItems.NUTRIENTS.get(), 2 * itemCount, "poor_biomass")
 				.setIngredient(ModTags.Items.POOR_BIOMASS)

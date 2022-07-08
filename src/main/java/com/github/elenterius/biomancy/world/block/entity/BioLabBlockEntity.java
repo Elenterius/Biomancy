@@ -6,6 +6,8 @@ import com.github.elenterius.biomancy.recipe.BioLabRecipe;
 import com.github.elenterius.biomancy.recipe.IngredientStack;
 import com.github.elenterius.biomancy.recipe.RecipeTypeImpl;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
+import com.github.elenterius.biomancy.util.fuel.FuelHandler;
+import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 import com.github.elenterius.biomancy.world.block.entity.state.BioLabStateData;
 import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.world.inventory.SimpleInventory;
@@ -46,11 +48,12 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 	public static final int INPUT_SLOTS = BioLabRecipe.MAX_INGREDIENTS + BioLabRecipe.MAX_REACTANT;
 	public static final int OUTPUT_SLOTS = 2;
 
-	public static final int MAX_FUEL = 32_000;
-	public static final short FUEL_COST = 2;
+	public static final int MAX_FUEL = 1_000;
+	public static final short BASE_COST = 2;
 	public static final RecipeTypeImpl.ItemStackRecipeType<BioLabRecipe> RECIPE_TYPE = ModRecipes.BIO_BREWING_RECIPE_TYPE;
 
-	private final BioLabStateData stateData = new BioLabStateData();
+	private final BioLabStateData stateData;
+	private final FuelHandler fuelHandler;
 	private final BehavioralInventory<?> fuelInventory;
 	private final SimpleInventory inputInventory;
 	private final BehavioralInventory<?> outputInventory;
@@ -59,9 +62,14 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 
 	public BioLabBlockEntity(BlockPos worldPosition, BlockState blockState) {
 		super(ModBlockEntities.BIO_LAB.get(), worldPosition, blockState);
-		fuelInventory = BehavioralInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterFuel, this::canPlayerOpenInv, this::setChanged);
+
 		inputInventory = SimpleInventory.createServerContents(INPUT_SLOTS, this::canPlayerOpenInv, this::setChanged);
 		outputInventory = BehavioralInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
+
+		fuelInventory = BehavioralInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterFuel, this::canPlayerOpenInv, this::setChanged);
+		fuelHandler = FuelHandler.createNutrientFuelHandler(MAX_FUEL, BASE_COST, this::setChanged);
+
+		stateData = new BioLabStateData(fuelHandler);
 	}
 
 	@Override
@@ -86,28 +94,8 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 	}
 
 	@Override
-	public int getFuelAmount() {
-		return stateData.getFuelAmount();
-	}
-
-	@Override
-	public void setFuelAmount(int newAmount) {
-		stateData.setFuelAmount((short) newAmount);
-	}
-
-	@Override
-	public void addFuelAmount(int addAmount) {
-		stateData.setFuelAmount((short) (stateData.getFuelAmount() + addAmount));
-	}
-
-	@Override
-	public int getMaxFuelAmount() {
-		return MAX_FUEL;
-	}
-
-	@Override
-	public int getFuelCost() {
-		return FUEL_COST;
+	protected IFuelHandler getFuelHandler() {
+		return fuelHandler;
 	}
 
 	@Override
@@ -216,9 +204,15 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 	}
 
 	@Override
+	protected boolean doesRecipeMatchInput(BioLabRecipe recipeToTest, Level level) {
+		return recipeToTest.matches(inputInventory, level);
+	}
+
+	@Override
 	protected void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 		stateData.serialize(tag);
+		tag.put("Fuel", fuelHandler.serializeNBT());
 		tag.put("FuelSlots", fuelInventory.serializeNBT());
 		tag.put("InputSlots", inputInventory.serializeNBT());
 		tag.put("OutputSlots", outputInventory.serializeNBT());
@@ -228,6 +222,7 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 	public void load(CompoundTag tag) {
 		super.load(tag);
 		stateData.deserialize(tag);
+		fuelHandler.deserializeNBT(tag.getCompound("Fuel"));
 		fuelInventory.deserializeNBT(tag.getCompound("FuelSlots"));
 		inputInventory.deserializeNBT(tag.getCompound("InputSlots"));
 		outputInventory.deserializeNBT(tag.getCompound("OutputSlots"));

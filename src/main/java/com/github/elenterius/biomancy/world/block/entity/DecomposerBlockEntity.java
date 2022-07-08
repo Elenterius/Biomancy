@@ -6,6 +6,8 @@ import com.github.elenterius.biomancy.recipe.DecomposerRecipe;
 import com.github.elenterius.biomancy.recipe.RecipeTypeImpl;
 import com.github.elenterius.biomancy.recipe.VariableProductionOutput;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
+import com.github.elenterius.biomancy.util.fuel.FuelHandler;
+import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 import com.github.elenterius.biomancy.world.block.MachineBlock;
 import com.github.elenterius.biomancy.world.block.entity.state.DecomposerStateData;
 import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
@@ -16,7 +18,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
@@ -53,11 +54,13 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	public static final int INPUT_SLOTS = DecomposerRecipe.MAX_INGREDIENTS;
 	public static final int OUTPUT_SLOTS = DecomposerRecipe.MAX_OUTPUTS;
 
-	public static final int MAX_FUEL = 32_000;
-	public static final short FUEL_COST = 5;
+	public static final int MAX_FUEL = 1_000;
+	public static final int BASE_COST = 1;
+
 	public static final RecipeTypeImpl.ItemStackRecipeType<DecomposerRecipe> RECIPE_TYPE = ModRecipes.DECOMPOSING_RECIPE_TYPE;
 
-	private final DecomposerStateData stateData = new DecomposerStateData();
+	private final DecomposerStateData stateData;
+	private final FuelHandler fuelHandler;
 	private final BehavioralInventory<?> fuelInventory;
 	private final BehavioralInventory<?> inputInventory;
 	private final BehavioralInventory<?> outputInventory;
@@ -68,13 +71,14 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 
 	public DecomposerBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.DECOMPOSER.get(), pos, state);
-		fuelInventory = BehavioralInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterFuel, this::canPlayerOpenInv, this::setChanged);
+
 		inputInventory = BehavioralInventory.createServerContents(INPUT_SLOTS, this::canPlayerOpenInv, this::setChanged);
 		outputInventory = BehavioralInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
-	}
 
-	public static void serverTick(Level level, BlockPos pos, BlockState state, DecomposerBlockEntity decomposer) {
-		decomposer.serverTick((ServerLevel) level);
+		fuelInventory = BehavioralInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterFuel, this::canPlayerOpenInv, this::setChanged);
+		fuelHandler = FuelHandler.createNutrientFuelHandler(MAX_FUEL, BASE_COST, this::setChanged);
+
+		stateData = new DecomposerStateData(fuelHandler);
 	}
 
 	@Override
@@ -104,28 +108,8 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	}
 
 	@Override
-	public int getFuelAmount() {
-		return stateData.getFuelAmount();
-	}
-
-	@Override
-	public void setFuelAmount(int newAmount) {
-		stateData.setFuelAmount(newAmount);
-	}
-
-	@Override
-	public void addFuelAmount(int addAmount) {
-		stateData.setFuelAmount(stateData.getFuelAmount() + addAmount);
-	}
-
-	@Override
-	public int getMaxFuelAmount() {
-		return MAX_FUEL;
-	}
-
-	@Override
-	public int getFuelCost() {
-		return FUEL_COST;
+	protected IFuelHandler getFuelHandler() {
+		return fuelHandler;
 	}
 
 	@Override
@@ -174,12 +158,18 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	}
 
 	@Override
+	protected boolean doesRecipeMatchInput(DecomposerRecipe recipeToTest, Level level) {
+		return recipeToTest.matches(inputInventory, level);
+	}
+
+	@Override
 	protected void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 		stateData.serialize(tag);
 		if (computedRecipeResult != null) {
 			tag.put("ComputedRecipeResult", computedRecipeResult.serialize());
 		}
+		tag.put("Fuel", fuelHandler.serializeNBT());
 		tag.put("FuelSlots", fuelInventory.serializeNBT());
 		tag.put("InputSlots", inputInventory.serializeNBT());
 		tag.put("OutputSlots", outputInventory.serializeNBT());
@@ -192,6 +182,7 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 		if (level != null && tag.contains("ComputedRecipeResult")) {
 			computedRecipeResult = DecomposerRecipeResult.deserialize(tag.getCompound("ComputedRecipeResult"), level.getRecipeManager());
 		}
+		fuelHandler.deserializeNBT(tag.getCompound("Fuel"));
 		fuelInventory.deserializeNBT(tag.getCompound("FuelSlots"));
 		inputInventory.deserializeNBT(tag.getCompound("InputSlots"));
 		outputInventory.deserializeNBT(tag.getCompound("OutputSlots"));

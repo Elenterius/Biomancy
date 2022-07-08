@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.recipe.DigesterRecipe;
+import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import com.github.elenterius.biomancy.world.block.entity.DigesterBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
@@ -77,7 +78,7 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 		int ticks = recipe.getCraftingTime();
 		if (ticks > 0) {
 			int seconds = ticks / 20;
-			int fuelCost = ticks * DigesterBlockEntity.FUEL_COST;
+			int fuelCost = NutrientFuelUtil.getFuelCost(DigesterBlockEntity.BASE_COST, ticks);
 			Component timeText = new TranslatableComponent("gui.jei.category.smelting.time.seconds", seconds);
 			Component costText = new TextComponent("+" + fuelCost + " ").append(new TranslatableComponent("tooltip.biomancy.nutrients_fuel"));
 			Font fontRenderer = Minecraft.getInstance().font;

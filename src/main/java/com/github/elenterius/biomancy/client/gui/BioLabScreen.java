@@ -72,9 +72,9 @@ public class BioLabScreen extends AbstractContainerScreen<BioLabMenu> {
 	}
 
 	private void drawFuelTooltip(PoseStack poseStack, int mouseX, int mouseY) {
-		int maxFuel = menu.getMAxFuelAmount();
+		int maxFuel = menu.getMaxFuelAmount();
 		int fuelAmount = menu.getFuelAmount();
-		int totalFuelCost = menu.getTotalFuelCost();
+		int totalFuelCost = menu.getFuelCost();
 		GuiRenderUtil.drawFuelTooltip(this, poseStack, mouseX, mouseY, maxFuel, fuelAmount, totalFuelCost);
 	}
 

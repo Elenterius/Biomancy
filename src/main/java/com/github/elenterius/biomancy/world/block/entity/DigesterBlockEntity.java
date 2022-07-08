@@ -5,6 +5,8 @@ import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.recipe.DigesterRecipe;
 import com.github.elenterius.biomancy.recipe.RecipeTypeImpl;
 import com.github.elenterius.biomancy.util.TextComponentUtil;
+import com.github.elenterius.biomancy.util.fuel.FuelHandler;
+import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 import com.github.elenterius.biomancy.world.block.MachineBlock;
 import com.github.elenterius.biomancy.world.block.entity.state.DigesterStateData;
 import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
@@ -45,11 +47,12 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 	public static final int INPUT_SLOTS = 1;
 	public static final int OUTPUT_SLOTS = 2;
 
-	public static final int MAX_FUEL = 32_000;
-	public static final short FUEL_COST = 2;
+	public static final int MAX_FUEL = 1_000;
+	public static final short BASE_COST = 1;
 	public static final RecipeTypeImpl.ItemStackRecipeType<DigesterRecipe> RECIPE_TYPE = ModRecipes.DIGESTING_RECIPE_TYPE;
 
-	private final DigesterStateData stateData = new DigesterStateData();
+	private final DigesterStateData stateData;
+	private final FuelHandler fuelHandler;
 	private final BehavioralInventory<?> fuelInventory;
 	private final BehavioralInventory<?> inputInventory;
 	private final BehavioralInventory<?> outputInventory;
@@ -58,9 +61,13 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 
 	public DigesterBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.DIGESTER.get(), pos, state);
-		fuelInventory = BehavioralInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterFuel, this::canPlayerOpenInv, this::setChanged);
 		inputInventory = BehavioralInventory.createServerContents(INPUT_SLOTS, this::canPlayerOpenInv, this::setChanged);
 		outputInventory = BehavioralInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
+
+		fuelInventory = BehavioralInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterFuel, this::canPlayerOpenInv, this::setChanged);
+		fuelHandler = FuelHandler.createNutrientFuelHandler(MAX_FUEL, BASE_COST, this::setChanged);
+
+		stateData = new DigesterStateData(fuelHandler);
 	}
 
 	@Override
@@ -90,28 +97,8 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 	}
 
 	@Override
-	public int getFuelAmount() {
-		return stateData.getFuelAmount();
-	}
-
-	@Override
-	public void setFuelAmount(int newAmount) {
-		stateData.setFuelAmount(newAmount);
-	}
-
-	@Override
-	public void addFuelAmount(int addAmount) {
-		stateData.setFuelAmount(stateData.getFuelAmount() + addAmount);
-	}
-
-	@Override
-	public int getMaxFuelAmount() {
-		return MAX_FUEL;
-	}
-
-	@Override
-	public int getFuelCost() {
-		return FUEL_COST;
+	protected IFuelHandler getFuelHandler() {
+		return fuelHandler;
 	}
 
 	@Override
@@ -147,9 +134,15 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 	}
 
 	@Override
+	protected boolean doesRecipeMatchInput(DigesterRecipe recipeToTest, Level level) {
+		return recipeToTest.matches(inputInventory, level);
+	}
+
+	@Override
 	protected void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 		stateData.serialize(tag);
+		tag.put("Fuel", fuelHandler.serializeNBT());
 		tag.put("FuelSlots", fuelInventory.serializeNBT());
 		tag.put("InputSlots", inputInventory.serializeNBT());
 		tag.put("OutputSlots", outputInventory.serializeNBT());
@@ -159,6 +152,7 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 	public void load(CompoundTag tag) {
 		super.load(tag);
 		stateData.deserialize(tag);
+		fuelHandler.deserializeNBT(tag.getCompound("Fuel"));
 		fuelInventory.deserializeNBT(tag.getCompound("FuelSlots"));
 		inputInventory.deserializeNBT(tag.getCompound("InputSlots"));
 		outputInventory.deserializeNBT(tag.getCompound("OutputSlots"));

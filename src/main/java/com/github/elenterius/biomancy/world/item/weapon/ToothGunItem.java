@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.world.item.weapon;
 
 import com.github.elenterius.biomancy.init.ModItems;
-import com.github.elenterius.biomancy.util.FuelUtil;
+import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import com.github.elenterius.biomancy.world.entity.projectile.ToothProjectile;
 import com.github.elenterius.biomancy.world.item.IBiomancyItem;
 import net.minecraft.server.level.ServerLevel;
@@ -86,7 +86,7 @@ public class ToothGunItem extends BaseGunItem implements IBiomancyItem {
 
 	@Override
 	public Predicate<ItemStack> getAllSupportedProjectiles() {
-		return FuelUtil.AMMO_PREDICATE;
+		return NutrientFuelUtil.AMMO_PREDICATE;
 	}
 
 	@Override

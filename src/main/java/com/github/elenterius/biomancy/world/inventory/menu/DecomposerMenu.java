@@ -2,7 +2,8 @@ package com.github.elenterius.biomancy.world.inventory.menu;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
-import com.github.elenterius.biomancy.util.FuelUtil;
+import com.github.elenterius.biomancy.util.fuel.FuelHandler;
+import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import com.github.elenterius.biomancy.world.block.entity.DecomposerBlockEntity;
 import com.github.elenterius.biomancy.world.block.entity.state.DecomposerStateData;
 import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
@@ -18,21 +19,18 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.apache.logging.log4j.MarkerManager;
 
+import java.util.function.Predicate;
+
 public class DecomposerMenu extends PlayerContainerMenu {
 
-	private final BehavioralInventory<?> fuelInventory;
-	private final BehavioralInventory<?> inputInventory;
-	private final BehavioralInventory<?> outputInventory;
-	private final DecomposerStateData stateData;
 	protected final Level level;
+	private final Predicate<Player> isMenuValidPredicate;
+	private final DecomposerStateData stateData;
 
 	protected DecomposerMenu(int id, Inventory playerInventory, BehavioralInventory<?> fuelInventory, BehavioralInventory<?> inputInventory, BehavioralInventory<?> outputInventory, DecomposerStateData stateData) {
 		super(ModMenuTypes.DECOMPOSER.get(), id, playerInventory, 111, 169);
 		level = playerInventory.player.level;
-
-		this.fuelInventory = fuelInventory;
-		this.inputInventory = inputInventory;
-		this.outputInventory = outputInventory;
+		isMenuValidPredicate = inputInventory::stillValid;
 		this.stateData = stateData;
 
 		addSlot(new FuelSlot(fuelInventory, 0, 39, 66));
@@ -58,13 +56,14 @@ public class DecomposerMenu extends PlayerContainerMenu {
 		BehavioralInventory<?> fuelInventory = BehavioralInventory.createClientContents(DecomposerBlockEntity.FUEL_SLOTS);
 		BehavioralInventory<?> inputInventory = BehavioralInventory.createClientContents(DecomposerBlockEntity.INPUT_SLOTS);
 		BehavioralInventory<?> outputInventory = BehavioralInventory.createClientContents(DecomposerBlockEntity.OUTPUT_SLOTS);
-		return new DecomposerMenu(screenId, playerInventory, fuelInventory, inputInventory, outputInventory, new DecomposerStateData());
+		FuelHandler fuelHandler = FuelHandler.createNutrientFuelHandler(DecomposerBlockEntity.MAX_FUEL, DecomposerBlockEntity.BASE_COST, () -> {});
+		DecomposerStateData state = new DecomposerStateData(fuelHandler);
+		return new DecomposerMenu(screenId, playerInventory, fuelInventory, inputInventory, outputInventory, state);
 	}
 
 	@Override
 	public boolean stillValid(Player player) {
-		//we don't check all three inventories because they all call the same method in the decomposer tile entity
-		return inputInventory.stillValid(player);
+		return isMenuValidPredicate.test(player);
 	}
 
 	public float getCraftingProgressNormalized() {
@@ -73,19 +72,19 @@ public class DecomposerMenu extends PlayerContainerMenu {
 	}
 
 	public float getFuelAmountNormalized() {
-		return Mth.clamp((float) stateData.getFuelAmount() / DecomposerBlockEntity.MAX_FUEL, 0f, 1f);
+		return Mth.clamp((float) stateData.fuelHandler.getFuelAmount() / stateData.fuelHandler.getMaxFuelAmount(), 0f, 1f);
 	}
 
 	public int getFuelAmount() {
-		return stateData.getFuelAmount();
+		return stateData.fuelHandler.getFuelAmount();
 	}
 
 	public int getMAxFuelAmount() {
-		return DecomposerBlockEntity.MAX_FUEL;
+		return stateData.fuelHandler.getMaxFuelAmount();
 	}
 
-	public int getTotalFuelCost() {
-		return stateData.timeForCompletion * DecomposerBlockEntity.FUEL_COST;
+	public int getFuelCost() {
+		return stateData.getFuelCost();
 	}
 
 	@Override
@@ -125,7 +124,7 @@ public class DecomposerMenu extends PlayerContainerMenu {
 	}
 
 	private boolean mergeIntoFuelZone(ItemStack stackInSlot) {
-		if (FuelUtil.isItemValidFuel(stackInSlot)) {
+		if (NutrientFuelUtil.isValidFuel(stackInSlot)) {
 			return mergeInto(SlotZone.FUEL_ZONE, stackInSlot, true);
 		}
 		return false;
@@ -140,14 +139,18 @@ public class DecomposerMenu extends PlayerContainerMenu {
 
 	public enum SlotZone implements ISlotZone {
 		PLAYER_HOTBAR(0, 9),
-		PLAYER_MAIN_INVENTORY(PLAYER_HOTBAR.lastIndexPlus1, 3 * 9),
-		FUEL_ZONE(PLAYER_MAIN_INVENTORY.lastIndexPlus1, DecomposerBlockEntity.FUEL_SLOTS),
-		INPUT_ZONE(FUEL_ZONE.lastIndexPlus1, DecomposerBlockEntity.INPUT_SLOTS),
-		OUTPUT_ZONE(INPUT_ZONE.lastIndexPlus1, DecomposerBlockEntity.OUTPUT_SLOTS);
+		PLAYER_MAIN_INVENTORY(PLAYER_HOTBAR, 3 * 9),
+		FUEL_ZONE(PLAYER_MAIN_INVENTORY, DecomposerBlockEntity.FUEL_SLOTS),
+		INPUT_ZONE(FUEL_ZONE, DecomposerBlockEntity.INPUT_SLOTS),
+		OUTPUT_ZONE(INPUT_ZONE, DecomposerBlockEntity.OUTPUT_SLOTS);
 
 		public final int firstIndex;
 		public final int slotCount;
 		public final int lastIndexPlus1;
+
+		SlotZone(SlotZone slotZone, int numberOfSlots) {
+			this(slotZone.lastIndexPlus1, numberOfSlots);
+		}
 
 		SlotZone(int firstIndex, int numberOfSlots) {
 			this.firstIndex = firstIndex;

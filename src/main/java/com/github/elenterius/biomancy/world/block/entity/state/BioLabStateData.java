@@ -1,20 +1,15 @@
 package com.github.elenterius.biomancy.world.block.entity.state;
 
 import com.github.elenterius.biomancy.recipe.BioLabRecipe;
-import net.minecraft.nbt.CompoundTag;
+import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 
 public class BioLabStateData extends RecipeCraftingStateData<BioLabRecipe> {
 
 	public static final int FUEL_INDEX = 2;
-	public static final String NBT_KEY_FUEL = "Fuel";
-	private short fuelAmount;
+	public final IFuelHandler fuelHandler;
 
-	public int getFuelAmount() {
-		return fuelAmount;
-	}
-
-	public void setFuelAmount(short value) {
-		fuelAmount = value;
+	public BioLabStateData(IFuelHandler fuelHandler) {
+		this.fuelHandler = fuelHandler;
 	}
 
 	@Override
@@ -23,15 +18,8 @@ public class BioLabStateData extends RecipeCraftingStateData<BioLabRecipe> {
 	}
 
 	@Override
-	public void serialize(CompoundTag nbt) {
-		super.serialize(nbt);
-		nbt.putShort(NBT_KEY_FUEL, fuelAmount);
-	}
-
-	@Override
-	public void deserialize(CompoundTag nbt) {
-		super.deserialize(nbt);
-		fuelAmount = nbt.getShort(NBT_KEY_FUEL);
+	public int getFuelCost() {
+		return fuelHandler.getFuelCost(timeForCompletion);
 	}
 
 	@Override
@@ -39,7 +27,7 @@ public class BioLabStateData extends RecipeCraftingStateData<BioLabRecipe> {
 		validateIndex(index);
 		if (index == TIME_INDEX) return timeElapsed;
 		else if (index == TIME_FOR_COMPLETION_INDEX) return timeForCompletion;
-		else if (index == FUEL_INDEX) return fuelAmount;
+		else if (index == FUEL_INDEX) return fuelHandler.getFuelAmount();
 		return 0;
 	}
 
@@ -48,7 +36,7 @@ public class BioLabStateData extends RecipeCraftingStateData<BioLabRecipe> {
 		validateIndex(index);
 		if (index == TIME_INDEX) timeElapsed = value;
 		else if (index == TIME_FOR_COMPLETION_INDEX) timeForCompletion = value;
-		else if (index == FUEL_INDEX) fuelAmount = (short) value;
+		else if (index == FUEL_INDEX) fuelHandler.setFuelAmount(value);
 	}
 
 	@Override

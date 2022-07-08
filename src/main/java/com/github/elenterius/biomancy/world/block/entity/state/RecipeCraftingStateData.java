@@ -65,6 +65,8 @@ public abstract class RecipeCraftingStateData<T extends AbstractProductionRecipe
 		timeForCompletion = recipe.getCraftingTime();
 	}
 
+	public abstract int getFuelCost();
+
 	public void clear() {
 		recipeId = null;
 		timeElapsed = 0;
