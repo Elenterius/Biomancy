@@ -1,11 +1,11 @@
 {
-  "credit": "Made by Elenterius",
+  "credit": "Made by RhinoW",
   "texture_size": [
     64,
     64
   ],
   "textures": {
-    "0": "digester"
+    "0": "biomancy:block/digester"
   },
   "elements": [
     {
