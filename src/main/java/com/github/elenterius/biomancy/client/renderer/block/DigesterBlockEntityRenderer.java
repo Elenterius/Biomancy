@@ -9,9 +9,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.renderers.geo.GeoBlockRenderer;
 
-public class DigesterBlockEntityRenderer extends GeoBlockRenderer<DigesterBlockEntity> {
+public class DigesterBlockEntityRenderer extends CustomGeoBlockRenderer<DigesterBlockEntity> {
 
 	public DigesterBlockEntityRenderer(BlockEntityRendererProvider.Context rendererDispatcher) {
 		super(rendererDispatcher, new DigesterModel());

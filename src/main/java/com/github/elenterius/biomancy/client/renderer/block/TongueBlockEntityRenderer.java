@@ -17,11 +17,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.geo.render.built.GeoBone;
-import software.bernie.geckolib3.renderers.geo.GeoBlockRenderer;
 
 import java.util.Random;
 
-public class TongueBlockEntityRenderer extends GeoBlockRenderer<TongueBlockEntity> {
+public class TongueBlockEntityRenderer extends CustomGeoBlockRenderer<TongueBlockEntity> {
 
 	private final Random random = new Random();
 

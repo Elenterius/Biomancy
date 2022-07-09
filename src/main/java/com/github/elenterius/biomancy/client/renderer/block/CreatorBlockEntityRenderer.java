@@ -8,9 +8,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.processor.IBone;
-import software.bernie.geckolib3.renderers.geo.GeoBlockRenderer;
 
-public class CreatorBlockEntityRenderer extends GeoBlockRenderer<CreatorBlockEntity> {
+public class CreatorBlockEntityRenderer extends CustomGeoBlockRenderer<CreatorBlockEntity> {
 
 	public CreatorBlockEntityRenderer(BlockEntityRendererProvider.Context rendererDispatcher) {
 		super(rendererDispatcher, new CreatorModel());
