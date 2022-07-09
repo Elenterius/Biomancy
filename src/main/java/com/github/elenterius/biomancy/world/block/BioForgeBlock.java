@@ -19,7 +19,9 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
@@ -27,7 +29,13 @@ import org.jetbrains.annotations.Nullable;
 public class BioForgeBlock extends BaseEntityBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-	public static final VoxelShape AABB = Block.box(1, 0, 1, 15, 15, 15);
+	protected static final VoxelShape SHAPE = createShape();
+
+	private static VoxelShape createShape() {
+		VoxelShape base = Block.box(2, 0, 2, 14, 15, 14);
+		VoxelShape outer = Block.box(1, 2, 1, 15, 8, 15);
+		return Shapes.join(base, outer, BooleanOp.OR);
+	}
 
 	public BioForgeBlock(Properties properties) {
 		super(properties);
@@ -86,7 +94,7 @@ public class BioForgeBlock extends BaseEntityBlock {
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		return AABB;
+		return SHAPE;
 	}
 
 

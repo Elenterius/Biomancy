@@ -19,7 +19,9 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,9 +29,13 @@ public class StorageSacBlock extends BaseEntityBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-	protected static final VoxelShape SHAPE_UD = Block.box(2d, 0d, 2d, 14d, 16d, 14d);
-	protected static final VoxelShape SHAPE_NS = Block.box(3d, 3d, 0d, 13d, 13d, 16d);
-	protected static final VoxelShape SHAPE_WE = Block.box(0d, 3d, 3d, 16d, 13d, 13d);
+	protected static final VoxelShape SHAPE = createShape();
+
+	private static VoxelShape createShape() {
+		VoxelShape base = Block.box(2d, 0d, 2d, 14d, 14d, 14d);
+		VoxelShape lid = Block.box(4d, 14d, 4d, 12d, 16d, 12d);
+		return Shapes.join(base, lid, BooleanOp.OR);
+	}
 
 	public StorageSacBlock(Properties properties) {
 		super(properties);
@@ -81,12 +87,7 @@ public class StorageSacBlock extends BaseEntityBlock {
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		return SHAPE_UD;
-		//		return switch (state.getValue(FACING)) {
-		//			case NORTH, SOUTH -> SHAPE_NS;
-		//			case WEST, EAST -> SHAPE_WE;
-		//			default -> SHAPE_UD;
-		//		};
+		return SHAPE;
 	}
 
 	@Override
