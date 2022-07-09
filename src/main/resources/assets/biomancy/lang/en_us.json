@@ -56,6 +56,7 @@
   "item.biomancy.healing_additive": "Healing Additive",
   "item.biomancy.glass_vial": "Glass Vial",
   "item.biomancy.serum": "Serum",
+
   "item.biomancy.injector": "Bio-Injector",
   "item.biomancy.creator_mix": "Exotic Flesh Meal",
   "item.biomancy.bio_extractor": "Bio-Extractor",
@@ -87,7 +88,7 @@
   "block.biomancy.flesh_slab": "Flesh Slab",
   "block.biomancy.flesh_stairs": "Flesh Stairs",
   "block.biomancy.flesh_wall": "Flesh Wall",
-  "block.biomancy.flesh_irisdoor": "Flesh Iris-Door",
+  "block.biomancy.flesh_iris_door": "Flesh Iris-Door",
   "block.biomancy.flesh_fence": "Flesh Fence",
   "block.biomancy.flesh_fence_gate": "Flesh Fence Gate",
   "block.biomancy.flesh_ladder": "Flesh Ladder",
