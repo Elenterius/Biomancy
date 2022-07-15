@@ -142,15 +142,9 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}:9.5.5.174:api") // compile against the JEI API but do not include it at runtime
     runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:9.5.5.174") // at runtime, use the full JEI jar
 
-//    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.4-51:api")
-//    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.4-51")
-    //Custom Build of the PatchouliProvider https://github.com/Elenterius/PatchouliProvider
-//    implementation fg.deobf('xyz.brassgoggledcoders:PatchouliProvider:1.16.5-1.0.3-CUSTOM')
-
 //    curse.maven:<descriptor, can be anything>-<CurseForge project id>:<CurseForge file id>
-//    runtimeOnly fg.deobf("curse.maven:create-328085:3278516")                     //https://www.curseforge.com/minecraft/mc-mods/create/files/3278516
+//    runtimeOnly fg.deobf("curse.maven:create-328085:3278516") //https://www.curseforge.com/minecraft/mc-mods/create/files/3278516
 //    implementation fg.deobf("com.github.Virtuoel:Pehkui:3.0.0-forge")
-//    runtimeOnly fg.deobf("curse.maven:sewing-kit-411896:3202871")
 }
 
 import java.util.concurrent.TimeUnit
@@ -232,18 +226,3 @@ publishing {
         }
     }
 }
-
-//task copyMCClientJar(type: Copy) {
-//    doLast {
-//        print("copying minecraft client-extra.jar...")
-//    }
-//    into "scripts/lib"
-//    from(configurations.runtime) {
-//        include 'client-extra.jar'
-//    }
-//}
-//
-//task drawRecipeDiGraphs(type: Exec, dependsOn: copyMCClientJar) {
-//    workingDir 'scripts'
-//    commandLine 'python', 'recipe_graph_network.py'
-//}
