@@ -11,7 +11,7 @@
       "ingredient": {
         "item": "biomancy:flesh_bits"
       },
-      "count": 64
+      "count": 16
     },
     {
       "ingredient": {
@@ -23,7 +23,7 @@
       "ingredient": {
         "item": "biomancy:elastic_fibers"
       },
-      "count": 128
+      "count": 32
     }
   ],
   "result": {

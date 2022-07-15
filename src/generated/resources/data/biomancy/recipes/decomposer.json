@@ -2,24 +2,24 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "F F",
-    "MTM",
+    "MGM",
     "MEM"
   ],
   "key": {
-    "T": {
-      "item": "minecraft:totem_of_undying"
-    },
     "M": {
       "tag": "biomancy:raw_meats"
     },
     "F": {
       "item": "biomancy:mob_fang"
     },
+    "G": {
+      "item": "biomancy:mob_gland"
+    },
     "E": {
-      "item": "minecraft:spider_eye"
+      "item": "biomancy:living_flesh"
     }
   },
   "result": {
-    "item": "biomancy:creator"
+    "item": "biomancy:decomposer"
   }
 }

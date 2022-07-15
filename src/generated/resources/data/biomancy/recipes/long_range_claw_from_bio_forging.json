@@ -11,25 +11,25 @@
       "ingredient": {
         "item": "biomancy:mob_claw"
       },
-      "count": 6
+      "count": 3
     },
     {
       "ingredient": {
         "item": "biomancy:bone_fragments"
       },
-      "count": 22
+      "count": 11
     },
     {
       "ingredient": {
         "item": "biomancy:tough_fibers"
       },
-      "count": 32
+      "count": 16
     },
     {
       "ingredient": {
         "item": "biomancy:flesh_bits"
       },
-      "count": 44
+      "count": 22
     }
   ],
   "result": {
