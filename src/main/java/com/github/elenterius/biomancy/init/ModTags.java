@@ -1,57 +1,82 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import net.minecraft.entity.EntityType;
-import net.minecraft.item.Item;
-import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.tags.ITag;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.Tags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 
 public final class ModTags {
 	private ModTags() {}
 
-	public static void init() {
+	static void init() {
 		//force initialization of static fields
 		Items.forceInit();
+		Blocks.forceInit();
 		EntityTypes.forceInit();
 	}
 
 	public static final class Items {
-		//Beware: optional tags inside optional tags don't tend to work, so when defining tags inside an optional tag they should be required
+		public static final TagKey<Item> RAW_MEATS = tag("raw_meats");
+		public static final TagKey<Item> COOKED_MEATS = tag("cooked_meats");
+		public static final TagKey<Item> SUGARS = tag("sugars");
 
-		public static final Tags.IOptionalNamedTag<Item> RAW_MEATS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "raw_meats"));
-		//		public static final Tags.IOptionalNamedTag<Item> FLESH = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "flesh"));
-		public static final Tags.IOptionalNamedTag<Item> COOKED_MEATS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "cooked_meats"));
-		public static final Tags.IOptionalNamedTag<Item> SUGARS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "sugars"));
-
-		public static final Tags.IOptionalNamedTag<Item> BIOMASS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "biomass"));
-		public static final Tags.IOptionalNamedTag<Item> POOR_BIOMASS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "poor_biomass"));
-		public static final Tags.IOptionalNamedTag<Item> AVERAGE_BIOMASS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "average_biomass"));
-		public static final Tags.IOptionalNamedTag<Item> GOOD_BIOMASS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "good_biomass"));
-		public static final Tags.IOptionalNamedTag<Item> SUPERB_BIOMASS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "superb_biomass"));
-
-		public static final Tags.IOptionalNamedTag<Item> OXIDES = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "oxides"));
-		public static final Tags.IOptionalNamedTag<Item> SILICATES = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "silicates"));
-		public static final Tags.IOptionalNamedTag<Item> KERATINS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "keratins"));
-		public static final Tags.IOptionalNamedTag<Item> HORMONES = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "hormones"));
-
-		public static final Tags.IOptionalNamedTag<Item> STOMACHS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "stomachs"));
+		public static final TagKey<Item> BIOMASS = tag("biomass");
+		public static final TagKey<Item> POOR_BIOMASS = tag("poor_biomass");
+		public static final TagKey<Item> AVERAGE_BIOMASS = tag("average_biomass");
+		public static final TagKey<Item> GOOD_BIOMASS = tag("good_biomass");
+		public static final TagKey<Item> SUPERB_BIOMASS = tag("superb_biomass");
 
 		private Items() {}
 
-		private static void forceInit() {}
+		private static TagKey<Item> tag(String name) {
+			return ItemTags.create(BiomancyMod.createRL(name));
+		}
+
+		private static void forceInit() {
+			//internal
+		}
+
+	}
+
+	public static final class Blocks {
+		public static final TagKey<Block> FLESHY_FENCES = tag("fleshy_fences");
+
+		private Blocks() {}
+
+		private static TagKey<Block> tag(String name) {
+			return BlockTags.create(BiomancyMod.createRL(name));
+		}
+
+		private static void forceInit() {
+			//internal
+		}
+
 	}
 
 	public static final class EntityTypes {
-		public static final Tags.IOptionalNamedTag<EntityType<?>> INFERNAL = EntityTypeTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "infernal"));
+		public static final TagKey<EntityType<?>> INFERNAL = tag("infernal");
 
-		public static final ITag.INamedTag<EntityType<?>> BOSSES = EntityTypeTags.bind("forge:bosses");
-		public static final ITag.INamedTag<EntityType<?>> NOT_CLONEABLE = EntityTypeTags.bind(BiomancyMod.createRLString("not_cloneable"));
+		public static final TagKey<EntityType<?>> BOSSES = TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation("forge", "bosses"));
+		public static final TagKey<EntityType<?>> NOT_CLONEABLE = tag("not_cloneable");
+		public static final TagKey<EntityType<?>> SHARP_FANG = tag("sharp_fang");
+		public static final TagKey<EntityType<?>> SHARP_CLAW = tag("sharp_claw");
+		public static final TagKey<EntityType<?>> VENOM_GLAND = tag("venom_gland");
+		public static final TagKey<EntityType<?>> VOLATILE_GLAND = tag("volatile_gland");
 
 		private EntityTypes() {}
 
-		private static void forceInit() {}
+		private static TagKey<EntityType<?>> tag(String name) {
+			return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, BiomancyMod.createRL(name));
+		}
+
+		private static void forceInit() {
+			//internal
+		}
+
 	}
 }

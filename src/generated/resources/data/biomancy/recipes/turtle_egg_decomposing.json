@@ -1,0 +1,30 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:turtle_egg"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:bio_minerals",
+        "count_range": {
+          "type": "constant",
+          "value": 1
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:stone_powder",
+        "count_range": {
+          "type": "constant",
+          "value": 1
+        }
+      }
+    }
+  ],
+  "time": 52
+}

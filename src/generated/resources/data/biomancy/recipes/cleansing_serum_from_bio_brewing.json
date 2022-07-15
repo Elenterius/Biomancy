@@ -1,0 +1,24 @@
+{
+  "type": "biomancy:bio_brewing",
+  "ingredient_quantities": [
+    {
+      "ingredient": {
+        "item": "biomancy:corrosive_additive"
+      },
+      "count": 1
+    },
+    {
+      "ingredient": {
+        "item": "biomancy:healing_additive"
+      },
+      "count": 1
+    }
+  ],
+  "reactant": {
+    "item": "biomancy:exotic_compound"
+  },
+  "result": {
+    "item": "biomancy:cleansing_serum"
+  },
+  "time": 160
+}

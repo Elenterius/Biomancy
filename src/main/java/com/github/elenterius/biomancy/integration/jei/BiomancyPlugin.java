@@ -1,18 +1,22 @@
 package com.github.elenterius.biomancy.integration.jei;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.client.gui.*;
-import com.github.elenterius.biomancy.init.ModItems;
+import com.github.elenterius.biomancy.client.gui.BioLabScreen;
+import com.github.elenterius.biomancy.client.gui.DecomposerScreen;
+import com.github.elenterius.biomancy.client.gui.DigesterScreen;
 import com.github.elenterius.biomancy.init.ModRecipes;
-import com.github.elenterius.biomancy.inventory.*;
-import com.google.common.collect.ImmutableSet;
+import com.github.elenterius.biomancy.world.inventory.menu.BioLabMenu;
+import com.github.elenterius.biomancy.world.inventory.menu.DecomposerMenu;
+import com.github.elenterius.biomancy.world.inventory.menu.DigesterMenu;
+import com.github.elenterius.biomancy.world.inventory.slot.ISlotZone;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.registration.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.inventory.container.Container;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 
 import java.util.Objects;
 
@@ -28,46 +32,40 @@ public class BiomancyPlugin implements IModPlugin {
 
 	@Override
 	public void registerItemSubtypes(ISubtypeRegistration registration) {
-		registration.registerSubtypeInterpreter(ModItems.REAGENT.get(), ReagentSubtypeInterpreter.INSTANCE);
+//		registration.registerSubtypeInterpreter(ModItems.GENERIC_SERUM.get(), SerumSubtypeInterpreter.INSTANCE);
 	}
 
 	@Override
 	public void registerCategories(IRecipeCategoryRegistration registration) {
-		registration.addRecipeCategories(new ChewerRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-		registration.addRecipeCategories(new DigesterRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
 		registration.addRecipeCategories(new DecomposerRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-		registration.addRecipeCategories(new SmallEvolutionPoolRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-		registration.addRecipeCategories(new SolidifierRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+		registration.addRecipeCategories(new BioLabRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+		registration.addRecipeCategories(new DigesterRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
 	}
 
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
-		ClientWorld world = Objects.requireNonNull(Minecraft.getInstance().level);
-		registration.addRecipes(ImmutableSet.copyOf(world.getRecipeManager().getAllRecipesFor(ModRecipes.CHEWER_RECIPE_TYPE)), ChewerRecipeCategory.ID);
-		registration.addRecipes(ImmutableSet.copyOf(world.getRecipeManager().getAllRecipesFor(ModRecipes.DIGESTER_RECIPE_TYPE)), DigesterRecipeCategory.ID);
-		registration.addRecipes(ImmutableSet.copyOf(world.getRecipeManager().getAllRecipesFor(ModRecipes.DECOMPOSING_RECIPE_TYPE)), DecomposerRecipeCategory.ID);
-		registration.addRecipes(ImmutableSet.copyOf(world.getRecipeManager().getAllRecipesFor(ModRecipes.EVOLUTION_POOL_RECIPE_TYPE)), SmallEvolutionPoolRecipeCategory.ID);
-		registration.addRecipes(ImmutableSet.copyOf(world.getRecipeManager().getAllRecipesFor(ModRecipes.SOLIDIFIER_RECIPE_TYPE)), SolidifierRecipeCategory.ID);
+		ClientLevel world = Objects.requireNonNull(Minecraft.getInstance().level);
+		registration.addRecipes(DecomposerRecipeCategory.RECIPE_TYPE, world.getRecipeManager().getAllRecipesFor(ModRecipes.DECOMPOSING_RECIPE_TYPE));
+		registration.addRecipes(BioLabRecipeCategory.RECIPE_TYPE, world.getRecipeManager().getAllRecipesFor(ModRecipes.BIO_BREWING_RECIPE_TYPE));
+		registration.addRecipes(DigesterRecipeCategory.RECIPE_TYPE, world.getRecipeManager().getAllRecipesFor(ModRecipes.DIGESTING_RECIPE_TYPE));
 	}
 
 	@Override
 	public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-		registration.addRecipeClickArea(ChewerContainerScreen.class, 90, 29, 14, 10, ChewerRecipeCategory.ID);
-		registration.addRecipeClickArea(DecomposerContainerScreen.class, 81, 20, 14, 10, DecomposerRecipeCategory.ID);
-		registration.addRecipeClickArea(DigesterContainerScreen.class, 81, 29, 14, 10, DigesterRecipeCategory.ID);
-		registration.addRecipeClickArea(EvolutionPoolContainerScreen.class, 108, 29, 14, 10, SmallEvolutionPoolRecipeCategory.ID);
-		registration.addRecipeClickArea(SolidifierContainerScreen.class, 81, 33, 14, 10, SolidifierRecipeCategory.ID);
+		registration.addRecipeClickArea(DecomposerScreen.class, 176 - 5 - 10, 4, 10, 10, DecomposerRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeClickArea(BioLabScreen.class, 176 - 5 - 10, 4, 10, 10, BioLabRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeClickArea(DigesterScreen.class, 176 - 5 - 10, 4, 10, 10, DigesterRecipeCategory.RECIPE_TYPE);
 	}
 
 	@Override
 	public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
-		registerInputSlots(registration, ChewerContainer.class, ChewerRecipeCategory.ID, ChewerContainer.SlotZone.INPUT_ZONE);
-		registerInputSlots(registration, DecomposerContainer.class, DecomposerRecipeCategory.ID, DecomposerContainer.SlotZone.INPUT_ZONE);
-		registerInputSlots(registration, DigesterContainer.class, DigesterRecipeCategory.ID, DigesterContainer.SlotZone.INPUT_ZONE);
-		registerInputSlots(registration, EvolutionPoolContainer.class, SmallEvolutionPoolRecipeCategory.ID, EvolutionPoolContainer.SlotZone.INPUT_ZONE);
+		registerInputSlots(registration, DecomposerMenu.class, DecomposerRecipeCategory.RECIPE_TYPE, DecomposerMenu.SlotZone.INPUT_ZONE);
+		registerInputSlots(registration, BioLabMenu.class, BioLabRecipeCategory.RECIPE_TYPE, BioLabMenu.SlotZone.INPUT_ZONE);
+		registerInputSlots(registration, DigesterMenu.class, DigesterRecipeCategory.RECIPE_TYPE, DigesterMenu.SlotZone.INPUT_ZONE);
 	}
 
-	private <C extends Container> void registerInputSlots(IRecipeTransferRegistration registration, Class<C> containerClass, ResourceLocation recipeCategoryUid, ISlotZone slotZone) {
-		registration.addRecipeTransferHandler(containerClass, recipeCategoryUid, slotZone.getFirstIndex(), slotZone.getSlotCount(), 0, 36);
+	private <C extends AbstractContainerMenu, R> void registerInputSlots(IRecipeTransferRegistration registration, Class<C> containerClass, RecipeType<R> recipeType, ISlotZone slotZone) {
+		registration.addRecipeTransferHandler(containerClass, recipeType, slotZone.getFirstIndex(), slotZone.getSlotCount(), 0, 36);
 	}
+
 }

@@ -1,0 +1,33 @@
+{
+  "type": "biomancy:bio_forging",
+  "ingredient_quantities": [
+    {
+      "ingredient": {
+        "item": "biomancy:living_flesh"
+      },
+      "count": 1
+    },
+    {
+      "ingredient": {
+        "item": "biomancy:flesh_bits"
+      },
+      "count": 64
+    },
+    {
+      "ingredient": {
+        "item": "biomancy:bone_fragments"
+      },
+      "count": 24
+    },
+    {
+      "ingredient": {
+        "item": "biomancy:mob_gland"
+      },
+      "count": 1
+    }
+  ],
+  "result": {
+    "item": "biomancy:digester"
+  },
+  "category": "biomancy_bio_forge_machines"
+}

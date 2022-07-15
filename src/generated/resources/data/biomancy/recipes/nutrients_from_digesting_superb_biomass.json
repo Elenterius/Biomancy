@@ -1,0 +1,11 @@
+{
+  "type": "biomancy:digesting",
+  "ingredient": {
+    "tag": "biomancy:superb_biomass"
+  },
+  "result": {
+    "item": "biomancy:nutrients",
+    "count": 32
+  },
+  "time": 540
+}

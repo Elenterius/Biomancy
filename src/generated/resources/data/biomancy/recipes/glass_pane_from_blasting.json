@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "item": "biomancy:stone_powder"
+  },
+  "result": "minecraft:glass_pane",
+  "experience": 0.1,
+  "cookingtime": 100
+}

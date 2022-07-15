@@ -1,0 +1,30 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:heart_of_the_sea"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:gem_fragments",
+        "count_range": {
+          "type": "constant",
+          "value": 9
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:exotic_dust",
+        "count_range": {
+          "type": "constant",
+          "value": 30
+        }
+      }
+    }
+  ],
+  "time": 1950
+}

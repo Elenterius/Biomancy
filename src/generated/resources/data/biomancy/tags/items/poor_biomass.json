@@ -13,7 +13,6 @@
     "minecraft:vine",
     "minecraft:fern",
     "minecraft:bamboo",
-    "biomancy:skin_chunk",
     {
       "id": "rats:contaminated_food",
       "required": false

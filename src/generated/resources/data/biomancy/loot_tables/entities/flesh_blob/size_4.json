@@ -2,16 +2,18 @@
   "type": "minecraft:entity",
   "pools": [
     {
-      "rolls": 3,
+      "rolls": 3.0,
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "biomancy:flesh_block"
+          "name": "biomancy:living_flesh"
         }
       ]
     },
     {
-      "rolls": 1,
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:loot_table",

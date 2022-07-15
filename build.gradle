@@ -23,24 +23,26 @@ version = "${mod_version}-${mc_version}-forge"
 group = 'com.github.elenterius.biomancy'
 archivesBaseName = 'biomancy'
 
-//Gradle 7 & FG v5.1+ are compatible with JDK 16 but for minecraft versions pre-1.17 we have to target Java 8
-java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+// Mojang ships Java 17 to end users in 1.18+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 
 minecraft {
-    mappings channel: 'parchment', version: "2021.10.17-${mc_version}"  // official mappings augmented with parameter names and javadocs
+    mappings channel: 'parchment', version: "${parchment_version}-${mc_version}"  // official mappings augmented with parameter names and javadocs
 
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
         client {
             workingDirectory project.file('run')
 
-            // options for Dcevm JVM (https://github.com/TravaOpenJDK/trava-jdk-11-dcevm)
-            // enables HotSwap Agent (needed for Dcevm version >= 11.0.9)
-            jvmArg '-XX:HotswapAgent=core' //[fatjar,core,external]
+            // enable HotSwap Agent (needs JBR-17 set jdk & HSA jar in jbr/lib/hotswap)
+            // https://github.com/HotswapProjects/HotswapAgent
+            jvmArg '-XX:+AllowEnhancedClassRedefinition'
+            jvmArg '-XX:HotswapAgent=fatjar'
 
             // "SCAN": For mods scan.
             // "REGISTRIES": For firing of registry events.
@@ -124,6 +126,7 @@ repositories {
         name = "ModMaven"
         url = "https://modmaven.k-4u.nl"
     }
+    maven { url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
     maven { url = 'https://maven.blamejared.com' }
     maven { url = "https://www.cursemaven.com" }
     maven { url = "https://jitpack.io" }
@@ -133,27 +136,19 @@ dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 
-    compileOnly fg.deobf("mezz.jei:jei-1.16.4:7.6.1.71:api") // compile against the JEI API but do not include it at runtime
-    runtimeOnly fg.deobf("mezz.jei:jei-1.16.4:7.6.1.71") // at runtime, use the full JEI jar
+//    implementation fg.deobf('com.github.Elenterius:Combat-Commons:0.2.0-beta-1.18.1-forge')
+    implementation fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.18')
 
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.4-51:api")
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.16.4-51")
-
-    //Custom Build of the PatchouliProvider https://github.com/Elenterius/PatchouliProvider
-    implementation fg.deobf('xyz.brassgoggledcoders:PatchouliProvider:1.16.5-1.0.3-CUSTOM')
+    compileOnly fg.deobf("mezz.jei:jei-${mc_version}:9.5.5.174:api") // compile against the JEI API but do not include it at runtime
+    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:9.5.5.174") // at runtime, use the full JEI jar
 
 //    curse.maven:<descriptor, can be anything>-<CurseForge project id>:<CurseForge file id>
-//    runtimeOnly fg.deobf("curse.maven:create-328085:3278516")                     //https://www.curseforge.com/minecraft/mc-mods/create/files/3278516
-//    runtimeOnly fg.deobf("curse.maven:simple-farming-327554:3339467")             //https://www.curseforge.com/minecraft/mc-mods/simple-farming/files/3339467
-//    runtimeOnly fg.deobf("curse.maven:extended-item-information-285166:3324259")  //https://www.curseforge.com/minecraft/mc-mods/simple-farming/files/3339467
-//    runtimeOnly fg.deobf("curse.maven:sneaky-magic-322733:3238487")               //https://www.curseforge.com/minecraft/mc-mods/sneaky-magic/files/3238487
-
+//    runtimeOnly fg.deobf("curse.maven:create-328085:3278516") //https://www.curseforge.com/minecraft/mc-mods/create/files/3278516
 //    implementation fg.deobf("com.github.Virtuoel:Pehkui:3.0.0-forge")
-    implementation fg.deobf('com.github.Elenterius:Combat-Commons:0.2.0-beta-1.16.5-forge')
-    runtimeOnly fg.deobf("curse.maven:sewing-kit-411896:3202871")
 }
 
 import java.util.concurrent.TimeUnit
+
 processResources {
     exclude '.cache'
     exclude '**/*.psd'
@@ -175,7 +170,7 @@ void minifyJsons(String fdir) {
         }
     }
     long ms = TimeUnit.MILLISECONDS.convert(System.nanoTime() - startTime, TimeUnit.NANOSECONDS)
-    printf "%7s sec, %s ms \n", (int)(ms/1000), ms%1000
+    printf "%7s sec, %s ms \n", (int) (ms / 1000), ms % 1000
 }
 
 build {
@@ -204,7 +199,7 @@ jar {
         attributes([
                 "Specification-Title"     : "biomancy",
                 "Specification-Vendor"    : "Elenterius",
-                "Specification-Version"   : "1", // We are version 1 of ourselves
+                "Specification-Version"   : "2",
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.mod_version,
                 "Implementation-Vendor"   : "Elenterius",
@@ -231,18 +226,3 @@ publishing {
         }
     }
 }
-
-//task copyMCClientJar(type: Copy) {
-//    doLast {
-//        print("copying minecraft client-extra.jar...")
-//    }
-//    into "scripts/lib"
-//    from(configurations.runtime) {
-//        include 'client-extra.jar'
-//    }
-//}
-//
-//task drawRecipeDiGraphs(type: Exec, dependsOn: copyMCClientJar) {
-//    workingDir 'scripts'
-//    commandLine 'python', 'recipe_graph_network.py'
-//}

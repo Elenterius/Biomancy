@@ -1,0 +1,39 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "biomancy:mob_marrow"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:regenerative_fluid",
+        "count_range": {
+          "type": "constant",
+          "value": 5
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:bile",
+        "count_range": {
+          "type": "constant",
+          "value": 5
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:bone_fragments",
+        "count_range": {
+          "type": "constant",
+          "value": 1
+        }
+      }
+    }
+  ],
+  "time": 280
+}

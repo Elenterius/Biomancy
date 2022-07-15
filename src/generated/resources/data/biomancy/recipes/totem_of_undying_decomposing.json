@@ -1,0 +1,30 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:totem_of_undying"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:exotic_dust",
+        "count_range": {
+          "type": "constant",
+          "value": 50
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:regenerative_fluid",
+        "count_range": {
+          "type": "constant",
+          "value": 50
+        }
+      }
+    }
+  ],
+  "time": 4250
+}

@@ -1,45 +1,44 @@
 package com.github.elenterius.biomancy.client.renderer.entity;
 
-import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.client.renderer.entity.model.FleshBlobModel;
-import com.github.elenterius.biomancy.entity.aberration.FleshBlobEntity;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import com.github.elenterius.biomancy.client.model.entity.FleshBlobModel;
+import com.github.elenterius.biomancy.world.entity.fleshblob.FleshBlob;
+import com.github.elenterius.biomancy.world.entity.fleshblob.TumorFlag;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import software.bernie.geckolib3.core.processor.AnimationProcessor;
+import software.bernie.geckolib3.core.processor.IBone;
+import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-@OnlyIn(Dist.CLIENT)
-public class FleshBlobRenderer extends MobRenderer<FleshBlobEntity, FleshBlobModel<FleshBlobEntity>> {
-	private static final ResourceLocation TEXTURE = new ResourceLocation(BiomancyMod.MOD_ID, "textures/entity/flesh_blob.png");
-	private static final ResourceLocation AGGRESSIVE_TEXTURE = new ResourceLocation(BiomancyMod.MOD_ID, "textures/entity/aggressive_flesh_blob.png");
+public class FleshBlobRenderer extends GeoEntityRenderer<FleshBlob> {
 
-	public FleshBlobRenderer(EntityRendererManager renderManagerIn) {
-		super(renderManagerIn, new FleshBlobModel<>(), 0.65f);
+	public FleshBlobRenderer(EntityRendererProvider.Context context) {
+		super(context, new FleshBlobModel<>());
+		shadowRadius = 0.65f;
 	}
 
 	@Override
-	public void render(FleshBlobEntity entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-		shadowRadius = 0.65f * (0.5f + entityIn.getBlobSize() * 0.5f);
-		super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
-	}
+	public void renderEarly(FleshBlob entity, PoseStack poseStack, float ticks, @Nullable MultiBufferSource renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLight, int packedOverlay, float red, float green, float blue, float partialTicks) {
+		float scale = FleshBlob.getScaleMultiplier(entity);
+		shadowRadius = 0.65f * scale;
 
-	@Override
-	protected void scale(FleshBlobEntity entity, MatrixStack matrixStackIn, float partialTickTime) {
-		matrixStackIn.scale(0.999f, 0.999f, 0.999f);
-		matrixStackIn.translate(0, 0.001f, 0);
-		float x = 0.5f + entity.getBlobSize() * 0.5f;
-		matrixStackIn.scale(x, x, x);
-	}
+		FleshBlobModel<FleshBlob> fleshBlobModel = (FleshBlobModel<FleshBlob>) getGeoModelProvider();
+		AnimationProcessor<?> animationProcessor = fleshBlobModel.getAnimationProcessor();
 
-	@Override
-	@Nonnull
-	public ResourceLocation getTextureLocation(FleshBlobEntity entity) {
-		return entity.getFleshBlobData() == 1 ? AGGRESSIVE_TEXTURE : TEXTURE;
+		int flag = entity.getTumorFlags();
+		for (TumorFlag tumorFlag : TumorFlag.values()) {
+			IBone tumor = animationProcessor.getBone(tumorFlag.getBoneId());
+			tumor.setHidden(tumorFlag.isNotSet(flag));
+		}
+
+		poseStack.scale(0.999f, 0.999f, 0.999f);
+		poseStack.translate(0, 0.001f, 0);
+		poseStack.scale(scale, scale, scale);
+
+		super.renderEarly(entity, poseStack, ticks, renderTypeBuffer, vertexBuilder, packedLight, packedOverlay, red, green, blue, partialTicks);
 	}
 
 }

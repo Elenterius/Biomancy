@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:leather_horse_armor_decomposing"
+    ]
+  },
+  "criteria": {
+    "has_leather_horse_armor": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:leather_horse_armor"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:leather_horse_armor_decomposing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_leather_horse_armor",
+      "has_the_recipe"
+    ]
+  ]
+}

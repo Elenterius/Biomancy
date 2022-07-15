@@ -1,0 +1,27 @@
+{
+  "conditions": [
+    {
+      "condition": "minecraft:entity_properties",
+      "predicate": {
+        "flags": {
+          "is_baby": false
+        }
+      },
+      "entity": "this"
+    },
+    {
+      "condition": "minecraft:killed_by_player"
+    }
+  ],
+  "weights": {
+    "biomancy_mob_fang": 90,
+    "biomancy_mob_claw": 90,
+    "biomancy_toxin_gland": 65,
+    "biomancy_volatile_gland": 50,
+    "biomancy_mob_gland": 75,
+    "biomancy_withered_mob_marrow": 65,
+    "biomancy_mob_marrow": 50,
+    "biomancy_mob_sinew": 75
+  },
+  "type": "biomancy:despoil_mob_loot"
+}

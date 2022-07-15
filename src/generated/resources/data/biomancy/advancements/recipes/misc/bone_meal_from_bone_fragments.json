@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:bone_meal_from_bone_fragments"
+    ]
+  },
+  "criteria": {
+    "has_bone_fragments": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:bone_fragments"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:bone_meal_from_bone_fragments"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_bone_fragments",
+      "has_the_recipe"
+    ]
+  ]
+}

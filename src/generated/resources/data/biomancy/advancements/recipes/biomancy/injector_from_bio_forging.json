@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:injector_from_bio_forging"
+    ]
+  },
+  "criteria": {
+    "has_flesh_bits": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:flesh_bits"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:injector_from_bio_forging"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_flesh_bits",
+      "has_the_recipe"
+    ]
+  ]
+}

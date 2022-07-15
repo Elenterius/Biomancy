@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:sand"
+    },
+    {
+      "item": "biomancy:mineral_fragment"
+    },
+    {
+      "item": "biomancy:mineral_fragment"
+    }
+  ],
+  "result": {
+    "item": "minecraft:red_sand"
+  }
+}

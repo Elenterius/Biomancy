@@ -2,6 +2,6 @@
 @MethodsReturnNonnullByDefault
 package com.github.elenterius.biomancy.recipe;
 
-import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.MethodsReturnNonnullByDefault;
 
 import javax.annotation.ParametersAreNonnullByDefault;

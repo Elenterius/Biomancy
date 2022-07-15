@@ -1,0 +1,15 @@
+{
+  "type": "biomancy:bio_forging",
+  "ingredient_quantities": [
+    {
+      "ingredient": {
+        "item": "biomancy:flesh_bits"
+      },
+      "count": 6
+    }
+  ],
+  "result": {
+    "item": "biomancy:flesh_stairs"
+  },
+  "category": "biomancy_bio_forge_blocks"
+}

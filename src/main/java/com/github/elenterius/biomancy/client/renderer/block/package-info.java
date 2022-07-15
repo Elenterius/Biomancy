@@ -2,6 +2,6 @@
 @MethodsReturnNonnullByDefault
 package com.github.elenterius.biomancy.client.renderer.block;
 
-import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.MethodsReturnNonnullByDefault;
 
 import javax.annotation.ParametersAreNonnullByDefault;

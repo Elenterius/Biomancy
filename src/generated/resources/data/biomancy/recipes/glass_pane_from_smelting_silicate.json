@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": {
-    "item": "biomancy:silicate_paste"
-  },
-  "result": "minecraft:glass_pane",
-  "experience": 0.1,
-  "cookingtime": 100
-}

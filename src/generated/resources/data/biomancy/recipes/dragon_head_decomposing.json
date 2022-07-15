@@ -1,0 +1,39 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:dragon_head"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:flesh_bits",
+        "count_range": {
+          "type": "constant",
+          "value": 40
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:exotic_dust",
+        "count_range": {
+          "type": "constant",
+          "value": 50
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:tough_fibers",
+        "count_range": {
+          "type": "constant",
+          "value": 30
+        }
+      }
+    }
+  ],
+  "time": 4120
+}

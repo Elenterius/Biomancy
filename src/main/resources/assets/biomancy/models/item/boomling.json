@@ -1,7 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "biomancy:item/boomling",
-    "layer1": "biomancy:item/boomling_overlay"
-  }
-}

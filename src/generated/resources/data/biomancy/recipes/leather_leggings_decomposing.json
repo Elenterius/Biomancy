@@ -1,0 +1,21 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:leather_leggings"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:tough_fibers",
+        "count_range": {
+          "type": "constant",
+          "value": 60
+        }
+      }
+    }
+  ],
+  "time": 1800
+}

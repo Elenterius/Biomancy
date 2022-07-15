@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cauldron_level1",
-  "textures": {
-    "water": "biomancy:block/muscle"
-  }
-}

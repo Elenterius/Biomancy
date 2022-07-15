@@ -1,0 +1,24 @@
+{
+  "type": "biomancy:bio_brewing",
+  "ingredient_quantities": [
+    {
+      "ingredient": {
+        "item": "biomancy:bile"
+      },
+      "count": 1
+    },
+    {
+      "ingredient": {
+        "item": "biomancy:nutrients"
+      },
+      "count": 1
+    }
+  ],
+  "reactant": {
+    "item": "biomancy:glass_vial"
+  },
+  "result": {
+    "item": "biomancy:organic_compound"
+  },
+  "time": 40
+}

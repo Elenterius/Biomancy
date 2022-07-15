@@ -10,7 +10,7 @@
       "tag": "forge:glass"
     },
     "T": {
-      "tag": "minecraft:wooden_slabs"
+      "item": "minecraft:clay_ball"
     }
   },
   "result": {

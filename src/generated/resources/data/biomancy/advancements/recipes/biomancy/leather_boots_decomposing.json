@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:leather_boots_decomposing"
+    ]
+  },
+  "criteria": {
+    "has_leather_boots": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:leather_boots"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:leather_boots_decomposing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_leather_boots",
+      "has_the_recipe"
+    ]
+  ]
+}

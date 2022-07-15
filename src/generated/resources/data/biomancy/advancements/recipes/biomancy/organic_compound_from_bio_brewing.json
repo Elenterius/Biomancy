@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:organic_compound_from_bio_brewing"
+    ]
+  },
+  "criteria": {
+    "has_bile": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:bile"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:organic_compound_from_bio_brewing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_bile",
+      "has_the_recipe"
+    ]
+  ]
+}

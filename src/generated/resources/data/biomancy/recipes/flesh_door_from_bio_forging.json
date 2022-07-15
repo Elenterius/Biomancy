@@ -1,0 +1,27 @@
+{
+  "type": "biomancy:bio_forging",
+  "ingredient_quantities": [
+    {
+      "ingredient": {
+        "item": "biomancy:flesh_bits"
+      },
+      "count": 16
+    },
+    {
+      "ingredient": {
+        "item": "biomancy:elastic_fibers"
+      },
+      "count": 16
+    },
+    {
+      "ingredient": {
+        "item": "biomancy:bone_fragments"
+      },
+      "count": 16
+    }
+  ],
+  "result": {
+    "item": "biomancy:flesh_door"
+  },
+  "category": "biomancy_bio_forge_misc"
+}

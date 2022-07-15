@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "biomancy:item/essence",
+    "layer1": "biomancy:item/essence_overlay"
+  }
+}

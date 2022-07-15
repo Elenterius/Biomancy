@@ -1,0 +1,21 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:leather_chestplate"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:tough_fibers",
+        "count_range": {
+          "type": "constant",
+          "value": 70
+        }
+      }
+    }
+  ],
+  "time": 2100
+}

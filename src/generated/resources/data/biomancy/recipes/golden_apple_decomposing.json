@@ -1,0 +1,30 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:golden_apple"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:mineral_fragment",
+        "count_range": {
+          "type": "constant",
+          "value": 63
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:regenerative_fluid",
+        "count_range": {
+          "type": "constant",
+          "value": 3
+        }
+      }
+    }
+  ],
+  "time": 2625
+}

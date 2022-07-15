@@ -1,0 +1,30 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:wither_skeleton_skull"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:bone_fragments",
+        "count_range": {
+          "type": "constant",
+          "value": 48
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:withering_ooze",
+        "count_range": {
+          "type": "constant",
+          "value": 8
+        }
+      }
+    }
+  ],
+  "time": 1400
+}

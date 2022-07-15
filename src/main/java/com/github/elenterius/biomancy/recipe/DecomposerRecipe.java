@@ -1,20 +1,18 @@
 package com.github.elenterius.biomancy.recipe;
 
 import com.github.elenterius.biomancy.init.ModRecipes;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipeSerializer;
-import net.minecraft.item.crafting.IRecipeType;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipe;
-import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.JSONUtils;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
+import net.minecraft.core.NonNullList;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.Container;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import java.util.ArrayList;
@@ -23,30 +21,41 @@ import java.util.List;
 public class DecomposerRecipe extends AbstractProductionRecipe {
 
 	public static final int MAX_INGREDIENTS = 1;
-	public static final int MAX_BYPRODUCTS = 5;
+	public static final int MAX_OUTPUTS = 6;
 
-	private final Ingredient ingredient;
-	private final int ingredientCount;
-	private final ItemStack recipeResult;
-	private final List<Byproduct> byproducts;
+	private final IngredientStack ingredientStack;
+	private final NonNullList<Ingredient> vanillaIngredients;
+	private final List<VariableProductionOutput> outputs;
 
-	public DecomposerRecipe(ResourceLocation registryKey, ItemStack result, int craftingTime, Ingredient ingredientIn, int ingredientCountIn, List<Byproduct> byproductsIn) {
-		super(registryKey, craftingTime);
-		ingredient = ingredientIn;
-		recipeResult = result;
-		ingredientCount = ingredientCountIn;
-		byproducts = byproductsIn;
+	public DecomposerRecipe(ResourceLocation id, List<VariableProductionOutput> outputs, IngredientStack ingredientStack, int craftingTime) {
+		super(id, craftingTime);
+		this.ingredientStack = ingredientStack;
+		this.outputs = outputs;
+
+		List<Ingredient> flatIngredients = RecipeUtil.flattenIngredientStacks(List.of(ingredientStack));
+		vanillaIngredients = NonNullList.createWithCapacity(flatIngredients.size());
+		vanillaIngredients.addAll(flatIngredients);
 	}
 
 	@Override
-	public boolean matches(IInventory inv, World worldIn) {
+	public boolean matches(Container inv, Level level) {
 		ItemStack stack = inv.getItem(0);
-		return ingredient.test(stack) && stack.getCount() >= ingredientCount;
+		return ingredientStack.ingredient().test(stack) && stack.getCount() >= ingredientStack.count();
 	}
 
 	@Override
-	public ItemStack assemble(IInventory inv) {
-		return recipeResult.copy();
+	public boolean isSpecial() {
+		return true;
+	}
+
+	@Override
+	public ItemStack getResultItem() {
+		return outputs.get(0).getItemStack();
+	}
+
+	@Override
+	public ItemStack assemble(Container inv) {
+		return outputs.get(0).getItemStack().copy();
 	}
 
 	@Override
@@ -56,101 +65,69 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 
 	@Override
 	public NonNullList<Ingredient> getIngredients() {
-		NonNullList<Ingredient> list = NonNullList.create();
-		list.add(ingredient);
-		return list;
+		return vanillaIngredients;
 	}
 
-	public Ingredient getIngredient() {
-		return ingredient;
+	public IngredientStack getIngredientQuantity() {
+		return ingredientStack;
 	}
 
-	public int getIngredientCount() {
-		return ingredientCount;
-	}
-
-	public List<Byproduct> getByproducts() {
-		return byproducts;
+	public List<VariableProductionOutput> getOutputs() {
+		return outputs;
 	}
 
 	@Override
-	public ItemStack getResultItem() {
-		return recipeResult;
-	}
-
-	@Override
-	public IRecipeSerializer<?> getSerializer() {
+	public RecipeSerializer<?> getSerializer() {
 		return ModRecipes.DECOMPOSING_SERIALIZER.get();
 	}
 
 	@Override
-	public IRecipeType<?> getType() {
+	public RecipeType<?> getType() {
 		return ModRecipes.DECOMPOSING_RECIPE_TYPE;
 	}
 
-	public static class Serializer extends ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<DecomposerRecipe> {
-
-		private static Ingredient readIngredient(JsonObject jsonObj) {
-			if (JSONUtils.isArrayNode(jsonObj, "ingredient")) return Ingredient.fromJson(JSONUtils.getAsJsonArray(jsonObj, "ingredient"));
-			else return Ingredient.fromJson(JSONUtils.getAsJsonObject(jsonObj, "ingredient"));
-		}
-
-		private static List<Byproduct> readByproducts(JsonArray jsonArray) {
-			List<Byproduct> list = new ArrayList<>();
-			for (int i = 0; i < jsonArray.size(); i++) {
-				list.add(Byproduct.deserialize(jsonArray.get(i).getAsJsonObject()));
-			}
-			return list;
-		}
+	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<DecomposerRecipe> {
 
 		@Override
 		public DecomposerRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-			JsonObject input = JSONUtils.getAsJsonObject(json, "input");
-			Ingredient ingredient = readIngredient(input);
-			int ingredientCount = JSONUtils.getAsInt(input, "count", 1);
+			JsonObject input = GsonHelper.getAsJsonObject(json, "input");
+			IngredientStack ingredientStack = IngredientStack.fromJson(input);
 
-			List<Byproduct> byproducts = readByproducts(JSONUtils.getAsJsonArray(json, "byproducts"));
-			if (byproducts.size() > MAX_BYPRODUCTS) {
-				throw new JsonParseException(String.format("Too many byproducts for %s recipe. Max amount is %d", getRegistryName(), MAX_BYPRODUCTS));
+			List<VariableProductionOutput> outputs = RecipeUtil.readVariableProductionOutputs(GsonHelper.getAsJsonArray(json, "outputs"));
+			if (outputs.size() > MAX_OUTPUTS) {
+				throw new JsonParseException(String.format("Too many outputs for %s recipe. Max amount is %d", getRegistryName(), MAX_OUTPUTS));
 			}
 
-			ItemStack resultStack = ShapedRecipe.itemFromJson(JSONUtils.getAsJsonObject(json, "result"));
-			int time = JSONUtils.getAsInt(json, "time", 100);
+			int time = GsonHelper.getAsInt(json, "time", 100);
 
-			return new DecomposerRecipe(recipeId, resultStack, time, ingredient, ingredientCount, byproducts);
+			return new DecomposerRecipe(recipeId, outputs, ingredientStack, time);
 		}
 
 		@Override
-		public DecomposerRecipe fromNetwork(ResourceLocation recipeId, PacketBuffer buffer) {
-			//client side
-			ItemStack resultStack = buffer.readItem();
-			int time = buffer.readInt();
+		public DecomposerRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+			IngredientStack ingredientStack = IngredientStack.fromNetwork(buffer);
 
-			int byproductCount = buffer.readVarInt();
-			List<Byproduct> byproducts = new ArrayList<>();
-			for (int j = 0; j < byproductCount; ++j) {
-				byproducts.add(Byproduct.read(buffer));
+			int time = buffer.readVarInt();
+
+			int outputCount = buffer.readVarInt();
+			List<VariableProductionOutput> outputs = new ArrayList<>();
+			for (int j = 0; j < outputCount; ++j) {
+				outputs.add(VariableProductionOutput.read(buffer));
 			}
 
-			Ingredient ingredient = Ingredient.fromNetwork(buffer);
-			int ingredientCount = buffer.readVarInt();
-
-			return new DecomposerRecipe(recipeId, resultStack, time, ingredient, ingredientCount, byproducts);
+			return new DecomposerRecipe(recipeId, outputs, ingredientStack, time);
 		}
 
 		@Override
-		public void toNetwork(PacketBuffer buffer, DecomposerRecipe recipe) {
-			//server side
-			buffer.writeItem(recipe.recipeResult);
+		public void toNetwork(FriendlyByteBuf buffer, DecomposerRecipe recipe) {
+			recipe.ingredientStack.toNetwork(buffer);
+
 			buffer.writeInt(recipe.getCraftingTime());
 
-			buffer.writeVarInt(recipe.byproducts.size());
-			for (Byproduct byproduct : recipe.byproducts) {
-				byproduct.write(buffer);
+			buffer.writeVarInt(recipe.outputs.size());
+			for (VariableProductionOutput output : recipe.outputs) {
+				output.write(buffer);
 			}
-
-			recipe.ingredient.toNetwork(buffer);
-			buffer.writeVarInt(recipe.ingredientCount);
 		}
 	}
 

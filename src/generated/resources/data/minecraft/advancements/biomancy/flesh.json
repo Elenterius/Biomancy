@@ -2,7 +2,7 @@
   "parent": "minecraft:biomancy/root",
   "display": {
     "icon": {
-      "item": "minecraft:cauldron"
+      "item": "biomancy:creator"
     },
     "title": {
       "translate": "advancements.biomancy.flesh.title"
@@ -21,7 +21,9 @@
       "conditions": {
         "items": [
           {
-            "item": "biomancy:flesh_block"
+            "items": [
+              "biomancy:flesh"
+            ]
           }
         ]
       }
