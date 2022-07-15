@@ -39,6 +39,11 @@ minecraft {
         client {
             workingDirectory project.file('run')
 
+            // enable HotSwap Agent (needs JBR-17 set jdk & HSA jar in jbr/lib/hotswap)
+            // https://github.com/HotswapProjects/HotswapAgent
+            jvmArg '-XX:+AllowEnhancedClassRedefinition'
+            jvmArg '-XX:HotswapAgent=fatjar'
+
             // "SCAN": For mods scan.
             // "REGISTRIES": For firing of registry events.
             // "REGISTRYDUMP": For getting the contents of all registries.

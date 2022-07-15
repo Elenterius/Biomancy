@@ -1,26 +1,69 @@
-<img src="media/v2/text_logo.png" alt="Biomancy" width="30%" style="image-rendering: crisp-edges;"/>
+<img src="media/v2/text_logo.png" alt="Biomancy" style="image-rendering: crisp-edges; max-width:50%;"/>
 
-[![Downloads on CurseForge](https://cf.way2muchnoise.eu/full_492939_downloads.svg?badge_style=for_the_badge)](https://www.curseforge.com/minecraft/mc-mods/biomancy)
-[![Biomancy Version](https://img.shields.io/badge/Version-2.0.0--alpha.12-red?style=for-the-badge)](https://github.com/Elenterius/Biomancy)
-[![Forge Version](https://img.shields.io/badge/Minecraft%20Forge-1.18.2--40.1.21+-orange?style=for-the-badge)](https://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.18.2.html)
-[![Biomancy Discord](https://img.shields.io/discord/920005236645572662?logo=discord&logoColor=white&style=for-the-badge)](https://discord.gg/424awTDdJJ)
+# Biomancy
+<a href="https://jitpack.io/#Elenterius/Biomancy" rel="nofollow"><img src="https://jitpack.io/v/Elenterius/Biomancy.svg?style=flat-square" alt="Biomancy JitPack" style="max-width: 100%; height:28px;"></a>
+[![Biomancy Version](https://img.shields.io/badge/Latest%20Version-2.0.0--alpha.15-red?style=for-the-badge)](https://github.com/Elenterius/Biomancy)
+[![Biomancy Discord](https://img.shields.io/discord/920005236645572662?logo=discord&logoColor=white&style=for-the-badge)][Discord]
+[![Downloads on CurseForge](https://cf.way2muchnoise.eu/full_492939_downloads.svg?badge_style=for_the_badge)][Download]
 
-Biomancy is a Biopunk inspired Mod and themed around flesh magic and bio-manipulation.
+Biomancy is magi-tech Mod for Minecraft. The mod is inspired by Biopunk and Bio-Manipulation and features a fleshy art style.
 
-**Mod Integrations**
+* [Download]
+* [Discord]
+* [Wiki]
+* [Trello]
 
-- [x] JEI
+## Tech Stack
+- [MinecraftForge](https://github.com/MinecraftForge/MinecraftForge) (modding API for Minecraft)
+- [SpongePowered Mixin](https://github.com/SpongePowered/Mixin) (mixin and bytecode weaving framework)
+- [GeckoLib](https://github.com/bernie-g/geckolib) (animation library)
 
-## Mod Download
+### Integration with other Mods
+- [JEI]
 
-https://www.curseforge.com/minecraft/mc-mods/biomancy
+## Gradle & Maven
+```groovy
+repositories {
+    maven { url "https://jitpack.io" }
+}
 
-modrinth (WIP)
+dependencies {
+    implementation fg.deobf('com.github.Elenterius:Biomancy:FooBarTag')
+}
+```
+Replace the FooBarTag with the tag of a build you want to use. The builds can be found on [JitPack] or in the release section on github. 
 
-## Recipes & Guide Book
+Alternatively you can use https://www.cursemaven.com/.
 
-ATM I recommended the use of [JEI](https://www.curseforge.com/minecraft/mc-mods/jei) to look up recipes and the
-github [Wiki](https://github.com/Elenterius/Biomancy/wiki/v2) to understand things.
+## Contributing
+Pull Request are welcome.
 
-[Getting Started](https://github.com/Elenterius/Biomancy/wiki/v2/Getting-Started)
+For new features or major changes related to the **gameplay** or **art style** please [join our Discord][Discord] and request to join the dev team.<br>
+This will give you access to the private mod development channels and resources such as the biomancy design document and concept board.
 
+You can track the development progress via our [Trello Board][Trello].
+
+## License
+All code is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+
+All artwork (images, textures, models, animations, etc.) is licensed under the [Creative Commons Attribution-NonCommercial 4.0 International License](http://creativecommons.org/licenses/by-nc/4.0/), unless stated otherwise.
+
+## Support
+If you need help feel free to [join our Discord][Discord].
+
+## User Guide
+The mod provides no ingame guide book but uses tooltip descriptions & flavor texts instead. If you need further information you can read the github [Wiki].
+
+Read the [Getting Started Guide](https://github.com/Elenterius/Biomancy/wiki/v2/Getting-Started) section if you don't know what to do at all.
+
+### Recipes
+To conveniently look up recipes ingame I recommend the use of the [JEI] mod.
+
+
+[Download]: https://www.curseforge.com/minecraft/mc-mods/biomancy
+[Discord]: https://discord.gg/424awTDdJJ
+[Wiki]: https://github.com/Elenterius/Biomancy/wiki/v2
+[Trello]: https://trello.com/b/GUKjOSAl
+[JitPack]: https://jitpack.io/#Elenterius/Biomancy
+
+[JEI]:https://www.curseforge.com/minecraft/mc-mods/jei
