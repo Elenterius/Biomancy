@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:crossbow_decomposing"
+      "biomancy:nutrient_paste"
     ]
   },
   "criteria": {
-    "has_crossbow": {
+    "has_nutrients": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:crossbow"
+              "biomancy:nutrients"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:crossbow_decomposing"
+        "recipe": "biomancy:nutrient_paste"
       }
     }
   },
   "requirements": [
     [
-      "has_crossbow",
+      "has_nutrients",
       "has_the_recipe"
     ]
   ]

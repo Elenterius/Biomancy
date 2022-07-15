@@ -4,6 +4,6 @@
     "item": "biomancy:stone_powder"
   },
   "result": "minecraft:glass_pane",
-  "experience": 0.1,
+  "experience": 0.01,
   "cookingtime": 100
 }

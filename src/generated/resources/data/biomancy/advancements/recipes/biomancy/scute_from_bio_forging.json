@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:bone_meal_from_bone_fragments"
+      "biomancy:scute_from_bio_forging"
     ]
   },
   "criteria": {
-    "has_bone_fragments": {
+    "has_bio_minerals": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:bone_fragments"
+              "biomancy:bio_minerals"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:bone_meal_from_bone_fragments"
+        "recipe": "biomancy:scute_from_bio_forging"
       }
     }
   },
   "requirements": [
     [
-      "has_bone_fragments",
+      "has_bio_minerals",
       "has_the_recipe"
     ]
   ]

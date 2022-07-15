@@ -1,20 +1,34 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "SBS",
-    "NNN"
-  ],
-  "key": {
-    "N": {
-      "item": "biomancy:nutrients"
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "biomancy:nutrient_paste"
     },
-    "B": {
-      "item": "minecraft:sweet_berries"
+    {
+      "item": "biomancy:nutrient_paste"
     },
-    "S": {
-      "tag": "forge:seeds"
+    {
+      "item": "biomancy:nutrient_paste"
+    },
+    {
+      "item": "biomancy:nutrient_paste"
+    },
+    {
+      "item": "biomancy:nutrient_paste"
+    },
+    {
+      "item": "biomancy:nutrient_paste"
+    },
+    {
+      "item": "biomancy:nutrient_paste"
+    },
+    {
+      "item": "biomancy:nutrient_paste"
+    },
+    {
+      "item": "biomancy:nutrient_paste"
     }
-  },
+  ],
   "result": {
     "item": "biomancy:nutrient_bar"
   }

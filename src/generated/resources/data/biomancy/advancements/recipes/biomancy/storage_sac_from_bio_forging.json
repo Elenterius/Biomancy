@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:bow_decomposing"
+      "biomancy:storage_sac_from_bio_forging"
     ]
   },
   "criteria": {
-    "has_bow": {
+    "has_elastic_fibers": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:bow"
+              "biomancy:elastic_fibers"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:bow_decomposing"
+        "recipe": "biomancy:storage_sac_from_bio_forging"
       }
     }
   },
   "requirements": [
     [
-      "has_bow",
+      "has_elastic_fibers",
       "has_the_recipe"
     ]
   ]

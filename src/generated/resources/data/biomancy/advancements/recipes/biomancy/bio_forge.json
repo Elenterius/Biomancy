@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "biomancy:flesh_slab"
+      "biomancy:bio_forge"
     ]
   },
   "criteria": {
-    "has_flesh": {
+    "has_living_flesh": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:flesh"
+              "biomancy:living_flesh"
             ]
           }
         ]
@@ -21,13 +21,14 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "biomancy:flesh_slab"
+        "recipe": "biomancy:bio_forge"
       }
     }
   },
   "requirements": [
     [
-      "has_flesh", "has_the_recipe"
+      "has_living_flesh",
+      "has_the_recipe"
     ]
   ]
 }

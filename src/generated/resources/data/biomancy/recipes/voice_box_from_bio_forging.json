@@ -11,19 +11,19 @@
       "ingredient": {
         "item": "biomancy:flesh_bits"
       },
-      "count": 64
+      "count": 6
     },
     {
       "ingredient": {
         "item": "biomancy:bone_fragments"
       },
-      "count": 12
+      "count": 4
     },
     {
       "ingredient": {
         "item": "biomancy:elastic_fibers"
       },
-      "count": 128
+      "count": 8
     }
   ],
   "result": {
