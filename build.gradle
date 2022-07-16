@@ -178,13 +178,8 @@ build {
         println("updating version in README.md...")
         def versionEscaped = mod_version.toString().replace("-", "--")
         def color = versionEscaped.contains("alpha") ? "red" : versionEscaped.contains("beta") ? "yellow" : "green"
-        ant.replaceregexp(match: 'Biomancy-([0-9\\.\\-]+[a-z\\.0-9\\-]+)', replace: "Biomancy-$versionEscaped-$color", flags: 'g', byline: true) {
-            fileset(dir: '.', includes: 'README.md')
-        }
-        ant.replaceregexp(match: 'Minecraft%20Forge-([0-9\\.\\-]+[a-z\\.0-9\\-]+)', replace: "Minecraft%20Forge-${mc_version}--${forge_version}-orange", flags: 'g', byline: true) {
-            fileset(dir: '.', includes: 'README.md')
-        }
-        ant.replaceregexp(match: 'forge/index_([0-9\\.\\-]+[a-z\\.0-9\\-]+)', replace: "forge/index_${mc_version}.html", flags: 'g', byline: true) {
+        def biomancy = 'Latest%20Version'
+        ant.replaceregexp(match: biomancy.plus('-([0-9\\.\\-]+[a-z\\.0-9\\-]+)'), replace: biomancy.plus("-$versionEscaped-$color"), flags: 'g', byline: true) {
             fileset(dir: '.', includes: 'README.md')
         }
     }

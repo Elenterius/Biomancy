@@ -3,5 +3,6 @@ before_install:
   - sdk use java 17.0.2-open
   - chmod +x gradlew
 install:
+  - ./gradlew build
   - ./gradlew clean
   - ./gradlew build publishToMavenLocal
