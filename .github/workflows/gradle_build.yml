@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 jobs:
-  gradle:
+  build-mod:
     runs-on: ubuntu-latest
 
     steps:
@@ -33,5 +33,5 @@ jobs:
     - name: Upload build
       uses: actions/upload-artifact@v3
       with:
-        name: build-lib
-        path: build/lib
+        name: build-libs
+        path: build/libs
