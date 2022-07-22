@@ -8,11 +8,7 @@ on:
     types: [published]
 
 jobs:
-  update-gradle-cache:
-    uses: elenterius/biomancy/.github/workflows/cache_gradle.yml@main
-  
   build-mod:
-    needs: update-gradle-cache
     runs-on: ubuntu-latest
 
     steps:
@@ -39,8 +35,14 @@ jobs:
       with:
         arguments: build
 
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v3
+#    - name: Upload Artifact
+#      uses: actions/upload-artifact@v3
+#      with:
+#        name: artifacts
+#        path: build/libs
+
+    - name: Upload Artifact to Github Release
+      uses: softprops/action-gh-release@v1
       with:
-        name: artifacts
-        path: build/libs
+        token: ${{ secrets.GITHUB_TOKEN }}
+        files: build/libs/*
