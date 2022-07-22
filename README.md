@@ -1,8 +1,7 @@
 <img src="media/v2/text_logo.png" alt="Biomancy" style="image-rendering: crisp-edges; max-width:50%;"/>
 
 # Biomancy
-<a href="https://jitpack.io/#Elenterius/Biomancy" rel="nofollow"><img src="https://jitpack.io/v/Elenterius/Biomancy.svg?style=flat-square" alt="Biomancy JitPack" style="max-width: 100%; height:28px;"></a>
-[![Biomancy Version](https://img.shields.io/badge/Latest%20Version-2.0.0--alpha.16-red?style=for-the-badge)](https://github.com/Elenterius/Biomancy)
+[![Biomancy Version](https://img.shields.io/badge/Latest%20Version-2.0.0--alpha.18-red?style=for-the-badge)](https://github.com/Elenterius/Biomancy)
 [![Biomancy Discord](https://img.shields.io/discord/920005236645572662?logo=discord&logoColor=white&style=for-the-badge)][Discord]
 [![Downloads on CurseForge](https://cf.way2muchnoise.eu/full_492939_downloads.svg?badge_style=for_the_badge)][Download]
 
@@ -21,19 +20,8 @@ Biomancy is magi-tech Mod for Minecraft. The mod is inspired by Biopunk and Bio-
 ### Integration with other Mods
 - [JEI]
 
-## Gradle & Maven
-```groovy
-repositories {
-    maven { url "https://jitpack.io" }
-}
-
-dependencies {
-    implementation fg.deobf('com.github.Elenterius:Biomancy:FooBarTag')
-}
-```
-Replace the FooBarTag with the tag of a build you want to use. The builds can be found on [JitPack] or in the release section on github. 
-
-Alternatively you can use https://www.cursemaven.com/.
+## Maven
+Atm you can use https://www.cursemaven.com/
 
 ## Contributing
 Pull Request are welcome.
