@@ -19,10 +19,13 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-def jsonFile = file('package.json')
-def parsedJson = new groovy.json.JsonSlurper().parseText(jsonFile.text)
-println('Mod-Version: ' + parsedJson.version)
-def mod_version = parsedJson.version
+private String parseModVersion() {
+    def parsedModVersion = new groovy.json.JsonSlurper().parseText(file('mod_version.json').text)
+    return parsedModVersion.major + '.' + parsedModVersion.semantic
+}
+
+def mod_version = parseModVersion()
+println('Mod-Version: ' + mod_version)
 
 version = "${mod_version}-${mc_version}-forge"
 group = 'com.github.elenterius.biomancy'

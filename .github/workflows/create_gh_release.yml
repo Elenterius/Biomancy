@@ -14,18 +14,17 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-        with:
-          ref: 'main'
 
       - name: Conventional Changelog
         id: changelog
         uses: TriPSs/conventional-changelog-action@v3
         with:
             github-token: ${{ secrets.GITHUB_TOKEN }}
-            output-file: "false"
+            version-file: './mod_version.json'
+            version-path: 'semantic'
+            output-file: 'false'
             git-message: 'chore(release): {version}'
             tag-prefix: 'v2.'
-            git-branch: 'main'
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
