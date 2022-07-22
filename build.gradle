@@ -19,6 +19,11 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
+def jsonFile = file('package.json')
+def parsedJson = new groovy.json.JsonSlurper().parseText(jsonFile.text)
+println('Mod-Version: ' + parsedJson.version)
+def mod_version = parsedJson.version
+
 version = "${mod_version}-${mc_version}-forge"
 group = 'com.github.elenterius.biomancy'
 archivesBaseName = 'biomancy'
@@ -196,7 +201,7 @@ jar {
                 "Specification-Vendor"    : "Elenterius",
                 "Specification-Version"   : "2",
                 "Implementation-Title"    : project.name,
-                "Implementation-Version"  : project.mod_version,
+                "Implementation-Version"  : mod_version,
                 "Implementation-Vendor"   : "Elenterius",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
                 "MixinConfigs"            : "mixins.biomancy.json"
