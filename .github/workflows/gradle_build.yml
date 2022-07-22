@@ -1,5 +1,5 @@
-# This workflow will build the Mod with Gradle and cache/restore any dependencies 
-# to improve the workflow execution time
+# This workflow will build the Mod with Gradle and cache/restore any dependencies to improve the workflow execution time
+# Note: cache writing only happens on the default branch but child branches do have read access to the default branch
 
 name: Run Gradle
 
@@ -25,7 +25,15 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         
-    - name: Setup & Run Gradle
+    - name: Setup Gradle
+      uses: gradle/gradle-build-action@v2.2.2
+    
+    - name: Execute Gradle Task "run Data Generators"
+      uses: gradle/gradle-build-action@v2.2.2
+      with:
+        arguments: runData
+    
+    - name: Excute Gradle Build
       uses: gradle/gradle-build-action@v2.2.2
       with:
         arguments: build
@@ -33,5 +41,5 @@ jobs:
     - name: Upload build
       uses: actions/upload-artifact@v3
       with:
-        name: build-libs
+        name: artifacts
         path: build/libs
