@@ -1,13 +1,11 @@
-# This workflow will build the Mod with Gradle and cache/restore any dependencies to improve the workflow execution time
+# On a github release this workflow will build the Mod with Gradle and cache/restore any dependencies to improve the workflow execution time
 # Note: cache writing only happens on the default branch but child branches do have read access to the default branch
 
 name: Run Gradle
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  release:
+    types: [published]
 
 permissions:
   contents: read
