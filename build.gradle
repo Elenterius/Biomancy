@@ -59,6 +59,8 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
+            property 'mixin.debug.verbose', 'true'
+            property 'mixin.debug.export', 'true'
             mods {
                 biomancy {
                     source sourceSets.main
@@ -73,6 +75,8 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
+            property 'mixin.debug.verbose', 'true'
+            property 'mixin.debug.export', 'true'
             mods {
                 biomancy {
                     source sourceSets.main
@@ -82,8 +86,7 @@ minecraft {
 
         data {
             workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES,REGISTRYDUMP'
+            property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
@@ -93,6 +96,11 @@ minecraft {
                     source sourceSets.main
                 }
             }
+        }
+
+        dataCI {
+            parent runs.data
+            forceExit false
         }
     }
 }
@@ -112,8 +120,6 @@ mixin {
     config 'mixins.biomancy.json'
 
     // options for dev run configs
-    debug.verbose = true
-    debug.export = true
     dumpTargetOnFailure = true
 }
 

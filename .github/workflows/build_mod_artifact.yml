@@ -25,10 +25,9 @@ jobs:
       uses: gradle/gradle-build-action@v2.2.2
     
     - name: Generate Assets
-      continue-on-error: true
       uses: gradle/gradle-build-action@v2.2.2
       with:
-        arguments: runData
+        arguments: runDataCI
 
     - name: Build Artifact
       uses: gradle/gradle-build-action@v2.2.2
