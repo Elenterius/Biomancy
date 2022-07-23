@@ -1,7 +1,7 @@
 <img src="media/v2/text_logo.png" alt="Biomancy" style="image-rendering: crisp-edges; max-width:50%;"/>
 
 # Biomancy
-[![Build Mod Artifact](https://github.com/Elenterius/Biomancy/actions/workflows/build_mod_artifact.yml/badge.svg?branch=main)](https://github.com/Elenterius/Biomancy/actions/workflows/build_mod_artifact.yml)
+[![Build Mod Artifact](https://github.com/Elenterius/Biomancy/actions/workflows/build_mod_artifact.yml/badge.svg)](https://github.com/Elenterius/Biomancy/actions/workflows/build_mod_artifact.yml)
 [![Biomancy Version](https://img.shields.io/badge/Latest%20Version-2.0.0--alpha.18-red?style=for-the-badge)](https://github.com/Elenterius/Biomancy)
 [![Biomancy Discord](https://img.shields.io/discord/920005236645572662?logo=discord&logoColor=white&style=for-the-badge)][Discord]
 [![Downloads on CurseForge](https://cf.way2muchnoise.eu/full_492939_downloads.svg?badge_style=for_the_badge)][Download]
