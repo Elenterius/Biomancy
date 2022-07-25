@@ -29,9 +29,9 @@ public final class ModItems {
 	public static final RegistryObject<SimpleItem> MOB_SINEW = registerSimpleItem("mob_sinew");
 	public static final RegistryObject<SimpleItem> MOB_MARROW = registerSimpleItem("mob_marrow");
 	public static final RegistryObject<SimpleItem> WITHERED_MOB_MARROW = registerSimpleItem("withered_mob_marrow");
-	public static final RegistryObject<SimpleItem> GENERIC_MOB_GLAND = registerSimpleItem("mob_gland");
-	public static final RegistryObject<SimpleItem> TOXIN_GLAND = registerSimpleItem("toxin_gland");
-	public static final RegistryObject<SimpleItem> VOLATILE_GLAND = registerSimpleItem("volatile_gland");
+	public static final RegistryObject<SimpleItem> GENERIC_MOB_GLAND = registerSimpleItem("mob_gland", () -> createBaseProperties().food(ModFoods.POOR_FLESH));
+	public static final RegistryObject<SimpleItem> TOXIN_GLAND = registerSimpleItem("toxin_gland", () -> createBaseProperties().food(ModFoods.TOXIN_GLAND));
+	public static final RegistryObject<VolatileGlandItem> VOLATILE_GLAND = ITEMS.register("volatile_gland", () -> new VolatileGlandItem(createBaseProperties().food(ModFoods.VOLATILE_GLAND)));
 	//## Special
 	public static final RegistryObject<SimpleItem> LIVING_FLESH = registerSimpleItem("living_flesh", ModRarities.VERY_RARE);
 	public static final RegistryObject<SimpleItem.ShinySimpleItem> EXALTED_LIVING_FLESH = ITEMS.register("exalted_living_flesh", () -> new SimpleItem.ShinySimpleItem(createBaseProperties().rarity(ModRarities.ULTRA_RARE).tab(null)));
