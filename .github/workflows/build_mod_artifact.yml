@@ -1,42 +1,16 @@
 # On a github release this workflow will build the Mod with Gradle and cache/restore any dependencies to improve the workflow execution time
 # Note: cache writing only happens on the default branch but child branches do have read access to the default branch
 
-name: Build Mod
+name: Build
 
 on:
   release:
     types: [published]
-    
-env:
-  CARGO_TERM_COLOR: always
 
 jobs:
-  cache-gradle:
+  build:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-      - name: Validate Gradle Wrapper
-        uses: gradle/wrapper-validation-action@v1.0.4
-      - name: Setup Mod Development Kit
-        uses: gradle/gradle-build-action@v2.2.2
-        with:
-          arguments: build # build is called to properly setup the minecraft mod development environment
-  
-  cache-oxipng:
-    runs-on: ubuntu-latest
-    steps:
-        - name: Cargo Install Oxipng
-          uses: baptiste0928/cargo-install@v1.3.0 #provides cache-efficient Rust crates installation
-          with:
-            crate: oxipng
-
-  build-mod:
-    needs: [cache-gradle, cache-oxipng] # both jobs are run in parallel in case either of them is not yet cached
-    runs-on: ubuntu-latest
+    environment: build
 
     steps:
     - name: Checkout Repository
@@ -46,6 +20,8 @@ jobs:
       uses: baptiste0928/cargo-install@v1.3.0 #provides cache-efficient Rust crates installation
       with:
         crate: oxipng
+      env:
+        CARGO_TERM_COLOR: always
 
     - name: Setup JDK 17
       uses: actions/setup-java@v3
@@ -62,7 +38,9 @@ jobs:
         arguments: runDataCI
 
     - name: Optimize PNG Assets
-      run: cargo oxipng -o 4 -i 0 --strip safe ./src/*/resources/*.png
+      run: oxipng -o 4 -i 0 --strip safe ./src/*/resources/*.png
+      env:
+        CARGO_TERM_COLOR: always
 
     - name: Build Mod Artifact
       uses: gradle/gradle-build-action@v2.2.2
