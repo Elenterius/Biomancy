@@ -29,6 +29,19 @@ jobs:
       with:
         arguments: runDataCI
 
+    - name: Cargo Install Oxipng
+      uses: baptiste0928/cargo-install@v1.3.0 #provides cache-efficient Rust crates installation
+      env:
+        CARGO_TERM_COLOR: always
+      with:
+        crate: oxipng
+        version: "5.0.1"
+
+    - name: Optimize PNGs
+      env:
+        CARGO_TERM_COLOR: always
+      run: cargo oxipng -o 4 -i 0 --strip safe ./src/*/resources/*.png
+
     - name: Build Artifact
       uses: gradle/gradle-build-action@v2.2.2
       with:
