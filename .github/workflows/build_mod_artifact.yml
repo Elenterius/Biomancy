@@ -1,19 +1,51 @@
 # On a github release this workflow will build the Mod with Gradle and cache/restore any dependencies to improve the workflow execution time
 # Note: cache writing only happens on the default branch but child branches do have read access to the default branch
 
-name: Build Mod Artifact
+name: Build Mod
 
 on:
   release:
     types: [published]
+    
+env:
+  CARGO_TERM_COLOR: always
 
 jobs:
+  cache-gradle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1.0.4
+      - name: Setup Mod Development Kit
+        uses: gradle/gradle-build-action@v2.2.2
+        with:
+          arguments: build # build is called to properly setup the minecraft mod development environment
+  
+  cache-oxipng:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Cargo Install Oxipng
+          uses: baptiste0928/cargo-install@v1.3.0 #provides cache-efficient Rust crates installation
+          with:
+            crate: oxipng
+
   build-mod:
+    needs: [cache-gradle, cache-oxipng] # both jobs are run in parallel in case either of them is not yet cached
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v3
+
+    - name: Setup Oxipng
+      uses: baptiste0928/cargo-install@v1.3.0 #provides cache-efficient Rust crates installation
+      with:
+        crate: oxipng
 
     - name: Setup JDK 17
       uses: actions/setup-java@v3
@@ -21,8 +53,6 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Validate Gradle wrapper
-      uses: gradle/wrapper-validation-action@v1.0.4
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2.2.2
     
@@ -31,20 +61,10 @@ jobs:
       with:
         arguments: runDataCI
 
-    - name: Cargo Install Oxipng
-      uses: baptiste0928/cargo-install@v1.3.0 #provides cache-efficient Rust crates installation
-      env:
-        CARGO_TERM_COLOR: always
-      with:
-        crate: oxipng
-        version: "5.0.1"
-
-    - name: Optimize PNGs
-      env:
-        CARGO_TERM_COLOR: always
+    - name: Optimize PNG Assets
       run: cargo oxipng -o 4 -i 0 --strip safe ./src/*/resources/*.png
 
-    - name: Build Artifact
+    - name: Build Mod Artifact
       uses: gradle/gradle-build-action@v2.2.2
       with:
         arguments: build
@@ -55,8 +75,19 @@ jobs:
 #        name: artifacts
 #        path: build/libs
 
-    - name: Upload Artifact to Github Release
+    - name: Upload Artifact to existing Github Release
       uses: softprops/action-gh-release@v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         files: build/libs/*
+        
+    - name: Upload to Discord
+      uses: appleboy/discord-action@master
+      with:
+        webhook_id: ${{ secrets.DISCORD_ID }}
+        webhook_token: ${{ secrets.DISCORD_TOKEN }}
+        file: ./build/libs/*
+        message: https://github.com/Elenterius/Biomancy/releases/tag/${{ github.ref }}
+    
+    
+    
