@@ -5,17 +5,20 @@ name: Github Release
 on:
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
-  build:
+  cache-gradle:
+    uses: elenterius/biomancy/.github/workflows/cache_gradle.yml@main
+  cache-oxipng:
+    uses: elenterius/biomancy/.github/workflows/cache_oxipng.yml@main
+      
+  create-release:
+    needs: [cache-gradle, cache-oxipng]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Conventional Changelog
+      - name: Generate Conventional Changelog
         id: changelog
         uses: TriPSs/conventional-changelog-action@v3
         with:
