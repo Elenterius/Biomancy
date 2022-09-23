@@ -151,10 +151,11 @@ dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 
 //    implementation fg.deobf('com.github.Elenterius:Combat-Commons:0.2.0-beta-1.18.1-forge')
-    implementation fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.18')
+    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.18:3.0.39')
 
-    compileOnly fg.deobf("mezz.jei:jei-${mc_version}:9.5.5.174:api") // compile against the JEI API but do not include it at runtime
-    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:9.5.5.174") // at runtime, use the full JEI jar
+    compileOnly fg.deobf("mezz.jei:jei-${mc_version}:9.7.1.255:api")
+    // compile against the JEI API but do not include it at runtime
+    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:9.7.1.255") // at runtime, use the full JEI jar
 
 //    curse.maven:<descriptor, can be anything>-<CurseForge project id>:<CurseForge file id>
 //    runtimeOnly fg.deobf("curse.maven:create-328085:3278516") //https://www.curseforge.com/minecraft/mc-mods/create/files/3278516
