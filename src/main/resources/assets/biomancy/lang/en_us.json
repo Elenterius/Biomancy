@@ -69,6 +69,8 @@
   "item.biomancy.control_staff": "[EXPERIMENTAL] Control Staff",
   "item.biomancy.flesh_blob_spawn_egg": "Flesh Blob Spawn Egg",
   "item.biomancy.boomling_spawn_egg": "Boomling Spawn Egg",
+  "item.biomancy.eyeball_pattern": "Banner Pattern",
+  "item.biomancy.eyeball_pattern.desc": "Ominous Eyeball",
   "block.biomancy.creator": "Flesh Crucible",
   "block.biomancy.bio_forge": "Bio-Forge",
   "block.biomancy.bio_lab": "Bio-Lab",

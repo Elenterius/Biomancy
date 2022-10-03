@@ -89,6 +89,13 @@ public final class ModItems {
 	public static final RegistryObject<InjectorItem> INJECTOR = ITEMS.register("injector", () -> new InjectorItem(createBaseProperties().durability(200)));
 	//	public static final RegistryObject<ControlStaffItem> CONTROL_STAFF = ITEMS.register("control_staff", () -> new ControlStaffItem(createBaseProperties().stacksTo(1).rarity(ModRarities.ULTRA_RARE)));
 
+	public static final RegistryObject<BannerPatternItem> EYEBALL_BANNER_PATTERN = ITEMS.register("eyeball_pattern", () -> new BannerPatternItem(ModBannerPatterns.EYEBALL_PATTERN, createBaseProperties()) {
+		@Override
+		public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+			tooltip.add(this.getDisplayName().withStyle(ModFonts.SCRIBBLED_TEXT_STYLE.withColor(ChatFormatting.GRAY)));
+		}
+	});
+
 	//# Weapons
 	//	public static final RegistryObject<SwordItem> BONE_SWORD = ITEMS.register("bone_sword", () -> new SwordItem(ModTiers.BONE, 3, -2.4f, createBaseProperties()));
 	public static final RegistryObject<ToothGunItem> TOOTH_GUN = ITEMS.register("tooth_gun", () -> new ToothGunItem(createBaseProperties().stacksTo(1).durability(ModTiers.LESSER_BIOFLESH.getUses()).rarity(ModRarities.VERY_RARE).tab(null)));
