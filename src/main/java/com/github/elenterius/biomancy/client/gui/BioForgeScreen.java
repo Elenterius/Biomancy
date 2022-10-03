@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.gui.component.CustomEditBox;
 import com.github.elenterius.biomancy.recipe.BioForgeRecipe;
 import com.github.elenterius.biomancy.recipe.IngredientStack;
+import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.world.inventory.menu.BioForgeMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -49,8 +50,8 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 
 		searchInput = new CustomEditBox(Objects.requireNonNull(minecraft).font, leftPos + 26, topPos + 16, 78, 14, new TranslatableComponent("itemGroup.search"));
 		searchInput.setMaxLength(50);
-		searchInput.setTextHint(new TranslatableComponent("gui.recipebook.search_hint").withStyle(Style.EMPTY.withItalic(true).withColor(ColorTheme.TEXT_ACCENT_FORGE_DARK)));
-		searchInput.setTextColor(ColorTheme.TEXT_ACCENT_FORGE);
+		searchInput.setTextHint(new TranslatableComponent("gui.recipebook.search_hint").withStyle(Style.EMPTY.withItalic(true).withColor(ColorStyles.TEXT_ACCENT_FORGE_DARK)));
+		searchInput.setTextColor(ColorStyles.TEXT_ACCENT_FORGE);
 
 		recipeBook = new BioForgeScreenController(minecraft, menu);
 
@@ -233,7 +234,7 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 		if (currentPage > 1) blit(poseStack, x - 22 - 8 - 1, y, 298, 58, 8, 13);
 		if (currentPage < recipeBook.maxPages) blit(poseStack, x + 22, y, 334, 58, 8, 13);
 		String text = "%d/%d".formatted(currentPage, recipeBook.maxPages);
-		font.draw(poseStack, text, x - font.width(text) / 2f, y + 3f, ColorTheme.TEXT_ACCENT_FORGE);
+		font.draw(poseStack, text, x - font.width(text) / 2f, y + 3f, ColorStyles.TEXT_ACCENT_FORGE);
 	}
 
 	private void drawRecipeIngredients(PoseStack poseStack) {
@@ -260,7 +261,7 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 		blit(poseStack, x - 3, y - 3, insufficient ? 354 : 330, 74, 22, 22);
 		itemRenderer.renderGuiItem(stack, x, y);
 		String text = "x" + requiredCount;
-		font.draw(poseStack, text, x + 16 + 4f - font.width(text), y + 16 + 4f + 1, insufficient ? ColorTheme.TEXT_ERROR : ColorTheme.TEXT_SUCCESS);
+		font.draw(poseStack, text, x + 16 + 4f - font.width(text), y + 16 + 4f + 1, insufficient ? ColorStyles.TEXT_ERROR : ColorStyles.TEXT_SUCCESS);
 		RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
 	}
 
@@ -277,7 +278,7 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 			blit(poseStack, x, y, 323, 30, 22, 22);
 			itemRenderer.renderAndDecorateItem(stack, x + 3, y + 3);
 			RenderSystem.depthFunc(GL11.GL_GREATER);
-			fill(poseStack, x, y, x + 22, y + 22, 0x40_00_00_00 | ColorTheme.TEXT_ERROR);
+			fill(poseStack, x, y, x + 22, y + 22, 0x40_00_00_00 | ColorStyles.TEXT_ERROR); // 0x40... | color -> prepend alpha to rgb color
 			RenderSystem.depthFunc(GL11.GL_LEQUAL);
 		} else {
 			itemRenderer.renderAndDecorateItem(stack, x + 3, y + 3);

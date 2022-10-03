@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
-import com.github.elenterius.biomancy.init.ModRarities;
+import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.world.item.IBiomancyItem;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -11,7 +11,6 @@ import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderTooltipEvent;
@@ -33,24 +32,13 @@ public final class TooltipRenderHandler {
 	}
 
 	@SubscribeEvent
-	public static void onRenderTooltipColor(final RenderTooltipEvent.Color event) {
-		ItemStack stack = event.getItemStack();
+	public static void onRenderTooltipColor(final RenderTooltipEvent.Color tooltipEvent) {
+		ItemStack stack = tooltipEvent.getItemStack();
 
 		if (stack.isEmpty() && ModMenuTypes.isBiomancyScreen(Minecraft.getInstance().screen)) {
-			event.setBackground(ColorTheme.TOOLTIP_BACKGROUND_ARGB);
-			event.setBorderStart(ColorTheme.TOOLTIP_BORDER_START_ARGB);
-			event.setBorderEnd(ColorTheme.TOOLTIP_BORDER_END_ARGB);
+			ColorStyles.GENERIC_TOOLTIP.applyColorTo(tooltipEvent);
 		} else if (isBiomancyItem(stack)) {
-			event.setBackground(ColorTheme.TOOLTIP_BACKGROUND_ARGB);
-			int customColor = ModRarities.getRGBColor(stack);
-			if (customColor > -1) {
-				//convert rgb to argb color
-				event.setBorderStart(0xFE_000000 | customColor); //fake color difference with lower alpha value
-				event.setBorderEnd(0xFF_000000 | customColor);
-			} else {
-				event.setBorderStart(ColorTheme.TOOLTIP_BORDER_START_ARGB);
-				event.setBorderEnd(ColorTheme.TOOLTIP_BORDER_END_ARGB);
-			}
+			ColorStyles.CUSTOM_RARITY_TOOLTIP.applyColorTo(tooltipEvent);
 		}
 	}
 
@@ -76,9 +64,9 @@ public final class TooltipRenderHandler {
 	//	}
 
 	public static void onPostRenderTooltip(ItemStack stack, Screen screen, PoseStack poseStack, int posX, int posY, int tooltipWidth, int tooltipHeight) {
-		if (isBiomancyItem(stack) && stack.getRarity() != Rarity.COMMON) {
-			drawTooltipOverlay(poseStack, posX, posY, tooltipWidth, tooltipHeight);
-		}
+		//		if (isBiomancyItem(stack) && stack.getRarity() != Rarity.COMMON) {
+		//			drawTooltipOverlay(poseStack, posX, posY, tooltipWidth, tooltipHeight);
+		//		}
 	}
 
 	private static void drawTooltipOverlay(PoseStack poseStack, int posX, int posY, int tooltipWidth, int tooltipHeight) {

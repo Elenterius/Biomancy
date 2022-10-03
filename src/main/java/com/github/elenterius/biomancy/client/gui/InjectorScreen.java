@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
+import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.world.item.ISerumProvider;
 import com.github.elenterius.biomancy.world.item.InjectorItem;
 import com.github.elenterius.biomancy.world.serum.Serum;
@@ -172,7 +173,7 @@ public class InjectorScreen extends Screen {
 
 			boolean isMouseInSection = radius > baseRadius - 1 && mouseAngle >= currentAngle - angleIncrement / 2f && mouseAngle < currentAngle + angleIncrement / 2f;
 
-			int color = isMouseInSection ? ColorTheme.TOOLTIP_BORDER_START_ARGB & 0xFAFFFFFF : ColorTheme.TOOLTIP_BACKGROUND_ARGB & 0xE0FFFFFF; //decrease alpha
+			int color = isMouseInSection ? ColorStyles.GENERIC_TOOLTIP.borderStartColor() & 0xFAFFFFFF : ColorStyles.GENERIC_TOOLTIP.backgroundColor() & 0xE0FFFFFF; //decrease alpha
 
 			drawSegment(poseStack, x, y, radius, currentAngle - angleIncrement / 2f, currentAngle, color, getBlitOffset());
 			drawSegment(poseStack, x, y, radius, currentAngle, currentAngle + angleIncrement / 2f, color, getBlitOffset());
@@ -223,8 +224,8 @@ public class InjectorScreen extends Screen {
 		float minY = yt - font.lineHeight / 2f - 3;
 		float maxX = xt + lineWidth + 2;
 		float maxY = yt + font.lineHeight / 2f + 2;
-		GuiRenderUtil.fill(poseStack, minX, minY, maxX, maxY, getBlitOffset(), ColorTheme.TOOLTIP_BACKGROUND_ARGB & 0xE0FFFFFF);
-		font.drawShadow(poseStack, text, xt, yt - font.lineHeight / 2f, ColorTheme.WHITE_ARGB);
+		GuiRenderUtil.fill(poseStack, minX, minY, maxX, maxY, getBlitOffset(), ColorStyles.GENERIC_TOOLTIP.backgroundColor() & 0xE0FFFFFF);
+		font.drawShadow(poseStack, text, xt, yt - font.lineHeight / 2f, ColorStyles.WHITE_ARGB);
 		poseStack.popPose();
 	}
 

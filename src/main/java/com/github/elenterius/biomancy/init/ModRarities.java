@@ -25,4 +25,8 @@ public final class ModRarities {
 		return color != null ? color.getValue() : -1;
 	}
 
+	public static int getARGBColor(ItemStack stack) {
+		return getRGBColor(stack) | 0xFF_000000;
+	}
+
 }
