@@ -20,6 +20,7 @@ public final class ModDamageSources {
 	public static final DamageSource SYMBIONT_EAT = createGenericDamage("symbiont_eat").bypassArmor().bypassMagic();
 	public static final DamageSource SYMBIONT_BITE = createGenericDamage("symbiont_bite").bypassArmor();
 	public static final DamageSource SYMBIONT_GENERIC_ATTACK = createGenericDamage("symbiont_generic");
+	public static final DamageSource CORROSIVE_ACID = createGenericDamage("corrosive_acid");
 
 	private ModDamageSources() {}
 
@@ -35,4 +36,7 @@ public final class ModDamageSources {
 		return new IndirectEntityDamageSource("witherSkull", projectile, shooter).setProjectile();
 	}
 
+	public static boolean isCorrosive(DamageSource damageSource) {
+		return damageSource == CORROSIVE_ACID;
+	}
 }

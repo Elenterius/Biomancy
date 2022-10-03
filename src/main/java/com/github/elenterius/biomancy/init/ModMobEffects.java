@@ -1,10 +1,7 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.statuseffect.AdrenalineEffect;
-import com.github.elenterius.biomancy.world.statuseffect.EssenceAnemiaEffect;
-import com.github.elenterius.biomancy.world.statuseffect.FleshEatingDiseaseEffect;
-import com.github.elenterius.biomancy.world.statuseffect.LibidoEffect;
+import com.github.elenterius.biomancy.world.statuseffect.*;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -16,6 +13,10 @@ import net.minecraftforge.registries.RegistryObject;
 public final class ModMobEffects {
 
 	public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, BiomancyMod.MOD_ID);
+
+	public static final RegistryObject<CorrosiveEffect> CORROSIVE = EFFECTS.register("corrosive", () -> new CorrosiveEffect(MobEffectCategory.HARMFUL, 0xbee040));
+	public static final RegistryObject<StatusEffect> ARMOR_SHRED = EFFECTS.register("armor_shred", () -> new ArmorShredEffect(MobEffectCategory.HARMFUL, 20, 0xbee040)
+			.addModifier(Attributes.ARMOR, "a15ed03e-c5db-4cf8-a0f5-4eb4657bb731", -0.05f, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
 	public static final RegistryObject<FleshEatingDiseaseEffect> FLESH_EATING_DISEASE = EFFECTS.register("flesh_eating_disease", () -> new FleshEatingDiseaseEffect(MobEffectCategory.HARMFUL, 0xcc33cc)
 			.addModifier(Attributes.MAX_HEALTH, "99DD10E5-2682-4C0D-8F8D-0FED3CE2D3F9", -0.1f, AttributeModifier.Operation.MULTIPLY_TOTAL));
