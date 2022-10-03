@@ -28,7 +28,7 @@ public final class ModItems {
 	public static final RegistryObject<SimpleItem> MOB_CLAW = registerSimpleItem("mob_claw");
 	public static final RegistryObject<SimpleItem> MOB_SINEW = registerSimpleItem("mob_sinew", ModRarities.UNCOMMON);
 	public static final RegistryObject<SimpleItem> MOB_MARROW = registerSimpleItem("mob_marrow", ModRarities.RARE);
-	public static final RegistryObject<SimpleItem> WITHERED_MOB_MARROW = registerSimpleItem("withered_mob_marrow", ModRarities.VERY_RARE);
+	public static final RegistryObject<SimpleItem> WITHERED_MOB_MARROW = registerSimpleItem("withered_mob_marrow", () -> createBaseProperties().food(ModFoods.CORROSIVE_FLUID).rarity(ModRarities.VERY_RARE));
 	public static final RegistryObject<SimpleItem> GENERIC_MOB_GLAND = registerSimpleItem("mob_gland", () -> createBaseProperties().food(ModFoods.POOR_FLESH).rarity(ModRarities.UNCOMMON));
 	public static final RegistryObject<SimpleItem> TOXIN_GLAND = registerSimpleItem("toxin_gland", () -> createBaseProperties().food(ModFoods.TOXIN_GLAND).rarity(ModRarities.RARE));
 	public static final RegistryObject<VolatileGlandItem> VOLATILE_GLAND = ITEMS.register("volatile_gland", () -> new VolatileGlandItem(createBaseProperties().food(ModFoods.VOLATILE_GLAND).rarity(ModRarities.RARE)));
