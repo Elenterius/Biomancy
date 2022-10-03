@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.world.item;
 
+import com.github.elenterius.biomancy.styles.HrTooltipComponent;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.world.block.BlockPropertyUtil;
 import com.github.elenterius.biomancy.world.block.PillarPlantUtil;
@@ -7,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -116,8 +118,18 @@ public class FertilizerItem extends Item implements IBiomancyItem {
 	}
 
 	@Override
+	public boolean isFoil(ItemStack stack) {
+		return true;
+	}
+
+	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
 		ClientTextUtil.appendItemInfoTooltip(stack.getItem(), tooltip);
+	}
+
+	@Override
+	public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
+		return Optional.of(new HrTooltipComponent());
 	}
 
 }

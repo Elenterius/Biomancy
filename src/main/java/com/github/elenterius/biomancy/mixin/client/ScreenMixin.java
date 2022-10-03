@@ -24,7 +24,7 @@ public class ScreenMixin {
 	@Inject(method = "renderTooltipInternal", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/entity/ItemRenderer;blitOffset:F", ordinal = 2, shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILEXCEPTION)
 	private void onRenderTooltipInternal(PoseStack poseStack, List<ClientTooltipComponent> tooltips, int mouseX, int mouseY, CallbackInfo ci, RenderTooltipEvent.Pre event, int width, int height, int posX, int posY) {
 		Screen screen = (Screen) (Object) this;
-		TooltipRenderHandler.onPostRenderTooltip(tooltipStack, screen, poseStack, posX, posY, width, height);
+		TooltipRenderHandler.onPostRenderTooltip(tooltipStack, tooltips, screen, poseStack, posX, posY, width, height);
 	}
 
 }

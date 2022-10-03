@@ -1,7 +1,9 @@
 package com.github.elenterius.biomancy.world.item;
 
+import com.github.elenterius.biomancy.styles.HrTooltipComponent;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -10,6 +12,7 @@ import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
 
 public class SimpleBlockItem extends BlockItem implements IBiomancyItem {
 
@@ -23,4 +26,8 @@ public class SimpleBlockItem extends BlockItem implements IBiomancyItem {
 		super.appendHoverText(stack, level, tooltip, flag);
 	}
 
+	@Override
+	public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
+		return Optional.of(new HrTooltipComponent());
+	}
 }

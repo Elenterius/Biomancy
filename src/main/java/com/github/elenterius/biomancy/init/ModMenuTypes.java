@@ -2,6 +2,8 @@ package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.gui.*;
+import com.github.elenterius.biomancy.styles.ClientHrTooltipComponent;
+import com.github.elenterius.biomancy.styles.HrTooltipComponent;
 import com.github.elenterius.biomancy.util.TabTooltipComponent;
 import com.github.elenterius.biomancy.world.inventory.menu.*;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -67,6 +69,7 @@ public final class ModMenuTypes {
 	@OnlyIn(Dist.CLIENT)
 	static void registerTooltipComponents() {
 		MinecraftForgeClient.registerTooltipComponentFactory(TabTooltipComponent.class, TabTooltipClientComponent::new);
+		MinecraftForgeClient.registerTooltipComponentFactory(HrTooltipComponent.class, ClientHrTooltipComponent::new);
 	}
 
 }

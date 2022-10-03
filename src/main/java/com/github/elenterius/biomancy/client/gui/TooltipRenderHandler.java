@@ -2,6 +2,8 @@ package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
+import com.github.elenterius.biomancy.init.ModRarities;
+import com.github.elenterius.biomancy.styles.ClientHrTooltipComponent;
 import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.world.item.IBiomancyItem;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -9,6 +11,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -16,6 +19,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
+import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = BiomancyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
@@ -42,28 +47,23 @@ public final class TooltipRenderHandler {
 		}
 	}
 
-	//	@SubscribeEvent
-	//	public static void onRenderTooltipComponent(final RenderTooltipEvent.GatherComponents event) {
-	//		ItemStack stack = event.getItemStack();
-	//		if (stack.isEmpty() || event.getTooltipElements().isEmpty()) return;
-	//
-	//		int customColor = ModRarities.getRGBColor(stack);
-	//		if (customColor > -1) {
-	//			//we assume the first text line we find is the item display name and modify its color if possible
-	//			for (int i = 0; i < event.getTooltipElements().size(); i++) {
-	//				Optional<FormattedText> left = event.getTooltipElements().get(i).left();
-	//				if (left.isPresent()) {
-	//					FormattedText formattedText = left.get();
-	//					if (formattedText instanceof MutableComponent mutableComponent) mutableComponent.withStyle(style -> style.withColor(customColor));
-	//					FormattedCharSequence visualOrderText = formattedText instanceof Component component ? component.getVisualOrderText() : Language.getInstance().getVisualOrder(formattedText);
-	//					event.getTooltipElements().set(i, Either.right(new TabTooltipComponent(visualOrderText)));
-	//					break;
-	//				}
-	//			}
-	//		}
-	//	}
+	@SubscribeEvent
+	public static void onRenderTooltipComponent(final RenderTooltipEvent.GatherComponents event) {
+		//placeholder
+	}
 
-	public static void onPostRenderTooltip(ItemStack stack, Screen screen, PoseStack poseStack, int posX, int posY, int tooltipWidth, int tooltipHeight) {
+	public static void onPostRenderTooltip(ItemStack stack, List<ClientTooltipComponent> components, Screen screen, PoseStack poseStack, int posX, int posY, int tooltipWidth, int tooltipHeight) {
+		if (!components.isEmpty()) {
+			int y = posY;
+			for (int i = 0; i < components.size(); i++) {
+				ClientTooltipComponent clientComponent = components.get(i);
+				if (clientComponent instanceof ClientHrTooltipComponent hrComponent) {
+					hrComponent.renderLine(poseStack, posX, y, tooltipWidth, i, ModRarities.getARGBColor(stack));
+				}
+				y += clientComponent.getHeight() + (i == 0 ? 2 : 0);
+			}
+		}
+
 		//		if (isBiomancyItem(stack) && stack.getRarity() != Rarity.COMMON) {
 		//			drawTooltipOverlay(poseStack, posX, posY, tooltipWidth, tooltipHeight);
 		//		}
