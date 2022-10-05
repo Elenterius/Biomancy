@@ -90,6 +90,8 @@ public final class ClientSetupHandler {
 		//		event.registerEntityRenderer(ModEntityTypes.THICK_WOOL_SHEEP.get(), ThickWoolSheepRenderer::new);
 		//		event.registerEntityRenderer(ModEntityTypes.FAILED_COW.get(), FailedCowRenderer::new);
 
+		event.registerEntityRenderer(ModEntityTypes.ANTI_GRAVITY_PROJECTILE.get(), ThrownItemRenderer::new);
+		event.registerEntityRenderer(ModEntityTypes.CORROSIVE_ACID_PROJECTILE.get(), AcidProjectileRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.TOOTH_PROJECTILE.get(), ThrownItemRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.WITHER_SKULL_PROJECTILE.get(), WitherProjectileRenderer::new);
 	}

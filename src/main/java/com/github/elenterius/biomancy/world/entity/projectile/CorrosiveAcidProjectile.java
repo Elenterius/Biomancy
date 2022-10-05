@@ -1,0 +1,95 @@
+package com.github.elenterius.biomancy.world.entity.projectile;
+
+import com.github.elenterius.biomancy.init.ModDamageSources;
+import com.github.elenterius.biomancy.init.ModEntityTypes;
+import com.github.elenterius.biomancy.init.ModMobEffects;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+
+import java.util.Objects;
+
+public class CorrosiveAcidProjectile extends BaseProjectile {
+
+	public CorrosiveAcidProjectile(EntityType<? extends BaseProjectile> entityType, Level level) {
+		super(entityType, level);
+	}
+
+	public CorrosiveAcidProjectile(Level level, double x, double y, double z) {
+		super(ModEntityTypes.CORROSIVE_ACID_PROJECTILE.get(), level, x, y, z);
+	}
+
+	public CorrosiveAcidProjectile(Level level, LivingEntity shooter) {
+		super(ModEntityTypes.CORROSIVE_ACID_PROJECTILE.get(), level, shooter);
+	}
+
+	@Override
+	public float getGravity() {
+		return 0.025f;
+	}
+
+	@Override
+	public boolean isPickable() {
+		return false;
+	}
+
+	@Override
+	public boolean hurt(DamageSource source, float amount) {
+		//		if (isInvulnerableTo(source)) return false;
+
+		//		markHurt();
+		//		Entity attacker = source.getEntity();
+		//		if (attacker != null) {
+		//			if (!level.isClientSide) {
+		//				setDeltaMovement(attacker.getLookAngle());
+		//				setOwner(attacker);
+		//			}
+		//			return true;
+		//		}
+
+		//TODO: explode into AOE cloud when damage is physical
+		return false;
+	}
+
+	@Override
+	protected void onHitBlock(BlockHitResult result) {
+		super.onHitBlock(result);
+		playSound(SoundEvents.SLIME_BLOCK_BREAK, 1, 1.2f / (random.nextFloat() * 0.2f + 0.9f));
+	}
+
+	@Override
+	protected void onHitEntity(EntityHitResult result) {
+		super.onHitEntity(result);
+		if (!level.isClientSide) {
+			Entity victim = result.getEntity();
+			Entity owner = getOwner();
+
+			victim.hurt(ModDamageSources.createProjectileDamage(this, owner), getDamage());
+
+			if (victim instanceof LivingEntity livingVictim) {
+				livingVictim.addEffect(new MobEffectInstance(ModMobEffects.CORROSIVE.get(), 2 * 20, 0), Objects.requireNonNullElse(owner, this));
+				livingVictim.addEffect(new MobEffectInstance(ModMobEffects.ARMOR_SHRED.get(), 5 * 20, 0), Objects.requireNonNullElse(owner, this));
+			}
+
+			if (owner instanceof LivingEntity shooter) {
+				doEnchantDamageEffects(shooter, victim);
+			}
+
+		}
+		playSound(SoundEvents.SLIME_BLOCK_BREAK, 1, 1.2f / (random.nextFloat() * 0.2f + 0.9f));
+	}
+
+	@Override
+	protected ParticleOptions getParticle() {
+		return ParticleTypes.SPIT;
+	}
+
+}

@@ -4,6 +4,8 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.world.entity.fleshblob.FleshBlob;
 import com.github.elenterius.biomancy.world.entity.ownable.Boomling;
 import com.github.elenterius.biomancy.world.entity.ownable.Fleshkin;
+import com.github.elenterius.biomancy.world.entity.projectile.AntiGravityProjectile;
+import com.github.elenterius.biomancy.world.entity.projectile.CorrosiveAcidProjectile;
 import com.github.elenterius.biomancy.world.entity.projectile.ToothProjectile;
 import com.github.elenterius.biomancy.world.entity.projectile.WitherProjectile;
 import net.minecraft.world.entity.Entity;
@@ -35,16 +37,17 @@ public final class ModEntityTypes {
 //	public static final RegistryObject<EntityType<BeetlingEntity>> BEETLING = register("beetling", EntityType.Builder.of(BeetlingEntity::new, EntityClassification.CREATURE).sized(0.475F, 0.34F));
 //	public static final RegistryObject<EntityType<CrocospiderEntity>> BROOD_MOTHER = register("brood_mother", EntityType.Builder.of(CrocospiderEntity::new, EntityClassification.MONSTER).sized(1.6F, 0.7F));
 
-//	//GMOs
-//	public static final RegistryObject<EntityType<ChromaSheepEntity>> CHROMA_SHEEP = register("chroma_sheep", EntityType.Builder.of(ChromaSheepEntity::new, EntityClassification.CREATURE).sized(0.9f, 1.3f).clientTrackingRange(10));
-//	public static final RegistryObject<EntityType<SilkyWoolSheepEntity>> SILKY_WOOL_SHEEP = register("silky_wool_sheep", EntityType.Builder.of(SilkyWoolSheepEntity::new, EntityClassification.CREATURE).sized(0.9f, 1.3f).clientTrackingRange(10));
-//	public static final RegistryObject<EntityType<ThickWoolSheepEntity>> THICK_WOOL_SHEEP = register("thick_wool_sheep", EntityType.Builder.of(ThickWoolSheepEntity::new, EntityClassification.CREATURE).sized(0.9f, 1.3f).clientTrackingRange(10));
-//	public static final RegistryObject<EntityType<NutrientSlurryCowEntity>> NUTRIENT_SLURRY_COW = register("nutrient_slurry_cow", EntityType.Builder.of(NutrientSlurryCowEntity::new, EntityClassification.CREATURE).sized(0.9f, 1.4f).clientTrackingRange(10));
+	//	//GMOs
+	//	public static final RegistryObject<EntityType<ChromaSheepEntity>> CHROMA_SHEEP = register("chroma_sheep", EntityType.Builder.of(ChromaSheepEntity::new, EntityClassification.CREATURE).sized(0.9f, 1.3f).clientTrackingRange(10));
+	//	public static final RegistryObject<EntityType<SilkyWoolSheepEntity>> SILKY_WOOL_SHEEP = register("silky_wool_sheep", EntityType.Builder.of(SilkyWoolSheepEntity::new, EntityClassification.CREATURE).sized(0.9f, 1.3f).clientTrackingRange(10));
+	//	public static final RegistryObject<EntityType<ThickWoolSheepEntity>> THICK_WOOL_SHEEP = register("thick_wool_sheep", EntityType.Builder.of(ThickWoolSheepEntity::new, EntityClassification.CREATURE).sized(0.9f, 1.3f).clientTrackingRange(10));
+	//	public static final RegistryObject<EntityType<NutrientSlurryCowEntity>> NUTRIENT_SLURRY_COW = register("nutrient_slurry_cow", EntityType.Builder.of(NutrientSlurryCowEntity::new, EntityClassification.CREATURE).sized(0.9f, 1.4f).clientTrackingRange(10));
 
 	//Projectiles
 	public static final RegistryObject<EntityType<ToothProjectile>> TOOTH_PROJECTILE = register("tooth_projectile", EntityType.Builder.<ToothProjectile>of(ToothProjectile::new, MobCategory.MISC).sized(0.25f, 0.25f).updateInterval(10));
 	public static final RegistryObject<EntityType<WitherProjectile>> WITHER_SKULL_PROJECTILE = register("wither_projectile", EntityType.Builder.<WitherProjectile>of(WitherProjectile::new, MobCategory.MISC).sized(0.3125f, 0.3125f).updateInterval(10));
-//	public static final RegistryObject<EntityType<BoomlingProjectileEntity>> BOOMLING_PROJECTILE = register("boomling_projectile", EntityType.Builder.<BoomlingProjectileEntity>of(BoomlingProjectileEntity::new, EntityClassification.MISC).sized(0.4f, 0.35f).updateInterval(10));
+	public static final RegistryObject<EntityType<AntiGravityProjectile>> ANTI_GRAVITY_PROJECTILE = register("anti_gravity_projectile", EntityType.Builder.<AntiGravityProjectile>of(AntiGravityProjectile::new, MobCategory.MISC).sized(0.25f, 0.25f).updateInterval(10));
+	public static final RegistryObject<EntityType<CorrosiveAcidProjectile>> CORROSIVE_ACID_PROJECTILE = register("corrosive_acid_projectile", EntityType.Builder.<CorrosiveAcidProjectile>of(CorrosiveAcidProjectile::new, MobCategory.MISC).sized(0.25f, 0.25f).updateInterval(10));
 
 	private ModEntityTypes() {}
 

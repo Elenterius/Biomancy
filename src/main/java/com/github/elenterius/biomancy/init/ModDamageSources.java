@@ -1,13 +1,16 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.entity.projectile.ToothProjectile;
+import com.github.elenterius.biomancy.world.entity.projectile.BaseProjectile;
+import com.github.elenterius.biomancy.world.entity.projectile.CorrosiveAcidProjectile;
 import com.github.elenterius.biomancy.world.entity.projectile.WitherProjectile;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 public final class ModDamageSources {
 
@@ -25,11 +28,12 @@ public final class ModDamageSources {
 	private ModDamageSources() {}
 
 	public static DamageSource createGenericDamage(String name) {
-		return new DamageSource(BiomancyMod.MOD_ID + "." + name);
+		return new DamageSource(BiomancyMod.MOD_ID + "." + name); //normal damage source "bypasses" shields
 	}
 
-	public static DamageSource createToothProjectileDamage(ToothProjectile projectile, @Nullable Entity shooter) {
-		return new IndirectEntityDamageSource(BiomancyMod.MOD_ID + "." + "tooth_projectile", projectile, shooter).setProjectile();
+	public static DamageSource createProjectileDamage(BaseProjectile projectile, @Nullable Entity shooter) {
+		String messageId = Objects.requireNonNullElse(projectile.getType().getRegistryName(), BiomancyMod.MOD_ID + "." + "projectile").toString();
+		return new IndirectEntityDamageSource(messageId, projectile, shooter).setProjectile();
 	}
 
 	public static DamageSource createWitherSkullDamage(WitherProjectile projectile, @Nullable Entity shooter) {
@@ -37,6 +41,6 @@ public final class ModDamageSources {
 	}
 
 	public static boolean isCorrosive(DamageSource damageSource) {
-		return damageSource == CORROSIVE_ACID;
+		return damageSource == CORROSIVE_ACID || damageSource.getDirectEntity() instanceof CorrosiveAcidProjectile;
 	}
 }

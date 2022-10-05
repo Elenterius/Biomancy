@@ -21,6 +21,8 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.Lazy;
 
+import java.util.Objects;
+
 public class ToothProjectile extends BaseProjectile implements ItemSupplier {
 
 	public ToothProjectile(EntityType<? extends BaseProjectile> entityType, Level world) {
@@ -49,10 +51,10 @@ public class ToothProjectile extends BaseProjectile implements ItemSupplier {
 			livingEntity.setLastHurtMob(victim);
 		}
 
-		boolean success = victim.hurt(ModDamageSources.createToothProjectileDamage(this, shooter != null ? shooter : this), getDamage());
+		boolean success = victim.hurt(ModDamageSources.createProjectileDamage(this, Objects.requireNonNullElse(shooter, this)), getDamage());
 		if (success && victim instanceof LivingEntity && !level.isClientSide) {
 			if (getKnockback() > 0) {
-				Vec3 vector3d = getDeltaMovement().multiply(1d, 0d, 1d).normalize().scale((double) getKnockback() * 0.6d);
+				Vec3 vector3d = getDeltaMovement().multiply(1, 0, 1).normalize().scale(getKnockback() * 0.6d);
 				if (vector3d.lengthSqr() > 0d) {
 					victim.push(vector3d.x, 0.1d, vector3d.z);
 				}
@@ -72,7 +74,7 @@ public class ToothProjectile extends BaseProjectile implements ItemSupplier {
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
-		playSound(SoundEvents.ARROW_HIT, 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
+		playSound(SoundEvents.ARROW_HIT, 1f, 1.2f / (random.nextFloat() * 0.2f + 0.9f));
 	}
 
 	@Override

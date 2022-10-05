@@ -23,6 +23,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
@@ -71,6 +72,21 @@ public final class MobUtil {
 
 	public static float getVolume(Entity entity) {
 		return entity.getBbWidth() * entity.getBbWidth() * entity.getBbHeight();
+	}
+
+	/**
+	 * @return gravity, positive is downwards force and negative is upwards force
+	 */
+	public static double getGravity(Entity entity) {
+		return entity instanceof LivingEntity livingEntity ? livingEntity.getAttributeValue(ForgeMod.ENTITY_GRAVITY.get()) : 0.08d;
+	}
+
+	//	public static double getGravitationalAcceleration(Entity entity) {
+	//		return entity.getDeltaMovement().y;
+	//	}
+
+	public static double getWeight(Entity entity) {
+		return getVolume(entity) * getGravity(entity);
 	}
 
 	public static boolean anyMatch(EntityType<?> target, EntityType<?> a, EntityType<?> b) {
