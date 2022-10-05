@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.world.block.entity;
 
 import com.github.elenterius.biomancy.init.ModBlockEntities;
+import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.ItemStackCounter;
-import com.github.elenterius.biomancy.util.TextComponentUtil;
 import com.github.elenterius.biomancy.world.inventory.SimpleInventory;
 import com.github.elenterius.biomancy.world.inventory.menu.StorageSacMenu;
 import net.minecraft.core.BlockPos;

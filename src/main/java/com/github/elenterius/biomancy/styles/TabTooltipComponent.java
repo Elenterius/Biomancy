@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.util;
+package com.github.elenterius.biomancy.styles;
 
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;

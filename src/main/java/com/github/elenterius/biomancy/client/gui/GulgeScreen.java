@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.util.ClientTextUtil;
+import com.github.elenterius.biomancy.styles.ClientTextUtil;
 import com.github.elenterius.biomancy.world.inventory.menu.GulgeMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;

@@ -1,11 +1,14 @@
-package com.github.elenterius.biomancy.util;
+package com.github.elenterius.biomancy.styles;
 
 import com.github.elenterius.biomancy.init.ClientSetupHandler;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.*;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
@@ -21,8 +24,6 @@ import java.util.UUID;
 
 @OnlyIn(Dist.CLIENT)
 public final class ClientTextUtil {
-
-	public static final Style LORE_STYLE = Style.EMPTY.withColor(ChatFormatting.DARK_GRAY).withItalic(true);
 
 	private static final TranslatableComponent CTRL_KEY_TEXT = new TranslatableComponent("keyboard.biomancy.ctrl");
 	private static final TranslatableComponent ALT_KEY_TEXT = new TranslatableComponent("keyboard.biomancy.alt");
@@ -46,17 +47,17 @@ public final class ClientTextUtil {
 
 	public static void appendItemInfoTooltip(Item item, List<Component> tooltip) {
 		if (Screen.hasControlDown()) {
-			tooltip.add(new TranslatableComponent(Util.makeDescriptionId("tooltip", ForgeRegistries.ITEMS.getKey(item))).withStyle(LORE_STYLE));
+			tooltip.add(new TranslatableComponent(Util.makeDescriptionId("tooltip", ForgeRegistries.ITEMS.getKey(item))).withStyle(TextStyles.LORE));
 		}
 	}
 
 	public static MutableComponent getItemInfoTooltip(Item item) {
-		return Screen.hasControlDown() ? new TranslatableComponent(Util.makeDescriptionId("tooltip", ForgeRegistries.ITEMS.getKey(item))).withStyle(LORE_STYLE) : pressButtonTo(CTRL_KEY_TEXT.plainCopy(), "show Info").withStyle(LORE_STYLE);
+		return Screen.hasControlDown() ? new TranslatableComponent(Util.makeDescriptionId("tooltip", ForgeRegistries.ITEMS.getKey(item))).withStyle(TextStyles.LORE) : pressButtonTo(CTRL_KEY_TEXT.plainCopy(), "show Info").withStyle(TextStyles.LORE);
 	}
 
 	public static boolean showExtraInfo(List<Component> tooltip) {
 		boolean flag = Screen.hasAltDown();
-		if (!flag) tooltip.add(pressButtonTo(ALT_KEY_TEXT.plainCopy(), "show Info").withStyle(LORE_STYLE));
+		if (!flag) tooltip.add(pressButtonTo(ALT_KEY_TEXT.plainCopy(), "show Info").withStyle(TextStyles.LORE));
 		return flag;
 	}
 

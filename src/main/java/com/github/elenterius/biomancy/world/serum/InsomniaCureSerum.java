@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.world.serum;
 
-import com.github.elenterius.biomancy.util.TextComponentUtil;
+import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;

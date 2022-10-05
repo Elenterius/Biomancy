@@ -1,8 +1,9 @@
 package com.github.elenterius.biomancy.world.serum;
 
 import com.github.elenterius.biomancy.init.ModMobEffects;
-import com.github.elenterius.biomancy.util.ClientTextUtil;
-import com.github.elenterius.biomancy.util.TextComponentUtil;
+import com.github.elenterius.biomancy.styles.ClientTextUtil;
+import com.github.elenterius.biomancy.styles.TextComponentUtil;
+import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.world.item.SerumItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -63,7 +64,7 @@ public class AdrenalineSerum extends Serum {
 		}
 
 		if (ClientTextUtil.showExtraInfo(tooltip)) {
-			tooltip.add(new TranslatableComponent(getTranslationKey().replace(Serum.PREFIX, "tooltip.")).withStyle(ClientTextUtil.LORE_STYLE));
+			tooltip.add(new TranslatableComponent(getTranslationKey().replace(Serum.PREFIX, "tooltip.")).withStyle(TextStyles.LORE));
 		}
 
 		addEffectToTooltip(tooltip, ModMobEffects.ADRENALINE_RUSH.get(), AMPLIFIER, DURATION);

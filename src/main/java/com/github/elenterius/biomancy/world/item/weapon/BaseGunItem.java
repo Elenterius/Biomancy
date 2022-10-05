@@ -1,8 +1,9 @@
 package com.github.elenterius.biomancy.world.item.weapon;
 
 import com.github.elenterius.biomancy.init.ModEnchantments;
-import com.github.elenterius.biomancy.util.ClientTextUtil;
-import com.github.elenterius.biomancy.util.TextComponentUtil;
+import com.github.elenterius.biomancy.styles.ClientTextUtil;
+import com.github.elenterius.biomancy.styles.TextComponentUtil;
+import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.world.item.IKeyListener;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -227,7 +228,7 @@ public abstract class BaseGunItem extends ProjectileWeaponItem implements IGun, 
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).setStyle(ClientTextUtil.LORE_STYLE));
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).setStyle(TextStyles.LORE));
 		if (ClientTextUtil.showExtraInfo(tooltip)) {
 			DecimalFormat df = ClientTextUtil.getDecimalFormatter("#.###");
 			tooltip.add(TextComponentUtil.getTooltipText("fire_rate").append(String.format(": %s RPS ", df.format(getFireRate(stack)))).append(addBrackets(df.format(ONE_SECOND / baseShootDelay))));

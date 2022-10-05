@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.world.block.entity;
 
-import com.github.elenterius.biomancy.util.TextComponentUtil;
+import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.world.inventory.GulgeInventory;
 import com.github.elenterius.biomancy.world.inventory.menu.GulgeMenu;
 import net.minecraft.core.BlockPos;

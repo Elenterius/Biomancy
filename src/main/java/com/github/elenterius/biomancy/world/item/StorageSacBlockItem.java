@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.world.item;
 
+import com.github.elenterius.biomancy.styles.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.HrTooltipComponent;
-import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.world.block.entity.StorageSacBlockEntity;
 import com.github.elenterius.biomancy.world.inventory.ItemStackInventory;
 import com.github.elenterius.biomancy.world.inventory.itemhandler.EnhancedItemHandler;

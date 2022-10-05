@@ -1,7 +1,8 @@
 package com.github.elenterius.biomancy.world.item.weapon;
 
 import com.github.elenterius.biomancy.init.ModEntityTypes;
-import com.github.elenterius.biomancy.util.ClientTextUtil;
+import com.github.elenterius.biomancy.styles.ClientTextUtil;
+import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.PotionUtilExt;
 import com.github.elenterius.biomancy.world.entity.MobUtil;
 import com.github.elenterius.biomancy.world.entity.ownable.Boomling;
@@ -93,7 +94,7 @@ public class BoomlingItem extends Item implements IBiomancyItem {
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).setStyle(ClientTextUtil.LORE_STYLE));
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).setStyle(TextStyles.LORE));
 		if (stack.hasTag() && stack.getTag() != null) {
 			String potionTranslationKey = PotionUtilExt.getPotionTranslationKeyFromHost(stack);
 			if (!potionTranslationKey.isEmpty())

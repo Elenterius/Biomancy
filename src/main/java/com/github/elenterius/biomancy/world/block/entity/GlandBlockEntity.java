@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.world.block.entity;
 
 import com.github.elenterius.biomancy.recipe.DecomposerRecipe;
-import com.github.elenterius.biomancy.util.TextComponentUtil;
+import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.world.inventory.itemhandler.HandlerBehaviors;
 import com.github.elenterius.biomancy.world.inventory.menu.GlandMenu;

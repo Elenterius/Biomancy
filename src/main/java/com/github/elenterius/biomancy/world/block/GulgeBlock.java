@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.world.block;
 
-import com.github.elenterius.biomancy.util.ClientTextUtil;
-import com.github.elenterius.biomancy.util.TextComponentUtil;
+import com.github.elenterius.biomancy.styles.ClientTextUtil;
+import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.world.block.entity.GulgeBlockEntity;
 import com.github.elenterius.biomancy.world.inventory.itemhandler.LargeSingleItemStackHandler;
 import net.minecraft.ChatFormatting;

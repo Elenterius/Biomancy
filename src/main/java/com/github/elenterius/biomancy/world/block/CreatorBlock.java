@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.world.block;
 
 import com.github.elenterius.biomancy.init.ModBlockEntities;
-import com.github.elenterius.biomancy.util.ClientTextUtil;
+import com.github.elenterius.biomancy.styles.ClientTextUtil;
 import com.github.elenterius.biomancy.world.block.entity.CreatorBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;

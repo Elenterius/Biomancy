@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.world.ownable;
 
-import com.github.elenterius.biomancy.util.ClientTextUtil;
-import com.github.elenterius.biomancy.util.TextComponentUtil;
+import com.github.elenterius.biomancy.styles.ClientTextUtil;
+import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.world.block.entity.OwnableBlockEntity;
 import com.github.elenterius.biomancy.world.permission.UserType;
 import net.minecraft.ChatFormatting;

@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.world.entity.ownable;
 
-import com.github.elenterius.biomancy.util.TextComponentUtil;
+import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.world.entity.ai.goal.controllable.FollowOwnerGoal;
 import com.github.elenterius.biomancy.world.entity.ai.goal.controllable.*;
 import com.github.elenterius.biomancy.world.ownable.IOwnableMob;

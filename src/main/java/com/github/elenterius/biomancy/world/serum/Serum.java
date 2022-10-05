@@ -1,7 +1,8 @@
 package com.github.elenterius.biomancy.world.serum;
 
-import com.github.elenterius.biomancy.util.ClientTextUtil;
-import com.github.elenterius.biomancy.util.TextComponentUtil;
+import com.github.elenterius.biomancy.styles.ClientTextUtil;
+import com.github.elenterius.biomancy.styles.TextComponentUtil;
+import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.world.item.SerumItem;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -74,7 +75,7 @@ public abstract class Serum extends ForgeRegistryEntry<Serum> {
 			tooltip.add(TextComponentUtil.getTooltipText("contains", new TranslatableComponent(getTranslationKey())).withStyle(ChatFormatting.GRAY));
 		}
 		if (ClientTextUtil.showExtraInfo(tooltip)) {
-			tooltip.add(new TranslatableComponent(getTranslationKey().replace(PREFIX, "tooltip.")).withStyle(ClientTextUtil.LORE_STYLE));
+			tooltip.add(new TranslatableComponent(getTranslationKey().replace(PREFIX, "tooltip.")).withStyle(TextStyles.LORE));
 		}
 	}
 

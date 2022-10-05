@@ -5,7 +5,7 @@ import com.github.elenterius.biomancy.init.ModDamageSources;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.network.ISyncableAnimation;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
-import com.github.elenterius.biomancy.util.TextComponentUtil;
+import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.world.inventory.SimpleInventory;
 import com.github.elenterius.biomancy.world.inventory.menu.FleshkinChestMenu;
 import net.minecraft.core.BlockPos;

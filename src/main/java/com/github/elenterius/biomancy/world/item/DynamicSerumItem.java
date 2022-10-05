@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.world.item;
 
 import com.github.elenterius.biomancy.init.ModSerums;
-import com.github.elenterius.biomancy.util.TextComponentUtil;
+import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.world.serum.Serum;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;

@@ -5,7 +5,7 @@ import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.recipe.BioForgeRecipe;
 import com.github.elenterius.biomancy.recipe.RecipeTypeImpl;
-import com.github.elenterius.biomancy.util.TextComponentUtil;
+import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import com.github.elenterius.biomancy.world.block.entity.state.BioForgeStateData;
 import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;

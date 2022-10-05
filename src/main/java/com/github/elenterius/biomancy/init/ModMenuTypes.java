@@ -4,7 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.gui.*;
 import com.github.elenterius.biomancy.styles.ClientHrTooltipComponent;
 import com.github.elenterius.biomancy.styles.HrTooltipComponent;
-import com.github.elenterius.biomancy.util.TabTooltipComponent;
+import com.github.elenterius.biomancy.styles.TabTooltipComponent;
 import com.github.elenterius.biomancy.world.inventory.menu.*;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;

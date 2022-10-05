@@ -1,7 +1,6 @@
-package com.github.elenterius.biomancy.util;
+package com.github.elenterius.biomancy.styles;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 
@@ -34,11 +33,11 @@ public final class TextComponentUtil {
 	}
 
 	public static Component getFailureMsgText(String msgKey) {
-		return getMsgText(msgKey).withStyle(ChatFormatting.RED);
+		return getMsgText(msgKey).withStyle(TextStyles.ERROR);
 	}
 
 	public static Component getFailureMsgText(String msgKey, Object... formatArgs) {
-		return getMsgText(msgKey, formatArgs).withStyle(ChatFormatting.RED);
+		return getMsgText(msgKey, formatArgs).withStyle(TextStyles.ERROR);
 	}
 
 }

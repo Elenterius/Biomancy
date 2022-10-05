@@ -1,0 +1,14 @@
+{
+  "providers": [
+    {
+      "type": "ttf",
+      "file": "biomancy:maykr_runes.ttf",
+      "size": 10,
+      "shift": [
+        0,
+        0
+      ],
+      "oversample": 16
+    }
+  ]
+}

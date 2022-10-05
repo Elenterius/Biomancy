@@ -5,7 +5,7 @@ import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.recipe.BioLabRecipe;
 import com.github.elenterius.biomancy.recipe.IngredientStack;
 import com.github.elenterius.biomancy.recipe.RecipeTypeImpl;
-import com.github.elenterius.biomancy.util.TextComponentUtil;
+import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.fuel.FuelHandler;
 import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 import com.github.elenterius.biomancy.world.block.entity.state.BioLabStateData;

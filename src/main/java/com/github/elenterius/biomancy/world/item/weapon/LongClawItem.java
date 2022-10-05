@@ -1,7 +1,10 @@
 package com.github.elenterius.biomancy.world.item.weapon;
 
-import com.github.elenterius.biomancy.util.ClientTextUtil;
-import com.github.elenterius.biomancy.util.TextComponentUtil;
+import com.github.elenterius.biomancy.init.ModCapabilities;
+import com.github.elenterius.biomancy.styles.ClientTextUtil;
+import com.github.elenterius.biomancy.styles.HrTooltipComponent;
+import com.github.elenterius.biomancy.styles.TextComponentUtil;
+import com.github.elenterius.biomancy.world.entity.MobUtil;
 import com.github.elenterius.biomancy.world.item.IBiomancyItem;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
