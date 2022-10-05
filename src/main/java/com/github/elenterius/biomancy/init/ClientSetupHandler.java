@@ -4,10 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.gui.IngameOverlays;
 import com.github.elenterius.biomancy.client.model.entity.FleshkinModel;
 import com.github.elenterius.biomancy.client.renderer.block.*;
-import com.github.elenterius.biomancy.client.renderer.entity.BoomlingRenderer;
-import com.github.elenterius.biomancy.client.renderer.entity.FleshBlobRenderer;
-import com.github.elenterius.biomancy.client.renderer.entity.FleshkinRenderer;
-import com.github.elenterius.biomancy.client.renderer.entity.WitherProjectileRenderer;
+import com.github.elenterius.biomancy.client.renderer.entity.*;
 import com.github.elenterius.biomancy.world.item.weapon.LongClawItem;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -87,18 +84,14 @@ public final class ClientSetupHandler {
 		event.registerEntityRenderer(ModEntityTypes.FLESHKIN.get(), FleshkinRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.BOOMLING.get(), BoomlingRenderer::new);
 
-//		event.registerEntityRenderer(ModEntityTypes.OCULUS_OBSERVER.get(), OculusObserverRenderer::new);
-//		event.registerEntityRenderer(ModEntityTypes.BROOD_MOTHER.get(), BroodmotherRenderer::new);
-//		event.registerEntityRenderer(ModEntityTypes.FAILED_SHEEP.get(), FailedSheepRenderer::new);
-//		event.registerEntityRenderer(ModEntityTypes.CHROMA_SHEEP.get(), ChromaSheepRenderer::new);
-//		event.registerEntityRenderer(ModEntityTypes.SILKY_WOOL_SHEEP.get(), SilkyWoolSheepRenderer::new);
-//		event.registerEntityRenderer(ModEntityTypes.THICK_WOOL_SHEEP.get(), ThickWoolSheepRenderer::new);
-//		event.registerEntityRenderer(ModEntityTypes.NUTRIENT_SLURRY_COW.get(), NutrientSlurryCowRenderer::new);
-//		event.registerEntityRenderer(ModEntityTypes.FAILED_COW.get(), FailedCowRenderer::new);
+		//		event.registerEntityRenderer(ModEntityTypes.FAILED_SHEEP.get(), FailedSheepRenderer::new);
+		//		event.registerEntityRenderer(ModEntityTypes.CHROMA_SHEEP.get(), ChromaSheepRenderer::new);
+		//		event.registerEntityRenderer(ModEntityTypes.SILKY_WOOL_SHEEP.get(), SilkyWoolSheepRenderer::new);
+		//		event.registerEntityRenderer(ModEntityTypes.THICK_WOOL_SHEEP.get(), ThickWoolSheepRenderer::new);
+		//		event.registerEntityRenderer(ModEntityTypes.FAILED_COW.get(), FailedCowRenderer::new);
 
 		event.registerEntityRenderer(ModEntityTypes.TOOTH_PROJECTILE.get(), ThrownItemRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.WITHER_SKULL_PROJECTILE.get(), WitherProjectileRenderer::new);
-//		event.registerEntityRenderer(ModEntityTypes.BOOMLING_PROJECTILE.get(), BoomlingProjectileRenderer::new);
 	}
 
 	@SubscribeEvent
@@ -132,12 +125,7 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void onItemColorRegistry(final ColorHandlerEvent.Item event) {
-//		event.getItemColors().register((stack, index) -> index == 0 ? ModItems.GENERIC_SERUM.get().getSerumColor(stack) : -1, ModItems.GENERIC_SERUM.get());
 		event.getItemColors().register((stack, index) -> ModItems.ESSENCE.get().getColor(stack, index), ModItems.ESSENCE.get());
-		event.getItemColors().register((stack, index) -> index == 1 ? ModItems.BOOMLING.get().getPotionColor(stack) : -1, ModItems.BOOMLING.get());
-
-//		event.getItemColors().register((stack, index) -> 0x8d758c, ModItems.NECROTIC_FLESH_BLOCK.get());
-//		event.getItemColors().register((stack, index) -> 0xedaeaa, ModItems.PROTEIN_BAR.get());
 	}
 
 	@SubscribeEvent

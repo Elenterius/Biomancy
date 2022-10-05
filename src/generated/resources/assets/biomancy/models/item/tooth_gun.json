@@ -1,6 +1,0 @@
-{
-  "parent": "biomancy:item/handheld_gun",
-  "textures": {
-    "layer0": "biomancy:item/weapon/tooth_gun"
-  }
-}

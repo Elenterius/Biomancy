@@ -83,13 +83,13 @@
   "block.biomancy.tongue": "Tongue",
   "block.biomancy.gland": "Appendix Gland",
   "block.biomancy.gulge": "Deep Gulge",
-  "block.biomancy.sac": "Storage Sac",
   "block.biomancy.voice_box": "Voice Box",
   "block.biomancy.storage_sac": "Storage Sac",
   "block.biomancy.fleshkin_chest": "Fleshkin Chest",
   "block.biomancy.fleshkin_door": "Fleshkin Door",
   "block.biomancy.fleshkin_trapdoor": "Fleshkin Trap Door",
   "block.biomancy.fleshkin_pressure_plate": "Fleshkin Pressure Plate",
+
   "block.biomancy.flesh": "Flesh Block",
   "block.biomancy.flesh_slab": "Flesh Slab",
   "block.biomancy.flesh_stairs": "Flesh Stairs",
@@ -172,9 +172,6 @@
   "tooltip.biomancy.exotic_dust": "Used as a main component in Ichor and related crafting. Basic component, only obtained in Gland.",
   "tooltip.biomancy.organic_matter": "Used as a main component in complex component and related crafting. Basic component, only obtained in Gland.",
 
-  "tooltip.biomancy.larynx": "Acquired from despoiling mobs, can be decomposed into flesh bits and other stuff. Can be inserted into a voice box or a fleshkin mutant.",
-  "tooltip.biomancy.ancient_stomach": "Acquired from despoiling boss mobs, can be decomposed into flesh bits, exotic dust and other stuff. Used as a main component for crafting items.",
-
   "tooltip.biomancy.bio_extractor": "A intricate device which is used to extract Essence from living beings.",
   "tooltip.biomancy.bio_injector": "A simple device which utilizes a razor sharp needle to quickly and forcefully inject Serums into various things such as Mobs, Players and Blocks.",
   "tooltip.biomancy.boomling": "A placeable and living proximity trap. Once a target is acquired the boomling will leap at its victims and explode into an AOE Potion Effect.\n\nCombine with a potion in crafting table to set the potion effect.\nSneak click to pick back up once placed.",
@@ -240,7 +237,6 @@
   "item.biomancy.fleshborn_axe": "Fleshborn Axe",
   "item.biomancy.fleshborn_shovel": "Fleshborn Shovel",
   "item.biomancy.fleshborn_sword": "Ravenous Blade",
-  "item.biomancy.boomling_hive_gun": "[WIP] Boomsling",
   "item.biomancy.bee_hive_gun": "[WIP] Bee-Launcher",
 
   "item.biomancy.mutagenic_bile": "Mutagenic Bile",
