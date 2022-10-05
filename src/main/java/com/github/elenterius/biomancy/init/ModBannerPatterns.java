@@ -7,7 +7,9 @@ import java.util.Locale;
 
 public final class ModBannerPatterns {
 
-	public static final BannerPattern EYEBALL_PATTERN = createBannerPattern("eyeball");
+	public static final BannerPattern MASCOT_PATTERN = createBannerPattern("mascot");
+	public static final BannerPattern MASCOT_ACCENT_PATTERN = createBannerPattern("mascot_accent");
+	public static final BannerPattern MASCOT_OUTLINE_PATTERN = createBannerPattern("mascot_outline");
 
 	private ModBannerPatterns() {}
 
