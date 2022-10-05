@@ -11,8 +11,9 @@
       "result": {
         "item": "biomancy:bio_minerals",
         "count_range": {
-          "type": "constant",
-          "value": 6
+          "type": "uniform",
+          "min": 3,
+          "max": 5
         }
       }
     },
@@ -20,11 +21,12 @@
       "result": {
         "item": "biomancy:tough_fibers",
         "count_range": {
-          "type": "constant",
-          "value": 4
+          "type": "uniform",
+          "min": 4,
+          "max": 6
         }
       }
     }
   ],
-  "time": 252
+  "time": 290
 }

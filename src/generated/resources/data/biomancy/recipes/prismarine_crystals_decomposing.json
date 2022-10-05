@@ -11,8 +11,9 @@
       "result": {
         "item": "biomancy:gem_fragments",
         "count_range": {
-          "type": "constant",
-          "value": 3
+          "type": "uniform",
+          "min": 1,
+          "max": 3
         }
       }
     },
@@ -20,8 +21,9 @@
       "result": {
         "item": "biomancy:bio_minerals",
         "count_range": {
-          "type": "constant",
-          "value": 1
+          "type": "uniform",
+          "min": 0,
+          "max": 1
         }
       }
     },
@@ -29,8 +31,9 @@
       "result": {
         "item": "biomancy:bio_lumens",
         "count_range": {
-          "type": "constant",
-          "value": 1
+          "type": "uniform",
+          "min": 0,
+          "max": 1
         }
       }
     }

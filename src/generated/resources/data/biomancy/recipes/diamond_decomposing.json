@@ -11,8 +11,9 @@
       "result": {
         "item": "biomancy:gem_fragments",
         "count_range": {
-          "type": "constant",
-          "value": 8
+          "type": "uniform",
+          "min": 4,
+          "max": 8
         }
       }
     }

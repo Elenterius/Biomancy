@@ -1,0 +1,32 @@
+{
+  "type": "biomancy:decomposing",
+  "input": {
+    "ingredient": {
+      "item": "minecraft:melon_slice"
+    },
+    "count": 1
+  },
+  "outputs": [
+    {
+      "result": {
+        "item": "biomancy:organic_matter",
+        "count_range": {
+          "type": "uniform",
+          "min": 1,
+          "max": 2
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:nutrients",
+        "count_range": {
+          "type": "uniform",
+          "min": 1,
+          "max": 2
+        }
+      }
+    }
+  ],
+  "time": 80
+}

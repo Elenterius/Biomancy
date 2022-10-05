@@ -11,8 +11,9 @@
       "result": {
         "item": "biomancy:stone_powder",
         "count_range": {
-          "type": "constant",
-          "value": 2
+          "type": "uniform",
+          "min": 1,
+          "max": 2
         }
       }
     },
@@ -20,8 +21,9 @@
       "result": {
         "item": "biomancy:mineral_fragment",
         "count_range": {
-          "type": "constant",
-          "value": 2
+          "type": "uniform",
+          "min": 1,
+          "max": 2
         }
       }
     }

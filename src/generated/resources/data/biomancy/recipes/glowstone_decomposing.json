@@ -11,8 +11,9 @@
       "result": {
         "item": "biomancy:stone_powder",
         "count_range": {
-          "type": "constant",
-          "value": 8
+          "type": "uniform",
+          "min": 2,
+          "max": 4
         }
       }
     },
@@ -20,11 +21,22 @@
       "result": {
         "item": "biomancy:exotic_dust",
         "count_range": {
-          "type": "constant",
-          "value": 4
+          "type": "uniform",
+          "min": 1,
+          "max": 4
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:bio_lumens",
+        "count_range": {
+          "type": "uniform",
+          "min": 2,
+          "max": 4
         }
       }
     }
   ],
-  "time": 440
+  "time": 408
 }

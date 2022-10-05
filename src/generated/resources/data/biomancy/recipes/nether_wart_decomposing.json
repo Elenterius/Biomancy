@@ -9,13 +9,34 @@
   "outputs": [
     {
       "result": {
-        "item": "biomancy:bile",
+        "item": "biomancy:organic_matter",
         "count_range": {
-          "type": "constant",
-          "value": 1
+          "type": "uniform",
+          "min": 0,
+          "max": 1
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:exotic_dust",
+        "count_range": {
+          "type": "uniform",
+          "min": 0,
+          "max": 1
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:nutrients",
+        "count_range": {
+          "type": "uniform",
+          "min": 0,
+          "max": 1
         }
       }
     }
   ],
-  "time": 16
+  "time": 90
 }

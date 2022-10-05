@@ -9,13 +9,24 @@
   "outputs": [
     {
       "result": {
+        "item": "biomancy:organic_matter",
+        "count_range": {
+          "type": "uniform",
+          "min": 0,
+          "max": 1
+        }
+      }
+    },
+    {
+      "result": {
         "item": "biomancy:stone_powder",
         "count_range": {
-          "type": "constant",
-          "value": 4
+          "type": "uniform",
+          "min": 0,
+          "max": 1
         }
       }
     }
   ],
-  "time": 120
+  "time": 50
 }

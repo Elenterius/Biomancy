@@ -11,20 +11,32 @@
       "result": {
         "item": "biomancy:mineral_fragment",
         "count_range": {
-          "type": "constant",
-          "value": 63
+          "type": "uniform",
+          "min": 37,
+          "max": 63
         }
       }
     },
     {
       "result": {
-        "item": "biomancy:regenerative_fluid",
+        "item": "biomancy:nutrients",
         "count_range": {
-          "type": "constant",
-          "value": 3
+          "type": "uniform",
+          "min": 2,
+          "max": 3
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:organic_matter",
+        "count_range": {
+          "type": "uniform",
+          "min": 2,
+          "max": 3
         }
       }
     }
   ],
-  "time": 2625
+  "time": 2640
 }

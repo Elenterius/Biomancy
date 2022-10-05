@@ -11,14 +11,15 @@
       "result": {
         "item": "biomancy:bio_lumens",
         "count_range": {
-          "type": "constant",
-          "value": 4
+          "type": "uniform",
+          "min": 2,
+          "max": 4
         }
       }
     },
     {
       "result": {
-        "item": "biomancy:bile",
+        "item": "biomancy:exotic_dust",
         "count_range": {
           "type": "constant",
           "value": 2
@@ -26,5 +27,5 @@
       }
     }
   ],
-  "time": 120
+  "time": 188
 }

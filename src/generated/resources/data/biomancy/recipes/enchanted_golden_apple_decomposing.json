@@ -11,8 +11,9 @@
       "result": {
         "item": "biomancy:mineral_fragment",
         "count_range": {
-          "type": "constant",
-          "value": 72
+          "type": "uniform",
+          "min": 43,
+          "max": 72
         }
       }
     },
@@ -20,8 +21,9 @@
       "result": {
         "item": "biomancy:regenerative_fluid",
         "count_range": {
-          "type": "constant",
-          "value": 20
+          "type": "uniform",
+          "min": 12,
+          "max": 20
         }
       }
     },
@@ -29,8 +31,9 @@
       "result": {
         "item": "biomancy:exotic_dust",
         "count_range": {
-          "type": "constant",
-          "value": 10
+          "type": "uniform",
+          "min": 6,
+          "max": 10
         }
       }
     }

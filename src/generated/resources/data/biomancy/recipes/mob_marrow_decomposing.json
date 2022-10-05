@@ -9,19 +9,11 @@
   "outputs": [
     {
       "result": {
-        "item": "biomancy:regenerative_fluid",
+        "item": "biomancy:hormone_secretion",
         "count_range": {
-          "type": "constant",
-          "value": 5
-        }
-      }
-    },
-    {
-      "result": {
-        "item": "biomancy:bile",
-        "count_range": {
-          "type": "constant",
-          "value": 5
+          "type": "uniform",
+          "min": 2,
+          "max": 5
         }
       }
     },
@@ -29,11 +21,22 @@
       "result": {
         "item": "biomancy:bone_fragments",
         "count_range": {
-          "type": "constant",
-          "value": 1
+          "type": "uniform",
+          "min": 2,
+          "max": 4
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:bio_minerals",
+        "count_range": {
+          "type": "uniform",
+          "min": 1,
+          "max": 2
         }
       }
     }
   ],
-  "time": 280
+  "time": 244
 }

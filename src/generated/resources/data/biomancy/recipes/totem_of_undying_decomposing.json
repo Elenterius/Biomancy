@@ -12,19 +12,28 @@
         "item": "biomancy:exotic_dust",
         "count_range": {
           "type": "constant",
-          "value": 50
+          "value": 25
         }
       }
     },
     {
       "result": {
-        "item": "biomancy:regenerative_fluid",
+        "item": "biomancy:gem_fragments",
         "count_range": {
           "type": "constant",
-          "value": 50
+          "value": 15
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:mineral_fragment",
+        "count_range": {
+          "type": "constant",
+          "value": 10
         }
       }
     }
   ],
-  "time": 4250
+  "time": 2400
 }

@@ -12,10 +12,10 @@
         "item": "biomancy:tough_fibers",
         "count_range": {
           "type": "constant",
-          "value": 2
+          "value": 0
         }
       }
     }
   ],
-  "time": 60
+  "time": 0
 }

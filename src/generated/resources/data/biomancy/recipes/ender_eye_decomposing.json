@@ -11,20 +11,12 @@
       "result": {
         "item": "biomancy:exotic_dust",
         "count_range": {
-          "type": "constant",
-          "value": 5
-        }
-      }
-    },
-    {
-      "result": {
-        "item": "biomancy:bile",
-        "count_range": {
-          "type": "constant",
-          "value": 2
+          "type": "uniform",
+          "min": 5,
+          "max": 6
         }
       }
     }
   ],
-  "time": 282
+  "time": 300
 }

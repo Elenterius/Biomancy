@@ -11,8 +11,9 @@
       "result": {
         "item": "biomancy:flesh_bits",
         "count_range": {
-          "type": "constant",
-          "value": 4
+          "type": "uniform",
+          "min": 3,
+          "max": 4
         }
       }
     },
@@ -20,20 +21,22 @@
       "result": {
         "item": "biomancy:bone_fragments",
         "count_range": {
-          "type": "constant",
-          "value": 4
+          "type": "uniform",
+          "min": 2,
+          "max": 4
         }
       }
     },
     {
       "result": {
-        "item": "biomancy:bile",
+        "item": "biomancy:elastic_fibers",
         "count_range": {
-          "type": "constant",
-          "value": 2
+          "type": "uniform",
+          "min": 2,
+          "max": 3
         }
       }
     }
   ],
-  "time": 204
+  "time": 202
 }

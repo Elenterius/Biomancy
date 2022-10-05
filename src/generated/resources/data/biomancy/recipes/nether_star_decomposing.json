@@ -12,10 +12,28 @@
         "item": "biomancy:exotic_dust",
         "count_range": {
           "type": "constant",
+          "value": 50
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:bio_lumens",
+        "count_range": {
+          "type": "constant",
+          "value": 25
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:gem_fragments",
+        "count_range": {
+          "type": "constant",
           "value": 20
         }
       }
     }
   ],
-  "time": 1000
+  "time": 4050
 }

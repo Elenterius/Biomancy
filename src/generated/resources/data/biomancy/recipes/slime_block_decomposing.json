@@ -11,8 +11,9 @@
       "result": {
         "item": "biomancy:regenerative_fluid",
         "count_range": {
-          "type": "constant",
-          "value": 45
+          "type": "uniform",
+          "min": 27,
+          "max": 45
         }
       }
     },
@@ -20,8 +21,9 @@
       "result": {
         "item": "biomancy:bile",
         "count_range": {
-          "type": "constant",
-          "value": 18
+          "type": "uniform",
+          "min": 10,
+          "max": 18
         }
       }
     }

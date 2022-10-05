@@ -11,11 +11,22 @@
       "result": {
         "item": "biomancy:bio_lumens",
         "count_range": {
-          "type": "constant",
-          "value": 2
+          "type": "uniform",
+          "min": 1,
+          "max": 2
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:organic_matter",
+        "count_range": {
+          "type": "uniform",
+          "min": 0,
+          "max": 1
         }
       }
     }
   ],
-  "time": 44
+  "time": 64
 }

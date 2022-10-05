@@ -11,8 +11,9 @@
       "result": {
         "item": "biomancy:exotic_dust",
         "count_range": {
-          "type": "constant",
-          "value": 128
+          "type": "uniform",
+          "min": 97,
+          "max": 128
         }
       }
     },
@@ -20,8 +21,9 @@
       "result": {
         "item": "biomancy:bio_lumens",
         "count_range": {
-          "type": "constant",
-          "value": 10
+          "type": "uniform",
+          "min": 6,
+          "max": 10
         }
       }
     },
@@ -29,11 +31,12 @@
       "result": {
         "item": "biomancy:bio_minerals",
         "count_range": {
-          "type": "constant",
-          "value": 10
+          "type": "uniform",
+          "min": 17,
+          "max": 23
         }
       }
     }
   ],
-  "time": 6840
+  "time": 7126
 }

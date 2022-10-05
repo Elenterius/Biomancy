@@ -12,7 +12,7 @@
         "item": "biomancy:flesh_bits",
         "count_range": {
           "type": "constant",
-          "value": 40
+          "value": 50
         }
       }
     },
@@ -30,10 +30,28 @@
         "item": "biomancy:tough_fibers",
         "count_range": {
           "type": "constant",
-          "value": 30
+          "value": 25
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:bio_minerals",
+        "count_range": {
+          "type": "constant",
+          "value": 20
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:bone_fragments",
+        "count_range": {
+          "type": "constant",
+          "value": 50
         }
       }
     }
   ],
-  "time": 4120
+  "time": 5840
 }

@@ -9,22 +9,24 @@
   "outputs": [
     {
       "result": {
-        "item": "biomancy:bile",
+        "item": "biomancy:nutrients",
         "count_range": {
-          "type": "constant",
-          "value": 1
+          "type": "uniform",
+          "min": 1,
+          "max": 2
         }
       }
     },
     {
       "result": {
-        "item": "biomancy:regenerative_fluid",
+        "item": "biomancy:organic_matter",
         "count_range": {
-          "type": "constant",
-          "value": 1
+          "type": "uniform",
+          "min": 1,
+          "max": 2
         }
       }
     }
   ],
-  "time": 51
+  "time": 80
 }

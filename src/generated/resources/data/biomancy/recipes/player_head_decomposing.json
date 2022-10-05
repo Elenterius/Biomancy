@@ -11,8 +11,19 @@
       "result": {
         "item": "biomancy:flesh_bits",
         "count_range": {
-          "type": "constant",
-          "value": 32
+          "type": "uniform",
+          "min": 19,
+          "max": 32
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:elastic_fibers",
+        "count_range": {
+          "type": "uniform",
+          "min": 5,
+          "max": 9
         }
       }
     },
@@ -26,5 +37,5 @@
       }
     }
   ],
-  "time": 596
+  "time": 686
 }

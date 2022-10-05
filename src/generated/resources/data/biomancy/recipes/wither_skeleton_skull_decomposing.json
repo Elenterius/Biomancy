@@ -11,8 +11,9 @@
       "result": {
         "item": "biomancy:bone_fragments",
         "count_range": {
-          "type": "constant",
-          "value": 48
+          "type": "uniform",
+          "min": 28,
+          "max": 48
         }
       }
     },
@@ -20,11 +21,22 @@
       "result": {
         "item": "biomancy:withering_ooze",
         "count_range": {
-          "type": "constant",
-          "value": 8
+          "type": "uniform",
+          "min": 4,
+          "max": 8
+        }
+      }
+    },
+    {
+      "result": {
+        "item": "biomancy:bio_minerals",
+        "count_range": {
+          "type": "uniform",
+          "min": 4,
+          "max": 7
         }
       }
     }
   ],
-  "time": 1400
+  "time": 1554
 }

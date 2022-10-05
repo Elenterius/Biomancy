@@ -11,8 +11,9 @@
       "result": {
         "item": "biomancy:mineral_fragment",
         "count_range": {
-          "type": "constant",
-          "value": 72
+          "type": "uniform",
+          "min": 43,
+          "max": 72
         }
       }
     }

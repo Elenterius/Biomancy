@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "biomancy:cake_decomposing"
+    ]
+  },
+  "criteria": {
+    "has_cake": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:cake"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "biomancy:cake_decomposing"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_cake",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -11,11 +11,12 @@
       "result": {
         "item": "biomancy:stone_powder",
         "count_range": {
-          "type": "constant",
-          "value": 9
+          "type": "uniform",
+          "min": 3,
+          "max": 6
         }
       }
     }
   ],
-  "time": 270
+  "time": 180
 }
