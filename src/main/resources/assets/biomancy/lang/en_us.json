@@ -56,7 +56,6 @@
   "item.biomancy.healing_additive": "Healing Additive",
   "item.biomancy.glass_vial": "Glass Vial",
   "item.biomancy.serum": "Serum",
-
   "item.biomancy.injector": "Bio-Injector",
   "item.biomancy.creator_mix": "Exotic Flesh Meal",
   "item.biomancy.bio_extractor": "Bio-Extractor",
@@ -76,6 +75,7 @@
   "item.biomancy.mascot_outline_pattern.desc": "Mascot 2",
   "item.biomancy.mascot_accent_pattern": "Banner Pattern",
   "item.biomancy.mascot_accent_pattern.desc": "Mascot 3",
+
   "block.biomancy.creator": "Flesh Crucible",
   "block.biomancy.bio_forge": "Bio-Forge",
   "block.biomancy.bio_lab": "Bio-Lab",
@@ -131,6 +131,7 @@
   "effect.biomancy.libido": "Fertility",
   "effect.biomancy.adrenaline_rush": "Adrenaline Rush",
   "effect.biomancy.adrenal_fatigue": "Adrenal Fatigue",
+  "effect.biomancy.flesh_eating_disease": "Necrotizing Flesh",
   "serum.biomancy.growth_serum": "Growth Serum",
   "serum.biomancy.rejuvenation_serum": "Rejuvenation Serum",
   "serum.biomancy.breeding_stimulant": "Breeding Stimulant",
@@ -335,8 +336,6 @@
   "death.attack.biomancy.ravenous_hunger": "%1$s couldn't stop their ravenous hunger and consumed themselves",
   "death.attack.biomancy.disease": "%1$s succumbed to a disease",
   "death.attack.biomancy.disease.player": "%1$s was infected by an disease through %2$s and ultimately died",
-  "death.attack.biomancy.tooth_projectile": "%1$s was forcefully implanted with teeth by %2$s",
-  "death.attack.biomancy.tooth_projectile.item": "%1$s received a lethal dental implant by %2$s using %3$s",
 
   "advancements.biomancy.stomach.title": "Organic Food Converter?",
   "advancements.biomancy.stomach.description": "Kill some animals or flesh blobs for a stomach",
