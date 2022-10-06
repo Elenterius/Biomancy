@@ -43,4 +43,20 @@ public final class ModDamageSources {
 	public static boolean isCorrosive(DamageSource damageSource) {
 		return damageSource == CORROSIVE_ACID || damageSource.getDirectEntity() instanceof CorrosiveAcidProjectile;
 	}
+
+	public interface IDamageType {}
+
+	public record DamageType(ResourceLocation id) implements IDamageType {
+		public static DamageType DEFAULT = new DamageType(new ResourceLocation("default"));
+		public static DamageType CORROSIVE = new DamageType(BiomancyMod.createRL("corrosive"));
+		public static DamageType VIRAL = new DamageType(BiomancyMod.createRL("viral"));
+		public static DamageType TOXIN = new DamageType(BiomancyMod.createRL("toxin"));
+		public static DamageType HEAT = new DamageType(BiomancyMod.createRL("neat"));
+		public static DamageType FROST = new DamageType(BiomancyMod.createRL("frost"));
+		public static DamageType BLAST = new DamageType(BiomancyMod.createRL("blast"));
+		public static DamageType GAS = new DamageType(BiomancyMod.createRL("gas"));
+		public static DamageType IMPACT = new DamageType(BiomancyMod.createRL("impact"));
+		public static DamageType SLASH = new DamageType(BiomancyMod.createRL("slash"));
+		public static DamageType PIERCE = new DamageType(BiomancyMod.createRL("pierce"));
+	}
 }
