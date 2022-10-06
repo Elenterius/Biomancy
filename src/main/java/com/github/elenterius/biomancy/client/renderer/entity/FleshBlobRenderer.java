@@ -1,17 +1,22 @@
 package com.github.elenterius.biomancy.client.renderer.entity;
 
 import com.github.elenterius.biomancy.client.model.entity.FleshBlobModel;
+import com.github.elenterius.biomancy.init.ModRenderTypes;
 import com.github.elenterius.biomancy.world.entity.fleshblob.FleshBlob;
 import com.github.elenterius.biomancy.world.entity.fleshblob.TumorFlag;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.core.processor.AnimationProcessor;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
 import javax.annotation.Nullable;
+import java.util.Locale;
 
 public class FleshBlobRenderer extends GeoEntityRenderer<FleshBlob> {
 
@@ -39,6 +44,20 @@ public class FleshBlobRenderer extends GeoEntityRenderer<FleshBlob> {
 		poseStack.scale(scale, scale, scale);
 
 		super.renderEarly(entity, poseStack, ticks, renderTypeBuffer, vertexBuilder, packedLight, packedOverlay, red, green, blue, partialTicks);
+	}
+
+	@Override
+	public RenderType getRenderType(FleshBlob fleshBlob, float partialTicks, PoseStack stack, @Nullable MultiBufferSource buffer, @Nullable VertexConsumer vertexBuilder, int packedLight, ResourceLocation textureLocation) {
+		if (fleshBlob.hasCustomName()) {
+			Component customName = fleshBlob.getCustomName();
+			if (customName != null) {
+				String name = customName.getContents().toLowerCase(Locale.ROOT);
+				if (name.contains("party_blob")) {
+					return ModRenderTypes.getCutoutPartyTime(textureLocation);
+				}
+			}
+		}
+		return RenderType.entityCutout(textureLocation);
 	}
 
 }
