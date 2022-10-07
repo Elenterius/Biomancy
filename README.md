@@ -1,4 +1,6 @@
-<img src="media/v2/text_logo.png" alt="Biomancy" style="image-rendering: crisp-edges; max-width:50%;"/>
+<p align="center">
+<img src="media/v2/text_logo_big.png" alt="Biomancy" height="200"/>
+</p>
 
 # Biomancy
 [![Build Mod Artifact](https://github.com/Elenterius/Biomancy/actions/workflows/build_mod_artifact.yml/badge.svg)](https://github.com/Elenterius/Biomancy/actions/workflows/build_mod_artifact.yml)
