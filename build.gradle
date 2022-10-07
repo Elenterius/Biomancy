@@ -190,13 +190,6 @@ void minifyJsons(String fdir) {
 
 build {
     doLast {
-        println("updating version in README.md...")
-        def versionEscaped = mod_version.toString().replace("-", "--")
-        def color = versionEscaped.contains("alpha") ? "red" : versionEscaped.contains("beta") ? "yellow" : "green"
-        def biomancy = 'Latest%20Version'
-        ant.replaceregexp(match: biomancy.plus('-([0-9\\.\\-]+[a-z\\.0-9\\-]+)'), replace: biomancy.plus("-$versionEscaped-$color"), flags: 'g', byline: true) {
-            fileset(dir: '.', includes: 'README.md')
-        }
     }
 }
 
