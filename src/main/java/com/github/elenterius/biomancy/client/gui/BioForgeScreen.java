@@ -16,6 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ClickType;
@@ -42,6 +43,10 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 		super(menu, playerInventory, title);
 		imageWidth = 292;
 		imageHeight = 219;
+	}
+
+	private static void playUISound(SoundEvent soundEvent) {
+		Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(soundEvent, 1f));
 	}
 
 	@Override
@@ -91,8 +96,23 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 				int pX = leftPos + 13 + (20 + 5 - 2) * (i % BioForgeScreenController.COLS);
 				int pY = topPos + 37 + (20 + 5 - 2) * (i / BioForgeScreenController.COLS);
 				if (GuiUtil.isInRect(pX, pY, 24, 24, mouseX, mouseY)) {
-					Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1f));
+					playUISound(SoundEvents.UI_STONECUTTER_SELECT_RECIPE);
 					recipeBook.setSelectedRecipe(i);
+					return true;
+				}
+			}
+
+			if (recipeBook.getMaxPages() > 1) {
+				int x = leftPos + 60 + 1;
+				int y = topPos + 211 - font.lineHeight * 2 - 2;
+				if (recipeBook.hasPrevPage() && GuiUtil.isInRect(x - 22 - 8 - 1, y, 8, 13, mouseX, mouseY)) {
+					playUISound(SoundEvents.UI_BUTTON_CLICK);
+					recipeBook.goToPrevPage();
+					return true;
+				}
+				if (recipeBook.hasNextPage() && GuiUtil.isInRect(x + 22, y, 8, 13, mouseX, mouseY)) {
+					playUISound(SoundEvents.UI_BUTTON_CLICK);
+					recipeBook.goToNextPage();
 					return true;
 				}
 			}
@@ -104,7 +124,7 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 			int pX = leftPos - w;
 			int pY = topPos + 32 + h * i;
 			if (!recipeBook.isActiveTab(i) && GuiUtil.isInRect(pX, pY + 3, w, h - 3, mouseX, mouseY)) {
-				Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1f));
+				playUISound(SoundEvents.UI_BUTTON_CLICK);
 				recipeBook.setActiveTab(i);
 				return true;
 			}
@@ -225,15 +245,15 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 	}
 
 	private void drawPagination(PoseStack poseStack) {
-		if (recipeBook.maxPages < 2) return;
+		if (recipeBook.getMaxPages() < 2) return;
 
 		int x = leftPos + 60 + 1;
 		int y = topPos + 211 - font.lineHeight * 2 - 2;
 		int currentPage = recipeBook.getCurrentPage();
 
 		if (currentPage > 1) blit(poseStack, x - 22 - 8 - 1, y, 298, 58, 8, 13);
-		if (currentPage < recipeBook.maxPages) blit(poseStack, x + 22, y, 334, 58, 8, 13);
-		String text = "%d/%d".formatted(currentPage, recipeBook.maxPages);
+		if (currentPage < recipeBook.getMaxPages()) blit(poseStack, x + 22, y, 334, 58, 8, 13);
+		String text = "%d/%d".formatted(currentPage, recipeBook.getMaxPages());
 		font.draw(poseStack, text, x - font.width(text) / 2f, y + 3f, ColorStyles.TEXT_ACCENT_FORGE);
 	}
 

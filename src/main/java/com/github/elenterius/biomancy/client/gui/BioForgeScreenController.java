@@ -41,7 +41,7 @@ class BioForgeScreenController {
 	private final List<ModRecipeBooks.BioForgeCategory> tabs;
 	private final Minecraft minecraft;
 	private final BioForgeMenu menu;
-	protected int maxPages = 0;
+	private int maxPages = 0;
 	private int activeTab = 0;
 	private int startIndex = 0;
 	private RecipeSelection recipeSelection = RecipeSelection.NONE;
@@ -81,6 +81,30 @@ class BioForgeScreenController {
 	 */
 	public int getCurrentPage() {
 		return startIndex / GRID_SIZE + 1;
+	}
+
+	public int getMaxPages() {
+		return maxPages;
+	}
+
+	public void goToNextPage() {
+		if (hasNextPage()) {
+			startIndex += GRID_SIZE;
+		}
+	}
+
+	public boolean hasNextPage() {
+		return getCurrentPage() < maxPages;
+	}
+
+	public boolean hasPrevPage() {
+		return getCurrentPage() > 1;
+	}
+
+	public void goToPrevPage() {
+		if (hasPrevPage()) {
+			startIndex -= GRID_SIZE;
+		}
 	}
 
 	public boolean hasRecipesOnPage() {
