@@ -1,14 +1,24 @@
 <p align="center">
 <img src="media/v2/text_logo_big.png" alt="Biomancy" height="200"/>
+<h1 align="center">Biomancy</h1>
 </p>
 
-# Biomancy
-[![Build Mod Artifact](https://github.com/Elenterius/Biomancy/actions/workflows/build_mod_artifact.yml/badge.svg)](https://github.com/Elenterius/Biomancy/actions/workflows/build_mod_artifact.yml)
-[![Biomancy Version](https://img.shields.io/badge/Latest%20Version-2.0.0--alpha.18-red?style=for-the-badge)](https://github.com/Elenterius/Biomancy)
-[![Biomancy Discord](https://img.shields.io/discord/920005236645572662?logo=discord&logoColor=white&style=for-the-badge)][Discord]
-[![Downloads on CurseForge](https://cf.way2muchnoise.eu/full_492939_downloads.svg?badge_style=for_the_badge)][Download]
+<p align="center">
+<a aria-label="Build Status" href="https://github.com/Elenterius/Biomancy/actions/workflows/gh_release.yml">
+<img alt="" src="https://img.shields.io/github/workflow/status/Elenterius/Biomancy/Release?logo=github&style=for-the-badge"></a>
 
-Biomancy is magi-tech Mod for Minecraft. The mod is inspired by Biopunk and Bio-Manipulation and features a fleshy art style.
+<a aria-label="Latest Release" href="https://github.com/Elenterius/Biomancy/releases/">
+<img alt="" src="https://img.shields.io/github/v/release/elenterius/biomancy?include_prereleases&logo=github&style=for-the-badge"></a>
+
+<a aria-label="Biomancy Discord" href="https://discord.gg/424awTDdJJ">
+<img alt="" src="https://img.shields.io/discord/920005236645572662?logo=discord&logoColor=white&color=5865F2&style=for-the-badge"></a>
+
+<a aria-label="Downloads on CurseForge" href="https://www.curseforge.com/minecraft/mc-mods/biomancy">
+<img alt="" src="https://cf.way2muchnoise.eu/full_492939_downloads(555555-F16436-fff-000-fff).svg?badge_style=for_the_badge"></a>
+</p>
+
+Biomancy is magi-tech Mod for Minecraft. The mod is inspired by Biopunk and Bio-Manipulation and features a fleshy art
+style.
 
 * [Download]
 * [Discord]
@@ -16,6 +26,7 @@ Biomancy is magi-tech Mod for Minecraft. The mod is inspired by Biopunk and Bio-
 * [Trello]
 
 ## Tech Stack
+
 - [MinecraftForge](https://github.com/MinecraftForge/MinecraftForge) (modding API for Minecraft)
 - [SpongePowered Mixin](https://github.com/SpongePowered/Mixin) (mixin and bytecode weaving framework)
 - [GeckoLib](https://github.com/bernie-g/geckolib) (animation library)
