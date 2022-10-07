@@ -38,7 +38,7 @@ jobs:
         arguments: runDataCI
 
     - name: Optimize PNG Assets
-      run: oxipng -o 4 -i 0 --strip safe ./src/*/resources/*.png
+      run: oxipng -o 3 -i 0 --strip safe -r ./src/*/resources/*.png
       env:
         CARGO_TERM_COLOR: always
 
@@ -64,8 +64,5 @@ jobs:
       with:
         webhook_id: ${{ secrets.DISCORD_ID }}
         webhook_token: ${{ secrets.DISCORD_TOKEN }}
-        file: ./build/libs/*
+        file: ./build/libs
         message: https://github.com/Elenterius/Biomancy/releases/tag/${{ github.ref }}
-    
-    
-    
