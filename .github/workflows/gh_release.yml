@@ -1,0 +1,105 @@
+# This workflow will build the Mod with Gradle and cache/restore any dependencies to improve the workflow execution time
+# Note: cache writing only happens on the default branch but child branches do have read access to the default branch
+
+name: Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  cache_gradle:
+    name: Cache Gradle
+    uses: elenterius/biomancy/.github/workflows/cache_gradle.yml@main
+  cache_oxipng:
+    name: Cache Oxipng
+    uses: elenterius/biomancy/.github/workflows/cache_oxipng.yml@main
+
+  changelog:
+    name: Generate Release Changelog and Bump Mod Version
+    needs: [ cache_gradle, cache_oxipng ]
+    runs-on: ubuntu-latest
+    outputs:
+      skip_build: ${{ steps.set_output.outputs.skipped }}
+      tag: ${{ steps.set_output.outputs.tag }}
+      clean_changelog: ${{ steps.set_output.outputs.clean_changelog }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Generate Conventional Changelog
+        id: changelog
+        uses: TriPSs/conventional-changelog-action@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          version-file: './mod_version.json'
+          version-path: 'semantic'
+          output-file: 'false'
+          git-message: 'chore(release): {version}'
+          tag-prefix: 'v2.'
+
+      - name: Set Output
+        id: set_output
+        run: |
+          echo "::set-output name=skipped::${{ steps.changelog.outputs.skipped }}"
+          echo "::set-output name=tag::${{ steps.changelog.outputs.tag }}"
+          echo "::set-output name=clean_changelog::${{ steps.changelog.outputs.clean_changelog }}"
+
+  build_release:
+    needs: [ changelog ]
+    if: needs.changelog.outputs.skip_build == 'false'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Oxipng
+        uses: baptiste0928/cargo-install@v1.3.0 #provides cache-efficient Rust crates installation
+        with:
+          crate: oxipng
+        env:
+          CARGO_TERM_COLOR: always
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2.2.2
+
+      - name: Generate Assets
+        uses: gradle/gradle-build-action@v2.2.2
+        with:
+          arguments: runDataCI
+
+      # We store assets at full raw quality in the repository and only optimize them for the release build
+      - name: Optimize PNG Assets
+        run: oxipng -o 3 -i 0 --strip safe -r ./src/*/resources/
+        env:
+          CARGO_TERM_COLOR: always
+
+      - name: Build Artifact
+        uses: gradle/gradle-build-action@v2.2.2
+        with:
+          arguments: build
+
+      # ----------------------------------------------------------------------------------------------------------------
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ needs.changelog.outputs.tag }}
+          body: ${{ needs.changelog.outputs.clean_changelog }}
+          files: build/libs/*
+
+      - name: Notify Discord Server
+        uses: appleboy/discord-action@0.0.3
+        with:
+          webhook_id: ${{ secrets.DISCORD_ID }}
+          webhook_token: ${{ secrets.DISCORD_TOKEN }}
+          color: "#088c7d"
+          username: "Mayker Bot"
+          message: "**New Build** :package:\n<https://github.com/Elenterius/Biomancy/releases/tag/${{ needs.changelog.outputs.tag }}>\n**Changelog:**\n${{ needs.changelog.outputs.clean_changelog }}"
