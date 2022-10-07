@@ -15,7 +15,7 @@ jobs:
     uses: elenterius/biomancy/.github/workflows/cache_oxipng.yml@main
 
   changelog:
-    name: Generate Release Changelog and Bump Mod Version
+    name: Generate Changelog
     needs: [ cache_gradle, cache_oxipng ]
     runs-on: ubuntu-latest
     outputs:
@@ -26,7 +26,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Generate Conventional Changelog
+      - name: Generate Conventional Changelog #this also determines the release version
         id: changelog
         uses: TriPSs/conventional-changelog-action@v3
         with:
@@ -36,15 +36,19 @@ jobs:
           output-file: 'false'
           git-message: 'chore(release): {version}'
           tag-prefix: 'v2.'
+          create-summary: true
 
-      - name: Set Output
+      - name: Set Output  #supports setting multiline output
         id: set_output
-        run: |
-          echo "::set-output name=skipped::${{ steps.changelog.outputs.skipped }}"
-          echo "::set-output name=tag::${{ steps.changelog.outputs.tag }}"
-          echo "::set-output name=clean_changelog::${{ steps.changelog.outputs.clean_changelog }}"
+        uses: actions/github-script@v6
+        with:
+          script: |
+            core.setOutput("skipped", `${{ steps.changelog.outputs.skipped }}`);  
+            core.setOutput("tag", `${{ steps.changelog.outputs.tag }}`);  
+            core.setOutput("clean_changelog", `${{ steps.changelog.outputs.clean_changelog }}`);
 
   build_release:
+    name: Build Release
     needs: [ changelog ]
     if: needs.changelog.outputs.skip_build == 'false'
     runs-on: ubuntu-latest
@@ -75,7 +79,7 @@ jobs:
 
       # We store assets at full raw quality in the repository and only optimize them for the release build
       - name: Optimize PNG Assets
-        run: oxipng -o 3 -i 0 --strip safe -r ./src/*/resources/
+        run: oxipng -o 3 -i 0 --strip safe -r src/*/resources/*.png
         env:
           CARGO_TERM_COLOR: always
 
@@ -102,4 +106,4 @@ jobs:
           webhook_token: ${{ secrets.DISCORD_TOKEN }}
           color: "#088c7d"
           username: "Mayker Bot"
-          message: "**New Build** :package:\n<https://github.com/Elenterius/Biomancy/releases/tag/${{ needs.changelog.outputs.tag }}>\n**Changelog:**\n${{ needs.changelog.outputs.clean_changelog }}"
+          message: "**New :package:**\n<https://github.com/Elenterius/Biomancy/releases/tag/${{ needs.changelog.outputs.tag }}>\n\n**Changelog**\n${{ needs.changelog.outputs.clean_changelog }}"
