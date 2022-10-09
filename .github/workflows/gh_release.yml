@@ -79,7 +79,9 @@ jobs:
 
       # We store assets at full raw quality in the repository and only optimize them for the release build
       - name: Optimize PNG Assets
-        run: oxipng -o 3 -i 0 --strip safe -r src/*/resources/*.png
+        run: |
+          oxipng -o 3 -i 0 --strip safe -r ./src/*/resources/*.png
+          oxipng -o 3 -i 0 --strip safe -r ./src/*/resources/assets/*/textures
         env:
           CARGO_TERM_COLOR: always
 
