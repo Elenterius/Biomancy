@@ -1,5 +1,5 @@
 <p align="center">
-<img src="media/v2/text_logo_big.png" alt="Biomancy" height="200"/>
+<img src="media/v2/text_logo_big.png" alt="Biomancy" height="150px"/>
 <h1 align="center">Biomancy</h1>
 </p>
 
