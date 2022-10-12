@@ -1,0 +1,17 @@
+name: Poke Discord
+
+on:
+  workflow_dispatch:
+
+jobs:
+  notify_discord:
+    name: Notify Discord Server
+    runs-on: ubuntu-latest
+    steps:
+      - uses: appleboy/discord-action@0.0.3
+        with:
+          webhook_id: ${{ secrets.DISCORD_ID }}
+          webhook_token: ${{ secrets.DISCORD_TOKEN }}
+          color: "#088c7d"
+          username: "Mayker Bot"
+          message: "Foobar"
