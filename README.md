@@ -10,11 +10,14 @@
 <a aria-label="Latest Release" href="https://github.com/Elenterius/Biomancy/releases/">
 <img alt="" src="https://img.shields.io/github/v/release/elenterius/biomancy?include_prereleases&logo=github&style=for-the-badge"></a>
 
+<a aria-label="Downloads on CurseForge" href="https://www.curseforge.com/minecraft/mc-mods/biomancy">
+<img alt="" src="https://cf.way2muchnoise.eu/full_492939_Downloads(555555-F16436-fff-000-fff).svg?badge_style=for_the_badge"></a>
+
 <a aria-label="Biomancy Discord" href="https://discord.gg/424awTDdJJ">
 <img alt="" src="https://img.shields.io/discord/920005236645572662?logo=discord&logoColor=white&color=5865F2&style=for-the-badge"></a>
 
-<a aria-label="Downloads on CurseForge" href="https://www.curseforge.com/minecraft/mc-mods/biomancy">
-<img alt="" src="https://cf.way2muchnoise.eu/full_492939_downloads(555555-F16436-fff-000-fff).svg?badge_style=for_the_badge"></a>
+<a aria-label="Downloads on CurseForge" href="https://ko-fi.com/elenterius">
+<img alt="" src="https://img.shields.io/badge/Ko--fi-F16061?logo=ko-fi&logoColor=white&style=for-the-badge"></a>
 </p>
 
 Biomancy is magi-tech Mod for Minecraft. The mod is inspired by Biopunk and Bio-Manipulation and features a fleshy art
