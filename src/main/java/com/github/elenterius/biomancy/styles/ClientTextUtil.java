@@ -46,9 +46,7 @@ public final class ClientTextUtil {
 	}
 
 	public static void appendItemInfoTooltip(Item item, List<Component> tooltip) {
-		if (Screen.hasControlDown()) {
-			tooltip.add(new TranslatableComponent(Util.makeDescriptionId("tooltip", ForgeRegistries.ITEMS.getKey(item))).withStyle(TextStyles.LORE));
-		}
+		tooltip.add(getItemInfoTooltip(item));
 	}
 
 	public static MutableComponent getItemInfoTooltip(Item item) {
