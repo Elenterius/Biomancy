@@ -107,5 +107,5 @@ jobs:
           webhook_id: ${{ secrets.DISCORD_ID }}
           webhook_token: ${{ secrets.DISCORD_TOKEN }}
           color: "#088c7d"
-          username: "Mayker Bot"
+          username: "Maykr Bot"
           message: "**New :package:**\n<https://github.com/Elenterius/Biomancy/releases/tag/${{ needs.changelog.outputs.tag }}>\n\n**Changelog**\n${{ needs.changelog.outputs.clean_changelog }}"
