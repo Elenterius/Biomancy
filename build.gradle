@@ -151,7 +151,7 @@ dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 
 //    implementation fg.deobf('com.github.Elenterius:Combat-Commons:0.2.0-beta-1.18.1-forge')
-    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.18:3.0.39')
+    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.18:3.0.41')
 
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}:9.7.1.255:api")
     // compile against the JEI API but do not include it at runtime
