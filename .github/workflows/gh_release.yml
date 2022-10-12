@@ -55,6 +55,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+        with:
+          ref: ${{ needs.changelog.outputs.tag }}
 
       - name: Setup Oxipng
         uses: baptiste0928/cargo-install@v1.3.0 #provides cache-efficient Rust crates installation
