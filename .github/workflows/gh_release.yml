@@ -102,6 +102,7 @@ jobs:
           tag_name: ${{ needs.changelog.outputs.tag }}
           body: ${{ needs.changelog.outputs.clean_changelog }}
           files: build/libs/*
+          prerelease: true
 
       - name: Notify Discord Server
         uses: appleboy/discord-action@0.0.3
@@ -110,4 +111,4 @@ jobs:
           webhook_token: ${{ secrets.DISCORD_TOKEN }}
           color: "#088c7d"
           username: "Maykr Bot"
-          message: "**New :package:**\n<https://github.com/Elenterius/Biomancy/releases/tag/${{ needs.changelog.outputs.tag }}>\n\n**Changelog**\n${{ needs.changelog.outputs.clean_changelog }}"
+          message: "**New :package:**\n\n${{ steps.create_release.outputs.url }}"
