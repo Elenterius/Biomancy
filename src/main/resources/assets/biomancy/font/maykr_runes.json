@@ -3,10 +3,10 @@
     {
       "type": "ttf",
       "file": "biomancy:maykr_runes.ttf",
-      "size": 10,
+      "size": 8,
       "shift": [
         0,
-        1
+        1.0
       ],
       "oversample": 16
     }
