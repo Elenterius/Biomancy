@@ -1,0 +1,79 @@
+{
+  "credit": "Made by Elenterius",
+  "parent": "builtin/entity",
+  "texture_size": [
+    32,
+    32
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "translation": [
+        0,
+        -4.5,
+        -1
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        0,
+        0,
+        -180
+      ],
+      "translation": [
+        0,
+        0.5,
+        -1
+      ]
+    },
+    "firstperson_righthand": {
+      "translation": [
+        0.75,
+        -1.25,
+        1.25
+      ]
+    },
+    "firstperson_lefthand": {
+      "translation": [
+        0.75,
+        -1.25,
+        1.25
+      ]
+    },
+    "ground": {
+      "translation": [
+        0,
+        0,
+        -4.25
+      ]
+    },
+    "gui": {
+      "rotation": [
+        30,
+        225,
+        0
+      ],
+      "translation": [
+        3,
+        -3,
+        0
+      ],
+      "scale": [
+        0.75,
+        0.75,
+        0.75
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        90,
+        45,
+        -90
+      ],
+      "translation": [
+        -5,
+        1.5,
+        0
+      ]
+    }
+  }
+}

@@ -2,8 +2,9 @@ package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.world.item.*;
-import com.github.elenterius.biomancy.world.item.weapon.ArmCannonItem;
+import com.github.elenterius.biomancy.world.item.weapon.BileSpitterItem;
 import com.github.elenterius.biomancy.world.item.weapon.BoomlingItem;
+import com.github.elenterius.biomancy.world.item.weapon.DevArmCannonItem;
 import com.github.elenterius.biomancy.world.item.weapon.LongClawItem;
 import com.github.elenterius.biomancy.world.serum.Serum;
 import net.minecraft.world.entity.EntityType;
@@ -93,7 +94,7 @@ public final class ModItems {
 	//	public static final RegistryObject<ToothGunItem> TOOTH_GUN = ITEMS.register("tooth_gun", () -> new ToothGunItem(createBaseProperties().stacksTo(1).durability(ModTiers.LESSER_BIOFLESH.getUses()).rarity(ModRarities.VERY_RARE)));
 	//	public static final RegistryObject<WithershotItem> WITHERSHOT = ITEMS.register("withershot", () -> new WithershotItem(createBaseProperties().stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.VERY_RARE)));
 	public static final RegistryObject<LongClawItem> LONG_CLAW = ITEMS.register("long_range_claw", () -> new LongClawItem(ModTiers.BIOFLESH, 3, -2.4f, 120, createBaseProperties().rarity(ModRarities.VERY_RARE)));
-	public static final RegistryObject<ArmCannonItem> ARM_CANNON = ITEMS.register("arm_cannon", () -> new ArmCannonItem(createBaseProperties().stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE)));
+	public static final RegistryObject<DevArmCannonItem> ARM_CANNON = ITEMS.register("dev_arm_cannon", () -> new DevArmCannonItem(createBaseProperties().stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE)));
 
 	//# Creature
 	public static final RegistryObject<BoomlingItem> BOOMLING = ITEMS.register("boomling", () -> new BoomlingItem(createBaseProperties().rarity(ModRarities.RARE).stacksTo(1).tab(null)));
