@@ -36,7 +36,7 @@ public abstract class CauldronBlockMixin {
 			if (waterLevel == 0) {
 				ItemStack stack = ((ItemEntity) entityIn).getItem();
 				Item item = stack.getItem();
-				if (item.is(ModTags.Items.RAW_MEATS)) {
+				if (ModTags.Items.isRawMeat(item)) {
 					int amount = Math.min(stack.getCount(), 5);
 					((ItemEntity) entityIn).getItem().grow(-amount);
 

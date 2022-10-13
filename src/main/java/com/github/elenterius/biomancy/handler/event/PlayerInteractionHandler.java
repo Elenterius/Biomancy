@@ -45,7 +45,7 @@ public final class PlayerInteractionHandler {
 	public static void onPlayerRightClickBlock(final PlayerInteractEvent.RightClickBlock event) {
 		if (!event.getItemStack().isEmpty()) {
 			Item item = event.getItemStack().getItem();
-			if (item.is(ModTags.Items.RAW_MEATS)) {
+			if (ModTags.Items.isRawMeat(item)) {
 				if (!event.getWorld().isClientSide()) {
 					BlockState blockState = event.getWorld().getBlockState(event.getPos());
 					if (blockState.is(Blocks.CAULDRON) && blockState == Blocks.CAULDRON.defaultBlockState()) {

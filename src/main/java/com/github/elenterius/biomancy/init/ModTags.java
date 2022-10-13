@@ -21,6 +21,10 @@ public final class ModTags {
 	public static final class Items {
 		//Beware: optional tags inside optional tags don't tend to work, so when defining tags inside an optional tag they should be required
 
+		public static boolean isRawMeat(Item item) {
+			return item == ModItems.FLESH_LUMP.get() || item.is(RAW_MEATS);
+		}
+
 		public static final Tags.IOptionalNamedTag<Item> RAW_MEATS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "raw_meats"));
 		//		public static final Tags.IOptionalNamedTag<Item> FLESH = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "flesh"));
 		public static final Tags.IOptionalNamedTag<Item> COOKED_MEATS = ItemTags.createOptional(new ResourceLocation(BiomancyMod.MOD_ID, "cooked_meats"));

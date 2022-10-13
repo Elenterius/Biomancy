@@ -337,7 +337,7 @@ public class DigesterTileEntity extends MachineTileEntity<DigesterRecipe, Digest
 
 	private boolean isValidInputItem(Item item) {
 		if (item == ModItems.BOLUS.get()) return true;
-		if (item.is(ModTags.Items.RAW_MEATS)) return true;
+		if (ModTags.Items.isRawMeat(item)) return true;
 		if (item.is(ModTags.Items.COOKED_MEATS)) return true;
 		return item.is(ModTags.Items.BIOMASS);
 	}

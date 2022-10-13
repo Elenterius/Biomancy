@@ -139,7 +139,7 @@ public class MeatsoupCauldronBlock extends Block {
 				int level = state.getValue(LEVEL);
 				int flagValue = state.getValue(FLAGS);
 				Item item = stack.getItem();
-				if (level < MAX_LEVEL - 3 && item.is(ModTags.Items.RAW_MEATS)) {
+				if (level < MAX_LEVEL - 3 && ModTags.Items.isRawMeat(item)) {
 					stack.grow(-1);
 					setSoupLevel(worldIn, pos, state, flagValue, level, 1);
 					worldIn.playSound(null, pos, SoundEvents.SLIME_SQUISH_SMALL, SoundCategory.BLOCKS, 1.0F, 0.5F);
@@ -229,7 +229,7 @@ public class MeatsoupCauldronBlock extends Block {
 
 				return ActionResultType.sidedSuccess(worldIn.isClientSide);
 			}
-			else if (level < MAX_LEVEL - 3 && item.is(ModTags.Items.RAW_MEATS)) {
+			else if (level < MAX_LEVEL - 3 && ModTags.Items.isRawMeat(item)) {
 				if (!worldIn.isClientSide) {
 					if (!player.abilities.instabuild) {
 						stack.grow(-1);
