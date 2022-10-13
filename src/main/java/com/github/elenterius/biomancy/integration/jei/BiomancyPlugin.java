@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.integration.jei;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.client.gui.BioForgeScreen;
 import com.github.elenterius.biomancy.client.gui.BioLabScreen;
 import com.github.elenterius.biomancy.client.gui.DecomposerScreen;
 import com.github.elenterius.biomancy.client.gui.DigesterScreen;
@@ -40,6 +41,7 @@ public class BiomancyPlugin implements IModPlugin {
 		registration.addRecipeCategories(new DecomposerRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
 		registration.addRecipeCategories(new BioLabRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
 		registration.addRecipeCategories(new DigesterRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+		registration.addRecipeCategories(new BioForgeRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
 	}
 
 	@Override
@@ -48,6 +50,7 @@ public class BiomancyPlugin implements IModPlugin {
 		registration.addRecipes(DecomposerRecipeCategory.RECIPE_TYPE, world.getRecipeManager().getAllRecipesFor(ModRecipes.DECOMPOSING_RECIPE_TYPE));
 		registration.addRecipes(BioLabRecipeCategory.RECIPE_TYPE, world.getRecipeManager().getAllRecipesFor(ModRecipes.BIO_BREWING_RECIPE_TYPE));
 		registration.addRecipes(DigesterRecipeCategory.RECIPE_TYPE, world.getRecipeManager().getAllRecipesFor(ModRecipes.DIGESTING_RECIPE_TYPE));
+		registration.addRecipes(BioForgeRecipeCategory.RECIPE_TYPE, world.getRecipeManager().getAllRecipesFor(ModRecipes.BIO_FORGING_RECIPE_TYPE));
 	}
 
 	@Override
@@ -55,6 +58,7 @@ public class BiomancyPlugin implements IModPlugin {
 		registration.addRecipeClickArea(DecomposerScreen.class, 176 - 5 - 10, 4, 10, 10, DecomposerRecipeCategory.RECIPE_TYPE);
 		registration.addRecipeClickArea(BioLabScreen.class, 176 - 5 - 10, 4, 10, 10, BioLabRecipeCategory.RECIPE_TYPE);
 		registration.addRecipeClickArea(DigesterScreen.class, 176 - 5 - 10, 4, 10, 10, DigesterRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeClickArea(BioForgeScreen.class, 192 - 5 - 10, 4, 10, 10, BioForgeRecipeCategory.RECIPE_TYPE);
 	}
 
 	@Override

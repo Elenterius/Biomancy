@@ -209,25 +209,21 @@
   "msg.biomancy.not_sleepy": "You don't feel sleepy...",
   "msg.biomancy.set_behavior_command": "%1$s will now execute the %2$s command",
   "msg.biomancy.not_enough_ammo": "Not enough Ammo",
-
   "advancements.biomancy.root.title": "Biomancy",
   "advancements.biomancy.root.description": "Raw Meat is useful...",
   "advancements.biomancy.flesh.title": "Meaty Sacrifice",
   "advancements.biomancy.flesh.description": "Use the Flesh Crucible to sacrifice items to the Flesh Lord",
   "advancements.biomancy.decomposer.title": "Deconstructing Things",
   "advancements.biomancy.decomposer.description": "Create a Decomposer. Who needs a composter, when you can use a semi-living thing with a stomach to decompose things into other things.",
-
   "jei.biomancy.recipe.bio_lab": "Bio-Lab Recipes",
   "jei.biomancy.recipe.decomposer": "Decomposer Recipes",
   "jei.biomancy.recipe.digester": "Digester Recipes",
-
+  "jei.biomancy.recipe.bio_forge": "Bio-Forge Recipes",
   "keyboard.biomancy.ctrl": "ctrl",
   "keyboard.biomancy.alt": "alt",
   "keyboard.biomancy.shift": "shift",
   "keyboard.biomancy.right_mouse": "right mouse",
-
   "sounds.biomancy.inject": "Injecting Serum",
-
   "#comment": "///////////////// outdated past this //////////////////////////////////////////////////////////////////////////",
 
   "item.biomancy.unveiling_oculi": "Oculi of Unveiling",
