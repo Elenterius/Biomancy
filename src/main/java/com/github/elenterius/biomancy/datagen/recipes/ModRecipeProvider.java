@@ -221,34 +221,32 @@ public class ModRecipeProvider extends RecipeProvider {
 
 	private void registerDigestingRecipes(Consumer<FinishedRecipe> consumer) {
 
-		final int itemCount = NutrientFuelUtil.DEFAULT_FUEL_VALUE;
-
-		DigesterRecipeBuilder.create(ModItems.NUTRIENTS.get(), 2 * itemCount, "poor_biomass")
+		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 1, "poor_biomass")
 				.setIngredient(ModTags.Items.POOR_BIOMASS)
 				.setCraftingTime(189)
 				.unlockedBy(ModTags.Items.POOR_BIOMASS).save(consumer);
 
-		DigesterRecipeBuilder.create(ModItems.NUTRIENTS.get(), 4 * 2 * itemCount, "average_biomass")
+		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 2, "average_biomass")
 				.setIngredient(ModTags.Items.AVERAGE_BIOMASS)
 				.setCraftingTime(351)
 				.unlockedBy(ModTags.Items.AVERAGE_BIOMASS).save(consumer);
 
-		DigesterRecipeBuilder.create(ModItems.NUTRIENTS.get(), 4 * 2 * itemCount, "raw_meat")
+		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 2, "raw_meat")
 				.setIngredient(ModTags.Items.RAW_MEATS)
 				.setCraftingTime(351)
 				.unlockedBy(ModTags.Items.RAW_MEATS).save(consumer);
 
-		DigesterRecipeBuilder.create(ModItems.NUTRIENTS.get(), 6 * 3 * itemCount, "good_biomass")
+		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 4, "good_biomass")
 				.setIngredient(ModTags.Items.GOOD_BIOMASS)
 				.setCraftingTime(490)
 				.unlockedBy(ModTags.Items.GOOD_BIOMASS).save(consumer);
 
-		DigesterRecipeBuilder.create(ModItems.NUTRIENTS.get(), 6 * 3 * itemCount, "cooked_meat")
+		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 4, "cooked_meat")
 				.setIngredient(ModTags.Items.COOKED_MEATS)
 				.setCraftingTime(490)
 				.unlockedBy(ModTags.Items.COOKED_MEATS).save(consumer);
 
-		DigesterRecipeBuilder.create(ModItems.NUTRIENTS.get(), 8 * 4 * itemCount, "superb_biomass")
+		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 6, "superb_biomass")
 				.setIngredient(ModTags.Items.SUPERB_BIOMASS)
 				.setCraftingTime(540)
 				.unlockedBy(ModTags.Items.SUPERB_BIOMASS).save(consumer);
@@ -385,7 +383,14 @@ public class ModRecipeProvider extends RecipeProvider {
 		int fleshBitCost = 16;
 		int boneFragCost = 3*2*2;
 
-		BioForgeRecipeBuilder.create(new ItemData(ModItems.DECOMPOSER.get())).addIngredient(ModItems.LIVING_FLESH.get()).addIngredient(ModItems.FLESH_BITS.get(), fleshBitCost).addIngredient(ModItems.BONE_FRAGMENTS.get(), boneFragCost).addIngredient(ModItems.VOLATILE_GLAND.get(), 1).addIngredient(ModItems.MOB_FANG.get(), 6).setCategory(ModRecipeBooks.BioForgeCategory.MACHINES).unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
+		BioForgeRecipeBuilder.create(new ItemData(ModItems.DECOMPOSER.get()))
+				.addIngredient(ModItems.LIVING_FLESH.get())
+				.addIngredient(ModItems.FLESH_BITS.get(), fleshBitCost)
+				.addIngredient(ModItems.BONE_FRAGMENTS.get(), boneFragCost)
+				.addIngredient(ModItems.VOLATILE_GLAND.get(), 1)
+				.addIngredient(ModItems.MOB_FANG.get(), 6)
+				.setCategory(ModRecipeBooks.BioForgeCategory.MACHINES)
+				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
 
 		BioForgeRecipeBuilder.create(new ItemData(ModItems.DIGESTER.get())).addIngredient(ModItems.LIVING_FLESH.get()).addIngredient(ModItems.FLESH_BITS.get(), fleshBitCost).addIngredient(ModItems.BONE_FRAGMENTS.get(), boneFragCost).addIngredient(ModItems.GENERIC_MOB_GLAND.get(), 1).setCategory(ModRecipeBooks.BioForgeCategory.MACHINES).unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
 
