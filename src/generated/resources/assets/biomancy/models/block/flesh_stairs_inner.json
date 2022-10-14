@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/inner_stairs",
-  "textures": {
-    "side": "biomancy:block/flesh",
-    "bottom": "biomancy:block/flesh",
-    "top": "biomancy:block/flesh"
-  }
-}

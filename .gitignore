@@ -24,6 +24,9 @@ run
 # Files from Forge MDK
 forge*changelog.txt
 
+# exclude generated resources from version control
+/src/generated/resources/
+
+# custom
 logs
-/src/generated/resources/.cache/
 /src_old/
