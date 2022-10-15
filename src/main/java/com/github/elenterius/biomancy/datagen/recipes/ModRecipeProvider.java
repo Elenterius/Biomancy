@@ -11,7 +11,6 @@ import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -563,6 +562,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		BioLabRecipeBuilder.create(ModItems.EXOTIC_COMPOUND.get())
 				.addIngredient(ModItems.EXOTIC_DUST.get())
+				.addIngredient(ModItems.EXOTIC_DUST.get())
 				.addIngredient(ModItems.BIO_MINERALS.get())
 				.setReactant(ModItems.ORGANIC_COMPOUND.get())
 				.setCraftingTime(4 * 20)
@@ -570,6 +570,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		BioLabRecipeBuilder.create(ModItems.GENETIC_COMPOUND.get())
 				.addIngredient(ModItems.HORMONE_SECRETION.get())
+				.addIngredient(ModItems.NUTRIENTS.get())
 				.setReactant(ModItems.ORGANIC_COMPOUND.get())
 				.setCraftingTime(4 * 20)
 				.unlockedBy(ModItems.ORGANIC_COMPOUND.get()).save(consumer);
@@ -618,8 +619,8 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		BioLabRecipeBuilder.create(ModItems.BREEDING_STIMULANT.get())
 				.addIngredient(ModItems.NUTRIENTS.get())
-				.addIngredient(ModItems.HORMONE_SECRETION.get())
 				.addIngredient(ItemTags.FLOWERS)
+				.addIngredient(ModItems.HORMONE_SECRETION.get())
 				.addIngredient(Items.COCOA_BEANS)
 				.setReactant(ModItems.GENETIC_COMPOUND.get())
 				.setCraftingTime(6 * 20)
@@ -635,9 +636,11 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		BioLabRecipeBuilder.create(ModItems.GROWTH_SERUM.get())
 				.addIngredient(ModItems.NUTRIENTS.get())
+				.addIngredient(ModItems.NUTRIENTS.get())
+				.addIngredient(ModItems.BIO_MINERALS.get())
 				.addIngredient(ModItems.BIO_MINERALS.get())
 				.setReactant(ModItems.GENETIC_COMPOUND.get())
-				.setCraftingTime(5 * 20)
+				.setCraftingTime(6 * 20)
 				.unlockedBy(ModItems.GENETIC_COMPOUND.get()).save(consumer);
 	}
 
