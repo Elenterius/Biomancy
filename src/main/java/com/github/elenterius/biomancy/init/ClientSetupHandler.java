@@ -4,7 +4,9 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.gui.IngameOverlays;
 import com.github.elenterius.biomancy.client.model.entity.FleshkinModel;
 import com.github.elenterius.biomancy.client.renderer.block.*;
-import com.github.elenterius.biomancy.client.renderer.entity.*;
+import com.github.elenterius.biomancy.client.renderer.entity.AcidProjectileRenderer;
+import com.github.elenterius.biomancy.client.renderer.entity.FleshBlobRenderer;
+import com.github.elenterius.biomancy.client.renderer.entity.WitherProjectileRenderer;
 import com.github.elenterius.biomancy.world.item.weapon.LongClawItem;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -81,8 +83,8 @@ public final class ClientSetupHandler {
 		event.registerBlockEntityRenderer(ModBlockEntities.STORAGE_SAC.get(), StorageSacBERenderer::new);
 
 		event.registerEntityRenderer(ModEntityTypes.FLESH_BLOB.get(), FleshBlobRenderer::new);
-		event.registerEntityRenderer(ModEntityTypes.FLESHKIN.get(), FleshkinRenderer::new);
-		event.registerEntityRenderer(ModEntityTypes.BOOMLING.get(), BoomlingRenderer::new);
+		//		event.registerEntityRenderer(ModEntityTypes.FLESHKIN.get(), FleshkinRenderer::new);
+		//		event.registerEntityRenderer(ModEntityTypes.BOOMLING.get(), BoomlingRenderer::new);
 
 		//		event.registerEntityRenderer(ModEntityTypes.FAILED_SHEEP.get(), FailedSheepRenderer::new);
 		//		event.registerEntityRenderer(ModEntityTypes.CHROMA_SHEEP.get(), ChromaSheepRenderer::new);

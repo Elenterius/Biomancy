@@ -1,26 +1,20 @@
 package com.github.elenterius.biomancy.world.item.weapon;
 
-import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.styles.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.PotionUtilExt;
-import com.github.elenterius.biomancy.world.entity.MobUtil;
-import com.github.elenterius.biomancy.world.entity.ownable.Boomling;
 import com.github.elenterius.biomancy.world.item.IBiomancyItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -33,37 +27,37 @@ public class BoomlingItem extends Item implements IBiomancyItem {
 
 	@Override
 	public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
-		if (context.getLevel().isClientSide()) return InteractionResult.PASS;
-
-		Player player = context.getPlayer();
-		if (player != null) {
-			if (context.getLevel().mayInteract(player, context.getClickedPos()) && player.mayUseItemAt(context.getClickedPos(), context.getClickedFace(), stack)) {
-				Boomling entity = ModEntityTypes.BOOMLING.get().create(context.getLevel());
-				if (entity != null) {
-					Vec3 pos = MobUtil.getAdjustedSpawnPositionFor(context.getClickedPos(), context.getClickLocation(), context.getClickedFace(), entity);
-					entity.moveTo(pos.x, pos.y, pos.z, Mth.wrapDegrees(context.getLevel().random.nextFloat() * 360f), 0f);
-					entity.yHeadRot = entity.getYRot();
-					entity.yBodyRot = entity.getYRot();
-					entity.setDeltaMovement(0, 0, 0);
-					entity.fallDistance = 0;
-
-					entity.setPersistenceRequired();
-					if (stack.hasCustomHoverName()) {
-						entity.setCustomName(stack.getHoverName());
-						entity.setCustomNameVisible(true);
-					}
-					entity.setOwner(player);
-					entity.setStoredPotion(PotionUtilExt.getPotionItemStack(stack));
-
-					if (context.getLevel().addFreshEntity(entity)) {
-						entity.playAmbientSound();
-						stack.shrink(1);
-						return InteractionResult.SUCCESS;
-					}
-				}
-			}
-			return InteractionResult.FAIL;
-		}
+		//		if (context.getLevel().isClientSide()) return InteractionResult.PASS;
+		//
+		//		Player player = context.getPlayer();
+		//		if (player != null) {
+		//			if (context.getLevel().mayInteract(player, context.getClickedPos()) && player.mayUseItemAt(context.getClickedPos(), context.getClickedFace(), stack)) {
+		//				Boomling entity = ModEntityTypes.BOOMLING.get().create(context.getLevel());
+		//				if (entity != null) {
+		//					Vec3 pos = MobUtil.getAdjustedSpawnPositionFor(context.getClickedPos(), context.getClickLocation(), context.getClickedFace(), entity);
+		//					entity.moveTo(pos.x, pos.y, pos.z, Mth.wrapDegrees(context.getLevel().random.nextFloat() * 360f), 0f);
+		//					entity.yHeadRot = entity.getYRot();
+		//					entity.yBodyRot = entity.getYRot();
+		//					entity.setDeltaMovement(0, 0, 0);
+		//					entity.fallDistance = 0;
+		//
+		//					entity.setPersistenceRequired();
+		//					if (stack.hasCustomHoverName()) {
+		//						entity.setCustomName(stack.getHoverName());
+		//						entity.setCustomNameVisible(true);
+		//					}
+		//					entity.setOwner(player);
+		//					entity.setStoredPotion(PotionUtilExt.getPotionItemStack(stack));
+		//
+		//					if (context.getLevel().addFreshEntity(entity)) {
+		//						entity.playAmbientSound();
+		//						stack.shrink(1);
+		//						return InteractionResult.SUCCESS;
+		//					}
+		//				}
+		//			}
+		//			return InteractionResult.FAIL;
+		//		}
 		return InteractionResult.PASS;
 	}
 

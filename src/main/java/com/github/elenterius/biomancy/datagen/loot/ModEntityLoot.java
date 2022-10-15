@@ -48,14 +48,14 @@ public class ModEntityLoot extends EntityLoot {
 		add(ModLoot.Entity.FLESH_BLOB_SIZE_9, fleshBlobLootTableBuilderWithDrop(8));
 		add(ModLoot.Entity.FLESH_BLOB_SIZE_10, fleshBlobLootTableBuilderWithDrop(9));
 
-		add(ModEntityTypes.BOOMLING.get(), LootTable.lootTable()); //no item drops
+		//		add(ModEntityTypes.BOOMLING.get(), LootTable.lootTable()); //no item drops
 
-		add(ModEntityTypes.FLESHKIN.get(), LootTable.lootTable()
-				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
-						.add(LootItem.lootTableItem(ModItems.LIVING_FLESH.get())
-								.apply(SetItemCountFunction.setCount(UniformGenerator.between(2f, 4f)))
-								.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0f, 1f)))))
-		);
+		//		add(ModEntityTypes.FLESHKIN.get(), LootTable.lootTable()
+		//				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+		//						.add(LootItem.lootTableItem(ModItems.LIVING_FLESH.get())
+		//								.apply(SetItemCountFunction.setCount(UniformGenerator.between(2f, 4f)))
+		//								.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0f, 1f)))))
+		//		);
 	}
 
 	@Override
