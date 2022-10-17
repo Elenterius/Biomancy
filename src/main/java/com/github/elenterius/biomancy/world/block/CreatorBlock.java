@@ -47,7 +47,7 @@ public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBl
 		Item item = stack.getItem();
 		if (item instanceof BlockItem blockItem && (blockItem.getBlock() instanceof ShulkerBoxBlock || blockItem.getBlock() instanceof FleshkinChestBlock))
 			return true;
-		return stack.getItemEnchantability() > 0 || stack.hasFoil() || stack.isEnchanted() || item instanceof TieredItem || item instanceof Vanishable;
+		return stack.getItemEnchantability() > 0 || stack.isEnchanted() || item instanceof TieredItem || item instanceof Vanishable;
 	};
 
 	public CreatorBlock(Properties properties) {
@@ -109,9 +109,9 @@ public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBl
 			if (EXPENSIVE_ITEMS.test(stack)) return false;
 
 			BlockEntity blockEntity = level.getBlockEntity(pos);
-			if (blockEntity instanceof CreatorBlockEntity creatorEntity && !creatorEntity.isFull() && creatorEntity.insertItem(ItemHandlerHelper.copyStackWithSize(stack, 1))) {
+			if (blockEntity instanceof CreatorBlockEntity creator && !creator.isFull() && creator.insertItem(ItemHandlerHelper.copyStackWithSize(stack, 1))) {
 				if (player == null || !player.isCreative()) stack.shrink(1);
-				level.playSound(null, pos, creatorEntity.isFull() ? SoundEvents.PLAYER_BURP : SoundEvents.GOAT_SCREAMING_EAT, SoundSource.BLOCKS, 1f, level.random.nextFloat(0.25f, 0.5f));
+				level.playSound(null, pos, creator.isFull() ? SoundEvents.PLAYER_BURP : SoundEvents.GOAT_SCREAMING_EAT, SoundSource.BLOCKS, 1f, level.random.nextFloat(0.25f, 0.5f));
 				return true;
 			}
 		}
@@ -120,7 +120,7 @@ public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBl
 
 	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, Random random) {
-		if (random.nextInt(4) == 0 && level.getBlockEntity(pos) instanceof CreatorBlockEntity creator && creator.getFillLevel() >= creator.getMaxFillLevel()) {
+		if (random.nextInt(4) == 0 && level.getBlockEntity(pos) instanceof CreatorBlockEntity creator && creator.isFull()) {
 			for (int i = 0; i < random.nextInt(2, 8); i++) {
 				level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + 0.13125f + 0.7375f * random.nextFloat(), pos.getY() + 0.5f, pos.getZ() + 0.13125f + 0.7375f * random.nextFloat(), 1.8f, 1.4f, 1.4f);
 			}

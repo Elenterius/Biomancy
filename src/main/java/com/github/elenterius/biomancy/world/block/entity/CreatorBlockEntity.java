@@ -5,26 +5,30 @@ import com.github.elenterius.biomancy.init.ModDamageSources;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.network.ISyncableAnimation;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
-import com.github.elenterius.biomancy.util.SacrificeHelper;
+import com.github.elenterius.biomancy.styles.TextStyles;
+import com.github.elenterius.biomancy.util.SacrificeHandler;
 import com.github.elenterius.biomancy.world.block.CreatorBlock;
 import com.github.elenterius.biomancy.world.entity.fleshblob.FleshBlob;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.items.ItemStackHandler;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -34,19 +38,17 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 
 public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnimatable, ISyncableAnimation {
 
-	public static final int MAX_SLOTS = 6;
 	public static final int DURATION = 20 * 4; //in ticks
-	public static final String FILL_LEVEL_KEY = "FillLevel";
-	public static final String INVENTORY_KEY = "Inventory";
+	public static final String BIOMASS_SYNC_KEY = "SyncBiomass";
+	public static final String LIFE_ENERGY_SYNC_KEY = "SyncLifeEnergy";
+	public static final String SACRIFICE_KEY = "Sacrifice";
 
 	private long ticks;
-	private final ItemHandler inv = new ItemHandler(MAX_SLOTS);
-	private byte fillLevel = 0;
+	private final SacrificeHandler sacrificeHandler = new SacrificeHandler();
 
 	private final AnimationFactory animationFactory = new AnimationFactory(this);
 	private boolean playAttackAnimation = false;
@@ -56,35 +58,30 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 	}
 
 	public boolean insertItem(ItemStack stack) {
-		if (level == null || level.isClientSide() || stack.isEmpty() || !inv.hasEmptySlots()) return false;
+		if (level == null || level.isClientSide() || stack.isEmpty()) return false;
+		if (sacrificeHandler.isFull()) return false;
 
 		ItemStack prevStack = stack.copy();
-
-		for (int i = 0; i < inv.getSlots(); i++) {
-			if (inv.isItemValid(i, stack)) {
-				stack = inv.insertItem(i, stack, false);
-				if (stack.isEmpty() || stack.getCount() < prevStack.getCount()) {
-					syncToClient();
-					visualizeIngredientValidity((ServerLevel) level, prevStack);
-					return true;
-				}
-			}
+		if (sacrificeHandler.addItem(stack)) {
+			setChanged();
+			syncToClient();
+			visualizeIngredientValidity((ServerLevel) level, prevStack);
+			return true;
 		}
-
 		return false;
 	}
 
 	private void visualizeIngredientValidity(ServerLevel level, ItemStack stack) {
-		if (SacrificeHelper.isValidIngredient(stack)) {
+		if (sacrificeHandler.isValidIngredient(stack)) {
 			BlockPos pos = getBlockPos();
-			if (SacrificeHelper.getSuccessModifier(stack) <= 0) {
+			if (sacrificeHandler.getSuccessModifier(stack) <= 0) {
 				int particleCount = level.random.nextInt(1, 3);
 				sendParticlesToClient(level, pos, ParticleTypes.ANGRY_VILLAGER, particleCount);
 			}
 			int particleCount = level.random.nextInt(6, 9);
-			sendParticlesToClient(level, pos, ParticleTypes.HAPPY_VILLAGER, particleCount);
-		}
-		else {
+			SimpleParticleType particleType = sacrificeHandler.isLifeEnergySource(stack) ? ParticleTypes.GLOW : ParticleTypes.HAPPY_VILLAGER;
+			sendParticlesToClient(level, pos, particleType, particleCount);
+		} else {
 			int particleCount = level.random.nextInt(2, 4);
 			sendParticlesToClient(level, getBlockPos(), ParticleTypes.ANGRY_VILLAGER, particleCount);
 		}
@@ -95,59 +92,68 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 	}
 
 	public boolean isFull() {
-		return getFillLevel() == getMaxFillLevel();
+		return sacrificeHandler.isFull();
 	}
 
-	public int getFillLevel() {
-		return fillLevel;
+	public float getBiomassFillLevel() {
+		return sacrificeHandler.getBiomassPct() * 6f;
 	}
 
-	public int getMaxFillLevel() {
-		return MAX_SLOTS;
-	}
-
-	public static void serverTick(Level level, BlockPos pos, BlockState state, CreatorBlockEntity creatorEntity) {
-		if (creatorEntity.getFillLevel() == creatorEntity.getMaxFillLevel()) {
-			creatorEntity.ticks++;
-			if (creatorEntity.ticks > DURATION) {
-				creatorEntity.onSacrifice((ServerLevel) level);
-				creatorEntity.ticks = 0;
+	public static void serverTick(Level level, BlockPos pos, BlockState state, CreatorBlockEntity creator) {
+		if (creator.isFull()) {
+			creator.ticks++;
+			if (creator.ticks > DURATION) {
+				creator.onSacrifice((ServerLevel) level);
+				creator.ticks = 0;
 			}
 		}
 	}
 
 	public void onSacrifice(ServerLevel level) {
-		SacrificeHelper sacrificeHelper = new SacrificeHelper(inv.getItems(), level.random);
-
-		//clear inventory
-		inv.clearAllSlots();
-		fillLevel = 0;
-		setChanged();
-		syncToClient();
-
 		BlockPos pos = getBlockPos();
-		if (sacrificeHelper.isSacrificeSuccessful()) {
-			spawnMob(level, pos, sacrificeHelper);
+		if (level.random.nextFloat() < sacrificeHandler.getSuccessChance()) {
+			spawnMob(level, pos, sacrificeHandler);
 			level.playSound(null, pos, SoundEvents.PLAYER_BURP, SoundSource.BLOCKS, 1f, level.random.nextFloat(0.25f, 0.75f));
 			level.sendParticles(ParticleTypes.EXPLOSION, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, 1, 0, 0, 0, 0);
+		} else {
+			if (sacrificeHandler.getSuccessChance() > -9999) {
+				attackAOE(level, pos);
+				level.playSound(null, pos, SoundEvents.GOAT_SCREAMING_RAM_IMPACT, SoundSource.BLOCKS, 1f, 0.5f);
+			} else {
+				if (level.canSeeSky(pos.above())) {
+					LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create(level);
+					if (lightningBolt != null) {
+						lightningBolt.moveTo(Vec3.atBottomCenterOf(pos));
+						if (level.addFreshEntity(lightningBolt)) {
+							level.playSound(null, pos, SoundEvents.TRIDENT_THUNDER, SoundSource.BLOCKS, 5f, 1f);
+						}
+					}
+				}
+
+				level.players().forEach(player -> player.sendMessage(new TextComponent("How dare you do this... I am watching you!").withStyle(TextStyles.MAYKR_RUNES_RED), Util.NIL_UUID));
+			}
 		}
-		else {
-			attackAOE(level, pos);
-			level.playSound(null, pos, SoundEvents.GOAT_SCREAMING_RAM_IMPACT, SoundSource.BLOCKS, 1f, 0.5f);
-		}
+
+		resetState();
 	}
 
-	public void spawnMob(ServerLevel level, BlockPos pos, SacrificeHelper sacrificeHelper) {
+	private void resetState() {
+		sacrificeHandler.reset();
+		setChanged();
+		syncToClient();
+	}
+
+	public void spawnMob(ServerLevel level, BlockPos pos, SacrificeHandler sacrificeHandler) {
 		FleshBlob fleshBlob = ModEntityTypes.FLESH_BLOB.get().create(level);
 		if (fleshBlob != null) {
 			float yaw = CreatorBlock.getYRotation(getBlockState());
 			fleshBlob.moveTo(pos.getX() + 0.5f, pos.getY() + 4f / 16f, pos.getZ() + 0.5f, yaw, 0);
 			fleshBlob.yHeadRot = fleshBlob.getYRot();
-			fleshBlob.setHostile(sacrificeHelper.isFleshBlobHostile());
-			fleshBlob.setTumors(sacrificeHelper.getTumorFactor());
+			fleshBlob.setHostile(level.random.nextFloat() < sacrificeHandler.getHostileChance());
+			fleshBlob.setTumors(sacrificeHandler.getTumorFactor());
 			level.addFreshEntity(fleshBlob);
 		}
-//			OculusObserverEntity entity = ModEntityTypes.OCULUS_OBSERVER.get().create(worldIn);
+		//			OculusObserverEntity entity = ModEntityTypes.OCULUS_OBSERVER.get().create(worldIn);
 //			if (entity != null) {
 //				entity.moveTo(pos.getX() + 0.5f, pos.getY() + 4f / 16f, pos.getZ() + 0.5f, 0, 0);
 //				worldIn.addFreshEntity(entity);
@@ -180,24 +186,26 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 	@Override
 	protected void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
-		tag.putByte(FILL_LEVEL_KEY, (byte) inv.countUsedSlots());
-		tag.put(INVENTORY_KEY, inv.serializeNBT());
+		tag.put(SACRIFICE_KEY, sacrificeHandler.serializeNBT());
 	}
 
 	@Override
 	protected void saveForSyncToClient(CompoundTag tag) {
-		tag.putByte(FILL_LEVEL_KEY, (byte) inv.countUsedSlots());
+		tag.putByte(BIOMASS_SYNC_KEY, (byte) sacrificeHandler.getBiomassAmount());
+		tag.putByte(LIFE_ENERGY_SYNC_KEY, (byte) sacrificeHandler.getLifeEnergyAmount());
 	}
 
 	@Override
 	public void load(CompoundTag tag) {
 		super.load(tag);
-		if (tag.contains(FILL_LEVEL_KEY)) {
-			fillLevel = tag.getByte(FILL_LEVEL_KEY);
+		if (tag.contains(BIOMASS_SYNC_KEY)) {
+			sacrificeHandler.setBiomass(tag.getByte(BIOMASS_SYNC_KEY));
 		}
-		if (tag.contains(INVENTORY_KEY)) {
-			inv.deserializeNBT(tag.getCompound(INVENTORY_KEY));
-			fillLevel = (byte) inv.countUsedSlots();
+		if (tag.contains(LIFE_ENERGY_SYNC_KEY)) {
+			sacrificeHandler.setLifeEnergy(tag.getByte(LIFE_ENERGY_SYNC_KEY));
+		}
+		if (tag.contains(SACRIFICE_KEY)) {
+			sacrificeHandler.deserializeNBT(tag.getCompound(SACRIFICE_KEY));
 		}
 	}
 
@@ -239,49 +247,6 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 	@Override
 	public AnimationFactory getFactory() {
 		return animationFactory;
-	}
-
-	private class ItemHandler extends ItemStackHandler {
-
-		public ItemHandler(int slots) {
-			super(slots);
-		}
-
-		public void clearAllSlots() {
-			stacks.clear();
-		}
-
-		@Override
-		public int getSlotLimit(int slot) {
-			return 1;
-		}
-
-		@Override
-		public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-			return getStackInSlot(slot).isEmpty();
-		}
-
-		@Override
-		protected void onContentsChanged(int slot) {
-			fillLevel = (byte) countUsedSlots();
-			setChanged();
-		}
-
-		public boolean hasEmptySlots() {
-			for (ItemStack stack : stacks) if (stack.isEmpty()) return true;
-			return false;
-		}
-
-		public int countUsedSlots() {
-			int count = 0;
-			for (ItemStack stack : stacks) if (!stack.isEmpty()) count++;
-			return count;
-		}
-
-		NonNullList<ItemStack> getItems() {
-			return stacks;
-		}
-
 	}
 
 }

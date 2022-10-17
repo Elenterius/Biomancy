@@ -20,7 +20,7 @@ public class CreatorBlockEntityRenderer extends CustomGeoBlockRenderer<CreatorBl
 		IBone bone = getGeoModelProvider().getAnimationProcessor().getBone("bone_fill");
 		bone.setHidden(true);
 
-		int fillLevel = creatorEntity.getFillLevel();
+		float fillLevel = creatorEntity.getBiomassFillLevel();
 		if (fillLevel > 0) {
 			bone.setHidden(false);
 			bone.setPositionY(fillLevel + 1f); //sets the position in animation space
