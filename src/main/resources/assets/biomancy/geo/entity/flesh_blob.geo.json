@@ -7,10 +7,10 @@
         "texture_width": 64,
         "texture_height": 64,
         "visible_bounds_width": 4,
-        "visible_bounds_height": 2.5,
+        "visible_bounds_height": 3.5,
         "visible_bounds_offset": [
           0,
-          0.75,
+          1.25,
           0
         ]
       },
@@ -101,12 +101,153 @@
                   ]
                 }
               }
+            },
+            {
+              "origin": [
+                8,
+                5,
+                -3
+              ],
+              "size": [
+                3,
+                6,
+                6
+              ],
+              "uv": {
+                "north": {
+                  "uv": [
+                    41,
+                    0
+                  ],
+                  "uv_size": [
+                    3,
+                    6
+                  ]
+                },
+                "south": {
+                  "uv": [
+                    38,
+                    0
+                  ],
+                  "uv_size": [
+                    3,
+                    6
+                  ]
+                },
+                "west": {
+                  "uv": [
+                    32,
+                    0
+                  ],
+                  "uv_size": [
+                    6,
+                    6
+                  ]
+                },
+                "up": {
+                  "uv": [
+                    53,
+                    0
+                  ],
+                  "uv_size": [
+                    3,
+                    6
+                  ]
+                },
+                "down": {
+                  "uv": [
+                    50,
+                    6
+                  ],
+                  "uv_size": [
+                    3,
+                    -6
+                  ]
+                }
+              }
+            },
+            {
+              "origin": [
+                4.01,
+                11,
+                5
+              ],
+              "size": [
+                0,
+                15,
+                12
+              ],
+              "uv": {
+                "east": {
+                  "uv": [
+                    44,
+                    6
+                  ],
+                  "uv_size": [
+                    -12,
+                    15
+                  ]
+                },
+                "west": {
+                  "uv": [
+                    32,
+                    6
+                  ],
+                  "uv_size": [
+                    12,
+                    15
+                  ]
+                }
+              }
+            },
+            {
+              "origin": [
+                4.01,
+                11,
+                -17
+              ],
+              "size": [
+                0,
+                15,
+                12
+              ],
+              "uv": {
+                "east": {
+                  "uv": [
+                    32,
+                    6
+                  ],
+                  "uv_size": [
+                    12,
+                    15
+                  ]
+                },
+                "west": {
+                  "uv": [
+                    44,
+                    6
+                  ],
+                  "uv_size": [
+                    -12,
+                    15
+                  ]
+                }
+              }
             }
           ]
         },
         {
-          "name": "tumor",
+          "name": "tumors",
           "parent": "main",
+          "pivot": [
+            0,
+            8,
+            0
+          ]
+        },
+        {
+          "name": "tumor",
+          "parent": "tumors",
           "pivot": [
             -5.5,
             2.5,
@@ -191,7 +332,7 @@
         },
         {
           "name": "tumor2",
-          "parent": "main",
+          "parent": "tumors",
           "pivot": [
             3.5,
             6.5,
@@ -276,7 +417,7 @@
         },
         {
           "name": "tumor3",
-          "parent": "main",
+          "parent": "tumors",
           "pivot": [
             -8,
             11.5,
@@ -361,7 +502,7 @@
         },
         {
           "name": "tumor4",
-          "parent": "main",
+          "parent": "tumors",
           "pivot": [
             9,
             2.5,
@@ -446,7 +587,7 @@
         },
         {
           "name": "tumor5",
-          "parent": "main",
+          "parent": "tumors",
           "pivot": [
             0.5,
             11.5,
@@ -531,7 +672,7 @@
         },
         {
           "name": "tumor6",
-          "parent": "main",
+          "parent": "tumors",
           "pivot": [
             -4.5,
             15.5,
@@ -599,16 +740,6 @@
                     -5,
                     -4
                   ]
-                },
-                "down": {
-                  "uv": [
-                    59,
-                    64
-                  ],
-                  "uv_size": [
-                    -5,
-                    -4
-                  ]
                 }
               }
             }
@@ -616,7 +747,7 @@
         },
         {
           "name": "tumor7",
-          "parent": "main",
+          "parent": "tumors",
           "pivot": [
             6.5,
             16,
