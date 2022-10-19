@@ -22,8 +22,8 @@ import java.util.function.Predicate;
 public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 
 	private static final int MAX_VALUE = 100;
-	private int biomass;
-	private int lifeEnergy;
+	private byte biomass;
+	private byte lifeEnergy;
 	private int successValue;
 	private int diseaseValue;
 	private int hostileValue;
@@ -37,7 +37,11 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 	}
 
 	public void setBiomass(int amount) {
-		biomass = amount;
+		biomass = (byte) Mth.clamp(amount, 0, MAX_VALUE);
+	}
+
+	public void addBiomass(int value) {
+		setBiomass(biomass + value);
 	}
 
 	public int getBiomassAmount() {
@@ -49,11 +53,19 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 	}
 
 	public void setLifeEnergy(int amount) {
-		lifeEnergy = amount;
+		lifeEnergy = (byte) Mth.clamp(amount, 0, MAX_VALUE);
+	}
+
+	public void addLifeEnergy(int value) {
+		setBiomass(lifeEnergy + value);
 	}
 
 	public int getLifeEnergyAmount() {
 		return lifeEnergy;
+	}
+
+	public float getLifeEnergyPct() {
+		return lifeEnergy / (float) MAX_VALUE;
 	}
 
 	public boolean isValidIngredient(ItemStack stack) {
@@ -65,15 +77,19 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 	}
 
 	public float getSuccessChance() {
-		return successValue / (float) MAX_VALUE;
+		return successValue / 100f;
 	}
 
 	public float getHostileChance() {
-		return hostileValue / (float) MAX_VALUE;
+		return hostileValue / 100f;
 	}
 
 	public float getTumorFactor() {
-		return diseaseValue / (float) MAX_VALUE;
+		return diseaseValue / 100f;
+	}
+
+	public boolean hasModifiers() {
+		return diseaseValue != 0 || hostileValue != 0;
 	}
 
 	public boolean addItem(ItemStack stack) {
@@ -85,13 +101,13 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 			boolean consumeItem = true;
 
 			if (isBiomass) {
-				if (biomass < MAX_VALUE) biomass = Mth.clamp(biomass + tribute.typeValue, 0, 100);
+				if (biomass < MAX_VALUE) setBiomass(biomass + tribute.typeValue);
 				else consumeItem = false;
 			}
 
 			if (hasLifeEnergy) {
 				if (lifeEnergy < MAX_VALUE) {
-					lifeEnergy = Mth.clamp(lifeEnergy + tribute.typeValue, 0, 100);
+					setLifeEnergy(lifeEnergy + tribute.typeValue);
 					consumeItem = true;
 				} else consumeItem = false;
 			}
@@ -120,8 +136,8 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 	@Override
 	public CompoundTag serializeNBT() {
 		CompoundTag tag = new CompoundTag();
-		tag.putInt("Biomass", biomass);
-		tag.putInt("LifeEnergy", lifeEnergy);
+		tag.putByte("Biomass", biomass);
+		tag.putByte("LifeEnergy", lifeEnergy);
 
 		tag.putInt("Disease", diseaseValue);
 		tag.putInt("Hostile", hostileValue);
@@ -131,8 +147,8 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 
 	@Override
 	public void deserializeNBT(CompoundTag tag) {
-		biomass = tag.getInt("Biomass");
-		lifeEnergy = tag.getInt("LifeEnergy");
+		biomass = tag.getByte("Biomass");
+		lifeEnergy = tag.getByte("LifeEnergy");
 
 		diseaseValue = tag.getInt("Disease");
 		hostileValue = tag.getInt("Hostile");

@@ -1,4 +1,5 @@
 {
+  "credit": "Made by Elenterius",
   "parent": "builtin/entity",
   "texture_size": [
     64,
@@ -7,13 +8,13 @@
   "display": {
     "thirdperson_righthand": {
       "rotation": [
-        75,
+        10,
         45,
         0
       ],
       "translation": [
         0,
-        2.5,
+        -1.25,
         0
       ],
       "scale": [
@@ -24,13 +25,13 @@
     },
     "thirdperson_lefthand": {
       "rotation": [
-        75,
+        10,
         45,
         0
       ],
       "translation": [
         0,
-        2.5,
+        -1.25,
         0
       ],
       "scale": [
@@ -42,7 +43,7 @@
     "firstperson_righthand": {
       "rotation": [
         0,
-        123,
+        125,
         0
       ],
       "scale": [
@@ -54,7 +55,7 @@
     "firstperson_lefthand": {
       "rotation": [
         0,
-        111,
+        125,
         0
       ],
       "scale": [
@@ -66,13 +67,13 @@
     "ground": {
       "translation": [
         0,
-        3,
+        -3.25,
         0
       ],
       "scale": [
-        0.25,
-        0.25,
-        0.25
+        0.5,
+        0.5,
+        0.5
       ]
     },
     "gui": {
@@ -95,20 +96,15 @@
     "head": {
       "translation": [
         0,
-        6.5,
+        -7,
         0
       ]
     },
     "fixed": {
       "translation": [
         0,
-        -4,
-        0
-      ],
-      "scale": [
-        0.5,
-        0.5,
-        0.5
+        -8.5,
+        0.75
       ]
     }
   }

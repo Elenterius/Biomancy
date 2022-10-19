@@ -43,9 +43,9 @@ import java.util.List;
 public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnimatable, ISyncableAnimation {
 
 	public static final int DURATION = 20 * 4; //in ticks
-	public static final String BIOMASS_SYNC_KEY = "SyncBiomass";
-	public static final String LIFE_ENERGY_SYNC_KEY = "SyncLifeEnergy";
-	public static final String SACRIFICE_KEY = "Sacrifice";
+
+	public static final String SACRIFICE_SYNC_KEY = "SyncSacrificeHandler";
+	public static final String SACRIFICE_KEY = "SacrificeHandler";
 
 	private long ticks;
 	private final SacrificeHandler sacrificeHandler = new SacrificeHandler();
@@ -95,8 +95,16 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 		return sacrificeHandler.isFull();
 	}
 
-	public float getBiomassFillLevel() {
-		return sacrificeHandler.getBiomassPct() * 6f;
+	public float getBiomassPct() {
+		return sacrificeHandler.getBiomassPct();
+	}
+
+	public float getLifeEnergyPct() {
+		return sacrificeHandler.getLifeEnergyPct();
+	}
+
+	public boolean hasModifiers() {
+		return sacrificeHandler.hasModifiers();
 	}
 
 	public static void serverTick(Level level, BlockPos pos, BlockState state, CreatorBlockEntity creator) {
@@ -191,21 +199,16 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 
 	@Override
 	protected void saveForSyncToClient(CompoundTag tag) {
-		tag.putByte(BIOMASS_SYNC_KEY, (byte) sacrificeHandler.getBiomassAmount());
-		tag.putByte(LIFE_ENERGY_SYNC_KEY, (byte) sacrificeHandler.getLifeEnergyAmount());
+		tag.put(SACRIFICE_SYNC_KEY, sacrificeHandler.serializeNBT());
 	}
 
 	@Override
 	public void load(CompoundTag tag) {
 		super.load(tag);
-		if (tag.contains(BIOMASS_SYNC_KEY)) {
-			sacrificeHandler.setBiomass(tag.getByte(BIOMASS_SYNC_KEY));
-		}
-		if (tag.contains(LIFE_ENERGY_SYNC_KEY)) {
-			sacrificeHandler.setLifeEnergy(tag.getByte(LIFE_ENERGY_SYNC_KEY));
-		}
 		if (tag.contains(SACRIFICE_KEY)) {
 			sacrificeHandler.deserializeNBT(tag.getCompound(SACRIFICE_KEY));
+		} else if (tag.contains(SACRIFICE_SYNC_KEY)) {
+			sacrificeHandler.deserializeNBT(tag.getCompound(SACRIFICE_SYNC_KEY));
 		}
 	}
 

@@ -5,7 +5,7 @@
       "loop": true,
       "animation_length": 3.12,
       "bones": {
-        "bone_main": {
+        "main": {
           "position": {
             "0.0": {
               "vector": [
@@ -57,7 +57,7 @@
             }
           }
         },
-        "bone_tooth_6": {
+        "tooth_6": {
           "rotation": {
             "0.0": {
               "vector": [
@@ -84,7 +84,7 @@
             }
           }
         },
-        "bone_tooth_5": {
+        "tooth_5": {
           "rotation": {
             "0.0": {
               "vector": [
@@ -111,7 +111,7 @@
             }
           }
         },
-        "bone_tooth_1": {
+        "tooth_1": {
           "rotation": {
             "0.0": {
               "vector": [
@@ -138,7 +138,7 @@
             }
           }
         },
-        "bone_tooth_2": {
+        "tooth_2": {
           "rotation": {
             "0.0": {
               "vector": [
@@ -165,7 +165,7 @@
             }
           }
         },
-        "bone_tooth_8": {
+        "tooth_8": {
           "rotation": {
             "0.0": {
               "vector": [
@@ -192,7 +192,7 @@
             }
           }
         },
-        "bone_tooth_7": {
+        "tooth_7": {
           "rotation": {
             "0.0": {
               "vector": [
@@ -219,7 +219,7 @@
             }
           }
         },
-        "bone_tooth_4": {
+        "tooth_4": {
           "rotation": {
             "0.0": {
               "vector": [
@@ -246,7 +246,7 @@
             }
           }
         },
-        "bone_tooth_3": {
+        "tooth_3": {
           "rotation": {
             "0.0": {
               "vector": [
@@ -273,7 +273,7 @@
             }
           }
         },
-        "bone_root_cube_1": {
+        "root_1": {
           "position": {
             "0.0": {
               "vector": [
@@ -375,7 +375,7 @@
             }
           }
         },
-        "bone_root_cube_2": {
+        "root_2": {
           "position": {
             "0.0": {
               "vector": [
@@ -459,7 +459,7 @@
             }
           }
         },
-        "bone_root_cube_3": {
+        "root_3": {
           "position": {
             "0.0": {
               "vector": [
@@ -529,7 +529,7 @@
             }
           }
         },
-        "bone_root_cube_4": {
+        "root_4": {
           "position": {
             "0.0": {
               "vector": [
@@ -690,7 +690,7 @@
     "creator.anim.spike": {
       "animation_length": 0.64,
       "bones": {
-        "bone_main": {
+        "main": {
           "scale": {
             "0.0": {
               "vector": [
@@ -938,7 +938,7 @@
       "loop": true,
       "animation_length": 1.04,
       "bones": {
-        "bone_tooth_6": {
+        "tooth_6": {
           "rotation": {
             "0.0": {
               "vector": [
@@ -967,7 +967,7 @@
             }
           }
         },
-        "bone_tooth_5": {
+        "tooth_5": {
           "rotation": {
             "0.0": {
               "vector": [
@@ -996,7 +996,7 @@
             }
           }
         },
-        "bone_tooth_1": {
+        "tooth_1": {
           "rotation": {
             "0.0": {
               "vector": [
@@ -1025,7 +1025,7 @@
             }
           }
         },
-        "bone_tooth_2": {
+        "tooth_2": {
           "rotation": {
             "0.0": {
               "vector": [
@@ -1054,7 +1054,7 @@
             }
           }
         },
-        "bone_tooth_8": {
+        "tooth_8": {
           "rotation": {
             "0.0": {
               "vector": [
@@ -1083,7 +1083,7 @@
             }
           }
         },
-        "bone_tooth_7": {
+        "tooth_7": {
           "rotation": {
             "0.0": {
               "vector": [
@@ -1112,7 +1112,7 @@
             }
           }
         },
-        "bone_tooth_4": {
+        "tooth_4": {
           "rotation": {
             "0.0": {
               "vector": [
@@ -1141,7 +1141,7 @@
             }
           }
         },
-        "bone_tooth_3": {
+        "tooth_3": {
           "rotation": {
             "0.0": {
               "vector": [
