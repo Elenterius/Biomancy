@@ -97,6 +97,7 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 		return DecomposerMenu.createServerMenu(containerId, playerInventory, fuelInventory, inputInventory, outputInventory, stateData);
 	}
 
+	@Override
 	public boolean canPlayerOpenInv(Player player) {
 		if (level == null || level.getBlockEntity(worldPosition) != this) return false;
 		return player.distanceToSqr(Vec3.atCenterOf(worldPosition)) < 8d * 8d;
@@ -225,16 +226,16 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	private <E extends BlockEntity & IAnimatable> PlayState handleIdleAnim(AnimationEvent<E> event) {
 		Boolean isCrafting = event.getAnimatable().getBlockState().getValue(MachineBlock.CRAFTING);
 		if (Boolean.TRUE.equals(isCrafting)) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("decomposer.anim.working", true));
+			event.getController().setAnimation(new AnimationBuilder().loop("decomposer.anim.working"));
 		} else {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("decomposer.anim.idle.normal", true));
+			event.getController().setAnimation(new AnimationBuilder().loop("decomposer.anim.idle"));
 		}
 		return PlayState.CONTINUE;
 	}
 
 	@Override
 	public void registerControllers(AnimationData data) {
-		data.addAnimationController(new AnimationController<>(this, "idle_controller", 10, this::handleIdleAnim));
+		data.addAnimationController(new AnimationController<>(this, "controller", 10, this::handleIdleAnim));
 	}
 
 	@Override
