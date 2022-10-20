@@ -8,6 +8,7 @@ import com.github.elenterius.biomancy.recipe.RecipeTypeImpl;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.fuel.FuelHandler;
 import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
+import com.github.elenterius.biomancy.world.block.MachineBlock;
 import com.github.elenterius.biomancy.world.block.entity.state.BioLabStateData;
 import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.world.inventory.SimpleInventory;
@@ -263,7 +264,14 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 	}
 
 	private <E extends BlockEntity & IAnimatable> PlayState handleAnim(AnimationEvent<E> event) {
-		event.getController().setAnimation(new AnimationBuilder().addAnimation("bio_lab.idle"));
+		Boolean isCrafting = getBlockState().getValue(MachineBlock.CRAFTING);
+
+		if (Boolean.TRUE.equals(isCrafting)) {
+			event.getController().setAnimation(new AnimationBuilder().loop("bio_lab.working"));
+		} else {
+			event.getController().setAnimation(new AnimationBuilder().loop("bio_lab.idle"));
+		}
+
 		return PlayState.CONTINUE;
 	}
 

@@ -5,7 +5,7 @@
       "loop": true,
       "animation_length": 2.08,
       "bones": {
-        "root_capsule": {
+        "main_capsule": {
           "scale": {
             "0.0": {
               "vector": [
@@ -29,8 +29,47 @@
               ]
             }
           }
+        }
+      }
+    },
+    "bio_lab.working": {
+      "loop": true,
+      "animation_length": 2.08,
+      "bones": {
+        "main_capsule": {
+          "scale": {
+            "0.0": {
+              "vector": [
+                1,
+                1,
+                1
+              ]
+            },
+            "1.04": {
+              "vector": [
+                1,
+                0.96,
+                0.96
+              ],
+              "easing": "easeOutBounce",
+              "easingArgs": [
+                1
+              ]
+            },
+            "2.08": {
+              "vector": [
+                1,
+                1,
+                1
+              ],
+              "easing": "easeOutBounce",
+              "easingArgs": [
+                1
+              ]
+            }
+          }
         },
-        "bone_canister_right": {
+        "canister_right": {
           "scale": {
             "0.0": {
               "vector": [
@@ -69,7 +108,7 @@
             }
           }
         },
-        "bone_canister_left": {
+        "canister_left": {
           "scale": {
             "0.0": {
               "vector": [
