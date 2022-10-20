@@ -33,7 +33,7 @@ public class DigesterMenu extends PlayerContainerMenu {
 		isMenuValidPredicate = inputInventory::stillValid;
 		this.stateData = stateData;
 
-		addSlot(new FuelSlot(fuelInventory, 0, 26, 68));
+		addSlot(new FuelSlot(fuelInventory, 0, 39, 68));
 
 		addSlot(new Slot(inputInventory, 0, 80, 24));
 

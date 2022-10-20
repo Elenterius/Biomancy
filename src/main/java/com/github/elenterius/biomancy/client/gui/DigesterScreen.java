@@ -31,8 +31,7 @@ public class DigesterScreen extends AbstractContainerScreen<DigesterMenu> {
 
 	@Override
 	protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
-		int posX = imageWidth / 2 - font.width(title) / 2;
-		font.draw(poseStack, title, posX, -12, 0xFFFFFF);
+		//draw no labels
 	}
 
 	@Override
@@ -52,13 +51,14 @@ public class DigesterScreen extends AbstractContainerScreen<DigesterMenu> {
 	}
 
 	private void drawFuelBar(PoseStack poseStack, float fuelPct) {
-		//fuel bar will probably be removed
+		int vHeight = (int) (fuelPct * 36) + (fuelPct > 0 ? 1 : 0);
+		blit(poseStack, leftPos + 44, topPos + 28 + 36 - vHeight, 178, 36 - vHeight, 5, vHeight);
 	}
 
 	@Override
 	protected void renderTooltip(PoseStack poseStack, int mouseX, int mouseY) {
 		if (menu.getCarried().isEmpty()) {
-			if (GuiUtil.isInRect(leftPos + 52, topPos + 20, 17, 17, mouseX, mouseY)) {
+			if (GuiUtil.isInRect(leftPos + 44, topPos + 26, 5, 36, mouseX, mouseY)) {
 				drawFuelTooltip(poseStack, mouseX, mouseY);
 				return;
 			}
