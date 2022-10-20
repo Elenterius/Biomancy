@@ -26,11 +26,13 @@ public class FleshkinChestMenu extends PlayerContainerMenu {
 		this.inventory = inventory;
 		inventory.startOpen(playerInventory.player);
 
-		final int posX = 8;
+		final int posX = 26;
 		final int posY = 24;
-		for (int y = 0; y < 6; y++) {
-			for (int x = 0; x < 9; x++) {
-				addSlot(new Slot(inventory, y * 9 + x, posX + x * 18, posY + y * 18));
+		final int rows = 6;
+		final int columns = 7;
+		for (int y = 0; y < rows; y++) {
+			for (int x = 0; x < columns; x++) {
+				addSlot(new Slot(inventory, y * columns + x, posX + x * 18, posY + y * 18));
 			}
 		}
 	}

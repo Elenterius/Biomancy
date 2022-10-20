@@ -43,7 +43,7 @@ import java.util.List;
 
 public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implements IAnimatable, ISyncableAnimation {
 
-	public static final int SLOTS = 9 * 6;
+	public static final int SLOTS = 6 * 7;
 
 	private final SimpleInventory inventory;
 	private boolean lidShouldBeOpen = false;
