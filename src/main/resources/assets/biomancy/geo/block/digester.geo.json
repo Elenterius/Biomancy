@@ -4,8 +4,8 @@
     {
       "description": {
         "identifier": "geometry.digester",
-        "texture_width": 64,
-        "texture_height": 64,
+        "texture_width": 32,
+        "texture_height": 32,
         "visible_bounds_width": 2,
         "visible_bounds_height": 2.5,
         "visible_bounds_offset": [
@@ -16,18 +16,27 @@
       },
       "bones": [
         {
-          "name": "bone",
+          "name": "main",
           "pivot": [
-            8,
             0,
-            -8
+            0,
+            0
+          ]
+        },
+        {
+          "name": "mouth",
+          "parent": "main",
+          "pivot": [
+            0,
+            11,
+            0
           ],
           "cubes": [
             {
               "origin": [
-                -2.94975,
+                -3,
                 10,
-                -3.05025
+                -3
               ],
               "size": [
                 6,
@@ -35,9 +44,9 @@
                 6
               ],
               "pivot": [
-                0.05025,
-                15,
-                -0.05025
+                0,
+                13,
+                0
               ],
               "rotation": [
                 0,
@@ -47,8 +56,8 @@
               "uv": {
                 "north": {
                   "uv": [
-                    10,
-                    32
+                    18,
+                    24
                   ],
                   "uv_size": [
                     6,
@@ -57,8 +66,8 @@
                 },
                 "east": {
                   "uv": [
-                    36,
-                    32
+                    0,
+                    24
                   ],
                   "uv_size": [
                     6,
@@ -67,8 +76,8 @@
                 },
                 "south": {
                   "uv": [
-                    10,
-                    38
+                    6,
+                    24
                   ],
                   "uv_size": [
                     6,
@@ -77,8 +86,8 @@
                 },
                 "west": {
                   "uv": [
-                    36,
-                    38
+                    12,
+                    24
                   ],
                   "uv_size": [
                     6,
@@ -87,8 +96,8 @@
                 },
                 "up": {
                   "uv": [
-                    0,
-                    40
+                    24,
+                    24
                   ],
                   "uv_size": [
                     6,
@@ -100,8 +109,8 @@
           ]
         },
         {
-          "name": "bone2",
-          "parent": "bone",
+          "name": "body",
+          "parent": "main",
           "pivot": [
             0,
             0,
@@ -122,48 +131,48 @@
               "uv": {
                 "north": {
                   "uv": [
-                    26,
-                    10
+                    0,
+                    0
                   ],
                   "uv_size": [
                     10,
-                    10
+                    12
                   ]
                 },
                 "east": {
                   "uv": [
-                    26,
-                    10
+                    10,
+                    0
                   ],
                   "uv_size": [
                     10,
-                    10
+                    12
                   ]
                 },
                 "south": {
                   "uv": [
-                    26,
-                    10
+                    0,
+                    12
                   ],
                   "uv_size": [
                     10,
-                    10
+                    12
                   ]
                 },
                 "west": {
                   "uv": [
-                    26,
-                    10
+                    10,
+                    12
                   ],
                   "uv_size": [
                     10,
-                    10
+                    12
                   ]
                 },
                 "up": {
                   "uv": [
-                    16,
-                    30
+                    20,
+                    0
                   ],
                   "uv_size": [
                     10,
@@ -172,8 +181,8 @@
                 },
                 "down": {
                   "uv": [
-                    16,
-                    40
+                    20,
+                    20
                   ],
                   "uv_size": [
                     10,

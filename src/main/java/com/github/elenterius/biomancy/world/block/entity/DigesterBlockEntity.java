@@ -193,13 +193,14 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 	}
 
 	private <E extends BlockEntity & IAnimatable> PlayState handleIdleAnim(AnimationEvent<E> event) {
-		Boolean isCrafting = event.getAnimatable().getBlockState().getValue(MachineBlock.CRAFTING);
+		Boolean isCrafting = getBlockState().getValue(MachineBlock.CRAFTING);
+
 		if (Boolean.TRUE.equals(isCrafting)) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("digester.anim.working", true));
+			event.getController().setAnimation(new AnimationBuilder().loop("digester.working"));
+		} else {
+			event.getController().setAnimation(new AnimationBuilder().loop("digester.idle"));
 		}
-		else {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("digester.anim.idle", true));
-		}
+
 		return PlayState.CONTINUE;
 	}
 

@@ -1,16 +1,58 @@
 {
   "format_version": "1.8.0",
   "animations": {
-    "digester.anim.idle": {
+    "digester.idle": {
       "loop": true,
-      "animation_length": 1,
-      "bones": {}
+      "animation_length": 2.08,
+      "bones": {
+        "body": {
+          "scale": {
+            "0.0": {
+              "vector": [
+                1,
+                1,
+                1
+              ]
+            },
+            "0.52": {
+              "vector": [
+                1.05,
+                0.975,
+                1.05
+              ],
+              "easing": "easeInQuad"
+            },
+            "1.04": {
+              "vector": [
+                1,
+                1,
+                1
+              ]
+            },
+            "1.56": {
+              "vector": [
+                1.05,
+                0.975,
+                1.05
+              ],
+              "easing": "easeInQuad"
+            },
+            "2.08": {
+              "vector": [
+                1,
+                1,
+                1
+              ]
+            }
+          }
+        }
+      }
     },
-    "digester.anim.working": {
+    "digester.working": {
       "loop": true,
       "animation_length": 0.4,
       "bones": {
-        "bone2": {
+        "body": {
           "scale": {
             "0.0": {
               "vector": [
