@@ -13,8 +13,12 @@ public class BioForgeStateData implements ContainerData {
 		return fuelAmount;
 	}
 
-	public void setFuelAmount(short value) {
-		fuelAmount = value;
+	public void setFuelAmount(short amount) {
+		fuelAmount = amount;
+	}
+
+	public void addFuelAmount(short value) {
+		fuelAmount = (short) Math.max(fuelAmount + value, 0);
 	}
 
 	public void serialize(CompoundTag nbt) {

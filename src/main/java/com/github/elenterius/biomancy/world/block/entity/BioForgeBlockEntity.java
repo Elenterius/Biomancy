@@ -11,6 +11,7 @@ import com.github.elenterius.biomancy.world.block.entity.state.BioForgeStateData
 import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.world.inventory.itemhandler.HandlerBehaviors;
 import com.github.elenterius.biomancy.world.inventory.menu.BioForgeMenu;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -26,6 +27,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
@@ -42,26 +44,91 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nonnull;
+import java.util.Objects;
 
 public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Nameable, IAnimatable {
 
 	public static final int FUEL_SLOTS = 1;
 	public static final int MAX_FUEL = 1_000;
 	public static final RecipeTypeImpl.ItemStackRecipeType<BioForgeRecipe> RECIPE_TYPE = ModRecipes.BIO_FORGING_RECIPE_TYPE;
-
-	private final AnimationFactory animationFactory = new AnimationFactory(this);
-
+	static final int OPENERS_CHANGE_EVENT = 1;
+	protected final int tickOffset = BiomancyMod.GLOBAL_RANDOM.nextInt(20);
 	private final BioForgeStateData stateData = new BioForgeStateData();
 	private final BehavioralInventory<?> fuelInventory;
+	private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
+
+		@Override
+		protected void onOpen(Level level, BlockPos pos, BlockState state) {
+			//play sound
+		}
+
+		@Override
+		protected void onClose(Level level, BlockPos pos, BlockState state) {
+			//play sound
+		}
+
+		@Override
+		protected void openerCountChanged(Level level, BlockPos pos, BlockState state, int prevOpenCount, int openCount) {
+			if (openCount != prevOpenCount) {
+				level.blockEvent(BioForgeBlockEntity.this.worldPosition, state.getBlock(), OPENERS_CHANGE_EVENT, openCount);
+			}
+		}
+
+		@Override
+		protected boolean isOwnContainer(Player player) {
+			if (player.containerMenu instanceof BioForgeMenu menu) {
+				return menu.getStateData() == stateData;
+			}
+			return false;
+		}
+	};
+	private final AnimationFactory animationFactory = new AnimationFactory(this);
+	protected int ticks = tickOffset;
+	private boolean playWorkingAnimation = false;
+	private float nearbyTimer = -1f;
 
 	public BioForgeBlockEntity(BlockPos worldPosition, BlockState blockState) {
 		super(ModBlockEntities.BIO_FORGE.get(), worldPosition, blockState);
 		fuelInventory = BehavioralInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterFuel, this::canPlayerOpenInv, this::setChanged);
+		fuelInventory.setOpenInventoryConsumer(this::startOpen);
+		fuelInventory.setCloseInventoryConsumer(this::stopOpen);
+	}
+
+	public static void serverTick(Level level, BlockPos pos, BlockState state, BioForgeBlockEntity entity) {
+		entity.serverTick((ServerLevel) level);
+	}
+
+	public static void clientTick(Level level, BlockPos pos, BlockState state, BioForgeBlockEntity entity) {
+		entity.clientTick((ClientLevel) level);
+	}
+
+	@Override
+	public boolean triggerEvent(int id, int type) {
+		if (id == OPENERS_CHANGE_EVENT) {
+			playWorkingAnimation = type > 0;
+			return true;
+		}
+		return super.triggerEvent(id, type);
 	}
 
 	public boolean canPlayerOpenInv(Player player) {
 		if (level == null || level.getBlockEntity(worldPosition) != this) return false;
 		return player.distanceToSqr(Vec3.atCenterOf(worldPosition)) < 8d * 8d;
+	}
+
+	private void startOpen(Player player) {
+		if (remove || player.isSpectator()) return;
+		openersCounter.incrementOpeners(player, Objects.requireNonNull(getLevel()), getBlockPos(), getBlockState());
+	}
+
+	private void stopOpen(Player player) {
+		if (remove || player.isSpectator()) return;
+		openersCounter.decrementOpeners(player, Objects.requireNonNull(getLevel()), getBlockPos(), getBlockState());
+	}
+
+	public void recheckOpen() {
+		if (remove) return;
+		openersCounter.recheckOpeners(Objects.requireNonNull(getLevel()), getBlockPos(), getBlockState());
 	}
 
 	@Nullable
@@ -78,11 +145,8 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 		return stateData.getFuelAmount();
 	}
 
-	protected final int tickOffset = BiomancyMod.GLOBAL_RANDOM.nextInt(20);
-	protected int ticks = tickOffset;
-
-	public static void serverTick(Level level, BlockPos pos, BlockState state, BioForgeBlockEntity entity) {
-		entity.serverTick((ServerLevel) level);
+	public void setFuelAmount(int newAmount) {
+		stateData.setFuelAmount((short) newAmount);
 	}
 
 	protected void serverTick(ServerLevel level) {
@@ -129,10 +193,6 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 			}
 		}
 		return stackIn;
-	}
-
-	public void setFuelAmount(int newAmount) {
-		stateData.setFuelAmount((short) newAmount);
 	}
 
 	public void addFuelAmount(int addAmount) {
@@ -200,14 +260,31 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 		return TextComponentUtil.getTranslationText("container", "bio_forge");
 	}
 
+	protected void clientTick(ClientLevel level) {
+		if (playWorkingAnimation) return;
+
+		BlockPos pos = getBlockPos();
+		Player player = level.getNearestPlayer(pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, 3d, false);
+		nearbyTimer = Mth.clamp(nearbyTimer + (player != null ? 0.1f : -0.1f), -1f, 1f);
+	}
+
 	private <E extends BlockEntity & IAnimatable> PlayState handleAnim(AnimationEvent<E> event) {
-		event.getController().setAnimation(new AnimationBuilder().addAnimation("placeholder.anim.idle", true));
+		if (playWorkingAnimation) {
+			event.getController().setAnimation(new AnimationBuilder().loop("bio_forge.working"));
+			return PlayState.CONTINUE;
+		}
+
+		if (nearbyTimer > 0f) {
+			event.getController().setAnimation(new AnimationBuilder().playOnce("bio_forge.unfold").loop("bio_forge.idle"));
+		} else {
+			event.getController().setAnimation(new AnimationBuilder().playOnce("bio_forge.fold").loop("bio_forge.folded_state"));
+		}
 		return PlayState.CONTINUE;
 	}
 
 	@Override
 	public void registerControllers(AnimationData data) {
-		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::handleAnim));
+		data.addAnimationController(new AnimationController<>(this, "controller", 10, this::handleAnim));
 	}
 
 	@Override

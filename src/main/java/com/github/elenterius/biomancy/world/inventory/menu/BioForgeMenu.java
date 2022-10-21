@@ -40,12 +40,17 @@ public class BioForgeMenu extends PlayerContainerMenu {
 		super(ModMenuTypes.BIO_FORGE.get(), id, playerInventory, 124, 137, 195);
 
 		this.fuelInventory = fuelInventory;
+		this.fuelInventory.startOpen(playerInventory.player);
 		this.stateData = stateData;
 
 		addSlot(new FuelSlot(fuelInventory, 0, 139, 53));
 		resultSlotIndex = addSlot(new CustomResultSlot(playerInventory.player, resultContainer, 0, 194 + 2, 33 + 2)).index;
 
 		addDataSlots(stateData);
+	}
+
+	public BioForgeStateData getStateData() {
+		return stateData;
 	}
 
 	public static BioForgeMenu createServerMenu(int screenId, Inventory playerInventory, BehavioralInventory<?> fuelInventory, BioForgeStateData stateData) {
@@ -111,6 +116,7 @@ public class BioForgeMenu extends PlayerContainerMenu {
 	public void removed(Player player) {
 		super.removed(player);
 		resultContainer.clearContent();
+		fuelInventory.stopOpen(player);
 	}
 
 	@Override
@@ -120,7 +126,6 @@ public class BioForgeMenu extends PlayerContainerMenu {
 
 	@Override
 	public boolean stillValid(Player player) {
-		//we don't check all three inventories because they all call the same method in the tile entity
 		return fuelInventory.stillValid(player);
 	}
 	public float getFuelAmountNormalized() {
@@ -338,8 +343,7 @@ public class BioForgeMenu extends PlayerContainerMenu {
 		inventory.setChanged();
 
 		//consume nutrients
-		short decreasedFuelAmount = (short) (stateData.getFuelAmount() - 1);
-		stateData.setFuelAmount(decreasedFuelAmount);
+		stateData.addFuelAmount((short) -1);
 	}
 
 }

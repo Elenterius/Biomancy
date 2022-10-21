@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.world.block;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.world.block.entity.BioForgeBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -25,6 +26,8 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Random;
 
 public class BioForgeBlock extends BaseEntityBlock {
 
@@ -62,7 +65,14 @@ public class BioForgeBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-		return level.isClientSide ? null : createTickerHelper(blockEntityType, ModBlockEntities.BIO_FORGE.get(), BioForgeBlockEntity::serverTick);
+		return createTickerHelper(blockEntityType, ModBlockEntities.BIO_FORGE.get(), level.isClientSide ? BioForgeBlockEntity::clientTick : BioForgeBlockEntity::serverTick);
+	}
+
+	@Override
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
+		if (level.getBlockEntity(pos) instanceof BioForgeBlockEntity bioForge) {
+			bioForge.recheckOpen(); //this is only here because of ContainerOpenersCounter
+		}
 	}
 
 	@Override
