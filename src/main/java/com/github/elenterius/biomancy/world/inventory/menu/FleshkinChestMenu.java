@@ -24,7 +24,7 @@ public class FleshkinChestMenu extends PlayerContainerMenu {
 		level = playerInventory.player.level;
 
 		this.inventory = inventory;
-		inventory.startOpen(playerInventory.player);
+		this.inventory.startOpen(playerInventory.player);
 
 		final int posX = 26;
 		final int posY = 24;
@@ -85,7 +85,7 @@ public class FleshkinChestMenu extends PlayerContainerMenu {
 	@Override
 	public void removed(Player player) {
 		super.removed(player);
-		inventory.startOpen(player);
+		inventory.stopOpen(player);
 	}
 
 	public enum SlotZone implements ISlotZone {

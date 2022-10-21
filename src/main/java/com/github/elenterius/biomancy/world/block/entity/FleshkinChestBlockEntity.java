@@ -64,7 +64,9 @@ public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implem
 
 		@Override
 		protected void openerCountChanged(Level level, BlockPos pos, BlockState state, int prevOpenCount, int openCount) {
-			level.blockEvent(FleshkinChestBlockEntity.this.worldPosition, state.getBlock(), 1, openCount);
+			if (openCount != prevOpenCount) {
+				level.blockEvent(FleshkinChestBlockEntity.this.worldPosition, state.getBlock(), 1, openCount);
+			}
 		}
 
 		@Override
