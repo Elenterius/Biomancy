@@ -1,6 +1,6 @@
 modLoader = "javafml"
 loaderVersion = "[40,)" #This is typically bumped every Minecraft version by Forge
-license = "MIT"
+license = "MIT & CC-BY-NC-4.0"
 issueTrackerURL = "https://github.com/Elenterius/Biomancy/issues" #optional
 showAsResourcePack = false
 
@@ -12,7 +12,7 @@ updateJSONURL = "https://github.com/Elenterius/Biomancy/blob/main/update.json?ra
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/biomancy" #optional
 logoFile = "text_logo_small.png" #optional
 logoBlur = false
-credits = "RhinoW for artwork and game design help. Shorepion for sound desing and music. Selea for general feeback and help with version 1.0"
+credits = "RhinoW for artwork and game design help. Shorepion for sound design and music. Selea for general feeback and help with version 1.0"
 authors = "\u00A72Elenterius\u00A7r, \u00A76RhinoW\u00A7r, \u00A75Shorepion"
 description = '''Biopunk and Flesh Magic inspired tech-magic mod that has a fleshy art theme.'''
 
