@@ -33,7 +33,7 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 		addSimpleSounds(ModSoundEvents.FLESH_DOOR_OPEN, 2);
         addSimpleSounds(ModSoundEvents.FLESH_DOOR_CLOSE, 2);
 
-		addSimpleSounds(ModSoundEvents.FLESHKIN_CHEST_OPEN, 1);
+		addSimpleSounds(ModSoundEvents.FLESHKIN_CHEST_OPEN, 2);
 		addSimpleSounds(ModSoundEvents.FLESHKIN_CHEST_CLOSE, 2);
 	}
 
