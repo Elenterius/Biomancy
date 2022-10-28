@@ -86,13 +86,12 @@ public class DespoilMobLootModifier extends LootModifier {
 	protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
 		if (context.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof LivingEntity victim) {
 			int despoilLevel = getDespoilLevel(context);
-			if (despoilLevel > 0) {
-				Random random = context.getRandom();
-				SimpleWeightedRandomList<ItemLoot> lootTable = buildLootTable(victim);
-				int lootingLevel = context.getLootingModifier();
-				for (int lootRolls = Mth.nextInt(random, 1, despoilLevel + 1); lootRolls > 0; lootRolls--) {
-					lootTable.getRandomValue(random).ifPresent(itemLoot -> generatedLoot.add(itemLoot.getItemStack(random, lootingLevel)));
-				}
+			Random random = context.getRandom();
+			SimpleWeightedRandomList<ItemLoot> lootTable = buildLootTable(victim);
+			int lootingLevel = context.getLootingModifier();
+			int extraRolls = despoilLevel > 0 ? Mth.nextInt(random, 1, despoilLevel + 1) : 0;
+			for (int lootRolls = 1 + extraRolls; lootRolls > 0; lootRolls--) {
+				lootTable.getRandomValue(random).ifPresent(itemLoot -> generatedLoot.add(itemLoot.getItemStack(random, lootingLevel)));
 			}
 		}
 		return generatedLoot;
