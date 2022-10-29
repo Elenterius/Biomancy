@@ -31,7 +31,7 @@ public class DigesterScreen extends AbstractContainerScreen<DigesterMenu> {
 
 	@Override
 	protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
-		//draw no labels
+		//don't draw any labels
 	}
 
 	@Override
