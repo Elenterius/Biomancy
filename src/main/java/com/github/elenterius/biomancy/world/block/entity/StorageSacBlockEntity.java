@@ -66,6 +66,10 @@ public class StorageSacBlockEntity extends SimpleContainerBlockEntity {
 		top5ItemsByCount = itemCounter.getItemCountSorted(5, false);
 	}
 
+	public boolean isEmpty() {
+		return inventory.isEmpty();
+	}
+
 	protected void onContentsChanged() {
 		countAllItems();
 		setChanged();

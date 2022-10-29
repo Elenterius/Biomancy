@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -76,13 +77,17 @@ public class StorageSacBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!state.is(newState.getBlock())) {
-			if (level.getBlockEntity(pos) instanceof StorageSacBlockEntity sac) {
-				//				sac.dropContainerContents(level, pos);
-			}
-			super.onRemove(state, level, pos, newState, isMoving);
+	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+		if (!level.isClientSide && player.isCreative() && level.getBlockEntity(pos) instanceof StorageSacBlockEntity storage && !storage.isEmpty()) {
+			ItemStack stack = new ItemStack(this);
+			storage.saveToItem(stack);
+			if (storage.hasCustomName()) stack.setHoverName(storage.getCustomName());
+			ItemEntity itemEntity = new ItemEntity(level, pos.getX() + 0.5d, pos.getY() + 0.5D, pos.getZ() + 0.5d, stack);
+			itemEntity.setDefaultPickUpDelay();
+			level.addFreshEntity(itemEntity);
 		}
+
+		super.playerWillDestroy(level, pos, state, player);
 	}
 
 	@Override
