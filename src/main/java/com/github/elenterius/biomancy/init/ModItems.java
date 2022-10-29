@@ -3,7 +3,6 @@ package com.github.elenterius.biomancy.init;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.world.item.*;
 import com.github.elenterius.biomancy.world.item.weapon.BileSpitterItem;
-import com.github.elenterius.biomancy.world.item.weapon.BoomlingItem;
 import com.github.elenterius.biomancy.world.item.weapon.DevArmCannonItem;
 import com.github.elenterius.biomancy.world.item.weapon.LongClawItem;
 import com.github.elenterius.biomancy.world.serum.Serum;
@@ -76,14 +75,12 @@ public final class ModItems {
 	//	public static final RegistryObject<SerumItem> ADRENALINE_SERUM = registerSerumItem(ModSerums.ADRENALINE_SERUM);
 	//	public static final RegistryObject<SerumItem> DECAY_AGENT = registerSerumItem(ModSerums.DECAY_AGENT);
 
-	//	public static final RegistryObject<Item> ICHOR_SERUM = ITEMS.register("ichor_serum", () -> new SimpleItem.WithFoilItem(createBaseProperties()));
-
 	//# Misc
 	public static final RegistryObject<SimpleItem> CREATOR_MIX = registerSimpleItem("creator_mix");
 	public static final RegistryObject<FertilizerItem> FERTILIZER = ITEMS.register("fertilizer", () -> new FertilizerItem(createBaseProperties().rarity(ModRarities.UNCOMMON)));
 	public static final RegistryObject<EssenceItem> ESSENCE = ITEMS.register("essence", () -> new EssenceItem(createBaseProperties().tab(null)));
 	public static final RegistryObject<BioExtractorItem> BIO_EXTRACTOR = ITEMS.register("bio_extractor", () -> new BioExtractorItem(createBaseProperties().durability(200).tab(null)));
-	public static final RegistryObject<InjectorItem> INJECTOR = ITEMS.register("injector", () -> new InjectorItem(createBaseProperties().durability(200)));
+	public static final RegistryObject<InjectorItem> INJECTOR = ITEMS.register("injector", () -> new InjectorItem(createBaseProperties().durability(200).rarity(ModRarities.RARE)));
 	//	public static final RegistryObject<ControlStaffItem> CONTROL_STAFF = ITEMS.register("control_staff", () -> new ControlStaffItem(createBaseProperties().stacksTo(1).rarity(ModRarities.ULTRA_RARE)));
 
 	public static final RegistryObject<MaykerBannerPatternItem> MASCOT_BANNER_PATTERN = ITEMS.register("mascot_pattern", () -> new MaykerBannerPatternItem(ModBannerPatterns.MASCOT_PATTERN, createBaseProperties()));
@@ -91,18 +88,16 @@ public final class ModItems {
 	public static final RegistryObject<MaykerBannerPatternItem> MASCOT_ACCENT_BANNER_PATTERN = ITEMS.register("mascot_accent_pattern", () -> new MaykerBannerPatternItem(ModBannerPatterns.MASCOT_ACCENT_PATTERN, createBaseProperties()));
 
 	//# Weapons
-	//	public static final RegistryObject<ToothGunItem> TOOTH_GUN = ITEMS.register("tooth_gun", () -> new ToothGunItem(createBaseProperties().stacksTo(1).durability(ModTiers.LESSER_BIOFLESH.getUses()).rarity(ModRarities.VERY_RARE)));
-	//	public static final RegistryObject<WithershotItem> WITHERSHOT = ITEMS.register("withershot", () -> new WithershotItem(createBaseProperties().stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.VERY_RARE)));
 	public static final RegistryObject<LongClawItem> LONG_CLAW = ITEMS.register("long_range_claw", () -> new LongClawItem(ModTiers.BIOFLESH, 3, -2.4f, 120, createBaseProperties().rarity(ModRarities.VERY_RARE)));
 	public static final RegistryObject<DevArmCannonItem> ARM_CANNON = ITEMS.register("dev_arm_cannon", () -> new DevArmCannonItem(createBaseProperties().stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE)));
 	public static final RegistryObject<BileSpitterItem> BILE_SPITTER = ITEMS.register("bile_spitter", () -> new BileSpitterItem(createBaseProperties().stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE)));
 
 	//# Creature
-	public static final RegistryObject<BoomlingItem> BOOMLING = ITEMS.register("boomling", () -> new BoomlingItem(createBaseProperties().rarity(ModRarities.RARE).stacksTo(1).tab(null)));
+	//	public static final RegistryObject<BoomlingItem> BOOMLING = ITEMS.register("boomling", () -> new BoomlingItem(createBaseProperties().rarity(ModRarities.RARE).stacksTo(1).tab(null)));
 
 	//# Food/Fuel
 	public static final RegistryObject<SimpleItem> NUTRIENT_PASTE = registerSimpleItem("nutrient_paste");
-	public static final RegistryObject<EffectCureItem> NUTRIENT_BAR = ITEMS.register("nutrient_bar", () -> new EffectCureItem(createBaseProperties().food(ModFoods.NUTRIENT_BAR).rarity(ModRarities.COMMON)));
+	public static final RegistryObject<EffectCureItem> NUTRIENT_BAR = ITEMS.register("nutrient_bar", () -> new EffectCureItem(createBaseProperties().food(ModFoods.NUTRIENT_BAR)));
 
 	//# Block Items
 
@@ -116,7 +111,7 @@ public final class ModItems {
 	//## Storage & Automation
 	public static final RegistryObject<SimpleBlockItem> TONGUE = registerSimpleBlockItem(ModBlocks.TONGUE, ModRarities.UNCOMMON);
 	public static final RegistryObject<SimpleBlockItem> FLESHKIN_CHEST = registerSimpleBlockItem(ModBlocks.FLESHKIN_CHEST, ModRarities.UNCOMMON);
-	public static final RegistryObject<StorageSacBlockItem> STORAGE_SAC = ITEMS.register(ModBlocks.STORAGE_SAC.getId().getPath(), () -> new StorageSacBlockItem(ModBlocks.STORAGE_SAC.get(), createBaseProperties().rarity(ModRarities.COMMON)));
+	public static final RegistryObject<StorageSacBlockItem> STORAGE_SAC = ITEMS.register(ModBlocks.STORAGE_SAC.getId().getPath(), () -> new StorageSacBlockItem(ModBlocks.STORAGE_SAC.get(), createBaseProperties()));
 	//	public static final RegistryObject<MobStorageSacItem> SMALL_ENTITY_BAG_ITEM = ITEMS.register("small_entity_bag", () -> new EntityStorageBagItem(4f, (byte) 1, createItemProperties().stacksTo(1).rarity(ModRarities.UNCOMMON)));
 	//	public static final RegistryObject<MobStorageSacItem> LARGE_ENTITY_BAG_ITEM = ITEMS.register("large_entity_bag", () -> new EntityStorageBagItem(10f, (byte) 8, createItemProperties().stacksTo(1).rarity(ModRarities.UNCOMMON)));
 
@@ -175,7 +170,7 @@ public final class ModItems {
 	private ModItems() {}
 
 	private static <T extends Block> RegistryObject<SimpleBlockItem> registerSimpleBlockItem(RegistryObject<T> blockHolder) {
-		return registerSimpleBlockItem(blockHolder, ModRarities.COMMON);
+		return ITEMS.register(blockHolder.getId().getPath(), () -> new SimpleBlockItem(blockHolder.get(), createBaseProperties()));
 	}
 
 	private static <T extends Block> RegistryObject<SimpleBlockItem> registerSimpleBlockItem(RegistryObject<T> blockHolder, Rarity rarity) {
@@ -195,15 +190,15 @@ public final class ModItems {
 	}
 
 	private static <T extends Serum> RegistryObject<SerumItem> registerSerumItem(RegistryObject<T> registryObject) {
-		return ITEMS.register(registryObject.getId().getPath(), () -> new SerumItem(createBaseProperties().stacksTo(8), registryObject));
+		return ITEMS.register(registryObject.getId().getPath(), () -> new SerumItem(createBaseProperties().stacksTo(8).rarity(ModRarities.UNCOMMON), registryObject));
 	}
 
 	private static RegistryObject<SimpleItem> registerSimpleVialItem(String name) {
-		return ITEMS.register(name, () -> new SimpleItem(createBaseProperties().craftRemainder(GLASS_VIAL.get()).rarity(ModRarities.COMMON)));
+		return ITEMS.register(name, () -> new SimpleItem(createBaseProperties().craftRemainder(GLASS_VIAL.get())));
 	}
 
 	private static RegistryObject<SimpleItem> registerSimpleItem(String name) {
-		return registerSimpleItem(name, ModRarities.COMMON);
+		return ITEMS.register(name, () -> new SimpleItem(createBaseProperties()));
 	}
 
 	private static RegistryObject<SimpleItem> registerSimpleItem(String name, Rarity rarity) {
@@ -215,7 +210,7 @@ public final class ModItems {
 	}
 
 	private static Item.Properties createBaseProperties() {
-		return new Item.Properties().tab(BiomancyMod.CREATIVE_TAB);
+		return new Item.Properties().tab(BiomancyMod.CREATIVE_TAB).rarity(ModRarities.COMMON);
 	}
 
 }

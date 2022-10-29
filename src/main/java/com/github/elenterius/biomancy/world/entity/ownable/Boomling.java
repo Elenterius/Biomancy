@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.world.entity.ownable;
 
-import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.util.PotionUtilExt;
 import com.github.elenterius.biomancy.world.entity.MobUtil;
 import net.minecraft.core.BlockPos;
@@ -321,14 +320,14 @@ public class Boomling extends OwnableMob implements IAnimatable {
 	protected InteractionResult mobInteract(Player player, InteractionHand hand) {
 		if (!isOwner(player)) return InteractionResult.PASS;
 
-		if (!player.level.isClientSide() && player.isShiftKeyDown()) {
-			removeAfterChangingDimensions();
-			ItemStack stack = PotionUtilExt.setPotionOfHost(new ItemStack(ModItems.BOOMLING.get()), getStoredPotion().copy());
-			if (hasCustomName()) stack.setHoverName(getCustomName());
-			if (!player.addItem(stack)) {
-				spawnAtLocation(stack);
-			}
-		}
+		//		if (!player.level.isClientSide() && player.isShiftKeyDown()) {
+		//			removeAfterChangingDimensions();
+		//			ItemStack stack = PotionUtilExt.setPotionOfHost(new ItemStack(ModItems.BOOMLING.get()), getStoredPotion().copy());
+		//			if (hasCustomName()) stack.setHoverName(getCustomName());
+		//			if (!player.addItem(stack)) {
+		//				spawnAtLocation(stack);
+		//			}
+		//		}
 		return InteractionResult.sidedSuccess(level.isClientSide());
 	}
 
