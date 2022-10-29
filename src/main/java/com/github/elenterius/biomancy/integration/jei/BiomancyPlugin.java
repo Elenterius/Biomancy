@@ -58,7 +58,7 @@ public class BiomancyPlugin implements IModPlugin {
 		registration.addRecipeClickArea(DecomposerScreen.class, 176 - 5 - 10, 4, 10, 10, DecomposerRecipeCategory.RECIPE_TYPE);
 		registration.addRecipeClickArea(BioLabScreen.class, 176 - 5 - 10, 4, 10, 10, BioLabRecipeCategory.RECIPE_TYPE);
 		registration.addRecipeClickArea(DigesterScreen.class, 176 - 5 - 10, 4, 10, 10, DigesterRecipeCategory.RECIPE_TYPE);
-		registration.addRecipeClickArea(BioForgeScreen.class, 192 - 5 - 10, 4, 10, 10, BioForgeRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeClickArea(BioForgeScreen.class, 292 - 5 - 10, 4, 10, 10, BioForgeRecipeCategory.RECIPE_TYPE);
 	}
 
 	@Override
