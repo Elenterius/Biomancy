@@ -34,7 +34,7 @@ public final class ModMenuTypes {
 	public static final RegistryObject<MenuType<GlandMenu>> GLAND = MENUS.register("gland", () -> IForgeMenuType.create(GlandMenu::createClientMenu));
 	public static final RegistryObject<MenuType<StorageSacMenu>> STORAGE_SAC = MENUS.register("storage_sac", () -> IForgeMenuType.create(StorageSacMenu::createClientMenu));
 	public static final RegistryObject<MenuType<GulgeMenu>> GULGE = MENUS.register("gulge", () -> IForgeMenuType.create(GulgeMenu::createClientMenu));
-	public static final RegistryObject<MenuType<BioInjectorMenu>> BIO_INJECTOR = MENUS.register("bio_injector", () -> IForgeMenuType.create(BioInjectorMenu::createClientMenu));
+
 	public static final RegistryObject<MenuType<FleshkinChestMenu>> FLESHKIN_CHEST = MENUS.register("flesh_chest", () -> IForgeMenuType.create(FleshkinChestMenu::createClientMenu));
 	public static final RegistryObject<MenuType<DigesterMenu>> DIGESTER = MENUS.register("digester", () -> IForgeMenuType.create(DigesterMenu::createClientMenu));
 	public static final RegistryObject<MenuType<BioForgeMenu>> BIO_FORGE = MENUS.register("bio_forge", () -> IForgeMenuType.create(BioForgeMenu::createClientMenu));
@@ -60,7 +60,6 @@ public final class ModMenuTypes {
 		registerMenuScreen(GLAND, GlandScreen::new, GlandScreen.class);
 		registerMenuScreen(STORAGE_SAC, StorageSacScreen::new, StorageSacScreen.class);
 		registerMenuScreen(GULGE, GulgeScreen::new, GulgeScreen.class);
-		registerMenuScreen(BIO_INJECTOR, BioInjectorScreen::new, BioInjectorScreen.class);
 		registerMenuScreen(FLESHKIN_CHEST, FleshkinChestScreen::new, FleshkinChestScreen.class);
 		registerMenuScreen(DIGESTER, DigesterScreen::new, DigesterScreen.class);
 		registerMenuScreen(BIO_FORGE, BioForgeScreen::new, BioForgeScreen.class);

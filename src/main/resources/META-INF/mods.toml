@@ -7,7 +7,7 @@ showAsResourcePack = false
 [[mods]]
 modId = "biomancy"
 version = "${file.jarVersion}"
-displayName = "Biomancy"
+displayName = "Biomancy 2"
 updateJSONURL = "https://github.com/Elenterius/Biomancy/blob/main/update.json?raw=true"
 displayURL = "https://www.curseforge.com/minecraft/mc-mods/biomancy" #optional
 logoFile = "text_logo_small.png" #optional

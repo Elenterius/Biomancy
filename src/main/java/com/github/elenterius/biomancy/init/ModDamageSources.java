@@ -4,7 +4,6 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.world.entity.projectile.BaseProjectile;
 import com.github.elenterius.biomancy.world.entity.projectile.CorrosiveAcidProjectile;
 import com.github.elenterius.biomancy.world.entity.projectile.WitherProjectile;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
@@ -44,7 +43,7 @@ public final class ModDamageSources {
 		return damageSource == CORROSIVE_ACID || damageSource.getDirectEntity() instanceof CorrosiveAcidProjectile;
 	}
 
-	public interface IDamageType {}
+	/*public interface IDamageType {}
 
 	public record DamageType(ResourceLocation id) implements IDamageType {
 		public static DamageType DEFAULT = new DamageType(new ResourceLocation("default"));
@@ -58,5 +57,5 @@ public final class ModDamageSources {
 		public static DamageType IMPACT = new DamageType(BiomancyMod.createRL("impact"));
 		public static DamageType SLASH = new DamageType(BiomancyMod.createRL("slash"));
 		public static DamageType PIERCE = new DamageType(BiomancyMod.createRL("pierce"));
-	}
+	}*/
 }
