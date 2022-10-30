@@ -47,7 +47,7 @@ public class BioLabMenu extends PlayerContainerMenu {
 		addSlot(new Slot(inputInventory, 4, 80, 62)); // reactant/vial slot
 
 		addSlot(new OutputSlot(outputInventory, 0, 80, 88));
-		addSlot(new OutputSlot(outputInventory, 1, 80 + 36, 88));
+		addSlot(new OutputSlot(outputInventory, 1, 116, 88)); // trash slot for empty vials
 
 		addDataSlots(stateData);
 	}
