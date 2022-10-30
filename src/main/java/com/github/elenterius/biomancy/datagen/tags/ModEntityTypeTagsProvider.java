@@ -31,7 +31,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 						EntityType.BAT, EntityType.HOGLIN, EntityType.ZOGLIN, EntityType.ENDER_DRAGON);
 
 		tag(ModTags.EntityTypes.SHARP_CLAW)
-				.add(EntityType.CAT, EntityType.OCELOT, EntityType.POLAR_BEAR, EntityType.PANDA,
+				.add(EntityType.CAT, EntityType.OCELOT, EntityType.WOLF, EntityType.FOX, EntityType.POLAR_BEAR, EntityType.PANDA,
 						EntityType.BAT, EntityType.ENDER_DRAGON);
 
 		tag(ModTags.EntityTypes.VENOM_GLAND)
