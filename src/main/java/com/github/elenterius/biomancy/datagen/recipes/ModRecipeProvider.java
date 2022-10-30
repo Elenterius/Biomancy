@@ -118,14 +118,13 @@ public class ModRecipeProvider extends RecipeProvider {
 		// machines ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		WorkbenchRecipeBuilder.shaped(ModItems.CREATOR.get())
-				.define('T', Items.TOTEM_OF_UNDYING)
+				.define('E', Items.ENDER_EYE)
 				.define('M', ModTags.Items.RAW_MEATS)
 				.define('F', ModItems.MOB_FANG.get())
-				.define('E', Items.SPIDER_EYE)
 				.pattern("F F")
-				.pattern("MTM")
 				.pattern("MEM")
-				.unlockedBy(hasName(Items.TOTEM_OF_UNDYING), has(Items.TOTEM_OF_UNDYING)).save(consumer);
+				.pattern("MMM")
+				.unlockedBy(hasName(Items.ENDER_EYE), has(Items.ENDER_EYE)).save(consumer);
 
 		WorkbenchRecipeBuilder.shaped(ModItems.DECOMPOSER.get())
 				.define('M', ModTags.Items.RAW_MEATS)
@@ -140,9 +139,9 @@ public class ModRecipeProvider extends RecipeProvider {
 		WorkbenchRecipeBuilder.shaped(ModItems.BIO_FORGE.get())
 				.define('S', Items.SLIME_BALL)
 				.define('M', ModTags.Items.RAW_MEATS)
-				.define('B', Tags.Items.BONES)
+				.define('C', ModItems.MOB_CLAW.get())
 				.define('E', ModItems.LIVING_FLESH.get())
-				.pattern("B B")
+				.pattern("C C")
 				.pattern("MSM")
 				.pattern("MEM")
 				.unlockedBy(hasName(ModItems.LIVING_FLESH.get()), has(ModItems.LIVING_FLESH.get())).save(consumer);
