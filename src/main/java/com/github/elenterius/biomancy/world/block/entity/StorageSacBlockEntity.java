@@ -3,7 +3,8 @@ package com.github.elenterius.biomancy.world.block.entity;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.ItemStackCounter;
-import com.github.elenterius.biomancy.world.inventory.SimpleInventory;
+import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
+import com.github.elenterius.biomancy.world.inventory.itemhandler.HandlerBehaviors;
 import com.github.elenterius.biomancy.world.inventory.menu.StorageSacMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -35,14 +36,14 @@ public class StorageSacBlockEntity extends SimpleContainerBlockEntity {
 	public static final int SLOTS = 3 * 5;
 	public static final String TOP5_BY_COUNT_KEY = "Top5ByCount";
 	public static final String INVENTORY_KEY = "Inventory";
-	private final SimpleInventory inventory;
+	private final BehavioralInventory<?> inventory;
 	protected final ItemStackCounter itemCounter = new ItemStackCounter();
 
 	private List<ItemStackCounter.CountedItem> top5ItemsByCount = List.of();
 
 	public StorageSacBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.STORAGE_SAC.get(), pos, state);
-		inventory = SimpleInventory.createServerContents(SLOTS, this::canPlayerOpenContainer, this::onContentsChanged);
+		inventory = BehavioralInventory.createServerContents(SLOTS, HandlerBehaviors::denyItemWithFilledInventory, this::canPlayerOpenContainer, this::onContentsChanged);
 	}
 
 	@Nullable

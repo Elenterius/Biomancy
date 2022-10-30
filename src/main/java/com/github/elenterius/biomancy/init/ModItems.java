@@ -110,7 +110,7 @@ public final class ModItems {
 
 	//## Storage & Automation
 	public static final RegistryObject<SimpleBlockItem> TONGUE = registerSimpleBlockItem(ModBlocks.TONGUE, ModRarities.UNCOMMON);
-	public static final RegistryObject<SimpleBlockItem> FLESHKIN_CHEST = registerSimpleBlockItem(ModBlocks.FLESHKIN_CHEST, ModRarities.UNCOMMON);
+	public static final RegistryObject<SimpleBlockItem> FLESHKIN_CHEST = ITEMS.register(ModBlocks.FLESHKIN_CHEST.getId().getPath(), () -> new FleshkinChestBlockItem(ModBlocks.FLESHKIN_CHEST.get(), createBaseProperties().rarity(ModRarities.UNCOMMON)));
 	public static final RegistryObject<StorageSacBlockItem> STORAGE_SAC = ITEMS.register(ModBlocks.STORAGE_SAC.getId().getPath(), () -> new StorageSacBlockItem(ModBlocks.STORAGE_SAC.get(), createBaseProperties()));
 	//	public static final RegistryObject<MobStorageSacItem> SMALL_ENTITY_BAG_ITEM = ITEMS.register("small_entity_bag", () -> new EntityStorageBagItem(4f, (byte) 1, createItemProperties().stacksTo(1).rarity(ModRarities.UNCOMMON)));
 	//	public static final RegistryObject<MobStorageSacItem> LARGE_ENTITY_BAG_ITEM = ITEMS.register("large_entity_bag", () -> new EntityStorageBagItem(10f, (byte) 8, createItemProperties().stacksTo(1).rarity(ModRarities.UNCOMMON)));

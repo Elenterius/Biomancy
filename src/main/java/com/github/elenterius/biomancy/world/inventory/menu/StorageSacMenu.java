@@ -3,8 +3,9 @@ package com.github.elenterius.biomancy.world.inventory.menu;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
 import com.github.elenterius.biomancy.world.block.entity.StorageSacBlockEntity;
-import com.github.elenterius.biomancy.world.inventory.SimpleInventory;
+import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.world.inventory.slot.ISlotZone;
+import com.github.elenterius.biomancy.world.inventory.slot.NonNestingSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -14,9 +15,9 @@ import org.apache.logging.log4j.MarkerManager;
 
 public class StorageSacMenu extends PlayerContainerMenu {
 
-	private final SimpleInventory inventory;
+	private final BehavioralInventory<?> inventory;
 
-	protected StorageSacMenu(int id, Inventory playerInventory, SimpleInventory inventory) {
+	protected StorageSacMenu(int id, Inventory playerInventory, BehavioralInventory<?> inventory) {
 		super(ModMenuTypes.STORAGE_SAC.get(), id, playerInventory, 88, 146);
 
 		this.inventory = inventory;
@@ -25,17 +26,17 @@ public class StorageSacMenu extends PlayerContainerMenu {
 		int posY = 17;
 		for (int y = 0; y < 3; y++) {
 			for (int x = 0; x < 5; x++) {
-				addSlot(new Slot(inventory, x + 5 * y, posX + x * 18, posY + y * 18));
+				addSlot(new NonNestingSlot(this.inventory, x + 5 * y, posX + x * 18, posY + y * 18));
 			}
 		}
 	}
 
-	public static StorageSacMenu createServerMenu(int screenId, Inventory playerInventory, SimpleInventory inventory) {
+	public static StorageSacMenu createServerMenu(int screenId, Inventory playerInventory, BehavioralInventory<?> inventory) {
 		return new StorageSacMenu(screenId, playerInventory, inventory);
 	}
 
 	public static StorageSacMenu createClientMenu(int screenId, Inventory playerInventory, FriendlyByteBuf extraData) {
-		SimpleInventory inventory = SimpleInventory.createClientContents(StorageSacBlockEntity.SLOTS);
+		BehavioralInventory<?> inventory = BehavioralInventory.createClientContents(StorageSacBlockEntity.SLOTS);
 		return new StorageSacMenu(screenId, playerInventory, inventory);
 	}
 

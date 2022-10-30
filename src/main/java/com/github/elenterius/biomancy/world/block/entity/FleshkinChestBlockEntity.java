@@ -6,7 +6,8 @@ import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.network.ISyncableAnimation;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
-import com.github.elenterius.biomancy.world.inventory.SimpleInventory;
+import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
+import com.github.elenterius.biomancy.world.inventory.itemhandler.HandlerBehaviors;
 import com.github.elenterius.biomancy.world.inventory.menu.FleshkinChestMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -45,7 +46,7 @@ public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implem
 
 	public static final int SLOTS = 6 * 7;
 
-	private final SimpleInventory inventory;
+	private final BehavioralInventory<?> inventory;
 	private boolean lidShouldBeOpen = false;
 
 	private boolean playAttackAnimation = false;
@@ -81,7 +82,7 @@ public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implem
 
 	public FleshkinChestBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.FLESHKIN_CHEST.get(), pos, state);
-		inventory = SimpleInventory.createServerContents(SLOTS, this::canPlayerOpenContainer, this::setChanged);
+		inventory = BehavioralInventory.createServerContents(SLOTS, HandlerBehaviors::denyItemWithFilledInventory, this::canPlayerOpenContainer, this::setChanged);
 		inventory.setOpenInventoryConsumer(this::startOpen);
 		inventory.setCloseInventoryConsumer(this::stopOpen);
 	}
@@ -123,7 +124,7 @@ public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implem
 		AABB aabb = new AABB(pos).inflate(0.25f);
 		List<Entity> victims = level.getEntities(excludedEntity, aabb, EntitySelector.LIVING_ENTITY_STILL_ALIVE);
 		for (Entity entity : victims) {
-			entity.hurt(ModDamageSources.CREATOR_SPIKES, 2f);
+			entity.hurt(ModDamageSources.CHEST_BITE, 2f);
 		}
 	}
 

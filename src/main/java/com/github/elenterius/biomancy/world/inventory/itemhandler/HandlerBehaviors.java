@@ -2,10 +2,7 @@ package com.github.elenterius.biomancy.world.inventory.itemhandler;
 
 import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -45,23 +42,20 @@ public final class HandlerBehaviors {
 	}
 
 	public static final Predicate<ItemStack> EMPTY_ITEM_INVENTORY_PREDICATE = stack -> {
-		if (stack.getItem() instanceof BlockItem blockItem) {
-			Block block = blockItem.getBlock();
-			if (block instanceof ShulkerBoxBlock) {
-				return stack.getTagElement("BlockEntityTag") == null;
-			}
-//			else if (block instanceof FleshChestBlock || block instanceof GulgeBlock) {
-//				CompoundTag nbt = stack.getTagElement("BlockEntityTag");
-//				if (nbt == null) return true;
-//				return nbt.getCompound("Inventory").isEmpty();
-//			}
-		}
+		//		if (stack.getItem() instanceof BlockItem blockItem) {
+		//			Block block = blockItem.getBlock();
+		//			if (block instanceof ShulkerBoxBlock) {
+		//				return stack.getTagElement("BlockEntityTag") == null;
+		//			}
+		//		}
+
+		if (!stack.getItem().canFitInsideContainerItems()) return false;
 
 		LazyOptional<IItemHandler> capability = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
 		final boolean[] isEmpty = {true};
 		capability.ifPresent(itemHandler -> {
 			int slots = itemHandler.getSlots();
-			if (slots > 1000) { //if we have more than 1000 slots we don't bother checking them and just return false
+			if (slots > 200) { //if we have more than 200 slots we don't bother checking them and just return false
 				isEmpty[0] = false;
 				return;
 			}
