@@ -1,12 +1,13 @@
 package com.github.elenterius.biomancy.world.block;
 
 import com.github.elenterius.biomancy.init.ModBlockEntities;
+import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.block.entity.DecomposerBlockEntity;
 import com.github.elenterius.biomancy.world.block.entity.MachineBlockEntity;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -74,17 +75,17 @@ public class DecomposerBlock extends HorizontalFacingMachineBlock {
 
 	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, Random random) {
-		if (random.nextInt(4) == 0 && Boolean.TRUE.equals(state.getValue(CRAFTING))) {
-			int n = random.nextInt(5);
+		if (random.nextInt(5) == 0 && Boolean.TRUE.equals(state.getValue(CRAFTING))) {
+			int particleAmount = random.nextInt(1, 5);
 			int color = 0xc7b15d;
 			double r = (color >> 16 & 255) / 255d;
 			double g = (color >> 8 & 255) / 255d;
 			double b = (color & 255) / 255d;
-			for (int i = 0; i < n; i++) {
-				level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + 0.2d + random.nextFloat() - 0.2d, pos.getY() + 0.3d, pos.getZ() + 0.2d + random.nextFloat() - 0.2d, r, g, b);
+			for (int i = 0; i < particleAmount; i++) {
+				level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + 0.5d + random.nextFloat(-0.3f, 0.3f), pos.getY() + 0.75d, pos.getZ() + 0.5d + random.nextFloat(-0.3f, 0.3f), r, g, b);
 			}
-			if (n > 0 && random.nextInt(3) == 0) {
-				level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.TROPICAL_FISH_FLOP, SoundSource.BLOCKS, 0.2f + random.nextFloat() * 0.2f, 0.9f + random.nextFloat() * 0.15f, false);
+			if (random.nextInt(3) == 0) {
+				SoundUtil.playLocalBlockSound((ClientLevel) level, pos, ModSoundEvents.DECOMPOSER_CRAFTING_RANDOM);
 			}
 		}
 	}

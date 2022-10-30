@@ -2,10 +2,12 @@ package com.github.elenterius.biomancy.world.block.entity;
 
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModRecipes;
+import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.recipe.DecomposerRecipe;
 import com.github.elenterius.biomancy.recipe.RecipeTypeImpl;
 import com.github.elenterius.biomancy.recipe.VariableProductionOutput;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
+import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.util.fuel.FuelHandler;
 import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 import com.github.elenterius.biomancy.world.block.MachineBlock;
@@ -13,11 +15,15 @@ import com.github.elenterius.biomancy.world.block.entity.state.DecomposerStateDa
 import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.world.inventory.itemhandler.HandlerBehaviors;
 import com.github.elenterius.biomancy.world.inventory.menu.DecomposerMenu;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
@@ -28,9 +34,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -38,6 +45,7 @@ import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.SoundKeyframeEvent;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
@@ -129,21 +137,8 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 		return outputInventory.doAllItemsFit(precomputedResult.items);
 	}
 
-	@Override
-	protected boolean craftRecipe(DecomposerRecipe recipeToCraft, Level level) {
-		DecomposerRecipeResult precomputedResult = getComputedRecipeResult(recipeToCraft);
-
-		if (!outputInventory.doAllItemsFit(precomputedResult.items)) return false;
-
-		inputInventory.removeItem(0, recipeToCraft.getIngredientQuantity().count()); //consume input
-
-		for (ItemStack stack : precomputedResult.items) {
-			outputInventory.insertItemStack(stack);
-		}
-
-		setChanged();
-		return true;
-	}
+	@OnlyIn(Dist.CLIENT)
+	private SimpleSoundInstance loopingSoundInstance;
 
 	DecomposerRecipeResult getComputedRecipeResult(DecomposerRecipe craftingGoal) {
 		if (computedRecipeResult == null || !computedRecipeResult.recipeId.equals(craftingGoal.getId())) {
@@ -223,24 +218,85 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 		outputInventory.revive();
 	}
 
-	private <E extends BlockEntity & IAnimatable> PlayState handleIdleAnim(AnimationEvent<E> event) {
-		Boolean isCrafting = event.getAnimatable().getBlockState().getValue(MachineBlock.CRAFTING);
-		if (Boolean.TRUE.equals(isCrafting)) {
-			event.getController().setAnimation(new AnimationBuilder().loop("decomposer.anim.working"));
-		} else {
-			event.getController().setAnimation(new AnimationBuilder().loop("decomposer.anim.idle"));
+	@Override
+	protected boolean craftRecipe(DecomposerRecipe recipeToCraft, Level level) {
+		DecomposerRecipeResult precomputedResult = getComputedRecipeResult(recipeToCraft);
+
+		if (!outputInventory.doAllItemsFit(precomputedResult.items)) return false;
+
+		inputInventory.removeItem(0, recipeToCraft.getIngredientQuantity().count()); //consume input
+
+		for (ItemStack stack : precomputedResult.items) {  //output result
+			outputInventory.insertItemStack(stack);
 		}
+
+		SoundUtil.broadcastBlockSound((ServerLevel) level, getBlockPos(), ModSoundEvents.DECOMPOSER_CRAFTING_COMPLETED);
+
+		setChanged();
+		return true;
+	}
+
+	private <T extends DecomposerBlockEntity> PlayState onAnimation(final AnimationEvent<T> event) {
+		Boolean isCrafting = event.getAnimatable().getBlockState().getValue(MachineBlock.CRAFTING);
+
+		if (Boolean.TRUE.equals(isCrafting)) {
+			event.getController().setAnimation(new AnimationBuilder().loop("decomposer.working"));
+			playLoopingSound();
+		}
+		else {
+			event.getController().setAnimation(new AnimationBuilder().loop("decomposer.idle"));
+			stopLoopingSound();
+		}
+
 		return PlayState.CONTINUE;
+	}
+
+	private <T extends DecomposerBlockEntity> void onSoundKeyframe(final SoundKeyframeEvent<T> event) {
+		if (event.sound.equals("eat") && level != null && !isRemoved()) {
+			SoundUtil.playLocalBlockSound((ClientLevel) level, getBlockPos(), ModSoundEvents.DECOMPOSER_EAT);
+		}
 	}
 
 	@Override
 	public void registerControllers(AnimationData data) {
-		data.addAnimationController(new AnimationController<>(this, "controller", 10, this::handleIdleAnim));
+		AnimationController<DecomposerBlockEntity> controller = new AnimationController<>(this, "controller", 10, this::onAnimation);
+		controller.registerSoundListener(this::onSoundKeyframe);
+		data.addAnimationController(controller);
 	}
 
 	@Override
 	public AnimationFactory getFactory() {
 		return animationFactory;
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	private void stopLoopingSound() {
+		if (loopingSoundInstance != null) {
+			Minecraft.getInstance().getSoundManager().stop(loopingSoundInstance);
+			loopingSoundInstance = null;
+		}
+	}
+
+	private void removeLoopingSound() {
+		if (level != null && level.isClientSide) {
+			stopLoopingSound();
+		}
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	private void playLoopingSound() {
+		if (loopingSoundInstance == null && !isRemoved()) {
+			loopingSoundInstance = SoundUtil.createLoopingSoundInstance(ModSoundEvents.DECOMPOSER_CRAFTING, getBlockPos());
+			Minecraft.getInstance().getSoundManager().play(loopingSoundInstance);
+		}
+	}
+
+	@Override
+	public void setRemoved() {
+		if (level != null && level.isClientSide) {
+			removeLoopingSound();
+		}
+		super.setRemoved();
 	}
 
 	record DecomposerRecipeResult(ResourceLocation recipeId, int seed, List<ItemStack> items) {

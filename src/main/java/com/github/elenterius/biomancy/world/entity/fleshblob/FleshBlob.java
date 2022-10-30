@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.world.entity.fleshblob;
 
 import com.github.elenterius.biomancy.init.ModLoot;
+import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.world.entity.JumpMoveMob;
 import com.github.elenterius.biomancy.world.entity.MobUtil;
 import com.github.elenterius.biomancy.world.entity.ai.control.GenericJumpControl;
@@ -471,7 +472,7 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 
 	@Override
 	public SoundEvent getJumpSound() {
-		return SoundEvents.SLIME_JUMP;
+		return ModSoundEvents.FLESH_BLOB_JUMP.get();
 	}
 
 	public SoundEvent getImpactSound() {

@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.styles.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.HrTooltipComponent;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
+import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.entity.MobUtil;
 import com.github.elenterius.biomancy.world.inventory.InjectorItemInventory;
 import com.github.elenterius.biomancy.world.inventory.itemhandler.LargeSingleItemStackHandler;
@@ -97,7 +98,7 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 			if (entities.isEmpty()) return false;
 			LivingEntity target = entities.get(0);
 			if (target.isAlive() && dispenserAffectEntity(level, pos, serum, stack, injectorItem, target)) {
-				level.playSound(null, pos, ModSoundEvents.INJECT.get(), SoundSource.BLOCKS, 0.8f, 1f / (level.random.nextFloat() * 0.5f + 1f) + 0.2f);
+				level.playSound(null, pos, ModSoundEvents.INJECTOR_INJECT.get(), SoundSource.BLOCKS, 0.8f, 1f / (level.random.nextFloat() * 0.5f + 1f) + 0.2f);
 				level.levelEvent(LevelEvent.PARTICLES_DRAGON_BLOCK_BREAK, target.blockPosition(), 0);
 				return true;
 			}
@@ -132,7 +133,7 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 		Screen currScreen = Minecraft.getInstance().screen;
 		if (currScreen == null && Minecraft.getInstance().player != null) {
 			Minecraft.getInstance().setScreen(new InjectorScreen(hand));
-			Minecraft.getInstance().player.playNotifySound(SoundEvents.SHULKER_BOX_OPEN, SoundSource.PLAYERS, 0.5f, 1f);
+			Minecraft.getInstance().player.playNotifySound(ModSoundEvents.UI_RADIAL_MENU_OPEN.get(), SoundSource.PLAYERS, 1f, 1f);
 		}
 	}
 
@@ -199,7 +200,7 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 				return InteractionResultHolder.consume(stack);
 			}
 
-			ModSoundEvents.itemSFX(level, player, ModSoundEvents.ACTION_FAIL.get());
+			SoundUtil.playItemSoundEffect(level, player, ModSoundEvents.INJECTOR_FAIL);
 			return InteractionResultHolder.fail(stack);
 
 		}
@@ -229,7 +230,7 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 				copyOfStack.hurtAndBreak(2, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
 			}
 
-			if (player.level.isClientSide) ModSoundEvents.localItemSFX((ClientLevel) player.level, player, ModSoundEvents.ACTION_FAIL.get());
+			if (player.level.isClientSide) SoundUtil.playLocalItemSound((ClientLevel) player.level, player, ModSoundEvents.INJECTOR_FAIL.get());
 			return InteractionResult.FAIL;
 		}
 
@@ -425,7 +426,7 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 			LocalPlayer client = Minecraft.getInstance().player;
 			level.playSound(client,
 					soundOrigin.getX(), soundOrigin.getY(0.5f), soundOrigin.getZ(),
-					ModSoundEvents.INJECT.get(), SoundSource.PLAYERS,
+					ModSoundEvents.INJECTOR_INJECT.get(), SoundSource.PLAYERS,
 					0.8f,
 					1f / (level.random.nextFloat() * 0.5f + 1f) + 0.2f
 			);

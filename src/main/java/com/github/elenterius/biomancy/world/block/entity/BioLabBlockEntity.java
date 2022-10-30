@@ -2,10 +2,12 @@ package com.github.elenterius.biomancy.world.block.entity;
 
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModRecipes;
+import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.recipe.BioLabRecipe;
 import com.github.elenterius.biomancy.recipe.IngredientStack;
 import com.github.elenterius.biomancy.recipe.RecipeTypeImpl;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
+import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.util.fuel.FuelHandler;
 import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 import com.github.elenterius.biomancy.world.block.MachineBlock;
@@ -14,10 +16,13 @@ import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.world.inventory.SimpleInventory;
 import com.github.elenterius.biomancy.world.inventory.itemhandler.HandlerBehaviors;
 import com.github.elenterius.biomancy.world.inventory.menu.BioLabMenu;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -27,6 +32,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -114,50 +121,8 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 		return outputInventory.getItem(0).isEmpty() || outputInventory.doesItemStackFit(0, stackToCraft);
 	}
 
-	@Override
-	protected boolean craftRecipe(BioLabRecipe recipeToCraft, Level level) {
-		ItemStack result = recipeToCraft.getResultItem().copy();
-		if (result.isEmpty() || !doesRecipeResultFitIntoOutputInv(recipeToCraft, result)) {
-			return false;
-		}
-
-		//get ingredients cost
-		List<IngredientStack> ingredients = recipeToCraft.getIngredientQuantities();
-		int[] ingredientCost = new int[ingredients.size()];
-		for (int i = 0; i < ingredients.size(); i++) {
-			ingredientCost[i] = ingredients.get(i).count();
-		}
-
-		//check if we can output all container items
-		if (!canContainerItemsFitIntoTrashSlot(ingredients, Arrays.copyOf(ingredientCost, ingredientCost.length))) return false;
-
-		//consume reactant
-		final int lastIndex = inputInventory.getContainerSize() - 1;
-		inputInventory.removeItem(lastIndex, 1);
-
-		//consume ingredients
-		for (int idx = 0; idx < lastIndex; idx++) {
-			final ItemStack foundStack = inputInventory.getItem(idx); //do not modify this stack
-			if (!foundStack.isEmpty()) {
-				for (int i = 0; i < ingredients.size(); i++) {
-					int remainingCost = ingredientCost[i];
-					if (remainingCost > 0 && ingredients.get(i).testItem(foundStack)) {
-						int amount = Math.min(remainingCost, foundStack.getCount());
-						inputInventory.removeItem(idx, amount);
-						outputContainerItems(foundStack, amount);
-						ingredientCost[i] -= amount;
-						break;
-					}
-				}
-			}
-		}
-
-		//output result
-		outputInventory.insertItemStack(0, result);
-
-		setChanged();
-		return true;
-	}
+	@OnlyIn(Dist.CLIENT)
+	private SimpleSoundInstance loopingSoundInstance;
 
 	private boolean canContainerItemsFitIntoTrashSlot(List<IngredientStack> ingredients, int[] ingredientCost) {
 		int lastIndex = inputInventory.getContainerSize() - 1;
@@ -263,13 +228,63 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 		outputInventory.revive();
 	}
 
+	@Override
+	protected boolean craftRecipe(BioLabRecipe recipeToCraft, Level level) {
+		ItemStack result = recipeToCraft.getResultItem().copy();
+		if (result.isEmpty() || !doesRecipeResultFitIntoOutputInv(recipeToCraft, result)) {
+			return false;
+		}
+
+		//get ingredients cost
+		List<IngredientStack> ingredients = recipeToCraft.getIngredientQuantities();
+		int[] ingredientCost = new int[ingredients.size()];
+		for (int i = 0; i < ingredients.size(); i++) {
+			ingredientCost[i] = ingredients.get(i).count();
+		}
+
+		//check if we can output all container items
+		if (!canContainerItemsFitIntoTrashSlot(ingredients, Arrays.copyOf(ingredientCost, ingredientCost.length))) return false;
+
+		//consume reactant
+		final int lastIndex = inputInventory.getContainerSize() - 1;
+		inputInventory.removeItem(lastIndex, 1);
+
+		//consume ingredients
+		for (int idx = 0; idx < lastIndex; idx++) {
+			final ItemStack foundStack = inputInventory.getItem(idx); //do not modify this stack
+			if (!foundStack.isEmpty()) {
+				for (int i = 0; i < ingredients.size(); i++) {
+					int remainingCost = ingredientCost[i];
+					if (remainingCost > 0 && ingredients.get(i).testItem(foundStack)) {
+						int amount = Math.min(remainingCost, foundStack.getCount());
+						inputInventory.removeItem(idx, amount);
+						outputContainerItems(foundStack, amount);
+						ingredientCost[i] -= amount;
+						break;
+					}
+				}
+			}
+		}
+
+		//output result
+		outputInventory.insertItemStack(0, result);
+
+		SoundUtil.broadcastBlockSound((ServerLevel) level, getBlockPos(), ModSoundEvents.BIO_LAB_CRAFTING_COMPLETED);
+
+		setChanged();
+		return true;
+	}
+
 	private <E extends BlockEntity & IAnimatable> PlayState handleAnim(AnimationEvent<E> event) {
 		Boolean isCrafting = getBlockState().getValue(MachineBlock.CRAFTING);
 
 		if (Boolean.TRUE.equals(isCrafting)) {
 			event.getController().setAnimation(new AnimationBuilder().loop("bio_lab.working"));
-		} else {
+			playLoopingSound();
+		}
+		else {
 			event.getController().setAnimation(new AnimationBuilder().loop("bio_lab.idle"));
+			stopLoopingSound();
 		}
 
 		return PlayState.CONTINUE;
@@ -283,6 +298,36 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 	@Override
 	public AnimationFactory getFactory() {
 		return animationFactory;
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	private void stopLoopingSound() {
+		if (loopingSoundInstance != null) {
+			Minecraft.getInstance().getSoundManager().stop(loopingSoundInstance);
+			loopingSoundInstance = null;
+		}
+	}
+
+	private void removeLoopingSound() {
+		if (level != null && level.isClientSide) {
+			stopLoopingSound();
+		}
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	private void playLoopingSound() {
+		if (loopingSoundInstance == null && !isRemoved()) {
+			loopingSoundInstance = SoundUtil.createLoopingSoundInstance(ModSoundEvents.BIO_LAB_CRAFTING, getBlockPos());
+			Minecraft.getInstance().getSoundManager().play(loopingSoundInstance);
+		}
+	}
+
+	@Override
+	public void setRemoved() {
+		if (level != null && level.isClientSide) {
+			removeLoopingSound();
+		}
+		super.setRemoved();
 	}
 
 }

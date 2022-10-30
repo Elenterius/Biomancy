@@ -3,10 +3,12 @@ package com.github.elenterius.biomancy.world.block.entity;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModDamageSources;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
+import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.network.ISyncableAnimation;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.SacrificeHandler;
+import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.block.CreatorBlock;
 import com.github.elenterius.biomancy.world.entity.fleshblob.FleshBlob;
 import net.minecraft.Util;
@@ -18,7 +20,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
@@ -121,23 +122,22 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 		BlockPos pos = getBlockPos();
 		if (level.random.nextFloat() < sacrificeHandler.getSuccessChance()) {
 			spawnMob(level, pos, sacrificeHandler);
-			level.playSound(null, pos, SoundEvents.PLAYER_BURP, SoundSource.BLOCKS, 1f, level.random.nextFloat(0.25f, 0.75f));
+			SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CREATOR_SPAWN_MOB);
 			level.sendParticles(ParticleTypes.EXPLOSION, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, 1, 0, 0, 0, 0);
 		} else {
 			if (sacrificeHandler.getSuccessChance() > -9999) {
 				attackAOE(level, pos);
-				level.playSound(null, pos, SoundEvents.GOAT_SCREAMING_RAM_IMPACT, SoundSource.BLOCKS, 1f, 0.5f);
+				SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CREATOR_SPIKE_ATTACK);
 			} else {
 				if (level.canSeeSky(pos.above())) {
 					LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create(level);
 					if (lightningBolt != null) {
 						lightningBolt.moveTo(Vec3.atBottomCenterOf(pos));
-						if (level.addFreshEntity(lightningBolt)) {
-							level.playSound(null, pos, SoundEvents.TRIDENT_THUNDER, SoundSource.BLOCKS, 5f, 1f);
-						}
+						level.addFreshEntity(lightningBolt);
 					}
 				}
 
+				SoundUtil.broadcastBlockSound(level, pos, SoundEvents.TRIDENT_THUNDER, 5f, 0.9f);
 				level.players().forEach(player -> player.sendMessage(new TextComponent("How dare you do this... I am watching you!").withStyle(TextStyles.MAYKR_RUNES_RED), Util.NIL_UUID));
 			}
 		}

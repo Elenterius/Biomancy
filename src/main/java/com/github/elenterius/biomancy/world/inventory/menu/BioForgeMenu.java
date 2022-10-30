@@ -2,8 +2,10 @@ package com.github.elenterius.biomancy.world.inventory.menu;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
+import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.recipe.BioForgeRecipe;
 import com.github.elenterius.biomancy.recipe.IngredientStack;
+import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import com.github.elenterius.biomancy.world.block.entity.BioForgeBlockEntity;
 import com.github.elenterius.biomancy.world.block.entity.state.BioForgeStateData;
@@ -12,11 +14,13 @@ import com.github.elenterius.biomancy.world.inventory.slot.FuelSlot;
 import com.github.elenterius.biomancy.world.inventory.slot.ISlotZone;
 import com.github.elenterius.biomancy.world.inventory.slot.OutputSlot;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.StackedContents;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -49,12 +53,16 @@ public class BioForgeMenu extends PlayerContainerMenu {
 		addDataSlots(stateData);
 	}
 
+	private ContainerLevelAccess containerLevelAccess = ContainerLevelAccess.NULL; //only exists on the logical server side
+	private long prevSoundTime;
+
 	public BioForgeStateData getStateData() {
 		return stateData;
 	}
 
-	public static BioForgeMenu createServerMenu(int screenId, Inventory playerInventory, BehavioralInventory<?> fuelInventory, BioForgeStateData stateData) {
-		return new BioForgeMenu(screenId, playerInventory, fuelInventory, stateData);
+	public BioForgeMenu(int id, Inventory playerInventory, BehavioralInventory<?> fuelInventory, BioForgeStateData stateData, ContainerLevelAccess containerLevelAccess) {
+		this(id, playerInventory, fuelInventory, stateData);
+		this.containerLevelAccess = containerLevelAccess;
 	}
 
 	public static BioForgeMenu createClientMenu(int screenId, Inventory playerInventory, FriendlyByteBuf buffer) {
@@ -63,7 +71,8 @@ public class BioForgeMenu extends PlayerContainerMenu {
 		BioForgeStateData stateData;
 		if (playerInventory.player.level.getBlockEntity(buffer.readBlockPos()) instanceof BioForgeBlockEntity bioForge) {
 			stateData = bioForge.getStateData();
-		} else stateData = new BioForgeStateData();
+		}
+		else stateData = new BioForgeStateData();
 
 		return new BioForgeMenu(screenId, playerInventory, fuelInventory, stateData);
 	}
@@ -234,6 +243,10 @@ public class BioForgeMenu extends PlayerContainerMenu {
 
 	}
 
+	public static BioForgeMenu createServerMenu(int screenId, Inventory playerInventory, BehavioralInventory<?> fuelInventory, BioForgeStateData stateData, ContainerLevelAccess containerLevelAccess) {
+		return new BioForgeMenu(screenId, playerInventory, fuelInventory, stateData, containerLevelAccess);
+	}
+
 	private class CustomResultSlot extends OutputSlot {
 
 		private final Player player;
@@ -276,10 +289,20 @@ public class BioForgeMenu extends PlayerContainerMenu {
 				setChanged();
 				return;
 			}
+
 			BioForgeRecipe recipe = getSelectedRecipe();
 			if (recipe != null) consumeCraftingIngredients(player, recipe);
 			checkTakeAchievements(stack);
 			onPlayerMainInventoryChanged(player.getInventory()); //ensures the recipe output slot is filled again if possible, integral for quick crafting to work
+
+			containerLevelAccess.execute((level, pos) -> {
+				long time = level.getGameTime();
+				if (prevSoundTime != time) {
+					SoundUtil.broadcastBlockSound((ServerLevel) level, pos, ModSoundEvents.UI_BIO_FORGE_TAKE_RESULT);
+					prevSoundTime = time;
+				}
+			});
+
 			setChanged();
 		}
 

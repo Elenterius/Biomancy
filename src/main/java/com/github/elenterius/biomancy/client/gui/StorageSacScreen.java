@@ -1,6 +1,8 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.inventory.menu.StorageSacMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -20,6 +22,12 @@ public class StorageSacScreen extends AbstractContainerScreen<StorageSacMenu> {
 	public StorageSacScreen(StorageSacMenu menu, Inventory playerInventory, Component title) {
 		super(menu, playerInventory, title);
 		imageHeight = 170;
+	}
+
+	@Override
+	protected void init() {
+		super.init();
+		SoundUtil.playUISound(ModSoundEvents.UI_MENU_OPEN);
 	}
 
 	@Override

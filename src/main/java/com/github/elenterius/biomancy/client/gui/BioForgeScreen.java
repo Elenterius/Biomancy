@@ -2,22 +2,20 @@ package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.gui.component.CustomEditBox;
+import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.recipe.BioForgeRecipe;
 import com.github.elenterius.biomancy.recipe.IngredientStack;
 import com.github.elenterius.biomancy.styles.ColorStyles;
+import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.inventory.menu.BioForgeMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
@@ -45,10 +43,6 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 		imageHeight = 219;
 	}
 
-	private static void playUISound(SoundEvent soundEvent) {
-		Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(soundEvent, 1f));
-	}
-
 	@Override
 	protected void init() {
 		super.init();
@@ -61,6 +55,8 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 		recipeBook = new BioForgeScreenController(minecraft, menu);
 
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
+
+		SoundUtil.playUISound(ModSoundEvents.UI_MENU_OPEN);
 	}
 
 	@Override
@@ -96,7 +92,7 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 				int pX = leftPos + 13 + (20 + 5 - 2) * (i % BioForgeScreenController.COLS);
 				int pY = topPos + 37 + (20 + 5 - 2) * (i / BioForgeScreenController.COLS);
 				if (GuiUtil.isInRect(pX, pY, 24, 24, mouseX, mouseY)) {
-					playUISound(SoundEvents.UI_STONECUTTER_SELECT_RECIPE);
+					SoundUtil.playUISound(ModSoundEvents.UI_BIO_FORGE_SELECT_RECIPE);
 					recipeBook.setSelectedRecipe(i);
 					return true;
 				}
@@ -106,12 +102,12 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 				int x = leftPos + 60 + 1;
 				int y = topPos + 211 - font.lineHeight * 2 - 2;
 				if (recipeBook.hasPrevPage() && GuiUtil.isInRect(x - 22 - 8 - 1, y, 8, 13, mouseX, mouseY)) {
-					playUISound(SoundEvents.UI_BUTTON_CLICK);
+					SoundUtil.playUISound(ModSoundEvents.UI_BUTTON_CLICK);
 					recipeBook.goToPrevPage();
 					return true;
 				}
 				if (recipeBook.hasNextPage() && GuiUtil.isInRect(x + 22, y, 8, 13, mouseX, mouseY)) {
-					playUISound(SoundEvents.UI_BUTTON_CLICK);
+					SoundUtil.playUISound(ModSoundEvents.UI_BUTTON_CLICK);
 					recipeBook.goToNextPage();
 					return true;
 				}
@@ -124,7 +120,7 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 			int pX = leftPos - w;
 			int pY = topPos + 32 + h * i;
 			if (!recipeBook.isActiveTab(i) && GuiUtil.isInRect(pX, pY + 3, w, h - 3, mouseX, mouseY)) {
-				playUISound(SoundEvents.UI_BUTTON_CLICK);
+				SoundUtil.playUISound(ModSoundEvents.UI_BUTTON_CLICK);
 				recipeBook.setActiveTab(i);
 				return true;
 			}

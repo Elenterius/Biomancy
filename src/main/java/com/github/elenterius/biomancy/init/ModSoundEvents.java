@@ -1,13 +1,7 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -16,8 +10,9 @@ public final class ModSoundEvents {
 
 	public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, BiomancyMod.MOD_ID);
 
-	public static final RegistryObject<SoundEvent> INJECT = registerSoundEvent("inject");
-	public static final RegistryObject<SoundEvent> ACTION_FAIL = registerSoundEvent("action.fail");
+	//# Items
+	public static final RegistryObject<SoundEvent> INJECTOR_INJECT = registerSoundEvent("item.injector.inject");
+	public static final RegistryObject<SoundEvent> INJECTOR_FAIL = registerSoundEvent("item.injector.fail");
 
 	//# Blocks
 	public static final RegistryObject<SoundEvent> FLESH_BLOCK_PLACE = registerSoundEvent("flesh_block.place");
@@ -27,34 +22,45 @@ public final class ModSoundEvents {
 	public static final RegistryObject<SoundEvent> FLESH_BLOCK_FALL = registerSoundEvent("flesh_block.fall");
 	public static final RegistryObject<SoundEvent> FLESH_DOOR_OPEN = registerSoundEvent("flesh_door.open");
 	public static final RegistryObject<SoundEvent> FLESH_DOOR_CLOSE = registerSoundEvent("flesh_door.close");
+
+	//## Misc
 	public static final RegistryObject<SoundEvent> FLESHKIN_CHEST_OPEN = registerSoundEvent("fleshkin_chest.open");
 	public static final RegistryObject<SoundEvent> FLESHKIN_CHEST_CLOSE = registerSoundEvent("fleshkin_chest.close");
+	public static final RegistryObject<SoundEvent> FLESHKIN_CHEST_BITE_ATTACK = registerSoundEvent("fleshkin_chest.bite_attack");
+	public static final RegistryObject<SoundEvent> FLESHKIN_CHEST_NO = registerSoundEvent("fleshkin_chest.no");
+	public static final RegistryObject<SoundEvent> CREATOR_SPIKE_ATTACK = registerSoundEvent("creator.spike_attack");
+	public static final RegistryObject<SoundEvent> CREATOR_CRAFTING_RANDOM = registerSoundEvent("block.creator.crafting_random");
+	public static final RegistryObject<SoundEvent> CREATOR_SPAWN_MOB = registerSoundEvent("block.creator.spawn_mob");
+	public static final RegistryObject<SoundEvent> CREATOR_BECAME_FULL = registerSoundEvent("block.creator.became_full");
+	public static final RegistryObject<SoundEvent> CREATOR_EAT = registerSoundEvent("block.creator.eat");
+	public static final RegistryObject<SoundEvent> CREATOR_NO = registerSoundEvent("block.creator.no");
+
+	//## Crafting
+	public static final RegistryObject<SoundEvent> DECOMPOSER_CRAFTING = registerSoundEvent("block.decomposer.crafting");
+	public static final RegistryObject<SoundEvent> DECOMPOSER_EAT = registerSoundEvent("block.decomposer.eat");
+	public static final RegistryObject<SoundEvent> DECOMPOSER_CRAFTING_RANDOM = registerSoundEvent("block.decomposer.crafting_random");
+	public static final RegistryObject<SoundEvent> DECOMPOSER_CRAFTING_COMPLETED = registerSoundEvent("block.decomposer.crafting_completed");
+	public static final RegistryObject<SoundEvent> DIGESTER_CRAFTING = registerSoundEvent("block.digester.crafting");
+	public static final RegistryObject<SoundEvent> DIGESTER_CRAFTING_RANDOM = registerSoundEvent("block.digester.crafting_random");
+	public static final RegistryObject<SoundEvent> DIGESTER_CRAFTING_COMPLETED = registerSoundEvent("block.digester.crafting_completed");
+	public static final RegistryObject<SoundEvent> BIO_LAB_CRAFTING = registerSoundEvent("block.bio_lab.crafting");
+	public static final RegistryObject<SoundEvent> BIO_LAB_CRAFTING_RANDOM = registerSoundEvent("block.bio_lab.crafting_random");
+	public static final RegistryObject<SoundEvent> BIO_LAB_CRAFTING_COMPLETED = registerSoundEvent("block.bio_lab.crafting_completed");
+
+	//# UI
+	public static final RegistryObject<SoundEvent> UI_BUTTON_CLICK = registerSoundEvent("ui.button.click");
+	public static final RegistryObject<SoundEvent> UI_MENU_OPEN = registerSoundEvent("ui.menu.open");
+	public static final RegistryObject<SoundEvent> UI_RADIAL_MENU_OPEN = registerSoundEvent("ui.radial_menu.open");
+	public static final RegistryObject<SoundEvent> UI_BIO_FORGE_SELECT_RECIPE = registerSoundEvent("ui.bio_forge.select_recipe");
+	public static final RegistryObject<SoundEvent> UI_BIO_FORGE_TAKE_RESULT = registerSoundEvent("ui.bio_forge.take_result");
+
+	//# Mobs
+	public static final RegistryObject<SoundEvent> FLESH_BLOB_JUMP = registerSoundEvent("entity.flesh_blob.jump");
 
 	private ModSoundEvents() {}
 
 	private static RegistryObject<SoundEvent> registerSoundEvent(String name) {
 		return SOUND_EVENTS.register(name, () -> new SoundEvent(BiomancyMod.createRL(name)));
-	}
-
-	public static void itemSFX(Level level, LivingEntity itemHolder, SoundEvent soundEvent) {
-		if (level instanceof ClientLevel clientLevel) {
-			localItemSFX(clientLevel, itemHolder, soundEvent);
-		}
-		else if (level instanceof ServerLevel serverLevel) {
-			broadcastItemSFX(serverLevel, itemHolder, soundEvent);
-		}
-	}
-
-	public static void localItemSFX(ClientLevel level, LivingEntity itemHolder, SoundEvent soundEvent) {
-		SoundSource soundSource = itemHolder instanceof Player ? SoundSource.PLAYERS : SoundSource.HOSTILE;
-		float pitch = 1f / (level.random.nextFloat() * 0.5f + 1f) + 0.2f;
-		level.playSound(itemHolder instanceof Player player ? player : null, itemHolder.getX(), itemHolder.getY(0.5f), itemHolder.getZ(), soundEvent, soundSource, 0.8f, pitch);
-	}
-
-	public static void broadcastItemSFX(ServerLevel level, LivingEntity itemHolder, SoundEvent soundEvent) {
-		SoundSource soundSource = itemHolder instanceof Player ? SoundSource.PLAYERS : SoundSource.HOSTILE;
-		float pitch = 1f / (level.random.nextFloat() * 0.5f + 1f) + 0.2f;
-		level.playSound(null, itemHolder.getX(), itemHolder.getY(0.5f), itemHolder.getZ(), soundEvent, soundSource, 0.8f, pitch);
 	}
 
 }

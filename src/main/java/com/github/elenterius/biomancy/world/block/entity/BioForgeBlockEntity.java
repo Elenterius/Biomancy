@@ -24,6 +24,7 @@ import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -134,7 +135,7 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 	@Nullable
 	@Override
 	public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
-		return BioForgeMenu.createServerMenu(containerId, playerInventory, fuelInventory, stateData);
+		return BioForgeMenu.createServerMenu(containerId, playerInventory, fuelInventory, stateData, ContainerLevelAccess.create(level, getBlockPos()));
 	}
 
 	public BioForgeStateData getStateData() {
@@ -264,7 +265,7 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 		if (playWorkingAnimation) return;
 
 		BlockPos pos = getBlockPos();
-		Player player = level.getNearestPlayer(pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, 3d, false);
+		Player player = level.getNearestPlayer(pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, 4.5d, false);
 		nearbyTimer = Mth.clamp(nearbyTimer + (player != null ? 0.1f : -0.1f), -1f, 1f);
 	}
 

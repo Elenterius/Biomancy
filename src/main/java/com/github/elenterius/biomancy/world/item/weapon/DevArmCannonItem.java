@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.world.item.weapon;
 import com.github.elenterius.biomancy.client.gui.DevCannonScreen;
 import com.github.elenterius.biomancy.client.renderer.item.DevArmCannonRenderer;
 import com.github.elenterius.biomancy.init.ModProjectiles;
+import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.styles.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.HrTooltipComponent;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
@@ -19,7 +20,6 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -100,7 +100,7 @@ public class DevArmCannonItem extends Item implements IAnimatable, IArmPoseProvi
 		Screen currScreen = Minecraft.getInstance().screen;
 		if (currScreen == null && Minecraft.getInstance().player != null) {
 			Minecraft.getInstance().setScreen(new DevCannonScreen(hand));
-			Minecraft.getInstance().player.playNotifySound(SoundEvents.SHULKER_BOX_OPEN, SoundSource.PLAYERS, 0.5f, 1f);
+			Minecraft.getInstance().player.playNotifySound(ModSoundEvents.UI_RADIAL_MENU_OPEN.get(), SoundSource.PLAYERS, 1f, 1f);
 		}
 	}
 

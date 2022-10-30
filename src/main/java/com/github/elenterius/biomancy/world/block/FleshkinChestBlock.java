@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.world.block;
 
 import com.github.elenterius.biomancy.init.ModBlockEntities;
+import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.styles.ClientTextUtil;
 import com.github.elenterius.biomancy.world.block.entity.FleshkinChestBlockEntity;
 import com.github.elenterius.biomancy.world.ownable.IOwnableEntityBlock;
@@ -20,7 +21,6 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.InteractionHand;
@@ -77,7 +77,7 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 		super.fillItemCategory(tab, items);
 
 		ItemStack stack = new ItemStack(this);
-		stack.setHoverName(new TextComponent("[test/nil_owner] ").append(stack.getHoverName()));
+		stack.setHoverName(new TextComponent("[TEST/other_owner] ").append(stack.getHoverName()));
 		CompoundTag tag = new CompoundTag();
 		tag.putUUID(IOwnableEntityBlock.NBT_KEY_OWNER, Util.NIL_UUID);
 		BlockItem.setBlockEntityData(stack, ModBlockEntities.FLESHKIN_CHEST.get(), tag);
@@ -143,12 +143,12 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 				else {
 					if (level.random.nextFloat() < 0.6f) {
 						chest.attack(state.getValue(FACING), player);
-						level.playSound(null, pos, SoundEvents.GOAT_SCREAMING_RAM_IMPACT, SoundSource.BLOCKS, 1f, 0.5f);
+						level.playSound(null, pos, ModSoundEvents.FLESHKIN_CHEST_BITE_ATTACK.get(), SoundSource.BLOCKS, 1f, level.random.nextFloat() * 0.1f + 0.9f);
 					}
 					else {
 						int particleCount = level.random.nextInt(1, 3);
 						((ServerLevel) level).sendParticles(ParticleTypes.ANGRY_VILLAGER, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, particleCount, 0.5d, 0.25d, 0.5d, 0);
-						level.playSound(null, pos, SoundEvents.VILLAGER_NO, SoundSource.BLOCKS, 0.75f, level.random.nextFloat(0.15f, 0.45f));
+						level.playSound(null, pos, ModSoundEvents.FLESHKIN_CHEST_NO.get(), SoundSource.BLOCKS, 1f, level.random.nextFloat() * 0.1f + 0.9f);
 					}
 				}
 			}

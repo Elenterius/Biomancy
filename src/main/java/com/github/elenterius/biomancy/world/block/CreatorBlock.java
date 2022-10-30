@@ -1,11 +1,14 @@
 package com.github.elenterius.biomancy.world.block;
 
 import com.github.elenterius.biomancy.init.ModBlockEntities;
+import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.block.entity.CreatorBlockEntity;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -93,7 +96,9 @@ public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBl
 		if (increaseFillLevel(player, level, pos, stackInHand)) {
 			return InteractionResult.SUCCESS;
 		}
-		level.playSound(null, pos, SoundEvents.VILLAGER_NO, SoundSource.BLOCKS, 0.75f, level.random.nextFloat(0.15f, 0.45f));
+		if (!level.isClientSide) {
+			SoundUtil.broadcastBlockSound((ServerLevel) level, pos, ModSoundEvents.CREATOR_NO);
+		}
 		return InteractionResult.CONSUME;
 	}
 
@@ -111,20 +116,12 @@ public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBl
 			BlockEntity blockEntity = level.getBlockEntity(pos);
 			if (blockEntity instanceof CreatorBlockEntity creator && !creator.isFull() && creator.insertItem(ItemHandlerHelper.copyStackWithSize(stack, 1))) {
 				if (player == null || !player.isCreative()) stack.shrink(1);
-				level.playSound(null, pos, creator.isFull() ? SoundEvents.PLAYER_BURP : SoundEvents.GOAT_SCREAMING_EAT, SoundSource.BLOCKS, 1f, level.random.nextFloat(0.25f, 0.5f));
+				SoundEvent soundEvent = creator.isFull() ? ModSoundEvents.CREATOR_BECAME_FULL.get() : ModSoundEvents.CREATOR_EAT.get();
+				SoundUtil.broadcastBlockSound((ServerLevel) level, pos, soundEvent);
 				return true;
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public void animateTick(BlockState state, Level level, BlockPos pos, Random random) {
-		if (random.nextInt(4) == 0 && level.getBlockEntity(pos) instanceof CreatorBlockEntity creator && creator.isFull()) {
-			for (int i = 0; i < random.nextInt(2, 8); i++) {
-				level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + 0.13125f + 0.7375f * random.nextFloat(), pos.getY() + 0.5f, pos.getZ() + 0.13125f + 0.7375f * random.nextFloat(), 1.8f, 1.4f, 1.4f);
-			}
-		}
 	}
 
 	@Override
@@ -135,6 +132,23 @@ public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBl
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
 		return AABB;
+	}
+
+	@Override
+	public void animateTick(BlockState state, Level level, BlockPos pos, Random random) {
+		if (random.nextInt(4) == 0 && level.getBlockEntity(pos) instanceof CreatorBlockEntity creator && creator.isFull()) {
+			int particleAmount = random.nextInt(2, 8);
+			int color = 0x9f4576; //magenta haze
+			double r = (color >> 16 & 255) / 255d;
+			double g = (color >> 8 & 255) / 255d;
+			double b = (color & 255) / 255d;
+			for (int i = 0; i < particleAmount; i++) {
+				level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + random.nextFloat(0.13125f, 0.7375f), pos.getY() + 0.5f, pos.getZ() + random.nextFloat(0.13125f, 0.7375f), r, g, b);
+			}
+			if (random.nextInt(3) == 0) {
+				SoundUtil.playLocalBlockSound((ClientLevel) level, pos, ModSoundEvents.CREATOR_CRAFTING_RANDOM);
+			}
+		}
 	}
 
 }

@@ -2,9 +2,11 @@ package com.github.elenterius.biomancy.world.block.entity;
 
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModRecipes;
+import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.recipe.DigesterRecipe;
 import com.github.elenterius.biomancy.recipe.RecipeTypeImpl;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
+import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.util.fuel.FuelHandler;
 import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 import com.github.elenterius.biomancy.world.block.MachineBlock;
@@ -12,10 +14,13 @@ import com.github.elenterius.biomancy.world.block.entity.state.DigesterStateData
 import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.world.inventory.itemhandler.HandlerBehaviors;
 import com.github.elenterius.biomancy.world.inventory.menu.DigesterMenu;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -26,6 +31,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -116,17 +123,8 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 		return outputInventory.doesItemStackFit(stackToCraft);
 	}
 
-	@Override
-	protected boolean craftRecipe(DigesterRecipe recipeToCraft, Level level) {
-		ItemStack result = recipeToCraft.assemble(inputInventory);
-		if (!result.isEmpty() && doesRecipeResultFitIntoOutputInv(recipeToCraft, result)) {
-			inputInventory.removeItem(0, 1);
-			outputInventory.insertItemStack(result);
-			setChanged();
-			return true;
-		}
-		return false;
-	}
+	@OnlyIn(Dist.CLIENT)
+	private SimpleSoundInstance loopingSoundInstance;
 
 	@Override
 	protected @Nullable DigesterRecipe resolveRecipeFromInput(Level level) {
@@ -192,13 +190,31 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 		outputInventory.revive();
 	}
 
-	private <E extends BlockEntity & IAnimatable> PlayState handleIdleAnim(AnimationEvent<E> event) {
+	@Override
+	protected boolean craftRecipe(DigesterRecipe recipeToCraft, Level level) {
+		ItemStack result = recipeToCraft.assemble(inputInventory);
+		if (!result.isEmpty() && doesRecipeResultFitIntoOutputInv(recipeToCraft, result)) {
+			inputInventory.removeItem(0, 1); //consume input
+			outputInventory.insertItemStack(result); //output result
+
+			SoundUtil.broadcastBlockSound((ServerLevel) level, getBlockPos(), ModSoundEvents.DIGESTER_CRAFTING_COMPLETED);
+
+			setChanged();
+			return true;
+		}
+		return false;
+	}
+
+	private <E extends BlockEntity & IAnimatable> PlayState handleAnim(AnimationEvent<E> event) {
 		Boolean isCrafting = getBlockState().getValue(MachineBlock.CRAFTING);
 
 		if (Boolean.TRUE.equals(isCrafting)) {
 			event.getController().setAnimation(new AnimationBuilder().loop("digester.working"));
-		} else {
+			playLoopingSound();
+		}
+		else {
 			event.getController().setAnimation(new AnimationBuilder().loop("digester.idle"));
+			stopLoopingSound();
 		}
 
 		return PlayState.CONTINUE;
@@ -206,12 +222,42 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 
 	@Override
 	public void registerControllers(AnimationData data) {
-		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::handleIdleAnim));
+		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::handleAnim));
 	}
 
 	@Override
 	public AnimationFactory getFactory() {
 		return animationFactory;
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	private void stopLoopingSound() {
+		if (loopingSoundInstance != null) {
+			Minecraft.getInstance().getSoundManager().stop(loopingSoundInstance);
+			loopingSoundInstance = null;
+		}
+	}
+
+	private void removeLoopingSound() {
+		if (level != null && level.isClientSide) {
+			stopLoopingSound();
+		}
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	private void playLoopingSound() {
+		if (loopingSoundInstance == null && !isRemoved()) {
+			loopingSoundInstance = SoundUtil.createLoopingSoundInstance(ModSoundEvents.DIGESTER_CRAFTING, getBlockPos());
+			Minecraft.getInstance().getSoundManager().play(loopingSoundInstance);
+		}
+	}
+
+	@Override
+	public void setRemoved() {
+		if (level != null && level.isClientSide) {
+			removeLoopingSound();
+		}
+		super.setRemoved();
 	}
 
 }

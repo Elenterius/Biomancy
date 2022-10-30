@@ -8,6 +8,7 @@ import com.github.elenterius.biomancy.styles.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.HrTooltipComponent;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.MobSoundUtil;
+import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.entity.MobUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -51,7 +52,7 @@ public class BioExtractorItem extends Item implements IKeyListener, IBiomancyIte
 	public static boolean tryExtractEssence(ServerLevel level, BlockPos pos, ItemStack stack) {
 		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos), EntitySelector.NO_SPECTATORS);
 		if (!entities.isEmpty() && extractEssence(stack, null, entities.get(0))) {
-			level.playSound(null, pos, ModSoundEvents.INJECT.get(), SoundSource.BLOCKS, 0.8f, 1f / (level.random.nextFloat() * 0.5f + 1f) + 0.2f);
+			level.playSound(null, pos, ModSoundEvents.INJECTOR_INJECT.get(), SoundSource.BLOCKS, 0.8f, 1f / (level.random.nextFloat() * 0.5f + 1f) + 0.2f);
 			return true;
 		}
 		return false;
@@ -97,7 +98,7 @@ public class BioExtractorItem extends Item implements IKeyListener, IBiomancyIte
 	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, ClientLevel level, Player player, EquipmentSlot slot, byte flags) {
 		//TODO: add cooldown?
 		if (!interactWithPlayerSelf(stack, player)) {
-			ModSoundEvents.localItemSFX(level, player, ModSoundEvents.ACTION_FAIL.get());
+			SoundUtil.playLocalItemSound(level, player, ModSoundEvents.INJECTOR_FAIL.get());
 			return InteractionResultHolder.fail(flags); //don't send button press to server
 		}
 		return InteractionResultHolder.success(flags);
@@ -105,14 +106,14 @@ public class BioExtractorItem extends Item implements IKeyListener, IBiomancyIte
 
 	@Override
 	public void onServerReceiveKeyPress(ItemStack stack, ServerLevel level, Player player, byte flags) {
-		ModSoundEvents.broadcastItemSFX(level, player, interactWithPlayerSelf(stack, player) ? ModSoundEvents.INJECT.get() : ModSoundEvents.ACTION_FAIL.get());
+		SoundUtil.broadcastItemSound(level, player, interactWithPlayerSelf(stack, player) ? ModSoundEvents.INJECTOR_INJECT.get() : ModSoundEvents.INJECTOR_FAIL.get());
 	}
 
 	@Override
 	public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity interactionTarget, InteractionHand usedHand) {
 		//the device is empty
 		if (interactionTarget.level instanceof ServerLevel serverLevel && extractEssence(stack, player, interactionTarget)) {
-			ModSoundEvents.broadcastItemSFX(serverLevel, player, ModSoundEvents.INJECT.get());
+			SoundUtil.broadcastItemSound(serverLevel, player, ModSoundEvents.INJECTOR_INJECT.get());
 
 			//fix for creative mode (normally the stack is not modified in creative)
 			if (player.isCreative()) player.setItemInHand(usedHand, stack);

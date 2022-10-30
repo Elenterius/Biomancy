@@ -21,20 +21,51 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 
 	@Override
 	public void registerSounds() {
-		addSimpleSound(ModSoundEvents.INJECT);
-		addSimpleRedirect(ModSoundEvents.ACTION_FAIL, SoundEvents.DISPENSER_FAIL);
+		addSimpleSound(ModSoundEvents.INJECTOR_INJECT);
+		addSimpleRedirect(ModSoundEvents.INJECTOR_FAIL, SoundEvents.DISPENSER_FAIL);
 
 		addSimpleSounds(ModSoundEvents.FLESH_BLOCK_HIT, 4);
 		addSimpleSounds(ModSoundEvents.FLESH_BLOCK_PLACE, 2);
 		addSimpleSounds(ModSoundEvents.FLESH_BLOCK_STEP, 4);
 		addSimpleSounds(ModSoundEvents.FLESH_BLOCK_BREAK, 4);
-        addSimpleSounds(ModSoundEvents.FLESH_BLOCK_FALL, 3);
+		addSimpleSounds(ModSoundEvents.FLESH_BLOCK_FALL, 3);
 
 		addSimpleSounds(ModSoundEvents.FLESH_DOOR_OPEN, 2);
-        addSimpleSounds(ModSoundEvents.FLESH_DOOR_CLOSE, 2);
+		addSimpleSounds(ModSoundEvents.FLESH_DOOR_CLOSE, 2);
 
 		addSimpleSounds(ModSoundEvents.FLESHKIN_CHEST_OPEN, 2);
 		addSimpleSounds(ModSoundEvents.FLESHKIN_CHEST_CLOSE, 2);
+		addSimpleRedirect(ModSoundEvents.FLESHKIN_CHEST_BITE_ATTACK, SoundEvents.GOAT_SCREAMING_RAM_IMPACT, 1f, 0.5f);
+		addSimpleRedirect(ModSoundEvents.FLESHKIN_CHEST_NO, SoundEvents.VILLAGER_NO, 0.75f, 0.3f);
+
+		addSimpleRedirect(ModSoundEvents.CREATOR_SPIKE_ATTACK, SoundEvents.GOAT_SCREAMING_RAM_IMPACT, 1f, 0.5f);
+		addSimpleRedirect(ModSoundEvents.CREATOR_CRAFTING_RANDOM, SoundEvents.PLAYER_BURP, 1f, 0.5f);
+		addSimpleRedirect(ModSoundEvents.CREATOR_SPAWN_MOB, SoundEvents.PLAYER_BURP, 1f, 0.5f);
+		addSimpleRedirect(ModSoundEvents.CREATOR_BECAME_FULL, SoundEvents.PLAYER_BURP, 1f, 0.25f);
+		addSimpleRedirect(ModSoundEvents.CREATOR_EAT, SoundEvents.GOAT_SCREAMING_EAT, 1f, 0.25f);
+		addSimpleRedirect(ModSoundEvents.CREATOR_NO, SoundEvents.VILLAGER_NO, 0.75f, 0.3f);
+
+		addSimpleRedirect(ModSoundEvents.UI_BUTTON_CLICK, SoundEvents.UI_BUTTON_CLICK);
+		addSimpleSound(ModSoundEvents.UI_MENU_OPEN);
+		addSimpleRedirect(ModSoundEvents.UI_RADIAL_MENU_OPEN, SoundEvents.SHULKER_BOX_OPEN, 0.5f, 1f);
+
+		addSimpleRedirect(ModSoundEvents.UI_BIO_FORGE_SELECT_RECIPE, SoundEvents.UI_STONECUTTER_SELECT_RECIPE);
+		addSimpleRedirect(ModSoundEvents.UI_BIO_FORGE_TAKE_RESULT, SoundEvents.PLAYER_BURP, 1f, 1.25f);
+
+		addSimpleSound(ModSoundEvents.DECOMPOSER_CRAFTING);
+		addSimpleRedirect(ModSoundEvents.DECOMPOSER_EAT, SoundEvents.GENERIC_EAT, 1f, 0.5f);
+		addSimpleRedirect(ModSoundEvents.DECOMPOSER_CRAFTING_RANDOM, SoundEvents.PLAYER_BURP, 0.9f, 0.5f);
+		addSimpleRedirect(ModSoundEvents.DECOMPOSER_CRAFTING_COMPLETED, SoundEvents.PLAYER_BURP, 1f, 1.5f);
+
+		addSimpleSound(ModSoundEvents.BIO_LAB_CRAFTING);
+		addSimpleRedirect(ModSoundEvents.BIO_LAB_CRAFTING_RANDOM, SoundEvents.BREWING_STAND_BREW, 0.9f, 0.5f);
+		addSimpleRedirect(ModSoundEvents.BIO_LAB_CRAFTING_COMPLETED, SoundEvents.WITCH_DRINK);
+
+		addSimpleSound(ModSoundEvents.DIGESTER_CRAFTING);
+		addSimpleRedirect(ModSoundEvents.DIGESTER_CRAFTING_RANDOM, SoundEvents.PLAYER_BURP, 0.9f, 0.5f);
+		addSimpleRedirect(ModSoundEvents.DIGESTER_CRAFTING_COMPLETED, SoundEvents.PLAYER_BURP, 1f, 1.25f);
+
+		addSimpleRedirect(ModSoundEvents.FLESH_BLOB_JUMP, SoundEvents.SLIME_JUMP);
 	}
 
 	public String translationKey(RegistryObject<SoundEvent> soundHolder) {
@@ -78,6 +109,13 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 		add(soundHolder, definition()
 				.subtitle(translationKey(soundHolder))
 				.with(sound(redirectTarget.getLocation(), SoundDefinition.SoundType.EVENT))
+		);
+	}
+
+	protected void addSimpleRedirect(RegistryObject<SoundEvent> soundHolder, SoundEvent redirectTarget, float volume, float pitch) {
+		add(soundHolder, definition()
+				.subtitle(translationKey(soundHolder))
+				.with(sound(redirectTarget.getLocation(), SoundDefinition.SoundType.EVENT).volume(volume).pitch(pitch))
 		);
 	}
 
