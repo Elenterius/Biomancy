@@ -66,17 +66,21 @@ public class DespoilMobLootModifier extends LootModifier {
 		boolean hasClaws = type.is(ModTags.EntityTypes.SHARP_CLAW);
 		boolean hasToxinGland = type.is(ModTags.EntityTypes.VENOM_GLAND);
 		boolean hasVolatileGland = type.is(ModTags.EntityTypes.VOLATILE_GLAND);
-		boolean isWithered = MobUtil.isWithered(livingEntity);
+		boolean isWithered = MobUtil.isWithered(livingEntity); //type of mob
 		boolean isSkeleton = MobUtil.isSkeleton(livingEntity);
 
 		if (hasFangs) builder.add(SHARP_FANG, weights.fang);
 		if (hasClaws) builder.add(SHARP_CLAW, weights.claw);
 		if (hasToxinGland) builder.add(TOXIN_GLAND, weights.toxinGland);
 		if (hasVolatileGland) builder.add(VOLATILE_GLAND, weights.volatileGland);
-		if (!hasToxinGland && !hasVolatileGland) builder.add(GENERIC_GLAND, weights.genericGland);
-		if (isWithered) builder.add(WITHERED_BONE_MARROW, weights.witheredBoneMarrow);
-		if (!isWithered && isSkeleton) builder.add(BONE_MARROW, weights.boneMarrow);
-		if (!isWithered && !isSkeleton) builder.add(SINEW, weights.sinew);
+
+		if (!isSkeleton) {
+			if (!hasToxinGland && !hasVolatileGland) builder.add(GENERIC_GLAND, weights.genericGland);
+			if (!isWithered) builder.add(SINEW, weights.sinew);
+		}
+
+		if (isSkeleton && !isWithered) builder.add(BONE_MARROW, weights.boneMarrow);
+		if (isWithered) builder.add(WITHERED_BONE_MARROW, weights.witheredBoneMarrow);  //includes wither boss & wither skeletons
 
 		return builder.build();
 	}
