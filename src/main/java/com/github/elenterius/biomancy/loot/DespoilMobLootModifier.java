@@ -48,8 +48,9 @@ public class DespoilMobLootModifier extends LootModifier {
 	private final Weights weights;
 
 	public DespoilMobLootModifier() {
-		this(new Weights(90, 90, 65, 50, 75, 65, 50, 75),
-				//Can't use MatchTool, since the tool is missing for Entity Kills
+		this(new Weights(90, 90, 75, 50, 45, 65, 45, 80),
+				//Can't use MatchTool, because the tool is missing for Entity Kills
+				//only apply the loot modifier to adult mobs killed by a player
 				LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().flags(EntityFlagsPredicate.Builder.flags().setIsBaby(false).build())).build(), LootItemKilledByPlayerCondition.killedByPlayer().build());
 	}
 
@@ -89,13 +90,17 @@ public class DespoilMobLootModifier extends LootModifier {
 	@Override
 	protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
 		if (context.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof LivingEntity victim) {
-			int despoilLevel = getDespoilLevel(context);
 			Random random = context.getRandom();
-			SimpleWeightedRandomList<ItemLoot> lootTable = buildLootTable(victim);
+			int despoilLevel = getDespoilLevel(context);
 			int lootingLevel = context.getLootingModifier();
-			int extraRolls = despoilLevel > 0 ? Mth.nextInt(random, 1, despoilLevel + 1) : 0;
-			for (int lootRolls = 1 + extraRolls; lootRolls > 0; lootRolls--) {
-				lootTable.getRandomValue(random).ifPresent(itemLoot -> generatedLoot.add(itemLoot.getItemStack(random, lootingLevel)));
+
+			float chance = 0.25f + despoilLevel * 0.25f;
+			if (random.nextFloat() < chance) {
+				SimpleWeightedRandomList<ItemLoot> lootTable = buildLootTable(victim);
+				int diceRolls = Mth.nextInt(random, 1, despoilLevel + 1);
+				for (; diceRolls > 0; diceRolls--) {
+					lootTable.getRandomValue(random).ifPresent(itemLoot -> generatedLoot.add(itemLoot.getItemStack(random, lootingLevel)));
+				}
 			}
 		}
 		return generatedLoot;
@@ -115,7 +120,16 @@ public class DespoilMobLootModifier extends LootModifier {
 
 	record Weights(int fang, int claw, int toxinGland, int volatileGland, int genericGland, int witheredBoneMarrow, int boneMarrow, int sinew) {
 		public static Weights fromJson(JsonObject jsonObject) {
-			return new Weights(GsonHelper.getAsInt(jsonObject, getName(ModItems.MOB_FANG)), GsonHelper.getAsInt(jsonObject, getName(ModItems.MOB_CLAW)), GsonHelper.getAsInt(jsonObject, getName(ModItems.TOXIN_GLAND)), GsonHelper.getAsInt(jsonObject, getName(ModItems.VOLATILE_GLAND)), GsonHelper.getAsInt(jsonObject, getName(ModItems.GENERIC_MOB_GLAND)), GsonHelper.getAsInt(jsonObject, getName(ModItems.WITHERED_MOB_MARROW)), GsonHelper.getAsInt(jsonObject, getName(ModItems.MOB_MARROW)), GsonHelper.getAsInt(jsonObject, getName(ModItems.MOB_SINEW)));
+			return new Weights(
+					GsonHelper.getAsInt(jsonObject, getName(ModItems.MOB_FANG)),
+					GsonHelper.getAsInt(jsonObject, getName(ModItems.MOB_CLAW)),
+					GsonHelper.getAsInt(jsonObject, getName(ModItems.TOXIN_GLAND)),
+					GsonHelper.getAsInt(jsonObject, getName(ModItems.VOLATILE_GLAND)),
+					GsonHelper.getAsInt(jsonObject, getName(ModItems.GENERIC_MOB_GLAND)),
+					GsonHelper.getAsInt(jsonObject, getName(ModItems.WITHERED_MOB_MARROW)),
+					GsonHelper.getAsInt(jsonObject, getName(ModItems.MOB_MARROW)),
+					GsonHelper.getAsInt(jsonObject, getName(ModItems.MOB_SINEW))
+			);
 		}
 
 		public JsonObject toJson() {
