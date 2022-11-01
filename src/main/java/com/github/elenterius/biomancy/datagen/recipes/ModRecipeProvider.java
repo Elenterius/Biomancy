@@ -153,7 +153,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
 				.save(consumer);
 
-		ShapedRecipeBuilder.shaped(ModItems.NUTRIENT_PASTE.get())
+		WorkbenchRecipeBuilder.shaped(ModItems.NUTRIENT_PASTE.get())
 				.define('P', ModItems.ORGANIC_MATTER.get())
 				.define('L', ModItems.NUTRIENTS.get())
 				.pattern("LPL")
@@ -170,31 +170,38 @@ public class ModRecipeProvider extends RecipeProvider {
 				.unlockedBy(hasName(ModItems.STONE_POWDER.get()), has(ModItems.STONE_POWDER.get()))
 				.save(consumer, getConversionRecipeId(Items.DIORITE, ModItems.STONE_POWDER.get()));
 
-		ShapelessRecipeBuilder.shapeless(Items.RED_SAND)
+		WorkbenchRecipeBuilder.shapeless(Items.RED_SAND)
 				.requires(Items.SAND)
 				.requires(ModItems.MINERAL_FRAGMENT.get(), 2)
 				.unlockedBy(hasName(ModItems.MINERAL_FRAGMENT.get()), has(ModItems.MINERAL_FRAGMENT.get()))
 				.save(consumer, getConversionRecipeId(Items.RED_SAND, ModItems.MINERAL_FRAGMENT.get()));
 
-		ShapedRecipeBuilder.shaped(Items.DIRT)
+		WorkbenchRecipeBuilder.shaped(Items.DIRT)
 				.define('P', ModItems.ORGANIC_MATTER.get())
 				.define('L', ModItems.STONE_POWDER.get())
 				.pattern("LPL").pattern("PLP").pattern("LPL")
 				.unlockedBy(hasName(ModItems.ORGANIC_MATTER.get()), has(ModItems.ORGANIC_MATTER.get()))
 				.save(consumer, getConversionRecipeId(Items.DIRT, ModItems.STONE_POWDER.get()));
 
-		ShapelessRecipeBuilder.shapeless(Items.CLAY_BALL)
+		WorkbenchRecipeBuilder.shapeless(Items.CLAY_BALL)
 				.requires(Items.WATER_BUCKET)
 				.requires(ModItems.STONE_POWDER.get(), 8)
 				.unlockedBy(hasName(ModItems.STONE_POWDER.get()), has(ModItems.STONE_POWDER.get()))
 				.save(consumer, getConversionRecipeId(Items.CLAY_BALL, ModItems.STONE_POWDER.get()));
 
-		ShapelessRecipeBuilder.shapeless(Items.GUNPOWDER)
+		WorkbenchRecipeBuilder.shapeless(Items.GUNPOWDER)
 				.requires(Items.CHARCOAL)
 				.requires(ModItems.EXOTIC_DUST.get(), 4)
 				.requires(Items.BLAZE_POWDER, 2)
 				.unlockedBy(hasName(ModItems.EXOTIC_DUST.get()), has(ModItems.EXOTIC_DUST.get()))
 				.save(consumer, getConversionRecipeId(Items.GUNPOWDER, ModItems.EXOTIC_DUST.get()));
+
+		WorkbenchRecipeBuilder.shaped(Items.GLOW_ITEM_FRAME)
+				.define('F', Items.ITEM_FRAME)
+				.define('L', ModItems.BIO_LUMENS.get())
+				.pattern(" L ").pattern("LFL").pattern(" L ")
+				.unlockedBy(hasName(ModItems.BIO_LUMENS.get()), has(ModItems.BIO_LUMENS.get()))
+				.save(consumer);
 	}
 
 	private void registerDigestingRecipes(Consumer<FinishedRecipe> consumer) {
