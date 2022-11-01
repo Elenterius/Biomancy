@@ -412,15 +412,22 @@ public class ModRecipeProvider extends RecipeProvider {
 				.setCategory(ModRecipeBooks.BioForgeCategory.MACHINES)
 				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
 
-		//BioForgeRecipeBuilder.create(new ItemData(ModItems.FLESHKIN_PRESSURE_PLATE.get())).addIngredient(ModItems.LIVING_FLESH.get()).addIngredient(ModItems.BONE_FRAGMENTS.get(), fleshBlockCost).addIngredient(ModItems.FLESH_BITS.get(), fleshBlockCost).addIngredient(ModItems.ELASTIC_FIBERS.get(), fleshBlockCost).setCategory(ModRecipeBooks.BioForgeCategory.MISC).unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
+		BioForgeRecipeBuilder.create(new ItemData(ModItems.FLESHKIN_PRESSURE_PLATE.get()))
+				.addIngredient(ModItems.LIVING_FLESH.get())
+				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 3)
+				.addIngredient(ModItems.FLESH_BITS.get(), 5)
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 4)
+				.addIngredient(ModItems.TOUGH_FIBERS.get(), 10)
+				.setCategory(ModRecipeBooks.BioForgeCategory.MISC)
+				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
 
-		//		BioForgeRecipeBuilder.create(new ItemData(ModItems.VOICE_BOX.get()))
-		//				.addIngredient(Items.NOTE_BLOCK)
-		//				.addIngredient(ModItems.FLESH_BITS.get(), 6)
-		//				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 4)
-		//				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 8)
-		//				.setCategory(ModRecipeBooks.BioForgeCategory.MISC)
-		//				.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
+		//BioForgeRecipeBuilder.create(new ItemData(ModItems.VOICE_BOX.get()))
+		//		.addIngredient(Items.NOTE_BLOCK)
+		//		.addIngredient(ModItems.FLESH_BITS.get(), 6)
+		//		.addIngredient(ModItems.BONE_FRAGMENTS.get(), 4)
+		//		.addIngredient(ModItems.ELASTIC_FIBERS.get(), 8)
+		//		.setCategory(ModRecipeBooks.BioForgeCategory.MISC)
+		//		.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
 
 		//////////// STORAGE ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		BioForgeRecipeBuilder.create(ModItems.STORAGE_SAC.get())
