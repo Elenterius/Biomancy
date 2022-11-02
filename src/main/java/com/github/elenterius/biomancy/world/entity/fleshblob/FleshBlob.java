@@ -186,6 +186,11 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 		entityData.set(BLOB_TYPE, blobType.asByte());
 	}
 
+	@Override
+	public boolean canBeLeashed(Player pPlayer) {
+		return !this.isLeashed();
+	}
+
 	public enum BlobType {
 		NEUTRAL(0, 3d),
 		HOSTILE(1, 8d);
