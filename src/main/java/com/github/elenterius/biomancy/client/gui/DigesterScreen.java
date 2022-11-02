@@ -27,7 +27,7 @@ public class DigesterScreen extends AbstractContainerScreen<DigesterMenu> {
 	@Override
 	protected void init() {
 		super.init();
-		SoundUtil.playUISound(ModSoundEvents.UI_MENU_OPEN);
+		SoundUtil.playUISound(ModSoundEvents.UI_DIGESTER_OPEN);
 	}
 
 	@Override

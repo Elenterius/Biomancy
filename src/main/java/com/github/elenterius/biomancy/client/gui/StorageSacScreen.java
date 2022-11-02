@@ -27,7 +27,7 @@ public class StorageSacScreen extends AbstractContainerScreen<StorageSacMenu> {
 	@Override
 	protected void init() {
 		super.init();
-		SoundUtil.playUISound(ModSoundEvents.UI_MENU_OPEN);
+		SoundUtil.playUISound(ModSoundEvents.UI_STORAGE_SAC_OPEN);
 	}
 
 	@Override

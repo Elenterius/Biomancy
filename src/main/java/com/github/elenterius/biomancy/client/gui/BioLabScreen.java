@@ -27,7 +27,7 @@ public class BioLabScreen extends AbstractContainerScreen<BioLabMenu> {
 	@Override
 	protected void init() {
 		super.init();
-		SoundUtil.playUISound(ModSoundEvents.UI_MENU_OPEN);
+		SoundUtil.playUISound(ModSoundEvents.UI_BIO_LAB_OPEN);
 	}
 
 	@Override

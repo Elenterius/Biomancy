@@ -49,10 +49,15 @@ public final class ModSoundEvents {
 
 	//# UI
 	public static final RegistryObject<SoundEvent> UI_BUTTON_CLICK = registerSoundEvent("ui.button.click");
-	public static final RegistryObject<SoundEvent> UI_MENU_OPEN = registerSoundEvent("ui.menu.open");
 	public static final RegistryObject<SoundEvent> UI_RADIAL_MENU_OPEN = registerSoundEvent("ui.radial_menu.open");
 	public static final RegistryObject<SoundEvent> UI_BIO_FORGE_SELECT_RECIPE = registerSoundEvent("ui.bio_forge.select_recipe");
 	public static final RegistryObject<SoundEvent> UI_BIO_FORGE_TAKE_RESULT = registerSoundEvent("ui.bio_forge.take_result");
+	public static final RegistryObject<SoundEvent> UI_MENU_OPEN = registerSoundEvent("ui.menu.open");
+	public static final RegistryObject<SoundEvent> UI_STORAGE_SAC_OPEN = registerSoundEvent("ui.storage_sac.open");
+	public static final RegistryObject<SoundEvent> UI_BIO_FORGE_OPEN = registerSoundEvent("ui.bio_forge.open");
+	public static final RegistryObject<SoundEvent> UI_DECOMPOSER_OPEN = registerSoundEvent("ui.decomposer.open");
+	public static final RegistryObject<SoundEvent> UI_BIO_LAB_OPEN = registerSoundEvent("ui.bio_lab.open");
+	public static final RegistryObject<SoundEvent> UI_DIGESTER_OPEN = registerSoundEvent("ui.digester.open");
 
 	//# Mobs
 	public static final RegistryObject<SoundEvent> FLESH_BLOB_JUMP = registerSoundEvent("entity.flesh_blob.jump");

@@ -27,7 +27,7 @@ public class DecomposerScreen extends AbstractContainerScreen<DecomposerMenu> {
 	@Override
 	protected void init() {
 		super.init();
-		SoundUtil.playUISound(ModSoundEvents.UI_MENU_OPEN);
+		SoundUtil.playUISound(ModSoundEvents.UI_DECOMPOSER_OPEN);
 	}
 
 	@Override

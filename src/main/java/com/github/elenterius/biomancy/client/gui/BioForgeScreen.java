@@ -56,7 +56,7 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 
-		SoundUtil.playUISound(ModSoundEvents.UI_MENU_OPEN);
+		SoundUtil.playUISound(ModSoundEvents.UI_BIO_FORGE_OPEN);
 	}
 
 	@Override
