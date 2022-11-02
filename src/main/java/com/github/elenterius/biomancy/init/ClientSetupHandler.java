@@ -7,7 +7,6 @@ import com.github.elenterius.biomancy.client.renderer.block.*;
 import com.github.elenterius.biomancy.client.renderer.entity.AcidProjectileRenderer;
 import com.github.elenterius.biomancy.client.renderer.entity.FleshBlobRenderer;
 import com.github.elenterius.biomancy.client.renderer.entity.WitherProjectileRenderer;
-import com.github.elenterius.biomancy.world.item.weapon.LongClawItem;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -21,8 +20,6 @@ import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.entity.WitherSkullRenderer;
-import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
@@ -111,10 +108,7 @@ public final class ClientSetupHandler {
 	}
 
 	private static void registerItemModelProperties() {
-		ItemProperties.register(ModItems.LONG_CLAW.get(), new ResourceLocation("extended"), (stack, level, entity, seed) -> LongClawItem.isClawExtended(stack) ? 1f : 0f);
 //		ItemProperties.register(ModItems.SINGLE_ITEM_BAG_ITEM.get(), new ResourceLocation("fullness"), (stack, clientWorld, livingEntity) -> ModItems.SINGLE_ITEM_BAG_ITEM.get().getFullness(stack));
-//		ItemProperties.register(ModItems.SMALL_ENTITY_BAG_ITEM.get(), new ResourceLocation("fullness"), (stack, clientWorld, livingEntity) -> ModItems.SMALL_ENTITY_BAG_ITEM.get().getFullness(stack));
-//		ItemProperties.register(ModItems.LARGE_ENTITY_BAG_ITEM.get(), new ResourceLocation("fullness"), (stack, clientWorld, livingEntity) -> ModItems.LARGE_ENTITY_BAG_ITEM.get().getFullness(stack));
 	}
 
 	@SubscribeEvent

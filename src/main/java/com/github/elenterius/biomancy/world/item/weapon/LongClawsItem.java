@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.world.item.weapon;
 
+import com.github.elenterius.biomancy.client.renderer.item.LongClawsRenderer;
 import com.github.elenterius.biomancy.init.ModCapabilities;
 import com.github.elenterius.biomancy.styles.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.HrTooltipComponent;
@@ -9,6 +10,7 @@ import com.github.elenterius.biomancy.world.item.IBiomancyItem;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -26,21 +28,30 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.common.util.Lazy;
+import software.bernie.geckolib3.core.IAnimatable;
+import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 
-public class LongClawItem extends ClawWeaponItem implements ICriticalHitEntity, IBiomancyItem /*implements IAreaHarvestingItem*/ {
+public class LongClawsItem extends ClawWeaponItem implements ICriticalHitEntity, IBiomancyItem, IAnimatable /*implements IAreaHarvestingItem*/ {
 
 	public static final String DURATION_KEY = "LongClawTimeLeft";
 
-	public static final AttributeModifier NO_KNOCKBACK_MODIFIER = new AttributeModifier(UUID.fromString("0f497472-0e93-4dc5-8a2c-c2033afbfed5"), "Weapon modifier", 0, AttributeModifier.Operation.MULTIPLY_TOTAL);
+	public static final AttributeModifier NO_KNOCK_BACK_MODIFIER = new AttributeModifier(UUID.fromString("0f497472-0e93-4dc5-8a2c-c2033afbfed5"), "Weapon modifier", 0, AttributeModifier.Operation.MULTIPLY_TOTAL);
 	public static final AttributeModifier RETRACTED_CLAW_REACH_MODIFIER = new AttributeModifier(UUID.fromString("d76adb08-2bb3-4e88-997d-766a919f0f6b"), "Weapon modifier", 0.5f, AttributeModifier.Operation.ADDITION);
 	public static final AttributeModifier EXTENDED_CLAW_REACH_MODIFIER = new AttributeModifier(UUID.fromString("29ace568-4e32-4809-840c-3c9a0e1ebcd4"), "Weapon modifier", 1.5f, AttributeModifier.Operation.ADDITION);
 
@@ -48,10 +59,25 @@ public class LongClawItem extends ClawWeaponItem implements ICriticalHitEntity, 
 
 	private final int abilityDuration; // in "seconds"
 
-	public LongClawItem(Tier tier, int attackDamage, float attackSpeed, int abilityDuration, Properties properties) {
+	private final AnimationFactory animationFactory = new AnimationFactory(this);
+
+	public LongClawsItem(Tier tier, int attackDamage, float attackSpeed, int abilityDuration, Properties properties) {
 		super(tier, attackDamage, attackSpeed, properties);
 		lazyAttributeModifiersV2 = Lazy.of(this::createAttributeModifiersV2);
 		this.abilityDuration = abilityDuration;
+	}
+
+	@Override
+	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+		super.initializeClient(consumer);
+		consumer.accept(new IItemRenderProperties() {
+			private final LongClawsRenderer renderer = new LongClawsRenderer();
+
+			@Override
+			public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+				return renderer;
+			}
+		});
 	}
 
 	public static boolean isClawExtended(ItemStack stack) {
@@ -80,7 +106,7 @@ public class LongClawItem extends ClawWeaponItem implements ICriticalHitEntity, 
 	protected void addAdditionalAttributeModifiers(ImmutableMultimap.Builder<Attribute, AttributeModifier> builder) {
 		super.addAdditionalAttributeModifiers(builder);
 		builder.put(ForgeMod.ATTACK_RANGE.get(), RETRACTED_CLAW_REACH_MODIFIER);
-		builder.put(Attributes.ATTACK_KNOCKBACK, NO_KNOCKBACK_MODIFIER);
+		builder.put(Attributes.ATTACK_KNOCKBACK, NO_KNOCK_BACK_MODIFIER);
 	}
 
 	@Override
@@ -138,11 +164,23 @@ public class LongClawItem extends ClawWeaponItem implements ICriticalHitEntity, 
 
 	@Override
 	public void inventoryTick(ItemStack stack, Level level, Entity entity, int itemSlot, boolean isSelected) {
-		if (!level.isClientSide() && level.getGameTime() % 20L == 0L) {
-			CompoundTag tag = stack.getOrCreateTag();
-			int timeLeft = tag.getInt(DURATION_KEY);
-			if (timeLeft > 0) {
-				tag.putInt(DURATION_KEY, timeLeft - 1);
+		if (level.getGameTime() % 20L == 0L) {
+			if (!level.isClientSide()) {
+				CompoundTag tag = stack.getOrCreateTag();
+				int timeLeft = tag.getInt(DURATION_KEY);
+				if (timeLeft > 0) {
+					tag.putInt(DURATION_KEY, timeLeft - 1);
+				}
+			}
+		}
+
+		if (level.isClientSide()) {
+			AnimationController<?> controller = GeckoLibUtil.getControllerForStack(animationFactory, stack, "controller");
+			if (stack.getOrCreateTag().getInt(DURATION_KEY) > 0) {
+				controller.setAnimation(new AnimationBuilder().playOnce("long_claws.extend").loop("long_claws.extended"));
+			}
+			else {
+				controller.setAnimation(new AnimationBuilder().loop("long_claws.idle"));
 			}
 		}
 	}
@@ -188,6 +226,18 @@ public class LongClawItem extends ClawWeaponItem implements ICriticalHitEntity, 
 	//	}
 
 	@Override
+	public void registerControllers(AnimationData data) {
+		AnimationController<LongClawsItem> controller = new AnimationController<>(this, "controller", 10, event -> PlayState.CONTINUE);
+		controller.setAnimation(new AnimationBuilder().loop("long_claws.idle"));
+		data.addAnimationController(controller);
+	}
+
+	@Override
+	public AnimationFactory getFactory() {
+		return animationFactory;
+	}
+
+	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(this));
 		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
@@ -195,7 +245,8 @@ public class LongClawItem extends ClawWeaponItem implements ICriticalHitEntity, 
 		int timeLeft = stack.getOrCreateTag().getInt(DURATION_KEY);
 		if (timeLeft > 0) {
 			tooltip.add(TextComponentUtil.getTooltipText("item_is_excited").append(" (" + timeLeft + ")").withStyle(ChatFormatting.GRAY));
-		} else {
+		}
+		else {
 			tooltip.add(TextComponentUtil.getTooltipText("item_is_dormant").withStyle(ChatFormatting.GRAY));
 		}
 		if (stack.isEnchanted()) tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());

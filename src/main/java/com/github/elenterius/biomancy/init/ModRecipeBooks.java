@@ -35,7 +35,7 @@ public final class ModRecipeBooks {
 		public static final BioForgeCategory MISC = new BioForgeCategory("misc", -1, ModItems.LIVING_FLESH.get());
 		public static final BioForgeCategory BLOCKS = new BioForgeCategory("blocks", ModItems.FLESH_BLOCK.get());
 		public static final BioForgeCategory MACHINES = new BioForgeCategory("machines", ModItems.DECOMPOSER.get());
-		public static final BioForgeCategory WEAPONS = new BioForgeCategory("weapons", ModItems.LONG_CLAW.get());
+		public static final BioForgeCategory WEAPONS = new BioForgeCategory("weapons", ModItems.LONG_CLAWS.get());
 
 		public BioForgeCategory(String name, int sortPriority, Item icon) {
 			this(PREFIX + name, sortPriority, RecipeBookCategories.create(PREFIX + name, new ItemStack(icon)));
