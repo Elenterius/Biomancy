@@ -29,14 +29,16 @@ public final class IngameOverlays {
 	public static final ResourceLocation COMMAND_ICONS = BiomancyMod.createRL("textures/gui/command_icons.png");
 	public static final ResourceLocation ORNATE_CORNER_BOTTOM_RIGHT = BiomancyMod.createRL("textures/gui/ornate_corner_br.png");
 
+	public static boolean SHOW_RESOURCE_PACKS;
 	public static final IIngameOverlay WATERMARK = (gui, poseStack, partialTick, width, height) -> {
 		Minecraft minecraft = Minecraft.getInstance();
 		if (!minecraft.options.hideGui && !minecraft.options.renderDebug && !(minecraft.getOverlay() instanceof LoadingOverlay)) {
 			gui.setupOverlayRenderState(true, false);
 			gui.setBlitOffset(-90);
 			Font font = Minecraft.getInstance().font;
+
 			ModList.get().getModContainerById(BiomancyMod.MOD_ID).ifPresent(modContainer -> {
-				String text = "Biomancy Dev Build";
+				String text = "Biomancy Alpha";
 				String version = "Version: " + MavenVersionStringHelper.artifactVersionToString(modContainer.getModInfo().getVersion());
 				int textWidth = font.width(text);
 				int versionWidth = font.width(version);
@@ -47,26 +49,29 @@ public final class IngameOverlays {
 				GuiComponent.drawString(poseStack, font, text, x - textWidth, y, 0xEEEEEE);
 				GuiComponent.drawString(poseStack, font, version, x - versionWidth, y + font.lineHeight + 1, 0xDDDDDD);
 
-				y += 2;
-				y += font.lineHeight + 1;
-				y += font.lineHeight + 1;
-				Collection<Pack> selectedPacks = minecraft.getResourcePackRepository().getSelectedPacks();
-				int i = 0;
-				for (Pack selectedPack : selectedPacks) {
-					String id = selectedPack.getId();
-					GuiComponent.drawString(poseStack, font, id, x - font.width(id), y, 0xDDDDDD);
+				if (SHOW_RESOURCE_PACKS) {
+					y += 2;
 					y += font.lineHeight + 1;
-					if (i >= 5) break;
-					i++;
-				}
-				int remainder = selectedPacks.size() - i;
-				if (remainder > 0) {
-					String txt = "...and " + remainder + " more";
-					GuiComponent.drawString(poseStack, font, txt, x - font.width(txt), y, 0xDDDDDD);
+					y += font.lineHeight + 1;
+					Collection<Pack> selectedPacks = minecraft.getResourcePackRepository().getSelectedPacks();
+					int i = 0;
+					for (Pack selectedPack : selectedPacks) {
+						String id = selectedPack.getId();
+						GuiComponent.drawString(poseStack, font, id, x - font.width(id), y, 0xDDDDDD);
+						y += font.lineHeight + 1;
+						if (i >= 5) break;
+						i++;
+					}
+					int remainder = selectedPacks.size() - i;
+					if (remainder > 0) {
+						String txt = "...and " + remainder + " more";
+						GuiComponent.drawString(poseStack, font, txt, x - font.width(txt), y, 0xDDDDDD);
+					}
 				}
 			});
 		}
 	};
+	public static boolean IS_DEV_BUILD;
 
 	public static final IIngameOverlay CONTROL_STAFF_OVERLAY = (gui, poseStack, partialTicks, screenWidth, screenHeight) -> {
 //		Minecraft minecraft = Minecraft.getInstance();
@@ -96,9 +101,12 @@ public final class IngameOverlays {
 	private IngameOverlays() {}
 
 	public static void registerGameOverlays() {
-//		OverlayRegistry.registerOverlayTop("Biomancy ControlStaff", CONTROL_STAFF_OVERLAY);
+		//		OverlayRegistry.registerOverlayTop("Biomancy ControlStaff", CONTROL_STAFF_OVERLAY);
 		OverlayRegistry.registerOverlayTop("Biomancy Gun", GUN_OVERLAY);
-		OverlayRegistry.registerOverlayTop("Biomancy Alpha Watermark", WATERMARK);
+
+		if (IS_DEV_BUILD) {
+			OverlayRegistry.registerOverlayTop("Biomancy Alpha Watermark", WATERMARK);
+		}
 	}
 
 	static void renderCommandOverlay(PoseStack poseStack, int screenWidth, int screenHeight, IControllableMob.Command command) {
