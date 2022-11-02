@@ -503,14 +503,14 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		//////////// WEAPONS ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//		BioForgeRecipeBuilder.create(new ItemData(ModItems.LONG_CLAW.get()))
-//				.addIngredient(ModItems.LIVING_FLESH.get())
-//				.addIngredient(ModItems.MOB_CLAW.get(), 3)
-//				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 11)
-//				.addIngredient(ModItems.TOUGH_FIBERS.get(), 16)
-//				.addIngredient(ModItems.FLESH_BITS.get(), 6 + 16)
-//				.setCategory(ModRecipeBooks.BioForgeCategory.WEAPONS)
-//				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
+		BioForgeRecipeBuilder.create(new ItemData(ModItems.LONG_CLAWS.get()))
+				.addIngredient(ModItems.LIVING_FLESH.get())
+				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 4)
+				.addIngredient(ModItems.FLESH_BITS.get(), 16)
+				.addIngredient(ModItems.TOUGH_FIBERS.get(), 6 * 3)
+				.addIngredient(ModItems.BIO_MINERALS.get(), 5 * 3)
+				.setCategory(ModRecipeBooks.BioForgeCategory.WEAPONS)
+				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
 
 		BioForgeRecipeBuilder.create(new ItemData(ModItems.INJECTOR.get()))
 				.addIngredient(ModItems.FLESH_BITS.get(), 20)
