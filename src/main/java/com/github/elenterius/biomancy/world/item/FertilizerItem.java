@@ -56,24 +56,49 @@ public class FertilizerItem extends Item implements IBiomancyItem {
 				}
 				return true;
 			}
-		} else if (block == Blocks.DIRT) {
+		}
+		else if (block == Blocks.DIRT) {
 			if (level instanceof ServerLevel serverLevel) {
 				growDirtIntoGrassBlock(serverLevel, pos);
 			}
 			return true;
-		} else if (block instanceof ChorusFlowerBlock) {
+		}
+		else if (block instanceof ChorusFlowerBlock) {
 			if (level instanceof ServerLevel serverLevel) {
-				if (state.getValue(ChorusFlowerBlock.AGE) < 5 && serverLevel.getBlockState(pos.below()).is(Blocks.END_STONE)) {
-					ChorusFlowerBlock.generatePlant(serverLevel, pos, level.random, 8);
-					return true;
-				}
+				return growChorusFlower(serverLevel, pos, state);
 			}
-		} else if (PillarPlantUtil.isPillarPlant(block)) {
+		}
+		else if (PillarPlantUtil.isPillarPlant(block)) {
 			return PillarPlantUtil.applyGrowthBoost(level, pos, state, block);
-		} else if (block instanceof IPlantable) { //e.g. nether wart
+		}
+		else if (block instanceof IPlantable) { //e.g. nether wart
 			if (level instanceof ServerLevel serverLevel) {
 				growPlantableBlock(serverLevel, pos, state, block);
 			}
+		}
+
+		return false;
+	}
+
+	private static boolean growChorusFlower(ServerLevel level, BlockPos pos, BlockState state) {
+		if (state.getValue(ChorusFlowerBlock.AGE) >= 5) return false;
+
+		BlockState stateBelow = level.getBlockState(pos.below());
+
+		if (stateBelow.is(Blocks.END_STONE)) {
+			ChorusFlowerBlock.generatePlant(level, pos, level.random, 8);
+			return true;
+		}
+
+		boolean isAttachedToChorusPlant = stateBelow.is(Blocks.CHORUS_PLANT)
+				|| level.getBlockState(pos.north()).is(Blocks.CHORUS_PLANT)
+				|| level.getBlockState(pos.south()).is(Blocks.CHORUS_PLANT)
+				|| level.getBlockState(pos.west()).is(Blocks.CHORUS_PLANT)
+				|| level.getBlockState(pos.east()).is(Blocks.CHORUS_PLANT);
+
+		if (isAttachedToChorusPlant) {
+			ChorusFlowerBlock.generatePlant(level, pos, level.random, 8);
+			return true;
 		}
 
 		return false;
@@ -95,7 +120,8 @@ public class FertilizerItem extends Item implements IBiomancyItem {
 				level.setBlock(pos, state.setValue(ageProperty, maxAge), Block.UPDATE_CLIENTS);
 				level.levelEvent(LevelEvent.PARTICLES_PLANT_GROWTH, pos, 5);
 			}
-		} else if (block.isRandomlyTicking(state) && !level.getBlockTicks().willTickThisTick(pos, block)) {
+		}
+		else if (block.isRandomlyTicking(state) && !level.getBlockTicks().willTickThisTick(pos, block)) {
 			level.scheduleTick(pos, block, 2);
 			level.levelEvent(LevelEvent.PARTICLES_PLANT_GROWTH, pos, 5);
 		}
@@ -112,7 +138,8 @@ public class FertilizerItem extends Item implements IBiomancyItem {
 				level.setBlock(pos, state.setValue(ageProperty, maxAge), Block.UPDATE_CLIENTS);
 				level.levelEvent(LevelEvent.PARTICLES_PLANT_GROWTH, pos, 5);
 			}
-		} else {
+		}
+		else {
 			block.performBonemeal(level, level.random, pos, state); //fall back
 		}
 	}
