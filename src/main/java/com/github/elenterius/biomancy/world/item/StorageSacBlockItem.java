@@ -2,16 +2,14 @@ package com.github.elenterius.biomancy.world.item;
 
 import com.github.elenterius.biomancy.styles.ClientTextUtil;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
+import com.github.elenterius.biomancy.tooltip.PlaceholderComponent;
+import com.github.elenterius.biomancy.tooltip.StorageSacTooltip;
 import com.github.elenterius.biomancy.world.block.entity.StorageSacBlockEntity;
 import com.github.elenterius.biomancy.world.inventory.ItemStackInventory;
 import com.github.elenterius.biomancy.world.inventory.itemhandler.EnhancedItemHandler;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.SlotAccess;
@@ -115,33 +113,7 @@ public class StorageSacBlockItem extends BlockItem implements IBiomancyItem {
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, level, tooltip, flag);
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
-
-		var ref = new Object() {
-			int sum = 0;
-		};
-		getItemHandler(stack).ifPresent(itemHandler -> {
-			tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
-			int count = 0;
-			for (int i = 0; i < itemHandler.getSlots(); i++) {
-				ItemStack stackInSlot = itemHandler.getStackInSlot(i);
-				if (!stackInSlot.isEmpty()) {
-					ref.sum++;
-					if (count < 5) {
-						MutableComponent component = stackInSlot.getHoverName().copy();
-						component.append(" x").append(String.valueOf(stackInSlot.getCount())).withStyle(ChatFormatting.GRAY);
-						tooltip.add(component);
-						count++;
-					}
-				}
-			}
-
-			if (ref.sum - count > 0) {
-				tooltip.add((new TranslatableComponent("container.shulkerBox.more", ref.sum - count)).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
-			}
-		});
-
-		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
-		tooltip.add(new TextComponent(String.format("%d/%d ", ref.sum, StorageSacBlockEntity.SLOTS)).append(new TranslatableComponent("tooltip.biomancy.slots")).withStyle(ChatFormatting.GRAY));
+		tooltip.add(new PlaceholderComponent(new StorageSacTooltip(getItemHandler(stack).orElse(null))));
 	}
 
 	@Override

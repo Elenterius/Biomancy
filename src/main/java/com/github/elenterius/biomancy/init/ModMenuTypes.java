@@ -66,7 +66,8 @@ public final class ModMenuTypes {
 	@OnlyIn(Dist.CLIENT)
 	static void registerTooltipComponents() {
 		MinecraftForgeClient.registerTooltipComponentFactory(TabTooltipComponent.class, TabTooltipClientComponent::new);
-		MinecraftForgeClient.registerTooltipComponentFactory(HrTooltipComponent.class, ClientHrTooltipComponent::new);
+		MinecraftForgeClient.registerTooltipComponentFactory(HrTooltipComponent.class, HrTooltipClientComponent::new);
+		MinecraftForgeClient.registerTooltipComponentFactory(StorageSacTooltipComponent.class, StorageSacTooltipClientComponent::new);
 	}
 
 }
