@@ -14,6 +14,9 @@ import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.AbstractGolem;
+import net.minecraft.world.entity.monster.Slime;
+import net.minecraft.world.entity.monster.Vex;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -90,6 +93,12 @@ public class DespoilMobLootModifier extends LootModifier {
 	@Override
 	protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
 		if (context.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof LivingEntity victim) {
+
+			//TODO: replace with data-pack driven denylist (mob type tag)?
+			if (victim instanceof Slime) return generatedLoot;
+			if (victim instanceof AbstractGolem) return generatedLoot;
+			if (victim instanceof Vex) return generatedLoot;
+
 			Random random = context.getRandom();
 			int despoilLevel = getDespoilLevel(context);
 			int lootingLevel = context.getLootingModifier();
