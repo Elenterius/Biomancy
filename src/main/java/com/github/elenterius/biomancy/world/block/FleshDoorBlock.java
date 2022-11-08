@@ -74,7 +74,7 @@ public class FleshDoorBlock extends Block {
 	public FleshDoorBlock(Properties properties) {
 		super(properties);
 		registerDefaultState(defaultBlockState()
-				.setValue(ORIENTATION, Orientation.Y_MIDDLE)
+				.setValue(ORIENTATION, Orientation.X_MIDDLE)
 				.setValue(OPEN, false).setValue(POWERED, false)
 				.setValue(HALF, DoubleBlockHalf.LOWER)
 		);
@@ -98,6 +98,10 @@ public class FleshDoorBlock extends Block {
 		if (!context.replacingClickedOnBlock()) {
 			Orientation orientation = Orientation.getXZOrientationFrom(context);
 			state = state.setValue(ORIENTATION, orientation);
+		}
+		else {
+			boolean isXAxis = context.getHorizontalDirection().getAxis() == Direction.Axis.X;
+			state = state.setValue(ORIENTATION, isXAxis ? Orientation.X_MIDDLE : Orientation.Z_MIDDLE);
 		}
 
 		if (level.hasNeighborSignal(pos) || level.hasNeighborSignal(pos.above())) {
