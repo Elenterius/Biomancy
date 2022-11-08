@@ -69,7 +69,7 @@ public class FertilizerItem extends Item implements IBiomancyItem {
 			}
 		}
 		else if (PillarPlantUtil.isPillarPlant(block)) {
-			return PillarPlantUtil.applyGrowthBoost(level, pos, state, block);
+			return PillarPlantUtil.applyMegaGrowthBoost(level, pos, state, block);
 		}
 		else if (block instanceof IPlantable) { //e.g. nether wart
 			if (level instanceof ServerLevel serverLevel) {

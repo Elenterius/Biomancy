@@ -25,9 +25,20 @@ public final class PillarPlantUtil {
 
 	public static boolean applyGrowthBoost(Level level, BlockPos pos, BlockState state, Block block) {
 		if (block == SUGAR_CANE_HELPER.block()) {
-			return handleGrowth(SUGAR_CANE_HELPER, level, pos, state, SUGAR_CANE_HELPER.defaultHeight * 2, SUGAR_CANE_HELPER.maxAge);
-		} else if (block == CACTUS_HELPER.block()) {
-			return handleGrowth(CACTUS_HELPER, level, pos, state, CACTUS_HELPER.defaultHeight * 2, CACTUS_HELPER.maxAge);
+			return handleGrowth(SUGAR_CANE_HELPER, level, pos, state, SUGAR_CANE_HELPER.defaultHeight, SUGAR_CANE_HELPER.maxAge);
+		}
+		else if (block == CACTUS_HELPER.block()) {
+			return handleGrowth(CACTUS_HELPER, level, pos, state, CACTUS_HELPER.defaultHeight, CACTUS_HELPER.maxAge);
+		}
+		return false;
+	}
+
+	public static boolean applyMegaGrowthBoost(Level level, BlockPos pos, BlockState state, Block block) {
+		if (block == SUGAR_CANE_HELPER.block()) {
+			return handleMegaGrowth(SUGAR_CANE_HELPER, level, pos, state, SUGAR_CANE_HELPER.defaultHeight * 3, SUGAR_CANE_HELPER.maxAge);
+		}
+		else if (block == CACTUS_HELPER.block()) {
+			return handleMegaGrowth(CACTUS_HELPER, level, pos, state, CACTUS_HELPER.defaultHeight * 3, CACTUS_HELPER.maxAge);
 		}
 		return false;
 	}
@@ -45,6 +56,24 @@ public final class PillarPlantUtil {
 			return true;
 		}
 		return false;
+	}
+
+	private static boolean handleMegaGrowth(PillarPlantHelper plantHelper, Level level, BlockPos pos, BlockState state, int maxHeight, int ageModifier) {
+		boolean hasGrown = false;
+
+		for (int i = 0; i < 3; i++) {
+			if (state.isAir() || !plantHelper.canGrow(level, pos, state, maxHeight)) break;
+
+			if (!level.isClientSide && level instanceof ServerLevel serverLevel) {
+				plantHelper.grow(serverLevel, pos, state, maxHeight, ageModifier);
+				serverLevel.levelEvent(LevelEvent.PARTICLES_PLANT_GROWTH, pos, 5);
+			}
+			pos = pos.above();
+			state = level.getBlockState(pos);
+			hasGrown = true;
+		}
+
+		return hasGrown;
 	}
 
 	public record PillarPlantHelper(Block block, int defaultHeight, IntegerProperty ageProperty, int maxAge, boolean callNeighborChanged) {
