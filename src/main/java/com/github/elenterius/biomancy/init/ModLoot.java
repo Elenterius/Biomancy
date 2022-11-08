@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.loot.DespoilMobLootModifier;
+import com.github.elenterius.biomancy.loot.SpecialMobLootModifier;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.registries.DeferredRegister;
@@ -13,7 +13,7 @@ import static com.github.elenterius.biomancy.BiomancyMod.createRL;
 public final class ModLoot {
 
 	public static final DeferredRegister<GlobalLootModifierSerializer<?>> GLOBAL_MODIFIERS = DeferredRegister.create(ForgeRegistries.Keys.LOOT_MODIFIER_SERIALIZERS, BiomancyMod.MOD_ID);
-	public static final RegistryObject<GlobalLootModifierSerializer<DespoilMobLootModifier>> DESPOIL_SERIALIZER = GLOBAL_MODIFIERS.register("despoil_mob_loot", DespoilMobLootModifier.Serializer::new);
+	public static final RegistryObject<GlobalLootModifierSerializer<SpecialMobLootModifier>> DESPOIL_SERIALIZER = GLOBAL_MODIFIERS.register("special_mob_loot", SpecialMobLootModifier.Serializer::new);
 
 	private ModLoot() {}
 

@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.loot;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModTags;
+import com.github.elenterius.biomancy.util.random.DynamicLootTable;
 import com.github.elenterius.biomancy.world.entity.MobUtil;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.critereon.EntityFlagsPredicate;
@@ -10,7 +11,6 @@ import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
-import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,38 +32,35 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Random;
-import java.util.function.Supplier;
-import java.util.function.ToIntBiFunction;
 
-public class DespoilMobLootModifier extends LootModifier {
-	public static final ToIntBiFunction<Random, Integer> CONSTANT_ITEM_AMOUNT_FUNC = (random, lootingLevel) -> 1;
-	public static final ToIntBiFunction<Random, Integer> RANDOM_ITEM_AMOUNT_FUNC_1 = (random, lootingLevel) -> Mth.nextInt(random, 1, 1 + lootingLevel);
-	public static final ToIntBiFunction<Random, Integer> RANDOM_ITEM_AMOUNT_FUNC_2 = (random, lootingLevel) -> Mth.nextInt(random, 1, 2 + lootingLevel);
-	private static final ItemLoot SHARP_FANG = new ItemLoot(ModItems.MOB_FANG, RANDOM_ITEM_AMOUNT_FUNC_1);
-	private static final ItemLoot SHARP_CLAW = new ItemLoot(ModItems.MOB_CLAW, RANDOM_ITEM_AMOUNT_FUNC_1);
+import static com.github.elenterius.biomancy.util.random.DynamicLootTable.*;
+
+public class SpecialMobLootModifier extends LootModifier {
+	private static final ItemLoot SHARP_FANG = new ItemLoot(ModItems.MOB_FANG, RANDOM_ITEM_AMOUNT_FUNC_2);
+	private static final ItemLoot SHARP_CLAW = new ItemLoot(ModItems.MOB_CLAW, RANDOM_ITEM_AMOUNT_FUNC_2);
 	private static final ItemLoot SINEW = new ItemLoot(ModItems.MOB_SINEW, RANDOM_ITEM_AMOUNT_FUNC_2);
-	private static final ItemLoot TOXIN_GLAND = new ItemLoot(ModItems.TOXIN_GLAND, CONSTANT_ITEM_AMOUNT_FUNC);
-	private static final ItemLoot VOLATILE_GLAND = new ItemLoot(ModItems.VOLATILE_GLAND, CONSTANT_ITEM_AMOUNT_FUNC);
+	private static final ItemLoot TOXIN_GLAND = new ItemLoot(ModItems.TOXIN_GLAND, RANDOM_ITEM_AMOUNT_FUNC_1);
+	private static final ItemLoot VOLATILE_GLAND = new ItemLoot(ModItems.VOLATILE_GLAND, RANDOM_ITEM_AMOUNT_FUNC_1);
 	private static final ItemLoot GENERIC_GLAND = new ItemLoot(ModItems.GENERIC_MOB_GLAND, CONSTANT_ITEM_AMOUNT_FUNC);
 	private static final ItemLoot BONE_MARROW = new ItemLoot(ModItems.MOB_MARROW, RANDOM_ITEM_AMOUNT_FUNC_2);
 	private static final ItemLoot WITHERED_BONE_MARROW = new ItemLoot(ModItems.WITHERED_MOB_MARROW, RANDOM_ITEM_AMOUNT_FUNC_2);
 
 	private final Weights weights;
 
-	public DespoilMobLootModifier() {
-		this(new Weights(90, 90, 75, 50, 45, 65, 45, 80),
+	public SpecialMobLootModifier() {
+		this(new Weights(140, 150, 75, 50, 40, 65, 45, 70),
 				//Can't use MatchTool, because the tool is missing for Entity Kills
 				//only apply the loot modifier to adult mobs killed by a player
 				LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().flags(EntityFlagsPredicate.Builder.flags().setIsBaby(false).build())).build(), LootItemKilledByPlayerCondition.killedByPlayer().build());
 	}
 
-	public DespoilMobLootModifier(Weights weights, LootItemCondition... conditions) {
+	public SpecialMobLootModifier(Weights weights, LootItemCondition... conditions) {
 		super(conditions);
 		this.weights = weights;
 	}
 
-	protected SimpleWeightedRandomList<ItemLoot> buildLootTable(LivingEntity livingEntity) {
-		SimpleWeightedRandomList.Builder<ItemLoot> builder = SimpleWeightedRandomList.builder();
+	protected DynamicLootTable buildLootTable(LivingEntity livingEntity) {
+		DynamicLootTable lootTable = new DynamicLootTable();
 
 		EntityType<?> type = livingEntity.getType();
 		boolean hasFangs = type.is(ModTags.EntityTypes.SHARP_FANG);
@@ -73,20 +70,20 @@ public class DespoilMobLootModifier extends LootModifier {
 		boolean isWithered = MobUtil.isWithered(livingEntity); //type of mob
 		boolean isSkeleton = MobUtil.isSkeleton(livingEntity);
 
-		if (hasFangs) builder.add(SHARP_FANG, weights.fang);
-		if (hasClaws) builder.add(SHARP_CLAW, weights.claw);
-		if (hasToxinGland) builder.add(TOXIN_GLAND, weights.toxinGland);
-		if (hasVolatileGland) builder.add(VOLATILE_GLAND, weights.volatileGland);
+		if (hasFangs) lootTable.add(SHARP_FANG, weights.fang);
+		if (hasClaws) lootTable.add(SHARP_CLAW, weights.claw);
+		if (hasToxinGland) lootTable.add(TOXIN_GLAND, weights.toxinGland);
+		if (hasVolatileGland) lootTable.add(VOLATILE_GLAND, weights.volatileGland);
 
 		if (!isSkeleton) {
-			if (!hasToxinGland && !hasVolatileGland) builder.add(GENERIC_GLAND, weights.genericGland);
-			if (!isWithered) builder.add(SINEW, weights.sinew);
+			if (!hasToxinGland && !hasVolatileGland) lootTable.addSelfRemoving(GENERIC_GLAND, weights.genericGland);
+			if (!isWithered) lootTable.add(SINEW, weights.sinew);
 		}
 
-		if (isSkeleton && !isWithered) builder.add(BONE_MARROW, weights.boneMarrow);
-		if (isWithered) builder.add(WITHERED_BONE_MARROW, weights.witheredBoneMarrow);  //includes wither boss & wither skeletons
+		if (isSkeleton && !isWithered) lootTable.add(BONE_MARROW, weights.boneMarrow);
+		if (isWithered) lootTable.add(WITHERED_BONE_MARROW, weights.witheredBoneMarrow);  //includes wither boss & wither skeletons
 
-		return builder.build();
+		return lootTable;
 	}
 
 	@NotNull
@@ -103,15 +100,13 @@ public class DespoilMobLootModifier extends LootModifier {
 			int despoilLevel = getDespoilLevel(context);
 			int lootingLevel = context.getLootingModifier();
 
-			float chance = 0.25f + despoilLevel * 0.25f;
-			if (random.nextFloat() < chance) {
-				SimpleWeightedRandomList<ItemLoot> lootTable = buildLootTable(victim);
-				int diceRolls = Mth.nextInt(random, 1, despoilLevel + 1);
-				for (; diceRolls > 0; diceRolls--) {
-					lootTable.getRandomValue(random).ifPresent(itemLoot -> generatedLoot.add(itemLoot.getItemStack(random, lootingLevel)));
-				}
+			DynamicLootTable lootTable = buildLootTable(victim);
+			int diceRolls = Mth.nextInt(random, 1, 1 + despoilLevel); //max is inclusive
+			for (; diceRolls > 0; diceRolls--) {
+				lootTable.getRandomItemStack(random, lootingLevel).ifPresent(generatedLoot::add);
 			}
 		}
+
 		return generatedLoot;
 	}
 
@@ -155,25 +150,15 @@ public class DespoilMobLootModifier extends LootModifier {
 		}
 	}
 
-	record ItemLoot(Supplier<? extends Item> itemSupplier, ToIntBiFunction<Random, Integer> itemCountFunc) {
-		int getItemAmount(Random random, int lootingLevel) {
-			return itemCountFunc.applyAsInt(random, lootingLevel);
-		}
-
-		ItemStack getItemStack(Random random, int lootingLevel) {
-			return new ItemStack(itemSupplier.get(), getItemAmount(random, lootingLevel));
-		}
-	}
-
-	public static class Serializer extends GlobalLootModifierSerializer<DespoilMobLootModifier> {
+	public static class Serializer extends GlobalLootModifierSerializer<SpecialMobLootModifier> {
 
 		@Override
-		public DespoilMobLootModifier read(ResourceLocation id, JsonObject object, LootItemCondition[] conditions) {
-			return new DespoilMobLootModifier(Weights.fromJson(object.getAsJsonObject("weights")), conditions);
+		public SpecialMobLootModifier read(ResourceLocation id, JsonObject object, LootItemCondition[] conditions) {
+			return new SpecialMobLootModifier(Weights.fromJson(object.getAsJsonObject("weights")), conditions);
 		}
 
 		@Override
-		public JsonObject write(DespoilMobLootModifier instance) {
+		public JsonObject write(SpecialMobLootModifier instance) {
 			JsonObject jsonObject = makeConditions(instance.conditions);
 			jsonObject.add("weights", instance.weights.toJson());
 			return jsonObject;
