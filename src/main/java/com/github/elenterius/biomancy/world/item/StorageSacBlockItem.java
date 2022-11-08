@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.world.item;
 
 import com.github.elenterius.biomancy.styles.ClientTextUtil;
-import com.github.elenterius.biomancy.styles.HrTooltipComponent;
+import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import com.github.elenterius.biomancy.world.block.entity.StorageSacBlockEntity;
 import com.github.elenterius.biomancy.world.inventory.ItemStackInventory;
 import com.github.elenterius.biomancy.world.inventory.itemhandler.EnhancedItemHandler;
@@ -69,7 +69,8 @@ public class StorageSacBlockItem extends BlockItem implements IBiomancyItem {
 			ItemStack remainder = slot.safeInsert(stackFromInv);
 			if (remainder.getCount() < insertAmount) playRemoveFromSacSound(player);
 			itemHandler.ifPresent(h -> h.insertItem(remainder));
-		} else if (stackInSlot.getItem().canFitInsideContainerItems()) {
+		}
+		else if (stackInSlot.getItem().canFitInsideContainerItems()) {
 			final int prevCount = stackInSlot.getCount();
 			ItemStack remainder = getItemHandler(stack).map(h -> h.insertItem(slot.safeTake(prevCount, Integer.MAX_VALUE, player))).orElse(ItemStack.EMPTY);
 			slot.safeInsert(remainder);
@@ -92,7 +93,8 @@ public class StorageSacBlockItem extends BlockItem implements IBiomancyItem {
 				playRemoveFromSacSound(player);
 				access.set(stackFromInv);
 			}
-		} else {
+		}
+		else {
 			ItemStack remainder = getItemHandler(stack).map(h -> h.insertItem(other)).orElse(ItemStack.EMPTY);
 			final int insertedAmount = other.getCount() - remainder.getCount();
 			if (insertedAmount > 0) {

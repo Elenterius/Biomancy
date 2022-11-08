@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.world.item;
 
 import com.github.elenterius.biomancy.styles.ClientTextUtil;
-import com.github.elenterius.biomancy.styles.HrTooltipComponent;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
+import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;

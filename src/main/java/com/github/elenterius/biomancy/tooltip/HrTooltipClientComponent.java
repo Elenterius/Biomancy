@@ -1,5 +1,6 @@
-package com.github.elenterius.biomancy.styles;
+package com.github.elenterius.biomancy.tooltip;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
@@ -8,9 +9,9 @@ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 /**
  * Horizontal Line element for Tooltips
  */
-public class ClientHrTooltipComponent implements ClientTooltipComponent {
+public class HrTooltipClientComponent implements ClientTooltipComponent {
 
-	public ClientHrTooltipComponent(HrTooltipComponent component) {}
+	public HrTooltipClientComponent(HrTooltipComponent component) {}
 
 	@Override
 	public int getHeight() {
@@ -28,8 +29,12 @@ public class ClientHrTooltipComponent implements ClientTooltipComponent {
 	 * @param color        argb
 	 */
 	public void renderLine(PoseStack poseStack, int posX, int posY, int tooltipWidth, int lineNumber, int color) {
+		RenderSystem.setShaderColor(1, 1, 1, 1);
 		int yOffset = lineNumber == 1 ? 0 : 2; //handle 2px bottom margin of the first line
+		poseStack.pushPose();
+		poseStack.translate(0, 0, 400);
 		GuiComponent.fill(poseStack, posX, posY + yOffset, posX + tooltipWidth, posY + yOffset + 4, color);
+		poseStack.popPose();
 	}
 
 }

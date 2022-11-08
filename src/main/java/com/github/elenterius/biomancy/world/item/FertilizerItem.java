@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.world.item;
 
 import com.github.elenterius.biomancy.styles.ClientTextUtil;
-import com.github.elenterius.biomancy.styles.HrTooltipComponent;
+import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import com.github.elenterius.biomancy.world.block.BlockPropertyUtil;
 import com.github.elenterius.biomancy.world.block.PillarPlantUtil;
 import net.minecraft.core.BlockPos;

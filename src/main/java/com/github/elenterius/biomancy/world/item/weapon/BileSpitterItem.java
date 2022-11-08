@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.world.item.weapon;
 import com.github.elenterius.biomancy.client.renderer.item.BileSpitterRenderer;
 import com.github.elenterius.biomancy.init.ModProjectiles;
 import com.github.elenterius.biomancy.styles.ClientTextUtil;
-import com.github.elenterius.biomancy.styles.HrTooltipComponent;
+import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import com.github.elenterius.biomancy.world.item.IArmPoseProvider;
 import com.github.elenterius.biomancy.world.item.IBiomancyItem;
 import net.minecraft.client.model.HumanoidModel;

@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.world.item;
 
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.styles.ClientTextUtil;
-import com.github.elenterius.biomancy.styles.HrTooltipComponent;
+import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -53,9 +53,10 @@ public class VolatileGlandItem extends Item implements IBiomancyItem {
 		level.explode(null, damageSource, null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), explosionRadius, false, blockInteraction);
 
 		if (!livingEntity.isDeadOrDying()) {
-			livingEntity.hurt(damageSource, 0.5f + livingEntity.getArmorCoverPercentage() * 2.5f);
+			livingEntity.hurt(damageSource, 0.5f + livingEntity.getArmorCoverPercentage() * 2.5f); //this might kill the entity
 		}
 
+		//check if the entity died from the attack/explosion
 		if (livingEntity.isDeadOrDying()) {
 			spawnFleshBits(level, livingEntity.getX(), livingEntity.getY(0.5f), livingEntity.getZ());
 			spawnEffectCloud(level, livingEntity);

@@ -1,7 +1,6 @@
-package com.github.elenterius.biomancy.client.gui;
+package com.github.elenterius.biomancy.tooltip;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.styles.TabTooltipComponent;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;

@@ -1,18 +1,20 @@
-package com.github.elenterius.biomancy.client.gui;
+package com.github.elenterius.biomancy.tooltip;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
 import com.github.elenterius.biomancy.init.ModRarities;
-import com.github.elenterius.biomancy.styles.ClientHrTooltipComponent;
 import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.world.item.IBiomancyItem;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.datafixers.util.Either;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -48,8 +50,17 @@ public final class TooltipRenderHandler {
 	}
 
 	@SubscribeEvent
-	public static void onRenderTooltipComponent(final RenderTooltipEvent.GatherComponents event) {
-		//placeholder
+	public static void onGatherTooltipComponents(final RenderTooltipEvent.GatherComponents event) {
+		List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
+		for (int i = 0; i < tooltipElements.size(); i++) {
+			Either<FormattedText, TooltipComponent> either = tooltipElements.get(i);
+			final int index = i;
+			either.ifLeft(formattedText -> {
+				if (formattedText instanceof PlaceholderComponent placeholder) {
+					tooltipElements.set(index, Either.right(placeholder.getReplacement()));
+				}
+			});
+		}
 	}
 
 	public static void onPostRenderTooltip(ItemStack stack, List<ClientTooltipComponent> components, Screen screen, PoseStack poseStack, int posX, int posY, int tooltipWidth, int tooltipHeight) {
@@ -57,7 +68,7 @@ public final class TooltipRenderHandler {
 			int y = posY;
 			for (int i = 0; i < components.size(); i++) {
 				ClientTooltipComponent clientComponent = components.get(i);
-				if (clientComponent instanceof ClientHrTooltipComponent hrComponent) {
+				if (clientComponent instanceof HrTooltipClientComponent hrComponent) {
 					hrComponent.renderLine(poseStack, posX, y, tooltipWidth, i, ModRarities.getARGBColor(stack));
 				}
 				y += clientComponent.getHeight() + (i == 0 ? 2 : 0);

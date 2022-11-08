@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.styles;
+package com.github.elenterius.biomancy.tooltip;
 
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 

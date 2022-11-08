@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.world.item;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.styles.ClientTextUtil;
-import com.github.elenterius.biomancy.styles.HrTooltipComponent;
+import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import com.github.elenterius.biomancy.world.serum.Serum;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
