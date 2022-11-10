@@ -4,21 +4,16 @@
       "apply": {
         "model": "biomancy:block/flesh_fence_post"
       }
-    }, {
-      "when": {
-        "up": "false"
-      },
-      "apply": {
-        "model": "biomancy:block/flesh_fence_spike"
-      }
-    }, {
+    },
+    {
       "when": {
         "north": "true"
       },
       "apply": {
         "model": "biomancy:block/flesh_fence_side"
       }
-    }, {
+    },
+    {
       "when": {
         "east": "true"
       },
@@ -26,7 +21,8 @@
         "model": "biomancy:block/flesh_fence_side",
         "y": 90
       }
-    }, {
+    },
+    {
       "when": {
         "south": "true"
       },
@@ -34,7 +30,8 @@
         "model": "biomancy:block/flesh_fence_side",
         "y": 180
       }
-    }, {
+    },
+    {
       "when": {
         "west": "true"
       },
