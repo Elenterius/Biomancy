@@ -3,17 +3,21 @@ package com.github.elenterius.biomancy.world.block;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.styles.ClientTextUtil;
+import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.world.block.entity.FleshkinChestBlockEntity;
 import com.github.elenterius.biomancy.world.ownable.IOwnableEntityBlock;
 import com.github.elenterius.biomancy.world.permission.Actions;
 import com.github.elenterius.biomancy.world.permission.IRestrictedInteraction;
+import com.github.elenterius.biomancy.world.permission.UserType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -58,6 +62,7 @@ import net.minecraftforge.network.NetworkHooks;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterloggedBlock, IOwnableEntityBlock {
 
@@ -235,37 +240,63 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 		super.appendHoverText(stack, level, tooltip, flag);
 
 		IOwnableEntityBlock.appendUserListToTooltip(stack, tooltip);
-		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
+
+		if (Minecraft.getInstance().player == null) return;
 
 		CompoundTag tag = BlockItem.getBlockEntityData(stack);
 		if (tag != null) {
-			CompoundTag inventoryTag = tag.getCompound("Inventory");
-			if (!inventoryTag.isEmpty() && inventoryTag.contains("Items", Tag.TAG_LIST)) {
-				int size = inventoryTag.contains("Size") ? inventoryTag.getInt("Size") : FleshkinChestBlockEntity.SLOTS;
-				NonNullList<ItemStack> itemList = NonNullList.withSize(size, ItemStack.EMPTY);
-				ContainerHelper.loadAllItems(inventoryTag, itemList);
-				int count = 0;
-				int totalCount = 0;
+			tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
 
-				for (ItemStack storedStack : itemList) {
-					if (!storedStack.isEmpty()) {
-						totalCount++;
-						if (count < 5) {
-							count++;
-							MutableComponent textComponent = storedStack.getHoverName().copy();
-							textComponent.append(" x").append(String.valueOf(storedStack.getCount())).withStyle(ChatFormatting.GRAY);
-							tooltip.add(textComponent);
+			if (isAuthorized(Minecraft.getInstance().player.getUUID(), tag)) {
+				CompoundTag inventoryTag = tag.getCompound("Inventory");
+				if (!inventoryTag.isEmpty() && inventoryTag.contains("Items", Tag.TAG_LIST)) {
+					int size = inventoryTag.contains("Size") ? inventoryTag.getInt("Size") : FleshkinChestBlockEntity.SLOTS;
+					NonNullList<ItemStack> itemList = NonNullList.withSize(size, ItemStack.EMPTY);
+					ContainerHelper.loadAllItems(inventoryTag, itemList);
+					int count = 0;
+					int totalCount = 0;
+
+					for (ItemStack storedStack : itemList) {
+						if (!storedStack.isEmpty()) {
+							totalCount++;
+							if (count < 5) {
+								count++;
+								MutableComponent textComponent = storedStack.getHoverName().copy();
+								textComponent.append(" x").append(String.valueOf(storedStack.getCount())).withStyle(ChatFormatting.GRAY);
+								tooltip.add(textComponent);
+							}
 						}
 					}
-				}
 
-				if (totalCount - count > 0) {
-					tooltip.add((new TranslatableComponent("container.shulkerBox.more", totalCount - count)).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
+					if (totalCount - count > 0) {
+						tooltip.add((new TranslatableComponent("container.shulkerBox.more", totalCount - count)).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
+					}
+					tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
+					tooltip.add(new TextComponent(String.format("%d/%d ", totalCount, FleshkinChestBlockEntity.SLOTS)).append(new TranslatableComponent("tooltip.biomancy.slots")).withStyle(ChatFormatting.GRAY));
 				}
-				tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
-				tooltip.add(new TextComponent(String.format("%d/%d ", totalCount, FleshkinChestBlockEntity.SLOTS)).append(new TranslatableComponent("tooltip.biomancy.slots")).withStyle(ChatFormatting.GRAY));
+			}
+			else {
+				tooltip.add(new TextComponent("Who are you? I don't like you!").withStyle(TextStyles.MAYKR_RUNES_GRAY));
 			}
 		}
+	}
+
+	private boolean isAuthorized(UUID uuid, CompoundTag tag) {
+		if (tag.hasUUID(NBT_KEY_OWNER)) {
+			if (tag.getUUID(NBT_KEY_OWNER).equals(uuid)) return true;
+		}
+
+		if (tag.contains(NBT_KEY_USER_LIST)) {
+			ListTag nbtList = tag.getList(NBT_KEY_USER_LIST, Tag.TAG_COMPOUND);
+			for (int i = 0; i < nbtList.size(); i++) {
+				CompoundTag userTag = nbtList.getCompound(i);
+				UUID userUUID = userTag.getUUID("UserUUID");
+				UserType authority = UserType.deserialize(userTag);
+				if (userUUID.equals(uuid) && authority.isUserLevel()) return true;
+			}
+		}
+
+		return false;
 	}
 
 	@Override
