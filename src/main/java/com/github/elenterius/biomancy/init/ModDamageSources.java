@@ -24,6 +24,9 @@ public final class ModDamageSources {
 	public static final DamageSource SYMBIONT_GENERIC_ATTACK = createGenericDamage("symbiont_generic");
 	public static final DamageSource CORROSIVE_ACID = createGenericDamage("corrosive_acid");
 
+	public static final DamageSource FALL_ON_BONE_SPIKE = createGenericDamage("bone_spike").bypassArmor().setIsFall();
+	public static final DamageSource IMPALED_BY_BONE_SPIKE = createGenericDamage("bone_spike").bypassArmor();
+
 	private ModDamageSources() {}
 
 	public static DamageSource createGenericDamage(String name) {

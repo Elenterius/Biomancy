@@ -53,6 +53,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		fleshDoor();
 
 		storageSac(ModBlocks.STORAGE_SAC.get());
+
+		boneSpike(ModBlocks.BONE_SPIKE.get());
 	}
 
 	public ResourceLocation blockModel(Block block) {
@@ -91,6 +93,12 @@ public class ModBlockStateProvider extends BlockStateProvider {
 	public void existingBlockWithItem(Block block) {
 		ModelFile.ExistingModelFile existingModel = models().getExistingFile(blockModel(block));
 		simpleBlock(block, existingModel);
+		simpleBlockItem(block, existingModel);
+	}
+
+	public void boneSpike(Block block) {
+		ModelFile.ExistingModelFile existingModel = models().getExistingFile(blockModel(block));
+		directionalBlock(block, existingModel);
 		simpleBlockItem(block, existingModel);
 	}
 

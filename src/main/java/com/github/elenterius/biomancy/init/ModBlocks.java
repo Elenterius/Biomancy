@@ -24,6 +24,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public final class ModBlocks {
+
 	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, BiomancyMod.MOD_ID);
 
 	//# Plant Types
@@ -52,19 +53,16 @@ public final class ModBlocks {
 	public static final RegistryObject<StorageSacBlock> STORAGE_SAC = BLOCKS.register("storage_sac", () -> new StorageSacBlock(createFleshProperties()));
 	public static final RegistryObject<TongueBlock> TONGUE = BLOCKS.register("tongue", () -> new TongueBlock(createFleshProperties()));
 
-	//	public static final RegistryObject<GlandBlock> GLAND = BLOCKS.register("gland", () -> new GlandBlock(createFleshProperties()));
-//	public static final RegistryObject<GulgeBlock> GULGE = BLOCKS.register("gulge", () -> new GulgeBlock(createFleshProperties()));
-
 	//## Ownable
 	public static final RegistryObject<FleshkinChestBlock> FLESHKIN_CHEST = BLOCKS.register("fleshkin_chest", () -> new FleshkinChestBlock(createFleshProperties()));
 	public static final RegistryObject<OwnableDoorBlock> FLESHKIN_DOOR = BLOCKS.register("fleshkin_door", () -> new OwnableDoorBlock(createFleshProperties()));
 	public static final RegistryObject<OwnableTrapDoorBlock> FLESHKIN_TRAPDOOR = BLOCKS.register("fleshkin_trapdoor", () -> new OwnableTrapDoorBlock(createFleshProperties()));
 	public static final RegistryObject<OwnablePressurePlateBlock> FLESHKIN_PRESSURE_PLATE = BLOCKS.register("fleshkin_pressure_plate", () -> new OwnablePressurePlateBlock(createFleshProperties()));
 
-	//## Misc
+	//## Building Materials
 	public static final RegistryObject<FleshBlock> FLESH = BLOCKS.register("flesh", () -> new FleshBlock(createFleshProperties()));
-	public static final RegistryObject<SlabBlock> FLESH_SLAB = BLOCKS.register("flesh_slab", () -> new SlabBlock(createFleshProperties()));
 	public static final RegistryObject<StairBlock> FLESH_STAIRS = BLOCKS.register("flesh_stairs", () -> new StairBlock(() -> FLESH.get().defaultBlockState(), createFleshProperties()));
+	public static final RegistryObject<SlabBlock> FLESH_SLAB = BLOCKS.register("flesh_slab", () -> new SlabBlock(createFleshProperties()));
 	public static final RegistryObject<FleshBlock> PACKED_FLESH = BLOCKS.register("packed_flesh", () -> new FleshBlock(createToughFleshProperties()));
 	public static final RegistryObject<StairBlock> PACKED_FLESH_STAIRS = BLOCKS.register("packed_flesh_stairs", () -> new StairBlock(() -> PACKED_FLESH.get().defaultBlockState(), createToughFleshProperties()));
 	public static final RegistryObject<SlabBlock> PACKED_FLESH_SLAB = BLOCKS.register("packed_flesh_slab", () -> new SlabBlock(createToughFleshProperties()));
@@ -75,12 +73,15 @@ public final class ModBlocks {
 	public static final RegistryObject<FleshBlock> MALIGNANT_FLESH = BLOCKS.register("malignant_flesh", () -> new FleshBlock(createFleshProperties()));
 	public static final RegistryObject<SlabBlock> MALIGNANT_FLESH_SLAB = BLOCKS.register("malignant_flesh_slab", () -> new SlabBlock(createFleshProperties()));
 	public static final RegistryObject<FleshVeinsBlock> MALIGNANT_FLESH_VEINS = BLOCKS.register("malignant_flesh_veins", () -> new FleshVeinsBlock(createFleshProperties().noCollission().noOcclusion()));
+	public static final RegistryObject<FleshFenceBlock> FLESH_FENCE = BLOCKS.register("flesh_fence", () -> new FleshFenceBlock(createFleshProperties()));
+
+	//## Misc
+	public static final RegistryObject<VoiceBoxBlock> VOICE_BOX = BLOCKS.register("voice_box", () -> new VoiceBoxBlock(createFleshProperties()));
+	public static final RegistryObject<LadderBlock> FLESH_LADDER = BLOCKS.register("flesh_ladder", () -> new LadderBlock(createFleshyBoneProperties().noOcclusion()));
+	public static final RegistryObject<FleshFenceGateBlock> FLESH_FENCE_GATE = BLOCKS.register("flesh_fence_gate", () -> new FleshFenceGateBlock(createFleshyBoneProperties().noOcclusion()));
 	public static final RegistryObject<IrisDoorBlock> FLESH_IRIS_DOOR = BLOCKS.register("flesh_iris_door", () -> new IrisDoorBlock(createFleshProperties()));
 	public static final RegistryObject<FleshDoorBlock> FLESH_DOOR = BLOCKS.register("flesh_door", () -> new FleshDoorBlock(createFleshProperties()));
-	public static final RegistryObject<FleshFenceBlock> FLESH_FENCE = BLOCKS.register("flesh_fence", () -> new FleshFenceBlock(createFleshProperties()));
-	public static final RegistryObject<FleshFenceGateBlock> FLESH_FENCE_GATE = BLOCKS.register("flesh_fence_gate", () -> new FleshFenceGateBlock(createFleshyBoneProperties().noOcclusion()));
-	public static final RegistryObject<LadderBlock> FLESH_LADDER = BLOCKS.register("flesh_ladder", () -> new LadderBlock(createFleshyBoneProperties().noOcclusion()));
-	public static final RegistryObject<VoiceBoxBlock> VOICE_BOX = BLOCKS.register("voice_box", () -> new VoiceBoxBlock(createFleshProperties()));
+	public static final RegistryObject<BoneSpikeBlock> BONE_SPIKE = BLOCKS.register("bone_spike", () -> new BoneSpikeBlock(createFleshyBoneProperties()));
 
 	private ModBlocks() {}
 
@@ -128,7 +129,7 @@ public final class ModBlocks {
 	}
 
 	public static boolean limitEntitySpawnToFlesh(BlockState state, BlockGetter level, BlockPos pos, EntityType<?> entityType) {
-//		entityType.getTags().contains(); //TODO: implement this
+		//		entityType.getTags().contains(); //TODO: implement this
 		return false;
 	}
 
