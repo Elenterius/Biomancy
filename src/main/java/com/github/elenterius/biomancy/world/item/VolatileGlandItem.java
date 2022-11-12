@@ -1,34 +1,27 @@
 package com.github.elenterius.biomancy.world.item;
 
 import com.github.elenterius.biomancy.init.ModItems;
-import com.github.elenterius.biomancy.styles.ClientTextUtil;
-import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
-import net.minecraft.network.chat.Component;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.AreaEffectCloud;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.ForgeEventFactory;
 
-import javax.annotation.Nullable;
 import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
 
-public class VolatileGlandItem extends Item implements IBiomancyItem {
+public class VolatileGlandItem extends MobLootItem {
 
-	public VolatileGlandItem(Properties properties) {
-		super(properties);
+	public VolatileGlandItem(TagKey<EntityType<?>> lootSource, Properties properties) {
+		super(lootSource, properties);
 	}
 
 	@Override
@@ -94,16 +87,6 @@ public class VolatileGlandItem extends Item implements IBiomancyItem {
 		}
 
 		level.addFreshEntity(effectCloud);
-	}
-
-	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
-	}
-
-	@Override
-	public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
-		return Optional.of(new HrTooltipComponent());
 	}
 
 }

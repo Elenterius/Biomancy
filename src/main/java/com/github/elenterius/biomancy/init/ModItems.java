@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.world.item.weapon.BileSpitterItem;
 import com.github.elenterius.biomancy.world.item.weapon.DevArmCannonItem;
 import com.github.elenterius.biomancy.world.item.weapon.LongClawsItem;
 import com.github.elenterius.biomancy.world.serum.Serum;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.Item;
@@ -23,14 +24,14 @@ public final class ModItems {
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, BiomancyMod.MOD_ID);
 
 	//# Material / Mob Loot
-	public static final RegistryObject<SimpleItem> MOB_FANG = registerSimpleItem("mob_fang");
-	public static final RegistryObject<SimpleItem> MOB_CLAW = registerSimpleItem("mob_claw");
-	public static final RegistryObject<SimpleItem> MOB_SINEW = registerSimpleItem("mob_sinew", ModRarities.UNCOMMON);
-	public static final RegistryObject<SimpleItem> MOB_MARROW = registerSimpleItem("mob_marrow", ModRarities.RARE);
-	public static final RegistryObject<SimpleItem> WITHERED_MOB_MARROW = registerSimpleItem("withered_mob_marrow", () -> createBaseProperties().food(ModFoods.CORROSIVE_FLUID).rarity(ModRarities.VERY_RARE));
-	public static final RegistryObject<SimpleItem> GENERIC_MOB_GLAND = registerSimpleItem("mob_gland", () -> createBaseProperties().food(ModFoods.POOR_FLESH).rarity(ModRarities.UNCOMMON));
-	public static final RegistryObject<SimpleItem> TOXIN_GLAND = registerSimpleItem("toxin_gland", () -> createBaseProperties().food(ModFoods.TOXIN_GLAND).rarity(ModRarities.RARE));
-	public static final RegistryObject<VolatileGlandItem> VOLATILE_GLAND = ITEMS.register("volatile_gland", () -> new VolatileGlandItem(createBaseProperties().food(ModFoods.VOLATILE_GLAND).rarity(ModRarities.RARE)));
+	public static final RegistryObject<MobLootItem> MOB_FANG = registerMobLootItem("mob_fang", ModTags.EntityTypes.SHARP_FANG);
+	public static final RegistryObject<MobLootItem> MOB_CLAW = registerMobLootItem("mob_claw", ModTags.EntityTypes.SHARP_CLAW);
+	public static final RegistryObject<MobLootItem> MOB_SINEW = registerMobLootItem("mob_sinew", ModTags.EntityTypes.SINEW, ModRarities.UNCOMMON);
+	public static final RegistryObject<MobLootItem> MOB_MARROW = registerMobLootItem("mob_marrow", ModTags.EntityTypes.BONE_MARROW, ModRarities.RARE);
+	public static final RegistryObject<MobLootItem> WITHERED_MOB_MARROW = registerMobLootItem("withered_mob_marrow", ModTags.EntityTypes.WITHERED_BONE_MARROW, () -> createBaseProperties().food(ModFoods.CORROSIVE_FLUID).rarity(ModRarities.VERY_RARE));
+	public static final RegistryObject<MobLootItem> GENERIC_MOB_GLAND = registerMobLootItem("mob_gland", ModTags.EntityTypes.BILE_GLAND, () -> createBaseProperties().food(ModFoods.POOR_FLESH).rarity(ModRarities.UNCOMMON));
+	public static final RegistryObject<MobLootItem> TOXIN_GLAND = registerMobLootItem("toxin_gland", ModTags.EntityTypes.TOXIN_GLAND, () -> createBaseProperties().food(ModFoods.TOXIN_GLAND).rarity(ModRarities.RARE));
+	public static final RegistryObject<VolatileGlandItem> VOLATILE_GLAND = ITEMS.register("volatile_gland", () -> new VolatileGlandItem(ModTags.EntityTypes.TOXIN_GLAND, createBaseProperties().food(ModFoods.VOLATILE_GLAND).rarity(ModRarities.RARE)));
 	//## Special
 	public static final RegistryObject<SimpleItem> LIVING_FLESH = registerSimpleItem("living_flesh", ModRarities.VERY_RARE);
 	public static final RegistryObject<SimpleItem.ShinySimpleItem> EXALTED_LIVING_FLESH = ITEMS.register("exalted_living_flesh", () -> new SimpleItem.ShinySimpleItem(createBaseProperties().rarity(ModRarities.ULTRA_RARE).tab(null)));
@@ -112,8 +113,6 @@ public final class ModItems {
 	public static final RegistryObject<SimpleBlockItem> TONGUE = registerSimpleBlockItem(ModBlocks.TONGUE, ModRarities.UNCOMMON);
 	public static final RegistryObject<SimpleBlockItem> FLESHKIN_CHEST = ITEMS.register(ModBlocks.FLESHKIN_CHEST.getId().getPath(), () -> new FleshkinChestBlockItem(ModBlocks.FLESHKIN_CHEST.get(), createBaseProperties().rarity(ModRarities.UNCOMMON)));
 	public static final RegistryObject<StorageSacBlockItem> STORAGE_SAC = ITEMS.register(ModBlocks.STORAGE_SAC.getId().getPath(), () -> new StorageSacBlockItem(ModBlocks.STORAGE_SAC.get(), createBaseProperties()));
-	//	public static final RegistryObject<MobStorageSacItem> SMALL_ENTITY_BAG_ITEM = ITEMS.register("small_entity_bag", () -> new EntityStorageBagItem(4f, (byte) 1, createItemProperties().stacksTo(1).rarity(ModRarities.UNCOMMON)));
-	//	public static final RegistryObject<MobStorageSacItem> LARGE_ENTITY_BAG_ITEM = ITEMS.register("large_entity_bag", () -> new EntityStorageBagItem(10f, (byte) 8, createItemProperties().stacksTo(1).rarity(ModRarities.UNCOMMON)));
 
 	//## Ownable
 	//	public static final RegistryObject<SimpleBlockItem> FLESHKIN_DOOR = registerSimpleBlockItem(ModBlocks.FLESHKIN_DOOR);
@@ -148,26 +147,6 @@ public final class ModItems {
 
 	//# Spawn Eggs
 	public static final RegistryObject<ForgeSpawnEggItem> FLESH_BLOB_SPAWN_EGG = registerSpawnEgg(ModEntityTypes.FLESH_BLOB, 0xe9967a, 0xf6d2c6);
-	//	public static final RegistryObject<ForgeSpawnEggItem> FLESHKIN_SPAWN_EGG = registerSpawnEgg(ModEntityTypes.FLESHKIN, 0xe9967a, 0xf6d2c6);
-	//	public static final RegistryObject<ForgeSpawnEggItem> BOOMLING_SPAWN_EGG = registerSpawnEgg(ModEntityTypes.BOOMLING, 0x3e3e3e, 0xcfcfcf);
-
-	//# Tools
-	//	public static final RegistryObject<AccessKeyItem> OCULUS_KEY = ITEMS.register("oculus_key", () -> new AccessKeyItem(createItemProperties()));
-	// Adaptive Tools
-	//	public static final RegistryObject<AdaptivePickaxeItem> FLESHBORN_PICKAXE = ITEMS.register("fleshborn_pickaxe", () -> new AdaptivePickaxeItem(ModItemTier.LESSER_BIOMETAL, 1, -2.8f, createItemProperties().rarity(ModRarities.UNCOMMON)));
-	//	public static final RegistryObject<AdaptiveShovelItem> FLESHBORN_SHOVEL = ITEMS.register("fleshborn_shovel", () -> new AdaptiveShovelItem(ModItemTier.LESSER_BIOMETAL, 1.5f, -3f, createItemProperties().rarity(ModRarities.UNCOMMON)));
-	//	public static final RegistryObject<AdaptiveAxeItem> FLESHBORN_AXE = ITEMS.register("fleshborn_axe", () -> new AdaptiveAxeItem(ModItemTier.LESSER_BIOMETAL, 6f, -3f, createItemProperties().rarity(ModRarities.UNCOMMON)));
-
-	//# Spawn Eggs
-	//	public static final RegistryObject<ModSpawnEggItem> OCULUS_OBSERVER_SPAWN_EGG = ITEMS.register("oculus_observer_spawn_egg", () -> new ModSpawnEggItem(ModEntityTypes.OCULUS_OBSERVER, 0xe9967a, 0xeff0f1, createItemProperties()));
-//	public static final RegistryObject<ModSpawnEggItem> FAILED_SHEEP_SPAWN_EGG = ITEMS.register("failed_sheep_spawn_egg", () -> new ModSpawnEggItem(ModEntityTypes.FAILED_SHEEP, 0xe9967a, 0xf6d2c6, createItemProperties()));
-//	public static final RegistryObject<ModSpawnEggItem> THICK_WOOL_SHEEP_SPAWN_EGG = ITEMS.register("thick_wool_sheep_spawn_egg", () -> new ModSpawnEggItem(ModEntityTypes.THICK_WOOL_SHEEP, 0xe7e7e7, 0xf1ddcf, createItemProperties()));
-//	public static final RegistryObject<ModSpawnEggItem> SILKY_WOOL_SHEEP_SPAWN_EGG = ITEMS.register("silky_wool_sheep_spawn_egg", () -> new ModSpawnEggItem(ModEntityTypes.SILKY_WOOL_SHEEP, 0xe7e7e7, 0xfae6fa, createItemProperties()));
-//	public static final RegistryObject<ModSpawnEggItem> FAILED_COW_SPAWN_EGG = ITEMS.register("failed_cow_spawn_egg", () -> new ModSpawnEggItem(ModEntityTypes.FAILED_COW, 0xe9967a, 0xf6d2c6, createItemProperties()));
-//	public static final RegistryObject<ModSpawnEggItem> NUTRIENT_COW_SPAWN_EGG = ITEMS.register("nutrient_slurry_cow_spawn_egg", () -> new ModSpawnEggItem(ModEntityTypes.NUTRIENT_SLURRY_COW, 0x443626, 0xccd65b, createItemProperties()));
-
-//	public static final RegistryObject<ModSpawnEggItem> BROOD_MOTHER_SPAWN_EGG = ITEMS.register("brood_mother_spawn_egg", () -> new ModSpawnEggItem(ModEntityTypes.BROOD_MOTHER, 0x49345e, 0xda70d6, createItemProperties()));
-//	public static final RegistryObject<ModSpawnEggItem> CHROMA_SHEEP_SPAWN_EGG = ITEMS.register("chroma_sheep_spawn_egg", () -> new ModSpawnEggItem(ModEntityTypes.CHROMA_SHEEP, 0xe9967a, 0xf6d2c6, createItemProperties()));
 
 	private ModItems() {}
 
@@ -201,6 +180,18 @@ public final class ModItems {
 
 	private static RegistryObject<SimpleItem> registerSimpleItem(String name) {
 		return ITEMS.register(name, () -> new SimpleItem(createBaseProperties()));
+	}
+
+	private static RegistryObject<MobLootItem> registerMobLootItem(String name, TagKey<EntityType<?>> lootSource) {
+		return ITEMS.register(name, () -> new MobLootItem(lootSource, createBaseProperties()));
+	}
+
+	private static RegistryObject<MobLootItem> registerMobLootItem(String name, TagKey<EntityType<?>> lootSource, Rarity rarity) {
+		return registerMobLootItem(name, lootSource, () -> createBaseProperties().rarity(rarity));
+	}
+
+	private static RegistryObject<MobLootItem> registerMobLootItem(String name, TagKey<EntityType<?>> lootSource, Supplier<Item.Properties> properties) {
+		return ITEMS.register(name, () -> new MobLootItem(lootSource, properties.get()));
 	}
 
 	private static RegistryObject<SimpleItem> registerSimpleItem(String name, Rarity rarity) {
