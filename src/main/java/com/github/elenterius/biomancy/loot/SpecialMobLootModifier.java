@@ -4,7 +4,6 @@ import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModTags;
 import com.github.elenterius.biomancy.util.random.DynamicLootTable;
-import com.github.elenterius.biomancy.world.entity.MobUtil;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.critereon.EntityFlagsPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
@@ -14,9 +13,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.AbstractGolem;
-import net.minecraft.world.entity.monster.Slime;
-import net.minecraft.world.entity.monster.Vex;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -59,29 +55,30 @@ public class SpecialMobLootModifier extends LootModifier {
 		this.weights = weights;
 	}
 
-	protected DynamicLootTable buildLootTable(LivingEntity livingEntity) {
-		DynamicLootTable lootTable = new DynamicLootTable();
+	private static String getName(RegistryObject<? extends Item> itemHolder) {
+		return itemHolder.getId().toDebugFileName();
+	}
 
+	protected DynamicLootTable buildLootTable(LivingEntity livingEntity) {
 		EntityType<?> type = livingEntity.getType();
 		boolean hasFangs = type.is(ModTags.EntityTypes.SHARP_FANG);
 		boolean hasClaws = type.is(ModTags.EntityTypes.SHARP_CLAW);
-		boolean hasToxinGland = type.is(ModTags.EntityTypes.VENOM_GLAND);
+		boolean hasToxinGland = type.is(ModTags.EntityTypes.TOXIN_GLAND);
 		boolean hasVolatileGland = type.is(ModTags.EntityTypes.VOLATILE_GLAND);
-		boolean isWithered = MobUtil.isWithered(livingEntity); //type of mob
-		boolean isSkeleton = MobUtil.isSkeleton(livingEntity);
+		boolean hasBileGland = type.is(ModTags.EntityTypes.BILE_GLAND);
+		boolean hasSinew = type.is(ModTags.EntityTypes.SINEW);
+		boolean hasBoneMarrow = type.is(ModTags.EntityTypes.BONE_MARROW);
+		boolean hasWitheredBoneMarrow = type.is(ModTags.EntityTypes.WITHERED_BONE_MARROW);
 
+		DynamicLootTable lootTable = new DynamicLootTable();
 		if (hasFangs) lootTable.add(SHARP_FANG, weights.fang);
 		if (hasClaws) lootTable.add(SHARP_CLAW, weights.claw);
 		if (hasToxinGland) lootTable.add(TOXIN_GLAND, weights.toxinGland);
 		if (hasVolatileGland) lootTable.add(VOLATILE_GLAND, weights.volatileGland);
-
-		if (!isSkeleton) {
-			if (!hasToxinGland && !hasVolatileGland) lootTable.addSelfRemoving(GENERIC_GLAND, weights.genericGland);
-			if (!isWithered) lootTable.add(SINEW, weights.sinew);
-		}
-
-		if (isSkeleton && !isWithered) lootTable.add(BONE_MARROW, weights.boneMarrow);
-		if (isWithered) lootTable.add(WITHERED_BONE_MARROW, weights.witheredBoneMarrow);  //includes wither boss & wither skeletons
+		if (hasBileGland) lootTable.addSelfRemoving(GENERIC_GLAND, weights.genericGland);
+		if (hasSinew) lootTable.add(SINEW, weights.sinew);
+		if (hasBoneMarrow) lootTable.add(BONE_MARROW, weights.boneMarrow);
+		if (hasWitheredBoneMarrow) lootTable.add(WITHERED_BONE_MARROW, weights.witheredBoneMarrow);
 
 		return lootTable;
 	}
@@ -90,17 +87,13 @@ public class SpecialMobLootModifier extends LootModifier {
 	@Override
 	protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
 		if (context.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof LivingEntity victim) {
-
-			//TODO: replace with data-pack driven denylist (mob type tag)?
-			if (victim instanceof Slime) return generatedLoot;
-			if (victim instanceof AbstractGolem) return generatedLoot;
-			if (victim instanceof Vex) return generatedLoot;
+			DynamicLootTable lootTable = buildLootTable(victim);
+			if (lootTable.isEmpty()) return generatedLoot;
 
 			Random random = context.getRandom();
 			int despoilLevel = getDespoilLevel(context);
 			int lootingLevel = context.getLootingModifier();
 
-			DynamicLootTable lootTable = buildLootTable(victim);
 			int diceRolls = Mth.nextInt(random, 1, 1 + despoilLevel); //max is inclusive
 			for (; diceRolls > 0; diceRolls--) {
 				lootTable.getRandomItemStack(random, lootingLevel).ifPresent(generatedLoot::add);
@@ -118,22 +111,9 @@ public class SpecialMobLootModifier extends LootModifier {
 		return 0;
 	}
 
-	private static String getName(RegistryObject<? extends Item> itemHolder) {
-		return itemHolder.getId().toDebugFileName();
-	}
-
 	record Weights(int fang, int claw, int toxinGland, int volatileGland, int genericGland, int witheredBoneMarrow, int boneMarrow, int sinew) {
 		public static Weights fromJson(JsonObject jsonObject) {
-			return new Weights(
-					GsonHelper.getAsInt(jsonObject, getName(ModItems.MOB_FANG)),
-					GsonHelper.getAsInt(jsonObject, getName(ModItems.MOB_CLAW)),
-					GsonHelper.getAsInt(jsonObject, getName(ModItems.TOXIN_GLAND)),
-					GsonHelper.getAsInt(jsonObject, getName(ModItems.VOLATILE_GLAND)),
-					GsonHelper.getAsInt(jsonObject, getName(ModItems.GENERIC_MOB_GLAND)),
-					GsonHelper.getAsInt(jsonObject, getName(ModItems.WITHERED_MOB_MARROW)),
-					GsonHelper.getAsInt(jsonObject, getName(ModItems.MOB_MARROW)),
-					GsonHelper.getAsInt(jsonObject, getName(ModItems.MOB_SINEW))
-			);
+			return new Weights(GsonHelper.getAsInt(jsonObject, getName(ModItems.MOB_FANG)), GsonHelper.getAsInt(jsonObject, getName(ModItems.MOB_CLAW)), GsonHelper.getAsInt(jsonObject, getName(ModItems.TOXIN_GLAND)), GsonHelper.getAsInt(jsonObject, getName(ModItems.VOLATILE_GLAND)), GsonHelper.getAsInt(jsonObject, getName(ModItems.GENERIC_MOB_GLAND)), GsonHelper.getAsInt(jsonObject, getName(ModItems.WITHERED_MOB_MARROW)), GsonHelper.getAsInt(jsonObject, getName(ModItems.MOB_MARROW)), GsonHelper.getAsInt(jsonObject, getName(ModItems.MOB_SINEW)));
 		}
 
 		public JsonObject toJson() {
