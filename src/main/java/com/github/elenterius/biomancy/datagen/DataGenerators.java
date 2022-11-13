@@ -4,7 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.datagen.loot.ModGlobalLootModifierProvider;
 import com.github.elenterius.biomancy.datagen.loot.ModLootTableProvider;
 import com.github.elenterius.biomancy.datagen.models.ModBlockStateProvider;
-import com.github.elenterius.biomancy.datagen.models.ModModelProvider;
+import com.github.elenterius.biomancy.datagen.models.ModItemModelProvider;
 import com.github.elenterius.biomancy.datagen.recipes.ModRecipeProvider;
 import com.github.elenterius.biomancy.datagen.tags.ForgeEntityTypeTagsProvider;
 import com.github.elenterius.biomancy.datagen.tags.ModBlockTagsProvider;
@@ -44,13 +44,11 @@ public final class DataGenerators {
 		generator.addProvider(new ModAdvancementProvider(generator, existingFileHelper));
 
 		//models & block states
-		generator.addProvider(new ModModelProvider(generator));
 		generator.addProvider(new ModBlockStateProvider(generator, existingFileHelper));
+		generator.addProvider(new ModItemModelProvider(generator, existingFileHelper));
 
 		//sounds
 		generator.addProvider(new ModSoundProvider(generator, existingFileHelper));
-
-//		generator.addProvider(new PatchouliProvider(generator));
 	}
 
 }
