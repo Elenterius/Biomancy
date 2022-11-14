@@ -32,7 +32,7 @@ import java.util.List;
 
 public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecipe> {
 
-	public static final RecipeType<DecomposerRecipe> RECIPE_TYPE = new RecipeType<>(BiomancyMod.createRL(ModRecipes.DECOMPOSING_RECIPE_TYPE.getId()), DecomposerRecipe.class);
+	public static final RecipeType<DecomposerRecipe> RECIPE_TYPE = new RecipeType<>(ModRecipes.DECOMPOSING_RECIPE_TYPE.getId(), DecomposerRecipe.class);
 	private final IDrawable background;
 	private final IDrawable icon;
 

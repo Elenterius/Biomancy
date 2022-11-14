@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.world.serum;
 
+import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModMobEffects;
-import com.github.elenterius.biomancy.styles.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.world.item.SerumItem;
@@ -20,8 +20,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -56,9 +54,8 @@ public class AdrenalineSerum extends Serum {
 		target.addEffect(new MobEffectInstance(ModMobEffects.ADRENALINE_RUSH.get(), duration, AMPLIFIER));
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInfoToTooltip(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
+	public void addInfoToClientTooltip(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
 		if (!(stack.getItem() instanceof SerumItem)) {
 			tooltip.add(TextComponentUtil.getTooltipText("contains", new TranslatableComponent(getTranslationKey())).withStyle(ChatFormatting.GRAY));
 		}
@@ -67,11 +64,10 @@ public class AdrenalineSerum extends Serum {
 			tooltip.add(new TranslatableComponent(getTranslationKey().replace(Serum.PREFIX, "tooltip.")).withStyle(TextStyles.LORE));
 		}
 
-		addEffectToTooltip(tooltip, ModMobEffects.ADRENALINE_RUSH.get(), AMPLIFIER, DURATION);
+		addEffectToClientTooltip(tooltip, ModMobEffects.ADRENALINE_RUSH.get(), AMPLIFIER, DURATION);
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	public void addEffectToTooltip(List<Component> tooltips, MobEffect effect, int amplifier, int duration) {
+	public void addEffectToClientTooltip(List<Component> tooltips, MobEffect effect, int amplifier, int duration) {
 		TranslatableComponent effectText = new TranslatableComponent(effect.getDescriptionId());
 		if (amplifier > 0)
 			effectText = new TranslatableComponent("potion.withAmplifier", effectText, new TranslatableComponent("potion.potency." + amplifier));

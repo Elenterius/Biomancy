@@ -1,12 +1,11 @@
 package com.github.elenterius.biomancy.world.item.weapon;
 
+import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModEnchantments;
-import com.github.elenterius.biomancy.styles.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.world.item.IKeyListener;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
@@ -51,7 +50,7 @@ public abstract class BaseGunItem extends ProjectileWeaponItem implements IGun, 
 	}
 
 	@Override
-	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, ClientLevel level, Player player, EquipmentSlot slot, byte flags) {
+	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, Level level, Player player, EquipmentSlot slot, byte flags) {
 		State state = getState(stack);
 		if (state == State.NONE && !canReload(stack, player)) {
 			playSFX(level, player, SoundEvents.DISPENSER_FAIL);

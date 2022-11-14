@@ -23,6 +23,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@Deprecated
 public class GlandBlockEntity extends SimpleContainerBlockEntity {
 
 	public static final int OUTPUT_SLOTS = DecomposerRecipe.MAX_OUTPUTS;
@@ -33,7 +34,7 @@ public class GlandBlockEntity extends SimpleContainerBlockEntity {
 		outputInventory = BehavioralInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenContainer, this::setChanged);
 	}
 
-//	public GlandBlockEntity(BlockPos pos, BlockState state) {
+	//	public GlandBlockEntity(BlockPos pos, BlockState state) {
 //		super(ModBlockEntities.GLAND.get(), pos, state);
 //		outputInventory = BehavioralInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenContainer, this::setChanged);
 //	}

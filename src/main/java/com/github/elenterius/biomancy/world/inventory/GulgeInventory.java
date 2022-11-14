@@ -9,6 +9,7 @@ import net.minecraftforge.common.util.LazyOptional;
 
 import java.util.function.Predicate;
 
+@Deprecated
 public class GulgeInventory extends BaseInventory<LargeSingleItemStackHandler> {
 
 	private final BigItemData bigItemData = new BigItemData();

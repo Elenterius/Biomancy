@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.world.block;
 
-import com.github.elenterius.biomancy.styles.ClientTextUtil;
+import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.VoxelShapeUtil;
 import com.github.elenterius.biomancy.world.block.entity.DecomposerBlockEntity;
 import com.github.elenterius.biomancy.world.block.entity.GlandBlockEntity;

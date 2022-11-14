@@ -101,7 +101,7 @@ public class BioLabRecipe extends AbstractProductionRecipe {
 
 	@Override
 	public RecipeType<?> getType() {
-		return ModRecipes.BIO_BREWING_RECIPE_TYPE;
+		return ModRecipes.BIO_BREWING_RECIPE_TYPE.get();
 	}
 
 	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<BioLabRecipe> {

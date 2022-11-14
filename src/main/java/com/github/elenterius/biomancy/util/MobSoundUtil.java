@@ -94,7 +94,7 @@ public final class MobSoundUtil {
 		}
 
 		public String getTranslationKey() {
-			return "enum.biomancy.voice_type." + name().toLowerCase(Locale.ROOT);
+			return "enum.biomancy.voice_type." + name().toLowerCase(Locale.ENGLISH);
 		}
 
 		public VoiceType cycle() {

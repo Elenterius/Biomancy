@@ -20,10 +20,7 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class FleshkinRenderer extends HumanoidMobRenderer<Fleshkin, FleshkinModel<Fleshkin>> {
 
 	private static final ResourceLocation TEXTURE = BiomancyMod.createRL("textures/entity/fleshkin.png");
@@ -58,7 +55,7 @@ public class FleshkinRenderer extends HumanoidMobRenderer<Fleshkin, FleshkinMode
 		@Override
 		public void render(PoseStack matrixStackIn, MultiBufferSource buffer, int packedLight, T livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 			matrixStackIn.pushPose();
-//			matrixStackIn.scale(1f, 1f, 1f);
+			//			matrixStackIn.scale(1f, 1f, 1f);
 			if (livingEntity.isBaby()) {
 				matrixStackIn.translate(0d, 0.03125d, 0d);
 				matrixStackIn.scale(0.7f, 0.7f, 0.7f);

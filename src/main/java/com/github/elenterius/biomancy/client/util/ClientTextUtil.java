@@ -1,6 +1,8 @@
-package com.github.elenterius.biomancy.styles;
+package com.github.elenterius.biomancy.client.util;
 
-import com.github.elenterius.biomancy.init.ClientSetupHandler;
+import com.github.elenterius.biomancy.init.client.ClientSetupHandler;
+import com.github.elenterius.biomancy.styles.TextComponentUtil;
+import com.github.elenterius.biomancy.styles.TextStyles;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -11,8 +13,6 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-@OnlyIn(Dist.CLIENT)
+
 public final class ClientTextUtil {
 
 	private static final TranslatableComponent CTRL_KEY_TEXT = new TranslatableComponent("keyboard.biomancy.ctrl");

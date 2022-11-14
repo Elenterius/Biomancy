@@ -58,6 +58,7 @@ public class DigesterRecipe extends AbstractProductionRecipe {
 		return NonNullList.of(Ingredient.EMPTY, recipeIngredient);
 	}
 
+
 	@Override
 	public RecipeSerializer<?> getSerializer() {
 		return ModRecipes.DIGESTING_SERIALIZER.get();
@@ -65,7 +66,7 @@ public class DigesterRecipe extends AbstractProductionRecipe {
 
 	@Override
 	public RecipeType<?> getType() {
-		return ModRecipes.DIGESTING_RECIPE_TYPE;
+		return ModRecipes.DIGESTING_RECIPE_TYPE.get();
 	}
 
 	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<DigesterRecipe> {

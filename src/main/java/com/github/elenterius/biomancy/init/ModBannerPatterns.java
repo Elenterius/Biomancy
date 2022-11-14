@@ -19,7 +19,7 @@ public final class ModBannerPatterns {
 
 	private static BannerPattern createBannerPattern(String name) {
 		String pattern = BiomancyMod.MOD_ID + "_" + name;
-		return BannerPattern.create(pattern.toUpperCase(Locale.ROOT), pattern, pattern, true);
+		return BannerPattern.create(pattern.toUpperCase(Locale.ENGLISH), pattern, pattern, true);
 	}
 
 }

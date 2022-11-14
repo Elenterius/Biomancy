@@ -117,7 +117,7 @@ public class DecomposerMenu extends PlayerContainerMenu {
 	}
 
 	private boolean mergeIntoInputZone(ItemStack stackInSlot) {
-		if (DecomposerBlockEntity.RECIPE_TYPE.getRecipeForIngredient(level, stackInSlot).isPresent()) {
+		if (DecomposerBlockEntity.RECIPE_TYPE.get().getRecipeForIngredient(level, stackInSlot).isPresent()) {
 			return mergeInto(SlotZone.INPUT_ZONE, stackInSlot, false);
 		}
 		return false;

@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.mixin.client;
 
-import com.github.elenterius.biomancy.tooltip.TooltipRenderHandler;
+import com.github.elenterius.biomancy.client.gui.tooltip.TooltipRenderHandler;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;

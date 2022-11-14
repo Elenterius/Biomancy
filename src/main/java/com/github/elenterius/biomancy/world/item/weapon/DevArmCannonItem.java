@@ -2,9 +2,9 @@ package com.github.elenterius.biomancy.world.item.weapon;
 
 import com.github.elenterius.biomancy.client.gui.DevCannonScreen;
 import com.github.elenterius.biomancy.client.renderer.item.DevArmCannonRenderer;
+import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModProjectiles;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
-import com.github.elenterius.biomancy.styles.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
@@ -15,7 +15,6 @@ import it.unimi.dsi.fastutil.floats.FloatUnaryOperator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -77,12 +76,11 @@ public class DevArmCannonItem extends Item implements IAnimatable, IArmPoseProvi
 		});
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
-	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, ClientLevel level, Player player, EquipmentSlot slot, byte flags) {
+	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, Level level, Player player, EquipmentSlot slot, byte flags) {
 		if (slot.getType() == EquipmentSlot.Type.HAND) {
 			InteractionHand hand = slot == EquipmentSlot.MAINHAND ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
-			tryToOpenWheelMenu(hand);
+			tryToOpenClientScreen(hand);
 		}
 		return InteractionResultHolder.fail(flags); //don't send button press to server
 	}
@@ -96,7 +94,7 @@ public class DevArmCannonItem extends Item implements IAnimatable, IArmPoseProvi
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private void tryToOpenWheelMenu(InteractionHand hand) {
+	private void tryToOpenClientScreen(InteractionHand hand) {
 		Screen currScreen = Minecraft.getInstance().screen;
 		if (currScreen == null && Minecraft.getInstance().player != null) {
 			Minecraft.getInstance().setScreen(new DevCannonScreen(hand));

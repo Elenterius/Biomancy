@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.styles.ClientTextUtil;
+import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.world.inventory.menu.GulgeMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -10,13 +10,10 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.awt.*;
 import java.text.DecimalFormat;
 
-@OnlyIn(Dist.CLIENT)
 public class GulgeScreen extends AbstractContainerScreen<GulgeMenu> {
 
 	private static final ResourceLocation BACKGROUND_TEXTURE = BiomancyMod.createRL("textures/gui/gulge_gui.png");

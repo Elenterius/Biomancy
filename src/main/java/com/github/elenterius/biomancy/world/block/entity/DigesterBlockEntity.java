@@ -4,8 +4,9 @@ import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.recipe.DigesterRecipe;
-import com.github.elenterius.biomancy.recipe.RecipeTypeImpl;
+import com.github.elenterius.biomancy.recipe.SimpleRecipeType;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
+import com.github.elenterius.biomancy.util.ILoopingSoundHelper;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.util.fuel.FuelHandler;
 import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
@@ -14,8 +15,6 @@ import com.github.elenterius.biomancy.world.block.entity.state.DigesterStateData
 import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.world.inventory.itemhandler.HandlerBehaviors;
 import com.github.elenterius.biomancy.world.inventory.menu.DigesterMenu;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -31,11 +30,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -56,7 +54,7 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 
 	public static final int MAX_FUEL = 1_000;
 	public static final short BASE_COST = 1;
-	public static final RecipeTypeImpl.ItemStackRecipeType<DigesterRecipe> RECIPE_TYPE = ModRecipes.DIGESTING_RECIPE_TYPE;
+	public static final RegistryObject<SimpleRecipeType.ItemStackRecipeType<DigesterRecipe>> RECIPE_TYPE = ModRecipes.DIGESTING_RECIPE_TYPE;
 
 	private final DigesterStateData stateData;
 	private final FuelHandler fuelHandler;
@@ -65,6 +63,7 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 	private final BehavioralInventory<?> outputInventory;
 
 	private final AnimationFactory animationFactory = new AnimationFactory(this);
+	private ILoopingSoundHelper loopingSoundHelper = ILoopingSoundHelper.NULL;
 
 	public DigesterBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.DIGESTER.get(), pos, state);
@@ -123,12 +122,9 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 		return outputInventory.doesItemStackFit(stackToCraft);
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	private SimpleSoundInstance loopingSoundInstance;
-
 	@Override
 	protected @Nullable DigesterRecipe resolveRecipeFromInput(Level level) {
-		return RECIPE_TYPE.getRecipeFromContainer(level, inputInventory).orElse(null);
+		return RECIPE_TYPE.get().getRecipeFromContainer(level, inputInventory).orElse(null);
 	}
 
 	@Override
@@ -205,16 +201,17 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 		return false;
 	}
 
+	//client side only
 	private <E extends BlockEntity & IAnimatable> PlayState handleAnim(AnimationEvent<E> event) {
 		Boolean isCrafting = getBlockState().getValue(MachineBlock.CRAFTING);
 
 		if (Boolean.TRUE.equals(isCrafting)) {
 			event.getController().setAnimation(new AnimationBuilder().loop("digester.working"));
-			playLoopingSound();
+			loopingSoundHelper.startLoop(this, ModSoundEvents.DIGESTER_CRAFTING.get());
 		}
 		else {
 			event.getController().setAnimation(new AnimationBuilder().loop("digester.idle"));
-			stopLoopingSound();
+			loopingSoundHelper.stopLoop();
 		}
 
 		return PlayState.CONTINUE;
@@ -230,32 +227,10 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 		return animationFactory;
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	private void stopLoopingSound() {
-		if (loopingSoundInstance != null) {
-			Minecraft.getInstance().getSoundManager().stop(loopingSoundInstance);
-			loopingSoundInstance = null;
-		}
-	}
-
-	private void removeLoopingSound() {
-		if (level != null && level.isClientSide) {
-			stopLoopingSound();
-		}
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	private void playLoopingSound() {
-		if (loopingSoundInstance == null && !isRemoved()) {
-			loopingSoundInstance = SoundUtil.createLoopingSoundInstance(ModSoundEvents.DIGESTER_CRAFTING, getBlockPos());
-			Minecraft.getInstance().getSoundManager().play(loopingSoundInstance);
-		}
-	}
-
 	@Override
 	public void setRemoved() {
 		if (level != null && level.isClientSide) {
-			removeLoopingSound();
+			loopingSoundHelper.clear();
 		}
 		super.setRemoved();
 	}

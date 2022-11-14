@@ -4,7 +4,6 @@ import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.block.entity.CreatorBlockEntity;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -38,6 +37,12 @@ import java.util.stream.Stream;
 
 public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBlock {
 
+	public static final Predicate<ItemStack> EXPENSIVE_ITEMS = stack -> {
+		Item item = stack.getItem();
+		if (item instanceof BlockItem blockItem && (blockItem.getBlock() instanceof ShulkerBoxBlock || blockItem.getBlock() instanceof FleshkinChestBlock))
+			return true;
+		return stack.getItemEnchantability() > 0 || stack.isEnchanted() || item instanceof TieredItem || item instanceof Vanishable;
+	};
 	protected static final VoxelShape INSIDE_AABB = box(3, 4, 3, 13, 16, 13);
 	protected static final VoxelShape OUTSIDE_AABB = Stream.of(
 			box(1, 0, 1, 15, 5, 15),
@@ -46,19 +51,18 @@ public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBl
 	).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
 	protected static final VoxelShape AABB = Shapes.join(OUTSIDE_AABB, INSIDE_AABB, BooleanOp.ONLY_FIRST);
 
-	public static final Predicate<ItemStack> EXPENSIVE_ITEMS = stack -> {
-		Item item = stack.getItem();
-		if (item instanceof BlockItem blockItem && (blockItem.getBlock() instanceof ShulkerBoxBlock || blockItem.getBlock() instanceof FleshkinChestBlock))
-			return true;
-		return stack.getItemEnchantability() > 0 || stack.isEnchanted() || item instanceof TieredItem || item instanceof Vanishable;
-	};
-
 	public CreatorBlock(Properties properties) {
 		super(properties);
 	}
 
 	public static float getYRotation(BlockState state) {
 		return state.getValue(FACING).toYRot();
+	}
+
+	@Nullable
+	protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(BlockEntityType<A> blockEntityType, BlockEntityType<E> targetType, BlockEntityTicker<? super E> entityTicker) {
+		//noinspection unchecked
+		return targetType == blockEntityType ? (BlockEntityTicker<A>) entityTicker : null;
 	}
 
 	@Override
@@ -82,12 +86,6 @@ public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBl
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
 		return level.isClientSide ? null : createTickerHelper(blockEntityType, ModBlockEntities.CREATOR.get(), CreatorBlockEntity::serverTick);
-	}
-
-	@Nullable
-	protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(BlockEntityType<A> blockEntityType, BlockEntityType<E> targetType, BlockEntityTicker<? super E> entityTicker) {
-		//noinspection unchecked
-		return targetType == blockEntityType ? (BlockEntityTicker<A>) entityTicker : null;
 	}
 
 	@Override
@@ -146,7 +144,7 @@ public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBl
 				level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + random.nextFloat(0.13125f, 0.7375f), pos.getY() + 0.5f, pos.getZ() + random.nextFloat(0.13125f, 0.7375f), r, g, b);
 			}
 			if (random.nextInt(3) == 0) {
-				SoundUtil.playLocalBlockSound((ClientLevel) level, pos, ModSoundEvents.CREATOR_CRAFTING_RANDOM);
+				SoundUtil.clientPlayBlockSound(level, pos, ModSoundEvents.CREATOR_CRAFTING_RANDOM);
 			}
 		}
 	}

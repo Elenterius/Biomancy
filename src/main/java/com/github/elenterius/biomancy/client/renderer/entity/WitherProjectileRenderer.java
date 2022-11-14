@@ -14,10 +14,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class WitherProjectileRenderer extends EntityRenderer<WitherProjectile> {
 
 	public static final ModelLayerLocation MODEL_LAYER = new ModelLayerLocation(BiomancyMod.createRL("wither_skull"), "main");

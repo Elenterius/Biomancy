@@ -1,6 +1,7 @@
-package com.github.elenterius.biomancy.tooltip;
+package com.github.elenterius.biomancy.client.gui.tooltip;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.tooltip.TabTooltipComponent;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
@@ -12,10 +13,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class TabTooltipClientComponent implements ClientTooltipComponent {
 
 	public static final ResourceLocation TEXTURE = BiomancyMod.createRL("textures/gui/ui_tooltip.png");

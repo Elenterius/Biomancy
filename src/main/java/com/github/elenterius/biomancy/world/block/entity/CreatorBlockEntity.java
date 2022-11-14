@@ -124,11 +124,14 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 			spawnMob(level, pos, sacrificeHandler);
 			SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CREATOR_SPAWN_MOB);
 			level.sendParticles(ParticleTypes.EXPLOSION, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, 1, 0, 0, 0, 0);
-		} else {
+		}
+		else {
 			if (sacrificeHandler.getSuccessChance() > -9999) {
 				attackAOE(level, pos);
 				SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CREATOR_SPIKE_ATTACK);
-			} else {
+				spawnFleshBlocks(level, pos, sacrificeHandler);
+			}
+			else {
 				if (level.canSeeSky(pos.above())) {
 					LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create(level);
 					if (lightningBolt != null) {
@@ -162,10 +165,14 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 			level.addFreshEntity(fleshBlob);
 		}
 		//			OculusObserverEntity entity = ModEntityTypes.OCULUS_OBSERVER.get().create(worldIn);
-//			if (entity != null) {
-//				entity.moveTo(pos.getX() + 0.5f, pos.getY() + 4f / 16f, pos.getZ() + 0.5f, 0, 0);
-//				worldIn.addFreshEntity(entity);
-//			}
+		//			if (entity != null) {
+		//				entity.moveTo(pos.getX() + 0.5f, pos.getY() + 4f / 16f, pos.getZ() + 0.5f, 0, 0);
+		//				worldIn.addFreshEntity(entity);
+		//			}
+	}
+
+	public void spawnFleshBlocks(ServerLevel level, BlockPos pos, SacrificeHandler sacrificeHandler) {
+		//sacrificeHandler.getTumorFactor()
 	}
 
 	public void attackAOE() {

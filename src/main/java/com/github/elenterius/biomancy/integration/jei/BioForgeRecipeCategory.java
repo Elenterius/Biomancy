@@ -28,7 +28,7 @@ import java.util.List;
 
 public class BioForgeRecipeCategory implements IRecipeCategory<BioForgeRecipe> {
 
-	public static final RecipeType<BioForgeRecipe> RECIPE_TYPE = new RecipeType<>(BiomancyMod.createRL(ModRecipes.BIO_FORGING_RECIPE_TYPE.getId()), BioForgeRecipe.class);
+	public static final RecipeType<BioForgeRecipe> RECIPE_TYPE = new RecipeType<>(ModRecipes.BIO_FORGING_RECIPE_TYPE.getId(), BioForgeRecipe.class);
 	private final IDrawable background;
 	private final IDrawable icon;
 

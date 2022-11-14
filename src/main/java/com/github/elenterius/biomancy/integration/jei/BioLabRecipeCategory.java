@@ -30,7 +30,7 @@ import java.util.List;
 
 public class BioLabRecipeCategory implements IRecipeCategory<BioLabRecipe> {
 
-	public static final RecipeType<BioLabRecipe> RECIPE_TYPE = new RecipeType<>(BiomancyMod.createRL(ModRecipes.BIO_BREWING_RECIPE_TYPE.getId()), BioLabRecipe.class);
+	public static final RecipeType<BioLabRecipe> RECIPE_TYPE = new RecipeType<>(ModRecipes.BIO_BREWING_RECIPE_TYPE.getId(), BioLabRecipe.class);
 	private final IDrawable background;
 	private final IDrawable icon;
 

@@ -26,7 +26,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 
-	public static final RecipeType<DigesterRecipe> RECIPE_TYPE = new RecipeType<>(BiomancyMod.createRL(ModRecipes.DIGESTING_RECIPE_TYPE.getId()), DigesterRecipe.class);
+	public static final RecipeType<DigesterRecipe> RECIPE_TYPE = new RecipeType<>(ModRecipes.DIGESTING_RECIPE_TYPE.getId(), DigesterRecipe.class);
 	private final IDrawable background;
 	private final IDrawable icon;
 

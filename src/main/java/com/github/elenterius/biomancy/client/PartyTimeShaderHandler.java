@@ -1,15 +1,13 @@
 package com.github.elenterius.biomancy.client;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.init.ModRenderTypes;
+import com.github.elenterius.biomancy.init.client.ModRenderTypes;
 import com.mojang.blaze3d.shaders.Uniform;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = BiomancyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public final class PartyTimeShaderHandler {
 

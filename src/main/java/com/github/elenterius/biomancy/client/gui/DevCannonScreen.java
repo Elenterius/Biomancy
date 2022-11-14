@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.client.gui;
 
+import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
 import com.github.elenterius.biomancy.init.ModProjectiles;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import com.github.elenterius.biomancy.styles.ColorStyles;

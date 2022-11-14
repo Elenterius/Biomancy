@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.world.item.weapon;
 
-import com.github.elenterius.biomancy.styles.ClientTextUtil;
+import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.world.entity.ownable.Fleshkin;
 import com.github.elenterius.biomancy.world.entity.ownable.IControllableMob;
@@ -8,7 +8,6 @@ import com.github.elenterius.biomancy.world.item.IBiomancyItem;
 import com.github.elenterius.biomancy.world.item.IKeyListener;
 import com.github.elenterius.biomancy.world.ownable.IOwnableMob;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -36,7 +35,7 @@ public class ControlStaffItem extends Item implements IKeyListener, IBiomancyIte
 	}
 
 	@Override
-	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, ClientLevel level, Player player, EquipmentSlot slot, byte flags) {
+	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, Level level, Player player, EquipmentSlot slot, byte flags) {
 		IControllableMob.Command command = getCommand(stack).cycle();
 		player.playSound(SoundEvents.GENERIC_HURT, 0.8f, 0.25f + level.random.nextFloat() * 0.25f);
 		return InteractionResultHolder.success(command.serialize());

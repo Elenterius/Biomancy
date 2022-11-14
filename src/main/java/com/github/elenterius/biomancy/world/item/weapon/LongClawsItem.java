@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.world.item.weapon;
 
 import com.github.elenterius.biomancy.client.renderer.item.LongClawsRenderer;
+import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModCapabilities;
-import com.github.elenterius.biomancy.styles.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import com.github.elenterius.biomancy.world.entity.MobUtil;

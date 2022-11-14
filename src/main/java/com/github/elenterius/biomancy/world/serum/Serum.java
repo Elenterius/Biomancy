@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.world.serum;
 
-import com.github.elenterius.biomancy.styles.ClientTextUtil;
+import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.world.item.SerumItem;
@@ -20,8 +20,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
@@ -69,8 +67,7 @@ public abstract class Serum extends ForgeRegistryEntry<Serum> {
 		return PREFIX + registryKey.getNamespace() + "." + registryKey.getPath().replace("/", ".");
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	public void addInfoToTooltip(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+	public void addInfoToClientTooltip(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		if (!(stack.getItem() instanceof SerumItem)) {
 			tooltip.add(TextComponentUtil.getTooltipText("contains", new TranslatableComponent(getTranslationKey())).withStyle(ChatFormatting.GRAY));
 		}

@@ -1,13 +1,10 @@
-package com.github.elenterius.biomancy.client.gui;
+package com.github.elenterius.biomancy.client.util;
 
 import net.minecraft.client.AttackIndicatorStatus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public final class GuiUtil {
 
 	private GuiUtil() {}

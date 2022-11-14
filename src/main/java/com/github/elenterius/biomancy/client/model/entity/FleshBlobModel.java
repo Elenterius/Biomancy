@@ -28,7 +28,7 @@ public class FleshBlobModel<T extends FleshBlob> extends AnimatedGeoModel<T> {
 		if (fleshBlob.hasCustomName()) {
 			Component customName = fleshBlob.getCustomName();
 			if (customName != null) {
-				String name = customName.getContents().toLowerCase(Locale.ROOT);
+				String name = customName.getContents().toLowerCase(Locale.ENGLISH);
 				if (name.contains("happy")) {
 					return LEGACY_TEXTURE;
 				}

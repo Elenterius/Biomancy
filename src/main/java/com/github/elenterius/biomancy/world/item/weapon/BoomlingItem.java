@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.world.item.weapon;
 
-import com.github.elenterius.biomancy.styles.ClientTextUtil;
+import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.PotionUtilExt;
 import com.github.elenterius.biomancy.world.item.IBiomancyItem;
@@ -19,6 +19,7 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.List;
 
+@Deprecated
 public class BoomlingItem extends Item implements IBiomancyItem {
 
 	public BoomlingItem(Properties properties) {

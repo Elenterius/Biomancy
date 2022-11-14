@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.client.gui;
 
+import com.github.elenterius.biomancy.client.util.GuiUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 

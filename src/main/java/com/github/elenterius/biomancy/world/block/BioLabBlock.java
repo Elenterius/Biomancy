@@ -6,7 +6,6 @@ import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.util.VoxelShapeUtil;
 import com.github.elenterius.biomancy.world.block.entity.BioLabBlockEntity;
 import com.github.elenterius.biomancy.world.block.entity.MachineBlockEntity;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -105,7 +104,7 @@ public class BioLabBlock extends HorizontalFacingMachineBlock {
 				level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + 0.5d + random.nextFloat(-0.25f, 0.25f), pos.getY() + 0.65d, pos.getZ() + 0.5d + random.nextFloat(-0.25f, 0.25f), r, g, b);
 			}
 			if (random.nextInt(3) == 0) {
-				SoundUtil.playLocalBlockSound((ClientLevel) level, pos, ModSoundEvents.BIO_LAB_CRAFTING_RANDOM);
+				SoundUtil.clientPlayBlockSound(level, pos, ModSoundEvents.BIO_LAB_CRAFTING_RANDOM);
 			}
 		}
 	}

@@ -47,10 +47,10 @@ public class BiomancyPlugin implements IModPlugin {
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
 		ClientLevel world = Objects.requireNonNull(Minecraft.getInstance().level);
-		registration.addRecipes(DecomposerRecipeCategory.RECIPE_TYPE, world.getRecipeManager().getAllRecipesFor(ModRecipes.DECOMPOSING_RECIPE_TYPE));
-		registration.addRecipes(BioLabRecipeCategory.RECIPE_TYPE, world.getRecipeManager().getAllRecipesFor(ModRecipes.BIO_BREWING_RECIPE_TYPE));
-		registration.addRecipes(DigesterRecipeCategory.RECIPE_TYPE, world.getRecipeManager().getAllRecipesFor(ModRecipes.DIGESTING_RECIPE_TYPE));
-		registration.addRecipes(BioForgeRecipeCategory.RECIPE_TYPE, world.getRecipeManager().getAllRecipesFor(ModRecipes.BIO_FORGING_RECIPE_TYPE));
+		registration.addRecipes(DecomposerRecipeCategory.RECIPE_TYPE, world.getRecipeManager().getAllRecipesFor(ModRecipes.DECOMPOSING_RECIPE_TYPE.get()));
+		registration.addRecipes(BioLabRecipeCategory.RECIPE_TYPE, world.getRecipeManager().getAllRecipesFor(ModRecipes.BIO_BREWING_RECIPE_TYPE.get()));
+		registration.addRecipes(DigesterRecipeCategory.RECIPE_TYPE, world.getRecipeManager().getAllRecipesFor(ModRecipes.DIGESTING_RECIPE_TYPE.get()));
+		registration.addRecipes(BioForgeRecipeCategory.RECIPE_TYPE, world.getRecipeManager().getAllRecipesFor(ModRecipes.BIO_FORGING_RECIPE_TYPE.get()));
 	}
 
 	@Override

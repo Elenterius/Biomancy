@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.client.gui;
 
+import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.world.item.ISerumProvider;
@@ -30,10 +31,10 @@ import net.minecraft.world.item.Items;
 
 public class InjectorScreen extends Screen {
 
-	static final float DIAGONAL_OF_ITEM = Mth.SQRT_OF_TWO * 32; // 16 * 2
-	static final int DURATION = 10;
 	public static final int CANCEL_ID = -1;
 	public static final int CLEAR_ID = -2;
+	static final float DIAGONAL_OF_ITEM = Mth.SQRT_OF_TWO * 32; // 16 * 2
+	static final int DURATION = 10;
 	private Object2IntMap<ItemStack> cachedStacks;
 	private int ticks;
 	private int refreshCacheTicks;
@@ -84,12 +85,12 @@ public class InjectorScreen extends Screen {
 			cachedStacks = findSerumStacks(minecraft.player);
 		}
 
-//		if (Screen.hasControlDown()) {
-//			ticks++;
-//		}
-//		else {
-//			ticks -= 2;
-//		}
+		//		if (Screen.hasControlDown()) {
+		//			ticks++;
+		//		}
+		//		else {
+		//			ticks -= 2;
+		//		}
 		ticks++;
 
 		if (ticks > DURATION) ticks = DURATION;
@@ -277,13 +278,13 @@ public class InjectorScreen extends Screen {
 			}
 		}
 
-//		if (foundStacks.size() > 1) {
+		//		if (foundStacks.size() > 1) {
 		foundStacks.put(ItemStack.EMPTY, CLEAR_ID);
 		return foundStacks;
-//		}
+		//		}
 
 		//not items were found
-//		return Object2IntMaps.emptyMap();
+		//		return Object2IntMaps.emptyMap();
 	}
 
 }

@@ -12,11 +12,11 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
-public abstract class RecipeTypeImpl<T extends Recipe<Container>> implements RecipeType<T> {
+public class SimpleRecipeType<T extends Recipe<?>> implements RecipeType<T> {
 
 	private final String identifier;
 
-	protected RecipeTypeImpl(String identifier) {
+	public SimpleRecipeType(String identifier) {
 		this.identifier = identifier;
 	}
 
@@ -29,13 +29,7 @@ public abstract class RecipeTypeImpl<T extends Recipe<Container>> implements Rec
 		return identifier;
 	}
 
-	public static class SimpleRecipeType<R extends Recipe<Container>> extends RecipeTypeImpl<R> {
-		public SimpleRecipeType(String identifier) {
-			super(identifier);
-		}
-	}
-
-	public static class ItemStackRecipeType<R extends Recipe<Container>> extends RecipeTypeImpl<R> {
+	public static class ItemStackRecipeType<R extends Recipe<Container>> extends SimpleRecipeType<R> {
 
 		public ItemStackRecipeType(String identifier) {
 			super(identifier);

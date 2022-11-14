@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.renderer.entity;
 
 import com.github.elenterius.biomancy.client.model.entity.FleshBlobModel;
-import com.github.elenterius.biomancy.init.ModRenderTypes;
+import com.github.elenterius.biomancy.init.client.ModRenderTypes;
 import com.github.elenterius.biomancy.world.entity.fleshblob.FleshBlob;
 import com.github.elenterius.biomancy.world.entity.fleshblob.TumorFlag;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -51,7 +51,7 @@ public class FleshBlobRenderer extends GeoEntityRenderer<FleshBlob> {
 		if (fleshBlob.hasCustomName()) {
 			Component customName = fleshBlob.getCustomName();
 			if (customName != null) {
-				String name = customName.getContents().toLowerCase(Locale.ROOT);
+				String name = customName.getContents().toLowerCase(Locale.ENGLISH);
 				if (name.contains("party_blob")) {
 					return ModRenderTypes.getCutoutPartyTime(textureLocation);
 				}

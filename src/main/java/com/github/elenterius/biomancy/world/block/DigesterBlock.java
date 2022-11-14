@@ -5,7 +5,6 @@ import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.block.entity.DigesterBlockEntity;
 import com.github.elenterius.biomancy.world.block.entity.MachineBlockEntity;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.InteractionHand;
@@ -32,11 +31,11 @@ import java.util.Random;
 
 public class DigesterBlock extends HorizontalFacingMachineBlock {
 
+	protected static final VoxelShape SHAPE = createShape();
+
 	public DigesterBlock(Properties properties) {
 		super(properties);
 	}
-
-	protected static final VoxelShape SHAPE = createShape();
 
 	private static VoxelShape createShape() {
 		VoxelShape base = Block.box(3d, 0d, 3d, 13d, 12d, 13d);
@@ -98,7 +97,7 @@ public class DigesterBlock extends HorizontalFacingMachineBlock {
 				level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + 0.5d + random.nextFloat(-0.125f, 0.125f), pos.getY() + 0.9d, pos.getZ() + 0.5d + random.nextFloat(-0.125f, 0.125f), r, g, b);
 			}
 			if (random.nextInt(3) == 0) {
-				SoundUtil.playLocalBlockSound((ClientLevel) level, pos, ModSoundEvents.DIGESTER_CRAFTING_RANDOM);
+				SoundUtil.clientPlayBlockSound(level, pos, ModSoundEvents.DIGESTER_CRAFTING_RANDOM);
 			}
 		}
 	}

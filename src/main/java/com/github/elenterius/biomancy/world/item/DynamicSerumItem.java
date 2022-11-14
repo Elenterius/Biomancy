@@ -39,7 +39,7 @@ public final class DynamicSerumItem extends SerumItem {
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
 		Serum serum = deserialize(stack.getOrCreateTag());
 		if (serum != null) {
-			serum.addInfoToTooltip(stack, level, tooltip, isAdvanced);
+			serum.addInfoToClientTooltip(stack, level, tooltip, isAdvanced);
 		}
 		else tooltip.add(TextComponentUtil.getTooltipText("contains_nothing"));
 	}

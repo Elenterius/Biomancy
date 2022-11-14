@@ -1,6 +1,8 @@
 package com.github.elenterius.biomancy.client.gui;
 
-import com.github.elenterius.biomancy.init.ModRecipeBooks;
+import com.github.elenterius.biomancy.init.ModBioForgeCategories;
+import com.github.elenterius.biomancy.init.ModRecipeBookTypes;
+import com.github.elenterius.biomancy.init.client.ModRecipeBookCategories;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import com.github.elenterius.biomancy.recipe.BioForgeRecipe;
 import com.github.elenterius.biomancy.world.inventory.menu.BioForgeMenu;
@@ -18,8 +20,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.Comparator;
@@ -27,18 +27,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-@OnlyIn(Dist.CLIENT)
 class BioForgeScreenController {
 
 	public static final int ROWS = 6;
 	public static final int COLS = 4;
 	public static final int GRID_SIZE = COLS * ROWS;
-	private static final Comparator<ModRecipeBooks.BioForgeCategory> CATEGORY_COMPARATOR = (a, b) -> {
+	private static final Comparator<ModBioForgeCategories.BioForgeCategory> CATEGORY_COMPARATOR = (a, b) -> {
 		if (a.sortPriority() == b.sortPriority()) return a.nameId().compareTo(b.nameId());
 		return b.sortPriority() - a.sortPriority();
 	};
 	private final StackedContents itemCounter;
-	private final List<ModRecipeBooks.BioForgeCategory> tabs;
+	private final List<ModBioForgeCategories.BioForgeCategory> tabs;
 	private final Minecraft minecraft;
 	private final BioForgeMenu menu;
 	private int maxPages = 0;
@@ -53,7 +52,7 @@ class BioForgeScreenController {
 		this.minecraft = minecraft;
 		this.menu = menu;
 
-		tabs = ModRecipeBooks.BioForgeCategory.getCategories().stream().sorted(CATEGORY_COMPARATOR).toList();
+		tabs = ModRecipeBookCategories.getBioForgeCategories().stream().sorted(CATEGORY_COMPARATOR).toList();
 
 		playerInvChanges = getPlayer().getInventory().getTimesChanged();
 		itemCounter = new StackedContents();
@@ -113,7 +112,7 @@ class BioForgeScreenController {
 
 	public List<BioForgeRecipe> getOrderedRecipes(RecipeCollection recipeCollection) {
 		List<Recipe<?>> list = recipeCollection.getDisplayRecipes(true);
-		if (!getPlayer().getRecipeBook().isFiltering(ModRecipeBooks.BIO_FORGE_TYPE)) {
+		if (!getPlayer().getRecipeBook().isFiltering(ModRecipeBookTypes.BIO_FORGE)) {
 			list.addAll(recipeCollection.getDisplayRecipes(false));
 		}
 		return list.stream().map(BioForgeRecipe.class::cast).toList();
@@ -176,11 +175,11 @@ class BioForgeScreenController {
 		ModNetworkHandler.sendBioForgeRecipeToServer(menu.containerId, recipe);
 	}
 
-	public ModRecipeBooks.BioForgeCategory getCurrentCategory() {
+	public ModBioForgeCategories.BioForgeCategory getCurrentCategory() {
 		return tabs.get(activeTab);
 	}
 
-	public int getTabIndex(ModRecipeBooks.BioForgeCategory category) {
+	public int getTabIndex(ModBioForgeCategories.BioForgeCategory category) {
 		for (int tabIndex = 0; tabIndex < tabs.size(); tabIndex++) {
 			if (tabs.get(tabIndex) == category) return tabIndex;
 		}
@@ -213,7 +212,7 @@ class BioForgeScreenController {
 
 	private void updateAndSearchRecipes() {
 		ClientRecipeBook recipeBook = getPlayer().getRecipeBook();
-		List<RecipeCollection> recipesForCategory = recipeBook.getCollection(tabs.get(activeTab).recipeBookCategory());
+		List<RecipeCollection> recipesForCategory = recipeBook.getCollection(ModRecipeBookCategories.getRecipeBookCategories(tabs.get(activeTab)));
 		recipesForCategory.forEach(recipeCollection -> recipeCollection.canCraft(itemCounter, 0, 0, recipeBook));
 
 		List<RecipeCollection> recipes = Lists.newArrayList(recipesForCategory);
@@ -225,7 +224,7 @@ class BioForgeScreenController {
 			recipes.removeIf(recipeCollection -> !searchResult.contains(recipeCollection));
 		}
 
-		if (recipeBook.isFiltering(ModRecipeBooks.BIO_FORGE_TYPE)) {
+		if (recipeBook.isFiltering(ModRecipeBookTypes.BIO_FORGE)) {
 			recipes.removeIf(recipeCollection -> !recipeCollection.hasCraftable());
 		}
 

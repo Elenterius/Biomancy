@@ -4,8 +4,6 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.world.block.*;
 import com.github.elenterius.biomancy.world.block.property.Orientation;
 import com.github.elenterius.biomancy.world.block.property.UserSensitivity;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.BlockGetter;
@@ -16,8 +14,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.PlantType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -86,23 +82,6 @@ public final class ModBlocks {
 	public static final RegistryObject<BoneSpikeBlock> BONE_SPIKE = BLOCKS.register("bone_spike", () -> new BoneSpikeBlock(createFleshyBoneProperties()));
 
 	private ModBlocks() {}
-
-	@OnlyIn(Dist.CLIENT)
-	static void setRenderLayers() {
-		ItemBlockRenderTypes.setRenderLayer(DIGESTER.get(), RenderType.cutout());
-
-		ItemBlockRenderTypes.setRenderLayer(VOICE_BOX.get(), RenderType.translucent());
-		ItemBlockRenderTypes.setRenderLayer(STORAGE_SAC.get(), RenderType.translucent());
-
-		ItemBlockRenderTypes.setRenderLayer(FLESH_IRIS_DOOR.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(FLESH_FENCE.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(FLESH_DOOR.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(FLESH_LADDER.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(MALIGNANT_FLESH_VEINS.get(), RenderType.cutout());
-
-		//block with "glowing" overlay texture, also needs a overlay model see onModelBakeEvent() in ClientSetupHandler
-		//ItemBlockRenderTypes.setRenderLayer(ModBlocks.FOOBAR.get(), renderType -> renderType == RenderType.getCutout() || renderType == RenderType.getTranslucent());
-	}
 
 	public static BlockBehaviour.Properties copyProperties(BlockBehaviour behaviour) {
 		return BlockBehaviour.Properties.copy(behaviour);

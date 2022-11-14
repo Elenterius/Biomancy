@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.datagen.recipes;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.init.ModRecipeBooks;
+import com.github.elenterius.biomancy.init.ModBioForgeCategories;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.recipe.IngredientStack;
 import com.google.gson.JsonArray;
@@ -34,7 +34,7 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 	private final ItemData result;
 	private final List<IngredientStack> ingredients = new ArrayList<>();
 	private final Advancement.Builder advancement = Advancement.Builder.advancement();
-	private ModRecipeBooks.BioForgeCategory category = ModRecipeBooks.BioForgeCategory.MISC;
+	private ModBioForgeCategories.BioForgeCategory category = ModBioForgeCategories.MISC;
 
 	private BioForgeRecipeBuilder(ResourceLocation recipeId, ItemData result) {
 		this.recipeId = recipeId;
@@ -78,7 +78,7 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 	//		return this;
 	//	}
 
-	public BioForgeRecipeBuilder setCategory(ModRecipeBooks.BioForgeCategory category) {
+	public BioForgeRecipeBuilder setCategory(ModBioForgeCategories.BioForgeCategory category) {
 		this.category = category;
 		return this;
 	}
@@ -136,12 +136,12 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 		private final ResourceLocation id;
 		private final List<IngredientStack> ingredients;
 		private final ItemData result;
-		private final ModRecipeBooks.BioForgeCategory category;
+		private final ModBioForgeCategories.BioForgeCategory category;
 
 		private final Advancement.Builder advancementBuilder;
 		private final ResourceLocation advancementId;
 
-		public RecipeResult(ResourceLocation recipeId, ModRecipeBooks.BioForgeCategory category, ItemData result, List<IngredientStack> ingredients, Advancement.Builder advancement, ResourceLocation advancementId) {
+		public RecipeResult(ResourceLocation recipeId, ModBioForgeCategories.BioForgeCategory category, ItemData result, List<IngredientStack> ingredients, Advancement.Builder advancement, ResourceLocation advancementId) {
 			id = recipeId;
 			this.category = category;
 			this.result = result;

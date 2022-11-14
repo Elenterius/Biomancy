@@ -2,19 +2,17 @@ package com.github.elenterius.biomancy.world.entity.ownable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Mob;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public interface IControllableMob<T extends Mob> {
-
-	private T getMobInstance() {
-		//noinspection unchecked
-		return (T) this;
-	}
 
 	static <T extends Mob> IControllableMob<T> cast(T mob) {
 		//noinspection unchecked
 		return (IControllableMob<T>) mob;
+	}
+
+	private T getMobInstance() {
+		//noinspection unchecked
+		return (T) this;
 	}
 
 	default boolean canExecuteCommand() {
@@ -45,7 +43,6 @@ public interface IControllableMob<T extends Mob> {
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	default Action getCurrentAction() {
 		return Action.IDLE;
 	}
@@ -57,15 +54,15 @@ public interface IControllableMob<T extends Mob> {
 		PATROL_AREA, //wander around home position
 		SEEK_AND_DESTROY; //seeks out and attacks any hostile entity
 
-		public Command cycle() {
-			return deserialize((byte) (ordinal() + 1));
-		}
-
 		public static Command deserialize(byte b) {
 			for (Command value : values()) {
 				if (value.ordinal() == b) return value;
 			}
 			return SIT;
+		}
+
+		public Command cycle() {
+			return deserialize((byte) (ordinal() + 1));
 		}
 
 		public byte serialize() {

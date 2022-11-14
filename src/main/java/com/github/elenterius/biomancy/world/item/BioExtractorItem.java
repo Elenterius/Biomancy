@@ -1,17 +1,16 @@
 package com.github.elenterius.biomancy.world.item;
 
+import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
-import com.github.elenterius.biomancy.styles.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import com.github.elenterius.biomancy.util.MobSoundUtil;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.entity.MobUtil;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -36,8 +35,6 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -93,12 +90,11 @@ public class BioExtractorItem extends Item implements IKeyListener, IBiomancyIte
 		return false;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
-	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, ClientLevel level, Player player, EquipmentSlot slot, byte flags) {
+	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, Level level, Player player, EquipmentSlot slot, byte flags) {
 		//TODO: add cooldown?
 		if (!interactWithPlayerSelf(stack, player)) {
-			SoundUtil.playLocalItemSound(level, player, ModSoundEvents.INJECTOR_FAIL.get());
+			SoundUtil.clientPlayItemSound(level, player, ModSoundEvents.INJECTOR_FAIL.get());
 			return InteractionResultHolder.fail(flags); //don't send button press to server
 		}
 		return InteractionResultHolder.success(flags);

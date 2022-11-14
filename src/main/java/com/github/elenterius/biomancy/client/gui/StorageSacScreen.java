@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.client.util.ClientSoundUtil;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
-import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.inventory.menu.StorageSacMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -11,10 +11,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class StorageSacScreen extends AbstractContainerScreen<StorageSacMenu> {
 
 	private static final ResourceLocation BACKGROUND_TEXTURE = BiomancyMod.createRL("textures/gui/menu_storage_sac.png");
@@ -27,7 +24,7 @@ public class StorageSacScreen extends AbstractContainerScreen<StorageSacMenu> {
 	@Override
 	protected void init() {
 		super.init();
-		SoundUtil.playUISound(ModSoundEvents.UI_STORAGE_SAC_OPEN);
+		ClientSoundUtil.playUISound(ModSoundEvents.UI_STORAGE_SAC_OPEN);
 	}
 
 	@Override

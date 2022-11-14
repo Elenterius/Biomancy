@@ -34,7 +34,7 @@ public class BioForgeRecipeMessage {
 			ServerPlayer sender = ctx.get().getSender();
 			if (sender != null && !sender.isSpectator() && sender.containerMenu instanceof BioForgeMenu menu && menu.containerId == packet.containerId) {
 				RecipeManager recipeManager = sender.getLevel().getRecipeManager();
-				Map<ResourceLocation, Recipe<Container>> recipes = recipeManager.byType(ModRecipes.BIO_FORGING_RECIPE_TYPE);
+				Map<ResourceLocation, Recipe<Container>> recipes = recipeManager.byType(ModRecipes.BIO_FORGING_RECIPE_TYPE.get());
 				BioForgeRecipe recipe = (BioForgeRecipe) recipes.get(packet.id);
 				menu.setSelectedRecipe(recipe, sender);
 			}

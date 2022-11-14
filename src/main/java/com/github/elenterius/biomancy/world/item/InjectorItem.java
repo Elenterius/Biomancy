@@ -2,8 +2,8 @@ package com.github.elenterius.biomancy.world.item;
 
 import com.github.elenterius.biomancy.client.gui.InjectorScreen;
 import com.github.elenterius.biomancy.client.renderer.item.InjectorRenderer;
+import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
-import com.github.elenterius.biomancy.styles.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import com.github.elenterius.biomancy.util.SoundUtil;
@@ -14,7 +14,6 @@ import com.github.elenterius.biomancy.world.serum.Serum;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
@@ -79,9 +78,8 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 	public static final short MAX_SLOT_SIZE = 16;
 	public static final String INVENTORY_TAG = "inventory";
 	public static final int COOL_DOWN_TICKS = 25;
-	private static final String CONTROLLER_NAME = "controller";
 	public static final int SCHEDULE_TICKS = Mth.ceil(0.32f * 20);
-
+	private static final String CONTROLLER_NAME = "controller";
 	private final AnimationFactory factory = new AnimationFactory(this);
 
 	public InjectorItem(Properties properties) {
@@ -129,7 +127,7 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	private void tryToOpenWheelMenu(InteractionHand hand) {
+	private void tryToOpenClientScreen(InteractionHand hand) {
 		Screen currScreen = Minecraft.getInstance().screen;
 		if (currScreen == null && Minecraft.getInstance().player != null) {
 			Minecraft.getInstance().setScreen(new InjectorScreen(hand));
@@ -137,12 +135,11 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
-	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, ClientLevel level, Player player, EquipmentSlot slot, byte flags) {
+	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, Level level, Player player, EquipmentSlot slot, byte flags) {
 		if (slot.getType() == EquipmentSlot.Type.HAND) {
 			InteractionHand hand = slot == EquipmentSlot.MAINHAND ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
-			tryToOpenWheelMenu(hand);
+			tryToOpenClientScreen(hand);
 		}
 		return InteractionResultHolder.fail(flags); //don't send button press to server
 	}
@@ -230,7 +227,7 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 				copyOfStack.hurtAndBreak(2, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
 			}
 
-			if (player.level.isClientSide) SoundUtil.playLocalItemSound((ClientLevel) player.level, player, ModSoundEvents.INJECTOR_FAIL.get());
+			if (player.level.isClientSide) SoundUtil.clientPlayItemSound(player.level, player, ModSoundEvents.INJECTOR_FAIL.get());
 			return InteractionResult.FAIL;
 		}
 
@@ -388,7 +385,7 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 
 		return null;
 
-//		return stack.getEntityRepresentation(); //usually null, ItemFrame or ItemEntity
+		//		return stack.getEntityRepresentation(); //usually null, ItemFrame or ItemEntity
 		//this would make it possible to play sounds/etc. via item animation at an ItemFrame or ItemEntity position
 	}
 
@@ -417,8 +414,9 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 		return null;
 	}
 
+	@OnlyIn(Dist.CLIENT)
 	private void onSoundKeyFrame(ItemStack stack, String soundId, double animationTick) {
-		ClientLevel level = Minecraft.getInstance().level;
+		Level level = Minecraft.getInstance().level;
 		if (level == null) return;
 
 		Entity soundOrigin = getEntityHost(stack, level);
@@ -436,8 +434,8 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 				level.levelEvent(LevelEvent.PARTICLES_DRAGON_BLOCK_BREAK, victim.blockPosition(), 0);
 			}
 
-//			removeEntityHost(stack);
-//			removeEntityVictim(stack);
+			//			removeEntityHost(stack);
+			//			removeEntityVictim(stack);
 		}
 	}
 
@@ -500,9 +498,10 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 			if (serum != null) {
 				short amount = tag.getCompound(INVENTORY_TAG).getShort(LargeSingleItemStackHandler.ITEM_AMOUNT_TAG);
 				tooltip.add(new TextComponent(String.format("Amount: %dx", amount)).withStyle(ChatFormatting.GRAY));
-				serum.addInfoToTooltip(stack, level, tooltip, isAdvanced);
+				serum.addInfoToClientTooltip(stack, level, tooltip, isAdvanced);
 			}
-		} else tooltip.add(TextComponentUtil.getTooltipText("contains_nothing").withStyle(ChatFormatting.GRAY));
+		}
+		else tooltip.add(TextComponentUtil.getTooltipText("contains_nothing").withStyle(ChatFormatting.GRAY));
 
 		tooltip.add(TextComponent.EMPTY);
 		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action_open_inventory")).withStyle(ChatFormatting.DARK_GRAY));

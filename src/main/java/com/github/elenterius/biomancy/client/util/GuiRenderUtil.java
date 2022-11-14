@@ -1,6 +1,5 @@
-package com.github.elenterius.biomancy.client.gui;
+package com.github.elenterius.biomancy.client.util;
 
-import com.github.elenterius.biomancy.styles.ClientTextUtil;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;

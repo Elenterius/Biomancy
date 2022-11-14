@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.apache.logging.log4j.MarkerManager;
 
+@Deprecated
 public class GlandMenu extends PlayerContainerMenu {
 
 	private final BehavioralInventory<?> outputInventory;

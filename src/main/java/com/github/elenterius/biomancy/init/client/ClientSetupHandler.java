@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.init;
+package com.github.elenterius.biomancy.init.client;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.gui.IngameOverlays;
@@ -7,6 +7,10 @@ import com.github.elenterius.biomancy.client.renderer.block.*;
 import com.github.elenterius.biomancy.client.renderer.entity.AcidProjectileRenderer;
 import com.github.elenterius.biomancy.client.renderer.entity.FleshBlobRenderer;
 import com.github.elenterius.biomancy.client.renderer.entity.WitherProjectileRenderer;
+import com.github.elenterius.biomancy.init.ModBlockEntities;
+import com.github.elenterius.biomancy.init.ModBlocks;
+import com.github.elenterius.biomancy.init.ModEntityTypes;
+import com.github.elenterius.biomancy.init.ModItems;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -18,12 +22,13 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.entity.WitherSkullRenderer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -40,7 +45,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-@OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = BiomancyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class ClientSetupHandler {
 
@@ -59,12 +63,14 @@ public final class ClientSetupHandler {
 		ClientRegistry.registerKeyBinding(ITEM_DEFAULT_KEY_BINDING);
 
 		IngameOverlays.registerGameOverlays();
+		ModScreens.registerMenuScreens();
+
+		ModRecipeBookCategories.init();
 
 		event.enqueueWork(() -> {
-			ModMenuTypes.registerMenuScreens();
-			ModMenuTypes.registerTooltipComponents();
+			ModScreens.registerTooltipComponents();
 			registerItemModelProperties();
-			ModBlocks.setRenderLayers();
+			setBlockRenderLayers();
 		});
 	}
 
@@ -80,19 +86,27 @@ public final class ClientSetupHandler {
 		event.registerBlockEntityRenderer(ModBlockEntities.STORAGE_SAC.get(), StorageSacBERenderer::new);
 
 		event.registerEntityRenderer(ModEntityTypes.FLESH_BLOB.get(), FleshBlobRenderer::new);
-		//		event.registerEntityRenderer(ModEntityTypes.FLESHKIN.get(), FleshkinRenderer::new);
-		//		event.registerEntityRenderer(ModEntityTypes.BOOMLING.get(), BoomlingRenderer::new);
-
-		//		event.registerEntityRenderer(ModEntityTypes.FAILED_SHEEP.get(), FailedSheepRenderer::new);
-		//		event.registerEntityRenderer(ModEntityTypes.CHROMA_SHEEP.get(), ChromaSheepRenderer::new);
-		//		event.registerEntityRenderer(ModEntityTypes.SILKY_WOOL_SHEEP.get(), SilkyWoolSheepRenderer::new);
-		//		event.registerEntityRenderer(ModEntityTypes.THICK_WOOL_SHEEP.get(), ThickWoolSheepRenderer::new);
-		//		event.registerEntityRenderer(ModEntityTypes.FAILED_COW.get(), FailedCowRenderer::new);
 
 		event.registerEntityRenderer(ModEntityTypes.ANTI_GRAVITY_PROJECTILE.get(), ThrownItemRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.CORROSIVE_ACID_PROJECTILE.get(), AcidProjectileRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.TOOTH_PROJECTILE.get(), ThrownItemRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.WITHER_SKULL_PROJECTILE.get(), WitherProjectileRenderer::new);
+	}
+
+	static void setBlockRenderLayers() {
+		ItemBlockRenderTypes.setRenderLayer(ModBlocks.DIGESTER.get(), RenderType.cutout());
+
+		ItemBlockRenderTypes.setRenderLayer(ModBlocks.VOICE_BOX.get(), RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(ModBlocks.STORAGE_SAC.get(), RenderType.translucent());
+
+		ItemBlockRenderTypes.setRenderLayer(ModBlocks.FLESH_IRIS_DOOR.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(ModBlocks.FLESH_FENCE.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(ModBlocks.FLESH_DOOR.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(ModBlocks.FLESH_LADDER.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(ModBlocks.MALIGNANT_FLESH_VEINS.get(), RenderType.cutout());
+
+		//block with "glowing" overlay texture, also needs a overlay model see onModelBakeEvent() in ClientSetupHandler
+		//ItemBlockRenderTypes.setRenderLayer(ModBlocks.FOOBAR.get(), renderType -> renderType == RenderType.getCutout() || renderType == RenderType.getTranslucent());
 	}
 
 	@SubscribeEvent
@@ -108,7 +122,7 @@ public final class ClientSetupHandler {
 	}
 
 	private static void registerItemModelProperties() {
-//		ItemProperties.register(ModItems.SINGLE_ITEM_BAG_ITEM.get(), new ResourceLocation("fullness"), (stack, clientWorld, livingEntity) -> ModItems.SINGLE_ITEM_BAG_ITEM.get().getFullness(stack));
+		//ItemProperties.register(ModItems.SINGLE_ITEM_BAG_ITEM.get(), new ResourceLocation("fullness"), (stack, clientWorld, livingEntity) -> ModItems.SINGLE_ITEM_BAG_ITEM.get().getFullness(stack));
 	}
 
 	@SubscribeEvent
@@ -128,7 +142,7 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void onItemColorRegistry(final ColorHandlerEvent.Block event) {
-//		event.getBlockColors().register((state, displayReader, pos, index) -> 0x8d758c, ModBlocks.NECROTIC_FLESH_BLOCK.get());
+		//		event.getBlockColors().register((state, displayReader, pos, index) -> 0x8d758c, ModBlocks.NECROTIC_FLESH_BLOCK.get());
 	}
 
 	@SubscribeEvent
@@ -138,20 +152,20 @@ public final class ClientSetupHandler {
 	}
 
 	private static void addFullBrightOverlayBakedModel(Block block, ModelBakeEvent event) {
-//		for (BlockState blockState : block.getStateDefinition().getPossibleStates()) {
-//			ModelResourceLocation modelLocation = BlockModelShapes.stateToModelLocation(blockState);
-//			IBakedModel bakedModel = event.getModelRegistry().get(modelLocation);
-//			if (bakedModel == null) {
-//				BiomancyMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Did not find any vanilla baked models for {}", block.getRegistryName());
-//			}
-//			else if (bakedModel instanceof FullBrightOverlayBakedModel) {
-//				BiomancyMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Attempted to replace already existing FullBrightOverlayBakedModel for {}", block.getRegistryName());
-//			}
-//			else {
-//				FullBrightOverlayBakedModel customModel = new FullBrightOverlayBakedModel(bakedModel);
-//				event.getModelRegistry().put(modelLocation, customModel);
-//			}
-//		}
+		//		for (BlockState blockState : block.getStateDefinition().getPossibleStates()) {
+		//			ModelResourceLocation modelLocation = BlockModelShapes.stateToModelLocation(blockState);
+		//			IBakedModel bakedModel = event.getModelRegistry().get(modelLocation);
+		//			if (bakedModel == null) {
+		//				BiomancyMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Did not find any vanilla baked models for {}", block.getRegistryName());
+		//			}
+		//			else if (bakedModel instanceof FullBrightOverlayBakedModel) {
+		//				BiomancyMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Attempted to replace already existing FullBrightOverlayBakedModel for {}", block.getRegistryName());
+		//			}
+		//			else {
+		//				FullBrightOverlayBakedModel customModel = new FullBrightOverlayBakedModel(bakedModel);
+		//				event.getModelRegistry().put(modelLocation, customModel);
+		//			}
+		//		}
 	}
 
 	private static final class HASHES {

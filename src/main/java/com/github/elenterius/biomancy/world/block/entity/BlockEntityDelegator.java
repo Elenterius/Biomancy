@@ -12,6 +12,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+@Deprecated
 public class BlockEntityDelegator extends SimpleSyncedBlockEntity implements IBlockEntityDelegator {
 
 	private BlockPos delegatePos = BlockPos.ZERO;

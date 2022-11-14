@@ -13,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.apache.logging.log4j.MarkerManager;
 
+@Deprecated
 public class GulgeMenu extends PlayerContainerMenu {
 
 	private static final int LAST_PLAYER_SLOT_INDEX = 9 + 3 * 9;

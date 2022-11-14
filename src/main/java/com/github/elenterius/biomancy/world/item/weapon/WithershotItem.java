@@ -16,6 +16,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Predicate;
 
+@Deprecated
 public class WithershotItem extends BaseGunItem implements IBiomancyItem {
 
 	public WithershotItem(Properties properties) {

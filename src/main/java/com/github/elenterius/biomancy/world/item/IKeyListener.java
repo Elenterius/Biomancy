@@ -1,14 +1,12 @@
 package com.github.elenterius.biomancy.world.item;
 
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 
@@ -47,8 +45,7 @@ public interface IKeyListener {
 	/**
 	 * If this method returns ActionResult Success, the result byte customFlags will be sent to the server
 	 */
-	@OnlyIn(Dist.CLIENT)
-	InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, ClientLevel level, Player player, EquipmentSlot slot, byte flags);
+	InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, Level level, Player player, EquipmentSlot slot, byte flags);
 
 	void onServerReceiveKeyPress(ItemStack stack, ServerLevel level, Player player, byte flags);
 

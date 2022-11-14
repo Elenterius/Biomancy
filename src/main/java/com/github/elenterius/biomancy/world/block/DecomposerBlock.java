@@ -5,7 +5,6 @@ import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.block.entity.DecomposerBlockEntity;
 import com.github.elenterius.biomancy.world.block.entity.MachineBlockEntity;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.InteractionHand;
@@ -31,11 +30,7 @@ import java.util.stream.Stream;
 
 public class DecomposerBlock extends HorizontalFacingMachineBlock {
 
-	protected static final VoxelShape AABB = Stream.of(
-			Block.box(0, 0, 0, 16, 14, 16),
-			Block.box(1, 14, 1, 15, 17, 15),
-			Block.box(2, 17, 2, 14, 18, 14)
-	).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
+	protected static final VoxelShape AABB = Stream.of(Block.box(0, 0, 0, 16, 14, 16), Block.box(1, 14, 1, 15, 17, 15), Block.box(2, 17, 2, 14, 18, 14)).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
 
 	public DecomposerBlock(Properties properties) {
 		super(properties);
@@ -84,8 +79,9 @@ public class DecomposerBlock extends HorizontalFacingMachineBlock {
 			for (int i = 0; i < particleAmount; i++) {
 				level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + 0.5d + random.nextFloat(-0.3f, 0.3f), pos.getY() + 0.75d, pos.getZ() + 0.5d + random.nextFloat(-0.3f, 0.3f), r, g, b);
 			}
+
 			if (random.nextInt(3) == 0) {
-				SoundUtil.playLocalBlockSound((ClientLevel) level, pos, ModSoundEvents.DECOMPOSER_CRAFTING_RANDOM);
+				SoundUtil.clientPlayBlockSound(level, pos, ModSoundEvents.DECOMPOSER_CRAFTING_RANDOM);
 			}
 		}
 	}

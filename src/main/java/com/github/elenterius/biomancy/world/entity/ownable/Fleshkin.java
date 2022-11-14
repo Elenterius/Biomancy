@@ -27,12 +27,11 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@Deprecated
 public class Fleshkin extends OwnableMonster implements IControllableMob<Fleshkin> {
 
 	private static final EntityDataAccessor<Boolean> IS_CHILD = SynchedEntityData.defineId(Fleshkin.class, EntityDataSerializers.BOOLEAN);
@@ -230,7 +229,6 @@ public class Fleshkin extends OwnableMonster implements IControllableMob<Fleshki
 		return getMainHandItem().getItem() instanceof TieredItem;
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public IControllableMob.Action getCurrentAction() {
 		if (isAggressive() && isHoldingMeleeWeapon()) {

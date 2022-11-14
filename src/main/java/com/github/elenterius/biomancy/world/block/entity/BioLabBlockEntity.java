@@ -1,12 +1,14 @@
 package com.github.elenterius.biomancy.world.block.entity;
 
+import com.github.elenterius.biomancy.client.util.ClientLoopingSoundHelper;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.recipe.BioLabRecipe;
 import com.github.elenterius.biomancy.recipe.IngredientStack;
-import com.github.elenterius.biomancy.recipe.RecipeTypeImpl;
+import com.github.elenterius.biomancy.recipe.SimpleRecipeType;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
+import com.github.elenterius.biomancy.util.ILoopingSoundHelper;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.util.fuel.FuelHandler;
 import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
@@ -16,8 +18,6 @@ import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.world.inventory.SimpleInventory;
 import com.github.elenterius.biomancy.world.inventory.itemhandler.HandlerBehaviors;
 import com.github.elenterius.biomancy.world.inventory.menu.BioLabMenu;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -32,11 +32,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -46,7 +46,6 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.List;
 
@@ -58,7 +57,7 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 
 	public static final int MAX_FUEL = 1_000;
 	public static final short BASE_COST = 2;
-	public static final RecipeTypeImpl.ItemStackRecipeType<BioLabRecipe> RECIPE_TYPE = ModRecipes.BIO_BREWING_RECIPE_TYPE;
+	public static final RegistryObject<SimpleRecipeType.ItemStackRecipeType<BioLabRecipe>> RECIPE_TYPE = ModRecipes.BIO_BREWING_RECIPE_TYPE;
 
 	private final BioLabStateData stateData;
 	private final FuelHandler fuelHandler;
@@ -67,6 +66,8 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 	private final BehavioralInventory<?> outputInventory;
 
 	private final AnimationFactory animationFactory = new AnimationFactory(this);
+
+	private ILoopingSoundHelper loopingSoundHelper = ILoopingSoundHelper.NULL;
 
 	public BioLabBlockEntity(BlockPos worldPosition, BlockState blockState) {
 		super(ModBlockEntities.BIO_LAB.get(), worldPosition, blockState);
@@ -78,6 +79,13 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 		fuelHandler = FuelHandler.createNutrientFuelHandler(MAX_FUEL, BASE_COST, this::setChanged);
 
 		stateData = new BioLabStateData(fuelHandler);
+	}
+
+	@Override
+	public void onLoad() {
+		if (level != null && level.isClientSide) {
+			loopingSoundHelper = new ClientLoopingSoundHelper();
+		}
 	}
 
 	@Override
@@ -121,9 +129,6 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 		return outputInventory.getItem(0).isEmpty() || outputInventory.doesItemStackFit(0, stackToCraft);
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	private SimpleSoundInstance loopingSoundInstance;
-
 	private boolean canContainerItemsFitIntoTrashSlot(List<IngredientStack> ingredients, int[] ingredientCost) {
 		int lastIndex = inputInventory.getContainerSize() - 1;
 		int trashAmount = outputInventory.getItem(1).getCount();
@@ -166,7 +171,7 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 	@Nullable
 	@Override
 	protected BioLabRecipe resolveRecipeFromInput(Level level) {
-		return RECIPE_TYPE.getRecipeFromContainer(level, inputInventory).orElse(null);
+		return RECIPE_TYPE.get().getRecipeFromContainer(level, inputInventory).orElse(null);
 	}
 
 	@Override
@@ -201,7 +206,7 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 		Containers.dropContents(level, pos, outputInventory);
 	}
 
-	@Nonnull
+	@NotNull
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
 		if (!remove && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
@@ -275,16 +280,17 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 		return true;
 	}
 
+	//client side only
 	private <E extends BlockEntity & IAnimatable> PlayState handleAnim(AnimationEvent<E> event) {
 		Boolean isCrafting = getBlockState().getValue(MachineBlock.CRAFTING);
 
 		if (Boolean.TRUE.equals(isCrafting)) {
 			event.getController().setAnimation(new AnimationBuilder().loop("bio_lab.working"));
-			playLoopingSound();
+			loopingSoundHelper.startLoop(this, ModSoundEvents.BIO_LAB_CRAFTING.get());
 		}
 		else {
 			event.getController().setAnimation(new AnimationBuilder().loop("bio_lab.idle"));
-			stopLoopingSound();
+			loopingSoundHelper.stopLoop();
 		}
 
 		return PlayState.CONTINUE;
@@ -300,32 +306,10 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 		return animationFactory;
 	}
 
-	@OnlyIn(Dist.CLIENT)
-	private void stopLoopingSound() {
-		if (loopingSoundInstance != null) {
-			Minecraft.getInstance().getSoundManager().stop(loopingSoundInstance);
-			loopingSoundInstance = null;
-		}
-	}
-
-	private void removeLoopingSound() {
-		if (level != null && level.isClientSide) {
-			stopLoopingSound();
-		}
-	}
-
-	@OnlyIn(Dist.CLIENT)
-	private void playLoopingSound() {
-		if (loopingSoundInstance == null && !isRemoved()) {
-			loopingSoundInstance = SoundUtil.createLoopingSoundInstance(ModSoundEvents.BIO_LAB_CRAFTING, getBlockPos());
-			Minecraft.getInstance().getSoundManager().play(loopingSoundInstance);
-		}
-	}
-
 	@Override
 	public void setRemoved() {
 		if (level != null && level.isClientSide) {
-			removeLoopingSound();
+			loopingSoundHelper.clear();
 		}
 		super.setRemoved();
 	}

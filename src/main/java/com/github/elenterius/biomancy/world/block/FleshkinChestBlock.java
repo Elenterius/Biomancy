@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.world.block;
 
+import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
-import com.github.elenterius.biomancy.styles.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.world.block.entity.FleshkinChestBlockEntity;
 import com.github.elenterius.biomancy.world.ownable.IOwnableEntityBlock;

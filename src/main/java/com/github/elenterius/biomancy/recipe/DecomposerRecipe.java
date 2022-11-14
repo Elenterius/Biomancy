@@ -83,7 +83,7 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 
 	@Override
 	public RecipeType<?> getType() {
-		return ModRecipes.DECOMPOSING_RECIPE_TYPE;
+		return ModRecipes.DECOMPOSING_RECIPE_TYPE.get();
 	}
 
 	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<DecomposerRecipe> {

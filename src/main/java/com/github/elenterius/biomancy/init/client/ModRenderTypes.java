@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.init;
+package com.github.elenterius.biomancy.init.client;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RegisterShadersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -19,7 +18,6 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.function.Function;
 
-@OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = BiomancyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class ModRenderTypes {
 

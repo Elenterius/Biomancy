@@ -2,16 +2,12 @@ package com.github.elenterius.biomancy.world.block.entity;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
-import com.github.elenterius.biomancy.init.ModRecipes;
-import com.github.elenterius.biomancy.recipe.BioForgeRecipe;
-import com.github.elenterius.biomancy.recipe.RecipeTypeImpl;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import com.github.elenterius.biomancy.world.block.entity.state.BioForgeStateData;
 import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.world.inventory.itemhandler.HandlerBehaviors;
 import com.github.elenterius.biomancy.world.inventory.menu.BioForgeMenu;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -51,7 +47,6 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 
 	public static final int FUEL_SLOTS = 1;
 	public static final int MAX_FUEL = 1_000;
-	public static final RecipeTypeImpl.ItemStackRecipeType<BioForgeRecipe> RECIPE_TYPE = ModRecipes.BIO_FORGING_RECIPE_TYPE;
 	static final int OPENERS_CHANGE_EVENT = 1;
 	protected final int tickOffset = BiomancyMod.GLOBAL_RANDOM.nextInt(20);
 	private final BioForgeStateData stateData = new BioForgeStateData();
@@ -100,7 +95,7 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 	}
 
 	public static void clientTick(Level level, BlockPos pos, BlockState state, BioForgeBlockEntity entity) {
-		entity.clientTick((ClientLevel) level);
+		entity.clientTick(level);
 	}
 
 	@Override
@@ -261,7 +256,7 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 		return TextComponentUtil.getTranslationText("container", "bio_forge");
 	}
 
-	protected void clientTick(ClientLevel level) {
+	protected void clientTick(Level level) {
 		if (playWorkingAnimation) return;
 
 		BlockPos pos = getBlockPos();
@@ -277,7 +272,8 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 
 		if (nearbyTimer > 0f) {
 			event.getController().setAnimation(new AnimationBuilder().playOnce("bio_forge.unfold").loop("bio_forge.idle"));
-		} else {
+		}
+		else {
 			event.getController().setAnimation(new AnimationBuilder().playOnce("bio_forge.fold").loop("bio_forge.folded_state"));
 		}
 		return PlayState.CONTINUE;

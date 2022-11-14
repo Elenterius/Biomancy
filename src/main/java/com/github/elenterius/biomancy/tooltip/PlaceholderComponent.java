@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.tooltip;
 
+import com.github.elenterius.biomancy.client.gui.tooltip.TooltipRenderHandler;
 import com.google.common.collect.Lists;
 import net.minecraft.network.chat.BaseComponent;
 import net.minecraft.network.chat.Component;

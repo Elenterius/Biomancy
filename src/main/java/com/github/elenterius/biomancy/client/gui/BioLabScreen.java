@@ -1,8 +1,10 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.client.util.ClientSoundUtil;
+import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
+import com.github.elenterius.biomancy.client.util.GuiUtil;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
-import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.inventory.menu.BioLabMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -11,10 +13,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class BioLabScreen extends AbstractContainerScreen<BioLabMenu> {
 
 	private static final ResourceLocation BACKGROUND_TEXTURE = BiomancyMod.createRL("textures/gui/menu_bio_lab.png");
@@ -27,7 +26,7 @@ public class BioLabScreen extends AbstractContainerScreen<BioLabMenu> {
 	@Override
 	protected void init() {
 		super.init();
-		SoundUtil.playUISound(ModSoundEvents.UI_BIO_LAB_OPEN);
+		ClientSoundUtil.playUISound(ModSoundEvents.UI_BIO_LAB_OPEN);
 	}
 
 	@Override

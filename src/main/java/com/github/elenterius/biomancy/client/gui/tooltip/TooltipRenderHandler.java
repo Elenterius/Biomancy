@@ -1,9 +1,10 @@
-package com.github.elenterius.biomancy.tooltip;
+package com.github.elenterius.biomancy.client.gui.tooltip;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.init.ModMenuTypes;
 import com.github.elenterius.biomancy.init.ModRarities;
+import com.github.elenterius.biomancy.init.client.ModScreens;
 import com.github.elenterius.biomancy.styles.ColorStyles;
+import com.github.elenterius.biomancy.tooltip.PlaceholderComponent;
 import com.github.elenterius.biomancy.world.item.IBiomancyItem;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -17,14 +18,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
 
-@OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = BiomancyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public final class TooltipRenderHandler {
 
@@ -42,9 +41,10 @@ public final class TooltipRenderHandler {
 	public static void onRenderTooltipColor(final RenderTooltipEvent.Color tooltipEvent) {
 		ItemStack stack = tooltipEvent.getItemStack();
 
-		if (stack.isEmpty() && ModMenuTypes.isBiomancyScreen(Minecraft.getInstance().screen)) {
+		if (stack.isEmpty() && ModScreens.isBiomancyScreen(Minecraft.getInstance().screen)) {
 			ColorStyles.GENERIC_TOOLTIP.applyColorTo(tooltipEvent);
-		} else if (isBiomancyItem(stack)) {
+		}
+		else if (isBiomancyItem(stack)) {
 			ColorStyles.CUSTOM_RARITY_TOOLTIP.applyColorTo(tooltipEvent);
 		}
 	}

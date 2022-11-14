@@ -1,5 +1,6 @@
-package com.github.elenterius.biomancy.tooltip;
+package com.github.elenterius.biomancy.client.gui.tooltip;
 
+import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.Font;

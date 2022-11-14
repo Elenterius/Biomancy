@@ -1,6 +1,8 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
+import com.github.elenterius.biomancy.client.util.GuiUtil;
 import com.github.elenterius.biomancy.world.entity.ownable.IControllableMob;
 import com.github.elenterius.biomancy.world.item.weapon.IGun;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -13,8 +15,6 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.gui.IIngameOverlay;
 import net.minecraftforge.client.gui.OverlayRegistry;
@@ -23,7 +23,6 @@ import net.minecraftforge.fml.ModList;
 
 import java.util.Collection;
 
-@OnlyIn(Dist.CLIENT)
 public final class IngameOverlays {
 
 	public static final ResourceLocation COMMAND_ICONS = BiomancyMod.createRL("textures/gui/command_icons.png");
