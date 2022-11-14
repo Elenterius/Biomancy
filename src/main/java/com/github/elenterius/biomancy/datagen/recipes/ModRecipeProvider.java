@@ -247,7 +247,7 @@ public class ModRecipeProvider extends RecipeProvider {
 		DecomposerRecipeBuilder.create().setIngredient(Items.GRAVEL).addOutput(ModItems.STONE_POWDER.get(), 3, 6).setCraftingTime(180).unlockedBy(Items.GRAVEL).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.SEA_PICKLE).addOutput(ModItems.BIO_MINERALS.get(), 1, 2).addOutput(ModItems.BIO_LUMENS.get(), 1, 2).addOutput(ModItems.ORGANIC_MATTER.get(), 1, 2).setCraftingTime(128).unlockedBy(Items.SEA_PICKLE).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.LILY_OF_THE_VALLEY).addOutput(ModItems.ORGANIC_MATTER.get(), 1, 2).addOutput(ModItems.TOXIN_EXTRACT.get(), 0, 1).setCraftingTime(60).unlockedBy(Items.LILY_OF_THE_VALLEY).save(consumer);
-		DecomposerRecipeBuilder.create().setIngredient(Items.WITHER_ROSE).addOutput(ModItems.ORGANIC_MATTER.get(), 1, 2).addOutput(ModItems.EXOTIC_DUST.get(), 0, 1).setCraftingTime(90).unlockedBy(Items.WITHER_ROSE).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(Items.WITHER_ROSE).addOutput(ModItems.ORGANIC_MATTER.get(), 1, 2).addOutput(ModItems.EXOTIC_DUST.get(), 0, 1).addOutput(ModItems.WITHERING_OOZE.get(), 3, 5).setCraftingTime(215).unlockedBy(Items.WITHER_ROSE).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.SPORE_BLOSSOM).addOutput(ModItems.ORGANIC_MATTER.get(), 1, 2).addOutput(ModItems.BIO_LUMENS.get(), 3, 5).setCraftingTime(150).unlockedBy(Items.SPORE_BLOSSOM).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.BROWN_MUSHROOM).addOutput(ModItems.ORGANIC_MATTER.get(), 1, 2).setCraftingTime(40).unlockedBy(Items.BROWN_MUSHROOM).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.RED_MUSHROOM).addOutput(ModItems.ORGANIC_MATTER.get(), 1, 2).setCraftingTime(40).unlockedBy(Items.RED_MUSHROOM).save(consumer);
@@ -305,7 +305,7 @@ public class ModRecipeProvider extends RecipeProvider {
 		DecomposerRecipeBuilder.create().setIngredient(Items.COCOA_BEANS).addOutput(ModItems.NUTRIENTS.get(), 1, 2).addOutput(ModItems.ORGANIC_MATTER.get(), 1, 2).setCraftingTime(80).unlockedBy(Items.COCOA_BEANS).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.BONE_MEAL).addOutput(ModItems.BONE_FRAGMENTS.get(), 1, 2).setCraftingTime(50).unlockedBy(Items.BONE_MEAL).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Tags.Items.BONES).addOutput(ModItems.BONE_FRAGMENTS.get(), 3, 6).setCraftingTime(150).unlockedBy(Tags.Items.BONES).save(consumer);
-		DecomposerRecipeBuilder.create().setIngredient(Items.SUGAR).addOutput(ModItems.NUTRIENTS.get(), 1).setCraftingTime(20).unlockedBy(Items.SUGAR).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(Items.SUGAR).addOutput(ModItems.NUTRIENTS.get(), -1, 1).setCraftingTime(20).unlockedBy(Items.SUGAR).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.CAKE).addOutput(ModItems.ORGANIC_MATTER.get(), 3, 6).addOutput(ModItems.NUTRIENTS.get(), 7, 12).setCraftingTime(360).unlockedBy(Items.CAKE).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.COOKIE).addOutput(ModItems.ORGANIC_MATTER.get(), 1, 2).addOutput(ModItems.NUTRIENTS.get(), 1, 2).setCraftingTime(80).unlockedBy(Items.COOKIE).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.MELON_SLICE).addOutput(ModItems.ORGANIC_MATTER.get(), 1, 2).addOutput(ModItems.NUTRIENTS.get(), 1, 2).setCraftingTime(80).unlockedBy(Items.MELON_SLICE).save(consumer);
