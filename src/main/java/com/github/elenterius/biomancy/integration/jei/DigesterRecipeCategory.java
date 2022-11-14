@@ -31,7 +31,7 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 	private final IDrawable icon;
 
 	public DigesterRecipeCategory(IGuiHelper guiHelper) {
-		icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(ModItems.DIGESTER.get()));
+		icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModItems.DIGESTER.get()));
 		ResourceLocation texture = BiomancyMod.createRL("textures/gui/jei/digester_recipe.png");
 		background = guiHelper.drawableBuilder(texture, 0, 0, 80, 47).setTextureSize(80, 47).addPadding(0, 4, 0, 0).build();
 	}
@@ -69,22 +69,22 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, DigesterRecipe recipe, IFocusGroup focuses) {
 		builder.setShapeless();
-		builder.addSlot(RecipeIngredientRole.INPUT, 1, 14).addIngredients(recipe.getIngredient());
-		builder.addSlot(RecipeIngredientRole.OUTPUT, 59, 15).addItemStack(recipe.getResultItem());
+		builder.addSlot(RecipeIngredientRole.INPUT, 1, 4).addIngredients(recipe.getIngredient());
+		builder.addSlot(RecipeIngredientRole.OUTPUT, 59, 5).addItemStack(recipe.getResultItem());
 	}
 
 	@Override
 	public void draw(DigesterRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
+		Font fontRenderer = Minecraft.getInstance().font;
+
 		int ticks = recipe.getCraftingTime();
-		if (ticks > 0) {
-			int seconds = ticks / 20;
-			int fuelCost = NutrientFuelUtil.getFuelCost(DigesterBlockEntity.BASE_COST, ticks);
-			Component timeText = new TranslatableComponent("gui.jei.category.smelting.time.seconds", seconds);
-			Component costText = new TextComponent("+" + fuelCost + " ").append(new TranslatableComponent("tooltip.biomancy.nutrients_fuel"));
-			Font fontRenderer = Minecraft.getInstance().font;
-			fontRenderer.draw(poseStack, timeText, (float) background.getWidth() - fontRenderer.width(timeText), 42, 0xff808080);
-			fontRenderer.draw(poseStack, costText, 0, 48, 0xff808080);
-		}
+		int seconds = ticks > 0 ? ticks / 20 : 0;
+		Component timeText = new TranslatableComponent("gui.jei.category.smelting.time.seconds", seconds);
+		fontRenderer.draw(poseStack, timeText, 48, 44 - fontRenderer.lineHeight, 0xff808080);
+
+		int fuelCost = NutrientFuelUtil.getFuelCost(DigesterBlockEntity.BASE_COST, ticks);
+		Component costText = new TextComponent("-" + fuelCost);
+		fontRenderer.draw(poseStack, costText, 15, 44 - fontRenderer.lineHeight, 0xff808080);
 	}
 
 }

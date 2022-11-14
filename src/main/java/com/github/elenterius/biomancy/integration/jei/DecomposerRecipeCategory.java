@@ -19,10 +19,10 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -37,8 +37,8 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 	private final IDrawable icon;
 
 	public DecomposerRecipeCategory(IGuiHelper guiHelper) {
-		icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(ModBlocks.DECOMPOSER.get()));
-		background = guiHelper.drawableBuilder(BiomancyMod.createRL("textures/gui/jei/decomposer_recipe.png"), 0, 0, 126, 60).setTextureSize(126, 60).build();
+		icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.DECOMPOSER.get()));
+		background = guiHelper.drawableBuilder(BiomancyMod.createRL("textures/gui/jei/decomposer_recipe.png"), 0, 0, 128, 64).setTextureSize(128, 64).build();
 	}
 
 	@Override
@@ -78,52 +78,79 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 		IRecipeSlotBuilder slotBuilder = builder.addSlot(RecipeIngredientRole.OUTPUT, x, y);
 		if (index < outputs.size()) {
 			VariableProductionOutput output = outputs.get(index);
-			ItemCountRange countRange = output.getCountRange();
 			ItemStack stack = output.getItemStack();
-			if (countRange instanceof ItemCountRange.ConstantValue constant) stack.setCount(constant.value());
-
 			slotBuilder.addItemStack(stack);
-			slotBuilder.addTooltipCallback((recipeSlotView, tooltip) -> {
-				tooltip.add(TextComponent.EMPTY);
-				tooltip.add(new TextComponent("Item Count"));
-				if (countRange instanceof ItemCountRange.UniformRange uniform) {
-					tooltip.add(new TextComponent(" uniform(min: %d, max: %d)".formatted(uniform.min(), uniform.max())).withStyle(ChatFormatting.GRAY));
-				} else if (countRange instanceof ItemCountRange.ConstantValue constant) {
-					tooltip.add(new TextComponent(" constant value: %d".formatted(constant.value())).withStyle(ChatFormatting.GRAY));
-				} else if (countRange instanceof ItemCountRange.BinomialRange binomialRange) {
-					tooltip.add(new TextComponent(" binomial(n: %d, p: %s)".formatted(binomialRange.n(), binomialRange.p())).withStyle(ChatFormatting.GRAY));
-				}
-			});
 		}
 	}
 
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, DecomposerRecipe recipe, IFocusGroup focuses) {
-		int posY = 12;
-		builder.addSlot(RecipeIngredientRole.INPUT, 10, posY).addItemStacks(recipe.getIngredientQuantity().getItemsWithCount());
+		int x = 51;
+		int y0 = 9;
+		int y1 = 38;
 
-		int posX = 63;
+		builder.addSlot(RecipeIngredientRole.INPUT, 5, y0).addItemStacks(recipe.getIngredientQuantity().getItemsWithCount());
+
 		List<VariableProductionOutput> outputs = recipe.getOutputs();
-		addOutputSlot(builder, posX, posY, outputs, 0);
-		addOutputSlot(builder, posX, posY + 18, outputs, 1);
-		addOutputSlot(builder, posX + 18, posY, outputs, 2);
-		addOutputSlot(builder, posX + 18, posY + 18, outputs, 3);
-		addOutputSlot(builder, posX + 18 * 2, posY, outputs, 4);
-		addOutputSlot(builder, posX + 18 * 2, posY + 18, outputs, 5);
+		addOutputSlot(builder, x, y0, outputs, 0);
+		addOutputSlot(builder, x, y1, outputs, 1);
+		addOutputSlot(builder, x + 30, y0, outputs, 2);
+		addOutputSlot(builder, x + 30, y1, outputs, 3);
+		addOutputSlot(builder, x + 30 * 2, y0, outputs, 4);
+		addOutputSlot(builder, x + 30 * 2, y1, outputs, 5);
 	}
 
 	@Override
 	public void draw(DecomposerRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
+		Font fontRenderer = Minecraft.getInstance().font;
+
 		int ticks = recipe.getCraftingTime();
-		if (ticks > 0) {
-			int fuelCost = NutrientFuelUtil.getFuelCost(DecomposerBlockEntity.BASE_COST, ticks);
-			int seconds = ticks / 20;
-			Font fontRenderer = Minecraft.getInstance().font;
-			TranslatableComponent timeString = new TranslatableComponent("gui.jei.category.smelting.time.seconds", seconds);
-			TextComponent costString = new TextComponent("" + fuelCost);
-			float pY = (float) background.getHeight() - fontRenderer.lineHeight;
-			fontRenderer.draw(poseStack, timeString, (background.getWidth() - fontRenderer.width(timeString)), pY, 0xff808080);
-			fontRenderer.draw(poseStack, costString, 9, pY - fontRenderer.lineHeight, 0xff808080);
+		int seconds = ticks > 0 ? ticks / 20 : 0;
+		TranslatableComponent timeString = new TranslatableComponent("gui.jei.category.smelting.time.seconds", seconds);
+		fontRenderer.draw(poseStack, timeString, 16, 59f - fontRenderer.lineHeight, 0xff808080);
+
+		int fuelCost = NutrientFuelUtil.getFuelCost(DecomposerBlockEntity.BASE_COST, ticks);
+		TextComponent costString = new TextComponent("-" + fuelCost);
+		fontRenderer.draw(poseStack, costString, 16, 43f - fontRenderer.lineHeight, 0xff808080);
+
+		int x = 68;
+		List<VariableProductionOutput> outputs = recipe.getOutputs();
+		drawOutputAmount(fontRenderer, poseStack, x, 26, outputs, 0);
+		drawOutputAmount(fontRenderer, poseStack, x, 55, outputs, 1);
+		drawOutputAmount(fontRenderer, poseStack, x + 30, 26, outputs, 2);
+		drawOutputAmount(fontRenderer, poseStack, x + 30, 55, outputs, 3);
+		drawOutputAmount(fontRenderer, poseStack, x + 30 * 2, 26, outputs, 4);
+		drawOutputAmount(fontRenderer, poseStack, x + 30 * 2, 55, outputs, 5);
+	}
+
+	private void drawOutputAmount(Font fontRenderer, PoseStack poseStack, int x, int y, List<VariableProductionOutput> outputs, int index) {
+		assert index >= 0;
+		assert index < DecomposerRecipe.MAX_OUTPUTS;
+
+		if (index < outputs.size()) {
+			VariableProductionOutput output = outputs.get(index);
+			if (output.getItemStack().isEmpty()) return;
+
+			poseStack.pushPose();
+			poseStack.translate(x, y, 0);
+			poseStack.scale(0.75f, 0.75f, 1f);
+			poseStack.translate(-x, -y, 0);
+
+			ItemCountRange countRange = output.getCountRange();
+			if (countRange instanceof ItemCountRange.UniformRange uniform) {
+				MutableComponent component = new TextComponent("%d-%d".formatted(Math.max(uniform.min(), 0), uniform.max()));
+				fontRenderer.draw(poseStack, component, x - fontRenderer.width(component), y, 0xff808080);
+			}
+			else if (countRange instanceof ItemCountRange.ConstantValue constant) {
+				MutableComponent component = new TextComponent("" + constant.value());
+				fontRenderer.draw(poseStack, component, x - fontRenderer.width(component), y, 0xff808080);
+			}
+			else if (countRange instanceof ItemCountRange.BinomialRange binomialRange) {
+				MutableComponent component = new TextComponent("n: %d, p: %s".formatted(binomialRange.n(), binomialRange.p()));
+				fontRenderer.draw(poseStack, component, x - fontRenderer.width(component), y, 0xff808080);
+			}
+
+			poseStack.popPose();
 		}
 	}
 

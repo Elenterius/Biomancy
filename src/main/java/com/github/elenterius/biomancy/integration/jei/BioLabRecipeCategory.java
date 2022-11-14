@@ -35,7 +35,7 @@ public class BioLabRecipeCategory implements IRecipeCategory<BioLabRecipe> {
 	private final IDrawable icon;
 
 	public BioLabRecipeCategory(IGuiHelper guiHelper) {
-		icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(ModItems.BIO_LAB.get()));
+		icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModItems.BIO_LAB.get()));
 		ResourceLocation texture = BiomancyMod.createRL("textures/gui/jei/bio_lab_recipe.png");
 		background = guiHelper.drawableBuilder(texture, 0, 0, 134, 54).setTextureSize(134, 54).addPadding(0, 4, 0, 0).build();
 	}
@@ -75,14 +75,14 @@ public class BioLabRecipeCategory implements IRecipeCategory<BioLabRecipe> {
 		builder.setShapeless();
 
 		List<IngredientStack> ingredientQuantities = recipe.getIngredientQuantities();
-		addInputSlot(builder, 1, 10, ingredientQuantities, 0);
-		addInputSlot(builder, 19, 10, ingredientQuantities, 1);
-		addInputSlot(builder, 1, 10 + 18, ingredientQuantities, 2);
-		addInputSlot(builder, 19, 10 + 18, ingredientQuantities, 3);
+		addInputSlot(builder, 1, 1, ingredientQuantities, 0);
+		addInputSlot(builder, 19, 1, ingredientQuantities, 1);
+		addInputSlot(builder, 1, 1 + 18, ingredientQuantities, 2);
+		addInputSlot(builder, 19, 1 + 18, ingredientQuantities, 3);
 
-		builder.addSlot(RecipeIngredientRole.INPUT, 55, 19).addIngredients(recipe.getReactant());
+		builder.addSlot(RecipeIngredientRole.INPUT, 55, 10).addIngredients(recipe.getReactant());
 
-		builder.addSlot(RecipeIngredientRole.OUTPUT, 113, 19).addItemStack(recipe.getResultItem());
+		builder.addSlot(RecipeIngredientRole.OUTPUT, 113, 10).addItemStack(recipe.getResultItem());
 	}
 
 	private void addInputSlot(IRecipeLayoutBuilder builder, int x, int y, List<IngredientStack> ingredients, int index) {
@@ -97,16 +97,16 @@ public class BioLabRecipeCategory implements IRecipeCategory<BioLabRecipe> {
 
 	@Override
 	public void draw(BioLabRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
+		Font fontRenderer = Minecraft.getInstance().font;
+
 		int ticks = recipe.getCraftingTime();
-		if (ticks > 0) {
-			int seconds = ticks / 20;
-			int fuelCost = NutrientFuelUtil.getFuelCost(BioLabBlockEntity.BASE_COST, ticks);
-			Component timeText = new TranslatableComponent("gui.jei.category.smelting.time.seconds", seconds);
-			Component costText = new TextComponent("+" + fuelCost + " ").append(new TranslatableComponent("tooltip.biomancy.nutrients_fuel"));
-			Font fontRenderer = Minecraft.getInstance().font;
-			fontRenderer.draw(poseStack, timeText, (float) background.getWidth() - fontRenderer.width(timeText), 42, 0xff808080);
-			fontRenderer.draw(poseStack, costText, 0, 48, 0xff808080);
-		}
+		int seconds = ticks > 0 ? ticks / 20 : 0;
+		Component timeText = new TranslatableComponent("gui.jei.category.smelting.time.seconds", seconds);
+		fontRenderer.draw(poseStack, timeText, 102, 50 - fontRenderer.lineHeight, 0xff808080);
+
+		int fuelCost = NutrientFuelUtil.getFuelCost(BioLabBlockEntity.BASE_COST, ticks);
+		Component costText = new TextComponent("-" + fuelCost);
+		fontRenderer.draw(poseStack, costText, 69, 50 - fontRenderer.lineHeight, 0xff808080);
 	}
 
 }
