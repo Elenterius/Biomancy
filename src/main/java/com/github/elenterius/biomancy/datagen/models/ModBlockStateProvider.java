@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.MultifaceBlock;
 import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraftforge.client.model.generators.*;
@@ -32,12 +33,14 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		stairsBlock(ModBlocks.FLESH_STAIRS.get(), blockTexture(ModBlocks.FLESH.get()));
 		simpleBlockItem(ModBlocks.FLESH_SLAB.get());
 		simpleBlockItem(ModBlocks.FLESH_STAIRS.get());
+		wallBlock(ModBlocks.FLESH_WALL.get(), ModBlocks.FLESH.get());
 
 		simpleBlockWithItem(ModBlocks.PACKED_FLESH.get());
 		slabBlock(ModBlocks.PACKED_FLESH_SLAB.get(), blockModel(ModBlocks.PACKED_FLESH.get()), blockTexture(ModBlocks.PACKED_FLESH.get()));
 		stairsBlock(ModBlocks.PACKED_FLESH_STAIRS.get(), blockTexture(ModBlocks.PACKED_FLESH.get()));
 		simpleBlockItem(ModBlocks.PACKED_FLESH_SLAB.get());
 		simpleBlockItem(ModBlocks.PACKED_FLESH_STAIRS.get());
+		wallBlock(ModBlocks.PACKED_FLESH_WALL.get(), ModBlocks.PACKED_FLESH.get());
 
 		simpleBlockWithItem(ModBlocks.PRIMAL_FLESH.get());
 		slabBlock(ModBlocks.PRIMAL_FLESH_SLAB.get(), blockModel(ModBlocks.PRIMAL_FLESH.get()), blockTexture(ModBlocks.PRIMAL_FLESH.get()));
@@ -73,6 +76,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
 	public void simpleBlockItem(Block block) {
 		String name = name(block);
 		itemModels().getBuilder(name).parent(models().getBuilder(name));
+	}
+
+	public void wallBlock(WallBlock block, Block textureBlock) {
+		ResourceLocation texture = blockTexture(textureBlock);
+		wallBlock(block, texture);
 	}
 
 	public void simpleBlockWithItem(Block block) {

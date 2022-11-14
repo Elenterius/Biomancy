@@ -461,9 +461,11 @@ public class ModRecipeProvider extends RecipeProvider {
 		BioForgeRecipeBuilder.create(ModItems.FLESH_BLOCK.get(), 4).addIngredient(ModItems.FLESH_BITS.get(), fleshBlockCost).setCategory(ModRecipeBooks.BioForgeCategory.BLOCKS).unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
 		BioForgeRecipeBuilder.create(ModItems.FLESH_STAIRS.get(), 4).addIngredient(ModItems.FLESH_BITS.get(), fleshStairsCost).setCategory(ModRecipeBooks.BioForgeCategory.BLOCKS).unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
 		BioForgeRecipeBuilder.create(ModItems.FLESH_SLAB.get(), 4).addIngredient(ModItems.FLESH_BITS.get(), fleshSlabCost).setCategory(ModRecipeBooks.BioForgeCategory.BLOCKS).unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
+		BioForgeRecipeBuilder.create(ModItems.FLESH_WALL.get(), 4).addIngredient(ModItems.FLESH_BITS.get(), fleshBlockCost).setCategory(ModRecipeBooks.BioForgeCategory.BLOCKS).unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
 		BioForgeRecipeBuilder.create(ModItems.PACKED_FLESH_BLOCK.get(), 4).addIngredient(ModItems.FLESH_BITS.get(), fleshBlockCost * 2).addIngredient(ModItems.TOUGH_FIBERS.get(), 4).setCategory(ModRecipeBooks.BioForgeCategory.BLOCKS).unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
 		BioForgeRecipeBuilder.create(ModItems.PACKED_FLESH_STAIRS.get(), 4).addIngredient(ModItems.FLESH_BITS.get(), fleshStairsCost * 2).addIngredient(ModItems.TOUGH_FIBERS.get(), 4).setCategory(ModRecipeBooks.BioForgeCategory.BLOCKS).unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
 		BioForgeRecipeBuilder.create(ModItems.PACKED_FLESH_SLAB.get(), 4).addIngredient(ModItems.FLESH_BITS.get(), fleshSlabCost * 2).addIngredient(ModItems.TOUGH_FIBERS.get(), 4).setCategory(ModRecipeBooks.BioForgeCategory.BLOCKS).unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
+		BioForgeRecipeBuilder.create(ModItems.PACKED_FLESH_WALL.get(), 4).addIngredient(ModItems.FLESH_BITS.get(), fleshBlockCost * 2).addIngredient(ModItems.TOUGH_FIBERS.get(), 4).setCategory(ModRecipeBooks.BioForgeCategory.BLOCKS).unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
 
 		BioForgeRecipeBuilder.create(ModItems.FLESH_FENCE.get(), 4)
 				.addIngredient(ModItems.FLESH_BITS.get(), fleshBlockCost)

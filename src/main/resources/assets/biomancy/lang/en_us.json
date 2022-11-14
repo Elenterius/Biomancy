@@ -96,6 +96,7 @@
   "block.biomancy.packed_flesh": "Packed Flesh Block",
   "block.biomancy.packed_flesh_slab": "Packed Flesh Slab",
   "block.biomancy.packed_flesh_stairs": "Packed Flesh Stairs",
+  "block.biomancy.packed_flesh_wall": "Packed Flesh Wall",
   "block.biomancy.primal_flesh": "Primal Flesh Block",
   "block.biomancy.primal_flesh_slab": "Primal Flesh Slab",
   "block.biomancy.corrupted_primal_flesh": "Corrupted Primal Flesh Block",
@@ -103,7 +104,6 @@
   "block.biomancy.malignant_flesh": "Malignant Flesh Block",
   "block.biomancy.malignant_flesh_slab": "Malignant Flesh Slab",
   "block.biomancy.malignant_flesh_veins": "Malignant Flesh Veins",
-
   "container.biomancy.decomposer": "Decomposer Inventory",
   "container.biomancy.bio_lab": "Bio-Lab Inventory",
   "container.biomancy.bio_forge": "Bio-Forge Inventory",

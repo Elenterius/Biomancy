@@ -63,11 +63,24 @@ public class ModItemModelProvider extends ItemModelProvider {
 				.texture(LAYER_0_TEXTURE, new ResourceLocation(item.getNamespace(), ITEM_FOLDER + "/" + item.getPath()));
 	}
 
-	private ItemModelBuilder flatBlockItem(BlockItem item) {
-		ResourceLocation id = Objects.requireNonNull(item.getBlock().getRegistryName());
-		return getBuilder(item.toString())
+	public ItemModelBuilder flatBlockItem(BlockItem blockItem) {
+		return flatBlockItem(Objects.requireNonNull(blockItem.getRegistryName()));
+	}
+
+	private ItemModelBuilder flatBlockItem(ResourceLocation blockItem) {
+		return getBuilder(blockItem.toString())
 				.parent(new ModelFile.UncheckedModelFile("item/generated"))
-				.texture(LAYER_0_TEXTURE, new ResourceLocation(id.getNamespace(), BLOCK_FOLDER + "/" + id.getPath()));
+				.texture(LAYER_0_TEXTURE, new ResourceLocation(blockItem.getNamespace(), BLOCK_FOLDER + "/" + blockItem.getPath()));
+	}
+
+	public ItemModelBuilder wallBlockItem(BlockItem blockItem) {
+		return wallBlockItem(Objects.requireNonNull(blockItem.getRegistryName()));
+	}
+
+	private ItemModelBuilder wallBlockItem(ResourceLocation blockItem) {
+		return getBuilder(blockItem.toString())
+				.parent(new ModelFile.UncheckedModelFile(BLOCK_FOLDER + "/wall_inventory"))
+				.texture("wall", new ResourceLocation(blockItem.getNamespace(), BLOCK_FOLDER + "/" + blockItem.getPath().replace("_wall", "")));
 	}
 
 	@Override
@@ -133,6 +146,9 @@ public class ModItemModelProvider extends ItemModelProvider {
 
 		//generate models for all eggs
 		ModItems.ITEMS.getEntries().stream().map(RegistryObject::get).filter(SpawnEggItem.class::isInstance).forEach(this::spawnEggItem);
+
+		wallBlockItem(ModItems.FLESH_WALL.get());
+		wallBlockItem(ModItems.PACKED_FLESH_WALL.get());
 	}
 
 }

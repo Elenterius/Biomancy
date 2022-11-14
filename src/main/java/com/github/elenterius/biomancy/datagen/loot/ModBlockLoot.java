@@ -82,10 +82,12 @@ public class ModBlockLoot extends BlockLoot {
 		dropSelf(ModBlocks.FLESH.get());
 		add(ModBlocks.FLESH_SLAB.get(), BlockLoot::createSlabItemTable);
 		dropSelf(ModBlocks.FLESH_STAIRS.get());
+		dropSelf(ModBlocks.FLESH_WALL.get());
 
 		dropSelf(ModBlocks.PACKED_FLESH.get());
 		add(ModBlocks.PACKED_FLESH_SLAB.get(), BlockLoot::createSlabItemTable);
 		dropSelf(ModBlocks.PACKED_FLESH_STAIRS.get());
+		dropSelf(ModBlocks.PACKED_FLESH_WALL.get());
 
 		dropSelf(ModBlocks.PRIMAL_FLESH.get());
 		add(ModBlocks.PRIMAL_FLESH_SLAB.get(), BlockLoot::createSlabItemTable);
