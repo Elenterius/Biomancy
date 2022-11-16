@@ -122,7 +122,7 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 		public void toNetwork(FriendlyByteBuf buffer, DecomposerRecipe recipe) {
 			recipe.ingredientStack.toNetwork(buffer);
 
-			buffer.writeInt(recipe.getCraftingTime());
+			buffer.writeVarInt(recipe.getCraftingTime());
 
 			buffer.writeVarInt(recipe.outputs.size());
 			for (VariableProductionOutput output : recipe.outputs) {

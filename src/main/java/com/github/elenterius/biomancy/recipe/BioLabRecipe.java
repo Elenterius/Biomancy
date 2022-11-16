@@ -154,6 +154,7 @@ public class BioLabRecipe extends AbstractProductionRecipe {
 			//server side
 			buffer.writeItem(recipe.result);
 			recipe.recipeReactant.toNetwork(buffer);
+
 			buffer.writeVarInt(recipe.getCraftingTime());
 
 			buffer.writeVarInt(recipe.ingredients.size());

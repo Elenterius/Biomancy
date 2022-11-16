@@ -32,6 +32,11 @@ public record IngredientStack(Ingredient ingredient, int count) {
 		return new IngredientStack(ingredient, count);
 	}
 
+	public void toNetwork(FriendlyByteBuf buffer) {
+		ingredient.toNetwork(buffer);
+		buffer.writeVarInt(count);
+	}
+
 	public boolean testItem(@Nullable ItemStack stack) {
 		return ingredient.test(stack);
 	}
@@ -53,11 +58,6 @@ public record IngredientStack(Ingredient ingredient, int count) {
 		json.add(INGREDIENT_KEY, ingredient.toJson());
 		if (count > 0) json.addProperty(COUNT_KEY, count);
 		return json;
-	}
-
-	public void toNetwork(FriendlyByteBuf buffer) {
-		ingredient.toNetwork(buffer);
-		buffer.writeVarInt(count);
 	}
 
 }

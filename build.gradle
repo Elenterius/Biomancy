@@ -49,8 +49,8 @@ minecraft {
 
             // Hot-Swapping via JBR, includes schema changes.
             // Guide: https://forge.gemwire.uk/wiki/Hotswap#Applying_schema_changes
-            // Important: we need to build and run via IDEA (Settings -> Build, Execution, Deployment -> Build Tools -> Gradle)
-            jvmArg '-XX:+AllowEnhancedClassRedefinition'
+            // You might need to build and run via IDEA (Settings -> Build, Execution, Deployment -> Build Tools -> Gradle)
+            //jvmArg '-XX:+AllowEnhancedClassRedefinition'
 
             // "SCAN": For mods scan.
             // "REGISTRIES": For firing of registry events.
