@@ -11,11 +11,6 @@ import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModItems;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-import com.google.common.hash.HashCode;
-import com.google.common.hash.Hashing;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.model.HumanoidModel;
@@ -26,8 +21,6 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.entity.WitherSkullRenderer;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.ColorHandlerEvent;
@@ -39,11 +32,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.lwjgl.glfw.GLFW;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 @Mod.EventBusSubscriber(modid = BiomancyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class ClientSetupHandler {
@@ -64,12 +52,12 @@ public final class ClientSetupHandler {
 
 		IngameOverlays.registerGameOverlays();
 		ModScreens.registerMenuScreens();
+		ModScreens.registerTooltipComponents();
+
+		setBlockRenderLayers();
 
 		event.enqueueWork(() -> {
-			ModScreens.registerTooltipComponents();
 			registerItemModelProperties();
-			setBlockRenderLayers();
-
 			ModRecipeBookCategories.init();
 		});
 	}
@@ -126,14 +114,18 @@ public final class ClientSetupHandler {
 	}
 
 	@SubscribeEvent
-	public static void registerLayers(final EntityRenderersEvent.AddLayers event) {}
+	public static void registerLayers(final EntityRenderersEvent.AddLayers event) {
+		//placeholder
+	}
 
 	@SubscribeEvent
-	public static void onBlockModelRegistry(final ModelRegistryEvent event) {}
-
-	public static boolean isPlayerCosmeticVisible(Player player) {
-		return HASHES.isValid(player.getGameProfile().getId());
+	public static void onBlockModelRegistry(final ModelRegistryEvent event) {
+		//placeholder
 	}
+
+	//	public static boolean isPlayerCosmeticVisible(Player player) {
+	//		return HASHES.isValid(player.getGameProfile().getId());
+	//	}
 
 	@SubscribeEvent
 	public static void onItemColorRegistry(final ColorHandlerEvent.Item event) {
@@ -141,8 +133,8 @@ public final class ClientSetupHandler {
 	}
 
 	@SubscribeEvent
-	public static void onItemColorRegistry(final ColorHandlerEvent.Block event) {
-		//		event.getBlockColors().register((state, displayReader, pos, index) -> 0x8d758c, ModBlocks.NECROTIC_FLESH_BLOCK.get());
+	public static void onBlockColorRegistry(final ColorHandlerEvent.Block event) {
+		//placeholder
 	}
 
 	@SubscribeEvent
@@ -151,49 +143,49 @@ public final class ClientSetupHandler {
 		//addFullBrightOverlayBakedModel(ModBlocks.FOOBAR.get(), event);
 	}
 
-	private static void addFullBrightOverlayBakedModel(Block block, ModelBakeEvent event) {
-		//		for (BlockState blockState : block.getStateDefinition().getPossibleStates()) {
-		//			ModelResourceLocation modelLocation = BlockModelShapes.stateToModelLocation(blockState);
-		//			IBakedModel bakedModel = event.getModelRegistry().get(modelLocation);
-		//			if (bakedModel == null) {
-		//				BiomancyMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Did not find any vanilla baked models for {}", block.getRegistryName());
-		//			}
-		//			else if (bakedModel instanceof FullBrightOverlayBakedModel) {
-		//				BiomancyMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Attempted to replace already existing FullBrightOverlayBakedModel for {}", block.getRegistryName());
-		//			}
-		//			else {
-		//				FullBrightOverlayBakedModel customModel = new FullBrightOverlayBakedModel(bakedModel);
-		//				event.getModelRegistry().put(modelLocation, customModel);
-		//			}
-		//		}
-	}
+	//	private static void addFullBrightOverlayBakedModel(Block block, ModelBakeEvent event) {
+	//		for (BlockState blockState : block.getStateDefinition().getPossibleStates()) {
+	//			ModelResourceLocation modelLocation = BlockModelShapes.stateToModelLocation(blockState);
+	//			IBakedModel bakedModel = event.getModelRegistry().get(modelLocation);
+	//			if (bakedModel == null) {
+	//				BiomancyMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Did not find any vanilla baked models for {}", block.getRegistryName());
+	//			}
+	//			else if (bakedModel instanceof FullBrightOverlayBakedModel) {
+	//				BiomancyMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Attempted to replace already existing FullBrightOverlayBakedModel for {}", block.getRegistryName());
+	//			}
+	//			else {
+	//				FullBrightOverlayBakedModel customModel = new FullBrightOverlayBakedModel(bakedModel);
+	//				event.getModelRegistry().put(modelLocation, customModel);
+	//			}
+	//		}
+	//	}
 
-	private static final class HASHES {
-
-		private static final Set<HashCode> VALID = Set.of(
-				HashCode.fromString("20f0bf6814e62bb7297669efb542f0af6ee0be1a9b87d0702853d8cc5aa15dc4")
-		);
-
-		private static final CacheLoader<UUID, HashCode> CACHE_LOADER = new CacheLoader<>() {
-			@Override
-			public HashCode load(UUID key) {
-				//noinspection UnstableApiUsage
-				return Hashing.sha256().hashString(key.toString(), StandardCharsets.UTF_8);
-			}
-		};
-
-		private static final LoadingCache<UUID, HashCode> CACHE = CacheBuilder.newBuilder().expireAfterAccess(2, TimeUnit.SECONDS).build(CACHE_LOADER);
-
-		private HASHES() {}
-
-		public static boolean isValid(UUID uuid) {
-			return VALID.contains(CACHE.getUnchecked(uuid));
-		}
-
-		public static boolean isValid(HashCode code) {
-			return VALID.contains(code);
-		}
-
-	}
+	//	private static final class HASHES {
+	//
+	//		private static final Set<HashCode> VALID = Set.of(
+	//				HashCode.fromString("20f0bf6814e62bb7297669efb542f0af6ee0be1a9b87d0702853d8cc5aa15dc4")
+	//		);
+	//
+	//		private static final CacheLoader<UUID, HashCode> CACHE_LOADER = new CacheLoader<>() {
+	//			@Override
+	//			public HashCode load(UUID key) {
+	//				//noinspection UnstableApiUsage
+	//				return Hashing.sha256().hashString(key.toString(), StandardCharsets.UTF_8);
+	//			}
+	//		};
+	//
+	//		private static final LoadingCache<UUID, HashCode> CACHE = CacheBuilder.newBuilder().expireAfterAccess(2, TimeUnit.SECONDS).build(CACHE_LOADER);
+	//
+	//		private HASHES() {}
+	//
+	//		public static boolean isValid(UUID uuid) {
+	//			return VALID.contains(CACHE.getUnchecked(uuid));
+	//		}
+	//
+	//		public static boolean isValid(HashCode code) {
+	//			return VALID.contains(code);
+	//		}
+	//
+	//	}
 
 }

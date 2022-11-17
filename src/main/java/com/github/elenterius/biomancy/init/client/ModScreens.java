@@ -22,10 +22,9 @@ import java.util.Set;
 
 public final class ModScreens {
 
-	public static final Set<Class<? extends Screen>> SCREENS = new HashSet<>();
+	private static final Set<Class<? extends Screen>> SCREENS = new HashSet<>();
 
 	private ModScreens() {}
-
 
 	public static boolean isBiomancyScreen(@Nullable Screen screen) {
 		return screen != null && SCREENS.stream().anyMatch(screenClass -> screenClass.isInstance(screen));
@@ -36,7 +35,7 @@ public final class ModScreens {
 		SCREENS.add(clazz);
 	}
 
-	public static void registerMenuScreens() {
+	static void registerMenuScreens() {
 		registerMenuScreen(ModMenuTypes.DECOMPOSER, DecomposerScreen::new, DecomposerScreen.class);
 		registerMenuScreen(ModMenuTypes.BIO_LAB, BioLabScreen::new, BioLabScreen.class);
 		registerMenuScreen(ModMenuTypes.GLAND, GlandScreen::new, GlandScreen.class);
@@ -47,7 +46,7 @@ public final class ModScreens {
 		registerMenuScreen(ModMenuTypes.BIO_FORGE, BioForgeScreen::new, BioForgeScreen.class);
 	}
 
-	public static void registerTooltipComponents() {
+	static void registerTooltipComponents() {
 		MinecraftForgeClient.registerTooltipComponentFactory(TabTooltipComponent.class, TabTooltipClientComponent::new);
 		MinecraftForgeClient.registerTooltipComponentFactory(HrTooltipComponent.class, HrTooltipClientComponent::new);
 		MinecraftForgeClient.registerTooltipComponentFactory(StorageSacTooltipComponent.class, StorageSacTooltipClientComponent::new);

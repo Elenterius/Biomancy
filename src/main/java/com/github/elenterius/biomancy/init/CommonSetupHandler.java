@@ -21,13 +21,13 @@ public final class CommonSetupHandler {
 	@SubscribeEvent
 	public static void onSetup(final FMLCommonSetupEvent event) {
 		ModNetworkHandler.register();
-		ModRecipes.register();
 
 		// do stuff after common setup event on single thread
 		event.enqueueWork(() -> {
 			ModTags.init();
 			//			ModTriggers.register();
 			registerDispenserBehaviors();
+			ModRecipes.registerComposterRecipes();
 		});
 	}
 

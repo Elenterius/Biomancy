@@ -31,11 +31,7 @@ public final class ModRecipes {
 
 	private ModRecipes() {}
 
-	static void register() {
-		registerComposterRecipes();
-	}
-
-	private static void registerComposterRecipes() {
+	public static void registerComposterRecipes() {
 		ComposterBlock.COMPOSTABLES.putIfAbsent(ModItems.ORGANIC_MATTER.get(), 0.25f);
 	}
 

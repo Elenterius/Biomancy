@@ -21,7 +21,6 @@ public final class ModSerums {
 	public static final RegistryObject<InsomniaCureSerum> INSOMNIA_CURE = SERUMS.register("insomnia_cure", () -> new InsomniaCureSerum(0x9B70B2));
 	public static final RegistryObject<CleansingSerum> CLEANSING_SERUM = SERUMS.register("cleansing_serum", () -> new CleansingSerum(0x371667));
 	public static final RegistryObject<DecaySerum> DECAY_AGENT = SERUMS.register("decay_agent", () -> new DecaySerum(0x8d4e85));
-	//	public static final RegistryObject<MutagenReagent> MUTAGEN_SERUM = SERUMS.register("mutagen_serum", () -> new MutagenReagent(0x60963a));
 	public static final RegistryObject<AdrenalineSerum> ADRENALINE_SERUM = SERUMS.register("adrenaline_serum", () -> new AdrenalineSerum(0x8F1834));
 
 	private ModSerums() {}
