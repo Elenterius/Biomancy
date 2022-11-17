@@ -65,12 +65,12 @@ public final class ClientSetupHandler {
 		IngameOverlays.registerGameOverlays();
 		ModScreens.registerMenuScreens();
 
-		ModRecipeBookCategories.init();
-
 		event.enqueueWork(() -> {
 			ModScreens.registerTooltipComponents();
 			registerItemModelProperties();
 			setBlockRenderLayers();
+
+			ModRecipeBookCategories.init();
 		});
 	}
 

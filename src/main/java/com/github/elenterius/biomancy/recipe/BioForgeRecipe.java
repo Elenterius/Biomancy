@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.recipe;
 
-import com.github.elenterius.biomancy.init.ModBioForgeCategories;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -23,13 +22,13 @@ public class BioForgeRecipe implements Recipe<Container> {
 
 	private final ResourceLocation registryKey;
 	public static final int MAX_INGREDIENTS = 5;
-	private final ModBioForgeCategories.BioForgeCategory category;
+	private final BioForgeCategory category;
 	private final List<IngredientStack> ingredients;
 	private final ItemStack result;
 
 	private final NonNullList<Ingredient> vanillaIngredients;
 
-	public BioForgeRecipe(ResourceLocation id, ModBioForgeCategories.BioForgeCategory category, ItemStack result, List<IngredientStack> ingredients) {
+	public BioForgeRecipe(ResourceLocation id, BioForgeCategory category, ItemStack result, List<IngredientStack> ingredients) {
 		registryKey = id;
 		this.category = category;
 		this.result = result;
@@ -114,7 +113,7 @@ public class BioForgeRecipe implements Recipe<Container> {
 		return ingredients;
 	}
 
-	public ModBioForgeCategories.BioForgeCategory getCategory() {
+	public BioForgeCategory getCategory() {
 		return category;
 	}
 
@@ -143,7 +142,7 @@ public class BioForgeRecipe implements Recipe<Container> {
 			}
 
 			ItemStack resultStack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
-			ModBioForgeCategories.BioForgeCategory category = ModBioForgeCategories.BioForgeCategory.fromJson(json);
+			BioForgeCategory category = BioForgeCategory.fromJson(json);
 
 			return new BioForgeRecipe(recipeId, category, resultStack, ingredients);
 		}
@@ -159,7 +158,7 @@ public class BioForgeRecipe implements Recipe<Container> {
 				ingredients.add(IngredientStack.fromNetwork(buffer));
 			}
 
-			ModBioForgeCategories.BioForgeCategory category = ModBioForgeCategories.BioForgeCategory.fromNetwork(buffer);
+			BioForgeCategory category = BioForgeCategory.fromNetwork(buffer);
 
 			return new BioForgeRecipe(recipeId, category, resultStack, ingredients);
 		}

@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.init.ModBioForgeCategories;
 import com.github.elenterius.biomancy.init.ModRecipeBookTypes;
 import com.github.elenterius.biomancy.init.client.ModRecipeBookCategories;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
+import com.github.elenterius.biomancy.recipe.BioForgeCategory;
 import com.github.elenterius.biomancy.recipe.BioForgeRecipe;
 import com.github.elenterius.biomancy.world.inventory.menu.BioForgeMenu;
 import com.google.common.collect.Lists;
@@ -32,12 +33,12 @@ class BioForgeScreenController {
 	public static final int ROWS = 6;
 	public static final int COLS = 4;
 	public static final int GRID_SIZE = COLS * ROWS;
-	private static final Comparator<ModBioForgeCategories.BioForgeCategory> CATEGORY_COMPARATOR = (a, b) -> {
-		if (a.sortPriority() == b.sortPriority()) return a.nameId().compareTo(b.nameId());
+	private static final Comparator<BioForgeCategory> CATEGORY_COMPARATOR = (a, b) -> {
+		if (a.sortPriority() == b.sortPriority()) return a.enumId().compareTo(b.enumId());
 		return b.sortPriority() - a.sortPriority();
 	};
 	private final StackedContents itemCounter;
-	private final List<ModBioForgeCategories.BioForgeCategory> tabs;
+	private final List<BioForgeCategory> tabs;
 	private final Minecraft minecraft;
 	private final BioForgeMenu menu;
 	private int maxPages = 0;
@@ -52,7 +53,7 @@ class BioForgeScreenController {
 		this.minecraft = minecraft;
 		this.menu = menu;
 
-		tabs = ModRecipeBookCategories.getBioForgeCategories().stream().sorted(CATEGORY_COMPARATOR).toList();
+		tabs = ModBioForgeCategories.REGISTRY.get().getValues().stream().sorted(CATEGORY_COMPARATOR).toList();
 
 		playerInvChanges = getPlayer().getInventory().getTimesChanged();
 		itemCounter = new StackedContents();
@@ -175,11 +176,11 @@ class BioForgeScreenController {
 		ModNetworkHandler.sendBioForgeRecipeToServer(menu.containerId, recipe);
 	}
 
-	public ModBioForgeCategories.BioForgeCategory getCurrentCategory() {
+	public BioForgeCategory getCurrentCategory() {
 		return tabs.get(activeTab);
 	}
 
-	public int getTabIndex(ModBioForgeCategories.BioForgeCategory category) {
+	public int getTabIndex(BioForgeCategory category) {
 		for (int tabIndex = 0; tabIndex < tabs.size(); tabIndex++) {
 			if (tabs.get(tabIndex) == category) return tabIndex;
 		}

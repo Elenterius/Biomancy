@@ -1,73 +1,36 @@
 package com.github.elenterius.biomancy.init;
 
-import com.google.gson.JsonObject;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.util.GsonHelper;
+import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.recipe.BioForgeCategory;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegistryBuilder;
+import net.minecraftforge.registries.RegistryObject;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Supplier;
 
 public final class ModBioForgeCategories {
-	public static final Map<String, BioForgeCategory> CATEGORIES = new HashMap<>();
-	private static final String PREFIX = "biomancy_";
-	public static final BioForgeCategory SEARCH = register("search", 1, () -> Items.COMPASS);
-	public static final BioForgeCategory MISC = register("misc", -1, ModItems.LIVING_FLESH);
-	public static final BioForgeCategory BLOCKS = register("blocks", ModItems.FLESH_BLOCK);
-	public static final BioForgeCategory MACHINES = register("machines", ModItems.DECOMPOSER);
-	public static final BioForgeCategory WEAPONS = register("weapons", ModItems.LONG_CLAWS);
+
+	public static final DeferredRegister<BioForgeCategory> BIO_FORGE_CATEGORIES = DeferredRegister.create(BiomancyMod.createRL("bio_forge_category"), BiomancyMod.MOD_ID);
+	public static final Supplier<IForgeRegistry<BioForgeCategory>> REGISTRY = BIO_FORGE_CATEGORIES.makeRegistry(BioForgeCategory.class, RegistryBuilder::new);
+
+	public static final RegistryObject<BioForgeCategory> SEARCH = register("search", 1, () -> Items.COMPASS);
+	public static final RegistryObject<BioForgeCategory> MISC = register("misc", -1, ModItems.LIVING_FLESH);
+
+	public static final RegistryObject<BioForgeCategory> BLOCKS = register("blocks", ModItems.FLESH_BLOCK);
+	public static final RegistryObject<BioForgeCategory> MACHINES = register("machines", ModItems.DECOMPOSER);
+	public static final RegistryObject<BioForgeCategory> WEAPONS = register("weapons", ModItems.LONG_CLAWS);
 
 	private ModBioForgeCategories() {}
 
-	private static BioForgeCategory register(String name, Supplier<? extends Item> itemSupplier) {
-		name = PREFIX + name;
-		BioForgeCategory category = new BioForgeCategory(name, itemSupplier);
-		CATEGORIES.put(name, category);
-		return category;
+	private static RegistryObject<BioForgeCategory> register(String name, Supplier<? extends Item> itemSupplier) {
+		return BIO_FORGE_CATEGORIES.register(name, () -> new BioForgeCategory(itemSupplier));
 	}
 
-	private static BioForgeCategory register(String name, int sortPriority, Supplier<? extends Item> itemSupplier) {
-		name = PREFIX + name;
-		BioForgeCategory category = new BioForgeCategory(name, sortPriority, itemSupplier);
-		CATEGORIES.put(name, category);
-		return category;
-	}
-
-	public record BioForgeCategory(String nameId, int sortPriority, Supplier<? extends Item> iconSupplier) {
-
-		public BioForgeCategory(String name, Supplier<? extends Item> itemSupplier) {
-			this(name, 0, itemSupplier);
-		}
-
-		public static BioForgeCategory byNameId(String id) {
-			return CATEGORIES.getOrDefault(id, MISC);
-		}
-
-		public static BioForgeCategory fromJson(JsonObject json) {
-			String nameId = GsonHelper.getAsString(json, "category", MISC.nameId);
-			return byNameId(nameId);
-		}
-
-		public void toJson(JsonObject json) {
-			json.addProperty("category", nameId);
-		}
-
-		public void toNetwork(FriendlyByteBuf buffer) {
-			buffer.writeUtf(nameId);
-		}
-
-		public static BioForgeCategory fromNetwork(FriendlyByteBuf buffer) {
-			String id = buffer.readUtf();
-			return byNameId(id);
-		}
-
-		public ItemStack getIcon() {
-			return new ItemStack(iconSupplier.get());
-		}
-
+	private static RegistryObject<BioForgeCategory> register(String name, int sortPriority, Supplier<? extends Item> itemSupplier) {
+		return BIO_FORGE_CATEGORIES.register(name, () -> new BioForgeCategory(sortPriority, itemSupplier));
 	}
 
 }

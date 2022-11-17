@@ -45,6 +45,7 @@ public final class BiomancyMod {
 
 		ModMenuTypes.MENUS.register(modEventBus);
 
+		ModBioForgeCategories.BIO_FORGE_CATEGORIES.register(modEventBus);
 		ModRecipes.RECIPE_TYPES.register(modEventBus);
 		ModRecipes.RECIPE_SERIALIZERS.register(modEventBus);
 
