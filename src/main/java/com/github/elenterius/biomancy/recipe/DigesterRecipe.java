@@ -86,26 +86,22 @@ public class DigesterRecipe extends AbstractProductionRecipe {
 			return new DigesterRecipe(recipeId, resultStack, time, ingredient);
 		}
 
+		//client side
 		@Nullable
 		@Override
 		public DigesterRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-			//client side
 			ItemStack resultStack = buffer.readItem();
-
 			int time = buffer.readVarInt();
-
 			Ingredient ingredient = Ingredient.fromNetwork(buffer);
 
 			return new DigesterRecipe(recipeId, resultStack, time, ingredient);
 		}
 
+		//server side
 		@Override
 		public void toNetwork(FriendlyByteBuf buffer, DigesterRecipe recipe) {
-			//server side
 			buffer.writeItem(recipe.recipeResult);
-
 			buffer.writeVarInt(recipe.getCraftingTime());
-
 			recipe.recipeIngredient.toNetwork(buffer);
 		}
 	}

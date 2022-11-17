@@ -112,7 +112,7 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 			int outputCount = buffer.readVarInt();
 			List<VariableProductionOutput> outputs = new ArrayList<>();
 			for (int j = 0; j < outputCount; ++j) {
-				outputs.add(VariableProductionOutput.read(buffer));
+				outputs.add(VariableProductionOutput.fromNetwork(buffer));
 			}
 
 			return new DecomposerRecipe(recipeId, outputs, ingredientStack, time);
@@ -126,7 +126,7 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 
 			buffer.writeVarInt(recipe.outputs.size());
 			for (VariableProductionOutput output : recipe.outputs) {
-				output.write(buffer);
+				output.toNetwork(buffer);
 			}
 		}
 	}

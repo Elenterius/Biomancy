@@ -22,18 +22,22 @@ public class BlockEntityAnimationClientMessage {
 	}
 
 	public static BlockEntityAnimationClientMessage decode(final FriendlyByteBuf buffer) {
-		return new BlockEntityAnimationClientMessage(buffer.readBlockPos(), buffer.readVarInt(), buffer.readVarInt());
-	}
+		BlockPos blockPos = buffer.readBlockPos();
+		int id = buffer.readVarInt();
+		int data = buffer.readVarInt();
 
-	public static void handle(BlockEntityAnimationClientMessage msg, Supplier<NetworkEvent.Context> ctx) {
-		ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientPacketHandler.handlePacket(msg, ctx)));
-		ctx.get().setPacketHandled(true);
+		return new BlockEntityAnimationClientMessage(blockPos, id, data);
 	}
 
 	public void encode(final FriendlyByteBuf buffer) {
 		buffer.writeBlockPos(pos);
 		buffer.writeVarInt(id);
 		buffer.writeVarInt(data);
+	}
+
+	public static void handle(BlockEntityAnimationClientMessage msg, Supplier<NetworkEvent.Context> ctx) {
+		ctx.get().enqueueWork(() -> DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> ClientPacketHandler.handlePacket(msg, ctx)));
+		ctx.get().setPacketHandled(true);
 	}
 
 }

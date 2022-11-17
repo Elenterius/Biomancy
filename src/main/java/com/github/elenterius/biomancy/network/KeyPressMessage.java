@@ -24,10 +24,6 @@ public class KeyPressMessage {
 		this.flag = flag;
 	}
 
-	public static KeyPressMessage decode(final FriendlyByteBuf byteBuf) {
-		return new KeyPressMessage(byteBuf.readByte(), byteBuf.readByte());
-	}
-
 	public static void handle(KeyPressMessage packet, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			ServerPlayer player = ctx.get().getSender();
@@ -37,6 +33,13 @@ public class KeyPressMessage {
 			}
 		});
 		ctx.get().setPacketHandled(true);
+	}
+
+	public static KeyPressMessage decode(final FriendlyByteBuf byteBuf) {
+		byte slotIndex = byteBuf.readByte();
+		byte flag = byteBuf.readByte();
+
+		return new KeyPressMessage(slotIndex, flag);
 	}
 
 	public void encode(final FriendlyByteBuf byteBuf) {

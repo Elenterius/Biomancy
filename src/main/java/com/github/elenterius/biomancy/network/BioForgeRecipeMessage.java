@@ -26,7 +26,15 @@ public class BioForgeRecipeMessage {
 	}
 
 	public static BioForgeRecipeMessage decode(final FriendlyByteBuf buffer) {
-		return new BioForgeRecipeMessage(buffer.readVarInt(), buffer.readResourceLocation());
+		int containerId = buffer.readVarInt();
+		ResourceLocation recipeId = buffer.readResourceLocation();
+
+		return new BioForgeRecipeMessage(containerId, recipeId);
+	}
+
+	public void encode(final FriendlyByteBuf buffer) {
+		buffer.writeVarInt(containerId);
+		buffer.writeResourceLocation(id);
 	}
 
 	public static void handle(BioForgeRecipeMessage packet, Supplier<NetworkEvent.Context> ctx) {
@@ -40,11 +48,6 @@ public class BioForgeRecipeMessage {
 			}
 		});
 		ctx.get().setPacketHandled(true);
-	}
-
-	public void encode(final FriendlyByteBuf buffer) {
-		buffer.writeVarInt(containerId);
-		buffer.writeResourceLocation(id);
 	}
 
 }

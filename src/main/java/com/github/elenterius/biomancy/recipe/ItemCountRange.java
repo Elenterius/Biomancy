@@ -91,7 +91,8 @@ public interface ItemCountRange {
 	}
 
 	static ItemCountRange fromNetwork(FriendlyByteBuf buffer) {
-		return RangeSerializerType.getSerializer(buffer.readByte()).fromNetwork(buffer);
+		RangeSerializer<? extends ItemCountRange> serializer = RangeSerializerType.getSerializer(buffer.readByte());
+		return serializer.fromNetwork(buffer);
 	}
 
 	int getCount(Random rng);
@@ -142,7 +143,9 @@ public interface ItemCountRange {
 
 			@Override
 			public UniformRange fromNetwork(FriendlyByteBuf buffer) {
-				return new UniformRange(buffer.readVarInt(), buffer.readVarInt());
+				int min1 = buffer.readVarInt();
+				int max1 = buffer.readVarInt();
+				return new UniformRange(min1, max1);
 			}
 		}
 
@@ -187,7 +190,9 @@ public interface ItemCountRange {
 
 			@Override
 			public BinomialRange fromNetwork(FriendlyByteBuf buffer) {
-				return new BinomialRange(buffer.readVarInt(), buffer.readFloat());
+				int n1 = buffer.readVarInt();
+				float p1 = buffer.readFloat();
+				return new BinomialRange(n1, p1);
 			}
 		}
 
@@ -225,7 +230,8 @@ public interface ItemCountRange {
 
 			@Override
 			public ConstantValue fromNetwork(FriendlyByteBuf buffer) {
-				return new ConstantValue(buffer.readVarInt());
+				int constantValue = buffer.readVarInt();
+				return new ConstantValue(constantValue);
 			}
 		}
 

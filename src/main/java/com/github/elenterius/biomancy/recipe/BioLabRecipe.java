@@ -134,7 +134,6 @@ public class BioLabRecipe extends AbstractProductionRecipe {
 		@Nullable
 		@Override
 		public BioLabRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-			//client side
 			ItemStack resultStack = buffer.readItem();
 
 			Ingredient reactant = Ingredient.fromNetwork(buffer);
@@ -151,15 +150,14 @@ public class BioLabRecipe extends AbstractProductionRecipe {
 
 		@Override
 		public void toNetwork(FriendlyByteBuf buffer, BioLabRecipe recipe) {
-			//server side
 			buffer.writeItem(recipe.result);
-			recipe.recipeReactant.toNetwork(buffer);
 
+			recipe.recipeReactant.toNetwork(buffer);
 			buffer.writeVarInt(recipe.getCraftingTime());
 
 			buffer.writeVarInt(recipe.ingredients.size());
-			for (IngredientStack input : recipe.ingredients) {
-				input.toNetwork(buffer);
+			for (IngredientStack ingredientStack : recipe.ingredients) {
+				ingredientStack.toNetwork(buffer);
 			}
 		}
 	}

@@ -10,22 +10,6 @@ public final class ClientPacketHandler {
 
 	private ClientPacketHandler() {}
 
-	//	static void handlePacket(BioForgeRecipeClientMessage msg, Supplier<NetworkEvent.Context> ctx) {
-	//		if (ctx.get().getNetworkManager().getPacketListener() instanceof ClientPacketListener netHandler) {
-	//			ClientLevel level = netHandler.getLevel();
-	//			if (level.getBlockEntity(msg.pos) instanceof BioForgeBlockEntity bioForge) {
-	//				if (msg.id == null) {
-	//					bioForge.setSelectedRecipe(null);
-	//					return;
-	//				}
-	//
-	//				RecipeManager recipeManager = level.getRecipeManager();
-	//				Map<ResourceLocation, Recipe<Container>> recipes = recipeManager.byType(ModRecipes.BIO_FORGING_RECIPE_TYPE);
-	//				bioForge.setSelectedRecipe((BioForgeRecipe) recipes.get(msg.id));
-	//			}
-	//		}
-	//	}
-
 	static void handlePacket(BlockEntityAnimationClientMessage msg, Supplier<NetworkEvent.Context> ctx) {
 		if (ctx.get().getNetworkManager().getPacketListener() instanceof ClientPacketListener netHandler) {
 			ClientLevel level = netHandler.getLevel();

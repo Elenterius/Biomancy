@@ -155,7 +155,7 @@ public class BioForgeRecipe implements Recipe<Container> {
 
 			int ingredientCount = buffer.readVarInt();
 			List<IngredientStack> ingredients = new ArrayList<>();
-			for (int j = 0; j < ingredientCount; ++j) {
+			for (int i = 0; i < ingredientCount; i++) {
 				ingredients.add(IngredientStack.fromNetwork(buffer));
 			}
 
@@ -169,8 +169,8 @@ public class BioForgeRecipe implements Recipe<Container> {
 			buffer.writeItem(recipe.result);
 
 			buffer.writeVarInt(recipe.ingredients.size());
-			for (IngredientStack input : recipe.ingredients) {
-				input.toNetwork(buffer);
+			for (IngredientStack ingredientStack : recipe.ingredients) {
+				ingredientStack.toNetwork(buffer);
 			}
 
 			recipe.category.toNetwork(buffer);

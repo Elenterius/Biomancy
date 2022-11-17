@@ -10,8 +10,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.Objects;
 import java.util.Random;
 
@@ -117,13 +117,15 @@ public class VariableProductionOutput {
 		return new VariableProductionOutput(stack, countRange);
 	}
 
-	public void write(FriendlyByteBuf buffer) {
-		buffer.writeItem(getItemStack());
-		ItemCountRange.toNetwork(buffer, countRange);
+	public static VariableProductionOutput fromNetwork(FriendlyByteBuf buffer) {
+		ItemStack stack = buffer.readItem();
+		ItemCountRange range = ItemCountRange.fromNetwork(buffer);
+		return new VariableProductionOutput(stack, range);
 	}
 
-	public static VariableProductionOutput read(FriendlyByteBuf buffer) {
-		return new VariableProductionOutput(buffer.readItem(), ItemCountRange.fromNetwork(buffer));
+	public void toNetwork(FriendlyByteBuf buffer) {
+		buffer.writeItem(getItemStack());
+		ItemCountRange.toNetwork(buffer, countRange);
 	}
 
 }

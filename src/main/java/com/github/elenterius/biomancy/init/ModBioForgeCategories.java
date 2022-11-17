@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 
 public final class ModBioForgeCategories {
 	public static final Map<String, BioForgeCategory> CATEGORIES = new HashMap<>();
-	private static final String PREFIX = "biomancy_bio_forge_";
+	private static final String PREFIX = "biomancy_";
 	public static final BioForgeCategory SEARCH = register("search", 1, () -> Items.COMPASS);
 	public static final BioForgeCategory MISC = register("misc", -1, ModItems.LIVING_FLESH);
 	public static final BioForgeCategory BLOCKS = register("blocks", ModItems.FLESH_BLOCK);
@@ -51,16 +51,17 @@ public final class ModBioForgeCategories {
 			return byNameId(nameId);
 		}
 
-		public static BioForgeCategory fromNetwork(FriendlyByteBuf buffer) {
-			return byNameId(buffer.readUtf());
-		}
-
 		public void toJson(JsonObject json) {
 			json.addProperty("category", nameId);
 		}
 
 		public void toNetwork(FriendlyByteBuf buffer) {
 			buffer.writeUtf(nameId);
+		}
+
+		public static BioForgeCategory fromNetwork(FriendlyByteBuf buffer) {
+			String id = buffer.readUtf();
+			return byNameId(id);
 		}
 
 		public ItemStack getIcon() {

@@ -201,7 +201,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.define('L', ModItems.BIO_LUMENS.get())
 				.pattern(" L ").pattern("LFL").pattern(" L ")
 				.unlockedBy(hasName(ModItems.BIO_LUMENS.get()), has(ModItems.BIO_LUMENS.get()))
-				.save(consumer);
+				.save(consumer, getSimpleRecipeId(Items.GLOW_ITEM_FRAME));
 	}
 
 	private void registerDigestingRecipes(Consumer<FinishedRecipe> consumer) {

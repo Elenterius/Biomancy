@@ -37,15 +37,6 @@ public final class ModNetworkHandler {
 		SIMPLE_NETWORK_CHANNEL.sendToServer(new BioForgeRecipeMessage(containerId, recipe.getId()));
 	}
 
-	//	public static void sendBioForgeRecipeToClients(BioForgeBlockEntity blockEntity, @Nullable BioForgeRecipe recipe) {
-	//		Level level = blockEntity.getLevel();
-	//		if (level != null && !level.isClientSide()) {
-	//			BlockPos pos = blockEntity.getBlockPos();
-	//			ResourceLocation recipeId = recipe != null ? recipe.getId() : null;
-	//			SIMPLE_NETWORK_CHANNEL.send(PacketDistributor.TRACKING_CHUNK.with(() -> level.getChunkAt(pos)), new BioForgeRecipeClientMessage(pos, recipeId));
-	//		}
-	//	}
-
 	public static <T extends BlockEntity & ISyncableAnimation> void sendAnimationToClients(T blockEntity, int id, int data) {
 		Level level = blockEntity.getLevel();
 		if (level != null && !level.isClientSide()) {
@@ -59,7 +50,6 @@ public final class ModNetworkHandler {
 		int id = -1;
 		SIMPLE_NETWORK_CHANNEL.registerMessage(++id, KeyPressMessage.class, KeyPressMessage::encode, KeyPressMessage::decode, KeyPressMessage::handle);
 		SIMPLE_NETWORK_CHANNEL.registerMessage(++id, BioForgeRecipeMessage.class, BioForgeRecipeMessage::encode, BioForgeRecipeMessage::decode, BioForgeRecipeMessage::handle);
-		//		SIMPLE_NETWORK_CHANNEL.registerMessage(++id, BioForgeRecipeClientMessage.class, BioForgeRecipeClientMessage::encode, BioForgeRecipeClientMessage::decode, BioForgeRecipeClientMessage::handle);
 		SIMPLE_NETWORK_CHANNEL.registerMessage(++id, BlockEntityAnimationClientMessage.class, BlockEntityAnimationClientMessage::encode, BlockEntityAnimationClientMessage::decode, BlockEntityAnimationClientMessage::handle);
 	}
 
