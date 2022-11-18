@@ -41,7 +41,7 @@ public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBl
 		Item item = stack.getItem();
 		if (item instanceof BlockItem blockItem && (blockItem.getBlock() instanceof ShulkerBoxBlock || blockItem.getBlock() instanceof FleshkinChestBlock))
 			return true;
-		return stack.getItemEnchantability() > 0 || stack.isEnchanted() || item instanceof TieredItem || item instanceof Vanishable;
+		return item instanceof TieredItem || item instanceof Vanishable || stack.isEnchanted();
 	};
 	protected static final VoxelShape INSIDE_AABB = box(3, 4, 3, 13, 16, 13);
 	protected static final VoxelShape OUTSIDE_AABB = Stream.of(

@@ -164,15 +164,11 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 			fleshBlob.setTumors(sacrificeHandler.getTumorFactor());
 			level.addFreshEntity(fleshBlob);
 		}
-		//			OculusObserverEntity entity = ModEntityTypes.OCULUS_OBSERVER.get().create(worldIn);
-		//			if (entity != null) {
-		//				entity.moveTo(pos.getX() + 0.5f, pos.getY() + 4f / 16f, pos.getZ() + 0.5f, 0, 0);
-		//				worldIn.addFreshEntity(entity);
-		//			}
 	}
 
 	public void spawnFleshBlocks(ServerLevel level, BlockPos pos, SacrificeHandler sacrificeHandler) {
 		//sacrificeHandler.getTumorFactor()
+		//TODO: implement this
 	}
 
 	public void attackAOE() {
