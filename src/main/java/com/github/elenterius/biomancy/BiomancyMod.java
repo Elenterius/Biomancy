@@ -74,6 +74,7 @@ public final class BiomancyMod {
 			super.fillItemList(items);
 			for (RegistryObject<Enchantment> entry : ModEnchantments.ENCHANTMENTS.getEntries()) {
 				Enchantment enchantment = entry.get();
+				if (enchantment == ModEnchantments.QUICK_SHOT.get() || enchantment == ModEnchantments.MAX_AMMO.get()) continue; //"hide" unused gun enchants
 				items.add(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enchantment, enchantment.getMaxLevel())));
 			}
 		}
