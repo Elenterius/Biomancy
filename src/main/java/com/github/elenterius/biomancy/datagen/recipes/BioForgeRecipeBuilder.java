@@ -1,10 +1,10 @@
 package com.github.elenterius.biomancy.datagen.recipes;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.init.ModBioForgeCategories;
+import com.github.elenterius.biomancy.init.ModBioForgeTabs;
 import com.github.elenterius.biomancy.init.ModRecipes;
-import com.github.elenterius.biomancy.recipe.BioForgeCategory;
 import com.github.elenterius.biomancy.recipe.IngredientStack;
+import com.github.elenterius.biomancy.world.inventory.menu.BioForgeTab;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;
@@ -36,7 +36,7 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 	private final ItemData result;
 	private final List<IngredientStack> ingredients = new ArrayList<>();
 	private final Advancement.Builder advancement = Advancement.Builder.advancement();
-	private BioForgeCategory category = ModBioForgeCategories.MISC.get();
+	private BioForgeTab category = ModBioForgeTabs.MISC.get();
 
 	private BioForgeRecipeBuilder(ResourceLocation recipeId, ItemData result) {
 		this.recipeId = recipeId;
@@ -80,12 +80,12 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 	//		return this;
 	//	}
 
-	public BioForgeRecipeBuilder setCategory(BioForgeCategory category) {
+	public BioForgeRecipeBuilder setCategory(BioForgeTab category) {
 		this.category = category;
 		return this;
 	}
 
-	public BioForgeRecipeBuilder setCategory(Supplier<BioForgeCategory> category) {
+	public BioForgeRecipeBuilder setCategory(Supplier<BioForgeTab> category) {
 		this.category = category.get();
 		return this;
 	}
@@ -143,12 +143,12 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 		private final ResourceLocation id;
 		private final List<IngredientStack> ingredients;
 		private final ItemData result;
-		private final BioForgeCategory category;
+		private final BioForgeTab category;
 
 		private final Advancement.Builder advancementBuilder;
 		private final ResourceLocation advancementId;
 
-		public RecipeResult(ResourceLocation recipeId, BioForgeCategory category, ItemData result, List<IngredientStack> ingredients, Advancement.Builder advancement, ResourceLocation advancementId) {
+		public RecipeResult(ResourceLocation recipeId, BioForgeTab category, ItemData result, List<IngredientStack> ingredients, Advancement.Builder advancement, ResourceLocation advancementId) {
 			id = recipeId;
 			this.category = category;
 			this.result = result;

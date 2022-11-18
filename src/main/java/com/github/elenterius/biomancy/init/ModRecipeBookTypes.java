@@ -8,4 +8,8 @@ public final class ModRecipeBookTypes {
 
 	private ModRecipeBookTypes() {}
 
+	static void init() {
+		//force init static fields
+	}
+
 }

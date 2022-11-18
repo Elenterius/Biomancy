@@ -57,8 +57,8 @@ public final class ClientSetupHandler {
 		setBlockRenderLayers();
 
 		event.enqueueWork(() -> {
-			registerItemModelProperties();
 			ModRecipeBookCategories.init();
+			registerItemModelProperties();
 		});
 	}
 

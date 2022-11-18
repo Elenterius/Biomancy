@@ -21,8 +21,9 @@ public final class CommonSetupHandler {
 	@SubscribeEvent
 	public static void onSetup(final FMLCommonSetupEvent event) {
 		ModNetworkHandler.register();
+		ModRecipeBookTypes.init();
 
-		// do stuff after common setup event on single thread
+		// if not thread safe do it after the common setup event on a single thread
 		event.enqueueWork(() -> {
 			ModTags.init();
 			//			ModTriggers.register();

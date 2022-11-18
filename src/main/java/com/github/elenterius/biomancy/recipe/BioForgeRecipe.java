@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.recipe;
 
 import com.github.elenterius.biomancy.init.ModRecipes;
+import com.github.elenterius.biomancy.world.inventory.menu.BioForgeTab;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.core.NonNullList;
@@ -22,15 +23,15 @@ public class BioForgeRecipe implements Recipe<Container> {
 
 	private final ResourceLocation registryKey;
 	public static final int MAX_INGREDIENTS = 5;
-	private final BioForgeCategory category;
+	private final BioForgeTab tab;
 	private final List<IngredientStack> ingredients;
 	private final ItemStack result;
 
 	private final NonNullList<Ingredient> vanillaIngredients;
 
-	public BioForgeRecipe(ResourceLocation id, BioForgeCategory category, ItemStack result, List<IngredientStack> ingredients) {
+	public BioForgeRecipe(ResourceLocation id, BioForgeTab tab, ItemStack result, List<IngredientStack> ingredients) {
 		registryKey = id;
-		this.category = category;
+		this.tab = tab;
 		this.result = result;
 		this.ingredients = ingredients;
 
@@ -113,8 +114,8 @@ public class BioForgeRecipe implements Recipe<Container> {
 		return ingredients;
 	}
 
-	public BioForgeCategory getCategory() {
-		return category;
+	public BioForgeTab getTab() {
+		return tab;
 	}
 
 	@Override
@@ -142,9 +143,9 @@ public class BioForgeRecipe implements Recipe<Container> {
 			}
 
 			ItemStack resultStack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
-			BioForgeCategory category = BioForgeCategory.fromJson(json);
+			BioForgeTab tab = BioForgeTab.fromJson(json);
 
-			return new BioForgeRecipe(recipeId, category, resultStack, ingredients);
+			return new BioForgeRecipe(recipeId, tab, resultStack, ingredients);
 		}
 
 		@Nullable
@@ -158,9 +159,9 @@ public class BioForgeRecipe implements Recipe<Container> {
 				ingredients.add(IngredientStack.fromNetwork(buffer));
 			}
 
-			BioForgeCategory category = BioForgeCategory.fromNetwork(buffer);
+			BioForgeTab tab = BioForgeTab.fromNetwork(buffer);
 
-			return new BioForgeRecipe(recipeId, category, resultStack, ingredients);
+			return new BioForgeRecipe(recipeId, tab, resultStack, ingredients);
 		}
 
 		@Override
@@ -172,7 +173,7 @@ public class BioForgeRecipe implements Recipe<Container> {
 				ingredientStack.toNetwork(buffer);
 			}
 
-			recipe.category.toNetwork(buffer);
+			recipe.tab.toNetwork(buffer);
 		}
 
 	}
