@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.world.block.entity;
 
+import com.github.elenterius.biomancy.client.util.ClientLoopingSoundHelper;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
@@ -86,6 +87,13 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 		fuelHandler = FuelHandler.createNutrientFuelHandler(MAX_FUEL, BASE_COST, this::setChanged);
 
 		stateData = new DecomposerStateData(fuelHandler);
+	}
+
+	@Override
+	public void onLoad() {
+		if (level != null && level.isClientSide) {
+			loopingSoundHelper = new ClientLoopingSoundHelper();
+		}
 	}
 
 	@Override
