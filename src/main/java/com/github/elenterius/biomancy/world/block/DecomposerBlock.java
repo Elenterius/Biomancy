@@ -81,7 +81,7 @@ public class DecomposerBlock extends HorizontalFacingMachineBlock {
 			}
 
 			if (random.nextInt(3) == 0) {
-				SoundUtil.clientPlayBlockSound(level, pos, ModSoundEvents.DECOMPOSER_CRAFTING_RANDOM);
+				SoundUtil.clientPlayBlockSound(level, pos, ModSoundEvents.DECOMPOSER_CRAFTING_RANDOM, 0.65f);
 			}
 		}
 	}

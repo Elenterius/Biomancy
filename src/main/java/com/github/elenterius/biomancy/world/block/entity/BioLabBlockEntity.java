@@ -286,7 +286,7 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 
 		if (Boolean.TRUE.equals(isCrafting)) {
 			event.getController().setAnimation(new AnimationBuilder().loop("bio_lab.working"));
-			loopingSoundHelper.startLoop(this, ModSoundEvents.BIO_LAB_CRAFTING.get());
+			loopingSoundHelper.startLoop(this, ModSoundEvents.BIO_LAB_CRAFTING.get(), 0.65f);
 		}
 		else {
 			event.getController().setAnimation(new AnimationBuilder().loop("bio_lab.idle"));

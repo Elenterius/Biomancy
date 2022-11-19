@@ -215,7 +215,7 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 
 		if (Boolean.TRUE.equals(isCrafting)) {
 			event.getController().setAnimation(new AnimationBuilder().loop("digester.working"));
-			loopingSoundHelper.startLoop(this, ModSoundEvents.DIGESTER_CRAFTING.get());
+			loopingSoundHelper.startLoop(this, ModSoundEvents.DIGESTER_CRAFTING.get(), 0.65f);
 		}
 		else {
 			event.getController().setAnimation(new AnimationBuilder().loop("digester.idle"));

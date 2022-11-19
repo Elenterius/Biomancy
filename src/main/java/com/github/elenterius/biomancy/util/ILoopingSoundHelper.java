@@ -13,6 +13,6 @@ public interface ILoopingSoundHelper {
 		stopLoop();
 	}
 
-	default void startLoop(BlockEntity blockEntity, SoundEvent soundEvent) {}
+	default void startLoop(BlockEntity blockEntity, SoundEvent soundEvent, float volume) {}
 
 }

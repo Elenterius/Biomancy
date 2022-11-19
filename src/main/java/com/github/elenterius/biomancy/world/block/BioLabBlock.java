@@ -104,7 +104,7 @@ public class BioLabBlock extends HorizontalFacingMachineBlock {
 				level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + 0.5d + random.nextFloat(-0.25f, 0.25f), pos.getY() + 0.65d, pos.getZ() + 0.5d + random.nextFloat(-0.25f, 0.25f), r, g, b);
 			}
 			if (random.nextInt(3) == 0) {
-				SoundUtil.clientPlayBlockSound(level, pos, ModSoundEvents.BIO_LAB_CRAFTING_RANDOM);
+				SoundUtil.clientPlayBlockSound(level, pos, ModSoundEvents.BIO_LAB_CRAFTING_RANDOM, 0.65f);
 			}
 		}
 	}

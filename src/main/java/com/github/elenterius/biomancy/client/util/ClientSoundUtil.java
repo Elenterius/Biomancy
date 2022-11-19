@@ -22,7 +22,11 @@ public final class ClientSoundUtil {
 	}
 
 	public static SimpleSoundInstance createLoopingSoundInstance(SoundEvent soundEvent, BlockPos pos) {
-		return new SimpleSoundInstance(soundEvent.getLocation(), SoundSource.BLOCKS, 1f, 1f, true, 0, SoundInstance.Attenuation.LINEAR, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, false);
+		return createLoopingSoundInstance(soundEvent, 1f, pos);
+	}
+
+	public static SimpleSoundInstance createLoopingSoundInstance(SoundEvent soundEvent, float volume, BlockPos pos) {
+		return new SimpleSoundInstance(soundEvent.getLocation(), SoundSource.BLOCKS, volume, 1f, true, 0, SoundInstance.Attenuation.LINEAR, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, false);
 	}
 
 	public static SimpleSoundInstance createLoopingSoundInstance(Supplier<SoundEvent> soundEventSupplier, BlockPos pos) {

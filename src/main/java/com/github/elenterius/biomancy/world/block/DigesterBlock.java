@@ -97,7 +97,7 @@ public class DigesterBlock extends HorizontalFacingMachineBlock {
 				level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + 0.5d + random.nextFloat(-0.125f, 0.125f), pos.getY() + 0.9d, pos.getZ() + 0.5d + random.nextFloat(-0.125f, 0.125f), r, g, b);
 			}
 			if (random.nextInt(3) == 0) {
-				SoundUtil.clientPlayBlockSound(level, pos, ModSoundEvents.DIGESTER_CRAFTING_RANDOM);
+				SoundUtil.clientPlayBlockSound(level, pos, ModSoundEvents.DIGESTER_CRAFTING_RANDOM, 0.65f);
 			}
 		}
 	}

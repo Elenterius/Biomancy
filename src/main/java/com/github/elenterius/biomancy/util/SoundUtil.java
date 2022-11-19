@@ -48,12 +48,16 @@ public final class SoundUtil {
 		level.playSound(null, itemHolder.getX(), itemHolder.getY(0.5f), itemHolder.getZ(), soundEvent, soundSource, 0.8f, pitch);
 	}
 
+	public static void clientPlayBlockSound(Level level, BlockPos pos, Supplier<SoundEvent> soundEventSupplier) {
+		clientPlayBlockSound(level, pos, soundEventSupplier.get());
+	}
+
 	public static void clientPlayBlockSound(Level level, BlockPos pos, Supplier<SoundEvent> soundEventSupplier, float volume, float pitch) {
 		clientPlayBlockSound(level, pos, soundEventSupplier.get(), volume, pitch);
 	}
 
-	public static void clientPlayBlockSound(Level level, BlockPos pos, Supplier<SoundEvent> soundEventSupplier) {
-		clientPlayBlockSound(level, pos, soundEventSupplier.get());
+	public static void clientPlayBlockSound(Level level, BlockPos pos, Supplier<SoundEvent> soundEventSupplier, float volume) {
+		clientPlayBlockSound(level, pos, soundEventSupplier.get(), volume, randomVanillaPitch(level.random));
 	}
 
 	public static void clientPlayBlockSound(Level level, BlockPos pos, SoundEvent soundEvent) {

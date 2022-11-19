@@ -245,7 +245,7 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 
 		if (Boolean.TRUE.equals(isCrafting)) {
 			event.getController().setAnimation(new AnimationBuilder().loop("decomposer.working"));
-			loopingSoundHelper.startLoop(this, ModSoundEvents.DECOMPOSER_CRAFTING.get());
+			loopingSoundHelper.startLoop(this, ModSoundEvents.DECOMPOSER_CRAFTING.get(), 0.65f);
 		}
 		else {
 			event.getController().setAnimation(new AnimationBuilder().loop("decomposer.idle"));

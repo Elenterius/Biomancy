@@ -26,16 +26,16 @@ public class ClientLoopingSoundHelper implements ILoopingSoundHelper {
 	}
 
 	@Override
-	public void startLoop(BlockEntity blockEntity, SoundEvent soundEvent) {
+	public void startLoop(BlockEntity blockEntity, SoundEvent soundEvent, float volume) {
 		if (blockEntity.isRemoved()) return;
 
 		if (soundInstance == null) {
-			soundInstance = ClientSoundUtil.createLoopingSoundInstance(soundEvent, blockEntity.getBlockPos());
+			soundInstance = ClientSoundUtil.createLoopingSoundInstance(soundEvent, volume, blockEntity.getBlockPos());
 			Minecraft.getInstance().getSoundManager().play(soundInstance);
 		}
 		else if (!soundInstance.getLocation().equals(soundEvent.getLocation())) {
 			Minecraft.getInstance().getSoundManager().stop(soundInstance);
-			soundInstance = ClientSoundUtil.createLoopingSoundInstance(soundEvent, blockEntity.getBlockPos());
+			soundInstance = ClientSoundUtil.createLoopingSoundInstance(soundEvent, volume, blockEntity.getBlockPos());
 			Minecraft.getInstance().getSoundManager().play(soundInstance);
 		}
 	}
