@@ -4,7 +4,7 @@ end_of_line = crlf
 indent_size = 4
 indent_style = space
 insert_final_newline = false
-max_line_length = 120
+max_line_length = 180
 tab_width = 4
 ij_continuation_indent_size = 8
 ij_formatter_off_tag = @formatter:off
@@ -16,9 +16,9 @@ ij_wrap_on_typing = false
 
 [*.java]
 indent_style = tab
-max_line_length = 180
+max_line_length = 200
 ij_smart_tabs = true
-ij_visual_guides = 160
+ij_visual_guides = 180
 ij_java_align_consecutive_assignments = false
 ij_java_align_consecutive_variable_declarations = false
 ij_java_align_group_field_declarations = false
@@ -261,7 +261,7 @@ ij_java_wrap_first_method_in_call_chain = false
 ij_java_wrap_long_lines = false
 
 [*.nbtt]
-max_line_length = 150
+max_line_length = 180
 ij_continuation_indent_size = 4
 ij_nbtt_keep_indents_on_empty_lines = false
 ij_nbtt_space_after_colon = true
