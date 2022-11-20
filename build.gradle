@@ -166,7 +166,9 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:9.7.1.255") // at runtime, use the full JEI jar
 
 //    curse.maven:<descriptor, can be anything>-<CurseForge project id>:<CurseForge file id>
-//    runtimeOnly fg.deobf("curse.maven:create-328085:3278516") //https://www.curseforge.com/minecraft/mc-mods/create/files/3278516
+    runtimeOnly fg.deobf("curse.maven:create-328085:4007544")
+    runtimeOnly fg.deobf("curse.maven:flywheel-486392:3934664")
+
 //    implementation fg.deobf("com.github.Virtuoel:Pehkui:3.0.0-forge")
 }
 
