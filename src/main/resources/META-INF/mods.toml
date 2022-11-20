@@ -19,7 +19,7 @@ description = '''Biopunk and Flesh Magic inspired tech-magic mod that has a fles
 [[dependencies.biomancy]]
 modId = "geckolib3"
 mandatory = true
-versionRange = "[3.0.41,)"
+versionRange = "[3.0.54,4.0)"
 ordering = "BEFORE"
 side = "BOTH"
 
