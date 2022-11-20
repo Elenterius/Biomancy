@@ -141,9 +141,7 @@ public class FleshDoorBlock extends Block {
 
 	@Override
 	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-		BlockPos posBelow = pos.below();
-		BlockState stateBelow = level.getBlockState(posBelow);
-		return isLowerHalf(state) ? stateBelow.isFaceSturdy(level, posBelow, Direction.UP) : stateBelow.is(this);
+		return isLowerHalf(state) || level.getBlockState(pos.below()).is(this);
 	}
 
 	@Override
