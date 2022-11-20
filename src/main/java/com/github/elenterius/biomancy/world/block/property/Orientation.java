@@ -1,9 +1,12 @@
 package com.github.elenterius.biomancy.world.block.property;
 
+import com.mojang.math.OctahedralGroup;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.phys.Vec3;
 
 public enum Orientation implements StringRepresentable {
@@ -20,9 +23,9 @@ public enum Orientation implements StringRepresentable {
 	private final String name;
 	public final Direction.Axis axis;
 
-	Orientation(String name, Direction.Axis x) {
+	Orientation(String name, Direction.Axis axis) {
 		this.name = name;
-		axis = x;
+		this.axis = axis;
 	}
 
 	public boolean isMiddle() {
@@ -35,6 +38,64 @@ public enum Orientation implements StringRepresentable {
 
 	public boolean isNegative() {
 		return this == X_NEGATIVE || this == Z_NEGATIVE || this == Y_NEGATIVE;
+	}
+
+	public Orientation rotate(Rotation rotation) {
+		if (axis == Direction.Axis.Y) {
+			return this;
+		}
+
+		//oriented towards x or z, rotation happens around the y-axis
+		return switch (rotation) {
+			case CLOCKWISE_90 -> getClockWise();
+			case CLOCKWISE_180 -> getOpposite();
+			case COUNTERCLOCKWISE_90 -> getCounterClockWise();
+			default -> this;
+		};
+	}
+
+	public Orientation mirror(Mirror mirror) {
+		OctahedralGroup rotation = mirror.rotation();
+		if (rotation == OctahedralGroup.INVERT_X && axis == Direction.Axis.X) return getOpposite();
+		if (rotation == OctahedralGroup.INVERT_Z && axis == Direction.Axis.Z) return getOpposite();
+		if (rotation == OctahedralGroup.INVERT_Y && axis == Direction.Axis.Y) return getOpposite();
+		return this;
+	}
+
+	public Orientation getClockWise() {
+		return switch (this) {
+			case Z_NEGATIVE -> X_POSITIVE;
+			case Z_POSITIVE -> X_NEGATIVE;
+			case X_NEGATIVE -> Z_NEGATIVE;
+			case X_POSITIVE -> Z_POSITIVE;
+			case X_MIDDLE -> Z_MIDDLE;
+			case Z_MIDDLE -> X_MIDDLE;
+			default -> this;
+		};
+	}
+
+	public Orientation getCounterClockWise() {
+		return switch (this) {
+			case Z_NEGATIVE -> X_NEGATIVE;
+			case Z_POSITIVE -> X_POSITIVE;
+			case X_NEGATIVE -> Z_POSITIVE;
+			case X_POSITIVE -> Z_NEGATIVE;
+			case X_MIDDLE -> Z_MIDDLE;
+			case Z_MIDDLE -> X_MIDDLE;
+			default -> this;
+		};
+	}
+
+	public Orientation getOpposite() {
+		return switch (this) {
+			case Z_NEGATIVE -> Z_POSITIVE;
+			case Z_POSITIVE -> Z_NEGATIVE;
+			case X_NEGATIVE -> X_POSITIVE;
+			case X_POSITIVE -> X_NEGATIVE;
+			case Y_POSITIVE -> Y_NEGATIVE;
+			case Y_NEGATIVE -> Y_POSITIVE;
+			default -> this;
+		};
 	}
 
 	public static Orientation getOrientationFrom(BlockPlaceContext context) {
