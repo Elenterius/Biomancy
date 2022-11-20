@@ -16,6 +16,7 @@ public class FleshBlobModel<T extends FleshBlob> extends AnimatedGeoModel<T> {
 	};
 	protected static final ResourceLocation LEGACY_TEXTURE = BiomancyMod.createRL("textures/entity/flesh_blob/flesh_blob_legacy.png");
 	protected static final ResourceLocation CLOWN_TEXTURE = BiomancyMod.createRL("textures/entity/flesh_blob/flesh_blob_clown.png");
+	protected static final ResourceLocation TROLL_TEXTURE = BiomancyMod.createRL("textures/entity/flesh_blob/flesh_blob_troll.png");
 	protected static final ResourceLocation WATCHER_TEXTURE = BiomancyMod.createRL("textures/entity/flesh_blob/flesh_blob_watcher.png");
 
 	@Override
@@ -29,15 +30,10 @@ public class FleshBlobModel<T extends FleshBlob> extends AnimatedGeoModel<T> {
 			Component customName = fleshBlob.getCustomName();
 			if (customName != null) {
 				String name = customName.getContents().toLowerCase(Locale.ENGLISH);
-				if (name.contains("happy")) {
-					return LEGACY_TEXTURE;
-				}
-				if (name.contains("krusty")) {
-					return CLOWN_TEXTURE;
-				}
-				if (name.contains("beholder") || name.contains("observer")) {
-					return WATCHER_TEXTURE;
-				}
+				if (name.contains("happy")) return LEGACY_TEXTURE;
+				if (name.equals("trololo") || name.equals("u mad bro?")) return TROLL_TEXTURE;
+				if (name.contains("krusty")) return CLOWN_TEXTURE;
+				if (name.contains("beholder") || name.contains("observer")) return WATCHER_TEXTURE;
 			}
 		}
 
