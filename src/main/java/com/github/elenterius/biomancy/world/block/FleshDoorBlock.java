@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
@@ -178,6 +179,11 @@ public class FleshDoorBlock extends Block {
 			}
 		}
 		super.playerWillDestroy(level, pos, state, player);
+	}
+
+	@Override
+	public PushReaction getPistonPushReaction(BlockState state) {
+		return PushReaction.BLOCK;
 	}
 
 	protected void triggerEvents(@Nullable Player player, Level level, BlockPos pos, boolean open) {
