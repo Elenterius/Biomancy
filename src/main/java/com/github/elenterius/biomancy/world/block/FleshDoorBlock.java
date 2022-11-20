@@ -9,6 +9,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -17,18 +18,12 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
@@ -37,15 +32,10 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class FleshDoorBlock extends Block {
-
-	public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
-	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+public class FleshDoorBlock extends DoorBlock {
 
 	public static final EnumProperty<Orientation> ORIENTATION = ModBlocks.ORIENTATION;
-	public static final EnumProperty<DoubleBlockHalf> HALF = BlockStateProperties.DOUBLE_BLOCK_HALF;
-
-	public static final int UPDATE_FLAGS = Block.UPDATE_CLIENTS | Block.UPDATE_IMMEDIATE; //10
+	public static final int USE_UPDATE_FLAG = Block.UPDATE_CLIENTS | Block.UPDATE_IMMEDIATE; // 10
 
 	protected static final int THICKNESS = 2;
 	protected static final int CLOSED_SHAPE_INDEX = 0;
@@ -56,6 +46,15 @@ public class FleshDoorBlock extends Block {
 	protected static final VoxelShape[] Z_NEG_AABB = createClosedAndOpenShape(0, 0, 0, 16, 16, THICKNESS);
 	protected static final VoxelShape[] Z_NONE_AABB = createClosedAndOpenShape(0, 0, 8d - THICKNESS / 2d, 16, 16, 8d + THICKNESS / 2d);
 	protected static final VoxelShape[] Z_POS_AABB = createClosedAndOpenShape(0, 0, 16d - THICKNESS, 16, 16, 16);
+
+	public FleshDoorBlock(Properties properties) {
+		super(properties);
+		registerDefaultState(getStateDefinition().any()
+				.setValue(ORIENTATION, Orientation.X_MIDDLE)
+				.setValue(HALF, DoubleBlockHalf.LOWER)
+				.setValue(OPEN, Boolean.FALSE)
+				.setValue(POWERED, Boolean.FALSE));
+	}
 
 	private static VoxelShape[] createClosedAndOpenShape(double x0, double y0, double z0, double x1, double y1, double z1) {
 		VoxelShape closedShape = Block.box(x0, y0, z0, x1, y1, z1);
@@ -74,18 +73,10 @@ public class FleshDoorBlock extends Block {
 		return new VoxelShape[]{closedShape, openShapeBottom, openShapeTop, openShapeForCollision};
 	}
 
-	public FleshDoorBlock(Properties properties) {
-		super(properties);
-		registerDefaultState(defaultBlockState()
-				.setValue(ORIENTATION, Orientation.X_MIDDLE)
-				.setValue(OPEN, false).setValue(POWERED, false)
-				.setValue(HALF, DoubleBlockHalf.LOWER)
-		);
-	}
-
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		builder.add(ORIENTATION, OPEN, POWERED, HALF);
+		//note: FACING and HINGE are not used! This is only here to prevent crashes.
+		builder.add(ORIENTATION, HALF, OPEN, POWERED, FACING, HINGE);
 	}
 
 	@Nullable
@@ -121,24 +112,19 @@ public class FleshDoorBlock extends Block {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		state = state.cycle(OPEN);
-		level.setBlock(pos, state, UPDATE_FLAGS);
-		triggerEvents(player, level, pos, isOpen(state));
+		BlockState newState = state.cycle(OPEN);
+		level.setBlock(pos, newState, USE_UPDATE_FLAG);
+		triggerOpenCloseEvent(player, level, pos, isOpen(newState));
+
 		return InteractionResult.sidedSuccess(level.isClientSide);
 	}
 
 	@Override
-	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
-		if (level.isClientSide()) return;
-
-		boolean hasSignal = level.hasNeighborSignal(pos) || level.hasNeighborSignal(pos.relative(isLowerHalf(state) ? Direction.UP : Direction.DOWN));
-
-		if (hasSignal != isPowered(state)) {
-			if (isOpen(state) != hasSignal) {
-				state = state.setValue(OPEN, hasSignal);
-				triggerEvents(null, level, pos, hasSignal);
-			}
-			level.setBlock(pos, state.setValue(POWERED, hasSignal), Block.UPDATE_CLIENTS);
+	public void setOpen(@Nullable Entity user, Level level, BlockState state, BlockPos pos, boolean open) {
+		if (state.is(this) && state.getValue(OPEN) != open) {
+			BlockState newState = state.setValue(OPEN, open);
+			level.setBlock(pos, newState, USE_UPDATE_FLAG);
+			triggerOpenCloseEvent(user, level, pos, open);
 		}
 	}
 
@@ -148,47 +134,42 @@ public class FleshDoorBlock extends Block {
 	}
 
 	@Override
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+		boolean hasSignal = level.hasNeighborSignal(pos) || level.hasNeighborSignal(pos.relative(isLowerHalf(state) ? Direction.UP : Direction.DOWN));
+
+		if (!defaultBlockState().is(block) && hasSignal != isPowered(state)) {
+			if (isOpen(state) != hasSignal) {
+				state = state.setValue(OPEN, hasSignal);
+				triggerOpenCloseEvent(null, level, pos, hasSignal);
+			}
+			level.setBlock(pos, state.setValue(POWERED, hasSignal), Block.UPDATE_CLIENTS);
+		}
+	}
+
+	@Override
 	public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos) {
 		DoubleBlockHalf half = state.getValue(HALF);
-		if (direction.getAxis() == Direction.Axis.Y) {
-			boolean isUp = direction == Direction.UP;
-			boolean isLowerHalf = half == DoubleBlockHalf.LOWER;
-			if (isLowerHalf == isUp) {
-				return neighborState.is(this) && neighborState.getValue(HALF) != half ?
-						state
-//								.setValue(FACING, neighborState.getValue(FACING))
-								.setValue(OPEN, neighborState.getValue(OPEN))
-								.setValue(POWERED, neighborState.getValue(POWERED))
-						:
-						Blocks.AIR.defaultBlockState();
+
+		if ((direction.getAxis() == Direction.Axis.Y) && (half == DoubleBlockHalf.LOWER == (direction == Direction.UP))) {
+			if (neighborState.is(this) && neighborState.getValue(HALF) != half) {
+				return state
+						.setValue(ORIENTATION, neighborState.getValue(ORIENTATION))
+						.setValue(OPEN, neighborState.getValue(OPEN))
+						.setValue(POWERED, neighborState.getValue(POWERED));
 			}
+			return Blocks.AIR.defaultBlockState();
 		}
 
-		return half == DoubleBlockHalf.LOWER && direction == Direction.DOWN && !state.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, direction, neighborState, level, currentPos, neighborPos);
-	}
-
-	@Override
-	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-		//prevent Creative Drop From Bottom Part
-		if (!level.isClientSide && player.isCreative() && !isLowerHalf(state)) {
-			BlockPos posBelow = pos.below();
-			BlockState stateBelow = level.getBlockState(posBelow);
-			if (stateBelow.is(state.getBlock()) && isLowerHalf(stateBelow)) {
-				level.setBlock(posBelow, Blocks.AIR.defaultBlockState(), 35);
-				level.levelEvent(player, 2001, posBelow, Block.getId(stateBelow));
-			}
+		if (half == DoubleBlockHalf.LOWER && direction == Direction.DOWN && !state.canSurvive(level, currentPos)) {
+			return Blocks.AIR.defaultBlockState();
 		}
-		super.playerWillDestroy(level, pos, state, player);
+
+		return super.updateShape(state, direction, neighborState, level, currentPos, neighborPos);
 	}
 
-	@Override
-	public PushReaction getPistonPushReaction(BlockState state) {
-		return PushReaction.BLOCK;
-	}
-
-	protected void triggerEvents(@Nullable Player player, Level level, BlockPos pos, boolean open) {
-		playSound(player, level, pos, open ? ModSoundEvents.FLESH_DOOR_OPEN.get() : ModSoundEvents.FLESH_DOOR_CLOSE.get());
-		level.gameEvent(player, open ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
+	protected void triggerOpenCloseEvent(@Nullable Entity entity, Level level, BlockPos pos, boolean isDoorOpening) {
+		playSound(entity instanceof Player player ? player : null, level, pos, isDoorOpening ? ModSoundEvents.FLESH_DOOR_OPEN.get() : ModSoundEvents.FLESH_DOOR_CLOSE.get());
+		level.gameEvent(entity, isDoorOpening ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
 	}
 
 	private void playSound(@Nullable Player player, Level level, BlockPos pos, SoundEvent sound) {
@@ -197,10 +178,6 @@ public class FleshDoorBlock extends Block {
 
 	public boolean isLowerHalf(BlockState state) {
 		return state.getValue(HALF) == DoubleBlockHalf.LOWER;
-	}
-
-	public boolean isOpen(BlockState state) {
-		return state.getValue(OPEN);
 	}
 
 	public boolean isPowered(BlockState state) {
@@ -247,7 +224,8 @@ public class FleshDoorBlock extends Block {
 	}
 
 	@Override
-	public BlockState rotate(BlockState state, LevelAccessor level, BlockPos pos, Rotation rotationDirection) {
+	public BlockState rotate(BlockState state, Rotation rotationDirection) {
+		//Note: the Create Mod does not call IForgeBlock#rotate and calls this method directly (Create Train/Contraption disassembly)
 		Orientation orientation = state.getValue(ORIENTATION);
 		return state.setValue(ORIENTATION, orientation.rotate(rotationDirection));
 	}

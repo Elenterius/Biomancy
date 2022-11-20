@@ -30,6 +30,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 	protected void addTags() {
 		addFleshyBlocksToHoeTag();
 
+		tag(BlockTags.DOORS).add(ModBlocks.FLESH_DOOR.get());
+
 		tag(ModTags.Blocks.FLESHY_FENCES).add(ModBlocks.FLESH_FENCE.get());
 		tag(BlockTags.FENCES).addTag(ModTags.Blocks.FLESHY_FENCES);
 
