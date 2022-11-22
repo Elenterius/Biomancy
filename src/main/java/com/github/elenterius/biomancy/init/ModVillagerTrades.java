@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.BasicItemListing;
 import net.minecraftforge.event.village.VillagerTradesEvent;
+import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -28,6 +29,18 @@ public class ModVillagerTrades {
 		}
 	}
 
+	@SubscribeEvent
+	public static void onWandererTrades(final WandererTradesEvent event) {
+		List<VillagerTrades.ItemListing> genericTrades = event.getGenericTrades();
+		genericTrades.add(sellToPlayer(ModItems.EXOTIC_DUST.get(), 4, 2, 16, 5));
+		genericTrades.add(sellToPlayer(ModItems.BONE_SPIKE.get(), 2, 16, 5));
+		genericTrades.add(buyFromPlayer(ModItems.NUTRIENT_BAR.get(), 2, 8, 5));
+
+		List<VillagerTrades.ItemListing> rareTrades = event.getRareTrades();
+		rareTrades.add(sellToPlayer(ModItems.INSOMNIA_CURE.get(), 20, 8, 20));
+		rareTrades.add(sellToPlayer(ModItems.CREATOR_MIX.get(), 20, 5, 20));
+	}
+
 	private static BasicItemListing buyFromPlayer(Item item, int emeralds, int maxTrades, int xp) {
 		return new BasicItemListing(new ItemStack(item), new ItemStack(Items.EMERALD, emeralds), maxTrades, xp, 0.05F);
 	}
@@ -39,6 +52,11 @@ public class ModVillagerTrades {
 	private static BasicItemListing sellToPlayer(Item item, int emeralds, int maxTrades, int xp) {
 		return new BasicItemListing(emeralds, new ItemStack(item), maxTrades, xp, 0.05F);
 	}
+
+	private static BasicItemListing sellToPlayer(Item item, int amount, int emeralds, int maxTrades, int xp) {
+		return new BasicItemListing(emeralds, new ItemStack(item, amount), maxTrades, xp, 0.05F);
+	}
+
 
 	private static void addClericTrades(Int2ObjectMap<List<VillagerTrades.ItemListing>> trades) {
 		TradeLevel.JOURNEYMAN.addItemListings(trades,
