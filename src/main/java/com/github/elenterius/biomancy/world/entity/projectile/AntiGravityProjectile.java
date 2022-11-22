@@ -18,67 +18,68 @@ import net.minecraftforge.common.util.Lazy;
 
 import java.util.Objects;
 
+@Deprecated(forRemoval = true)
 public class AntiGravityProjectile extends BaseProjectile implements ItemSupplier {
 
-    private static final Lazy<ItemStack> ITEM_TO_RENDER = Lazy.of(() -> new ItemStack(ModItems.CREATOR_MIX.get()));
+	private static final Lazy<ItemStack> ITEM_TO_RENDER = Lazy.of(() -> new ItemStack(ModItems.CREATOR_MIX.get()));
 
-    public AntiGravityProjectile(EntityType<? extends BaseProjectile> entityType, Level level) {
-        super(entityType, level);
-    }
+	public AntiGravityProjectile(EntityType<? extends BaseProjectile> entityType, Level level) {
+		super(entityType, level);
+	}
 
-    public AntiGravityProjectile(Level level, double x, double y, double z) {
-        super(ModEntityTypes.ANTI_GRAVITY_PROJECTILE.get(), level, x, y, z);
-    }
+	public AntiGravityProjectile(Level level, double x, double y, double z) {
+		super(ModEntityTypes.ANTI_GRAVITY_PROJECTILE.get(), level, x, y, z);
+	}
 
-    public AntiGravityProjectile(Level level, LivingEntity shooter) {
-        super(ModEntityTypes.ANTI_GRAVITY_PROJECTILE.get(), level, shooter);
-    }
+	public AntiGravityProjectile(Level level, LivingEntity shooter) {
+		super(ModEntityTypes.ANTI_GRAVITY_PROJECTILE.get(), level, shooter);
+	}
 
-    @Override
-    public float getGravity() {
-        return 0.01f;
-    }
+	@Override
+	public float getGravity() {
+		return 0.01f;
+	}
 
-    @Override
-    public boolean isPickable() {
-        return false;
-    }
+	@Override
+	public boolean isPickable() {
+		return false;
+	}
 
-    @Override
-    public boolean hurt(DamageSource source, float amount) {
-        return false;
-    }
+	@Override
+	public boolean hurt(DamageSource source, float amount) {
+		return false;
+	}
 
-    @Override
-    protected void onHitBlock(BlockHitResult result) {
-        super.onHitBlock(result);
-        playSound(SoundEvents.GLOW_SQUID_SQUIRT, 1, 1.2f / (random.nextFloat() * 0.2f + 0.9f));
-    }
+	@Override
+	protected void onHitBlock(BlockHitResult result) {
+		super.onHitBlock(result);
+		playSound(SoundEvents.GLOW_SQUID_SQUIRT, 1, 1.2f / (random.nextFloat() * 0.2f + 0.9f));
+	}
 
-    @Override
-    protected void onHitEntity(EntityHitResult result) {
-        super.onHitEntity(result);
-        if (!level.isClientSide) {
-            Entity victim = result.getEntity();
-            Entity owner = getOwner();
-            if (victim instanceof LivingEntity livingVictim) {
-                //                AttributeInstance gravityAttribute = livingVictim.getAttribute(ForgeMod.ENTITY_GRAVITY.get());
-                //                if (gravityAttribute != null) {
-                //                    gravityAttribute.addTransientModifier(new AttributeModifier("AntiGravity modifier", -0.081d, AttributeModifier.Operation.ADDITION));
-                //                }
-                livingVictim.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 20 * 240, livingVictim.hasEffect(MobEffects.LEVITATION) ? 1 : 0), Objects.requireNonNullElse(owner, this));
-            }
+	@Override
+	protected void onHitEntity(EntityHitResult result) {
+		super.onHitEntity(result);
+		if (!level.isClientSide) {
+			Entity victim = result.getEntity();
+			Entity owner = getOwner();
+			if (victim instanceof LivingEntity livingVictim) {
+				//                AttributeInstance gravityAttribute = livingVictim.getAttribute(ForgeMod.ENTITY_GRAVITY.get());
+				//                if (gravityAttribute != null) {
+				//                    gravityAttribute.addTransientModifier(new AttributeModifier("AntiGravity modifier", -0.081d, AttributeModifier.Operation.ADDITION));
+				//                }
+				livingVictim.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 20 * 240, livingVictim.hasEffect(MobEffects.LEVITATION) ? 1 : 0), Objects.requireNonNullElse(owner, this));
+			}
 
-            if (owner instanceof LivingEntity shooter) {
-                doEnchantDamageEffects(shooter, victim);
-            }
-        }
-        playSound(SoundEvents.GLOW_SQUID_SQUIRT, 1, 1.2f / (random.nextFloat() * 0.2f + 0.9f));
-    }
+			if (owner instanceof LivingEntity shooter) {
+				doEnchantDamageEffects(shooter, victim);
+			}
+		}
+		playSound(SoundEvents.GLOW_SQUID_SQUIRT, 1, 1.2f / (random.nextFloat() * 0.2f + 0.9f));
+	}
 
-    @Override
-    public ItemStack getItem() {
-        return ITEM_TO_RENDER.get();
-    }
+	@Override
+	public ItemStack getItem() {
+		return ITEM_TO_RENDER.get();
+	}
 
 }

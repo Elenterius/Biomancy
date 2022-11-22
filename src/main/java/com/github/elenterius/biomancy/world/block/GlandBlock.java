@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+@Deprecated
 public class GlandBlock extends BaseEntityBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;

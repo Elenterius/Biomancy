@@ -14,6 +14,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.event.ForgeEventFactory;
 
+@Deprecated(forRemoval = true)
 public class WitherProjectile extends BaseProjectile {
 
 	public WitherProjectile(EntityType<? extends BaseProjectile> entityType, Level world) {

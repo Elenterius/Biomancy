@@ -24,6 +24,7 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.Nullable;
 
+@Deprecated
 public class VoiceBoxBlock extends BaseEntityBlock {
 
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;

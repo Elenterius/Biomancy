@@ -36,6 +36,7 @@ import org.jetbrains.annotations.Nullable;
 import java.text.DecimalFormat;
 import java.util.List;
 
+@Deprecated
 public class GulgeBlock extends BaseEntityBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;

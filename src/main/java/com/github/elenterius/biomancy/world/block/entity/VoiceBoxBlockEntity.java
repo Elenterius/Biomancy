@@ -23,6 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.Predicate;
 
+@Deprecated
 public class VoiceBoxBlockEntity extends BlockEntity {
 
 	public static final Predicate<ItemStack> VALID_ITEM = stack -> stack.getItem() instanceof EssenceItem;
@@ -68,7 +69,7 @@ public class VoiceBoxBlockEntity extends BlockEntity {
 		return false;
 	}
 
-//	private void playVoice(ItemStack stack, Level level, double x, double y, double z) {
+	//	private void playVoice(ItemStack stack, Level level, double x, double y, double z) {
 //		CompoundTag tag = stack.getOrCreateTag();
 //		if (!playVoice(stack, level, x, y, z, MobSoundUtil.VoiceType.getVolume(tag), MobSoundUtil.VoiceType.getPitch(tag))) {
 //			level.playSound(null, x, y, z, SoundEvents.PLAYER_BREATH, SoundSource.RECORDS, 2f, 1f);

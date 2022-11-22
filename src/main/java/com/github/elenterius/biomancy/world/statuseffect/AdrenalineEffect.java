@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.UUID;
 
+@Deprecated
 public class AdrenalineEffect extends StatusEffect {
 
 	protected double damageMultiplier;

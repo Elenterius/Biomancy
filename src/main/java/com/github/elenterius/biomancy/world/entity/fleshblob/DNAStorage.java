@@ -9,6 +9,7 @@ import net.minecraft.world.entity.EntityType;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 final class DNAStorage {
 
 	private final List<EntityType<?>> entities;

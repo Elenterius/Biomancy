@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.init.ModEnchantments;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 
+@Deprecated
 public class MaxAmmoEnchantment extends Enchantment {
 
 	public MaxAmmoEnchantment(Enchantment.Rarity rarityIn, EquipmentSlot... slotTypes) {

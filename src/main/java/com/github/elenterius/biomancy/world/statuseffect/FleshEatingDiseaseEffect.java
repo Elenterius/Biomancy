@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
+@Deprecated
 public class FleshEatingDiseaseEffect extends StatusEffect {
 
 	public FleshEatingDiseaseEffect(MobEffectCategory category, int color) {

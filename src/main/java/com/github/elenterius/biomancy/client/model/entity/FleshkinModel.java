@@ -7,6 +7,7 @@ import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 
+@Deprecated(forRemoval = true)
 public class FleshkinModel<T extends Fleshkin> extends HumanoidModel<T> {
 
 	public static final ModelLayerLocation MODEL_LAYER = new ModelLayerLocation(BiomancyMod.createRL("fleshkin"), "main");

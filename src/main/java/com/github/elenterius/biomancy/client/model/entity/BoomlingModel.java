@@ -10,6 +10,7 @@ import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
+@Deprecated
 public class BoomlingModel<T extends Boomling> extends AnimatedGeoModel<T> {
 
 	public static final ResourceLocation OVERLAY_TEXTURE = BiomancyMod.createRL("textures/entity/boomling_overlay.png");

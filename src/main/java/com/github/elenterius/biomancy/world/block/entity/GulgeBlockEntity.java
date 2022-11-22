@@ -19,6 +19,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@Deprecated
 public class GulgeBlockEntity extends SimpleContainerBlockEntity {
 
 	public static final short MAX_ITEM_AMOUNT = 64 * 128;
@@ -29,7 +30,7 @@ public class GulgeBlockEntity extends SimpleContainerBlockEntity {
 		gulgeInventory = GulgeInventory.createServerContents(MAX_ITEM_AMOUNT, this::canPlayerOpenContainer, this::setChanged);
 	}
 
-//	public GulgeBlockEntity(BlockPos pos, BlockState state) {
+	//	public GulgeBlockEntity(BlockPos pos, BlockState state) {
 //		super(ModBlockEntities.GULGE.get(), pos, state);
 //		gulgeInventory = GulgeInventory.createServerContents(MAX_ITEM_AMOUNT, this::canPlayerOpenContainer, this::setChanged);
 //	}

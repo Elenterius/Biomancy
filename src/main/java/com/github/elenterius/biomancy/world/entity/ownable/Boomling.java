@@ -54,6 +54,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+@Deprecated
 public class Boomling extends OwnableMob implements IAnimatable {
 
 	private static final EntityDataAccessor<Byte> CLIMBING = SynchedEntityData.defineId(Boomling.class, EntityDataSerializers.BYTE);
