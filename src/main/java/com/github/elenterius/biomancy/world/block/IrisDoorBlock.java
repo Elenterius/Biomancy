@@ -17,9 +17,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LadderBlock;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -213,6 +211,19 @@ public class IrisDoorBlock extends Block implements SimpleWaterloggedBlock {
 			level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
 		return super.updateShape(state, direction, neighborState, level, currentPos, neighborPos);
+	}
+
+	@Override
+	public BlockState rotate(BlockState state, Rotation rotationDirection) {
+		//Note: the Create Mod does not call IForgeBlock#rotate and calls this method directly (Create Train/Contraption disassembly)
+		Orientation orientation = state.getValue(ORIENTATION);
+		return state.setValue(ORIENTATION, orientation.rotate(rotationDirection));
+	}
+
+	@Override
+	public BlockState mirror(BlockState state, Mirror mirror) {
+		Orientation orientation = state.getValue(ORIENTATION);
+		return state.setValue(ORIENTATION, orientation.mirror(mirror));
 	}
 
 	@Override
