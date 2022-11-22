@@ -31,13 +31,17 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 		addFleshyBlocksToHoeTag();
 
 		tag(BlockTags.DOORS).add(ModBlocks.FLESH_DOOR.get());
+		tag(BlockTags.TRAPDOORS).add(ModBlocks.FLESH_IRIS_DOOR.get());
 
 		tag(ModTags.Blocks.FLESHY_FENCES).add(ModBlocks.FLESH_FENCE.get());
 		tag(BlockTags.FENCES).addTag(ModTags.Blocks.FLESHY_FENCES);
+		tag(BlockTags.FENCE_GATES).add(ModBlocks.FLESH_FENCE_GATE.get());
 
 		tag(BlockTags.WALLS).add(ModBlocks.FLESH_WALL.get(), ModBlocks.PACKED_FLESH_WALL.get());
 
-		tag(BlockTags.FENCE_GATES).add(ModBlocks.FLESH_FENCE_GATE.get());
+		tag(BlockTags.STAIRS).add(ModBlocks.FLESH_STAIRS.get(), ModBlocks.PACKED_FLESH_STAIRS.get());
+
+		tag(BlockTags.PRESSURE_PLATES).add(ModBlocks.FLESHKIN_PRESSURE_PLATE.get());
 
 		tag(BlockTags.CLIMBABLE).add(ModBlocks.FLESH_LADDER.get());
 
