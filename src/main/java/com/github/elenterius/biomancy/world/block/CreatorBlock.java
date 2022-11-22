@@ -92,6 +92,21 @@ public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBl
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		ItemStack stackInHand = player.getItemInHand(hand);
 		if (increaseFillLevel(player, level, pos, stackInHand)) {
+			if (!level.isClientSide) {
+				boolean isPotion = stackInHand.getItem() instanceof PotionItem;
+
+				if (!player.isCreative()) {
+					stackInHand.shrink(1);
+				}
+
+				if (stackInHand.hasContainerItem()) {
+					player.getInventory().add(stackInHand.getContainerItem());
+				}
+				else if (isPotion && stackInHand.isEmpty()) {
+					player.getInventory().add(new ItemStack(Items.GLASS_BOTTLE));
+				}
+
+			}
 			return InteractionResult.SUCCESS;
 		}
 		if (!level.isClientSide) {
@@ -103,7 +118,17 @@ public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBl
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		if (!level.isClientSide() && entity instanceof ItemEntity itemEntity) {
-			increaseFillLevel(null, level, pos, itemEntity.getItem());
+			ItemStack stack = itemEntity.getItem();
+			if (increaseFillLevel(null, level, pos, stack)) {
+				if (stack.hasContainerItem()) {
+					entity.spawnAtLocation(stack.getContainerItem());
+					stack.shrink(1);
+				}
+				else if (stack.getItem() instanceof PotionItem) {
+					entity.spawnAtLocation(new ItemStack(Items.GLASS_BOTTLE));
+					stack.shrink(1);
+				}
+			}
 		}
 	}
 
@@ -113,7 +138,6 @@ public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBl
 
 			BlockEntity blockEntity = level.getBlockEntity(pos);
 			if (blockEntity instanceof CreatorBlockEntity creator && !creator.isFull() && creator.insertItem(ItemHandlerHelper.copyStackWithSize(stack, 1))) {
-				if (player == null || !player.isCreative()) stack.shrink(1);
 				SoundEvent soundEvent = creator.isFull() ? ModSoundEvents.CREATOR_BECAME_FULL.get() : ModSoundEvents.CREATOR_EAT.get();
 				SoundUtil.broadcastBlockSound((ServerLevel) level, pos, soundEvent);
 				return true;
