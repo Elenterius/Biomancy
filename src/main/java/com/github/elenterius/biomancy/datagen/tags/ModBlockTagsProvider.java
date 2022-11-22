@@ -40,6 +40,14 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 		tag(BlockTags.FENCE_GATES).add(ModBlocks.FLESH_FENCE_GATE.get());
 
 		tag(BlockTags.CLIMBABLE).add(ModBlocks.FLESH_LADDER.get());
+
+		tag(BlockTags.SLABS).add(
+				ModBlocks.FLESH_SLAB.get(),
+				ModBlocks.PACKED_FLESH_SLAB.get(),
+				ModBlocks.PRIMAL_FLESH_SLAB.get(),
+				ModBlocks.CORRUPTED_PRIMAL_FLESH_SLAB.get(),
+				ModBlocks.MALIGNANT_FLESH_SLAB.get()
+		);
 	}
 
 	private void addFleshyBlocksToHoeTag() {

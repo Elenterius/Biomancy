@@ -2,8 +2,10 @@ package com.github.elenterius.biomancy.datagen.models;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModBlocks;
+import com.github.elenterius.biomancy.world.block.DirectionalSlabBlock;
 import com.github.elenterius.biomancy.world.block.FleshDoorBlock;
 import com.github.elenterius.biomancy.world.block.IrisDoorBlock;
+import com.github.elenterius.biomancy.world.block.property.DirectionalSlabType;
 import com.github.elenterius.biomancy.world.block.property.Orientation;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
@@ -29,28 +31,24 @@ public class ModBlockStateProvider extends BlockStateProvider {
 	@Override
 	protected void registerStatesAndModels() {
 		simpleBlockWithItem(ModBlocks.FLESH.get());
-		slabBlock(ModBlocks.FLESH_SLAB.get(), blockModel(ModBlocks.FLESH.get()), blockTexture(ModBlocks.FLESH.get()));
+		directionalSlabBlockWithItem(ModBlocks.FLESH_SLAB.get(), ModBlocks.FLESH.get());
 		stairsBlock(ModBlocks.FLESH_STAIRS.get(), blockTexture(ModBlocks.FLESH.get()));
-		simpleBlockItem(ModBlocks.FLESH_SLAB.get());
 		simpleBlockItem(ModBlocks.FLESH_STAIRS.get());
 		wallBlock(ModBlocks.FLESH_WALL.get(), ModBlocks.FLESH.get());
 
 		simpleBlockWithItem(ModBlocks.PACKED_FLESH.get());
-		slabBlock(ModBlocks.PACKED_FLESH_SLAB.get(), blockModel(ModBlocks.PACKED_FLESH.get()), blockTexture(ModBlocks.PACKED_FLESH.get()));
+		directionalSlabBlockWithItem(ModBlocks.PACKED_FLESH_SLAB.get(), ModBlocks.PACKED_FLESH.get());
 		stairsBlock(ModBlocks.PACKED_FLESH_STAIRS.get(), blockTexture(ModBlocks.PACKED_FLESH.get()));
-		simpleBlockItem(ModBlocks.PACKED_FLESH_SLAB.get());
 		simpleBlockItem(ModBlocks.PACKED_FLESH_STAIRS.get());
 		wallBlock(ModBlocks.PACKED_FLESH_WALL.get(), ModBlocks.PACKED_FLESH.get());
 
 		simpleBlockWithItem(ModBlocks.PRIMAL_FLESH.get());
-		slabBlock(ModBlocks.PRIMAL_FLESH_SLAB.get(), blockModel(ModBlocks.PRIMAL_FLESH.get()), blockTexture(ModBlocks.PRIMAL_FLESH.get()));
+		directionalSlabBlockWithItem(ModBlocks.PRIMAL_FLESH_SLAB.get(), ModBlocks.PRIMAL_FLESH.get());
 		existingBlockWithItem(ModBlocks.CORRUPTED_PRIMAL_FLESH.get());
-		simpleBlockItem(ModBlocks.PRIMAL_FLESH_SLAB.get());
 
 		simpleBlockWithItem(ModBlocks.MALIGNANT_FLESH.get());
-		slabBlock(ModBlocks.MALIGNANT_FLESH_SLAB.get(), blockModel(ModBlocks.MALIGNANT_FLESH.get()), blockTexture(ModBlocks.MALIGNANT_FLESH.get()));
+		directionalSlabBlockWithItem(ModBlocks.MALIGNANT_FLESH_SLAB.get(), ModBlocks.MALIGNANT_FLESH.get());
 		veinsBlock(ModBlocks.MALIGNANT_FLESH_VEINS.get());
-		simpleBlockItem(ModBlocks.MALIGNANT_FLESH_SLAB.get());
 
 		irisDoor(ModBlocks.FLESH_IRIS_DOOR.get(), true);
 		fleshDoor();
@@ -108,6 +106,45 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		ModelFile.ExistingModelFile existingModel = models().getExistingFile(blockModel(block));
 		directionalBlock(block, existingModel);
 		simpleBlockItem(block, existingModel);
+	}
+
+	public void directionalSlabBlockWithItem(DirectionalSlabBlock slab, Block block) {
+		directionalSlabBlockWithItem(slab, blockModel(block), blockTexture(block));
+	}
+
+	public void directionalSlabBlockWithItem(DirectionalSlabBlock block, ResourceLocation full, ResourceLocation texture) {
+		directionalSlabBlock(block, full, texture, texture, texture);
+		simpleBlockItem(block);
+	}
+
+	public void directionalSlabBlock(DirectionalSlabBlock block, ResourceLocation full, ResourceLocation side, ResourceLocation bottom, ResourceLocation top) {
+		directionalSlabBlock(block, models().slab(name(block), side, bottom, top), models().getExistingFile(full));
+	}
+
+	public void directionalSlabBlock(DirectionalSlabBlock block, ModelFile half, ModelFile full) {
+		getVariantBuilder(block)
+				.forAllStatesExcept(
+						state -> {
+							DirectionalSlabType type = state.getValue(DirectionalSlabBlock.TYPE);
+							Direction facing = type.getFacing();
+							if (type != DirectionalSlabType.FULL) {
+								int xRotation = 0;
+								if (facing == Direction.DOWN) xRotation = 180;
+								else if (facing.getAxis().isHorizontal()) xRotation = 90;
+
+								int yRotation = facing.getAxis().isVertical() ? 0 : ((int) facing.toYRot() + 180) % 360;
+
+								return ConfiguredModel.builder()
+										.modelFile(half)
+										.rotationX(xRotation)
+										.rotationY(yRotation)
+										.build();
+							}
+
+							return ConfiguredModel.builder().modelFile(full).build();
+						},
+						DirectionalSlabBlock.WATERLOGGED
+				);
 	}
 
 	public void storageSac(Block block) {
