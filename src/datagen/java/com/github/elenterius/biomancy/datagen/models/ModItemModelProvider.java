@@ -39,6 +39,18 @@ public class ModItemModelProvider extends ItemModelProvider {
 		return basicItem(Objects.requireNonNull(item.getRegistryName()), "serum");
 	}
 
+	public ItemModelBuilder weaponItem(Item item) {
+		return basicItem(Objects.requireNonNull(item.getRegistryName()), "weapon");
+	}
+
+	public ItemModelBuilder handheldWeaponItem(Item item) {
+		return handheldItem(Objects.requireNonNull(item.getRegistryName()), "weapon");
+	}
+
+	public ItemModelBuilder miscItem(Item item) {
+		return basicItem(Objects.requireNonNull(item.getRegistryName()), "misc");
+	}
+
 	private ItemModelBuilder basicItem(ResourceLocation item, String subfolder) {
 		return getBuilder(item.toString())
 				.parent(new ModelFile.UncheckedModelFile("item/generated"))
@@ -61,6 +73,12 @@ public class ModItemModelProvider extends ItemModelProvider {
 		return getBuilder(item.toString())
 				.parent(new ModelFile.UncheckedModelFile("item/handheld"))
 				.texture(LAYER_0_TEXTURE, new ResourceLocation(item.getNamespace(), ITEM_FOLDER + "/" + item.getPath()));
+	}
+
+	private ItemModelBuilder handheldItem(ResourceLocation item, String subfolder) {
+		return getBuilder(item.toString())
+				.parent(new ModelFile.UncheckedModelFile("item/handheld"))
+				.texture(LAYER_0_TEXTURE, new ResourceLocation(item.getNamespace(), ITEM_FOLDER + "/" + subfolder + "/" + item.getPath()));
 	}
 
 	public ItemModelBuilder flatBlockItem(BlockItem blockItem) {
@@ -143,6 +161,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 		flatBlockItem(ModItems.MALIGNANT_FLESH_VEINS.get());
 
 		handheldItem(ModItems.BIO_EXTRACTOR.get());
+		handheldWeaponItem(ModItems.BONE_CLEAVER.get());
 
 		//generate models for all eggs
 		ModItems.ITEMS.getEntries().stream().map(RegistryObject::get).filter(SpawnEggItem.class::isInstance).forEach(this::spawnEggItem);

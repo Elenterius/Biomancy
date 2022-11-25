@@ -11,6 +11,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
@@ -89,6 +90,7 @@ public final class ModItems {
 	public static final RegistryObject<MaykerBannerPatternItem> MASCOT_ACCENT_BANNER_PATTERN = ITEMS.register("mascot_accent_pattern", () -> new MaykerBannerPatternItem(ModBannerPatterns.MASCOT_ACCENT_PATTERN, createBaseProperties()));
 
 	//# Weapons
+	public static final RegistryObject<SwordItem> BONE_CLEAVER = ITEMS.register("bone_cleaver", () -> new SwordItem(ModTiers.BONE, 3, -2.4f, createBaseProperties()));
 	public static final RegistryObject<LongClawsItem> LONG_CLAWS = ITEMS.register("long_claws", () -> new LongClawsItem(ModTiers.BIOFLESH, 3, -2.4f, 120, createBaseProperties().rarity(ModRarities.VERY_RARE)));
 	public static final RegistryObject<DevArmCannonItem> ARM_CANNON = ITEMS.register("dev_arm_cannon", () -> new DevArmCannonItem(createBaseProperties().stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE)));
 	public static final RegistryObject<BileSpitterItem> BILE_SPITTER = ITEMS.register("bile_spitter", () -> new BileSpitterItem(createBaseProperties().stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE)));

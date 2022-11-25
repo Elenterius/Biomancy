@@ -21,6 +21,9 @@ public final class ModTags {
 	}
 
 	public static final class Items {
+
+		public static final TagKey<Item> TOOLS_KNIVES = ItemTags.create(new ResourceLocation("forge", "tools/knives"));
+
 		public static final TagKey<Item> RAW_MEATS = tag("raw_meats");
 		public static final TagKey<Item> COOKED_MEATS = tag("cooked_meats");
 		public static final TagKey<Item> SUGARS = tag("sugars");

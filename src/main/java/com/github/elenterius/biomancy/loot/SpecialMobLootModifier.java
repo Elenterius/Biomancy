@@ -15,6 +15,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -41,13 +42,17 @@ public class SpecialMobLootModifier extends LootModifier {
 	private static final ItemLoot BONE_MARROW = new ItemLoot(ModItems.MOB_MARROW, RANDOM_ITEM_AMOUNT_FUNC_2);
 	private static final ItemLoot WITHERED_BONE_MARROW = new ItemLoot(ModItems.WITHERED_MOB_MARROW, RANDOM_ITEM_AMOUNT_FUNC_2);
 
+	private static final ItemLoot FLESH_BITS = new ItemLoot(ModItems.FLESH_BITS, RANDOM_ITEM_AMOUNT_FUNC_2); //bonus drop for bone cleaver
+	private static final ItemLoot EMPTY = new ItemLoot(() -> Items.AIR, CONSTANT_ITEM_AMOUNT_FUNC);
+
 	private final Weights weights;
 
 	public SpecialMobLootModifier() {
 		this(new Weights(140, 150, 75, 50, 40, 65, 45, 70),
 				//Can't use MatchTool, because the tool is missing for Entity Kills
 				//only apply the loot modifier to adult mobs killed by a player
-				LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().flags(EntityFlagsPredicate.Builder.flags().setIsBaby(false).build())).build(), LootItemKilledByPlayerCondition.killedByPlayer().build());
+				LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().flags(EntityFlagsPredicate.Builder.flags().setIsBaby(false).build())).build(),
+				LootItemKilledByPlayerCondition.killedByPlayer().build());
 	}
 
 	public SpecialMobLootModifier(Weights weights, LootItemCondition... conditions) {
@@ -90,13 +95,27 @@ public class SpecialMobLootModifier extends LootModifier {
 			DynamicLootTable lootTable = buildLootTable(victim);
 			if (lootTable.isEmpty()) return generatedLoot;
 
-			Random random = context.getRandom();
+			lootTable.add(EMPTY, 15);
+
 			int despoilLevel = getDespoilLevel(context);
 			int lootingLevel = context.getLootingModifier();
+			ItemStack heldStack = getItemInMainHand(context);
 
-			int diceRolls = Mth.nextInt(random, 1, 1 + despoilLevel); //max is inclusive
-			for (; diceRolls > 0; diceRolls--) {
-				lootTable.getRandomItemStack(random, lootingLevel).ifPresent(generatedLoot::add);
+			//bonus
+			if (heldStack.is(ModItems.BONE_CLEAVER.get())) {
+				despoilLevel++;
+				lootTable.add(FLESH_BITS, 15);
+			}
+			else if (heldStack.is(ModTags.Items.TOOLS_KNIVES)) {
+				despoilLevel++;
+			}
+
+			Random random = context.getRandom();
+			if (despoilLevel > 0 || random.nextFloat() < 0.05f) {
+				int diceRolls = Mth.nextInt(random, 1, 1 + despoilLevel); //max is inclusive
+				for (; diceRolls > 0; diceRolls--) {
+					lootTable.getRandomItemStack(random, lootingLevel).filter(stack -> !stack.isEmpty()).ifPresent(generatedLoot::add);
+				}
 			}
 		}
 
@@ -109,6 +128,14 @@ public class SpecialMobLootModifier extends LootModifier {
 			return EnchantmentHelper.getEnchantmentLevel(ModEnchantments.DESPOIL.get(), livingEntity);
 		}
 		return 0;
+	}
+
+	private ItemStack getItemInMainHand(LootContext lootContext) {
+		Entity killer = lootContext.getParamOrNull(LootContextParams.KILLER_ENTITY);
+		if (killer instanceof LivingEntity livingEntity) {
+			return livingEntity.getMainHandItem();
+		}
+		return ItemStack.EMPTY;
 	}
 
 	record Weights(int fang, int claw, int toxinGland, int volatileGland, int genericGland, int witheredBoneMarrow, int boneMarrow, int sinew) {
