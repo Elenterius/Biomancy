@@ -40,6 +40,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -47,10 +48,14 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
-import javax.annotation.Nullable;
 import java.util.function.Predicate;
 
+/**
+ * @deprecated The Flesh Blob will be significantly reworked in the near future
+ */
+@Deprecated
 public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<FleshBlob>, IAnimatable {
 
 	public static final byte EATING_STATE_ID = 60;
@@ -63,8 +68,10 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 	private static final EntityDataAccessor<Byte> TUMORS = SynchedEntityData.defineId(FleshBlob.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Byte> BLOB_TYPE = SynchedEntityData.defineId(FleshBlob.class, EntityDataSerializers.BYTE);
 
+
+	@Deprecated
 	private final DNAStorage storedDNA = new DNAStorage(4);
-	private final AnimationFactory animationFactory = new AnimationFactory(this);
+	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
 	protected GenericJumpMoveHelper<FleshBlob> jumpMoveState;
 	private int eatTimer;
 
@@ -235,6 +242,7 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 		super.onSyncedDataUpdated(key);
 	}
 
+	@Deprecated
 	public void addMobDNA(EntityType<LivingEntity> entityType) {
 		if (!storedDNA.addDNA(entityType)) {
 			Explosion.BlockInteraction mode = ForgeEventFactory.getMobGriefingEvent(level, this) ? Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE;
@@ -243,10 +251,12 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 		}
 	}
 
+	@Deprecated
 	public void clearStoredDNA() {
 		storedDNA.clear();
 	}
 
+	@Deprecated
 	public DNAStorage getStoredDNA() {
 		return storedDNA;
 	}
@@ -261,7 +271,7 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 		ItemStack heldStack = getItemBySlot(EquipmentSlot.MAINHAND);
 		if (heldStack.getItem().isEdible()) {
 			if (eatTimer > 400) {
-				FoodProperties food = heldStack.getItem().getFoodProperties();
+				FoodProperties food = heldStack.getFoodProperties(this);
 				ItemStack eatenStack = heldStack.finishUsingItem(level, this);
 				if (!eatenStack.isEmpty()) {
 					setItemSlot(EquipmentSlot.MAINHAND, eatenStack);
@@ -489,10 +499,10 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 		if (jumpPct > 0) {
 			event.getController().transitionLengthTicks = 0;
 			if (jumpPct <= 0.28f) {
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("fleshkin_blob.jump.startup").addAnimation("fleshkin_blob.jump.air.loop", false));
+				event.getController().setAnimation(new AnimationBuilder().addAnimation("fleshkin_blob.jump.startup").playAndHold("fleshkin_blob.jump.air.loop"));
 			}
 			else if (jumpPct < 0.72f) {
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("fleshkin_blob.jump.air.loop", true));
+				event.getController().setAnimation(new AnimationBuilder().loop("fleshkin_blob.jump.air.loop"));
 			}
 			else {
 				event.getController().setAnimation(new AnimationBuilder().addAnimation("fleshkin_blob.jump.impact"));
@@ -500,7 +510,7 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 		}
 		else {
 			event.getController().transitionLengthTicks = 10;
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("fleshkin_blob.ground.loop", true));
+			event.getController().setAnimation(new AnimationBuilder().loop("fleshkin_blob.ground.loop"));
 		}
 		return PlayState.CONTINUE;
 	}
@@ -526,7 +536,7 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 		@Override
 		public boolean canContinueToUse() {
 			FleshBlob fleshBlob = (FleshBlob) mob;
-			if (fleshBlob.isNeutral() && mob.getRandom().nextFloat() < 0.2f) {
+			if (mob.getRandom().nextFloat() < 0.2f && fleshBlob.isNeutral()) {
 				mob.setTarget(null);
 				return false;
 			}
