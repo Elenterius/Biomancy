@@ -5,8 +5,8 @@ import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModTags;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -107,26 +107,40 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 
 	@Override
 	protected void addTags() {
-		//noinspection SpellCheckingInspection
-		tag(ModTags.EntityTypes.NOT_CLONEABLE)
+		createTag(ModTags.EntityTypes.NOT_CLONEABLE)
 				.addTag(ModTags.EntityTypes.BOSSES)
 				.add(EntityType.IRON_GOLEM, EntityType.SNOW_GOLEM)
-				.addOptional(new ResourceLocation("strawgolem", "strawgolem"))
-				.addOptional(new ResourceLocation("strawgolem", "strawnggolem"));
+				.addOptional("strawgolem:strawgolem", "strawgolem:strawnggolem");
 
-		tag(ModTags.EntityTypes.SHARP_FANG).add(SHARP_FANG_MOBS);
-		tag(ModTags.EntityTypes.SHARP_CLAW).add(SHARP_CLAW_MOBS);
-		tag(ModTags.EntityTypes.TOXIN_GLAND).add(TOXIC_MOBS);
-		tag(ModTags.EntityTypes.VOLATILE_GLAND).add(VOLATILE_MOBS);
-		tag(ModTags.EntityTypes.BONE_MARROW).add(EntityType.SKELETON_HORSE).addTag(EntityTypeTags.SKELETONS);
-		tag(ModTags.EntityTypes.WITHERED_BONE_MARROW).add(EntityType.WITHER_SKELETON, EntityType.WITHER);
+		addSpecialMobLootTags();
+	}
+
+	private void addSpecialMobLootTags() {
+		createTag(ModTags.EntityTypes.SHARP_FANG)
+				.add(SHARP_FANG_MOBS);
+
+		createTag(ModTags.EntityTypes.SHARP_CLAW)
+				.add(SHARP_CLAW_MOBS);
+
+		createTag(ModTags.EntityTypes.TOXIN_GLAND)
+				.add(TOXIC_MOBS);
+
+		createTag(ModTags.EntityTypes.VOLATILE_GLAND)
+				.add(VOLATILE_MOBS);
+
+		createTag(ModTags.EntityTypes.BONE_MARROW)
+				.add(EntityType.SKELETON_HORSE)
+				.addTag(EntityTypeTags.SKELETONS);
+
+		createTag(ModTags.EntityTypes.WITHERED_BONE_MARROW)
+				.add(EntityType.WITHER_SKELETON, EntityType.WITHER);
 
 		Predicate<EntityType<?>> sinewPredicate = createSinewPredicate();
 		Predicate<EntityType<?>> bileGlandPredicate = createBileGlandPredicate();
 		Predicate<EntityType<?>> validEntityPredicate = createValidEntityTypePredicate();
 
-		TagAppender<EntityType<?>> sinewTag = tag(ModTags.EntityTypes.SINEW);
-		TagAppender<EntityType<?>> bileGlandTag = tag(ModTags.EntityTypes.BILE_GLAND);
+		EnhancedTagAppender<EntityType<?>> sinewTag = createTag(ModTags.EntityTypes.SINEW);
+		EnhancedTagAppender<EntityType<?>> bileGlandTag = createTag(ModTags.EntityTypes.BILE_GLAND);
 
 		for (EntityType<?> entityType : ForgeRegistries.ENTITIES) {
 			if (validEntityPredicate.test(entityType)) {
@@ -151,6 +165,10 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 		Set<EntityType<?>> toxicMobs = Set.of(TOXIC_MOBS);
 		Set<EntityType<?>> volatileMobs = Set.of(VOLATILE_MOBS);
 		return entityType -> !toxicMobs.contains(entityType) && !volatileMobs.contains(entityType) && !INVALID_MOBS_FOR_MEATY_LOOT.contains(entityType);
+	}
+
+	protected EnhancedTagAppender<EntityType<?>> createTag(TagKey<EntityType<?>> tag) {
+		return new EnhancedTagAppender<>(tag(tag));
 	}
 
 	@Override
