@@ -1,10 +1,8 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.client.util.ClientSoundUtil;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
 import com.github.elenterius.biomancy.client.util.GuiUtil;
-import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.world.inventory.menu.DecomposerMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -26,7 +24,6 @@ public class DecomposerScreen extends AbstractContainerScreen<DecomposerMenu> {
 	@Override
 	protected void init() {
 		super.init();
-		ClientSoundUtil.playUISound(ModSoundEvents.UI_DECOMPOSER_OPEN);
 	}
 
 	@Override

@@ -1,7 +1,11 @@
 package com.github.elenterius.biomancy.world.block;
 
+import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.block.entity.StorageSacBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,6 +28,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 public class StorageSacBlock extends BaseEntityBlock {
@@ -68,11 +73,14 @@ public class StorageSacBlock extends BaseEntityBlock {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (level.isClientSide) return InteractionResult.SUCCESS;
-
-		if (level.getBlockEntity(pos) instanceof StorageSacBlockEntity sac) {
-			player.openMenu(sac);
+		if (level.getBlockEntity(pos) instanceof StorageSacBlockEntity sac && sac.canPlayerOpenInv(player)) {
+			if (!level.isClientSide) {
+				NetworkHooks.openGui((ServerPlayer) player, sac, buffer -> buffer.writeBlockPos(pos));
+				SoundUtil.broadcastBlockSound((ServerLevel) level, pos, ModSoundEvents.UI_STORAGE_SAC_OPEN);
+			}
+			return InteractionResult.SUCCESS;
 		}
+
 		return InteractionResult.CONSUME;
 	}
 

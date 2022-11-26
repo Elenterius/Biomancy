@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Inventory;
 import java.awt.*;
 import java.text.DecimalFormat;
 
+@Deprecated
 public class GulgeScreen extends AbstractContainerScreen<GulgeMenu> {
 
 	private static final ResourceLocation BACKGROUND_TEXTURE = BiomancyMod.createRL("textures/gui/gulge_gui.png");

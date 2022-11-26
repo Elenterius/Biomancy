@@ -7,6 +7,8 @@ import com.github.elenterius.biomancy.world.block.entity.DigesterBlockEntity;
 import com.github.elenterius.biomancy.world.block.entity.MachineBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -25,6 +27,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
@@ -57,11 +60,14 @@ public class DigesterBlock extends HorizontalFacingMachineBlock {
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (level.isClientSide) return InteractionResult.SUCCESS;
-
-		if (level.getBlockEntity(pos) instanceof DigesterBlockEntity digester) {
-			player.openMenu(digester);
+		if (level.getBlockEntity(pos) instanceof DigesterBlockEntity digester && digester.canPlayerOpenInv(player)) {
+			if (!level.isClientSide) {
+				NetworkHooks.openGui((ServerPlayer) player, digester, buffer -> buffer.writeBlockPos(pos));
+				SoundUtil.broadcastBlockSound((ServerLevel) level, pos, ModSoundEvents.UI_DIGESTER_OPEN);
+			}
+			return InteractionResult.SUCCESS;
 		}
+
 		return InteractionResult.CONSUME;
 	}
 

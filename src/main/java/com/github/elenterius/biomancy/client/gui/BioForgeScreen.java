@@ -54,8 +54,6 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 		recipeBook = new BioForgeScreenController(minecraft, menu);
 
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
-
-		ClientSoundUtil.playUISound(ModSoundEvents.UI_BIO_FORGE_OPEN);
 	}
 
 	@Override

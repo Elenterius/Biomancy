@@ -22,6 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -50,6 +51,11 @@ public class StorageSacBlockEntity extends SimpleContainerBlockEntity {
 	@Override
 	public AbstractContainerMenu createMenu(int containerId, Inventory playerInventory, Player player) {
 		return StorageSacMenu.createServerMenu(containerId, playerInventory, inventory);
+	}
+
+	public boolean canPlayerOpenInv(Player player) {
+		if (level == null || level.getBlockEntity(worldPosition) != this) return false;
+		return player.distanceToSqr(Vec3.atCenterOf(worldPosition)) < 8d * 8d;
 	}
 
 	@Override
