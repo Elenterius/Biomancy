@@ -52,7 +52,8 @@ public class BioLabRecipe extends AbstractProductionRecipe {
 			if (stack.isEmpty()) continue;
 
 			for (int i = 0; i < ingredients.size(); i++) {
-				if (ingredients.get(i).testItem(stack)) {
+				IngredientStack requiredIngredient = ingredients.get(i);
+				if (requiredIngredient.testItem(stack) && countedIngredients[i] < requiredIngredient.count()) {
 					countedIngredients[i] += stack.getCount();
 					break;
 				}
