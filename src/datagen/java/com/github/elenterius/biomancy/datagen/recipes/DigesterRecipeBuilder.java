@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.datagen.recipes;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModRecipes;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards;
@@ -17,22 +18,27 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.NBTIngredient;
+import net.minecraftforge.common.crafting.conditions.ICondition;
+import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
+import net.minecraftforge.common.crafting.conditions.NotCondition;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class DigesterRecipeBuilder implements IRecipeBuilder {
 
 	public static final String SUFFIX = "_from_digesting";
 
-	private final Advancement.Builder advancement = Advancement.Builder.advancement();
-
 	private final ResourceLocation recipeId;
+	private final List<ICondition> conditions = new ArrayList<>();
 	private final ItemData recipeResult;
+	private final Advancement.Builder advancement = Advancement.Builder.advancement();
 	private Ingredient recipeIngredient;
 	private int craftingTime = 4 * 20;
-
 	@Nullable
 	private String group;
 
@@ -77,6 +83,19 @@ public class DigesterRecipeBuilder implements IRecipeBuilder {
 		return create(new ItemData(item, count), postSuffix);
 	}
 
+	public DigesterRecipeBuilder ifModLoaded(String modId) {
+		return withCondition(new ModLoadedCondition(modId));
+	}
+
+	public DigesterRecipeBuilder ifModMissing(String modId) {
+		return withCondition(new NotCondition(new ModLoadedCondition(modId)));
+	}
+
+	public DigesterRecipeBuilder withCondition(ICondition condition) {
+		conditions.add(condition);
+		return this;
+	}
+
 	public DigesterRecipeBuilder setCraftingTime(int time) {
 		if (time < 0) throw new IllegalArgumentException("Invalid crafting time: " + time);
 		craftingTime = time;
@@ -116,7 +135,7 @@ public class DigesterRecipeBuilder implements IRecipeBuilder {
 		validateCriteria(recipeId);
 		advancement.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
 		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(), "recipes/" + (itemCategory != null ? itemCategory.getRecipeFolderName() : BiomancyMod.MOD_ID) + "/" + recipeId.getPath());
-		consumer.accept(new Result(recipeId, group == null ? "" : group, recipeResult, craftingTime, recipeIngredient, advancement, advancementId));
+		consumer.accept(new Result(this, advancementId));
 	}
 
 	private void validateCriteria(ResourceLocation id) {
@@ -126,23 +145,25 @@ public class DigesterRecipeBuilder implements IRecipeBuilder {
 	}
 
 	public static class Result implements FinishedRecipe {
+
 		private final ResourceLocation id;
 		private final String group;
-
 		private final Ingredient ingredient;
 		private final ItemData recipeResult;
 		private final int craftingTime;
-
+		private final List<ICondition> conditions;
 		private final Advancement.Builder advancementBuilder;
 		private final ResourceLocation advancementId;
 
-		public Result(ResourceLocation recipeId, String group, ItemData result, int craftingTime, Ingredient ingredient, Advancement.Builder advancement, ResourceLocation advancementId) {
-			id = recipeId;
-			this.group = group;
-			this.ingredient = ingredient;
-			this.recipeResult = result;
-			this.craftingTime = craftingTime;
-			advancementBuilder = advancement;
+		public Result(DigesterRecipeBuilder builder, ResourceLocation advancementId) {
+			id = builder.recipeId;
+			group = builder.group == null ? "" : builder.group;
+			ingredient = builder.recipeIngredient;
+			recipeResult = builder.recipeResult;
+			craftingTime = builder.craftingTime;
+			conditions = builder.conditions;
+
+			advancementBuilder = builder.advancement;
 			this.advancementId = advancementId;
 		}
 
@@ -156,6 +177,13 @@ public class DigesterRecipeBuilder implements IRecipeBuilder {
 			json.add("result", recipeResult.toJson());
 
 			json.addProperty("time", craftingTime);
+
+			//serialize conditions
+			if (!conditions.isEmpty()) {
+				JsonArray array = new JsonArray();
+				conditions.forEach(c -> array.add(CraftingHelper.serialize(c)));
+				json.add("conditions", array);
+			}
 		}
 
 		public RecipeSerializer<?> getType() {

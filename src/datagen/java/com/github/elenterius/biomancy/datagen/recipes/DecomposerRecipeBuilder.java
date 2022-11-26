@@ -19,9 +19,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.common.crafting.conditions.ICondition;
+import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
+import net.minecraftforge.common.crafting.conditions.NotCondition;
 import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,9 +34,10 @@ import java.util.function.Consumer;
 public class DecomposerRecipeBuilder implements IRecipeBuilder {
 
 	public static final String SUFFIX = "_decomposing";
-	private ResourceLocation recipeId;
 	private final List<VariableProductionOutput> outputs = new ArrayList<>();
 	private final Advancement.Builder advancement = Advancement.Builder.advancement();
+	private final List<ICondition> conditions = new ArrayList<>();
+	private ResourceLocation recipeId;
 	private IngredientStack ingredientStack = null;
 	private int craftingTime = 4 * 20;
 	@Nullable
@@ -42,19 +47,19 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 		this.recipeId = recipeId;
 	}
 
-//	public static DecomposerRecipeBuilder create(String modId, String ingredientName) {
-//		ResourceLocation rl = new ResourceLocation(modId, ingredientName + SUFFIX);
-//		return new DecomposerRecipeBuilder(rl);
-//	}
-//
-//	public static DecomposerRecipeBuilder create(String ingredientName) {
-//		ResourceLocation rl = BiomancyMod.createRL(ingredientName + SUFFIX);
-//		return new DecomposerRecipeBuilder(rl);
-//	}
-//
-//	public static DecomposerRecipeBuilder create(ResourceLocation recipeId) {
-//		return new DecomposerRecipeBuilder(recipeId);
-//	}
+	//	public static DecomposerRecipeBuilder create(String modId, String ingredientName) {
+	//		ResourceLocation rl = new ResourceLocation(modId, ingredientName + SUFFIX);
+	//		return new DecomposerRecipeBuilder(rl);
+	//	}
+	//
+	//	public static DecomposerRecipeBuilder create(String ingredientName) {
+	//		ResourceLocation rl = BiomancyMod.createRL(ingredientName + SUFFIX);
+	//		return new DecomposerRecipeBuilder(rl);
+	//	}
+	//
+	//	public static DecomposerRecipeBuilder create(ResourceLocation recipeId) {
+	//		return new DecomposerRecipeBuilder(recipeId);
+	//	}
 
 	public static DecomposerRecipeBuilder create() {
 		return new DecomposerRecipeBuilder(BiomancyMod.createRL("unknown"));
@@ -63,6 +68,19 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 	private static String getName(ItemLike itemLike) {
 		ResourceLocation name = itemLike.asItem().getRegistryName();
 		return name != null ? name.getPath() : "unknown";
+	}
+
+	public DecomposerRecipeBuilder ifModLoaded(String modId) {
+		return withCondition(new ModLoadedCondition(modId));
+	}
+
+	public DecomposerRecipeBuilder ifModMissing(String modId) {
+		return withCondition(new NotCondition(new ModLoadedCondition(modId)));
+	}
+
+	public DecomposerRecipeBuilder withCondition(ICondition condition) {
+		conditions.add(condition);
+		return this;
 	}
 
 	public DecomposerRecipeBuilder setCraftingTime(int time) {
@@ -93,6 +111,11 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 
 	public DecomposerRecipeBuilder setIngredient(ItemLike itemLike, int quantity) {
 		setIngredient(Ingredient.of(itemLike), quantity, BiomancyMod.createRL(getName(itemLike) + SUFFIX));
+		return this;
+	}
+
+	public DecomposerRecipeBuilder setIngredient(DatagenIngredient ingredient) {
+		setIngredient(ingredient, 1, BiomancyMod.createRL(ingredient.resourceLocation.getNamespace() + "_" + ingredient.resourceLocation.getPath() + SUFFIX));
 		return this;
 	}
 
@@ -140,9 +163,7 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 	public void save(Consumer<FinishedRecipe> consumer, @Nullable CreativeModeTab itemCategory) {
 		validate();
 
-		advancement.parent(new ResourceLocation("recipes/root"))
-				.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId))
-				.rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
+		advancement.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
 
 		String folder = itemCategory != null ? itemCategory.getRecipeFolderName() : BiomancyMod.MOD_ID;
 		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(), "recipes/%s/%s".formatted(folder, recipeId.getPath()));
@@ -165,6 +186,7 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 		private final IngredientStack ingredientStack;
 		private final List<VariableProductionOutput> outputs;
 		private final int craftingTime;
+		private final List<ICondition> conditions;
 		private final Advancement.Builder advancementBuilder;
 		private final ResourceLocation advancementId;
 
@@ -174,10 +196,13 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 			ingredientStack = builder.ingredientStack;
 			craftingTime = builder.craftingTime;
 			outputs = builder.outputs;
+			conditions = builder.conditions;
+
 			advancementBuilder = builder.advancement;
 			this.advancementId = advancementId;
 		}
 
+		@Override
 		public void serializeRecipeData(JsonObject json) {
 			if (!group.isEmpty()) {
 				json.addProperty("group", group);
@@ -192,21 +217,32 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 			json.add("outputs", jsonArray);
 
 			json.addProperty("time", craftingTime);
+
+			//serialize conditions
+			if (!conditions.isEmpty()) {
+				JsonArray array = new JsonArray();
+				conditions.forEach(c -> array.add(CraftingHelper.serialize(c)));
+				json.add("conditions", array);
+			}
 		}
 
+		@Override
 		public RecipeSerializer<?> getType() {
 			return ModRecipes.DECOMPOSING_SERIALIZER.get();
 		}
 
+		@Override
 		public ResourceLocation getId() {
 			return id;
 		}
 
+		@Override
 		@Nullable
 		public JsonObject serializeAdvancement() {
 			return advancementBuilder.serializeToJson();
 		}
 
+		@Override
 		@Nullable
 		public ResourceLocation getAdvancementId() {
 			return advancementId;

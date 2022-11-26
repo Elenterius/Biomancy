@@ -20,8 +20,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.common.crafting.conditions.ICondition;
+import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
+import net.minecraftforge.common.crafting.conditions.NotCondition;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -33,6 +37,8 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 	public static final String SUFFIX = "_from_bio_forging";
 
 	private final ResourceLocation recipeId;
+
+	private final List<ICondition> conditions = new ArrayList<>();
 	private final ItemData result;
 	private final List<IngredientStack> ingredients = new ArrayList<>();
 	private final Advancement.Builder advancement = Advancement.Builder.advancement();
@@ -79,6 +85,19 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 	//		craftingTime = time;
 	//		return this;
 	//	}
+
+	public BioForgeRecipeBuilder ifModLoaded(String modId) {
+		return withCondition(new ModLoadedCondition(modId));
+	}
+
+	public BioForgeRecipeBuilder ifModMissing(String modId) {
+		return withCondition(new NotCondition(new ModLoadedCondition(modId)));
+	}
+
+	public BioForgeRecipeBuilder withCondition(ICondition condition) {
+		conditions.add(condition);
+		return this;
+	}
 
 	public BioForgeRecipeBuilder setCategory(BioForgeTab category) {
 		this.category = category;
@@ -130,7 +149,7 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 				.rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
 		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(),
 				"recipes/" + (itemCategory != null ? itemCategory.getRecipeFolderName() : BiomancyMod.MOD_ID) + "/" + recipeId.getPath());
-		consumer.accept(new RecipeResult(recipeId, category, result, ingredients, advancement, advancementId));
+		consumer.accept(new RecipeResult(this, advancementId));
 	}
 
 	private void validateCriteria() {
@@ -140,21 +159,23 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 	}
 
 	public static class RecipeResult implements FinishedRecipe {
+
 		private final ResourceLocation id;
 		private final List<IngredientStack> ingredients;
 		private final ItemData result;
 		private final BioForgeTab category;
-
+		private final List<ICondition> conditions;
 		private final Advancement.Builder advancementBuilder;
 		private final ResourceLocation advancementId;
 
-		public RecipeResult(ResourceLocation recipeId, BioForgeTab category, ItemData result, List<IngredientStack> ingredients, Advancement.Builder advancement, ResourceLocation advancementId) {
-			id = recipeId;
-			this.category = category;
-			this.result = result;
-			this.ingredients = ingredients;
+		public RecipeResult(BioForgeRecipeBuilder builder, ResourceLocation advancementId) {
+			id = builder.recipeId;
+			category = builder.category;
+			result = builder.result;
+			ingredients = builder.ingredients;
+			conditions = builder.conditions;
 
-			advancementBuilder = advancement;
+			advancementBuilder = builder.advancement;
 			this.advancementId = advancementId;
 		}
 
@@ -169,6 +190,13 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 			json.add("result", result.toJson());
 
 			category.toJson(json);
+
+			//serialize conditions
+			if (!conditions.isEmpty()) {
+				JsonArray array = new JsonArray();
+				conditions.forEach(c -> array.add(CraftingHelper.serialize(c)));
+				json.add("conditions", array);
+			}
 		}
 
 		@Override

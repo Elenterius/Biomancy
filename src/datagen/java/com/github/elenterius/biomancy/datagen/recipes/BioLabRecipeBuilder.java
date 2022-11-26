@@ -20,9 +20,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.NBTIngredient;
+import net.minecraftforge.common.crafting.conditions.ICondition;
+import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
+import net.minecraftforge.common.crafting.conditions.NotCondition;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -33,12 +37,12 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 	public static final String SUFFIX = "_from_bio_brewing";
 
 	private final ResourceLocation recipeId;
+	private final List<ICondition> conditions = new ArrayList<>();
 	private final ItemData result;
 	private final List<IngredientStack> ingredients = new ArrayList<>();
+	private final Advancement.Builder advancement = Advancement.Builder.advancement();
 	private Ingredient reactant = Ingredient.of(ModItems.GLASS_VIAL.get());
 	private int craftingTime = 4 * 20;
-
-	private final Advancement.Builder advancement = Advancement.Builder.advancement();
 
 	private BioLabRecipeBuilder(ResourceLocation recipeId, ItemData result) {
 		this.recipeId = recipeId;
@@ -74,6 +78,19 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 		ItemData itemData = new ItemData(item, count);
 		ResourceLocation rl = BiomancyMod.createRL(Objects.requireNonNull(item.asItem().getRegistryName()).getPath() + SUFFIX);
 		return new BioLabRecipeBuilder(rl, itemData);
+	}
+
+	public BioLabRecipeBuilder ifModLoaded(String modId) {
+		return withCondition(new ModLoadedCondition(modId));
+	}
+
+	public BioLabRecipeBuilder ifModMissing(String modId) {
+		return withCondition(new NotCondition(new ModLoadedCondition(modId)));
+	}
+
+	public BioLabRecipeBuilder withCondition(ICondition condition) {
+		conditions.add(condition);
+		return this;
 	}
 
 	public BioLabRecipeBuilder setCraftingTime(int time) {
@@ -142,7 +159,7 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 				.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId))
 				.rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
 		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(), "recipes/%s/%s".formatted(getRecipeFolderName(itemCategory), recipeId.getPath()));
-		consumer.accept(new RecipeResult(this, advancement, advancementId));
+		consumer.accept(new RecipeResult(this, advancementId));
 	}
 
 	private String getRecipeFolderName(@Nullable CreativeModeTab itemCategory) {
@@ -157,26 +174,28 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 
 	public static class RecipeResult implements FinishedRecipe {
 		private final ResourceLocation id;
-
 		private final List<IngredientStack> ingredients;
 		private final Ingredient reactant;
 		private final ItemData result;
 		private final int craftingTime;
+		private final List<ICondition> conditions;
 
 		private final Advancement.Builder advancementBuilder;
 		private final ResourceLocation advancementId;
 
-		public RecipeResult(BioLabRecipeBuilder builder, Advancement.Builder advancement, ResourceLocation advancementId) {
+		public RecipeResult(BioLabRecipeBuilder builder, ResourceLocation advancementId) {
 			id = builder.recipeId;
 			ingredients = builder.ingredients;
 			reactant = builder.reactant;
 			result = builder.result;
 			craftingTime = builder.craftingTime;
+			conditions = builder.conditions;
 
-			advancementBuilder = advancement;
+			advancementBuilder = builder.advancement;
 			this.advancementId = advancementId;
 		}
 
+		@Override
 		public void serializeRecipeData(JsonObject json) {
 			JsonArray jsonArray = new JsonArray();
 			for (IngredientStack ingredient : ingredients) {
@@ -191,21 +210,32 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 			json.add("result", result.toJson());
 
 			json.addProperty("time", craftingTime);
+
+			//serialize conditions
+			if (!conditions.isEmpty()) {
+				JsonArray array = new JsonArray();
+				conditions.forEach(c -> array.add(CraftingHelper.serialize(c)));
+				json.add("conditions", array);
+			}
 		}
 
+		@Override
 		public RecipeSerializer<?> getType() {
 			return ModRecipes.BIO_BREWING_SERIALIZER.get();
 		}
 
+		@Override
 		public ResourceLocation getId() {
 			return id;
 		}
 
+		@Override
 		@Nullable
 		public JsonObject serializeAdvancement() {
 			return advancementBuilder.serializeToJson();
 		}
 
+		@Override
 		@Nullable
 		public ResourceLocation getAdvancementId() {
 			return advancementId;
