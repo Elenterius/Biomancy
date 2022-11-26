@@ -577,6 +577,12 @@ public class ModRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.MISC)
 				.unlockedBy(Items.LEATHER).save(consumer);
 
+		BioForgeRecipeBuilder.create(Items.STRING)
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 2)
+				.addIngredient(ModItems.BIO_MINERALS.get(), 1)
+				.setCategory(ModBioForgeTabs.MISC)
+				.unlockedBy(Items.STRING).save(consumer);
+
 		BioForgeRecipeBuilder.create(Items.SCUTE)
 				.addIngredient(ModItems.TOUGH_FIBERS.get(), 6)
 				.addIngredient(ModItems.BIO_MINERALS.get(), 4)
