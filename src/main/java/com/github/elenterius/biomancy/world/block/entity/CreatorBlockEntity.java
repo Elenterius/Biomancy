@@ -38,6 +38,7 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 	private long ticks;
 	private final SacrificeHandler sacrificeHandler = new SacrificeHandler();
 
-	private final AnimationFactory animationFactory = new AnimationFactory(this);
+	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
 	private boolean playAttackAnimation = false;
 
 	public CreatorBlockEntity(BlockPos pos, BlockState state) {

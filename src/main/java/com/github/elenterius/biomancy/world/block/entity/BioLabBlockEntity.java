@@ -45,6 +45,7 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -65,7 +66,7 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 	private final SimpleInventory inputInventory;
 	private final BehavioralInventory<?> outputInventory;
 
-	private final AnimationFactory animationFactory = new AnimationFactory(this);
+	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
 
 	private ILoopingSoundHelper loopingSoundHelper = ILoopingSoundHelper.NULL;
 

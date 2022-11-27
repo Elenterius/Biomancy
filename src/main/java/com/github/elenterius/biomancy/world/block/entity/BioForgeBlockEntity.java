@@ -39,6 +39,7 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -78,7 +79,7 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 			return false;
 		}
 	};
-	private final AnimationFactory animationFactory = new AnimationFactory(this);
+	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
 	protected int ticks = tickOffset;
 	private boolean playWorkingAnimation = false;
 	private float nearbyTimer = -1f;

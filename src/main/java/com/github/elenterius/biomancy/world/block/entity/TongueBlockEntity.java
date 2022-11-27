@@ -22,6 +22,7 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 public class TongueBlockEntity extends SimpleSyncedBlockEntity implements IAnimatable {
 
@@ -31,7 +32,7 @@ public class TongueBlockEntity extends SimpleSyncedBlockEntity implements IAnima
 	public static final int DELAY = 8 + 1; //ceil(31.2) --> 32
 
 	private final SingleItemStackHandler inventory;
-	private final AnimationFactory animationFactory = new AnimationFactory(this);
+	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
 
 	private int ticks;
 

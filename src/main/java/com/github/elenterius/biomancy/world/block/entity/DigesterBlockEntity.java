@@ -43,6 +43,7 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
@@ -63,7 +64,7 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 	private final BehavioralInventory<?> inputInventory;
 	private final BehavioralInventory<?> outputInventory;
 
-	private final AnimationFactory animationFactory = new AnimationFactory(this);
+	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
 	private ILoopingSoundHelper loopingSoundHelper = ILoopingSoundHelper.NULL;
 
 	public DigesterBlockEntity(BlockPos pos, BlockState state) {
