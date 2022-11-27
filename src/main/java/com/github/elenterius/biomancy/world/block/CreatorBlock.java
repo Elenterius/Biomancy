@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.world.block;
 
 import com.github.elenterius.biomancy.init.ModBlockEntities;
+import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.block.entity.CreatorBlockEntity;
@@ -32,6 +33,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
+import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -122,12 +124,11 @@ public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBl
 			if (increaseFillLevel(null, level, pos, stack)) {
 				if (stack.hasContainerItem()) {
 					entity.spawnAtLocation(stack.getContainerItem());
-					stack.shrink(1);
 				}
 				else if (stack.getItem() instanceof PotionItem) {
 					entity.spawnAtLocation(new ItemStack(Items.GLASS_BOTTLE));
-					stack.shrink(1);
 				}
+				stack.shrink(1);
 			}
 		}
 	}
