@@ -121,6 +121,14 @@ public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBl
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		if (!level.isClientSide() && entity instanceof ItemEntity itemEntity) {
 			ItemStack stack = itemEntity.getItem();
+
+			if (stack.is(ModItems.LIVING_FLESH.get())) {
+				UUID thrower = itemEntity.getThrower();
+				if (thrower == null && itemEntity.getAge() < 80) {
+					return;
+				}
+			}
+
 			if (increaseFillLevel(null, level, pos, stack)) {
 				if (stack.hasContainerItem()) {
 					entity.spawnAtLocation(stack.getContainerItem());
