@@ -35,6 +35,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
+import net.minecraftforge.items.wrapper.RangedWrapper;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -68,6 +71,8 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 
 	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
 
+	private LazyOptional<IItemHandler> optionalCombinedInventory;
+
 	private ILoopingSoundHelper loopingSoundHelper = ILoopingSoundHelper.NULL;
 
 	public BioLabBlockEntity(BlockPos worldPosition, BlockState blockState) {
@@ -75,11 +80,19 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 
 		inputInventory = SimpleInventory.createServerContents(INPUT_SLOTS, this::canPlayerOpenInv, this::setChanged);
 		outputInventory = BehavioralInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
-
 		fuelInventory = BehavioralInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterFuel, this::canPlayerOpenInv, this::setChanged);
-		fuelHandler = FuelHandler.createNutrientFuelHandler(MAX_FUEL, BASE_COST, this::setChanged);
 
+		optionalCombinedInventory = createCombinedInventory();
+
+		fuelHandler = FuelHandler.createNutrientFuelHandler(MAX_FUEL, BASE_COST, this::setChanged);
 		stateData = new BioLabStateData(fuelHandler);
+	}
+
+	private LazyOptional<IItemHandler> createCombinedInventory() {
+		return LazyOptional.of(() -> new CombinedInvWrapper(
+				fuelInventory.getItemHandlerWithBehavior(),
+				new RangedWrapper(inputInventory.getItemHandler(), inputInventory.getContainerSize() - 1, inputInventory.getContainerSize())
+		));
 	}
 
 	@Override
@@ -213,7 +226,7 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 		if (!remove && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			if (side == null || side == Direction.DOWN) return outputInventory.getOptionalItemHandler().cast();
 			if (side == Direction.UP) return inputInventory.getOptionalItemHandler().cast();
-			return fuelInventory.getOptionalItemHandler().cast();
+			return optionalCombinedInventory.cast();
 		}
 		return super.getCapability(cap, side);
 	}
@@ -224,6 +237,7 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 		fuelInventory.invalidate();
 		inputInventory.invalidate();
 		outputInventory.invalidate();
+		optionalCombinedInventory.invalidate();
 	}
 
 	@Override
@@ -232,6 +246,7 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 		fuelInventory.revive();
 		inputInventory.revive();
 		outputInventory.revive();
+		optionalCombinedInventory = createCombinedInventory();
 	}
 
 	@Override
