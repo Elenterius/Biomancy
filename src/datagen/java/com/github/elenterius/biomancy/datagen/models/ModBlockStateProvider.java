@@ -293,7 +293,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 							.rotationY(orientation.isPositive() ? 180 : 0)
 							.build();
 
-				}, IrisDoorBlock.POWERED);
+				}, FleshDoorBlock.POWERED, FleshDoorBlock.HINGE, FleshDoorBlock.FACING);
 	}
 
 }

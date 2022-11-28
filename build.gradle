@@ -174,17 +174,16 @@ dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
-//    implementation fg.deobf('com.github.Elenterius:Combat-Commons:0.2.0-beta-1.18.1-forge')
     implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.18:3.0.56')
 
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}:9.7.1.255:api") // compile against the JEI API but do not include it at runtime
     runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:9.7.1.255") // at runtime, use the full JEI jar
 
-//    curse.maven:<descriptor, can be anything>-<CurseForge project id>:<CurseForge file id>
+//  curse.maven:<descriptor, can be anything>-<CurseForge project id>:<CurseForge file id>
     runtimeOnly fg.deobf("curse.maven:create-328085:4007544")
     runtimeOnly fg.deobf("curse.maven:flywheel-486392:3934664")
 
-//    implementation fg.deobf("com.github.Virtuoel:Pehkui:3.0.0-forge")
+//  implementation fg.deobf("com.github.Virtuoel:Pehkui:3.0.0-forge")
 
     datagenImplementation sourceSets.main.output
     implementation sourceSets.api.output
