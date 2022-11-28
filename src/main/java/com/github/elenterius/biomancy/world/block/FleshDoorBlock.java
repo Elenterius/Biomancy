@@ -49,11 +49,7 @@ public class FleshDoorBlock extends DoorBlock {
 
 	public FleshDoorBlock(Properties properties) {
 		super(properties);
-		registerDefaultState(getStateDefinition().any()
-				.setValue(ORIENTATION, Orientation.X_MIDDLE)
-				.setValue(HALF, DoubleBlockHalf.LOWER)
-				.setValue(OPEN, Boolean.FALSE)
-				.setValue(POWERED, Boolean.FALSE));
+		registerDefaultState(defaultBlockState().setValue(ORIENTATION, Orientation.X_MIDDLE));
 	}
 
 	private static VoxelShape[] createClosedAndOpenShape(double x0, double y0, double z0, double x1, double y1, double z1) {
@@ -76,7 +72,8 @@ public class FleshDoorBlock extends DoorBlock {
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		//note: FACING and HINGE are not used! This is only here to prevent crashes.
-		builder.add(ORIENTATION, HALF, OPEN, POWERED, FACING, HINGE);
+		super.createBlockStateDefinition(builder);
+		builder.add(ORIENTATION);
 	}
 
 	@Nullable
