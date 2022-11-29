@@ -1,9 +1,9 @@
 package com.github.elenterius.biomancy.world.block;
 
-import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.styles.TextStyles;
+import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.world.block.entity.FleshkinChestBlockEntity;
 import com.github.elenterius.biomancy.world.ownable.IOwnableEntityBlock;
 import com.github.elenterius.biomancy.world.permission.Actions;
@@ -245,7 +245,7 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 
 		CompoundTag tag = BlockItem.getBlockEntityData(stack);
 		if (tag != null) {
-			tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
+			tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
 
 			if (isAuthorized(Minecraft.getInstance().player.getUUID(), tag)) {
 				CompoundTag inventoryTag = tag.getCompound("Inventory");
@@ -271,7 +271,7 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 					if (totalCount - count > 0) {
 						tooltip.add((new TranslatableComponent("container.shulkerBox.more", totalCount - count)).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
 					}
-					tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
+					tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
 					tooltip.add(new TextComponent(String.format("%d/%d ", totalCount, FleshkinChestBlockEntity.SLOTS)).append(new TranslatableComponent("tooltip.biomancy.slots")).withStyle(ChatFormatting.GRAY));
 				}
 			}

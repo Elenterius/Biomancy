@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.client.renderer.item.InjectorRenderer;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
+import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.entity.MobUtil;
@@ -503,7 +504,7 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 		}
 		else tooltip.add(TextComponentUtil.getTooltipText("contains_nothing").withStyle(ChatFormatting.GRAY));
 
-		tooltip.add(TextComponent.EMPTY);
+		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
 		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action_open_inventory")).withStyle(ChatFormatting.DARK_GRAY));
 		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getShiftKey().append(" + ").append(ClientTextUtil.getRightMouseKey()), TextComponentUtil.getTooltipText("action_self_inject")).withStyle(ChatFormatting.DARK_GRAY));
 	}

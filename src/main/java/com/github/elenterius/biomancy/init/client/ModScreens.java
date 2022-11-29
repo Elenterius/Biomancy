@@ -1,10 +1,12 @@
 package com.github.elenterius.biomancy.init.client;
 
 import com.github.elenterius.biomancy.client.gui.*;
+import com.github.elenterius.biomancy.client.gui.tooltip.EmptyLineClientComponent;
 import com.github.elenterius.biomancy.client.gui.tooltip.HrTooltipClientComponent;
 import com.github.elenterius.biomancy.client.gui.tooltip.StorageSacTooltipClientComponent;
 import com.github.elenterius.biomancy.client.gui.tooltip.TabTooltipClientComponent;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
+import com.github.elenterius.biomancy.tooltip.EmptyLineTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.StorageSacTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.TabTooltipComponent;
@@ -49,6 +51,7 @@ public final class ModScreens {
 	static void registerTooltipComponents() {
 		MinecraftForgeClient.registerTooltipComponentFactory(TabTooltipComponent.class, TabTooltipClientComponent::new);
 		MinecraftForgeClient.registerTooltipComponentFactory(HrTooltipComponent.class, HrTooltipClientComponent::new);
+		MinecraftForgeClient.registerTooltipComponentFactory(EmptyLineTooltipComponent.class, EmptyLineClientComponent::new);
 		MinecraftForgeClient.registerTooltipComponentFactory(StorageSacTooltipComponent.class, StorageSacTooltipClientComponent::new);
 	}
 

@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
+import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.world.item.SerumItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -76,7 +77,7 @@ public class AdrenalineSerum extends Serum {
 
 		Map<Attribute, AttributeModifier> effectModifiers = effect.getAttributeModifiers();
 		if (!effectModifiers.isEmpty()) {
-			tooltips.add(ClientTextUtil.EMPTY_LINE_HACK());
+			tooltips.add(TooltipHacks.EMPTY_LINE_COMPONENT);
 
 			for (Map.Entry<Attribute, AttributeModifier> entry : effectModifiers.entrySet()) {
 				AttributeModifier modifier = entry.getValue();

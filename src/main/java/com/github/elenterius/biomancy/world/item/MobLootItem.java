@@ -2,8 +2,7 @@ package com.github.elenterius.biomancy.world.item;
 
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
-import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
-import com.github.elenterius.biomancy.tooltip.PlaceholderComponent;
+import com.github.elenterius.biomancy.styles.TooltipHacks;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -33,13 +32,11 @@ public class MobLootItem extends Item implements IBiomancyItem {
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		PlaceholderComponent hrElement = new PlaceholderComponent(new HrTooltipComponent());
-
-		tooltip.add(hrElement);
+		tooltip.add(TooltipHacks.HR_COMPONENT);
 		ClientTextUtil.appendItemInfoTooltip(stack.getItem(), tooltip);
 
 		if (Screen.hasControlDown()) {
-			tooltip.add(hrElement);
+			tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
 			tooltip.add(new TextComponent("Drops from").withStyle(TextStyles.LORE));
 
 			List<EntityType<?>> mobs = taggedEntities.stream().limit(12).toList();

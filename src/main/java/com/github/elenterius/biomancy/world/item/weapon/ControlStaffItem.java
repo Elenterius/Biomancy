@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.world.item.weapon;
 
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
+import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.world.entity.ownable.Fleshkin;
 import com.github.elenterius.biomancy.world.entity.ownable.IControllableMob;
 import com.github.elenterius.biomancy.world.item.IBiomancyItem;
@@ -85,7 +86,7 @@ public class ControlStaffItem extends Item implements IKeyListener, IBiomancyIte
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
-		tooltip.add(TextComponent.EMPTY);
+		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
 		tooltip.add(TextComponentUtil.getTooltipText("command").append(": ").withStyle().withStyle(ChatFormatting.GRAY).append(new TextComponent(getCommand(stack).toString()).withStyle(ChatFormatting.AQUA)));
 		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action_cycle")).withStyle(ChatFormatting.DARK_GRAY));
 	}

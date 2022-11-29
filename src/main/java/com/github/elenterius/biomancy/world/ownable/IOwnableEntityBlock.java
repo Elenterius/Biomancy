@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.world.ownable;
 
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
+import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.world.block.entity.OwnableBlockEntity;
 import com.github.elenterius.biomancy.world.permission.UserType;
 import net.minecraft.ChatFormatting;
@@ -72,7 +73,7 @@ public interface IOwnableEntityBlock extends EntityBlock {
 			ownerName = ClientTextUtil.tryToGetPlayerNameOnClientSide(entityData.getUUID(NBT_KEY_OWNER));
 		}
 
-		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
+		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
 		tooltip.add(TextComponentUtil.getTooltipText("owner", new TextComponent(ownerName).withStyle(ChatFormatting.WHITE)).withStyle(ChatFormatting.GRAY));
 
 		if (entityData.contains(NBT_KEY_USER_LIST)) {

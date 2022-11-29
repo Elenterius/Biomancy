@@ -9,7 +9,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -29,21 +28,12 @@ public final class ClientTextUtil {
 	private static final TranslatableComponent ALT_KEY_TEXT = new TranslatableComponent("keyboard.biomancy.alt");
 	private static final TranslatableComponent SHIFT_KEY_TEXT = new TranslatableComponent("keyboard.biomancy.shift");
 	private static final TranslatableComponent RIGHT_MOUSE_KEY_TEXT = new TranslatableComponent("keyboard.biomancy.right_mouse");
-	private static final TextComponent FAKE_EMPTY_LINE = new TextComponent(" ");
 
 	private static DecimalFormat decimalFormat = null;
 	private static String prevPattern = "";
 	private static Locale prevLocale = MinecraftForgeClient.getLocale();
 
 	private ClientTextUtil() {}
-
-	/**
-	 * When the tooltip text is too long it gets wrapped and {@link TextComponent#EMPTY} components (empty strings) are discarded.<br>
-	 * Is this a bug or intended vanilla behavior?
-	 */
-	public static Component EMPTY_LINE_HACK() {
-		return Screen.hasControlDown() ? FAKE_EMPTY_LINE : TextComponent.EMPTY;
-	}
 
 	public static void appendItemInfoTooltip(Item item, List<Component> tooltip) {
 		tooltip.add(getItemInfoTooltip(item));

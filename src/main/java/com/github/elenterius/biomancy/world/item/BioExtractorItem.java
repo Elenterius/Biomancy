@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
+import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import com.github.elenterius.biomancy.util.MobSoundUtil;
 import com.github.elenterius.biomancy.util.SoundUtil;
@@ -13,7 +14,6 @@ import com.github.elenterius.biomancy.world.entity.MobUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
@@ -145,7 +145,7 @@ public class BioExtractorItem extends Item implements IKeyListener, IBiomancyIte
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
 		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTranslationText("tooltip", "action_self_extract")).withStyle(ChatFormatting.DARK_GRAY));
-		if (stack.isEnchanted()) tooltip.add(TextComponent.EMPTY);
+		if (stack.isEnchanted()) tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
 	}
 
 	@Override
