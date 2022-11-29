@@ -5,7 +5,6 @@ import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.world.entity.MobUtil;
-import com.github.elenterius.biomancy.world.item.IBiomancyItem;
 import com.github.elenterius.biomancy.world.item.IKeyListener;
 import com.github.elenterius.biomancy.world.item.ILivingToolItem;
 import com.github.elenterius.biomancy.world.item.LivingToolState;
@@ -23,7 +22,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -34,12 +32,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LivingSwordItem extends SwordItem implements IBiomancyItem, ILivingToolItem, IKeyListener {
+public class LivingClawsItem extends SimpleClawsItem implements ILivingToolItem, IKeyListener {
 
 	private final int maxNutrients;
 
-	public LivingSwordItem(Tier tier, int damageModifier, float attackSpeedModifier, int maxNutrients, Properties properties) {
-		super(tier, damageModifier, attackSpeedModifier, properties);
+	public LivingClawsItem(Tier tier, int baseAttackDamage, float attackSpeedModifier, float attackRangeModifier, int maxNutrients, Properties properties) {
+		super(tier, baseAttackDamage, attackSpeedModifier, attackRangeModifier, properties);
 		this.maxNutrients = maxNutrients;
 	}
 
@@ -82,7 +80,7 @@ public class LivingSwordItem extends SwordItem implements IBiomancyItem, ILiving
 	}
 
 	@Override
-	public int getMaxNutrients(ItemStack stack) {
+	public int getMaxNutrients(ItemStack container) {
 		return maxNutrients;
 	}
 
@@ -109,7 +107,7 @@ public class LivingSwordItem extends SwordItem implements IBiomancyItem, ILiving
 	}
 
 	@Override
-	public int getLivingToolActionCost(ItemStack stack, LivingToolState state, ToolAction toolAction) {
+	public int getLivingToolActionCost(ItemStack livingTool, LivingToolState state, ToolAction toolAction) {
 		int baseCost = 0;
 		if (toolAction == ToolActions.SWORD_DIG) baseCost = 2;
 		if (toolAction == ToolActions.SWORD_SWEEP) baseCost = 1;
@@ -153,8 +151,7 @@ public class LivingSwordItem extends SwordItem implements IBiomancyItem, ILiving
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		tooltip.add(TooltipHacks.HR_COMPONENT);
-		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
+		super.appendHoverText(stack, level, tooltip, isAdvanced);
 
 		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
 		appendLivingToolTooltip(stack, tooltip);

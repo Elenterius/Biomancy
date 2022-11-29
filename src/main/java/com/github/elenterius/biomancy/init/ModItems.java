@@ -4,7 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.world.item.*;
 import com.github.elenterius.biomancy.world.item.weapon.BileSpitterItem;
 import com.github.elenterius.biomancy.world.item.weapon.DevArmCannonItem;
-import com.github.elenterius.biomancy.world.item.weapon.LongClawsItem;
+import com.github.elenterius.biomancy.world.item.weapon.LivingLongClawsItem;
 import com.github.elenterius.biomancy.world.item.weapon.SimpleSwordItem;
 import com.github.elenterius.biomancy.world.serum.Serum;
 import net.minecraft.tags.TagKey;
@@ -91,7 +91,7 @@ public final class ModItems {
 
 	//# Weapons
 	public static final RegistryObject<SimpleSwordItem> BONE_CLEAVER = ITEMS.register("bone_cleaver", () -> new SimpleSwordItem(ModTiers.BONE, 3, -2.4f, createBaseProperties()));
-	public static final RegistryObject<LongClawsItem> LONG_CLAWS = ITEMS.register("long_claws", () -> new LongClawsItem(ModTiers.BIOFLESH, -2, -2.4f, 1000, createLivingToolProperties()));
+	public static final RegistryObject<LivingLongClawsItem> LONG_CLAWS = ITEMS.register("long_claws", () -> new LivingLongClawsItem(ModTiers.BIOFLESH, -2, -2.4f, 0.5f, 1000, createLivingToolProperties()));
 	public static final RegistryObject<DevArmCannonItem> ARM_CANNON = ITEMS.register("dev_arm_cannon", () -> new DevArmCannonItem(createBaseProperties().stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE)));
 	public static final RegistryObject<BileSpitterItem> BILE_SPITTER = ITEMS.register("bile_spitter", () -> new BileSpitterItem(createBaseProperties().stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE)));
 

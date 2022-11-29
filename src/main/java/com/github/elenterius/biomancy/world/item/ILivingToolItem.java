@@ -1,12 +1,15 @@
 package com.github.elenterius.biomancy.world.item;
 
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
+import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.styles.TooltipHacks;
+import com.github.elenterius.biomancy.util.SoundUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
@@ -33,6 +36,20 @@ public interface ILivingToolItem extends INutrientsContainerItem {
 		return getLivingToolActionCost(livingTool, state, toolAction);
 	}
 
+	default void updateLivingToolState(ItemStack livingTool, ServerLevel level, Player player) {
+		LivingToolState state = getLivingToolState(livingTool);
+		boolean hasNutrients = hasNutrients(livingTool);
+
+		if (state == LivingToolState.AWAKE) {
+			setLivingToolState(livingTool, hasNutrients ? LivingToolState.EXALTED : LivingToolState.DORMANT);
+			SoundUtil.broadcastItemSound(level, player, ModSoundEvents.FLESH_BLOCK_PLACE.get());
+		}
+		else if (state == LivingToolState.EXALTED) {
+			setLivingToolState(livingTool, hasNutrients ? LivingToolState.AWAKE : LivingToolState.DORMANT);
+			SoundUtil.broadcastItemSound(level, player, ModSoundEvents.FLESH_BLOCK_HIT.get());
+		}
+	}
+
 	int getLivingToolActionCost(ItemStack livingTool, LivingToolState state, ToolAction toolAction);
 
 	default int getLivingToolMaxActionCost(ItemStack livingTool, LivingToolState state) {
@@ -44,6 +61,11 @@ public interface ILivingToolItem extends INutrientsContainerItem {
 
 	default Set<ToolAction> getLivingToolActions(ItemStack livingTool) {
 		return ToolAction.getActions().stream().filter(livingTool::canPerformAction).collect(Collectors.toSet());
+	}
+
+	@Override
+	default int getNutrientFuelValue(ItemStack container, ItemStack food) {
+		return INutrientsContainerItem.super.getNutrientFuelValue(container, food) * 2;
 	}
 
 	@Override
@@ -111,14 +133,14 @@ public interface ILivingToolItem extends INutrientsContainerItem {
 		tooltip.add(new TranslatableComponent("tooltip.biomancy.nutrients_fuel").withStyle(ChatFormatting.GRAY));
 		tooltip.add(new TextComponent("%s/%s u".formatted(df.format(getNutrients(stack)), df.format(getMaxNutrients(stack)))).withStyle(TextStyles.NUTRIENTS));
 
-		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
-
-		tooltip.add(new TranslatableComponent("tooltip.biomancy.consumption").withStyle(ChatFormatting.GRAY));
-		for (ToolAction toolAction : getLivingToolActions(stack)) {
-			int actionCost = getLivingToolActionCost(stack, toolAction);
-			String text = "%s:  %s u".formatted(toolAction.name(), df.format(actionCost));
-			tooltip.add(new TextComponent(text).withStyle(TextStyles.NUTRIENTS_CONSUMPTION));
-		}
+		//		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
+		//
+		//		tooltip.add(new TranslatableComponent("tooltip.biomancy.consumption").withStyle(ChatFormatting.GRAY));
+		//		for (ToolAction toolAction : getLivingToolActions(stack)) {
+		//			int actionCost = getLivingToolActionCost(stack, toolAction);
+		//			String text = "%s:  %s u".formatted(toolAction.name(), df.format(actionCost));
+		//			tooltip.add(new TextComponent(text).withStyle(TextStyles.NUTRIENTS_CONSUMPTION));
+		//		}
 	}
 
 }
