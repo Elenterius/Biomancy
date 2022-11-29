@@ -62,6 +62,8 @@ public final class ModTags {
 	}
 
 	public static final class EntityTypes {
+
+		@Deprecated(forRemoval = true)
 		public static final TagKey<EntityType<?>> INFERNAL = tag("infernal");
 		public static final TagKey<EntityType<?>> BOSSES = TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation("forge", "bosses"));
 		public static final TagKey<EntityType<?>> NOT_CLONEABLE = tag("not_cloneable");
