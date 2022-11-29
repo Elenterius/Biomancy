@@ -16,6 +16,7 @@ import net.minecraft.world.entity.animal.horse.SkeletonHorse;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.monster.WitherSkeleton;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrownPotion;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -37,6 +38,10 @@ public final class MobUtil {
 	private static final Marker LOG_MARKER = MarkerManager.getMarker("MobUtil");
 
 	private MobUtil() {}
+
+	public static boolean isCreativePlayer(LivingEntity entity) {
+		return entity instanceof Player player && player.getAbilities().instabuild;
+	}
 
 	public static boolean isBoss(LivingEntity entity) {
 		return isBoss(entity.getType());
