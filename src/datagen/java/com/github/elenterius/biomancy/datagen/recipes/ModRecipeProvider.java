@@ -186,7 +186,9 @@ public class ModRecipeProvider extends RecipeProvider {
 		WorkbenchRecipeBuilder.shaped(Items.DIRT)
 				.define('P', ModItems.ORGANIC_MATTER.get())
 				.define('L', ModItems.STONE_POWDER.get())
-				.pattern("LPL").pattern("PLP").pattern("LPL")
+				.pattern("LPL")
+				.pattern("PLP")
+				.pattern("LPL")
 				.unlockedBy(hasName(ModItems.ORGANIC_MATTER.get()), has(ModItems.ORGANIC_MATTER.get()))
 				.save(consumer, getConversionRecipeId(Items.DIRT, ModItems.STONE_POWDER.get()));
 
@@ -206,7 +208,9 @@ public class ModRecipeProvider extends RecipeProvider {
 		WorkbenchRecipeBuilder.shaped(Items.GLOW_ITEM_FRAME)
 				.define('F', Items.ITEM_FRAME)
 				.define('L', ModItems.BIO_LUMENS.get())
-				.pattern(" L ").pattern("LFL").pattern(" L ")
+				.pattern(" L ")
+				.pattern("LFL")
+				.pattern(" L ")
 				.unlockedBy(hasName(ModItems.BIO_LUMENS.get()), has(ModItems.BIO_LUMENS.get()))
 				.save(consumer, getSimpleRecipeId(Items.GLOW_ITEM_FRAME));
 	}
