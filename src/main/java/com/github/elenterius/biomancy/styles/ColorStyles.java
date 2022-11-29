@@ -7,6 +7,8 @@ public final class ColorStyles {
 
 	public static final int WHITE_ARGB = 0xFF_FF_FF_FF;
 	public static final int NUTRIENTS_FUEL_BAR = 0x94A856;
+	public static final int TEXT_NUTRIENTS = 0x65b52a;
+	public static final int TEXT_NUTRIENTS_CONSUMPTION = 0xe7bd42;
 	public static final int TOOLTIP_BACKGROUND_ARGB = 0xFA_2B2121;
 	public static final int TEXT_ERROR = 0xC12727;
 	public static final int TEXT_SUCCESS = 0x65B52A;

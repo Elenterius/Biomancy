@@ -45,7 +45,7 @@ public class MobLootItem extends Item implements IBiomancyItem {
 			List<EntityType<?>> mobs = taggedEntities.stream().limit(12).toList();
 			int mobCount = mobs.size();
 			if (mobCount > 0) {
-				MutableComponent component = new TextComponent("").withStyle(TextStyles.ItalicGray);
+				MutableComponent component = new TextComponent("").withStyle(TextStyles.ITALIC_GRAY);
 				tooltip.add(component);
 
 				for (int i = 0; i < mobCount; i++) {

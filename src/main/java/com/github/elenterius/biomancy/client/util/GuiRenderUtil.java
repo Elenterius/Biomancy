@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.client.util;
 
+import com.github.elenterius.biomancy.styles.TextStyles;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
@@ -9,8 +10,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
@@ -26,11 +27,10 @@ public final class GuiRenderUtil {
 		List<Component> hoveringText = new ArrayList<>();
 		DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
 
-		hoveringText.add(new TextComponent("Nutrient Fuel").withStyle(Style.EMPTY.withColor(0x65b52a)));
+		hoveringText.add(new TranslatableComponent("tooltip.biomancy.nutrients_fuel").withStyle(TextStyles.NUTRIENTS));
 		hoveringText.add(new TextComponent("%s/%s u".formatted(df.format(fuelAmount), df.format(maxFuel))));
 		if (totalFuelCost > 0) {
-			String text = "Cost:  %s u".formatted(df.format(totalFuelCost));
-			hoveringText.add(new TextComponent(text).withStyle(Style.EMPTY.withColor(0xe7bd42)));
+			hoveringText.add(new TranslatableComponent("tooltip.biomancy.nutrients_consumes", df.format(totalFuelCost)).withStyle(TextStyles.NUTRIENTS_CONSUMPTION));
 		}
 
 		screen.renderComponentTooltip(poseStack, hoveringText, mouseX, mouseY);
