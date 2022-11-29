@@ -4,23 +4,19 @@ import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
-import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
+import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.util.SoundUtil;
-import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import com.github.elenterius.biomancy.world.entity.MobUtil;
 import com.github.elenterius.biomancy.world.item.IBiomancyItem;
 import com.github.elenterius.biomancy.world.item.IKeyListener;
-import com.github.elenterius.biomancy.world.item.INutrientsContainerItem;
+import com.github.elenterius.biomancy.world.item.ILivingToolItem;
 import com.github.elenterius.biomancy.world.item.LivingToolState;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,7 +24,6 @@ import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
@@ -37,14 +32,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
-import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
-import java.text.DecimalFormat;
 import java.util.List;
-import java.util.Optional;
 
-public class LivingSwordItem extends SwordItem implements IBiomancyItem, INutrientsContainerItem, IKeyListener {
+public class LivingSwordItem extends SwordItem implements IBiomancyItem, ILivingToolItem, IKeyListener {
 
 	private final int maxNutrients;
 
@@ -56,6 +48,7 @@ public class LivingSwordItem extends SwordItem implements IBiomancyItem, INutrie
 	@Override
 	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, Level level, Player player, EquipmentSlot slot, byte flags) {
 		if (!hasNutrients(stack)) {
+			player.displayClientMessage(TextComponentUtil.getFailureMsgText("not_enough_nutrients"), true);
 			player.playSound(SoundEvents.VILLAGER_NO, 0.8f, 0.8f + player.getLevel().getRandom().nextFloat() * 0.4f);
 			return InteractionResultHolder.fail(flags);
 		}
@@ -106,104 +99,28 @@ public class LivingSwordItem extends SwordItem implements IBiomancyItem, INutrie
 	}
 
 	@Override
-	public void onNutrientsChanged(ItemStack stack, int oldValue, int newValue) {
-		LivingToolState prevState = getLivingToolState(stack);
-		LivingToolState state = prevState;
-
-		if (newValue <= 0) {
-			if (state != LivingToolState.DORMANT) setLivingToolState(stack, LivingToolState.DORMANT);
-			return;
-		}
-
-		if (state == LivingToolState.DORMANT) {
-			state = LivingToolState.AWAKE;
-		}
-
-		int digCost = getLivingToolActionCost(stack, ToolActions.SWORD_DIG, state);
-		int attackCost = getLivingToolActionCost(stack, ToolActions.SWORD_SWEEP, state);
-		int maxCost = Math.max(digCost, attackCost);
-
-		if (newValue < maxCost) {
-			if (state == LivingToolState.EXALTED) state = LivingToolState.AWAKE;
-			else if (state == LivingToolState.AWAKE) state = LivingToolState.DORMANT;
-		}
-
-		if (state != prevState) setLivingToolState(stack, state);
-	}
-
-	@Override
 	public boolean overrideStackedOnOther(ItemStack stack, Slot slot, ClickAction action, Player player) {
-		if (stack.getCount() > 1) return false;
-		if (action != ClickAction.SECONDARY) return false;
-
-		final ItemStack stackInSlot = slot.getItem();
-		if (!stackInSlot.isEmpty()) {
-			ItemStack fuelStack = slot.safeTake(1, 1, player);
-			ItemStack remainder = addFuel(stack, fuelStack);
-			slot.safeInsert(remainder);
-			int insertedAmount = fuelStack.getCount() - remainder.getCount();
-			if (insertedAmount > 0) {
-				playSound(player, SoundEvents.GENERIC_EAT);
-			}
+		if (handleOverrideStackedOnOther(stack, slot, action, player)) {
+			playSound(player, SoundEvents.GENERIC_EAT);
+			return true;
 		}
-
-		return true;
+		return false;
 	}
 
 	@Override
 	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
-		if (stack.getCount() > 1) return false;
-		if (action != ClickAction.SECONDARY || !slot.allowModification(player)) return false;
-
-		if (!other.isEmpty()) {
-			ItemStack remainder = addFuel(stack, other);
-			int insertedAmount = other.getCount() - remainder.getCount();
-			if (insertedAmount > 0) {
-				playSound(player, SoundEvents.GENERIC_EAT);
-				other.shrink(insertedAmount);
-			}
+		if (handleOverrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+			playSound(player, SoundEvents.GENERIC_EAT);
+			return true;
 		}
-
-		return true;
+		return false;
 	}
 
-	private void playSound(Player player, SoundEvent soundEvent) {
+	protected void playSound(Player player, SoundEvent soundEvent) {
 		player.playSound(soundEvent, 0.8f, 0.8f + player.getLevel().getRandom().nextFloat() * 0.4f);
 	}
 
-	public boolean isValidFuel(ItemStack fuelStack) {
-		return NutrientFuelUtil.isValidFuel(fuelStack);
-	}
-
-	public int getFuelValue(ItemStack fuelStack) {
-		return NutrientFuelUtil.getFuelValue(fuelStack);
-	}
-
-	public ItemStack addFuel(ItemStack livingToolStack, ItemStack fuelStack) {
-		if (fuelStack.isEmpty()) return fuelStack;
-		if (!isValidFuel(fuelStack)) return fuelStack;
-
-		final int nutrients = getNutrients(livingToolStack);
-		int maxNutrients = getMaxNutrients(livingToolStack);
-		if (nutrients >= maxNutrients) return fuelStack;
-
-		int fuelValue = getFuelValue(fuelStack);
-		if (fuelValue <= 0) return fuelStack;
-
-		int neededCount = Mth.floor(Math.max(0, maxNutrients - nutrients) / (float) fuelValue);
-		if (neededCount > 0) {
-			setNutrients(livingToolStack, nutrients + fuelValue);
-			return ItemHandlerHelper.copyStackWithSize(fuelStack, fuelStack.getCount() - 1);
-		}
-		return fuelStack;
-	}
-
-	public int getLivingToolActionCost(ItemStack stack, ToolAction toolAction) {
-		LivingToolState state = getLivingToolState(stack);
-		return getLivingToolActionCost(stack, toolAction, state);
-	}
-
-	private int getLivingToolActionCost(ItemStack stack, ToolAction toolAction, LivingToolState state) {
+	public int getLivingToolActionCost(ItemStack stack, LivingToolState state, ToolAction toolAction) {
 		int baseCost = 0;
 		if (toolAction == ToolActions.SWORD_DIG) baseCost = 1;
 		if (toolAction == ToolActions.SWORD_SWEEP) baseCost = 2;
@@ -213,17 +130,6 @@ public class LivingSwordItem extends SwordItem implements IBiomancyItem, INutrie
 			case AWAKE -> baseCost + 2;
 			default -> baseCost;
 		};
-	}
-
-	public LivingToolState getLivingToolState(ItemStack stack) {
-		boolean hasNutrients = hasNutrients(stack);
-		if (!hasNutrients) return LivingToolState.DORMANT;
-
-		return LivingToolState.deserialize(stack.getOrCreateTag());
-	}
-
-	public void setLivingToolState(ItemStack stack, LivingToolState state) {
-		state.serialize(stack.getOrCreateTag());
 	}
 
 	@Override
@@ -258,41 +164,19 @@ public class LivingSwordItem extends SwordItem implements IBiomancyItem, INutrie
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		ClientTextUtil.appendItemInfoTooltip(stack.getItem(), tooltip);
+		tooltip.add(TooltipHacks.HR_COMPONENT);
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
 
-		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
-
-		tooltip.add(getLivingToolState(stack).getItemTooltip().withStyle(ChatFormatting.GRAY));
-
-		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
-
-		DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
-		tooltip.add(new TextComponent("Nutrients").withStyle(ChatFormatting.GRAY));
-		tooltip.add(new TextComponent("%s/%s u".formatted(df.format(getNutrients(stack)), df.format(getMaxNutrients(stack)))).withStyle(Style.EMPTY.withColor(0x65b52a)));
-
-		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
-
-		tooltip.add(new TextComponent("Consumption").withStyle(ChatFormatting.GRAY));
-		for (ToolAction swordAction : ToolActions.DEFAULT_SWORD_ACTIONS) {
-			if (!canPerformAction(stack, swordAction)) continue;
-			int actionCost = getLivingToolActionCost(stack, swordAction);
-			String text = "%s:  %s u".formatted(swordAction.name(), df.format(actionCost));
-			tooltip.add(new TextComponent(text).withStyle(Style.EMPTY.withColor(0xe7bd42)));
-		}
-
-		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
+		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
+		appendLivingToolTooltip(stack, tooltip);
+		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
 		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action_cycle")));
-		tooltip.add(ClientTextUtil.EMPTY_LINE_HACK());
+		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
 	}
 
 	@Override
 	public Component getHighlightTip(ItemStack stack, Component displayName) {
 		return new TextComponent("").append(displayName).append(" (").append(getLivingToolState(stack).getTooltip()).append(")");
-	}
-
-	@Override
-	public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
-		return Optional.of(new HrTooltipComponent());
 	}
 
 }
