@@ -4,13 +4,11 @@ import com.github.elenterius.biomancy.client.renderer.item.LongClawsRenderer;
 import com.github.elenterius.biomancy.world.item.LivingToolState;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
@@ -19,10 +17,12 @@ import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
+import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public class LivingLongClawsItem extends LivingClawsItem implements IAnimatable {
@@ -57,17 +57,23 @@ public class LivingLongClawsItem extends LivingClawsItem implements IAnimatable 
 		return super.canPerformAction(stack, toolAction);
 	}
 
-	@Override
-	public void inventoryTick(ItemStack stack, Level level, Entity entity, int itemSlot, boolean isSelected) {
-		if (level.isClientSide()) {
-			AnimationController<?> controller = GeckoLibUtil.getControllerForStack(animationFactory, stack, "controller");
-			LivingToolState state = getLivingToolState(stack);
-			switch (state) {
-				case AWAKE -> controller.setAnimation(new AnimationBuilder().loop("long_claws.awake"));
-				case EXALTED -> controller.setAnimation(new AnimationBuilder().playOnce("long_claws.extend").loop("long_claws.extended"));
-				default -> controller.setAnimation(new AnimationBuilder().loop("long_claws.dormant"));
-			}
+	private PlayState onAnim(AnimationEvent<LivingLongClawsItem> event) {
+		List<ItemStack> extraData = event.getExtraDataOfType(ItemStack.class);
+		LivingToolState state = !extraData.isEmpty() ? getLivingToolState(extraData.get(0)) : LivingToolState.DORMANT;
+
+		AnimationController<LivingLongClawsItem> controller = event.getController();
+
+		if (state == LivingToolState.AWAKE) {
+			controller.setAnimation(new AnimationBuilder().loop("long_claws.awake"));
 		}
+		else if (state == LivingToolState.EXALTED) {
+			controller.setAnimation(new AnimationBuilder().playOnce("long_claws.extend").loop("long_claws.extended"));
+		}
+		else {
+			controller.setAnimation(new AnimationBuilder().loop("long_claws.dormant"));
+		}
+
+		return PlayState.CONTINUE;
 	}
 
 	@Override
@@ -85,9 +91,7 @@ public class LivingLongClawsItem extends LivingClawsItem implements IAnimatable 
 
 	@Override
 	public void registerControllers(AnimationData data) {
-		AnimationController<LivingLongClawsItem> controller = new AnimationController<>(this, "controller", 10, event -> PlayState.CONTINUE);
-		controller.setAnimation(new AnimationBuilder().loop("long_claws.dormant"));
-		data.addAnimationController(controller);
+		data.addAnimationController(new AnimationController<>(this, "controller", 10, this::onAnim));
 	}
 
 	@Override

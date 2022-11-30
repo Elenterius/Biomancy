@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -29,6 +30,8 @@ public interface ILivingToolItem extends INutrientsContainerItem {
 
 	default void setLivingToolState(ItemStack livingTool, LivingToolState state) {
 		state.serialize(livingTool.getOrCreateTag());
+		CompoundTag tag = livingTool.getOrCreateTag();
+		tag.putByte("DirtyFlag", (byte) (tag.getByte("DirtyFlag") + 1)); //prime cheese for geckolib animations
 	}
 
 	default int getLivingToolActionCost(ItemStack livingTool, ToolAction toolAction) {
