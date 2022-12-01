@@ -6,7 +6,6 @@ import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TooltipHacks;
-import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.entity.MobUtil;
 import com.github.elenterius.biomancy.world.inventory.InjectorItemInventory;
@@ -22,9 +21,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -38,7 +35,6 @@ import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -56,6 +52,8 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.network.PacketDistributor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -68,8 +66,6 @@ import software.bernie.geckolib3.network.GeckoLibNetwork;
 import software.bernie.geckolib3.network.ISyncable;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -81,7 +77,7 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 	public static final int COOL_DOWN_TICKS = 25;
 	public static final int SCHEDULE_TICKS = Mth.ceil(0.32f * 20);
 	private static final String CONTROLLER_NAME = "controller";
-	private final AnimationFactory factory = new AnimationFactory(this);
+	private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
 	public InjectorItem(Properties properties) {
 		super(properties);
@@ -386,7 +382,7 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 
 		return null;
 
-		//		return stack.getEntityRepresentation(); //usually null, ItemFrame or ItemEntity
+		//return stack.getEntityRepresentation(); //usually null, ItemFrame or ItemEntity
 		//this would make it possible to play sounds/etc. via item animation at an ItemFrame or ItemEntity position
 	}
 
@@ -423,29 +419,21 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 		Entity soundOrigin = getEntityHost(stack, level);
 		if (soundOrigin != null) {
 			LocalPlayer client = Minecraft.getInstance().player;
-			level.playSound(client,
-					soundOrigin.getX(), soundOrigin.getY(0.5f), soundOrigin.getZ(),
-					ModSoundEvents.INJECTOR_INJECT.get(), SoundSource.PLAYERS,
-					0.8f,
-					1f / (level.random.nextFloat() * 0.5f + 1f) + 0.2f
-			);
+			level.playSound(client, soundOrigin.getX(), soundOrigin.getY(0.5f), soundOrigin.getZ(), ModSoundEvents.INJECTOR_INJECT.get(), SoundSource.PLAYERS, 0.8f, 1f / (level.random.nextFloat() * 0.5f + 1f) + 0.2f);
 
 			Entity victim = getEntityVictim(stack, level);
 			if (victim != null) {
 				level.levelEvent(LevelEvent.PARTICLES_DRAGON_BLOCK_BREAK, victim.blockPosition(), 0);
 			}
 
-			//			removeEntityHost(stack);
-			//			removeEntityVictim(stack);
+			//removeEntityHost(stack);
+			//removeEntityVictim(stack);
 		}
 	}
 
-	private <T extends InjectorItem> void soundListener(SoundKeyframeEvent<T> event) {
-		if (RenderProperties.get(event.getEntity()).getItemStackRenderer() instanceof InjectorRenderer renderer) {
-			AnimationController<?> controller = GeckoLibUtil.getControllerForID(factory, renderer.getUniqueID(event.getEntity()), CONTROLLER_NAME);
-			if (event.getController() == controller) { //sanity check
-				onSoundKeyFrame(renderer.getCurrentItemStack(), event.sound, event.getAnimationTick());
-			}
+	private void soundListener(SoundKeyframeEvent<InjectorItem> event) {
+		if (RenderProperties.get(this).getItemStackRenderer() instanceof InjectorRenderer renderer) {
+			onSoundKeyFrame(renderer.getCurrentItemStack(), event.sound, event.getAnimationTick());
 		}
 	}
 
@@ -455,7 +443,6 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 		AnimationController<InjectorItem> controller = new AnimationController<>(this, CONTROLLER_NAME, 1, event -> PlayState.CONTINUE);
 		controller.registerSoundListener(this::soundListener);
 		data.addAnimationController(controller);
-
 	}
 
 	@Override
@@ -477,20 +464,21 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 			AnimationController<?> controller = GeckoLibUtil.getControllerForID(factory, id, CONTROLLER_NAME);
 			if (controller.getAnimationState() == AnimationState.Stopped) {
 				controller.markNeedsReload(); //make sure animation can play more than once (animations are usually cached)
-				controller.setAnimation(new AnimationBuilder().addAnimation(AnimState.INJECT_OTHER.animationName, false));
+				controller.setAnimation(new AnimationBuilder().playOnce(AnimState.INJECT_OTHER.animationName));
 			}
 		}
 		else if (AnimState.INJECT_SELF.is(state)) {
 			AnimationController<?> controller = GeckoLibUtil.getControllerForID(factory, id, CONTROLLER_NAME);
 			if (controller.getAnimationState() == AnimationState.Stopped) {
 				controller.markNeedsReload(); //make sure animation can play more than once (animations are usually cached)
-				controller.setAnimation(new AnimationBuilder().addAnimation(AnimState.INJECT_SELF.animationName, false));
+				controller.setAnimation(new AnimationBuilder().playOnce(AnimState.INJECT_SELF.animationName));
 			}
 		}
 	}
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
+		tooltip.add(TooltipHacks.HR_COMPONENT);
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
 
 		CompoundTag tag = stack.getOrCreateTag();
@@ -510,19 +498,9 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 	}
 
 	@Override
-	public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
-		return Optional.of(new HrTooltipComponent());
-	}
-
-	@Override
 	public Component getHighlightTip(ItemStack stack, Component displayName) {
-		if (displayName instanceof MutableComponent mutableComponent) {
-			Serum serum = getSerum(stack);
-			if (serum != null) {
-				return mutableComponent.append(" (").append(new TranslatableComponent(serum.getTranslationKey()).withStyle(ChatFormatting.AQUA)).append(")");
-			}
-		}
-		return displayName;
+		Serum serum = getSerum(stack);
+		return serum == null ? displayName : new TextComponent("").append(displayName).append(" (").append(serum.getDisplayName()).append(")");
 	}
 
 	@Override
@@ -536,8 +514,7 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 	}
 
 	enum AnimState {
-		INJECT_OTHER(0, "injector.anim.inject"),
-		INJECT_SELF(1, "injector.anim.inject.self");
+		INJECT_OTHER(0, "injector.anim.inject"), INJECT_SELF(1, "injector.anim.inject.self");
 
 		private final int id;
 		private final String animationName;
@@ -561,9 +538,9 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 			itemHandler = InjectorItemInventory.createServerContents(MAX_SLOT_SIZE, stack);
 		}
 
-		@Nonnull
+		@NotNull
 		@Override
-		public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
+		public <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction facing) {
 			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.orEmpty(capability, itemHandler.getOptionalItemHandler());
 		}
 

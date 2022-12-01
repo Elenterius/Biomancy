@@ -100,9 +100,9 @@ public class InjectorRenderer extends GeoItemRenderer<InjectorItem> {
 	}
 
 	@Override
-	public Integer getUniqueID(InjectorItem item) {
-		if (currentTransformType == TransformType.GUI) return -1;
-		return super.getUniqueID(item);
+	public int getInstanceId(InjectorItem item) {
+		if (currentTransformType == TransformType.GUI) return -1; //don't render animation in GUI
+		return super.getInstanceId(animatable);
 	}
 
 	public ItemStack getCurrentItemStack() {

@@ -80,6 +80,10 @@ public abstract class Serum extends ForgeRegistryEntry<Serum> {
 		return getTranslationKey(Objects.requireNonNull(getRegistryName()));
 	}
 
+	public TranslatableComponent getDisplayName() {
+		return new TranslatableComponent(getTranslationKey());
+	}
+
 	public boolean isEmpty() {
 		return this == EMPTY;
 	}
