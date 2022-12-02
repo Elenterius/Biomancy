@@ -183,6 +183,16 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:create-328085:4007544")
     runtimeOnly fg.deobf("curse.maven:flywheel-486392:3934664")
 
+    runtimeOnly fg.deobf("curse.maven:farmers_delight-398521:3999153")
+//    runtimeOnly fg.deobf("curse.maven:cultural_delights-574622:4000179") //download is forbidden >:(
+//    runtimeOnly fg.deobf("com.ncpbails.culturaldelights:culturaldelights:1.18.2-0.14") //place jar inside libs folder in project root
+
+    runtimeOnly fg.deobf("curse.maven:alexs_mobs-426558:3853078")
+    runtimeOnly fg.deobf("curse.maven:citadel-331936:3783096")
+
+//    runtimeOnly fg.deobf("curse.maven:dragons_survival-420799:4124689") //download is forbidden >:(
+//    runtimeOnly fg.deobf("by.dragonsurvivalteam:DragonSurvival_DragonEditor:1.18.2-1.4.36") //place jar inside libs folder in project root
+
 //  implementation fg.deobf("com.github.Virtuoel:Pehkui:3.0.0-forge")
 
     datagenImplementation sourceSets.main.output
