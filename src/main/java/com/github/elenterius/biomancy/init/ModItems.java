@@ -92,8 +92,8 @@ public final class ModItems {
 	//# Weapons
 	public static final RegistryObject<SimpleSwordItem> BONE_CLEAVER = ITEMS.register("bone_cleaver", () -> new SimpleSwordItem(ModTiers.BONE, 3, -2.4f, createBaseProperties()));
 	public static final RegistryObject<LivingLongClawsItem> LONG_CLAWS = ITEMS.register("long_claws", () -> new LivingLongClawsItem(ModTiers.BIOFLESH, -2, -2.4f, 0.5f, 1000, createLivingToolProperties()));
-	public static final RegistryObject<DevArmCannonItem> ARM_CANNON = ITEMS.register("dev_arm_cannon", () -> new DevArmCannonItem(createBaseProperties().stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE)));
-	public static final RegistryObject<BileSpitterItem> BILE_SPITTER = ITEMS.register("bile_spitter", () -> new BileSpitterItem(createBaseProperties().stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE)));
+	public static final RegistryObject<DevArmCannonItem> DEV_ARM_CANNON = ITEMS.register("dev_arm_cannon", () -> new DevArmCannonItem(createBaseProperties().stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE).tab(null)));
+	public static final RegistryObject<BileSpitterItem> BILE_SPITTER = ITEMS.register("bile_spitter", () -> new BileSpitterItem(createBaseProperties().stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE).tab(null)));
 
 	//# Creature
 	//	public static final RegistryObject<BoomlingItem> BOOMLING = ITEMS.register("boomling", () -> new BoomlingItem(createBaseProperties().rarity(ModRarities.RARE).stacksTo(1).tab(null)));
