@@ -66,11 +66,11 @@ public class StorageSacBlockItem extends BlockItem implements IBiomancyItem {
 			int insertAmount = stackFromInv.getCount();
 			ItemStack remainder = slot.safeInsert(stackFromInv);
 			if (remainder.getCount() < insertAmount) playRemoveFromSacSound(player);
-			itemHandler.ifPresent(h -> h.insertItem(remainder));
+			itemHandler.ifPresent(h -> h.insertItemOnExistingFirst(remainder));
 		}
 		else if (stackInSlot.getItem().canFitInsideContainerItems()) {
 			final int prevCount = stackInSlot.getCount();
-			ItemStack remainder = getItemHandler(stack).map(h -> h.insertItem(slot.safeTake(prevCount, Integer.MAX_VALUE, player))).orElse(ItemStack.EMPTY);
+			ItemStack remainder = getItemHandler(stack).map(h -> h.insertItemOnExistingFirst(slot.safeTake(prevCount, Integer.MAX_VALUE, player))).orElse(ItemStack.EMPTY);
 			slot.safeInsert(remainder);
 			if (prevCount - remainder.getCount() > 0) {
 				playInsertIntoSacSound(player);
@@ -93,7 +93,7 @@ public class StorageSacBlockItem extends BlockItem implements IBiomancyItem {
 			}
 		}
 		else {
-			ItemStack remainder = getItemHandler(stack).map(h -> h.insertItem(other)).orElse(ItemStack.EMPTY);
+			ItemStack remainder = getItemHandler(stack).map(h -> h.insertItemOnExistingFirst(other)).orElse(ItemStack.EMPTY);
 			final int insertedAmount = other.getCount() - remainder.getCount();
 			if (insertedAmount > 0) {
 				playInsertIntoSacSound(player);

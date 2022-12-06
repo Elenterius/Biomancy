@@ -84,6 +84,23 @@ interface TransferOperations extends Forwarding<IItemHandler> {
 		return stack;
 	}
 
+	default ItemStack insertItemOnExistingFirst(ItemStack stack) {
+		return insertItemOnExistingFirst(stack, false);
+	}
+
+	default ItemStack insertItemOnExistingFirst(ItemStack stack, boolean simulate) {
+		if (stack.isEmpty()) return stack;
+
+		for (int i = 0; i < inner().getSlots(); i++) {
+			if (inner().getStackInSlot(i).isEmpty()) continue; //skip empty slots
+
+			stack = inner().insertItem(i, stack, simulate);
+			if (stack.isEmpty()) return ItemStack.EMPTY;
+		}
+
+		return insertItem(stack, simulate);
+	}
+
 	default ItemStack extractItemFirstFound() {
 		return extractItemFirstFound(false);
 	}
