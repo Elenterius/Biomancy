@@ -4,9 +4,14 @@ import com.github.elenterius.biomancy.client.renderer.item.LongClawsRenderer;
 import com.github.elenterius.biomancy.world.item.LivingToolState;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraftforge.client.IItemRenderProperties;
@@ -49,6 +54,24 @@ public class LivingLongClawsItem extends LivingClawsItem implements IAnimatable 
 			};
 		}
 		return super.getAttributeModifiers(slot, stack);
+	}
+
+	@Override
+	public void updateLivingToolState(ItemStack livingTool, ServerLevel level, Player player) {
+		GeckoLibUtil.writeIDToStack(livingTool, level);
+		super.updateLivingToolState(livingTool, level, player);
+	}
+
+	@Override
+	public boolean overrideStackedOnOther(ItemStack livingTool, Slot slot, ClickAction action, Player player) {
+		if (player.level instanceof ServerLevel serverLevel) GeckoLibUtil.writeIDToStack(livingTool, serverLevel);
+		return super.overrideStackedOnOther(livingTool, slot, action, player);
+	}
+
+	@Override
+	public boolean overrideOtherStackedOnMe(ItemStack livingTool, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
+		if (player.level instanceof ServerLevel serverLevel) GeckoLibUtil.writeIDToStack(livingTool, serverLevel);
+		return super.overrideOtherStackedOnMe(livingTool, other, slot, action, player, access);
 	}
 
 	@Override

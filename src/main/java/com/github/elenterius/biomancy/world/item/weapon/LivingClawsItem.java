@@ -85,8 +85,8 @@ public class LivingClawsItem extends SimpleClawsItem implements ILivingToolItem,
 	}
 
 	@Override
-	public boolean overrideStackedOnOther(ItemStack stack, Slot slot, ClickAction action, Player player) {
-		if (handleOverrideStackedOnOther(stack, slot, action, player)) {
+	public boolean overrideStackedOnOther(ItemStack livingTool, Slot slot, ClickAction action, Player player) {
+		if (handleOverrideStackedOnOther(livingTool, slot, action, player)) {
 			playSound(player, SoundEvents.GENERIC_EAT);
 			return true;
 		}
@@ -94,8 +94,8 @@ public class LivingClawsItem extends SimpleClawsItem implements ILivingToolItem,
 	}
 
 	@Override
-	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
-		if (handleOverrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+	public boolean overrideOtherStackedOnMe(ItemStack livingTool, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
+		if (handleOverrideOtherStackedOnMe(livingTool, other, slot, action, player, access)) {
 			playSound(player, SoundEvents.GENERIC_EAT);
 			return true;
 		}
