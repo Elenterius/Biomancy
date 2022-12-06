@@ -180,7 +180,7 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:9.7.1.255") // at runtime, use the full JEI jar
 
 //  curse.maven:<descriptor, can be anything>-<CurseForge project id>:<CurseForge file id>
-    runtimeOnly fg.deobf("curse.maven:create-328085:4007544")
+    implementation fg.deobf("curse.maven:create-328085:4007544")
     runtimeOnly fg.deobf("curse.maven:flywheel-486392:3934664")
 
     runtimeOnly fg.deobf("curse.maven:farmers_delight-398521:3999153")

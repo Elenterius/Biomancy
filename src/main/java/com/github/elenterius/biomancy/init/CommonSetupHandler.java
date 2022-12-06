@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.integration.compat.create.CreateModCompat;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import com.github.elenterius.biomancy.world.item.BioExtractorItem;
 import com.github.elenterius.biomancy.world.item.InjectorItem;
@@ -10,6 +11,7 @@ import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
@@ -29,6 +31,10 @@ public final class CommonSetupHandler {
 			//			ModTriggers.register();
 			registerDispenserBehaviors();
 			ModRecipes.registerComposterRecipes();
+
+			if (ModList.get().isLoaded("create")) {
+				CreateModCompat.setup();
+			}
 		});
 	}
 
