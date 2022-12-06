@@ -28,10 +28,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.*;
 import org.jetbrains.annotations.Nullable;
 
 public class IrisDoorBlock extends Block implements SimpleWaterloggedBlock {
@@ -54,6 +51,15 @@ public class IrisDoorBlock extends Block implements SimpleWaterloggedBlock {
 	protected static final VoxelShape[] Z_NONE_AABB = createClosedAndOpenShape(0, 0, 8d - THICKNESS / 2d, 16, 16, 8d + THICKNESS / 2d);
 	protected static final VoxelShape[] Z_POS_AABB = createClosedAndOpenShape(0, 0, 16d - THICKNESS, 16, 16, 16);
 
+	public IrisDoorBlock(Properties properties) {
+		super(properties);
+		registerDefaultState(defaultBlockState()
+				.setValue(ORIENTATION, Orientation.Y_MIDDLE)
+				.setValue(OPEN, false).setValue(POWERED, false)
+				.setValue(WATERLOGGED, false)
+		);
+	}
+
 	private static VoxelShape[] createClosedAndOpenShape(double x0, double y0, double z0, double x1, double y1, double z1) {
 		VoxelShape closedShape = Block.box(x0, y0, z0, x1, y1, z1);
 
@@ -70,15 +76,6 @@ public class IrisDoorBlock extends Block implements SimpleWaterloggedBlock {
 		VoxelShape openShape = Shapes.join(closedShape, Block.box(xA, yA, zA, xB, yB, zB), BooleanOp.NOT_SAME);
 
 		return new VoxelShape[]{closedShape, openShape};
-	}
-
-	public IrisDoorBlock(Properties properties) {
-		super(properties);
-		registerDefaultState(defaultBlockState()
-				.setValue(ORIENTATION, Orientation.Y_MIDDLE)
-				.setValue(OPEN, false).setValue(POWERED, false)
-				.setValue(WATERLOGGED, false)
-		);
 	}
 
 	@Override
@@ -185,24 +182,10 @@ public class IrisDoorBlock extends Block implements SimpleWaterloggedBlock {
 		};
 	}
 
-	//TODO: is custom occlusion shape needed?
-
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		if (isOpen(state)) return Shapes.empty();
-
-		int idx = CLOSED_SHAPE_INDEX;
-		return switch (state.getValue(ORIENTATION)) {
-			case X_POSITIVE -> X_POS_AABB[idx];
-			case X_MIDDLE -> x_NONE_AABB[idx];
-			case X_NEGATIVE -> x_NEG_AABB[idx];
-			case Z_POSITIVE -> Z_POS_AABB[idx];
-			case Z_MIDDLE -> Z_NONE_AABB[idx];
-			case Z_NEGATIVE -> Z_NEG_AABB[idx];
-			case Y_POSITIVE -> Y_POS_AABB[idx];
-			case Y_NEGATIVE -> Y_NEG_AABB[idx];
-			case Y_MIDDLE -> Y_NONE_AABB[idx];
-		};
+		if (isOpen(state) && context instanceof EntityCollisionContext entityContext && entityContext.getEntity() != null) return Shapes.empty(); //workaround for create contraptions
+		return state.getShape(level, pos);
 	}
 
 	@Override
