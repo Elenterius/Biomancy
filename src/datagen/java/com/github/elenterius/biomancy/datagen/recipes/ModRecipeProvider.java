@@ -108,11 +108,11 @@ public class ModRecipeProvider extends RecipeProvider {
 
 	private void registerWorkbenchRecipes(Consumer<FinishedRecipe> consumer) {
 
-		WorkbenchRecipeBuilder.shaped(ModItems.BONE_CLEAVER.get(), 8)
+		WorkbenchRecipeBuilder.shaped(ModItems.BONE_CLEAVER.get())
 				.define('B', Tags.Items.BONES).define('F', Items.FLINT)
+				.pattern(" FB")
 				.pattern("FB ")
-				.pattern("FB ")
-				.pattern(" B ")
+				.pattern("B  ")
 				.unlockedBy(hasName(Items.BONE), has(Tags.Items.BONES)).save(consumer);
 
 		WorkbenchRecipeBuilder.shaped(ModItems.GLASS_VIAL.get(), 8)
