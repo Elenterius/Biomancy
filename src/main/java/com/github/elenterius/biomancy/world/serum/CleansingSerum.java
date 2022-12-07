@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.world.serum;
 
+import com.github.elenterius.biomancy.integration.compat.ModsCompatHandler;
 import com.github.elenterius.biomancy.mixin.ZombieVillagerMixinAccessor;
 import com.github.elenterius.biomancy.world.entity.MobUtil;
 import com.github.elenterius.biomancy.world.entity.fleshblob.FleshBlob;
@@ -24,6 +25,7 @@ public class CleansingSerum extends Serum {
 	public void affectEntity(ServerLevel level, CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
 		clearPotionEffects(target);
 		clearAbsorption(target);
+		resetPehkuiSize(target);
 
 		if (target instanceof ZombieVillager) {
 			if (ForgeEventFactory.canLivingConvert(target, EntityType.VILLAGER, timer -> {})) {
@@ -37,6 +39,10 @@ public class CleansingSerum extends Serum {
 		if (target instanceof FleshBlob fleshBlob) {
 			fleshBlob.clearStoredDNA();
 		}
+	}
+
+	private void resetPehkuiSize(LivingEntity target) {
+		ModsCompatHandler.getPehkuiHelper().resetSize(target);
 	}
 
 	@Override

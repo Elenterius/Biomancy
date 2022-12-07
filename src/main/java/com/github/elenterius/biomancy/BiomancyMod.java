@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy;
 
 import com.github.elenterius.biomancy.init.*;
+import com.github.elenterius.biomancy.integration.compat.ModsCompatHandler;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
@@ -52,6 +53,8 @@ public final class BiomancyMod {
 		ModLoot.GLOBAL_MODIFIERS.register(modEventBus);
 
 		ModSoundEvents.SOUND_EVENTS.register(modEventBus);
+
+		ModsCompatHandler.onBiomancyInit(modEventBus);
 	}
 
 	public static ResourceLocation createRL(String path) {

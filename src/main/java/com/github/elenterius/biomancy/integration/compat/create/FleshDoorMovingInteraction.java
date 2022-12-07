@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import org.jetbrains.annotations.Nullable;
 
-public class FleshDoorMovingInteraction extends SimpleBlockMovingInteraction {
+class FleshDoorMovingInteraction extends SimpleBlockMovingInteraction {
 
 	@Override
 	protected BlockState handle(@Nullable Player player, Contraption contraption, BlockPos pos, BlockState blockState) {

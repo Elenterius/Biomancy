@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.integration.compat.create;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.simibubi.create.AllInteractionBehaviours;
 
-public final class InteractionBehaviors {
+final class InteractionBehaviors {
 
 	private InteractionBehaviors() {}
 

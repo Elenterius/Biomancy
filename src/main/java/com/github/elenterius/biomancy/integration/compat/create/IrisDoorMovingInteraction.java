@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-public class IrisDoorMovingInteraction extends SimpleBlockMovingInteraction {
+class IrisDoorMovingInteraction extends SimpleBlockMovingInteraction {
 
 	@Override
 	protected BlockState handle(@Nullable Player player, Contraption contraption, BlockPos pos, BlockState blockState) {

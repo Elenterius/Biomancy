@@ -149,16 +149,8 @@ repositories {
     flatDir {
         dirs 'libs'
     }
-    maven {
-        // JEI files
-        name = "Progwml6 maven"
-        url = "https://dvs1.progwml6.com/files/maven/"
-    }
-    maven {
-        // JEI fallback
-        name = "ModMaven"
-        url = "https://modmaven.k-4u.nl"
-    }
+    maven { url = "https://dvs1.progwml6.com/files/maven/" }  // JEI
+    maven { url = "https://modmaven.k-4u.nl" }  // JEI backup
     maven { url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
     maven { url = 'https://maven.blamejared.com' }
     maven { url = "https://www.cursemaven.com" }
@@ -190,10 +182,11 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:alexs_mobs-426558:3853078")
     runtimeOnly fg.deobf("curse.maven:citadel-331936:3783096")
 
-//    runtimeOnly fg.deobf("curse.maven:dragons_survival-420799:4124689") //download is forbidden >:(
-//    runtimeOnly fg.deobf("by.dragonsurvivalteam:DragonSurvival_DragonEditor:1.18.2-1.4.36") //place jar inside libs folder in project root
+    implementation fg.deobf("com.github.Virtuoel:Pehkui:3.6.0-1.18.2-forge")
 
-//  implementation fg.deobf("com.github.Virtuoel:Pehkui:3.0.0-forge")
+    //TODO: Morph Mod Integration?
+//    implementation fg.deobf("curse.maven:identity-391390:3807264") // https://www.curseforge.com/minecraft/mc-mods/identity
+//    runtimeOnly fg.deobf("curse.maven:architectury-419699:4040966")
 
     datagenImplementation sourceSets.main.output
     implementation sourceSets.api.output

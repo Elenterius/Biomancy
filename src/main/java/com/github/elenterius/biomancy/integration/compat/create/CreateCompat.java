@@ -1,10 +1,10 @@
 package com.github.elenterius.biomancy.integration.compat.create;
 
-public final class CreateModCompat {
+public final class CreateCompat {
 
-	private CreateModCompat() {}
+	private CreateCompat() {}
 
-	public static void setup() {
+	public static void onPostSetup() {
 		InteractionBehaviors.register();
 	}
 
