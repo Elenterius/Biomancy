@@ -106,7 +106,7 @@ public class SpecialMobLootModifier extends LootModifier {
 				despoilLevel++;
 				lootTable.add(FLESH_BITS, 15);
 			}
-			else if (heldStack.is(ModTags.Items.TOOLS_KNIVES)) {
+			else if (heldStack.is(ModTags.Items.FORGE_TOOLS_KNIVES)) {
 				despoilLevel++;
 			}
 

@@ -52,7 +52,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 				.addOptional("createfa:ground_chicken", "createfa:ground_beef")
 				.addOptional("rats:raw_rat")
 				.addOptional("circus:clown")
-				.addOptional("evilcraft:flesh_humanoid", "evilcraft:flesh_werewolf");
+				.addOptional("evilcraft:flesh_humanoid", "evilcraft:flesh_werewolf")
+				.addOptionalTag("forge:raw_fishes")
+				.addOptionalTag("forge:raw_bacon", "forge:raw_beef", "forge:raw_chicken", "forge:raw_pork", "forge:raw_mutton");
 
 		createTag(ModTags.Items.GOOD_BIOMASS)
 				.add(BREAD, MUSHROOM_STEM, SUSPICIOUS_STEW, COCOA_BEANS, BAKED_POTATO, HONEYCOMB, MELON, PUMPKIN, DRIED_KELP_BLOCK, SEA_PICKLE, LILY_PAD, CARVED_PUMPKIN,
@@ -82,7 +84,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 	}
 
 	private void addForgeTags() {
-		tag(ModTags.Items.TOOLS_KNIVES).add(ModItems.BONE_CLEAVER.get());
+		tag(ModTags.Items.FORGE_TOOLS_KNIVES).add(ModItems.BONE_CLEAVER.get());
 	}
 
 	protected EnhancedTagAppender<Item> createTag(TagKey<Item> tag) {

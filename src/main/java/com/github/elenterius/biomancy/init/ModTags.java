@@ -22,7 +22,13 @@ public final class ModTags {
 
 	public static final class Items {
 
-		public static final TagKey<Item> TOOLS_KNIVES = ItemTags.create(new ResourceLocation("forge", "tools/knives"));
+		public static final TagKey<Item> FORGE_TOOLS_KNIVES = forgeTag("tools/knives");
+		//		public static final TagKey<Item> FORGE_RAW_BACON = forgeTag("raw_bacon");
+		//		public static final TagKey<Item> FORGE_RAW_BEEF = forgeTag("raw_beef");
+		//		public static final TagKey<Item> FORGE_RAW_CHICKEN = forgeTag("raw_chicken");
+		//		public static final TagKey<Item> FORGE_RAW_PORK = forgeTag("raw_pork");
+		//		public static final TagKey<Item> FORGE_RAW_MUTTON = forgeTag("raw_mutton");
+		//		public static final TagKey<Item> FORGE_RAW_FISHES = forgeTag("raw_fishes");
 
 		public static final TagKey<Item> RAW_MEATS = tag("raw_meats");
 		public static final TagKey<Item> COOKED_MEATS = tag("cooked_meats");
@@ -38,6 +44,10 @@ public final class ModTags {
 
 		private static TagKey<Item> tag(String name) {
 			return ItemTags.create(BiomancyMod.createRL(name));
+		}
+
+		private static TagKey<Item> forgeTag(String path) {
+			return ItemTags.create(new ResourceLocation("forge", path));
 		}
 
 		private static void forceInit() {
