@@ -37,7 +37,7 @@ public final class ModBlocks {
 	//# Blocks
 
 	//## Crafting
-	public static final RegistryObject<CreatorBlock> CREATOR = BLOCKS.register("creator", () -> new CreatorBlock(createFleshProperties()));
+	public static final RegistryObject<PrimordialCradleBlock> PRIMORDIAL_CRADLE = BLOCKS.register("primordial_cradle", () -> new PrimordialCradleBlock(createFleshProperties()));
 	public static final RegistryObject<BioForgeBlock> BIO_FORGE = BLOCKS.register("bio_forge", () -> new BioForgeBlock(createFleshProperties()));
 
 	//## Machine

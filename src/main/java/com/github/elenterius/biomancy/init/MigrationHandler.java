@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -32,6 +33,7 @@ public final class MigrationHandler {
 		for (RegistryEvent.MissingMappings.Mapping<Block> mapping : mappings) {
 			String path = mapping.key.getPath();
 			switch (path) {
+				case "creator" -> mapping.remap(ModBlocks.PRIMORDIAL_CRADLE.get());
 				case "flesh_block" -> mapping.remap(ModBlocks.FLESH.get());
 				case "flesh_block_slab" -> mapping.remap(ModBlocks.FLESH_SLAB.get());
 				case "flesh_block_stairs" -> mapping.remap(ModBlocks.FLESH_STAIRS.get());
@@ -39,6 +41,18 @@ public final class MigrationHandler {
 				case "necrotic_flesh_block" -> mapping.remap(ModBlocks.MALIGNANT_FLESH.get());
 				case "flesh_tentacle" -> mapping.remap(ModBlocks.MALIGNANT_FLESH_VEINS.get());
 				default -> ignore();
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void onMissingBlockEntityMappings(final RegistryEvent.MissingMappings<BlockEntityType<?>> event) {
+		ImmutableList<RegistryEvent.MissingMappings.Mapping<BlockEntityType<?>>> mappings = event.getMappings(BiomancyMod.MOD_ID);
+		if (mappings.isEmpty()) return;
+
+		for (RegistryEvent.MissingMappings.Mapping<BlockEntityType<?>> mapping : mappings) {
+			if (mapping.key.getPath().equals("creator")) {
+				mapping.remap(ModBlockEntities.PRIMORDIAL_CRADLE.get());
 			}
 		}
 	}
@@ -54,6 +68,7 @@ public final class MigrationHandler {
 		for (RegistryEvent.MissingMappings.Mapping<Item> mapping : mappings) {
 			String path = mapping.key.getPath();
 			switch (path) {
+				case "creator" -> mapping.remap(ModItems.PRIMORDIAL_CRADLE.get());
 				case "flesh_block" -> mapping.remap(ModItems.FLESH_BLOCK.get());
 				case "flesh_block_slab" -> mapping.remap(ModItems.FLESH_SLAB.get());
 				case "flesh_block_stairs" -> mapping.remap(ModItems.FLESH_STAIRS.get());

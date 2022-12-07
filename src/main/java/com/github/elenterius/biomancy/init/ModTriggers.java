@@ -1,13 +1,16 @@
 package com.github.elenterius.biomancy.init;
 
+import com.github.elenterius.biomancy.trigger.SacrificedItemTrigger;
+import net.minecraft.advancements.CriteriaTriggers;
+
 public final class ModTriggers {
 
-//	public static final EvolutionPoolCreatedTrigger EVOLUTION_POOL_CREATED = new EvolutionPoolCreatedTrigger();
+	public static final SacrificedItemTrigger SACRIFICED_ITEM_TRIGGER = new SacrificedItemTrigger();
 
 	private ModTriggers() {}
 
 	public static void register() {
-//		CriteriaTriggers.register(EVOLUTION_POOL_CREATED);
+		CriteriaTriggers.register(SACRIFICED_ITEM_TRIGGER);
 	}
 
 }

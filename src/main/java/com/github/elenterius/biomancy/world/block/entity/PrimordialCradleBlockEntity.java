@@ -9,7 +9,7 @@ import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.SacrificeHandler;
 import com.github.elenterius.biomancy.util.SoundUtil;
-import com.github.elenterius.biomancy.world.block.CreatorBlock;
+import com.github.elenterius.biomancy.world.block.PrimordialCradleBlock;
 import com.github.elenterius.biomancy.world.entity.fleshblob.FleshBlob;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -42,7 +42,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.List;
 
-public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnimatable, ISyncableAnimation {
+public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity implements IAnimatable, ISyncableAnimation {
 
 	public static final int DURATION = 20 * 4; //in ticks
 
@@ -55,8 +55,8 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
 	private boolean playAttackAnimation = false;
 
-	public CreatorBlockEntity(BlockPos pos, BlockState state) {
-		super(ModBlockEntities.CREATOR.get(), pos, state);
+	public PrimordialCradleBlockEntity(BlockPos pos, BlockState state) {
+		super(ModBlockEntities.PRIMORDIAL_CRADLE.get(), pos, state);
 	}
 
 	public boolean insertItem(ItemStack stack) {
@@ -109,7 +109,7 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 		return sacrificeHandler.hasModifiers();
 	}
 
-	public static void serverTick(Level level, BlockPos pos, BlockState state, CreatorBlockEntity creator) {
+	public static void serverTick(Level level, BlockPos pos, BlockState state, PrimordialCradleBlockEntity creator) {
 		if (creator.isFull()) {
 			creator.ticks++;
 			if (creator.ticks > DURATION) {
@@ -158,7 +158,7 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 	public void spawnMob(ServerLevel level, BlockPos pos, SacrificeHandler sacrificeHandler) {
 		FleshBlob fleshBlob = ModEntityTypes.FLESH_BLOB.get().create(level);
 		if (fleshBlob != null) {
-			float yaw = CreatorBlock.getYRotation(getBlockState());
+			float yaw = PrimordialCradleBlock.getYRotation(getBlockState());
 			fleshBlob.moveTo(pos.getX() + 0.5f, pos.getY() + 4f / 16f, pos.getZ() + 0.5f, yaw, 0);
 			fleshBlob.yHeadRot = fleshBlob.getYRot();
 			fleshBlob.setHostile(level.random.nextFloat() < sacrificeHandler.getHostileChance());
@@ -229,19 +229,19 @@ public class CreatorBlockEntity extends SimpleSyncedBlockEntity implements IAnim
 		playAttackAnimation = false;
 	}
 
-	private PlayState handleAnim(AnimationEvent<CreatorBlockEntity> event) {
-//		if (fillLevel >= getMaxFillLevel()) {
-//			event.getController().setAnimation(new AnimationBuilder().addAnimation("creator.anim.work"));
-//		}
+	private PlayState handleAnim(AnimationEvent<PrimordialCradleBlockEntity> event) {
+		//		if (fillLevel >= getMaxFillLevel()) {
+		//			event.getController().setAnimation(new AnimationBuilder().addAnimation("cradle.anim.work"));
+		//		}
 
 		if (playAttackAnimation) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("creator.anim.spike"));
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("cradle.anim.spike"));
 			if (event.getController().getAnimationState() != AnimationState.Stopped) return PlayState.CONTINUE;
 			stopAttackAnimation();
 		}
 
 		if (event.getController().getAnimationState() == AnimationState.Stopped) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("creator.anim.idle"));
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("cradle.anim.idle"));
 		}
 		return PlayState.CONTINUE;
 	}

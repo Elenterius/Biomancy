@@ -66,13 +66,13 @@ public class ModAdvancementProvider extends AdvancementProvider {
 		Advancement root = Advancement.Builder.advancement().display(ModItems.FLESH_BITS.get(), createTitle("root"), createDescription("root"), BiomancyMod.createRL("textures/block/flesh.png"),
 				FrameType.TASK, true, true, false).addCriterion("has_raw_meats", hasTag(ModTags.Items.RAW_MEATS)).save(consumer, BiomancyMod.MOD_ID + "/root");
 
-		Advancement nodeCreator = Advancement.Builder.advancement().parent(root).display(ModItems.CREATOR.get(), createTitle("flesh"), createDescription("flesh"), null,
+		Advancement nodeCreator = Advancement.Builder.advancement().parent(root).display(ModItems.PRIMORDIAL_CRADLE.get(), createTitle("flesh"), createDescription("flesh"), null,
 						FrameType.CHALLENGE, true, false, true)
 				.addCriterion("has_ender_eye", hasItems(Items.ENDER_EYE)).save(consumer, BiomancyMod.MOD_ID + "/flesh");
 
 		Advancement nodeLivingFlesh = Advancement.Builder.advancement().parent(nodeCreator).display(ModItems.LIVING_FLESH.get(), createTitle("living_flesh"), createDescription("living_flesh"), null,
 						FrameType.TASK, true, false, false)
-				.addCriterion("placed_creator", hasPlacedBlock(ModBlocks.CREATOR.get())).save(consumer, BiomancyMod.MOD_ID + "/living_flesh");
+				.addCriterion("placed_creator", hasPlacedBlock(ModBlocks.PRIMORDIAL_CRADLE.get())).save(consumer, BiomancyMod.MOD_ID + "/living_flesh");
 
 		Advancement nodeDecomposer = Advancement.Builder.advancement().parent(nodeLivingFlesh).display(ModItems.DECOMPOSER.get(), createTitle("decomposer"), createDescription("decomposer"), null,
 						FrameType.TASK, true, false, false)

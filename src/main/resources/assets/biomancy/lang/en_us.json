@@ -69,8 +69,7 @@
   "item.biomancy.mascot_outline_pattern.desc": "Mascot 2",
   "item.biomancy.mascot_accent_pattern": "Banner Pattern",
   "item.biomancy.mascot_accent_pattern.desc": "Mascot 3",
-
-  "block.biomancy.creator": "Flesh Crucible",
+  "block.biomancy.primordial_cradle": "Primordial Cradle",
   "block.biomancy.bio_forge": "Bio-Forge",
   "block.biomancy.bio_lab": "Bio-Lab",
   "block.biomancy.digester": "Digester",

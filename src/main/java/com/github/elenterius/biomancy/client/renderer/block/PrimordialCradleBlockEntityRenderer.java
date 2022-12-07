@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.renderer.block;
 
-import com.github.elenterius.biomancy.client.model.block.CreatorModel;
-import com.github.elenterius.biomancy.world.block.entity.CreatorBlockEntity;
+import com.github.elenterius.biomancy.client.model.block.PrimordialCradleModel;
+import com.github.elenterius.biomancy.world.block.entity.PrimordialCradleBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
@@ -19,16 +19,16 @@ import software.bernie.geckolib3.geo.render.built.GeoCube;
 import software.bernie.geckolib3.geo.render.built.GeoQuad;
 import software.bernie.geckolib3.geo.render.built.GeoVertex;
 
-public class CreatorBlockEntityRenderer extends CustomGeoBlockRenderer<CreatorBlockEntity> {
+public class PrimordialCradleBlockEntityRenderer extends CustomGeoBlockRenderer<PrimordialCradleBlockEntity> {
 
 	private float lifeEnergyPct;
 
-	public CreatorBlockEntityRenderer(BlockEntityRendererProvider.Context rendererDispatcher) {
-		super(rendererDispatcher, new CreatorModel());
+	public PrimordialCradleBlockEntityRenderer(BlockEntityRendererProvider.Context rendererDispatcher) {
+		super(rendererDispatcher, new PrimordialCradleModel());
 	}
 
 	@Override
-	public void renderEarly(CreatorBlockEntity creatorEntity, PoseStack stackIn, float ticks, @Nullable MultiBufferSource renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float partialTicks) {
+	public void renderEarly(PrimordialCradleBlockEntity cradle, PoseStack stackIn, float ticks, @Nullable MultiBufferSource renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float partialTicks) {
 		AnimationProcessor<?> processor = getGeoModelProvider().getAnimationProcessor();
 		IBone boneFillLevel = processor.getBone("_fill_level");
 		IBone boneToppings = processor.getBone("_toppings");
@@ -36,16 +36,16 @@ public class CreatorBlockEntityRenderer extends CustomGeoBlockRenderer<CreatorBl
 		boneFillLevel.setHidden(true);
 		boneToppings.setHidden(true);
 
-		float biomassPct = creatorEntity.getBiomassPct();
+		float biomassPct = cradle.getBiomassPct();
 		if (biomassPct > 0) {
 			boneFillLevel.setHidden(false);
 			boneFillLevel.setPositionY(Mth.floor(biomassPct * 8f) + 2f); //sets the position in model space
-			if (creatorEntity.hasModifiers()) {
+			if (cradle.hasModifiers()) {
 				boneToppings.setHidden(false);
 			}
 		}
 
-		lifeEnergyPct = Math.min(creatorEntity.getLifeEnergyPct(), 1f);
+		lifeEnergyPct = Math.min(cradle.getLifeEnergyPct(), 1f);
 	}
 
 	private boolean isSpecialCube = false;

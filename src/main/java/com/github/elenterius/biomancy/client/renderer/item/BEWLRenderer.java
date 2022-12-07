@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.client.renderer.item;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.world.block.entity.BioLabBlockEntity;
-import com.github.elenterius.biomancy.world.block.entity.CreatorBlockEntity;
+import com.github.elenterius.biomancy.world.block.entity.PrimordialCradleBlockEntity;
 import com.github.elenterius.biomancy.world.item.BEWLBlockItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
@@ -21,7 +21,7 @@ public class BEWLRenderer extends BlockEntityWithoutLevelRenderer {
 
 	public static final BEWLRenderer INSTANCE = new BEWLRenderer();
 
-	private final Lazy<CreatorBlockEntity> creator = Lazy.of(() -> new CreatorBlockEntity(BlockPos.ZERO, ModBlocks.CREATOR.get().defaultBlockState()));
+	private final Lazy<PrimordialCradleBlockEntity> creator = Lazy.of(() -> new PrimordialCradleBlockEntity(BlockPos.ZERO, ModBlocks.PRIMORDIAL_CRADLE.get().defaultBlockState()));
 	private final Lazy<BioLabBlockEntity> bioLab = Lazy.of(() -> new BioLabBlockEntity(BlockPos.ZERO, ModBlocks.BIO_LAB.get().defaultBlockState()));
 
 	public BEWLRenderer() {
@@ -38,9 +38,10 @@ public class BEWLRenderer extends BlockEntityWithoutLevelRenderer {
 		Item item = stack.getItem();
 
 		if (item instanceof BEWLBlockItem) {
-			if (item == ModItems.CREATOR.get()) {
+			if (item == ModItems.PRIMORDIAL_CRADLE.get()) {
 				renderBlockEntity(poseStack, buffer, packedLight, packedOverlay, creator.get());
-			} else if (item == ModItems.BIO_LAB.get()) {
+			}
+			else if (item == ModItems.BIO_LAB.get()) {
 				renderBlockEntity(poseStack, buffer, packedLight, packedOverlay, bioLab.get());
 			}
 		}

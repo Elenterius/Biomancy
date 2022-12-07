@@ -65,7 +65,7 @@ public class ModBlockLoot extends BlockLoot {
 	protected void addTables() {
 		LOGGER.info(logMarker, "registering block loot...");
 
-		dropSelf(ModBlocks.CREATOR.get());
+		dropSelf(ModBlocks.PRIMORDIAL_CRADLE.get());
 		dropSelf(ModBlocks.TONGUE.get());
 		add(ModBlocks.STORAGE_SAC.get(), ModBlockLoot::dropWithInventory);
 

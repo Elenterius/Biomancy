@@ -4,7 +4,7 @@ import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.util.SoundUtil;
-import com.github.elenterius.biomancy.world.block.entity.CreatorBlockEntity;
+import com.github.elenterius.biomancy.world.block.entity.PrimordialCradleBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -37,7 +37,7 @@ import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBlock {
+public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements EntityBlock {
 
 	public static final Predicate<ItemStack> EXPENSIVE_ITEMS = stack -> {
 		Item item = stack.getItem();
@@ -53,7 +53,7 @@ public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBl
 	).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
 	protected static final VoxelShape AABB = Shapes.join(OUTSIDE_AABB, INSIDE_AABB, BooleanOp.ONLY_FIRST);
 
-	public CreatorBlock(Properties properties) {
+	public PrimordialCradleBlock(Properties properties) {
 		super(properties);
 	}
 
@@ -81,13 +81,13 @@ public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBl
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return ModBlockEntities.CREATOR.get().create(pos, state);
+		return ModBlockEntities.PRIMORDIAL_CRADLE.get().create(pos, state);
 	}
 
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-		return level.isClientSide ? null : createTickerHelper(blockEntityType, ModBlockEntities.CREATOR.get(), CreatorBlockEntity::serverTick);
+		return level.isClientSide ? null : createTickerHelper(blockEntityType, ModBlockEntities.PRIMORDIAL_CRADLE.get(), PrimordialCradleBlockEntity::serverTick);
 	}
 
 	@Override
@@ -146,7 +146,7 @@ public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBl
 			if (EXPENSIVE_ITEMS.test(stack)) return false;
 
 			BlockEntity blockEntity = level.getBlockEntity(pos);
-			if (blockEntity instanceof CreatorBlockEntity creator && !creator.isFull() && creator.insertItem(ItemHandlerHelper.copyStackWithSize(stack, 1))) {
+			if (blockEntity instanceof PrimordialCradleBlockEntity creator && !creator.isFull() && creator.insertItem(ItemHandlerHelper.copyStackWithSize(stack, 1))) {
 				SoundEvent soundEvent = creator.isFull() ? ModSoundEvents.CREATOR_BECAME_FULL.get() : ModSoundEvents.CREATOR_EAT.get();
 				SoundUtil.broadcastBlockSound((ServerLevel) level, pos, soundEvent);
 				return true;
@@ -167,7 +167,7 @@ public class CreatorBlock extends HorizontalDirectionalBlock implements EntityBl
 
 	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, Random random) {
-		if (random.nextInt(4) == 0 && level.getBlockEntity(pos) instanceof CreatorBlockEntity creator && creator.isFull()) {
+		if (random.nextInt(4) == 0 && level.getBlockEntity(pos) instanceof PrimordialCradleBlockEntity creator && creator.isFull()) {
 			int particleAmount = random.nextInt(2, 8);
 			int color = 0x9f4576; //magenta haze
 			double r = (color >> 16 & 255) / 255d;

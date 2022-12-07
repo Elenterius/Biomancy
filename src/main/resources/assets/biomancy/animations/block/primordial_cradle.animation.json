@@ -1,7 +1,7 @@
 {
   "format_version": "1.8.0",
   "animations": {
-    "creator.anim.idle": {
+    "cradle.anim.idle": {
       "loop": true,
       "animation_length": 3.12,
       "bones": {
@@ -687,7 +687,7 @@
         }
       }
     },
-    "creator.anim.spike": {
+    "cradle.anim.spike": {
       "animation_length": 0.64,
       "bones": {
         "main": {
@@ -934,7 +934,7 @@
         }
       }
     },
-    "creator.anim.work": {
+    "cradle.anim.work": {
       "loop": true,
       "animation_length": 1.04,
       "bones": {

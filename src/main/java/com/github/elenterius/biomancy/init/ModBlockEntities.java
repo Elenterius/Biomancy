@@ -3,6 +3,8 @@ package com.github.elenterius.biomancy.init;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.world.block.entity.*;
 import com.mojang.datafixers.types.Type;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -12,7 +14,12 @@ public final class ModBlockEntities {
 
 	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, BiomancyMod.MOD_ID);
 
-	public static final RegistryObject<BlockEntityType<CreatorBlockEntity>> CREATOR = BLOCK_ENTITIES.register("creator", () -> BlockEntityType.Builder.of(CreatorBlockEntity::new, ModBlocks.CREATOR.get()).build(noDataFixer()));
+	private static <T extends BlockEntity, B extends Block> RegistryObject<BlockEntityType<T>> register(RegistryObject<B> blockHolder, BlockEntityType.BlockEntitySupplier<T> factory) {
+		return BLOCK_ENTITIES.register(blockHolder.getId().getPath(), () -> BlockEntityType.Builder.of(factory, blockHolder.get()).build(noDataFixer()));
+	}	public static final RegistryObject<BlockEntityType<PrimordialCradleBlockEntity>> PRIMORDIAL_CRADLE = register(ModBlocks.PRIMORDIAL_CRADLE, PrimordialCradleBlockEntity::new);
+
+
+
 	public static final RegistryObject<BlockEntityType<DecomposerBlockEntity>> DECOMPOSER = BLOCK_ENTITIES.register("decomposer", () -> BlockEntityType.Builder.of(DecomposerBlockEntity::new, ModBlocks.DECOMPOSER.get()).build(noDataFixer()));
 	public static final RegistryObject<BlockEntityType<BioForgeBlockEntity>> BIO_FORGE = BLOCK_ENTITIES.register("bio_forge", () -> BlockEntityType.Builder.of(BioForgeBlockEntity::new, ModBlocks.BIO_FORGE.get()).build(noDataFixer()));
 	public static final RegistryObject<BlockEntityType<BioLabBlockEntity>> BIO_LAB = BLOCK_ENTITIES.register("bio_lab", () -> BlockEntityType.Builder.of(BioLabBlockEntity::new, ModBlocks.BIO_LAB.get()).build(noDataFixer()));

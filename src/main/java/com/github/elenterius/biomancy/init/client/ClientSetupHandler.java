@@ -64,7 +64,7 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
-		event.registerBlockEntityRenderer(ModBlockEntities.CREATOR.get(), CreatorBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntities.PRIMORDIAL_CRADLE.get(), PrimordialCradleBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.DECOMPOSER.get(), DecomposerBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.DIGESTER.get(), DigesterBlockEntityRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.BIO_FORGE.get(), BioForgeBlockRenderer::new);
