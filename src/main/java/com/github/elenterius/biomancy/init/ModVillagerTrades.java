@@ -49,6 +49,14 @@ public class ModVillagerTrades {
 		return new BasicItemListing(new ItemStack(item, amount), new ItemStack(Items.EMERALD, emeralds), maxTrades, xp, 0.05F);
 	}
 
+	private static BasicItemListing convertItem(Item item, int emeralds, Item result, int resultAmount, int maxTrades, int xp) {
+		return new BasicItemListing(new ItemStack(item), new ItemStack(Items.EMERALD, emeralds), new ItemStack(result, resultAmount), maxTrades, xp, 0.05F);
+	}
+
+	private static BasicItemListing convertItem(Item item, int emeralds, Item result, int maxTrades, int xp) {
+		return new BasicItemListing(new ItemStack(item), new ItemStack(Items.EMERALD, emeralds), new ItemStack(result), maxTrades, xp, 0.05F);
+	}
+
 	private static BasicItemListing sellToPlayer(Item item, int emeralds, int maxTrades, int xp) {
 		return new BasicItemListing(emeralds, new ItemStack(item), maxTrades, xp, 0.05F);
 	}
@@ -66,6 +74,10 @@ public class ModVillagerTrades {
 		TradeLevel.EXPERT.addItemListings(trades,
 				buyFromPlayer(ModItems.BILE.get(), 2, 12, 30)
 		);
+
+		TradeLevel.MASTER.addItemListings(trades,
+				convertItem(ModItems.TOXIN_GLAND.get(), 4, ModItems.TOXIN_EXTRACT.get(), 4, 8, 15)
+		);
 	}
 
 	private static void addButcherTrades(Int2ObjectMap<List<VillagerTrades.ItemListing>> trades) {
@@ -75,7 +87,8 @@ public class ModVillagerTrades {
 		);
 
 		TradeLevel.APPRENTICE.addItemListings(trades,
-				buyFromPlayer(ModItems.MOB_SINEW.get(), 4, 1, 8, 5)
+				buyFromPlayer(ModItems.MOB_SINEW.get(), 4, 1, 8, 5),
+				buyFromPlayer(ModItems.GENERIC_MOB_GLAND.get(), 2, 1, 8, 5)
 		);
 
 		TradeLevel.JOURNEYMAN.addItemListings(trades,
@@ -88,7 +101,8 @@ public class ModVillagerTrades {
 		);
 
 		TradeLevel.MASTER.addItemListings(trades,
-				sellToPlayer(ModItems.WITHERED_MOB_MARROW.get(), 20, 8, 30)
+				sellToPlayer(ModItems.WITHERED_MOB_MARROW.get(), 20, 8, 30),
+				convertItem(ModItems.VOLATILE_GLAND.get(), 4, Items.GUNPOWDER, 4, 8, 15)
 		);
 	}
 
