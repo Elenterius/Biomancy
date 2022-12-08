@@ -3,11 +3,13 @@ package com.github.elenterius.biomancy.world.block;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.init.ModTriggers;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.block.entity.PrimordialCradleBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -147,6 +149,9 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 
 			BlockEntity blockEntity = level.getBlockEntity(pos);
 			if (blockEntity instanceof PrimordialCradleBlockEntity creator && !creator.isFull() && creator.insertItem(ItemHandlerHelper.copyStackWithSize(stack, 1))) {
+				if (player != null) {
+					ModTriggers.SACRIFICED_ITEM_TRIGGER.trigger((ServerPlayer) player, stack);
+				}
 				SoundEvent soundEvent = creator.isFull() ? ModSoundEvents.CREATOR_BECAME_FULL.get() : ModSoundEvents.CREATOR_EAT.get();
 				SoundUtil.broadcastBlockSound((ServerLevel) level, pos, soundEvent);
 				return true;
