@@ -1,5 +1,7 @@
 package com.github.elenterius.biomancy.datagen.recipes;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModBioForgeTabs;
 import com.github.elenterius.biomancy.init.ModItems;
@@ -376,14 +378,156 @@ public class ModRecipeProvider extends RecipeProvider {
 		DecomposerRecipeBuilder.create().setIngredient(ModItems.TOXIN_GLAND).addOutput(ModItems.TOXIN_EXTRACT.get(), 2, 5).addOutput(ModItems.FLESH_BITS.get(), 2, 3).addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 3).setCraftingTime(184).unlockedBy(ModItems.TOXIN_GLAND).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(ModItems.VOLATILE_GLAND).addOutput(ModItems.VOLATILE_FLUID.get(), 2, 5).addOutput(ModItems.FLESH_BITS.get(), 2, 3).addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 3).setCraftingTime(209).unlockedBy(ModItems.VOLATILE_GLAND).save(consumer);
 
-		//Other Mods
-		DecomposerRecipeBuilder.create()
-				.ifModLoaded("biomesoplenty")
-				.setIngredient(new DatagenIngredient("biomesoplenty:flesh_tendons"))
-				.addOutput(ModItems.ELASTIC_FIBERS.get(), 4, 8)
-				.addOutput(ModItems.FLESH_BITS.get(), 1, 2)
-				.setCraftingTime(116)
-				.unlockedBy(ModItems.MOB_SINEW).save(consumer);
+		//biomes o plenty
+		DecomposerRecipeBuilder.create().ifModLoaded("biomesoplenty").setIngredient(new DatagenIngredient("biomesoplenty:flesh_tendons")).addOutput(ModItems.ELASTIC_FIBERS.get(), 4, 8).addOutput(ModItems.FLESH_BITS.get(), 1, 2).setCraftingTime(116).unlockedBy(ModItems.MOB_SINEW).save(consumer);
+
+		registerDecomposerRecipesForAlexsMobs(consumer);
+	}
+
+	private void registerDecomposerRecipesForAlexsMobs(Consumer<FinishedRecipe> consumer) {
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.ROADRUNNER_FEATHER)
+				.addOutput(ModItems.TOUGH_FIBERS.get(), 1, 2).addOutput(ModItems.BIO_MINERALS.get(), 0, 1).setCraftingTime(82)
+				.unlockedBy(AMItemRegistry.ROADRUNNER_FEATHER).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.BONE_SERPENT_TOOTH)
+				.addOutput(ModItems.BIO_MINERALS.get(), 2, 4).addOutput(ModItems.BONE_FRAGMENTS.get(), 4, 6).setCraftingTime(238)
+				.unlockedBy(AMItemRegistry.BONE_SERPENT_TOOTH).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.GAZELLE_HORN)
+				.addOutput(ModItems.BIO_MINERALS.get(), 3, 5).addOutput(ModItems.TOUGH_FIBERS.get(), 4, 6).setCraftingTime(290)
+				.unlockedBy(AMItemRegistry.GAZELLE_HORN).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.CROCODILE_SCUTE)
+				.addOutput(ModItems.TOUGH_FIBERS.get(), 3, 5).addOutput(ModItems.BIO_MINERALS.get(), 1, 3).setCraftingTime(216)
+				.unlockedBy(AMItemRegistry.CROCODILE_SCUTE).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.MAGGOT)
+				.addOutput(ModItems.FLESH_BITS.get(), 0, 1).setCraftingTime(30)
+				.unlockedBy(AMItemRegistry.MAGGOT).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.BLOOD_SAC)
+				.addOutput(ModItems.BILE.get(), 4, 6).addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 3).setCraftingTime(180)
+				.unlockedBy(AMItemRegistry.BLOOD_SAC).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.RATTLESNAKE_RATTLE)
+				.addOutput(ModItems.TOXIN_EXTRACT.get(), 2, 5).addOutput(ModItems.TOUGH_FIBERS.get(), 2, 3).addOutput(ModItems.BIO_MINERALS.get(), 1, 3).setCraftingTime(184)
+				.unlockedBy(AMItemRegistry.RATTLESNAKE_RATTLE).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.SHARK_TOOTH)
+				.addOutput(ModItems.BIO_MINERALS.get(), 1, 2).addOutput(ModItems.BONE_FRAGMENTS.get(), 2, 4).setCraftingTime(218)
+				.unlockedBy(AMItemRegistry.SHARK_TOOTH).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.KOMODO_SPIT)
+				.addOutput(ModItems.BILE.get(), 1, 2).addOutput(ModItems.TOXIN_EXTRACT.get(), 0, 1).setCraftingTime(90)
+				.unlockedBy(AMItemRegistry.KOMODO_SPIT).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.CENTIPEDE_LEG)
+				.addOutput(ModItems.BIO_MINERALS.get(), 6, 10).addOutput(ModItems.TOUGH_FIBERS.get(), 4, 7).setCraftingTime(430)
+				.unlockedBy(AMItemRegistry.CENTIPEDE_LEG).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.MOOSE_ANTLER)
+				.addOutput(ModItems.BIO_MINERALS.get(), 3, 5).addOutput(ModItems.TOUGH_FIBERS.get(), 4, 6).setCraftingTime(290)
+				.unlockedBy(AMItemRegistry.MOOSE_ANTLER).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.MOOSE_RIBS)
+				.addOutput(ModItems.FLESH_BITS.get(), 2, 4).addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 2, 5).addOutput(ModItems.NUTRIENTS.get(), 0, 1).setCraftingTime(187)
+				.unlockedBy(AMItemRegistry.MOOSE_RIBS).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.RACCOON_TAIL)
+				.addOutput(ModItems.BIO_MINERALS.get(), 2, 4).addOutput(ModItems.FLESH_BITS.get(), 2, 3).addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 3).setCraftingTime(180)
+				.unlockedBy(AMItemRegistry.RACCOON_TAIL).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.BLOBFISH)
+				.addOutput(ModItems.BILE.get(), 2, 4).addOutput(ModItems.FLESH_BITS.get(), 2, 4).addOutput(ModItems.BONE_FRAGMENTS.get(), 1, 2)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2).setCraftingTime(182)
+				.unlockedBy(AMItemRegistry.BLOBFISH).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.SPIKED_SCUTE)
+				.addOutput(ModItems.TOUGH_FIBERS.get(), 3, 5).addOutput(ModItems.BIO_MINERALS.get(), 1, 3).setCraftingTime(216)
+				.unlockedBy(AMItemRegistry.SPIKED_SCUTE).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.HEMOLYMPH_SAC)
+				.addOutput(ModItems.BILE.get(), 4, 6).addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 3).addOutput(ModItems.BIO_LUMENS.get(), 2, 4).setCraftingTime(182)
+				.unlockedBy(AMItemRegistry.HEMOLYMPH_SAC).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.EMU_FEATHER)
+				.addOutput(ModItems.TOUGH_FIBERS.get(), 1, 2).addOutput(ModItems.BIO_MINERALS.get(), 0, 1).setCraftingTime(82)
+				.unlockedBy(AMItemRegistry.EMU_FEATHER).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.DROPBEAR_CLAW)
+				.addOutput(ModItems.BIO_MINERALS.get(), 3, 5).addOutput(ModItems.TOUGH_FIBERS.get(), 4, 6).setCraftingTime(290)
+				.unlockedBy(AMItemRegistry.DROPBEAR_CLAW).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.KANGAROO_MEAT)
+				.addOutput(ModItems.FLESH_BITS.get(), 2, 4).addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 0, 2).addOutput(ModItems.NUTRIENTS.get(), 0, 1).setCraftingTime(187)
+				.unlockedBy(AMItemRegistry.KANGAROO_MEAT).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.KANGAROO_HIDE)
+				.addOutput(ModItems.TOUGH_FIBERS.get(), 1, 2).setCraftingTime(60)
+				.unlockedBy(AMItemRegistry.KANGAROO_HIDE).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.CACHALOT_WHALE_TOOTH)
+				.addOutput(ModItems.BIO_MINERALS.get(), 2, 4).addOutput(ModItems.BONE_FRAGMENTS.get(), 4, 6).setCraftingTime(238)
+				.unlockedBy(AMItemRegistry.CACHALOT_WHALE_TOOTH).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.VOID_WORM_MANDIBLE)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 20, 25).addOutput(ModItems.BIO_MINERALS.get(), 6, 10).addOutput(ModItems.TOUGH_FIBERS.get(), 4, 7).setCraftingTime(490)
+				.unlockedBy(AMItemRegistry.VOID_WORM_MANDIBLE).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.VOID_WORM_EYE)
+				.addOutput(ModItems.BILE.get(), 5, 10).addOutput(ModItems.EXOTIC_DUST.get(), 40, 50).addOutput(ModItems.BIO_MINERALS.get(), 6, 10)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 4, 7).setCraftingTime(600)
+				.unlockedBy(AMItemRegistry.VOID_WORM_EYE).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.FROSTSTALKER_HORN)
+				.addOutput(ModItems.BIO_MINERALS.get(), 3, 5).addOutput(ModItems.TOUGH_FIBERS.get(), 4, 6).setCraftingTime(290)
+				.unlockedBy(AMItemRegistry.FROSTSTALKER_HORN).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.SHED_SNAKE_SKIN)
+				.addOutput(ModItems.TOUGH_FIBERS.get(), 0, 2).setCraftingTime(60)
+				.unlockedBy(AMItemRegistry.SHED_SNAKE_SKIN).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.LOST_TENTACLE)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 8, 15).addOutput(ModItems.FLESH_BITS.get(), 3, 5).setCraftingTime(146)
+				.unlockedBy(AMItemRegistry.LOST_TENTACLE).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.RAW_CATFISH)
+				.addOutput(ModItems.FLESH_BITS.get(), 2, 4).addOutput(ModItems.BONE_FRAGMENTS.get(), 1, 2).addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2).setCraftingTime(142)
+				.unlockedBy(AMItemRegistry.RAW_CATFISH).save(consumer);
+
+		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
+				.setIngredient(AMItemRegistry.FISH_BONES)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 2, 5).setCraftingTime(145)
+				.unlockedBy(AMItemRegistry.FISH_BONES).save(consumer);
 	}
 
 	private void registerBioForgeRecipes(Consumer<FinishedRecipe> consumer) {
