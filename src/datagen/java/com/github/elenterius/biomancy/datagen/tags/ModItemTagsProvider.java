@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.datagen.tags;
 
+import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModTags;
@@ -49,6 +50,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
 		createTag(ModTags.Items.RAW_MEATS)
 				.add(BEEF, PORKCHOP, CHICKEN, RABBIT, MUTTON, COD, SALMON, TROPICAL_FISH, PUFFERFISH)
+				.add(AMItemRegistry.MOOSE_RIBS.get(), AMItemRegistry.KANGAROO_MEAT.get(), AMItemRegistry.RAW_CATFISH.get(), AMItemRegistry.BLOBFISH.get(), AMItemRegistry.MAGGOT.get())
 				.addOptional("createfa:ground_chicken", "createfa:ground_beef")
 				.addOptional("rats:raw_rat")
 				.addOptional("circus:clown")
@@ -65,6 +67,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
 		createTag(ModTags.Items.COOKED_MEATS)
 				.add(COOKED_BEEF, COOKED_PORKCHOP, COOKED_CHICKEN, COOKED_SALMON, COOKED_MUTTON, COOKED_COD, COOKED_RABBIT)
+				.add(AMItemRegistry.COOKED_MOOSE_RIBS.get())
 				.addOptional("createfa:schnitzel", "createfa:meatballs", "createfa:chicken_nuggets")
 				.addOptional("rats:cooked_rat");
 
