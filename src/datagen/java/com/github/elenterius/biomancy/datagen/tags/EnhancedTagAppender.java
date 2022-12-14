@@ -5,17 +5,63 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagKey;
+import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.registries.RegistryObject;
 
-public record EnhancedTagAppender<T>(TagsProvider.TagAppender<T> delegate) {
+import java.util.Objects;
 
-	public EnhancedTagAppender<T> add(T entry) {
-		delegate.add(entry);
+public record EnhancedTagAppender<T extends IForgeRegistryEntry<?>>(TagsProvider.TagAppender<T> delegate) {
+
+	public EnhancedTagAppender<T> addTag(TagKey<T> tagKey) {
+		if (isValidNamespace(tagKey.location().getNamespace())) {
+			delegate.addTag(tagKey);
+		}
+		else {
+			addOptionalTag(tagKey.location());
+		}
 		return this;
 	}
 
 	@SafeVarargs
+	public final EnhancedTagAppender<T> addTag(TagKey<T>... tagKeys) {
+		for (TagKey<T> tagKey : tagKeys) {
+			addTag(tagKey);
+		}
+		return this;
+	}
+
+	@SafeVarargs
+	public final EnhancedTagAppender<T> add(T... entries) {
+		for (T entry : entries) {
+			add(entry);
+		}
+		return this;
+	}
+
+	public EnhancedTagAppender<T> add(T entry) {
+		if (isValidNamespace(Objects.requireNonNull(entry.getRegistryName()).getNamespace())) {
+			delegate.add(entry);
+		}
+		else {
+			addOptional(entry.getRegistryName());
+		}
+		return this;
+	}
+
+	private boolean isValidNamespace(String namespace) {
+		return "minecraft".equals(namespace) || delegate.getModID().equals(namespace);
+	}
+
+	@SafeVarargs
 	public final EnhancedTagAppender<T> add(ResourceKey<T>... resourceKeys) {
-		delegate.add(resourceKeys);
+		for (ResourceKey<T> resourcekey : resourceKeys) {
+			if (isValidNamespace(resourcekey.location().getNamespace())) {
+				delegate.add(resourcekey);
+			}
+			else {
+				addOptional(resourcekey.location());
+			}
+		}
 		return this;
 	}
 
@@ -38,9 +84,10 @@ public record EnhancedTagAppender<T>(TagsProvider.TagAppender<T> delegate) {
 		return this;
 	}
 
-
-	public EnhancedTagAppender<T> addTag(TagKey<T> tagKey) {
-		delegate.addTag(tagKey);
+	public EnhancedTagAppender<T> addOptional(RegistryObject<?>... entries) {
+		for (RegistryObject<?> registryObject : entries) {
+			delegate.addOptional(registryObject.getId());
+		}
 		return this;
 	}
 
@@ -63,29 +110,12 @@ public record EnhancedTagAppender<T>(TagsProvider.TagAppender<T> delegate) {
 		return this;
 	}
 
-	@SafeVarargs
-	public final EnhancedTagAppender<T> add(T... entries) {
-		delegate.add(entries);
-		return this;
-	}
-
-	public EnhancedTagAppender<T> add(Tag.Entry tagEntry) {
-		delegate.add(tagEntry);
-		return this;
-	}
-
 	public Tag.Builder getInternalBuilder() {
 		return delegate.getInternalBuilder();
 	}
 
 	public String getModId() {
 		return delegate.getModID();
-	}
-
-	@SafeVarargs
-	public final EnhancedTagAppender<T> addTag(TagKey<T>... tagKeys) {
-		delegate.addTags(tagKeys);
-		return this;
 	}
 
 	public EnhancedTagAppender<T> replace() {
