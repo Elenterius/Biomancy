@@ -1,72 +1,47 @@
 package com.github.elenterius.biomancy.datagen.tags;
 
+import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModTags;
+import com.github.elenterius.biomancy.world.entity.MobUtil;
+import net.minecraft.core.*;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.animal.AbstractGolem;
+import net.minecraft.world.entity.monster.Slime;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkSource;
+import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.entity.LevelEntityGetter;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
+import net.minecraft.world.scores.Scoreboard;
+import net.minecraft.world.ticks.LevelTickAccess;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
 
 public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
-
-	protected static final Set<EntityType<?>> INVALID_VANILLA_ENTITIES = Set.of(
-			EntityType.AREA_EFFECT_CLOUD,
-			EntityType.ARMOR_STAND,
-			EntityType.ARROW,
-			EntityType.BOAT,
-			EntityType.DRAGON_FIREBALL,
-			EntityType.END_CRYSTAL,
-			EntityType.EVOKER_FANGS,
-			EntityType.EXPERIENCE_ORB,
-			EntityType.EYE_OF_ENDER,
-			EntityType.FALLING_BLOCK,
-			EntityType.FIREWORK_ROCKET,
-			EntityType.GLOW_ITEM_FRAME,
-			EntityType.ITEM_FRAME,
-			EntityType.ITEM,
-			EntityType.FIREBALL,
-			EntityType.LEASH_KNOT,
-			EntityType.LIGHTNING_BOLT,
-			EntityType.LLAMA_SPIT,
-			EntityType.MARKER,
-			EntityType.MINECART,
-			EntityType.CHEST_MINECART,
-			EntityType.COMMAND_BLOCK_MINECART,
-			EntityType.FURNACE_MINECART,
-			EntityType.HOPPER_MINECART,
-			EntityType.SPAWNER_MINECART,
-			EntityType.TNT_MINECART,
-			EntityType.PAINTING,
-			EntityType.TNT,
-			EntityType.SHULKER_BULLET,
-			EntityType.SMALL_FIREBALL,
-			EntityType.SNOWBALL,
-			EntityType.SPECTRAL_ARROW,
-			EntityType.EGG,
-			EntityType.ENDER_PEARL,
-			EntityType.EXPERIENCE_BOTTLE,
-			EntityType.POTION,
-			EntityType.TRIDENT,
-			EntityType.WITHER_SKULL,
-			EntityType.FISHING_BOBBER
-	);
-
-	protected static final Set<EntityType<?>> INVALID_BIOMANCY_ENTITIES = Set.of(
-			ModEntityTypes.TOOTH_PROJECTILE.get(),
-			ModEntityTypes.ANTI_GRAVITY_PROJECTILE.get(),
-			ModEntityTypes.WITHER_SKULL_PROJECTILE.get(),
-			ModEntityTypes.CORROSIVE_ACID_PROJECTILE.get()
-	);
 
 	protected static final EntityType<?>[] TOXIC_MOBS = {
 			EntityType.CAVE_SPIDER,
@@ -91,16 +66,18 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 			EntityType.WOLF, EntityType.FOX,
 			EntityType.POLAR_BEAR, EntityType.PANDA,
 			EntityType.HOGLIN, EntityType.ZOGLIN,
-			EntityType.ENDER_DRAGON,
-			EntityType.DOLPHIN
+			EntityType.ENDER_DRAGON
 	};
 	protected static final Set<EntityType<?>> INVALID_MOBS_FOR_MEATY_LOOT = Set.of(
-			EntityType.SLIME,
+			EntityType.SLIME, EntityType.MAGMA_CUBE,
 			EntityType.IRON_GOLEM, EntityType.SNOW_GOLEM, EntityType.SHULKER,
 			EntityType.VEX, EntityType.GHAST,
 			EntityType.BLAZE,
 			EntityType.HUSK, EntityType.DROWNED, EntityType.ZOMBIE, EntityType.ZOMBIE_HORSE, EntityType.ZOMBIE_VILLAGER,
-			EntityType.SKELETON, EntityType.SKELETON_HORSE, EntityType.STRAY, EntityType.WITHER_SKELETON, EntityType.WITHER
+			EntityType.SKELETON, EntityType.SKELETON_HORSE, EntityType.STRAY, EntityType.WITHER_SKELETON, EntityType.WITHER,
+
+			AMEntityRegistry.SPECTRE.get(), AMEntityRegistry.VOID_WORM.get(), AMEntityRegistry.SKELEWAG.get(), AMEntityRegistry.BONE_SERPENT.get(),
+			AMEntityRegistry.MIMICUBE.get(), AMEntityRegistry.FLUTTER.get(), AMEntityRegistry.GUSTER.get()
 	);
 
 	public ModEntityTypeTagsProvider(DataGenerator pGenerator, @Nullable ExistingFileHelper existingFileHelper) {
@@ -119,54 +96,78 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 
 	private void addSpecialMobLootTags() {
 		createTag(ModTags.EntityTypes.SHARP_FANG)
-				.add(SHARP_FANG_MOBS);
+				.add(SHARP_FANG_MOBS)
+				.addOptional(
+						AMEntityRegistry.GRIZZLY_BEAR, AMEntityRegistry.DROPBEAR, AMEntityRegistry.SEA_BEAR,
+						AMEntityRegistry.GORILLA, AMEntityRegistry.GELADA_MONKEY, AMEntityRegistry.CAPUCHIN_MONKEY,
+						AMEntityRegistry.RATTLESNAKE, AMEntityRegistry.ANACONDA,
+						AMEntityRegistry.TIGER, AMEntityRegistry.MANED_WOLF, AMEntityRegistry.SNOW_LEOPARD,
+						AMEntityRegistry.TUSKLIN
+				);
 
 		createTag(ModTags.EntityTypes.SHARP_CLAW)
-				.add(SHARP_CLAW_MOBS);
+				.add(SHARP_CLAW_MOBS)
+				.addOptional(
+						AMEntityRegistry.GRIZZLY_BEAR, AMEntityRegistry.DROPBEAR, AMEntityRegistry.SEA_BEAR,
+						AMEntityRegistry.ROADRUNNER, AMEntityRegistry.SOUL_VULTURE, AMEntityRegistry.BALD_EAGLE, AMEntityRegistry.EMU,
+						AMEntityRegistry.PLATYPUS,
+						AMEntityRegistry.RACCOON, AMEntityRegistry.TASMANIAN_DEVIL,
+						AMEntityRegistry.TIGER, AMEntityRegistry.MANED_WOLF, AMEntityRegistry.SNOW_LEOPARD
+				);
 
 		createTag(ModTags.EntityTypes.TOXIN_GLAND)
-				.add(TOXIC_MOBS);
+				.add(TOXIC_MOBS)
+				.addOptional(
+						AMEntityRegistry.KOMODO_DRAGON,
+						AMEntityRegistry.PLATYPUS
+				);
 
 		createTag(ModTags.EntityTypes.VOLATILE_GLAND)
 				.add(VOLATILE_MOBS);
 
 		createTag(ModTags.EntityTypes.BONE_MARROW)
 				.add(EntityType.SKELETON_HORSE)
-				.addTag(EntityTypeTags.SKELETONS);
+				.addTag(EntityTypeTags.SKELETONS)
+				.addOptional(AMEntityRegistry.SKELEWAG, AMEntityRegistry.BONE_SERPENT);
 
 		createTag(ModTags.EntityTypes.WITHERED_BONE_MARROW)
 				.add(EntityType.WITHER_SKELETON, EntityType.WITHER);
 
-		Predicate<EntityType<?>> sinewPredicate = createSinewPredicate();
-		Predicate<EntityType<?>> bileGlandPredicate = createBileGlandPredicate();
-		Predicate<EntityType<?>> validEntityPredicate = createValidEntityTypePredicate();
+		buildSinewAndBileTag();
+	}
+
+	private void buildSinewAndBileTag() {
+		Set<String> validNamespaces = Set.of("minecraft", BiomancyMod.MOD_ID, AlexsMobs.MODID);
+		Predicate<EntityType<?>> allowedNamespace = entityType -> validNamespaces.contains(Objects.requireNonNull(entityType.getRegistryName()).getNamespace());
+
+		Set<EntityType<?>> toxicMobs = Set.of(TOXIC_MOBS);
+		Set<EntityType<?>> volatileMobs = Set.of(VOLATILE_MOBS);
+		Predicate<EntityType<?>> canHaveGland = entityType -> !toxicMobs.contains(entityType) && !volatileMobs.contains(entityType);
 
 		EnhancedTagAppender<EntityType<?>> sinewTag = createTag(ModTags.EntityTypes.SINEW);
 		EnhancedTagAppender<EntityType<?>> bileGlandTag = createTag(ModTags.EntityTypes.BILE_GLAND);
 
+		FakeLevel fakeLevel = new FakeLevel(); //we ignore that this is a AutoClosable object
+
 		for (EntityType<?> entityType : ForgeRegistries.ENTITIES) {
-			if (validEntityPredicate.test(entityType)) {
-				if (sinewPredicate.test(entityType)) sinewTag.add(entityType);
-				if (bileGlandPredicate.test(entityType)) bileGlandTag.add(entityType);
+			if (!allowedNamespace.test(entityType)) continue;
+
+			Entity entity = entityType.create(fakeLevel);
+			if (entity instanceof Mob mob && isValidForMeatyLoot(mob, entityType)) {
+				sinewTag.add(entityType);
+				if (canHaveGland.test(entityType)) bileGlandTag.add(entityType);
 			}
 		}
 	}
 
-	private Predicate<EntityType<?>> createValidEntityTypePredicate() {
-		Set<String> validNamespaces = Set.of("minecraft", BiomancyMod.MOD_ID);
-		return entityType -> !INVALID_VANILLA_ENTITIES.contains(entityType)
-				&& !INVALID_BIOMANCY_ENTITIES.contains(entityType)
-				&& validNamespaces.contains(Objects.requireNonNull(entityType.getRegistryName()).getNamespace());
-	}
-
-	private Predicate<EntityType<?>> createSinewPredicate() {
-		return entityType -> !INVALID_MOBS_FOR_MEATY_LOOT.contains(entityType);
-	}
-
-	private Predicate<EntityType<?>> createBileGlandPredicate() {
-		Set<EntityType<?>> toxicMobs = Set.of(TOXIC_MOBS);
-		Set<EntityType<?>> volatileMobs = Set.of(VOLATILE_MOBS);
-		return entityType -> !toxicMobs.contains(entityType) && !volatileMobs.contains(entityType) && !INVALID_MOBS_FOR_MEATY_LOOT.contains(entityType);
+	private boolean isValidForMeatyLoot(Mob mob, EntityType<?> entityType) {
+		if (INVALID_MOBS_FOR_MEATY_LOOT.contains(entityType)) return false;
+		if (MobUtil.isUndead(mob)) return false;
+		if (MobUtil.isSkeleton(mob)) return false;
+		if (MobUtil.isWithered(mob)) return false;
+		if (mob instanceof AbstractGolem) return false;
+		if (mob instanceof Slime) return false;
+		return true;
 	}
 
 	protected EnhancedTagAppender<EntityType<?>> createTag(TagKey<EntityType<?>> tag) {
@@ -176,6 +177,143 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 	@Override
 	public String getName() {
 		return StringUtils.capitalize(modId) + " " + super.getName();
+	}
+
+	/**
+	 * Stub for creating instances of Entities from EntityTypes.
+	 * FOR DATAGEN ONLY! MAY IMPLODE.
+	 */
+	@SuppressWarnings("DataFlowIssue")
+	private static final class FakeLevel extends Level {
+
+		private final Scoreboard scoreboard;
+
+		private FakeLevel() {
+			super(null, null, RegistryAccess.BUILTIN.get().registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getHolderOrThrow(DimensionType.OVERWORLD_LOCATION), null, false, false, 0);
+			scoreboard = new Scoreboard();
+		}
+
+		@Override
+		public RegistryAccess registryAccess() {
+			return null;
+		}
+
+		@Override
+		public void close() {
+			//do nothing
+		}
+
+		@Override
+		public long getDayTime() {
+			return 0L; //fix for villagers
+		}
+
+		@Override
+		public long getGameTime() {
+			return 0L; //fix for villagers
+		}
+
+		@Override
+		public void sendBlockUpdated(BlockPos pos, BlockState oldState, BlockState newState, int flags) {
+			//do nothing
+		}
+
+		@Override
+		public void playSound(@Nullable Player player, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch) {
+			//do nothing
+		}
+
+		@Override
+		public void playSound(@Nullable Player player, Entity entity, SoundEvent event, SoundSource category, float volume, float pitch) {
+			//do nothing
+		}
+
+		@Override
+		public String gatherChunkSourceStats() {
+			return null;
+		}
+
+		@Nullable
+		@Override
+		public Entity getEntity(int id) {
+			return null;
+		}
+
+		@Nullable
+		@Override
+		public MapItemSavedData getMapData(String mapName) {
+			return null;
+		}
+
+		@Override
+		public void setMapData(String mapId, MapItemSavedData data) {
+			//do nothing
+		}
+
+		@Override
+		public int getFreeMapId() {
+			return 0;
+		}
+
+		@Override
+		public void destroyBlockProgress(int breakerId, BlockPos pos, int progress) {
+			//do nothing
+		}
+
+		@Override
+		public Scoreboard getScoreboard() {
+			return scoreboard; //fix for wither boss
+		}
+
+		@Override
+		public RecipeManager getRecipeManager() {
+			return null;
+		}
+
+		@Override
+		protected LevelEntityGetter<Entity> getEntities() {
+			return null;
+		}
+
+		@Override
+		public LevelTickAccess<Block> getBlockTicks() {
+			return null;
+		}
+
+		@Override
+		public LevelTickAccess<Fluid> getFluidTicks() {
+			return null;
+		}
+
+		@Override
+		public ChunkSource getChunkSource() {
+			return null;
+		}
+
+		@Override
+		public void levelEvent(@Nullable Player player, int type, BlockPos pos, int data) {
+			//do nothing
+		}
+
+		@Override
+		public void gameEvent(@Nullable Entity entity, GameEvent event, BlockPos pos) {
+			//do nothing
+		}
+
+		@Override
+		public float getShade(Direction direction, boolean shade) {
+			return 0;
+		}
+
+		@Override
+		public List<? extends Player> players() {
+			return List.of();
+		}
+
+		@Override
+		public Holder<Biome> getUncachedNoiseBiome(int x, int y, int z) {
+			return null;
+		}
 	}
 
 }
