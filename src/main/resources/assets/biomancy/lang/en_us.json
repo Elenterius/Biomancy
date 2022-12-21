@@ -289,6 +289,8 @@
   "jei.biomancy.recipe.decomposer": "Decomposer Recipes",
   "jei.biomancy.recipe.digester": "Digester Recipes",
   "jei.biomancy.recipe.bio_forge": "Bio-Forge Recipes",
+  "jer.biomancy.requiresDespoilOrBoneCleaver": "Requires Despoil Enchantment or Bone Cleaver (#forge:tools/knives)",
+  "jer.biomancy.requiresBoneCleaver": "Requires Bone Cleaver",
   "keyboard.biomancy.ctrl": "ctrl",
   "keyboard.biomancy.alt": "alt",
   "keyboard.biomancy.shift": "shift",

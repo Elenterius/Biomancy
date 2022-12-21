@@ -28,6 +28,10 @@ public class DynamicWeightedRandomList<T extends DynamicWeightedRandomList.IWeig
 		return totalWeight;
 	}
 
+	public List<T> getEntries() {
+		return items;
+	}
+
 	protected void addEntry(T entry) {
 		items.add(entry);
 		calcTotalWeight();

@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy;
 
 import com.github.elenterius.biomancy.init.*;
-import com.github.elenterius.biomancy.integration.compat.ModsCompatHandler;
+import com.github.elenterius.biomancy.integration.ModsCompatHandler;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;

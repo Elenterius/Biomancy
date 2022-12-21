@@ -171,6 +171,9 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}:9.7.1.255:api") // compile against the JEI API but do not include it at runtime
     runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:9.7.1.255") // at runtime, use the full JEI jar
 
+//    compileOnly fg.deobf("curse.maven:jer_api-240630:3831562")
+    implementation "curse.maven:jer_deobf-240630:3831563"
+
 //  curse.maven:<descriptor, can be anything>-<CurseForge project id>:<CurseForge file id>
     implementation fg.deobf("curse.maven:create-328085:4007544")
     runtimeOnly fg.deobf("curse.maven:flywheel-486392:3934664")

@@ -11,6 +11,7 @@ import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModItems;
+import com.github.elenterius.biomancy.integration.ModsCompatHandler;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.model.HumanoidModel;
@@ -60,6 +61,8 @@ public final class ClientSetupHandler {
 			ModRecipeBookCategories.init();
 			registerItemModelProperties();
 		});
+
+		ModsCompatHandler.onBiomancyClientSetup(event);
 	}
 
 	@SubscribeEvent

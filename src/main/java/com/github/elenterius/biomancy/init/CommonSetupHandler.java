@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.integration.compat.ModsCompatHandler;
+import com.github.elenterius.biomancy.integration.ModsCompatHandler;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import com.github.elenterius.biomancy.world.item.BioExtractorItem;
 import com.github.elenterius.biomancy.world.item.InjectorItem;
@@ -32,7 +32,7 @@ public final class CommonSetupHandler {
 			ModRecipes.registerComposterRecipes();
 		});
 
-		ModsCompatHandler.onBiomancySetup(event);
+		ModsCompatHandler.onBiomancyCommonSetup(event);
 	}
 
 	private static void registerDispenserBehaviors() {

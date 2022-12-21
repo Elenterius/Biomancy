@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.world.serum;
 
-import com.github.elenterius.biomancy.integration.compat.ModsCompatHandler;
+import com.github.elenterius.biomancy.integration.ModsCompatHandler;
 import com.github.elenterius.biomancy.mixin.ZombieVillagerMixinAccessor;
 import com.github.elenterius.biomancy.world.entity.MobUtil;
 import com.github.elenterius.biomancy.world.entity.fleshblob.FleshBlob;

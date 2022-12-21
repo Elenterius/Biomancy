@@ -60,6 +60,10 @@ public class SpecialMobLootModifier extends LootModifier {
 		this.weights = weights;
 	}
 
+	public LootItemCondition[] getConditions() {
+		return conditions;
+	}
+
 	private static String getName(RegistryObject<? extends Item> itemHolder) {
 		return itemHolder.getId().toDebugFileName();
 	}
@@ -85,6 +89,15 @@ public class SpecialMobLootModifier extends LootModifier {
 		if (hasBoneMarrow) lootTable.add(BONE_MARROW, weights.boneMarrow);
 		if (hasWitheredBoneMarrow) lootTable.add(WITHERED_BONE_MARROW, weights.witheredBoneMarrow);
 
+		return lootTable;
+	}
+
+	private DynamicLootTable getLootTableForJER(LivingEntity livingEntity) {
+		DynamicLootTable lootTable = buildLootTable(livingEntity);
+		if (lootTable.isEmpty()) return lootTable;
+
+		lootTable.add(EMPTY, 15);
+		lootTable.add(FLESH_BITS, 15);
 		return lootTable;
 	}
 

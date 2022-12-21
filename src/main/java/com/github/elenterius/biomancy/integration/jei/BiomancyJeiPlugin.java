@@ -22,7 +22,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import java.util.Objects;
 
 @JeiPlugin
-public class BiomancyPlugin implements IModPlugin {
+public class BiomancyJeiPlugin implements IModPlugin {
 
 	private static final ResourceLocation ID = BiomancyMod.createRL("plugin");
 

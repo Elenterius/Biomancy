@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.world.serum;
 
-import com.github.elenterius.biomancy.integration.compat.ModsCompatHandler;
+import com.github.elenterius.biomancy.integration.ModsCompatHandler;
 import com.github.elenterius.biomancy.integration.compat.pehkui.IPehkuiHelper;
 import com.github.elenterius.biomancy.mixin.AgeableMobAccessor;
 import com.github.elenterius.biomancy.mixin.ArmorStandAccessor;
