@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.world.entity.projectile.BaseProjectile;
 import com.github.elenterius.biomancy.world.entity.projectile.CorrosiveAcidProjectile;
 import com.github.elenterius.biomancy.world.entity.projectile.WitherProjectile;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
@@ -24,8 +25,8 @@ public final class ModDamageSources {
 	public static final DamageSource SYMBIONT_GENERIC_ATTACK = createGenericDamage("symbiont_generic");
 	public static final DamageSource CORROSIVE_ACID = createGenericDamage("corrosive_acid");
 
-	public static final DamageSource FALL_ON_BONE_SPIKE = createGenericDamage("bone_spike").bypassArmor().setIsFall();
-	public static final DamageSource IMPALED_BY_BONE_SPIKE = createGenericDamage("bone_spike").bypassArmor();
+	public static final DamageSource FALL_ON_BONE_SPIKE = createGenericDamage("bone_spike_fall").bypassArmor().setIsFall();
+	public static final DamageSource IMPALED_BY_BONE_SPIKE = createGenericDamage("bone_spike_impale").bypassArmor();
 
 	private ModDamageSources() {}
 
@@ -34,7 +35,8 @@ public final class ModDamageSources {
 	}
 
 	public static DamageSource createProjectileDamage(BaseProjectile projectile, @Nullable Entity shooter) {
-		String messageId = Objects.requireNonNullElse(projectile.getType().getRegistryName(), BiomancyMod.MOD_ID + "." + "projectile").toString();
+		ResourceLocation resourceLocation = Objects.requireNonNull(projectile.getType().getRegistryName());
+		String messageId = resourceLocation.toString().replace(":", ".");
 		return new IndirectEntityDamageSource(messageId, projectile, shooter).setProjectile();
 	}
 

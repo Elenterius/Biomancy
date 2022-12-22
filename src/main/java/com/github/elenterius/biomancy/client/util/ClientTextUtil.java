@@ -4,7 +4,6 @@ import com.github.elenterius.biomancy.init.client.ClientSetupHandler;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -13,7 +12,6 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -40,7 +38,7 @@ public final class ClientTextUtil {
 	}
 
 	public static MutableComponent getItemInfoTooltip(Item item) {
-		return Screen.hasControlDown() ? new TranslatableComponent(Util.makeDescriptionId("tooltip", ForgeRegistries.ITEMS.getKey(item))).withStyle(TextStyles.LORE) : pressButtonTo(CTRL_KEY_TEXT.plainCopy(), "show Info").withStyle(TextStyles.LORE);
+		return Screen.hasControlDown() ? TextComponentUtil.getItemTooltip(item).withStyle(TextStyles.LORE) : pressButtonTo(CTRL_KEY_TEXT.plainCopy(), "show Info").withStyle(TextStyles.LORE);
 	}
 
 	public static boolean showExtraInfo(List<Component> tooltip) {

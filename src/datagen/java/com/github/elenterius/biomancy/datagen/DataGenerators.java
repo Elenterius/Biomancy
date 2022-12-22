@@ -49,6 +49,9 @@ public final class DataGenerators {
 
 		//sounds
 		generator.addProvider(new ModSoundProvider(generator, existingFileHelper));
+
+		//translations
+		generator.addProvider(new ModEnglishLanguageProvider(generator));
 	}
 
 }

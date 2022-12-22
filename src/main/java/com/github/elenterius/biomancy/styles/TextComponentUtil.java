@@ -3,6 +3,8 @@ package com.github.elenterius.biomancy.styles;
 import com.github.elenterius.biomancy.BiomancyMod;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 
 public final class TextComponentUtil {
 
@@ -14,6 +16,18 @@ public final class TextComponentUtil {
 
 	public static TranslatableComponent getTranslationText(String prefix, String suffix) {
 		return new TranslatableComponent(getTranslationKey(prefix, suffix));
+	}
+
+	public static String getItemTooltipKey(Item item) {
+		return item.getDescriptionId() + ".tooltip";
+	}
+
+	public static String getItemTooltipKey(Block block) {
+		return block.getDescriptionId() + ".tooltip";
+	}
+
+	public static TranslatableComponent getItemTooltip(Item item) {
+		return new TranslatableComponent(getItemTooltipKey(item));
 	}
 
 	public static TranslatableComponent getTooltipText(String tooltipKey) {

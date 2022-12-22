@@ -10,7 +10,6 @@ import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.advancements.AdvancementProvider;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -28,6 +27,7 @@ import org.apache.logging.log4j.MarkerManager;
 import java.util.function.Consumer;
 
 import static com.github.elenterius.biomancy.BiomancyMod.LOGGER;
+import static com.github.elenterius.biomancy.datagen.ModEnglishLanguageProvider.AdvancementTranslations;
 
 public class ModAdvancementProvider extends AdvancementProvider {
 
@@ -69,14 +69,6 @@ public class ModAdvancementProvider extends AdvancementProvider {
 		return new TradeTrigger.TriggerInstance(EntityPredicate.Composite.ANY, EntityPredicate.Composite.ANY, ItemPredicate.Builder.item().of(items).build());
 	}
 
-	protected TranslatableComponent createTitle(String name) {
-		return new TranslatableComponent("advancements.biomancy." + name + ".title");
-	}
-
-	protected TranslatableComponent createDescription(String name) {
-		return new TranslatableComponent("advancements.biomancy." + name + ".description");
-	}
-
 	@Override
 	public String getName() {
 		return StringUtils.capitalize(BiomancyMod.MOD_ID) + " Advancements";
@@ -86,19 +78,19 @@ public class ModAdvancementProvider extends AdvancementProvider {
 	protected void registerAdvancements(Consumer<Advancement> consumer, ExistingFileHelper fileHelper) {
 		LOGGER.info(logMarker, "registering advancements...");
 
-		Advancement root = Advancement.Builder.advancement().display(ModItems.FLESH_BITS.get(), createTitle("root"), createDescription("root"), BiomancyMod.createRL("textures/block/flesh.png"),
+		Advancement root = Advancement.Builder.advancement().display(ModItems.FLESH_BITS.get(), AdvancementTranslations.ROOT.getTitle(), AdvancementTranslations.ROOT.getDescription(), BiomancyMod.createRL("textures/block/flesh.png"),
 				FrameType.TASK, true, true, false).addCriterion("has_raw_meats", hasTag(ModTags.Items.RAW_MEATS)).save(consumer, BiomancyMod.MOD_ID + "/root");
 
-		Advancement greedyButcher = Advancement.Builder.advancement().parent(root).display(ModItems.BONE_CLEAVER.get(), createTitle("greedy_butcher"), createDescription("greedy_butcher"), null,
+		Advancement greedyButcher = Advancement.Builder.advancement().parent(root).display(ModItems.BONE_CLEAVER.get(), AdvancementTranslations.GREEDY_BUTCHER.getTitle(), AdvancementTranslations.GREEDY_BUTCHER.getDescription(), null,
 						FrameType.TASK, true, false, false)
 				.addCriterion("has_bone_cleaver", hasItems(ModItems.BONE_CLEAVER.get())).save(consumer, BiomancyMod.MOD_ID + "/greedy_butcher");
 
-		Advancement.Builder.advancement().parent(greedyButcher).display(ModItems.VOLATILE_GLAND.get(), createTitle("organ_trader"), createDescription("organ_trader"), null,
+		Advancement.Builder.advancement().parent(greedyButcher).display(ModItems.VOLATILE_GLAND.get(), AdvancementTranslations.ORGAN_TRADER.getTitle(), AdvancementTranslations.ORGAN_TRADER.getDescription(), null,
 						FrameType.CHALLENGE, true, true, true)
 				.addCriterion("has_traded_organs", hasTradedItems(ModItems.VOLATILE_GLAND.get(), ModItems.GENERIC_MOB_GLAND.get(), ModItems.TOXIN_GLAND.get()))
 				.save(consumer, BiomancyMod.MOD_ID + "/organ_trader");
 
-		Advancement.Builder.advancement().parent(greedyButcher).display(Items.LEATHER, createTitle("poacher"), createDescription("poacher"), null,
+		Advancement.Builder.advancement().parent(greedyButcher).display(Items.LEATHER, AdvancementTranslations.POACHER.getTitle(), AdvancementTranslations.POACHER.getDescription(), null,
 						FrameType.CHALLENGE, true, true, true)
 				.addCriterion("has_killed_ocelot", hasKilledEntity(EntityType.OCELOT))
 				.addCriterion("has_killed_panda", hasKilledEntity(EntityType.PANDA))
@@ -106,7 +98,7 @@ public class ModAdvancementProvider extends AdvancementProvider {
 				.addCriterion("has_killed_axolotl", hasKilledEntity(EntityType.AXOLOTL))
 				.save(consumer, BiomancyMod.MOD_ID + "/poacher");
 
-		Advancement.Builder.advancement().parent(greedyButcher).display(ModItems.MOB_FANG.get(), createTitle("predator_killer"), createDescription("predator_killer"), null,
+		Advancement.Builder.advancement().parent(greedyButcher).display(ModItems.MOB_FANG.get(), AdvancementTranslations.PREDATOR_KILLER.getTitle(), AdvancementTranslations.PREDATOR_KILLER.getDescription(), null,
 						FrameType.CHALLENGE, true, true, true)
 				.addCriterion("has_killed_fangs_mob", hasKilledEntityTag(ModTags.EntityTypes.SHARP_FANG))
 				.addCriterion("has_killed_claws_mob", hasKilledEntityTag(ModTags.EntityTypes.SHARP_CLAW))
@@ -114,64 +106,63 @@ public class ModAdvancementProvider extends AdvancementProvider {
 				.addCriterion("has_claws", hasItems(ModItems.MOB_CLAW.get()))
 				.save(consumer, BiomancyMod.MOD_ID + "/predator_killer");
 
-		Advancement.Builder.advancement().parent(greedyButcher).display(Items.STRING, createTitle("cat_killer"), createDescription("cat_killer"), null,
+		Advancement.Builder.advancement().parent(greedyButcher).display(Items.STRING, AdvancementTranslations.CAT_KILLER.getTitle(), AdvancementTranslations.CAT_KILLER.getDescription(), null,
 						FrameType.CHALLENGE, true, true, true)
 				.addCriterion("has_killed_cat", hasKilledEntity(EntityType.CAT))
 				.save(consumer, BiomancyMod.MOD_ID + "/cat_killer");
 
-		Advancement nodeCradle = Advancement.Builder.advancement().parent(root).display(ModItems.PRIMORDIAL_CRADLE.get(), createTitle("flesh"), createDescription("flesh"), null,
+		Advancement nodeCradle = Advancement.Builder.advancement().parent(root).display(ModItems.PRIMORDIAL_CRADLE.get(), AdvancementTranslations.FLESH.getTitle(), AdvancementTranslations.FLESH.getDescription(), null,
 						FrameType.CHALLENGE, true, false, false)
 				.addCriterion("has_ender_eye", hasItems(Items.ENDER_EYE)).save(consumer, BiomancyMod.MOD_ID + "/flesh");
 
-		Advancement nodeLivingFlesh = Advancement.Builder.advancement().parent(nodeCradle).display(ModItems.LIVING_FLESH.get(), createTitle("living_flesh"), createDescription("living_flesh"), null,
+		Advancement nodeLivingFlesh = Advancement.Builder.advancement().parent(nodeCradle).display(ModItems.LIVING_FLESH.get(), AdvancementTranslations.LIVING_FLESH.getTitle(), AdvancementTranslations.LIVING_FLESH.getDescription(), null,
 						FrameType.TASK, true, false, false)
 				.addCriterion("placed_creator", hasPlacedBlock(ModBlocks.PRIMORDIAL_CRADLE.get())).save(consumer, BiomancyMod.MOD_ID + "/living_flesh");
 
 		Advancement.Builder.advancement().parent(nodeLivingFlesh).display(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_HEALING),
-						createTitle("healing_activator_sacrifice"), createDescription("healing_activator_sacrifice"), null,
+						AdvancementTranslations.HEALING_ACTIVATOR_SACRIFICE.getTitle(), AdvancementTranslations.HEALING_ACTIVATOR_SACRIFICE.getDescription(), null,
 						FrameType.TASK, true, false, false)
 				.addCriterion("has_sacrificed_healing_activator", hasSacrificedItem(Items.POTION)).save(consumer, BiomancyMod.MOD_ID + "/healing_activator_sacrifice");
 
-		Advancement.Builder.advancement().parent(nodeLivingFlesh).display(Items.BEEF, createTitle("raw_meat_sacrifice"), createDescription("raw_meat_sacrifice"), null,
+		Advancement.Builder.advancement().parent(nodeLivingFlesh).display(Items.BEEF, AdvancementTranslations.RAW_MEAT_SACRIFICE.getTitle(), AdvancementTranslations.RAW_MEAT_SACRIFICE.getDescription(), null,
 						FrameType.TASK, true, false, false)
 				.addCriterion("has_sacrificed_raw_meat", hasSacrificedTag(ModTags.Items.RAW_MEATS)).save(consumer, BiomancyMod.MOD_ID + "/raw_meat_sacrifice");
 
-		Advancement.Builder.advancement().parent(nodeLivingFlesh).display(Items.COOKED_BEEF, createTitle("cooked_meat_sacrifice"), createDescription("cooked_meat_sacrifice"), null,
+		Advancement.Builder.advancement().parent(nodeLivingFlesh).display(Items.COOKED_BEEF, AdvancementTranslations.COOKED_MEAT_SACRIFICE.getTitle(), AdvancementTranslations.COOKED_MEAT_SACRIFICE.getDescription(), null,
 						FrameType.TASK, true, false, true)
 				.addCriterion("has_sacrificed_cooked_meat", hasSacrificedTag(ModTags.Items.COOKED_MEATS)).save(consumer, BiomancyMod.MOD_ID + "/cooked_meat_sacrifice");
 
-		Advancement.Builder.advancement().parent(nodeLivingFlesh).display(ModItems.DECOMPOSER.get(), createTitle("decomposer"), createDescription("decomposer"), null,
+		Advancement.Builder.advancement().parent(nodeLivingFlesh).display(ModItems.DECOMPOSER.get(), AdvancementTranslations.DECOMPOSER.getTitle(), AdvancementTranslations.DECOMPOSER.getDescription(), null,
 						FrameType.TASK, true, false, false)
 				.addCriterion("has_decomposer", hasItems(ModItems.DECOMPOSER.get())).save(consumer, BiomancyMod.MOD_ID + "/decomposer");
 
-		Advancement bioForge = Advancement.Builder.advancement().parent(nodeLivingFlesh).display(ModItems.BIO_FORGE.get(), createTitle("bio_forge"), createDescription("bio_forge"), null,
+		Advancement bioForge = Advancement.Builder.advancement().parent(nodeLivingFlesh).display(ModItems.BIO_FORGE.get(), AdvancementTranslations.BIO_FORGE.getTitle(), AdvancementTranslations.BIO_FORGE.getDescription(), null,
 						FrameType.GOAL, true, true, false)
 				.addCriterion("has_bio_forge", hasItems(ModItems.BIO_FORGE.get())).save(consumer, BiomancyMod.MOD_ID + "/bio_forge");
 
-		Advancement.Builder.advancement().parent(bioForge).display(ModItems.DIGESTER.get(), createTitle("digester"), createDescription("digester"), null,
+		Advancement.Builder.advancement().parent(bioForge).display(ModItems.DIGESTER.get(), AdvancementTranslations.DIGESTER.getTitle(), AdvancementTranslations.DIGESTER.getDescription(), null,
 						FrameType.CHALLENGE, true, false, false)
 				.addCriterion("has_digester", hasItems(ModItems.DIGESTER.get())).save(consumer, BiomancyMod.MOD_ID + "/digester");
 
-		Advancement bioLab = Advancement.Builder.advancement().parent(bioForge).display(ModItems.BIO_LAB.get(), createTitle("bio_lab"), createDescription("bio_lab"), null,
+		Advancement bioLab = Advancement.Builder.advancement().parent(bioForge).display(ModItems.BIO_LAB.get(), AdvancementTranslations.BIO_LAB.getTitle(), AdvancementTranslations.BIO_LAB.getDescription(), null,
 						FrameType.CHALLENGE, true, true, false)
 				.addCriterion("has_bio_lab", hasItems(ModItems.BIO_LAB.get())).save(consumer, BiomancyMod.MOD_ID + "/bio_lab");
 
-		Advancement.Builder.advancement().parent(bioLab).display(ModItems.INJECTOR.get(), createTitle("bio_injector"), createDescription("bio_injector"), null,
+		Advancement.Builder.advancement().parent(bioLab).display(ModItems.INJECTOR.get(), AdvancementTranslations.BIO_INJECTOR.getTitle(), AdvancementTranslations.BIO_INJECTOR.getDescription(), null,
 						FrameType.TASK, true, false, false)
 				.addCriterion("has_bio_injector", hasItems(ModItems.INJECTOR.get())).save(consumer, BiomancyMod.MOD_ID + "/bio_injector");
 
-		Advancement organicCompounds = Advancement.Builder.advancement().parent(bioLab).display(ModItems.ORGANIC_COMPOUND.get(), createTitle("organic_compounds"), createDescription("organic_compounds"), null,
+		Advancement organicCompounds = Advancement.Builder.advancement().parent(bioLab).display(ModItems.ORGANIC_COMPOUND.get(), AdvancementTranslations.ORGANIC_COMPOUNDS.getTitle(), AdvancementTranslations.ORGANIC_COMPOUNDS.getDescription(), null,
 						FrameType.TASK, true, false, false)
 				.addCriterion("has_organic_compound", hasItems(ModItems.ORGANIC_COMPOUND.get())).save(consumer, BiomancyMod.MOD_ID + "/organic_compounds");
 
-		Advancement.Builder.advancement().parent(organicCompounds).display(ModItems.EXOTIC_COMPOUND.get(), createTitle("exotic_compounds"), createDescription("exotic_compounds"), null,
+		Advancement.Builder.advancement().parent(organicCompounds).display(ModItems.EXOTIC_COMPOUND.get(), AdvancementTranslations.EXOTIC_COMPOUNDS.getTitle(), AdvancementTranslations.EXOTIC_COMPOUNDS.getDescription(), null,
 						FrameType.TASK, true, false, false)
 				.addCriterion("has_exotic_compound", hasItems(ModItems.EXOTIC_COMPOUND.get())).save(consumer, BiomancyMod.MOD_ID + "/exotic_compounds");
 
-		Advancement.Builder.advancement().parent(organicCompounds).display(ModItems.GENETIC_COMPOUND.get(), createTitle("genetic_compounds"), createDescription("genetic_compounds"), null,
+		Advancement.Builder.advancement().parent(organicCompounds).display(ModItems.GENETIC_COMPOUND.get(), AdvancementTranslations.GENETIC_COMPOUNDS.getTitle(), AdvancementTranslations.GENETIC_COMPOUNDS.getDescription(), null,
 						FrameType.TASK, true, false, false)
 				.addCriterion("has_genetic_compound", hasItems(ModItems.GENETIC_COMPOUND.get())).save(consumer, BiomancyMod.MOD_ID + "/genetic_compounds");
-
 	}
 
 }
