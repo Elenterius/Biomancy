@@ -1,17 +1,8 @@
 {
   "homepage": "https://www.curseforge.com/minecraft/mc-mods/biomancy",
-  "1.16.5": {
-    "1.0.0-beta.7": "fixes and added chinese translation",
-    "1.0.0-beta.6": "fixes and attack distance changes",
-    "1.0.0-beta.5": "fixed recipe issues for the decomposer",
-    "1.0.0-beta.4b": "hotfix",
-    "1.0.0-beta.4": "changed fuel into fluid",
-    "1.0.0-beta.3": "fixes",
-    "1.0.0-beta.2": "fixes",
-    "1.0.0-beta.1": "initial beta"
-  },
   "promos": {
     "1.16.5-latest": "1.0.0-beta.7",
-    "1.16.5-recommended": "1.0.0-beta.7"
+    "1.16.5-recommended": "1.0.0-beta.7",
+    "1.18.2-latest": "2.0.37.0"
   }
 }
