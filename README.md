@@ -5,7 +5,7 @@
 
 <p align="center">
 <a aria-label="Build Status" href="https://github.com/Elenterius/Biomancy/actions/workflows/gh_release.yml">
-<img alt="" src="https://img.shields.io/github/workflow/status/Elenterius/Biomancy/Release?logo=github&style=for-the-badge"></a>
+<img alt="" src="https://img.shields.io/github/actions/workflow/status/Elenterius/Biomancy/gh_release.yml?logo=github&style=for-the-badge"></a>
 
 <a aria-label="Latest Release" href="https://github.com/Elenterius/Biomancy/releases/">
 <img alt="" src="https://img.shields.io/github/v/release/elenterius/biomancy?include_prereleases&logo=github&style=for-the-badge"></a>
