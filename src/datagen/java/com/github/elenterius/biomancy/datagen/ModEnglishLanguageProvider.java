@@ -435,7 +435,7 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
 
 	public static final class AdvancementTranslations {
 
-		private static final List<AdvancementTranslation> TRANSLATIONS = new ArrayList<>();
+		public static final List<AdvancementTranslation> TRANSLATIONS = new ArrayList<>();
 
 		public static final AdvancementTranslation ROOT = create("root", "Meat Whisperer", "You feel a presence in the flesh, it whispers into your ears: \"Raw Meat is useful...\"");
 		public static final AdvancementTranslation GREEDY_BUTCHER = create("greedy_butcher", "Greedy Butcher", "You've acquired a taste for organs. Crafted a special tool to get them fresh from your victims death.");
@@ -475,11 +475,11 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
 				return "advancements.biomancy." + id + ".description";
 			}
 
-			TranslatableComponent getTitle() {
+			public TranslatableComponent getTitle() {
 				return new TranslatableComponent(getTitleKey());
 			}
 
-			TranslatableComponent getDescription() {
+			public TranslatableComponent getDescription() {
 				return new TranslatableComponent(getDescriptionKey());
 			}
 
