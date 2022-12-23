@@ -171,6 +171,10 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 
 		static final ImmutableMap<Item, Tribute> ITEM_MAP = new ImmutableMap.Builder<Item, Tribute>()
 				.put(ModItems.CREATOR_MIX.get(), new Tribute(Type.CREATOR_MIX, 20, 19, 6, 6))
+
+				.put(ModItems.HEALING_ADDITIVE.get(), new Tribute(Type.HEAL_POTION, 50, 1, -5, 0))
+				.put(ModItems.REGENERATIVE_FLUID.get(), new Tribute(Type.HEAL_POTION, 5, 0, 0, 0))
+
 				.put(Items.ROTTEN_FLESH, new Tribute(Type.RAW_MEAT, 10, 6, 35, 15))
 				.put(Items.CHICKEN, new Tribute(Type.RAW_MEAT, 20, 15, 20, 0))
 				.put(ModItems.MOB_SINEW.get(), new Tribute(Type.RAW_MEAT, 5, 2, 0, 0))
