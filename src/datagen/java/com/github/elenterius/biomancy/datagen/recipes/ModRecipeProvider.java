@@ -174,12 +174,12 @@ public class ModRecipeProvider extends RecipeProvider {
 		WorkbenchRecipeBuilder.shapeless(ModItems.NUTRIENTS.get(), 5)
 				.requires(ModItems.NUTRIENT_PASTE.get())
 				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
-				.save(consumer);
+				.save(consumer, getConversionRecipeId(ModItems.NUTRIENTS.get(), ModItems.NUTRIENT_PASTE.get()));
 
 		WorkbenchRecipeBuilder.shapeless(ModItems.NUTRIENT_PASTE.get(), 9)
 				.requires(ModItems.NUTRIENT_BAR.get())
 				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
-				.save(consumer);
+				.save(consumer, getConversionRecipeId(ModItems.NUTRIENT_PASTE.get(), ModItems.NUTRIENT_BAR.get()));
 
 		// misc ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		WorkbenchRecipeBuilder.shapeless(Items.DIORITE)
