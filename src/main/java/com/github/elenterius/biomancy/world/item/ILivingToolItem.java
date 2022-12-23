@@ -94,14 +94,14 @@ public interface ILivingToolItem extends INutrientsContainerItem {
 
 	default boolean handleOverrideStackedOnOther(ItemStack livingTool, Slot slot, ClickAction action, Player player) {
 		if (livingTool.getCount() > 1) return false;
-		if (action != ClickAction.SECONDARY) return false;
+		if (action != ClickAction.SECONDARY || !slot.allowModification(player)) return false;
 
 		if (!slot.getItem().isEmpty()) {
-			ItemStack potentialFood = slot.safeTake(1, 1, player);
+			ItemStack potentialFood = slot.getItem();
 			ItemStack remainder = insertNutrients(livingTool, potentialFood);
-			if (remainder.getCount() != potentialFood.getCount()) {
-				slot.safeInsert(remainder);
-				return true;
+			int insertedAmount = potentialFood.getCount() - remainder.getCount();
+			if (insertedAmount > 0) {
+				return !slot.safeTake(insertedAmount, insertedAmount, player).isEmpty();
 			}
 		}
 
