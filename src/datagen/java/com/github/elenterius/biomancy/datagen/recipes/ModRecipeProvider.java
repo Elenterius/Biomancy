@@ -686,6 +686,12 @@ public class ModRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.BLOCKS)
 				.unlockedBy(ModItems.BONE_FRAGMENTS.get()).save(consumer);
 
+		BioForgeRecipeBuilder.create(Items.SHROOMLIGHT)
+				.addIngredient(ModItems.BIO_LUMENS.get(), 10)
+				.addIngredient(ModItems.ORGANIC_MATTER.get(), 4)
+				.setCategory(ModBioForgeTabs.BLOCKS)
+				.unlockedBy(Items.SHROOMLIGHT).save(consumer);
+
 		//////////// WEAPONS ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		BioForgeRecipeBuilder.create(new ItemData(ModItems.LONG_CLAWS.get()))
