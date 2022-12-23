@@ -3,17 +3,14 @@ package com.github.elenterius.biomancy.datagen.recipes;
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
-import java.util.Objects;
 
 public final class ItemData {
 
-	private final Item item;
+	private final ResourceLocation registryName;
 	private final int count;
 	private final @Nullable
 	CompoundTag tag;
@@ -35,22 +32,31 @@ public final class ItemData {
 	}
 
 	public ItemData(ItemLike item, @Nullable CompoundTag tag, int count) {
-		this.item = item.asItem();
+		this.registryName = item.asItem().getRegistryName();
+		this.tag = tag;
+		this.count = count;
+	}
+
+	public ItemData(ResourceLocation itemRegistryName) {
+		this(itemRegistryName, null, 1);
+	}
+
+	public ItemData(ResourceLocation registryName, @Nullable CompoundTag tag, int count) {
+		this.registryName = registryName;
 		this.tag = tag;
 		this.count = count;
 	}
 
 	public JsonObject toJson() {
 		JsonObject json = new JsonObject();
-		json.addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)).toString());
+		json.addProperty("item", registryName.toString());
 		if (count > 1) json.addProperty("count", count);
 		if (tag != null && !tag.isEmpty()) json.addProperty("nbt", tag.getAsString());
 		return json;
 	}
 
 	public String getItemNamedId() {
-		ResourceLocation key = ForgeRegistries.ITEMS.getKey(item);
-		return key != null ? key.getPath() : "unknown";
+		return registryName.getPath();
 	}
 
 }
