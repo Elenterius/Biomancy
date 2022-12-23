@@ -2,6 +2,11 @@ name: Poke Discord
 
 on:
   workflow_dispatch:
+    inputs:
+      message:
+        description: 'Message'
+        required: true
+        default: 'foobar'
 
 jobs:
   notify_discord:
@@ -12,6 +17,6 @@ jobs:
         with:
           webhook_id: ${{ secrets.DISCORD_ID }}
           webhook_token: ${{ secrets.DISCORD_TOKEN }}
-          color: "#088c7d"
-          username: "Maykr Bot"
-          message: "Foobar"
+          color: "#ffd700"
+          username: "Maykrs Herald"
+          message: "${{ github.event.inputs.message }}"

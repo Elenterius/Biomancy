@@ -9,10 +9,30 @@ on:
 jobs:
   cache_gradle:
     name: Cache Gradle
-    uses: elenterius/biomancy/.github/workflows/cache_gradle.yml@main
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1.0.4
+      - name: Setup Mod Development Kit
+        uses: gradle/gradle-build-action@v2.2.2
+        with:
+          arguments: build # build is called to properly setup the minecraft mod development environment
+
   cache_oxipng:
     name: Cache Oxipng
-    uses: elenterius/biomancy/.github/workflows/cache_oxipng.yml@main
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cargo Install Oxipng
+        uses: baptiste0928/cargo-install@v1.3.0 #provides cache-efficient Rust crates installation
+        with:
+          crate: oxipng
+        env:
+          CARGO_TERM_COLOR: always
 
   changelog:
     name: Generate Changelog
@@ -111,4 +131,4 @@ jobs:
           webhook_token: ${{ secrets.DISCORD_TOKEN }}
           color: "#088c7d"
           username: "Maykr Bot"
-          message: "**New :package:**\n\n${{ steps.create_release.outputs.url }}"
+          message: "**:package: ${{ steps.create_release.outputs.id }}**\n\n**Download**\n${{ fromJSON(steps.create_release.outputs.assets)[0].browser_download_url }}\n\n**Changelog**\n${{ steps.create_release.outputs.url }}"
