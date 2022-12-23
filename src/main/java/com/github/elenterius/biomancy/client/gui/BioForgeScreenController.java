@@ -48,6 +48,7 @@ class BioForgeScreenController {
 	private int playerInvChanges;
 	private String currentSearchString = "";
 	private List<RecipeCollection> shownRecipes = List.of();
+	private int crossoverGridIndex = 0;
 
 	public BioForgeScreenController(Minecraft minecraft, BioForgeMenu menu) {
 		this.minecraft = minecraft;
@@ -128,7 +129,7 @@ class BioForgeScreenController {
 		if (index >= shownRecipes.size()) throw new IndexOutOfBoundsException(index);
 		return getOrderedRecipes(shownRecipes.get(index)).get(0);
 		// we disregard all other recipes in the RecipeCollection
-		// RecipeCollections for the bio-forge should only contain 1 recipes
+		// RecipeCollections for the bio-forge should only contain 1 recipe
 	}
 
 	public RecipeCollection getRecipeCollectionByGrid(int gridIndex) {
@@ -152,11 +153,35 @@ class BioForgeScreenController {
 
 	public boolean isSelectedRecipeVisible() {
 		int maxIndex = startIndex + GRID_SIZE;
-		return recipeSelection.tab == activeTab && recipeSelection.index >= startIndex && recipeSelection.index < maxIndex && getGridIndexOfSelectedRecipe() < getMaxRecipesOnGrid();
+		if (recipeSelection.tab == activeTab) {
+			return recipeSelection.index >= startIndex && recipeSelection.index < maxIndex && getGridIndexOfSelectedRecipe() < getMaxRecipesOnGrid();
+		}
+
+		if (recipeSelection.recipe != null && (activeTab == 0 || getCurrentCategory() == recipeSelection.recipe.getTab())) {
+			//find gridIndex recipeSelection in foreign tab
+			int maxRecipes = getMaxRecipesOnGrid();
+			for (int i = 0; i < maxRecipes; i++) {
+				if (getRecipe(startIndex + i).isRecipeEqual(recipeSelection.recipe)) {
+					crossoverGridIndex = startIndex + i;
+					return true;
+				}
+			}
+		}
+		crossoverGridIndex = 0;
+
+		return false;
 	}
 
 	public int getGridIndexOfSelectedRecipe() {
-		return recipeSelection.index - startIndex;
+		if (recipeSelection.tab == activeTab) {
+			return recipeSelection.index - startIndex;
+		}
+
+		if (recipeSelection.recipe != null && (activeTab == 0 || getCurrentCategory() == recipeSelection.recipe.getTab())) {
+			return crossoverGridIndex;
+		}
+
+		return 0;
 	}
 
 	public final boolean hasSelectedRecipe() {
