@@ -37,6 +37,7 @@ class BioForgeScreenController {
 		if (a.sortPriority() == b.sortPriority()) return a.enumId().compareTo(b.enumId());
 		return b.sortPriority() - a.sortPriority();
 	};
+	private static RecipeSelection recipeSelection = RecipeSelection.EMPTY; //volatile client cache
 	private final StackedContents itemCounter;
 	private final List<BioForgeTab> tabs;
 	private final Minecraft minecraft;
@@ -44,7 +45,6 @@ class BioForgeScreenController {
 	private int maxPages = 0;
 	private int activeTab = 0;
 	private int startIndex = 0;
-	private RecipeSelection recipeSelection = RecipeSelection.NONE;
 	private int playerInvChanges;
 	private String currentSearchString = "";
 	private List<RecipeCollection> shownRecipes = List.of();
@@ -58,6 +58,11 @@ class BioForgeScreenController {
 		playerInvChanges = getPlayer().getInventory().getTimesChanged();
 		itemCounter = new StackedContents();
 		getPlayer().getInventory().fillStackedContents(itemCounter);
+
+		//restore selected recipe from volatile client cache
+		if (recipeSelection != RecipeSelection.EMPTY && menu.getSelectedRecipe() == null && recipeSelection.recipe != null) {
+			ModNetworkHandler.sendBioForgeRecipeToServer(menu.containerId, recipeSelection.recipe);
+		}
 
 		updateAndSearchRecipes();
 	}
@@ -165,7 +170,7 @@ class BioForgeScreenController {
 
 	void setSelectedRecipe(int gridIndex) {
 		if (gridIndex < 0) {
-			recipeSelection = RecipeSelection.NONE;
+			recipeSelection = RecipeSelection.EMPTY;
 			return;
 		}
 
@@ -268,7 +273,7 @@ class BioForgeScreenController {
 	}
 
 	record RecipeSelection(@Nullable BioForgeRecipe recipe, int tab, int index) {
-		public static RecipeSelection NONE = new RecipeSelection(null, -1, -1);
+		public static RecipeSelection EMPTY = new RecipeSelection(null, -1, -1);
 
 		@Nullable
 		public ResourceLocation getRecipeId() {
