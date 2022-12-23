@@ -672,6 +672,15 @@ public class ModRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.BLOCKS)
 				.unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
 
+		BioForgeRecipeBuilder.create(new ItemData(new ResourceLocation("dramaticdoors", "tall_flesh_door")))
+				.ifModLoaded("dramaticdoors")
+				.addIngredient(ModItems.FLESH_BITS.get(), 9)
+				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 9)
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 6)
+				.addIngredient(ModItems.TOUGH_FIBERS.get(), 3)
+				.setCategory(ModBioForgeTabs.BLOCKS)
+				.unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
+
 		BioForgeRecipeBuilder.create(ModItems.FLESH_IRIS_DOOR.get())
 				.addIngredient(ModItems.FLESH_BITS.get(), 4)
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 4)
