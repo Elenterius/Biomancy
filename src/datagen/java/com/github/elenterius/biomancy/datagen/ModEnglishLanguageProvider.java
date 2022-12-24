@@ -169,6 +169,7 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
 		addDamageTranslations();
 
 		addTooltip("empty", "Empty");
+		addTooltip("contains", "Contains: %1$s");
 		addTooltip("nutrients_fuel", "Nutrients");
 		addTooltip("nutrients_consumes", "Consumes %1$s u");
 		addTooltip("consumption", "Consumption");
@@ -178,14 +179,17 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
 		addTooltip("action_self_inject", "inject yourself");
 		addTooltip("action_self_extract", "extract from yourself");
 		addTooltip("action_open_inventory", "open its inventory");
+
 		addTooltip("fire_rate", "Fire Rate");
 		addTooltip("accuracy", "Accuracy");
 		addTooltip("ammo", "Ammo");
 		addTooltip("reload_time", "Reload Time");
 		addTooltip("projectile_damage", "Projectile Damage");
+
 		addTooltip("item_is_dormant", "The Tool is Dormant");
 		addTooltip("item_is_awake", "The Tool is Awake");
 		addTooltip("item_is_exalted", "The Tool is Exalted");
+
 		addTooltip("dormant", "Dormant");
 		addTooltip("awake", "Awake");
 		addTooltip("exalted", "Exalted");

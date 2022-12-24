@@ -144,153 +144,103 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 	@Override
 	public void onServerReceiveKeyPress(ItemStack stack, ServerLevel level, Player player, byte flags) {
 		if (flags == -2) {
-			//clear out whole inventory
-			getItemHandler(stack).ifPresent(handler -> {
-				if (!handler.getStack().isEmpty()) {
-					ItemStack result = handler.extractItem(handler.getMaxAmount(), false);
-					if (!player.addItem(result)) {
-						player.drop(result, false);
-					}
-				}
-			});
+			clearInventory(stack, player);
 		}
 
 		if (flags >= 0) {
-			//replace whole inventory with new item
-			final int idx = flags;
-			ItemStack foundStack = player.getInventory().getItem(idx);
-			Item item = foundStack.getItem();
-			if (item instanceof ISerumProvider && !(item instanceof InjectorItem)) {
-				getItemHandler(stack).ifPresent(handler -> {
-					ItemStack oldStack = ItemStack.EMPTY;
-					if (!handler.getStack().isEmpty()) {
-						oldStack = handler.extractItem(handler.getMaxAmount(), false);
-					}
-
-					ItemStack remainder = handler.insertItem(foundStack, false);
-					player.getInventory().setItem(idx, remainder);
-
-					//eject old stuff
-					if (!oldStack.isEmpty() && !player.addItem(oldStack)) {
-						player.drop(oldStack, false);
-					}
-				});
-			}
+			setInventory(stack, player, flags);
 		}
+	}
+
+	/**
+	 * replace contents of injector inventory with new item from player inventory
+	 */
+	private void setInventory(ItemStack injector, Player player, int slotIndex) {
+		ItemStack foundStack = player.getInventory().getItem(slotIndex);
+
+		Item item = foundStack.getItem();
+		if (item instanceof InjectorItem) return;
+		if (!(item instanceof ISerumProvider)) return;
+
+		getItemHandler(injector).ifPresent(handler -> {
+			ItemStack oldStack = ItemStack.EMPTY;
+			if (!handler.getStack().isEmpty()) {
+				oldStack = handler.extractItem(handler.getMaxAmount(), false);
+			}
+
+			ItemStack remainder = handler.insertItem(foundStack, false);
+			player.getInventory().setItem(slotIndex, remainder);
+
+			//eject old stuff
+			if (!oldStack.isEmpty() && !player.addItem(oldStack)) {
+				player.drop(oldStack, false);
+			}
+		});
+	}
+
+	private void clearInventory(ItemStack injector, Player player) {
+		getItemHandler(injector).ifPresent(handler -> {
+			if (!handler.getStack().isEmpty()) {
+				ItemStack result = handler.extractItem(handler.getMaxAmount(), false);
+				if (!player.addItem(result)) {
+					player.drop(result, false);
+				}
+			}
+		});
 	}
 
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-		if (player.isShiftKeyDown()) {
-			ItemStack stack = player.getItemInHand(usedHand);
-			if (player.getCooldowns().isOnCooldown(this)) return InteractionResultHolder.fail(stack);
+		ItemStack stack = player.getItemInHand(usedHand);
 
-			if (interactWithPlayerSelf(stack, player)) {
-				if (!level.isClientSide) {
-					scheduleSerumInjection(stack, player, player, SCHEDULE_TICKS);
-					broadcastAnimation((ServerLevel) level, player, stack, AnimState.INJECT_SELF.id);
-					player.getCooldowns().addCooldown(this, COOL_DOWN_TICKS);
-				}
-				return InteractionResultHolder.consume(stack);
-			}
-
+		if (!player.isShiftKeyDown()) return InteractionResultHolder.pass(stack);
+		if (player.getCooldowns().isOnCooldown(this) || !canInteractWithPlayerSelf(stack, player)) {
 			SoundUtil.playItemSoundEffect(level, player, ModSoundEvents.INJECTOR_FAIL);
 			return InteractionResultHolder.fail(stack);
-
 		}
-		return InteractionResultHolder.pass(player.getItemInHand(usedHand));
+
+		if (!level.isClientSide) {
+			InjectionScheduler.schedule(this, stack, player, player, SCHEDULE_TICKS);
+			broadcastAnimation((ServerLevel) level, player, stack, AnimState.INJECT_SELF.id);
+			player.getCooldowns().addCooldown(this, COOL_DOWN_TICKS);
+		}
+		return InteractionResultHolder.consume(stack);
+	}
+
+	public boolean canInteractWithPlayerSelf(ItemStack stack, Player player) {
+		Serum serum = getSerum(stack);
+		return serum != null && serum.canAffectPlayerSelf(Serum.getDataTag(stack), player);
+	}
+
+	public boolean canInteractWithLivingTarget(ItemStack stack, Player player, LivingEntity target) {
+		Serum serum = getSerum(stack);
+		return serum != null && serum.canAffectEntity(Serum.getDataTag(stack), player, target);
 	}
 
 	@Override
 	public InteractionResult interactLivingEntity(ItemStack copyOfStack, Player player, LivingEntity target, InteractionHand usedHand) {
-		Serum serum = getSerum(copyOfStack);
-		if (serum != null) {
-			if (MobUtil.canPierceThroughArmor(copyOfStack, target)) {
-				CompoundTag dataTag = Serum.getDataTag(copyOfStack);
-				if (serum.canAffectEntity(dataTag, player, target)) {
-					if (player.level.isClientSide) return InteractionResult.CONSUME;
-
-					if (player.getCooldowns().isOnCooldown(this)) return InteractionResult.FAIL;
-					player.getCooldowns().addCooldown(this, COOL_DOWN_TICKS);
-
-					ItemStack realStack = player.getAbilities().instabuild ? player.getItemInHand(usedHand) : copyOfStack;
-					scheduleSerumInjection(realStack, player, target, SCHEDULE_TICKS);
-					broadcastAnimation((ServerLevel) target.level, player, realStack, AnimState.INJECT_OTHER.id);
-
-					return InteractionResult.CONSUME;
-				}
-			}
-			else if (!player.level.isClientSide) {
-				copyOfStack.hurtAndBreak(2, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
-			}
-
+		if (!canInteractWithLivingTarget(copyOfStack, player, target)) {
 			if (player.level.isClientSide) SoundUtil.clientPlayItemSound(player.level, player, ModSoundEvents.INJECTOR_FAIL.get());
 			return InteractionResult.FAIL;
 		}
 
-		return InteractionResult.PASS;
+		if (player.level.isClientSide) return InteractionResult.CONSUME;
+		if (player.getCooldowns().isOnCooldown(this)) return InteractionResult.FAIL;
+
+		player.getCooldowns().addCooldown(this, COOL_DOWN_TICKS);
+
+		ItemStack realStack = player.getAbilities().instabuild ? player.getItemInHand(usedHand) : copyOfStack;
+		InjectionScheduler.schedule(this, realStack, player, target, SCHEDULE_TICKS);
+		broadcastAnimation((ServerLevel) target.level, player, realStack, AnimState.INJECT_OTHER.id);
+
+		return InteractionResult.CONSUME;
 	}
 
 	@Override
 	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
 		if (entity instanceof ServerPlayer player && level instanceof ServerLevel serverLevel) {
-			tickInjectionScheduler(serverLevel, stack, player);
+			InjectionScheduler.tick(serverLevel, this, stack, player);
 		}
-	}
-
-	private void scheduleSerumInjection(ItemStack stack, Player player, LivingEntity target, int delayInTicks) {
-		if (stack.isEmpty() || player.level.isClientSide || getSerum(stack) == null) return;
-
-		setEntityHost(stack, player); //who is using the item
-		setEntityVictim(stack, target); //who is the victim
-
-		CompoundTag tag = stack.getOrCreateTag();
-		tag.putInt("DelayInTicks", delayInTicks);
-		tag.putLong("ScheduleTimestamp", player.level.getGameTime());
-	}
-
-	private void tickInjectionScheduler(ServerLevel level, ItemStack stack, ServerPlayer player) {
-		CompoundTag tag = stack.getOrCreateTag();
-		if (!tag.contains("ScheduleTimestamp")) return;
-
-		long delayInTicks = tag.getLong("DelayInTicks");
-		long starTimestamp = tag.getLong("ScheduleTimestamp");
-		if (player.level.getGameTime() - starTimestamp > delayInTicks) {
-			performScheduledSerumInjection(level, stack, player);
-			tag.remove("DelayInTicks");
-			tag.remove("ScheduleTimestamp");
-		}
-	}
-
-	private void performScheduledSerumInjection(ServerLevel level, ItemStack stack, ServerPlayer player) {
-		Serum serum = getSerum(stack);
-		if (serum != null) {
-			Entity victim = getEntityVictim(stack, level);
-			Entity host = getEntityHost(stack, level);
-			if (victim instanceof LivingEntity target) {
-				if (host == victim) {
-					serum.affectPlayerSelf(Serum.getDataTag(stack), player);
-				}
-				else {
-					serum.affectEntity(level, Serum.getDataTag(stack), player, target);
-				}
-			}
-			consumeSerum(stack, player);
-			stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
-		}
-	}
-
-	public boolean interactWithPlayerSelf(ItemStack stack, Player player) {
-		Serum serum = getSerum(stack);
-		if (serum != null) {
-			if (MobUtil.canPierceThroughArmor(stack, player)) {
-				return serum.canAffectPlayerSelf(Serum.getDataTag(stack), player);
-			}
-			else if (!player.level.isClientSide) {
-				stack.hurtAndBreak(2, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
-			}
-		}
-		return false;
 	}
 
 	@Override
@@ -480,6 +430,7 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
 		tooltip.add(TooltipHacks.HR_COMPONENT);
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
+		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
 
 		CompoundTag tag = stack.getOrCreateTag();
 		if (tag.contains(INVENTORY_TAG)) {
@@ -544,6 +495,64 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.orEmpty(capability, itemHandler.getOptionalItemHandler());
 		}
 
+	}
+
+	static class InjectionScheduler {
+
+		public static final String DELAY_KEY = "DelayInTicks";
+		public static final String TIMESTAMP_KEY = "ScheduleTimestamp";
+		private InjectionScheduler() {}
+
+		public static void schedule(InjectorItem injector, ItemStack stack, Player player, LivingEntity target, int delayInTicks) {
+			if (stack.isEmpty() || player.level.isClientSide || injector.getSerum(stack) == null) return;
+
+			injector.setEntityHost(stack, player); //who is using the item
+			injector.setEntityVictim(stack, target); //who is the victim
+
+			CompoundTag tag = stack.getOrCreateTag();
+			tag.putInt(DELAY_KEY, delayInTicks);
+			tag.putLong(TIMESTAMP_KEY, player.level.getGameTime());
+		}
+
+		public static void tick(ServerLevel level, InjectorItem injector, ItemStack stack, ServerPlayer player) {
+			CompoundTag tag = stack.getOrCreateTag();
+			if (!tag.contains(TIMESTAMP_KEY)) return;
+
+			long delayInTicks = tag.getLong(DELAY_KEY);
+			long starTimestamp = tag.getLong(TIMESTAMP_KEY);
+			if (player.level.getGameTime() - starTimestamp > delayInTicks) {
+				performScheduledSerumInjection(level, injector, stack, player);
+				tag.remove(DELAY_KEY);
+				tag.remove(TIMESTAMP_KEY);
+			}
+		}
+
+		public static void performScheduledSerumInjection(ServerLevel level, InjectorItem injector, ItemStack stack, ServerPlayer player) {
+			Serum serum = injector.getSerum(stack);
+			if (serum == null) return;
+
+			Entity victim = injector.getEntityVictim(stack, level);
+			Entity host = injector.getEntityHost(stack, level);
+
+			if (victim instanceof LivingEntity target) {
+				if (!MobUtil.canPierceThroughArmor(stack, target)) {
+					stack.hurtAndBreak(2, player, p -> {});
+					player.broadcastBreakEvent(EquipmentSlot.MAINHAND); //break needle
+					player.getCooldowns().addCooldown(stack.getItem(), COOL_DOWN_TICKS * 2);
+					return;
+				}
+
+				if (host == victim) {
+					serum.affectPlayerSelf(Serum.getDataTag(stack), player);
+				}
+				else {
+					serum.affectEntity(level, Serum.getDataTag(stack), player, target);
+				}
+
+				injector.consumeSerum(stack, player);
+				stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+			}
+		}
 	}
 
 }

@@ -70,6 +70,9 @@
       }
     }
   },
+  "textures": {
+    "particle": "biomancy:item/component/bone_fragments"
+  },
   "perspectives": {
     "gui": {
       "parent": "biomancy:item/injector_icon"

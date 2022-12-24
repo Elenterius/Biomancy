@@ -34,7 +34,7 @@ public class InsomniaCureSerum extends Serum {
 //		if (!targetSelf.level.isClientSide && !targetSelf.level.getGameRules().getBoolean(GameRules.RULE_DOINSOMNIA)) return false;
 
 		if (getTimeSinceRest(targetSelf) > 20 * 60) {
-			if (targetSelf.level.isClientSide) {
+			if (!targetSelf.level.isClientSide) {
 				targetSelf.displayClientMessage(TextComponentUtil.getFailureMsgText("not_sleepy"), true);
 			}
 			return false;

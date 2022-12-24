@@ -350,6 +350,7 @@
   "tooltip.biomancy.awake": "Awake",
   "tooltip.biomancy.bile_fuel": "Bile",
   "tooltip.biomancy.consumption": "Consumption",
+  "tooltip.biomancy.contains": "Contains: %1$s",
   "tooltip.biomancy.contains_unique_dna": "Contains Unique Genetic Sequences",
   "tooltip.biomancy.dormant": "Dormant",
   "tooltip.biomancy.empty": "Empty",
