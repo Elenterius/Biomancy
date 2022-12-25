@@ -76,7 +76,10 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 	public static final String INVENTORY_TAG = "inventory";
 	public static final int COOL_DOWN_TICKS = 25;
 	public static final int SCHEDULE_TICKS = Mth.ceil(0.32f * 20);
-	private static final String CONTROLLER_NAME = "controller";
+	protected static final String CURRENT_VICTIM_KEY = "CurrentVictimId";
+	protected static final String CURRENT_HOST_KEY = "CurrentHostId";
+	protected static final String NEEDLE_ANIM_CONTROLLER = "needle";
+	private static final String DEFAULT_ANIM_CONTROLLER = "controller";
 	private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
 
 	public InjectorItem(Properties properties) {
@@ -88,7 +91,7 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 		if (!(stack.getItem() instanceof InjectorItem injectorItem) || stack.getDamageValue() >= stack.getMaxDamage() - 1) return false;
 
 		Serum serum = injectorItem.getSerum(stack);
-		if (serum != null) {
+		if (!serum.isEmpty()) {
 			List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos), EntitySelector.NO_SPECTATORS);
 			if (entities.isEmpty()) return false;
 			LivingEntity target = entities.get(0);
@@ -208,13 +211,11 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 	}
 
 	public boolean canInteractWithPlayerSelf(ItemStack stack, Player player) {
-		Serum serum = getSerum(stack);
-		return serum != null && serum.canAffectPlayerSelf(Serum.getDataTag(stack), player);
+		return getSerum(stack).canAffectPlayerSelf(Serum.getDataTag(stack), player);
 	}
 
 	public boolean canInteractWithLivingTarget(ItemStack stack, Player player, LivingEntity target) {
-		Serum serum = getSerum(stack);
-		return serum != null && serum.canAffectEntity(Serum.getDataTag(stack), player, target);
+		return getSerum(stack).canAffectEntity(Serum.getDataTag(stack), player, target);
 	}
 
 	@Override
@@ -244,7 +245,6 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 	}
 
 	@Override
-	@Nullable
 	public Serum getSerum(ItemStack stack) {
 		Optional<LargeSingleItemStackHandler> optional = getItemHandler(stack);
 		if (optional.isPresent()) {
@@ -253,13 +253,7 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 				return provider.getSerum(foundStack);
 			}
 		}
-		return null;
-	}
-
-	@Override
-	public int getSerumColor(ItemStack stack) {
-		Serum serum = getSerum(stack);
-		return serum != null ? serum.getColor() : -1;
+		return Serum.EMPTY;
 	}
 
 	public void consumeSerum(ItemStack stack, @Nullable Player player) {
@@ -309,14 +303,14 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 	 */
 	public void setEntityHost(ItemStack stack, Entity entity) {
 		if (stack.isEmpty()) return;
-		stack.getOrCreateTag().putInt("CurrentHostId", entity.getId());
+		stack.getOrCreateTag().putInt(CURRENT_HOST_KEY, entity.getId());
 	}
 
 	public void removeEntityHost(ItemStack stack) {
 		if (stack.hasTag()) {
 			CompoundTag tag = stack.getTag();
 			if (tag != null) {
-				tag.remove("CurrentHostId");
+				tag.remove(CURRENT_HOST_KEY);
 			}
 		}
 	}
@@ -325,8 +319,8 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 	public Entity getEntityHost(ItemStack stack, Level level) {
 		if (stack.hasTag()) {
 			CompoundTag tag = stack.getTag();
-			if (tag != null && tag.contains("CurrentHostId", Tag.TAG_ANY_NUMERIC)) {
-				return level.getEntity(tag.getInt("CurrentHostId"));
+			if (tag != null && tag.contains(CURRENT_HOST_KEY, Tag.TAG_ANY_NUMERIC)) {
+				return level.getEntity(tag.getInt(CURRENT_HOST_KEY));
 			}
 		}
 
@@ -338,14 +332,14 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 
 	public void setEntityVictim(ItemStack stack, Entity entity) {
 		if (stack.isEmpty()) return;
-		stack.getOrCreateTag().putInt("CurrentVictimId", entity.getId());
+		stack.getOrCreateTag().putInt(CURRENT_VICTIM_KEY, entity.getId());
 	}
 
 	public void removeEntityVictim(ItemStack stack) {
 		if (stack.hasTag()) {
 			CompoundTag tag = stack.getTag();
 			if (tag != null) {
-				tag.remove("CurrentVictimId");
+				tag.remove(CURRENT_VICTIM_KEY);
 			}
 		}
 	}
@@ -354,8 +348,8 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 	public Entity getEntityVictim(ItemStack stack, Level level) {
 		if (stack.hasTag()) {
 			CompoundTag tag = stack.getTag();
-			if (tag != null && tag.contains("CurrentVictimId", Tag.TAG_ANY_NUMERIC)) {
-				return level.getEntity(tag.getInt("CurrentVictimId"));
+			if (tag != null && tag.contains(CURRENT_VICTIM_KEY, Tag.TAG_ANY_NUMERIC)) {
+				return level.getEntity(tag.getInt(CURRENT_VICTIM_KEY));
 			}
 		}
 		return null;
@@ -390,9 +384,11 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 	@Override
 	public void registerControllers(AnimationData data) {
 		//IMPORTANT: transitionLengthTicks needs to be larger than 0, or else the controller.currentAnimation might be null and a NPE is thrown
-		AnimationController<InjectorItem> controller = new AnimationController<>(this, CONTROLLER_NAME, 1, event -> PlayState.CONTINUE);
+		AnimationController<InjectorItem> controller = new AnimationController<>(this, DEFAULT_ANIM_CONTROLLER, 1, event -> PlayState.CONTINUE);
 		controller.registerSoundListener(this::soundListener);
 		data.addAnimationController(controller);
+
+		data.addAnimationController(new AnimationController<>(this, NEEDLE_ANIM_CONTROLLER, 1, event -> PlayState.CONTINUE));
 	}
 
 	@Override
@@ -411,39 +407,43 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 		//client side for living entities: stack.setEntityRepresentation(); ?
 
 		if (AnimState.INJECT_OTHER.is(state)) {
-			AnimationController<?> controller = GeckoLibUtil.getControllerForID(factory, id, CONTROLLER_NAME);
+			AnimationController<?> controller = GeckoLibUtil.getControllerForID(factory, id, DEFAULT_ANIM_CONTROLLER);
 			if (controller.getAnimationState() == AnimationState.Stopped) {
 				controller.markNeedsReload(); //make sure animation can play more than once (animations are usually cached)
 				controller.setAnimation(new AnimationBuilder().playOnce(AnimState.INJECT_OTHER.animationName));
 			}
 		}
 		else if (AnimState.INJECT_SELF.is(state)) {
-			AnimationController<?> controller = GeckoLibUtil.getControllerForID(factory, id, CONTROLLER_NAME);
+			AnimationController<?> controller = GeckoLibUtil.getControllerForID(factory, id, DEFAULT_ANIM_CONTROLLER);
 			if (controller.getAnimationState() == AnimationState.Stopped) {
 				controller.markNeedsReload(); //make sure animation can play more than once (animations are usually cached)
 				controller.setAnimation(new AnimationBuilder().playOnce(AnimState.INJECT_SELF.animationName));
 			}
+		}
+		else if (AnimState.REGROW_NEEDLE.is(state)) {
+			AnimationController<?> controller = GeckoLibUtil.getControllerForID(factory, id, NEEDLE_ANIM_CONTROLLER);
+			controller.markNeedsReload(); //make sure animation can play more than once (animations are usually cached)
+			controller.setAnimation(new AnimationBuilder().playOnce(AnimState.REGROW_NEEDLE.animationName));
 		}
 	}
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
 		tooltip.add(TooltipHacks.HR_COMPONENT);
-		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack));
 		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
 
 		CompoundTag tag = stack.getOrCreateTag();
 		if (tag.contains(INVENTORY_TAG)) {
 			Serum serum = getSerum(stack);
-			if (serum != null) {
+			if (!serum.isEmpty()) {
 				short amount = tag.getCompound(INVENTORY_TAG).getShort(LargeSingleItemStackHandler.ITEM_AMOUNT_TAG);
-				tooltip.add(new TextComponent(String.format("Amount: %dx", amount)).withStyle(ChatFormatting.GRAY));
-				serum.addInfoToClientTooltip(stack, level, tooltip, isAdvanced);
+				tooltip.add(new TextComponent(String.format("%dx", amount)).append(serum.getDisplayName()).withStyle(ChatFormatting.GRAY));
+				serum.appendTooltip(stack, level, tooltip, isAdvanced);
+				tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
 			}
 		}
-		else tooltip.add(TextComponentUtil.getTooltipText("contains_nothing").withStyle(ChatFormatting.GRAY));
 
-		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
 		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action_open_inventory")).withStyle(ChatFormatting.DARK_GRAY));
 		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getShiftKey().append(" + ").append(ClientTextUtil.getRightMouseKey()), TextComponentUtil.getTooltipText("action_self_inject")).withStyle(ChatFormatting.DARK_GRAY));
 	}
@@ -451,7 +451,7 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 	@Override
 	public Component getHighlightTip(ItemStack stack, Component displayName) {
 		Serum serum = getSerum(stack);
-		return serum == null ? displayName : new TextComponent("").append(displayName).append(" (").append(serum.getDisplayName()).append(")");
+		return serum.isEmpty() ? displayName : new TextComponent("").append(displayName).append(" (").append(serum.getDisplayName()).append(")");
 	}
 
 	@Override
@@ -465,7 +465,9 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 	}
 
 	enum AnimState {
-		INJECT_OTHER(0, "injector.anim.inject"), INJECT_SELF(1, "injector.anim.inject.self");
+		INJECT_OTHER(0, "injector.inject"),
+		INJECT_SELF(1, "injector.inject.self"),
+		REGROW_NEEDLE(2, "injector.regrow_needle");
 
 		private final int id;
 		private final String animationName;
@@ -504,7 +506,7 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 		private InjectionScheduler() {}
 
 		public static void schedule(InjectorItem injector, ItemStack stack, Player player, LivingEntity target, int delayInTicks) {
-			if (stack.isEmpty() || player.level.isClientSide || injector.getSerum(stack) == null) return;
+			if (stack.isEmpty() || player.level.isClientSide || injector.getSerum(stack).isEmpty()) return;
 
 			injector.setEntityHost(stack, player); //who is using the item
 			injector.setEntityVictim(stack, target); //who is the victim
@@ -529,7 +531,7 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 
 		public static void performScheduledSerumInjection(ServerLevel level, InjectorItem injector, ItemStack stack, ServerPlayer player) {
 			Serum serum = injector.getSerum(stack);
-			if (serum == null) return;
+			if (serum.isEmpty()) return;
 
 			Entity victim = injector.getEntityVictim(stack, level);
 			Entity host = injector.getEntityHost(stack, level);
@@ -538,6 +540,7 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 				if (!MobUtil.canPierceThroughArmor(stack, target)) {
 					stack.hurtAndBreak(2, player, p -> {});
 					player.broadcastBreakEvent(EquipmentSlot.MAINHAND); //break needle
+					injector.broadcastAnimation(level, player, stack, AnimState.REGROW_NEEDLE.id);
 					player.getCooldowns().addCooldown(stack.getItem(), COOL_DOWN_TICKS * 2);
 					return;
 				}

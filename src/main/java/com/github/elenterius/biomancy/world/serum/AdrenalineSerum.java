@@ -2,10 +2,8 @@ package com.github.elenterius.biomancy.world.serum;
 
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModMobEffects;
-import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.styles.TooltipHacks;
-import com.github.elenterius.biomancy.world.item.SerumItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -56,13 +54,9 @@ public class AdrenalineSerum extends Serum {
 	}
 
 	@Override
-	public void addInfoToClientTooltip(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
-		if (!(stack.getItem() instanceof SerumItem)) {
-			tooltip.add(TextComponentUtil.getTooltipText("contains", new TranslatableComponent(getTranslationKey())).withStyle(ChatFormatting.GRAY));
-		}
-
+	public void appendTooltip(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
 		if (ClientTextUtil.showExtraInfo(tooltip)) {
-			tooltip.add(new TranslatableComponent(getTranslationKey().replace(Serum.PREFIX, "tooltip.")).withStyle(TextStyles.LORE));
+			tooltip.add(new TranslatableComponent(getTooltipKey()).withStyle(TextStyles.LORE));
 		}
 
 		addEffectToClientTooltip(tooltip, ModMobEffects.ADRENALINE_RUSH.get(), AMPLIFIER, DURATION);

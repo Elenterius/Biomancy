@@ -17,6 +17,7 @@ import software.bernie.geckolib3.renderers.geo.GeoItemRenderer;
 public class InjectorRenderer extends GeoItemRenderer<InjectorItem> {
 
 	private TransformType currentTransformType;
+	private int serumColor = -1;
 
 	public InjectorRenderer() {
 		super(new InjectorModel());
@@ -30,68 +31,30 @@ public class InjectorRenderer extends GeoItemRenderer<InjectorItem> {
 
 	@Override
 	public void render(InjectorItem item, PoseStack poseStack, MultiBufferSource bufferIn, int packedLight, ItemStack itemStack) {
+		serumColor = item.getSerumColor(itemStack);
 		super.render(item, poseStack, bufferIn, packedLight, itemStack);
-
-		//render "last"
-//		if (currentTransformType != TransformType.GUI) {
-//			LocalPlayer player = Minecraft.getInstance().player;
-//			if (player == null) return;
-//			RenderSystem.setShaderTexture(0, player.getSkinTextureLocation());
-//			PlayerRenderer playerRenderer = (PlayerRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
-//
-//			AnimatedGeoModel<InjectorItem> model = getGeoModelProvider();
-//			AnimationProcessor<?> animationProcessor = model.getAnimationProcessor();
-//			IBone leftArmBone = animationProcessor.getBone("leftArm");
-//
-//			poseStack.pushPose();
-//			poseStack.translate(0, 0.01f, 0);
-//			poseStack.translate(0.5, 0.5, 0.5);
-//
-//			translate(leftArmBone, poseStack);
-//			moveToPivot(leftArmBone, poseStack);
-//			rotate(leftArmBone, poseStack);
-//			scale(leftArmBone, poseStack);
-//			moveBackFromPivot(leftArmBone, poseStack);
-//			playerRenderer.renderLeftHand(poseStack, bufferIn, packedLight, player);
-//			poseStack.popPose();
-//		}
 	}
 
-//	public static void moveToPivot(IBone bone, PoseStack stack) {
-//		stack.translate(bone.getPivotX() / 16, bone.getPivotY() / 16, bone.getPivotZ() / 16);
-//	}
-//
-//	public static void moveBackFromPivot(IBone bone, PoseStack stack) {
-//		stack.translate(-bone.getPivotX() / 16, -bone.getPivotY() / 16, -bone.getPivotZ() / 16);
-//	}
-//
-//	public static void scale(IBone bone, PoseStack stack) {
-//		stack.scale(bone.getScaleX(), bone.getScaleY(), bone.getScaleZ());
-//	}
-//
-//	public static void translate(IBone bone, PoseStack stack) {
-//		stack.translate(-bone.getPositionX() / 16, bone.getPositionY() / 16, bone.getPositionZ() / 16);
-//	}
-//
-//	public static void rotate(IBone bone, PoseStack stack) {
-//		if (bone.getRotationZ() != 0f) stack.mulPose(Vector3f.ZP.rotation(bone.getRotationZ()));
-//		if (bone.getRotationY() != 0f) stack.mulPose(Vector3f.YP.rotation(bone.getRotationY()));
-//		if (bone.getRotationX() != 0f) stack.mulPose(Vector3f.XP.rotation(bone.getRotationX()));
-//	}
 
 	@Override
 	public void renderRecursively(GeoBone bone, PoseStack stack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		if (bone.name.equals("serum") && currentItemStack.getItem() instanceof InjectorItem injector) {
-			int serumColor = injector.getSerumColor(currentItemStack);
-//			if (serumColor == -1) return; //don't render? :)
-			float r = FastColor.ARGB32.red(serumColor) / 255f;
-			float g = FastColor.ARGB32.green(serumColor) / 255f;
-			float b = FastColor.ARGB32.blue(serumColor) / 255f;
-			super.renderRecursively(bone, stack, buffer, packedLight, packedOverlay, r, g, b, 0.85f);
+		if (bone.name.equals("serum")) {
+			renderSerumBone(bone, stack, buffer, packedLight, packedOverlay, 0.8f);
+		}
+		else if (bone.name.equals("serum_core")) {
+			renderSerumBone(bone, stack, buffer, packedLight, packedOverlay, 1f);
 		}
 		else {
 			super.renderRecursively(bone, stack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
 		}
+	}
+
+	private void renderSerumBone(GeoBone bone, PoseStack stack, VertexConsumer buffer, int packedLight, int packedOverlay, float alpha) {
+		if (serumColor == -1) return; //don't render
+		float r = FastColor.ARGB32.red(serumColor) / 255f;
+		float g = FastColor.ARGB32.green(serumColor) / 255f;
+		float b = FastColor.ARGB32.blue(serumColor) / 255f;
+		super.renderRecursively(bone, stack, buffer, packedLight, packedOverlay, r, g, b, alpha);
 	}
 
 	@Override

@@ -1,12 +1,9 @@
 package com.github.elenterius.biomancy.world.serum;
 
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
-import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
-import com.github.elenterius.biomancy.world.item.SerumItem;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -21,20 +18,30 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistryEntry;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 public abstract class Serum extends ForgeRegistryEntry<Serum> {
 
-	public static final Serum EMPTY = new Serum(0) {
+	public static final Serum EMPTY = new Serum(-1) {
 		@Override
 		public void affectEntity(ServerLevel level, CompoundTag nbt, @Nullable LivingEntity source, LivingEntity target) {}
 
 		@Override
 		public void affectPlayerSelf(CompoundTag nbt, ServerPlayer targetSelf) {}
+
+		@Override
+		public boolean canAffectPlayerSelf(CompoundTag tag, Player targetSelf) {
+			return false;
+		}
+
+		@Override
+		public boolean canAffectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
+			return false;
+		}
 	};
 
 	public static final String PREFIX = "serum.";
@@ -67,13 +74,18 @@ public abstract class Serum extends ForgeRegistryEntry<Serum> {
 		return PREFIX + registryKey.getNamespace() + "." + registryKey.getPath().replace("/", ".");
 	}
 
-	public void addInfoToClientTooltip(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		if (!(stack.getItem() instanceof SerumItem)) {
-			tooltip.add(TextComponentUtil.getTooltipText("contains", new TranslatableComponent(getTranslationKey())).withStyle(ChatFormatting.GRAY));
-		}
+	public final boolean isEmpty() {
+		return this == EMPTY;
+	}
+
+	public void appendTooltip(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		if (ClientTextUtil.showExtraInfo(tooltip)) {
-			tooltip.add(new TranslatableComponent(getTranslationKey().replace(PREFIX, "tooltip.")).withStyle(TextStyles.LORE));
+			tooltip.add(new TranslatableComponent(getTooltipKey()).withStyle(TextStyles.LORE));
 		}
+	}
+
+	public String getTooltipKey() {
+		return getTranslationKey() + ".tooltip";
 	}
 
 	public String getTranslationKey() {
@@ -82,10 +94,6 @@ public abstract class Serum extends ForgeRegistryEntry<Serum> {
 
 	public TranslatableComponent getDisplayName() {
 		return new TranslatableComponent(getTranslationKey());
-	}
-
-	public boolean isEmpty() {
-		return this == EMPTY;
 	}
 
 	public int getColor() {

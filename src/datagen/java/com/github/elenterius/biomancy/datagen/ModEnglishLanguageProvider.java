@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.init.client.ClientSetupHandler;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.world.entity.projectile.BaseProjectile;
+import com.github.elenterius.biomancy.world.item.IBiomancyItem;
 import com.github.elenterius.biomancy.world.item.MaykerBannerPatternItem;
 import com.github.elenterius.biomancy.world.serum.Serum;
 import net.minecraft.data.DataGenerator;
@@ -116,7 +117,13 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
 	private <T extends Item> void addItem(Supplier<T> supplier, String name, String tooltip) {
 		T item = supplier.get();
 		add(item.getDescriptionId(), name);
-		add(TextComponentUtil.getItemTooltipKey(item), tooltip);
+
+		if (item instanceof IBiomancyItem biomancyItem) {
+			add(biomancyItem.getTooltipKey(new ItemStack(item)), tooltip);
+		}
+		else {
+			add(TextComponentUtil.getItemTooltipKey(item), tooltip);
+		}
 
 		itemsToTranslate.remove(item);
 	}

@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.client.util;
 import com.github.elenterius.biomancy.init.client.ClientSetupHandler;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
+import com.github.elenterius.biomancy.world.item.IBiomancyItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -11,6 +12,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 import java.text.DecimalFormat;
@@ -37,6 +39,21 @@ public final class ClientTextUtil {
 		tooltip.add(getItemInfoTooltip(item));
 	}
 
+	private static MutableComponent getItemTooltip(ItemStack stack) {
+		Item item = stack.getItem();
+
+		if (item instanceof IBiomancyItem biomancyItem) {
+			return biomancyItem.getTooltip(stack);
+		}
+
+		return TextComponentUtil.getItemTooltip(item);
+	}
+
+	public static MutableComponent getItemInfoTooltip(ItemStack stack) {
+		return Screen.hasControlDown() ? getItemTooltip(stack).withStyle(TextStyles.LORE) : pressButtonTo(CTRL_KEY_TEXT.plainCopy(), "show Info").withStyle(TextStyles.LORE);
+	}
+
+	@Deprecated
 	public static MutableComponent getItemInfoTooltip(Item item) {
 		return Screen.hasControlDown() ? TextComponentUtil.getItemTooltip(item).withStyle(TextStyles.LORE) : pressButtonTo(CTRL_KEY_TEXT.plainCopy(), "show Info").withStyle(TextStyles.LORE);
 	}

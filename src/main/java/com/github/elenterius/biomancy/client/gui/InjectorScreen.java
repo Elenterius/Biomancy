@@ -269,7 +269,7 @@ public class InjectorScreen extends Screen {
 			Item item = stack.getItem();
 			if (item instanceof ISerumProvider serumProvider && !(item instanceof InjectorItem)) {
 				Serum serum = serumProvider.getSerum(stack);
-				if (serum != null) {
+				if (!serum.isEmpty()) {
 					if (!foundSerums.containsKey(serum)) {
 						foundStacks.put(stack, idx);
 					}
