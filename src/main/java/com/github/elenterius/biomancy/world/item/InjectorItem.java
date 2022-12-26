@@ -306,6 +306,16 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 		stack.getOrCreateTag().putInt(CURRENT_HOST_KEY, entity.getId());
 	}
 
+	public void setInjectionSuccess(ItemStack stack, boolean flag) {
+		if (stack.isEmpty()) return;
+		stack.getOrCreateTag().putBoolean("IsInjectionSuccess", flag);
+	}
+
+	public boolean getInjectionSuccess(ItemStack stack) {
+		if (stack.isEmpty()) return false;
+		return stack.getOrCreateTag().getBoolean("IsInjectionSuccess");
+	}
+
 	public void removeEntityHost(ItemStack stack) {
 		if (stack.hasTag()) {
 			CompoundTag tag = stack.getTag();
@@ -359,19 +369,17 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 	private void onSoundKeyFrame(ItemStack stack, String soundId, double animationTick) {
 		Level level = Minecraft.getInstance().level;
 		if (level == null) return;
+		if (!getInjectionSuccess(stack)) return;
 
 		Entity soundOrigin = getEntityHost(stack, level);
-		if (soundOrigin != null) {
-			LocalPlayer client = Minecraft.getInstance().player;
-			level.playSound(client, soundOrigin.getX(), soundOrigin.getY(0.5f), soundOrigin.getZ(), ModSoundEvents.INJECTOR_INJECT.get(), SoundSource.PLAYERS, 0.8f, 1f / (level.random.nextFloat() * 0.5f + 1f) + 0.2f);
+		if (soundOrigin == null) return;
 
-			Entity victim = getEntityVictim(stack, level);
-			if (victim != null) {
-				level.levelEvent(LevelEvent.PARTICLES_DRAGON_BLOCK_BREAK, victim.blockPosition(), 0);
-			}
+		LocalPlayer client = Minecraft.getInstance().player;
+		level.playSound(client, soundOrigin.getX(), soundOrigin.getY(0.5f), soundOrigin.getZ(), ModSoundEvents.INJECTOR_INJECT.get(), SoundSource.PLAYERS, 0.8f, 1f / (level.random.nextFloat() * 0.5f + 1f) + 0.2f);
 
-			//removeEntityHost(stack);
-			//removeEntityVictim(stack);
+		Entity victim = getEntityVictim(stack, level);
+		if (victim != null) {
+			level.levelEvent(LevelEvent.PARTICLES_DRAGON_BLOCK_BREAK, victim.blockPosition(), 0);
 		}
 	}
 
@@ -511,6 +519,8 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 			injector.setEntityHost(stack, player); //who is using the item
 			injector.setEntityVictim(stack, target); //who is the victim
 
+			injector.setInjectionSuccess(stack, MobUtil.canPierceThroughArmor(stack, target)); //precompute injection success
+
 			CompoundTag tag = stack.getOrCreateTag();
 			tag.putInt(DELAY_KEY, delayInTicks);
 			tag.putLong(TIMESTAMP_KEY, player.level.getGameTime());
@@ -535,9 +545,10 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 
 			Entity victim = injector.getEntityVictim(stack, level);
 			Entity host = injector.getEntityHost(stack, level);
+			boolean injectionSuccess = injector.getInjectionSuccess(stack);
 
 			if (victim instanceof LivingEntity target) {
-				if (!MobUtil.canPierceThroughArmor(stack, target)) {
+				if (!injectionSuccess) {
 					stack.hurtAndBreak(2, player, p -> {});
 					player.broadcastBreakEvent(EquipmentSlot.MAINHAND); //break needle
 					injector.broadcastAnimation(level, player, stack, AnimState.REGROW_NEEDLE.id);
