@@ -4,86 +4,39 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
 import com.github.elenterius.biomancy.client.util.GuiUtil;
 import com.github.elenterius.biomancy.world.entity.ownable.IControllableMob;
+import com.github.elenterius.biomancy.world.item.InjectorItem;
 import com.github.elenterius.biomancy.world.item.weapon.IGun;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.client.gui.screens.LoadingOverlay;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.gui.IIngameOverlay;
 import net.minecraftforge.client.gui.OverlayRegistry;
-import net.minecraftforge.common.util.MavenVersionStringHelper;
-import net.minecraftforge.fml.ModList;
-
-import java.util.Collection;
 
 public final class IngameOverlays {
 
 	public static final ResourceLocation COMMAND_ICONS = BiomancyMod.createRL("textures/gui/command_icons.png");
+	public static final ResourceLocation INJECTOR_COOL_DOWN = BiomancyMod.createRL("textures/gui/indicator_injector_cooldown.png");
 	public static final ResourceLocation ORNATE_CORNER_BOTTOM_RIGHT = BiomancyMod.createRL("textures/gui/ornate_corner_br.png");
 
-	public static boolean SHOW_RESOURCE_PACKS;
-	public static final IIngameOverlay WATERMARK = (gui, poseStack, partialTick, width, height) -> {
-		Minecraft minecraft = Minecraft.getInstance();
-		if (!minecraft.options.hideGui && !minecraft.options.renderDebug && !(minecraft.getOverlay() instanceof LoadingOverlay)) {
-			gui.setupOverlayRenderState(true, false);
-			gui.setBlitOffset(-90);
-			Font font = Minecraft.getInstance().font;
-
-			ModList.get().getModContainerById(BiomancyMod.MOD_ID).ifPresent(modContainer -> {
-				String text = "Biomancy Alpha";
-				String version = "Version: " + MavenVersionStringHelper.artifactVersionToString(modContainer.getModInfo().getVersion());
-				int textWidth = font.width(text);
-				int versionWidth = font.width(version);
-				int totalWidth = Math.max(textWidth, versionWidth);
-				int y = 32;
-				int x = width - 2;
-				GuiComponent.fill(poseStack, x - totalWidth - 4, y - 4, width, y + font.lineHeight * 2 + 2 + 1, 0xAA111111);
-				GuiComponent.drawString(poseStack, font, text, x - textWidth, y, 0xEEEEEE);
-				GuiComponent.drawString(poseStack, font, version, x - versionWidth, y + font.lineHeight + 1, 0xDDDDDD);
-
-				if (SHOW_RESOURCE_PACKS) {
-					y += 2;
-					y += font.lineHeight + 1;
-					y += font.lineHeight + 1;
-					Collection<Pack> selectedPacks = minecraft.getResourcePackRepository().getSelectedPacks();
-					int i = 0;
-					for (Pack selectedPack : selectedPacks) {
-						String id = selectedPack.getId();
-						GuiComponent.drawString(poseStack, font, id, x - font.width(id), y, 0xDDDDDD);
-						y += font.lineHeight + 1;
-						if (i >= 5) break;
-						i++;
-					}
-					int remainder = selectedPacks.size() - i;
-					if (remainder > 0) {
-						String txt = "...and " + remainder + " more";
-						GuiComponent.drawString(poseStack, font, txt, x - font.width(txt), y, 0xDDDDDD);
-					}
-				}
-			});
-		}
-	};
-	public static boolean IS_DEV_BUILD;
-
-	public static final IIngameOverlay CONTROL_STAFF_OVERLAY = (gui, poseStack, partialTicks, screenWidth, screenHeight) -> {
-//		Minecraft minecraft = Minecraft.getInstance();
-//		if (!minecraft.options.hideGui && minecraft.options.getCameraType().isFirstPerson() && minecraft.player != null) {
-//			ItemStack itemStack = minecraft.player.getMainHandItem();
-//			if (itemStack.isEmpty() || !itemStack.is(ModItems.CONTROL_STAFF.get())) return;
-//			IControllableMob.Command command = ModItems.CONTROL_STAFF.get().getCommand(itemStack);
-//
-//			gui.setupOverlayRenderState(true, false, COMMAND_ICONS);
-//			gui.setBlitOffset(-90);
-//			renderCommandOverlay(poseStack, screenWidth, screenHeight, command);
-//		}
-	};
+	//	public static final IIngameOverlay CONTROL_STAFF_OVERLAY = (gui, poseStack, partialTicks, screenWidth, screenHeight) -> {
+	//		Minecraft minecraft = Minecraft.getInstance();
+	//		if (!minecraft.options.hideGui && minecraft.options.getCameraType().isFirstPerson() && minecraft.player != null) {
+	//			ItemStack itemStack = minecraft.player.getMainHandItem();
+	//			if (itemStack.isEmpty() || !itemStack.is(ModItems.CONTROL_STAFF.get())) return;
+	//			IControllableMob.Command command = ModItems.CONTROL_STAFF.get().getCommand(itemStack);
+	//
+	//			gui.setupOverlayRenderState(true, false, COMMAND_ICONS);
+	//			gui.setBlitOffset(-90);
+	//			renderCommandOverlay(poseStack, screenWidth, screenHeight, command);
+	//		}
+	//	};
 
 	public static final IIngameOverlay GUN_OVERLAY = (gui, poseStack, partialTicks, screenWidth, screenHeight) -> {
 		Minecraft minecraft = Minecraft.getInstance();
@@ -97,19 +50,28 @@ public final class IngameOverlays {
 		}
 	};
 
+	public static final IIngameOverlay INJECTOR_OVERLAY = (gui, poseStack, partialTicks, screenWidth, screenHeight) -> {
+		Minecraft minecraft = Minecraft.getInstance();
+		if (!minecraft.options.hideGui && minecraft.player != null) {
+			ItemStack itemStack = minecraft.player.getMainHandItem();
+			if (itemStack.isEmpty() || !(itemStack.getItem() instanceof InjectorItem injector)) return;
+
+			gui.setupOverlayRenderState(true, false);
+			gui.setBlitOffset(-90);
+			renderInjectorOverlay(gui, poseStack, partialTicks, screenWidth, screenHeight, minecraft.player, itemStack, injector);
+		}
+	};
+
 	private IngameOverlays() {}
 
 	public static void registerGameOverlays() {
 		//		OverlayRegistry.registerOverlayTop("Biomancy ControlStaff", CONTROL_STAFF_OVERLAY);
 		OverlayRegistry.registerOverlayTop("Biomancy Gun", GUN_OVERLAY);
-
-		if (IS_DEV_BUILD) {
-			OverlayRegistry.registerOverlayTop("Biomancy Alpha Watermark", WATERMARK);
-		}
+		OverlayRegistry.registerOverlayTop("Biomancy Injector", INJECTOR_OVERLAY);
 	}
 
 	static void renderCommandOverlay(PoseStack poseStack, int screenWidth, int screenHeight, IControllableMob.Command command) {
-//		if (Minecraft.getInstance().hitResult != null && Minecraft.getInstance().hitResult.getType() == HitResult.Type.BLOCK) {
+		//		if (Minecraft.getInstance().hitResult != null && Minecraft.getInstance().hitResult.getType() == HitResult.Type.BLOCK) {
 		int x = screenWidth / 2 + 16;
 		int y = screenHeight / 2 - 16;
 		GuiComponent.blit(poseStack, x, y, command.serialize() * 32f, 0, 32, 32, 160, 32);
@@ -121,6 +83,20 @@ public final class IngameOverlays {
 
 		if (GuiUtil.isFirstPersonView()) {
 			renderReloadIndicator(gui, poseStack, screenWidth, screenHeight, player, stack, gun);
+		}
+	}
+
+	static void renderInjectorOverlay(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight, LocalPlayer player, ItemStack stack, InjectorItem injector) {
+		if (GuiUtil.isFirstPersonView()) {
+			float progress = 1f - player.getCooldowns().getCooldownPercent(injector, partialTicks);
+			if (progress < 1f) {
+				int x = screenWidth / 2 - 8;
+				int y = screenHeight / 2 - 7 - 8;
+				RenderSystem.setShaderTexture(0, INJECTOR_COOL_DOWN);
+				RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+				GuiComponent.blit(poseStack, x, y, gui.getBlitOffset(), 0, 0, 16, 7, 16, 16);
+				GuiComponent.blit(poseStack, x, y, gui.getBlitOffset(), 0, 7, (int) (progress * 16f), 7, 16, 16);
+			}
 		}
 	}
 
