@@ -218,14 +218,22 @@
       }
     },
     "injector.regrow_needle": {
-      "animation_length": 1,
+      "animation_length": 2.08,
       "bones": {
         "needle": {
           "position": {
             "0.0": {
               "vector": [ 0, 0, 6 ]
             },
-            "1.0": {
+            "0.4": {
+              "vector": [ 0, 0, 4.5 ],
+              "easing": "easeOutBack",
+              "easingArgs": [ 1.1 ]
+            },
+            "0.72": {
+              "vector": [ 0, 0, 4.5 ]
+            },
+            "2.08": {
               "vector": [ 0, 0, 0 ],
               "easing": "easeInOutElastic",
               "easingArgs": [ 1 ]
