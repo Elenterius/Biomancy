@@ -134,4 +134,22 @@ public abstract class Serum extends ForgeRegistryEntry<Serum> {
 		if (attributeModifiers != null) livingEntity.getAttributes().addTransientAttributeModifiers(attributeModifiers);
 	}
 
+	@Override
+	public String toString() {
+		return "Serum{name=%s, color=%s}".formatted(getRegistryName(), Integer.toHexString(color));
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (this == other) return true;
+		if (other == null || getClass() != other.getClass()) return false;
+		Serum otherSerum = (Serum) other;
+		return Objects.requireNonNull(getRegistryName()).equals(otherSerum.getRegistryName());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getRegistryName());
+	}
+
 }
