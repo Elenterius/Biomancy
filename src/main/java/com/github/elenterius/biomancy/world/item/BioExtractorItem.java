@@ -40,7 +40,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class BioExtractorItem extends Item implements IKeyListener, IBiomancyItem {
+public class BioExtractorItem extends Item implements IKeyListener, ICustomTooltip {
 
 	public BioExtractorItem(Properties properties) {
 		super(properties);

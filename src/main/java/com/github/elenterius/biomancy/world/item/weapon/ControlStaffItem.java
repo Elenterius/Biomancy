@@ -5,7 +5,7 @@ import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.world.entity.ownable.Fleshkin;
 import com.github.elenterius.biomancy.world.entity.ownable.IControllableMob;
-import com.github.elenterius.biomancy.world.item.IBiomancyItem;
+import com.github.elenterius.biomancy.world.item.ICustomTooltip;
 import com.github.elenterius.biomancy.world.item.IKeyListener;
 import com.github.elenterius.biomancy.world.ownable.IOwnableMob;
 import net.minecraft.ChatFormatting;
@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ControlStaffItem extends Item implements IKeyListener, IBiomancyItem {
+public class ControlStaffItem extends Item implements IKeyListener, ICustomTooltip {
 
 	public ControlStaffItem(Properties properties) {
 		super(properties);

@@ -70,7 +70,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem, IKeyListener, IAnimatable, ISyncable {
+public class InjectorItem extends Item implements ISerumProvider, ICustomTooltip, IKeyListener, IAnimatable, ISyncable {
 
 	public static final short MAX_SLOT_SIZE = 16;
 	public static final String INVENTORY_TAG = "inventory";
@@ -446,7 +446,7 @@ public class InjectorItem extends Item implements ISerumProvider, IBiomancyItem,
 			Serum serum = getSerum(stack);
 			if (!serum.isEmpty()) {
 				short amount = tag.getCompound(INVENTORY_TAG).getShort(LargeSingleItemStackHandler.ITEM_AMOUNT_TAG);
-				tooltip.add(new TextComponent(String.format("%dx", amount)).append(serum.getDisplayName()).withStyle(ChatFormatting.GRAY));
+				tooltip.add(new TextComponent(String.format("%dx ", amount)).append(serum.getDisplayName()).withStyle(ChatFormatting.GRAY));
 				serum.appendTooltip(stack, level, tooltip, isAdvanced);
 				tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
 			}

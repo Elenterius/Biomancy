@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 //implements IAnimatable
-public class BEWLBlockItem extends BlockItem implements IBiomancyItem {
+public class BEWLBlockItem extends BlockItem implements ICustomTooltip {
 
 	public BEWLBlockItem(Block block, Properties properties) {
 		super(block, properties);

@@ -5,7 +5,7 @@ import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModProjectiles;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import com.github.elenterius.biomancy.world.item.IArmPoseProvider;
-import com.github.elenterius.biomancy.world.item.IBiomancyItem;
+import com.github.elenterius.biomancy.world.item.ICustomTooltip;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
@@ -39,7 +39,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public class BileSpitterItem extends ProjectileWeaponItem implements IBiomancyItem, IAnimatable, ISyncable, IArmPoseProvider {
+public class BileSpitterItem extends ProjectileWeaponItem implements ICustomTooltip, IAnimatable, ISyncable, IArmPoseProvider {
 
 	private static final String CONTROLLER_NAME = "controller";
 	public final float drawTime = 50f;

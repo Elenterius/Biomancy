@@ -5,7 +5,7 @@ import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.init.client.ClientSetupHandler;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.world.entity.projectile.BaseProjectile;
-import com.github.elenterius.biomancy.world.item.IBiomancyItem;
+import com.github.elenterius.biomancy.world.item.ICustomTooltip;
 import com.github.elenterius.biomancy.world.item.MaykerBannerPatternItem;
 import com.github.elenterius.biomancy.world.item.SerumItem;
 import com.github.elenterius.biomancy.world.item.state.LivingToolState;
@@ -134,8 +134,8 @@ public class EnglishTranslationProvider extends LanguageProvider {
 		T item = supplier.get();
 		add(item.getDescriptionId(), name);
 
-		if (item instanceof IBiomancyItem biomancyItem) {
-			add(biomancyItem.getTooltipKey(new ItemStack(item)), tooltip);
+		if (item instanceof ICustomTooltip iTooltip) {
+			add(iTooltip.getTooltipKey(new ItemStack(item)), tooltip);
 		}
 		else {
 			add(TextComponentUtil.getItemTooltipKey(item), tooltip);

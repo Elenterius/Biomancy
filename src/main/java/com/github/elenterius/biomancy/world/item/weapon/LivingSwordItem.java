@@ -5,7 +5,7 @@ import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.world.entity.MobUtil;
-import com.github.elenterius.biomancy.world.item.IBiomancyItem;
+import com.github.elenterius.biomancy.world.item.ICustomTooltip;
 import com.github.elenterius.biomancy.world.item.IKeyListener;
 import com.github.elenterius.biomancy.world.item.ILivingToolItem;
 import com.github.elenterius.biomancy.world.item.state.LivingToolState;
@@ -34,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LivingSwordItem extends SwordItem implements IBiomancyItem, ILivingToolItem, IKeyListener {
+public class LivingSwordItem extends SwordItem implements ICustomTooltip, ILivingToolItem, IKeyListener {
 
 	private final int maxNutrients;
 

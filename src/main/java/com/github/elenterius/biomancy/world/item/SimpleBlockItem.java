@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class SimpleBlockItem extends BlockItem implements IBiomancyItem {
+public class SimpleBlockItem extends BlockItem implements ICustomTooltip {
 
 	public SimpleBlockItem(Block block, Properties properties) {
 		super(block, properties);

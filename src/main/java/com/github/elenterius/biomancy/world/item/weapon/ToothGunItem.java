@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.world.item.weapon;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import com.github.elenterius.biomancy.world.entity.projectile.ToothProjectile;
-import com.github.elenterius.biomancy.world.item.IBiomancyItem;
+import com.github.elenterius.biomancy.world.item.ICustomTooltip;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -15,7 +15,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.function.Predicate;
 
 @Deprecated(forRemoval = true)
-public class ToothGunItem extends BaseGunItem implements IBiomancyItem {
+public class ToothGunItem extends BaseGunItem implements ICustomTooltip {
 
 	public ToothGunItem(Properties properties) {
 		super(properties, new GunProperties()

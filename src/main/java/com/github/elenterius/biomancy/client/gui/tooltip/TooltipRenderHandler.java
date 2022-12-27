@@ -4,8 +4,9 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModRarities;
 import com.github.elenterius.biomancy.init.client.ModScreens;
 import com.github.elenterius.biomancy.styles.ColorStyles;
+import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.tooltip.PlaceholderComponent;
-import com.github.elenterius.biomancy.world.item.IBiomancyItem;
+import com.github.elenterius.biomancy.world.item.ICustomTooltip;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
@@ -14,6 +15,7 @@ import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.network.chat.FormattedText;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
@@ -31,12 +33,6 @@ public final class TooltipRenderHandler {
 
 	private TooltipRenderHandler() {}
 
-	private static boolean isBiomancyItem(ItemStack stack) {
-		if (stack.getItem() instanceof IBiomancyItem) return true;
-		ResourceLocation id = stack.getItem().getRegistryName();
-		return id != null && id.getNamespace().equals(BiomancyMod.MOD_ID);
-	}
-
 	@SubscribeEvent
 	public static void onRenderTooltipColor(final RenderTooltipEvent.Color tooltipEvent) {
 		ItemStack stack = tooltipEvent.getItemStack();
@@ -44,13 +40,15 @@ public final class TooltipRenderHandler {
 		if (stack.isEmpty() && ModScreens.isBiomancyScreen(Minecraft.getInstance().screen)) {
 			ColorStyles.GENERIC_TOOLTIP.applyColorTo(tooltipEvent);
 		}
-		else if (isBiomancyItem(stack)) {
-			ColorStyles.CUSTOM_RARITY_TOOLTIP.applyColorTo(tooltipEvent);
+		else if (stack.getItem() instanceof ICustomTooltip iTooltip) {
+			iTooltip.getTooltipStyle().applyColorTo(tooltipEvent);
 		}
 	}
 
 	@SubscribeEvent
 	public static void onGatherTooltipComponents(final RenderTooltipEvent.GatherComponents event) {
+		final boolean isTooltip = event.getItemStack().getItem() instanceof ICustomTooltip;
+
 		List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
 		for (int i = 0; i < tooltipElements.size(); i++) {
 			Either<FormattedText, TooltipComponent> either = tooltipElements.get(i);
@@ -59,25 +57,28 @@ public final class TooltipRenderHandler {
 				if (formattedText instanceof PlaceholderComponent placeholder) {
 					tooltipElements.set(index, Either.right(placeholder.getReplacement()));
 				}
+				else if (isTooltip && formattedText == TextComponent.EMPTY) { //vanilla bugfix: fixes empty lines disappearing when long text is wrapped
+					tooltipElements.set(index, Either.right(TooltipHacks.EMPTY_LINE_COMPONENT.getReplacement()));
+				}
 			});
 		}
 	}
 
 	public static void onPostRenderTooltip(ItemStack stack, List<ClientTooltipComponent> components, Screen screen, PoseStack poseStack, int posX, int posY, int tooltipWidth, int tooltipHeight) {
 		if (!components.isEmpty()) {
+			int color = stack.getItem() instanceof ICustomTooltip iTooltip ? iTooltip.getTooltipColorWithAlpha(stack) : ModRarities.getARGBColor(stack);
+
 			int y = posY;
 			for (int i = 0; i < components.size(); i++) {
 				ClientTooltipComponent clientComponent = components.get(i);
 				if (clientComponent instanceof HrTooltipClientComponent hrComponent) {
-					hrComponent.renderLine(poseStack, posX, y, tooltipWidth, i, ModRarities.getARGBColor(stack));
+					hrComponent.renderLine(poseStack, posX, y, tooltipWidth, i, color);
 				}
 				y += clientComponent.getHeight() + (i == 0 ? 2 : 0);
 			}
 		}
 
-		//		if (isBiomancyItem(stack) && stack.getRarity() != Rarity.COMMON) {
-		//			drawTooltipOverlay(poseStack, posX, posY, tooltipWidth, tooltipHeight);
-		//		}
+		//drawTooltipOverlay(poseStack, posX, posY, tooltipWidth, tooltipHeight);
 	}
 
 	private static void drawTooltipOverlay(PoseStack poseStack, int posX, int posY, int tooltipWidth, int tooltipHeight) {

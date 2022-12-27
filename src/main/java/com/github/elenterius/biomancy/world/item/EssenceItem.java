@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class EssenceItem extends Item implements IBiomancyItem {
+public class EssenceItem extends Item implements ICustomTooltip {
 
 	public static final String NBT_KEY_ENTITY_TYPE = "EntityType";
 	public static final String KEY_DATA = "EssenceData";

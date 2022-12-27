@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.world.item.weapon;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.PotionUtilExt;
-import com.github.elenterius.biomancy.world.item.IBiomancyItem;
+import com.github.elenterius.biomancy.world.item.ICustomTooltip;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 @Deprecated
-public class BoomlingItem extends Item implements IBiomancyItem {
+public class BoomlingItem extends Item implements ICustomTooltip {
 
 	public BoomlingItem(Properties properties) {
 		super(properties);

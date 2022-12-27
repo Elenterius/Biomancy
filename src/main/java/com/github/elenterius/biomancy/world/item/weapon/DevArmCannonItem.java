@@ -9,7 +9,7 @@ import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.world.item.IArmPoseProvider;
-import com.github.elenterius.biomancy.world.item.IBiomancyItem;
+import com.github.elenterius.biomancy.world.item.ICustomTooltip;
 import com.github.elenterius.biomancy.world.item.IKeyListener;
 import it.unimi.dsi.fastutil.floats.FloatUnaryOperator;
 import net.minecraft.client.Minecraft;
@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
-public class DevArmCannonItem extends Item implements IAnimatable, IArmPoseProvider, IBiomancyItem, IKeyListener {
+public class DevArmCannonItem extends Item implements IAnimatable, IArmPoseProvider, ICustomTooltip, IKeyListener {
 
 	public static final Set<Enchantment> VALID_ENCHANTMENTS = Set.of(Enchantments.PUNCH_ARROWS, Enchantments.POWER_ARROWS);
 	private final AnimationFactory animationFactory = new AnimationFactory(this);
