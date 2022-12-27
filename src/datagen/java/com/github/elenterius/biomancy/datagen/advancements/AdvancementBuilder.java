@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.datagen.advancements;
 
-import com.github.elenterius.biomancy.datagen.ModEnglishLanguageProvider;
+import com.github.elenterius.biomancy.datagen.translations.EnglishTranslationProvider;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.FrameType;
@@ -19,7 +19,7 @@ public class AdvancementBuilder {
 	private final Advancement.Builder internalBuilder;
 	private final String modId;
 	private final String id;
-	private final ModEnglishLanguageProvider.AdvancementTranslations.AdvancementTranslation translation;
+	private final EnglishTranslationProvider.AdvancementTranslations.AdvancementTranslation translation;
 	private ItemStack icon = ItemStack.EMPTY;
 	private ResourceLocation background = null;
 	private FrameType frameType = FrameType.TASK;
@@ -31,7 +31,7 @@ public class AdvancementBuilder {
 		this.modId = modId;
 		this.id = id;
 		internalBuilder = Advancement.Builder.advancement();
-		translation = ModEnglishLanguageProvider.AdvancementTranslations.TRANSLATIONS.stream().filter(t -> id.equals(t.id())).findFirst().orElseThrow(() -> new IllegalStateException("translation is missing for advancement '%s'".formatted(id)));
+		translation = EnglishTranslationProvider.AdvancementTranslations.TRANSLATIONS.stream().filter(t -> id.equals(t.id())).findFirst().orElseThrow(() -> new IllegalStateException("translation is missing for advancement '%s'".formatted(id)));
 	}
 
 	public static AdvancementBuilder create(String modId, String id) {

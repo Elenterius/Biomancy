@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.world.item;
 
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
+import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.styles.TooltipHacks;
 import net.minecraft.client.gui.screens.Screen;
@@ -37,7 +38,7 @@ public class MobLootItem extends Item implements IBiomancyItem {
 
 		if (Screen.hasControlDown()) {
 			tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
-			tooltip.add(new TextComponent("Drops from").withStyle(TextStyles.LORE));
+			tooltip.add(TextComponentUtil.getTooltipText("drops_from").withStyle(TextStyles.LORE));
 
 			List<EntityType<?>> mobs = taggedEntities.stream().limit(12).toList();
 			int mobCount = mobs.size();
@@ -49,7 +50,7 @@ public class MobLootItem extends Item implements IBiomancyItem {
 					component.append(mobs.get(i).getDescription());
 					if (mobCount > 1 && i < mobCount - 1) component.append(", ");
 				}
-				if (mobCount < taggedEntities.size()) component.append(" and more...");
+				if (mobCount < taggedEntities.size()) component.append(" ").append(TextComponentUtil.getTooltipText("and_more"));
 			}
 		}
 	}

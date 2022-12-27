@@ -156,7 +156,7 @@ public class LivingClawsItem extends SimpleClawsItem implements ILivingToolItem,
 		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
 		appendLivingToolTooltip(stack, tooltip);
 		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
-		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action_cycle")));
+		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action.cycle")));
 		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
 	}
 

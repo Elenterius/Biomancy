@@ -11,6 +11,7 @@ import com.github.elenterius.biomancy.datagen.tags.ForgeEntityTypeTagsProvider;
 import com.github.elenterius.biomancy.datagen.tags.ModBlockTagsProvider;
 import com.github.elenterius.biomancy.datagen.tags.ModEntityTypeTagsProvider;
 import com.github.elenterius.biomancy.datagen.tags.ModItemTagsProvider;
+import com.github.elenterius.biomancy.datagen.translations.EnglishTranslationProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -52,7 +53,7 @@ public final class DataGenerators {
 		generator.addProvider(new ModSoundProvider(generator, existingFileHelper));
 
 		//translations
-		generator.addProvider(new ModEnglishLanguageProvider(generator));
+		generator.addProvider(new EnglishTranslationProvider(generator));
 	}
 
 }

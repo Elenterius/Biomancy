@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.datagen;
+package com.github.elenterius.biomancy.datagen.translations;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.*;
@@ -7,6 +7,8 @@ import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.world.entity.projectile.BaseProjectile;
 import com.github.elenterius.biomancy.world.item.IBiomancyItem;
 import com.github.elenterius.biomancy.world.item.MaykerBannerPatternItem;
+import com.github.elenterius.biomancy.world.item.SerumItem;
+import com.github.elenterius.biomancy.world.item.state.LivingToolState;
 import com.github.elenterius.biomancy.world.serum.Serum;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.HashCache;
@@ -34,15 +36,16 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-public class ModEnglishLanguageProvider extends LanguageProvider {
+public class EnglishTranslationProvider extends LanguageProvider {
 
 	public static final Marker LOG_MARKER = MarkerManager.getMarker("EnglishLanguageProvider");
 	private static final String EMPTY_STRING = "";
 
 	private List<Item> itemsToTranslate = List.of();
 	private List<Block> blocksToTranslate = List.of();
+	private List<Serum> serumsToTranslate = List.of();
 
-	public ModEnglishLanguageProvider(DataGenerator gen) {
+	public EnglishTranslationProvider(DataGenerator gen) {
 		super(gen, BiomancyMod.MOD_ID, "en_us");
 	}
 
@@ -50,6 +53,7 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
 	public void run(HashCache cache) throws IOException {
 		itemsToTranslate = new ArrayList<>(ModItems.ITEMS.getEntries().stream().map(RegistryObject::get).filter(item -> !(item instanceof BlockItem)).toList());
 		blocksToTranslate = new ArrayList<>(ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).toList());
+		serumsToTranslate = new ArrayList<>(ModSerums.SERUMS.getEntries().stream().map(RegistryObject::get).toList());
 
 		super.run(cache);
 
@@ -65,6 +69,13 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
 				BiomancyMod.LOGGER.warn(LOG_MARKER, () -> "Missing translation for block '%s'".formatted(block));
 			}
 			throw new IllegalStateException("Missing translation for %d blocks".formatted(blocksToTranslate.size()));
+		}
+
+		if (!serumsToTranslate.isEmpty()) {
+			for (Serum serum : serumsToTranslate) {
+				BiomancyMod.LOGGER.warn(LOG_MARKER, () -> "Missing translation for serum '%s'".formatted(serum));
+			}
+			throw new IllegalStateException("Missing translation for %d serums".formatted(serumsToTranslate.size()));
 		}
 	}
 
@@ -92,7 +103,12 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
 	}
 
 	private <T extends Serum> void addSerum(Supplier<T> supplier, String name) {
-		add(supplier.get().getTranslationKey(), name);
+		add(supplier.get(), name);
+	}
+
+	private void add(Serum serum, String name) {
+		add(serum.getTranslationKey(), name);
+		serumsToTranslate.remove(serum);
 	}
 
 	private void addDeathMessage(DamageSource damageSource, String text) {
@@ -125,6 +141,17 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
 			add(TextComponentUtil.getItemTooltipKey(item), tooltip);
 		}
 
+		itemsToTranslate.remove(item);
+	}
+
+	private <T extends SerumItem> void addSerumItem(Supplier<T> supplier, String serumName, String tooltip) {
+		T item = supplier.get();
+		ItemStack stack = new ItemStack(item);
+
+		add(item.getSerum(stack), serumName);
+
+		add(item.getDescriptionId(stack), serumName);
+		add(item.getTooltipKey(stack), tooltip);
 		itemsToTranslate.remove(item);
 	}
 
@@ -183,9 +210,17 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
 		addTooltip("bile_fuel", "Bile");
 		addTooltip("contains_unique_dna", "Contains Unique Genetic Sequences");
 		addTooltip("press_button_to", "Press %1$s to %2$s");
-		addTooltip("action_self_inject", "inject yourself");
-		addTooltip("action_self_extract", "extract from yourself");
-		addTooltip("action_open_inventory", "open its inventory");
+
+		addTooltip("drops_from", "Drops from");
+		addTooltip("and_more", "and more...");
+
+		addTooltip("action.self_inject", "inject yourself");
+		addTooltip("action.self_extract", "extract from yourself");
+		addTooltip("action.open_inventory", "open its inventory");
+		addTooltip("action.activate", "activate");
+		addTooltip("action.deactivate", "deactivate");
+		addTooltip("action.reload", "reload");
+		addTooltip("action.cycle", "cycle");
 
 		addTooltip("fire_rate", "Fire Rate");
 		addTooltip("accuracy", "Accuracy");
@@ -193,13 +228,10 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
 		addTooltip("reload_time", "Reload Time");
 		addTooltip("projectile_damage", "Projectile Damage");
 
-		addTooltip("item_is_dormant", "The Tool is Dormant");
-		addTooltip("item_is_awake", "The Tool is Awake");
-		addTooltip("item_is_exalted", "The Tool is Exalted");
-
-		addTooltip("dormant", "Dormant");
-		addTooltip("awake", "Awake");
-		addTooltip("exalted", "Exalted");
+		add(LivingToolState.getTooltipTranslationKey(), "The Tool is %1$s");
+		add(LivingToolState.DORMANT.getTranslationKey(), "Dormant");
+		add(LivingToolState.AWAKE.getTranslationKey(), "Awake");
+		add(LivingToolState.EXALTED.getTranslationKey(), "Exalted");
 
 		addHudMessage("not_sleepy", "You don't feel sleepy...");
 		addHudMessage("set_behavior_command", "%1$s will now execute the %2$s command");
@@ -289,12 +321,8 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
 	}
 
 	private void addSerumTranslations() {
-		addSerum(ModSerums.GROWTH_SERUM, "Growth Serum");
-		addSerum(ModSerums.REJUVENATION_SERUM, "Rejuvenation Serum");
-		addSerum(ModSerums.CLEANSING_SERUM, "Cleansing Serum");
-		addSerum(ModSerums.BREEDING_STIMULANT, "Breeding Stimulant");
-		addSerum(ModSerums.ABSORPTION_BOOST, "Absorption Stimulant");
-		addSerum(ModSerums.INSOMNIA_CURE, "Insomnia Cure");
+		//serums that are not tied to a specific item
+		add(Serum.EMPTY, "INVALID SERUM");
 	}
 
 	private void addStatusEffectTranslations() {
@@ -368,12 +396,12 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
 		addItem(ModItems.CORROSIVE_ADDITIVE, "Corrosive Additive", "An highly corrosive fluid that seems useful for alchemically burning away organic material or weakening the bonds of complex substances.");
 		addItem(ModItems.HEALING_ADDITIVE, "Healing Additive", "An highly concentrated substance that is used to imbue it properties to other compounds.");
 
-		addItem(ModItems.GROWTH_SERUM, "Growth Serum", "Induces growth, in most cases child Mobs grow into Adults.");
-		addItem(ModItems.REJUVENATION_SERUM, "Rejuvenation Serum", "Reverses the growth of Mobs, in most cases they turn into children.");
-		addItem(ModItems.CLEANSING_SERUM, "Cleansing Serum", "Burns away all foreign substances inside a living entity.\nVery effective for sticky status effects that refuse to be healed with milk.");
-		addItem(ModItems.BREEDING_STIMULANT, "Breeding Stimulant", "Makes Animals hyper-fertile, making them able to constantly reproduce for a short time.");
-		addItem(ModItems.ABSORPTION_BOOST, "Absorption Stimulant", "Grants stackable absorption health points for Mobs and Players.");
-		addItem(ModItems.INSOMNIA_CURE, "Insomnia Cure", "Resets the last slept time, no need to sleep for quite some time.");
+		addSerumItem(ModItems.GROWTH_SERUM, "Growth Serum", "Induces growth, in most cases child Mobs grow into Adults.");
+		addSerumItem(ModItems.REJUVENATION_SERUM, "Rejuvenation Serum", "Reverses the growth of Mobs, in most cases they turn into children.");
+		addSerumItem(ModItems.CLEANSING_SERUM, "Cleansing Serum", "Burns away all foreign substances inside a living entity.\nVery effective for sticky status effects that refuse to be healed with milk.");
+		addSerumItem(ModItems.BREEDING_STIMULANT, "Breeding Stimulant", "Makes Animals hyper-fertile, making them able to constantly reproduce for a short time.");
+		addSerumItem(ModItems.ABSORPTION_BOOST, "Absorption Stimulant", "Grants stackable absorption health points for Mobs and Players.");
+		addSerumItem(ModItems.INSOMNIA_CURE, "Insomnia Cure", "Resets the last slept time, no need to sleep for quite some time.");
 
 		addBannerPatternItem(ModItems.MASCOT_BANNER_PATTERN, "Banner Pattern", "Mascot Base");
 		addBannerPatternItem(ModItems.MASCOT_OUTLINE_BANNER_PATTERN, "Banner Pattern", "Mascot Outline");
@@ -411,17 +439,17 @@ public class ModEnglishLanguageProvider extends LanguageProvider {
 		addBlock(ModBlocks.FLESH, "Flesh Block", "A generic block of flesh... Don't bother me with this!");
 		addBlock(ModBlocks.FLESH_SLAB, "Flesh Slab", "A generic slab of flesh... Don't bother me with this!");
 		addBlock(ModBlocks.FLESH_STAIRS, "Flesh Stairs", "Stairs made of generic flesh... Don't bother me with this!");
-		addBlock(ModBlocks.FLESH_WALL, "Flesh Wall", EMPTY_STRING);
+		addBlock(ModBlocks.FLESH_WALL, "Flesh Wall", "A generic wall of flesh.");
 		addBlock(ModBlocks.PACKED_FLESH, "Packed Flesh Block", "Tenacious Block of flesh. Is it tough enough?");
 		addBlock(ModBlocks.PACKED_FLESH_SLAB, "Packed Flesh Slab", "Tenacious Slab of flesh. Is it tough enough?");
 		addBlock(ModBlocks.PACKED_FLESH_STAIRS, "Packed Flesh Stairs", "Stairs made of tenacious flesh. Is it tough enough?");
-		addBlock(ModBlocks.PACKED_FLESH_WALL, "Packed Flesh Wall", EMPTY_STRING);
+		addBlock(ModBlocks.PACKED_FLESH_WALL, "Packed Flesh Wall", "Tenacious wall of flesh.");
 
 		addBlock(ModBlocks.FLESH_FENCE, "Flesh Fence", "Fence made of bones and flesh...");
 		addBlock(ModBlocks.FLESH_FENCE_GATE, "Flesh Fence Gate", "Fence gate made of bones and flesh...");
 		addBlock(ModBlocks.FLESH_IRIS_DOOR, "Flesh Iris-Door", "Trapdoor-like iris door made of flesh...");
 		addBlock(ModBlocks.FLESH_DOOR, "Flesh Door", "A sliding door made of flesh...");
-		addBlock(ModBlocks.BONE_SPIKE, "Bone Spike", EMPTY_STRING);
+		addBlock(ModBlocks.BONE_SPIKE, "Bone Spike", "A dangerous spike made of reinforced bone, colliding with it will hurt.");
 		addBlock(ModBlocks.FLESH_LADDER, "Flesh Ladder", "Ladder mainly made of bones and a little bit of flesh...");
 
 		addBlock(ModBlocks.PRIMAL_FLESH, "Primal Flesh Block", "Primitive and pure, you better not touch this with your dirty paws.");
