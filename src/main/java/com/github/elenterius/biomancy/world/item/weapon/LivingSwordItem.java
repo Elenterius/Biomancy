@@ -8,7 +8,7 @@ import com.github.elenterius.biomancy.world.entity.MobUtil;
 import com.github.elenterius.biomancy.world.item.IBiomancyItem;
 import com.github.elenterius.biomancy.world.item.IKeyListener;
 import com.github.elenterius.biomancy.world.item.ILivingToolItem;
-import com.github.elenterius.biomancy.world.item.LivingToolState;
+import com.github.elenterius.biomancy.world.item.state.LivingToolState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -165,7 +165,7 @@ public class LivingSwordItem extends SwordItem implements IBiomancyItem, ILiving
 
 	@Override
 	public Component getHighlightTip(ItemStack stack, Component displayName) {
-		return new TextComponent("").append(displayName).append(" (").append(getLivingToolState(stack).getTooltip()).append(")");
+		return new TextComponent("").append(displayName).append(" (").append(getLivingToolState(stack).getDisplayName()).append(")");
 	}
 
 }

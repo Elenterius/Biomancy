@@ -1,6 +1,6 @@
-package com.github.elenterius.biomancy.world.item;
+package com.github.elenterius.biomancy.world.item.state;
 
-import com.github.elenterius.biomancy.styles.TextComponentUtil;
+import com.github.elenterius.biomancy.BiomancyMod;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 
@@ -23,16 +23,24 @@ public enum LivingToolState {
 		return values()[stateId];
 	}
 
+	public static String getTooltipTranslationKey() {
+		return "tooltip." + BiomancyMod.MOD_ID + ".living_tool_state_is";
+	}
+
 	public LivingToolState cycle() {
 		return deserialize((byte) (ordinal() + 1));
 	}
 
-	public TranslatableComponent getItemTooltip() {
-		return TextComponentUtil.getTooltipText("item_is_" + name().toLowerCase(Locale.ENGLISH));
+	public TranslatableComponent getTooltip() {
+		return new TranslatableComponent(getTooltipTranslationKey(), new TranslatableComponent(getTranslationKey()));
 	}
 
-	public TranslatableComponent getTooltip() {
-		return TextComponentUtil.getTooltipText(name().toLowerCase(Locale.ENGLISH));
+	public String getTranslationKey() {
+		return "state." + BiomancyMod.MOD_ID + ".living_tool." + name().toLowerCase(Locale.ENGLISH);
+	}
+
+	public TranslatableComponent getDisplayName() {
+		return new TranslatableComponent(getTranslationKey());
 	}
 
 	public void serialize(CompoundTag tag) {

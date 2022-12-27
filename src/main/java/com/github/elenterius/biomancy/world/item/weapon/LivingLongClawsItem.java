@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.world.item.weapon;
 
 import com.github.elenterius.biomancy.client.renderer.item.LongClawsRenderer;
-import com.github.elenterius.biomancy.world.item.LivingToolState;
+import com.github.elenterius.biomancy.world.item.state.LivingToolState;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.server.level.ServerLevel;

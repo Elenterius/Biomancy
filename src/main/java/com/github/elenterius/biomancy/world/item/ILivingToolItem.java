@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.util.SoundUtil;
+import com.github.elenterius.biomancy.world.item.state.LivingToolState;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -125,7 +126,7 @@ public interface ILivingToolItem extends INutrientsContainerItem {
 	}
 
 	default void appendLivingToolTooltip(ItemStack stack, List<Component> tooltip) {
-		tooltip.add(getLivingToolState(stack).getItemTooltip().withStyle(TextStyles.ITALIC_GRAY));
+		tooltip.add(getLivingToolState(stack).getTooltip().withStyle(TextStyles.ITALIC_GRAY));
 
 		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
 
