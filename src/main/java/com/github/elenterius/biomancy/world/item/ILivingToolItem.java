@@ -16,6 +16,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.common.ToolAction;
 
 import java.text.DecimalFormat;
@@ -24,6 +26,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public interface ILivingToolItem extends INutrientsContainerItem {
+	Set<Enchantment> INVALID_ENCHANTMENTS = Set.of(Enchantments.UNBREAKING, Enchantments.MENDING, Enchantments.FIRE_ASPECT);
+
 	default LivingToolState getLivingToolState(ItemStack livingTool) {
 		return LivingToolState.deserialize(livingTool.getOrCreateTag());
 	}
@@ -123,6 +127,10 @@ public interface ILivingToolItem extends INutrientsContainerItem {
 		}
 
 		return false;
+	}
+
+	default boolean isValidEnchantment(ItemStack livingTool, Enchantment enchantment) {
+		return !INVALID_ENCHANTMENTS.contains(enchantment);
 	}
 
 	default void appendLivingToolTooltip(ItemStack stack, List<Component> tooltip) {

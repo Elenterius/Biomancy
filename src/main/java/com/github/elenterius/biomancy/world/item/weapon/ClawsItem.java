@@ -68,7 +68,7 @@ public class ClawsItem extends TieredItem implements Vanishable {
 
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return enchantment.category == EnchantmentCategory.WEAPON; //use sword enchantments
+		return enchantment.category.canEnchant(stack.getItem()) || enchantment.category == EnchantmentCategory.WEAPON; //use sword enchantments
 	}
 
 	@Override

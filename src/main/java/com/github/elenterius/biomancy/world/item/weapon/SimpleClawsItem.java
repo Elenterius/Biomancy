@@ -21,7 +21,7 @@ public class SimpleClawsItem extends ClawsItem implements ICustomTooltip {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
 		tooltip.add(TooltipHacks.HR_COMPONENT);
-		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack));
 	}
 
 }
