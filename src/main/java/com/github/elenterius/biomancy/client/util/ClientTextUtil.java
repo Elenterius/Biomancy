@@ -24,14 +24,15 @@ import java.util.UUID;
 
 public final class ClientTextUtil {
 
-	private static final TranslatableComponent CTRL_KEY_TEXT = new TranslatableComponent("keyboard.biomancy.ctrl");
-	private static final TranslatableComponent ALT_KEY_TEXT = new TranslatableComponent("keyboard.biomancy.alt");
-	private static final TranslatableComponent SHIFT_KEY_TEXT = new TranslatableComponent("keyboard.biomancy.shift");
-	private static final TranslatableComponent RIGHT_MOUSE_KEY_TEXT = new TranslatableComponent("keyboard.biomancy.right_mouse");
+	private static final TranslatableComponent CTRL_KEY_TEXT = new TranslatableComponent("keyboard." + BiomancyMod.MOD_ID + ".ctrl");
+	private static final TranslatableComponent ALT_KEY_TEXT = new TranslatableComponent("keyboard." + BiomancyMod.MOD_ID + ".alt");
+	private static final TranslatableComponent SHIFT_KEY_TEXT = new TranslatableComponent("keyboard." + BiomancyMod.MOD_ID + ".shift");
+	private static final TranslatableComponent RIGHT_MOUSE_KEY_TEXT = new TranslatableComponent("keyboard." + BiomancyMod.MOD_ID + ".right_mouse");
+	private static final TranslatableComponent SHOW_INFO = new TranslatableComponent("tooltip." + BiomancyMod.MOD_ID + ".action.show_info");
 
 	private static DecimalFormat decimalFormat = null;
 	private static String prevPattern = "";
-	private static Locale prevLocale = MinecraftForgeClient.getLocale();
+	private static Locale prevLocale = null;
 
 	private ClientTextUtil() {}
 
@@ -51,17 +52,17 @@ public final class ClientTextUtil {
 	}
 
 	public static MutableComponent getItemInfoTooltip(ItemStack stack) {
-		return Screen.hasControlDown() ? getItemTooltip(stack).withStyle(TextStyles.LORE) : pressButtonTo(CTRL_KEY_TEXT.plainCopy(), "show Info").withStyle(TextStyles.LORE);
+		return Screen.hasControlDown() ? getItemTooltip(stack).withStyle(TextStyles.LORE) : pressButtonTo(CTRL_KEY_TEXT.plainCopy(), SHOW_INFO).withStyle(TextStyles.LORE);
 	}
 
 	@Deprecated
 	public static MutableComponent getItemInfoTooltip(Item item) {
-		return Screen.hasControlDown() ? TextComponentUtil.getItemTooltip(item).withStyle(TextStyles.LORE) : pressButtonTo(CTRL_KEY_TEXT.plainCopy(), "show Info").withStyle(TextStyles.LORE);
+		return Screen.hasControlDown() ? TextComponentUtil.getItemTooltip(item).withStyle(TextStyles.LORE) : pressButtonTo(CTRL_KEY_TEXT.plainCopy(), SHOW_INFO).withStyle(TextStyles.LORE);
 	}
 
 	public static boolean showExtraInfo(List<Component> tooltip) {
 		boolean flag = Screen.hasAltDown();
-		if (!flag) tooltip.add(pressButtonTo(ALT_KEY_TEXT.plainCopy(), "show Info").withStyle(TextStyles.LORE));
+		if (!flag) tooltip.add(pressButtonTo(ALT_KEY_TEXT.plainCopy(), SHOW_INFO).withStyle(TextStyles.LORE));
 		return flag;
 	}
 
@@ -69,19 +70,19 @@ public final class ClientTextUtil {
 		return new TranslatableComponent(TextComponentUtil.getTranslationKey("tooltip", "press_button_to"), key.withStyle(TextStyles.KEYBOARD_INPUT), action);
 	}
 
-	public static MutableComponent getAltKey() {
+	public static TranslatableComponent getAltKey() {
 		return ALT_KEY_TEXT.plainCopy();
 	}
 
-	public static MutableComponent getCtrlKey() {
+	public static TranslatableComponent getCtrlKey() {
 		return CTRL_KEY_TEXT.plainCopy();
 	}
 
-	public static MutableComponent getShiftKey() {
+	public static TranslatableComponent getShiftKey() {
 		return SHIFT_KEY_TEXT.plainCopy();
 	}
 
-	public static MutableComponent getRightMouseKey() {
+	public static TranslatableComponent getRightMouseKey() {
 		return RIGHT_MOUSE_KEY_TEXT.plainCopy();
 	}
 

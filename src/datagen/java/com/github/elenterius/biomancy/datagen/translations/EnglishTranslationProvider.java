@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.datagen.translations;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.init.client.ClientSetupHandler;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
@@ -214,6 +215,7 @@ public class EnglishTranslationProvider extends LanguageProvider {
 		addTooltip("drops_from", "Drops from");
 		addTooltip("and_more", "and more...");
 
+		addTooltip("action.show_info", "show info");
 		addTooltip("action.self_inject", "inject yourself");
 		addTooltip("action.self_extract", "extract from yourself");
 		addTooltip("action.open_inventory", "open its inventory");
@@ -240,10 +242,10 @@ public class EnglishTranslationProvider extends LanguageProvider {
 
 		addAdvancementTranslations();
 
-		add("keyboard.biomancy.ctrl", "ctrl");
-		add("keyboard.biomancy.alt", "alt");
-		add("keyboard.biomancy.shift", "shift");
-		add("keyboard.biomancy.right_mouse", "right mouse");
+		add(ClientTextUtil.getCtrlKey().getKey(), "ctrl");
+		add(ClientTextUtil.getAltKey().getKey(), "alt");
+		add(ClientTextUtil.getShiftKey().getKey(), "shift");
+		add(ClientTextUtil.getRightMouseKey().getKey(), "right mouse");
 
 		add("jei.biomancy.recipe.bio_lab", "Bio-Lab Recipes");
 		add("jei.biomancy.recipe.decomposer", "Decomposer Recipes");

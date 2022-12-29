@@ -354,6 +354,7 @@
   "tooltip.biomancy.action.reload": "reload",
   "tooltip.biomancy.action.self_extract": "extract from yourself",
   "tooltip.biomancy.action.self_inject": "inject yourself",
+  "tooltip.biomancy.action.show_info": "show info",
   "tooltip.biomancy.ammo": "Ammo",
   "tooltip.biomancy.and_more": "and more...",
   "tooltip.biomancy.bile_fuel": "Bile",
