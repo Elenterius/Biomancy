@@ -1,10 +1,10 @@
 package com.github.elenterius.biomancy.client.util;
 
+import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.client.ClientSetupHandler;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.world.item.ICustomTooltip;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -65,8 +65,8 @@ public final class ClientTextUtil {
 		return flag;
 	}
 
-	public static MutableComponent pressButtonTo(MutableComponent key, Object action) {
-		return new TranslatableComponent(TextComponentUtil.getTranslationKey("tooltip", "press_button_to"), key.withStyle(ChatFormatting.AQUA), action);
+	public static TranslatableComponent pressButtonTo(MutableComponent key, Object action) {
+		return new TranslatableComponent(TextComponentUtil.getTranslationKey("tooltip", "press_button_to"), key.withStyle(TextStyles.KEYBOARD_INPUT), action);
 	}
 
 	public static MutableComponent getAltKey() {
