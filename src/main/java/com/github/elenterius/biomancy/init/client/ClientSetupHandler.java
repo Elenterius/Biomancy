@@ -2,7 +2,6 @@ package com.github.elenterius.biomancy.init.client;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.gui.IngameOverlays;
-import com.github.elenterius.biomancy.client.model.entity.FleshkinModel;
 import com.github.elenterius.biomancy.client.renderer.block.*;
 import com.github.elenterius.biomancy.client.renderer.entity.AcidProjectileRenderer;
 import com.github.elenterius.biomancy.client.renderer.entity.FleshBlobRenderer;
@@ -15,10 +14,6 @@ import com.github.elenterius.biomancy.integration.ModsCompatHandler;
 import com.github.elenterius.biomancy.world.item.SerumItem;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.geom.LayerDefinitions;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -103,13 +98,6 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void registerLayerDefinitions(final EntityRenderersEvent.RegisterLayerDefinitions event) {
-		LayerDefinition humanoidBase = LayerDefinition.create(HumanoidModel.createMesh(CubeDeformation.NONE, 0.0F), 64, 32);
-		LayerDefinition humanoidOuterArmor = LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.OUTER_ARMOR_DEFORMATION, 0), 64, 32);
-		LayerDefinition humanoidInnerArmor = LayerDefinition.create(HumanoidModel.createMesh(LayerDefinitions.INNER_ARMOR_DEFORMATION, 0), 64, 32);
-		event.registerLayerDefinition(FleshkinModel.MODEL_LAYER, () -> humanoidBase);
-		event.registerLayerDefinition(FleshkinModel.INNER_ARMOR_LAYER, () -> humanoidInnerArmor);
-		event.registerLayerDefinition(FleshkinModel.OUTER_ARMOR_LAYER, () -> humanoidOuterArmor);
-
 		event.registerLayerDefinition(WitherProjectileRenderer.MODEL_LAYER, WitherSkullRenderer::createSkullLayer);
 	}
 

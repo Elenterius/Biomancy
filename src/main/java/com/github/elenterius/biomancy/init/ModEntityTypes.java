@@ -56,17 +56,6 @@ public final class ModEntityTypes {
 	public static void onAttributeCreation(final EntityAttributeCreationEvent event) {
 		BiomancyMod.LOGGER.debug(MarkerManager.getMarker("ENTITIES"), "creating attributes...");
 		event.put(FLESH_BLOB.get(), FleshBlob.createAttributes().build());
-		//		event.put(BOOMLING.get(), Boomling.createAttributes().build());
-		//		event.put(OCULUS_OBSERVER.get(), OculusObserverEntity.createAttributes().build());
-//		event.put(FAILED_SHEEP.get(), SheepEntity.createAttributes().build());
-//		event.put(CHROMA_SHEEP.get(), ChromaSheepEntity.createAttributes().build());
-//		event.put(SILKY_WOOL_SHEEP.get(), SilkyWoolSheepEntity.createAttributes().build());
-//		event.put(THICK_WOOL_SHEEP.get(), ThickWoolSheepEntity.createAttributes().build());
-//		event.put(NUTRIENT_SLURRY_COW.get(), CowEntity.createAttributes().build());
-		//		event.put(FAILED_COW.get(), CowEntity.createAttributes().build());
-		//		event.put(FLESHKIN.get(), Fleshkin.createAttributes().build());
-		//		event.put(BROOD_MOTHER.get(), CrocospiderEntity.createAttributes().build());
-//		event.put(BEETLING.get(), BeetlingEntity.createAttributes().build());
 	}
 
 }
