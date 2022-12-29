@@ -398,8 +398,11 @@ public class EnglishTranslationProvider extends LanguageProvider {
 		addItem(ModItems.CORROSIVE_ADDITIVE, "Corrosive Additive", "An highly corrosive fluid that seems useful for alchemically burning away organic material or weakening the bonds of complex substances.");
 		addItem(ModItems.HEALING_ADDITIVE, "Healing Additive", "An highly concentrated substance that is used to imbue it properties to other compounds.");
 
-		addSerumItem(ModItems.GROWTH_SERUM, "Growth Serum", "Induces growth, in most cases child Mobs grow into Adults.");
-		addSerumItem(ModItems.REJUVENATION_SERUM, "Rejuvenation Serum", "Reverses the growth of Mobs, in most cases they turn into children.");
+		addSerumItem(ModItems.AGEING_SERUM, "Ageing Serum", "Forces the maturation of young Mobs into Adults. Some rare Mobs may turn into Elders.");
+		addSerumItem(ModItems.REJUVENATION_SERUM, "Rejuvenation Serum", "Reverses the maturation of Mobs, in most cases they turn into children.");
+		addSerumItem(ModItems.ENLARGEMENT_SERUM, "Enlargement Serum", "Induces growth in Slimes, Magma Cubes and Flesh Blobs.\n\n(If Pehkui is installed you can enlarge yourself and all Mobs)");
+		addSerumItem(ModItems.SHRINKING_SERUM, "Shrinking Serum", "Shrinks Slimes, Magma Cubes and Flesh Blobs.\n\n(If Pehkui is installed you can shrink yourself and all Mobs)");
+
 		addSerumItem(ModItems.CLEANSING_SERUM, "Cleansing Serum", "Burns away all foreign substances inside a living entity.\nVery effective for sticky status effects that refuse to be healed with milk.");
 		addSerumItem(ModItems.BREEDING_STIMULANT, "Breeding Stimulant", "Makes Animals hyper-fertile, making them able to constantly reproduce for a short time.");
 		addSerumItem(ModItems.ABSORPTION_BOOST, "Absorption Stimulant", "Grants stackable absorption health points for Mobs and Players.");

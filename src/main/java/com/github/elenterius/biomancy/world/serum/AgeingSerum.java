@@ -7,37 +7,36 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.monster.ElderGuardian;
+import net.minecraft.world.entity.monster.Guardian;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.LevelEvent;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
+public class AgeingSerum extends Serum {
 
-public class RejuvenationSerum extends Serum {
-
-	public RejuvenationSerum(int color) {
+	public AgeingSerum(int color) {
 		super(color);
 	}
 
 	@Override
 	public boolean canAffectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
-		return (target instanceof Mob && !target.isBaby()) || target instanceof ElderGuardian;
+		return (target instanceof Mob && target.isBaby()) || target instanceof Guardian;
 	}
 
 	@Override
 	public void affectEntity(ServerLevel level, CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
-		if (target instanceof ElderGuardian elderGuardian) {
-			convertToGuardian(level, elderGuardian);
+		if (target instanceof Guardian guardian) {
+			convertToElderGuardian(level, guardian);
 		}
-		if (target instanceof Mob mob) {
-			MobUtil.convertToBaby(mob, true); // includes animals, villagers, zombies, etc..
+		else if (target instanceof Mob mob) {
+			MobUtil.convertToAdult(mob);
 		}
 	}
 
-	private void convertToGuardian(ServerLevel level, ElderGuardian elderGuardian) {
-		MobUtil.convertMobTo(level, elderGuardian, EntityType.GUARDIAN, true, (oldElderGuardian, guardian) -> {
-			if (!oldElderGuardian.isSilent()) {
-				level.levelEvent(null, LevelEvent.SOUND_ZOMBIE_INFECTED, oldElderGuardian.blockPosition(), 0);
+	private void convertToElderGuardian(ServerLevel level, Guardian guardian) {
+		MobUtil.convertMobTo(level, guardian, EntityType.GUARDIAN, true, (oldGuardian, elderGuardian) -> {
+			if (!oldGuardian.isSilent()) {
+				level.levelEvent(null, LevelEvent.SOUND_ZOMBIE_INFECTED, oldGuardian.blockPosition(), 0);
 			}
 		});
 	}
@@ -49,7 +48,7 @@ public class RejuvenationSerum extends Serum {
 
 	@Override
 	public void affectPlayerSelf(CompoundTag tag, ServerPlayer targetSelf) {
-		//do nothing;
+		//do nothing
 	}
 
 }

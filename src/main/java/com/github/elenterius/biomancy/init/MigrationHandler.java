@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.world.serum.Serum;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -21,6 +22,19 @@ import net.minecraftforge.fml.common.Mod;
 public final class MigrationHandler {
 
 	private MigrationHandler() {}
+
+
+	@SubscribeEvent
+	public static void onMissingSerumMappings(final RegistryEvent.MissingMappings<Serum> event) {
+		ImmutableList<RegistryEvent.MissingMappings.Mapping<Serum>> mappings = event.getMappings(BiomancyMod.MOD_ID);
+		if (mappings.isEmpty()) return;
+
+		for (RegistryEvent.MissingMappings.Mapping<Serum> mapping : mappings) {
+			if (mapping.key.getPath().equals("growth_serum")) {
+				mapping.remap(ModSerums.AGEING_SERUM.get());
+			}
+		}
+	}
 
 	@SubscribeEvent
 	public static void onMissingBlockMappings(final RegistryEvent.MissingMappings<Block> event) {

@@ -14,8 +14,6 @@ public sealed interface IPehkuiHelper permits IPehkuiHelper.EmptyPehkuiHelper, P
 
 	float getScale(LivingEntity livingEntity);
 
-	boolean isResizable(LivingEntity livingEntity);
-
 	final class EmptyPehkuiHelper implements IPehkuiHelper {
 		@Override
 		public void setScale(LivingEntity livingEntity, float scale) {
@@ -35,11 +33,6 @@ public sealed interface IPehkuiHelper permits IPehkuiHelper.EmptyPehkuiHelper, P
 		@Override
 		public float getScale(LivingEntity livingEntity) {
 			return 1f;
-		}
-
-		@Override
-		public boolean isResizable(LivingEntity livingEntity) {
-			return false;
 		}
 
 	}

@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.world.entity;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModTags;
+import com.github.elenterius.biomancy.mixin.AgeableMobAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -102,6 +103,36 @@ public final class MobUtil {
 		AttributeInstance instance = livingEntity.getAttribute(attribute);
 		if (instance != null) instance.setBaseValue(value);
 		else BiomancyMod.LOGGER.warn(LOG_MARKER, "Tried to set the value of a missing Attribute: {}, {}", attribute, livingEntity);
+	}
+
+	/**
+	 * Attempts to turn an adult mob into a baby. Success is not guaranteed.
+	 *
+	 * @param mob           adult mob
+	 * @param disableAgeing prevent {@link AgeableMob} babies from growing into adults
+	 */
+	public static void convertToBaby(Mob mob, boolean disableAgeing) {
+		if (mob.isBaby()) return;
+
+		mob.setBaby(true);
+		if (mob instanceof AgeableMob ageableMob) {
+			ageableMob.setAge(AgeableMob.BABY_START_AGE);
+			if (disableAgeing) {
+				((AgeableMobAccessor) ageableMob).biomancy_setForcedAge(AgeableMob.BABY_START_AGE);
+			}
+		}
+	}
+
+	public static void convertToAdult(Mob mob) {
+		if (!mob.isBaby()) return;
+
+		mob.setBaby(false);
+		if (mob instanceof AgeableMob ageableMob) {
+			AgeableMobAccessor accessor = (AgeableMobAccessor) ageableMob;
+			if (accessor.biomancy_getForcedAge() != 0) {
+				accessor.biomancy_setForcedAge(0); //unset forced age
+			}
+		}
 	}
 
 	/**

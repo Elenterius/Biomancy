@@ -733,9 +733,9 @@ public class ModRecipeProvider extends RecipeProvider {
 		BioForgeRecipeBuilder.create(ModItems.FERTILIZER.get())
 				.addIngredient(ModItems.NUTRIENTS.get(), 4)
 				.addIngredient(ModItems.ORGANIC_MATTER.get(), 4)
-				.addIngredient(ModItems.GROWTH_SERUM.get())
+				.addIngredient(ModItems.AGEING_SERUM.get())
 				.setCategory(ModBioForgeTabs.MISC)
-				.unlockedBy(ModItems.GROWTH_SERUM.get()).save(consumer);
+				.unlockedBy(ModItems.AGEING_SERUM.get()).save(consumer);
 
 		BioForgeRecipeBuilder.create(Items.BONE)
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 5)
@@ -853,13 +853,31 @@ public class ModRecipeProvider extends RecipeProvider {
 				.setCraftingTime(8 * 20)
 				.unlockedBy(ModItems.GENETIC_COMPOUND.get()).save(consumer);
 
-		BioLabRecipeBuilder.create(ModItems.GROWTH_SERUM.get())
+		BioLabRecipeBuilder.create(ModItems.AGEING_SERUM.get())
 				.addIngredient(ModItems.NUTRIENTS.get())
 				.addIngredient(ModItems.NUTRIENTS.get())
 				.addIngredient(ModItems.BIO_MINERALS.get())
+				.addIngredient(ModItems.CORROSIVE_ADDITIVE.get())
+				.setReactant(ModItems.GENETIC_COMPOUND.get())
+				.setCraftingTime(6 * 20)
+				.unlockedBy(ModItems.GENETIC_COMPOUND.get()).save(consumer);
+
+		BioLabRecipeBuilder.create(ModItems.ENLARGEMENT_SERUM.get())
+				.addIngredient(ModItems.NUTRIENT_PASTE.get())
+				.addIngredient(ModItems.HORMONE_SECRETION.get())
+				.addIngredient(ModItems.HEALING_ADDITIVE.get())
 				.addIngredient(ModItems.BIO_MINERALS.get())
 				.setReactant(ModItems.GENETIC_COMPOUND.get())
 				.setCraftingTime(6 * 20)
+				.unlockedBy(ModItems.GENETIC_COMPOUND.get()).save(consumer);
+
+		BioLabRecipeBuilder.create(ModItems.SHRINKING_SERUM.get())
+				.addIngredient(ModItems.EXOTIC_DUST.get())
+				.addIngredient(ModItems.HEALING_ADDITIVE.get())
+				.addIngredient(ModItems.CORROSIVE_ADDITIVE.get())
+				.addIngredient(ModItems.CORROSIVE_ADDITIVE.get())
+				.setReactant(ModItems.GENETIC_COMPOUND.get())
+				.setCraftingTime(8 * 20)
 				.unlockedBy(ModItems.GENETIC_COMPOUND.get()).save(consumer);
 	}
 

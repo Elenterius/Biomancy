@@ -2,7 +2,6 @@ package com.github.elenterius.biomancy.integration.compat.pehkui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import virtuoel.pehkui.api.*;
 
 import java.util.function.Consumer;
@@ -51,11 +50,6 @@ public final class PehkuiCompat {
 		public float getScale(LivingEntity livingEntity) {
 			ScaleData scaleData = PehkuiCompat.SCALE_TYPE.getScaleData(livingEntity);
 			return scaleData.getScale();
-		}
-
-		@Override
-		public boolean isResizable(LivingEntity livingEntity) {
-			return livingEntity instanceof Player || !livingEntity.isBaby();
 		}
 
 	}

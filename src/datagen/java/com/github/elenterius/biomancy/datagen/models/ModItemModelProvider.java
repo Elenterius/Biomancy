@@ -39,6 +39,14 @@ public class ModItemModelProvider extends ItemModelProvider {
 		return basicItem(Objects.requireNonNull(item.getRegistryName()), "serum");
 	}
 
+	public ItemModelBuilder genericSerumItem(Item item) {
+		ResourceLocation rl = Objects.requireNonNull(item.getRegistryName());
+		return getBuilder(rl.toString())
+				.parent(new ModelFile.UncheckedModelFile("item/generated"))
+				.texture(LAYER_0_TEXTURE, new ResourceLocation(rl.getNamespace(), ITEM_FOLDER + "/serum/generic_serum"))
+				.texture("layer1", new ResourceLocation(rl.getNamespace(), ITEM_FOLDER + "/serum/generic_serum_overlay"));
+	}
+
 	public ItemModelBuilder weaponItem(Item item) {
 		return basicItem(Objects.requireNonNull(item.getRegistryName()), "weapon");
 	}
@@ -142,7 +150,9 @@ public class ModItemModelProvider extends ItemModelProvider {
 		basicItem(ModItems.FLESH_DOOR.get());
 
 		serumItem(ModItems.REJUVENATION_SERUM.get());
-		serumItem(ModItems.GROWTH_SERUM.get());
+		serumItem(ModItems.AGEING_SERUM.get());
+		genericSerumItem(ModItems.ENLARGEMENT_SERUM.get());
+		genericSerumItem(ModItems.SHRINKING_SERUM.get());
 		serumItem(ModItems.BREEDING_STIMULANT.get());
 		serumItem(ModItems.ABSORPTION_BOOST.get());
 		serumItem(ModItems.CLEANSING_SERUM.get());
