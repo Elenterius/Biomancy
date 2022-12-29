@@ -8,11 +8,11 @@ import net.minecraft.world.item.Rarity;
 
 public final class ModRarities {
 
-	public static final Rarity COMMON = createRarity("common", 0x5c4432);
-	public static final Rarity UNCOMMON = createRarity("uncommon", 0xb3953a);
-	public static final Rarity RARE = createRarity("rare", 0x0f701d);
-	public static final Rarity VERY_RARE = createRarity("very_rare", 0x6f318b);
-	public static final Rarity ULTRA_RARE = createRarity("ultra_rare", 0xbb0b3f);
+	public static final Rarity COMMON = createRarity("common", 0xA58369);
+	public static final Rarity UNCOMMON = createRarity("uncommon", 0xB19748);
+	public static final Rarity RARE = createRarity("rare", 0x2E9E3E);
+	public static final Rarity VERY_RARE = createRarity("very_rare", 0xA870E1);
+	public static final Rarity ULTRA_RARE = createRarity("ultra_rare", 0xFF3D51);
 
 	private ModRarities() {}
 
