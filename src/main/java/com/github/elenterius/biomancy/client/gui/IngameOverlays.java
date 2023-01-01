@@ -15,9 +15,8 @@ import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.gui.ForgeIngameGui;
-import net.minecraftforge.client.gui.IIngameOverlay;
-import net.minecraftforge.client.gui.OverlayRegistry;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
+import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
 public final class IngameOverlays {
 
@@ -38,7 +37,7 @@ public final class IngameOverlays {
 	//		}
 	//	};
 
-	public static final IIngameOverlay GUN_OVERLAY = (gui, poseStack, partialTicks, screenWidth, screenHeight) -> {
+	public static final IGuiOverlay GUN_OVERLAY = (gui, poseStack, partialTicks, screenWidth, screenHeight) -> {
 		Minecraft minecraft = Minecraft.getInstance();
 		if (!minecraft.options.hideGui && minecraft.player != null) {
 			ItemStack itemStack = minecraft.player.getMainHandItem();
@@ -50,7 +49,7 @@ public final class IngameOverlays {
 		}
 	};
 
-	public static final IIngameOverlay INJECTOR_OVERLAY = (gui, poseStack, partialTicks, screenWidth, screenHeight) -> {
+	public static final IGuiOverlay INJECTOR_OVERLAY = (gui, poseStack, partialTicks, screenWidth, screenHeight) -> {
 		Minecraft minecraft = Minecraft.getInstance();
 		if (!minecraft.options.hideGui && minecraft.player != null) {
 			ItemStack itemStack = minecraft.player.getMainHandItem();
@@ -64,11 +63,7 @@ public final class IngameOverlays {
 
 	private IngameOverlays() {}
 
-	public static void registerGameOverlays() {
-		//		OverlayRegistry.registerOverlayTop("Biomancy ControlStaff", CONTROL_STAFF_OVERLAY);
-		OverlayRegistry.registerOverlayTop("Biomancy Gun", GUN_OVERLAY);
-		OverlayRegistry.registerOverlayTop("Biomancy Injector", INJECTOR_OVERLAY);
-	}
+
 
 	static void renderCommandOverlay(PoseStack poseStack, int screenWidth, int screenHeight, IControllableMob.Command command) {
 		//		if (Minecraft.getInstance().hitResult != null && Minecraft.getInstance().hitResult.getType() == HitResult.Type.BLOCK) {
@@ -78,7 +73,7 @@ public final class IngameOverlays {
 		GuiComponent.drawString(poseStack, Minecraft.getInstance().font, command.name(), x, y + 16 + 18, 0x55ffff);
 	}
 
-	static void renderGunOverlay(ForgeIngameGui gui, PoseStack poseStack, int screenWidth, int screenHeight, LocalPlayer player, ItemStack stack, IGun gun) {
+	static void renderGunOverlay(ForgeGui gui, PoseStack poseStack, int screenWidth, int screenHeight, LocalPlayer player, ItemStack stack, IGun gun) {
 		renderAmmoOverlay(poseStack, screenWidth, screenHeight, stack, gun);
 
 		if (GuiUtil.isFirstPersonView()) {
@@ -86,7 +81,7 @@ public final class IngameOverlays {
 		}
 	}
 
-	static void renderInjectorOverlay(ForgeIngameGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight, LocalPlayer player, ItemStack stack, InjectorItem injector) {
+	static void renderInjectorOverlay(ForgeGui gui, PoseStack poseStack, float partialTicks, int screenWidth, int screenHeight, LocalPlayer player, ItemStack stack, InjectorItem injector) {
 		if (GuiUtil.isFirstPersonView()) {
 			float progress = 1f - player.getCooldowns().getCooldownPercent(injector, partialTicks);
 			if (progress < 1f) {
@@ -105,7 +100,7 @@ public final class IngameOverlays {
 		GuiComponent.blit(poseStack, x, y, 0, 0, 44, 28, 44, 28);
 	}
 
-	static void renderReloadIndicator(ForgeIngameGui gui, PoseStack poseStack, int screenWidth, int screenHeight, LocalPlayer player, ItemStack stack, IGun gun) {
+	static void renderReloadIndicator(ForgeGui gui, PoseStack poseStack, int screenWidth, int screenHeight, LocalPlayer player, ItemStack stack, IGun gun) {
 		IGun.State gunState = gun.getState(stack);
 		if (gunState == IGun.State.RELOADING) {
 			long elapsedTime = player.clientLevel.getGameTime() - gun.getReloadStartTime(stack);
@@ -140,7 +135,7 @@ public final class IngameOverlays {
 		poseStack.popPose();
 	}
 
-	public static void renderAttackIndicator(ForgeIngameGui gui, PoseStack poseStack, int screenWidth, int screenHeight, LocalPlayer player, long elapsedTime, int shootDelay) {
+	public static void renderAttackIndicator(ForgeGui gui, PoseStack poseStack, int screenWidth, int screenHeight, LocalPlayer player, long elapsedTime, int shootDelay) {
 		if (elapsedTime < shootDelay && GuiUtil.canDrawAttackIndicator(player)) {
 			float progress = (float) elapsedTime / shootDelay;
 			if (progress < 1f) {

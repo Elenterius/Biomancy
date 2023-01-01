@@ -6,6 +6,7 @@ import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 
 import java.util.function.Supplier;
 
@@ -26,7 +27,7 @@ public final class ClientSoundUtil {
 	}
 
 	public static SimpleSoundInstance createLoopingSoundInstance(SoundEvent soundEvent, float volume, BlockPos pos) {
-		return new SimpleSoundInstance(soundEvent.getLocation(), SoundSource.BLOCKS, volume, 1f, true, 0, SoundInstance.Attenuation.LINEAR, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, false);
+		return new SimpleSoundInstance(soundEvent.getLocation(), SoundSource.BLOCKS, volume, 1f, RandomSource.create(), true, 0, SoundInstance.Attenuation.LINEAR, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, false);
 	}
 
 	public static SimpleSoundInstance createLoopingSoundInstance(Supplier<SoundEvent> soundEventSupplier, BlockPos pos) {

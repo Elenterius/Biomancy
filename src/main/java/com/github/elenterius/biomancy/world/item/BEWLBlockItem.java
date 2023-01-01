@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -26,10 +26,10 @@ public class BEWLBlockItem extends BlockItem implements ICustomTooltip {
 	}
 
 	@Override
-	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
-		consumer.accept(new IItemRenderProperties() {
+	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+		consumer.accept(new IClientItemExtensions() {
 			@Override
-			public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
 				return BEWLRenderer.INSTANCE;
 			}
 		});

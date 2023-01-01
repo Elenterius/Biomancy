@@ -2,8 +2,8 @@ package com.github.elenterius.biomancy.world.item.state;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
-
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import java.util.Locale;
 
 public enum LivingToolState {
@@ -31,16 +31,16 @@ public enum LivingToolState {
 		return deserialize((byte) (ordinal() + 1));
 	}
 
-	public TranslatableComponent getTooltip() {
-		return new TranslatableComponent(getTooltipTranslationKey(), new TranslatableComponent(getTranslationKey()));
+	public MutableComponent getTooltip() {
+		return Component.translatable(getTooltipTranslationKey(), Component.translatable(getTranslationKey()));
 	}
 
 	public String getTranslationKey() {
 		return "state." + BiomancyMod.MOD_ID + ".living_tool." + name().toLowerCase(Locale.ENGLISH);
 	}
 
-	public TranslatableComponent getDisplayName() {
-		return new TranslatableComponent(getTranslationKey());
+	public MutableComponent getDisplayName() {
+		return Component.translatable(getTranslationKey());
 	}
 
 	public void serialize(CompoundTag tag) {

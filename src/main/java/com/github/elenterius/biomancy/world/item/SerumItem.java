@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import net.minecraft.world.item.PotionItem;
+
 public class SerumItem extends Item implements ISerumProvider, ICustomTooltip {
 
 	private static final Map<Serum, SerumItem> SERUM_MAP = new IdentityHashMap<>();
@@ -54,7 +56,8 @@ public class SerumItem extends Item implements ISerumProvider, ICustomTooltip {
 		return getSerum(stack).getTooltipKey();
 	}
 
-	@Override
+	//TODO: Replace this code.
+	/*@Override
 	public boolean hasContainerItem(ItemStack stack) {
 		return true;
 	}
@@ -62,7 +65,7 @@ public class SerumItem extends Item implements ISerumProvider, ICustomTooltip {
 	@Override
 	public ItemStack getContainerItem(ItemStack stackIn) {
 		return new ItemStack(ModItems.GLASS_VIAL.get());
-	}
+	}*/
 
 	@Mod.EventBusSubscriber(modid = BiomancyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 	private static class CommonHandler {

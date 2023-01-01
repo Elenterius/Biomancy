@@ -16,17 +16,17 @@ public class BoomlingModel<T extends Boomling> extends AnimatedGeoModel<T> {
 	public static final ResourceLocation OVERLAY_TEXTURE = BiomancyMod.createRL("textures/entity/boomling_overlay.png");
 
 	@Override
-	public ResourceLocation getModelLocation(Boomling boomling) {
+	public ResourceLocation getModelResource(Boomling boomling) {
 		return BiomancyMod.createRL("geo/entity/boomling.geo.json");
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(Boomling boomling) {
+	public ResourceLocation getTextureResource(Boomling boomling) {
 		return BiomancyMod.createRL("textures/entity/boomling.png");
 	}
 
 	@Override
-	public ResourceLocation getAnimationFileLocation(Boomling boomling) {
+	public ResourceLocation getAnimationResource(Boomling boomling) {
 		return BiomancyMod.createRL("animations/entity/boomling.animation.json");
 	}
 

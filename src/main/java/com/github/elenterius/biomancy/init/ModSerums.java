@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 public final class ModSerums {
 
 	public static final DeferredRegister<Serum> SERUMS = DeferredRegister.create(BiomancyMod.createRL("serum"), BiomancyMod.MOD_ID);
-	public static final Supplier<IForgeRegistry<Serum>> REGISTRY = SERUMS.makeRegistry(Serum.class, RegistryBuilder::new);
+	public static final Supplier<IForgeRegistry<Serum>> REGISTRY = SERUMS.makeRegistry(RegistryBuilder::new);
 
 	public static final RegistryObject<Serum> EMPTY = SERUMS.register("empty", () -> Serum.EMPTY);
 

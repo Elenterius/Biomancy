@@ -30,9 +30,9 @@ public final class BiomancyMod {
 	public BiomancyMod() {
 		GeckoLib.initialize();
 
-		ModBannerPatterns.register();
-
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+		ModBannerPatterns.BANNERS.register(modEventBus);
 
 		ModBlocks.BLOCKS.register(modEventBus);
 		ModItems.ITEMS.register(modEventBus);

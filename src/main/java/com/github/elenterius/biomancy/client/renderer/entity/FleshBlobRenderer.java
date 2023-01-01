@@ -51,7 +51,7 @@ public class FleshBlobRenderer extends GeoEntityRenderer<FleshBlob> {
 		if (fleshBlob.hasCustomName()) {
 			Component customName = fleshBlob.getCustomName();
 			if (customName != null) {
-				String name = customName.getContents().toLowerCase(Locale.ENGLISH);
+				String name = customName.getContents().toString().toLowerCase(Locale.ENGLISH);
 				if (name.contains("party_blob")) {
 					return ModRenderTypes.getCutoutPartyTime(textureLocation);
 				}

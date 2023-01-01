@@ -7,7 +7,6 @@ import com.github.elenterius.biomancy.styles.TooltipHacks;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -28,7 +27,7 @@ public class MobLootItem extends Item implements ICustomTooltip {
 	public MobLootItem(TagKey<EntityType<?>> lootSource, Properties properties) {
 		super(properties);
 
-		taggedEntities = Objects.requireNonNull(ForgeRegistries.ENTITIES.tags()).getTag(lootSource);
+		taggedEntities = Objects.requireNonNull(ForgeRegistries.ENTITY_TYPES.tags()).getTag(lootSource);
 	}
 
 	@Override
@@ -43,7 +42,7 @@ public class MobLootItem extends Item implements ICustomTooltip {
 			List<EntityType<?>> mobs = taggedEntities.stream().limit(12).toList();
 			int mobCount = mobs.size();
 			if (mobCount > 0) {
-				MutableComponent component = new TextComponent("").withStyle(TextStyles.ITALIC_GRAY);
+				MutableComponent component = Component.literal("").withStyle(TextStyles.ITALIC_GRAY);
 				tooltip.add(component);
 
 				for (int i = 0; i < mobCount; i++) {

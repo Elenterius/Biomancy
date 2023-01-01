@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.client.gui.BioForgeScreen;
 import com.github.elenterius.biomancy.client.gui.BioLabScreen;
 import com.github.elenterius.biomancy.client.gui.DecomposerScreen;
 import com.github.elenterius.biomancy.client.gui.DigesterScreen;
+import com.github.elenterius.biomancy.init.ModMenuTypes;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.world.inventory.menu.BioLabMenu;
 import com.github.elenterius.biomancy.world.inventory.menu.DecomposerMenu;
@@ -18,8 +19,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
 
 import java.util.Objects;
+
+import org.jetbrains.annotations.Nullable;
 
 @JeiPlugin
 public class BiomancyJeiPlugin implements IModPlugin {
@@ -63,13 +67,13 @@ public class BiomancyJeiPlugin implements IModPlugin {
 
 	@Override
 	public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
-		registerInputSlots(registration, DecomposerMenu.class, DecomposerRecipeCategory.RECIPE_TYPE, DecomposerMenu.SlotZone.INPUT_ZONE);
-		registerInputSlots(registration, BioLabMenu.class, BioLabRecipeCategory.RECIPE_TYPE, BioLabMenu.SlotZone.INPUT_ZONE);
-		registerInputSlots(registration, DigesterMenu.class, DigesterRecipeCategory.RECIPE_TYPE, DigesterMenu.SlotZone.INPUT_ZONE);
+		registerInputSlots(registration, ModMenuTypes.DECOMPOSER.get(), DecomposerMenu.class, DecomposerRecipeCategory.RECIPE_TYPE, DecomposerMenu.SlotZone.INPUT_ZONE);
+		registerInputSlots(registration, ModMenuTypes.BIO_LAB.get(), BioLabMenu.class, BioLabRecipeCategory.RECIPE_TYPE, BioLabMenu.SlotZone.INPUT_ZONE);
+		registerInputSlots(registration, ModMenuTypes.DIGESTER.get(), DigesterMenu.class, DigesterRecipeCategory.RECIPE_TYPE, DigesterMenu.SlotZone.INPUT_ZONE);
 	}
 
-	private <C extends AbstractContainerMenu, R> void registerInputSlots(IRecipeTransferRegistration registration, Class<C> containerClass, RecipeType<R> recipeType, ISlotZone slotZone) {
-		registration.addRecipeTransferHandler(containerClass, recipeType, slotZone.getFirstIndex(), slotZone.getSlotCount(), 0, 36);
+	private <C extends AbstractContainerMenu, R> void registerInputSlots(IRecipeTransferRegistration registration, @Nullable MenuType<C> menuType, Class<? extends C> containerClass, RecipeType<R> recipeType, ISlotZone slotZone) {
+		registration.addRecipeTransferHandler(containerClass, menuType, recipeType, slotZone.getFirstIndex(), slotZone.getSlotCount(), 0, 36);
 	}
 
 }

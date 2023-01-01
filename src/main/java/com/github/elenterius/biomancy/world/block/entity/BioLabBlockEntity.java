@@ -152,8 +152,8 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 
 		for (int idx = 0; idx < lastIndex; idx++) {
 			final ItemStack foundStack = inputInventory.getItem(idx);
-			if (!foundStack.isEmpty() && foundStack.hasContainerItem()) {
-				ItemStack containerItem = foundStack.getContainerItem();
+			if (!foundStack.isEmpty() && foundStack.hasCraftingRemainingItem()) {
+				ItemStack containerItem = foundStack.getCraftingRemainingItem();
 				if (!containerItem.isEmpty()) {
 					for (int i = 0; i < ingredients.size(); i++) {
 						int remainingCost = ingredientCost[i];
@@ -173,8 +173,8 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 	}
 
 	private void outputContainerItems(ItemStack foundStack, int amount) {
-		if (foundStack.hasContainerItem()) {
-			ItemStack containerItem = foundStack.getContainerItem();
+		if (foundStack.hasCraftingRemainingItem()) {
+			ItemStack containerItem = foundStack.getCraftingRemainingItem();
 			if (!containerItem.isEmpty()) {
 				containerItem.setCount(amount);
 				outputInventory.insertItemStack(1, containerItem);

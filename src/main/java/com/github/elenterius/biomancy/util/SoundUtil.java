@@ -4,22 +4,22 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-import java.util.Random;
 import java.util.function.Supplier;
 
 public final class SoundUtil {
 
 	private SoundUtil() {}
 
-	private static float randomVanillaItemPitch(Random rand) {
+	private static float randomVanillaItemPitch(RandomSource rand) {
 		return 1f / (rand.nextFloat() * 0.5f + 1f) + 0.2f;
 	}
 
-	private static float randomVanillaPitch(Random rand) {
+	private static float randomVanillaPitch(RandomSource rand) {
 		return rand.nextFloat() * 0.1f + 0.9f;
 	}
 

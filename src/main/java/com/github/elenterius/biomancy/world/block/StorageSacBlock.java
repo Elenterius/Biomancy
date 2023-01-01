@@ -75,7 +75,7 @@ public class StorageSacBlock extends BaseEntityBlock {
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (level.getBlockEntity(pos) instanceof StorageSacBlockEntity sac && sac.canPlayerOpenInv(player)) {
 			if (!level.isClientSide) {
-				NetworkHooks.openGui((ServerPlayer) player, sac, buffer -> buffer.writeBlockPos(pos));
+				NetworkHooks.openScreen((ServerPlayer) player, sac, buffer -> buffer.writeBlockPos(pos));
 				SoundUtil.broadcastBlockSound((ServerLevel) level, pos, ModSoundEvents.UI_STORAGE_SAC_OPEN);
 			}
 			return InteractionResult.SUCCESS;

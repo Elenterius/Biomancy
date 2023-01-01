@@ -7,8 +7,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -48,7 +46,7 @@ public class EssenceItem extends Item implements ICustomTooltip {
 	@Nullable
 	public <T extends Entity> EntityType<T> getEntityType(ItemStack stack) {
 		CompoundTag tag = stack.getOrCreateTag().getCompound(KEY_DATA);
-		EntityType<?> value = ForgeRegistries.ENTITIES.getValue(ResourceLocation.tryParse(tag.getString(NBT_KEY_ENTITY_TYPE)));
+		EntityType<?> value = ForgeRegistries.ENTITY_TYPES.getValue(ResourceLocation.tryParse(tag.getString(NBT_KEY_ENTITY_TYPE)));
 		//noinspection unchecked
 		return value != null ? (EntityType<T>) value : null;
 	}
@@ -128,7 +126,7 @@ public class EssenceItem extends Item implements ICustomTooltip {
 			CompoundTag subTag = tag.getCompound(KEY_DATA);
 			if (subTag.getBoolean(KEY_IS_PLAYER)) {
 				String name = ClientTextUtil.tryToGetPlayerNameOnClientSide(subTag.getUUID(KEY_ENTITY_UUID));
-				tooltip.add(new TextComponent(name).withStyle(ChatFormatting.GRAY));
+				tooltip.add(Component.literal(name).withStyle(ChatFormatting.GRAY));
 			}
 			tooltip.add(TextComponentUtil.getTooltipText("contains_unique_dna").withStyle(ChatFormatting.GRAY));
 		}
@@ -154,7 +152,7 @@ public class EssenceItem extends Item implements ICustomTooltip {
 		CompoundTag tag = stack.getOrCreateTag();
 		if (tag.contains(KEY_DATA)) {
 			CompoundTag subTag = tag.getCompound(KEY_DATA);
-			return new TranslatableComponent(subTag.getString(KEY_ENTITY_NAME));
+			return Component.translatable(subTag.getString(KEY_ENTITY_NAME));
 		}
 		return null;
 	}

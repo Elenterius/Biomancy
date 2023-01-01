@@ -1,25 +1,36 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.entity.BannerPattern;
-
-import java.util.Locale;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 
 public final class ModBannerPatterns {
 
-	public static final BannerPattern MASCOT_PATTERN = createBannerPattern("mascot");
-	public static final BannerPattern MASCOT_ACCENT_PATTERN = createBannerPattern("mascot_accent");
-	public static final BannerPattern MASCOT_OUTLINE_PATTERN = createBannerPattern("mascot_outline");
+	public static final DeferredRegister<BannerPattern> BANNERS = DeferredRegister.create(Registry.BANNER_PATTERN_REGISTRY, BiomancyMod.MOD_ID);
+	public static final RegistryObject<BannerPattern> MASCOT_BASE = register("mascot_base");
+	public static final RegistryObject<BannerPattern> MASCOT_ACCENT = register("mascot_accent");
+	public static final RegistryObject<BannerPattern> MASCOT_OUTLINE = register("mascot_outline");
+	public static final TagKey<BannerPattern> TAG_MASCOT = createTagKey("mascot");
 
 	private ModBannerPatterns() {}
 
-	public static void register() {
-		//forces initialization of static fields
+	private static RegistryObject<BannerPattern> register(String name) {
+		return BANNERS.register(name, () -> new BannerPattern(BiomancyMod.createRLString(name)));
 	}
 
-	private static BannerPattern createBannerPattern(String name) {
-		String pattern = BiomancyMod.MOD_ID + "_" + name;
-		return BannerPattern.create(pattern.toUpperCase(Locale.ENGLISH), pattern, pattern, true);
+	private static TagKey<BannerPattern> createTagKey(String name) {
+		return TagKey.create(Registry.BANNER_PATTERN_REGISTRY, BiomancyMod.createRL("pattern_item/" + name));
+	}
+
+	private static TagKey<BannerPattern> createTagKey(RegistryObject<BannerPattern> registryObject) {
+		ResourceLocation registryName = registryObject.getId();
+		String modId = registryName.getNamespace();
+		String name = registryName.getPath();
+		return TagKey.create(Registry.BANNER_PATTERN_REGISTRY, new ResourceLocation(modId, "pattern_item/" + name));
 	}
 
 }

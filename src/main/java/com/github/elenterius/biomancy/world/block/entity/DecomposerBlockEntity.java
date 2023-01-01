@@ -23,6 +23,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
@@ -299,7 +300,7 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 		}
 
 		public static DecomposerRecipeResult computeRecipeResult(DecomposerRecipe recipe, int seed) {
-			Random random = new Random(seed);
+			RandomSource random = RandomSource.create(seed);
 
 			List<ItemStack> items = new ArrayList<>();
 			for (VariableProductionOutput output : recipe.getOutputs()) {

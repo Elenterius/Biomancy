@@ -21,11 +21,10 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -61,7 +60,6 @@ import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterloggedBlock, IOwnableEntityBlock {
@@ -82,7 +80,7 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 		super.fillItemCategory(tab, items);
 
 		ItemStack stack = new ItemStack(this);
-		stack.setHoverName(new TextComponent("[TEST/other_owner] ").append(stack.getHoverName()));
+		stack.setHoverName(Component.literal("[TEST/other_owner] ").append(stack.getHoverName()));
 		CompoundTag tag = new CompoundTag();
 		tag.putUUID(IOwnableEntityBlock.NBT_KEY_OWNER, Util.NIL_UUID);
 		BlockItem.setBlockEntityData(stack, ModBlockEntities.FLESHKIN_CHEST.get(), tag);
@@ -141,7 +139,7 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 				if (chest.canPlayerOpenContainer(player)) {
 					MenuProvider menuProvider = getMenuProvider(state, level, pos);
 					if (menuProvider != null) {
-						NetworkHooks.openGui(serverPlayer, menuProvider, byteBuffer -> {});
+						NetworkHooks.openScreen(serverPlayer, menuProvider, byteBuffer -> {});
 						return InteractionResult.SUCCESS;
 					}
 				}
@@ -269,14 +267,14 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 					}
 
 					if (totalCount - count > 0) {
-						tooltip.add((new TranslatableComponent("container.shulkerBox.more", totalCount - count)).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
+						tooltip.add((Component.translatable("container.shulkerBox.more", totalCount - count)).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
 					}
 					tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
-					tooltip.add(new TextComponent(String.format("%d/%d ", totalCount, FleshkinChestBlockEntity.SLOTS)).append(new TranslatableComponent("tooltip.biomancy.slots")).withStyle(ChatFormatting.GRAY));
+					tooltip.add(Component.literal(String.format("%d/%d ", totalCount, FleshkinChestBlockEntity.SLOTS)).append(Component.translatable("tooltip.biomancy.slots")).withStyle(ChatFormatting.GRAY));
 				}
 			}
 			else {
-				tooltip.add(new TextComponent("Who are you? I don't like you!").withStyle(TextStyles.MAYKR_RUNES_GRAY));
+				tooltip.add(Component.literal("Who are you? I don't like you!").withStyle(TextStyles.MAYKR_RUNES_GRAY));
 			}
 		}
 	}
@@ -300,7 +298,7 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (level.getBlockEntity(pos) instanceof FleshkinChestBlockEntity chest) {
 			chest.recheckOpen();
 		}

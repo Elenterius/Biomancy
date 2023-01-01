@@ -10,8 +10,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
@@ -27,10 +25,10 @@ public final class GuiRenderUtil {
 		List<Component> hoveringText = new ArrayList<>();
 		DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
 
-		hoveringText.add(new TranslatableComponent("tooltip.biomancy.nutrients_fuel").withStyle(TextStyles.NUTRIENTS));
-		hoveringText.add(new TextComponent("%s/%s u".formatted(df.format(fuelAmount), df.format(maxFuel))));
+		hoveringText.add(Component.translatable("tooltip.biomancy.nutrients_fuel").withStyle(TextStyles.NUTRIENTS));
+		hoveringText.add(Component.literal("%s/%s u".formatted(df.format(fuelAmount), df.format(maxFuel))));
 		if (totalFuelCost > 0) {
-			hoveringText.add(new TranslatableComponent("tooltip.biomancy.nutrients_consumes", df.format(totalFuelCost)).withStyle(TextStyles.NUTRIENTS_CONSUMPTION));
+			hoveringText.add(Component.translatable("tooltip.biomancy.nutrients_consumes", df.format(totalFuelCost)).withStyle(TextStyles.NUTRIENTS_CONSUMPTION));
 		}
 
 		screen.renderComponentTooltip(poseStack, hoveringText, mouseX, mouseY);
@@ -129,11 +127,10 @@ public final class GuiRenderUtil {
 		bufferbuilder.vertex(matrix4f, maxX, maxY, blitOffset).color(argbColor).endVertex();
 		bufferbuilder.vertex(matrix4f, maxX, minY, blitOffset).color(argbColor).endVertex();
 		bufferbuilder.vertex(matrix4f, minX, minY, blitOffset).color(argbColor).endVertex();
-		bufferbuilder.end();
-		BufferUploader.end(bufferbuilder);
+		BufferUploader.drawWithShader(bufferbuilder.end());
 	}
 
-	public static void fill(PoseStack poseStack, float minX, float minY, float maxX, float maxY, int blitOffset, int color) {
+	public static void fill(PoseStack poseStack, float minX, float minY, float maxX, float maxY, int blitOffset, int colorARGB) {
 		Matrix4f matrix4f = poseStack.last().pose();
 
 		BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
@@ -142,12 +139,11 @@ public final class GuiRenderUtil {
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.setShader(GameRenderer::getPositionColorShader);
 		bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-		bufferbuilder.vertex(matrix4f, minX, maxY, blitOffset).color(color).endVertex();
-		bufferbuilder.vertex(matrix4f, maxX, maxY, blitOffset).color(color).endVertex();
-		bufferbuilder.vertex(matrix4f, maxX, minY, blitOffset).color(color).endVertex();
-		bufferbuilder.vertex(matrix4f, minX, minY, blitOffset).color(color).endVertex();
-		bufferbuilder.end();
-		BufferUploader.end(bufferbuilder);
+		bufferbuilder.vertex(matrix4f, minX, maxY, blitOffset).color(colorARGB).endVertex();
+		bufferbuilder.vertex(matrix4f, maxX, maxY, blitOffset).color(colorARGB).endVertex();
+		bufferbuilder.vertex(matrix4f, maxX, minY, blitOffset).color(colorARGB).endVertex();
+		bufferbuilder.vertex(matrix4f, minX, minY, blitOffset).color(colorARGB).endVertex();
+		BufferUploader.drawWithShader(bufferbuilder.end());
 		RenderSystem.enableTexture();
 		RenderSystem.disableBlend();
 	}

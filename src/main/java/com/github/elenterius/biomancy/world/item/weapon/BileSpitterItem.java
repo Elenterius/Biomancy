@@ -21,7 +21,7 @@ import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.network.PacketDistributor;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -61,13 +61,13 @@ public class BileSpitterItem extends ProjectileWeaponItem implements ICustomTool
 	}
 
 	@Override
-	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
 		super.initializeClient(consumer);
-		consumer.accept(new IItemRenderProperties() {
+		consumer.accept(new IClientItemExtensions() {
 			private final BileSpitterRenderer renderer = new BileSpitterRenderer();
 
 			@Override
-			public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
 				return renderer;
 			}
 		});

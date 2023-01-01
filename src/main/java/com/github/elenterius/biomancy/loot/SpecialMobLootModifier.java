@@ -4,12 +4,14 @@ import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModTags;
 import com.github.elenterius.biomancy.util.random.DynamicLootTable;
-import com.google.gson.JsonObject;
+import com.google.common.base.Suppliers;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.advancements.critereon.EntityFlagsPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,17 +24,22 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
-import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
+import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.loot.LootModifier;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.Random;
+import java.util.function.Supplier;
 
 import static com.github.elenterius.biomancy.util.random.DynamicLootTable.*;
 
 public class SpecialMobLootModifier extends LootModifier {
+	public static final Supplier<Codec<SpecialMobLootModifier>> CODEC = Suppliers.memoize(() -> RecordCodecBuilder.create(inst ->
+			codecStart(inst)
+					.and(Weights.CODEC.get().fieldOf("weights").forGetter(m -> m.weights))
+					.apply(inst, SpecialMobLootModifier::new)
+	));
+
 	private static final ItemLoot SHARP_FANG = new ItemLoot(ModItems.MOB_FANG, RANDOM_ITEM_AMOUNT_FUNC_2);
 	private static final ItemLoot SHARP_CLAW = new ItemLoot(ModItems.MOB_CLAW, RANDOM_ITEM_AMOUNT_FUNC_2);
 	private static final ItemLoot SINEW = new ItemLoot(ModItems.MOB_SINEW, RANDOM_ITEM_AMOUNT_FUNC_2);
@@ -41,31 +48,38 @@ public class SpecialMobLootModifier extends LootModifier {
 	private static final ItemLoot GENERIC_GLAND = new ItemLoot(ModItems.GENERIC_MOB_GLAND, CONSTANT_ITEM_AMOUNT_FUNC);
 	private static final ItemLoot BONE_MARROW = new ItemLoot(ModItems.MOB_MARROW, RANDOM_ITEM_AMOUNT_FUNC_2);
 	private static final ItemLoot WITHERED_BONE_MARROW = new ItemLoot(ModItems.WITHERED_MOB_MARROW, RANDOM_ITEM_AMOUNT_FUNC_2);
-
 	private static final ItemLoot FLESH_BITS = new ItemLoot(ModItems.FLESH_BITS, RANDOM_ITEM_AMOUNT_FUNC_2); //bonus drop for bone cleaver
 	private static final ItemLoot EMPTY = new ItemLoot(() -> Items.AIR, CONSTANT_ITEM_AMOUNT_FUNC);
 
 	private final Weights weights;
 
 	public SpecialMobLootModifier() {
-		this(new Weights(140, 150, 75, 50, 40, 65, 45, 70),
-				//Can't use MatchTool, because the tool is missing for Entity Kills
+		this(
+				//Can't use MatchTool, because the tool is missing for Entity Kills (1.18.2) //TODO: confirm if this is the same case for 1.19.2
 				//only apply the loot modifier to adult mobs killed by a player
-				LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().flags(EntityFlagsPredicate.Builder.flags().setIsBaby(false).build())).build(),
-				LootItemKilledByPlayerCondition.killedByPlayer().build());
+				new LootItemCondition[]{
+						LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().flags(EntityFlagsPredicate.Builder.flags().setIsBaby(false).build())).build(),
+						LootItemKilledByPlayerCondition.killedByPlayer().build()
+				},
+				new Weights(140, 150, 75, 50, 40, 65, 45, 70));
 	}
 
-	public SpecialMobLootModifier(Weights weights, LootItemCondition... conditions) {
+	public SpecialMobLootModifier(LootItemCondition[] conditions, Weights weights) {
 		super(conditions);
 		this.weights = weights;
 	}
 
-	public LootItemCondition[] getConditions() {
-		return conditions;
-	}
-
 	private static String getName(RegistryObject<? extends Item> itemHolder) {
 		return itemHolder.getId().toDebugFileName();
+	}
+
+	@Override
+	public Codec<? extends IGlobalLootModifier> codec() {
+		return CODEC.get();
+	}
+
+	public LootItemCondition[] getConditions() {
+		return conditions;
 	}
 
 	protected DynamicLootTable buildLootTable(LivingEntity livingEntity) {
@@ -92,6 +106,7 @@ public class SpecialMobLootModifier extends LootModifier {
 		return lootTable;
 	}
 
+	@Deprecated(forRemoval = true)
 	private DynamicLootTable getLootTableForJER(LivingEntity livingEntity) {
 		DynamicLootTable lootTable = buildLootTable(livingEntity);
 		if (lootTable.isEmpty()) return lootTable;
@@ -103,7 +118,7 @@ public class SpecialMobLootModifier extends LootModifier {
 
 	@NotNull
 	@Override
-	protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
+	protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
 		if (context.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof LivingEntity victim) {
 			DynamicLootTable lootTable = buildLootTable(victim);
 			if (lootTable.isEmpty()) return generatedLoot;
@@ -123,7 +138,7 @@ public class SpecialMobLootModifier extends LootModifier {
 				despoilLevel++;
 			}
 
-			Random random = context.getRandom();
+			RandomSource random = context.getRandom();
 			if (despoilLevel > 0 || random.nextFloat() < 0.05f) {
 				int diceRolls = Mth.nextInt(random, 1, 1 + despoilLevel); //max is inclusive
 				for (; diceRolls > 0; diceRolls--) {
@@ -152,38 +167,17 @@ public class SpecialMobLootModifier extends LootModifier {
 	}
 
 	record Weights(int fang, int claw, int toxinGland, int volatileGland, int genericGland, int witheredBoneMarrow, int boneMarrow, int sinew) {
-		public static Weights fromJson(JsonObject jsonObject) {
-			return new Weights(GsonHelper.getAsInt(jsonObject, getName(ModItems.MOB_FANG)), GsonHelper.getAsInt(jsonObject, getName(ModItems.MOB_CLAW)), GsonHelper.getAsInt(jsonObject, getName(ModItems.TOXIN_GLAND)), GsonHelper.getAsInt(jsonObject, getName(ModItems.VOLATILE_GLAND)), GsonHelper.getAsInt(jsonObject, getName(ModItems.GENERIC_MOB_GLAND)), GsonHelper.getAsInt(jsonObject, getName(ModItems.WITHERED_MOB_MARROW)), GsonHelper.getAsInt(jsonObject, getName(ModItems.MOB_MARROW)), GsonHelper.getAsInt(jsonObject, getName(ModItems.MOB_SINEW)));
-		}
-
-		public JsonObject toJson() {
-			JsonObject weights = new JsonObject();
-			weights.addProperty(getName(ModItems.MOB_FANG), fang);
-			weights.addProperty(getName(ModItems.MOB_CLAW), claw);
-			weights.addProperty(getName(ModItems.TOXIN_GLAND), toxinGland);
-			weights.addProperty(getName(ModItems.VOLATILE_GLAND), volatileGland);
-			weights.addProperty(getName(ModItems.GENERIC_MOB_GLAND), genericGland);
-			weights.addProperty(getName(ModItems.WITHERED_MOB_MARROW), witheredBoneMarrow);
-			weights.addProperty(getName(ModItems.MOB_MARROW), boneMarrow);
-			weights.addProperty(getName(ModItems.MOB_SINEW), sinew);
-			return weights;
-		}
-	}
-
-	public static class Serializer extends GlobalLootModifierSerializer<SpecialMobLootModifier> {
-
-		@Override
-		public SpecialMobLootModifier read(ResourceLocation id, JsonObject object, LootItemCondition[] conditions) {
-			return new SpecialMobLootModifier(Weights.fromJson(object.getAsJsonObject("weights")), conditions);
-		}
-
-		@Override
-		public JsonObject write(SpecialMobLootModifier instance) {
-			JsonObject jsonObject = makeConditions(instance.conditions);
-			jsonObject.add("weights", instance.weights.toJson());
-			return jsonObject;
-		}
-
+		public static final Supplier<Codec<Weights>> CODEC = Suppliers.memoize(() -> RecordCodecBuilder.create(inst -> inst.group(
+						Codec.INT.fieldOf(getName(ModItems.MOB_FANG)).forGetter(Weights::fang),
+						Codec.INT.fieldOf(getName(ModItems.MOB_CLAW)).forGetter(Weights::claw),
+						Codec.INT.fieldOf(getName(ModItems.TOXIN_GLAND)).forGetter(Weights::toxinGland),
+						Codec.INT.fieldOf(getName(ModItems.VOLATILE_GLAND)).forGetter(Weights::volatileGland),
+						Codec.INT.fieldOf(getName(ModItems.GENERIC_MOB_GLAND)).forGetter(Weights::genericGland),
+						Codec.INT.fieldOf(getName(ModItems.WITHERED_MOB_MARROW)).forGetter(Weights::witheredBoneMarrow),
+						Codec.INT.fieldOf(getName(ModItems.MOB_MARROW)).forGetter(Weights::boneMarrow),
+						Codec.INT.fieldOf(getName(ModItems.MOB_SINEW)).forGetter(Weights::sinew)
+				).apply(inst, Weights::new))
+		);
 	}
 
 }

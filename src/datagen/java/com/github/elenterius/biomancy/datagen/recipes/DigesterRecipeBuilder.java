@@ -19,7 +19,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.common.crafting.NBTIngredient;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
 import net.minecraftforge.common.crafting.conditions.NotCondition;
@@ -111,7 +110,7 @@ public class DigesterRecipeBuilder implements IRecipeBuilder {
 	}
 
 	public DigesterRecipeBuilder setIngredient(ItemStack stack) {
-		return setIngredient(NBTIngredient.of(stack));
+		return setIngredient(Ingredient.of(stack));
 	}
 
 	public DigesterRecipeBuilder setIngredient(Ingredient ingredient) {

@@ -19,8 +19,6 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -36,24 +34,26 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 		background = guiHelper.drawableBuilder(texture, 0, 0, 80, 47).setTextureSize(80, 47).addPadding(0, 4, 0, 0).build();
 	}
 
-	@Override
+	//TODO: Change this code.
+	/*@Override
 	public ResourceLocation getUid() {
 		return getRecipeType().getUid();
-	}
+	}*/
 
 	@Override
 	public RecipeType<DigesterRecipe> getRecipeType() {
 		return RECIPE_TYPE;
 	}
 
-	@Override
+	//TODO: Change this code.
+	/*@Override
 	public Class<? extends DigesterRecipe> getRecipeClass() {
 		return getRecipeType().getRecipeClass();
-	}
+	}*/
 
 	@Override
 	public Component getTitle() {
-		return new TranslatableComponent("jei.biomancy.recipe.digester");
+		return Component.translatable("jei.biomancy.recipe.digester");
 	}
 
 	@Override
@@ -79,11 +79,11 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 
 		int ticks = recipe.getCraftingTime();
 		int seconds = ticks > 0 ? ticks / 20 : 0;
-		Component timeText = new TranslatableComponent("gui.jei.category.smelting.time.seconds", seconds);
+		Component timeText = Component.translatable("gui.jei.category.smelting.time.seconds", seconds);
 		fontRenderer.draw(poseStack, timeText, 48, 44 - fontRenderer.lineHeight, 0xff808080);
 
 		int fuelCost = NutrientFuelUtil.getFuelCost(DigesterBlockEntity.BASE_COST, ticks);
-		Component costText = new TextComponent("-" + fuelCost);
+		Component costText = Component.literal("-" + fuelCost);
 		fontRenderer.draw(poseStack, costText, 15, 44 - fontRenderer.lineHeight, 0xff808080);
 	}
 

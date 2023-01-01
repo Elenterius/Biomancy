@@ -2,7 +2,10 @@ package com.github.elenterius.biomancy.datagen.loot;
 
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.world.block.FleshDoorBlock;
+
+import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.loot.BlockLoot;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -10,6 +13,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.CopyNameFunction;
 import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
+import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.registries.RegistryObject;
@@ -96,7 +100,7 @@ public class ModBlockLoot extends BlockLoot {
 
 		dropSelf(ModBlocks.MALIGNANT_FLESH.get());
 		add(ModBlocks.MALIGNANT_FLESH_SLAB.get(), BlockLoot::createSlabItemTable);
-		add(ModBlocks.MALIGNANT_FLESH_VEINS.get(), BlockLoot::createGlowLichenDrops);
+		add(ModBlocks.MALIGNANT_FLESH_VEINS.get(), (block) -> { return createMultifaceBlockDrops(block, MatchTool.toolMatches(ItemPredicate.Builder.item().of(Items.SHEARS))); });
 
 		dropSelf(ModBlocks.VOICE_BOX.get());
 		dropSelf(ModBlocks.FLESH_IRIS_DOOR.get());

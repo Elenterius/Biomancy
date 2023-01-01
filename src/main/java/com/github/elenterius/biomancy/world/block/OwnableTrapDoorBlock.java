@@ -12,6 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -41,7 +42,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.UUID;
 
 public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableEntityBlock {
@@ -149,7 +149,7 @@ public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableEntit
 		if (isOpen(state)) {
 			playSound(null, level, pos, false);
 			state = state.setValue(OPEN, false);
-			level.gameEvent(GameEvent.BLOCK_CLOSE, pos);
+			level.gameEvent(null, GameEvent.BLOCK_CLOSE, pos);
 		}
 		else if (hasSignal) {
 			level.playSound(null, pos, SoundEvents.CHEST_LOCKED, SoundSource.BLOCKS, 1f, 1f);
@@ -165,7 +165,7 @@ public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableEntit
 		if (hasSignal != isOpen(state)) {
 			playSound(null, level, pos, hasSignal);
 			state = state.setValue(OPEN, hasSignal);
-			level.gameEvent(hasSignal ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
+			level.gameEvent(null, hasSignal ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
 		}
 		level.setBlock(pos, state.setValue(POWERED, hasSignal), Block.UPDATE_CLIENTS);
 
@@ -173,7 +173,7 @@ public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableEntit
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand) {
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {
 		if (!isOpen(state)) return;
 
 		UserSensitivity sensitivity = state.getValue(SENSITIVITY);
@@ -202,7 +202,7 @@ public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableEntit
 
 		level.setBlock(pos, state.setValue(OPEN, false), Block.UPDATE_CLIENTS);
 		level.playSound(null, pos, SoundEvents.WOODEN_TRAPDOOR_CLOSE, SoundSource.BLOCKS, 1f, 1f);
-		level.gameEvent(GameEvent.BLOCK_CLOSE, pos);
+		level.gameEvent(null, GameEvent.BLOCK_CLOSE, pos);
 	}
 
 	@Override
@@ -253,7 +253,7 @@ public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableEntit
 
 		state = state.setValue(OPEN, true);
 		level.setBlock(pos, state, Block.UPDATE_CLIENTS);
-		level.gameEvent(GameEvent.BLOCK_OPEN, pos);
+		level.gameEvent(null, GameEvent.BLOCK_OPEN, pos);
 
 		if (autoClose) level.scheduleTick(pos, state.getBlock(), 40); //schedule tick to auto-close door after (~2sec)
 		if (isWaterlogged(state)) level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));

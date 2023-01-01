@@ -461,8 +461,8 @@ public class FleshBlob extends PathfinderMob implements Enemy, JumpMoveMob<Flesh
 		}
 	}
 
-	private void playSound(SoundEvent soundEvent) {
-		playSound(soundEvent, getSoundVolume(), (random.nextFloat(-1, 1) * 0.2f + 1f) * 0.8f);
+	public void playSound(SoundEvent soundEvent) {
+		playSound(soundEvent, getSoundVolume(), ((this.random.nextFloat() - this.random.nextFloat()) * 0.2f + 1f) * 0.8f);
 	}
 
 	@Override

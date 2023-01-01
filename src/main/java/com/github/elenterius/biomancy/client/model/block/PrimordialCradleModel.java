@@ -8,17 +8,17 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class PrimordialCradleModel extends AnimatedGeoModel<PrimordialCradleBlockEntity> {
 
 	@Override
-	public ResourceLocation getModelLocation(PrimordialCradleBlockEntity blockEntity) {
+	public ResourceLocation getModelResource(PrimordialCradleBlockEntity blockEntity) {
 		return BiomancyMod.createRL("geo/block/primordial_cradle.geo.json");
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(PrimordialCradleBlockEntity blockEntity) {
+	public ResourceLocation getTextureResource(PrimordialCradleBlockEntity blockEntity) {
 		return BiomancyMod.createRL("textures/block/primordial_cradle.png");
 	}
 
 	@Override
-	public ResourceLocation getAnimationFileLocation(PrimordialCradleBlockEntity blockEntity) {
+	public ResourceLocation getAnimationResource(PrimordialCradleBlockEntity blockEntity) {
 		return BiomancyMod.createRL("animations/block/primordial_cradle.animation.json");
 	}
 

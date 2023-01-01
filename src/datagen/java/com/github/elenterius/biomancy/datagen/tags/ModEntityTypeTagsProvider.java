@@ -24,11 +24,13 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkSource;
-import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import net.minecraft.world.level.entity.LevelEntityGetter;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.gameevent.GameEvent.Context;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.scores.Scoreboard;
 import net.minecraft.world.ticks.LevelTickAccess;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -138,7 +140,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 
 	private void buildSinewAndBileTag() {
 		Set<String> validNamespaces = Set.of("minecraft", BiomancyMod.MOD_ID, AlexsMobs.MODID);
-		Predicate<EntityType<?>> allowedNamespace = entityType -> validNamespaces.contains(Objects.requireNonNull(entityType.getRegistryName()).getNamespace());
+		Predicate<EntityType<?>> allowedNamespace = entityType -> validNamespaces.contains(Objects.requireNonNull(ForgeRegistries.ENTITY_TYPES.getKey(entityType)).getNamespace());
 
 		Set<EntityType<?>> toxicMobs = Set.of(TOXIC_MOBS);
 		Set<EntityType<?>> volatileMobs = Set.of(VOLATILE_MOBS);
@@ -149,7 +151,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 
 		FakeLevel fakeLevel = new FakeLevel(); //we ignore that this is a AutoClosable object
 
-		for (EntityType<?> entityType : ForgeRegistries.ENTITIES) {
+		for (EntityType<?> entityType : ForgeRegistries.ENTITY_TYPES) {
 			if (!allowedNamespace.test(entityType)) continue;
 
 			Entity entity = entityType.create(fakeLevel);
@@ -171,7 +173,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 	}
 
 	protected EnhancedTagAppender<EntityType<?>> createTag(TagKey<EntityType<?>> tag) {
-		return new EnhancedTagAppender<>(tag(tag));
+		return new EnhancedTagAppender<>(tag(tag), ForgeRegistries.ENTITY_TYPES);
 	}
 
 	@Override
@@ -179,17 +181,12 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 		return StringUtils.capitalize(modId) + " " + super.getName();
 	}
 
-	/**
-	 * Stub for creating instances of Entities from EntityTypes.
-	 * FOR DATAGEN ONLY! MAY IMPLODE.
-	 */
-	@SuppressWarnings("DataFlowIssue")
 	private static final class FakeLevel extends Level {
 
 		private final Scoreboard scoreboard;
 
 		private FakeLevel() {
-			super(null, null, RegistryAccess.BUILTIN.get().registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getHolderOrThrow(DimensionType.OVERWORLD_LOCATION), null, false, false, 0);
+			super(null, null, RegistryAccess.BUILTIN.get().registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getHolderOrThrow(BuiltinDimensionTypes.OVERWORLD), null, false, false, 0, 1);
 			scoreboard = new Scoreboard();
 		}
 
@@ -313,6 +310,23 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 		@Override
 		public Holder<Biome> getUncachedNoiseBiome(int x, int y, int z) {
 			return null;
+		}
+
+		@Override
+		public void gameEvent(GameEvent event, Vec3 ppos, Context context) {
+			//do nothing
+			
+		}
+
+		@Override
+		public void playSeededSound(Player player, double x, double y, double z, SoundEvent sound, SoundSource source, float volume, float pitch, long seed) {
+			//do nothing
+			
+		}
+
+		@Override
+		public void playSeededSound(Player player, Entity entity, SoundEvent sound, SoundSource source, float volume, float pitch, long seed) {
+			//do nothing
 		}
 	}
 

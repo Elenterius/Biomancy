@@ -21,8 +21,6 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -40,24 +38,26 @@ public class BioLabRecipeCategory implements IRecipeCategory<BioLabRecipe> {
 		background = guiHelper.drawableBuilder(texture, 0, 0, 134, 54).setTextureSize(134, 54).addPadding(0, 4, 0, 0).build();
 	}
 
-	@Override
+	//TODO: Change this code.
+	/*@Override
 	public ResourceLocation getUid() {
 		return getRecipeType().getUid();
-	}
+	}*/
 
 	@Override
 	public RecipeType<BioLabRecipe> getRecipeType() {
 		return RECIPE_TYPE;
 	}
 
-	@Override
+	//TODO: Change this code.
+	/*@Override
 	public Class<? extends BioLabRecipe> getRecipeClass() {
 		return getRecipeType().getRecipeClass();
-	}
+	}*/
 
 	@Override
 	public Component getTitle() {
-		return new TranslatableComponent("jei.biomancy.recipe.bio_lab");
+		return Component.translatable("jei.biomancy.recipe.bio_lab");
 	}
 
 	@Override
@@ -101,11 +101,11 @@ public class BioLabRecipeCategory implements IRecipeCategory<BioLabRecipe> {
 
 		int ticks = recipe.getCraftingTime();
 		int seconds = ticks > 0 ? ticks / 20 : 0;
-		Component timeText = new TranslatableComponent("gui.jei.category.smelting.time.seconds", seconds);
+		Component timeText = Component.translatable("gui.jei.category.smelting.time.seconds", seconds);
 		fontRenderer.draw(poseStack, timeText, 102, 50 - fontRenderer.lineHeight, 0xff808080);
 
 		int fuelCost = NutrientFuelUtil.getFuelCost(BioLabBlockEntity.BASE_COST, ticks);
-		Component costText = new TextComponent("-" + fuelCost);
+		Component costText = Component.literal("-" + fuelCost);
 		fontRenderer.draw(poseStack, costText, 69, 50 - fontRenderer.lineHeight, 0xff808080);
 	}
 

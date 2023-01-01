@@ -14,8 +14,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
@@ -57,7 +57,7 @@ public final class TooltipRenderHandler {
 				if (formattedText instanceof PlaceholderComponent placeholder) {
 					tooltipElements.set(index, Either.right(placeholder.getReplacement()));
 				}
-				else if (isTooltip && formattedText == TextComponent.EMPTY) { //vanilla bugfix: fixes empty lines disappearing when long text is wrapped
+				else if (isTooltip && formattedText == Component.EMPTY) { //vanilla bugfix: fixes empty lines disappearing when long text is wrapped
 					tooltipElements.set(index, Either.right(TooltipHacks.EMPTY_LINE_COMPONENT.getReplacement()));
 				}
 			});

@@ -87,9 +87,7 @@ public final class ModItems {
 	public static final RegistryObject<InjectorItem> INJECTOR = ITEMS.register("injector", () -> new InjectorItem(createBaseProperties().durability(200).rarity(ModRarities.RARE)));
 	//	public static final RegistryObject<ControlStaffItem> CONTROL_STAFF = ITEMS.register("control_staff", () -> new ControlStaffItem(createBaseProperties().stacksTo(1).rarity(ModRarities.ULTRA_RARE)));
 
-	public static final RegistryObject<MaykerBannerPatternItem> MASCOT_BANNER_PATTERN = ITEMS.register("mascot_pattern", () -> new MaykerBannerPatternItem(ModBannerPatterns.MASCOT_PATTERN, createBaseProperties()));
-	public static final RegistryObject<MaykerBannerPatternItem> MASCOT_OUTLINE_BANNER_PATTERN = ITEMS.register("mascot_outline_pattern", () -> new MaykerBannerPatternItem(ModBannerPatterns.MASCOT_OUTLINE_PATTERN, createBaseProperties()));
-	public static final RegistryObject<MaykerBannerPatternItem> MASCOT_ACCENT_BANNER_PATTERN = ITEMS.register("mascot_accent_pattern", () -> new MaykerBannerPatternItem(ModBannerPatterns.MASCOT_ACCENT_PATTERN, createBaseProperties()));
+	public static final RegistryObject<MaykerBannerPatternItem> MASCOT_BANNER_PATTERNS = ITEMS.register("mascot_patterns", () -> new MaykerBannerPatternItem(ModBannerPatterns.TAG_MASCOT, createBaseProperties()));
 
 	//# Weapons
 	public static final RegistryObject<SimpleSwordItem> BONE_CLEAVER = ITEMS.register("bone_cleaver", () -> new SimpleSwordItem(ModTiers.BONE, 3, -2.4f, createBaseProperties()));

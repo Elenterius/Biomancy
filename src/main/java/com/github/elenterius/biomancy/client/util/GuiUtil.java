@@ -23,7 +23,7 @@ public final class GuiUtil {
 
 	public static boolean canDrawAttackIndicator(LocalPlayer player) {
 		Minecraft minecraft = Minecraft.getInstance();
-		if (minecraft.options.attackIndicator != AttackIndicatorStatus.CROSSHAIR) return true;
+		if (minecraft.options.attackIndicator().get() != AttackIndicatorStatus.CROSSHAIR) return true;
 		boolean isVisible = false;
 		float attackStrength = player.getAttackStrengthScale(0f);
 		if (minecraft.crosshairPickEntity instanceof LivingEntity && attackStrength >= 1f) {

@@ -1,7 +1,6 @@
 package com.github.elenterius.biomancy.world.entity.ownable;
 
 import com.github.elenterius.biomancy.world.ownable.IOwnableMob;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -96,7 +95,7 @@ public abstract class OwnableMob extends PathfinderMob implements IOwnableMob {
 		if (!level.isClientSide && level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES)) {
 			Optional<Player> optional = getOwnerAsPlayer();
 			if (optional.isPresent() && optional.get() instanceof ServerPlayer) {
-				optional.get().sendMessage(getCombatTracker().getDeathMessage(), Util.NIL_UUID);
+				optional.get().sendSystemMessage(getCombatTracker().getDeathMessage());
 			}
 		}
 		super.die(cause);

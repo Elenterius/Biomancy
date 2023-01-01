@@ -20,11 +20,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.common.crafting.CompoundIngredient;
 import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.common.crafting.NBTIngredient;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
 import net.minecraftforge.common.crafting.conditions.NotCondition;
+import net.minecraftforge.registries.ForgeRegistries;
+
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -70,13 +72,13 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 
 	public static BioLabRecipeBuilder create(ItemLike item) {
 		ItemData itemData = new ItemData(item);
-		ResourceLocation rl = BiomancyMod.createRL(Objects.requireNonNull(item.asItem().getRegistryName()).getPath() + SUFFIX);
+		ResourceLocation rl = BiomancyMod.createRL(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item.asItem())).getPath() + SUFFIX);
 		return new BioLabRecipeBuilder(rl, itemData);
 	}
 
 	public static BioLabRecipeBuilder create(ItemLike item, int count) {
 		ItemData itemData = new ItemData(item, count);
-		ResourceLocation rl = BiomancyMod.createRL(Objects.requireNonNull(item.asItem().getRegistryName()).getPath() + SUFFIX);
+		ResourceLocation rl = BiomancyMod.createRL(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item.asItem())).getPath() + SUFFIX);
 		return new BioLabRecipeBuilder(rl, itemData);
 	}
 
@@ -108,7 +110,7 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 	}
 
 	public BioLabRecipeBuilder setReactant(ItemStack stack) {
-		return setReactant(NBTIngredient.of(stack));
+		return setReactant(Ingredient.of(stack));
 	}
 
 	public BioLabRecipeBuilder setReactant(Ingredient ingredient) {
@@ -129,7 +131,7 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 	}
 
 	public BioLabRecipeBuilder addIngredient(ItemStack stack) {
-		return addIngredient(NBTIngredient.of(stack), 1);
+		return addIngredient(Ingredient.of(stack), 1);
 	}
 
 	public BioLabRecipeBuilder addIngredient(Ingredient ingredient) {

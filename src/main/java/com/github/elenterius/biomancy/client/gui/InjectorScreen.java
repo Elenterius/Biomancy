@@ -20,9 +20,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
@@ -42,7 +41,7 @@ public class InjectorScreen extends Screen {
 	private InteractionHand itemHoldingHand;
 
 	public InjectorScreen(InteractionHand hand) {
-		super(new TranslatableComponent("biomancy.injector.wheel_menu"));
+		super(Component.translatable("biomancy.injector.wheel_menu"));
 		itemHoldingHand = hand;
 	}
 
@@ -150,6 +149,8 @@ public class InjectorScreen extends Screen {
 		if (cachedStacks == null || cachedStacks.isEmpty()) return;
 
 		ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
+		int blitOffset = getBlitOffset();
+
 		ObjectSet<Object2IntMap.Entry<ItemStack>> stackEntries = cachedStacks.object2IntEntrySet();
 
 		int segments = stackEntries.size();
@@ -177,8 +178,8 @@ public class InjectorScreen extends Screen {
 
 			int color = isMouseInSection ? ColorStyles.GENERIC_TOOLTIP.borderStartColor() & 0xFA_FFFFFF : ColorStyles.GENERIC_TOOLTIP.backgroundColor() & 0xE0_FFFFFF; //decrease alpha
 
-			drawSegment(poseStack, x, y, radius, currentAngle - angleIncrement / 2f, currentAngle, color, getBlitOffset());
-			drawSegment(poseStack, x, y, radius, currentAngle, currentAngle + angleIncrement / 2f, color, getBlitOffset());
+			drawSegment(poseStack, x, y, radius, currentAngle - angleIncrement / 2f, currentAngle, color, blitOffset);
+			drawSegment(poseStack, x, y, radius, currentAngle, currentAngle + angleIncrement / 2f, color, blitOffset);
 
 			float v = x + radius * Mth.cos(currentAngle); //polar to cartesian
 			float w = y + radius * Mth.sin(currentAngle);
@@ -197,13 +198,13 @@ public class InjectorScreen extends Screen {
 		//draw text for selected section
 		MutableComponent text;
 		if (stack.isEmpty()) {
-			text = new TextComponent("Clear").withStyle(TextStyles.ERROR);
+			text = Component.literal("Clear").withStyle(TextStyles.ERROR);
 		}
 		else if (stack.getItem() == Items.BARRIER) {
-			text = new TextComponent("Cancel");
+			text = Component.literal("Cancel");
 		}
 		else {
-			text = new TextComponent("").append(stack.getHoverName()).withStyle(stack.getRarity().getStyleModifier());
+			text = Component.literal("").append(stack.getHoverName()).withStyle(stack.getRarity().getStyleModifier());
 			if (stack.hasCustomHoverName()) text.withStyle(ChatFormatting.ITALIC);
 		}
 
@@ -226,7 +227,7 @@ public class InjectorScreen extends Screen {
 		float minY = yt - font.lineHeight / 2f - 3;
 		float maxX = xt + lineWidth + 2;
 		float maxY = yt + font.lineHeight / 2f + 2;
-		GuiRenderUtil.fill(poseStack, minX, minY, maxX, maxY, getBlitOffset(), ColorStyles.GENERIC_TOOLTIP.backgroundColor() & 0xE0_FFFFFF);
+		GuiRenderUtil.fill(poseStack, minX, minY, maxX, maxY, blitOffset, ColorStyles.GENERIC_TOOLTIP.backgroundColor() & 0xE0_FFFFFF);
 		font.drawShadow(poseStack, text, xt, yt - font.lineHeight / 2f, ColorStyles.WHITE_ARGB);
 		poseStack.popPose();
 	}
@@ -250,8 +251,7 @@ public class InjectorScreen extends Screen {
 		bufferBuilder.vertex(matrix4f, x + outerRadius * Mth.cos(endAngle), y + outerRadius * Mth.sin(endAngle), blitOffset).color(argbColor).endVertex();
 		bufferBuilder.vertex(matrix4f, x + outerRadius * Mth.cos(startAngle), y + outerRadius * Mth.sin(startAngle), blitOffset).color(argbColor).endVertex();
 
-		bufferBuilder.end();
-		BufferUploader.end(bufferBuilder);
+		BufferUploader.drawWithShader(bufferBuilder.end());
 
 		RenderSystem.enableTexture();
 		RenderSystem.disableBlend();

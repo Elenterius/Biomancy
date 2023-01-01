@@ -3,7 +3,9 @@ package com.github.elenterius.biomancy.world.item;
 import com.github.elenterius.biomancy.init.ModRarities;
 import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
-import net.minecraft.network.chat.TranslatableComponent;
+
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 
 public interface ICustomTooltip {
@@ -12,8 +14,8 @@ public interface ICustomTooltip {
 		return TextComponentUtil.getItemTooltipKey(stack.getItem());
 	}
 
-	default TranslatableComponent getTooltipText(ItemStack stack) {
-		return new TranslatableComponent(getTooltipKey(stack));
+	default MutableComponent getTooltipText(ItemStack stack) {
+		return Component.translatable(getTooltipKey(stack));
 	}
 
 	default int getTooltipColor(ItemStack stack) {

@@ -8,7 +8,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -108,7 +107,7 @@ public class Fleshkin extends OwnableMonster implements IControllableMob<Fleshki
 			Item item = player.getMainHandItem().getItem();
 			if (item == Items.DEBUG_STICK /*|| item == ModItems.CONTROL_STAFF.get()*/) {
 				setOwner(player);
-				player.displayClientMessage(new TextComponent("You are now the owner of this creature!").withStyle(ChatFormatting.RED), true);
+				player.displayClientMessage(Component.literal("You are now the owner of this creature!").withStyle(ChatFormatting.RED), true);
 			}
 		}
 
@@ -124,7 +123,7 @@ public class Fleshkin extends OwnableMonster implements IControllableMob<Fleshki
 	}
 
 	public static void displayCommandSetMsg(Player player, Component name, Command newCommand) {
-		MutableComponent cmd = new TextComponent(newCommand.toString()).withStyle(ChatFormatting.DARK_AQUA);
+		MutableComponent cmd = Component.literal(newCommand.toString()).withStyle(ChatFormatting.DARK_AQUA);
 		MutableComponent text = TextComponentUtil.getMsgText("set_behavior_command", name, cmd).withStyle(ChatFormatting.WHITE);
 		player.displayClientMessage(text, true);
 	}

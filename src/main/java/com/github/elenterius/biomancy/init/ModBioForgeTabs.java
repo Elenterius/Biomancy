@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 public final class ModBioForgeTabs {
 
 	public static final DeferredRegister<BioForgeTab> BIO_FORGE_TABS = DeferredRegister.create(BiomancyMod.createRL("bio_forge_tab"), BiomancyMod.MOD_ID);
-	public static final Supplier<IForgeRegistry<BioForgeTab>> REGISTRY = BIO_FORGE_TABS.makeRegistry(BioForgeTab.class, RegistryBuilder::new);
+	public static final Supplier<IForgeRegistry<BioForgeTab>> REGISTRY = BIO_FORGE_TABS.makeRegistry(RegistryBuilder::new);
 
 	public static final RegistryObject<BioForgeTab> SEARCH = register("search", 1, () -> Items.COMPASS);
 	public static final RegistryObject<BioForgeTab> MISC = register("misc", -1, ModItems.LIVING_FLESH);

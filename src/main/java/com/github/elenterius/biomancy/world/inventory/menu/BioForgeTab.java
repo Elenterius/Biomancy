@@ -8,11 +8,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistryEntry;
-
 import java.util.Objects;
 
-public final class BioForgeTab extends ForgeRegistryEntry<BioForgeTab> {
+public final class BioForgeTab {
 	private static final String JSON_KEY = "bio_forge_tab";
 	private final int sortPriority;
 	private final Item iconItem;
@@ -41,11 +39,11 @@ public final class BioForgeTab extends ForgeRegistryEntry<BioForgeTab> {
 	}
 
 	public void toNetwork(FriendlyByteBuf buffer) {
-		buffer.writeResourceLocation(getRegistryName());
+		buffer.writeResourceLocation(ModBioForgeTabs.REGISTRY.get().getKey(this));
 	}
 
 	public void toJson(JsonObject json) {
-		json.addProperty(JSON_KEY, getRegistryName().toString());
+		json.addProperty(JSON_KEY, ModBioForgeTabs.REGISTRY.get().getKey(this).toString());
 	}
 
 	public ItemStack getIcon() {
@@ -53,7 +51,7 @@ public final class BioForgeTab extends ForgeRegistryEntry<BioForgeTab> {
 	}
 
 	public String enumId() {
-		return getRegistryName().toString().replace(":", "_");
+		return ModBioForgeTabs.REGISTRY.get().getKey(this).toString().replace(":", "_");
 	}
 
 	public int sortPriority() {
@@ -65,17 +63,17 @@ public final class BioForgeTab extends ForgeRegistryEntry<BioForgeTab> {
 		if (obj == this) return true;
 		if (obj == null || obj.getClass() != this.getClass()) return false;
 		var that = (BioForgeTab) obj;
-		return getRegistryName().equals(that.getRegistryName()) && this.sortPriority == that.sortPriority && Objects.equals(this.iconItem, that.iconItem);
+		return ModBioForgeTabs.REGISTRY.get().getKey(this).equals(ModBioForgeTabs.REGISTRY.get().getKey(that)) && this.sortPriority == that.sortPriority && Objects.equals(this.iconItem, that.iconItem);
 	}
 
-	@Override
+	/*@Override
 	public int hashCode() {
-		return getRegistryName().hashCode();
-	}
+		return 31 * ModBioForgeTabs.REGISTRY.get().getKey(this).getNamespace().hashCode() + ModBioForgeTabs.REGISTRY.get().getKey(this).getPath().hashCode();
+	}*/
 
 	@Override
 	public String toString() {
-		return "BioForgeTab[" + "id=" + getRegistryName() + ", " + "sortPriority=" + sortPriority + ", " + "iconSupplier=" + iconItem + ']';
+		return "BioForgeTab[" + "id=" + ModBioForgeTabs.REGISTRY.get().getKey(this) + ", " + "sortPriority=" + sortPriority + ", " + "iconSupplier=" + iconItem + ']';
 	}
 
 }

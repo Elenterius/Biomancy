@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -28,7 +29,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Random;
 import java.util.stream.Stream;
 
 public class DecomposerBlock extends HorizontalFacingMachineBlock {
@@ -55,7 +55,7 @@ public class DecomposerBlock extends HorizontalFacingMachineBlock {
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (level.getBlockEntity(pos) instanceof DecomposerBlockEntity decomposer && decomposer.canPlayerOpenInv(player)) {
 			if (!level.isClientSide) {
-				NetworkHooks.openGui((ServerPlayer) player, decomposer, buffer -> buffer.writeBlockPos(pos));
+				NetworkHooks.openScreen((ServerPlayer) player, decomposer, buffer -> buffer.writeBlockPos(pos));
 				SoundUtil.broadcastBlockSound((ServerLevel) level, pos, ModSoundEvents.UI_DECOMPOSER_OPEN);
 			}
 			return InteractionResult.SUCCESS;
@@ -75,7 +75,7 @@ public class DecomposerBlock extends HorizontalFacingMachineBlock {
 	}
 
 	@Override
-	public void animateTick(BlockState state, Level level, BlockPos pos, Random random) {
+	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
 		if (random.nextInt(5) == 0 && Boolean.TRUE.equals(state.getValue(CRAFTING))) {
 			int particleAmount = random.nextInt(1, 5);
 			int color = 0xc7b15d;
@@ -83,7 +83,7 @@ public class DecomposerBlock extends HorizontalFacingMachineBlock {
 			double g = (color >> 8 & 255) / 255d;
 			double b = (color & 255) / 255d;
 			for (int i = 0; i < particleAmount; i++) {
-				level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + 0.5d + random.nextFloat(-0.3f, 0.3f), pos.getY() + 0.75d, pos.getZ() + 0.5d + random.nextFloat(-0.3f, 0.3f), r, g, b);
+				level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + 0.5d + ((random.nextFloat() - random.nextFloat()) * 0.3F), pos.getY() + 0.75d, pos.getZ() + 0.5d + ((random.nextFloat() - random.nextFloat()) * 0.3F), r, g, b);
 			}
 
 			if (random.nextInt(3) == 0) {

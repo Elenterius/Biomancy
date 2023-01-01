@@ -17,7 +17,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -34,7 +33,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
@@ -62,13 +61,13 @@ public class DevArmCannonItem extends Item implements IAnimatable, IArmPoseProvi
 	}
 
 	@Override
-	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
 		super.initializeClient(consumer);
-		consumer.accept(new IItemRenderProperties() {
+		consumer.accept(new IClientItemExtensions() {
 			private final DevArmCannonRenderer renderer = new DevArmCannonRenderer();
 
 			@Override
-			public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
 				return renderer;
 			}
 		});
@@ -151,14 +150,14 @@ public class DevArmCannonItem extends Item implements IAnimatable, IArmPoseProvi
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
 
 		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
-		tooltip.add(new TextComponent("The quick brown fox jumps over the lazy dog.").withStyle(TextStyles.MAYKR_RUNES_GRAY));
+		tooltip.add(Component.literal("The quick brown fox jumps over the lazy dog.").withStyle(TextStyles.MAYKR_RUNES_GRAY));
 
 		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
 		byte index = stack.getOrCreateTag().getByte("ProjectileIndex");
 		if (index < 0 || index >= ModProjectiles.PRECONFIGURED_PROJECTILES.size()) {
 			index = 0;
 		}
-		tooltip.add(new TextComponent(ModProjectiles.PRECONFIGURED_PROJECTILES.get(index).name()));
+		tooltip.add(Component.literal(ModProjectiles.PRECONFIGURED_PROJECTILES.get(index).name()));
 
 		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
 
@@ -172,7 +171,7 @@ public class DevArmCannonItem extends Item implements IAnimatable, IArmPoseProvi
 		if (index < 0 || index >= ModProjectiles.PRECONFIGURED_PROJECTILES.size()) {
 			index = 0;
 		}
-		return new TextComponent("").append(displayName).append(" (" + ModProjectiles.PRECONFIGURED_PROJECTILES.get(index).name() + ")");
+		return Component.literal("").append(displayName).append(" (" + ModProjectiles.PRECONFIGURED_PROJECTILES.get(index).name() + ")");
 	}
 
 }

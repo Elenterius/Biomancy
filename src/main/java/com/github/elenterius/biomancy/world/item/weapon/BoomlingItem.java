@@ -7,7 +7,6 @@ import com.github.elenterius.biomancy.world.item.ICustomTooltip;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -63,8 +62,8 @@ public class BoomlingItem extends Item implements ICustomTooltip {
 	}
 
 	@Override
-	public ItemStack getContainerItem(ItemStack stack) {
-		if (!hasContainerItem(stack)) {
+	public ItemStack getCraftingRemainingItem(ItemStack stack) {
+		if (!hasCraftingRemainingItem(stack)) {
 			return ItemStack.EMPTY;
 		}
 		else {
@@ -75,7 +74,7 @@ public class BoomlingItem extends Item implements ICustomTooltip {
 	}
 
 	@Override
-	public boolean hasContainerItem(ItemStack stack) {
+	public boolean hasCraftingRemainingItem(ItemStack stack) {
 		return containsPotion(stack);
 	}
 
@@ -93,7 +92,7 @@ public class BoomlingItem extends Item implements ICustomTooltip {
 		if (stack.hasTag() && stack.getTag() != null) {
 			String potionTranslationKey = PotionUtilExt.getPotionTranslationKeyFromHost(stack);
 			if (!potionTranslationKey.isEmpty())
-				tooltip.add(new TranslatableComponent(potionTranslationKey).setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
+				tooltip.add(Component.translatable(potionTranslationKey).setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
 		}
 		PotionUtilExt.addPotionTooltip(stack, tooltip, 1f);
 	}

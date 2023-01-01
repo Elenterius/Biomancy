@@ -11,6 +11,7 @@ import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Objects;
@@ -28,19 +29,19 @@ public class ModItemModelProvider extends ItemModelProvider {
 	}
 
 	public ItemModelBuilder spawnEggItem(Item item) {
-		return spawnEggItem(Objects.requireNonNull(item.getRegistryName()));
+		return spawnEggItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)));
 	}
 
 	public ItemModelBuilder componentItem(Item item) {
-		return basicItem(Objects.requireNonNull(item.getRegistryName()), "component");
+		return basicItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)), "component");
 	}
 
 	public ItemModelBuilder serumItem(Item item) {
-		return basicItem(Objects.requireNonNull(item.getRegistryName()), "serum");
+		return basicItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)), "serum");
 	}
 
 	public ItemModelBuilder genericSerumItem(Item item) {
-		ResourceLocation rl = Objects.requireNonNull(item.getRegistryName());
+		ResourceLocation rl = Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item));
 		return getBuilder(rl.toString())
 				.parent(new ModelFile.UncheckedModelFile("item/generated"))
 				.texture(LAYER_0_TEXTURE, new ResourceLocation(rl.getNamespace(), ITEM_FOLDER + "/serum/generic_serum"))
@@ -48,15 +49,15 @@ public class ModItemModelProvider extends ItemModelProvider {
 	}
 
 	public ItemModelBuilder weaponItem(Item item) {
-		return basicItem(Objects.requireNonNull(item.getRegistryName()), "weapon");
+		return basicItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)), "weapon");
 	}
 
 	public ItemModelBuilder handheldWeaponItem(Item item) {
-		return handheldItem(Objects.requireNonNull(item.getRegistryName()), "weapon");
+		return handheldItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)), "weapon");
 	}
 
 	public ItemModelBuilder miscItem(Item item) {
-		return basicItem(Objects.requireNonNull(item.getRegistryName()), "misc");
+		return basicItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)), "misc");
 	}
 
 	private ItemModelBuilder basicItem(ResourceLocation item, String subfolder) {
@@ -66,7 +67,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 	}
 
 	public ItemModelBuilder overlayItem(Item item) {
-		return overlayItem(Objects.requireNonNull(item.getRegistryName()));
+		return overlayItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)));
 	}
 
 	private ItemModelBuilder overlayItem(ResourceLocation item) {
@@ -74,7 +75,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 	}
 
 	public ItemModelBuilder handheldItem(Item item) {
-		return handheldItem(Objects.requireNonNull(item.getRegistryName()));
+		return handheldItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)));
 	}
 
 	private ItemModelBuilder handheldItem(ResourceLocation item) {
@@ -90,7 +91,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 	}
 
 	public ItemModelBuilder flatBlockItem(BlockItem blockItem) {
-		return flatBlockItem(Objects.requireNonNull(blockItem.getRegistryName()));
+		return flatBlockItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(blockItem)));
 	}
 
 	private ItemModelBuilder flatBlockItem(ResourceLocation blockItem) {
@@ -100,7 +101,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 	}
 
 	public ItemModelBuilder wallBlockItem(BlockItem blockItem) {
-		return wallBlockItem(Objects.requireNonNull(blockItem.getRegistryName()));
+		return wallBlockItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(blockItem)));
 	}
 
 	private ItemModelBuilder wallBlockItem(ResourceLocation blockItem) {

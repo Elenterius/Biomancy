@@ -11,6 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -28,8 +29,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Random;
 
 public class BioLabBlock extends HorizontalFacingMachineBlock {
 
@@ -73,7 +72,7 @@ public class BioLabBlock extends HorizontalFacingMachineBlock {
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (level.getBlockEntity(pos) instanceof BioLabBlockEntity bioLab && bioLab.canPlayerOpenInv(player)) {
 			if (!level.isClientSide) {
-				NetworkHooks.openGui((ServerPlayer) player, bioLab, buffer -> buffer.writeBlockPos(pos));
+				NetworkHooks.openScreen((ServerPlayer) player, bioLab, buffer -> buffer.writeBlockPos(pos));
 				SoundUtil.broadcastBlockSound((ServerLevel) level, pos, ModSoundEvents.UI_BIO_LAB_OPEN);
 			}
 			return InteractionResult.SUCCESS;
@@ -99,7 +98,7 @@ public class BioLabBlock extends HorizontalFacingMachineBlock {
 	}
 
 	@Override
-	public void animateTick(BlockState state, Level level, BlockPos pos, Random random) {
+	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
 		if (random.nextInt(5) == 0 && Boolean.TRUE.equals(state.getValue(CRAFTING))) {
 			int particleAmount = random.nextInt(1, 5);
 			int color = 0x9acd32; //yellowgreen
@@ -107,7 +106,7 @@ public class BioLabBlock extends HorizontalFacingMachineBlock {
 			double g = (color >> 8 & 255) / 255d;
 			double b = (color & 255) / 255d;
 			for (int i = 0; i < particleAmount; i++) {
-				level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + 0.5d + random.nextFloat(-0.25f, 0.25f), pos.getY() + 0.65d, pos.getZ() + 0.5d + random.nextFloat(-0.25f, 0.25f), r, g, b);
+				level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + 0.5d + ((random.nextFloat() - random.nextFloat()) * 0.25F), pos.getY() + 0.65d, pos.getZ() + 0.5d + ((random.nextFloat() - random.nextFloat()) * 0.25F), r, g, b);
 			}
 			if (random.nextInt(3) == 0) {
 				SoundUtil.clientPlayBlockSound(level, pos, ModSoundEvents.BIO_LAB_CRAFTING_RANDOM, 0.65f);

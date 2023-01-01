@@ -2,6 +2,10 @@ package com.github.elenterius.biomancy.init.client;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.gui.IngameOverlays;
+import com.github.elenterius.biomancy.client.gui.tooltip.EmptyLineClientComponent;
+import com.github.elenterius.biomancy.client.gui.tooltip.HrTooltipClientComponent;
+import com.github.elenterius.biomancy.client.gui.tooltip.StorageSacTooltipClientComponent;
+import com.github.elenterius.biomancy.client.gui.tooltip.TabTooltipClientComponent;
 import com.github.elenterius.biomancy.client.renderer.block.*;
 import com.github.elenterius.biomancy.client.renderer.entity.AcidProjectileRenderer;
 import com.github.elenterius.biomancy.client.renderer.entity.FleshBlobRenderer;
@@ -11,6 +15,10 @@ import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.integration.ModsCompatHandler;
+import com.github.elenterius.biomancy.tooltip.EmptyLineTooltipComponent;
+import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
+import com.github.elenterius.biomancy.tooltip.StorageSacTooltipComponent;
+import com.github.elenterius.biomancy.tooltip.TabTooltipComponent;
 import com.github.elenterius.biomancy.world.item.SerumItem;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
@@ -19,11 +27,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.entity.WitherSkullRenderer;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.ClientRegistry;
-import net.minecraftforge.client.event.ColorHandlerEvent;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -44,21 +48,23 @@ public final class ClientSetupHandler {
 	private ClientSetupHandler() {}
 
 	@SubscribeEvent
-	public static void onClientSetup(FMLClientSetupEvent event) {
-		ClientRegistry.registerKeyBinding(ITEM_DEFAULT_KEY_BINDING);
-
-		IngameOverlays.registerGameOverlays();
+	public static void onSetup(final FMLClientSetupEvent event) {
 		ModScreens.registerMenuScreens();
-		ModScreens.registerTooltipComponents();
 
 		setBlockRenderLayers();
 
-		event.enqueueWork(() -> {
-			ModRecipeBookCategories.init();
-			registerItemModelProperties();
-		});
+		event.enqueueWork(ClientSetupHandler::onPostSetup);
 
 		ModsCompatHandler.onBiomancyClientSetup(event);
+	}
+
+	private static void onPostSetup() {
+		registerItemModelProperties();
+	}
+
+	@SubscribeEvent
+	public static void registerKeyMappings(final RegisterKeyMappingsEvent event) {
+		event.register(ITEM_DEFAULT_KEY_BINDING);
 	}
 
 	@SubscribeEvent
@@ -80,7 +86,8 @@ public final class ClientSetupHandler {
 		event.registerEntityRenderer(ModEntityTypes.WITHER_SKULL_PROJECTILE.get(), WitherProjectileRenderer::new);
 	}
 
-	static void setBlockRenderLayers() {
+	@SuppressWarnings("removal")
+	private static void setBlockRenderLayers() {
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.DIGESTER.get(), RenderType.cutout());
 
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.VOICE_BOX.get(), RenderType.translucent());
@@ -111,74 +118,33 @@ public final class ClientSetupHandler {
 	}
 
 	@SubscribeEvent
-	public static void onBlockModelRegistry(final ModelRegistryEvent event) {
-		//placeholder
-	}
-
-	//	public static boolean isPlayerCosmeticVisible(Player player) {
-	//		return HASHES.isValid(player.getGameProfile().getId());
-	//	}
-
-	@SubscribeEvent
-	public static void onItemColorRegistry(final ColorHandlerEvent.Item event) {
-		event.getItemColors().register((stack, index) -> ModItems.ESSENCE.get().getColor(stack, index), ModItems.ESSENCE.get());
-		event.getItemColors().register((stack, index) -> index == 0 ? ((SerumItem) stack.getItem()).getSerumColor(stack) : -1, ModItems.ENLARGEMENT_SERUM.get(), ModItems.SHRINKING_SERUM.get());
-	}
-
-	@SubscribeEvent
-	public static void onBlockColorRegistry(final ColorHandlerEvent.Block event) {
+	public static void onBlockModelRegistry(final ModelEvent.RegisterAdditional event) {
 		//placeholder
 	}
 
 	@SubscribeEvent
-	public static void onModelBakeEvent(ModelBakeEvent event) {
-		//block with "glowing" overlay texture
-		//addFullBrightOverlayBakedModel(ModBlocks.FOOBAR.get(), event);
+	public static void onItemColorRegistry(final RegisterColorHandlersEvent.Item event) {
+		event.register((stack, index) -> ModItems.ESSENCE.get().getColor(stack, index), ModItems.ESSENCE.get());
+		event.register((stack, index) -> index == 0 ? ((SerumItem) stack.getItem()).getSerumColor(stack) : -1, ModItems.ENLARGEMENT_SERUM.get(), ModItems.SHRINKING_SERUM.get());
 	}
 
-	//	private static void addFullBrightOverlayBakedModel(Block block, ModelBakeEvent event) {
-	//		for (BlockState blockState : block.getStateDefinition().getPossibleStates()) {
-	//			ModelResourceLocation modelLocation = BlockModelShapes.stateToModelLocation(blockState);
-	//			IBakedModel bakedModel = event.getModelRegistry().get(modelLocation);
-	//			if (bakedModel == null) {
-	//				BiomancyMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Did not find any vanilla baked models for {}", block.getRegistryName());
-	//			}
-	//			else if (bakedModel instanceof FullBrightOverlayBakedModel) {
-	//				BiomancyMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Attempted to replace already existing FullBrightOverlayBakedModel for {}", block.getRegistryName());
-	//			}
-	//			else {
-	//				FullBrightOverlayBakedModel customModel = new FullBrightOverlayBakedModel(bakedModel);
-	//				event.getModelRegistry().put(modelLocation, customModel);
-	//			}
-	//		}
-	//	}
+	@SubscribeEvent
+	public static void onBlockColorRegistry(final RegisterColorHandlersEvent.Block event) {
+		//placeholder
+	}
 
-	//	private static final class HASHES {
-	//
-	//		private static final Set<HashCode> VALID = Set.of(
-	//				HashCode.fromString("20f0bf6814e62bb7297669efb542f0af6ee0be1a9b87d0702853d8cc5aa15dc4")
-	//		);
-	//
-	//		private static final CacheLoader<UUID, HashCode> CACHE_LOADER = new CacheLoader<>() {
-	//			@Override
-	//			public HashCode load(UUID key) {
-	//				//noinspection UnstableApiUsage
-	//				return Hashing.sha256().hashString(key.toString(), StandardCharsets.UTF_8);
-	//			}
-	//		};
-	//
-	//		private static final LoadingCache<UUID, HashCode> CACHE = CacheBuilder.newBuilder().expireAfterAccess(2, TimeUnit.SECONDS).build(CACHE_LOADER);
-	//
-	//		private HASHES() {}
-	//
-	//		public static boolean isValid(UUID uuid) {
-	//			return VALID.contains(CACHE.getUnchecked(uuid));
-	//		}
-	//
-	//		public static boolean isValid(HashCode code) {
-	//			return VALID.contains(code);
-	//		}
-	//
-	//	}
+	@SubscribeEvent
+	public static void registerGameOverlays(RegisterGuiOverlaysEvent event) {
+		event.registerAboveAll("biomancy_gun", IngameOverlays.GUN_OVERLAY);
+		event.registerAboveAll("biomancy_injector", IngameOverlays.INJECTOR_OVERLAY);
+	}
+
+	@SubscribeEvent
+	static void registerTooltipComponents(RegisterClientTooltipComponentFactoriesEvent event) {
+		event.register(TabTooltipComponent.class, TabTooltipClientComponent::new);
+		event.register(HrTooltipComponent.class, HrTooltipClientComponent::new);
+		event.register(EmptyLineTooltipComponent.class, EmptyLineClientComponent::new);
+		event.register(StorageSacTooltipComponent.class, StorageSacTooltipClientComponent::new);
+	}
 
 }

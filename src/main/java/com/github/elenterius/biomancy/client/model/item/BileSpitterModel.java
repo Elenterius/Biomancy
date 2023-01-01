@@ -8,17 +8,17 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class BileSpitterModel extends AnimatedGeoModel<BileSpitterItem> {
 
 	@Override
-	public ResourceLocation getModelLocation(BileSpitterItem item) {
+	public ResourceLocation getModelResource(BileSpitterItem item) {
 		return BiomancyMod.createRL("geo/item/bile_spitter.geo.json");
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(BileSpitterItem item) {
+	public ResourceLocation getTextureResource(BileSpitterItem item) {
 		return BiomancyMod.createRL("textures/item/weapon/bile_spitter.png");
 	}
 
 	@Override
-	public ResourceLocation getAnimationFileLocation(BileSpitterItem item) {
+	public ResourceLocation getAnimationResource(BileSpitterItem item) {
 		return BiomancyMod.createRL("animations/item/bile_spitter.animation.json");
 	}
 

@@ -17,7 +17,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -142,7 +142,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 				}
 
 				SoundUtil.broadcastBlockSound(level, pos, SoundEvents.TRIDENT_THUNDER, 5f, 0.9f);
-				level.players().forEach(player -> player.sendMessage(new TextComponent("How dare you do this... I am watching you!").withStyle(TextStyles.MAYKR_RUNES_RED), Util.NIL_UUID));
+				level.players().forEach(player -> player.sendSystemMessage(Component.literal("How dare you do this... I am watching you!").withStyle(TextStyles.MAYKR_RUNES_RED)));
 			}
 		}
 

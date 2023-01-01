@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.world.block.entity.MachineBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -14,8 +15,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-
-import java.util.Random;
 
 public abstract class MachineBlock extends BaseEntityBlock {
 
@@ -46,7 +45,7 @@ public abstract class MachineBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (Boolean.TRUE.equals(state.getValue(POWERED))) { //after pending block update deactivate red-stone
 			level.setBlock(pos, state.setValue(POWERED, Boolean.FALSE), Block.UPDATE_ALL);
 			updateNeighbors(level, pos);
