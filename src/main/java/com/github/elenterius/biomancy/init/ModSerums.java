@@ -18,7 +18,7 @@ public final class ModSerums {
 
 	public static final RegistryObject<AgeingSerum> AGEING_SERUM = SERUMS.register("ageing_serum", () -> new AgeingSerum(0x09DF5B));
 	public static final RegistryObject<EnlargementSerum> ENLARGEMENT_SERUM = SERUMS.register("enlargement_serum", () -> new EnlargementSerum(0x09DF5B));
-	public static final RegistryObject<ShrinkingSerum> SHRINKING_SERUM = SERUMS.register("shrinking_serum", () -> new ShrinkingSerum(0x09DF5B));
+	public static final RegistryObject<ShrinkingSerum> SHRINKING_SERUM = SERUMS.register("shrinking_serum", () -> new ShrinkingSerum(0x69CB49));
 	public static final RegistryObject<RejuvenationSerum> REJUVENATION_SERUM = SERUMS.register("rejuvenation_serum", () -> new RejuvenationSerum(0x69CB49));
 	public static final RegistryObject<BreedingSerum> BREEDING_STIMULANT = SERUMS.register("breeding_stimulant", () -> new BreedingSerum(0x70174E));
 	public static final RegistryObject<AbsorptionSerum> ABSORPTION_BOOST = SERUMS.register("absorption_boost", () -> new AbsorptionSerum(0xFFE114));
