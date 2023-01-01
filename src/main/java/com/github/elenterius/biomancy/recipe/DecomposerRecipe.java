@@ -13,7 +13,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistryEntry;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +86,7 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 		return ModRecipes.DECOMPOSING_RECIPE_TYPE.get();
 	}
 
-	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<DecomposerRecipe> {
+	public static class Serializer implements RecipeSerializer<DecomposerRecipe> {
 
 		@Override
 		public DecomposerRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
@@ -95,7 +95,7 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 
 			List<VariableProductionOutput> outputs = RecipeUtil.readVariableProductionOutputs(GsonHelper.getAsJsonArray(json, "outputs"));
 			if (outputs.size() > MAX_OUTPUTS) {
-				throw new JsonParseException(String.format("Too many outputs for %s recipe. Max amount is %d", getRegistryName(), MAX_OUTPUTS));
+				throw new JsonParseException(String.format("Too many outputs for %s recipe. Max amount is %d", ForgeRegistries.RECIPE_SERIALIZERS.getKey(this), MAX_OUTPUTS));
 			}
 
 			int time = GsonHelper.getAsInt(json, "time", 100);

@@ -159,7 +159,7 @@ public class OwnableDoorBlock extends DoorBlock implements IOwnableEntityBlock {
 		if (isOpen(state)) { //force close the door if open
 			playSoundFX(level, posIn, false);
 			state = state.setValue(OPEN, false);
-			level.gameEvent(GameEvent.BLOCK_CLOSE, posIn);
+			level.gameEvent(null, GameEvent.BLOCK_CLOSE, posIn);
 		}
 		else if (hasSignal) {
 			level.playSound(null, posIn, SoundEvents.CHEST_LOCKED, SoundSource.BLOCKS, 1f, 1f);
@@ -172,7 +172,7 @@ public class OwnableDoorBlock extends DoorBlock implements IOwnableEntityBlock {
 
 		playSoundFX(level, pos, hasSignal);
 		level.setBlock(pos, state.setValue(POWERED, hasSignal).setValue(OPEN, hasSignal), Block.UPDATE_CLIENTS);
-		level.gameEvent(hasSignal ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
+		level.gameEvent(null, hasSignal ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pos);
 	}
 
 	@Override

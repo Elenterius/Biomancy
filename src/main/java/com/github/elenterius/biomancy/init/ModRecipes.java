@@ -43,6 +43,7 @@ public final class ModRecipes {
 		return RECIPE_TYPES.register(identifier, () -> new ItemStackRecipeType<>(BiomancyMod.createRLString(identifier)));
 	}
 
+	//TODO: Determine if this code should be removed.
 	private static <T extends Recipe<Container>> RegistryObject<SimpleRecipeType<T>> createSimpleRecipeType(String identifier) {
 		return RECIPE_TYPES.register(identifier, () -> new SimpleRecipeType<>(BiomancyMod.createRLString(identifier)));
 	}

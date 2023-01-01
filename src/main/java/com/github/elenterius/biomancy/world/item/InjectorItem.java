@@ -21,7 +21,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -45,8 +44,7 @@ import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.IItemRenderProperties;
-import net.minecraftforge.client.RenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -264,8 +262,8 @@ public class InjectorItem extends Item implements ISerumProvider, ICustomTooltip
 	private void consumeSerum(LargeSingleItemStackHandler handler, @Nullable Player player) {
 		if (handler.getStack().getItem() instanceof ISerumProvider) {
 			ItemStack stack = handler.extractItem(1, false);
-			if (stack.hasContainerItem()) {
-				ItemStack containerItem = stack.getContainerItem();
+			if (stack.hasCraftingRemainingItem()) {
+				ItemStack containerItem = stack.getCraftingRemainingItem();
 				if (!containerItem.isEmpty() && player != null && !player.addItem(containerItem)) {
 					player.drop(containerItem, false);
 				}
@@ -280,13 +278,13 @@ public class InjectorItem extends Item implements ISerumProvider, ICustomTooltip
 	}
 
 	@Override
-	public void initializeClient(Consumer<IItemRenderProperties> consumer) {
+	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
 		super.initializeClient(consumer);
-		consumer.accept(new IItemRenderProperties() {
+		consumer.accept(new IClientItemExtensions() {
 			private final InjectorRenderer renderer = new InjectorRenderer();
 
 			@Override
-			public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
+			public BlockEntityWithoutLevelRenderer getCustomRenderer() {
 				return renderer;
 			}
 		});
@@ -446,7 +444,7 @@ public class InjectorItem extends Item implements ISerumProvider, ICustomTooltip
 			Serum serum = getSerum(stack);
 			if (!serum.isEmpty()) {
 				short amount = tag.getCompound(INVENTORY_TAG).getShort(LargeSingleItemStackHandler.ITEM_AMOUNT_TAG);
-				tooltip.add(new TextComponent(String.format("%dx ", amount)).append(serum.getDisplayName()).withStyle(ChatFormatting.GRAY));
+				tooltip.add(Component.literal(String.format("%dx ", amount)).append(serum.getDisplayName()).withStyle(ChatFormatting.GRAY));
 				serum.appendTooltip(stack, level, tooltip, isAdvanced);
 				tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
 			}
@@ -459,7 +457,7 @@ public class InjectorItem extends Item implements ISerumProvider, ICustomTooltip
 	@Override
 	public Component getHighlightTip(ItemStack stack, Component displayName) {
 		Serum serum = getSerum(stack);
-		return serum.isEmpty() ? displayName : new TextComponent("").append(displayName).append(" (").append(serum.getDisplayName()).append(")");
+		return serum.isEmpty() ? displayName : Component.literal("").append(displayName).append(" (").append(serum.getDisplayName()).append(")");
 	}
 
 	@Override

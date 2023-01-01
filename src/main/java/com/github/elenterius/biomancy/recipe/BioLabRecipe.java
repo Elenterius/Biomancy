@@ -14,7 +14,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistryEntry;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -105,18 +105,18 @@ public class BioLabRecipe extends AbstractProductionRecipe {
 		return ModRecipes.BIO_BREWING_RECIPE_TYPE.get();
 	}
 
-	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<BioLabRecipe> {
+	public static class Serializer implements RecipeSerializer<BioLabRecipe> {
 
 		@Override
 		public BioLabRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
 			List<IngredientStack> ingredients = RecipeUtil.readIngredientStacks(GsonHelper.getAsJsonArray(json, "ingredient_quantities"));
 
 			if (ingredients.isEmpty()) {
-				throw new JsonParseException("No ingredients found for %s recipe".formatted(getRegistryName()));
+				throw new JsonParseException("No ingredients found for %s recipe".formatted(ForgeRegistries.RECIPE_SERIALIZERS.getKey(this)));
 			}
 
 			if (ingredients.size() > MAX_INGREDIENTS) {
-				throw new JsonParseException("Too many ingredients for %s recipe. Max amount is %d".formatted(getRegistryName(), MAX_INGREDIENTS));
+				throw new JsonParseException("Too many ingredients for %s recipe. Max amount is %d".formatted(ForgeRegistries.RECIPE_SERIALIZERS.getKey(this), MAX_INGREDIENTS));
 			}
 
 			for (IngredientStack ingredientStack : ingredients) {

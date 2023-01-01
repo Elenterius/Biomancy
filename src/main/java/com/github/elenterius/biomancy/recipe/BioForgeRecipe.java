@@ -13,7 +13,6 @@ import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -128,7 +127,7 @@ public class BioForgeRecipe implements Recipe<Container> {
 		return ModRecipes.BIO_FORGING_RECIPE_TYPE.get();
 	}
 
-	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<BioForgeRecipe> {
+	public static class Serializer implements RecipeSerializer<BioForgeRecipe> {
 
 		@Override
 		public BioForgeRecipe fromJson(ResourceLocation recipeId, JsonObject json) {

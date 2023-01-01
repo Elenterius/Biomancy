@@ -5,6 +5,7 @@ import com.google.gson.JsonParseException;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.ShapedRecipe;
@@ -13,7 +14,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
-import java.util.Random;
 
 public class VariableProductionOutput {
 
@@ -72,7 +72,7 @@ public class VariableProductionOutput {
 		return stack;
 	}
 
-	public ItemStack getItemStack(Random rng) {
+	public ItemStack getItemStack(RandomSource rng) {
 		int count = getCount(rng);
 		if (count < 1) return ItemStack.EMPTY;
 
@@ -85,7 +85,7 @@ public class VariableProductionOutput {
 		return stack;
 	}
 
-	public int getCount(Random rng) {
+	public int getCount(RandomSource rng) {
 		return countRange.getCount(rng);
 	}
 

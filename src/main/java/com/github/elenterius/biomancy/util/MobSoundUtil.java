@@ -103,7 +103,7 @@ public final class MobSoundUtil {
 
 		private void saveSound(CompoundTag tag, @Nullable SoundEvent soundEvent) {
 			if (soundEvent != null) {
-				ResourceLocation registryName = soundEvent.getRegistryName();
+				ResourceLocation registryName = soundEvent.getLocation();
 				tag.putString(nbtKey, registryName != null ? registryName.toString() : genericSoundId);
 			}
 			else tag.remove(nbtKey);

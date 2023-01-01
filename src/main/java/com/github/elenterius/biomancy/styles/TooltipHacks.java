@@ -3,7 +3,6 @@ package com.github.elenterius.biomancy.styles;
 import com.github.elenterius.biomancy.tooltip.EmptyLineTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.PlaceholderComponent;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraftforge.client.ForgeHooksClient;
 

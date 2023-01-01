@@ -23,6 +23,7 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
 import net.minecraftforge.common.crafting.conditions.NotCondition;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 
@@ -66,7 +67,7 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 	}
 
 	private static String getName(ItemLike itemLike) {
-		ResourceLocation name = itemLike.asItem().getRegistryName();
+		ResourceLocation name = ForgeRegistries.ITEMS.getKey(itemLike.asItem());
 		return name != null ? name.getPath() : "unknown";
 	}
 

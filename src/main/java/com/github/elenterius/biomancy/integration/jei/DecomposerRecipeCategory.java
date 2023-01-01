@@ -23,9 +23,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
@@ -41,15 +38,16 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 		background = guiHelper.drawableBuilder(BiomancyMod.createRL("textures/gui/jei/decomposer_recipe.png"), 0, 0, 128, 64).setTextureSize(128, 64).build();
 	}
 
-	@Override
+	//TODO: Change this code.
+	/*@Override
 	public ResourceLocation getUid() {
 		return getRecipeType().getUid();
-	}
+	}*/
 
-	@Override
+	/*@Override
 	public Class<? extends DecomposerRecipe> getRecipeClass() {
 		return getRecipeType().getRecipeClass();
-	}
+	}*/
 
 	@Override
 	public RecipeType<DecomposerRecipe> getRecipeType() {
@@ -58,7 +56,7 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 
 	@Override
 	public Component getTitle() {
-		return new TranslatableComponent("jei.biomancy.recipe.decomposer");
+		return Component.translatable("jei.biomancy.recipe.decomposer");
 	}
 
 	@Override
@@ -106,11 +104,11 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 
 		int ticks = recipe.getCraftingTime();
 		int seconds = ticks > 0 ? ticks / 20 : 0;
-		TranslatableComponent timeString = new TranslatableComponent("gui.jei.category.smelting.time.seconds", seconds);
+		MutableComponent timeString = Component.translatable("gui.jei.category.smelting.time.seconds", seconds);
 		fontRenderer.draw(poseStack, timeString, 16, 59f - fontRenderer.lineHeight, 0xff808080);
 
 		int fuelCost = NutrientFuelUtil.getFuelCost(DecomposerBlockEntity.BASE_COST, ticks);
-		TextComponent costString = new TextComponent("-" + fuelCost);
+		MutableComponent costString = Component.literal("-" + fuelCost);
 		fontRenderer.draw(poseStack, costString, 16, 43f - fontRenderer.lineHeight, 0xff808080);
 
 		int x = 68;
@@ -138,15 +136,15 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 
 			ItemCountRange countRange = output.getCountRange();
 			if (countRange instanceof ItemCountRange.UniformRange uniform) {
-				MutableComponent component = new TextComponent("%d-%d".formatted(Math.max(uniform.min(), 0), uniform.max()));
+				MutableComponent component = Component.literal("%d-%d".formatted(Math.max(uniform.min(), 0), uniform.max()));
 				fontRenderer.draw(poseStack, component, x - fontRenderer.width(component), y, 0xff808080);
 			}
 			else if (countRange instanceof ItemCountRange.ConstantValue constant) {
-				MutableComponent component = new TextComponent("" + constant.value());
+				MutableComponent component = Component.literal("" + constant.value());
 				fontRenderer.draw(poseStack, component, x - fontRenderer.width(component), y, 0xff808080);
 			}
 			else if (countRange instanceof ItemCountRange.BinomialRange binomialRange) {
-				MutableComponent component = new TextComponent("n: %d, p: %s".formatted(binomialRange.n(), binomialRange.p()));
+				MutableComponent component = Component.literal("n: %d, p: %s".formatted(binomialRange.n(), binomialRange.p()));
 				fontRenderer.draw(poseStack, component, x - fontRenderer.width(component), y, 0xff808080);
 			}
 

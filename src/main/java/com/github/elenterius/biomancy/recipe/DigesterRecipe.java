@@ -14,8 +14,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistryEntry;
-
+import net.minecraftforge.registries.ForgeRegistries;
 import javax.annotation.Nullable;
 
 public class DigesterRecipe extends AbstractProductionRecipe {
@@ -69,7 +68,7 @@ public class DigesterRecipe extends AbstractProductionRecipe {
 		return ModRecipes.DIGESTING_RECIPE_TYPE.get();
 	}
 
-	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<DigesterRecipe> {
+	public static class Serializer implements RecipeSerializer<DigesterRecipe> {
 
 		@Override
 		public DigesterRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
@@ -77,7 +76,7 @@ public class DigesterRecipe extends AbstractProductionRecipe {
 			Ingredient ingredient = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "ingredient"));
 
 			if (ingredient.isEmpty()) {
-				throw new JsonParseException("No ingredient found for " + getRegistryName() + " recipe");
+				throw new JsonParseException("No ingredient found for " + ForgeRegistries.RECIPE_SERIALIZERS.getKey(this) + " recipe");
 			}
 
 			ItemStack resultStack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));

@@ -7,7 +7,8 @@ import com.github.elenterius.biomancy.recipe.BioForgeRecipe;
 import com.github.elenterius.biomancy.world.inventory.menu.BioForgeTab;
 import net.minecraft.client.RecipeBookCategories;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraftforge.client.RecipeBookRegistry;
+import net.minecraftforge.client.event.RegisterRecipeBookCategoriesEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.HashMap;
@@ -27,14 +28,20 @@ public final class ModRecipeBookCategories {
 	};
 
 	private ModRecipeBookCategories() {}
-
+	
+	@SubscribeEvent
+	public static void registerRecipeBooks(RegisterRecipeBookCategoriesEvent event) {
+		//event.registerBookCategories(Biom );
+	}
+	
+	//TODO: Update this code for 1.19+
 	static void init() {
 		initBioForgeCategories();
 
 		//other, prevents warnings
-		RecipeBookRegistry.addCategoriesFinder(ModRecipes.BIO_BREWING_RECIPE_TYPE.get(), recipe -> RecipeBookCategories.UNKNOWN);
-		RecipeBookRegistry.addCategoriesFinder(ModRecipes.DECOMPOSING_RECIPE_TYPE.get(), recipe -> RecipeBookCategories.UNKNOWN);
-		RecipeBookRegistry.addCategoriesFinder(ModRecipes.DIGESTING_RECIPE_TYPE.get(), recipe -> RecipeBookCategories.UNKNOWN);
+		//RecipeBookRegistry.addCategoriesFinder(ModRecipes.BIO_BREWING_RECIPE_TYPE.get(), recipe -> RecipeBookCategories.UNKNOWN);
+		//RecipeBookRegistry.addCategoriesFinder(ModRecipes.DECOMPOSING_RECIPE_TYPE.get(), recipe -> RecipeBookCategories.UNKNOWN);
+		//RecipeBookRegistry.addCategoriesFinder(ModRecipes.DIGESTING_RECIPE_TYPE.get(), recipe -> RecipeBookCategories.UNKNOWN);
 	}
 
 	private static void initBioForgeCategories() {
@@ -46,9 +53,9 @@ public final class ModRecipeBookCategories {
 		RecipeBookCategories weaponsCategory = createRecipeBookCategories(ModBioForgeTabs.WEAPONS);
 
 		//add stuff to the registry
-		RecipeBookRegistry.addCategoriesToType(ModRecipeBookTypes.BIO_FORGE, List.of(searchCategory, miscCategory, blocksCategory, machinesCategory, weaponsCategory));
-		RecipeBookRegistry.addAggregateCategories(searchCategory, List.of(miscCategory, blocksCategory, machinesCategory, weaponsCategory));
-		RecipeBookRegistry.addCategoriesFinder(ModRecipes.BIO_FORGING_RECIPE_TYPE.get(), BIO_FORGE_BOOK_CATEGORIES_FINDER);
+		//RecipeBookRegistry.addCategoriesToType(ModRecipeBookTypes.BIO_FORGE, List.of(searchCategory, miscCategory, blocksCategory, machinesCategory, weaponsCategory));
+		//RecipeBookRegistry.addAggregateCategories(searchCategory, List.of(miscCategory, blocksCategory, machinesCategory, weaponsCategory));
+		//RecipeBookRegistry.addCategoriesFinder(ModRecipes.BIO_FORGING_RECIPE_TYPE.get(), BIO_FORGE_BOOK_CATEGORIES_FINDER);
 	}
 
 	private static RecipeBookCategories createRecipeBookCategories(RegistryObject<BioForgeTab> tab) {

@@ -7,7 +7,7 @@ import com.github.elenterius.biomancy.styles.TooltipHacks;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.StringUtil;
@@ -56,17 +56,17 @@ public class AdrenalineSerum extends Serum {
 	@Override
 	public void appendTooltip(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
 		if (ClientTextUtil.showExtraInfo(tooltip)) {
-			tooltip.add(new TranslatableComponent(getTooltipKey()).withStyle(TextStyles.LORE));
+			tooltip.add(Component.translatable(getTooltipKey()).withStyle(TextStyles.LORE));
 		}
 
 		addEffectToClientTooltip(tooltip, ModMobEffects.ADRENALINE_RUSH.get(), AMPLIFIER, DURATION);
 	}
 
 	public void addEffectToClientTooltip(List<Component> tooltips, MobEffect effect, int amplifier, int duration) {
-		TranslatableComponent effectText = new TranslatableComponent(effect.getDescriptionId());
+		MutableComponent effectText = Component.translatable(effect.getDescriptionId());
 		if (amplifier > 0)
-			effectText = new TranslatableComponent("potion.withAmplifier", effectText, new TranslatableComponent("potion.potency." + amplifier));
-		if (duration > 20) effectText = new TranslatableComponent("potion.withDuration", effectText, StringUtil.formatTickDuration(duration));
+			effectText = Component.translatable("potion.withAmplifier", effectText, Component.translatable("potion.potency." + amplifier));
+		if (duration > 20) effectText = Component.translatable("potion.withDuration", effectText, StringUtil.formatTickDuration(duration));
 		tooltips.add(effectText.withStyle(effect.getCategory().getTooltipFormatting()));
 
 		Map<Attribute, AttributeModifier> effectModifiers = effect.getAttributeModifiers();
@@ -79,13 +79,13 @@ public class AdrenalineSerum extends Serum {
 				double value = effect.getAttributeModifierValue(amplifier, modifier);
 				double amount = operation != AttributeModifier.Operation.MULTIPLY_BASE && operation != AttributeModifier.Operation.MULTIPLY_TOTAL ? value : value * 100d;
 
-				TranslatableComponent attributeText = new TranslatableComponent(entry.getKey().getDescriptionId());
+				MutableComponent attributeText = Component.translatable(entry.getKey().getDescriptionId());
 				if (value > 0) {
-					tooltips.add((new TranslatableComponent("attribute.modifier.plus." + operation.toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(amount), attributeText)).withStyle(ChatFormatting.BLUE));
+					tooltips.add((Component.translatable("attribute.modifier.plus." + operation.toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(amount), attributeText)).withStyle(ChatFormatting.BLUE));
 				}
 				else if (value < 0) {
 					amount = amount * -1d;
-					tooltips.add((new TranslatableComponent("attribute.modifier.take." + operation.toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(amount), attributeText)).withStyle(ChatFormatting.RED));
+					tooltips.add((Component.translatable("attribute.modifier.take." + operation.toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(amount), attributeText)).withStyle(ChatFormatting.RED));
 				}
 			}
 		}

@@ -18,6 +18,7 @@ import net.minecraftforge.items.IItemHandler;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
+import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -136,7 +137,7 @@ public class TongueBlockEntity extends SimpleSyncedBlockEntity implements IAnima
 
 	private <E extends BlockEntity & IAnimatable> PlayState handleAnim(AnimationEvent<E> event) {
 		if (inventory.isEmpty()) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("tongue.anim.none", true));
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("tongue.anim.none", EDefaultLoopTypes.LOOP));
 		}
 		else {
 			event.getController().setAnimation(new AnimationBuilder().addAnimation("tongue.anim.stretch"));

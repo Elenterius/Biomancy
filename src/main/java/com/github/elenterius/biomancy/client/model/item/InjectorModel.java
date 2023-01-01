@@ -8,17 +8,17 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class InjectorModel extends AnimatedGeoModel<InjectorItem> {
 
 	@Override
-	public ResourceLocation getModelLocation(InjectorItem item) {
+	public ResourceLocation getModelResource(InjectorItem item) {
 		return BiomancyMod.createRL("geo/item/injector.geo.json");
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(InjectorItem item) {
+	public ResourceLocation getTextureResource(InjectorItem item) {
 		return BiomancyMod.createRL("textures/item/injector_tint.png");
 	}
 
 	@Override
-	public ResourceLocation getAnimationFileLocation(InjectorItem item) {
+	public ResourceLocation getAnimationResource(InjectorItem item) {
 		return BiomancyMod.createRL("animations/item/injector.animation.json");
 	}
 

@@ -2,8 +2,13 @@ package com.github.elenterius.biomancy.loot;
 
 import com.github.elenterius.biomancy.init.ModItems;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.animal.Cat;
+import net.minecraft.world.entity.animal.CatVariant;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -12,12 +17,14 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
-import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
+import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.loot.LootModifier;
 import net.minecraftforge.common.loot.LootTableIdCondition;
 
 import java.util.List;
 import java.util.Random;
+
+import org.jetbrains.annotations.NotNull;
 
 public class CatMorningGiftLootModifier extends LootModifier {
 
@@ -30,11 +37,11 @@ public class CatMorningGiftLootModifier extends LootModifier {
 	}
 
 	@Override
-	protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
+	protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
 		if (!(context.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof Cat cat)) return generatedLoot;
 
-		Random random = context.getRandom();
-		boolean isBlackCat = cat.getCatType() == Cat.TYPE_ALL_BLACK || cat.getCatType() == Cat.TYPE_BLACK;
+		RandomSource random = context.getRandom();
+		boolean isBlackCat = cat.getCatVariant() == CatVariant.ALL_BLACK || cat.getCatVariant() == CatVariant.BLACK;
 
 		for (int i = 0; i < generatedLoot.size(); i++) {
 			ItemStack stack = generatedLoot.get(i);
@@ -57,6 +64,12 @@ public class CatMorningGiftLootModifier extends LootModifier {
 		}
 
 		return generatedLoot;
+	}
+
+	@Override
+	public Codec<? extends IGlobalLootModifier> codec() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public static class Serializer extends GlobalLootModifierSerializer<CatMorningGiftLootModifier> {

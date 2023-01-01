@@ -9,7 +9,6 @@ import com.github.elenterius.biomancy.world.item.IKeyListener;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -242,7 +241,7 @@ public abstract class BaseGunItem extends ProjectileWeaponItem implements IGun, 
 	}
 
 	private MutableComponent addBrackets(Object obj) {
-		return new TextComponent("(" + obj + ")").withStyle(ChatFormatting.DARK_GRAY);
+		return Component.literal("(" + obj + ")").withStyle(ChatFormatting.DARK_GRAY);
 	}
 
 	public static class GunProperties {

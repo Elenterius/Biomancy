@@ -28,7 +28,7 @@ public class OwnableBlockEntity extends SimpleSyncedBlockEntity implements IOwna
 		this(ModBlockEntities.OWNABLE_BE.get(), pos, state);
 	}
 
-	protected OwnableBlockEntity(BlockEntityType type, BlockPos pos, BlockState state) {
+	protected OwnableBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 	}
 

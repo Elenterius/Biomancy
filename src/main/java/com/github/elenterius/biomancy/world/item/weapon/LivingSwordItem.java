@@ -11,7 +11,6 @@ import com.github.elenterius.biomancy.world.item.ILivingToolItem;
 import com.github.elenterius.biomancy.world.item.state.LivingToolState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -171,7 +170,7 @@ public class LivingSwordItem extends SwordItem implements ICustomTooltip, ILivin
 
 	@Override
 	public Component getHighlightTip(ItemStack stack, Component displayName) {
-		return new TextComponent("").append(displayName).append(" (").append(getLivingToolState(stack).getDisplayName()).append(")");
+		return Component.literal("").append(displayName).append(" (").append(getLivingToolState(stack).getDisplayName()).append(")");
 	}
 
 }

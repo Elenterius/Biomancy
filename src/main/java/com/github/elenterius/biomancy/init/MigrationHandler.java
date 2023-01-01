@@ -7,9 +7,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.MissingMappingsEvent;
+import net.minecraftforge.registries.MissingMappingsEvent.Mapping;
 
 /**
  * Currently MissingMappings Event fires on WRONG Bus (FORGE BUS) even though it implements IModBusEvent
@@ -24,13 +25,15 @@ public final class MigrationHandler {
 	private MigrationHandler() {}
 
 
-	@SubscribeEvent
-	public static void onMissingSerumMappings(final RegistryEvent.MissingMappings<Serum> event) {
-		ImmutableList<RegistryEvent.MissingMappings.Mapping<Serum>> mappings = event.getMappings(BiomancyMod.MOD_ID);
-		if (mappings.isEmpty()) return;
+	//TODO: Merge the code.
+	/*@SubscribeEvent
+	public static void onMissingSerumMappings(final MissingMappingsEvent event) {
+		
+		ImmutableList<Mapping<Serum>> mappingsSerum = event.getMappings(ModSerums.SERUMS.getEntries());
+		if (mappingsSerum.isEmpty()) return;
 
-		for (RegistryEvent.MissingMappings.Mapping<Serum> mapping : mappings) {
-			if (mapping.key.getPath().equals("growth_serum")) {
+		for (Mapping<Serum> mapping : mappingsSerum) {
+			if (mapping.getKey().getPath().equals("growth_serum")) {
 				mapping.remap(ModSerums.AGEING_SERUM.get());
 			}
 		}
@@ -103,7 +106,7 @@ public final class MigrationHandler {
 				default -> ignore();
 			}
 		}
-	}
+	}*/
 
 //	@Subscribe
 //	public static void onChangedMappings(RegistryEvent.IdMappingEvent event) {

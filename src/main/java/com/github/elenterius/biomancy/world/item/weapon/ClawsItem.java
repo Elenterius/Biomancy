@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -32,7 +33,6 @@ import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.common.util.Lazy;
 
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
@@ -122,7 +122,7 @@ public class ClawsItem extends TieredItem implements Vanishable {
 
 			if (shearingTarget.isShearable(stack, targetEntity.level, pos)) {
 				List<ItemStack> drops = shearingTarget.onSheared(player, stack, targetEntity.level, pos, EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, stack));
-				Random rand = player.getRandom();
+				RandomSource rand = player.getRandom();
 				drops.forEach(lootStack -> {
 					ItemEntity itemEntity = targetEntity.spawnAtLocation(lootStack, 1f);
 					if (itemEntity != null) {

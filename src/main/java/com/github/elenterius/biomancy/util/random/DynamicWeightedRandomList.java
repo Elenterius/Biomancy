@@ -4,7 +4,7 @@ package com.github.elenterius.biomancy.util.random;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
+import net.minecraft.util.RandomSource;
 
 public class DynamicWeightedRandomList<T extends DynamicWeightedRandomList.IWeightedEntry<?>> {
 
@@ -42,7 +42,7 @@ public class DynamicWeightedRandomList<T extends DynamicWeightedRandomList.IWeig
 		calcTotalWeight();
 	}
 
-	protected Optional<T> getRandom(Random random) {
+	protected Optional<T> getRandom(RandomSource random) {
 		if (totalWeight == 0) return Optional.empty();
 
 		return getWeightedItem(random.nextInt(totalWeight));

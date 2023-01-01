@@ -34,6 +34,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -92,7 +93,7 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 
 	@Override
 	public Component getName() {
-		return TextComponentUtil.getTranslationText("container", Objects.requireNonNull(getType().getRegistryName()).getPath());
+		return TextComponentUtil.getTranslationText("container", Objects.requireNonNull(ForgeRegistries.BLOCK_ENTITY_TYPES.getKey(getType())).getPath());
 	}
 
 	@Nullable

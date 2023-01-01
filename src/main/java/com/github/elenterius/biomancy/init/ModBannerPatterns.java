@@ -1,15 +1,15 @@
 package com.github.elenterius.biomancy.init;
 
-import com.github.elenterius.biomancy.BiomancyMod;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.entity.BannerPattern;
-
-import java.util.Locale;
 
 public final class ModBannerPatterns {
 
-	public static final BannerPattern MASCOT_PATTERN = createBannerPattern("mascot");
-	public static final BannerPattern MASCOT_ACCENT_PATTERN = createBannerPattern("mascot_accent");
-	public static final BannerPattern MASCOT_OUTLINE_PATTERN = createBannerPattern("mascot_outline");
+	public static final TagKey<BannerPattern> MASCOT_PATTERN = create("pattern_item/mascot");
+	public static final TagKey<BannerPattern> MASCOT_ACCENT_PATTERN = create("pattern_item/mascot_accent");
+	public static final TagKey<BannerPattern> MASCOT_OUTLINE_PATTERN = create("pattern_item/mascot_outline");
 
 	private ModBannerPatterns() {}
 
@@ -17,9 +17,8 @@ public final class ModBannerPatterns {
 		//forces initialization of static fields
 	}
 
-	private static BannerPattern createBannerPattern(String name) {
-		String pattern = BiomancyMod.MOD_ID + "_" + name;
-		return BannerPattern.create(pattern.toUpperCase(Locale.ENGLISH), pattern, pattern, true);
+	private static TagKey<BannerPattern> create(String name) {
+		return TagKey.create(Registry.BANNER_PATTERN_REGISTRY, new ResourceLocation(name));
 	}
 
 }

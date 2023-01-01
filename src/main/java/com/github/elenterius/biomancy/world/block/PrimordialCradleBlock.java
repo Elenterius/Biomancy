@@ -11,6 +11,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -103,8 +104,8 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 					stackInHand.shrink(1);
 				}
 
-				if (stackInHand.hasContainerItem()) {
-					player.getInventory().add(stackInHand.getContainerItem());
+				if (stackInHand.hasCraftingRemainingItem()) {
+					player.getInventory().add(stackInHand.getCraftingRemainingItem());
 				}
 				else if (isPotion && stackInHand.isEmpty()) {
 					player.getInventory().add(new ItemStack(Items.GLASS_BOTTLE));
@@ -132,8 +133,8 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 			}
 
 			if (increaseFillLevel(null, level, pos, stack)) {
-				if (stack.hasContainerItem()) {
-					entity.spawnAtLocation(stack.getContainerItem());
+				if (stack.hasCraftingRemainingItem()) {
+					entity.spawnAtLocation(stack.getCraftingRemainingItem());
 				}
 				else if (stack.getItem() instanceof PotionItem) {
 					entity.spawnAtLocation(new ItemStack(Items.GLASS_BOTTLE));
@@ -171,7 +172,7 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 	}
 
 	@Override
-	public void animateTick(BlockState state, Level level, BlockPos pos, Random random) {
+	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
 		if (random.nextInt(4) == 0 && level.getBlockEntity(pos) instanceof PrimordialCradleBlockEntity creator && creator.isFull()) {
 			int particleAmount = random.nextInt(2, 8);
 			int color = 0x9f4576; //magenta haze
@@ -179,7 +180,7 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 			double g = (color >> 8 & 255) / 255d;
 			double b = (color & 255) / 255d;
 			for (int i = 0; i < particleAmount; i++) {
-				level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + random.nextFloat(0.13125f, 0.7375f), pos.getY() + 0.5f, pos.getZ() + random.nextFloat(0.13125f, 0.7375f), r, g, b);
+				level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + ((random.nextFloat() * 0.60625) + 0.13125f), pos.getY() + 0.5f, pos.getZ() + ((random.nextFloat() * 0.60625) + 0.13125f), r, g, b);
 			}
 			if (random.nextInt(3) == 0) {
 				SoundUtil.clientPlayBlockSound(level, pos, ModSoundEvents.CREATOR_CRAFTING_RANDOM, 0.85f);

@@ -8,17 +8,17 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class LongClawsModel extends AnimatedGeoModel<LivingLongClawsItem> {
 
 	@Override
-	public ResourceLocation getModelLocation(LivingLongClawsItem item) {
+	public ResourceLocation getModelResource(LivingLongClawsItem item) {
 		return BiomancyMod.createRL("geo/item/long_claws.geo.json");
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(LivingLongClawsItem item) {
+	public ResourceLocation getTextureResource(LivingLongClawsItem item) {
 		return BiomancyMod.createRL("textures/item/weapon/long_claws.png");
 	}
 
 	@Override
-	public ResourceLocation getAnimationFileLocation(LivingLongClawsItem item) {
+	public ResourceLocation getAnimationResource(LivingLongClawsItem item) {
 		return BiomancyMod.createRL("animations/item/long_claws.animation.json");
 	}
 

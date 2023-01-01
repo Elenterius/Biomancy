@@ -3,14 +3,14 @@ package com.github.elenterius.biomancy.datagen.tags;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagBuilder;
 import net.minecraft.tags.TagKey;
-import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Objects;
 
-public record EnhancedTagAppender<T extends IForgeRegistryEntry<?>>(TagsProvider.TagAppender<T> delegate) {
+public record EnhancedTagAppender<T extends IForgeRegistry<?>>(TagsProvider.TagAppender<T> delegate) {
 
 	public EnhancedTagAppender<T> addTag(TagKey<T> tagKey) {
 		if (isValidNamespace(tagKey.location().getNamespace())) {
@@ -110,7 +110,7 @@ public record EnhancedTagAppender<T extends IForgeRegistryEntry<?>>(TagsProvider
 		return this;
 	}
 
-	public Tag.Builder getInternalBuilder() {
+	public TagBuilder getInternalBuilder() {
 		return delegate.getInternalBuilder();
 	}
 

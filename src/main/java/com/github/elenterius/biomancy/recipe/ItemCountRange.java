@@ -4,8 +4,8 @@ import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 
-import java.util.Random;
 import java.util.function.Function;
 
 public interface ItemCountRange {
@@ -95,7 +95,7 @@ public interface ItemCountRange {
 		return serializer.fromNetwork(buffer);
 	}
 
-	int getCount(Random rng);
+	int getCount(RandomSource rng);
 
 	RangeSerializer<?> getSerializer();
 
@@ -114,7 +114,7 @@ public interface ItemCountRange {
 		public static final Serializer SERIALIZER = new Serializer();
 
 		@Override
-		public int getCount(Random rng) {
+		public int getCount(RandomSource rng) {
 			return Mth.nextInt(rng, min, max);
 		}
 
@@ -156,7 +156,7 @@ public interface ItemCountRange {
 		public static final Serializer SERIALIZER = new Serializer();
 
 		@Override
-		public int getCount(Random rng) {
+		public int getCount(RandomSource rng) {
 			int v = 0;
 			for (int i = 0; i < n; i++) {
 				if (rng.nextFloat() < p) v++;
@@ -203,7 +203,7 @@ public interface ItemCountRange {
 		public static final Serializer SERIALIZER = new Serializer();
 
 		@Override
-		public int getCount(Random rng) {
+		public int getCount(RandomSource rng) {
 			return value;
 		}
 

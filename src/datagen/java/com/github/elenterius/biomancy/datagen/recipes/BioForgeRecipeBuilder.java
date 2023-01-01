@@ -24,6 +24,8 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
 import net.minecraftforge.common.crafting.conditions.NotCondition;
+import net.minecraftforge.registries.ForgeRegistries;
+
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -70,13 +72,13 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 
 	public static BioForgeRecipeBuilder create(ItemLike item) {
 		ItemData itemData = new ItemData(item);
-		ResourceLocation rl = BiomancyMod.createRL(Objects.requireNonNull(item.asItem().getRegistryName()).getPath() + SUFFIX);
+		ResourceLocation rl = BiomancyMod.createRL(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item.asItem())).getPath() + SUFFIX);
 		return new BioForgeRecipeBuilder(rl, itemData);
 	}
 
 	public static BioForgeRecipeBuilder create(ItemLike item, int count) {
 		ItemData itemData = new ItemData(item, count);
-		ResourceLocation rl = BiomancyMod.createRL(Objects.requireNonNull(item.asItem().getRegistryName()).getPath() + SUFFIX);
+		ResourceLocation rl = BiomancyMod.createRL(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item.asItem())).getPath() + SUFFIX);
 		return new BioForgeRecipeBuilder(rl, itemData);
 	}
 

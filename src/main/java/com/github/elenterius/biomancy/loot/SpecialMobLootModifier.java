@@ -5,11 +5,15 @@ import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModTags;
 import com.github.elenterius.biomancy.util.random.DynamicLootTable;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.advancements.critereon.EntityFlagsPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,7 +26,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
-import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
+import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.loot.LootModifier;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
@@ -103,7 +107,7 @@ public class SpecialMobLootModifier extends LootModifier {
 
 	@NotNull
 	@Override
-	protected List<ItemStack> doApply(List<ItemStack> generatedLoot, LootContext context) {
+	protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
 		if (context.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof LivingEntity victim) {
 			DynamicLootTable lootTable = buildLootTable(victim);
 			if (lootTable.isEmpty()) return generatedLoot;
@@ -123,7 +127,7 @@ public class SpecialMobLootModifier extends LootModifier {
 				despoilLevel++;
 			}
 
-			Random random = context.getRandom();
+			RandomSource random = context.getRandom();
 			if (despoilLevel > 0 || random.nextFloat() < 0.05f) {
 				int diceRolls = Mth.nextInt(random, 1, 1 + despoilLevel); //max is inclusive
 				for (; diceRolls > 0; diceRolls--) {
@@ -184,6 +188,12 @@ public class SpecialMobLootModifier extends LootModifier {
 			return jsonObject;
 		}
 
+	}
+
+	@Override
+	public Codec<? extends IGlobalLootModifier> codec() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

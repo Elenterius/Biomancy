@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.world.entity.fleshblob;
 
-import java.util.Random;
+import net.minecraft.util.RandomSource;
 
 public enum TumorFlag {
 	TUMOR1, TUMOR2, TUMOR3, TUMOR4, TUMOR5, TUMOR6, TUMOR7;
@@ -24,7 +24,7 @@ public enum TumorFlag {
 		return value & ~flag.bitPosition;
 	}
 
-	public static byte randomFlags(Random random) {
+	public static byte randomFlags(RandomSource random) {
 		return (byte) random.nextInt(Byte.MAX_VALUE + 1);
 	}
 

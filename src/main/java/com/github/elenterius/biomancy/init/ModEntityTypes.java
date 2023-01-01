@@ -20,7 +20,7 @@ import org.apache.logging.log4j.MarkerManager;
 @Mod.EventBusSubscriber(modid = BiomancyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class ModEntityTypes {
 
-	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, BiomancyMod.MOD_ID);
+	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, BiomancyMod.MOD_ID);
 
 	//# Aberrations
 	public static final RegistryObject<EntityType<FleshBlob>> FLESH_BLOB = register("flesh_blob", EntityType.Builder.of(FleshBlob::new, MobCategory.CREATURE).sized(1F, 1F));

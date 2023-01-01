@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
@@ -35,7 +36,7 @@ public final class ModDamageSources {
 	}
 
 	public static DamageSource createProjectileDamage(BaseProjectile projectile, @Nullable Entity shooter) {
-		ResourceLocation resourceLocation = Objects.requireNonNull(projectile.getType().getRegistryName());
+		ResourceLocation resourceLocation = Objects.requireNonNull(ForgeRegistries.ENTITY_TYPES.getKey(projectile.getType()));
 		String messageId = resourceLocation.toString().replace(":", ".");
 		return new IndirectEntityDamageSource(messageId, projectile, shooter).setProjectile();
 	}

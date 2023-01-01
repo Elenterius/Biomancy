@@ -8,8 +8,6 @@ import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.item.state.LivingToolState;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
@@ -139,16 +137,16 @@ public interface ILivingToolItem extends INutrientsContainerItem {
 		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
 
 		DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
-		tooltip.add(new TranslatableComponent("tooltip.biomancy.nutrients_fuel").withStyle(ChatFormatting.GRAY));
-		tooltip.add(new TextComponent("%s/%s u".formatted(df.format(getNutrients(stack)), df.format(getMaxNutrients(stack)))).withStyle(TextStyles.NUTRIENTS));
+		tooltip.add(Component.translatable("tooltip.biomancy.nutrients_fuel").withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.literal("%s/%s u".formatted(df.format(getNutrients(stack)), df.format(getMaxNutrients(stack)))).withStyle(TextStyles.NUTRIENTS));
 
 		//		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
 		//
-		//		tooltip.add(new TranslatableComponent("tooltip.biomancy.consumption").withStyle(ChatFormatting.GRAY));
+		//		tooltip.add(Component.translatable("tooltip.biomancy.consumption").withStyle(ChatFormatting.GRAY));
 		//		for (ToolAction toolAction : getLivingToolActions(stack)) {
 		//			int actionCost = getLivingToolActionCost(stack, toolAction);
 		//			String text = "%s:  %s u".formatted(toolAction.name(), df.format(actionCost));
-		//			tooltip.add(new TextComponent(text).withStyle(TextStyles.NUTRIENTS_CONSUMPTION));
+		//			tooltip.add(Component.literal(text).withStyle(TextStyles.NUTRIENTS_CONSUMPTION));
 		//		}
 	}
 

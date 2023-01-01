@@ -8,16 +8,15 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
-import java.util.Random;
 
 public class StorageSacBERenderer implements BlockEntityRenderer<StorageSacBlockEntity> {
 
-	private final Random random = new Random();
+	private final RandomSource random = RandomSource.create();
 
-	@SuppressWarnings("unused")
 	public StorageSacBERenderer(BlockEntityRendererProvider.Context context) {}
 
 	@Override

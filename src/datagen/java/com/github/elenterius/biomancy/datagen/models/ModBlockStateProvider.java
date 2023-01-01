@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -59,7 +60,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 	}
 
 	public ResourceLocation blockModel(Block block) {
-		ResourceLocation name = Objects.requireNonNull(block.getRegistryName());
+		ResourceLocation name = Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block));
 		return new ResourceLocation(name.getNamespace(), ModelProvider.BLOCK_FOLDER + "/" + name.getPath());
 	}
 
@@ -68,7 +69,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 	}
 
 	private String name(Block block) {
-		return Objects.requireNonNull(block.getRegistryName()).getPath();
+		return Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block)).getPath();
 	}
 
 	public void simpleBlockItem(Block block) {

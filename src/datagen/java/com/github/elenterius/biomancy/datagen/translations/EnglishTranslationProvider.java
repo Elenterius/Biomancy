@@ -11,12 +11,15 @@ import com.github.elenterius.biomancy.world.item.MaykerBannerPatternItem;
 import com.github.elenterius.biomancy.world.item.SerumItem;
 import com.github.elenterius.biomancy.world.item.state.LivingToolState;
 import com.github.elenterius.biomancy.world.serum.Serum;
+
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.HashCache;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
@@ -26,6 +29,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraftforge.common.data.LanguageProvider;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Marker;
@@ -51,7 +55,7 @@ public class EnglishTranslationProvider extends LanguageProvider {
 	}
 
 	@Override
-	public void run(HashCache cache) throws IOException {
+	public void run(CachedOutput cache) throws IOException {
 		itemsToTranslate = new ArrayList<>(ModItems.ITEMS.getEntries().stream().map(RegistryObject::get).filter(item -> !(item instanceof BlockItem)).toList());
 		blocksToTranslate = new ArrayList<>(ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).toList());
 		serumsToTranslate = new ArrayList<>(ModSerums.SERUMS.getEntries().stream().map(RegistryObject::get).toList());
@@ -81,11 +85,11 @@ public class EnglishTranslationProvider extends LanguageProvider {
 	}
 
 	private void add(Component component, String translation) {
-		if (!(component instanceof TranslatableComponent translatableComponent)) {
+		if (!(component instanceof MutableComponent translatableComponent)) {
 			throw new IllegalArgumentException("Provided component is not a translatable component");
 		}
 
-		add(translatableComponent.getKey(), translation);
+		add(translatableComponent, translation);
 	}
 
 	private void addBannerPatternItem(RegistryObject<MaykerBannerPatternItem> itemSupplier, String name, String description) {
@@ -93,8 +97,8 @@ public class EnglishTranslationProvider extends LanguageProvider {
 		add(item.getDescriptionId(), name);
 		add(item.getDisplayName(), description);
 
-		BannerPattern bannerPattern = item.getBannerPattern();
-		ResourceLocation rl = new ResourceLocation(bannerPattern.getFilename());
+		TagKey<BannerPattern> bannerPattern = item.getBannerPattern();
+		ResourceLocation rl = new ResourceLocation(bannerPattern.toString());
 
 		for (DyeColor dyeColor : DyeColor.values()) {
 			add("block.%s.banner.%s.%s".formatted(rl.getNamespace(), rl.getPath(), dyeColor.getName()), StringUtils.capitalize(dyeColor.getName()) + " " + description);
@@ -125,7 +129,7 @@ public class EnglishTranslationProvider extends LanguageProvider {
 	}
 
 	private <T extends BaseProjectile> void addDeathMessage(Supplier<EntityType<T>> supplier, String directCause, String indirectCause) {
-		ResourceLocation resourceLocation = Objects.requireNonNull(supplier.get().getRegistryName());
+		ResourceLocation resourceLocation = Objects.requireNonNull(ForgeRegistries.ENTITY_TYPES.getKey(supplier.get()));
 		String msgId = resourceLocation.toString().replace(":", ".");
 		add("death.attack." + msgId, directCause);
 		add("death.attack." + msgId + ".item", indirectCause);
@@ -242,10 +246,10 @@ public class EnglishTranslationProvider extends LanguageProvider {
 
 		addAdvancementTranslations();
 
-		add(ClientTextUtil.getCtrlKey().getKey(), "ctrl");
-		add(ClientTextUtil.getAltKey().getKey(), "alt");
-		add(ClientTextUtil.getShiftKey().getKey(), "shift");
-		add(ClientTextUtil.getRightMouseKey().getKey(), "right mouse");
+		add(ClientTextUtil.getCtrlKey(), "ctrl");
+		add(ClientTextUtil.getAltKey(), "alt");
+		add(ClientTextUtil.getShiftKey(), "shift");
+		add(ClientTextUtil.getRightMouseKey(), "right mouse");
 
 		add("jei.biomancy.recipe.bio_lab", "Bio-Lab Recipes");
 		add("jei.biomancy.recipe.decomposer", "Decomposer Recipes");
@@ -519,12 +523,12 @@ public class EnglishTranslationProvider extends LanguageProvider {
 				return "advancements.biomancy." + id + ".description";
 			}
 
-			public TranslatableComponent getTitle() {
-				return new TranslatableComponent(getTitleKey());
+			public MutableComponent getTitle() {
+				return Component.translatable(getTitleKey());
 			}
 
-			public TranslatableComponent getDescription() {
-				return new TranslatableComponent(getDescriptionKey());
+			public MutableComponent getDescription() {
+				return Component.translatable(getDescriptionKey());
 			}
 
 		}

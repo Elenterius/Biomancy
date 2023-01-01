@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[40,)" #This is typically bumped every Minecraft version by Forge
+loaderVersion = "[43,)" #This is typically bumped every Minecraft version by Forge
 license = "MIT & CC-BY-NC-4.0"
 issueTrackerURL = "https://github.com/Elenterius/Biomancy/issues" #optional
 showAsResourcePack = false
@@ -19,27 +19,27 @@ description = '''Biopunk and Flesh Magic inspired tech-magic mod that has a fles
 [[dependencies.biomancy]]
 modId = "geckolib3"
 mandatory = true
-versionRange = "[3.0.54,4.0)"
+versionRange = "[3.1.39,4.0)"
 ordering = "BEFORE"
 side = "BOTH"
 
 [[dependencies.biomancy]]
 modId = "jei"
 mandatory = false
-versionRange = "[9.7.0,)"
+versionRange = "[11.5.0,)"
 ordering = "BEFORE"
 side = "BOTH"
 
 [[dependencies.biomancy]]
 modId = "forge"
 mandatory = true
-versionRange = "[40.1.80,)"
+versionRange = "[43.2.0,)"
 ordering = "NONE"
 side = "BOTH" # BOTH, CLIENT or SERVER
 
 [[dependencies.biomancy]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.18.2,1.19)"
+versionRange = "[1.19.2,1.19.3)"
 ordering = "NONE"
 side = "BOTH"

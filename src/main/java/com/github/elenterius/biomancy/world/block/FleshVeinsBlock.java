@@ -7,6 +7,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.MultifaceBlock;
+import net.minecraft.world.level.block.MultifaceSpreader;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.material.Fluids;
 public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterloggedBlock {
 
 	protected static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+	private final MultifaceSpreader spreader = new MultifaceSpreader(this);
 
 	public FleshVeinsBlock(Properties properties) {
 		super(properties);
@@ -51,6 +53,11 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 	@Override
 	public boolean propagatesSkylightDown(BlockState state, BlockGetter level, BlockPos pos) {
 		return state.getFluidState().isEmpty();
+	}
+
+	@Override
+	public MultifaceSpreader getSpreader() {
+		return this.spreader;
 	}
 
 }

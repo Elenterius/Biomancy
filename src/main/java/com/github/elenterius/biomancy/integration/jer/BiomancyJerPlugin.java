@@ -6,7 +6,8 @@ import jeresources.api.JERPlugin;
 
 public final class BiomancyJerPlugin {
 
-	@JERPlugin
+	// Annotation disabled for now.
+	//@JERPlugin
 	public static IJERAPI jerApi;
 
 	private BiomancyJerPlugin() {}

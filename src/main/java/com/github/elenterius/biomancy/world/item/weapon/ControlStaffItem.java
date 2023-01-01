@@ -12,7 +12,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionResult;
@@ -58,7 +57,7 @@ public class ControlStaffItem extends Item implements IKeyListener, ICustomToolt
 
 		int size = mobs.size();
 		if (size == 0) {
-			MutableComponent component = new TextComponent("Couldn't find any controllable mobs nearby!").withStyle(ChatFormatting.RED);
+			MutableComponent component = Component.literal("Couldn't find any controllable mobs nearby!").withStyle(ChatFormatting.RED);
 			player.displayClientMessage(component, true);
 			return InteractionResult.FAIL;
 		}
@@ -71,7 +70,7 @@ public class ControlStaffItem extends Item implements IKeyListener, ICustomToolt
 			controllable.setActiveCommand(command);
 		}
 
-		Fleshkin.displayCommandSetMsg(player, new TextComponent(size + (size > 1 ? " mobs" : " mob")), command);
+		Fleshkin.displayCommandSetMsg(player, Component.literal(size + (size > 1 ? " mobs" : " mob")), command);
 		return InteractionResult.SUCCESS;
 	}
 
@@ -87,13 +86,13 @@ public class ControlStaffItem extends Item implements IKeyListener, ICustomToolt
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
 		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
-		tooltip.add(TextComponentUtil.getTooltipText("command").append(": ").withStyle().withStyle(ChatFormatting.GRAY).append(new TextComponent(getCommand(stack).toString()).withStyle(ChatFormatting.AQUA)));
+		tooltip.add(TextComponentUtil.getTooltipText("command").append(": ").withStyle().withStyle(ChatFormatting.GRAY).append(Component.literal(getCommand(stack).toString()).withStyle(ChatFormatting.AQUA)));
 		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action_cycle")).withStyle(ChatFormatting.DARK_GRAY));
 	}
 
 //	@Override
 //	public Component getHighlightTip(ItemStack stack, Component displayName) {
-//		return new TextComponent("").append(displayName).append(" (").append(new TextComponent(getCommand(stack).toString()).withStyle(ChatFormatting.AQUA)).append(")");
+//		return Component.literal("").append(displayName).append(" (").append(Component.literal(getCommand(stack).toString()).withStyle(ChatFormatting.AQUA)).append(")");
 //	}
 
 }

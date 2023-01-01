@@ -19,8 +19,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -38,24 +37,26 @@ public class BioForgeRecipeCategory implements IRecipeCategory<BioForgeRecipe> {
 		background = guiHelper.drawableBuilder(texture, 0, 0, 152, 32).setTextureSize(152, 32).build();
 	}
 
-	@Override
+	//TODO: Change this code.
+	/*@Override
 	public ResourceLocation getUid() {
 		return getRecipeType().getUid();
-	}
+	}*/
 
 	@Override
 	public RecipeType<BioForgeRecipe> getRecipeType() {
 		return RECIPE_TYPE;
 	}
 
-	@Override
+	//TODO: Change this code.
+	/*@Override
 	public Class<? extends BioForgeRecipe> getRecipeClass() {
 		return getRecipeType().getRecipeClass();
-	}
+	}*/
 
 	@Override
 	public Component getTitle() {
-		return new TranslatableComponent("jei.biomancy.recipe.bio_forge");
+		return Component.translatable("jei.biomancy.recipe.bio_forge");
 	}
 
 	@Override
@@ -97,7 +98,7 @@ public class BioForgeRecipeCategory implements IRecipeCategory<BioForgeRecipe> {
 	public void draw(BioForgeRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
 		Font fontRenderer = Minecraft.getInstance().font;
 		int fuelCost = 1; //TODO: use constant
-		TextComponent costString = new TextComponent("-" + fuelCost);
+		MutableComponent costString = Component.literal("-" + fuelCost);
 		fontRenderer.draw(poseStack, costString, 108, 32f - fontRenderer.lineHeight + 1, 0xff808080);
 	}
 }

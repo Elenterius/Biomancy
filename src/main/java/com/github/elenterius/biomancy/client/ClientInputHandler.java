@@ -25,7 +25,7 @@ public final class ClientInputHandler {
 	private ClientInputHandler() {}
 
 	@SubscribeEvent
-	public static void onKeyInput(final InputEvent.KeyInputEvent event) {
+	public static void onKeyInput(final InputEvent.Key event) {
 		Minecraft mc = Minecraft.getInstance();
 		LocalPlayer player = mc.player;
 		if (!(mc.screen instanceof InventoryScreen) && mc.screen != null) return;

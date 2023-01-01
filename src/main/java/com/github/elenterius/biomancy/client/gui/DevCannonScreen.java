@@ -14,9 +14,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
@@ -33,7 +32,7 @@ public class DevCannonScreen extends Screen {
 	private InteractionHand itemHoldingHand;
 
 	public DevCannonScreen(InteractionHand hand) {
-		super(new TranslatableComponent("biomancy.dev.wheel_menu"));
+		super(Component.translatable("biomancy.dev.wheel_menu"));
 		itemHoldingHand = hand;
 	}
 
@@ -176,7 +175,7 @@ public class DevCannonScreen extends Screen {
 		if (radius <= baseRadius - 1) return;
 
 		//draw text for selected section
-		MutableComponent text = configuredProjectile == null ? new TextComponent("Cancel") : new TextComponent(configuredProjectile.name());
+		MutableComponent text = configuredProjectile == null ? Component.literal("Cancel") : Component.literal(configuredProjectile.name());
 
 		int textRadius = radius + 16 + 8 + 2;
 		float xt = x + textRadius * Mth.cos(textAngle);
@@ -221,8 +220,7 @@ public class DevCannonScreen extends Screen {
 		bufferBuilder.vertex(matrix4f, x + outerRadius * Mth.cos(endAngle), y + outerRadius * Mth.sin(endAngle), blitOffset).color(argbColor).endVertex();
 		bufferBuilder.vertex(matrix4f, x + outerRadius * Mth.cos(startAngle), y + outerRadius * Mth.sin(startAngle), blitOffset).color(argbColor).endVertex();
 
-		bufferBuilder.end();
-		BufferUploader.end(bufferBuilder);
+		BufferUploader.draw(bufferBuilder.end());
 
 		RenderSystem.enableTexture();
 		RenderSystem.disableBlend();

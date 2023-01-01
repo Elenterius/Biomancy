@@ -7,6 +7,7 @@ import com.github.elenterius.biomancy.world.block.entity.BioForgeBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -28,8 +29,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Random;
 
 public class BioForgeBlock extends BaseEntityBlock {
 
@@ -71,7 +70,7 @@ public class BioForgeBlock extends BaseEntityBlock {
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (level.getBlockEntity(pos) instanceof BioForgeBlockEntity bioForge) {
 			bioForge.recheckOpen(); //this is only here because of ContainerOpenersCounter
 		}
@@ -81,7 +80,7 @@ public class BioForgeBlock extends BaseEntityBlock {
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (level.getBlockEntity(pos) instanceof BioForgeBlockEntity bioForge && bioForge.canPlayerOpenInv(player)) {
 			if (!level.isClientSide) {
-				NetworkHooks.openGui((ServerPlayer) player, bioForge, buffer -> buffer.writeBlockPos(pos));
+				NetworkHooks.openScreen((ServerPlayer) player, bioForge, buffer -> buffer.writeBlockPos(pos));
 				SoundUtil.broadcastBlockSound((ServerLevel) level, pos, ModSoundEvents.UI_BIO_FORGE_OPEN);
 			}
 			return InteractionResult.SUCCESS;

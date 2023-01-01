@@ -13,16 +13,15 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.geo.render.built.GeoBone;
 
-import java.util.Random;
-
 public class TongueBlockEntityRenderer extends CustomGeoBlockRenderer<TongueBlockEntity> {
 
-	private final Random random = new Random();
+	private final RandomSource random = RandomSource.create();
 
 	private ItemStack heldItemStack = ItemStack.EMPTY;
 	private MultiBufferSource multiBufferSource = Minecraft.getInstance().renderBuffers().bufferSource();

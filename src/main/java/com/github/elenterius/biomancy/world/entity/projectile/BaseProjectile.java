@@ -191,10 +191,11 @@ public abstract class BaseProjectile extends Projectile implements IEntityAdditi
 		return 1f;
 	}
 
-	@Override
+	//TODO: Replace this code.
+	/*@Override
 	public float getBrightness() {
 		return 1f;
-	}
+	}*/
 
 	@Override
 	public boolean shouldRenderAtSqrDistance(double distance) {

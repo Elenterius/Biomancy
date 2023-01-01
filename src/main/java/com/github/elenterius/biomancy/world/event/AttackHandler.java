@@ -20,9 +20,9 @@ public class AttackHandler {
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public static void onCriticalHit(final CriticalHitEvent event) {
 		if (event.getDamageModifier() > 0 && event.getTarget() instanceof LivingEntity target && (event.getResult() == Event.Result.ALLOW || event.isVanillaCritical() && event.getResult() == Event.Result.DEFAULT)) {
-			ItemStack heldStack = event.getEntityLiving().getMainHandItem();
+			ItemStack heldStack = ((LivingEntity)event.getTarget()).getMainHandItem();
 			if (heldStack.getItem() instanceof ICriticalHitEntity listener) {
-				listener.onCriticalHitEntity(heldStack, event.getPlayer(), target);
+				listener.onCriticalHitEntity(heldStack, event.getEntity(), target);
 			}
 		}
 	}
@@ -31,7 +31,7 @@ public class AttackHandler {
 	public static void onKnockback(final LivingKnockBackEvent event) {
 		if (event.isCanceled()) return;
 
-		event.getEntityLiving().getCapability(ModCapabilities.NO_KNOCKBACK_FLAG_CAP).ifPresent(flag -> {
+		event.getEntity().getCapability(ModCapabilities.NO_KNOCKBACK_FLAG_CAP).ifPresent(flag -> {
 			if (flag.isEnabled()) {
 				flag.disable();
 				event.setCanceled(true);

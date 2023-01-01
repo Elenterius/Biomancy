@@ -8,17 +8,17 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class TongueModel extends AnimatedGeoModel<TongueBlockEntity> {
 
 	@Override
-	public ResourceLocation getModelLocation(TongueBlockEntity blockEntity) {
+	public ResourceLocation getModelResource(TongueBlockEntity blockEntity) {
 		return BiomancyMod.createRL("geo/block/tongue.geo.json");
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(TongueBlockEntity blockEntity) {
+	public ResourceLocation getTextureResource(TongueBlockEntity blockEntity) {
 		return BiomancyMod.createRL("textures/block/tongue.png");
 	}
 
 	@Override
-	public ResourceLocation getAnimationFileLocation(TongueBlockEntity blockEntity) {
+	public ResourceLocation getAnimationResource(TongueBlockEntity blockEntity) {
 		return BiomancyMod.createRL("animations/block/tongue.animation.json");
 	}
 
