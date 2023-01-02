@@ -173,7 +173,7 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:11.5.0.297") // at runtime, use the full JEI jar
 
 //    compileOnly fg.deobf("curse.maven:jer_api-240630:3831562")
-    implementation "curse.maven:jer_deobf-240630:4092965"
+//    implementation "curse.maven:jer_deobf-240630:4092965"
 
 //  curse.maven:<descriptor, can be anything>-<CurseForge project id>:<CurseForge file id>
     implementation fg.deobf("curse.maven:create-328085:4174330")
@@ -183,9 +183,9 @@ dependencies {
 //    runtimeOnly fg.deobf("curse.maven:cultural_delights-574622:4000179") //download is forbidden >:(
 //    runtimeOnly fg.deobf("com.ncpbails.culturaldelights:culturaldelights:1.18.2-0.14") //place jar inside libs folder in project root
 
-    runtimeOnly fg.deobf("curse.maven:alexs_mobs-426558:4183112")
+    runtimeOnly fg.deobf("curse.maven:alexs_mobs-426558:4159154")
     runtimeOnly fg.deobf("curse.maven:citadel-331936:4132623")
-    datagenImplementation fg.deobf("curse.maven:alexs_mobs-426558:4183112")
+    datagenImplementation fg.deobf("curse.maven:alexs_mobs-426558:4159154")
 
     implementation fg.deobf("com.github.Virtuoel:Pehkui:3.6.2-1.19.2-forge")
 
