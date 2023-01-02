@@ -14,6 +14,8 @@ import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModItems;
+import com.github.elenterius.biomancy.init.ModRecipeBookTypes;
+import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.integration.ModsCompatHandler;
 import com.github.elenterius.biomancy.tooltip.EmptyLineTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
@@ -33,6 +35,7 @@ import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEv
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.event.RegisterRecipeBookCategoriesEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -59,7 +62,7 @@ public final class ClientSetupHandler {
 		setBlockRenderLayers();
 
 		event.enqueueWork(() -> {
-			ModRecipeBookCategories.init();
+			//ModRecipeBookCategories.init();
 			registerItemModelProperties();
 		});
 
@@ -154,6 +157,16 @@ public final class ClientSetupHandler {
 		event.register(HrTooltipComponent.class, HrTooltipClientComponent::new);
 		event.register(EmptyLineTooltipComponent.class, EmptyLineClientComponent::new);
 		event.register(StorageSacTooltipComponent.class, StorageSacTooltipClientComponent::new);
+	}
+	
+	@SubscribeEvent
+	public static void registerRecipeBooks(RegisterRecipeBookCategoriesEvent event) {
+		event.registerBookCategories(ModRecipeBookTypes.BIO_FORGE, ModRecipeBookCategories.BIOFORGE_CATEGORIES);
+		event.registerAggregateCategory(ModRecipeBookCategories.SEARCH_CATEGORY, ModRecipeBookCategories.BIOFORGE_CATEGORIES);
+		event.registerRecipeCategoryFinder(ModRecipes.BIO_FORGING_RECIPE_TYPE.get(), (rc) -> ModRecipeBookCategories.MISC_CATEGORY);
+		event.registerRecipeCategoryFinder(ModRecipes.BIO_FORGING_RECIPE_TYPE.get(), (rc) -> ModRecipeBookCategories.BLOCKS_CATEGORY);
+		event.registerRecipeCategoryFinder(ModRecipes.BIO_FORGING_RECIPE_TYPE.get(), (rc) -> ModRecipeBookCategories.MACHINES_CATEGORY);
+		event.registerRecipeCategoryFinder(ModRecipes.BIO_FORGING_RECIPE_TYPE.get(), (rc) -> ModRecipeBookCategories.WEAPONS_CATEGORY);
 	}
 	
 	@SubscribeEvent
