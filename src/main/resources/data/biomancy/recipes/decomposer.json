@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","pattern":["F F","MGM","MEM"],"key":{"M":{"tag":"biomancy:raw_meats"},"F":{"item":"biomancy:mob_fang"},"G":{"item":"biomancy:mob_gland"},"E":{"item":"biomancy:living_flesh"}},"result":{"item":"biomancy:decomposer"}}

@@ -1,0 +1,1 @@
+{"type":"biomancy:decomposing","input":{"ingredient":{"item":"minecraft:diamond"},"count":1},"outputs":[{"result":{"item":"biomancy:gem_fragments","count_range":{"type":"uniform","min":4,"max":8}}}],"time":400}

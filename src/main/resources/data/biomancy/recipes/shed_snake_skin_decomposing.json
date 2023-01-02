@@ -1,0 +1,1 @@
+{"type":"biomancy:decomposing","input":{"ingredient":{"item":"alexsmobs:shed_snake_skin"},"count":1},"outputs":[{"result":{"item":"biomancy:tough_fibers","count_range":{"type":"uniform","min":0,"max":2}}}],"time":60,"conditions":[{"modid":"alexsmobs","type":"forge:mod_loaded"}]}

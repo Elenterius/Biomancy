@@ -1,0 +1,1 @@
+{"type":"biomancy:decomposing","input":{"ingredient":{"item":"minecraft:netherite_ingot"},"count":1},"outputs":[{"result":{"item":"biomancy:mineral_fragment","count_range":{"type":"uniform","min":43,"max":72}}}],"time":2880}

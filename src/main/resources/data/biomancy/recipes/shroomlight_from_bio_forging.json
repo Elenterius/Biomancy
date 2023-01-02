@@ -1,0 +1,1 @@
+{"type":"biomancy:bio_forging","ingredient_quantities":[{"ingredient":{"item":"biomancy:bio_lumens"},"count":10},{"ingredient":{"item":"biomancy:organic_matter"},"count":4}],"result":{"item":"minecraft:shroomlight"},"bio_forge_tab":"biomancy:blocks"}

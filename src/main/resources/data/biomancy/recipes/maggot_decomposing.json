@@ -1,0 +1,1 @@
+{"type":"biomancy:decomposing","input":{"ingredient":{"item":"alexsmobs:maggot"},"count":1},"outputs":[{"result":{"item":"biomancy:flesh_bits","count_range":{"type":"uniform","min":0,"max":1}}}],"time":30,"conditions":[{"modid":"alexsmobs","type":"forge:mod_loaded"}]}

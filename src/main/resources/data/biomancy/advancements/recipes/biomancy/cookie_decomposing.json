@@ -1,0 +1,1 @@
+{"parent":"minecraft:recipes/root","rewards":{"recipes":["biomancy:cookie_decomposing"]},"criteria":{"has_cookie":{"trigger":"minecraft:inventory_changed","conditions":{"items":[{"items":["minecraft:cookie"]}]}},"has_the_recipe":{"trigger":"minecraft:recipe_unlocked","conditions":{"recipe":"biomancy:cookie_decomposing"}}},"requirements":[["has_cookie","has_the_recipe"]]}

@@ -1,0 +1,1 @@
+{"type":"biomancy:decomposing","input":{"ingredient":{"item":"minecraft:turtle_helmet"},"count":1},"outputs":[{"result":{"item":"biomancy:tough_fibers","count_range":{"type":"uniform","min":15,"max":25}}},{"result":{"item":"biomancy:bio_minerals","count_range":{"type":"uniform","min":9,"max":15}}}],"time":1080}

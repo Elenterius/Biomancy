@@ -1,0 +1,1 @@
+{"parent":"minecraft:recipes/root","rewards":{"recipes":["biomancy:scute_from_bio_forging"]},"criteria":{"has_scute":{"trigger":"minecraft:inventory_changed","conditions":{"items":[{"items":["minecraft:scute"]}]}},"has_the_recipe":{"trigger":"minecraft:recipe_unlocked","conditions":{"recipe":"biomancy:scute_from_bio_forging"}}},"requirements":[["has_scute","has_the_recipe"]]}

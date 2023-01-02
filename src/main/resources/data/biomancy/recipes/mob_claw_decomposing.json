@@ -1,0 +1,1 @@
+{"type":"biomancy:decomposing","input":{"ingredient":{"item":"biomancy:mob_claw"},"count":1},"outputs":[{"result":{"item":"biomancy:bio_minerals","count_range":{"type":"uniform","min":3,"max":5}}},{"result":{"item":"biomancy:tough_fibers","count_range":{"type":"uniform","min":4,"max":6}}}],"time":290}

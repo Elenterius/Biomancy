@@ -1,0 +1,1 @@
+{"parent":"minecraft:recipes/root","rewards":{"recipes":["biomancy:maggot_decomposing"]},"criteria":{"has_maggot":{"trigger":"minecraft:inventory_changed","conditions":{"items":[{"items":["alexsmobs:maggot"]}]}},"has_the_recipe":{"trigger":"minecraft:recipe_unlocked","conditions":{"recipe":"biomancy:maggot_decomposing"}}},"requirements":[["has_maggot","has_the_recipe"]]}

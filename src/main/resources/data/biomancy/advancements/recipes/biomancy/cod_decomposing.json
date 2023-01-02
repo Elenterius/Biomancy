@@ -1,0 +1,1 @@
+{"parent":"minecraft:recipes/root","rewards":{"recipes":["biomancy:cod_decomposing"]},"criteria":{"has_cod":{"trigger":"minecraft:inventory_changed","conditions":{"items":[{"items":["minecraft:cod"]}]}},"has_the_recipe":{"trigger":"minecraft:recipe_unlocked","conditions":{"recipe":"biomancy:cod_decomposing"}}},"requirements":[["has_cod","has_the_recipe"]]}

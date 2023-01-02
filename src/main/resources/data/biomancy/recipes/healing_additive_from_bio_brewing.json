@@ -1,0 +1,1 @@
+{"type":"biomancy:bio_brewing","ingredient_quantities":[{"ingredient":{"item":"biomancy:regenerative_fluid"},"count":1},{"ingredient":{"item":"biomancy:bile"},"count":1}],"reactant":{"item":"biomancy:organic_compound"},"result":{"item":"biomancy:healing_additive"},"time":40}

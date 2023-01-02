@@ -1,0 +1,1 @@
+{"parent":"minecraft:recipes/root","rewards":{"recipes":["biomancy:primordial_cradle"]},"criteria":{"has_ender_eye":{"trigger":"minecraft:inventory_changed","conditions":{"items":[{"items":["minecraft:ender_eye"]}]}},"has_the_recipe":{"trigger":"minecraft:recipe_unlocked","conditions":{"recipe":"biomancy:primordial_cradle"}}},"requirements":[["has_ender_eye","has_the_recipe"]]}

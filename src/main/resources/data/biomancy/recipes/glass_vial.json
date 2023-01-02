@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","pattern":["GTG","G G"," G "],"key":{"G":{"tag":"forge:glass"},"T":{"item":"minecraft:clay_ball"}},"result":{"item":"biomancy:glass_vial","count":8}}

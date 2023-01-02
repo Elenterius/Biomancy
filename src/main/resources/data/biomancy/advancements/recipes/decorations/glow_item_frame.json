@@ -1,0 +1,1 @@
+{"parent":"minecraft:recipes/root","rewards":{"recipes":["biomancy:glow_item_frame"]},"criteria":{"has_bio_lumens":{"trigger":"minecraft:inventory_changed","conditions":{"items":[{"items":["biomancy:bio_lumens"]}]}},"has_the_recipe":{"trigger":"minecraft:recipe_unlocked","conditions":{"recipe":"biomancy:glow_item_frame"}}},"requirements":[["has_bio_lumens","has_the_recipe"]]}

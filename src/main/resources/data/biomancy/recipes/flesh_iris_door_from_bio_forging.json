@@ -1,0 +1,1 @@
+{"type":"biomancy:bio_forging","ingredient_quantities":[{"ingredient":{"item":"biomancy:flesh_bits"},"count":4},{"ingredient":{"item":"biomancy:bone_fragments"},"count":4},{"ingredient":{"item":"biomancy:elastic_fibers"},"count":2},{"ingredient":{"item":"biomancy:tough_fibers"},"count":1}],"result":{"item":"biomancy:flesh_iris_door"},"bio_forge_tab":"biomancy:blocks"}

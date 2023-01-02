@@ -1,0 +1,1 @@
+{"type":"minecraft:crafting_shaped","pattern":["F F","MEM","MMM"],"key":{"E":{"item":"minecraft:ender_eye"},"M":{"tag":"biomancy:raw_meats"},"F":{"item":"biomancy:mob_fang"}},"result":{"item":"biomancy:primordial_cradle"}}

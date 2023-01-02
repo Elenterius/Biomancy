@@ -1,0 +1,1 @@
+{"parent":"minecraft:recipes/root","rewards":{"recipes":["biomancy:podzol_decomposing"]},"criteria":{"has_podzol":{"trigger":"minecraft:inventory_changed","conditions":{"items":[{"items":["minecraft:podzol"]}]}},"has_the_recipe":{"trigger":"minecraft:recipe_unlocked","conditions":{"recipe":"biomancy:podzol_decomposing"}}},"requirements":[["has_podzol","has_the_recipe"]]}

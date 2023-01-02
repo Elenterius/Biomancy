@@ -1,0 +1,1 @@
+{"type":"biomancy:decomposing","input":{"ingredient":{"item":"alexsmobs:fish_bones"},"count":1},"outputs":[{"result":{"item":"biomancy:bone_fragments","count_range":{"type":"uniform","min":2,"max":5}}}],"time":145,"conditions":[{"modid":"alexsmobs","type":"forge:mod_loaded"}]}

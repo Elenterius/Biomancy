@@ -1,0 +1,1 @@
+{"type":"biomancy:bio_forging","ingredient_quantities":[{"ingredient":{"item":"biomancy:flesh_bits"},"count":2},{"ingredient":{"item":"biomancy:bone_fragments"},"count":10}],"result":{"item":"biomancy:flesh_ladder","count":4},"bio_forge_tab":"biomancy:blocks"}

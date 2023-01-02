@@ -1,0 +1,1 @@
+{"type":"biomancy:bio_brewing","ingredient_quantities":[{"ingredient":{"item":"minecraft:sugar"},"count":1},{"ingredient":{"item":"biomancy:bile"},"count":1}],"reactant":{"item":"biomancy:exotic_compound"},"result":{"item":"biomancy:insomnia_cure"},"time":160}
