@@ -63,14 +63,12 @@ public class PlaceholderComponent implements Component {
 
 	@Override
 	public ComponentContents getContents() {
-		// TODO Auto-generated method stub
-		return null;
+		return ComponentContents.EMPTY;
 	}
 
 	@Override
 	public FormattedCharSequence getVisualOrderText() {
-		// TODO Auto-generated method stub
-		return null;
+		return FormattedCharSequence.EMPTY;
 	}
 
 }
