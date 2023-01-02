@@ -66,10 +66,10 @@ public final class BioForgeTab {
 		return ModBioForgeTabs.REGISTRY.get().getKey(this).equals(ModBioForgeTabs.REGISTRY.get().getKey(that)) && this.sortPriority == that.sortPriority && Objects.equals(this.iconItem, that.iconItem);
 	}
 
-	@Override
+	/*@Override
 	public int hashCode() {
-		return ModBioForgeTabs.REGISTRY.get().getKey(this).hashCode();
-	}
+		return 31 * ModBioForgeTabs.REGISTRY.get().getKey(this).getNamespace().hashCode() + ModBioForgeTabs.REGISTRY.get().getKey(this).getPath().hashCode();
+	}*/
 
 	@Override
 	public String toString() {

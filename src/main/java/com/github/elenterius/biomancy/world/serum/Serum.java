@@ -147,9 +147,9 @@ public abstract class Serum {
 		return Objects.requireNonNull(ModSerums.REGISTRY.get().getKey(this)).equals(ModSerums.REGISTRY.get().getKey(otherSerum));
 	}
 
-	@Override
+	/*@Override
 	public int hashCode() {
-		return Objects.hash(ModSerums.REGISTRY.get().getKey(this));
-	}
+		return 31 * ModSerums.REGISTRY.get().getKey(this).getNamespace().hashCode() + ModSerums.REGISTRY.get().getKey(this).getPath().hashCode();
+	}*/
 
 }
