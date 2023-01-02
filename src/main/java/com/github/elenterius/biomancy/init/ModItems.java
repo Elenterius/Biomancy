@@ -119,8 +119,8 @@ public final class ModItems {
 	public static final RegistryObject<StorageSacBlockItem> STORAGE_SAC = ITEMS.register(ModBlocks.STORAGE_SAC.getId().getPath(), () -> new StorageSacBlockItem(ModBlocks.STORAGE_SAC.get(), createBaseProperties()));
 
 	//## Ownable
-	//	public static final RegistryObject<SimpleBlockItem> FLESHKIN_DOOR = registerSimpleBlockItem(ModBlocks.FLESHKIN_DOOR);
-	//	public static final RegistryObject<SimpleBlockItem> FLESHKIN_TRAPDOOR = registerSimpleBlockItem(ModBlocks.FLESHKIN_TRAPDOOR);
+	public static final RegistryObject<SimpleBlockItem> FLESHKIN_DOOR = registerSimpleBlockItem(ModBlocks.FLESHKIN_DOOR);
+	public static final RegistryObject<SimpleBlockItem> FLESHKIN_TRAPDOOR = registerSimpleBlockItem(ModBlocks.FLESHKIN_TRAPDOOR);
 	public static final RegistryObject<SimpleBlockItem> FLESHKIN_PRESSURE_PLATE = registerSimpleBlockItem(ModBlocks.FLESHKIN_PRESSURE_PLATE);
 
 	//## Building Blocks
