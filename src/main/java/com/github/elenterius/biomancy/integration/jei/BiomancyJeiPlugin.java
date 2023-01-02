@@ -68,8 +68,8 @@ public class BiomancyJeiPlugin implements IModPlugin {
 		registerInputSlots(registration, DigesterMenu.class, DigesterRecipeCategory.RECIPE_TYPE, DigesterMenu.SlotZone.INPUT_ZONE);
 	}
 
-	private <C extends AbstractContainerMenu, R> void registerInputSlots(IRecipeTransferRegistration registration, Class<C> containerClass, RecipeType<R> recipeType, ISlotZone slotZone) {
-		registration.addRecipeTransferHandler(containerClass, recipeType, slotZone.getFirstIndex(), slotZone.getSlotCount(), 0, 36);
+	private <C extends AbstractContainerMenu, R> void registerInputSlots(IRecipeTransferRegistration registration, Class<? extends C> containerClass, RecipeType<R> recipeType, ISlotZone slotZone) {
+		registration.addRecipeTransferHandler(containerClass, null, recipeType, slotZone.getFirstIndex(), slotZone.getSlotCount(), 0, 36);
 	}
 
 }
