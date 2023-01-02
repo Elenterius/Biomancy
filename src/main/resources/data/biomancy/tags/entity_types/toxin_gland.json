@@ -1,1 +1,16 @@
-{"replace":false,"values":["minecraft:cave_spider","minecraft:pufferfish","minecraft:bee",{"id":"alexsmobs:komodo_dragon","required":false},{"id":"alexsmobs:platypus","required":false}]}
+{
+  "replace": false,
+  "values": [
+    "minecraft:cave_spider",
+    "minecraft:pufferfish",
+    "minecraft:bee",
+    {
+      "id": "alexsmobs:komodo_dragon",
+      "required": false
+    },
+    {
+      "id": "alexsmobs:platypus",
+      "required": false
+    }
+  ]
+}

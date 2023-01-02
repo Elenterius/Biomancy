@@ -1,1 +1,63 @@
-{"replace":false,"values":["minecraft:bat","minecraft:cat","minecraft:ocelot","minecraft:wolf","minecraft:fox","minecraft:polar_bear","minecraft:panda","minecraft:hoglin","minecraft:zoglin","minecraft:ender_dragon",{"id":"alexsmobs:grizzly_bear","required":false},{"id":"alexsmobs:dropbear","required":false},{"id":"alexsmobs:sea_bear","required":false},{"id":"alexsmobs:gorilla","required":false},{"id":"alexsmobs:gelada_monkey","required":false},{"id":"alexsmobs:capuchin_monkey","required":false},{"id":"alexsmobs:rattlesnake","required":false},{"id":"alexsmobs:anaconda","required":false},{"id":"alexsmobs:tiger","required":false},{"id":"alexsmobs:maned_wolf","required":false},{"id":"alexsmobs:snow_leopard","required":false},{"id":"alexsmobs:tusklin","required":false}]}
+{
+  "replace": false,
+  "values": [
+    "minecraft:bat",
+    "minecraft:cat",
+    "minecraft:ocelot",
+    "minecraft:wolf",
+    "minecraft:fox",
+    "minecraft:polar_bear",
+    "minecraft:panda",
+    "minecraft:hoglin",
+    "minecraft:zoglin",
+    "minecraft:ender_dragon",
+    {
+      "id": "alexsmobs:grizzly_bear",
+      "required": false
+    },
+    {
+      "id": "alexsmobs:dropbear",
+      "required": false
+    },
+    {
+      "id": "alexsmobs:sea_bear",
+      "required": false
+    },
+    {
+      "id": "alexsmobs:gorilla",
+      "required": false
+    },
+    {
+      "id": "alexsmobs:gelada_monkey",
+      "required": false
+    },
+    {
+      "id": "alexsmobs:capuchin_monkey",
+      "required": false
+    },
+    {
+      "id": "alexsmobs:rattlesnake",
+      "required": false
+    },
+    {
+      "id": "alexsmobs:anaconda",
+      "required": false
+    },
+    {
+      "id": "alexsmobs:tiger",
+      "required": false
+    },
+    {
+      "id": "alexsmobs:maned_wolf",
+      "required": false
+    },
+    {
+      "id": "alexsmobs:snow_leopard",
+      "required": false
+    },
+    {
+      "id": "alexsmobs:tusklin",
+      "required": false
+    }
+  ]
+}
