@@ -3,8 +3,10 @@ package com.github.elenterius.biomancy.tooltip;
 import com.github.elenterius.biomancy.client.gui.tooltip.TooltipRenderHandler;
 import com.google.common.collect.Lists;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.ComponentContents;
+//import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 
@@ -18,7 +20,7 @@ import java.util.Objects;
  * <br>
  * This allows easy insertion of TooltipComponents inside of {@link Item#appendHoverText}
  */
-public class PlaceholderComponent extends MutableComponent {
+public class PlaceholderComponent implements Component {
 
 	private final TooltipComponent replacement;
 
@@ -39,25 +41,8 @@ public class PlaceholderComponent extends MutableComponent {
 	}
 
 	@Override
-	public MutableComponent plainCopy() {
-		return new PlaceholderComponent(replacement);
-	}
-
-	@Override
 	public List<Component> getSiblings() {
 		return Lists.newArrayList();
-	}
-
-	@Override
-	public MutableComponent append(Component sibling) {
-		//append nothing
-		return this;
-	}
-
-	@Override
-	public MutableComponent append(String string) {
-		//append nothing
-		return this;
 	}
 
 	@Override
@@ -74,6 +59,18 @@ public class PlaceholderComponent extends MutableComponent {
 
 	public String toString() {
 		return "PlaceholderComponent{replacement=" + replacement + "}";
+	}
+
+	@Override
+	public ComponentContents getContents() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public FormattedCharSequence getVisualOrderText() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
