@@ -1,14 +1,14 @@
 package com.github.elenterius.biomancy.integration.jer;
 
-import jeresources.api.IJERAPI;
-import jeresources.api.JERPlugin;
+//import jeresources.api.IJERAPI;
+//import jeresources.api.JERPlugin;
 
-
+// TODO: This compat is disabled for now.
 public final class BiomancyJerPlugin {
 
 	// Annotation disabled for now.
 	//@JERPlugin
-	public static IJERAPI jerApi;
+	//public static IJERAPI jerApi;
 
 	private BiomancyJerPlugin() {}
 
