@@ -12,6 +12,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
@@ -91,7 +92,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 	}
 
 	protected EnhancedTagAppender<Item> createTag(TagKey<Item> tag) {
-		return new EnhancedTagAppender<>(tag(tag));
+		return new EnhancedTagAppender<>(tag(tag), ForgeRegistries.ITEMS);
 	}
 
 	@Override

@@ -8,7 +8,6 @@ import com.github.elenterius.biomancy.world.entity.MobUtil;
 import net.minecraft.core.*;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
-import net.minecraft.data.worldgen.DimensionTypes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.EntityTypeTags;
@@ -26,7 +25,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkSource;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
-import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.entity.LevelEntityGetter;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.gameevent.GameEvent.Context;
@@ -175,7 +173,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 	}
 
 	protected EnhancedTagAppender<EntityType<?>> createTag(TagKey<EntityType<?>> tag) {
-		return new EnhancedTagAppender<>(tag(tag));
+		return new EnhancedTagAppender<>(tag(tag), ForgeRegistries.ENTITY_TYPES);
 	}
 
 	@Override
