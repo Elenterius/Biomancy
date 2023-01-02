@@ -1,1 +1,8 @@
-{"replace":false,"values":["#biomancy:poor_biomass","#biomancy:average_biomass","#biomancy:good_biomass","#biomancy:superb_biomass"]}
+{
+  "values": [
+    "#biomancy:poor_biomass",
+    "#biomancy:average_biomass",
+    "#biomancy:good_biomass",
+    "#biomancy:superb_biomass"
+  ]
+}

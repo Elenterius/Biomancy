@@ -1,1 +1,6 @@
-{"replace":false,"values":["biomancy:flesh_door"]}
+{
+  "values": [
+    "biomancy:flesh_door",
+    "biomancy:fleshkin_door"
+  ]
+}

@@ -1,1 +1,28 @@
-{"replace":false,"values":["minecraft:cooked_beef","minecraft:cooked_porkchop","minecraft:cooked_chicken","minecraft:cooked_salmon","minecraft:cooked_mutton","minecraft:cooked_cod","minecraft:cooked_rabbit",{"id":"alexsmobs:cooked_moose_ribs","required":false},{"id":"createfa:schnitzel","required":false},{"id":"createfa:meatballs","required":false},{"id":"createfa:chicken_nuggets","required":false},{"id":"rats:cooked_rat","required":false}]}
+{
+  "values": [
+    "minecraft:cooked_beef",
+    "minecraft:cooked_porkchop",
+    "minecraft:cooked_chicken",
+    "minecraft:cooked_salmon",
+    "minecraft:cooked_mutton",
+    "minecraft:cooked_cod",
+    "minecraft:cooked_rabbit",
+    "alexsmobs:cooked_moose_ribs",
+    {
+      "id": "createfa:schnitzel",
+      "required": false
+    },
+    {
+      "id": "createfa:meatballs",
+      "required": false
+    },
+    {
+      "id": "createfa:chicken_nuggets",
+      "required": false
+    },
+    {
+      "id": "rats:cooked_rat",
+      "required": false
+    }
+  ]
+}

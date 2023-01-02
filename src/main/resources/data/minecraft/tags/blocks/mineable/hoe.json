@@ -1,1 +1,37 @@
-{"replace":false,"values":["biomancy:primordial_cradle","biomancy:bio_forge","biomancy:decomposer","biomancy:bio_lab","biomancy:digester","biomancy:storage_sac","biomancy:tongue","biomancy:fleshkin_chest","biomancy:fleshkin_door","biomancy:fleshkin_trapdoor","biomancy:fleshkin_pressure_plate","biomancy:flesh","biomancy:flesh_stairs","biomancy:flesh_slab","biomancy:flesh_wall","biomancy:packed_flesh","biomancy:packed_flesh_stairs","biomancy:packed_flesh_slab","biomancy:packed_flesh_wall","biomancy:primal_flesh","biomancy:primal_flesh_slab","biomancy:corrupted_primal_flesh","biomancy:corrupted_primal_flesh_slab","biomancy:malignant_flesh","biomancy:malignant_flesh_slab","biomancy:malignant_flesh_veins","biomancy:flesh_fence","biomancy:voice_box","biomancy:flesh_ladder","biomancy:flesh_fence_gate","biomancy:flesh_iris_door","biomancy:flesh_door","biomancy:bone_spike"]}
+{
+  "values": [
+    "biomancy:primordial_cradle",
+    "biomancy:bio_forge",
+    "biomancy:decomposer",
+    "biomancy:bio_lab",
+    "biomancy:digester",
+    "biomancy:storage_sac",
+    "biomancy:tongue",
+    "biomancy:fleshkin_chest",
+    "biomancy:fleshkin_door",
+    "biomancy:fleshkin_trapdoor",
+    "biomancy:fleshkin_pressure_plate",
+    "biomancy:flesh",
+    "biomancy:flesh_stairs",
+    "biomancy:flesh_slab",
+    "biomancy:flesh_wall",
+    "biomancy:packed_flesh",
+    "biomancy:packed_flesh_stairs",
+    "biomancy:packed_flesh_slab",
+    "biomancy:packed_flesh_wall",
+    "biomancy:primal_flesh",
+    "biomancy:primal_flesh_slab",
+    "biomancy:corrupted_primal_flesh",
+    "biomancy:corrupted_primal_flesh_slab",
+    "biomancy:malignant_flesh",
+    "biomancy:malignant_flesh_slab",
+    "biomancy:malignant_flesh_veins",
+    "biomancy:flesh_fence",
+    "biomancy:voice_box",
+    "biomancy:flesh_ladder",
+    "biomancy:flesh_fence_gate",
+    "biomancy:flesh_iris_door",
+    "biomancy:flesh_door",
+    "biomancy:bone_spike"
+  ]
+}

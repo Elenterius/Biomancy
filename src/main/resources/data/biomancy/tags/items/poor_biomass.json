@@ -1,1 +1,23 @@
-{"replace":false,"values":["#minecraft:flowers",{"id":"#forge:seeds","required":false},"#minecraft:leaves","minecraft:sweet_berries","minecraft:sugar_cane","minecraft:kelp","minecraft:dried_kelp","minecraft:grass","minecraft:seagrass","minecraft:vine","minecraft:fern","minecraft:bamboo",{"id":"rats:contaminated_food","required":false}]}
+{
+  "values": [
+    "#minecraft:flowers",
+    {
+      "id": "#forge:seeds",
+      "required": false
+    },
+    "#minecraft:leaves",
+    "minecraft:sweet_berries",
+    "minecraft:sugar_cane",
+    "minecraft:kelp",
+    "minecraft:dried_kelp",
+    "minecraft:grass",
+    "minecraft:seagrass",
+    "minecraft:vine",
+    "minecraft:fern",
+    "minecraft:bamboo",
+    {
+      "id": "rats:contaminated_food",
+      "required": false
+    }
+  ]
+}
