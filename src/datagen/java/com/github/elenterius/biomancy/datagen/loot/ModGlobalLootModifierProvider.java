@@ -15,14 +15,15 @@ public class ModGlobalLootModifierProvider extends GlobalLootModifierProvider {
 		super(gen, BiomancyMod.MOD_ID);
 	}
 
+	//TODO: Change this code.
 	@Override
 	protected void start() {
-		addLootModifier(ModLoot.SPECIAL_MOB_LOOT_SERIALIZER, new SpecialMobLootModifier());
-		addLootModifier(ModLoot.CAT_MORNING_GIFT_SERIALIZER, new CatMorningGiftLootModifier());
+		//addLootModifier(ModLoot.SPECIAL_MOB_LOOT_SERIALIZER, new SpecialMobLootModifier());
+		//addLootModifier(ModLoot.CAT_MORNING_GIFT_SERIALIZER, new CatMorningGiftLootModifier());
 	}
 
-	protected <T extends IGlobalLootModifier> void addLootModifier(RegistryObject<GlobalLootModifierSerializer<T>> serializerHolder, T lootModifier) {
+	/*protected <T extends IGlobalLootModifier> void addLootModifier(RegistryObject<GlobalLootModifierSerializer<T>> serializerHolder, T lootModifier) {
 		add(serializerHolder.getId().getPath(), serializerHolder.get(), lootModifier);
-	}
+	}*/
 
 }

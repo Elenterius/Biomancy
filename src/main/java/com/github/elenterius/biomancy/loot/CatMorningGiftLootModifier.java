@@ -72,7 +72,8 @@ public class CatMorningGiftLootModifier extends LootModifier {
 		return null;
 	}
 
-	public static class Serializer extends GlobalLootModifierSerializer<CatMorningGiftLootModifier> {
+	//TODO: Work on this
+	/*public static class Serializer extends GlobalLootModifierSerializer<CatMorningGiftLootModifier> {
 
 		@Override
 		public CatMorningGiftLootModifier read(ResourceLocation location, JsonObject object, LootItemCondition[] conditions) {
@@ -83,6 +84,6 @@ public class CatMorningGiftLootModifier extends LootModifier {
 		public JsonObject write(CatMorningGiftLootModifier instance) {
 			return makeConditions(instance.conditions);
 		}
-	}
+	}*/
 
 }

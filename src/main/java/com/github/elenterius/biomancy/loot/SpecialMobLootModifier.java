@@ -174,7 +174,8 @@ public class SpecialMobLootModifier extends LootModifier {
 		}
 	}
 
-	public static class Serializer extends GlobalLootModifierSerializer<SpecialMobLootModifier> {
+	//TODO: Work on this.
+	/*public static class Serializer extends GlobalLootModifierSerializer<SpecialMobLootModifier> {
 
 		@Override
 		public SpecialMobLootModifier read(ResourceLocation id, JsonObject object, LootItemCondition[] conditions) {
@@ -188,7 +189,7 @@ public class SpecialMobLootModifier extends LootModifier {
 			return jsonObject;
 		}
 
-	}
+	}*/
 
 	@Override
 	public Codec<? extends IGlobalLootModifier> codec() {
