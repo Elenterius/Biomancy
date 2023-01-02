@@ -292,7 +292,7 @@ public class InjectorItem extends Item implements ISerumProvider, ICustomTooltip
 
 	@Nullable
 	private InjectorRenderer getInjectorRenderer(InjectorItem item) {
-		BlockEntityWithoutLevelRenderer renderer = RenderProperties.get(item).getItemStackRenderer();
+		BlockEntityWithoutLevelRenderer renderer = IClientItemExtensions.of(this).getCustomRenderer();
 		return renderer instanceof InjectorRenderer injectorRenderer ? injectorRenderer : null;
 	}
 
@@ -382,7 +382,7 @@ public class InjectorItem extends Item implements ISerumProvider, ICustomTooltip
 	}
 
 	private void soundListener(SoundKeyframeEvent<InjectorItem> event) {
-		if (RenderProperties.get(this).getItemStackRenderer() instanceof InjectorRenderer renderer) {
+		if (IClientItemExtensions.of(this).getCustomRenderer() instanceof InjectorRenderer renderer) {
 			onSoundKeyFrame(renderer.getCurrentItemStack(), event.sound, event.getAnimationTick());
 		}
 	}
