@@ -10,7 +10,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Objects;
 
-public record EnhancedTagAppender<T extends Object>(TagsProvider.TagAppender<T> delegate) {
+public record EnhancedTagAppender<T>(TagsProvider.TagAppender<T> delegate, IForgeRegistry<T> forgeRegistry) {
 
 	public EnhancedTagAppender<T> addTag(TagKey<T> tagKey) {
 		if (isValidNamespace(tagKey.location().getNamespace())) {
@@ -39,14 +39,13 @@ public record EnhancedTagAppender<T extends Object>(TagsProvider.TagAppender<T> 
 	}
 
 	public EnhancedTagAppender<T> add(T entry) {
-		delegate.add(entry);
-		//TODO: Rework the #$*& outta this.
-		/*if (isValidNamespace(Objects.requireNonNull(entry.getRegistryName()).getNamespace())) {
+		ResourceLocation registryName = Objects.requireNonNull(forgeRegistry.getKey(entry));
+		if (isValidNamespace(registryName.getNamespace())) {
 			delegate.add(entry);
 		}
 		else {
-			addOptional(entry.getRegistryName());
-		}*/
+			addOptional(registryName);
+		}
 		return this;
 	}
 

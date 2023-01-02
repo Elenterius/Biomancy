@@ -1,11 +1,10 @@
 package com.github.elenterius.biomancy.loot;
 
 import com.github.elenterius.biomancy.init.ModItems;
-import com.google.gson.JsonObject;
+import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
-
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.animal.CatVariant;
@@ -21,19 +20,29 @@ import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.loot.LootModifier;
 import net.minecraftforge.common.loot.LootTableIdCondition;
 
-import java.util.List;
-import java.util.Random;
-
-import org.jetbrains.annotations.NotNull;
+import java.util.function.Supplier;
 
 public class CatMorningGiftLootModifier extends LootModifier {
 
+	public static final Supplier<Codec<CatMorningGiftLootModifier>> CODEC = Suppliers.memoize(() -> RecordCodecBuilder.create(inst ->
+			codecStart(inst).apply(inst, CatMorningGiftLootModifier::new)));
+
 	public CatMorningGiftLootModifier() {
-		this(LootItemEntityPropertyCondition.entityPresent(LootContext.EntityTarget.THIS).build(), LootTableIdCondition.builder(BuiltInLootTables.CAT_MORNING_GIFT).build());
+		this(
+				new LootItemCondition[]{
+						LootItemEntityPropertyCondition.entityPresent(LootContext.EntityTarget.THIS).build(),
+						LootTableIdCondition.builder(BuiltInLootTables.CAT_MORNING_GIFT).build()
+				}
+		);
 	}
 
-	public CatMorningGiftLootModifier(LootItemCondition... conditions) {
+	public CatMorningGiftLootModifier(LootItemCondition[] conditions) {
 		super(conditions);
+	}
+
+	@Override
+	public Codec<? extends IGlobalLootModifier> codec() {
+		return CODEC.get();
 	}
 
 	@Override
@@ -65,25 +74,5 @@ public class CatMorningGiftLootModifier extends LootModifier {
 
 		return generatedLoot;
 	}
-
-	@Override
-	public Codec<? extends IGlobalLootModifier> codec() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	//TODO: Work on this
-	/*public static class Serializer extends GlobalLootModifierSerializer<CatMorningGiftLootModifier> {
-
-		@Override
-		public CatMorningGiftLootModifier read(ResourceLocation location, JsonObject object, LootItemCondition[] conditions) {
-			return new CatMorningGiftLootModifier(conditions);
-		}
-
-		@Override
-		public JsonObject write(CatMorningGiftLootModifier instance) {
-			return makeConditions(instance.conditions);
-		}
-	}*/
 
 }

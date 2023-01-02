@@ -4,7 +4,6 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.loot.CatMorningGiftLootModifier;
 import com.github.elenterius.biomancy.loot.SpecialMobLootModifier;
 import com.mojang.serialization.Codec;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.registries.DeferredRegister;
@@ -15,10 +14,9 @@ import static com.github.elenterius.biomancy.BiomancyMod.createRL;
 
 public final class ModLoot {
 
-	//TODO: Re-enable this.
 	public static final DeferredRegister<Codec<? extends IGlobalLootModifier>> GLOBAL_MODIFIERS = DeferredRegister.create(ForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, BiomancyMod.MOD_ID);
-	//public static final RegistryObject<Codec<? extends IGlobalLootModifier>> SPECIAL_MOB_LOOT_SERIALIZER = GLOBAL_MODIFIERS.register("special_mob_loot", SpecialMobLootModifier.DIRECT_CODEC);
-	//public static final RegistryObject<Codec<? extends IGlobalLootModifier>> CAT_MORNING_GIFT_SERIALIZER = GLOBAL_MODIFIERS.register("cat_morning_gift", CatMorningGiftLootModifier.DIRECT_CODEC);
+	public static final RegistryObject<Codec<? extends IGlobalLootModifier>> SPECIAL_MOB_LOOT_SERIALIZER = GLOBAL_MODIFIERS.register("special_mob_loot", SpecialMobLootModifier.CODEC);
+	public static final RegistryObject<Codec<? extends IGlobalLootModifier>> CAT_MORNING_GIFT_SERIALIZER = GLOBAL_MODIFIERS.register("cat_morning_gift", CatMorningGiftLootModifier.CODEC);
 
 	private ModLoot() {}
 
