@@ -24,6 +24,7 @@ import com.github.elenterius.biomancy.tooltip.TabTooltipComponent;
 import com.github.elenterius.biomancy.world.item.SerumItem;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.RecipeBookCategories;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
@@ -167,6 +168,10 @@ public final class ClientSetupHandler {
 		event.registerRecipeCategoryFinder(ModRecipes.BIO_FORGING_RECIPE_TYPE.get(), (rc) -> ModRecipeBookCategories.BLOCKS_CATEGORY);
 		event.registerRecipeCategoryFinder(ModRecipes.BIO_FORGING_RECIPE_TYPE.get(), (rc) -> ModRecipeBookCategories.MACHINES_CATEGORY);
 		event.registerRecipeCategoryFinder(ModRecipes.BIO_FORGING_RECIPE_TYPE.get(), (rc) -> ModRecipeBookCategories.WEAPONS_CATEGORY);
+		
+		event.registerRecipeCategoryFinder(ModRecipes.BIO_BREWING_RECIPE_TYPE.get(), (rc) -> RecipeBookCategories.UNKNOWN);
+		event.registerRecipeCategoryFinder(ModRecipes.DECOMPOSING_RECIPE_TYPE.get(), (rc) -> RecipeBookCategories.UNKNOWN);
+		event.registerRecipeCategoryFinder(ModRecipes.DIGESTING_RECIPE_TYPE.get(), (rc) -> RecipeBookCategories.UNKNOWN);
 	}
 	
 	@SubscribeEvent
