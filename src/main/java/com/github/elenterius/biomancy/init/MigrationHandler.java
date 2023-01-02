@@ -2,15 +2,17 @@ package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.world.serum.Serum;
-import com.google.common.collect.ImmutableList;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.MissingMappingsEvent;
 import net.minecraftforge.registries.MissingMappingsEvent.Mapping;
+
+import java.util.List;
 
 /**
  * Currently MissingMappings Event fires on WRONG Bus (FORGE BUS) even though it implements IModBusEvent
@@ -24,31 +26,34 @@ public final class MigrationHandler {
 
 	private MigrationHandler() {}
 
+	@SubscribeEvent
+	public static void onMissingMappings(final MissingMappingsEvent event) {
+		handleMissingSerums(event.getMappings(ModSerums.SERUMS.getRegistryKey(), BiomancyMod.MOD_ID));
+		handleMissingItems(event.getMappings(ModItems.ITEMS.getRegistryKey(), BiomancyMod.MOD_ID));
+		handleMissingBlocks(event.getMappings(ModBlocks.BLOCKS.getRegistryKey(), BiomancyMod.MOD_ID));
+		handleMissingBlockEntityTypes(event.getMappings(ForgeRegistries.BLOCK_ENTITY_TYPES.getRegistryKey(), BiomancyMod.MOD_ID));
+	}
 
-	//TODO: Merge the code.
-	/*@SubscribeEvent
-	public static void onMissingSerumMappings(final MissingMappingsEvent event) {
-		
-		ImmutableList<Mapping<Serum>> mappingsSerum = event.getMappings(ModSerums.SERUMS.getEntries());
-		if (mappingsSerum.isEmpty()) return;
+	private static void handleMissingSerums(List<Mapping<Serum>> mappings) {
+		if (mappings.isEmpty()) return;
 
-		for (Mapping<Serum> mapping : mappingsSerum) {
+		for (Mapping<Serum> mapping : mappings) {
 			if (mapping.getKey().getPath().equals("growth_serum")) {
 				mapping.remap(ModSerums.AGEING_SERUM.get());
+			}
+			else {
+				mapping.ignore();
 			}
 		}
 	}
 
-	@SubscribeEvent
-	public static void onMissingBlockMappings(final RegistryEvent.MissingMappings<Block> event) {
-		ImmutableList<RegistryEvent.MissingMappings.Mapping<Block>> mappings = event.getMappings(BiomancyMod.MOD_ID);
+	public static void handleMissingBlocks(List<Mapping<Block>> mappings) {
 		if (mappings.isEmpty()) return;
 
 		BiomancyMod.LOGGER.info("found missing block mappings, attempting to remap...");
 
-		//version 1.0 -> Version 2.0
-		for (RegistryEvent.MissingMappings.Mapping<Block> mapping : mappings) {
-			String path = mapping.key.getPath();
+		for (Mapping<Block> mapping : mappings) {
+			String path = mapping.getKey().getPath();
 			switch (path) {
 				case "creator" -> mapping.remap(ModBlocks.PRIMORDIAL_CRADLE.get());
 				case "flesh_block" -> mapping.remap(ModBlocks.FLESH.get());
@@ -57,33 +62,31 @@ public final class MigrationHandler {
 				case "flesh_irisdoor" -> mapping.remap(ModBlocks.FLESH_IRIS_DOOR.get());
 				case "necrotic_flesh_block" -> mapping.remap(ModBlocks.MALIGNANT_FLESH.get());
 				case "flesh_tentacle" -> mapping.remap(ModBlocks.MALIGNANT_FLESH_VEINS.get());
-				default -> ignore();
+				default -> mapping.ignore();
 			}
 		}
 	}
 
-	@SubscribeEvent
-	public static void onMissingBlockEntityMappings(final RegistryEvent.MissingMappings<BlockEntityType<?>> event) {
-		ImmutableList<RegistryEvent.MissingMappings.Mapping<BlockEntityType<?>>> mappings = event.getMappings(BiomancyMod.MOD_ID);
+	public static void handleMissingBlockEntityTypes(List<Mapping<BlockEntityType<?>>> mappings) {
 		if (mappings.isEmpty()) return;
 
-		for (RegistryEvent.MissingMappings.Mapping<BlockEntityType<?>> mapping : mappings) {
-			if (mapping.key.getPath().equals("creator")) {
+		for (Mapping<BlockEntityType<?>> mapping : mappings) {
+			if (mapping.getKey().getPath().equals("creator")) {
 				mapping.remap(ModBlockEntities.PRIMORDIAL_CRADLE.get());
+			}
+			else {
+				mapping.ignore();
 			}
 		}
 	}
 
-	@SubscribeEvent
-	public static void onMissingItemMappings(final RegistryEvent.MissingMappings<Item> event) {
-		ImmutableList<RegistryEvent.MissingMappings.Mapping<Item>> mappings = event.getMappings(BiomancyMod.MOD_ID);
+	public static void handleMissingItems(List<Mapping<Item>> mappings) {
 		if (mappings.isEmpty()) return;
 
 		BiomancyMod.LOGGER.info("found missing item mappings, attempting to remap...");
 
-		//version 1.0 -> Version 2.0
-		for (RegistryEvent.MissingMappings.Mapping<Item> mapping : mappings) {
-			String path = mapping.key.getPath();
+		for (Mapping<Item> mapping : mappings) {
+			String path = mapping.getKey().getPath();
 			switch (path) {
 				case "creator" -> mapping.remap(ModItems.PRIMORDIAL_CRADLE.get());
 				case "flesh_block" -> mapping.remap(ModItems.FLESH_BLOCK.get());
@@ -103,18 +106,9 @@ public final class MigrationHandler {
 				case "digestate" -> mapping.remap(ModItems.ORGANIC_MATTER.get());
 				case "oxide_powder", "silicate_paste" -> mapping.remap(ModItems.MINERAL_FRAGMENT.get());
 				case "hormone_bile" -> mapping.remap(ModItems.HORMONE_SECRETION.get());
-				default -> ignore();
+				default -> mapping.ignore();
 			}
 		}
-	}*/
-
-//	@Subscribe
-//	public static void onChangedMappings(RegistryEvent.IdMappingEvent event) {
-//
-//	}
-
-	private static void ignore() {
-		//do nothing
 	}
 
 }
