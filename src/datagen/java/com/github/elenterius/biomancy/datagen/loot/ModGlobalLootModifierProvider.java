@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModLoot;
 import com.github.elenterius.biomancy.loot.CatMorningGiftLootModifier;
 import com.github.elenterius.biomancy.loot.SpecialMobLootModifier;
+import com.mojang.serialization.Codec;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.GlobalLootModifierProvider;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
@@ -15,15 +16,14 @@ public class ModGlobalLootModifierProvider extends GlobalLootModifierProvider {
 		super(gen, BiomancyMod.MOD_ID);
 	}
 
-	//TODO: Change this code.
 	@Override
 	protected void start() {
-		//addLootModifier(ModLoot.SPECIAL_MOB_LOOT_SERIALIZER, new SpecialMobLootModifier());
-		//addLootModifier(ModLoot.CAT_MORNING_GIFT_SERIALIZER, new CatMorningGiftLootModifier());
+		addLootModifier(ModLoot.SPECIAL_MOB_LOOT_SERIALIZER, new SpecialMobLootModifier());
+		addLootModifier(ModLoot.CAT_MORNING_GIFT_SERIALIZER, new CatMorningGiftLootModifier());
 	}
 
-	/*protected <T extends IGlobalLootModifier> void addLootModifier(RegistryObject<GlobalLootModifierSerializer<T>> serializerHolder, T lootModifier) {
-		add(serializerHolder.getId().getPath(), serializerHolder.get(), lootModifier);
-	}*/
+	protected <T extends IGlobalLootModifier> void addLootModifier(RegistryObject<Codec<? extends T>> codecSupplier, T lootModifier) {
+		add(codecSupplier.getId().getPath(), lootModifier);
+	}
 
 }
