@@ -157,7 +157,7 @@ public final class ClientSetupHandler {
 	}
 	
 	@SubscribeEvent
-	public static void onModelBakeEvent(ModelEvent event) {
+	public static void onModelBakeEvent(ModelEvent.RegisterAdditional event) {
 		//block with "glowing" overlay texture
 		//addFullBrightOverlayBakedModel(ModBlocks.FOOBAR.get(), event);
 	}
