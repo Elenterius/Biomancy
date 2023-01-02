@@ -164,10 +164,7 @@ public final class ClientSetupHandler {
 	public static void registerRecipeBooks(RegisterRecipeBookCategoriesEvent event) {
 		event.registerBookCategories(ModRecipeBookTypes.BIO_FORGE, ModRecipeBookCategories.BIOFORGE_CATEGORIES);
 		event.registerAggregateCategory(ModRecipeBookCategories.SEARCH_CATEGORY, ModRecipeBookCategories.BIOFORGE_CATEGORIES);
-		event.registerRecipeCategoryFinder(ModRecipes.BIO_FORGING_RECIPE_TYPE.get(), (rc) -> ModRecipeBookCategories.MISC_CATEGORY);
-		event.registerRecipeCategoryFinder(ModRecipes.BIO_FORGING_RECIPE_TYPE.get(), (rc) -> ModRecipeBookCategories.BLOCKS_CATEGORY);
-		event.registerRecipeCategoryFinder(ModRecipes.BIO_FORGING_RECIPE_TYPE.get(), (rc) -> ModRecipeBookCategories.MACHINES_CATEGORY);
-		event.registerRecipeCategoryFinder(ModRecipes.BIO_FORGING_RECIPE_TYPE.get(), (rc) -> ModRecipeBookCategories.WEAPONS_CATEGORY);
+		event.registerRecipeCategoryFinder(ModRecipes.BIO_FORGING_RECIPE_TYPE.get(), (rc) -> ModRecipeBookCategories.BIO_FORGE_BOOK_CATEGORIES_FINDER.apply(rc));
 		
 		event.registerRecipeCategoryFinder(ModRecipes.BIO_BREWING_RECIPE_TYPE.get(), (rc) -> RecipeBookCategories.UNKNOWN);
 		event.registerRecipeCategoryFinder(ModRecipes.DECOMPOSING_RECIPE_TYPE.get(), (rc) -> RecipeBookCategories.UNKNOWN);

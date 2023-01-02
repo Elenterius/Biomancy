@@ -32,7 +32,7 @@ public final class ModRecipeBookCategories {
 	public static final RecipeBookCategories WEAPONS_CATEGORY = createRecipeBookCategories(ModBioForgeTabs.WEAPONS);
 	public static final List<RecipeBookCategories> BIOFORGE_CATEGORIES = ImmutableList.of(SEARCH_CATEGORY, MISC_CATEGORY, BLOCKS_CATEGORY, MACHINES_CATEGORY, WEAPONS_CATEGORY);
 	
-	private static final Function<Recipe<?>, RecipeBookCategories> BIO_FORGE_BOOK_CATEGORIES_FINDER = recipe -> {
+	public static final Function<Recipe<?>, RecipeBookCategories> BIO_FORGE_BOOK_CATEGORIES_FINDER = recipe -> {
 		if (recipe instanceof BioForgeRecipe bioForgeRecipe) {
 			return BIO_FORGE_TAB_TO_CATEGORY.get(bioForgeRecipe.getTab().enumId());
 		}
