@@ -55,7 +55,7 @@ jobs:
           version-path: 'semantic'
           output-file: 'false'
           git-message: 'chore(release): {version}'
-          tag-prefix: 'v2.'
+          tag-prefix: '${{ github.head_ref || github.ref_name }}-2.'
           create-summary: true
 
       - name: Set Output  #supports setting multiline output
