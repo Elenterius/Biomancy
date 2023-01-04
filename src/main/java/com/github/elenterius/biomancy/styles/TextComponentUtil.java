@@ -1,8 +1,9 @@
 package com.github.elenterius.biomancy.styles;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
@@ -14,8 +15,8 @@ public final class TextComponentUtil {
 		return prefix + "." + BiomancyMod.MOD_ID + "." + suffix;
 	}
 
-	public static TranslatableComponent getTranslationText(String prefix, String suffix) {
-		return new TranslatableComponent(getTranslationKey(prefix, suffix));
+	public static MutableComponent getTranslationText(String prefix, String suffix) {
+		return ComponentUtil.translatable(getTranslationKey(prefix, suffix));
 	}
 
 	public static String getItemTooltipKey(Item item) {
@@ -26,24 +27,24 @@ public final class TextComponentUtil {
 		return block.getDescriptionId() + ".tooltip";
 	}
 
-	public static TranslatableComponent getItemTooltip(Item item) {
-		return new TranslatableComponent(getItemTooltipKey(item));
+	public static MutableComponent getItemTooltip(Item item) {
+		return ComponentUtil.translatable(getItemTooltipKey(item));
 	}
 
-	public static TranslatableComponent getTooltipText(String tooltipKey) {
-		return new TranslatableComponent(getTranslationKey("tooltip", tooltipKey));
+	public static MutableComponent getTooltipText(String tooltipKey) {
+		return ComponentUtil.translatable(getTranslationKey("tooltip", tooltipKey));
 	}
 
-	public static TranslatableComponent getTooltipText(String tooltipKey, Object... formatArgs) {
-		return new TranslatableComponent(getTranslationKey("tooltip", tooltipKey), formatArgs);
+	public static MutableComponent getTooltipText(String tooltipKey, Object... formatArgs) {
+		return ComponentUtil.translatable(getTranslationKey("tooltip", tooltipKey), formatArgs);
 	}
 
-	public static TranslatableComponent getMsgText(String msgKey) {
-		return new TranslatableComponent(getTranslationKey("msg", msgKey));
+	public static MutableComponent getMsgText(String msgKey) {
+		return ComponentUtil.translatable(getTranslationKey("msg", msgKey));
 	}
 
-	public static TranslatableComponent getMsgText(String msgKey, Object... formatArgs) {
-		return new TranslatableComponent(getTranslationKey("msg", msgKey), formatArgs);
+	public static MutableComponent getMsgText(String msgKey, Object... formatArgs) {
+		return ComponentUtil.translatable(getTranslationKey("msg", msgKey), formatArgs);
 	}
 
 	public static Component getFailureMsgText(String msgKey) {

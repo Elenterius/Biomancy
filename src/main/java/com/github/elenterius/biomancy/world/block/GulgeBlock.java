@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.world.block;
 
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.world.block.entity.GulgeBlockEntity;
@@ -8,7 +9,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -131,7 +131,7 @@ public class GulgeBlock extends BaseEntityBlock {
 					short itemAmount = invNbt.getShort(LargeSingleItemStackHandler.ITEM_AMOUNT_TAG);
 					tooltip.add(TextComponentUtil.getTooltipText("contains", storedStack.getHoverName().copy()).withStyle(ChatFormatting.GRAY));
 					DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
-					tooltip.add(new TextComponent(df.format(itemAmount) + "/" + df.format(GulgeBlockEntity.MAX_ITEM_AMOUNT)).withStyle(ChatFormatting.GRAY));
+					tooltip.add(ComponentUtil.literal(df.format(itemAmount) + "/" + df.format(GulgeBlockEntity.MAX_ITEM_AMOUNT)).withStyle(ChatFormatting.GRAY));
 					return;
 				}
 			}

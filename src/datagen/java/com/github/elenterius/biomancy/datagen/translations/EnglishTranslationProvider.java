@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.datagen.translations;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.init.client.ClientSetupHandler;
@@ -14,6 +15,7 @@ import com.github.elenterius.biomancy.world.serum.Serum;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.HashCache;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -242,10 +244,10 @@ public class EnglishTranslationProvider extends LanguageProvider {
 
 		addAdvancementTranslations();
 
-		add(ClientTextUtil.getCtrlKey().getKey(), "ctrl");
-		add(ClientTextUtil.getAltKey().getKey(), "alt");
-		add(ClientTextUtil.getShiftKey().getKey(), "shift");
-		add(ClientTextUtil.getRightMouseKey().getKey(), "right mouse");
+		add(ClientTextUtil.getCtrlKey(), "ctrl");
+		add(ClientTextUtil.getAltKey(), "alt");
+		add(ClientTextUtil.getShiftKey(), "shift");
+		add(ClientTextUtil.getRightMouseKey(), "right mouse");
 
 		add("jei.biomancy.recipe.bio_lab", "Bio-Lab Recipes");
 		add("jei.biomancy.recipe.decomposer", "Decomposer Recipes");
@@ -519,12 +521,12 @@ public class EnglishTranslationProvider extends LanguageProvider {
 				return "advancements.biomancy." + id + ".description";
 			}
 
-			public TranslatableComponent getTitle() {
-				return new TranslatableComponent(getTitleKey());
+			public MutableComponent getTitle() {
+				return ComponentUtil.translatable(getTitleKey());
 			}
 
-			public TranslatableComponent getDescription() {
-				return new TranslatableComponent(getDescriptionKey());
+			public MutableComponent getDescription() {
+				return ComponentUtil.translatable(getDescriptionKey());
 			}
 
 		}

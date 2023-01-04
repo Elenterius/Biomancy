@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.integration.jei;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.recipe.DigesterRecipe;
@@ -19,8 +20,6 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -53,7 +52,7 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 
 	@Override
 	public Component getTitle() {
-		return new TranslatableComponent("jei.biomancy.recipe.digester");
+		return ComponentUtil.translatable("jei.biomancy.recipe.digester");
 	}
 
 	@Override
@@ -79,11 +78,11 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 
 		int ticks = recipe.getCraftingTime();
 		int seconds = ticks > 0 ? ticks / 20 : 0;
-		Component timeText = new TranslatableComponent("gui.jei.category.smelting.time.seconds", seconds);
+		Component timeText = ComponentUtil.translatable("gui.jei.category.smelting.time.seconds", seconds);
 		fontRenderer.draw(poseStack, timeText, 48, 44 - fontRenderer.lineHeight, 0xff808080);
 
 		int fuelCost = NutrientFuelUtil.getFuelCost(DigesterBlockEntity.BASE_COST, ticks);
-		Component costText = new TextComponent("-" + fuelCost);
+		Component costText = ComponentUtil.literal("-" + fuelCost);
 		fontRenderer.draw(poseStack, costText, 15, 44 - fontRenderer.lineHeight, 0xff808080);
 	}
 

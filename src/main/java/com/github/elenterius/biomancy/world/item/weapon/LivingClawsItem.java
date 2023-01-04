@@ -1,16 +1,15 @@
 package com.github.elenterius.biomancy.world.item.weapon;
 
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
-import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.world.entity.MobUtil;
 import com.github.elenterius.biomancy.world.item.IKeyListener;
 import com.github.elenterius.biomancy.world.item.ILivingToolItem;
 import com.github.elenterius.biomancy.world.item.state.LivingToolState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -159,15 +158,15 @@ public class LivingClawsItem extends SimpleClawsItem implements ILivingToolItem,
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tooltip, isAdvanced);
 
-		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
+		tooltip.add(ComponentUtil.emptyLine());
 		appendLivingToolTooltip(stack, tooltip);
-		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
+		tooltip.add(ComponentUtil.emptyLine());
 		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action.cycle")));
 	}
 
 	@Override
 	public Component getHighlightTip(ItemStack stack, Component displayName) {
-		return new TextComponent("").append(displayName).append(" (").append(getLivingToolState(stack).getDisplayName()).append(")");
+		return ComponentUtil.mutable().append(displayName).append(" (").append(getLivingToolState(stack).getDisplayName()).append(")");
 	}
 
 }

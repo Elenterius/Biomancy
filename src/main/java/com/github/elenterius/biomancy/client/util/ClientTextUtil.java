@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.client.util;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.init.client.ClientSetupHandler;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
@@ -9,7 +10,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -24,11 +24,11 @@ import java.util.UUID;
 
 public final class ClientTextUtil {
 
-	private static final TranslatableComponent CTRL_KEY_TEXT = new TranslatableComponent("keyboard." + BiomancyMod.MOD_ID + ".ctrl");
-	private static final TranslatableComponent ALT_KEY_TEXT = new TranslatableComponent("keyboard." + BiomancyMod.MOD_ID + ".alt");
-	private static final TranslatableComponent SHIFT_KEY_TEXT = new TranslatableComponent("keyboard." + BiomancyMod.MOD_ID + ".shift");
-	private static final TranslatableComponent RIGHT_MOUSE_KEY_TEXT = new TranslatableComponent("keyboard." + BiomancyMod.MOD_ID + ".right_mouse");
-	private static final TranslatableComponent SHOW_INFO = new TranslatableComponent("tooltip." + BiomancyMod.MOD_ID + ".action.show_info");
+	private static final MutableComponent CTRL_KEY_TEXT = ComponentUtil.translatable("keyboard." + BiomancyMod.MOD_ID + ".ctrl");
+	private static final MutableComponent ALT_KEY_TEXT = ComponentUtil.translatable("keyboard." + BiomancyMod.MOD_ID + ".alt");
+	private static final MutableComponent SHIFT_KEY_TEXT = ComponentUtil.translatable("keyboard." + BiomancyMod.MOD_ID + ".shift");
+	private static final MutableComponent RIGHT_MOUSE_KEY_TEXT = ComponentUtil.translatable("keyboard." + BiomancyMod.MOD_ID + ".right_mouse");
+	private static final MutableComponent SHOW_INFO = ComponentUtil.translatable("tooltip." + BiomancyMod.MOD_ID + ".action.show_info");
 
 	private static DecimalFormat decimalFormat = null;
 	private static String prevPattern = "";
@@ -66,23 +66,23 @@ public final class ClientTextUtil {
 		return flag;
 	}
 
-	public static TranslatableComponent pressButtonTo(MutableComponent key, Object action) {
-		return new TranslatableComponent(TextComponentUtil.getTranslationKey("tooltip", "press_button_to"), key.withStyle(TextStyles.KEYBOARD_INPUT), action);
+	public static MutableComponent pressButtonTo(MutableComponent key, Object action) {
+		return ComponentUtil.translatable(TextComponentUtil.getTranslationKey("tooltip", "press_button_to"), key.withStyle(TextStyles.KEYBOARD_INPUT), action);
 	}
 
-	public static TranslatableComponent getAltKey() {
+	public static MutableComponent getAltKey() {
 		return ALT_KEY_TEXT.plainCopy();
 	}
 
-	public static TranslatableComponent getCtrlKey() {
+	public static MutableComponent getCtrlKey() {
 		return CTRL_KEY_TEXT.plainCopy();
 	}
 
-	public static TranslatableComponent getShiftKey() {
+	public static MutableComponent getShiftKey() {
 		return SHIFT_KEY_TEXT.plainCopy();
 	}
 
-	public static TranslatableComponent getRightMouseKey() {
+	public static MutableComponent getRightMouseKey() {
 		return RIGHT_MOUSE_KEY_TEXT.plainCopy();
 	}
 

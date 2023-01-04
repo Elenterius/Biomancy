@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.client.gui;
 
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import com.github.elenterius.biomancy.styles.ColorStyles;
@@ -21,8 +22,6 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
@@ -42,7 +41,7 @@ public class InjectorScreen extends Screen {
 	private InteractionHand itemHoldingHand;
 
 	public InjectorScreen(InteractionHand hand) {
-		super(new TranslatableComponent("biomancy.injector.wheel_menu"));
+		super(ComponentUtil.translatable("biomancy.injector.wheel_menu"));
 		itemHoldingHand = hand;
 	}
 
@@ -197,13 +196,13 @@ public class InjectorScreen extends Screen {
 		//draw text for selected section
 		MutableComponent text;
 		if (stack.isEmpty()) {
-			text = new TextComponent("Clear").withStyle(TextStyles.ERROR);
+			text = ComponentUtil.literal("Clear").withStyle(TextStyles.ERROR);
 		}
 		else if (stack.getItem() == Items.BARRIER) {
-			text = new TextComponent("Cancel");
+			text = ComponentUtil.literal("Cancel");
 		}
 		else {
-			text = new TextComponent("").append(stack.getHoverName()).withStyle(stack.getRarity().getStyleModifier());
+			text = ComponentUtil.mutable().append(stack.getHoverName()).withStyle(stack.getRarity().getStyleModifier());
 			if (stack.hasCustomHoverName()) text.withStyle(ChatFormatting.ITALIC);
 		}
 

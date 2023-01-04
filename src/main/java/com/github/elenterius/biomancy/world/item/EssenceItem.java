@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.world.item;
 
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
@@ -7,8 +8,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -121,14 +120,14 @@ public class EssenceItem extends Item implements ICustomTooltip {
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack));
 
 		CompoundTag tag = stack.getOrCreateTag();
 		if (tag.contains(KEY_DATA)) {
 			CompoundTag subTag = tag.getCompound(KEY_DATA);
 			if (subTag.getBoolean(KEY_IS_PLAYER)) {
 				String name = ClientTextUtil.tryToGetPlayerNameOnClientSide(subTag.getUUID(KEY_ENTITY_UUID));
-				tooltip.add(new TextComponent(name).withStyle(ChatFormatting.GRAY));
+				tooltip.add(ComponentUtil.literal(name).withStyle(ChatFormatting.GRAY));
 			}
 			tooltip.add(TextComponentUtil.getTooltipText("contains_unique_dna").withStyle(ChatFormatting.GRAY));
 		}
@@ -154,7 +153,7 @@ public class EssenceItem extends Item implements ICustomTooltip {
 		CompoundTag tag = stack.getOrCreateTag();
 		if (tag.contains(KEY_DATA)) {
 			CompoundTag subTag = tag.getCompound(KEY_DATA);
-			return new TranslatableComponent(subTag.getString(KEY_ENTITY_NAME));
+			return ComponentUtil.translatable(subTag.getString(KEY_ENTITY_NAME));
 		}
 		return null;
 	}

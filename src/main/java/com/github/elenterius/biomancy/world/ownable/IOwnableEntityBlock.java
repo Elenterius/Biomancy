@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.world.ownable;
 
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
-import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.world.block.entity.OwnableBlockEntity;
 import com.github.elenterius.biomancy.world.permission.UserType;
 import net.minecraft.ChatFormatting;
@@ -12,7 +12,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -73,18 +72,18 @@ public interface IOwnableEntityBlock extends EntityBlock {
 			ownerName = ClientTextUtil.tryToGetPlayerNameOnClientSide(entityData.getUUID(NBT_KEY_OWNER));
 		}
 
-		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
-		tooltip.add(TextComponentUtil.getTooltipText("owner", new TextComponent(ownerName).withStyle(ChatFormatting.WHITE)).withStyle(ChatFormatting.GRAY));
+		tooltip.add(ComponentUtil.emptyLine());
+		tooltip.add(TextComponentUtil.getTooltipText("owner", ComponentUtil.literal(ownerName).withStyle(ChatFormatting.WHITE)).withStyle(ChatFormatting.GRAY));
 
 		if (entityData.contains(NBT_KEY_USER_LIST)) {
 			ListTag nbtList = entityData.getList(NBT_KEY_USER_LIST, Tag.TAG_COMPOUND);
-			tooltip.add(new TextComponent("Users: ").withStyle(ChatFormatting.GRAY));
+			tooltip.add(ComponentUtil.literal("Users: ").withStyle(ChatFormatting.GRAY));
 			int limit = Screen.hasControlDown() ? Math.min(5, nbtList.size()) : nbtList.size();
 			for (int i = 0; i < limit; i++) {
 				CompoundTag userNbt = nbtList.getCompound(i);
 				String userName = ClientTextUtil.tryToGetPlayerNameOnClientSide(userNbt.getUUID(NBT_KEY_USER));
 				UserType level = UserType.deserialize(userNbt);
-				tooltip.add(new TextComponent(String.format(" - %s (%s)", userName, level.name().toLowerCase(Locale.ROOT))).withStyle(ChatFormatting.GRAY));
+				tooltip.add(ComponentUtil.literal(String.format(" - %s (%s)", userName, level.name().toLowerCase(Locale.ROOT))).withStyle(ChatFormatting.GRAY));
 			}
 			int remainder = nbtList.size() - limit;
 			if (remainder > 0) {

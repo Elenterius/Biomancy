@@ -1,15 +1,13 @@
 package com.github.elenterius.biomancy.world.item;
 
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.styles.TextStyles;
-import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.item.state.LivingToolState;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
@@ -136,19 +134,19 @@ public interface ILivingToolItem extends INutrientsContainerItem {
 	default void appendLivingToolTooltip(ItemStack stack, List<Component> tooltip) {
 		tooltip.add(getLivingToolState(stack).getTooltip().withStyle(TextStyles.ITALIC_GRAY));
 
-		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
+		tooltip.add(ComponentUtil.emptyLine());
 
 		DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
-		tooltip.add(new TranslatableComponent("tooltip.biomancy.nutrients_fuel").withStyle(ChatFormatting.GRAY));
-		tooltip.add(new TextComponent("%s/%s u".formatted(df.format(getNutrients(stack)), df.format(getMaxNutrients(stack)))).withStyle(TextStyles.NUTRIENTS));
+		tooltip.add(ComponentUtil.translatable("tooltip.biomancy.nutrients_fuel").withStyle(ChatFormatting.GRAY));
+		tooltip.add(ComponentUtil.literal("%s/%s u".formatted(df.format(getNutrients(stack)), df.format(getMaxNutrients(stack)))).withStyle(TextStyles.NUTRIENTS));
 
-		//		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
+		//		tooltip.add(ComponentUtil.emptyLine());
 		//
-		//		tooltip.add(new TranslatableComponent("tooltip.biomancy.consumption").withStyle(ChatFormatting.GRAY));
+		//		tooltip.add(ComponentUtil.translatable("tooltip.biomancy.consumption").withStyle(ChatFormatting.GRAY));
 		//		for (ToolAction toolAction : getLivingToolActions(stack)) {
 		//			int actionCost = getLivingToolActionCost(stack, toolAction);
 		//			String text = "%s:  %s u".formatted(toolAction.name(), df.format(actionCost));
-		//			tooltip.add(new TextComponent(text).withStyle(TextStyles.NUTRIENTS_CONSUMPTION));
+		//			tooltip.add(ComponentUtil.literal(text).withStyle(TextStyles.NUTRIENTS_CONSUMPTION));
 		//		}
 	}
 

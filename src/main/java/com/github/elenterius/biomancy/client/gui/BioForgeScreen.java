@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.gui.component.CustomEditBox;
 import com.github.elenterius.biomancy.client.util.ClientSoundUtil;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
@@ -16,7 +17,6 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ClickType;
@@ -46,9 +46,9 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 	protected void init() {
 		super.init();
 
-		searchInput = new CustomEditBox(Objects.requireNonNull(minecraft).font, leftPos + 26, topPos + 16, 78, 14, new TranslatableComponent("itemGroup.search"));
+		searchInput = new CustomEditBox(Objects.requireNonNull(minecraft).font, leftPos + 26, topPos + 16, 78, 14, ComponentUtil.translatable("itemGroup.search"));
 		searchInput.setMaxLength(50);
-		searchInput.setTextHint(new TranslatableComponent("gui.recipebook.search_hint").withStyle(Style.EMPTY.withItalic(true).withColor(ColorStyles.TEXT_ACCENT_FORGE_DARK)));
+		searchInput.setTextHint(ComponentUtil.translatable("gui.recipebook.search_hint").withStyle(Style.EMPTY.withItalic(true).withColor(ColorStyles.TEXT_ACCENT_FORGE_DARK)));
 		searchInput.setTextColor(ColorStyles.TEXT_ACCENT_FORGE);
 
 		recipeBook = new BioForgeScreenController(minecraft, menu);

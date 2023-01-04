@@ -1,9 +1,9 @@
 package com.github.elenterius.biomancy.world.block;
 
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.styles.TextStyles;
-import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.world.block.entity.FleshkinChestBlockEntity;
 import com.github.elenterius.biomancy.world.ownable.IOwnableEntityBlock;
 import com.github.elenterius.biomancy.world.permission.Actions;
@@ -21,8 +21,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -82,7 +80,7 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 		super.fillItemCategory(tab, items);
 
 		ItemStack stack = new ItemStack(this);
-		stack.setHoverName(new TextComponent("[TEST/other_owner] ").append(stack.getHoverName()));
+		stack.setHoverName(ComponentUtil.literal("[TEST/other_owner] ").append(stack.getHoverName()));
 		CompoundTag tag = new CompoundTag();
 		tag.putUUID(IOwnableEntityBlock.NBT_KEY_OWNER, Util.NIL_UUID);
 		BlockItem.setBlockEntityData(stack, ModBlockEntities.FLESHKIN_CHEST.get(), tag);
@@ -245,7 +243,7 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 
 		CompoundTag tag = BlockItem.getBlockEntityData(stack);
 		if (tag != null) {
-			tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
+			tooltip.add(ComponentUtil.emptyLine());
 
 			if (isAuthorized(Minecraft.getInstance().player.getUUID(), tag)) {
 				CompoundTag inventoryTag = tag.getCompound("Inventory");
@@ -269,14 +267,14 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 					}
 
 					if (totalCount - count > 0) {
-						tooltip.add((new TranslatableComponent("container.shulkerBox.more", totalCount - count)).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
+						tooltip.add((ComponentUtil.translatable("container.shulkerBox.more", totalCount - count)).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
 					}
-					tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
-					tooltip.add(new TextComponent(String.format("%d/%d ", totalCount, FleshkinChestBlockEntity.SLOTS)).append(new TranslatableComponent("tooltip.biomancy.slots")).withStyle(ChatFormatting.GRAY));
+					tooltip.add(ComponentUtil.emptyLine());
+					tooltip.add(ComponentUtil.literal(String.format("%d/%d ", totalCount, FleshkinChestBlockEntity.SLOTS)).append(ComponentUtil.translatable("tooltip.biomancy.slots")).withStyle(ChatFormatting.GRAY));
 				}
 			}
 			else {
-				tooltip.add(new TextComponent("Who are you? I don't like you!").withStyle(TextStyles.MAYKR_RUNES_GRAY));
+				tooltip.add(ComponentUtil.literal("Who are you? I don't like you!").withStyle(TextStyles.MAYKR_RUNES_GRAY));
 			}
 		}
 	}

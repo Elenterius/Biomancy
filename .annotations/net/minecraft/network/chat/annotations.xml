@@ -1,0 +1,26 @@
+<root>
+    <item name='net.minecraft.network.chat.Component net.minecraft.network.chat.Component nullToEmpty(java.lang.String)'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+    <item name='net.minecraft.network.chat.KeybindComponent KeybindComponent(java.lang.String)'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+    <item name='net.minecraft.network.chat.ScoreComponent ScoreComponent(java.lang.String, java.lang.String)'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+    <item name='net.minecraft.network.chat.SelectorComponent SelectorComponent(java.lang.String, java.util.Optional&lt;net.minecraft.network.chat.Component&gt;)'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+    <item name='net.minecraft.network.chat.TextComponent EMPTY'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+    <item name='net.minecraft.network.chat.TextComponent TextComponent(java.lang.String)'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+    <item name='net.minecraft.network.chat.TranslatableComponent TranslatableComponent(java.lang.String)'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+    <item name='net.minecraft.network.chat.TranslatableComponent TranslatableComponent(java.lang.String, java.lang.Object...)'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+</root>

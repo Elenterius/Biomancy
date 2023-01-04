@@ -1,11 +1,11 @@
 package com.github.elenterius.biomancy.world.item;
 
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.gui.InjectorScreen;
 import com.github.elenterius.biomancy.client.renderer.item.InjectorRenderer;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
-import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.entity.MobUtil;
 import com.github.elenterius.biomancy.world.inventory.InjectorItemInventory;
@@ -21,7 +21,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -437,18 +436,18 @@ public class InjectorItem extends Item implements ISerumProvider, ICustomTooltip
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		tooltip.add(TooltipHacks.HR_COMPONENT);
+		tooltip.add(ComponentUtil.horizontalLine());
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack));
-		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
+		tooltip.add(ComponentUtil.emptyLine());
 
 		CompoundTag tag = stack.getOrCreateTag();
 		if (tag.contains(INVENTORY_TAG)) {
 			Serum serum = getSerum(stack);
 			if (!serum.isEmpty()) {
 				short amount = tag.getCompound(INVENTORY_TAG).getShort(LargeSingleItemStackHandler.ITEM_AMOUNT_TAG);
-				tooltip.add(new TextComponent(String.format("%dx ", amount)).append(serum.getDisplayName()).withStyle(ChatFormatting.GRAY));
+				tooltip.add(ComponentUtil.literal(String.format("%dx ", amount)).append(serum.getDisplayName()).withStyle(ChatFormatting.GRAY));
 				serum.appendTooltip(stack, level, tooltip, isAdvanced);
-				tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
+				tooltip.add(ComponentUtil.emptyLine());
 			}
 		}
 
@@ -459,7 +458,7 @@ public class InjectorItem extends Item implements ISerumProvider, ICustomTooltip
 	@Override
 	public Component getHighlightTip(ItemStack stack, Component displayName) {
 		Serum serum = getSerum(stack);
-		return serum.isEmpty() ? displayName : new TextComponent("").append(displayName).append(" (").append(serum.getDisplayName()).append(")");
+		return serum.isEmpty() ? displayName : ComponentUtil.mutable().append(displayName).append(" (").append(serum.getDisplayName()).append(")");
 	}
 
 	@Override

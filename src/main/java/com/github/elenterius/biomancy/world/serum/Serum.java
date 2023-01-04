@@ -1,12 +1,13 @@
 package com.github.elenterius.biomancy.world.serum;
 
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -80,7 +81,7 @@ public abstract class Serum extends ForgeRegistryEntry<Serum> {
 
 	public void appendTooltip(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		if (ClientTextUtil.showExtraInfo(tooltip)) {
-			tooltip.add(new TranslatableComponent(getTooltipKey()).withStyle(TextStyles.LORE));
+			tooltip.add(ComponentUtil.translatable(getTooltipKey()).withStyle(TextStyles.LORE));
 		}
 	}
 
@@ -92,8 +93,8 @@ public abstract class Serum extends ForgeRegistryEntry<Serum> {
 		return getTranslationKey(Objects.requireNonNull(getRegistryName()));
 	}
 
-	public TranslatableComponent getDisplayName() {
-		return new TranslatableComponent(getTranslationKey());
+	public MutableComponent getDisplayName() {
+		return ComponentUtil.translatable(getTranslationKey());
 	}
 
 	public int getColor() {

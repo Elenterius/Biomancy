@@ -1,13 +1,12 @@
 package com.github.elenterius.biomancy.world.item;
 
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
-import com.github.elenterius.biomancy.styles.TooltipHacks;
-import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import com.github.elenterius.biomancy.util.MobSoundUtil;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.entity.MobUtil;
@@ -26,7 +25,6 @@ import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -38,7 +36,6 @@ import net.minecraft.world.phys.AABB;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Optional;
 
 public class BioExtractorItem extends Item implements IKeyListener, ICustomTooltip {
 
@@ -143,14 +140,11 @@ public class BioExtractorItem extends Item implements IKeyListener, ICustomToolt
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
+		tooltip.add(ComponentUtil.horizontalLine());
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack));
+		tooltip.add(ComponentUtil.emptyLine());
 		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTranslationText("tooltip", "action_self_extract")).withStyle(ChatFormatting.DARK_GRAY));
-		if (stack.isEnchanted()) tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
-	}
-
-	@Override
-	public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
-		return Optional.of(new HrTooltipComponent());
+		if (stack.isEnchanted()) tooltip.add(ComponentUtil.emptyLine());
 	}
 
 }

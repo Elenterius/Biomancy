@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.integration.jei;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.recipe.BioForgeRecipe;
@@ -19,8 +20,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -55,7 +55,7 @@ public class BioForgeRecipeCategory implements IRecipeCategory<BioForgeRecipe> {
 
 	@Override
 	public Component getTitle() {
-		return new TranslatableComponent("jei.biomancy.recipe.bio_forge");
+		return ComponentUtil.translatable("jei.biomancy.recipe.bio_forge");
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class BioForgeRecipeCategory implements IRecipeCategory<BioForgeRecipe> {
 	public void draw(BioForgeRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
 		Font fontRenderer = Minecraft.getInstance().font;
 		int fuelCost = 1; //TODO: use constant
-		TextComponent costString = new TextComponent("-" + fuelCost);
+		MutableComponent costString = ComponentUtil.literal("-" + fuelCost);
 		fontRenderer.draw(poseStack, costString, 108, 32f - fontRenderer.lineHeight + 1, 0xff808080);
 	}
 }

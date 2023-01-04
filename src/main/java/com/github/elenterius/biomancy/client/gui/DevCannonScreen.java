@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.client.gui;
 
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
 import com.github.elenterius.biomancy.init.ModProjectiles;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
@@ -15,8 +16,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
@@ -33,7 +32,7 @@ public class DevCannonScreen extends Screen {
 	private InteractionHand itemHoldingHand;
 
 	public DevCannonScreen(InteractionHand hand) {
-		super(new TranslatableComponent("biomancy.dev.wheel_menu"));
+		super(ComponentUtil.translatable("biomancy.dev.wheel_menu"));
 		itemHoldingHand = hand;
 	}
 
@@ -176,7 +175,7 @@ public class DevCannonScreen extends Screen {
 		if (radius <= baseRadius - 1) return;
 
 		//draw text for selected section
-		MutableComponent text = configuredProjectile == null ? new TextComponent("Cancel") : new TextComponent(configuredProjectile.name());
+		MutableComponent text = configuredProjectile == null ? ComponentUtil.literal("Cancel") : ComponentUtil.literal(configuredProjectile.name());
 
 		int textRadius = radius + 16 + 8 + 2;
 		float xt = x + textRadius * Mth.cos(textAngle);

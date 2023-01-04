@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.world.item.weapon;
 
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.gui.DevCannonScreen;
 import com.github.elenterius.biomancy.client.renderer.item.DevArmCannonRenderer;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
@@ -7,7 +8,6 @@ import com.github.elenterius.biomancy.init.ModProjectiles;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
-import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.world.item.IArmPoseProvider;
 import com.github.elenterius.biomancy.world.item.ICustomTooltip;
 import com.github.elenterius.biomancy.world.item.IKeyListener;
@@ -17,7 +17,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -147,20 +146,20 @@ public class DevArmCannonItem extends Item implements IAnimatable, IArmPoseProvi
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		tooltip.add(TooltipHacks.HR_COMPONENT);
-		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
+		tooltip.add(ComponentUtil.horizontalLine());
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack));
 
-		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
-		tooltip.add(new TextComponent("The quick brown fox jumps over the lazy dog.").withStyle(TextStyles.MAYKR_RUNES_GRAY));
+		tooltip.add(ComponentUtil.emptyLine());
+		tooltip.add(ComponentUtil.literal("The quick brown fox jumps over the lazy dog.").withStyle(TextStyles.MAYKR_RUNES_GRAY));
 
-		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
+		tooltip.add(ComponentUtil.emptyLine());
 		byte index = stack.getOrCreateTag().getByte("ProjectileIndex");
 		if (index < 0 || index >= ModProjectiles.PRECONFIGURED_PROJECTILES.size()) {
 			index = 0;
 		}
-		tooltip.add(new TextComponent(ModProjectiles.PRECONFIGURED_PROJECTILES.get(index).name()));
+		tooltip.add(ComponentUtil.literal(ModProjectiles.PRECONFIGURED_PROJECTILES.get(index).name()));
 
-		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
+		tooltip.add(ComponentUtil.emptyLine());
 
 		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action_open_inventory")).withStyle(TextStyles.MAYKR_RUNES_GRAY));
 		// /tellraw @a {"text":"The quick brown fox jumps over the lazy dog. 1234567890!?","color":"#9e1316","font":"biomancy:maykr_runes"}
@@ -172,7 +171,7 @@ public class DevArmCannonItem extends Item implements IAnimatable, IArmPoseProvi
 		if (index < 0 || index >= ModProjectiles.PRECONFIGURED_PROJECTILES.size()) {
 			index = 0;
 		}
-		return new TextComponent("").append(displayName).append(" (" + ModProjectiles.PRECONFIGURED_PROJECTILES.get(index).name() + ")");
+		return ComponentUtil.mutable().append(displayName).append(" (" + ModProjectiles.PRECONFIGURED_PROJECTILES.get(index).name() + ")");
 	}
 
 }
