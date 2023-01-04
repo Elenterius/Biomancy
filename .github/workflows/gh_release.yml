@@ -7,22 +7,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  cache_gradle:
-    name: Cache Gradle
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-      - name: Validate Gradle Wrapper
-        uses: gradle/wrapper-validation-action@v1.0.4
-      - name: Setup Mod Development Kit
-        uses: gradle/gradle-build-action@v2.2.2
-        with:
-          arguments: build # build is called to properly setup the minecraft mod development environment
-
   cache_oxipng:
     name: Cache Oxipng
     runs-on: ubuntu-latest
@@ -34,9 +18,35 @@ jobs:
         env:
           CARGO_TERM_COLOR: always
 
+  build_test:
+    name: Gradle Build Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1.0.4
+
+      - name: Setup/Cache Gradle
+        uses: gradle/gradle-build-action@v2.2.2
+
+      - name: Test Asset Generation
+        uses: gradle/gradle-build-action@v2.2.2
+        with:
+          arguments: runDataCI
+
+      - name: Test Build
+        uses: gradle/gradle-build-action@v2.2.2
+        with:
+          arguments: build
+
   changelog:
     name: Generate Changelog
-    needs: [ cache_gradle, cache_oxipng ]
+    needs: [ build_test, cache_oxipng ]
     runs-on: ubuntu-latest
     outputs:
       skip_build: ${{ steps.set_output.outputs.skipped }}
@@ -45,6 +55,13 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
+
+      - name: Get Minecraft Version
+        id: gradle_properties
+        uses: christian-draeger/read-properties@1.1.0
+        with:
+          path: './gradle.properties'
+          properties: 'mc_version'
 
       - name: Generate Conventional Changelog #this also determines the release version
         id: changelog
@@ -55,7 +72,7 @@ jobs:
           version-path: 'semantic'
           output-file: 'false'
           git-message: 'chore(release): {version}'
-          tag-prefix: '${{ github.head_ref || github.ref_name }}-2.'
+          tag-prefix: '${{ steps.gradle_properties.outputs.mc_version }}-v2.'
           create-summary: true
 
       - name: Set Output  #supports setting multiline output
