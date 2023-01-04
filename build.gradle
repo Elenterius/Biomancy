@@ -19,17 +19,25 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-private String parseModVersion() {
-    def parsedModVersion = new groovy.json.JsonSlurper().parseText(file('mod_version.json').text)
-    return parsedModVersion.major + '.' + parsedModVersion.semantic
+
+import groovy.json.JsonSlurper
+
+import java.util.concurrent.TimeUnit
+
+/**
+ * MAJORMOD.MAJORAPI.MINOR.PATCH
+ * @return Hybrid Semantic Version
+ */
+private String getModVersion() {
+    def parsedVersion = new JsonSlurper().parseText(file('mod_version.json').text)
+    return parsedVersion.major + "." + parsedVersion.semantic
 }
 
-def mod_version = parseModVersion()
-println('Mod-Version: ' + mod_version)
+def mod_version = getModVersion()
 
-version = "${mod_version}-${mc_version}-forge"
+version = "${mod_version}"
 group = 'com.github.elenterius.biomancy'
-archivesBaseName = 'biomancy'
+archivesBaseName = "biomancy-forge-${mc_version}"
 
 // Mojang ships Java 17 to end users in 1.18+
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -196,8 +204,6 @@ dependencies {
     implementation sourceSets.api.output
 }
 
-import java.util.concurrent.TimeUnit
-
 processResources {
     exclude '.cache'
     exclude '**/*.psd'
@@ -213,8 +219,7 @@ void minifyJsons(String fdir) {
     for (File file in fileTree(dir: fdir, include: "**/*.json")) {
         try {
             file.text = groovy.json.JsonOutput.toJson(new groovy.json.JsonSlurper().parse(file))
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new Exception("Failed to minimize " + file, e)
         }
     }
@@ -223,24 +228,21 @@ void minifyJsons(String fdir) {
 }
 
 build {
-    doLast {
-    }
+    doLast {}
 }
 
 jar {
     // manifest properties for reading on runtime
     //noinspection GroovyAssignabilityCheck
     manifest {
-        attributes([
-                "Specification-Title"     : "biomancy",
-                "Specification-Vendor"    : "Elenterius",
-                "Specification-Version"   : "2",
-                "Implementation-Title"    : project.name,
-                "Implementation-Version"  : mod_version,
-                "Implementation-Vendor"   : "Elenterius",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "MixinConfigs"            : "mixins.biomancy.json"
-        ])
+        attributes(["Specification-Title"     : "biomancy",
+                    "Specification-Vendor"    : "Elenterius",
+                    "Specification-Version"   : "2",
+                    "Implementation-Title"    : project.name,
+                    "Implementation-Version"  : mod_version,
+                    "Implementation-Vendor"   : "Elenterius",
+                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                    "MixinConfigs"            : "mixins.biomancy.json"])
     }
 }
 
