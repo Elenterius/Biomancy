@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.integration.jei;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.recipe.DecomposerRecipe;
@@ -56,7 +57,7 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 
 	@Override
 	public Component getTitle() {
-		return Component.translatable("jei.biomancy.recipe.decomposer");
+		return ComponentUtil.translatable("jei.biomancy.recipe.decomposer");
 	}
 
 	@Override
@@ -104,11 +105,11 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 
 		int ticks = recipe.getCraftingTime();
 		int seconds = ticks > 0 ? ticks / 20 : 0;
-		MutableComponent timeString = Component.translatable("gui.jei.category.smelting.time.seconds", seconds);
+		MutableComponent timeString = ComponentUtil.translatable("gui.jei.category.smelting.time.seconds", seconds);
 		fontRenderer.draw(poseStack, timeString, 16, 59f - fontRenderer.lineHeight, 0xff808080);
 
 		int fuelCost = NutrientFuelUtil.getFuelCost(DecomposerBlockEntity.BASE_COST, ticks);
-		MutableComponent costString = Component.literal("-" + fuelCost);
+		MutableComponent costString = ComponentUtil.literal("-" + fuelCost);
 		fontRenderer.draw(poseStack, costString, 16, 43f - fontRenderer.lineHeight, 0xff808080);
 
 		int x = 68;
@@ -136,15 +137,15 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 
 			ItemCountRange countRange = output.getCountRange();
 			if (countRange instanceof ItemCountRange.UniformRange uniform) {
-				MutableComponent component = Component.literal("%d-%d".formatted(Math.max(uniform.min(), 0), uniform.max()));
+				MutableComponent component = ComponentUtil.literal("%d-%d".formatted(Math.max(uniform.min(), 0), uniform.max()));
 				fontRenderer.draw(poseStack, component, x - fontRenderer.width(component), y, 0xff808080);
 			}
 			else if (countRange instanceof ItemCountRange.ConstantValue constant) {
-				MutableComponent component = Component.literal("" + constant.value());
+				MutableComponent component = ComponentUtil.literal("" + constant.value());
 				fontRenderer.draw(poseStack, component, x - fontRenderer.width(component), y, 0xff808080);
 			}
 			else if (countRange instanceof ItemCountRange.BinomialRange binomialRange) {
-				MutableComponent component = Component.literal("n: %d, p: %s".formatted(binomialRange.n(), binomialRange.p()));
+				MutableComponent component = ComponentUtil.literal("n: %d, p: %s".formatted(binomialRange.n(), binomialRange.p()));
 				fontRenderer.draw(poseStack, component, x - fontRenderer.width(component), y, 0xff808080);
 			}
 

@@ -1,10 +1,10 @@
 package com.github.elenterius.biomancy.client.gui.tooltip;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.init.ModRarities;
 import com.github.elenterius.biomancy.init.client.ModScreens;
 import com.github.elenterius.biomancy.styles.ColorStyles;
-import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.tooltip.PlaceholderComponent;
 import com.github.elenterius.biomancy.world.item.ICustomTooltip;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -58,7 +58,7 @@ public final class TooltipRenderHandler {
 					tooltipElements.set(index, Either.right(placeholder.getReplacement()));
 				}
 				else if (isTooltip && formattedText == Component.EMPTY) { //vanilla bugfix: fixes empty lines disappearing when long text is wrapped
-					tooltipElements.set(index, Either.right(TooltipHacks.EMPTY_LINE_COMPONENT.getReplacement()));
+					tooltipElements.set(index, Either.right(ComponentUtil.emptyLine().getReplacement()));
 				}
 			});
 		}

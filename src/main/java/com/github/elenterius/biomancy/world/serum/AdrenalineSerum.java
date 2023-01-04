@@ -1,9 +1,9 @@
 package com.github.elenterius.biomancy.world.serum;
 
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.styles.TextStyles;
-import com.github.elenterius.biomancy.styles.TooltipHacks;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -56,22 +56,22 @@ public class AdrenalineSerum extends Serum {
 	@Override
 	public void appendTooltip(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
 		if (ClientTextUtil.showExtraInfo(tooltip)) {
-			tooltip.add(Component.translatable(getTooltipKey()).withStyle(TextStyles.LORE));
+			tooltip.add(ComponentUtil.translatable(getTooltipKey()).withStyle(TextStyles.LORE));
 		}
 
 		addEffectToClientTooltip(tooltip, ModMobEffects.ADRENALINE_RUSH.get(), AMPLIFIER, DURATION);
 	}
 
 	public void addEffectToClientTooltip(List<Component> tooltips, MobEffect effect, int amplifier, int duration) {
-		MutableComponent effectText = Component.translatable(effect.getDescriptionId());
+		MutableComponent effectText = ComponentUtil.translatable(effect.getDescriptionId());
 		if (amplifier > 0)
-			effectText = Component.translatable("potion.withAmplifier", effectText, Component.translatable("potion.potency." + amplifier));
-		if (duration > 20) effectText = Component.translatable("potion.withDuration", effectText, StringUtil.formatTickDuration(duration));
+			effectText = ComponentUtil.translatable("potion.withAmplifier", effectText, ComponentUtil.translatable("potion.potency." + amplifier));
+		if (duration > 20) effectText = ComponentUtil.translatable("potion.withDuration", effectText, StringUtil.formatTickDuration(duration));
 		tooltips.add(effectText.withStyle(effect.getCategory().getTooltipFormatting()));
 
 		Map<Attribute, AttributeModifier> effectModifiers = effect.getAttributeModifiers();
 		if (!effectModifiers.isEmpty()) {
-			tooltips.add(TooltipHacks.EMPTY_LINE_COMPONENT);
+			tooltips.add(ComponentUtil.emptyLine());
 
 			for (Map.Entry<Attribute, AttributeModifier> entry : effectModifiers.entrySet()) {
 				AttributeModifier modifier = entry.getValue();
@@ -79,13 +79,13 @@ public class AdrenalineSerum extends Serum {
 				double value = effect.getAttributeModifierValue(amplifier, modifier);
 				double amount = operation != AttributeModifier.Operation.MULTIPLY_BASE && operation != AttributeModifier.Operation.MULTIPLY_TOTAL ? value : value * 100d;
 
-				MutableComponent attributeText = Component.translatable(entry.getKey().getDescriptionId());
+				MutableComponent attributeText = ComponentUtil.translatable(entry.getKey().getDescriptionId());
 				if (value > 0) {
-					tooltips.add((Component.translatable("attribute.modifier.plus." + operation.toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(amount), attributeText)).withStyle(ChatFormatting.BLUE));
+					tooltips.add((ComponentUtil.translatable("attribute.modifier.plus." + operation.toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(amount), attributeText)).withStyle(ChatFormatting.BLUE));
 				}
 				else if (value < 0) {
 					amount = amount * -1d;
-					tooltips.add((Component.translatable("attribute.modifier.take." + operation.toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(amount), attributeText)).withStyle(ChatFormatting.RED));
+					tooltips.add((ComponentUtil.translatable("attribute.modifier.take." + operation.toValue(), ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(amount), attributeText)).withStyle(ChatFormatting.RED));
 				}
 			}
 		}

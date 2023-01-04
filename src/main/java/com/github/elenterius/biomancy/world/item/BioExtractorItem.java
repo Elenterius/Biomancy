@@ -1,12 +1,12 @@
 package com.github.elenterius.biomancy.world.item;
 
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
-import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import com.github.elenterius.biomancy.util.MobSoundUtil;
 import com.github.elenterius.biomancy.util.SoundUtil;
@@ -145,7 +145,7 @@ public class BioExtractorItem extends Item implements IKeyListener, ICustomToolt
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
 		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTranslationText("tooltip", "action_self_extract")).withStyle(ChatFormatting.DARK_GRAY));
-		if (stack.isEnchanted()) tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
+		if (stack.isEnchanted()) tooltip.add(ComponentUtil.emptyLine());
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.client.util;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.init.client.ClientSetupHandler;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
@@ -12,6 +13,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.List;
@@ -21,11 +23,11 @@ import java.util.UUID;
 
 public final class ClientTextUtil {
 
-	private static final MutableComponent CTRL_KEY_TEXT = Component.translatable("keyboard." + BiomancyMod.MOD_ID + ".ctrl");
-	private static final MutableComponent ALT_KEY_TEXT = Component.translatable("keyboard." + BiomancyMod.MOD_ID + ".alt");
-	private static final MutableComponent SHIFT_KEY_TEXT = Component.translatable("keyboard." + BiomancyMod.MOD_ID + ".shift");
-	private static final MutableComponent RIGHT_MOUSE_KEY_TEXT = Component.translatable("keyboard." + BiomancyMod.MOD_ID + ".right_mouse");
-	private static final MutableComponent SHOW_INFO = Component.translatable("tooltip." + BiomancyMod.MOD_ID + ".action.show_info");
+	private static final MutableComponent CTRL_KEY_TEXT = ComponentUtil.translatable("keyboard." + BiomancyMod.MOD_ID + ".ctrl");
+	private static final MutableComponent ALT_KEY_TEXT = ComponentUtil.translatable("keyboard." + BiomancyMod.MOD_ID + ".alt");
+	private static final MutableComponent SHIFT_KEY_TEXT = ComponentUtil.translatable("keyboard." + BiomancyMod.MOD_ID + ".shift");
+	private static final MutableComponent RIGHT_MOUSE_KEY_TEXT = ComponentUtil.translatable("keyboard." + BiomancyMod.MOD_ID + ".right_mouse");
+	private static final MutableComponent SHOW_INFO = ComponentUtil.translatable("tooltip." + BiomancyMod.MOD_ID + ".action.show_info");
 
 	private static DecimalFormat decimalFormat = null;
 	private static String prevPattern = "";
@@ -64,7 +66,7 @@ public final class ClientTextUtil {
 	}
 
 	public static MutableComponent pressButtonTo(MutableComponent key, Object action) {
-		return Component.translatable(TextComponentUtil.getTranslationKey("tooltip", "press_button_to"), key.withStyle(TextStyles.KEYBOARD_INPUT), action);
+		return ComponentUtil.translatable(TextComponentUtil.getTranslationKey("tooltip", "press_button_to"), key.withStyle(TextStyles.KEYBOARD_INPUT), action);
 	}
 
 	public static MutableComponent getAltKey() {
@@ -84,7 +86,7 @@ public final class ClientTextUtil {
 	}
 
 	public static MutableComponent getDefaultKey() {
-		return ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.getTranslatedKeyMessage().plainCopy();
+		return ComponentUtil.keybind(ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING);
 	}
 
 	public static String tryToGetPlayerNameOnClientSide(UUID uuid) {

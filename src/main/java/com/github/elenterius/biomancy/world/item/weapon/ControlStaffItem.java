@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.world.item.weapon;
 
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
-import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.world.entity.ownable.Fleshkin;
 import com.github.elenterius.biomancy.world.entity.ownable.IControllableMob;
 import com.github.elenterius.biomancy.world.item.ICustomTooltip;
@@ -57,7 +57,7 @@ public class ControlStaffItem extends Item implements IKeyListener, ICustomToolt
 
 		int size = mobs.size();
 		if (size == 0) {
-			MutableComponent component = Component.literal("Couldn't find any controllable mobs nearby!").withStyle(ChatFormatting.RED);
+			MutableComponent component = ComponentUtil.literal("Couldn't find any controllable mobs nearby!").withStyle(ChatFormatting.RED);
 			player.displayClientMessage(component, true);
 			return InteractionResult.FAIL;
 		}
@@ -70,7 +70,7 @@ public class ControlStaffItem extends Item implements IKeyListener, ICustomToolt
 			controllable.setActiveCommand(command);
 		}
 
-		Fleshkin.displayCommandSetMsg(player, Component.literal(size + (size > 1 ? " mobs" : " mob")), command);
+		Fleshkin.displayCommandSetMsg(player, ComponentUtil.literal(size + (size > 1 ? " mobs" : " mob")), command);
 		return InteractionResult.SUCCESS;
 	}
 
@@ -85,14 +85,14 @@ public class ControlStaffItem extends Item implements IKeyListener, ICustomToolt
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
-		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
-		tooltip.add(TextComponentUtil.getTooltipText("command").append(": ").withStyle().withStyle(ChatFormatting.GRAY).append(Component.literal(getCommand(stack).toString()).withStyle(ChatFormatting.AQUA)));
+		tooltip.add(ComponentUtil.emptyLine());
+		tooltip.add(TextComponentUtil.getTooltipText("command").append(": ").withStyle().withStyle(ChatFormatting.GRAY).append(ComponentUtil.literal(getCommand(stack).toString()).withStyle(ChatFormatting.AQUA)));
 		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action_cycle")).withStyle(ChatFormatting.DARK_GRAY));
 	}
 
 //	@Override
-//	public Component getHighlightTip(ItemStack stack, Component displayName) {
-//		return Component.literal("").append(displayName).append(" (").append(Component.literal(getCommand(stack).toString()).withStyle(ChatFormatting.AQUA)).append(")");
-//	}
+	//	public Component getHighlightTip(ItemStack stack, Component displayName) {
+	//		return ComponentFacade.builder().append(displayName).append(" (").append(ComponentFacade.literal(getCommand(stack).toString()).withStyle(ChatFormatting.AQUA)).append(")");
+	//	}
 
 }

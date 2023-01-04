@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.integration.jei;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.recipe.BioForgeRecipe;
@@ -56,7 +57,7 @@ public class BioForgeRecipeCategory implements IRecipeCategory<BioForgeRecipe> {
 
 	@Override
 	public Component getTitle() {
-		return Component.translatable("jei.biomancy.recipe.bio_forge");
+		return ComponentUtil.translatable("jei.biomancy.recipe.bio_forge");
 	}
 
 	@Override
@@ -98,7 +99,7 @@ public class BioForgeRecipeCategory implements IRecipeCategory<BioForgeRecipe> {
 	public void draw(BioForgeRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
 		Font fontRenderer = Minecraft.getInstance().font;
 		int fuelCost = 1; //TODO: use constant
-		MutableComponent costString = Component.literal("-" + fuelCost);
+		MutableComponent costString = ComponentUtil.literal("-" + fuelCost);
 		fontRenderer.draw(poseStack, costString, 108, 32f - fontRenderer.lineHeight + 1, 0xff808080);
 	}
 }

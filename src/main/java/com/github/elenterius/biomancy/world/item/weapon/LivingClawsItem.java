@@ -1,9 +1,9 @@
 package com.github.elenterius.biomancy.world.item.weapon;
 
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
-import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.world.entity.MobUtil;
 import com.github.elenterius.biomancy.world.item.IKeyListener;
 import com.github.elenterius.biomancy.world.item.ILivingToolItem;
@@ -158,15 +158,15 @@ public class LivingClawsItem extends SimpleClawsItem implements ILivingToolItem,
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tooltip, isAdvanced);
 
-		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
+		tooltip.add(ComponentUtil.emptyLine());
 		appendLivingToolTooltip(stack, tooltip);
-		tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
+		tooltip.add(ComponentUtil.emptyLine());
 		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action.cycle")));
 	}
 
 	@Override
 	public Component getHighlightTip(ItemStack stack, Component displayName) {
-		return Component.literal("").append(displayName).append(" (").append(getLivingToolState(stack).getDisplayName()).append(")");
+		return ComponentUtil.mutable().append(displayName).append(" (").append(getLivingToolState(stack).getDisplayName()).append(")");
 	}
 
 }

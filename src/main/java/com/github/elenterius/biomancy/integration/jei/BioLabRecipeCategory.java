@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.integration.jei;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.recipe.BioLabRecipe;
@@ -57,7 +58,7 @@ public class BioLabRecipeCategory implements IRecipeCategory<BioLabRecipe> {
 
 	@Override
 	public Component getTitle() {
-		return Component.translatable("jei.biomancy.recipe.bio_lab");
+		return ComponentUtil.translatable("jei.biomancy.recipe.bio_lab");
 	}
 
 	@Override
@@ -101,11 +102,11 @@ public class BioLabRecipeCategory implements IRecipeCategory<BioLabRecipe> {
 
 		int ticks = recipe.getCraftingTime();
 		int seconds = ticks > 0 ? ticks / 20 : 0;
-		Component timeText = Component.translatable("gui.jei.category.smelting.time.seconds", seconds);
+		Component timeText = ComponentUtil.translatable("gui.jei.category.smelting.time.seconds", seconds);
 		fontRenderer.draw(poseStack, timeText, 102, 50 - fontRenderer.lineHeight, 0xff808080);
 
 		int fuelCost = NutrientFuelUtil.getFuelCost(BioLabBlockEntity.BASE_COST, ticks);
-		Component costText = Component.literal("-" + fuelCost);
+		Component costText = ComponentUtil.literal("-" + fuelCost);
 		fontRenderer.draw(poseStack, costText, 69, 50 - fontRenderer.lineHeight, 0xff808080);
 	}
 

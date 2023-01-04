@@ -1,9 +1,9 @@
 package com.github.elenterius.biomancy.world.block;
 
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.styles.TextStyles;
-import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.world.block.entity.FleshkinChestBlockEntity;
 import com.github.elenterius.biomancy.world.ownable.IOwnableEntityBlock;
 import com.github.elenterius.biomancy.world.permission.Actions;
@@ -80,7 +80,7 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 		super.fillItemCategory(tab, items);
 
 		ItemStack stack = new ItemStack(this);
-		stack.setHoverName(Component.literal("[TEST/other_owner] ").append(stack.getHoverName()));
+		stack.setHoverName(ComponentUtil.literal("[TEST/other_owner] ").append(stack.getHoverName()));
 		CompoundTag tag = new CompoundTag();
 		tag.putUUID(IOwnableEntityBlock.NBT_KEY_OWNER, Util.NIL_UUID);
 		BlockItem.setBlockEntityData(stack, ModBlockEntities.FLESHKIN_CHEST.get(), tag);
@@ -243,7 +243,7 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 
 		CompoundTag tag = BlockItem.getBlockEntityData(stack);
 		if (tag != null) {
-			tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
+			tooltip.add(ComponentUtil.emptyLine());
 
 			if (isAuthorized(Minecraft.getInstance().player.getUUID(), tag)) {
 				CompoundTag inventoryTag = tag.getCompound("Inventory");
@@ -267,14 +267,14 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 					}
 
 					if (totalCount - count > 0) {
-						tooltip.add((Component.translatable("container.shulkerBox.more", totalCount - count)).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
+						tooltip.add((ComponentUtil.translatable("container.shulkerBox.more", totalCount - count)).withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
 					}
-					tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
-					tooltip.add(Component.literal(String.format("%d/%d ", totalCount, FleshkinChestBlockEntity.SLOTS)).append(Component.translatable("tooltip.biomancy.slots")).withStyle(ChatFormatting.GRAY));
+					tooltip.add(ComponentUtil.emptyLine());
+					tooltip.add(ComponentUtil.literal(String.format("%d/%d ", totalCount, FleshkinChestBlockEntity.SLOTS)).append(ComponentUtil.translatable("tooltip.biomancy.slots")).withStyle(ChatFormatting.GRAY));
 				}
 			}
 			else {
-				tooltip.add(Component.literal("Who are you? I don't like you!").withStyle(TextStyles.MAYKR_RUNES_GRAY));
+				tooltip.add(ComponentUtil.literal("Who are you? I don't like you!").withStyle(TextStyles.MAYKR_RUNES_GRAY));
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.styles;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.Item;
@@ -15,7 +16,7 @@ public final class TextComponentUtil {
 	}
 
 	public static MutableComponent getTranslationText(String prefix, String suffix) {
-		return Component.translatable(getTranslationKey(prefix, suffix));
+		return ComponentUtil.translatable(getTranslationKey(prefix, suffix));
 	}
 
 	public static String getItemTooltipKey(Item item) {
@@ -27,23 +28,23 @@ public final class TextComponentUtil {
 	}
 
 	public static MutableComponent getItemTooltip(Item item) {
-		return Component.translatable(getItemTooltipKey(item));
+		return ComponentUtil.translatable(getItemTooltipKey(item));
 	}
 
 	public static MutableComponent getTooltipText(String tooltipKey) {
-		return Component.translatable(getTranslationKey("tooltip", tooltipKey));
+		return ComponentUtil.translatable(getTranslationKey("tooltip", tooltipKey));
 	}
 
 	public static MutableComponent getTooltipText(String tooltipKey, Object... formatArgs) {
-		return Component.translatable(getTranslationKey("tooltip", tooltipKey), formatArgs);
+		return ComponentUtil.translatable(getTranslationKey("tooltip", tooltipKey), formatArgs);
 	}
 
 	public static MutableComponent getMsgText(String msgKey) {
-		return Component.translatable(getTranslationKey("msg", msgKey));
+		return ComponentUtil.translatable(getTranslationKey("msg", msgKey));
 	}
 
 	public static MutableComponent getMsgText(String msgKey, Object... formatArgs) {
-		return Component.translatable(getTranslationKey("msg", msgKey), formatArgs);
+		return ComponentUtil.translatable(getTranslationKey("msg", msgKey), formatArgs);
 	}
 
 	public static Component getFailureMsgText(String msgKey) {

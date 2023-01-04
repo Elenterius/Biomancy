@@ -1,9 +1,8 @@
 package com.github.elenterius.biomancy.world.item;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
-import com.github.elenterius.biomancy.init.ModItems;
-import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.world.serum.Serum;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -20,8 +19,6 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
-
-import net.minecraft.world.item.PotionItem;
 
 public class SerumItem extends Item implements ISerumProvider, ICustomTooltip {
 
@@ -47,7 +44,7 @@ public class SerumItem extends Item implements ISerumProvider, ICustomTooltip {
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		tooltip.add(TooltipHacks.HR_COMPONENT);
+		tooltip.add(ComponentUtil.horizontalLine());
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack));
 	}
 

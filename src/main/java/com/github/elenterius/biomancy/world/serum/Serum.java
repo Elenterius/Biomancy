@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.world.serum;
 
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModSerums;
 import com.github.elenterius.biomancy.styles.TextStyles;
@@ -80,7 +81,7 @@ public abstract class Serum {
 
 	public void appendTooltip(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		if (ClientTextUtil.showExtraInfo(tooltip)) {
-			tooltip.add(Component.translatable(getTooltipKey()).withStyle(TextStyles.LORE));
+			tooltip.add(ComponentUtil.translatable(getTooltipKey()).withStyle(TextStyles.LORE));
 		}
 	}
 
@@ -93,7 +94,7 @@ public abstract class Serum {
 	}
 
 	public MutableComponent getDisplayName() {
-		return Component.translatable(getTranslationKey());
+		return ComponentUtil.translatable(getTranslationKey());
 	}
 
 	public int getColor() {

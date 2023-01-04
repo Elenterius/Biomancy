@@ -4,7 +4,6 @@ import com.github.elenterius.biomancy.client.gui.tooltip.TooltipRenderHandler;
 import com.google.common.collect.Lists;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentContents;
-//import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;

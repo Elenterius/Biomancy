@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.gui.component.CustomEditBox;
 import com.github.elenterius.biomancy.client.util.ClientSoundUtil;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
@@ -45,9 +46,9 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 	protected void init() {
 		super.init();
 
-		searchInput = new CustomEditBox(Objects.requireNonNull(minecraft).font, leftPos + 26, topPos + 16, 78, 14, Component.translatable("itemGroup.search"));
+		searchInput = new CustomEditBox(Objects.requireNonNull(minecraft).font, leftPos + 26, topPos + 16, 78, 14, ComponentUtil.translatable("itemGroup.search"));
 		searchInput.setMaxLength(50);
-		searchInput.setTextHint(Component.translatable("gui.recipebook.search_hint").withStyle(Style.EMPTY.withItalic(true).withColor(ColorStyles.TEXT_ACCENT_FORGE_DARK)));
+		searchInput.setTextHint(ComponentUtil.translatable("gui.recipebook.search_hint").withStyle(Style.EMPTY.withItalic(true).withColor(ColorStyles.TEXT_ACCENT_FORGE_DARK)));
 		searchInput.setTextColor(ColorStyles.TEXT_ACCENT_FORGE);
 
 		recipeBook = new BioForgeScreenController(minecraft, menu);

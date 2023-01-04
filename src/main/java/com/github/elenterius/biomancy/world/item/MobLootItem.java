@@ -1,9 +1,9 @@
 package com.github.elenterius.biomancy.world.item;
 
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
-import com.github.elenterius.biomancy.styles.TooltipHacks;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -32,17 +32,17 @@ public class MobLootItem extends Item implements ICustomTooltip {
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		tooltip.add(TooltipHacks.HR_COMPONENT);
-		ClientTextUtil.appendItemInfoTooltip(stack.getItem(), tooltip);
+		tooltip.add(ComponentUtil.horizontalLine());
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack));
 
 		if (Screen.hasControlDown()) {
-			tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
+			tooltip.add(ComponentUtil.emptyLine());
 			tooltip.add(TextComponentUtil.getTooltipText("drops_from").withStyle(TextStyles.LORE));
 
 			List<EntityType<?>> mobs = taggedEntities.stream().limit(12).toList();
 			int mobCount = mobs.size();
 			if (mobCount > 0) {
-				MutableComponent component = Component.literal("").withStyle(TextStyles.ITALIC_GRAY);
+				MutableComponent component = ComponentUtil.mutable().withStyle(TextStyles.ITALIC_GRAY);
 				tooltip.add(component);
 
 				for (int i = 0; i < mobCount; i++) {

@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.datagen.translations;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.init.client.ClientSetupHandler;
@@ -527,11 +528,11 @@ public class EnglishTranslationProvider extends LanguageProvider {
 			}
 
 			public MutableComponent getTitle() {
-				return Component.translatable(getTitleKey());
+				return ComponentUtil.translatable(getTitleKey());
 			}
 
 			public MutableComponent getDescription() {
-				return Component.translatable(getDescriptionKey());
+				return ComponentUtil.translatable(getDescriptionKey());
 			}
 
 		}

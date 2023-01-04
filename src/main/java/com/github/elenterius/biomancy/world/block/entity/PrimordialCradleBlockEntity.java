@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.world.block.entity;
 
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModDamageSources;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
@@ -11,13 +12,11 @@ import com.github.elenterius.biomancy.util.SacrificeHandler;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.block.PrimordialCradleBlock;
 import com.github.elenterius.biomancy.world.entity.fleshblob.FleshBlob;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -142,7 +141,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 				}
 
 				SoundUtil.broadcastBlockSound(level, pos, SoundEvents.TRIDENT_THUNDER, 5f, 0.9f);
-				level.players().forEach(player -> player.sendSystemMessage(Component.literal("How dare you do this... I am watching you!").withStyle(TextStyles.MAYKR_RUNES_RED)));
+				level.players().forEach(player -> player.sendSystemMessage(ComponentUtil.literal("How dare you do this... I am watching you!").withStyle(TextStyles.MAYKR_RUNES_RED)));
 			}
 		}
 

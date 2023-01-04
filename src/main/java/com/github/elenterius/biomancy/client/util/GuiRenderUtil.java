@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.client.util;
 
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -25,10 +26,10 @@ public final class GuiRenderUtil {
 		List<Component> hoveringText = new ArrayList<>();
 		DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
 
-		hoveringText.add(Component.translatable("tooltip.biomancy.nutrients_fuel").withStyle(TextStyles.NUTRIENTS));
-		hoveringText.add(Component.literal("%s/%s u".formatted(df.format(fuelAmount), df.format(maxFuel))));
+		hoveringText.add(ComponentUtil.translatable("tooltip.biomancy.nutrients_fuel").withStyle(TextStyles.NUTRIENTS));
+		hoveringText.add(ComponentUtil.literal("%s/%s u".formatted(df.format(fuelAmount), df.format(maxFuel))));
 		if (totalFuelCost > 0) {
-			hoveringText.add(Component.translatable("tooltip.biomancy.nutrients_consumes", df.format(totalFuelCost)).withStyle(TextStyles.NUTRIENTS_CONSUMPTION));
+			hoveringText.add(ComponentUtil.translatable("tooltip.biomancy.nutrients_consumes", df.format(totalFuelCost)).withStyle(TextStyles.NUTRIENTS_CONSUMPTION));
 		}
 
 		screen.renderComponentTooltip(poseStack, hoveringText, mouseX, mouseY);

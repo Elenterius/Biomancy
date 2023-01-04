@@ -1,10 +1,10 @@
 package com.github.elenterius.biomancy.world.item.weapon;
 
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
-import com.github.elenterius.biomancy.styles.TooltipHacks;
 import com.github.elenterius.biomancy.world.item.IKeyListener;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -235,13 +235,13 @@ public abstract class BaseGunItem extends ProjectileWeaponItem implements IGun, 
 			tooltip.add(TextComponentUtil.getTooltipText("ammo").append(String.format(": %d/%d ", getAmmo(stack), getMaxAmmo(stack))).append(addBrackets("x/" + baseMaxAmmo)));
 			tooltip.add(TextComponentUtil.getTooltipText("reload_time").append(String.format(": %s ", df.format(getReloadTime(stack) / ONE_SECOND))).append(addBrackets(df.format(baseReloadTime / ONE_SECOND))));
 			tooltip.add(TextComponentUtil.getTooltipText("projectile_damage").append(String.format(": %s ", df.format(getProjectileDamage(stack)))).append(addBrackets(df.format(baseProjectileDamage))));
-			tooltip.add(TooltipHacks.EMPTY_LINE_COMPONENT);
+			tooltip.add(ComponentUtil.emptyLine());
 		}
 		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTranslationText("tooltip", "action_reload")).withStyle(ChatFormatting.DARK_GRAY));
 	}
 
 	private MutableComponent addBrackets(Object obj) {
-		return Component.literal("(" + obj + ")").withStyle(ChatFormatting.DARK_GRAY);
+		return ComponentUtil.literal("(" + obj + ")").withStyle(ChatFormatting.DARK_GRAY);
 	}
 
 	public static class GunProperties {

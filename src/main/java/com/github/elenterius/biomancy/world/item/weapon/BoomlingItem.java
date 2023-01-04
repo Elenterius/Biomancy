@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.world.item.weapon;
 
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.PotionUtilExt;
@@ -92,7 +93,7 @@ public class BoomlingItem extends Item implements ICustomTooltip {
 		if (stack.hasTag() && stack.getTag() != null) {
 			String potionTranslationKey = PotionUtilExt.getPotionTranslationKeyFromHost(stack);
 			if (!potionTranslationKey.isEmpty())
-				tooltip.add(Component.translatable(potionTranslationKey).setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
+				tooltip.add(ComponentUtil.translatable(potionTranslationKey).setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
 		}
 		PotionUtilExt.addPotionTooltip(stack, tooltip, 1f);
 	}
