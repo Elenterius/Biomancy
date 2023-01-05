@@ -9,6 +9,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.ComposterBlock;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -33,6 +34,10 @@ public final class ModRecipes {
 
 	public static void registerComposterRecipes() {
 		ComposterBlock.COMPOSTABLES.putIfAbsent(ModItems.ORGANIC_MATTER.get(), 0.25f);
+	}
+
+	public static void registerIngredientSerializers() {
+		CraftingHelper.register(BiomancyMod.createRL("food_nutrition"), FoodNutritionIngredient.Serializer.INSTANCE);
 	}
 
 	private static <T extends RecipeType<?>, R extends Recipe<Container>> RegistryObject<RecipeSerializer<R>> registerRecipeSerializer(RegistryObject<T> recipeTypeHolder, Supplier<RecipeSerializer<R>> serializerSupplier) {

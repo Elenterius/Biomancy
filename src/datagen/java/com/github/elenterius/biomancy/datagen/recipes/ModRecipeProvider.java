@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModBioForgeTabs;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModTags;
+import com.github.elenterius.biomancy.recipe.FoodNutritionIngredient;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.DataGenerator;
@@ -234,29 +235,77 @@ public class ModRecipeProvider extends RecipeProvider {
 				.setCraftingTime(189)
 				.unlockedBy(ModTags.Items.POOR_BIOMASS).save(consumer);
 
+		/*
+		POOR_BIOMASS Averages
+		Nutrition: 1
+		Saturation Modifier: 0,200000
+		*/
+		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 1, "poor_food")
+				.setIngredient(new FoodNutritionIngredient(0, 1))
+				.setCraftingTime(189)
+				.unlockedBy(ModTags.Items.POOR_BIOMASS).save(consumer);
+
 		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 2, "average_biomass")
 				.setIngredient(ModTags.Items.AVERAGE_BIOMASS)
 				.setCraftingTime(351)
 				.unlockedBy(ModTags.Items.AVERAGE_BIOMASS).save(consumer);
 
-		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 2, "raw_meat")
-				.setIngredient(ModTags.Items.RAW_MEATS)
+		/*
+		AVERAGE_BIOMASS Averages
+		Nutrition: 2
+		Saturation Modifier: 0,360000
+
+		RAW_MEATS Averages
+		Nutrition: 2
+		Saturation Modifier: 0,285714
+		*/
+		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 2, "average_food")
+				.setIngredient(new FoodNutritionIngredient(2, 3))
 				.setCraftingTime(351)
-				.unlockedBy(ModTags.Items.RAW_MEATS).save(consumer);
+				.unlockedBy(ModTags.Items.AVERAGE_BIOMASS).save(consumer);
 
 		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 4, "good_biomass")
 				.setIngredient(ModTags.Items.GOOD_BIOMASS)
 				.setCraftingTime(490)
 				.unlockedBy(ModTags.Items.GOOD_BIOMASS).save(consumer);
 
-		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 4, "cooked_meat")
-				.setIngredient(ModTags.Items.COOKED_MEATS)
+		/*
+		GOOD_BIOMASS Averages
+		Nutrition: 5
+		Saturation Modifier: 0,525000
+		*/
+		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 4, "good_food")
+				.setIngredient(new FoodNutritionIngredient(4, 5))
 				.setCraftingTime(490)
-				.unlockedBy(ModTags.Items.COOKED_MEATS).save(consumer);
+				.unlockedBy(ModTags.Items.GOOD_BIOMASS).save(consumer);
 
 		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 6, "superb_biomass")
 				.setIngredient(ModTags.Items.SUPERB_BIOMASS)
 				.setCraftingTime(540)
+				.unlockedBy(ModTags.Items.SUPERB_BIOMASS).save(consumer);
+
+		/*
+		COOKED_MEATS Averages
+		Nutrition: 6
+		Saturation Modifier: 0,731250
+
+		SUPERB_BIOMASS Averages
+		Nutrition: 6
+		Saturation Modifier: 0,600000
+		*/
+		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 6, "superb_food")
+				.setIngredient(new FoodNutritionIngredient(6, 7))
+				.setCraftingTime(540)
+				.unlockedBy(ModTags.Items.SUPERB_BIOMASS).save(consumer);
+
+		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 8, "excellent_food")
+				.setIngredient(new FoodNutritionIngredient(8, 9))
+				.setCraftingTime(590)
+				.unlockedBy(ModTags.Items.SUPERB_BIOMASS).save(consumer);
+
+		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 10, "godly_food")
+				.setIngredient(new FoodNutritionIngredient(10, Integer.MAX_VALUE))
+				.setCraftingTime(640)
 				.unlockedBy(ModTags.Items.SUPERB_BIOMASS).save(consumer);
 	}
 

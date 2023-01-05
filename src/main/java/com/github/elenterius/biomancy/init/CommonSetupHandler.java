@@ -13,6 +13,8 @@ import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
 
 @Mod.EventBusSubscriber(modid = BiomancyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class CommonSetupHandler {
@@ -33,6 +35,13 @@ public final class CommonSetupHandler {
 		});
 
 		ModsCompatHandler.onBiomancyCommonSetup(event);
+	}
+
+	@SubscribeEvent
+	public static void registerRecipeSerializers(RegisterEvent event) {
+		if (event.getRegistryKey().equals(ForgeRegistries.Keys.RECIPE_SERIALIZERS)) {
+			ModRecipes.registerIngredientSerializers();
+		}
 	}
 
 	private static void registerDispenserBehaviors() {
