@@ -13,6 +13,8 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -92,19 +94,45 @@ public class DigesterBlock extends HorizontalFacingMachineBlock {
 
 	@Override
 	public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-		if (random.nextInt(5) == 0 && Boolean.TRUE.equals(state.getValue(CRAFTING))) {
-			int particleAmount = random.nextInt(1, 5);
-			int color = 0x867e36; //old moss green
-			double r = (color >> 16 & 255) / 255d;
-			double g = (color >> 8 & 255) / 255d;
-			double b = (color & 255) / 255d;
-			for (int i = 0; i < particleAmount; i++) {
-				level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + 0.5d + ((random.nextFloat() - random.nextFloat()) * 0.125F), pos.getY() + 0.9d, pos.getZ() + 0.5d + ((random.nextFloat() - random.nextFloat()) * 0.125F), r, g, b);
-			}
-			if (random.nextInt(3) == 0) {
-				SoundUtil.clientPlayBlockSound(level, pos, ModSoundEvents.DIGESTER_CRAFTING_RANDOM, 0.65f);
-			}
+		if (random.nextInt(5) != 0) return;
+		if (!isCrafting(state)) return;
+
+		int particleAmount = random.nextInt(1, 5);
+		int color = 0x867e36; //old moss green
+		double r = (color >> 16 & 255) / 255d;
+		double g = (color >> 8 & 255) / 255d;
+		double b = (color & 255) / 255d;
+		for (int i = 0; i < particleAmount; i++) {
+			level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + 0.5d + ((random.nextFloat() - random.nextFloat()) * 0.125f), pos.getY() + 0.9d, pos.getZ() + 0.5d + ((random.nextFloat() - random.nextFloat()) * 0.125f), r, g, b);
 		}
+
+		if (random.nextInt(3) != 0) return;
+
+		if (!playFoodEatingSound(level, pos, random)) {
+			SoundUtil.clientPlayBlockSound(level, pos, ModSoundEvents.DIGESTER_CRAFTING_RANDOM, 0.65f);
+		}
+	}
+
+	public boolean isCrafting(BlockState state) {
+		return Boolean.TRUE.equals(state.getValue(CRAFTING));
+	}
+
+	private boolean playFoodEatingSound(Level level, BlockPos pos, RandomSource random) {
+		if (level.getBlockEntity(pos) instanceof DigesterBlockEntity digester) {
+			ItemStack stack = digester.getInputSlotStack();
+			if (stack.isEmpty()) return false;
+
+			if (stack.getUseAnimation() == UseAnim.DRINK) {
+				SoundUtil.clientPlayBlockSound(level, pos, stack.getDrinkingSound(), 0.5F, random.nextFloat() * 0.1F + 0.9F);
+			}
+			else if (stack.getUseAnimation() == UseAnim.EAT) {
+				SoundUtil.clientPlayBlockSound(level, pos, stack.getEatingSound(), 0.5f + 0.5f * random.nextInt(2), (random.nextFloat() - random.nextFloat()) * 0.2f + 1f);
+			}
+
+			return true;
+		}
+
+		return false;
 	}
 
 }
