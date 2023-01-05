@@ -13,6 +13,7 @@ public final class ModSoundEvents {
 	//# Items
 	public static final RegistryObject<SoundEvent> INJECTOR_INJECT = registerSoundEvent("item.injector.inject");
 	public static final RegistryObject<SoundEvent> INJECTOR_FAIL = registerSoundEvent("item.injector.fail");
+	public static final RegistryObject<SoundEvent> MARROW_DRINK = registerSoundEvent("item.bone_marrow.drink");
 
 	//# Blocks
 	public static final RegistryObject<SoundEvent> FLESH_BLOCK_PLACE = registerSoundEvent("flesh_block.place");

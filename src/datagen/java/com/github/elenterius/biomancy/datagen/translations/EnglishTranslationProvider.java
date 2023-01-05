@@ -267,6 +267,7 @@ public class EnglishTranslationProvider extends LanguageProvider {
 
 		addSound(ModSoundEvents.INJECTOR_INJECT, "Injecting Serum");
 		addSound(ModSoundEvents.INJECTOR_FAIL, "Injection Failed");
+		addSound(ModSoundEvents.MARROW_DRINK, "Slurping Bone Marrow");
 
 		addSound(ModSoundEvents.FLESH_BLOCK_HIT, "Hit Fleshy Block");
 		addSound(ModSoundEvents.FLESH_BLOCK_PLACE, "Place Fleshy Block");
