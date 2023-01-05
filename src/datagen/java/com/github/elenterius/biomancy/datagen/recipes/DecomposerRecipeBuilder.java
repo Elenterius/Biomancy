@@ -1,8 +1,10 @@
 package com.github.elenterius.biomancy.datagen.recipes;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.recipe.IngredientStack;
+import com.github.elenterius.biomancy.recipe.ItemCountRange;
 import com.github.elenterius.biomancy.recipe.VariableProductionOutput;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -26,9 +28,7 @@ import net.minecraftforge.common.crafting.conditions.NotCondition;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class DecomposerRecipeBuilder implements IRecipeBuilder {
@@ -39,12 +39,16 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 	private final List<ICondition> conditions = new ArrayList<>();
 	private ResourceLocation recipeId;
 	private IngredientStack ingredientStack = null;
-	private int craftingTime = 4 * 20;
+	private int craftingTime = -1;
 	@Nullable
 	private String group;
 
 	private DecomposerRecipeBuilder(ResourceLocation recipeId) {
 		this.recipeId = recipeId;
+	}
+
+	public static DecomposerRecipeBuilder create() {
+		return new DecomposerRecipeBuilder(BiomancyMod.createRL("unknown"));
 	}
 
 	//	public static DecomposerRecipeBuilder create(String modId, String ingredientName) {
@@ -60,10 +64,6 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 	//	public static DecomposerRecipeBuilder create(ResourceLocation recipeId) {
 	//		return new DecomposerRecipeBuilder(recipeId);
 	//	}
-
-	public static DecomposerRecipeBuilder create() {
-		return new DecomposerRecipeBuilder(BiomancyMod.createRL("unknown"));
-	}
 
 	private static String getName(ItemLike itemLike) {
 		ResourceLocation name = itemLike.asItem().getRegistryName();
@@ -163,7 +163,13 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 	public void save(Consumer<FinishedRecipe> consumer, @Nullable CreativeModeTab itemCategory) {
 		validate();
 
-		advancement.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
+		if (craftingTime < 0) {
+			craftingTime = CraftingTimeUtil.getTotalTicks(outputs);
+		}
+
+		advancement.parent(new ResourceLocation("recipes/root"))
+				.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId))
+				.rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
 
 		String folder = itemCategory != null ? itemCategory.getRecipeFolderName() : BiomancyMod.MOD_ID;
 		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(), "recipes/%s/%s".formatted(folder, recipeId.getPath()));
@@ -248,5 +254,58 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 			return advancementId;
 		}
 	}
+
+	public static class CraftingTimeUtil {
+		static final Map<Item, Float> TICK_MULTIPLIERS = new HashMap<>();
+		static final float BASE_TICKS = 20;
+
+		static {
+			TICK_MULTIPLIERS.put(ModItems.FLESH_BITS.get(), 0.9f);
+			TICK_MULTIPLIERS.put(ModItems.BONE_FRAGMENTS.get(), 1.25f);
+			TICK_MULTIPLIERS.put(ModItems.TOUGH_FIBERS.get(), 1.5f);
+			TICK_MULTIPLIERS.put(ModItems.ELASTIC_FIBERS.get(), 0.5f);
+			TICK_MULTIPLIERS.put(ModItems.STONE_POWDER.get(), 1.5f);
+			TICK_MULTIPLIERS.put(ModItems.MINERAL_FRAGMENT.get(), 2f);
+			TICK_MULTIPLIERS.put(ModItems.GEM_FRAGMENTS.get(), 2.5f);
+			TICK_MULTIPLIERS.put(ModItems.EXOTIC_DUST.get(), 2.5f);
+			TICK_MULTIPLIERS.put(ModItems.BIO_MINERALS.get(), 1.1f);
+			TICK_MULTIPLIERS.put(ModItems.BIO_LUMENS.get(), 1.1f);
+			TICK_MULTIPLIERS.put(ModItems.BILE.get(), 1f);
+			TICK_MULTIPLIERS.put(ModItems.TOXIN_EXTRACT.get(), 1f);
+			TICK_MULTIPLIERS.put(ModItems.VOLATILE_FLUID.get(), 1.25f);
+			TICK_MULTIPLIERS.put(ModItems.HORMONE_SECRETION.get(), 1f);
+			TICK_MULTIPLIERS.put(ModItems.WITHERING_OOZE.get(), 1.25f);
+			TICK_MULTIPLIERS.put(ModItems.REGENERATIVE_FLUID.get(), 1.75f);
+		}
+
+		private CraftingTimeUtil() {}
+
+		public static float getTicks(Item item, int maxAmount) {
+			return BASE_TICKS * TICK_MULTIPLIERS.getOrDefault(item, 1f) * Math.max(1, maxAmount);
+		}
+
+		public static int getTotalTicks(List<VariableProductionOutput> outputs) {
+			float ticks = 0;
+			for (VariableProductionOutput output : outputs) {
+				ticks += getTicks(output.getItem(), getMaxAmount(output));
+			}
+			return Math.round(ticks);
+		}
+
+		static int getMaxAmount(VariableProductionOutput output) {
+			ItemCountRange countRange = output.getCountRange();
+			if (countRange instanceof ItemCountRange.UniformRange uniform) {
+				return uniform.max();
+			}
+			else if (countRange instanceof ItemCountRange.ConstantValue constant) {
+				return constant.value();
+			}
+			else if (countRange instanceof ItemCountRange.BinomialRange binomialRange) {
+				return binomialRange.n();
+			}
+			return 1;
+		}
+	}
+
 }
 
