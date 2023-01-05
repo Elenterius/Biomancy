@@ -26,7 +26,9 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.BowlFoodItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -199,16 +201,38 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 	@Override
 	protected boolean craftRecipe(DigesterRecipe recipeToCraft, Level level) {
 		ItemStack result = recipeToCraft.assemble(inputInventory);
+
 		if (!result.isEmpty() && doesRecipeResultFitIntoOutputInv(recipeToCraft, result)) {
+			ItemStack craftingRemainder = getCraftingRemainder();
+
 			inputInventory.removeItem(0, 1); //consume input
 			outputInventory.insertItemStack(result); //output result
+
+			if (!craftingRemainder.isEmpty()) {
+				outputInventory.insertItemStack(craftingRemainder);
+			}
 
 			SoundUtil.broadcastBlockSound((ServerLevel) level, getBlockPos(), ModSoundEvents.DIGESTER_CRAFTING_COMPLETED);
 
 			setChanged();
 			return true;
 		}
+
 		return false;
+	}
+
+	private ItemStack getCraftingRemainder() {
+		ItemStack stack = inputInventory.getItem(0);
+
+		if (stack.hasCraftingRemainingItem()) {
+			return stack.getCraftingRemainingItem();
+		}
+
+		if (stack.getItem() instanceof BowlFoodItem) {
+			return new ItemStack(Items.BOWL);
+		}
+
+		return ItemStack.EMPTY;
 	}
 
 	//client side only
