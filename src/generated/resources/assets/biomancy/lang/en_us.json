@@ -333,6 +333,7 @@
   "sounds.biomancy.fleshkin_chest.close": "Close Fleshy Chest",
   "sounds.biomancy.fleshkin_chest.no": "Fleshy Chest says No",
   "sounds.biomancy.fleshkin_chest.open": "Open Fleshy Chest",
+  "sounds.biomancy.item.bone_marrow.drink": "Slurping Bone Marrow",
   "sounds.biomancy.item.injector.fail": "Injection Failed",
   "sounds.biomancy.item.injector.inject": "Injecting Serum",
   "sounds.biomancy.ui.bio_forge.open": "Open Menu of Bio-Forge",
