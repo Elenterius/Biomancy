@@ -9,7 +9,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -33,6 +35,11 @@ public final class CommonSetupHandler {
 		});
 
 		ModsCompatHandler.onBiomancyCommonSetup(event);
+	}
+
+	@SubscribeEvent
+	public static void registerRecipeSerializers(RegistryEvent.Register<RecipeSerializer<?>> event) {
+		ModRecipes.registerIngredientSerializers();
 	}
 
 	private static void registerDispenserBehaviors() {
