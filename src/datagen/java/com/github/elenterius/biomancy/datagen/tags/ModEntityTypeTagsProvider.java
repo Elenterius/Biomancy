@@ -17,6 +17,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.monster.Slime;
+import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
@@ -128,7 +129,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 				.add(VOLATILE_MOBS);
 
 		createTag(ModTags.EntityTypes.BONE_MARROW)
-				.add(EntityType.SKELETON_HORSE)
+				.add(EntityType.SKELETON_HORSE, EntityType.WARDEN)
 				.addTag(EntityTypeTags.SKELETONS)
 				.addOptional(AMEntityRegistry.SKELEWAG, AMEntityRegistry.BONE_SERPENT);
 
@@ -169,6 +170,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 		if (MobUtil.isWithered(mob)) return false;
 		if (mob instanceof AbstractGolem) return false;
 		if (mob instanceof Slime) return false;
+		if (mob instanceof Warden) return false;
 		return true;
 	}
 

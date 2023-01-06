@@ -15,6 +15,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -49,6 +50,7 @@ public class SpecialMobLootModifier extends LootModifier {
 	private static final ItemLoot BONE_MARROW = new ItemLoot(ModItems.MOB_MARROW, RANDOM_ITEM_AMOUNT_FUNC_2);
 	private static final ItemLoot WITHERED_BONE_MARROW = new ItemLoot(ModItems.WITHERED_MOB_MARROW, RANDOM_ITEM_AMOUNT_FUNC_2);
 	private static final ItemLoot FLESH_BITS = new ItemLoot(ModItems.FLESH_BITS, RANDOM_ITEM_AMOUNT_FUNC_2); //bonus drop for bone cleaver
+	private static final ItemLoot ECHO_SHARD = new ItemLoot(() -> Items.ECHO_SHARD, RANDOM_ITEM_AMOUNT_FUNC_1);
 	private static final ItemLoot EMPTY = new ItemLoot(() -> Items.AIR, CONSTANT_ITEM_AMOUNT_FUNC);
 
 	private final Weights weights;
@@ -103,16 +105,10 @@ public class SpecialMobLootModifier extends LootModifier {
 		if (hasBoneMarrow) lootTable.add(BONE_MARROW, weights.boneMarrow);
 		if (hasWitheredBoneMarrow) lootTable.add(WITHERED_BONE_MARROW, weights.witheredBoneMarrow);
 
-		return lootTable;
-	}
+		if (livingEntity instanceof Warden) {
+			lootTable.add(ECHO_SHARD, 10);
+		}
 
-	@Deprecated(forRemoval = true)
-	private DynamicLootTable getLootTableForJER(LivingEntity livingEntity) {
-		DynamicLootTable lootTable = buildLootTable(livingEntity);
-		if (lootTable.isEmpty()) return lootTable;
-
-		lootTable.add(EMPTY, 15);
-		lootTable.add(FLESH_BITS, 15);
 		return lootTable;
 	}
 
