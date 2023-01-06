@@ -74,7 +74,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 	protected static final Set<EntityType<?>> INVALID_MOBS_FOR_MEATY_LOOT = Set.of(
 			EntityType.SLIME, EntityType.MAGMA_CUBE,
 			EntityType.IRON_GOLEM, EntityType.SNOW_GOLEM, EntityType.SHULKER,
-			EntityType.VEX, EntityType.GHAST,
+			EntityType.VEX, EntityType.GHAST, EntityType.ALLAY,
 			EntityType.BLAZE,
 			EntityType.HUSK, EntityType.DROWNED, EntityType.ZOMBIE, EntityType.ZOMBIE_HORSE, EntityType.ZOMBIE_VILLAGER,
 			EntityType.SKELETON, EntityType.SKELETON_HORSE, EntityType.STRAY, EntityType.WITHER_SKELETON, EntityType.WITHER,
