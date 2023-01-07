@@ -215,6 +215,9 @@ public class EnglishTranslationProvider extends LanguageProvider {
 		addTooltip("contains_unique_dna", "Contains Unique Genetic Sequences");
 		addTooltip("press_button_to", "Press %1$s to %2$s");
 
+		addTooltip("owner", "Owner: %1$s");
+
+		addTooltip("slots", "Slots");
 		addTooltip("drops_from", "Drops from");
 		addTooltip("and_more", "and more...");
 

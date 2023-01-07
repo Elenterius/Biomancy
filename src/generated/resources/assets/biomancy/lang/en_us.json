@@ -370,7 +370,9 @@
   "tooltip.biomancy.living_tool_state_is": "The Tool is %1$s",
   "tooltip.biomancy.nutrients_consumes": "Consumes %1$s u",
   "tooltip.biomancy.nutrients_fuel": "Nutrients",
+  "tooltip.biomancy.owner": "Owner: %1$s",
   "tooltip.biomancy.press_button_to": "Press %1$s to %2$s",
   "tooltip.biomancy.projectile_damage": "Projectile Damage",
-  "tooltip.biomancy.reload_time": "Reload Time"
+  "tooltip.biomancy.reload_time": "Reload Time",
+  "tooltip.biomancy.slots": "Slots"
 }
