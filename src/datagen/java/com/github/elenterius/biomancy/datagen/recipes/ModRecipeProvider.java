@@ -383,8 +383,7 @@ public class ModRecipeProvider extends RecipeProvider {
 		DecomposerRecipeBuilder.create().setIngredient(Items.COOKIE).addOutput(ModItems.ORGANIC_MATTER.get(), 1, 2).addOutput(ModItems.NUTRIENTS.get(), 1, 2).unlockedBy(Items.COOKIE).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.MELON_SLICE).addOutput(ModItems.ORGANIC_MATTER.get(), 1, 2).addOutput(ModItems.NUTRIENTS.get(), 1, 2).unlockedBy(Items.MELON_SLICE).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.DRIED_KELP).addOutput(ModItems.ORGANIC_MATTER.get(), -1, 1).addOutput(ModItems.NUTRIENTS.get(), -1, 1).unlockedBy(Items.DRIED_KELP).save(consumer);
-		DecomposerRecipeBuilder.create().setIngredient(Items.PUMPKIN_SEEDS).addOutput(ModItems.ORGANIC_MATTER.get(), 0, 1).addOutput(ModItems.NUTRIENTS.get(), 0, 1).unlockedBy(Items.PUMPKIN_SEEDS).save(consumer);
-		DecomposerRecipeBuilder.create().setIngredient(Items.MELON_SEEDS).addOutput(ModItems.ORGANIC_MATTER.get(), 0, 1).addOutput(ModItems.NUTRIENTS.get(), 0, 1).unlockedBy(Items.MELON_SEEDS).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(Tags.Items.SEEDS).addOutput(ModItems.ORGANIC_MATTER.get(), 0, 1).addOutput(ModItems.NUTRIENTS.get(), 0, 1).unlockedBy(Tags.Items.SEEDS).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.BEEF).addOutput(ModItems.FLESH_BITS.get(), 3, 6).unlockedBy(Items.BEEF).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.CHICKEN).addOutput(ModItems.FLESH_BITS.get(), 3, 4).addOutput(ModItems.BONE_FRAGMENTS.get(), 2, 4).addOutput(ModItems.ELASTIC_FIBERS.get(), 2, 3).unlockedBy(Items.CHICKEN).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.ROTTEN_FLESH).addOutput(ModItems.FLESH_BITS.get(), 1, 3).addOutput(ModItems.ELASTIC_FIBERS.get(), 0, 1).unlockedBy(Items.ROTTEN_FLESH).save(consumer);
