@@ -125,6 +125,11 @@ public class LivingClawsItem extends SimpleClawsItem implements ILivingToolItem,
 	}
 
 	@Override
+	public boolean isEnchantable(ItemStack stack) {
+		return getItemStackLimit(stack) == 1;
+	}
+
+	@Override
 	public boolean isDamageable(ItemStack stack) {
 		return false;
 	}
