@@ -49,6 +49,7 @@ public class CleansingSerum extends Serum {
 	public void affectPlayerSelf(CompoundTag tag, ServerPlayer targetSelf) {
 		clearPotionEffects(targetSelf);
 		clearAbsorption(targetSelf);
+		resetPehkuiSize(targetSelf);
 	}
 
 	private void clearPotionEffects(LivingEntity target) {

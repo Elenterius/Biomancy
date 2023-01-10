@@ -34,10 +34,8 @@ public final class PehkuiCompat {
 
 		@Override
 		public void resetSize(LivingEntity livingEntity) {
-			//			PehkuiCompat.SCALE_TYPE.getScaleData(livingEntity).resetScale(); // doesn't work as expected?
-			ScaleData scaleData = PehkuiCompat.SCALE_TYPE.getScaleData(livingEntity);
-			float initialScale = scaleData.getInitialScale();
-			if (scaleData.getScale() != initialScale) scaleData.setTargetScale(initialScale);
+			//PehkuiCompat.SCALE_TYPE.getScaleData(livingEntity).resetScale();
+			setScale(livingEntity, 1f);
 		}
 
 		@Override
