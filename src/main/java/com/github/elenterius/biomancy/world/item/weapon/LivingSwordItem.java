@@ -127,6 +127,11 @@ public class LivingSwordItem extends SwordItem implements ICustomTooltip, ILivin
 	}
 
 	@Override
+	public boolean isEnchantable(ItemStack stack) {
+		return getMaxStackSize(stack) == 1;
+	}
+
+	@Override
 	public boolean isDamageable(ItemStack stack) {
 		return false;
 	}

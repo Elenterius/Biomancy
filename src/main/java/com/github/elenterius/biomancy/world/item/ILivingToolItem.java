@@ -24,7 +24,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public interface ILivingToolItem extends INutrientsContainerItem {
-	Set<Enchantment> INVALID_ENCHANTMENTS = Set.of(Enchantments.UNBREAKING, Enchantments.MENDING, Enchantments.FIRE_ASPECT);
+	Set<Enchantment> INVALID_ENCHANTMENTS = Set.of(Enchantments.FLAMING_ARROWS, Enchantments.FIRE_ASPECT);
 
 	default LivingToolState getLivingToolState(ItemStack livingTool) {
 		return LivingToolState.deserialize(livingTool.getOrCreateTag());
