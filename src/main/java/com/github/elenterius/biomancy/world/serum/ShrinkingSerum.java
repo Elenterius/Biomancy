@@ -44,8 +44,8 @@ public class ShrinkingSerum extends Serum {
 	private void resizeWithPehkui(LivingEntity target) {
 		IPehkuiHelper pehkuiHelper = ModsCompatHandler.getPehkuiHelper();
 		float currentScale = pehkuiHelper.getScale(target);
-		if (currentScale > 0.5f) {
-			pehkuiHelper.setScale(target, Mth.clamp(currentScale * 0.5f, 0.5f, 1.5f));
+		if (currentScale > 0.25f) {
+			pehkuiHelper.setScale(target, Mth.clamp(currentScale - 0.25f, 0.25f, 2f));
 		}
 	}
 
