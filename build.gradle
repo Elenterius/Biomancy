@@ -195,6 +195,7 @@ dependencies {
     datagenImplementation fg.deobf("curse.maven:alexs_mobs-426558:3853078")
 
     implementation fg.deobf("com.github.Virtuoel:Pehkui:3.6.0-1.18.2-forge")
+    //needs to be compileOnly for datagen to work -> temporarily change to implementation for gameplay testing
 
     //TODO: Morph Mod Integration?
 //    implementation fg.deobf("curse.maven:identity-391390:3807264") // https://www.curseforge.com/minecraft/mc-mods/identity
