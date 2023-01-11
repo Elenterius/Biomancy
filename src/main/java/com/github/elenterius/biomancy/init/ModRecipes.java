@@ -5,11 +5,21 @@ import com.github.elenterius.biomancy.recipe.*;
 import com.github.elenterius.biomancy.recipe.SimpleRecipeType.ItemStackRecipeType;
 import net.minecraft.core.Registry;
 import net.minecraft.world.Container;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.ComposterBlock;
+import net.minecraftforge.common.brewing.BrewingRecipe;
+import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
 import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.common.crafting.NBTIngredient;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -34,6 +44,28 @@ public final class ModRecipes {
 
 	public static void registerComposterRecipes() {
 		ComposterBlock.COMPOSTABLES.putIfAbsent(ModItems.ORGANIC_MATTER.get(), 0.25f);
+	}
+
+	public static void registerBrewingRecipes() {
+		registerBrewingRecipe(ModItems.TOXIN_EXTRACT.get(), Potions.AWKWARD, Potions.POISON);
+		registerBrewingRecipe(ModItems.TOXIN_GLAND.get(), Potions.MUNDANE, Potions.LONG_POISON);
+		registerBrewingRecipe(ModItems.TOXIN_GLAND.get(), Potions.THICK, Potions.STRONG_POISON);
+	}
+
+	private static void registerBrewingRecipe(Item reactant, Potion potionBase, Potion potionResult) {
+		BrewingRecipeRegistry.addRecipe(new BrewingRecipe(createPotionIngredient(potionBase), Ingredient.of(reactant), createPotionStack(potionResult)));
+	}
+
+	private static ItemStack createPotionStack(Supplier<Potion> supplier) {
+		return createPotionStack(supplier.get());
+	}
+
+	private static ItemStack createPotionStack(Potion potion) {
+		return PotionUtils.setPotion(new ItemStack(Items.POTION), potion);
+	}
+
+	private static Ingredient createPotionIngredient(Potion potion) {
+		return NBTIngredient.of(createPotionStack(potion));
 	}
 
 	public static void registerIngredientSerializers() {
