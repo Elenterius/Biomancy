@@ -34,6 +34,7 @@ public final class CommonSetupHandler {
 			ModRecipes.registerComposterRecipes();
 		});
 
+		ModRecipes.registerBrewingRecipes();
 		ModsCompatHandler.onBiomancyCommonSetup(event);
 	}
 
