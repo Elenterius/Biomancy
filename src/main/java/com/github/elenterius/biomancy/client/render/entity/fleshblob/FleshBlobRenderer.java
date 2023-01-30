@@ -1,8 +1,7 @@
-package com.github.elenterius.biomancy.client.renderer.entity;
+package com.github.elenterius.biomancy.client.render.entity.fleshblob;
 
-import com.github.elenterius.biomancy.client.model.entity.FleshBlobModel;
 import com.github.elenterius.biomancy.init.client.ModRenderTypes;
-import com.github.elenterius.biomancy.world.entity.fleshblob.FleshBlob;
+import com.github.elenterius.biomancy.world.entity.fleshblob.AbstractFleshBlob;
 import com.github.elenterius.biomancy.world.entity.fleshblob.TumorFlag;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -18,7 +17,7 @@ import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 import javax.annotation.Nullable;
 import java.util.Locale;
 
-public class FleshBlobRenderer extends GeoEntityRenderer<FleshBlob> {
+public class FleshBlobRenderer extends GeoEntityRenderer<AbstractFleshBlob> {
 
 	public FleshBlobRenderer(EntityRendererProvider.Context context) {
 		super(context, new FleshBlobModel<>());
@@ -26,11 +25,11 @@ public class FleshBlobRenderer extends GeoEntityRenderer<FleshBlob> {
 	}
 
 	@Override
-	public void renderEarly(FleshBlob entity, PoseStack poseStack, float ticks, @Nullable MultiBufferSource renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLight, int packedOverlay, float red, float green, float blue, float partialTicks) {
-		float scale = FleshBlob.getScaleMultiplier(entity);
+	public void renderEarly(AbstractFleshBlob entity, PoseStack poseStack, float ticks, @Nullable MultiBufferSource renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLight, int packedOverlay, float red, float green, float blue, float partialTicks) {
+		float scale = entity.getBlobScale();
 		shadowRadius = 0.65f * scale;
 
-		FleshBlobModel<FleshBlob> fleshBlobModel = (FleshBlobModel<FleshBlob>) getGeoModelProvider();
+		FleshBlobModel<AbstractFleshBlob> fleshBlobModel = (FleshBlobModel<AbstractFleshBlob>) modelProvider;
 		AnimationProcessor<?> animationProcessor = fleshBlobModel.getAnimationProcessor();
 
 		int flag = entity.getTumorFlags();
@@ -47,7 +46,7 @@ public class FleshBlobRenderer extends GeoEntityRenderer<FleshBlob> {
 	}
 
 	@Override
-	public RenderType getRenderType(FleshBlob fleshBlob, float partialTicks, PoseStack stack, @Nullable MultiBufferSource buffer, @Nullable VertexConsumer vertexBuilder, int packedLight, ResourceLocation textureLocation) {
+	public RenderType getRenderType(AbstractFleshBlob fleshBlob, float partialTicks, PoseStack stack, @Nullable MultiBufferSource buffer, @Nullable VertexConsumer vertexBuilder, int packedLight, ResourceLocation textureLocation) {
 		if (fleshBlob.hasCustomName()) {
 			Component customName = fleshBlob.getCustomName();
 			if (customName != null) {

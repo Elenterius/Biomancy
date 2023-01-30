@@ -74,6 +74,7 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 		addSimpleRedirect(ModSoundEvents.DIGESTER_CRAFTING_COMPLETED, SoundEvents.PLAYER_BURP, 1f, 1.25f);
 
 		addSimpleRedirect(ModSoundEvents.FLESH_BLOB_JUMP, SoundEvents.SLIME_JUMP);
+		addSimpleRedirect(ModSoundEvents.FLESH_BLOB_HURT, ModSoundEvents.FLESH_BLOCK_BREAK.get(), 0.8f, 0.9f);
 	}
 
 	public String translationKey(RegistryObject<SoundEvent> soundHolder) {
@@ -138,6 +139,13 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 		add(soundHolder, definition()
 				.subtitle(translationKey(soundHolder))
 				.with(sound(redirectTarget.getLocation(), SoundDefinition.SoundType.EVENT).volume(volume).pitch(pitch))
+		);
+	}
+
+	protected void addSimpleRedirect(RegistryObject<SoundEvent> soundHolder, RegistryObject<SoundEvent> redirectTarget, float volume, float pitch) {
+		add(soundHolder, definition()
+				.subtitle(translationKey(soundHolder))
+				.with(sound(redirectTarget.getId(), SoundDefinition.SoundType.EVENT).volume(volume).pitch(pitch))
 		);
 	}
 
