@@ -11,8 +11,7 @@ import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.SacrificeHandler;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.block.PrimordialCradleBlock;
-import com.github.elenterius.biomancy.world.entity.fleshblob.FleshBlob;
-import net.minecraft.Util;
+import com.github.elenterius.biomancy.world.entity.fleshblob.AbstractFleshBlob;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -156,12 +155,13 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 	}
 
 	public void spawnMob(ServerLevel level, BlockPos pos, SacrificeHandler sacrificeHandler) {
-		FleshBlob fleshBlob = ModEntityTypes.FLESH_BLOB.get().create(level);
+		EntityType<? extends AbstractFleshBlob> fleshBlobType = level.random.nextFloat() < sacrificeHandler.getHostileChance() ? ModEntityTypes.HUNGRY_FLESH_BLOB.get() : ModEntityTypes.FLESH_BLOB.get();
+		AbstractFleshBlob fleshBlob = fleshBlobType.create(level);
 		if (fleshBlob != null) {
 			float yaw = PrimordialCradleBlock.getYRotation(getBlockState());
 			fleshBlob.moveTo(pos.getX() + 0.5f, pos.getY() + 4f / 16f, pos.getZ() + 0.5f, yaw, 0);
 			fleshBlob.yHeadRot = fleshBlob.getYRot();
-			fleshBlob.setHostile(level.random.nextFloat() < sacrificeHandler.getHostileChance());
+			fleshBlob.yBodyRot = fleshBlob.getYRot();
 			fleshBlob.setTumors(sacrificeHandler.getTumorFactor());
 			level.addFreshEntity(fleshBlob);
 		}

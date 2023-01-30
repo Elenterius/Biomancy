@@ -22,7 +22,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.ColorHandlerEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -44,7 +43,7 @@ public final class ClientSetupHandler {
 	private ClientSetupHandler() {}
 
 	@SubscribeEvent
-	public static void onClientSetup(FMLClientSetupEvent event) {
+	public static void onSetup(final FMLClientSetupEvent event) {
 		ClientRegistry.registerKeyBinding(ITEM_DEFAULT_KEY_BINDING);
 
 		IngameOverlays.registerGameOverlays();
@@ -53,12 +52,14 @@ public final class ClientSetupHandler {
 
 		setBlockRenderLayers();
 
-		event.enqueueWork(() -> {
-			ModRecipeBookCategories.init();
-			registerItemModelProperties();
-		});
+		event.enqueueWork(ClientSetupHandler::onPostSetup);
 
 		ModsCompatHandler.onBiomancyClientSetup(event);
+	}
+
+	private static void onPostSetup() {
+		ModRecipeBookCategories.init();
+		registerItemModelProperties();
 	}
 
 	@SubscribeEvent
@@ -72,6 +73,7 @@ public final class ClientSetupHandler {
 		event.registerBlockEntityRenderer(ModBlockEntities.FLESHKIN_CHEST.get(), FleshkinChestBlockRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.STORAGE_SAC.get(), StorageSacBERenderer::new);
 
+		event.registerEntityRenderer(ModEntityTypes.HUNGRY_FLESH_BLOB.get(), FleshBlobRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.FLESH_BLOB.get(), FleshBlobRenderer::new);
 
 		event.registerEntityRenderer(ModEntityTypes.ANTI_GRAVITY_PROJECTILE.get(), ThrownItemRenderer::new);
@@ -80,7 +82,8 @@ public final class ClientSetupHandler {
 		event.registerEntityRenderer(ModEntityTypes.WITHER_SKULL_PROJECTILE.get(), WitherProjectileRenderer::new);
 	}
 
-	static void setBlockRenderLayers() {
+	@SuppressWarnings("removal")
+	private static void setBlockRenderLayers() {
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.DIGESTER.get(), RenderType.cutout());
 
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.VOICE_BOX.get(), RenderType.translucent());
@@ -115,10 +118,6 @@ public final class ClientSetupHandler {
 		//placeholder
 	}
 
-	//	public static boolean isPlayerCosmeticVisible(Player player) {
-	//		return HASHES.isValid(player.getGameProfile().getId());
-	//	}
-
 	@SubscribeEvent
 	public static void onItemColorRegistry(final ColorHandlerEvent.Item event) {
 		event.getItemColors().register((stack, index) -> ModItems.ESSENCE.get().getColor(stack, index), ModItems.ESSENCE.get());
@@ -130,55 +129,18 @@ public final class ClientSetupHandler {
 		//placeholder
 	}
 
-	@SubscribeEvent
-	public static void onModelBakeEvent(ModelBakeEvent event) {
-		//block with "glowing" overlay texture
-		//addFullBrightOverlayBakedModel(ModBlocks.FOOBAR.get(), event);
-	}
-
-	//	private static void addFullBrightOverlayBakedModel(Block block, ModelBakeEvent event) {
-	//		for (BlockState blockState : block.getStateDefinition().getPossibleStates()) {
-	//			ModelResourceLocation modelLocation = BlockModelShapes.stateToModelLocation(blockState);
-	//			IBakedModel bakedModel = event.getModelRegistry().get(modelLocation);
-	//			if (bakedModel == null) {
-	//				BiomancyMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Did not find any vanilla baked models for {}", block.getRegistryName());
-	//			}
-	//			else if (bakedModel instanceof FullBrightOverlayBakedModel) {
-	//				BiomancyMod.LOGGER.warn(MarkerManager.getMarker("ModelBakeEvent"), "Attempted to replace already existing FullBrightOverlayBakedModel for {}", block.getRegistryName());
-	//			}
-	//			else {
-	//				FullBrightOverlayBakedModel customModel = new FullBrightOverlayBakedModel(bakedModel);
-	//				event.getModelRegistry().put(modelLocation, customModel);
-	//			}
-	//		}
+	//	@SubscribeEvent
+	//	public static void registerGameOverlays(RegisterGuiOverlaysEvent event) {
+	//		event.registerAboveAll("biomancy_gun", IngameOverlays.GUN_OVERLAY);
+	//		event.registerAboveAll("biomancy_injector", IngameOverlays.INJECTOR_OVERLAY);
 	//	}
-
-	//	private static final class HASHES {
 	//
-	//		private static final Set<HashCode> VALID = Set.of(
-	//				HashCode.fromString("20f0bf6814e62bb7297669efb542f0af6ee0be1a9b87d0702853d8cc5aa15dc4")
-	//		);
-	//
-	//		private static final CacheLoader<UUID, HashCode> CACHE_LOADER = new CacheLoader<>() {
-	//			@Override
-	//			public HashCode load(UUID key) {
-	//				//noinspection UnstableApiUsage
-	//				return Hashing.sha256().hashString(key.toString(), StandardCharsets.UTF_8);
-	//			}
-	//		};
-	//
-	//		private static final LoadingCache<UUID, HashCode> CACHE = CacheBuilder.newBuilder().expireAfterAccess(2, TimeUnit.SECONDS).build(CACHE_LOADER);
-	//
-	//		private HASHES() {}
-	//
-	//		public static boolean isValid(UUID uuid) {
-	//			return VALID.contains(CACHE.getUnchecked(uuid));
-	//		}
-	//
-	//		public static boolean isValid(HashCode code) {
-	//			return VALID.contains(code);
-	//		}
-	//
+	//	@SubscribeEvent
+	//	static void registerTooltipComponents(RegisterClientTooltipComponentFactoriesEvent event) {
+	//		event.register(TabTooltipComponent.class, TabTooltipClientComponent::new);
+	//		event.register(HrTooltipComponent.class, HrTooltipClientComponent::new);
+	//		event.register(EmptyLineTooltipComponent.class, EmptyLineClientComponent::new);
+	//		event.register(StorageSacTooltipComponent.class, StorageSacTooltipClientComponent::new);
 	//	}
 
 }

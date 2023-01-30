@@ -3,7 +3,6 @@ package com.github.elenterius.biomancy.world.serum;
 import com.github.elenterius.biomancy.integration.ModsCompatHandler;
 import com.github.elenterius.biomancy.mixin.ZombieVillagerMixinAccessor;
 import com.github.elenterius.biomancy.world.entity.MobUtil;
-import com.github.elenterius.biomancy.world.entity.fleshblob.FleshBlob;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -34,10 +33,6 @@ public class CleansingSerum extends Serum {
 		}
 		else if (target instanceof WitherSkeleton skeleton) {
 			MobUtil.convertMobTo((ServerLevel) target.level, skeleton, EntityType.SKELETON);
-		}
-
-		if (target instanceof FleshBlob fleshBlob) {
-			fleshBlob.clearStoredDNA();
 		}
 	}
 

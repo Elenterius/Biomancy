@@ -313,6 +313,7 @@ public class EnglishTranslationProvider extends LanguageProvider {
 		addSound(ModSoundEvents.DIGESTER_CRAFTING_COMPLETED, "Digester finished crafting");
 
 		addSound(ModSoundEvents.FLESH_BLOB_JUMP, "Flesh Blob Jump");
+		addSound(ModSoundEvents.FLESH_BLOB_HURT, "Flesh Blob Hurt");
 	}
 
 	private void addDamageTranslations() {
@@ -418,6 +419,7 @@ public class EnglishTranslationProvider extends LanguageProvider {
 		addBannerPatternItem(ModItems.MASCOT_OUTLINE_BANNER_PATTERN, "Banner Pattern", "Mascot Outline");
 		addBannerPatternItem(ModItems.MASCOT_ACCENT_BANNER_PATTERN, "Banner Pattern", "Mascot Accent");
 
+		addItem(ModItems.HUNGRY_FLESH_BLOB_SPAWN_EGG, "Hungry Flesh Blob Spawn Egg");
 		addItem(ModItems.FLESH_BLOB_SPAWN_EGG, "Flesh Blob Spawn Egg");
 	}
 
@@ -473,6 +475,7 @@ public class EnglishTranslationProvider extends LanguageProvider {
 	}
 
 	private void addEntityTranslations() {
+		addEntityType(ModEntityTypes.HUNGRY_FLESH_BLOB, "Hungry Flesh Blob");
 		addEntityType(ModEntityTypes.FLESH_BLOB, "Flesh Blob");
 	}
 
