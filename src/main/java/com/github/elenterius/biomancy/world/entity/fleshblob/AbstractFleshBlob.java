@@ -2,12 +2,15 @@ package com.github.elenterius.biomancy.world.entity.fleshblob;
 
 import com.github.elenterius.biomancy.init.ModLoot;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.world.entity.IJukeboxDancer;
 import com.github.elenterius.biomancy.world.entity.JumpMoveHelper;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
@@ -15,6 +18,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.gameevent.*;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -25,20 +30,25 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public abstract class AbstractFleshBlob extends PathfinderMob implements JumpMoveHelper.IJumpingPathfinderMob, IAnimatable {
+import java.util.function.BiConsumer;
+
+public abstract class AbstractFleshBlob extends PathfinderMob implements JumpMoveHelper.IJumpingPathfinderMob, IJukeboxDancer, IAnimatable {
 
 	public static final byte MAX_SIZE = 10;
 	public static final byte MIN_SIZE = 1;
 	public static final byte JUMPING_STATE_ID = 61;
 	protected static final EntityDataAccessor<Byte> BLOB_SIZE = SynchedEntityData.defineId(AbstractFleshBlob.class, EntityDataSerializers.BYTE);
 	protected static final EntityDataAccessor<Byte> TUMORS = SynchedEntityData.defineId(AbstractFleshBlob.class, EntityDataSerializers.BYTE);
+	protected static final EntityDataAccessor<Boolean> IS_DANCING = SynchedEntityData.defineId(AbstractFleshBlob.class, EntityDataSerializers.BOOLEAN);
 
 	protected final JumpMoveHelper<AbstractFleshBlob> jumpMoveHelper = new JumpMoveHelper<>(this, JUMPING_STATE_ID);
-
 	protected final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
+	private final DynamicGameEventListener<JukeboxListener> dynamicJukeboxListener;
+	private @Nullable BlockPos jukeboxPos;
 
 	protected AbstractFleshBlob(EntityType<? extends AbstractFleshBlob> entityType, Level level) {
 		super(entityType, level);
+		dynamicJukeboxListener = new DynamicGameEventListener<>(new JukeboxListener(new EntityPositionSource(this, this.getEyeHeight()), GameEvent.JUKEBOX_PLAY.getNotificationRadius()));
 	}
 
 	@Nullable
@@ -67,6 +77,7 @@ public abstract class AbstractFleshBlob extends PathfinderMob implements JumpMov
 		super.defineSynchedData();
 		entityData.define(BLOB_SIZE, (byte) 1);
 		entityData.define(TUMORS, (byte) 0);
+		entityData.define(IS_DANCING, false);
 	}
 
 	@Override
@@ -80,6 +91,13 @@ public abstract class AbstractFleshBlob extends PathfinderMob implements JumpMov
 			}
 		}
 		super.onSyncedDataUpdated(key);
+	}
+
+	@Override
+	public void updateDynamicGameEventListener(BiConsumer<DynamicGameEventListener<?>, ServerLevel> listener) {
+		if (level instanceof ServerLevel serverlevel) {
+			listener.accept(dynamicJukeboxListener, serverlevel);
+		}
 	}
 
 	@Override
@@ -152,6 +170,20 @@ public abstract class AbstractFleshBlob extends PathfinderMob implements JumpMov
 		entityData.set(TUMORS, flags);
 	}
 
+	public boolean isDancing() {
+		return entityData.get(IS_DANCING);
+	}
+
+	public void setDancing(boolean dancing) {
+		if (!level.isClientSide) entityData.set(IS_DANCING, dancing);
+	}
+
+	@Nullable
+	@Override
+	public BlockPos getJukeboxPos() {
+		return jukeboxPos;
+	}
+
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
@@ -192,6 +224,18 @@ public abstract class AbstractFleshBlob extends PathfinderMob implements JumpMov
 	public void aiStep() {
 		super.aiStep();
 		jumpMoveHelper.onAiStep();
+
+		if (tickCount % 20 == 0 && isDancing() && shouldStopDancing()) {
+			setDancing(false);
+			jukeboxPos = null;
+		}
+	}
+
+	protected boolean shouldStopDancing() {
+		boolean wasHurt = lastHurtByPlayer != null || getLastHurtByMob() != null;
+		if (wasHurt) return true;
+
+		return jukeboxPos == null || !jukeboxPos.closerToCenterThan(position(), GameEvent.JUKEBOX_PLAY.getNotificationRadius()) || !level.getBlockState(jukeboxPos).is(Blocks.JUKEBOX);
 	}
 
 	@Override
@@ -218,7 +262,7 @@ public abstract class AbstractFleshBlob extends PathfinderMob implements JumpMov
 	@Override
 	public void setJumping(boolean jumping) {
 		super.setJumping(jumping);
-		if (jumping && !isInWater()) {
+		if (jumping && !isInWaterOrBubble()) {
 			playSound(getJumpSound(), getSoundVolume(), ((float) random.nextGaussian() * 0.2f + 1f) * 0.8f);
 		}
 	}
@@ -239,7 +283,21 @@ public abstract class AbstractFleshBlob extends PathfinderMob implements JumpMov
 		return false;
 	}
 
-	protected <E extends IAnimatable> PlayState onAnimEvent(AnimationEvent<E> event) {
+	public void setJukeboxPlaying(BlockPos pos, boolean isJukeboxPlaying) {
+		if (isJukeboxPlaying) {
+			boolean wasHurt = lastHurtByPlayer != null || getLastHurtByMob() != null;
+			if (!isDancing() && !wasHurt) {
+				jukeboxPos = pos;
+				setDancing(true);
+			}
+		}
+		else if (pos.equals(jukeboxPos) || jukeboxPos == null) {
+			jukeboxPos = null;
+			setDancing(false);
+		}
+	}
+
+	protected <E extends IAnimatable> PlayState handleJumpAnimation(AnimationEvent<E> event) {
 		float jumpPct = jumpMoveHelper.getJumpCompletionPct(event.getPartialTick());
 		if (jumpPct > 0) {
 			event.getController().transitionLengthTicks = 0;
@@ -260,9 +318,18 @@ public abstract class AbstractFleshBlob extends PathfinderMob implements JumpMov
 		return PlayState.CONTINUE;
 	}
 
+	protected <E extends IAnimatable> PlayState handleDaneAnimation(AnimationEvent<E> event) {
+		if (isDancing()) {
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("dancing.loop"));
+			return PlayState.CONTINUE;
+		}
+		return PlayState.STOP;
+	}
+
 	@Override
 	public void registerControllers(AnimationData data) {
-		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::onAnimEvent));
+		data.addAnimationController(new AnimationController<>(this, "jumpController", 0, this::handleJumpAnimation));
+		data.addAnimationController(new AnimationController<>(this, "danceController", 10, this::handleDaneAnimation));
 	}
 
 	@Override
@@ -270,4 +337,37 @@ public abstract class AbstractFleshBlob extends PathfinderMob implements JumpMov
 		return animationFactory;
 	}
 
+	protected class JukeboxListener implements GameEventListener {
+		private final PositionSource listenerSource;
+		private final int listenerRadius;
+
+		public JukeboxListener(PositionSource positionSource, int radius) {
+			listenerSource = positionSource;
+			listenerRadius = radius;
+		}
+
+		@Override
+		public PositionSource getListenerSource() {
+			return listenerSource;
+		}
+
+		@Override
+		public int getListenerRadius() {
+			return listenerRadius;
+		}
+
+		@Override
+		public boolean handleGameEvent(ServerLevel pLevel, GameEvent.Message message) {
+			if (message.gameEvent() == GameEvent.JUKEBOX_PLAY) {
+				setJukeboxPlaying(new BlockPos(message.source()), true);
+				return true;
+			}
+			else if (message.gameEvent() == GameEvent.JUKEBOX_STOP_PLAY) {
+				setJukeboxPlaying(new BlockPos(message.source()), false);
+				return true;
+			}
+
+			return false;
+		}
+	}
 }

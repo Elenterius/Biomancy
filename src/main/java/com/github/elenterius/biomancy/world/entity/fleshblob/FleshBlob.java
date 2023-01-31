@@ -209,7 +209,7 @@ public abstract class FleshBlob extends AbstractFleshBlob implements IFoodEater 
 		}
 	}
 
-	protected <E extends IAnimatable> PlayState onEatingAnimation(AnimationEvent<E> event) {
+	protected <E extends IAnimatable> PlayState handleEatingAnimation(AnimationEvent<E> event) {
 		if (isEating()) {
 			event.getController().setAnimation(new AnimationBuilder().loop("eating.loop"));
 			return PlayState.CONTINUE;
@@ -227,7 +227,7 @@ public abstract class FleshBlob extends AbstractFleshBlob implements IFoodEater 
 	@Override
 	public void registerControllers(AnimationData data) {
 		super.registerControllers(data);
-		AnimationController<FleshBlob> controller = new AnimationController<>(this, "eatingController", 4, this::onEatingAnimation);
+		AnimationController<FleshBlob> controller = new AnimationController<>(this, "eatingController", 4, this::handleEatingAnimation);
 		controller.registerCustomInstructionListener(this::onEatingSfx);
 		data.addAnimationController(controller);
 	}
