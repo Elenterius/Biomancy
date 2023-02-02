@@ -170,6 +170,8 @@
   "block.biomancy.flesh_iris_door.tooltip": "Trapdoor-like iris door made of flesh...",
   "block.biomancy.flesh_door": "Flesh Door",
   "block.biomancy.flesh_door.tooltip": "A sliding door made of flesh...",
+  "block.biomancy.full_flesh_door": "Wide Flesh Door",
+  "block.biomancy.full_flesh_door.tooltip": "A wide sliding door made of flesh...",
   "block.biomancy.bone_spike": "Bone Spike",
   "block.biomancy.bone_spike.tooltip": "A dangerous spike made of reinforced bone, colliding with it will hurt.",
   "block.biomancy.flesh_ladder": "Flesh Ladder",
