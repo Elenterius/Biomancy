@@ -50,15 +50,16 @@ public class HungryFleshBlob extends FleshBlob implements Enemy {
 		goalSelector.addGoal(3, new EatFoodItemGoal<>(this, 0.1f));
 		goalSelector.addGoal(4, new CustomAttackGoal(this, 1.2f));
 		goalSelector.addGoal(5, new AvoidEntityGoal<>(this, AbstractGolem.class, 6f, 1f, 1.2f));
-//		goalSelector.addGoal(6, new DanceNearJukeboxGoal<>(this));
+		//		goalSelector.addGoal(6, new DanceNearJukeboxGoal<>(this));
 		goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1f));
 		goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8f));
 		goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 
 		targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-		targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Animal.class, false));
-		targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, false));
+		targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, MalignantFleshBlob.class, false));
+		targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
+		targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Animal.class, false));
+		targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, false));
 	}
 
 	@Override

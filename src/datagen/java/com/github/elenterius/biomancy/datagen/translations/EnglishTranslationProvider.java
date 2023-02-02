@@ -400,6 +400,7 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 
 		addItem(ModItems.HUNGRY_FLESH_BLOB_SPAWN_EGG, "Hungry Flesh Blob Spawn Egg");
 		addItem(ModItems.FLESH_BLOB_SPAWN_EGG, "Flesh Blob Spawn Egg");
+		addItem(ModItems.MALIGNANT_FLESH_BLOB_SPAWN_EGG, "Malignant Flesh Blob Spawn Egg");
 	}
 
 	private void addBlockTranslations() {
@@ -457,6 +458,7 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 	private void addEntityTranslations() {
 		addEntityType(ModEntityTypes.HUNGRY_FLESH_BLOB, "Hungry Flesh Blob");
 		addEntityType(ModEntityTypes.FLESH_BLOB, "Flesh Blob");
+		addEntityType(ModEntityTypes.MALIGNANT_FLESH_BLOB, "Malignant Flesh Blob");
 	}
 
 	private void addAdvancementTranslations() {
