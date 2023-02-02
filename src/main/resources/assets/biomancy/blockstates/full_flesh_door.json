@@ -1,0 +1,277 @@
+{
+  "variants": {
+    "half=upper,open=false,orientation=x_positive,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_top_right",
+      "y": 90
+    },
+    "half=lower,open=false,orientation=x_positive,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_bottom_right",
+      "y": 90
+    },
+    "half=upper,open=true,orientation=x_positive,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_top_left_open",
+      "y": 90
+    },
+    "half=lower,open=true,orientation=x_positive,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_bottom_left_open",
+      "y": 90
+    },
+    "half=upper,open=false,orientation=x_middle,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_top_middle_left",
+      "y": 90
+    },
+    "half=lower,open=false,orientation=x_middle,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_bottom_middle_left",
+      "y": 90
+    },
+    "half=upper,open=true,orientation=x_middle,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_top_middle_left_open",
+      "y": 90
+    },
+    "half=lower,open=true,orientation=x_middle,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_bottom_middle_left_open",
+      "y": 90
+    },
+    "half=upper,open=false,orientation=x_negative,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_top_left",
+      "y": 270
+    },
+    "half=lower,open=false,orientation=x_negative,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_bottom_left",
+      "y": 270
+    },
+    "half=upper,open=true,orientation=x_negative,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_top_right_open",
+      "y": 270
+    },
+    "half=lower,open=true,orientation=x_negative,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_bottom_right_open",
+      "y": 270
+    },
+    "half=upper,open=false,orientation=z_positive,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_top_left",
+      "y": 180
+    },
+    "half=lower,open=false,orientation=z_positive,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_bottom_left",
+      "y": 180
+    },
+    "half=upper,open=true,orientation=z_positive,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_top_right_open",
+      "y": 180
+    },
+    "half=lower,open=true,orientation=z_positive,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_bottom_right_open",
+      "y": 180
+    },
+    "half=upper,open=false,orientation=z_middle,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_top_middle_left"
+    },
+    "half=lower,open=false,orientation=z_middle,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_bottom_middle_left"
+    },
+    "half=upper,open=true,orientation=z_middle,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_top_middle_left_open"
+    },
+    "half=lower,open=true,orientation=z_middle,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_bottom_middle_left_open"
+    },
+    "half=upper,open=false,orientation=z_negative,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_top_right"
+    },
+    "half=lower,open=false,orientation=z_negative,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_bottom_right"
+    },
+    "half=upper,open=true,orientation=z_negative,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_top_left_open"
+    },
+    "half=lower,open=true,orientation=z_negative,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_bottom_left_open"
+    },
+    "half=upper,open=false,orientation=y_positive,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_top_left",
+      "x": 90
+    },
+    "half=lower,open=false,orientation=y_positive,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_bottom_left",
+      "x": 90
+    },
+    "half=upper,open=true,orientation=y_positive,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_top_left_open",
+      "x": 90
+    },
+    "half=lower,open=true,orientation=y_positive,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_bottom_left_open",
+      "x": 90
+    },
+    "half=upper,open=false,orientation=y_middle,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_top_middle_left",
+      "x": 90
+    },
+    "half=lower,open=false,orientation=y_middle,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_bottom_middle_left",
+      "x": 90
+    },
+    "half=upper,open=true,orientation=y_middle,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_top_middle_left_open",
+      "x": 90
+    },
+    "half=lower,open=true,orientation=y_middle,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_bottom_middle_left_open",
+      "x": 90
+    },
+    "half=upper,open=false,orientation=y_negative,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_top_left",
+      "x": 270
+    },
+    "half=lower,open=false,orientation=y_negative,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_bottom_left",
+      "x": 270
+    },
+    "half=upper,open=true,orientation=y_negative,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_top_left_open",
+      "x": 270
+    },
+    "half=lower,open=true,orientation=y_negative,hinge=left": {
+      "model": "biomancy:block/full_flesh_door_bottom_left_open",
+      "x": 270
+    },
+    
+    "half=upper,open=false,orientation=x_positive,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_top_left",
+      "y": 90
+    },
+    "half=lower,open=false,orientation=x_positive,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_bottom_left",
+      "y": 90
+    },
+    "half=upper,open=true,orientation=x_positive,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_top_right_open",
+      "y": 90
+    },
+    "half=lower,open=true,orientation=x_positive,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_bottom_right_open",
+      "y": 90
+    },
+    "half=upper,open=false,orientation=x_middle,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_top_middle_right",
+      "y": 90
+    },
+    "half=lower,open=false,orientation=x_middle,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_bottom_middle_right",
+      "y": 90
+    },
+    "half=upper,open=true,orientation=x_middle,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_top_middle_right_open",
+      "y": 90
+    },
+    "half=lower,open=true,orientation=x_middle,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_bottom_middle_right_open",
+      "y": 90
+    },
+    "half=upper,open=false,orientation=x_negative,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_top_right",
+      "y": 270
+    },
+    "half=lower,open=false,orientation=x_negative,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_bottom_right",
+      "y": 270
+    },
+    "half=upper,open=true,orientation=x_negative,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_top_left_open",
+      "y": 270
+    },
+    "half=lower,open=true,orientation=x_negative,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_bottom_left_open",
+      "y": 270
+    },
+    "half=upper,open=false,orientation=z_positive,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_top_right",
+      "y": 180
+    },
+    "half=lower,open=false,orientation=z_positive,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_bottom_right",
+      "y": 180
+    },
+    "half=upper,open=true,orientation=z_positive,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_top_left_open",
+      "y": 180
+    },
+    "half=lower,open=true,orientation=z_positive,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_bottom_left_open",
+      "y": 180
+    },
+    "half=upper,open=false,orientation=z_middle,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_top_middle_right"
+    },
+    "half=lower,open=false,orientation=z_middle,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_bottom_middle_right"
+    },
+    "half=upper,open=true,orientation=z_middle,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_top_middle_right_open"
+    },
+    "half=lower,open=true,orientation=z_middle,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_bottom_middle_right_open"
+    },
+    "half=upper,open=false,orientation=z_negative,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_top_left"
+    },
+    "half=lower,open=false,orientation=z_negative,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_bottom_left"
+    },
+    "half=upper,open=true,orientation=z_negative,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_top_right_open"
+    },
+    "half=lower,open=true,orientation=z_negative,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_bottom_right_open"
+    },
+    "half=upper,open=false,orientation=y_positive,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_top_right",
+      "x": 90
+    },
+    "half=lower,open=false,orientation=y_positive,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_bottom_right",
+      "x": 90
+    },
+    "half=upper,open=true,orientation=y_positive,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_top_right_open",
+      "x": 90
+    },
+    "half=lower,open=true,orientation=y_positive,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_bottom_right_open",
+      "x": 90
+    },
+    "half=upper,open=false,orientation=y_middle,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_top_middle_right",
+      "x": 90
+    },
+    "half=lower,open=false,orientation=y_middle,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_bottom_middle_right",
+      "x": 90
+    },
+    "half=upper,open=true,orientation=y_middle,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_top_middle_right_open",
+      "x": 90
+    },
+    "half=lower,open=true,orientation=y_middle,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_bottom_middle_right_open",
+      "x": 90
+    },
+    "half=upper,open=false,orientation=y_negative,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_top_right",
+      "x": 270
+    },
+    "half=lower,open=false,orientation=y_negative,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_bottom_right",
+      "x": 270
+    },
+    "half=upper,open=true,orientation=y_negative,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_top_right_open",
+      "x": 270
+    },
+    "half=lower,open=true,orientation=y_negative,hinge=right": {
+      "model": "biomancy:block/full_flesh_door_bottom_right_open",
+      "x": 270
+    }
+  }
+}
