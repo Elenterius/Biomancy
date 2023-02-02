@@ -1,31 +1,32 @@
 package com.github.elenterius.biomancy.world.block.entity;
 
-import com.github.elenterius.biomancy.chat.ComponentUtil;
-import com.github.elenterius.biomancy.init.ModBlockEntities;
-import com.github.elenterius.biomancy.init.ModDamageSources;
-import com.github.elenterius.biomancy.init.ModEntityTypes;
-import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.network.ISyncableAnimation;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
-import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.SacrificeHandler;
 import com.github.elenterius.biomancy.util.SoundUtil;
+import com.github.elenterius.biomancy.world.block.DirectionalSlabBlock;
+import com.github.elenterius.biomancy.world.block.FleshVeinsBlock;
 import com.github.elenterius.biomancy.world.block.PrimordialCradleBlock;
+import com.github.elenterius.biomancy.world.block.property.DirectionalSlabType;
 import com.github.elenterius.biomancy.world.entity.fleshblob.AbstractFleshBlob;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.DirectionalPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -118,34 +119,38 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 		}
 	}
 
-	public void onSacrifice(ServerLevel level) {
-		BlockPos pos = getBlockPos();
-		if (level.random.nextFloat() < sacrificeHandler.getSuccessChance()) {
-			spawnMob(level, pos, sacrificeHandler);
-			SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CREATOR_SPAWN_MOB);
-			level.sendParticles(ParticleTypes.EXPLOSION, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, 1, 0, 0, 0, 0);
-		}
-		else {
-			if (sacrificeHandler.getSuccessChance() > -9999) {
-				attackAOE(level, pos);
-				SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CREATOR_SPIKE_ATTACK);
-				spawnFleshBlocks(level, pos, sacrificeHandler);
+	private static boolean spreadMalignantFlesh(ServerLevel level, BlockPos pos, SacrificeHandler sacrificeHandler) {
+		BlockState currentState = level.getBlockState(pos);
+		FleshVeinsBlock veinsBlock = ModBlocks.MALIGNANT_FLESH_VEINS.get();
+
+		if (currentState.is(veinsBlock)) {
+			if (veinsBlock.getSpreader().spreadAll(currentState, level, pos, false) > 0) {
+				level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 1f, 0.85f + level.random.nextFloat() * 0.5f);
 			}
 			else {
-				if (level.canSeeSky(pos.above())) {
-					LightningBolt lightningBolt = EntityType.LIGHTNING_BOLT.create(level);
-					if (lightningBolt != null) {
-						lightningBolt.moveTo(Vec3.atBottomCenterOf(pos));
-						level.addFreshEntity(lightningBolt);
-					}
-				}
+				Block block = sacrificeHandler.getTumorFactor() < 3f ? ModBlocks.MALIGNANT_FLESH_SLAB.get() : ModBlocks.MALIGNANT_FLESH.get();
+				level.setBlockAndUpdate(pos, block.defaultBlockState());
+				level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_PLACE.get(), SoundSource.BLOCKS, 1f, 0.85f + level.random.nextFloat() * 0.5f);
+			}
+			return true;
+		}
+		else if (currentState.is(ModBlocks.MALIGNANT_FLESH_SLAB.get())) {
+			if (currentState.getValue(DirectionalSlabBlock.TYPE) == DirectionalSlabType.FULL) return false;
 
-				SoundUtil.broadcastBlockSound(level, pos, SoundEvents.TRIDENT_THUNDER, 5f, 0.9f);
-				level.players().forEach(player -> player.sendSystemMessage(ComponentUtil.literal("How dare you do this... I am watching you!").withStyle(TextStyles.MAYKR_RUNES_RED)));
+			level.setBlockAndUpdate(pos, ModBlocks.MALIGNANT_FLESH.get().defaultBlockState());
+			level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_PLACE.get(), SoundSource.BLOCKS, 1f, 0.85f + level.random.nextFloat() * 0.5f);
+			return true;
+		}
+		else if (currentState.canBeReplaced(new DirectionalPlaceContext(level, pos, Direction.DOWN, ItemStack.EMPTY, Direction.UP))) {
+			BlockState stateForPlacement = veinsBlock.getStateForPlacement(currentState, level, pos, Direction.DOWN);
+			if (stateForPlacement != null) {
+				level.setBlockAndUpdate(pos, stateForPlacement);
+				level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 0.7f, 0.85f + level.random.nextFloat() * 0.5f);
+				return true;
 			}
 		}
 
-		resetState();
+		return false;
 	}
 
 	private void resetState() {
@@ -154,8 +159,47 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 		syncToClient();
 	}
 
-	public void spawnMob(ServerLevel level, BlockPos pos, SacrificeHandler sacrificeHandler) {
-		EntityType<? extends AbstractFleshBlob> fleshBlobType = level.random.nextFloat() < sacrificeHandler.getHostileChance() ? ModEntityTypes.HUNGRY_FLESH_BLOB.get() : ModEntityTypes.FLESH_BLOB.get();
+	public void onSacrifice(ServerLevel level) {
+		BlockPos pos = getBlockPos();
+		if (sacrificeHandler.getTumorFactor() < 2f && level.random.nextFloat() < sacrificeHandler.getSuccessChance()) {
+			spawnFleshBlob(level, pos, sacrificeHandler);
+			SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CREATOR_SPAWN_MOB);
+			level.sendParticles(ParticleTypes.EXPLOSION, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, 1, 0, 0, 0, 0);
+		}
+		else {
+			if (sacrificeHandler.getSuccessChance() > -9000) {
+				attackAOE(level, pos);
+				SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CREATOR_SPIKE_ATTACK);
+				spawnFleshBlocks(level, pos, sacrificeHandler);
+			}
+			else {
+				spawnMalignantFleshBlob(level, pos);
+				SoundUtil.broadcastBlockSound(level, pos, SoundEvents.TRIDENT_THUNDER, 5f, 0.9f);
+				level.sendParticles(ParticleTypes.EXPLOSION, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, 1, 0, 0, 0, 0);
+			}
+		}
+
+		resetState();
+	}
+
+	public void spawnMalignantFleshBlob(ServerLevel level, BlockPos pos) {
+		AbstractFleshBlob fleshBlob = ModEntityTypes.MALIGNANT_FLESH_BLOB.get().create(level);
+		if (fleshBlob != null) {
+			float yaw = PrimordialCradleBlock.getYRotation(getBlockState());
+			fleshBlob.moveTo(pos.getX() + 0.5f, pos.getY() + 4f / 16f, pos.getZ() + 0.5f, yaw, 0);
+			fleshBlob.yHeadRot = fleshBlob.getYRot();
+			fleshBlob.yBodyRot = fleshBlob.getYRot();
+			fleshBlob.randomizeTumors();
+			level.addFreshEntity(fleshBlob);
+		}
+	}
+
+	public void spawnFleshBlob(ServerLevel level, BlockPos pos, SacrificeHandler sacrificeHandler) {
+		EntityType<? extends AbstractFleshBlob> entityType = level.random.nextFloat() < sacrificeHandler.getHostileChance() ? ModEntityTypes.HUNGRY_FLESH_BLOB.get() : ModEntityTypes.FLESH_BLOB.get();
+		spawnFleshBlob(level, pos, sacrificeHandler, entityType);
+	}
+
+	public void spawnFleshBlob(ServerLevel level, BlockPos pos, SacrificeHandler sacrificeHandler, EntityType<? extends AbstractFleshBlob> fleshBlobType) {
 		AbstractFleshBlob fleshBlob = fleshBlobType.create(level);
 		if (fleshBlob != null) {
 			float yaw = PrimordialCradleBlock.getYRotation(getBlockState());
@@ -168,8 +212,11 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 	}
 
 	public void spawnFleshBlocks(ServerLevel level, BlockPos pos, SacrificeHandler sacrificeHandler) {
-		//sacrificeHandler.getTumorFactor()
-		//TODO: implement this
+		if (level.random.nextFloat() >= sacrificeHandler.getTumorFactor()) return;
+
+		for (BlockPos.MutableBlockPos mutablePos : BlockPos.spiralAround(pos, 3, level.random.nextBoolean() ? Direction.EAST : Direction.WEST, level.random.nextBoolean() ? Direction.SOUTH : Direction.NORTH)) {
+			if (!mutablePos.equals(pos) && spreadMalignantFlesh(level, mutablePos, sacrificeHandler)) break;
+		}
 	}
 
 	public void attackAOE() {
