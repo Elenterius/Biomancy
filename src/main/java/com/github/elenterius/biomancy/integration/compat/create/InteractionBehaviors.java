@@ -9,6 +9,7 @@ final class InteractionBehaviors {
 
 	static void register() {
 		AllInteractionBehaviours.registerBehaviour(ModBlocks.FLESH_DOOR.get(), new FleshDoorMovingInteraction());
+		AllInteractionBehaviours.registerBehaviour(ModBlocks.FULL_FLESH_DOOR.get(), new FullFleshDoorMovingInteraction());
 		AllInteractionBehaviours.registerBehaviour(ModBlocks.FLESH_IRIS_DOOR.get(), new IrisDoorMovingInteraction());
 	}
 

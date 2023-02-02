@@ -226,6 +226,17 @@ public class ModRecipeProvider extends RecipeProvider {
 				.pattern(" L ")
 				.unlockedBy(hasName(ModItems.BIO_LUMENS.get()), has(ModItems.BIO_LUMENS.get()))
 				.save(consumer, getSimpleRecipeId(Items.GLOW_ITEM_FRAME));
+		
+		// A recipe for converting between two versions of Flesh Door.
+		WorkbenchRecipeBuilder.shapeless(ModItems.FLESH_DOOR.get())
+				.requires(ModItems.FULL_FLESH_DOOR.get())
+				.unlockedBy(hasName(ModItems.FULL_FLESH_DOOR.get()), has(ModItems.FULL_FLESH_DOOR.get()))
+				.save(consumer, getConversionRecipeId(ModItems.FLESH_DOOR.get(), ModItems.FULL_FLESH_DOOR.get()));
+		
+		WorkbenchRecipeBuilder.shapeless(ModItems.FULL_FLESH_DOOR.get())
+				.requires(ModItems.FLESH_DOOR.get())
+				.unlockedBy(hasName(ModItems.FLESH_DOOR.get()), has(ModItems.FLESH_DOOR.get()))
+				.save(consumer, getConversionRecipeId(ModItems.FULL_FLESH_DOOR.get(), ModItems.FLESH_DOOR.get()));
 	}
 
 	private void registerDigestingRecipes(Consumer<FinishedRecipe> consumer) {
@@ -719,8 +730,25 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addIngredient(ModItems.TOUGH_FIBERS.get(), 2)
 				.setCategory(ModBioForgeTabs.BLOCKS)
 				.unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
+		
+		BioForgeRecipeBuilder.create(ModItems.FULL_FLESH_DOOR.get())
+				.addIngredient(ModItems.FLESH_BITS.get(), 6)
+				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 6)
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 4)
+				.addIngredient(ModItems.TOUGH_FIBERS.get(), 2)
+				.setCategory(ModBioForgeTabs.BLOCKS)
+				.unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
 
 		BioForgeRecipeBuilder.create(new ItemData(new ResourceLocation("dramaticdoors", "tall_flesh_door")))
+				.ifModLoaded("dramaticdoors")
+				.addIngredient(ModItems.FLESH_BITS.get(), 9)
+				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 9)
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 6)
+				.addIngredient(ModItems.TOUGH_FIBERS.get(), 3)
+				.setCategory(ModBioForgeTabs.BLOCKS)
+				.unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
+		
+		BioForgeRecipeBuilder.create(new ItemData(new ResourceLocation("dramaticdoors", "tall_full_flesh_door")))
 				.ifModLoaded("dramaticdoors")
 				.addIngredient(ModItems.FLESH_BITS.get(), 9)
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 9)

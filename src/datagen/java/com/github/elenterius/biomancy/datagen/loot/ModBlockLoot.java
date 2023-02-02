@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.world.block.FleshDoorBlock;
 import net.minecraft.data.loot.BlockLoot;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -57,8 +58,8 @@ public class ModBlockLoot extends BlockLoot {
 				)));
 	}
 
-	protected static LootTable.Builder createFleshDoorTable(FleshDoorBlock block) {
-		return createSinglePropConditionTable(block, FleshDoorBlock.HALF, DoubleBlockHalf.LOWER);
+	protected static LootTable.Builder createFleshDoorTable(DoorBlock block) {
+		return createSinglePropConditionTable(block, DoorBlock.HALF, DoubleBlockHalf.LOWER);
 	}
 
 	@Override
@@ -105,6 +106,7 @@ public class ModBlockLoot extends BlockLoot {
 		dropSelf(ModBlocks.FLESH_LADDER.get());
 
 		addCustom(ModBlocks.FLESH_DOOR.get(), ModBlockLoot::createFleshDoorTable);
+		addCustom(ModBlocks.FULL_FLESH_DOOR.get(), ModBlockLoot::createFleshDoorTable);
 
 		dropSelf(ModBlocks.BONE_SPIKE.get());
 	}
