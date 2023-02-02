@@ -162,6 +162,7 @@ repositories {
     maven { url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
     maven { url = 'https://maven.blamejared.com' }
     maven { url = "https://www.cursemaven.com" }
+    maven { url = "https://api.modrinth.com/maven" }
     maven { url = "https://jitpack.io" }
 }
 
@@ -173,6 +174,8 @@ configurations {
 dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
+//    runtimeOnly fg.deobf("curse.maven:debug_utils-783008:4302677") //minecraft 1.19.3
 
     implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.19:3.1.39')
 
@@ -194,7 +197,7 @@ dependencies {
     runtimeOnly fg.deobf("curse.maven:citadel-331936:4132623")
     datagenImplementation fg.deobf("curse.maven:alexs_mobs-426558:4159154") //1.21.1
 
-    compileOnly fg.deobf("com.github.Virtuoel:Pehkui:3.6.2-1.19.2-forge")
+    compileOnly fg.deobf("maven.modrinth:pehkui:3.6.2+1.19.2-forge") // 3.6.2+1.19.2-forge
     //needs to be compileOnly for datagen to work -> temporarily change to implementation for gameplay testing
 
     //TODO: Morph Mod Integration?
