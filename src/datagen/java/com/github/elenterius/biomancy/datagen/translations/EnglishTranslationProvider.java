@@ -14,12 +14,8 @@ import com.github.elenterius.biomancy.world.item.state.LivingToolState;
 import com.github.elenterius.biomancy.world.serum.Serum;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.HashCache;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
@@ -27,7 +23,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BannerPattern;
-import net.minecraftforge.common.data.LanguageProvider;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Marker;
@@ -39,9 +35,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-public class EnglishTranslationProvider extends LanguageProvider {
+public class EnglishTranslationProvider extends AbstractTranslationProvider {
 
-	public static final Marker LOG_MARKER = MarkerManager.getMarker("EnglishLanguageProvider");
+	public static final Marker LOG_MARKER = MarkerManager.getMarker("EnglishTranslationProvider");
 	private static final String EMPTY_STRING = "";
 
 	private List<Item> itemsToTranslate = List.of();
@@ -82,14 +78,6 @@ public class EnglishTranslationProvider extends LanguageProvider {
 		}
 	}
 
-	private void add(Component component, String translation) {
-		if (!(component instanceof TranslatableComponent translatableComponent)) {
-			throw new IllegalArgumentException("Provided component is not a translatable component");
-		}
-
-		add(translatableComponent.getKey(), translation);
-	}
-
 	private void addBannerPatternItem(RegistryObject<MaykerBannerPatternItem> itemSupplier, String name, String description) {
 		MaykerBannerPatternItem item = itemSupplier.get();
 		add(item.getDescriptionId(), name);
@@ -114,10 +102,6 @@ public class EnglishTranslationProvider extends LanguageProvider {
 		serumsToTranslate.remove(serum);
 	}
 
-	private void addDeathMessage(DamageSource damageSource, String text) {
-		add("death.attack." + damageSource.msgId, text);
-	}
-
 	private void addHudMessage(String id, String text) {
 		add("msg.biomancy." + id, text);
 	}
@@ -127,7 +111,7 @@ public class EnglishTranslationProvider extends LanguageProvider {
 	}
 
 	private <T extends BaseProjectile> void addDeathMessage(Supplier<EntityType<T>> supplier, String directCause, String indirectCause) {
-		ResourceLocation resourceLocation = Objects.requireNonNull(supplier.get().getRegistryName());
+		ResourceLocation resourceLocation = Objects.requireNonNull(ForgeRegistries.ENTITIES.getKey(supplier.get()));
 		String msgId = resourceLocation.toString().replace(":", ".");
 		add("death.attack." + msgId, directCause);
 		add("death.attack." + msgId + ".item", indirectCause);
@@ -184,11 +168,6 @@ public class EnglishTranslationProvider extends LanguageProvider {
 	public void add(Block block, String name) {
 		add(block.getDescriptionId(), name);
 		blocksToTranslate.remove(block);
-	}
-
-	private void addSound(Supplier<SoundEvent> supplier, String text) {
-		ResourceLocation rl = supplier.get().getLocation();
-		add("sounds.%s.%s".formatted(rl.getNamespace(), rl.getPath()), text);
 	}
 
 	@Override
