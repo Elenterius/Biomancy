@@ -149,6 +149,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 		basicItem(ModItems.NUTRIENT_BAR.get());
 		basicItem(ModItems.GLASS_VIAL.get());
 		basicItem(ModItems.FLESH_DOOR.get());
+		basicItem(ModItems.FULL_FLESH_DOOR.get());
 
 		serumItem(ModItems.REJUVENATION_SERUM.get());
 		serumItem(ModItems.AGEING_SERUM.get());

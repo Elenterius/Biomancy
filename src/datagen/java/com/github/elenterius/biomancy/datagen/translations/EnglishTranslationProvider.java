@@ -435,6 +435,7 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 		addBlock(ModBlocks.FLESH_FENCE_GATE, "Flesh Fence Gate", "Fence gate made of bones and flesh...");
 		addBlock(ModBlocks.FLESH_IRIS_DOOR, "Flesh Iris-Door", "Trapdoor-like iris door made of flesh...");
 		addBlock(ModBlocks.FLESH_DOOR, "Flesh Door", "A sliding door made of flesh...");
+		addBlock(ModBlocks.FULL_FLESH_DOOR, "Wide Flesh Door", "A wide sliding door made of flesh...");
 		addBlock(ModBlocks.BONE_SPIKE, "Bone Spike", "A dangerous spike made of reinforced bone, colliding with it will hurt.");
 		addBlock(ModBlocks.FLESH_LADDER, "Flesh Ladder", "Ladder mainly made of bones and a little bit of flesh...");
 
