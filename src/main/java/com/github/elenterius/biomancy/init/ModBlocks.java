@@ -79,6 +79,7 @@ public final class ModBlocks {
 	public static final RegistryObject<FleshFenceGateBlock> FLESH_FENCE_GATE = BLOCKS.register("flesh_fence_gate", () -> new FleshFenceGateBlock(createFleshyBoneProperties().noOcclusion()));
 	public static final RegistryObject<IrisDoorBlock> FLESH_IRIS_DOOR = BLOCKS.register("flesh_iris_door", () -> new IrisDoorBlock(createFleshProperties()));
 	public static final RegistryObject<FleshDoorBlock> FLESH_DOOR = BLOCKS.register("flesh_door", () -> new FleshDoorBlock(createFleshProperties()));
+	public static final RegistryObject<FullFleshDoorBlock> FULL_FLESH_DOOR = BLOCKS.register("full_flesh_door", () -> new FullFleshDoorBlock(createFleshProperties()));
 	public static final RegistryObject<BoneSpikeBlock> BONE_SPIKE = BLOCKS.register("bone_spike", () -> new BoneSpikeBlock(createFleshyBoneProperties()));
 
 	private ModBlocks() {}

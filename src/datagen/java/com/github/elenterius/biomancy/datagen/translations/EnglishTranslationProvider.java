@@ -14,23 +14,15 @@ import com.github.elenterius.biomancy.world.item.state.LivingToolState;
 import com.github.elenterius.biomancy.world.serum.Serum;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BannerPattern;
-import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import org.apache.commons.lang3.text.WordUtils;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 
@@ -40,9 +32,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-public class EnglishTranslationProvider extends LanguageProvider {
+public class EnglishTranslationProvider extends AbstractTranslationProvider {
 
-	public static final Marker LOG_MARKER = MarkerManager.getMarker("EnglishLanguageProvider");
+	public static final Marker LOG_MARKER = MarkerManager.getMarker("EnglishTranslationProvider");
 	private static final String EMPTY_STRING = "";
 
 	private List<Item> itemsToTranslate = List.of();
@@ -83,22 +75,6 @@ public class EnglishTranslationProvider extends LanguageProvider {
 		}
 	}
 
-	private void add(Component component, String translation) {
-		if (!(component.getContents() instanceof TranslatableContents translatableContents)) {
-			throw new IllegalArgumentException("Provided component does not contain translatable contents");
-		}
-
-		add(translatableContents.getKey(), translation);
-	}
-
-	private void addBannerPattern(RegistryObject<BannerPattern> supplier, String name) {
-		ResourceLocation rl = new ResourceLocation(supplier.getId().toShortLanguageKey());
-		for (DyeColor dyeColor : DyeColor.values()) {
-			String dyeColorName = WordUtils.capitalize(dyeColor.getName().replace("_", " "));
-			add("block.%s.banner.%s.%s".formatted(rl.getNamespace(), rl.getPath(), dyeColor.getName()), dyeColorName + " " + name);
-		}
-	}
-
 	private void addBannerPatternItem(RegistryObject<MaykerBannerPatternItem> supplier, String name, String description) {
 		MaykerBannerPatternItem item = supplier.get();
 		add(item.getDescriptionId(), name);
@@ -113,10 +89,6 @@ public class EnglishTranslationProvider extends LanguageProvider {
 	private void add(Serum serum, String name) {
 		add(serum.getTranslationKey(), name);
 		serumsToTranslate.remove(serum);
-	}
-
-	private void addDeathMessage(DamageSource damageSource, String text) {
-		add("death.attack." + damageSource.msgId, text);
 	}
 
 	private void addHudMessage(String id, String text) {
@@ -185,11 +157,6 @@ public class EnglishTranslationProvider extends LanguageProvider {
 	public void add(Block block, String name) {
 		add(block.getDescriptionId(), name);
 		blocksToTranslate.remove(block);
-	}
-
-	private void addSound(Supplier<SoundEvent> supplier, String text) {
-		ResourceLocation rl = supplier.get().getLocation();
-		add("sounds.%s.%s".formatted(rl.getNamespace(), rl.getPath()), text);
 	}
 
 	@Override
@@ -468,6 +435,7 @@ public class EnglishTranslationProvider extends LanguageProvider {
 		addBlock(ModBlocks.FLESH_FENCE_GATE, "Flesh Fence Gate", "Fence gate made of bones and flesh...");
 		addBlock(ModBlocks.FLESH_IRIS_DOOR, "Flesh Iris-Door", "Trapdoor-like iris door made of flesh...");
 		addBlock(ModBlocks.FLESH_DOOR, "Flesh Door", "A sliding door made of flesh...");
+		addBlock(ModBlocks.FULL_FLESH_DOOR, "Wide Flesh Door", "A wide sliding door made of flesh...");
 		addBlock(ModBlocks.BONE_SPIKE, "Bone Spike", "A dangerous spike made of reinforced bone, colliding with it will hurt.");
 		addBlock(ModBlocks.FLESH_LADDER, "Flesh Ladder", "Ladder mainly made of bones and a little bit of flesh...");
 
