@@ -24,15 +24,15 @@ public class MultifaceSpreader {
 		this(new MultifaceSpreader.DefaultSpreaderConfig(block));
 	}
 
-	public MultifaceSpreader(MultifaceSpreader.SpreadConfig pConfig) {
-		this.config = pConfig;
+	public MultifaceSpreader(MultifaceSpreader.SpreadConfig config) {
+		this.config = config;
 	}
 
 	private static Stream<Direction> stream() {
 		return Stream.of(VALUES);
 	}
 
-	private static Collection<Direction> shuffledDirections(Random random) {
+	public static Collection<Direction> shuffledDirections(Random random) {
 		ObjectArrayList<Direction> list = new ObjectArrayList<>(VALUES);
 
 		int size = list.size();
@@ -165,7 +165,7 @@ public class MultifaceSpreader {
 			return block.getStateForPlacement(pCurrentState, pLevel, pPos, pLookingDirection);
 		}
 
-		protected boolean stateCanBeReplaced(BlockGetter pLevel, BlockPos pos, BlockPos p_221690_, Direction p_221691_, BlockState state) {
+		protected boolean stateCanBeReplaced(BlockGetter level, BlockPos posA, BlockPos posB, Direction direction, BlockState state) {
 			return state.isAir() || state.is(block) || state.is(Blocks.WATER) && state.getFluidState().isSource();
 		}
 

@@ -5,10 +5,9 @@ import com.github.elenterius.biomancy.network.ISyncableAnimation;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import com.github.elenterius.biomancy.util.SacrificeHandler;
 import com.github.elenterius.biomancy.util.SoundUtil;
-import com.github.elenterius.biomancy.world.block.DirectionalSlabBlock;
 import com.github.elenterius.biomancy.world.block.FleshVeinsBlock;
+import com.github.elenterius.biomancy.world.block.MultifaceSpreader;
 import com.github.elenterius.biomancy.world.block.PrimordialCradleBlock;
-import com.github.elenterius.biomancy.world.block.property.DirectionalSlabType;
 import com.github.elenterius.biomancy.world.entity.fleshblob.AbstractFleshBlob;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -24,9 +23,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.DirectionalPlaceContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -119,40 +116,6 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 		}
 	}
 
-	private static boolean spreadMalignantFlesh(ServerLevel level, BlockPos pos, SacrificeHandler sacrificeHandler) {
-		BlockState currentState = level.getBlockState(pos);
-		FleshVeinsBlock veinsBlock = ModBlocks.MALIGNANT_FLESH_VEINS.get();
-
-		if (currentState.is(veinsBlock)) {
-			if (veinsBlock.getSpreader().spreadAll(currentState, level, pos) > 0) {
-				level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 1f, 0.85f + level.random.nextFloat() * 0.5f);
-			}
-			else {
-				Block block = sacrificeHandler.getTumorFactor() < 3f ? ModBlocks.MALIGNANT_FLESH_SLAB.get() : ModBlocks.MALIGNANT_FLESH.get();
-				level.setBlockAndUpdate(pos, block.defaultBlockState());
-				level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_PLACE.get(), SoundSource.BLOCKS, 1f, 0.85f + level.random.nextFloat() * 0.5f);
-			}
-			return true;
-		}
-		else if (currentState.is(ModBlocks.MALIGNANT_FLESH_SLAB.get())) {
-			if (currentState.getValue(DirectionalSlabBlock.TYPE) == DirectionalSlabType.FULL) return false;
-
-			level.setBlockAndUpdate(pos, ModBlocks.MALIGNANT_FLESH.get().defaultBlockState());
-			level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_PLACE.get(), SoundSource.BLOCKS, 1f, 0.85f + level.random.nextFloat() * 0.5f);
-			return true;
-		}
-		else if (currentState.canBeReplaced(new DirectionalPlaceContext(level, pos, Direction.DOWN, ItemStack.EMPTY, Direction.UP))) {
-			BlockState stateForPlacement = veinsBlock.getStateForPlacement(currentState, level, pos, Direction.DOWN);
-			if (stateForPlacement != null) {
-				level.setBlockAndUpdate(pos, stateForPlacement);
-				level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 0.7f, 0.85f + level.random.nextFloat() * 0.5f);
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 	private void resetState() {
 		sacrificeHandler.reset();
 		setChanged();
@@ -214,8 +177,19 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 	public void spawnFleshBlocks(ServerLevel level, BlockPos pos, SacrificeHandler sacrificeHandler) {
 		if (level.random.nextFloat() >= sacrificeHandler.getTumorFactor()) return;
 
-		for (BlockPos.MutableBlockPos mutablePos : BlockPos.spiralAround(pos, 3, level.random.nextBoolean() ? Direction.EAST : Direction.WEST, level.random.nextBoolean() ? Direction.SOUTH : Direction.NORTH)) {
-			if (!mutablePos.equals(pos) && spreadMalignantFlesh(level, mutablePos, sacrificeHandler)) break;
+		FleshVeinsBlock veinsBlock = ModBlocks.MALIGNANT_FLESH_VEINS.get();
+		BlockState state = level.getBlockState(pos);
+
+		if (level.random.nextFloat() < 0.6f) veinsBlock.getSpreader().spreadFromRandomFaceTowardRandomDirection(state, level, pos, level.random);
+		if (level.random.nextFloat() < 0.6f) veinsBlock.getSpreader().spreadFromRandomFaceTowardRandomDirection(state, level, pos, level.random);
+		if (level.random.nextFloat() < 0.6f) veinsBlock.getSpreader().spreadFromRandomFaceTowardRandomDirection(state, level, pos, level.random);
+		if (level.random.nextFloat() < 0.6f) veinsBlock.getSpreader().spreadFromRandomFaceTowardRandomDirection(state, level, pos, level.random);
+		level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 1f, 0.15f + level.random.nextFloat() * 0.5f);
+
+		for (Direction subDirection : MultifaceSpreader.shuffledDirections(level.random)) {
+			BlockPos neighborPos = pos.relative(subDirection);
+			BlockState neighborState = level.getBlockState(neighborPos);
+			veinsBlock.increaseCharge(level, neighborPos, neighborState, Mth.nextInt(level.random, 1, 3));
 		}
 	}
 

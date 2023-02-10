@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.block.DirectionalSlabBlock;
 import com.github.elenterius.biomancy.world.block.FleshVeinsBlock;
+import com.github.elenterius.biomancy.world.block.MultifaceSpreader;
 import com.github.elenterius.biomancy.world.block.PrimordialCradleBlock;
 import com.github.elenterius.biomancy.world.block.entity.PrimordialCradleBlockEntity;
 import com.github.elenterius.biomancy.world.block.property.DirectionalSlabType;
@@ -189,12 +190,17 @@ public class MalignantFleshBlob extends AbstractFleshBlob implements Enemy {
 		FleshVeinsBlock veinsBlock = ModBlocks.MALIGNANT_FLESH_VEINS.get();
 		if (currentState.is(veinsBlock)) {
 			if (veinsBlock.getSpreader().spreadAll(currentState, level, pos) > 0) {
-				level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 1f, 0.85f + random.nextFloat() * 0.5f);
+				for (Direction subDirection : MultifaceSpreader.shuffledDirections(random)) {
+					BlockPos neighborPos = pos.relative(subDirection);
+					BlockState neighborState = level.getBlockState(neighborPos);
+					veinsBlock.increaseCharge((ServerLevel) level, neighborPos, neighborState, 1);
+				}
+				level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 1f, 0.15f + random.nextFloat() * 0.5f);
 			}
 			else {
 				Block block = getBlobSize() < MAX_SIZE / 2f ? ModBlocks.MALIGNANT_FLESH_SLAB.get() : ModBlocks.MALIGNANT_FLESH.get();
 				level.setBlockAndUpdate(pos, block.defaultBlockState());
-				level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_PLACE.get(), SoundSource.BLOCKS, 1f, 0.85f + random.nextFloat() * 0.5f);
+				level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_PLACE.get(), SoundSource.BLOCKS, 1f, 0.15f + random.nextFloat() * 0.5f);
 			}
 			return true;
 		}
@@ -202,14 +208,19 @@ public class MalignantFleshBlob extends AbstractFleshBlob implements Enemy {
 			if (currentState.getValue(DirectionalSlabBlock.TYPE) == DirectionalSlabType.FULL) return false;
 
 			level.setBlockAndUpdate(pos, ModBlocks.MALIGNANT_FLESH.get().defaultBlockState());
-			level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_PLACE.get(), SoundSource.BLOCKS, 1f, 0.85f + level.random.nextFloat() * 0.5f);
+
+
+			level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_PLACE.get(), SoundSource.BLOCKS, 1f, 0.15f + level.random.nextFloat() * 0.5f);
 			return true;
 		}
 		else if (currentState.canBeReplaced(new DirectionalPlaceContext(level, pos, Direction.DOWN, ItemStack.EMPTY, Direction.UP))) {
-			BlockState stateForPlacement = veinsBlock.getStateForPlacement(currentState, level, pos, Direction.DOWN);
+			BlockState stateForPlacement = veinsBlock.getStateForPlacement(currentState, level, pos, Direction.DOWN, getBlobSize() * 2);
 			if (stateForPlacement != null) {
 				level.setBlockAndUpdate(pos, stateForPlacement);
-				level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 0.7f, 0.85f + random.nextFloat() * 0.5f);
+				if (random.nextFloat() < (float) getBlobSize() / MAX_SIZE) {
+					veinsBlock.getSpreader().spreadFromRandomFaceTowardRandomDirection(stateForPlacement, level, pos, random);
+				}
+				level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 0.7f, 0.15f + random.nextFloat() * 0.5f);
 				return true;
 			}
 		}
