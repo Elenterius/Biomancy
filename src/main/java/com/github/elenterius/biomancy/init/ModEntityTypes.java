@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.init;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.world.entity.fleshblob.DomesticatedFleshBlob;
 import com.github.elenterius.biomancy.world.entity.fleshblob.HungryFleshBlob;
+import com.github.elenterius.biomancy.world.entity.fleshblob.MalignantFleshBlob;
 import com.github.elenterius.biomancy.world.entity.projectile.AntiGravityProjectile;
 import com.github.elenterius.biomancy.world.entity.projectile.CorrosiveAcidProjectile;
 import com.github.elenterius.biomancy.world.entity.projectile.ToothProjectile;
@@ -24,8 +25,9 @@ public final class ModEntityTypes {
 	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, BiomancyMod.MOD_ID);
 
 	//# Flesh Blobs
-	public static final RegistryObject<EntityType<HungryFleshBlob>> HUNGRY_FLESH_BLOB = register("hungry_flesh_blob", EntityType.Builder.of(HungryFleshBlob::new, MobCategory.CREATURE).sized(1F, 1F));
-	public static final RegistryObject<EntityType<DomesticatedFleshBlob>> FLESH_BLOB = register("flesh_blob", EntityType.Builder.of(DomesticatedFleshBlob::new, MobCategory.CREATURE).sized(1F, 1F));
+	public static final RegistryObject<EntityType<HungryFleshBlob>> HUNGRY_FLESH_BLOB = register("hungry_flesh_blob", EntityType.Builder.of(HungryFleshBlob::new, MobCategory.CREATURE).sized(1f, 1f));
+	public static final RegistryObject<EntityType<DomesticatedFleshBlob>> FLESH_BLOB = register("flesh_blob", EntityType.Builder.of(DomesticatedFleshBlob::new, MobCategory.CREATURE).sized(1f, 1f));
+	public static final RegistryObject<EntityType<MalignantFleshBlob>> MALIGNANT_FLESH_BLOB = register("malignant_flesh_blob", EntityType.Builder.of(MalignantFleshBlob::new, MobCategory.MONSTER).sized(1f, 0.625f));
 
 	//# Aberrations
 	//	public static final RegistryObject<EntityType<OculusObserverEntity>> OCULUS_OBSERVER = register("oculus_observer", EntityType.Builder.of(OculusObserverEntity::new, EntityClassification.CREATURE).sized(0.6F, 0.5F));
@@ -61,6 +63,7 @@ public final class ModEntityTypes {
 		BiomancyMod.LOGGER.debug(MarkerManager.getMarker("ENTITIES"), "creating attributes...");
 		event.put(HUNGRY_FLESH_BLOB.get(), HungryFleshBlob.createAttributes().build());
 		event.put(FLESH_BLOB.get(), DomesticatedFleshBlob.createAttributes().build());
+		event.put(MALIGNANT_FLESH_BLOB.get(), MalignantFleshBlob.createAttributes().build());
 	}
 
 }

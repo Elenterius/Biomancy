@@ -4,7 +4,7 @@ import com.github.elenterius.biomancy.integration.ModsCompatHandler;
 import com.github.elenterius.biomancy.integration.compat.pehkui.IPehkuiHelper;
 import com.github.elenterius.biomancy.mixin.ArmorStandAccessor;
 import com.github.elenterius.biomancy.mixin.SlimeAccessor;
-import com.github.elenterius.biomancy.world.entity.fleshblob.FleshBlob;
+import com.github.elenterius.biomancy.world.entity.fleshblob.AbstractFleshBlob;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -27,7 +27,7 @@ public class ShrinkingSerum extends Serum {
 		armorStand.biomancy_setSmall(true);
 	}
 
-	private void resizeFleshBlob(FleshBlob fleshBlob) {
+	private void resizeFleshBlob(AbstractFleshBlob fleshBlob) {
 		byte blobSize = fleshBlob.getBlobSize();
 		if (blobSize > 1) {
 			fleshBlob.setBlobSize((byte) (blobSize - 1), false);
@@ -59,7 +59,7 @@ public class ShrinkingSerum extends Serum {
 		if (target instanceof Slime slime) { // includes MagmaCube
 			resizeSlime(slime);
 		}
-		else if (target instanceof FleshBlob fleshBlob) {
+		else if (target instanceof AbstractFleshBlob fleshBlob) {
 			resizeFleshBlob(fleshBlob);
 		}
 		else if (target instanceof ArmorStand armorStand && !armorStand.isSmall()) {

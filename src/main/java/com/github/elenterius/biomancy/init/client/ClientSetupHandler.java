@@ -7,6 +7,7 @@ import com.github.elenterius.biomancy.client.gui.tooltip.HrTooltipClientComponen
 import com.github.elenterius.biomancy.client.gui.tooltip.StorageSacTooltipClientComponent;
 import com.github.elenterius.biomancy.client.gui.tooltip.TabTooltipClientComponent;
 import com.github.elenterius.biomancy.client.render.entity.fleshblob.FleshBlobRenderer;
+import com.github.elenterius.biomancy.client.render.entity.fleshblob.MalignantFleshBlobRenderer;
 import com.github.elenterius.biomancy.client.renderer.block.*;
 import com.github.elenterius.biomancy.client.renderer.entity.AcidProjectileRenderer;
 import com.github.elenterius.biomancy.client.renderer.entity.WitherProjectileRenderer;
@@ -80,6 +81,7 @@ public final class ClientSetupHandler {
 
 		event.registerEntityRenderer(ModEntityTypes.HUNGRY_FLESH_BLOB.get(), FleshBlobRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.FLESH_BLOB.get(), FleshBlobRenderer::new);
+		event.registerEntityRenderer(ModEntityTypes.MALIGNANT_FLESH_BLOB.get(), MalignantFleshBlobRenderer::new);
 
 		event.registerEntityRenderer(ModEntityTypes.ANTI_GRAVITY_PROJECTILE.get(), ThrownItemRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.CORROSIVE_ACID_PROJECTILE.get(), AcidProjectileRenderer::new);
