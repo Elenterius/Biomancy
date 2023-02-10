@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.world.block.DirectionalSlabBlock;
 import com.github.elenterius.biomancy.world.block.FleshDoorBlock;
+import com.github.elenterius.biomancy.world.block.FleshLanternBlock;
 import com.github.elenterius.biomancy.world.block.IrisDoorBlock;
 import com.github.elenterius.biomancy.world.block.property.DirectionalSlabType;
 import com.github.elenterius.biomancy.world.block.property.Orientation;
@@ -56,6 +57,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		storageSac(ModBlocks.STORAGE_SAC.get());
 
 		boneSpike(ModBlocks.BONE_SPIKE.get());
+
+		bioLantern(ModBlocks.BIO_LANTERN.get());
 	}
 
 	public ResourceLocation blockModel(Block block) {
@@ -159,6 +162,20 @@ public class ModBlockStateProvider extends BlockStateProvider {
 				});
 
 		simpleBlockItem(block, existingModel);
+	}
+
+	public void bioLantern(FleshLanternBlock block) {
+		ResourceLocation file = blockModel(block);
+		ModelFile.ExistingModelFile model = models().getExistingFile(file);
+		ModelFile.ExistingModelFile hangingModel = models().getExistingFile(new ResourceLocation(file.getNamespace(), file.getPath() + "_hanging"));
+
+		getVariantBuilder(block)
+				.forAllStatesExcept(
+						state -> ConfiguredModel.builder().modelFile(Boolean.TRUE.equals(state.getValue(FleshLanternBlock.HANGING)) ? hangingModel : model).build(),
+						FleshLanternBlock.WATERLOGGED
+				);
+
+		simpleBlockItem(block, hangingModel);
 	}
 
 	public void veinsBlock(MultifaceBlock block) {
