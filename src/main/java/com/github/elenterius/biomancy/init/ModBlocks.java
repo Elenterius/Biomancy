@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.PlantType;
@@ -31,6 +32,7 @@ public final class ModBlocks {
 
 	//# Block Properties
 	public static final BooleanProperty CRAFTING_PROPERTY = BooleanProperty.create("crafting");
+	public static final IntegerProperty CHARGE = IntegerProperty.create("charge", 0, 15);
 	public static final EnumProperty<UserSensitivity> USER_SENSITIVITY_PROPERTY = EnumProperty.create("sensitivity", UserSensitivity.class);
 	public static final EnumProperty<Orientation> ORIENTATION = EnumProperty.create("orientation", Orientation.class);
 
@@ -81,6 +83,7 @@ public final class ModBlocks {
 	public static final RegistryObject<FleshDoorBlock> FLESH_DOOR = BLOCKS.register("flesh_door", () -> new FleshDoorBlock(createFleshProperties()));
 	public static final RegistryObject<FullFleshDoorBlock> FULL_FLESH_DOOR = BLOCKS.register("full_flesh_door", () -> new FullFleshDoorBlock(createFleshProperties()));
 	public static final RegistryObject<BoneSpikeBlock> BONE_SPIKE = BLOCKS.register("bone_spike", () -> new BoneSpikeBlock(createFleshyBoneProperties()));
+	public static final RegistryObject<FleshLanternBlock> BIO_LANTERN = BLOCKS.register("bio_lantern", () -> new FleshLanternBlock(createFleshProperties().sound(SoundType.SHROOMLIGHT).lightLevel(x -> 15).noOcclusion()));
 
 	private ModBlocks() {}
 

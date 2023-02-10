@@ -43,6 +43,7 @@ public class DomesticatedFleshBlob extends FleshBlob {
 		goalSelector.addGoal(3, new EatFoodItemGoal<>(this));
 		goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Player.class, 6f, 0.8f, 1.2f));
 		goalSelector.addGoal(4, new AvoidEntityGoal<>(this, AbstractVillager.class, 16f, 0.8f, 1.2f));
+		goalSelector.addGoal(4, new AvoidEntityGoal<>(this, MalignantFleshBlob.class, 16f, 0.8f, 1.2f));
 		goalSelector.addGoal(5, new DanceNearJukeboxGoal<>(this));
 		goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1d));
 		goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8f));

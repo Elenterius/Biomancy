@@ -57,9 +57,10 @@ public class HungryFleshBlob extends FleshBlob implements Enemy {
 		goalSelector.addGoal(7, new RandomLookAroundGoal(this));
 
 		targetSelector.addGoal(1, new HurtByTargetGoal(this));
-		targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-		targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Animal.class, false));
-		targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, false));
+		targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, MalignantFleshBlob.class, false));
+		targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
+		targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Animal.class, false));
+		targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, false));
 	}
 
 	@Override

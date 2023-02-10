@@ -38,6 +38,10 @@ public class ModEntityLoot extends EntityLoot {
 						.when(LootItemKilledByPlayerCondition.killedByPlayer()));
 	}
 
+	private static LootTable.Builder noLoot() {
+		return LootTable.lootTable();
+	}
+
 	@Override
 	protected void addTables() {
 		add(ModEntityTypes.FLESH_BLOB.get(), fleshBlobLootTable());
@@ -51,6 +55,8 @@ public class ModEntityLoot extends EntityLoot {
 		add(ModLoot.Entity.FLESH_BLOB_SIZE_8, fleshBlobLootTableBuilderWithDrop(7));
 		add(ModLoot.Entity.FLESH_BLOB_SIZE_9, fleshBlobLootTableBuilderWithDrop(8));
 		add(ModLoot.Entity.FLESH_BLOB_SIZE_10, fleshBlobLootTableBuilderWithDrop(9));
+
+		add(ModEntityTypes.MALIGNANT_FLESH_BLOB.get(), noLoot());
 
 		//		add(ModEntityTypes.BOOMLING.get(), LootTable.lootTable()); //no item drops
 
