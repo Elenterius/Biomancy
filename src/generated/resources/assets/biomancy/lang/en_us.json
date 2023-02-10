@@ -177,6 +177,8 @@
   "block.biomancy.bone_spike.tooltip": "A dangerous spike made of reinforced bone, colliding with it will hurt.",
   "block.biomancy.flesh_ladder": "Flesh Ladder",
   "block.biomancy.flesh_ladder.tooltip": "Ladder mainly made of bones and a little bit of flesh...",
+  "block.biomancy.bio_lantern": "Bioluminescent Lantern",
+  "block.biomancy.bio_lantern.tooltip": "Biological light source.",
   "block.biomancy.primal_flesh": "Primal Flesh Block",
   "block.biomancy.primal_flesh.tooltip": "Primitive and pure, you better not touch this with your dirty paws.",
   "block.biomancy.primal_flesh_slab": "Primal Flesh Slab",
