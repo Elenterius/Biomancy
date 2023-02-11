@@ -63,7 +63,7 @@ public final class ModItems {
 	//# Serum
 	public static final RegistryObject<SimpleItem> GLASS_VIAL = registerSimpleItem("glass_vial");
 	public static final RegistryObject<SimpleItem> ORGANIC_COMPOUND = registerSimpleVialItem("organic_compound");
-	public static final RegistryObject<SimpleItem> UNSTABLE_COMPOUND = registerSimpleVialItem("unstable_compound");
+	public static final RegistryObject<UnstableCompoundItem> UNSTABLE_COMPOUND = ITEMS.register("unstable_compound", () -> new UnstableCompoundItem(createBaseProperties()));
 	public static final RegistryObject<SimpleItem> GENETIC_COMPOUND = registerSimpleVialItem("genetic_compound");
 	public static final RegistryObject<SimpleItem> EXOTIC_COMPOUND = registerSimpleVialItem("exotic_compound");
 	public static final RegistryObject<SimpleItem> HEALING_ADDITIVE = registerSimpleVialItem("healing_additive");
