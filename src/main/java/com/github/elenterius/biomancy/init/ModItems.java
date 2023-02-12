@@ -63,7 +63,7 @@ public final class ModItems {
 	//# Serum
 	public static final RegistryObject<SimpleItem> GLASS_VIAL = registerSimpleItem("glass_vial");
 	public static final RegistryObject<SimpleItem> ORGANIC_COMPOUND = registerSimpleVialItem("organic_compound");
-	public static final RegistryObject<SimpleItem> UNSTABLE_COMPOUND = registerSimpleVialItem("unstable_compound");
+	public static final RegistryObject<UnstableCompoundItem> UNSTABLE_COMPOUND = ITEMS.register("unstable_compound", () -> new UnstableCompoundItem(createBaseProperties()));
 	public static final RegistryObject<SimpleItem> GENETIC_COMPOUND = registerSimpleVialItem("genetic_compound");
 	public static final RegistryObject<SimpleItem> EXOTIC_COMPOUND = registerSimpleVialItem("exotic_compound");
 	public static final RegistryObject<SimpleItem> HEALING_ADDITIVE = registerSimpleVialItem("healing_additive");
@@ -149,6 +149,7 @@ public final class ModItems {
 	public static final RegistryObject<SimpleBlockItem> FLESH_DOOR = registerSimpleBlockItem(ModBlocks.FLESH_DOOR);
 	public static final RegistryObject<SimpleBlockItem> FULL_FLESH_DOOR = registerSimpleBlockItem(ModBlocks.FULL_FLESH_DOOR);
 	public static final RegistryObject<SimpleBlockItem> BONE_SPIKE = registerSimpleBlockItem(ModBlocks.BONE_SPIKE);
+	public static final RegistryObject<SimpleBlockItem> BIO_LANTERN = registerSimpleBlockItem(ModBlocks.BIO_LANTERN);
 
 	//# Spawn Eggs
 	public static final RegistryObject<ForgeSpawnEggItem> HUNGRY_FLESH_BLOB_SPAWN_EGG = registerSpawnEgg(ModEntityTypes.HUNGRY_FLESH_BLOB, 0xe9967a, 0xf6d2c6);

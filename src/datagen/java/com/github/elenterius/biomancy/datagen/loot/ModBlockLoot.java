@@ -1,8 +1,6 @@
 package com.github.elenterius.biomancy.datagen.loot;
 
 import com.github.elenterius.biomancy.init.ModBlocks;
-import com.github.elenterius.biomancy.world.block.FleshDoorBlock;
-
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.loot.BlockLoot;
 import net.minecraft.world.item.Items;
@@ -108,6 +106,7 @@ public class ModBlockLoot extends BlockLoot {
 		dropSelf(ModBlocks.FLESH_FENCE.get());
 		dropSelf(ModBlocks.FLESH_FENCE_GATE.get());
 		dropSelf(ModBlocks.FLESH_LADDER.get());
+		dropSelf(ModBlocks.BIO_LANTERN.get());
 
 		addCustom(ModBlocks.FLESH_DOOR.get(), ModBlockLoot::createFleshDoorTable);
 		addCustom(ModBlocks.FULL_FLESH_DOOR.get(), ModBlockLoot::createFleshDoorTable);
