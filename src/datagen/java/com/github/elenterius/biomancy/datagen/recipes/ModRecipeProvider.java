@@ -786,7 +786,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addIngredient(ModItems.FLESH_BITS.get(), 2)
 				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 4)
 				.setCategory(ModBioForgeTabs.BLOCKS)
-				.unlockedBy(Items.SHROOMLIGHT).save(consumer);
+				.unlockedBy(ModItems.BIO_LUMENS.get()).save(consumer);
 
 		BioForgeRecipeBuilder.create(Items.SHROOMLIGHT)
 				.addIngredient(ModItems.BIO_LUMENS.get(), 10)

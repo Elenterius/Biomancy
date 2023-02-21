@@ -116,8 +116,6 @@
     {
       "name": "body",
       "origin": [ 0, 0, 0 ],
-      "color": 0,
-      "ik_rotorAngleConstraint": 180,
       "children": [ 0, 1, 2 ]
     }
   ]
