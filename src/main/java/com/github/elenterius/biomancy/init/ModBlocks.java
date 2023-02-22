@@ -84,6 +84,7 @@ public final class ModBlocks {
 	public static final RegistryObject<FullFleshDoorBlock> FULL_FLESH_DOOR = BLOCKS.register("full_flesh_door", () -> new FullFleshDoorBlock(createFleshProperties()));
 	public static final RegistryObject<BoneSpikeBlock> BONE_SPIKE = BLOCKS.register("bone_spike", () -> new BoneSpikeBlock(createFleshyBoneProperties()));
 	public static final RegistryObject<FleshLanternBlock> BIO_LANTERN = BLOCKS.register("bio_lantern", () -> new FleshLanternBlock(createFleshProperties().sound(SoundType.SHROOMLIGHT).lightLevel(x -> 15).noOcclusion()));
+	public static final RegistryObject<FleshChainBlock> TENDON_CHAIN = BLOCKS.register("tendon_chain", () -> new FleshChainBlock(createFleshProperties().noOcclusion()));
 
 	private ModBlocks() {}
 

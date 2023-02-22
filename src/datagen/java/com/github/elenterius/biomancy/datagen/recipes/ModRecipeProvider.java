@@ -771,6 +771,11 @@ public class ModRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.BLOCKS)
 				.unlockedBy(ModItems.BONE_FRAGMENTS.get()).save(consumer);
 
+		BioForgeRecipeBuilder.create(ModItems.TENDON_CHAIN.get())
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 8)
+				.setCategory(ModBioForgeTabs.BLOCKS)
+				.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
+
 		BioForgeRecipeBuilder.create(ModItems.BIO_LANTERN.get())
 				.addIngredient(ModItems.BIO_LUMENS.get(), 10)
 				.addIngredient(ModItems.FLESH_BITS.get(), 2)

@@ -10,6 +10,7 @@ import com.github.elenterius.biomancy.world.serum.Serum;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
@@ -18,6 +19,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public final class ModItems {
@@ -152,6 +154,7 @@ public final class ModItems {
 	public static final RegistryObject<SimpleBlockItem> FULL_FLESH_DOOR = registerSimpleBlockItem(ModBlocks.FULL_FLESH_DOOR);
 	public static final RegistryObject<SimpleBlockItem> BONE_SPIKE = registerSimpleBlockItem(ModBlocks.BONE_SPIKE);
 	public static final RegistryObject<SimpleBlockItem> BIO_LANTERN = registerSimpleBlockItem(ModBlocks.BIO_LANTERN);
+	public static final RegistryObject<FleshChainBlockItem> TENDON_CHAIN = registerBlockItem(ModBlocks.TENDON_CHAIN, block -> new FleshChainBlockItem(block, createBaseProperties()));
 
 	//# Spawn Eggs
 	public static final RegistryObject<ForgeSpawnEggItem> HUNGRY_FLESH_BLOB_SPAWN_EGG = registerSpawnEgg(ModEntityTypes.HUNGRY_FLESH_BLOB, 0xe9967a, 0xf6d2c6);
@@ -170,6 +173,10 @@ public final class ModItems {
 
 	private static <T extends Block> RegistryObject<SimpleBlockItem> registerSimpleBlockItem(RegistryObject<T> blockHolder, Supplier<Item.Properties> properties) {
 		return ITEMS.register(blockHolder.getId().getPath(), () -> new SimpleBlockItem(blockHolder.get(), properties.get()));
+	}
+
+	private static <T extends Block, I extends BlockItem> RegistryObject<I> registerBlockItem(RegistryObject<T> blockHolder, Function<T, I> factory) {
+		return ITEMS.register(blockHolder.getId().getPath(), () -> factory.apply(blockHolder.get()));
 	}
 
 	private static <T extends EntityType<? extends Mob>> RegistryObject<ForgeSpawnEggItem> registerSpawnEgg(RegistryObject<T> mobHolder, int primaryColor, int accentColor) {

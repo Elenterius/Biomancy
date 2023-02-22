@@ -2,19 +2,13 @@ package com.github.elenterius.biomancy.datagen.models;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModBlocks;
-import com.github.elenterius.biomancy.world.block.DirectionalSlabBlock;
-import com.github.elenterius.biomancy.world.block.FleshDoorBlock;
-import com.github.elenterius.biomancy.world.block.FleshLanternBlock;
-import com.github.elenterius.biomancy.world.block.IrisDoorBlock;
+import com.github.elenterius.biomancy.world.block.*;
 import com.github.elenterius.biomancy.world.block.property.DirectionalSlabType;
 import com.github.elenterius.biomancy.world.block.property.Orientation;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.MultifaceBlock;
-import net.minecraft.world.level.block.PipeBlock;
-import net.minecraft.world.level.block.WallBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraftforge.client.model.generators.*;
@@ -59,6 +53,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		boneSpike(ModBlocks.BONE_SPIKE.get());
 
 		bioLantern(ModBlocks.BIO_LANTERN.get());
+		tendonChain(ModBlocks.TENDON_CHAIN.get());
 	}
 
 	public ResourceLocation blockModel(Block block) {
@@ -162,6 +157,21 @@ public class ModBlockStateProvider extends BlockStateProvider {
 				});
 
 		simpleBlockItem(block, existingModel);
+	}
+
+	public void tendonChain(FleshChainBlock block) {
+		ResourceLocation file = blockModel(block);
+		ModelFile.ExistingModelFile model = models().getExistingFile(file);
+
+		getVariantBuilder(block)
+				.partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.Y)
+				.modelForState().modelFile(model).addModel()
+				.partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.Z)
+				.modelForState().modelFile(model).rotationX(90).addModel()
+				.partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.X)
+				.modelForState().modelFile(model).rotationX(90).rotationY(90).addModel();
+
+		simpleBlockItem(block, model);
 	}
 
 	public void bioLantern(FleshLanternBlock block) {
