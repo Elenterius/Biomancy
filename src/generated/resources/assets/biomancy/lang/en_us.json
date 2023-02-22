@@ -179,6 +179,8 @@
   "block.biomancy.flesh_ladder.tooltip": "Ladder mainly made of bones and a little bit of flesh...",
   "block.biomancy.bio_lantern": "Bioluminescent Lantern",
   "block.biomancy.bio_lantern.tooltip": "Biological light source.",
+  "block.biomancy.tendon_chain": "Tendon Chain",
+  "block.biomancy.tendon_chain.tooltip": "Chain made of tendons.",
   "block.biomancy.primal_flesh": "Primal Flesh Block",
   "block.biomancy.primal_flesh.tooltip": "Primitive and pure, you better not touch this with your dirty paws.",
   "block.biomancy.primal_flesh_slab": "Primal Flesh Slab",
