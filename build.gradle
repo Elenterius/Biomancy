@@ -178,6 +178,7 @@ dependencies {
 //    runtimeOnly fg.deobf("curse.maven:debug_utils-783008:4302677") //minecraft 1.19.3
 
     implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.19:3.1.39')
+    implementation fg.deobf('curse.maven:modonomicon-538392:4401275') //1.19.2-1.25.0
 
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:11.5.0.297")
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:11.5.0.297") // compile against the JEI API but do not include it at runtime
@@ -212,6 +213,7 @@ processResources {
     exclude '.cache'
     exclude '**/*.psd'
     exclude '**/*.bbmodel'
+    exclude '**/*.pdn'
     doLast {
         minifyJsons(processResources.outputs.files.asPath)
     }
