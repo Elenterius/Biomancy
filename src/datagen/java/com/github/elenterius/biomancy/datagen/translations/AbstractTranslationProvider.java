@@ -37,7 +37,7 @@ import java.util.function.Supplier;
 /**
  * Note: The translations are maintained in the order they were added.
  */
-public abstract class AbstractTranslationProvider implements DataProvider {
+public abstract class AbstractTranslationProvider implements DataProvider, ITranslationProvider {
 
 	private final Map<String, String> translations = new LinkedHashMap<>();
 	private final DataGenerator dataGenerator;
@@ -55,7 +55,20 @@ public abstract class AbstractTranslationProvider implements DataProvider {
 	@SuppressWarnings("UnstableApiUsage")
 	@Override
 	public void run(CachedOutput cache) throws IOException {
-		addTranslations();
+
+		//move pre-added translations (modnomicon, etc.) to the end of the translation file
+		LinkedHashMap<String, String> preAdded = null;
+		if (!translations.isEmpty()) {
+			preAdded = new LinkedHashMap<>(translations);
+			translations.clear();
+		}
+
+		addTranslations(); //adds the main translations
+
+		//append pre-added translations
+		if (preAdded != null && !preAdded.isEmpty()) {
+			translations.putAll(preAdded);
+		}
 
 		if (!translations.isEmpty()) {
 			JsonObject json = new JsonObject();
