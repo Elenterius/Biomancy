@@ -14,9 +14,9 @@ import com.github.elenterius.biomancy.datagen.tags.ModItemTagsProvider;
 import com.github.elenterius.biomancy.datagen.translations.EnglishTranslationProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 
 @Mod.EventBusSubscriber(modid = BiomancyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class DataGenerators {
@@ -30,12 +30,10 @@ public final class DataGenerators {
 
 		//tags
 		ModBlockTagsProvider blockTags = new ModBlockTagsProvider(generator, existingFileHelper);
-		generator.addProvider(true, blockTags);
-		generator.addProvider(true, new ModItemTagsProvider(generator, blockTags, existingFileHelper));
-		generator.addProvider(true, new ForgeEntityTypeTagsProvider(generator, existingFileHelper));
-		generator.addProvider(true, new ModEntityTypeTagsProvider(generator, existingFileHelper));
-
-		generator.addProvider(true, new ModBannerPatternTagsProvider(generator, existingFileHelper));
+		generator.addProvider(blockTags);
+		generator.addProvider(new ModItemTagsProvider(generator, blockTags, existingFileHelper));
+		generator.addProvider(new ForgeEntityTypeTagsProvider(generator, existingFileHelper));
+		generator.addProvider(new ModEntityTypeTagsProvider(generator, existingFileHelper));
 
 		//recipes
 		generator.addProvider(new ModRecipeProvider(generator));
@@ -43,9 +41,6 @@ public final class DataGenerators {
 		//loot
 		generator.addProvider(new ModLootTableProvider(generator));
 		generator.addProvider(new ModGlobalLootModifierProvider(generator));
-
-		//advancements
-		generator.addProvider(new ModAdvancementProvider(generator, existingFileHelper));
 
 		//models & block states
 		generator.addProvider(new ModBlockStateProvider(generator, existingFileHelper));
@@ -58,9 +53,9 @@ public final class DataGenerators {
 		EnglishTranslationProvider translationProvider = new EnglishTranslationProvider(generator);
 
 		//advancements
-		generator.addProvider(true, new ModAdvancementProvider(generator, existingFileHelper, translationProvider));
+		generator.addProvider(new ModAdvancementProvider(generator, existingFileHelper, translationProvider));
 
-		generator.addProvider(true, translationProvider);
+		generator.addProvider(translationProvider);
 	}
 
 }

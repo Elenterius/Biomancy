@@ -1,7 +1,6 @@
 package com.github.elenterius.biomancy.datagen.translations;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.init.client.ClientSetupHandler;
@@ -14,7 +13,6 @@ import com.github.elenterius.biomancy.world.item.state.LivingToolState;
 import com.github.elenterius.biomancy.world.serum.Serum;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.HashCache;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
@@ -223,8 +221,6 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 		addHudMessage("set_behavior_command", "%1$s will now execute the %2$s command");
 		addHudMessage("not_enough_ammo", "Not enough Ammo");
 		addHudMessage("not_enough_nutrients", "Not enough Nutrients");
-
-		addAdvancementTranslations();
 
 		add(ClientTextUtil.getCtrlKey(), "ctrl");
 		add(ClientTextUtil.getAltKey(), "alt");
@@ -463,63 +459,4 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 		addEntityType(ModEntityTypes.MALIGNANT_FLESH_BLOB, "Malignant Flesh Blob");
 	}
 
-	private void addAdvancementTranslations() {
-		for (AdvancementTranslations.AdvancementTranslation translation : AdvancementTranslations.TRANSLATIONS) {
-			add(translation.getTitleKey(), translation.title());
-			add(translation.getDescriptionKey(), translation.description());
-		}
-	}
-
-	public static final class AdvancementTranslations {
-
-		public static final List<AdvancementTranslation> TRANSLATIONS = new ArrayList<>();
-
-		public static final AdvancementTranslation ROOT = create("root", "Meat Whisperer", "You feel a presence in the flesh, it whispers into your ears: \"Raw Meat is useful...\"");
-		public static final AdvancementTranslation GREEDY_BUTCHER = create("greedy_butcher", "Greedy Butcher", "You've acquired a taste for organs. Crafted a special tool to get them fresh from your victims death.");
-		public static final AdvancementTranslation ORGAN_TRADER = create("organ_trader", "Organ Trader", "Become the funnel for fleshy parts and trade various organs with villagers.");
-		public static final AdvancementTranslation POACHER = create("poacher", "Rare Animal Poacher", "You have no morals and poached endangered Animals.");
-		public static final AdvancementTranslation PREDATOR_KILLER = create("predator_killer", "Predator Killer", "Hunt predators and collect their fangs and claws.");
-		public static final AdvancementTranslation CAT_KILLER = create("cat_killer", "Kitty Cat Killer", "Kill a innocent cat.");
-
-		public static final AdvancementTranslation FLESH = create("flesh", "Strange Vision", "You felt a foreign presence from the ender eye. A cauldron made of raw meat appears in your mind, you start forgetting portals... you feel compelled to build it...");
-		public static final AdvancementTranslation LIVING_FLESH = create("living_flesh", "Reviving Flesh", "You felt a foreign presence from the ender eye. A cauldron made of raw meat appears in your mind, you start forgetting portals... you feel compelled to build it...");
-		public static final AdvancementTranslation HEALING_ACTIVATOR_SACRIFICE = create("healing_activator_sacrifice", "Healing Activator", "It's seems like fluids enriched in life energy are needed. Jumpstart the process with a few healing potions.");
-		public static final AdvancementTranslation RAW_MEAT_SACRIFICE = create("raw_meat_sacrifice", "Tartar Delight", "Serve raw meat to the Primordial Cradle.");
-		public static final AdvancementTranslation COOKED_MEAT_SACRIFICE = create("cooked_meat_sacrifice", "Cooked Meat Disrelish", "Serve cooked meat to the Primordial Cradle.");
-		public static final AdvancementTranslation DECOMPOSER = create("decomposer", "Munch & Crunch", "You suddenly feel disgusted by the composter. You should use a semi-living construct to decompose things into their base parts.");
-		public static final AdvancementTranslation BIO_FORGE = create("bio_forge", "Organic Smithing", "You dreamt of a Bio-Construct weaving organic parts together into intricate semi-living things... You don't know when, but you built it.");
-		public static final AdvancementTranslation DIGESTER = create("digester", "Yummy Paste", "You feel tired of feeding your Bio-Constructs with poor quality food. You have the urge to produce a nutrients enriched yellow-green paste.");
-		public static final AdvancementTranslation BIO_LAB = create("bio_lab", "Is this still Alchemy?", "You had an epiphany, why use crude inorganic tools to brew potions if an Bio-Construct can do it better. No longer do you need to mix or adjust the heat by yourself.");
-		public static final AdvancementTranslation BIO_INJECTOR = create("bio_injector", "Injections", "Craft a Bio-Injector to be able to forcefully inject Serums into all living things.");
-		public static final AdvancementTranslation ORGANIC_COMPOUNDS = create("organic_compounds", "Organic Bio-Alchemy", "Combine various organic secretions and substances to create Compounds and Serums.");
-		public static final AdvancementTranslation EXOTIC_COMPOUNDS = create("exotic_compounds", "Exotic Bio-Alchemy", "Combine organic things with exotic compounds to create cures and cleansing fluids.");
-		public static final AdvancementTranslation GENETIC_COMPOUNDS = create("genetic_compounds", "Genetic Bio-Alchemy", "Combine organic things with genetic compounds to create fluids that influence growth and fertility.");
-
-		private AdvancementTranslations() {}
-
-		private static AdvancementTranslation create(String id, String title, String desc) {
-			AdvancementTranslation translation = new AdvancementTranslation(id, title, desc);
-			TRANSLATIONS.add(translation);
-			return translation;
-		}
-
-		public record AdvancementTranslation(String id, String title, String description) {
-			public String getTitleKey() {
-				return "advancements.biomancy." + id + ".title";
-			}
-
-			public String getDescriptionKey() {
-				return "advancements.biomancy." + id + ".description";
-			}
-
-			public MutableComponent getTitle() {
-				return ComponentUtil.translatable(getTitleKey());
-			}
-
-			public MutableComponent getDescription() {
-				return ComponentUtil.translatable(getDescriptionKey());
-			}
-
-		}
-	}
 }

@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.datagen.advancements;
 
-import com.github.elenterius.biomancy.datagen.translations.EnglishTranslationProvider;
+import com.github.elenterius.biomancy.chat.ComponentUtil;
+import com.github.elenterius.biomancy.datagen.translations.ITranslationProvider;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.FrameType;
@@ -17,9 +18,15 @@ import java.util.function.Consumer;
 public class AdvancementBuilder {
 
 	private final Advancement.Builder internalBuilder;
+	private final ITranslationProvider lang;
+
 	private final String modId;
 	private final String id;
-	private final EnglishTranslationProvider.AdvancementTranslations.AdvancementTranslation translation;
+	private final String titleTranslationKey;
+	private final String descriptionTranslationKey;
+	private String title = null;
+	private String description = null;
+
 	private ItemStack icon = ItemStack.EMPTY;
 	private ResourceLocation background = null;
 	private FrameType frameType = FrameType.TASK;
@@ -27,19 +34,31 @@ public class AdvancementBuilder {
 	private boolean announceToChat = false;
 	private boolean hidden = false;
 
-	private AdvancementBuilder(String modId, final String id) {
+	private AdvancementBuilder(String modId, final String id, ITranslationProvider lang) {
 		this.modId = modId;
 		this.id = id;
+		this.lang = lang;
 		internalBuilder = Advancement.Builder.advancement();
-		translation = EnglishTranslationProvider.AdvancementTranslations.TRANSLATIONS.stream().filter(t -> id.equals(t.id())).findFirst().orElseThrow(() -> new IllegalStateException("translation is missing for advancement '%s'".formatted(id)));
+		titleTranslationKey = "advancements.%s.%s.title".formatted(modId, id);
+		descriptionTranslationKey = "advancements.%s.%s.description".formatted(modId, id);
 	}
 
-	public static AdvancementBuilder create(String modId, String id) {
-		return new AdvancementBuilder(modId, id);
+	public static AdvancementBuilder create(String modId, String id, ITranslationProvider lang) {
+		return new AdvancementBuilder(modId, id, lang);
 	}
 
 	public AdvancementBuilder parent(Advancement advancement) {
 		internalBuilder.parent(advancement);
+		return this;
+	}
+
+	public AdvancementBuilder title(String text) {
+		title = text;
+		return this;
+	}
+
+	public AdvancementBuilder description(String text) {
+		description = text;
 		return this;
 	}
 
@@ -99,12 +118,18 @@ public class AdvancementBuilder {
 		return this;
 	}
 
-	public Advancement save(Consumer<Advancement> consumer, ExistingFileHelper fileHelper) {
+	public Advancement save(Consumer<Advancement> consumer, ExistingFileHelper fileHelper) throws Exception {
 		return save(consumer, fileHelper, modId);
 	}
 
-	public Advancement save(Consumer<Advancement> consumer, ExistingFileHelper fileHelper, String category) {
-		internalBuilder.display(icon, translation.getTitle(), translation.getDescription(), background, frameType, showToast, announceToChat, hidden);
+	public Advancement save(Consumer<Advancement> consumer, ExistingFileHelper fileHelper, String category) throws Exception {
+		if (title == null || title.isBlank()) throw new IllegalStateException("Missing title for advancement " + createRL(category + "/" + id));
+		if (description == null || description.isBlank()) throw new IllegalStateException("Missing description for advancement " + createRL(category + "/" + id));
+
+		lang.add(titleTranslationKey, title);
+		lang.add(descriptionTranslationKey, description);
+
+		internalBuilder.display(icon, ComponentUtil.translatable(titleTranslationKey), ComponentUtil.translatable(descriptionTranslationKey), background, frameType, showToast, announceToChat, hidden);
 		return internalBuilder.save(consumer, createRL(category + "/" + id), fileHelper);
 	}
 
