@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.world.item;
 import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.world.block.FleshChainBlock;
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -79,7 +80,7 @@ public class FleshChainBlockItem extends SimpleBlockItem {
 				if (context.getPlayer() instanceof ServerPlayer serverPlayer) {
 					int maxBuildHeight = level.getMaxBuildHeight();
 					if (mutablePos.getY() >= maxBuildHeight) {
-						serverPlayer.sendSystemMessage(ComponentUtil.translatable("build.tooHigh", maxBuildHeight - 1).withStyle(ChatFormatting.RED), true);
+						serverPlayer.sendMessage(ComponentUtil.translatable("build.tooHigh", maxBuildHeight - 1).withStyle(ChatFormatting.RED), Util.NIL_UUID);
 					}
 				}
 				return null;

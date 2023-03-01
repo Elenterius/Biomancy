@@ -1,7 +1,8 @@
 package com.github.elenterius.biomancy.datagen.translations;
 
-import com.google.gson.*;
-import com.google.gson.stream.JsonWriter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
@@ -18,7 +19,6 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
 import org.apache.commons.lang3.text.translate.JavaUnicodeEscaper;
 
-import javax.annotation.Nullable;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,7 +31,7 @@ import java.util.function.Supplier;
 /**
  * Note: The translations are maintained in the order they were added.
  */
-public abstract class AbstractTranslationProvider implements DataProvider {
+public abstract class AbstractTranslationProvider implements DataProvider, ITranslationProvider {
 	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
 
 	private final Map<String, String> translations = new LinkedHashMap<>();
@@ -45,49 +45,24 @@ public abstract class AbstractTranslationProvider implements DataProvider {
 		this.languageLocale = languageLocale;
 	}
 
-	private static void writeValue(JsonWriter jsonWriter, @Nullable JsonElement json) throws IOException {
-		if (json == null || json.isJsonNull()) {
-			jsonWriter.nullValue();
-			return;
-		}
-
-		if (json.isJsonPrimitive()) {
-			JsonPrimitive primitive = json.getAsJsonPrimitive();
-			if (primitive.isNumber()) {
-				jsonWriter.value(primitive.getAsNumber());
-			}
-			else if (primitive.isBoolean()) {
-				jsonWriter.value(primitive.getAsBoolean());
-			}
-			else {
-				jsonWriter.value(primitive.getAsString());
-			}
-		}
-		else if (json.isJsonArray()) {
-			jsonWriter.beginArray();
-			for (JsonElement element : json.getAsJsonArray()) {
-				writeValue(jsonWriter, element);
-			}
-			jsonWriter.endArray();
-		}
-		else {
-			if (!json.isJsonObject()) throw new IllegalArgumentException("Couldn't write " + json.getClass());
-
-			jsonWriter.beginObject();
-			for (Map.Entry<String, JsonElement> entry : json.getAsJsonObject().entrySet()) {
-				jsonWriter.name(entry.getKey());
-				writeValue(jsonWriter, entry.getValue());
-			}
-			jsonWriter.endObject();
-		}
-	}
-
 	protected abstract void addTranslations();
 
 	@SuppressWarnings("UnstableApiUsage")
 	@Override
 	public void run(HashCache cache) throws IOException {
-		addTranslations();
+		//move pre-added translations (modnomicon, etc.) to the end of the translation file
+		LinkedHashMap<String, String> preAdded = null;
+		if (!translations.isEmpty()) {
+			preAdded = new LinkedHashMap<>(translations);
+			translations.clear();
+		}
+
+		addTranslations(); //adds the main translations
+
+		//append pre-added translations
+		if (preAdded != null && !preAdded.isEmpty()) {
+			translations.putAll(preAdded);
+		}
 
 		if (!translations.isEmpty()) {
 			JsonObject json = new JsonObject();
