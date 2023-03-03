@@ -19,21 +19,17 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.MultifaceBlock;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.properties.*;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.BitSet;
 import java.util.Optional;
 import java.util.Random;
 
@@ -148,31 +144,23 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 
 	@Override
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
-		if (!level.isAreaLoaded(pos, 1)) return;
+		if (!level.isAreaLoaded(pos, 2)) return;
 		int charge = getCharge(state);
 		if (charge <= 0) return;
 
-		if (random.nextFloat() < (charge / 15f) - 0.25f) {
-			for (Direction direction : MultifaceSpreader.shuffledDirections(random)) {
-				if (hasFace(state, direction)) {
-					BlockState slabState = ModBlocks.MALIGNANT_FLESH_SLAB.get().defaultBlockState();
-					DirectionalSlabType type = DirectionalSlabType.getHalfFrom(pos, Vec3.atCenterOf(pos), direction.getOpposite());
-					level.setBlockAndUpdate(pos, slabState.setValue(DirectionalSlabBlock.TYPE, type));
+		if (random.nextFloat() < (charge / 15f) && convertSelf(state, level, pos)) {
+			if (random.nextFloat() < 0.75f) getSpreader().spreadFromRandomFaceTowardRandomDirection(state, level, pos, random);
+			if (random.nextFloat() < 0.60f) getSpreader().spreadFromRandomFaceTowardRandomDirection(state, level, pos, random);
+			if (random.nextFloat() < 0.45f) getSpreader().spreadFromRandomFaceTowardRandomDirection(state, level, pos, random);
 
-					if (random.nextFloat() < 0.75f) getSpreader().spreadFromRandomFaceTowardRandomDirection(state, level, pos, random);
-					if (random.nextFloat() < 0.60f) getSpreader().spreadFromRandomFaceTowardRandomDirection(state, level, pos, random);
-					if (random.nextFloat() < 0.45f) getSpreader().spreadFromRandomFaceTowardRandomDirection(state, level, pos, random);
-
-					for (Direction subDirection : MultifaceSpreader.shuffledDirections(random)) {
-						BlockPos neighborPos = pos.relative(subDirection);
-						BlockState neighborState = level.getBlockState(neighborPos);
-						increaseCharge(level, neighborPos, neighborState, 1);
-					}
-
-					level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 1.2f, 0.15f + random.nextFloat() * 0.5f);
-					return;
-				}
+			for (Direction subDirection : MultifaceSpreader.shuffledDirections(random)) {
+				BlockPos neighborPos = pos.relative(subDirection);
+				BlockState neighborState = level.getBlockState(neighborPos);
+				increaseCharge(level, neighborPos, neighborState, 1);
 			}
+
+			level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 1.2f, 0.15f + random.nextFloat() * 0.5f);
+			return;
 		}
 
 		if (charge > 4) {
@@ -180,12 +168,14 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 			if (growthAmount > 0) {
 				charge -= growthAmount;
 				state = level.getBlockState(pos);
+				level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 1f, 0.15f + random.nextFloat() * 0.5f);
 			}
 		}
 		else {
 			if (getSpreader().spreadFromRandomFaceTowardRandomDirection(state, level, pos, random).isPresent()) {
 				charge -= 1;
 				state = level.getBlockState(pos);
+				level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 1f, 0.15f + random.nextFloat() * 0.5f);
 			}
 		}
 
@@ -199,7 +189,167 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		}
 
 		level.setBlockAndUpdate(pos, applyCharge(state, charge));
-		level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 1f, 0.15f + random.nextFloat() * 0.5f);
+	}
+
+	protected boolean convertSelf(BlockState state, ServerLevel level, BlockPos pos) {
+		BitSet bitSet = new BitSet(6);
+		bitSet.set(5, hasFace(state, Direction.DOWN));
+		bitSet.set(4, hasFace(state, Direction.UP));
+		bitSet.set(3, hasFace(state, Direction.NORTH));
+		bitSet.set(2, hasFace(state, Direction.SOUTH));
+		bitSet.set(1, hasFace(state, Direction.WEST));
+		bitSet.set(0, hasFace(state, Direction.EAST));
+
+		int faces = bitSet.cardinality();
+
+		if (faces > 3) {
+			level.setBlockAndUpdate(pos, ModBlocks.MALIGNANT_FLESH.get().defaultBlockState());
+			return true;
+		}
+
+		if (faces == 1) {
+			for (int i = 0; i < 5; i++) {
+				if (bitSet.get(i)) {
+					Direction direction = Direction.from3DDataValue(5 - i);
+					BlockState slabState = ModBlocks.MALIGNANT_FLESH_SLAB.get().defaultBlockState();
+					DirectionalSlabType type = DirectionalSlabType.getHalfFrom(pos, Vec3.atCenterOf(pos), direction.getOpposite());
+					level.setBlockAndUpdate(pos, slabState.setValue(DirectionalSlabBlock.TYPE, type));
+					return true;
+				}
+			}
+		}
+
+		int mask = bitSet.toByteArray()[0];
+
+		if (mask == 0b10_10_00) { //down & north
+			BlockState blockState = ModBlocks.MALIGNANT_FLESH_STAIRS.get().defaultBlockState()
+					.setValue(StairBlock.HALF, Half.BOTTOM)
+					.setValue(StairBlock.FACING, Direction.NORTH)
+					.setValue(StairBlock.SHAPE, StairsShape.STRAIGHT);
+			return level.setBlockAndUpdate(pos, blockState);
+		}
+
+		if (mask == 0b10_01_00) { //down & south
+			BlockState blockState = ModBlocks.MALIGNANT_FLESH_STAIRS.get().defaultBlockState()
+					.setValue(StairBlock.HALF, Half.BOTTOM)
+					.setValue(StairBlock.FACING, Direction.SOUTH)
+					.setValue(StairBlock.SHAPE, StairsShape.STRAIGHT);
+			return level.setBlockAndUpdate(pos, blockState);
+		}
+
+		if (mask == 0b10_00_10) { //down & west
+			BlockState blockState = ModBlocks.MALIGNANT_FLESH_STAIRS.get().defaultBlockState()
+					.setValue(StairBlock.HALF, Half.BOTTOM)
+					.setValue(StairBlock.FACING, Direction.WEST)
+					.setValue(StairBlock.SHAPE, StairsShape.STRAIGHT);
+			return level.setBlockAndUpdate(pos, blockState);
+		}
+
+		if (mask == 0b10_00_01) { //down & east
+			BlockState blockState = ModBlocks.MALIGNANT_FLESH_STAIRS.get().defaultBlockState()
+					.setValue(StairBlock.HALF, Half.BOTTOM)
+					.setValue(StairBlock.FACING, Direction.EAST)
+					.setValue(StairBlock.SHAPE, StairsShape.STRAIGHT);
+			return level.setBlockAndUpdate(pos, blockState);
+		}
+
+		if (mask == 0b10_10_01) { //down & north & east
+			BlockState blockState = ModBlocks.MALIGNANT_FLESH_STAIRS.get().defaultBlockState()
+					.setValue(StairBlock.HALF, Half.BOTTOM)
+					.setValue(StairBlock.FACING, Direction.NORTH)
+					.setValue(StairBlock.SHAPE, StairsShape.INNER_RIGHT);
+			return level.setBlockAndUpdate(pos, blockState);
+		}
+
+		if (mask == 0b10_10_10) { //down & north & west
+			BlockState blockState = ModBlocks.MALIGNANT_FLESH_STAIRS.get().defaultBlockState()
+					.setValue(StairBlock.HALF, Half.BOTTOM)
+					.setValue(StairBlock.FACING, Direction.WEST)
+					.setValue(StairBlock.SHAPE, StairsShape.INNER_RIGHT);
+			return level.setBlockAndUpdate(pos, blockState);
+		}
+
+		if (mask == 0b10_01_10) { //down & south & west
+			BlockState blockState = ModBlocks.MALIGNANT_FLESH_STAIRS.get().defaultBlockState()
+					.setValue(StairBlock.HALF, Half.BOTTOM)
+					.setValue(StairBlock.FACING, Direction.SOUTH)
+					.setValue(StairBlock.SHAPE, StairsShape.INNER_RIGHT);
+			return level.setBlockAndUpdate(pos, blockState);
+		}
+
+		if (mask == 0b10_01_01) { //down & south & west
+			BlockState blockState = ModBlocks.MALIGNANT_FLESH_STAIRS.get().defaultBlockState()
+					.setValue(StairBlock.HALF, Half.BOTTOM)
+					.setValue(StairBlock.FACING, Direction.EAST)
+					.setValue(StairBlock.SHAPE, StairsShape.INNER_RIGHT);
+			return level.setBlockAndUpdate(pos, blockState);
+		}
+
+		if (mask == 0b01_10_01) { //up & north & east
+			BlockState blockState = ModBlocks.MALIGNANT_FLESH_STAIRS.get().defaultBlockState()
+					.setValue(StairBlock.HALF, Half.TOP)
+					.setValue(StairBlock.FACING, Direction.NORTH)
+					.setValue(StairBlock.SHAPE, StairsShape.INNER_RIGHT);
+			return level.setBlockAndUpdate(pos, blockState);
+		}
+
+		if (mask == 0b01_01_10) { //up & south & west
+			BlockState blockState = ModBlocks.MALIGNANT_FLESH_STAIRS.get().defaultBlockState()
+					.setValue(StairBlock.HALF, Half.TOP)
+					.setValue(StairBlock.FACING, Direction.SOUTH)
+					.setValue(StairBlock.SHAPE, StairsShape.INNER_RIGHT);
+			return level.setBlockAndUpdate(pos, blockState);
+		}
+
+		if (mask == 0b01_01_01) { //up & south & east
+			BlockState blockState = ModBlocks.MALIGNANT_FLESH_STAIRS.get().defaultBlockState()
+					.setValue(StairBlock.HALF, Half.TOP)
+					.setValue(StairBlock.FACING, Direction.EAST)
+					.setValue(StairBlock.SHAPE, StairsShape.INNER_RIGHT);
+			return level.setBlockAndUpdate(pos, blockState);
+		}
+
+		if (mask == 0b01_10_10) { //up & north & west
+			BlockState blockState = ModBlocks.MALIGNANT_FLESH_STAIRS.get().defaultBlockState()
+					.setValue(StairBlock.HALF, Half.TOP)
+					.setValue(StairBlock.FACING, Direction.WEST)
+					.setValue(StairBlock.SHAPE, StairsShape.INNER_RIGHT);
+			return level.setBlockAndUpdate(pos, blockState);
+		}
+
+		if (mask == 0b01_10_00) { //up & north
+			BlockState blockState = ModBlocks.MALIGNANT_FLESH_STAIRS.get().defaultBlockState()
+					.setValue(StairBlock.HALF, Half.TOP)
+					.setValue(StairBlock.FACING, Direction.NORTH)
+					.setValue(StairBlock.SHAPE, StairsShape.STRAIGHT);
+			return level.setBlockAndUpdate(pos, blockState);
+		}
+
+		if (mask == 0b01_01_00) { //up & south
+			BlockState blockState = ModBlocks.MALIGNANT_FLESH_STAIRS.get().defaultBlockState()
+					.setValue(StairBlock.HALF, Half.TOP)
+					.setValue(StairBlock.FACING, Direction.SOUTH)
+					.setValue(StairBlock.SHAPE, StairsShape.STRAIGHT);
+			return level.setBlockAndUpdate(pos, blockState);
+		}
+
+		if (mask == 0b01_00_10) { //up & west
+			BlockState blockState = ModBlocks.MALIGNANT_FLESH_STAIRS.get().defaultBlockState()
+					.setValue(StairBlock.HALF, Half.TOP)
+					.setValue(StairBlock.FACING, Direction.WEST)
+					.setValue(StairBlock.SHAPE, StairsShape.STRAIGHT);
+			return level.setBlockAndUpdate(pos, blockState);
+		}
+
+		if (mask == 0b01_00_01) { //up & east
+			BlockState blockState = ModBlocks.MALIGNANT_FLESH_STAIRS.get().defaultBlockState()
+					.setValue(StairBlock.HALF, Half.TOP)
+					.setValue(StairBlock.FACING, Direction.EAST)
+					.setValue(StairBlock.SHAPE, StairsShape.STRAIGHT);
+			return level.setBlockAndUpdate(pos, blockState);
+		}
+
+		return false;
 	}
 
 	public int increaseCharge(ServerLevel level, BlockPos pos, BlockState state, int amount) {
@@ -234,7 +384,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 
 		@Override
 		public boolean isOtherBlockValidAsSource(BlockState state) {
-			return state.getBlock() instanceof PrimordialCradleBlock || state.is(ModBlocks.MALIGNANT_FLESH_SLAB.get()) || state.is(ModBlocks.MALIGNANT_FLESH.get());
+			return state.getBlock() instanceof PrimordialCradleBlock || state.is(ModBlocks.MALIGNANT_FLESH_SLAB.get()) || state.is(ModBlocks.MALIGNANT_FLESH_STAIRS.get()) || state.is(ModBlocks.MALIGNANT_FLESH.get());
 		}
 
 		@Nullable
@@ -257,6 +407,23 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 			}
 
 			return super.stateCanBeReplaced(level, posA, posB, direction, state);
+		}
+
+		@Override
+		public boolean placeBlock(LevelAccessor level, MultifaceSpreader.SpreadPos spreadPos, BlockState state) {
+			int neighbors = 0;
+			for (Direction direction : DIRECTIONS) {
+				for (int i = 0; i < 2; i++) {
+					BlockState neighborState = level.getBlockState(spreadPos.pos().relative(direction, i + 1));
+					neighbors += neighborState.is(block) || isOtherBlockValidAsSource(neighborState) ? 1 : 0;
+				}
+			}
+			if (neighbors >= 4) return false;
+
+			BlockState blockstate = getStateForPlacement(state, level, spreadPos.pos(), spreadPos.face());
+			if (blockstate == null) return false;
+
+			return level.setBlock(spreadPos.pos(), blockstate, 2);
 		}
 	}
 }
