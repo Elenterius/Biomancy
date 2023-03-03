@@ -94,11 +94,13 @@ public class ModBlockLoot extends BlockLoot {
 
 		dropSelf(ModBlocks.PRIMAL_FLESH.get());
 		add(ModBlocks.PRIMAL_FLESH_SLAB.get(), BlockLoot::createSlabItemTable);
+		dropSelf(ModBlocks.PRIMAL_FLESH_STAIRS.get());
 		dropSelf(ModBlocks.CORRUPTED_PRIMAL_FLESH.get());
 
 		dropSelf(ModBlocks.MALIGNANT_FLESH.get());
 		add(ModBlocks.MALIGNANT_FLESH_SLAB.get(), BlockLoot::createSlabItemTable);
-		add(ModBlocks.MALIGNANT_FLESH_VEINS.get(), (block) -> { return createMultifaceBlockDrops(block, MatchTool.toolMatches(ItemPredicate.Builder.item().of(Items.SHEARS))); });
+		dropSelf(ModBlocks.MALIGNANT_FLESH_STAIRS.get());
+		add(ModBlocks.MALIGNANT_FLESH_VEINS.get(), (block) -> {return createMultifaceBlockDrops(block, MatchTool.toolMatches(ItemPredicate.Builder.item().of(Items.SHEARS)));});
 
 		dropSelf(ModBlocks.VOICE_BOX.get());
 		dropSelf(ModBlocks.FLESH_IRIS_DOOR.get());

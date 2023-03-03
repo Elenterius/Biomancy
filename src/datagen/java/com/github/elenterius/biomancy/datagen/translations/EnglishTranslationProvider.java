@@ -442,9 +442,11 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 
 		addBlock(ModBlocks.PRIMAL_FLESH, "Primal Flesh Block", "Primitive and pure, you better not touch this with your dirty paws.");
 		addBlock(ModBlocks.PRIMAL_FLESH_SLAB, "Primal Flesh Slab", "Primitive and pure, you better not touch this with your dirty paws.");
+		addBlock(ModBlocks.PRIMAL_FLESH_STAIRS, "Primal Flesh Stairs", "Stairs made of primal flesh. Feels primitive and pure...");
 		addBlock(ModBlocks.CORRUPTED_PRIMAL_FLESH, "Corrupted Primal Flesh", "It's no longer pure... Don't deny it. Your dirty paws caused this!");
 		addBlock(ModBlocks.MALIGNANT_FLESH, "Malignant Flesh Block", "Looks dangerous, you better not touch this block!");
 		addBlock(ModBlocks.MALIGNANT_FLESH_SLAB, "Malignant Flesh Slab", "Looks dangerous, you better not touch this slab!");
+		addBlock(ModBlocks.MALIGNANT_FLESH_STAIRS, "Malignant Flesh Stairs", "Stairs made of malignant flesh. Looks diseased...");
 		addBlock(ModBlocks.MALIGNANT_FLESH_VEINS, "Malignant Flesh Veins", "Looks dangerous, you better not touch these veins!");
 	}
 
