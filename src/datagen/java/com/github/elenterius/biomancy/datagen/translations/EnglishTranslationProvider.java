@@ -320,8 +320,8 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 	private void addEnchantmentTranslations() {
 		addEnchantment(ModEnchantments.DESPOIL, "Despoil");
 		addEnchantment(ModEnchantments.ANESTHETIC, "Anesthetic Touch");
-		addEnchantment(ModEnchantments.QUICK_SHOT, "Quick Shot");
-		addEnchantment(ModEnchantments.MAX_AMMO, "Max Ammo");
+		//		addEnchantment(ModEnchantments.QUICK_SHOT, "Quick Shot");
+		//		addEnchantment(ModEnchantments.MAX_AMMO, "Max Ammo");
 	}
 
 	private void addItemTranslations() {

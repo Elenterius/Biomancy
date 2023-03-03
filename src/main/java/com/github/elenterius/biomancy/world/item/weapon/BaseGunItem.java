@@ -2,7 +2,6 @@ package com.github.elenterius.biomancy.world.item.weapon;
 
 import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
-import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.world.item.IKeyListener;
@@ -182,7 +181,9 @@ public abstract class BaseGunItem extends ProjectileWeaponItem implements IGun, 
 
 	@Override
 	public int getShootDelay(ItemStack stack) {
-		return baseShootDelay - 2 * EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.QUICK_SHOT.get(), stack);
+		//		int level = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.QUICK_SHOT.get(), stack);
+		int level = 0;
+		return baseShootDelay - 2 * level;
 	}
 
 	@Override
@@ -201,7 +202,9 @@ public abstract class BaseGunItem extends ProjectileWeaponItem implements IGun, 
 
 	@Override
 	public int getMaxAmmo(ItemStack stack) {
-		return Mth.floor(baseMaxAmmo + baseMaxAmmo * 0.5f * EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.MAX_AMMO.get(), stack));
+		//		int level = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.MAX_AMMO.get(), stack);
+		int level = 0;
+		return Mth.floor(baseMaxAmmo + baseMaxAmmo * 0.5f * level);
 	}
 
 	@Override
