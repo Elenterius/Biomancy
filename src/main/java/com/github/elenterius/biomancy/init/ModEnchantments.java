@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.world.enchantment.AnestheticEnchantment;
 import com.github.elenterius.biomancy.world.enchantment.DespoilEnchantment;
 import com.github.elenterius.biomancy.world.item.BioExtractorItem;
+import com.github.elenterius.biomancy.world.item.InjectorItem;
 import com.github.elenterius.biomancy.world.item.weapon.ClawsItem;
 import com.github.elenterius.biomancy.world.item.weapon.IGun;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -16,7 +17,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public final class ModEnchantments {
 
-	public static final EnchantmentCategory SYRINGE_CATEGORY = EnchantmentCategory.create("biomancy_syringe", BioExtractorItem.class::isInstance);
+	public static final EnchantmentCategory SYRINGE_CATEGORY = EnchantmentCategory.create("biomancy_syringe", item -> item instanceof BioExtractorItem || item instanceof InjectorItem);
 	public static final EnchantmentCategory GUN_CATEGORY = EnchantmentCategory.create("biomancy_gun", IGun.class::isInstance);
 	public static final EnchantmentCategory WEAPON_CATEGORY = EnchantmentCategory.create("biomancy_weapon", item -> EnchantmentCategory.WEAPON.canEnchant(item) || item instanceof ClawsItem || item instanceof AxeItem);
 

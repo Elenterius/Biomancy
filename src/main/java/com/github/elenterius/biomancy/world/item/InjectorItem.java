@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.gui.InjectorScreen;
 import com.github.elenterius.biomancy.client.renderer.item.InjectorRenderer;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
+import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.SoundUtil;
@@ -29,6 +30,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -111,6 +113,9 @@ public class InjectorItem extends Item implements ISerumProvider, ICustomTooltip
 				serum.affectEntity(level, dataTag, null, target);
 				injectorItem.consumeSerum(injectorStack, null); //TODO: drop appropriate vials/container
 				injectorStack.hurt(1, level.getRandom(), null);
+				if (injectorStack.getEnchantmentLevel(ModEnchantments.ANESTHETIC.get()) <= 0) {
+					target.hurt(new EntityDamageSource("sting", null), 0.5f);
+				}
 				return true;
 			}
 		}
@@ -564,6 +569,10 @@ public class InjectorItem extends Item implements ISerumProvider, ICustomTooltip
 
 				injector.consumeSerum(stack, player);
 				stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+
+				if (stack.getEnchantmentLevel(ModEnchantments.ANESTHETIC.get()) <= 0) {
+					target.hurt(new EntityDamageSource("sting", player), 0.5f);
+				}
 			}
 		}
 	}
