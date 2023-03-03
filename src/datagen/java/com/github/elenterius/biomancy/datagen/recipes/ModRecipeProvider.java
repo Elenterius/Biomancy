@@ -226,17 +226,25 @@ public class ModRecipeProvider extends RecipeProvider {
 				.pattern(" L ")
 				.unlockedBy(hasName(ModItems.BIO_LUMENS.get()), has(ModItems.BIO_LUMENS.get()))
 				.save(consumer, getSimpleRecipeId(Items.GLOW_ITEM_FRAME));
-		
+
 		// A recipe for converting between two versions of Flesh Door.
 		WorkbenchRecipeBuilder.shapeless(ModItems.FLESH_DOOR.get())
 				.requires(ModItems.FULL_FLESH_DOOR.get())
 				.unlockedBy(hasName(ModItems.FULL_FLESH_DOOR.get()), has(ModItems.FULL_FLESH_DOOR.get()))
 				.save(consumer, getConversionRecipeId(ModItems.FLESH_DOOR.get(), ModItems.FULL_FLESH_DOOR.get()));
-		
+
 		WorkbenchRecipeBuilder.shapeless(ModItems.FULL_FLESH_DOOR.get())
 				.requires(ModItems.FLESH_DOOR.get())
 				.unlockedBy(hasName(ModItems.FLESH_DOOR.get()), has(ModItems.FLESH_DOOR.get()))
 				.save(consumer, getConversionRecipeId(ModItems.FULL_FLESH_DOOR.get(), ModItems.FLESH_DOOR.get()));
+
+		stairBuilder(ModItems.PRIMAL_FLESH_STAIRS.get(), Ingredient.of(ModItems.PRIMAL_FLESH_BLOCK.get()))
+				.unlockedBy(hasName(ModItems.PRIMAL_FLESH_BLOCK.get()), has(ModItems.PRIMAL_FLESH_BLOCK.get()))
+				.save(consumer);
+
+		stairBuilder(ModItems.MALIGNANT_FLESH_STAIRS.get(), Ingredient.of(ModItems.MALIGNANT_FLESH_BLOCK.get()))
+				.unlockedBy(hasName(ModItems.MALIGNANT_FLESH_BLOCK.get()), has(ModItems.MALIGNANT_FLESH_BLOCK.get()))
+				.save(consumer);
 	}
 
 	private void registerDigestingRecipes(Consumer<FinishedRecipe> consumer) {
