@@ -95,7 +95,6 @@ public class ModBlockLoot extends BlockLoot {
 		dropSelf(ModBlocks.PRIMAL_FLESH.get());
 		add(ModBlocks.PRIMAL_FLESH_SLAB.get(), BlockLoot::createSlabItemTable);
 		dropSelf(ModBlocks.CORRUPTED_PRIMAL_FLESH.get());
-		add(ModBlocks.CORRUPTED_PRIMAL_FLESH_SLAB.get(), BlockLoot::createSlabItemTable);
 
 		dropSelf(ModBlocks.MALIGNANT_FLESH.get());
 		add(ModBlocks.MALIGNANT_FLESH_SLAB.get(), BlockLoot::createSlabItemTable);
