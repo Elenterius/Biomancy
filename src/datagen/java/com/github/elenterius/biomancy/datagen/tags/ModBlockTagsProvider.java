@@ -49,7 +49,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 				ModBlocks.FLESH_SLAB.get(),
 				ModBlocks.PACKED_FLESH_SLAB.get(),
 				ModBlocks.PRIMAL_FLESH_SLAB.get(),
-				ModBlocks.CORRUPTED_PRIMAL_FLESH_SLAB.get(),
 				ModBlocks.MALIGNANT_FLESH_SLAB.get()
 		);
 	}
