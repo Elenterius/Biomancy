@@ -863,6 +863,11 @@ public class ModRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.WEAPONS)
 				.unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
 
+		BioForgeRecipeBuilder.create(ModItems.BONE_CLEAVER.get())
+				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 3 * 4)
+				.setCategory(ModBioForgeTabs.WEAPONS)
+				.unlockedBy(ModItems.BONE_FRAGMENTS.get()).save(consumer);
+
 		//////////// MISC ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		BioForgeRecipeBuilder.create(ModItems.CREATOR_MIX.get())
