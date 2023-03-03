@@ -3,8 +3,6 @@ package com.github.elenterius.biomancy.init;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.world.enchantment.AnestheticEnchantment;
 import com.github.elenterius.biomancy.world.enchantment.DespoilEnchantment;
-import com.github.elenterius.biomancy.world.enchantment.MaxAmmoEnchantment;
-import com.github.elenterius.biomancy.world.enchantment.QuickShotEnchantment;
 import com.github.elenterius.biomancy.world.item.BioExtractorItem;
 import com.github.elenterius.biomancy.world.item.weapon.ClawsItem;
 import com.github.elenterius.biomancy.world.item.weapon.IGun;
@@ -26,8 +24,8 @@ public final class ModEnchantments {
 
 	public static final RegistryObject<DespoilEnchantment> DESPOIL = ENCHANTMENTS.register("despoil", () -> new DespoilEnchantment(Enchantment.Rarity.RARE, WEAPON_CATEGORY, EquipmentSlot.MAINHAND));
 	public static final RegistryObject<AnestheticEnchantment> ANESTHETIC = ENCHANTMENTS.register("anesthetic", () -> new AnestheticEnchantment(Enchantment.Rarity.RARE, SYRINGE_CATEGORY, EquipmentSlot.MAINHAND));
-	public static final RegistryObject<QuickShotEnchantment> QUICK_SHOT = ENCHANTMENTS.register("quick_shot", () -> new QuickShotEnchantment(Enchantment.Rarity.VERY_RARE, EquipmentSlot.MAINHAND));
-	public static final RegistryObject<MaxAmmoEnchantment> MAX_AMMO = ENCHANTMENTS.register("max_ammo", () -> new MaxAmmoEnchantment(Enchantment.Rarity.VERY_RARE, EquipmentSlot.MAINHAND));
+	//	public static final RegistryObject<QuickShotEnchantment> QUICK_SHOT = ENCHANTMENTS.register("quick_shot", () -> new QuickShotEnchantment(Enchantment.Rarity.VERY_RARE, EquipmentSlot.MAINHAND));
+	//	public static final RegistryObject<MaxAmmoEnchantment> MAX_AMMO = ENCHANTMENTS.register("max_ammo", () -> new MaxAmmoEnchantment(Enchantment.Rarity.VERY_RARE, EquipmentSlot.MAINHAND));
 
 	private ModEnchantments() {}
 
