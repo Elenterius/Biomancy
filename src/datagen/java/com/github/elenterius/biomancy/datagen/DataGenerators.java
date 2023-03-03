@@ -41,9 +41,6 @@ public final class DataGenerators {
 		generator.addProvider(true, new ModLootTableProvider(generator));
 		generator.addProvider(true, new ModGlobalLootModifierProvider(generator));
 
-		//advancements
-		generator.addProvider(true, new ModAdvancementProvider(generator, existingFileHelper));
-
 		//models & block states
 		generator.addProvider(true, new ModBlockStateProvider(generator, existingFileHelper));
 		generator.addProvider(true, new ModItemModelProvider(generator, existingFileHelper));
@@ -52,7 +49,12 @@ public final class DataGenerators {
 		generator.addProvider(true, new ModSoundProvider(generator, existingFileHelper));
 
 		//translations
-		generator.addProvider(true, new EnglishTranslationProvider(generator));
+		EnglishTranslationProvider translationProvider = new EnglishTranslationProvider(generator);
+
+		//advancements
+		generator.addProvider(true, new ModAdvancementProvider(generator, existingFileHelper, translationProvider));
+
+		generator.addProvider(true, translationProvider);
 	}
 
 }

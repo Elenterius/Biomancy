@@ -1,0 +1,124 @@
+{
+	"credit": "Made by ZeoMaddox & Elenterius",
+	"parent": "block/block",
+	"textures": {
+		"particle": "biomancy:block/tendon_chain",
+		"all": "biomancy:block/tendon_chain"
+	},
+	"elements": [
+		{
+			"from": [ 6.5, 10, 8 ],
+			"to": [ 9.5, 16, 8 ],
+			"rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [ 8, 13, 8 ]
+      },
+      "faces": {
+        "north": {
+          "uv": [ 13, 6, 16, 12 ],
+          "texture": "#all"
+        },
+        "south": {
+          "uv": [ 13, 6, 16, 12 ],
+          "texture": "#all"
+        }
+      }
+    },
+    {
+      "from": [ 8, 10, 6.5 ],
+      "to": [ 8, 16, 9.5 ],
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [ 8, 13, 8 ]
+      },
+      "faces": {
+        "east": {
+          "uv": [ 13, 0, 16, 6 ],
+          "texture": "#all"
+        },
+        "west": {
+          "uv": [ 13, 0, 16, 6 ],
+          "texture": "#all"
+        }
+      }
+    },
+    {
+      "from": [ 6.5, 4, 8 ],
+      "to": [ 9.5, 10, 8 ],
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [ 8, 13, 8 ]
+      },
+      "faces": {
+        "north": {
+          "uv": [ 13, 6, 16, 12 ],
+          "texture": "#all"
+        },
+        "south": {
+          "uv": [ 13, 6, 16, 12 ],
+          "texture": "#all"
+        }
+      }
+    },
+    {
+      "from": [ 8, 4, 6.5 ],
+      "to": [ 8, 10, 9.5 ],
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [ 8, 13, 8 ]
+      },
+      "faces": {
+        "east": {
+          "uv": [ 13, 0, 16, 6 ],
+          "texture": "#all"
+        },
+        "west": {
+          "uv": [ 13, 0, 16, 6 ],
+          "texture": "#all"
+        }
+      }
+    },
+    {
+      "from": [ 8, 0, 6.5 ],
+      "to": [ 8, 4, 9.5 ],
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [ 8, 13, 8 ]
+      },
+      "faces": {
+        "east": {
+          "uv": [ 13, 0, 16, 4 ],
+          "texture": "#all"
+        },
+        "west": {
+          "uv": [ 13, 0, 16, 4 ],
+          "texture": "#all"
+        }
+      }
+    },
+    {
+      "from": [ 6.5, 0, 8 ],
+      "to": [ 9.5, 4, 8 ],
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [ 8, 13, 8 ]
+      },
+      "faces": {
+        "north": {
+          "uv": [ 13, 6, 16, 10 ],
+          "texture": "#all"
+        },
+        "south": {
+          "uv": [ 13, 6, 16, 10 ],
+          "texture": "#all"
+        }
+      }
+    }
+  ]
+}

@@ -10,6 +10,7 @@ import com.github.elenterius.biomancy.world.serum.Serum;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
@@ -18,6 +19,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public final class ModItems {
@@ -35,7 +37,8 @@ public final class ModItems {
 	public static final RegistryObject<VolatileGlandItem> VOLATILE_GLAND = ITEMS.register("volatile_gland", () -> new VolatileGlandItem(ModTags.EntityTypes.VOLATILE_GLAND, createBaseProperties().food(ModFoods.VOLATILE_GLAND).rarity(ModRarities.RARE)));
 	//## Special
 	public static final RegistryObject<SimpleItem> LIVING_FLESH = registerSimpleItem("living_flesh", ModRarities.VERY_RARE);
-	public static final RegistryObject<SimpleItem.ShinySimpleItem> EXALTED_LIVING_FLESH = ITEMS.register("exalted_living_flesh", () -> new SimpleItem.ShinySimpleItem(createBaseProperties().rarity(ModRarities.ULTRA_RARE).tab(null)));
+	public static final RegistryObject<SimpleItem> PRIMORDIAL_LIVING_FLESH = ITEMS.register("primordial_living_flesh", () -> new SimpleItem(createBaseProperties().rarity(ModRarities.ULTRA_RARE)));
+	public static final RegistryObject<SimpleItem> PRIMORDIAL_LIVING_OCULUS = ITEMS.register("primordial_living_oculus", () -> new SimpleItem(createBaseProperties().rarity(ModRarities.ULTRA_RARE)));
 
 	//# Components
 	//## Complex
@@ -85,6 +88,7 @@ public final class ModItems {
 	public static final RegistryObject<EssenceItem> ESSENCE = ITEMS.register("essence", () -> new EssenceItem(createBaseProperties().tab(null)));
 	public static final RegistryObject<BioExtractorItem> BIO_EXTRACTOR = ITEMS.register("bio_extractor", () -> new BioExtractorItem(createBaseProperties().durability(200).tab(null)));
 	public static final RegistryObject<InjectorItem> INJECTOR = ITEMS.register("injector", () -> new InjectorItem(createBaseProperties().durability(200).rarity(ModRarities.RARE)));
+	public static final RegistryObject<GuideBookItem> GUIDE_BOOK = ITEMS.register("guide_book", () -> new GuideBookItem(createBaseProperties().stacksTo(1).rarity(ModRarities.RARE)));
 	//	public static final RegistryObject<ControlStaffItem> CONTROL_STAFF = ITEMS.register("control_staff", () -> new ControlStaffItem(createBaseProperties().stacksTo(1).rarity(ModRarities.ULTRA_RARE)));
 
 	public static final RegistryObject<MaykerBannerPatternItem> MASCOT_BANNER_PATTERNS = ITEMS.register("mascot_patterns", () -> new MaykerBannerPatternItem(ModBannerPatterns.TAG_MASCOT, createBaseProperties()));
@@ -150,6 +154,7 @@ public final class ModItems {
 	public static final RegistryObject<SimpleBlockItem> FULL_FLESH_DOOR = registerSimpleBlockItem(ModBlocks.FULL_FLESH_DOOR);
 	public static final RegistryObject<SimpleBlockItem> BONE_SPIKE = registerSimpleBlockItem(ModBlocks.BONE_SPIKE);
 	public static final RegistryObject<SimpleBlockItem> BIO_LANTERN = registerSimpleBlockItem(ModBlocks.BIO_LANTERN);
+	public static final RegistryObject<FleshChainBlockItem> TENDON_CHAIN = registerBlockItem(ModBlocks.TENDON_CHAIN, block -> new FleshChainBlockItem(block, createBaseProperties()));
 
 	//# Spawn Eggs
 	public static final RegistryObject<ForgeSpawnEggItem> HUNGRY_FLESH_BLOB_SPAWN_EGG = registerSpawnEgg(ModEntityTypes.HUNGRY_FLESH_BLOB, 0xe9967a, 0xf6d2c6);
@@ -168,6 +173,10 @@ public final class ModItems {
 
 	private static <T extends Block> RegistryObject<SimpleBlockItem> registerSimpleBlockItem(RegistryObject<T> blockHolder, Supplier<Item.Properties> properties) {
 		return ITEMS.register(blockHolder.getId().getPath(), () -> new SimpleBlockItem(blockHolder.get(), properties.get()));
+	}
+
+	private static <T extends Block, I extends BlockItem> RegistryObject<I> registerBlockItem(RegistryObject<T> blockHolder, Function<T, I> factory) {
+		return ITEMS.register(blockHolder.getId().getPath(), () -> factory.apply(blockHolder.get()));
 	}
 
 	private static <T extends EntityType<? extends Mob>> RegistryObject<ForgeSpawnEggItem> registerSpawnEgg(RegistryObject<T> mobHolder, int primaryColor, int accentColor) {
