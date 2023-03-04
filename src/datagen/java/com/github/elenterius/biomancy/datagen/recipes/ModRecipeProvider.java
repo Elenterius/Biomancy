@@ -109,6 +109,10 @@ public class ModRecipeProvider extends RecipeProvider {
 		SimpleCookingRecipeBuilder.blasting(Ingredient.of(ModItems.STONE_POWDER.get()), Items.GLASS_PANE, 0.01F, 100).unlockedBy(hasName(ModItems.STONE_POWDER.get()), has(ModItems.STONE_POWDER.get())).save(consumer, getBlastingRecipeId(Items.GLASS_PANE));
 	}
 
+	protected static void stairs(Consumer<FinishedRecipe> consumer, ItemLike result, ItemLike ingredient) {
+		stairBuilder(result, Ingredient.of(ingredient)).unlockedBy(hasName(ingredient), has(ingredient)).save(consumer);
+	}
+
 	private void registerWorkbenchRecipes(Consumer<FinishedRecipe> consumer) {
 
 		WorkbenchRecipeBuilder.shaped(ModItems.BONE_CLEAVER.get())
@@ -243,17 +247,41 @@ public class ModRecipeProvider extends RecipeProvider {
 				.pattern(" L ")
 				.unlockedBy(hasName(ModItems.BIO_LUMENS.get()), has(ModItems.BIO_LUMENS.get()))
 				.save(consumer, getSimpleRecipeId(Items.GLOW_ITEM_FRAME));
-		
+
 		// A recipe for converting between two versions of Flesh Door.
 		WorkbenchRecipeBuilder.shapeless(ModItems.FLESH_DOOR.get())
 				.requires(ModItems.FULL_FLESH_DOOR.get())
 				.unlockedBy(hasName(ModItems.FULL_FLESH_DOOR.get()), has(ModItems.FULL_FLESH_DOOR.get()))
 				.save(consumer, getConversionRecipeId(ModItems.FLESH_DOOR.get(), ModItems.FULL_FLESH_DOOR.get()));
-		
+
 		WorkbenchRecipeBuilder.shapeless(ModItems.FULL_FLESH_DOOR.get())
 				.requires(ModItems.FLESH_DOOR.get())
 				.unlockedBy(hasName(ModItems.FLESH_DOOR.get()), has(ModItems.FLESH_DOOR.get()))
 				.save(consumer, getConversionRecipeId(ModItems.FULL_FLESH_DOOR.get(), ModItems.FLESH_DOOR.get()));
+
+		stairs(consumer, ModItems.FLESH_STAIRS.get(), ModItems.FLESH_BLOCK.get());
+		slab(consumer, ModItems.FLESH_SLAB.get(), ModItems.FLESH_BLOCK.get());
+		wall(consumer, ModItems.FLESH_WALL.get(), ModItems.FLESH_BLOCK.get());
+		stonecutterResultFromBase(consumer, ModItems.FLESH_STAIRS.get(), ModItems.FLESH_BLOCK.get());
+		stonecutterResultFromBase(consumer, ModItems.FLESH_SLAB.get(), ModItems.FLESH_BLOCK.get(), 2);
+		stonecutterResultFromBase(consumer, ModItems.FLESH_WALL.get(), ModItems.FLESH_BLOCK.get());
+
+		stairs(consumer, ModItems.PACKED_FLESH_STAIRS.get(), ModItems.PACKED_FLESH_BLOCK.get());
+		slab(consumer, ModItems.PACKED_FLESH_SLAB.get(), ModItems.PACKED_FLESH_BLOCK.get());
+		wall(consumer, ModItems.PACKED_FLESH_WALL.get(), ModItems.PACKED_FLESH_BLOCK.get());
+		stonecutterResultFromBase(consumer, ModItems.PACKED_FLESH_STAIRS.get(), ModItems.PACKED_FLESH_BLOCK.get());
+		stonecutterResultFromBase(consumer, ModItems.PACKED_FLESH_SLAB.get(), ModItems.PACKED_FLESH_BLOCK.get(), 2);
+		stonecutterResultFromBase(consumer, ModItems.PACKED_FLESH_WALL.get(), ModItems.PACKED_FLESH_BLOCK.get());
+
+		stairs(consumer, ModItems.PRIMAL_FLESH_STAIRS.get(), ModItems.PRIMAL_FLESH_BLOCK.get());
+		slab(consumer, ModItems.PRIMAL_FLESH_SLAB.get(), ModItems.PRIMAL_FLESH_BLOCK.get());
+		stonecutterResultFromBase(consumer, ModItems.PRIMAL_FLESH_STAIRS.get(), ModItems.PRIMAL_FLESH_BLOCK.get());
+		stonecutterResultFromBase(consumer, ModItems.PRIMAL_FLESH_SLAB.get(), ModItems.PRIMAL_FLESH_BLOCK.get(), 2);
+
+		stairs(consumer, ModItems.MALIGNANT_FLESH_STAIRS.get(), ModItems.MALIGNANT_FLESH_BLOCK.get());
+		slab(consumer, ModItems.MALIGNANT_FLESH_SLAB.get(), ModItems.MALIGNANT_FLESH_BLOCK.get());
+		stonecutterResultFromBase(consumer, ModItems.MALIGNANT_FLESH_STAIRS.get(), ModItems.MALIGNANT_FLESH_BLOCK.get());
+		stonecutterResultFromBase(consumer, ModItems.MALIGNANT_FLESH_SLAB.get(), ModItems.MALIGNANT_FLESH_BLOCK.get(), 2);
 	}
 
 	private void registerDigestingRecipes(Consumer<FinishedRecipe> consumer) {
@@ -834,6 +862,11 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addIngredient(ModItems.TOUGH_FIBERS.get(), 5)
 				.setCategory(ModBioForgeTabs.WEAPONS)
 				.unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
+
+		BioForgeRecipeBuilder.create(ModItems.BONE_CLEAVER.get())
+				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 3 * 4)
+				.setCategory(ModBioForgeTabs.WEAPONS)
+				.unlockedBy(ModItems.BONE_FRAGMENTS.get()).save(consumer);
 
 		//////////// MISC ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

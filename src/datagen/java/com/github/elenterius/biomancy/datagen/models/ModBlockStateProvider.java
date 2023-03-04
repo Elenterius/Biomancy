@@ -40,10 +40,14 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
 		simpleBlockWithItem(ModBlocks.PRIMAL_FLESH.get());
 		directionalSlabBlockWithItem(ModBlocks.PRIMAL_FLESH_SLAB.get(), ModBlocks.PRIMAL_FLESH.get());
+		stairsBlock(ModBlocks.PRIMAL_FLESH_STAIRS.get(), blockTexture(ModBlocks.PRIMAL_FLESH.get()));
+		simpleBlockItem(ModBlocks.PRIMAL_FLESH_STAIRS.get());
 		existingBlockWithItem(ModBlocks.CORRUPTED_PRIMAL_FLESH.get());
 
 		simpleBlockWithItem(ModBlocks.MALIGNANT_FLESH.get());
 		directionalSlabBlockWithItem(ModBlocks.MALIGNANT_FLESH_SLAB.get(), ModBlocks.MALIGNANT_FLESH.get());
+		stairsBlock(ModBlocks.MALIGNANT_FLESH_STAIRS.get(), blockTexture(ModBlocks.MALIGNANT_FLESH.get()));
+		simpleBlockItem(ModBlocks.MALIGNANT_FLESH_STAIRS.get());
 		veinsBlock(ModBlocks.MALIGNANT_FLESH_VEINS.get());
 
 		irisDoor(ModBlocks.FLESH_IRIS_DOOR.get(), true);
