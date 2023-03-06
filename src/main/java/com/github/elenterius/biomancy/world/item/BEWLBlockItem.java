@@ -4,23 +4,34 @@ import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.renderer.item.BEWLRenderer;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.common.util.Lazy;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 
-//implements IAnimatable
 public class BEWLBlockItem extends BlockItem implements ICustomTooltip {
 
-	public BEWLBlockItem(Block block, Properties properties) {
+	private final Lazy<BlockEntity> cachedBlockEntityWithoutLevel;
+
+	public <T extends Block & EntityBlock> BEWLBlockItem(T block, Properties properties) {
 		super(block, properties);
+		cachedBlockEntityWithoutLevel = Lazy.of(() -> block.newBlockEntity(BlockPos.ZERO, block.defaultBlockState()));
+	}
+
+	@Nullable
+	public BlockEntity getCachedBEWL() {
+		return cachedBlockEntityWithoutLevel.get();
 	}
 
 	@Override
