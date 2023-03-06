@@ -1,28 +1,19 @@
 package com.github.elenterius.biomancy.client.renderer.item;
 
-import com.github.elenterius.biomancy.init.ModBlocks;
-import com.github.elenterius.biomancy.init.ModItems;
-import com.github.elenterius.biomancy.world.block.entity.BioLabBlockEntity;
-import com.github.elenterius.biomancy.world.block.entity.PrimordialCradleBlockEntity;
 import com.github.elenterius.biomancy.world.item.BEWLBlockItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.util.Lazy;
+import software.bernie.geckolib3.core.IAnimatable;
 
 public class BEWLRenderer extends BlockEntityWithoutLevelRenderer {
 
 	public static final BEWLRenderer INSTANCE = new BEWLRenderer();
-
-	private final Lazy<PrimordialCradleBlockEntity> creator = Lazy.of(() -> new PrimordialCradleBlockEntity(BlockPos.ZERO, ModBlocks.PRIMORDIAL_CRADLE.get().defaultBlockState()));
-	private final Lazy<BioLabBlockEntity> bioLab = Lazy.of(() -> new BioLabBlockEntity(BlockPos.ZERO, ModBlocks.BIO_LAB.get().defaultBlockState()));
 
 	public BEWLRenderer() {
 		super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
@@ -35,14 +26,18 @@ public class BEWLRenderer extends BlockEntityWithoutLevelRenderer {
 
 	@Override
 	public void renderByItem(ItemStack stack, ItemTransforms.TransformType transformType, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
-		Item item = stack.getItem();
+		if (stack.getItem() instanceof BEWLBlockItem blockItem) {
+			BlockEntity cachedBEWL = blockItem.getCachedBEWL();
+			if (cachedBEWL == null) return;
 
-		if (item instanceof BEWLBlockItem) {
-			if (item == ModItems.PRIMORDIAL_CRADLE.get()) {
-				renderBlockEntity(poseStack, buffer, packedLight, packedOverlay, creator.get());
+			if (cachedBEWL instanceof IAnimatable && transformType == ItemTransforms.TransformType.GUI) {
+				poseStack.pushPose();
+				poseStack.translate(0f, 0.5f, 0f); //fix for display translation offset of geo block models
+				renderBlockEntity(poseStack, buffer, packedLight, packedOverlay, cachedBEWL);
+				poseStack.popPose();
 			}
-			else if (item == ModItems.BIO_LAB.get()) {
-				renderBlockEntity(poseStack, buffer, packedLight, packedOverlay, bioLab.get());
+			else {
+				renderBlockEntity(poseStack, buffer, packedLight, packedOverlay, cachedBEWL);
 			}
 		}
 	}

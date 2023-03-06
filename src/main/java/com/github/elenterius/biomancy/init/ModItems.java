@@ -109,10 +109,10 @@ public final class ModItems {
 	//# Block Items
 
 	//## Machine
-	public static final RegistryObject<BEWLBlockItem> PRIMORDIAL_CRADLE = ITEMS.register(ModBlocks.PRIMORDIAL_CRADLE.getId().getPath(), () -> new BEWLBlockItem(ModBlocks.PRIMORDIAL_CRADLE.get(), createBaseProperties().rarity(ModRarities.VERY_RARE)));
+	public static final RegistryObject<BEWLBlockItem> PRIMORDIAL_CRADLE = registerBlockItem(ModBlocks.PRIMORDIAL_CRADLE, block -> new BEWLBlockItem(block, createBaseProperties().rarity(ModRarities.VERY_RARE)));
 	public static final RegistryObject<SimpleBlockItem> BIO_FORGE = registerSimpleBlockItem(ModBlocks.BIO_FORGE, ModRarities.RARE);
 	public static final RegistryObject<SimpleBlockItem> DECOMPOSER = registerSimpleBlockItem(ModBlocks.DECOMPOSER, ModRarities.RARE);
-	public static final RegistryObject<BEWLBlockItem> BIO_LAB = ITEMS.register(ModBlocks.BIO_LAB.getId().getPath(), () -> new BEWLBlockItem(ModBlocks.BIO_LAB.get(), createBaseProperties().rarity(ModRarities.RARE)));
+	public static final RegistryObject<BEWLBlockItem> BIO_LAB = registerBlockItem(ModBlocks.BIO_LAB, block -> new BEWLBlockItem(block, createBaseProperties().rarity(ModRarities.RARE)));
 	public static final RegistryObject<SimpleBlockItem> DIGESTER = registerSimpleBlockItem(ModBlocks.DIGESTER, ModRarities.RARE);
 
 	//## Storage & Automation
