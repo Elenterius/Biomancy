@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.datagen.loot.ModGlobalLootModifierProvider
 import com.github.elenterius.biomancy.datagen.loot.ModLootTableProvider;
 import com.github.elenterius.biomancy.datagen.models.ModBlockStateProvider;
 import com.github.elenterius.biomancy.datagen.models.ModItemModelProvider;
+import com.github.elenterius.biomancy.datagen.modonomicon.GuideBookProvider;
 import com.github.elenterius.biomancy.datagen.recipes.ModRecipeProvider;
 import com.github.elenterius.biomancy.datagen.tags.*;
 import com.github.elenterius.biomancy.datagen.translations.EnglishTranslationProvider;
@@ -53,6 +54,9 @@ public final class DataGenerators {
 
 		//advancements
 		generator.addProvider(true, new ModAdvancementProvider(generator, existingFileHelper, translationProvider));
+
+		//guide book
+		generator.addProvider(true, new GuideBookProvider(generator, translationProvider));
 
 		generator.addProvider(true, translationProvider);
 	}
