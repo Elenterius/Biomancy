@@ -41,8 +41,8 @@ public class GuideBookProvider extends AbstractBookProvider {
 				.withCustomBookItem(ModItems.GUIDE_BOOK.getId()).withGenerateBookItem(false)
 				.withCategories(featuresCategory);
 
-		lang.add(demoBook.getName(), "[PH] Biomancy Index");
-		lang.add(demoBook.getTooltip(), "[PH] A book to test Modonomicon features for Biomancy.");
+		lang.add(demoBook.getName(), "Biomancy Index");
+		lang.add(demoBook.getTooltip(), "A book to test Modonomicon features for Biomancy.");
 
 		add(demoBook);
 	}
@@ -53,14 +53,14 @@ public class GuideBookProvider extends AbstractBookProvider {
 		EntryLocationHelper entryHelper = ModonomiconAPI.get().getEntryLocationHelper();
 		entryHelper.setMap(
 				"_____________________",
-				"__m______________d___",
+				"__p__d_______________",
 				"__________r__________",
 				"__c__________________",
 				"__________2___3___i__",
 				"__s_____e____________"
 		);
 
-		var multiBlockEntry = makeMultiBlockEntry(helper, entryHelper, 'm');
+		var primordialCradleRecipe = makeRecipeEntry(helper, entryHelper, 'p');
 
 		var recipeEntry = makeRecipeEntry(helper, entryHelper, 'c');
 
@@ -71,12 +71,12 @@ public class GuideBookProvider extends AbstractBookProvider {
 		var entityEntry = makeEntityEntry(helper, entryHelper, 'd');
 
 		BookCategoryModel categoryModel = BookCategoryModel.create(modLoc(helper.category), helper.categoryName())
-				.withIcon("minecraft:nether_star") //the icon for the category. In this case we simply use an existing item.
-				.withEntries(multiBlockEntry)
+				.withIcon("biomancy:living_flesh")
+				.withEntries(primordialCradleRecipe)
 				.withEntries(recipeEntry)
 				.withEntries(spotlightEntry)
 				.withEntries(entityEntry);
-		lang.add(helper.categoryName(), "[PH] Features Category");
+		lang.add(helper.categoryName(), "Fleshy Constructs");
 
 		return categoryModel;
 	}
@@ -89,8 +89,8 @@ public class GuideBookProvider extends AbstractBookProvider {
 				.withText(helper.pageText())
 				.withTitle(helper.pageTitle())
 				.build();
-		lang.add(helper.pageTitle(), "[PH] Recipe Entry");
-		lang.add(helper.pageText(), "[PH] Recipe pages allow to show recipes in the book.");
+		lang.add(helper.pageTitle(), "Recipe Entry");
+		lang.add(helper.pageText(), "Recipe pages allow to show recipes in the book.");
 
 		helper.page("crafting");
 		var crafting = BookCraftingRecipePageModel.builder()
@@ -99,8 +99,8 @@ public class GuideBookProvider extends AbstractBookProvider {
 				.withText(helper.pageText())
 				.withTitle2("test.test.test")
 				.build();
-		lang.add(helper.pageText(), "[PH] A sample recipe page.");
-		lang.add("test.test.test", "[PH] Book of Binding: Afrit (Bound)");
+		lang.add(helper.pageText(), "A sample recipe page.");
+		lang.add("test.test.test", "Book of Binding: Afrit (Bound)");
 
 
 		helper.page("smelting");
@@ -108,7 +108,7 @@ public class GuideBookProvider extends AbstractBookProvider {
 				.withRecipeId1("minecraft:charcoal")
 				.withRecipeId2("minecraft:cooked_beef")
 				.build();
-		lang.add(helper.pageText(), "[PH] A smelting recipe page with one recipe and some text.");
+		lang.add(helper.pageText(), "A smelting recipe page with one recipe and some text.");
 
 		helper.page("blasting");
 		var blasting = BookBlastingRecipePageModel.builder()
@@ -123,8 +123,8 @@ public class GuideBookProvider extends AbstractBookProvider {
 				.withLocation(entryHelper.get('c'))
 				.withPages(introPage, crafting, smelting, blasting)
 				.build();
-		lang.add(helper.entryName(), "[PH] Recipe Entry");
-		lang.add(helper.entryDescription(), "[PH] An entry showcasing recipe pages.");
+		lang.add(helper.entryName(), "Recipe Entry");
+		lang.add(helper.entryDescription(), "An entry showcasing recipe pages.");
 
 		return entryModel;
 	}
@@ -137,8 +137,8 @@ public class GuideBookProvider extends AbstractBookProvider {
 				.withText(helper.pageText())
 				.withTitle(helper.pageTitle())
 				.build();
-		lang.add(helper.pageTitle(), "[PH] Spotlight Entry");
-		lang.add(helper.pageText(), "[PH] Spotlight pages allow to show items (actually, ingredients).");
+		lang.add(helper.pageTitle(), "Spotlight Entry");
+		lang.add(helper.pageText(), "Spotlight pages allow to show items (actually, ingredients).");
 
 		helper.page("spotlight1");
 		var spotlight1 = BookSpotlightPageModel.builder()
@@ -146,15 +146,15 @@ public class GuideBookProvider extends AbstractBookProvider {
 				.withText(helper.pageText())
 				.withItem(Ingredient.of(Items.APPLE))
 				.build();
-		lang.add(helper.pageTitle(), "[PH] Custom Title");
-		lang.add(helper.pageText(), "[PH] A sample spotlight page with custom title.");
+		lang.add(helper.pageTitle(), "Custom Title");
+		lang.add(helper.pageText(), "A sample spotlight page with custom title.");
 
 		helper.page("spotlight2");
 		var spotlight2 = BookSpotlightPageModel.builder()
 				.withText(helper.pageText())
 				.withItem(Ingredient.of(Items.DIAMOND))
 				.build();
-		lang.add(helper.pageText(), "[PH] A sample spotlight page with automatic title.");
+		lang.add(helper.pageText(), "A sample spotlight page with automatic title.");
 
 		BookEntryModel.Builder builder = BookEntryModel.builder()
 				.withId(entryId(helper))
@@ -163,8 +163,8 @@ public class GuideBookProvider extends AbstractBookProvider {
 				.withIcon("minecraft:beacon")
 				.withLocation(entryHelper.get(location))
 				.withPages(introPage, spotlight1, spotlight2);
-		lang.add(helper.entryName(), "[PH] Spotlight Entry");
-		lang.add(helper.entryDescription(), "[PH] An entry showcasing spotlight pages.");
+		lang.add(helper.entryName(), "Spotlight Entry");
+		lang.add(helper.entryDescription(), "An entry showcasing spotlight pages.");
 		return builder;
 	}
 
@@ -176,8 +176,8 @@ public class GuideBookProvider extends AbstractBookProvider {
 				.withText(helper.pageText())
 				.withTitle(helper.pageTitle())
 				.build();
-		lang.add(helper.pageTitle(), "[PH] Entity Entry");
-		lang.add(helper.pageText(), "[PH] Entity pages allow to show entities.");
+		lang.add(helper.pageTitle(), "Entity Entry");
+		lang.add(helper.pageText(), "Entity pages allow to show entities.");
 
 		helper.page("flesh_blob");
 		BookEntityPageModel fleshBlobPage = BookEntityPageModel.builder()
@@ -185,7 +185,7 @@ public class GuideBookProvider extends AbstractBookProvider {
 				.withEntityId(ModEntityTypes.FLESH_BLOB.getId().toString())
 				.withScale(1f)
 				.build();
-		lang.add(helper.pageTitle(), "[PH] Flesh Blob");
+		lang.add(helper.pageTitle(), "Flesh Blob");
 
 		helper.page("hungry_flesh_blob");
 		BookEntityPageModel hungryFleshBlobPage = BookEntityPageModel.builder()
@@ -193,7 +193,7 @@ public class GuideBookProvider extends AbstractBookProvider {
 				.withEntityId(ModEntityTypes.HUNGRY_FLESH_BLOB.getId().toString())
 				.withScale(1f)
 				.build();
-		lang.add(helper.pageText(), "[PH] A sample entity page with automatic title.");
+		lang.add(helper.pageText(), "A sample entity page with automatic title.");
 
 		BookEntryModel entryModel = BookEntryModel.builder()
 				.withId(entryId(helper))
@@ -203,42 +203,41 @@ public class GuideBookProvider extends AbstractBookProvider {
 				.withLocation(entryHelper.get(location))
 				.withPages(introPage, fleshBlobPage, hungryFleshBlobPage)
 				.build();
-		lang.add(helper.entryName(), "[PH] Entity Entry");
-		lang.add(helper.entryDescription(), "[PH] An entry showcasing entity pages.");
+		lang.add(helper.entryName(), "Entity Entry");
+		lang.add(helper.entryDescription(), "An entry showcasing entity pages.");
 
 		return entryModel;
 	}
 
-	private BookEntryModel makeMultiBlockEntry(BookLangHelper helper, EntryLocationHelper entryHelper, char location) {
-		helper.entry("multiblock");
+	private BookEntryModel makeRecipeEntry(BookLangHelper helper, EntryLocationHelper entryHelper, char location) {
+		helper.entry("primordialcradleentry");
 
 		helper.page("intro");
 		var introPage = BookTextPageModel.builder()
 				.withText(helper.pageText())
 				.withTitle(helper.pageTitle())
 				.build();
-		lang.add(helper.pageTitle(), "[PH] Multi-block Page");
-		lang.add(helper.pageText(), "[PH] Multi-block pages allow to preview multi-blocks both in the book and in the world.");
+		lang.add(helper.pageTitle(), "The Primordial Cradle");
+		lang.add(helper.pageText(), "By filling the cradle with raw flesh and a healing agent (Instant Health Potions or Regenerative Fluid) you gain the ability to form new living beings");
 
-		helper.page("preview");
-		var multiBlockPreviewPage = BookMultiblockPageModel.builder()
-				.withMultiblockId("modonomicon:blockentity") //sample multi-block from modonomicon
-				.withMultiblockName("multiblocks.modonomicon.blockentity") //and the lang key for its name
+		helper.page("crafting");
+		var crafting = BookCraftingRecipePageModel.builder()
+				.withRecipeId1("biomancy:primordial_cradle")
+				.withRecipeId2("biomancy:primordial_living_oculus")
 				.withText(helper.pageText())
 				.build();
-		lang.add("multiblocks.modonomicon.blockentity", "[PH] Blockentity Multi-Block.");
-		lang.add(helper.pageText(), "[PH] A sample multi-block.");
+		lang.add(helper.pageText(), "Primordial Cradle Recipe");
 
 		BookEntryModel entryModel = BookEntryModel.builder()
 				.withId(entryId(helper))
 				.withName(helper.entryName())
 				.withDescription(helper.entryDescription())
-				.withIcon("minecraft:furnace") //we use furnace as icon
+				.withIcon("biomancy:primordial_cradle") //we use primordial cradle as icon
 				.withLocation(entryHelper.get(location)) //and we place it at the location we defined earlier in the entry helper mapping
-				.withPages(introPage, multiBlockPreviewPage) //finally we add our pages to the entry
+				.withPages(introPage, crafting) //finally we add our pages to the entry
 				.build();
-		lang.add(helper.entryName(), "[PH] Multi-block Entry");
-		lang.add(helper.entryDescription(), "[PH] An entry showcasing a multi-block.");
+		lang.add(helper.entryName(), "The Primordial Cradle");
+		lang.add(helper.entryDescription(), "The Fun Begins");
 
 		return entryModel;
 	}
