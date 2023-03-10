@@ -56,14 +56,14 @@ public class GuideBookProvider extends AbstractBookProvider {
 		EntryLocationHelper entryHelper = ModonomiconAPI.get().getEntryLocationHelper();
 		entryHelper.setMap(
 				"_____________________",
-				"__m______________d___",
+				"__p__d_______________",
 				"__________r__________",
 				"__c__________________",
 				"__________2___3___i__",
 				"__s_____e____________"
 		);
 
-		var multiBlockEntry = makeMultiBlockEntry(helper, entryHelper, 'm');
+		var primordialCradleRecipe = makeRecipeEntry(helper, entryHelper, 'p');
 
 		var recipeEntry = makeRecipeEntry(helper, entryHelper, 'c');
 
@@ -76,13 +76,13 @@ public class GuideBookProvider extends AbstractBookProvider {
 		BookCategoryModel categoryModel = BookCategoryModel.builder()
 				.withId(modLoc(helper.category)) //the id of the category, as stored in the lang helper. modLoc() prepends the mod id.
 				.withName(helper.categoryName()) //the name of the category. The lang helper gives us the correct translation key.
-				.withIcon("minecraft:nether_star") //the icon for the category. In this case we simply use an existing item.
-				.withEntries(multiBlockEntry)
+				.withIcon("biomancy:living_flesh")
+				.withEntries(primordialCradleRecipe)
 				.withEntries(recipeEntry)
 				.withEntries(spotlightEntry)
 				.withEntries(entityEntry)
 				.build();
-		lang.add(helper.categoryName(), "Features Category");
+		lang.add(helper.categoryName(), "Fleshy Constructs");
 
 		return categoryModel;
 	}
@@ -215,36 +215,35 @@ public class GuideBookProvider extends AbstractBookProvider {
 		return entryModel;
 	}
 
-	private BookEntryModel makeMultiBlockEntry(BookLangHelper helper, EntryLocationHelper entryHelper, char location) {
-		helper.entry("multiblock");
+	private BookEntryModel makeRecipeEntry(BookLangHelper helper, EntryLocationHelper entryHelper, char location) {
+		helper.entry("primordialcradleentry");
 
 		helper.page("intro");
 		var introPage = BookTextPageModel.builder()
 				.withText(helper.pageText())
 				.withTitle(helper.pageTitle())
 				.build();
-		lang.add(helper.pageTitle(), "Multi-block Page");
-		lang.add(helper.pageText(), "Multi-block pages allow to preview multi-blocks both in the book and in the world.");
+		lang.add(helper.pageTitle(), "The Primordial Cradle");
+		lang.add(helper.pageText(), "By filling the cradle with raw flesh and a healing agent (Instant Health Potions or Regenerative Fluid) you gain the ability to form new living beings");
 
-		helper.page("preview");
-		var multiBlockPreviewPage = BookMultiblockPageModel.builder()
-				.withMultiblockId("modonomicon:blockentity") //sample multi-block from modonomicon
-				.withMultiblockName("multiblocks.modonomicon.blockentity") //and the lang key for its name
+		helper.page("crafting");
+		var crafting = BookCraftingRecipePageModel.builder()
+				.withRecipeId1("biomancy:primordial_cradle")
+				.withRecipeId2("biomancy:primordial_living_oculus")
 				.withText(helper.pageText())
 				.build();
-		lang.add("multiblocks.modonomicon.blockentity", "Blockentity Multi-Block.");
-		lang.add(helper.pageText(), "A sample multi-block.");
+		lang.add(helper.pageText(), "Primordial Cradle Recipe");
 
 		BookEntryModel entryModel = BookEntryModel.builder()
 				.withId(entryId(helper))
 				.withName(helper.entryName())
 				.withDescription(helper.entryDescription())
-				.withIcon("minecraft:furnace") //we use furnace as icon
+				.withIcon("biomancy:primordial_cradle") //we use primordial cradle as icon
 				.withLocation(entryHelper.get(location)) //and we place it at the location we defined earlier in the entry helper mapping
-				.withPages(introPage, multiBlockPreviewPage) //finally we add our pages to the entry
+				.withPages(introPage, crafting) //finally we add our pages to the entry
 				.build();
-		lang.add(helper.entryName(), "Multi-block Entry");
-		lang.add(helper.entryDescription(), "An entry showcasing a multi-block.");
+		lang.add(helper.entryName(), "The Primordial Cradle");
+		lang.add(helper.entryDescription(), "The Fun Begins");
 
 		return entryModel;
 	}
