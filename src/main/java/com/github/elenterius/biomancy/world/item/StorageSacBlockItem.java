@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.world.item;
 
+import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
-import com.github.elenterius.biomancy.tooltip.PlaceholderComponent;
 import com.github.elenterius.biomancy.tooltip.StorageSacTooltipComponent;
 import com.github.elenterius.biomancy.world.block.entity.StorageSacBlockEntity;
 import com.github.elenterius.biomancy.world.inventory.ItemStackInventory;
@@ -112,8 +112,8 @@ public class StorageSacBlockItem extends BlockItem implements ICustomTooltip {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, level, tooltip, flag);
-		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
-		tooltip.add(new PlaceholderComponent(new StorageSacTooltipComponent(getItemHandler(stack).orElse(null))));
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack));
+		tooltip.add(ComponentUtil.tooltip(new StorageSacTooltipComponent(getItemHandler(stack).orElse(null))));
 	}
 
 	@Override

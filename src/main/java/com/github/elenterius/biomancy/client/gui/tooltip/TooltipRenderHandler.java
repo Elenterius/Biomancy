@@ -1,11 +1,11 @@
 package com.github.elenterius.biomancy.client.gui.tooltip;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.init.ModRarities;
 import com.github.elenterius.biomancy.init.client.ModScreens;
 import com.github.elenterius.biomancy.styles.ColorStyles;
-import com.github.elenterius.biomancy.tooltip.PlaceholderComponent;
+import com.github.elenterius.biomancy.tooltip.EmptyLineTooltipComponent;
+import com.github.elenterius.biomancy.tooltip.TooltipContents;
 import com.github.elenterius.biomancy.world.item.ICustomTooltip;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -30,6 +30,7 @@ import java.util.List;
 public final class TooltipRenderHandler {
 
 	private static final ResourceLocation TOOLTIP_OVERLAY_TEXTURE = BiomancyMod.createRL("textures/gui/ui_tooltip.png");
+	private static final EmptyLineTooltipComponent EMPTY_LINE = new EmptyLineTooltipComponent();
 
 	private TooltipRenderHandler() {}
 
@@ -53,12 +54,14 @@ public final class TooltipRenderHandler {
 		for (int i = 0; i < tooltipElements.size(); i++) {
 			Either<FormattedText, TooltipComponent> either = tooltipElements.get(i);
 			final int index = i;
+
+			//replace formattedText with TooltipComponent
 			either.ifLeft(formattedText -> {
-				if (formattedText instanceof PlaceholderComponent placeholder) {
-					tooltipElements.set(index, Either.right(placeholder.getReplacement()));
+				if (formattedText instanceof Component component && component.getContents() instanceof TooltipContents contents) {
+					tooltipElements.set(index, Either.right(contents.component()));
 				}
 				else if (isTooltip && formattedText == Component.EMPTY) { //vanilla bugfix: fixes empty lines disappearing when long text is wrapped
-					tooltipElements.set(index, Either.right(ComponentUtil.emptyLine().getReplacement()));
+					tooltipElements.set(index, Either.right(EMPTY_LINE));
 				}
 			});
 		}

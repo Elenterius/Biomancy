@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.chat;
 
 import com.github.elenterius.biomancy.tooltip.EmptyLineTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
-import com.github.elenterius.biomancy.tooltip.PlaceholderComponent;
+import com.github.elenterius.biomancy.tooltip.TooltipContents;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -47,14 +47,14 @@ public final class ComponentUtil {
 	/**
 	 * force empty line iin item tooltips
 	 */
-	public static PlaceholderComponent emptyLine() {
+	public static Component emptyLine() {
 		return TooltipHacks.EMPTY_LINE_COMPONENT;
 	}
 
 	/**
 	 * horizontal line in item tooltips
 	 */
-	public static PlaceholderComponent horizontalLine() {
+	public static Component horizontalLine() {
 		return TooltipHacks.HR_COMPONENT;
 	}
 
@@ -83,22 +83,26 @@ public final class ComponentUtil {
 		return MutableComponent.create(new SelectorContents(pattern, separator));
 	}
 
+	public static MutableComponent tooltip(TooltipComponent component) {
+		return TooltipHacks.wrap(component);
+	}
+
 	private static final class TooltipHacks {
 
-		static final PlaceholderComponent HR_COMPONENT = create(new HrTooltipComponent());
+		static final MutableComponent HR_COMPONENT = wrap(new HrTooltipComponent());
 
 		/**
-		 * This is a replacement for {@link CommonComponents#EMPTY}
+		 * This is a component for {@link CommonComponents#EMPTY}
 		 * <br><br>
 		 * When tooltip text is too wide it is wrapped around by forge ({@link ForgeHooksClient#gatherTooltipComponents}) to the next line and {@link CommonComponents#EMPTY}
 		 * components (empty strings) are discarded by minecraft's {@link net.minecraft.client.StringSplitter#splitLines StringSplitter#splitLines} method.<br>
 		 */
-		static final PlaceholderComponent EMPTY_LINE_COMPONENT = create(new EmptyLineTooltipComponent());
+		static final MutableComponent EMPTY_LINE_COMPONENT = wrap(new EmptyLineTooltipComponent());
 
 		private TooltipHacks() {}
 
-		static PlaceholderComponent create(TooltipComponent component) {
-			return new PlaceholderComponent(component);
+		private static MutableComponent wrap(TooltipComponent component) {
+			return MutableComponent.create(new TooltipContents(component));
 		}
 
 	}
