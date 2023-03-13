@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.recipe;
 
+import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -84,6 +85,11 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 	@Override
 	public RecipeType<?> getType() {
 		return ModRecipes.DECOMPOSING_RECIPE_TYPE.get();
+	}
+
+	@Override
+	public ItemStack getToastSymbol() {
+		return new ItemStack(ModItems.DECOMPOSER.get());
 	}
 
 	public static class Serializer implements RecipeSerializer<DecomposerRecipe> {

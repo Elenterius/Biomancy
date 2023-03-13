@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.recipe;
 
+import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.world.inventory.menu.BioForgeTab;
 import com.google.gson.JsonObject;
@@ -125,6 +126,11 @@ public class BioForgeRecipe implements Recipe<Container> {
 	@Override
 	public RecipeType<?> getType() {
 		return ModRecipes.BIO_FORGING_RECIPE_TYPE.get();
+	}
+
+	@Override
+	public ItemStack getToastSymbol() {
+		return new ItemStack(ModItems.BIO_FORGE.get());
 	}
 
 	public static class Serializer implements RecipeSerializer<BioForgeRecipe> {
