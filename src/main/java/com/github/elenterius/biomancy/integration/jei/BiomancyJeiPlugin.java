@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.client.gui.BioForgeScreen;
 import com.github.elenterius.biomancy.client.gui.BioLabScreen;
 import com.github.elenterius.biomancy.client.gui.DecomposerScreen;
 import com.github.elenterius.biomancy.client.gui.DigesterScreen;
+import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.world.inventory.menu.BioLabMenu;
@@ -20,10 +21,10 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
-
-import org.jetbrains.annotations.Nullable;
 
 @JeiPlugin
 public class BiomancyJeiPlugin implements IModPlugin {
@@ -55,6 +56,14 @@ public class BiomancyJeiPlugin implements IModPlugin {
 		registration.addRecipes(BioLabRecipeCategory.RECIPE_TYPE, world.getRecipeManager().getAllRecipesFor(ModRecipes.BIO_BREWING_RECIPE_TYPE.get()));
 		registration.addRecipes(DigesterRecipeCategory.RECIPE_TYPE, world.getRecipeManager().getAllRecipesFor(ModRecipes.DIGESTING_RECIPE_TYPE.get()));
 		registration.addRecipes(BioForgeRecipeCategory.RECIPE_TYPE, world.getRecipeManager().getAllRecipesFor(ModRecipes.BIO_FORGING_RECIPE_TYPE.get()));
+	}
+
+	@Override
+	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
+		registration.addRecipeCatalyst(new ItemStack(ModItems.BIO_FORGE.get()), BioForgeRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(ModItems.BIO_LAB.get()), BioLabRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(ModItems.DIGESTER.get()), DigesterRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(ModItems.DECOMPOSER.get()), DecomposerRecipeCategory.RECIPE_TYPE);
 	}
 
 	@Override
