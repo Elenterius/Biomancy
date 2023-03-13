@@ -48,6 +48,14 @@ public final class ItemData {
 		this.count = count;
 	}
 
+	public int getCount() {
+		return count;
+	}
+
+	public ResourceLocation getRegistryName() {
+		return registryName;
+	}
+
 	public JsonObject toJson() {
 		JsonObject json = new JsonObject();
 		json.addProperty("item", registryName.toString());

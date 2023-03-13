@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.datagen.recipes;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -12,6 +13,7 @@ import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -27,6 +29,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.IntUnaryOperator;
 
 public class DigesterRecipeBuilder implements IRecipeBuilder {
 
@@ -37,13 +40,23 @@ public class DigesterRecipeBuilder implements IRecipeBuilder {
 	private final ItemData recipeResult;
 	private final Advancement.Builder advancement = Advancement.Builder.advancement();
 	private Ingredient recipeIngredient;
-	private int craftingTime = 4 * 20;
+	private int craftingTime = -1;
 	@Nullable
 	private String group;
 
 	private DigesterRecipeBuilder(ResourceLocation recipeId, ItemData result) {
 		this.recipeId = recipeId;
 		recipeResult = result;
+
+		if (recipeResult.getRegistryName().equals(ModItems.NUTRIENTS.getId())) {
+			craftingTime = Mth.ceil(200 + 190 * Math.log(recipeResult.getCount() / 5d));
+		}
+		else if (recipeResult.getRegistryName().equals(ModItems.NUTRIENT_PASTE.getId())) {
+			craftingTime = Mth.ceil(200 + 190 * Math.log(recipeResult.getCount()));
+		}
+		else if (recipeResult.getRegistryName().equals(ModItems.NUTRIENT_BAR.getId())) {
+			craftingTime = Mth.ceil(200 + 190 * Math.log(recipeResult.getCount() * 9));
+		}
 	}
 
 	public static DigesterRecipeBuilder create(String modId, String outputName, ItemData result) {
@@ -95,9 +108,8 @@ public class DigesterRecipeBuilder implements IRecipeBuilder {
 		return this;
 	}
 
-	public DigesterRecipeBuilder setCraftingTime(int time) {
-		if (time < 0) throw new IllegalArgumentException("Invalid crafting time: " + time);
-		craftingTime = time;
+	public DigesterRecipeBuilder modifyCraftingTime(IntUnaryOperator func) {
+		craftingTime = func.applyAsInt(craftingTime);
 		return this;
 	}
 
@@ -132,6 +144,9 @@ public class DigesterRecipeBuilder implements IRecipeBuilder {
 	@Override
 	public void save(Consumer<FinishedRecipe> consumer, @Nullable CreativeModeTab itemCategory) {
 		validateCriteria(recipeId);
+
+		if (craftingTime < 0) throw new IllegalArgumentException("Invalid crafting time: " + craftingTime);
+
 		advancement.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
 		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(), "recipes/" + (itemCategory != null ? itemCategory.getRecipeFolderName() : BiomancyMod.MOD_ID) + "/" + recipeId.getPath());
 		consumer.accept(new Result(this, advancementId));
