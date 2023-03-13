@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.client.gui.BioForgeScreen;
 import com.github.elenterius.biomancy.client.gui.BioLabScreen;
 import com.github.elenterius.biomancy.client.gui.DecomposerScreen;
 import com.github.elenterius.biomancy.client.gui.DigesterScreen;
+import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.world.inventory.menu.BioLabMenu;
 import com.github.elenterius.biomancy.world.inventory.menu.DecomposerMenu;
@@ -18,6 +19,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.Objects;
 
@@ -54,6 +56,14 @@ public class BiomancyJeiPlugin implements IModPlugin {
 	}
 
 	@Override
+	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
+		registration.addRecipeCatalyst(new ItemStack(ModItems.BIO_FORGE.get()), BioForgeRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(ModItems.BIO_LAB.get()), BioLabRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(ModItems.DIGESTER.get()), DigesterRecipeCategory.RECIPE_TYPE);
+		registration.addRecipeCatalyst(new ItemStack(ModItems.DECOMPOSER.get()), DecomposerRecipeCategory.RECIPE_TYPE);
+	}
+
+	@Override
 	public void registerGuiHandlers(IGuiHandlerRegistration registration) {
 		registration.addRecipeClickArea(DecomposerScreen.class, 176 - 5 - 10, 4, 10, 10, DecomposerRecipeCategory.RECIPE_TYPE);
 		registration.addRecipeClickArea(BioLabScreen.class, 176 - 5 - 10, 4, 10, 10, BioLabRecipeCategory.RECIPE_TYPE);
@@ -71,5 +81,4 @@ public class BiomancyJeiPlugin implements IModPlugin {
 	private <C extends AbstractContainerMenu, R> void registerInputSlots(IRecipeTransferRegistration registration, Class<C> containerClass, RecipeType<R> recipeType, ISlotZone slotZone) {
 		registration.addRecipeTransferHandler(containerClass, recipeType, slotZone.getFirstIndex(), slotZone.getSlotCount(), 0, 36);
 	}
-
 }
