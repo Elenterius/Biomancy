@@ -39,7 +39,10 @@ public class GuideBookProvider extends AbstractBookProvider {
 		BookModel demoBook = BookModel.create(GuideBookItem.GUIDE_BOOK_ID, helper.bookName())
 				.withTooltip(helper.bookTooltip())
 				.withCustomBookItem(ModItems.GUIDE_BOOK.getId()).withGenerateBookItem(false)
-				.withCategories(featuresCategory);
+				.withCategories(featuresCategory)
+				.withCraftingTexture(BiomancyMod.createRL("textures/gui/crafting_textures.png"))
+				.withBookContentTexture(BiomancyMod.createRL("textures/gui/book_content.png"))
+				.withBookOverviewTexture(BiomancyMod.createRL("textures/gui/book_overview.png"));
 
 		lang.add(demoBook.getName(), "Biomancy Index");
 		lang.add(demoBook.getTooltip(), "A book to test Modonomicon features for Biomancy.");
@@ -60,7 +63,7 @@ public class GuideBookProvider extends AbstractBookProvider {
 				"__s_____e____________"
 		);
 
-		var primordialCradleRecipe = makeRecipeEntry(helper, entryHelper, 'p');
+		var primordialCradleRecipe = makeCradleEntry(helper, entryHelper, 'p');
 
 		var recipeEntry = makeRecipeEntry(helper, entryHelper, 'c');
 
@@ -75,7 +78,9 @@ public class GuideBookProvider extends AbstractBookProvider {
 				.withEntries(primordialCradleRecipe)
 				.withEntries(recipeEntry)
 				.withEntries(spotlightEntry)
-				.withEntries(entityEntry);
+				.withEntries(entityEntry)
+				.withEntryTextures(BiomancyMod.createRL("textures/gui/entry_textures.png"))
+				.withBackground(BiomancyMod.createRL("textures/gui/category1_background.png"));
 		lang.add(helper.categoryName(), "Fleshy Constructs");
 
 		return categoryModel;
@@ -209,7 +214,7 @@ public class GuideBookProvider extends AbstractBookProvider {
 		return entryModel;
 	}
 
-	private BookEntryModel makeRecipeEntry(BookLangHelper helper, EntryLocationHelper entryHelper, char location) {
+	private BookEntryModel makeCradleEntry(BookLangHelper helper, EntryLocationHelper entryHelper, char location) {
 		helper.entry("primordialcradleentry");
 
 		helper.page("intro");
