@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.recipe;
 
+import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.world.inventory.menu.BioForgeTab;
 import com.google.gson.JsonObject;
@@ -21,8 +22,8 @@ import java.util.List;
 
 public class BioForgeRecipe implements Recipe<Container> {
 
-	private final ResourceLocation registryKey;
 	public static final int MAX_INGREDIENTS = 5;
+	private final ResourceLocation registryKey;
 	private final BioForgeTab tab;
 	private final List<IngredientStack> ingredients;
 	private final ItemStack result;
@@ -40,6 +41,10 @@ public class BioForgeRecipe implements Recipe<Container> {
 		vanillaIngredients.addAll(flatIngredients);
 	}
 
+	public static boolean areRecipesEqual(BioForgeRecipe recipeA, BioForgeRecipe recipeB) {
+		return recipeA.isRecipeEqual(recipeB);
+	}
+
 	@Override
 	public ResourceLocation getId() {
 		return registryKey;
@@ -47,10 +52,6 @@ public class BioForgeRecipe implements Recipe<Container> {
 
 	public boolean isRecipeEqual(BioForgeRecipe other) {
 		return registryKey.equals(other.getId());
-	}
-
-	public static boolean areRecipesEqual(BioForgeRecipe recipeA, BioForgeRecipe recipeB) {
-		return recipeA.isRecipeEqual(recipeB);
 	}
 
 	public boolean isCraftable(StackedContents itemCounter) {
@@ -126,6 +127,11 @@ public class BioForgeRecipe implements Recipe<Container> {
 	@Override
 	public RecipeType<?> getType() {
 		return ModRecipes.BIO_FORGING_RECIPE_TYPE.get();
+	}
+
+	@Override
+	public ItemStack getToastSymbol() {
+		return new ItemStack(ModItems.BIO_FORGE.get());
 	}
 
 	public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<BioForgeRecipe> {
