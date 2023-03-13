@@ -7,10 +7,8 @@ import com.github.elenterius.biomancy.init.ModTags;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
@@ -36,22 +34,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 				.addOptional("create:sweet_roll", "create:chocolate_glazed_berries", "create:honeyed_apple", "create:bar_of_chocolate")
 				.addOptional("createaddition:chocolate_cake");
 
-		createTag(ModTags.Items.POOR_BIOMASS)
-				.addTag(ItemTags.FLOWERS, Tags.Items.SEEDS, ItemTags.LEAVES)
-				.add(SUGAR_CANE, KELP, GRASS, SEAGRASS, VINE, FERN, BAMBOO);
-
-		createTag(ModTags.Items.AVERAGE_BIOMASS)
-				.addTag(ItemTags.SAPLINGS, Tags.Items.CROPS, Tags.Items.MUSHROOMS)
-				.add(CACTUS, WARPED_FUNGUS, NETHER_SPROUTS, WEEPING_VINES,
-						TWISTING_VINES, LARGE_FERN, TALL_GRASS, WARPED_ROOTS, CRIMSON_ROOTS, CRIMSON_FUNGUS);
-
-		createTag(ModTags.Items.GOOD_BIOMASS)
-				.add(COCOA_BEANS, HONEYCOMB, MELON, PUMPKIN, DRIED_KELP_BLOCK, SEA_PICKLE, LILY_PAD, CARVED_PUMPKIN,
-						WARPED_WART_BLOCK, NETHER_WART_BLOCK, RED_MUSHROOM_BLOCK, BROWN_MUSHROOM_BLOCK, SHROOMLIGHT, MUSHROOM_STEM);
-
-		createTag(ModTags.Items.SUPERB_BIOMASS)
-				.add(CAKE, HAY_BLOCK);
-
+		createTag(ModTags.Items.POOR_BIOMASS);
+		createTag(ModTags.Items.AVERAGE_BIOMASS);
+		createTag(ModTags.Items.GOOD_BIOMASS);
+		createTag(ModTags.Items.SUPERB_BIOMASS);
 		createTag(ModTags.Items.BIOMASS)
 				.addTag(ModTags.Items.POOR_BIOMASS, ModTags.Items.AVERAGE_BIOMASS, ModTags.Items.GOOD_BIOMASS, ModTags.Items.SUPERB_BIOMASS);
 
