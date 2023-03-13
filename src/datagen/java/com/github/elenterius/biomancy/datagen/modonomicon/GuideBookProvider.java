@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.datagen.translations.AbstractTranslationProvider;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModItems;
+import com.github.elenterius.biomancy.recipe.IngredientStack;
 import com.github.elenterius.biomancy.world.item.GuideBookItem;
 import com.klikli_dev.modonomicon.api.ModonomiconAPI;
 import com.klikli_dev.modonomicon.api.datagen.BookLangHelper;
@@ -17,6 +18,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.common.crafting.AbstractIngredient;
 
 public class GuideBookProvider extends AbstractBookProvider {
 
@@ -59,22 +61,22 @@ public class GuideBookProvider extends AbstractBookProvider {
 		EntryLocationHelper entryHelper = ModonomiconAPI.get().getEntryLocationHelper();
 		entryHelper.setMap(
 				"_____________________",
-				"__p__d_______________",
+				"__p__d__s____________",
 				"__________r__________",
 				"__c__________________",
 				"__________2___3___i__",
-				"__s_____e____________"
+				"________e____________"
 		);
 
 		var primordialCradleRecipe = makeCradleEntry(helper, entryHelper, 'p');
 
 		var recipeEntry = makeRecipeEntry(helper, entryHelper, 'c');
 
-		var spotlightEntry = makeSpotlightEntry(helper, entryHelper, 's')
-				.withParent(BookEntryParentModel.builder().withEntryId(recipeEntry.getId()).build())
-				.build();
+		var spotlightEntry = makeSpotlightEntry(helper, entryHelper, 's');
 
-		var entityEntry = makeEntityEntry(helper, entryHelper, 'd');
+		var entityEntry = makeEntityEntry(helper, entryHelper, 'd')
+				.withParent(BookEntryParentModel.builder().withEntryId(primordialCradleRecipe.getId()).build())
+				.build();
 
 		BookCategoryModel categoryModel = BookCategoryModel.builder()
 				.withId(modLoc(helper.category)) //the id of the category, as stored in the lang helper. modLoc() prepends the mod id.
@@ -182,13 +184,12 @@ public class GuideBookProvider extends AbstractBookProvider {
 	private BookEntryModel makeEntityEntry(BookLangHelper helper, EntryLocationHelper entryHelper, char location) {
 		helper.entry("entity");
 
-		helper.page("intro");
-		BookTextPageModel introPage = BookTextPageModel.builder()
+		helper.page("living_flesh_spotlight");
+		var livingFleshSpotlight = BookSpotlightPageModel.builder()
 				.withText(helper.pageText())
-				.withTitle(helper.pageTitle())
+				.withItem(Ingredient.of(Items.BEEF))
 				.build();
-		lang.add(helper.pageTitle(), "Entity Entry");
-		lang.add(helper.pageText(), "Entity pages allow to show entities.");
+		lang.add(helper.pageText(), "Living Flesh is the remains of a Flesh Blob after is has been killed\\It's most definitely alive, although it lacks any real intelligence or selfish will\\++That may not be a bad thing though...++");
 
 		helper.page("flesh_blob");
 		BookEntityPageModel fleshBlobPage = BookEntityPageModel.builder()
@@ -212,7 +213,7 @@ public class GuideBookProvider extends AbstractBookProvider {
 				.withDescription(helper.entryDescription())
 				.withIcon("minecraft:spider_eye")
 				.withLocation(entryHelper.get(location))
-				.withPages(introPage, fleshBlobPage, hungryFleshBlobPage)
+				.withPages(livingFleshSpotlight, fleshBlobPage, hungryFleshBlobPage)
 				.build();
 		lang.add(helper.entryName(), "Entity Entry");
 		lang.add(helper.entryDescription(), "An entry showcasing entity pages.");
