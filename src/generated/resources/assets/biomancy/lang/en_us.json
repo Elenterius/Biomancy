@@ -409,7 +409,7 @@
   "book.biomancy.guide_book.features.spotlight.spotlight2.text": "A sample spotlight page with automatic title.",
   "book.biomancy.guide_book.features.spotlight.name": "Spotlight Entry",
   "book.biomancy.guide_book.features.spotlight.description": "An entry showcasing spotlight pages.",
-  "book.biomancy.guide_book.features.entity.living_flesh_spotlight.text": "Living Flesh is the remains of a Flesh Blob after is has been killed\\It's most definitely alive, although it lacks any real intelligence or selfish will\\++That may not be a bad thing though...++",
+  "book.biomancy.guide_book.features.entity.living_flesh_spotlight.text": "Living Flesh is the remains of a Flesh Blob after is has been killed\n\\\\\nIt's most definitely alive, although it lacks any real intelligence or selfish will\n\\\\\n++That may not be a bad thing though...++",
   "book.biomancy.guide_book.features.entity.flesh_blob.title": "Flesh Blob",
   "book.biomancy.guide_book.features.entity.hungry_flesh_blob.text": "A sample entity page with automatic title.",
   "book.biomancy.guide_book.features.entity.name": "Entity Entry",
