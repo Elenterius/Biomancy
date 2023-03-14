@@ -12,7 +12,10 @@ import com.klikli_dev.modonomicon.api.datagen.book.BookCategoryModel;
 import com.klikli_dev.modonomicon.api.datagen.book.BookEntryModel;
 import com.klikli_dev.modonomicon.api.datagen.book.BookEntryParentModel;
 import com.klikli_dev.modonomicon.api.datagen.book.BookModel;
-import com.klikli_dev.modonomicon.api.datagen.book.page.*;
+import com.klikli_dev.modonomicon.api.datagen.book.page.BookCraftingRecipePageModel;
+import com.klikli_dev.modonomicon.api.datagen.book.page.BookEntityPageModel;
+import com.klikli_dev.modonomicon.api.datagen.book.page.BookSpotlightPageModel;
+import com.klikli_dev.modonomicon.api.datagen.book.page.BookTextPageModel;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
@@ -56,27 +59,30 @@ public class GuideBookProvider extends AbstractBookProvider {
 		EntryLocationHelper entryHelper = ModonomiconAPI.get().getEntryLocationHelper();
 		entryHelper.setMap(
 				"_____________________",
-				"__p__d__s____________",
-				"__________r__________",
-				"__c__________________",
-				"__________2___3___i__",
-				"________e____________"
+				"__________e_d________",
+				"_____________________",
+				"__c_______p__________",
+				"__s__________________",
+				"_____________________"
 		);
 
 		var primordialCradleRecipe = makeCradleEntry(helper, entryHelper, 'p');
 
-		var recipeEntry = makeRecipeEntry(helper, entryHelper, 'c');
+		var decomposerEntry = makeDecomposerEntry(helper, entryHelper, 'd')
+				.withParent(BookEntryParentModel.builder().withEntryId().build())
+				.build();
 
 		var spotlightEntry = makeSpotlightEntry(helper, entryHelper, 's');
 
-		var entityEntry = makeEntityEntry(helper, entryHelper, 'd')
+		var entityEntry = makeEntityEntry(helper, entryHelper, 'e')
 				.withParent(BookEntryParentModel.builder().withEntryId(primordialCradleRecipe.getId()).build())
 				.build();
+
 
 		BookCategoryModel categoryModel = BookCategoryModel.create(modLoc(helper.category), helper.categoryName())
 				.withIcon("biomancy:living_flesh")
 				.withEntries(primordialCradleRecipe)
-				.withEntries(recipeEntry)
+				.withEntries(decomposerEntry)
 				.withEntries(spotlightEntry)
 				.withEntries(entityEntry)
 				.withEntryTextures(BiomancyMod.createRL("textures/gui/entry_textures.png"))
@@ -86,55 +92,36 @@ public class GuideBookProvider extends AbstractBookProvider {
 		return categoryModel;
 	}
 
-	private BookEntryModel makeRecipeEntry(BookLangHelper helper, EntryLocationHelper entryHelper, char location) {
-		helper.entry("recipe");
+	private BookEntryModel.Builder makeDecomposerEntry(BookLangHelper helper, EntryLocationHelper entryHelper, char location) {
+		helper.entry("decomposer");
 
-		helper.page("intro");
-		var introPage = BookTextPageModel.builder()
+		helper.page("spotlight");
+		var introPage = BookSpotlightPageModel.builder()
 				.withText(helper.pageText())
-				.withTitle(helper.pageTitle())
+				.withItem(Ingredient.of(ModItems.DECOMPOSER.get()))
 				.build();
-		lang.add(helper.pageTitle(), "Recipe Entry");
-		lang.add(helper.pageText(), "Recipe pages allow to show recipes in the book.");
+		lang.add(helper.pageText(), """
+				By giving a Living Flesh some more meat, a few Sharp Fangs, and a Bile Gland, you make a creature that will chew up items and give you useful components for the Bio-Forge""");
 
 		helper.page("crafting");
 		var crafting = BookCraftingRecipePageModel.builder()
-				.withRecipeId1("minecraft:crafting_table")
-				.withRecipeId2("minecraft:oak_planks")
-				.withText(helper.pageText())
-				.withTitle2("test.test.test")
-				.build();
-		lang.add(helper.pageText(), "A sample recipe page.");
-		lang.add("test.test.test", "Book of Binding: Afrit (Bound)");
-
-
-		helper.page("smelting");
-		var smelting = BookSmeltingRecipePageModel.builder()
-				.withRecipeId1("minecraft:charcoal")
-				.withRecipeId2("minecraft:cooked_beef")
-				.build();
-		lang.add(helper.pageText(), "A smelting recipe page with one recipe and some text.");
-
-		helper.page("blasting");
-		var blasting = BookBlastingRecipePageModel.builder()
-				.withRecipeId2("biomancy:glass_pane_from_blasting")
+				.withRecipeId1("biomancy:decomposer")
 				.build();
 
-		BookEntryModel entryModel = BookEntryModel.builder()
+		var entryModel = BookEntryModel.builder()
 				.withId(entryId(helper))
 				.withName(helper.entryName())
 				.withDescription(helper.entryDescription())
 				.withIcon("minecraft:crafting_table")
 				.withLocation(entryHelper.get('c'))
-				.withPages(introPage, crafting, smelting, blasting)
-				.build();
+				.withPages(introPage, crafting);
 		lang.add(helper.entryName(), "Recipe Entry");
 		lang.add(helper.entryDescription(), "An entry showcasing recipe pages.");
 
 		return entryModel;
 	}
 
-	private BookEntryModel.Builder makeSpotlightEntry(BookLangHelper helper, EntryLocationHelper entryHelper, char location) {
+	private BookEntryModel makeSpotlightEntry(BookLangHelper helper, EntryLocationHelper entryHelper, char location) {
 		helper.entry("spotlight");
 
 		helper.page("intro");
@@ -161,27 +148,33 @@ public class GuideBookProvider extends AbstractBookProvider {
 				.build();
 		lang.add(helper.pageText(), "A sample spotlight page with automatic title.");
 
-		BookEntryModel.Builder builder = BookEntryModel.builder()
+		var builder = BookEntryModel.builder()
 				.withId(entryId(helper))
 				.withName(helper.entryName())
 				.withDescription(helper.entryDescription())
 				.withIcon("minecraft:beacon")
 				.withLocation(entryHelper.get(location))
-				.withPages(introPage, spotlight1, spotlight2);
+				.withPages(introPage, spotlight1, spotlight2)
+				.build();
 		lang.add(helper.entryName(), "Spotlight Entry");
 		lang.add(helper.entryDescription(), "An entry showcasing spotlight pages.");
 		return builder;
 	}
 
-	private BookEntryModel makeEntityEntry(BookLangHelper helper, EntryLocationHelper entryHelper, char location) {
+	private BookEntryModel.Builder makeEntityEntry(BookLangHelper helper, EntryLocationHelper entryHelper, char location) {
 		helper.entry("entity");
 
 		helper.page("living_flesh_spotlight");
 		var livingFleshSpotlight = BookSpotlightPageModel.builder()
 				.withText(helper.pageText())
-				.withItem(Ingredient.of(Items.BEEF))
+				.withItem(Ingredient.of(ModItems.LIVING_FLESH.get()))
 				.build();
-		lang.add(helper.pageText(), "Living Flesh is the remains of a Flesh Blob after is has been killed\\It's most definitely alive, although it lacks any real intelligence or selfish will\\++That may not be a bad thing though...++");
+		lang.add(helper.pageText(), """
+				Living Flesh is the remains of a Flesh Blob after is has been killed
+				\\\\
+				It's most definitely alive, although it lacks any real intelligence or selfish will
+				\\\\
+				++That may not be a bad thing though...++""");
 
 		helper.page("flesh_blob");
 		BookEntityPageModel fleshBlobPage = BookEntityPageModel.builder()
@@ -199,14 +192,13 @@ public class GuideBookProvider extends AbstractBookProvider {
 				.build();
 		lang.add(helper.pageText(), "A sample entity page with automatic title.");
 
-		BookEntryModel entryModel = BookEntryModel.builder()
+		var entryModel = BookEntryModel.builder()
 				.withId(entryId(helper))
 				.withName(helper.entryName())
 				.withDescription(helper.entryDescription())
-				.withIcon("minecraft:spider_eye")
+				.withIcon("biomancy:living_flesh")
 				.withLocation(entryHelper.get(location))
-				.withPages(livingFleshSpotlight, fleshBlobPage, hungryFleshBlobPage)
-				.build();
+				.withPages(livingFleshSpotlight, fleshBlobPage, hungryFleshBlobPage);
 		lang.add(helper.entryName(), "Entity Entry");
 		lang.add(helper.entryDescription(), "An entry showcasing entity pages.");
 
