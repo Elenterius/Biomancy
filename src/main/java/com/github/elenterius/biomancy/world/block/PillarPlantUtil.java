@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.world.block;
 
 import com.github.elenterius.biomancy.world.LevelUtil;
+import com.github.elenterius.biomancy.world.block.property.BlockPropertyUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.BlockGetter;

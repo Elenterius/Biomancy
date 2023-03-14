@@ -4,7 +4,7 @@ import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.StorageSacTooltipComponent;
-import com.github.elenterius.biomancy.world.block.entity.StorageSacBlockEntity;
+import com.github.elenterius.biomancy.world.block.storagesac.StorageSacBlockEntity;
 import com.github.elenterius.biomancy.world.inventory.ItemStackInventory;
 import com.github.elenterius.biomancy.world.inventory.itemhandler.EnhancedItemHandler;
 import net.minecraft.core.Direction;

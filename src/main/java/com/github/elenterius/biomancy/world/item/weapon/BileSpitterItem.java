@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.world.item.weapon;
 
-import com.github.elenterius.biomancy.client.renderer.item.BileSpitterRenderer;
+import com.github.elenterius.biomancy.client.render.item.dev.BileSpitterRenderer;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModProjectiles;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
