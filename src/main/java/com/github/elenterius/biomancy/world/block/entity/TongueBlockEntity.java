@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.world.block.entity;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.world.LevelUtil;
 import com.github.elenterius.biomancy.world.block.TongueBlock;
+import com.github.elenterius.biomancy.world.inventory.itemhandler.EnhancedItemHandler;
 import com.github.elenterius.biomancy.world.inventory.itemhandler.SingleItemStackHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -77,22 +78,14 @@ public class TongueBlockEntity extends SimpleSyncedBlockEntity implements IAnima
 	}
 
 	private void tryToExtractItems(IItemHandler itemHandler) {
-		for (int i = 0; i < itemHandler.getSlots(); i++) {
-			ItemStack stackInSlot = itemHandler.getStackInSlot(i);
-			if (!stackInSlot.isEmpty()) {
-				ItemStack stackInSlotCopy = stackInSlot.copy();
-				stackInSlotCopy.setCount(ITEM_TRANSFER_AMOUNT);
-				int amount = ITEM_TRANSFER_AMOUNT - inventory.insertItem(0, stackInSlotCopy, true).getCount();
-				if (amount > 0) {
-					ItemStack stack = itemHandler.extractItem(i, amount, false);
-					if (!stack.isEmpty()) {
-						inventory.insertItem(0, stack, false);
-						setChanged();
-						syncToClient();
-						break;
-					}
-				}
-			}
+		if (!inventory.isEmpty()) return;
+
+		EnhancedItemHandler handler = new EnhancedItemHandler(itemHandler);
+		ItemStack extractedStack = handler.extractItemAny(ITEM_TRANSFER_AMOUNT, false);
+		if (!extractedStack.isEmpty()) {
+			inventory.insertItem(0, extractedStack, false);
+			setChanged();
+			syncToClient();
 		}
 	}
 
