@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.world.inventory.itemhandler;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -139,6 +140,32 @@ interface TransferOperations extends Forwarding<IItemHandler> {
 			if (!stack.isEmpty()) return stack;
 		}
 		return ItemStack.EMPTY;
+	}
+
+	default ItemStack extractItemAny(int targetAmount, boolean simulate) {
+		ItemStack extracted = ItemStack.EMPTY;
+
+		for (int i = 0; i < inner().getSlots(); i++) {
+			ItemStack stackInSlot = inner().getStackInSlot(i);
+			if (stackInSlot.isEmpty()) continue;
+
+			if (extracted.isEmpty()) {
+				int amount = Math.min(stackInSlot.getMaxStackSize(), targetAmount);
+				extracted = inner().extractItem(i, amount, simulate);
+
+				if (!extracted.isEmpty()) targetAmount = Math.min(extracted.getMaxStackSize(), targetAmount);
+
+				if (extracted.getCount() >= targetAmount) return extracted;
+			}
+			else if (ItemHandlerHelper.canItemStacksStack(stackInSlot, extracted)) {
+				int amount = Math.min(stackInSlot.getMaxStackSize(), targetAmount - extracted.getCount());
+				ItemStack result = inner().extractItem(i, amount, simulate);
+				if (!result.isEmpty()) extracted.grow(result.getCount());
+				if (extracted.getCount() >= targetAmount) return extracted;
+			}
+		}
+
+		return extracted;
 	}
 }
 
