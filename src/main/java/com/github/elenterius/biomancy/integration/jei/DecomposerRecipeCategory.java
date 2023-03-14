@@ -8,7 +8,7 @@ import com.github.elenterius.biomancy.recipe.DecomposerRecipe;
 import com.github.elenterius.biomancy.recipe.ItemCountRange;
 import com.github.elenterius.biomancy.recipe.VariableProductionOutput;
 import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
-import com.github.elenterius.biomancy.world.block.entity.DecomposerBlockEntity;
+import com.github.elenterius.biomancy.world.block.decomposer.DecomposerBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;

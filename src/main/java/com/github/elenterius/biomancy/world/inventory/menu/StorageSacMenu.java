@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.world.inventory.menu;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
-import com.github.elenterius.biomancy.world.block.entity.StorageSacBlockEntity;
+import com.github.elenterius.biomancy.world.block.storagesac.StorageSacBlockEntity;
 import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.world.inventory.slot.ISlotZone;
 import com.github.elenterius.biomancy.world.inventory.slot.NonNestingSlot;

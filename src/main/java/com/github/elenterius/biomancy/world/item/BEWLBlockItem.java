@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.world.item;
 
 import com.github.elenterius.biomancy.chat.ComponentUtil;
-import com.github.elenterius.biomancy.client.renderer.item.BEWLRenderer;
+import com.github.elenterius.biomancy.client.render.item.BEWLItemRenderer;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
@@ -39,7 +39,7 @@ public class BEWLBlockItem extends BlockItem implements ICustomTooltip {
 		consumer.accept(new IItemRenderProperties() {
 			@Override
 			public BlockEntityWithoutLevelRenderer getItemStackRenderer() {
-				return BEWLRenderer.INSTANCE;
+				return BEWLItemRenderer.INSTANCE;
 			}
 		});
 	}

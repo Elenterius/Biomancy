@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.world.block;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.world.block.cradle.PrimordialCradleBlock;
 import com.github.elenterius.biomancy.world.block.property.DirectionalSlabType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.world.item.weapon;
 
 import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.gui.DevCannonScreen;
-import com.github.elenterius.biomancy.client.renderer.item.DevArmCannonRenderer;
+import com.github.elenterius.biomancy.client.render.item.dev.DevArmCannonRenderer;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModProjectiles;
 import com.github.elenterius.biomancy.init.ModSoundEvents;

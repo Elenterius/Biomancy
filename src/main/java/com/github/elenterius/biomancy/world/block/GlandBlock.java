@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.world.block;
 
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.VoxelShapeUtil;
-import com.github.elenterius.biomancy.world.block.entity.DecomposerBlockEntity;
+import com.github.elenterius.biomancy.world.block.decomposer.DecomposerBlockEntity;
 import com.github.elenterius.biomancy.world.block.entity.GlandBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

@@ -1,7 +1,17 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.block.entity.*;
+import com.github.elenterius.biomancy.world.block.bioforge.BioForgeBlockEntity;
+import com.github.elenterius.biomancy.world.block.biolab.BioLabBlockEntity;
+import com.github.elenterius.biomancy.world.block.cradle.PrimordialCradleBlockEntity;
+import com.github.elenterius.biomancy.world.block.decomposer.DecomposerBlockEntity;
+import com.github.elenterius.biomancy.world.block.digester.DigesterBlockEntity;
+import com.github.elenterius.biomancy.world.block.entity.BlockEntityDelegator;
+import com.github.elenterius.biomancy.world.block.fleshkinchest.FleshkinChestBlockEntity;
+import com.github.elenterius.biomancy.world.block.modularlarynx.VoiceBoxBlockEntity;
+import com.github.elenterius.biomancy.world.block.ownable.OwnableBlockEntity;
+import com.github.elenterius.biomancy.world.block.storagesac.StorageSacBlockEntity;
+import com.github.elenterius.biomancy.world.block.tongue.TongueBlockEntity;
 import com.mojang.datafixers.types.Type;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;

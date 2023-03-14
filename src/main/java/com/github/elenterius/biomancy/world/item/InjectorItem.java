@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.world.item;
 
 import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.gui.InjectorScreen;
-import com.github.elenterius.biomancy.client.renderer.item.InjectorRenderer;
+import com.github.elenterius.biomancy.client.render.item.injector.InjectorRenderer;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModSoundEvents;

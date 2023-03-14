@@ -2,11 +2,18 @@ package com.github.elenterius.biomancy.init.client;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.gui.IngameOverlays;
+import com.github.elenterius.biomancy.client.render.block.bioforge.BioForgeRenderer;
+import com.github.elenterius.biomancy.client.render.block.biolab.BioLabRenderer;
+import com.github.elenterius.biomancy.client.render.block.cradle.PrimordialCradleRenderer;
+import com.github.elenterius.biomancy.client.render.block.decomposer.DecomposerRenderer;
+import com.github.elenterius.biomancy.client.render.block.digester.DigesterRenderer;
+import com.github.elenterius.biomancy.client.render.block.fleshkinchest.FleshkinChestRenderer;
+import com.github.elenterius.biomancy.client.render.block.storagesac.StorageSacRenderer;
+import com.github.elenterius.biomancy.client.render.block.tongue.TongueBlockEntityRenderer;
+import com.github.elenterius.biomancy.client.render.entity.AcidProjectileRenderer;
+import com.github.elenterius.biomancy.client.render.entity.WitherProjectileRenderer;
 import com.github.elenterius.biomancy.client.render.entity.fleshblob.FleshBlobRenderer;
 import com.github.elenterius.biomancy.client.render.entity.fleshblob.MalignantFleshBlobRenderer;
-import com.github.elenterius.biomancy.client.renderer.block.*;
-import com.github.elenterius.biomancy.client.renderer.entity.AcidProjectileRenderer;
-import com.github.elenterius.biomancy.client.renderer.entity.WitherProjectileRenderer;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
@@ -65,14 +72,14 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
-		event.registerBlockEntityRenderer(ModBlockEntities.PRIMORDIAL_CRADLE.get(), PrimordialCradleBlockEntityRenderer::new);
-		event.registerBlockEntityRenderer(ModBlockEntities.DECOMPOSER.get(), DecomposerBlockEntityRenderer::new);
-		event.registerBlockEntityRenderer(ModBlockEntities.DIGESTER.get(), DigesterBlockEntityRenderer::new);
-		event.registerBlockEntityRenderer(ModBlockEntities.BIO_FORGE.get(), BioForgeBlockRenderer::new);
-		event.registerBlockEntityRenderer(ModBlockEntities.BIO_LAB.get(), BioLabBlockRenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntities.PRIMORDIAL_CRADLE.get(), PrimordialCradleRenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntities.DECOMPOSER.get(), DecomposerRenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntities.DIGESTER.get(), DigesterRenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntities.BIO_FORGE.get(), BioForgeRenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntities.BIO_LAB.get(), BioLabRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.TONGUE.get(), TongueBlockEntityRenderer::new);
-		event.registerBlockEntityRenderer(ModBlockEntities.FLESHKIN_CHEST.get(), FleshkinChestBlockRenderer::new);
-		event.registerBlockEntityRenderer(ModBlockEntities.STORAGE_SAC.get(), StorageSacBERenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntities.FLESHKIN_CHEST.get(), FleshkinChestRenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntities.STORAGE_SAC.get(), StorageSacRenderer::new);
 
 		event.registerEntityRenderer(ModEntityTypes.HUNGRY_FLESH_BLOB.get(), FleshBlobRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.FLESH_BLOB.get(), FleshBlobRenderer::new);
@@ -133,19 +140,5 @@ public final class ClientSetupHandler {
 	public static void onBlockColorRegistry(final ColorHandlerEvent.Block event) {
 		//placeholder
 	}
-
-	//	@SubscribeEvent
-	//	public static void registerGameOverlays(RegisterGuiOverlaysEvent event) {
-	//		event.registerAboveAll("biomancy_gun", IngameOverlays.GUN_OVERLAY);
-	//		event.registerAboveAll("biomancy_injector", IngameOverlays.INJECTOR_OVERLAY);
-	//	}
-	//
-	//	@SubscribeEvent
-	//	static void registerTooltipComponents(RegisterClientTooltipComponentFactoriesEvent event) {
-	//		event.register(TabTooltipComponent.class, TabTooltipClientComponent::new);
-	//		event.register(HrTooltipComponent.class, HrTooltipClientComponent::new);
-	//		event.register(EmptyLineTooltipComponent.class, EmptyLineClientComponent::new);
-	//		event.register(StorageSacTooltipComponent.class, StorageSacTooltipClientComponent::new);
-	//	}
 
 }
