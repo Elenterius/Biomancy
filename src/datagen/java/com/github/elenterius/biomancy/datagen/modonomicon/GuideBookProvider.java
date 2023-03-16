@@ -68,16 +68,15 @@ public class GuideBookProvider extends AbstractBookProvider {
 
 		var primordialCradleRecipe = makeCradleEntry(helper, entryHelper, 'p');
 
-		var decomposerEntry = makeDecomposerEntry(helper, entryHelper, 'd')
-				.withParent(BookEntryParentModel.builder().withEntryId().build())
-				.build();
-
 		var spotlightEntry = makeSpotlightEntry(helper, entryHelper, 's');
 
 		var entityEntry = makeEntityEntry(helper, entryHelper, 'e')
 				.withParent(BookEntryParentModel.builder().withEntryId(primordialCradleRecipe.getId()).build())
 				.build();
 
+		var decomposerEntry = makeDecomposerEntry(helper, entryHelper, 'd')
+				.withParent(BookEntryParentModel.builder().withEntryId(entityEntry.getId()).build())
+				.build();
 
 		BookCategoryModel categoryModel = BookCategoryModel.create(modLoc(helper.category), helper.categoryName())
 				.withIcon("biomancy:living_flesh")
@@ -92,34 +91,7 @@ public class GuideBookProvider extends AbstractBookProvider {
 		return categoryModel;
 	}
 
-	private BookEntryModel.Builder makeDecomposerEntry(BookLangHelper helper, EntryLocationHelper entryHelper, char location) {
-		helper.entry("decomposer");
 
-		helper.page("spotlight");
-		var introPage = BookSpotlightPageModel.builder()
-				.withText(helper.pageText())
-				.withItem(Ingredient.of(ModItems.DECOMPOSER.get()))
-				.build();
-		lang.add(helper.pageText(), """
-				By giving a Living Flesh some more meat, a few Sharp Fangs, and a Bile Gland, you make a creature that will chew up items and give you useful components for the Bio-Forge""");
-
-		helper.page("crafting");
-		var crafting = BookCraftingRecipePageModel.builder()
-				.withRecipeId1("biomancy:decomposer")
-				.build();
-
-		var entryModel = BookEntryModel.builder()
-				.withId(entryId(helper))
-				.withName(helper.entryName())
-				.withDescription(helper.entryDescription())
-				.withIcon("minecraft:crafting_table")
-				.withLocation(entryHelper.get('c'))
-				.withPages(introPage, crafting);
-		lang.add(helper.entryName(), "Recipe Entry");
-		lang.add(helper.entryDescription(), "An entry showcasing recipe pages.");
-
-		return entryModel;
-	}
 
 	private BookEntryModel makeSpotlightEntry(BookLangHelper helper, EntryLocationHelper entryHelper, char location) {
 		helper.entry("spotlight");
@@ -170,27 +142,37 @@ public class GuideBookProvider extends AbstractBookProvider {
 				.withItem(Ingredient.of(ModItems.LIVING_FLESH.get()))
 				.build();
 		lang.add(helper.pageText(), """
-				Living Flesh is the remains of a Flesh Blob after is has been killed
-				\\\\
-				It's most definitely alive, although it lacks any real intelligence or selfish will
-				\\\\
-				++That may not be a bad thing though...++""");
+				Living Flesh is the remains of a Flesh Blob after is has been killed.
+				\\
+				It's most definitely alive, although it lacks any real intelligence or selfish will.
+				\\
+				++That isn't necessarily a bad thing though...++""");
 
 		helper.page("flesh_blob");
 		BookEntityPageModel fleshBlobPage = BookEntityPageModel.builder()
-				.withEntityName(helper.pageTitle())
+				.withText(helper.pageText())
 				.withEntityId(ModEntityTypes.FLESH_BLOB.getId().toString())
 				.withScale(1f)
 				.build();
-		lang.add(helper.pageTitle(), "Flesh Blob");
+		lang.add(helper.pageText(), """
+				A regular Flesh Blob is formed with just typical raw meat and healing agents.
+				\\
+				Has no redeeming qualities, but makes for a good house pet.""");
 
 		helper.page("hungry_flesh_blob");
 		BookEntityPageModel hungryFleshBlobPage = BookEntityPageModel.builder()
-				.withText(helper.pageText())
 				.withEntityId(ModEntityTypes.HUNGRY_FLESH_BLOB.getId().toString())
 				.withScale(1f)
 				.build();
-		lang.add(helper.pageText(), "A sample entity page with automatic title.");
+
+		helper.page("hungry_flesh_blob_text");
+		BookTextPageModel hungryFleshBlobText = BookTextPageModel.builder()
+				.withText(helper.pageText())
+				.build();
+		lang.add(helper.pageText(), """
+				A Hungry Flesh Blob is formed by adding a few Sharp Fangs into the cradle with some raw meat and a healing agent.
+				\\
+				Maybe don't try petting this one...""");
 
 		var entryModel = BookEntryModel.builder()
 				.withId(entryId(helper))
@@ -198,9 +180,38 @@ public class GuideBookProvider extends AbstractBookProvider {
 				.withDescription(helper.entryDescription())
 				.withIcon("biomancy:living_flesh")
 				.withLocation(entryHelper.get(location))
-				.withPages(livingFleshSpotlight, fleshBlobPage, hungryFleshBlobPage);
-		lang.add(helper.entryName(), "Entity Entry");
-		lang.add(helper.entryDescription(), "An entry showcasing entity pages.");
+				.withPages(livingFleshSpotlight, fleshBlobPage, fleshBlobText, hungryFleshBlobPage, hungryFleshBlobText);
+		lang.add(helper.entryName(), "Flesh Blobs");
+		lang.add(helper.entryDescription(), "Bouncy lil guys");
+
+		return entryModel;
+	}
+
+	private BookEntryModel.Builder makeDecomposerEntry(BookLangHelper helper, EntryLocationHelper entryHelper, char location) {
+		helper.entry("decomposer");
+
+		helper.page("spotlight");
+		var introPage = BookSpotlightPageModel.builder()
+				.withText(helper.pageText())
+				.withItem(Ingredient.of(ModItems.DECOMPOSER.get()))
+				.build();
+		lang.add(helper.pageText(), """
+				By giving a Living Flesh some more meat, a few Sharp Fangs, and a Bile Gland, you make a creature that will chew up items and give you useful components for the Bio-Forge""");
+
+		helper.page("crafting");
+		var crafting = BookCraftingRecipePageModel.builder()
+				.withRecipeId1("biomancy:decomposer")
+				.build();
+
+		var entryModel = BookEntryModel.builder()
+				.withId(entryId(helper))
+				.withName(helper.entryName())
+				.withDescription(helper.entryDescription())
+				.withIcon("biomancy:decomposer")
+				.withLocation(entryHelper.get(location))
+				.withPages(introPage, crafting);
+		lang.add(helper.entryName(), "Decomposer");
+		lang.add(helper.entryDescription(), "Munch, munch!");
 
 		return entryModel;
 	}
@@ -214,7 +225,7 @@ public class GuideBookProvider extends AbstractBookProvider {
 				.withTitle(helper.pageTitle())
 				.build();
 		lang.add(helper.pageTitle(), "The Primordial Cradle");
-		lang.add(helper.pageText(), "By filling the cradle with raw flesh and a healing agent (Instant Health Potions or Regenerative Fluid) you gain the ability to form new living beings");
+		lang.add(helper.pageText(), "By filling the cradle with raw flesh and a healing agent (Instant Health Potions, Healing Additive, or Regenerative Fluid) you gain the ability to form new living beings");
 
 		helper.page("crafting");
 		var crafting = BookCraftingRecipePageModel.builder()
