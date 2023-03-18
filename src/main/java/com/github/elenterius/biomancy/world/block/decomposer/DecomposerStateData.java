@@ -15,7 +15,7 @@ public class DecomposerStateData extends RecipeCraftingStateData<DecomposerRecip
 	}
 
 	@Override
-	public Class<DecomposerRecipe> getRecipeType() {
+	protected Class<DecomposerRecipe> getRecipeType() {
 		return DecomposerRecipe.class;
 	}
 

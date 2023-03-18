@@ -42,7 +42,7 @@ public abstract class RecipeCraftingStateData<T extends AbstractProductionRecipe
 		craftingState = CraftingState.CANCELED;
 	}
 
-	public abstract Class<T> getRecipeType();
+	protected abstract Class<T> getRecipeType();
 
 	public Optional<T> getCraftingGoalRecipe(Level world) {
 		if (recipeId == null) return Optional.empty();

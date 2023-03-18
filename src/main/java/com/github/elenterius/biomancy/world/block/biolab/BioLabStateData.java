@@ -14,7 +14,7 @@ public class BioLabStateData extends RecipeCraftingStateData<BioLabRecipe> {
 	}
 
 	@Override
-	public Class<BioLabRecipe> getRecipeType() {
+	protected Class<BioLabRecipe> getRecipeType() {
 		return BioLabRecipe.class;
 	}
 
