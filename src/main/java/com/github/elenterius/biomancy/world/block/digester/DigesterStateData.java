@@ -15,7 +15,7 @@ public class DigesterStateData extends RecipeCraftingStateData<DigesterRecipe> {
 	}
 
 	@Override
-	Class<DigesterRecipe> getRecipeType() {
+	protected Class<DigesterRecipe> getRecipeType() {
 		return DigesterRecipe.class;
 	}
 
