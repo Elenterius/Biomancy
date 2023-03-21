@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.world;
 
+import com.github.elenterius.biomancy.init.ModCapabilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -11,19 +12,19 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import org.jetbrains.annotations.Nullable;
 
 public final class LevelUtil {
 
 	private LevelUtil() {}
 
-	public static LazyOptional<IItemHandler> getItemHandler(ServerLevel level, BlockPos pos, Direction direction) {
+	public static LazyOptional<IItemHandler> getItemHandler(ServerLevel level, BlockPos pos, @Nullable Direction direction) {
 		BlockState state = level.getBlockState(pos);
 		if (state.hasBlockEntity()) {
 			BlockEntity blockEntity = level.getBlockEntity(pos);
 			if (blockEntity != null) {
-				return blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, direction);
+				return blockEntity.getCapability(ModCapabilities.ITEM_HANDLER, direction);
 			}
 		}
 		return LazyOptional.empty();

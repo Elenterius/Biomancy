@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.world.block.entity;
 
+import com.github.elenterius.biomancy.init.ModCapabilities;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.world.inventory.GulgeInventory;
 import com.github.elenterius.biomancy.world.inventory.menu.GulgeMenu;
@@ -15,7 +16,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -69,7 +69,7 @@ public class GulgeBlockEntity extends SimpleContainerBlockEntity {
 	@NotNull
 	@Override
 	public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-		if (!remove && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+		if (!remove && cap == ModCapabilities.ITEM_HANDLER) {
 			return gulgeInventory.getOptionalItemHandler().cast();
 		}
 		return super.getCapability(cap, side);

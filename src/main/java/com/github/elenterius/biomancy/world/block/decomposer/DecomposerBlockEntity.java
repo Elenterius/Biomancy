@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.world.block.decomposer;
 
 import com.github.elenterius.biomancy.client.util.ClientLoopingSoundHelper;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
+import com.github.elenterius.biomancy.init.ModCapabilities;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.recipe.DecomposerRecipe;
@@ -37,7 +38,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.registries.RegistryObject;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -199,7 +199,7 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-		if (!remove && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+		if (!remove && cap == ModCapabilities.ITEM_HANDLER) {
 			if (side == null || side == Direction.DOWN) return outputInventory.getOptionalItemHandler().cast();
 			if (side == Direction.UP) return inputInventory.getOptionalItemHandler().cast();
 			return fuelInventory.getOptionalItemHandler().cast();

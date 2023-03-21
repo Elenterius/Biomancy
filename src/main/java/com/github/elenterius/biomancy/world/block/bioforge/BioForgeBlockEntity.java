@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.world.block.bioforge;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
+import com.github.elenterius.biomancy.init.ModCapabilities;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import com.github.elenterius.biomancy.world.inventory.BehavioralInventory;
@@ -28,7 +29,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -228,7 +228,7 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-		if (!remove && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+		if (!remove && cap == ModCapabilities.ITEM_HANDLER) {
 			if (side != null && side.getAxis().isHorizontal()) return fuelInventory.getOptionalItemHandler().cast();
 		}
 		return super.getCapability(cap, side);
