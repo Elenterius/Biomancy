@@ -1,11 +1,11 @@
 package com.github.elenterius.biomancy.world.inventory.itemhandler;
 
+import com.github.elenterius.biomancy.init.ModCapabilities;
 import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
@@ -51,7 +51,7 @@ public final class HandlerBehaviors {
 
 		if (!stack.getItem().canFitInsideContainerItems()) return false;
 
-		LazyOptional<IItemHandler> capability = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY);
+		LazyOptional<IItemHandler> capability = stack.getCapability(ModCapabilities.ITEM_HANDLER);
 		final boolean[] isEmpty = {true};
 		capability.ifPresent(itemHandler -> {
 			int slots = itemHandler.getSlots();

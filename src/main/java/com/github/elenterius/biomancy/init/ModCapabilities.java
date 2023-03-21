@@ -9,6 +9,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.items.IItemHandler;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -17,6 +18,7 @@ import javax.annotation.Nullable;
 public final class ModCapabilities {
 
 	public static final Capability<FlagCapImpl> NO_KNOCKBACK_FLAG_CAP = CapabilityManager.get(new CapabilityToken<>() {});
+	public static final Capability<IItemHandler> ITEM_HANDLER = ForgeCapabilities.ITEM_HANDLER;
 
 	private ModCapabilities() {}
 
