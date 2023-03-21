@@ -8,6 +8,7 @@ import com.github.elenterius.biomancy.world.block.decomposer.DecomposerBlockEnti
 import com.github.elenterius.biomancy.world.block.digester.DigesterBlockEntity;
 import com.github.elenterius.biomancy.world.block.entity.BlockEntityDelegator;
 import com.github.elenterius.biomancy.world.block.fleshkinchest.FleshkinChestBlockEntity;
+import com.github.elenterius.biomancy.world.block.mawhopper.MawHopperBlockEntity;
 import com.github.elenterius.biomancy.world.block.modularlarynx.VoiceBoxBlockEntity;
 import com.github.elenterius.biomancy.world.block.ownable.OwnableBlockEntity;
 import com.github.elenterius.biomancy.world.block.storagesac.StorageSacBlockEntity;
@@ -32,6 +33,7 @@ public final class ModBlockEntities {
 	public static final RegistryObject<BlockEntityType<DigesterBlockEntity>> DIGESTER = register(ModBlocks.DIGESTER, DigesterBlockEntity::new);
 
 	public static final RegistryObject<BlockEntityType<TongueBlockEntity>> TONGUE = register(ModBlocks.TONGUE, TongueBlockEntity::new);
+	public static final RegistryObject<BlockEntityType<MawHopperBlockEntity>> MAW_HOPPER = register(ModBlocks.MAW_HOPPER, MawHopperBlockEntity::new);
 	public static final RegistryObject<BlockEntityType<StorageSacBlockEntity>> STORAGE_SAC = register(ModBlocks.STORAGE_SAC, StorageSacBlockEntity::new);
 	public static final RegistryObject<BlockEntityType<FleshkinChestBlockEntity>> FLESHKIN_CHEST = register(ModBlocks.FLESHKIN_CHEST, FleshkinChestBlockEntity::new);
 	public static final RegistryObject<BlockEntityType<VoiceBoxBlockEntity>> VOICE_BOX = register(ModBlocks.VOICE_BOX, VoiceBoxBlockEntity::new);

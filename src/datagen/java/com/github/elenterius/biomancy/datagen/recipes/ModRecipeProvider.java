@@ -692,6 +692,14 @@ public class ModRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.MACHINES)
 				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
 
+		BioForgeRecipeBuilder.create(ModItems.MAW_HOPPER.get())
+				.addIngredient(ModItems.LIVING_FLESH.get())
+				.addIngredient(ModItems.FLESH_BITS.get(), 5)
+				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 3)
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 10)
+				.setCategory(ModBioForgeTabs.MACHINES)
+				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
+
 		BioForgeRecipeBuilder.create(new ItemData(ModItems.FLESHKIN_PRESSURE_PLATE.get()))
 				.addIngredient(ModItems.LIVING_FLESH.get())
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 3)
