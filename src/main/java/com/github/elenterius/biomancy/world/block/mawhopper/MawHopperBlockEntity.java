@@ -13,6 +13,7 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -190,8 +191,15 @@ public class MawHopperBlockEntity extends BlockEntity implements IAnimatable {
 		}
 	}
 
-	public void dropContainerContents(Level level, BlockPos pos) {
-		Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), inventory.getStack());
+	public void dropInventoryContents(Level level, BlockPos pos) {
+		Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), inventory.extractItem(inventory.getMaxAmount(), false));
+	}
+
+	public void giveInventoryContentsTo(Level level, BlockPos pos, Player player) {
+		ItemStack stack = inventory.extractItem(inventory.getMaxAmount(), false);
+		if (!stack.isEmpty() && !player.addItem(stack)) {
+			player.drop(stack, false);
+		}
 	}
 
 	@Override
