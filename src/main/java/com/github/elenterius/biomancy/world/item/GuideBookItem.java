@@ -95,16 +95,18 @@ public class GuideBookItem extends SimpleItem implements IAnimatable {
 	}
 
 	@Override
-	public boolean onEntityItemUpdate(ItemStack stack, ItemEntity entity) {
-		if (entity.level.isClientSide) return super.onEntityItemUpdate(stack, entity);
+	public boolean onEntityItemUpdate(ItemStack stack, ItemEntity itemEntity) {
+		if (itemEntity.level.isClientSide) return super.onEntityItemUpdate(stack, itemEntity);
 
 		CompoundTag tag = stack.getOrCreateTag();
 		if (tag.getBoolean(BOOK_OPEN_KEY)) {
-			GeckoLibUtil.writeIDToStack(stack, (ServerLevel) entity.level);
+			GeckoLibUtil.writeIDToStack(stack, (ServerLevel) itemEntity.level);
 			tag.putBoolean(BOOK_OPEN_KEY, false);
+
+			itemEntity.setItem(stack.copy()); //we need to update ItemEntity with a new ItemStack instance to force the sync to the client
 		}
 
-		return super.onEntityItemUpdate(stack, entity);
+		return super.onEntityItemUpdate(stack, itemEntity);
 	}
 
 	private PlayState handleAnim(AnimationEvent<GuideBookItem> event) {
