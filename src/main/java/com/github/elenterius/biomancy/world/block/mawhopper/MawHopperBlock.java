@@ -44,6 +44,7 @@ public class MawHopperBlock extends BaseEntityBlock {
 
 	public MawHopperBlock(Properties properties) {
 		super(properties);
+		registerDefaultState(defaultBlockState().setValue(FACING, Direction.UP));
 	}
 
 	private static VoxelShape createVoxelShape(Direction direction) {
