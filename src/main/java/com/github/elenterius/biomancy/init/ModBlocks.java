@@ -8,6 +8,7 @@ import com.github.elenterius.biomancy.world.block.cradle.PrimordialCradleBlock;
 import com.github.elenterius.biomancy.world.block.decomposer.DecomposerBlock;
 import com.github.elenterius.biomancy.world.block.digester.DigesterBlock;
 import com.github.elenterius.biomancy.world.block.fleshkinchest.FleshkinChestBlock;
+import com.github.elenterius.biomancy.world.block.mawhopper.MawHopperBlock;
 import com.github.elenterius.biomancy.world.block.modularlarynx.VoiceBoxBlock;
 import com.github.elenterius.biomancy.world.block.ownable.OwnableDoorBlock;
 import com.github.elenterius.biomancy.world.block.ownable.OwnablePressurePlateBlock;
@@ -62,6 +63,7 @@ public final class ModBlocks {
 	//## Automation & Storage
 	public static final RegistryObject<StorageSacBlock> STORAGE_SAC = BLOCKS.register("storage_sac", () -> new StorageSacBlock(createFleshProperties()));
 	public static final RegistryObject<TongueBlock> TONGUE = BLOCKS.register("tongue", () -> new TongueBlock(createFleshProperties()));
+	public static final RegistryObject<MawHopperBlock> MAW_HOPPER = BLOCKS.register("maw_hopper", () -> new MawHopperBlock(createFleshProperties()));
 
 	//## Ownable
 	public static final RegistryObject<FleshkinChestBlock> FLESHKIN_CHEST = BLOCKS.register("fleshkin_chest", () -> new FleshkinChestBlock(createFleshProperties()));

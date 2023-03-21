@@ -70,6 +70,7 @@ public class ModBlockLoot extends BlockLoot {
 
 		dropSelf(ModBlocks.PRIMORDIAL_CRADLE.get());
 		dropSelf(ModBlocks.TONGUE.get());
+		dropSelf(ModBlocks.MAW_HOPPER.get());
 		add(ModBlocks.STORAGE_SAC.get(), ModBlockLoot::dropWithInventory);
 
 		add(ModBlocks.BIO_FORGE.get(), BlockLoot::createNameableBlockEntityTable);
