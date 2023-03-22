@@ -41,11 +41,12 @@ public class MawHopperBlockEntity extends BlockEntity implements IAnimatable {
 	public static final String INVENTORY_TAG = "Inventory";
 	public static final int ITEM_TRANSFER_AMOUNT = 16;
 	public static final int DURATION = 24;
-	public static final int DELAY = 8 + 1; //ceil(31.2) --> 32
-	private final SingleItemStackHandler inventory;
+	public static final int DELAY = 8 + 1;
 	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
-	private int ticks = BiomancyMod.GLOBAL_RANDOM.nextInt(DURATION);
+
+	private final SingleItemStackHandler inventory;
 	private LazyOptional<IItemHandler> optionalItemHandler;
+	private int ticks = BiomancyMod.GLOBAL_RANDOM.nextInt(DURATION); //add random tick offset
 
 	public MawHopperBlockEntity(BlockPos pos, BlockState blockState) {
 		super(ModBlockEntities.MAW_HOPPER.get(), pos, blockState);

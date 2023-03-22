@@ -1,0 +1,216 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.maw_hopper_connected",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [ 0, 0.75, 0 ]
+			},
+			"bones": [
+				{
+					"name": "root",
+					"pivot": [ 0, 0, 0 ],
+					"cubes": [
+						{
+							"origin": [ -3, 12, -3 ],
+							"size": [ 6, 4, 6 ],
+							"uv": {
+								"north": {
+									"uv": [ 20, 30 ],
+									"uv_size": [ 6, 4 ]
+								},
+								"east": {
+									"uv": [ 30, 22 ],
+									"uv_size": [ 6, 4 ]
+								},
+								"south": {
+									"uv": [ 26, 30 ],
+									"uv_size": [ 6, 4 ]
+								},
+								"west": {
+									"uv": [ 30, 26 ],
+									"uv_size": [ 6, 4 ]
+								},
+								"up": {
+									"uv": [ 18, 37 ],
+									"uv_size": [ -6, -6 ]
+								},
+								"down": {
+									"uv": [ 20, 6 ],
+									"uv_size": [ 6, -6 ]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "segment_1",
+					"parent": "root",
+					"pivot": [ 0, 3, 0 ],
+					"cubes": [
+						{
+							"origin": [ -2, 8, -2 ],
+							"size": [ 4, 4, 4 ],
+							"uv": {
+								"north": {
+									"uv": [ 32, 30 ],
+									"uv_size": [ 4, 4 ]
+								},
+								"east": {
+									"uv": [ 33, 12 ],
+									"uv_size": [ 4, 4 ]
+								},
+								"south": {
+									"uv": [ 33, 16 ],
+									"uv_size": [ 4, 4 ]
+								},
+								"west": {
+									"uv": [ 17, 34 ],
+									"uv_size": [ 4, 4 ]
+								},
+								"up": {
+									"uv": [ 21, 34 ],
+									"uv_size": [ 4, 4 ]
+								},
+								"down": {
+									"uv": [ 25, 38 ],
+									"uv_size": [ 4, -4 ]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "segment_2",
+					"parent": "root",
+					"pivot": [ 0, 0, 0 ],
+					"cubes": [
+						{
+							"origin": [ -2, 6, -2 ],
+							"size": [ 4, 2, 4 ],
+							"uv": {
+								"north": {
+									"uv": [ 36, 23 ],
+									"uv_size": [ 4, 2 ]
+								},
+								"east": {
+									"uv": [ 36, 25 ],
+									"uv_size": [ 4, 2 ]
+								},
+								"south": {
+									"uv": [ 36, 27 ],
+									"uv_size": [ 4, 2 ]
+								},
+								"west": {
+									"uv": [ 36, 29 ],
+									"uv_size": [ 4, 2 ]
+								},
+								"up": {
+									"uv": [ 9, 32 ],
+									"uv_size": [ 4, 4 ]
+								},
+								"down": {
+									"uv": [ 13, 36 ],
+									"uv_size": [ 4, -4 ]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "segment_3",
+					"parent": "root",
+					"pivot": [ 0, 0, 0 ],
+					"cubes": [
+						{
+							"origin": [ -2, 2, -2 ],
+							"size": [ 4, 4, 4 ],
+							"uv": {
+								"north": {
+									"uv": [ 32, 30 ],
+									"uv_size": [ 4, 4 ]
+								},
+								"east": {
+									"uv": [ 33, 12 ],
+									"uv_size": [ 4, 4 ]
+								},
+								"south": {
+									"uv": [ 33, 16 ],
+									"uv_size": [ 4, 4 ]
+								},
+								"west": {
+									"uv": [ 17, 34 ],
+									"uv_size": [ 4, 4 ]
+								},
+								"up": {
+									"uv": [ 21, 34 ],
+									"uv_size": [ 4, 4 ]
+								},
+								"down": {
+									"uv": [ 25, 38 ],
+									"uv_size": [ 4, -4 ]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "segment_4",
+					"parent": "root",
+					"pivot": [ 0, 0, 0 ],
+					"cubes": [
+						{
+							"origin": [ -2, 0, -2 ],
+							"size": [ 4, 2, 4 ],
+							"uv": {
+								"north": {
+									"uv": [ 36, 23 ],
+									"uv_size": [ 4, 2 ]
+								},
+								"east": {
+									"uv": [ 36, 25 ],
+									"uv_size": [ 4, 2 ]
+								},
+								"south": {
+									"uv": [ 36, 27 ],
+									"uv_size": [ 4, 2 ]
+								},
+								"west": {
+									"uv": [ 36, 29 ],
+									"uv_size": [ 4, 2 ]
+								},
+								"up": {
+									"uv": [ 9, 32 ],
+									"uv_size": [ 4, 4 ]
+								},
+								"down": {
+									"uv": [ 13, 36 ],
+									"uv_size": [ 4, -4 ]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "teeth_1",
+					"parent": "root",
+					"pivot": [ 0, 2, 0 ]
+				},
+				{
+					"name": "teeth_2",
+					"parent": "root",
+					"pivot": [ 0, 2, 0 ]
+				},
+				{
+					"name": "teeth_3",
+					"parent": "root",
+					"pivot": [ 0, 2, 0 ]
+				}
+			]
+		}
+	]
+}
