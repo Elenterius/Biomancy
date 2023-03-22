@@ -132,13 +132,17 @@ interface TransferOperations extends Forwarding<IItemHandler> {
 
 	default ItemStack extractItemFirstMatch(Predicate<ItemStack> predicate, int maxAmount, boolean simulate) {
 		for (int i = 0; i < inner().getSlots(); i++) {
-			ItemStack stackInSlot = inner().getStackInSlot(i);
-			if (stackInSlot.isEmpty() || !predicate.test(stackInSlot)) continue;
+			int amount = Math.min(maxAmount, inner().getStackInSlot(i).getMaxStackSize());
+			ItemStack stack = inner().extractItem(i, amount, true);
 
-			int amount = Math.min(stackInSlot.getMaxStackSize(), maxAmount);
-			ItemStack stack = inner().extractItem(i, amount, simulate);
-			if (!stack.isEmpty()) return stack;
+			if (!stack.isEmpty() && predicate.test(stack)) {
+				if (!simulate) {
+					return inner().extractItem(i, amount, false);
+				}
+				return stack;
+			}
 		}
+
 		return ItemStack.EMPTY;
 	}
 
