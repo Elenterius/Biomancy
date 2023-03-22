@@ -41,9 +41,9 @@ public class MawHopperBlockEntity extends BlockEntity implements IAnimatable {
 	public static final String INVENTORY_TAG = "Inventory";
 	public static final int ITEM_TRANSFER_AMOUNT = 16;
 	public static final int DURATION = 24;
-	public static final int DELAY = 8 + 1; //ceil(31.2) --> 32
+	public static final int DELAY = 8 + 1;
 
-	private int ticks = BiomancyMod.GLOBAL_RANDOM.nextInt(DURATION);
+	private int ticks = BiomancyMod.GLOBAL_RANDOM.nextInt(DURATION); //add random tick offset
 
 	private final SingleItemStackHandler inventory;
 	private LazyOptional<IItemHandler> optionalItemHandler;
