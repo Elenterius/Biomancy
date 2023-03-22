@@ -11,6 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -123,8 +124,15 @@ public class TongueBlockEntity extends SimpleSyncedBlockEntity implements IAnima
 		tag.put(INVENTORY_TAG, inventory.serializeNBT());
 	}
 
-	public void dropContainerContents(Level level, BlockPos pos) {
-		Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), inventory.getStack());
+	public void dropInventoryContents(Level level, BlockPos pos) {
+		Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), inventory.extractItem(inventory.getMaxAmount(), false));
+	}
+
+	public void giveInventoryContentsTo(Level level, BlockPos pos, Player player) {
+		ItemStack stack = inventory.extractItem(inventory.getMaxAmount(), false);
+		if (!stack.isEmpty() && !player.addItem(stack)) {
+			player.drop(stack, false);
+		}
 	}
 
 	private <E extends BlockEntity & IAnimatable> PlayState handleAnim(AnimationEvent<E> event) {

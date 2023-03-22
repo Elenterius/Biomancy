@@ -4,6 +4,9 @@ import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.util.VoxelShapeUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -16,6 +19,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -70,10 +74,23 @@ public class TongueBlock extends HorizontalDirectionalBlock implements EntityBlo
 	}
 
 	@Override
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (!player.getItemInHand(hand).isEmpty()) return InteractionResult.PASS;
+
+		if (level.getBlockEntity(pos) instanceof TongueBlockEntity blockEntity) {
+			if (level.isClientSide) return InteractionResult.SUCCESS;
+			blockEntity.giveInventoryContentsTo(level, pos, player);
+			return InteractionResult.CONSUME;
+		}
+
+		return InteractionResult.PASS;
+	}
+
+	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock())) {
 			if (level.getBlockEntity(pos) instanceof TongueBlockEntity tongue) {
-				tongue.dropContainerContents(level, pos);
+				tongue.dropInventoryContents(level, pos);
 			}
 			super.onRemove(state, level, pos, newState, isMoving);
 		}
