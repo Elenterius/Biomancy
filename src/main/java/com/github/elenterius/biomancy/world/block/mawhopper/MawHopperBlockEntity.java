@@ -34,6 +34,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 public class MawHopperBlockEntity extends BlockEntity implements IAnimatable {
 
@@ -172,7 +173,11 @@ public class MawHopperBlockEntity extends BlockEntity implements IAnimatable {
 		if (inventory.isFull()) return false;
 
 		EnhancedItemHandler handler = new EnhancedItemHandler(itemHandler);
-		ItemStack extractedStack = handler.extractItemFirstFound(ITEM_TRANSFER_AMOUNT, false);
+
+		int amount = Math.min(ITEM_TRANSFER_AMOUNT, inventory.getMaxAmount() - inventory.getAmount());
+		Predicate<ItemStack> canAcceptItem = stack -> inventory.insertItem(stack, true).isEmpty();
+		ItemStack extractedStack = handler.extractItemFirstMatch(canAcceptItem, amount, false);
+
 		if (!extractedStack.isEmpty()) {
 			inventory.insertItem(extractedStack, false);
 			return true;
