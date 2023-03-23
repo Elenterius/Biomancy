@@ -103,7 +103,7 @@ public final class ModItems {
 	//	public static final RegistryObject<BoomlingItem> BOOMLING = ITEMS.register("boomling", () -> new BoomlingItem(createBaseProperties().rarity(ModRarities.RARE).stacksTo(1).tab(null)));
 
 	//# Food/Fuel
-	public static final RegistryObject<SimpleItem> NUTRIENT_PASTE = registerSimpleItem("nutrient_paste");
+	public static final RegistryObject<EffectCureItem> NUTRIENT_PASTE = ITEMS.register("nutrient_paste", () -> new EffectCureItem(createBaseProperties().food(ModFoods.NUTRIENT_PASTE)));
 	public static final RegistryObject<EffectCureItem> NUTRIENT_BAR = ITEMS.register("nutrient_bar", () -> new EffectCureItem(createBaseProperties().food(ModFoods.NUTRIENT_BAR)));
 
 	//# Block Items
