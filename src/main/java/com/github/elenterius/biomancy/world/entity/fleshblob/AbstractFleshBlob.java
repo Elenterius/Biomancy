@@ -96,6 +96,11 @@ public abstract class AbstractFleshBlob extends PathfinderMob implements JumpMov
 	//	}
 
 	@Override
+	public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+		return false;
+	}
+
+	@Override
 	public EntityDimensions getDimensions(Pose pose) {
 		return super.getDimensions(pose).scale(getBlobScale());
 	}
