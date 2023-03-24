@@ -339,12 +339,11 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 		addItem(ModItems.BONE_FRAGMENTS, "Bone Fragments", "A tiny fragment of bone... Provides rigidity and shape to flesh. Useful for assembling mechanical parts.");
 		addItem(ModItems.TOUGH_FIBERS, "Tough Fibers", "Fibrous tissue that is very tough and rigid. Useful for crafting things that need more resilience.");
 		addItem(ModItems.ELASTIC_FIBERS, "Elastic Fibers", "Fibrous tissue that is sturdy but has rubbery properties. It appears like a good material to imitate muscles.");
-		addItem(ModItems.MINERAL_FRAGMENT, "Mineral Fragment", "Component only obtained in Decomposer.\nUsed to harden fibers.");
+		addItem(ModItems.MINERAL_FRAGMENT, "Mineral Fragment", "Component only obtained in Decomposer.\nUsed to toughen and harden fibers.");
 		addItem(ModItems.GEM_FRAGMENTS, "Gem Fragments", "Used to enhance hardened fibers to their maximum resilience, very expensive.");
 		addItem(ModItems.BIO_LUMENS, "Bioluminescent Goo", "Basic component, only obtained via the Decomposer, usually alongside biotic matter.\n\nUsed as a cosmetic upgrade to make things glow.");
 		addItem(ModItems.ORGANIC_MATTER, "Biotic Matter", "Moist organic material, extracted from Plants. With its dark and fibrous texture almost seems like humus.");
 		addItem(ModItems.EXOTIC_DUST, "Exotic Dust", "Exotic substance, maybe magical. Byproduct from decomposing magical things.");
-		addItem(ModItems.BIO_MINERALS, "Bio-Minerals", "Component only obtained in Decomposer.\nUsed to toughen fibers.");
 		addItem(ModItems.STONE_POWDER, "Lithic Powder", "Very Basic Crafting component, usually obtained as a byproduct from decomposing things.");
 
 		addItem(ModItems.NUTRIENTS, "Nutrients", "Very hard pellets rich in energy, almost look like vitamin pills. Occasional byproduct from decomposing plants, but mainly obtained from digesting plants.");
