@@ -269,7 +269,6 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 			TICK_MULTIPLIERS.put(ModItems.MINERAL_FRAGMENT.get(), 2f);
 			TICK_MULTIPLIERS.put(ModItems.GEM_FRAGMENTS.get(), 2.5f);
 			TICK_MULTIPLIERS.put(ModItems.EXOTIC_DUST.get(), 2.5f);
-			TICK_MULTIPLIERS.put(ModItems.BIO_MINERALS.get(), 1.1f);
 			TICK_MULTIPLIERS.put(ModItems.BIO_LUMENS.get(), 1.1f);
 			TICK_MULTIPLIERS.put(ModItems.BILE.get(), 1f);
 			TICK_MULTIPLIERS.put(ModItems.TOXIN_EXTRACT.get(), 1f);

@@ -131,7 +131,6 @@ public class ModItemModelProvider extends ItemModelProvider {
 		componentItem(ModItems.TOUGH_FIBERS.get());
 		componentItem(ModItems.ORGANIC_MATTER.get());
 		componentItem(ModItems.EXOTIC_DUST.get());
-		componentItem(ModItems.BIO_MINERALS.get());
 		componentItem(ModItems.BIO_LUMENS.get());
 		componentItem(ModItems.NUTRIENTS.get());
 		componentItem(ModItems.GEM_FRAGMENTS.get());

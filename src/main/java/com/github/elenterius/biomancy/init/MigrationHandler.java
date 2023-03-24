@@ -106,7 +106,7 @@ public final class MigrationHandler {
 				case "bolus" -> mapping.remap(ModItems.NUTRIENTS.get());
 				case "keratin_filaments" -> mapping.remap(ModItems.TOUGH_FIBERS.get());
 				case "digestate" -> mapping.remap(ModItems.ORGANIC_MATTER.get());
-				case "oxide_powder", "silicate_paste" -> mapping.remap(ModItems.MINERAL_FRAGMENT.get());
+				case "oxide_powder", "silicate_paste", "bio_minerals" -> mapping.remap(ModItems.MINERAL_FRAGMENT.get());
 				case "hormone_bile" -> mapping.remap(ModItems.HORMONE_SECRETION.get());
 				default -> mapping.ignore();
 			}
