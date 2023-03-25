@@ -151,6 +151,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 			fleshBlob.yHeadRot = fleshBlob.getYRot();
 			fleshBlob.yBodyRot = fleshBlob.getYRot();
 			fleshBlob.randomizeTumors();
+			fleshBlob.restrictTo(pos, 32);
 			level.addFreshEntity(fleshBlob);
 		}
 	}
@@ -168,6 +169,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 			fleshBlob.yHeadRot = fleshBlob.getYRot();
 			fleshBlob.yBodyRot = fleshBlob.getYRot();
 			fleshBlob.setTumors(sacrificeHandler.getTumorFactor());
+			fleshBlob.restrictTo(pos, 24);
 			level.addFreshEntity(fleshBlob);
 		}
 	}
