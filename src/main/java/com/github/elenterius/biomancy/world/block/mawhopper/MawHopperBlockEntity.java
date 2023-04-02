@@ -40,7 +40,7 @@ public class MawHopperBlockEntity extends BlockEntity implements IAnimatable {
 
 	public static final String INVENTORY_TAG = "Inventory";
 	public static final int ITEM_TRANSFER_AMOUNT = 16;
-	public static final int DURATION = 24;
+	public static final int DURATION = 11;
 	public static final int DELAY = 8 + 1;
 	protected static final AnimationBuilder PUMPING_ANIM = new AnimationBuilder().loop("pumping");
 
