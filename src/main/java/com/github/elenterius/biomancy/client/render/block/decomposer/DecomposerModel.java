@@ -7,19 +7,23 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class DecomposerModel extends AnimatedGeoModel<DecomposerBlockEntity> {
 
+	protected static final ResourceLocation MODEL = BiomancyMod.createRL("geo/block/decomposer.geo.json");
+	protected static final ResourceLocation TEXTURE = BiomancyMod.createRL("textures/block/decomposer.png");
+	protected static final ResourceLocation ANIMATION = BiomancyMod.createRL("animations/block/decomposer.animation.json");
+
 	@Override
 	public ResourceLocation getModelResource(DecomposerBlockEntity blockEntity) {
-		return BiomancyMod.createRL("geo/block/decomposer.geo.json");
+		return MODEL;
 	}
 
 	@Override
 	public ResourceLocation getTextureResource(DecomposerBlockEntity blockEntity) {
-		return BiomancyMod.createRL("textures/block/decomposer.png");
+		return TEXTURE;
 	}
 
 	@Override
 	public ResourceLocation getAnimationResource(DecomposerBlockEntity blockEntity) {
-		return BiomancyMod.createRL("animations/block/decomposer.animation.json");
+		return ANIMATION;
 	}
 
 }

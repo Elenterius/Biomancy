@@ -14,7 +14,7 @@ import com.github.elenterius.biomancy.client.render.block.digester.DigesterRende
 import com.github.elenterius.biomancy.client.render.block.fleshkinchest.FleshkinChestRenderer;
 import com.github.elenterius.biomancy.client.render.block.mawhopper.MawHopperRenderer;
 import com.github.elenterius.biomancy.client.render.block.storagesac.StorageSacRenderer;
-import com.github.elenterius.biomancy.client.render.block.tongue.TongueBlockEntityRenderer;
+import com.github.elenterius.biomancy.client.render.block.tongue.TongueRenderer;
 import com.github.elenterius.biomancy.client.render.entity.AcidProjectileRenderer;
 import com.github.elenterius.biomancy.client.render.entity.WitherProjectileRenderer;
 import com.github.elenterius.biomancy.client.render.entity.fleshblob.FleshBlobRenderer;
@@ -83,7 +83,7 @@ public final class ClientSetupHandler {
 		event.registerBlockEntityRenderer(ModBlockEntities.DIGESTER.get(), DigesterRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.BIO_FORGE.get(), BioForgeRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.BIO_LAB.get(), BioLabRenderer::new);
-		event.registerBlockEntityRenderer(ModBlockEntities.TONGUE.get(), TongueBlockEntityRenderer::new);
+		event.registerBlockEntityRenderer(ModBlockEntities.TONGUE.get(), TongueRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.FLESHKIN_CHEST.get(), FleshkinChestRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.STORAGE_SAC.get(), StorageSacRenderer::new);
 		event.registerBlockEntityRenderer(ModBlockEntities.MAW_HOPPER.get(), MawHopperRenderer::new);

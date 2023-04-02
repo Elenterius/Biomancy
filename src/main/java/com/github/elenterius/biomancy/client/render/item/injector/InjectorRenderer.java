@@ -34,7 +34,6 @@ public class InjectorRenderer extends GeoItemRenderer<InjectorItem> {
 		super.render(item, poseStack, bufferIn, packedLight, itemStack);
 	}
 
-
 	@Override
 	public void renderRecursively(GeoBone bone, PoseStack stack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		if (bone.name.equals("serum")) {

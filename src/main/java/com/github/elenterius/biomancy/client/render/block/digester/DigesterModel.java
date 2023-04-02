@@ -7,19 +7,23 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class DigesterModel extends AnimatedGeoModel<DigesterBlockEntity> {
 
+	protected static final ResourceLocation MODEL = BiomancyMod.createRL("geo/block/digester.geo.json");
+	protected static final ResourceLocation TEXTURE = BiomancyMod.createRL("textures/block/digester.png");
+	protected static final ResourceLocation ANIMATION = BiomancyMod.createRL("animations/block/digester.animation.json");
+
 	@Override
 	public ResourceLocation getModelResource(DigesterBlockEntity blockEntity) {
-		return BiomancyMod.createRL("geo/block/digester.geo.json");
+		return MODEL;
 	}
 
 	@Override
 	public ResourceLocation getTextureResource(DigesterBlockEntity blockEntity) {
-		return BiomancyMod.createRL("textures/block/digester.png");
+		return TEXTURE;
 	}
 
 	@Override
 	public ResourceLocation getAnimationResource(DigesterBlockEntity blockEntity) {
-		return BiomancyMod.createRL("animations/block/digester.animation.json");
+		return ANIMATION;
 	}
 
 }
