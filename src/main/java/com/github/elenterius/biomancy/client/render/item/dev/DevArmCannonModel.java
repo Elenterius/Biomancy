@@ -7,19 +7,23 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class DevArmCannonModel extends AnimatedGeoModel<DevArmCannonItem> {
 
+	protected static final ResourceLocation MODEL = BiomancyMod.createRL("geo/item/arm_cannon.geo.json");
+	protected static final ResourceLocation TEXTURE = BiomancyMod.createRL("textures/item/weapon/arm_cannon.png");
+	protected static final ResourceLocation ANIMATION = BiomancyMod.createRL("animations/item/arm_cannon.animation.json");
+
 	@Override
 	public ResourceLocation getModelLocation(DevArmCannonItem item) {
-		return BiomancyMod.createRL("geo/item/arm_cannon.geo.json");
+		return MODEL;
 	}
 
 	@Override
 	public ResourceLocation getTextureLocation(DevArmCannonItem item) {
-		return BiomancyMod.createRL("textures/item/weapon/arm_cannon.png");
+		return TEXTURE;
 	}
 
 	@Override
 	public ResourceLocation getAnimationFileLocation(DevArmCannonItem item) {
-		return BiomancyMod.createRL("animations/item/arm_cannon.animation.json");
+		return ANIMATION;
 	}
 
 }

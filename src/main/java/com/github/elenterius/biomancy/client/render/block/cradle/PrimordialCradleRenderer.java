@@ -70,7 +70,7 @@ public class PrimordialCradleRenderer extends CustomGeoBlockRenderer<PrimordialC
 	}
 
 	@Override
-	public void createVerticesOfQuad(GeoQuad quad, Matrix4f matrix4f, Vector3f normal, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+	public void createVerticesOfQuad(GeoQuad quad, Matrix4f matrix4f, Vector3f normal, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		if (isSpecialCube && quad.direction == Direction.NORTH) {
 			float textureV = Mth.lerp(lifeEnergyPct, quad.vertices[2].textureV, quad.vertices[0].textureV);
 			float positionY = Mth.lerp(lifeEnergyPct, quad.vertices[2].position.y(), quad.vertices[0].position.y());
@@ -78,18 +78,22 @@ public class PrimordialCradleRenderer extends CustomGeoBlockRenderer<PrimordialC
 			GeoVertex topLeft = quad.vertices[0]; // Top left corner
 			GeoVertex topRight = quad.vertices[1]; // Top right corner
 
+			Vector4f position = new Vector4f(0, 0, 0, 1);
 			for (GeoVertex vertex : quad.vertices) {
 				boolean isTopVertex = (vertex == topLeft || vertex == topRight);
 
-				Vector4f vector4f = new Vector4f(vertex.position.x(), isTopVertex ? positionY : vertex.position.y(), vertex.position.z(), 1f);
-				vector4f.transform(matrix4f);
-				bufferIn.vertex(
-						vector4f.x(), vector4f.y(), vector4f.z(), red, green, blue, alpha,
+				position.set(vertex.position.x(), isTopVertex ? positionY : vertex.position.y(), vertex.position.z(), 1);
+				position.transform(matrix4f);
+				buffer.vertex(
+						position.x(), position.y(), position.z(), red, green, blue, alpha,
 						vertex.textureU, isTopVertex ? textureV : vertex.textureV,
-						packedOverlayIn, packedLightIn, normal.x(), normal.y(), normal.z()
+						packedOverlay, packedLight, normal.x(), normal.y(), normal.z()
 				);
 			}
-		} else {super.createVerticesOfQuad(quad, matrix4f, normal, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);}
+		}
+		else {
+			super.createVerticesOfQuad(quad, matrix4f, normal, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+		}
 	}
 
 }

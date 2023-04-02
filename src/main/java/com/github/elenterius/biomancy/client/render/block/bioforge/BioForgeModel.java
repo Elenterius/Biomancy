@@ -7,19 +7,23 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class BioForgeModel extends AnimatedGeoModel<BioForgeBlockEntity> {
 
+	protected static final ResourceLocation MODEL = BiomancyMod.createRL("geo/block/bio_forge.geo.json");
+	protected static final ResourceLocation TEXTURE = BiomancyMod.createRL("textures/block/bio_forge.png");
+	protected static final ResourceLocation ANIMATION = BiomancyMod.createRL("animations/block/bio_forge.animation.json");
+
 	@Override
 	public ResourceLocation getModelLocation(BioForgeBlockEntity blockEntity) {
-		return BiomancyMod.createRL("geo/block/bio_forge.geo.json");
+		return MODEL;
 	}
 
 	@Override
 	public ResourceLocation getTextureLocation(BioForgeBlockEntity blockEntity) {
-		return BiomancyMod.createRL("textures/block/bio_forge.png");
+		return TEXTURE;
 	}
 
 	@Override
 	public ResourceLocation getAnimationFileLocation(BioForgeBlockEntity blockEntity) {
-		return BiomancyMod.createRL("animations/block/bio_forge.animation.json");
+		return ANIMATION;
 	}
 
 }

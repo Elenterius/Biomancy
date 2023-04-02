@@ -7,19 +7,23 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class FleshkinChestModel extends AnimatedGeoModel<FleshkinChestBlockEntity> {
 
+	protected static final ResourceLocation MODEL = BiomancyMod.createRL("geo/block/fleshkin_chest.geo.json");
+	protected static final ResourceLocation TEXTURE = BiomancyMod.createRL("textures/block/fleshkin_chest.png");
+	protected static final ResourceLocation ANIMATION = BiomancyMod.createRL("animations/block/fleshkin_chest.animation.json");
+
 	@Override
 	public ResourceLocation getModelLocation(FleshkinChestBlockEntity blockEntity) {
-		return BiomancyMod.createRL("geo/block/fleshkin_chest.geo.json");
+		return MODEL;
 	}
 
 	@Override
 	public ResourceLocation getTextureLocation(FleshkinChestBlockEntity blockEntity) {
-		return BiomancyMod.createRL("textures/block/fleshkin_chest.png");
+		return TEXTURE;
 	}
 
 	@Override
 	public ResourceLocation getAnimationFileLocation(FleshkinChestBlockEntity blockEntity) {
-		return BiomancyMod.createRL("animations/block/fleshkin_chest.animation.json");
+		return ANIMATION;
 	}
 
 }

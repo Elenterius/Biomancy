@@ -18,9 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.geo.render.built.GeoBone;
 
-import java.util.Random;
-
-public class TongueBlockEntityRenderer extends CustomGeoBlockRenderer<TongueBlockEntity> {
+public class TongueRenderer extends CustomGeoBlockRenderer<TongueBlockEntity> {
 
 	private final Random random = new Random();
 
@@ -28,7 +26,7 @@ public class TongueBlockEntityRenderer extends CustomGeoBlockRenderer<TongueBloc
 	private MultiBufferSource multiBufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
 	private ResourceLocation texture;
 
-	public TongueBlockEntityRenderer(BlockEntityRendererProvider.Context rendererDispatcher) {
+	public TongueRenderer(BlockEntityRendererProvider.Context rendererDispatcher) {
 		super(rendererDispatcher, new TongueModel());
 	}
 
