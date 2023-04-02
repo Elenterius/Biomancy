@@ -49,11 +49,7 @@ public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implem
 	public static final int SLOTS = 6 * 7;
 
 	private final BehavioralInventory<?> inventory;
-	private boolean lidShouldBeOpen = false;
-
-	private boolean playAttackAnimation = false;
 	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
-
 	private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
 		@Override
 		protected void onOpen(Level level, BlockPos pos, BlockState state) {
@@ -81,6 +77,9 @@ public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implem
 			return false;
 		}
 	};
+	private boolean lidShouldBeOpen = false;
+	private boolean playAttackAnimation = false;
+	private boolean lidIsOpen = false;
 
 	public FleshkinChestBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.FLESHKIN_CHEST.get(), pos, state);
@@ -162,7 +161,7 @@ public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implem
 
 	@Override
 	public void dropContainerContents(Level level, BlockPos pos) {
-//		Containers.dropContents(level, pos, inventory);
+		//		Containers.dropContents(level, pos, inventory);
 	}
 
 	public boolean isEmpty() {
@@ -172,9 +171,9 @@ public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implem
 	@NotNull
 	@Override
 	public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-//		if (!remove && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-//			return inventory.getOptionalItemHandler().cast();
-//		}
+		//		if (!remove && cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+		//			return inventory.getOptionalItemHandler().cast();
+		//		}
 		return super.getCapability(cap, side);
 	}
 
@@ -203,27 +202,25 @@ public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implem
 		playAttackAnimation = false;
 	}
 
-	private boolean lidIsOpen = false;
-
 	private PlayState handleIdleAnim(AnimationEvent<FleshkinChestBlockEntity> event) {
 		if (playAttackAnimation) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("fleshkin_chest.bite"));
+			event.getController().setAnimation(Animations.BITE);
 			if (event.getController().getAnimationState() != AnimationState.Stopped) return PlayState.CONTINUE;
 			stopAttackAnimation();
 		}
 
 		if (lidShouldBeOpen) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("fleshkin_chest.open").addAnimation("fleshkin_chest.opened"));
+			event.getController().setAnimation(Animations.OPENING);
 			lidIsOpen = true;
 			return PlayState.CONTINUE;
 		}
 		else if (lidIsOpen) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("fleshkin_chest.close"));
+			event.getController().setAnimation(Animations.CLOSING);
 			if (event.getController().getAnimationState() != AnimationState.Stopped) return PlayState.CONTINUE;
 			lidIsOpen = false;
 		}
 
-		event.getController().setAnimation(new AnimationBuilder().addAnimation("fleshkin_chest.closed"));
+		event.getController().setAnimation(Animations.CLOSED);
 		return PlayState.CONTINUE;
 	}
 
@@ -235,6 +232,15 @@ public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implem
 	@Override
 	public AnimationFactory getFactory() {
 		return animationFactory;
+	}
+
+	protected static class Animations {
+		protected static final AnimationBuilder BITE = new AnimationBuilder().addAnimation("fleshkin_chest.bite");
+		protected static final AnimationBuilder OPENING = new AnimationBuilder().addAnimation("fleshkin_chest.open").addAnimation("fleshkin_chest.opened");
+		protected static final AnimationBuilder CLOSING = new AnimationBuilder().addAnimation("fleshkin_chest.close");
+		protected static final AnimationBuilder CLOSED = new AnimationBuilder().addAnimation("fleshkin_chest.closed");
+
+		private Animations() {}
 	}
 
 }

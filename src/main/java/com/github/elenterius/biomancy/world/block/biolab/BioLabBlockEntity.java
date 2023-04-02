@@ -62,17 +62,15 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 	public static final int MAX_FUEL = 1_000;
 	public static final short BASE_COST = 2;
 	public static final RegistryObject<SimpleRecipeType.ItemStackRecipeType<BioLabRecipe>> RECIPE_TYPE = ModRecipes.BIO_BREWING_RECIPE_TYPE;
-
+	protected static final AnimationBuilder WORKING_ANIM = new AnimationBuilder().loop("bio_lab.working");
+	protected static final AnimationBuilder IDLE_ANIM = new AnimationBuilder().loop("bio_lab.idle");
 	private final BioLabStateData stateData;
 	private final FuelHandler fuelHandler;
 	private final BehavioralInventory<?> fuelInventory;
 	private final SimpleInventory inputInventory;
 	private final BehavioralInventory<?> outputInventory;
-
 	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
-
 	private LazyOptional<IItemHandler> optionalCombinedInventory;
-
 	private ILoopingSoundHelper loopingSoundHelper = ILoopingSoundHelper.NULL;
 
 	public BioLabBlockEntity(BlockPos worldPosition, BlockState blockState) {
@@ -296,16 +294,15 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 		return true;
 	}
 
-	//client side only
 	private <E extends BlockEntity & IAnimatable> PlayState handleAnim(AnimationEvent<E> event) {
-		Boolean isCrafting = getBlockState().getValue(MachineBlock.CRAFTING);
+		boolean isCrafting = Boolean.TRUE.equals(getBlockState().getValue(MachineBlock.CRAFTING));
 
-		if (Boolean.TRUE.equals(isCrafting)) {
-			event.getController().setAnimation(new AnimationBuilder().loop("bio_lab.working"));
+		if (isCrafting) {
+			event.getController().setAnimation(WORKING_ANIM);
 			loopingSoundHelper.startLoop(this, ModSoundEvents.BIO_LAB_CRAFTING.get(), 0.65f);
 		}
 		else {
-			event.getController().setAnimation(new AnimationBuilder().loop("bio_lab.idle"));
+			event.getController().setAnimation(IDLE_ANIM);
 			loopingSoundHelper.stopLoop();
 		}
 

@@ -65,6 +65,8 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	public static final int BASE_COST = 1;
 
 	public static final RegistryObject<SimpleRecipeType.ItemStackRecipeType<DecomposerRecipe>> RECIPE_TYPE = ModRecipes.DECOMPOSING_RECIPE_TYPE;
+	protected static final AnimationBuilder WORKING_ANIM = new AnimationBuilder().loop("decomposer.working");
+	protected static final AnimationBuilder IDLE_ANIM = new AnimationBuilder().loop("decomposer.idle");
 
 	private final DecomposerStateData stateData;
 	private final FuelHandler fuelHandler;
@@ -241,25 +243,25 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 		return true;
 	}
 
-	private <T extends DecomposerBlockEntity> PlayState onAnimation(final AnimationEvent<T> event) {
-		Boolean isCrafting = event.getAnimatable().getBlockState().getValue(MachineBlock.CRAFTING);
-
-		if (Boolean.TRUE.equals(isCrafting)) {
-			event.getController().setAnimation(new AnimationBuilder().loop("decomposer.working"));
-			loopingSoundHelper.startLoop(this, ModSoundEvents.DECOMPOSER_CRAFTING.get(), 0.65f);
-		}
-		else {
-			event.getController().setAnimation(new AnimationBuilder().loop("decomposer.idle"));
-			loopingSoundHelper.stopLoop();
-		}
-
-		return PlayState.CONTINUE;
-	}
-
 	private <T extends DecomposerBlockEntity> void onSoundKeyframe(final SoundKeyframeEvent<T> event) {
 		if (event.sound.equals("eat") && level != null && !isRemoved()) {
 			SoundUtil.clientPlayBlockSound(level, getBlockPos(), ModSoundEvents.DECOMPOSER_EAT);
 		}
+	}
+
+	private <T extends DecomposerBlockEntity> PlayState onAnimation(final AnimationEvent<T> event) {
+		Boolean isCrafting = event.getAnimatable().getBlockState().getValue(MachineBlock.CRAFTING);
+
+		if (Boolean.TRUE.equals(isCrafting)) {
+			event.getController().setAnimation(WORKING_ANIM);
+			loopingSoundHelper.startLoop(this, ModSoundEvents.DECOMPOSER_CRAFTING.get(), 0.65f);
+		}
+		else {
+			event.getController().setAnimation(IDLE_ANIM);
+			loopingSoundHelper.stopLoop();
+		}
+
+		return PlayState.CONTINUE;
 	}
 
 	@Override

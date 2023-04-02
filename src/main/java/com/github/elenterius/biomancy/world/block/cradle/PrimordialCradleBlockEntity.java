@@ -44,15 +44,25 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 
 	public static final String SACRIFICE_SYNC_KEY = "SyncSacrificeHandler";
 	public static final String SACRIFICE_KEY = "SacrificeHandler";
-
-	private long ticks;
+	protected static final AnimationBuilder IDLE_ANIM = new AnimationBuilder().addAnimation("cradle.anim.idle");
+	protected static final AnimationBuilder SPIKE_ANIM = new AnimationBuilder().addAnimation("cradle.anim.spike");
 	private final SacrificeHandler sacrificeHandler = new SacrificeHandler();
-
 	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
+	private long ticks;
 	private boolean playAttackAnimation = false;
 
 	public PrimordialCradleBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.PRIMORDIAL_CRADLE.get(), pos, state);
+	}
+
+	public static void serverTick(Level level, BlockPos pos, BlockState state, PrimordialCradleBlockEntity creator) {
+		if (creator.isFull()) {
+			creator.ticks++;
+			if (creator.ticks > DURATION) {
+				creator.onSacrifice((ServerLevel) level);
+				creator.ticks = 0;
+			}
+		}
 	}
 
 	public boolean insertItem(ItemStack stack) {
@@ -79,7 +89,8 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 			int particleCount = level.random.nextInt(6, 9);
 			SimpleParticleType particleType = sacrificeHandler.isLifeEnergySource(stack) ? ParticleTypes.GLOW : ParticleTypes.HAPPY_VILLAGER;
 			sendParticlesToClient(level, pos, particleType, particleCount);
-		} else {
+		}
+		else {
 			int particleCount = level.random.nextInt(2, 4);
 			sendParticlesToClient(level, getBlockPos(), ParticleTypes.ANGRY_VILLAGER, particleCount);
 		}
@@ -103,16 +114,6 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 
 	public boolean hasModifiers() {
 		return sacrificeHandler.hasModifiers();
-	}
-
-	public static void serverTick(Level level, BlockPos pos, BlockState state, PrimordialCradleBlockEntity creator) {
-		if (creator.isFull()) {
-			creator.ticks++;
-			if (creator.ticks > DURATION) {
-				creator.onSacrifice((ServerLevel) level);
-				creator.ticks = 0;
-			}
-		}
 	}
 
 	private void resetState() {
@@ -233,7 +234,8 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 		super.load(tag);
 		if (tag.contains(SACRIFICE_KEY)) {
 			sacrificeHandler.deserializeNBT(tag.getCompound(SACRIFICE_KEY));
-		} else if (tag.contains(SACRIFICE_SYNC_KEY)) {
+		}
+		else if (tag.contains(SACRIFICE_SYNC_KEY)) {
 			sacrificeHandler.deserializeNBT(tag.getCompound(SACRIFICE_SYNC_KEY));
 		}
 	}
@@ -257,14 +259,15 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 		//		}
 
 		if (playAttackAnimation) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("cradle.anim.spike"));
+			event.getController().setAnimation(SPIKE_ANIM);
 			if (event.getController().getAnimationState() != AnimationState.Stopped) return PlayState.CONTINUE;
 			stopAttackAnimation();
 		}
 
 		if (event.getController().getAnimationState() == AnimationState.Stopped) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("cradle.anim.idle"));
+			event.getController().setAnimation(IDLE_ANIM);
 		}
+
 		return PlayState.CONTINUE;
 	}
 
