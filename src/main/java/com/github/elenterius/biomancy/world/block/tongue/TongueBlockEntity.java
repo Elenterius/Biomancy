@@ -20,7 +20,6 @@ import net.minecraftforge.items.IItemHandler;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType.EDefaultLoopTypes;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
@@ -33,6 +32,8 @@ public class TongueBlockEntity extends SimpleSyncedBlockEntity implements IAnima
 	public static final int ITEM_TRANSFER_AMOUNT = 3;
 	public static final int DURATION = 24;
 	public static final int DELAY = 8 + 1; //ceil(31.2) --> 32
+	protected static final AnimationBuilder IDLE_ANIM = new AnimationBuilder().loop("tongue.anim.none");
+	protected static final AnimationBuilder STRETCH_ANIM = new AnimationBuilder().addAnimation("tongue.anim.stretch");
 
 	private final SingleItemStackHandler inventory;
 	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
@@ -138,10 +139,10 @@ public class TongueBlockEntity extends SimpleSyncedBlockEntity implements IAnima
 
 	private <E extends BlockEntity & IAnimatable> PlayState handleAnim(AnimationEvent<E> event) {
 		if (inventory.isEmpty()) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("tongue.anim.none", EDefaultLoopTypes.LOOP));
+			event.getController().setAnimation(IDLE_ANIM);
 		}
 		else {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("tongue.anim.stretch"));
+			event.getController().setAnimation(STRETCH_ANIM);
 		}
 		return PlayState.CONTINUE;
 	}

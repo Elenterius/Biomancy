@@ -42,6 +42,7 @@ public class MawHopperBlockEntity extends BlockEntity implements IAnimatable {
 	public static final int ITEM_TRANSFER_AMOUNT = 16;
 	public static final int DURATION = 24;
 	public static final int DELAY = 8 + 1;
+	protected static final AnimationBuilder PUMPING_ANIM = new AnimationBuilder().loop("pumping");
 
 	private int ticks = BiomancyMod.GLOBAL_RANDOM.nextInt(DURATION); //add random tick offset
 
@@ -226,7 +227,7 @@ public class MawHopperBlockEntity extends BlockEntity implements IAnimatable {
 		//		else {
 		//			event.getController().setAnimation(new AnimationBuilder().loop("pumping"));
 		//		}
-		event.getController().setAnimation(new AnimationBuilder().loop("pumping"));
+		event.getController().setAnimation(PUMPING_ANIM);
 		return PlayState.CONTINUE;
 	}
 

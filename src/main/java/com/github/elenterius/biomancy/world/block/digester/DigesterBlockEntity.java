@@ -64,6 +64,8 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 	public static final int MAX_FUEL = 1_000;
 	public static final short BASE_COST = 1;
 	public static final RegistryObject<SimpleRecipeType.ItemStackRecipeType<DigesterRecipe>> RECIPE_TYPE = ModRecipes.DIGESTING_RECIPE_TYPE;
+	protected static final AnimationBuilder WORKING_ANIM = new AnimationBuilder().loop("digester.working");
+	protected static final AnimationBuilder IDLE_ANIM = new AnimationBuilder().loop("digester.idle");
 
 	private final DigesterStateData stateData;
 	private final FuelHandler fuelHandler;
@@ -254,11 +256,11 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 		Boolean isCrafting = getBlockState().getValue(MachineBlock.CRAFTING);
 
 		if (Boolean.TRUE.equals(isCrafting)) {
-			event.getController().setAnimation(new AnimationBuilder().loop("digester.working"));
+			event.getController().setAnimation(WORKING_ANIM);
 			loopingSoundHelper.startLoop(this, ModSoundEvents.DIGESTER_CRAFTING.get(), 0.65f);
 		}
 		else {
-			event.getController().setAnimation(new AnimationBuilder().loop("digester.idle"));
+			event.getController().setAnimation(IDLE_ANIM);
 			loopingSoundHelper.stopLoop();
 		}
 
