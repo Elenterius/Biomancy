@@ -33,6 +33,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
+import software.bernie.geckolib3.core.builder.Animation;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
@@ -81,7 +82,7 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
 	protected int ticks = tickOffset;
 	private boolean playWorkingAnimation = false;
-	private float nearbyTimer = -1f;
+	private int nearbyTimer = -10;
 
 	public BioForgeBlockEntity(BlockPos worldPosition, BlockState blockState) {
 		super(ModBlockEntities.BIO_FORGE.get(), worldPosition, blockState);
@@ -261,21 +262,35 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 
 		BlockPos pos = getBlockPos();
 		Player player = level.getNearestPlayer(pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, 4.5d, false);
-		nearbyTimer = Mth.clamp(nearbyTimer + (player != null ? 0.1f : -0.1f), -1f, 1f);
+		nearbyTimer = Mth.clamp(nearbyTimer + (player != null ? 1 : -1), -10, 10);
 	}
 
 	private <E extends BlockEntity & IAnimatable> PlayState handleAnim(AnimationEvent<E> event) {
-		if (playWorkingAnimation) {
-			event.getController().setAnimation(new AnimationBuilder().loop("bio_forge.working"));
+
+		if (event.getController().getCurrentAnimation() == null) { //set default start animation
+			event.getController().setAnimation(Animations.FOLDED);
+			event.getController().transitionLengthTicks = 0;
 			return PlayState.CONTINUE;
 		}
 
-		if (nearbyTimer > 0f) {
-			event.getController().setAnimation(new AnimationBuilder().playOnce("bio_forge.unfold").loop("bio_forge.idle"));
+		if (playWorkingAnimation) {
+			event.getController().setAnimation(Animations.WORKING);
+			event.getController().transitionLengthTicks = 10;
+			return PlayState.CONTINUE;
+		}
+
+		if (nearbyTimer > 0) {
+			boolean isUnfoldedOrWorking = Animations.isUnfoldedOrWorking(event.getController());
+			event.getController().setAnimation(isUnfoldedOrWorking ? Animations.UNFOLDED : Animations.UNFOLDING);
+			event.getController().transitionLengthTicks = 10;
 		}
 		else {
-			event.getController().setAnimation(new AnimationBuilder().playOnce("bio_forge.fold").loop("bio_forge.folded_state"));
+			if (!Animations.isFolded(event.getController())) {
+				event.getController().setAnimation(Animations.FOLDING);
+				event.getController().transitionLengthTicks = 10;
+			}
 		}
+
 		return PlayState.CONTINUE;
 	}
 
@@ -287,6 +302,28 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 	@Override
 	public AnimationFactory getFactory() {
 		return animationFactory;
+	}
+
+	protected static class Animations {
+		protected static final AnimationBuilder UNFOLDING = new AnimationBuilder().playOnce("bio_forge.unfold").loop("bio_forge.idle");
+		protected static final AnimationBuilder UNFOLDED = new AnimationBuilder().loop("bio_forge.idle");
+		protected static final AnimationBuilder FOLDING = new AnimationBuilder().playOnce("bio_forge.fold").loop("bio_forge.folded_state");
+		protected static final AnimationBuilder FOLDED = new AnimationBuilder().loop("bio_forge.folded_state");
+		protected static final AnimationBuilder WORKING = new AnimationBuilder().loop("bio_forge.working");
+
+		private Animations() {}
+
+		protected static boolean isUnfoldedOrWorking(AnimationController<?> controller) {
+			Animation animation = controller.getCurrentAnimation();
+			if (animation == null) return false;
+			return animation.animationName.equals("bio_forge.idle") || animation.animationName.equals("bio_forge.working");
+		}
+
+		protected static boolean isFolded(AnimationController<?> controller) {
+			Animation animation = controller.getCurrentAnimation();
+			if (animation == null) return false;
+			return animation.animationName.equals("bio_forge.folded_state");
+		}
 	}
 
 }
