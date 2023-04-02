@@ -408,7 +408,7 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 
 		addBlock(ModBlocks.VOICE_BOX, "Modular Larynx", EMPTY_STRING);
 		addBlock(ModBlocks.TONGUE, "Tongue", "Extracts up to 3 items of the same type every 24 ticks from containers its attached to and drops them on the ground.");
-		addBlock(ModBlocks.MAW_HOPPER, "Maw Hopper", "A fleshy sister of the hopper. Transfers up to 16 items every 24 ticks.");
+		addBlock(ModBlocks.MAW_HOPPER, "Maw Hopper", "A fleshy sister of the hopper. Transfers up to 16 items at a time.");
 
 		addBlock(ModBlocks.STORAGE_SAC, "Storage Sac", "Cheap Shulker-like storage sac that also works like a bundle.");
 
