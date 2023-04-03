@@ -504,6 +504,12 @@ public class ModRecipeProvider extends RecipeProvider {
 		DecomposerRecipeBuilder.create().setIngredient(ModItems.TOXIN_GLAND).addOutput(ModItems.TOXIN_EXTRACT.get(), 2, 5).addOutput(ModItems.FLESH_BITS.get(), 2, 3).addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 3).unlockedBy(ModItems.TOXIN_GLAND).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(ModItems.VOLATILE_GLAND).addOutput(ModItems.VOLATILE_FLUID.get(), 2, 5).addOutput(ModItems.FLESH_BITS.get(), 2, 3).addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 3).unlockedBy(ModItems.VOLATILE_GLAND).save(consumer);
 
+		//Special
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.LIVING_FLESH)
+				.addOutput(ModItems.FLESH_BITS.get(), 3, 6)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 0, 2)
+				.unlockedBy(ModItems.LIVING_FLESH).save(consumer);
+
 		registerDecomposerRecipesForBiomesOPlenty(consumer);
 		registerDecomposerRecipesForAlexsMobs(consumer);
 	}
