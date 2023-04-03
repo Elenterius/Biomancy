@@ -927,6 +927,27 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addIngredient(ModItems.STONE_POWDER.get(), 1)
 				.setCategory(ModBioForgeTabs.MISC)
 				.unlockedBy(Items.NAUTILUS_SHELL).save(consumer);
+
+		BioForgeRecipeBuilder.create(ModItems.MASCOT_BANNER_PATTERN.get())
+				.addIngredient(ModItems.ORGANIC_MATTER.get(), 8)
+				.addIngredient(Items.SPIDER_EYE, 1)
+				.addIngredient(ModItems.BILE.get(), 4)
+				.setCategory(ModBioForgeTabs.MISC)
+				.unlockedBy(ModItems.ORGANIC_MATTER.get()).save(consumer);
+
+		BioForgeRecipeBuilder.create(ModItems.MASCOT_ACCENT_BANNER_PATTERN.get())
+				.addIngredient(ModItems.ORGANIC_MATTER.get(), 8)
+				.addIngredient(ModItems.EXOTIC_DUST.get(), 1)
+				.addIngredient(ModItems.BILE.get(), 4)
+				.setCategory(ModBioForgeTabs.MISC)
+				.unlockedBy(ModItems.ORGANIC_MATTER.get()).save(consumer);
+
+		BioForgeRecipeBuilder.create(ModItems.MASCOT_OUTLINE_BANNER_PATTERN.get())
+				.addIngredient(ModItems.ORGANIC_MATTER.get(), 8)
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 1)
+				.addIngredient(ModItems.BILE.get(), 4)
+				.setCategory(ModBioForgeTabs.MISC)
+				.unlockedBy(ModItems.ORGANIC_MATTER.get()).save(consumer);
 	}
 
 	private void registerBioLabRecipes(Consumer<FinishedRecipe> consumer) {
