@@ -504,10 +504,12 @@ public class ModRecipeProvider extends RecipeProvider {
 		DecomposerRecipeBuilder.create().setIngredient(ModItems.TOXIN_GLAND).addOutput(ModItems.TOXIN_EXTRACT.get(), 2, 5).addOutput(ModItems.FLESH_BITS.get(), 2, 3).addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 3).unlockedBy(ModItems.TOXIN_GLAND).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(ModItems.VOLATILE_GLAND).addOutput(ModItems.VOLATILE_FLUID.get(), 2, 5).addOutput(ModItems.FLESH_BITS.get(), 2, 3).addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 3).unlockedBy(ModItems.VOLATILE_GLAND).save(consumer);
 
-		//biomes o plenty
-		DecomposerRecipeBuilder.create().ifModLoaded("biomesoplenty").setIngredient(new DatagenIngredient("biomesoplenty:flesh_tendons")).addOutput(ModItems.ELASTIC_FIBERS.get(), 4, 8).addOutput(ModItems.FLESH_BITS.get(), 1, 2).unlockedBy(ModItems.MOB_SINEW).save(consumer);
-
+		registerDecomposerRecipesForBiomesOPlenty(consumer);
 		registerDecomposerRecipesForAlexsMobs(consumer);
+	}
+
+	private void registerDecomposerRecipesForBiomesOPlenty(Consumer<FinishedRecipe> consumer) {
+		DecomposerRecipeBuilder.create().ifModLoaded("biomesoplenty").setIngredient(new DatagenIngredient("biomesoplenty:flesh_tendons")).addOutput(ModItems.ELASTIC_FIBERS.get(), 4, 8).addOutput(ModItems.FLESH_BITS.get(), 1, 2).unlockedBy(ModItems.MOB_SINEW).save(consumer);
 	}
 
 	private void registerDecomposerRecipesForAlexsMobs(Consumer<FinishedRecipe> consumer) {
