@@ -46,9 +46,9 @@ style.
 
 ## Credits
 
-- **RhinoW** for artwork and game design help
-- **Shorepion** for sound desing and music
-- **Selea** for general feeback and help with version 1.0
+Special thanks to **RhinoW** for artwork and game design help.
+
+View full [List of Contributors](CREDITS.md)
 
 ## License
 
