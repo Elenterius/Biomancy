@@ -94,19 +94,19 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		ItemStack stackInHand = player.getItemInHand(hand);
-		if (increaseFillLevel(player, level, pos, stackInHand)) {
+		ItemStack stack = player.getItemInHand(hand);
+		if (increaseFillLevel(player, level, pos, ItemHandlerHelper.copyStackWithSize(stack, 1))) {
 			if (!level.isClientSide) {
-				boolean isPotion = stackInHand.getItem() instanceof PotionItem;
+				boolean isPotion = stack.getItem() instanceof PotionItem;
 
 				if (!player.isCreative()) {
-					stackInHand.shrink(1);
+					stack.shrink(1);
 				}
 
-				if (stackInHand.hasCraftingRemainingItem()) {
-					player.getInventory().add(stackInHand.getCraftingRemainingItem());
+				if (stack.hasCraftingRemainingItem()) {
+					player.getInventory().add(stack.getCraftingRemainingItem());
 				}
-				else if (isPotion && stackInHand.isEmpty()) {
+				else if (isPotion && stack.isEmpty()) {
 					player.getInventory().add(new ItemStack(Items.GLASS_BOTTLE));
 				}
 
@@ -138,7 +138,7 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 				else if (stack.getItem() instanceof PotionItem) {
 					entity.spawnAtLocation(new ItemStack(Items.GLASS_BOTTLE));
 				}
-				stack.shrink(1);
+				//				stack.shrink(1);
 			}
 		}
 	}
@@ -148,7 +148,7 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 			if (EXPENSIVE_ITEMS.test(stack)) return false;
 
 			BlockEntity blockEntity = level.getBlockEntity(pos);
-			if (blockEntity instanceof PrimordialCradleBlockEntity creator && !creator.isFull() && creator.insertItem(ItemHandlerHelper.copyStackWithSize(stack, 1))) {
+			if (blockEntity instanceof PrimordialCradleBlockEntity creator && !creator.isFull() && creator.insertItem(stack)) {
 				if (player != null) {
 					ModTriggers.SACRIFICED_ITEM_TRIGGER.trigger((ServerPlayer) player, stack);
 				}
