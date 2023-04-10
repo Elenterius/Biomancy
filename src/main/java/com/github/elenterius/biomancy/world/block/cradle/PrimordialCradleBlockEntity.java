@@ -69,30 +69,37 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 		if (level == null || level.isClientSide() || stack.isEmpty()) return false;
 		if (sacrificeHandler.isFull()) return false;
 
-		ItemStack prevStack = stack.copy();
-		if (sacrificeHandler.addItem(stack)) {
+		return sacrificeHandler.addItem(stack, tribute -> {
 			setChanged();
 			syncToClient();
-			visualizeIngredientValidity((ServerLevel) level, prevStack);
-			return true;
-		}
-		return false;
+			spawnTributeParticles((ServerLevel) level, tribute);
+		});
 	}
 
-	private void visualizeIngredientValidity(ServerLevel level, ItemStack stack) {
-		if (sacrificeHandler.isValidIngredient(stack)) {
-			BlockPos pos = getBlockPos();
-			if (sacrificeHandler.getSuccessModifier(stack) <= 0) {
-				int particleCount = level.random.nextInt(1, 3);
-				sendParticlesToClient(level, pos, ParticleTypes.ANGRY_VILLAGER, particleCount);
-			}
+	private void spawnTributeParticles(ServerLevel level, ITribute tribute) {
+		BlockPos pos = getBlockPos();
+
+		if (tribute.successModifier() < 0) {
+			int n = tribute.successModifier() < -99 ? 2 : 0;
+			int particleCount = level.random.nextInt(1 + n, 3 + n);
+			sendParticlesToClient(level, pos, ParticleTypes.ANGRY_VILLAGER, particleCount);
+		}
+		else if (tribute.successModifier() > 0) {
 			int particleCount = level.random.nextInt(6, 9);
-			SimpleParticleType particleType = sacrificeHandler.isLifeEnergySource(stack) ? ParticleTypes.GLOW : ParticleTypes.HAPPY_VILLAGER;
+			SimpleParticleType particleType = ParticleTypes.HAPPY_VILLAGER;
 			sendParticlesToClient(level, pos, particleType, particleCount);
 		}
-		else {
-			int particleCount = level.random.nextInt(2, 4);
-			sendParticlesToClient(level, getBlockPos(), ParticleTypes.ANGRY_VILLAGER, particleCount);
+
+		if (tribute.lifeEnergy() > 0) {
+			int n = Mth.clamp(Math.round(tribute.lifeEnergy() / 100f) * 5, 1, 5);
+			int particleCount = level.random.nextInt(n, n + 4);
+			sendParticlesToClient(level, pos, ParticleTypes.GLOW, particleCount);
+		}
+
+		if (tribute.diseaseModifier() > 0) {
+			int n = Mth.clamp(Math.round(tribute.diseaseModifier() / 100f) * 8, 1, 8);
+			int particleCount = level.random.nextInt(n, n + 4);
+			sendParticlesToClient(level, pos, ParticleTypes.MYCELIUM, particleCount);
 		}
 	}
 

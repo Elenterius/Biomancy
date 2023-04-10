@@ -94,19 +94,19 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		ItemStack stackInHand = player.getItemInHand(hand);
-		if (increaseFillLevel(player, level, pos, stackInHand)) {
+		ItemStack stack = player.getItemInHand(hand);
+		if (increaseFillLevel(player, level, pos, ItemHandlerHelper.copyStackWithSize(stack, 1))) {
 			if (!level.isClientSide) {
-				boolean isPotion = stackInHand.getItem() instanceof PotionItem;
+				boolean isPotion = stack.getItem() instanceof PotionItem;
 
 				if (!player.isCreative()) {
-					stackInHand.shrink(1);
+					stack.shrink(1);
 				}
 
-				if (stackInHand.hasContainerItem()) {
-					player.getInventory().add(stackInHand.getContainerItem());
+				if (stack.hasContainerItem()) {
+					player.getInventory().add(stack.getContainerItem());
 				}
-				else if (isPotion && stackInHand.isEmpty()) {
+				else if (isPotion && stack.isEmpty()) {
 					player.getInventory().add(new ItemStack(Items.GLASS_BOTTLE));
 				}
 
@@ -138,7 +138,7 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 				else if (stack.getItem() instanceof PotionItem) {
 					entity.spawnAtLocation(new ItemStack(Items.GLASS_BOTTLE));
 				}
-				stack.shrink(1);
+				//				stack.shrink(1);
 			}
 		}
 	}
@@ -148,7 +148,7 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 			if (EXPENSIVE_ITEMS.test(stack)) return false;
 
 			BlockEntity blockEntity = level.getBlockEntity(pos);
-			if (blockEntity instanceof PrimordialCradleBlockEntity creator && !creator.isFull() && creator.insertItem(ItemHandlerHelper.copyStackWithSize(stack, 1))) {
+			if (blockEntity instanceof PrimordialCradleBlockEntity creator && !creator.isFull() && creator.insertItem(stack)) {
 				if (player != null) {
 					ModTriggers.SACRIFICED_ITEM_TRIGGER.trigger((ServerPlayer) player, stack);
 				}
@@ -179,7 +179,7 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 			double g = (color >> 8 & 255) / 255d;
 			double b = (color & 255) / 255d;
 			for (int i = 0; i < particleAmount; i++) {
-				level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + random.nextFloat(0.13125f, 0.7375f), pos.getY() + 0.5f, pos.getZ() + random.nextFloat(0.13125f, 0.7375f), r, g, b);
+				level.addParticle(ParticleTypes.ENTITY_EFFECT, pos.getX() + ((random.nextFloat() * 0.60625) + 0.13125f), pos.getY() + 0.5f, pos.getZ() + ((random.nextFloat() * 0.60625) + 0.13125f), r, g, b);
 			}
 			if (random.nextInt(3) == 0) {
 				SoundUtil.clientPlayBlockSound(level, pos, ModSoundEvents.CREATOR_CRAFTING_RANDOM, 0.85f);
