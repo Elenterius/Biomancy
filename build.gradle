@@ -235,16 +235,17 @@ build {
 jar {
     // manifest properties for reading on runtime
     //noinspection GroovyAssignabilityCheck
-    manifest {
-        attributes(["Specification-Title"     : "biomancy",
-                    "Specification-Vendor"    : "Elenterius",
-                    "Specification-Version"   : "2",
-                    "Implementation-Title"    : project.name,
-                    "Implementation-Version"  : mod_version,
-                    "Implementation-Vendor"   : "Elenterius",
-                    "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                    "MixinConfigs"            : "mixins.biomancy.json"])
-    }
+	manifest {
+		attributes(["Specification-Title"     : "biomancy",
+					"Specification-Vendor"    : "Elenterius",
+					"Specification-Version"   : "2",
+					"Implementation-Title"    : project.name,
+					"Implementation-Version"  : mod_version,
+					"Implementation-Vendor"   : "Elenterius",
+					"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+					"MixinConfigs"            : "mixins.biomancy.json"])
+	}
+	from { ["CREDITS.md", "LICENSE.txt"] } //copy files from the repository root into the jar
 }
 
 // This is the preferred method to reobfuscate your jar file

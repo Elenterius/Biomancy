@@ -14,10 +14,11 @@ Sound Design and Music
 
 ## Kitteh6660
 
-Programming & Models, etc.
+Programming & Models
 
 - initial port of the mod to 1.19
 - Wide Flesh Door
+- Bio-Bed
 
 ## ZeoMaddox
 
@@ -28,9 +29,12 @@ Models and Textures
 
 ## ItsLumine
 
-Models and Textures
+Models, Animations and Textures
 
 - Bone Spike
+- Maw Hopper
+- Guide Book
+- Primordial Vent
 
 ## RuskieThe3rd
 
@@ -40,3 +44,4 @@ Textures & Animations
 - animated Living Flesh texture
 - animated Volatile Fluid texture
 - animated Exotic Dust texture
+- Primordial Vent

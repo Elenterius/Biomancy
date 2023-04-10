@@ -1,4 +1,4 @@
-Copyright (c) 2022 Elenterius
+Copyright (c) 2022-2023 Elenterius
 
 All code is licensed under the MIT License.
 
