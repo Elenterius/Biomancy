@@ -29,18 +29,18 @@ jobs:
           distribution: 'temurin'
 
       - name: Validate Gradle Wrapper
-        uses: gradle/wrapper-validation-action@v1.0.4
+        uses: gradle/wrapper-validation-action@v1
 
       - name: Setup/Cache Gradle
-        uses: gradle/gradle-build-action@v2.2.2
+        uses: gradle/gradle-build-action@v2
 
       - name: Test Asset Generation
-        uses: gradle/gradle-build-action@v2.2.2
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: runDataCI
 
       - name: Test Build
-        uses: gradle/gradle-build-action@v2.2.2
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: build
 
@@ -70,7 +70,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           version-file: './mod_version.json'
           version-path: 'semantic'
-          output-file: 'false'
           git-message: 'chore(release): {version}'
           tag-prefix: '${{ steps.gradle_properties.outputs.mc_version }}-v2.'
           create-summary: true
@@ -109,10 +108,10 @@ jobs:
           distribution: 'temurin'
 
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2.2.2
+        uses: gradle/gradle-build-action@v2
 
       - name: Generate Assets
-        uses: gradle/gradle-build-action@v2.2.2
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: runDataCI
 
@@ -125,7 +124,7 @@ jobs:
           CARGO_TERM_COLOR: always
 
       - name: Build Artifact
-        uses: gradle/gradle-build-action@v2.2.2
+        uses: gradle/gradle-build-action@v2
         with:
           arguments: build
 
