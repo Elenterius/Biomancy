@@ -67,6 +67,7 @@ jobs:
         id: changelog
         uses: TriPSs/conventional-changelog-action@v3
         with:
+          preset: 'conventionalcommits'
           github-token: ${{ secrets.GITHUB_TOKEN }}
           version-file: './mod_version.json'
           version-path: 'semantic'
