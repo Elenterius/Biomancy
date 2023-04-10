@@ -34,7 +34,7 @@ public class AgeingSerum extends Serum {
 	}
 
 	private void convertToElderGuardian(ServerLevel level, Guardian guardian) {
-		MobUtil.convertMobTo(level, guardian, EntityType.GUARDIAN, true, (oldGuardian, elderGuardian) -> {
+		MobUtil.convertMobTo(level, guardian, EntityType.ELDER_GUARDIAN, true, (oldGuardian, elderGuardian) -> {
 			if (!oldGuardian.isSilent()) {
 				level.levelEvent(null, LevelEvent.SOUND_ZOMBIE_INFECTED, oldGuardian.blockPosition(), 0);
 			}
