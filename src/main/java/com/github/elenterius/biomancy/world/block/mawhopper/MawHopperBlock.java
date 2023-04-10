@@ -91,8 +91,9 @@ public class MawHopperBlock extends BaseEntityBlock {
 		Direction direction = context.getClickedFace();
 		BlockState state = defaultBlockState().setValue(FACING, direction);
 
-		BlockPos pullPos = context.getClickedPos().relative(direction);
-		if (context.getLevel().getBlockState(pullPos).getBlock() instanceof MawHopperBlock) {
+		BlockPos neighborPos = context.getClickedPos().relative(direction);
+		BlockState neighborState = context.getLevel().getBlockState(neighborPos);
+		if (neighborState.getBlock() instanceof MawHopperBlock && getDirection(neighborState) == direction) {
 			return state.setValue(SHAPE, Shape.CONNECTED);
 		}
 
