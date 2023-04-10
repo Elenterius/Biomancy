@@ -356,8 +356,8 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 		addItem(ModItems.BONE_CLEAVER, "Bone Cleaver", "A specialized bone tool for getting additional special loot from its victims.");
 		addItem(ModItems.GLASS_VIAL, "Glass Vial", "Glass is transparent... very brittle, yet strong and rigid. Very high alchemical resistance, seems perfect for holding reactive substances.");
 		addItem(ModItems.LIVING_FLESH, "Living Flesh", "It's alive!\nBut it looks too dumb to be the brain of a mob. You should turn it into a construct.");
-		addItem(ModItems.PRIMORDIAL_LIVING_FLESH, "Primordial Flesh", "A ominous piece of primal flesh oozing primordial soup. It looks hungry...");
-		addItem(ModItems.PRIMORDIAL_LIVING_OCULUS, "Primordial Oculus", "A ominous eye is gazing at you...");
+		//		addItem(ModItems.PRIMORDIAL_LIVING_FLESH, "Primordial Flesh", "A ominous piece of primal flesh oozing primordial soup. It looks hungry...");
+		//		addItem(ModItems.PRIMORDIAL_LIVING_OCULUS, "Primordial Oculus", "A ominous eye is gazing at you...");
 		addItem(ModItems.GUIDE_BOOK, "Primordial Index", "Ask questions?");
 		addItem(ModItems.CREATOR_MIX, "Exotic Flesh Mix", "A meal made for the cradle... just not for you.");
 		addItem(ModItems.INJECTOR, "Bio-Injector", "A simple device which utilizes a razor sharp needle to quickly and forcefully inject Serums into Mobs and Players.");

@@ -123,22 +123,22 @@ public class ModRecipeProvider extends RecipeProvider {
 				.pattern("B  ")
 				.unlockedBy(hasName(Items.BONE), has(Tags.Items.BONES)).save(consumer);
 
-		WorkbenchRecipeBuilder.shapeless(ModItems.PRIMORDIAL_LIVING_OCULUS.get())
-				.requires(Items.SPIDER_EYE)
-				.requires(ModTags.Items.RAW_MEATS)
-				.requires(ModTags.Items.RAW_MEATS)
-				.requires(ModItems.MOB_SINEW.get())
-				.requires(ModItems.MOB_MARROW.get())
-				.requires(ModItems.PRIMORDIAL_LIVING_FLESH.get())
-				.unlockedBy(hasName(ModItems.PRIMORDIAL_LIVING_FLESH.get()), has(ModItems.PRIMORDIAL_LIVING_FLESH.get())).save(consumer);
-
-		WorkbenchRecipeBuilder.shapeless(ModItems.GUIDE_BOOK.get())
-				.requires(ModItems.MOB_SINEW.get())
-				.requires(Items.BOOK)
-				.requires(ModTags.Items.RAW_MEATS)
-				.requires(ModItems.PRIMORDIAL_LIVING_OCULUS.get())
-				.requires(ModItems.MOB_FANG.get())
-				.unlockedBy(hasName(ModItems.PRIMORDIAL_LIVING_FLESH.get()), has(ModItems.PRIMORDIAL_LIVING_FLESH.get())).save(consumer);
+		//		WorkbenchRecipeBuilder.shapeless(ModItems.PRIMORDIAL_LIVING_OCULUS.get())
+		//				.requires(Items.SPIDER_EYE)
+		//				.requires(ModTags.Items.RAW_MEATS)
+		//				.requires(ModTags.Items.RAW_MEATS)
+		//				.requires(ModItems.MOB_SINEW.get())
+		//				.requires(ModItems.MOB_MARROW.get())
+		//				.requires(ModItems.PRIMORDIAL_LIVING_FLESH.get())
+		//				.unlockedBy(hasName(ModItems.PRIMORDIAL_LIVING_FLESH.get()), has(ModItems.PRIMORDIAL_LIVING_FLESH.get())).save(consumer);
+		//
+		//		WorkbenchRecipeBuilder.shapeless(ModItems.GUIDE_BOOK.get())
+		//				.requires(ModItems.MOB_SINEW.get())
+		//				.requires(Items.BOOK)
+		//				.requires(ModTags.Items.RAW_MEATS)
+		//				.requires(ModItems.PRIMORDIAL_LIVING_OCULUS.get())
+		//				.requires(ModItems.MOB_FANG.get())
+		//				.unlockedBy(hasName(ModItems.PRIMORDIAL_LIVING_FLESH.get()), has(ModItems.PRIMORDIAL_LIVING_FLESH.get())).save(consumer);
 
 		WorkbenchRecipeBuilder.shaped(ModItems.GLASS_VIAL.get(), 8)
 				.define('G', Tags.Items.GLASS).define('T', Items.CLAY_BALL)
@@ -150,7 +150,7 @@ public class ModRecipeProvider extends RecipeProvider {
 		// machines ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		WorkbenchRecipeBuilder.shaped(ModItems.PRIMORDIAL_CRADLE.get())
-				.define('E', ModItems.PRIMORDIAL_LIVING_OCULUS.get())
+				.define('E', Items.ENDER_EYE)
 				.define('M', ModTags.Items.RAW_MEATS)
 				.define('F', ModItems.MOB_FANG.get())
 				.pattern("F F")

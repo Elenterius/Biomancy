@@ -38,8 +38,8 @@ public final class ModItems {
 
 	//## Special
 	public static final RegistryObject<SimpleItem> LIVING_FLESH = registerSimpleItem("living_flesh", ModRarities.VERY_RARE);
-	public static final RegistryObject<SimpleItem> PRIMORDIAL_LIVING_FLESH = registerItem("primordial_living_flesh", props -> new SimpleItem(props.rarity(ModRarities.ULTRA_RARE)));
-	public static final RegistryObject<SimpleItem> PRIMORDIAL_LIVING_OCULUS = registerItem("primordial_living_oculus", props -> new SimpleItem(props.rarity(ModRarities.ULTRA_RARE)));
+	//	public static final RegistryObject<SimpleItem> PRIMORDIAL_LIVING_FLESH = registerItem("primordial_living_flesh", props -> new SimpleItem(props.rarity(ModRarities.ULTRA_RARE)));
+	//	public static final RegistryObject<SimpleItem> PRIMORDIAL_LIVING_OCULUS = registerItem("primordial_living_oculus", props -> new SimpleItem(props.rarity(ModRarities.ULTRA_RARE)));
 
 	//# Components
 	//## Complex
@@ -88,7 +88,7 @@ public final class ModItems {
 	public static final RegistryObject<EssenceItem> ESSENCE = registerItem("essence", props -> new EssenceItem(props.tab(null)));
 	public static final RegistryObject<BioExtractorItem> BIO_EXTRACTOR = registerItem("bio_extractor", props -> new BioExtractorItem(props.durability(200).tab(null)));
 	public static final RegistryObject<InjectorItem> INJECTOR = registerItem("injector", props -> new InjectorItem(props.durability(200).rarity(ModRarities.RARE)));
-	public static final RegistryObject<GuideBookItem> GUIDE_BOOK = registerItem("guide_book", props -> new GuideBookItem(props.stacksTo(1).rarity(ModRarities.RARE)));
+	public static final RegistryObject<GuideBookItem> GUIDE_BOOK = registerItem("guide_book", props -> new GuideBookItem(props.stacksTo(1).rarity(ModRarities.RARE).tab(null)));
 	//	public static final RegistryObject<ControlStaffItem> CONTROL_STAFF = registerItem("control_staff", props -> new ControlStaffItem(props.stacksTo(1).rarity(ModRarities.ULTRA_RARE)));
 
 	public static final RegistryObject<MaykerBannerPatternItem> MASCOT_BANNER_PATTERNS = registerItem("mascot_patterns", props -> new MaykerBannerPatternItem(ModBannerPatterns.TAG_MASCOT, props));
