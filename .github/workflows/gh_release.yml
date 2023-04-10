@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Cargo Install Oxipng
-        uses: baptiste0928/cargo-install@v1.3.0 #provides cache-efficient Rust crates installation
+        uses: baptiste0928/cargo-install@v2 #provides cache-efficient Rust crates installation
         with:
           crate: oxipng
         env:
@@ -96,7 +96,7 @@ jobs:
           ref: ${{ needs.changelog.outputs.tag }}
 
       - name: Setup Oxipng
-        uses: baptiste0928/cargo-install@v1.3.0 #provides cache-efficient Rust crates installation
+        uses: baptiste0928/cargo-install@v2 #provides cache-efficient Rust crates installation
         with:
           crate: oxipng
         env:
