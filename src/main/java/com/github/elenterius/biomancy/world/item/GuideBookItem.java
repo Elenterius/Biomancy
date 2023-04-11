@@ -17,6 +17,8 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -64,13 +66,18 @@ public class GuideBookItem extends SimpleItem implements IAnimatable {
 		ItemStack stack = player.getItemInHand(usedHand);
 
 		if (level.isClientSide) {
-			boolean canOpenBook = ModsCompatHandler.getModonomiconHelper().openBook(GUIDE_BOOK_ID);
-			if (!canOpenBook && player instanceof LocalPlayer localPlayer) {
-				Minecraft.getInstance().setScreen(new AdvancementsScreen(localPlayer.connection.getAdvancements())); //fallback
-			}
+			tryToOpenClientScreen(player);
 		}
 
 		return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	private void tryToOpenClientScreen(Player player) {
+		boolean canOpenBook = ModsCompatHandler.getModonomiconHelper().openBook(GUIDE_BOOK_ID);
+		if (!canOpenBook && player instanceof LocalPlayer localPlayer) {
+			Minecraft.getInstance().setScreen(new AdvancementsScreen(localPlayer.connection.getAdvancements())); //fallback
+		}
 	}
 
 	@Override
