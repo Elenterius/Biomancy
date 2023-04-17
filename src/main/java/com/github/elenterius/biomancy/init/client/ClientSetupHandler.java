@@ -2,9 +2,9 @@ package com.github.elenterius.biomancy.init.client;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.gui.IngameOverlays;
+import com.github.elenterius.biomancy.client.render.entity.fleshblob.FleshBlobRenderer;
 import com.github.elenterius.biomancy.client.renderer.block.*;
 import com.github.elenterius.biomancy.client.renderer.entity.AcidProjectileRenderer;
-import com.github.elenterius.biomancy.client.renderer.entity.FleshBlobRenderer;
 import com.github.elenterius.biomancy.client.renderer.entity.WitherProjectileRenderer;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModBlocks;

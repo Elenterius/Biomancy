@@ -1,16 +1,14 @@
 package com.github.elenterius.biomancy.world.entity.ai.goal;
 
 import com.github.elenterius.biomancy.world.entity.IJukeboxDancer;
-import net.minecraft.core.BlockPos;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.level.gameevent.GameEvent;
 
 import java.util.EnumSet;
-import java.util.Set;
 
+/**
+ * Currently broken in 1.18.2
+ */
 public class DanceNearJukeboxGoal<T extends PathfinderMob & IJukeboxDancer> extends Goal {
 
 	protected final T mob;
@@ -22,7 +20,8 @@ public class DanceNearJukeboxGoal<T extends PathfinderMob & IJukeboxDancer> exte
 
 	@Override
 	public boolean canUse() {
-		return mob.getJukeboxPos() != null && mob.isDancing();
+		return false;
+		//		return mob.getJukeboxPos() != null && mob.isDancing();
 	}
 
 	@Override
@@ -32,30 +31,30 @@ public class DanceNearJukeboxGoal<T extends PathfinderMob & IJukeboxDancer> exte
 
 	@Override
 	public void start() {
-		BlockPos pos = mob.getJukeboxPos();
-		if (pos != null) {
-			float radius = GameEvent.JUKEBOX_PLAY.getNotificationRadius() * 0.45f;
-			double distanceSqr = pos.distToCenterSqr(mob.position());
-
-			PathNavigation navigation = mob.getNavigation();
-
-			if (distanceSqr >= Mth.square(radius)) {
-				navigation.moveTo(navigation.createPath(pos, 4), 0.9f);
-			}
-			else {
-				Set<BlockPos> pathPoints = Set.of(
-						pos.north(3),
-						pos.east(3),
-						pos.south(3),
-						pos.west(3),
-						pos.south(2).west(2),
-						pos.east(2).south(2),
-						pos.north(2).east(2),
-						pos.west(2).north(2)
-				);
-				navigation.moveTo(navigation.createPath(pathPoints, 3), 0.7f);
-			}
-		}
+		//		BlockPos pos = mob.getJukeboxPos();
+		//		if (pos != null) {
+		//			float radius = GameEvent.JUKEBOX_PLAY.getNotificationRadius() * 0.45f;
+		//			double distanceSqr = pos.distToCenterSqr(mob.position());
+		//
+		//			PathNavigation navigation = mob.getNavigation();
+		//
+		//			if (distanceSqr >= Mth.square(radius)) {
+		//				navigation.moveTo(navigation.createPath(pos, 4), 0.9f);
+		//			}
+		//			else {
+		//				Set<BlockPos> pathPoints = Set.of(
+		//						pos.north(3),
+		//						pos.east(3),
+		//						pos.south(3),
+		//						pos.west(3),
+		//						pos.south(2).west(2),
+		//						pos.east(2).south(2),
+		//						pos.north(2).east(2),
+		//						pos.west(2).north(2)
+		//				);
+		//				navigation.moveTo(navigation.createPath(pathPoints, 3), 0.7f);
+		//			}
+		//		}
 	}
 
 	@Override

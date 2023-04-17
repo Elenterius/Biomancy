@@ -12,6 +12,7 @@ import com.github.elenterius.biomancy.util.SacrificeHandler;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.block.PrimordialCradleBlock;
 import com.github.elenterius.biomancy.world.entity.fleshblob.AbstractFleshBlob;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;

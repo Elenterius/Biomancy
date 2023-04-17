@@ -10,7 +10,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
@@ -18,8 +17,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.gameevent.*;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -29,8 +26,6 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
-
-import java.util.function.BiConsumer;
 
 public abstract class AbstractFleshBlob extends PathfinderMob implements JumpMoveHelper.IJumpingPathfinderMob, IJukeboxDancer, IAnimatable {
 
@@ -43,12 +38,12 @@ public abstract class AbstractFleshBlob extends PathfinderMob implements JumpMov
 
 	protected final JumpMoveHelper<AbstractFleshBlob> jumpMoveHelper = new JumpMoveHelper<>(this, JUMPING_STATE_ID);
 	protected final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
-	private final DynamicGameEventListener<JukeboxListener> dynamicJukeboxListener;
+//	private final DynamicGameEventListener<JukeboxListener> dynamicJukeboxListener;
 	private @Nullable BlockPos jukeboxPos;
 
 	protected AbstractFleshBlob(EntityType<? extends AbstractFleshBlob> entityType, Level level) {
 		super(entityType, level);
-		dynamicJukeboxListener = new DynamicGameEventListener<>(new JukeboxListener(new EntityPositionSource(this, this.getEyeHeight()), GameEvent.JUKEBOX_PLAY.getNotificationRadius()));
+		//		dynamicJukeboxListener = new DynamicGameEventListener<>(new JukeboxListener(new EntityPositionSource(this, this.getEyeHeight()), GameEvent.JUKEBOX_PLAY.getNotificationRadius()));
 	}
 
 	@Nullable
@@ -93,12 +88,12 @@ public abstract class AbstractFleshBlob extends PathfinderMob implements JumpMov
 		super.onSyncedDataUpdated(key);
 	}
 
-	@Override
-	public void updateDynamicGameEventListener(BiConsumer<DynamicGameEventListener<?>, ServerLevel> listener) {
-		if (level instanceof ServerLevel serverlevel) {
-			listener.accept(dynamicJukeboxListener, serverlevel);
-		}
-	}
+	//	@Override
+	//	public void updateDynamicGameEventListener(BiConsumer<DynamicGameEventListener<?>, ServerLevel> listener) {
+	//		if (level instanceof ServerLevel serverlevel) {
+	//			listener.accept(dynamicJukeboxListener, serverlevel);
+	//		}
+	//	}
 
 	@Override
 	public EntityDimensions getDimensions(Pose pose) {
@@ -225,18 +220,18 @@ public abstract class AbstractFleshBlob extends PathfinderMob implements JumpMov
 		super.aiStep();
 		jumpMoveHelper.onAiStep();
 
-		if (tickCount % 20 == 0 && isDancing() && shouldStopDancing()) {
-			setDancing(false);
-			jukeboxPos = null;
-		}
+		//		if (tickCount % 20 == 0 && isDancing() && shouldStopDancing()) {
+		//			setDancing(false);
+		//			jukeboxPos = null;
+		//		}
 	}
 
-	protected boolean shouldStopDancing() {
-		boolean wasHurt = lastHurtByPlayer != null || getLastHurtByMob() != null;
-		if (wasHurt) return true;
-
-		return jukeboxPos == null || !jukeboxPos.closerToCenterThan(position(), GameEvent.JUKEBOX_PLAY.getNotificationRadius()) || !level.getBlockState(jukeboxPos).is(Blocks.JUKEBOX);
-	}
+	//	protected boolean shouldStopDancing() {
+	//		boolean wasHurt = lastHurtByPlayer != null || getLastHurtByMob() != null;
+	//		if (wasHurt) return true;
+	//
+	//		return jukeboxPos == null || !jukeboxPos.closerToCenterThan(position(), GameEvent.JUKEBOX_PLAY.getNotificationRadius()) || !level.getBlockState(jukeboxPos).is(Blocks.JUKEBOX);
+	//	}
 
 	@Override
 	protected void customServerAiStep() {
@@ -283,19 +278,19 @@ public abstract class AbstractFleshBlob extends PathfinderMob implements JumpMov
 		return false;
 	}
 
-	public void setJukeboxPlaying(BlockPos pos, boolean isJukeboxPlaying) {
-		if (isJukeboxPlaying) {
-			boolean wasHurt = lastHurtByPlayer != null || getLastHurtByMob() != null;
-			if (!isDancing() && !wasHurt) {
-				jukeboxPos = pos;
-				setDancing(true);
-			}
-		}
-		else if (pos.equals(jukeboxPos) || jukeboxPos == null) {
-			jukeboxPos = null;
-			setDancing(false);
-		}
-	}
+	//	public void setJukeboxPlaying(BlockPos pos, boolean isJukeboxPlaying) {
+	//		if (isJukeboxPlaying) {
+	//			boolean wasHurt = lastHurtByPlayer != null || getLastHurtByMob() != null;
+	//			if (!isDancing() && !wasHurt) {
+	//				jukeboxPos = pos;
+	//				setDancing(true);
+	//			}
+	//		}
+	//		else if (pos.equals(jukeboxPos) || jukeboxPos == null) {
+	//			jukeboxPos = null;
+	//			setDancing(false);
+	//		}
+	//	}
 
 	protected <E extends IAnimatable> PlayState handleJumpAnimation(AnimationEvent<E> event) {
 		float jumpPct = jumpMoveHelper.getJumpCompletionPct(event.getPartialTick());
@@ -318,18 +313,18 @@ public abstract class AbstractFleshBlob extends PathfinderMob implements JumpMov
 		return PlayState.CONTINUE;
 	}
 
-	protected <E extends IAnimatable> PlayState handleDaneAnimation(AnimationEvent<E> event) {
-		if (isDancing()) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("dancing.loop"));
-			return PlayState.CONTINUE;
-		}
-		return PlayState.STOP;
-	}
+	//	protected <E extends IAnimatable> PlayState handleDaneAnimation(AnimationEvent<E> event) {
+	//		if (isDancing()) {
+	//			event.getController().setAnimation(new AnimationBuilder().addAnimation("dancing.loop"));
+	//			return PlayState.CONTINUE;
+	//		}
+	//		return PlayState.STOP;
+	//	}
 
 	@Override
 	public void registerControllers(AnimationData data) {
 		data.addAnimationController(new AnimationController<>(this, "jumpController", 0, this::handleJumpAnimation));
-		data.addAnimationController(new AnimationController<>(this, "danceController", 10, this::handleDaneAnimation));
+		//		data.addAnimationController(new AnimationController<>(this, "danceController", 10, this::handleDaneAnimation));
 	}
 
 	@Override
@@ -337,37 +332,36 @@ public abstract class AbstractFleshBlob extends PathfinderMob implements JumpMov
 		return animationFactory;
 	}
 
-	protected class JukeboxListener implements GameEventListener {
-		private final PositionSource listenerSource;
-		private final int listenerRadius;
-
-		public JukeboxListener(PositionSource positionSource, int radius) {
-			listenerSource = positionSource;
-			listenerRadius = radius;
-		}
-
-		@Override
-		public PositionSource getListenerSource() {
-			return listenerSource;
-		}
-
-		@Override
-		public int getListenerRadius() {
-			return listenerRadius;
-		}
-
-		@Override
-		public boolean handleGameEvent(ServerLevel pLevel, GameEvent.Message message) {
-			if (message.gameEvent() == GameEvent.JUKEBOX_PLAY) {
-				setJukeboxPlaying(new BlockPos(message.source()), true);
-				return true;
-			}
-			else if (message.gameEvent() == GameEvent.JUKEBOX_STOP_PLAY) {
-				setJukeboxPlaying(new BlockPos(message.source()), false);
-				return true;
-			}
-
-			return false;
-		}
-	}
+	//	protected class JukeboxListener implements GameEventListener {
+	//		private final PositionSource listenerSource;
+	//		private final int listenerRadius;
+	//
+	//		public JukeboxListener(PositionSource positionSource, int radius) {
+	//			listenerSource = positionSource;
+	//			listenerRadius = radius;
+	//		}
+	//
+	//		@Override
+	//		public PositionSource getListenerSource() {
+	//			return listenerSource;
+	//		}
+	//
+	//		@Override
+	//		public int getListenerRadius() {
+	//			return listenerRadius;
+	//		}
+	//
+	//		@Override
+	//		public boolean handleGameEvent(Level level, GameEvent event, @Nullable Entity entity, BlockPos pos) {
+	//			if (event == GameEvent.JUKEBOX_PLAY) {
+	//				setJukeboxPlaying(new BlockPos(message.source()), true);
+	//				return true;
+	//			}
+	//			else if (event == GameEvent.JUKEBOX_STOP_PLAY) {
+	//				setJukeboxPlaying(new BlockPos(message.source()), false);
+	//				return true;
+	//			}
+	//			return false;
+	//		}
+	//	}
 }

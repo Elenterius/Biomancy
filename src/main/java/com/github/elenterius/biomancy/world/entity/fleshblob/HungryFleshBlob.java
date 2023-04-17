@@ -2,7 +2,6 @@ package com.github.elenterius.biomancy.world.entity.fleshblob;
 
 import com.github.elenterius.biomancy.world.entity.MobUtil;
 import com.github.elenterius.biomancy.world.entity.ai.goal.BurningOrFreezingPanicGoal;
-import com.github.elenterius.biomancy.world.entity.ai.goal.DanceNearJukeboxGoal;
 import com.github.elenterius.biomancy.world.entity.ai.goal.EatFoodItemGoal;
 import com.github.elenterius.biomancy.world.entity.ai.goal.FindItemGoal;
 import net.minecraft.sounds.SoundSource;
@@ -51,7 +50,7 @@ public class HungryFleshBlob extends FleshBlob implements Enemy {
 		goalSelector.addGoal(3, new EatFoodItemGoal<>(this, 0.1f));
 		goalSelector.addGoal(4, new CustomAttackGoal(this, 1.2f));
 		goalSelector.addGoal(5, new AvoidEntityGoal<>(this, AbstractGolem.class, 6f, 1f, 1.2f));
-		goalSelector.addGoal(6, new DanceNearJukeboxGoal<>(this));
+//		goalSelector.addGoal(6, new DanceNearJukeboxGoal<>(this));
 		goalSelector.addGoal(6, new WaterAvoidingRandomStrollGoal(this, 1f));
 		goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8f));
 		goalSelector.addGoal(7, new RandomLookAroundGoal(this));

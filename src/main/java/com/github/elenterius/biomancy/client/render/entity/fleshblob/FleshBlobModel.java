@@ -18,12 +18,12 @@ public class FleshBlobModel<T extends AbstractFleshBlob> extends AnimatedGeoMode
 	protected static final ResourceLocation WATCHER_TEXTURE = BiomancyMod.createRL("textures/entity/flesh_blob/flesh_blob_watcher.png");
 
 	@Override
-	public ResourceLocation getModelResource(AbstractFleshBlob fleshBlob) {
+	public ResourceLocation getModelLocation(AbstractFleshBlob fleshBlob) {
 		return BiomancyMod.createRL("geo/entity/flesh_blob.geo.json");
 	}
 
 	@Override
-	public ResourceLocation getTextureResource(AbstractFleshBlob fleshBlob) {
+	public ResourceLocation getTextureLocation(AbstractFleshBlob fleshBlob) {
 		if (fleshBlob.hasCustomName()) {
 			String name = fleshBlob.getName().getString().toLowerCase(Locale.ENGLISH);
 			if (name.contains("happy")) return LEGACY_TEXTURE;
@@ -36,7 +36,7 @@ public class FleshBlobModel<T extends AbstractFleshBlob> extends AnimatedGeoMode
 	}
 
 	@Override
-	public ResourceLocation getAnimationResource(AbstractFleshBlob fleshBlob) {
+	public ResourceLocation getAnimationFileLocation(AbstractFleshBlob fleshBlob) {
 		return BiomancyMod.createRL("animations/entity/flesh_blob.animation.json");
 	}
 
