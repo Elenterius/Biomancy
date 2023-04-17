@@ -2,16 +2,23 @@ package com.github.elenterius.biomancy.datagen.loot;
 
 import com.github.elenterius.biomancy.init.ModBlocks;
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.data.loot.BlockLoot;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.CopyNameFunction;
 import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
+import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
@@ -26,13 +33,6 @@ import static com.github.elenterius.biomancy.BiomancyMod.LOGGER;
 public class ModBlockLoot extends BlockLoot {
 
 	private static final Marker logMarker = ModLootTableProvider.LOG_MARKER;
-
-	@Override
-	protected Iterable<Block> getKnownBlocks() {
-		List<Block> blocks = ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).toList();
-		LOGGER.info(logMarker, "generating loot tables for {} blocks...", blocks.size());
-		return blocks;
-	}
 
 	protected static LootTable.Builder dropWithInventory(Block block) {
 		return LootTable.lootTable().withPool(applyExplosionCondition(block, LootPool.lootPool().setRolls(ConstantValue.exactly(1))
@@ -62,6 +62,32 @@ public class ModBlockLoot extends BlockLoot {
 
 	protected static LootTable.Builder createFleshDoorTable(DoorBlock block) {
 		return createSinglePropConditionTable(block, DoorBlock.HALF, DoubleBlockHalf.LOWER);
+	}
+
+	protected static LootTable.Builder createFleshVeinsDrops(Block block, LootItemCondition.Builder condition) {
+		return LootTable.lootTable().withPool(LootPool.lootPool()
+				.add(applyExplosionDecay(block, LootItem.lootTableItem(block).when(condition)
+						.apply(multifaceLootItem(block, PipeBlock.EAST))
+						.apply(multifaceLootItem(block, PipeBlock.WEST))
+						.apply(multifaceLootItem(block, PipeBlock.NORTH))
+						.apply(multifaceLootItem(block, PipeBlock.SOUTH))
+						.apply(multifaceLootItem(block, PipeBlock.UP))
+						.apply(multifaceLootItem(block, PipeBlock.DOWN))
+						.apply(SetItemCountFunction.setCount(ConstantValue.exactly(-1f), true)))));
+	}
+
+	private static LootItemConditionalFunction.Builder<?> multifaceLootItem(Block block, BooleanProperty property) {
+		return SetItemCountFunction.setCount(ConstantValue.exactly(1f), true).when(
+				LootItemBlockStatePropertyCondition.hasBlockStateProperties(block)
+						.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(property, true))
+		);
+	}
+
+	@Override
+	protected Iterable<Block> getKnownBlocks() {
+		List<Block> blocks = ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).toList();
+		LOGGER.info(logMarker, "generating loot tables for {} blocks...", blocks.size());
+		return blocks;
 	}
 
 	@Override
@@ -99,7 +125,7 @@ public class ModBlockLoot extends BlockLoot {
 
 		dropSelf(ModBlocks.MALIGNANT_FLESH.get());
 		add(ModBlocks.MALIGNANT_FLESH_SLAB.get(), BlockLoot::createSlabItemTable);
-		add(ModBlocks.MALIGNANT_FLESH_VEINS.get(), (block) -> {return createMultifaceBlockDrops(block, MatchTool.toolMatches(ItemPredicate.Builder.item().of(Items.SHEARS)));});
+		add(ModBlocks.MALIGNANT_FLESH_VEINS.get(), block -> createFleshVeinsDrops(block, MatchTool.toolMatches(ItemPredicate.Builder.item().of(Items.SHEARS))));
 
 		dropSelf(ModBlocks.VOICE_BOX.get());
 		dropSelf(ModBlocks.FLESH_IRIS_DOOR.get());
