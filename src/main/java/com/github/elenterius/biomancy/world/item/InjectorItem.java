@@ -40,6 +40,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LevelEvent;
@@ -113,7 +114,7 @@ public class InjectorItem extends Item implements ISerumProvider, ICustomTooltip
 				serum.affectEntity(level, dataTag, null, target);
 				injectorItem.consumeSerum(injectorStack, null); //TODO: drop appropriate vials/container
 				injectorStack.hurt(1, level.getRandom(), null);
-				if (injectorStack.getEnchantmentLevel(ModEnchantments.ANESTHETIC.get()) <= 0) {
+				if (EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.ANESTHETIC.get(), injectorStack) <= 0) {
 					target.hurt(new EntityDamageSource("sting", null), 0.5f);
 				}
 				return true;
@@ -570,7 +571,7 @@ public class InjectorItem extends Item implements ISerumProvider, ICustomTooltip
 				injector.consumeSerum(stack, player);
 				stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
 
-				if (stack.getEnchantmentLevel(ModEnchantments.ANESTHETIC.get()) <= 0) {
+				if (EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.ANESTHETIC.get(), stack) <= 0) {
 					target.hurt(new EntityDamageSource("sting", player), 0.5f);
 				}
 			}
