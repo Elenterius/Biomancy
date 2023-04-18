@@ -1,0 +1,151 @@
+# This workflow will build the Mod with Gradle and cache/restore any dependencies to improve the workflow execution time
+# Note: cache writing only happens on the default branch but child branches do have read access to the default branch
+
+name: Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  cache_oxipng:
+    name: Cache Oxipng
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cargo Install Oxipng
+        uses: baptiste0928/cargo-install@v2 #provides cache-efficient Rust crates installation
+        with:
+          crate: oxipng
+        env:
+          CARGO_TERM_COLOR: always
+
+  build_test:
+    name: Gradle Build Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Setup/Cache Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Test Asset Generation
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: runDataCI
+
+      - name: Test Build
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build
+
+  changelog:
+    name: Generate Changelog
+    needs: [ build_test, cache_oxipng ]
+    runs-on: ubuntu-latest
+    outputs:
+      skip_build: ${{ steps.set_output.outputs.skipped }}
+      tag: ${{ steps.set_output.outputs.tag }}
+      clean_changelog: ${{ steps.set_output.outputs.clean_changelog }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Get Minecraft Version
+        id: gradle_properties
+        uses: christian-draeger/read-properties@1.1.0
+        with:
+          path: './gradle.properties'
+          properties: 'mc_version'
+
+      - name: Generate Conventional Changelog #this also determines the release version
+        id: changelog
+        uses: TriPSs/conventional-changelog-action@v3
+        with:
+          preset: 'conventionalcommits'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          version-file: './mod_version.json'
+          version-path: 'semantic'
+          git-message: 'chore(release): {version}'
+          tag-prefix: '${{ steps.gradle_properties.outputs.mc_version }}-v1.'
+          create-summary: true
+
+      - name: Set Output  #supports setting multiline output
+        id: set_output
+        uses: actions/github-script@v6
+        with:
+          script: |
+            core.setOutput("skipped", `${{ steps.changelog.outputs.skipped }}`);  
+            core.setOutput("tag", `${{ steps.changelog.outputs.tag }}`);  
+            core.setOutput("clean_changelog", `${{ steps.changelog.outputs.clean_changelog }}`);
+
+  build_release:
+    name: Build Release
+    needs: [ changelog ]
+    if: needs.changelog.outputs.skip_build == 'false'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ needs.changelog.outputs.tag }}
+
+      - name: Setup Oxipng
+        uses: baptiste0928/cargo-install@v2 #provides cache-efficient Rust crates installation
+        with:
+          crate: oxipng
+        env:
+          CARGO_TERM_COLOR: always
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Generate Assets
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: runDataCI
+
+      # We store assets at full raw quality in the repository and only optimize them for the release build
+      - name: Optimize PNG Assets
+        run: |
+          oxipng -o 3 -i 0 --strip safe -r ./src/*/resources/*.png
+          oxipng -o 3 -i 0 --strip safe -r ./src/*/resources/assets/*/textures
+        env:
+          CARGO_TERM_COLOR: always
+
+      - name: Build Artifact
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build
+
+      # ----------------------------------------------------------------------------------------------------------------
+
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ needs.changelog.outputs.tag }}
+          body: ${{ needs.changelog.outputs.clean_changelog }}
+          files: build/libs/*
+          prerelease: true
+
+      - name: Notify Discord Server
+        uses: appleboy/discord-action@0.0.3
+        with:
+          webhook_id: ${{ secrets.DISCORD_ID }}
+          webhook_token: ${{ secrets.DISCORD_TOKEN }}
+          color: "#088c7d"
+          username: "Maykr Bot"
+          message: "**:package: ${{ needs.changelog.outputs.tag }}**\n\n**Download**\n${{ fromJSON(steps.create_release.outputs.assets)[0].browser_download_url }}\n\n**Changelog**\n${{ steps.create_release.outputs.url }}"

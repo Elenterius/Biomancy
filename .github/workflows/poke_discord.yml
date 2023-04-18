@@ -1,0 +1,22 @@
+name: Poke Discord
+
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'Message'
+        required: true
+        default: 'foobar'
+
+jobs:
+  notify_discord:
+    name: Notify Discord Server
+    runs-on: ubuntu-latest
+    steps:
+      - uses: appleboy/discord-action@0.0.3
+        with:
+          webhook_id: ${{ secrets.DISCORD_ID }}
+          webhook_token: ${{ secrets.DISCORD_TOKEN }}
+          color: "#ffd700"
+          username: "Maykrs Herald"
+          message: "${{ github.event.inputs.message }}"
