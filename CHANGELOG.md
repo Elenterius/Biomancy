@@ -1,3 +1,21 @@
+## [1.0.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.0.53.2...1.19.2-v2.1.0.0) (2023-04-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* change serum class structure and serum registry
+* reorganize package structure
+
+### Bug Fixes
+
+* fix ageing and rejuvenation serum interaction with Tadpoles & Frogs ([af655a6](https://github.com/Elenterius/Biomancy/commit/af655a61385b76731142e01aad3af5c6ee336159))
+
+
+### Miscellaneous Chores
+
+* change serum class structure and serum registry ([e4f72b0](https://github.com/Elenterius/Biomancy/commit/e4f72b06ed63daa6c4d3f2e528d4c627544d7099))
+* reorganize package structure ([98eac84](https://github.com/Elenterius/Biomancy/commit/98eac844d56e443b9d79b02e33ce716b219dfc9f))
+
 ### [0.53.2](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.0.53.1...1.19.2-v2.0.53.2) (2023-04-11)
 
 
@@ -44,22 +62,4 @@
 ### Bug Fixes
 
 * fix flesh blobs being discarded on despawn (they will now persist without name tags) ([75bed7b](https://github.com/Elenterius/Biomancy/commit/75bed7ba35a20a48999fa38f09129142072c5533))
-
-## [0.51.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.0.50.0...1.19.2-v2.0.51.0) (2023-03-22)
-
-
-### Features
-
-* add ability to extract items from Maw Hopper on right click ([23fcc3d](https://github.com/Elenterius/Biomancy/commit/23fcc3d7ca39141f6ebeb6245aabb19215054e02))
-* add ability to extract items from Tongue block on right click ([78fb444](https://github.com/Elenterius/Biomancy/commit/78fb444511d1132e17a8545db76779a75e04b6cd))
-* add connected Maw Hopper block model ([1f0b322](https://github.com/Elenterius/Biomancy/commit/1f0b3223e4c9d1379b66fd60cf70690f5de024f2))
-
-
-### Bug Fixes
-
-* fix custom geo block animation bug for BEWLBlockItems ([66225fb](https://github.com/Elenterius/Biomancy/commit/66225fb0f3065e25bc4f5e88705527c4523390ef))
-* fix Guide Book closing animation not playing when dropped on the ground ([c419349](https://github.com/Elenterius/Biomancy/commit/c419349fff644b29390cbeb7c598f939491c9fc3))
-* fix item extraction logic ([cbd0cd6](https://github.com/Elenterius/Biomancy/commit/cbd0cd64fd84e9da0c0b6daece1aa4e9d0318264))
-* fix Maw Hopper block extracting items into nothingness when they have no inventory space ([e2065af](https://github.com/Elenterius/Biomancy/commit/e2065af8743f92bee1d48838f6c9bb08e0cb9fd5))
-* fix Maw Hopper item gui render ([f5c359c](https://github.com/Elenterius/Biomancy/commit/f5c359c3cf49cdd85873b6a8aaea1ef38440e49d))
 
