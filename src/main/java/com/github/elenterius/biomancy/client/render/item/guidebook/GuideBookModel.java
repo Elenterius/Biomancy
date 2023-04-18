@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.render.item.guidebook;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.item.GuideBookItem;
+import com.github.elenterius.biomancy.item.GuideBookItem;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 

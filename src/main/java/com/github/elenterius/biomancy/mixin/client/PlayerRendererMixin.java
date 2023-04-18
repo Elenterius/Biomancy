@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.mixin.client;
 
-import com.github.elenterius.biomancy.world.item.IArmPoseProvider;
+import com.github.elenterius.biomancy.item.IArmPoseProvider;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;

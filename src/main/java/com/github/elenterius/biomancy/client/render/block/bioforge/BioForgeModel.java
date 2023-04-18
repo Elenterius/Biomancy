@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.render.block.bioforge;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.block.bioforge.BioForgeBlockEntity;
+import com.github.elenterius.biomancy.block.bioforge.BioForgeBlockEntity;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 

@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.client.gui;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
 import com.github.elenterius.biomancy.client.util.GuiUtil;
-import com.github.elenterius.biomancy.world.inventory.menu.BioLabMenu;
+import com.github.elenterius.biomancy.inventory.menu.BioLabMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;

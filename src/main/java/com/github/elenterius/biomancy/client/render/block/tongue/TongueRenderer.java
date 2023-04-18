@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.render.block.tongue;
 
+import com.github.elenterius.biomancy.block.tongue.TongueBlockEntity;
 import com.github.elenterius.biomancy.client.render.block.CustomGeoBlockRenderer;
-import com.github.elenterius.biomancy.world.block.tongue.TongueBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;

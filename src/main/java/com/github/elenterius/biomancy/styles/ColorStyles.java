@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.styles;
 
 import com.github.elenterius.biomancy.init.ModRarities;
-import com.github.elenterius.biomancy.world.item.ICustomTooltip;
+import com.github.elenterius.biomancy.item.ICustomTooltip;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 

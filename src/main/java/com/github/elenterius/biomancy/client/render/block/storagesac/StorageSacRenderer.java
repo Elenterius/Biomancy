@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.render.block.storagesac;
 
+import com.github.elenterius.biomancy.block.storagesac.StorageSacBlockEntity;
 import com.github.elenterius.biomancy.util.ItemStackCounter;
-import com.github.elenterius.biomancy.world.block.storagesac.StorageSacBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;

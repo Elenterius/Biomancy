@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.render.item.dev;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.item.weapon.DevArmCannonItem;
+import com.github.elenterius.biomancy.item.weapon.DevArmCannonItem;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 

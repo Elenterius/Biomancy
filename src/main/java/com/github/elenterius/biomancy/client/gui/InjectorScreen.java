@@ -2,12 +2,12 @@ package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
+import com.github.elenterius.biomancy.item.ISerumProvider;
+import com.github.elenterius.biomancy.item.InjectorItem;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
+import com.github.elenterius.biomancy.serum.Serum;
 import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.styles.TextStyles;
-import com.github.elenterius.biomancy.world.item.ISerumProvider;
-import com.github.elenterius.biomancy.world.item.InjectorItem;
-import com.github.elenterius.biomancy.world.serum.Serum;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;

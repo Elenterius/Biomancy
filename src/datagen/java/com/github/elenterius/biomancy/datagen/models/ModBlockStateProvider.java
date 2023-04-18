@@ -1,10 +1,10 @@
 package com.github.elenterius.biomancy.datagen.models;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.block.*;
+import com.github.elenterius.biomancy.block.property.DirectionalSlabType;
+import com.github.elenterius.biomancy.block.property.Orientation;
 import com.github.elenterius.biomancy.init.ModBlocks;
-import com.github.elenterius.biomancy.world.block.*;
-import com.github.elenterius.biomancy.world.block.property.DirectionalSlabType;
-import com.github.elenterius.biomancy.world.block.property.Orientation;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;

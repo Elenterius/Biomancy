@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.render.block.cradle;
 
+import com.github.elenterius.biomancy.block.cradle.PrimordialCradleBlockEntity;
 import com.github.elenterius.biomancy.client.render.block.CustomGeoBlockRenderer;
-import com.github.elenterius.biomancy.world.block.cradle.PrimordialCradleBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;

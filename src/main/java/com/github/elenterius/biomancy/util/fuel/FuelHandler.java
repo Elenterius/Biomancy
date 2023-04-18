@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.util.fuel;
 
-import com.github.elenterius.biomancy.world.inventory.Notify;
+import com.github.elenterius.biomancy.inventory.Notify;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;

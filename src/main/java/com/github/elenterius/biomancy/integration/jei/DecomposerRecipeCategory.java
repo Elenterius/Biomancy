@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.integration.jei;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.block.decomposer.DecomposerBlockEntity;
 import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModRecipes;
@@ -8,7 +9,6 @@ import com.github.elenterius.biomancy.recipe.DecomposerRecipe;
 import com.github.elenterius.biomancy.recipe.ItemCountRange;
 import com.github.elenterius.biomancy.recipe.VariableProductionOutput;
 import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
-import com.github.elenterius.biomancy.world.block.decomposer.DecomposerBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;

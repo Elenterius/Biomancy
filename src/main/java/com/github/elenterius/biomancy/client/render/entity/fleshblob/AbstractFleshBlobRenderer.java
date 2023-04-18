@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.render.entity.fleshblob;
 
-import com.github.elenterius.biomancy.world.entity.fleshblob.AbstractFleshBlob;
-import com.github.elenterius.biomancy.world.entity.fleshblob.TumorFlag;
+import com.github.elenterius.biomancy.entity.fleshblob.AbstractFleshBlob;
+import com.github.elenterius.biomancy.entity.fleshblob.TumorFlag;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;

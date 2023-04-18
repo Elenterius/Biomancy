@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.mixin;
 
-import com.github.elenterius.biomancy.world.statuseffect.ArmorShredEffect;
+import com.github.elenterius.biomancy.statuseffect.ArmorShredEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

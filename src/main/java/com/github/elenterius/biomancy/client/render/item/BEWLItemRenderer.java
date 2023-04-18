@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.client.render.item;
 
-import com.github.elenterius.biomancy.world.item.BEWLBlockItem;
+import com.github.elenterius.biomancy.item.BEWLBlockItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;

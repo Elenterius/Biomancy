@@ -3,8 +3,8 @@ package com.github.elenterius.biomancy.datagen.recipes;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModBioForgeTabs;
 import com.github.elenterius.biomancy.init.ModRecipes;
+import com.github.elenterius.biomancy.inventory.menu.BioForgeTab;
 import com.github.elenterius.biomancy.recipe.IngredientStack;
-import com.github.elenterius.biomancy.world.inventory.menu.BioForgeTab;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;
@@ -25,7 +25,6 @@ import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
 import net.minecraftforge.common.crafting.conditions.NotCondition;
 import net.minecraftforge.registries.ForgeRegistries;
-
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;

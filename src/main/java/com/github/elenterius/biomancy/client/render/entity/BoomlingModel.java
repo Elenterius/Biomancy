@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.render.entity;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.entity.ownable.Boomling;
+import com.github.elenterius.biomancy.entity.ownable.Boomling;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;

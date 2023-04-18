@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.render.block.biolab;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.block.biolab.BioLabBlockEntity;
+import com.github.elenterius.biomancy.block.biolab.BioLabBlockEntity;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 

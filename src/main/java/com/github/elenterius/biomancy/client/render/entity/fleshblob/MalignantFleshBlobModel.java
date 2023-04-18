@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.render.entity.fleshblob;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.entity.fleshblob.MalignantFleshBlob;
+import com.github.elenterius.biomancy.entity.fleshblob.MalignantFleshBlob;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 

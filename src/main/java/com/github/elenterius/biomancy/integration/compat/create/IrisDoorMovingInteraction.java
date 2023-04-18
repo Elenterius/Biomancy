@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.integration.compat.create;
 
+import com.github.elenterius.biomancy.block.IrisDoorBlock;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
-import com.github.elenterius.biomancy.world.block.IrisDoorBlock;
 import com.simibubi.create.content.contraptions.components.structureMovement.Contraption;
 import com.simibubi.create.content.contraptions.components.structureMovement.interaction.SimpleBlockMovingInteraction;
 import net.minecraft.core.BlockPos;

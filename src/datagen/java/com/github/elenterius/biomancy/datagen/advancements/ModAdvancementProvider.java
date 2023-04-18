@@ -1,11 +1,11 @@
 package com.github.elenterius.biomancy.datagen.advancements;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.advancements.trigger.SacrificedItemTrigger;
 import com.github.elenterius.biomancy.datagen.translations.ITranslationProvider;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModTags;
-import com.github.elenterius.biomancy.trigger.SacrificedItemTrigger;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.critereon.*;

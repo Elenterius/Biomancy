@@ -1,12 +1,12 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.enchantment.AnestheticEnchantment;
-import com.github.elenterius.biomancy.world.enchantment.DespoilEnchantment;
-import com.github.elenterius.biomancy.world.item.BioExtractorItem;
-import com.github.elenterius.biomancy.world.item.InjectorItem;
-import com.github.elenterius.biomancy.world.item.weapon.ClawsItem;
-import com.github.elenterius.biomancy.world.item.weapon.IGun;
+import com.github.elenterius.biomancy.enchantment.AnestheticEnchantment;
+import com.github.elenterius.biomancy.enchantment.DespoilEnchantment;
+import com.github.elenterius.biomancy.item.BioExtractorItem;
+import com.github.elenterius.biomancy.item.InjectorItem;
+import com.github.elenterius.biomancy.item.weapon.ClawsItem;
+import com.github.elenterius.biomancy.item.weapon.IGun;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.enchantment.Enchantment;

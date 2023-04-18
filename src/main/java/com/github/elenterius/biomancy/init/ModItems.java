@@ -1,12 +1,12 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.item.*;
-import com.github.elenterius.biomancy.world.item.weapon.BileSpitterItem;
-import com.github.elenterius.biomancy.world.item.weapon.DevArmCannonItem;
-import com.github.elenterius.biomancy.world.item.weapon.LivingLongClawsItem;
-import com.github.elenterius.biomancy.world.item.weapon.SimpleSwordItem;
-import com.github.elenterius.biomancy.world.serum.Serum;
+import com.github.elenterius.biomancy.item.*;
+import com.github.elenterius.biomancy.item.weapon.BileSpitterItem;
+import com.github.elenterius.biomancy.item.weapon.DevArmCannonItem;
+import com.github.elenterius.biomancy.item.weapon.LivingLongClawsItem;
+import com.github.elenterius.biomancy.item.weapon.SimpleSwordItem;
+import com.github.elenterius.biomancy.serum.Serum;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;

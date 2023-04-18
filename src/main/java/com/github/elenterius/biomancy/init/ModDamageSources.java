@@ -1,9 +1,9 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.entity.projectile.BaseProjectile;
-import com.github.elenterius.biomancy.world.entity.projectile.CorrosiveAcidProjectile;
-import com.github.elenterius.biomancy.world.entity.projectile.WitherProjectile;
+import com.github.elenterius.biomancy.entity.projectile.BaseProjectile;
+import com.github.elenterius.biomancy.entity.projectile.CorrosiveAcidProjectile;
+import com.github.elenterius.biomancy.entity.projectile.WitherProjectile;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.IndirectEntityDamageSource;

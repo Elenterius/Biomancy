@@ -2,8 +2,8 @@ package com.github.elenterius.biomancy.client;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.client.ClientSetupHandler;
+import com.github.elenterius.biomancy.item.IKeyListener;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
-import com.github.elenterius.biomancy.world.item.IKeyListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.player.LocalPlayer;

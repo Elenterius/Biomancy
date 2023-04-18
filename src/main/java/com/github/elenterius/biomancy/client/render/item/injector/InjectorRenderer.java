@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.client.render.item.injector;
 
-import com.github.elenterius.biomancy.world.item.InjectorItem;
+import com.github.elenterius.biomancy.item.InjectorItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;

@@ -4,7 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.datagen.translations.AbstractTranslationProvider;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModItems;
-import com.github.elenterius.biomancy.world.item.GuideBookItem;
+import com.github.elenterius.biomancy.item.GuideBookItem;
 import com.klikli_dev.modonomicon.api.ModonomiconAPI;
 import com.klikli_dev.modonomicon.api.datagen.BookLangHelper;
 import com.klikli_dev.modonomicon.api.datagen.EntryLocationHelper;

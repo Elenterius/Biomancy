@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.init;
 
-import com.github.elenterius.biomancy.trigger.SacrificedItemTrigger;
+import com.github.elenterius.biomancy.advancements.trigger.SacrificedItemTrigger;
 import net.minecraft.advancements.CriteriaTriggers;
 
 public final class ModTriggers {

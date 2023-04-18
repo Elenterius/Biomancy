@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.network;
 
 import com.github.elenterius.biomancy.init.ModRecipes;
+import com.github.elenterius.biomancy.inventory.menu.BioForgeMenu;
 import com.github.elenterius.biomancy.recipe.BioForgeRecipe;
-import com.github.elenterius.biomancy.world.inventory.menu.BioForgeMenu;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;

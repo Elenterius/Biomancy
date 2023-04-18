@@ -2,11 +2,11 @@ package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
+import com.github.elenterius.biomancy.entity.projectile.BaseProjectile;
 import com.github.elenterius.biomancy.init.ModProjectiles;
+import com.github.elenterius.biomancy.item.weapon.DevArmCannonItem;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import com.github.elenterius.biomancy.styles.ColorStyles;
-import com.github.elenterius.biomancy.world.entity.projectile.BaseProjectile;
-import com.github.elenterius.biomancy.world.item.weapon.DevArmCannonItem;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;

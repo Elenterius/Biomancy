@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.client.render.block.mawhopper;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.block.mawhopper.MawHopperBlock;
-import com.github.elenterius.biomancy.world.block.mawhopper.MawHopperBlockEntity;
+import com.github.elenterius.biomancy.block.mawhopper.MawHopperBlock;
+import com.github.elenterius.biomancy.block.mawhopper.MawHopperBlockEntity;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 

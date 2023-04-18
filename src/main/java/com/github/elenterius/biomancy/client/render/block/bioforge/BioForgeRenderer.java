@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.render.block.bioforge;
 
+import com.github.elenterius.biomancy.block.bioforge.BioForgeBlockEntity;
 import com.github.elenterius.biomancy.client.render.block.CustomGeoBlockRenderer;
-import com.github.elenterius.biomancy.world.block.bioforge.BioForgeBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;

@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.render.block.mawhopper;
 
+import com.github.elenterius.biomancy.block.mawhopper.MawHopperBlockEntity;
 import com.github.elenterius.biomancy.client.render.block.CustomGeoBlockRenderer;
-import com.github.elenterius.biomancy.world.block.mawhopper.MawHopperBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;

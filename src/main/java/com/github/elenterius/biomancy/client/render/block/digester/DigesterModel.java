@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.render.block.digester;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.block.digester.DigesterBlockEntity;
+import com.github.elenterius.biomancy.block.digester.DigesterBlockEntity;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 

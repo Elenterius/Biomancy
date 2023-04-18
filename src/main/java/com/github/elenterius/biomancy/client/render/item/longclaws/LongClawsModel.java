@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.render.item.longclaws;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.item.weapon.LivingLongClawsItem;
+import com.github.elenterius.biomancy.item.weapon.LivingLongClawsItem;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 

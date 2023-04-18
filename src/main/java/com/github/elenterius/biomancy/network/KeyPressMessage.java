@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.network;
 
-import com.github.elenterius.biomancy.world.item.IKeyListener;
+import com.github.elenterius.biomancy.item.IKeyListener;
 import com.google.common.primitives.UnsignedBytes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;

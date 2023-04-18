@@ -1,13 +1,13 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.entity.fleshblob.DomesticatedFleshBlob;
-import com.github.elenterius.biomancy.world.entity.fleshblob.HungryFleshBlob;
-import com.github.elenterius.biomancy.world.entity.fleshblob.MalignantFleshBlob;
-import com.github.elenterius.biomancy.world.entity.projectile.AntiGravityProjectile;
-import com.github.elenterius.biomancy.world.entity.projectile.CorrosiveAcidProjectile;
-import com.github.elenterius.biomancy.world.entity.projectile.ToothProjectile;
-import com.github.elenterius.biomancy.world.entity.projectile.WitherProjectile;
+import com.github.elenterius.biomancy.entity.fleshblob.DomesticatedFleshBlob;
+import com.github.elenterius.biomancy.entity.fleshblob.HungryFleshBlob;
+import com.github.elenterius.biomancy.entity.fleshblob.MalignantFleshBlob;
+import com.github.elenterius.biomancy.entity.projectile.AntiGravityProjectile;
+import com.github.elenterius.biomancy.entity.projectile.CorrosiveAcidProjectile;
+import com.github.elenterius.biomancy.entity.projectile.ToothProjectile;
+import com.github.elenterius.biomancy.entity.projectile.WitherProjectile;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;

@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.init;
 
-import com.github.elenterius.biomancy.world.entity.projectile.*;
-import com.github.elenterius.biomancy.world.item.weapon.IGun;
+import com.github.elenterius.biomancy.entity.projectile.*;
+import com.github.elenterius.biomancy.item.weapon.IGun;
 import it.unimi.dsi.fastutil.floats.FloatUnaryOperator;
 import it.unimi.dsi.fastutil.ints.IntUnaryOperator;
 import net.minecraft.sounds.SoundEvents;
