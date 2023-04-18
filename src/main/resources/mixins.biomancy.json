@@ -8,17 +8,8 @@
 		"defaultRequire": 1
 	},
 	"mixins": [
-		"AgeableMobAccessor",
-		"ArmorStandAccessor",
-		"LivingEntityAccessor",
-		"MobEffectInstanceAccessor",
-		"MobEffectInstanceMixin",
-		"MobEntityAccessor",
-		"PlayerMixin",
-		"SlimeAccessor",
-		"SwordItemMixinAccessor",
-		"TextureSlotAccessor",
-		"ZombieVillagerMixinAccessor"
+		"AgeableMobAccessor", "ArmorStandAccessor", "LivingEntityAccessor", "MobEffectInstanceAccessor", "MobEffectInstanceMixin", "MobEntityAccessor",
+		"PlayerMixin", "SlimeAccessor", "SwordItemMixinAccessor", "TadpoleAccessor", "TextureSlotAccessor", "ZombieVillagerMixinAccessor"
 	],
 	"client": [
 		"client.ClientPackListenerMixin",

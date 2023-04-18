@@ -7,6 +7,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.animal.frog.Frog;
 import net.minecraft.world.entity.monster.ElderGuardian;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.LevelEvent;
@@ -21,7 +22,7 @@ public class RejuvenationSerum extends Serum {
 
 	@Override
 	public boolean canAffectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
-		return (target instanceof Mob && !target.isBaby()) || target instanceof ElderGuardian;
+		return (target instanceof Mob && !target.isBaby()) || target instanceof ElderGuardian || target instanceof Frog;
 	}
 
 	@Override
@@ -29,9 +30,20 @@ public class RejuvenationSerum extends Serum {
 		if (target instanceof ElderGuardian elderGuardian) {
 			convertToGuardian(level, elderGuardian);
 		}
-		if (target instanceof Mob mob) {
+		else if (target instanceof Frog frog) {
+			convertToTadpole(level, frog);
+		}
+		else if (target instanceof Mob mob) {
 			MobUtil.convertToBaby(mob, true); // includes animals, villagers, zombies, etc..
 		}
+	}
+
+	private void convertToTadpole(ServerLevel level, Frog frog) {
+		MobUtil.convertMobTo(level, frog, EntityType.TADPOLE, true, (oldFrog, tadpole) -> {
+			if (!oldFrog.isSilent()) {
+				level.levelEvent(null, LevelEvent.SOUND_ZOMBIE_INFECTED, oldFrog.blockPosition(), 0);
+			}
+		});
 	}
 
 	private void convertToGuardian(ServerLevel level, ElderGuardian elderGuardian) {
