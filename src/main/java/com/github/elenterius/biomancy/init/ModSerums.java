@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.api.serum.ISerum;
 import com.github.elenterius.biomancy.serum.*;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -11,10 +12,10 @@ import java.util.function.Supplier;
 
 public final class ModSerums {
 
-	public static final DeferredRegister<Serum> SERUMS = DeferredRegister.create(BiomancyMod.createRL("serum"), BiomancyMod.MOD_ID);
-	public static final Supplier<IForgeRegistry<Serum>> REGISTRY = SERUMS.makeRegistry(RegistryBuilder::new);
+	public static final DeferredRegister<ISerum> SERUMS = DeferredRegister.create(BiomancyMod.createRL("serum"), BiomancyMod.MOD_ID);
+	public static final Supplier<IForgeRegistry<ISerum>> REGISTRY = SERUMS.makeRegistry(RegistryBuilder::new);
 
-	public static final RegistryObject<Serum> EMPTY = SERUMS.register("empty", () -> Serum.EMPTY);
+	public static final RegistryObject<ISerum> EMPTY = SERUMS.register("empty", () -> Serum.EMPTY);
 
 	public static final RegistryObject<AgeingSerum> AGEING_SERUM = SERUMS.register("ageing_serum", () -> new AgeingSerum(0x09DF5B));
 	public static final RegistryObject<EnlargementSerum> ENLARGEMENT_SERUM = SERUMS.register("enlargement_serum", () -> new EnlargementSerum(0x09DF5B));

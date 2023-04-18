@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.datagen.translations;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.api.serum.ISerum;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.entity.projectile.BaseProjectile;
 import com.github.elenterius.biomancy.init.*;
@@ -37,7 +38,7 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 
 	private List<Item> itemsToTranslate = List.of();
 	private List<Block> blocksToTranslate = List.of();
-	private List<Serum> serumsToTranslate = List.of();
+	private List<ISerum> serumsToTranslate = List.of();
 
 	public EnglishTranslationProvider(DataGenerator gen) {
 		super(gen, BiomancyMod.MOD_ID, "en_us");
@@ -66,7 +67,7 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 		}
 
 		if (!serumsToTranslate.isEmpty()) {
-			for (Serum serum : serumsToTranslate) {
+			for (ISerum serum : serumsToTranslate) {
 				BiomancyMod.LOGGER.warn(LOG_MARKER, () -> "Missing translation for serum '%s'".formatted(serum));
 			}
 			throw new IllegalStateException("Missing translation for %d serums".formatted(serumsToTranslate.size()));
@@ -80,11 +81,11 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 		itemsToTranslate.remove(item);
 	}
 
-	private <T extends Serum> void addSerum(Supplier<T> supplier, String name) {
+	private <T extends ISerum> void addSerum(Supplier<T> supplier, String name) {
 		add(supplier.get(), name);
 	}
 
-	private void add(Serum serum, String name) {
+	private void add(ISerum serum, String name) {
 		add(serum.getTranslationKey(), name);
 		serumsToTranslate.remove(serum);
 	}

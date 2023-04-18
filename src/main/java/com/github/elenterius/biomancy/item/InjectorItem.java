@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.item;
 
+import com.github.elenterius.biomancy.api.serum.ISerum;
 import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.gui.InjectorScreen;
 import com.github.elenterius.biomancy.client.render.item.injector.InjectorRenderer;
@@ -10,7 +11,6 @@ import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.inventory.InjectorItemInventory;
 import com.github.elenterius.biomancy.inventory.itemhandler.LargeSingleItemStackHandler;
-import com.github.elenterius.biomancy.serum.Serum;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import net.minecraft.ChatFormatting;
@@ -90,7 +90,7 @@ public class InjectorItem extends Item implements ISerumProvider, ICustomTooltip
 	public static boolean tryInjectLivingEntity(ServerLevel level, BlockPos pos, ItemStack stack) {
 		if (!(stack.getItem() instanceof InjectorItem injectorItem) || stack.getDamageValue() >= stack.getMaxDamage() - 1) return false;
 
-		Serum serum = injectorItem.getSerum(stack);
+		ISerum serum = injectorItem.getSerum(stack);
 		if (!serum.isEmpty()) {
 			List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, new AABB(pos), EntitySelector.NO_SPECTATORS);
 			if (entities.isEmpty()) return false;
@@ -105,9 +105,9 @@ public class InjectorItem extends Item implements ISerumProvider, ICustomTooltip
 		return false;
 	}
 
-	private static boolean dispenserAffectEntity(ServerLevel level, BlockPos pos, Serum serum, ItemStack injectorStack, InjectorItem injectorItem, LivingEntity target) {
+	private static boolean dispenserAffectEntity(ServerLevel level, BlockPos pos, ISerum serum, ItemStack injectorStack, InjectorItem injectorItem, LivingEntity target) {
 		if (MobUtil.canPierceThroughArmor(injectorStack, target)) {
-			CompoundTag dataTag = Serum.getDataTag(injectorStack);
+			CompoundTag dataTag = ISerum.getDataTag(injectorStack);
 			if (serum.canAffectEntity(dataTag, null, target)) {
 				serum.affectEntity(level, dataTag, null, target);
 				injectorItem.consumeSerum(injectorStack, null); //TODO: drop appropriate vials/container
@@ -214,11 +214,11 @@ public class InjectorItem extends Item implements ISerumProvider, ICustomTooltip
 	}
 
 	public boolean canInteractWithPlayerSelf(ItemStack stack, Player player) {
-		return getSerum(stack).canAffectPlayerSelf(Serum.getDataTag(stack), player);
+		return getSerum(stack).canAffectPlayerSelf(ISerum.getDataTag(stack), player);
 	}
 
 	public boolean canInteractWithLivingTarget(ItemStack stack, Player player, LivingEntity target) {
-		return getSerum(stack).canAffectEntity(Serum.getDataTag(stack), player, target);
+		return getSerum(stack).canAffectEntity(ISerum.getDataTag(stack), player, target);
 	}
 
 	@Override
@@ -248,7 +248,7 @@ public class InjectorItem extends Item implements ISerumProvider, ICustomTooltip
 	}
 
 	@Override
-	public Serum getSerum(ItemStack stack) {
+	public ISerum getSerum(ItemStack stack) {
 		Optional<LargeSingleItemStackHandler> optional = getItemHandler(stack);
 		if (optional.isPresent()) {
 			ItemStack foundStack = optional.get().getStack();
@@ -256,7 +256,7 @@ public class InjectorItem extends Item implements ISerumProvider, ICustomTooltip
 				return provider.getSerum(foundStack);
 			}
 		}
-		return Serum.EMPTY;
+		return ISerum.EMPTY;
 	}
 
 	public void consumeSerum(ItemStack stack, @Nullable Player player) {
@@ -446,7 +446,7 @@ public class InjectorItem extends Item implements ISerumProvider, ICustomTooltip
 
 		CompoundTag tag = stack.getOrCreateTag();
 		if (tag.contains(INVENTORY_TAG)) {
-			Serum serum = getSerum(stack);
+			ISerum serum = getSerum(stack);
 			if (!serum.isEmpty()) {
 				short amount = tag.getCompound(INVENTORY_TAG).getShort(LargeSingleItemStackHandler.ITEM_AMOUNT_TAG);
 				tooltip.add(ComponentUtil.literal(String.format("%dx ", amount)).append(serum.getDisplayName()).withStyle(ChatFormatting.GRAY));
@@ -461,7 +461,7 @@ public class InjectorItem extends Item implements ISerumProvider, ICustomTooltip
 
 	@Override
 	public Component getHighlightTip(ItemStack stack, Component displayName) {
-		Serum serum = getSerum(stack);
+		ISerum serum = getSerum(stack);
 		return serum.isEmpty() ? displayName : ComponentUtil.mutable().append(displayName).append(" (").append(serum.getDisplayName()).append(")");
 	}
 
@@ -543,7 +543,7 @@ public class InjectorItem extends Item implements ISerumProvider, ICustomTooltip
 		}
 
 		public static void performScheduledSerumInjection(ServerLevel level, InjectorItem injector, ItemStack stack, ServerPlayer player) {
-			Serum serum = injector.getSerum(stack);
+			ISerum serum = injector.getSerum(stack);
 			if (serum.isEmpty()) return;
 
 			Entity victim = injector.getEntityVictim(stack, level);
@@ -560,10 +560,10 @@ public class InjectorItem extends Item implements ISerumProvider, ICustomTooltip
 				}
 
 				if (host == victim) {
-					serum.affectPlayerSelf(Serum.getDataTag(stack), player);
+					serum.affectPlayerSelf(ISerum.getDataTag(stack), player);
 				}
 				else {
-					serum.affectEntity(level, Serum.getDataTag(stack), player, target);
+					serum.affectEntity(level, ISerum.getDataTag(stack), player, target);
 				}
 
 				injector.consumeSerum(stack, player);

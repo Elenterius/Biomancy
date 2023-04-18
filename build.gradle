@@ -211,8 +211,9 @@ dependencies {
 //    implementation fg.deobf("curse.maven:identity-391390:3807264") // https://www.curseforge.com/minecraft/mc-mods/identity
 //    runtimeOnly fg.deobf("curse.maven:architectury-419699:4040966")
 
-	datagenImplementation sourceSets.main.output
 	implementation sourceSets.api.output
+	datagenImplementation sourceSets.main.output
+	datagenImplementation sourceSets.api.output
 }
 
 processResources {

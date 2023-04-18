@@ -1,20 +1,14 @@
 package com.github.elenterius.biomancy.serum;
 
+import com.github.elenterius.biomancy.api.serum.ISerum;
 import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModSerums;
 import com.github.elenterius.biomancy.styles.TextStyles;
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -23,60 +17,38 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
-public abstract class Serum {
-
-	public static final Serum EMPTY = new Serum(-1) {
-		@Override
-		public void affectEntity(ServerLevel level, CompoundTag nbt, @Nullable LivingEntity source, LivingEntity target) {}
-
-		@Override
-		public void affectPlayerSelf(CompoundTag nbt, ServerPlayer targetSelf) {}
-
-		@Override
-		public boolean canAffectPlayerSelf(CompoundTag tag, Player targetSelf) {
-			return false;
-		}
-
-		@Override
-		public boolean canAffectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
-			return false;
-		}
-	};
-
-	public static final String PREFIX = "serum.";
-	public static final String DATA_TAG = "SerumData";
+public abstract class Serum implements ISerum {
 
 	private final int color;
-	@Nullable
-	private Multimap<Attribute, AttributeModifier> attributeModifiers = null;
 
-	protected Serum(int colorIn) {
-		color = colorIn;
+	protected Serum(int color) {
+		this.color = color;
 	}
 
-	public static CompoundTag getDataTag(ItemStack stack) {
-		return stack.getOrCreateTag().getCompound(DATA_TAG);
+	@Override
+	public int getColor() {
+		return color;
 	}
 
-	public static void remove(CompoundTag tag) {
-		tag.remove(DATA_TAG);
+	@Override
+	public boolean canAffectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
+		return true;
 	}
 
-	public static void copyAdditionalData(CompoundTag fromTag, CompoundTag toTag) {
-		if (fromTag.contains(DATA_TAG)) {
-			CompoundTag data = fromTag.getCompound(DATA_TAG);
-			if (!data.isEmpty()) toTag.put(DATA_TAG, data.copy());
-		}
+	@Override
+	public boolean canAffectPlayerSelf(CompoundTag tag, Player targetSelf) {
+		return true;
 	}
 
-	public static String getTranslationKey(ResourceLocation registryKey) {
-		return PREFIX + registryKey.getNamespace() + "." + registryKey.getPath().replace("/", ".");
+	@Override
+	public String getTranslationKey() {
+		return ISerum.makeTranslationKey(Objects.requireNonNull(ModSerums.REGISTRY.get().getKey(this)));
 	}
 
-	public final boolean isEmpty() {
-		return this == EMPTY;
+	@Override
+	public MutableComponent getDisplayName() {
+		return ComponentUtil.translatable(getTranslationKey());
 	}
 
 	public void appendTooltip(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
@@ -87,52 +59,6 @@ public abstract class Serum {
 
 	public String getTooltipKey() {
 		return getTranslationKey() + ".tooltip";
-	}
-
-	public String getTranslationKey() {
-		return getTranslationKey(Objects.requireNonNull(ModSerums.REGISTRY.get().getKey(this)));
-	}
-
-	public MutableComponent getDisplayName() {
-		return ComponentUtil.translatable(getTranslationKey());
-	}
-
-	public int getColor() {
-		return color;
-	}
-
-	public final boolean isAttributeModifier() {return attributeModifiers != null;}
-
-	public boolean canAffectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
-		return true;
-	}
-
-	public void affectEntity(ServerLevel level, CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
-		if (isAttributeModifier()) applyAttributesModifiersToEntity(target);
-	}
-
-	public boolean canAffectPlayerSelf(CompoundTag tag, Player targetSelf) {
-		return true;
-	}
-
-	public void affectPlayerSelf(CompoundTag tag, ServerPlayer targetSelf) {
-		if (isAttributeModifier()) applyAttributesModifiersToEntity(targetSelf);
-	}
-
-	protected final Serum addAttributeModifier(Attribute attribute, String uuid, double amount, AttributeModifier.Operation operation) {
-		if (attributeModifiers == null) attributeModifiers = HashMultimap.create();
-
-		AttributeModifier modifier = new AttributeModifier(UUID.fromString(uuid), getTranslationKey(), amount, operation);
-		attributeModifiers.put(attribute, modifier);
-		return this;
-	}
-
-	public void removeAttributesModifiersFromEntity(LivingEntity livingEntity) {
-		if (attributeModifiers != null) livingEntity.getAttributes().removeAttributeModifiers(attributeModifiers);
-	}
-
-	public void applyAttributesModifiersToEntity(LivingEntity livingEntity) {
-		if (attributeModifiers != null) livingEntity.getAttributes().addTransientAttributeModifiers(attributeModifiers);
 	}
 
 	@Override
@@ -147,10 +73,5 @@ public abstract class Serum {
 		Serum otherSerum = (Serum) other;
 		return Objects.requireNonNull(ModSerums.REGISTRY.get().getKey(this)).equals(ModSerums.REGISTRY.get().getKey(otherSerum));
 	}
-
-	/*@Override
-	public int hashCode() {
-		return 31 * ModSerums.REGISTRY.get().getKey(this).getNamespace().hashCode() + ModSerums.REGISTRY.get().getKey(this).getPath().hashCode();
-	}*/
 
 }
