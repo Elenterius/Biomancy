@@ -27,10 +27,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
 	public final Logger LOGGER = BiomancyMod.LOGGER;
 	public final Marker logMarker = MarkerManager.getMarker("ModItemTagsProvider");
-//	protected final ItemComparator ITEM_ID_COMPARATOR = new ItemComparator();
+	//	protected final ItemComparator ITEM_ID_COMPARATOR = new ItemComparator();
 
-	public ModItemTagsProvider(DataGenerator dataGenerator, BlockTagsProvider blockTagProvider, @Nullable ExistingFileHelper existingFileHelper) {
-		super(dataGenerator, blockTagProvider, BiomancyMod.MOD_ID, existingFileHelper);
+	public ModItemTagsProvider(DataGenerator generator, BlockTagsProvider blockTagProvider, @Nullable ExistingFileHelper existingFileHelper) {
+		super(generator, blockTagProvider, BiomancyMod.MOD_ID, existingFileHelper);
 	}
 
 	private static void addOptionalItemsTo(Builder<Item> builder, String... itemKeys) {

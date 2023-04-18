@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.datagen.recipes;
 
-import com.github.elenterius.biomancy.recipe.ItemStackIngredient;
+import com.github.elenterius.biomancy.recipe.StrictNBTIngredient;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -70,12 +70,12 @@ public class ShapelessNbtRecipeBuilder {
 		return this;
 	}
 
-	public ShapelessNbtRecipeBuilder addIngredient(ItemStack ingredientIn) {
-		return addIngredient(new ItemStackIngredient(ingredientIn), ingredientIn.getCount());
+	public ShapelessNbtRecipeBuilder addStrictIngredient(ItemStack strictIngredient) {
+		return addIngredient(StrictNBTIngredient.of(strictIngredient), strictIngredient.getCount());
 	}
 
-	public ShapelessNbtRecipeBuilder addIngredient(ItemStack ingredientIn, int countIn) {
-		return addIngredient(new ItemStackIngredient(ingredientIn), countIn);
+	public ShapelessNbtRecipeBuilder addStrictIngredient(ItemStack strictIngredient, int countIn) {
+		return addIngredient(StrictNBTIngredient.of(strictIngredient), countIn);
 	}
 
 	public ShapelessNbtRecipeBuilder addIngredient(Ingredient ingredientIn) {

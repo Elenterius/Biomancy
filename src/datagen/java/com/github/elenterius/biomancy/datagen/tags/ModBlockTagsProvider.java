@@ -16,8 +16,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 	public final Logger LOGGER = BiomancyMod.LOGGER;
 	public final Marker logMarker = MarkerManager.getMarker("ModItemTagsProvider");
 
-	public ModBlockTagsProvider(DataGenerator generatorIn, @Nullable ExistingFileHelper existingFileHelper) {
-		super(generatorIn, BiomancyMod.MOD_ID, existingFileHelper);
+	public ModBlockTagsProvider(DataGenerator generator, @Nullable ExistingFileHelper existingFileHelper) {
+		super(generator, BiomancyMod.MOD_ID, existingFileHelper);
 	}
 
 	@Override

@@ -3,7 +3,8 @@ package com.github.elenterius.biomancy.datagen.recipes;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.item.ReagentItem;
-import com.github.elenterius.biomancy.recipe.ItemStackIngredient;
+import com.github.elenterius.biomancy.recipe.PartialNBTIngredient;
+import com.github.elenterius.biomancy.recipe.StrictNBTIngredient;
 import com.github.elenterius.biomancy.util.BiofuelUtil;
 import net.minecraft.advancements.ICriterionInstance;
 import net.minecraft.advancements.criterion.EnchantmentPredicate;
@@ -92,6 +93,11 @@ public class ModRecipeProvider extends RecipeProvider {
 		registerEvolutionPoolRecipes(consumer);
 	}
 
+	private static PartialNBTIngredient enchantedBookIngredient(Enchantment enchantment) {
+		ItemStack stack = EnchantedBookItem.createForEnchantment(new EnchantmentData(enchantment, enchantment.getMaxLevel()));
+		return PartialNBTIngredient.of(Items.ENCHANTED_BOOK, stack.getOrCreateTag());
+	}
+
 	private void registerEvolutionPoolRecipes(Consumer<IFinishedRecipe> consumer) {
 		final int defaultTime = 400;
 
@@ -130,7 +136,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addCriterion("has_eroding_bile_and_wither_rose", inventoryTrigger(createPredicate(ModItems.ERODING_BILE.get()), createPredicate(Items.WITHER_ROSE)))
 				.build(consumer);
 
-		ItemStackIngredient reagentIngredient = new ItemStackIngredient(ReagentItem.getReagentItemStack(ModReagents.CLEANSING_SERUM.get()));
+		StrictNBTIngredient reagentIngredient = StrictNBTIngredient.of(ReagentItem.getReagentItemStack(ModReagents.CLEANSING_SERUM.get()));
 		EvolutionPoolRecipeBuilder.createRecipe(Items.SKELETON_SKULL, defaultTime * 3)
 				.addIngredient(Items.WITHER_SKELETON_SKULL).addIngredients(reagentIngredient, 1)
 				.addCriterion("has_cleansing_serum", hasItems(Items.SKELETON_SKULL))
@@ -201,17 +207,17 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addIngredients(ModItems.KERATIN_FILAMENTS.get(), 2)
 				.addCriterion("has_fleshborn_axe", has(ModItems.FLESHBORN_AXE.get())).build(consumer);
 
-		ItemStackIngredient sweepingBook = new ItemStackIngredient(EnchantedBookItem.createForEnchantment(new EnchantmentData(Enchantments.SWEEPING_EDGE, Enchantments.SWEEPING_EDGE.getMaxLevel())));
+		PartialNBTIngredient sweepingBook = enchantedBookIngredient(Enchantments.SWEEPING_EDGE);
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.LONG_RANGE_CLAW.get(), defaultTime * 2)
 				.addIngredient(ModItems.OCULUS.get()).addIngredient(sweepingBook).addIngredients(ModItems.BONE_SWORD.get(), 2).addIngredient(Items.DIAMOND_SWORD).addIngredient(ModItems.BIOMETAL.get())
 				.addCriterion(HAS_OCULUS, has(ModItems.OCULUS.get())).build(consumer);
 
-		ItemStackIngredient mendingBook = new ItemStackIngredient(EnchantedBookItem.createForEnchantment(new EnchantmentData(Enchantments.MENDING, Enchantments.MENDING.getMaxLevel())));
+		PartialNBTIngredient mendingBook = enchantedBookIngredient(Enchantments.MENDING);
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.LEECH_CLAW.get(), defaultTime * 2)
 				.addIngredient(ModItems.OCULUS.get()).addIngredient(ModItems.INJECTION_DEVICE.get()).addIngredient(mendingBook).addIngredient(Items.DIAMOND_SWORD).addIngredient(ModItems.BIOMETAL.get())
 				.addCriterion(HAS_OCULUS, has(ModItems.OCULUS.get())).build(consumer);
 
-		ItemStackIngredient maxBaneBook = new ItemStackIngredient(EnchantedBookItem.createForEnchantment(new EnchantmentData(ModEnchantments.ATTUNED_BANE.get(), ModEnchantments.ATTUNED_BANE.get().getMaxLevel())));
+		PartialNBTIngredient maxBaneBook = enchantedBookIngredient(ModEnchantments.ATTUNED_BANE.get());
 		EvolutionPoolRecipeBuilder.createRecipe(ModItems.FLESHBORN_GUAN_DAO.get(), defaultTime * 2)
 				.addIngredient(ModItems.OCULUS.get()).addIngredient(maxBaneBook).addIngredient(Tags.Items.BONES).addIngredient(Items.DIAMOND_SWORD).addIngredient(Items.DIAMOND_AXE).addIngredient(ModItems.BIOMETAL.get())
 				.addCriterion(HAS_OCULUS, has(ModItems.OCULUS.get())).build(consumer);
@@ -226,13 +232,14 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addCriterion("has_tooth_gun", has(ModItems.TOOTH_GUN.get())).build(consumer);
 
 		// Enchantments ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		Enchantment enchantment = ModEnchantments.ATTUNED_BANE.get();
-		for (int level = enchantment.getMinLevel(); level <= enchantment.getMaxLevel(); ++level) {
-			ItemStack minBaneBook = EnchantedBookItem.createForEnchantment(new EnchantmentData(ModEnchantments.ATTUNED_BANE.get(), level));
-			ItemStackIngredient sharpnessBook = new ItemStackIngredient(EnchantedBookItem.createForEnchantment(new EnchantmentData(Enchantments.SHARPNESS, level)));
-			ItemStackIngredient smiteBook = new ItemStackIngredient(EnchantedBookItem.createForEnchantment(new EnchantmentData(Enchantments.SMITE, level)));
-			ItemStackIngredient arthropodsBook = new ItemStackIngredient(EnchantedBookItem.createForEnchantment(new EnchantmentData(Enchantments.BANE_OF_ARTHROPODS, level)));
-			EvolutionPoolRecipeBuilder.createRecipe(minBaneBook, defaultTime + 125 * level)
+		PartialNBTIngredient sharpnessBook = enchantedBookIngredient(Enchantments.SHARPNESS);
+		PartialNBTIngredient smiteBook = enchantedBookIngredient(Enchantments.SMITE);
+		PartialNBTIngredient arthropodsBook = enchantedBookIngredient(Enchantments.BANE_OF_ARTHROPODS);
+
+		Enchantment attunedBane = ModEnchantments.ATTUNED_BANE.get();
+		for (int level = attunedBane.getMinLevel(); level <= attunedBane.getMaxLevel(); ++level) {
+			ItemStack result = EnchantedBookItem.createForEnchantment(new EnchantmentData(attunedBane, level));
+			EvolutionPoolRecipeBuilder.createRecipe(result, defaultTime + 125 * level)
 					.addIngredient(sharpnessBook).addIngredient(smiteBook).addIngredient(arthropodsBook).addIngredient(ModTags.Items.STOMACHS).addIngredient(ModItems.ERODING_BILE.get()).addIngredient(ModItems.REJUVENATING_MUCUS.get())
 					.addCriterion("has_smite_enchant", inventoryTrigger(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.SMITE, MinMaxBounds.IntBound.atLeast(1))).build())).build(consumer, "attuned_bane_" + level, true);
 		}
@@ -634,27 +641,27 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		//rejuvenating mucus from healing/health potions
 		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime / 2, 4)
-				.setIngredient(new ItemStackIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.REGENERATION)))
+				.setIngredient(StrictNBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.REGENERATION)))
 				.addByproduct(Items.GLASS_BOTTLE)
 				.addCriterion("has_potion", has(Items.POTION)).build(consumer, "from_regen_potion", true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime / 2, 6)
-				.setIngredient(new ItemStackIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.LONG_REGENERATION)))
+				.setIngredient(StrictNBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.LONG_REGENERATION)))
 				.addByproduct(Items.GLASS_BOTTLE)
 				.addCriterion("has_potion", has(Items.POTION)).build(consumer, "from_long_regen_potion", true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime / 2, 6)
-				.setIngredient(new ItemStackIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_REGENERATION)))
+				.setIngredient(StrictNBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_REGENERATION)))
 				.addByproduct(Items.GLASS_BOTTLE)
 				.addCriterion("has_potion", has(Items.POTION)).build(consumer, "from_strong_regen_potion", true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime / 2, 4)
-				.setIngredient(new ItemStackIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.HEALING)))
+				.setIngredient(StrictNBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.HEALING)))
 				.addByproduct(Items.GLASS_BOTTLE)
 				.addCriterion("has_potion", has(Items.POTION)).build(consumer, "from_healing_potion", true);
 
 		DecomposerRecipeBuilder.createRecipe(ModItems.REJUVENATING_MUCUS.get(), defaultDecomposingTime / 2, 6)
-				.setIngredient(new ItemStackIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_HEALING)))
+				.setIngredient(StrictNBTIngredient.of(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_HEALING)))
 				.addByproduct(Items.GLASS_BOTTLE)
 				.addCriterion("has_potion", has(Items.POTION)).build(consumer, "from_strong_healing_potion", true);
 
@@ -754,12 +761,12 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		ShapelessRecipeBuilder.shapeless(Items.ROTTEN_FLESH)
 				.requires(ModItems.NECROTIC_FLESH.get())
-				.requires(new ItemStackIngredient(ReagentItem.getReagentItemStack(ModReagents.ROTTEN_BLOOD_SAMPLE.get())))
+				.requires(StrictNBTIngredient.of(ReagentItem.getReagentItemStack(ModReagents.ROTTEN_BLOOD_SAMPLE.get())))
 				.unlockedBy("has_necrotic_flesh", has(ModItems.NECROTIC_FLESH.get())).save(consumer, BiomancyMod.createRL("rotten_flesh_from_necrotic_flesh"));
 
 		ShapelessRecipeBuilder.shapeless(Items.ROTTEN_FLESH)
 				.requires(ModTags.Items.RAW_MEATS).requires(ModItems.ERODING_BILE.get())
-				.requires(new ItemStackIngredient(ReagentItem.getReagentItemStack(ModReagents.ROTTEN_BLOOD_SAMPLE.get())))
+				.requires(StrictNBTIngredient.of(ReagentItem.getReagentItemStack(ModReagents.ROTTEN_BLOOD_SAMPLE.get())))
 				.unlockedBy("has_raw_meats", has(ModTags.Items.RAW_MEATS)).save(consumer, BiomancyMod.createRL("rotten_flesh_from_raw_meats"));
 
 		ShapedRecipeBuilder.shaped(ModItems.BONE_GEAR.get(), 1)
@@ -910,20 +917,20 @@ public class ModRecipeProvider extends RecipeProvider {
 		ShapelessNbtRecipeBuilder.shapelessRecipe(ReagentItem.getReagentItemStack(ModReagents.INSOMNIA_CURE.get()))
 				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(ModItems.HORMONE_BILE.get()).addIngredient(Items.COCOA_BEANS, 2)
 				.addIngredient(ModItems.REJUVENATING_MUCUS.get(), 2)
-				.addIngredient(ReagentItem.getReagentItemStack(ModReagents.CLEANSING_SERUM.get())).addIngredient(ModItems.NUTRIENT_PASTE.get())
+				.addStrictIngredient(ReagentItem.getReagentItemStack(ModReagents.CLEANSING_SERUM.get())).addIngredient(ModItems.NUTRIENT_PASTE.get())
 				.addCriterion(HAS_GLASS_VIAL, has(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.INSOMNIA_CURE.get().getRegistryName().getPath() + vialSuffix));
 
 		//noinspection ConstantConditions
 		ShapelessNbtRecipeBuilder.shapelessRecipe(ReagentItem.getReagentItemStack(ModReagents.ABSORPTION_BOOST.get()))
 				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(ModItems.ERODING_BILE.get()).addIngredient(ModItems.HORMONE_BILE.get())
-				.addIngredient(ReagentItem.getReagentItemStack(ModReagents.GROWTH_SERUM.get())).addIngredient(Items.GOLDEN_APPLE)
+				.addStrictIngredient(ReagentItem.getReagentItemStack(ModReagents.GROWTH_SERUM.get())).addIngredient(Items.GOLDEN_APPLE)
 				.addCriterion(HAS_GLASS_VIAL, has(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.ABSORPTION_BOOST.get().getRegistryName().getPath() + vialSuffix));
 
 		//noinspection ConstantConditions
 		ShapelessNbtRecipeBuilder.shapelessRecipe(ReagentItem.getReagentItemStack(ModReagents.ADRENALINE_SERUM.get()))
 				.addIngredient(ModItems.GLASS_VIAL.get()).addIngredient(Items.COCOA_BEANS, 2).addIngredient(ModItems.HORMONE_BILE.get(), 2)
-				.addIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_STRENGTH))
-				.addIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_SWIFTNESS))
+				.addStrictIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_STRENGTH))
+				.addStrictIngredient(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_SWIFTNESS))
 				.addCriterion(HAS_GLASS_VIAL, has(ModItems.GLASS_VIAL.get())).build(consumer, BiomancyMod.createRL(ModReagents.ADRENALINE_SERUM.get().getRegistryName().getPath() + vialSuffix));
 
 		// food ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

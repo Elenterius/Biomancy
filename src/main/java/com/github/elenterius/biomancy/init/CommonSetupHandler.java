@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.capabilities.ItemDecayImpl;
 import com.github.elenterius.biomancy.handler.AnimalDropStomachLootModifier;
 import com.github.elenterius.biomancy.item.InjectionDeviceItem;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
+import com.github.elenterius.biomancy.recipe.PartialNBTIngredient;
 import net.minecraft.block.DispenserBlock;
 import net.minecraft.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.dispenser.IBlockSource;
@@ -15,10 +16,13 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SpawnEggItem;
+import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
@@ -59,6 +63,11 @@ public final class CommonSetupHandler {
 	@SubscribeEvent
 	public static void registerModifierSerializers(final RegistryEvent.Register<GlobalLootModifierSerializer<?>> event) {
 		event.getRegistry().register(new AnimalDropStomachLootModifier.Serializer().setRegistryName(BiomancyMod.createRL("animal_drop_stomach")));
+	}
+
+	@SubscribeEvent
+	public static void registerIngredientSerializers(final RegistryEvent.Register<IRecipeSerializer<?>> event) {
+		CraftingHelper.register(new ResourceLocation("biomancy", "partial_nbt"), PartialNBTIngredient.Serializer.INSTANCE);
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)

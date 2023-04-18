@@ -19,8 +19,8 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 	public final Logger LOGGER = BiomancyMod.LOGGER;
 	public final Marker logMarker = MarkerManager.getMarker("ModEntityTypeTagsProvider");
 
-	public ModEntityTypeTagsProvider(DataGenerator pGenerator, @Nullable ExistingFileHelper existingFileHelper) {
-		super(pGenerator, BiomancyMod.MOD_ID, existingFileHelper);
+	public ModEntityTypeTagsProvider(DataGenerator generator, @Nullable ExistingFileHelper existingFileHelper) {
+		super(generator, BiomancyMod.MOD_ID, existingFileHelper);
 	}
 
 	@Override

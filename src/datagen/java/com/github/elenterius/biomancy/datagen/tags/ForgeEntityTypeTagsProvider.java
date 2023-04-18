@@ -18,8 +18,8 @@ public class ForgeEntityTypeTagsProvider extends EntityTypeTagsProvider {
 	public final Logger LOGGER = BiomancyMod.LOGGER;
 	public final Marker logMarker = MarkerManager.getMarker("ForgeEntityTypeTagsProvider");
 
-	public ForgeEntityTypeTagsProvider(DataGenerator pGenerator, @Nullable ExistingFileHelper existingFileHelper) {
-		super(pGenerator, "forge", existingFileHelper);
+	public ForgeEntityTypeTagsProvider(DataGenerator generator, @Nullable ExistingFileHelper existingFileHelper) {
+		super(generator, "forge", existingFileHelper);
 	}
 
 	@Override
