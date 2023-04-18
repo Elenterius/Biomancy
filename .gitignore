@@ -24,7 +24,12 @@ run
 # Files from Forge MDK
 forge*changelog.txt
 
+# exclude generated resources except the language files from version control
+/src/generated/resources/*
+!/src/generated/resources/assets
+/src/generated/resources/assets/*/*
+!/src/generated/resources/assets/*/lang
+
 logs
-/src/generated/resources/.cache/
 /scripts/.vscode/
 /scripts/lib/
