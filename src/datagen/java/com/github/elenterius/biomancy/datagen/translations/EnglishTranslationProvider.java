@@ -360,7 +360,6 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 		addItem(ModItems.BONE_CLEAVER, "Bone Cleaver", "A specialized bone tool for getting additional special loot from its victims.");
 		addItem(ModItems.GLASS_VIAL, "Glass Vial", "Glass is transparent... very brittle, yet strong and rigid. Very high alchemical resistance, seems perfect for holding reactive substances.");
 		addItem(ModItems.LIVING_FLESH, "Living Flesh", "It's alive!\nBut it looks too dumb to be the brain of a mob. You should turn it into a construct.");
-		addItem(ModItems.EXALTED_LIVING_FLESH, "Exalted Living Flesh", EMPTY_STRING);
 		addItem(ModItems.CREATOR_MIX, "Exotic Flesh Mix", "A meal made for the cradle... just not for you.");
 		addItem(ModItems.INJECTOR, "Bio-Injector", "A simple device which utilizes a razor sharp needle to quickly and forcefully inject Serums into Mobs and Players.");
 		addItem(ModItems.FERTILIZER, "Bio-Alchemical Fertilizer", "Fertilizer that induces hyper-growth in plants, even for reeds, cactus, nether wart and chorus plant.");
