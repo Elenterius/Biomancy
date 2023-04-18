@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.datagen;
+package com.github.elenterius.biomancy.datagen.loot;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.MeatsoupCauldronBlock;

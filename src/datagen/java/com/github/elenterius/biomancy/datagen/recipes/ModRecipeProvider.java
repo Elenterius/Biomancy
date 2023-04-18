@@ -1,7 +1,6 @@
-package com.github.elenterius.biomancy.datagen;
+package com.github.elenterius.biomancy.datagen.recipes;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.datagen.recipe.*;
 import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.item.ReagentItem;
 import com.github.elenterius.biomancy.recipe.ItemStackIngredient;

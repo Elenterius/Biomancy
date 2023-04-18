@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.datagen;
+package com.github.elenterius.biomancy.datagen.tags;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import net.minecraft.data.BlockTagsProvider;

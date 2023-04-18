@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package com.github.elenterius.biomancy.datagen.recipe;
+package com.github.elenterius.biomancy.datagen.recipes;
 
 import mcp.MethodsReturnNonnullByDefault;
 

@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.datagen.recipe;
+package com.github.elenterius.biomancy.datagen.recipes;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.fluid.simibubi.FluidIngredient;
