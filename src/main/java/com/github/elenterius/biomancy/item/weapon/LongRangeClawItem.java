@@ -13,6 +13,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -82,7 +83,13 @@ public class LongRangeClawItem extends ClawWeaponItem implements IAreaHarvesting
 		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
 		Multimap<Attribute, AttributeModifier> clawAttributes = lazyAttributeModifiers.get();
 		clawAttributes.forEach((attribute, attributeModifier) -> {
-			builder.put(attribute, attributeModifier);
+			if (attribute == Attributes.ATTACK_DAMAGE && attributeModifier.getId().equals(BASE_ATTACK_DAMAGE_UUID)) {
+				builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, attributeModifier.getName(), attributeModifier.getAmount() + 2f, attributeModifier.getOperation()));
+			}
+			else if (attribute == Attributes.ATTACK_SPEED && attributeModifier.getId().equals(BASE_ATTACK_SPEED_UUID)) {
+				builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, attributeModifier.getName(), attributeModifier.getAmount() + 0.5f, attributeModifier.getOperation()));
+			}
+			else builder.put(attribute, attributeModifier);
 		});
 		return builder.build();
 	}
