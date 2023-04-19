@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.item.weapon;
 
-import com.github.elenterius.biomancy.init.ModAttributes;
 import com.github.elenterius.biomancy.mixin.SwordItemMixinAccessor;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
@@ -13,8 +12,8 @@ import net.minecraftforge.common.util.Lazy;
 
 public class PoleWeaponItem extends SwordItem {
 
-	public static AttributeModifier ATTACK_REACH_MODIFIER = new AttributeModifier(ModAttributes.UUIDS.ATTACK_REACH, "Weapon modifier", 2f, AttributeModifier.Operation.ADDITION);
-	public static AttributeModifier BLOCK_REACH_MODIFIER = new AttributeModifier(ModAttributes.UUIDS.BLOCK_REACH, "Tool modifier", 2f, AttributeModifier.Operation.ADDITION);
+	//	public static AttributeModifier ATTACK_REACH_MODIFIER = new AttributeModifier(ModAttributes.UUIDS.ATTACK_REACH, "Weapon modifier", 2f, AttributeModifier.Operation.ADDITION);
+	//	public static AttributeModifier BLOCK_REACH_MODIFIER = new AttributeModifier(ModAttributes.UUIDS.BLOCK_REACH, "Tool modifier", 2f, AttributeModifier.Operation.ADDITION);
 
 	final Lazy<Multimap<Attribute, AttributeModifier>> lazyAttributeModifiers; //is needed if we want to add forge block reach distance
 
@@ -32,8 +31,8 @@ public class PoleWeaponItem extends SwordItem {
 	}
 
 	protected void addAdditionalAttributeModifiers(ImmutableMultimap.Builder<Attribute, AttributeModifier> builder) {
-		builder.put(ModAttributes.getBlockReach(), BLOCK_REACH_MODIFIER);
-		builder.put(ModAttributes.getAttackReach(), ATTACK_REACH_MODIFIER);
+		//		builder.put(ModAttributes.getBlockReach(), BLOCK_REACH_MODIFIER);
+		//		builder.put(ModAttributes.getAttackReach(), ATTACK_REACH_MODIFIER);
 	}
 
 	@Override

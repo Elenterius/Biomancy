@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.item.weapon;
 
-import com.github.elenterius.biomancy.init.ModAttributes;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.TextUtil;
 import net.minecraft.block.BlockState;
@@ -67,10 +66,10 @@ public class KhopeshItem extends AxeItem {
 		if (modifiableAttributeInstance != null && modifiableAttributeInstance.hasModifier(ATTACK_DAMAGE_RIDING_MODIFIER)) {
 			modifiableAttributeInstance.removeModifier(ATTACK_DAMAGE_RIDING_MODIFIER);
 		}
-		modifiableAttributeInstance = livingEntity.getAttributes().getInstance(ModAttributes.getAttackReach());
-		if (modifiableAttributeInstance != null && modifiableAttributeInstance.hasModifier(ATTACK_REACH_RIDING_MODIFIER)) {
-			modifiableAttributeInstance.removeModifier(ATTACK_REACH_RIDING_MODIFIER);
-		}
+		//		modifiableAttributeInstance = livingEntity.getAttributes().getInstance(ModAttributes.getAttackReach());
+		//		if (modifiableAttributeInstance != null && modifiableAttributeInstance.hasModifier(ATTACK_REACH_RIDING_MODIFIER)) {
+		//			modifiableAttributeInstance.removeModifier(ATTACK_REACH_RIDING_MODIFIER);
+		//		}
 	}
 
 	public static void applySpecialAttributeModifiers(LivingEntity livingEntity) {
@@ -78,9 +77,9 @@ public class KhopeshItem extends AxeItem {
 		if (modifiableAttributeInstance != null && !modifiableAttributeInstance.hasModifier(ATTACK_DAMAGE_RIDING_MODIFIER)) {
 			modifiableAttributeInstance.addTransientModifier(ATTACK_DAMAGE_RIDING_MODIFIER);
 		}
-		modifiableAttributeInstance = livingEntity.getAttributes().getInstance(ModAttributes.getAttackReach());
-		if (modifiableAttributeInstance != null && !modifiableAttributeInstance.hasModifier(ATTACK_REACH_RIDING_MODIFIER)) {
-			modifiableAttributeInstance.addTransientModifier(ATTACK_REACH_RIDING_MODIFIER);
-		}
+		//		modifiableAttributeInstance = livingEntity.getAttributes().getInstance(ModAttributes.getAttackReach());
+		//		if (modifiableAttributeInstance != null && !modifiableAttributeInstance.hasModifier(ATTACK_REACH_RIDING_MODIFIER)) {
+		//			modifiableAttributeInstance.addTransientModifier(ATTACK_REACH_RIDING_MODIFIER);
+		//		}
 	}
 }

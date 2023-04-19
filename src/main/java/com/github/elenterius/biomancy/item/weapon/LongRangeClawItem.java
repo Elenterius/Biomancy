@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.item.weapon;
 
-import com.github.elenterius.biomancy.init.ModAttributes;
 import com.github.elenterius.biomancy.item.IAreaHarvestingItem;
 import com.github.elenterius.biomancy.util.ClientTextUtil;
 import com.github.elenterius.biomancy.util.GeometricShape;
@@ -36,14 +35,10 @@ import net.minecraftforge.common.util.Lazy;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.UUID;
 
 public class LongRangeClawItem extends ClawWeaponItem implements IAreaHarvestingItem {
 
 	public static final String NBT_KEY = "LongClawTimeLeft";
-	public static AttributeModifier RETRACTED_CLAW_REACH_MODIFIER = new AttributeModifier(UUID.fromString("d76adb08-2bb3-4e88-997d-766a919f0f6b"), "Weapon modifier", 1f, AttributeModifier.Operation.ADDITION);
-	public static AttributeModifier EXTENDED_CLAW_REACH_MODIFIER = new AttributeModifier(UUID.fromString("29ace568-4e32-4809-840c-3c9a0e1ebcd4"), "Weapon modifier", 3f, AttributeModifier.Operation.ADDITION);
-
 	private final Lazy<Multimap<Attribute, AttributeModifier>> lazyAttributeModifiersV2;
 
 	private final int abilityDuration; // in "seconds"
@@ -87,18 +82,9 @@ public class LongRangeClawItem extends ClawWeaponItem implements IAreaHarvesting
 		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
 		Multimap<Attribute, AttributeModifier> clawAttributes = lazyAttributeModifiers.get();
 		clawAttributes.forEach((attribute, attributeModifier) -> {
-			if (attributeModifier != RETRACTED_CLAW_REACH_MODIFIER) {
-				builder.put(attribute, attributeModifier);
-			}
+			builder.put(attribute, attributeModifier);
 		});
-		builder.put(ModAttributes.getAttackReach(), EXTENDED_CLAW_REACH_MODIFIER);
 		return builder.build();
-	}
-
-	@Override
-	protected void addAdditionalAttributeModifiers(ImmutableMultimap.Builder<Attribute, AttributeModifier> builder) {
-		super.addAdditionalAttributeModifiers(builder);
-		builder.put(ModAttributes.getAttackReach(), RETRACTED_CLAW_REACH_MODIFIER);
 	}
 
 	@Override
