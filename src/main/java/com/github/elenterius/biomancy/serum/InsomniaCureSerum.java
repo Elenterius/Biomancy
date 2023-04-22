@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Player;
 
 import javax.annotation.Nullable;
 
-public class InsomniaCureSerum extends Serum {
+public class InsomniaCureSerum extends BasicSerum {
 
 	public InsomniaCureSerum(int color) {
 		super(color);

@@ -30,7 +30,7 @@ public class InjectorRenderer extends GeoItemRenderer<InjectorItem> {
 
 	@Override
 	public void render(InjectorItem item, PoseStack poseStack, MultiBufferSource bufferIn, int packedLight, ItemStack itemStack) {
-		serumColor = item.getSerumColor(itemStack);
+		serumColor = item.getSerum(itemStack).getColor();
 		super.render(item, poseStack, bufferIn, packedLight, itemStack);
 	}
 

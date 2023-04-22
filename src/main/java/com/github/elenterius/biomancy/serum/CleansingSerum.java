@@ -14,7 +14,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
 
-public class CleansingSerum extends Serum {
+public class CleansingSerum extends BasicSerum {
 
 	public CleansingSerum(int color) {
 		super(color);

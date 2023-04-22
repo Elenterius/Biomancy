@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.api.serum.ISerum;
+import com.github.elenterius.biomancy.api.serum.Serum;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -34,10 +34,10 @@ public final class MigrationHandler {
 		handleMissingBlockEntityTypes(event.getMappings(ForgeRegistries.BLOCK_ENTITY_TYPES.getRegistryKey(), BiomancyMod.MOD_ID));
 	}
 
-	private static void handleMissingSerums(List<Mapping<ISerum>> mappings) {
+	private static void handleMissingSerums(List<Mapping<Serum>> mappings) {
 		if (mappings.isEmpty()) return;
 
-		for (Mapping<ISerum> mapping : mappings) {
+		for (Mapping<Serum> mapping : mappings) {
 			if (mapping.getKey().getPath().equals("growth_serum")) {
 				mapping.remap(ModSerums.AGEING_SERUM.get());
 			}

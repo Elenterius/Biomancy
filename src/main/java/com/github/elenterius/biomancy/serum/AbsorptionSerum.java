@@ -7,7 +7,7 @@ import net.minecraft.world.entity.LivingEntity;
 
 import javax.annotation.Nullable;
 
-public class AbsorptionSerum extends Serum {
+public class AbsorptionSerum extends BasicSerum {
 
 	public AbsorptionSerum(int color) {
 		super(color);

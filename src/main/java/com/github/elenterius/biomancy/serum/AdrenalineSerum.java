@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
-public class AdrenalineSerum extends Serum {
+public class AdrenalineSerum extends BasicSerum {
 
 	public static final int DURATION = 20 * (2 * 60 + 30); // 2 min : 30 sec
 	public static final int AMPLIFIER = 1;
@@ -56,7 +56,7 @@ public class AdrenalineSerum extends Serum {
 	@Override
 	public void appendTooltip(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flagIn) {
 		if (ClientTextUtil.showExtraInfo(tooltip)) {
-			tooltip.add(ComponentUtil.translatable(getTooltipKey()).withStyle(TextStyles.LORE));
+			tooltip.add(ComponentUtil.translatable(getDescriptionTranslationKey()).withStyle(TextStyles.LORE));
 		}
 
 		addEffectToClientTooltip(tooltip, ModMobEffects.ADRENALINE_RUSH.get(), AMPLIFIER, DURATION);

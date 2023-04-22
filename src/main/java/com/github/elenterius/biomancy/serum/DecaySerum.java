@@ -19,17 +19,17 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.UUID;
 
-public class DecaySerum extends Serum {
+public class DecaySerum extends BasicSerum {
 
 	public DecaySerum(int colorIn) {
 		super(colorIn);
 	}
 
 	//TODO: use withering ooze for this?
-//	@Override
-//	public boolean affectBlock(CompoundTag tag, @Nullable LivingEntity source, Level world, BlockPos pos, Direction facing) {
-//		BlockState state = world.getBlockState(pos);
-//		Block block = state.getBlock();
+	//	@Override
+	//	public boolean affectBlock(CompoundTag tag, @Nullable LivingEntity source, Level world, BlockPos pos, Direction facing) {
+	//		BlockState state = world.getBlockState(pos);
+	//		Block block = state.getBlock();
 
 //		if (block == ModBlocks.FLESH_BLOCK.get()) {
 //			if (!world.isClientSide) world.setBlockAndUpdate(pos, ModBlocks.NECROTIC_FLESH_BLOCK.get().defaultBlockState());

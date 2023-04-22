@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.serum;
 
-import com.github.elenterius.biomancy.api.serum.ISerum;
+import com.github.elenterius.biomancy.api.serum.Serum;
 import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModSerums;
@@ -18,11 +18,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class Serum implements ISerum {
+public abstract class BasicSerum implements Serum {
 
 	private final int color;
 
-	protected Serum(int color) {
+	protected BasicSerum(int color) {
 		this.color = color;
 	}
 
@@ -42,36 +42,24 @@ public abstract class Serum implements ISerum {
 	}
 
 	@Override
-	public String getTranslationKey() {
-		return ISerum.makeTranslationKey(Objects.requireNonNull(ModSerums.REGISTRY.get().getKey(this)));
+	public String getNameTranslationKey() {
+		return Serum.makeTranslationKey(Objects.requireNonNull(ModSerums.REGISTRY.get().getKey(this)));
 	}
 
 	@Override
 	public MutableComponent getDisplayName() {
-		return ComponentUtil.translatable(getTranslationKey());
+		return ComponentUtil.translatable(getNameTranslationKey());
 	}
 
 	public void appendTooltip(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		if (ClientTextUtil.showExtraInfo(tooltip)) {
-			tooltip.add(ComponentUtil.translatable(getTooltipKey()).withStyle(TextStyles.LORE));
+			tooltip.add(ComponentUtil.translatable(getDescriptionTranslationKey()).withStyle(TextStyles.LORE));
 		}
-	}
-
-	public String getTooltipKey() {
-		return getTranslationKey() + ".tooltip";
 	}
 
 	@Override
 	public String toString() {
 		return "Serum{name=%s, color=%s}".formatted(ModSerums.REGISTRY.get().getKey(this), Integer.toHexString(color));
-	}
-
-	@Override
-	public boolean equals(Object other) {
-		if (this == other) return true;
-		if (other == null || getClass() != other.getClass()) return false;
-		Serum otherSerum = (Serum) other;
-		return Objects.requireNonNull(ModSerums.REGISTRY.get().getKey(this)).equals(ModSerums.REGISTRY.get().getKey(otherSerum));
 	}
 
 }

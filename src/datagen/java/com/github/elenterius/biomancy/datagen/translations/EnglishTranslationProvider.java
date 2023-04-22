@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.datagen.translations;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.api.serum.ISerum;
+import com.github.elenterius.biomancy.api.serum.Serum;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.entity.projectile.BaseProjectile;
 import com.github.elenterius.biomancy.init.*;
@@ -10,7 +10,7 @@ import com.github.elenterius.biomancy.item.ICustomTooltip;
 import com.github.elenterius.biomancy.item.MaykerBannerPatternItem;
 import com.github.elenterius.biomancy.item.SerumItem;
 import com.github.elenterius.biomancy.item.state.LivingToolState;
-import com.github.elenterius.biomancy.serum.Serum;
+import com.github.elenterius.biomancy.serum.BasicSerum;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
@@ -38,7 +38,7 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 
 	private List<Item> itemsToTranslate = List.of();
 	private List<Block> blocksToTranslate = List.of();
-	private List<ISerum> serumsToTranslate = List.of();
+	private List<Serum> serumsToTranslate = List.of();
 
 	public EnglishTranslationProvider(DataGenerator gen) {
 		super(gen, BiomancyMod.MOD_ID, "en_us");
@@ -67,7 +67,7 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 		}
 
 		if (!serumsToTranslate.isEmpty()) {
-			for (ISerum serum : serumsToTranslate) {
+			for (Serum serum : serumsToTranslate) {
 				BiomancyMod.LOGGER.warn(LOG_MARKER, () -> "Missing translation for serum '%s'".formatted(serum));
 			}
 			throw new IllegalStateException("Missing translation for %d serums".formatted(serumsToTranslate.size()));
@@ -81,12 +81,12 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 		itemsToTranslate.remove(item);
 	}
 
-	private <T extends ISerum> void addSerum(Supplier<T> supplier, String name) {
+	private <T extends Serum> void addSerum(Supplier<T> supplier, String name) {
 		add(supplier.get(), name);
 	}
 
-	private void add(ISerum serum, String name) {
-		add(serum.getTranslationKey(), name);
+	private void add(Serum serum, String name) {
+		add(serum.getNameTranslationKey(), name);
 		serumsToTranslate.remove(serum);
 	}
 
@@ -123,7 +123,7 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 		T item = supplier.get();
 		ItemStack stack = new ItemStack(item);
 
-		add(item.getSerum(stack), serumName);
+		add(item.getSerum(), serumName);
 
 		add(item.getDescriptionId(stack), serumName);
 		add(item.getTooltipKey(stack), tooltip);
@@ -297,7 +297,7 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 
 	private void addSerumTranslations() {
 		//serums that are not tied to a specific item
-		add(Serum.EMPTY, "INVALID SERUM");
+		add(BasicSerum.EMPTY, "INVALID SERUM");
 	}
 
 	private void addStatusEffectTranslations() {

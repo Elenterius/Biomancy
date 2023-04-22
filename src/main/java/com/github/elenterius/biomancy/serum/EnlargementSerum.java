@@ -17,7 +17,7 @@ import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
-public class EnlargementSerum extends Serum {
+public class EnlargementSerum extends BasicSerum {
 
 	public EnlargementSerum(int color) {
 		super(color);

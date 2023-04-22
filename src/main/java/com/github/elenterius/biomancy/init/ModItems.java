@@ -1,12 +1,12 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.api.serum.Serum;
 import com.github.elenterius.biomancy.item.*;
 import com.github.elenterius.biomancy.item.weapon.BileSpitterItem;
 import com.github.elenterius.biomancy.item.weapon.DevArmCannonItem;
 import com.github.elenterius.biomancy.item.weapon.LivingLongClawsItem;
 import com.github.elenterius.biomancy.item.weapon.SimpleSwordItem;
-import com.github.elenterius.biomancy.serum.Serum;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -198,7 +198,7 @@ public final class ModItems {
 	}
 
 	private static <T extends Serum> RegistryObject<SerumItem> registerSerumItem(RegistryObject<T> registryObject) {
-		return ITEMS.register(registryObject.getId().getPath(), () -> new SerumItem(createProperties().stacksTo(8).rarity(ModRarities.UNCOMMON), registryObject));
+		return ITEMS.register(registryObject.getId().getPath(), () -> new SerumItem(createProperties().craftRemainder(ModItems.GLASS_VIAL.get()).stacksTo(8).rarity(ModRarities.UNCOMMON), registryObject));
 	}
 
 	private static RegistryObject<SimpleItem> registerSimpleVialItem(String name) {

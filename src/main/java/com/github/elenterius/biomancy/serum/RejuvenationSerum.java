@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.LevelEvent;
 
 import javax.annotation.Nullable;
 
-public class RejuvenationSerum extends Serum {
+public class RejuvenationSerum extends BasicSerum {
 
 	public RejuvenationSerum(int color) {
 		super(color);

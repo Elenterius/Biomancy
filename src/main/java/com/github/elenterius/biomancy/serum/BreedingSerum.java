@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Player;
 
 import javax.annotation.Nullable;
 
-public class BreedingSerum extends Serum {
+public class BreedingSerum extends BasicSerum {
 
 	public BreedingSerum(int colorIn) {
 		super(colorIn);

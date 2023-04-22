@@ -17,15 +17,18 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 @ApiStatus.Experimental
-public interface ISerum {
+public interface Serum {
 	String DATA_TAG = "SerumData";
-	String PREFIX = "serum.";
-	ISerum EMPTY = new ISerum() {
+	String TRANSLATION_PREFIX = "serum.";
+
+	Serum EMPTY = new Serum() {
 		@Override
-		public void affectEntity(ServerLevel level, CompoundTag nbt, @Nullable LivingEntity source, LivingEntity target) {}
+		public boolean canAffectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
+			return false;
+		}
 
 		@Override
-		public void affectPlayerSelf(CompoundTag nbt, ServerPlayer targetSelf) {}
+		public void affectEntity(ServerLevel level, CompoundTag nbt, @Nullable LivingEntity source, LivingEntity target) {}
 
 		@Override
 		public boolean canAffectPlayerSelf(CompoundTag tag, Player targetSelf) {
@@ -33,17 +36,10 @@ public interface ISerum {
 		}
 
 		@Override
+		public void affectPlayerSelf(CompoundTag nbt, ServerPlayer targetSelf) {}
+
+		@Override
 		public void appendTooltip(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {}
-
-		@Override
-		public String getTranslationKey() {
-			return PREFIX + "biomancy.empty";
-		}
-
-		@Override
-		public MutableComponent getDisplayName() {
-			return Component.translatable(getTranslationKey());
-		}
 
 		@Override
 		public boolean isEmpty() {
@@ -56,9 +52,10 @@ public interface ISerum {
 		}
 
 		@Override
-		public boolean canAffectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
-			return false;
+		public String getNameTranslationKey() {
+			return TRANSLATION_PREFIX + "biomancy.empty";
 		}
+
 	};
 
 	static CompoundTag getDataTag(ItemStack stack) {
@@ -66,7 +63,7 @@ public interface ISerum {
 	}
 
 	static String makeTranslationKey(ResourceLocation registryId) {
-		return PREFIX + registryId.getNamespace() + "." + registryId.getPath().replace("/", ".");
+		return TRANSLATION_PREFIX + registryId.getNamespace() + "." + registryId.getPath().replace("/", ".");
 	}
 
 	static void removeDataTag(CompoundTag tag) {
@@ -80,11 +77,13 @@ public interface ISerum {
 		}
 	}
 
-	void appendTooltip(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag);
+	boolean canAffectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target);
 
-	String getTranslationKey();
+	void affectEntity(ServerLevel level, CompoundTag tag, @Nullable LivingEntity source, LivingEntity target);
 
-	MutableComponent getDisplayName();
+	boolean canAffectPlayerSelf(CompoundTag tag, Player targetSelf);
+
+	void affectPlayerSelf(CompoundTag tag, ServerPlayer targetSelf);
 
 	default boolean isEmpty() {
 		return false;
@@ -95,11 +94,15 @@ public interface ISerum {
 	 */
 	int getColor();
 
-	boolean canAffectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target);
+	void appendTooltip(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag);
 
-	void affectEntity(ServerLevel level, CompoundTag tag, @Nullable LivingEntity source, LivingEntity target);
+	String getNameTranslationKey();
 
-	boolean canAffectPlayerSelf(CompoundTag tag, Player targetSelf);
+	default String getDescriptionTranslationKey() {
+		return getNameTranslationKey() + ".tooltip";
+	}
 
-	void affectPlayerSelf(CompoundTag tag, ServerPlayer targetSelf);
+	default MutableComponent getDisplayName() {
+		return Component.translatable(getNameTranslationKey());
+	}
 }

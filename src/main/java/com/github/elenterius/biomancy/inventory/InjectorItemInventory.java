@@ -1,8 +1,7 @@
 package com.github.elenterius.biomancy.inventory;
 
+import com.github.elenterius.biomancy.api.serum.SerumContainer;
 import com.github.elenterius.biomancy.inventory.itemhandler.LargeSingleItemStackHandler;
-import com.github.elenterius.biomancy.item.ISerumProvider;
-import com.github.elenterius.biomancy.item.InjectorItem;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -21,7 +20,7 @@ public class InjectorItemInventory extends BaseInventory<LargeSingleItemStackHan
 			@Override
 			public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
 				Item item = stack.getItem();
-				return super.isItemValid(slot, stack) && item instanceof ISerumProvider && !(item instanceof InjectorItem);
+				return super.isItemValid(slot, stack) && item instanceof SerumContainer;
 			}
 
 			@Override

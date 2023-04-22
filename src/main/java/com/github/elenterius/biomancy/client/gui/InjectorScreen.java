@@ -1,9 +1,9 @@
 package com.github.elenterius.biomancy.client.gui;
 
-import com.github.elenterius.biomancy.api.serum.ISerum;
+import com.github.elenterius.biomancy.api.serum.Serum;
+import com.github.elenterius.biomancy.api.serum.SerumContainer;
 import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
-import com.github.elenterius.biomancy.item.ISerumProvider;
 import com.github.elenterius.biomancy.item.InjectorItem;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import com.github.elenterius.biomancy.styles.ColorStyles;
@@ -259,7 +259,7 @@ public class InjectorScreen extends Screen {
 
 	private Object2IntMap<ItemStack> findSerumStacks(LocalPlayer player) {
 		Object2IntMap<ItemStack> foundStacks = new Object2IntArrayMap<>();
-		Object2IntMap<ISerum> foundSerums = new Object2IntArrayMap<>();
+		Object2IntMap<Serum> foundSerums = new Object2IntArrayMap<>();
 
 		foundStacks.put(new ItemStack(Items.BARRIER), CANCEL_ID);
 
@@ -268,8 +268,8 @@ public class InjectorScreen extends Screen {
 		for (int idx = 0; idx < slots; idx++) {
 			ItemStack stack = inventory.getItem(idx);
 			Item item = stack.getItem();
-			if (item instanceof ISerumProvider serumProvider && !(item instanceof InjectorItem)) {
-				ISerum serum = serumProvider.getSerum(stack);
+			if (item instanceof SerumContainer vial) {
+				Serum serum = vial.getSerum();
 				if (!serum.isEmpty()) {
 					if (!foundSerums.containsKey(serum)) {
 						foundStacks.put(stack, idx);
