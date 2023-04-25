@@ -5,7 +5,6 @@ import com.github.elenterius.biomancy.client.gui.IngameOverlays;
 import com.github.elenterius.biomancy.client.gui.tooltip.EmptyLineClientComponent;
 import com.github.elenterius.biomancy.client.gui.tooltip.HrTooltipClientComponent;
 import com.github.elenterius.biomancy.client.gui.tooltip.StorageSacTooltipClientComponent;
-import com.github.elenterius.biomancy.client.gui.tooltip.TabTooltipClientComponent;
 import com.github.elenterius.biomancy.client.render.block.bioforge.BioForgeRenderer;
 import com.github.elenterius.biomancy.client.render.block.biolab.BioLabRenderer;
 import com.github.elenterius.biomancy.client.render.block.cradle.PrimordialCradleRenderer;
@@ -29,7 +28,6 @@ import com.github.elenterius.biomancy.item.SerumItem;
 import com.github.elenterius.biomancy.tooltip.EmptyLineTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.StorageSacTooltipComponent;
-import com.github.elenterius.biomancy.tooltip.TabTooltipComponent;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -158,7 +156,6 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	static void registerTooltipComponents(RegisterClientTooltipComponentFactoriesEvent event) {
-		event.register(TabTooltipComponent.class, TabTooltipClientComponent::new);
 		event.register(HrTooltipComponent.class, HrTooltipClientComponent::new);
 		event.register(EmptyLineTooltipComponent.class, EmptyLineClientComponent::new);
 		event.register(StorageSacTooltipComponent.class, StorageSacTooltipClientComponent::new);
