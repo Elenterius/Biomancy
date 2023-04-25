@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.mixin.ZombieVillagerMixinAccessor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.WitherSkeleton;
@@ -33,6 +34,10 @@ public class CleansingSerum extends BasicSerum {
 		}
 		else if (target instanceof WitherSkeleton skeleton) {
 			MobUtil.convertMobTo((ServerLevel) target.level, skeleton, EntityType.SKELETON);
+		}
+
+		if (target instanceof AgeableMob ageableMob) {
+			MobUtil.removeForcedAge(ageableMob);
 		}
 	}
 

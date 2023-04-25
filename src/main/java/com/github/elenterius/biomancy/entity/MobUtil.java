@@ -128,10 +128,14 @@ public final class MobUtil {
 
 		mob.setBaby(false);
 		if (mob instanceof AgeableMob ageableMob) {
-			AgeableMobAccessor accessor = (AgeableMobAccessor) ageableMob;
-			if (accessor.biomancy_getForcedAge() != 0) {
-				accessor.biomancy_setForcedAge(0); //unset forced age
-			}
+			removeForcedAge(ageableMob);
+		}
+	}
+
+	public static void removeForcedAge(AgeableMob mob) {
+		AgeableMobAccessor accessor = (AgeableMobAccessor) mob;
+		if (accessor.biomancy_getForcedAge() != 0) {
+			accessor.biomancy_setForcedAge(0); //unset forced age
 		}
 	}
 
