@@ -240,11 +240,9 @@ void minifyJsons(String fdir) {
 	printf "%7s sec, %s ms \n", (int) (ms / 1000), ms % 1000
 }
 
-build {
-	doLast {}
-}
-
 jar {
+	from sourceSets.api.output
+
 	// manifest properties for reading on runtime
 	manifest {
 		attributes(["Specification-Title"     : "biomancy",
@@ -256,6 +254,7 @@ jar {
 					"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
 					"MixinConfigs"            : "mixins.biomancy.json"])
 	}
+
 	from { ["CREDITS.md", "LICENSE.txt"] } //copy files from the repository root into the jar
 }
 
