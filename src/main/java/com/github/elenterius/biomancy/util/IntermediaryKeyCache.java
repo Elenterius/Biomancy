@@ -7,27 +7,36 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
+/**
+ * Models a many-to-one relationship -> "Multi Key" Map
+ * <br>
+ * i.e. different Keys will point to the same Value
+ */
 public class IntermediaryKeyCache<K, V> {
+	protected static final Map<Integer, Integer> INTEGER_CACHE = new HashMap<>();
+
 	private final Function<K, Integer> computeKey;
 	private final Map<K, Integer> computedKeys = new HashMap<>();
 	private final HashMap<Integer, V> cachedValues = new HashMap<>();
 
 	/**
-	 * many-to-one relationship -> "Multi Key" Map
+	 * @param computeKey a function that computes the same intermediary key for all input keys that must point to the same cached value
 	 */
 	public IntermediaryKeyCache(Function<K, Integer> computeKey) {
 		this.computeKey = computeKey;
 	}
 
+	private Integer getIntermediaryKey(K key) {
+		return computedKeys.computeIfAbsent(key, k -> INTEGER_CACHE.computeIfAbsent(computeKey.apply(k), computedKey -> computedKey));
+	}
+
 	@Nullable
 	public V put(K key, V value) {
-		Integer intermediaryKey = computedKeys.computeIfAbsent(key, computeKey);
-		return cachedValues.put(intermediaryKey, value);
+		return cachedValues.put(getIntermediaryKey(key), value);
 	}
 
 	public V computeIfAbsent(K key, Function<K, V> computeValue) {
-		Integer intermediaryKey = computedKeys.computeIfAbsent(key, computeKey);
-		return cachedValues.computeIfAbsent(intermediaryKey, k -> computeValue.apply(key));
+		return cachedValues.computeIfAbsent(getIntermediaryKey(key), k -> computeValue.apply(key));
 	}
 
 	@Nullable
