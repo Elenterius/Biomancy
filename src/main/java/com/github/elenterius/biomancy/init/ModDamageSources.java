@@ -26,13 +26,13 @@ public final class ModDamageSources {
 	public static final DamageSource SYMBIONT_GENERIC_ATTACK = createGenericDamage("symbiont_generic");
 	public static final DamageSource CORROSIVE_ACID = createGenericDamage("corrosive_acid");
 
-	public static final DamageSource FALL_ON_BONE_SPIKE = createGenericDamage("bone_spike_fall").bypassArmor().setIsFall();
-	public static final DamageSource IMPALED_BY_BONE_SPIKE = createGenericDamage("bone_spike_impale").bypassArmor();
+	public static final DamageSource FALL_ON_SPIKE = createGenericDamage("spike_fall_on").bypassArmor().setIsFall();
+	public static final DamageSource IMPALED_BY_SPIKE = createGenericDamage("spike_impale").bypassArmor();
 
 	private ModDamageSources() {}
 
 	public static DamageSource createGenericDamage(String name) {
-		return new DamageSource(BiomancyMod.MOD_ID + "." + name); //normal damage source "bypasses" shields
+		return new DamageSource(BiomancyMod.MOD_ID + "." + name); //normal damageShape source "bypasses" shields
 	}
 
 	public static DamageSource createProjectileDamage(BaseProjectile projectile, @Nullable Entity shooter) {

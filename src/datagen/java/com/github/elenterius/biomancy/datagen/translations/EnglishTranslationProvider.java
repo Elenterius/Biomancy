@@ -286,8 +286,8 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 		addDeathMessage(ModDamageSources.CHEST_BITE, "%1$s tried touching a chest but was eaten instead");
 		addDeathMessage(ModDamageSources.CREATOR_SPIKES, "%1$s angered the Maykrs and was impaled by bone spikes");
 
-		addDeathMessage(ModDamageSources.FALL_ON_BONE_SPIKE, "%1$s fell on a sharp bone");
-		addDeathMessage(ModDamageSources.IMPALED_BY_BONE_SPIKE, "%1$s was impaled by a sharp bone");
+		addDeathMessage(ModDamageSources.FALL_ON_SPIKE, "%1$s fell on a sharp spike");
+		addDeathMessage(ModDamageSources.IMPALED_BY_SPIKE, "%1$s was skewered by a sharp spike");
 
 		addDeathMessage(ModDamageSources.CORROSIVE_ACID, "%1$s died from severe acid burns");
 
@@ -366,7 +366,7 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 
 		addItem(ModItems.LONG_CLAWS, "Living Long Claws", "Claws made of living flesh\n\nFeed it with nutrients via right click in the inventory.");
 		addItem(ModItems.DEV_ARM_CANNON, "[Dev Tool] Arm Cannon", "Creative/Developer Tool for testing projectiles.");
-		addItem(ModItems.BILE_SPITTER, "[EXPERIMENTAL] Bile Spitter", "WIP: \"living\" projectile weapon that shoots corrosive bile.\nIntended behaviour: charge it like a bow to increase damage & size of projectile.");
+		addItem(ModItems.BILE_SPITTER, "[EXPERIMENTAL] Bile Spitter", "WIP: \"living\" projectile weapon that shoots corrosive bile.\nIntended behaviour: charge it like a bow to increase damageShape & size of projectile.");
 
 		addItem(ModItems.BIO_EXTRACTOR, "Bio-Extractor", EMPTY_STRING);
 		addItem(ModItems.ESSENCE, "Essence", EMPTY_STRING);
@@ -436,7 +436,7 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 		addBlock(ModBlocks.FLESH_IRIS_DOOR, "Flesh Iris-Door", "Trapdoor-like iris door made of flesh...");
 		addBlock(ModBlocks.FLESH_DOOR, "Flesh Door", "A sliding door made of flesh...");
 		addBlock(ModBlocks.FULL_FLESH_DOOR, "Wide Flesh Door", "A wide sliding door made of flesh...");
-		addBlock(ModBlocks.BONE_SPIKE, "Bone Spike", "A dangerous spike made of reinforced bone, colliding with it will hurt.");
+		addBlock(ModBlocks.FLESH_SPIKE, "Flesh Spike", "A dangerous spike made of reinforced bone and flesh, colliding with it will hurt. Several spikes can be placed in one spot.");
 		addBlock(ModBlocks.FLESH_LADDER, "Flesh Ladder", "Ladder mainly made of bones and a little bit of flesh...");
 		addBlock(ModBlocks.BIO_LANTERN, "Bioluminescent Lantern", "Biological light source.");
 		addBlock(ModBlocks.TENDON_CHAIN, "Tendon Chain", "Chain made of tendons.");

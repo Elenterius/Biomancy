@@ -114,7 +114,7 @@ public class ModBlockLoot extends BlockLoot {
 		addCustom(ModBlocks.FLESH_DOOR.get(), ModBlockLoot::createFleshDoorTable);
 		addCustom(ModBlocks.FULL_FLESH_DOOR.get(), ModBlockLoot::createFleshDoorTable);
 
-		dropSelf(ModBlocks.BONE_SPIKE.get());
+		dropSelf(ModBlocks.FLESH_SPIKE.get());
 	}
 
 	protected <T extends Block> void addCustom(T block, Function<T, LootTable.Builder> function) {

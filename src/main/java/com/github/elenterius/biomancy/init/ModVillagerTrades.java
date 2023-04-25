@@ -33,7 +33,7 @@ public class ModVillagerTrades {
 	public static void onWandererTrades(final WandererTradesEvent event) {
 		List<VillagerTrades.ItemListing> genericTrades = event.getGenericTrades();
 		genericTrades.add(sellToPlayer(ModItems.EXOTIC_DUST.get(), 4, 2, 16, 5));
-		genericTrades.add(sellToPlayer(ModItems.BONE_SPIKE.get(), 2, 16, 5));
+		genericTrades.add(sellToPlayer(ModItems.FLESH_SPIKE.get(), 2, 16, 5));
 		genericTrades.add(buyFromPlayer(ModItems.NUTRIENT_BAR.get(), 2, 8, 5));
 
 		List<VillagerTrades.ItemListing> rareTrades = event.getRareTrades();

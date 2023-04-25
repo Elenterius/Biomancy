@@ -55,6 +55,7 @@ public final class MigrationHandler {
 		for (Mapping<Block> mapping : mappings) {
 			String path = mapping.getKey().getPath();
 			switch (path) {
+				case "bone_spike" -> mapping.remap(ModBlocks.FLESH_SPIKE.get());
 				case "creator" -> mapping.remap(ModBlocks.PRIMORDIAL_CRADLE.get());
 				case "flesh_block" -> mapping.remap(ModBlocks.FLESH.get());
 				case "flesh_block_slab" -> mapping.remap(ModBlocks.FLESH_SLAB.get());
@@ -71,8 +72,12 @@ public final class MigrationHandler {
 		if (mappings.isEmpty()) return;
 
 		for (Mapping<BlockEntityType<?>> mapping : mappings) {
-			if (mapping.getKey().getPath().equals("creator")) {
+			String path = mapping.getKey().getPath();
+			if (path.equals("creator")) {
 				mapping.remap(ModBlockEntities.PRIMORDIAL_CRADLE.get());
+			}
+			else if (path.equals("bone_spike")) {
+				mapping.remap(ModBlockEntities.FLESH_SPIKE.get());
 			}
 			else {
 				mapping.ignore();

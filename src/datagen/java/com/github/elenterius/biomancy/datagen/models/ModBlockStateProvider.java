@@ -56,7 +56,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
 		storageSac(ModBlocks.STORAGE_SAC.get());
 
-		boneSpike(ModBlocks.BONE_SPIKE.get());
+		geckolibModel(ModBlocks.FLESH_SPIKE.get());
 
 		bioLantern(ModBlocks.BIO_LANTERN.get());
 		tendonChain(ModBlocks.TENDON_CHAIN.get());
