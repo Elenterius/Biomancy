@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.block.*;
 import com.github.elenterius.biomancy.block.property.DirectionalSlabType;
 import com.github.elenterius.biomancy.block.property.Orientation;
 import com.github.elenterius.biomancy.init.ModBlocks;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -109,6 +110,27 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		ModelFile.ExistingModelFile existingModel = models().getExistingFile(blockModel(block));
 		directionalBlock(block, existingModel);
 		simpleBlockItem(block, existingModel);
+	}
+
+	public void geckolibModel(Block block, ResourceLocation particleTexture) {
+		String name = name(block);
+		BlockModelBuilder builder = models().getBuilder(name).texture("particle", particleTexture);
+		simpleBlock(block, builder);
+
+		itemModels().getBuilder(name).parent(new ModelFile.UncheckedModelFile(new ResourceLocation("builtin/entity")))
+				.transforms()
+				.transform(ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND).rotation(0, 45, 0).scale(0.4f).end()
+				.transform(ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND).rotation(0, 225, 0).scale(0.4f).end()
+				.transform(ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND).rotation(75, 45, 0).translation(0, 2.5f, 0).scale(0.375f).end()
+				.transform(ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND).rotation(75, 45, 0).translation(0, 2.5f, 0).scale(0.375f).end()
+				.transform(ItemTransforms.TransformType.GUI).rotation(30, 225, 0).translation(0, -4.25f, 0).scale(0.625f).end()
+				.transform(ItemTransforms.TransformType.FIXED).translation(0, -4, 0).scale(0.5f).end()
+				.transform(ItemTransforms.TransformType.GROUND).translation(0, -4, 0).scale(0.25f).end()
+				.transform(ItemTransforms.TransformType.HEAD).translation(0, -8, 0).scale(1).end();
+	}
+
+	public void geckolibModel(Block block) {
+		geckolibModel(block, new ResourceLocation("biomancy:block/packed_flesh"));
 	}
 
 	public void directionalSlabBlockWithItem(DirectionalSlabBlock slab, Block block) {
