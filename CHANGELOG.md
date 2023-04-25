@@ -1,3 +1,16 @@
+## [1.1.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.0.0...1.19.2-v2.1.1.0) (2023-04-25)
+
+
+### Features
+
+* make Cleansing Serum able to remove forced age from applicable mobs ([908c7ef](https://github.com/Elenterius/Biomancy/commit/908c7ef86fea34248a103eb27ec42d43ba2bae90))
+* rework Spike block ([4138a5b](https://github.com/Elenterius/Biomancy/commit/4138a5b36389e6d6848495a9b9b433a3717108ec))
+
+
+### Bug Fixes
+
+* fix Bio-Forge GUI crashing the game when clicking next page button ([4046464](https://github.com/Elenterius/Biomancy/commit/40464647129b6077d70f58bc96db9e7555ba1413))
+
 ## [1.0.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.0.53.2...1.19.2-v2.1.0.0) (2023-04-18)
 
 
@@ -45,21 +58,4 @@
 ### Bug Fixes
 
 * fix Ageing Serum not converting Guardian mobs to Elder Guardians mobs ([976aef6](https://github.com/Elenterius/Biomancy/commit/976aef6ccfc3c08e92144b7ae99d1eb61a429047))
-
-## [0.52.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.0.51.0...1.19.2-v2.0.52.0) (2023-03-25)
-
-
-### Features
-
-* buff nutrient bar from 4 to 9 nutrition and from 0.3 to 1.8 saturation ([361dae7](https://github.com/Elenterius/Biomancy/commit/361dae79231b22165c0432e350fc8d9c749a935e))
-* make nutrient paste edible ([7faa162](https://github.com/Elenterius/Biomancy/commit/7faa162e837b5b5649b4b570831a471686ba47a8))
-* merge Bio-Minerals into Mineral Fragment item ([76e6145](https://github.com/Elenterius/Biomancy/commit/76e614582700712c272b7f7b5d20377b6af9d39d))
-* restrict flesh blobs to remain near the cradle from which they spawned ([5fe5cb2](https://github.com/Elenterius/Biomancy/commit/5fe5cb25be9ae3a27186f33cd1699c4b8e680c07))
-* tweak decomposer recipes and remove Nutrients from these recipes ([2e3e399](https://github.com/Elenterius/Biomancy/commit/2e3e3997d219958bc904e1837f1dcebb3a0d6f6e))
-* update textures ([4f4ed43](https://github.com/Elenterius/Biomancy/commit/4f4ed437f4d56ca2519de7f3ec21978f4f4b5b55))
-
-
-### Bug Fixes
-
-* fix flesh blobs being discarded on despawn (they will now persist without name tags) ([75bed7b](https://github.com/Elenterius/Biomancy/commit/75bed7ba35a20a48999fa38f09129142072c5533))
 
