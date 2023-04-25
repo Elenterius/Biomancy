@@ -10,7 +10,6 @@ import com.github.elenterius.biomancy.item.ICustomTooltip;
 import com.github.elenterius.biomancy.item.MaykerBannerPatternItem;
 import com.github.elenterius.biomancy.item.SerumItem;
 import com.github.elenterius.biomancy.item.state.LivingToolState;
-import com.github.elenterius.biomancy.serum.BasicSerum;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
@@ -178,7 +177,7 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 		addTooltip("nutrients_consumes", "Consumes %1$s u");
 		addTooltip("consumption", "Consumption");
 		addTooltip("bile_fuel", "Bile");
-		addTooltip("contains_unique_dna", "Contains Unique Genetic Sequences");
+		addTooltip("contains_unique_dna", "[PH] Contains Unique Genetic Sequences");
 		addTooltip("press_button_to", "Press %1$s to %2$s");
 
 		addTooltip("owner", "Owner: %1$s");
@@ -196,11 +195,11 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 		addTooltip("action.reload", "reload");
 		addTooltip("action.cycle", "cycle");
 
-		addTooltip("fire_rate", "Fire Rate");
-		addTooltip("accuracy", "Accuracy");
-		addTooltip("ammo", "Ammo");
-		addTooltip("reload_time", "Reload Time");
-		addTooltip("projectile_damage", "Projectile Damage");
+		//		addTooltip("fire_rate", "Fire Rate");
+		//		addTooltip("accuracy", "Accuracy");
+		//		addTooltip("ammo", "Ammo");
+		//		addTooltip("reload_time", "Reload Time");
+		//		addTooltip("projectile_damage", "Projectile Damage");
 
 		add(LivingToolState.getTooltipTranslationKey(), "The Tool is %1$s");
 		add(LivingToolState.DORMANT.getTranslationKey(), "Dormant");
@@ -208,8 +207,8 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 		add(LivingToolState.EXALTED.getTranslationKey(), "Exalted");
 
 		addHudMessage("not_sleepy", "You don't feel sleepy...");
-		addHudMessage("set_behavior_command", "%1$s will now execute the %2$s command");
-		addHudMessage("not_enough_ammo", "Not enough Ammo");
+		//		addHudMessage("set_behavior_command", "%1$s will now execute the %2$s command");
+		//		addHudMessage("not_enough_ammo", "Not enough Ammo");
 		addHudMessage("not_enough_nutrients", "Not enough Nutrients");
 
 		add(ClientTextUtil.getCtrlKey(), "ctrl");
@@ -222,8 +221,8 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 		add("jei.biomancy.recipe.digester", "Digester Recipes");
 		add("jei.biomancy.recipe.bio_forge", "Bio-Forge Recipes");
 
-		add("jer.biomancy.requiresDespoilOrBoneCleaver", "Requires Despoil Enchantment or Bone Cleaver (#forge:tools/knives)");
-		add("jer.biomancy.requiresBoneCleaver", "Requires Bone Cleaver");
+		//		add("jer.biomancy.requiresDespoilOrBoneCleaver", "Requires Despoil Enchantment or Bone Cleaver (#forge:tools/knives)");
+		//		add("jer.biomancy.requiresBoneCleaver", "Requires Bone Cleaver");
 
 		addSoundTranslations();
 		addBannerPatternTranslations();
@@ -291,28 +290,26 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 
 		addDeathMessage(ModDamageSources.CORROSIVE_ACID, "%1$s died from severe acid burns");
 
-		addDeathMessage(ModEntityTypes.TOOTH_PROJECTILE, "%1$s was forcefully implanted with teeth by %2$s", "%1$s received a lethal dental implant by %2$s using %3$s");
-		addDeathMessage(ModEntityTypes.CORROSIVE_ACID_PROJECTILE, "%1$s was doused with corrosive acid by %2$s", "%1$s was showered in corrosive acid by %2$s using %3$s");
+		addDeathMessage(ModEntityTypes.TOOTH_PROJECTILE, "[WIP] %1$s was forcefully implanted with teeth by %2$s", "[WIP] %1$s received a lethal dental implant by %2$s using %3$s");
+		addDeathMessage(ModEntityTypes.CORROSIVE_ACID_PROJECTILE, "[WIP] %1$s was doused with corrosive acid by %2$s", "[WIP] %1$s was showered in corrosive acid by %2$s using %3$s");
 	}
 
 	private void addSerumTranslations() {
 		//serums that are not tied to a specific item
-		add(BasicSerum.EMPTY, "INVALID SERUM");
+		add(Serum.EMPTY, "ERROR: INVALID SERUM");
 	}
 
 	private void addStatusEffectTranslations() {
 		addEffect(ModMobEffects.CORROSIVE, "Corrosive Acid");
 		addEffect(ModMobEffects.ARMOR_SHRED, "Armor Shred");
-		addEffect(ModMobEffects.ESSENCE_ANEMIA, "Essence Anemia");
+		addEffect(ModMobEffects.ESSENCE_ANEMIA, "[PH] Essence Anemia");
 		addEffect(ModMobEffects.LIBIDO, "Fertility");
-		addEffect(ModMobEffects.FLESH_EATING_DISEASE, "Necrotizing Flesh");
+		addEffect(ModMobEffects.FLESH_EATING_DISEASE, "[WIP] Necrotizing Flesh");
 	}
 
 	private void addEnchantmentTranslations() {
 		addEnchantment(ModEnchantments.DESPOIL, "Despoil");
 		addEnchantment(ModEnchantments.ANESTHETIC, "Anesthetic Touch");
-		//		addEnchantment(ModEnchantments.QUICK_SHOT, "Quick Shot");
-		//		addEnchantment(ModEnchantments.MAX_AMMO, "Max Ammo");
 	}
 
 	private void addBannerPatternTranslations() {
@@ -354,22 +351,22 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 		addItem(ModItems.VOLATILE_FLUID, "Volatile Fluid", "Combustible extract, needs further processing to be more dangerous.");
 		addItem(ModItems.BILE, "Bile", "Organic base material which is often used in bio-alchemy.");
 
-		addItem(ModItems.BONE_CLEAVER, "Bone Cleaver", "A specialized bone tool for getting additional special loot from its victims.");
+		addItem(ModItems.BONE_CLEAVER, "[WIP] Bone Cleaver", "[WIP] A specialized bone tool for getting additional special loot from its victims.");
 		addItem(ModItems.GLASS_VIAL, "Glass Vial", "Glass is transparent... very brittle, yet strong and rigid. Very high alchemical resistance, seems perfect for holding reactive substances.");
 		addItem(ModItems.LIVING_FLESH, "Living Flesh", "It's alive!\nBut it looks too dumb to be the brain of a mob. You should turn it into a construct.");
 		//		addItem(ModItems.PRIMORDIAL_LIVING_FLESH, "Primordial Flesh", "A ominous piece of primal flesh oozing primordial soup. It looks hungry...");
 		//		addItem(ModItems.PRIMORDIAL_LIVING_OCULUS, "Primordial Oculus", "A ominous eye is gazing at you...");
-		addItem(ModItems.GUIDE_BOOK, "Primordial Index", "Ask questions?");
+		addItem(ModItems.GUIDE_BOOK, "[WIP] Primordial Index", "[WIP] Ask questions?");
 		addItem(ModItems.CREATOR_MIX, "Exotic Flesh Mix", "A meal made for the cradle... just not for you.");
 		addItem(ModItems.INJECTOR, "Bio-Injector", "A simple device which utilizes a razor sharp needle to quickly and forcefully inject Serums into Mobs and Players.");
 		addItem(ModItems.FERTILIZER, "Bio-Alchemical Fertilizer", "Fertilizer that induces hyper-growth in plants, even for reeds, cactus, nether wart and chorus plant.");
 
 		addItem(ModItems.LONG_CLAWS, "Living Long Claws", "Claws made of living flesh\n\nFeed it with nutrients via right click in the inventory.");
 		addItem(ModItems.DEV_ARM_CANNON, "[Dev Tool] Arm Cannon", "Creative/Developer Tool for testing projectiles.");
-		addItem(ModItems.BILE_SPITTER, "[EXPERIMENTAL] Bile Spitter", "WIP: \"living\" projectile weapon that shoots corrosive bile.\nIntended behaviour: charge it like a bow to increase damageShape & size of projectile.");
+		addItem(ModItems.BILE_SPITTER, "[WIP] Bile Spitter", "[WIP] \"living\" projectile weapon that shoots corrosive bile.\nIntended behaviour: charge it like a bow to increase damageShape & size of projectile.");
 
-		addItem(ModItems.BIO_EXTRACTOR, "Bio-Extractor", EMPTY_STRING);
-		addItem(ModItems.ESSENCE, "Essence", EMPTY_STRING);
+		addItem(ModItems.BIO_EXTRACTOR, "[PH] Bio-Extractor", EMPTY_STRING);
+		addItem(ModItems.ESSENCE, "[PH] Essence", EMPTY_STRING);
 
 		addItem(ModItems.ORGANIC_COMPOUND, "Organic Compound", "Slimy substance made of bile infused with nutrients.");
 		addItem(ModItems.UNSTABLE_COMPOUND, "Unstable Compound", "Very unstable and reactive substance. Seems like it will combust if it comes in contact with other things.");
@@ -403,7 +400,7 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 		addBlock(ModBlocks.BIO_FORGE, "Bio-Forge", "Crafting Station");
 		addBlock(ModBlocks.BIO_LAB, "Bio-Lab", "Bio-alchemical Brewer");
 
-		addBlock(ModBlocks.VOICE_BOX, "Modular Larynx", EMPTY_STRING);
+		addBlock(ModBlocks.VOICE_BOX, "[PH] Modular Larynx", EMPTY_STRING);
 		addBlock(ModBlocks.TONGUE, "Tongue", "Extracts up to 3 items of the same type every 24 ticks from containers its attached to and drops them on the ground.");
 		addBlock(ModBlocks.MAW_HOPPER, "Maw Hopper", "A fleshy sister of the hopper. Transfers up to 16 items at a time.");
 
@@ -414,8 +411,8 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 				Only its master may open and takes its content without repercussion.
 
 				It's fangs look awfully sharp...""");
-		addBlock(ModBlocks.FLESHKIN_DOOR, "Fleshkin Door", EMPTY_STRING);
-		addBlock(ModBlocks.FLESHKIN_TRAPDOOR, "Fleshkin Trap Door", EMPTY_STRING);
+		addBlock(ModBlocks.FLESHKIN_DOOR, "[WIP] Fleshkin Door", EMPTY_STRING);
+		addBlock(ModBlocks.FLESHKIN_TRAPDOOR, "[WIP] Fleshkin Trap Door", EMPTY_STRING);
 		addBlock(ModBlocks.FLESHKIN_PRESSURE_PLATE, "Fleshkin Pressure Sensor", """
 				Fleshkin pancake. Yummy...
 				It has two behaviors, either it only activates for its owner or it only works for everyone else.
