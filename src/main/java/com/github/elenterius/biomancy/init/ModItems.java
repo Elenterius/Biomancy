@@ -185,11 +185,11 @@ public final class ModItems {
 		return ITEMS.register(blockHolder.getId().getPath(), () -> factory.apply(blockHolder.get()));
 	}
 
-	private static <T extends Block, I extends BlockItem> RegistryObject<I> registerBlockItem(RegistryObject<T> blockHolder, IBlockItemFactory<I> factory) {
+	private static <T extends Block, I extends BlockItem> RegistryObject<I> registerBlockItem(RegistryObject<T> blockHolder, IBlockItemFactory<T, I> factory) {
 		return ITEMS.register(blockHolder.getId().getPath(), () -> factory.create(blockHolder.get(), createProperties()));
 	}
 
-	private static <T extends Block, I extends BlockItem> RegistryObject<I> registerBlockItem(RegistryObject<T> blockHolder, IBlockItemFactory<I> factory, Rarity rarity) {
+	private static <T extends Block, I extends BlockItem> RegistryObject<I> registerBlockItem(RegistryObject<T> blockHolder, IBlockItemFactory<T, I> factory, Rarity rarity) {
 		return ITEMS.register(blockHolder.getId().getPath(), () -> factory.create(blockHolder.get(), createProperties().rarity(rarity)));
 	}
 
@@ -229,8 +229,8 @@ public final class ModItems {
 		return ITEMS.register(name, () -> new SimpleItem(properties.get()));
 	}
 
-	interface IBlockItemFactory<I extends BlockItem> {
-		I create(Block block, Item.Properties properties);
+	interface IBlockItemFactory<T extends Block, I extends BlockItem> {
+		I create(T block, Item.Properties properties);
 	}
 
 }
