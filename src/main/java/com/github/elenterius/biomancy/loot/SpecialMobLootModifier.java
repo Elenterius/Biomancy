@@ -57,7 +57,7 @@ public class SpecialMobLootModifier extends LootModifier {
 
 	public SpecialMobLootModifier() {
 		this(
-				//Can't use MatchTool, because the tool is missing for Entity Kills (1.18.2) //TODO: confirm if this is the same case for 1.19.2
+				//Can't use MatchTool, because the tool is missing for Entity Kills (1.18.2, 1.19.2)
 				//only apply the loot modifier to adult mobs killed by a player
 				new LootItemCondition[]{
 						LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().flags(EntityFlagsPredicate.Builder.flags().setIsBaby(false).build())).build(),
