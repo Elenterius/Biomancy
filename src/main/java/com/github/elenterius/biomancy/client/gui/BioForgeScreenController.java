@@ -151,6 +151,7 @@ class BioForgeScreenController {
 		return Math.min(GRID_SIZE, shownRecipes.size() - startIndex);
 	}
 
+	//TODO: refactor
 	public boolean isSelectedRecipeVisible() {
 		int maxIndex = startIndex + GRID_SIZE;
 		if (recipeSelection.tab == activeTab) {
@@ -158,11 +159,10 @@ class BioForgeScreenController {
 		}
 
 		if (recipeSelection.recipe != null && (activeTab == 0 || getCurrentCategory() == recipeSelection.recipe.getTab())) {
-			//find gridIndex recipeSelection in foreign tab
 			int maxRecipes = getMaxRecipesOnGrid();
-			for (int i = 0; i < maxRecipes; i++) {
-				if (getRecipe(startIndex + i).isRecipeEqual(recipeSelection.recipe)) {
-					crossoverGridIndex = startIndex + i;
+			for (int gridIndex = 0; gridIndex < maxRecipes; gridIndex++) {
+				if (getRecipe(startIndex + gridIndex).isRecipeEqual(recipeSelection.recipe)) {
+					crossoverGridIndex = startIndex + gridIndex;
 					return true;
 				}
 			}
@@ -178,7 +178,7 @@ class BioForgeScreenController {
 		}
 
 		if (recipeSelection.recipe != null && (activeTab == 0 || getCurrentCategory() == recipeSelection.recipe.getTab())) {
-			return crossoverGridIndex;
+			return crossoverGridIndex - startIndex;
 		}
 
 		return 0;

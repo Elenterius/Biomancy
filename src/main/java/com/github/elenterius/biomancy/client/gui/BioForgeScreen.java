@@ -220,6 +220,7 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 	private void drawRecipes(PoseStack poseStack) {
 		if (!recipeBook.hasRecipesOnPage()) return;
 
+		//TODO: refactor - move into the loop below
 		if (recipeBook.hasSelectedRecipe() && recipeBook.isSelectedRecipeVisible()) {
 			int gridIndex = recipeBook.getGridIndexOfSelectedRecipe();
 			BioForgeRecipe recipe = recipeBook.getRecipeByGrid(gridIndex);
@@ -228,10 +229,10 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 		}
 
 		int maxRecipes = recipeBook.getMaxRecipesOnGrid();
-		for (int i = 0; i < maxRecipes; i++) {
-			BioForgeRecipe recipe = recipeBook.getRecipeByGrid(i);
-			boolean isCraftable = recipeBook.getRecipeCollectionByGrid(i).isCraftable(recipe);
-			drawRecipeTile(poseStack, i, isCraftable, recipe.getResultItem());
+		for (int gridIndex = 0; gridIndex < maxRecipes; gridIndex++) {
+			BioForgeRecipe recipe = recipeBook.getRecipeByGrid(gridIndex);
+			boolean isCraftable = recipeBook.getRecipeCollectionByGrid(gridIndex).isCraftable(recipe);
+			drawRecipeTile(poseStack, gridIndex, isCraftable, recipe.getResultItem());
 		}
 
 		drawPagination(poseStack);
