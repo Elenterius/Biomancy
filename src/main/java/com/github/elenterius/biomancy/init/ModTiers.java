@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.init;
 
+import com.github.elenterius.biomancy.init.tags.ModItemTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -14,7 +15,7 @@ public final class ModTiers {
 
 	public static final ForgeTier BONE = new ForgeTier(1, 142, 4.5f, 1f, 7, BlockTags.NEEDS_STONE_TOOL, ModTiers::buildBoneIngredients);
 	public static final ForgeTier LESSER_BIOFLESH = new ForgeTier(3, 1650, 6f, 2f, 14, BlockTags.NEEDS_IRON_TOOL, () -> Ingredient.of(ModItems.FLESH_BITS.get()));
-	public static final ForgeTier BIOFLESH = new ForgeTier(4, 2031, 9f, 4f, 15, Tags.Blocks.NEEDS_NETHERITE_TOOL, () -> Ingredient.of(ModTags.Items.RAW_MEATS));
+	public static final ForgeTier BIOFLESH = new ForgeTier(4, 2031, 9f, 4f, 15, Tags.Blocks.NEEDS_NETHERITE_TOOL, () -> Ingredient.of(ModItemTags.RAW_MEATS));
 
 	private ModTiers() {}
 

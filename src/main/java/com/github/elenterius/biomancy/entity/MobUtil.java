@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.entity;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.init.ModTags;
+import com.github.elenterius.biomancy.init.tags.ModEntityTags;
 import com.github.elenterius.biomancy.mixin.AgeableMobAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -49,7 +49,7 @@ public final class MobUtil {
 	}
 
 	public static boolean isBoss(EntityType<?> entityType) {
-		return entityType.is(ModTags.EntityTypes.BOSSES);
+		return entityType.is(ModEntityTags.FORGE_BOSSES);
 	}
 
 	public static boolean isSkeleton(LivingEntity entity) {
@@ -69,7 +69,7 @@ public final class MobUtil {
 	}
 
 	public static boolean isCloneable(EntityType<?> entityType) {
-		return !entityType.is(ModTags.EntityTypes.NOT_CLONEABLE);
+		return !entityType.is(ModEntityTags.NOT_CLONEABLE);
 	}
 
 	public static float getVolume(EntityType<?> entityType) {

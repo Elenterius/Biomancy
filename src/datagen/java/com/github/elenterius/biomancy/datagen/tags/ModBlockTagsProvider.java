@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.datagen.tags;
 
 import com.github.elenterius.biomancy.init.ModBlocks;
-import com.github.elenterius.biomancy.init.ModTags;
+import com.github.elenterius.biomancy.init.tags.ModBlockTags;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.BlockTags;
@@ -33,8 +33,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 		tag(BlockTags.DOORS).add(ModBlocks.FLESH_DOOR.get()).add(ModBlocks.FULL_FLESH_DOOR.get());
 		tag(BlockTags.TRAPDOORS).add(ModBlocks.FLESH_IRIS_DOOR.get());
 
-		tag(ModTags.Blocks.FLESHY_FENCES).add(ModBlocks.FLESH_FENCE.get());
-		tag(BlockTags.FENCES).addTag(ModTags.Blocks.FLESHY_FENCES);
+		tag(ModBlockTags.FLESHY_FENCES).add(ModBlocks.FLESH_FENCE.get());
+		tag(BlockTags.FENCES).addTag(ModBlockTags.FLESHY_FENCES);
 		tag(BlockTags.FENCE_GATES).add(ModBlocks.FLESH_FENCE_GATE.get());
 
 		tag(BlockTags.WALLS).add(ModBlocks.FLESH_WALL.get(), ModBlocks.PACKED_FLESH_WALL.get());

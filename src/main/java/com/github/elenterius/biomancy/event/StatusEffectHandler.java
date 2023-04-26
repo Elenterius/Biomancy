@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.event;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModMobEffects;
-import com.github.elenterius.biomancy.init.ModTags;
+import com.github.elenterius.biomancy.init.tags.ModItemTags;
 import com.github.elenterius.biomancy.serum.AdrenalineSerum;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -46,7 +46,7 @@ public final class StatusEffectHandler {
 	public static void onFoodEaten(final LivingEntityUseItemEvent.Finish event) {
 		if (!event.getEntity().level.isClientSide) {
 			ItemStack stack = event.getItem();
-			if (stack.isEdible() && stack.is(ModTags.Items.SUGARS)) {
+			if (stack.isEdible() && stack.is(ModItemTags.SUGARS)) {
 				FoodProperties food = stack.getItem().getFoodProperties();
 				reduceAdrenalFatigue(food != null ? food.getNutrition() : 0, event.getEntity());
 			}

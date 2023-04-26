@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.api.serum.Serum;
+import com.github.elenterius.biomancy.init.tags.ModEntityTags;
 import com.github.elenterius.biomancy.item.*;
 import com.github.elenterius.biomancy.item.weapon.BileSpitterItem;
 import com.github.elenterius.biomancy.item.weapon.DevArmCannonItem;
@@ -27,14 +28,14 @@ public final class ModItems {
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, BiomancyMod.MOD_ID);
 
 	//# Material / Mob Loot
-	public static final RegistryObject<MobLootItem> MOB_FANG = registerMobLootItem("mob_fang", ModTags.EntityTypes.SHARP_FANG);
-	public static final RegistryObject<MobLootItem> MOB_CLAW = registerMobLootItem("mob_claw", ModTags.EntityTypes.SHARP_CLAW);
-	public static final RegistryObject<MobLootItem> MOB_SINEW = registerMobLootItem("mob_sinew", ModTags.EntityTypes.SINEW, ModRarities.UNCOMMON);
-	public static final RegistryObject<BoneMarrowItem> MOB_MARROW = registerItem("mob_marrow", props -> new BoneMarrowItem(ModTags.EntityTypes.BONE_MARROW, props.food(ModFoods.MARROW_FLUID).rarity(ModRarities.RARE)));
-	public static final RegistryObject<BoneMarrowItem> WITHERED_MOB_MARROW = registerItem("withered_mob_marrow", props -> new BoneMarrowItem(ModTags.EntityTypes.WITHERED_BONE_MARROW, props.food(ModFoods.CORROSIVE_FLUID).rarity(ModRarities.VERY_RARE)));
-	public static final RegistryObject<MobLootItem> GENERIC_MOB_GLAND = registerItem("mob_gland", props -> new MobLootItem(ModTags.EntityTypes.BILE_GLAND, props.food(ModFoods.POOR_FLESH).rarity(ModRarities.UNCOMMON)));
-	public static final RegistryObject<MobLootItem> TOXIN_GLAND = registerItem("toxin_gland", props -> new MobLootItem(ModTags.EntityTypes.TOXIN_GLAND, props.food(ModFoods.TOXIN_GLAND).rarity(ModRarities.RARE)));
-	public static final RegistryObject<VolatileGlandItem> VOLATILE_GLAND = registerItem("volatile_gland", props -> new VolatileGlandItem(ModTags.EntityTypes.VOLATILE_GLAND, props.food(ModFoods.VOLATILE_GLAND).rarity(ModRarities.RARE)));
+	public static final RegistryObject<MobLootItem> MOB_FANG = registerMobLootItem("mob_fang", ModEntityTags.SHARP_FANG);
+	public static final RegistryObject<MobLootItem> MOB_CLAW = registerMobLootItem("mob_claw", ModEntityTags.SHARP_CLAW);
+	public static final RegistryObject<MobLootItem> MOB_SINEW = registerMobLootItem("mob_sinew", ModEntityTags.SINEW, ModRarities.UNCOMMON);
+	public static final RegistryObject<BoneMarrowItem> MOB_MARROW = registerItem("mob_marrow", props -> new BoneMarrowItem(ModEntityTags.BONE_MARROW, props.food(ModFoods.MARROW_FLUID).rarity(ModRarities.RARE)));
+	public static final RegistryObject<BoneMarrowItem> WITHERED_MOB_MARROW = registerItem("withered_mob_marrow", props -> new BoneMarrowItem(ModEntityTags.WITHERED_BONE_MARROW, props.food(ModFoods.CORROSIVE_FLUID).rarity(ModRarities.VERY_RARE)));
+	public static final RegistryObject<MobLootItem> GENERIC_MOB_GLAND = registerItem("mob_gland", props -> new MobLootItem(ModEntityTags.BILE_GLAND, props.food(ModFoods.POOR_FLESH).rarity(ModRarities.UNCOMMON)));
+	public static final RegistryObject<MobLootItem> TOXIN_GLAND = registerItem("toxin_gland", props -> new MobLootItem(ModEntityTags.TOXIN_GLAND, props.food(ModFoods.TOXIN_GLAND).rarity(ModRarities.RARE)));
+	public static final RegistryObject<VolatileGlandItem> VOLATILE_GLAND = registerItem("volatile_gland", props -> new VolatileGlandItem(ModEntityTags.VOLATILE_GLAND, props.food(ModFoods.VOLATILE_GLAND).rarity(ModRarities.RARE)));
 
 	//## Special
 	public static final RegistryObject<SimpleItem> LIVING_FLESH = registerSimpleItem("living_flesh", ModRarities.VERY_RARE);

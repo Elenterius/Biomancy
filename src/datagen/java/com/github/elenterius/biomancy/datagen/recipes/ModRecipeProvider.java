@@ -5,7 +5,7 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModBioForgeTabs;
 import com.github.elenterius.biomancy.init.ModItems;
-import com.github.elenterius.biomancy.init.ModTags;
+import com.github.elenterius.biomancy.init.tags.ModItemTags;
 import com.github.elenterius.biomancy.recipe.FoodNutritionIngredient;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
@@ -151,7 +151,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		WorkbenchRecipeBuilder.shaped(ModItems.PRIMORDIAL_CRADLE.get())
 				.define('E', Items.ENDER_EYE)
-				.define('M', ModTags.Items.RAW_MEATS)
+				.define('M', ModItemTags.RAW_MEATS)
 				.define('F', ModItems.MOB_FANG.get())
 				.pattern("F F")
 				.pattern("MEM")
@@ -159,7 +159,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.unlockedBy(hasName(Items.ENDER_EYE), has(Items.ENDER_EYE)).save(consumer);
 
 		WorkbenchRecipeBuilder.shaped(ModItems.DECOMPOSER.get())
-				.define('M', ModTags.Items.RAW_MEATS)
+				.define('M', ModItemTags.RAW_MEATS)
 				.define('F', ModItems.MOB_FANG.get())
 				.define('G', ModItems.GENERIC_MOB_GLAND.get())
 				.define('E', ModItems.LIVING_FLESH.get())
@@ -170,7 +170,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		WorkbenchRecipeBuilder.shaped(ModItems.BIO_FORGE.get())
 				.define('S', Items.SLIME_BALL)
-				.define('M', ModTags.Items.RAW_MEATS)
+				.define('M', ModItemTags.RAW_MEATS)
 				.define('C', ModItems.MOB_CLAW.get())
 				.define('E', ModItems.LIVING_FLESH.get())
 				.pattern("C C")
@@ -289,27 +289,27 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 1, "poor_food")
 				.setIngredient(new FoodNutritionIngredient(0, 1))
-				.unlockedBy(ModTags.Items.POOR_BIOMASS).save(consumer);
+				.unlockedBy(ModItemTags.POOR_BIOMASS).save(consumer);
 
 		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 2, "average_food")
 				.setIngredient(new FoodNutritionIngredient(2, 3))
-				.unlockedBy(ModTags.Items.AVERAGE_BIOMASS).save(consumer);
+				.unlockedBy(ModItemTags.AVERAGE_BIOMASS).save(consumer);
 
 		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 4, "good_food")
 				.setIngredient(new FoodNutritionIngredient(4, 5))
-				.unlockedBy(ModTags.Items.GOOD_BIOMASS).save(consumer);
+				.unlockedBy(ModItemTags.GOOD_BIOMASS).save(consumer);
 
 		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 6, "superb_food")
 				.setIngredient(new FoodNutritionIngredient(6, 7))
-				.unlockedBy(ModTags.Items.SUPERB_BIOMASS).save(consumer);
+				.unlockedBy(ModItemTags.SUPERB_BIOMASS).save(consumer);
 
 		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 8, "excellent_food")
 				.setIngredient(new FoodNutritionIngredient(8, 9))
-				.unlockedBy(ModTags.Items.SUPERB_BIOMASS).save(consumer);
+				.unlockedBy(ModItemTags.SUPERB_BIOMASS).save(consumer);
 
 		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 10, "godly_food")
 				.setIngredient(new FoodNutritionIngredient(10, Integer.MAX_VALUE))
-				.unlockedBy(ModTags.Items.SUPERB_BIOMASS).save(consumer);
+				.unlockedBy(ModItemTags.SUPERB_BIOMASS).save(consumer);
 
 		//////////////////////////
 

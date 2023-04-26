@@ -5,7 +5,8 @@ import com.github.elenterius.biomancy.advancements.trigger.SacrificedItemTrigger
 import com.github.elenterius.biomancy.datagen.translations.ITranslationProvider;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModItems;
-import com.github.elenterius.biomancy.init.ModTags;
+import com.github.elenterius.biomancy.init.tags.ModEntityTags;
+import com.github.elenterius.biomancy.init.tags.ModItemTags;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.critereon.*;
@@ -96,7 +97,7 @@ public class ModAdvancementProvider extends AdvancementProvider {
 				.title("Meat Whisperer")
 				.description("You feel a presence in the flesh, it whispers into your ears: \"Raw Meat is useful...\"")
 				.showToast().announceToChat()
-				.addHasCriterion(ModTags.Items.RAW_MEATS)
+				.addHasCriterion(ModItemTags.RAW_MEATS)
 				.save(consumer, fileHelper);
 
 		Advancement greedyButcher = createAdvancement("greedy_butcher").parent(root).icon(ModItems.BONE_CLEAVER.get())
@@ -127,8 +128,8 @@ public class ModAdvancementProvider extends AdvancementProvider {
 				.title("Predator Killer")
 				.description("Hunt predators and collect their fangs and claws.")
 				.frameType(FrameType.CHALLENGE).showToast().announceToChat().hidden()
-				.addCriterion("has_killed_fangs_mob", hasKilledEntityTag(ModTags.EntityTypes.SHARP_FANG))
-				.addCriterion("has_killed_claws_mob", hasKilledEntityTag(ModTags.EntityTypes.SHARP_CLAW))
+				.addCriterion("has_killed_fangs_mob", hasKilledEntityTag(ModEntityTags.SHARP_FANG))
+				.addCriterion("has_killed_claws_mob", hasKilledEntityTag(ModEntityTags.SHARP_CLAW))
 				.addHasCriterion(ModItems.MOB_FANG.get())
 				.addHasCriterion(ModItems.MOB_CLAW.get())
 				.save(consumer, fileHelper);
@@ -165,14 +166,14 @@ public class ModAdvancementProvider extends AdvancementProvider {
 				.title("Tartar Delight")
 				.description("Serve raw meat to the Primordial Cradle.")
 				.showToast()
-				.addCriterion("has_sacrificed_raw_meat", hasSacrificedTag(ModTags.Items.RAW_MEATS))
+				.addCriterion("has_sacrificed_raw_meat", hasSacrificedTag(ModItemTags.RAW_MEATS))
 				.save(consumer, fileHelper);
 
 		createAdvancement("cooked_meat_sacrifice").parent(livingFlesh).icon(Items.COOKED_BEEF)
 				.title("Cooked Meat Disrelish")
 				.description("Serve cooked meat to the Primordial Cradle.")
 				.showToast().hidden()
-				.addCriterion("has_sacrificed_cooked_meat", hasSacrificedTag(ModTags.Items.COOKED_MEATS))
+				.addCriterion("has_sacrificed_cooked_meat", hasSacrificedTag(ModItemTags.COOKED_MEATS))
 				.save(consumer, fileHelper);
 
 		createAdvancement("decomposer").parent(livingFlesh).icon(ModItems.DECOMPOSER.get())

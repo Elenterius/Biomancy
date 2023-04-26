@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.datagen.tags;
 
-import com.github.elenterius.biomancy.init.ModTags;
+import com.github.elenterius.biomancy.init.tags.ModEntityTags;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.world.entity.EntityType;
@@ -17,7 +17,7 @@ public class ForgeEntityTypeTagsProvider extends EntityTypeTagsProvider {
 
 	@Override
 	protected void addTags() {
-		tag(ModTags.EntityTypes.BOSSES).add(EntityType.WITHER, EntityType.ENDER_DRAGON);
+		tag(ModEntityTags.FORGE_BOSSES).add(EntityType.WITHER, EntityType.ENDER_DRAGON);
 	}
 
 	@Override

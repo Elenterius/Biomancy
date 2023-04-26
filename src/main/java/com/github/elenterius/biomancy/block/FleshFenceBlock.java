@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.block;
 
-import com.github.elenterius.biomancy.init.ModTags;
+import com.github.elenterius.biomancy.init.tags.ModBlockTags;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.FenceBlock;
@@ -23,7 +23,7 @@ public class FleshFenceBlock extends FenceBlock {
 	}
 
 	protected boolean canConnectToFence(BlockState state) {
-		return state.is(BlockTags.FENCES) && state.is(ModTags.Blocks.FLESHY_FENCES);
+		return state.is(BlockTags.FENCES) && state.is(ModBlockTags.FLESHY_FENCES);
 	}
 
 }

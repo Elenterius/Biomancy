@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.block.cradle;
 
 import com.github.elenterius.biomancy.init.ModItems;
-import com.github.elenterius.biomancy.init.ModTags;
+import com.github.elenterius.biomancy.init.tags.ModItemTags;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -60,8 +60,8 @@ final class Tributes {
 		ImmutableTribute foundTribute = ITEM_MAP.get(stack.getItem());
 		if (foundTribute != null) return foundTribute;
 
-		if (stack.is(ModTags.Items.RAW_MEATS)) return GENERIC_RAW_MEATS;
-		if (stack.is(ModTags.Items.COOKED_MEATS)) return COOKED_MEATS;
+		if (stack.is(ModItemTags.RAW_MEATS)) return GENERIC_RAW_MEATS;
+		if (stack.is(ModItemTags.COOKED_MEATS)) return COOKED_MEATS;
 		if (stack.is(Tags.Items.BONES)) return GENERIC_BONES;
 
 		return ITribute.EMPTY;

@@ -4,7 +4,7 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.entity.MobUtil;
-import com.github.elenterius.biomancy.init.ModTags;
+import com.github.elenterius.biomancy.init.tags.ModEntityTags;
 import net.minecraft.core.*;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
@@ -89,8 +89,8 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 
 	@Override
 	protected void addTags() {
-		createTag(ModTags.EntityTypes.NOT_CLONEABLE)
-				.addTag(ModTags.EntityTypes.BOSSES)
+		createTag(ModEntityTags.NOT_CLONEABLE)
+				.addTag(ModEntityTags.FORGE_BOSSES)
 				.add(EntityType.IRON_GOLEM, EntityType.SNOW_GOLEM)
 				.addOptional("strawgolem:strawgolem", "strawgolem:strawnggolem");
 
@@ -98,7 +98,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 	}
 
 	private void addSpecialMobLootTags() {
-		createTag(ModTags.EntityTypes.SHARP_FANG)
+		createTag(ModEntityTags.SHARP_FANG)
 				.add(SHARP_FANG_MOBS)
 				.addOptional(
 						AMEntityRegistry.GRIZZLY_BEAR, AMEntityRegistry.DROPBEAR, AMEntityRegistry.SEA_BEAR,
@@ -108,7 +108,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 						AMEntityRegistry.TUSKLIN
 				);
 
-		createTag(ModTags.EntityTypes.SHARP_CLAW)
+		createTag(ModEntityTags.SHARP_CLAW)
 				.add(SHARP_CLAW_MOBS)
 				.addOptional(
 						AMEntityRegistry.GRIZZLY_BEAR, AMEntityRegistry.DROPBEAR, AMEntityRegistry.SEA_BEAR,
@@ -118,22 +118,22 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 						AMEntityRegistry.TIGER, AMEntityRegistry.MANED_WOLF, AMEntityRegistry.SNOW_LEOPARD
 				);
 
-		createTag(ModTags.EntityTypes.TOXIN_GLAND)
+		createTag(ModEntityTags.TOXIN_GLAND)
 				.add(TOXIC_MOBS)
 				.addOptional(
 						AMEntityRegistry.KOMODO_DRAGON,
 						AMEntityRegistry.PLATYPUS
 				);
 
-		createTag(ModTags.EntityTypes.VOLATILE_GLAND)
+		createTag(ModEntityTags.VOLATILE_GLAND)
 				.add(VOLATILE_MOBS);
 
-		createTag(ModTags.EntityTypes.BONE_MARROW)
+		createTag(ModEntityTags.BONE_MARROW)
 				.add(EntityType.SKELETON_HORSE, EntityType.WARDEN)
 				.addTag(EntityTypeTags.SKELETONS)
 				.addOptional(AMEntityRegistry.SKELEWAG, AMEntityRegistry.BONE_SERPENT);
 
-		createTag(ModTags.EntityTypes.WITHERED_BONE_MARROW)
+		createTag(ModEntityTags.WITHERED_BONE_MARROW)
 				.add(EntityType.WITHER_SKELETON, EntityType.WITHER);
 
 		buildSinewAndBileTag();
@@ -147,8 +147,8 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 		Set<EntityType<?>> volatileMobs = Set.of(VOLATILE_MOBS);
 		Predicate<EntityType<?>> canHaveGland = entityType -> !toxicMobs.contains(entityType) && !volatileMobs.contains(entityType);
 
-		EnhancedTagAppender<EntityType<?>> sinewTag = createTag(ModTags.EntityTypes.SINEW);
-		EnhancedTagAppender<EntityType<?>> bileGlandTag = createTag(ModTags.EntityTypes.BILE_GLAND);
+		EnhancedTagAppender<EntityType<?>> sinewTag = createTag(ModEntityTags.SINEW);
+		EnhancedTagAppender<EntityType<?>> bileGlandTag = createTag(ModEntityTags.BILE_GLAND);
 
 		FakeLevel fakeLevel = new FakeLevel(); //we ignore that this is a AutoClosable object
 

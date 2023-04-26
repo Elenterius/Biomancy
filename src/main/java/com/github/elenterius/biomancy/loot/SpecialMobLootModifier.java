@@ -2,7 +2,8 @@ package com.github.elenterius.biomancy.loot;
 
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModItems;
-import com.github.elenterius.biomancy.init.ModTags;
+import com.github.elenterius.biomancy.init.tags.ModEntityTags;
+import com.github.elenterius.biomancy.init.tags.ModItemTags;
 import com.github.elenterius.biomancy.util.random.DynamicLootTable;
 import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
@@ -86,14 +87,14 @@ public class SpecialMobLootModifier extends LootModifier {
 
 	protected DynamicLootTable buildLootTable(LivingEntity livingEntity) {
 		EntityType<?> type = livingEntity.getType();
-		boolean hasFangs = type.is(ModTags.EntityTypes.SHARP_FANG);
-		boolean hasClaws = type.is(ModTags.EntityTypes.SHARP_CLAW);
-		boolean hasToxinGland = type.is(ModTags.EntityTypes.TOXIN_GLAND);
-		boolean hasVolatileGland = type.is(ModTags.EntityTypes.VOLATILE_GLAND);
-		boolean hasBileGland = type.is(ModTags.EntityTypes.BILE_GLAND);
-		boolean hasSinew = type.is(ModTags.EntityTypes.SINEW);
-		boolean hasBoneMarrow = type.is(ModTags.EntityTypes.BONE_MARROW);
-		boolean hasWitheredBoneMarrow = type.is(ModTags.EntityTypes.WITHERED_BONE_MARROW);
+		boolean hasFangs = type.is(ModEntityTags.SHARP_FANG);
+		boolean hasClaws = type.is(ModEntityTags.SHARP_CLAW);
+		boolean hasToxinGland = type.is(ModEntityTags.TOXIN_GLAND);
+		boolean hasVolatileGland = type.is(ModEntityTags.VOLATILE_GLAND);
+		boolean hasBileGland = type.is(ModEntityTags.BILE_GLAND);
+		boolean hasSinew = type.is(ModEntityTags.SINEW);
+		boolean hasBoneMarrow = type.is(ModEntityTags.BONE_MARROW);
+		boolean hasWitheredBoneMarrow = type.is(ModEntityTags.WITHERED_BONE_MARROW);
 
 		DynamicLootTable lootTable = new DynamicLootTable();
 		if (hasFangs) lootTable.add(SHARP_FANG, weights.fang);
@@ -130,7 +131,7 @@ public class SpecialMobLootModifier extends LootModifier {
 				despoilLevel++;
 				lootTable.add(FLESH_BITS, 15);
 			}
-			else if (heldStack.is(ModTags.Items.FORGE_TOOLS_KNIVES)) {
+			else if (heldStack.is(ModItemTags.FORGE_TOOLS_KNIVES)) {
 				despoilLevel++;
 			}
 

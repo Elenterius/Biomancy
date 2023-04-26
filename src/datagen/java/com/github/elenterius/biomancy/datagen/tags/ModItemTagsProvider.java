@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.datagen.tags;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
-import com.github.elenterius.biomancy.init.ModTags;
+import com.github.elenterius.biomancy.init.tags.ModItemTags;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -36,19 +36,19 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 	}
 
 	private void addBiomancyTags() {
-		createTag(ModTags.Items.SUGARS)
+		createTag(ModItemTags.SUGARS)
 				.add(SUGAR, COOKIE, CAKE, HONEYCOMB, HONEY_BLOCK, HONEYCOMB_BLOCK, HONEY_BOTTLE, SWEET_BERRIES, COCOA_BEANS, APPLE)
 				.addOptional("create:sweet_roll", "create:chocolate_glazed_berries", "create:honeyed_apple", "create:bar_of_chocolate")
 				.addOptional("createaddition:chocolate_cake");
 
-		createTag(ModTags.Items.POOR_BIOMASS);
-		createTag(ModTags.Items.AVERAGE_BIOMASS);
-		createTag(ModTags.Items.GOOD_BIOMASS);
-		createTag(ModTags.Items.SUPERB_BIOMASS);
-		createTag(ModTags.Items.BIOMASS)
-				.addTag(ModTags.Items.POOR_BIOMASS, ModTags.Items.AVERAGE_BIOMASS, ModTags.Items.GOOD_BIOMASS, ModTags.Items.SUPERB_BIOMASS);
+		createTag(ModItemTags.POOR_BIOMASS);
+		createTag(ModItemTags.AVERAGE_BIOMASS);
+		createTag(ModItemTags.GOOD_BIOMASS);
+		createTag(ModItemTags.SUPERB_BIOMASS);
+		createTag(ModItemTags.BIOMASS)
+				.addTag(ModItemTags.POOR_BIOMASS, ModItemTags.AVERAGE_BIOMASS, ModItemTags.GOOD_BIOMASS, ModItemTags.SUPERB_BIOMASS);
 
-		createTag(ModTags.Items.RAW_MEATS)
+		createTag(ModItemTags.RAW_MEATS)
 				.add(BEEF, PORKCHOP, CHICKEN, RABBIT, MUTTON, COD, SALMON, TROPICAL_FISH, PUFFERFISH)
 				.add(AMItemRegistry.MOOSE_RIBS.get(), AMItemRegistry.KANGAROO_MEAT.get(), AMItemRegistry.RAW_CATFISH.get(), AMItemRegistry.BLOBFISH.get(), AMItemRegistry.MAGGOT.get())
 				.addOptional("createfa:ground_chicken", "createfa:ground_beef")
@@ -58,7 +58,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 				.addOptionalTag("forge:raw_fishes")
 				.addOptionalTag("forge:raw_bacon", "forge:raw_beef", "forge:raw_chicken", "forge:raw_pork", "forge:raw_mutton");
 
-		createTag(ModTags.Items.COOKED_MEATS)
+		createTag(ModItemTags.COOKED_MEATS)
 				.add(COOKED_BEEF, COOKED_PORKCHOP, COOKED_CHICKEN, COOKED_SALMON, COOKED_MUTTON, COOKED_COD, COOKED_RABBIT)
 				.add(AMItemRegistry.COOKED_MOOSE_RIBS.get())
 				.addOptional("createfa:schnitzel", "createfa:meatballs", "createfa:chicken_nuggets")
@@ -70,7 +70,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 	}
 
 	private void addForgeTags() {
-		tag(ModTags.Items.FORGE_TOOLS_KNIVES).add(ModItems.BONE_CLEAVER.get());
+		tag(ModItemTags.FORGE_TOOLS_KNIVES).add(ModItems.BONE_CLEAVER.get());
 	}
 
 	protected EnhancedTagAppender<Item> createTag(TagKey<Item> tag) {
