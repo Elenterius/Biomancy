@@ -11,6 +11,7 @@ public final class ModEntityTags {
 	public static final TagKey<EntityType<?>> FORGE_BOSSES = forgeTag("bosses");
 	public static final TagKey<EntityType<?>> NOT_CLONEABLE = tag("not_cloneable");
 
+	public static final TagKey<EntityType<?>> FLESHKIN = tag("fleshkin");
 
 	//Special Mob Loot
 	public static final TagKey<EntityType<?>> SHARP_FANG = tag("sharp_fang");

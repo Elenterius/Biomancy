@@ -4,6 +4,7 @@ import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.entity.MobUtil;
+import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.tags.ModEntityTags;
 import net.minecraft.core.*;
 import net.minecraft.data.DataGenerator;
@@ -93,6 +94,9 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 				.addTag(ModEntityTags.FORGE_BOSSES)
 				.add(EntityType.IRON_GOLEM, EntityType.SNOW_GOLEM)
 				.addOptional("strawgolem:strawgolem", "strawgolem:strawnggolem");
+
+		createTag(ModEntityTags.FLESHKIN)
+				.add(ModEntityTypes.FLESH_BLOB.get(), ModEntityTypes.HUNGRY_FLESH_BLOB.get(), ModEntityTypes.MALIGNANT_FLESH_BLOB.get());
 
 		addSpecialMobLootTags();
 	}
