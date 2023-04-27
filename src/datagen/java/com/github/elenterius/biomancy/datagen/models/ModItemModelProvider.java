@@ -2,11 +2,14 @@ package com.github.elenterius.biomancy.datagen.models;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
+import com.google.gson.JsonObject;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
+import net.minecraftforge.client.model.generators.CustomLoaderBuilder;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
@@ -19,95 +22,10 @@ import java.util.Objects;
 public class ModItemModelProvider extends ItemModelProvider {
 
 	protected static final String LAYER_0_TEXTURE = "layer0";
+	protected static final String LAYER_1_TEXTURE = "layer1";
 
 	public ModItemModelProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
 		super(generator, BiomancyMod.MOD_ID, existingFileHelper);
-	}
-
-	private ItemModelBuilder spawnEggItem(ResourceLocation item) {
-		return getBuilder(item.toString()).parent(new ModelFile.UncheckedModelFile("item/template_spawn_egg"));
-	}
-
-	public ItemModelBuilder spawnEggItem(Item item) {
-		return spawnEggItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)));
-	}
-
-	public ItemModelBuilder componentItem(Item item) {
-		return basicItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)), "component");
-	}
-
-	public ItemModelBuilder serumItem(Item item) {
-		return basicItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)), "serum");
-	}
-
-	public ItemModelBuilder genericSerumItem(Item item) {
-		ResourceLocation rl = Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item));
-		return getBuilder(rl.toString())
-				.parent(new ModelFile.UncheckedModelFile("item/generated"))
-				.texture(LAYER_0_TEXTURE, new ResourceLocation(rl.getNamespace(), ITEM_FOLDER + "/serum/generic_serum"))
-				.texture("layer1", new ResourceLocation(rl.getNamespace(), ITEM_FOLDER + "/serum/generic_serum_overlay"));
-	}
-
-	public ItemModelBuilder weaponItem(Item item) {
-		return basicItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)), "weapon");
-	}
-
-	public ItemModelBuilder handheldWeaponItem(Item item) {
-		return handheldItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)), "weapon");
-	}
-
-	public ItemModelBuilder miscItem(Item item) {
-		return basicItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)), "misc");
-	}
-
-	private ItemModelBuilder basicItem(ResourceLocation item, String subfolder) {
-		return getBuilder(item.toString())
-				.parent(new ModelFile.UncheckedModelFile("item/generated"))
-				.texture(LAYER_0_TEXTURE, new ResourceLocation(item.getNamespace(), ITEM_FOLDER + "/" + subfolder + "/" + item.getPath()));
-	}
-
-	public ItemModelBuilder overlayItem(Item item) {
-		return overlayItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)));
-	}
-
-	private ItemModelBuilder overlayItem(ResourceLocation item) {
-		return basicItem(item).texture("layer1", new ResourceLocation(item.getNamespace(), ITEM_FOLDER + "/" + item.getPath() + "_overlay"));
-	}
-
-	public ItemModelBuilder handheldItem(Item item) {
-		return handheldItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)));
-	}
-
-	private ItemModelBuilder handheldItem(ResourceLocation item) {
-		return getBuilder(item.toString())
-				.parent(new ModelFile.UncheckedModelFile("item/handheld"))
-				.texture(LAYER_0_TEXTURE, new ResourceLocation(item.getNamespace(), ITEM_FOLDER + "/" + item.getPath()));
-	}
-
-	private ItemModelBuilder handheldItem(ResourceLocation item, String subfolder) {
-		return getBuilder(item.toString())
-				.parent(new ModelFile.UncheckedModelFile("item/handheld"))
-				.texture(LAYER_0_TEXTURE, new ResourceLocation(item.getNamespace(), ITEM_FOLDER + "/" + subfolder + "/" + item.getPath()));
-	}
-
-	public ItemModelBuilder flatBlockItem(BlockItem blockItem) {
-		return flatBlockItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(blockItem)));
-	}
-
-	private ItemModelBuilder flatBlockItem(ResourceLocation blockItem) {
-		return getBuilder(blockItem.toString())
-				.parent(new ModelFile.UncheckedModelFile("item/generated"))
-				.texture(LAYER_0_TEXTURE, new ResourceLocation(blockItem.getNamespace(), BLOCK_FOLDER + "/" + blockItem.getPath()));
-	}
-
-	public ItemModelBuilder wallBlockItem(BlockItem blockItem) {
-		return wallBlockItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(blockItem)));
-	}
-
-	private ItemModelBuilder wallBlockItem(ResourceLocation blockItem) {
-		return getBuilder(blockItem.toString())
-				.parent(new ModelFile.UncheckedModelFile(BLOCK_FOLDER + "/wall_inventory"))
-				.texture("wall", new ResourceLocation(blockItem.getNamespace(), BLOCK_FOLDER + "/" + blockItem.getPath().replace("_wall", "")));
 	}
 
 	@Override
@@ -121,8 +39,6 @@ public class ModItemModelProvider extends ItemModelProvider {
 		basicItem(ModItems.TOXIN_GLAND.get());
 		basicItem(ModItems.VOLATILE_GLAND.get());
 		basicItem(ModItems.LIVING_FLESH.get());
-		//		basicItem(ModItems.PRIMORDIAL_LIVING_FLESH.get());
-		//		basicItem(ModItems.PRIMORDIAL_LIVING_OCULUS.get());
 
 		componentItem(ModItems.FLESH_BITS.get());
 		componentItem(ModItems.BONE_FRAGMENTS.get());
@@ -182,4 +98,107 @@ public class ModItemModelProvider extends ItemModelProvider {
 		wallBlockItem(ModItems.PACKED_FLESH_WALL.get());
 	}
 
+	private ItemModelBuilder spawnEggItem(ResourceLocation item) {
+		return getBuilder(item.toString()).parent(new ModelFile.UncheckedModelFile("item/template_spawn_egg"));
+	}
+
+	public ItemModelBuilder spawnEggItem(Item item) {
+		return spawnEggItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)));
+	}
+
+	public ItemModelBuilder componentItem(Item item) {
+		return basicItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)), "component");
+	}
+
+	public ItemModelBuilder serumItem(Item item) {
+		return basicItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)), "serum");
+	}
+
+	public ItemModelBuilder genericSerumItem(Item item) {
+		ResourceLocation rl = Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item));
+		return getBuilder(rl.toString())
+				.parent(new ModelFile.UncheckedModelFile("item/generated"))
+				.texture(LAYER_0_TEXTURE, new ResourceLocation(rl.getNamespace(), ITEM_FOLDER + "/serum/generic_serum"))
+				.texture(LAYER_1_TEXTURE, new ResourceLocation(rl.getNamespace(), ITEM_FOLDER + "/serum/generic_serum_overlay"));
+	}
+
+	public ItemModelBuilder weaponItem(Item item) {
+		return basicItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)), "weapon");
+	}
+
+	public ItemModelBuilder handheldWeaponItem(Item item) {
+		return handheldItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)), "weapon");
+	}
+
+	public ItemModelBuilder miscItem(Item item) {
+		return basicItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)), "misc");
+	}
+
+	private ItemModelBuilder basicItem(ResourceLocation item, String subfolder) {
+		return getBuilder(item.toString())
+				.parent(new ModelFile.UncheckedModelFile("item/generated"))
+				.texture(LAYER_0_TEXTURE, new ResourceLocation(item.getNamespace(), ITEM_FOLDER + "/" + subfolder + "/" + item.getPath()));
+	}
+
+	public ItemModelBuilder overlayItem(Item item) {
+		return overlayItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)));
+	}
+
+	private ItemModelBuilder overlayItem(ResourceLocation item) {
+		return basicItem(item).texture(LAYER_1_TEXTURE, new ResourceLocation(item.getNamespace(), ITEM_FOLDER + "/" + item.getPath() + "_overlay"));
+	}
+
+	public ItemModelBuilder handheldItem(Item item) {
+		return handheldItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)));
+	}
+
+	private ItemModelBuilder handheldItem(ResourceLocation item) {
+		return getBuilder(item.toString())
+				.parent(new ModelFile.UncheckedModelFile("item/handheld"))
+				.texture(LAYER_0_TEXTURE, new ResourceLocation(item.getNamespace(), ITEM_FOLDER + "/" + item.getPath()));
+	}
+
+	private ItemModelBuilder handheldItem(ResourceLocation item, String subfolder) {
+		return getBuilder(item.toString())
+				.parent(new ModelFile.UncheckedModelFile("item/handheld"))
+				.texture(LAYER_0_TEXTURE, new ResourceLocation(item.getNamespace(), ITEM_FOLDER + "/" + subfolder + "/" + item.getPath()));
+	}
+
+	public ItemModelBuilder flatBlockItem(BlockItem blockItem) {
+		return flatBlockItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(blockItem)));
+	}
+
+	private ItemModelBuilder flatBlockItem(ResourceLocation blockItem) {
+		return getBuilder(blockItem.toString())
+				.parent(new ModelFile.UncheckedModelFile("item/generated"))
+				.texture(LAYER_0_TEXTURE, new ResourceLocation(blockItem.getNamespace(), BLOCK_FOLDER + "/" + blockItem.getPath()));
+	}
+
+	public ItemModelBuilder wallBlockItem(BlockItem blockItem) {
+		return wallBlockItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(blockItem)));
+	}
+
+	private ItemModelBuilder wallBlockItem(ResourceLocation blockItem) {
+		return getBuilder(blockItem.toString())
+				.parent(new ModelFile.UncheckedModelFile(BLOCK_FOLDER + "/wall_inventory"))
+				.texture("wall", new ResourceLocation(blockItem.getNamespace(), BLOCK_FOLDER + "/" + blockItem.getPath().replace("_wall", "")));
+	}
+
+	private ItemModelBuilder dynamicBucket(BucketItem item) {
+		ResourceLocation itemKey = Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item));
+		ResourceLocation fluidKey = Objects.requireNonNull(ForgeRegistries.FLUIDS.getKey(item.getFluid()));
+		ResourceLocation loaderKey = new ResourceLocation("forge", "fluid_container");
+		ResourceLocation bucketModelKey = new ResourceLocation("forge", "item/bucket");
+
+		return getBuilder(itemKey.toString())
+				.parent(getExistingFile(bucketModelKey))
+				.customLoader((builder, existingFileHelper) -> new CustomLoaderBuilder<ItemModelBuilder>(loaderKey, builder, existingFileHelper) {
+					@Override
+					public JsonObject toJson(JsonObject json) {
+						JsonObject json1 = super.toJson(json);
+						json1.addProperty("fluid", fluidKey.toString());
+						return json1;
+					}
+				}).end();
+	}
 }
