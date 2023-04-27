@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.datagen.modonomicon;
 
-import com.github.elenterius.biomancy.datagen.translations.ITranslationProvider;
+import com.github.elenterius.biomancy.datagen.lang.LangProvider;
 import com.klikli_dev.modonomicon.api.ModonomiconConstants;
 import com.klikli_dev.modonomicon.api.datagen.book.BookCategoryModel;
 import com.klikli_dev.modonomicon.api.datagen.book.BookEntryModel;
@@ -21,11 +21,11 @@ public abstract class AbstractBookProvider implements DataProvider {
 	protected static final Logger LOGGER = LogUtils.getLogger();
 
 	protected final DataGenerator generator;
-	protected final ITranslationProvider lang;
+	protected final LangProvider lang;
 	protected final Map<ResourceLocation, BookModel> bookModels;
 	protected final String modId;
 
-	protected AbstractBookProvider(DataGenerator generator, String modId, ITranslationProvider lang) {
+	protected AbstractBookProvider(DataGenerator generator, String modId, LangProvider lang) {
 		this.modId = modId;
 		this.generator = generator;
 		this.lang = lang;

@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.datagen;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.datagen.advancements.ModAdvancementProvider;
+import com.github.elenterius.biomancy.datagen.lang.EnglishLangProvider;
 import com.github.elenterius.biomancy.datagen.loot.ModGlobalLootModifierProvider;
 import com.github.elenterius.biomancy.datagen.loot.ModLootTableProvider;
 import com.github.elenterius.biomancy.datagen.models.ModBlockStateProvider;
@@ -9,7 +10,6 @@ import com.github.elenterius.biomancy.datagen.models.ModItemModelProvider;
 import com.github.elenterius.biomancy.datagen.modonomicon.GuideBookProvider;
 import com.github.elenterius.biomancy.datagen.recipes.ModRecipeProvider;
 import com.github.elenterius.biomancy.datagen.tags.*;
-import com.github.elenterius.biomancy.datagen.translations.EnglishTranslationProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -50,7 +50,7 @@ public final class DataGenerators {
 		generator.addProvider(true, new ModSoundProvider(generator, existingFileHelper));
 
 		//translations
-		EnglishTranslationProvider translationProvider = new EnglishTranslationProvider(generator);
+		EnglishLangProvider translationProvider = new EnglishLangProvider(generator);
 
 		//advancements
 		generator.addProvider(true, new ModAdvancementProvider(generator, existingFileHelper, translationProvider));

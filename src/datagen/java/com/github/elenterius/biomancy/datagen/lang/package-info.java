@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package com.github.elenterius.biomancy.datagen.translations;
+package com.github.elenterius.biomancy.datagen.lang;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

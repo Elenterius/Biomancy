@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.datagen.translations;
+package com.github.elenterius.biomancy.datagen.lang;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.api.serum.Serum;
@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-public class EnglishTranslationProvider extends AbstractTranslationProvider {
+public class EnglishLangProvider extends AbstractLangProvider {
 
 	public static final Marker LOG_MARKER = MarkerManager.getMarker("EnglishTranslationProvider");
 	private static final String EMPTY_STRING = "";
@@ -39,7 +39,7 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 	private List<Block> blocksToTranslate = List.of();
 	private List<Serum> serumsToTranslate = List.of();
 
-	public EnglishTranslationProvider(DataGenerator gen) {
+	public EnglishLangProvider(DataGenerator gen) {
 		super(gen, BiomancyMod.MOD_ID, "en_us");
 	}
 
@@ -95,13 +95,6 @@ public class EnglishTranslationProvider extends AbstractTranslationProvider {
 
 	private void addTooltip(String id, String text) {
 		add("tooltip.biomancy." + id, text);
-	}
-
-	private <T extends BaseProjectile> void addDeathMessage(Supplier<EntityType<T>> supplier, String directCause, String indirectCause) {
-		ResourceLocation resourceLocation = Objects.requireNonNull(ForgeRegistries.ENTITY_TYPES.getKey(supplier.get()));
-		String msgId = resourceLocation.toString().replace(":", ".");
-		add("death.attack." + msgId, directCause);
-		add("death.attack." + msgId + ".item", indirectCause);
 	}
 
 	private <T extends Item> void addItem(Supplier<T> supplier, String name, String tooltip) {

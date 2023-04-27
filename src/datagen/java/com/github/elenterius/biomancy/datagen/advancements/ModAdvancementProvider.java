@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.datagen.advancements;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.advancements.trigger.SacrificedItemTrigger;
-import com.github.elenterius.biomancy.datagen.translations.ITranslationProvider;
+import com.github.elenterius.biomancy.datagen.lang.LangProvider;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.tags.ModEntityTags;
@@ -33,9 +33,9 @@ import static com.github.elenterius.biomancy.BiomancyMod.LOGGER;
 public class ModAdvancementProvider extends AdvancementProvider {
 
 	private final Marker LOG_MARKER = MarkerManager.getMarker("AdvancementProvider");
-	private final ITranslationProvider lang;
+	private final LangProvider lang;
 
-	public ModAdvancementProvider(DataGenerator generator, ExistingFileHelper fileHelper, ITranslationProvider lang) {
+	public ModAdvancementProvider(DataGenerator generator, ExistingFileHelper fileHelper, LangProvider lang) {
 		super(generator, fileHelper);
 		this.lang = lang;
 	}

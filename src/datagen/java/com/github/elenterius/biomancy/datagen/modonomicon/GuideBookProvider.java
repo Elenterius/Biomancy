@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.datagen.modonomicon;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.datagen.translations.AbstractTranslationProvider;
+import com.github.elenterius.biomancy.datagen.lang.AbstractLangProvider;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.item.GuideBookItem;
@@ -20,7 +20,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 public class GuideBookProvider extends AbstractBookProvider {
 
-	public GuideBookProvider(DataGenerator generator, AbstractTranslationProvider lang) {
+	public GuideBookProvider(DataGenerator generator, AbstractLangProvider lang) {
 		super(generator, BiomancyMod.MOD_ID, lang);
 	}
 
