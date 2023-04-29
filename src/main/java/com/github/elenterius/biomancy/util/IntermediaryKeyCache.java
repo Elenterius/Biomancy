@@ -13,38 +13,38 @@ import java.util.function.Function;
  * i.e. different Keys will point to the same Value
  */
 public class IntermediaryKeyCache<K, V> {
-	protected static final Map<Integer, Integer> INTEGER_CACHE = new HashMap<>();
 
-	private final Function<K, Integer> computeKey;
-	private final Map<K, Integer> computedKeys = new HashMap<>();
-	private final HashMap<Integer, V> cachedValues = new HashMap<>();
+	private final Function<K, Integer> intermediaryKeyFunc;
+	private final Map<K, V> accessMap = new HashMap<>();
+	private final Map<Integer, V> valueCache = new HashMap<>();
 
 	/**
-	 * @param computeKey a function that computes the same intermediary key for all input keys that must point to the same cached value
+	 * @param intermediaryKeyFunc a function that computes the same intermediary key for all input keys that must point to the same cached value
 	 */
-	public IntermediaryKeyCache(Function<K, Integer> computeKey) {
-		this.computeKey = computeKey;
-	}
-
-	private Integer getIntermediaryKey(K key) {
-		return computedKeys.computeIfAbsent(key, k -> INTEGER_CACHE.computeIfAbsent(computeKey.apply(k), computedKey -> computedKey));
+	public IntermediaryKeyCache(Function<K, Integer> intermediaryKeyFunc) {
+		this.intermediaryKeyFunc = intermediaryKeyFunc;
 	}
 
 	@Nullable
 	public V put(K key, V value) {
-		return cachedValues.put(getIntermediaryKey(key), value);
+		valueCache.put(intermediaryKeyFunc.apply(key), value);
+		return accessMap.put(key, value);
 	}
 
 	public V computeIfAbsent(K key, Function<K, V> computeValue) {
-		return cachedValues.computeIfAbsent(getIntermediaryKey(key), k -> computeValue.apply(key));
+		if (accessMap.containsKey(key)) return accessMap.get(key);
+
+		V value = valueCache.computeIfAbsent(intermediaryKeyFunc.apply(key), intermediaryKey -> computeValue.apply(key));
+		accessMap.put(key, value);
+		return value;
 	}
 
 	@Nullable
 	public V get(K key) {
-		return computedKeys.containsKey(key) ? cachedValues.get(computedKeys.get(key)) : null;
+		return accessMap.get(key);
 	}
 
 	public Optional<V> getOptional(K key) {
-		return computedKeys.containsKey(key) ? Optional.ofNullable(cachedValues.get(computedKeys.get(key))) : Optional.empty();
+		return Optional.ofNullable(accessMap.get(key));
 	}
 }
