@@ -39,6 +39,7 @@ public class FleshSpikeBlock extends BaseEntityBlock implements SimpleWaterlogge
 	public FleshSpikeBlock(Properties properties) {
 		super(properties);
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.UP).setValue(SPIKES, MIN_SPIKES).setValue(WATERLOGGED, Boolean.FALSE));
+		FleshSpikeShapes.computePossibleShapes(stateDefinition.getPossibleStates());
 	}
 
 	public static int getSpikes(BlockState blockState) {

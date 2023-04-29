@@ -8,6 +8,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -17,16 +18,20 @@ public final class FleshSpikeShapes {
 
 	private FleshSpikeShapes() {}
 
+	static void computePossibleShapes(List<BlockState> possibleStates) {
+		possibleStates.forEach(possibleState -> CACHE.computeIfAbsent(possibleState, FleshSpikeShapes::computeShapes));
+	}
+
 	static VoxelShape getDamageShape(BlockState blockState) {
-		return CACHE.computeIfAbsent(blockState, FleshSpikeShapes::computeShapes).damageShape();
+		return CACHE.get(blockState).damageShape();
 	}
 
 	static VoxelShape getBoundingShape(BlockState blockState) {
-		return CACHE.computeIfAbsent(blockState, FleshSpikeShapes::computeShapes).boundingShape();
+		return CACHE.get(blockState).boundingShape();
 	}
 
 	public static VoxelShape getCollisionShape(BlockState blockState) {
-		return CACHE.computeIfAbsent(blockState, FleshSpikeShapes::computeShapes).collisionShape();
+		return CACHE.get(blockState).collisionShape();
 	}
 
 	private static Integer computeKey(BlockState blockState) {

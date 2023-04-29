@@ -35,25 +35,24 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 public class MawHopperBlock extends BaseEntityBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
-
 	public static final EnumProperty<Shape> SHAPE = EnumProperty.create("shape", Shape.class);
 
-	protected static final Map<BlockState, VoxelShape> CACHED_SHAPES = new HashMap<>();
+	protected final Map<Integer, VoxelShape> computedShapes = new HashMap<>();
+	protected final Map<BlockState, VoxelShape> cachedShapes = new HashMap<>();
 
 	public MawHopperBlock(Properties properties) {
 		super(properties);
 		registerDefaultState(defaultBlockState().setValue(FACING, Direction.UP).setValue(SHAPE, Shape.NORMAL));
+		stateDefinition.getPossibleStates().forEach(possibleState -> cachedShapes.put(possibleState, computeIfAbsent(possibleState)));
 	}
 
-	private static VoxelShape createVoxelShape(BlockState state) {
-		Direction direction = getDirection(state);
-		Shape shape = getShape(state);
-
+	private static VoxelShape computeVoxelShape(Direction direction, Shape shape) {
 		if (shape == Shape.NORMAL) {
 			return Stream.of(
 					VoxelShapeUtil.createXZRotatedTowards(direction, 6, 0, 6, 10, 2, 10),
@@ -70,6 +69,12 @@ public class MawHopperBlock extends BaseEntityBlock {
 				VoxelShapeUtil.createXZRotatedTowards(direction, 5, 12, 5, 11, 16, 11),
 				VoxelShapeUtil.createXZRotatedTowards(direction, 6, 0, 6, 10, 12, 10)
 		).reduce((a, b) -> Shapes.join(a, b, BooleanOp.OR)).orElse(Shapes.block());
+	}
+
+	private VoxelShape computeIfAbsent(BlockState state) {
+		Direction direction = getDirection(state);
+		Shape shape = getShape(state);
+		return computedShapes.computeIfAbsent(Objects.hash(direction, shape), hash -> computeVoxelShape(direction, shape));
 	}
 
 	public static Direction getDirection(BlockState state) {
@@ -157,7 +162,7 @@ public class MawHopperBlock extends BaseEntityBlock {
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		return CACHED_SHAPES.computeIfAbsent(state, MawHopperBlock::createVoxelShape);
+		return cachedShapes.get(state);
 	}
 
 	@Override
