@@ -3,11 +3,11 @@ package com.github.elenterius.biomancy.client.render.block.storagesac;
 import com.github.elenterius.biomancy.block.storagesac.StorageSacBlockEntity;
 import com.github.elenterius.biomancy.util.ItemStackCounter;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 
@@ -16,8 +16,11 @@ import java.util.List;
 public class StorageSacRenderer implements BlockEntityRenderer<StorageSacBlockEntity> {
 
 	private final RandomSource random = RandomSource.create();
+	private final ItemRenderer itemRenderer;
 
-	public StorageSacRenderer(BlockEntityRendererProvider.Context context) {}
+	public StorageSacRenderer(BlockEntityRendererProvider.Context context) {
+		itemRenderer = context.getItemRenderer();
+	}
 
 	@Override
 	public void render(StorageSacBlockEntity blockEntity, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
@@ -46,7 +49,7 @@ public class StorageSacRenderer implements BlockEntityRenderer<StorageSacBlockEn
 						poseStack.translate(x2 * 0.5f, y2 * 0.5f, z2 * 0.5f);
 					}
 					poseStack.scale(0.375f, 0.375f, 0.375f);
-					Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemTransforms.TransformType.FIXED, packedLight, packedOverlay, poseStack, bufferSource, 0);
+					itemRenderer.renderStatic(stack, ItemTransforms.TransformType.FIXED, packedLight, packedOverlay, poseStack, bufferSource, 0);
 					poseStack.popPose();
 				}
 				poseStack.popPose();
