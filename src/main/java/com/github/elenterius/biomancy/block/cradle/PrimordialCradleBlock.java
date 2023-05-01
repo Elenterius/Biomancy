@@ -138,7 +138,6 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 				else if (stack.getItem() instanceof PotionItem) {
 					entity.spawnAtLocation(new ItemStack(Items.GLASS_BOTTLE));
 				}
-				//				stack.shrink(1);
 			}
 		}
 	}
@@ -147,10 +146,10 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 		if (!stack.isEmpty() && !level.isClientSide()) {
 			if (EXPENSIVE_ITEMS.test(stack)) return false;
 
-			BlockEntity blockEntity = level.getBlockEntity(pos);
-			if (blockEntity instanceof PrimordialCradleBlockEntity creator && !creator.isFull() && creator.insertItem(stack)) {
-				if (player != null) {
-					ModTriggers.SACRIFICED_ITEM_TRIGGER.trigger((ServerPlayer) player, stack);
+			ItemStack copyOfStack = ItemHandlerHelper.copyStackWithSize(stack, 1); //creator#insertItem modifies the stack which may lead to it being empty
+			if (level.getBlockEntity(pos) instanceof PrimordialCradleBlockEntity creator && !creator.isFull() && creator.insertItem(stack)) {
+				if (player instanceof ServerPlayer serverPlayer) {
+					ModTriggers.SACRIFICED_ITEM_TRIGGER.trigger(serverPlayer, copyOfStack);
 				}
 				SoundEvent soundEvent = creator.isFull() ? ModSoundEvents.CREATOR_BECAME_FULL.get() : ModSoundEvents.CREATOR_EAT.get();
 				SoundUtil.broadcastBlockSound((ServerLevel) level, pos, soundEvent);
