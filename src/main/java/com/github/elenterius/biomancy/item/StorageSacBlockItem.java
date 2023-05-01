@@ -59,8 +59,8 @@ public class StorageSacBlockItem extends BlockItem implements ICustomTooltip {
 		if (stack.getCount() > 1) return false;
 		if (action != ClickAction.SECONDARY) return false;
 
-		final ItemStack stackInSlot = slot.getItem();
-		if (stackInSlot.isEmpty()) {
+		final ItemStack otherStack = slot.getItem();
+		if (otherStack.isEmpty()) {
 			Optional<EnhancedItemHandler> itemHandler = getItemHandler(stack);
 			ItemStack stackFromInv = itemHandler.map(h -> h.extractItemFirstFound(slot.getMaxStackSize(), false)).orElse(ItemStack.EMPTY);
 			int insertAmount = stackFromInv.getCount();
@@ -68,8 +68,8 @@ public class StorageSacBlockItem extends BlockItem implements ICustomTooltip {
 			if (remainder.getCount() < insertAmount) playRemoveFromSacSound(player);
 			itemHandler.ifPresent(h -> h.insertItemOnExistingFirst(remainder));
 		}
-		else if (stackInSlot.getItem().canFitInsideContainerItems()) {
-			final int prevCount = stackInSlot.getCount();
+		else if (otherStack.getItem().canFitInsideContainerItems()) {
+			final int prevCount = otherStack.getCount();
 			ItemStack remainder = getItemHandler(stack).map(h -> h.insertItemOnExistingFirst(slot.safeTake(prevCount, Integer.MAX_VALUE, player))).orElse(ItemStack.EMPTY);
 			slot.safeInsert(remainder);
 			if (prevCount - remainder.getCount() > 0) {
@@ -81,23 +81,23 @@ public class StorageSacBlockItem extends BlockItem implements ICustomTooltip {
 	}
 
 	@Override
-	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
+	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack otherStack, Slot slot, ClickAction action, Player player, SlotAccess access) {
 		if (stack.getCount() > 1) return false;
 		if (action != ClickAction.SECONDARY || !slot.allowModification(player)) return false;
 
-		if (other.isEmpty()) {
+		if (otherStack.isEmpty()) {
 			ItemStack stackFromInv = getItemHandler(stack).map(EnhancedItemHandler::extractItemFirstFound).orElse(ItemStack.EMPTY);
 			if (!stackFromInv.isEmpty()) {
 				playRemoveFromSacSound(player);
 				access.set(stackFromInv);
 			}
 		}
-		else {
-			ItemStack remainder = getItemHandler(stack).map(h -> h.insertItemOnExistingFirst(other)).orElse(ItemStack.EMPTY);
-			final int insertedAmount = other.getCount() - remainder.getCount();
+		else if (otherStack.getItem().canFitInsideContainerItems()) {
+			ItemStack remainder = getItemHandler(stack).map(h -> h.insertItemOnExistingFirst(otherStack)).orElse(ItemStack.EMPTY);
+			final int insertedAmount = otherStack.getCount() - remainder.getCount();
 			if (insertedAmount > 0) {
 				playInsertIntoSacSound(player);
-				other.shrink(insertedAmount);
+				otherStack.shrink(insertedAmount);
 			}
 		}
 
