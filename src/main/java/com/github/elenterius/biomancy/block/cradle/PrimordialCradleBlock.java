@@ -123,15 +123,18 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		if (!level.isClientSide() && entity instanceof ItemEntity itemEntity) {
 			ItemStack stack = itemEntity.getItem();
+			UUID thrower = itemEntity.getThrower();
 
-			if (stack.is(ModItems.LIVING_FLESH.get())) {
-				UUID thrower = itemEntity.getThrower();
-				if (thrower == null && itemEntity.getAge() < 80) {
-					return;
-				}
+			if (stack.is(ModItems.LIVING_FLESH.get()) && thrower == null && itemEntity.getAge() < 80) {
+				return;
 			}
 
-			if (increaseFillLevel(null, level, pos, stack)) {
+			Player player = null;
+			if (thrower != null) {
+				player = level.getPlayerByUUID(thrower);
+			}
+
+			if (increaseFillLevel(player, level, pos, stack)) {
 				if (stack.hasCraftingRemainingItem()) {
 					entity.spawnAtLocation(stack.getCraftingRemainingItem());
 				}
