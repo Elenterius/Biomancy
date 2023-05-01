@@ -64,6 +64,9 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 		}
 	}
 
+	/**
+	 * modifies the stack
+	 */
 	public boolean insertItem(ItemStack stack) {
 		if (level == null || level.isClientSide() || stack.isEmpty()) return false;
 		if (sacrificeHandler.isFull()) return false;
