@@ -21,7 +21,9 @@ import software.bernie.geckolib3.geo.render.built.GeoVertex;
 
 public class PrimordialCradleRenderer extends CustomGeoBlockRenderer<PrimordialCradleBlockEntity> {
 
+	private final Vector4f vertexPosition = new Vector4f(0, 0, 0, 1);
 	private float lifeEnergyPct;
+	private boolean isSpecialCube = false;
 
 	public PrimordialCradleRenderer(BlockEntityRendererProvider.Context rendererDispatcher) {
 		super(rendererDispatcher, new PrimordialCradleModel());
@@ -48,8 +50,6 @@ public class PrimordialCradleRenderer extends CustomGeoBlockRenderer<PrimordialC
 		lifeEnergyPct = Math.min(cradle.getLifeEnergyPct(), 1f);
 	}
 
-	private boolean isSpecialCube = false;
-
 	@Override
 	public void renderCubesOfBone(GeoBone bone, PoseStack stack, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
 		if (bone.getName().equals("_eye_overlay")) {
@@ -66,7 +66,8 @@ public class PrimordialCradleRenderer extends CustomGeoBlockRenderer<PrimordialC
 				}
 				isSpecialCube = false;
 			}
-		} else super.renderCubesOfBone(bone, stack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		}
+		else super.renderCubesOfBone(bone, stack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 	}
 
 	@Override
@@ -78,14 +79,13 @@ public class PrimordialCradleRenderer extends CustomGeoBlockRenderer<PrimordialC
 			GeoVertex topLeft = quad.vertices[0]; // Top left corner
 			GeoVertex topRight = quad.vertices[1]; // Top right corner
 
-			Vector4f position = new Vector4f(0, 0, 0, 1);
 			for (GeoVertex vertex : quad.vertices) {
 				boolean isTopVertex = (vertex == topLeft || vertex == topRight);
 
-				position.set(vertex.position.x(), isTopVertex ? positionY : vertex.position.y(), vertex.position.z(), 1);
-				position.transform(matrix4f);
+				vertexPosition.set(vertex.position.x(), isTopVertex ? positionY : vertex.position.y(), vertex.position.z(), 1);
+				vertexPosition.transform(matrix4f);
 				buffer.vertex(
-						position.x(), position.y(), position.z(), red, green, blue, alpha,
+						vertexPosition.x(), vertexPosition.y(), vertexPosition.z(), red, green, blue, alpha,
 						vertex.textureU, isTopVertex ? textureV : vertex.textureV,
 						packedOverlay, packedLight, normal.x(), normal.y(), normal.z()
 				);
