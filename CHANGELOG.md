@@ -1,3 +1,24 @@
+## [1.2.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.1.0...1.19.2-v2.1.2.0) (2023-05-02)
+
+
+### Features
+
+* add enchantment descriptions for "Enchantment Descriptions" mod ([60aca25](https://github.com/Elenterius/Biomancy/commit/60aca25d065aecb50da82e21071bf689776aadc8))
+* trigger item sacrifice advancements for thrown items thrown into the Cradle by a player ([214ca4e](https://github.com/Elenterius/Biomancy/commit/214ca4efefef0ade47b36ab493f8d9956e84c4cf))
+
+
+### Bug Fixes
+
+* fix advancements not firing for sacrificing item in the cradle ([9566f3d](https://github.com/Elenterius/Biomancy/commit/9566f3dd21f4d6fe4562f24a504a0aaac267fe17))
+* potentially fix concurrent modification exception when getting voxel shapes for certain blocks ([b0a0eb2](https://github.com/Elenterius/Biomancy/commit/b0a0eb22161f8a57a77b60c67a170918228327af))
+* remove ability to insert storage container blocks/items into the storage sac on right clicking the sac ([762e10e](https://github.com/Elenterius/Biomancy/commit/762e10e59aeb7b765eccc6c7a9d0736045e93896))
+
+
+### Performance Improvements
+
+* avoid creation of objects during the renderer phase of the Cradle ([36442f1](https://github.com/Elenterius/Biomancy/commit/36442f1a8ea756a70c96e58b04ae5216210ffc11))
+* refactor intermediary key cache ([5ac54fb](https://github.com/Elenterius/Biomancy/commit/5ac54fb691d0fade66971daca94ab1bdad521ce5))
+
 ## [1.1.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.0.0...1.19.2-v2.1.1.0) (2023-04-25)
 
 
@@ -42,20 +63,4 @@
 ### Bug Fixes
 
 * fix placement logic of maw hopper allowing it to connect to invalid neighbors ([1cc2f72](https://github.com/Elenterius/Biomancy/commit/1cc2f72a5016d0925282140dfd3316856c961492))
-
-## [0.53.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.0.52.0...1.19.2-v2.0.53.0) (2023-04-10)
-
-
-### Features
-
-* add decomposer recipe for living flesh ([f577d4e](https://github.com/Elenterius/Biomancy/commit/f577d4e1a68e434fa8bd1308fa8e15a509988577))
-* add recipe for biomancy banner patterns ([22084de](https://github.com/Elenterius/Biomancy/commit/22084deb5c2fc17fdbb4360eba337686c69692e6))
-* increase speed of Maw Hopper ([2f03171](https://github.com/Elenterius/Biomancy/commit/2f03171346140b53b04405db37180ac00db5afdb))
-* make the Primordial Cradle capable of handling tributes with food property effects and potion effects ([fb8e84d](https://github.com/Elenterius/Biomancy/commit/fb8e84de28e4ec502bc715e3167b586ce1ee654c))
-* remove primordial living flesh and temporarily revert back to requiring a ender eye to craft a Primordial Cradle ([5aeb56c](https://github.com/Elenterius/Biomancy/commit/5aeb56c66d62466c548bac655bef9f448c372291))
-
-
-### Bug Fixes
-
-* fix Ageing Serum not converting Guardian mobs to Elder Guardians mobs ([976aef6](https://github.com/Elenterius/Biomancy/commit/976aef6ccfc3c08e92144b7ae99d1eb61a429047))
 
