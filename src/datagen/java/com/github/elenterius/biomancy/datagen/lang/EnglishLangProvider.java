@@ -3,7 +3,6 @@ package com.github.elenterius.biomancy.datagen.lang;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.api.serum.Serum;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
-import com.github.elenterius.biomancy.entity.projectile.BaseProjectile;
 import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.init.client.ClientSetupHandler;
 import com.github.elenterius.biomancy.item.ICustomTooltip;
@@ -13,13 +12,11 @@ import com.github.elenterius.biomancy.item.state.LivingToolState;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
@@ -27,7 +24,6 @@ import org.apache.logging.log4j.MarkerManager;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Supplier;
 
 public class EnglishLangProvider extends AbstractLangProvider {
@@ -120,6 +116,12 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		add(item.getDescriptionId(stack), serumName);
 		add(item.getTooltipKey(stack), tooltip);
 		itemsToTranslate.remove(item);
+	}
+
+	private <T extends Enchantment> void addEnchantment(Supplier<T> supplier, String name, String tooltip) {
+		T enchantment = supplier.get();
+		add(enchantment.getDescriptionId(), name);
+		add(enchantment.getDescriptionId() + ".desc", tooltip);
 	}
 
 	@Override
@@ -301,8 +303,8 @@ public class EnglishLangProvider extends AbstractLangProvider {
 	}
 
 	private void addEnchantmentTranslations() {
-		addEnchantment(ModEnchantments.DESPOIL, "Despoil");
-		addEnchantment(ModEnchantments.ANESTHETIC, "Anesthetic Touch");
+		addEnchantment(ModEnchantments.DESPOIL, "Despoil", "On killing a mob they will drop additional special Loot.");
+		addEnchantment(ModEnchantments.ANESTHETIC, "Anesthetic Touch", "Prevents the Damage & Aggro caused by injecting mobs with the Injector. Mobs won't know who attacked them and animals won't panic anymore.");
 	}
 
 	private void addBannerPatternTranslations() {
