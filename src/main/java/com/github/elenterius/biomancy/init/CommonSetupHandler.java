@@ -42,6 +42,7 @@ public final class CommonSetupHandler {
 			//dumpBiomeTemperatureAndHumidity();
 		});
 
+		ModFluids.registerInteractions();
 		ModRecipes.registerBrewingRecipes();
 		ModsCompatHandler.onBiomancyCommonSetup(event);
 	}
