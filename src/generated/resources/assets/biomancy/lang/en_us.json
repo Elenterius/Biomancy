@@ -62,6 +62,8 @@
 	"item.biomancy.glass_vial.tooltip": "Glass is transparent... very brittle, yet strong and rigid. Very high alchemical resistance, seems perfect for holding reactive substances.",
 	"item.biomancy.living_flesh": "Living Flesh",
 	"item.biomancy.living_flesh.tooltip": "It's alive!\nBut it looks too dumb to be the brain of a mob. You should turn it into a construct.",
+	"item.biomancy.primordial_core": "Primordial Core",
+	"item.biomancy.primordial_core.tooltip": "[WIP] A ominous artifact made of flesh. It makes you feel uneasy...",
 	"item.biomancy.guide_book": "[WIP] Primordial Index",
 	"item.biomancy.guide_book.tooltip": "[WIP] Ask questions?",
 	"item.biomancy.creator_mix": "Exotic Flesh Mix",

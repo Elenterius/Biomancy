@@ -123,6 +123,19 @@ public class ModRecipeProvider extends RecipeProvider {
 				.pattern("B  ")
 				.unlockedBy(hasName(Items.BONE), has(Tags.Items.BONES)).save(consumer);
 
+		WorkbenchRecipeBuilder.shaped(ModItems.PRIMORDIAL_CORE.get())
+				.pattern("#P#")
+				.pattern("BEM")
+				.pattern("#CR")
+				.define('B', Items.BEEF)
+				.define('P', Items.PORKCHOP)
+				.define('M', Items.MUTTON)
+				.define('R', Items.RABBIT)
+				.define('C', Items.CHICKEN)
+				.define('E', Items.ENDER_PEARL)
+				.define('#', ModItemTags.RAW_MEATS)
+				.unlockedBy(hasName(Items.ENDER_PEARL), has(Items.ENDER_PEARL)).save(consumer);
+
 		//		WorkbenchRecipeBuilder.shapeless(ModItems.PRIMORDIAL_LIVING_OCULUS.get())
 		//				.requires(Items.SPIDER_EYE)
 		//				.requires(ModTags.Items.RAW_MEATS)
@@ -150,13 +163,13 @@ public class ModRecipeProvider extends RecipeProvider {
 		// machines ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		WorkbenchRecipeBuilder.shaped(ModItems.PRIMORDIAL_CRADLE.get())
-				.define('E', Items.ENDER_EYE)
+				.define('E', ModItems.PRIMORDIAL_CORE.get())
 				.define('M', ModItemTags.RAW_MEATS)
 				.define('F', ModItems.MOB_FANG.get())
 				.pattern("F F")
 				.pattern("MEM")
 				.pattern("MMM")
-				.unlockedBy(hasName(Items.ENDER_EYE), has(Items.ENDER_EYE)).save(consumer);
+				.unlockedBy(hasName(ModItems.PRIMORDIAL_CORE.get()), has(ModItems.PRIMORDIAL_CORE.get())).save(consumer);
 
 		WorkbenchRecipeBuilder.shaped(ModItems.DECOMPOSER.get())
 				.define('M', ModItemTags.RAW_MEATS)
@@ -830,7 +843,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addIngredient(ModItems.TOUGH_FIBERS.get(), 2)
 				.setCategory(ModBioForgeTabs.BLOCKS)
 				.unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
-		
+
 		BioForgeRecipeBuilder.create(ModItems.FULL_FLESH_DOOR.get())
 				.addIngredient(ModItems.FLESH_BITS.get(), 6)
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 6)
@@ -847,7 +860,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addIngredient(ModItems.TOUGH_FIBERS.get(), 3)
 				.setCategory(ModBioForgeTabs.BLOCKS)
 				.unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
-		
+
 		BioForgeRecipeBuilder.create(new ItemData(new ResourceLocation("dramaticdoors", "tall_full_flesh_door")))
 				.ifModLoaded("dramaticdoors")
 				.addIngredient(ModItems.FLESH_BITS.get(), 9)
