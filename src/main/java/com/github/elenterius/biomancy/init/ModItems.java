@@ -39,8 +39,7 @@ public final class ModItems {
 
 	//## Special
 	public static final RegistryObject<SimpleItem> LIVING_FLESH = registerSimpleItem("living_flesh", ModRarities.VERY_RARE);
-	//	public static final RegistryObject<SimpleItem> PRIMORDIAL_LIVING_FLESH = registerItem("primordial_living_flesh", props -> new SimpleItem(props.rarity(ModRarities.ULTRA_RARE)));
-	//	public static final RegistryObject<SimpleItem> PRIMORDIAL_LIVING_OCULUS = registerItem("primordial_living_oculus", props -> new SimpleItem(props.rarity(ModRarities.ULTRA_RARE)));
+	public static final RegistryObject<SimpleItem> PRIMORDIAL_CORE = registerSimpleItem("primordial_core", ModRarities.RARE);
 
 	//# Components
 	//## Complex
