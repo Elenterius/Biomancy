@@ -9,6 +9,7 @@ import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
@@ -30,7 +31,7 @@ public class PrimordialCradleRenderer extends CustomGeoBlockRenderer<PrimordialC
 	}
 
 	@Override
-	public void renderEarly(PrimordialCradleBlockEntity cradle, PoseStack stackIn, float ticks, @Nullable MultiBufferSource renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float partialTicks) {
+	public void renderEarly(PrimordialCradleBlockEntity cradle, PoseStack stack, float ticks, @Nullable MultiBufferSource renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLight, int packedOverlay, float red, float green, float blue, float partialTicks) {
 		AnimationProcessor<?> processor = getGeoModelProvider().getAnimationProcessor();
 		IBone boneFillLevel = processor.getBone("_fill_level");
 		IBone boneToppings = processor.getBone("_toppings");
@@ -51,7 +52,7 @@ public class PrimordialCradleRenderer extends CustomGeoBlockRenderer<PrimordialC
 	}
 
 	@Override
-	public void renderCubesOfBone(GeoBone bone, PoseStack stack, VertexConsumer bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+	public void renderCubesOfBone(GeoBone bone, PoseStack stack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		if (bone.getName().equals("_eye_overlay")) {
 			if (lifeEnergyPct > 0) {
 				float steps = 8f; //UV face height in pixels
@@ -60,14 +61,14 @@ public class PrimordialCradleRenderer extends CustomGeoBlockRenderer<PrimordialC
 				for (GeoCube cube : bone.childCubes) {
 					stack.pushPose();
 					if (!bone.cubesAreHidden()) {
-						renderCube(cube, stack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+						renderCube(cube, stack, buffer, 0xf000f0, OverlayTexture.NO_OVERLAY, red, green, blue, alpha);
 					}
 					stack.popPose();
 				}
 				isSpecialCube = false;
 			}
 		}
-		else super.renderCubesOfBone(bone, stack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
+		else super.renderCubesOfBone(bone, stack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
 	@Override
