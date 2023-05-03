@@ -148,4 +148,4 @@ jobs:
           webhook_token: ${{ secrets.DISCORD_TOKEN }}
           color: "#088c7d"
           username: "Maykr Bot"
-          message: "**:package: ${{ needs.changelog.outputs.tag }}**\n\n**Download**\n${{ fromJSON(steps.create_release.outputs.assets)[0].browser_download_url }}\n\n**Changelog**\n${{ steps.create_release.outputs.url }}\n\n<@&1098316788116246550>"
+          message: "**:package: ${{ needs.changelog.outputs.tag }}**\n\n**Download**\n${{ fromJSON(steps.create_release.outputs.assets)[0].browser_download_url }}\n\n**Changelog**\n${{ steps.create_release.outputs.url }}"
