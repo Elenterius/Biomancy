@@ -24,7 +24,6 @@ import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.integration.ModsCompatHandler;
-import com.github.elenterius.biomancy.item.SerumItem;
 import com.github.elenterius.biomancy.tooltip.EmptyLineTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.StorageSacTooltipComponent;
@@ -140,7 +139,6 @@ public final class ClientSetupHandler {
 	@SubscribeEvent
 	public static void onItemColorRegistry(final RegisterColorHandlersEvent.Item event) {
 		event.register((stack, index) -> ModItems.ESSENCE.get().getColor(stack, index), ModItems.ESSENCE.get());
-		event.register((stack, index) -> index == 0 ? ((SerumItem) stack.getItem()).getSerum().getColor() : 0xFF_FFFFFF, ModItems.ENLARGEMENT_SERUM.get(), ModItems.SHRINKING_SERUM.get());
 	}
 
 	@SubscribeEvent

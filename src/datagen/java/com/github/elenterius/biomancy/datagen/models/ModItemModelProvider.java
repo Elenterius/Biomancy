@@ -69,8 +69,8 @@ public class ModItemModelProvider extends ItemModelProvider {
 
 		serumItem(ModItems.REJUVENATION_SERUM.get());
 		serumItem(ModItems.AGEING_SERUM.get());
-		genericSerumItem(ModItems.ENLARGEMENT_SERUM.get());
-		genericSerumItem(ModItems.SHRINKING_SERUM.get());
+		serumItem(ModItems.ENLARGEMENT_SERUM.get());
+		serumItem(ModItems.SHRINKING_SERUM.get());
 		serumItem(ModItems.BREEDING_STIMULANT.get());
 		serumItem(ModItems.ABSORPTION_BOOST.get());
 		serumItem(ModItems.CLEANSING_SERUM.get());
