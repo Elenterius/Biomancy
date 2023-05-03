@@ -262,15 +262,15 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 		playAttackAnimation = false;
 	}
 
-	private PlayState handleAnim(AnimationEvent<PrimordialCradleBlockEntity> event) {
+	protected PlayState handleAnim(AnimationEvent<PrimordialCradleBlockEntity> event) {
 		//		if (fillLevel >= getMaxFillLevel()) {
 		//			event.getController().setAnimation(new AnimationBuilder().addAnimation("cradle.anim.work"));
 		//		}
 
-		if (playAttackAnimation) {
+		if (event.getAnimatable().playAttackAnimation) {
 			event.getController().setAnimation(SPIKE_ANIM);
 			if (event.getController().getAnimationState() != AnimationState.Stopped) return PlayState.CONTINUE;
-			stopAttackAnimation();
+			event.getAnimatable().stopAttackAnimation();
 		}
 
 		if (event.getController().getAnimationState() == AnimationState.Stopped) {

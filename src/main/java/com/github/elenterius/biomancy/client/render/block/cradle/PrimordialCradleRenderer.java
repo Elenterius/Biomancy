@@ -8,6 +8,7 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
@@ -59,11 +60,11 @@ public class PrimordialCradleRenderer extends CustomGeoBlockRenderer<PrimordialC
 				lifeEnergyPct = (Mth.floor(lifeEnergyPct * (steps - 1f)) + 1f) / steps; //rescale to fixed step size, -+1 ensures we never get 0
 				isSpecialCube = true;
 				for (GeoCube cube : bone.childCubes) {
-					stack.pushPose();
 					if (!bone.cubesAreHidden()) {
-						renderCube(cube, stack, buffer, 0xf000f0, OverlayTexture.NO_OVERLAY, red, green, blue, alpha);
+						stack.pushPose();
+						renderCube(cube, stack, rtb.getBuffer(RenderType.eyes(PrimordialCradleModel.TEXTURE)), 0xf000f0, OverlayTexture.NO_OVERLAY, red, green, blue, alpha);
+						stack.popPose();
 					}
-					stack.popPose();
 				}
 				isSpecialCube = false;
 			}
@@ -73,28 +74,48 @@ public class PrimordialCradleRenderer extends CustomGeoBlockRenderer<PrimordialC
 
 	@Override
 	public void createVerticesOfQuad(GeoQuad quad, Matrix4f matrix4f, Vector3f normal, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		GeoVertex[] vertices = quad.vertices;
+
 		if (isSpecialCube && quad.direction == Direction.NORTH) {
-			float textureV = Mth.lerp(lifeEnergyPct, quad.vertices[2].textureV, quad.vertices[0].textureV);
-			float positionY = Mth.lerp(lifeEnergyPct, quad.vertices[2].position.y(), quad.vertices[0].position.y());
+			float textureV = Mth.lerp(lifeEnergyPct, vertices[2].textureV, vertices[0].textureV);
+			float positionY = Mth.lerp(lifeEnergyPct, vertices[2].position.y(), vertices[0].position.y());
 
 			GeoVertex topLeft = quad.vertices[0]; // Top left corner
 			GeoVertex topRight = quad.vertices[1]; // Top right corner
 
 			for (GeoVertex vertex : quad.vertices) {
 				boolean isTopVertex = (vertex == topLeft || vertex == topRight);
-
-				vertexPosition.set(vertex.position.x(), isTopVertex ? positionY : vertex.position.y(), vertex.position.z(), 1);
-				vertexPosition.transform(matrix4f);
-				buffer.vertex(
-						vertexPosition.x(), vertexPosition.y(), vertexPosition.z(), red, green, blue, alpha,
-						vertex.textureU, isTopVertex ? textureV : vertex.textureV,
-						packedOverlay, packedLight, normal.x(), normal.y(), normal.z()
-				);
+				if (isTopVertex) {
+					createVertex(matrix4f, normal, buffer, packedLight, packedOverlay, red, green, blue, alpha, vertex, textureV, positionY);
+				}
+				else {
+					createVertex(matrix4f, normal, buffer, packedLight, packedOverlay, red, green, blue, alpha, vertex);
+				}
 			}
 		}
 		else {
-			super.createVerticesOfQuad(quad, matrix4f, normal, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+			for (GeoVertex vertex : vertices) {
+				createVertex(matrix4f, normal, buffer, packedLight, packedOverlay, red, green, blue, alpha, vertex);
+			}
 		}
+	}
+
+	private void createVertex(Matrix4f matrix4f, Vector3f normal, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha, GeoVertex geoVertex) {
+		vertexPosition.set(geoVertex.position.x(), geoVertex.position.y(), geoVertex.position.z(), 1);
+		vertexPosition.transform(matrix4f);
+		buffer.vertex(
+				vertexPosition.x(), vertexPosition.y(), vertexPosition.z(), red, green, blue, alpha,
+				geoVertex.textureU, geoVertex.textureV, packedOverlay, packedLight, normal.x(), normal.y(), normal.z()
+		);
+	}
+
+	private void createVertex(Matrix4f matrix4f, Vector3f normal, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha, GeoVertex geoVertex, float v, float y) {
+		vertexPosition.set(geoVertex.position.x(), y, geoVertex.position.z(), 1);
+		vertexPosition.transform(matrix4f);
+		buffer.vertex(
+				vertexPosition.x(), vertexPosition.y(), vertexPosition.z(), red, green, blue, alpha,
+				geoVertex.textureU, v, packedOverlay, packedLight, normal.x(), normal.y(), normal.z()
+		);
 	}
 
 }
