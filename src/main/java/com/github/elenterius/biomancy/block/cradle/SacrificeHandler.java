@@ -130,7 +130,10 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 		if (isFull()) return false;
 		if (tribute.isEmpty()) return false;
 
-		boolean consumeTribute = addBiomass(tribute.biomass()) || addLifeEnergy(tribute.lifeEnergy());
+		boolean addedBiomass = addBiomass(tribute.biomass());
+		boolean addedLifeEnergy = addLifeEnergy(tribute.lifeEnergy());
+
+		boolean consumeTribute = addedBiomass || addedLifeEnergy;
 		boolean isModifier = tribute.biomass() == 0 && tribute.lifeEnergy() == 0;
 
 		if (consumeTribute || isModifier) {
