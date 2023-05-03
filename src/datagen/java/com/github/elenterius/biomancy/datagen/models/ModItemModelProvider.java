@@ -39,6 +39,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 		basicItem(ModItems.TOXIN_GLAND.get());
 		basicItem(ModItems.VOLATILE_GLAND.get());
 		basicItem(ModItems.LIVING_FLESH.get());
+		basicItem(ModItems.PRIMORDIAL_CORE.get());
 
 		componentItem(ModItems.FLESH_BITS.get());
 		componentItem(ModItems.BONE_FRAGMENTS.get());
