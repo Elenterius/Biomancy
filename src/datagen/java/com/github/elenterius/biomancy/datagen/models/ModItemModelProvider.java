@@ -103,6 +103,8 @@ public class ModItemModelProvider extends ItemModelProvider {
 		flatBlockItem(ModItems.FLESH_LADDER);
 		flatBlockItem(ModItems.MALIGNANT_FLESH_VEINS);
 
+		dynamicBucket(ModItems.ACID_BUCKET.get());
+
 		//generate models for all eggs
 		ModItems.ITEMS.getEntries().stream().map(RegistryObject::get).filter(SpawnEggItem.class::isInstance).forEach(this::spawnEggItem);
 	}
