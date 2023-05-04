@@ -90,7 +90,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 		flatBlockItem(ModItems.MALIGNANT_FLESH_VEINS.get());
 
 		handheldItem(ModItems.BIO_EXTRACTOR.get());
-		handheldWeaponItem(ModItems.BONE_CLEAVER.get());
+		handheldWeaponItem(ModItems.DESPOIL_SICKLE.get());
 
 		//generate models for all eggs
 		ModItems.ITEMS.getEntries().stream().map(RegistryObject::get).filter(SpawnEggItem.class::isInstance).forEach(this::spawnEggItem);

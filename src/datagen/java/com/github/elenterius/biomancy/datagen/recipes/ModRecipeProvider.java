@@ -116,13 +116,6 @@ public class ModRecipeProvider extends RecipeProvider {
 
 	private void registerWorkbenchRecipes(Consumer<FinishedRecipe> consumer) {
 
-		WorkbenchRecipeBuilder.shaped(ModItems.BONE_CLEAVER.get())
-				.define('B', Tags.Items.BONES).define('F', Items.FLINT)
-				.pattern(" FB")
-				.pattern("FB ")
-				.pattern("B  ")
-				.unlockedBy(hasName(Items.BONE), has(Tags.Items.BONES)).save(consumer);
-
 		WorkbenchRecipeBuilder.shaped(ModItems.PRIMORDIAL_CORE.get())
 				.pattern("#P#")
 				.pattern("BEM")
@@ -135,6 +128,15 @@ public class ModRecipeProvider extends RecipeProvider {
 				.define('E', Items.ENDER_PEARL)
 				.define('#', ModItemTags.RAW_MEATS)
 				.unlockedBy(hasName(Items.ENDER_PEARL), has(Items.ENDER_PEARL)).save(consumer);
+
+		WorkbenchRecipeBuilder.shaped(ModItems.DESPOIL_SICKLE.get())
+				.define('B', Tags.Items.BONES)
+				.define('M', ModItemTags.RAW_MEATS)
+				.define('C', ModItems.PRIMORDIAL_CORE.get())
+				.pattern("BB ")
+				.pattern(" BM")
+				.pattern("MC ")
+				.unlockedBy(hasName(ModItems.PRIMORDIAL_CORE.get()), has(ModItems.PRIMORDIAL_CORE.get())).save(consumer);
 
 		//		WorkbenchRecipeBuilder.shapeless(ModItems.PRIMORDIAL_LIVING_OCULUS.get())
 		//				.requires(Items.SPIDER_EYE)
@@ -920,11 +922,6 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addIngredient(ModItems.TOUGH_FIBERS.get(), 5)
 				.setCategory(ModBioForgeTabs.WEAPONS)
 				.unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
-
-		BioForgeRecipeBuilder.create(ModItems.BONE_CLEAVER.get())
-				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 3 * 4)
-				.setCategory(ModBioForgeTabs.WEAPONS)
-				.unlockedBy(ModItems.BONE_FRAGMENTS.get()).save(consumer);
 
 		//////////// MISC ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
