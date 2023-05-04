@@ -141,16 +141,16 @@ public class ModAdvancementProvider extends AdvancementProvider {
 				.addCriterion("has_killed_cat", hasKilledEntity(EntityType.CAT))
 				.save(consumer, fileHelper);
 
-		Advancement cradle = createAdvancement("flesh").parent(root).icon(ModItems.PRIMORDIAL_CRADLE.get())
-				.title("Strange Vision")
-				.description("You felt a foreign presence from the ender eye. A cauldron made of raw meat appears in your mind, you start forgetting portals... you feel compelled to build it...")
+		Advancement cradle = createAdvancement("flesh").parent(root).icon(ModItems.PRIMORDIAL_CORE.get())
+				.title("[WIP] Primal Vision")
+				.description("[WIP] You feel an ancient presence from the ender eye. As you gaze into the pearl... portals... you feel compelled to combine it with raw meat... cross the boundary...")
 				.frameType(FrameType.CHALLENGE).showToast()
 				.addHasCriterion(Items.ENDER_EYE)
 				.save(consumer, fileHelper);
 
 		Advancement livingFlesh = createAdvancement("living_flesh").parent(cradle).icon(ModItems.PRIMORDIAL_CRADLE.get())
 				.title("Reviving Flesh")
-				.description("You felt a foreign presence from the ender eye. A cauldron made of raw meat appears in your mind, you start forgetting portals... you feel compelled to build it...")
+				.description("[WIP] The Primordial Core is whispering of a bowl filled with life...")
 				.showToast()
 				.addCriterion("placed_creator", hasPlacedBlock(ModBlocks.PRIMORDIAL_CRADLE.get()))
 				.save(consumer, fileHelper);
