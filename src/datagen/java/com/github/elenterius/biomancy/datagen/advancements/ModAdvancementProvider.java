@@ -100,11 +100,11 @@ public class ModAdvancementProvider extends AdvancementProvider {
 				.addHasCriterion(ModItemTags.RAW_MEATS)
 				.save(consumer, fileHelper);
 
-		Advancement greedyButcher = createAdvancement("greedy_butcher").parent(root).icon(ModItems.BONE_CLEAVER.get())
+		Advancement greedyButcher = createAdvancement("greedy_butcher").parent(root).icon(ModItems.DESPOIL_SICKLE.get())
 				.title("Greedy Butcher")
 				.description("You've acquired a taste for organs. Crafted a special tool to get them fresh from your victims death.")
 				.showToast()
-				.addHasCriterion(ModItems.BONE_CLEAVER.get())
+				.addHasCriterion(ModItems.DESPOIL_SICKLE.get())
 				.save(consumer, fileHelper);
 
 		createAdvancement("organ_trader").parent(greedyButcher).icon(ModItems.VOLATILE_GLAND.get())

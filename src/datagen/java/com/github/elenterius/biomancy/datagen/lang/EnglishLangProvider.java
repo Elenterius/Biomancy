@@ -346,7 +346,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addItem(ModItems.VOLATILE_FLUID, "Volatile Fluid", "Combustible extract, needs further processing to be more dangerous.");
 		addItem(ModItems.BILE, "Bile", "Organic base material which is often used in bio-alchemy.");
 
-		addItem(ModItems.BONE_CLEAVER, "[WIP] Bone Cleaver", "[WIP] A specialized bone tool for getting additional special loot from its victims.");
+		addItem(ModItems.DESPOIL_SICKLE, "[WIP] Flesh Plunderer", "[WIP] A specialized tool for pillaging special loot from dying mobs.");
 		addItem(ModItems.GLASS_VIAL, "Glass Vial", "Glass is transparent... very brittle, yet strong and rigid. Very high alchemical resistance, seems perfect for holding reactive substances.");
 		addItem(ModItems.LIVING_FLESH, "Living Flesh", "It's alive!\nBut it looks too dumb to be the brain of a mob. You should turn it into a construct.");
 		addItem(ModItems.PRIMORDIAL_CORE, "Primordial Core", "[WIP] A ominous artifact made of flesh. It makes you feel uneasy...");

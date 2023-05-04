@@ -2,7 +2,6 @@ package com.github.elenterius.biomancy.datagen.tags;
 
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.tags.ModItemTags;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
@@ -70,7 +69,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 	}
 
 	private void addForgeTags() {
-		tag(ModItemTags.FORGE_TOOLS_KNIVES).add(ModItems.BONE_CLEAVER.get());
+		tag(ModItemTags.FORGE_TOOLS_KNIVES);
 	}
 
 	protected EnhancedTagAppender<Item> createTag(TagKey<Item> tag) {
