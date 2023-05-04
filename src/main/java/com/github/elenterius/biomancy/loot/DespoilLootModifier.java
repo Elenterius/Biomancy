@@ -3,7 +3,6 @@ package com.github.elenterius.biomancy.loot;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.tags.ModEntityTags;
-import com.github.elenterius.biomancy.init.tags.ModItemTags;
 import com.github.elenterius.biomancy.util.random.DynamicLootTable;
 import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
@@ -11,16 +10,15 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.advancements.critereon.EntityFlagsPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
@@ -35,11 +33,11 @@ import java.util.function.Supplier;
 
 import static com.github.elenterius.biomancy.util.random.DynamicLootTable.*;
 
-public class SpecialMobLootModifier extends LootModifier {
-	public static final Supplier<Codec<SpecialMobLootModifier>> CODEC = Suppliers.memoize(() -> RecordCodecBuilder.create(inst ->
+public class DespoilLootModifier extends LootModifier {
+	public static final Supplier<Codec<DespoilLootModifier>> CODEC = Suppliers.memoize(() -> RecordCodecBuilder.create(inst ->
 			codecStart(inst)
 					.and(Weights.CODEC.get().fieldOf("weights").forGetter(m -> m.weights))
-					.apply(inst, SpecialMobLootModifier::new)
+					.apply(inst, DespoilLootModifier::new)
 	));
 
 	private static final ItemLoot SHARP_FANG = new ItemLoot(ModItems.MOB_FANG, RANDOM_ITEM_AMOUNT_FUNC_2);
@@ -56,7 +54,7 @@ public class SpecialMobLootModifier extends LootModifier {
 
 	private final Weights weights;
 
-	public SpecialMobLootModifier() {
+	public DespoilLootModifier() {
 		this(
 				//Can't use MatchTool, because the tool is missing for Entity Kills (1.18.2, 1.19.2)
 				//only apply the loot modifier to adult mobs killed by a player
@@ -67,7 +65,7 @@ public class SpecialMobLootModifier extends LootModifier {
 				new Weights(140, 150, 75, 50, 40, 65, 45, 70));
 	}
 
-	public SpecialMobLootModifier(LootItemCondition[] conditions, Weights weights) {
+	public DespoilLootModifier(LootItemCondition[] conditions, Weights weights) {
 		super(conditions);
 		this.weights = weights;
 	}
@@ -83,6 +81,22 @@ public class SpecialMobLootModifier extends LootModifier {
 
 	public LootItemCondition[] getConditions() {
 		return conditions;
+	}
+
+	private static int getDespoilLevel(LootContext lootContext) {
+		Entity killer = lootContext.getParamOrNull(LootContextParams.KILLER_ENTITY);
+		if (killer instanceof LivingEntity livingEntity) {
+			return ModEnchantments.DESPOIL.get().getSlotItems(livingEntity).values().stream()
+					.mapToInt(DespoilLootModifier::getDespoilLevel)
+					.max()
+					.orElse(lootContext.getRandom().nextFloat() < 0.05f ? 1 : 0);
+		}
+
+		return 0;
+	}
+
+	private static int getDespoilLevel(ItemStack stack) {
+		return stack.getEnchantmentLevel(ModEnchantments.DESPOIL.get());
 	}
 
 	protected DynamicLootTable buildLootTable(LivingEntity livingEntity) {
@@ -103,12 +117,18 @@ public class SpecialMobLootModifier extends LootModifier {
 		if (hasVolatileGland) lootTable.add(VOLATILE_GLAND, weights.volatileGland);
 		if (hasBileGland) lootTable.addSelfRemoving(GENERIC_GLAND, weights.genericGland);
 		if (hasSinew) lootTable.add(SINEW, weights.sinew);
-		if (hasBoneMarrow) lootTable.add(BONE_MARROW, weights.boneMarrow);
+		if (hasBoneMarrow && !hasWitheredBoneMarrow) lootTable.add(BONE_MARROW, weights.boneMarrow);
 		if (hasWitheredBoneMarrow) lootTable.add(WITHERED_BONE_MARROW, weights.witheredBoneMarrow);
 
 		if (livingEntity instanceof Warden) {
 			lootTable.add(ECHO_SHARD, 10);
 		}
+
+		if (livingEntity.getMobType() != MobType.UNDEAD) {
+			lootTable.add(FLESH_BITS, 15); //bonus
+		}
+
+		lootTable.add(EMPTY, 15);
 
 		return lootTable;
 	}
@@ -117,27 +137,14 @@ public class SpecialMobLootModifier extends LootModifier {
 	@Override
 	protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
 		if (context.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof LivingEntity victim) {
-			DynamicLootTable lootTable = buildLootTable(victim);
-			if (lootTable.isEmpty()) return generatedLoot;
-
-			lootTable.add(EMPTY, 15);
-
 			int despoilLevel = getDespoilLevel(context);
 			int lootingLevel = context.getLootingModifier();
-			ItemStack heldStack = getItemInMainHand(context);
 
-			//bonus
-			if (heldStack.is(ModItems.BONE_CLEAVER.get())) {
-				despoilLevel++;
-				lootTable.add(FLESH_BITS, 15);
-			}
-			else if (heldStack.is(ModItemTags.FORGE_TOOLS_KNIVES)) {
-				despoilLevel++;
-			}
+			if (despoilLevel > 0) {
+				RandomSource random = context.getRandom();
+				DynamicLootTable lootTable = buildLootTable(victim);
 
-			RandomSource random = context.getRandom();
-			if (despoilLevel > 0 || random.nextFloat() < 0.05f) {
-				int diceRolls = Mth.nextInt(random, 1, 1 + despoilLevel); //max is inclusive
+				int diceRolls = despoilLevel;
 				for (; diceRolls > 0; diceRolls--) {
 					lootTable.getRandomItemStack(random, lootingLevel).filter(stack -> !stack.isEmpty()).ifPresent(generatedLoot::add);
 				}
@@ -147,30 +154,14 @@ public class SpecialMobLootModifier extends LootModifier {
 		return generatedLoot;
 	}
 
-	private int getDespoilLevel(LootContext lootContext) {
-		Entity killer = lootContext.getParamOrNull(LootContextParams.KILLER_ENTITY);
-		if (killer instanceof LivingEntity livingEntity) {
-			return EnchantmentHelper.getEnchantmentLevel(ModEnchantments.DESPOIL.get(), livingEntity);
-		}
-		return 0;
-	}
-
-	private ItemStack getItemInMainHand(LootContext lootContext) {
-		Entity killer = lootContext.getParamOrNull(LootContextParams.KILLER_ENTITY);
-		if (killer instanceof LivingEntity livingEntity) {
-			return livingEntity.getMainHandItem();
-		}
-		return ItemStack.EMPTY;
-	}
-
 	record Weights(int fang, int claw, int toxinGland, int volatileGland, int genericGland, int witheredBoneMarrow, int boneMarrow, int sinew) {
 		public static final Supplier<Codec<Weights>> CODEC = Suppliers.memoize(() -> RecordCodecBuilder.create(inst -> inst.group(
-						Codec.INT.fieldOf(getName(ModItems.MOB_FANG)).forGetter(Weights::fang),
-						Codec.INT.fieldOf(getName(ModItems.MOB_CLAW)).forGetter(Weights::claw),
-						Codec.INT.fieldOf(getName(ModItems.TOXIN_GLAND)).forGetter(Weights::toxinGland),
-						Codec.INT.fieldOf(getName(ModItems.VOLATILE_GLAND)).forGetter(Weights::volatileGland),
-						Codec.INT.fieldOf(getName(ModItems.GENERIC_MOB_GLAND)).forGetter(Weights::genericGland),
-						Codec.INT.fieldOf(getName(ModItems.WITHERED_MOB_MARROW)).forGetter(Weights::witheredBoneMarrow),
+				Codec.INT.fieldOf(getName(ModItems.MOB_FANG)).forGetter(Weights::fang),
+				Codec.INT.fieldOf(getName(ModItems.MOB_CLAW)).forGetter(Weights::claw),
+				Codec.INT.fieldOf(getName(ModItems.TOXIN_GLAND)).forGetter(Weights::toxinGland),
+				Codec.INT.fieldOf(getName(ModItems.VOLATILE_GLAND)).forGetter(Weights::volatileGland),
+				Codec.INT.fieldOf(getName(ModItems.GENERIC_MOB_GLAND)).forGetter(Weights::genericGland),
+				Codec.INT.fieldOf(getName(ModItems.WITHERED_MOB_MARROW)).forGetter(Weights::witheredBoneMarrow),
 						Codec.INT.fieldOf(getName(ModItems.MOB_MARROW)).forGetter(Weights::boneMarrow),
 						Codec.INT.fieldOf(getName(ModItems.MOB_SINEW)).forGetter(Weights::sinew)
 				).apply(inst, Weights::new))

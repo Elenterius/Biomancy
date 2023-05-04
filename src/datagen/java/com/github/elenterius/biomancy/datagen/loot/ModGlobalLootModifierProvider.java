@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.datagen.loot;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModLoot;
 import com.github.elenterius.biomancy.loot.CatMorningGiftLootModifier;
-import com.github.elenterius.biomancy.loot.SpecialMobLootModifier;
+import com.github.elenterius.biomancy.loot.DespoilLootModifier;
 import com.mojang.serialization.Codec;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.GlobalLootModifierProvider;
@@ -18,7 +18,7 @@ public class ModGlobalLootModifierProvider extends GlobalLootModifierProvider {
 
 	@Override
 	protected void start() {
-		addLootModifier(ModLoot.SPECIAL_MOB_LOOT_SERIALIZER, new SpecialMobLootModifier());
+		addLootModifier(ModLoot.DESPOIL_SERIALIZER, new DespoilLootModifier());
 		addLootModifier(ModLoot.CAT_MORNING_GIFT_SERIALIZER, new CatMorningGiftLootModifier());
 	}
 
