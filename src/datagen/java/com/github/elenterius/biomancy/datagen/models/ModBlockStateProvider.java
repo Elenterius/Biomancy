@@ -54,6 +54,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		irisDoor(ModBlocks.FLESH_IRIS_DOOR.get(), true);
 		fleshDoor();
 
+		axisBlock(ModBlocks.FLESH_PILLAR.get());
+
 		storageSac(ModBlocks.STORAGE_SAC.get());
 
 		geckolibModel(ModBlocks.FLESH_SPIKE.get());
