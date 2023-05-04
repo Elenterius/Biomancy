@@ -119,14 +119,13 @@ public class ModRecipeProvider extends RecipeProvider {
 		WorkbenchRecipeBuilder.shaped(ModItems.PRIMORDIAL_CORE.get())
 				.pattern("#P#")
 				.pattern("BEM")
-				.pattern("#CR")
+				.pattern("#C#")
 				.define('B', Items.BEEF)
 				.define('P', Items.PORKCHOP)
 				.define('M', Items.MUTTON)
-				.define('R', Items.RABBIT)
 				.define('C', Items.CHICKEN)
 				.define('E', Items.ENDER_PEARL)
-				.define('#', ModItemTags.RAW_MEATS)
+				.define('#', Items.BLAZE_POWDER)
 				.unlockedBy(hasName(Items.ENDER_PEARL), has(Items.ENDER_PEARL)).save(consumer);
 
 		WorkbenchRecipeBuilder.shaped(ModItems.DESPOIL_SICKLE.get())
