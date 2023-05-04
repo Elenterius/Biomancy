@@ -179,6 +179,8 @@
 	"block.biomancy.flesh_spike.tooltip": "A dangerous spike made of reinforced bone and flesh, colliding with it will hurt. Several spikes can be placed in one spot.",
 	"block.biomancy.flesh_ladder": "Flesh Ladder",
 	"block.biomancy.flesh_ladder.tooltip": "Ladder mainly made of bones and a little bit of flesh...",
+	"block.biomancy.flesh_pillar": "Flesh Pillar",
+	"block.biomancy.flesh_pillar.tooltip": "A Pillar made of bones and flesh.",
 	"block.biomancy.bio_lantern": "Bioluminescent Lantern",
 	"block.biomancy.bio_lantern.tooltip": "Biological light source.",
 	"block.biomancy.tendon_chain": "Tendon Chain",
