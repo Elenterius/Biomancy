@@ -5,15 +5,17 @@ import com.github.elenterius.biomancy.api.serum.Serum;
 import com.github.elenterius.biomancy.init.tags.ModEntityTags;
 import com.github.elenterius.biomancy.item.*;
 import com.github.elenterius.biomancy.item.weapon.BileSpitterItem;
+import com.github.elenterius.biomancy.item.weapon.DespoilingSwordItem;
 import com.github.elenterius.biomancy.item.weapon.DevArmCannonItem;
 import com.github.elenterius.biomancy.item.weapon.LivingLongClawsItem;
-import com.github.elenterius.biomancy.item.weapon.SimpleSwordItem;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Rarity;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
@@ -55,6 +57,7 @@ public final class ModItems {
 	public static final RegistryObject<SimpleItem> BIO_LUMENS = registerSimpleItem("bio_lumens");
 	public static final RegistryObject<SimpleItem> EXOTIC_DUST = registerSimpleItem("exotic_dust");
 	public static final RegistryObject<SimpleItem> STONE_POWDER = registerSimpleItem("stone_powder");
+
 	//## Specific
 	public static final RegistryObject<SimpleItem> REGENERATIVE_FLUID = registerSimpleItem("regenerative_fluid");
 	public static final RegistryObject<SimpleItem> WITHERING_OOZE = registerSimpleItem("withering_ooze");
@@ -98,9 +101,6 @@ public final class ModItems {
 	public static final RegistryObject<LivingLongClawsItem> LONG_CLAWS = registerItem("long_claws", props -> new LivingLongClawsItem(ModTiers.BIOFLESH, -2, -2.4f, 0.5f, 1000, props.setNoRepair().rarity(ModRarities.VERY_RARE)));
 	public static final RegistryObject<DevArmCannonItem> DEV_ARM_CANNON = registerItem("dev_arm_cannon", props -> new DevArmCannonItem(props.stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE).tab(null)));
 	public static final RegistryObject<BileSpitterItem> BILE_SPITTER = registerItem("bile_spitter", props -> new BileSpitterItem(props.stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE).tab(null)));
-
-	//# Creature
-	//	public static final RegistryObject<BoomlingItem> BOOMLING = ITEMS.register("boomling", () -> new BoomlingItem(createBaseProperties().rarity(ModRarities.RARE).stacksTo(1).tab(null)));
 
 	//# Food/Fuel
 	public static final RegistryObject<EffectCureItem> NUTRIENT_PASTE = registerItem("nutrient_paste", props -> new EffectCureItem(props.food(ModFoods.NUTRIENT_PASTE)));
@@ -227,6 +227,18 @@ public final class ModItems {
 
 	private static RegistryObject<SimpleItem> registerSimpleItem(String name, Supplier<Item.Properties> properties) {
 		return ITEMS.register(name, () -> new SimpleItem(properties.get()));
+	}
+
+	private interface SwordSmithy<T extends SwordItem> {
+		AttributeSupplier PLAYER_ATTRIBUTES = Player.createAttributes().build();
+
+		static <T extends SwordItem> T forge(SwordSmithy<T> smithy, Tier tier, int attackDamage, float attackSpeed, Item.Properties properties) {
+			int attackDamageModifier = Mth.floor(attackDamage - (PLAYER_ATTRIBUTES.getValue(Attributes.ATTACK_DAMAGE) + tier.getAttackDamageBonus()));
+			float attackSpeedModifier = attackSpeed - (float) PLAYER_ATTRIBUTES.getValue(Attributes.ATTACK_SPEED);
+			return smithy.forge(tier, attackDamageModifier, attackSpeedModifier, properties);
+		}
+
+		T forge(Tier tier, int attackDamageModifier, float attackSpeedModifier, Item.Properties properties);
 	}
 
 	interface IBlockItemFactory<T extends Block, I extends BlockItem> {
