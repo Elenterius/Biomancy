@@ -10,14 +10,17 @@ import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.function.Function;
 
 public class ModBlockStateProvider extends BlockStateProvider {
 
@@ -108,10 +111,30 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		simpleBlockItem(block, existingModel);
 	}
 
-	public void boneSpike(Block block) {
+	public void directionalBlockWithItem(Block block) {
 		ModelFile.ExistingModelFile existingModel = models().getExistingFile(blockModel(block));
-		directionalBlock(block, existingModel);
+		directionalBlock(block, blockState -> existingModel, BlockStateProperties.WATERLOGGED);
 		simpleBlockItem(block, existingModel);
+	}
+
+	public void directionalBlock(Block block, Function<BlockState, ModelFile> modelFunc, Property<?>... ignored) {
+		getVariantBuilder(block)
+				.forAllStatesExcept(blockState -> {
+					Direction direction = blockState.getValue(BlockStateProperties.FACING);
+					int rotX = 0;
+					int rotY = 0;
+
+					if (!direction.getAxis().isVertical()) {
+						rotX = direction == Direction.DOWN ? 180 : 90;
+						rotY = ((int) direction.toYRot()) + 180;
+					}
+
+					return ConfiguredModel.builder()
+							.modelFile(modelFunc.apply(blockState))
+							.rotationX(rotX)
+							.rotationY(rotY % 360)
+							.build();
+				}, ignored);
 	}
 
 	public void geckolibModel(Block block, ResourceLocation particleTexture) {
