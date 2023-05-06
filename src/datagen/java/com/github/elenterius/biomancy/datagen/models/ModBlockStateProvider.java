@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.block.*;
 import com.github.elenterius.biomancy.block.property.DirectionalSlabType;
 import com.github.elenterius.biomancy.block.property.Orientation;
 import com.github.elenterius.biomancy.init.ModBlocks;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
@@ -23,6 +24,9 @@ import java.util.Objects;
 import java.util.function.Function;
 
 public class ModBlockStateProvider extends BlockStateProvider {
+
+	protected static final ResourceLocation FLESH_PARTICLE_TEXTURE = new ResourceLocation("biomancy:block/packed_flesh");
+	protected static final ResourceLocation PRIMAL_PARTICLE_TEXTURE = new ResourceLocation("biomancy:block/primal_flesh");
 
 	public ModBlockStateProvider(DataGenerator generator, ExistingFileHelper fileHelper) {
 		super(generator, BiomancyMod.MOD_ID, fileHelper);
@@ -68,21 +72,21 @@ public class ModBlockStateProvider extends BlockStateProvider {
 	}
 
 	public ResourceLocation blockModel(Block block) {
-		ResourceLocation name = Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block));
-		return new ResourceLocation(name.getNamespace(), ModelProvider.BLOCK_FOLDER + "/" + name.getPath());
+		ResourceLocation rl = Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block));
+		return new ResourceLocation(rl.getNamespace(), ModelProvider.BLOCK_FOLDER + "/" + rl.getPath());
 	}
 
 	public ResourceLocation extend(ResourceLocation rl, String suffix) {
 		return new ResourceLocation(rl.getNamespace(), rl.getPath() + suffix);
 	}
 
-	private String name(Block block) {
+	private String path(Block block) {
 		return Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block)).getPath();
 	}
 
 	public void simpleBlockItem(Block block) {
-		String name = name(block);
-		itemModels().getBuilder(name).parent(models().getBuilder(name));
+		String path = path(block);
+		itemModels().getBuilder(path).parent(models().getBuilder(path));
 	}
 
 	public void wallBlock(WallBlock block, Block textureBlock) {
@@ -121,11 +125,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		getVariantBuilder(block)
 				.forAllStatesExcept(blockState -> {
 					Direction direction = blockState.getValue(BlockStateProperties.FACING);
-					int rotX = 0;
+					int rotX = direction == Direction.DOWN ? 180 : 0;
 					int rotY = 0;
 
-					if (!direction.getAxis().isVertical()) {
-						rotX = direction == Direction.DOWN ? 180 : 90;
+					if (direction.getAxis().isHorizontal()) {
+						rotX = 90;
 						rotY = ((int) direction.toYRot()) + 180;
 					}
 
@@ -137,25 +141,52 @@ public class ModBlockStateProvider extends BlockStateProvider {
 				}, ignored);
 	}
 
-	public void geckolibModel(Block block, ResourceLocation particleTexture) {
-		String name = name(block);
-		BlockModelBuilder builder = models().getBuilder(name).texture("particle", particleTexture);
-		simpleBlock(block, builder);
+	public void fleshSpikes(Block block) {
+		ResourceLocation path = blockModel(block);
+		ModelFile.ExistingModelFile[] models = {
+				models().getExistingFile(extend(path, "_1")),
+				models().getExistingFile(extend(path, "_2")),
+				models().getExistingFile(extend(path, "_3"))
+		};
+		directionalBlock(block, blockState -> models[FleshSpikeBlock.getSpikes(blockState) - 1], BlockStateProperties.WATERLOGGED);
 
-		itemModels().getBuilder(name).parent(new ModelFile.UncheckedModelFile(new ResourceLocation("builtin/entity")))
-				.transforms()
-				.transform(ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND).rotation(0, 45, 0).scale(0.4f).end()
-				.transform(ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND).rotation(0, 225, 0).scale(0.4f).end()
-				.transform(ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND).rotation(75, 45, 0).translation(0, 2.5f, 0).scale(0.375f).end()
-				.transform(ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND).rotation(75, 45, 0).translation(0, 2.5f, 0).scale(0.375f).end()
-				.transform(ItemTransforms.TransformType.GUI).rotation(30, 225, 0).translation(0, -4.25f, 0).scale(0.625f).end()
-				.transform(ItemTransforms.TransformType.FIXED).translation(0, -4, 0).scale(0.5f).end()
-				.transform(ItemTransforms.TransformType.GROUND).translation(0, -4, 0).scale(0.25f).end()
-				.transform(ItemTransforms.TransformType.HEAD).translation(0, -8, 0).scale(1).end();
+		simpleBlockItem(block, models[0]);
 	}
 
-	public void geckolibModel(Block block) {
-		geckolibModel(block, new ResourceLocation("biomancy:block/packed_flesh"));
+	private void geoBlockItem(Block block, Vector3f modelBounds) {
+		String path = path(block);
+
+		float xMul = modelBounds.x() <= 1e-5f ? 0 : 16 / modelBounds.x();
+		float yMul = modelBounds.y() <= 1e-5f ? 0 : 16 / modelBounds.y();
+		float zMul = modelBounds.z() <= 1e-5f ? 0 : 16 / modelBounds.z();
+		float scaleMultiplier = Math.max(Math.max(xMul, yMul), zMul);
+		float xPct = modelBounds.x() / 16;
+		float yPct = modelBounds.y() / 16;
+		float zPct = modelBounds.z() / 16;
+
+		float scale1P = 0.4f;
+		float scale3P = 0.375f;
+		float scaleGUI = 0.625f;
+		float scaleFixed = 0.5f;
+		float scaleGround = 0.25f;
+		int scaleHead = 1;
+		float translation3P = 2.5f;
+
+		itemModels().getBuilder(path).parent(new ModelFile.UncheckedModelFile(new ResourceLocation("builtin/entity")))
+				.transforms()
+				.transform(ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND).rotation(0, 45, 0).translation(0, (1 - yPct) * 6.5f, 0).scale(scale1P * scaleMultiplier).end()
+				.transform(ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND).rotation(0, 225, 0).translation(0, (1 - yPct) * 6.5f, 0).scale(scale1P * scaleMultiplier).end()
+				.transform(ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND).rotation(75, 45, 0).translation(0, (1 - zPct) * translation3P, (1 - yPct) * translation3P).scale(scale3P * scaleMultiplier).end()
+				.transform(ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND).rotation(75, 45, 0).translation(0, (1 - zPct) * translation3P, (1 - yPct) * translation3P).scale(scale3P * scaleMultiplier).end()
+				.transform(ItemTransforms.TransformType.GUI).rotation(30, 225, 0).translation(0, -4.25f * yPct, 0).scale(scaleGUI * scaleMultiplier).end()
+				.transform(ItemTransforms.TransformType.FIXED).translation(0, -4f * yPct, 0).scale(scaleFixed * scaleMultiplier).end()
+				.transform(ItemTransforms.TransformType.GROUND).translation(0, -0.25f * yPct, 0).scale(scaleGround * scaleMultiplier).end()
+				.transform(ItemTransforms.TransformType.HEAD).translation(0, -8 * yPct, 0).scale(scaleHead * scaleMultiplier).end();
+	}
+
+	public void geckolibModel(Block block, ResourceLocation particleTexture) {
+		String path = path(block);
+		simpleBlock(block, models().getBuilder(path).texture("particle", particleTexture));
 	}
 
 	public void directionalSlabBlockWithItem(DirectionalSlabBlock slab, Block block) {
@@ -168,7 +199,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 	}
 
 	public void directionalSlabBlock(DirectionalSlabBlock block, ResourceLocation full, ResourceLocation side, ResourceLocation bottom, ResourceLocation top) {
-		directionalSlabBlock(block, models().slab(name(block), side, bottom, top), models().getExistingFile(full));
+		directionalSlabBlock(block, models().slab(path(block), side, bottom, top), models().getExistingFile(full));
 	}
 
 	public void directionalSlabBlock(DirectionalSlabBlock block, ModelFile half, ModelFile full) {
@@ -241,7 +272,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 	}
 
 	public void veinsBlock(MultifaceBlock block) {
-		String name = name(block);
+		String name = path(block);
 		ModelFile model = models().singleTexture(name, BiomancyMod.createRL("block/template_veins"), blockTexture(block));
 
 		MultiPartBlockStateBuilder builder = getMultipartBuilder(block);
@@ -280,7 +311,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
 	public void irisDoor(IrisDoorBlock block, boolean simpleBlockItem) {
 		ResourceLocation texture = blockTexture(block);
-		String name = name(block);
+		String name = path(block);
 
 		ModelFile openModel = models().singleTexture(name + "_open", BiomancyMod.createRL("block/template_iris_door"), extend(texture, "_open"));
 		ModelFile middleOpenModel = models().singleTexture(name + "_middle_open", BiomancyMod.createRL("block/template_iris_door_middle"), extend(texture, "_open"));
