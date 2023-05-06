@@ -62,6 +62,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		fleshDoor();
 
 		axisBlock(ModBlocks.FLESH_PILLAR.get());
+		simpleBlockItem(ModBlocks.FLESH_PILLAR.get());
 
 		storageSac(ModBlocks.STORAGE_SAC.get());
 
