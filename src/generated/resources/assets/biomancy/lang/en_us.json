@@ -141,7 +141,7 @@
 	"block.biomancy.maw_hopper.tooltip": "A fleshy sister of the hopper. Transfers up to 16 items at a time.",
 	"block.biomancy.storage_sac": "Storage Sac",
 	"block.biomancy.storage_sac.tooltip": "Cheap Shulker-like storage sac that also works like a bundle.",
-	"block.biomancy.fleshkin_chest": "Fleshkin Chest",
+	"block.biomancy.fleshkin_chest": "Fleshkin Vault",
 	"block.biomancy.fleshkin_chest.tooltip": "A fleshkin forged into the shape of a chest with sharp teeth and a resilient stomach allowing it to keeps its contents when mined.\nOnly its master may open and takes its content without repercussion.\n\nIt's fangs look awfully sharp...",
 	"block.biomancy.fleshkin_door": "[WIP] Fleshkin Door",
 	"block.biomancy.fleshkin_door.tooltip": "",
