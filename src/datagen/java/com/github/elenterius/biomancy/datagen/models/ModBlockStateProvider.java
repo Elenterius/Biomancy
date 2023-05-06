@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.datagen.models;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.*;
+import com.github.elenterius.biomancy.block.fleshspike.FleshSpikeBlock;
 import com.github.elenterius.biomancy.block.property.DirectionalSlabType;
 import com.github.elenterius.biomancy.block.property.Orientation;
 import com.github.elenterius.biomancy.init.ModBlocks;
@@ -66,7 +67,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
 		storageSac(ModBlocks.STORAGE_SAC.get());
 
-		geckolibModel(ModBlocks.FLESH_SPIKE.get());
+		fleshSpikes(ModBlocks.FLESH_SPIKE.get());
 
 		bioLantern(ModBlocks.BIO_LANTERN.get());
 		tendonChain(ModBlocks.TENDON_CHAIN.get());

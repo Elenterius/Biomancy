@@ -76,9 +76,6 @@ public final class MigrationHandler {
 			if (path.equals("creator")) {
 				mapping.remap(ModBlockEntities.PRIMORDIAL_CRADLE.get());
 			}
-			else if (path.equals("bone_spike")) {
-				mapping.remap(ModBlockEntities.FLESH_SPIKE.get());
-			}
 			else {
 				mapping.ignore();
 			}
