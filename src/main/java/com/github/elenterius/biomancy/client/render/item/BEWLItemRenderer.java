@@ -33,7 +33,7 @@ public class BEWLItemRenderer extends BlockEntityWithoutLevelRenderer {
 			BlockEntity cachedBEWL = blockItem.getCachedBEWL();
 			if (cachedBEWL == null) return;
 
-			if (cachedBEWL instanceof IAnimatable && transformType == ItemTransforms.TransformType.GUI) {
+			if (cachedBEWL instanceof IAnimatable && transformType != ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND && transformType != ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND) {
 				poseStack.pushPose();
 				poseStack.translate(0f, 0.5f, 0f); //fix for display translation offset of geo block models
 				renderBlockEntity(poseStack, buffer, packedLight, packedOverlay, cachedBEWL);

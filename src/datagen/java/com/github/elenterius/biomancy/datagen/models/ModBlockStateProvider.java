@@ -70,6 +70,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
 		bioLantern(ModBlocks.BIO_LANTERN.get());
 		tendonChain(ModBlocks.TENDON_CHAIN.get());
+
+		geckolibModel(ModBlocks.PRIMORDIAL_CRADLE.get(), PRIMAL_PARTICLE_TEXTURE);
+		geoBlockItem(ModBlocks.PRIMORDIAL_CRADLE.get(), new Vector3f(16, 16, 16));
 	}
 
 	public ResourceLocation blockModel(Block block) {
