@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.block.fleshspike;
 
-import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModDamageSources;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -10,8 +9,10 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -20,7 +21,6 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -28,7 +28,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class FleshSpikeBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
+public class FleshSpikeBlock extends Block implements SimpleWaterloggedBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
 	public static final int MIN_SPIKES = 1;
@@ -54,12 +54,6 @@ public class FleshSpikeBlock extends BaseEntityBlock implements SimpleWaterlogge
 	@Override
 	public FluidState getFluidState(BlockState state) {
 		return Boolean.TRUE.equals(state.getValue(WATERLOGGED)) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
-	}
-
-	@Nullable
-	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return ModBlockEntities.FLESH_SPIKE.get().create(pos, state);
 	}
 
 	@Nullable
@@ -103,16 +97,6 @@ public class FleshSpikeBlock extends BaseEntityBlock implements SimpleWaterlogge
 	@Override
 	public boolean isCollisionShapeFullBlock(BlockState state, BlockGetter level, BlockPos pos) {
 		return false;
-	}
-
-	@Override
-	public PushReaction getPistonPushReaction(BlockState state) {
-		return PushReaction.NORMAL; //TODO: what happens with piston?
-	}
-
-	@Override
-	public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
-		super.stepOn(level, pos, state, entity);
 	}
 
 	@Override

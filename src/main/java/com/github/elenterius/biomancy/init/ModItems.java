@@ -155,7 +155,7 @@ public final class ModItems {
 	public static final RegistryObject<SimpleBlockItem> FLESH_IRIS_DOOR = registerSimpleBlockItem(ModBlocks.FLESH_IRIS_DOOR);
 	public static final RegistryObject<SimpleBlockItem> FLESH_DOOR = registerSimpleBlockItem(ModBlocks.FLESH_DOOR);
 	public static final RegistryObject<SimpleBlockItem> FULL_FLESH_DOOR = registerSimpleBlockItem(ModBlocks.FULL_FLESH_DOOR);
-	public static final RegistryObject<BEWLBlockItem> FLESH_SPIKE = registerBlockItem(ModBlocks.FLESH_SPIKE, BEWLBlockItem::new);
+	public static final RegistryObject<SimpleBlockItem> FLESH_SPIKE = registerSimpleBlockItem(ModBlocks.FLESH_SPIKE);
 	public static final RegistryObject<SimpleBlockItem> BIO_LANTERN = registerSimpleBlockItem(ModBlocks.BIO_LANTERN);
 	public static final RegistryObject<FleshChainBlockItem> TENDON_CHAIN = registerBlockItem(ModBlocks.TENDON_CHAIN, FleshChainBlockItem::new);
 
