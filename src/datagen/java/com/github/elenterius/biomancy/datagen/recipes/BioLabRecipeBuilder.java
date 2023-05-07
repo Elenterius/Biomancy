@@ -41,7 +41,7 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 	private final ItemData result;
 	private final List<IngredientStack> ingredients = new ArrayList<>();
 	private final Advancement.Builder advancement = Advancement.Builder.advancement();
-	private Ingredient reactant = Ingredient.of(ModItems.GLASS_VIAL.get());
+	private Ingredient reactant = Ingredient.of(ModItems.VIAL.get());
 	private int craftingTime = 4 * 20;
 
 	private BioLabRecipeBuilder(ResourceLocation recipeId, ItemData result) {

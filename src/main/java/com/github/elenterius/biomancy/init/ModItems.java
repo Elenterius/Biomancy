@@ -67,7 +67,7 @@ public final class ModItems {
 	public static final RegistryObject<SimpleItem> VOLATILE_FLUID = registerSimpleItem("volatile_fluid");
 
 	//# Serum
-	public static final RegistryObject<SimpleItem> GLASS_VIAL = registerSimpleItem("glass_vial");
+	public static final RegistryObject<SimpleItem> VIAL = registerSimpleItem("vial");
 	public static final RegistryObject<SimpleItem> ORGANIC_COMPOUND = registerSimpleVialItem("organic_compound");
 	public static final RegistryObject<UnstableCompoundItem> UNSTABLE_COMPOUND = registerItem("unstable_compound", UnstableCompoundItem::new);
 	public static final RegistryObject<SimpleItem> GENETIC_COMPOUND = registerSimpleVialItem("genetic_compound");
@@ -199,11 +199,11 @@ public final class ModItems {
 	}
 
 	private static <T extends Serum> RegistryObject<SerumItem> registerSerumItem(RegistryObject<T> registryObject) {
-		return ITEMS.register(registryObject.getId().getPath(), () -> new SerumItem(createProperties().craftRemainder(ModItems.GLASS_VIAL.get()).stacksTo(8).rarity(ModRarities.UNCOMMON), registryObject));
+		return ITEMS.register(registryObject.getId().getPath(), () -> new SerumItem(createProperties().stacksTo(8).rarity(ModRarities.UNCOMMON), registryObject));
 	}
 
 	private static RegistryObject<SimpleItem> registerSimpleVialItem(String name) {
-		return ITEMS.register(name, () -> new SimpleItem(createProperties().craftRemainder(GLASS_VIAL.get())));
+		return ITEMS.register(name, () -> new SimpleItem(createProperties()));
 	}
 
 	private static RegistryObject<SimpleItem> registerSimpleItem(String name) {
