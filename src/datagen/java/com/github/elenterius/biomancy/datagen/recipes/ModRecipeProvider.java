@@ -744,11 +744,10 @@ public class ModRecipeProvider extends RecipeProvider {
 				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
 
 		BioForgeRecipeBuilder.create(new ItemData(ModItems.PRIMORDIAL_CRADLE.get()))
-				.addIngredient(ModItems.LIVING_FLESH.get())
+				.addIngredient(ModItems.PRIMORDIAL_CORE.get())
 				.addIngredient(ModItems.FLESH_BITS.get(), 5)
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 8)
 				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 4)
-				.addIngredient(ModItems.EXOTIC_DUST.get(), 10)
 				.setCategory(ModBioForgeTabs.MACHINES)
 				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
 
