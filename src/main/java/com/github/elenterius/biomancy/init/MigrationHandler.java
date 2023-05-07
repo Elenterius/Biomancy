@@ -92,6 +92,8 @@ public final class MigrationHandler {
 			switch (path) {
 				case "mascot_pattern", "mascot_outline_pattern", "mascot_accent_pattern" -> mapping.remap(ModItems.MASCOT_BANNER_PATTERNS.get());
 
+				case "glass_vial" -> mapping.remap(ModItems.VIAL.get());
+
 				case "creator" -> mapping.remap(ModItems.PRIMORDIAL_CRADLE.get());
 				case "flesh_block" -> mapping.remap(ModItems.FLESH_BLOCK.get());
 				case "flesh_block_slab" -> mapping.remap(ModItems.FLESH_SLAB.get());

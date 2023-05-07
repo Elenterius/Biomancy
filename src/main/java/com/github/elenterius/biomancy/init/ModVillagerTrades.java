@@ -68,7 +68,7 @@ public class ModVillagerTrades {
 
 	private static void addClericTrades(Int2ObjectMap<List<VillagerTrades.ItemListing>> trades) {
 		TradeLevel.JOURNEYMAN.addItemListings(trades,
-				buyFromPlayer(ModItems.GLASS_VIAL.get(), 4, 1, 12, 20)
+				buyFromPlayer(ModItems.VIAL.get(), 4, 1, 12, 20)
 		);
 
 		TradeLevel.EXPERT.addItemListings(trades,

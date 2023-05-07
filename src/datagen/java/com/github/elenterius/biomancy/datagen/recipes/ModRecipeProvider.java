@@ -154,12 +154,12 @@ public class ModRecipeProvider extends RecipeProvider {
 		//				.requires(ModItems.MOB_FANG.get())
 		//				.unlockedBy(hasName(ModItems.PRIMORDIAL_LIVING_FLESH.get()), has(ModItems.PRIMORDIAL_LIVING_FLESH.get())).save(consumer);
 
-		WorkbenchRecipeBuilder.shaped(ModItems.GLASS_VIAL.get(), 8)
-				.define('G', Tags.Items.GLASS).define('T', Items.CLAY_BALL)
-				.pattern("GTG")
-				.pattern("G G")
-				.pattern(" G ")
-				.unlockedBy(hasName(Items.GLASS), has(Tags.Items.GLASS)).save(consumer);
+		//		WorkbenchRecipeBuilder.shaped(ModItems.VIAL.get(), 8)
+		//				.define('G', Tags.Items.GLASS).define('T', Items.CLAY_BALL)
+		//				.pattern("GTG")
+		//				.pattern("G G")
+		//				.pattern(" G ")
+		//				.unlockedBy(hasName(Items.GLASS), has(Tags.Items.GLASS)).save(consumer);
 
 		// machines ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -921,6 +921,11 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addIngredient(ModItems.TOUGH_FIBERS.get(), 5)
 				.setCategory(ModBioForgeTabs.WEAPONS)
 				.unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
+
+		BioForgeRecipeBuilder.create(new ItemData(ModItems.VIAL.get()))
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 1)
+				.setCategory(ModBioForgeTabs.WEAPONS)
+				.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
 
 		//////////// MISC ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
