@@ -226,6 +226,12 @@ public class ModRecipeProvider extends RecipeProvider {
 				.unlockedBy(hasName(ModItems.STONE_POWDER.get()), has(ModItems.STONE_POWDER.get()))
 				.save(consumer, getConversionRecipeId(Items.DIORITE, ModItems.STONE_POWDER.get()));
 
+		WorkbenchRecipeBuilder.shapeless(Items.GRANITE)
+				.requires(Items.DIORITE)
+				.requires(ModItems.MINERAL_FRAGMENT.get(), 2)
+				.unlockedBy(hasName(ModItems.MINERAL_FRAGMENT.get()), has(ModItems.MINERAL_FRAGMENT.get()))
+				.save(consumer, getConversionRecipeId(Items.GRANITE, ModItems.MINERAL_FRAGMENT.get()));
+
 		WorkbenchRecipeBuilder.shapeless(Items.RED_SAND)
 				.requires(Items.SAND)
 				.requires(ModItems.MINERAL_FRAGMENT.get(), 2)
@@ -240,6 +246,15 @@ public class ModRecipeProvider extends RecipeProvider {
 				.pattern("LPL")
 				.unlockedBy(hasName(ModItems.ORGANIC_MATTER.get()), has(ModItems.ORGANIC_MATTER.get()))
 				.save(consumer, getConversionRecipeId(Items.DIRT, ModItems.STONE_POWDER.get()));
+
+		WorkbenchRecipeBuilder.shaped(Items.SAND)
+				.define('M', ModItems.MINERAL_FRAGMENT.get())
+				.define('L', ModItems.STONE_POWDER.get())
+				.pattern("LLL")
+				.pattern("LML")
+				.pattern("LLL")
+				.unlockedBy(hasName(ModItems.STONE_POWDER.get()), has(ModItems.STONE_POWDER.get()))
+				.save(consumer, getConversionRecipeId(Items.SAND, ModItems.STONE_POWDER.get()));
 
 		WorkbenchRecipeBuilder.shapeless(Items.CLAY_BALL)
 				.requires(Items.WATER_BUCKET)
