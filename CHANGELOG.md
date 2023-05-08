@@ -1,33 +1,52 @@
-## [1.3.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.1.0...1.19.2-v2.1.3.0) (2023-05-04)
+## [1.4.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.2.0...1.19.2-v2.1.4.0) (2023-05-08)
+
+
+### Features
+
+* add Flesh Pillar ([2976ec5](https://github.com/Elenterius/Biomancy/commit/2976ec51e7d5b5e6bfe8febd339f4f79ef25e5f4))
+* add flesh pillar recipe ([3fc76b1](https://github.com/Elenterius/Biomancy/commit/3fc76b16f116c24a29fcb2a78b8be32cc076d486))
+* add Primordial Core ([6856a8c](https://github.com/Elenterius/Biomancy/commit/6856a8c64f7942f3714b0ea01419e454ee4bf984))
+* add sand & granite recipe ([676d74d](https://github.com/Elenterius/Biomancy/commit/676d74d314039875102b253166a8d95853ced40e))
+* change Armor Shred Effect to reduce armor by 1 point per level ([4ef413c](https://github.com/Elenterius/Biomancy/commit/4ef413c70452be667705a0eb1f50be7b4ec10fe0))
+* make despoil enchantment applicable to items with the knives tag ([03bc0de](https://github.com/Elenterius/Biomancy/commit/03bc0de6e3c5eac73093db280f1213495c4ec63f))
+* rename fleshkin chest to vault ([d02c351](https://github.com/Elenterius/Biomancy/commit/d02c3519e17e3a449e9efeee37fadfd602048ead))
+* render Primordial Cradle eye overlay at full brightness ([a3b4948](https://github.com/Elenterius/Biomancy/commit/a3b49488487332da590dd3f3b62ab013d34eddad))
+* replace bone cleaver with despoiling sickle ([7f501c2](https://github.com/Elenterius/Biomancy/commit/7f501c279b3d6577ab047725ab711920a5687288))
+* replace Glass Vial with disposable Organic Vial ([922209a](https://github.com/Elenterius/Biomancy/commit/922209a8f6575801f00b16718a399388273686c2))
+* retexture Component Items ([c0b2faa](https://github.com/Elenterius/Biomancy/commit/c0b2faacf21b0d5b37b2dd9a969bc22b5e34319d))
+* retexture Enlargement and Shrinking Serums ([8b92738](https://github.com/Elenterius/Biomancy/commit/8b92738f0ad78017a79d297da4a73c4156a43ca9))
+* retexture Exotic Flesh Mix ([8fed41f](https://github.com/Elenterius/Biomancy/commit/8fed41f7c38a0cce354a7cee4ff1a24e176eb20f))
+* retexture Fertilizer ([fa04053](https://github.com/Elenterius/Biomancy/commit/fa04053c30b656da49258dde16f77a8b471be171))
+* retexture Glass Vial ([33f992b](https://github.com/Elenterius/Biomancy/commit/33f992bcdd022cea813eeb7d7ce74512c67eeba8))
+* retexture Living Flesh Item ([6d5946d](https://github.com/Elenterius/Biomancy/commit/6d5946d890e649b99ef89cea449b120a56571d9b))
+* retexture Packed Flesh ([55ade0a](https://github.com/Elenterius/Biomancy/commit/55ade0ae5da881a83bec6569f2d1688b559c66c8))
+* retexture Serums, Compounds and Additives ([ff8990a](https://github.com/Elenterius/Biomancy/commit/ff8990a91252c27a496de8c6b073d78b4023c559))
+* rework & nerf Despoil Loot Modifier to only drop loot for killing mobs with the despoil enchantment ([0dac901](https://github.com/Elenterius/Biomancy/commit/0dac901daada32e7059d005cc8b3685739b9e589))
+* tweak advancement texts ([7e31714](https://github.com/Elenterius/Biomancy/commit/7e3171421fffb2e7ad24e7e46868bb9dda02680b))
+* tweak bio-forging recipe of the Cradle ([8f3d5b4](https://github.com/Elenterius/Biomancy/commit/8f3d5b4b63f5138bffc357e26af95416887145c5))
+* tweak flesh spike recipe ([36ea146](https://github.com/Elenterius/Biomancy/commit/36ea146ce4635c1ebea4b4f133ec5c2da3528ad5))
+* tweak Primordial Core recipe ([4f232e6](https://github.com/Elenterius/Biomancy/commit/4f232e69b174f0aae9aeafc6f493ec8114b65a47))
+* update flesh spike model and interaction shape ([6d6e918](https://github.com/Elenterius/Biomancy/commit/6d6e91896243a7550aa34340dac846ee2e912e65))
+* update flesh spike models and texture ([61f539c](https://github.com/Elenterius/Biomancy/commit/61f539c1a56dc655d3f58064dc7d2d4aa26a217a))
+
+
+### Bug Fixes
+
+* **datagen:** add missing flesh pillar item model ([7b66995](https://github.com/Elenterius/Biomancy/commit/7b669950ef33e8d1d0a7395c64b376a47bc53233))
+* fix Cradle sacrifices not increasing biomass and life energy at the same time ([0737e32](https://github.com/Elenterius/Biomancy/commit/0737e32d094381a67b5ba08f38606016c4994b06))
+
+## [1.2.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.1.0...1.19.2-v2.1.2.0) (2023-05-02)
 
 
 ### Features
 
 * add enchantment descriptions for "Enchantment Descriptions" mod ([60aca25](https://github.com/Elenterius/Biomancy/commit/60aca25d065aecb50da82e21071bf689776aadc8))
-* add Flesh Pillar ([537bc1d](https://github.com/Elenterius/Biomancy/commit/537bc1dc7ed2ab87c0d53484342201cd57aaa8c5))
-* add Primordial Core ([0424223](https://github.com/Elenterius/Biomancy/commit/04242232eef5f61a482902935c4aedd7d4cb0c9d))
-* change Armor Shred Effect to reduce armor by 1 point per level ([82573cf](https://github.com/Elenterius/Biomancy/commit/82573cf265f7a0c8a64ea846103d8169e7e66f9c))
-* make despoil enchantment applicable to items with the knives tag ([f927d57](https://github.com/Elenterius/Biomancy/commit/f927d570a07ed37f42d16ea5b0f8bfc9f743e7f5))
-* render Primordial Cradle eye overlay at full brightness ([bd1e02a](https://github.com/Elenterius/Biomancy/commit/bd1e02ad73d2e98e52e5010828b50f16b19e44fe))
-* replace bone cleaver with despoiling sickle ([68882e8](https://github.com/Elenterius/Biomancy/commit/68882e8a6e2c35ef0fafd347a1b63afd9be0ef90))
-* retexture Component Items ([426f973](https://github.com/Elenterius/Biomancy/commit/426f973660af9dbe827f0d200bd8a6e66d18479a))
-* retexture Enlargement and Shrinking Serums ([190b9d4](https://github.com/Elenterius/Biomancy/commit/190b9d4ade72cb88b75a63f1cbee3eb3423706cd))
-* retexture Exotic Flesh Mix ([8ba0657](https://github.com/Elenterius/Biomancy/commit/8ba06570255d4d6b00f53bdd0ecd50a9c081c64b))
-* retexture Fertilizer ([629079b](https://github.com/Elenterius/Biomancy/commit/629079b1804d47c4c45949d9f65dcb1dcaf1b542))
-* retexture Glass Vial ([bd8559c](https://github.com/Elenterius/Biomancy/commit/bd8559c528d53a2cfebf0868b05e1ab1f3f3b215))
-* retexture Living Flesh Item ([39b423b](https://github.com/Elenterius/Biomancy/commit/39b423b5eabfd7164af6d0acafd6249e6525c55e))
-* retexture Packed Flesh ([989028f](https://github.com/Elenterius/Biomancy/commit/989028f65c9104ff4a608f5f0c7a83ea81612f8d))
-* retexture Serums, Compounds and Additives ([831a9f5](https://github.com/Elenterius/Biomancy/commit/831a9f50dddd7b4cd23ef1117fe495e823c8b64e))
-* rework & nerf Despoil Loot Modifier to only drop loot for killing mobs with the despoil enchantment ([c3a2793](https://github.com/Elenterius/Biomancy/commit/c3a279378c34c1f5069f8dedfc630125f5e48bdc))
 * trigger item sacrifice advancements for thrown items thrown into the Cradle by a player ([214ca4e](https://github.com/Elenterius/Biomancy/commit/214ca4efefef0ade47b36ab493f8d9956e84c4cf))
-* tweak advancement texts ([98bdd54](https://github.com/Elenterius/Biomancy/commit/98bdd54ee8fd55cf43b05ec3ebd1e58b682d727a))
-* update flesh spike models and texture ([6e84fd7](https://github.com/Elenterius/Biomancy/commit/6e84fd7eee2be6b2303f5ec970271ff051116c1d))
 
 
 ### Bug Fixes
 
 * fix advancements not firing for sacrificing item in the cradle ([9566f3d](https://github.com/Elenterius/Biomancy/commit/9566f3dd21f4d6fe4562f24a504a0aaac267fe17))
-* fix Cradle sacrifices not increasing biomass and life energy at the same time ([f035f9e](https://github.com/Elenterius/Biomancy/commit/f035f9edd93c29c117b1a0185c8daae05e4036fc))
 * potentially fix concurrent modification exception when getting voxel shapes for certain blocks ([b0a0eb2](https://github.com/Elenterius/Biomancy/commit/b0a0eb22161f8a57a77b60c67a170918228327af))
 * remove ability to insert storage container blocks/items into the storage sac on right clicking the sac ([762e10e](https://github.com/Elenterius/Biomancy/commit/762e10e59aeb7b765eccc6c7a9d0736045e93896))
 
@@ -74,11 +93,4 @@
 ### Bug Fixes
 
 * fix crash on server startup ([4988deb](https://github.com/Elenterius/Biomancy/commit/4988deb88a3e0ff90024ac2dd76ce3d24835c102))
-
-### [0.53.1](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.0.53.0...1.19.2-v2.0.53.1) (2023-04-10)
-
-
-### Bug Fixes
-
-* fix placement logic of maw hopper allowing it to connect to invalid neighbors ([1cc2f72](https://github.com/Elenterius/Biomancy/commit/1cc2f72a5016d0925282140dfd3316856c961492))
 
