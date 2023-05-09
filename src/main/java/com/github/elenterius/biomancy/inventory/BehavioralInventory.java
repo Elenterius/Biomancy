@@ -1,12 +1,12 @@
 package com.github.elenterius.biomancy.inventory;
 
+import com.github.elenterius.biomancy.inventory.itemhandler.FixedSizeItemStackHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
@@ -17,7 +17,7 @@ public class BehavioralInventory<T extends IItemHandler & IItemHandlerModifiable
 
 	BehavioralInventory(int slotAmount) {
 		//noinspection unchecked
-		itemHandler = (T) new ItemStackHandler(slotAmount) {
+		itemHandler = (T) new FixedSizeItemStackHandler(slotAmount) {
 			@Override
 			protected void onContentsChanged(int slot) {
 				super.onContentsChanged(slot);
@@ -30,7 +30,7 @@ public class BehavioralInventory<T extends IItemHandler & IItemHandlerModifiable
 
 	BehavioralInventory(int slotAmount, UnaryOperator<T> operator) {
 		//noinspection unchecked
-		T handler = (T) new ItemStackHandler(slotAmount) {
+		T handler = (T) new FixedSizeItemStackHandler(slotAmount) {
 			@Override
 			protected void onContentsChanged(int slot) {
 				super.onContentsChanged(slot);
