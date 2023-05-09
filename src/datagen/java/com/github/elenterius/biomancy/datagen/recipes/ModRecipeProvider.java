@@ -809,11 +809,11 @@ public class ModRecipeProvider extends RecipeProvider {
 				.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
 
 		BioForgeRecipeBuilder.create(ModItems.FLESHKIN_CHEST.get())
-				.addIngredient(ModItems.LIVING_FLESH.get())
-				.addIngredient(ModItems.FLESH_BITS.get(), 10)
+				.addIngredient(ModItems.LIVING_FLESH.get(), 2)
+				.addIngredient(ModItems.FLESH_BITS.get(), 14)
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 12)
-				.addIngredient(ModItems.TOUGH_FIBERS.get(), 14)
-				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 10)
+				.addIngredient(ModItems.TOUGH_FIBERS.get(), 30)
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 16)
 				.setCategory(ModBioForgeTabs.MISC)
 				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
 

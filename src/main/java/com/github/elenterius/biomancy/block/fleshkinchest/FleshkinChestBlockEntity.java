@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.block.fleshkinchest;
 
 import com.github.elenterius.biomancy.block.ownable.OwnableContainerBlockEntity;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
+import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModDamageSources;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.inventory.BehavioralInventory;
@@ -9,7 +10,6 @@ import com.github.elenterius.biomancy.inventory.itemhandler.HandlerBehaviors;
 import com.github.elenterius.biomancy.inventory.menu.FleshkinChestMenu;
 import com.github.elenterius.biomancy.network.ISyncableAnimation;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
-import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -46,7 +46,7 @@ import java.util.List;
 
 public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implements IAnimatable, ISyncableAnimation {
 
-	public static final int SLOTS = 6 * 7;
+	public static final int SLOTS = 4 * 7;
 
 	private final BehavioralInventory<?> inventory;
 	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
@@ -134,7 +134,7 @@ public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implem
 	}
 
 	public Component getDefaultName() {
-		return TextComponentUtil.getTranslationText("container", "fleshkin_chest");
+		return ModBlocks.FLESHKIN_CHEST.get().getName();
 	}
 
 	@Nullable
