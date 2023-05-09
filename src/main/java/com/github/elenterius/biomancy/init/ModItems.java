@@ -86,6 +86,7 @@ public final class ModItems {
 	//	public static final RegistryObject<SerumItem> DECAY_AGENT = registerSerumItem(ModSerums.DECAY_AGENT);
 
 	//# Misc
+	public static final RegistryObject<GiftSacItem> GIFT_SAC = registerItem("gift_sac", props -> new GiftSacItem(props.stacksTo(1).rarity(ModRarities.ULTRA_RARE)));
 	public static final RegistryObject<SimpleItem> CREATOR_MIX = registerSimpleItem("creator_mix");
 	public static final RegistryObject<FertilizerItem> FERTILIZER = registerItem("fertilizer", props -> new FertilizerItem(props.rarity(ModRarities.UNCOMMON)));
 	public static final RegistryObject<EssenceItem> ESSENCE = registerItem("essence", props -> new EssenceItem(props.tab(null)));

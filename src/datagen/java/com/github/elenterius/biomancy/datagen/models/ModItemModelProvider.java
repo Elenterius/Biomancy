@@ -60,6 +60,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 		componentItem(ModItems.VOLATILE_FLUID.get());
 		componentItem(ModItems.BILE.get());
 
+		basicItem(ModItems.GIFT_SAC.get());
 		basicItem(ModItems.FERTILIZER.get());
 		basicItem(ModItems.CREATOR_MIX.get());
 		basicItem(ModItems.NUTRIENT_PASTE.get());
