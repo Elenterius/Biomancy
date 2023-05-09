@@ -21,7 +21,8 @@ public class FleshkinChestScreen extends AbstractContainerScreen<FleshkinChestMe
 
 	@Override
 	protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
-		//draw no labels
+		int posX = imageWidth / 2 - font.width(title) / 2;
+		font.draw(poseStack, title, posX, 24, 0xA58369);
 	}
 
 	@Override
