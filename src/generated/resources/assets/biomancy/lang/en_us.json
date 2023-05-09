@@ -72,6 +72,8 @@
 	"item.biomancy.injector.tooltip": "A simple device which utilizes a razor sharp needle to quickly and forcefully inject Serums into Mobs and Players.",
 	"item.biomancy.fertilizer": "Bio-Alchemical Fertilizer",
 	"item.biomancy.fertilizer.tooltip": "Fertilizer that induces hyper-growth in plants, even for reeds, cactus, nether wart and chorus plant.",
+	"item.biomancy.gift_sac": "Gift Sac",
+	"item.biomancy.gift_sac.tooltip": "Looks like some objects are wrapped in an organic layer of skin. It's either filled with items or toxin if your language is set to German.\n\nRight Click the Sac to retrieve the Items.\n",
 	"item.biomancy.long_claws": "Living Long Claws",
 	"item.biomancy.long_claws.tooltip": "Claws made of living flesh\n\nFeed it with nutrients via right click in the inventory.",
 	"item.biomancy.dev_arm_cannon": "[Dev Tool] Arm Cannon",
