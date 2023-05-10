@@ -17,7 +17,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.animal.AbstractGolem;
+import net.minecraft.world.entity.animal.horse.ZombieHorse;
 import net.minecraft.world.entity.monster.Slime;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -160,9 +162,14 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 			if (!allowedNamespace.test(entityType)) continue;
 
 			Entity entity = entityType.create(fakeLevel);
-			if (entity instanceof Mob mob && isValidForMeatyLoot(mob, entityType)) {
-				sinewTag.add(entityType);
-				if (canHaveGland.test(entityType)) bileGlandTag.add(entityType);
+			if (entity instanceof Mob mob) {
+				if (isValidForMeatyLoot(mob, entityType)) {
+					sinewTag.add(entityType);
+					if (canHaveGland.test(entityType)) bileGlandTag.add(entityType);
+				}
+				else if (mob instanceof Zombie || mob instanceof ZombieHorse) {
+					sinewTag.add(entityType);
+				}
 			}
 		}
 	}
