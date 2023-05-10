@@ -38,6 +38,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.*;
@@ -171,6 +172,16 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 		}
 
 		super.playerWillDestroy(level, pos, state, player);
+	}
+
+	@Override
+	public boolean canDropFromExplosion(BlockState state, BlockGetter level, BlockPos pos, Explosion explosion) {
+		return false;
+	}
+
+	@Override
+	public void onBlockExploded(BlockState state, Level level, BlockPos pos, Explosion explosion) {
+		//ignore the explosion, the block is not destroyed
 	}
 
 	@Override
