@@ -802,9 +802,10 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		//////////// STORAGE ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		BioForgeRecipeBuilder.create(ModItems.STORAGE_SAC.get())
-				.addIngredient(ModItems.FLESH_BITS.get(), 8)
-				.addIngredient(ModItems.TOUGH_FIBERS.get(), 5)
-				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 8)
+				.addIngredient(ModItems.FLESH_BITS.get(), 4)
+				.addIngredient(ModItems.TOUGH_FIBERS.get(), 6)
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 12)
+				.addIngredient(ModItems.GEM_FRAGMENTS.get(), 4)
 				.setCategory(ModBioForgeTabs.MISC)
 				.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
 
