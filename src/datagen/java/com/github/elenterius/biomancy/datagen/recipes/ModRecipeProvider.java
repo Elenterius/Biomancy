@@ -812,8 +812,8 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addIngredient(ModItems.LIVING_FLESH.get(), 2)
 				.addIngredient(ModItems.FLESH_BITS.get(), 14)
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 12)
-				.addIngredient(ModItems.TOUGH_FIBERS.get(), 30)
-				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 16)
+				.addIngredient(Items.SHULKER_SHELL, 2)
+				.addIngredient(ModItems.TOUGH_FIBERS.get(), 32)
 				.setCategory(ModBioForgeTabs.MISC)
 				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
 
