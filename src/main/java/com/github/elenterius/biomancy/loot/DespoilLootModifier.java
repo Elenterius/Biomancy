@@ -12,6 +12,7 @@ import net.minecraft.advancements.critereon.EntityFlagsPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.item.Item;
@@ -96,10 +97,19 @@ public class DespoilLootModifier extends LootModifier {
 		return stack.getEnchantmentLevel(ModEnchantments.DESPOIL.get());
 	}
 
-	protected static boolean isHolding(LootContext lootContext, Item item) {
+	protected static boolean hurtAndBreak(LootContext lootContext, Item item, int amount) {
 		Entity killer = lootContext.getParamOrNull(LootContextParams.KILLER_ENTITY);
+
 		if (killer instanceof LivingEntity livingEntity) {
-			return livingEntity.isHolding(item);
+			for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
+				if (equipmentSlot.getType() == EquipmentSlot.Type.HAND) {
+					ItemStack stack = livingEntity.getItemBySlot(equipmentSlot);
+					if (stack.is(item)) {
+						stack.hurtAndBreak(amount, livingEntity, user -> user.broadcastBreakEvent(equipmentSlot));
+						return true;
+					}
+				}
+			}
 		}
 
 		return false;
@@ -145,7 +155,7 @@ public class DespoilLootModifier extends LootModifier {
 				DynamicLootTable lootTable = buildLootTable(victim);
 				if (lootTable.isEmpty()) return generatedLoot;
 
-				if (!isHolding(context, ModItems.DESPOIL_SICKLE.get())) {
+				if (!hurtAndBreak(context, ModItems.DESPOIL_SICKLE.get(), 1)) {
 					lootTable.add(EMPTY, 15); //only the despoil sickle has a 100% guarantee to drop despoil loot
 				}
 
