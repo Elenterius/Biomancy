@@ -1,3 +1,21 @@
+## [1.5.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.4.0...1.19.2-v2.1.5.0) (2023-05-10)
+
+
+### Features
+
+* **despoil-loot:** adjust the sinew and bone marrow drop amount ([8b01fb0](https://github.com/Elenterius/Biomancy/commit/8b01fb09853c379baaee48d8609183c4a58d047d))
+* **despoil-loot:** damage durability of held despoil sickle when dropping loot ([689bb31](https://github.com/Elenterius/Biomancy/commit/689bb3107b32e1ecf1befb6775dc2bf3453ffb23))
+* **despoil-loot:** don't drop flesh bits from mobs ([a4466fe](https://github.com/Elenterius/Biomancy/commit/a4466fed0391f811c6ef31a7db1fc4603e414191))
+* **despoil-loot:** drop sinew for Zombies ([8270761](https://github.com/Elenterius/Biomancy/commit/8270761857c3c0cf26307c8683cb2f3ef2dd0e23))
+* **despoil-loot:** only guarantee a loot drop for the despoiling Sickle ([bd6c014](https://github.com/Elenterius/Biomancy/commit/bd6c0143e599bf6c6e16c431aed669a5b9dc0281))
+* nerf Fleshkin Chest, reduce inventory size to 28 slots and make recipe more expensive ([e13cd96](https://github.com/Elenterius/Biomancy/commit/e13cd9609ac8c52c52bb37faa615033915bd6e16))
+* tweak fleshkin chest recipe ([af22edd](https://github.com/Elenterius/Biomancy/commit/af22edd86c76bb6f26ccd8cbb43342f6e9b58552))
+
+
+### Reverts
+
+* revert fleshkin chest name change ([c91bc5a](https://github.com/Elenterius/Biomancy/commit/c91bc5af561a654f7490bbc4c84e9e73b2c61dbd))
+
 ## [1.4.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.2.0...1.19.2-v2.1.4.0) (2023-05-08)
 
 
@@ -86,11 +104,4 @@
 
 * change serum class structure and serum registry ([e4f72b0](https://github.com/Elenterius/Biomancy/commit/e4f72b06ed63daa6c4d3f2e528d4c627544d7099))
 * reorganize package structure ([98eac84](https://github.com/Elenterius/Biomancy/commit/98eac844d56e443b9d79b02e33ce716b219dfc9f))
-
-### [0.53.2](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.0.53.1...1.19.2-v2.0.53.2) (2023-04-11)
-
-
-### Bug Fixes
-
-* fix crash on server startup ([4988deb](https://github.com/Elenterius/Biomancy/commit/4988deb88a3e0ff90024ac2dd76ce3d24835c102))
 
