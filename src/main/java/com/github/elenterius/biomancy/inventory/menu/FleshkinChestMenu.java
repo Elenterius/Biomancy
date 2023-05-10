@@ -28,8 +28,8 @@ public class FleshkinChestMenu extends PlayerContainerMenu {
 		this.inventory.startOpen(playerInventory.player);
 
 		final int posX = 26;
-		final int posY = 24 + 18;
-		final int rows = 4;
+		final int posY = 24;
+		final int rows = 6;
 		final int columns = 7;
 		for (int y = 0; y < rows; y++) {
 			for (int x = 0; x < columns; x++) {
