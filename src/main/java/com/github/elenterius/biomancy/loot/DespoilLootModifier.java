@@ -80,7 +80,7 @@ public class DespoilLootModifier extends LootModifier {
 		return conditions;
 	}
 
-	private static int getDespoilLevel(LootContext lootContext) {
+	protected static int getDespoilLevel(LootContext lootContext) {
 		Entity killer = lootContext.getParamOrNull(LootContextParams.KILLER_ENTITY);
 		if (killer instanceof LivingEntity livingEntity) {
 			return ModEnchantments.DESPOIL.get().getSlotItems(livingEntity).values().stream()
@@ -92,8 +92,17 @@ public class DespoilLootModifier extends LootModifier {
 		return 0;
 	}
 
-	private static int getDespoilLevel(ItemStack stack) {
+	protected static int getDespoilLevel(ItemStack stack) {
 		return stack.getEnchantmentLevel(ModEnchantments.DESPOIL.get());
+	}
+
+	protected static boolean isHolding(LootContext lootContext, Item item) {
+		Entity killer = lootContext.getParamOrNull(LootContextParams.KILLER_ENTITY);
+		if (killer instanceof LivingEntity livingEntity) {
+			return livingEntity.isHolding(item);
+		}
+
+		return false;
 	}
 
 	protected DynamicLootTable buildLootTable(LivingEntity livingEntity) {
@@ -128,16 +137,20 @@ public class DespoilLootModifier extends LootModifier {
 	@Override
 	protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
 		if (context.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof LivingEntity victim) {
-			int despoilLevel = getDespoilLevel(context);
-			int lootingLevel = context.getLootingModifier();
+			final int despoilLevel = getDespoilLevel(context);
 
 			if (despoilLevel > 0) {
-				RandomSource random = context.getRandom();
-				DynamicLootTable lootTable = buildLootTable(victim);
+				final int lootingLevel = context.getLootingModifier();
 
-				int diceRolls = despoilLevel;
-				for (; diceRolls > 0; diceRolls--) {
-					lootTable.getRandomItemStack(random, lootingLevel).filter(stack -> !stack.isEmpty()).ifPresent(generatedLoot::add);
+				DynamicLootTable lootTable = buildLootTable(victim);
+				if (lootTable.isEmpty()) return generatedLoot;
+
+				if (!isHolding(context, ModItems.DESPOIL_SICKLE.get())) {
+					lootTable.add(EMPTY, 15); //only the despoil sickle has a 100% guarantee to drop despoil loot
+				}
+
+				for (int rolls = despoilLevel; rolls > 0; rolls--) {
+					lootTable.getRandomItemStack(context.getRandom(), lootingLevel).filter(stack -> !stack.isEmpty()).ifPresent(generatedLoot::add);
 				}
 			}
 		}
