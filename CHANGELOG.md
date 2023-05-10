@@ -1,3 +1,22 @@
+## [1.6.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.5.0...1.19.2-v2.1.6.0) (2023-05-10)
+
+
+### Features
+
+* make the despoil sickle name permanent ([1dbaaee](https://github.com/Elenterius/Biomancy/commit/1dbaaeea8fd73b153bb41ae26e163ae6124f67bc))
+* tweak storage sac recipe ([0b2528b](https://github.com/Elenterius/Biomancy/commit/0b2528bf8d84f2c193354f02c80389ad68b56539))
+
+
+### Bug Fixes
+
+* fix broken 1.19 fix for empty lines disappearing when long text is wrapped ([7489062](https://github.com/Elenterius/Biomancy/commit/7489062b6688ca73e5b38af4ac891f6ca3634485))
+* fix fleshkin chest not resisting explosions ([466e290](https://github.com/Elenterius/Biomancy/commit/466e29009420780e90c59d78d3078f3395d44f05))
+
+
+### Reverts
+
+* revert Fleshkin Chest inventory size nerf ([f6eadca](https://github.com/Elenterius/Biomancy/commit/f6eadcae2c8a91bf5e6beb99959648f4a073c77a))
+
 ## [1.5.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.4.0...1.19.2-v2.1.5.0) (2023-05-10)
 
 
@@ -86,22 +105,4 @@
 ### Bug Fixes
 
 * fix Bio-Forge GUI crashing the game when clicking next page button ([4046464](https://github.com/Elenterius/Biomancy/commit/40464647129b6077d70f58bc96db9e7555ba1413))
-
-## [1.0.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.0.53.2...1.19.2-v2.1.0.0) (2023-04-18)
-
-
-### ⚠ BREAKING CHANGES
-
-* change serum class structure and serum registry
-* reorganize package structure
-
-### Bug Fixes
-
-* fix ageing and rejuvenation serum interaction with Tadpoles & Frogs ([af655a6](https://github.com/Elenterius/Biomancy/commit/af655a61385b76731142e01aad3af5c6ee336159))
-
-
-### Miscellaneous Chores
-
-* change serum class structure and serum registry ([e4f72b0](https://github.com/Elenterius/Biomancy/commit/e4f72b06ed63daa6c4d3f2e528d4c627544d7099))
-* reorganize package structure ([98eac84](https://github.com/Elenterius/Biomancy/commit/98eac844d56e443b9d79b02e33ce716b219dfc9f))
 
