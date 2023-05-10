@@ -2,14 +2,18 @@ package com.github.elenterius.biomancy.datagen.tags;
 
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.tags.ModItemTags;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.StringUtils;
@@ -68,8 +72,23 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 		//		tag(ItemTags.FENCES).getInternalBuilder().addTag(ModTags.Blocks.FLESHY_FENCES.getName(), BiomancyMod.MOD_ID);
 	}
 
+	private static TagKey<Item> forgeTag(String path) {
+		return ItemTags.create(new ResourceLocation("forge", path));
+	}
+
 	private void addForgeTags() {
-		tag(ModItemTags.FORGE_TOOLS_KNIVES);
+		//		tag(ModItemTags.FORGE_TOOLS_KNIVES);
+
+		TagKey<Item> clawsTag = forgeTag("tools/claws");
+		tag(clawsTag)
+				.add(ModItems.LONG_CLAWS.get());
+
+		tag(Tags.Items.TOOLS_SWORDS)
+				.add(ModItems.DESPOIL_SICKLE.get());
+
+		tag(Tags.Items.TOOLS)
+				.addTag(clawsTag)
+				.add(ModItems.INJECTOR.get(), ModItems.BIO_EXTRACTOR.get());
 	}
 
 	protected EnhancedTagAppender<Item> createTag(TagKey<Item> tag) {
