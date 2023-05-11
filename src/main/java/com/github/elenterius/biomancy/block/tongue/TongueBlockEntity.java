@@ -17,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.IItemHandler;
+import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -138,12 +139,14 @@ public class TongueBlockEntity extends SimpleSyncedBlockEntity implements IAnima
 	}
 
 	private <E extends BlockEntity & IAnimatable> PlayState handleAnim(AnimationEvent<E> event) {
+		AnimationController<E> controller = event.getController();
 		if (inventory.isEmpty()) {
-			event.getController().setAnimation(IDLE_ANIM);
+			if (controller.getAnimationState() == AnimationState.Stopped) controller.setAnimation(IDLE_ANIM);
 		}
 		else {
-			event.getController().setAnimation(STRETCH_ANIM);
+			controller.setAnimation(STRETCH_ANIM);
 		}
+
 		return PlayState.CONTINUE;
 	}
 
