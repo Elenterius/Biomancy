@@ -100,9 +100,16 @@ public class ModAdvancementProvider extends AdvancementProvider {
 				.addHasCriterion(ModItemTags.RAW_MEATS)
 				.save(consumer, fileHelper);
 
-		Advancement greedyButcher = createAdvancement("greedy_butcher").parent(root).icon(ModItems.DESPOIL_SICKLE.get())
+		Advancement primalCore = createAdvancement("flesh").parent(root).icon(ModItems.PRIMORDIAL_CORE.get())
+				.title("Primal Vision")
+				.description("You feel an ancient presence from the ender pearl. As you gaze into the pearl... portals... you feel compelled to combine it with raw meat... cross the boundary...")
+				.frameType(FrameType.CHALLENGE).showToast()
+				.addHasCriterion(Items.ENDER_PEARL)
+				.save(consumer, fileHelper);
+
+		Advancement greedyButcher = createAdvancement("greedy_butcher").parent(primalCore).icon(ModItems.DESPOIL_SICKLE.get())
 				.title("Greedy Butcher")
-				.description("You've acquired a taste for organs. Crafted a special tool to get them fresh from your victims death.")
+				.description("You've acquired a taste for organs. Craft the plundering Sickle to get them fresh from your victims death.")
 				.showToast()
 				.addHasCriterion(ModItems.DESPOIL_SICKLE.get())
 				.save(consumer, fileHelper);
@@ -127,7 +134,7 @@ public class ModAdvancementProvider extends AdvancementProvider {
 		createAdvancement("predator_killer").parent(greedyButcher).icon(ModItems.MOB_FANG.get())
 				.title("Predator Killer")
 				.description("Hunt predators and collect their fangs and claws.")
-				.frameType(FrameType.CHALLENGE).showToast().announceToChat().hidden()
+				.frameType(FrameType.CHALLENGE).showToast().announceToChat()
 				.addCriterion("has_killed_fangs_mob", hasKilledEntityTag(ModEntityTags.SHARP_FANG))
 				.addCriterion("has_killed_claws_mob", hasKilledEntityTag(ModEntityTags.SHARP_CLAW))
 				.addHasCriterion(ModItems.MOB_FANG.get())
@@ -141,49 +148,42 @@ public class ModAdvancementProvider extends AdvancementProvider {
 				.addCriterion("has_killed_cat", hasKilledEntity(EntityType.CAT))
 				.save(consumer, fileHelper);
 
-		Advancement cradle = createAdvancement("flesh").parent(root).icon(ModItems.PRIMORDIAL_CORE.get())
-				.title("[WIP] Primal Vision")
-				.description("[WIP] You feel an ancient presence from the ender eye. As you gaze into the pearl... portals... you feel compelled to combine it with raw meat... cross the boundary...")
-				.frameType(FrameType.CHALLENGE).showToast()
-				.addHasCriterion(Items.ENDER_EYE)
-				.save(consumer, fileHelper);
-
-		Advancement livingFlesh = createAdvancement("living_flesh").parent(cradle).icon(ModItems.PRIMORDIAL_CRADLE.get())
-				.title("Reviving Flesh")
-				.description("[WIP] The Primordial Core is whispering of a bowl filled with life...")
+		Advancement primalCradle = createAdvancement("cradle").parent(primalCore).icon(ModItems.PRIMORDIAL_CRADLE.get())
+				.title("Cradle of Life")
+				.description("The Primordial Core is whispering of a bowl filled with life... build the flesh construct and feed it with organic materials.")
 				.showToast()
-				.addCriterion("placed_creator", hasPlacedBlock(ModBlocks.PRIMORDIAL_CRADLE.get()))
+				.addCriterion("has_placed_cradle", hasPlacedBlock(ModBlocks.PRIMORDIAL_CRADLE.get()))
 				.save(consumer, fileHelper);
 
-		createAdvancement("healing_activator_sacrifice").parent(livingFlesh).icon(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_HEALING))
+		createAdvancement("healing_activator_sacrifice").parent(primalCradle).icon(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_HEALING))
 				.title("Healing Activator")
 				.description("It's seems like fluids enriched in life energy are needed. Jumpstart the process with a few healing potions.")
 				.showToast()
 				.addCriterion("has_sacrificed_healing_activator", hasSacrificedItem(Items.POTION))
 				.save(consumer, fileHelper);
 
-		createAdvancement("raw_meat_sacrifice").parent(livingFlesh).icon(Items.BEEF)
+		createAdvancement("raw_meat_sacrifice").parent(primalCradle).icon(Items.BEEF)
 				.title("Tartar Delight")
 				.description("Serve raw meat to the Primordial Cradle.")
 				.showToast()
 				.addCriterion("has_sacrificed_raw_meat", hasSacrificedTag(ModItemTags.RAW_MEATS))
 				.save(consumer, fileHelper);
 
-		createAdvancement("cooked_meat_sacrifice").parent(livingFlesh).icon(Items.COOKED_BEEF)
+		createAdvancement("cooked_meat_sacrifice").parent(primalCradle).icon(Items.COOKED_BEEF)
 				.title("Cooked Meat Disrelish")
 				.description("Serve cooked meat to the Primordial Cradle.")
 				.showToast().hidden()
 				.addCriterion("has_sacrificed_cooked_meat", hasSacrificedTag(ModItemTags.COOKED_MEATS))
 				.save(consumer, fileHelper);
 
-		createAdvancement("decomposer").parent(livingFlesh).icon(ModItems.DECOMPOSER.get())
+		createAdvancement("decomposer").parent(primalCradle).icon(ModItems.DECOMPOSER.get())
 				.title("Munch & Crunch")
 				.description("You suddenly feel disgusted by the composter. You should use a semi-living construct to decompose things into their base parts.")
 				.showToast()
 				.addHasCriterion(ModItems.DECOMPOSER.get())
 				.save(consumer, fileHelper);
 
-		Advancement bioForge = createAdvancement("bio_forge").parent(livingFlesh).icon(ModItems.BIO_FORGE.get())
+		Advancement bioForge = createAdvancement("bio_forge").parent(primalCradle).icon(ModItems.BIO_FORGE.get())
 				.title("Organic Smithing")
 				.description("You dreamt of a Bio-Construct weaving organic parts together into intricate semi-living things... You don't know when, but you built it.")
 				.frameType(FrameType.GOAL).showToast().announceToChat()
@@ -206,7 +206,7 @@ public class ModAdvancementProvider extends AdvancementProvider {
 
 		createAdvancement("bio_injector").parent(bioLab).icon(ModItems.INJECTOR.get())
 				.title("Injections")
-				.description("Craft a Bio-Injector to be able to forcefully inject Serums into all living things.")
+				.description("Craft a Injector to be able to forcefully inject Serums into all living things.")
 				.showToast()
 				.addHasCriterion(ModItems.INJECTOR.get())
 				.save(consumer, fileHelper);
