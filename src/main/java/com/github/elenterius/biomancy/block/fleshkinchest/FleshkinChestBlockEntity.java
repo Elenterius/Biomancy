@@ -4,8 +4,7 @@ import com.github.elenterius.biomancy.block.ownable.OwnableContainerBlockEntity;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModDamageSources;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
-import com.github.elenterius.biomancy.inventory.BehavioralInventory;
-import com.github.elenterius.biomancy.inventory.itemhandler.HandlerBehaviors;
+import com.github.elenterius.biomancy.inventory.SimpleInventory;
 import com.github.elenterius.biomancy.inventory.menu.FleshkinChestMenu;
 import com.github.elenterius.biomancy.network.ISyncableAnimation;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
@@ -18,6 +17,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Container;
+import net.minecraft.world.Containers;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
@@ -48,7 +48,7 @@ public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implem
 
 	public static final int SLOTS = 6 * 7;
 
-	private final BehavioralInventory<?> inventory;
+	private final SimpleInventory inventory;
 	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
 	private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
 		@Override
@@ -83,7 +83,7 @@ public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implem
 
 	public FleshkinChestBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.FLESHKIN_CHEST.get(), pos, state);
-		inventory = BehavioralInventory.createServerContents(SLOTS, HandlerBehaviors::denyItemWithFilledInventory, this::canPlayerOpenContainer, this::setChanged);
+		inventory = SimpleInventory.createServerContents(SLOTS, this::canPlayerOpenContainer, this::setChanged);
 		inventory.setOpenInventoryConsumer(this::startOpen);
 		inventory.setCloseInventoryConsumer(this::stopOpen);
 	}
@@ -161,7 +161,7 @@ public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implem
 
 	@Override
 	public void dropContainerContents(Level level, BlockPos pos) {
-		//		Containers.dropContents(level, pos, inventory);
+		if (!inventory.isEmpty()) Containers.dropContents(level, pos, inventory);
 	}
 
 	public boolean isEmpty() {

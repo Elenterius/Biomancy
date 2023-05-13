@@ -10,7 +10,7 @@ public class FleshkinChestBlockItem extends SimpleBlockItem {
 
 	@Override
 	public boolean canFitInsideContainerItems() {
-		return false;
+		return true;
 	}
 
 	//	public boolean canFitInsideContainerItems(ItemStack stack) {

@@ -3,48 +3,44 @@ package com.github.elenterius.biomancy.inventory.menu;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.fleshkinchest.FleshkinChestBlockEntity;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
-import com.github.elenterius.biomancy.inventory.BehavioralInventory;
+import com.github.elenterius.biomancy.inventory.SimpleInventory;
 import com.github.elenterius.biomancy.inventory.slot.ISlotZone;
-import com.github.elenterius.biomancy.inventory.slot.NonNestingSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import org.apache.logging.log4j.MarkerManager;
 
 public class FleshkinChestMenu extends PlayerContainerMenu {
 
-	private final BehavioralInventory<?> inventory;
-	protected final Level level;
+	private final SimpleInventory inventory;
 
-	protected FleshkinChestMenu(int id, Inventory playerInventory, BehavioralInventory<?> inventory) {
+	protected FleshkinChestMenu(int id, Inventory playerInventory, SimpleInventory chestInventory) {
 		super(ModMenuTypes.FLESHKIN_CHEST.get(), id, playerInventory, 150, 208);
-		level = playerInventory.player.level;
 
-		this.inventory = inventory;
-		this.inventory.startOpen(playerInventory.player);
+		inventory = chestInventory;
+		inventory.startOpen(playerInventory.player);
 
-		final int posX = 26;
-		final int posY = 24;
-		final int rows = 6;
-		final int columns = 7;
+		int posX = 26;
+		int posY = 24;
+		int rows = 6;
+		int columns = 7;
 		for (int y = 0; y < rows; y++) {
 			for (int x = 0; x < columns; x++) {
-				addSlot(new NonNestingSlot(this.inventory, y * columns + x, posX + x * 18, posY + y * 18));
+				addSlot(new Slot(inventory, y * columns + x, posX + x * 18, posY + y * 18));
 			}
 		}
 	}
 
-	public static FleshkinChestMenu createServerMenu(int screenId, Inventory playerInventory, BehavioralInventory<?> inventory) {
-		return new FleshkinChestMenu(screenId, playerInventory, inventory);
+	public static FleshkinChestMenu createServerMenu(int screenId, Inventory playerInventory, SimpleInventory chestInventory) {
+		return new FleshkinChestMenu(screenId, playerInventory, chestInventory);
 	}
 
 	public static FleshkinChestMenu createClientMenu(int screenId, Inventory playerInventory, FriendlyByteBuf extraData) {
-		BehavioralInventory<?> inventory = BehavioralInventory.createClientContents(FleshkinChestBlockEntity.SLOTS);
-		return new FleshkinChestMenu(screenId, playerInventory, inventory);
+		SimpleInventory chestInventory = SimpleInventory.createClientContents(FleshkinChestBlockEntity.SLOTS);
+		return new FleshkinChestMenu(screenId, playerInventory, chestInventory);
 	}
 
 	@Override

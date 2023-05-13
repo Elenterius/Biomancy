@@ -29,7 +29,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BlockItem;
@@ -161,17 +160,11 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 	}
 
 	@Override
-	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-		if (!level.isClientSide && player.isCreative() && level.getBlockEntity(pos) instanceof FleshkinChestBlockEntity chest && !chest.isEmpty()) {
-			ItemStack stack = new ItemStack(this);
-			chest.saveToItem(stack);
-			if (chest.hasCustomName()) stack.setHoverName(chest.getCustomName());
-			ItemEntity itemEntity = new ItemEntity(level, pos.getX() + 0.5d, pos.getY() + 0.5D, pos.getZ() + 0.5d, stack);
-			itemEntity.setDefaultPickUpDelay();
-			level.addFreshEntity(itemEntity);
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!level.isClientSide && !state.is(newState.getBlock()) && level.getBlockEntity(pos) instanceof FleshkinChestBlockEntity chest) {
+			chest.dropContainerContents(level, pos);
 		}
-
-		super.playerWillDestroy(level, pos, state, player);
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override
