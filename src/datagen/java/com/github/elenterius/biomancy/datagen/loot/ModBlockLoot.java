@@ -42,7 +42,7 @@ public class ModBlockLoot extends BlockLoot {
 				)));
 	}
 
-	protected static LootTable.Builder dropFleshkinChest(Block block) {
+	protected static LootTable.Builder dropOwnableInventory(Block block) {
 		return LootTable.lootTable().withPool(applyExplosionCondition(block, LootPool.lootPool().setRolls(ConstantValue.exactly(1))
 				.add(LootItem.lootTableItem(block)
 						.apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY))
@@ -78,7 +78,7 @@ public class ModBlockLoot extends BlockLoot {
 		add(ModBlocks.DIGESTER.get(), BlockLoot::createNameableBlockEntityTable);
 		add(ModBlocks.DECOMPOSER.get(), BlockLoot::createNameableBlockEntityTable);
 
-		add(ModBlocks.FLESHKIN_CHEST.get(), ModBlockLoot::dropFleshkinChest);
+		add(ModBlocks.FLESHKIN_CHEST.get(), BlockLoot::createNameableBlockEntityTable);
 		add(ModBlocks.FLESHKIN_DOOR.get(), ModBlockLoot::dropWithOwnableData);
 		add(ModBlocks.FLESHKIN_TRAPDOOR.get(), ModBlockLoot::dropWithOwnableData);
 		add(ModBlocks.FLESHKIN_PRESSURE_PLATE.get(), ModBlockLoot::dropWithOwnableData);
