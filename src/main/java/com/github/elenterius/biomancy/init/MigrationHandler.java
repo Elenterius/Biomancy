@@ -55,6 +55,7 @@ public final class MigrationHandler {
 		for (Mapping<Block> mapping : mappings) {
 			String path = mapping.getKey().getPath();
 			switch (path) {
+				case "bio_lantern" -> mapping.remap(ModBlocks.YELLOW_BIO_LANTERN.get());
 				case "bone_spike" -> mapping.remap(ModBlocks.FLESH_SPIKE.get());
 				case "creator" -> mapping.remap(ModBlocks.PRIMORDIAL_CRADLE.get());
 				case "flesh_block" -> mapping.remap(ModBlocks.FLESH.get());
@@ -92,6 +93,7 @@ public final class MigrationHandler {
 			switch (path) {
 				case "mascot_pattern", "mascot_outline_pattern", "mascot_accent_pattern" -> mapping.remap(ModItems.MASCOT_BANNER_PATTERNS.get());
 
+				case "bio_lantern" -> mapping.remap(ModItems.YELLOW_BIO_LANTERN.get());
 				case "glass_vial" -> mapping.remap(ModItems.VIAL.get());
 
 				case "creator" -> mapping.remap(ModItems.PRIMORDIAL_CRADLE.get());

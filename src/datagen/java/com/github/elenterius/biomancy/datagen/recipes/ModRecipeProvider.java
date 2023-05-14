@@ -912,7 +912,15 @@ public class ModRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.BLOCKS)
 				.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
 
-		BioForgeRecipeBuilder.create(ModItems.BIO_LANTERN.get())
+		BioForgeRecipeBuilder.create(ModItems.YELLOW_BIO_LANTERN.get())
+				.addIngredient(ModItems.BIO_LUMENS.get(), 10)
+				.addIngredient(Items.YELLOW_DYE, 1)
+				.addIngredient(ModItems.FLESH_BITS.get(), 2)
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 4)
+				.setCategory(ModBioForgeTabs.BLOCKS)
+				.unlockedBy(ModItems.BIO_LUMENS.get()).save(consumer);
+
+		BioForgeRecipeBuilder.create(ModItems.BLUE_BIO_LANTERN.get())
 				.addIngredient(ModItems.BIO_LUMENS.get(), 10)
 				.addIngredient(ModItems.FLESH_BITS.get(), 2)
 				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 4)
@@ -921,6 +929,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		BioForgeRecipeBuilder.create(Items.SHROOMLIGHT)
 				.addIngredient(ModItems.BIO_LUMENS.get(), 10)
+				.addIngredient(Items.YELLOW_DYE, 2)
 				.addIngredient(ModItems.ORGANIC_MATTER.get(), 4)
 				.setCategory(ModBioForgeTabs.BLOCKS)
 				.unlockedBy(Items.SHROOMLIGHT).save(consumer);
