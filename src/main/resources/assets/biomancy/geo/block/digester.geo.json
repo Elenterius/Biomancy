@@ -1,199 +1,88 @@
 {
-  "format_version": "1.12.0",
-  "minecraft:geometry": [
-    {
-      "description": {
-        "identifier": "geometry.digester",
-        "texture_width": 32,
-        "texture_height": 32,
-        "visible_bounds_width": 2,
-        "visible_bounds_height": 2.5,
-        "visible_bounds_offset": [
-          0,
-          0.75,
-          0
-        ]
-      },
-      "bones": [
-        {
-          "name": "main",
-          "pivot": [
-            0,
-            0,
-            0
-          ]
-        },
-        {
-          "name": "mouth",
-          "parent": "main",
-          "pivot": [
-            0,
-            11,
-            0
-          ],
-          "cubes": [
-            {
-              "origin": [
-                -3,
-                10,
-                -3
-              ],
-              "size": [
-                6,
-                6,
-                6
-              ],
-              "pivot": [
-                0,
-                13,
-                0
-              ],
-              "rotation": [
-                0,
-                90,
-                0
-              ],
-              "uv": {
-                "north": {
-                  "uv": [
-                    18,
-                    24
-                  ],
-                  "uv_size": [
-                    6,
-                    6
-                  ]
-                },
-                "east": {
-                  "uv": [
-                    0,
-                    24
-                  ],
-                  "uv_size": [
-                    6,
-                    6
-                  ]
-                },
-                "south": {
-                  "uv": [
-                    6,
-                    24
-                  ],
-                  "uv_size": [
-                    6,
-                    6
-                  ]
-                },
-                "west": {
-                  "uv": [
-                    12,
-                    24
-                  ],
-                  "uv_size": [
-                    6,
-                    6
-                  ]
-                },
-                "up": {
-                  "uv": [
-                    24,
-                    24
-                  ],
-                  "uv_size": [
-                    6,
-                    6
-                  ]
-                }
-              }
-            }
-          ]
-        },
-        {
-          "name": "body",
-          "parent": "main",
-          "pivot": [
-            0,
-            0,
-            0
-          ],
-          "cubes": [
-            {
-              "origin": [
-                -5,
-                0,
-                -5
-              ],
-              "size": [
-                10,
-                12,
-                10
-              ],
-              "uv": {
-                "north": {
-                  "uv": [
-                    0,
-                    0
-                  ],
-                  "uv_size": [
-                    10,
-                    12
-                  ]
-                },
-                "east": {
-                  "uv": [
-                    10,
-                    0
-                  ],
-                  "uv_size": [
-                    10,
-                    12
-                  ]
-                },
-                "south": {
-                  "uv": [
-                    0,
-                    12
-                  ],
-                  "uv_size": [
-                    10,
-                    12
-                  ]
-                },
-                "west": {
-                  "uv": [
-                    10,
-                    12
-                  ],
-                  "uv_size": [
-                    10,
-                    12
-                  ]
-                },
-                "up": {
-                  "uv": [
-                    20,
-                    0
-                  ],
-                  "uv_size": [
-                    10,
-                    10
-                  ]
-                },
-                "down": {
-                  "uv": [
-                    20,
-                    20
-                  ],
-                  "uv_size": [
-                    10,
-                    -10
-                  ]
-                }
-              }
-            }
-          ]
-        }
-      ]
-    }
-  ]
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.biomancy:digester",
+				"texture_width": 32,
+				"texture_height": 32,
+				"visible_bounds_width": 2,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [ 0, 0.75, 0 ]
+			},
+			"bones": [
+				{
+					"name": "root",
+					"pivot": [ 0, 0, 0 ],
+					"cubes": [
+						{
+							"origin": [ -3, 10, -3 ],
+							"size": [ 6, 6, 6 ],
+							"pivot": [ 0, 13, 0 ],
+							"rotation": [ 0, 90, 0 ],
+							"uv": {
+								"north": {
+									"uv": [ 0, 6 ],
+									"uv_size": [ 6, 6 ]
+								},
+								"east": {
+									"uv": [ 18, 6 ],
+									"uv_size": [ 6, 6 ]
+								},
+								"south": {
+									"uv": [ 12, 6 ],
+									"uv_size": [ 6, 6 ]
+								},
+								"west": {
+									"uv": [ 6, 6 ],
+									"uv_size": [ 6, 6 ]
+								},
+								"up": {
+									"uv": [ 6, 0 ],
+									"uv_size": [ 6, 6 ]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "stomach",
+					"parent": "root",
+					"pivot": [ 0, 0, 0 ],
+					"cubes": [
+						{
+							"origin": [ -5, 0, -5 ],
+							"size": [ 10, 12, 10 ],
+							"uv": {
+								"north": {
+									"uv": [ 10, 13 ],
+									"uv_size": [ 10, 12 ]
+								},
+								"east": {
+									"uv": [ 20, 13 ],
+									"uv_size": [ 10, 12 ]
+								},
+								"south": {
+									"uv": [ 20, 13 ],
+									"uv_size": [ 10, 12 ]
+								},
+								"west": {
+									"uv": [ 20, 13 ],
+									"uv_size": [ 10, 12 ]
+								},
+								"up": {
+									"uv": [ 0, 15 ],
+									"uv_size": [ 10, 10 ]
+								},
+								"down": {
+									"uv": [ 0, 25 ],
+									"uv_size": [ 10, -10 ]
+								}
+							}
+						}
+					]
+				}
+			]
+		}
+	]
 }

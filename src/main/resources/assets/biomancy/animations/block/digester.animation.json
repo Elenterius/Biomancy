@@ -1,100 +1,36 @@
 {
-  "format_version": "1.8.0",
-  "animations": {
-    "digester.idle": {
-      "loop": true,
-      "animation_length": 2.08,
-      "bones": {
-        "body": {
-          "scale": {
-            "0.0": {
-              "vector": [
-                1,
-                1,
-                1
-              ]
-            },
-            "0.52": {
-              "vector": [
-                1.05,
-                0.975,
-                1.05
-              ],
-              "easing": "easeInQuad"
-            },
-            "1.04": {
-              "vector": [
-                1,
-                1,
-                1
-              ]
-            },
-            "1.56": {
-              "vector": [
-                1.05,
-                0.975,
-                1.05
-              ],
-              "easing": "easeInQuad"
-            },
-            "2.08": {
-              "vector": [
-                1,
-                1,
-                1
-              ]
-            }
-          }
-        }
-      }
-    },
-    "digester.working": {
-      "loop": true,
-      "animation_length": 0.4,
-      "bones": {
-        "body": {
-          "scale": {
-            "0.0": {
-              "vector": [
-                1,
-                1,
-                1
-              ]
-            },
-            "0.12": {
-              "vector": [
-                1.1,
-                0.95,
-                1.1
-              ],
-              "easing": "easeInQuad"
-            },
-            "0.2": {
-              "vector": [
-                1,
-                1,
-                1
-              ]
-            },
-            "0.32": {
-              "vector": [
-                1.1,
-                0.95,
-                1.1
-              ],
-              "easing": "easeInQuad"
-            },
-            "0.4": {
-              "vector": [
-                1,
-                1,
-                1
-              ]
-            }
-          }
-        }
-      }
-    }
-  },
-  "geckolib_format_version": 2
+	"format_version": "1.8.0",
+	"animations": {
+		"digester.working": {
+			"loop": true,
+			"animation_length": 0.4,
+			"bones": {
+				"stomach": {
+					"scale": {
+						"0.0": {
+							"vector": [ 1, 1, 1 ]
+						},
+						"0.12": {
+							"vector": [ 1.1, 0.95, 1.1 ],
+							"easing": "easeInQuad"
+						},
+						"0.2": {
+							"vector": [ 1, 1, 1 ]
+						},
+						"0.32": {
+							"vector": [ 1.1, 0.95, 1.1 ],
+							"easing": "easeInQuad"
+						},
+						"0.4": {
+							"vector": [ 1, 1, 1 ]
+						}
+					}
+				}
+			}
+		},
+		"digester.idle": {
+			"loop": true
+		}
+	},
+	"geckolib_format_version": 2
 }
