@@ -33,8 +33,8 @@ public class TongueBlockEntity extends SimpleSyncedBlockEntity implements IAnima
 	public static final int ITEM_TRANSFER_AMOUNT = 3;
 	public static final int DURATION = 24;
 	public static final int DELAY = 8 + 1; //ceil(31.2) --> 32
-	protected static final AnimationBuilder IDLE_ANIM = new AnimationBuilder().loop("tongue.anim.none");
-	protected static final AnimationBuilder STRETCH_ANIM = new AnimationBuilder().addAnimation("tongue.anim.stretch");
+	protected static final AnimationBuilder IDLE_ANIM = new AnimationBuilder().loop("tongue.none");
+	protected static final AnimationBuilder STRETCH_ANIM = new AnimationBuilder().addAnimation("tongue.stretch");
 
 	private final SingleItemStackHandler inventory;
 	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);

@@ -35,7 +35,7 @@ public class TongueRenderer extends CustomGeoBlockRenderer<TongueBlockEntity> {
 
 	@Override
 	public void renderRecursively(GeoBone bone, PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		if (bone.getName().equals("item") && !heldItemStack.isEmpty()) {
+		if (bone.getName().equals("_item") && !heldItemStack.isEmpty()) {
 			int itemCount = Math.min(heldItemStack.getCount(), 3);
 			int seed = Item.getId(heldItemStack.getItem()) + heldItemStack.getDamageValue();
 			renderItems(poseStack, packedLight, packedOverlay, itemCount, seed);
