@@ -108,7 +108,8 @@ public final class ClientSetupHandler {
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.FULL_FLESH_DOOR.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.FLESH_LADDER.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.MALIGNANT_FLESH_VEINS.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(ModBlocks.BIO_LANTERN.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(ModBlocks.YELLOW_BIO_LANTERN.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLUE_BIO_LANTERN.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.TENDON_CHAIN.get(), RenderType.cutout());
 
 		//block with "glowing" overlay texture, also needs a overlay model see onModelBakeEvent() in ClientSetupHandler

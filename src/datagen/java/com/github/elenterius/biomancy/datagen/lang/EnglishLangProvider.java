@@ -436,7 +436,8 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.FLESH_SPIKE, "Flesh Spike", "A dangerous spike made of reinforced bone and flesh, colliding with it will hurt. Several spikes can be placed in one spot.");
 		addBlock(ModBlocks.FLESH_LADDER, "Flesh Ladder", "Ladder mainly made of bones and a little bit of flesh...");
 		addBlock(ModBlocks.FLESH_PILLAR, "Flesh Pillar", "A Pillar made of bones and flesh.");
-		addBlock(ModBlocks.BIO_LANTERN, "Bioluminescent Lantern", "Biological light source.");
+		addBlock(ModBlocks.YELLOW_BIO_LANTERN, "Yellow Bio-Lantern", "Bioluminescent light source.");
+		addBlock(ModBlocks.BLUE_BIO_LANTERN, "Blue Bio-Lantern", "Bioluminescent light source.");
 		addBlock(ModBlocks.TENDON_CHAIN, "Tendon Chain", "Chain made of tendons.");
 
 		addBlock(ModBlocks.PRIMAL_FLESH, "Primal Flesh Block", "Primitive and pure, you better not touch this with your dirty paws.");

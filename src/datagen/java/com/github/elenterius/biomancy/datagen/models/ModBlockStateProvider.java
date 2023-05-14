@@ -69,7 +69,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
 		fleshSpikes(ModBlocks.FLESH_SPIKE.get());
 
-		bioLantern(ModBlocks.BIO_LANTERN.get());
+		bioLantern(ModBlocks.YELLOW_BIO_LANTERN.get());
+		bioLantern(ModBlocks.BLUE_BIO_LANTERN.get());
 		tendonChain(ModBlocks.TENDON_CHAIN.get());
 
 		geckolibModel(ModBlocks.PRIMORDIAL_CRADLE.get(), PRIMAL_PARTICLE_TEXTURE);
@@ -263,9 +264,12 @@ public class ModBlockStateProvider extends BlockStateProvider {
 	}
 
 	public void bioLantern(FleshLanternBlock block) {
-		ResourceLocation file = blockModel(block);
-		ModelFile.ExistingModelFile model = models().getExistingFile(file);
-		ModelFile.ExistingModelFile hangingModel = models().getExistingFile(new ResourceLocation(file.getNamespace(), file.getPath() + "_hanging"));
+		String path = path(block);
+		ResourceLocation texture = blockTexture(block);
+		ResourceLocation template = BiomancyMod.createRL("block/template_bio_lantern");
+
+		ModelFile model = models().singleTexture(path, template, texture);
+		ModelFile hangingModel = models().singleTexture(path + "_hanging", extend(template, "_hanging"), texture);
 
 		getVariantBuilder(block)
 				.forAllStatesExcept(
