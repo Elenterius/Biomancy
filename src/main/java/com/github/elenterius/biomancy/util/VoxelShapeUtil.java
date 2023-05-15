@@ -26,8 +26,8 @@ public final class VoxelShapeUtil {
 	public static VoxelShape createYRotatedTowards(Direction dir, double x1, double y1, double z1, double x2, double y2, double z2) {
 		return switch (dir) {
 			case SOUTH -> rotateYAxis(Rotation.ROT180, x1, y1, z1, x2, y2, z2);
-			case WEST -> rotateYAxis(Rotation.ROT90, x1, y1, z1, x2, y2, z2);
-			case EAST -> rotateYAxis(Rotation.ROT270, x1, y1, z1, x2, y2, z2);
+			case WEST -> rotateYAxis(Rotation.ROT270, x1, y1, z1, x2, y2, z2);
+			case EAST -> rotateYAxis(Rotation.ROT90, x1, y1, z1, x2, y2, z2);
 			default -> box(x1, y1, z1, x2, y2, z2);
 		};
 	}
