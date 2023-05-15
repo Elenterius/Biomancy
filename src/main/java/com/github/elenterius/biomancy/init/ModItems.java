@@ -113,7 +113,7 @@ public final class ModItems {
 	public static final RegistryObject<BEWLBlockItem> PRIMORDIAL_CRADLE = registerBlockItem(ModBlocks.PRIMORDIAL_CRADLE, block -> new BEWLBlockItem(block, createProperties().rarity(ModRarities.VERY_RARE)));
 	public static final RegistryObject<SimpleBlockItem> BIO_FORGE = registerSimpleBlockItem(ModBlocks.BIO_FORGE, ModRarities.RARE);
 	public static final RegistryObject<SimpleBlockItem> DECOMPOSER = registerSimpleBlockItem(ModBlocks.DECOMPOSER, ModRarities.RARE);
-	public static final RegistryObject<BEWLBlockItem> BIO_LAB = registerBlockItem(ModBlocks.BIO_LAB, block -> new BEWLBlockItem(block, createProperties().rarity(ModRarities.RARE)));
+	public static final RegistryObject<SimpleBlockItem> BIO_LAB = registerSimpleBlockItem(ModBlocks.BIO_LAB, ModRarities.RARE);
 	public static final RegistryObject<SimpleBlockItem> DIGESTER = registerSimpleBlockItem(ModBlocks.DIGESTER, ModRarities.RARE);
 
 	//## Storage & Automation
