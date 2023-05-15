@@ -30,31 +30,28 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.stream.Stream;
+
 public class BioLabBlock extends HorizontalFacingMachineBlock {
 
-	public static final VoxelShape SHAPE_NORTH = makeShape(Direction.NORTH);
-	public static final VoxelShape SHAPE_SOUTH = makeShape(Direction.SOUTH);
-	public static final VoxelShape SHAPE_WEST = makeShape(Direction.WEST);
-	public static final VoxelShape SHAPE_EAST = makeShape(Direction.EAST);
+	public static final VoxelShape SHAPE_NORTH = createShape(Direction.NORTH);
+	public static final VoxelShape SHAPE_SOUTH = createShape(Direction.SOUTH);
+	public static final VoxelShape SHAPE_WEST = createShape(Direction.WEST);
+	public static final VoxelShape SHAPE_EAST = createShape(Direction.EAST);
 
 	public BioLabBlock(Properties properties) {
 		super(properties);
 	}
 
-	private static VoxelShape makeShape(Direction direction) {
-		VoxelShape shape = Shapes.empty();
-		shape = Shapes.join(shape, createBox(direction, 0.125, 0, 0.125, 0.875, 0.4375, 0.875), BooleanOp.OR);
-		shape = Shapes.join(shape, createBox(direction, 0.25, 0.4375, 0.25, 0.75, 1, 0.75), BooleanOp.OR);
-		shape = Shapes.join(shape, createBox(direction, 0.3125, 0.0625, 0.75, 0.6875, 0.5625, 0.9375), BooleanOp.OR);
-		shape = Shapes.join(shape, createBox(direction, 0.75, 0.0625, 0.3125, 0.9375, 0.625, 0.75), BooleanOp.OR);
-		shape = Shapes.join(shape, createBox(direction, 0.3125, 0.0625, 0.0625, 0.6875, 0.5625, 0.25), BooleanOp.OR);
-		shape = Shapes.join(shape, createBox(direction, 0.0625, 0.0625, 0.3125, 0.25, 0.625, 0.75), BooleanOp.OR);
-		return shape;
+	private static VoxelShape createShape(Direction direction) {
+		return Stream.of(
+				VoxelShapeUtil.createYRotatedTowards(direction, 2, 0, 2, 14, 7, 14),
+				VoxelShapeUtil.createYRotatedTowards(direction, 4, 10, 4, 12, 16, 12),
+				VoxelShapeUtil.createYRotatedTowards(direction, 6, 1, 12, 10, 10, 15),
+				VoxelShapeUtil.createYRotatedTowards(direction, 1, 1, 4, 15, 10, 12)
+		).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).orElse(Shapes.block());
 	}
 
-	private static VoxelShape createBox(Direction direction, double x1, double y1, double z1, double x2, double y2, double z2) {
-		return VoxelShapeUtil.createYRotatedTowards(direction, x1 * 16, y1 * 16, z1 * 16, x2 * 16, y2 * 16, z2 * 16);
-	}
 
 	@Nullable
 	@Override
