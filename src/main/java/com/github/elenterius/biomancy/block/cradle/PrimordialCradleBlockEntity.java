@@ -43,8 +43,8 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 
 	public static final String SACRIFICE_SYNC_KEY = "SyncSacrificeHandler";
 	public static final String SACRIFICE_KEY = "SacrificeHandler";
-	protected static final AnimationBuilder IDLE_ANIM = new AnimationBuilder().addAnimation("cradle.anim.idle");
-	protected static final AnimationBuilder SPIKE_ANIM = new AnimationBuilder().addAnimation("cradle.anim.spike");
+	protected static final AnimationBuilder IDLE_ANIM = new AnimationBuilder().addAnimation("cradle.idle");
+	protected static final AnimationBuilder SPIKE_ANIM = new AnimationBuilder().addAnimation("cradle.spike");
 	private final SacrificeHandler sacrificeHandler = new SacrificeHandler();
 	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
 	private long ticks;

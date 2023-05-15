@@ -1,17 +1,17 @@
 {
 	"format_version": "1.8.0",
 	"animations": {
-		"cradle.anim.idle": {
+		"cradle.idle": {
 			"loop": true,
 			"animation_length": 3.12,
 			"bones": {
 				"main": {
 					"position": {
 						"0.0": {
-							"vector": [0, -0.25, 0]
+							"vector": [ 0, -0.25, 0 ]
 						},
 						"1.56": {
-							"vector": [0, 0, 0],
+							"vector": [ 0, 0, 0 ],
 							"easing": "easeInOutQuad"
 						},
 						"3.12": {
@@ -195,16 +195,16 @@
 				}
 			}
 		},
-		"cradle.anim.spike": {
+		"cradle.spike": {
 			"animation_length": 0.64,
 			"bones": {
 				"main": {
 					"scale": {
 						"0.0": {
-							"vector": [1, 1, 1]
+							"vector": [ 1, 1, 1 ]
 						},
 						"0.12": {
-							"vector": [0.975, 1.1, 0.975],
+							"vector": [ 0.975, 1.1, 0.975 ],
 							"easing": "easeInSine"
 						},
 						"0.28": {
@@ -326,17 +326,17 @@
 				}
 			}
 		},
-		"cradle.anim.work": {
+		"cradle.work": {
 			"loop": true,
 			"animation_length": 1.04,
 			"bones": {
 				"tooth_6": {
 					"rotation": {
 						"0.0": {
-							"vector": [0, 0, 0]
+							"vector": [ 0, 0, 0 ]
 						},
 						"0.52": {
-							"vector": [22.5, 0, 0],
+							"vector": [ 22.5, 0, 0 ],
 							"easing": "easeInOutElastic",
 							"easingArgs": [2]
 						},
