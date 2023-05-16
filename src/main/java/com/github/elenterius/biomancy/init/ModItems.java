@@ -118,7 +118,7 @@ public final class ModItems {
 
 	//## Storage & Automation
 	public static final RegistryObject<SimpleBlockItem> TONGUE = registerSimpleBlockItem(ModBlocks.TONGUE, ModRarities.UNCOMMON);
-	public static final RegistryObject<BEWLBlockItem> MAW_HOPPER = registerBlockItem(ModBlocks.MAW_HOPPER, block -> new BEWLBlockItem(block, createProperties().rarity(ModRarities.UNCOMMON)));
+	public static final RegistryObject<SimpleBlockItem> MAW_HOPPER = registerSimpleBlockItem(ModBlocks.MAW_HOPPER, ModRarities.UNCOMMON);
 	public static final RegistryObject<SimpleBlockItem> FLESHKIN_CHEST = registerBlockItem(ModBlocks.FLESHKIN_CHEST, FleshkinChestBlockItem::new, ModRarities.UNCOMMON);
 	public static final RegistryObject<StorageSacBlockItem> STORAGE_SAC = registerBlockItem(ModBlocks.STORAGE_SAC, StorageSacBlockItem::new);
 
