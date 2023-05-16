@@ -1,7 +1,6 @@
 package com.github.elenterius.biomancy.block.mawhopper;
 
 import com.github.elenterius.biomancy.init.ModBlockEntities;
-import com.github.elenterius.biomancy.util.VoxelShapeUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
@@ -26,68 +25,34 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Stream;
 
 public class MawHopperBlock extends BaseEntityBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.FACING;
-	public static final EnumProperty<Shape> SHAPE = EnumProperty.create("shape", Shape.class);
-
-	protected final Map<Integer, VoxelShape> computedShapes = new HashMap<>();
-	protected final Map<BlockState, VoxelShape> cachedShapes = new HashMap<>();
+	public static final EnumProperty<Type> TYPE = EnumProperty.create("type", Type.class);
 
 	public MawHopperBlock(Properties properties) {
 		super(properties);
-		registerDefaultState(defaultBlockState().setValue(FACING, Direction.UP).setValue(SHAPE, Shape.NORMAL));
-		stateDefinition.getPossibleStates().forEach(possibleState -> cachedShapes.put(possibleState, computeIfAbsent(possibleState)));
-	}
-
-	private static VoxelShape computeVoxelShape(Direction direction, Shape shape) {
-		if (shape == Shape.NORMAL) {
-			return Stream.of(
-					VoxelShapeUtil.createXZRotatedTowards(direction, 6, 0, 6, 10, 2, 10),
-					VoxelShapeUtil.createXZRotatedTowards(direction, 6, 2, 6, 10, 6, 10),
-					VoxelShapeUtil.createXZRotatedTowards(direction, 5, 6, 5, 11, 10, 11),
-					VoxelShapeUtil.createXZRotatedTowards(direction, 3, 10, 3, 13, 13, 13),
-					VoxelShapeUtil.createXZRotatedTowards(direction, 0, 13, 3, 16, 16, 13),
-					VoxelShapeUtil.createXZRotatedTowards(direction, 3, 13, 0, 13, 16, 16)
-			).reduce((a, b) -> Shapes.join(a, b, BooleanOp.OR)).orElse(Shapes.block());
-		}
-
-		//connected shape
-		return Stream.of(
-				VoxelShapeUtil.createXZRotatedTowards(direction, 5, 12, 5, 11, 16, 11),
-				VoxelShapeUtil.createXZRotatedTowards(direction, 6, 0, 6, 10, 12, 10)
-		).reduce((a, b) -> Shapes.join(a, b, BooleanOp.OR)).orElse(Shapes.block());
-	}
-
-	private VoxelShape computeIfAbsent(BlockState state) {
-		Direction direction = getDirection(state);
-		Shape shape = getShape(state);
-		return computedShapes.computeIfAbsent(Objects.hash(direction, shape), hash -> computeVoxelShape(direction, shape));
+		registerDefaultState(defaultBlockState().setValue(FACING, Direction.DOWN).setValue(TYPE, Type.INPUT));
+		MawHopperShapes.computePossibleShapes(stateDefinition.getPossibleStates());
 	}
 
 	public static Direction getDirection(BlockState state) {
 		return state.getValue(FACING);
 	}
 
-	public static Shape getShape(BlockState state) {
-		return state.getValue(SHAPE);
+	public static Type getType(BlockState state) {
+		return state.getValue(TYPE);
 	}
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		builder.add(FACING, SHAPE);
+		builder.add(FACING, TYPE);
 	}
 
 	@Nullable
@@ -99,10 +64,10 @@ public class MawHopperBlock extends BaseEntityBlock {
 		BlockPos neighborPos = context.getClickedPos().relative(direction);
 		BlockState neighborState = context.getLevel().getBlockState(neighborPos);
 		if (neighborState.getBlock() instanceof MawHopperBlock && getDirection(neighborState) == direction) {
-			return state.setValue(SHAPE, Shape.CONNECTED);
+			return state.setValue(TYPE, Type.STRAIGHT);
 		}
 
-		return state.setValue(SHAPE, Shape.NORMAL);
+		return state.setValue(TYPE, Type.INPUT);
 	}
 
 	@Override
@@ -110,10 +75,10 @@ public class MawHopperBlock extends BaseEntityBlock {
 		Direction ownDirection = getDirection(state);
 		if (ownDirection == direction) {
 			if (neighborState.getBlock() instanceof MawHopperBlock && getDirection(neighborState) == ownDirection) {
-				return state.setValue(SHAPE, Shape.CONNECTED);
+				return state.setValue(TYPE, Type.STRAIGHT);
 			}
 			else {
-				return state.setValue(SHAPE, Shape.NORMAL);
+				return state.setValue(TYPE, Type.INPUT);
 			}
 		}
 
@@ -162,7 +127,7 @@ public class MawHopperBlock extends BaseEntityBlock {
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		return cachedShapes.get(state);
+		return MawHopperShapes.getShape(state);
 	}
 
 	@Override
@@ -175,8 +140,8 @@ public class MawHopperBlock extends BaseEntityBlock {
 		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 
-	public enum Shape implements StringRepresentable {
-		NORMAL, CONNECTED;
+	public enum Type implements StringRepresentable {
+		INPUT, STRAIGHT;
 
 		@Override
 		public String getSerializedName() {
