@@ -56,7 +56,7 @@ public final class DataGenerators {
 		generator.addProvider(true, new ModAdvancementProvider(generator, existingFileHelper, translationProvider));
 
 		//guide book
-		generator.addProvider(true, new GuideBookProvider(generator, translationProvider));
+		generator.addProvider(false, new GuideBookProvider(generator, translationProvider)); //TODO: re-enable when ready
 
 		generator.addProvider(true, translationProvider);
 	}
