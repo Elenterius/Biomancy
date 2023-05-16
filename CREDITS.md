@@ -10,7 +10,7 @@ Artwork and Game Design help
 
 Sound Design and Music
 
-- all sounds
+- all sound effects
 
 ## Kitteh6660
 
@@ -24,15 +24,15 @@ Programming & Models
 
 Models and Textures
 
-- Bio Lantern
-- Tendon Chain
+- Original Design of the Bio Lantern Block
+- Original Design of the Tendon Chain Block
 
 ## ItsLumine
 
 Models, Animations and Textures
 
-- Bone Spike
-- Maw Hopper
+- Old Bone Spike Block
+- Original Maw Hopper Block
 - Guide Book
 - Primordial Vent
 
@@ -40,8 +40,11 @@ Models, Animations and Textures
 
 Textures & Animations
 
-- animated Bile texture
-- animated Living Flesh texture
-- animated Volatile Fluid texture
-- animated Exotic Dust texture
+- animated textures
 - Primordial Vent
+
+## M4rc3ll0
+
+Models & Designs
+
+- Original Design of the Flesh Pillar Block
