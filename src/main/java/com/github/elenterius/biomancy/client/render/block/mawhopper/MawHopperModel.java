@@ -3,12 +3,13 @@ package com.github.elenterius.biomancy.client.render.block.mawhopper;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.mawhopper.MawHopperBlock;
 import com.github.elenterius.biomancy.block.mawhopper.MawHopperBlockEntity;
+import com.github.elenterius.biomancy.block.mawhopper.VertexType;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class MawHopperModel extends AnimatedGeoModel<MawHopperBlockEntity> {
 
-	protected static final ResourceLocation INPUT_MODEL = BiomancyMod.createRL("geo/block/maw_hopper.geo.json");
+	protected static final ResourceLocation SOURCE_MODEL = BiomancyMod.createRL("geo/block/maw_hopper.geo.json");
 	protected static final ResourceLocation STRAIGHT_MODEL = BiomancyMod.createRL("geo/block/maw_hopper_connected_straight.geo.json");
 	protected static final ResourceLocation CORNER_MODEL = BiomancyMod.createRL("geo/block/maw_hopper_connected_corner.geo.json");
 
@@ -19,8 +20,10 @@ public class MawHopperModel extends AnimatedGeoModel<MawHopperBlockEntity> {
 
 	@Override
 	public ResourceLocation getModelResource(MawHopperBlockEntity blockEntity) {
-		MawHopperBlock.Type type = MawHopperBlock.getType(blockEntity.getBlockState());
-		return type == MawHopperBlock.Type.INPUT ? INPUT_MODEL : STRAIGHT_MODEL;
+		VertexType vertexType = MawHopperBlock.getVertexType(blockEntity.getBlockState());
+		if (vertexType == VertexType.SOURCE) return SOURCE_MODEL;
+
+		return MawHopperBlock.getConnection(blockEntity.getBlockState()).isCorner() ? CORNER_MODEL : STRAIGHT_MODEL;
 	}
 
 	@Override
@@ -30,8 +33,10 @@ public class MawHopperModel extends AnimatedGeoModel<MawHopperBlockEntity> {
 
 	@Override
 	public ResourceLocation getAnimationResource(MawHopperBlockEntity blockEntity) {
-		MawHopperBlock.Type type = MawHopperBlock.getType(blockEntity.getBlockState());
-		return type == MawHopperBlock.Type.INPUT ? INPUT_ANIMATION : CONNECTED_ANIMATION;
+		VertexType vertexType = MawHopperBlock.getVertexType(blockEntity.getBlockState());
+		if (vertexType == VertexType.SOURCE) return INPUT_ANIMATION;
+
+		return CONNECTED_ANIMATION;
 	}
 
 }
