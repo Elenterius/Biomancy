@@ -23,17 +23,18 @@ public final class MawHopperShapes {
 	}
 
 	private static Integer computeKey(BlockState blockState) {
-		return Objects.hash(MawHopperBlock.getDirection(blockState), MawHopperBlock.getType(blockState));
+		return Objects.hash(MawHopperBlock.getConnection(blockState), MawHopperBlock.getVertexType(blockState));
 	}
 
 	private static VoxelShape computeShape(BlockState blockState) {
-		Direction direction = MawHopperBlock.getDirection(blockState);
-		MawHopperBlock.Type type = MawHopperBlock.getType(blockState);
-		return computeVoxelShape(direction, type);
+		DirectedConnection connection = MawHopperBlock.getConnection(blockState);
+		VertexType vertexType = MawHopperBlock.getVertexType(blockState);
+		return computeVoxelShape(connection, vertexType);
 	}
 
-	private static VoxelShape computeVoxelShape(Direction direction, MawHopperBlock.Type type) {
-		if (type == MawHopperBlock.Type.INPUT) {
+	private static VoxelShape computeVoxelShape(DirectedConnection connection, VertexType vertexType) {
+		if (vertexType == VertexType.SOURCE) {
+			Direction direction = connection.ingoing;
 			return Stream.of(
 					VoxelShapeUtil.createXZRotatedTowards(direction, 0, 13, 13, 16, 16, 16),
 					VoxelShapeUtil.createXZRotatedTowards(direction, 0, 13, 0, 16, 16, 3),
@@ -45,11 +46,21 @@ public final class MawHopperShapes {
 			).reduce((a, b) -> Shapes.join(a, b, BooleanOp.OR)).orElse(Shapes.block());
 		}
 
-		//connected shape
-		return Stream.of(
-				VoxelShapeUtil.createXZRotatedTowards(direction, 5, 12, 5, 11, 16, 11),
-				VoxelShapeUtil.createXZRotatedTowards(direction, 6, 0, 6, 10, 12, 10)
-		).reduce((a, b) -> Shapes.join(a, b, BooleanOp.OR)).orElse(Shapes.block());
+		if (connection.isStraight()) {
+			//connected straight shape
+			Direction direction = connection.ingoing;
+			return Stream.of(
+					VoxelShapeUtil.createXZRotatedTowards(direction, 5, 12, 5, 11, 16, 11),
+					VoxelShapeUtil.createXZRotatedTowards(direction, 6, 0, 6, 10, 12, 10)
+			).reduce((a, b) -> Shapes.join(a, b, BooleanOp.OR)).orElse(Shapes.block());
+		}
+
+		//connected corner shape
+		VoxelShape headShape = Shapes.join(
+				VoxelShapeUtil.createXZRotatedTowards(connection.ingoing, 5, 12, 5, 11, 16, 11),
+				VoxelShapeUtil.createXZRotatedTowards(connection.ingoing, 6, 6, 6, 10, 12, 10), BooleanOp.OR);
+		VoxelShape tailShape = VoxelShapeUtil.createXZRotatedTowards(connection.outgoing.getOpposite(), 6, 0, 6, 10, 6, 10);
+		return Shapes.join(headShape, tailShape, BooleanOp.OR);
 	}
 
 	static VoxelShape getShape(BlockState blockState) {

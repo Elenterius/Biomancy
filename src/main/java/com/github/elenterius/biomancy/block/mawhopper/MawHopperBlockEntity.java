@@ -90,7 +90,7 @@ public class MawHopperBlockEntity extends BlockEntity implements IAnimatable {
 		if (level.isClientSide) return;
 
 		if (entity instanceof ItemEntity itemEntity) {
-			AABB aabb = new AABB(pos.relative(MawHopperBlock.getDirection(state)));
+			AABB aabb = new AABB(pos.relative(MawHopperBlock.getConnection(state).ingoing));
 			if (aabb.intersects(entity.getBoundingBox())) {
 				addItem(blockEntity.inventory, itemEntity);
 			}
@@ -138,16 +138,16 @@ public class MawHopperBlockEntity extends BlockEntity implements IAnimatable {
 		ticks++;
 
 		if (ticks % DURATION == 0 && !inventory.isEmpty()) {
-			Direction direction = MawHopperBlock.getDirection(state);
-			BlockPos insertPos = pos.relative(direction.getOpposite());
+			DirectedConnection connection = MawHopperBlock.getConnection(state);
+			BlockPos insertPos = pos.relative(connection.outgoing);
 			if (level.isLoaded(insertPos)) {
-				LazyOptional<IItemHandler> itemHandler = getItemHandler(level, insertPos, direction);
+				LazyOptional<IItemHandler> itemHandler = getItemHandler(level, insertPos, connection.outgoing);
 				itemHandler.map(this::tryToInsertItems);
 			}
 		}
 
 		if (ticks % (DURATION + DELAY) == 0 && !inventory.isFull()) {
-			BlockPos pullPos = pos.relative(MawHopperBlock.getDirection(state));
+			BlockPos pullPos = pos.relative(MawHopperBlock.getConnection(state).ingoing);
 			if (level.isLoaded(pullPos)) {
 				LazyOptional<IItemHandler> itemHandler = getItemHandler(level, pullPos, Direction.DOWN);
 				if (!itemHandler.map(this::tryToExtractItems).orElse(false)) {
