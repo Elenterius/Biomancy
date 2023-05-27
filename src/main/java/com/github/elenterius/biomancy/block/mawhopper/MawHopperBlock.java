@@ -12,29 +12,32 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class MawHopperBlock extends BaseEntityBlock {
+public class MawHopperBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
 
 	public static final EnumProperty<DirectedConnection> CONNECTION = EnumProperty.create("connection", DirectedConnection.class);
 	public static final EnumProperty<VertexType> VERTEX_TYPE = EnumProperty.create("vertex", VertexType.class);
+	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
 	public MawHopperBlock(Properties properties) {
 		super(properties);
-		registerDefaultState(defaultBlockState().setValue(CONNECTION, DirectedConnection.UP_DOWN).setValue(VERTEX_TYPE, VertexType.SOURCE));
+		registerDefaultState(defaultBlockState().setValue(CONNECTION, DirectedConnection.UP_DOWN).setValue(VERTEX_TYPE, VertexType.SOURCE).setValue(WATERLOGGED, false));
 		MawHopperShapes.computePossibleShapes(stateDefinition.getPossibleStates());
 	}
 
@@ -44,6 +47,10 @@ public class MawHopperBlock extends BaseEntityBlock {
 
 	public static VertexType getVertexType(BlockState state) {
 		return state.getValue(VERTEX_TYPE);
+	}
+
+	private static boolean isWaterlogged(BlockState blockState) {
+		return Boolean.TRUE.equals(blockState.getValue(WATERLOGGED));
 	}
 
 	private static boolean isOutgoingConnected(LevelAccessor level, BlockPos pos, DirectedConnection connection) {
@@ -58,12 +65,19 @@ public class MawHopperBlock extends BaseEntityBlock {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		builder.add(CONNECTION, VERTEX_TYPE);
+		builder.add(CONNECTION, VERTEX_TYPE, WATERLOGGED);
+	}
+
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		return isWaterlogged(state) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
 	}
 
 	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		boolean isWaterlogged = context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER;
+
 		Direction ingoing;
 		Direction outgoing;
 
@@ -89,14 +103,18 @@ public class MawHopperBlock extends BaseEntityBlock {
 			if (direction == sourceConnection.outgoing) {
 				vertexType = VertexType.SINK;
 			}
-			return defaultBlockState().setValue(CONNECTION, connection).setValue(VERTEX_TYPE, vertexType);
+			return defaultBlockState().setValue(CONNECTION, connection).setValue(VERTEX_TYPE, vertexType).setValue(WATERLOGGED, isWaterlogged);
 		}
 
-		return defaultBlockState().setValue(CONNECTION, connection).setValue(VERTEX_TYPE, VertexType.SOURCE);
+		return defaultBlockState().setValue(CONNECTION, connection).setValue(VERTEX_TYPE, VertexType.SOURCE).setValue(WATERLOGGED, isWaterlogged);
 	}
 
 	@Override
 	public BlockState updateShape(BlockState ourState, Direction updateDirection, BlockState theirState, LevelAccessor level, BlockPos ourPos, BlockPos theirPos) {
+		if (isWaterlogged(ourState)) {
+			level.scheduleTick(ourPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+		}
+
 		DirectedConnection ourConnection = getConnection(ourState);
 		boolean isUpdateFromIngoing = updateDirection == ourConnection.ingoing;
 		boolean isUpdateFromOutgoing = updateDirection == ourConnection.outgoing;
@@ -184,6 +202,11 @@ public class MawHopperBlock extends BaseEntityBlock {
 			return InteractionResult.CONSUME;
 		}
 		return super.use(state, level, pos, player, hand, hit);
+	}
+
+	@Override
+	public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type) {
+		return false;
 	}
 
 	@Nullable
