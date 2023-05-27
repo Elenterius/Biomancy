@@ -200,6 +200,8 @@ public class MawHopperBlock extends BaseEntityBlock {
 
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+		if (getVertexType(state) != VertexType.SOURCE) return;
+
 		BlockEntity blockentity = level.getBlockEntity(pos);
 		if (blockentity instanceof MawHopperBlockEntity blockEntity) {
 			MawHopperBlockEntity.entityInside(level, pos, state, blockEntity, entity);
