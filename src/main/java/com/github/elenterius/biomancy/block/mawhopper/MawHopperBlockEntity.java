@@ -146,7 +146,7 @@ public class MawHopperBlockEntity extends BlockEntity implements IAnimatable {
 			}
 		}
 
-		if (ticks % (DURATION + DELAY) == 0 && !inventory.isFull()) {
+		if (ticks % (DURATION + DELAY) == 0 && !inventory.isFull() && isMawHead()) {
 			BlockPos pullPos = pos.relative(MawHopperBlock.getConnection(state).ingoing);
 			if (level.isLoaded(pullPos)) {
 				LazyOptional<IItemHandler> itemHandler = getItemHandler(level, pullPos, Direction.DOWN);
@@ -155,6 +155,10 @@ public class MawHopperBlockEntity extends BlockEntity implements IAnimatable {
 				}
 			}
 		}
+	}
+
+	private boolean isMawHead() {
+		return MawHopperBlock.getVertexType(getBlockState()) == VertexType.SOURCE;
 	}
 
 	private boolean tryToInsertItems(IItemHandler itemHandler) {
