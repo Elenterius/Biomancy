@@ -75,6 +75,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
 		geckolibModel(ModBlocks.PRIMORDIAL_CRADLE.get(), PRIMAL_PARTICLE_TEXTURE);
 		geoBlockItem(ModBlocks.PRIMORDIAL_CRADLE.get(), new Vector3f(16, 16, 16));
+
+		geckolibModel(ModBlocks.MAW_HOPPER.get(), FLESH_PARTICLE_TEXTURE);
 	}
 
 	public ResourceLocation blockModel(Block block) {
