@@ -1,516 +1,282 @@
 {
-  "format_version": "1.8.0",
-  "animations": {
-    "fleshkin_chest.open": {
-      "animation_length": 0.8,
-      "bones": {
-        "main": {
-          "scale": {
-            "0.0": {
-              "vector": [
-                1,
-                1,
-                1
-              ],
-              "easing": "easeInSine"
-            },
-            "0.08": {
-              "vector": [
-                0.95,
-                0.95,
-                0.95
-              ],
-              "easing": "easeOutSine"
-            },
-            "0.28": {
-              "vector": [
-                1.05,
-                1.05,
-                1.05
-              ],
-              "easing": "easeInSine"
-            },
-            "0.64": {
-              "vector": [
-                1,
-                1,
-                1
-              ],
-              "easing": "easeOutSine"
-            }
-          }
-        },
-        "top": {
-          "rotation": {
-            "0.0": {
-              "vector": [
-                0,
-                0,
-                0
-              ]
-            },
-            "0.44": {
-              "vector": [
-                70,
-                0,
-                0
-              ],
-              "easing": "easeInOutQuad"
-            },
-            "0.56": {
-              "vector": [
-                65,
-                0,
-                0
-              ],
-              "easing": "easeOutQuad"
-            }
-          }
-        },
-        "tongue_0": {
-          "rotation": {
-            "0.0": {
-              "vector": [
-                0,
-                0,
-                0
-              ]
-            },
-            "0.48": {
-              "vector": [
-                -12.5,
-                0,
-                0
-              ],
-              "easing": "easeInOutSine"
-            }
-          },
-          "position": {
-            "0.0": {
-              "vector": [
-                0,
-                0,
-                0
-              ]
-            },
-            "0.36": {
-              "vector": [
-                0,
-                0,
-                3
-              ],
-              "easing": "easeInOutSine"
-            }
-          }
-        },
-        "tongue_1": {
-          "rotation": {
-            "0.0": {
-              "vector": [
-                55,
-                0,
-                0
-              ]
-            },
-            "0.48": {
-              "vector": [
-                30,
-                0,
-                0
-              ],
-              "easing": "easeInOutSine"
-            }
-          },
-          "position": {
-            "0.0": {
-              "vector": [
-                0,
-                0,
-                -3
-              ]
-            },
-            "0.2": {
-              "vector": [
-                0,
-                0,
-                0
-              ]
-            }
-          }
-        }
-      }
-    },
-    "fleshkin_chest.close": {
-      "animation_length": 0.64,
-      "bones": {
-        "main": {
-          "scale": {
-            "0.0": {
-              "vector": [
-                1,
-                1,
-                1
-              ],
-              "easing": "easeInSine"
-            },
-            "0.32": {
-              "vector": [
-                1,
-                1,
-                1
-              ],
-              "easing": "easeInSine"
-            },
-            "0.4": {
-              "vector": [
-                0.98,
-                0.98,
-                0.98
-              ],
-              "easing": "easeInSine"
-            },
-            "0.64": {
-              "vector": [
-                1,
-                1,
-                1
-              ],
-              "easing": "easeInOutSine"
-            }
-          }
-        },
-        "top": {
-          "rotation": {
-            "0.0": {
-              "vector": [
-                65,
-                0,
-                0
-              ],
-              "easing": "easeOutQuad"
-            },
-            "0.44": {
-              "vector": [
-                -5,
-                0,
-                0
-              ],
-              "easing": "easeInOutQuad"
-            },
-            "0.56": {
-              "vector": [
-                0,
-                0,
-                0
-              ],
-              "easing": "easeOutQuad"
-            }
-          }
-        },
-        "tongue_0": {
-          "rotation": {
-            "0.0": {
-              "vector": [
-                -12.5,
-                0,
-                0
-              ],
-              "easing": "easeInOutSine"
-            },
-            "0.48": {
-              "vector": [
-                0,
-                0,
-                0
-              ]
-            }
-          },
-          "position": {
-            "0.0": {
-              "vector": [
-                0,
-                0,
-                3
-              ],
-              "easing": "easeInOutSine"
-            },
-            "0.28": {
-              "vector": [
-                0,
-                0,
-                0
-              ],
-              "easing": "easeInSine"
-            }
-          }
-        },
-        "tongue_1": {
-          "rotation": {
-            "0.0": {
-              "vector": [
-                30,
-                0,
-                0
-              ],
-              "easing": "easeInOutSine"
-            },
-            "0.6": {
-              "vector": [
-                55,
-                0,
-                0
-              ]
-            }
-          },
-          "position": {
-            "0.0": {
-              "vector": [
-                0,
-                0,
-                0
-              ]
-            },
-            "0.4": {
-              "vector": [
-                0,
-                0,
-                -3
-              ],
-              "easing": "easeInQuad"
-            }
-          }
-        }
-      }
-    },
-    "fleshkin_chest.closed": {
-      "loop": true,
-      "animation_length": 0.64,
-      "bones": {
-        "main": {
-          "scale": {
-            "vector": [
-              1,
-              1,
-              1
-            ],
-            "easing": "easeInOutSine"
-          }
-        }
-      }
-    },
-    "fleshkin_chest.opened": {
-      "loop": true,
-      "animation_length": 0.64,
-      "bones": {
-        "main": {
-          "scale": {
-            "vector": [
-              1,
-              1,
-              1
-            ],
-            "easing": "easeInSine"
-          }
-        },
-        "top": {
-          "rotation": {
-            "vector": [
-              65,
-              0,
-              0
-            ],
-            "easing": "easeOutQuad"
-          }
-        },
-        "tongue_0": {
-          "rotation": {
-            "vector": [
-              -12.5,
-              0,
-              0
-            ],
-            "easing": "easeInOutSine"
-          },
-          "position": {
-            "vector": [
-              0,
-              0,
-              3
-            ],
-            "easing": "easeInOutSine"
-          }
-        },
-        "tongue_1": {
-          "rotation": {
-            "vector": [
-              30,
-              0,
-              0
-            ],
-            "easing": "easeInOutSine"
-          },
-          "position": {
-            "vector": [
-              0,
-              0,
-              0
-            ]
-          }
-        }
-      }
-    },
-    "fleshkin_chest.bite": {
-      "animation_length": 1.28,
-      "bones": {
-        "main": {
-          "rotation": {
-            "0.0": {
-              "vector": [
-                0,
-                0,
-                0
-              ]
-            },
-            "0.2": {
-              "vector": [
-                0,
-                0,
-                0
-              ]
-            },
-            "0.28": {
-              "vector": [
-                -5,
-                0,
-                0
-              ]
-            },
-            "0.4": {
-              "vector": [
-                -7.5,
-                0,
-                0
-              ]
-            },
-            "0.64": {
-              "vector": [
-                0,
-                0,
-                0
-              ]
-            }
-          },
-          "position": {
-            "0.0": {
-              "vector": [
-                0,
-                0,
-                0
-              ]
-            },
-            "0.16": {
-              "vector": [
-                0,
-                0,
-                0.5
-              ],
-              "easing": "easeInQuad"
-            },
-            "0.32": {
-              "vector": [
-                0,
-                0,
-                -1.5
-              ],
-              "easing": "easeOutQuad"
-            },
-            "0.52": {
-              "vector": [
-                0,
-                0,
-                0
-              ]
-            }
-          },
-          "scale": {
-            "0.0": {
-              "vector": [
-                1,
-                1,
-                1
-              ]
-            },
-            "0.16": {
-              "vector": [
-                1,
-                1,
-                1
-              ]
-            },
-            "0.24": {
-              "vector": [
-                1.1,
-                1.1,
-                1.1
-              ]
-            },
-            "0.52": {
-              "vector": [
-                1,
-                1,
-                1
-              ]
-            }
-          }
-        },
-        "top": {
-          "rotation": {
-            "0.0": {
-              "vector": [
-                0,
-                0,
-                0
-              ]
-            },
-            "0.08": {
-              "vector": [
-                5,
-                0,
-                0
-              ]
-            },
-            "0.16": {
-              "vector": [
-                55,
-                0,
-                0
-              ]
-            },
-            "0.24": {
-              "vector": [
-                55,
-                0,
-                0
-              ]
-            },
-            "0.32": {
-              "vector": [
-                -2.5,
-                0,
-                0
-              ]
-            },
-            "0.48": {
-              "vector": [
-                0,
-                0,
-                0
-              ]
-            }
-          }
-        }
-      }
-    }
-  },
-  "geckolib_format_version": 2
+	"format_version": "1.8.0",
+	"animations": {
+		"fleshkin_chest.open": {
+			"animation_length": 0.8,
+			"bones": {
+				"root": {
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1],
+							"easing": "easeInSine"
+						},
+						"0.08": {
+							"vector": [0.95, 0.95, 0.95],
+							"easing": "easeOutSine"
+						},
+						"0.28": {
+							"vector": [1.05, 1.05, 1.05],
+							"easing": "easeInSine"
+						},
+						"0.64": {
+							"vector": [1, 1, 1],
+							"easing": "easeOutSine"
+						}
+					}
+				},
+				"mouth_top": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.44": {
+							"vector": [70, 0, 0],
+							"easing": "easeInOutQuad"
+						},
+						"0.56": {
+							"vector": [65, 0, 0],
+							"easing": "easeOutQuad"
+						}
+					}
+				},
+				"tongue_0": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.48": {
+							"vector": [-12.5, 0, 0],
+							"easing": "easeInOutSine"
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.36": {
+							"vector": [0, 0, 3],
+							"easing": "easeInOutSine"
+						}
+					}
+				},
+				"tongue_1": {
+					"rotation": {
+						"0.0": {
+							"vector": [55, 0, 0]
+						},
+						"0.48": {
+							"vector": [30, 0, 0],
+							"easing": "easeInOutSine"
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 0, -3]
+						},
+						"0.2": {
+							"vector": [0, 0, 0]
+						}
+					}
+				}
+			}
+		},
+		"fleshkin_chest.close": {
+			"animation_length": 0.64,
+			"bones": {
+				"root": {
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1],
+							"easing": "easeInSine"
+						},
+						"0.32": {
+							"vector": [1, 1, 1],
+							"easing": "easeInSine"
+						},
+						"0.4": {
+							"vector": [0.98, 0.98, 0.98],
+							"easing": "easeInSine"
+						},
+						"0.64": {
+							"vector": [1, 1, 1],
+							"easing": "easeInOutSine"
+						}
+					}
+				},
+				"mouth_top": {
+					"rotation": {
+						"0.0": {
+							"vector": [65, 0, 0],
+							"easing": "easeOutQuad"
+						},
+						"0.44": {
+							"vector": [-5, 0, 0],
+							"easing": "easeInOutQuad"
+						},
+						"0.56": {
+							"vector": [0, 0, 0],
+							"easing": "easeOutQuad"
+						}
+					}
+				},
+				"tongue_0": {
+					"rotation": {
+						"0.0": {
+							"vector": [-12.5, 0, 0],
+							"easing": "easeInOutSine"
+						},
+						"0.48": {
+							"vector": [0, 0, 0]
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 3],
+							"easing": "easeInOutSine"
+						},
+						"0.28": {
+							"vector": [0, 0, 0],
+							"easing": "easeInSine"
+						}
+					}
+				},
+				"tongue_1": {
+					"rotation": {
+						"0.0": {
+							"vector": [30, 0, 0],
+							"easing": "easeInOutSine"
+						},
+						"0.6": {
+							"vector": [55, 0, 0]
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.4": {
+							"vector": [0, 0, -3],
+							"easing": "easeInQuad"
+						}
+					}
+				}
+			}
+		},
+		"fleshkin_chest.opened": {
+			"loop": true,
+			"bones": {
+				"root": {
+					"scale": {
+						"vector": [1, 1, 1],
+						"easing": "easeInSine"
+					}
+				},
+				"mouth_top": {
+					"rotation": {
+						"vector": [65, 0, 0],
+						"easing": "easeOutQuad"
+					}
+				},
+				"tongue_0": {
+					"rotation": {
+						"vector": [-12.5, 0, 0],
+						"easing": "easeInOutSine"
+					},
+					"position": {
+						"vector": [0, 0, 3],
+						"easing": "easeInOutSine"
+					}
+				},
+				"tongue_1": {
+					"rotation": {
+						"vector": [30, 0, 0],
+						"easing": "easeInOutSine"
+					},
+					"position": {
+						"vector": [0, 0, 0]
+					}
+				}
+			}
+		},
+		"fleshkin_chest.bite": {
+			"animation_length": 1.28,
+			"bones": {
+				"root": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.2": {
+							"vector": [0, 0, 0]
+						},
+						"0.28": {
+							"vector": [-5, 0, 0]
+						},
+						"0.4": {
+							"vector": [-7.5, 0, 0]
+						},
+						"0.64": {
+							"vector": [0, 0, 0]
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.16": {
+							"vector": [0, 0, 0.5],
+							"easing": "easeInQuad"
+						},
+						"0.32": {
+							"vector": [0, 0, -1.5],
+							"easing": "easeOutQuad"
+						},
+						"0.52": {
+							"vector": [0, 0, 0]
+						}
+					},
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.16": {
+							"vector": [1, 1, 1]
+						},
+						"0.24": {
+							"vector": [1.1, 1.1, 1.1]
+						},
+						"0.52": {
+							"vector": [1, 1, 1]
+						}
+					}
+				},
+				"mouth_top": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.08": {
+							"vector": [5, 0, 0]
+						},
+						"0.16": {
+							"vector": [55, 0, 0]
+						},
+						"0.24": {
+							"vector": [55, 0, 0]
+						},
+						"0.32": {
+							"vector": [-2.5, 0, 0]
+						},
+						"0.48": {
+							"vector": [0, 0, 0]
+						}
+					}
+				}
+			}
+		},
+		"fleshkin_chest.closed": {
+			"loop": true
+		}
+	},
+	"geckolib_format_version": 2
 }
