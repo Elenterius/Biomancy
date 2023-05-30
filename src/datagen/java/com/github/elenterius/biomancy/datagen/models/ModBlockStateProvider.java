@@ -3,8 +3,10 @@ package com.github.elenterius.biomancy.datagen.models;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.*;
 import com.github.elenterius.biomancy.block.fleshspike.FleshSpikeBlock;
+import com.github.elenterius.biomancy.block.ownable.OwnablePressurePlateBlock;
 import com.github.elenterius.biomancy.block.property.DirectionalSlabType;
 import com.github.elenterius.biomancy.block.property.Orientation;
+import com.github.elenterius.biomancy.block.property.UserSensitivity;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -78,6 +80,42 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
 		geckolibModel(ModBlocks.MAW_HOPPER.get(), FLESH_PARTICLE_TEXTURE);
 		geckolibModel(ModBlocks.FLESHKIN_CHEST.get(), FLESH_PARTICLE_TEXTURE);
+
+		fleshkinPressurePlate(ModBlocks.FLESHKIN_PRESSURE_PLATE.get());
+	}
+
+	private void fleshkinPressurePlate(OwnablePressurePlateBlock block) {
+		String path = path(block);
+		ResourceLocation baseTexture = blockTexture(block);
+
+		BlockModelBuilder pressurePlateModel = createPressurePlateModel(path, baseTexture, UserSensitivity.FRIENDLY);
+
+		getVariantBuilder(block)
+				.partialState()
+				.with(PressurePlateBlock.POWERED, true).with(OwnablePressurePlateBlock.USER_SENSITIVITY, UserSensitivity.FRIENDLY)
+				.addModels(new ConfiguredModel(createPressurePlateDownModel(path, baseTexture, UserSensitivity.FRIENDLY)))
+				.partialState()
+				.with(PressurePlateBlock.POWERED, false).with(OwnablePressurePlateBlock.USER_SENSITIVITY, UserSensitivity.FRIENDLY)
+				.addModels(new ConfiguredModel(pressurePlateModel))
+				.partialState()
+				.with(PressurePlateBlock.POWERED, true).with(OwnablePressurePlateBlock.USER_SENSITIVITY, UserSensitivity.HOSTILE)
+				.addModels(new ConfiguredModel(createPressurePlateDownModel(path, baseTexture, UserSensitivity.HOSTILE)))
+				.partialState()
+				.with(PressurePlateBlock.POWERED, false).with(OwnablePressurePlateBlock.USER_SENSITIVITY, UserSensitivity.HOSTILE)
+				.addModels(new ConfiguredModel(createPressurePlateModel(path, baseTexture, UserSensitivity.HOSTILE)))
+				.partialState()
+				.with(OwnablePressurePlateBlock.USER_SENSITIVITY, UserSensitivity.NONE)
+				.addModels(new ConfiguredModel(pressurePlateModel));
+
+		simpleBlockItem(block, pressurePlateModel);
+	}
+
+	private BlockModelBuilder createPressurePlateModel(String path, ResourceLocation baseTexture, UserSensitivity sensitivity) {
+		return models().pressurePlate(path + "_" + sensitivity.getSerializedName(), extend(baseTexture, "_" + sensitivity.getSerializedName()));
+	}
+
+	private BlockModelBuilder createPressurePlateDownModel(String path, ResourceLocation baseTexture, UserSensitivity sensitivity) {
+		return models().pressurePlateDown(path + "_" + sensitivity.getSerializedName() + "_down", extend(baseTexture, "_" + sensitivity.getSerializedName() + "_down"));
 	}
 
 	public ResourceLocation blockModel(Block block) {
