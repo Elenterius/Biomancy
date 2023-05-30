@@ -161,6 +161,12 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		simpleBlockItem(block, models[0]);
 	}
 
+	public void storageSac(Block block) {
+		ModelFile.ExistingModelFile existingModel = models().getExistingFile(blockModel(block));
+		directionalBlock(block, blockState -> existingModel, BlockStateProperties.WATERLOGGED);
+		simpleBlockItem(block, existingModel);
+	}
+
 	private void geoBlockItem(Block block, Vector3f modelBounds) {
 		String path = path(block);
 
@@ -234,20 +240,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
 						},
 						DirectionalSlabBlock.WATERLOGGED
 				);
-	}
-
-	public void storageSac(Block block) {
-		ModelFile.ExistingModelFile existingModel = models().getExistingFile(blockModel(block));
-		getVariantBuilder(block)
-				.forAllStates(state -> {
-					Direction dir = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
-					return ConfiguredModel.builder()
-							.modelFile(existingModel)
-							.rotationY(((int) dir.toYRot() + 180) % 360)
-							.build();
-				});
-
-		simpleBlockItem(block, existingModel);
 	}
 
 	public void tendonChain(FleshChainBlock block) {
