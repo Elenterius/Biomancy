@@ -36,8 +36,6 @@ public final class ModScreens {
 		registerMenuScreen(ModMenuTypes.FLESHKIN_CHEST, FleshkinChestScreen::new, FleshkinChestScreen.class);
 		registerMenuScreen(ModMenuTypes.DIGESTER, DigesterScreen::new, DigesterScreen.class);
 		registerMenuScreen(ModMenuTypes.BIO_FORGE, BioForgeScreen::new, BioForgeScreen.class);
-		registerMenuScreen(ModMenuTypes.GLAND, GlandScreen::new, GlandScreen.class);
-		registerMenuScreen(ModMenuTypes.GULGE, GulgeScreen::new, GulgeScreen.class);
 	}
 
 }
