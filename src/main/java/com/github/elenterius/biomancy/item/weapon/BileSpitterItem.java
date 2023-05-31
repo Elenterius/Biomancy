@@ -39,6 +39,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+@Deprecated(forRemoval = true)
 public class BileSpitterItem extends ProjectileWeaponItem implements ICustomTooltip, IAnimatable, ISyncable, IArmPoseProvider {
 
 	private static final String CONTROLLER_NAME = "controller";

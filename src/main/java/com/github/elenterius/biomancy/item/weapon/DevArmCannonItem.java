@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
 
+@Deprecated
 public class DevArmCannonItem extends Item implements IAnimatable, IArmPoseProvider, ICustomTooltip, IKeyListener {
 
 	public static final Set<Enchantment> VALID_ENCHANTMENTS = Set.of(Enchantments.PUNCH_ARROWS, Enchantments.POWER_ARROWS);

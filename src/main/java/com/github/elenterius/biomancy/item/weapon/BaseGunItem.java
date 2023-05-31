@@ -28,6 +28,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Set;
 
+@Deprecated
 public abstract class BaseGunItem extends ProjectileWeaponItem implements IGun, IKeyListener {
 	public static final Set<Enchantment> VALID_VANILLA_ENCHANTMENTS = Set.of(Enchantments.PUNCH_ARROWS, Enchantments.POWER_ARROWS, Enchantments.QUICK_CHARGE);
 
