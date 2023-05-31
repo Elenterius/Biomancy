@@ -4,7 +4,6 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.entity.fleshblob.DomesticatedFleshBlob;
 import com.github.elenterius.biomancy.entity.fleshblob.HungryFleshBlob;
 import com.github.elenterius.biomancy.entity.fleshblob.MalignantFleshBlob;
-import com.github.elenterius.biomancy.entity.projectile.AntiGravityProjectile;
 import com.github.elenterius.biomancy.entity.projectile.CorrosiveAcidProjectile;
 import com.github.elenterius.biomancy.entity.projectile.ToothProjectile;
 import com.github.elenterius.biomancy.entity.projectile.WitherProjectile;
@@ -49,7 +48,6 @@ public final class ModEntityTypes {
 	//Projectiles
 	public static final RegistryObject<EntityType<ToothProjectile>> TOOTH_PROJECTILE = register("tooth_projectile", EntityType.Builder.<ToothProjectile>of(ToothProjectile::new, MobCategory.MISC).sized(0.25f, 0.25f).updateInterval(10));
 	public static final RegistryObject<EntityType<WitherProjectile>> WITHER_SKULL_PROJECTILE = register("wither_projectile", EntityType.Builder.<WitherProjectile>of(WitherProjectile::new, MobCategory.MISC).sized(0.3125f, 0.3125f).updateInterval(10));
-	public static final RegistryObject<EntityType<AntiGravityProjectile>> ANTI_GRAVITY_PROJECTILE = register("anti_gravity_projectile", EntityType.Builder.<AntiGravityProjectile>of(AntiGravityProjectile::new, MobCategory.MISC).sized(0.25f, 0.25f).updateInterval(10));
 	public static final RegistryObject<EntityType<CorrosiveAcidProjectile>> CORROSIVE_ACID_PROJECTILE = register("corrosive_acid_projectile", EntityType.Builder.<CorrosiveAcidProjectile>of(CorrosiveAcidProjectile::new, MobCategory.MISC).sized(0.25f, 0.25f).updateInterval(10));
 
 	private ModEntityTypes() {}
