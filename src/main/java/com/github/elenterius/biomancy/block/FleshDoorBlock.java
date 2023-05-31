@@ -26,10 +26,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.*;
 import org.jetbrains.annotations.Nullable;
 
 public class FleshDoorBlock extends DoorBlock {
@@ -199,7 +196,13 @@ public class FleshDoorBlock extends DoorBlock {
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		int idx = isOpen(state) ? OPEN_SHAPE_INDEX + 2 : CLOSED_SHAPE_INDEX;
+		boolean isOpen = isOpen(state);
+
+		if (isOpen && context instanceof EntityCollisionContext entityContext && entityContext.getEntity() != null) {
+			return Shapes.empty(); //workaround for create contraptions
+		}
+
+		int idx = isOpen ? OPEN_SHAPE_INDEX + 2 : CLOSED_SHAPE_INDEX;
 
 		return switch (state.getValue(ORIENTATION)) {
 			case X_POSITIVE -> X_POS_AABB[idx];
