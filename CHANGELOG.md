@@ -1,3 +1,36 @@
+## [1.7.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.6.0...1.19.2-v2.1.7.0) (2023-05-31)
+
+
+### Features
+
+* allow Maw Hopper to be waterlogged ([752707f](https://github.com/Elenterius/Biomancy/commit/752707fc277ea921ba94b916718cc042351acbff))
+* apply micro-optimizations to Maw Hopper ([09a5694](https://github.com/Elenterius/Biomancy/commit/09a5694309c8479a7f342ccb79df0c613d8cb7cc))
+* disable entity collision for open Flesh Doors ([43da96f](https://github.com/Elenterius/Biomancy/commit/43da96ff5f8afe7775fdc1dfa134e3d5f8d0b71e))
+* make Storage Sac Block directional and water loggable ([52f6fba](https://github.com/Elenterius/Biomancy/commit/52f6fba6d93cc4946b79da2c7c3811b640505d75))
+* nerf fleshkin chest by removing shulkerbox behavior and dropping items on destruction ([4ef7baf](https://github.com/Elenterius/Biomancy/commit/4ef7baf1612ca1d440fbc1ca40767db141b930da))
+* rework Maw Hopper behavior/system (directed pipes) ([8e2a44b](https://github.com/Elenterius/Biomancy/commit/8e2a44b38577e16d6b2559ceaa78ac2a2f8e1dac))
+* tweak Maw Hopper assets ([fd9d689](https://github.com/Elenterius/Biomancy/commit/fd9d689a01484706c0975a20631cd304c77a5d00))
+* update advancements ([eaeab3a](https://github.com/Elenterius/Biomancy/commit/eaeab3a5fbf6594147a2b3109ce586d768bc21e2))
+* update Bio-Forge model ([4293777](https://github.com/Elenterius/Biomancy/commit/42937776a1a9b3ac5ff82e1107a2063574525761))
+* update Bio-Lab bounding box ([f2ff83c](https://github.com/Elenterius/Biomancy/commit/f2ff83c37d204d86e97d860c0462f0dc140bcde0))
+* update Bio-Lab model ([6b131b7](https://github.com/Elenterius/Biomancy/commit/6b131b76cf7147d9337e4638bc54c814f42a3f21))
+* update Bio-Lantern model and add variants ([552d4d0](https://github.com/Elenterius/Biomancy/commit/552d4d08b7c2df83a26245f76f2d8e86ace04fca))
+* update Decomposer model ([79ae27c](https://github.com/Elenterius/Biomancy/commit/79ae27c285e9b4c07b07537d0de97b0f5aef86ec))
+* update Digester Block model ([6b1e886](https://github.com/Elenterius/Biomancy/commit/6b1e886f6020dd4773c9acb1674badee15afbb0e))
+* update Flesh Door Model ([afa037f](https://github.com/Elenterius/Biomancy/commit/afa037f3e585d3942e450639da5a44d7c3867b01))
+* update Fleshkin Chest Model ([a548d1f](https://github.com/Elenterius/Biomancy/commit/a548d1f9abac460882eacd52a9dd7d6d17f437f4))
+* update Fleshkin Pressure Plate Model ([a12991d](https://github.com/Elenterius/Biomancy/commit/a12991d25d9c7499fd679e6bc22852172e77f8ac))
+* update Maw Hopper model ([007d232](https://github.com/Elenterius/Biomancy/commit/007d2327ec82d1e47ad44a148972dbdbec604cc9))
+* update primordial core texture ([8127a37](https://github.com/Elenterius/Biomancy/commit/8127a37e84cb894104f22efa292d36162ae16b07))
+* update Tendon Chain model and texture ([d67913f](https://github.com/Elenterius/Biomancy/commit/d67913fc7f00ce3078c7fb2ff35c7c5b658e6b0a))
+* update Tongue Block model ([792d64a](https://github.com/Elenterius/Biomancy/commit/792d64a5ad9e40ea9b3fb92efdc0cfdf58f8a94e))
+
+
+### Bug Fixes
+
+* fix tongue animation not completing the the retraction animation after dropping items ([812c8b4](https://github.com/Elenterius/Biomancy/commit/812c8b4b11f046cbccf4691ad19a4ed99e98f6a0))
+* fix y rotation of bounding boxes of blocks ([dd7df34](https://github.com/Elenterius/Biomancy/commit/dd7df34eae7aef453174e4c3fd389517614abea9))
+
 ## [1.6.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.5.0...1.19.2-v2.1.6.0) (2023-05-10)
 
 
@@ -92,17 +125,4 @@
 
 * avoid creation of objects during the renderer phase of the Cradle ([36442f1](https://github.com/Elenterius/Biomancy/commit/36442f1a8ea756a70c96e58b04ae5216210ffc11))
 * refactor intermediary key cache ([5ac54fb](https://github.com/Elenterius/Biomancy/commit/5ac54fb691d0fade66971daca94ab1bdad521ce5))
-
-## [1.1.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.0.0...1.19.2-v2.1.1.0) (2023-04-25)
-
-
-### Features
-
-* make Cleansing Serum able to remove forced age from applicable mobs ([908c7ef](https://github.com/Elenterius/Biomancy/commit/908c7ef86fea34248a103eb27ec42d43ba2bae90))
-* rework Spike block ([4138a5b](https://github.com/Elenterius/Biomancy/commit/4138a5b36389e6d6848495a9b9b433a3717108ec))
-
-
-### Bug Fixes
-
-* fix Bio-Forge GUI crashing the game when clicking next page button ([4046464](https://github.com/Elenterius/Biomancy/commit/40464647129b6077d70f58bc96db9e7555ba1413))
 
