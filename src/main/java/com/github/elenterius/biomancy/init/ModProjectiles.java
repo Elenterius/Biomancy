@@ -1,6 +1,9 @@
 package com.github.elenterius.biomancy.init;
 
-import com.github.elenterius.biomancy.entity.projectile.*;
+import com.github.elenterius.biomancy.entity.projectile.BaseProjectile;
+import com.github.elenterius.biomancy.entity.projectile.CorrosiveAcidProjectile;
+import com.github.elenterius.biomancy.entity.projectile.ToothProjectile;
+import com.github.elenterius.biomancy.entity.projectile.WitherProjectile;
 import com.github.elenterius.biomancy.item.weapon.IGun;
 import it.unimi.dsi.fastutil.floats.FloatUnaryOperator;
 import it.unimi.dsi.fastutil.ints.IntUnaryOperator;
@@ -18,7 +21,6 @@ public final class ModProjectiles {
 	public static final List<ConfiguredProjectile<? extends BaseProjectile>> PRECONFIGURED_PROJECTILES = new ArrayList<>();
 	public static final ConfiguredProjectile<ToothProjectile> TOOTH = build("Sharp Tooth", 1.75f, 5f, 0, convertToInaccuracy(0.92f), ToothProjectile::new);
 	public static final ConfiguredProjectile<WitherProjectile> WITHER = build("Withershot", 0.8f, 8f, 0, convertToInaccuracy(0.9f), WitherProjectile::new);
-	public static final ConfiguredProjectile<AntiGravityProjectile> ANTI_GRAVITY = build("AntiGravity", 1.75f, 0, 0, convertToInaccuracy(0.92f), AntiGravityProjectile::new);
 	public static final ConfiguredProjectile<CorrosiveAcidProjectile> CORROSIVE = build("Corrosive", 1.5f, 4, 0, convertToInaccuracy(0.9f), CorrosiveAcidProjectile::new);
 
 	private static float convertToInaccuracy(float accuracy) {
