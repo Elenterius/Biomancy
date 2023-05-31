@@ -78,9 +78,15 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		geckolibModel(ModBlocks.PRIMORDIAL_CRADLE.get(), PRIMAL_PARTICLE_TEXTURE);
 		geoBlockItem(ModBlocks.PRIMORDIAL_CRADLE.get(), new Vector3f(16, 16, 16));
 
-		geckolibModel(ModBlocks.MAW_HOPPER.get(), FLESH_PARTICLE_TEXTURE);
-		geckolibModel(ModBlocks.FLESHKIN_CHEST.get(), FLESH_PARTICLE_TEXTURE);
+		geckolibModel(ModBlocks.DECOMPOSER.get(), FLESH_PARTICLE_TEXTURE);
+		geckolibModel(ModBlocks.BIO_FORGE.get(), FLESH_PARTICLE_TEXTURE);
+		geckolibModel(ModBlocks.BIO_LAB.get(), FLESH_PARTICLE_TEXTURE);
+		geckolibModel(ModBlocks.DIGESTER.get(), FLESH_PARTICLE_TEXTURE);
 
+		geckolibModel(ModBlocks.MAW_HOPPER.get(), FLESH_PARTICLE_TEXTURE);
+		geckolibModel(ModBlocks.TONGUE.get(), FLESH_PARTICLE_TEXTURE);
+
+		geckolibModel(ModBlocks.FLESHKIN_CHEST.get(), FLESH_PARTICLE_TEXTURE);
 		fleshkinPressurePlate(ModBlocks.FLESHKIN_PRESSURE_PLATE.get());
 	}
 
