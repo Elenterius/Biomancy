@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.serum;
 
-import com.github.elenterius.biomancy.init.ModMobEffects;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -19,6 +18,7 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.UUID;
 
+@Deprecated
 public class DecaySerum extends BasicSerum {
 
 	public DecaySerum(int colorIn) {
@@ -31,7 +31,7 @@ public class DecaySerum extends BasicSerum {
 	//		BlockState state = world.getBlockState(pos);
 	//		Block block = state.getBlock();
 
-//		if (block == ModBlocks.FLESH_BLOCK.get()) {
+	//		if (block == ModBlocks.FLESH_BLOCK.get()) {
 //			if (!world.isClientSide) world.setBlockAndUpdate(pos, ModBlocks.NECROTIC_FLESH_BLOCK.get().defaultBlockState());
 //			return true;
 //		}
@@ -56,19 +56,19 @@ public class DecaySerum extends BasicSerum {
 		Collection<MobEffectInstance> effects = target.getActiveEffects();
 		int amplifier = 0;
 		int duration = 0;
-		for (MobEffectInstance effectInstance : effects) {
-			if (effectInstance.getEffect() == ModMobEffects.FLESH_EATING_DISEASE.get()) {
-				amplifier = effectInstance.getAmplifier() + 1;
-				duration = effectInstance.getDuration();
-				break;
-			}
-		}
+		//		for (MobEffectInstance effectInstance : effects) {
+		//			if (effectInstance.getEffect() == ModMobEffects.FLESH_EATING_DISEASE.get()) {
+		//				amplifier = effectInstance.getAmplifier() + 1;
+		//				duration = effectInstance.getDuration();
+		//				break;
+		//			}
+		//		}
 		duration += 5 * 120;
 
-		if (!convertLivingEntity((ServerLevel) target.level, target, amplifier)) {
-			MobEffectInstance effectInstance = new MobEffectInstance(ModMobEffects.FLESH_EATING_DISEASE.get(), duration, amplifier);
-			target.addEffect(effectInstance);
-		}
+		//		if (!convertLivingEntity((ServerLevel) target.level, target, amplifier)) {
+		//			MobEffectInstance effectInstance = new MobEffectInstance(ModMobEffects.FLESH_EATING_DISEASE.get(), duration, amplifier);
+		//			target.addEffect(effectInstance);
+		//		}
 	}
 
 	@Override
@@ -76,15 +76,15 @@ public class DecaySerum extends BasicSerum {
 		Collection<MobEffectInstance> effects = targetSelf.getActiveEffects();
 		int amplifier = 0;
 		int duration = 0;
-		for (MobEffectInstance effectInstance : effects) {
-			if (effectInstance.getEffect() == ModMobEffects.FLESH_EATING_DISEASE.get()) {
-				amplifier = effectInstance.getAmplifier() + 1;
-				duration = effectInstance.getDuration();
-				break;
-			}
-		}
-		MobEffectInstance effectInstance = new MobEffectInstance(ModMobEffects.FLESH_EATING_DISEASE.get(), 5 * 120 + duration, amplifier);
-		targetSelf.addEffect(effectInstance);
+		//		for (MobEffectInstance effectInstance : effects) {
+		//			if (effectInstance.getEffect() == ModMobEffects.FLESH_EATING_DISEASE.get()) {
+		//				amplifier = effectInstance.getAmplifier() + 1;
+		//				duration = effectInstance.getDuration();
+		//				break;
+		//			}
+		//		}
+		//		MobEffectInstance effectInstance = new MobEffectInstance(ModMobEffects.FLESH_EATING_DISEASE.get(), 5 * 120 + duration, amplifier);
+		//		targetSelf.addEffect(effectInstance);
 	}
 
 	private boolean convertLivingEntity(ServerLevel level, LivingEntity target, int amplifier) {
