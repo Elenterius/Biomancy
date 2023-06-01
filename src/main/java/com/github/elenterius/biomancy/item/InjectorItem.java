@@ -466,7 +466,8 @@ public class InjectorItem extends Item implements SerumInjector, ICustomTooltip,
 
 	enum AnimState {
 		INJECT_OTHER(0, "injector.inject"),
-		INJECT_SELF(1, "injector.inject.self"),
+		INJECT_SELF(1, "injector.inject_self"),
+		INJECT_FAIL(3, "injector.inject_fail"),
 		REGROW_NEEDLE(2, "injector.regrow_needle");
 
 		private final int id;

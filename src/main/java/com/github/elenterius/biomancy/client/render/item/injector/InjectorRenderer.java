@@ -36,11 +36,8 @@ public class InjectorRenderer extends GeoItemRenderer<InjectorItem> {
 
 	@Override
 	public void renderRecursively(GeoBone bone, PoseStack stack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		if (bone.name.equals("serum")) {
-			renderSerumBone(bone, stack, buffer, packedLight, packedOverlay, 0.8f);
-		}
-		else if (bone.name.equals("serum_core")) {
-			renderSerumBone(bone, stack, buffer, packedLight, packedOverlay, 1f);
+		if (bone.name.equals("_serum_core")) {
+			renderSerumBone(bone, stack, buffer, packedLight, packedOverlay, alpha);
 		}
 		else {
 			super.renderRecursively(bone, stack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
@@ -57,7 +54,7 @@ public class InjectorRenderer extends GeoItemRenderer<InjectorItem> {
 
 	@Override
 	public RenderType getRenderType(InjectorItem item, float partialTicks, PoseStack stack, @Nullable MultiBufferSource buffer, @Nullable VertexConsumer vertexBuilder, int packedLight, ResourceLocation texture) {
-		return RenderType.entityTranslucent(texture);
+		return RenderType.entityTranslucentCull(texture);
 	}
 
 	@Override
