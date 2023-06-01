@@ -299,7 +299,6 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addEffect(ModMobEffects.ARMOR_SHRED, "Armor Shred");
 		addEffect(ModMobEffects.ESSENCE_ANEMIA, "[PH] Essence Anemia");
 		addEffect(ModMobEffects.LIBIDO, "Fertility");
-		addEffect(ModMobEffects.FLESH_EATING_DISEASE, "[WIP] Necrotizing Flesh");
 	}
 
 	private void addEnchantmentTranslations() {
