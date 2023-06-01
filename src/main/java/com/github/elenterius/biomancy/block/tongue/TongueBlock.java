@@ -58,7 +58,14 @@ public class TongueBlock extends HorizontalDirectionalBlock implements EntityBlo
 	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+		Direction clickedFace = context.getClickedFace();
+
+		if (clickedFace.getAxis().isHorizontal()) {
+			return defaultBlockState().setValue(FACING, clickedFace);
+		}
+		else {
+			return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+		}
 	}
 
 	@Nullable
