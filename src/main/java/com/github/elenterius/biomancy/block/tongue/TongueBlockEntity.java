@@ -14,7 +14,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.IItemHandler;
 import software.bernie.geckolib3.core.AnimationState;
@@ -32,9 +31,9 @@ public class TongueBlockEntity extends SimpleSyncedBlockEntity implements IAnima
 	public static final String INVENTORY_TAG = "Inventory";
 	public static final int ITEM_TRANSFER_AMOUNT = 3;
 	public static final int DURATION = 24;
-	public static final int DELAY = 8 + 1; //ceil(31.2) --> 32
-	protected static final AnimationBuilder IDLE_ANIM = new AnimationBuilder().loop("tongue.none");
-	protected static final AnimationBuilder STRETCH_ANIM = new AnimationBuilder().addAnimation("tongue.stretch");
+	public static final int DELAY = 12;
+	protected static final AnimationBuilder IDLE_ANIM = new AnimationBuilder().loop("tongue.idle");
+	protected static final AnimationBuilder STRETCH_ANIM = new AnimationBuilder().playOnce("tongue.stretch");
 
 	private final SingleItemStackHandler inventory;
 	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
@@ -63,20 +62,20 @@ public class TongueBlockEntity extends SimpleSyncedBlockEntity implements IAnima
 	private void serverTick(ServerLevel level, BlockPos pos, BlockState state) {
 		ticks++;
 
-		if (ticks % DURATION == 0 && !inventory.isEmpty()) {
+		if (ticks % DURATION == 0 && isHoldingItem()) {
 			Direction facing = TongueBlock.getFacing(state);
 			dropItems(level, pos, facing);
 			return;
 		}
 
-		if (ticks % (DURATION + DELAY) == 0 && inventory.isEmpty()) {
+		if (ticks % (DURATION + DELAY) == 0 && !isHoldingItem()) {
 			Direction facing = TongueBlock.getFacing(state);
 			BlockPos relativePos = pos.relative(facing.getOpposite());
 			if (level.isLoaded(relativePos)) {
 				LevelUtil.getItemHandler(level, relativePos, Direction.DOWN).ifPresent(this::tryToExtractItems);
 			}
 
-			if (!inventory.isEmpty()) ticks = 0;
+			if (isHoldingItem()) ticks = 0;
 		}
 	}
 
@@ -110,6 +109,10 @@ public class TongueBlockEntity extends SimpleSyncedBlockEntity implements IAnima
 		return inventory.getStack();
 	}
 
+	public boolean isHoldingItem() {
+		return !inventory.isEmpty();
+	}
+
 	@Override
 	protected void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
@@ -138,13 +141,17 @@ public class TongueBlockEntity extends SimpleSyncedBlockEntity implements IAnima
 		}
 	}
 
-	private <E extends BlockEntity & IAnimatable> PlayState handleAnim(AnimationEvent<E> event) {
-		AnimationController<E> controller = event.getController();
-		if (inventory.isEmpty()) {
-			if (controller.getAnimationState() == AnimationState.Stopped) controller.setAnimation(IDLE_ANIM);
-		}
-		else {
+	protected <T extends TongueBlockEntity> PlayState handleAnim(AnimationEvent<T> event) {
+		AnimationController<T> controller = event.getController();
+		boolean isStopped = controller.getAnimationState() == AnimationState.Stopped;
+
+		if (event.getAnimatable().isHoldingItem()) {
 			controller.setAnimation(STRETCH_ANIM);
+			if (!isStopped) return PlayState.CONTINUE;
+		}
+
+		if (isStopped) {
+			controller.setAnimation(IDLE_ANIM);
 		}
 
 		return PlayState.CONTINUE;
