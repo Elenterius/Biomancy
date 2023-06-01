@@ -37,7 +37,7 @@ public class TongueBlock extends HorizontalDirectionalBlock implements EntityBlo
 	}
 
 	private static VoxelShape createVoxelShape(Direction direction) {
-		return VoxelShapeUtil.createXZRotatedTowards(direction, 2, 0, 2, 14, 4, 14);
+		return VoxelShapeUtil.createYRotatedTowards(direction, 2, 3, 12, 14, 13, 16);
 	}
 
 	@Nullable
