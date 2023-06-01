@@ -8,7 +8,7 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class InjectorModel extends AnimatedGeoModel<InjectorItem> {
 
 	protected static final ResourceLocation MODEL = BiomancyMod.createRL("geo/item/injector.geo.json");
-	protected static final ResourceLocation TEXTURE = BiomancyMod.createRL("textures/item/injector_tint.png");
+	protected static final ResourceLocation TEXTURE = BiomancyMod.createRL("textures/item/injector.png");
 	protected static final ResourceLocation ANIMATION = BiomancyMod.createRL("animations/item/injector.animation.json");
 
 	@Override
