@@ -26,7 +26,10 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.*;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class FleshDoorBlock extends DoorBlock {
@@ -196,21 +199,17 @@ public class FleshDoorBlock extends DoorBlock {
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		boolean isOpen = isOpen(state);
+		if (isOpen(state)) return Shapes.empty();
 
-		if (isOpen && context instanceof EntityCollisionContext entityContext && entityContext.getEntity() != null) {
-			return Shapes.empty(); //workaround for create contraptions
-		}
-
-		int idx = isOpen ? OPEN_SHAPE_INDEX + 2 : CLOSED_SHAPE_INDEX;
+		int i = CLOSED_SHAPE_INDEX;
 
 		return switch (state.getValue(ORIENTATION)) {
-			case X_POSITIVE -> X_POS_AABB[idx];
-			case X_MIDDLE -> x_NONE_AABB[idx];
-			case X_NEGATIVE -> x_NEG_AABB[idx];
-			case Z_POSITIVE -> Z_POS_AABB[idx];
-			case Z_MIDDLE -> Z_NONE_AABB[idx];
-			case Z_NEGATIVE -> Z_NEG_AABB[idx];
+			case X_POSITIVE -> X_POS_AABB[i];
+			case X_MIDDLE -> x_NONE_AABB[i];
+			case X_NEGATIVE -> x_NEG_AABB[i];
+			case Z_POSITIVE -> Z_POS_AABB[i];
+			case Z_MIDDLE -> Z_NONE_AABB[i];
+			case Z_NEGATIVE -> Z_NEG_AABB[i];
 			default -> Shapes.block();
 		};
 	}
