@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.integration.compat.create;
+package com.github.elenterius.biomancy.integration.create;
 
 public final class CreateCompat {
 

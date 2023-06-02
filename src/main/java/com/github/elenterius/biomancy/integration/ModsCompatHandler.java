@@ -1,9 +1,9 @@
 package com.github.elenterius.biomancy.integration;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.integration.compat.create.CreateCompat;
 import com.github.elenterius.biomancy.integration.compat.pehkui.IPehkuiHelper;
 import com.github.elenterius.biomancy.integration.compat.pehkui.PehkuiCompat;
+import com.github.elenterius.biomancy.integration.create.CreateCompat;
 import com.github.elenterius.biomancy.integration.modonomicon.IModonomiconHelper;
 import com.github.elenterius.biomancy.integration.modonomicon.ModonomiconIntegration;
 import net.minecraftforge.eventbus.api.IEventBus;
