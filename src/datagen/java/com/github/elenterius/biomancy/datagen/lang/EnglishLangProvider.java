@@ -352,7 +352,13 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		//		addItem(ModItems.PRIMORDIAL_LIVING_OCULUS, "Primordial Oculus", "A ominous eye is gazing at you...");
 		addItem(ModItems.GUIDE_BOOK, "[WIP] Primordial Index", "[WIP] Ask questions?");
 		addItem(ModItems.CREATOR_MIX, "Exotic Flesh Mix", "A meal made for the cradle... just not for you.");
-		addItem(ModItems.INJECTOR, "Bio-Injector", "A simple device which utilizes a razor sharp needle to quickly and forcefully inject Serums into Mobs and Players.");
+		addItem(ModItems.INJECTOR, "Bio-Injector", """
+				A simple device which utilizes a razor sharp needle to quickly and forcefully inject Serums into Mobs and Players.
+								
+				Can be enchanted with:
+				 - Piercing: Increases the chance to pierce through Armor
+				 - Anesthetic Touch: Nullifies the damage from the Needle
+				""");
 		addItem(ModItems.FERTILIZER, "Bio-Alchemical Fertilizer", "Fertilizer that induces hyper-growth in plants, even for reeds, cactus, nether wart and chorus plant.");
 		addItem(ModItems.GIFT_SAC, "Gift Sac", """
 				Looks like some objects are wrapped in an organic layer of skin. It's either filled with items or toxin if your language is set to German.
