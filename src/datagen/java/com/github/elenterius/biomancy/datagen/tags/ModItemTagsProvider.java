@@ -10,18 +10,12 @@ import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.MarkerManager;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
-import java.util.Objects;
 
 import static net.minecraft.world.item.Items.*;
 
@@ -93,26 +87,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
 	protected EnhancedTagAppender<Item> createTag(TagKey<Item> tag) {
 		return new EnhancedTagAppender<>(tag(tag), ForgeRegistries.ITEMS);
-	}
-
-	private void analyze(EnhancedTagAppender<Item> tagAppender, String name) {
-		List<FoodProperties> foodProperties = tagAppender.getInternalBuilder().build().stream()
-				.filter(tagEntry -> !tagEntry.isTag())
-				.map(tagEntry -> tagAppender.forgeRegistry().getValue(tagEntry.getId()))
-				.filter(Objects::nonNull)
-				.filter(Item::isEdible)
-				.map(item -> item.getFoodProperties(new ItemStack(item), null))
-				.toList();
-
-		if (foodProperties.isEmpty()) {
-			BiomancyMod.LOGGER.warn(MarkerManager.getMarker("Biomass Stats"), () -> "Could not analyze Food Properties of tag " + name);
-			return;
-		}
-
-		long averageNutrition = foodProperties.stream().mapToLong(FoodProperties::getNutrition).sum() / foodProperties.size();
-		double averageSaturationModifier = foodProperties.stream().mapToDouble(FoodProperties::getSaturationModifier).sum() / foodProperties.size();
-
-		BiomancyMod.LOGGER.debug(MarkerManager.getMarker("Biomass Stats"), () -> "%s Averages%n Nutrition: %d%n Saturation Modifier: %f".formatted(name, averageNutrition, averageSaturationModifier));
 	}
 
 	@Override
