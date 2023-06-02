@@ -1,10 +1,10 @@
-package com.github.elenterius.biomancy.integration.compat.create;
+package com.github.elenterius.biomancy.integration.create;
 
 import com.github.elenterius.biomancy.block.FullFleshDoorBlock;
 import com.github.elenterius.biomancy.block.property.Orientation;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
-import com.simibubi.create.content.contraptions.components.structureMovement.Contraption;
-import com.simibubi.create.content.contraptions.components.structureMovement.interaction.SimpleBlockMovingInteraction;
+import com.simibubi.create.content.contraptions.Contraption;
+import com.simibubi.create.content.contraptions.behaviour.SimpleBlockMovingInteraction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;

@@ -31,6 +31,13 @@ ordering = "BEFORE"
 side = "BOTH"
 
 [[dependencies.biomancy]]
+modId = "create"
+mandatory = false
+versionRange = "[0.5.1.b,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.biomancy]]
 modId = "forge"
 mandatory = true
 versionRange = "[43.2.0,)"

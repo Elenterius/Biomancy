@@ -165,6 +165,10 @@ repositories {
 		name = "KliKli Maven (Modnomicon)"
 		url = "https://repo.repsy.io/mvn/klikli-dev/mods"
 	}
+	maven {
+		name = 'tterrag maven'
+		url = 'https://maven.tterrag.com/'
+	}
 	maven { url = "https://www.cursemaven.com" }
 	maven { url = "https://api.modrinth.com/maven" }
 	maven { url = "https://jitpack.io" }
@@ -190,11 +194,9 @@ dependencies {
 	compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:11.5.0.297") // compile against the JEI API but do not include it at runtime
 	runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:11.5.0.297") // at runtime, use the full JEI jar
 
-//    compileOnly fg.deobf("curse.maven:jer_api-240630:3831562")
-//    implementation "curse.maven:jer_deobf-240630:4092965"
-
-	implementation fg.deobf("curse.maven:create-328085:4174330") //1.19.2-0.5.0.g
-	runtimeOnly fg.deobf("curse.maven:flywheel-486392:4174759") //1.19.2-0.6.8
+	implementation fg.deobf("com.simibubi.create:create-${mc_version}:${create_version}:slim") { transitive = false }
+	implementation fg.deobf("com.jozufozu.flywheel:flywheel-forge-${mc_version}:${flywheel_version}")
+	implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
 
 	runtimeOnly fg.deobf("curse.maven:farmers_delight-398521:3999157")
 //    runtimeOnly fg.deobf("curse.maven:cultural_delights-574622:4000179") //download is forbidden >:(
