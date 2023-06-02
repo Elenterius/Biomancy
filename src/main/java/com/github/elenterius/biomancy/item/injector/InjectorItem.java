@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.item;
+package com.github.elenterius.biomancy.item.injector;
 
 import com.github.elenterius.biomancy.api.serum.Serum;
 import com.github.elenterius.biomancy.api.serum.SerumContainer;
@@ -13,6 +13,8 @@ import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.inventory.InjectorItemInventory;
 import com.github.elenterius.biomancy.inventory.itemhandler.LargeSingleItemStackHandler;
+import com.github.elenterius.biomancy.item.ICustomTooltip;
+import com.github.elenterius.biomancy.item.IKeyListener;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import net.minecraft.ChatFormatting;
@@ -208,7 +210,7 @@ public class InjectorItem extends Item implements SerumInjector, ICustomTooltip,
 
 		if (!level.isClientSide) {
 			InjectionScheduler.schedule(this, stack, player, player, SCHEDULE_TICKS);
-			broadcastAnimation((ServerLevel) level, player, stack, AnimState.INJECT_SELF.id);
+			broadcastAnimation((ServerLevel) level, player, stack, InjectorAnimationState.INJECT_SELF.id);
 			player.getCooldowns().addCooldown(this, COOL_DOWN_TICKS);
 		}
 		return InteractionResultHolder.consume(stack);
@@ -228,7 +230,7 @@ public class InjectorItem extends Item implements SerumInjector, ICustomTooltip,
 
 		ItemStack realStack = player.getAbilities().instabuild ? player.getItemInHand(usedHand) : copyOfStack;
 		InjectionScheduler.schedule(this, realStack, player, target, SCHEDULE_TICKS);
-		broadcastAnimation((ServerLevel) target.level, player, realStack, AnimState.INJECT_OTHER.id);
+		broadcastAnimation((ServerLevel) target.level, player, realStack, InjectorAnimationState.INJECT_OTHER.id);
 
 		return InteractionResult.CONSUME;
 	}
@@ -396,34 +398,30 @@ public class InjectorItem extends Item implements SerumInjector, ICustomTooltip,
 		return factory;
 	}
 
-	private void broadcastAnimation(ServerLevel level, Player player, ItemStack stack, int state) {
+	void broadcastAnimation(ServerLevel level, Player player, ItemStack stack, int state) {
 		int id = GeckoLibUtil.guaranteeIDForStack(stack, level);
 		PacketDistributor.PacketTarget target = PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player);
 		GeckoLibNetwork.syncAnimation(target, this, id, state);
 	}
 
 	@Override
-	public void onAnimationSync(int id, int state) {
+	public void onAnimationSync(int controllerId, int animationStateId) {
 		//client side for living entities: stack.setEntityRepresentation(); ?
 
-		if (AnimState.INJECT_OTHER.is(state)) {
-			AnimationController<?> controller = GeckoLibUtil.getControllerForID(factory, id, DEFAULT_ANIM_CONTROLLER);
-			if (controller.getAnimationState() == AnimationState.Stopped) {
-				controller.markNeedsReload(); //make sure animation can play more than once (animations are usually cached)
-				controller.setAnimation(new AnimationBuilder().playOnce(AnimState.INJECT_OTHER.animationName));
-			}
+		switch (InjectorAnimationState.from(animationStateId)) {
+			case INJECT_OTHER -> playAnimation(controllerId, InjectorAnimationState.INJECT_OTHER, DEFAULT_ANIM_CONTROLLER);
+			case INJECT_SELF -> playAnimation(controllerId, InjectorAnimationState.INJECT_SELF, DEFAULT_ANIM_CONTROLLER);
+			case REGROW_NEEDLE -> playAnimation(controllerId, InjectorAnimationState.REGROW_NEEDLE, NEEDLE_ANIM_CONTROLLER);
+			case INJECT_FAIL -> playAnimation(controllerId, InjectorAnimationState.INJECT_FAIL, DEFAULT_ANIM_CONTROLLER);
+			case EMPTY -> { /* do nothing */ }
 		}
-		else if (AnimState.INJECT_SELF.is(state)) {
-			AnimationController<?> controller = GeckoLibUtil.getControllerForID(factory, id, DEFAULT_ANIM_CONTROLLER);
-			if (controller.getAnimationState() == AnimationState.Stopped) {
-				controller.markNeedsReload(); //make sure animation can play more than once (animations are usually cached)
-				controller.setAnimation(new AnimationBuilder().playOnce(AnimState.INJECT_SELF.animationName));
-			}
-		}
-		else if (AnimState.REGROW_NEEDLE.is(state)) {
-			AnimationController<?> controller = GeckoLibUtil.getControllerForID(factory, id, NEEDLE_ANIM_CONTROLLER);
+	}
+
+	private void playAnimation(int controllerId, InjectorAnimationState animationState, String animationController) {
+		AnimationController<?> controller = GeckoLibUtil.getControllerForID(factory, controllerId, animationController);
+		if (controller.getAnimationState() == AnimationState.Stopped) {
 			controller.markNeedsReload(); //make sure animation can play more than once (animations are usually cached)
-			controller.setAnimation(new AnimationBuilder().playOnce(AnimState.REGROW_NEEDLE.animationName));
+			controller.setAnimation(animationState.animation);
 		}
 	}
 
@@ -464,24 +462,40 @@ public class InjectorItem extends Item implements SerumInjector, ICustomTooltip,
 		return 15;
 	}
 
-	enum AnimState {
+	enum InjectorAnimationState {
+		EMPTY(-1, ""),
 		INJECT_OTHER(0, "injector.inject"),
 		INJECT_SELF(1, "injector.inject_self"),
 		INJECT_FAIL(3, "injector.inject_fail"),
 		REGROW_NEEDLE(2, "injector.regrow_needle");
 
 		private final int id;
-		private final String animationName;
+		private final String nameId;
+		private final AnimationBuilder animation;
 
-		AnimState(int id, String animationName) {
+		InjectorAnimationState(int id, String nameId) {
 			this.id = id;
-			this.animationName = animationName;
+			this.nameId = nameId;
+			animation = new AnimationBuilder().playOnce(nameId);
 		}
 
-		public boolean is(int otherId) {
-			return otherId == id;
+		public static InjectorAnimationState from(int id) {
+			if (id < 0 || id > 3) return EMPTY;
+			for (InjectorAnimationState animationState : values()) {
+				if (animationState.id == id) {
+					return animationState;
+				}
+			}
+			return EMPTY;
 		}
 
+		public int getId() {
+			return id;
+		}
+
+		public String getNameId() {
+			return nameId;
+		}
 	}
 
 	private static class InventoryCapability implements ICapabilityProvider {
@@ -498,72 +512,6 @@ public class InjectorItem extends Item implements SerumInjector, ICustomTooltip,
 			return ModCapabilities.ITEM_HANDLER.orEmpty(capability, itemHandler.getOptionalItemHandler());
 		}
 
-	}
-
-	static class InjectionScheduler {
-
-		public static final String DELAY_KEY = "DelayInTicks";
-		public static final String TIMESTAMP_KEY = "ScheduleTimestamp";
-		private InjectionScheduler() {}
-
-		public static void schedule(InjectorItem injector, ItemStack stack, Player player, LivingEntity target, int delayInTicks) {
-			if (stack.isEmpty() || player.level.isClientSide || injector.getSerum(stack).isEmpty()) return;
-
-			injector.setEntityHost(stack, player); //who is using the item
-			injector.setEntityVictim(stack, target); //who is the victim
-
-			injector.setInjectionSuccess(stack, MobUtil.canPierceThroughArmor(stack, target)); //precompute injection success
-
-			CompoundTag tag = stack.getOrCreateTag();
-			tag.putInt(DELAY_KEY, delayInTicks);
-			tag.putLong(TIMESTAMP_KEY, player.level.getGameTime());
-		}
-
-		public static void tick(ServerLevel level, InjectorItem injector, ItemStack stack, ServerPlayer player) {
-			CompoundTag tag = stack.getOrCreateTag();
-			if (!tag.contains(TIMESTAMP_KEY)) return;
-
-			long delayInTicks = tag.getLong(DELAY_KEY);
-			long starTimestamp = tag.getLong(TIMESTAMP_KEY);
-			if (player.level.getGameTime() - starTimestamp > delayInTicks) {
-				performScheduledSerumInjection(level, injector, stack, player);
-				tag.remove(DELAY_KEY);
-				tag.remove(TIMESTAMP_KEY);
-			}
-		}
-
-		public static void performScheduledSerumInjection(ServerLevel level, InjectorItem injector, ItemStack stack, ServerPlayer player) {
-			Serum serum = injector.getSerum(stack);
-			if (serum.isEmpty()) return;
-
-			Entity victim = injector.getEntityVictim(stack, level);
-			Entity host = injector.getEntityHost(stack, level);
-			boolean injectionSuccess = injector.getInjectionSuccess(stack);
-
-			if (victim instanceof LivingEntity target) {
-				if (!injectionSuccess) {
-					stack.hurtAndBreak(2, player, p -> {});
-					player.broadcastBreakEvent(EquipmentSlot.MAINHAND); //break needle
-					injector.broadcastAnimation(level, player, stack, AnimState.REGROW_NEEDLE.id);
-					player.getCooldowns().addCooldown(stack.getItem(), COOL_DOWN_TICKS * 2);
-					return;
-				}
-
-				if (host == victim) {
-					serum.affectPlayerSelf(Serum.getDataTag(stack), player);
-				}
-				else {
-					serum.affectEntity(level, Serum.getDataTag(stack), player, target);
-				}
-
-				injector.consumeSerum(stack, player);
-				stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
-
-				if (stack.getEnchantmentLevel(ModEnchantments.ANESTHETIC.get()) <= 0) {
-					target.hurt(new EntityDamageSource("sting", player), 0.5f);
-				}
-			}
-		}
 	}
 
 }
