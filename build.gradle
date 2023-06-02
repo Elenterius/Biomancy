@@ -185,7 +185,7 @@ dependencies {
 
 //    runtimeOnly fg.deobf("curse.maven:debug_utils-783008:4302677") //minecraft 1.19.3
 
-	implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.19:3.1.39')
+	implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.19:3.1.40')
 
 	implementation fg.deobf("com.klikli_dev:modonomicon:1.19.2-1.26.0")
 	datagenImplementation fg.deobf("com.klikli_dev:modonomicon:1.19.2-1.26.0")
