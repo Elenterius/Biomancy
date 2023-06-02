@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.entity.ownable;
 
-import com.github.elenterius.biomancy.entity.MobUtil;
+import com.github.elenterius.biomancy.util.CombatUtil;
 import com.github.elenterius.biomancy.util.PotionUtilExt;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -314,7 +314,7 @@ public class Boomling extends OwnableMob implements IAnimatable {
 	private void causeWaterAOE() {
 		Optional<Player> owner = getOwnerAsPlayer();
 		LivingEntity shooter = owner.isPresent() ? owner.get() : this;
-		MobUtil.performWaterAOE(level, shooter, 4d);
+		CombatUtil.performWaterAOE(level, shooter, 4d);
 	}
 
 	@Override

@@ -7,30 +7,20 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.world.damagesource.CombatRules;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.horse.SkeletonHorse;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.AbstractSkeleton;
 import net.minecraft.world.entity.monster.WitherSkeleton;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ThrownPotion;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.event.ForgeEventFactory;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 
-import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
@@ -194,12 +184,6 @@ public final class MobUtil {
 		return false;
 	}
 
-	public static boolean canPierceThroughArmor(ItemStack stack, LivingEntity target) {
-		int pierceLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PIERCING, stack);
-		float pct = CombatRules.getDamageAfterAbsorb(20f, target.getArmorValue(), (float) target.getAttributeValue(Attributes.ARMOR_TOUGHNESS)) / 20f;
-		return target.getRandom().nextFloat() < pct + 0.075f * pierceLevel;
-	}
-
 	/**
 	 * This should return a position vector that can be used to more safely spawn entities as it should mitigate entities getting stuck in walls.<br>
 	 *
@@ -252,19 +236,6 @@ public final class MobUtil {
 		}
 
 		return new Vec3(x, y, z);
-	}
-
-	public static void performWaterAOE(Level world, Entity attacker, double maxDistance) {
-		AABB aabb = attacker.getBoundingBox().inflate(maxDistance, maxDistance / 2d, maxDistance);
-		List<LivingEntity> entities = world.getEntitiesOfClass(LivingEntity.class, aabb, ThrownPotion.WATER_SENSITIVE);
-		if (!entities.isEmpty()) {
-			double maxDistSq = maxDistance * maxDistance;
-			for (LivingEntity victim : entities) {
-				if (attacker.distanceToSqr(victim) < maxDistSq) {
-					victim.hurt(DamageSource.indirectMagic(victim, attacker), 1f);
-				}
-			}
-		}
 	}
 
 }

@@ -7,7 +7,6 @@ import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.gui.InjectorScreen;
 import com.github.elenterius.biomancy.client.render.item.injector.InjectorRenderer;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
-import com.github.elenterius.biomancy.entity.MobUtil;
 import com.github.elenterius.biomancy.init.ModCapabilities;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
@@ -16,6 +15,7 @@ import com.github.elenterius.biomancy.inventory.itemhandler.LargeSingleItemStack
 import com.github.elenterius.biomancy.item.ICustomTooltip;
 import com.github.elenterius.biomancy.item.IKeyListener;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
+import com.github.elenterius.biomancy.util.CombatUtil;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -110,7 +110,7 @@ public class InjectorItem extends Item implements SerumInjector, ICustomTooltip,
 	}
 
 	private static boolean dispenserAffectEntity(ServerLevel level, BlockPos pos, Serum serum, ItemStack injectorStack, InjectorItem injectorItem, LivingEntity target) {
-		if (MobUtil.canPierceThroughArmor(injectorStack, target)) {
+		if (CombatUtil.canPierceThroughArmor(injectorStack, target)) {
 			CompoundTag dataTag = Serum.getDataTag(injectorStack);
 			if (serum.canAffectEntity(dataTag, null, target)) {
 				serum.affectEntity(level, dataTag, null, target);

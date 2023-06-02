@@ -2,20 +2,17 @@ package com.github.elenterius.biomancy.entity.projectile;
 
 import com.github.elenterius.biomancy.init.ModDamageSources;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
-import com.github.elenterius.biomancy.init.ModMobEffects;
+import com.github.elenterius.biomancy.util.CombatUtil;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-
-import java.util.Objects;
 
 public class CorrosiveAcidProjectile extends BaseProjectile {
 
@@ -75,8 +72,7 @@ public class CorrosiveAcidProjectile extends BaseProjectile {
 			victim.hurt(ModDamageSources.createProjectileDamage(this, owner), getDamage());
 
 			if (victim instanceof LivingEntity livingVictim) {
-				livingVictim.addEffect(new MobEffectInstance(ModMobEffects.CORROSIVE.get(), 2 * 20, 0), Objects.requireNonNullElse(owner, this));
-				livingVictim.addEffect(new MobEffectInstance(ModMobEffects.ARMOR_SHRED.get(), 5 * 20, 0), Objects.requireNonNullElse(owner, this));
+				CombatUtil.applyAcidEffect(livingVictim, 4);
 			}
 
 			if (owner instanceof LivingEntity shooter) {
