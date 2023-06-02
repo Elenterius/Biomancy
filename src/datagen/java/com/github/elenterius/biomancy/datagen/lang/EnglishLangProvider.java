@@ -357,14 +357,12 @@ public class EnglishLangProvider extends AbstractLangProvider {
 								
 				Can be enchanted with:
 				 - Piercing: Increases the chance to pierce through Armor
-				 - Anesthetic Touch: Nullifies the damage from the Needle
-				""");
+				 - Anesthetic Touch: Nullifies the damage from the Needle""");
 		addItem(ModItems.FERTILIZER, "Bio-Alchemical Fertilizer", "Fertilizer that induces hyper-growth in plants, even for reeds, cactus, nether wart and chorus plant.");
 		addItem(ModItems.GIFT_SAC, "Gift Sac", """
 				Looks like some objects are wrapped in an organic layer of skin. It's either filled with items or toxin if your language is set to German.
 								
-				Right Click the Sac to retrieve the Items.
-				""");
+				Right Click the Sac to retrieve the Items.""");
 
 		addItem(ModItems.LONG_CLAWS, "Living Long Claws", "Claws made of living flesh\n\nFeed it with nutrients via right click in the inventory.");
 		addItem(ModItems.DEV_ARM_CANNON, "[Dev Tool] Arm Cannon", "Creative/Developer Tool for testing projectiles.");
