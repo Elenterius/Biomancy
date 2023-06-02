@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.event;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.item.BioExtractorItem;
-import com.github.elenterius.biomancy.item.InjectorItem;
+import com.github.elenterius.biomancy.item.injector.InjectorItem;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;

@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.init;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.integration.ModsCompatHandler;
 import com.github.elenterius.biomancy.item.BioExtractorItem;
-import com.github.elenterius.biomancy.item.InjectorItem;
+import com.github.elenterius.biomancy.item.injector.InjectorItem;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;

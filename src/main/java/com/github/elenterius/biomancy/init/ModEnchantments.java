@@ -5,7 +5,7 @@ import com.github.elenterius.biomancy.enchantment.AnestheticEnchantment;
 import com.github.elenterius.biomancy.enchantment.DespoilEnchantment;
 import com.github.elenterius.biomancy.init.tags.ModItemTags;
 import com.github.elenterius.biomancy.item.BioExtractorItem;
-import com.github.elenterius.biomancy.item.InjectorItem;
+import com.github.elenterius.biomancy.item.injector.InjectorItem;
 import com.github.elenterius.biomancy.item.weapon.ClawsItem;
 import com.github.elenterius.biomancy.item.weapon.IGun;
 import net.minecraft.world.entity.EquipmentSlot;

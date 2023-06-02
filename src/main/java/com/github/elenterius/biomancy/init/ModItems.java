@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.api.serum.Serum;
 import com.github.elenterius.biomancy.init.tags.ModEntityTags;
 import com.github.elenterius.biomancy.item.*;
+import com.github.elenterius.biomancy.item.injector.InjectorItem;
 import com.github.elenterius.biomancy.item.weapon.BileSpitterItem;
 import com.github.elenterius.biomancy.item.weapon.DespoilingSwordItem;
 import com.github.elenterius.biomancy.item.weapon.DevArmCannonItem;
