@@ -181,7 +181,6 @@
 		},
 		"tongue.idle": {
 			"loop": true,
-			"animation_length": 0.24,
 			"bones": {
 				"bone_tongue_1": {
 					"scale": {
