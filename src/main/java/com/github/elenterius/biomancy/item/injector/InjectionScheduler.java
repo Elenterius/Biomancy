@@ -63,6 +63,10 @@ final class InjectionScheduler {
 				return;
 			}
 
+			if (stack.getEnchantmentLevel(ModEnchantments.ANESTHETIC.get()) <= 0) {
+				target.hurt(new EntityDamageSource("sting", player), 0.5f);
+			}
+
 			if (host == victim) {
 				serum.affectPlayerSelf(Serum.getDataTag(stack), player);
 			}
@@ -72,10 +76,6 @@ final class InjectionScheduler {
 
 			injector.consumeSerum(stack, player);
 			stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
-
-			if (stack.getEnchantmentLevel(ModEnchantments.ANESTHETIC.get()) <= 0) {
-				target.hurt(new EntityDamageSource("sting", player), 0.5f);
-			}
 		}
 	}
 }
