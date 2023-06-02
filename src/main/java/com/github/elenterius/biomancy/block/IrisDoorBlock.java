@@ -28,7 +28,10 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.*;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class IrisDoorBlock extends Block implements SimpleWaterloggedBlock {
@@ -184,8 +187,7 @@ public class IrisDoorBlock extends Block implements SimpleWaterloggedBlock {
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		if (isOpen(state) && context instanceof EntityCollisionContext entityContext && entityContext.getEntity() != null) return Shapes.empty(); //workaround for create contraptions
-		return state.getShape(level, pos);
+		return isOpen(state) ? Shapes.empty() : state.getShape(level, pos);
 	}
 
 	@Override
