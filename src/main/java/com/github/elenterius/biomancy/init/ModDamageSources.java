@@ -32,7 +32,7 @@ public final class ModDamageSources {
 	private ModDamageSources() {}
 
 	public static DamageSource createGenericDamage(String name) {
-		return new DamageSource(BiomancyMod.MOD_ID + "." + name); //normal damageShape source "bypasses" shields
+		return new DamageSource(BiomancyMod.MOD_ID + "." + name); //normal damage source "bypasses" shields
 	}
 
 	public static DamageSource createProjectileDamage(BaseProjectile projectile, @Nullable Entity shooter) {

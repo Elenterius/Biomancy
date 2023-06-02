@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.item.injector;
 
 import com.github.elenterius.biomancy.api.serum.Serum;
-import com.github.elenterius.biomancy.entity.MobUtil;
 import com.github.elenterius.biomancy.init.ModEnchantments;
+import com.github.elenterius.biomancy.util.CombatUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -26,7 +26,7 @@ final class InjectionScheduler {
 		injector.setEntityHost(stack, player); //who is using the item
 		injector.setEntityVictim(stack, target); //who is the victim
 
-		injector.setInjectionSuccess(stack, MobUtil.canPierceThroughArmor(stack, target)); //precompute injection success
+		injector.setInjectionSuccess(stack, CombatUtil.canPierceThroughArmor(stack, target)); //precompute injection success
 
 		CompoundTag tag = stack.getOrCreateTag();
 		tag.putInt(DELAY_KEY, delayInTicks);

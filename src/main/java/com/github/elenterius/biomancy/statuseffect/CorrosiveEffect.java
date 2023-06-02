@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.statuseffect;
 
 import com.github.elenterius.biomancy.init.ModDamageSources;
+import com.github.elenterius.biomancy.util.CombatUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -36,8 +37,7 @@ public class CorrosiveEffect extends StatusEffect {
 		if (!livingEntity.isAlive()) return;
 
 		int damage = 2 * effectLevel;
-		livingEntity.invulnerableTime = 0; //bypass invulnerable ticks
-		livingEntity.hurt(ModDamageSources.CORROSIVE_ACID, damage);
+		CombatUtil.hurtWithAcid(livingEntity, damage);
 	}
 
 	@Override
