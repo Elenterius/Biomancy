@@ -1,14 +1,12 @@
 package com.github.elenterius.biomancy.entity.ownable;
 
 import com.github.elenterius.biomancy.util.CombatUtil;
-import com.github.elenterius.biomancy.util.PotionUtilExt;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -29,8 +27,8 @@ import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.animal.Ocelot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -38,7 +36,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -52,7 +49,6 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Deprecated
 public class Boomling extends OwnableMob implements IAnimatable {
@@ -142,9 +138,9 @@ public class Boomling extends OwnableMob implements IAnimatable {
 		}
 		setIgnited(nbt.getBoolean("Ignited"));
 		ItemStack storedPotion = getStoredPotion();
-		if (!storedPotion.isEmpty()) {
-			getEntityData().set(COLOR, PotionUtilExt.getColor(storedPotion)); //restore color
-		}
+		//		if (!storedPotion.isEmpty()) {
+		//			getEntityData().set(COLOR, PotionUtilExt.getColor(storedPotion)); //restore color
+		//		}
 	}
 
 	@Override
@@ -154,21 +150,21 @@ public class Boomling extends OwnableMob implements IAnimatable {
 
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {
-		SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
-		if (getStoredPotion().isEmpty()) {
-			Set<ResourceLocation> keys = ForgeRegistries.POTIONS.getKeys();
-			int n = level.getRandom().nextInt(keys.size());
-			for (ResourceLocation key : keys) {
-				if (--n <= 0) {
-					Potion potion = ForgeRegistries.POTIONS.getValue(key);
-					if (potion != null && potion != Potions.EMPTY) {
-						setStoredPotion(PotionUtilExt.setPotion(new ItemStack(Items.POTION), potion));
-						break;
-					}
-				}
-			}
-		}
-		return data;
+		//		SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
+		//		if (getStoredPotion().isEmpty()) {
+		//			Set<ResourceLocation> keys = ForgeRegistries.POTIONS.getKeys();
+		//			int n = level.getRandom().nextInt(keys.size());
+		//			for (ResourceLocation key : keys) {
+		//				if (--n <= 0) {
+		//					Potion potion = ForgeRegistries.POTIONS.getValue(key);
+		//					if (potion != null && potion != Potions.EMPTY) {
+		//						setStoredPotion(PotionUtilExt.setPotion(new ItemStack(Items.POTION), potion));
+		//						break;
+		//					}
+		//				}
+		//			}
+		//		}
+		return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
 	}
 
 	@Override
@@ -227,7 +223,7 @@ public class Boomling extends OwnableMob implements IAnimatable {
 
 	public void setStoredPotion(ItemStack stack) {
 		setItemSlot(EquipmentSlot.MAINHAND, stack);
-		getEntityData().set(COLOR, stack.isEmpty() ? 0 : PotionUtilExt.getColor(stack));
+		//		getEntityData().set(COLOR, stack.isEmpty() ? 0 : PotionUtilExt.getColor(stack));
 	}
 
 	public byte getState() {
@@ -287,8 +283,8 @@ public class Boomling extends OwnableMob implements IAnimatable {
 		ItemStack stack = getStoredPotion();
 		if (stack.isEmpty()) return;
 
-		Potion potion = PotionUtilExt.getPotion(stack);
-		List<MobEffectInstance> effects = PotionUtilExt.getMobEffects(stack);
+		Potion potion = PotionUtils.getPotion(stack);
+		List<MobEffectInstance> effects = PotionUtils.getMobEffects(stack);
 		if (potion == Potions.WATER && effects.isEmpty()) {
 			causeWaterAOE();
 			discard();
@@ -303,11 +299,11 @@ public class Boomling extends OwnableMob implements IAnimatable {
 		Optional<Player> owner = getOwnerAsPlayer();
 		LivingEntity shooter = owner.isPresent() ? owner.get() : this;
 		CompoundTag nbt = stack.getTag();
-		int color = PotionUtilExt.getColor(stack);
+		int color = PotionUtils.getColor(stack);
 		if (nbt != null && nbt.contains("CustomPotionColor", Tag.TAG_ANY_NUMERIC)) {
 			color = nbt.getInt("CustomPotionColor");
 		}
-		List<MobEffectInstance> effects = PotionUtilExt.getCustomEffects(stack);
+		List<MobEffectInstance> effects = PotionUtils.getCustomEffects(stack);
 		spawnEffectAOE(level, shooter, position(), potion, effects, color);
 	}
 
