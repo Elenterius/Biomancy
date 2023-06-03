@@ -205,8 +205,8 @@ dependencies {
 
 	implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.19:3.1.40')
 
-	implementation fg.deobf("com.klikli_dev:modonomicon:1.19.2-1.26.0")
-	datagenImplementation fg.deobf("com.klikli_dev:modonomicon:1.19.2-1.26.0")
+	implementation fg.deobf("com.klikli_dev:modonomicon:1.19.2-1.30.2")
+	datagenImplementation fg.deobf("com.klikli_dev:modonomicon:1.19.2-1.30.2")
 
 	compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
 	compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}") // compile against the JEI API but do not include it at runtime
