@@ -18,6 +18,7 @@ import com.github.elenterius.biomancy.block.property.Orientation;
 import com.github.elenterius.biomancy.block.property.UserSensitivity;
 import com.github.elenterius.biomancy.block.storagesac.StorageSacBlock;
 import com.github.elenterius.biomancy.block.tongue.TongueBlock;
+import com.github.elenterius.biomancy.block.vialholder.VialHolderBlock;
 import com.github.elenterius.biomancy.init.tags.ModEntityTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -111,6 +112,7 @@ public final class ModBlocks {
 	public static final RegistryObject<FleshLanternBlock> YELLOW_BIO_LANTERN = register("bio_lantern_yellow", properties -> new FleshLanternBlock(properties.sound(SoundType.SHROOMLIGHT).lightLevel(x -> 15).noOcclusion()));
 	public static final RegistryObject<FleshLanternBlock> BLUE_BIO_LANTERN = register("bio_lantern_blue", properties -> new FleshLanternBlock(properties.sound(SoundType.SHROOMLIGHT).lightLevel(x -> 15).noOcclusion()));
 	public static final RegistryObject<FleshChainBlock> TENDON_CHAIN = register("tendon_chain", properties -> new FleshChainBlock(properties.noOcclusion()));
+	public static final RegistryObject<VialHolderBlock> VIAL_HOLDER = register("vial_holder", VialHolderBlock::new);
 
 	private ModBlocks() {}
 

@@ -7,6 +7,7 @@ import com.github.elenterius.biomancy.block.ownable.OwnablePressurePlateBlock;
 import com.github.elenterius.biomancy.block.property.DirectionalSlabType;
 import com.github.elenterius.biomancy.block.property.Orientation;
 import com.github.elenterius.biomancy.block.property.UserSensitivity;
+import com.github.elenterius.biomancy.block.vialholder.VialHolderBlock;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -74,6 +76,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		bioLantern(ModBlocks.YELLOW_BIO_LANTERN.get());
 		bioLantern(ModBlocks.BLUE_BIO_LANTERN.get());
 		tendonChain(ModBlocks.TENDON_CHAIN.get());
+		vialHolder(ModBlocks.VIAL_HOLDER.get());
 
 		geckolibModel(ModBlocks.PRIMORDIAL_CRADLE.get(), PRIMAL_PARTICLE_TEXTURE);
 		geoBlockItem(ModBlocks.PRIMORDIAL_CRADLE.get(), new Vector3f(16, 16, 16));
@@ -88,6 +91,31 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
 		geckolibModel(ModBlocks.FLESHKIN_CHEST.get(), FLESH_PARTICLE_TEXTURE);
 		fleshkinPressurePlate(ModBlocks.FLESHKIN_PRESSURE_PLATE.get());
+	}
+
+	public void vialHolder(VialHolderBlock block) {
+		ResourceLocation baseModel = blockModel(block);
+		ModelFile.ExistingModelFile frameModel = models().getExistingFile(extend(baseModel, "_frame"));
+
+		DirectionProperty facingProperty = BlockStateProperties.HORIZONTAL_FACING;
+
+		MultiPartBlockStateBuilder builder = getMultipartBuilder(block);
+
+		facingProperty.getPossibleValues().forEach(direction -> {
+			int rotY = (((int) direction.toYRot()) + 180) % 360;
+			builder.part().modelFile(frameModel).rotationY(rotY).addModel().condition(facingProperty, direction).end();
+		});
+
+		for (BooleanProperty vialProperty : VialHolderBlock.getVialProperties()) {
+			ModelFile.ExistingModelFile vialModel = models().getExistingFile(extend(baseModel, "_" + vialProperty.getName()));
+
+			facingProperty.getPossibleValues().forEach(direction -> {
+				int rotY = (((int) direction.toYRot()) + 180) % 360;
+				builder.part().modelFile(vialModel).rotationY(rotY).addModel().condition(facingProperty, direction).condition(vialProperty, true).end();
+			});
+		}
+
+		itemModels().getBuilder(path(block)).parent(frameModel);
 	}
 
 	private void fleshkinPressurePlate(OwnablePressurePlateBlock block) {

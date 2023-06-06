@@ -112,6 +112,7 @@ public class ModBlockLoot extends BlockLoot {
 		dropSelf(ModBlocks.YELLOW_BIO_LANTERN.get());
 		dropSelf(ModBlocks.BLUE_BIO_LANTERN.get());
 		dropSelf(ModBlocks.TENDON_CHAIN.get());
+		dropSelf(ModBlocks.VIAL_HOLDER.get());
 
 		addCustom(ModBlocks.FLESH_DOOR.get(), ModBlockLoot::createFleshDoorTable);
 		addCustom(ModBlocks.FULL_FLESH_DOOR.get(), ModBlockLoot::createFleshDoorTable);

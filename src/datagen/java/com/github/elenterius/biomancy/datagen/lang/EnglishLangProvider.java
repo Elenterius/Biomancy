@@ -442,6 +442,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.YELLOW_BIO_LANTERN, "Yellow Bio-Lantern", "Bioluminescent light source.");
 		addBlock(ModBlocks.BLUE_BIO_LANTERN, "Blue Bio-Lantern", "Bioluminescent light source.");
 		addBlock(ModBlocks.TENDON_CHAIN, "Tendon Chain", "Chain made of tendons.");
+		addBlock(ModBlocks.VIAL_HOLDER, "Vial Holder", "Display and organize your serums.");
 
 		addBlock(ModBlocks.PRIMAL_FLESH, "Primal Flesh Block", "Primitive and pure, you better not touch this with your dirty paws.");
 		addBlock(ModBlocks.PRIMAL_FLESH_SLAB, "Primal Flesh Slab", "Primitive and pure, you better not touch this with your dirty paws.");
