@@ -36,13 +36,10 @@ public class GuideBookProvider extends AbstractBookProvider {
 
 		BookCategoryModel featuresCategory = makeFeaturesCategory(helper);
 
-		BookModel demoBook = BookModel.builder()
-				.withId(GuideBookItem.GUIDE_BOOK_ID)
-				.withName(helper.bookName())
+		BookModel demoBook = BookModel.create(GuideBookItem.GUIDE_BOOK_ID, helper.bookName())
 				.withTooltip(helper.bookTooltip())
 				.withCustomBookItem(ModItems.GUIDE_BOOK.getId()).withGenerateBookItem(false)
-				.withCategories(featuresCategory)
-				.build();
+				.withCategories(featuresCategory);
 
 		lang.add(demoBook.getName(), "[PH] Biomancy Index");
 		lang.add(demoBook.getTooltip(), "[PH] A book to test Modonomicon features for Biomancy.");
@@ -73,15 +70,12 @@ public class GuideBookProvider extends AbstractBookProvider {
 
 		var entityEntry = makeEntityEntry(helper, entryHelper, 'd');
 
-		BookCategoryModel categoryModel = BookCategoryModel.builder()
-				.withId(modLoc(helper.category)) //the id of the category, as stored in the lang helper. modLoc() prepends the mod id.
-				.withName(helper.categoryName()) //the name of the category. The lang helper gives us the correct translation key.
+		BookCategoryModel categoryModel = BookCategoryModel.create(modLoc(helper.category), helper.categoryName())
 				.withIcon("minecraft:nether_star") //the icon for the category. In this case we simply use an existing item.
 				.withEntries(multiBlockEntry)
 				.withEntries(recipeEntry)
 				.withEntries(spotlightEntry)
-				.withEntries(entityEntry)
-				.build();
+				.withEntries(entityEntry);
 		lang.add(helper.categoryName(), "[PH] Features Category");
 
 		return categoryModel;
