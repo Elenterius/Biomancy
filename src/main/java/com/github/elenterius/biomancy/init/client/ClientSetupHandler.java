@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.init.client;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.block.vialholder.VialHolderBlock;
 import com.github.elenterius.biomancy.client.gui.IngameOverlays;
 import com.github.elenterius.biomancy.client.gui.tooltip.EmptyLineClientComponent;
 import com.github.elenterius.biomancy.client.gui.tooltip.HrTooltipClientComponent;
@@ -110,6 +111,7 @@ public final class ClientSetupHandler {
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.YELLOW_BIO_LANTERN.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLUE_BIO_LANTERN.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.TENDON_CHAIN.get(), RenderType.cutout());
+		ItemBlockRenderTypes.setRenderLayer(ModBlocks.VIAL_HOLDER.get(), RenderType.cutout());
 
 		//block with "glowing" overlay texture, also needs a overlay model see onModelBakeEvent() in ClientSetupHandler
 		//ItemBlockRenderTypes.setRenderLayer(ModBlocks.FOOBAR.get(), renderType -> renderType == RenderType.getCutout() || renderType == RenderType.getTranslucent());
@@ -141,7 +143,7 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void onBlockColorRegistry(final RegisterColorHandlersEvent.Block event) {
-		//placeholder
+		event.register(VialHolderBlock::getTintColor, ModBlocks.VIAL_HOLDER.get());
 	}
 
 	@SubscribeEvent
