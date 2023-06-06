@@ -1,3 +1,26 @@
+## [1.8.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.7.0...1.19.2-v2.1.8.0) (2023-06-06)
+
+
+### Features
+
+* add Chinese Translation ([c02a28a](https://github.com/Elenterius/Biomancy/commit/c02a28a9421bfda9907e15596b506f2e0bb8302b))
+* add Vial Holder block ([f6980d2](https://github.com/Elenterius/Biomancy/commit/f6980d2c01724b66ad6a982fe04108e57958034d))
+* make the Corrosion effect able to convert Zombies into Skeleton ([56452e1](https://github.com/Elenterius/Biomancy/commit/56452e1e7c7aae531cdcdec94ecc494a51a94be9))
+* tweak Tongue block animation ([f64d7c6](https://github.com/Elenterius/Biomancy/commit/f64d7c6d66e8fda6f3a0c0b7be86aa07bb318143))
+* tweak Tongue block placement logic ([c9b47e8](https://github.com/Elenterius/Biomancy/commit/c9b47e8c403f6fa2f945b990f8a12be87dcfda88))
+* update Corrosive & Armor Shred Icons ([25c24a3](https://github.com/Elenterius/Biomancy/commit/25c24a3399bda561c19e21ae3b7d1b73ea0c68cf))
+* update Injector model ([9bac7a5](https://github.com/Elenterius/Biomancy/commit/9bac7a541422c8b7ea563e71b6cfb096f41c8415))
+* upgrade Create dependency to version 0.5.1.b ([00fcc70](https://github.com/Elenterius/Biomancy/commit/00fcc70bd70aa3e5ccf8fee3f011dcff4e75b6b5))
+
+
+### Bug Fixes
+
+* fix Injector not dealing damage before affecting the target with the serum ([38dd224](https://github.com/Elenterius/Biomancy/commit/38dd2246453a9e464e9e9e6183f5d3f16595d2a2))
+* fix Tongue block bounding box ([5ded1d0](https://github.com/Elenterius/Biomancy/commit/5ded1d0b3d01963714bc5fd55784aa0752a3b038))
+* fix Tongue block stretch animation not matching the item drop timing and add missing retract animation ([d176f69](https://github.com/Elenterius/Biomancy/commit/d176f699cde2d171c27111dbda473e889b526d33))
+* remove invalid frames from item texture animations ([e4714d8](https://github.com/Elenterius/Biomancy/commit/e4714d83050b3066a92e1013c7eebc213377ec1e))
+* replace Create contraption workaround for Iris Door with proper solution ([a20a4e2](https://github.com/Elenterius/Biomancy/commit/a20a4e24a2ad3e09c577349fb158d861af6cd58f))
+
 ## [1.7.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.6.0...1.19.2-v2.1.7.0) (2023-05-31)
 
 
@@ -104,25 +127,4 @@
 
 * **datagen:** add missing flesh pillar item model ([7b66995](https://github.com/Elenterius/Biomancy/commit/7b669950ef33e8d1d0a7395c64b376a47bc53233))
 * fix Cradle sacrifices not increasing biomass and life energy at the same time ([0737e32](https://github.com/Elenterius/Biomancy/commit/0737e32d094381a67b5ba08f38606016c4994b06))
-
-## [1.2.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.1.0...1.19.2-v2.1.2.0) (2023-05-02)
-
-
-### Features
-
-* add enchantment descriptions for "Enchantment Descriptions" mod ([60aca25](https://github.com/Elenterius/Biomancy/commit/60aca25d065aecb50da82e21071bf689776aadc8))
-* trigger item sacrifice advancements for thrown items thrown into the Cradle by a player ([214ca4e](https://github.com/Elenterius/Biomancy/commit/214ca4efefef0ade47b36ab493f8d9956e84c4cf))
-
-
-### Bug Fixes
-
-* fix advancements not firing for sacrificing item in the cradle ([9566f3d](https://github.com/Elenterius/Biomancy/commit/9566f3dd21f4d6fe4562f24a504a0aaac267fe17))
-* potentially fix concurrent modification exception when getting voxel shapes for certain blocks ([b0a0eb2](https://github.com/Elenterius/Biomancy/commit/b0a0eb22161f8a57a77b60c67a170918228327af))
-* remove ability to insert storage container blocks/items into the storage sac on right clicking the sac ([762e10e](https://github.com/Elenterius/Biomancy/commit/762e10e59aeb7b765eccc6c7a9d0736045e93896))
-
-
-### Performance Improvements
-
-* avoid creation of objects during the renderer phase of the Cradle ([36442f1](https://github.com/Elenterius/Biomancy/commit/36442f1a8ea756a70c96e58b04ae5216210ffc11))
-* refactor intermediary key cache ([5ac54fb](https://github.com/Elenterius/Biomancy/commit/5ac54fb691d0fade66971daca94ab1bdad521ce5))
 
