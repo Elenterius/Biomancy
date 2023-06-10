@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.item.injector.InjectorItem;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.entity.PartEntity;
@@ -18,19 +19,36 @@ public final class PlayerInteractHandler {
 
 	private PlayerInteractHandler() {}
 
-	@SubscribeEvent
-	public static void onPlayerInteractOn(PlayerInteractEvent.EntityInteract event) {
-		if (event.isCanceled()) return;
-
+	@SubscribeEvent(receiveCanceled = false)
+	public static void onPlayerInteractWithEntity(final PlayerInteractEvent.EntityInteract event) {
 		ItemStack stack = event.getItemStack();
 		Item item = stack.getItem();
-		if ((item instanceof BioExtractorItem || item instanceof InjectorItem) && event.getTarget() instanceof PartEntity<?> partEntity) {
-			Entity parent = getParent(partEntity);
-			if (parent instanceof LivingEntity livingEntity) {
-				InteractionResult interactionResult = item.interactLivingEntity(stack, event.getEntity(), livingEntity, event.getHand());
-				event.setCancellationResult(interactionResult);
+
+		if (item instanceof BioExtractorItem || item instanceof InjectorItem) {
+			Entity target = event.getTarget();
+
+			if (target instanceof PartEntity<?> partEntity) {
+				interactWithParent(event, stack, item, partEntity);
+			}
+			else if (target instanceof AbstractVillager villager) {
+				bypassVillagerInteraction(event, stack, item, villager);
 			}
 		}
+	}
+
+	private static void interactWithParent(PlayerInteractEvent.EntityInteract event, ItemStack stack, Item item, PartEntity<?> partEntity) {
+		Entity parent = getParent(partEntity);
+		if (parent instanceof LivingEntity livingEntity) {
+			InteractionResult interactionResult = item.interactLivingEntity(stack, event.getEntity(), livingEntity, event.getHand());
+			event.setCancellationResult(interactionResult);
+			event.setCanceled(true);
+		}
+	}
+
+	private static void bypassVillagerInteraction(PlayerInteractEvent.EntityInteract event, ItemStack stack, Item item, AbstractVillager villager) {
+		InteractionResult interactionResult = item.interactLivingEntity(stack, event.getEntity(), villager, event.getHand());
+		event.setCancellationResult(interactionResult);
+		event.setCanceled(true);
 	}
 
 	private static Entity getParent(Entity entity) {
