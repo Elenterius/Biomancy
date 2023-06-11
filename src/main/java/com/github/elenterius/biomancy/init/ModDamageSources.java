@@ -15,23 +15,17 @@ import java.util.Objects;
 
 public final class ModDamageSources {
 
-	public static final DamageSource DISEASE = createGenericDamage("disease").bypassArmor().bypassMagic();
-	public static final DamageSource RAVENOUS_HUNGER = createGenericDamage("ravenous_hunger").bypassArmor().bypassMagic();
+	public static final DamageSource CREATOR_SPIKES = createDamage("creator_spikes").bypassArmor();
+	public static final DamageSource CHEST_BITE = createDamage("chest_bite").bypassArmor();
 
-	public static final DamageSource CREATOR_SPIKES = createGenericDamage("creator_spikes").bypassArmor();
-	public static final DamageSource CHEST_BITE = createGenericDamage("chest_bite").bypassArmor();
+	public static final DamageSource CORROSIVE_ACID = createDamage("corrosive_acid");
 
-	public static final DamageSource SYMBIONT_EAT = createGenericDamage("symbiont_eat").bypassArmor().bypassMagic();
-	public static final DamageSource SYMBIONT_BITE = createGenericDamage("symbiont_bite").bypassArmor();
-	public static final DamageSource SYMBIONT_GENERIC_ATTACK = createGenericDamage("symbiont_generic");
-	public static final DamageSource CORROSIVE_ACID = createGenericDamage("corrosive_acid");
-
-	public static final DamageSource FALL_ON_SPIKE = createGenericDamage("spike_fall_on").bypassArmor().setIsFall();
-	public static final DamageSource IMPALED_BY_SPIKE = createGenericDamage("spike_impale").bypassArmor();
+	public static final DamageSource FALL_ON_SPIKE = createDamage("spike_fall_on").bypassArmor().setIsFall();
+	public static final DamageSource IMPALED_BY_SPIKE = createDamage("spike_impale").bypassArmor();
 
 	private ModDamageSources() {}
 
-	public static DamageSource createGenericDamage(String name) {
+	private static DamageSource createDamage(String name) {
 		return new DamageSource(BiomancyMod.MOD_ID + "." + name); //normal damage source "bypasses" shields
 	}
 
