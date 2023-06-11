@@ -278,7 +278,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 
 	private void addDamageTranslations() {
 		addDeathMessage(ModDamageSources.CHEST_BITE, "%1$s tried touching a chest but was eaten instead");
-		addDeathMessage(ModDamageSources.CREATOR_SPIKES, "%1$s angered the Maykrs and was impaled by bone spikes");
+		addDeathMessage(ModDamageSources.PRIMORDIAL_SPIKES, "%1$s was impaled by primordial spikes");
 
 		addDeathMessage(ModDamageSources.FALL_ON_SPIKE, "%1$s fell on a sharp spike");
 		addDeathMessage(ModDamageSources.IMPALED_BY_SPIKE, "%1$s was skewered by a sharp spike");

@@ -15,7 +15,7 @@ import java.util.Objects;
 
 public final class ModDamageSources {
 
-	public static final DamageSource CREATOR_SPIKES = createDamage("creator_spikes").bypassArmor();
+	public static final DamageSource PRIMORDIAL_SPIKES = createDamage("primordial_spikes").bypassArmor();
 	public static final DamageSource CHEST_BITE = createDamage("chest_bite").bypassArmor();
 
 	public static final DamageSource CORROSIVE_ACID = createDamage("corrosive_acid");

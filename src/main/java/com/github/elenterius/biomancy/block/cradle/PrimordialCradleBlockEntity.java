@@ -223,7 +223,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 			float distSqr = (float) entity.distanceToSqr(origin);
 			float pct = distSqr / maxAttackDistanceSqr;
 			float damage = Mth.clamp(8f * (1 - pct), 0.5f, 8f); //linear damage falloff
-			entity.hurt(ModDamageSources.CREATOR_SPIKES, damage);
+			entity.hurt(ModDamageSources.PRIMORDIAL_SPIKES, damage);
 		}
 	}
 
