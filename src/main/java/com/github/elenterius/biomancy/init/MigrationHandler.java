@@ -91,6 +91,8 @@ public final class MigrationHandler {
 		for (Mapping<Item> mapping : mappings) {
 			String path = mapping.getKey().getPath();
 			switch (path) {
+				case "long_claws" -> mapping.remap(ModItems.RAVENOUS_CLAWS.get());
+
 				case "mascot_pattern", "mascot_outline_pattern", "mascot_accent_pattern" -> mapping.remap(ModItems.MASCOT_BANNER_PATTERNS.get());
 
 				case "bio_lantern" -> mapping.remap(ModItems.YELLOW_BIO_LANTERN.get());

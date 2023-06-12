@@ -1,12 +1,10 @@
-package com.github.elenterius.biomancy.item.weapon;
+package com.github.elenterius.biomancy.item.livingtool;
 
 import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.entity.MobUtil;
-import com.github.elenterius.biomancy.item.ICustomTooltip;
 import com.github.elenterius.biomancy.item.IKeyListener;
-import com.github.elenterius.biomancy.item.ILivingToolItem;
-import com.github.elenterius.biomancy.item.state.LivingToolState;
+import com.github.elenterius.biomancy.item.weapon.SimpleClawsItem;
 import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import net.minecraft.core.BlockPos;
@@ -22,7 +20,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -34,12 +31,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LivingSwordItem extends SwordItem implements ICustomTooltip, ILivingToolItem, IKeyListener {
+public class LivingClawsItem extends SimpleClawsItem implements LivingTool, IKeyListener {
 
 	private final int maxNutrients;
 
-	public LivingSwordItem(Tier tier, int damageModifier, float attackSpeedModifier, int maxNutrients, Properties properties) {
-		super(tier, damageModifier, attackSpeedModifier, properties);
+	public LivingClawsItem(Tier tier, int baseAttackDamage, float attackSpeedModifier, float attackRangeModifier, int maxNutrients, Properties properties) {
+		super(tier, baseAttackDamage, attackSpeedModifier, attackRangeModifier, properties);
 		this.maxNutrients = maxNutrients;
 	}
 
@@ -78,17 +75,17 @@ public class LivingSwordItem extends SwordItem implements ICustomTooltip, ILivin
 	@Override
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
 		LivingToolState toolState = getLivingToolState(stack);
-		return toolState == LivingToolState.DORMANT ? 1f : super.getDestroySpeed(stack, state);
+		return toolState == LivingToolState.BROKEN ? 1f : super.getDestroySpeed(stack, state);
 	}
 
 	@Override
-	public int getMaxNutrients(ItemStack stack) {
+	public int getMaxNutrients(ItemStack container) {
 		return maxNutrients;
 	}
 
 	@Override
-	public boolean overrideStackedOnOther(ItemStack stack, Slot slot, ClickAction action, Player player) {
-		if (handleOverrideStackedOnOther(stack, slot, action, player)) {
+	public boolean overrideStackedOnOther(ItemStack livingTool, Slot slot, ClickAction action, Player player) {
+		if (handleOverrideStackedOnOther(livingTool, slot, action, player)) {
 			playSound(player, SoundEvents.GENERIC_EAT);
 			return true;
 		}
@@ -96,8 +93,8 @@ public class LivingSwordItem extends SwordItem implements ICustomTooltip, ILivin
 	}
 
 	@Override
-	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
-		if (handleOverrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+	public boolean overrideOtherStackedOnMe(ItemStack livingTool, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
+		if (handleOverrideOtherStackedOnMe(livingTool, other, slot, action, player, access)) {
 			playSound(player, SoundEvents.GENERIC_EAT);
 			return true;
 		}
@@ -109,14 +106,14 @@ public class LivingSwordItem extends SwordItem implements ICustomTooltip, ILivin
 	}
 
 	@Override
-	public int getLivingToolActionCost(ItemStack stack, LivingToolState state, ToolAction toolAction) {
+	public int getLivingToolActionCost(ItemStack livingTool, LivingToolState state, ToolAction toolAction) {
 		int baseCost = 0;
 		if (toolAction == ToolActions.SWORD_DIG) baseCost = 2;
 		if (toolAction == ToolActions.SWORD_SWEEP) baseCost = 1;
 
 		return switch (state) {
-			case EXALTED -> baseCost + 4;
-			case AWAKE -> baseCost + 1;
+			case AWAKENED -> baseCost + 4;
+			case DORMANT -> baseCost + 1;
 			default -> baseCost;
 		};
 	}
@@ -163,14 +160,12 @@ public class LivingSwordItem extends SwordItem implements ICustomTooltip, ILivin
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		tooltip.add(ComponentUtil.horizontalLine());
-		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
+		super.appendHoverText(stack, level, tooltip, isAdvanced);
 
 		tooltip.add(ComponentUtil.emptyLine());
 		appendLivingToolTooltip(stack, tooltip);
 		tooltip.add(ComponentUtil.emptyLine());
-		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action_cycle")));
-		tooltip.add(ComponentUtil.emptyLine());
+		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action.cycle")));
 	}
 
 	@Override

@@ -1,9 +1,9 @@
-package com.github.elenterius.biomancy.item;
+package com.github.elenterius.biomancy.item.livingtool;
 
 import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
-import com.github.elenterius.biomancy.item.state.LivingToolState;
+import com.github.elenterius.biomancy.item.INutrientsContainerItem;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import net.minecraft.ChatFormatting;
@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public interface ILivingToolItem extends INutrientsContainerItem {
+public interface LivingTool extends INutrientsContainerItem {
 	Set<Enchantment> INVALID_ENCHANTMENTS = Set.of(Enchantments.FLAMING_ARROWS, Enchantments.FIRE_ASPECT);
 
 	default LivingToolState getLivingToolState(ItemStack livingTool) {
@@ -43,12 +43,12 @@ public interface ILivingToolItem extends INutrientsContainerItem {
 		LivingToolState state = getLivingToolState(livingTool);
 		boolean hasNutrients = hasNutrients(livingTool);
 
-		if (state == LivingToolState.AWAKE) {
-			setLivingToolState(livingTool, hasNutrients ? LivingToolState.EXALTED : LivingToolState.DORMANT);
+		if (state == LivingToolState.DORMANT) {
+			setLivingToolState(livingTool, hasNutrients ? LivingToolState.AWAKENED : LivingToolState.BROKEN);
 			SoundUtil.broadcastItemSound(level, player, ModSoundEvents.FLESH_BLOCK_PLACE.get());
 		}
-		else if (state == LivingToolState.EXALTED) {
-			setLivingToolState(livingTool, hasNutrients ? LivingToolState.AWAKE : LivingToolState.DORMANT);
+		else if (state == LivingToolState.AWAKENED) {
+			setLivingToolState(livingTool, hasNutrients ? LivingToolState.DORMANT : LivingToolState.BROKEN);
 			SoundUtil.broadcastItemSound(level, player, ModSoundEvents.FLESH_BLOCK_HIT.get());
 		}
 	}
@@ -77,19 +77,19 @@ public interface ILivingToolItem extends INutrientsContainerItem {
 		LivingToolState state = prevState;
 
 		if (newValue <= 0) {
-			if (state != LivingToolState.DORMANT) setLivingToolState(livingTool, LivingToolState.DORMANT);
+			if (state != LivingToolState.BROKEN) setLivingToolState(livingTool, LivingToolState.BROKEN);
 			return;
 		}
 
-		if (state == LivingToolState.DORMANT) {
-			state = LivingToolState.AWAKE;
+		if (state == LivingToolState.BROKEN) {
+			state = LivingToolState.DORMANT;
 		}
 
 		int maxCost = getLivingToolMaxActionCost(livingTool, state);
 
 		if (newValue < maxCost) {
-			if (state == LivingToolState.EXALTED) state = LivingToolState.AWAKE;
-			else if (state == LivingToolState.AWAKE) state = LivingToolState.DORMANT;
+			if (state == LivingToolState.AWAKENED) state = LivingToolState.DORMANT;
+			else if (state == LivingToolState.DORMANT) state = LivingToolState.BROKEN;
 		}
 
 		if (state != prevState) setLivingToolState(livingTool, state);

@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package com.github.elenterius.biomancy.client.render.item.longclaws;
+package com.github.elenterius.biomancy.item.livingtool;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

@@ -8,7 +8,7 @@ import com.github.elenterius.biomancy.item.injector.InjectorItem;
 import com.github.elenterius.biomancy.item.weapon.BileSpitterItem;
 import com.github.elenterius.biomancy.item.weapon.DespoilingSwordItem;
 import com.github.elenterius.biomancy.item.weapon.DevArmCannonItem;
-import com.github.elenterius.biomancy.item.weapon.LivingLongClawsItem;
+import com.github.elenterius.biomancy.item.weapon.RavenousClawsItem;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
@@ -100,7 +100,7 @@ public final class ModItems {
 
 	//# Weapons
 	public static final RegistryObject<DespoilingSwordItem> DESPOIL_SICKLE = registerItem("despoil_sickle", props -> SwordSmithy.forge(DespoilingSwordItem::new, ModTiers.BRITTLE, 10, 1, props.setNoRepair()));
-	public static final RegistryObject<LivingLongClawsItem> LONG_CLAWS = registerItem("long_claws", props -> new LivingLongClawsItem(ModTiers.BIOFLESH, -2, -2.4f, 0.5f, 1000, props.setNoRepair().rarity(ModRarities.VERY_RARE)));
+	public static final RegistryObject<RavenousClawsItem> RAVENOUS_CLAWS = registerItem("ravenous_claws", props -> new RavenousClawsItem(ModTiers.BIOFLESH, 5, 5, 1000, props.setNoRepair().rarity(ModRarities.VERY_RARE)));
 	public static final RegistryObject<DevArmCannonItem> DEV_ARM_CANNON = registerItem("dev_arm_cannon", props -> new DevArmCannonItem(props.stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE).tab(null)));
 	public static final RegistryObject<BileSpitterItem> BILE_SPITTER = registerItem("bile_spitter", props -> new BileSpitterItem(props.stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE).tab(null)));
 

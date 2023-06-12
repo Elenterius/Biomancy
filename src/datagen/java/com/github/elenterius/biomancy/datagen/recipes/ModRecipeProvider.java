@@ -941,7 +941,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		//////////// WEAPONS ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		BioForgeRecipeBuilder.create(new ItemData(ModItems.LONG_CLAWS.get()))
+		BioForgeRecipeBuilder.create(new ItemData(ModItems.RAVENOUS_CLAWS.get()))
 				.addIngredient(ModItems.LIVING_FLESH.get())
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 4)
 				.addIngredient(ModItems.FLESH_BITS.get(), 16)
