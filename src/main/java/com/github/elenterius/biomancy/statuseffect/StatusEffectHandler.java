@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.event;
+package com.github.elenterius.biomancy.statuseffect;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModMobEffects;
