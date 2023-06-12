@@ -1,7 +1,9 @@
 package com.github.elenterius.biomancy.mixin;
 
-import com.github.elenterius.biomancy.statuseffect.ArmorShredEffect;
+import com.github.elenterius.biomancy.statuseffect.StackingStatusEffect;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -14,10 +16,16 @@ public abstract class MobEffectInstanceMixin {
 	@Shadow
 	public abstract int getAmplifier();
 
+	@Shadow
+	@Final
+	private MobEffect effect;
+
 	@Inject(method = "update", at = @At(value = "HEAD"))
 	protected void onUpdate(MobEffectInstance other, CallbackInfoReturnable<Boolean> cir) {
-		if (other.getEffect() instanceof ArmorShredEffect) {
-			int modifiedAmplifier = Math.max(other.getAmplifier(), getAmplifier()) + 1;
+		if (other.getEffect() != effect) return;
+
+		if (other.getEffect() instanceof StackingStatusEffect stackingStatusEffect) {
+			int modifiedAmplifier = StackingStatusEffect.computeAmplifierFrom(stackingStatusEffect, other.getAmplifier(), getAmplifier());
 			((MobEffectInstanceAccessor) other).setAmplifier(modifiedAmplifier);
 		}
 	}
