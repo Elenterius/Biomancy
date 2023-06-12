@@ -21,7 +21,7 @@ public final class ModBioForgeTabs {
 
 	public static final RegistryObject<BioForgeTab> BLOCKS = register("blocks", ModItems.FLESH_BLOCK);
 	public static final RegistryObject<BioForgeTab> MACHINES = register("machines", ModItems.DECOMPOSER);
-	public static final RegistryObject<BioForgeTab> WEAPONS = register("weapons", ModItems.LONG_CLAWS);
+	public static final RegistryObject<BioForgeTab> WEAPONS = register("weapons", ModItems.RAVENOUS_CLAWS);
 
 	private ModBioForgeTabs() {}
 

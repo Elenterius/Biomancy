@@ -8,7 +8,7 @@ import com.github.elenterius.biomancy.init.client.ClientSetupHandler;
 import com.github.elenterius.biomancy.item.ICustomTooltip;
 import com.github.elenterius.biomancy.item.MaykerBannerPatternItem;
 import com.github.elenterius.biomancy.item.SerumItem;
-import com.github.elenterius.biomancy.item.state.LivingToolState;
+import com.github.elenterius.biomancy.item.livingtool.LivingToolState;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
@@ -197,9 +197,9 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		//		addTooltip("projectile_damage", "Projectile Damage");
 
 		add(LivingToolState.getTooltipTranslationKey(), "The Tool is %1$s");
+		add(LivingToolState.BROKEN.getTranslationKey(), "Broken");
 		add(LivingToolState.DORMANT.getTranslationKey(), "Dormant");
-		add(LivingToolState.AWAKE.getTranslationKey(), "Awake");
-		add(LivingToolState.EXALTED.getTranslationKey(), "Exalted");
+		add(LivingToolState.AWAKENED.getTranslationKey(), "Awakened");
 
 		addHudMessage("not_sleepy", "You don't feel sleepy...");
 		//		addHudMessage("set_behavior_command", "%1$s will now execute the %2$s command");
@@ -366,7 +366,10 @@ public class EnglishLangProvider extends AbstractLangProvider {
 								
 				Right Click the Sac to retrieve the Items.""");
 
-		addItem(ModItems.LONG_CLAWS, "Living Long Claws", "Claws made of living flesh\n\nFeed it with nutrients via right click in the inventory.");
+		addItem(ModItems.RAVENOUS_CLAWS, "Ravenous Claws [Rework v1]", """
+				Extremely hungry and vicious Claws forged by starving living flesh and grafting claws onto them.
+								
+				Feed the famished claws by killing Mobs or feed them with food via the player inventory.""");
 		addItem(ModItems.DEV_ARM_CANNON, "[Dev Tool] Arm Cannon", "Creative/Developer Tool for testing projectiles.");
 		addItem(ModItems.BILE_SPITTER, "[WIP] Bile Spitter", "[WIP] \"living\" projectile weapon that shoots corrosive bile.\nIntended behaviour: charge it like a bow to increase damageShape & size of projectile.");
 

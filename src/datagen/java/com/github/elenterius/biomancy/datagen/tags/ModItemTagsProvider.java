@@ -75,7 +75,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
 		TagKey<Item> clawsTag = forgeTag("tools/claws");
 		tag(clawsTag)
-				.add(ModItems.LONG_CLAWS.get());
+				.add(ModItems.RAVENOUS_CLAWS.get());
 
 		tag(Tags.Items.TOOLS_SWORDS)
 				.add(ModItems.DESPOIL_SICKLE.get());

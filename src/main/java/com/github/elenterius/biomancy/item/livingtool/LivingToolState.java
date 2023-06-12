@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.item.state;
+package com.github.elenterius.biomancy.item.livingtool;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.chat.ComponentUtil;
@@ -9,7 +9,7 @@ import java.util.Locale;
 
 public enum LivingToolState {
 
-	DORMANT, AWAKE, EXALTED;
+	BROKEN, DORMANT, AWAKENED;
 
 	public static final String STATE_KEY = "LivingToolState";
 
@@ -18,8 +18,8 @@ public enum LivingToolState {
 	}
 
 	public static LivingToolState deserialize(byte stateId) {
-		if (stateId >= values().length) return DORMANT;
-		if (stateId < 0) return DORMANT;
+		if (stateId >= values().length) return BROKEN;
+		if (stateId < 0) return BROKEN;
 
 		return values()[stateId];
 	}
