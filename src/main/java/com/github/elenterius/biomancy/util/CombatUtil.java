@@ -55,4 +55,7 @@ public final class CombatUtil {
 		livingEntity.hurt(ModDamageSources.CORROSIVE_ACID, damage);
 	}
 
+	public static void applyBleedEffect(LivingEntity livingEntity, int seconds) {
+		livingEntity.addEffect(new MobEffectInstance(ModMobEffects.BLEED.get(), seconds * 20, 0, false, false, true));
+	}
 }

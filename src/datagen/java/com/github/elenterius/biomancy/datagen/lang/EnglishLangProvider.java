@@ -284,6 +284,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addDeathMessage(ModDamageSources.IMPALED_BY_SPIKE, "%1$s was skewered by a sharp spike");
 
 		addDeathMessage(ModDamageSources.CORROSIVE_ACID, "%1$s died from severe acid burns");
+		addDeathMessage(ModDamageSources.BLEED, "%1$s died from severe blood loss");
 
 		addDeathMessage(ModEntityTypes.TOOTH_PROJECTILE, "[WIP] %1$s was forcefully implanted with teeth by %2$s", "[WIP] %1$s received a lethal dental implant by %2$s using %3$s");
 		addDeathMessage(ModEntityTypes.CORROSIVE_ACID_PROJECTILE, "[WIP] %1$s was doused with corrosive acid by %2$s", "[WIP] %1$s was showered in corrosive acid by %2$s using %3$s");
@@ -297,8 +298,9 @@ public class EnglishLangProvider extends AbstractLangProvider {
 	private void addStatusEffectTranslations() {
 		addEffect(ModMobEffects.CORROSIVE, "Corrosive Acid");
 		addEffect(ModMobEffects.ARMOR_SHRED, "Armor Shred");
-		addEffect(ModMobEffects.ESSENCE_ANEMIA, "[PH] Essence Anemia");
 		addEffect(ModMobEffects.LIBIDO, "Fertility");
+		addEffect(ModMobEffects.BLEED, "Bleed");
+		addEffect(ModMobEffects.ESSENCE_ANEMIA, "[PH] Essence Anemia");
 	}
 
 	private void addEnchantmentTranslations() {
