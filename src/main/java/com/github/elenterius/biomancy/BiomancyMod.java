@@ -53,6 +53,7 @@ public final class BiomancyMod {
 		ModLoot.GLOBAL_MODIFIERS.register(modEventBus);
 
 		ModSoundEvents.SOUND_EVENTS.register(modEventBus);
+		ModParticleTypes.PARTICLE_TYPES.register(modEventBus);
 
 		ModsCompatHandler.onBiomancyInit(modEventBus);
 	}

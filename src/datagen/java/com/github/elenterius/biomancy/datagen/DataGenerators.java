@@ -8,6 +8,7 @@ import com.github.elenterius.biomancy.datagen.loot.ModLootTableProvider;
 import com.github.elenterius.biomancy.datagen.models.ModBlockStateProvider;
 import com.github.elenterius.biomancy.datagen.models.ModItemModelProvider;
 import com.github.elenterius.biomancy.datagen.modonomicon.GuideBookProvider;
+import com.github.elenterius.biomancy.datagen.particles.ModParticleSpriteProvider;
 import com.github.elenterius.biomancy.datagen.recipes.ModRecipeProvider;
 import com.github.elenterius.biomancy.datagen.tags.*;
 import net.minecraft.data.DataGenerator;
@@ -48,6 +49,9 @@ public final class DataGenerators {
 
 		//sounds
 		generator.addProvider(true, new ModSoundProvider(generator, existingFileHelper));
+
+		//particles
+		generator.addProvider(true, new ModParticleSpriteProvider(generator, existingFileHelper));
 
 		//translations
 		EnglishLangProvider translationProvider = new EnglishLangProvider(generator);
