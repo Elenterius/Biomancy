@@ -159,8 +159,8 @@
 			}
 		},
 		"ravenous_claws.wakeup": {
-			"loop": true,
-			"animation_length": 2.33333,
+			"loop": "hold_on_last_frame",
+			"animation_length": 0.41667,
 			"bones": {
 				"right_claw": {
 					"position": {
@@ -169,12 +169,6 @@
 						},
 						"0.125": {
 							"vector": [ 0, 0, 0 ]
-						},
-						"1.2083": {
-							"vector": [ 0, 0, 0 ]
-						},
-						"1.2917": {
-							"vector": [ 1, -0.25, 0.5 ]
 						}
 					},
 					"scale": {
@@ -186,12 +180,6 @@
 						},
 						"0.2917": {
 							"vector": [ 0.9, 1, 1 ]
-						},
-						"1.2083": {
-							"vector": [ 0.9, 1, 1 ]
-						},
-						"1.2917": {
-							"vector": [ 0.9, 1, 1 ]
 						}
 					}
 				},
@@ -202,12 +190,6 @@
 						},
 						"0.0833": {
 							"vector": [ 0, 0, 0 ]
-						},
-						"1.2083": {
-							"vector": [ 0, 0, 0 ]
-						},
-						"1.2917": {
-							"vector": [ 1, 0, 0 ]
 						}
 					},
 					"scale": {
@@ -219,12 +201,6 @@
 						},
 						"0.4167": {
 							"vector": [ 1, 1, 1 ]
-						},
-						"1.2083": {
-							"vector": [ 1, 1, 1 ]
-						},
-						"1.2917": {
-							"vector": [ 0.9, 0.9, 1 ]
 						}
 					}
 				},
@@ -234,10 +210,6 @@
 							"vector": [ 0, 0, 1 ]
 						},
 						"0.1667": {
-							"vector": [ 0, 0, 0 ],
-							"easing": "easeInSine"
-						},
-						"1.2083": {
 							"vector": [ 0, 0, 0 ],
 							"easing": "easeInSine"
 						}
@@ -256,13 +228,6 @@
 						"0.25": {
 							"vector": [ 1, 1, 1 ],
 							"easing": "easeInSine"
-						},
-						"1.2083": {
-							"vector": [ 1, 1, 1 ],
-							"easing": "easeInSine"
-						},
-						"1.2917": {
-							"vector": [ 0, 0, 0 ]
 						}
 					}
 				},
@@ -272,10 +237,6 @@
 							"vector": [ 0, -1, 1 ]
 						},
 						"0.1667": {
-							"vector": [ 0, 0, 0 ],
-							"easing": "easeInSine"
-						},
-						"1.2083": {
 							"vector": [ 0, 0, 0 ],
 							"easing": "easeInSine"
 						}
@@ -299,13 +260,6 @@
 						"0.375": {
 							"vector": [ 1, 1, 1 ],
 							"easing": "easeInSine"
-						},
-						"1.2083": {
-							"vector": [ 1, 1, 1 ],
-							"easing": "easeInSine"
-						},
-						"1.2917": {
-							"vector": [ 0, 0, 0 ]
 						}
 					}
 				},
@@ -315,10 +269,6 @@
 							"vector": [ -1, -2, 0 ]
 						},
 						"0.1667": {
-							"vector": [ 0.25, -0.5, 0 ],
-							"easing": "easeInSine"
-						},
-						"1.2083": {
 							"vector": [ 0.25, -0.5, 0 ],
 							"easing": "easeInSine"
 						}
@@ -337,13 +287,6 @@
 						"0.25": {
 							"vector": [ 1, 1, 1 ],
 							"easing": "easeInSine"
-						},
-						"1.2083": {
-							"vector": [ 1, 1, 1 ],
-							"easing": "easeInSine"
-						},
-						"1.2917": {
-							"vector": [ 0, 0, 0 ]
 						}
 					}
 				},
@@ -353,10 +296,6 @@
 							"vector": [ 0, -1, -1 ]
 						},
 						"0.1667": {
-							"vector": [ 0, 0, 0 ],
-							"easing": "easeInSine"
-						},
-						"1.2083": {
 							"vector": [ 0, 0, 0 ],
 							"easing": "easeInSine"
 						}
@@ -380,13 +319,6 @@
 						"0.375": {
 							"vector": [ 1, 1, 1 ],
 							"easing": "easeInSine"
-						},
-						"1.2083": {
-							"vector": [ 1, 1, 1 ],
-							"easing": "easeInSine"
-						},
-						"1.2917": {
-							"vector": [ 0, 0, 0 ]
 						}
 					}
 				},
@@ -397,12 +329,6 @@
 						},
 						"0.125": {
 							"vector": [ 0, 0, 0 ]
-						},
-						"1.2083": {
-							"vector": [ 0, 0, 0 ]
-						},
-						"1.2917": {
-							"vector": [ 1, -0.25, -0.5 ]
 						}
 					},
 					"scale": {
@@ -414,12 +340,6 @@
 						},
 						"0.2917": {
 							"vector": [ 1, 1, 1 ]
-						},
-						"1.2083": {
-							"vector": [ 1, 1, 1 ]
-						},
-						"1.2917": {
-							"vector": [ 0.9, 1, 1 ]
 						}
 					}
 				},
@@ -429,10 +349,6 @@
 							"vector": [ 0, 0, -1 ]
 						},
 						"0.1667": {
-							"vector": [ 0, 0, 0 ],
-							"easing": "easeInSine"
-						},
-						"1.2083": {
 							"vector": [ 0, 0, 0 ],
 							"easing": "easeInSine"
 						}
@@ -451,13 +367,6 @@
 						"0.25": {
 							"vector": [ 1, 1, 1 ],
 							"easing": "easeInSine"
-						},
-						"1.2083": {
-							"vector": [ 1, 1, 1 ],
-							"easing": "easeInSine"
-						},
-						"1.2917": {
-							"vector": [ 0, 0, 0 ]
 						}
 					}
 				},
@@ -470,12 +379,6 @@
 							"vector": [ 1, 1, 1 ],
 							"easing": "step",
 							"easingArgs": [ 2 ]
-						},
-						"1.25": {
-							"vector": [ 1, 1, 1 ]
-						},
-						"1.2917": {
-							"vector": [ 0, 0, 0 ]
 						}
 					}
 				},
@@ -491,12 +394,6 @@
 							"vector": [ 0, 0, 0 ],
 							"easing": "step",
 							"easingArgs": [ 2 ]
-						},
-						"1.2083": {
-							"vector": [ 0, 0, 0 ]
-						},
-						"1.25": {
-							"vector": [ 1, 1, 1 ]
 						}
 					}
 				},
@@ -509,14 +406,6 @@
 							"vector": [ 0, 0, 0 ],
 							"easing": "step",
 							"easingArgs": [ 2 ]
-						},
-						"1.25": {
-							"vector": [ 0, 0, 0 ],
-							"easing": "step",
-							"easingArgs": [ 2 ]
-						},
-						"1.2917": {
-							"vector": [ 1, 1, 1 ]
 						}
 					}
 				},
@@ -529,14 +418,6 @@
 							"vector": [ 1, 1, 1 ],
 							"easing": "step",
 							"easingArgs": [ 2 ]
-						},
-						"1.2917": {
-							"vector": [ 1, 1, 1 ],
-							"easing": "step",
-							"easingArgs": [ 2 ]
-						},
-						"1.3333": {
-							"vector": [ 0, 0, 0 ]
 						}
 					}
 				}
@@ -722,7 +603,7 @@
 			}
 		},
 		"ravenous_claws.awakened": {
-			"loop": "hold_on_last_frame",
+			"loop": true,
 			"animation_length": 0.5,
 			"bones": {
 				"claw_extended": {
