@@ -154,8 +154,9 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void registerGameOverlays(RegisterGuiOverlaysEvent event) {
-		event.registerAboveAll("biomancy_gun", IngameOverlays.GUN_OVERLAY);
+//		event.registerAboveAll("biomancy_gun", IngameOverlays.GUN_OVERLAY);
 		event.registerAboveAll("biomancy_injector", IngameOverlays.INJECTOR_OVERLAY);
+		event.registerAboveAll("biomancy_charge_bar", IngameOverlays.CHARGE_BAR_OVERLAY);
 	}
 
 	@SubscribeEvent

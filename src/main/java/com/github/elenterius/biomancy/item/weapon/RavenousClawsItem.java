@@ -3,20 +3,23 @@ package com.github.elenterius.biomancy.item.weapon;
 import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.render.item.ravenousclaws.RavenousClawsRenderer;
 import com.github.elenterius.biomancy.entity.MobUtil;
-import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.init.ModParticleTypes;
+import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.item.ItemCharge;
 import com.github.elenterius.biomancy.item.livingtool.LivingClawsItem;
 import com.github.elenterius.biomancy.item.livingtool.LivingToolState;
+import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.CombatUtil;
+import com.github.elenterius.biomancy.util.SoundUtil;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SlotAccess;
@@ -49,20 +52,39 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class RavenousClawsItem extends LivingClawsItem implements IAnimatable {
+public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, ItemCharge {
 	protected static final UUID BASE_ATTACK_KNOCKBACK_UUID = UUID.fromString("6175525b-56dd-4f87-b035-86b892afe7b3");
 	private final Lazy<Multimap<Attribute, AttributeModifier>> brokenAttributes;
 	private final Lazy<Multimap<Attribute, AttributeModifier>> dormantAttributes;
 	private final Lazy<Multimap<Attribute, AttributeModifier>> awakenedAttributes;
 	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
 
-	public RavenousClawsItem(Tier tier, int attackDamage, float attackSpeed, int maxNutrients, Properties properties) {
+	public RavenousClawsItem(Tier tier, float attackDamage, float attackSpeed, int maxNutrients, Properties properties) {
 		super(tier, 0, 0, 0, maxNutrients, properties);
 
 		float attackSpeedModifier = (float) (attackSpeed - Attributes.ATTACK_SPEED.getDefaultValue());
 		brokenAttributes = Lazy.of(() -> createDefaultAttributeModifiers(0, 0, -0.5f).build());
-		dormantAttributes = Lazy.of(() -> createDefaultAttributeModifiers(attackDamage, attackSpeedModifier - 1, -0.5f).build());
-		awakenedAttributes = Lazy.of(() -> createDefaultAttributeModifiers(attackDamage + 1, attackSpeedModifier, 0.5f).build());
+		dormantAttributes = Lazy.of(() -> createDefaultAttributeModifiers(-1 + attackDamage, attackSpeedModifier, -0.5f).build());
+		awakenedAttributes = Lazy.of(() -> createDefaultAttributeModifiers(-1 + attackDamage + 2, attackSpeedModifier, 0.5f).build());
+	}
+
+	private static void playBloodyClawsFX(LivingEntity attacker) {
+		attacker.level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, attacker.getSoundSource(), 0.85f, 0.9f + attacker.getRandom().nextFloat() * 0.5f);
+		if (attacker.level instanceof ServerLevel serverLevel) {
+			double xOffset = -Mth.sin(attacker.getYRot() * Mth.DEG_TO_RAD);
+			double zOffset = Mth.cos(attacker.getYRot() * Mth.DEG_TO_RAD);
+			serverLevel.sendParticles(ModParticleTypes.BLOODY_CLAWS_ATTACK.get(), attacker.getX() + xOffset, attacker.getY(0.52f), attacker.getZ() + zOffset, 0, xOffset, 0, zOffset, 0);
+		}
+	}
+
+	private static void playBloodExplosionFX(LivingEntity target) {
+		if (target.level instanceof ServerLevel serverLevel) {
+			float w = target.getBbWidth() * 0.45f;
+			double x = serverLevel.getRandom().nextGaussian() * w;
+			double y = serverLevel.getRandom().nextGaussian() * 0.2d;
+			double z = serverLevel.getRandom().nextGaussian() * w;
+			serverLevel.sendParticles(ModParticleTypes.FALLING_BLOOD.get(), target.getX(), target.getY(0.5f), target.getZ(), 20, x, y, z, 0.25);
+		}
 	}
 
 	@Override
@@ -72,31 +94,21 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable {
 		return builder;
 	}
 
-	private static void playChargedHitFX(Player player) {
-		player.level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, player.getSoundSource(), 1f, 1f);
-		if (player.level instanceof ServerLevel serverLevel) {
-			double xOffset = -Mth.sin(player.getYRot() * Mth.DEG_TO_RAD);
-			double zOffset = Mth.cos(player.getYRot() * Mth.DEG_TO_RAD);
-			serverLevel.sendParticles(ModParticleTypes.BLOODY_CLAWS_ATTACK.get(), player.getX() + xOffset, player.getY(0.52d), player.getZ() + zOffset, 0, xOffset, 0, zOffset, 0);
-		}
-	}
-
 	@Override
 	public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
-		return equipmentSlot == EquipmentSlot.MAINHAND ? dormantAttributes.get() : super.getDefaultAttributeModifiers(equipmentSlot);
+		return equipmentSlot == EquipmentSlot.MAINHAND ? dormantAttributes.get() : ImmutableMultimap.of();
 	}
 
 	@Override
 	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
 		if (slot == EquipmentSlot.MAINHAND) {
-			LivingToolState livingToolState = getLivingToolState(stack);
-			return switch (livingToolState) {
+			return switch (getLivingToolState(stack)) {
 				case BROKEN -> brokenAttributes.get();
 				case DORMANT -> dormantAttributes.get();
 				case AWAKENED -> awakenedAttributes.get();
 			};
 		}
-		return super.getAttributeModifiers(slot, stack);
+		return ImmutableMultimap.of();
 	}
 
 	@Override
@@ -105,9 +117,75 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable {
 	}
 
 	@Override
+	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, Level level, Player player, EquipmentSlot slot, byte flags) {
+		if (!hasCharge(stack)) {
+			player.displayClientMessage(TextComponentUtil.getFailureMsgText("not_enough_charge"), true);
+			player.playSound(SoundEvents.VILLAGER_NO, 0.8f, 0.8f + player.getLevel().getRandom().nextFloat() * 0.4f);
+			return InteractionResultHolder.fail(flags);
+		}
+
+		return InteractionResultHolder.success(flags);
+	}
+
+	@Override
+	public int getMaxCharge(ItemStack container) {
+		return 50;
+	}
+
+	@Override
+	public void onChargeChanged(ItemStack livingTool, int oldValue, int newValue) {
+		if (newValue <= 0 && getLivingToolState(livingTool) == LivingToolState.AWAKENED) {
+			setLivingToolState(livingTool, LivingToolState.DORMANT);
+		}
+	}
+
+	@Override
+	public void onNutrientsChanged(ItemStack livingTool, int oldValue, int newValue) {
+		LivingToolState prevState = getLivingToolState(livingTool);
+		LivingToolState state = prevState;
+
+		if (newValue <= 0) {
+			if (state != LivingToolState.BROKEN) setLivingToolState(livingTool, LivingToolState.BROKEN);
+			return;
+		}
+
+		if (state == LivingToolState.BROKEN) {
+			state = LivingToolState.DORMANT;
+		}
+
+		int maxCost = getLivingToolMaxActionCost(livingTool, state);
+		if (newValue < maxCost && state == LivingToolState.DORMANT) state = LivingToolState.BROKEN;
+
+		if (state != prevState) setLivingToolState(livingTool, state);
+	}
+
+	@Override
 	public void updateLivingToolState(ItemStack livingTool, ServerLevel level, Player player) {
 		GeckoLibUtil.writeIDToStack(livingTool, level);
-		super.updateLivingToolState(livingTool, level, player);
+
+		LivingToolState state = getLivingToolState(livingTool);
+		boolean hasNutrients = hasNutrients(livingTool);
+
+		if (!hasNutrients) {
+			if (state != LivingToolState.BROKEN) {
+				setLivingToolState(livingTool, LivingToolState.BROKEN);
+				SoundUtil.broadcastItemSound(level, player, ModSoundEvents.FLESH_BLOCK_BREAK.get());
+			}
+			return;
+		}
+
+		switch (state) {
+			case BROKEN, AWAKENED -> {
+				setLivingToolState(livingTool, LivingToolState.DORMANT);
+				SoundUtil.broadcastItemSound(level, player, ModSoundEvents.FLESH_BLOCK_HIT.get());
+			}
+			case DORMANT -> {
+				if (hasCharge(livingTool)) {
+					setLivingToolState(livingTool, LivingToolState.AWAKENED);
+					SoundUtil.broadcastItemSound(level, player, ModSoundEvents.FLESH_BLOCK_PLACE.get());
+				}
+			}
+		}
 	}
 
 	@Override
@@ -129,44 +207,52 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable {
 	}
 
 	@Override
-	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		if (!MobUtil.isCreativePlayer(attacker)) {
-			consumeNutrients(stack, getLivingToolActionCost(stack, null));
-		}
+	public int getNutrientFuelValue(ItemStack container, ItemStack food) {
+		return super.getNutrientFuelValue(container, food) / 2;
+	}
 
+	@Override
+	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		if (attacker.level.isClientSide) return true;
 
-		if (target.isDeadOrDying()) {
-			addNutrients(stack, 5);
+		LivingToolState livingToolState = getLivingToolState(stack);
+		boolean isFullAttackStrength = !(attacker instanceof Player player) || player.getAttackStrengthScale(0.5f) >= 0.9f;
+		boolean isNotCreativePlayer = !MobUtil.isCreativePlayer(attacker);
+
+		if (isNotCreativePlayer) {
+			switch (livingToolState) {
+				case BROKEN -> { /* do nothing */ }
+				case DORMANT -> consumeNutrients(stack, 1);
+				case AWAKENED -> consumeCharge(stack, 1);
+			}
 		}
 
-		if (attacker instanceof Player player) {
-			if (player.getAttackStrengthScale(0.5f) < 0.9f) return true;
-
-			switch (getLivingToolState(stack)) {
-				case BROKEN -> {
-					//do nothing
-				}
+		if (isFullAttackStrength) {
+			switch (livingToolState) {
+				case BROKEN -> { /* do nothing */ }
 				case DORMANT -> {
-					playChargedHitFX(player);
-					if (player.getRandom().nextFloat() < 0.06f) {
-						player.level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_CRIT, player.getSoundSource(), 1f, 1.5f);
+					playBloodyClawsFX(attacker);
+					if (attacker.getRandom().nextInt(12) == 0) { //8.3%
+						attacker.level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), SoundEvents.PLAYER_ATTACK_CRIT, attacker.getSoundSource(), 1f, 1.5f);
+
 						CombatUtil.applyBleedEffect(target, 20);
-						player.sendSystemMessage(Component.literal("6% Bleed Proc!").withStyle(Style.EMPTY.withColor(ModMobEffects.BLEED.get().getColor())));
 					}
 				}
 				case AWAKENED -> {
-					playChargedHitFX(player);
-					if (player.getRandom().nextFloat() < 0.12f) {
-						player.level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.PLAYER_ATTACK_CRIT, player.getSoundSource(), 1f, 1.5f);
-						//bloodExplosionFX()
-						CombatUtil.hurtWithBleed(target, 0.1f * target.getMaxHealth());
+					playBloodyClawsFX(attacker);
+					if (attacker.getRandom().nextInt(5) == 0) { //20%
+						attacker.level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), SoundEvents.PLAYER_ATTACK_CRIT, attacker.getSoundSource(), 1f, 1.5f);
 
+						playBloodExplosionFX(target);
+						CombatUtil.hurtWithBleed(target, 0.1f * target.getMaxHealth());
 						CombatUtil.applyBleedEffect(target, 20);
-						player.sendSystemMessage(Component.literal("12% Bleed Proc!").withStyle(Style.EMPTY.withColor(ModMobEffects.BLEED.get().getColor())));
 					}
 				}
 			}
+		}
+
+		if (target.isDeadOrDying()) {
+			addCharge(stack, 2);
 		}
 
 		return true;
@@ -182,23 +268,25 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable {
 			case DORMANT -> {
 				tooltip.add(ComponentUtil.emptyLine());
 				tooltip.add(ComponentUtil.literal("On Charged Hit:").withStyle(ChatFormatting.GRAY));
-				tooltip.add(ComponentUtil.literal(" 6% Bleed Chance").withStyle(ChatFormatting.DARK_GRAY));
+				tooltip.add(ComponentUtil.literal(" 8% Bleed Chance").withStyle(ChatFormatting.DARK_GRAY));
 			}
 			case AWAKENED -> {
 				tooltip.add(ComponentUtil.emptyLine());
 				tooltip.add(ComponentUtil.literal("On Charged Hit:").withStyle(ChatFormatting.GRAY));
-				tooltip.add(ComponentUtil.literal(" 12% Bleed Chance").withStyle(ChatFormatting.DARK_GRAY));
-				tooltip.add(ComponentUtil.literal(" 12% Blood Explosion Chance (deals 10% of max health as damage)").withStyle(ChatFormatting.DARK_GRAY));
+				tooltip.add(ComponentUtil.literal(" 20% Bleed Chance").withStyle(ChatFormatting.DARK_GRAY));
+				tooltip.add(ComponentUtil.literal(" 20% Blood Explosion Chance (deals 10% of max health as damage)").withStyle(ChatFormatting.DARK_GRAY));
 			}
 		}
-		tooltip.add(ComponentUtil.emptyLine());
+
+		if (stack.isEnchanted()) {
+			tooltip.add(ComponentUtil.emptyLine());
+		}
 	}
 
 	@Override
 	public int getLivingToolActionCost(ItemStack livingTool, LivingToolState state, ToolAction toolAction) {
 		return switch (state) {
-			case AWAKENED -> 20;
-			case DORMANT -> 2;
+			case AWAKENED, DORMANT -> 1;
 			case BROKEN -> 0;
 		};
 	}
@@ -209,9 +297,9 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable {
 
 		AnimationController<RavenousClawsItem> controller = event.getController();
 		switch (state) {
-			case DORMANT -> controller.setAnimation(Animations.getDormant(controller));
-			case AWAKENED -> controller.setAnimation(Animations.getAwakened(controller));
-			case BROKEN -> controller.setAnimation(Animations.BROKEN_ANIMATION);
+			case DORMANT -> Animations.setDormant(controller);
+			case AWAKENED -> Animations.setAwakened(controller);
+			case BROKEN -> Animations.setBroken(controller);
 		}
 
 		return PlayState.CONTINUE;
@@ -232,7 +320,7 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable {
 
 	@Override
 	public void registerControllers(AnimationData data) {
-		data.addAnimationController(new AnimationController<>(this, "controller", 10, this::onAnim));
+		data.addAnimationController(new AnimationController<>(this, "controller", 1, this::onAnim));
 	}
 
 	@Override
@@ -241,36 +329,46 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable {
 	}
 
 	protected static class Animations {
-		protected static final AnimationBuilder DORMANT_ANIMATION = new AnimationBuilder().loop("ravenous_claws.dormant");
-		protected static final AnimationBuilder TO_SLEEP_TRANSITION_ANIMATION = new AnimationBuilder().playOnce("ravenous_claws.tosleep").loop("ravenous_claws.dormant");
-		protected static final AnimationBuilder BROKEN_ANIMATION = new AnimationBuilder().loop("ravenous_claws.broken");
-		protected static final AnimationBuilder WAKEUP_TRANSITION_ANIMATION = new AnimationBuilder().playOnce("ravenous_claws.wakeup").loop("ravenous_claws.awakened");
-		protected static final AnimationBuilder AWAKENED_ANIMATION = new AnimationBuilder().loop("ravenous_claws.awakened");
+		protected static final AnimationBuilder DORMANT = new AnimationBuilder().loop("ravenous_claws.dormant");
+		protected static final AnimationBuilder TO_SLEEP_TRANSITION = new AnimationBuilder().playOnce("ravenous_claws.tosleep").loop("ravenous_claws.dormant");
+		protected static final AnimationBuilder BROKEN = new AnimationBuilder().loop("ravenous_claws.broken");
+		protected static final AnimationBuilder WAKEUP_TRANSITION = new AnimationBuilder().playOnce("ravenous_claws.wakeup").loop("ravenous_claws.awakened");
+		protected static final AnimationBuilder AWAKENED = new AnimationBuilder().loop("ravenous_claws.awakened");
 
 		private Animations() {}
 
-		protected static AnimationBuilder getDormant(AnimationController<?> controller) {
+		protected static void setDormant(AnimationController<?> controller) {
 			Animation animation = controller.getCurrentAnimation();
-			if (animation == null) return DORMANT_ANIMATION;
-
-			String animationName = animation.animationName;
-			if (animationName.equals("ravenous_claws.awakened") || animationName.equals("ravenous_claws.wakeup")) {
-				return TO_SLEEP_TRANSITION_ANIMATION;
+			if (animation == null) {
+				controller.setAnimation(DORMANT);
+				return;
 			}
 
-			return DORMANT_ANIMATION;
+			if (!animation.animationName.equals("ravenous_claws.dormant")) {
+				controller.setAnimation(TO_SLEEP_TRANSITION);
+				return;
+			}
+
+			controller.setAnimation(DORMANT);
 		}
 
-		protected static AnimationBuilder getAwakened(AnimationController<?> controller) {
+		protected static void setAwakened(AnimationController<?> controller) {
 			Animation animation = controller.getCurrentAnimation();
-			if (animation == null) return AWAKENED_ANIMATION;
-
-			String animationName = animation.animationName;
-			if (animationName.equals("ravenous_claws.dormant") || animationName.equals("ravenous_claws.tosleep")) {
-				return WAKEUP_TRANSITION_ANIMATION;
+			if (animation == null) {
+				controller.setAnimation(AWAKENED);
+				return;
 			}
 
-			return AWAKENED_ANIMATION;
+			if (!animation.animationName.equals("ravenous_claws.awakened")) {
+				controller.setAnimation(WAKEUP_TRANSITION);
+				return;
+			}
+
+			controller.setAnimation(AWAKENED);
+		}
+
+		public static void setBroken(AnimationController<RavenousClawsItem> controller) {
+			controller.setAnimation(BROKEN);
 		}
 	}
 

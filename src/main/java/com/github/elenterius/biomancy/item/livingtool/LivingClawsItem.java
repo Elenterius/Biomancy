@@ -35,7 +35,7 @@ public class LivingClawsItem extends SimpleClawsItem implements LivingTool, IKey
 
 	private final int maxNutrients;
 
-	public LivingClawsItem(Tier tier, int baseAttackDamage, float attackSpeedModifier, float attackRangeModifier, int maxNutrients, Properties properties) {
+	public LivingClawsItem(Tier tier, float baseAttackDamage, float attackSpeedModifier, float attackRangeModifier, int maxNutrients, Properties properties) {
 		super(tier, baseAttackDamage, attackSpeedModifier, attackRangeModifier, properties);
 		this.maxNutrients = maxNutrients;
 	}

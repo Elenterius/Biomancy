@@ -42,7 +42,7 @@ public class ClawsItem extends TieredItem implements Vanishable {
 	protected static final Set<Material> MINEABLE_WITH_CLAWS = Set.of(Material.PLANT, Material.REPLACEABLE_PLANT, Material.VEGETABLE);
 	protected final Lazy<Multimap<Attribute, AttributeModifier>> defaultAttributeModifiers;
 
-	public ClawsItem(Tier tier, int baseAttackDamage, float attackSpeedModifier, float attackRangeModifier, Properties properties) {
+	public ClawsItem(Tier tier, float baseAttackDamage, float attackSpeedModifier, float attackRangeModifier, Properties properties) {
 		super(tier, properties);
 		float attackDamageModifier = baseAttackDamage + tier.getAttackDamageBonus();
 		defaultAttributeModifiers = Lazy.of(() -> createDefaultAttributeModifiers(attackDamageModifier, attackSpeedModifier, attackRangeModifier).build());
