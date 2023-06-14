@@ -61,6 +61,11 @@ public abstract class ParticleSpriteProvider implements DataProvider {
 
 	public abstract void registerParticles();
 
+	protected <O extends ParticleOptions, T extends ParticleType<O>> void addParticle(final RegistryObject<T> registryObject, String texture) {
+		ResourceLocation id = registryObject.getId();
+		addParticle(id, ParticleSprite.create(texture));
+	}
+
 	protected <O extends ParticleOptions, T extends ParticleType<O>> void addParticle(final RegistryObject<T> registryObject, int frameCount, int frameStartNumber) {
 		ResourceLocation id = registryObject.getId();
 		addParticle(id, ParticleSprite.create(id, frameCount, frameStartNumber));
@@ -127,7 +132,16 @@ public abstract class ParticleSpriteProvider implements DataProvider {
 		return generator.getOutputFolder().resolve("assets/" + particleId.getNamespace() + "/particles/" + particleId.getPath() + ".json");
 	}
 
-	public record ParticleSprite(ResourceLocation texture, int frameCount, String[] spriteFrames) {
+	protected record ParticleSprite(ResourceLocation texture, int frameCount, String[] spriteFrames) {
+
+		public static ParticleSprite create(String texture) {
+			ResourceLocation rl = new ResourceLocation(texture);
+			return new ParticleSprite(rl, 1, new String[]{rl.toString()});
+		}
+
+		public static ParticleSprite create(ResourceLocation texture) {
+			return new ParticleSprite(texture, 1, new String[]{texture.toString()});
+		}
 
 		public static ParticleSprite create(ResourceLocation texture, int frameCount) {
 			String[] sprites = createSpriteFrames(texture, frameCount, 0);
