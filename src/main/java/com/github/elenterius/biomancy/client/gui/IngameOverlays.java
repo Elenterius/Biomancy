@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
 import com.github.elenterius.biomancy.client.util.GuiUtil;
 import com.github.elenterius.biomancy.entity.ownable.IControllableMob;
+import com.github.elenterius.biomancy.item.ItemCharge;
 import com.github.elenterius.biomancy.item.injector.InjectorItem;
 import com.github.elenterius.biomancy.item.weapon.IGun;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -20,9 +21,10 @@ import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
 public final class IngameOverlays {
 
-	public static final ResourceLocation COMMAND_ICONS = BiomancyMod.createRL("textures/gui/command_icons.png");
+	//	public static final ResourceLocation COMMAND_ICONS = BiomancyMod.createRL("textures/gui/command_icons.png");
 	public static final ResourceLocation INJECTOR_COOL_DOWN = BiomancyMod.createRL("textures/gui/indicator_injector_cooldown.png");
 	public static final ResourceLocation ORNATE_CORNER_BOTTOM_RIGHT = BiomancyMod.createRL("textures/gui/ornate_corner_br.png");
+	public static final ResourceLocation CHARGE_BAR = BiomancyMod.createRL("textures/gui/charge_bar.png");
 
 	//	public static final IIngameOverlay CONTROL_STAFF_OVERLAY = (gui, poseStack, partialTicks, screenWidth, screenHeight) -> {
 	//		Minecraft minecraft = Minecraft.getInstance();
@@ -37,17 +39,17 @@ public final class IngameOverlays {
 	//		}
 	//	};
 
-	public static final IGuiOverlay GUN_OVERLAY = (gui, poseStack, partialTicks, screenWidth, screenHeight) -> {
-		Minecraft minecraft = Minecraft.getInstance();
-		if (!minecraft.options.hideGui && minecraft.player != null) {
-			ItemStack itemStack = minecraft.player.getMainHandItem();
-			if (itemStack.isEmpty() || !(itemStack.getItem() instanceof IGun gun)) return;
-
-			gui.setupOverlayRenderState(true, false);
-			gui.setBlitOffset(-90);
-			renderGunOverlay(gui, poseStack, screenWidth, screenHeight, minecraft.player, itemStack, gun);
-		}
-	};
+	//	public static final IGuiOverlay GUN_OVERLAY = (gui, poseStack, partialTicks, screenWidth, screenHeight) -> {
+	//		Minecraft minecraft = Minecraft.getInstance();
+	//		if (!minecraft.options.hideGui && minecraft.player != null) {
+	//			ItemStack itemStack = minecraft.player.getMainHandItem();
+	//			if (itemStack.isEmpty() || !(itemStack.getItem() instanceof IGun gun)) return;
+	//
+	//			gui.setupOverlayRenderState(true, false);
+	//			gui.setBlitOffset(-90);
+	//			renderGunOverlay(gui, poseStack, screenWidth, screenHeight, minecraft.player, itemStack, gun);
+	//		}
+	//	};
 
 	public static final IGuiOverlay INJECTOR_OVERLAY = (gui, poseStack, partialTicks, screenWidth, screenHeight) -> {
 		Minecraft minecraft = Minecraft.getInstance();
@@ -61,9 +63,21 @@ public final class IngameOverlays {
 		}
 	};
 
+	public static final IGuiOverlay CHARGE_BAR_OVERLAY = (gui, poseStack, partialTicks, screenWidth, screenHeight) -> {
+		Minecraft minecraft = Minecraft.getInstance();
+		if (!minecraft.options.hideGui && minecraft.player != null) {
+			ItemStack stack = minecraft.player.getMainHandItem();
+			if (stack.isEmpty() || !(stack.getItem() instanceof ItemCharge abilityCharge)) return;
+
+			if (GuiUtil.isFirstPersonView()) {
+				gui.setupOverlayRenderState(true, false);
+				gui.setBlitOffset(-90);
+				renderChargeBar(poseStack, screenWidth, screenHeight, gui.getFont(), abilityCharge.getCharge(stack), abilityCharge.getChargePct(stack));
+			}
+		}
+	};
+
 	private IngameOverlays() {}
-
-
 
 	static void renderCommandOverlay(PoseStack poseStack, int screenWidth, int screenHeight, IControllableMob.Command command) {
 		//		if (Minecraft.getInstance().hitResult != null && Minecraft.getInstance().hitResult.getType() == HitResult.Type.BLOCK) {
@@ -100,6 +114,28 @@ public final class IngameOverlays {
 		GuiComponent.blit(poseStack, x, y, 0, 0, 44, 28, 44, 28);
 	}
 
+	static void renderChargeBar(PoseStack poseStack, int screenWidth, int screenHeight, Font font, int charge, float chargePct) {
+		int x = screenWidth / 4 * 3 - 25; // 51/2 ~= 25
+		int y = screenHeight - 5 - 16;
+
+		RenderSystem.setShaderTexture(0, CHARGE_BAR);
+		GuiComponent.blit(poseStack, x, y, 6, 6, 51, 5, 64, 16); //background
+		GuiComponent.blit(poseStack, x, y, 6, 11, (int) (chargePct * 51), 5, 64, 16); //foreground
+		GuiComponent.blit(poseStack, x, y - 5, 6, 0, 51, 6, 64, 16); //ornament
+
+		if (charge <= 0) return;
+
+		String number = String.valueOf(charge);
+		int pX = x + 26 - font.width(number) / 2;
+		int pY = y - 5 - 4;
+
+		font.draw(poseStack, number, pX + 1f, pY, 0);
+		font.draw(poseStack, number, pX - 1f, pY, 0);
+		font.draw(poseStack, number, pX, pY + 1f, 0);
+		font.draw(poseStack, number, pX, pY - 1f, 0);
+		font.draw(poseStack, number, pX, pY, 0xac0404);
+	}
+
 	static void renderReloadIndicator(ForgeGui gui, PoseStack poseStack, int screenWidth, int screenHeight, LocalPlayer player, ItemStack stack, IGun gun) {
 		IGun.State gunState = gun.getState(stack);
 		if (gunState == IGun.State.RELOADING) {
@@ -123,7 +159,7 @@ public final class IngameOverlays {
 
 	static void renderAmmoCount(PoseStack poseStack, Font font, int screenWidth, int screenHeight, int maxAmmoIn, int ammoIn, int primaryColor, int secondaryColor) {
 		String maxAmmo = "/" + maxAmmoIn;
-		String ammo = "" + ammoIn;
+		String ammo = String.valueOf(ammoIn);
 		int x = screenWidth - font.width(maxAmmo) - 4;
 		int y = screenHeight - font.lineHeight - 4;
 		GuiComponent.drawString(poseStack, font, maxAmmo, x, y, secondaryColor);
