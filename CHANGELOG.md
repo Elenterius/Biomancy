@@ -1,3 +1,16 @@
+## [1.10.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.9.0...1.19.2-v2.1.10.0) (2023-06-14)
+
+
+### Features
+
+* add Blood Particles ([cba7d3e](https://github.com/Elenterius/Biomancy/commit/cba7d3e4c54904ec30669a951deeefcc5718584a))
+* rework Ravenous Claw (2nd revision, blood charge) ([51f04a2](https://github.com/Elenterius/Biomancy/commit/51f04a24bc847202e4a908fe64d243644d2139d6))
+
+
+### Bug Fixes
+
+* fix ravenous claws animation ([f102644](https://github.com/Elenterius/Biomancy/commit/f102644b34c7705efc1798b0be23119cce404cc5))
+
 ## [1.9.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.8.0...1.19.2-v2.1.9.0) (2023-06-13)
 
 
@@ -83,22 +96,4 @@
 ### Reverts
 
 * revert Fleshkin Chest inventory size nerf ([f6eadca](https://github.com/Elenterius/Biomancy/commit/f6eadcae2c8a91bf5e6beb99959648f4a073c77a))
-
-## [1.5.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.4.0...1.19.2-v2.1.5.0) (2023-05-10)
-
-
-### Features
-
-* **despoil-loot:** adjust the sinew and bone marrow drop amount ([8b01fb0](https://github.com/Elenterius/Biomancy/commit/8b01fb09853c379baaee48d8609183c4a58d047d))
-* **despoil-loot:** damage durability of held despoil sickle when dropping loot ([689bb31](https://github.com/Elenterius/Biomancy/commit/689bb3107b32e1ecf1befb6775dc2bf3453ffb23))
-* **despoil-loot:** don't drop flesh bits from mobs ([a4466fe](https://github.com/Elenterius/Biomancy/commit/a4466fed0391f811c6ef31a7db1fc4603e414191))
-* **despoil-loot:** drop sinew for Zombies ([8270761](https://github.com/Elenterius/Biomancy/commit/8270761857c3c0cf26307c8683cb2f3ef2dd0e23))
-* **despoil-loot:** only guarantee a loot drop for the despoiling Sickle ([bd6c014](https://github.com/Elenterius/Biomancy/commit/bd6c0143e599bf6c6e16c431aed669a5b9dc0281))
-* nerf Fleshkin Chest, reduce inventory size to 28 slots and make recipe more expensive ([e13cd96](https://github.com/Elenterius/Biomancy/commit/e13cd9609ac8c52c52bb37faa615033915bd6e16))
-* tweak fleshkin chest recipe ([af22edd](https://github.com/Elenterius/Biomancy/commit/af22edd86c76bb6f26ccd8cbb43342f6e9b58552))
-
-
-### Reverts
-
-* revert fleshkin chest name change ([c91bc5a](https://github.com/Elenterius/Biomancy/commit/c91bc5af561a654f7490bbc4c84e9e73b2c61dbd))
 
