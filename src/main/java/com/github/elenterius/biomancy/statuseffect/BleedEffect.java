@@ -1,7 +1,9 @@
 package com.github.elenterius.biomancy.statuseffect;
 
 import com.github.elenterius.biomancy.init.ModDamageSources;
+import com.github.elenterius.biomancy.init.ModParticleTypes;
 import com.github.elenterius.biomancy.mixin.MobEffectInstanceAccessor;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -18,7 +20,7 @@ public class BleedEffect extends StatusEffect implements StackingStatusEffect {
 
 	@Override
 	public boolean isDurationEffectTick(int duration, int amplifier) {
-		return duration % 40 == 0;
+		return (duration + 1) % 40 == 0;
 	}
 
 	@Override
@@ -37,6 +39,12 @@ public class BleedEffect extends StatusEffect implements StackingStatusEffect {
 
 		int effectLevel = amplifier + 1;
 		livingEntity.hurt(ModDamageSources.BLEED, effectLevel);
+
+		if (livingEntity.level instanceof ServerLevel serverLevel) {
+			float xz = livingEntity.getBbWidth() * 0.25f;
+			float y = livingEntity.getBbHeight() * 0.25f;
+			serverLevel.sendParticles(ModParticleTypes.FALLING_BLOOD.get(), livingEntity.getX(), livingEntity.getY(0.5f), livingEntity.getZ(), 4, xz, y, xz, 0);
+		}
 	}
 
 	private void reduceEffectDurationBy(LivingEntity livingEntity, int ticks) {

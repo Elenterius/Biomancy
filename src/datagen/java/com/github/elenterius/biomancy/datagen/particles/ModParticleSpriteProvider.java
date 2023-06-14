@@ -13,6 +13,8 @@ public class ModParticleSpriteProvider extends ParticleSpriteProvider {
 	@Override
 	public void registerParticles() {
 		addParticle(ModParticleTypes.BLOODY_CLAWS_ATTACK, 8, 1);
+		addParticle(ModParticleTypes.FALLING_BLOOD, "minecraft:drip_fall");
+		addParticle(ModParticleTypes.LANDING_BLOOD, "minecraft:drip_land");
 	}
 
 }
