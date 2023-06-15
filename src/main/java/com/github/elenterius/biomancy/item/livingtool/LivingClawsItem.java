@@ -139,6 +139,11 @@ public class LivingClawsItem extends SimpleClawsItem implements LivingTool, IKey
 	}
 
 	@Override
+	public boolean isFoil(ItemStack stack) {
+		return false;
+	}
+
+	@Override
 	public boolean isBarVisible(ItemStack stack) {
 		return getNutrients(stack) > 0;
 	}

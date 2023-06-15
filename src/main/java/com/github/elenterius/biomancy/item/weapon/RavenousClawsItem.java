@@ -219,18 +219,14 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 		boolean isFullAttackStrength = !(attacker instanceof Player player) || player.getAttackStrengthScale(0.5f) >= 0.9f;
 		boolean isNotCreativePlayer = !MobUtil.isCreativePlayer(attacker);
 
-		if (isNotCreativePlayer) {
-			switch (livingToolState) {
-				case BROKEN -> { /* do nothing */ }
-				case DORMANT -> consumeNutrients(stack, 1);
-				case AWAKENED -> consumeCharge(stack, 1);
-			}
-		}
+		switch (livingToolState) {
+			case BROKEN -> { /* do nothing */ }
+			case DORMANT -> {
+				if (isNotCreativePlayer) {
+					consumeNutrients(stack, 1);
+				}
 
-		if (isFullAttackStrength) {
-			switch (livingToolState) {
-				case BROKEN -> { /* do nothing */ }
-				case DORMANT -> {
+				if (isFullAttackStrength) {
 					playBloodyClawsFX(attacker);
 					if (attacker.getRandom().nextInt(12) == 0) { //8.3%
 						attacker.level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), SoundEvents.PLAYER_ATTACK_CRIT, attacker.getSoundSource(), 1f, 1.5f);
@@ -238,21 +234,30 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 						CombatUtil.applyBleedEffect(target, 20);
 					}
 				}
-				case AWAKENED -> {
+
+				if (target.isDeadOrDying()) {
+					addCharge(stack, 5);
+				}
+			}
+			case AWAKENED -> {
+				if (isNotCreativePlayer) {
+					consumeCharge(stack, 1);
+				}
+
+				if (isFullAttackStrength) {
 					playBloodyClawsFX(attacker);
 					if (attacker.getRandom().nextInt(5) == 0) { //20%
 						attacker.level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), SoundEvents.PLAYER_ATTACK_CRIT, attacker.getSoundSource(), 1f, 1.5f);
 
-						playBloodExplosionFX(target);
-						CombatUtil.hurtWithBleed(target, 0.1f * target.getMaxHealth());
+						if (CombatUtil.getBleedEffectLevel(target) < 2) {
+							playBloodExplosionFX(target);
+							CombatUtil.hurtWithBleed(target, 0.1f * target.getMaxHealth());
+						}
+
 						CombatUtil.applyBleedEffect(target, 20);
 					}
 				}
 			}
-		}
-
-		if (target.isDeadOrDying()) {
-			addCharge(stack, 2);
 		}
 
 		return true;
@@ -267,14 +272,15 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 			}
 			case DORMANT -> {
 				tooltip.add(ComponentUtil.emptyLine());
-				tooltip.add(ComponentUtil.literal("On Charged Hit:").withStyle(ChatFormatting.GRAY));
-				tooltip.add(ComponentUtil.literal(" 8% Bleed Chance").withStyle(ChatFormatting.DARK_GRAY));
+				tooltip.add(ComponentUtil.literal("Bleed Proc:").withStyle(ChatFormatting.GRAY));
+				tooltip.add(ComponentUtil.literal(" 8% chance to add one bleed stack (max 2)").withStyle(ChatFormatting.DARK_GRAY));
 			}
 			case AWAKENED -> {
 				tooltip.add(ComponentUtil.emptyLine());
-				tooltip.add(ComponentUtil.literal("On Charged Hit:").withStyle(ChatFormatting.GRAY));
-				tooltip.add(ComponentUtil.literal(" 20% Bleed Chance").withStyle(ChatFormatting.DARK_GRAY));
-				tooltip.add(ComponentUtil.literal(" 20% Blood Explosion Chance (deals 10% of max health as damage)").withStyle(ChatFormatting.DARK_GRAY));
+				tooltip.add(ComponentUtil.literal("Bleed Proc:").withStyle(ChatFormatting.GRAY));
+				tooltip.add(ComponentUtil.literal(" 20% chance to add one bleed stack (max 2)").withStyle(ChatFormatting.DARK_GRAY));
+				tooltip.add(ComponentUtil.literal("Blood Explosion:").withStyle(ChatFormatting.GRAY));
+				tooltip.add(ComponentUtil.literal(" on bleed proc deals 10% of max health as damage").withStyle(ChatFormatting.DARK_GRAY));
 			}
 		}
 

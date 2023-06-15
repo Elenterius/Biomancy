@@ -63,4 +63,13 @@ public final class CombatUtil {
 	public static void applyBleedEffect(LivingEntity livingEntity, int seconds) {
 		livingEntity.addEffect(new MobEffectInstance(ModMobEffects.BLEED.get(), seconds * 20, 0, false, false, true));
 	}
+
+	public static int getBleedEffectLevel(LivingEntity target) {
+		MobEffectInstance effectInstance = target.getEffect(ModMobEffects.BLEED.get());
+		if (effectInstance == null) {
+			return 0;
+		}
+		return effectInstance.getAmplifier() + 1;
+	}
+
 }

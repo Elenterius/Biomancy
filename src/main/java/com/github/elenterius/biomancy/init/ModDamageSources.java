@@ -19,7 +19,7 @@ public final class ModDamageSources {
 	public static final DamageSource CHEST_BITE = createDamage("chest_bite").bypassArmor();
 
 	public static final DamageSource CORROSIVE_ACID = createDamage("corrosive_acid");
-	public static final DamageSource BLEED = createDamage("bleed").bypassArmor().bypassMagic().bypassInvul();
+	public static final DamageSource BLEED = createDamage("bleed").bypassArmor().bypassMagic().bypassEnchantments();
 
 	public static final DamageSource FALL_ON_SPIKE = createDamage("spike_fall_on").bypassArmor().setIsFall();
 	public static final DamageSource IMPALED_BY_SPIKE = createDamage("spike_impale").bypassArmor();

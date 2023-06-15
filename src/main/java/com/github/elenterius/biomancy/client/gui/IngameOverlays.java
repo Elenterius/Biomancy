@@ -115,7 +115,7 @@ public final class IngameOverlays {
 	}
 
 	static void renderChargeBar(PoseStack poseStack, int screenWidth, int screenHeight, Font font, int charge, float chargePct) {
-		int x = screenWidth / 4 * 3 - 25; // 51/2 ~= 25
+		int x = screenWidth - 51 - 16;
 		int y = screenHeight - 5 - 16;
 
 		RenderSystem.setShaderTexture(0, CHARGE_BAR);
