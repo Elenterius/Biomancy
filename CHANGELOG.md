@@ -1,3 +1,10 @@
+### [1.11.1](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.11.0...1.19.2-v2.1.11.1) (2023-06-16)
+
+
+### Bug Fixes
+
+* fix Ravenous Claws display settings (third person left hand) ([ca4e6c5](https://github.com/Elenterius/Biomancy/commit/ca4e6c5e39f6cf51742288c8c251d4fef55a009f))
+
 ## [1.11.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.2.0...1.19.2-v2.1.11.0) (2023-06-16)
 
 
@@ -148,11 +155,4 @@
 
 * change serum class structure and serum registry ([e4f72b0](https://github.com/Elenterius/Biomancy/commit/e4f72b06ed63daa6c4d3f2e528d4c627544d7099))
 * reorganize package structure ([98eac84](https://github.com/Elenterius/Biomancy/commit/98eac844d56e443b9d79b02e33ce716b219dfc9f))
-
-### [0.53.2](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.0.53.1...1.19.2-v2.0.53.2) (2023-04-11)
-
-
-### Bug Fixes
-
-* fix crash on server startup ([4988deb](https://github.com/Elenterius/Biomancy/commit/4988deb88a3e0ff90024ac2dd76ce3d24835c102))
 
