@@ -119,7 +119,7 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 	@Override
 	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, Level level, Player player, EquipmentSlot slot, byte flags) {
 		if (!hasCharge(stack)) {
-			player.displayClientMessage(TextComponentUtil.getFailureMsgText("not_enough_charge"), true);
+			player.displayClientMessage(TextComponentUtil.getFailureMsgText("not_enough_blood_charge"), true);
 			player.playSound(SoundEvents.VILLAGER_NO, 0.8f, 0.8f + player.getLevel().getRandom().nextFloat() * 0.4f);
 			return InteractionResultHolder.fail(flags);
 		}
