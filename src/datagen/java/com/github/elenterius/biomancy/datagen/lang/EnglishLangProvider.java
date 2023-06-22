@@ -205,6 +205,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		//		addHudMessage("set_behavior_command", "%1$s will now execute the %2$s command");
 		//		addHudMessage("not_enough_ammo", "Not enough Ammo");
 		addHudMessage("not_enough_nutrients", "Not enough Nutrients");
+		addHudMessage("not_enough_blood_charge", "Not enough Blood");
 
 		add(ClientTextUtil.getCtrlKey(), "ctrl");
 		add(ClientTextUtil.getAltKey(), "alt");

@@ -256,6 +256,7 @@
 	"state.biomancy.living_tool.awakened": "Awakened",
 	"msg.biomancy.not_sleepy": "You don't feel sleepy...",
 	"msg.biomancy.not_enough_nutrients": "Not enough Nutrients",
+	"msg.biomancy.not_enough_blood_charge": "Not enough Blood",
 	"keyboard.biomancy.ctrl": "ctrl",
 	"keyboard.biomancy.alt": "alt",
 	"keyboard.biomancy.shift": "shift",
