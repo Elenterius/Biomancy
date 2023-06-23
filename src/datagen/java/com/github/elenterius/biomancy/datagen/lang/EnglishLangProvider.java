@@ -368,7 +368,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 								
 				Right Click the Sac to retrieve the Items.""");
 
-		addItem(ModItems.RAVENOUS_CLAWS, "Ravenous Claws [Rework v1]", """
+		addItem(ModItems.RAVENOUS_CLAWS, "Ravenous Claws", """
 				Extremely hungry and vicious Claws forged by starving living flesh and grafting claws onto them.
 								
 				Feed the famished claws by killing Mobs or feed them with food via the player inventory.""");
