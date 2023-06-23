@@ -813,7 +813,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addIngredient(ModItems.LIVING_FLESH.get())
 				.addIngredient(ModItems.FLESH_BITS.get(), 10)
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 12)
-				.addIngredient(Items.SHULKER_SHELL, 2)
+				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 8)
 				.addIngredient(ModItems.TOUGH_FIBERS.get(), 32)
 				.setCategory(ModBioForgeTabs.MISC)
 				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
