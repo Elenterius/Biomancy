@@ -250,6 +250,7 @@
 	"tooltip.biomancy.action.deactivate": "deactivate",
 	"tooltip.biomancy.action.reload": "reload",
 	"tooltip.biomancy.action.cycle": "cycle",
+	"tooltip.biomancy.action.switch_mode": "switch mode",
 	"tooltip.biomancy.living_tool_state_is": "The Tool is %1$s",
 	"state.biomancy.living_tool.broken": "Broken",
 	"state.biomancy.living_tool.dormant": "Dormant",
