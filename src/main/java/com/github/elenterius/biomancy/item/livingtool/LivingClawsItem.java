@@ -170,7 +170,7 @@ public class LivingClawsItem extends SimpleClawsItem implements LivingTool, IKey
 		tooltip.add(ComponentUtil.emptyLine());
 		appendLivingToolTooltip(stack, tooltip);
 		tooltip.add(ComponentUtil.emptyLine());
-		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action.cycle")));
+		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action.switch_mode")));
 	}
 
 	@Override

@@ -189,6 +189,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addTooltip("action.deactivate", "deactivate");
 		addTooltip("action.reload", "reload");
 		addTooltip("action.cycle", "cycle");
+		addTooltip("action.switch_mode", "switch mode");
 
 		//		addTooltip("fire_rate", "Fire Rate");
 		//		addTooltip("accuracy", "Accuracy");
