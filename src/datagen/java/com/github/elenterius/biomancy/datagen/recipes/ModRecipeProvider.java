@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModBioForgeTabs;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.tags.ModItemTags;
+import com.github.elenterius.biomancy.item.weapon.RavenousClawsItem;
 import com.github.elenterius.biomancy.recipe.FoodNutritionIngredient;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
@@ -16,6 +17,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
@@ -941,7 +943,10 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		//////////// WEAPONS ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		BioForgeRecipeBuilder.create(new ItemData(ModItems.RAVENOUS_CLAWS.get()))
+		RavenousClawsItem ravenousClawsItem = ModItems.RAVENOUS_CLAWS.get();
+		ItemStack ravenousClawsStack = new ItemStack(ravenousClawsItem);
+		ravenousClawsItem.setNutrients(ravenousClawsStack, Integer.MAX_VALUE);
+		BioForgeRecipeBuilder.create(new ItemData(ravenousClawsStack))
 				.addIngredient(ModItems.LIVING_FLESH.get())
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 4)
 				.addIngredient(ModItems.FLESH_BITS.get(), 16)
