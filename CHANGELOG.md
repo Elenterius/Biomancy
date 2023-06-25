@@ -1,3 +1,16 @@
+### [1.11.2](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.11.1...1.19.2-v2.1.11.2) (2023-06-25)
+
+
+### Bug Fixes
+
+* add missing language key for missing blood charge ([478c585](https://github.com/Elenterius/Biomancy/commit/478c58549ac677f3f960c8bd95ee87ac06bcb69d))
+* fix Maw Hopper not inserting items on the correct block face ([db57423](https://github.com/Elenterius/Biomancy/commit/db57423c451de0caf7f7529cad2cffdf47e27762))
+* fix Ravenous Claws item name ([ea9f79c](https://github.com/Elenterius/Biomancy/commit/ea9f79ce56afbcb5896f8b90618ade0dee21270a))
+* fix Ravenous Claws recipe ([272071d](https://github.com/Elenterius/Biomancy/commit/272071db69a6f57bbc93c8d938e948ccaac06139))
+* fix wrong fleshkin chest recipe ([a6be325](https://github.com/Elenterius/Biomancy/commit/a6be3254b4d77deed47f8824bf735776f1b7701f))
+* make Ravenous Claws tooltip less confusing ([c8940a6](https://github.com/Elenterius/Biomancy/commit/c8940a62b88a10f59b7857dec73904fbeb5a6832))
+* make tooltip text for pressing the v key on living tools less confusing ([7c7160f](https://github.com/Elenterius/Biomancy/commit/7c7160fd8515a767ae027f75a8586a5e8b62007e))
+
 ### [1.11.1](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.11.0...1.19.2-v2.1.11.1) (2023-06-16)
 
 
@@ -137,22 +150,4 @@
 ### Bug Fixes
 
 * fix Bio-Forge GUI crashing the game when clicking next page button ([4046464](https://github.com/Elenterius/Biomancy/commit/40464647129b6077d70f58bc96db9e7555ba1413))
-
-## [1.0.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.0.53.2...1.19.2-v2.1.0.0) (2023-04-18)
-
-
-### ⚠ BREAKING CHANGES
-
-* change serum class structure and serum registry
-* reorganize package structure
-
-### Bug Fixes
-
-* fix ageing and rejuvenation serum interaction with Tadpoles & Frogs ([af655a6](https://github.com/Elenterius/Biomancy/commit/af655a61385b76731142e01aad3af5c6ee336159))
-
-
-### Miscellaneous Chores
-
-* change serum class structure and serum registry ([e4f72b0](https://github.com/Elenterius/Biomancy/commit/e4f72b06ed63daa6c4d3f2e528d4c627544d7099))
-* reorganize package structure ([98eac84](https://github.com/Elenterius/Biomancy/commit/98eac844d56e443b9d79b02e33ce716b219dfc9f))
 
