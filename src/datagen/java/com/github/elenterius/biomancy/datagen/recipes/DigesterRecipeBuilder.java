@@ -33,7 +33,8 @@ import java.util.function.IntUnaryOperator;
 
 public class DigesterRecipeBuilder implements IRecipeBuilder {
 
-	public static final String SUFFIX = "_from_digesting";
+	public static final String RECIPE_SUB_FOLDER = ModRecipes.DIGESTING_RECIPE_TYPE.getId().getPath();
+	public static final String SUFFIX = "_from_" + RECIPE_SUB_FOLDER;
 
 	private final ResourceLocation recipeId;
 	private final List<ICondition> conditions = new ArrayList<>();
@@ -45,7 +46,7 @@ public class DigesterRecipeBuilder implements IRecipeBuilder {
 	private String group;
 
 	private DigesterRecipeBuilder(ResourceLocation recipeId, ItemData result) {
-		this.recipeId = recipeId;
+		this.recipeId = new ResourceLocation(recipeId.getNamespace(), RECIPE_SUB_FOLDER + "/" + recipeId.getPath());
 		recipeResult = result;
 
 		if (recipeResult.getRegistryName().equals(ModItems.NUTRIENTS.getId())) {
@@ -59,6 +60,10 @@ public class DigesterRecipeBuilder implements IRecipeBuilder {
 		}
 	}
 
+	public static DigesterRecipeBuilder create(ResourceLocation recipeId, ItemData result) {
+		return new DigesterRecipeBuilder(recipeId, result);
+	}
+
 	public static DigesterRecipeBuilder create(String modId, String outputName, ItemData result) {
 		ResourceLocation rl = new ResourceLocation(modId, outputName + SUFFIX);
 		return new DigesterRecipeBuilder(rl, result);
@@ -69,18 +74,18 @@ public class DigesterRecipeBuilder implements IRecipeBuilder {
 		return new DigesterRecipeBuilder(rl, result);
 	}
 
-	public static DigesterRecipeBuilder create(ResourceLocation recipeId, ItemData result) {
-		return new DigesterRecipeBuilder(recipeId, result);
-	}
-
 	public static DigesterRecipeBuilder create(ItemData result) {
-		ResourceLocation rl = BiomancyMod.createRL(result.getItemNamedId() + SUFFIX);
+		ResourceLocation rl = BiomancyMod.createRL(result.getItemPath() + SUFFIX);
 		return new DigesterRecipeBuilder(rl, result);
 	}
 
 	public static DigesterRecipeBuilder create(ItemData result, String postSuffix) {
-		ResourceLocation rl = BiomancyMod.createRL(result.getItemNamedId() + SUFFIX + "_" + postSuffix);
+		ResourceLocation rl = BiomancyMod.createRL(result.getItemPath() + SUFFIX + "_" + postSuffix);
 		return new DigesterRecipeBuilder(rl, result);
+	}
+
+	public static DigesterRecipeBuilder create(ItemStack stack) {
+		return create(new ItemData(stack));
 	}
 
 	public static DigesterRecipeBuilder create(ItemLike item) {

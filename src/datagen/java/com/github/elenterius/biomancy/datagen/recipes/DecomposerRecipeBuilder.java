@@ -34,7 +34,9 @@ import java.util.function.Consumer;
 
 public class DecomposerRecipeBuilder implements IRecipeBuilder {
 
+	public static final String RECIPE_SUB_FOLDER = ModRecipes.DECOMPOSING_RECIPE_TYPE.getId().getPath();
 	public static final String SUFFIX = "_decomposing";
+
 	private final List<VariableProductionOutput> outputs = new ArrayList<>();
 	private final Advancement.Builder advancement = Advancement.Builder.advancement();
 	private final List<ICondition> conditions = new ArrayList<>();
@@ -44,12 +46,12 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 	@Nullable
 	private String group;
 
-	private DecomposerRecipeBuilder(ResourceLocation recipeId) {
-		this.recipeId = recipeId;
+	private DecomposerRecipeBuilder() {
+		this.recipeId = BiomancyMod.createRL("unknown");
 	}
 
 	public static DecomposerRecipeBuilder create() {
-		return new DecomposerRecipeBuilder(BiomancyMod.createRL("unknown"));
+		return new DecomposerRecipeBuilder();
 	}
 
 	//	public static DecomposerRecipeBuilder create(String modId, String ingredientName) {
@@ -66,9 +68,8 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 	//		return new DecomposerRecipeBuilder(recipeId);
 	//	}
 
-	private static String getName(ItemLike itemLike) {
-		ResourceLocation name = ForgeRegistries.ITEMS.getKey(itemLike.asItem());
-		return name != null ? name.getPath() : "unknown";
+	private static ResourceLocation getRegistryKey(ItemLike itemLike) {
+		return Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(itemLike.asItem()));
 	}
 
 	public DecomposerRecipeBuilder ifModLoaded(String modId) {
@@ -111,7 +112,7 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 	}
 
 	public DecomposerRecipeBuilder setIngredient(ItemLike itemLike, int quantity) {
-		setIngredient(Ingredient.of(itemLike), quantity, BiomancyMod.createRL(getName(itemLike) + SUFFIX));
+		setIngredient(Ingredient.of(itemLike), quantity, BiomancyMod.createRL(getRegistryKey(itemLike).getPath() + SUFFIX));
 		return this;
 	}
 
@@ -123,7 +124,7 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 	public DecomposerRecipeBuilder setIngredient(Ingredient ingredient, int count, ResourceLocation recipeId) {
 		if (ingredientStack != null) throw new IllegalStateException("Ingredient is already set");
 		ingredientStack = new IngredientStack(ingredient, count);
-		this.recipeId = recipeId;
+		this.recipeId = new ResourceLocation(recipeId.getNamespace(), RECIPE_SUB_FOLDER + "/" + recipeId.getPath());
 		return this;
 	}
 
@@ -172,8 +173,8 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 				.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId))
 				.rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
 
-		String folder = itemCategory != null ? itemCategory.getRecipeFolderName() : BiomancyMod.MOD_ID;
-		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(), "recipes/%s/%s".formatted(folder, recipeId.getPath()));
+		String folderName = IRecipeBuilder.getRecipeFolderName(itemCategory, BiomancyMod.MOD_ID);
+		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(), "recipes/%s/%s".formatted(folderName, recipeId.getPath()));
 
 		consumer.accept(new RecipeResult(this, advancementId));
 	}

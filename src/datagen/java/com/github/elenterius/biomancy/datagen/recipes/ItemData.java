@@ -8,6 +8,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 
 public final class ItemData {
 
@@ -33,7 +34,7 @@ public final class ItemData {
 	}
 
 	public ItemData(ItemLike item, @Nullable CompoundTag tag, int count) {
-		this.registryName = ForgeRegistries.ITEMS.getKey(item.asItem());
+		this.registryName = Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item.asItem()));
 		this.tag = tag;
 		this.count = count;
 	}
@@ -64,7 +65,7 @@ public final class ItemData {
 		return json;
 	}
 
-	public String getItemNamedId() {
+	public String getItemPath() {
 		return registryName.getPath();
 	}
 

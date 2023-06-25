@@ -19,6 +19,10 @@ import java.util.function.Consumer;
 
 public interface IRecipeBuilder {
 
+	static String getRecipeFolderName(@Nullable CreativeModeTab itemCategory, String modId) {
+		return itemCategory != null ? itemCategory.getRecipeFolderName() : modId;
+	}
+
 	private InventoryChangeTrigger.TriggerInstance has(ItemLike itemLike) {
 		return inventoryTrigger(ItemPredicate.Builder.item().of(itemLike).build());
 	}

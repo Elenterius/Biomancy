@@ -24,17 +24,16 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
 import net.minecraftforge.common.crafting.conditions.NotCondition;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 public class BioLabRecipeBuilder implements IRecipeBuilder {
 
-	public static final String SUFFIX = "_from_bio_brewing";
+	public static final String RECIPE_SUB_FOLDER = ModRecipes.BIO_BREWING_RECIPE_TYPE.getId().getPath();
+	public static final String SUFFIX = "_from_" + RECIPE_SUB_FOLDER;
 
 	private final ResourceLocation recipeId;
 	private final List<ICondition> conditions = new ArrayList<>();
@@ -45,8 +44,12 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 	private int craftingTime = 4 * 20;
 
 	private BioLabRecipeBuilder(ResourceLocation recipeId, ItemData result) {
-		this.recipeId = recipeId;
+		this.recipeId = new ResourceLocation(recipeId.getNamespace(), RECIPE_SUB_FOLDER + "/" + recipeId.getPath());
 		this.result = result;
+	}
+
+	public static BioLabRecipeBuilder create(ResourceLocation recipeId, ItemData result) {
+		return new BioLabRecipeBuilder(recipeId, result);
 	}
 
 	public static BioLabRecipeBuilder create(String modId, String outputName, ItemData result) {
@@ -59,25 +62,21 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 		return new BioLabRecipeBuilder(rl, result);
 	}
 
-	public static BioLabRecipeBuilder create(ResourceLocation recipeId, ItemData result) {
-		return new BioLabRecipeBuilder(recipeId, result);
-	}
-
 	public static BioLabRecipeBuilder create(ItemData result) {
-		ResourceLocation rl = BiomancyMod.createRL(result.getItemNamedId() + SUFFIX);
+		ResourceLocation rl = BiomancyMod.createRL(result.getItemPath() + SUFFIX);
 		return new BioLabRecipeBuilder(rl, result);
 	}
 
+	public static BioLabRecipeBuilder create(ItemStack stack) {
+		return create(new ItemData(stack));
+	}
+
 	public static BioLabRecipeBuilder create(ItemLike item) {
-		ItemData itemData = new ItemData(item);
-		ResourceLocation rl = BiomancyMod.createRL(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item.asItem())).getPath() + SUFFIX);
-		return new BioLabRecipeBuilder(rl, itemData);
+		return create(new ItemData(item));
 	}
 
 	public static BioLabRecipeBuilder create(ItemLike item, int count) {
-		ItemData itemData = new ItemData(item, count);
-		ResourceLocation rl = BiomancyMod.createRL(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item.asItem())).getPath() + SUFFIX);
-		return new BioLabRecipeBuilder(rl, itemData);
+		return create(new ItemData(item, count));
 	}
 
 	public BioLabRecipeBuilder ifModLoaded(String modId) {
@@ -158,12 +157,11 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 		advancement.parent(new ResourceLocation("recipes/root"))
 				.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId))
 				.rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
-		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(), "recipes/%s/%s".formatted(getRecipeFolderName(itemCategory), recipeId.getPath()));
-		consumer.accept(new RecipeResult(this, advancementId));
-	}
 
-	private String getRecipeFolderName(@Nullable CreativeModeTab itemCategory) {
-		return itemCategory != null ? itemCategory.getRecipeFolderName() : BiomancyMod.MOD_ID;
+		String folderName = IRecipeBuilder.getRecipeFolderName(itemCategory, BiomancyMod.MOD_ID);
+		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(), "recipes/%s/%s".formatted(folderName, recipeId.getPath()));
+
+		consumer.accept(new RecipeResult(this, advancementId));
 	}
 
 	private void validateCriteria() {
