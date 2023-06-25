@@ -141,7 +141,7 @@ public class MawHopperBlockEntity extends BlockEntity implements IAnimatable {
 			DirectedConnection connection = MawHopperBlock.getConnection(state);
 			BlockPos insertPos = pos.relative(connection.outgoing);
 			if (level.isLoaded(insertPos)) {
-				LazyOptional<IItemHandler> itemHandler = getItemHandler(level, insertPos, connection.outgoing);
+				LazyOptional<IItemHandler> itemHandler = getItemHandler(level, insertPos, connection.outgoing.getOpposite());
 				itemHandler.map(this::tryToInsertItems);
 			}
 		}
