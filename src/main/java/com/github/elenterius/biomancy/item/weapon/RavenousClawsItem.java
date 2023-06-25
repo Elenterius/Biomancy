@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.item.weapon;
 
 import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.render.item.ravenousclaws.RavenousClawsRenderer;
+import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.entity.MobUtil;
 import com.github.elenterius.biomancy.init.ModParticleTypes;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
@@ -9,12 +10,14 @@ import com.github.elenterius.biomancy.item.ItemCharge;
 import com.github.elenterius.biomancy.item.livingtool.LivingClawsItem;
 import com.github.elenterius.biomancy.item.livingtool.LivingToolState;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
+import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.CombatUtil;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -29,6 +32,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
@@ -48,6 +52,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -125,6 +130,17 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 		}
 
 		return InteractionResultHolder.success(flags);
+	}
+
+	@Override
+	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
+		if (allowedIn(tab)) {
+			items.add(new ItemStack(this)); //empty
+
+			ItemStack stack = new ItemStack(this);
+			setNutrients(stack, Integer.MAX_VALUE);
+			items.add(stack);
+		}
 	}
 
 	@Override
@@ -265,27 +281,57 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		super.appendHoverText(stack, level, tooltip, isAdvanced);
+		tooltip.add(ComponentUtil.horizontalLine());
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack));
+		tooltip.add(ComponentUtil.emptyLine());
+		appendLivingToolTooltip(stack, tooltip);
+
+		if (stack.isEnchanted()) {
+			tooltip.add(ComponentUtil.emptyLine());
+		}
+	}
+
+	@Override
+	public void appendLivingToolTooltip(ItemStack stack, List<Component> tooltip) {
 		switch (getLivingToolState(stack)) {
 			case BROKEN -> {
 				//do nothing
 			}
 			case DORMANT -> {
+				tooltip.add(ComponentUtil.literal("Bleed Proc (8% chance)").withStyle(ChatFormatting.GRAY));
+				tooltip.add(ComponentUtil.literal(" adds one bleed stack (max 2)").withStyle(ChatFormatting.DARK_GRAY));
 				tooltip.add(ComponentUtil.emptyLine());
-				tooltip.add(ComponentUtil.literal("Bleed Proc:").withStyle(ChatFormatting.GRAY));
-				tooltip.add(ComponentUtil.literal(" 8% chance to add one bleed stack (max 2)").withStyle(ChatFormatting.DARK_GRAY));
 			}
 			case AWAKENED -> {
+				tooltip.add(ComponentUtil.literal("Bleed Proc (20% chance)").withStyle(ChatFormatting.GRAY));
+				tooltip.add(ComponentUtil.literal(" adds one Bleed Stack (max 2)").withStyle(ChatFormatting.DARK_GRAY));
+				tooltip.add(ComponentUtil.literal("Blood Explosion").withStyle(ChatFormatting.GRAY));
+				tooltip.add(ComponentUtil.literal(" on Bleed Stack deals 10% of max health as damage").withStyle(ChatFormatting.DARK_GRAY));
 				tooltip.add(ComponentUtil.emptyLine());
-				tooltip.add(ComponentUtil.literal("Bleed Proc:").withStyle(ChatFormatting.GRAY));
-				tooltip.add(ComponentUtil.literal(" 20% chance to add one bleed stack (max 2)").withStyle(ChatFormatting.DARK_GRAY));
-				tooltip.add(ComponentUtil.literal("Blood Explosion:").withStyle(ChatFormatting.GRAY));
-				tooltip.add(ComponentUtil.literal(" on bleed proc deals 10% of max health as damage").withStyle(ChatFormatting.DARK_GRAY));
 			}
 		}
 
-		if (stack.isEnchanted()) {
-			tooltip.add(ComponentUtil.emptyLine());
+		DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
+		tooltip.add(TextComponentUtil.getTooltipText("nutrients_fuel").withStyle(ChatFormatting.GRAY));
+		tooltip.add(ComponentUtil.literal(" %s/%s".formatted(df.format(getNutrients(stack)), df.format(getMaxNutrients(stack)))).withStyle(TextStyles.NUTRIENTS));
+		tooltip.add(TextComponentUtil.getTooltipText("blood_charge").withStyle(ChatFormatting.GRAY));
+		tooltip.add(ComponentUtil.literal(" %s/%s".formatted(df.format(getCharge(stack)), df.format(getMaxCharge(stack)))).withStyle(TextStyles.ERROR));
+
+		switch (getLivingToolState(stack)) {
+			case BROKEN -> {
+				tooltip.add(ComponentUtil.emptyLine());
+				tooltip.add(getLivingToolState(stack).getTooltip());
+			}
+			case DORMANT -> {
+				tooltip.add(ComponentUtil.emptyLine());
+				tooltip.add(getLivingToolState(stack).getTooltip().withStyle(TextStyles.ITALIC_GRAY));
+				tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action.awaken")));
+			}
+			case AWAKENED -> {
+				tooltip.add(ComponentUtil.emptyLine());
+				tooltip.add(getLivingToolState(stack).getTooltip().withStyle(TextStyles.ITALIC_GRAY));
+				tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action.make_drowsy")));
+			}
 		}
 	}
 

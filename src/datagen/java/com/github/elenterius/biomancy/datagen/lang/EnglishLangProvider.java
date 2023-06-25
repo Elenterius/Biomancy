@@ -172,6 +172,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addTooltip("nutrients_consumes", "Consumes %1$s u");
 		addTooltip("consumption", "Consumption");
 		addTooltip("bile_fuel", "Bile");
+		addTooltip("blood_charge", "Blood Charge");
 		addTooltip("contains_unique_dna", "[PH] Contains Unique Genetic Sequences");
 		addTooltip("press_button_to", "Press %1$s to %2$s");
 
@@ -190,6 +191,8 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addTooltip("action.reload", "reload");
 		addTooltip("action.cycle", "cycle");
 		addTooltip("action.switch_mode", "switch mode");
+		addTooltip("action.awaken", "awaken");
+		addTooltip("action.make_drowsy", "make drowsy");
 
 		//		addTooltip("fire_rate", "Fire Rate");
 		//		addTooltip("accuracy", "Accuracy");
@@ -199,14 +202,14 @@ public class EnglishLangProvider extends AbstractLangProvider {
 
 		add(LivingToolState.getTooltipTranslationKey(), "The Tool is %1$s");
 		add(LivingToolState.BROKEN.getTranslationKey(), "Broken");
-		add(LivingToolState.DORMANT.getTranslationKey(), "Dormant");
+		add(LivingToolState.DORMANT.getTranslationKey(), "Drowsy");
 		add(LivingToolState.AWAKENED.getTranslationKey(), "Awakened");
 
 		addHudMessage("not_sleepy", "You don't feel sleepy...");
 		//		addHudMessage("set_behavior_command", "%1$s will now execute the %2$s command");
 		//		addHudMessage("not_enough_ammo", "Not enough Ammo");
 		addHudMessage("not_enough_nutrients", "Not enough Nutrients");
-		addHudMessage("not_enough_blood_charge", "Not enough Blood");
+		addHudMessage("not_enough_blood_charge", "Not enough Blood Charge");
 
 		add(ClientTextUtil.getCtrlKey(), "ctrl");
 		add(ClientTextUtil.getAltKey(), "alt");
@@ -371,7 +374,9 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addItem(ModItems.RAVENOUS_CLAWS, "Ravenous Claws", """
 				Extremely hungry and vicious Claws forged by starving living flesh and grafting claws onto them.
 								
-				Feed the famished claws by killing Mobs or feed them with food via the player inventory.""");
+				Repair the famished claws by feeding them with food via the player inventory like a bundle.
+								
+				Killing Mobs grants blood charges which allow you to use the Awakened mode.""");
 		addItem(ModItems.DEV_ARM_CANNON, "[Dev Tool] Arm Cannon", "Creative/Developer Tool for testing projectiles.");
 		addItem(ModItems.BILE_SPITTER, "[WIP] Bile Spitter", "[WIP] \"living\" projectile weapon that shoots corrosive bile.\nIntended behaviour: charge it like a bow to increase damageShape & size of projectile.");
 
