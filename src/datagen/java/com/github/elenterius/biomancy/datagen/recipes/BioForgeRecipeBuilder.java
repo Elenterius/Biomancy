@@ -17,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
@@ -24,18 +25,17 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
 import net.minecraftforge.common.crafting.conditions.NotCondition;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class BioForgeRecipeBuilder implements IRecipeBuilder {
 
-	public static final String SUFFIX = "_from_bio_forging";
+	public static final String RECIPE_SUB_FOLDER = ModRecipes.BIO_FORGING_RECIPE_TYPE.getId().getPath();
+	public static final String SUFFIX = "_from_" + RECIPE_SUB_FOLDER;
 
 	private final ResourceLocation recipeId;
 
@@ -46,8 +46,12 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 	private BioForgeTab category = ModBioForgeTabs.MISC.get();
 
 	private BioForgeRecipeBuilder(ResourceLocation recipeId, ItemData result) {
-		this.recipeId = recipeId;
+		this.recipeId = new ResourceLocation(recipeId.getNamespace(), RECIPE_SUB_FOLDER + "/" + recipeId.getPath());
 		this.result = result;
+	}
+
+	public static BioForgeRecipeBuilder create(ResourceLocation recipeId, ItemData result) {
+		return new BioForgeRecipeBuilder(recipeId, result);
 	}
 
 	public static BioForgeRecipeBuilder create(String modId, String outputName, ItemData result) {
@@ -60,25 +64,21 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 		return new BioForgeRecipeBuilder(rl, result);
 	}
 
-	public static BioForgeRecipeBuilder create(ResourceLocation recipeId, ItemData result) {
-		return new BioForgeRecipeBuilder(recipeId, result);
-	}
-
 	public static BioForgeRecipeBuilder create(ItemData result) {
-		ResourceLocation rl = BiomancyMod.createRL(result.getItemNamedId() + SUFFIX);
+		ResourceLocation rl = BiomancyMod.createRL(result.getItemPath() + SUFFIX);
 		return new BioForgeRecipeBuilder(rl, result);
 	}
 
+	public static BioForgeRecipeBuilder create(ItemStack stack) {
+		return create(new ItemData(stack));
+	}
+
 	public static BioForgeRecipeBuilder create(ItemLike item) {
-		ItemData itemData = new ItemData(item);
-		ResourceLocation rl = BiomancyMod.createRL(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item.asItem())).getPath() + SUFFIX);
-		return new BioForgeRecipeBuilder(rl, itemData);
+		return create(new ItemData(item));
 	}
 
 	public static BioForgeRecipeBuilder create(ItemLike item, int count) {
-		ItemData itemData = new ItemData(item, count);
-		ResourceLocation rl = BiomancyMod.createRL(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item.asItem())).getPath() + SUFFIX);
-		return new BioForgeRecipeBuilder(rl, itemData);
+		return create(new ItemData(item, count));
 	}
 
 	//	public BioForgeRecipeBuilder setCraftingTime(int time) {
@@ -145,11 +145,14 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 	@Override
 	public void save(Consumer<FinishedRecipe> consumer, @Nullable CreativeModeTab itemCategory) {
 		validateCriteria();
+
 		advancement.parent(new ResourceLocation("recipes/root"))
 				.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId))
 				.rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
-		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(),
-				"recipes/" + (itemCategory != null ? itemCategory.getRecipeFolderName() : BiomancyMod.MOD_ID) + "/" + recipeId.getPath());
+
+		String folderName = IRecipeBuilder.getRecipeFolderName(itemCategory, BiomancyMod.MOD_ID);
+		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(), "recipes/%s/%s".formatted(folderName, recipeId.getPath()));
+
 		consumer.accept(new RecipeResult(this, advancementId));
 	}
 

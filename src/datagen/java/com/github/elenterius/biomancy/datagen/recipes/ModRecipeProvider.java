@@ -946,7 +946,7 @@ public class ModRecipeProvider extends RecipeProvider {
 		RavenousClawsItem ravenousClawsItem = ModItems.RAVENOUS_CLAWS.get();
 		ItemStack ravenousClawsStack = new ItemStack(ravenousClawsItem);
 		ravenousClawsItem.setNutrients(ravenousClawsStack, Integer.MAX_VALUE);
-		BioForgeRecipeBuilder.create(new ItemData(ravenousClawsStack))
+		BioForgeRecipeBuilder.create(ravenousClawsStack)
 				.addIngredient(ModItems.LIVING_FLESH.get())
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 4)
 				.addIngredient(ModItems.FLESH_BITS.get(), 16)
@@ -955,7 +955,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.WEAPONS)
 				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
 
-		BioForgeRecipeBuilder.create(new ItemData(ModItems.INJECTOR.get()))
+		BioForgeRecipeBuilder.create(ModItems.INJECTOR.get())
 				.addIngredient(ModItems.FLESH_BITS.get(), 20)
 				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 10)
 				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 3)
@@ -963,7 +963,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.WEAPONS)
 				.unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
 
-		BioForgeRecipeBuilder.create(new ItemData(ModItems.VIAL.get()))
+		BioForgeRecipeBuilder.create(ModItems.VIAL.get())
 				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 1)
 				.setCategory(ModBioForgeTabs.WEAPONS)
 				.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
