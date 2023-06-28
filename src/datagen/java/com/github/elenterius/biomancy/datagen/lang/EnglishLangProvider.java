@@ -191,8 +191,8 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addTooltip("action.reload", "reload");
 		addTooltip("action.cycle", "cycle");
 		addTooltip("action.switch_mode", "switch mode");
-		addTooltip("action.awaken", "awaken");
-		addTooltip("action.make_drowsy", "make drowsy");
+		addTooltip("action.enable_awakened_mode", "activate Awakened Mode");
+		addTooltip("action.disable_awakened_mode", "cancel Awakened Mode");
 
 		//		addTooltip("fire_rate", "Fire Rate");
 		//		addTooltip("accuracy", "Accuracy");
@@ -202,7 +202,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 
 		add(LivingToolState.getTooltipTranslationKey(), "The Tool is %1$s");
 		add(LivingToolState.BROKEN.getTranslationKey(), "Broken");
-		add(LivingToolState.DORMANT.getTranslationKey(), "Drowsy");
+		add(LivingToolState.DORMANT.getTranslationKey(), "Dormant");
 		add(LivingToolState.AWAKENED.getTranslationKey(), "Awakened");
 
 		addHudMessage("not_sleepy", "You don't feel sleepy...");
