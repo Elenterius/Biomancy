@@ -150,7 +150,7 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 					else {
 						int particleCount = level.random.nextInt(1, 3);
 						((ServerLevel) level).sendParticles(ParticleTypes.ANGRY_VILLAGER, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, particleCount, 0.5d, 0.25d, 0.5d, 0);
-						level.playSound(null, pos, ModSoundEvents.FLESHKIN_CHEST_NO.get(), SoundSource.BLOCKS, 1f, level.random.nextFloat() * 0.1f + 0.9f);
+						level.playSound(null, pos, ModSoundEvents.FLESHKIN_NO.get(), SoundSource.BLOCKS, 1f, level.random.nextFloat() * 0.1f + 0.9f);
 					}
 				}
 			}

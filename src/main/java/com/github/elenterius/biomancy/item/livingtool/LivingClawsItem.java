@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.item.livingtool;
 import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.entity.MobUtil;
+import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.item.IKeyListener;
 import com.github.elenterius.biomancy.item.weapon.SimpleClawsItem;
 import com.github.elenterius.biomancy.styles.ColorStyles;
@@ -11,7 +12,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -44,7 +44,7 @@ public class LivingClawsItem extends SimpleClawsItem implements LivingTool, IKey
 	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, Level level, Player player, EquipmentSlot slot, byte flags) {
 		if (!hasNutrients(stack)) {
 			player.displayClientMessage(TextComponentUtil.getFailureMsgText("not_enough_nutrients"), true);
-			player.playSound(SoundEvents.VILLAGER_NO, 0.8f, 0.8f + player.getLevel().getRandom().nextFloat() * 0.4f);
+			player.playSound(ModSoundEvents.FLESHKIN_NO.get(), 1f, 1f + player.getLevel().getRandom().nextFloat() * 0.4f);
 			return InteractionResultHolder.fail(flags);
 		}
 
@@ -86,7 +86,7 @@ public class LivingClawsItem extends SimpleClawsItem implements LivingTool, IKey
 	@Override
 	public boolean overrideStackedOnOther(ItemStack livingTool, Slot slot, ClickAction action, Player player) {
 		if (handleOverrideStackedOnOther(livingTool, slot, action, player)) {
-			playSound(player, SoundEvents.GENERIC_EAT);
+			playSound(player, ModSoundEvents.FLESHKIN_EAT.get());
 			return true;
 		}
 		return false;
@@ -95,7 +95,7 @@ public class LivingClawsItem extends SimpleClawsItem implements LivingTool, IKey
 	@Override
 	public boolean overrideOtherStackedOnMe(ItemStack livingTool, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
 		if (handleOverrideOtherStackedOnMe(livingTool, other, slot, action, player, access)) {
-			playSound(player, SoundEvents.GENERIC_EAT);
+			playSound(player, ModSoundEvents.FLESHKIN_EAT.get());
 			return true;
 		}
 		return false;

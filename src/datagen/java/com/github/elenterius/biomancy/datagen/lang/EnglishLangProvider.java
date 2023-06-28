@@ -246,10 +246,16 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addSound(ModSoundEvents.FLESH_DOOR_OPEN, "Open Fleshy Door");
 		addSound(ModSoundEvents.FLESH_DOOR_CLOSE, "Close Fleshy Door");
 
+		addSound(ModSoundEvents.CLAWS_ATTACK_STRONG, "Strong Claw Attack");
+		addSound(ModSoundEvents.CLAWS_ATTACK_BLEED_PROC, "Claw procs Bleed");
+		addSound(ModSoundEvents.FLESHKIN_NO, "Fleshkin says No");
+		addSound(ModSoundEvents.FLESHKIN_BREAK, "Fleshkin Break");
+		addSound(ModSoundEvents.FLESHKIN_BECOME_DORMANT, "Fleshkin becomes Dormant");
+		addSound(ModSoundEvents.FLESHKIN_BECOME_AWAKENED, "Fleshkin becomes Awakened");
+
 		addSound(ModSoundEvents.FLESHKIN_CHEST_OPEN, "Open Fleshy Chest");
 		addSound(ModSoundEvents.FLESHKIN_CHEST_CLOSE, "Close Fleshy Chest");
 		addSound(ModSoundEvents.FLESHKIN_CHEST_BITE_ATTACK, "Fleshy Chest Bite Attack");
-		addSound(ModSoundEvents.FLESHKIN_CHEST_NO, "Fleshy Chest says No");
 
 		addSound(ModSoundEvents.CREATOR_SPAWN_MOB, "Primordial Cradle Spawns a Mob");
 		addSound(ModSoundEvents.CREATOR_BECAME_FULL, "Primordial Cradle became full");

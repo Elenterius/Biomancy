@@ -22,9 +22,8 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 	@Override
 	public void registerSounds() {
 
-		addSimpleRedirect(ModSoundEvents.UI_BUTTON_CLICK, SoundEvents.UI_BUTTON_CLICK);
-		addSimpleSound(ModSoundEvents.UI_MENU_OPEN);
-		addSimpleRedirect(ModSoundEvents.UI_RADIAL_MENU_OPEN, SoundEvents.SHULKER_BOX_OPEN, 0.5f, 1f);
+		addSimpleRedirect(ModSoundEvents.CLAWS_ATTACK_STRONG, SoundEvents.PLAYER_ATTACK_SWEEP, 0.85f, 0.9f);
+		addSimpleRedirect(ModSoundEvents.CLAWS_ATTACK_BLEED_PROC, SoundEvents.PLAYER_ATTACK_CRIT, 1f, 1.5f);
 
 		addSimpleSound(ModSoundEvents.INJECTOR_INJECT);
 		addSimpleRedirect(ModSoundEvents.INJECTOR_FAIL, SoundEvents.DISPENSER_FAIL);
@@ -39,10 +38,15 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 		addSimpleSounds(ModSoundEvents.FLESH_DOOR_OPEN, 2);
 		addSimpleSounds(ModSoundEvents.FLESH_DOOR_CLOSE, 2);
 
+		addSimpleRedirect(ModSoundEvents.FLESHKIN_NO, SoundEvents.VILLAGER_NO, 0.75f, 0.3f);
+		addSimpleRedirect(ModSoundEvents.FLESHKIN_EAT, SoundEvents.GENERIC_EAT, 0.9f, 0.9f);
+		addSimpleRedirect(ModSoundEvents.FLESHKIN_BREAK, ModSoundEvents.FLESH_BLOCK_BREAK, 1.2f, 1.25f);
+		addSimpleRedirect(ModSoundEvents.FLESHKIN_BECOME_DORMANT, ModSoundEvents.FLESH_BLOCK_HIT, 1.2f, 1.25f);
+		addSimpleRedirect(ModSoundEvents.FLESHKIN_BECOME_AWAKENED, ModSoundEvents.FLESH_BLOCK_PLACE, 1.2f, 1.25f);
+
 		addSimpleSounds(ModSoundEvents.FLESHKIN_CHEST_OPEN, 2);
 		addSimpleSounds(ModSoundEvents.FLESHKIN_CHEST_CLOSE, 2);
 		addSimpleRedirect(ModSoundEvents.FLESHKIN_CHEST_BITE_ATTACK, SoundEvents.GOAT_SCREAMING_RAM_IMPACT, 1f, 0.5f);
-		addSimpleRedirect(ModSoundEvents.FLESHKIN_CHEST_NO, SoundEvents.VILLAGER_NO, 0.75f, 0.3f);
 
 		addSimpleRedirect(ModSoundEvents.CREATOR_SPIKE_ATTACK, SoundEvents.GOAT_SCREAMING_RAM_IMPACT, 1f, 0.5f);
 		addSimpleRedirect(ModSoundEvents.CREATOR_CRAFTING_RANDOM, SoundEvents.PLAYER_BURP, 1f, 0.5f);
@@ -50,6 +54,10 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 		addSimpleRedirect(ModSoundEvents.CREATOR_BECAME_FULL, SoundEvents.PLAYER_BURP, 1f, 0.25f);
 		addSimpleRedirect(ModSoundEvents.CREATOR_EAT, SoundEvents.GOAT_SCREAMING_EAT, 1f, 0.25f);
 		addSimpleRedirect(ModSoundEvents.CREATOR_NO, SoundEvents.VILLAGER_NO, 0.75f, 0.3f);
+
+		addSimpleRedirect(ModSoundEvents.UI_BUTTON_CLICK, SoundEvents.UI_BUTTON_CLICK);
+		addSimpleSound(ModSoundEvents.UI_MENU_OPEN);
+		addSimpleRedirect(ModSoundEvents.UI_RADIAL_MENU_OPEN, SoundEvents.SHULKER_BOX_OPEN, 0.5f, 1f);
 
 		addSimpleRedirect(ModSoundEvents.UI_STORAGE_SAC_OPEN, ModSoundEvents.UI_MENU_OPEN);
 
