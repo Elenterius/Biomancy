@@ -20,7 +20,6 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -74,7 +73,7 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 	}
 
 	private static void playBloodyClawsFX(LivingEntity attacker) {
-		attacker.level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, attacker.getSoundSource(), 0.85f, 0.9f + attacker.getRandom().nextFloat() * 0.5f);
+		attacker.level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), ModSoundEvents.CLAWS_ATTACK_STRONG.get(), attacker.getSoundSource(), 1f, 1f + attacker.getRandom().nextFloat() * 0.5f);
 		if (attacker.level instanceof ServerLevel serverLevel) {
 			double xOffset = -Mth.sin(attacker.getYRot() * Mth.DEG_TO_RAD);
 			double zOffset = Mth.cos(attacker.getYRot() * Mth.DEG_TO_RAD);
@@ -125,7 +124,7 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, Level level, Player player, EquipmentSlot slot, byte flags) {
 		if (!hasCharge(stack)) {
 			player.displayClientMessage(TextComponentUtil.getFailureMsgText("not_enough_blood_charge"), true);
-			player.playSound(SoundEvents.VILLAGER_NO, 0.8f, 0.8f + player.getLevel().getRandom().nextFloat() * 0.4f);
+			player.playSound(ModSoundEvents.FLESHKIN_NO.get(), 0.8f, 0.8f + player.getLevel().getRandom().nextFloat() * 0.4f);
 			return InteractionResultHolder.fail(flags);
 		}
 
@@ -185,7 +184,7 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 		if (!hasNutrients) {
 			if (state != LivingToolState.BROKEN) {
 				setLivingToolState(livingTool, LivingToolState.BROKEN);
-				SoundUtil.broadcastItemSound(level, player, ModSoundEvents.FLESH_BLOCK_BREAK.get());
+				SoundUtil.broadcastItemSound(level, player, ModSoundEvents.FLESHKIN_BREAK.get());
 			}
 			return;
 		}
@@ -193,12 +192,12 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 		switch (state) {
 			case BROKEN, AWAKENED -> {
 				setLivingToolState(livingTool, LivingToolState.DORMANT);
-				SoundUtil.broadcastItemSound(level, player, ModSoundEvents.FLESH_BLOCK_HIT.get());
+				SoundUtil.broadcastItemSound(level, player, ModSoundEvents.FLESHKIN_BECOME_DORMANT.get());
 			}
 			case DORMANT -> {
 				if (hasCharge(livingTool)) {
 					setLivingToolState(livingTool, LivingToolState.AWAKENED);
-					SoundUtil.broadcastItemSound(level, player, ModSoundEvents.FLESH_BLOCK_PLACE.get());
+					SoundUtil.broadcastItemSound(level, player, ModSoundEvents.FLESHKIN_BECOME_AWAKENED.get());
 				}
 			}
 		}
@@ -245,7 +244,7 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 				if (isFullAttackStrength) {
 					playBloodyClawsFX(attacker);
 					if (attacker.getRandom().nextInt(12) == 0) { //8.3%
-						attacker.level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), SoundEvents.PLAYER_ATTACK_CRIT, attacker.getSoundSource(), 1f, 1.5f);
+						attacker.level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), ModSoundEvents.CLAWS_ATTACK_BLEED_PROC.get(), attacker.getSoundSource(), 1f, 1f);
 
 						CombatUtil.applyBleedEffect(target, 20);
 					}
@@ -263,7 +262,7 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 				if (isFullAttackStrength) {
 					playBloodyClawsFX(attacker);
 					if (attacker.getRandom().nextInt(5) == 0) { //20%
-						attacker.level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), SoundEvents.PLAYER_ATTACK_CRIT, attacker.getSoundSource(), 1f, 1.5f);
+						attacker.level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), ModSoundEvents.CLAWS_ATTACK_BLEED_PROC.get(), attacker.getSoundSource(), 1f, 1f);
 
 						if (CombatUtil.getBleedEffectLevel(target) < 2) {
 							playBloodExplosionFX(target);

@@ -10,6 +10,10 @@ public final class ModSoundEvents {
 
 	public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, BiomancyMod.MOD_ID);
 
+	//# Attacks
+	public static final RegistryObject<SoundEvent> CLAWS_ATTACK_STRONG = registerSoundEvent("claws.attack.strong");
+	public static final RegistryObject<SoundEvent> CLAWS_ATTACK_BLEED_PROC = registerSoundEvent("claws.attack.bleed_proc");
+
 	//# Items
 	public static final RegistryObject<SoundEvent> INJECTOR_INJECT = registerSoundEvent("item.injector.inject");
 	public static final RegistryObject<SoundEvent> INJECTOR_FAIL = registerSoundEvent("item.injector.fail");
@@ -24,11 +28,17 @@ public final class ModSoundEvents {
 	public static final RegistryObject<SoundEvent> FLESH_DOOR_OPEN = registerSoundEvent("flesh_door.open");
 	public static final RegistryObject<SoundEvent> FLESH_DOOR_CLOSE = registerSoundEvent("flesh_door.close");
 
+	//# Fleshkin
+	public static final RegistryObject<SoundEvent> FLESHKIN_NO = registerSoundEvent("fleshkin.no");
+	public static final RegistryObject<SoundEvent> FLESHKIN_EAT = registerSoundEvent("fleshkin.eat");
+	public static final RegistryObject<SoundEvent> FLESHKIN_BREAK = registerSoundEvent("fleshkin.break");
+	public static final RegistryObject<SoundEvent> FLESHKIN_BECOME_DORMANT = registerSoundEvent("fleshkin.dormant");
+	public static final RegistryObject<SoundEvent> FLESHKIN_BECOME_AWAKENED = registerSoundEvent("fleshkin.awakened");
+
 	//## Misc
 	public static final RegistryObject<SoundEvent> FLESHKIN_CHEST_OPEN = registerSoundEvent("fleshkin_chest.open");
 	public static final RegistryObject<SoundEvent> FLESHKIN_CHEST_CLOSE = registerSoundEvent("fleshkin_chest.close");
 	public static final RegistryObject<SoundEvent> FLESHKIN_CHEST_BITE_ATTACK = registerSoundEvent("fleshkin_chest.bite_attack");
-	public static final RegistryObject<SoundEvent> FLESHKIN_CHEST_NO = registerSoundEvent("fleshkin_chest.no");
 	public static final RegistryObject<SoundEvent> CREATOR_SPIKE_ATTACK = registerSoundEvent("creator.spike_attack");
 	public static final RegistryObject<SoundEvent> CREATOR_CRAFTING_RANDOM = registerSoundEvent("block.creator.crafting_random");
 	public static final RegistryObject<SoundEvent> CREATOR_SPAWN_MOB = registerSoundEvent("block.creator.spawn_mob");
