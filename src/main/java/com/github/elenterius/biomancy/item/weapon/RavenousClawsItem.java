@@ -298,15 +298,17 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 				//do nothing
 			}
 			case DORMANT -> {
+				//TODO: replace with translatable chat components
 				tooltip.add(ComponentUtil.literal("Bleed Proc (8% chance)").withStyle(ChatFormatting.GRAY));
-				tooltip.add(ComponentUtil.literal(" adds one bleed stack (max 2)").withStyle(ChatFormatting.DARK_GRAY));
+				tooltip.add(ComponentUtil.literal(" Adds one bleed stack (max 2)").withStyle(ChatFormatting.DARK_GRAY));
 				tooltip.add(ComponentUtil.emptyLine());
 			}
 			case AWAKENED -> {
+				//TODO: replace with translatable chat components
 				tooltip.add(ComponentUtil.literal("Bleed Proc (20% chance)").withStyle(ChatFormatting.GRAY));
-				tooltip.add(ComponentUtil.literal(" adds one Bleed Stack (max 2)").withStyle(ChatFormatting.DARK_GRAY));
+				tooltip.add(ComponentUtil.literal(" Adds one Bleed Stack (max 2)").withStyle(ChatFormatting.DARK_GRAY));
 				tooltip.add(ComponentUtil.literal("Blood Explosion").withStyle(ChatFormatting.GRAY));
-				tooltip.add(ComponentUtil.literal(" on Bleed Stack deals 10% of max health as damage").withStyle(ChatFormatting.DARK_GRAY));
+				tooltip.add(ComponentUtil.literal(" On Bleed Stack deals 10% of max health as damage").withStyle(ChatFormatting.DARK_GRAY));
 				tooltip.add(ComponentUtil.emptyLine());
 			}
 		}
@@ -325,12 +327,12 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 			case DORMANT -> {
 				tooltip.add(ComponentUtil.emptyLine());
 				tooltip.add(getLivingToolState(stack).getTooltip().withStyle(TextStyles.ITALIC_GRAY));
-				tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action.awaken")));
+				tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action.enable_awakened_mode")));
 			}
 			case AWAKENED -> {
 				tooltip.add(ComponentUtil.emptyLine());
 				tooltip.add(getLivingToolState(stack).getTooltip().withStyle(TextStyles.ITALIC_GRAY));
-				tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action.make_drowsy")));
+				tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action.disable_awakened_mode")));
 			}
 		}
 	}
