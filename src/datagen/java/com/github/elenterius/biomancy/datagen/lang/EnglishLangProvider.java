@@ -194,6 +194,11 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addTooltip("action.enable_awakened_mode", "activate Awakened Mode");
 		addTooltip("action.disable_awakened_mode", "cancel Awakened Mode");
 
+		addTooltip("ability.bleed_proc", "Bleed Proc");
+		addTooltip("ability.bleed_proc.desc", "Adds one Bleed Stack (max 2)");
+		addTooltip("ability.blood_explosion", "Blood Explosion");
+		addTooltip("ability.blood_explosion.desc", "On Bleed Stack deals 10% of max health as damage");
+
 		//		addTooltip("fire_rate", "Fire Rate");
 		//		addTooltip("accuracy", "Accuracy");
 		//		addTooltip("ammo", "Ammo");

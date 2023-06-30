@@ -124,7 +124,7 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, Level level, Player player, EquipmentSlot slot, byte flags) {
 		if (!hasCharge(stack)) {
 			player.displayClientMessage(TextComponentUtil.getFailureMsgText("not_enough_blood_charge"), true);
-			player.playSound(ModSoundEvents.FLESHKIN_NO.get(), 0.8f, 0.8f + player.getLevel().getRandom().nextFloat() * 0.4f);
+			player.playSound(ModSoundEvents.FLESHKIN_NO.get(), 1f, 1f + player.getLevel().getRandom().nextFloat() * 0.4f);
 			return InteractionResultHolder.fail(flags);
 		}
 
@@ -292,22 +292,22 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 
 	@Override
 	public void appendLivingToolTooltip(ItemStack stack, List<Component> tooltip) {
-		switch (getLivingToolState(stack)) {
+		LivingToolState livingToolState = getLivingToolState(stack);
+
+		switch (livingToolState) {
 			case BROKEN -> {
 				//do nothing
 			}
 			case DORMANT -> {
-				//TODO: replace with translatable chat components
-				tooltip.add(ComponentUtil.literal("Bleed Proc (8% chance)").withStyle(ChatFormatting.GRAY));
-				tooltip.add(ComponentUtil.literal(" Adds one bleed stack (max 2)").withStyle(ChatFormatting.DARK_GRAY));
+				tooltip.add(TextComponentUtil.getTooltipText("ability.bleed_proc").append(" (8% chance)").withStyle(ChatFormatting.GRAY));
+				tooltip.add(ComponentUtil.literal(" ").append(TextComponentUtil.getTooltipText("ability.bleed_proc.desc")).withStyle(ChatFormatting.DARK_GRAY));
 				tooltip.add(ComponentUtil.emptyLine());
 			}
 			case AWAKENED -> {
-				//TODO: replace with translatable chat components
-				tooltip.add(ComponentUtil.literal("Bleed Proc (20% chance)").withStyle(ChatFormatting.GRAY));
-				tooltip.add(ComponentUtil.literal(" Adds one Bleed Stack (max 2)").withStyle(ChatFormatting.DARK_GRAY));
-				tooltip.add(ComponentUtil.literal("Blood Explosion").withStyle(ChatFormatting.GRAY));
-				tooltip.add(ComponentUtil.literal(" On Bleed Stack deals 10% of max health as damage").withStyle(ChatFormatting.DARK_GRAY));
+				tooltip.add(TextComponentUtil.getTooltipText("ability.bleed_proc").append(" (20% chance)").withStyle(ChatFormatting.GRAY));
+				tooltip.add(ComponentUtil.literal(" ").append(TextComponentUtil.getTooltipText("ability.bleed_proc.desc")).withStyle(ChatFormatting.DARK_GRAY));
+				tooltip.add(TextComponentUtil.getTooltipText("ability.blood_explosion").append(" (20% chance)").withStyle(ChatFormatting.GRAY));
+				tooltip.add(ComponentUtil.literal(" ").append(TextComponentUtil.getTooltipText("ability.blood_explosion.desc")).withStyle(ChatFormatting.DARK_GRAY));
 				tooltip.add(ComponentUtil.emptyLine());
 			}
 		}
@@ -318,19 +318,19 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 		tooltip.add(TextComponentUtil.getTooltipText("blood_charge").withStyle(ChatFormatting.GRAY));
 		tooltip.add(ComponentUtil.literal(" %s/%s".formatted(df.format(getCharge(stack)), df.format(getMaxCharge(stack)))).withStyle(TextStyles.ERROR));
 
-		switch (getLivingToolState(stack)) {
+		switch (livingToolState) {
 			case BROKEN -> {
 				tooltip.add(ComponentUtil.emptyLine());
-				tooltip.add(getLivingToolState(stack).getTooltip());
+				tooltip.add(livingToolState.getTooltip());
 			}
 			case DORMANT -> {
 				tooltip.add(ComponentUtil.emptyLine());
-				tooltip.add(getLivingToolState(stack).getTooltip().withStyle(TextStyles.ITALIC_GRAY));
+				tooltip.add(livingToolState.getTooltip().withStyle(TextStyles.ITALIC_GRAY));
 				tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action.enable_awakened_mode")));
 			}
 			case AWAKENED -> {
 				tooltip.add(ComponentUtil.emptyLine());
-				tooltip.add(getLivingToolState(stack).getTooltip().withStyle(TextStyles.ITALIC_GRAY));
+				tooltip.add(livingToolState.getTooltip().withStyle(TextStyles.ITALIC_GRAY));
 				tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action.disable_awakened_mode")));
 			}
 		}
