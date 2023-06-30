@@ -1,3 +1,10 @@
+### [1.11.3](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.11.2...1.19.2-v2.1.11.3) (2023-06-30)
+
+
+### Bug Fixes
+
+* fix Ravenous Claws ability tooltips not using translation keys ([989ff50](https://github.com/Elenterius/Biomancy/commit/989ff50e67110b0037d145f3a804a5455124ae91))
+
 ### [1.11.2](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.11.1...1.19.2-v2.1.11.2) (2023-06-25)
 
 
@@ -137,17 +144,4 @@
 
 * avoid creation of objects during the renderer phase of the Cradle ([36442f1](https://github.com/Elenterius/Biomancy/commit/36442f1a8ea756a70c96e58b04ae5216210ffc11))
 * refactor intermediary key cache ([5ac54fb](https://github.com/Elenterius/Biomancy/commit/5ac54fb691d0fade66971daca94ab1bdad521ce5))
-
-## [1.1.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.0.0...1.19.2-v2.1.1.0) (2023-04-25)
-
-
-### Features
-
-* make Cleansing Serum able to remove forced age from applicable mobs ([908c7ef](https://github.com/Elenterius/Biomancy/commit/908c7ef86fea34248a103eb27ec42d43ba2bae90))
-* rework Spike block ([4138a5b](https://github.com/Elenterius/Biomancy/commit/4138a5b36389e6d6848495a9b9b433a3717108ec))
-
-
-### Bug Fixes
-
-* fix Bio-Forge GUI crashing the game when clicking next page button ([4046464](https://github.com/Elenterius/Biomancy/commit/40464647129b6077d70f58bc96db9e7555ba1413))
 
