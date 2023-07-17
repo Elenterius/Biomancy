@@ -458,7 +458,10 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.FLESH_IRIS_DOOR, "Flesh Iris-Door", "Trapdoor-like iris door made of flesh...");
 		addBlock(ModBlocks.FLESH_DOOR, "Flesh Door", "A sliding door made of flesh...");
 		addBlock(ModBlocks.FULL_FLESH_DOOR, "Wide Flesh Door", "A wide sliding door made of flesh...");
-		addBlock(ModBlocks.FLESH_SPIKE, "Flesh Spike", "A dangerous spike made of reinforced bone and flesh, colliding with it will hurt. Several spikes can be placed in one spot.");
+		addBlock(ModBlocks.FLESH_SPIKE, "Flesh Spike", """
+				A deadly trap fashioned from the amalgamation of reinforced bone and sinew. Approach with caution, for any contact will inflict considerable harm.
+								
+				Multiple spikes can be meticulously positioned within a single location, intensifying their lethal potential.""");
 		addBlock(ModBlocks.FLESH_LADDER, "Flesh Ladder", "Ladder mainly made of bones and a little bit of flesh...");
 		addBlock(ModBlocks.FLESH_PILLAR, "Flesh Pillar", "A Pillar made of bones and flesh.");
 		addBlock(ModBlocks.YELLOW_BIO_LANTERN, "Yellow Bio-Lantern", "A bioluminescent light source that is energy-efficient and environmentally friendly.");
