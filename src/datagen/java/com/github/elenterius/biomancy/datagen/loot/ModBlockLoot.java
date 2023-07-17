@@ -34,6 +34,14 @@ public class ModBlockLoot extends BlockLoot {
 		return blocks;
 	}
 
+	protected static LootTable.Builder createNameableBioMachineTable(Block block) {
+		return LootTable.lootTable().withPool(applyExplosionCondition(block, LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+				.add(LootItem.lootTableItem(block)
+						.apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY))
+						.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("Fuel", "BlockEntityTag.Fuel"))
+				)));
+	}
+
 	protected static LootTable.Builder dropWithInventory(Block block) {
 		return LootTable.lootTable().withPool(applyExplosionCondition(block, LootPool.lootPool().setRolls(ConstantValue.exactly(1))
 				.add(LootItem.lootTableItem(block)
@@ -73,10 +81,10 @@ public class ModBlockLoot extends BlockLoot {
 		dropSelf(ModBlocks.MAW_HOPPER.get());
 		add(ModBlocks.STORAGE_SAC.get(), ModBlockLoot::dropWithInventory);
 
-		add(ModBlocks.BIO_FORGE.get(), BlockLoot::createNameableBlockEntityTable);
-		add(ModBlocks.BIO_LAB.get(), BlockLoot::createNameableBlockEntityTable);
-		add(ModBlocks.DIGESTER.get(), BlockLoot::createNameableBlockEntityTable);
-		add(ModBlocks.DECOMPOSER.get(), BlockLoot::createNameableBlockEntityTable);
+		add(ModBlocks.BIO_FORGE.get(), ModBlockLoot::createNameableBioMachineTable);
+		add(ModBlocks.BIO_LAB.get(), ModBlockLoot::createNameableBioMachineTable);
+		add(ModBlocks.DIGESTER.get(), ModBlockLoot::createNameableBioMachineTable);
+		add(ModBlocks.DECOMPOSER.get(), ModBlockLoot::createNameableBioMachineTable);
 
 		add(ModBlocks.FLESHKIN_CHEST.get(), BlockLoot::createNameableBlockEntityTable);
 		add(ModBlocks.FLESHKIN_DOOR.get(), ModBlockLoot::dropWithOwnableData);
