@@ -433,10 +433,9 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.STORAGE_SAC, "Storage Sac", "Cheap Shulker-like storage sac that also works like a bundle.");
 
 		addBlock(ModBlocks.FLESHKIN_CHEST, "Fleshkin Chest", """
-				A fleshkin Vault forged into the shape of a chest with sharp teeth and a resilient stomach allowing it to keeps its contents when mined.
-				Only its master may open and takes its content without repercussion.
-
-				It's fangs look awfully sharp...""");
+				Crafted from living flesh, the organic composition of the chest grants it remarkable resilience, ensuring the safety of its precious contents even from explosions.
+								
+				Only its true master can unlock its contents without invoking the wrath of its razor-sharp fangs.""");
 		addBlock(ModBlocks.FLESHKIN_DOOR, "[WIP] Fleshkin Door", EMPTY_STRING);
 		addBlock(ModBlocks.FLESHKIN_TRAPDOOR, "[WIP] Fleshkin Trap Door", EMPTY_STRING);
 		addBlock(ModBlocks.FLESHKIN_PRESSURE_PLATE, "Fleshkin Pressure Sensor", """
