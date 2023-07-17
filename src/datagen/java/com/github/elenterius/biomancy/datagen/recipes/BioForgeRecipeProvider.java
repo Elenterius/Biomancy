@@ -282,6 +282,14 @@ public class BioForgeRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.MISC)
 				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
 
+		BioForgeRecipeBuilder.create(ModItems.CHRYSALIS.get())
+				.addIngredient(ModItems.TOUGH_FIBERS.get(), 6)
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 12)
+				.addIngredient(Items.EGG, 4)
+				.addIngredient(ModItems.LIVING_FLESH.get())
+				.setCategory(ModBioForgeTabs.MISC)
+				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
+
 		BioForgeRecipeBuilder.create(ModItems.IMPERMEABLE_MEMBRANE.get())
 				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 2)
 				.addIngredient(ModItems.BILE.get(), 4)

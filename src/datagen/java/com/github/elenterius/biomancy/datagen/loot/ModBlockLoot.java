@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.datagen.loot;
 
 import com.github.elenterius.biomancy.block.DirectionalSlabBlock;
+import com.github.elenterius.biomancy.block.chrysalis.Chrysalis;
 import com.github.elenterius.biomancy.block.fleshspike.FleshSpikeBlock;
 import com.github.elenterius.biomancy.block.property.DirectionalSlabType;
 import com.github.elenterius.biomancy.init.ModBlocks;
@@ -88,6 +89,14 @@ public class ModBlockLoot extends BlockLootSubProvider {
 				)));
 	}
 
+	protected LootTable.Builder dropChrysalisWithEntity(Block block) {
+		return LootTable.lootTable().withPool(applyExplosionCondition(block, LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+				.add(LootItem.lootTableItem(block)
+						.apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY))
+						.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy(Chrysalis.ENTITY_KEY, "BlockEntityTag." + Chrysalis.ENTITY_KEY))
+				)));
+	}
+
 	protected LootTable.Builder dropOwnableInventory(Block block) {
 		return LootTable.lootTable().withPool(applyExplosionCondition(block, LootPool.lootPool().setRolls(ConstantValue.exactly(1))
 				.add(LootItem.lootTableItem(block)
@@ -141,6 +150,7 @@ public class ModBlockLoot extends BlockLootSubProvider {
 		dropSelf(ModBlocks.TONGUE.get());
 		dropSelf(ModBlocks.MAW_HOPPER.get());
 		add(ModBlocks.STORAGE_SAC.get(), this::dropWithInventory);
+		add(ModBlocks.CHRYSALIS.get(), this::dropChrysalisWithEntity);
 
 		add(ModBlocks.BIO_FORGE.get(), this::createNameableBioMachineTable);
 		add(ModBlocks.BIO_LAB.get(), this::createNameableBioMachineTable);

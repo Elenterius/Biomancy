@@ -2,7 +2,6 @@ package com.github.elenterius.biomancy.styles;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.util.ComponentUtil;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -47,11 +46,11 @@ public final class TextComponentUtil {
 		return ComponentUtil.translatable(getTranslationKey("msg", msgKey), formatArgs);
 	}
 
-	public static Component getFailureMsgText(String msgKey) {
+	public static MutableComponent getFailureMsgText(String msgKey) {
 		return getMsgText(msgKey).withStyle(TextStyles.ERROR);
 	}
 
-	public static Component getFailureMsgText(String msgKey, Object... formatArgs) {
+	public static MutableComponent getFailureMsgText(String msgKey, Object... formatArgs) {
 		return getMsgText(msgKey, formatArgs).withStyle(TextStyles.ERROR);
 	}
 

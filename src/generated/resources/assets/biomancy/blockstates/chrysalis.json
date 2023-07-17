@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "biomancy:block/chrysalis",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "biomancy:block/chrysalis",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "biomancy:block/chrysalis",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "biomancy:block/chrysalis",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "biomancy:block/chrysalis"
+    },
+    "facing=west": {
+      "model": "biomancy:block/chrysalis",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

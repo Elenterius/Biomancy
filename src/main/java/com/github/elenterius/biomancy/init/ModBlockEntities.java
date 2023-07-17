@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.base.BlockEntityDelegator;
 import com.github.elenterius.biomancy.block.bioforge.BioForgeBlockEntity;
 import com.github.elenterius.biomancy.block.biolab.BioLabBlockEntity;
+import com.github.elenterius.biomancy.block.chrysalis.ChrysalisBlockEntity;
 import com.github.elenterius.biomancy.block.cradle.PrimordialCradleBlockEntity;
 import com.github.elenterius.biomancy.block.decomposer.DecomposerBlockEntity;
 import com.github.elenterius.biomancy.block.digester.DigesterBlockEntity;
@@ -39,6 +40,7 @@ public final class ModBlockEntities {
 	public static final RegistryObject<BlockEntityType<FleshkinChestBlockEntity>> FLESHKIN_CHEST = register(ModBlocks.FLESHKIN_CHEST, FleshkinChestBlockEntity::new);
 	public static final RegistryObject<BlockEntityType<VialHolderBlockEntity>> VIAL_HOLDER = register(ModBlocks.VIAL_HOLDER, VialHolderBlockEntity::new);
 	//	public static final RegistryObject<BlockEntityType<VoiceBoxBlockEntity>> VOICE_BOX = register(ModBlocks.VOICE_BOX, VoiceBoxBlockEntity::new);
+	public static final RegistryObject<BlockEntityType<ChrysalisBlockEntity>> CHRYSALIS = register(ModBlocks.CHRYSALIS, ChrysalisBlockEntity::new);
 
 	//# Special
 	public static final RegistryObject<BlockEntityType<OwnableBlockEntity>> OWNABLE_BE = BLOCK_ENTITIES.register("ownable_block_entity", () -> BlockEntityType.Builder.of(OwnableBlockEntity::new, /*ModBlocks.FLESHKIN_DOOR.get(), ModBlocks.FLESHKIN_TRAPDOOR.get(),*/ ModBlocks.FLESHKIN_PRESSURE_PLATE.get()).build(noDataFixer()));

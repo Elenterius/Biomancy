@@ -144,6 +144,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		geckolibModel(ModBlocks.FLESHKIN_CHEST, FLESH_PARTICLE_TEXTURE);
 		fleshkinPressurePlate(ModBlocks.FLESHKIN_PRESSURE_PLATE);
 		storageSac(ModBlocks.STORAGE_SAC);
+		directionalBlockWithItem(ModBlocks.CHRYSALIS.get());
 
 		particleOnly(ModBlocks.ACID_FLUID_BLOCK, new ResourceLocation("biomancy:block/acid_flat"));
 	}

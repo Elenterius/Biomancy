@@ -236,6 +236,11 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		//		addHudMessage("not_enough_ammo", "Not enough Ammo");
 		addHudMessage("not_enough_nutrients", "Not enough Nutrients");
 		addHudMessage("not_enough_blood_charge", "Not enough Blood Charge");
+		addHudMessage("mob_too_old", "The Mob is too old");
+		addHudMessage("already_full", "Already Full");
+		addHudMessage("failed_to_store_mob", "Failed to store the mob");
+		addHudMessage("failed_to_spawn_mob", "Failed to spawn the stored mob");
+		addHudMessage("item_interaction_not_allowed", "Item interaction is not allowed");
 
 		add(ClientTextUtil.getCtrlKey(), "ctrl");
 		add(ClientTextUtil.getAltKey(), "alt");
@@ -495,6 +500,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.MAW_HOPPER, "Maw Hopper", "A fleshy sister of the hopper. Transfers up to 16 items at a time.");
 
 		addBlock(ModBlocks.STORAGE_SAC, "Storage Sac", "Cheap Shulker-like storage sac that also acts like a bundle.");
+		addBlock(ModBlocks.CHRYSALIS, "Chrysalis", "Stores babies/children, small mobs and flesh blobs");
 
 		addBlock(ModBlocks.FLESHKIN_CHEST, "Fleshkin Chest", """
 				Crafted from living flesh, the organic composition of the chest grants it remarkable resilience, ensuring the safety of its precious contents even from explosions.
