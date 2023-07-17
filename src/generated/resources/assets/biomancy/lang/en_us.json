@@ -144,7 +144,7 @@
 	"block.biomancy.storage_sac": "Storage Sac",
 	"block.biomancy.storage_sac.tooltip": "Cheap Shulker-like storage sac that also works like a bundle.",
 	"block.biomancy.fleshkin_chest": "Fleshkin Chest",
-	"block.biomancy.fleshkin_chest.tooltip": "A fleshkin Vault forged into the shape of a chest with sharp teeth and a resilient stomach allowing it to keeps its contents when mined.\nOnly its master may open and takes its content without repercussion.\n\nIt's fangs look awfully sharp...",
+	"block.biomancy.fleshkin_chest.tooltip": "Crafted from living flesh, the organic composition of the chest grants it remarkable resilience, ensuring the safety of its precious contents even from explosions.\n\nOnly its true master can unlock its contents without invoking the wrath of its razor-sharp fangs.",
 	"block.biomancy.fleshkin_door": "[WIP] Fleshkin Door",
 	"block.biomancy.fleshkin_door.tooltip": "",
 	"block.biomancy.fleshkin_trapdoor": "[WIP] Fleshkin Trap Door",
