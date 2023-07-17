@@ -1,15 +1,24 @@
 package com.github.elenterius.biomancy.block.bioforge;
 
+import com.github.elenterius.biomancy.chat.ComponentUtil;
+import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.SoundUtil;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -28,6 +37,9 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
+
+import java.text.DecimalFormat;
+import java.util.List;
 
 public class BioForgeBlock extends BaseEntityBlock {
 
@@ -118,4 +130,19 @@ public class BioForgeBlock extends BaseEntityBlock {
 		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 
+	@Override
+	public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flag) {
+		int fuelAmount = getFuelAmount(stack);
+		if (fuelAmount > 0) {
+			tooltip.add(ComponentUtil.emptyLine());
+			DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
+			tooltip.add(ComponentUtil.translatable("tooltip.biomancy.nutrients_fuel").withStyle(ChatFormatting.GRAY));
+			tooltip.add(ComponentUtil.literal("%s/%s u".formatted(df.format(fuelAmount), df.format(BioForgeBlockEntity.MAX_FUEL))).withStyle(TextStyles.NUTRIENTS));
+		}
+	}
+
+	public static int getFuelAmount(ItemStack stack) {
+		CompoundTag tag = BlockItem.getBlockEntityData(stack);
+		return tag != null && tag.contains("Fuel") ? tag.getShort("Fuel") : 0;
+	}
 }
