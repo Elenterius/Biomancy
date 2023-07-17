@@ -1,0 +1,25 @@
+{
+  "type": "biomancy:bio_forging",
+  "bio_forge_tab": "biomancy:misc",
+  "ingredients": [
+    {
+      "count": 6,
+      "item": "biomancy:tough_fibers"
+    },
+    {
+      "count": 12,
+      "item": "biomancy:elastic_fibers"
+    },
+    {
+      "count": 4,
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "biomancy:living_flesh"
+    }
+  ],
+  "nutrientsCost": 1,
+  "result": {
+    "item": "biomancy:chrysalis"
+  }
+}

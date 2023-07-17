@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.block.*;
 import com.github.elenterius.biomancy.block.bioforge.BioForgeBlock;
 import com.github.elenterius.biomancy.block.biolab.BioLabBlock;
 import com.github.elenterius.biomancy.block.bloom.BloomBlock;
+import com.github.elenterius.biomancy.block.chrysalis.ChrysalisBlock;
 import com.github.elenterius.biomancy.block.cradle.PrimordialCradleBlock;
 import com.github.elenterius.biomancy.block.decomposer.DecomposerBlock;
 import com.github.elenterius.biomancy.block.digester.DigesterBlock;
@@ -60,6 +61,7 @@ public final class ModBlocks {
 	public static final RegistryObject<MawHopperBlock> MAW_HOPPER = register("maw_hopper", MawHopperBlock::new);
 	public static final RegistryObject<FleshkinChestBlock> FLESHKIN_CHEST = register("fleshkin_chest", properties -> new FleshkinChestBlock(properties, FLESH_DESTROY_SPEED));
 	public static final RegistryObject<OwnablePressurePlateBlock> FLESHKIN_PRESSURE_PLATE = register("fleshkin_pressure_plate", properties -> new OwnablePressurePlateBlock(properties, ModBlockSetTypes.FLESH_SET_TYPE.get()));
+	public static final RegistryObject<ChrysalisBlock> CHRYSALIS = register("chrysalis", ChrysalisBlock::new);
 
 	//## Building Materials
 	public static final RegistryObject<FleshBlock> FLESH = register("flesh", FleshBlock::new);

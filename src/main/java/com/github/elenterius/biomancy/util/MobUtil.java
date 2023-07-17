@@ -3,10 +3,14 @@ package com.github.elenterius.biomancy.util;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.tags.ModEntityTags;
 import com.github.elenterius.biomancy.mixin.AgeableMobAccessor;
+import com.github.elenterius.biomancy.mixin.EntityAccessor;
+import com.github.elenterius.biomancy.mixin.ServerLevelAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -21,6 +25,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 
+import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
@@ -238,4 +243,20 @@ public final class MobUtil {
 		return new Vec3(x, y, z);
 	}
 
+	public static void randomizeUUID(Entity entity) {
+		RandomSource randomSource = ((EntityAccessor) entity).biomancy$random();
+		entity.setUUID(Mth.createInsecureUUID(randomSource));
+	}
+
+	/**
+	 * Checks if entity id is unique and not already in queue to be summoned
+	 */
+	public static boolean isEntityIdUnique(ServerLevel level, Entity entity) {
+		return !isEntityIdLoaded(level, entity.getUUID());
+	}
+
+	public static boolean isEntityIdLoaded(ServerLevel level, UUID uuid) {
+		//noinspection resource
+		return ((ServerLevelAccessor) level).biomancy$entityManager().isLoaded(uuid);
+	}
 }
