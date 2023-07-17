@@ -1,7 +1,10 @@
 package com.github.elenterius.biomancy.datagen.loot;
 
+import com.github.elenterius.biomancy.block.DirectionalSlabBlock;
+import com.github.elenterius.biomancy.block.property.DirectionalSlabType;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.data.loot.BlockLoot;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -12,6 +15,8 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.CopyNameFunction;
 import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
@@ -72,6 +77,19 @@ public class ModBlockLoot extends BlockLoot {
 		return createSinglePropConditionTable(block, DoorBlock.HALF, DoubleBlockHalf.LOWER);
 	}
 
+	protected static LootTable.Builder createDirectionalSlabTable(Block slab) {
+		return LootTable.lootTable().withPool(
+				LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+						.add(applyExplosionDecay(slab, LootItem.lootTableItem(slab)
+								.apply(
+										SetItemCountFunction.setCount(ConstantValue.exactly(2)).when(
+												LootItemBlockStatePropertyCondition
+														.hasBlockStateProperties(slab)
+														.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(DirectionalSlabBlock.TYPE, DirectionalSlabType.FULL))
+										))
+						)));
+	}
+
 	@Override
 	protected void addTables() {
 		LOGGER.info(logMarker, "registering block loot...");
@@ -92,22 +110,22 @@ public class ModBlockLoot extends BlockLoot {
 		add(ModBlocks.FLESHKIN_PRESSURE_PLATE.get(), ModBlockLoot::dropWithOwnableData);
 
 		dropSelf(ModBlocks.FLESH.get());
-		add(ModBlocks.FLESH_SLAB.get(), BlockLoot::createSlabItemTable);
+		add(ModBlocks.FLESH_SLAB.get(), ModBlockLoot::createDirectionalSlabTable);
 		dropSelf(ModBlocks.FLESH_STAIRS.get());
 		dropSelf(ModBlocks.FLESH_WALL.get());
 
 		dropSelf(ModBlocks.PACKED_FLESH.get());
-		add(ModBlocks.PACKED_FLESH_SLAB.get(), BlockLoot::createSlabItemTable);
+		add(ModBlocks.PACKED_FLESH_SLAB.get(), ModBlockLoot::createDirectionalSlabTable);
 		dropSelf(ModBlocks.PACKED_FLESH_STAIRS.get());
 		dropSelf(ModBlocks.PACKED_FLESH_WALL.get());
 
 		dropSelf(ModBlocks.PRIMAL_FLESH.get());
-		add(ModBlocks.PRIMAL_FLESH_SLAB.get(), BlockLoot::createSlabItemTable);
+		add(ModBlocks.PRIMAL_FLESH_SLAB.get(), ModBlockLoot::createDirectionalSlabTable);
 		dropSelf(ModBlocks.PRIMAL_FLESH_STAIRS.get());
 		dropSelf(ModBlocks.CORRUPTED_PRIMAL_FLESH.get());
 
 		dropSelf(ModBlocks.MALIGNANT_FLESH.get());
-		add(ModBlocks.MALIGNANT_FLESH_SLAB.get(), BlockLoot::createSlabItemTable);
+		add(ModBlocks.MALIGNANT_FLESH_SLAB.get(), ModBlockLoot::createDirectionalSlabTable);
 		dropSelf(ModBlocks.MALIGNANT_FLESH_STAIRS.get());
 		add(ModBlocks.MALIGNANT_FLESH_VEINS.get(), (block) -> {return createMultifaceBlockDrops(block, MatchTool.toolMatches(ItemPredicate.Builder.item().of(Items.SHEARS)));});
 
