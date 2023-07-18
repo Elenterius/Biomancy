@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.entity.MobUtil;
 import com.github.elenterius.biomancy.init.ModParticleTypes;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.item.AttackReachIndicator;
 import com.github.elenterius.biomancy.item.ItemCharge;
 import com.github.elenterius.biomancy.item.livingtool.LivingClawsItem;
 import com.github.elenterius.biomancy.item.livingtool.LivingToolState;
@@ -56,7 +57,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, ItemCharge {
+public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, ItemCharge, AttackReachIndicator {
 	protected static final UUID BASE_ATTACK_KNOCKBACK_UUID = UUID.fromString("6175525b-56dd-4f87-b035-86b892afe7b3");
 	private final Lazy<Multimap<Attribute, AttributeModifier>> brokenAttributes;
 	private final Lazy<Multimap<Attribute, AttributeModifier>> dormantAttributes;

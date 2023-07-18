@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
 import com.github.elenterius.biomancy.client.util.GuiUtil;
 import com.github.elenterius.biomancy.entity.ownable.IControllableMob;
+import com.github.elenterius.biomancy.item.AttackReachIndicator;
 import com.github.elenterius.biomancy.item.ItemCharge;
 import com.github.elenterius.biomancy.item.injector.InjectorItem;
 import com.github.elenterius.biomancy.item.weapon.IGun;
@@ -15,6 +16,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
@@ -23,6 +25,7 @@ public final class IngameOverlays {
 
 	//	public static final ResourceLocation COMMAND_ICONS = BiomancyMod.createRL("textures/gui/command_icons.png");
 	public static final ResourceLocation INJECTOR_COOL_DOWN = BiomancyMod.createRL("textures/gui/indicator_injector_cooldown.png");
+	public static final ResourceLocation ATTACK_REACH = BiomancyMod.createRL("textures/gui/indicator_attack_reach.png");
 	public static final ResourceLocation ORNATE_CORNER_BOTTOM_RIGHT = BiomancyMod.createRL("textures/gui/ornate_corner_br.png");
 	public static final ResourceLocation CHARGE_BAR = BiomancyMod.createRL("textures/gui/charge_bar.png");
 
@@ -73,6 +76,27 @@ public final class IngameOverlays {
 				gui.setupOverlayRenderState(true, false);
 				gui.setBlitOffset(-90);
 				renderChargeBar(poseStack, screenWidth, screenHeight, gui.getFont(), abilityCharge.getCharge(stack), abilityCharge.getChargePct(stack));
+			}
+		}
+	};
+
+	public static final IGuiOverlay ATTACK_REACH_OVERLAY = (gui, poseStack, partialTicks, screenWidth, screenHeight) -> {
+		Minecraft minecraft = Minecraft.getInstance();
+		if (!minecraft.options.hideGui && minecraft.player != null) {
+			ItemStack stack = minecraft.player.getMainHandItem();
+			if (stack.isEmpty() || !(stack.getItem() instanceof AttackReachIndicator)) return;
+
+			if (GuiUtil.isFirstPersonView()) {
+				gui.setupOverlayRenderState(true, false);
+				gui.setBlitOffset(-90);
+
+				if (minecraft.crosshairPickEntity instanceof LivingEntity crosshairTarget && crosshairTarget.isAlive() && minecraft.player.canHit(crosshairTarget, 0)) {
+					int x = screenWidth / 2 - 8;
+					int y = screenHeight / 2 - 16 - 8;
+					RenderSystem.setShaderTexture(0, ATTACK_REACH);
+					RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+					GuiComponent.blit(poseStack, x, y, gui.getBlitOffset(), 0, 0, 16, 16, 16, 16);
+				}
 			}
 		}
 	};
