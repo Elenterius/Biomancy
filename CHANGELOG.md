@@ -1,3 +1,22 @@
+## [1.12.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.11.3...1.19.2-v2.1.12.0) (2023-07-18)
+
+
+### Features
+
+* add attack reach indicator for the Ravenous Claws ([ccc850f](https://github.com/Elenterius/Biomancy/commit/ccc850fce7a7d08aa86a97676eb2068f9167009b))
+* add Spanish translation ([4c3c35b](https://github.com/Elenterius/Biomancy/commit/4c3c35ba18f09cf94b8c3a8581927ed809fada13))
+* add status effect version of Despoil for use by datapacks etc ([fe2ae46](https://github.com/Elenterius/Biomancy/commit/fe2ae46e524d0b862f5a7ccae769878436589259))
+* improve flesh spike tooltip ([4e4c042](https://github.com/Elenterius/Biomancy/commit/4e4c042654d80f0cc11dab20d3f18fbca87b6082))
+* make bio-machines retain their fuel when destroyed ([8ec768d](https://github.com/Elenterius/Biomancy/commit/8ec768dcf6a5e92717a9be2ac2d6336b8098bb2c))
+* make flesh block texture less repetitive (uses placeholder textures) ([20fb879](https://github.com/Elenterius/Biomancy/commit/20fb87945492eb2cef904b323487dd281bdb7ddc))
+
+
+### Bug Fixes
+
+* fix full block slabs not dropping two slab blocks ([54bb038](https://github.com/Elenterius/Biomancy/commit/54bb038109267982d1b5594df40cbfe589f3de19))
+* fix inability to switch claw modes when holding down ctrl to sprint ([870a033](https://github.com/Elenterius/Biomancy/commit/870a03359169f68ef0d7cd20963b24182918e61f))
+* fix misleading fleshkin chest tooltip ([47b2758](https://github.com/Elenterius/Biomancy/commit/47b2758b5eee547d2bbe7d9eec01402f5ce38cf2))
+
 ### [1.11.3](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.11.2...1.19.2-v2.1.11.3) (2023-06-30)
 
 
@@ -123,25 +142,4 @@
 
 * revert Fleshkin Chest inventory size nerf ([fbd6471](https://github.com/Elenterius/Biomancy/commit/fbd647141c73a041452ba091d600bd3c1f32f7af))
 * revert fleshkin chest name change ([01f94c2](https://github.com/Elenterius/Biomancy/commit/01f94c2cfed4b7f7fdf453d11e1fc9e081923fd1))
-
-## [1.2.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.1.0...1.19.2-v2.1.2.0) (2023-05-02)
-
-
-### Features
-
-* add enchantment descriptions for "Enchantment Descriptions" mod ([60aca25](https://github.com/Elenterius/Biomancy/commit/60aca25d065aecb50da82e21071bf689776aadc8))
-* trigger item sacrifice advancements for thrown items thrown into the Cradle by a player ([214ca4e](https://github.com/Elenterius/Biomancy/commit/214ca4efefef0ade47b36ab493f8d9956e84c4cf))
-
-
-### Bug Fixes
-
-* fix advancements not firing for sacrificing item in the cradle ([9566f3d](https://github.com/Elenterius/Biomancy/commit/9566f3dd21f4d6fe4562f24a504a0aaac267fe17))
-* potentially fix concurrent modification exception when getting voxel shapes for certain blocks ([b0a0eb2](https://github.com/Elenterius/Biomancy/commit/b0a0eb22161f8a57a77b60c67a170918228327af))
-* remove ability to insert storage container blocks/items into the storage sac on right clicking the sac ([762e10e](https://github.com/Elenterius/Biomancy/commit/762e10e59aeb7b765eccc6c7a9d0736045e93896))
-
-
-### Performance Improvements
-
-* avoid creation of objects during the renderer phase of the Cradle ([36442f1](https://github.com/Elenterius/Biomancy/commit/36442f1a8ea756a70c96e58b04ae5216210ffc11))
-* refactor intermediary key cache ([5ac54fb](https://github.com/Elenterius/Biomancy/commit/5ac54fb691d0fade66971daca94ab1bdad521ce5))
 
