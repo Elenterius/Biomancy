@@ -6,8 +6,16 @@ on:
       - '**/dev'
 
 jobs:
+  validation:
+    name: "Validate Gradle Wrapper"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: gradle/wrapper-validation-action@v1.0.6
+
   changelog:
     name: Generate Changelog
+    needs: [ validation ]
     runs-on: ubuntu-latest
     outputs:
       skip_build: ${{ steps.set_output.outputs.skipped }}
@@ -47,14 +55,12 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            core.setOutput("skipped", `${{ steps.changelog.outputs.skipped }}`);  
             core.setOutput("tag", `${{ steps.changelog.outputs.tag }}`);  
             core.setOutput("clean_changelog", `${{ steps.changelog.outputs.clean_changelog }}`);
 
   build_snapshot:
     name: Build Snapshot
     needs: [ changelog ]
-    if: needs.changelog.outputs.skip_build == 'false'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
