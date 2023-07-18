@@ -30,7 +30,7 @@ jobs:
         with:
           preset: 'conventionalcommits'
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          skip-git-pull: true,
+          skip-git-pull: true
           version-file: './mod_version.json'
           version-path: 'semantic'
           skip-version-file: true
