@@ -31,12 +31,13 @@ public final class ClientInputHandler {
 		if (!(mc.screen instanceof InventoryScreen) && mc.screen != null) return;
 
 		if (player != null && event.getKey() == ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.getKey().getValue() && event.getAction() == GLFW.GLFW_RELEASE) {
-			if (event.getModifiers() == GLFW.GLFW_MOD_CONTROL) {
-				handleEquipmentSlots(armorSlotTypes, player);
-			}
-			else {
-				handleEquipmentSlots(handSlotTypes, player);
-			}
+			//			if (event.getModifiers() == GLFW.GLFW_MOD_CONTROL) { //FIXME: replace this hardcoded solution with a keybinding
+			//				handleEquipmentSlots(armorSlotTypes, player);
+			//			}
+			//			else {
+			//				handleEquipmentSlots(handSlotTypes, player);
+			//			}
+			handleEquipmentSlots(handSlotTypes, player);
 		}
 
 	}
