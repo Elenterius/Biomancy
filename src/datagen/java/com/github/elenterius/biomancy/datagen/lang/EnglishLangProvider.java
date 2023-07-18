@@ -317,6 +317,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addEffect(ModMobEffects.LIBIDO, "Fertility");
 		addEffect(ModMobEffects.BLEED, "Bleed");
 		addEffect(ModMobEffects.ESSENCE_ANEMIA, "[PH] Essence Anemia");
+		addEffect(ModMobEffects.DESPOIL, "Despoil");
 	}
 
 	private void addEnchantmentTranslations() {

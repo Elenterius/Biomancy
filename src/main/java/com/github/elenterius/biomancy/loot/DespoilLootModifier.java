@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.loot;
 
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModItems;
+import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.init.tags.ModEntityTags;
 import com.github.elenterius.biomancy.util.random.DynamicLootTable;
 import com.google.common.base.Suppliers;
@@ -10,6 +11,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.advancements.critereon.EntityFlagsPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -84,10 +86,15 @@ public class DespoilLootModifier extends LootModifier {
 	protected static int getDespoilLevel(LootContext lootContext) {
 		Entity killer = lootContext.getParamOrNull(LootContextParams.KILLER_ENTITY);
 		if (killer instanceof LivingEntity livingEntity) {
-			return ModEnchantments.DESPOIL.get().getSlotItems(livingEntity).values().stream()
+			int itemDespoilLevel = ModEnchantments.DESPOIL.get().getSlotItems(livingEntity).values().stream()
 					.mapToInt(DespoilLootModifier::getDespoilLevel)
 					.max()
 					.orElse(lootContext.getRandom().nextFloat() < 0.05f ? 1 : 0);
+
+			MobEffectInstance effectInstance = livingEntity.getEffect(ModMobEffects.DESPOIL.get());
+			int effectDespoilLevel = effectInstance != null ? effectInstance.getAmplifier() + 1 : 0;
+
+			return Math.max(itemDespoilLevel, effectDespoilLevel);
 		}
 
 		return 0;
