@@ -219,6 +219,7 @@
 	"effect.biomancy.libido": "Fertility",
 	"effect.biomancy.bleed": "Bleed",
 	"effect.biomancy.essence_anemia": "[PH] Essence Anemia",
+	"effect.biomancy.despoil": "Despoil",
 	"serum.biomancy.empty": "ERROR: INVALID SERUM",
 	"death.attack.biomancy.chest_bite": "%1$s tried touching a chest but was eaten instead",
 	"death.attack.biomancy.primordial_spikes": "%1$s was impaled by primordial spikes",
