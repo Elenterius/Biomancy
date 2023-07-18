@@ -1,0 +1,103 @@
+name: Build And Release Dev Snapshot
+
+on:
+  push:
+    branches:
+      - '**/dev'
+
+jobs:
+  changelog:
+    name: Generate Changelog
+    runs-on: ubuntu-latest
+    outputs:
+      skip_build: ${{ steps.set_output.outputs.skipped }}
+      tag: ${{ steps.set_output.outputs.tag }}
+      clean_changelog: ${{ steps.set_output.outputs.clean_changelog }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Get Minecraft Version
+        id: gradle_properties
+        uses: christian-draeger/read-properties@1.1.0
+        with:
+          path: './gradle.properties'
+          properties: 'mc_version'
+
+      - name: Create Conventional Changelog #this also determines the release version
+        id: changelog
+        uses: TriPSs/conventional-changelog-action@v3
+        with:
+          preset: 'conventionalcommits'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          skip-git-pull: true,
+          version-file: './mod_version.json'
+          version-path: 'semantic'
+          skip-version-file: true
+          skip-commit: true
+          git-push: false
+          pre-release: true
+          pre-release-identifier: 'snapshot'
+          git-message: 'chore(snapshot): {version}'
+          tag-prefix: '${{ steps.gradle_properties.outputs.mc_version }}-v2.'
+          create-summary: true
+
+      - name: Set Output  #supports setting multiline output
+        id: set_output
+        uses: actions/github-script@v6
+        with:
+          script: |
+            core.setOutput("skipped", `${{ steps.changelog.outputs.skipped }}`);  
+            core.setOutput("tag", `${{ steps.changelog.outputs.tag }}`);  
+            core.setOutput("clean_changelog", `${{ steps.changelog.outputs.clean_changelog }}`);
+
+  build_snapshot:
+    name: Build Snapshot
+    needs: [ changelog ]
+    if: needs.changelog.outputs.skip_build == 'false'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ needs.changelog.outputs.tag }}
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Generate Assets
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: runDataCI
+
+      - name: Build Artifact
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build
+
+      # ----------------------------------------------------------------------------------------------------------------
+
+      - name: Create Snapshot Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ${{ needs.changelog.outputs.tag }}
+          body: ${{ needs.changelog.outputs.clean_changelog }}
+          files: build/libs/*
+          prerelease: true
+
+      - name: Notify Discord Server
+        uses: appleboy/discord-action@0.0.3
+        with:
+          webhook_id: ${{ secrets.DISCORD_ID }}
+          webhook_token: ${{ secrets.DISCORD_TOKEN }}
+          color: "#088c7d"
+          username: "Maykr Bot"
+          message: "**:package: ${{ needs.changelog.outputs.tag }}**\n\n**Download**\n${{ fromJSON(steps.create_release.outputs.assets)[0].browser_download_url }}\n\n**Changelog**\n${{ steps.create_release.outputs.url }}"
