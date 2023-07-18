@@ -157,6 +157,7 @@ public final class ClientSetupHandler {
 //		event.registerAboveAll("biomancy_gun", IngameOverlays.GUN_OVERLAY);
 		event.registerAboveAll("biomancy_injector", IngameOverlays.INJECTOR_OVERLAY);
 		event.registerAboveAll("biomancy_charge_bar", IngameOverlays.CHARGE_BAR_OVERLAY);
+		event.registerAboveAll("biomancy_attack_reach", IngameOverlays.ATTACK_REACH_OVERLAY);
 	}
 
 	@SubscribeEvent
