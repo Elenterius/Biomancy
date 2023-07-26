@@ -73,6 +73,8 @@ public final class ModSoundEvents {
 	//# Mobs
 	public static final RegistryObject<SoundEvent> FLESH_BLOB_JUMP = registerSoundEvent("entity.flesh_blob.jump");
 	public static final RegistryObject<SoundEvent> FLESH_BLOB_HURT = registerSoundEvent("entity.flesh_blob.hurt");
+	public static final RegistryObject<SoundEvent> FLESH_BLOB_DEATH = registerSoundEvent("entity.flesh_blob.death");
+	public static final RegistryObject<SoundEvent> FLESH_BLOB_AMBIENT = registerSoundEvent("entity.flesh_blob.ambient");
 
 	private ModSoundEvents() {}
 
