@@ -83,6 +83,8 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 
 		addSimpleRedirect(ModSoundEvents.FLESH_BLOB_JUMP, SoundEvents.SLIME_JUMP);
 		addSimpleRedirect(ModSoundEvents.FLESH_BLOB_HURT, ModSoundEvents.FLESH_BLOCK_BREAK.get(), 0.8f, 0.9f);
+		addSimpleRedirect(ModSoundEvents.FLESH_BLOB_DEATH, SoundEvents.GENERIC_DEATH);
+		addSimpleSounds(ModSoundEvents.FLESH_BLOB_AMBIENT, 3, 0.8f, 0.9f);
 	}
 
 	public String translationKey(RegistryObject<SoundEvent> soundHolder) {
@@ -97,13 +99,21 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 		return new ResourceLocation(rl.getNamespace(), rl.getPath() + variant);
 	}
 
-    protected void addSimpleSounds(RegistryObject<SoundEvent> soundHolder, int variants) {
-        SoundDefinition soundDefinition = definition().subtitle(translationKey(soundHolder));
-        for (int i = 1; i <= variants; i++) {
-	        soundDefinition.with(SoundDefinitionsProvider.sound(extend(soundHolder.getId(), i)));
-        }
-        add(soundHolder, soundDefinition);
-    }
+	protected void addSimpleSounds(RegistryObject<SoundEvent> soundHolder, int variants) {
+		SoundDefinition soundDefinition = definition().subtitle(translationKey(soundHolder));
+		for (int i = 1; i <= variants; i++) {
+			soundDefinition.with(SoundDefinitionsProvider.sound(extend(soundHolder.getId(), i)));
+		}
+		add(soundHolder, soundDefinition);
+	}
+
+	protected void addSimpleSounds(RegistryObject<SoundEvent> soundHolder, int variants, float volume, float pitch) {
+		SoundDefinition soundDefinition = definition().subtitle(translationKey(soundHolder));
+		for (int i = 1; i <= variants; i++) {
+			soundDefinition.with(SoundDefinitionsProvider.sound(extend(soundHolder.getId(), i)).volume(volume).pitch(pitch));
+		}
+		add(soundHolder, soundDefinition);
+	}
 
 	protected void addSimpleSounds(RegistryObject<SoundEvent> soundHolder, String... suffixes) {
 		SoundDefinition soundDefinition = definition().subtitle(translationKey(soundHolder));
