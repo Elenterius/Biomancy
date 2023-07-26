@@ -283,6 +283,18 @@ public abstract class AbstractFleshBlob extends PathfinderMob implements JumpMov
 		return ModSoundEvents.FLESH_BLOB_HURT.get();
 	}
 
+	@Nullable
+	@Override
+	protected SoundEvent getDeathSound() {
+		return ModSoundEvents.FLESH_BLOB_DEATH.get();
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return ModSoundEvents.FLESH_BLOB_AMBIENT.get();
+	}
+
 	@Override
 	public boolean canSpawnSprintParticle() {
 		return false;
