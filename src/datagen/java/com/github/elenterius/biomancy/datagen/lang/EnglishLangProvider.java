@@ -194,7 +194,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addTooltip("action.enable_awakened_mode", "activate Awakened Mode");
 		addTooltip("action.disable_awakened_mode", "cancel Awakened Mode");
 
-		addTooltip("ability.bleed_proc", "Eviscerating Slash"); //"Bleed Proc" didn't seem like a finished label - Feel free to replace with whatever :) -Kd
+		addTooltip("ability.bleed_proc", "Eviscerating Slash");
 		addTooltip("ability.bleed_proc.desc", "When triggered, adds one Bleed Stack (max 2)");
 		addTooltip("ability.blood_explosion", "Blood Explosion");
 		addTooltip("ability.blood_explosion.desc", "On Bleed Stack, deals 10% of max health as damage");
@@ -252,7 +252,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addSound(ModSoundEvents.FLESH_DOOR_CLOSE, "Close Fleshy Door");
 
 		addSound(ModSoundEvents.CLAWS_ATTACK_STRONG, "Strong Claw Attack");
-		addSound(ModSoundEvents.CLAWS_ATTACK_BLEED_PROC, "Eviscerating Slash triggers"); //Again, feel free to replace with something else. -Kd
+		addSound(ModSoundEvents.CLAWS_ATTACK_BLEED_PROC, "Eviscerating Slash triggers");
 		addSound(ModSoundEvents.FLESHKIN_NO, "Fleshkin says No");
 		addSound(ModSoundEvents.FLESHKIN_BREAK, "Fleshkin Break");
 		addSound(ModSoundEvents.FLESHKIN_BECOME_DORMANT, "Fleshkin becomes Dormant");
@@ -353,7 +353,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addItem(ModItems.EXOTIC_DUST, "Exotic Dust", "Exotic substance, perhaps the very essence of magic itself.\nAn uncommon byproduct obtained by decomposing magical things.");
 		addItem(ModItems.STONE_POWDER, "Lithic Powder", "A very basic crafting component, usually obtained as a byproduct from decomposing things.");
 
-		addItem(ModItems.NUTRIENTS, "Nutrients", "Very hard pellets rich in energy. They almost look like vitamin pills. Occasional byproduct from decomposing plants, but mainly obtained from digesting plants.");
+		addItem(ModItems.NUTRIENTS, "Nutrients", "Very hard pellets rich in energy that almost look like vitamin pills.");
 		addItem(ModItems.NUTRIENT_PASTE, "Nutrient Paste", "Nutrients combined with Biotic Matter to moisten the hard pellets, producing a paste.\nIt almost looks like yellowish cake, and is a convenient source of energy.");
 		addItem(ModItems.NUTRIENT_BAR, "Nutrient Bar", "Nutrient Paste compressed into the shape of a bar. Looks edible, if a bit bland.");
 
