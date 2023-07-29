@@ -91,7 +91,6 @@
 		{
 			"from": [ 6.5, 10, 8 ],
 			"to": [ 9.5, 16, 8 ],
-			"shade": false,
 			"rotation": {
 				"angle": 45,
 				"axis": "y",
@@ -111,7 +110,6 @@
 		{
 			"from": [ 8, 10, 6.5 ],
 			"to": [ 8, 16, 9.5 ],
-			"shade": false,
 			"rotation": {
 				"angle": 45,
 				"axis": "y",
