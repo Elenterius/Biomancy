@@ -91,7 +91,6 @@ public class ModItemModelProvider extends ItemModelProvider {
 		basicItem(ModItems.GIFT_SAC);
 		basicItem(ModItems.FERTILIZER);
 		overlayItem(ModItems.ESSENCE);
-		handheldItem(ModItems.BIO_EXTRACTOR);
 		handheldWeaponItem(ModItems.TOXICUS);
 
 		basicItem(ModItems.FLESH_DOOR);

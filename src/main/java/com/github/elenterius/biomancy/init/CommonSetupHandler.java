@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.integration.ModsCompatHandler;
-import com.github.elenterius.biomancy.item.BioExtractorItem;
+import com.github.elenterius.biomancy.item.extractor.ExtractorItem;
 import com.github.elenterius.biomancy.item.injector.InjectorItem;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import net.minecraft.core.BlockPos;
@@ -68,11 +68,11 @@ public final class CommonSetupHandler {
 	}
 
 	private static void registerDispenserBehaviors() {
-		DispenserBlock.registerBehavior(ModItems.BIO_EXTRACTOR.get(), new OptionalDispenseItemBehavior() {
+		DispenserBlock.registerBehavior(ModItems.ESSENCE_EXTRACTOR.get(), new OptionalDispenseItemBehavior() {
 			@Override
 			protected ItemStack execute(BlockSource source, ItemStack stack) {
 				BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
-				setSuccess(BioExtractorItem.tryExtractEssence(source.getLevel(), pos, stack));
+				setSuccess(ExtractorItem.tryExtractEssence(source.getLevel(), pos, stack));
 				if (isSuccess() && stack.hurt(1, source.getLevel().getRandom(), null)) {
 					stack.setCount(0);
 				}

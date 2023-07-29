@@ -113,7 +113,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 		createTag(Tags.Items.TOOLS)
 				.addTag(clawsTag)
 				.addTag(swordsTag)
-				.add(ModItems.INJECTOR.get(), ModItems.BIO_EXTRACTOR.get());
+				.add(ModItems.INJECTOR.get(), ModItems.ESSENCE_EXTRACTOR.get());
 
 		createTag(Tags.Items.CHESTS).add(ModItems.FLESHKIN_CHEST.get());
 
