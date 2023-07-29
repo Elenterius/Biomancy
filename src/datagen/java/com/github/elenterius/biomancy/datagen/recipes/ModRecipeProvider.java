@@ -314,6 +314,22 @@ public class ModRecipeProvider extends RecipeProvider {
 		slab(consumer, ModItems.MALIGNANT_FLESH_SLAB.get(), ModItems.MALIGNANT_FLESH_BLOCK.get());
 		stonecutterResultFromBase(consumer, ModItems.MALIGNANT_FLESH_STAIRS.get(), ModItems.MALIGNANT_FLESH_BLOCK.get());
 		stonecutterResultFromBase(consumer, ModItems.MALIGNANT_FLESH_SLAB.get(), ModItems.MALIGNANT_FLESH_BLOCK.get(), 2);
+
+		WorkbenchRecipeBuilder.shaped(ModItems.MALIGNANT_FLESH_BLOCK.get())
+				.define('F', ModItems.FLESH_BITS.get())
+				.define('V', ModItems.MALIGNANT_FLESH_VEINS.get())
+				.pattern("VVV")
+				.pattern("VFV")
+				.pattern("VVV")
+				.unlockedBy(hasName(ModItems.MALIGNANT_FLESH_VEINS.get()), has(ModItems.MALIGNANT_FLESH_VEINS.get()))
+				.save(consumer);
+
+		WorkbenchRecipeBuilder.shaped(ModItems.MALIGNANT_FLESH_BLOCK.get())
+				.define('S', ModItems.MALIGNANT_FLESH_SLAB.get())
+				.pattern(" S ")
+				.pattern(" S ")
+				.unlockedBy(hasName(ModItems.MALIGNANT_FLESH_SLAB.get()), has(ModItems.MALIGNANT_FLESH_SLAB.get()))
+				.save(consumer, BiomancyMod.createRL(getItemName(ModItems.MALIGNANT_FLESH_BLOCK.get()) + "_from_slabs"));
 	}
 
 	private void registerDigestingRecipes(Consumer<FinishedRecipe> consumer) {
