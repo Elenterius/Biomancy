@@ -93,7 +93,6 @@ public final class BiomancyMod {
 				Set<RegistryObject<? extends Item>> hiddenItems = Set.of(
 						ModItems.GIFT_SAC,
 						ModItems.ESSENCE,
-						ModItems.BIO_EXTRACTOR,
 						ModItems.GUIDE_BOOK,
 						ModItems.TOXICUS,
 						ModItems.BILE_SPITTER,

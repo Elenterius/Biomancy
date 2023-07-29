@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.event;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.item.BioExtractorItem;
+import com.github.elenterius.biomancy.item.extractor.ExtractorItem;
 import com.github.elenterius.biomancy.item.injector.InjectorItem;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -23,7 +23,7 @@ public final class PlayerInteractHandler {
 		ItemStack stack = event.getItemStack();
 		Item item = stack.getItem();
 
-		if (item instanceof BioExtractorItem || item instanceof InjectorItem) {
+		if (item instanceof ExtractorItem || item instanceof InjectorItem) {
 			Entity target = event.getTarget();
 
 			if (target instanceof PartEntity<?> partEntity) {

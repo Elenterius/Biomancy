@@ -9,6 +9,6 @@
       "required": false
     },
     "biomancy:injector",
-    "biomancy:bio_extractor"
+    "biomancy:extractor"
   ]
 }

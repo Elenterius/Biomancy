@@ -190,7 +190,7 @@ public class PirateLangProvider extends AbstractLangProvider {
 		addTooltip("consumption", "Consumin'");
 		addTooltip("bile_fuel", "Vitriol");
 		addTooltip("blood_charge", "Humor Capacity");
-		addTooltip("contains_unique_dna", "[PH] Contains Unique Genetic Sequences");
+		addTooltip("contains_unique_dna", "Contains Unique Genetic Sequences");
 		addTooltip("press_button_to", "Press %1$s ta' %2$s");
 
 		addTooltip("owner", "Captain: %1$s");
@@ -453,8 +453,8 @@ public class PirateLangProvider extends AbstractLangProvider {
 		addItem(ModItems.DEV_ARM_CANNON, "[Dev Tool] Arm Cannon", "Creative/Developer Tool for testing projectiles.");
 		addItem(ModItems.BILE_SPITTER, "[WIP] Bile Spitter", "[WIP] \"living\" projectile weapon that shoots corrosive bile.\nIntended behaviour: charge it like a bow to increase damageShape & size of projectile.");
 
-		addItem(ModItems.BIO_EXTRACTOR, "[PH] Bio-Extractor", EMPTY_STRING);
-		addItem(ModItems.ESSENCE, "[PH] Essence", EMPTY_STRING);
+		addItem(ModItems.ESSENCE_EXTRACTOR, "Essence Extractor", "Primed Suck, slurps essence from its victims.");
+		addItem(ModItems.ESSENCE, "Essence", EMPTY_STRING);
 
 		addItem(ModItems.ORGANIC_COMPOUND, "Life Compound", "Slimy liquid made o' bile infused with sustenance.");
 		addItem(ModItems.UNSTABLE_COMPOUND, "Cannoneer's Compound", "Mighty unstable substance. Seems it'd explode if it be touchin' just about anythin' else.");
