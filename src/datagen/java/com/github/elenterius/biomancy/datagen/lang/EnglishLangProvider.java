@@ -190,7 +190,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addTooltip("consumption", "Consumption");
 		addTooltip("bile_fuel", "Bile");
 		addTooltip("blood_charge", "Blood Charge");
-		addTooltip("contains_unique_dna", "[PH] Contains Unique Genetic Sequences");
+		addTooltip("contains_unique_dna", "Contains Unique Genetic Sequences");
 		addTooltip("press_button_to", "Press %1$s to %2$s");
 
 		addTooltip("owner", "Owner: %1$s");
@@ -378,7 +378,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addEffect(ModMobEffects.ARMOR_SHRED, "Armor Shred");
 		addEffect(ModMobEffects.LIBIDO, "Fertility");
 		addEffect(ModMobEffects.BLEED, "Bleed");
-		addEffect(ModMobEffects.ESSENCE_ANEMIA, "[PH] Essence Anemia");
+		addEffect(ModMobEffects.ESSENCE_ANEMIA, "Essence Anemia");
 		addEffect(ModMobEffects.DROWSY, "Drowsy");
 		addEffect(ModMobEffects.DESPOIL, "Despoil");
 	}
@@ -386,6 +386,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 	private void addEnchantmentTranslations() {
 		addEnchantment(ModEnchantments.DESPOIL, "Despoil", "When killing something with a weapon that has this enchantment, they will drop additional special loot.");
 		addEnchantment(ModEnchantments.ANESTHETIC, "Anesthetic Touch", "Prevents the Damage & Aggro caused by injecting mobs with the Injector. Mobs won't know who attacked them, and animals won't panic anymore.");
+		addEnchantment(ModEnchantments.SURGICAL_PRECISION, "Surgical Precision", "Improves the quality and success of surgeries or extraction of essences from mobs.");
 	}
 
 	private void addBannerPatternTranslations() {
@@ -433,7 +434,6 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addItem(ModItems.VIAL, "Organic Vial", "A small organic container with very high alchemical resistance, perfect for holding reactive substances.\nThe vial dissolves on use.");
 		addItem(ModItems.LIVING_FLESH, "Living Flesh", "It's alive!\nUnfortunately, it looks too dumb to be the brain of a mob. You should turn it into a construct instead.");
 		addItem(ModItems.PRIMORDIAL_CORE, "Primordial Core", "A ominous artifact made of flesh. Looking at it makes you feel uneasy...");
-		//		addItem(ModItems.PRIMORDIAL_LIVING_OCULUS, "Primordial Oculus", "A ominous eye is gazing at you...");
 		addItem(ModItems.GUIDE_BOOK, "[WIP] Primordial Index", "[WIP] Ask questions?");
 		addItem(ModItems.CREATOR_MIX, "Exotic Flesh Mix", "A meal made for the cradle... not for you.");
 		addItem(ModItems.INJECTOR, "Bio-Injector", """
@@ -458,8 +458,10 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addItem(ModItems.DEV_ARM_CANNON, "[Dev Tool] Arm Cannon", "Creative/Developer Tool for testing projectiles.");
 		addItem(ModItems.BILE_SPITTER, "[WIP] Bile Spitter", "[WIP] \"living\" projectile weapon that shoots corrosive bile.\nIntended behaviour: charge it like a bow to increase damageShape & size of projectile.");
 
-		addItem(ModItems.BIO_EXTRACTOR, "[PH] Bio-Extractor", EMPTY_STRING);
-		addItem(ModItems.ESSENCE, "[PH] Essence", EMPTY_STRING);
+		addItem(ModItems.ESSENCE_EXTRACTOR, "Essence Extractor", "Primed Suck, slurps essence from its victims.");
+		addItem(ModItems.ESSENCE, "Essence", "Extracted life essence from a Mob. Contains sequences of genetic information.");
+		add(ModItems.ESSENCE.get().getDescriptionId() + ".mob", "%1$s Essence");
+		add(ModItems.ESSENCE.get().getDescriptionId() + ".unique_mob", "Unique %1$s Essence");
 
 		addItem(ModItems.ORGANIC_COMPOUND, "Organic Compound", "Slimy substance made of bile infused with nutrients.");
 		addItem(ModItems.UNSTABLE_COMPOUND, "Unstable Compound", "Very unstable and reactive substance. Seems like it will combust if it comes in contact with just about anything else.");
@@ -556,6 +558,11 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.PRIMAL_PERMEABLE_MEMBRANE_PANE, "Primal Membrane Pane", "Gelatinous-like membrane reinforced with elastic fibers.\n\nOnly mobs that are alive can diffuse through the membrane.");
 		addBlock(ModBlocks.UNDEAD_PERMEABLE_MEMBRANE, "Undead-Permeable Membrane", "Gelatinized phantom membrane reinforced with elastic fibers.\n\nOnly mobs that are undead can diffuse through the membrane.");
 		addBlock(ModBlocks.UNDEAD_PERMEABLE_MEMBRANE_PANE, "Undead-Permeable Membrane Pane", "Gelatinized phantom membrane reinforced with elastic fibers.\n\nOnly mobs that are undead can diffuse through the membrane.");
+		addBlock(ModBlocks.BIOMETRIC_MEMBRANE, "Biometric Membrane", "Membrane which is configured via Mob Essence");
+		add(ModBlocks.BIOMETRIC_MEMBRANE.get().getDescriptionId() + ".inverted", "Inverted Biometric Membrane");
+		add(ModBlocks.BIOMETRIC_MEMBRANE.get().getDescriptionId() + ".inverted.unique", "Inverted Unique Biometric Membrane");
+		add(ModBlocks.BIOMETRIC_MEMBRANE.get().getDescriptionId() + ".unique", "Unique Biometric Membrane");
+
 		//addBlock(ModBlocks.NEURAL_INTERCEPTOR, "Neural Interceptor", "A psychic node that prevents natural mob spawning in a 48 block radius.");
 
 		addBlock(ModBlocks.PRIMAL_FLESH, "Primal Flesh Block", "Primitive and pure, you better not touch this with your dirty mitts.");
