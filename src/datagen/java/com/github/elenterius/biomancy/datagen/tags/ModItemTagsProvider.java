@@ -60,6 +60,14 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 				.add(AMItemRegistry.COOKED_MOOSE_RIBS.get())
 				.addOptional("createfa:schnitzel", "createfa:meatballs", "createfa:chicken_nuggets")
 				.addOptional("rats:cooked_rat");
+
+		createTag(ModItemTags.CLAWS)
+				.add(ModItems.MOB_CLAW.get())
+				.add(AMItemRegistry.DROPBEAR_CLAW.get());
+
+		createTag(ModItemTags.FANGS)
+				.add(ModItems.MOB_FANG.get())
+				.add(AMItemRegistry.BONE_SERPENT_TOOTH.get());
 	}
 
 	private void addMinecraftTags() {
