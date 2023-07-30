@@ -665,7 +665,7 @@ public class ModRecipeProvider extends RecipeProvider {
 		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
 				.setIngredient(AMItemRegistry.MOOSE_RIBS)
 				.addOutput(ModItems.FLESH_BITS.get(), 2, 4).addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2)
-				.addOutput(ModItems.BONE_FRAGMENTS.get(), 2, 5).addOutput(ModItems.NUTRIENTS.get(), 0, 1)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 2, 5)
 				.unlockedBy(AMItemRegistry.MOOSE_RIBS).save(consumer);
 
 		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
@@ -702,7 +702,7 @@ public class ModRecipeProvider extends RecipeProvider {
 		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
 				.setIngredient(AMItemRegistry.KANGAROO_MEAT)
 				.addOutput(ModItems.FLESH_BITS.get(), 2, 4).addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2)
-				.addOutput(ModItems.BONE_FRAGMENTS.get(), 0, 2).addOutput(ModItems.NUTRIENTS.get(), 0, 1)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 0, 2)
 				.unlockedBy(AMItemRegistry.KANGAROO_MEAT).save(consumer);
 
 		DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID)
