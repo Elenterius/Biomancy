@@ -16,6 +16,8 @@ public final class ModItemTags {
 	//		public static final TagKey<Item> FORGE_RAW_MUTTON = forgeTag("raw_mutton");
 	//		public static final TagKey<Item> FORGE_RAW_FISHES = forgeTag("raw_fishes");
 
+	public static final TagKey<Item> FANGS = tag("fangs");
+	public static final TagKey<Item> CLAWS = tag("claws");
 	public static final TagKey<Item> RAW_MEATS = tag("raw_meats");
 	public static final TagKey<Item> COOKED_MEATS = tag("cooked_meats");
 	public static final TagKey<Item> SUGARS = tag("sugars");
