@@ -316,8 +316,19 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		stairs(consumer, ModItems.PRIMAL_FLESH_STAIRS.get(), ModItems.PRIMAL_FLESH_BLOCK.get());
 		slab(consumer, ModItems.PRIMAL_FLESH_SLAB.get(), ModItems.PRIMAL_FLESH_BLOCK.get());
+		blockFromSlabs(consumer, ModItems.PRIMAL_FLESH_BLOCK.get(), ModItems.PRIMAL_FLESH_SLAB.get());
 		stonecutterResultFromBase(consumer, ModItems.PRIMAL_FLESH_STAIRS.get(), ModItems.PRIMAL_FLESH_BLOCK.get());
 		stonecutterResultFromBase(consumer, ModItems.PRIMAL_FLESH_SLAB.get(), ModItems.PRIMAL_FLESH_BLOCK.get(), 2);
+
+		WorkbenchRecipeBuilder.shaped(ModItems.PRIMAL_FLESH_BLOCK.get(), 8)
+				.define('G', ModItems.WITHERING_OOZE.get())
+				.define('F', ModItems.FLESH_BLOCK.get())
+				.define('M', ModItems.MALIGNANT_FLESH_BLOCK.get())
+				.pattern("MFM")
+				.pattern("FGF")
+				.pattern("MFM")
+				.unlockedBy(hasName(ModItems.MALIGNANT_FLESH_BLOCK.get()), has(ModItems.MALIGNANT_FLESH_BLOCK.get()))
+				.save(consumer);
 
 		stairs(consumer, ModItems.MALIGNANT_FLESH_STAIRS.get(), ModItems.MALIGNANT_FLESH_BLOCK.get());
 		slab(consumer, ModItems.MALIGNANT_FLESH_SLAB.get(), ModItems.MALIGNANT_FLESH_BLOCK.get());
