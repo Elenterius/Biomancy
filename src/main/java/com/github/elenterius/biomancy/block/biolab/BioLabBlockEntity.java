@@ -50,14 +50,13 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabStateData> implements MenuProvider, IAnimatable {
 
 	public static final int FUEL_SLOTS = 1;
 	public static final int INPUT_SLOTS = BioLabRecipe.MAX_INGREDIENTS + BioLabRecipe.MAX_REACTANT;
-	public static final int OUTPUT_SLOTS = 2;
+	public static final int OUTPUT_SLOTS = 1;
 
 	public static final int MAX_FUEL = 1_000;
 	public static final short BASE_COST = 2;
@@ -141,45 +140,6 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 		return outputInventory.getItem(0).isEmpty() || outputInventory.doesItemStackFit(0, stackToCraft);
 	}
 
-	private boolean canContainerItemsFitIntoTrashSlot(List<IngredientStack> ingredients, int[] ingredientCost) {
-		int lastIndex = inputInventory.getContainerSize() - 1;
-		int trashAmount = outputInventory.getItem(1).getCount();
-
-		if (trashAmount >= outputInventory.getMaxStackSize()) return false;
-		if (trashAmount < 1) return true;
-
-		for (int idx = 0; idx < lastIndex; idx++) {
-			final ItemStack foundStack = inputInventory.getItem(idx);
-			if (!foundStack.isEmpty() && foundStack.hasCraftingRemainingItem()) {
-				ItemStack containerItem = foundStack.getCraftingRemainingItem();
-				if (!containerItem.isEmpty()) {
-					for (int i = 0; i < ingredients.size(); i++) {
-						int remainingCost = ingredientCost[i];
-						if (remainingCost > 0 && ingredients.get(i).testItem(foundStack)) {
-							int amount = Math.min(remainingCost, foundStack.getCount());
-							ingredientCost[i] -= amount;
-							containerItem.setCount(amount);
-							if (!outputInventory.doesItemStackFit(1, containerItem)) return false;
-							break;
-						}
-					}
-				}
-			}
-		}
-
-		return true;
-	}
-
-	private void outputContainerItems(ItemStack foundStack, int amount) {
-		if (foundStack.hasCraftingRemainingItem()) {
-			ItemStack containerItem = foundStack.getCraftingRemainingItem();
-			if (!containerItem.isEmpty()) {
-				containerItem.setCount(amount);
-				outputInventory.insertItemStack(1, containerItem);
-			}
-		}
-	}
-
 	@Nullable
 	@Override
 	protected BioLabRecipe resolveRecipeFromInput(Level level) {
@@ -261,9 +221,6 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 			ingredientCost[i] = ingredients.get(i).count();
 		}
 
-		//check if we can output all container items
-		if (!canContainerItemsFitIntoTrashSlot(ingredients, Arrays.copyOf(ingredientCost, ingredientCost.length))) return false;
-
 		//consume reactant
 		final int lastIndex = inputInventory.getContainerSize() - 1;
 		inputInventory.removeItem(lastIndex, 1);
@@ -277,7 +234,6 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 					if (remainingCost > 0 && ingredients.get(i).testItem(foundStack)) {
 						int amount = Math.min(remainingCost, foundStack.getCount());
 						inputInventory.removeItem(idx, amount);
-						outputContainerItems(foundStack, amount);
 						ingredientCost[i] -= amount;
 						break;
 					}
