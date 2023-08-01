@@ -1,3 +1,27 @@
+## [1.14.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.13.0...1.19.2-v2.1.14.0) (2023-08-01)
+
+
+### Features
+
+* add claws & fangs item tags for crafting ([cf0d3cf](https://github.com/Elenterius/Biomancy/commit/cf0d3cfd7a54ce5daba7c1b73c88aa1fe23b4c75))
+* add Malignant Flesh Block recipes ([798db02](https://github.com/Elenterius/Biomancy/commit/798db02a346f1145983c1f09d654450558f09e6c))
+* add Primal Flesh Block recipes ([e2f678f](https://github.com/Elenterius/Biomancy/commit/e2f678fb818914de93a8258ef94c7c591dd75220))
+* add Toxicus ([2aa60f4](https://github.com/Elenterius/Biomancy/commit/2aa60f4ed531f74942d077878153984998342eda))
+* buff Flesh Plunderer damage from 10 to 12 and durability from 60 to 250 ([ed6403e](https://github.com/Elenterius/Biomancy/commit/ed6403eed15ef4511eb3d460f57425a7aade9cc0))
+* enable shading for tendon chain & hanging bio lantern model ([e246ee8](https://github.com/Elenterius/Biomancy/commit/e246ee8ab39d390fdc5182e7562d2a240f231fe3))
+* make all Flesh Blob sounds resource pack driven ([a7d2cd4](https://github.com/Elenterius/Biomancy/commit/a7d2cd448b42d1e5296c2190a4bd5f1516c67145))
+* make Malignant Veins harvestable with silk touch tools (additionally to shears) ([3d6df08](https://github.com/Elenterius/Biomancy/commit/3d6df08be58580e9435bc5f513c90feb23f076f3))
+* remove trash slot from Bio-Lab UI ([eaef2ad](https://github.com/Elenterius/Biomancy/commit/eaef2ad0afc1709844b9fd43d36550de9593fbc1))
+* update flesh blob troll texture ([09d3980](https://github.com/Elenterius/Biomancy/commit/09d39800046d9e6ad3a78543cc7b739e2640fcb4))
+
+
+### Bug Fixes
+
+* fix alex's mobs kangaroo and moose ribs decomposer recipes (remove nutrients output) ([23af07d](https://github.com/Elenterius/Biomancy/commit/23af07dc6a4f19948bcf899adc34118c22c40d1d))
+* fix Flesh Spike block not dropping the correct amount of spikes ([7fdba95](https://github.com/Elenterius/Biomancy/commit/7fdba955a2cb6cb64bbd899258a917e3cb0eb15e))
+* fix inability to inject tamed mobs with Serums ([5a346e9](https://github.com/Elenterius/Biomancy/commit/5a346e9a5f13d00f055672eaff6c119e471701f6))
+* fix white line on the bottom of the Flesh Door model ([60971a0](https://github.com/Elenterius/Biomancy/commit/60971a0479de6ac5afed78cded58efc58b7141d4))
+
 ## [1.13.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.12.0...1.19.2-v2.1.13.0) (2023-07-29)
 
 
@@ -43,11 +67,4 @@
 * fix wrong fleshkin chest recipe ([a6be325](https://github.com/Elenterius/Biomancy/commit/a6be3254b4d77deed47f8824bf735776f1b7701f))
 * make Ravenous Claws tooltip less confusing ([c8940a6](https://github.com/Elenterius/Biomancy/commit/c8940a62b88a10f59b7857dec73904fbeb5a6832))
 * make tooltip text for pressing the v key on living tools less confusing ([7c7160f](https://github.com/Elenterius/Biomancy/commit/7c7160fd8515a767ae027f75a8586a5e8b62007e))
-
-### [1.11.1](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.11.0...1.19.2-v2.1.11.1) (2023-06-16)
-
-
-### Bug Fixes
-
-* fix Ravenous Claws display settings (third person left hand) ([ca4e6c5](https://github.com/Elenterius/Biomancy/commit/ca4e6c5e39f6cf51742288c8c251d4fef55a009f))
 
