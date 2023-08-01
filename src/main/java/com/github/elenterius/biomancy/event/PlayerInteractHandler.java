@@ -6,7 +6,6 @@ import com.github.elenterius.biomancy.item.injector.InjectorItem;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.entity.PartEntity;
@@ -30,8 +29,8 @@ public final class PlayerInteractHandler {
 			if (target instanceof PartEntity<?> partEntity) {
 				interactWithParent(event, stack, item, partEntity);
 			}
-			else if (target instanceof AbstractVillager villager) {
-				bypassVillagerInteraction(event, stack, item, villager);
+			else if (target instanceof LivingEntity livingEntity) {
+				bypassLivingInteraction(event, stack, item, livingEntity);
 			}
 		}
 	}
@@ -45,8 +44,8 @@ public final class PlayerInteractHandler {
 		}
 	}
 
-	private static void bypassVillagerInteraction(PlayerInteractEvent.EntityInteract event, ItemStack stack, Item item, AbstractVillager villager) {
-		InteractionResult interactionResult = item.interactLivingEntity(stack, event.getEntity(), villager, event.getHand());
+	private static void bypassLivingInteraction(PlayerInteractEvent.EntityInteract event, ItemStack stack, Item item, LivingEntity livingEntity) {
+		InteractionResult interactionResult = item.interactLivingEntity(stack, event.getEntity(), livingEntity, event.getHand());
 		event.setCancellationResult(interactionResult);
 		event.setCanceled(true);
 	}
