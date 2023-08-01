@@ -86,7 +86,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 				.add(ModItems.RAVENOUS_CLAWS.get());
 
 		tag(Tags.Items.TOOLS_SWORDS)
-				.add(ModItems.DESPOIL_SICKLE.get());
+				.add(ModItems.DESPOIL_SICKLE.get(), ModItems.TOXICUS.get());
 
 		tag(Tags.Items.TOOLS)
 				.addTag(clawsTag)
