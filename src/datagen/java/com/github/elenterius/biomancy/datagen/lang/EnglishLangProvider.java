@@ -365,6 +365,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addItem(ModItems.BILE, "Bile", "Organic base material which is often used in bio-alchemy.");
 
 		addItem(ModItems.DESPOIL_SICKLE, "Flesh Plunderer", "A very brittle yet highly specialized tool for pillaging special loot from dying mobs.\n\nWhen held in either hand, the tool guarantees Despoil loot drops. When doing so, it receives extra durability damage.");
+		addItem(ModItems.TOXICUS, "[WIP] Toxicus", "[PH] deals corrosive damage");
 		addItem(ModItems.VIAL, "Organic Vial", "A small organic container with very high alchemical resistance, perfect for holding reactive substances.\nThe vial dissolves on use.");
 		addItem(ModItems.LIVING_FLESH, "Living Flesh", "It's alive!\nUnfortunately, it looks too dumb to be the brain of a mob. You should turn it into a construct instead.");
 		addItem(ModItems.PRIMORDIAL_CORE, "Primordial Core", "A ominous artifact made of flesh. Looking at it makes you feel uneasy...");

@@ -58,6 +58,8 @@
 	"item.biomancy.bile.tooltip": "Organic base material which is often used in bio-alchemy.",
 	"item.biomancy.despoil_sickle": "Flesh Plunderer",
 	"item.biomancy.despoil_sickle.tooltip": "A very brittle yet highly specialized tool for pillaging special loot from dying mobs.\n\nWhen held in either hand, the tool guarantees Despoil loot drops. When doing so, it receives extra durability damage.",
+  "item.biomancy.toxicus": "[WIP] Toxicus",
+  "item.biomancy.toxicus.tooltip": "[PH] deals corrosive damage",
 	"item.biomancy.vial": "Organic Vial",
 	"item.biomancy.vial.tooltip": "A small organic container with very high alchemical resistance, perfect for holding reactive substances.\nThe vial dissolves on use.",
 	"item.biomancy.living_flesh": "Living Flesh",

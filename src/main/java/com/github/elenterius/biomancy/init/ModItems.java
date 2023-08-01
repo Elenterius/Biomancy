@@ -97,6 +97,7 @@ public final class ModItems {
 
 	//# Weapons
 	public static final RegistryObject<DespoilingSwordItem> DESPOIL_SICKLE = registerItem("despoil_sickle", props -> SwordSmithy.forge(DespoilingSwordItem::new, ModTiers.PRIMAL_FLESH, 12, 1, props));
+	public static final RegistryObject<ToxicusItem> TOXICUS = registerItem("toxicus", props -> SwordSmithy.forge(ToxicusItem::new, ModTiers.LESSER_BIO_FLESH, 14, 0.7f, props));
 	public static final RegistryObject<RavenousClawsItem> RAVENOUS_CLAWS = registerItem("ravenous_claws", props -> new RavenousClawsItem(ModTiers.BIOFLESH, 3, 4, 250, props.setNoRepair().rarity(ModRarities.VERY_RARE)));
 	public static final RegistryObject<DevArmCannonItem> DEV_ARM_CANNON = registerItem("dev_arm_cannon", props -> new DevArmCannonItem(props.stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE).tab(null)));
 	public static final RegistryObject<BileSpitterItem> BILE_SPITTER = registerItem("bile_spitter", props -> new BileSpitterItem(props.stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE).tab(null)));
