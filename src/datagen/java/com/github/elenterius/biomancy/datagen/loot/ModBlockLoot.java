@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.datagen.loot;
 
 import com.github.elenterius.biomancy.block.DirectionalSlabBlock;
+import com.github.elenterius.biomancy.block.fleshspike.FleshSpikeBlock;
 import com.github.elenterius.biomancy.block.property.DirectionalSlabType;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
@@ -29,6 +30,7 @@ import org.apache.logging.log4j.Marker;
 
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 
 import static com.github.elenterius.biomancy.BiomancyMod.LOGGER;
 
@@ -98,6 +100,16 @@ public class ModBlockLoot extends BlockLoot {
 						)));
 	}
 
+	protected static LootTable.Builder createFleshSpikeTable(FleshSpikeBlock block) {
+		return LootTable.lootTable().withPool(LootPool.lootPool()
+				.setRolls(ConstantValue.exactly(1))
+				.add(applyExplosionDecay(block, LootItem.lootTableItem(block).apply(
+						IntStream.range(FleshSpikeBlock.MIN_SPIKES + 1, FleshSpikeBlock.MAX_SPIKES + 1).boxed().toList(),
+						spikes -> SetItemCountFunction.setCount(ConstantValue.exactly(spikes))
+								.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(FleshSpikeBlock.SPIKES, spikes)))
+				))));
+	}
+
 	@Override
 	protected void addTables() {
 		LOGGER.info(logMarker, "registering block loot...");
@@ -151,7 +163,7 @@ public class ModBlockLoot extends BlockLoot {
 		addCustom(ModBlocks.FLESH_DOOR.get(), ModBlockLoot::createFleshDoorTable);
 		addCustom(ModBlocks.FULL_FLESH_DOOR.get(), ModBlockLoot::createFleshDoorTable);
 
-		dropSelf(ModBlocks.FLESH_SPIKE.get());
+		addCustom(ModBlocks.FLESH_SPIKE.get(), ModBlockLoot::createFleshSpikeTable);
 	}
 
 	protected <T extends Block> void addCustom(T block, Function<T, LootTable.Builder> function) {
