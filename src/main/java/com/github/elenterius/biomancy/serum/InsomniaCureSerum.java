@@ -15,6 +15,8 @@ import javax.annotation.Nullable;
 
 public class InsomniaCureSerum extends BasicSerum {
 
+	protected static final int PHANTOM_SPAWN_THRESHOLD = 72_000;
+
 	public InsomniaCureSerum(int color) {
 		super(color);
 	}
@@ -33,7 +35,8 @@ public class InsomniaCureSerum extends BasicSerum {
 	public boolean canAffectPlayerSelf(CompoundTag tag, Player targetSelf) {
 //		if (!targetSelf.level.isClientSide && !targetSelf.level.getGameRules().getBoolean(GameRules.RULE_DOINSOMNIA)) return false;
 
-		if (getTimeSinceRest(targetSelf) > 20 * 60) {
+		int ticksSinceRest = getTimeSinceRest(targetSelf);
+		if (ticksSinceRest <= PHANTOM_SPAWN_THRESHOLD * 0.833f) {
 			if (!targetSelf.level.isClientSide) {
 				targetSelf.displayClientMessage(TextComponentUtil.getFailureMsgText("not_sleepy"), true);
 			}
