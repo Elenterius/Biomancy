@@ -40,6 +40,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -55,6 +56,7 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -173,16 +175,29 @@ public class InjectorItem extends Item implements SerumInjector, ICustomTooltip,
 
 		getItemHandler(injector).ifPresent(handler -> {
 			ItemStack oldStack = ItemStack.EMPTY;
-			if (!handler.getStack().isEmpty()) {
+			if (!handler.getStack().isEmpty() && !ItemHandlerHelper.canItemStacksStack(foundStack, handler.getStack())) {
 				oldStack = handler.extractItem(handler.getMaxAmount(), false);
 			}
 
 			ItemStack remainder = handler.insertItem(foundStack, false);
 			player.getInventory().setItem(slotIndex, remainder);
 
+			if (remainder.isEmpty() && !handler.isFull()) {
+				Inventory inventory = player.getInventory();
+				int slots = inventory.getContainerSize();
+				for (int idx = 0; idx < slots; idx++) {
+					ItemStack stack = inventory.getItem(idx);
+					if (ItemHandlerHelper.canItemStacksStack(stack, handler.getStack())) {
+						remainder = handler.insertItem(foundStack, false);
+						player.getInventory().setItem(idx, remainder);
+						if (!remainder.isEmpty()) break;
+					}
+				}
+			}
+
 			//eject old stuff
-			if (!oldStack.isEmpty() && !player.addItem(oldStack)) {
-				player.drop(oldStack, false);
+			if (!oldStack.isEmpty()) {
+				player.getInventory().placeItemBackInInventory(oldStack);
 			}
 		});
 	}
@@ -191,9 +206,7 @@ public class InjectorItem extends Item implements SerumInjector, ICustomTooltip,
 		getItemHandler(injector).ifPresent(handler -> {
 			if (!handler.getStack().isEmpty()) {
 				ItemStack result = handler.extractItem(handler.getMaxAmount(), false);
-				if (!player.addItem(result)) {
-					player.drop(result, false);
-				}
+				player.getInventory().placeItemBackInInventory(result);
 			}
 		});
 	}
@@ -271,6 +284,16 @@ public class InjectorItem extends Item implements SerumInjector, ICustomTooltip,
 		}
 	}
 
+	@Override
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+		return enchantment == Enchantments.PIERCING || super.canApplyAtEnchantingTable(stack, enchantment);
+	}
+
+	@Override
+	public int getEnchantmentValue() {
+		return 15;
+	}
+	
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
@@ -454,16 +477,6 @@ public class InjectorItem extends Item implements SerumInjector, ICustomTooltip,
 	public Component getHighlightTip(ItemStack stack, Component displayName) {
 		Serum serum = getSerum(stack);
 		return serum.isEmpty() ? displayName : ComponentUtil.mutable().append(displayName).append(" (").append(serum.getDisplayName()).append(")");
-	}
-
-	@Override
-	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return enchantment == Enchantments.PIERCING || super.canApplyAtEnchantingTable(stack, enchantment);
-	}
-
-	@Override
-	public int getEnchantmentValue() {
-		return 15;
 	}
 
 	enum InjectorAnimationState {
