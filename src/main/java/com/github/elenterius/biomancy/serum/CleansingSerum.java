@@ -11,6 +11,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.WitherSkeleton;
 import net.minecraft.world.entity.monster.ZombieVillager;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
@@ -39,6 +40,10 @@ public class CleansingSerum extends BasicSerum {
 		if (target instanceof AgeableMob ageableMob) {
 			MobUtil.removeForcedAge(ageableMob);
 		}
+
+		if (target instanceof Player player) {
+			player.causeFoodExhaustion(40);
+		}
 	}
 
 	private void resetPehkuiSize(LivingEntity target) {
@@ -50,6 +55,8 @@ public class CleansingSerum extends BasicSerum {
 		clearPotionEffects(targetSelf);
 		clearAbsorption(targetSelf);
 		resetPehkuiSize(targetSelf);
+
+		targetSelf.causeFoodExhaustion(40);
 	}
 
 	private void clearPotionEffects(LivingEntity target) {
