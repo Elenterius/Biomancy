@@ -250,6 +250,10 @@ public class InjectorItem extends Item implements SerumInjector, ICustomTooltip,
 				.map(SerumContainer::getSerum).orElse(Serum.EMPTY);
 	}
 
+	public ItemStack getSerumItemStack(ItemStack stack) {
+		return getItemHandler(stack).map(LargeSingleItemStackHandler::getStack).orElse(ItemStack.EMPTY);
+	}
+
 	public void consumeSerum(ItemStack stack, @Nullable Player player) {
 		if (player != null && player.isCreative()) return;
 		getItemHandler(stack).ifPresent(handler -> consumeSerum(handler, player));

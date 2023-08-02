@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.api.serum.SerumContainer;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
 import com.github.elenterius.biomancy.client.util.GuiUtil;
 import com.github.elenterius.biomancy.entity.ownable.IControllableMob;
@@ -129,6 +130,13 @@ public final class IngameOverlays {
 				RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 				GuiComponent.blit(poseStack, x, y, gui.getBlitOffset(), 0, 0, 16, 7, 16, 16);
 				GuiComponent.blit(poseStack, x, y, gui.getBlitOffset(), 0, 7, (int) (progress * 16f), 7, 16, 16);
+			}
+
+			ItemStack serumItemStack = injector.getSerumItemStack(stack);
+			if (serumItemStack.getItem() instanceof SerumContainer container && !container.getSerum().isEmpty()) {
+				Font font = gui.getFont();
+				short maxAmmo = InjectorItem.MAX_SLOT_SIZE;
+				renderAmmoCount(poseStack, font, screenWidth, screenHeight, maxAmmo, serumItemStack.getCount(), 0xFFFEFEFE, 0xFF9E9E9E);
 			}
 		}
 	}
