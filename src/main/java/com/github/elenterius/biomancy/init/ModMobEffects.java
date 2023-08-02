@@ -22,6 +22,7 @@ public final class ModMobEffects {
 	public static final RegistryObject<EssenceAnemiaEffect> ESSENCE_ANEMIA = EFFECTS.register("essence_anemia", () -> new EssenceAnemiaEffect(MobEffectCategory.HARMFUL, 0x986c76));
 	public static final RegistryObject<DespoilEffect> DESPOIL = EFFECTS.register("despoil", () -> new DespoilEffect(MobEffectCategory.BENEFICIAL, 0xdd77ff));
 	public static final RegistryObject<LibidoEffect> LIBIDO = EFFECTS.register("libido", () -> new LibidoEffect(MobEffectCategory.NEUTRAL, 0xe06a78));
+	public static final RegistryObject<DrowsyEffect> DROWSY = EFFECTS.register("drowsy", () -> new DrowsyEffect(MobEffectCategory.NEUTRAL, 0x9b70b2));
 
 	public static final RegistryObject<AdrenalineEffect> ADRENALINE_RUSH = EFFECTS.register("adrenaline_rush", () -> new AdrenalineEffect(MobEffectCategory.BENEFICIAL, 0xff9532)
 			.addAttackDamageModifier("1f1fb00f-d6bc-4b42-8533-422054cea63d", 4f, 0, AttributeModifier.Operation.ADDITION)
