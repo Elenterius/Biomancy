@@ -25,7 +25,7 @@ public class LibidoEffect extends StatusEffect {
 	@Override
 	public boolean isDurationEffectTick(int duration, int amplifier) {
 		int nTicks = 80 >> amplifier;
-		return nTicks <= 0 || duration % nTicks == 0;
+		return nTicks == 0 || duration % nTicks == 0;
 	}
 
 }

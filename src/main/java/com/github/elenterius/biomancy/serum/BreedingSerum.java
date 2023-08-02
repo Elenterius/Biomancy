@@ -25,7 +25,7 @@ public class BreedingSerum extends BasicSerum {
 	@Override
 	public void affectEntity(ServerLevel level, CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
 		if (target instanceof Animal animal && !animal.isBaby()) {
-			animal.addEffect(new MobEffectInstance(ModMobEffects.LIBIDO.get(), 12 * 20, 1, false, true));
+			animal.addEffect(new MobEffectInstance(ModMobEffects.LIBIDO.get(), 14 * 20, 1, false, true));
 		}
 	}
 
