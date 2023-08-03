@@ -3,10 +3,15 @@ package com.github.elenterius.biomancy.item.weapon;
 import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.init.ModDamageSources;
 import com.github.elenterius.biomancy.init.ModMobEffects;
+import com.github.elenterius.biomancy.init.ModParticleTypes;
+import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.item.SweepAttackListener;
 import com.github.elenterius.biomancy.mixin.DamageSourceAccessor;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -20,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ToxicusItem extends SimpleSwordItem implements CriticalHitEntityAction {
+public class ToxicusItem extends SimpleSwordItem implements CriticalHitEntityAction, SweepAttackListener {
 
 	public ToxicusItem(Tier tier, int attackDamageModifier, float attackSpeedModifier, Properties properties) {
 		super(tier, attackDamageModifier, attackSpeedModifier, properties);
@@ -32,6 +37,7 @@ public class ToxicusItem extends SimpleSwordItem implements CriticalHitEntityAct
 
 		boolean isFullAttackStrength = !(attacker instanceof Player player) || player.getAttackStrengthScale(0.5f) >= 0.9f;
 		if (isFullAttackStrength) {
+			attacker.level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), ModSoundEvents.CLAWS_ATTACK_STRONG.get(), attacker.getSoundSource(), 1f, 1f + attacker.getRandom().nextFloat() * 0.5f);
 			target.addEffect(new MobEffectInstance(ModMobEffects.ARMOR_SHRED.get(), 4 * 20, 0));
 		}
 
@@ -48,6 +54,17 @@ public class ToxicusItem extends SimpleSwordItem implements CriticalHitEntityAct
 		int seconds = 4;
 		target.addEffect(new MobEffectInstance(ModMobEffects.CORROSIVE.get(), seconds * 20, 0));
 		target.addEffect(new MobEffectInstance(ModMobEffects.ARMOR_SHRED.get(), seconds * 20, 1));
+	}
+
+	@Override
+	public boolean onSweepAttack(Level level, Player attacker) {
+		if (attacker.level instanceof ServerLevel serverLevel) {
+			double xOffset = -Mth.sin(attacker.getYRot() * Mth.DEG_TO_RAD);
+			double zOffset = Mth.cos(attacker.getYRot() * Mth.DEG_TO_RAD);
+			serverLevel.sendParticles(ModParticleTypes.CORROSIVE_SWIPE_ATTACK.get(), attacker.getX() + xOffset, attacker.getY(0.5f), attacker.getZ() + zOffset, 0, xOffset, 0, zOffset, 0);
+		}
+
+		return true;
 	}
 
 	@Override
