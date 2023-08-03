@@ -15,6 +15,7 @@ public class ModParticleSpriteProvider extends ParticleSpriteProvider {
 		addParticle(ModParticleTypes.BLOODY_CLAWS_ATTACK, 8, 1);
 		addParticle(ModParticleTypes.FALLING_BLOOD, "minecraft:drip_fall");
 		addParticle(ModParticleTypes.LANDING_BLOOD, "minecraft:drip_land");
+		addParticle(ModParticleTypes.CORROSIVE_SWIPE_ATTACK, 8, 1);
 	}
 
 }

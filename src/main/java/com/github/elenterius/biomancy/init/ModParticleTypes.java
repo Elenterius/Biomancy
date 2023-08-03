@@ -13,6 +13,7 @@ public final class ModParticleTypes {
 	public static final RegistryObject<SimpleParticleType> BLOODY_CLAWS_ATTACK = register("bloody_claws_attack", true);
 	public static final RegistryObject<SimpleParticleType> FALLING_BLOOD = register("falling_blood", false);
 	public static final RegistryObject<SimpleParticleType> LANDING_BLOOD = register("landing_blood", false);
+	public static final RegistryObject<SimpleParticleType> CORROSIVE_SWIPE_ATTACK = register("corrosive_swipe", true);
 
 	private ModParticleTypes() {}
 
