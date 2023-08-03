@@ -1,3 +1,23 @@
+## [1.15.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.14.0...1.19.2-v2.1.15.0) (2023-08-03)
+
+
+### Features
+
+* add Corrosive Swipe Attack VFX to the Toxicus ([2c93fb1](https://github.com/Elenterius/Biomancy/commit/2c93fb1cfd564617f60008fea18242a2563f5110))
+* add Drowsy Status Effect which prevents Phantoms from attacking ([ce494f8](https://github.com/Elenterius/Biomancy/commit/ce494f86c955da5c2ac160bee0cce08692e12621))
+* add HUD for the serum amount inside an Injector ([e31657a](https://github.com/Elenterius/Biomancy/commit/e31657a55653529cb10fd8777a1708f191e638e4))
+* fix Injector not reloading with max serum amount ([315c9af](https://github.com/Elenterius/Biomancy/commit/315c9af6fd56c53db291796631692a9ceb64c3d5))
+* increase Breeding Stimulant duration from 12 to 14 seconds ([c77996e](https://github.com/Elenterius/Biomancy/commit/c77996ec9b8b789ec95b852666f7e7758136a5df))
+* make Cleansing Serum consume saturation ([124a948](https://github.com/Elenterius/Biomancy/commit/124a948ce4c6f52f742b75619430e78493ab4a80))
+* make Insomnia Cure serum apply the Drowsy status effect ([97bc661](https://github.com/Elenterius/Biomancy/commit/97bc66132b2386fe5d38eb12bdf1d8b22458ef0f))
+* update Flesh Block variant textures ([daf9b85](https://github.com/Elenterius/Biomancy/commit/daf9b85d36ecf4751333f51c224f5d5edb45bad5))
+
+
+### Bug Fixes
+
+* fix critical hits not being detected ([def136c](https://github.com/Elenterius/Biomancy/commit/def136c66e7738b5e48a85a6ddee24807f3ab74f))
+* fix Insomnia Cure "not sleepy" check not working properly ([594fb69](https://github.com/Elenterius/Biomancy/commit/594fb69c5b3d984adf96b38ef1512e4f49ee1daf))
+
 ## [1.14.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.13.0...1.19.2-v2.1.14.0) (2023-08-01)
 
 
@@ -54,17 +74,4 @@
 ### Bug Fixes
 
 * fix Ravenous Claws ability tooltips not using translation keys ([989ff50](https://github.com/Elenterius/Biomancy/commit/989ff50e67110b0037d145f3a804a5455124ae91))
-
-### [1.11.2](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.11.1...1.19.2-v2.1.11.2) (2023-06-25)
-
-
-### Bug Fixes
-
-* add missing language key for missing blood charge ([478c585](https://github.com/Elenterius/Biomancy/commit/478c58549ac677f3f960c8bd95ee87ac06bcb69d))
-* fix Maw Hopper not inserting items on the correct block face ([db57423](https://github.com/Elenterius/Biomancy/commit/db57423c451de0caf7f7529cad2cffdf47e27762))
-* fix Ravenous Claws item name ([ea9f79c](https://github.com/Elenterius/Biomancy/commit/ea9f79ce56afbcb5896f8b90618ade0dee21270a))
-* fix Ravenous Claws recipe ([272071d](https://github.com/Elenterius/Biomancy/commit/272071db69a6f57bbc93c8d938e948ccaac06139))
-* fix wrong fleshkin chest recipe ([a6be325](https://github.com/Elenterius/Biomancy/commit/a6be3254b4d77deed47f8824bf735776f1b7701f))
-* make Ravenous Claws tooltip less confusing ([c8940a6](https://github.com/Elenterius/Biomancy/commit/c8940a62b88a10f59b7857dec73904fbeb5a6832))
-* make tooltip text for pressing the v key on living tools less confusing ([7c7160f](https://github.com/Elenterius/Biomancy/commit/7c7160fd8515a767ae027f75a8586a5e8b62007e))
 
