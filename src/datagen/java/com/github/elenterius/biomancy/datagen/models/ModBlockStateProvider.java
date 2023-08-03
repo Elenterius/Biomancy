@@ -39,7 +39,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
 	@Override
 	protected void registerStatesAndModels() {
-		final int fleshVariants = 5;
+		final int fleshVariants = 7;
 		simpleVariantBlockWithItem(ModBlocks.FLESH.get(), fleshVariants);
 		directionalSlabBlockWithItem(ModBlocks.FLESH_SLAB.get(), ModBlocks.FLESH.get());
 		stairsBlock(ModBlocks.FLESH_STAIRS.get(), blockTexture(ModBlocks.FLESH.get()));
