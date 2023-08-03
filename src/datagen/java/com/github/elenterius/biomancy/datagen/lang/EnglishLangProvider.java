@@ -198,6 +198,10 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addTooltip("ability.bleed_proc.desc", "When triggered, adds one Bleed Stack (max 2)");
 		addTooltip("ability.blood_explosion", "Blood Explosion");
 		addTooltip("ability.blood_explosion.desc", "On Bleed Stack, deals 10% of max health as damage");
+		addTooltip("ability.shredding_strike", "Shredding Swipe");
+		addTooltip("ability.shredding_strike.desc", "On heavy attack, adds one Armor Shred stack (max 20)");
+		addTooltip("ability.corrosive_proc", "Corrosive Blow");
+		addTooltip("ability.corrosive_proc.desc", "On critical hit, applies Corrosive status effect");
 
 		//		addTooltip("fire_rate", "Fire Rate");
 		//		addTooltip("accuracy", "Accuracy");
