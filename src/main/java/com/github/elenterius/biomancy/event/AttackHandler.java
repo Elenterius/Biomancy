@@ -19,8 +19,8 @@ public class AttackHandler {
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public static void onCriticalHit(final CriticalHitEvent event) {
-		if (event.getDamageModifier() > 0 && event.getTarget() instanceof LivingEntity target && (event.getResult() == Event.Result.ALLOW || event.isVanillaCritical() && event.getResult() == Event.Result.DEFAULT)) {
-			ItemStack heldStack = ((LivingEntity)event.getTarget()).getMainHandItem();
+		if (event.getDamageModifier() > 0 && event.getTarget() instanceof LivingEntity target && (event.getResult() == Event.Result.ALLOW || (event.isVanillaCritical() && event.getResult() == Event.Result.DEFAULT))) {
+			ItemStack heldStack = event.getEntity().getMainHandItem();
 			if (heldStack.getItem() instanceof CriticalHitEntityAction listener) {
 				listener.onCriticalHitEntity(heldStack, event.getEntity(), target);
 			}
