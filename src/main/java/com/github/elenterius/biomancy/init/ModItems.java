@@ -21,6 +21,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public final class ModItems {
 
@@ -203,6 +204,20 @@ public final class ModItems {
 	public static final RegistryObject<ForgeSpawnEggItem> PRIMORDIAL_HUNGRY_FLESH_BLOB_SPAWN_EGG = registerSpawnEgg(ModEntityTypes.PRIMORDIAL_HUNGRY_FLESH_BLOB, 0x752144, 0x752144);
 
 	private ModItems() {}
+
+	public static <T extends Item> Stream<T> findItems(Class<T> clazz) {
+		return ModItems.ITEMS.getEntries().stream()
+				.map(RegistryObject::get)
+				.filter(clazz::isInstance)
+				.map(clazz::cast);
+	}
+
+	public static <T extends Item> Stream<RegistryObject<T>> findEntries(Class<T> clazz) {
+		//noinspection unchecked
+		return ModItems.ITEMS.getEntries().stream()
+				.filter(registryObject -> clazz.isInstance(registryObject.get()))
+				.map(registryObject -> (RegistryObject<T>) registryObject);
+	}
 
 	private static <T extends Item> RegistryObject<T> registerItem(String name, Function<Item.Properties, T> factory) {
 		return ITEMS.register(name, () -> factory.apply(createProperties()));
