@@ -84,8 +84,9 @@ public class FleshSpikeBlock extends WaterloggedFacingBlock {
 
 	@Override
 	public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
-		if (state.getValue(FACING) == Direction.UP) {
-			entity.causeFallDamage(fallDistance + 2f, 2f, ModDamageSources.FALL_ON_SPIKE);
+		if (getFacing(state) == Direction.UP) {
+			int spikes = getSpikes(state);
+			entity.causeFallDamage(fallDistance + 2f, 1f + spikes * 0.5f, ModDamageSources.FALL_ON_SPIKE);
 		}
 		else super.fallOn(level, state, pos, entity, fallDistance);
 	}
