@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.block.fleshspike;
 
+import com.github.elenterius.biomancy.block.base.WaterloggedFacingBlock;
 import com.github.elenterius.biomancy.init.ModDamageSources;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -10,17 +11,9 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Mirror;
-import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -28,17 +21,15 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class FleshSpikeBlock extends Block implements SimpleWaterloggedBlock {
+public class FleshSpikeBlock extends WaterloggedFacingBlock {
 
-	public static final DirectionProperty FACING = BlockStateProperties.FACING;
 	public static final int MIN_SPIKES = 1;
 	public static final int MAX_SPIKES = 3;
 	public static final IntegerProperty SPIKES = IntegerProperty.create("spikes", MIN_SPIKES, MAX_SPIKES);
-	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
 	public FleshSpikeBlock(Properties properties) {
 		super(properties);
-		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.UP).setValue(SPIKES, MIN_SPIKES).setValue(WATERLOGGED, Boolean.FALSE));
+		registerDefaultState(defaultBlockState().setValue(SPIKES, MIN_SPIKES));
 		FleshSpikeShapes.computePossibleShapes(stateDefinition.getPossibleStates());
 	}
 
@@ -48,27 +39,19 @@ public class FleshSpikeBlock extends Block implements SimpleWaterloggedBlock {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		builder.add(FACING, SPIKES, WATERLOGGED);
-	}
-
-	@Override
-	public FluidState getFluidState(BlockState state) {
-		return Boolean.TRUE.equals(state.getValue(WATERLOGGED)) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+		super.createBlockStateDefinition(builder);
+		builder.add(SPIKES);
 	}
 
 	@Nullable
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		BlockPos pos = context.getClickedPos();
-
-		BlockState blockState = context.getLevel().getBlockState(pos);
+		BlockState blockState = context.getLevel().getBlockState(context.getClickedPos());
 		if (blockState.getBlock() instanceof FleshSpikeBlock) {
 			return blockState.setValue(SPIKES, Math.min(getSpikes(blockState) + 1, MAX_SPIKES));
 		}
 
-		Level level = context.getLevel();
-		boolean isWaterlogged = level.getFluidState(pos).getType() == Fluids.WATER;
-		return defaultBlockState().setValue(FACING, context.getClickedFace()).setValue(WATERLOGGED, isWaterlogged);
+		return super.getStateForPlacement(context);
 	}
 
 	@Override
@@ -79,7 +62,7 @@ public class FleshSpikeBlock extends Block implements SimpleWaterloggedBlock {
 
 	@Override
 	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-		Direction direction = state.getValue(FACING);
+		Direction direction = getFacing(state);
 		BlockPos basePos = pos.relative(direction.getOpposite());
 		return Block.canSupportCenter(level, basePos, direction);
 	}
@@ -111,7 +94,7 @@ public class FleshSpikeBlock extends Block implements SimpleWaterloggedBlock {
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		if (!isEntityInsideDamageArea(level, pos, state, entity)) return;
 
-		Direction direction = state.getValue(FACING);
+		Direction direction = getFacing(state);
 		Vec3i normal = direction.getNormal();
 		float x = (1 - Math.abs(normal.getX())) * 0.1f;
 		float y = (1 - Math.abs(normal.getY())) * 0.1f;
@@ -129,16 +112,6 @@ public class FleshSpikeBlock extends Block implements SimpleWaterloggedBlock {
 		VoxelShape blockShape = FleshSpikeShapes.getDamageShape(state).move(pos.getX(), pos.getY(), pos.getZ());
 		VoxelShape entityShape = Shapes.create(entity.getBoundingBox());
 		return Shapes.joinIsNotEmpty(blockShape, entityShape, BooleanOp.AND);
-	}
-
-	@Override
-	public BlockState rotate(BlockState state, Rotation rot) {
-		return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
-	}
-
-	@Override
-	public BlockState mirror(BlockState state, Mirror mirror) {
-		return state.rotate(mirror.getRotation(state.getValue(FACING)));
 	}
 
 }
