@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.datagen.models;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
+import com.github.elenterius.biomancy.item.weapon.DespoilingSwordItem;
 import com.google.gson.JsonObject;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -13,6 +14,7 @@ import net.minecraftforge.client.model.generators.CustomLoaderBuilder;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.client.model.generators.loaders.ItemLayersModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -80,7 +82,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 		serumItem(ModItems.CORROSIVE_ADDITIVE);
 
 		basicItem(ModItems.PRIMORDIAL_CORE);
-		handheldWeaponItem(ModItems.DESPOIL_SICKLE);
+		fleshPlunderer(ModItems.DESPOIL_SICKLE);
 		basicItem(ModItems.CREATOR_MIX);
 		basicItem(ModItems.NUTRIENT_PASTE);
 		basicItem(ModItems.NUTRIENT_BAR);
@@ -100,6 +102,15 @@ public class ModItemModelProvider extends ItemModelProvider {
 
 		//generate models for all eggs
 		ModItems.ITEMS.getEntries().stream().map(RegistryObject::get).filter(SpawnEggItem.class::isInstance).forEach(this::spawnEggItem);
+	}
+
+	public <T extends DespoilingSwordItem> void fleshPlunderer(RegistryObject<T> registryObject) {
+		ResourceLocation registryKey = registryObject.getId();
+		getBuilder(registryKey.toString())
+				.parent(new ModelFile.UncheckedModelFile("item/handheld"))
+				.customLoader(ItemLayersModelBuilder::begin).emissive(1).end()
+				.texture(LAYER_0_TEXTURE, new ResourceLocation(registryKey.getNamespace(), ITEM_FOLDER + "/weapon/" + registryKey.getPath()))
+				.texture(LAYER_1_TEXTURE, new ResourceLocation(registryKey.getNamespace(), ITEM_FOLDER + "/weapon/" + registryKey.getPath() + "_emissive"));
 	}
 
 	public <T extends Item> ItemModelBuilder basicItem(RegistryObject<T> registryObject) {
