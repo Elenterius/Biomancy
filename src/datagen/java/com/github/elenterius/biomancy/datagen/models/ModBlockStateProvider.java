@@ -250,7 +250,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		};
 		directionalBlock(block, blockState -> models[FleshSpikeBlock.getSpikes(blockState) - 1], BlockStateProperties.WATERLOGGED);
 
-		simpleBlockItem(block, models[0]);
+		itemModels().basicItem(block.asItem());
 	}
 
 	public void storageSac(Block block) {
