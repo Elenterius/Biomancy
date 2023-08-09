@@ -346,7 +346,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 				.partialState().with(RotatedPillarBlock.AXIS, Direction.Axis.X)
 				.modelForState().modelFile(model).rotationX(90).rotationY(90).addModel();
 
-		simpleBlockItem(block, model);
+		itemModels().basicItem(block.asItem());
 	}
 
 	public void bioLantern(FleshLanternBlock block) {
