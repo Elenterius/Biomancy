@@ -1,121 +1,18 @@
 {
-	"credit": "Made by RhinoW",
-	"parent": "builtin/entity",
-	"texture_size": [
-		64,
-		64
-	],
-	"display": {
-		"thirdperson_righthand": {
-			"rotation": [
-				90,
-				0,
-				-90
-			],
-			"translation": [
-				-2.25,
-				-2,
-				1.25
-			]
+	"parent": "forge:item/default",
+	"loader": "forge:separate_transforms",
+	"base": {
+		"parent": "biomancy:item/ravenous_claws_display"
+	},
+	"textures": {
+		"particle": "biomancy:item/component/bone_fragments"
+	},
+	"perspectives": {
+		"gui": {
+			"parent": "biomancy:item/ravenous_claws_icon"
 		},
-		"thirdperson_lefthand": {
-			"rotation": [
-				90,
-				180,
-				90
-			],
-			"translation": [
-				-2.25,
-				-2,
-				1.25
-			]
-		},
-		"firstperson_righthand": {
-			"rotation": [
-				108.44,
-				63.02,
-				-71.41
-			],
-			"translation": [
-				0,
-				1.6,
-				-3.7
-			],
-			"scale": [
-				0.68,
-				0.68,
-				0.68
-			]
-		},
-    "firstperson_lefthand": {
-			"rotation": [
-				108,
-				-110,
-				71
-			],
-			"translation": [
-				0,
-				1.6,
-				-2.75
-			],
-			"scale": [
-				0.68,
-				0.68,
-				0.68
-			]
-		},
-    "ground": {
-			"translation": [
-				0,
-				2,
-				0
-			],
-			"scale": [
-				0.5,
-				0.5,
-				0.5
-			]
-		},
-    "gui": {
-			"rotation": [
-				30,
-				225,
-				0
-			],
-			"translation": [
-				0.5,
-				-3.5,
-				0
-			],
-			"scale": [
-				0.8,
-				0.8,
-				0.8
-			]
-		},
-    "head": {
-			"rotation": [
-				162.3,
-				87.97,
-				107.1
-			],
-			"translation": [
-				0,
-				-2.75,
-				-4.5
-			]
-		},
-    "fixed": {
-      "rotation": [
-        -164.99,
-        -87.93,
-        -74.9
-      ],
-      "translation": [
-        0,
-        0.5,
-				1.5
-      ]
-    }
-  }
+		"fixed": {
+			"parent": "biomancy:item/ravenous_claws_icon"
+		}
+	}
 }
