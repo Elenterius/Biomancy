@@ -28,98 +28,118 @@ public class ModItemModelProvider extends ItemModelProvider {
 		super(generator, BiomancyMod.MOD_ID, existingFileHelper);
 	}
 
+	private static ResourceLocation registryKey(Item item) {
+		return Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item));
+	}
+
 	@Override
 	protected void registerModels() {
-		basicItem(ModItems.MOB_FANG.get());
-		basicItem(ModItems.MOB_CLAW.get());
-		basicItem(ModItems.MOB_SINEW.get());
-		basicItem(ModItems.MOB_MARROW.get());
-		basicItem(ModItems.WITHERED_MOB_MARROW.get());
-		basicItem(ModItems.GENERIC_MOB_GLAND.get());
-		basicItem(ModItems.TOXIN_GLAND.get());
-		basicItem(ModItems.VOLATILE_GLAND.get());
-		basicItem(ModItems.LIVING_FLESH.get());
-		basicItem(ModItems.PRIMORDIAL_CORE.get());
+		lootItem(ModItems.MOB_FANG);
+		lootItem(ModItems.MOB_CLAW);
+		lootItem(ModItems.MOB_SINEW);
+		lootItem(ModItems.MOB_MARROW);
+		lootItem(ModItems.WITHERED_MOB_MARROW);
+		lootItem(ModItems.GENERIC_MOB_GLAND);
+		lootItem(ModItems.TOXIN_GLAND);
+		lootItem(ModItems.VOLATILE_GLAND);
+		lootItem(ModItems.LIVING_FLESH);
 
-		componentItem(ModItems.FLESH_BITS.get());
-		componentItem(ModItems.BONE_FRAGMENTS.get());
-		componentItem(ModItems.ELASTIC_FIBERS.get());
-		componentItem(ModItems.MINERAL_FRAGMENT.get());
-		componentItem(ModItems.TOUGH_FIBERS.get());
-		componentItem(ModItems.ORGANIC_MATTER.get());
-		componentItem(ModItems.EXOTIC_DUST.get());
-		componentItem(ModItems.BIO_LUMENS.get());
-		componentItem(ModItems.NUTRIENTS.get());
-		componentItem(ModItems.GEM_FRAGMENTS.get());
-		componentItem(ModItems.STONE_POWDER.get());
+		componentItem(ModItems.FLESH_BITS);
+		componentItem(ModItems.BONE_FRAGMENTS);
+		componentItem(ModItems.ELASTIC_FIBERS);
+		componentItem(ModItems.MINERAL_FRAGMENT);
+		componentItem(ModItems.TOUGH_FIBERS);
+		componentItem(ModItems.ORGANIC_MATTER);
+		componentItem(ModItems.EXOTIC_DUST);
+		componentItem(ModItems.BIO_LUMENS);
+		componentItem(ModItems.NUTRIENTS);
+		componentItem(ModItems.GEM_FRAGMENTS);
+		componentItem(ModItems.STONE_POWDER);
 
-		componentItem(ModItems.REGENERATIVE_FLUID.get());
-		componentItem(ModItems.WITHERING_OOZE.get());
-		componentItem(ModItems.HORMONE_SECRETION.get());
-		componentItem(ModItems.TOXIN_EXTRACT.get());
-		componentItem(ModItems.VOLATILE_FLUID.get());
-		componentItem(ModItems.BILE.get());
+		componentItem(ModItems.REGENERATIVE_FLUID);
+		componentItem(ModItems.WITHERING_OOZE);
+		componentItem(ModItems.HORMONE_SECRETION);
+		componentItem(ModItems.TOXIN_EXTRACT);
+		componentItem(ModItems.VOLATILE_FLUID);
+		componentItem(ModItems.BILE);
 
-		basicItem(ModItems.GIFT_SAC.get());
-		basicItem(ModItems.FERTILIZER.get());
-		basicItem(ModItems.CREATOR_MIX.get());
-		basicItem(ModItems.NUTRIENT_PASTE.get());
-		basicItem(ModItems.NUTRIENT_BAR.get());
-		basicItem(ModItems.FLESH_DOOR.get());
-		basicItem(ModItems.FULL_FLESH_DOOR.get());
+		serumItem(ModItems.REJUVENATION_SERUM);
+		serumItem(ModItems.AGEING_SERUM);
+		serumItem(ModItems.ENLARGEMENT_SERUM);
+		serumItem(ModItems.SHRINKING_SERUM);
+		serumItem(ModItems.BREEDING_STIMULANT);
+		serumItem(ModItems.ABSORPTION_BOOST);
+		serumItem(ModItems.CLEANSING_SERUM);
+		serumItem(ModItems.INSOMNIA_CURE);
 
-		serumItem(ModItems.VIAL.get());
+		serumItem(ModItems.ORGANIC_COMPOUND);
+		serumItem(ModItems.UNSTABLE_COMPOUND);
+		serumItem(ModItems.GENETIC_COMPOUND);
+		serumItem(ModItems.EXOTIC_COMPOUND);
+		serumItem(ModItems.HEALING_ADDITIVE);
+		serumItem(ModItems.CORROSIVE_ADDITIVE);
 
-		serumItem(ModItems.REJUVENATION_SERUM.get());
-		serumItem(ModItems.AGEING_SERUM.get());
-		serumItem(ModItems.ENLARGEMENT_SERUM.get());
-		serumItem(ModItems.SHRINKING_SERUM.get());
-		serumItem(ModItems.BREEDING_STIMULANT.get());
-		serumItem(ModItems.ABSORPTION_BOOST.get());
-		serumItem(ModItems.CLEANSING_SERUM.get());
-		serumItem(ModItems.INSOMNIA_CURE.get());
+		basicItem(ModItems.PRIMORDIAL_CORE);
+		handheldWeaponItem(ModItems.DESPOIL_SICKLE);
+		basicItem(ModItems.CREATOR_MIX);
+		basicItem(ModItems.NUTRIENT_PASTE);
+		basicItem(ModItems.NUTRIENT_BAR);
+		serumItem(ModItems.VIAL);
+		basicItem(ModItems.GIFT_SAC);
+		basicItem(ModItems.FERTILIZER);
+		overlayItem(ModItems.ESSENCE);
+		handheldItem(ModItems.BIO_EXTRACTOR);
+		handheldWeaponItem(ModItems.TOXICUS);
 
-		serumItem(ModItems.ORGANIC_COMPOUND.get());
-		serumItem(ModItems.UNSTABLE_COMPOUND.get());
-		serumItem(ModItems.GENETIC_COMPOUND.get());
-		serumItem(ModItems.EXOTIC_COMPOUND.get());
-		serumItem(ModItems.HEALING_ADDITIVE.get());
-		serumItem(ModItems.CORROSIVE_ADDITIVE.get());
-
-		overlayItem(ModItems.ESSENCE.get());
-
-		flatBlockItem(ModItems.FLESH_LADDER.get());
-		flatBlockItem(ModItems.MALIGNANT_FLESH_VEINS.get());
-
-		handheldItem(ModItems.BIO_EXTRACTOR.get());
-		handheldWeaponItem(ModItems.DESPOIL_SICKLE.get());
-		handheldWeaponItem(ModItems.TOXICUS.get());
+		basicItem(ModItems.FLESH_DOOR);
+		basicItem(ModItems.FULL_FLESH_DOOR);
+		wallBlockItem(ModItems.FLESH_WALL);
+		wallBlockItem(ModItems.PACKED_FLESH_WALL);
+		flatBlockItem(ModItems.FLESH_LADDER);
+		flatBlockItem(ModItems.MALIGNANT_FLESH_VEINS);
 
 		//generate models for all eggs
 		ModItems.ITEMS.getEntries().stream().map(RegistryObject::get).filter(SpawnEggItem.class::isInstance).forEach(this::spawnEggItem);
-
-		wallBlockItem(ModItems.FLESH_WALL.get());
-		wallBlockItem(ModItems.PACKED_FLESH_WALL.get());
 	}
 
-	private ItemModelBuilder spawnEggItem(ResourceLocation item) {
-		return getBuilder(item.toString()).parent(new ModelFile.UncheckedModelFile("item/template_spawn_egg"));
+	public <T extends Item> ItemModelBuilder basicItem(RegistryObject<T> registryObject) {
+		return basicItem(registryObject.getId());
 	}
 
 	public ItemModelBuilder spawnEggItem(Item item) {
-		return spawnEggItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)));
+		return spawnEggItem(registryKey(item));
+	}
+
+	public ItemModelBuilder spawnEggItem(ResourceLocation registryKey) {
+		return getBuilder(registryKey.toString()).parent(new ModelFile.UncheckedModelFile("item/template_spawn_egg"));
+	}
+
+	public <T extends Item> ItemModelBuilder lootItem(RegistryObject<T> registryObject) {
+		return basicItem(registryObject.getId(), "loot");
+	}
+
+	public ItemModelBuilder lootItem(Item item) {
+		return basicItem(registryKey(item), "loot");
+	}
+
+	public <T extends Item> ItemModelBuilder componentItem(RegistryObject<T> registryObject) {
+		return basicItem(registryObject.getId(), "component");
 	}
 
 	public ItemModelBuilder componentItem(Item item) {
-		return basicItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)), "component");
+		return basicItem(registryKey(item), "component");
+	}
+
+	public <T extends Item> ItemModelBuilder serumItem(RegistryObject<T> registryObject) {
+		return basicItem(registryObject.getId(), "serum");
 	}
 
 	public ItemModelBuilder serumItem(Item item) {
-		return basicItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)), "serum");
+		return basicItem(registryKey(item), "serum");
 	}
 
 	public ItemModelBuilder genericSerumItem(Item item) {
-		ResourceLocation rl = Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item));
+		ResourceLocation rl = registryKey(item);
 		return getBuilder(rl.toString())
 				.parent(new ModelFile.UncheckedModelFile("item/generated"))
 				.texture(LAYER_0_TEXTURE, new ResourceLocation(rl.getNamespace(), ITEM_FOLDER + "/serum/generic_serum"))
@@ -127,69 +147,90 @@ public class ModItemModelProvider extends ItemModelProvider {
 	}
 
 	public ItemModelBuilder weaponItem(Item item) {
-		return basicItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)), "weapon");
+		return basicItem(registryKey(item), "weapon");
 	}
 
 	public ItemModelBuilder handheldWeaponItem(Item item) {
-		return handheldItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)), "weapon");
+		return handheldItem(registryKey(item), "weapon");
+	}
+
+	public <T extends Item> ItemModelBuilder handheldWeaponItem(RegistryObject<T> registryObject) {
+		return handheldItem(registryObject.getId(), "weapon");
 	}
 
 	public ItemModelBuilder miscItem(Item item) {
-		return basicItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)), "misc");
+		return basicItem(registryKey(item), "misc");
 	}
 
-	private ItemModelBuilder basicItem(ResourceLocation item, String subfolder) {
-		return getBuilder(item.toString())
+	public ItemModelBuilder basicItem(ResourceLocation registryKey, String subfolder) {
+		return getBuilder(registryKey.toString())
 				.parent(new ModelFile.UncheckedModelFile("item/generated"))
-				.texture(LAYER_0_TEXTURE, new ResourceLocation(item.getNamespace(), ITEM_FOLDER + "/" + subfolder + "/" + item.getPath()));
+				.texture(LAYER_0_TEXTURE, new ResourceLocation(registryKey.getNamespace(), ITEM_FOLDER + "/" + subfolder + "/" + registryKey.getPath()));
 	}
 
 	public ItemModelBuilder overlayItem(Item item) {
-		return overlayItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)));
+		return overlayItem(registryKey(item));
 	}
 
-	private ItemModelBuilder overlayItem(ResourceLocation item) {
-		return basicItem(item).texture(LAYER_1_TEXTURE, new ResourceLocation(item.getNamespace(), ITEM_FOLDER + "/" + item.getPath() + "_overlay"));
+	public <T extends Item> ItemModelBuilder overlayItem(RegistryObject<T> registryObject) {
+		return overlayItem(registryObject.getId());
+	}
+
+	public ItemModelBuilder overlayItem(ResourceLocation registryKey) {
+		String texturePath = ITEM_FOLDER + "/" + registryKey.getPath() + "_overlay";
+		return basicItem(registryKey).texture(LAYER_1_TEXTURE, new ResourceLocation(registryKey.getNamespace(), texturePath));
 	}
 
 	public ItemModelBuilder handheldItem(Item item) {
-		return handheldItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)));
+		return handheldItem(registryKey(item));
 	}
 
-	private ItemModelBuilder handheldItem(ResourceLocation item) {
-		return getBuilder(item.toString())
-				.parent(new ModelFile.UncheckedModelFile("item/handheld"))
-				.texture(LAYER_0_TEXTURE, new ResourceLocation(item.getNamespace(), ITEM_FOLDER + "/" + item.getPath()));
+	public <T extends Item> ItemModelBuilder handheldItem(RegistryObject<T> registryObject) {
+		return handheldItem(registryObject.getId());
 	}
 
-	private ItemModelBuilder handheldItem(ResourceLocation item, String subfolder) {
-		return getBuilder(item.toString())
+	public ItemModelBuilder handheldItem(ResourceLocation registryKey) {
+		return getBuilder(registryKey.toString())
 				.parent(new ModelFile.UncheckedModelFile("item/handheld"))
-				.texture(LAYER_0_TEXTURE, new ResourceLocation(item.getNamespace(), ITEM_FOLDER + "/" + subfolder + "/" + item.getPath()));
+				.texture(LAYER_0_TEXTURE, new ResourceLocation(registryKey.getNamespace(), ITEM_FOLDER + "/" + registryKey.getPath()));
+	}
+
+	public ItemModelBuilder handheldItem(ResourceLocation registryKey, String subfolder) {
+		return getBuilder(registryKey.toString())
+				.parent(new ModelFile.UncheckedModelFile("item/handheld"))
+				.texture(LAYER_0_TEXTURE, new ResourceLocation(registryKey.getNamespace(), ITEM_FOLDER + "/" + subfolder + "/" + registryKey.getPath()));
+	}
+
+	public <T extends BlockItem> ItemModelBuilder flatBlockItem(RegistryObject<T> registryObject) {
+		return flatBlockItem(registryObject.getId());
 	}
 
 	public ItemModelBuilder flatBlockItem(BlockItem blockItem) {
-		return flatBlockItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(blockItem)));
+		return flatBlockItem(registryKey(blockItem));
 	}
 
-	private ItemModelBuilder flatBlockItem(ResourceLocation blockItem) {
-		return getBuilder(blockItem.toString())
+	public ItemModelBuilder flatBlockItem(ResourceLocation registryKey) {
+		return getBuilder(registryKey.toString())
 				.parent(new ModelFile.UncheckedModelFile("item/generated"))
-				.texture(LAYER_0_TEXTURE, new ResourceLocation(blockItem.getNamespace(), BLOCK_FOLDER + "/" + blockItem.getPath()));
+				.texture(LAYER_0_TEXTURE, new ResourceLocation(registryKey.getNamespace(), BLOCK_FOLDER + "/" + registryKey.getPath()));
+	}
+
+	public <T extends BlockItem> ItemModelBuilder wallBlockItem(RegistryObject<T> registryObject) {
+		return wallBlockItem(registryObject.getId());
 	}
 
 	public ItemModelBuilder wallBlockItem(BlockItem blockItem) {
-		return wallBlockItem(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(blockItem)));
+		return wallBlockItem(registryKey(blockItem));
 	}
 
-	private ItemModelBuilder wallBlockItem(ResourceLocation blockItem) {
-		return getBuilder(blockItem.toString())
+	public ItemModelBuilder wallBlockItem(ResourceLocation registryKey) {
+		return getBuilder(registryKey.toString())
 				.parent(new ModelFile.UncheckedModelFile(BLOCK_FOLDER + "/wall_inventory"))
-				.texture("wall", new ResourceLocation(blockItem.getNamespace(), BLOCK_FOLDER + "/" + blockItem.getPath().replace("_wall", "")));
+				.texture("wall", new ResourceLocation(registryKey.getNamespace(), BLOCK_FOLDER + "/" + registryKey.getPath().replace("_wall", "")));
 	}
 
-	private ItemModelBuilder dynamicBucket(BucketItem item) {
-		ResourceLocation itemKey = Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item));
+	public ItemModelBuilder dynamicBucket(BucketItem item) {
+		ResourceLocation itemKey = registryKey(item);
 		ResourceLocation fluidKey = Objects.requireNonNull(ForgeRegistries.FLUIDS.getKey(item.getFluid()));
 		ResourceLocation loaderKey = new ResourceLocation("forge", "fluid_container");
 		ResourceLocation bucketModelKey = new ResourceLocation("forge", "item/bucket");
