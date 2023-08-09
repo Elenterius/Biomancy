@@ -40,7 +40,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 	@Override
 	protected void registerStatesAndModels() {
 		final int fleshVariants = 7;
-		simpleVariantBlockWithItem(ModBlocks.FLESH.get(), fleshVariants);
+		tintedVariantBlockWithItem(ModBlocks.FLESH.get(), fleshVariants);
 		directionalSlabBlockWithItem(ModBlocks.FLESH_SLAB.get(), ModBlocks.FLESH.get());
 		stairsBlock(ModBlocks.FLESH_STAIRS.get(), blockTexture(ModBlocks.FLESH.get()));
 		simpleBlockItem(ModBlocks.FLESH_STAIRS.get());
@@ -194,6 +194,28 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		for (int i = 1; i < variants; i++) {
 			String suffix = "_" + i;
 			BlockModelBuilder modelVariant = models().cubeAll(path + suffix, extend(blockTexture, suffix));
+			builder = builder.nextModel().modelFile(modelVariant).weight(1);
+		}
+
+		getVariantBuilder(block).partialState().setModels(builder.build());
+	}
+
+	public BlockModelBuilder tintedCubeAll(String name, ResourceLocation texture) {
+		return models().withExistingParent(name, BiomancyMod.createRL(ModelProvider.BLOCK_FOLDER + "/tinted_cube_all")).texture("all", texture);
+	}
+
+	public void tintedVariantBlockWithItem(Block block, int variants) {
+		String path = path(block);
+		ResourceLocation blockTexture = blockTexture(block);
+
+		ModelFile mainModel = tintedCubeAll(path, blockTexture);
+		simpleBlockItem(block, mainModel);
+
+		ConfiguredModel.Builder<?> builder = ConfiguredModel.builder().modelFile(mainModel).weight(2); //make main model more frequent than the variants
+
+		for (int i = 1; i < variants; i++) {
+			String suffix = "_" + i;
+			BlockModelBuilder modelVariant = tintedCubeAll(path + suffix, extend(blockTexture, suffix));
 			builder = builder.nextModel().modelFile(modelVariant).weight(1);
 		}
 

@@ -27,11 +27,18 @@ import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.StorageSacTooltipComponent;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.particle.AttackSweepParticle;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.entity.WitherSkullRenderer;
+import net.minecraft.util.FastColor;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.ColorResolver;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
+import net.minecraft.world.level.levelgen.WorldgenRandom;
+import net.minecraft.world.level.levelgen.synth.SimplexNoise;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.settings.KeyConflictContext;
@@ -151,6 +158,31 @@ public final class ClientSetupHandler {
 	@SubscribeEvent
 	public static void onBlockColorRegistry(final RegisterColorHandlersEvent.Block event) {
 		event.register(VialHolderBlock::getTintColor, ModBlocks.VIAL_HOLDER.get());
+		event.register(FleshColor.BLOCK_TINT, ModBlocks.FLESH.get());
+	}
+
+	@SubscribeEvent
+	public static void onColorResolverRegistry(final RegisterColorHandlersEvent.ColorResolvers event) {
+		event.register(FleshColor.RESOLVER);
+	}
+
+	public class FleshColor {
+		public static final SimplexNoise NOISE = new SimplexNoise(new WorldgenRandom(new LegacyRandomSource(2345)));
+
+		public static final ColorResolver RESOLVER = (biome, x, z) -> {
+			double v = NOISE.getValue(x * 0.025, z * 0.025);
+			v = v * 0.5 + 0.5; //rescale from [-1,1] to [0,1]
+
+			double temperature = Mth.clamp(biome.getBaseTemperature(), 0, 1);
+			double humidity = Mth.clamp(biome.getDownfall(), 0, 1);
+			int red = 255 - 50 + (int) Math.round(v * 20 + temperature * 20 + (1 - humidity) * 10);
+			int green = 255 - 50 + (int) Math.round(v * 50);
+			int blue = 255 - 50 + (int) Math.round(v * 30 + humidity * 10 + (1 - temperature) * 10);
+			return FastColor.ARGB32.color(255, red, green, blue);
+		};
+
+		public static final BlockColor BLOCK_TINT = (state, level, pos, tintIndex) -> pos != null && level != null ? level.getBlockTint(pos, RESOLVER) : 0xffffffff;
+
 	}
 
 	@SubscribeEvent
