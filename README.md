@@ -10,8 +10,8 @@
 <a aria-label="Latest Release" href="https://github.com/Elenterius/Biomancy/releases/">
 <img alt="" src="https://img.shields.io/github/v/release/elenterius/biomancy?include_prereleases&logo=github&style=for-the-badge"></a>
 
-<a aria-label="Project Tracker" href="https://trello.com/b/GUKjOSAl">
-<img alt="" src="https://img.shields.io/badge/Trello-0052CC?style=for-the-badge&logo=trello&logoColor=white"></a>
+<a aria-label="Project Tracker" href="https://github.com/orgs/Creative-Chasm/projects/2/">
+<img alt="" src="https://img.shields.io/badge/-Project-black?style=for-the-badge&logo=github"></a>
 
 <a aria-label="Downloads on CurseForge" href="https://www.curseforge.com/minecraft/mc-mods/biomancy">
 <img alt="" src="https://cf.way2muchnoise.eu/short_492939_downloads(f16436-f16436-fff-000-fff).svg?badge_style=for_the_badge"></a>
