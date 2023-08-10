@@ -277,7 +277,7 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 				}
 			}
 			else {
-				tooltip.add(ComponentUtil.literal("Who are you? I don't like you!").withStyle(TextStyles.MAYKR_RUNES_GRAY));
+				tooltip.add(ComponentUtil.literal("Who are you? I don't like you!").withStyle(TextStyles.PRIMORDIAL_RUNES_GRAY));
 			}
 		}
 	}

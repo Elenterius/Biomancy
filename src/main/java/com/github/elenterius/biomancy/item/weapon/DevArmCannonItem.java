@@ -151,7 +151,7 @@ public class DevArmCannonItem extends Item implements IAnimatable, IArmPoseProvi
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
 
 		tooltip.add(ComponentUtil.emptyLine());
-		tooltip.add(ComponentUtil.literal("The quick brown fox jumps over the lazy dog.").withStyle(TextStyles.MAYKR_RUNES_GRAY));
+		tooltip.add(ComponentUtil.literal("The quick brown fox jumps over the lazy dog.").withStyle(TextStyles.PRIMORDIAL_RUNES_GRAY));
 
 		tooltip.add(ComponentUtil.emptyLine());
 		byte index = stack.getOrCreateTag().getByte("ProjectileIndex");
@@ -162,8 +162,8 @@ public class DevArmCannonItem extends Item implements IAnimatable, IArmPoseProvi
 
 		tooltip.add(ComponentUtil.emptyLine());
 
-		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action_open_inventory")).withStyle(TextStyles.MAYKR_RUNES_GRAY));
-		// /tellraw @a {"text":"The quick brown fox jumps over the lazy dog. 1234567890!?","color":"#9e1316","font":"biomancy:maykr_runes"}
+		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action_open_inventory")).withStyle(TextStyles.PRIMORDIAL_RUNES_GRAY));
+		// /tellraw @a {"text":"The quick brown fox jumps over the lazy dog. 1234567890!?","color":"#9e1316","font":"biomancy:caro_invitica"}
 	}
 
 	@Override
