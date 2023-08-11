@@ -139,6 +139,9 @@ public class ModBlockLoot extends BlockLoot {
 		dropSelf(ModBlocks.PACKED_FLESH_STAIRS.get());
 		dropSelf(ModBlocks.PACKED_FLESH_WALL.get());
 
+		dropSelf(ModBlocks.FLESH_PILLAR.get());
+		dropSelf(ModBlocks.FIBROUS_FLESH.get());
+
 		dropSelf(ModBlocks.PRIMAL_FLESH.get());
 		add(ModBlocks.PRIMAL_FLESH_SLAB.get(), ModBlockLoot::createDirectionalSlabTable);
 		dropSelf(ModBlocks.PRIMAL_FLESH_STAIRS.get());
@@ -154,7 +157,6 @@ public class ModBlockLoot extends BlockLoot {
 		dropSelf(ModBlocks.FLESH_FENCE.get());
 		dropSelf(ModBlocks.FLESH_FENCE_GATE.get());
 		dropSelf(ModBlocks.FLESH_LADDER.get());
-		dropSelf(ModBlocks.FLESH_PILLAR.get());
 		dropSelf(ModBlocks.YELLOW_BIO_LANTERN.get());
 		dropSelf(ModBlocks.BLUE_BIO_LANTERN.get());
 		dropSelf(ModBlocks.TENDON_CHAIN.get());
