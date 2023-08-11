@@ -137,6 +137,7 @@ public final class ModItems {
 	public static final RegistryObject<SimpleBlockItem> PACKED_FLESH_WALL = registerSimpleBlockItem(ModBlocks.PACKED_FLESH_WALL);
 	public static final RegistryObject<ObfuscatedTooltipBlockItem> FLESH_PILLAR = registerBlockItem(ModBlocks.FLESH_PILLAR, ObfuscatedTooltipBlockItem::new);
 	public static final RegistryObject<ObfuscatedTooltipBlockItem> FIBROUS_FLESH_BLOCK = registerBlockItem(ModBlocks.FIBROUS_FLESH, ObfuscatedTooltipBlockItem::new);
+	public static final RegistryObject<ObfuscatedTooltipBlockItem> CHISELED_FLESH_BLOCK = registerBlockItem(ModBlocks.CHISELED_FLESH, ObfuscatedTooltipBlockItem::new);
 
 	public static final RegistryObject<SimpleBlockItem> PRIMAL_FLESH_BLOCK = registerSimpleBlockItem(ModBlocks.PRIMAL_FLESH);
 	public static final RegistryObject<SimpleBlockItem> PRIMAL_FLESH_SLAB = registerSimpleBlockItem(ModBlocks.PRIMAL_FLESH_SLAB);
