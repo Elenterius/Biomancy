@@ -882,6 +882,13 @@ public class ModRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.BLOCKS)
 				.unlockedBy(ModItems.BONE_FRAGMENTS.get()).save(consumer);
 
+		BioForgeRecipeBuilder.create(ModItems.TUBULAR_FLESH_BLOCK.get())
+				.addIngredient(ModItems.FLESH_BITS.get(), 1)
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 2)
+				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 1)
+				.setCategory(ModBioForgeTabs.BLOCKS)
+				.unlockedBy(ModItems.BONE_FRAGMENTS.get()).save(consumer);
+
 		BioForgeRecipeBuilder.create(ModItems.FLESH_PILLAR.get())
 				.addIngredient(ModItems.FLESH_BITS.get(), 2)
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 2)

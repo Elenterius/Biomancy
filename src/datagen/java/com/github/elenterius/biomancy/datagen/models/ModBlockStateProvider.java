@@ -76,6 +76,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		simpleBlockWithItem(ModBlocks.FIBROUS_FLESH);
 		simpleBlockWithItem(ModBlocks.CHISELED_FLESH);
 		axisBlockWithItem(ModBlocks.ORNATE_FLESH);
+		axisBlockWithItem(ModBlocks.TUBULAR_FLESH_BLOCK);
 
 		simpleBlockWithItem(ModBlocks.PRIMAL_FLESH);
 		directionalSlabBlockWithItem(ModBlocks.PRIMAL_FLESH_SLAB, ModBlocks.PRIMAL_FLESH);
