@@ -59,6 +59,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 				ModBlocks.PRIMAL_FLESH_SLAB.get(),
 				ModBlocks.MALIGNANT_FLESH_SLAB.get()
 		);
+
+		tag(BlockTags.IMPERMEABLE).add(ModBlocks.FLESH_MEMBRANE.get());
 	}
 
 	private void addFleshyBlocksToHoeTag() {

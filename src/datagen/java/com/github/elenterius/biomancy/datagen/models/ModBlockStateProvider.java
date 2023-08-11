@@ -91,6 +91,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		irisDoor(ModBlocks.FLESH_IRIS_DOOR, true);
 		fleshDoor(ModBlocks.FLESH_DOOR);
 		fleshSpikes(ModBlocks.FLESH_SPIKE);
+		translucentBlockWithItem(ModBlocks.FLESH_MEMBRANE);
 		bioLantern(ModBlocks.YELLOW_BIO_LANTERN);
 		bioLantern(ModBlocks.BLUE_BIO_LANTERN);
 		tendonChain(ModBlocks.TENDON_CHAIN);
