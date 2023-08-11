@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -37,60 +38,98 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		super(generator, BiomancyMod.MOD_ID, fileHelper);
 	}
 
+	protected ResourceLocation registryKey(Block block) {
+		return Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block));
+	}
+
+	protected String path(Block block) {
+		return registryKey(block).getPath();
+	}
+
+	protected ResourceLocation blockAsset(ResourceLocation registryKey) {
+		return new ResourceLocation(registryKey.getNamespace(), ModelProvider.BLOCK_FOLDER + "/" + registryKey.getPath());
+	}
+
+	protected ResourceLocation blockAsset(Block block) {
+		ResourceLocation registryKey = registryKey(block);
+		return new ResourceLocation(registryKey.getNamespace(), ModelProvider.BLOCK_FOLDER + "/" + registryKey.getPath());
+	}
+
+	protected ResourceLocation extend(ResourceLocation resourceLocation, String suffix) {
+		return new ResourceLocation(resourceLocation.getNamespace(), resourceLocation.getPath() + suffix);
+	}
+
 	@Override
 	protected void registerStatesAndModels() {
 		final int fleshVariants = 7;
-		simpleVariantBlockWithItem(ModBlocks.FLESH.get(), fleshVariants);
-		directionalSlabBlockWithItem(ModBlocks.FLESH_SLAB.get(), ModBlocks.FLESH.get());
-		stairsBlock(ModBlocks.FLESH_STAIRS.get(), blockTexture(ModBlocks.FLESH.get()));
-		simpleBlockItem(ModBlocks.FLESH_STAIRS.get());
-		wallBlock(ModBlocks.FLESH_WALL.get(), ModBlocks.FLESH.get());
+		simpleVariantBlockWithItem(ModBlocks.FLESH, fleshVariants);
+		directionalSlabBlockWithItem(ModBlocks.FLESH_SLAB, ModBlocks.FLESH);
+		stairsBlockWithItem(ModBlocks.FLESH_STAIRS, ModBlocks.FLESH);
+		wallBlock(ModBlocks.FLESH_WALL, ModBlocks.FLESH);
 
-		simpleBlockWithItem(ModBlocks.PACKED_FLESH.get());
-		directionalSlabBlockWithItem(ModBlocks.PACKED_FLESH_SLAB.get(), ModBlocks.PACKED_FLESH.get());
-		stairsBlock(ModBlocks.PACKED_FLESH_STAIRS.get(), blockTexture(ModBlocks.PACKED_FLESH.get()));
-		simpleBlockItem(ModBlocks.PACKED_FLESH_STAIRS.get());
-		wallBlock(ModBlocks.PACKED_FLESH_WALL.get(), ModBlocks.PACKED_FLESH.get());
+		simpleBlockWithItem(ModBlocks.PACKED_FLESH);
+		directionalSlabBlockWithItem(ModBlocks.PACKED_FLESH_SLAB, ModBlocks.PACKED_FLESH);
+		stairsBlockWithItem(ModBlocks.PACKED_FLESH_STAIRS, ModBlocks.PACKED_FLESH);
+		wallBlock(ModBlocks.PACKED_FLESH_WALL, ModBlocks.PACKED_FLESH);
 
-		axisBlockWithItem(ModBlocks.FLESH_PILLAR.get());
+		axisBlockWithItem(ModBlocks.FLESH_PILLAR);
 
-		simpleBlockWithItem(ModBlocks.PRIMAL_FLESH.get());
-		directionalSlabBlockWithItem(ModBlocks.PRIMAL_FLESH_SLAB.get(), ModBlocks.PRIMAL_FLESH.get());
-		stairsBlock(ModBlocks.PRIMAL_FLESH_STAIRS.get(), blockTexture(ModBlocks.PRIMAL_FLESH.get()));
-		simpleBlockItem(ModBlocks.PRIMAL_FLESH_STAIRS.get());
-		existingBlockWithItem(ModBlocks.CORRUPTED_PRIMAL_FLESH.get());
+		simpleBlockWithItem(ModBlocks.PRIMAL_FLESH);
+		directionalSlabBlockWithItem(ModBlocks.PRIMAL_FLESH_SLAB, ModBlocks.PRIMAL_FLESH);
+		stairsBlockWithItem(ModBlocks.PRIMAL_FLESH_STAIRS, ModBlocks.PRIMAL_FLESH);
+		existingBlockWithItem(ModBlocks.CORRUPTED_PRIMAL_FLESH);
 
-		simpleBlockWithItem(ModBlocks.MALIGNANT_FLESH.get());
-		directionalSlabBlockWithItem(ModBlocks.MALIGNANT_FLESH_SLAB.get(), ModBlocks.MALIGNANT_FLESH.get());
-		stairsBlock(ModBlocks.MALIGNANT_FLESH_STAIRS.get(), blockTexture(ModBlocks.MALIGNANT_FLESH.get()));
-		simpleBlockItem(ModBlocks.MALIGNANT_FLESH_STAIRS.get());
-		veinsBlock(ModBlocks.MALIGNANT_FLESH_VEINS.get());
+		simpleBlockWithItem(ModBlocks.MALIGNANT_FLESH);
+		directionalSlabBlockWithItem(ModBlocks.MALIGNANT_FLESH_SLAB, ModBlocks.MALIGNANT_FLESH);
+		stairsBlockWithItem(ModBlocks.MALIGNANT_FLESH_STAIRS, ModBlocks.MALIGNANT_FLESH);
+		veinsBlock(ModBlocks.MALIGNANT_FLESH_VEINS);
 
-		irisDoor(ModBlocks.FLESH_IRIS_DOOR.get(), true);
-		fleshDoor();
+		irisDoor(ModBlocks.FLESH_IRIS_DOOR, true);
+		fleshDoor(ModBlocks.FLESH_DOOR);
+		fleshSpikes(ModBlocks.FLESH_SPIKE);
+		bioLantern(ModBlocks.YELLOW_BIO_LANTERN);
+		bioLantern(ModBlocks.BLUE_BIO_LANTERN);
+		tendonChain(ModBlocks.TENDON_CHAIN);
+		vialHolder(ModBlocks.VIAL_HOLDER);
 
-		storageSac(ModBlocks.STORAGE_SAC.get());
+		geckolibModel(ModBlocks.PRIMORDIAL_CRADLE, PRIMAL_PARTICLE_TEXTURE);
+		geoBlockItem(ModBlocks.PRIMORDIAL_CRADLE, new Vector3f(16, 16, 16));
 
-		fleshSpikes(ModBlocks.FLESH_SPIKE.get());
+		geckolibModel(ModBlocks.DECOMPOSER, FLESH_PARTICLE_TEXTURE);
+		geckolibModel(ModBlocks.BIO_FORGE, FLESH_PARTICLE_TEXTURE);
+		geckolibModel(ModBlocks.BIO_LAB, FLESH_PARTICLE_TEXTURE);
+		geckolibModel(ModBlocks.DIGESTER, FLESH_PARTICLE_TEXTURE);
 
-		bioLantern(ModBlocks.YELLOW_BIO_LANTERN.get());
-		bioLantern(ModBlocks.BLUE_BIO_LANTERN.get());
-		tendonChain(ModBlocks.TENDON_CHAIN.get());
-		vialHolder(ModBlocks.VIAL_HOLDER.get());
+		geckolibModel(ModBlocks.MAW_HOPPER, FLESH_PARTICLE_TEXTURE);
+		geckolibModel(ModBlocks.TONGUE, FLESH_PARTICLE_TEXTURE);
+		geckolibModel(ModBlocks.FLESHKIN_CHEST, FLESH_PARTICLE_TEXTURE);
+		fleshkinPressurePlate(ModBlocks.FLESHKIN_PRESSURE_PLATE);
+		storageSac(ModBlocks.STORAGE_SAC);
+	}
 
-		geckolibModel(ModBlocks.PRIMORDIAL_CRADLE.get(), PRIMAL_PARTICLE_TEXTURE);
-		geoBlockItem(ModBlocks.PRIMORDIAL_CRADLE.get(), new Vector3f(16, 16, 16));
+	public <T extends Block> void translucentBlockWithItem(RegistryObject<T> block) {
+		translucentBlockWithItem(block.get());
+	}
 
-		geckolibModel(ModBlocks.DECOMPOSER.get(), FLESH_PARTICLE_TEXTURE);
-		geckolibModel(ModBlocks.BIO_FORGE.get(), FLESH_PARTICLE_TEXTURE);
-		geckolibModel(ModBlocks.BIO_LAB.get(), FLESH_PARTICLE_TEXTURE);
-		geckolibModel(ModBlocks.DIGESTER.get(), FLESH_PARTICLE_TEXTURE);
+	public <T extends FleshChainBlock> void tendonChain(RegistryObject<T> block) {
+		tendonChain(block.get());
+	}
 
-		geckolibModel(ModBlocks.MAW_HOPPER.get(), FLESH_PARTICLE_TEXTURE);
-		geckolibModel(ModBlocks.TONGUE.get(), FLESH_PARTICLE_TEXTURE);
+	public <T extends FleshLanternBlock> void bioLantern(RegistryObject<T> block) {
+		bioLantern(block.get());
+	}
 
-		geckolibModel(ModBlocks.FLESHKIN_CHEST.get(), FLESH_PARTICLE_TEXTURE);
-		fleshkinPressurePlate(ModBlocks.FLESHKIN_PRESSURE_PLATE.get());
+	public void stairsBlockWithItem(RegistryObject<StairBlock> block, RegistryObject<FleshBlock> textureBlock) {
+		stairsBlockWithItem(block.get(), textureBlock.get());
+	}
+
+	public void stairsBlockWithItem(StairBlock block, Block textureBlock) {
+		stairsBlock(block, blockAsset(textureBlock));
+		simpleBlockItem(block);
+	}
+
+	public <T extends RotatedPillarBlock> void axisBlockWithItem(RegistryObject<T> block) {
+		axisBlockWithItem(block.get());
 	}
 
 	public void axisBlockWithItem(RotatedPillarBlock block) {
@@ -99,7 +138,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 	}
 
 	public void vialHolder(VialHolderBlock block) {
-		ResourceLocation baseModel = blockModel(block);
+		ResourceLocation baseModel = blockAsset(block);
 		ModelFile.ExistingModelFile frameModel = models().getExistingFile(extend(baseModel, "_frame"));
 
 		DirectionProperty facingProperty = BlockStateProperties.HORIZONTAL_FACING;
@@ -123,9 +162,13 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		itemModels().getBuilder(path(block)).parent(frameModel);
 	}
 
-	private void fleshkinPressurePlate(OwnablePressurePlateBlock block) {
+	public <T extends OwnablePressurePlateBlock> void fleshkinPressurePlate(RegistryObject<T> pressurePlate) {
+		fleshkinPressurePlate(pressurePlate.get());
+	}
+
+	public void fleshkinPressurePlate(OwnablePressurePlateBlock block) {
 		String path = path(block);
-		ResourceLocation baseTexture = blockTexture(block);
+		ResourceLocation baseTexture = blockAsset(block);
 
 		BlockModelBuilder pressurePlateModel = createPressurePlateModel(path, baseTexture, UserSensitivity.FRIENDLY);
 
@@ -149,25 +192,12 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		simpleBlockItem(block, pressurePlateModel);
 	}
 
-	private BlockModelBuilder createPressurePlateModel(String path, ResourceLocation baseTexture, UserSensitivity sensitivity) {
+	public BlockModelBuilder createPressurePlateModel(String path, ResourceLocation baseTexture, UserSensitivity sensitivity) {
 		return models().pressurePlate(path + "_" + sensitivity.getSerializedName(), extend(baseTexture, "_" + sensitivity.getSerializedName()));
 	}
 
-	private BlockModelBuilder createPressurePlateDownModel(String path, ResourceLocation baseTexture, UserSensitivity sensitivity) {
+	public BlockModelBuilder createPressurePlateDownModel(String path, ResourceLocation baseTexture, UserSensitivity sensitivity) {
 		return models().pressurePlateDown(path + "_" + sensitivity.getSerializedName() + "_down", extend(baseTexture, "_" + sensitivity.getSerializedName() + "_down"));
-	}
-
-	public ResourceLocation blockModel(Block block) {
-		ResourceLocation rl = Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block));
-		return new ResourceLocation(rl.getNamespace(), ModelProvider.BLOCK_FOLDER + "/" + rl.getPath());
-	}
-
-	public ResourceLocation extend(ResourceLocation rl, String suffix) {
-		return new ResourceLocation(rl.getNamespace(), rl.getPath() + suffix);
-	}
-
-	private String path(Block block) {
-		return Objects.requireNonNull(ForgeRegistries.BLOCKS.getKey(block)).getPath();
 	}
 
 	public void simpleBlockItem(Block block) {
@@ -175,9 +205,17 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		itemModels().getBuilder(path).parent(models().getBuilder(path));
 	}
 
+	public <W extends WallBlock, B extends Block> void wallBlock(RegistryObject<W> wallBlock, RegistryObject<B> textureBlock) {
+		wallBlock(wallBlock.get(), textureBlock.get());
+	}
+
 	public void wallBlock(WallBlock block, Block textureBlock) {
-		ResourceLocation texture = blockTexture(textureBlock);
+		ResourceLocation texture = blockAsset(textureBlock);
 		wallBlock(block, texture);
+	}
+
+	public <T extends Block> void simpleBlockWithItem(RegistryObject<T> block) {
+		simpleBlockWithItem(block.get());
 	}
 
 	public void simpleBlockWithItem(Block block) {
@@ -186,18 +224,30 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		simpleBlockItem(block, model);
 	}
 
+	public void translucentBlockWithItem(Block block) {
+		BlockModelBuilder modelBuilder = models()
+				.cubeAll(path(block), blockAsset(block))
+				.renderType("translucent");
+		simpleBlock(block, modelBuilder);
+		simpleBlockItem(block, modelBuilder);
+	}
+
+	public <T extends Block> void simpleVariantBlockWithItem(RegistryObject<T> block, int variants) {
+		simpleVariantBlockWithItem(block.get(), variants);
+	}
+
 	public void simpleVariantBlockWithItem(Block block, int variants) {
 		String path = path(block);
-		ResourceLocation blockTexture = blockTexture(block);
+		ResourceLocation texture = blockAsset(block);
 
-		ModelFile mainModel = models().cubeAll(path, blockTexture);
+		ModelFile mainModel = models().cubeAll(path, texture);
 		simpleBlockItem(block, mainModel);
 
 		ConfiguredModel.Builder<?> builder = ConfiguredModel.builder().modelFile(mainModel).weight(2); //make main model more frequent than the variants
 
 		for (int i = 1; i < variants; i++) {
 			String suffix = "_" + i;
-			BlockModelBuilder modelVariant = models().cubeAll(path + suffix, extend(blockTexture, suffix));
+			BlockModelBuilder modelVariant = models().cubeAll(path + suffix, extend(texture, suffix));
 			builder = builder.nextModel().modelFile(modelVariant).weight(1);
 		}
 
@@ -205,7 +255,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 	}
 
 	public void existingBlock(Block block) {
-		existingBlock(block, blockModel(block));
+		existingBlock(block, blockAsset(block));
 	}
 
 	public void existingBlock(Block block, ResourceLocation existingModel) {
@@ -213,14 +263,18 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		simpleBlock(block, modelFile);
 	}
 
+	public <T extends Block> void existingBlockWithItem(RegistryObject<T> block) {
+		existingBlockWithItem(block.get());
+	}
+
 	public void existingBlockWithItem(Block block) {
-		ModelFile.ExistingModelFile existingModel = models().getExistingFile(blockModel(block));
+		ModelFile.ExistingModelFile existingModel = models().getExistingFile(blockAsset(block));
 		simpleBlock(block, existingModel);
 		simpleBlockItem(block, existingModel);
 	}
 
 	public void directionalBlockWithItem(Block block) {
-		ModelFile.ExistingModelFile existingModel = models().getExistingFile(blockModel(block));
+		ModelFile.ExistingModelFile existingModel = models().getExistingFile(blockAsset(block));
 		directionalBlock(block, blockState -> existingModel, BlockStateProperties.WATERLOGGED);
 		simpleBlockItem(block, existingModel);
 	}
@@ -246,24 +300,32 @@ public class ModBlockStateProvider extends BlockStateProvider {
 	}
 
 	public void fleshSpikes(Block block) {
-		ResourceLocation path = blockModel(block);
+		ResourceLocation model = blockAsset(block);
 		ModelFile.ExistingModelFile[] models = {
-				models().getExistingFile(extend(path, "_1")),
-				models().getExistingFile(extend(path, "_2")),
-				models().getExistingFile(extend(path, "_3"))
+				models().getExistingFile(extend(model, "_1")),
+				models().getExistingFile(extend(model, "_2")),
+				models().getExistingFile(extend(model, "_3"))
 		};
 		directionalBlock(block, blockState -> models[FleshSpikeBlock.getSpikes(blockState) - 1], BlockStateProperties.WATERLOGGED);
 
 		itemModels().basicItem(block.asItem());
 	}
 
+	public <T extends Block> void storageSac(RegistryObject<T> block) {
+		storageSac(block.get());
+	}
+
 	public void storageSac(Block block) {
-		ModelFile.ExistingModelFile existingModel = models().getExistingFile(blockModel(block));
+		ModelFile.ExistingModelFile existingModel = models().getExistingFile(blockAsset(block));
 		directionalBlock(block, blockState -> existingModel, BlockStateProperties.WATERLOGGED);
 		simpleBlockItem(block, existingModel);
 	}
 
-	private void geoBlockItem(Block block, Vector3f modelBounds) {
+	public <T extends Block> void geoBlockItem(RegistryObject<T> block, Vector3f modelBounds) {
+		geoBlockItem(block.get(), modelBounds);
+	}
+
+	public void geoBlockItem(Block block, Vector3f modelBounds) {
 		String path = path(block);
 
 		float xMul = modelBounds.x() <= 1e-5f ? 0 : 16 / modelBounds.x();
@@ -294,22 +356,32 @@ public class ModBlockStateProvider extends BlockStateProvider {
 				.transform(ItemTransforms.TransformType.HEAD).translation(0, -8 * yPct, 0).scale(scaleHead * scaleMultiplier).end();
 	}
 
+	public <T extends Block> void geckolibModel(RegistryObject<T> geoBlock, ResourceLocation particleTexture) {
+		geckolibModel(geoBlock.get(), particleTexture);
+	}
+
 	public void geckolibModel(Block block, ResourceLocation particleTexture) {
 		String path = path(block);
 		simpleBlock(block, models().getBuilder(path).texture("particle", particleTexture));
 	}
 
-	public void directionalSlabBlockWithItem(DirectionalSlabBlock slab, Block block) {
-		directionalSlabBlockWithItem(slab, blockModel(block), blockTexture(block));
+	public <S extends DirectionalSlabBlock, B extends Block> void directionalSlabBlockWithItem(RegistryObject<S> slab, RegistryObject<B> fullBlock) {
+		directionalSlabBlockWithItem(slab.get(), fullBlock.get());
 	}
 
-	public void directionalSlabBlockWithItem(DirectionalSlabBlock block, ResourceLocation full, ResourceLocation texture) {
-		directionalSlabBlock(block, full, texture, texture, texture);
+	public void directionalSlabBlockWithItem(DirectionalSlabBlock slab, Block fullBlock) {
+		ResourceLocation fullModel = blockAsset(fullBlock);
+		ResourceLocation texture = blockAsset(fullBlock);
+		directionalSlabBlockWithItem(slab, fullModel, texture);
+	}
+
+	public void directionalSlabBlockWithItem(DirectionalSlabBlock block, ResourceLocation existingModelFull, ResourceLocation texture) {
+		directionalSlabBlock(block, existingModelFull, texture, texture, texture);
 		simpleBlockItem(block);
 	}
 
-	public void directionalSlabBlock(DirectionalSlabBlock block, ResourceLocation full, ResourceLocation side, ResourceLocation bottom, ResourceLocation top) {
-		directionalSlabBlock(block, models().slab(path(block), side, bottom, top), models().getExistingFile(full));
+	public void directionalSlabBlock(DirectionalSlabBlock block, ResourceLocation existingModelFull, ResourceLocation side, ResourceLocation bottom, ResourceLocation top) {
+		directionalSlabBlock(block, models().slab(path(block), side, bottom, top), models().getExistingFile(existingModelFull));
 	}
 
 	public void directionalSlabBlock(DirectionalSlabBlock block, ModelFile half, ModelFile full) {
@@ -339,7 +411,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 	}
 
 	public void tendonChain(FleshChainBlock block) {
-		ResourceLocation file = blockModel(block);
+		ResourceLocation file = blockAsset(block);
 		ModelFile.ExistingModelFile model = models().getExistingFile(file);
 
 		getVariantBuilder(block)
@@ -355,7 +427,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
 	public void bioLantern(FleshLanternBlock block) {
 		String path = path(block);
-		ResourceLocation texture = blockTexture(block);
+		ResourceLocation texture = blockAsset(block);
 		ResourceLocation template = BiomancyMod.createRL("block/template_bio_lantern");
 
 		ModelFile model = models().singleTexture(path, template, texture);
@@ -372,7 +444,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
 	public void veinsBlock(MultifaceBlock block) {
 		String name = path(block);
-		ModelFile model = models().singleTexture(name, BiomancyMod.createRL("block/template_veins"), blockTexture(block));
+		ModelFile model = models().singleTexture(name, BiomancyMod.createRL("block/template_veins"), blockAsset(block));
 
 		MultiPartBlockStateBuilder builder = getMultipartBuilder(block);
 
@@ -409,7 +481,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 	}
 
 	public void irisDoor(IrisDoorBlock block, boolean simpleBlockItem) {
-		ResourceLocation texture = blockTexture(block);
+		ResourceLocation texture = blockAsset(block);
 		String name = path(block);
 
 		ModelFile openModel = models().singleTexture(name + "_open", BiomancyMod.createRL("block/template_iris_door"), extend(texture, "_open"));
@@ -453,7 +525,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 				}, IrisDoorBlock.POWERED, IrisDoorBlock.WATERLOGGED);
 	}
 
-	private void fleshDoor() {
+	public void fleshDoor(FleshDoorBlock block) {
 		ModelFile.ExistingModelFile bottomModel = models().getExistingFile(BiomancyMod.createRL("block/flesh_door_bottom"));
 		ModelFile.ExistingModelFile bottomOpenModel = models().getExistingFile(BiomancyMod.createRL("block/flesh_door_bottom_open"));
 		ModelFile.ExistingModelFile bottomMiddleModel = models().getExistingFile(BiomancyMod.createRL("block/flesh_door_bottom_middle"));
@@ -463,7 +535,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		ModelFile.ExistingModelFile topMiddleModel = models().getExistingFile(BiomancyMod.createRL("block/flesh_door_top_middle"));
 		ModelFile.ExistingModelFile topMiddleOpenModel = models().getExistingFile(BiomancyMod.createRL("block/flesh_door_top_middle_open"));
 
-		FleshDoorBlock block = ModBlocks.FLESH_DOOR.get();
 		getVariantBuilder(block)
 				.forAllStatesExcept(state -> {
 					boolean isOpen = block.isOpen(state);
@@ -505,4 +576,23 @@ public class ModBlockStateProvider extends BlockStateProvider {
 				}, FleshDoorBlock.POWERED, FleshDoorBlock.HINGE, FleshDoorBlock.FACING);
 	}
 
+	public <T extends FleshSpikeBlock> void fleshSpikes(RegistryObject<T> block) {
+		fleshSpikes(block.get());
+	}
+
+	public <T extends FleshDoorBlock> void fleshDoor(RegistryObject<T> block) {
+		fleshDoor(block.get());
+	}
+
+	public <T extends IrisDoorBlock> void irisDoor(RegistryObject<T> block, boolean simpleBlockItem) {
+		irisDoor(block.get(), simpleBlockItem);
+	}
+
+	public <T extends FleshVeinsBlock> void veinsBlock(RegistryObject<T> block) {
+		veinsBlock(block.get());
+	}
+
+	public <T extends VialHolderBlock> void vialHolder(RegistryObject<T> block) {
+		vialHolder(block.get());
+	}
 }
