@@ -105,6 +105,10 @@ public final class ModBlocks {
 
 	//## Misc
 	public static final RegistryObject<VoiceBoxBlock> VOICE_BOX = register("voice_box", VoiceBoxBlock::new);
+	public static final RegistryObject<MembraneBlock> FLESH_MEMBRANE = register("flesh_membrane", props -> {
+		props = props.noOcclusion().isRedstoneConductor(ModBlocks::neverValid).isSuffocating(ModBlocks::neverValid).isViewBlocking(ModBlocks::neverValid);
+		return new MembraneBlock(props, MembraneBlock.IgnoreEntityCollisionPredicate.IS_BABY_MOB);
+	});
 	public static final RegistryObject<LadderBlock> FLESH_LADDER = register("flesh_ladder", () -> new LadderBlock(createFleshyBoneProperties().noOcclusion()));
 	public static final RegistryObject<FleshFenceBlock> FLESH_FENCE = register("flesh_fence", FleshFenceBlock::new);
 	public static final RegistryObject<FleshFenceGateBlock> FLESH_FENCE_GATE = register("flesh_fence_gate", () -> new FleshFenceGateBlock(createFleshyBoneProperties().noOcclusion()));
@@ -170,6 +174,15 @@ public final class ModBlocks {
 	public static boolean isValidFleshkinSpawn(BlockState state, BlockGetter level, BlockPos pos, EntityType<?> entityType) {
 		return entityType.is(ModEntityTags.FLESHKIN) && state.isFaceSturdy(level, pos, Direction.UP);
 	}
+
+	public static boolean neverValid(BlockState state, BlockGetter level, BlockPos pos, EntityType<?> entityType) {
+		return false;
+	}
+
+	public static boolean neverValid(BlockState state, BlockGetter level, BlockPos pos) {
+		return false;
+	}
+
 
 	interface StairBlockFactory<T extends StairBlock> {
 		T create(Supplier<BlockState> state, BlockBehaviour.Properties properties);

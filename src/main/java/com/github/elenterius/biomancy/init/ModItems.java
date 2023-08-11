@@ -152,6 +152,7 @@ public final class ModItems {
 
 	//## Misc
 	public static final RegistryObject<SimpleBlockItem> VOICE_BOX = registerSimpleBlockItem(ModBlocks.VOICE_BOX, () -> createProperties().tab(null));
+	public static final RegistryObject<SimpleBlockItem> FLESH_MEMBRANE = registerSimpleBlockItem(ModBlocks.FLESH_MEMBRANE);
 	public static final RegistryObject<SimpleBlockItem> FLESH_LADDER = registerSimpleBlockItem(ModBlocks.FLESH_LADDER);
 	public static final RegistryObject<SimpleBlockItem> FLESH_FENCE = registerSimpleBlockItem(ModBlocks.FLESH_FENCE);
 	public static final RegistryObject<SimpleBlockItem> FLESH_FENCE_GATE = registerSimpleBlockItem(ModBlocks.FLESH_FENCE_GATE);
