@@ -91,6 +91,7 @@ public final class ModBlocks {
 	public static final RegistryObject<RotatedPillarBlock> FLESH_PILLAR = register("flesh_pillar", RotatedPillarBlock::new);
 	public static final RegistryObject<FleshBlock> FIBROUS_FLESH = register("fibrous_flesh", FleshBlock::new);
 	public static final RegistryObject<FleshBlock> CHISELED_FLESH = register("chiseled_flesh", FleshBlock::new);
+	public static final RegistryObject<RotatedPillarBlock> ORNATE_FLESH = register("ornate_flesh", RotatedPillarBlock::new);
 
 	public static final RegistryObject<FleshBlock> PRIMAL_FLESH = register("primal_flesh", FleshBlock::new);
 	public static final RegistryObject<StairBlock> PRIMAL_FLESH_STAIRS = registerStairs(PRIMAL_FLESH, StairBlock::new);
