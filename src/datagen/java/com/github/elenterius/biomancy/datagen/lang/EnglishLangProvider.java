@@ -463,6 +463,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.FLESH_PILLAR, "Flesh Pillar", "A Pillar made of bones and flesh.");
 		addBlock(ModBlocks.FIBROUS_FLESH, "Fibrous Flesh Block", "A unusual block flesh made from the innards of someone.");
 		addBlock(ModBlocks.CHISELED_FLESH, "Chiseled Flesh Block", "A regal block of flesh... I'm most delighted");
+		addBlock(ModBlocks.ORNATE_FLESH, "Ornamental Flesh Block", "A set of regal teeth and flesh.");
 
 		addBlock(ModBlocks.FLESH_FENCE, "Flesh Fence", "Fence made of bones and flesh...");
 		addBlock(ModBlocks.FLESH_FENCE_GATE, "Flesh Fence Gate", "Fence gate made of bones and flesh...");
