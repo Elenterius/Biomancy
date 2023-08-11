@@ -141,6 +141,7 @@ public class ModBlockLoot extends BlockLoot {
 
 		dropSelf(ModBlocks.FLESH_PILLAR.get());
 		dropSelf(ModBlocks.FIBROUS_FLESH.get());
+		dropSelf(ModBlocks.CHISELED_FLESH.get());
 
 		dropSelf(ModBlocks.PRIMAL_FLESH.get());
 		add(ModBlocks.PRIMAL_FLESH_SLAB.get(), ModBlockLoot::createDirectionalSlabTable);
