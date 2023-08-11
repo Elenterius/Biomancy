@@ -52,6 +52,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		simpleBlockItem(ModBlocks.PACKED_FLESH_STAIRS.get());
 		wallBlock(ModBlocks.PACKED_FLESH_WALL.get(), ModBlocks.PACKED_FLESH.get());
 
+		axisBlockWithItem(ModBlocks.FLESH_PILLAR.get());
+
 		simpleBlockWithItem(ModBlocks.PRIMAL_FLESH.get());
 		directionalSlabBlockWithItem(ModBlocks.PRIMAL_FLESH_SLAB.get(), ModBlocks.PRIMAL_FLESH.get());
 		stairsBlock(ModBlocks.PRIMAL_FLESH_STAIRS.get(), blockTexture(ModBlocks.PRIMAL_FLESH.get()));
@@ -66,9 +68,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
 		irisDoor(ModBlocks.FLESH_IRIS_DOOR.get(), true);
 		fleshDoor();
-
-		axisBlock(ModBlocks.FLESH_PILLAR.get());
-		simpleBlockItem(ModBlocks.FLESH_PILLAR.get());
 
 		storageSac(ModBlocks.STORAGE_SAC.get());
 
@@ -92,6 +91,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
 		geckolibModel(ModBlocks.FLESHKIN_CHEST.get(), FLESH_PARTICLE_TEXTURE);
 		fleshkinPressurePlate(ModBlocks.FLESHKIN_PRESSURE_PLATE.get());
+	}
+
+	public void axisBlockWithItem(RotatedPillarBlock block) {
+		axisBlock(block);
+		simpleBlockItem(block);
 	}
 
 	public void vialHolder(VialHolderBlock block) {
