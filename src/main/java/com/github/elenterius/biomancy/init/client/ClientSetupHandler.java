@@ -19,7 +19,8 @@ import com.github.elenterius.biomancy.client.render.block.tongue.TongueRenderer;
 import com.github.elenterius.biomancy.client.render.entity.AcidProjectileRenderer;
 import com.github.elenterius.biomancy.client.render.entity.WitherProjectileRenderer;
 import com.github.elenterius.biomancy.client.render.entity.fleshblob.FleshBlobRenderer;
-import com.github.elenterius.biomancy.client.render.entity.fleshblob.MalignantFleshBlobRenderer;
+import com.github.elenterius.biomancy.client.render.entity.fleshblob.LegacyFleshBlobRenderer;
+import com.github.elenterius.biomancy.client.render.entity.fleshblob.PrimordialFleshBlobRenderer;
 import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.integration.ModsCompatHandler;
 import com.github.elenterius.biomancy.tooltip.EmptyLineTooltipComponent;
@@ -87,7 +88,9 @@ public final class ClientSetupHandler {
 
 		event.registerEntityRenderer(ModEntityTypes.HUNGRY_FLESH_BLOB.get(), FleshBlobRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.FLESH_BLOB.get(), FleshBlobRenderer::new);
-		event.registerEntityRenderer(ModEntityTypes.MALIGNANT_FLESH_BLOB.get(), MalignantFleshBlobRenderer::new);
+		event.registerEntityRenderer(ModEntityTypes.LEGACY_FLESH_BLOB.get(), LegacyFleshBlobRenderer::new);
+		event.registerEntityRenderer(ModEntityTypes.PRIMORDIAL_FLESH_BLOB.get(), PrimordialFleshBlobRenderer::new);
+		event.registerEntityRenderer(ModEntityTypes.PRIMORDIAL_HUNGRY_FLESH_BLOB.get(), PrimordialFleshBlobRenderer::new);
 
 		event.registerEntityRenderer(ModEntityTypes.CORROSIVE_ACID_PROJECTILE.get(), AcidProjectileRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.TOOTH_PROJECTILE.get(), ThrownItemRenderer::new);

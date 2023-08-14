@@ -38,6 +38,15 @@ public class ModEntityLoot extends EntityLoot {
 						.when(LootItemKilledByPlayerCondition.killedByPlayer()));
 	}
 
+	private static LootTable.Builder primordialFleshBlobLootTable() {
+		return LootTable.lootTable()
+				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(ModItems.CREATOR_MIX.get())
+						.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1))).apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0f, 1f)))))
+				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+						.add(LootItem.lootTableItem(ModItems.CREATOR_MIX.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(-4f, 1f))).apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0f, 1f))))
+						.when(LootItemKilledByPlayerCondition.killedByPlayer()));
+	}
+
 	private static LootTable.Builder noLoot() {
 		return LootTable.lootTable();
 	}
@@ -45,6 +54,7 @@ public class ModEntityLoot extends EntityLoot {
 	@Override
 	protected void addTables() {
 		add(ModEntityTypes.FLESH_BLOB.get(), fleshBlobLootTable());
+		add(ModEntityTypes.LEGACY_FLESH_BLOB.get(), fleshBlobLootTable());
 		add(ModEntityTypes.HUNGRY_FLESH_BLOB.get(), fleshBlobLootTable());
 		add(ModLoot.Entity.FLESH_BLOB_SIZE_2, fleshBlobLootTableBuilderWithDrop(1));
 		add(ModLoot.Entity.FLESH_BLOB_SIZE_3, fleshBlobLootTableBuilderWithDrop(2));
@@ -56,7 +66,8 @@ public class ModEntityLoot extends EntityLoot {
 		add(ModLoot.Entity.FLESH_BLOB_SIZE_9, fleshBlobLootTableBuilderWithDrop(8));
 		add(ModLoot.Entity.FLESH_BLOB_SIZE_10, fleshBlobLootTableBuilderWithDrop(9));
 
-		add(ModEntityTypes.MALIGNANT_FLESH_BLOB.get(), noLoot());
+		add(ModEntityTypes.PRIMORDIAL_FLESH_BLOB.get(), primordialFleshBlobLootTable());
+		add(ModEntityTypes.PRIMORDIAL_HUNGRY_FLESH_BLOB.get(), primordialFleshBlobLootTable());
 
 		//		add(ModEntityTypes.BOOMLING.get(), LootTable.lootTable()); //no item drops
 

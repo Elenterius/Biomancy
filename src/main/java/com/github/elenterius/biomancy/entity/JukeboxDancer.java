@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.entity;
 import net.minecraft.core.BlockPos;
 import org.jetbrains.annotations.Nullable;
 
-public interface IJukeboxDancer {
+public interface JukeboxDancer {
 
 	boolean isDancing();
 

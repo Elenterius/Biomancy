@@ -4,7 +4,7 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public interface IFoodEater {
+public interface FoodEater {
 	void ate(@Nullable FoodProperties food);
 
 	boolean isEating();
