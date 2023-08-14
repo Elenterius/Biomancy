@@ -84,11 +84,10 @@ public class VialHolderBlockEntity extends SimpleSyncedBlockEntity {
 		tag.put(INVENTORY_TAG, inventory.serializeNBT());
 	}
 
-	public void dropInventoryContents(Level level, BlockPos pos) {
+	public void dropInventoryContents(Level level, BlockPos pos, boolean removeWithoutUpdate) {
 		for (int i = 0; i < inventory.getSlots(); i++) {
-			ItemStack stack = inventory.extractItem(i, inventory.getSlotLimit(i), false);
+			ItemStack stack = inventory.extractItem(i, inventory.getSlotLimit(i), removeWithoutUpdate);
 			if (stack.isEmpty()) continue;
-
 			Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), stack);
 		}
 	}
