@@ -14,7 +14,8 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 	private byte lifeEnergy;
 	private int successValue;
 	private int diseaseValue;
-	private int hostileValue;
+	private int hostileValue = 100;
+	private int anomalyValue = 5;
 
 	public boolean isFull() {
 		return lifeEnergy >= MAX_VALUE && biomass >= MAX_VALUE;
@@ -84,6 +85,10 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 		return hostileValue / 100f;
 	}
 
+	public float getAnomalyChance() {
+		return anomalyValue / 100f;
+	}
+
 	public float getTumorFactor() {
 		return diseaseValue / 100f;
 	}
@@ -140,6 +145,7 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 			diseaseValue += tribute.diseaseModifier();
 			hostileValue += tribute.hostileModifier();
 			successValue += tribute.successModifier();
+			anomalyValue += tribute.anomalyModifier();
 			return true;
 		}
 
@@ -151,8 +157,9 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 		lifeEnergy = 0;
 
 		diseaseValue = 0;
-		hostileValue = 0;
+		hostileValue = 100;
 		successValue = 0;
+		anomalyValue = 5;
 	}
 
 	@Override
@@ -164,6 +171,7 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 		tag.putInt("Disease", diseaseValue);
 		tag.putInt("Hostile", hostileValue);
 		tag.putInt("Success", successValue);
+		tag.putInt("Anomaly", anomalyValue);
 		return tag;
 	}
 
@@ -175,6 +183,7 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 		diseaseValue = tag.getInt("Disease");
 		hostileValue = tag.getInt("Hostile");
 		successValue = tag.getInt("Success");
+		anomalyValue = tag.getInt("Anomaly");
 	}
 
 }
