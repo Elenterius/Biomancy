@@ -162,7 +162,7 @@ public class VialHolderBlock extends BaseEntityBlock {
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!state.is(newState.getBlock())) {
 			if (level.getBlockEntity(pos) instanceof VialHolderBlockEntity vialHolder) {
-				vialHolder.dropInventoryContents(level, pos);
+				vialHolder.dropInventoryContents(level, pos, true);
 			}
 			super.onRemove(state, level, pos, newState, isMoving);
 		}
