@@ -81,7 +81,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 		serumItem(ModItems.HEALING_ADDITIVE);
 		serumItem(ModItems.CORROSIVE_ADDITIVE);
 
-		basicItem(ModItems.PRIMORDIAL_CORE);
+		emissiveItem(ModItems.PRIMORDIAL_CORE);
 		fleshPlunderer(ModItems.DESPOIL_SICKLE);
 		basicItem(ModItems.CREATOR_MIX);
 		basicItem(ModItems.NUTRIENT_PASTE);
@@ -102,6 +102,18 @@ public class ModItemModelProvider extends ItemModelProvider {
 
 		//generate models for all eggs
 		ModItems.ITEMS.getEntries().stream().map(RegistryObject::get).filter(SpawnEggItem.class::isInstance).forEach(this::spawnEggItem);
+	}
+
+	public <T extends Item> void emissiveItem(RegistryObject<T> registryObject) {
+		emissiveItem(registryObject.getId());
+	}
+
+	public void emissiveItem(ResourceLocation registryKey) {
+		getBuilder(registryKey.toString())
+				.parent(new ModelFile.UncheckedModelFile("item/generated"))
+				.customLoader(ItemLayersModelBuilder::begin).emissive(1).end()
+				.texture(LAYER_0_TEXTURE, new ResourceLocation(registryKey.getNamespace(), ITEM_FOLDER + "/" + registryKey.getPath()))
+				.texture(LAYER_1_TEXTURE, new ResourceLocation(registryKey.getNamespace(), ITEM_FOLDER + "/" + registryKey.getPath() + "_emissive"));
 	}
 
 	public <T extends DespoilingSwordItem> void fleshPlunderer(RegistryObject<T> registryObject) {
