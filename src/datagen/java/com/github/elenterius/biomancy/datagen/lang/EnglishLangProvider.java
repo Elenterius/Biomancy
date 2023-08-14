@@ -422,7 +422,9 @@ public class EnglishLangProvider extends AbstractLangProvider {
 
 		addItem(ModItems.HUNGRY_FLESH_BLOB_SPAWN_EGG, "Hungry Flesh Blob Spawn Egg");
 		addItem(ModItems.FLESH_BLOB_SPAWN_EGG, "Flesh Blob Spawn Egg");
-		addItem(ModItems.MALIGNANT_FLESH_BLOB_SPAWN_EGG, "Malignant Flesh Blob Spawn Egg");
+		addItem(ModItems.LEGACY_FLESH_BLOB_SPAWN_EGG, "Legacy Flesh Blob Spawn Egg");
+		addItem(ModItems.PRIMORDIAL_FLESH_BLOB_SPAWN_EGG, "Primordial Flesh Blob Spawn Egg");
+		addItem(ModItems.PRIMORDIAL_HUNGRY_FLESH_BLOB_SPAWN_EGG, "Primordial Hungry Flesh Blob Spawn Egg");
 	}
 
 	private void addBlockTranslations() {
@@ -495,7 +497,9 @@ public class EnglishLangProvider extends AbstractLangProvider {
 	private void addEntityTranslations() {
 		addEntityType(ModEntityTypes.HUNGRY_FLESH_BLOB, "Hungry Flesh Blob");
 		addEntityType(ModEntityTypes.FLESH_BLOB, "Flesh Blob");
-		addEntityType(ModEntityTypes.MALIGNANT_FLESH_BLOB, "Malignant Flesh Blob");
+		addEntityType(ModEntityTypes.LEGACY_FLESH_BLOB, "Legacy Flesh Blob");
+		addEntityType(ModEntityTypes.PRIMORDIAL_FLESH_BLOB, "Primordial Flesh Blob");
+		addEntityType(ModEntityTypes.PRIMORDIAL_HUNGRY_FLESH_BLOB, "Primordial Hungry Flesh Blob");
 	}
 
 }

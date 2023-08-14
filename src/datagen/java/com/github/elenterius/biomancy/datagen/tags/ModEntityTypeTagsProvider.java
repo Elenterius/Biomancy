@@ -97,8 +97,10 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 				.add(EntityType.IRON_GOLEM, EntityType.SNOW_GOLEM)
 				.addOptional("strawgolem:strawgolem", "strawgolem:strawnggolem");
 
-		createTag(ModEntityTags.FLESHKIN)
-				.add(ModEntityTypes.FLESH_BLOB.get(), ModEntityTypes.HUNGRY_FLESH_BLOB.get(), ModEntityTypes.MALIGNANT_FLESH_BLOB.get());
+		createTag(ModEntityTags.FLESHKIN).add(
+				ModEntityTypes.FLESH_BLOB.get(), ModEntityTypes.HUNGRY_FLESH_BLOB.get(), ModEntityTypes.LEGACY_FLESH_BLOB.get(),
+				ModEntityTypes.PRIMORDIAL_FLESH_BLOB.get(), ModEntityTypes.PRIMORDIAL_HUNGRY_FLESH_BLOB.get()
+		);
 
 		addSpecialMobLootTags();
 	}

@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.api.serum.Serum;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -32,6 +33,7 @@ public final class MigrationHandler {
 		handleMissingItems(event.getMappings(ModItems.ITEMS.getRegistryKey(), BiomancyMod.MOD_ID));
 		handleMissingBlocks(event.getMappings(ModBlocks.BLOCKS.getRegistryKey(), BiomancyMod.MOD_ID));
 		handleMissingBlockEntityTypes(event.getMappings(ForgeRegistries.BLOCK_ENTITY_TYPES.getRegistryKey(), BiomancyMod.MOD_ID));
+		handleMissingEntityTypes(event.getMappings(ForgeRegistries.ENTITY_TYPES.getRegistryKey(), BiomancyMod.MOD_ID));
 	}
 
 	private static void handleMissingSerums(List<Mapping<Serum>> mappings) {
@@ -65,6 +67,22 @@ public final class MigrationHandler {
 				case "necrotic_flesh_block" -> mapping.remap(ModBlocks.MALIGNANT_FLESH.get());
 				case "flesh_tentacle" -> mapping.remap(ModBlocks.MALIGNANT_FLESH_VEINS.get());
 				default -> mapping.ignore();
+			}
+		}
+	}
+
+	private static void handleMissingEntityTypes(List<Mapping<EntityType<?>>> mappings) {
+		if (mappings.isEmpty()) return;
+
+		BiomancyMod.LOGGER.info("found missing entity mappings, attempting to remap...");
+
+		for (Mapping<EntityType<?>> mapping : mappings) {
+			String path = mapping.getKey().getPath();
+			if (path.equals("malignant_flesh_blob")) {
+				mapping.remap(ModEntityTypes.PRIMORDIAL_HUNGRY_FLESH_BLOB.get());
+			}
+			else {
+				mapping.ignore();
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.entity.ai.goal;
 
-import com.github.elenterius.biomancy.entity.IJukeboxDancer;
+import com.github.elenterius.biomancy.entity.JukeboxDancer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.PathfinderMob;
@@ -11,7 +11,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import java.util.EnumSet;
 import java.util.Set;
 
-public class DanceNearJukeboxGoal<T extends PathfinderMob & IJukeboxDancer> extends Goal {
+public class DanceNearJukeboxGoal<T extends PathfinderMob & JukeboxDancer> extends Goal {
 
 	protected final T mob;
 

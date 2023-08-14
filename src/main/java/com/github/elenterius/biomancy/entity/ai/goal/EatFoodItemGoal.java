@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.entity.ai.goal;
 
-import com.github.elenterius.biomancy.entity.IFoodEater;
+import com.github.elenterius.biomancy.entity.FoodEater;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.food.FoodProperties;
@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.EnumSet;
 
-public class EatFoodItemGoal<T extends PathfinderMob & IFoodEater> extends Goal {
+public class EatFoodItemGoal<T extends PathfinderMob & FoodEater> extends Goal {
 
 	protected static final int EATING_TICKS = 20 * 2 + 4;
 	private final T mob;

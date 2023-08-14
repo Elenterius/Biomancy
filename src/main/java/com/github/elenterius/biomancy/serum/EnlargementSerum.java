@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.serum;
 
-import com.github.elenterius.biomancy.entity.fleshblob.AbstractFleshBlob;
+import com.github.elenterius.biomancy.entity.fleshblob.FleshBlob;
 import com.github.elenterius.biomancy.integration.ModsCompatHandler;
 import com.github.elenterius.biomancy.integration.compat.pehkui.IPehkuiHelper;
 import com.github.elenterius.biomancy.mixin.ArmorStandAccessor;
@@ -27,7 +27,7 @@ public class EnlargementSerum extends BasicSerum {
 		((ArmorStandAccessor) armorStand).biomancy_setSmall(false);
 	}
 
-	private void resizeFleshBlob(@Nullable LivingEntity source, AbstractFleshBlob fleshBlob) {
+	private void resizeFleshBlob(@Nullable LivingEntity source, FleshBlob fleshBlob) {
 		byte blobSize = fleshBlob.getBlobSize();
 		if (blobSize < 10) {
 			fleshBlob.setBlobSize((byte) (blobSize + 1), false);
@@ -65,7 +65,7 @@ public class EnlargementSerum extends BasicSerum {
 		if (target instanceof Slime slime) {
 			resizeSlime(source, slime);
 		}
-		else if (target instanceof AbstractFleshBlob fleshBlob) {
+		else if (target instanceof FleshBlob fleshBlob) {
 			resizeFleshBlob(source, fleshBlob);
 		}
 		else if (target instanceof ArmorStand armorStand && armorStand.isSmall()) {

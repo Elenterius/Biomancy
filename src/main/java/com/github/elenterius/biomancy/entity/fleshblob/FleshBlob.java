@@ -1,235 +1,391 @@
 package com.github.elenterius.biomancy.entity.fleshblob;
 
-import com.github.elenterius.biomancy.entity.IFoodEater;
-import com.github.elenterius.biomancy.entity.ai.goal.FindItemGoal;
-import net.minecraft.core.particles.ItemParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
+import com.github.elenterius.biomancy.entity.Fleshkin;
+import com.github.elenterius.biomancy.entity.JukeboxDancer;
+import com.github.elenterius.biomancy.entity.JumpMoveHelper;
+import com.github.elenterius.biomancy.init.ModLoot;
+import com.github.elenterius.biomancy.init.ModSoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.gameevent.*;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.CustomInstructionKeyframeEvent;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
-import java.util.function.Predicate;
+import java.util.function.BiConsumer;
 
-public abstract class FleshBlob extends AbstractFleshBlob implements IFoodEater {
+public abstract class FleshBlob extends PathfinderMob implements Fleshkin, JumpMoveHelper.IJumpingPathfinderMob, JukeboxDancer, IAnimatable {
 
-	public static final Predicate<ItemEntity> ITEM_ENTITY_FILTER = itemEntity -> FindItemGoal.ITEM_ENTITY_FILTER.test(itemEntity) && itemEntity.getItem().isEdible();
-	protected static final EntityDataAccessor<Boolean> IS_EATING = SynchedEntityData.defineId(FleshBlob.class, EntityDataSerializers.BOOLEAN);
+	public static final byte MAX_SIZE = 10;
+	public static final byte MIN_SIZE = 1;
+	public static final byte JUMPING_STATE_ID = 61;
+	protected static final EntityDataAccessor<Byte> BLOB_SIZE = SynchedEntityData.defineId(FleshBlob.class, EntityDataSerializers.BYTE);
+	protected static final EntityDataAccessor<Byte> TUMORS = SynchedEntityData.defineId(FleshBlob.class, EntityDataSerializers.BYTE);
+	protected static final EntityDataAccessor<Boolean> IS_DANCING = SynchedEntityData.defineId(FleshBlob.class, EntityDataSerializers.BOOLEAN);
+
+	protected final JumpMoveHelper<FleshBlob> jumpMoveHelper = new JumpMoveHelper<>(this, JUMPING_STATE_ID);
+	protected final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
+	private final DynamicGameEventListener<JukeboxListener> dynamicJukeboxListener;
+	private @Nullable BlockPos jukeboxPos;
 
 	protected FleshBlob(EntityType<? extends FleshBlob> entityType, Level level) {
 		super(entityType, level);
-		setCanPickUpLoot(true);
+		dynamicJukeboxListener = new DynamicGameEventListener<>(new JukeboxListener(new EntityPositionSource(this, this.getEyeHeight()), GameEvent.JUKEBOX_PLAY.getNotificationRadius()));
 	}
 
-	private static ItemStack removeOneItemFromItemEntity(ItemEntity itemEntity) {
-		ItemStack stack = itemEntity.getItem();
-		ItemStack splitStack = stack.split(1);
+	@Nullable
+	@Override
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {
+		if (spawnData instanceof FleshBlobSpawnData data) {
+			setTumorFlags(data.tumorFlags());
+		}
+		else {
+			final byte tumorFlags = TumorFlag.randomFlags(random);
+			setTumorFlags(tumorFlags);
+			spawnData = new FleshBlobSpawnData.Tumors(tumorFlags);
+		}
 
-		if (stack.isEmpty()) itemEntity.discard();
-		else itemEntity.setItem(stack);
+		setBlobSize((byte) 1, true); //refreshes mob dimensions, etc. This also makes sure the path navigator uses the correct bounding box size
 
-		return splitStack;
+		if (reason == MobSpawnType.SPAWNER) {
+			xpReward = 0;
+		}
+
+		return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
 	}
 
 	@Override
 	protected void defineSynchedData() {
 		super.defineSynchedData();
-		entityData.define(IS_EATING, false);
-	}
-
-	protected float getFoodHealAmount(@Nullable FoodProperties food) {
-		if (food == null) return 0.5f;
-		return food.getNutrition() * (food.isMeat() ? 1.25f : 0.75f);
-	}
-
-	protected float getGrowChance(@Nullable FoodProperties food) {
-		if (food == null) return 0.4f;
-		return 0.4f + (food.getNutrition() * (food.isMeat() ? 0.5f : 0.25f)) / MAX_SIZE;
+		entityData.define(BLOB_SIZE, (byte) 1);
+		entityData.define(TUMORS, (byte) 0);
+		entityData.define(IS_DANCING, false);
 	}
 
 	@Override
-	public boolean canPickUpLoot() {
-		//delay item pickup to 5 seconds after spawn
-		return (tickCount + 1) % (20 * 5) == 0 && super.canPickUpLoot();
-	}
-
-	@Override
-	public boolean canTakeItem(ItemStack stack) {
-		if (!canPickUpLoot()) return false;
-		return getFoodItem().isEmpty();
-	}
-
-	@Override
-	public boolean canHoldItem(ItemStack stack) {
-		ItemStack heldStack = getFoodItem();
-		return stack.isEdible() && (heldStack.isEmpty() || !heldStack.getItem().isEdible());
-	}
-
-	@Override
-	protected void pickUpItem(ItemEntity itemEntity) {
-		ItemStack stack = itemEntity.getItem();
-		if (canHoldItem(stack)) {
-			take(itemEntity, 1);
-			stack = removeOneItemFromItemEntity(itemEntity);
-
-			ItemStack heldStack = getFoodItem();
-			if (!heldStack.isEmpty()) {
-				spawnAtLocation(heldStack); //drop old item
+	public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+		if (BLOB_SIZE.equals(key)) {
+			refreshDimensions();
+			setYRot(yHeadRot);
+			setYBodyRot(yHeadRot);
+			if (isInWater() && random.nextFloat() < 0.05f) {
+				doWaterSplashEffect();
 			}
+		}
+		super.onSyncedDataUpdated(key);
+	}
 
-			setFoodItem(stack);
+	@Override
+	public void updateDynamicGameEventListener(BiConsumer<DynamicGameEventListener<?>, ServerLevel> listener) {
+		if (level instanceof ServerLevel serverlevel) {
+			listener.accept(dynamicJukeboxListener, serverlevel);
 		}
 	}
 
 	@Override
-	protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-		ItemStack stack = player.getItemInHand(hand);
-		if (canHoldItem(stack)) {
-			if (level.isClientSide) return InteractionResult.CONSUME;
+	public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+		return false;
+	}
 
-			ItemStack heldStack = getFoodItem();
-			if (!heldStack.isEmpty()) {
-				spawnAtLocation(heldStack); //drop old item
+	@Override
+	public EntityDimensions getDimensions(Pose pose) {
+		return super.getDimensions(pose).scale(getBlobScale());
+	}
+
+	public float getBlobScale() {
+		return 0.5f + getBlobSize() * 0.25f;
+	}
+
+	@Override
+	public int getMaxHeadXRot() {
+		return 0;
+	}
+
+	@Override
+	public void refreshDimensions() {
+		double x = getX();
+		double y = getY();
+		double z = getZ();
+		super.refreshDimensions();
+		setPos(x, y, z);
+	}
+
+	@Override
+	protected float getStandingEyeHeight(Pose pose, EntityDimensions size) {
+		return size.height * 0.5f;
+	}
+
+	public void setBlobSize(byte size, boolean resetHealth) {
+		size = Mth.clamp(size, MIN_SIZE, MAX_SIZE);
+		entityData.set(BLOB_SIZE, size);
+
+		reapplyPosition();
+		refreshDimensions();
+
+		updateBaseAttributes(size);
+
+		if (resetHealth) setHealth(getMaxHealth());
+
+		xpReward = size;
+	}
+
+	protected abstract void updateBaseAttributes(byte size);
+
+	public byte getBlobSize() {
+		return entityData.get(BLOB_SIZE);
+	}
+
+	public void randomizeTumors() {
+		entityData.set(TUMORS, (byte) random.nextInt(Byte.MAX_VALUE + 1));
+	}
+
+	public void setTumors(float tumorFactor) {
+		int flags = 0;
+		if (tumorFactor > 0) {
+			for (TumorFlag flag : TumorFlag.values()) {
+				if (level.random.nextFloat() < tumorFactor) flags = TumorFlag.setFlag(flags, flag);
 			}
-
-			setFoodItem(ItemHandlerHelper.copyStackWithSize(stack, 1));
-			if (!player.getAbilities().instabuild) stack.shrink(1);
-
-			if (!isSilent()) {
-				level.playSound(null, getX(), getY(), getZ(), SoundEvents.GENERIC_EAT, getSoundSource(), 0.75f + 0.25f * random.nextInt(2), (random.nextFloat() - random.nextFloat()) * 0.2f + 1f);
-			}
-			gameEvent(GameEvent.EAT, this);
-
-			return InteractionResult.SUCCESS;
 		}
-
-		return super.mobInteract(player, hand);
+		entityData.set(TUMORS, (byte) flags);
 	}
 
-	//	@Override
-	//	protected void dropEquipment() {
-	//		ItemStack stack = getItemBySlot(EquipmentSlot.MAINHAND);
-	//		if (!stack.isEmpty()) {
-	//			spawnAtLocation(stack);
-	//			setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
-	//		}
-	//	}
+	public byte getTumorFlags() {
+		return entityData.get(TUMORS);
+	}
 
+	public void setTumorFlags(byte flags) {
+		entityData.set(TUMORS, flags);
+	}
+
+	public boolean isDancing() {
+		return entityData.get(IS_DANCING);
+	}
+
+	public void setDancing(boolean dancing) {
+		if (!level.isClientSide) entityData.set(IS_DANCING, dancing);
+	}
+
+	@Nullable
 	@Override
-	public boolean isEating() {
-		return entityData.get(IS_EATING);
+	public BlockPos getJukeboxPos() {
+		return jukeboxPos;
 	}
 
 	@Override
-	public void setEating(boolean flag) {
-		entityData.set(IS_EATING, flag);
+	public void addAdditionalSaveData(CompoundTag tag) {
+		super.addAdditionalSaveData(tag);
+		tag.putByte("Size", getBlobSize());
+		tag.putByte("Tumors", getTumorFlags());
 	}
 
 	@Override
-	public void ate(@Nullable FoodProperties food) {
-		float health = getHealth();
-		if (health < getMaxHealth()) {
-			heal(getFoodHealAmount(food));
+	public void readAdditionalSaveData(CompoundTag tag) {
+		super.readAdditionalSaveData(tag);
+		setBlobSize(tag.getByte("Size"), false);
+		setTumorFlags(tag.getByte("Tumors"));
+	}
+
+	@Override
+	protected ResourceLocation getDefaultLootTable() {
+		return switch (getBlobSize()) {
+			case 2 -> ModLoot.Entity.FLESH_BLOB_SIZE_2;
+			case 3 -> ModLoot.Entity.FLESH_BLOB_SIZE_3;
+			case 4 -> ModLoot.Entity.FLESH_BLOB_SIZE_4;
+			case 5 -> ModLoot.Entity.FLESH_BLOB_SIZE_5;
+			case 6 -> ModLoot.Entity.FLESH_BLOB_SIZE_6;
+			case 7 -> ModLoot.Entity.FLESH_BLOB_SIZE_7;
+			case 8 -> ModLoot.Entity.FLESH_BLOB_SIZE_8;
+			case 9 -> ModLoot.Entity.FLESH_BLOB_SIZE_9;
+			case 10 -> ModLoot.Entity.FLESH_BLOB_SIZE_10;
+			default -> getType().getDefaultLootTable();
+		};
+	}
+
+	@Override
+	protected void jumpFromGround() {
+		super.jumpFromGround();
+		jumpMoveHelper.onJumpFromGround();
+	}
+
+	@Override
+	public void aiStep() {
+		super.aiStep();
+		jumpMoveHelper.onAiStep();
+
+		if (tickCount % 20 == 0 && isDancing() && shouldStopDancing()) {
+			setDancing(false);
+			jukeboxPos = null;
+		}
+	}
+
+	protected boolean shouldStopDancing() {
+		boolean wasHurt = lastHurtByPlayer != null || getLastHurtByMob() != null;
+		if (wasHurt) return true;
+
+		return jukeboxPos == null || !jukeboxPos.closerToCenterThan(position(), GameEvent.JUKEBOX_PLAY.getNotificationRadius()) || !level.getBlockState(jukeboxPos).is(Blocks.JUKEBOX);
+	}
+
+	@Override
+	protected void customServerAiStep() {
+		jumpMoveHelper.onCustomServerAiStep();
+	}
+
+	@Override
+	public void handleEntityEvent(byte id) {
+		if (jumpMoveHelper.handleEntityEvent(id)) return;
+		super.handleEntityEvent(id);
+	}
+
+	@Override
+	public void spawnJumpParticle() {
+		spawnSprintParticle();
+	}
+
+	@Override
+	public boolean isJumping() {
+		return jumping;
+	}
+
+	@Override
+	public void setJumping(boolean jumping) {
+		super.setJumping(jumping);
+		if (jumping && !isInWaterOrBubble()) {
+			playSound(getJumpSound(), getSoundVolume(), ((float) random.nextGaussian() * 0.2f + 1f) * 0.8f);
+		}
+	}
+
+	@Override
+	public SoundEvent getJumpSound() {
+		return ModSoundEvents.FLESH_BLOB_JUMP.get();
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSource) {
+		return ModSoundEvents.FLESH_BLOB_HURT.get();
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getDeathSound() {
+		return ModSoundEvents.FLESH_BLOB_DEATH.get();
+	}
+
+	@Nullable
+	@Override
+	protected SoundEvent getAmbientSound() {
+		return ModSoundEvents.FLESH_BLOB_AMBIENT.get();
+	}
+
+	@Override
+	public boolean canSpawnSprintParticle() {
+		return false;
+	}
+
+	public void setJukeboxPlaying(BlockPos pos, boolean isJukeboxPlaying) {
+		if (isJukeboxPlaying) {
+			boolean wasHurt = lastHurtByPlayer != null || getLastHurtByMob() != null;
+			if (!isDancing() && !wasHurt) {
+				jukeboxPos = pos;
+				setDancing(true);
+			}
+		}
+		else if (pos.equals(jukeboxPos) || jukeboxPos == null) {
+			jukeboxPos = null;
+			setDancing(false);
+		}
+	}
+
+	protected <E extends IAnimatable> PlayState handleJumpAnimation(AnimationEvent<E> event) {
+		float jumpPct = jumpMoveHelper.getJumpCompletionPct(event.getPartialTick());
+		if (jumpPct > 0) {
+			event.getController().transitionLengthTicks = 0;
+			if (jumpPct <= 0.28f) {
+				event.getController().setAnimation(new AnimationBuilder().addAnimation("jump.startup").playAndHold("jump.air.loop"));
+			}
+			else if (jumpPct < 0.72f) {
+				event.getController().setAnimation(new AnimationBuilder().loop("jump.air.loop"));
+			}
+			else {
+				event.getController().setAnimation(new AnimationBuilder().addAnimation("jump.impact"));
+			}
 		}
 		else {
-			byte blobSize = getBlobSize();
-			if (blobSize < MAX_SIZE && random.nextFloat() < getGrowChance(food)) {
-				setBlobSize((byte) (blobSize + 1), true);
-			}
+			event.getController().transitionLengthTicks = 10;
+			event.getController().setAnimation(new AnimationBuilder().loop("ground.loop"));
 		}
+		return PlayState.CONTINUE;
 	}
 
-	@Override
-	public ItemStack getFoodItem() {
-		return getItemBySlot(EquipmentSlot.MAINHAND);
-	}
-
-	@Override
-	public void setFoodItem(ItemStack stack) {
-		setItemSlot(EquipmentSlot.MAINHAND, stack);
-		setGuaranteedDrop(EquipmentSlot.MAINHAND);
-	}
-
-	protected void spawnEatingParticles(ItemStack stack) {
-		float pitch = -getXRot() * Mth.DEG_TO_RAD;
-		float yaw = -getYRot() * Mth.DEG_TO_RAD;
-
-		double radius = getDimensions(getPose()).width / 2d;
-		double x = getX() + getLookAngle().x * radius;
-		double y = getY();
-		double z = getZ() + getLookAngle().z * radius;
-
-		for (int i = 0; i < 8; i++) {
-			Vec3 motion = new Vec3((random.nextFloat() - 0.5d) * 0.1d, random.nextFloat() * 0.1d + 0.15d, 0).xRot(pitch).yRot(yaw);
-			level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, stack), x, y, z, motion.x, motion.y, motion.z);
-		}
-	}
-
-	protected void playEatingFX() {
-		ItemStack stack = getFoodItem();
-		if (stack.isEmpty()) return;
-
-		if (stack.getUseAnimation() == UseAnim.DRINK) {
-			playClientLocalSound(getDrinkingSound(stack), 0.75f, level.random.nextFloat() * 0.1f + 0.9f);
-		}
-
-		if (stack.getUseAnimation() == UseAnim.EAT) {
-			spawnEatingParticles(stack);
-			SoundEvent eatingSound = getEatingSound(stack);
-			playClientLocalSound(eatingSound, 0.75f + 0.25f * random.nextInt(2), (random.nextFloat() - random.nextFloat()) * 0.2f + 1f);
-		}
-	}
-
-	private void playClientLocalSound(SoundEvent soundEvent, float volume, float pitch) {
-		if (!isSilent()) {
-			level.playLocalSound(getX(), getY(), getZ(), soundEvent, getSoundSource(), volume, pitch, false);
-		}
-	}
-
-	protected <E extends IAnimatable> PlayState handleEatingAnimation(AnimationEvent<E> event) {
-		if (isEating()) {
-			event.getController().setAnimation(new AnimationBuilder().loop("eating.loop"));
+	protected <E extends IAnimatable> PlayState handleDaneAnimation(AnimationEvent<E> event) {
+		if (isDancing()) {
+			event.getController().setAnimation(new AnimationBuilder().addAnimation("dancing.loop"));
 			return PlayState.CONTINUE;
 		}
-
 		return PlayState.STOP;
-	}
-
-	protected <E extends IAnimatable> void onEatingSfx(CustomInstructionKeyframeEvent<E> event) {
-		if (event.instructions.equals("eating_fx;")) {
-			playEatingFX();
-		}
 	}
 
 	@Override
 	public void registerControllers(AnimationData data) {
-		super.registerControllers(data);
-		AnimationController<FleshBlob> controller = new AnimationController<>(this, "eatingController", 4, this::handleEatingAnimation);
-		controller.registerCustomInstructionListener(this::onEatingSfx);
-		data.addAnimationController(controller);
+		data.addAnimationController(new AnimationController<>(this, "jumpController", 0, this::handleJumpAnimation));
+		data.addAnimationController(new AnimationController<>(this, "danceController", 10, this::handleDaneAnimation));
 	}
 
+	@Override
+	public AnimationFactory getFactory() {
+		return animationFactory;
+	}
+
+	protected class JukeboxListener implements GameEventListener {
+		private final PositionSource listenerSource;
+		private final int listenerRadius;
+
+		public JukeboxListener(PositionSource positionSource, int radius) {
+			listenerSource = positionSource;
+			listenerRadius = radius;
+		}
+
+		@Override
+		public PositionSource getListenerSource() {
+			return listenerSource;
+		}
+
+		@Override
+		public int getListenerRadius() {
+			return listenerRadius;
+		}
+
+		@Override
+		public boolean handleGameEvent(ServerLevel pLevel, GameEvent.Message message) {
+			if (message.gameEvent() == GameEvent.JUKEBOX_PLAY) {
+				setJukeboxPlaying(new BlockPos(message.source()), true);
+				return true;
+			}
+			else if (message.gameEvent() == GameEvent.JUKEBOX_STOP_PLAY) {
+				setJukeboxPlaying(new BlockPos(message.source()), false);
+				return true;
+			}
+
+			return false;
+		}
+	}
 }

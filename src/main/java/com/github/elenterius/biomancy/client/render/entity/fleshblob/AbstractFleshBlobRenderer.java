@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.client.render.entity.fleshblob;
 
-import com.github.elenterius.biomancy.entity.fleshblob.AbstractFleshBlob;
+import com.github.elenterius.biomancy.entity.fleshblob.FleshBlob;
 import com.github.elenterius.biomancy.entity.fleshblob.TumorFlag;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -13,7 +13,7 @@ import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 
 import javax.annotation.Nullable;
 
-public abstract class AbstractFleshBlobRenderer<T extends AbstractFleshBlob> extends GeoEntityRenderer<T> {
+public abstract class AbstractFleshBlobRenderer<T extends FleshBlob> extends GeoEntityRenderer<T> {
 
 	protected AbstractFleshBlobRenderer(EntityRendererProvider.Context context, AnimatedGeoModel<T> modelProvider) {
 		super(context, modelProvider);
