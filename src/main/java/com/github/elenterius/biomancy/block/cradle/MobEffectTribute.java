@@ -109,4 +109,9 @@ class MobEffectTribute implements ITribute {
 	public int hostileModifier() {
 		return hostileModifier;
 	}
+
+	@Override
+	public int anomalyModifier() {
+		return 0;
+	}
 }

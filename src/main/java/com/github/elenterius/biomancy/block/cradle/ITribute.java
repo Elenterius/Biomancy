@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.block.cradle;
 
-interface ITribute {
+public interface ITribute {
 	ITribute EMPTY = new ITribute() {
 		@Override
 		public int biomass() {
@@ -28,6 +28,11 @@ interface ITribute {
 		}
 
 		@Override
+		public int anomalyModifier() {
+			return 0;
+		}
+
+		@Override
 		public boolean isEmpty() {
 			return true;
 		}
@@ -43,7 +48,13 @@ interface ITribute {
 
 	int hostileModifier();
 
+	int anomalyModifier();
+
 	default boolean isEmpty() {
-		return biomass() == 0 && lifeEnergy() == 0 && successModifier() == 0 && diseaseModifier() == 0 && hostileModifier() == 0;
+		return biomass() == 0 && lifeEnergy() == 0
+				&& successModifier() == 0
+				&& diseaseModifier() == 0
+				&& hostileModifier() == 0
+				&& anomalyModifier() == 0;
 	}
 }
