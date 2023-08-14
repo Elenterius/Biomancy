@@ -1,3 +1,28 @@
+## [1.16.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.15.0...1.19.2-v2.1.16.0) (2023-08-14)
+
+
+### Features
+
+* add Caro Invitica font by Tyfin ([09d182c](https://github.com/Elenterius/Biomancy/commit/09d182ca396a8288f21d2a5d2fb6d6737167b015))
+* add Chiseled Flesh block ([963e93e](https://github.com/Elenterius/Biomancy/commit/963e93eec9a3685873ddf01047b64619860c6cb7))
+* add Fibrous Flesh block ([a6d033d](https://github.com/Elenterius/Biomancy/commit/a6d033d01056e915e1f998df4b60a8d246f061ca))
+* add Fleshy Membrane block ([2afb176](https://github.com/Elenterius/Biomancy/commit/2afb176dd58ffd258a26f17d7b35587f76a1dbba))
+* add item gui icon for the Ravenous Claws ([36f8fed](https://github.com/Elenterius/Biomancy/commit/36f8fed3b8190f5ab3d1c49daceff5cea30a9168))
+* add item texture for the Flesh Spike ([54b5bec](https://github.com/Elenterius/Biomancy/commit/54b5becab54bd1d0763c7133016e99dc15778e01))
+* add item texture for the Tendon Chain ([fd1c457](https://github.com/Elenterius/Biomancy/commit/fd1c457a1c26ef2c4d19dddb19f059ba32ea842b))
+* add Ornate Flesh block ([1c9f8ba](https://github.com/Elenterius/Biomancy/commit/1c9f8bafb20488babc8702ad1a3c8bbc8a9896e6))
+* add Tubular Flesh block ([86bf486](https://github.com/Elenterius/Biomancy/commit/86bf486659357f8d054a8717ca91c5c8a9cb7676))
+* change injector item icon texture ([34b6a15](https://github.com/Elenterius/Biomancy/commit/34b6a15ac01b44b366c59a2e78dc2b6452ae6fa5))
+* make flesh plunderer magic outline emissive ([94d4a55](https://github.com/Elenterius/Biomancy/commit/94d4a55546cf6aeabf2912cf12656ef44b83fe94))
+* make Flesh Spikes fall-on damage scale with the spike amount ([9c9cdd1](https://github.com/Elenterius/Biomancy/commit/9c9cdd1b511dbb5f12edcc5a349bdb67c62ce710))
+* replace Malignant Flesh Blob with Primordial Flesh Blob variants ([9399a51](https://github.com/Elenterius/Biomancy/commit/9399a51dc180acb37a1216e071ea84c417857590))
+* rework Cradle sacrifice system to prefer to spawn hostile mobs and occasionally anomalies ([7a8bd97](https://github.com/Elenterius/Biomancy/commit/7a8bd974ceb174491f4ca26fce6a1b5da3f77c1b))
+
+
+### Bug Fixes
+
+* fix buggy Vial Holder block breaking ([5f343e0](https://github.com/Elenterius/Biomancy/commit/5f343e0abeecb5b0ad707976ac5c4ec631d8d185))
+
 ## [1.15.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.14.0...1.19.2-v2.1.15.0) (2023-08-03)
 
 
@@ -67,11 +92,4 @@
 * fix full block slabs not dropping two slab blocks ([54bb038](https://github.com/Elenterius/Biomancy/commit/54bb038109267982d1b5594df40cbfe589f3de19))
 * fix inability to switch claw modes when holding down ctrl to sprint ([870a033](https://github.com/Elenterius/Biomancy/commit/870a03359169f68ef0d7cd20963b24182918e61f))
 * fix misleading fleshkin chest tooltip ([47b2758](https://github.com/Elenterius/Biomancy/commit/47b2758b5eee547d2bbe7d9eec01402f5ce38cf2))
-
-### [1.11.3](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.11.2...1.19.2-v2.1.11.3) (2023-06-30)
-
-
-### Bug Fixes
-
-* fix Ravenous Claws ability tooltips not using translation keys ([989ff50](https://github.com/Elenterius/Biomancy/commit/989ff50e67110b0037d145f3a804a5455124ae91))
 
