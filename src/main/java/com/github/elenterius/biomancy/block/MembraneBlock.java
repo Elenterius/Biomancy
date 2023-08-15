@@ -46,8 +46,11 @@ public class MembraneBlock extends HalfTransparentBlock {
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		if (context instanceof EntityCollisionContext entityContext && ignoreEntityCollisionPredicate.test(state, level, pos, entityContext.getEntity())) {
-			return Shapes.empty();
+		if (context instanceof EntityCollisionContext entityContext) {
+			Entity entity = entityContext.getEntity();
+			if (ignoreEntityCollisionPredicate.test(state, level, pos, entity)) {
+				return Shapes.empty();
+			}
 		}
 		return state.getShape(level, pos);
 	}
@@ -71,6 +74,7 @@ public class MembraneBlock extends HalfTransparentBlock {
 		IgnoreEntityCollisionPredicate IS_BABY_MOB = (state, level, pos, entity) -> entity instanceof LivingEntity livingEntity && livingEntity.isBaby();
 		IgnoreEntityCollisionPredicate IS_ADULT_MOB = (state, level, pos, entity) -> entity instanceof LivingEntity livingEntity && !livingEntity.isBaby();
 		IgnoreEntityCollisionPredicate IS_ITEM = (state, level, pos, entity) -> entity instanceof ItemEntity;
+		IgnoreEntityCollisionPredicate NEVER = (state, level, pos, entity) -> false;
 
 		boolean test(BlockState state, BlockGetter level, BlockPos pos, @Nullable Entity entity);
 	}

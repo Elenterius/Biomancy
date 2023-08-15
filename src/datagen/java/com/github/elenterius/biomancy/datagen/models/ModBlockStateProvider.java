@@ -91,7 +91,10 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		irisDoor(ModBlocks.FLESH_IRIS_DOOR, true);
 		fleshDoor(ModBlocks.FLESH_DOOR);
 		fleshSpikes(ModBlocks.FLESH_SPIKE);
-		translucentBlockWithItem(ModBlocks.FLESH_MEMBRANE);
+		translucentBlockWithItem(ModBlocks.IMPERMEABLE_MEMBRANE);
+		membraneWithItem(ModBlocks.BABY_PERMEABLE_MEMBRANE);
+		membraneWithItem(ModBlocks.ADULT_PERMEABLE_MEMBRANE);
+		membraneWithItem(ModBlocks.ITEM_PERMEABLE_MEMBRANE);
 		bioLantern(ModBlocks.YELLOW_BIO_LANTERN);
 		bioLantern(ModBlocks.BLUE_BIO_LANTERN);
 		tendonChain(ModBlocks.TENDON_CHAIN);
@@ -428,6 +431,24 @@ public class ModBlockStateProvider extends BlockStateProvider {
 				.modelForState().modelFile(model).rotationX(90).rotationY(90).addModel();
 
 		itemModels().basicItem(block.asItem());
+	}
+
+	public void membraneWithItem(RegistryObject<MembraneBlock> registryObject) {
+		membraneWithItem(registryObject.get());
+	}
+
+	public void membraneWithItem(MembraneBlock block) {
+		String path = path(block);
+		//		ResourceLocation texture = blockAsset(block);
+		ResourceLocation template = BiomancyMod.createRL("block/template_membrane");
+
+		ModelFile model = models()
+				.withExistingParent(path, template)
+				.texture("base", BiomancyMod.createRL("block/membrane_base"))
+				.texture("overlay", BiomancyMod.createRL("block/membrane_overlay"));
+
+		simpleBlock(block, model);
+		simpleBlockItem(block, model);
 	}
 
 	public void bioLantern(FleshLanternBlock block) {

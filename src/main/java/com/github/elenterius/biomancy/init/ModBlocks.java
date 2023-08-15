@@ -105,10 +105,11 @@ public final class ModBlocks {
 
 	//## Misc
 	public static final RegistryObject<VoiceBoxBlock> VOICE_BOX = register("voice_box", VoiceBoxBlock::new);
-	public static final RegistryObject<MembraneBlock> FLESH_MEMBRANE = register("flesh_membrane", props -> {
-		props = props.noOcclusion().isRedstoneConductor(ModBlocks::neverValid).isSuffocating(ModBlocks::neverValid).isViewBlocking(ModBlocks::neverValid);
-		return new MembraneBlock(props, MembraneBlock.IgnoreEntityCollisionPredicate.IS_BABY_MOB);
-	});
+	public static final RegistryObject<MembraneBlock> IMPERMEABLE_MEMBRANE = registerMembrane("impermeable_membrane", MembraneBlock.IgnoreEntityCollisionPredicate.NEVER);
+	public static final RegistryObject<MembraneBlock> BABY_PERMEABLE_MEMBRANE = registerMembrane("baby_permeable_membrane", MembraneBlock.IgnoreEntityCollisionPredicate.IS_BABY_MOB);
+	public static final RegistryObject<MembraneBlock> ADULT_PERMEABLE_MEMBRANE = registerMembrane("adult_permeable_membrane", MembraneBlock.IgnoreEntityCollisionPredicate.IS_ADULT_MOB);
+	public static final RegistryObject<MembraneBlock> ITEM_PERMEABLE_MEMBRANE = registerMembrane("item_permeable_membrane", MembraneBlock.IgnoreEntityCollisionPredicate.IS_ITEM);
+
 	public static final RegistryObject<LadderBlock> FLESH_LADDER = register("flesh_ladder", () -> new LadderBlock(createFleshyBoneProperties().noOcclusion()));
 	public static final RegistryObject<FleshFenceBlock> FLESH_FENCE = register("flesh_fence", FleshFenceBlock::new);
 	public static final RegistryObject<FleshFenceGateBlock> FLESH_FENCE_GATE = register("flesh_fence_gate", () -> new FleshFenceGateBlock(createFleshyBoneProperties().noOcclusion()));
@@ -153,6 +154,13 @@ public final class ModBlocks {
 
 	private static <T extends DirectionalSlabBlock> RegistryObject<T> registerSlab(String name, RegistryObject<? extends Block> parent, Function<BlockBehaviour.Properties, T> factory) {
 		return BLOCKS.register(name, () -> factory.apply(copyProperties(parent.get())));
+	}
+
+	private static RegistryObject<MembraneBlock> registerMembrane(String name, MembraneBlock.IgnoreEntityCollisionPredicate predicate) {
+		return register(name, props -> {
+			props = props.noOcclusion().isRedstoneConductor(ModBlocks::neverValid).isSuffocating(ModBlocks::neverValid).isViewBlocking(ModBlocks::neverValid);
+			return new MembraneBlock(props, predicate);
+		});
 	}
 
 	public static BlockBehaviour.Properties copyProperties(BlockBehaviour behaviour) {
