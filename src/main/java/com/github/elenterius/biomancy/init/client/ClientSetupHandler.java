@@ -148,12 +148,16 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void onItemColorRegistry(final RegisterColorHandlersEvent.Item event) {
-		event.register((stack, index) -> ModItems.ESSENCE.get().getColor(stack, index), ModItems.ESSENCE.get());
+		event.register((stack, tintIndex) -> ModItems.ESSENCE.get().getColor(stack, tintIndex), ModItems.ESSENCE.get());
+		event.register((stack, tintIndex) -> tintIndex == 1 ? 0xFF_09DF5B : 0xFF_FFFFFF, ModBlocks.BABY_PERMEABLE_MEMBRANE.get());
+		event.register((stack, tintIndex) -> tintIndex == 1 ? 0xFF_69CB49 : 0xFF_FFFFFF, ModBlocks.ADULT_PERMEABLE_MEMBRANE.get());
 	}
 
 	@SubscribeEvent
 	public static void onBlockColorRegistry(final RegisterColorHandlersEvent.Block event) {
 		event.register(VialHolderBlock::getTintColor, ModBlocks.VIAL_HOLDER.get());
+		event.register((state, level, pos, tintIndex) -> tintIndex == 1 ? 0xFF_09DF5B : 0xFF_FFFFFF, ModBlocks.BABY_PERMEABLE_MEMBRANE.get());
+		event.register((state, level, pos, tintIndex) -> tintIndex == 1 ? 0xFF_69CB49 : 0xFF_FFFFFF, ModBlocks.ADULT_PERMEABLE_MEMBRANE.get());
 	}
 
 	@SubscribeEvent

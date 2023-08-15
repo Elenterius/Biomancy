@@ -156,7 +156,10 @@ public class ModBlockLoot extends BlockLoot {
 		add(ModBlocks.MALIGNANT_FLESH_VEINS.get(), block -> createMultifaceBlockDrops(block, HAS_SHEARS_OR_SILK_TOUCH));
 
 		dropSelf(ModBlocks.VOICE_BOX.get());
-		dropSelf(ModBlocks.FLESH_MEMBRANE.get());
+		dropSelf(ModBlocks.IMPERMEABLE_MEMBRANE.get());
+		dropSelf(ModBlocks.BABY_PERMEABLE_MEMBRANE.get());
+		dropSelf(ModBlocks.ADULT_PERMEABLE_MEMBRANE.get());
+		dropSelf(ModBlocks.ITEM_PERMEABLE_MEMBRANE.get());
 		dropSelf(ModBlocks.FLESH_IRIS_DOOR.get());
 		dropSelf(ModBlocks.FLESH_FENCE.get());
 		dropSelf(ModBlocks.FLESH_FENCE_GATE.get());
