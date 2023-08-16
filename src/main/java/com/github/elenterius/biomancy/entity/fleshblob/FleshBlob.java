@@ -35,6 +35,13 @@ import java.util.function.BiConsumer;
 
 public abstract class FleshBlob extends PathfinderMob implements Fleshkin, JumpMoveHelper.IJumpingPathfinderMob, JukeboxDancer, IAnimatable {
 
+	protected static final AnimationBuilder ON_GROUND_ANIMATION = new AnimationBuilder().loop("ground.loop");
+	protected static final AnimationBuilder JUMP_START_ANIMATION = new AnimationBuilder().addAnimation("jump.startup").playAndHold("jump.air.loop");
+	protected static final AnimationBuilder JUMP_IN_AIR_ANIMATION = new AnimationBuilder().loop("jump.air.loop");
+	protected static final AnimationBuilder JUMP_LAND_ANIMATION = new AnimationBuilder().addAnimation("jump.impact");
+	protected static final AnimationBuilder EATING_ANIMATION = new AnimationBuilder().loop("eating.loop");
+	protected static final AnimationBuilder DANCE_ANIMATION = new AnimationBuilder().addAnimation("dancing.loop");
+
 	public static final byte MAX_SIZE = 10;
 	public static final byte MIN_SIZE = 1;
 	public static final byte JUMPING_STATE_ID = 61;
@@ -49,7 +56,7 @@ public abstract class FleshBlob extends PathfinderMob implements Fleshkin, JumpM
 
 	protected FleshBlob(EntityType<? extends FleshBlob> entityType, Level level) {
 		super(entityType, level);
-		dynamicJukeboxListener = new DynamicGameEventListener<>(new JukeboxListener(new EntityPositionSource(this, this.getEyeHeight()), GameEvent.JUKEBOX_PLAY.getNotificationRadius()));
+		dynamicJukeboxListener = new DynamicGameEventListener<>(new JukeboxListener(new EntityPositionSource(this, getEyeHeight()), GameEvent.JUKEBOX_PLAY.getNotificationRadius()));
 	}
 
 	@Nullable
@@ -320,25 +327,25 @@ public abstract class FleshBlob extends PathfinderMob implements Fleshkin, JumpM
 		if (jumpPct > 0) {
 			event.getController().transitionLengthTicks = 0;
 			if (jumpPct <= 0.28f) {
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("jump.startup").playAndHold("jump.air.loop"));
+				event.getController().setAnimation(JUMP_START_ANIMATION);
 			}
 			else if (jumpPct < 0.72f) {
-				event.getController().setAnimation(new AnimationBuilder().loop("jump.air.loop"));
+				event.getController().setAnimation(JUMP_IN_AIR_ANIMATION);
 			}
 			else {
-				event.getController().setAnimation(new AnimationBuilder().addAnimation("jump.impact"));
+				event.getController().setAnimation(JUMP_LAND_ANIMATION);
 			}
 		}
 		else {
 			event.getController().transitionLengthTicks = 10;
-			event.getController().setAnimation(new AnimationBuilder().loop("ground.loop"));
+			event.getController().setAnimation(ON_GROUND_ANIMATION);
 		}
 		return PlayState.CONTINUE;
 	}
 
-	protected <E extends IAnimatable> PlayState handleDaneAnimation(AnimationEvent<E> event) {
+	protected <E extends IAnimatable> PlayState handleDanceAnimation(AnimationEvent<E> event) {
 		if (isDancing()) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("dancing.loop"));
+			event.getController().setAnimation(DANCE_ANIMATION);
 			return PlayState.CONTINUE;
 		}
 		return PlayState.STOP;
@@ -347,7 +354,7 @@ public abstract class FleshBlob extends PathfinderMob implements Fleshkin, JumpM
 	@Override
 	public void registerControllers(AnimationData data) {
 		data.addAnimationController(new AnimationController<>(this, "jumpController", 0, this::handleJumpAnimation));
-		data.addAnimationController(new AnimationController<>(this, "danceController", 10, this::handleDaneAnimation));
+		data.addAnimationController(new AnimationController<>(this, "danceController", 10, this::handleDanceAnimation));
 	}
 
 	@Override

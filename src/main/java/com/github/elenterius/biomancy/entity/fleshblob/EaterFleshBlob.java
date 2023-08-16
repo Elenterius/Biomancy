@@ -26,7 +26,6 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
 import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.CustomInstructionKeyframeEvent;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
@@ -212,7 +211,7 @@ public abstract class EaterFleshBlob extends FleshBlob implements FoodEater {
 
 	protected <E extends IAnimatable> PlayState handleEatingAnimation(AnimationEvent<E> event) {
 		if (isEating()) {
-			event.getController().setAnimation(new AnimationBuilder().loop("eating.loop"));
+			event.getController().setAnimation(EATING_ANIMATION);
 			return PlayState.CONTINUE;
 		}
 
