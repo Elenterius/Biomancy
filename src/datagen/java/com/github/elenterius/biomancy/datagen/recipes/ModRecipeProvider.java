@@ -344,6 +344,24 @@ public class ModRecipeProvider extends RecipeProvider {
 				.pattern("VVV")
 				.unlockedBy(hasName(ModItems.MALIGNANT_FLESH_VEINS.get()), has(ModItems.MALIGNANT_FLESH_VEINS.get()))
 				.save(consumer);
+
+		WorkbenchRecipeBuilder.shaped(ModItems.PRIMORDIAL_BIO_LANTERN.get())
+				.define('F', ModItems.YELLOW_BIO_LANTERN.get())
+				.define('V', ModItems.MALIGNANT_FLESH_VEINS.get())
+				.pattern("VVV")
+				.pattern("VFV")
+				.pattern("VVV")
+				.unlockedBy(hasName(ModItems.MALIGNANT_FLESH_VEINS.get()), has(ModItems.MALIGNANT_FLESH_VEINS.get()))
+				.save(consumer, getConversionRecipeId(ModItems.PRIMORDIAL_BIO_LANTERN.get(), ModItems.YELLOW_BIO_LANTERN.get()));
+
+		WorkbenchRecipeBuilder.shaped(ModItems.PRIMORDIAL_BIO_LANTERN.get())
+				.define('F', ModItems.BLUE_BIO_LANTERN.get())
+				.define('V', ModItems.MALIGNANT_FLESH_VEINS.get())
+				.pattern("VVV")
+				.pattern("VFV")
+				.pattern("VVV")
+				.unlockedBy(hasName(ModItems.PRIMORDIAL_BIO_LANTERN.get()), has(ModItems.BLUE_BIO_LANTERN.get()))
+				.save(consumer);
 	}
 
 	private void registerDigestingRecipes(Consumer<FinishedRecipe> consumer) {

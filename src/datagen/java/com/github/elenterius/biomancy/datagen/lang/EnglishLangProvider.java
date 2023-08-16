@@ -480,6 +480,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.FLESH_LADDER, "Flesh Ladder", "Ladder mainly made of bones and a little bit of flesh...");
 		addBlock(ModBlocks.YELLOW_BIO_LANTERN, "Yellow Bio-Lantern", "A bioluminescent light source that is energy-efficient and environmentally friendly.");
 		addBlock(ModBlocks.BLUE_BIO_LANTERN, "Blue Bio-Lantern", "A bioluminescent light source. This one is blue!");
+		addBlock(ModBlocks.PRIMORDIAL_BIO_LANTERN, "Primordial Bio-Lantern", "A primal light source. This one is magenta!");
 		addBlock(ModBlocks.TENDON_CHAIN, "Tendon Chain", "A chain made of tendons.");
 		addBlock(ModBlocks.VIAL_HOLDER, "Vial Holder", "Display and organize your serums.");
 		addBlock(ModBlocks.IMPERMEABLE_MEMBRANE, "Impermeable Membrane", "Gelatinous-like membrane reinforced with elastic fibers.");
