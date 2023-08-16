@@ -40,7 +40,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 		tag(BlockTags.FENCES).addTag(ModBlockTags.FLESHY_FENCES);
 		tag(BlockTags.FENCE_GATES).add(ModBlocks.FLESH_FENCE_GATE.get());
 
-		tag(BlockTags.WALLS).add(ModBlocks.FLESH_WALL.get(), ModBlocks.PACKED_FLESH_WALL.get());
+		tag(BlockTags.WALLS).add(
+				ModBlocks.FLESH_WALL.get(),
+				ModBlocks.PACKED_FLESH_WALL.get(),
+				ModBlocks.MALIGNANT_FLESH_WALL.get(),
+				ModBlocks.PRIMAL_FLESH_WALL.get()
+		);
 
 		tag(BlockTags.STAIRS).add(
 				ModBlocks.FLESH_STAIRS.get(),

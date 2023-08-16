@@ -490,12 +490,14 @@ public class EnglishLangProvider extends AbstractLangProvider {
 
 		addBlock(ModBlocks.PRIMAL_FLESH, "Primal Flesh Block", "Primitive and pure, you better not touch this with your dirty mitts.");
 		addBlock(ModBlocks.PRIMAL_FLESH_SLAB, "Primal Flesh Slab", "Primitive and pure, you better not touch this with your dirty mitts.");
-		addBlock(ModBlocks.PRIMAL_FLESH_STAIRS, "Primal Flesh Stairs", "Stairs made of primal flesh. Feels primitive and pure...");
-		addBlock(ModBlocks.CORRUPTED_PRIMAL_FLESH, "Corrupted Primal Flesh", "It's no longer pure... Don't deny it. Your dirty mitts caused this!");
+		addBlock(ModBlocks.PRIMAL_FLESH_STAIRS, "Primal Flesh Stairs", "Stairs made of primal flesh.\nFeels primitive and pure...");
+		addBlock(ModBlocks.PRIMAL_FLESH_WALL, "Primal Flesh Wall", "Wall of primal flesh. Is this Terraria?\nYou better start running >:D");
+		addBlock(ModBlocks.CORRUPTED_PRIMAL_FLESH, "Corrupted Primal Flesh", "It's no longer pure... Don't deny it.\nYour dirty mitts caused this!");
 		addBlock(ModBlocks.MALIGNANT_FLESH, "Malignant Flesh Block", "Looks dangerous, you better not touch it!");
 		addBlock(ModBlocks.MALIGNANT_FLESH_SLAB, "Malignant Flesh Slab", "Looks off-putting, probably best not to touch it.");
-		addBlock(ModBlocks.MALIGNANT_FLESH_STAIRS, "Malignant Flesh Stairs", "Stairs made of malignant flesh. Looks diseased...");
-		addBlock(ModBlocks.MALIGNANT_FLESH_VEINS, "Malignant Flesh Veins", "They look almost feral... you better not touch them.");
+		addBlock(ModBlocks.MALIGNANT_FLESH_STAIRS, "Malignant Flesh Stairs", "Stairs made of malignant flesh.\nLooks diseased...");
+		addBlock(ModBlocks.MALIGNANT_FLESH_WALL, "Malignant Flesh Wall", "Wall of malignant flesh.\nIt's coming for you! ;)");
+		addBlock(ModBlocks.MALIGNANT_FLESH_VEINS, "Malignant Flesh Veins", "They look almost feral...\nyou better not touch them.");
 	}
 
 	private void addEntityTranslations() {

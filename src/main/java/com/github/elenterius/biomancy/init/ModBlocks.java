@@ -97,10 +97,12 @@ public final class ModBlocks {
 	public static final RegistryObject<FleshBlock> PRIMAL_FLESH = register("primal_flesh", FleshBlock::new);
 	public static final RegistryObject<StairBlock> PRIMAL_FLESH_STAIRS = registerStairs(PRIMAL_FLESH, StairBlock::new);
 	public static final RegistryObject<DirectionalSlabBlock> PRIMAL_FLESH_SLAB = registerSlab(PRIMAL_FLESH, DirectionalSlabBlock::new);
+	public static final RegistryObject<WallBlock> PRIMAL_FLESH_WALL = registerWall(PRIMAL_FLESH, WallBlock::new);
 	public static final RegistryObject<FleshBlock> CORRUPTED_PRIMAL_FLESH = register("corrupted_primal_flesh", FleshBlock::new);
 	public static final RegistryObject<FleshBlock> MALIGNANT_FLESH = register("malignant_flesh", FleshBlock::new);
 	public static final RegistryObject<StairBlock> MALIGNANT_FLESH_STAIRS = registerStairs(MALIGNANT_FLESH, StairBlock::new);
 	public static final RegistryObject<DirectionalSlabBlock> MALIGNANT_FLESH_SLAB = registerSlab(MALIGNANT_FLESH, DirectionalSlabBlock::new);
+	public static final RegistryObject<WallBlock> MALIGNANT_FLESH_WALL = registerWall(MALIGNANT_FLESH, WallBlock::new);
 	public static final RegistryObject<FleshVeinsBlock> MALIGNANT_FLESH_VEINS = register("malignant_flesh_veins", properties -> new FleshVeinsBlock(properties.noCollission().noOcclusion()));
 
 	//## Misc

@@ -97,6 +97,8 @@ public class ModItemModelProvider extends ItemModelProvider {
 		basicItem(ModItems.FULL_FLESH_DOOR);
 		wallBlockItem(ModItems.FLESH_WALL);
 		wallBlockItem(ModItems.PACKED_FLESH_WALL);
+		wallBlockItem(ModItems.MALIGNANT_FLESH_WALL);
+		wallBlockItem(ModItems.PRIMAL_FLESH_WALL);
 		flatBlockItem(ModItems.FLESH_LADDER);
 		flatBlockItem(ModItems.MALIGNANT_FLESH_VEINS);
 
