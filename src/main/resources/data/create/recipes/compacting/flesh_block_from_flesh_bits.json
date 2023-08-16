@@ -1,0 +1,19 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "item": "biomancy:flesh_bits"
+    },
+    {
+      "item": "biomancy:flesh_bits"
+    },
+    {
+      "item": "biomancy:nutrients"
+    }
+  ],
+  "results": [
+    {
+      "item": "biomancy:flesh"
+    }
+  ]
+}

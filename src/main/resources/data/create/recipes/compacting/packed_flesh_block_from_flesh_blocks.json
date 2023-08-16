@@ -1,0 +1,19 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "item": "biomancy:flesh"
+    },
+    {
+      "item": "biomancy:flesh"
+    },
+    {
+      "item": "biomancy:tough_fibers"
+    }
+  ],
+  "results": [
+    {
+      "item": "biomancy:packed_flesh"
+    }
+  ]
+}

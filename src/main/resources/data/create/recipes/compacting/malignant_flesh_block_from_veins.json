@@ -1,0 +1,37 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "item": "biomancy:flesh_bits"
+    },
+    {
+      "item": "biomancy:malignant_flesh_veins"
+    },
+    {
+      "item": "biomancy:malignant_flesh_veins"
+    },
+    {
+      "item": "biomancy:malignant_flesh_veins"
+    },
+    {
+      "item": "biomancy:malignant_flesh_veins"
+    },
+    {
+      "item": "biomancy:malignant_flesh_veins"
+    },
+    {
+      "item": "biomancy:malignant_flesh_veins"
+    },
+    {
+      "item": "biomancy:malignant_flesh_veins"
+    },
+    {
+      "item": "biomancy:malignant_flesh_veins"
+    }
+  ],
+  "results": [
+    {
+      "item": "biomancy:malignant_flesh"
+    }
+  ]
+}
