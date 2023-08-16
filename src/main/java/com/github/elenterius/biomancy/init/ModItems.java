@@ -144,10 +144,12 @@ public final class ModItems {
 	public static final RegistryObject<SimpleBlockItem> PRIMAL_FLESH_BLOCK = registerSimpleBlockItem(ModBlocks.PRIMAL_FLESH);
 	public static final RegistryObject<SimpleBlockItem> PRIMAL_FLESH_SLAB = registerSimpleBlockItem(ModBlocks.PRIMAL_FLESH_SLAB);
 	public static final RegistryObject<SimpleBlockItem> PRIMAL_FLESH_STAIRS = registerSimpleBlockItem(ModBlocks.PRIMAL_FLESH_STAIRS);
+	public static final RegistryObject<ObfuscatedTooltipBlockItem> PRIMAL_FLESH_WALL = registerBlockItem(ModBlocks.PRIMAL_FLESH_WALL, ObfuscatedTooltipBlockItem::new);
 	public static final RegistryObject<SimpleBlockItem> CORRUPTED_PRIMAL_FLESH_BLOCK = registerSimpleBlockItem(ModBlocks.CORRUPTED_PRIMAL_FLESH);
 	public static final RegistryObject<SimpleBlockItem> MALIGNANT_FLESH_BLOCK = registerSimpleBlockItem(ModBlocks.MALIGNANT_FLESH);
 	public static final RegistryObject<SimpleBlockItem> MALIGNANT_FLESH_SLAB = registerSimpleBlockItem(ModBlocks.MALIGNANT_FLESH_SLAB);
 	public static final RegistryObject<SimpleBlockItem> MALIGNANT_FLESH_STAIRS = registerSimpleBlockItem(ModBlocks.MALIGNANT_FLESH_STAIRS);
+	public static final RegistryObject<ObfuscatedTooltipBlockItem> MALIGNANT_FLESH_WALL = registerBlockItem(ModBlocks.MALIGNANT_FLESH_WALL, ObfuscatedTooltipBlockItem::new);
 	public static final RegistryObject<SimpleBlockItem> MALIGNANT_FLESH_VEINS = registerSimpleBlockItem(ModBlocks.MALIGNANT_FLESH_VEINS);
 
 	//## Misc

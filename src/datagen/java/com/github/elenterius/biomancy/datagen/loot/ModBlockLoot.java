@@ -148,11 +148,13 @@ public class ModBlockLoot extends BlockLoot {
 		dropSelf(ModBlocks.PRIMAL_FLESH.get());
 		add(ModBlocks.PRIMAL_FLESH_SLAB.get(), ModBlockLoot::createDirectionalSlabTable);
 		dropSelf(ModBlocks.PRIMAL_FLESH_STAIRS.get());
+		dropSelf(ModBlocks.PRIMAL_FLESH_WALL.get());
 		dropSelf(ModBlocks.CORRUPTED_PRIMAL_FLESH.get());
 
 		dropSelf(ModBlocks.MALIGNANT_FLESH.get());
 		add(ModBlocks.MALIGNANT_FLESH_SLAB.get(), ModBlockLoot::createDirectionalSlabTable);
 		dropSelf(ModBlocks.MALIGNANT_FLESH_STAIRS.get());
+		dropSelf(ModBlocks.MALIGNANT_FLESH_WALL.get());
 		add(ModBlocks.MALIGNANT_FLESH_VEINS.get(), block -> createMultifaceBlockDrops(block, HAS_SHEARS_OR_SILK_TOUCH));
 
 		dropSelf(ModBlocks.VOICE_BOX.get());
