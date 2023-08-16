@@ -199,6 +199,8 @@
 	"block.biomancy.bio_lantern_yellow.tooltip": "A bioluminescent light source that is energy-efficient and environmentally friendly.",
 	"block.biomancy.bio_lantern_blue": "Blue Bio-Lantern",
 	"block.biomancy.bio_lantern_blue.tooltip": "A bioluminescent light source. This one is blue!",
+  "block.biomancy.primordial_bio_lantern": "Primordial Bio-Lantern",
+  "block.biomancy.primordial_bio_lantern.tooltip": "A primal light source. This one is magenta!",
 	"block.biomancy.tendon_chain": "Tendon Chain",
 	"block.biomancy.tendon_chain.tooltip": "A chain made of tendons.",
 	"block.biomancy.vial_holder": "Vial Holder",

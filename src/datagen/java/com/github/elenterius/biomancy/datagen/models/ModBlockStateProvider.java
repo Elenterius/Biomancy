@@ -97,6 +97,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		membraneWithItem(ModBlocks.ITEM_PERMEABLE_MEMBRANE);
 		bioLantern(ModBlocks.YELLOW_BIO_LANTERN);
 		bioLantern(ModBlocks.BLUE_BIO_LANTERN);
+		bioLantern(ModBlocks.PRIMORDIAL_BIO_LANTERN);
 		tendonChain(ModBlocks.TENDON_CHAIN);
 		vialHolder(ModBlocks.VIAL_HOLDER);
 
@@ -456,8 +457,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		ResourceLocation texture = blockAsset(block);
 		ResourceLocation template = BiomancyMod.createRL("block/template_bio_lantern");
 
-		ModelFile model = models().singleTexture(path, template, texture);
-		ModelFile hangingModel = models().singleTexture(path + "_hanging", extend(template, "_hanging"), texture);
+		ModelFile model = models().singleTexture(path, template, texture).renderType("cutout");
+		ModelFile hangingModel = models().singleTexture(path + "_hanging", extend(template, "_hanging"), texture).renderType("cutout");
 
 		getVariantBuilder(block)
 				.forAllStatesExcept(
