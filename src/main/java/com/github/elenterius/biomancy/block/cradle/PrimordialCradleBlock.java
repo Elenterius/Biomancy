@@ -32,6 +32,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,11 +43,18 @@ import java.util.stream.Stream;
 public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements EntityBlock {
 
 	public static final Predicate<ItemStack> EXPENSIVE_ITEMS = stack -> {
+		if (stack.is(Tags.Items.TOOLS)) return true;
+
 		Item item = stack.getItem();
+
 		if (item instanceof BlockItem blockItem && (blockItem.getBlock() instanceof ShulkerBoxBlock || blockItem.getBlock() instanceof FleshkinChestBlock))
 			return true;
+
+		//TODO: handle Tetra Tools & add Dragon Sinew to Tributes
+
 		return item instanceof TieredItem || item instanceof Vanishable || stack.isEnchanted();
 	};
+
 	protected static final VoxelShape INSIDE_AABB = box(3, 4, 3, 13, 16, 13);
 	protected static final VoxelShape OUTSIDE_AABB = Stream.of(
 			box(1, 0, 1, 15, 5, 15),
@@ -95,6 +103,7 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		ItemStack stack = player.getItemInHand(hand);
+
 		if (increaseFillLevel(player, level, pos, ItemHandlerHelper.copyStackWithSize(stack, 1))) {
 			if (!level.isClientSide) {
 				boolean isPotion = stack.getItem() instanceof PotionItem;
@@ -116,6 +125,7 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 		if (!level.isClientSide) {
 			SoundUtil.broadcastBlockSound((ServerLevel) level, pos, ModSoundEvents.CREATOR_NO);
 		}
+
 		return InteractionResult.CONSUME;
 	}
 
