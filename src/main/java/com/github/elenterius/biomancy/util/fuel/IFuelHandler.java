@@ -18,7 +18,7 @@ public interface IFuelHandler {
 
 	int getFuelValue(ItemStack stack);
 
-	default int getFuelCost(int craftingTicks) {
+	default int getFuelCost(int craftingCostNutrients) {
 		return 1;
 	}
 

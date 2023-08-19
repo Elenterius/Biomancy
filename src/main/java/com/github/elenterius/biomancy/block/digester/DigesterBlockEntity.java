@@ -62,7 +62,7 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 	public static final int OUTPUT_SLOTS = 2;
 
 	public static final int MAX_FUEL = 1_000;
-	public static final short BASE_COST = 1;
+
 	public static final RegistryObject<SimpleRecipeType.ItemStackRecipeType<DigesterRecipe>> RECIPE_TYPE = ModRecipes.DIGESTING_RECIPE_TYPE;
 	protected static final AnimationBuilder WORKING_ANIM = new AnimationBuilder().loop("digester.working");
 	protected static final AnimationBuilder IDLE_ANIM = new AnimationBuilder().loop("digester.idle");
@@ -82,7 +82,7 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 		outputInventory = BehavioralInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
 
 		fuelInventory = BehavioralInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterFuel, this::canPlayerOpenInv, this::setChanged);
-		fuelHandler = FuelHandler.createNutrientFuelHandler(MAX_FUEL, BASE_COST, this::setChanged);
+		fuelHandler = FuelHandler.createNutrientFuelHandler(MAX_FUEL, this::setChanged);
 
 		stateData = new DigesterStateData(fuelHandler);
 	}

@@ -5,7 +5,7 @@ import com.github.elenterius.biomancy.block.MachineBlock;
 import com.github.elenterius.biomancy.block.state.CraftingState;
 import com.github.elenterius.biomancy.block.state.RecipeCraftingStateData;
 import com.github.elenterius.biomancy.init.ModBlocks;
-import com.github.elenterius.biomancy.recipe.AbstractProductionRecipe;
+import com.github.elenterius.biomancy.recipe.ProcessingRecipe;
 import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class MachineBlockEntity<R extends AbstractProductionRecipe, S extends RecipeCraftingStateData<R>> extends BlockEntity implements Nameable {
+public abstract class MachineBlockEntity<R extends ProcessingRecipe, S extends RecipeCraftingStateData<R>> extends BlockEntity implements Nameable {
 
 	protected final int tickOffset = BiomancyMod.GLOBAL_RANDOM.nextInt(20);
 	protected int ticks = tickOffset;
@@ -30,7 +30,7 @@ public abstract class MachineBlockEntity<R extends AbstractProductionRecipe, S e
 		super(type, pos, state);
 	}
 
-	public static <R extends AbstractProductionRecipe, S extends RecipeCraftingStateData<R>> void serverTick(Level level, BlockPos pos, BlockState state, MachineBlockEntity<R, S> entity) {
+	public static <R extends ProcessingRecipe, S extends RecipeCraftingStateData<R>> void serverTick(Level level, BlockPos pos, BlockState state, MachineBlockEntity<R, S> entity) {
 		entity.serverTick((ServerLevel) level);
 	}
 
@@ -48,7 +48,7 @@ public abstract class MachineBlockEntity<R extends AbstractProductionRecipe, S e
 	protected abstract IFuelHandler getFuelHandler();
 
 	public int getFuelCost(R recipeToCraft) {
-		return getFuelHandler().getFuelCost(recipeToCraft.getCraftingTime());
+		return getFuelHandler().getFuelCost(recipeToCraft.getCraftingCostNutrients());
 	}
 
 	public abstract ItemStack getStackInFuelSlot();

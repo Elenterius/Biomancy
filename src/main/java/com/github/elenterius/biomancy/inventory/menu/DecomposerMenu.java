@@ -56,7 +56,7 @@ public class DecomposerMenu extends PlayerContainerMenu {
 		BehavioralInventory<?> fuelInventory = BehavioralInventory.createClientContents(DecomposerBlockEntity.FUEL_SLOTS);
 		BehavioralInventory<?> inputInventory = BehavioralInventory.createClientContents(DecomposerBlockEntity.INPUT_SLOTS);
 		BehavioralInventory<?> outputInventory = BehavioralInventory.createClientContents(DecomposerBlockEntity.OUTPUT_SLOTS);
-		FuelHandler fuelHandler = FuelHandler.createNutrientFuelHandler(DecomposerBlockEntity.MAX_FUEL, DecomposerBlockEntity.BASE_COST, () -> {});
+		FuelHandler fuelHandler = FuelHandler.createNutrientFuelHandler(DecomposerBlockEntity.MAX_FUEL, () -> {});
 		DecomposerStateData state = new DecomposerStateData(fuelHandler);
 		return new DecomposerMenu(screenId, playerInventory, fuelInventory, inputInventory, outputInventory, state);
 	}

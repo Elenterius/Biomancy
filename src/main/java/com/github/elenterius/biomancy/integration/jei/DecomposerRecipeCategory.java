@@ -1,14 +1,12 @@
 package com.github.elenterius.biomancy.integration.jei;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.block.decomposer.DecomposerBlockEntity;
 import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.recipe.DecomposerRecipe;
 import com.github.elenterius.biomancy.recipe.ItemCountRange;
 import com.github.elenterius.biomancy.recipe.VariableProductionOutput;
-import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -103,14 +101,13 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 	public void draw(DecomposerRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
 		Font fontRenderer = Minecraft.getInstance().font;
 
-		int ticks = recipe.getCraftingTime();
+		int ticks = recipe.getCraftingTimeTicks();
 		int seconds = ticks > 0 ? ticks / 20 : 0;
 		MutableComponent timeString = ComponentUtil.translatable("gui.jei.category.smelting.time.seconds", seconds);
-		fontRenderer.draw(poseStack, timeString, 16, 59f - fontRenderer.lineHeight, 0xff808080);
+		fontRenderer.draw(poseStack, timeString, 16, 59f - fontRenderer.lineHeight, 0xff_808080);
 
-		int fuelCost = NutrientFuelUtil.getFuelCost(DecomposerBlockEntity.BASE_COST, ticks);
-		MutableComponent costString = ComponentUtil.literal("-" + fuelCost);
-		fontRenderer.draw(poseStack, costString, 16, 43f - fontRenderer.lineHeight, 0xff808080);
+		MutableComponent costString = ComponentUtil.literal("-" + recipe.getCraftingCostNutrients());
+		fontRenderer.draw(poseStack, costString, 16, 43f - fontRenderer.lineHeight, 0xff_808080);
 
 		int x = 68;
 		List<VariableProductionOutput> outputs = recipe.getOutputs();
@@ -138,15 +135,15 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 			ItemCountRange countRange = output.getCountRange();
 			if (countRange instanceof ItemCountRange.UniformRange uniform) {
 				MutableComponent component = ComponentUtil.literal("%d-%d".formatted(Math.max(uniform.min(), 0), uniform.max()));
-				fontRenderer.draw(poseStack, component, x - fontRenderer.width(component), y, 0xff808080);
+				fontRenderer.draw(poseStack, component, x - fontRenderer.width(component), y, 0xff_808080);
 			}
 			else if (countRange instanceof ItemCountRange.ConstantValue constant) {
 				MutableComponent component = ComponentUtil.literal("" + constant.value());
-				fontRenderer.draw(poseStack, component, x - fontRenderer.width(component), y, 0xff808080);
+				fontRenderer.draw(poseStack, component, x - fontRenderer.width(component), y, 0xff_808080);
 			}
 			else if (countRange instanceof ItemCountRange.BinomialRange binomialRange) {
 				MutableComponent component = ComponentUtil.literal("n: %d, p: %s".formatted(binomialRange.n(), binomialRange.p()));
-				fontRenderer.draw(poseStack, component, x - fontRenderer.width(component), y, 0xff808080);
+				fontRenderer.draw(poseStack, component, x - fontRenderer.width(component), y, 0xff_808080);
 			}
 
 			poseStack.popPose();

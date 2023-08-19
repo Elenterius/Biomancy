@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModBioForgeTabs;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.inventory.menu.BioForgeTab;
+import com.github.elenterius.biomancy.recipe.DecomposerRecipe;
 import com.github.elenterius.biomancy.recipe.IngredientStack;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -44,6 +45,8 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 	private final List<IngredientStack> ingredients = new ArrayList<>();
 	private final Advancement.Builder advancement = Advancement.Builder.advancement();
 	private BioForgeTab category = ModBioForgeTabs.MISC.get();
+
+	private int craftingCostNutrients = -1;
 
 	private BioForgeRecipeBuilder(ResourceLocation recipeId, ItemData result) {
 		this.recipeId = new ResourceLocation(recipeId.getNamespace(), RECIPE_SUB_FOLDER + "/" + recipeId.getPath());
@@ -86,6 +89,12 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 	//		craftingTime = time;
 	//		return this;
 	//	}
+
+	public BioForgeRecipeBuilder setCraftingCost(int costNutrients) {
+		if (costNutrients < 0) throw new IllegalArgumentException("Invalid crafting cost: " + costNutrients);
+		craftingCostNutrients = costNutrients;
+		return this;
+	}
 
 	public BioForgeRecipeBuilder ifModLoaded(String modId) {
 		return withCondition(new ModLoadedCondition(modId));
@@ -146,6 +155,10 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 	public void save(Consumer<FinishedRecipe> consumer, @Nullable CreativeModeTab itemCategory) {
 		validateCriteria();
 
+		if (craftingCostNutrients < 0) {
+			craftingCostNutrients = DecomposerRecipe.DEFAULT_CRAFTING_COST_NUTRIENTS;
+		}
+
 		advancement.parent(new ResourceLocation("recipes/root"))
 				.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId))
 				.rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
@@ -153,7 +166,7 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 		String folderName = IRecipeBuilder.getRecipeFolderName(itemCategory, BiomancyMod.MOD_ID);
 		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(), "recipes/%s/%s".formatted(folderName, recipeId.getPath()));
 
-		consumer.accept(new RecipeResult(this, advancementId));
+		consumer.accept(new Result(this, advancementId));
 	}
 
 	private void validateCriteria() {
@@ -162,21 +175,23 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 		}
 	}
 
-	public static class RecipeResult implements FinishedRecipe {
+	public static class Result implements FinishedRecipe {
 
 		private final ResourceLocation id;
 		private final List<IngredientStack> ingredients;
 		private final ItemData result;
+		private final int craftingCost;
 		private final BioForgeTab category;
 		private final List<ICondition> conditions;
 		private final Advancement.Builder advancementBuilder;
 		private final ResourceLocation advancementId;
 
-		public RecipeResult(BioForgeRecipeBuilder builder, ResourceLocation advancementId) {
+		public Result(BioForgeRecipeBuilder builder, ResourceLocation advancementId) {
 			id = builder.recipeId;
 			category = builder.category;
 			result = builder.result;
 			ingredients = builder.ingredients;
+			craftingCost = builder.craftingCostNutrients;
 			conditions = builder.conditions;
 
 			advancementBuilder = builder.advancement;
@@ -194,6 +209,8 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 			json.add("result", result.toJson());
 
 			category.toJson(json);
+
+			json.addProperty("nutrientsCost", craftingCost);
 
 			//serialize conditions
 			if (!conditions.isEmpty()) {

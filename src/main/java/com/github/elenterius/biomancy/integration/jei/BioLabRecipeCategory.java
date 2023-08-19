@@ -1,13 +1,11 @@
 package com.github.elenterius.biomancy.integration.jei;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.block.biolab.BioLabBlockEntity;
 import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.recipe.BioLabRecipe;
 import com.github.elenterius.biomancy.recipe.IngredientStack;
-import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -100,14 +98,13 @@ public class BioLabRecipeCategory implements IRecipeCategory<BioLabRecipe> {
 	public void draw(BioLabRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
 		Font fontRenderer = Minecraft.getInstance().font;
 
-		int ticks = recipe.getCraftingTime();
+		int ticks = recipe.getCraftingTimeTicks();
 		int seconds = ticks > 0 ? ticks / 20 : 0;
 		Component timeText = ComponentUtil.translatable("gui.jei.category.smelting.time.seconds", seconds);
-		fontRenderer.draw(poseStack, timeText, 102, 50 - fontRenderer.lineHeight, 0xff808080);
+		fontRenderer.draw(poseStack, timeText, 102f, 50f - fontRenderer.lineHeight, 0xff808080);
 
-		int fuelCost = NutrientFuelUtil.getFuelCost(BioLabBlockEntity.BASE_COST, ticks);
-		Component costText = ComponentUtil.literal("-" + fuelCost);
-		fontRenderer.draw(poseStack, costText, 69, 50 - fontRenderer.lineHeight, 0xff808080);
+		Component costText = ComponentUtil.literal("-" + recipe.getCraftingCostNutrients());
+		fontRenderer.draw(poseStack, costText, 69f, 50f - fontRenderer.lineHeight, 0xff808080);
 	}
 
 }

@@ -51,7 +51,7 @@ public class DigesterMenu extends PlayerContainerMenu {
 		BehavioralInventory<?> fuelInventory = BehavioralInventory.createClientContents(DigesterBlockEntity.FUEL_SLOTS);
 		BehavioralInventory<?> inputInventory = BehavioralInventory.createClientContents(DigesterBlockEntity.INPUT_SLOTS);
 		BehavioralInventory<?> outputInventory = BehavioralInventory.createClientContents(DigesterBlockEntity.OUTPUT_SLOTS);
-		FuelHandler fuelHandler = FuelHandler.createNutrientFuelHandler(DigesterBlockEntity.MAX_FUEL, DigesterBlockEntity.BASE_COST, () -> {});
+		FuelHandler fuelHandler = FuelHandler.createNutrientFuelHandler(DigesterBlockEntity.MAX_FUEL, () -> {});
 		DigesterStateData state = new DigesterStateData(fuelHandler);
 		return new DigesterMenu(screenId, playerInventory, fuelInventory, inputInventory, outputInventory, state);
 	}

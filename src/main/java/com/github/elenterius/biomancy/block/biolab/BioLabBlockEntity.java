@@ -59,7 +59,7 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 	public static final int OUTPUT_SLOTS = 1;
 
 	public static final int MAX_FUEL = 1_000;
-	public static final short BASE_COST = 2;
+
 	public static final RegistryObject<SimpleRecipeType.ItemStackRecipeType<BioLabRecipe>> RECIPE_TYPE = ModRecipes.BIO_BREWING_RECIPE_TYPE;
 	protected static final AnimationBuilder WORKING_ANIM = new AnimationBuilder().loop("bio_lab.working");
 	protected static final AnimationBuilder IDLE_ANIM = new AnimationBuilder().loop("bio_lab.idle");
@@ -81,7 +81,7 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 
 		optionalCombinedInventory = createCombinedInventory();
 
-		fuelHandler = FuelHandler.createNutrientFuelHandler(MAX_FUEL, BASE_COST, this::setChanged);
+		fuelHandler = FuelHandler.createNutrientFuelHandler(MAX_FUEL, this::setChanged);
 		stateData = new BioLabStateData(fuelHandler);
 	}
 

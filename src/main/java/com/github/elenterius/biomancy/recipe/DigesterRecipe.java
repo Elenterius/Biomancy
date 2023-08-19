@@ -19,13 +19,14 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 
-public class DigesterRecipe extends AbstractProductionRecipe {
+public class DigesterRecipe extends ProcessingRecipe {
 
+	public static final short DEFAULT_CRAFTING_COST_NUTRIENTS = 1;
 	private final Ingredient recipeIngredient;
 	private final ItemStack recipeResult;
 
-	public DigesterRecipe(ResourceLocation id, ItemStack result, int craftingTime, Ingredient ingredient) {
-		super(id, craftingTime);
+	public DigesterRecipe(ResourceLocation id, ItemStack result, int craftingTimeTicks, int craftingCostNutrients, Ingredient ingredient) {
+		super(id, craftingTimeTicks, craftingCostNutrients);
 		recipeIngredient = ingredient;
 		recipeResult = result;
 	}
@@ -88,8 +89,9 @@ public class DigesterRecipe extends AbstractProductionRecipe {
 
 			ItemStack resultStack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
 			int time = GsonHelper.getAsInt(json, "time", 100);
+			int cost = GsonHelper.getAsInt(json, "nutrientsCost", DEFAULT_CRAFTING_COST_NUTRIENTS);
 
-			return new DigesterRecipe(recipeId, resultStack, time, ingredient);
+			return new DigesterRecipe(recipeId, resultStack, time, cost, ingredient);
 		}
 
 		//client side
@@ -97,17 +99,21 @@ public class DigesterRecipe extends AbstractProductionRecipe {
 		@Override
 		public DigesterRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
 			ItemStack resultStack = buffer.readItem();
-			int time = buffer.readVarInt();
+
+			int craftingTime = buffer.readVarInt();
+			int craftingCost = buffer.readVarInt();
+
 			Ingredient ingredient = Ingredient.fromNetwork(buffer);
 
-			return new DigesterRecipe(recipeId, resultStack, time, ingredient);
+			return new DigesterRecipe(recipeId, resultStack, craftingTime, craftingCost, ingredient);
 		}
 
 		//server side
 		@Override
 		public void toNetwork(FriendlyByteBuf buffer, DigesterRecipe recipe) {
 			buffer.writeItem(recipe.recipeResult);
-			buffer.writeVarInt(recipe.getCraftingTime());
+			buffer.writeVarInt(recipe.getCraftingTimeTicks());
+			buffer.writeVarInt(recipe.getCraftingCostNutrients());
 			recipe.recipeIngredient.toNetwork(buffer);
 		}
 	}

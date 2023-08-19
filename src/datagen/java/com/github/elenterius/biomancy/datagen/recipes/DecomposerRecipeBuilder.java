@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.datagen.recipes;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
+import com.github.elenterius.biomancy.recipe.DecomposerRecipe;
 import com.github.elenterius.biomancy.recipe.IngredientStack;
 import com.github.elenterius.biomancy.recipe.ItemCountRange;
 import com.github.elenterius.biomancy.recipe.VariableProductionOutput;
@@ -42,7 +43,8 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 	private final List<ICondition> conditions = new ArrayList<>();
 	private ResourceLocation recipeId;
 	private IngredientStack ingredientStack = null;
-	private int craftingTime = -1;
+	private int craftingTimeTicks = -1;
+	private int craftingCostNutrients = -1;
 	@Nullable
 	private String group;
 
@@ -87,7 +89,13 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 
 	public DecomposerRecipeBuilder setCraftingTime(int time) {
 		if (time < 0) throw new IllegalArgumentException("Invalid crafting time: " + time);
-		craftingTime = time;
+		craftingTimeTicks = time;
+		return this;
+	}
+
+	public DecomposerRecipeBuilder setCraftingCost(int costNutrients) {
+		if (costNutrients < 0) throw new IllegalArgumentException("Invalid crafting cost: " + costNutrients);
+		craftingCostNutrients = costNutrients;
 		return this;
 	}
 
@@ -165,8 +173,12 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 	public void save(Consumer<FinishedRecipe> consumer, @Nullable CreativeModeTab itemCategory) {
 		validate();
 
-		if (craftingTime < 0) {
-			craftingTime = CraftingTimeUtil.getTotalTicks(outputs);
+		if (craftingTimeTicks < 0) {
+			craftingTimeTicks = CraftingTimeUtil.getTotalTicks(outputs);
+		}
+
+		if (craftingCostNutrients < 0) {
+			craftingCostNutrients = CraftingCostUtil.getCost(DecomposerRecipe.DEFAULT_CRAFTING_COST_NUTRIENTS, craftingTimeTicks);
 		}
 
 		advancement.parent(new ResourceLocation("recipes/root"))
@@ -194,6 +206,7 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 		private final IngredientStack ingredientStack;
 		private final List<VariableProductionOutput> outputs;
 		private final int craftingTime;
+		private final int craftingCost;
 		private final List<ICondition> conditions;
 		private final Advancement.Builder advancementBuilder;
 		private final ResourceLocation advancementId;
@@ -202,7 +215,8 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 			id = builder.recipeId;
 			group = builder.group == null ? "" : builder.group;
 			ingredientStack = builder.ingredientStack;
-			craftingTime = builder.craftingTime;
+			craftingTime = builder.craftingTimeTicks;
+			craftingCost = builder.craftingCostNutrients;
 			outputs = builder.outputs;
 			conditions = builder.conditions;
 
@@ -225,6 +239,7 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 			json.add("outputs", jsonArray);
 
 			json.addProperty("time", craftingTime);
+			json.addProperty("nutrientsCost", craftingCost);
 
 			//serialize conditions
 			if (!conditions.isEmpty()) {

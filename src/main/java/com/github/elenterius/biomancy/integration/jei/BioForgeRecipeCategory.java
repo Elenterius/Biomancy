@@ -98,8 +98,7 @@ public class BioForgeRecipeCategory implements IRecipeCategory<BioForgeRecipe> {
 	@Override
 	public void draw(BioForgeRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
 		Font fontRenderer = Minecraft.getInstance().font;
-		int fuelCost = 1; //TODO: use constant
-		MutableComponent costString = ComponentUtil.literal("-" + fuelCost);
-		fontRenderer.draw(poseStack, costString, 108, 32f - fontRenderer.lineHeight + 1, 0xff808080);
+		MutableComponent costString = ComponentUtil.literal("-" + recipe.getCraftingCostNutrients());
+		fontRenderer.draw(poseStack, costString, 108, 32f - fontRenderer.lineHeight + 1, 0xff_808080);
 	}
 }

@@ -368,7 +368,10 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 
 		int maxFuel = menu.getMaxFuelAmount();
 		int fuelAmount = menu.getFuelAmount();
-		int totalFuelCost = recipeBook.hasSelectedRecipe() ? 1 : 0;
+
+		BioForgeRecipe selectedRecipe = recipeBook.getSelectedRecipe();
+		int totalFuelCost = selectedRecipe != null ? selectedRecipe.getCraftingCostNutrients() : 0;
+
 		GuiRenderUtil.drawFuelTooltip(this, poseStack, mouseX, mouseY, maxFuel, fuelAmount, totalFuelCost);
 		return true;
 	}

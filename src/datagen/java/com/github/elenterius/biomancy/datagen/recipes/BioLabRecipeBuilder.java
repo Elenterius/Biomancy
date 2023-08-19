@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.datagen.recipes;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
+import com.github.elenterius.biomancy.recipe.BioLabRecipe;
 import com.github.elenterius.biomancy.recipe.IngredientStack;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -41,7 +42,8 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 	private final List<IngredientStack> ingredients = new ArrayList<>();
 	private final Advancement.Builder advancement = Advancement.Builder.advancement();
 	private Ingredient reactant = Ingredient.of(ModItems.VIAL.get());
-	private int craftingTime = 4 * 20;
+	private int craftingTimeTicks = -1;
+	private int craftingCostNutrients = -1;
 
 	private BioLabRecipeBuilder(ResourceLocation recipeId, ItemData result) {
 		this.recipeId = new ResourceLocation(recipeId.getNamespace(), RECIPE_SUB_FOLDER + "/" + recipeId.getPath());
@@ -92,9 +94,15 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 		return this;
 	}
 
-	public BioLabRecipeBuilder setCraftingTime(int time) {
-		if (time < 0) throw new IllegalArgumentException("Invalid crafting time: " + time);
-		craftingTime = time;
+	public BioLabRecipeBuilder setCraftingTime(int timeTicks) {
+		if (timeTicks < 0) throw new IllegalArgumentException("Invalid crafting time: " + timeTicks);
+		craftingTimeTicks = timeTicks;
+		return this;
+	}
+
+	public BioLabRecipeBuilder setCraftingCost(int costNutrients) {
+		if (costNutrients < 0) throw new IllegalArgumentException("Invalid crafting cost: " + costNutrients);
+		craftingCostNutrients = costNutrients;
 		return this;
 	}
 
@@ -154,6 +162,15 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 	@Override
 	public void save(Consumer<FinishedRecipe> consumer, @Nullable CreativeModeTab itemCategory) {
 		validateCriteria();
+
+		if (craftingTimeTicks < 0) {
+			craftingTimeTicks = 4 * 20;
+		}
+
+		if (craftingCostNutrients < 0) {
+			craftingCostNutrients = CraftingCostUtil.getCost(BioLabRecipe.DEFAULT_CRAFTING_COST_NUTRIENTS, craftingTimeTicks);
+		}
+
 		advancement.parent(new ResourceLocation("recipes/root"))
 				.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId))
 				.rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
@@ -161,7 +178,7 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 		String folderName = IRecipeBuilder.getRecipeFolderName(itemCategory, BiomancyMod.MOD_ID);
 		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(), "recipes/%s/%s".formatted(folderName, recipeId.getPath()));
 
-		consumer.accept(new RecipeResult(this, advancementId));
+		consumer.accept(new Result(this, advancementId));
 	}
 
 	private void validateCriteria() {
@@ -170,23 +187,25 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 		}
 	}
 
-	public static class RecipeResult implements FinishedRecipe {
+	public static class Result implements FinishedRecipe {
 		private final ResourceLocation id;
 		private final List<IngredientStack> ingredients;
 		private final Ingredient reactant;
 		private final ItemData result;
 		private final int craftingTime;
+		private final int craftingCost;
 		private final List<ICondition> conditions;
 
 		private final Advancement.Builder advancementBuilder;
 		private final ResourceLocation advancementId;
 
-		public RecipeResult(BioLabRecipeBuilder builder, ResourceLocation advancementId) {
+		public Result(BioLabRecipeBuilder builder, ResourceLocation advancementId) {
 			id = builder.recipeId;
 			ingredients = builder.ingredients;
 			reactant = builder.reactant;
 			result = builder.result;
-			craftingTime = builder.craftingTime;
+			craftingTime = builder.craftingTimeTicks;
+			craftingCost = builder.craftingCostNutrients;
 			conditions = builder.conditions;
 
 			advancementBuilder = builder.advancement;
@@ -208,6 +227,7 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 			json.add("result", result.toJson());
 
 			json.addProperty("time", craftingTime);
+			json.addProperty("nutrientsCost", craftingCost);
 
 			//serialize conditions
 			if (!conditions.isEmpty()) {

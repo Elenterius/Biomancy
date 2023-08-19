@@ -59,7 +59,7 @@ public class BioLabMenu extends PlayerContainerMenu {
 		BehavioralInventory<?> fuelInventory = BehavioralInventory.createClientContents(BioLabBlockEntity.FUEL_SLOTS);
 		SimpleInventory inputInventory = SimpleInventory.createClientContents(BioLabBlockEntity.INPUT_SLOTS);
 		BehavioralInventory<?> outputInventory = BehavioralInventory.createClientContents(BioLabBlockEntity.OUTPUT_SLOTS);
-		FuelHandler fuelHandler = FuelHandler.createNutrientFuelHandler(BioLabBlockEntity.MAX_FUEL, BioLabBlockEntity.BASE_COST, () -> {});
+		FuelHandler fuelHandler = FuelHandler.createNutrientFuelHandler(BioLabBlockEntity.MAX_FUEL, () -> {});
 		BioLabStateData state = new BioLabStateData(fuelHandler);
 		return new BioLabMenu(screenId, playerInventory, fuelInventory, inputInventory, outputInventory, state);
 	}
