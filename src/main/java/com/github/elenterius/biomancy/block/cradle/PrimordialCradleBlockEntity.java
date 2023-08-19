@@ -2,10 +2,7 @@ package com.github.elenterius.biomancy.block.cradle;
 
 import com.github.elenterius.biomancy.block.entity.SimpleSyncedBlockEntity;
 import com.github.elenterius.biomancy.entity.fleshblob.FleshBlob;
-import com.github.elenterius.biomancy.init.ModBlockEntities;
-import com.github.elenterius.biomancy.init.ModDamageSources;
-import com.github.elenterius.biomancy.init.ModEntityTypes;
-import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.network.ISyncableAnimation;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import com.github.elenterius.biomancy.util.SoundUtil;
@@ -40,27 +37,28 @@ import java.util.List;
 
 public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity implements IAnimatable, ISyncableAnimation {
 
-	public static final int DURATION = 20 * 4; //in ticks
-
+	public static final int DURATION_TICKS = 20 * 4;
 	public static final String SACRIFICE_SYNC_KEY = "SyncSacrificeHandler";
 	public static final String SACRIFICE_KEY = "SacrificeHandler";
+	public static final String PRIMAL_SPREAD_CHARGE_KEY = "PrimalSpreadCharge";
 	protected static final AnimationBuilder IDLE_ANIM = new AnimationBuilder().addAnimation("cradle.idle");
 	protected static final AnimationBuilder SPIKE_ANIM = new AnimationBuilder().addAnimation("cradle.spike");
-	private final SacrificeHandler sacrificeHandler = new SacrificeHandler();
 	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
-	private long ticks;
+	private final SacrificeHandler sacrificeHandler = new SacrificeHandler();
 	private boolean playAttackAnimation = false;
+	private long ticks;
+	private int primalSpreadCharge;
 
 	public PrimordialCradleBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.PRIMORDIAL_CRADLE.get(), pos, state);
 	}
 
-	public static void serverTick(Level level, BlockPos pos, BlockState state, PrimordialCradleBlockEntity creator) {
-		if (creator.isFull()) {
-			creator.ticks++;
-			if (creator.ticks > DURATION) {
-				creator.onSacrifice((ServerLevel) level);
-				creator.ticks = 0;
+	public static void serverTick(Level level, BlockPos pos, BlockState state, PrimordialCradleBlockEntity cradle) {
+		if (cradle.isFull()) {
+			cradle.ticks++;
+			if (cradle.ticks > DURATION_TICKS) {
+				cradle.onSacrifice((ServerLevel) level);
+				cradle.ticks = 0;
 			}
 		}
 	}
@@ -138,6 +136,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 
 			if (level.random.nextFloat() < sacrificeHandler.getAnomalyChance()) {
 				spawnPrimordialFleshBlob(level, pos, sacrificeHandler);
+				primalSpreadCharge += 2048;
 				SoundUtil.broadcastBlockSound(level, pos, SoundEvents.FOX_SCREECH, 2f, 0.5f);
 			}
 			else {
@@ -147,7 +146,13 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 				else {
 					spawnFleshBlob(level, pos, sacrificeHandler);
 				}
+
+				primalSpreadCharge += 512;
 				SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CREATOR_SPAWN_MOB);
+			}
+
+			if (level.random.nextFloat() >= sacrificeHandler.getTumorFactor() / 2) {
+				PrimordialEcosystem.tryToReplaceBlock(level, pos.below(), ModBlocks.PRIMAL_FLESH.get().defaultBlockState());
 			}
 
 			level.sendParticles(ParticleTypes.EXPLOSION, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, 1, 0, 0, 0, 0);
@@ -155,12 +160,24 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 		else {
 			attackAOE(level, pos);
 			SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CREATOR_SPIKE_ATTACK);
-			if (level.random.nextFloat() < sacrificeHandler.getTumorFactor()) {
-				PrimordialEcosystem.spreadMalignantVeinsFromSource(level, pos);
+			if (!PrimordialEcosystem.spreadMalignantVeinsFromSource(level, pos, PrimordialEcosystem.MAX_CHARGE_SUPPLIER)) {
+				PrimordialEcosystem.tryToReplaceBlock(level, pos.below(), ModBlocks.PRIMAL_FLESH.get().defaultBlockState());
 			}
+
+			primalSpreadCharge += 1024;
+			SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), 1f, 0.15f + level.random.nextFloat() * 0.5f);
 		}
 
 		resetState();
+	}
+
+	public boolean consumePrimalSpreadCharge(ServerLevel level, int amount) {
+		if (amount <= 0) return false;
+		if (primalSpreadCharge < amount) return false;
+
+		primalSpreadCharge -= amount;
+
+		return true;
 	}
 
 	public void spawnPrimordialFleshBlob(ServerLevel level, BlockPos pos, SacrificeHandler sacrificeHandler) {
@@ -229,6 +246,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 	protected void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 		tag.put(SACRIFICE_KEY, sacrificeHandler.serializeNBT());
+		tag.putInt(PRIMAL_SPREAD_CHARGE_KEY, primalSpreadCharge);
 	}
 
 	@Override
@@ -245,6 +263,8 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 		else if (tag.contains(SACRIFICE_SYNC_KEY)) {
 			sacrificeHandler.deserializeNBT(tag.getCompound(SACRIFICE_SYNC_KEY));
 		}
+
+		primalSpreadCharge = tag.getInt(PRIMAL_SPREAD_CHARGE_KEY);
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import com.github.elenterius.biomancy.block.ownable.OwnablePressurePlateBlock;
 import com.github.elenterius.biomancy.block.property.DirectionalSlabType;
 import com.github.elenterius.biomancy.block.property.Orientation;
 import com.github.elenterius.biomancy.block.property.UserSensitivity;
+import com.github.elenterius.biomancy.block.veins.FleshVeinsBlock;
 import com.github.elenterius.biomancy.block.vialholder.VialHolderBlock;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.mojang.math.Vector3f;
