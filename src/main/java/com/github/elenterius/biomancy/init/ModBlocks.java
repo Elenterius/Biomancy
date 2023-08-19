@@ -16,6 +16,7 @@ import com.github.elenterius.biomancy.block.ownable.OwnablePressurePlateBlock;
 import com.github.elenterius.biomancy.block.ownable.OwnableTrapDoorBlock;
 import com.github.elenterius.biomancy.block.storagesac.StorageSacBlock;
 import com.github.elenterius.biomancy.block.tongue.TongueBlock;
+import com.github.elenterius.biomancy.block.veins.FleshVeinsBlock;
 import com.github.elenterius.biomancy.block.vialholder.VialHolderBlock;
 import com.github.elenterius.biomancy.init.tags.ModEntityTags;
 import net.minecraft.core.BlockPos;

@@ -9,7 +9,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.predicate.BlockMaterialPredicate;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +26,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 		super(generatorIn, MOD_ID, existingFileHelper);
 	}
 
+	private static TagKey<Block> tagKey(String modId, String path) {
+		return BlockTags.create(new ResourceLocation(modId, path));
+	}
+
 	@Override
 	public String getName() {
 		return StringUtils.capitalize(modId) + " " + super.getName();
@@ -33,6 +39,17 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 	protected void addTags() {
 		addFleshyBlocksToHoeTag();
 		addCreateTags();
+
+		//CONVERTABLE_TO_PRIMAL_FLESH
+		//CONVERTABLE_TO_MALIGNANT_FLESH
+		tag(ModBlockTags.PRIMORDIAL_ECO_SYSTEM_REPLACEABLE)
+				.add(Blocks.CLAY).addTag(BlockTags.SAND).addTag(Tags.Blocks.GRAVEL)
+				.add(Blocks.SNOW_BLOCK, Blocks.SNOW)
+				.addTag(BlockTags.LEAVES)
+				.add(
+						Blocks.DIRT, Blocks.COARSE_DIRT, Blocks.PODZOL, Blocks.GRASS_BLOCK, Blocks.DIRT_PATH, Blocks.FARMLAND,
+						Blocks.ROOTED_DIRT, Blocks.MUDDY_MANGROVE_ROOTS, Blocks.MUD
+				);
 
 		tag(BlockTags.DOORS).add(ModBlocks.FLESH_DOOR.get()).add(ModBlocks.FULL_FLESH_DOOR.get());
 		tag(BlockTags.TRAPDOORS).add(ModBlocks.FLESH_IRIS_DOOR.get());
@@ -92,10 +109,6 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 				ModBlocks.FLESH_DOOR.get(),
 				ModBlocks.FLESH_IRIS_DOOR.get()
 		);
-	}
-
-	private static TagKey<Block> tagKey(String modId, String path) {
-		return BlockTags.create(new ResourceLocation(modId, path));
 	}
 
 }
