@@ -62,7 +62,6 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	public static final int OUTPUT_SLOTS = DecomposerRecipe.MAX_OUTPUTS;
 
 	public static final int MAX_FUEL = 1_000;
-	public static final int BASE_COST = 1;
 
 	public static final RegistryObject<SimpleRecipeType.ItemStackRecipeType<DecomposerRecipe>> RECIPE_TYPE = ModRecipes.DECOMPOSING_RECIPE_TYPE;
 	protected static final AnimationBuilder WORKING_ANIM = new AnimationBuilder().loop("decomposer.working");
@@ -87,7 +86,7 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 		outputInventory = BehavioralInventory.createServerContents(OUTPUT_SLOTS, HandlerBehaviors::denyInput, this::canPlayerOpenInv, this::setChanged);
 
 		fuelInventory = BehavioralInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterFuel, this::canPlayerOpenInv, this::setChanged);
-		fuelHandler = FuelHandler.createNutrientFuelHandler(MAX_FUEL, BASE_COST, this::setChanged);
+		fuelHandler = FuelHandler.createNutrientFuelHandler(MAX_FUEL, this::setChanged);
 
 		stateData = new DecomposerStateData(fuelHandler);
 	}

@@ -21,8 +21,9 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BioLabRecipe extends AbstractProductionRecipe {
+public class BioLabRecipe extends ProcessingRecipe {
 
+	public static final short DEFAULT_CRAFTING_COST_NUTRIENTS = 2;
 	public static final int MAX_INGREDIENTS = 4;
 	public static final int MAX_REACTANT = 1;
 	private final List<IngredientStack> ingredients;
@@ -31,8 +32,8 @@ public class BioLabRecipe extends AbstractProductionRecipe {
 
 	private final NonNullList<Ingredient> vanillaIngredients;
 
-	public BioLabRecipe(ResourceLocation id, ItemStack result, int craftingTime, List<IngredientStack> ingredients, Ingredient reactant) {
-		super(id, craftingTime);
+	public BioLabRecipe(ResourceLocation id, ItemStack result, int craftingTimeTicks, int craftingCostNutrients, List<IngredientStack> ingredients, Ingredient reactant) {
+		super(id, craftingTimeTicks, craftingCostNutrients);
 		this.ingredients = ingredients;
 		recipeReactant = reactant;
 		this.result = result;
@@ -133,9 +134,11 @@ public class BioLabRecipe extends AbstractProductionRecipe {
 			Ingredient reactant = json.has("reactant") ? RecipeUtil.readIngredient(json, "reactant") : Ingredient.EMPTY;
 
 			ItemStack resultStack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
-			int time = GsonHelper.getAsInt(json, "time", 100);
 
-			return new BioLabRecipe(recipeId, resultStack, time, ingredients, reactant);
+			int time = GsonHelper.getAsInt(json, "time", 100);
+			int cost = GsonHelper.getAsInt(json, "nutrientsCost", DEFAULT_CRAFTING_COST_NUTRIENTS);
+
+			return new BioLabRecipe(recipeId, resultStack, time, cost, ingredients, reactant);
 		}
 
 		@Nullable
@@ -145,6 +148,7 @@ public class BioLabRecipe extends AbstractProductionRecipe {
 
 			Ingredient reactant = Ingredient.fromNetwork(buffer);
 			int craftingTime = buffer.readVarInt();
+			int craftingCost = buffer.readVarInt();
 
 			int ingredientCount = buffer.readVarInt();
 			List<IngredientStack> ingredients = new ArrayList<>();
@@ -152,7 +156,7 @@ public class BioLabRecipe extends AbstractProductionRecipe {
 				ingredients.add(IngredientStack.fromNetwork(buffer));
 			}
 
-			return new BioLabRecipe(recipeId, resultStack, craftingTime, ingredients, reactant);
+			return new BioLabRecipe(recipeId, resultStack, craftingTime, craftingCost, ingredients, reactant);
 		}
 
 		@Override
@@ -160,7 +164,8 @@ public class BioLabRecipe extends AbstractProductionRecipe {
 			buffer.writeItem(recipe.result);
 
 			recipe.recipeReactant.toNetwork(buffer);
-			buffer.writeVarInt(recipe.getCraftingTime());
+			buffer.writeVarInt(recipe.getCraftingTimeTicks());
+			buffer.writeVarInt(recipe.getCraftingCostNutrients());
 
 			buffer.writeVarInt(recipe.ingredients.size());
 			for (IngredientStack ingredientStack : recipe.ingredients) {

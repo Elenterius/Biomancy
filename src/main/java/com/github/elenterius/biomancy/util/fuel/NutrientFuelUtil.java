@@ -1,7 +1,6 @@
 package com.github.elenterius.biomancy.util.fuel;
 
 import com.github.elenterius.biomancy.init.ModItems;
-import net.minecraft.util.Mth;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -14,7 +13,6 @@ public final class NutrientFuelUtil {
 	private NutrientFuelUtil() {}
 
 	public static final byte DEFAULT_FUEL_VALUE = 1;
-	public static final int SIXTY_SECONDS_IN_TICKS = 20 * 60;
 
 	public static final Set<Item> FUEL_ITEMS = Set.of(
 			ModItems.NUTRIENTS.get(),
@@ -49,18 +47,6 @@ public final class NutrientFuelUtil {
 			if (foodProperties != null) return foodProperties.getNutrition();
 		}
 		return 0;
-	}
-
-	public static int getFuelCostMultiplier(int craftingTimeInTicks) {
-		return 1 + Mth.floor(craftingTimeInTicks / (float) SIXTY_SECONDS_IN_TICKS);
-	}
-
-	public static int getFuelCost(int craftingTimeInTicks) {
-		return getFuelCost(DEFAULT_FUEL_VALUE, craftingTimeInTicks);
-	}
-
-	public static int getFuelCost(int baseCost, int craftingTimeInTicks) {
-		return baseCost * getFuelCostMultiplier(craftingTimeInTicks);
 	}
 
 }

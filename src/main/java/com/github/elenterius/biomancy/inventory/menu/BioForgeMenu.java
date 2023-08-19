@@ -309,7 +309,7 @@ public class BioForgeMenu extends PlayerContainerMenu {
 	}
 
 	private boolean canCraft(Player player, @Nullable BioForgeRecipe recipe) {
-		if (recipe == null || stateData.getFuelAmount() <= 0 || !recipe.isCraftable(itemCounter)) return false;
+		if (recipe == null || stateData.getFuelAmount() < recipe.getCraftingCostNutrients() || !recipe.isCraftable(itemCounter)) return false;
 
 		Inventory inventory = player.getInventory();
 
@@ -366,7 +366,7 @@ public class BioForgeMenu extends PlayerContainerMenu {
 		inventory.setChanged();
 
 		//consume nutrients
-		stateData.addFuelAmount((short) -1);
+		stateData.addFuelAmount((short) -recipe.getCraftingCostNutrients());
 	}
 
 }

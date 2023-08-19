@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.block.state;
 
-import com.github.elenterius.biomancy.recipe.AbstractProductionRecipe;
+import com.github.elenterius.biomancy.recipe.ProcessingRecipe;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.ContainerData;
@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 
 import java.util.Optional;
 
-public abstract class RecipeCraftingStateData<T extends AbstractProductionRecipe> implements ContainerData {
+public abstract class RecipeCraftingStateData<T extends ProcessingRecipe> implements ContainerData {
 
 	public static final String NBT_KEY_RECIPE_ID = "RecipeId";
 	public static final String NBT_KEY_TIME_ELAPSED = "TimeElapsed";
@@ -62,7 +62,7 @@ public abstract class RecipeCraftingStateData<T extends AbstractProductionRecipe
 
 	public void setCraftingGoalRecipe(T recipe) {
 		recipeId = recipe.getId();
-		timeForCompletion = recipe.getCraftingTime();
+		timeForCompletion = recipe.getCraftingTimeTicks();
 	}
 
 	public abstract int getFuelCost();

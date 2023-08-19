@@ -21,15 +21,18 @@ import java.util.List;
 
 public class BioForgeRecipe implements Recipe<Container> {
 
-	private final ResourceLocation registryKey;
+	public static final byte DEFAULT_CRAFTING_COST_NUTRIENTS = 1;
 	public static final int MAX_INGREDIENTS = 5;
+	private final ResourceLocation registryKey;
 	private final BioForgeTab tab;
 	private final List<IngredientStack> ingredients;
 	private final ItemStack result;
 
 	private final NonNullList<Ingredient> vanillaIngredients;
 
-	public BioForgeRecipe(ResourceLocation id, BioForgeTab tab, ItemStack result, List<IngredientStack> ingredients) {
+	private final int cost;
+
+	public BioForgeRecipe(ResourceLocation id, BioForgeTab tab, ItemStack result, List<IngredientStack> ingredients, int craftingCostNutrients) {
 		registryKey = id;
 		this.tab = tab;
 		this.result = result;
@@ -38,6 +41,12 @@ public class BioForgeRecipe implements Recipe<Container> {
 		List<Ingredient> flatIngredients = RecipeUtil.flattenIngredientStacks(ingredients);
 		vanillaIngredients = NonNullList.createWithCapacity(flatIngredients.size());
 		vanillaIngredients.addAll(flatIngredients);
+
+		cost = craftingCostNutrients;
+	}
+
+	public static boolean areRecipesEqual(BioForgeRecipe recipeA, BioForgeRecipe recipeB) {
+		return recipeA.isRecipeEqual(recipeB);
 	}
 
 	@Override
@@ -45,12 +54,12 @@ public class BioForgeRecipe implements Recipe<Container> {
 		return registryKey;
 	}
 
-	public boolean isRecipeEqual(BioForgeRecipe other) {
-		return registryKey.equals(other.getId());
+	public int getCraftingCostNutrients() {
+		return cost;
 	}
 
-	public static boolean areRecipesEqual(BioForgeRecipe recipeA, BioForgeRecipe recipeB) {
-		return recipeA.isRecipeEqual(recipeB);
+	public boolean isRecipeEqual(BioForgeRecipe other) {
+		return registryKey.equals(other.getId());
 	}
 
 	public boolean isCraftable(StackedContents itemCounter) {
@@ -148,9 +157,12 @@ public class BioForgeRecipe implements Recipe<Container> {
 			}
 
 			ItemStack resultStack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
+
+			int cost = GsonHelper.getAsInt(json, "nutrientsCost", DEFAULT_CRAFTING_COST_NUTRIENTS);
+
 			BioForgeTab tab = BioForgeTab.fromJson(json);
 
-			return new BioForgeRecipe(recipeId, tab, resultStack, ingredients);
+			return new BioForgeRecipe(recipeId, tab, resultStack, ingredients, cost);
 		}
 
 		@Nullable
@@ -164,9 +176,11 @@ public class BioForgeRecipe implements Recipe<Container> {
 				ingredients.add(IngredientStack.fromNetwork(buffer));
 			}
 
+			int craftingCost = buffer.readVarInt();
+
 			BioForgeTab tab = BioForgeTab.fromNetwork(buffer);
 
-			return new BioForgeRecipe(recipeId, tab, resultStack, ingredients);
+			return new BioForgeRecipe(recipeId, tab, resultStack, ingredients, craftingCost);
 		}
 
 		@Override
@@ -177,6 +191,8 @@ public class BioForgeRecipe implements Recipe<Container> {
 			for (IngredientStack ingredientStack : recipe.ingredients) {
 				ingredientStack.toNetwork(buffer);
 			}
+
+			buffer.writeVarInt(recipe.getCraftingCostNutrients());
 
 			recipe.tab.toNetwork(buffer);
 		}

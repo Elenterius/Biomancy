@@ -19,8 +19,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DecomposerRecipe extends AbstractProductionRecipe {
-
+public class DecomposerRecipe extends ProcessingRecipe {
+	public static final short DEFAULT_CRAFTING_COST_NUTRIENTS = 1;
 	public static final int MAX_INGREDIENTS = 1;
 	public static final int MAX_OUTPUTS = 6;
 
@@ -28,8 +28,8 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 	private final NonNullList<Ingredient> vanillaIngredients;
 	private final List<VariableProductionOutput> outputs;
 
-	public DecomposerRecipe(ResourceLocation id, List<VariableProductionOutput> outputs, IngredientStack ingredientStack, int craftingTime) {
-		super(id, craftingTime);
+	public DecomposerRecipe(ResourceLocation id, List<VariableProductionOutput> outputs, IngredientStack ingredientStack, int craftingTimeTicks, int craftingCostNutrients) {
+		super(id, craftingTimeTicks, craftingCostNutrients);
 		this.ingredientStack = ingredientStack;
 		this.outputs = outputs;
 
@@ -105,15 +105,17 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 			}
 
 			int time = GsonHelper.getAsInt(json, "time", 100);
+			int cost = GsonHelper.getAsInt(json, "nutrientsCost", DEFAULT_CRAFTING_COST_NUTRIENTS);
 
-			return new DecomposerRecipe(recipeId, outputs, ingredientStack, time);
+			return new DecomposerRecipe(recipeId, outputs, ingredientStack, time, cost);
 		}
 
 		@Override
 		public DecomposerRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
 			IngredientStack ingredientStack = IngredientStack.fromNetwork(buffer);
 
-			int time = buffer.readVarInt();
+			int craftingTime = buffer.readVarInt();
+			int craftingCost = buffer.readVarInt();
 
 			int outputCount = buffer.readVarInt();
 			List<VariableProductionOutput> outputs = new ArrayList<>();
@@ -121,14 +123,15 @@ public class DecomposerRecipe extends AbstractProductionRecipe {
 				outputs.add(VariableProductionOutput.fromNetwork(buffer));
 			}
 
-			return new DecomposerRecipe(recipeId, outputs, ingredientStack, time);
+			return new DecomposerRecipe(recipeId, outputs, ingredientStack, craftingTime, craftingCost);
 		}
 
 		@Override
 		public void toNetwork(FriendlyByteBuf buffer, DecomposerRecipe recipe) {
 			recipe.ingredientStack.toNetwork(buffer);
 
-			buffer.writeVarInt(recipe.getCraftingTime());
+			buffer.writeVarInt(recipe.getCraftingTimeTicks());
+			buffer.writeVarInt(recipe.getCraftingCostNutrients());
 
 			buffer.writeVarInt(recipe.outputs.size());
 			for (VariableProductionOutput output : recipe.outputs) {
