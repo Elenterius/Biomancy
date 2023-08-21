@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.recipe;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.GsonHelper;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public record IngredientStack(Ingredient ingredient, int count) {
 
-	public static final String INGREDIENT_KEY = "ingredient";
+	public static final String ALT_INGREDIENT_KEY = "alt";
 	public static final String COUNT_KEY = "count";
 
 	public boolean testItem(@Nullable ItemStack stack) {
@@ -32,9 +33,17 @@ public record IngredientStack(Ingredient ingredient, int count) {
 	}
 
 	public JsonObject toJson() {
-		JsonObject json = new JsonObject();
-		json.add(INGREDIENT_KEY, ingredient.toJson());
-		if (count > 0) json.addProperty(COUNT_KEY, count);
+		JsonElement ingredientJson = ingredient.toJson();
+
+		if (ingredientJson.isJsonArray()) {
+			JsonObject json = new JsonObject();
+			json.add(ALT_INGREDIENT_KEY, ingredientJson);
+			if (count > 1) json.addProperty(COUNT_KEY, count);
+			return json;
+		}
+
+		JsonObject json = (JsonObject) ingredientJson;
+		if (count > 1) json.addProperty(COUNT_KEY, count);
 		return json;
 	}
 
@@ -45,8 +54,10 @@ public record IngredientStack(Ingredient ingredient, int count) {
 	}
 
 	private static Ingredient readIngredient(JsonObject json) {
-		if (GsonHelper.isArrayNode(json, INGREDIENT_KEY)) return Ingredient.fromJson(GsonHelper.getAsJsonArray(json, INGREDIENT_KEY));
-		else return Ingredient.fromJson(GsonHelper.getAsJsonObject(json, INGREDIENT_KEY));
+		if (GsonHelper.isArrayNode(json, ALT_INGREDIENT_KEY)) {
+			return Ingredient.fromJson(GsonHelper.getAsJsonArray(json, ALT_INGREDIENT_KEY));
+		}
+		return Ingredient.fromJson(json);
 	}
 
 	public static IngredientStack fromNetwork(FriendlyByteBuf buffer) {

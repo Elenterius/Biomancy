@@ -116,7 +116,7 @@ public class BioLabRecipe extends ProcessingRecipe {
 
 		@Override
 		public BioLabRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-			List<IngredientStack> ingredients = RecipeUtil.readIngredientStacks(GsonHelper.getAsJsonArray(json, "ingredient_quantities"));
+			List<IngredientStack> ingredients = RecipeUtil.readIngredientStacks(GsonHelper.getAsJsonArray(json, "ingredients"));
 
 			if (ingredients.isEmpty()) {
 				throw new JsonParseException("No ingredients found for %s recipe".formatted(ForgeRegistries.RECIPE_SERIALIZERS.getKey(this)));
@@ -135,7 +135,7 @@ public class BioLabRecipe extends ProcessingRecipe {
 
 			ItemStack resultStack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
 
-			int time = GsonHelper.getAsInt(json, "time", 100);
+			int time = GsonHelper.getAsInt(json, "processingTime", 100);
 			int cost = GsonHelper.getAsInt(json, "nutrientsCost", DEFAULT_CRAFTING_COST_NUTRIENTS);
 
 			return new BioLabRecipe(recipeId, resultStack, time, cost, ingredients, reactant);
