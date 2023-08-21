@@ -88,7 +88,7 @@ public class DigesterRecipe extends ProcessingRecipe {
 			}
 
 			ItemStack resultStack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
-			int time = GsonHelper.getAsInt(json, "time", 100);
+			int time = GsonHelper.getAsInt(json, "processingTime", 100);
 			int cost = GsonHelper.getAsInt(json, "nutrientsCost", DEFAULT_CRAFTING_COST_NUTRIENTS);
 
 			return new DigesterRecipe(recipeId, resultStack, time, cost, ingredient);

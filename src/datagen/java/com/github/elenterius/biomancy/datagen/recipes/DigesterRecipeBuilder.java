@@ -211,7 +211,7 @@ public class DigesterRecipeBuilder implements IRecipeBuilder {
 
 			json.add("result", recipeResult.toJson());
 
-			json.addProperty("time", craftingTime);
+			json.addProperty("processingTime", craftingTime);
 			json.addProperty("nutrientsCost", craftingCost);
 
 			//serialize conditions

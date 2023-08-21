@@ -218,7 +218,7 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 			for (IngredientStack ingredient : ingredients) {
 				jsonArray.add(ingredient.toJson());
 			}
-			json.add("ingredient_quantities", jsonArray);
+			json.add("ingredients", jsonArray);
 
 			if (!reactant.isEmpty()) {
 				json.add("reactant", reactant.toJson());
@@ -226,7 +226,7 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 
 			json.add("result", result.toJson());
 
-			json.addProperty("time", craftingTime);
+			json.addProperty("processingTime", craftingTime);
 			json.addProperty("nutrientsCost", craftingCost);
 
 			//serialize conditions

@@ -146,7 +146,7 @@ public class BioForgeRecipe implements Recipe<Container> {
 
 		@Override
 		public BioForgeRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-			List<IngredientStack> ingredients = RecipeUtil.readIngredientStacks(GsonHelper.getAsJsonArray(json, "ingredient_quantities"));
+			List<IngredientStack> ingredients = RecipeUtil.readIngredientStacks(GsonHelper.getAsJsonArray(json, "ingredients"));
 
 			if (ingredients.isEmpty()) {
 				throw new JsonParseException("No ingredients for recipe");
