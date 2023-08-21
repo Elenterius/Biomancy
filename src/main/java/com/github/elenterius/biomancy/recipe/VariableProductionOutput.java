@@ -92,27 +92,23 @@ public class VariableProductionOutput {
 	public ItemCountRange getCountRange() {return countRange;}
 
 	public JsonObject serialize() {
-		JsonObject parent = new JsonObject();
-
 		JsonObject result = new JsonObject();
 		result.addProperty("item", Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item)).toString());
 
 		JsonObject obj = new JsonObject();
 		ItemCountRange.toJson(obj, countRange);
-		result.add("count_range", obj);
+		result.add("countRange", obj);
 
 		if (tag != null && !tag.isEmpty()) {
 			result.addProperty("nbt", tag.getAsString());
 		}
-		parent.add("result", result);
 
-		return parent;
+		return result;
 	}
 
 	public static VariableProductionOutput deserialize(JsonObject jsonObject) {
-		JsonObject result = GsonHelper.getAsJsonObject(jsonObject, "result");
-		ItemStack stack = ShapedRecipe.itemStackFromJson(result);
-		ItemCountRange countRange = ItemCountRange.fromJson(GsonHelper.getAsJsonObject(result, "count_range"));
+		ItemStack stack = ShapedRecipe.itemStackFromJson(jsonObject);
+		ItemCountRange countRange = ItemCountRange.fromJson(GsonHelper.getAsJsonObject(jsonObject, "countRange"));
 		if (stack.isEmpty()) throw new JsonParseException("Result can't be Empty");
 		return new VariableProductionOutput(stack, countRange);
 	}

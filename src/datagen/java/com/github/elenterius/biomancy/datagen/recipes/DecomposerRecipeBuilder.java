@@ -230,15 +230,15 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 				json.addProperty("group", group);
 			}
 
-			json.add("input", ingredientStack.toJson());
+			json.add("ingredient", ingredientStack.toJson());
 
 			JsonArray jsonArray = new JsonArray();
 			for (VariableProductionOutput output : outputs) {
 				jsonArray.add(output.serialize());
 			}
-			json.add("outputs", jsonArray);
+			json.add("results", jsonArray);
 
-			json.addProperty("time", craftingTime);
+			json.addProperty("processingTime", craftingTime);
 			json.addProperty("nutrientsCost", craftingCost);
 
 			//serialize conditions

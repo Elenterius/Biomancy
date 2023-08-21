@@ -204,7 +204,7 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 			for (IngredientStack ingredient : ingredients) {
 				jsonArray.add(ingredient.toJson());
 			}
-			json.add("ingredient_quantities", jsonArray);
+			json.add("ingredients", jsonArray);
 
 			json.add("result", result.toJson());
 
