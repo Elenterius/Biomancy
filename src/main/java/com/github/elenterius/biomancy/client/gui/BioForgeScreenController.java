@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.init.ModRecipeBookTypes;
 import com.github.elenterius.biomancy.init.client.ModRecipeBookCategories;
 import com.github.elenterius.biomancy.inventory.menu.BioForgeMenu;
 import com.github.elenterius.biomancy.inventory.menu.BioForgeTab;
+import com.github.elenterius.biomancy.mixin.client.RecipeCollectionAccessor;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import com.github.elenterius.biomancy.recipe.BioForgeRecipe;
 import com.google.common.collect.Lists;
@@ -17,16 +18,14 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.searchtree.SearchRegistry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.stats.RecipeBook;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 
 import javax.annotation.Nullable;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 
 class BioForgeScreenController {
 
@@ -241,13 +240,41 @@ class BioForgeScreenController {
 		currentSearchString = searchString;
 	}
 
+	private static void canCraftRecipe(RecipeCollection recipeCollection, StackedContents handler, RecipeBook book, boolean isCreativePlayer) {
+		RecipeCollectionAccessor accessor = (RecipeCollectionAccessor) recipeCollection;
+		Set<Recipe<?>> fitDimensions = accessor.getFitDimensions();
+		Set<Recipe<?>> craftable = accessor.getCraftable();
+
+		for (Recipe<?> recipe : recipeCollection.getRecipes()) {
+			boolean isRecipeKnown = isCreativePlayer || book.contains(recipe);
+			boolean canCraftRecipe = recipe.canCraftInDimensions(0, 0) && isRecipeKnown;
+
+			if (canCraftRecipe) {
+				fitDimensions.add(recipe);
+			}
+			else {
+				fitDimensions.remove(recipe);
+			}
+
+			if (canCraftRecipe && handler.canCraft(recipe, null)) {
+				craftable.add(recipe);
+			}
+			else {
+				craftable.remove(recipe);
+			}
+		}
+	}
+
 	private void updateAndSearchRecipes() {
-		ClientRecipeBook recipeBook = getPlayer().getRecipeBook();
+		LocalPlayer player = getPlayer();
+		boolean isCreativePlayer = player.isCreative();
+
+		ClientRecipeBook recipeBook = player.getRecipeBook();
 		List<RecipeCollection> recipesForCategory = recipeBook.getCollection(ModRecipeBookCategories.getRecipeBookCategories(tabs.get(activeTab)));
-		recipesForCategory.forEach(recipeCollection -> recipeCollection.canCraft(itemCounter, 0, 0, recipeBook));
+		recipesForCategory.forEach(recipeCollection -> canCraftRecipe(recipeCollection, itemCounter, recipeBook, isCreativePlayer));
 
 		List<RecipeCollection> recipes = Lists.newArrayList(recipesForCategory);
-		recipes.removeIf(recipeCollection -> !recipeCollection.hasKnownRecipes());
+		if (!isCreativePlayer) recipes.removeIf(recipeCollection -> !recipeCollection.hasKnownRecipes());
 		recipes.removeIf(recipeCollection -> !recipeCollection.hasFitting());
 
 		if (!currentSearchString.isEmpty()) {

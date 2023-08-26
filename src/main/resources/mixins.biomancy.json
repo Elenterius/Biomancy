@@ -12,10 +12,6 @@
     "MobEntityAccessor", "PhantomMixin", "PlayerMixin", "SlimeAccessor", "SwordItemMixinAccessor", "TadpoleAccessor", "TextureSlotAccessor",
     "ZombieVillagerMixinAccessor"
   ],
-  "client": [
-    "client.ClientPackListenerMixin",
-    "client.PlayerRendererMixin",
-    "client.ScreenMixin"
-  ],
+	"client": [ "client.ClientPackListenerMixin", "client.PlayerRendererMixin", "client.RecipeCollectionAccessor", "client.ScreenMixin" ],
   "server": [ ]
 }
