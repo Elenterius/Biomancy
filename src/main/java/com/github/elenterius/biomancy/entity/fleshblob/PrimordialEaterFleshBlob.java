@@ -11,7 +11,6 @@ import com.github.elenterius.biomancy.world.PrimordialEcosystem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
@@ -70,11 +69,6 @@ public class PrimordialEaterFleshBlob extends EaterFleshBlob implements Primordi
 			spawnData = new FleshBlobSpawnData.Tumors((byte) 0);
 		}
 		return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
-	}
-
-	@Override
-	protected ResourceLocation getDefaultLootTable() {
-		return getType().getDefaultLootTable();
 	}
 
 	@Override
