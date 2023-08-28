@@ -33,7 +33,7 @@ side = "BOTH"
 [[dependencies.biomancy]]
 modId = "create"
 mandatory = false
-versionRange = "[0.5.1.b,)"
+versionRange = "[0.5.0,)"
 ordering = "NONE"
 side = "BOTH"
 
