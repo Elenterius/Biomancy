@@ -10,13 +10,12 @@ import com.github.elenterius.biomancy.entity.ai.goal.FindItemGoal;
 import com.github.elenterius.biomancy.world.PrimordialEcosystem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
@@ -31,6 +30,8 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
 
@@ -79,6 +80,14 @@ public class PrimordialHangryEaterFleshBlob extends EaterFleshBlob implements En
 		targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, FleshBlob.class, false, IS_VALID_ATTACK_TARGET));
 		targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
 		targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Mob.class, false, IS_VALID_ATTACK_TARGET));
+	}
+
+	@Override
+	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {
+		if (!(spawnData instanceof FleshBlobSpawnData)) {
+			spawnData = new FleshBlobSpawnData.Tumors((byte) 0);
+		}
+		return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
 	}
 
 	@Override
