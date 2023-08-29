@@ -76,6 +76,10 @@ public final class ModSoundEvents {
 	public static final RegistryObject<SoundEvent> FLESH_BLOB_DEATH = registerSoundEvent("entity.flesh_blob.death");
 	public static final RegistryObject<SoundEvent> FLESH_BLOB_AMBIENT = registerSoundEvent("entity.flesh_blob.ambient");
 
+	//## Generic
+	public static final RegistryObject<SoundEvent> GENERIC_MEW_PURR = registerSoundEvent("entity.generic.mew_purr");
+	public static final RegistryObject<SoundEvent> GENERIC_GROWL = registerSoundEvent("entity.generic.growl");
+
 	private ModSoundEvents() {}
 
 	private static RegistryObject<SoundEvent> registerSoundEvent(String name) {
