@@ -85,6 +85,8 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 		addSimpleRedirect(ModSoundEvents.FLESH_BLOB_HURT, ModSoundEvents.FLESH_BLOCK_BREAK.get(), 0.8f, 0.9f);
 		addSimpleRedirect(ModSoundEvents.FLESH_BLOB_DEATH, SoundEvents.GENERIC_DEATH);
 		addSimpleSounds(ModSoundEvents.FLESH_BLOB_AMBIENT, 3, 0.8f, 0.9f);
+		addSimpleSound(ModSoundEvents.GENERIC_MEW_PURR, 0.7f, 0.45f);
+		addSimpleSound(ModSoundEvents.GENERIC_GROWL, 0.9f, 0.55f);
 	}
 
 	public String translationKey(RegistryObject<SoundEvent> soundHolder) {
