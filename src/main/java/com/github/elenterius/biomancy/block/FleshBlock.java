@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.block;
 
-import com.github.elenterius.biomancy.init.ModBlocks;
+import com.github.elenterius.biomancy.init.ModPlantTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
@@ -18,7 +18,7 @@ public class FleshBlock extends Block {
 	@Override
 	public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction facing, IPlantable plantable) {
 		PlantType type = plantable.getPlantType(world, pos.relative(facing));
-		return type == ModBlocks.FLESH_PLANT_TYPE;
+		return type == ModPlantTypes.FLESH_PLANT_TYPE;
 	}
 
 }
