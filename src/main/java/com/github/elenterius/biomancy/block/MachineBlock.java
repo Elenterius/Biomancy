@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.block;
 
 import com.github.elenterius.biomancy.block.entity.MachineBlockEntity;
-import com.github.elenterius.biomancy.init.ModBlocks;
+import com.github.elenterius.biomancy.init.ModBlockProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
 public abstract class MachineBlock extends BaseEntityBlock {
 
-	public static final BooleanProperty CRAFTING = ModBlocks.CRAFTING_PROPERTY;
+	public static final BooleanProperty CRAFTING = ModBlockProperties.IS_CRAFTING;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
 	protected MachineBlock(Properties properties) {

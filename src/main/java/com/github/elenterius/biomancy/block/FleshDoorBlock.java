@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.block;
 
 import com.github.elenterius.biomancy.block.property.Orientation;
-import com.github.elenterius.biomancy.init.ModBlocks;
+import com.github.elenterius.biomancy.init.ModBlockProperties;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -34,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class FleshDoorBlock extends DoorBlock {
 
-	public static final EnumProperty<Orientation> ORIENTATION = ModBlocks.ORIENTATION;
+	public static final EnumProperty<Orientation> ORIENTATION = ModBlockProperties.ORIENTATION;
 	public static final int USE_UPDATE_FLAG = Block.UPDATE_CLIENTS | Block.UPDATE_IMMEDIATE; // 10
 
 	protected static final int THICKNESS = 2;

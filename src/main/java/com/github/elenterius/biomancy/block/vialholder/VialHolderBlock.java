@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.block.vialholder;
 
 import com.github.elenterius.biomancy.init.ModBlockEntities;
+import com.github.elenterius.biomancy.init.ModBlockProperties;
 import com.github.elenterius.biomancy.util.VoxelShapeUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,16 +33,19 @@ import java.util.List;
 public class VialHolderBlock extends BaseEntityBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-	public static final BooleanProperty VIAL_0 = BooleanProperty.create("vial_0");
-	public static final BooleanProperty VIAL_1 = BooleanProperty.create("vial_1");
-	public static final BooleanProperty VIAL_2 = BooleanProperty.create("vial_2");
-	public static final BooleanProperty VIAL_3 = BooleanProperty.create("vial_3");
-	public static final BooleanProperty VIAL_4 = BooleanProperty.create("vial_4");
+
+	public static final BooleanProperty VIAL_0 = ModBlockProperties.VIAL_0;
+	public static final BooleanProperty VIAL_1 = ModBlockProperties.VIAL_1;
+	public static final BooleanProperty VIAL_2 = ModBlockProperties.VIAL_2;
+	public static final BooleanProperty VIAL_3 = ModBlockProperties.VIAL_3;
+	public static final BooleanProperty VIAL_4 = ModBlockProperties.VIAL_4;
+
 	public static final VoxelShape SHAPE_NORTH = createShape(Direction.NORTH);
 	public static final VoxelShape SHAPE_SOUTH = createShape(Direction.SOUTH);
 	public static final VoxelShape SHAPE_WEST = createShape(Direction.WEST);
 	public static final VoxelShape SHAPE_EAST = createShape(Direction.EAST);
-	static final BooleanProperty[] VIAL_PROPERTIES = {VIAL_0, VIAL_1, VIAL_2, VIAL_3, VIAL_4};
+
+	protected static final BooleanProperty[] VIAL_PROPERTIES = {VIAL_0, VIAL_1, VIAL_2, VIAL_3, VIAL_4};
 
 	public VialHolderBlock(Properties properties) {
 		super(properties);

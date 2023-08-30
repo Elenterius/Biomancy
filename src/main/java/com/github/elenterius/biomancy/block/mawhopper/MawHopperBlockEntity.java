@@ -1,6 +1,8 @@
 package com.github.elenterius.biomancy.block.mawhopper;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.block.property.DirectedConnection;
+import com.github.elenterius.biomancy.block.property.VertexType;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModCapabilities;
 import com.github.elenterius.biomancy.inventory.itemhandler.EnhancedItemHandler;
