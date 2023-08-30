@@ -1,11 +1,11 @@
 package com.github.elenterius.biomancy.integration;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.integration.compat.pehkui.IPehkuiHelper;
-import com.github.elenterius.biomancy.integration.compat.pehkui.PehkuiCompat;
 import com.github.elenterius.biomancy.integration.create.CreateCompat;
 import com.github.elenterius.biomancy.integration.modonomicon.IModonomiconHelper;
 import com.github.elenterius.biomancy.integration.modonomicon.ModonomiconIntegration;
+import com.github.elenterius.biomancy.integration.pehkui.IPehkuiHelper;
+import com.github.elenterius.biomancy.integration.pehkui.PehkuiCompat;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -43,8 +43,11 @@ public final class ModsCompatHandler {
 						.mapToInt(ModsCompatHandler::parseVersionNumber)
 						.toArray();
 
-				//0.5.1.b-30
-				if (splitVersion[1] >= 5 && splitVersion[2] >= 1) {
+				int major = splitVersion[0];
+				int minor = splitVersion[1];
+				int patch = splitVersion[2];
+
+				if (major > 0 || (major == 0 && minor > 5) || (major == 0 && minor == 5 && patch >= 1)) {
 					BiomancyMod.LOGGER.info(LOG_MARKER, "Setup Create compat...");
 					CreateCompat.onPostSetup();
 				}
