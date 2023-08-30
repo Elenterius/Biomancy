@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.block.ownable;
 
 import com.github.elenterius.biomancy.block.property.UserSensitivity;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
-import com.github.elenterius.biomancy.init.ModBlocks;
+import com.github.elenterius.biomancy.init.ModBlockProperties;
 import com.github.elenterius.biomancy.ownable.IOwnable;
 import com.github.elenterius.biomancy.ownable.IOwnableEntityBlock;
 import com.github.elenterius.biomancy.permission.Actions;
@@ -35,7 +35,7 @@ import java.util.function.Predicate;
 
 public class OwnablePressurePlateBlock extends PressurePlateBlock implements IOwnableEntityBlock {
 
-	public static final EnumProperty<UserSensitivity> USER_SENSITIVITY = ModBlocks.USER_SENSITIVITY_PROPERTY;
+	public static final EnumProperty<UserSensitivity> USER_SENSITIVITY = ModBlockProperties.USER_SENSITIVITY;
 	public static final Predicate<Entity> ENTITY_SELECTOR = entity -> !entity.isSpectator() && !entity.isIgnoringBlockTriggers();
 
 	public OwnablePressurePlateBlock(Properties properties) {

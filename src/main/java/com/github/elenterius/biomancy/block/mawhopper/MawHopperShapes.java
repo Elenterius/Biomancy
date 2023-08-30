@@ -1,5 +1,7 @@
 package com.github.elenterius.biomancy.block.mawhopper;
 
+import com.github.elenterius.biomancy.block.property.DirectedConnection;
+import com.github.elenterius.biomancy.block.property.VertexType;
 import com.github.elenterius.biomancy.util.IntermediaryKeyCache;
 import com.github.elenterius.biomancy.util.VoxelShapeUtil;
 import net.minecraft.core.Direction;

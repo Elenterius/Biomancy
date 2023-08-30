@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.block.fleshspike;
 
 import com.github.elenterius.biomancy.block.base.WaterloggedFacingBlock;
+import com.github.elenterius.biomancy.init.ModBlockProperties;
 import com.github.elenterius.biomancy.init.ModDamageSources;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,7 +26,7 @@ public class FleshSpikeBlock extends WaterloggedFacingBlock {
 
 	public static final int MIN_SPIKES = 1;
 	public static final int MAX_SPIKES = 3;
-	public static final IntegerProperty SPIKES = IntegerProperty.create("spikes", MIN_SPIKES, MAX_SPIKES);
+	public static final IntegerProperty SPIKES = ModBlockProperties.SPIKES;
 
 	public FleshSpikeBlock(Properties properties) {
 		super(properties);

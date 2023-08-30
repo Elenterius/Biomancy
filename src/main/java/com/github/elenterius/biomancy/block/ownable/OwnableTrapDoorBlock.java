@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.block.ownable;
 
 import com.github.elenterius.biomancy.block.property.UserSensitivity;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
-import com.github.elenterius.biomancy.init.ModBlocks;
+import com.github.elenterius.biomancy.init.ModBlockProperties;
 import com.github.elenterius.biomancy.ownable.IOwnable;
 import com.github.elenterius.biomancy.ownable.IOwnableEntityBlock;
 import com.github.elenterius.biomancy.permission.Actions;
@@ -46,7 +46,7 @@ import java.util.UUID;
 
 public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableEntityBlock {
 
-	public static final EnumProperty<UserSensitivity> SENSITIVITY = ModBlocks.USER_SENSITIVITY_PROPERTY;
+	public static final EnumProperty<UserSensitivity> SENSITIVITY = ModBlockProperties.USER_SENSITIVITY;
 	protected static final AABB TOP_AABB_VOLUME = new AABB(0d, 0.75d, 0d, 1d, 1.25d, 1d);
 	protected static final AABB BOTTOM_AABB_VOLUME = new AABB(0d, -0.25d, 0d, 1d, 0.25d, 1d);
 	protected static final AABB INFLATED_AABB_VOLUME = new AABB(-0.125d, -0.25d, -0.125d, 1.125d, 1.25d, 1.125d);

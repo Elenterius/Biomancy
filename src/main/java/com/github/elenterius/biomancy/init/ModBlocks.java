@@ -14,8 +14,6 @@ import com.github.elenterius.biomancy.block.modularlarynx.VoiceBoxBlock;
 import com.github.elenterius.biomancy.block.ownable.OwnableDoorBlock;
 import com.github.elenterius.biomancy.block.ownable.OwnablePressurePlateBlock;
 import com.github.elenterius.biomancy.block.ownable.OwnableTrapDoorBlock;
-import com.github.elenterius.biomancy.block.property.Orientation;
-import com.github.elenterius.biomancy.block.property.UserSensitivity;
 import com.github.elenterius.biomancy.block.storagesac.StorageSacBlock;
 import com.github.elenterius.biomancy.block.tongue.TongueBlock;
 import com.github.elenterius.biomancy.block.vialholder.VialHolderBlock;
@@ -27,9 +25,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.PlantType;
@@ -49,14 +44,6 @@ public final class ModBlocks {
 
 	//# Materials
 	public static final Material FLESH_MATERIAL = new Material.Builder(MaterialColor.COLOR_PINK).build();
-
-	//# Block Properties
-	public static final BooleanProperty CRAFTING_PROPERTY = BooleanProperty.create("crafting");
-	public static final IntegerProperty CHARGE = IntegerProperty.create("charge", 0, 15);
-	public static final EnumProperty<UserSensitivity> USER_SENSITIVITY_PROPERTY = EnumProperty.create("sensitivity", UserSensitivity.class);
-	public static final EnumProperty<Orientation> ORIENTATION = EnumProperty.create("orientation", Orientation.class);
-
-	//# Blocks
 
 	//## Crafting
 	public static final RegistryObject<PrimordialCradleBlock> PRIMORDIAL_CRADLE = register("primordial_cradle", PrimordialCradleBlock::new);

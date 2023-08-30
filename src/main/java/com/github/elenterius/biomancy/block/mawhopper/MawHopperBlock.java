@@ -1,6 +1,9 @@
 package com.github.elenterius.biomancy.block.mawhopper;
 
+import com.github.elenterius.biomancy.block.property.DirectedConnection;
+import com.github.elenterius.biomancy.block.property.VertexType;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
+import com.github.elenterius.biomancy.init.ModBlockProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -31,8 +34,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class MawHopperBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
 
-	public static final EnumProperty<DirectedConnection> CONNECTION = EnumProperty.create("connection", DirectedConnection.class);
-	public static final EnumProperty<VertexType> VERTEX_TYPE = EnumProperty.create("vertex", VertexType.class);
+	public static final EnumProperty<DirectedConnection> CONNECTION = ModBlockProperties.DIRECTED_CONNECTION;
+	public static final EnumProperty<VertexType> VERTEX_TYPE = ModBlockProperties.VERTEX_TYPE;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
 	public MawHopperBlock(Properties properties) {
