@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.serum;
 
 import com.github.elenterius.biomancy.entity.fleshblob.FleshBlob;
 import com.github.elenterius.biomancy.integration.ModsCompatHandler;
-import com.github.elenterius.biomancy.integration.compat.pehkui.IPehkuiHelper;
+import com.github.elenterius.biomancy.integration.pehkui.IPehkuiHelper;
 import com.github.elenterius.biomancy.mixin.ArmorStandAccessor;
 import com.github.elenterius.biomancy.mixin.SlimeAccessor;
 import net.minecraft.nbt.CompoundTag;
