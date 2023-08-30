@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.datagen.tags;
 
+import com.github.elenterius.biomancy.init.ModBlockMaterials;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.tags.ModBlockTags;
 import net.minecraft.data.DataGenerator;
@@ -74,7 +75,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 	}
 
 	private void addFleshyBlocksToHoeTag() {
-		BlockMaterialPredicate predicate = BlockMaterialPredicate.forMaterial(ModBlocks.FLESH_MATERIAL);
+		BlockMaterialPredicate predicate = BlockMaterialPredicate.forMaterial(ModBlockMaterials.FLESH_MATERIAL);
 		TagAppender<Block> tag = tag(BlockTags.MINEABLE_WITH_HOE);
 		ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).filter(block -> predicate.test(block.defaultBlockState())).forEach(tag::add);
 	}
