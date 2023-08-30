@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.integration.compat.pehkui;
+package com.github.elenterius.biomancy.integration.pehkui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import net.minecraft.world.entity.LivingEntity;
