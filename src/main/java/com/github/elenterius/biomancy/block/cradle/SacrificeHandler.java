@@ -10,12 +10,31 @@ import java.util.function.Consumer;
 public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 
 	private static final int MAX_VALUE = 100;
+
 	private byte biomass;
 	private byte lifeEnergy;
 	private int successValue;
 	private int diseaseValue;
-	private int hostileValue = 100;
-	private int anomalyValue = 5;
+	private int hostileValue;
+	private int anomalyValue;
+	private boolean hasModifiers;
+
+	public SacrificeHandler() {
+		reset();
+	}
+
+	public void reset() {
+		biomass = 0;
+		lifeEnergy = 0;
+
+		successValue = 0;
+
+		diseaseValue = 0;
+		hostileValue = 100;
+		anomalyValue = 5;
+
+		hasModifiers = false;
+	}
 
 	public boolean isFull() {
 		return lifeEnergy >= MAX_VALUE && biomass >= MAX_VALUE;
@@ -94,7 +113,7 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 	}
 
 	public boolean hasModifiers() {
-		return diseaseValue != 0 || hostileValue != 0;
+		return hasModifiers;
 	}
 
 	public boolean addItem(ItemStack stack, Consumer<ITribute> onSuccess) {
@@ -142,24 +161,21 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 		boolean isModifier = tribute.biomass() == 0 && tribute.lifeEnergy() == 0;
 
 		if (consumeTribute || isModifier) {
-			diseaseValue += tribute.diseaseModifier();
-			hostileValue += tribute.hostileModifier();
 			successValue += tribute.successModifier();
-			anomalyValue += tribute.anomalyModifier();
+
+			int diseaseModifier = tribute.diseaseModifier();
+			int hostileModifier = tribute.hostileModifier();
+			int anomalyModifier = tribute.anomalyModifier();
+
+			if (diseaseModifier != 0 || hostileModifier != 0 || anomalyModifier != 0) hasModifiers = true;
+
+			diseaseValue += diseaseModifier;
+			hostileValue += hostileModifier;
+			anomalyValue += anomalyModifier;
 			return true;
 		}
 
 		return false;
-	}
-
-	public void reset() {
-		biomass = 0;
-		lifeEnergy = 0;
-
-		diseaseValue = 0;
-		hostileValue = 100;
-		successValue = 0;
-		anomalyValue = 5;
 	}
 
 	@Override
@@ -168,10 +184,13 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 		tag.putByte("Biomass", biomass);
 		tag.putByte("LifeEnergy", lifeEnergy);
 
+		tag.putInt("Success", successValue);
+
 		tag.putInt("Disease", diseaseValue);
 		tag.putInt("Hostile", hostileValue);
-		tag.putInt("Success", successValue);
 		tag.putInt("Anomaly", anomalyValue);
+
+		tag.putBoolean("HasModifiers", hasModifiers);
 		return tag;
 	}
 
@@ -180,10 +199,13 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 		biomass = tag.getByte("Biomass");
 		lifeEnergy = tag.getByte("LifeEnergy");
 
+		successValue = tag.getInt("Success");
+
 		diseaseValue = tag.getInt("Disease");
 		hostileValue = tag.getInt("Hostile");
-		successValue = tag.getInt("Success");
 		anomalyValue = tag.getInt("Anomaly");
+
+		hasModifiers = tag.getBoolean("HasModifiers");
 	}
 
 }
