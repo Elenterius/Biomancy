@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.block;
 
 import com.github.elenterius.biomancy.block.property.DirectionalSlabType;
+import com.github.elenterius.biomancy.init.ModBlockProperties;
 import com.github.elenterius.biomancy.util.VoxelShapeUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class DirectionalSlabBlock extends Block implements SimpleWaterloggedBlock {
 
-	public static final EnumProperty<DirectionalSlabType> TYPE = EnumProperty.create("type", DirectionalSlabType.class);
+	public static final EnumProperty<DirectionalSlabType> TYPE = ModBlockProperties.DIRECTIONAL_SLAB_TYPE;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
 	protected static final VoxelShape SHAPE_UP = VoxelShapeUtil.createXZRotatedTowards(Direction.UP, 0, 0, 0, 16, 8, 16);

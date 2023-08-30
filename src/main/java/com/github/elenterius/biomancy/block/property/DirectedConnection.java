@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.block.mawhopper;
+package com.github.elenterius.biomancy.block.property;
 
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;

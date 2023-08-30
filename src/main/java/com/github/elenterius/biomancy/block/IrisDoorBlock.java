@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.block;
 
 import com.github.elenterius.biomancy.block.property.Orientation;
-import com.github.elenterius.biomancy.init.ModBlocks;
+import com.github.elenterius.biomancy.init.ModBlockProperties;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -40,7 +40,7 @@ public class IrisDoorBlock extends Block implements SimpleWaterloggedBlock {
 	public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 
-	public static final EnumProperty<Orientation> ORIENTATION = ModBlocks.ORIENTATION;
+	public static final EnumProperty<Orientation> ORIENTATION = ModBlockProperties.ORIENTATION;
 	protected static final int THICKNESS = 2;
 	protected static final int CLOSED_SHAPE_INDEX = 0;
 	protected static final int OPEN_SHAPE_INDEX = 1;

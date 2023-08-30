@@ -4,7 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.MachineBlock;
 import com.github.elenterius.biomancy.block.state.CraftingState;
 import com.github.elenterius.biomancy.block.state.RecipeCraftingStateData;
-import com.github.elenterius.biomancy.init.ModBlocks;
+import com.github.elenterius.biomancy.init.ModBlockProperties;
 import com.github.elenterius.biomancy.recipe.ProcessingRecipe;
 import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 import net.minecraft.core.BlockPos;
@@ -160,7 +160,7 @@ public abstract class MachineBlockEntity<R extends ProcessingRecipe, S extends R
 	}
 
 	protected BooleanProperty getIsCraftingBlockStateProperty() {
-		return ModBlocks.CRAFTING_PROPERTY;
+		return ModBlockProperties.IS_CRAFTING;
 	}
 
 	protected void updateBlockState(Level world, S tileState, boolean redstoneSignal) {
