@@ -25,8 +25,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.PlantType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -41,9 +39,6 @@ public final class ModBlocks {
 
 	//# Plant Types
 	public static final PlantType FLESH_PLANT_TYPE = PlantType.get("flesh");
-
-	//# Materials
-	public static final Material FLESH_MATERIAL = new Material.Builder(MaterialColor.COLOR_PINK).build();
 
 	//## Crafting
 	public static final RegistryObject<PrimordialCradleBlock> PRIMORDIAL_CRADLE = register("primordial_cradle", PrimordialCradleBlock::new);
@@ -158,7 +153,7 @@ public final class ModBlocks {
 	}
 
 	public static BlockBehaviour.Properties createFleshProperties() {
-		return BlockBehaviour.Properties.of(FLESH_MATERIAL).strength(3f, 3f).sound(ModSoundTypes.FLESH_BLOCK).isValidSpawn(ModBlocks::isValidFleshkinSpawn);
+		return BlockBehaviour.Properties.of(ModBlockMaterials.FLESH_MATERIAL).strength(3f, 3f).sound(ModSoundTypes.FLESH_BLOCK).isValidSpawn(ModBlocks::isValidFleshkinSpawn);
 	}
 
 	public static BlockBehaviour.Properties createToughFleshProperties() {
@@ -166,7 +161,7 @@ public final class ModBlocks {
 	}
 
 	public static BlockBehaviour.Properties createFleshyBoneProperties() {
-		return BlockBehaviour.Properties.of(FLESH_MATERIAL).strength(3f, 3f).sound(SoundType.BONE_BLOCK).isValidSpawn(ModBlocks::isValidFleshkinSpawn);
+		return BlockBehaviour.Properties.of(ModBlockMaterials.FLESH_MATERIAL).strength(3f, 3f).sound(SoundType.BONE_BLOCK).isValidSpawn(ModBlocks::isValidFleshkinSpawn);
 	}
 
 	public static boolean isValidFleshkinSpawn(BlockState state, BlockGetter level, BlockPos pos, EntityType<?> entityType) {
