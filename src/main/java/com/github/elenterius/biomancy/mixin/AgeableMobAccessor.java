@@ -8,9 +8,9 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface AgeableMobAccessor {
 
 	@Accessor("forcedAge")
-	int biomancy_getForcedAge();
+	int biomancy$getForcedAge();
 
 	@Accessor("forcedAge")
-	void biomancy_setForcedAge(int age);
+	void biomancy$setForcedAge(int age);
 
 }

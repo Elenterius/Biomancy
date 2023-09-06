@@ -10,12 +10,12 @@ import java.util.Optional;
 public interface MobEffectInstanceAccessor {
 
 	@Accessor("amplifier")
-	void setAmplifier(int amplifier);
+	void biomancy$setAmplifier(int amplifier);
 
 	@Accessor("duration")
-	void setDuration(int ticks);
+	void biomancy$setDuration(int ticks);
 
 	@Accessor("factorData")
-	Optional<MobEffectInstance.FactorData> getFactorData();
+	Optional<MobEffectInstance.FactorData> biomancy$getFactorData();
 
 }

@@ -24,7 +24,7 @@ public class EnlargementSerum extends BasicSerum {
 	}
 
 	private void resizeArmorStand(ArmorStand armorStand) {
-		((ArmorStandAccessor) armorStand).biomancy_setSmall(false);
+		((ArmorStandAccessor) armorStand).biomancy$setSmall(false);
 	}
 
 	private void resizeFleshBlob(@Nullable LivingEntity source, FleshBlob fleshBlob) {
@@ -40,7 +40,7 @@ public class EnlargementSerum extends BasicSerum {
 	private void resizeSlime(@Nullable LivingEntity source, Slime slime) {
 		int slimeSize = slime.getSize();
 		if (slimeSize < 25) {
-			((SlimeAccessor) slime).biomancy_setSlimeSize(slimeSize + 1, false);
+			((SlimeAccessor) slime).biomancy$setSlimeSize(slimeSize + 1, false);
 		}
 		else {
 			slime.hurt(DamageSource.explosion(source), slime.getHealth()); //"explode" slime

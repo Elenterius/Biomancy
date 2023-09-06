@@ -242,8 +242,8 @@ class BioForgeScreenController {
 
 	private static void canCraftRecipe(RecipeCollection recipeCollection, StackedContents handler, RecipeBook book, boolean isCreativePlayer) {
 		RecipeCollectionAccessor accessor = (RecipeCollectionAccessor) recipeCollection;
-		Set<Recipe<?>> fitDimensions = accessor.getFitDimensions();
-		Set<Recipe<?>> craftable = accessor.getCraftable();
+		Set<Recipe<?>> fitDimensions = accessor.biomancy$getFitDimensions();
+		Set<Recipe<?>> craftable = accessor.biomancy$getCraftable();
 
 		for (Recipe<?> recipe : recipeCollection.getRecipes()) {
 			boolean isRecipeKnown = isCreativePlayer || book.contains(recipe);

@@ -24,7 +24,7 @@ public class ShrinkingSerum extends BasicSerum {
 	}
 
 	private void resizeArmorStand(ArmorStandAccessor armorStand) {
-		armorStand.biomancy_setSmall(true);
+		armorStand.biomancy$setSmall(true);
 	}
 
 	private void resizeFleshBlob(FleshBlob fleshBlob) {
@@ -37,7 +37,7 @@ public class ShrinkingSerum extends BasicSerum {
 	private void resizeSlime(Slime slime) {
 		int slimeSize = slime.getSize();
 		if (slimeSize > 1) {
-			((SlimeAccessor) slime).biomancy_setSlimeSize(slimeSize - 1, false);
+			((SlimeAccessor) slime).biomancy$setSlimeSize(slimeSize - 1, false);
 		}
 	}
 
