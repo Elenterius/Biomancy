@@ -1055,10 +1055,11 @@ public class ModRecipeProvider extends RecipeProvider {
 		ravenousClawsItem.setNutrients(ravenousClawsStack, Integer.MAX_VALUE);
 		BioForgeRecipeBuilder.create(ravenousClawsStack)
 				.addIngredient(ModItems.LIVING_FLESH.get())
-				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 4)
+				.addIngredient(ModItems.MOB_CLAW.get(), 3)
 				.addIngredient(ModItems.FLESH_BITS.get(), 16)
 				.addIngredient(ModItems.TOUGH_FIBERS.get(), 6 * 3)
 				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 5 * 3)
+				.setCraftingCost(250)
 				.setCategory(ModBioForgeTabs.WEAPONS)
 				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
 
