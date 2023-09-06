@@ -1,3 +1,43 @@
+## [1.17.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.16.0...1.19.2-v2.1.17.0) (2023-09-06)
+
+
+### Features
+
+* add ability to "pet" Flesh Blobs ([752fc58](https://github.com/Elenterius/Biomancy/commit/752fc581e6fd49a4fc4e44fb794eebc1d60fa289))
+* add malignant and primal flesh walls ([43cee81](https://github.com/Elenterius/Biomancy/commit/43cee81536c9a70d1373640f6735be130ffbfa3c))
+* add primordial bio lantern ([a03a408](https://github.com/Elenterius/Biomancy/commit/a03a408073f7f49b264eebca3e85c34167838193))
+* add specialised membrane variants for items, babies and adult mobs ([0da0681](https://github.com/Elenterius/Biomancy/commit/0da0681e9b0f09da8d86cd43f1398ea1e6831447))
+* fix and improve malignant flesh spreading mechanics ([166350c](https://github.com/Elenterius/Biomancy/commit/166350cb29be5d9e4703a712fb8574a4f2ab9459))
+* fix primordial flesh blobs spawning with tumors when summoned via spawn eggs ([e02baf3](https://github.com/Elenterius/Biomancy/commit/e02baf3a7793bab804b76ac017e69abd91b82875))
+* give creative players the ability to see all Bio-Forge recipe regardless of if they have unlocked them ([507954c](https://github.com/Elenterius/Biomancy/commit/507954c4d7cf55817ebc42ccfa6cba199555b804))
+* make crafting cost (nutrients) data driven by including them in recipes ([fe4770e](https://github.com/Elenterius/Biomancy/commit/fe4770e7caff09a011de80f7ec14f13b727c5cf4))
+* make membrane block deal reduced fall damage ([7af7853](https://github.com/Elenterius/Biomancy/commit/7af785347b21ac82e6273614b7e703f07c0f89df))
+* make part of the Primordial Core item emissive ([3766d3d](https://github.com/Elenterius/Biomancy/commit/3766d3d5dbdab819307a004c2b749fd1e035e5d4))
+* mirco-buff Ravenous Claws ([8fc4b84](https://github.com/Elenterius/Biomancy/commit/8fc4b8400192fabea9a70e9cfab4e7771eca7dc9))
+* **mod-compat:** add Create compacting recipes for flesh blocks ([b3c228d](https://github.com/Elenterius/Biomancy/commit/b3c228d00c7d4e67a1c7a178e16f6ca5827d1f48))
+* obfuscate primal and malignant flesh block tooltips ([f181045](https://github.com/Elenterius/Biomancy/commit/f18104540f1eef00b08256cd1ec6c29982f43649))
+* **recipes:** add Claw recipe to Bio-Forge ([929245d](https://github.com/Elenterius/Biomancy/commit/929245d8405984b11bbd4b56ea316a69f63dcdbc))
+* **recipes:** add Fang recipe to Bio-Forge ([eda4464](https://github.com/Elenterius/Biomancy/commit/eda4464341de4c96b1991aa9b7f7505e7f2c296f))
+* **recipes:** buff decomposing recipe of Golden Apples ([14e3e03](https://github.com/Elenterius/Biomancy/commit/14e3e034888794f379a233d19afee0e06ebcfbfe))
+* **recipes:** nerf Flesh Spike recipe ([4488aa0](https://github.com/Elenterius/Biomancy/commit/4488aa052a29ce82af6f962ebc14981eefe74599))
+* **recipes:** nerf kelp decomposing recipe ([41169a5](https://github.com/Elenterius/Biomancy/commit/41169a510c867e3e3f4cc639b55e19dac3844651))
+* **recipes:** nerf kelp digesting recipe ([bd4dcb4](https://github.com/Elenterius/Biomancy/commit/bd4dcb49e97cdf5df4a7d68cb73f6cd3ca9913ce))
+* **recipes:** nerf Ravenous Claws recipe ([2d12e11](https://github.com/Elenterius/Biomancy/commit/2d12e11e60d523e2994e1766883d7649a0cb076a))
+* **recipes:** remove Primordial Cradle recipe from Bio-Forge ([ba4ada0](https://github.com/Elenterius/Biomancy/commit/ba4ada068dcca0d36409e439681a74eed2fa9efe))
+* tweak flesh block recipes ([f579e1f](https://github.com/Elenterius/Biomancy/commit/f579e1fc8d54d52f9d0a31dabfe2e5f4ec02e0ed))
+* tweak tooltip colors ([af38a8b](https://github.com/Elenterius/Biomancy/commit/af38a8bf46423fcab3384cfd33027b0af7668b3d))
+
+
+### Bug Fixes
+
+* fix incompatibility with outdated versions of Create by simply not setting up any compat for it (min. Create version is now 0.5.0) ([9e36f45](https://github.com/Elenterius/Biomancy/commit/9e36f45f29c647f2d280968b304a753406b74ddf))
+* fix SacrificeHandler incorrectly tracking if it has any modifiers applied ([7bab04f](https://github.com/Elenterius/Biomancy/commit/7bab04fb242ea194ec98410d8f47413fcbe47939))
+
+
+### Performance Improvements
+
+* use cached animations for Flesh Blobs ([94b7c55](https://github.com/Elenterius/Biomancy/commit/94b7c55fbaf96b3b01ab61f5f2d2b4fc6b9991db))
+
 ## [1.16.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.15.0...1.19.2-v2.1.16.0) (2023-08-14)
 
 
@@ -73,23 +113,4 @@
 ### Features
 
 * enhance tooltip clarity and consistency ([bdbbcb9](https://github.com/Elenterius/Biomancy/commit/bdbbcb96bea8c5b7b8bbb1f2c9772be8ab98ab31))
-
-## [1.12.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.11.3...1.19.2-v2.1.12.0) (2023-07-18)
-
-
-### Features
-
-* add attack reach indicator for the Ravenous Claws ([ccc850f](https://github.com/Elenterius/Biomancy/commit/ccc850fce7a7d08aa86a97676eb2068f9167009b))
-* add Spanish translation ([4c3c35b](https://github.com/Elenterius/Biomancy/commit/4c3c35ba18f09cf94b8c3a8581927ed809fada13))
-* add status effect version of Despoil for use by datapacks etc ([fe2ae46](https://github.com/Elenterius/Biomancy/commit/fe2ae46e524d0b862f5a7ccae769878436589259))
-* improve flesh spike tooltip ([4e4c042](https://github.com/Elenterius/Biomancy/commit/4e4c042654d80f0cc11dab20d3f18fbca87b6082))
-* make bio-machines retain their fuel when destroyed ([8ec768d](https://github.com/Elenterius/Biomancy/commit/8ec768dcf6a5e92717a9be2ac2d6336b8098bb2c))
-* make flesh block texture less repetitive (uses placeholder textures) ([20fb879](https://github.com/Elenterius/Biomancy/commit/20fb87945492eb2cef904b323487dd281bdb7ddc))
-
-
-### Bug Fixes
-
-* fix full block slabs not dropping two slab blocks ([54bb038](https://github.com/Elenterius/Biomancy/commit/54bb038109267982d1b5594df40cbfe589f3de19))
-* fix inability to switch claw modes when holding down ctrl to sprint ([870a033](https://github.com/Elenterius/Biomancy/commit/870a03359169f68ef0d7cd20963b24182918e61f))
-* fix misleading fleshkin chest tooltip ([47b2758](https://github.com/Elenterius/Biomancy/commit/47b2758b5eee547d2bbe7d9eec01402f5ce38cf2))
 
