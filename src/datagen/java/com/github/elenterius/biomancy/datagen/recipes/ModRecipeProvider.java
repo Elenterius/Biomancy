@@ -954,7 +954,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.BLOCKS)
 				.unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
 
-		BioForgeRecipeBuilder.create(ModItems.FLESH_SPIKE.get(), 4)
+		BioForgeRecipeBuilder.create(ModItems.FLESH_SPIKE.get(), 1)
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 2)
 				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 2)
 				.addIngredient(ModItems.FLESH_BITS.get(), 4)
@@ -1091,6 +1091,13 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addIngredient(ModItems.AGEING_SERUM.get())
 				.setCategory(ModBioForgeTabs.MISC)
 				.unlockedBy(ModItems.AGEING_SERUM.get()).save(consumer);
+
+		BioForgeRecipeBuilder.create(ModItems.MOB_FANG.get())
+				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 6)
+				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 8)
+				.addIngredient(ModItems.STONE_POWDER.get(), 1)
+				.setCategory(ModBioForgeTabs.MISC)
+				.unlockedBy(ModItems.MOB_FANG.get()).save(consumer);
 
 		BioForgeRecipeBuilder.create(Items.BONE)
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 5)
