@@ -176,6 +176,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 		if (primalSpreadCharge < amount) return false;
 
 		primalSpreadCharge -= amount;
+		setChanged();
 
 		return true;
 	}
