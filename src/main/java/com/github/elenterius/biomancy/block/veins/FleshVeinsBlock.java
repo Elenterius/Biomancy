@@ -295,10 +295,10 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 	protected void setCharge(Level level, BlockPos pos, BlockState state, int amount) {
 		if (!state.is(this)) return;
 
-		amount = Mth.clamp(amount, 0, 15);
-		if (amount == CHARGE.getValue(state)) return;
+		BlockState newState = CHARGE.setValue(state, amount);
+		if (newState == state) return;
 
-		level.setBlock(pos, CHARGE.setValue(state, amount), Block.UPDATE_CLIENTS);
+		level.setBlock(pos, newState, Block.UPDATE_CLIENTS);
 	}
 
 	@Override
@@ -368,8 +368,20 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		if (level.random.nextFloat() >= 0.5f) return;
 		if (!level.isAreaLoaded(pos, 2)) return;
 
+		int cradleCoreRadius = 8;
+		int maxCradleDist = cradleCoreRadius * 4;
+		PrimordialCradleBlockEntity cradle = LevelUtil.findNearestBlockEntity(level, pos, maxCradleDist, PrimordialCradleBlockEntity.class);
+
 		int charge = getCharge(state);
-		if (charge <= 1) return;
+		if (charge < 2) {
+			if (cradle != null && cradle.consumePrimalSpreadCharge(level, 1)) {
+				setCharge(level, pos, state, charge + 1);
+			}
+			return;
+		}
+
+		double cradleDistance = cradle != null ? Math.sqrt(cradle.getBlockPos().distSqr(pos)) : maxCradleDist + 1;
+		float nearCradlePct = Mth.clamp((float) (1d - cradleDistance / maxCradleDist), 0f, 1f);
 
 		int directNeighbors = 0;
 		for (Direction direction : Direction.values()) {
@@ -380,19 +392,13 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		float populationPct = directNeighbors / (float) Direction.values().length;
 		float conversionChance = charge / (CHARGE.getMax() + 5f) + populationPct * 0.5f;
 
-		int cradleCoreRadius = 8;
-		int maxCradleDist = cradleCoreRadius * 4;
-		PrimordialCradleBlockEntity cradle = LevelUtil.findNearestBlockEntity(level, pos, maxCradleDist, PrimordialCradleBlockEntity.class);
-		double cradleDistance = cradle != null ? Math.sqrt(cradle.getBlockPos().distSqr(pos)) : maxCradleDist + 1;
-		float nearCradlePct = Mth.clamp((float) (1d - cradleDistance / maxCradleDist), 0f, 1f);
-
 		if (random.nextFloat() < conversionChance && convertSelf(state, level, pos, directNeighbors, cradleDistance <= cradleCoreRadius, nearCradlePct)) {
 			level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 1.2f, 0.15f + random.nextFloat() * 0.5f);
 			return;
 		}
 
 		if (charge > 4) {
-			int growthAmount = (int) Mth.clamp(getSpreader().spreadAll(state, level, pos, false), 0, 15);
+			int growthAmount = (int) Mth.clamp(getSpreader().spreadAll(state, level, pos, false), 0, CHARGE.getMax());
 			if (growthAmount > 0) {
 				charge -= growthAmount * 2;
 				state = level.getBlockState(pos);
@@ -408,7 +414,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		}
 
 		if (cradleDistance <= maxCradleDist) {
-			if (cradleDistance <= cradleCoreRadius || (cradle.consumePrimalSpreadCharge(level, charge))) {
+			if (cradleDistance <= cradleCoreRadius || (cradle != null && cradle.consumePrimalSpreadCharge(level, charge))) {
 				charge = Math.max(charge, Math.round(CHARGE.getMax() * nearCradlePct));
 				increaseChargeAroundPos(level, pos, random, charge * 2);
 			}
@@ -417,6 +423,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 				for (int i = usedCharge; i > 0; i--) {
 					if (random.nextFloat() < 0.75f) charge--;
 				}
+				charge = Math.max(charge, 1);
 			}
 			setCharge(level, pos, state, charge);
 		}
