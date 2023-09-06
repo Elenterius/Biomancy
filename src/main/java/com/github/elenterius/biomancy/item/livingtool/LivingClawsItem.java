@@ -4,7 +4,7 @@ import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.entity.MobUtil;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
-import com.github.elenterius.biomancy.item.IKeyListener;
+import com.github.elenterius.biomancy.item.KeyPressListener;
 import com.github.elenterius.biomancy.item.weapon.SimpleClawsItem;
 import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
@@ -31,7 +31,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LivingClawsItem extends SimpleClawsItem implements LivingTool, IKeyListener {
+public class LivingClawsItem extends SimpleClawsItem implements LivingTool, KeyPressListener {
 
 	private final int maxNutrients;
 

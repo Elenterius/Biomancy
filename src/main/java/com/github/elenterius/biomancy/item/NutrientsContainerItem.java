@@ -5,8 +5,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-//TODO: replace with capability?
-public interface INutrientsContainerItem {
+public interface NutrientsContainerItem {
 
 	String NUTRIENTS_KEY = "Nutrients";
 

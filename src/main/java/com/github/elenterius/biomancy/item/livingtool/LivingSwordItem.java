@@ -3,8 +3,8 @@ package com.github.elenterius.biomancy.item.livingtool;
 import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.entity.MobUtil;
-import com.github.elenterius.biomancy.item.ICustomTooltip;
-import com.github.elenterius.biomancy.item.IKeyListener;
+import com.github.elenterius.biomancy.item.CustomTooltipProvider;
+import com.github.elenterius.biomancy.item.KeyPressListener;
 import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import net.minecraft.core.BlockPos;
@@ -32,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LivingSwordItem extends SwordItem implements ICustomTooltip, LivingTool, IKeyListener {
+public class LivingSwordItem extends SwordItem implements CustomTooltipProvider, LivingTool, KeyPressListener {
 
 	private final int maxNutrients;
 

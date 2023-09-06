@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
 
-public interface IKeyListener {
+public interface KeyPressListener {
 
 	/**
 	 * @param slotIndex of EquipmentSlotType (Armor + Main & Off Hand). This is not the inventory index of a player
@@ -19,13 +19,13 @@ public interface IKeyListener {
 		EquipmentSlot slotType = getEquipmentSlotTypeFrom(slotIndex);
 		if (slotType != null) {
 			ItemStack heldStack = player.getItemBySlot(slotType);
-			if ((heldStack.getItem() instanceof IKeyListener keyListener) && !(player.getCooldowns().isOnCooldown(heldStack.getItem()))) {
+			if ((heldStack.getItem() instanceof KeyPressListener keyListener) && !(player.getCooldowns().isOnCooldown(heldStack.getItem()))) {
 				keyListener.onServerReceiveKeyPress(heldStack, world, player, flag);
 			}
 		}
 		else {
 			ItemStack stackInSlot = player.getInventory().getItem(slotIndex);
-			if (!stackInSlot.isEmpty() && (stackInSlot.getItem() instanceof IKeyListener keyListener) && !(player.getCooldowns().isOnCooldown(stackInSlot.getItem()))) {
+			if (!stackInSlot.isEmpty() && (stackInSlot.getItem() instanceof KeyPressListener keyListener) && !(player.getCooldowns().isOnCooldown(stackInSlot.getItem()))) {
 				keyListener.onServerReceiveKeyPress(stackInSlot, world, player, flag);
 			}
 		}

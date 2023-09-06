@@ -12,8 +12,8 @@ import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.inventory.InjectorItemInventory;
 import com.github.elenterius.biomancy.inventory.itemhandler.LargeSingleItemStackHandler;
-import com.github.elenterius.biomancy.item.ICustomTooltip;
-import com.github.elenterius.biomancy.item.IKeyListener;
+import com.github.elenterius.biomancy.item.CustomTooltipProvider;
+import com.github.elenterius.biomancy.item.KeyPressListener;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.CombatUtil;
 import com.github.elenterius.biomancy.util.SoundUtil;
@@ -76,7 +76,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class InjectorItem extends Item implements SerumInjector, ICustomTooltip, IKeyListener, IAnimatable, ISyncable {
+public class InjectorItem extends Item implements SerumInjector, CustomTooltipProvider, KeyPressListener, IAnimatable, ISyncable {
 
 	public static final short MAX_SLOT_SIZE = 16;
 	public static final String INVENTORY_TAG = "inventory";

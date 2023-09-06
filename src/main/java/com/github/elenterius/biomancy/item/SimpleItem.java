@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class SimpleItem extends Item implements ICustomTooltip {
+public class SimpleItem extends Item implements CustomTooltipProvider {
 
 	public SimpleItem(Properties properties) {
 		super(properties);

@@ -7,7 +7,7 @@ import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 
-public interface ICustomTooltip {
+public interface CustomTooltipProvider {
 
 	default String getTooltipKey(ItemStack stack) {
 		return TextComponentUtil.getItemTooltipKey(stack.getItem());

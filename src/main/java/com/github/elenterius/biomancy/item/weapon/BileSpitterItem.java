@@ -3,8 +3,8 @@ package com.github.elenterius.biomancy.item.weapon;
 import com.github.elenterius.biomancy.client.render.item.dev.BileSpitterRenderer;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModProjectiles;
+import com.github.elenterius.biomancy.item.CustomTooltipProvider;
 import com.github.elenterius.biomancy.item.IArmPoseProvider;
-import com.github.elenterius.biomancy.item.ICustomTooltip;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -40,7 +40,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 @Deprecated(forRemoval = true)
-public class BileSpitterItem extends ProjectileWeaponItem implements ICustomTooltip, IAnimatable, ISyncable, IArmPoseProvider {
+public class BileSpitterItem extends ProjectileWeaponItem implements CustomTooltipProvider, IAnimatable, ISyncable, IArmPoseProvider {
 
 	private static final String CONTROLLER_NAME = "controller";
 	public final float drawTime = 50f;

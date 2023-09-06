@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class BEWLBlockItem extends BlockItem implements ICustomTooltip {
+public class BEWLBlockItem extends BlockItem implements CustomTooltipProvider {
 
 	private final Lazy<BlockEntity> cachedBlockEntityWithoutLevel;
 

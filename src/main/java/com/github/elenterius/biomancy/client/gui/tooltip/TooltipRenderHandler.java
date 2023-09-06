@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.client.gui.tooltip;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModRarities;
 import com.github.elenterius.biomancy.init.client.ModScreens;
-import com.github.elenterius.biomancy.item.ICustomTooltip;
+import com.github.elenterius.biomancy.item.CustomTooltipProvider;
 import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.tooltip.EmptyLineTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.TooltipContents;
@@ -43,14 +43,14 @@ public final class TooltipRenderHandler {
 		if (stack.isEmpty() && ModScreens.isBiomancyScreen(Minecraft.getInstance().screen)) {
 			ColorStyles.GENERIC_TOOLTIP.applyColorTo(tooltipEvent);
 		}
-		else if (stack.getItem() instanceof ICustomTooltip iTooltip) {
+		else if (stack.getItem() instanceof CustomTooltipProvider iTooltip) {
 			iTooltip.getTooltipStyle().applyColorTo(tooltipEvent);
 		}
 	}
 
 	@SubscribeEvent
 	public static void onGatherTooltipComponents(final RenderTooltipEvent.GatherComponents event) {
-		final boolean isTooltip = event.getItemStack().getItem() instanceof ICustomTooltip;
+		final boolean isTooltip = event.getItemStack().getItem() instanceof CustomTooltipProvider;
 
 		List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
 		for (int i = 0; i < tooltipElements.size(); i++) {
@@ -74,7 +74,7 @@ public final class TooltipRenderHandler {
 
 	public static void onPostRenderTooltip(ItemStack stack, List<ClientTooltipComponent> components, Screen screen, PoseStack poseStack, int posX, int posY, int tooltipWidth, int tooltipHeight) {
 		if (!components.isEmpty()) {
-			int color = stack.getItem() instanceof ICustomTooltip iTooltip ? iTooltip.getTooltipColorWithAlpha(stack) : ModRarities.getARGBColor(stack);
+			int color = stack.getItem() instanceof CustomTooltipProvider iTooltip ? iTooltip.getTooltipColorWithAlpha(stack) : ModRarities.getARGBColor(stack);
 
 			int y = posY;
 			for (int i = 0; i < components.size(); i++) {

@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.item.livingtool;
 import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
-import com.github.elenterius.biomancy.item.INutrientsContainerItem;
+import com.github.elenterius.biomancy.item.NutrientsContainerItem;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import net.minecraft.ChatFormatting;
@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public interface LivingTool extends INutrientsContainerItem {
+public interface LivingTool extends NutrientsContainerItem {
 	Set<Enchantment> INVALID_ENCHANTMENTS = Set.of(Enchantments.FLAMING_ARROWS, Enchantments.FIRE_ASPECT);
 
 	default LivingToolState getLivingToolState(ItemStack livingTool) {
@@ -68,7 +68,7 @@ public interface LivingTool extends INutrientsContainerItem {
 
 	@Override
 	default int getNutrientFuelValue(ItemStack container, ItemStack food) {
-		return INutrientsContainerItem.super.getNutrientFuelValue(container, food) * 2;
+		return NutrientsContainerItem.super.getNutrientFuelValue(container, food) * 2;
 	}
 
 	@Override
