@@ -1099,6 +1099,13 @@ public class ModRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.MISC)
 				.unlockedBy(ModItems.MOB_FANG.get()).save(consumer);
 
+		BioForgeRecipeBuilder.create(ModItems.MOB_CLAW.get())
+				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 7)
+				.addIngredient(ModItems.TOUGH_FIBERS.get(), 8)
+				.addIngredient(ModItems.STONE_POWDER.get(), 1)
+				.setCategory(ModBioForgeTabs.MISC)
+				.unlockedBy(ModItems.MOB_CLAW.get()).save(consumer);
+
 		BioForgeRecipeBuilder.create(Items.BONE)
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 5)
 				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 1)
