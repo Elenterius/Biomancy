@@ -955,11 +955,11 @@ public class ModRecipeProvider extends RecipeProvider {
 				.unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
 
 		BioForgeRecipeBuilder.create(ModItems.FLESH_SPIKE.get(), 1)
-				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 2)
-				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 2)
-				.addIngredient(ModItems.FLESH_BITS.get(), 4)
+				.addIngredient(ModItems.MOB_FANG.get())
+				.addIngredient(ModItems.TOUGH_FIBERS.get(), 2)
+				.addIngredient(ModItems.FLESH_BITS.get(), 1)
 				.setCategory(ModBioForgeTabs.BLOCKS)
-				.unlockedBy(ModItems.BONE_FRAGMENTS.get()).save(consumer);
+				.unlockedBy(ModItems.MOB_FANG.get()).save(consumer);
 
 		BioForgeRecipeBuilder.create(ModItems.FLESH_FENCE_GATE.get(), 4)
 				.addIngredient(ModItems.FLESH_BITS.get(), fleshSlabCost)
