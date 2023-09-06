@@ -69,7 +69,7 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 
 		float attackSpeedModifier = (float) (attackSpeed - Attributes.ATTACK_SPEED.getDefaultValue());
 		brokenAttributes = Lazy.of(() -> createDefaultAttributeModifiers(0, 0, -0.5f).build());
-		dormantAttributes = Lazy.of(() -> createDefaultAttributeModifiers(-1 + attackDamage, attackSpeedModifier, -0.5f).build());
+		dormantAttributes = Lazy.of(() -> createDefaultAttributeModifiers(-1 + attackDamage, attackSpeedModifier, 0).build());
 		awakenedAttributes = Lazy.of(() -> createDefaultAttributeModifiers(-1 + attackDamage + 2, attackSpeedModifier, 0.5f).build());
 	}
 
@@ -249,6 +249,8 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 
 						CombatUtil.applyBleedEffect(target, 20);
 					}
+
+					target.invulnerableTime = 0; //make victims vulnerable the next attack regardless of the damage amount
 				}
 
 				if (target.isDeadOrDying()) {
@@ -272,6 +274,8 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 
 						CombatUtil.applyBleedEffect(target, 20);
 					}
+
+					target.invulnerableTime = 0; //make victims vulnerable the next attack regardless of the damage amount
 				}
 			}
 		}
