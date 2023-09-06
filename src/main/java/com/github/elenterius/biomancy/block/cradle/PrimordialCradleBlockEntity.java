@@ -71,7 +71,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 		if (sacrificeHandler.isFull()) return false;
 
 		return sacrificeHandler.addItem(stack, tribute -> {
-			setChanged();
+			setChangedSilent();
 			syncToClient();
 			spawnTributeParticles((ServerLevel) level, tribute);
 		});
@@ -126,8 +126,17 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 
 	private void resetState() {
 		sacrificeHandler.reset();
-		setChanged();
+		setChangedSilent();
 		syncToClient();
+	}
+
+	/**
+	 * equivalent to calling #setChanged() but without notifying block neighbors of the change
+	 */
+	protected void setChangedSilent() {
+		if (level != null && level.hasChunkAt(worldPosition)) {
+			level.getChunkAt(worldPosition).setUnsaved(true);
+		}
 	}
 
 	public void onSacrifice(ServerLevel level) {
