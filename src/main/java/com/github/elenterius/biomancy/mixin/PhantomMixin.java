@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class PhantomMixin {
 
 	@Inject(method = "canAttack(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/ai/targeting/TargetingConditions;)Z", at = @At(value = "HEAD"), cancellable = true)
-	private void canAttack(LivingEntity target, TargetingConditions condition, CallbackInfoReturnable<Boolean> cir) {
+	private void onCanAttack(LivingEntity target, TargetingConditions condition, CallbackInfoReturnable<Boolean> cir) {
 		LivingEntity attacker = (LivingEntity) (Object) this;
 		if (attacker instanceof Phantom && target.hasEffect(ModMobEffects.DROWSY.get())) {
 			cir.setReturnValue(false);

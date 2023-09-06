@@ -108,7 +108,7 @@ public final class MobUtil {
 		if (mob instanceof AgeableMob ageableMob) {
 			ageableMob.setAge(AgeableMob.BABY_START_AGE);
 			if (disableAgeing) {
-				((AgeableMobAccessor) ageableMob).biomancy_setForcedAge(AgeableMob.BABY_START_AGE);
+				((AgeableMobAccessor) ageableMob).biomancy$setForcedAge(AgeableMob.BABY_START_AGE);
 			}
 		}
 	}
@@ -124,8 +124,8 @@ public final class MobUtil {
 
 	public static void removeForcedAge(AgeableMob mob) {
 		AgeableMobAccessor accessor = (AgeableMobAccessor) mob;
-		if (accessor.biomancy_getForcedAge() != 0) {
-			accessor.biomancy_setForcedAge(0); //unset forced age
+		if (accessor.biomancy$getForcedAge() != 0) {
+			accessor.biomancy$setForcedAge(0); //unset forced age
 		}
 	}
 

@@ -8,6 +8,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface ArmorStandAccessor {
 
 	@Invoker("setSmall")
-	void biomancy_setSmall(boolean flag);
+	void biomancy$setSmall(boolean flag);
 
 }

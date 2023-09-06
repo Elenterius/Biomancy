@@ -53,8 +53,8 @@ public class BleedEffect extends StatusEffect implements StackingStatusEffect {
 
 		int reducedDuration = effectInstance.getDuration() - ticks;
 		if (reducedDuration > 0) {
-			((MobEffectInstanceAccessor) effectInstance).setDuration(reducedDuration);
-			((MobEffectInstanceAccessor) effectInstance).getFactorData().ifPresent(factorData -> factorData.update(effectInstance));
+			((MobEffectInstanceAccessor) effectInstance).biomancy$setDuration(reducedDuration);
+			((MobEffectInstanceAccessor) effectInstance).biomancy$getFactorData().ifPresent(factorData -> factorData.update(effectInstance));
 		}
 		else {
 			livingEntity.removeEffect(this);
@@ -66,8 +66,8 @@ public class BleedEffect extends StatusEffect implements StackingStatusEffect {
 		if (effectInstance == null) return;
 
 		int increasedDuration = effectInstance.getDuration() + ticks;
-		((MobEffectInstanceAccessor) effectInstance).setDuration(increasedDuration);
-		((MobEffectInstanceAccessor) effectInstance).getFactorData().ifPresent(factorData -> factorData.update(effectInstance));
+		((MobEffectInstanceAccessor) effectInstance).biomancy$setDuration(increasedDuration);
+		((MobEffectInstanceAccessor) effectInstance).biomancy$getFactorData().ifPresent(factorData -> factorData.update(effectInstance));
 	}
 
 	@Override

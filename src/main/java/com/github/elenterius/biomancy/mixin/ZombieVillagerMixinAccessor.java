@@ -9,6 +9,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface ZombieVillagerMixinAccessor {
 
 	@Invoker("finishConversion")
-	void biomancy_cureZombie(ServerLevel level);
+	void biomancy$cureZombie(ServerLevel level);
 
 }

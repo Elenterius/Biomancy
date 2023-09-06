@@ -11,6 +11,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface SwordItemMixinAccessor {
 
 	@Accessor("defaultModifiers")
-	Multimap<Attribute, AttributeModifier> biomancy_getDefaultModifiers();
+	Multimap<Attribute, AttributeModifier> biomancy$getDefaultModifiers();
 
 }

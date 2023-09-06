@@ -10,7 +10,7 @@ import javax.annotation.Nonnull;
 public interface TextureSlotAccessor {
 
 	@Nonnull
-	@Invoker
-	static TextureSlot callCreate(String id) {return null;}
+	@Invoker("create")
+	static TextureSlot biomancy$create(String id) {return null;}
 
 }

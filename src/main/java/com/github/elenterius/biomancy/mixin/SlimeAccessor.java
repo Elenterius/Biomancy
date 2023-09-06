@@ -8,6 +8,6 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface SlimeAccessor {
 
 	@Invoker("setSize")
-	void biomancy_setSlimeSize(int size, boolean resetHealth);
+	void biomancy$setSlimeSize(int size, boolean resetHealth);
 
 }

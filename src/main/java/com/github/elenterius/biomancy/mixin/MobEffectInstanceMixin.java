@@ -26,7 +26,7 @@ public abstract class MobEffectInstanceMixin {
 
 		if (other.getEffect() instanceof StackingStatusEffect stackingStatusEffect) {
 			int modifiedAmplifier = StackingStatusEffect.computeAmplifierFrom(stackingStatusEffect, other.getAmplifier(), getAmplifier());
-			((MobEffectInstanceAccessor) other).setAmplifier(modifiedAmplifier);
+			((MobEffectInstanceAccessor) other).biomancy$setAmplifier(modifiedAmplifier);
 		}
 	}
 

@@ -10,8 +10,8 @@ import java.util.Set;
 @Mixin(RecipeCollection.class)
 public interface RecipeCollectionAccessor {
 	@Accessor("fitsDimensions")
-	Set<Recipe<?>> getFitDimensions();
+	Set<Recipe<?>> biomancy$getFitDimensions();
 
 	@Accessor("craftable")
-	Set<Recipe<?>> getCraftable();
+	Set<Recipe<?>> biomancy$getCraftable();
 }

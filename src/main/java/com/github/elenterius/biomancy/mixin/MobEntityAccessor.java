@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface MobEntityAccessor {
 
 	@Invoker("getAmbientSound")
-	SoundEvent biomancy_getAmbientSound();
+	SoundEvent biomancy$getAmbientSound();
 
 	@Accessor("jumpControl")
 	void biomancy$setJumpControl(JumpControl jumpControl);
