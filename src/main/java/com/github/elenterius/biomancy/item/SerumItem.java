@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class SerumItem extends Item implements SerumContainer, ICustomTooltip {
+public class SerumItem extends Item implements SerumContainer, CustomTooltipProvider {
 
 	private final Supplier<? extends Serum> serumSupplier;
 

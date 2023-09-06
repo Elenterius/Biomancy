@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class EssenceItem extends Item implements ICustomTooltip {
+public class EssenceItem extends Item implements CustomTooltipProvider {
 
 	public static final String NBT_KEY_ENTITY_TYPE = "EntityType";
 	public static final String KEY_DATA = "EssenceData";

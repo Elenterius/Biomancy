@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.item.weapon;
 
 import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
-import com.github.elenterius.biomancy.item.IKeyListener;
+import com.github.elenterius.biomancy.item.KeyPressListener;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import net.minecraft.ChatFormatting;
@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Set;
 
 @Deprecated
-public abstract class BaseGunItem extends ProjectileWeaponItem implements IGun, IKeyListener {
+public abstract class BaseGunItem extends ProjectileWeaponItem implements Gun, KeyPressListener {
 	public static final Set<Enchantment> VALID_VANILLA_ENCHANTMENTS = Set.of(Enchantments.PUNCH_ARROWS, Enchantments.POWER_ARROWS, Enchantments.QUICK_CHARGE);
 
 	private final int baseShootDelay; //measured in ticks

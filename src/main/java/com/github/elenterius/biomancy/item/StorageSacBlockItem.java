@@ -33,7 +33,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class StorageSacBlockItem extends BlockItem implements ICustomTooltip {
+public class StorageSacBlockItem extends BlockItem implements CustomTooltipProvider {
 
 	public StorageSacBlockItem(Block block, Properties properties) {
 		super(block, properties);

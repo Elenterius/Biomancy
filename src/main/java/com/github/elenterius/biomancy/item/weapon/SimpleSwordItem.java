@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.item.weapon;
 
 import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
-import com.github.elenterius.biomancy.item.ICustomTooltip;
+import com.github.elenterius.biomancy.item.CustomTooltipProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class SimpleSwordItem extends SwordItem implements ICustomTooltip {
+public class SimpleSwordItem extends SwordItem implements CustomTooltipProvider {
 
 	public SimpleSwordItem(Tier tier, int attackDamageModifier, float attackSpeedModifier, Properties properties) {
 		super(tier, attackDamageModifier, attackSpeedModifier, properties);

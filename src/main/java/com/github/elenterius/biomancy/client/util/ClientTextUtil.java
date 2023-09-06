@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.client.util;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.init.client.ClientSetupHandler;
-import com.github.elenterius.biomancy.item.ICustomTooltip;
+import com.github.elenterius.biomancy.item.CustomTooltipProvider;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import net.minecraft.client.Minecraft;
@@ -43,7 +43,7 @@ public final class ClientTextUtil {
 	private static MutableComponent getItemTooltip(ItemStack stack) {
 		Item item = stack.getItem();
 
-		if (item instanceof ICustomTooltip iTooltip) {
+		if (item instanceof CustomTooltipProvider iTooltip) {
 			return iTooltip.getTooltipText(stack);
 		}
 

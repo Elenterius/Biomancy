@@ -14,7 +14,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class EffectCureItem extends Item implements ICustomTooltip {
+public class EffectCureItem extends Item implements CustomTooltipProvider {
 
 	public EffectCureItem(Properties properties) {
 		super(properties);

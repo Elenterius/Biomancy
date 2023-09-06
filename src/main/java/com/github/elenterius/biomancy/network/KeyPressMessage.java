@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.network;
 
-import com.github.elenterius.biomancy.item.IKeyListener;
+import com.github.elenterius.biomancy.item.KeyPressListener;
 import com.google.common.primitives.UnsignedBytes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
@@ -29,7 +29,7 @@ public class KeyPressMessage {
 			ServerPlayer player = ctx.get().getSender();
 			if (player != null) {
 				ServerLevel world = player.getLevel();
-				IKeyListener.onReceiveKeybindingPacket(world, player, UnsignedBytes.toInt(packet.slotIndex), packet.flag); //TODO: add version which is not tied to EquipmentSlotType
+				KeyPressListener.onReceiveKeybindingPacket(world, player, UnsignedBytes.toInt(packet.slotIndex), packet.flag); //TODO: add version which is not tied to EquipmentSlotType
 			}
 		});
 		ctx.get().setPacketHandled(true);

@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.init.ModDamageSources;
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.init.ModParticleTypes;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.item.CriticalHitListener;
 import com.github.elenterius.biomancy.item.SweepAttackListener;
 import com.github.elenterius.biomancy.mixin.DamageSourceAccessor;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
@@ -25,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ToxicusItem extends SimpleSwordItem implements CriticalHitEntityAction, SweepAttackListener {
+public class ToxicusItem extends SimpleSwordItem implements CriticalHitListener, SweepAttackListener {
 
 	public ToxicusItem(Tier tier, int attackDamageModifier, float attackSpeedModifier, Properties properties) {
 		super(tier, attackDamageModifier, attackSpeedModifier, properties);

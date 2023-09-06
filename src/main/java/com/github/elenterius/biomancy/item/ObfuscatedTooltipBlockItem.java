@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ObfuscatedTooltipBlockItem extends BlockItem implements ICustomTooltip {
+public class ObfuscatedTooltipBlockItem extends BlockItem implements CustomTooltipProvider {
 
 	public ObfuscatedTooltipBlockItem(Block block, Properties properties) {
 		super(block, properties);

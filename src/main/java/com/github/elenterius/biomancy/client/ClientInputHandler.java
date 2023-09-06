@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.client;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.client.ClientSetupHandler;
-import com.github.elenterius.biomancy.item.IKeyListener;
+import com.github.elenterius.biomancy.item.KeyPressListener;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -45,7 +45,7 @@ public final class ClientInputHandler {
 	private static void handleEquipmentSlots(EquipmentSlot[] slots, LocalPlayer player) {
 		for (EquipmentSlot slot : slots) { //worst case this will send 2 or 4 packets to the server
 			ItemStack stack = player.getItemBySlot(slot);
-			if (!stack.isEmpty() && stack.getItem() instanceof IKeyListener keyListener) {
+			if (!stack.isEmpty() && stack.getItem() instanceof KeyPressListener keyListener) {
 				InteractionResultHolder<Byte> result = keyListener.onClientKeyPress(stack, player.clientLevel, player, slot, (byte) 0);
 				if (result.getResult().shouldSwing()) {
 					ModNetworkHandler.sendKeyBindPressToServer(slot, result.getObject());

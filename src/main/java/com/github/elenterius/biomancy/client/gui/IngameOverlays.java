@@ -8,7 +8,7 @@ import com.github.elenterius.biomancy.entity.ownable.IControllableMob;
 import com.github.elenterius.biomancy.item.AttackReachIndicator;
 import com.github.elenterius.biomancy.item.ItemCharge;
 import com.github.elenterius.biomancy.item.injector.InjectorItem;
-import com.github.elenterius.biomancy.item.weapon.IGun;
+import com.github.elenterius.biomancy.item.weapon.Gun;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -112,7 +112,7 @@ public final class IngameOverlays {
 		GuiComponent.drawString(poseStack, Minecraft.getInstance().font, command.name(), x, y + 16 + 18, 0x55ffff);
 	}
 
-	static void renderGunOverlay(ForgeGui gui, PoseStack poseStack, int screenWidth, int screenHeight, LocalPlayer player, ItemStack stack, IGun gun) {
+	static void renderGunOverlay(ForgeGui gui, PoseStack poseStack, int screenWidth, int screenHeight, LocalPlayer player, ItemStack stack, Gun gun) {
 		renderAmmoOverlay(poseStack, screenWidth, screenHeight, stack, gun);
 
 		if (GuiUtil.isFirstPersonView()) {
@@ -168,9 +168,9 @@ public final class IngameOverlays {
 		font.draw(poseStack, number, pX, pY, 0xac0404);
 	}
 
-	static void renderReloadIndicator(ForgeGui gui, PoseStack poseStack, int screenWidth, int screenHeight, LocalPlayer player, ItemStack stack, IGun gun) {
-		IGun.State gunState = gun.getState(stack);
-		if (gunState == IGun.State.RELOADING) {
+	static void renderReloadIndicator(ForgeGui gui, PoseStack poseStack, int screenWidth, int screenHeight, LocalPlayer player, ItemStack stack, Gun gun) {
+		Gun.State gunState = gun.getState(stack);
+		if (gunState == Gun.State.RELOADING) {
 			long elapsedTime = player.clientLevel.getGameTime() - gun.getReloadStartTime(stack);
 			float reloadProgress = gun.getReloadProgress(elapsedTime, gun.getReloadTime(stack));
 			GuiRenderUtil.drawSquareProgressBar(poseStack, screenWidth / 2, screenHeight / 2, gui.getBlitOffset(), 10, reloadProgress);
@@ -181,7 +181,7 @@ public final class IngameOverlays {
 		}
 	}
 
-	static void renderAmmoOverlay(PoseStack poseStack, int screenWidth, int screenHeight, ItemStack stack, IGun gun) {
+	static void renderAmmoOverlay(PoseStack poseStack, int screenWidth, int screenHeight, ItemStack stack, Gun gun) {
 		int maxAmmo = gun.getMaxAmmo(stack);
 		int ammo = gun.getAmmo(stack);
 		renderOrnateCorner(poseStack, screenWidth - 44, screenHeight - 28);

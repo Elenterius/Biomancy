@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class SimpleBlockItem extends BlockItem implements ICustomTooltip {
+public class SimpleBlockItem extends BlockItem implements CustomTooltipProvider {
 
 	public SimpleBlockItem(Block block, Properties properties) {
 		super(block, properties);
