@@ -217,7 +217,7 @@ dependencies {
 	implementation fg.deobf("com.jozufozu.flywheel:flywheel-forge-${mc_version}:${flywheel_version}")
 	implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
 
-	runtimeOnly fg.deobf("curse.maven:farmers_delight-398521:4525646") //1.2.1
+//	runtimeOnly fg.deobf("curse.maven:farmers_delight-398521:4525646") //1.2.1
 //    runtimeOnly fg.deobf("curse.maven:cultural_delights-574622:4000179")
 
 	runtimeOnly fg.deobf("curse.maven:alexs_mobs-426558:4159154") //1.21.1
