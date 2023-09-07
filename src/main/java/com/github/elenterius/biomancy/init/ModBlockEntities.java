@@ -16,6 +16,7 @@ import com.github.elenterius.biomancy.block.tongue.TongueBlockEntity;
 import com.github.elenterius.biomancy.block.vialholder.VialHolderBlockEntity;
 import com.mojang.datafixers.types.Type;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -41,8 +42,8 @@ public final class ModBlockEntities {
 	public static final RegistryObject<BlockEntityType<VoiceBoxBlockEntity>> VOICE_BOX = register(ModBlocks.VOICE_BOX, VoiceBoxBlockEntity::new);
 
 	//# Special
-	public static final RegistryObject<BlockEntityType<OwnableBlockEntity>> OWNABLE_BE = BLOCK_ENTITIES.register("ownable_block_entity", () -> BlockEntityType.Builder.of(OwnableBlockEntity::new, ModBlocks.FLESHKIN_DOOR.get(), ModBlocks.FLESHKIN_TRAPDOOR.get(), ModBlocks.FLESHKIN_PRESSURE_PLATE.get()).build(noDataFixer()));
-	public static final RegistryObject<BlockEntityType<BlockEntityDelegator>> BE_DELEGATOR = BLOCK_ENTITIES.register("block_entity_delegator", () -> BlockEntityType.Builder.of(BlockEntityDelegator::new, ModBlocks.FLESHKIN_DOOR.get()).build(noDataFixer()));
+	public static final RegistryObject<BlockEntityType<OwnableBlockEntity>> OWNABLE_BE = BLOCK_ENTITIES.register("ownable_block_entity", () -> BlockEntityType.Builder.of(OwnableBlockEntity::new, /*ModBlocks.FLESHKIN_DOOR.get(), ModBlocks.FLESHKIN_TRAPDOOR.get(),*/ ModBlocks.FLESHKIN_PRESSURE_PLATE.get()).build(noDataFixer()));
+	public static final RegistryObject<BlockEntityType<BlockEntityDelegator>> BE_DELEGATOR = BLOCK_ENTITIES.register("block_entity_delegator", () -> BlockEntityType.Builder.of(BlockEntityDelegator::new, Blocks.AIR /*ModBlocks.FLESHKIN_DOOR.get()*/).build(noDataFixer()));
 
 	private ModBlockEntities() {}
 

@@ -11,9 +11,7 @@ import com.github.elenterius.biomancy.block.fleshkinchest.FleshkinChestBlock;
 import com.github.elenterius.biomancy.block.fleshspike.FleshSpikeBlock;
 import com.github.elenterius.biomancy.block.mawhopper.MawHopperBlock;
 import com.github.elenterius.biomancy.block.modularlarynx.VoiceBoxBlock;
-import com.github.elenterius.biomancy.block.ownable.OwnableDoorBlock;
 import com.github.elenterius.biomancy.block.ownable.OwnablePressurePlateBlock;
-import com.github.elenterius.biomancy.block.ownable.OwnableTrapDoorBlock;
 import com.github.elenterius.biomancy.block.storagesac.StorageSacBlock;
 import com.github.elenterius.biomancy.block.tongue.TongueBlock;
 import com.github.elenterius.biomancy.block.veins.FleshVeinsBlock;
@@ -54,8 +52,8 @@ public final class ModBlocks {
 
 	//## Ownable
 	public static final RegistryObject<FleshkinChestBlock> FLESHKIN_CHEST = register("fleshkin_chest", FleshkinChestBlock::new);
-	public static final RegistryObject<OwnableDoorBlock> FLESHKIN_DOOR = register("fleshkin_door", OwnableDoorBlock::new);
-	public static final RegistryObject<OwnableTrapDoorBlock> FLESHKIN_TRAPDOOR = register("fleshkin_trapdoor", OwnableTrapDoorBlock::new);
+	//	public static final RegistryObject<OwnableDoorBlock> FLESHKIN_DOOR = register("fleshkin_door", OwnableDoorBlock::new);
+	//	public static final RegistryObject<OwnableTrapDoorBlock> FLESHKIN_TRAPDOOR = register("fleshkin_trapdoor", OwnableTrapDoorBlock::new);
 	public static final RegistryObject<OwnablePressurePlateBlock> FLESHKIN_PRESSURE_PLATE = register("fleshkin_pressure_plate", OwnablePressurePlateBlock::new);
 
 	//## Building Materials
