@@ -125,8 +125,8 @@ public class ModBlockLoot extends BlockLoot {
 		add(ModBlocks.DECOMPOSER.get(), ModBlockLoot::createNameableBioMachineTable);
 
 		add(ModBlocks.FLESHKIN_CHEST.get(), BlockLoot::createNameableBlockEntityTable);
-		add(ModBlocks.FLESHKIN_DOOR.get(), ModBlockLoot::dropWithOwnableData);
-		add(ModBlocks.FLESHKIN_TRAPDOOR.get(), ModBlockLoot::dropWithOwnableData);
+		//		add(ModBlocks.FLESHKIN_DOOR.get(), ModBlockLoot::dropWithOwnableData);
+		//		add(ModBlocks.FLESHKIN_TRAPDOOR.get(), ModBlockLoot::dropWithOwnableData);
 		add(ModBlocks.FLESHKIN_PRESSURE_PLATE.get(), ModBlockLoot::dropWithOwnableData);
 
 		dropSelf(ModBlocks.FLESH.get());
