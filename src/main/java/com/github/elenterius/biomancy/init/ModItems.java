@@ -145,7 +145,6 @@ public final class ModItems {
 	public static final RegistryObject<ObfuscatedTooltipBlockItem> PRIMAL_FLESH_SLAB = registerBlockItem(ModBlocks.PRIMAL_FLESH_SLAB, ObfuscatedTooltipBlockItem::new);
 	public static final RegistryObject<ObfuscatedTooltipBlockItem> PRIMAL_FLESH_STAIRS = registerBlockItem(ModBlocks.PRIMAL_FLESH_STAIRS, ObfuscatedTooltipBlockItem::new);
 	public static final RegistryObject<ObfuscatedTooltipBlockItem> PRIMAL_FLESH_WALL = registerBlockItem(ModBlocks.PRIMAL_FLESH_WALL, ObfuscatedTooltipBlockItem::new);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> CORRUPTED_PRIMAL_FLESH_BLOCK = registerBlockItem(ModBlocks.CORRUPTED_PRIMAL_FLESH, ObfuscatedTooltipBlockItem::new);
 	public static final RegistryObject<ObfuscatedTooltipBlockItem> MALIGNANT_FLESH_BLOCK = registerBlockItem(ModBlocks.MALIGNANT_FLESH, ObfuscatedTooltipBlockItem::new);
 	public static final RegistryObject<ObfuscatedTooltipBlockItem> MALIGNANT_FLESH_SLAB = registerBlockItem(ModBlocks.MALIGNANT_FLESH_SLAB, ObfuscatedTooltipBlockItem::new);
 	public static final RegistryObject<ObfuscatedTooltipBlockItem> MALIGNANT_FLESH_STAIRS = registerBlockItem(ModBlocks.MALIGNANT_FLESH_STAIRS, ObfuscatedTooltipBlockItem::new);
