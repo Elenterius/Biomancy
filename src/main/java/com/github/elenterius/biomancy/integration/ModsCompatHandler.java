@@ -6,6 +6,8 @@ import com.github.elenterius.biomancy.integration.modonomicon.IModonomiconHelper
 import com.github.elenterius.biomancy.integration.modonomicon.ModonomiconIntegration;
 import com.github.elenterius.biomancy.integration.pehkui.IPehkuiHelper;
 import com.github.elenterius.biomancy.integration.pehkui.PehkuiCompat;
+import com.github.elenterius.biomancy.integration.tetra.TetraCompat;
+import com.github.elenterius.biomancy.integration.tetra.TetraHelper;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -20,6 +22,7 @@ public final class ModsCompatHandler {
 	static final Marker LOG_MARKER = MarkerManager.getMarker(ModsCompatHandler.class.getSimpleName());
 	static IPehkuiHelper PEHKUI_HELPER = IPehkuiHelper.EMPTY;
 	static IModonomiconHelper MODONOMICON_HELPER = IModonomiconHelper.EMPTY;
+	static TetraHelper TETRA_HELPER = TetraHelper.EMPTY;
 
 	private ModsCompatHandler() {}
 
@@ -32,6 +35,11 @@ public final class ModsCompatHandler {
 		if (ModList.get().isLoaded("modonomicon")) {
 			BiomancyMod.LOGGER.info(LOG_MARKER, "Initialize Modonomicon integration...");
 			ModonomiconIntegration.init(helper -> MODONOMICON_HELPER = helper);
+		}
+
+		if (ModList.get().isLoaded("tetra")) {
+			BiomancyMod.LOGGER.info(LOG_MARKER, "Initialize Modonomicon integration...");
+			TetraCompat.init(helper -> TETRA_HELPER = helper);
 		}
 	}
 
@@ -55,6 +63,11 @@ public final class ModsCompatHandler {
 					BiomancyMod.LOGGER.warn(LOG_MARKER, "Found outdated version of Create (< 0.5.1). Skipping compatibility setup for Create!");
 				}
 			}
+
+			if (ModList.get().isLoaded("tetra")) {
+				BiomancyMod.LOGGER.info(LOG_MARKER, "Setup Tetra compat...");
+				TetraCompat.onPostSetup();
+			}
 		});
 	}
 
@@ -69,10 +82,10 @@ public final class ModsCompatHandler {
 
 	public static void onBiomancyClientSetup(final FMLClientSetupEvent event) {
 		//		event.enqueueWork(() -> {
-			//			if (ModList.get().isLoaded("jeresources")) {
-			//				BiomancyMod.LOGGER.info(LOG_MARKER, "setup JER plugin...");
-			//				BiomancyJerPlugin.onClientPostSetup();
-			//			}
+		//			if (ModList.get().isLoaded("jeresources")) {
+		//				BiomancyMod.LOGGER.info(LOG_MARKER, "setup JER plugin...");
+		//				BiomancyJerPlugin.onClientPostSetup();
+		//			}
 		//		});
 	}
 
@@ -82,6 +95,10 @@ public final class ModsCompatHandler {
 
 	public static IModonomiconHelper getModonomiconHelper() {
 		return MODONOMICON_HELPER;
+	}
+
+	public static TetraHelper getTetraHelper() {
+		return TETRA_HELPER;
 	}
 
 }

@@ -218,7 +218,7 @@ dependencies {
 	implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
 
 //	runtimeOnly fg.deobf("curse.maven:farmers_delight-398521:4525646") //1.2.1
-//    runtimeOnly fg.deobf("curse.maven:cultural_delights-574622:4000179")
+//  runtimeOnly fg.deobf("curse.maven:cultural_delights-574622:4000179")
 
 	runtimeOnly fg.deobf("curse.maven:alexs_mobs-426558:4159154") //1.21.1
 	runtimeOnly fg.deobf("curse.maven:citadel-331936:4132623")
@@ -226,6 +226,9 @@ dependencies {
 
 	compileOnly fg.deobf("maven.modrinth:pehkui:3.6.2+1.19.2-forge") // 3.6.2+1.19.2-forge
 	//needs to be compileOnly for datagen to work -> temporarily change to implementation for gameplay testing
+
+//	implementation fg.deobf("se.mickelus.mutil:mutil:1.19.2-5.1.0")
+	compileOnly fg.deobf("curse.maven:tetra-289712:4738567") // 1.19.2-5.5.0
 
 	//TODO: Morph Mod Integration?
 //    implementation fg.deobf("curse.maven:identity-391390:3807264") // https://www.curseforge.com/minecraft/mc-mods/identity

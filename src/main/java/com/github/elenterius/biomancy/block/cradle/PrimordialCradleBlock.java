@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.init.ModTriggers;
+import com.github.elenterius.biomancy.integration.ModsCompatHandler;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -50,7 +51,7 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 		if (item instanceof BlockItem blockItem && (blockItem.getBlock() instanceof ShulkerBoxBlock || blockItem.getBlock() instanceof FleshkinChestBlock))
 			return true;
 
-		//TODO: handle Tetra Tools & add Dragon Sinew to Tributes
+		if (ModsCompatHandler.getTetraHelper().isToolOrModularItem(item)) return true;
 
 		return item instanceof TieredItem || item instanceof Vanishable || stack.isEnchanted();
 	};
