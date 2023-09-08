@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package com.github.elenterius.biomancy.inventory.slot;
+package com.github.elenterius.biomancy.menu;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

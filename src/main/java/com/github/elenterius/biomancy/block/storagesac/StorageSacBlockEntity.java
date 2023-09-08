@@ -5,7 +5,7 @@ import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModCapabilities;
 import com.github.elenterius.biomancy.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.inventory.itemhandler.HandlerBehaviors;
-import com.github.elenterius.biomancy.inventory.menu.StorageSacMenu;
+import com.github.elenterius.biomancy.menu.StorageSacMenu;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.ItemStackCounter;
 import net.minecraft.core.BlockPos;

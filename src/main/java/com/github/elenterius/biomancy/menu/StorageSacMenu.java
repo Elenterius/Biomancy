@@ -1,11 +1,11 @@
-package com.github.elenterius.biomancy.inventory.menu;
+package com.github.elenterius.biomancy.menu;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.storagesac.StorageSacBlockEntity;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
 import com.github.elenterius.biomancy.inventory.BehavioralInventory;
-import com.github.elenterius.biomancy.inventory.slot.ISlotZone;
-import com.github.elenterius.biomancy.inventory.slot.NonNestingSlot;
+import com.github.elenterius.biomancy.menu.slot.ISlotZone;
+import com.github.elenterius.biomancy.menu.slot.NonNestingSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;

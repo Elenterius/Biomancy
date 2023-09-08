@@ -14,6 +14,7 @@ import java.util.function.Predicate;
 /**
  * allows us to add specific behavior to any IItemHandler or IFluidHandler without the need of subclassing
  */
+@Deprecated(forRemoval = true)
 public final class HandlerBehaviors {
 
 	private HandlerBehaviors() {}

@@ -10,7 +10,7 @@ import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.inventory.SimpleInventory;
 import com.github.elenterius.biomancy.inventory.itemhandler.HandlerBehaviors;
-import com.github.elenterius.biomancy.inventory.menu.BioLabMenu;
+import com.github.elenterius.biomancy.menu.BioLabMenu;
 import com.github.elenterius.biomancy.recipe.BioLabRecipe;
 import com.github.elenterius.biomancy.recipe.IngredientStack;
 import com.github.elenterius.biomancy.recipe.SimpleRecipeType;

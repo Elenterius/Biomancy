@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.inventory.menu;
+package com.github.elenterius.biomancy.menu;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.bioforge.BioForgeBlockEntity;
@@ -6,9 +6,9 @@ import com.github.elenterius.biomancy.block.bioforge.BioForgeStateData;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.inventory.BehavioralInventory;
-import com.github.elenterius.biomancy.inventory.slot.FuelSlot;
-import com.github.elenterius.biomancy.inventory.slot.ISlotZone;
-import com.github.elenterius.biomancy.inventory.slot.OutputSlot;
+import com.github.elenterius.biomancy.menu.slot.FuelSlot;
+import com.github.elenterius.biomancy.menu.slot.ISlotZone;
+import com.github.elenterius.biomancy.menu.slot.OutputSlot;
 import com.github.elenterius.biomancy.recipe.BioForgeRecipe;
 import com.github.elenterius.biomancy.recipe.IngredientStack;
 import com.github.elenterius.biomancy.util.SoundUtil;

@@ -1,6 +1,6 @@
-package com.github.elenterius.biomancy.inventory.menu;
+package com.github.elenterius.biomancy.menu;
 
-import com.github.elenterius.biomancy.inventory.slot.ISlotZone;
+import com.github.elenterius.biomancy.menu.slot.ISlotZone;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;

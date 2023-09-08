@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.inventory.menu;
+package com.github.elenterius.biomancy.menu;
 
 import com.github.elenterius.biomancy.init.ModBioForgeTabs;
 import com.google.gson.JsonObject;
