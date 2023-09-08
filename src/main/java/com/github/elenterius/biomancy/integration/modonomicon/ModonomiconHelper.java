@@ -5,15 +5,15 @@ import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
-public sealed interface IModonomiconHelper permits IModonomiconHelper.EmptyModonomiconHelper, ModonomiconHelperImpl {
+public sealed interface ModonomiconHelper permits ModonomiconHelper.EmptyModonomiconHelper, ModonomiconHelperImpl {
 
-	IModonomiconHelper EMPTY = new IModonomiconHelper.EmptyModonomiconHelper();
+	ModonomiconHelper EMPTY = new ModonomiconHelper.EmptyModonomiconHelper();
 
 	boolean openBook(ResourceLocation bookId);
 
 	boolean isBookScreenActive(ResourceLocation bookId);
 
-	final class EmptyModonomiconHelper implements IModonomiconHelper {
+	final class EmptyModonomiconHelper implements ModonomiconHelper {
 
 		@Override
 		public boolean openBook(ResourceLocation bookId) {

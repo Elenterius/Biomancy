@@ -6,7 +6,7 @@ public final class ModonomiconIntegration {
 
 	private ModonomiconIntegration() {}
 
-	public static void init(Consumer<IModonomiconHelper> helperSetter) {
+	public static void init(Consumer<ModonomiconHelper> helperSetter) {
 		helperSetter.accept(new ModonomiconHelperImpl());
 	}
 

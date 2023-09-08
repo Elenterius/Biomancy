@@ -12,7 +12,7 @@ public final class PehkuiCompat {
 
 	private PehkuiCompat() {}
 
-	public static void init(Consumer<IPehkuiHelper> helperSetter) {
+	public static void init(Consumer<PehkuiHelper> helperSetter) {
 		ScaleTypes.BASE.getDefaultBaseValueModifiers().add(SCALE_MODIFIER);
 		helperSetter.accept(new PehkuiHelperImpl());
 	}
@@ -25,7 +25,7 @@ public final class PehkuiCompat {
 		return ScaleRegistries.register(ScaleRegistries.SCALE_TYPES, BiomancyMod.createRL(name), builder.apply(ScaleType.Builder.create()).build());
 	}
 
-	static final class PehkuiHelperImpl implements IPehkuiHelper {
+	static final class PehkuiHelperImpl implements PehkuiHelper {
 
 		@Override
 		public void setScale(LivingEntity livingEntity, float scale) {
