@@ -8,7 +8,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
-final class ModonomiconHelperImpl implements IModonomiconHelper {
+final class ModonomiconHelperImpl implements ModonomiconHelper {
 
 	@Override
 	public boolean openBook(ResourceLocation bookId) {

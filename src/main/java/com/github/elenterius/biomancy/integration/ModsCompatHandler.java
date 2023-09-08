@@ -2,10 +2,10 @@ package com.github.elenterius.biomancy.integration;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.integration.create.CreateCompat;
-import com.github.elenterius.biomancy.integration.modonomicon.IModonomiconHelper;
+import com.github.elenterius.biomancy.integration.modonomicon.ModonomiconHelper;
 import com.github.elenterius.biomancy.integration.modonomicon.ModonomiconIntegration;
-import com.github.elenterius.biomancy.integration.pehkui.IPehkuiHelper;
 import com.github.elenterius.biomancy.integration.pehkui.PehkuiCompat;
+import com.github.elenterius.biomancy.integration.pehkui.PehkuiHelper;
 import com.github.elenterius.biomancy.integration.tetra.TetraCompat;
 import com.github.elenterius.biomancy.integration.tetra.TetraHelper;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -20,8 +20,8 @@ import java.util.Arrays;
 public final class ModsCompatHandler {
 
 	static final Marker LOG_MARKER = MarkerManager.getMarker(ModsCompatHandler.class.getSimpleName());
-	static IPehkuiHelper PEHKUI_HELPER = IPehkuiHelper.EMPTY;
-	static IModonomiconHelper MODONOMICON_HELPER = IModonomiconHelper.EMPTY;
+	static PehkuiHelper PEHKUI_HELPER = PehkuiHelper.EMPTY;
+	static ModonomiconHelper MODONOMICON_HELPER = ModonomiconHelper.EMPTY;
 	static TetraHelper TETRA_HELPER = TetraHelper.EMPTY;
 
 	private ModsCompatHandler() {}
@@ -89,11 +89,11 @@ public final class ModsCompatHandler {
 		//		});
 	}
 
-	public static IPehkuiHelper getPehkuiHelper() {
+	public static PehkuiHelper getPehkuiHelper() {
 		return PEHKUI_HELPER;
 	}
 
-	public static IModonomiconHelper getModonomiconHelper() {
+	public static ModonomiconHelper getModonomiconHelper() {
 		return MODONOMICON_HELPER;
 	}
 

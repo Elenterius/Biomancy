@@ -2,9 +2,9 @@ package com.github.elenterius.biomancy.integration.pehkui;
 
 import net.minecraft.world.entity.LivingEntity;
 
-public sealed interface IPehkuiHelper permits IPehkuiHelper.EmptyPehkuiHelper, PehkuiCompat.PehkuiHelperImpl {
+public sealed interface PehkuiHelper permits PehkuiHelper.EmptyPehkuiHelper, PehkuiCompat.PehkuiHelperImpl {
 
-	IPehkuiHelper EMPTY = new EmptyPehkuiHelper();
+	PehkuiHelper EMPTY = new EmptyPehkuiHelper();
 
 	void setScale(LivingEntity livingEntity, float scale);
 
@@ -14,7 +14,7 @@ public sealed interface IPehkuiHelper permits IPehkuiHelper.EmptyPehkuiHelper, P
 
 	float getScale(LivingEntity livingEntity);
 
-	final class EmptyPehkuiHelper implements IPehkuiHelper {
+	final class EmptyPehkuiHelper implements PehkuiHelper {
 		@Override
 		public void setScale(LivingEntity livingEntity, float scale) {
 			//empty
