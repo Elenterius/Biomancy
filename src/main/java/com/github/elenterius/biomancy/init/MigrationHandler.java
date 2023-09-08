@@ -66,6 +66,8 @@ public final class MigrationHandler {
 				case "flesh_irisdoor" -> mapping.remap(ModBlocks.FLESH_IRIS_DOOR.get());
 				case "necrotic_flesh_block" -> mapping.remap(ModBlocks.MALIGNANT_FLESH.get());
 				case "flesh_tentacle" -> mapping.remap(ModBlocks.MALIGNANT_FLESH_VEINS.get());
+				case "corrupted_primal_flesh" -> mapping.remap(ModBlocks.PRIMAL_FLESH.get());
+
 				default -> mapping.ignore();
 			}
 		}
@@ -123,6 +125,7 @@ public final class MigrationHandler {
 				case "flesh_irisdoor" -> mapping.remap(ModItems.FLESH_IRIS_DOOR.get());
 				case "necrotic_flesh_block" -> mapping.remap(ModItems.MALIGNANT_FLESH_BLOCK.get());
 				case "flesh_tentacle" -> mapping.remap(ModItems.MALIGNANT_FLESH_VEINS.get());
+				case "corrupted_primal_flesh" -> mapping.remap(ModItems.PRIMAL_FLESH_BLOCK.get());
 
 				case "biometal" -> mapping.remap(ModItems.LIVING_FLESH.get());
 				case "bone_gear" -> mapping.remap(Items.BONE);
