@@ -86,7 +86,6 @@ public final class ModBlocks {
 	public static final RegistryObject<MembraneBlock> IMPERMEABLE_MEMBRANE = registerMembrane("impermeable_membrane", MembraneBlock.IgnoreEntityCollisionPredicate.NEVER);
 	public static final RegistryObject<MembraneBlock> BABY_PERMEABLE_MEMBRANE = registerMembrane("baby_permeable_membrane", MembraneBlock.IgnoreEntityCollisionPredicate.IS_BABY_MOB);
 	public static final RegistryObject<MembraneBlock> ADULT_PERMEABLE_MEMBRANE = registerMembrane("adult_permeable_membrane", MembraneBlock.IgnoreEntityCollisionPredicate.IS_ADULT_MOB);
-	public static final RegistryObject<MembraneBlock> ITEM_PERMEABLE_MEMBRANE = registerMembrane("item_permeable_membrane", MembraneBlock.IgnoreEntityCollisionPredicate.IS_ITEM);
 
 	public static final RegistryObject<LadderBlock> FLESH_LADDER = register("flesh_ladder", () -> new LadderBlock(createFleshyBoneProperties().noOcclusion()));
 	public static final RegistryObject<FleshFenceBlock> FLESH_FENCE = register("flesh_fence", FleshFenceBlock::new);
