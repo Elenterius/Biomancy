@@ -926,12 +926,12 @@ public class ModRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.MISC)
 				.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
 
-		BioForgeRecipeBuilder.create(ModItems.ITEM_PERMEABLE_MEMBRANE.get())
-				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 4)
-				.addIngredient(ModItems.BILE.get(), 4)
-				.addIngredient(Items.QUARTZ, 1)
-				.setCategory(ModBioForgeTabs.MISC)
-				.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
+		//		BioForgeRecipeBuilder.create(ModItems.ITEM_PERMEABLE_MEMBRANE.get())
+		//				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 4)
+		//				.addIngredient(ModItems.BILE.get(), 4)
+		//				.addIngredient(Items.QUARTZ, 1)
+		//				.setCategory(ModBioForgeTabs.MISC)
+		//				.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
 
 		BioForgeRecipeBuilder.create(ModItems.BABY_PERMEABLE_MEMBRANE.get())
 				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 4)

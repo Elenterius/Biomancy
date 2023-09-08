@@ -86,8 +86,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 		tag(BlockTags.IMPERMEABLE).add(
 				ModBlocks.IMPERMEABLE_MEMBRANE.get(),
 				ModBlocks.BABY_PERMEABLE_MEMBRANE.get(),
-				ModBlocks.ADULT_PERMEABLE_MEMBRANE.get(),
-				ModBlocks.ITEM_PERMEABLE_MEMBRANE.get()
+				ModBlocks.ADULT_PERMEABLE_MEMBRANE.get()
 		);
 	}
 

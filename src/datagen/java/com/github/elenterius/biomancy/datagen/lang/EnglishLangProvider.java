@@ -486,7 +486,6 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.IMPERMEABLE_MEMBRANE, "Impermeable Membrane", "Gelatinous-like membrane reinforced with elastic fibers.");
 		addBlock(ModBlocks.BABY_PERMEABLE_MEMBRANE, "Baby-Permeable Membrane", "Gelatinous-like membrane reinforced with elastic fibers.\n\nBaby mobs can diffuse through the membrane.");
 		addBlock(ModBlocks.ADULT_PERMEABLE_MEMBRANE, "Adult-Permeable Membrane", "Gelatinous-like membrane reinforced with elastic fibers.\n\nAdult mobs can diffuse through the membrane.");
-		addBlock(ModBlocks.ITEM_PERMEABLE_MEMBRANE, "Item-Permeable Membrane", "Gelatinous-like membrane reinforced with elastic fibers.\n\nItems can diffuse through the membrane.");
 
 		addBlock(ModBlocks.PRIMAL_FLESH, "Primal Flesh Block", "Primitive and pure, you better not touch this with your dirty mitts.");
 		addBlock(ModBlocks.PRIMAL_FLESH_SLAB, "Primal Flesh Slab", "Primitive and pure, you better not touch this with your dirty mitts.");
