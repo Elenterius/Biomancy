@@ -7,7 +7,7 @@ import com.github.elenterius.biomancy.client.util.ClientSoundUtil;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
 import com.github.elenterius.biomancy.client.util.GuiUtil;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
-import com.github.elenterius.biomancy.inventory.menu.BioForgeMenu;
+import com.github.elenterius.biomancy.menu.BioForgeMenu;
 import com.github.elenterius.biomancy.recipe.BioForgeRecipe;
 import com.github.elenterius.biomancy.recipe.IngredientStack;
 import com.github.elenterius.biomancy.styles.ColorStyles;

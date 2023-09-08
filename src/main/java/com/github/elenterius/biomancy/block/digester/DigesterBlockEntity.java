@@ -9,7 +9,7 @@ import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.inventory.itemhandler.HandlerBehaviors;
-import com.github.elenterius.biomancy.inventory.menu.DigesterMenu;
+import com.github.elenterius.biomancy.menu.DigesterMenu;
 import com.github.elenterius.biomancy.recipe.DigesterRecipe;
 import com.github.elenterius.biomancy.recipe.SimpleRecipeType;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;

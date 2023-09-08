@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.inventory.slot;
+package com.github.elenterius.biomancy.menu.slot;
 
 import com.github.elenterius.biomancy.inventory.itemhandler.HandlerBehaviors;
 import net.minecraft.world.Container;

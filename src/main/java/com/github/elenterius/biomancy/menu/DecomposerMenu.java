@@ -1,13 +1,13 @@
-package com.github.elenterius.biomancy.inventory.menu;
+package com.github.elenterius.biomancy.menu;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.decomposer.DecomposerBlockEntity;
 import com.github.elenterius.biomancy.block.decomposer.DecomposerStateData;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
 import com.github.elenterius.biomancy.inventory.BehavioralInventory;
-import com.github.elenterius.biomancy.inventory.slot.FuelSlot;
-import com.github.elenterius.biomancy.inventory.slot.ISlotZone;
-import com.github.elenterius.biomancy.inventory.slot.OutputSlot;
+import com.github.elenterius.biomancy.menu.slot.FuelSlot;
+import com.github.elenterius.biomancy.menu.slot.ISlotZone;
+import com.github.elenterius.biomancy.menu.slot.OutputSlot;
 import com.github.elenterius.biomancy.util.fuel.FuelHandler;
 import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import net.minecraft.network.FriendlyByteBuf;

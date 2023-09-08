@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.recipe;
 
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
-import com.github.elenterius.biomancy.inventory.menu.BioForgeTab;
+import com.github.elenterius.biomancy.menu.BioForgeTab;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.core.NonNullList;

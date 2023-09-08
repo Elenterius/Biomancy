@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.inventory.slot;
+package com.github.elenterius.biomancy.menu.slot;
 
 public interface ISlotZone {
 
