@@ -12,15 +12,18 @@ import java.util.Optional;
 
 public abstract class RecipeCraftingStateData<T extends ProcessingRecipe> implements ContainerData {
 
-	public static final String NBT_KEY_RECIPE_ID = "RecipeId";
-	public static final String NBT_KEY_TIME_ELAPSED = "TimeElapsed";
-	public static final String NBT_KEY_TIME_FOR_COMPLETION = "TimeForCompletion";
+	public static final String RECIPE_ID_KEY = "RecipeId";
+	public static final String TIME_ELAPSED_KEY = "TimeElapsed";
+	public static final String TIME_FOR_COMPLETION_KEY = "TimeForCompletion";
+	public static final String NUTRIENTS_COST_KEY = "NutrientsCost";
 
 	public static final int TIME_INDEX = 0;
 	public static final int TIME_FOR_COMPLETION_INDEX = 1;
+	public static final int NUTRIENTS_COST_INDEX = 2;
 
 	public int timeElapsed;
 	public int timeForCompletion;
+	public int nutrientsCost;
 
 	private CraftingState craftingState = CraftingState.NONE;
 	private ResourceLocation recipeId;
@@ -63,6 +66,7 @@ public abstract class RecipeCraftingStateData<T extends ProcessingRecipe> implem
 	public void setCraftingGoalRecipe(T recipe) {
 		recipeId = recipe.getId();
 		timeForCompletion = recipe.getCraftingTimeTicks();
+		nutrientsCost = recipe.getCraftingCostNutrients();
 	}
 
 	public abstract int getFuelCost();
@@ -71,26 +75,29 @@ public abstract class RecipeCraftingStateData<T extends ProcessingRecipe> implem
 		recipeId = null;
 		timeElapsed = 0;
 		timeForCompletion = 0;
+		nutrientsCost = 0;
 	}
 
 	public void serialize(CompoundTag tag) {
 		CraftingState.toNBT(tag, craftingState);
 		if (recipeId != null) {
-			tag.putString(NBT_KEY_RECIPE_ID, recipeId.toString());
+			tag.putString(RECIPE_ID_KEY, recipeId.toString());
 		}
-		tag.putInt(NBT_KEY_TIME_ELAPSED, timeElapsed);
-		tag.putInt(NBT_KEY_TIME_FOR_COMPLETION, timeForCompletion);
+		tag.putInt(TIME_ELAPSED_KEY, timeElapsed);
+		tag.putInt(TIME_FOR_COMPLETION_KEY, timeForCompletion);
+		tag.putInt(NUTRIENTS_COST_KEY, nutrientsCost);
 	}
 
 	public void deserialize(CompoundTag tag) {
 		craftingState = CraftingState.fromNBT(tag);
-		if (tag.contains(NBT_KEY_RECIPE_ID)) {
-			String id = tag.getString(NBT_KEY_RECIPE_ID);
+		if (tag.contains(RECIPE_ID_KEY)) {
+			String id = tag.getString(RECIPE_ID_KEY);
 			recipeId = ResourceLocation.tryParse(id);
 		}
 		else recipeId = null;
-		timeElapsed = tag.getInt(NBT_KEY_TIME_ELAPSED);
-		timeForCompletion = tag.getInt(NBT_KEY_TIME_FOR_COMPLETION);
+		timeElapsed = tag.getInt(TIME_ELAPSED_KEY);
+		timeForCompletion = tag.getInt(TIME_FOR_COMPLETION_KEY);
+		nutrientsCost = tag.getInt(NUTRIENTS_COST_KEY);
 	}
 
 	protected void validateIndex(int index) {
@@ -102,6 +109,7 @@ public abstract class RecipeCraftingStateData<T extends ProcessingRecipe> implem
 		validateIndex(index);
 		if (index == TIME_INDEX) return timeElapsed;
 		else if (index == TIME_FOR_COMPLETION_INDEX) return timeForCompletion;
+		else if (index == NUTRIENTS_COST_INDEX) return nutrientsCost;
 		return 0;
 	}
 
@@ -110,11 +118,12 @@ public abstract class RecipeCraftingStateData<T extends ProcessingRecipe> implem
 		validateIndex(index);
 		if (index == TIME_INDEX) timeElapsed = value;
 		else if (index == TIME_FOR_COMPLETION_INDEX) timeForCompletion = value;
+		else if (index == NUTRIENTS_COST_INDEX) nutrientsCost = value;
 	}
 
 	@Override
 	public int getCount() {
-		return 2;
+		return 3;
 	}
 
 }
