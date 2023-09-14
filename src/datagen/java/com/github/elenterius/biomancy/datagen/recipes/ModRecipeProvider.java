@@ -322,13 +322,14 @@ public class ModRecipeProvider extends RecipeProvider {
 		stonecutterResultFromBase(consumer, ModItems.PRIMAL_FLESH_STAIRS.get(), ModItems.PRIMAL_FLESH_BLOCK.get());
 		stonecutterResultFromBase(consumer, ModItems.PRIMAL_FLESH_SLAB.get(), ModItems.PRIMAL_FLESH_BLOCK.get(), 2);
 
-		WorkbenchRecipeBuilder.shaped(ModItems.PRIMAL_FLESH_BLOCK.get(), 8)
-				.define('G', ModItems.WITHERING_OOZE.get())
-				.define('F', ModItems.FLESH_BLOCK.get())
+		WorkbenchRecipeBuilder.shaped(ModItems.PRIMAL_FLESH_BLOCK.get(), 4)
+				.define('S', ModItems.STONE_POWDER.get())
+				.define('E', ModItems.EXOTIC_DUST.get())
+				.define('F', ModItemTags.RAW_MEATS)
 				.define('M', ModItems.MALIGNANT_FLESH_BLOCK.get())
+				.pattern("SME")
 				.pattern("MFM")
-				.pattern("FGF")
-				.pattern("MFM")
+				.pattern("EMS")
 				.unlockedBy(hasName(ModItems.MALIGNANT_FLESH_BLOCK.get()), has(ModItems.MALIGNANT_FLESH_BLOCK.get()))
 				.save(consumer);
 
