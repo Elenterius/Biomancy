@@ -74,7 +74,7 @@ public class DigesterMenu extends PlayerContainerMenu {
 		return stateData.fuelHandler.getFuelAmount();
 	}
 
-	public int getMAxFuelAmount() {
+	public int getMaxFuelAmount() {
 		return stateData.fuelHandler.getMaxFuelAmount();
 	}
 

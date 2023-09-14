@@ -72,7 +72,7 @@ public class DigesterScreen extends AbstractContainerScreen<DigesterMenu> {
 	}
 
 	private void drawFuelTooltip(PoseStack poseStack, int mouseX, int mouseY) {
-		int maxFuel = menu.getMAxFuelAmount();
+		int maxFuel = menu.getMaxFuelAmount();
 		int fuelAmount = menu.getFuelAmount();
 		int totalFuelCost = menu.getFuelCost();
 		GuiRenderUtil.drawFuelTooltip(this, poseStack, mouseX, mouseY, maxFuel, fuelAmount, totalFuelCost);
