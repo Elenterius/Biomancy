@@ -207,8 +207,6 @@
 	"block.biomancy.baby_permeable_membrane.tooltip": "Gelatinous-like membrane reinforced with elastic fibers.\n\nBaby mobs can diffuse through the membrane.",
 	"block.biomancy.adult_permeable_membrane": "Adult-Permeable Membrane",
 	"block.biomancy.adult_permeable_membrane.tooltip": "Gelatinous-like membrane reinforced with elastic fibers.\n\nAdult mobs can diffuse through the membrane.",
-	"block.biomancy.item_permeable_membrane": "Item-Permeable Membrane",
-	"block.biomancy.item_permeable_membrane.tooltip": "Gelatinous-like membrane reinforced with elastic fibers.\n\nItems can diffuse through the membrane.",
 	"block.biomancy.primal_flesh": "Primal Flesh Block",
 	"block.biomancy.primal_flesh.tooltip": "Primitive and pure, you better not touch this with your dirty mitts.",
 	"block.biomancy.primal_flesh_slab": "Primal Flesh Slab",
