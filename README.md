@@ -14,7 +14,7 @@
 <img alt="" src="https://img.shields.io/badge/-Project-black?style=for-the-badge&logo=github"></a>
 
 <a aria-label="Downloads on CurseForge" href="https://www.curseforge.com/minecraft/mc-mods/biomancy">
-<img alt="" src="https://cf.way2muchnoise.eu/short_492939_downloads(f16436-f16436-fff-000-fff).svg?badge_style=for_the_badge"></a>
+<img alt="" src="https://cf.way2muchnoise.eu/full_492939_downloads(f16436-f16436-fff-000-fff).svg?badge_style=for_the_badge"></a>
 
 <a aria-label="Downloads on Modrinth" href="https://modrinth.com/mod/biomancy">
 <img alt="" src="https://img.shields.io/modrinth/dt/uAAuyU4M?logo=modrinth&style=for-the-badge&color=1bd96a&labelColor=&logoColor=1bd96a"></a>
