@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.block.digester;
 
-import com.github.elenterius.biomancy.block.state.FuelConsumingRecipeCraftingStateData;
-import com.github.elenterius.biomancy.recipe.DigesterRecipe;
+import com.github.elenterius.biomancy.crafting.recipe.DigesterRecipe;
+import com.github.elenterius.biomancy.crafting.state.FuelConsumingRecipeCraftingStateData;
 import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 
 public class DigesterStateData extends FuelConsumingRecipeCraftingStateData<DigesterRecipe> {

@@ -1,6 +1,6 @@
-package com.github.elenterius.biomancy.block.state;
+package com.github.elenterius.biomancy.crafting.state;
 
-import com.github.elenterius.biomancy.recipe.ProcessingRecipe;
+import com.github.elenterius.biomancy.crafting.recipe.ProcessingRecipe;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.ContainerData;

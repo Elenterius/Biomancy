@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.block.state;
+package com.github.elenterius.biomancy.crafting.state;
 
 import net.minecraft.nbt.CompoundTag;
 

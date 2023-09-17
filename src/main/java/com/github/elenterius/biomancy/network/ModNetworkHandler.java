@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.network;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.recipe.BioForgeRecipe;
+import com.github.elenterius.biomancy.crafting.recipe.BioForgeRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
