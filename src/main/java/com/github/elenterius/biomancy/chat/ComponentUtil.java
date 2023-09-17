@@ -15,8 +15,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-@SuppressWarnings("deprecation")
 public final class ComponentUtil {
+
+	private static final Component SPACE = Component.literal(" ");
+	private static final Component TEXT_SEPARATOR = Component.literal(", ");
 
 	private ComponentUtil() {}
 
@@ -45,10 +47,29 @@ public final class ComponentUtil {
 	}
 
 	/**
-	 * force empty line iin item tooltips
+	 * whitespace
+	 */
+	public static Component space() {
+		return SPACE;
+	}
+
+	/**
+	 * force empty line in item tooltips
 	 */
 	public static Component emptyLine() {
 		return TooltipHacks.EMPTY_LINE_COMPONENT;
+	}
+
+	public static Component newLine() {
+		return CommonComponents.NEW_LINE;
+	}
+
+	public static Component ellipsis() {
+		return CommonComponents.ELLIPSIS;
+	}
+
+	public static Component textSeparator() {
+		return TEXT_SEPARATOR;
 	}
 
 	/**
