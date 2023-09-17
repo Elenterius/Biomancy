@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.block.fleshkinchest;
 
-import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.ownable.IOwnableEntityBlock;
@@ -8,6 +7,7 @@ import com.github.elenterius.biomancy.permission.Actions;
 import com.github.elenterius.biomancy.permission.IRestrictedInteraction;
 import com.github.elenterius.biomancy.permission.UserType;
 import com.github.elenterius.biomancy.styles.TextStyles;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;

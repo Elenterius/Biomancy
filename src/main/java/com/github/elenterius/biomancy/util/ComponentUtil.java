@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.chat;
+package com.github.elenterius.biomancy.util;
 
 import com.github.elenterius.biomancy.tooltip.EmptyLineTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;

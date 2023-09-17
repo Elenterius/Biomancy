@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.item;
 
 import com.github.elenterius.biomancy.block.FleshChainBlock;
-import com.github.elenterius.biomancy.chat.ComponentUtil;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

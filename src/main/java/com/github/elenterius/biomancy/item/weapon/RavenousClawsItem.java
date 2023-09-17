@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.item.weapon;
 
-import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.render.item.ravenousclaws.RavenousClawsRenderer;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.entity.MobUtil;
@@ -13,6 +12,7 @@ import com.github.elenterius.biomancy.item.livingtool.LivingToolState;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.CombatUtil;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;

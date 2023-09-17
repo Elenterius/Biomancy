@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.item.weapon;
 
-import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.item.CustomTooltipProvider;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;

@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.styles;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.chat.ComponentUtil;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.Item;

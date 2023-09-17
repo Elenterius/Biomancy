@@ -1,13 +1,13 @@
 package com.github.elenterius.biomancy.item;
 
 import com.github.elenterius.biomancy.block.storagesac.StorageSacBlockEntity;
-import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModCapabilities;
 import com.github.elenterius.biomancy.inventory.ItemStackInventory;
 import com.github.elenterius.biomancy.inventory.itemhandler.EnhancedItemHandler;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.StorageSacTooltipComponent;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;

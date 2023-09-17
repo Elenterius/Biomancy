@@ -2,11 +2,11 @@ package com.github.elenterius.biomancy.block.digester;
 
 import com.github.elenterius.biomancy.block.HorizontalFacingMachineBlock;
 import com.github.elenterius.biomancy.block.entity.MachineBlockEntity;
-import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.styles.TextStyles;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;

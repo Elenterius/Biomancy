@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.item.livingtool;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.chat.ComponentUtil;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.MutableComponent;
 

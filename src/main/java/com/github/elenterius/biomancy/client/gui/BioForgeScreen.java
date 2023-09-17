@@ -1,7 +1,6 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.gui.component.CustomEditBox;
 import com.github.elenterius.biomancy.client.util.ClientSoundUtil;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
@@ -11,6 +10,7 @@ import com.github.elenterius.biomancy.crafting.recipe.IngredientStack;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.menu.BioForgeMenu;
 import com.github.elenterius.biomancy.styles.ColorStyles;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
