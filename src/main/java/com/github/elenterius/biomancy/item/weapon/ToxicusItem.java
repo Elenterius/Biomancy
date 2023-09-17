@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.item.weapon;
 
-import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.init.ModDamageSources;
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.init.ModParticleTypes;
@@ -9,6 +8,7 @@ import com.github.elenterius.biomancy.item.CriticalHitListener;
 import com.github.elenterius.biomancy.item.SweepAttackListener;
 import com.github.elenterius.biomancy.mixin.DamageSourceAccessor;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;

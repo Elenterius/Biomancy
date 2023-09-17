@@ -1,10 +1,10 @@
 package com.github.elenterius.biomancy.ownable;
 
 import com.github.elenterius.biomancy.block.ownable.OwnableBlockEntity;
-import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.permission.UserType;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;

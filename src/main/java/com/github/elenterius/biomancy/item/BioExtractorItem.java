@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.item;
 
-import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModItems;
@@ -9,6 +8,7 @@ import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import com.github.elenterius.biomancy.util.CombatUtil;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.github.elenterius.biomancy.util.MobSoundUtil;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import net.minecraft.ChatFormatting;

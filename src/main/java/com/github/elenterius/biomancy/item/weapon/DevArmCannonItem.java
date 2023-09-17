@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.item.weapon;
 
-import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.gui.DevCannonScreen;
 import com.github.elenterius.biomancy.client.render.item.dev.DevArmCannonRenderer;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
@@ -11,6 +10,7 @@ import com.github.elenterius.biomancy.item.IArmPoseProvider;
 import com.github.elenterius.biomancy.item.KeyPressListener;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import it.unimi.dsi.fastutil.floats.FloatUnaryOperator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;

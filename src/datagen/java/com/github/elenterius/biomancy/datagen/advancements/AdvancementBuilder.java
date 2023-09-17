@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.datagen.advancements;
 
-import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.datagen.lang.LangProvider;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.FrameType;

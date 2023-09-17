@@ -1,10 +1,10 @@
 package com.github.elenterius.biomancy.item.livingtool;
 
-import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.item.NutrientsContainerItem;
 import com.github.elenterius.biomancy.styles.TextStyles;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
