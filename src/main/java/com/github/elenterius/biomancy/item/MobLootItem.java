@@ -35,21 +35,23 @@ public class MobLootItem extends Item implements CustomTooltipProvider {
 		tooltip.add(ComponentUtil.horizontalLine());
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack));
 
-		if (Screen.hasControlDown()) {
+		if (!taggedEntities.isEmpty() && Screen.hasControlDown()) {
 			tooltip.add(ComponentUtil.emptyLine());
 			tooltip.add(TextComponentUtil.getTooltipText("drops_from").withStyle(TextStyles.LORE));
 
-			List<EntityType<?>> mobs = taggedEntities.stream().limit(12).toList();
-			int mobCount = mobs.size();
-			if (mobCount > 0) {
-				MutableComponent component = ComponentUtil.mutable().withStyle(TextStyles.ITALIC_GRAY);
-				tooltip.add(component);
+			MutableComponent component = ComponentUtil.mutable().withStyle(TextStyles.ITALIC_GRAY);
+			tooltip.add(component);
 
-				for (int i = 0; i < mobCount; i++) {
-					component.append(mobs.get(i).getDescription());
-					if (mobCount > 1 && i < mobCount - 1) component.append(", ");
-				}
-				if (mobCount < taggedEntities.size()) component.append(" ").append(TextComponentUtil.getTooltipText("and_more"));
+			int mobCount = 0;
+			for (EntityType<?> entityType : taggedEntities) {
+				if (mobCount >= 12) break;
+				if (mobCount > 0) component.append(ComponentUtil.textSeparator());
+				component.append(entityType.getDescription());
+				mobCount++;
+			}
+
+			if (mobCount < taggedEntities.size()) {
+				component.append(ComponentUtil.textSeparator()).append(ComponentUtil.ellipsis());
 			}
 		}
 	}
