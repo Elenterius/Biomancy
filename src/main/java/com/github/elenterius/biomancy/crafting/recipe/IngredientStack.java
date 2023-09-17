@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.recipe;
+package com.github.elenterius.biomancy.crafting.recipe;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public record IngredientStack(Ingredient ingredient, int count) {
 
-	public static final String ALT_INGREDIENT_KEY = "alt";
+	public static final String ALT_INGREDIENT_KEY = "alt"; //legacy support, unused by Biomancy
 	public static final String COUNT_KEY = "count";
 
 	public boolean testItem(@Nullable ItemStack stack) {

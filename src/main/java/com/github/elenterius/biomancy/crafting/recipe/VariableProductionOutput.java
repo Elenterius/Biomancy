@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.recipe;
+package com.github.elenterius.biomancy.crafting.recipe;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;

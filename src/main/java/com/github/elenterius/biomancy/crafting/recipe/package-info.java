@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package com.github.elenterius.biomancy.recipe;
+package com.github.elenterius.biomancy.crafting.recipe;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

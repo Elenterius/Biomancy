@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.recipe.*;
-import com.github.elenterius.biomancy.recipe.SimpleRecipeType.ItemStackRecipeType;
+import com.github.elenterius.biomancy.crafting.recipe.*;
+import com.github.elenterius.biomancy.crafting.recipe.SimpleRecipeType.ItemStackRecipeType;
 import net.minecraft.core.Registry;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;

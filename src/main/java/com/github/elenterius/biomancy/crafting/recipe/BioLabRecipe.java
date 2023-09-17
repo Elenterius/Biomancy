@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.recipe;
+package com.github.elenterius.biomancy.crafting.recipe;
 
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;

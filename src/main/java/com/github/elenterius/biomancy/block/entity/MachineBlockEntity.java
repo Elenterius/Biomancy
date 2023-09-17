@@ -2,10 +2,10 @@ package com.github.elenterius.biomancy.block.entity;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.MachineBlock;
-import com.github.elenterius.biomancy.block.state.CraftingState;
-import com.github.elenterius.biomancy.block.state.RecipeCraftingStateData;
+import com.github.elenterius.biomancy.crafting.recipe.ProcessingRecipe;
+import com.github.elenterius.biomancy.crafting.state.CraftingState;
+import com.github.elenterius.biomancy.crafting.state.RecipeCraftingStateData;
 import com.github.elenterius.biomancy.init.ModBlockProperties;
-import com.github.elenterius.biomancy.recipe.ProcessingRecipe;
 import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.recipe;
+package com.github.elenterius.biomancy.crafting.recipe;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
