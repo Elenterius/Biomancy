@@ -35,6 +35,10 @@ public class EnhancedIntegerProperty {
 		return state.setValue(property, Mth.clamp(value, min, max));
 	}
 
+	public BlockState addValue(BlockState state, int value) {
+		return setValue(state, state.getValue(property) + value);
+	}
+
 	public int getMin() {
 		return ((IntegerPropertyAccessor) property).biomancy$getMin();
 	}
