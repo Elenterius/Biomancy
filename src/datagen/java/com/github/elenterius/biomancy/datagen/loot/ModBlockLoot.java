@@ -104,9 +104,9 @@ public class ModBlockLoot extends BlockLoot {
 		return LootTable.lootTable().withPool(LootPool.lootPool()
 				.setRolls(ConstantValue.exactly(1))
 				.add(applyExplosionDecay(block, LootItem.lootTableItem(block).apply(
-						IntStream.range(FleshSpikeBlock.MIN_SPIKES + 1, FleshSpikeBlock.MAX_SPIKES + 1).boxed().toList(),
+						IntStream.range(FleshSpikeBlock.SPIKES.getMin() + 1, FleshSpikeBlock.SPIKES.getMax() + 1).boxed().toList(),
 						spikes -> SetItemCountFunction.setCount(ConstantValue.exactly(spikes))
-								.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(FleshSpikeBlock.SPIKES, spikes)))
+								.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(FleshSpikeBlock.SPIKES.get(), spikes)))
 				))));
 	}
 

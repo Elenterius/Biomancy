@@ -35,12 +35,12 @@ public final class FleshSpikeShapes {
 	}
 
 	private static Integer computeKey(BlockState blockState) {
-		return Objects.hash(blockState.getValue(FleshSpikeBlock.FACING), blockState.getValue(FleshSpikeBlock.SPIKES));
+		return Objects.hash(blockState.getValue(FleshSpikeBlock.FACING), FleshSpikeBlock.getSpikes(blockState));
 	}
 
 	private static ComputedShapes computeShapes(BlockState blockState) {
 		Direction direction = blockState.getValue(FleshSpikeBlock.FACING);
-		int spikes = blockState.getValue(FleshSpikeBlock.SPIKES);
+		int spikes = FleshSpikeBlock.getSpikes(blockState);
 		VoxelShape boundingShape = computeBoundingShape(direction, spikes);
 		VoxelShape collisionShape = computeCollisionShape(direction, spikes);
 		VoxelShape damageShape = computeDamageShape(direction, spikes);

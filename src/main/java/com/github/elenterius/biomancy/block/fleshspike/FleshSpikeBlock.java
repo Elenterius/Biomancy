@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.block.fleshspike;
 import com.github.elenterius.biomancy.block.base.WaterloggedFacingBlock;
 import com.github.elenterius.biomancy.init.ModBlockProperties;
 import com.github.elenterius.biomancy.init.ModDamageSources;
+import com.github.elenterius.biomancy.util.EnhancedIntegerProperty;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
@@ -15,7 +16,6 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -25,24 +25,22 @@ import org.jetbrains.annotations.Nullable;
 
 public class FleshSpikeBlock extends WaterloggedFacingBlock {
 
-	public static final int MIN_SPIKES = 1;
-	public static final int MAX_SPIKES = 3;
-	public static final IntegerProperty SPIKES = ModBlockProperties.SPIKES;
+	public static final EnhancedIntegerProperty SPIKES = ModBlockProperties.SPIKES;
 
 	public FleshSpikeBlock(Properties properties) {
 		super(properties);
-		registerDefaultState(defaultBlockState().setValue(SPIKES, MIN_SPIKES));
+		registerDefaultState(defaultBlockState().setValue(SPIKES.get(), SPIKES.getMin()));
 		FleshSpikeShapes.computePossibleShapes(stateDefinition.getPossibleStates());
 	}
 
 	public static int getSpikes(BlockState blockState) {
-		return blockState.getValue(SPIKES);
+		return SPIKES.getValue(blockState);
 	}
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
-		builder.add(SPIKES);
+		builder.add(SPIKES.get());
 	}
 
 	@Nullable
@@ -50,7 +48,7 @@ public class FleshSpikeBlock extends WaterloggedFacingBlock {
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		BlockState blockState = context.getLevel().getBlockState(context.getClickedPos());
 		if (blockState.getBlock() instanceof FleshSpikeBlock) {
-			return blockState.setValue(SPIKES, Math.min(getSpikes(blockState) + 1, MAX_SPIKES));
+			return SPIKES.addValue(blockState, 1);
 		}
 
 		return super.getStateForPlacement(context);
@@ -58,7 +56,7 @@ public class FleshSpikeBlock extends WaterloggedFacingBlock {
 
 	@Override
 	public boolean canBeReplaced(BlockState state, BlockPlaceContext useContext) {
-		if (!useContext.isSecondaryUseActive() && useContext.getItemInHand().is(asItem()) && getSpikes(state) < MAX_SPIKES) return true;
+		if (!useContext.isSecondaryUseActive() && useContext.getItemInHand().is(asItem()) && getSpikes(state) < SPIKES.getMax()) return true;
 		return super.canBeReplaced(state, useContext);
 	}
 
