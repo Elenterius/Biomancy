@@ -1,12 +1,9 @@
 package com.github.elenterius.biomancy.init;
 
-import com.github.elenterius.biomancy.entity.projectile.BaseProjectile;
-import com.github.elenterius.biomancy.entity.projectile.CorrosiveAcidProjectile;
-import com.github.elenterius.biomancy.entity.projectile.ToothProjectile;
-import com.github.elenterius.biomancy.entity.projectile.WitherProjectile;
+import com.github.elenterius.biomancy.entity.projectile.*;
 import com.github.elenterius.biomancy.item.weapon.Gun;
-import it.unimi.dsi.fastutil.floats.FloatUnaryOperator;
-import it.unimi.dsi.fastutil.ints.IntUnaryOperator;
+import com.github.elenterius.biomancy.util.function.FloatOperator;
+import com.github.elenterius.biomancy.util.function.IntOperator;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,6 +19,7 @@ public final class ModProjectiles {
 	public static final ConfiguredProjectile<ToothProjectile> TOOTH = build("Sharp Tooth", 1.75f, 5f, 0, convertToInaccuracy(0.92f), ToothProjectile::new);
 	public static final ConfiguredProjectile<WitherProjectile> WITHER = build("Withershot", 0.8f, 8f, 0, convertToInaccuracy(0.9f), WitherProjectile::new);
 	public static final ConfiguredProjectile<CorrosiveAcidProjectile> CORROSIVE = build("Corrosive", 1.5f, 4, 0, convertToInaccuracy(0.9f), CorrosiveAcidProjectile::new);
+	public static final ConfiguredProjectile<SapberryProjectile> SAPBERRY = build("Sapberry", 1.25f, 2, 0, convertToInaccuracy(0.9f), SapberryProjectile::new);
 
 	private static float convertToInaccuracy(float accuracy) {
 		return -Gun.MAX_INACCURACY * accuracy + Gun.MAX_INACCURACY;
@@ -34,7 +32,9 @@ public final class ModProjectiles {
 	}
 
 	public static <T extends BaseProjectile> boolean shootProjectile(Level level, LivingEntity shooter, float velocity, float damage, int knockback, float inaccuracy, ProjectileFactory<T> factory) {
-		BaseProjectile projectile = factory.create(level, shooter);
+		BaseProjectile projectile = factory.create(level, shooter.getX(), shooter.getEyeY() - 0.1f, shooter.getZ());
+		projectile.setOwner(shooter);
+
 		projectile.setDamage(damage);
 		if (knockback > 0) {
 			projectile.setKnockback((byte) knockback);
@@ -51,18 +51,45 @@ public final class ModProjectiles {
 		return false;
 	}
 
+	public static <T extends BaseProjectile> boolean shootProjectile(Level level, Vec3 origin, Vec3 target, float velocity, float damage, int knockback, float inaccuracy, ProjectileFactory<T> factory) {
+		BaseProjectile projectile = factory.create(level, origin.x, origin.y, origin.z);
+
+		projectile.setDamage(damage);
+		if (knockback > 0) {
+			projectile.setKnockback((byte) knockback);
+		}
+
+		Vec3 direction = target.subtract(origin).normalize();
+		projectile.shoot(direction.x(), direction.y(), direction.z(), velocity, inaccuracy);
+
+		if (level.addFreshEntity(projectile)) {
+			level.playSound(null, origin.x, origin.y, origin.z, SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 0.8f, 0.4f);
+			return true;
+		}
+
+		return false;
+	}
+
 	public interface ProjectileFactory<T extends BaseProjectile> {
-		T create(Level level, LivingEntity shooter);
+		T create(Level level, double x, double v, double z);
 	}
 
 	public record ConfiguredProjectile<T extends BaseProjectile>(String name, float velocity, float damage, int knockback, float inaccuracy, ProjectileFactory<T> factory) {
+
+		public boolean shoot(Level level, Vec3 origin, Vec3 target) {
+			return shootProjectile(level, origin, target, velocity, damage, knockback, inaccuracy, factory);
+		}
+
+		public boolean shoot(Level level, Vec3 origin, Vec3 target, FloatOperator velocityModifier, FloatOperator damageModifier, IntOperator knockbackModifier, FloatOperator inaccuracyModifier) {
+			return shootProjectile(level, origin, target, velocityModifier.apply(velocity), damageModifier.apply(damage), knockbackModifier.apply(knockback), inaccuracyModifier.apply(inaccuracy), factory);
+		}
 
 		public boolean shoot(Level level, LivingEntity shooter) {
 			return shootProjectile(level, shooter, velocity, damage, knockback, inaccuracy, factory);
 		}
 
-		public boolean shoot(Level level, LivingEntity shooter, FloatUnaryOperator velocityFunc, FloatUnaryOperator damageFunc, IntUnaryOperator knockbackFunc, FloatUnaryOperator inaccuracyFunc) {
-			return shootProjectile(level, shooter, velocityFunc.apply(velocity), damageFunc.apply(damage), knockbackFunc.apply(knockback), inaccuracyFunc.apply(inaccuracy), factory);
+		public boolean shoot(Level level, LivingEntity shooter, FloatOperator velocityModifier, FloatOperator damageModifier, IntOperator knockbackModifier, FloatOperator inaccuracyModifier) {
+			return shootProjectile(level, shooter, velocityModifier.apply(velocity), damageModifier.apply(damage), knockbackModifier.apply(knockback), inaccuracyModifier.apply(inaccuracy), factory);
 		}
 
 	}

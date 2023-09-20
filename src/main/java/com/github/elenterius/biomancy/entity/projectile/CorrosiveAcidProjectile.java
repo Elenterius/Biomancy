@@ -24,10 +24,6 @@ public class CorrosiveAcidProjectile extends BaseProjectile {
 		super(ModEntityTypes.CORROSIVE_ACID_PROJECTILE.get(), level, x, y, z);
 	}
 
-	public CorrosiveAcidProjectile(Level level, LivingEntity shooter) {
-		super(ModEntityTypes.CORROSIVE_ACID_PROJECTILE.get(), level, shooter);
-	}
-
 	@Override
 	public float getGravity() {
 		return 0.025f;

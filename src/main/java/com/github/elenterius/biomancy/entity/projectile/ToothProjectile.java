@@ -33,10 +33,6 @@ public class ToothProjectile extends BaseProjectile implements ItemSupplier {
 		super(ModEntityTypes.TOOTH_PROJECTILE.get(), world, x, y, z);
 	}
 
-	public ToothProjectile(Level world, LivingEntity shooter) {
-		super(ModEntityTypes.TOOTH_PROJECTILE.get(), world, shooter);
-	}
-
 	@Override
 	public float getGravity() {
 		return 0.01f;

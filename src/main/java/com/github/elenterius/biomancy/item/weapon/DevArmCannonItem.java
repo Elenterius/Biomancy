@@ -11,7 +11,7 @@ import com.github.elenterius.biomancy.item.KeyPressListener;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
-import it.unimi.dsi.fastutil.floats.FloatUnaryOperator;
+import com.github.elenterius.biomancy.util.function.FloatOperator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.model.HumanoidModel;
@@ -37,6 +37,7 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -47,7 +48,7 @@ import java.util.function.Consumer;
 public class DevArmCannonItem extends Item implements IAnimatable, IArmPoseProvider, CustomTooltipProvider, KeyPressListener {
 
 	public static final Set<Enchantment> VALID_ENCHANTMENTS = Set.of(Enchantments.PUNCH_ARROWS, Enchantments.POWER_ARROWS);
-	private final AnimationFactory animationFactory = new AnimationFactory(this);
+	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
 
 	public DevArmCannonItem(Properties properties) {
 		super(properties);
@@ -110,7 +111,7 @@ public class DevArmCannonItem extends Item implements IAnimatable, IArmPoseProvi
 				index = 0;
 				stack.getOrCreateTag().putByte("ProjectileIndex", (byte) 0);
 			}
-			ModProjectiles.PRECONFIGURED_PROJECTILES.get(index).shoot(level, player, FloatUnaryOperator.identity(), d -> d + getBonusDamage(stack), k -> k + getBonusKnockBack(stack), FloatUnaryOperator.identity());
+			ModProjectiles.PRECONFIGURED_PROJECTILES.get(index).shoot(level, player, FloatOperator.IDENTITY, d -> d + getBonusDamage(stack), k -> k + getBonusKnockBack(stack), FloatOperator.IDENTITY);
 		}
 		return InteractionResultHolder.consume(player.getItemInHand(usedHand));
 	}
