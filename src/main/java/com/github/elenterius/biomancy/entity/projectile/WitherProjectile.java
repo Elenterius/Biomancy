@@ -25,10 +25,6 @@ public class WitherProjectile extends BaseProjectile {
 		super(ModEntityTypes.WITHER_SKULL_PROJECTILE.get(), world, x, y, z);
 	}
 
-	public WitherProjectile(Level world, LivingEntity shooter) {
-		super(ModEntityTypes.WITHER_SKULL_PROJECTILE.get(), world, shooter);
-	}
-
 	@Override
 	public float getGravity() {
 		return 0.001f;

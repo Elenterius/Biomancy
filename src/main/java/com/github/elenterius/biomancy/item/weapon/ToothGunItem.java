@@ -28,7 +28,9 @@ public class ToothGunItem extends BaseGunItem implements CustomTooltipProvider {
 	}
 
 	public static void fireProjectile(ServerLevel serverLevel, LivingEntity shooter, InteractionHand usedHand, ItemStack stack, ProjectileProperties properties) {
-		ToothProjectile projectile = new ToothProjectile(serverLevel, shooter);
+		ToothProjectile projectile = new ToothProjectile(serverLevel, shooter.getX(), shooter.getEyeY() - 0.1f, shooter.getZ());
+		projectile.setOwner(shooter);
+
 		projectile.setDamage(properties.damage());
 		if (properties.knockBack() > 0) {
 			projectile.setKnockback((byte) properties.knockBack());

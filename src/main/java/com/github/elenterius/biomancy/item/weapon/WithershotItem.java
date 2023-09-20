@@ -29,7 +29,9 @@ public class WithershotItem extends BaseGunItem implements CustomTooltipProvider
 	}
 
 	public static void fireProjectile(ServerLevel serverLevel, LivingEntity shooter, InteractionHand hand, ItemStack projectileWeapon, ProjectileProperties properties) {
-		WitherProjectile projectile = new WitherProjectile(serverLevel, shooter);
+		WitherProjectile projectile = new WitherProjectile(serverLevel, shooter.getX(), shooter.getEyeY() - 0.1f, shooter.getZ());
+		projectile.setOwner(shooter);
+
 		projectile.setDamage(properties.damage());
 		if (properties.knockBack() > 0) {
 			projectile.setKnockback((byte) properties.knockBack());
