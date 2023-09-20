@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.datagen.models;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.*;
 import com.github.elenterius.biomancy.block.fleshspike.FleshSpikeBlock;
+import com.github.elenterius.biomancy.block.malignantbloom.MalignantBloomBlock;
 import com.github.elenterius.biomancy.block.ownable.OwnablePressurePlateBlock;
 import com.github.elenterius.biomancy.block.property.DirectionalSlabType;
 import com.github.elenterius.biomancy.block.property.Orientation;
@@ -89,6 +90,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		stairsBlockWithItem(ModBlocks.MALIGNANT_FLESH_STAIRS, ModBlocks.MALIGNANT_FLESH);
 		wallBlock(ModBlocks.MALIGNANT_FLESH_WALL, ModBlocks.MALIGNANT_FLESH);
 		veinsBlock(ModBlocks.MALIGNANT_FLESH_VEINS);
+		malignantBloom(ModBlocks.MALIGNANT_BLOOM);
 
 		irisDoor(ModBlocks.FLESH_IRIS_DOOR, true);
 		fleshDoor(ModBlocks.FLESH_DOOR);
@@ -307,6 +309,26 @@ public class ModBlockStateProvider extends BlockStateProvider {
 							.rotationY(rotY % 360)
 							.build();
 				}, ignored);
+	}
+
+	public <T extends MalignantBloomBlock> void malignantBloom(RegistryObject<T> block) {
+		malignantBloom(block.get());
+	}
+
+	public void malignantBloom(MalignantBloomBlock block) {
+		ResourceLocation model = blockAsset(block);
+
+		ModelFile.ExistingModelFile[] models = {
+				models().getExistingFile(extend(model, "_1")),
+				models().getExistingFile(extend(model, "_2")),
+				models().getExistingFile(extend(model, "_3")),
+				models().getExistingFile(extend(model, "_4")),
+				models().getExistingFile(extend(model, "_5"))
+		};
+
+		directionalBlock(block, blockState -> models[MalignantBloomBlock.getStage(blockState)], BlockStateProperties.WATERLOGGED);
+
+		simpleBlockItem(block, models[0]);
 	}
 
 	public void fleshSpikes(Block block) {

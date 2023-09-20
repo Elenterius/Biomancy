@@ -21,6 +21,7 @@ import com.github.elenterius.biomancy.client.render.entity.WitherProjectileRende
 import com.github.elenterius.biomancy.client.render.entity.fleshblob.FleshBlobRenderer;
 import com.github.elenterius.biomancy.client.render.entity.fleshblob.LegacyFleshBlobRenderer;
 import com.github.elenterius.biomancy.client.render.entity.fleshblob.PrimordialFleshBlobRenderer;
+import com.github.elenterius.biomancy.client.render.entity.sapberry.SapberryProjectileRenderer;
 import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.integration.ModsCompatHandler;
 import com.github.elenterius.biomancy.tooltip.EmptyLineTooltipComponent;
@@ -95,6 +96,7 @@ public final class ClientSetupHandler {
 		event.registerEntityRenderer(ModEntityTypes.CORROSIVE_ACID_PROJECTILE.get(), AcidProjectileRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.TOOTH_PROJECTILE.get(), ThrownItemRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.WITHER_SKULL_PROJECTILE.get(), WitherProjectileRenderer::new);
+		event.registerEntityRenderer(ModEntityTypes.SAPBERRY_PROJECTILE.get(), SapberryProjectileRenderer::new);
 	}
 
 	@SuppressWarnings("removal")

@@ -86,6 +86,19 @@ public class DirectionalSlabBlock extends Block implements SimpleWaterloggedBloc
 		return defaultBlockState().setValue(TYPE, type).setValue(WATERLOGGED, isWaterlogged);
 	}
 
+	public BlockState getStateForPlacement(BlockGetter level, BlockPos pos, Direction direction) {
+		BlockState state = level.getBlockState(pos);
+		boolean isWaterlogged = level.getFluidState(pos).getType() == Fluids.WATER;
+
+		if (state.is(this) && state.getValue(TYPE) != DirectionalSlabType.FULL) {
+			return defaultBlockState().setValue(TYPE, DirectionalSlabType.FULL).setValue(WATERLOGGED, false);
+		}
+
+		DirectionalSlabType type = DirectionalSlabType.getHalfFrom(direction);
+
+		return defaultBlockState().setValue(TYPE, type).setValue(WATERLOGGED, isWaterlogged);
+	}
+
 	@Override
 	public boolean canBeReplaced(BlockState state, BlockPlaceContext useContext) {
 		ItemStack stack = useContext.getItemInHand();

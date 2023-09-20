@@ -361,6 +361,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addItem(ModItems.NUTRIENTS, "Nutrients", "Very hard pellets rich in energy that almost look like vitamin pills.");
 		addItem(ModItems.NUTRIENT_PASTE, "Nutrient Paste", "Nutrients combined with Biotic Matter to moisten the hard pellets, producing a paste.\nIt almost looks like yellowish cake, and is a convenient source of energy.");
 		addItem(ModItems.NUTRIENT_BAR, "Nutrient Bar", "Nutrient Paste compressed into the shape of a bar. Looks edible, if a bit bland.");
+		addItem(ModItems.SAPBERRY, "Sapberry", "An exotic delicacy which grants random potion effects.");
 
 		addItem(ModItems.REGENERATIVE_FLUID, "Regenerative Fluid", "A fluid with regenerative properties, used to concoct healing additives.");
 		addItem(ModItems.WITHERING_OOZE, "Withering Ooze", "A corrosive extract. It likely has uses in bio-alchemy.");
@@ -496,6 +497,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.MALIGNANT_FLESH_STAIRS, "Malignant Flesh Stairs", "Stairs made of malignant flesh.\nLooks diseased...");
 		addBlock(ModBlocks.MALIGNANT_FLESH_WALL, "Malignant Flesh Wall", "Wall of malignant flesh.\nIt's coming for you! ;)");
 		addBlock(ModBlocks.MALIGNANT_FLESH_VEINS, "Malignant Flesh Veins", "They look almost feral...\nyou better not touch them.");
+		addBlock(ModBlocks.MALIGNANT_BLOOM, "Malignant Bloom", "An exotic flower of primordial beauty.\n\nIt will spread itself by launching it's ripe berry into the air.\nOn impact the berry explodes and spreads malignant veins as well.");
 	}
 
 	private void addEntityTranslations() {

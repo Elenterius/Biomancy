@@ -610,6 +610,12 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addOutput(ModItems.FLESH_BITS.get(), 3, 6)
 				.addOutput(ModItems.EXOTIC_DUST.get(), 0, 2)
 				.unlockedBy(ModItems.LIVING_FLESH).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.SAPBERRY)
+				.addOutput(ModItems.BIO_LUMENS.get(), 0, 2)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 0, 1)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 0, 3)
+				.addOutput(ModItems.BILE.get(), 1, 2)
+				.unlockedBy(ModItems.SAPBERRY).save(consumer);
 
 		registerDecomposerRecipesFor119(consumer);
 		registerDecomposerRecipesForBiomesOPlenty(consumer);

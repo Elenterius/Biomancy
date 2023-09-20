@@ -18,6 +18,7 @@ final class Tributes {
 			.put(ModItems.CREATOR_MIX.get(), Tribute.builder().biomass(20).lifeEnergy(20).successModifier(19).diseaseModifier(6).hostileModifier(-12).create())
 			.put(ModItems.PRIMORDIAL_CORE.get(), Tribute.builder().biomass(80).successModifier(64).anomalyModifier(100).diseaseModifier(50).create())
 			.put(ModItems.LIVING_FLESH.get(), Tribute.builder().biomass(10).lifeEnergy(10).successModifier(40).anomalyModifier(55).create())
+			.put(ModItems.SAPBERRY.get(), Tribute.builder().successModifier(10).lifeEnergy(20).anomalyModifier(20).create())
 			.put(Items.GOLDEN_APPLE, Tribute.builder().successModifier(10).hostileModifier(-100).create())
 			.put(Items.ENCHANTED_GOLDEN_APPLE, Tribute.builder().lifeEnergy(15).successModifier(40).hostileModifier(-200).create())
 			.put(Items.CAKE, Tribute.builder().hostileModifier(-80).diseaseModifier(10).create())

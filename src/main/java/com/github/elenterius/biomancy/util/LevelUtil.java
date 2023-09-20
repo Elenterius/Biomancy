@@ -15,6 +15,8 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.function.Predicate;
+
 public final class LevelUtil {
 
 	private LevelUtil() {}
@@ -42,6 +44,25 @@ public final class LevelUtil {
 		return i;
 	}
 
+	public static boolean isBlockNearby(ServerLevel level, BlockPos pos, int rangeXZ, int rangeY, Predicate<BlockState> predicate) {
+		BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+
+		for (int y = 0; y <= rangeY; y = y > 0 ? -y : 1 - y) {
+			for (int xz = 0; xz < rangeXZ; ++xz) {
+				for (int x = 0; x <= xz; x = x > 0 ? -x : 1 - x) {
+					for (int z = x < xz && x > -xz ? xz : 0; z <= xz; z = z > 0 ? -z : 1 - z) {
+						mutablePos.setWithOffset(pos, x, y - 1, z);
+						if (predicate.test(level.getBlockState(mutablePos))) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
 	public static boolean isChunkCloserToPosThan(int chunkX, int chunkZ, BlockPos pos, double distanceSquared) {
 		int minBlockX = SectionPos.sectionToBlockCoord(chunkX);
 		int minBlockZ = SectionPos.sectionToBlockCoord(chunkZ);
@@ -57,6 +78,9 @@ public final class LevelUtil {
 		return (dx * dx + dz * dz) < distanceSquared;
 	}
 
+	/**
+	 * performance: vroom vroom
+	 */
 	@Nullable
 	public static <T extends BlockEntity> T findNearestBlockEntity(ServerLevel level, BlockPos pos, int searchDist, Class<T> clazz) {
 		if (searchDist <= 0) return null;
