@@ -1,8 +1,6 @@
 package com.github.elenterius.biomancy.block.veins;
 
-import com.github.elenterius.biomancy.block.DirectionalSlabBlock;
 import com.github.elenterius.biomancy.block.cradle.PrimordialCradleBlockEntity;
-import com.github.elenterius.biomancy.block.property.DirectionalSlabType;
 import com.github.elenterius.biomancy.init.ModBlockProperties;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModItems;
@@ -124,12 +122,21 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 				if (!PrimordialEcosystem.tryToReplaceBlock(level, posBelow, stateBelow, replacementBlock.defaultBlockState())) {
 					Noise noise = PrimordialEcosystem.getCellularNoise(level);
 					float borderThreshold = 0.15f;
-					float n = noise.getValue(pos.getX(), pos.getY(), pos.getZ());
+					float n = noise.getValueAtCenter(pos);
 					if (n >= borderThreshold) {
-						BlockState slabState = ModBlocks.MALIGNANT_FLESH_SLAB.get()
-								.defaultBlockState()
-								.setValue(DirectionalSlabBlock.TYPE, DirectionalSlabType.getHalfFrom(pos, Vec3.atCenterOf(pos), direction.getOpposite()));
-						level.setBlock(pos, slabState, Block.UPDATE_CLIENTS);
+						if (!LevelUtil.isBlockNearby(level, pos, 2, 2, blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get()))) {
+							BlockState slabState = ModBlocks.MALIGNANT_FLESH_SLAB.get().getStateForPlacement(level, pos, direction.getOpposite());
+							level.setBlock(pos, slabState, Block.UPDATE_CLIENTS);
+						}
+					}
+					else if (PrimordialEcosystem.getRandomWithSeed(pos).nextFloat() <= 0.45f && level.getLightEngine().getRawBrightness(pos, 0) > 5) {
+						posBelow = pos.relative(direction);
+						stateBelow = level.getBlockState(posBelow);
+						boolean mayPlace = ModBlocks.MALIGNANT_BLOOM.get().mayPlaceOn(level, posBelow, stateBelow);
+						if (mayPlace && !LevelUtil.isBlockNearby(level, pos, 4, 4, blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get()))) {
+							BlockState slabState = ModBlocks.MALIGNANT_BLOOM.get().getStateForPlacement(level, pos, direction.getOpposite());
+							level.setBlock(pos, slabState, Block.UPDATE_CLIENTS);
+						}
 					}
 				}
 			}
@@ -138,6 +145,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		}
 
 		if (isCradleNearby) return false;
+		if (LevelUtil.isBlockNearby(level, pos, 2, 2, blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get()))) return false;
 
 		if (faces > 3) {
 			level.setBlock(pos, ModBlocks.MALIGNANT_FLESH.get().defaultBlockState(), Block.UPDATE_CLIENTS);
@@ -311,7 +319,9 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 
 	@Override
 	public boolean canBeReplaced(BlockState state, BlockPlaceContext useContext) {
-		return useContext.getItemInHand().is(asItem()) && super.canBeReplaced(state, useContext);
+		ItemStack stack = useContext.getItemInHand();
+		boolean isValidItem = stack.is(asItem()) || stack.isEmpty();
+		return isValidItem && super.canBeReplaced(state, useContext);
 	}
 
 	@Override

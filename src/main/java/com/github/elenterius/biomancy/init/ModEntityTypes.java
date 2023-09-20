@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.entity.fleshblob.AdulteratedHangryEaterFle
 import com.github.elenterius.biomancy.entity.fleshblob.PrimordialEaterFleshBlob;
 import com.github.elenterius.biomancy.entity.fleshblob.PrimordialHangryEaterFleshBlob;
 import com.github.elenterius.biomancy.entity.projectile.CorrosiveAcidProjectile;
+import com.github.elenterius.biomancy.entity.projectile.SapberryProjectile;
 import com.github.elenterius.biomancy.entity.projectile.ToothProjectile;
 import com.github.elenterius.biomancy.entity.projectile.WitherProjectile;
 import net.minecraft.world.entity.Entity;
@@ -51,6 +52,7 @@ public final class ModEntityTypes {
 	public static final RegistryObject<EntityType<ToothProjectile>> TOOTH_PROJECTILE = register("tooth_projectile", EntityType.Builder.<ToothProjectile>of(ToothProjectile::new, MobCategory.MISC).sized(0.25f, 0.25f).updateInterval(10));
 	public static final RegistryObject<EntityType<WitherProjectile>> WITHER_SKULL_PROJECTILE = register("wither_projectile", EntityType.Builder.<WitherProjectile>of(WitherProjectile::new, MobCategory.MISC).sized(0.3125f, 0.3125f).updateInterval(10));
 	public static final RegistryObject<EntityType<CorrosiveAcidProjectile>> CORROSIVE_ACID_PROJECTILE = register("corrosive_acid_projectile", EntityType.Builder.<CorrosiveAcidProjectile>of(CorrosiveAcidProjectile::new, MobCategory.MISC).sized(0.25f, 0.25f).updateInterval(10));
+	public static final RegistryObject<EntityType<SapberryProjectile>> SAPBERRY_PROJECTILE = register("sapberry_projectile", EntityType.Builder.<SapberryProjectile>of(SapberryProjectile::new, MobCategory.MISC).sized(8f / 16f, 8f / 16f).updateInterval(10));
 
 	private ModEntityTypes() {}
 

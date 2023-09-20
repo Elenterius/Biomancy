@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.block.veins;
 
 import com.github.elenterius.biomancy.block.cradle.PrimordialCradleBlock;
 import com.github.elenterius.biomancy.init.ModBlocks;
+import com.github.elenterius.biomancy.util.LevelUtil;
 import com.github.elenterius.biomancy.util.random.Noise;
 import com.github.elenterius.biomancy.world.PrimordialEcosystem;
 import net.minecraft.core.BlockPos;
@@ -23,7 +24,6 @@ import java.util.Set;
 class MalignantFleshSpreaderConfig extends MultifaceSpreader.DefaultSpreaderConfig {
 
 	protected static final Set<Block> VALID_SOURCES = Set.of(ModBlocks.MALIGNANT_FLESH_SLAB.get(), ModBlocks.MALIGNANT_FLESH_STAIRS.get(), ModBlocks.MALIGNANT_FLESH.get());
-	protected static final Set<Block> VALID_UPGRADE_TARGETS = Set.of(ModBlocks.MALIGNANT_FLESH_SLAB.get(), ModBlocks.MALIGNANT_FLESH_STAIRS.get());
 
 	public MalignantFleshSpreaderConfig(MultifaceBlock block) {
 		super(block);
@@ -54,12 +54,12 @@ class MalignantFleshSpreaderConfig extends MultifaceSpreader.DefaultSpreaderConf
 	@Override
 	public boolean canSpreadInto(BlockGetter level, BlockPos pos, MultifaceSpreader.SpreadPos spreadPos) {
 		BlockState state = level.getBlockState(spreadPos.pos());
-		if (VALID_UPGRADE_TARGETS.contains(state.getBlock())) {
+		if (PrimordialEcosystem.VALID_UPGRADE_TARGETS.contains(state.getBlock())) {
 			if (level instanceof ServerLevel serverLevel) {
 				Noise noise = PrimordialEcosystem.getCellularNoise(serverLevel);
 				float borderThreshold = 0.145f;
-				float n = noise.getValue(pos.getX(), pos.getY(), pos.getZ());
-				return n >= borderThreshold;
+				float n = noise.getValueAtCenter(pos);
+				return n >= borderThreshold && !LevelUtil.isBlockNearby(serverLevel, spreadPos.pos(), 4, 4, blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get()));
 			}
 			return true;
 		}
@@ -68,7 +68,7 @@ class MalignantFleshSpreaderConfig extends MultifaceSpreader.DefaultSpreaderConf
 
 	@Override
 	public boolean placeBlock(LevelAccessor level, MultifaceSpreader.SpreadPos spreadPos, BlockState state, boolean markForPostprocessing) {
-		if (VALID_UPGRADE_TARGETS.contains(state.getBlock())) {
+		if (PrimordialEcosystem.VALID_UPGRADE_TARGETS.contains(state.getBlock())) {
 			if (level.getRandom().nextFloat() < 0.25f) {
 				return level.setBlock(spreadPos.pos(), ModBlocks.MALIGNANT_FLESH.get().defaultBlockState(), Block.UPDATE_CLIENTS);
 			}

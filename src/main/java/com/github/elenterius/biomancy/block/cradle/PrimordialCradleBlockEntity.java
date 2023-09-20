@@ -177,6 +177,8 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 			SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), 1f, 0.15f + level.random.nextFloat() * 0.5f);
 		}
 
+		//primalSpreadCharge = Integer.MAX_VALUE; //uncomment to unleash the abomination
+
 		resetState();
 	}
 

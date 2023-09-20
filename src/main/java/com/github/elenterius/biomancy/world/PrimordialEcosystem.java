@@ -5,9 +5,11 @@ import com.github.elenterius.biomancy.block.property.DirectionalSlabType;
 import com.github.elenterius.biomancy.block.veins.FleshVeinsBlock;
 import com.github.elenterius.biomancy.entity.PrimordialFleshkin;
 import com.github.elenterius.biomancy.entity.fleshblob.FleshBlob;
+import com.github.elenterius.biomancy.init.ModBlockProperties;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.init.tags.ModBlockTags;
+import com.github.elenterius.biomancy.util.LevelUtil;
 import com.github.elenterius.biomancy.util.random.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,12 +24,15 @@ import net.minecraft.world.level.block.MultifaceSpreader;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.IntSupplier;
 import java.util.function.Supplier;
 
 public final class PrimordialEcosystem {
 
+	private static final RandomSource random = RandomSource.create();
 	public static final IntSupplier MAX_CHARGE_SUPPLIER = () -> 15;
+	public static final Set<Block> VALID_UPGRADE_TARGETS = Set.of(ModBlocks.MALIGNANT_FLESH_SLAB.get(), ModBlocks.MALIGNANT_FLESH_STAIRS.get());
 
 	private PrimordialEcosystem() {}
 
@@ -75,6 +80,58 @@ public final class PrimordialEcosystem {
 		return false;
 	}
 
+	public static boolean placeMalignantBloomOrBlocks(ServerLevel level, BlockPos pos, Direction direction) {
+
+		BlockState state = level.getBlockState(pos);
+		if (VALID_UPGRADE_TARGETS.contains(state.getBlock())) {
+			level.setBlock(pos, ModBlocks.MALIGNANT_FLESH.get().defaultBlockState(), Block.UPDATE_CLIENTS);
+			level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_PLACE.get(), SoundSource.BLOCKS, 1f, 0.15f + level.random.nextFloat() * 0.5f);
+			return true;
+		}
+
+		BlockPos relativePos = pos.relative(direction);
+		BlockState relativeState = level.getBlockState(relativePos);
+		RandomSource random = level.getRandom();
+
+		if (random.nextFloat() < 0.7f && ModBlocks.MALIGNANT_BLOOM.get().mayPlaceOn(level, pos, state)) {
+			boolean canBeReplaced = relativeState.canBeReplaced(new DirectionalPlaceContext(level, relativePos, direction.getOpposite(), ItemStack.EMPTY, direction));
+			boolean noBloomNearby = !LevelUtil.isBlockNearby(level, pos, 4, 4, blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get()));
+			if (canBeReplaced && noBloomNearby) {
+				BlockState blockState = ModBlocks.MALIGNANT_BLOOM.get().getStateForPlacement(level, relativePos, direction);
+				level.playSound(null, relativePos, ModSoundEvents.FLESH_BLOCK_PLACE.get(), SoundSource.BLOCKS, 1f, 0.5f + random.nextFloat() * 0.5f);
+				level.setBlock(relativePos, blockState, Block.UPDATE_CLIENTS);
+				return true;
+			}
+		}
+
+		if (relativeState.is(ModBlocks.MALIGNANT_FLESH_VEINS.get())) {
+			if (PrimordialEcosystem.tryToReplaceBlock(level, relativePos, ModBlocks.PRIMAL_FLESH.get().defaultBlockState())) {
+				level.playSound(null, relativePos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 1f, 0.15f + random.nextFloat() * 0.5f);
+				return true;
+			}
+			else if (FleshVeinsBlock.convertSelf(relativeState, level, relativePos, 0, true, 0.5f)) {
+				level.playSound(null, relativePos, ModSoundEvents.FLESH_BLOCK_PLACE.get(), SoundSource.BLOCKS, 1f, 0.15f + random.nextFloat() * 0.5f);
+				return true;
+			}
+
+			return PrimordialEcosystem.spreadMalignantVeinsFromSource(level, relativePos, PrimordialEcosystem.MAX_CHARGE_SUPPLIER);
+		}
+		else if (relativeState.canBeReplaced(new DirectionalPlaceContext(level, relativePos, direction.getOpposite(), ItemStack.EMPTY, direction))) {
+			FleshVeinsBlock veinsBlock = ModBlocks.MALIGNANT_FLESH_VEINS.get();
+			BlockState stateForPlacement = veinsBlock.getStateForPlacement(relativeState, level, relativePos, direction.getOpposite(), 15);
+			if (stateForPlacement != null) {
+				level.setBlock(relativePos, stateForPlacement, Block.UPDATE_CLIENTS);
+				for (int i = 0; i < 4; i++) {
+					if (random.nextFloat() < 0.4f) veinsBlock.getSpreader().spreadFromRandomFaceTowardRandomDirection(stateForPlacement, level, relativePos, random);
+				}
+				level.playSound(null, relativePos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 0.7f, 0.15f + random.nextFloat() * 0.5f);
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	public static boolean spreadMalignantVeinsFromSource(ServerLevel level, BlockPos pos, IntSupplier chargeSupplier) {
 		FleshVeinsBlock veinsBlock = ModBlocks.MALIGNANT_FLESH_VEINS.get();
 		BlockState state = level.getBlockState(pos);
@@ -111,6 +168,38 @@ public final class PrimordialEcosystem {
 		return usedCharge;
 	}
 
+	public static int countMalignantChargeAroundPos(ServerLevel level, BlockPos pos) {
+		int totalCharge = 0;
+
+		for (int y = -1; y <= 1; y++) {
+			for (int x = -1; x <= 1; x++) {
+				for (int z = -1; z <= 1; z++) {
+					if (x == 0 && y == 0 && z == 0) continue;
+					BlockPos neighborPos = pos.offset(x, y, z);
+					BlockState neighborState = level.getBlockState(neighborPos);
+					totalCharge += neighborState.getOptionalValue(ModBlockProperties.CHARGE.get()).orElse(0);
+				}
+			}
+		}
+
+		return totalCharge;
+	}
+
+	public static int countMalignantVeinsAroundPos(ServerLevel level, BlockPos pos) {
+		int veins = 0;
+
+		for (int y = -1; y <= 1; y++) {
+			for (int x = -1; x <= 1; x++) {
+				for (int z = -1; z <= 1; z++) {
+					if (x == 0 && y == 0 && z == 0) continue;
+					if (level.getBlockState(pos.offset(x, y, z)).is(ModBlocks.MALIGNANT_FLESH_VEINS.get())) veins += 1;
+				}
+			}
+		}
+
+		return veins;
+	}
+
 	private static double step(double value, double threshold) {
 		return value >= threshold ? 1 : 0;
 	}
@@ -140,7 +229,7 @@ public final class PrimordialEcosystem {
 	private static void trySetBlockInCellularLevel(ServerLevel level, BlockPos pos, BlockState placementState, int x, int y, int z) {
 		Noise noise = getCellularNoise(level);
 		float borderThreshold = 0.15f;
-		float n = noise.getValue(x, y, z);
+		float n = noise.getValue(x + 0.5f, y + 0.5f, z + 0.5f);
 		if (n >= borderThreshold) {
 			tryToReplaceBlock(level, pos.offset(x, y, z), placementState);
 		}
@@ -148,7 +237,7 @@ public final class PrimordialEcosystem {
 
 	private static void trySetBlock(ServerLevel level, BlockPos pos, BlockState placementState, CellularNoise noise, int x, int y, int z) {
 		float borderThreshold = 0.12f;
-		float n = noise.getValue(x, y, z);
+		float n = noise.getValue(x + 0.5f, y + 0.5f, z + 0.5f);
 		if (n >= borderThreshold) {
 			tryToReplaceBlock(level, pos.offset(x, y, z), placementState);
 		}
@@ -179,6 +268,11 @@ public final class PrimordialEcosystem {
 		return false;
 	}
 
+	public static RandomSource getRandomWithSeed(BlockPos pos) {
+		random.setSeed(Mth.getSeed(pos));
+		return random;
+	}
+
 	public static CellularNoise getCellularNoise(ServerLevel level) {
 		return ((CellularNoiseProvider) level).biomancy$getCellularNoise();
 	}
@@ -197,4 +291,5 @@ public final class PrimordialEcosystem {
 
 		return new CellularNoiseWithDomainWarp(cellularNoise, domainWarp);
 	}
+
 }
