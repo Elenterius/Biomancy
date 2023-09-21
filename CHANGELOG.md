@@ -1,3 +1,16 @@
+## [2.1.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.2.0.0...1.19.2-v2.2.1.0) (2023-09-21)
+
+
+### Features
+
+* add Malignant Bloom and Sapberry ([6d575d2](https://github.com/Elenterius/Biomancy/commit/6d575d2200399b14d28af7793892d92fb54d447a))
+* tweak primal flesh block recipe ([10e80c7](https://github.com/Elenterius/Biomancy/commit/10e80c7236554a422945815f3b4aba76a931653f))
+
+
+### Bug Fixes
+
+* fix machine menus displaying wrong crafting cost ([430d54e](https://github.com/Elenterius/Biomancy/commit/430d54e21f0851b51b68d56df330afb01ca7a8c5))
+
 ## [2.0.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.13.0...1.19.2-v2.2.0.0) (2023-09-09)
 
 
@@ -133,17 +146,4 @@
 ### Bug Fixes
 
 * fix Ravenous Claws ability tooltips not using translation keys ([989ff50](https://github.com/Elenterius/Biomancy/commit/989ff50e67110b0037d145f3a804a5455124ae91))
-
-### [1.11.2](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.11.1...1.19.2-v2.1.11.2) (2023-06-25)
-
-
-### Bug Fixes
-
-* add missing language key for missing blood charge ([478c585](https://github.com/Elenterius/Biomancy/commit/478c58549ac677f3f960c8bd95ee87ac06bcb69d))
-* fix Maw Hopper not inserting items on the correct block face ([db57423](https://github.com/Elenterius/Biomancy/commit/db57423c451de0caf7f7529cad2cffdf47e27762))
-* fix Ravenous Claws item name ([ea9f79c](https://github.com/Elenterius/Biomancy/commit/ea9f79ce56afbcb5896f8b90618ade0dee21270a))
-* fix Ravenous Claws recipe ([272071d](https://github.com/Elenterius/Biomancy/commit/272071db69a6f57bbc93c8d938e948ccaac06139))
-* fix wrong fleshkin chest recipe ([a6be325](https://github.com/Elenterius/Biomancy/commit/a6be3254b4d77deed47f8824bf735776f1b7701f))
-* make Ravenous Claws tooltip less confusing ([c8940a6](https://github.com/Elenterius/Biomancy/commit/c8940a62b88a10f59b7857dec73904fbeb5a6832))
-* make tooltip text for pressing the v key on living tools less confusing ([7c7160f](https://github.com/Elenterius/Biomancy/commit/7c7160fd8515a767ae027f75a8586a5e8b62007e))
 
