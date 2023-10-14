@@ -57,7 +57,7 @@ class MalignantFleshSpreaderConfig extends MultifaceSpreader.DefaultSpreaderConf
 		if (PrimordialEcosystem.VALID_UPGRADE_TARGETS.contains(state.getBlock())) {
 			if (level instanceof ServerLevel serverLevel) {
 				Noise noise = PrimordialEcosystem.getCellularNoise(serverLevel);
-				float borderThreshold = 0.145f;
+				float borderThreshold = 0.155f;
 				float n = noise.getValueAtCenter(pos);
 				return n >= borderThreshold && !LevelUtil.isBlockNearby(serverLevel, spreadPos.pos(), 4, blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get()));
 			}
