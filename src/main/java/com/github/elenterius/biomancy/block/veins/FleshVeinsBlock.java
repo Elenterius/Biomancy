@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.block.veins;
 
 import com.github.elenterius.biomancy.block.cradle.PrimordialCradleBlockEntity;
+import com.github.elenterius.biomancy.block.malignantbloom.MalignantBloomBlock;
 import com.github.elenterius.biomancy.init.ModBlockProperties;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModItems;
@@ -132,9 +133,10 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 					else if (PrimordialEcosystem.getRandomWithSeed(pos).nextFloat() <= 0.42f && LevelUtil.getMaxBrightness(level, pos) > 5) {
 						posBelow = pos.relative(direction);
 						stateBelow = level.getBlockState(posBelow);
-						boolean mayPlace = ModBlocks.MALIGNANT_BLOOM.get().mayPlaceOn(level, posBelow, stateBelow);
-						if (mayPlace && !LevelUtil.isBlockNearby(level, pos, 4, 4, blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get()))) {
-							BlockState slabState = ModBlocks.MALIGNANT_BLOOM.get().getStateForPlacement(level, pos, direction.getOpposite());
+						MalignantBloomBlock block = ModBlocks.MALIGNANT_BLOOM.get();
+						boolean mayPlace = block.mayPlaceOn(level, posBelow, stateBelow);
+						if (mayPlace && !LevelUtil.isBlockNearby(level, pos, 4, blockState -> blockState.is(block)) && block.hasUnobstructedAim(level, pos, direction.getOpposite())) {
+							BlockState slabState = block.getStateForPlacement(level, pos, direction.getOpposite());
 							level.setBlock(pos, slabState, Block.UPDATE_CLIENTS);
 						}
 					}
