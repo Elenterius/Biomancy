@@ -124,12 +124,12 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 					float borderThreshold = 0.15f;
 					float n = noise.getValueAtCenter(pos);
 					if (n >= borderThreshold) {
-						if (!LevelUtil.isBlockNearby(level, pos, 2, 2, blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get()))) {
+						if (!LevelUtil.isBlockNearby(level, pos, 2, blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get()))) {
 							BlockState slabState = ModBlocks.MALIGNANT_FLESH_SLAB.get().getStateForPlacement(level, pos, direction.getOpposite());
 							level.setBlock(pos, slabState, Block.UPDATE_CLIENTS);
 						}
 					}
-					else if (PrimordialEcosystem.getRandomWithSeed(pos).nextFloat() <= 0.45f && level.getLightEngine().getRawBrightness(pos, 0) > 5) {
+					else if (PrimordialEcosystem.getRandomWithSeed(pos).nextFloat() <= 0.42f && LevelUtil.getMaxBrightness(level, pos) > 5) {
 						posBelow = pos.relative(direction);
 						stateBelow = level.getBlockState(posBelow);
 						boolean mayPlace = ModBlocks.MALIGNANT_BLOOM.get().mayPlaceOn(level, posBelow, stateBelow);
@@ -145,7 +145,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		}
 
 		if (isCradleNearby) return false;
-		if (LevelUtil.isBlockNearby(level, pos, 2, 2, blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get()))) return false;
+		if (LevelUtil.isBlockNearby(level, pos, 2, blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get()))) return false;
 
 		if (faces > 3) {
 			level.setBlock(pos, ModBlocks.MALIGNANT_FLESH.get().defaultBlockState(), Block.UPDATE_CLIENTS);

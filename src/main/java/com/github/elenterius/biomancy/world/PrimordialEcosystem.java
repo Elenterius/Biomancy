@@ -95,7 +95,7 @@ public final class PrimordialEcosystem {
 
 		if (random.nextFloat() < 0.7f && ModBlocks.MALIGNANT_BLOOM.get().mayPlaceOn(level, pos, state)) {
 			boolean canBeReplaced = relativeState.canBeReplaced(new DirectionalPlaceContext(level, relativePos, direction.getOpposite(), ItemStack.EMPTY, direction));
-			boolean noBloomNearby = !LevelUtil.isBlockNearby(level, pos, 4, 4, blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get()));
+			boolean noBloomNearby = !LevelUtil.isBlockNearby(level, pos, 4, blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get()));
 			if (canBeReplaced && noBloomNearby) {
 				BlockState blockState = ModBlocks.MALIGNANT_BLOOM.get().getStateForPlacement(level, relativePos, direction);
 				level.playSound(null, relativePos, ModSoundEvents.FLESH_BLOCK_PLACE.get(), SoundSource.BLOCKS, 1f, 0.5f + random.nextFloat() * 0.5f);
