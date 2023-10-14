@@ -7,6 +7,7 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,6 +33,13 @@ public final class LevelUtil {
 		return LazyOptional.empty();
 	}
 
+	/**
+	 * @return max(skyLight, blockLight) in the range of [0, ..., 15]
+	 */
+	public static int getMaxBrightness(Level level, BlockPos pos) {
+		return level.getLightEngine().getRawBrightness(pos, 0);
+	}
+
 	public static int getNumOfBlocksAbove(BlockGetter level, BlockPos pos, Block targetBlock, int maxHeight) {
 		int i = 0;
 		while (i < maxHeight && level.getBlockState(pos.above(i + 1)).getBlock() == targetBlock) i++;
@@ -44,13 +52,15 @@ public final class LevelUtil {
 		return i;
 	}
 
-	public static boolean isBlockNearby(ServerLevel level, BlockPos pos, int rangeXZ, int rangeY, Predicate<BlockState> predicate) {
+	public static boolean isBlockNearby(ServerLevel level, BlockPos pos, int range, Predicate<BlockState> predicate) {
 		BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
-		for (int y = 0; y <= rangeY; y = y > 0 ? -y : 1 - y) {
-			for (int xz = 0; xz < rangeXZ; ++xz) {
+		for (int y = 0; y <= range; y = y > 0 ? -y : 1 - y) {
+			for (int xz = 0; xz < range; ++xz) {
 				for (int x = 0; x <= xz; x = x > 0 ? -x : 1 - x) {
 					for (int z = x < xz && x > -xz ? xz : 0; z <= xz; z = z > 0 ? -z : 1 - z) {
+						if ((x * x + y * y + z * z) > range * range) continue;
+
 						mutablePos.setWithOffset(pos, x, y - 1, z);
 						if (predicate.test(level.getBlockState(mutablePos))) {
 							return true;
