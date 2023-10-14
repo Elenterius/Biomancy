@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.block.cradle;
+package com.github.elenterius.biomancy.tribute;
 
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.mojang.datafixers.util.Pair;
@@ -13,7 +13,7 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import java.util.List;
 import java.util.Set;
 
-class MobEffectTribute implements ITribute {
+class MobEffectTribute implements Tribute {
 
 	//TODO: Replace with TagKeys?
 	//

@@ -1,7 +1,7 @@
-package com.github.elenterius.biomancy.block.cradle;
+package com.github.elenterius.biomancy.tribute;
 
-public record Tribute(int biomass, int lifeEnergy, int successModifier, int diseaseModifier, int hostileModifier, int anomalyModifier) implements ITribute {
-	public Tribute(ITribute a, ITribute b) {
+public record TributeImpl(int biomass, int lifeEnergy, int successModifier, int diseaseModifier, int hostileModifier, int anomalyModifier) implements Tribute {
+	public TributeImpl(Tribute a, Tribute b) {
 		this(
 				a.biomass() + b.biomass(),
 				a.lifeEnergy() + b.lifeEnergy(),
@@ -12,8 +12,8 @@ public record Tribute(int biomass, int lifeEnergy, int successModifier, int dise
 		);
 	}
 
-	public static Tribute.Builder builder() {
-		return new Tribute.Builder();
+	public static TributeImpl.Builder builder() {
+		return new TributeImpl.Builder();
 	}
 
 	public static class Builder {
@@ -54,8 +54,8 @@ public record Tribute(int biomass, int lifeEnergy, int successModifier, int dise
 			return this;
 		}
 
-		public ITribute create() {
-			return new Tribute(biomass, lifeEnergy, successModifier, diseaseModifier, hostileModifier, anomalyModifier);
+		public Tribute create() {
+			return new TributeImpl(biomass, lifeEnergy, successModifier, diseaseModifier, hostileModifier, anomalyModifier);
 		}
 	}
 }

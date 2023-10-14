@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.entity.fleshblob.FleshBlob;
 import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.network.ISyncableAnimation;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
+import com.github.elenterius.biomancy.tribute.Tribute;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.world.PrimordialEcosystem;
 import net.minecraft.core.BlockPos;
@@ -77,7 +78,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 		});
 	}
 
-	private void spawnTributeParticles(ServerLevel level, ITribute tribute) {
+	private void spawnTributeParticles(ServerLevel level, Tribute tribute) {
 		BlockPos pos = getBlockPos();
 
 		if (tribute.successModifier() < 0) {
