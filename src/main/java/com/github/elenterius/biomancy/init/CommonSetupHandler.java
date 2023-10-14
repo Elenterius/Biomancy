@@ -16,6 +16,11 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegisterEvent;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
+
 @Mod.EventBusSubscriber(modid = BiomancyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class CommonSetupHandler {
 
@@ -31,10 +36,25 @@ public final class CommonSetupHandler {
 			ModTriggers.register();
 			registerDispenserBehaviors();
 			ModRecipes.registerComposterRecipes();
+
+			//dumpBiomeTemperatureAndHumidity();
 		});
 
 		ModRecipes.registerBrewingRecipes();
 		ModsCompatHandler.onBiomancyCommonSetup(event);
+	}
+
+	public static void dumpBiomeTemperatureAndHumidity() {
+		BiomancyMod.LOGGER.info("dumping biome default temperatures to biome_temperatures.csv...");
+		try {
+			Stream<String> stringStream = ForgeRegistries.BIOMES.getEntries().stream()
+					.map(keyEntry -> "%s,%s,%s".formatted(keyEntry.getKey().location(), keyEntry.getValue().getBaseTemperature(), keyEntry.getValue().getDownfall()));
+
+			Files.write(Paths.get("biome_temperatures.csv"), (Iterable<String>) stringStream::iterator);
+		}
+		catch (IOException e) {
+			BiomancyMod.LOGGER.error("Failed to dump biome temps!", e);
+		}
 	}
 
 	@SubscribeEvent
