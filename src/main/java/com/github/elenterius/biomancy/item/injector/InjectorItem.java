@@ -168,7 +168,8 @@ public class InjectorItem extends Item implements SerumInjector, CustomTooltipPr
 	 * replace contents of injector inventory with new item from player inventory
 	 */
 	private void setInventory(ItemStack injector, Player player, int slotIndex) {
-		ItemStack foundStack = player.getInventory().getItem(slotIndex);
+		final Inventory playerInventory = player.getInventory();
+		final ItemStack foundStack = playerInventory.getItem(slotIndex);
 
 		Item item = foundStack.getItem();
 		if (!(item instanceof SerumContainer)) return;
@@ -180,16 +181,15 @@ public class InjectorItem extends Item implements SerumInjector, CustomTooltipPr
 			}
 
 			ItemStack remainder = handler.insertItem(foundStack, false);
-			player.getInventory().setItem(slotIndex, remainder);
+			playerInventory.setItem(slotIndex, remainder);
 
 			if (remainder.isEmpty() && !handler.isFull()) {
-				Inventory inventory = player.getInventory();
-				int slots = inventory.getContainerSize();
+				int slots = playerInventory.getContainerSize();
 				for (int idx = 0; idx < slots; idx++) {
-					ItemStack stack = inventory.getItem(idx);
+					ItemStack stack = playerInventory.getItem(idx);
 					if (ItemHandlerHelper.canItemStacksStack(stack, handler.getStack())) {
-						remainder = handler.insertItem(foundStack, false);
-						player.getInventory().setItem(idx, remainder);
+						remainder = handler.insertItem(stack, false);
+						playerInventory.setItem(idx, remainder);
 						if (!remainder.isEmpty()) break;
 					}
 				}
@@ -197,7 +197,7 @@ public class InjectorItem extends Item implements SerumInjector, CustomTooltipPr
 
 			//eject old stuff
 			if (!oldStack.isEmpty()) {
-				player.getInventory().placeItemBackInInventory(oldStack);
+				playerInventory.placeItemBackInInventory(oldStack);
 			}
 		});
 	}
