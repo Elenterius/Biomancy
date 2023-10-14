@@ -6,9 +6,11 @@ import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModPlantTypes;
 import com.github.elenterius.biomancy.init.ModProjectiles;
 import com.github.elenterius.biomancy.util.EnhancedIntegerProperty;
+import com.github.elenterius.biomancy.util.VectorUtil;
 import com.github.elenterius.biomancy.world.PrimordialEcosystem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -20,10 +22,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,6 +31,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -43,6 +43,7 @@ import net.minecraftforge.common.PlantType;
 public class MalignantBloomBlock extends WaterloggedFacingBlock implements IPlantable {
 
 	public static final EnhancedIntegerProperty AGE = EnhancedIntegerProperty.wrap(BlockStateProperties.AGE_7);
+	protected static final int AIM_DISTANCE = 8;
 
 	public MalignantBloomBlock(Properties properties) {
 		super(properties);
@@ -89,6 +90,14 @@ public class MalignantBloomBlock extends WaterloggedFacingBlock implements IPlan
 		return defaultBlockState().setValue(FACING, direction).setValue(WATERLOGGED, isWaterlogged);
 	}
 
+	public boolean hasUnobstructedAim(BlockGetter level, BlockPos pos, Direction direction) {
+		return hasUnobstructedAim(level, pos, pos.relative(direction, AIM_DISTANCE));
+	}
+
+	public boolean hasUnobstructedAim(BlockGetter level, BlockPos origin, BlockPos target) {
+		return level.clip(new ClipContext(Vec3.atCenterOf(origin), Vec3.atCenterOf(target), ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, null)).getType() == HitResult.Type.MISS;
+	}
+
 	@Override
 	public boolean isRandomlyTicking(BlockState state) {
 		return true;
@@ -97,6 +106,11 @@ public class MalignantBloomBlock extends WaterloggedFacingBlock implements IPlan
 	@Override
 	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (!level.isAreaLoaded(pos, 1)) return;
+
+		Direction direction = getFacing(state);
+		BlockPos relativePos = pos.relative(direction);
+		BlockState relativeState = level.getBlockState(relativePos);
+		if (relativeState.getMaterial().isSolid() || !relativeState.getCollisionShape(level, relativePos).isEmpty()) return;
 
 		int age = AGE.getValue(state);
 		if (age < AGE.getMax()) {
@@ -108,12 +122,16 @@ public class MalignantBloomBlock extends WaterloggedFacingBlock implements IPlan
 			}
 		}
 		else {
-			Direction direction = getFacing(state);
-
 			level.sendParticles(ParticleTypes.EXPLOSION, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, 1, 0, 0, 0, 0);
 			level.setBlock(pos, AGE.setValue(state, AGE.getMin()), Block.UPDATE_CLIENTS);
 
-			BlockPos target = pos.relative(direction, 10).offset(random.nextIntBetweenInclusive(-5, 5), random.nextIntBetweenInclusive(-5, 5), random.nextIntBetweenInclusive(-5, 5));
+			int range = 6;
+			Vec3i plane = VectorUtil.axisAlignedPlane3i(direction);
+			int offsetX = plane.getX() * random.nextIntBetweenInclusive(-range, range);
+			int offsetY = plane.getY() * random.nextIntBetweenInclusive(-range, range);
+			int offsetZ = plane.getZ() * random.nextIntBetweenInclusive(-range, range);
+			BlockPos target = pos.relative(direction, AIM_DISTANCE).offset(offsetX, offsetY, offsetZ);
+
 			ModProjectiles.SAPBERRY.shoot(level, Vec3.atCenterOf(pos), Vec3.atCenterOf(target));
 		}
 	}
