@@ -34,18 +34,24 @@ class MobEffectTribute implements Tribute {
 	private int diseaseModifier = 0;
 	private int successModifier = 0;
 
-	static MobEffectTribute from(ItemStack stack) {
+	static Tribute from(ItemStack stack) {
+		boolean isPotionItem = stack.getItem() instanceof PotionItem; //we don't check if the potion has no effects because it should contain an effect in 99% of cases
+
+		FoodProperties food = stack.getFoodProperties(null);
+		boolean isFoodItem = food != null && !food.getEffects().isEmpty(); //we check if the food has any effects because they are optional
+
+		if (!isPotionItem && !isFoodItem) return Tribute.EMPTY; //avoid creation of new empty objects
+
 		MobEffectTribute mobEffectTribute = new MobEffectTribute();
 
-		if (stack.getItem() instanceof PotionItem) {
+		if (isPotionItem) {
 			List<MobEffectInstance> effectInstances = PotionUtils.getMobEffects(stack);
 			for (MobEffectInstance instance : effectInstances) {
 				mobEffectTribute.apply(instance, 1f);
 			}
 		}
 
-		FoodProperties food = stack.getFoodProperties(null);
-		if (food != null) {
+		if (isFoodItem) {
 			for (Pair<MobEffectInstance, Float> pair : food.getEffects()) {
 				MobEffectInstance instance = pair.getFirst();
 				float chance = pair.getSecond();
