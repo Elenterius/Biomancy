@@ -74,7 +74,7 @@ public final class Tributes {
 
 	public static Tribute from(ItemStack stack) {
 
-		MobEffectTribute mobEffectTribute = MobEffectTribute.from(stack);
+		Tribute mobEffectTribute = MobEffectTribute.from(stack);
 		Tribute tribute = findExistingTribute(stack);
 
 		if (mobEffectTribute.isEmpty() && tribute.isEmpty()) {
