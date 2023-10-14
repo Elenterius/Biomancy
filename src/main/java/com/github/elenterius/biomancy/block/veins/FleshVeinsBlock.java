@@ -122,7 +122,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 
 				if (!PrimordialEcosystem.tryToReplaceBlock(level, posBelow, stateBelow, replacementBlock.defaultBlockState())) {
 					Noise noise = PrimordialEcosystem.getCellularNoise(level);
-					float borderThreshold = 0.15f;
+					float borderThreshold = 0.16f;
 					float n = noise.getValueAtCenter(pos);
 					if (n >= borderThreshold) {
 						if (!LevelUtil.isBlockNearby(level, pos, 2, blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get()))) {
@@ -404,7 +404,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		float populationPct = directNeighbors / (float) Direction.values().length;
 		float conversionChance = charge / (CHARGE.getMax() + 5f) + populationPct * 0.5f;
 
-		if (random.nextFloat() < conversionChance && convertSelf(state, level, pos, directNeighbors, cradleDistance <= cradleCoreRadius, nearCradlePct)) {
+		if (random.nextFloat() < conversionChance && convertSelf(state, level, pos, directNeighbors, cradleDistance < cradleCoreRadius, nearCradlePct)) {
 			level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 1.2f, 0.15f + random.nextFloat() * 0.5f);
 			return;
 		}
