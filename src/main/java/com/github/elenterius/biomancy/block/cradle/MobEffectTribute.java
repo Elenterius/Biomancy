@@ -29,10 +29,9 @@ class MobEffectTribute implements ITribute {
 
 	private static final Set<MobEffect> LIFE_ENERGY_MODIFIER = Set.of(MobEffects.HEAL, MobEffects.REGENERATION, MobEffects.HEALTH_BOOST);
 	private static final Set<MobEffect> DISEASE_MODIFIER = Set.of(MobEffects.HUNGER, MobEffects.WITHER, MobEffects.POISON, MobEffects.CONFUSION, ModMobEffects.CORROSIVE.get());
-	private static final Set<MobEffect> HOSTILE_MODIFIER = Set.of(MobEffects.DAMAGE_BOOST, MobEffects.JUMP, MobEffects.DAMAGE_RESISTANCE, MobEffects.FIRE_RESISTANCE, MobEffects.MOVEMENT_SPEED);
+
 	private float lifeEnergy = 0;
 	private int diseaseModifier = 0;
-	private int hostileModifier = 0;
 	private int successModifier = 0;
 
 	static MobEffectTribute from(ItemStack stack) {
@@ -68,21 +67,11 @@ class MobEffectTribute implements ITribute {
 			int level = instance.getAmplifier() + 1;
 			diseaseModifier += Math.round(level * 15 * chance);
 		}
-		else if (HOSTILE_MODIFIER.contains(effect)) {
-			int level = instance.getAmplifier() + 1;
-			hostileModifier += Math.round(level * 10 * chance);
-		}
 		else if (effect == MobEffects.LUCK) {
 			int level = instance.getAmplifier() + 1;
 			successModifier += Math.round(level * 50 * chance);
 		}
 
-		if (effect.isBeneficial()) {
-			hostileModifier -= 10;
-		}
-		else {
-			hostileModifier += 10;
-		}
 	}
 
 	@Override
@@ -107,7 +96,7 @@ class MobEffectTribute implements ITribute {
 
 	@Override
 	public int hostileModifier() {
-		return hostileModifier;
+		return 0;
 	}
 
 	@Override
