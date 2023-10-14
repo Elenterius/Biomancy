@@ -1,7 +1,10 @@
-package com.github.elenterius.biomancy.block.cradle;
+package com.github.elenterius.biomancy.tribute;
 
-public interface ITribute {
-	ITribute EMPTY = new ITribute() {
+import org.jetbrains.annotations.ApiStatus;
+
+@ApiStatus.Experimental
+public interface Tribute {
+	Tribute EMPTY = new Tribute() {
 		@Override
 		public int biomass() {
 			return 0;

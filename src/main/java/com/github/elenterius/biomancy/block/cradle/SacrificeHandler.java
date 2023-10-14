@@ -1,5 +1,7 @@
 package com.github.elenterius.biomancy.block.cradle;
 
+import com.github.elenterius.biomancy.tribute.Tribute;
+import com.github.elenterius.biomancy.tribute.Tributes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
@@ -116,11 +118,11 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 		return hasModifiers;
 	}
 
-	public boolean addItem(ItemStack stack, Consumer<ITribute> onSuccess) {
+	public boolean addItem(ItemStack stack, Consumer<Tribute> onSuccess) {
 		if (isFull()) return false;
 		if (stack.isEmpty()) return false;
 
-		ITribute tribute = Tributes.from(stack);
+		Tribute tribute = Tributes.from(stack);
 		int count = addTribute(tribute, stack.getCount());
 		if (count > 0) {
 			stack.shrink(count);
@@ -144,13 +146,13 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 		return false;
 	}
 
-	private int addTribute(ITribute tribute, int maxCount) {
+	private int addTribute(Tribute tribute, int maxCount) {
 		int n = maxCount;
 		while (n > 0 && addTribute(tribute)) n--;
 		return maxCount - n;
 	}
 
-	public boolean addTribute(ITribute tribute) {
+	public boolean addTribute(Tribute tribute) {
 		if (isFull()) return false;
 		if (tribute.isEmpty()) return false;
 
