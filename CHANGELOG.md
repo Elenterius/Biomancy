@@ -1,3 +1,23 @@
+## [2.2.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.2.1.0...1.19.2-v2.2.2.0) (2023-10-28)
+
+
+### Features
+
+* improve make malignant bloom shooting and check for blocks obstructing the aim ([d483871](https://github.com/Elenterius/Biomancy/commit/d483871160088e36c43cd0f0eca2d551e19421ef))
+* make it possible to add more cradle tributes via code ([9ab0c36](https://github.com/Elenterius/Biomancy/commit/9ab0c3692757e1261d695774123166bd697f37d0))
+* make life energy affect the energy charge of the Primordial Cradle and allow life energy of sacrifices to exceed 100 ([ca75b23](https://github.com/Elenterius/Biomancy/commit/ca75b235e05beaa495a9c14280b671481fba0be9))
+* make nether stars a valid sacrifice source ([aa92c3a](https://github.com/Elenterius/Biomancy/commit/aa92c3a3122af34f4c53e35a4bb440935d25004c))
+* remove the ability of mob effects to influence the hostility of Flesh Blobs spawned via the cradle ([11fcd4d](https://github.com/Elenterius/Biomancy/commit/11fcd4d33821cd487fcb4c16d760a4c501e8b40e))
+* **tetra-compat:** make Dragon Sinew a valid cradle tribute ([0abd696](https://github.com/Elenterius/Biomancy/commit/0abd69612ff29c58b63b843d8698becabcf8a267))
+* **tetra-compat:** make Dragon Sinew decomposable ([6f4732b](https://github.com/Elenterius/Biomancy/commit/6f4732b8fe718c0092879047f56f26be95506c66))
+
+
+### Bug Fixes
+
+* add workaround for NERB incompatibility ("unlocks" all recipes when NERB is detected) ([9dd10ee](https://github.com/Elenterius/Biomancy/commit/9dd10eeeaae04d21804b7d1e325d44836e48df70))
+* fix serum duplication bug with Injector ([1137763](https://github.com/Elenterius/Biomancy/commit/1137763a4b051e5d6eb8c18f00d38a127f755e63))
+* fix Wide Flesh Doors incompatibility with Quark's double door feature ([e9f4eb5](https://github.com/Elenterius/Biomancy/commit/e9f4eb57041e564c486677462d68c85e68cb5217)), closes [#108](https://github.com/Elenterius/Biomancy/issues/108)
+
 ## [2.1.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.2.0.0...1.19.2-v2.2.1.0) (2023-09-21)
 
 
@@ -139,11 +159,4 @@
 * fix full block slabs not dropping two slab blocks ([54bb038](https://github.com/Elenterius/Biomancy/commit/54bb038109267982d1b5594df40cbfe589f3de19))
 * fix inability to switch claw modes when holding down ctrl to sprint ([870a033](https://github.com/Elenterius/Biomancy/commit/870a03359169f68ef0d7cd20963b24182918e61f))
 * fix misleading fleshkin chest tooltip ([47b2758](https://github.com/Elenterius/Biomancy/commit/47b2758b5eee547d2bbe7d9eec01402f5ce38cf2))
-
-### [1.11.3](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.11.2...1.19.2-v2.1.11.3) (2023-06-30)
-
-
-### Bug Fixes
-
-* fix Ravenous Claws ability tooltips not using translation keys ([989ff50](https://github.com/Elenterius/Biomancy/commit/989ff50e67110b0037d145f3a804a5455124ae91))
 
