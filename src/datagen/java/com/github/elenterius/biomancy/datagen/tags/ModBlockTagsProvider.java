@@ -1,5 +1,7 @@
 package com.github.elenterius.biomancy.datagen.tags;
 
+import com.github.elenterius.biomancy.block.FleshDoorBlock;
+import com.github.elenterius.biomancy.block.FullFleshDoorBlock;
 import com.github.elenterius.biomancy.init.ModBlockMaterials;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.tags.ModBlockTags;
@@ -17,6 +19,7 @@ import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
+import java.util.function.Predicate;
 
 import static com.github.elenterius.biomancy.BiomancyMod.MOD_ID;
 
@@ -39,6 +42,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 	protected void addTags() {
 		addFleshyBlocksToHoeTag();
 		addCreateTags();
+		addQuarkTags();
 
 		//CONVERTABLE_TO_PRIMAL_FLESH
 		//CONVERTABLE_TO_MALIGNANT_FLESH
@@ -110,4 +114,15 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 		);
 	}
 
+	/**
+	 * <a href="https://github.com/VazkiiMods/Quark/blob/master/src/main/resources/data/quark/tags">Quark Tags</a>
+	 */
+	private void addQuarkTags() {
+		String modId = "quark";
+		TagKey<Block> noDoubleDoor = tagKey(modId, "non_double_door");
+		TagAppender<Block> tag = tag(noDoubleDoor);
+
+		Predicate<Block> predicate = block -> block instanceof FleshDoorBlock || block instanceof FullFleshDoorBlock;
+		ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).filter(predicate).forEach(tag::add);
+	}
 }
