@@ -620,6 +620,7 @@ public class ModRecipeProvider extends RecipeProvider {
 		registerDecomposerRecipesFor119(consumer);
 		registerDecomposerRecipesForBiomesOPlenty(consumer);
 		registerDecomposerRecipesForAlexsMobs(consumer);
+		registerDecomposerRecipesForTetra(consumer);
 	}
 
 	private void registerDecomposerRecipesFor119(Consumer<FinishedRecipe> consumer) {
@@ -633,6 +634,14 @@ public class ModRecipeProvider extends RecipeProvider {
 
 	private void registerDecomposerRecipesForBiomesOPlenty(Consumer<FinishedRecipe> consumer) {
 		DecomposerRecipeBuilder.create().ifModLoaded("biomesoplenty").setIngredient(new DatagenIngredient("biomesoplenty:flesh_tendons")).addOutput(ModItems.ELASTIC_FIBERS.get(), 4, 8).addOutput(ModItems.FLESH_BITS.get(), 1, 2).unlockedBy(ModItems.MOB_SINEW).save(consumer);
+	}
+
+	private void registerDecomposerRecipesForTetra(Consumer<FinishedRecipe> consumer) {
+		DecomposerRecipeBuilder.create().ifModLoaded("tetra").setIngredient(new DatagenIngredient("tetra:dragon_sinew"))
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 4, 8)
+				.addOutput(ModItems.TOUGH_FIBERS.get(), 1, 2)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 4, 8)
+				.unlockedBy(ModItems.MOB_SINEW).save(consumer);
 	}
 
 	private void registerDecomposerRecipesForAlexsMobs(Consumer<FinishedRecipe> consumer) {
