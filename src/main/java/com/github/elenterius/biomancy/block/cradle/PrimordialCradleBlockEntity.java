@@ -142,11 +142,14 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 
 	public void onSacrifice(ServerLevel level) {
 		BlockPos pos = getBlockPos();
+
+		float spreadChargeMultiplier = sacrificeHandler.getLifeEnergyPct();
+
 		if (level.random.nextFloat() < sacrificeHandler.getSuccessChance()) {
 
 			if (level.random.nextFloat() < sacrificeHandler.getAnomalyChance()) {
 				spawnPrimordialFleshBlob(level, pos, sacrificeHandler);
-				primalSpreadCharge += 2048;
+				primalSpreadCharge += Math.round(2048 * spreadChargeMultiplier);
 				SoundUtil.broadcastBlockSound(level, pos, SoundEvents.FOX_SCREECH, 2f, 0.5f);
 			}
 			else {
@@ -157,7 +160,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 					spawnFleshBlob(level, pos, sacrificeHandler);
 				}
 
-				primalSpreadCharge += 512;
+				primalSpreadCharge += Math.round(512 * spreadChargeMultiplier);
 				SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CREATOR_SPAWN_MOB);
 			}
 
@@ -174,7 +177,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 				PrimordialEcosystem.tryToReplaceBlock(level, pos.below(), ModBlocks.PRIMAL_FLESH.get().defaultBlockState());
 			}
 
-			primalSpreadCharge += 1024;
+			primalSpreadCharge += Math.round(1024 * spreadChargeMultiplier);
 			SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), 1f, 0.15f + level.random.nextFloat() * 0.5f);
 		}
 

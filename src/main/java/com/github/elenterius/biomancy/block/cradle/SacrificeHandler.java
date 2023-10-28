@@ -11,10 +11,10 @@ import java.util.function.Consumer;
 
 public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 
-	private static final int MAX_VALUE = 100;
+	private static final int MAX_BIOMASS_VALUE = 100;
 
 	private byte biomass;
-	private byte lifeEnergy;
+	private int lifeEnergy;
 	private int successValue;
 	private int diseaseValue;
 	private int hostileValue;
@@ -39,11 +39,11 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 	}
 
 	public boolean isFull() {
-		return lifeEnergy >= MAX_VALUE && biomass >= MAX_VALUE;
+		return lifeEnergy >= MAX_BIOMASS_VALUE && biomass >= MAX_BIOMASS_VALUE;
 	}
 
 	public void setBiomass(int amount) {
-		biomass = (byte) Mth.clamp(amount, 0, MAX_VALUE);
+		biomass = (byte) Mth.clamp(amount, 0, MAX_BIOMASS_VALUE);
 	}
 
 	public boolean addBiomass(int amount) {
@@ -54,7 +54,7 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 			return true;
 		}
 
-		if (amount > 0 && biomass < MAX_VALUE) {
+		if (amount > 0 && biomass < MAX_BIOMASS_VALUE) {
 			setBiomass(biomass + amount);
 			return true;
 		}
@@ -67,11 +67,11 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 	}
 
 	public float getBiomassPct() {
-		return biomass / (float) MAX_VALUE;
+		return biomass / 100f;
 	}
 
 	public void setLifeEnergy(int amount) {
-		lifeEnergy = (byte) Mth.clamp(amount, 0, MAX_VALUE);
+		lifeEnergy = (byte) Mth.clamp(amount, 0, Integer.MAX_VALUE);
 	}
 
 	public boolean addLifeEnergy(int amount) {
@@ -82,7 +82,7 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 			return true;
 		}
 
-		if (amount > 0 && lifeEnergy < MAX_VALUE) {
+		if (amount > 0) {
 			setLifeEnergy(lifeEnergy + amount);
 			return true;
 		}
@@ -95,7 +95,7 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 	}
 
 	public float getLifeEnergyPct() {
-		return lifeEnergy / (float) MAX_VALUE;
+		return lifeEnergy / 100f;
 	}
 
 	public float getSuccessChance() {
@@ -184,7 +184,7 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 	public CompoundTag serializeNBT() {
 		CompoundTag tag = new CompoundTag();
 		tag.putByte("Biomass", biomass);
-		tag.putByte("LifeEnergy", lifeEnergy);
+		tag.putInt("LifeEnergy", lifeEnergy);
 
 		tag.putInt("Success", successValue);
 
@@ -199,7 +199,7 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 	@Override
 	public void deserializeNBT(CompoundTag tag) {
 		biomass = tag.getByte("Biomass");
-		lifeEnergy = tag.getByte("LifeEnergy");
+		lifeEnergy = tag.getInt("LifeEnergy");
 
 		successValue = tag.getInt("Success");
 
