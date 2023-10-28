@@ -230,6 +230,8 @@ dependencies {
 //	implementation fg.deobf("se.mickelus.mutil:mutil:1.19.2-5.1.0")
 	compileOnly fg.deobf("curse.maven:tetra-289712:4738567") // 1.19.2-5.5.0
 
+//	runtimeOnly fg.deobf("maven.modrinth:nerb:ANmCMdMt") //NERB 0.3
+
 	//TODO: Morph Mod Integration?
 //    implementation fg.deobf("curse.maven:identity-391390:3807264") // https://www.curseforge.com/minecraft/mc-mods/identity
 //    runtimeOnly fg.deobf("curse.maven:architectury-419699:4040966")

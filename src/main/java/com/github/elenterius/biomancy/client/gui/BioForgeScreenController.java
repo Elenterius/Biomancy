@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.crafting.recipe.BioForgeRecipe;
 import com.github.elenterius.biomancy.init.ModBioForgeTabs;
 import com.github.elenterius.biomancy.init.ModRecipeBookTypes;
 import com.github.elenterius.biomancy.init.client.ModRecipeBookCategories;
+import com.github.elenterius.biomancy.integration.BioForgeCompat;
 import com.github.elenterius.biomancy.menu.BioForgeMenu;
 import com.github.elenterius.biomancy.menu.BioForgeTab;
 import com.github.elenterius.biomancy.mixin.client.RecipeCollectionAccessor;
@@ -267,7 +268,7 @@ class BioForgeScreenController {
 
 	private void updateAndSearchRecipes() {
 		LocalPlayer player = getPlayer();
-		boolean isCreativePlayer = player.isCreative();
+		boolean isCreativePlayer = player.isCreative() || BioForgeCompat.isRecipeCollectionOverwriteEnabled();
 
 		ClientRecipeBook recipeBook = player.getRecipeBook();
 		List<RecipeCollection> recipesForCategory = recipeBook.getCollection(ModRecipeBookCategories.getRecipeBookCategories(tabs.get(activeTab)));
