@@ -25,6 +25,10 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 		super(dataGenerator, blockTagProvider, BiomancyMod.MOD_ID, existingFileHelper);
 	}
 
+	private static TagKey<Item> forgeTag(String path) {
+		return ItemTags.create(new ResourceLocation("forge", path));
+	}
+
 	@Override
 	protected void addTags() {
 		addBiomancyTags();
@@ -37,13 +41,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 				.add(SUGAR, COOKIE, CAKE, HONEYCOMB, HONEY_BLOCK, HONEYCOMB_BLOCK, HONEY_BOTTLE, SWEET_BERRIES, COCOA_BEANS, APPLE)
 				.addOptional("create:sweet_roll", "create:chocolate_glazed_berries", "create:honeyed_apple", "create:bar_of_chocolate")
 				.addOptional("createaddition:chocolate_cake");
-
-		createTag(ModItemTags.POOR_BIOMASS);
-		createTag(ModItemTags.AVERAGE_BIOMASS);
-		createTag(ModItemTags.GOOD_BIOMASS);
-		createTag(ModItemTags.SUPERB_BIOMASS);
-		createTag(ModItemTags.BIOMASS)
-				.addTag(ModItemTags.POOR_BIOMASS, ModItemTags.AVERAGE_BIOMASS, ModItemTags.GOOD_BIOMASS, ModItemTags.SUPERB_BIOMASS);
 
 		createTag(ModItemTags.RAW_MEATS)
 				.add(BEEF, PORKCHOP, CHICKEN, RABBIT, MUTTON, COD, SALMON, TROPICAL_FISH, PUFFERFISH)
@@ -72,10 +69,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
 	private void addMinecraftTags() {
 		//		tag(ItemTags.FENCES).getInternalBuilder().addTag(ModTags.Blocks.FLESHY_FENCES.getName(), BiomancyMod.MOD_ID);
-	}
-
-	private static TagKey<Item> forgeTag(String path) {
-		return ItemTags.create(new ResourceLocation("forge", path));
 	}
 
 	private void addForgeTags() {

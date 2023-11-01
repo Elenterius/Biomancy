@@ -34,6 +34,8 @@ public final class CommonSetupHandler {
 		// if not thread safe do it after the common setup event on a single thread
 		event.enqueueWork(() -> {
 			ModTriggers.register();
+			ModPredicates.registerItemPredicates();
+
 			registerDispenserBehaviors();
 			ModRecipes.registerComposterRecipes();
 
