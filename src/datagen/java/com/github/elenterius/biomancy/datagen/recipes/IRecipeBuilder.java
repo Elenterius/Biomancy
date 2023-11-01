@@ -46,6 +46,10 @@ public interface IRecipeBuilder {
 
 	IRecipeBuilder unlockedBy(String name, CriterionTriggerInstance criterionTrigger);
 
+	default IRecipeBuilder unlockedBy(String name, ItemPredicate predicate) {
+		return unlockedBy(name, inventoryTrigger(predicate));
+	}
+
 	default IRecipeBuilder unlockedBy(ItemLike itemLike, CriterionTriggerInstance criterionTrigger) {
 		return unlockedBy("has_" + getItemName(itemLike), criterionTrigger);
 	}

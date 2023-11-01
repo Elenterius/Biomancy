@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.datagen.recipes;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.advancements.predicate.FoodItemPredicate;
 import com.github.elenterius.biomancy.crafting.recipe.FoodNutritionIngredient;
 import com.github.elenterius.biomancy.init.ModBioForgeTabs;
 import com.github.elenterius.biomancy.init.ModItems;
@@ -370,30 +371,31 @@ public class ModRecipeProvider extends RecipeProvider {
 	}
 
 	private void registerDigestingRecipes(Consumer<FinishedRecipe> consumer) {
+		FoodItemPredicate foodItemPredicate = new FoodItemPredicate();
 
 		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 1, "poor_food")
 				.setIngredient(new FoodNutritionIngredient(0, 1))
-				.unlockedBy(ModItemTags.POOR_BIOMASS).save(consumer);
+				.unlockedBy("has_food", foodItemPredicate).save(consumer);
 
 		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 2, "average_food")
 				.setIngredient(new FoodNutritionIngredient(2, 3))
-				.unlockedBy(ModItemTags.AVERAGE_BIOMASS).save(consumer);
+				.unlockedBy("has_food", foodItemPredicate).save(consumer);
 
 		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 4, "good_food")
 				.setIngredient(new FoodNutritionIngredient(4, 5))
-				.unlockedBy(ModItemTags.GOOD_BIOMASS).save(consumer);
+				.unlockedBy("has_food", foodItemPredicate).save(consumer);
 
 		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 6, "superb_food")
 				.setIngredient(new FoodNutritionIngredient(6, 7))
-				.unlockedBy(ModItemTags.SUPERB_BIOMASS).save(consumer);
+				.unlockedBy("has_food", foodItemPredicate).save(consumer);
 
 		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 8, "excellent_food")
 				.setIngredient(new FoodNutritionIngredient(8, 9))
-				.unlockedBy(ModItemTags.SUPERB_BIOMASS).save(consumer);
+				.unlockedBy("has_food", foodItemPredicate).save(consumer);
 
 		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 10, "godly_food")
 				.setIngredient(new FoodNutritionIngredient(10, Integer.MAX_VALUE))
-				.unlockedBy(ModItemTags.SUPERB_BIOMASS).save(consumer);
+				.unlockedBy("has_food", foodItemPredicate).save(consumer);
 
 		//////////////////////////
 

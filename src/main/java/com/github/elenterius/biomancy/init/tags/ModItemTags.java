@@ -22,12 +22,6 @@ public final class ModItemTags {
 	public static final TagKey<Item> COOKED_MEATS = tag("cooked_meats");
 	public static final TagKey<Item> SUGARS = tag("sugars");
 
-	public static final TagKey<Item> BIOMASS = tag("biomass");
-	public static final TagKey<Item> POOR_BIOMASS = tag("poor_biomass");
-	public static final TagKey<Item> AVERAGE_BIOMASS = tag("average_biomass");
-	public static final TagKey<Item> GOOD_BIOMASS = tag("good_biomass");
-	public static final TagKey<Item> SUPERB_BIOMASS = tag("superb_biomass");
-
 	private ModItemTags() {}
 
 	private static TagKey<Item> tag(String name) {
