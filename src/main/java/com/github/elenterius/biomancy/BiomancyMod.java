@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.RegistryObject;
@@ -31,6 +32,7 @@ public final class BiomancyMod {
 		GeckoLib.initialize();
 
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+		ModLoadingContext modLoadingContext = ModLoadingContext.get();
 
 		ModBannerPatterns.BANNERS.register(modEventBus);
 
@@ -55,6 +57,7 @@ public final class BiomancyMod {
 		ModSoundEvents.SOUND_EVENTS.register(modEventBus);
 		ModParticleTypes.PARTICLE_TYPES.register(modEventBus);
 
+		BiomancyConfig.register(modLoadingContext);
 		ModsCompatHandler.onBiomancyInit(modEventBus);
 	}
 

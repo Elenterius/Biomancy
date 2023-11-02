@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.init;
 
+import com.github.elenterius.biomancy.BiomancyConfig;
 import com.github.elenterius.biomancy.BiomancyMod;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.world.entity.npc.VillagerProfession;
@@ -21,6 +22,8 @@ public class ModVillagerTrades {
 
 	@SubscribeEvent
 	public static void onVillagerTrades(final VillagerTradesEvent event) {
+		if (Boolean.FALSE.equals(BiomancyConfig.SERVER.addTradesToVillagers.get())) return;
+
 		if (event.getType() == VillagerProfession.BUTCHER) {
 			addButcherTrades(event.getTrades());
 		}
@@ -31,6 +34,8 @@ public class ModVillagerTrades {
 
 	@SubscribeEvent
 	public static void onWandererTrades(final WandererTradesEvent event) {
+		if (Boolean.FALSE.equals(BiomancyConfig.SERVER.addTradesToWanderingTrader.get())) return;
+
 		List<VillagerTrades.ItemListing> genericTrades = event.getGenericTrades();
 		genericTrades.add(sellToPlayer(ModItems.EXOTIC_DUST.get(), 4, 2, 16, 5));
 		genericTrades.add(sellToPlayer(ModItems.FLESH_SPIKE.get(), 2, 16, 5));
