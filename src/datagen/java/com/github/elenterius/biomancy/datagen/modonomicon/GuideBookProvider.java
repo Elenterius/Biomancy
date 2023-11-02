@@ -20,6 +20,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.phys.Vec2;
 
 public class GuideBookProvider extends AbstractBookProvider {
 
@@ -33,31 +34,31 @@ public class GuideBookProvider extends AbstractBookProvider {
 
 	@Override
 	protected void generate() {
+		BookLangHelper langHelper = ModonomiconAPI.get().getLangHelper(modId);
 
-		BookLangHelper helper = ModonomiconAPI.get().getLangHelper(modId);
-		helper.book("guide_book");
-
-		BookCategoryModel featuresCategory = makeFeaturesCategory(helper);
-
-		BookModel demoBook = BookModel.create(GuideBookItem.GUIDE_BOOK_ID, helper.bookName())
-				.withTooltip(helper.bookTooltip())
+		langHelper.book("guide_book");
+		BookModel book = BookModel.create(GuideBookItem.GUIDE_BOOK_ID, langHelper.bookName())
+				.withTooltip(langHelper.bookTooltip())
 				.withCustomBookItem(ModItems.GUIDE_BOOK.getId()).withGenerateBookItem(false)
-				.withCategories(featuresCategory)
-				.withCraftingTexture(BiomancyMod.createRL("textures/gui/crafting_textures.png"))
-				.withBookContentTexture(BiomancyMod.createRL("textures/gui/book_content.png"))
-				.withBookOverviewTexture(BiomancyMod.createRL("textures/gui/book_overview.png"));
+				.withCraftingTexture(BiomancyMod.createRL("textures/gui/modonomicon/crafting_textures.png"))
+				.withBookContentTexture(BiomancyMod.createRL("textures/gui/modonomicon/book_content.png"))
+				.withBookOverviewTexture(BiomancyMod.createRL("textures/gui/modonomicon/book_overview.png"));
 
-		lang.add(demoBook.getName(), "Biomancy Index");
-		lang.add(demoBook.getTooltip(), "A book to test Modonomicon features for Biomancy.");
+		lang.add(book.getName(), "Biomancy Index");
+		lang.add(book.getTooltip(), "A book to test Modonomicon features for Biomancy.");
 
-		add(demoBook);
+		BookCategoryModel featuresCategory = makeFeaturesCategory(langHelper);
+
+		book.withCategories(featuresCategory);
+
+		add(book);
 	}
 
-	private BookCategoryModel makeFeaturesCategory(BookLangHelper helper) {
-		helper.category("features");
+	private BookCategoryModel makeFeaturesCategory(BookLangHelper langHelper) {
+		langHelper.category("features");
 
-		EntryLocationHelper entryHelper = ModonomiconAPI.get().getEntryLocationHelper();
-		entryHelper.setMap(
+		EntryLocationHelper locationHelper = ModonomiconAPI.get().getEntryLocationHelper();
+		locationHelper.setMap(
 				"_____________________",
 				"__________e_d________",
 				"_____________________",
@@ -66,187 +67,189 @@ public class GuideBookProvider extends AbstractBookProvider {
 				"_____________________"
 		);
 
-		var primordialCradleRecipe = makeCradleEntry(helper, entryHelper, 'p');
+		BookEntryModel primordialCradleRecipe = makeCradleEntry(langHelper, locationHelper.get('p')).build();
 
-		var spotlightEntry = makeSpotlightEntry(helper, entryHelper, 's');
+		BookEntryModel spotlightTestEntry = makeSpotlightTestEntry(langHelper, locationHelper.get('s')).build();
 
-		var entityEntry = makeEntityEntry(helper, entryHelper, 'e')
+		BookEntryModel fleshBlobEntry = makeFleshBlobEntry(langHelper, locationHelper.get('e'))
 				.withParent(BookEntryParentModel.builder().withEntryId(primordialCradleRecipe.getId()).build())
 				.build();
 
-		var decomposerEntry = makeDecomposerEntry(helper, entryHelper, 'd')
-				.withParent(BookEntryParentModel.builder().withEntryId(entityEntry.getId()).build())
+		BookEntryModel decomposerEntry = makeDecomposerEntry(langHelper, locationHelper.get('d'))
+				.withParent(BookEntryParentModel.builder().withEntryId(fleshBlobEntry.getId()).build())
 				.build();
 
-		BookCategoryModel categoryModel = BookCategoryModel.create(modLoc(helper.category), helper.categoryName())
-				.withIcon("biomancy:living_flesh")
-				.withEntries(primordialCradleRecipe)
-				.withEntries(decomposerEntry)
-				.withEntries(spotlightEntry)
-				.withEntries(entityEntry)
-				.withEntryTextures(BiomancyMod.createRL("textures/gui/entry_textures.png"))
-				.withBackground(BiomancyMod.createRL("textures/gui/category1_background.png"));
-		lang.add(helper.categoryName(), "Fleshy Constructs");
+		BookCategoryModel category = BookCategoryModel.create(modLoc(langHelper.category), langHelper.categoryName())
+				.withIcon(ModItems.LIVING_FLESH.get())
+				.withEntryTextures(BiomancyMod.createRL("textures/gui/modonomicon/entry_textures.png"))
+				.withBackground(BiomancyMod.createRL("textures/gui/modonomicon/main_background.png"))
+				.withEntries(primordialCradleRecipe, decomposerEntry, fleshBlobEntry)
+				.withEntries(spotlightTestEntry);
+		lang.add(langHelper.categoryName(), "Fleshy Constructs");
 
-		return categoryModel;
+		return category;
 	}
 
+	private BookEntryModel.Builder makeSpotlightTestEntry(BookLangHelper langHelper, Vec2 location) {
+		langHelper.entry("spotlight");
 
-
-	private BookEntryModel makeSpotlightEntry(BookLangHelper helper, EntryLocationHelper entryHelper, char location) {
-		helper.entry("spotlight");
-
-		helper.page("intro");
+		langHelper.page("intro");
 		var introPage = BookTextPageModel.builder()
-				.withText(helper.pageText())
-				.withTitle(helper.pageTitle())
+				.withText(langHelper.pageText())
+				.withTitle(langHelper.pageTitle())
 				.build();
-		lang.add(helper.pageTitle(), "Spotlight Entry");
-		lang.add(helper.pageText(), "Spotlight pages allow to show items (actually, ingredients).");
+		lang.add(langHelper.pageTitle(), "[PH] Spotlight Entry");
+		lang.add(langHelper.pageText(), "[PH] Spotlight pages allow to show items (actually, ingredients).");
 
-		helper.page("spotlight1");
+		langHelper.page("spotlight1");
 		var spotlight1 = BookSpotlightPageModel.builder()
-				.withTitle(helper.pageTitle())
-				.withText(helper.pageText())
+				.withTitle(langHelper.pageTitle())
+				.withText(langHelper.pageText())
 				.withItem(Ingredient.of(Items.APPLE))
 				.build();
-		lang.add(helper.pageTitle(), "Custom Title");
-		lang.add(helper.pageText(), "A sample spotlight page with custom title.");
+		lang.add(langHelper.pageTitle(), "[PH] Custom Title");
+		lang.add(langHelper.pageText(), "[PH] A sample spotlight page with custom title.");
 
-		helper.page("spotlight2");
+		langHelper.page("spotlight2");
 		var spotlight2 = BookSpotlightPageModel.builder()
-				.withText(helper.pageText())
+				.withText(langHelper.pageText())
 				.withItem(Ingredient.of(Items.DIAMOND))
 				.build();
-		lang.add(helper.pageText(), "A sample spotlight page with automatic title.");
+		lang.add(langHelper.pageText(), "[PH] A sample spotlight page with automatic title.");
 
 		var builder = BookEntryModel.builder()
-				.withId(entryId(helper))
-				.withName(helper.entryName())
-				.withDescription(helper.entryDescription())
-				.withIcon("minecraft:beacon")
-				.withLocation(entryHelper.get(location))
-				.withPages(introPage, spotlight1, spotlight2)
-				.build();
-		lang.add(helper.entryName(), "Spotlight Entry");
-		lang.add(helper.entryDescription(), "An entry showcasing spotlight pages.");
+				.withId(entryId(langHelper))
+				.withName(langHelper.entryName())
+				.withDescription(langHelper.entryDescription())
+				.withIcon(Items.BEACON)
+				.withLocation(location)
+				.withPages(introPage, spotlight1, spotlight2);
+
+		lang.add(langHelper.entryName(), "[PH] Spotlight Entry");
+		lang.add(langHelper.entryDescription(), "[PH] An entry showcasing spotlight pages.");
+
 		return builder;
 	}
 
-	private BookEntryModel.Builder makeEntityEntry(BookLangHelper helper, EntryLocationHelper entryHelper, char location) {
-		helper.entry("entity");
+	private BookEntryModel.Builder makeFleshBlobEntry(BookLangHelper langHelper, Vec2 location) {
+		langHelper.entry("mob");
 
-		helper.page("living_flesh_spotlight");
+		langHelper.page("living_flesh_spotlight");
 		var livingFleshSpotlight = BookSpotlightPageModel.builder()
-				.withText(helper.pageText())
+				.withText(langHelper.pageText())
 				.withItem(Ingredient.of(ModItems.LIVING_FLESH.get()))
 				.build();
-		lang.add(helper.pageText(), """
+		lang.add(langHelper.pageText(), """
 				Living Flesh is the remains of a Flesh Blob after is has been killed.
 				\\
 				It's most definitely alive, although it lacks any real intelligence or selfish will.
 				\\
 				++That isn't necessarily a bad thing though...++""");
 
-		helper.page("flesh_blob");
+		langHelper.page("flesh_blob");
 		BookEntityPageModel fleshBlobPage = BookEntityPageModel.builder()
-				.withText(helper.pageText())
 				.withEntityId(ModEntityTypes.FLESH_BLOB.getId().toString())
 				.withScale(1f)
 				.build();
-		lang.add(helper.pageText(), """
+
+		langHelper.page("flesh_blob_page");
+		BookTextPageModel fleshBlobText = BookTextPageModel.builder()
+				.withText(langHelper.pageText())
+				.build();
+		lang.add(langHelper.pageText(), """
 				A regular Flesh Blob is formed with just typical raw meat and healing agents.
 				\\
 				Has no redeeming qualities, but makes for a good house pet.""");
-
-		helper.page("hungry_flesh_blob");
+		langHelper.page("hungry_flesh_blob");
 		BookEntityPageModel hungryFleshBlobPage = BookEntityPageModel.builder()
 				.withEntityId(ModEntityTypes.HUNGRY_FLESH_BLOB.getId().toString())
 				.withScale(1f)
 				.build();
 
-		helper.page("hungry_flesh_blob_text");
+		langHelper.page("hungry_flesh_blob_text");
 		BookTextPageModel hungryFleshBlobText = BookTextPageModel.builder()
-				.withText(helper.pageText())
+				.withText(langHelper.pageText())
 				.build();
-		lang.add(helper.pageText(), """
+		lang.add(langHelper.pageText(), """
 				A Hungry Flesh Blob is formed by adding a few Sharp Fangs into the cradle with some raw meat and a healing agent.
 				\\
 				Maybe don't try petting this one...""");
 
-		var entryModel = BookEntryModel.builder()
-				.withId(entryId(helper))
-				.withName(helper.entryName())
-				.withDescription(helper.entryDescription())
-				.withIcon("biomancy:living_flesh")
-				.withLocation(entryHelper.get(location))
-				.withPages(livingFleshSpotlight, fleshBlobPage, fleshBlobText, hungryFleshBlobPage, hungryFleshBlobText);
-		lang.add(helper.entryName(), "Flesh Blobs");
-		lang.add(helper.entryDescription(), "Bouncy lil guys");
+		var builder = BookEntryModel.builder()
+				.withId(entryId(langHelper))
+				.withName(langHelper.entryName())
+				.withDescription(langHelper.entryDescription())
+				.withIcon(ModItems.LIVING_FLESH.get())
+				.withLocation(location)
+				.withPages(
+						fleshBlobPage, fleshBlobText,
+						hungryFleshBlobPage, hungryFleshBlobText,
+						livingFleshSpotlight
+				);
+		lang.add(langHelper.entryName(), "Flesh Blobs");
+		lang.add(langHelper.entryDescription(), "Bouncy lil guys");
 
-		return entryModel;
+		return builder;
 	}
 
-	private BookEntryModel.Builder makeDecomposerEntry(BookLangHelper helper, EntryLocationHelper entryHelper, char location) {
-		helper.entry("decomposer");
+	private BookEntryModel.Builder makeDecomposerEntry(BookLangHelper langHelper, Vec2 location) {
+		langHelper.entry("decomposer");
 
-		helper.page("spotlight");
+		langHelper.page("spotlight");
 		var introPage = BookSpotlightPageModel.builder()
-				.withText(helper.pageText())
+				.withText(langHelper.pageText())
 				.withItem(Ingredient.of(ModItems.DECOMPOSER.get()))
 				.build();
-		lang.add(helper.pageText(), """
-				By giving a Living Flesh some more meat, a few Sharp Fangs, and a Bile Gland, you make a creature that will chew up items and give you useful components for the Bio-Forge""");
+		lang.add(langHelper.pageText(), "By giving a Living Flesh some more meat, a few Sharp Fangs, and a Bile Gland, you make a creature that will chew up items and give you useful components for the Bio-Forge");
 
-		helper.page("crafting");
+		langHelper.page("crafting");
 		var crafting = BookCraftingRecipePageModel.builder()
 				.withRecipeId1("biomancy:decomposer")
 				.build();
 
-		var entryModel = BookEntryModel.builder()
-				.withId(entryId(helper))
-				.withName(helper.entryName())
-				.withDescription(helper.entryDescription())
-				.withIcon("biomancy:decomposer")
-				.withLocation(entryHelper.get(location))
+		var builder = BookEntryModel.builder()
+				.withId(entryId(langHelper))
+				.withName(langHelper.entryName())
+				.withDescription(langHelper.entryDescription())
+				.withIcon(ModItems.DECOMPOSER.get())
+				.withLocation(location)
 				.withPages(introPage, crafting);
-		lang.add(helper.entryName(), "Decomposer");
-		lang.add(helper.entryDescription(), "Munch, munch!");
+		lang.add(langHelper.entryName(), "Decomposer");
+		lang.add(langHelper.entryDescription(), "Munch, munch!");
 
-		return entryModel;
+		return builder;
 	}
 
-	private BookEntryModel makeCradleEntry(BookLangHelper helper, EntryLocationHelper entryHelper, char location) {
-		helper.entry("primordialcradleentry");
+	private BookEntryModel.Builder makeCradleEntry(BookLangHelper langHelper, Vec2 location) {
+		langHelper.entry("primordial_cradle");
 
-		helper.page("intro");
+		langHelper.page("intro");
 		var introPage = BookTextPageModel.builder()
-				.withText(helper.pageText())
-				.withTitle(helper.pageTitle())
+				.withText(langHelper.pageText())
+				.withTitle(langHelper.pageTitle())
 				.build();
-		lang.add(helper.pageTitle(), "The Primordial Cradle");
-		lang.add(helper.pageText(), "By filling the cradle with raw flesh and a healing agent (Instant Health Potions, Healing Additive, or Regenerative Fluid) you gain the ability to form new living beings");
+		lang.add(langHelper.pageTitle(), "The Primordial Cradle");
+		lang.add(langHelper.pageText(), "By filling the cradle with raw flesh and a healing agent (Instant Health Potions, Healing Additive, or Regenerative Fluid) you gain the ability to form new living beings");
 
-		helper.page("crafting");
+		langHelper.page("crafting");
 		var crafting = BookCraftingRecipePageModel.builder()
-				.withRecipeId1("biomancy:primordial_cradle")
-				.withRecipeId2("biomancy:primordial_living_oculus")
-				.withText(helper.pageText())
+				.withRecipeId1("biomancy:primordial_core")
+				.withRecipeId2("biomancy:primordial_cradle")
+				.withText(langHelper.pageText())
 				.build();
-		lang.add(helper.pageText(), "Primordial Cradle Recipe");
+		lang.add(langHelper.pageText(), "Primordial Cradle Recipe");
 
-		BookEntryModel entryModel = BookEntryModel.builder()
-				.withId(entryId(helper))
-				.withName(helper.entryName())
-				.withDescription(helper.entryDescription())
-				.withIcon("biomancy:primordial_cradle") //we use primordial cradle as icon
-				.withLocation(entryHelper.get(location)) //and we place it at the location we defined earlier in the entry helper mapping
-				.withPages(introPage, crafting) //finally we add our pages to the entry
-				.build();
-		lang.add(helper.entryName(), "The Primordial Cradle");
-		lang.add(helper.entryDescription(), "The Fun Begins");
+		var builder = BookEntryModel.builder()
+				.withId(entryId(langHelper))
+				.withName(langHelper.entryName())
+				.withDescription(langHelper.entryDescription())
+				.withIcon(ModItems.PRIMORDIAL_CRADLE.get())
+				.withLocation(location)
+				.withPages(introPage, crafting);
+		lang.add(langHelper.entryName(), "The Primordial Cradle");
+		lang.add(langHelper.entryDescription(), "The Fun Begins");
 
-		return entryModel;
+		return builder;
 	}
 
 }
