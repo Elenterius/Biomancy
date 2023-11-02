@@ -42,8 +42,8 @@ public class ModVillagerTrades {
 		genericTrades.add(buyFromPlayer(ModItems.NUTRIENT_BAR.get(), 2, 8, 5));
 
 		List<VillagerTrades.ItemListing> rareTrades = event.getRareTrades();
-		rareTrades.add(sellToPlayer(ModItems.INSOMNIA_CURE.get(), 20, 8, 20));
-		rareTrades.add(sellToPlayer(ModItems.CREATOR_MIX.get(), 20, 5, 20));
+		rareTrades.add(sellToPlayer(ModItems.INSOMNIA_CURE.get(), 10, 8, 20));
+		rareTrades.add(sellToPlayer(ModItems.CREATOR_MIX.get(), 10, 5, 20));
 	}
 
 	private static BasicItemListing buyFromPlayer(Item item, int emeralds, int maxTrades, int xp) {
