@@ -1,3 +1,17 @@
+## [2.3.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.2.2.0...1.19.2-v2.2.3.0) (2023-11-03)
+
+
+### Features
+
+* add config for enabling unlimited flesh growth globally ([e28dc68](https://github.com/Elenterius/Biomancy/commit/e28dc68b22fe2d0d0cea75f81659a3b5063a965d))
+* add config for enabling unlimited flesh growth near cradles ([826c988](https://github.com/Elenterius/Biomancy/commit/826c9881aeeb9edfd77d0678fca95fa68a448eb7))
+* add server config for BioForge recipe unlocking and villager trades ([47a8b12](https://github.com/Elenterius/Biomancy/commit/47a8b120adcf69ed83ebd239cd467d371b35fb6c))
+* increase life/primal energy value of sacrificed Nether Stars tenfold ([320cc67](https://github.com/Elenterius/Biomancy/commit/320cc67f0a1a3c399c976e695cd9e01460e4092f))
+* make malignant flesh veins replaceable ([c574f3d](https://github.com/Elenterius/Biomancy/commit/c574f3d0fc337b1f87cffe5c603862f15a0bb295))
+* make wandering trader trades less expensive ([0eb8f80](https://github.com/Elenterius/Biomancy/commit/0eb8f808b43f4d13cfe6f8ccd755a80808577e2f))
+* remove infinite flesh growth near cradles (distance < 8) ([50df048](https://github.com/Elenterius/Biomancy/commit/50df048376bb4cec33912cc760e4ba834c71e3bc))
+* remove legacy item tags for biomass ([dd31596](https://github.com/Elenterius/Biomancy/commit/dd31596e1634a9cfa5fff61855c02e9b246933c9))
+
 ## [2.2.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.2.1.0...1.19.2-v2.2.2.0) (2023-10-28)
 
 
@@ -140,23 +154,4 @@
 ### Features
 
 * enhance tooltip clarity and consistency ([bdbbcb9](https://github.com/Elenterius/Biomancy/commit/bdbbcb96bea8c5b7b8bbb1f2c9772be8ab98ab31))
-
-## [1.12.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.11.3...1.19.2-v2.1.12.0) (2023-07-18)
-
-
-### Features
-
-* add attack reach indicator for the Ravenous Claws ([ccc850f](https://github.com/Elenterius/Biomancy/commit/ccc850fce7a7d08aa86a97676eb2068f9167009b))
-* add Spanish translation ([4c3c35b](https://github.com/Elenterius/Biomancy/commit/4c3c35ba18f09cf94b8c3a8581927ed809fada13))
-* add status effect version of Despoil for use by datapacks etc ([fe2ae46](https://github.com/Elenterius/Biomancy/commit/fe2ae46e524d0b862f5a7ccae769878436589259))
-* improve flesh spike tooltip ([4e4c042](https://github.com/Elenterius/Biomancy/commit/4e4c042654d80f0cc11dab20d3f18fbca87b6082))
-* make bio-machines retain their fuel when destroyed ([8ec768d](https://github.com/Elenterius/Biomancy/commit/8ec768dcf6a5e92717a9be2ac2d6336b8098bb2c))
-* make flesh block texture less repetitive (uses placeholder textures) ([20fb879](https://github.com/Elenterius/Biomancy/commit/20fb87945492eb2cef904b323487dd281bdb7ddc))
-
-
-### Bug Fixes
-
-* fix full block slabs not dropping two slab blocks ([54bb038](https://github.com/Elenterius/Biomancy/commit/54bb038109267982d1b5594df40cbfe589f3de19))
-* fix inability to switch claw modes when holding down ctrl to sprint ([870a033](https://github.com/Elenterius/Biomancy/commit/870a03359169f68ef0d7cd20963b24182918e61f))
-* fix misleading fleshkin chest tooltip ([47b2758](https://github.com/Elenterius/Biomancy/commit/47b2758b5eee547d2bbe7d9eec01402f5ce38cf2))
 
