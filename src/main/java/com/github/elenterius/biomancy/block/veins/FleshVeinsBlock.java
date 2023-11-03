@@ -426,9 +426,9 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		}
 
 		if (cradleDistance <= maxCradleDist) {
-			if (cradleDistance <= cradleCoreRadius || (cradle != null && cradle.consumePrimalEnergy(level, charge))) {
-				charge = Math.max(charge, Math.round(CHARGE.getMax() * nearCradlePct));
-				increaseChargeAroundPos(level, pos, random, charge * 2);
+			int primalEnergy = Math.max(charge, Math.round(CHARGE.getMax() * nearCradlePct) / 2);
+			if (cradle != null && cradle.consumePrimalEnergy(level, primalEnergy)) {
+				increaseChargeAroundPos(level, pos, random, primalEnergy * 2);
 			}
 			else if (charge > 1) {
 				int usedCharge = increaseChargeAroundPos(level, pos, random, charge);
