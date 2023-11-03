@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.block.veins;
 
+import com.github.elenterius.biomancy.BiomancyConfig;
 import com.github.elenterius.biomancy.block.cradle.PrimordialCradleBlockEntity;
 import com.github.elenterius.biomancy.block.malignantbloom.MalignantBloomBlock;
 import com.github.elenterius.biomancy.init.ModBlockProperties;
@@ -386,7 +387,10 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 
 		int charge = getCharge(state);
 		if (charge < 2) {
-			if (cradle != null && cradle.consumePrimalEnergy(level, 1)) {
+			if (BiomancyConfig.SERVER.doUnlimitedGrowth.get()) {
+				setCharge(level, pos, state, CHARGE.getMax());
+			}
+			else if (cradle != null && cradle.consumePrimalEnergy(level, 1)) {
 				setCharge(level, pos, state, charge + 1);
 			}
 			return;
