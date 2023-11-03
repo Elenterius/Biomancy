@@ -322,9 +322,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 
 	@Override
 	public boolean canBeReplaced(BlockState state, BlockPlaceContext useContext) {
-		ItemStack stack = useContext.getItemInHand();
-		boolean isValidItem = stack.is(asItem()) || stack.isEmpty();
-		return isValidItem && super.canBeReplaced(state, useContext);
+		return !useContext.getItemInHand().is(asItem()) || super.canBeReplaced(state, useContext);
 	}
 
 	@Override
