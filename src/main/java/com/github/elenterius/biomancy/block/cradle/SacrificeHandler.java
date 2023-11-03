@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.block.cradle;
 
 import com.github.elenterius.biomancy.tribute.Tribute;
 import com.github.elenterius.biomancy.tribute.Tributes;
+import com.google.common.math.IntMath;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
@@ -71,7 +72,7 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 	}
 
 	public void setLifeEnergy(int amount) {
-		lifeEnergy = (byte) Mth.clamp(amount, 0, Integer.MAX_VALUE);
+		lifeEnergy = Mth.clamp(amount, 0, Integer.MAX_VALUE);
 	}
 
 	public boolean addLifeEnergy(int amount) {
@@ -83,7 +84,7 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 		}
 
 		if (amount > 0) {
-			setLifeEnergy(lifeEnergy + amount);
+			setLifeEnergy(IntMath.saturatedAdd(lifeEnergy, amount));
 			return true;
 		}
 
