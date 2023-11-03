@@ -192,7 +192,10 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 
 	public boolean consumePrimalEnergy(ServerLevel level, int amount) {
 		if (amount <= 0) return false;
-		if (primalSpreadCharge < amount) return false;
+
+		PrimalEnergySettings.SupplyAmount supplyAmount = BiomancyConfig.SERVER.primalEnergySupplyOfCradle.get();
+		if (supplyAmount == PrimalEnergySettings.SupplyAmount.UNLIMITED) return true;
+		if (supplyAmount == PrimalEnergySettings.SupplyAmount.NONE) return false;
 
 		if (primalEnergy < amount) return false;
 
