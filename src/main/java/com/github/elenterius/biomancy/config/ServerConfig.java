@@ -7,6 +7,8 @@ public class ServerConfig {
 	public final ForgeConfigSpec.BooleanValue doBioForgeRecipeProgression;
 	public final ForgeConfigSpec.BooleanValue addTradesToVillagers;
 	public final ForgeConfigSpec.BooleanValue addTradesToWanderingTrader;
+	//	public final ForgeConfigSpec.BooleanValue decreasePrimalEnergyOfGrowth;
+	public final ForgeConfigSpec.EnumValue<PrimalEnergySettings.SupplyAmount> primalEnergySupplyOfCradle;
 
 	public ServerConfig(ForgeConfigSpec.Builder builder) {
 		builder.push("recipes");
@@ -26,6 +28,18 @@ public class ServerConfig {
 		addTradesToWanderingTrader = builder
 				.comment("Determines if wandering traders will sell biomancy items")
 				.define("addTradesToWanderingTrader", true);
+
+		builder.pop();
+
+		builder.push("flesh-growth");
+
+		//		decreasePrimalEnergyOfGrowth = builder
+		//				.comment("Determines if the BioForge recipes need to be unlocked to be able to craft them")
+		//				.define("decreasePrimalEnergyOfGrowth", true);
+
+		primalEnergySupplyOfCradle = builder
+				.comment("Determines how much primal energy the Cradle can supply to nearby malignant flesh veins")
+				.defineEnum("primalEnergySupplyOfCradle", PrimalEnergySettings.SupplyAmount.LIMITED);
 
 		builder.pop();
 	}
