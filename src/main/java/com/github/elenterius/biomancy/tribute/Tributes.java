@@ -51,7 +51,7 @@ public final class Tributes {
 	public static final Tribute MOB_FANG = register(ModItems.MOB_FANG.get(), TributeImpl.builder().successModifier(5).hostileModifier(5).create());
 	public static final Tribute MOB_CLAW = register(ModItems.MOB_CLAW.get(), TributeImpl.builder().successModifier(5).hostileModifier(5).create());
 	public static final Tribute ENDER_PEARL = register(Items.ENDER_PEARL, TributeImpl.builder().hostileModifier(50).anomalyModifier(50).create());
-	public static final Tribute NETHER_STAR = register(Items.NETHER_STAR, TributeImpl.builder().lifeEnergy(1000).hostileModifier(100).diseaseModifier(100).create());
+	public static final Tribute NETHER_STAR = register(Items.NETHER_STAR, TributeImpl.builder().lifeEnergy(10_000).hostileModifier(100).diseaseModifier(100).create());
 
 	public static final Tribute ELASTIC_FIBERS = register(ModItems.ELASTIC_FIBERS.get(), TributeImpl.builder().diseaseModifier(1).anomalyModifier(1).create());
 	public static final Tribute TOUGH_FIBERS = register(ModItems.TOUGH_FIBERS.get(), TributeImpl.builder().diseaseModifier(1).anomalyModifier(1).create());
