@@ -1,14 +1,20 @@
 package com.github.elenterius.biomancy.block.cradle;
 
 import com.github.elenterius.biomancy.block.fleshkinchest.FleshkinChestBlock;
+import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.init.ModTriggers;
 import com.github.elenterius.biomancy.integration.ModsCompatHandler;
+import com.github.elenterius.biomancy.styles.TextStyles;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -37,6 +43,8 @@ import net.minecraftforge.common.Tags;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
+import java.text.DecimalFormat;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -76,6 +84,10 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 	protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(BlockEntityType<A> blockEntityType, BlockEntityType<E> targetType, BlockEntityTicker<? super E> entityTicker) {
 		//noinspection unchecked
 		return targetType == blockEntityType ? (BlockEntityTicker<A>) entityTicker : null;
+	}
+
+	public static int getPrimalEnergy(CompoundTag tag) {
+		return tag.contains(PrimordialCradleBlockEntity.PRIMAL_ENERGY_KEY) ? tag.getInt(PrimordialCradleBlockEntity.PRIMAL_ENERGY_KEY) : 0;
 	}
 
 	@Override
@@ -200,4 +212,47 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 		}
 	}
 
+	@Override
+	public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flag) {
+		CompoundTag tag = BlockItem.getBlockEntityData(stack);
+		if (tag == null) return;
+
+		tooltip.add(ComponentUtil.emptyLine());
+
+		DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
+
+		int primalEnergy = getPrimalEnergy(tag);
+		if (primalEnergy > 0) {
+			tooltip.add(
+					ComponentUtil.literal(df.format(primalEnergy))
+							.withStyle(TextStyles.PRIMORDIAL_RUNES_LIGHT_GRAY)
+							.append(ComponentUtil.space())
+							.append(ComponentUtil.translatable("tooltip.biomancy.primal_energy").withStyle(TextStyles.GRAY))
+			);
+		}
+
+		if (tag.contains(PrimordialCradleBlockEntity.SACRIFICE_KEY)) {
+			CompoundTag sacrificeTag = tag.getCompound(PrimordialCradleBlockEntity.SACRIFICE_KEY);
+			byte biomass = sacrificeTag.getByte("Biomass");
+			int lifeEnergy = sacrificeTag.getInt("LifeEnergy");
+			int success = sacrificeTag.getInt("Success");
+			int disease = sacrificeTag.getInt("Disease");
+			int hostile = sacrificeTag.getInt("Hostile");
+			int anomaly = sacrificeTag.getInt("Anomaly");
+
+			if (biomass > 0) tooltip.add(createValueComponent(df, biomass, "Biomass"));
+			if (lifeEnergy > 0) tooltip.add(createValueComponent(df, lifeEnergy, "Life Energy"));
+			if (success > 0) tooltip.add(createValueComponent(df, success, "Success"));
+			if (disease > 0) tooltip.add(createValueComponent(df, disease, "Disease"));
+			if (hostile > 0) tooltip.add(createValueComponent(df, hostile, "Hostile"));
+			if (anomaly > 0) tooltip.add(createValueComponent(df, anomaly, "Anomaly"));
+		}
+	}
+
+	private static MutableComponent createValueComponent(DecimalFormat df, int value, String name) {
+		return ComponentUtil.literal(df.format(value))
+				.withStyle(TextStyles.PRIMORDIAL_RUNES_LIGHT_GRAY)
+				.append(ComponentUtil.space())
+				.append(ComponentUtil.literal(name).withStyle(TextStyles.GRAY));
+	}
 }
