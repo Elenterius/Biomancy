@@ -152,7 +152,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 
 			if (level.random.nextFloat() < sacrificeHandler.getAnomalyChance()) {
 				spawnPrimordialFleshBlob(level, pos, sacrificeHandler);
-				addPrimalEnergy(level, Math.round(2048 * energyMultiplier));
+				addPrimalEnergy(level, Math.round(4096 * energyMultiplier));
 				SoundUtil.broadcastBlockSound(level, pos, SoundEvents.FOX_SCREECH, 2f, 0.5f);
 			}
 			else {
@@ -163,7 +163,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 					spawnFleshBlob(level, pos, sacrificeHandler);
 				}
 
-				addPrimalEnergy(level, Math.round(512 * energyMultiplier));
+				addPrimalEnergy(level, Math.round(2048 * energyMultiplier));
 				SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CREATOR_SPAWN_MOB);
 			}
 
@@ -179,7 +179,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 			if (!PrimordialEcosystem.spreadMalignantVeinsFromSource(level, pos, PrimordialEcosystem.MAX_CHARGE_SUPPLIER)) {
 				PrimordialEcosystem.tryToReplaceBlock(level, pos.below(), ModBlocks.PRIMAL_FLESH.get().defaultBlockState());
 			}
-			addPrimalEnergy(level, Math.round(1024 * energyMultiplier));
+			addPrimalEnergy(level, Math.round(3072 * energyMultiplier));
 			SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), 1f, 0.15f + level.random.nextFloat() * 0.5f);
 		}
 
