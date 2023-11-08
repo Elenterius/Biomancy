@@ -65,6 +65,10 @@ minecraft {
 			// Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
 			property 'forge.enabledGameTestNamespaces', 'biomancy'
 
+			// Hot-Swapping via JBR, includes schema changes
+			// Guide: https://forge.gemwire.uk/wiki/Hotswap#Applying_schema_changes
+			jvmArgs '-XX:+IgnoreUnrecognizedVMOptions', '-XX:+AllowEnhancedClassRedefinition'
+
 			mods {
 				biomancy {
 					source sourceSets.main
@@ -76,13 +80,6 @@ minecraft {
 		client2 {
 			parent runs.client
 			args '--username', 'Dev2'
-		}
-
-		// Hot-Swapping via JBR, includes schema changes
-		// Guide: https://forge.gemwire.uk/wiki/Hotswap#Applying_schema_changes
-		clientWithJBR {
-			parent runs.client
-			jvmArg '-XX:+AllowEnhancedClassRedefinition'
 		}
 
 		server {
