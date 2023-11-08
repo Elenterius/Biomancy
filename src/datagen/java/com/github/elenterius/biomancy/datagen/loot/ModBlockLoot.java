@@ -57,6 +57,14 @@ public class ModBlockLoot extends BlockLoot {
 				)));
 	}
 
+	protected static LootTable.Builder createPrimordialCradleTable(Block block) {
+		return LootTable.lootTable().withPool(applyExplosionCondition(block, LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+				.add(LootItem.lootTableItem(block)
+						.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("PrimalEnergy", "BlockEntityTag.PrimalEnergy"))
+						.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("SacrificeHandler", "BlockEntityTag.SacrificeHandler"))
+				)));
+	}
+
 	protected static LootTable.Builder dropWithInventory(Block block) {
 		return LootTable.lootTable().withPool(applyExplosionCondition(block, LootPool.lootPool().setRolls(ConstantValue.exactly(1))
 				.add(LootItem.lootTableItem(block)
@@ -114,7 +122,7 @@ public class ModBlockLoot extends BlockLoot {
 	protected void addTables() {
 		LOGGER.info(logMarker, "registering block loot...");
 
-		dropSelf(ModBlocks.PRIMORDIAL_CRADLE.get());
+		add(ModBlocks.PRIMORDIAL_CRADLE.get(), ModBlockLoot::createPrimordialCradleTable);
 		dropSelf(ModBlocks.TONGUE.get());
 		dropSelf(ModBlocks.MAW_HOPPER.get());
 		add(ModBlocks.STORAGE_SAC.get(), ModBlockLoot::dropWithInventory);
