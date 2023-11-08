@@ -169,6 +169,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addTooltip("empty", "Empty");
 		addTooltip("contains", "Contains: %1$s");
 		addTooltip("nutrients_fuel", "Nutrients");
+		addTooltip("primal_energy", "Primal Energy");
 		addTooltip("nutrients_consumes", "Consumes %1$s u");
 		addTooltip("consumption", "Consumption");
 		addTooltip("bile_fuel", "Bile");
