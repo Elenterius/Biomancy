@@ -131,7 +131,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 							level.setBlock(pos, slabState, Block.UPDATE_CLIENTS);
 						}
 					}
-					else if (PrimordialEcosystem.getRandomWithSeed(pos).nextFloat() <= 0.42f && LevelUtil.getMaxBrightness(level, pos) > 5) {
+					else if ((n < (borderThreshold - 0.03f)) && (PrimordialEcosystem.getRandomWithSeed(pos).nextFloat() <= 0.3f) && (LevelUtil.getMaxBrightness(level, pos) > 5)) {
 						posBelow = pos.relative(direction);
 						stateBelow = level.getBlockState(posBelow);
 						MalignantBloomBlock block = ModBlocks.MALIGNANT_BLOOM.get();
