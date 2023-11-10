@@ -125,6 +125,16 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 					stateBelow = level.getBlockState(posBelow);
 					replacementBlockState = ModBlocks.PRIMAL_FLESH.get().defaultBlockState();
 				}
+				else if (stateBelow.is(ModBlockTags.PRIMORDIAL_ECO_SYSTEM_REPLACEABLE) && stateBelow.is(BlockTags.OVERWORLD_NATURAL_LOGS)) {
+					if (n < innerBorderThreshold) {
+						if (state.hasProperty(RotatedPillarBlock.AXIS)) {
+							Direction.Axis axis = state.getValue(RotatedPillarBlock.AXIS);
+							replacementBlockState = Blocks.BONE_BLOCK.defaultBlockState().setValue(RotatedPillarBlock.AXIS, axis);
+						}
+						else replacementBlockState = ModBlocks.PRIMAL_FLESH_WALL.get().defaultBlockState();
+					}
+					else replacementBlockState = ModBlocks.PRIMAL_FLESH.get().defaultBlockState();
+				}
 				else {
 					replacementBlockState = ModBlocks.MALIGNANT_FLESH.get().defaultBlockState();
 				}
