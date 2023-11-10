@@ -7,6 +7,7 @@ import com.github.elenterius.biomancy.init.ModBlockProperties;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.init.tags.ModBlockTags;
 import com.github.elenterius.biomancy.util.ArrayUtil;
 import com.github.elenterius.biomancy.util.Bit32Set;
 import com.github.elenterius.biomancy.util.EnhancedIntegerProperty;
@@ -29,6 +30,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -288,6 +290,15 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		return false;
 	}
 
+	protected static BlockState removeFace(BlockState state, BooleanProperty face) {
+		BlockState blockstate = state.setValue(face, Boolean.FALSE);
+		return hasAnyFace(blockstate) ? blockstate : Blocks.AIR.defaultBlockState();
+	}
+
+	public static boolean canVeinsAttachTo(BlockGetter level, Direction direction, BlockPos pos, BlockState state) {
+		return state.is(ModBlockTags.PRIMORDIAL_ECO_SYSTEM_REPLACEABLE) || Block.isFaceFull(state.getBlockSupportShape(level, pos), direction.getOpposite()) || Block.isFaceFull(state.getCollisionShape(level, pos), direction.getOpposite());
+	}
+
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
@@ -317,7 +328,42 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		if (Boolean.TRUE.equals(state.getValue(WATERLOGGED))) {
 			level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
-		return super.updateShape(state, direction, neighborState, level, currentPos, neighborPos);
+
+		if (!hasAnyFace(state)) {
+			return Blocks.AIR.defaultBlockState();
+		}
+
+		if (hasFace(state, direction) && !canVeinsAttachTo(level, direction, neighborPos, neighborState)) {
+			return removeFace(state, getFaceProperty(direction));
+		}
+
+		return state;
+	}
+
+	@Override
+	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+		boolean flag = false;
+
+		for (Direction direction : DIRECTIONS) {
+			if (hasFace(state, direction)) {
+				BlockPos blockpos = pos.relative(direction);
+				if (!canVeinsAttachTo(level, direction, blockpos, level.getBlockState(blockpos))) {
+					return false;
+				}
+				flag = true;
+			}
+		}
+
+		return flag;
+	}
+
+	@Override
+	public boolean isValidStateForPlacement(BlockGetter level, BlockState state, BlockPos pos, Direction direction) {
+		if (isFaceSupported(direction) && (!state.is(this) || !hasFace(state, direction))) {
+			BlockPos blockPos = pos.relative(direction);
+			return canVeinsAttachTo(level, direction, blockPos, level.getBlockState(blockPos));
+		}
+		return false;
 	}
 
 	@Override
