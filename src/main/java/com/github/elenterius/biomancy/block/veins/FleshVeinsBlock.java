@@ -20,6 +20,7 @@ import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -56,21 +57,21 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false).setValue(CHARGE.get(), CHARGE.getMin()));
 	}
 
-	public static boolean convertSelf(BlockState state, ServerLevel level, BlockPos pos, int directNeighbors, boolean isCradleNearby, float nearCradlePct) {
+	public static boolean convert(BlockState state, ServerLevel level, BlockPos pos, int directNeighbors, boolean isCradleNearby, float nearCradlePct) {
 
-		Bit32Set bitSet = new Bit32Set();
-		bitSet.set(5, hasFace(state, Direction.DOWN));
-		bitSet.set(4, hasFace(state, Direction.UP));
-		bitSet.set(3, hasFace(state, Direction.NORTH));
-		bitSet.set(2, hasFace(state, Direction.SOUTH));
-		bitSet.set(1, hasFace(state, Direction.WEST));
-		bitSet.set(0, hasFace(state, Direction.EAST));
+		Bit32Set facesSet = new Bit32Set();
+		facesSet.set(5, hasFace(state, Direction.DOWN));
+		facesSet.set(4, hasFace(state, Direction.UP));
+		facesSet.set(3, hasFace(state, Direction.NORTH));
+		facesSet.set(2, hasFace(state, Direction.SOUTH));
+		facesSet.set(1, hasFace(state, Direction.WEST));
+		facesSet.set(0, hasFace(state, Direction.EAST));
 
-		int faces = bitSet.cardinality();
+		int numFaces = facesSet.cardinality();
 
-		if (faces == 1) {
+		if (numFaces == 1) {
 			if (isCradleNearby) {
-				int bitIndex = bitSet.nextSetBit(0);
+				int bitIndex = facesSet.nextSetBit(0);
 				if (bitIndex < 6) {
 					Direction direction = Direction.from3DDataValue(5 - bitIndex);
 					BlockPos posBelow = pos.relative(direction);
@@ -104,7 +105,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 
 			if (directNeighbors < 3) return false;
 
-			int bitIndex = bitSet.nextSetBit(0);
+			int bitIndex = facesSet.nextSetBit(0);
 			if (bitIndex < 6) {
 				//vein faces point inwards and the direction is in reference to itself and not in reference to the block it's attached to
 
@@ -112,28 +113,30 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 				BlockPos posBelow = pos.relative(direction);
 				BlockState stateBelow = level.getBlockState(posBelow);
 
-				Block replacementBlock;
+				BlockState replacementBlockState;
+
+				Noise noise = PrimordialEcosystem.getCellularNoise(level);
+				final float outerBorderThreshold = 0.16f;
+				final float innerBorderThreshold = 0.16f - 0.03f;
+				final float n = noise.getValueAtCenter(pos);
 
 				if (stateBelow.getBlock() == ModBlocks.PRIMAL_FLESH.get() || stateBelow.getBlock() == ModBlocks.MALIGNANT_FLESH.get()) {
 					posBelow = pos.relative(direction, 2);
 					stateBelow = level.getBlockState(posBelow);
-					replacementBlock = ModBlocks.PRIMAL_FLESH.get();
+					replacementBlockState = ModBlocks.PRIMAL_FLESH.get().defaultBlockState();
 				}
 				else {
-					replacementBlock = ModBlocks.MALIGNANT_FLESH.get();
+					replacementBlockState = ModBlocks.MALIGNANT_FLESH.get().defaultBlockState();
 				}
 
-				if (!PrimordialEcosystem.tryToReplaceBlock(level, posBelow, stateBelow, replacementBlock.defaultBlockState())) {
-					Noise noise = PrimordialEcosystem.getCellularNoise(level);
-					float borderThreshold = 0.16f;
-					float n = noise.getValueAtCenter(pos);
-					if (n >= borderThreshold) {
+				if (!PrimordialEcosystem.tryToReplaceBlock(level, posBelow, stateBelow, replacementBlockState)) {
+					if (n >= outerBorderThreshold) {
 						if (!LevelUtil.isBlockNearby(level, pos, 2, blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get()))) {
 							BlockState slabState = ModBlocks.MALIGNANT_FLESH_SLAB.get().getStateForPlacement(level, pos, direction.getOpposite());
 							level.setBlock(pos, slabState, Block.UPDATE_CLIENTS);
 						}
 					}
-					else if ((n < (borderThreshold - 0.03f)) && (PrimordialEcosystem.getRandomWithSeed(pos).nextFloat() <= 0.3f) && (LevelUtil.getMaxBrightness(level, pos) > 5)) {
+					else if (n < innerBorderThreshold && (PrimordialEcosystem.getRandomWithSeed(pos).nextFloat() <= 0.3f) && (LevelUtil.getMaxBrightness(level, pos) > 5)) {
 						posBelow = pos.relative(direction);
 						stateBelow = level.getBlockState(posBelow);
 						MalignantBloomBlock block = ModBlocks.MALIGNANT_BLOOM.get();
@@ -152,12 +155,19 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		if (isCradleNearby) return false;
 		if (LevelUtil.isBlockNearby(level, pos, 2, blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get()))) return false;
 
-		if (faces > 3) {
-			level.setBlock(pos, ModBlocks.MALIGNANT_FLESH.get().defaultBlockState(), Block.UPDATE_CLIENTS);
-			return true;
+		if (numFaces > 3) {
+			convertSelfIntoFullBlock(level, pos);
 		}
 
-		int mask = bitSet.getBits();
+		return convertSelfIntoStairs(level, pos, facesSet);
+	}
+
+	protected static boolean convertSelfIntoFullBlock(ServerLevel level, BlockPos pos) {
+		return level.setBlock(pos, ModBlocks.MALIGNANT_FLESH.get().defaultBlockState(), Block.UPDATE_CLIENTS);
+	}
+
+	protected static boolean convertSelfIntoStairs(ServerLevel level, BlockPos pos, Bit32Set facesSet) {
+		int mask = facesSet.getBits();
 
 		if (mask == 0b10_10_00) { //down & north
 			BlockState blockState = ModBlocks.MALIGNANT_FLESH_STAIRS.get().defaultBlockState()
@@ -452,7 +462,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		float populationPct = directNeighbors / (float) Direction.values().length;
 		float conversionChance = charge / (CHARGE.getMax() + 5f) + populationPct * 0.5f;
 
-		if (random.nextFloat() < conversionChance && convertSelf(state, level, pos, directNeighbors, cradleDistance < cradleCoreRadius, nearCradlePct)) {
+		if (random.nextFloat() < conversionChance && convert(state, level, pos, directNeighbors, cradleDistance < cradleCoreRadius, nearCradlePct)) {
 			level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 1.2f, 0.15f + random.nextFloat() * 0.5f);
 			return;
 		}
