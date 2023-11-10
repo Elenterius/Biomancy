@@ -109,7 +109,7 @@ public final class PrimordialEcosystem {
 				level.playSound(null, relativePos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 1f, 0.15f + random.nextFloat() * 0.5f);
 				return true;
 			}
-			else if (FleshVeinsBlock.convertSelf(relativeState, level, relativePos, 0, true, 0.5f)) {
+			else if (FleshVeinsBlock.convert(relativeState, level, relativePos, 0, true, 0.5f)) {
 				level.playSound(null, relativePos, ModSoundEvents.FLESH_BLOCK_PLACE.get(), SoundSource.BLOCKS, 1f, 0.15f + random.nextFloat() * 0.5f);
 				return true;
 			}
