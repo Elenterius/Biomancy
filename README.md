@@ -32,7 +32,7 @@ style.
 * [Download]
 * [Discord]
 * [Wiki]
-* [Trello]
+* [Github Project]
 
 ## Tech Stack
 
@@ -73,7 +73,7 @@ the [Creative Commons Attribution-NonCommercial 4.0 International License](http:
 
 ### Maven
 
-Atm there is no dedicated maven, you can use https://www.cursemaven.com/ to include the mod as a dependency.
+Atm there is no dedicated maven, you can use [cursemaven](https://www.cursemaven.com/) or [Modrinth Maven](https://docs.modrinth.com/maven) to include the mod as a dependency.
 
 ### Contributing
 
@@ -84,7 +84,7 @@ request to join the dev team.<br>
 This will give you access to the private mod development channels and resources such as the biomancy design document and
 concept board.
 
-You can track the development progress via our [Trello Board][Trello].
+You can track the development progress via our [Dev Board][Github Project].
 
 This project uses **Conventional Commits Messages** (https://www.conventionalcommits.org/en/v1.0.0/) to automatically
 genereate
@@ -96,7 +96,7 @@ If you need help feel free to [join our Discord][Discord].
 ## User Guide
 The mod provides no ingame guide book but uses tooltip descriptions & flavor texts instead. If you need further information you can read the github [Wiki].
 
-Read the [Getting Started Guide](https://github.com/Elenterius/Biomancy/wiki/v2/Getting-Started) section if you don't know what to do at all.
+Read the [Getting Started Guide](https://github.com/Elenterius/Biomancy/wiki/Biomancy-2-Getting-Started) section if you don't know what to do at all.
 
 ### Recipes
 To conveniently look up recipes ingame I recommend the use of the [JEI] mod.
@@ -104,8 +104,9 @@ To conveniently look up recipes ingame I recommend the use of the [JEI] mod.
 
 [Download]: https://www.curseforge.com/minecraft/mc-mods/biomancy
 [Discord]: https://discord.gg/424awTDdJJ
-[Wiki]: https://github.com/Elenterius/Biomancy/wiki/v2
-[Trello]: https://trello.com/b/GUKjOSAl
-[JitPack]: https://jitpack.io/#Elenterius/Biomancy
+
+[Wiki]: https://github.com/Elenterius/Biomancy/wiki/Biomancy-2
+
+[Github Project]: https://trello.com/b/GUKjOSAl
 
 [JEI]:https://www.curseforge.com/minecraft/mc-mods/jei
