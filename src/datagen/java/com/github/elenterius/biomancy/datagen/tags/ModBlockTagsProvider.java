@@ -50,6 +50,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 				.add(Blocks.CLAY).addTag(BlockTags.SAND).addTag(Tags.Blocks.GRAVEL)
 				.add(Blocks.SNOW_BLOCK, Blocks.SNOW)
 				.addTag(BlockTags.LEAVES)
+				.addTag(BlockTags.OVERWORLD_NATURAL_LOGS)
 				.add(
 						Blocks.DIRT, Blocks.COARSE_DIRT, Blocks.PODZOL, Blocks.GRASS_BLOCK, Blocks.DIRT_PATH, Blocks.FARMLAND,
 						Blocks.ROOTED_DIRT, Blocks.MUDDY_MANGROVE_ROOTS, Blocks.MUD
