@@ -1,3 +1,19 @@
+## [2.4.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.2.3.0...1.19.2-v2.2.4.0) (2023-11-11)
+
+
+### Features
+
+* **buff:** increase primal energy conversion of sacrifices in the Primordial Cradle ([b3923db](https://github.com/Elenterius/Biomancy/commit/b3923dba38bd909bdea04c02629715670bdd6059))
+* make overworld logs replaceable by malignant veins ([f02208e](https://github.com/Elenterius/Biomancy/commit/f02208e10a1fb539dea67bb597fd2d0abc00f306))
+* make Primordial Cradle block items display their internal sacrifice information in the tooltip ([f244c70](https://github.com/Elenterius/Biomancy/commit/f244c70ce325787061a9b684390893e889c0a9bc))
+* **nerf:** decrease Malignant Bloom spawn rate ([dc1beb9](https://github.com/Elenterius/Biomancy/commit/dc1beb9a0eab70859865005cab529a04087bfc88))
+
+
+### Bug Fixes
+
+* fix flesh veins inability to spread over dirt paths ([b319e1e](https://github.com/Elenterius/Biomancy/commit/b319e1ee1a16c876064b2bb15483d61f2b7ca335))
+* fix Primordial Cradle not persisting internal sacrifice values when mined ([ac17061](https://github.com/Elenterius/Biomancy/commit/ac17061f805f24fa20ccb32e6633631bb3b01b9e))
+
 ## [2.3.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.2.2.0...1.19.2-v2.2.3.0) (2023-11-03)
 
 
@@ -147,11 +163,4 @@
 ### Code Refactoring
 
 * move menu package from inventory package into main package ([3b4796b](https://github.com/Elenterius/Biomancy/commit/3b4796b8d05d515117ce84f4ffccd476894160da))
-
-## [1.13.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.12.0...1.19.2-v2.1.13.0) (2023-07-29)
-
-
-### Features
-
-* enhance tooltip clarity and consistency ([bdbbcb9](https://github.com/Elenterius/Biomancy/commit/bdbbcb96bea8c5b7b8bbb1f2c9772be8ab98ab31))
 
