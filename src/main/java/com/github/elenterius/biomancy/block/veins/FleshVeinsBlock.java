@@ -12,7 +12,7 @@ import com.github.elenterius.biomancy.util.ArrayUtil;
 import com.github.elenterius.biomancy.util.Bit32Set;
 import com.github.elenterius.biomancy.util.EnhancedIntegerProperty;
 import com.github.elenterius.biomancy.util.LevelUtil;
-import com.github.elenterius.biomancy.util.random.Noise;
+import com.github.elenterius.biomancy.util.random.CellularNoise;
 import com.github.elenterius.biomancy.world.PrimordialEcosystem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -72,89 +72,79 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		if (numFaces == 1) {
 			if (isCradleNearby) {
 				int bitIndex = facesSet.nextSetBit(0);
-				if (bitIndex < 6) {
-					Direction direction = Direction.from3DDataValue(5 - bitIndex);
-					BlockPos posBelow = pos.relative(direction);
-					BlockState stateBelow = level.getBlockState(posBelow);
-
-					Block replacementBlock = ModBlocks.PRIMAL_FLESH.get();
-
-					if (stateBelow.getBlock() == ModBlocks.PRIMAL_FLESH.get() || stateBelow.getBlock() == ModBlocks.MALIGNANT_FLESH.get()) {
-						BlockPos posBelow2 = pos.relative(direction, 2);
-						BlockState stateBelow2 = level.getBlockState(posBelow2);
-
-						if (direction == Direction.UP && (stateBelow2.getBlock() == ModBlocks.PRIMAL_FLESH.get() || stateBelow2.getBlock() == ModBlocks.MALIGNANT_FLESH.get())) {
-							if (level.getLightEngine().getRawBrightness(pos, 0) < 5) {
-								level.setBlock(posBelow, Blocks.SHROOMLIGHT.defaultBlockState(), Block.UPDATE_CLIENTS);
-								return true;
-							}
-						}
-
-						posBelow = posBelow2;
-						stateBelow = stateBelow2;
-					}
-					else {
-						replacementBlock = level.random.nextFloat() < nearCradlePct ? ModBlocks.PRIMAL_FLESH.get() : ModBlocks.MALIGNANT_FLESH.get();
-					}
-
-					return PrimordialEcosystem.tryToReplaceBlock(level, posBelow, stateBelow, replacementBlock.defaultBlockState());
-				}
-
-				return false;
-			}
-
-			if (directNeighbors < 3) return false;
-
-			int bitIndex = facesSet.nextSetBit(0);
-			if (bitIndex < 6) {
-				//vein faces point inwards and the direction is in reference to itself and not in reference to the block it's attached to
-
 				Direction direction = Direction.from3DDataValue(5 - bitIndex);
 				BlockPos posBelow = pos.relative(direction);
 				BlockState stateBelow = level.getBlockState(posBelow);
 
-				BlockState replacementBlockState;
-
-				Noise noise = PrimordialEcosystem.getCellularNoise(level);
-				final float outerBorderThreshold = 0.16f;
-				final float innerBorderThreshold = 0.16f - 0.03f;
-				final float n = noise.getValueAtCenter(pos);
+				Block replacementBlock = ModBlocks.PRIMAL_FLESH.get();
 
 				if (stateBelow.getBlock() == ModBlocks.PRIMAL_FLESH.get() || stateBelow.getBlock() == ModBlocks.MALIGNANT_FLESH.get()) {
-					posBelow = pos.relative(direction, 2);
-					stateBelow = level.getBlockState(posBelow);
-					replacementBlockState = ModBlocks.PRIMAL_FLESH.get().defaultBlockState();
-				}
-				else if (stateBelow.is(ModBlockTags.PRIMORDIAL_ECO_SYSTEM_REPLACEABLE) && stateBelow.is(BlockTags.OVERWORLD_NATURAL_LOGS)) {
-					if (n < innerBorderThreshold) {
-						if (state.hasProperty(RotatedPillarBlock.AXIS)) {
-							Direction.Axis axis = state.getValue(RotatedPillarBlock.AXIS);
-							replacementBlockState = Blocks.BONE_BLOCK.defaultBlockState().setValue(RotatedPillarBlock.AXIS, axis);
+					BlockPos posBelow2 = pos.relative(direction, 2);
+					BlockState stateBelow2 = level.getBlockState(posBelow2);
+
+					if (direction == Direction.UP && (stateBelow2.getBlock() == ModBlocks.PRIMAL_FLESH.get() || stateBelow2.getBlock() == ModBlocks.MALIGNANT_FLESH.get())) {
+						if (level.getLightEngine().getRawBrightness(pos, 0) < 5) {
+							level.setBlock(posBelow, Blocks.SHROOMLIGHT.defaultBlockState(), Block.UPDATE_CLIENTS);
+							return true;
 						}
-						else replacementBlockState = ModBlocks.PRIMAL_FLESH_WALL.get().defaultBlockState();
 					}
-					else replacementBlockState = ModBlocks.PRIMAL_FLESH.get().defaultBlockState();
+
+					posBelow = posBelow2;
+					stateBelow = stateBelow2;
 				}
 				else {
-					replacementBlockState = ModBlocks.MALIGNANT_FLESH.get().defaultBlockState();
+					replacementBlock = level.random.nextFloat() < nearCradlePct ? ModBlocks.PRIMAL_FLESH.get() : ModBlocks.MALIGNANT_FLESH.get();
 				}
 
-				if (!PrimordialEcosystem.tryToReplaceBlock(level, posBelow, stateBelow, replacementBlockState)) {
-					if (n >= outerBorderThreshold) {
-						if (!LevelUtil.isBlockNearby(level, pos, 2, blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get()))) {
-							BlockState slabState = ModBlocks.MALIGNANT_FLESH_SLAB.get().getStateForPlacement(level, pos, direction.getOpposite());
-							level.setBlock(pos, slabState, Block.UPDATE_CLIENTS);
-						}
+				return PrimordialEcosystem.tryToReplaceBlock(level, posBelow, stateBelow, replacementBlock.defaultBlockState());
+			}
+
+			if (directNeighbors < 3) return false;
+
+			//vein faces point inwards and the direction is in reference to itself and not in reference to the block it's attached to
+			Direction direction = Direction.from3DDataValue(5 - facesSet.nextSetBit(0));
+			BlockPos posBelow = pos.relative(direction);
+			BlockState stateBelow = level.getBlockState(posBelow);
+
+			BlockState replacementBlockState;
+
+			CellularNoise cellularNoise = PrimordialEcosystem.getCellularNoise(level);
+			final float n = cellularNoise.getValueAtCenter(pos);
+
+			if (stateBelow.getBlock() == ModBlocks.PRIMAL_FLESH.get() || stateBelow.getBlock() == ModBlocks.MALIGNANT_FLESH.get()) {
+				posBelow = pos.relative(direction, 2);
+				stateBelow = level.getBlockState(posBelow);
+				replacementBlockState = ModBlocks.PRIMAL_FLESH.get().defaultBlockState();
+			}
+			else if (stateBelow.is(ModBlockTags.PRIMORDIAL_ECO_SYSTEM_REPLACEABLE) && stateBelow.is(BlockTags.OVERWORLD_NATURAL_LOGS)) {
+				if (n < cellularNoise.coreThreshold()) {
+					if (state.hasProperty(RotatedPillarBlock.AXIS)) {
+						Direction.Axis axis = state.getValue(RotatedPillarBlock.AXIS);
+						replacementBlockState = Blocks.BONE_BLOCK.defaultBlockState().setValue(RotatedPillarBlock.AXIS, axis);
 					}
-					else if (n < innerBorderThreshold && (PrimordialEcosystem.getRandomWithSeed(pos).nextFloat() <= 0.3f) && (LevelUtil.getMaxBrightness(level, pos) > 5)) {
-						posBelow = pos.relative(direction);
-						stateBelow = level.getBlockState(posBelow);
-						MalignantBloomBlock block = ModBlocks.MALIGNANT_BLOOM.get();
-						boolean mayPlace = block.mayPlaceOn(level, posBelow, stateBelow);
-						if (mayPlace && !LevelUtil.isBlockNearby(level, pos, 4, blockState -> blockState.is(block)) && block.hasUnobstructedAim(level, pos, direction.getOpposite())) {
-							BlockState slabState = block.getStateForPlacement(level, pos, direction.getOpposite());
-							level.setBlock(pos, slabState, Block.UPDATE_CLIENTS);
-						}
+					else replacementBlockState = ModBlocks.PRIMAL_FLESH_WALL.get().defaultBlockState();
+				}
+				else replacementBlockState = ModBlocks.PRIMAL_FLESH.get().defaultBlockState();
+			}
+			else {
+				replacementBlockState = ModBlocks.MALIGNANT_FLESH.get().defaultBlockState();
+			}
+
+			if (!PrimordialEcosystem.tryToReplaceBlock(level, posBelow, stateBelow, replacementBlockState)) {
+				if (n >= cellularNoise.borderThreshold()) {
+					if (!LevelUtil.isBlockNearby(level, pos, 2, blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get()))) {
+						BlockState slabState = ModBlocks.MALIGNANT_FLESH_SLAB.get().getStateForPlacement(level, pos, direction.getOpposite());
+						level.setBlock(pos, slabState, Block.UPDATE_CLIENTS);
+					}
+				}
+				else if (n < cellularNoise.coreThreshold() && (PrimordialEcosystem.getRandomWithSeed(pos).nextFloat() <= 0.3f) && (LevelUtil.getMaxBrightness(level, pos) > 5)) {
+					posBelow = pos.relative(direction);
+					stateBelow = level.getBlockState(posBelow);
+					MalignantBloomBlock block = ModBlocks.MALIGNANT_BLOOM.get();
+					boolean mayPlace = block.mayPlaceOn(level, posBelow, stateBelow);
+					if (mayPlace && !LevelUtil.isBlockNearby(level, pos, 4, blockState -> blockState.is(block)) && block.hasUnobstructedAim(level, pos, direction.getOpposite())) {
+						BlockState slabState = block.getStateForPlacement(level, pos, direction.getOpposite());
+						level.setBlock(pos, slabState, Block.UPDATE_CLIENTS);
 					}
 				}
 			}

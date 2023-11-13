@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.block.veins;
 import com.github.elenterius.biomancy.block.cradle.PrimordialCradleBlock;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.util.LevelUtil;
-import com.github.elenterius.biomancy.util.random.Noise;
+import com.github.elenterius.biomancy.util.random.CellularNoise;
 import com.github.elenterius.biomancy.world.PrimordialEcosystem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -56,9 +56,9 @@ class MalignantFleshSpreaderConfig extends MultifaceSpreader.DefaultSpreaderConf
 		BlockState state = level.getBlockState(spreadPos.pos());
 		if (PrimordialEcosystem.VALID_UPGRADE_TARGETS.contains(state.getBlock())) {
 			if (level instanceof ServerLevel serverLevel) {
-				Noise noise = PrimordialEcosystem.getCellularNoise(serverLevel);
-				float borderThreshold = 0.155f;
-				float n = noise.getValueAtCenter(pos);
+				CellularNoise cellularNoise = PrimordialEcosystem.getCellularNoise(serverLevel);
+				float borderThreshold = cellularNoise.borderThreshold() - 0.005f;
+				float n = cellularNoise.getValueAtCenter(pos);
 				return n >= borderThreshold && !LevelUtil.isBlockNearby(serverLevel, spreadPos.pos(), 4, blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get()));
 			}
 			return true;

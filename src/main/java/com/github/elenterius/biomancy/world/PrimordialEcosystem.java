@@ -289,7 +289,7 @@ public final class PrimordialEcosystem {
 		domainWarp.SetDomainWarpAmp(50f);
 		domainWarp.SetFrequency(0.005f);
 
-		return new CellularNoiseWithDomainWarp(cellularNoise, domainWarp);
+		return new CellularNoiseWithDomainWarp(cellularNoise, domainWarp, 0.16f, 0.13f);
 	}
 
 }
