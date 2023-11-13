@@ -107,6 +107,6 @@ To conveniently look up recipes ingame I recommend the use of the [JEI] mod.
 
 [Wiki]: https://github.com/Elenterius/Biomancy/wiki/Biomancy-2
 
-[Github Project]: https://trello.com/b/GUKjOSAl
+[Github Project]: https://github.com/orgs/Creative-Chasm/projects/2/
 
 [JEI]:https://www.curseforge.com/minecraft/mc-mods/jei
