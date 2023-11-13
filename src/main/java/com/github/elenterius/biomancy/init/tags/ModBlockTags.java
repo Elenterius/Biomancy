@@ -11,6 +11,8 @@ public final class ModBlockTags {
 	//CONVERTABLE_TO_PRIMAL_FLESH
 	//CONVERTABLE_TO_MALIGNANT_FLESH
 	public static final TagKey<Block> PRIMORDIAL_ECO_SYSTEM_REPLACEABLE = tag("primordial_ecosystem_replaceable");
+	public static final TagKey<Block> ALLOW_VEINS_TO_ATTACH = tag("allow_veins_to_attach");
+	public static final TagKey<Block> DISALLOW_VEINS_TO_ATTACH = tag("disallow_veins_to_attach");
 
 	private ModBlockTags() {}
 
