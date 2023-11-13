@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.util.random;
 
-public record CellularNoiseWithDomainWarp(FastNoiseLite cellularNoise, FastNoiseLite domainWarp) implements CellularNoise {
+public record CellularNoiseWithDomainWarp(FastNoiseLite cellularNoise, FastNoiseLite domainWarp, float borderThreshold, float coreThreshold) implements CellularNoise {
 	@Override
 	public float getValue(float x, float y) {
 		FastNoiseLite.Vector2 vec = new FastNoiseLite.Vector2(x, y);
