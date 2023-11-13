@@ -316,7 +316,9 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 	}
 
 	public static boolean canVeinsAttachTo(BlockGetter level, Direction direction, BlockPos pos, BlockState state) {
-		return state.is(ModBlockTags.PRIMORDIAL_ECO_SYSTEM_REPLACEABLE) || Block.isFaceFull(state.getBlockSupportShape(level, pos), direction.getOpposite()) || Block.isFaceFull(state.getCollisionShape(level, pos), direction.getOpposite());
+		if (state.is(ModBlockTags.DISALLOW_VEINS_TO_ATTACH)) return false;
+		if (state.is(ModBlockTags.ALLOW_VEINS_TO_ATTACH)) return true;
+		return Block.isFaceFull(state.getBlockSupportShape(level, pos), direction.getOpposite()) || Block.isFaceFull(state.getCollisionShape(level, pos), direction.getOpposite());
 	}
 
 	@Override

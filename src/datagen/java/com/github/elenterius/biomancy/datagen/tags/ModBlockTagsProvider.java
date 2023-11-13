@@ -56,6 +56,12 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 						Blocks.ROOTED_DIRT, Blocks.MUDDY_MANGROVE_ROOTS, Blocks.MUD
 				);
 
+		tag(ModBlockTags.ALLOW_VEINS_TO_ATTACH)
+				.add(Blocks.DIRT_PATH, Blocks.FARMLAND);
+
+		tag(ModBlockTags.DISALLOW_VEINS_TO_ATTACH)
+				.add(ModBlocks.MALIGNANT_BLOOM.get());
+
 		tag(BlockTags.DOORS).add(ModBlocks.FLESH_DOOR.get()).add(ModBlocks.FULL_FLESH_DOOR.get());
 		tag(BlockTags.TRAPDOORS).add(ModBlocks.FLESH_IRIS_DOOR.get());
 
