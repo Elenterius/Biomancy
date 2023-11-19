@@ -450,7 +450,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 
 				stack.shrink(1);
 				setCharge(level, pos, state, charge);
-				level.playSound(null, pos, ModSoundEvents.DECOMPOSER_EAT.get(), SoundSource.BLOCKS, 1f, 0.15f + level.random.nextFloat() * 0.5f);
+				level.playSound(null, pos, ModSoundEvents.DECOMPOSER_EAT.get(), SoundSource.BLOCKS, 0.6f, 0.15f + level.random.nextFloat() * 0.5f);
 			}
 			else if (stack.isEdible()) {
 				int nutrition = Optional.ofNullable(stack.getFoodProperties(null))
@@ -466,7 +466,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 				stack.shrink(amount);
 				charge += amount * nutrition;
 				setCharge(level, pos, state, charge);
-				level.playSound(null, pos, ModSoundEvents.DECOMPOSER_EAT.get(), SoundSource.BLOCKS, 1f, 0.15f + level.random.nextFloat() * 0.5f);
+				level.playSound(null, pos, ModSoundEvents.DECOMPOSER_EAT.get(), SoundSource.BLOCKS, 0.6f, 0.15f + level.random.nextFloat() * 0.5f);
 			}
 		}
 	}
@@ -518,7 +518,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		float conversionChance = charge / (CHARGE.getMax() + 5f) + populationPct * 0.5f;
 
 		if (random.nextFloat() < conversionChance && convert(state, level, pos, directNeighbors, chamber, nearChamberCenterPct)) {
-			level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 1.2f, 0.15f + random.nextFloat() * 0.5f);
+			level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 0.8f, 0.15f + random.nextFloat() * 0.5f);
 			//return; //TODO: exiting early hampers growth to a very extreme degree. reevaluate which conversions should return true or be ignored
 		}
 
@@ -527,14 +527,14 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 			if (growthAmount > 0) {
 				charge -= growthAmount * 2;
 				state = level.getBlockState(pos);
-				level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 1f, 0.15f + random.nextFloat() * 0.5f);
+				level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 0.6f, 0.15f + random.nextFloat() * 0.5f);
 			}
 		}
 		else {
 			if (getSpreader().spreadFromRandomFaceTowardRandomDirection(state, level, pos, random).isPresent()) {
 				charge -= 2;
 				state = level.getBlockState(pos);
-				level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 1f, 0.15f + random.nextFloat() * 0.5f);
+				level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 0.6f, 0.15f + random.nextFloat() * 0.5f);
 			}
 		}
 
