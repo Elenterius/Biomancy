@@ -58,6 +58,23 @@ public class Bit32Set implements IntegerSerializable {
 		return 32;
 	}
 
+	/**
+	 * @return indices of all bits set to true
+	 */
+	public int[] getIndices() {
+		if (bits == 0) return new int[]{};
+		int[] indices = new int[Integer.bitCount(bits)];
+
+		int n = 0;
+		for (int i = 0; i < 32; i++) {
+			if ((bits & (1 << i)) != 0) {
+				indices[n++] = i;
+			}
+		}
+
+		return indices;
+	}
+
 	public int getBits() {
 		return bits;
 	}
