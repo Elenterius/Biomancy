@@ -9,7 +9,10 @@ import com.github.elenterius.biomancy.network.ISyncableAnimation;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import com.github.elenterius.biomancy.tribute.Tribute;
 import com.github.elenterius.biomancy.util.SoundUtil;
+import com.github.elenterius.biomancy.world.MoundShape;
 import com.github.elenterius.biomancy.world.PrimordialEcosystem;
+import com.github.elenterius.biomancy.world.ShapeManager;
+import com.github.elenterius.biomancy.world.ShapeTicket;
 import com.google.common.math.IntMath;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
@@ -27,6 +30,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -39,7 +43,7 @@ import software.bernie.geckolib3.util.GeckoLibUtil;
 
 import java.util.List;
 
-public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity implements IAnimatable, ISyncableAnimation {
+public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity implements PrimalEnergyHandler, IAnimatable, ISyncableAnimation {
 
 	public static final int DURATION_TICKS = 20 * 4;
 	public static final String SACRIFICE_SYNC_KEY = "SyncSacrificeHandler";
@@ -53,6 +57,9 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 	private long ticks;
 	private int primalEnergy;
 
+	@Nullable
+	private ShapeTicket shapeTicket;
+
 	public PrimordialCradleBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.PRIMORDIAL_CRADLE.get(), pos, state);
 	}
@@ -64,6 +71,23 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 				cradle.onSacrifice((ServerLevel) level);
 				cradle.ticks = 0;
 			}
+		}
+	}
+
+	@Override
+	public void onLoad() {
+		super.onLoad();
+		if (level != null && !level.isClientSide && shapeTicket == null) {
+			MoundShape moundShape = MoundShape.Generator.constructShape(level, worldPosition, Mth.getSeed(worldPosition));
+			shapeTicket = ShapeManager.addShapeTicket(level, moundShape);
+		}
+	}
+
+	@Override
+	public void setRemoved() {
+		super.setRemoved();
+		if (shapeTicket != null) {
+			shapeTicket.invalidate();
 		}
 	}
 
@@ -152,7 +176,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 
 			if (level.random.nextFloat() < sacrificeHandler.getAnomalyChance()) {
 				spawnPrimordialFleshBlob(level, pos, sacrificeHandler);
-				addPrimalEnergy(level, Math.round(4096 * energyMultiplier));
+				addPrimalEnergy(Math.round(4096 * energyMultiplier));
 				SoundUtil.broadcastBlockSound(level, pos, SoundEvents.FOX_SCREECH, 2f, 0.5f);
 			}
 			else {
@@ -163,7 +187,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 					spawnFleshBlob(level, pos, sacrificeHandler);
 				}
 
-				addPrimalEnergy(level, Math.round(2048 * energyMultiplier));
+				addPrimalEnergy(Math.round(2048 * energyMultiplier));
 				SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CREATOR_SPAWN_MOB);
 			}
 
@@ -179,30 +203,58 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 			if (!PrimordialEcosystem.spreadMalignantVeinsFromSource(level, pos, PrimordialEcosystem.MAX_CHARGE_SUPPLIER)) {
 				PrimordialEcosystem.tryToReplaceBlock(level, pos.below(), ModBlocks.PRIMAL_FLESH.get().defaultBlockState());
 			}
-			addPrimalEnergy(level, Math.round(3072 * energyMultiplier));
+			addPrimalEnergy(Math.round(3072 * energyMultiplier));
 			SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), 1f, 0.15f + level.random.nextFloat() * 0.5f);
 		}
 
 		resetState();
 	}
 
-	public void addPrimalEnergy(ServerLevel level, int amount) {
+	@Override
+	public int getPrimalEnergy() {
+		PrimalEnergySettings.SupplyAmount supplyAmount = BiomancyConfig.SERVER.primalEnergySupplyOfCradle.get();
+		if (supplyAmount == PrimalEnergySettings.SupplyAmount.UNLIMITED) return Integer.MAX_VALUE;
+		if (supplyAmount == PrimalEnergySettings.SupplyAmount.NONE) return 0;
+
+		return primalEnergy;
+	}
+
+	private void addPrimalEnergy(int amount) {
 		primalEnergy = IntMath.saturatedAdd(primalEnergy, amount);
 	}
 
-	public boolean consumePrimalEnergy(ServerLevel level, int amount) {
-		if (amount <= 0) return false;
+	@Override
+	public int fillPrimalEnergy(int amount) {
+		if (amount <= 0) return 0;
+
+		int prevPrimalEnergy = primalEnergy;
+		primalEnergy = IntMath.saturatedAdd(primalEnergy, amount);
+		int filled = primalEnergy - prevPrimalEnergy;
+
+		setChanged();
+
+		return filled;
+	}
+
+	@Override
+	public int drainPrimalEnergy(int amount) {
+		if (amount <= 0) return 0;
 
 		PrimalEnergySettings.SupplyAmount supplyAmount = BiomancyConfig.SERVER.primalEnergySupplyOfCradle.get();
-		if (supplyAmount == PrimalEnergySettings.SupplyAmount.UNLIMITED) return true;
-		if (supplyAmount == PrimalEnergySettings.SupplyAmount.NONE) return false;
+		if (supplyAmount == PrimalEnergySettings.SupplyAmount.UNLIMITED) return amount;
+		if (supplyAmount == PrimalEnergySettings.SupplyAmount.NONE) return 0;
 
-		if (primalEnergy < amount) return false;
+		if (primalEnergy < amount) {
+			int prevPrimalEnergy = primalEnergy;
+			primalEnergy = 0;
+			setChanged();
+			return prevPrimalEnergy;
+		}
 
 		primalEnergy -= amount;
 		setChanged();
 
-		return true;
+		return amount;
 	}
 
 	public void spawnPrimordialFleshBlob(ServerLevel level, BlockPos pos, SacrificeHandler sacrificeHandler) {

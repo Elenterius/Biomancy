@@ -15,6 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
@@ -33,6 +34,7 @@ public final class PrimordialEcosystem {
 	private static final RandomSource random = RandomSource.create();
 	public static final IntSupplier MAX_CHARGE_SUPPLIER = () -> 15;
 	public static final Set<Block> VALID_UPGRADE_TARGETS = Set.of(ModBlocks.MALIGNANT_FLESH_SLAB.get(), ModBlocks.MALIGNANT_FLESH_STAIRS.get());
+	public static final Set<Block> FULL_FLESH_BLOCKS = Set.of(ModBlocks.MALIGNANT_FLESH.get(), ModBlocks.PRIMAL_FLESH.get());
 
 	private PrimordialEcosystem() {}
 
@@ -109,7 +111,7 @@ public final class PrimordialEcosystem {
 				level.playSound(null, relativePos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 1f, 0.15f + random.nextFloat() * 0.5f);
 				return true;
 			}
-			else if (FleshVeinsBlock.convert(relativeState, level, relativePos, 0, true, 0.5f)) {
+			else if (FleshVeinsBlock.convert(relativeState, level, relativePos, 0, null, 0.5f)) {
 				level.playSound(null, relativePos, ModSoundEvents.FLESH_BLOCK_PLACE.get(), SoundSource.BLOCKS, 1f, 0.15f + random.nextFloat() * 0.5f);
 				return true;
 			}
@@ -245,7 +247,7 @@ public final class PrimordialEcosystem {
 
 	public static boolean tryToReplaceBlock(ServerLevel level, BlockPos pos, BlockState replacementState) {
 		BlockState state = level.getBlockState(pos);
-		if (state.getMaterial().isReplaceable() || state.is(ModBlockTags.PRIMORDIAL_ECO_SYSTEM_REPLACEABLE)) {
+		if (isReplaceable(state)) {
 			level.setBlock(pos, replacementState, Block.UPDATE_CLIENTS);
 			return true;
 		}
@@ -253,7 +255,7 @@ public final class PrimordialEcosystem {
 	}
 
 	public static boolean tryToReplaceBlock(ServerLevel level, BlockPos pos, BlockState state, BlockState replacementState) {
-		if (state.getMaterial().isReplaceable() || state.is(ModBlockTags.PRIMORDIAL_ECO_SYSTEM_REPLACEABLE)) {
+		if (isReplaceable(state)) {
 			level.setBlock(pos, replacementState, Block.UPDATE_CLIENTS);
 			return true;
 		}
@@ -261,11 +263,19 @@ public final class PrimordialEcosystem {
 	}
 
 	public static boolean tryToReplaceBlock(ServerLevel level, BlockPos pos, BlockState state, Supplier<BlockState> replacementStateSupplier) {
-		if (state.getMaterial().isReplaceable() || state.is(ModBlockTags.PRIMORDIAL_ECO_SYSTEM_REPLACEABLE)) {
+		if (isReplaceable(state)) {
 			level.setBlock(pos, replacementStateSupplier.get(), Block.UPDATE_CLIENTS);
 			return true;
 		}
 		return false;
+	}
+
+	public static boolean isReplaceable(BlockState state) {
+		return state.getMaterial().isReplaceable() || state.is(ModBlockTags.PRIMORDIAL_ECO_SYSTEM_REPLACEABLE);
+	}
+
+	public static boolean isReplaceableLog(BlockState state) {
+		return isReplaceable(state) && state.is(BlockTags.OVERWORLD_NATURAL_LOGS);
 	}
 
 	public static RandomSource getRandomWithSeed(BlockPos pos) {

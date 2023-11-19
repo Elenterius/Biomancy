@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.block.veins;
 
 import com.github.elenterius.biomancy.BiomancyConfig;
-import com.github.elenterius.biomancy.block.cradle.PrimordialCradleBlockEntity;
+import com.github.elenterius.biomancy.block.cradle.PrimalEnergyHandler;
 import com.github.elenterius.biomancy.block.malignantbloom.MalignantBloomBlock;
 import com.github.elenterius.biomancy.init.ModBlockProperties;
 import com.github.elenterius.biomancy.init.ModBlocks;
@@ -13,14 +13,17 @@ import com.github.elenterius.biomancy.util.Bit32Set;
 import com.github.elenterius.biomancy.util.EnhancedIntegerProperty;
 import com.github.elenterius.biomancy.util.LevelUtil;
 import com.github.elenterius.biomancy.util.random.CellularNoise;
+import com.github.elenterius.biomancy.util.shape.Shape;
+import com.github.elenterius.biomancy.world.MoundChamber;
+import com.github.elenterius.biomancy.world.MoundShape;
 import com.github.elenterius.biomancy.world.PrimordialEcosystem;
+import com.github.elenterius.biomancy.world.ShapeManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -33,6 +36,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -44,12 +48,15 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterloggedBlock {
 
 	protected static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	protected static final EnhancedIntegerProperty CHARGE = ModBlockProperties.CHARGE;
+	public static final Predicate<BlockState> BLOCKS_TO_AVOID_PREDICATE = blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get());
 	private final MultifaceSpreader spreader = new MultifaceSpreader(new MalignantFleshSpreaderConfig(this));
 
 	public FleshVeinsBlock(Properties properties) {
@@ -57,7 +64,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false).setValue(CHARGE.get(), CHARGE.getMin()));
 	}
 
-	public static boolean convert(BlockState state, ServerLevel level, BlockPos pos, int directNeighbors, boolean isCradleNearby, float nearCradlePct) {
+	public static boolean convert(BlockState state, ServerLevel level, BlockPos pos, int directNeighbors, @Nullable MoundChamber chamber, float nearChamberCenterPct) {
 
 		Bit32Set facesSet = new Bit32Set();
 		facesSet.set(5, hasFace(state, Direction.DOWN));
@@ -67,99 +74,131 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		facesSet.set(1, hasFace(state, Direction.WEST));
 		facesSet.set(0, hasFace(state, Direction.EAST));
 
-		int numFaces = facesSet.cardinality();
-
-		if (numFaces == 1) {
-			if (isCradleNearby) {
-				int bitIndex = facesSet.nextSetBit(0);
-				Direction direction = Direction.from3DDataValue(5 - bitIndex);
-				BlockPos posBelow = pos.relative(direction);
-				BlockState stateBelow = level.getBlockState(posBelow);
-
-				Block replacementBlock = ModBlocks.PRIMAL_FLESH.get();
-
-				if (stateBelow.getBlock() == ModBlocks.PRIMAL_FLESH.get() || stateBelow.getBlock() == ModBlocks.MALIGNANT_FLESH.get()) {
-					BlockPos posBelow2 = pos.relative(direction, 2);
-					BlockState stateBelow2 = level.getBlockState(posBelow2);
-
-					if (direction == Direction.UP && (stateBelow2.getBlock() == ModBlocks.PRIMAL_FLESH.get() || stateBelow2.getBlock() == ModBlocks.MALIGNANT_FLESH.get())) {
-						if (level.getLightEngine().getRawBrightness(pos, 0) < 5) {
-							level.setBlock(posBelow, Blocks.SHROOMLIGHT.defaultBlockState(), Block.UPDATE_CLIENTS);
-							return true;
-						}
-					}
-
-					posBelow = posBelow2;
-					stateBelow = stateBelow2;
-				}
-				else {
-					replacementBlock = level.random.nextFloat() < nearCradlePct ? ModBlocks.PRIMAL_FLESH.get() : ModBlocks.MALIGNANT_FLESH.get();
-				}
-
-				return PrimordialEcosystem.tryToReplaceBlock(level, posBelow, stateBelow, replacementBlock.defaultBlockState());
-			}
-
-			if (directNeighbors < 3) return false;
-
-			//vein faces point inwards and the direction is in reference to itself and not in reference to the block it's attached to
-			Direction direction = Direction.from3DDataValue(5 - facesSet.nextSetBit(0));
-			BlockPos posBelow = pos.relative(direction);
-			BlockState stateBelow = level.getBlockState(posBelow);
-
-			BlockState replacementBlockState;
-
-			CellularNoise cellularNoise = PrimordialEcosystem.getCellularNoise(level);
-			final float n = cellularNoise.getValueAtCenter(pos);
-
-			if (stateBelow.getBlock() == ModBlocks.PRIMAL_FLESH.get() || stateBelow.getBlock() == ModBlocks.MALIGNANT_FLESH.get()) {
-				posBelow = pos.relative(direction, 2);
-				stateBelow = level.getBlockState(posBelow);
-				replacementBlockState = ModBlocks.PRIMAL_FLESH.get().defaultBlockState();
-			}
-			else if (stateBelow.is(ModBlockTags.PRIMORDIAL_ECO_SYSTEM_REPLACEABLE) && stateBelow.is(BlockTags.OVERWORLD_NATURAL_LOGS)) {
-				if (n < cellularNoise.coreThreshold()) {
-					if (state.hasProperty(RotatedPillarBlock.AXIS)) {
-						Direction.Axis axis = state.getValue(RotatedPillarBlock.AXIS);
-						replacementBlockState = Blocks.BONE_BLOCK.defaultBlockState().setValue(RotatedPillarBlock.AXIS, axis);
-					}
-					else replacementBlockState = ModBlocks.PRIMAL_FLESH_WALL.get().defaultBlockState();
-				}
-				else replacementBlockState = ModBlocks.PRIMAL_FLESH.get().defaultBlockState();
-			}
-			else {
-				replacementBlockState = ModBlocks.MALIGNANT_FLESH.get().defaultBlockState();
-			}
-
-			if (!PrimordialEcosystem.tryToReplaceBlock(level, posBelow, stateBelow, replacementBlockState)) {
-				if (n >= cellularNoise.borderThreshold()) {
-					if (!LevelUtil.isBlockNearby(level, pos, 2, blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get()))) {
-						BlockState slabState = ModBlocks.MALIGNANT_FLESH_SLAB.get().getStateForPlacement(level, pos, direction.getOpposite());
-						level.setBlock(pos, slabState, Block.UPDATE_CLIENTS);
-					}
-				}
-				else if (n < cellularNoise.coreThreshold() && (PrimordialEcosystem.getRandomWithSeed(pos).nextFloat() <= 0.3f) && (LevelUtil.getMaxBrightness(level, pos) > 5)) {
-					posBelow = pos.relative(direction);
-					stateBelow = level.getBlockState(posBelow);
-					MalignantBloomBlock block = ModBlocks.MALIGNANT_BLOOM.get();
-					boolean mayPlace = block.mayPlaceOn(level, posBelow, stateBelow);
-					if (mayPlace && !LevelUtil.isBlockNearby(level, pos, 4, blockState -> blockState.is(block)) && block.hasUnobstructedAim(level, pos, direction.getOpposite())) {
-						BlockState slabState = block.getStateForPlacement(level, pos, direction.getOpposite());
-						level.setBlock(pos, slabState, Block.UPDATE_CLIENTS);
-					}
-				}
-			}
-
-			return true;
+		if (chamber != null) {
+			return convertInsideChamber(level, pos, directNeighbors, chamber, nearChamberCenterPct, facesSet);
 		}
 
-		if (isCradleNearby) return false;
-		if (LevelUtil.isBlockNearby(level, pos, 2, blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get()))) return false;
+		return convertNormal(level, pos, directNeighbors, facesSet);
+	}
+
+	protected static boolean convertNormal(ServerLevel level, BlockPos pos, int directNeighbors, Bit32Set facesSet) {
+		int numFaces = facesSet.cardinality();
+
+		boolean hasAnyBlockToAvoidNearby = LevelUtil.isBlockNearby(level, pos, 2, BLOCKS_TO_AVOID_PREDICATE);
+
+		if (numFaces == 1) {
+			CellularNoise cellularNoise = PrimordialEcosystem.getCellularNoise(level);
+			float noiseValue = cellularNoise.getValueAtCenter(pos);
+
+			//vein face points inwards and the direction is in reference to itself and not in reference to the block it's attached to
+			Direction axisDirection = Direction.from3DDataValue(5 - facesSet.nextSetBit(0));
+
+			boolean hasConvertedAnyOtherBlocks = convertDirectNeighborBlock(level, pos, axisDirection, directNeighbors, cellularNoise, noiseValue);
+
+			if (!hasConvertedAnyOtherBlocks && !hasAnyBlockToAvoidNearby && directNeighbors > 2) {
+				if (noiseValue >= cellularNoise.borderThreshold()) {
+					return convertSelfIntoSlabBlock(level, pos, axisDirection.getOpposite());
+				}
+				else if (noiseValue < cellularNoise.coreThreshold() && (PrimordialEcosystem.getRandomWithSeed(pos).nextFloat() <= 0.3f) && (LevelUtil.getMaxBrightness(level, pos) > 5)) {
+					return convertSelfIntoBloom(level, pos, axisDirection);
+				}
+			}
+
+			return hasConvertedAnyOtherBlocks;
+		}
+
+		if (hasAnyBlockToAvoidNearby) return false;
 
 		if (numFaces > 3) {
-			convertSelfIntoFullBlock(level, pos);
+			return convertSelfIntoFullBlock(level, pos);
 		}
 
 		return convertSelfIntoStairs(level, pos, facesSet);
+	}
+
+	protected static boolean convertInsideChamber(ServerLevel level, BlockPos pos, int directNeighbors, MoundChamber chamber, float nearChamberCenterPct, Bit32Set facesSet) {
+		Direction[] axisDirections = Arrays.stream(facesSet.getIndices()).mapToObj(i -> Direction.from3DDataValue(5 - i)).toArray(Direction[]::new);
+		ArrayUtil.shuffle(axisDirections, level.random);
+
+		for (Direction axisDirection : axisDirections) {
+			BlockPos posRelative = pos.relative(axisDirection);
+			BlockState stateRelative = level.getBlockState(posRelative);
+
+			if (PrimordialEcosystem.isReplaceable(stateRelative)) {
+				return level.setBlock(posRelative, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+			}
+			else if (PrimordialEcosystem.FULL_FLESH_BLOCKS.contains(stateRelative.getBlock())) {
+				BlockPos posBelow2 = pos.relative(axisDirection, 2);
+				BlockState stateBelow2 = level.getBlockState(posBelow2);
+
+				if (axisDirection == Direction.UP && PrimordialEcosystem.FULL_FLESH_BLOCKS.contains(stateBelow2.getBlock()) && LevelUtil.getMaxBrightness(level, pos) < 5) {
+					return level.setBlock(posRelative, Blocks.SHROOMLIGHT.defaultBlockState(), Block.UPDATE_CLIENTS);
+				}
+
+				posRelative = posBelow2;
+				stateRelative = stateBelow2;
+				if (PrimordialEcosystem.isReplaceable(stateRelative)) {
+					BlockState replacementState = level.random.nextFloat() < nearChamberCenterPct ? ModBlocks.PRIMAL_FLESH.get().defaultBlockState() : ModBlocks.MALIGNANT_FLESH.get().defaultBlockState();
+					return level.setBlock(posRelative, replacementState, Block.UPDATE_CLIENTS);
+				}
+			}
+		}
+
+		return false;
+	}
+
+	protected static boolean convertDirectNeighborBlock(ServerLevel level, BlockPos pos, Direction axisDirection, int directNeighbors, CellularNoise cellularNoise, float noiseValue) {
+		BlockPos posRelative = pos.relative(axisDirection);
+		BlockState stateRelative = level.getBlockState(posRelative);
+		BlockState replacementState = null;
+
+		if (directNeighbors > 2) {
+			if (stateRelative.getBlock() == ModBlocks.PRIMAL_FLESH.get() || stateRelative.getBlock() == ModBlocks.MALIGNANT_FLESH.get()) {
+				posRelative = pos.relative(axisDirection, 2);
+				stateRelative = level.getBlockState(posRelative);
+				return PrimordialEcosystem.tryToReplaceBlock(level, posRelative, stateRelative, ModBlocks.PRIMAL_FLESH.get().defaultBlockState());
+			}
+			else {
+				replacementState = ModBlocks.MALIGNANT_FLESH.get().defaultBlockState();
+			}
+		}
+
+		if (PrimordialEcosystem.isReplaceableLog(stateRelative)) {
+			if (noiseValue < cellularNoise.coreThreshold()) {
+				if (stateRelative.hasProperty(RotatedPillarBlock.AXIS)) {
+					Direction.Axis axis = stateRelative.getValue(RotatedPillarBlock.AXIS);
+					replacementState = Blocks.BONE_BLOCK.defaultBlockState().setValue(RotatedPillarBlock.AXIS, axis);
+				}
+				else replacementState = ModBlocks.PRIMAL_FLESH_WALL.get().defaultBlockState();
+			}
+			else replacementState = ModBlocks.PRIMAL_FLESH.get().defaultBlockState();
+		}
+
+		if (replacementState != null) {
+			return PrimordialEcosystem.tryToReplaceBlock(level, posRelative, stateRelative, replacementState);
+		}
+
+		return false;
+	}
+
+	protected static boolean convertSelfIntoBloom(ServerLevel level, BlockPos pos, Direction direction) {
+		MalignantBloomBlock bloomBlock = ModBlocks.MALIGNANT_BLOOM.get();
+
+		BlockPos posBelow = pos.relative(direction);
+		BlockState stateBelow = level.getBlockState(posBelow);
+		boolean mayPlace = bloomBlock.mayPlaceOn(level, posBelow, stateBelow);
+
+		if (mayPlace && !LevelUtil.isBlockNearby(level, pos, 4, blockState -> blockState.is(bloomBlock)) && bloomBlock.hasUnobstructedAim(level, pos, direction.getOpposite())) {
+			BlockState stateForPlacement = bloomBlock.getStateForPlacement(level, pos, direction.getOpposite());
+			return level.setBlock(pos, stateForPlacement, Block.UPDATE_CLIENTS);
+		}
+
+		return false;
+	}
+
+	protected static boolean convertSelfIntoSlabBlock(ServerLevel level, BlockPos pos, Direction direction) {
+		BlockState stateForPlacement = ModBlocks.MALIGNANT_FLESH_SLAB.get().getStateForPlacement(level, pos, direction);
+		return level.setBlock(pos, stateForPlacement, Block.UPDATE_CLIENTS);
 	}
 
 	protected static boolean convertSelfIntoFullBlock(ServerLevel level, BlockPos pos) {
@@ -437,23 +476,37 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		if (level.random.nextFloat() >= 0.5f) return;
 		if (!level.isAreaLoaded(pos, 2)) return;
 
-		int cradleCoreRadius = 8;
-		int maxCradleDist = cradleCoreRadius * 4;
-		PrimordialCradleBlockEntity cradle = LevelUtil.findNearestBlockEntity(level, pos, maxCradleDist, PrimordialCradleBlockEntity.class);
+		PrimalEnergyHandler energyHandler = null;
+		MoundChamber chamber = null;
+		float nearChamberCenterPct = 0;
+
+		if (ShapeManager.getShape(level, pos) instanceof MoundShape moundShape) {
+			BlockPos origin = moundShape.getOrigin();
+			BlockEntity existingBlockEntity = level.getExistingBlockEntity(origin);
+			if (existingBlockEntity instanceof PrimalEnergyHandler peh) {
+				energyHandler = peh;
+			}
+
+			chamber = moundShape.getChamberAt(pos.getX(), pos.getY(), pos.getZ());
+			Shape confiningChamberShape = moundShape.getChamberConfiningShapeAt(pos.getX(), pos.getY(), pos.getZ());
+			if (confiningChamberShape != null) {
+				double radius = confiningChamberShape instanceof Shape.Sphere sphere ? sphere.getRadius() : confiningChamberShape.getAABB().getSize() / 2;
+				double radiusSqr = radius * radius;
+				double distSqr = confiningChamberShape.distanceToSqr(pos.getX(), pos.getY(), pos.getZ());
+				nearChamberCenterPct = Mth.clamp((float) (1 - distSqr / radiusSqr), 0f, 1f);
+			}
+		}
 
 		int charge = getCharge(state);
 		if (charge < 2) {
-			if (BiomancyConfig.SERVER.doUnlimitedGrowth.get()) {
+			if (Boolean.TRUE.equals(BiomancyConfig.SERVER.doUnlimitedGrowth.get())) {
 				setCharge(level, pos, state, CHARGE.getMax());
 			}
-			else if (cradle != null && cradle.consumePrimalEnergy(level, 1)) {
+			else if (energyHandler != null && energyHandler.drainPrimalEnergy(1) > 0) {
 				setCharge(level, pos, state, charge + 1);
 			}
 			return;
 		}
-
-		double cradleDistance = cradle != null ? Math.sqrt(cradle.getBlockPos().distSqr(pos)) : maxCradleDist + 1;
-		float nearCradlePct = Mth.clamp((float) (1d - cradleDistance / maxCradleDist), 0f, 1f);
 
 		int directNeighbors = 0;
 		for (Direction direction : Direction.values()) {
@@ -464,9 +517,9 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		float populationPct = directNeighbors / (float) Direction.values().length;
 		float conversionChance = charge / (CHARGE.getMax() + 5f) + populationPct * 0.5f;
 
-		if (random.nextFloat() < conversionChance && convert(state, level, pos, directNeighbors, cradleDistance < cradleCoreRadius, nearCradlePct)) {
+		if (random.nextFloat() < conversionChance && convert(state, level, pos, directNeighbors, chamber, nearChamberCenterPct)) {
 			level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 1.2f, 0.15f + random.nextFloat() * 0.5f);
-			return;
+			//return; //TODO: exiting early hampers growth to a very extreme degree. reevaluate which conversions should return true or be ignored
 		}
 
 		if (charge > 4) {
@@ -485,9 +538,9 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 			}
 		}
 
-		if (cradleDistance <= maxCradleDist) {
-			int primalEnergy = Math.max(charge, Math.round(CHARGE.getMax() * nearCradlePct) / 2);
-			if (cradle != null && cradle.consumePrimalEnergy(level, primalEnergy)) {
+		if (energyHandler != null) {
+			int primalEnergy = Math.max(charge, Math.round(CHARGE.getMax() * nearChamberCenterPct) / 2);
+			if (energyHandler.getPrimalEnergy() > primalEnergy && energyHandler.drainPrimalEnergy(primalEnergy) >= primalEnergy) {
 				increaseChargeAroundPos(level, pos, random, primalEnergy * 2);
 			}
 			else if (charge > 1) {
