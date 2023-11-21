@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.world;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.util.shape.Shape;
+import com.github.elenterius.biomancy.world.mound.MoundShape;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.MapMaker;
 import net.minecraft.core.BlockPos;

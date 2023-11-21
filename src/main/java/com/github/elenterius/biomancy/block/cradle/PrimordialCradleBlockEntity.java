@@ -9,10 +9,11 @@ import com.github.elenterius.biomancy.network.ISyncableAnimation;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import com.github.elenterius.biomancy.tribute.Tribute;
 import com.github.elenterius.biomancy.util.SoundUtil;
-import com.github.elenterius.biomancy.world.MoundShape;
 import com.github.elenterius.biomancy.world.PrimordialEcosystem;
 import com.github.elenterius.biomancy.world.ShapeManager;
 import com.github.elenterius.biomancy.world.ShapeTicket;
+import com.github.elenterius.biomancy.world.mound.MoundGenerator;
+import com.github.elenterius.biomancy.world.mound.MoundShape;
 import com.google.common.math.IntMath;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
@@ -77,9 +78,15 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 	@Override
 	public void onLoad() {
 		super.onLoad();
-		if (level != null && !level.isClientSide && shapeTicket == null) {
-			MoundShape moundShape = MoundShape.Generator.constructShape(level, worldPosition, Mth.getSeed(worldPosition));
-			shapeTicket = ShapeManager.addShapeTicket(level, moundShape);
+		if (level != null && !level.isClientSide) {
+			if (shapeTicket == null) {
+				long seed = Mth.getSeed(worldPosition); //TODO: make unique per cradle
+				MoundShape moundShape = MoundGenerator.constructShape(level, worldPosition, seed);
+				shapeTicket = ShapeManager.addShapeTicket(level, moundShape);
+			}
+			else {
+				shapeTicket.validate();
+			}
 		}
 	}
 

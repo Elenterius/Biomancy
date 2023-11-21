@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.world;
+package com.github.elenterius.biomancy.world.mound;
 
 import com.github.elenterius.biomancy.util.shape.Shape;
 import net.minecraft.world.phys.AABB;
