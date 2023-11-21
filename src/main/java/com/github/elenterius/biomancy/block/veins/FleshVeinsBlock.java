@@ -136,7 +136,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 				BlockState stateBelow2 = level.getBlockState(posBelow2);
 
 				if (axisDirection == Direction.UP && PrimordialEcosystem.FULL_FLESH_BLOCKS.contains(stateBelow2.getBlock()) && LevelUtil.getMaxBrightness(level, pos) < 5) {
-					return level.setBlock(posRelative, Blocks.SHROOMLIGHT.defaultBlockState(), Block.UPDATE_CLIENTS);
+					return level.setBlock(posRelative, ModBlocks.BLOOMLIGHT.get().defaultBlockState(), Block.UPDATE_CLIENTS);
 				}
 
 				posRelative = posBelow2;

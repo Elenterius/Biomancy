@@ -607,6 +607,13 @@ public class ModRecipeProvider extends RecipeProvider {
 		DecomposerRecipeBuilder.create().setIngredient(ModItems.TOXIN_GLAND).addOutput(ModItems.TOXIN_EXTRACT.get(), 2, 5).addOutput(ModItems.FLESH_BITS.get(), 2, 3).addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 3).unlockedBy(ModItems.TOXIN_GLAND).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(ModItems.VOLATILE_GLAND).addOutput(ModItems.VOLATILE_FLUID.get(), 2, 5).addOutput(ModItems.FLESH_BITS.get(), 2, 3).addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 3).unlockedBy(ModItems.VOLATILE_GLAND).save(consumer);
 
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.BLOOMLIGHT)
+				.addOutput(ModItems.BIO_LUMENS.get(), 5, 9)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 2, 3)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 0, 3)
+				.addOutput(ModItems.BILE.get(), 1, 2)
+				.unlockedBy(Items.SHROOMLIGHT).save(consumer);
+
 		//Special
 		DecomposerRecipeBuilder.create().setIngredient(ModItems.LIVING_FLESH)
 				.addOutput(ModItems.FLESH_BITS.get(), 3, 6)
