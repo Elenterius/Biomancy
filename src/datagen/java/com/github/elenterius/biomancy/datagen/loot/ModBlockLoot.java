@@ -175,6 +175,7 @@ public class ModBlockLoot extends BlockLoot {
 		dropSelf(ModBlocks.FLESH_LADDER.get());
 		dropSelf(ModBlocks.YELLOW_BIO_LANTERN.get());
 		dropSelf(ModBlocks.PRIMORDIAL_BIO_LANTERN.get());
+		dropSelf(ModBlocks.BLOOMLIGHT.get());
 		dropSelf(ModBlocks.BLUE_BIO_LANTERN.get());
 		dropSelf(ModBlocks.TENDON_CHAIN.get());
 		dropSelf(ModBlocks.VIAL_HOLDER.get());

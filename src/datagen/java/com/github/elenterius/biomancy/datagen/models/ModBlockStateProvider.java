@@ -101,6 +101,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		bioLantern(ModBlocks.YELLOW_BIO_LANTERN);
 		bioLantern(ModBlocks.BLUE_BIO_LANTERN);
 		bioLantern(ModBlocks.PRIMORDIAL_BIO_LANTERN);
+		simpleBlockWithItem(ModBlocks.BLOOMLIGHT);
 		tendonChain(ModBlocks.TENDON_CHAIN);
 		vialHolder(ModBlocks.VIAL_HOLDER);
 
