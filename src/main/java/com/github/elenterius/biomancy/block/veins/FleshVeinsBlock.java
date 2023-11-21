@@ -125,9 +125,13 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 			BlockState stateRelative = level.getBlockState(posRelative);
 
 			if (PrimordialEcosystem.isReplaceable(stateRelative)) {
-				return level.setBlock(posRelative, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+				return destroyBlockAndConvertIntoEnergy(level, posRelative, energyHandler, 15);
 			}
 			else if (PrimordialEcosystem.FULL_FLESH_BLOCKS.contains(stateRelative.getBlock())) {
+				if (chamber.contains(posRelative.getX(), posRelative.getY(), posRelative.getZ())) {
+					return destroyBlockAndConvertIntoEnergy(level, posRelative, energyHandler, 30); //TODO: this might interfere with future room content generation
+				}
+
 				BlockPos posBelow2 = pos.relative(axisDirection, 2);
 				BlockState stateBelow2 = level.getBlockState(posBelow2);
 
@@ -144,6 +148,14 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 			}
 		}
 
+		return false;
+	}
+
+	protected static boolean destroyBlockAndConvertIntoEnergy(ServerLevel level, BlockPos pos, @Nullable PrimalEnergyHandler energyHandler, int amount) {
+		if (level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS)) {
+			if (energyHandler != null) energyHandler.fillPrimalEnergy(amount);
+			return true;
+		}
 		return false;
 	}
 
