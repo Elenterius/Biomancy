@@ -14,10 +14,10 @@ import com.github.elenterius.biomancy.util.EnhancedIntegerProperty;
 import com.github.elenterius.biomancy.util.LevelUtil;
 import com.github.elenterius.biomancy.util.random.CellularNoise;
 import com.github.elenterius.biomancy.util.shape.Shape;
-import com.github.elenterius.biomancy.world.MoundChamber;
-import com.github.elenterius.biomancy.world.MoundShape;
 import com.github.elenterius.biomancy.world.PrimordialEcosystem;
 import com.github.elenterius.biomancy.world.ShapeManager;
+import com.github.elenterius.biomancy.world.mound.MoundChamber;
+import com.github.elenterius.biomancy.world.mound.MoundShape;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -64,7 +64,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false).setValue(CHARGE.get(), CHARGE.getMin()));
 	}
 
-	public static boolean convert(BlockState state, ServerLevel level, BlockPos pos, int directNeighbors, @Nullable MoundChamber chamber, float nearChamberCenterPct) {
+	public static boolean convert(BlockState state, ServerLevel level, BlockPos pos, int directNeighbors, @Nullable MoundChamber chamber, float nearBoundingCenterPct, @Nullable PrimalEnergyHandler energyHandler) {
 
 		Bit32Set facesSet = new Bit32Set();
 		facesSet.set(5, hasFace(state, Direction.DOWN));
@@ -75,7 +75,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		facesSet.set(0, hasFace(state, Direction.EAST));
 
 		if (chamber != null) {
-			return convertInsideChamber(level, pos, directNeighbors, chamber, nearChamberCenterPct, facesSet);
+			return convertInsideChamber(level, pos, directNeighbors, chamber, nearBoundingCenterPct, facesSet, energyHandler);
 		}
 
 		return convertNormal(level, pos, directNeighbors, facesSet);
@@ -116,7 +116,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		return convertSelfIntoStairs(level, pos, facesSet);
 	}
 
-	protected static boolean convertInsideChamber(ServerLevel level, BlockPos pos, int directNeighbors, MoundChamber chamber, float nearChamberCenterPct, Bit32Set facesSet) {
+	protected static boolean convertInsideChamber(ServerLevel level, BlockPos pos, int directNeighbors, MoundChamber chamber, float nearBoundingCenterPct, Bit32Set facesSet, @Nullable PrimalEnergyHandler energyHandler) {
 		Direction[] axisDirections = Arrays.stream(facesSet.getIndices()).mapToObj(i -> Direction.from3DDataValue(5 - i)).toArray(Direction[]::new);
 		ArrayUtil.shuffle(axisDirections, level.random);
 
@@ -138,7 +138,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 				posRelative = posBelow2;
 				stateRelative = stateBelow2;
 				if (PrimordialEcosystem.isReplaceable(stateRelative)) {
-					BlockState replacementState = level.random.nextFloat() < nearChamberCenterPct ? ModBlocks.PRIMAL_FLESH.get().defaultBlockState() : ModBlocks.MALIGNANT_FLESH.get().defaultBlockState();
+					BlockState replacementState = level.random.nextFloat() < nearBoundingCenterPct ? ModBlocks.PRIMAL_FLESH.get().defaultBlockState() : ModBlocks.MALIGNANT_FLESH.get().defaultBlockState();
 					return level.setBlock(posRelative, replacementState, Block.UPDATE_CLIENTS);
 				}
 			}
@@ -478,7 +478,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 
 		PrimalEnergyHandler energyHandler = null;
 		MoundChamber chamber = null;
-		float nearChamberCenterPct = 0;
+		float nearBoundingCenterPct = 0;
 
 		if (ShapeManager.getShape(level, pos) instanceof MoundShape moundShape) {
 			BlockPos origin = moundShape.getOrigin();
@@ -488,12 +488,12 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 			}
 
 			chamber = moundShape.getChamberAt(pos.getX(), pos.getY(), pos.getZ());
-			Shape confiningChamberShape = moundShape.getChamberConfiningShapeAt(pos.getX(), pos.getY(), pos.getZ());
-			if (confiningChamberShape != null) {
-				double radius = confiningChamberShape instanceof Shape.Sphere sphere ? sphere.getRadius() : confiningChamberShape.getAABB().getSize() / 2;
+			Shape boundingShape = moundShape.getBoundingShapeAt(pos.getX(), pos.getY(), pos.getZ());
+			if (boundingShape != null) {
+				double radius = boundingShape instanceof Shape.Sphere sphere ? sphere.getRadius() : boundingShape.getAABB().getSize() / 2;
 				double radiusSqr = radius * radius;
-				double distSqr = confiningChamberShape.distanceToSqr(pos.getX(), pos.getY(), pos.getZ());
-				nearChamberCenterPct = Mth.clamp((float) (1 - distSqr / radiusSqr), 0f, 1f);
+				double distSqr = boundingShape.distanceToSqr(pos.getX(), pos.getY(), pos.getZ());
+				nearBoundingCenterPct = Mth.clamp((float) (1 - distSqr / radiusSqr), 0f, 1f);
 			}
 		}
 
@@ -517,7 +517,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		float populationPct = directNeighbors / (float) Direction.values().length;
 		float conversionChance = charge / (CHARGE.getMax() + 5f) + populationPct * 0.5f;
 
-		if (random.nextFloat() < conversionChance && convert(state, level, pos, directNeighbors, chamber, nearChamberCenterPct)) {
+		if (random.nextFloat() < conversionChance && convert(state, level, pos, directNeighbors, chamber, nearBoundingCenterPct, energyHandler)) {
 			level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 0.8f, 0.15f + random.nextFloat() * 0.5f);
 			//return; //TODO: exiting early hampers growth to a very extreme degree. reevaluate which conversions should return true or be ignored
 		}
@@ -539,7 +539,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		}
 
 		if (energyHandler != null) {
-			int primalEnergy = Math.max(charge, Math.round(CHARGE.getMax() * nearChamberCenterPct) / 2);
+			int primalEnergy = Math.max(charge, Math.round(CHARGE.getMax() * nearBoundingCenterPct) / 2);
 			if (energyHandler.getPrimalEnergy() > primalEnergy && energyHandler.drainPrimalEnergy(primalEnergy) >= primalEnergy) {
 				increaseChargeAroundPos(level, pos, random, primalEnergy * 2);
 			}
