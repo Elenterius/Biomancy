@@ -10,6 +10,7 @@ import com.github.elenterius.biomancy.integration.ModsCompatHandler;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.github.elenterius.biomancy.util.SoundUtil;
+import com.github.elenterius.biomancy.world.RegionManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -105,6 +106,16 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return ModBlockEntities.PRIMORDIAL_CRADLE.get().create(pos, state);
+	}
+
+	@Override
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!state.is(newState.getBlock())) {
+			if (level instanceof ServerLevel serverLevel) {
+				RegionManager.remove(serverLevel, pos); //removes mound shape from level
+			}
+			super.onRemove(state, level, pos, newState, isMoving);
+		}
 	}
 
 	@Nullable
