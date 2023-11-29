@@ -153,6 +153,7 @@ public final class ClientSetupHandler {
 		event.register((stack, tintIndex) -> ModItems.ESSENCE.get().getColor(stack, tintIndex), ModItems.ESSENCE.get());
 		event.register((stack, tintIndex) -> tintIndex == 1 ? 0xFF_09DF5B : 0xFF_FFFFFF, ModBlocks.BABY_PERMEABLE_MEMBRANE.get());
 		event.register((stack, tintIndex) -> tintIndex == 1 ? 0xFF_ACBF60 : 0xFF_FFFFFF, ModBlocks.ADULT_PERMEABLE_MEMBRANE.get());
+		event.register((stack, tintIndex) -> tintIndex == 1 ? 0xFF_F740FD : 0xFF_FFFFFF, ModBlocks.PRIMAL_PERMEABLE_MEMBRANE.get());
 	}
 
 	@SubscribeEvent
@@ -160,6 +161,7 @@ public final class ClientSetupHandler {
 		event.register(VialHolderBlock::getTintColor, ModBlocks.VIAL_HOLDER.get());
 		event.register((state, level, pos, tintIndex) -> tintIndex == 1 ? 0xFF_09DF5B : 0xFF_FFFFFF, ModBlocks.BABY_PERMEABLE_MEMBRANE.get());
 		event.register((state, level, pos, tintIndex) -> tintIndex == 1 ? 0xFF_ACBF60 : 0xFF_FFFFFF, ModBlocks.ADULT_PERMEABLE_MEMBRANE.get());
+		event.register((state, level, pos, tintIndex) -> tintIndex == 1 ? 0xFF_F740FD : 0xFF_FFFFFF, ModBlocks.PRIMAL_PERMEABLE_MEMBRANE.get());
 	}
 
 	@SubscribeEvent
