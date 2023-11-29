@@ -64,7 +64,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false).setValue(CHARGE.get(), CHARGE.getMin()));
 	}
 
-	public static boolean convert(BlockState state, ServerLevel level, BlockPos pos, int directNeighbors, @Nullable MoundChamber chamber, float nearBoundingCenterPct, @Nullable PrimalEnergyHandler energyHandler) {
+	public static boolean convert(BlockState state, ServerLevel level, BlockPos pos, int directNeighbors, @Nullable MoundShape mound, float nearBoundingCenterPct, @Nullable PrimalEnergyHandler energyHandler) {
 
 		Bit32Set facesSet = new Bit32Set();
 		facesSet.set(5, hasFace(state, Direction.DOWN));
@@ -74,8 +74,11 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		facesSet.set(1, hasFace(state, Direction.WEST));
 		facesSet.set(0, hasFace(state, Direction.EAST));
 
-		if (chamber != null) {
-			return convertInsideChamber(level, pos, directNeighbors, chamber, nearBoundingCenterPct, facesSet, energyHandler);
+		if (mound != null) {
+			MoundChamber chamber = mound.getChamberAt(pos.getX(), pos.getY(), pos.getZ());
+			if (chamber != null) {
+				return convertInsideChamber(level, pos, directNeighbors, mound, chamber, nearBoundingCenterPct, facesSet, energyHandler);
+			}
 		}
 
 		return convertNormal(level, pos, directNeighbors, facesSet);
@@ -116,7 +119,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		return convertSelfIntoStairs(level, pos, facesSet);
 	}
 
-	protected static boolean convertInsideChamber(ServerLevel level, BlockPos pos, int directNeighbors, MoundChamber chamber, float nearBoundingCenterPct, Bit32Set facesSet, @Nullable PrimalEnergyHandler energyHandler) {
+	protected static boolean convertInsideChamber(ServerLevel level, BlockPos pos, int directNeighbors, MoundShape mound, MoundChamber chamber, float nearBoundingCenterPct, Bit32Set facesSet, @Nullable PrimalEnergyHandler energyHandler) {
 		Direction[] axisDirections = Arrays.stream(facesSet.getIndices()).mapToObj(i -> Direction.from3DDataValue(5 - i)).toArray(Direction[]::new);
 		ArrayUtil.shuffle(axisDirections, level.random);
 
@@ -127,15 +130,24 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 			if (PrimordialEcosystem.isReplaceable(stateRelative)) {
 				return destroyBlockAndConvertIntoEnergy(level, posRelative, energyHandler, 15);
 			}
-			else if (PrimordialEcosystem.FULL_FLESH_BLOCKS.contains(stateRelative.getBlock())) {
+
+			if (PrimordialEcosystem.FULL_FLESH_BLOCKS.contains(stateRelative.getBlock())) {
 				if (chamber.contains(posRelative.getX(), posRelative.getY(), posRelative.getZ())) {
 					return destroyBlockAndConvertIntoEnergy(level, posRelative, energyHandler, 30); //TODO: this might interfere with future room content generation
 				}
 
 				BlockPos posRelative2 = pos.relative(axisDirection, 2);
 				BlockState stateRelative2 = level.getBlockState(posRelative2);
+
+				// create "Door" between two adjacent chambers
+				MoundChamber neighborChamber = mound.getChamberAt(posRelative2.getX(), posRelative2.getY(), posRelative2.getZ());
+				if (neighborChamber != null && neighborChamber != chamber) {
+					return level.setBlock(posRelative, ModBlocks.PRIMAL_PERMEABLE_MEMBRANE.get().defaultBlockState(), Block.UPDATE_CLIENTS);
+				}
+
 				boolean isFleshBlock = PrimordialEcosystem.FULL_FLESH_BLOCKS.contains(stateRelative2.getBlock());
 
+				// create light source in dark corners
 				if (isFleshBlock && axisDirection == Direction.UP && LevelUtil.getMaxBrightness(level, pos) < 5) {
 					return level.setBlock(posRelative, ModBlocks.BLOOMLIGHT.get().defaultBlockState(), Block.UPDATE_CLIENTS);
 				}
@@ -144,8 +156,6 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 					BlockState replacementState = level.random.nextFloat() < nearBoundingCenterPct ? ModBlocks.PRIMAL_FLESH.get().defaultBlockState() : ModBlocks.MALIGNANT_FLESH.get().defaultBlockState();
 					return level.setBlock(posRelative2, replacementState, Block.UPDATE_CLIENTS);
 				}
-
-				//TODO: place membranes as "doors"
 			}
 		}
 
@@ -490,17 +500,18 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		if (!level.isAreaLoaded(pos, 2)) return;
 
 		PrimalEnergyHandler energyHandler = null;
-		MoundChamber chamber = null;
+		MoundShape mound = null;
 		float nearBoundingCenterPct = 0;
 
 		if (RegionManager.getClosestShape(level, pos) instanceof MoundShape moundShape) {
+			mound = moundShape;
+
 			BlockPos origin = moundShape.getOrigin();
 			BlockEntity existingBlockEntity = level.getExistingBlockEntity(origin);
 			if (existingBlockEntity instanceof PrimalEnergyHandler peh) {
 				energyHandler = peh;
 			}
 
-			chamber = moundShape.getChamberAt(pos.getX(), pos.getY(), pos.getZ());
 			Shape boundingShape = moundShape.getBoundingShapeAt(pos.getX(), pos.getY(), pos.getZ());
 			if (boundingShape != null) {
 				double radius = boundingShape instanceof Shape.Sphere sphere ? sphere.getRadius() : boundingShape.getAABB().getSize() / 2;
@@ -530,7 +541,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		float populationPct = directNeighbors / (float) Direction.values().length;
 		float conversionChance = charge / (CHARGE.getMax() + 5f) + populationPct * 0.5f;
 
-		if (random.nextFloat() < conversionChance && convert(state, level, pos, directNeighbors, chamber, nearBoundingCenterPct, energyHandler)) {
+		if (random.nextFloat() < conversionChance && convert(state, level, pos, directNeighbors, mound, nearBoundingCenterPct, energyHandler)) {
 			level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 0.8f, 0.15f + random.nextFloat() * 0.5f);
 			//return; //TODO: exiting early hampers growth to a very extreme degree. reevaluate which conversions should return true or be ignored
 		}
