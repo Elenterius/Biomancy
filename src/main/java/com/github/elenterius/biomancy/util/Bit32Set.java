@@ -1,5 +1,7 @@
 package com.github.elenterius.biomancy.util;
 
+import com.github.elenterius.biomancy.util.serialization.IntegerSerializable;
+
 public class Bit32Set implements IntegerSerializable {
 	private int bits;
 

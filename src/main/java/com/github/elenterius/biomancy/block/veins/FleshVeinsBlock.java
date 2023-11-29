@@ -15,7 +15,7 @@ import com.github.elenterius.biomancy.util.LevelUtil;
 import com.github.elenterius.biomancy.util.random.CellularNoise;
 import com.github.elenterius.biomancy.util.shape.Shape;
 import com.github.elenterius.biomancy.world.PrimordialEcosystem;
-import com.github.elenterius.biomancy.world.ShapeManager;
+import com.github.elenterius.biomancy.world.RegionManager;
 import com.github.elenterius.biomancy.world.mound.MoundChamber;
 import com.github.elenterius.biomancy.world.mound.MoundShape;
 import net.minecraft.core.BlockPos;
@@ -132,19 +132,20 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 					return destroyBlockAndConvertIntoEnergy(level, posRelative, energyHandler, 30); //TODO: this might interfere with future room content generation
 				}
 
-				BlockPos posBelow2 = pos.relative(axisDirection, 2);
-				BlockState stateBelow2 = level.getBlockState(posBelow2);
+				BlockPos posRelative2 = pos.relative(axisDirection, 2);
+				BlockState stateRelative2 = level.getBlockState(posRelative2);
+				boolean isFleshBlock = PrimordialEcosystem.FULL_FLESH_BLOCKS.contains(stateRelative2.getBlock());
 
-				if (axisDirection == Direction.UP && PrimordialEcosystem.FULL_FLESH_BLOCKS.contains(stateBelow2.getBlock()) && LevelUtil.getMaxBrightness(level, pos) < 5) {
+				if (isFleshBlock && axisDirection == Direction.UP && LevelUtil.getMaxBrightness(level, pos) < 5) {
 					return level.setBlock(posRelative, ModBlocks.BLOOMLIGHT.get().defaultBlockState(), Block.UPDATE_CLIENTS);
 				}
 
-				posRelative = posBelow2;
-				stateRelative = stateBelow2;
-				if (PrimordialEcosystem.isReplaceable(stateRelative)) {
+				if (PrimordialEcosystem.isReplaceable(stateRelative2) && stateRelative2.isCollisionShapeFullBlock(level, posRelative2)) {
 					BlockState replacementState = level.random.nextFloat() < nearBoundingCenterPct ? ModBlocks.PRIMAL_FLESH.get().defaultBlockState() : ModBlocks.MALIGNANT_FLESH.get().defaultBlockState();
-					return level.setBlock(posRelative, replacementState, Block.UPDATE_CLIENTS);
+					return level.setBlock(posRelative2, replacementState, Block.UPDATE_CLIENTS);
 				}
+
+				//TODO: place membranes as "doors"
 			}
 		}
 
@@ -492,7 +493,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		MoundChamber chamber = null;
 		float nearBoundingCenterPct = 0;
 
-		if (ShapeManager.getShape(level, pos) instanceof MoundShape moundShape) {
+		if (RegionManager.getClosestShape(level, pos) instanceof MoundShape moundShape) {
 			BlockPos origin = moundShape.getOrigin();
 			BlockEntity existingBlockEntity = level.getExistingBlockEntity(origin);
 			if (existingBlockEntity instanceof PrimalEnergyHandler peh) {

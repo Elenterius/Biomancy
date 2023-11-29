@@ -9,9 +9,9 @@ import com.github.elenterius.biomancy.network.ISyncableAnimation;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import com.github.elenterius.biomancy.tribute.Tribute;
 import com.github.elenterius.biomancy.util.SoundUtil;
+import com.github.elenterius.biomancy.util.shape.Shape;
 import com.github.elenterius.biomancy.world.PrimordialEcosystem;
-import com.github.elenterius.biomancy.world.ShapeManager;
-import com.github.elenterius.biomancy.world.ShapeTicket;
+import com.github.elenterius.biomancy.world.RegionManager;
 import com.github.elenterius.biomancy.world.mound.MoundGenerator;
 import com.github.elenterius.biomancy.world.mound.MoundShape;
 import com.google.common.math.IntMath;
@@ -46,10 +46,13 @@ import java.util.List;
 
 public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity implements PrimalEnergyHandler, IAnimatable, ISyncableAnimation {
 
-	public static final int DURATION_TICKS = 20 * 4;
 	public static final String SACRIFICE_SYNC_KEY = "SyncSacrificeHandler";
 	public static final String SACRIFICE_KEY = "SacrificeHandler";
 	public static final String PRIMAL_ENERGY_KEY = "PrimalEnergy";
+	public static final String PROC_GEN_VALUES_KEY = "ProcGenValues";
+
+	public static final int DURATION_TICKS = 20 * 4;
+
 	protected static final AnimationBuilder IDLE_ANIM = new AnimationBuilder().addAnimation("cradle.idle");
 	protected static final AnimationBuilder SPIKE_ANIM = new AnimationBuilder().addAnimation("cradle.spike");
 	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
@@ -57,9 +60,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 	private boolean playAttackAnimation = false;
 	private long ticks;
 	private int primalEnergy;
-
-	@Nullable
-	private ShapeTicket shapeTicket;
+	private @Nullable MoundShape.ProcGenValues procGenValues;
 
 	public PrimordialCradleBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.PRIMORDIAL_CRADLE.get(), pos, state);
@@ -78,24 +79,25 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 	@Override
 	public void onLoad() {
 		super.onLoad();
-		if (level != null && !level.isClientSide) {
-			if (shapeTicket == null) {
-				long seed = Mth.getSeed(worldPosition); //TODO: make unique per cradle
-				MoundShape moundShape = MoundGenerator.constructShape(level, worldPosition, seed);
-				shapeTicket = ShapeManager.addShapeTicket(level, moundShape);
-			}
-			else {
-				shapeTicket.validate();
+		if (level instanceof ServerLevel serverLevel && !serverLevel.isClientSide) {
+			Shape shape = RegionManager.getOrCreateShapeRegion(serverLevel, worldPosition, () -> {
+				if (procGenValues != null) {
+					return MoundGenerator.constructShape(worldPosition, procGenValues);
+				}
+				return MoundGenerator.constructShape(level, worldPosition, level.random.nextLong());
+			});
+			if (shape instanceof MoundShape moundShape) {
+				procGenValues = moundShape.getProcGenValues();
 			}
 		}
 	}
 
 	@Override
 	public void setRemoved() {
-		super.setRemoved();
-		if (shapeTicket != null) {
-			shapeTicket.invalidate();
+		if (level instanceof ServerLevel serverLevel && !serverLevel.isClientSide) {
+			RegionManager.remove(serverLevel, worldPosition);
 		}
+		super.setRemoved();
 	}
 
 	/**
@@ -331,6 +333,12 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 		super.saveAdditional(tag);
 		tag.put(SACRIFICE_KEY, sacrificeHandler.serializeNBT());
 		tag.putInt(PRIMAL_ENERGY_KEY, primalEnergy);
+
+		if (procGenValues != null) {
+			CompoundTag tagProcGen = new CompoundTag();
+			procGenValues.writeTo(tagProcGen);
+			tag.put(PROC_GEN_VALUES_KEY, tagProcGen);
+		}
 	}
 
 	@Override
@@ -349,6 +357,10 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 		}
 
 		primalEnergy = tag.getInt(PRIMAL_ENERGY_KEY);
+
+		if (tag.contains(PROC_GEN_VALUES_KEY)) {
+			procGenValues = MoundShape.ProcGenValues.readFrom(tag.getCompound(PROC_GEN_VALUES_KEY));
+		}
 	}
 
 	@Override

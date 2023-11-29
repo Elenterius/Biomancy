@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.world.mound;
 
+import com.github.elenterius.biomancy.util.serialization.NBTSerializer;
 import com.github.elenterius.biomancy.util.shape.Shape;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -41,5 +42,10 @@ public class MoundChamber implements Chamber, Shape {
 	@Override
 	public AABB getAABB() {
 		return shape.getAABB();
+	}
+
+	@Override
+	public NBTSerializer<Shape> getNBTSerializer() {
+		return null;
 	}
 }

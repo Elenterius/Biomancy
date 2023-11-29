@@ -1,5 +1,8 @@
 package com.github.elenterius.biomancy.util.shape;
 
+import com.github.elenterius.biomancy.util.serialization.NBTSerializer;
+import com.github.elenterius.biomancy.util.serialization.NBTSerializers;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -43,4 +46,29 @@ public class SphereShape implements Shape.Sphere {
 		return radius;
 	}
 
+	@Override
+	public NBTSerializer<Shape> getNBTSerializer() {
+		return NBTSerializers.SPHERE_SERIALIZER;
+	}
+
+	public record Serializer(String id) implements NBTSerializer<SphereShape> {
+		@Override
+		public CompoundTag serializeNBT(SphereShape shape) {
+			CompoundTag tag = new CompoundTag();
+			tag.putFloat("Radius", shape.radius);
+			tag.putDouble("X", shape.origin.x);
+			tag.putDouble("Y", shape.origin.y);
+			tag.putDouble("Z", shape.origin.z);
+			return tag;
+		}
+
+		@Override
+		public SphereShape deserializeNBT(CompoundTag tag) {
+			float radius = tag.getFloat("Radius");
+			double x = tag.getDouble("X");
+			double y = tag.getDouble("Y");
+			double z = tag.getDouble("Z");
+			return new SphereShape(x, y, z, radius);
+		}
+	}
 }

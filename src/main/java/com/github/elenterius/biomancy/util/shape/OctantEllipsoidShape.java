@@ -1,5 +1,8 @@
 package com.github.elenterius.biomancy.util.shape;
 
+import com.github.elenterius.biomancy.util.serialization.NBTSerializer;
+import com.github.elenterius.biomancy.util.serialization.NBTSerializers;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -70,4 +73,44 @@ public class OctantEllipsoidShape implements Shape.Sphere {
 		return radius;
 	}
 
+	@Override
+	public NBTSerializer<Shape> getNBTSerializer() {
+		return NBTSerializers.OCTANT_ELLIPSOID_SERIALIZER;
+	}
+
+	public record Serializer(String id) implements NBTSerializer<OctantEllipsoidShape> {
+
+		@Override
+		public CompoundTag serializeNBT(OctantEllipsoidShape shape) {
+			CompoundTag tag = new CompoundTag();
+
+			tag.putDouble("X", shape.origin.x);
+			tag.putDouble("Y", shape.origin.y);
+			tag.putDouble("Z", shape.origin.z);
+
+			tag.putFloat("A+", shape.aPos);
+			tag.putFloat("B+", shape.bPos);
+			tag.putFloat("C+", shape.cPos);
+			tag.putFloat("A-", shape.aNeg);
+			tag.putFloat("B-", shape.bNeg);
+			tag.putFloat("C-", shape.cNeg);
+			return tag;
+		}
+
+		@Override
+		public OctantEllipsoidShape deserializeNBT(CompoundTag tag) {
+			double x = tag.getDouble("X");
+			double y = tag.getDouble("Y");
+			double z = tag.getDouble("Z");
+
+			float aPos = tag.getFloat("A+");
+			float bPos = tag.getFloat("B+");
+			float cPos = tag.getFloat("C+");
+			float aNeg = tag.getFloat("A-");
+			float bNeg = tag.getFloat("B-");
+			float cNeg = tag.getFloat("C-");
+
+			return new OctantEllipsoidShape(x, y, z, aPos, bPos, cPos, aNeg, bNeg, cNeg);
+		}
+	}
 }

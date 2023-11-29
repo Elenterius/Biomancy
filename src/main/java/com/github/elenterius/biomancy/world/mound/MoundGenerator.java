@@ -17,24 +17,37 @@ import java.util.List;
 public final class MoundGenerator {
 	private MoundGenerator() {}
 
+	public static MoundShape constructShape(BlockPos blockOrigin, MoundShape.ProcGenValues procGenValues) {
+		return genShape(blockOrigin, procGenValues);
+	}
+
 	public static MoundShape constructShape(Level level, BlockPos blockOrigin, long seed) {
+		Biome biome = level.getBiome(blockOrigin).get();
+		MoundShape.ProcGenValues procGenValues = new MoundShape.ProcGenValues(
+				seed,
+				level.getMaxBuildHeight(),
+				level.getSeaLevel(),
+				TemperatureUtil.getTemperature(biome, blockOrigin),
+				biome.getDownfall()
+		);
+
+		return genShape(blockOrigin, procGenValues);
+	}
+
+	private static MoundShape genShape(BlockPos blockOrigin, MoundShape.ProcGenValues procGenValues) {
 		Context ctx = new Context();
-		ctx.random = RandomSource.create(seed);
-
-		final int maxBuildHeight = level.getMaxBuildHeight();
-		final int seaLevel = level.getSeaLevel();
-
+		ctx.random = RandomSource.create(procGenValues.seed());
 		Vec3 origin = Vec3.atCenterOf(blockOrigin);
 
 		//TODO: add these to the cradle? ////////////////
 		float heightMultiplier = 0;
 		float spireCountModifier = 6;
 		float roomSizeModifier = 4; //clamp between 0 and 4? The more spires the smaller the roomSizeModifier?
+
 		/////////////////////////////////////////////////
 
-		Biome biome = level.getBiome(blockOrigin).get();
-		float biomeTemperature = TemperatureUtil.getTemperature(biome, blockOrigin);
-		float biomeHumidity = biome.getDownfall();
+		float biomeTemperature = procGenValues.biomeTemperature();
+		float biomeHumidity = procGenValues.biomeHumidity();
 
 		float heatMultiplier = TemperatureUtil.rescale(biomeTemperature) * 0.5f + biomeTemperature / TemperatureUtil.MAX_TEMP * 0.5f;
 		float coldMultiplier = TemperatureUtil.isFreezing(biomeTemperature) ? 0.1f : 1;
@@ -52,6 +65,8 @@ public final class MoundGenerator {
 		float subSpireRadius = ctx.maxMoundRadius / 2;
 		float extraSpires = Mth.clamp(spireCountModifier, 0, countCirclesOnCircumference(ctx.maxMoundRadius, subSpireRadius));
 
+		int maxBuildHeight = procGenValues.maxBuildHeight();
+		int seaLevel = procGenValues.seaLevel();
 		float maxMoundHeight = Mth.clamp(maxBuildHeight * ctx.spikiness, 0, (maxBuildHeight - seaLevel));
 
 		ctx.dirLean = new Vec3(ctx.random.nextFloat() - ctx.random.nextFloat(), 0, ctx.random.nextFloat() - ctx.random.nextFloat()).normalize();
@@ -70,7 +85,7 @@ public final class MoundGenerator {
 			genSpire(xn, origin.y, zn, maxMoundHeight / (1.5f + ctx.random.nextFloat() * 1.5f), subRadius, ctx);
 		}
 
-		return new MoundShape(blockOrigin, ctx.boundingShapes, ctx.chambers);
+		return new MoundShape(blockOrigin, ctx.boundingShapes, ctx.chambers, procGenValues);
 	}
 
 	private static void genSpire(double x, double y, double z, float maxHeight, float baseRadius, Context context) {
