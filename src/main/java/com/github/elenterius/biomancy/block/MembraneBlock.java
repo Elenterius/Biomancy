@@ -5,6 +5,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -73,6 +74,7 @@ public class MembraneBlock extends HalfTransparentBlock {
 	public interface IgnoreEntityCollisionPredicate {
 		IgnoreEntityCollisionPredicate IS_BABY_MOB = (state, level, pos, entity) -> entity instanceof LivingEntity livingEntity && livingEntity.isBaby();
 		IgnoreEntityCollisionPredicate IS_ADULT_MOB = (state, level, pos, entity) -> entity instanceof LivingEntity livingEntity && !livingEntity.isBaby();
+		IgnoreEntityCollisionPredicate IS_ALIVE_MOB = (state, level, pos, entity) -> entity instanceof LivingEntity livingEntity && livingEntity.getMobType() != MobType.UNDEAD;
 		IgnoreEntityCollisionPredicate IS_ITEM = (state, level, pos, entity) -> entity instanceof ItemEntity;
 		IgnoreEntityCollisionPredicate NEVER = (state, level, pos, entity) -> false;
 
