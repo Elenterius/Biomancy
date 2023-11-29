@@ -79,25 +79,22 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 	@Override
 	public void onLoad() {
 		super.onLoad();
-		if (level instanceof ServerLevel serverLevel && !serverLevel.isClientSide) {
+		if (level instanceof ServerLevel serverLevel) {
 			Shape shape = RegionManager.getOrCreateShapeRegion(serverLevel, worldPosition, () -> {
 				if (procGenValues != null) {
 					return MoundGenerator.constructShape(worldPosition, procGenValues);
 				}
 				return MoundGenerator.constructShape(level, worldPosition, level.random.nextLong());
 			});
+
 			if (shape instanceof MoundShape moundShape) {
-				procGenValues = moundShape.getProcGenValues();
+				MoundShape.ProcGenValues values = moundShape.getProcGenValues();
+				if (!values.equals(procGenValues)) {
+					procGenValues = values;
+					setChangedSilent();
+				}
 			}
 		}
-	}
-
-	@Override
-	public void setRemoved() {
-		if (level instanceof ServerLevel serverLevel && !serverLevel.isClientSide) {
-			RegionManager.remove(serverLevel, worldPosition);
-		}
-		super.setRemoved();
 	}
 
 	/**
