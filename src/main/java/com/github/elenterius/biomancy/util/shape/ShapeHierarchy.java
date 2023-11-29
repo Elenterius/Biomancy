@@ -11,17 +11,16 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * spatial hash map based on a 16x16x16 grid
- *
- * @param <T>
- */
-public class ShapeMap<T extends Shape> {
+public class ShapeHierarchy<T extends Shape> {
+
+	/**
+	 * spatial hash map based on a 16x16x16 cell grid
+	 */
 	protected final Long2ObjectMap<Set<T>> sections = new Long2ObjectOpenHashMap<>();
 
 	protected final AABB aabb;
 
-	public ShapeMap(Iterable<T> shapes) {
+	public ShapeHierarchy(Iterable<T> shapes) {
 		double aabbMinX = Double.MAX_VALUE;
 		double aabbMinY = Double.MAX_VALUE;
 		double aabbMinZ = Double.MAX_VALUE;

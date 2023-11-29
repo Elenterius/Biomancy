@@ -61,6 +61,7 @@ public class ModBlockLoot extends BlockLoot {
 		return LootTable.lootTable().withPool(applyExplosionCondition(block, LootPool.lootPool().setRolls(ConstantValue.exactly(1))
 				.add(LootItem.lootTableItem(block)
 						.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("PrimalEnergy", "BlockEntityTag.PrimalEnergy"))
+						.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("ProcGenValues", "BlockEntityTag.ProcGenValues"))
 						.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("SacrificeHandler", "BlockEntityTag.SacrificeHandler"))
 				)));
 	}
