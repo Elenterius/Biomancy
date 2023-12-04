@@ -34,7 +34,7 @@ public final class PrimordialEcosystem {
 	private static final RandomSource random = RandomSource.create();
 	public static final IntSupplier MAX_CHARGE_SUPPLIER = () -> 15;
 	public static final Set<Block> VALID_UPGRADE_TARGETS = Set.of(ModBlocks.MALIGNANT_FLESH_SLAB.get(), ModBlocks.MALIGNANT_FLESH_STAIRS.get());
-	public static final Set<Block> FULL_FLESH_BLOCKS = Set.of(ModBlocks.MALIGNANT_FLESH.get(), ModBlocks.PRIMAL_FLESH.get());
+	public static final Set<Block> FULL_FLESH_BLOCKS = Set.of(ModBlocks.MALIGNANT_FLESH.get(), ModBlocks.PRIMAL_FLESH.get(), ModBlocks.PRIMAL_PERMEABLE_MEMBRANE.get());
 
 	private PrimordialEcosystem() {}
 
