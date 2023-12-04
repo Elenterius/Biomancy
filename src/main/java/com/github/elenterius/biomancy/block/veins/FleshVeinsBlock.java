@@ -5,7 +5,6 @@ import com.github.elenterius.biomancy.block.cradle.PrimalEnergyHandler;
 import com.github.elenterius.biomancy.block.malignantbloom.MalignantBloomBlock;
 import com.github.elenterius.biomancy.init.ModBlockProperties;
 import com.github.elenterius.biomancy.init.ModBlocks;
-import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.init.tags.ModBlockTags;
 import com.github.elenterius.biomancy.util.ArrayUtil;
@@ -465,17 +464,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 
 			ItemStack stack = itemEntity.getItem();
 
-			if (stack.is(ModItems.LIVING_FLESH.get())) {
-				charge = CHARGE.getMax();
-
-				Vec3 motion = new Vec3((level.random.nextFloat() - 0.5d) * 0.1d, level.random.nextFloat() * 0.1d + 0.15d, (level.random.nextFloat() - 0.5d) * 0.1d);
-				((ServerLevel) level).sendParticles(new ItemParticleOption(ParticleTypes.ITEM, stack), itemEntity.getX(), itemEntity.getY(), itemEntity.getZ(), 8, motion.x, motion.y, motion.z, 0.05f);
-
-				stack.shrink(1);
-				setCharge(level, pos, state, charge);
-				level.playSound(null, pos, ModSoundEvents.DECOMPOSER_EAT.get(), SoundSource.BLOCKS, 0.6f, 0.15f + level.random.nextFloat() * 0.5f);
-			}
-			else if (stack.isEdible()) {
+			if (stack.isEdible()) {
 				int nutrition = Optional.ofNullable(stack.getFoodProperties(null))
 						.filter(FoodProperties::isMeat)
 						.map(FoodProperties::getNutrition).orElse(0);
