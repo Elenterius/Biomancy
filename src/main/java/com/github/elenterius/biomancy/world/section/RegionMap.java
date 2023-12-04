@@ -1,17 +1,11 @@
-package com.github.elenterius.biomancy.world;
+package com.github.elenterius.biomancy.world.section;
 
-import com.github.elenterius.biomancy.util.serialization.NBTSerializable;
-import com.github.elenterius.biomancy.util.serialization.NBTSerializer;
-import com.github.elenterius.biomancy.util.serialization.NBTSerializers;
 import it.unimi.dsi.fastutil.ints.IntArraySet;
 import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.level.ChunkPos;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,7 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 
-public class RegionSectionMap {
+public class RegionMap {
 
 	/**
 	 * spatial hash map based on a 16x16x16 cell grid
@@ -28,9 +22,9 @@ public class RegionSectionMap {
 	protected final Long2ObjectMap<IntSet> chunks = new Long2ObjectOpenHashMap<>();
 	protected final Long2ObjectMap<Region> loadedRegions = new Long2ObjectOpenHashMap<>();
 
-	public RegionSectionMap() {}
+	public RegionMap() {}
 
-	public RegionSectionMap(Iterable<Region> regions) {
+	public RegionMap(Iterable<Region> regions) {
 		for (Region region : regions) {
 			add(region);
 		}
@@ -232,45 +226,45 @@ public class RegionSectionMap {
 		return false;
 	}
 
-	public CompoundTag writeNBT() {
-		ListTag listTag = new ListTag();
-
-		for (Region region : loadedRegions.values()) {
-			if (region instanceof NBTSerializable<?> serializable) {
-				//noinspection unchecked
-				NBTSerializer<Region> serializer = (NBTSerializer<Region>) serializable.getNBTSerializer();
-				CompoundTag serialized = serializer.serializeNBT(region);
-				serialized.putString("Serializer", serializer.id());
-
-				CompoundTag tag = new CompoundTag();
-				tag.put("Region", serialized);
-				listTag.add(tag);
-			}
-		}
-
-		CompoundTag tag = new CompoundTag();
-		tag.put("Regions", listTag);
-
-		return tag;
-	}
-
-	public void readNBT(CompoundTag tag) {
-		sections.clear();
-		chunks.clear();
-		loadedRegions.clear();
-
-		ListTag tagList = tag.getList("Regions", Tag.TAG_COMPOUND);
-		for (int i = 0; i < tagList.size(); i++) {
-			CompoundTag entry = tagList.getCompound(i);
-			CompoundTag serialized = entry.getCompound("Region");
-			String serializerId = serialized.getString("Serializer");
-			NBTSerializer<?> nbtSerializer = NBTSerializers.get(serializerId);
-			if (nbtSerializer != null) {
-				Object o = nbtSerializer.deserializeNBT(serialized);
-				if (o instanceof Region region) {
-					add(region);
-				}
-			}
-		}
-	}
+	//	public CompoundTag writeNBT() {
+	//		ListTag listTag = new ListTag();
+	//
+	//		for (Region region : loadedRegions.values()) {
+	//			if (region instanceof NBTSerializable<?> serializable) {
+	//				//noinspection unchecked
+	//				NBTSerializer<Region> serializer = (NBTSerializer<Region>) serializable.getNBTSerializer();
+	//				CompoundTag serialized = serializer.write(region);
+	//				serialized.putString("Serializer", serializer.id());
+	//
+	//				CompoundTag tag = new CompoundTag();
+	//				tag.put("Region", serialized);
+	//				listTag.add(tag);
+	//			}
+	//		}
+	//
+	//		CompoundTag tag = new CompoundTag();
+	//		tag.put("Regions", listTag);
+	//
+	//		return tag;
+	//	}
+	//
+	//	public void readNBT(CompoundTag tag) {
+	//		sections.clear();
+	//		chunks.clear();
+	//		loadedRegions.clear();
+	//
+	//		ListTag tagList = tag.getList("Regions", Tag.TAG_COMPOUND);
+	//		for (int i = 0; i < tagList.size(); i++) {
+	//			CompoundTag entry = tagList.getCompound(i);
+	//			CompoundTag serialized = entry.getCompound("Region");
+	//			String serializerId = serialized.getString("Serializer");
+	//			NBTSerializer<?> nbtSerializer = ShapeSerializers.get(serializerId);
+	//			if (nbtSerializer != null) {
+	//				Object o = nbtSerializer.read(serialized);
+	//				if (o instanceof Region region) {
+	//					add(region);
+	//				}
+	//			}
+	//		}
+	//	}
 }

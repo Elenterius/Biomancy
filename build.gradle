@@ -6,6 +6,8 @@ plugins {
 	id 'org.spongepowered.mixin' version '0.7-SNAPSHOT'
 }
 
+jarJar.enable()
+
 import groovy.json.JsonSlurper
 
 import java.util.concurrent.TimeUnit
@@ -204,6 +206,10 @@ dependencies {
 
 	implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.19:3.1.40")
 	datagenImplementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.19:3.1.40")
+
+	//https://h2database.com/html/mvstore.html
+	minecraftLibrary(group: "com.h2database", name: "h2-mvstore", version: "2.2.224")
+	jarJar(group: "com.h2database", name: "h2-mvstore", version: "[2.2.220,3.0.0)")
 
 	implementation fg.deobf("com.klikli_dev:modonomicon-${mc_version}:1.34.0")
 	datagenImplementation fg.deobf("com.klikli_dev:modonomicon-${mc_version}:1.34.0")

@@ -1,12 +1,12 @@
 package com.github.elenterius.biomancy.util.shape;
 
 import com.github.elenterius.biomancy.util.serialization.NBTSerializer;
-import com.github.elenterius.biomancy.util.serialization.NBTSerializers;
+import com.github.elenterius.biomancy.world.spatial.type.ShapeSerializers;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public class OctantEllipsoidShape implements Shape.Sphere {
+public class OctantEllipsoidShape implements Shape, Shape.HasRadius {
 	private final Vec3 center;
 	private final float radius;
 	private final Vec3 origin;
@@ -69,19 +69,19 @@ public class OctantEllipsoidShape implements Shape.Sphere {
 	}
 
 	@Override
-	public double getRadius() {
+	public float getRadius() {
 		return radius;
 	}
 
 	@Override
 	public NBTSerializer<Shape> getNBTSerializer() {
-		return NBTSerializers.OCTANT_ELLIPSOID_SERIALIZER;
+		return ShapeSerializers.OCTANT_ELLIPSOID_SERIALIZER;
 	}
 
 	public record Serializer(String id) implements NBTSerializer<OctantEllipsoidShape> {
 
 		@Override
-		public CompoundTag serializeNBT(OctantEllipsoidShape shape) {
+		public CompoundTag write(OctantEllipsoidShape shape) {
 			CompoundTag tag = new CompoundTag();
 
 			tag.putDouble("X", shape.origin.x);
@@ -98,7 +98,7 @@ public class OctantEllipsoidShape implements Shape.Sphere {
 		}
 
 		@Override
-		public OctantEllipsoidShape deserializeNBT(CompoundTag tag) {
+		public OctantEllipsoidShape read(CompoundTag tag) {
 			double x = tag.getDouble("X");
 			double y = tag.getDouble("Y");
 			double z = tag.getDouble("Z");

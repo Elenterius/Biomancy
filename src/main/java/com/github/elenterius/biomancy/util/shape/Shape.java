@@ -16,8 +16,8 @@ public interface Shape extends NBTSerializable<Shape> {
 
 	AABB getAABB();
 
-	interface Sphere extends Shape {
-		double getRadius();
+	interface HasRadius {
+		float getRadius();
 	}
 
 	Shape EMPTY = new Shape() {
@@ -50,12 +50,12 @@ public interface Shape extends NBTSerializable<Shape> {
 
 		public record Serializer(String id) implements NBTSerializer<Shape> {
 			@Override
-			public CompoundTag serializeNBT(Shape shape) {
+			public CompoundTag write(Shape shape) {
 				return new CompoundTag();
 			}
 
 			@Override
-			public Shape deserializeNBT(CompoundTag tag) {
+			public Shape read(CompoundTag tag) {
 				return Shape.EMPTY;
 			}
 		}

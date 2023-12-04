@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.event;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.RegionManager;
 import com.github.elenterius.biomancy.world.mound.MoundShape;
+import com.github.elenterius.biomancy.world.spatial.SpatialShapeManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.MobSpawnType;
@@ -37,7 +37,7 @@ public final class MobSpawnHandler {
 			//Mob entity = event.getEntity();
 
 			//TODO: implement check with BoundingBox of entity
-			if (RegionManager.getClosestShape(serverLevel, pos) instanceof MoundShape) {
+			if (SpatialShapeManager.getClosestShape(serverLevel, pos) instanceof MoundShape) {
 				//TODO: chamber level mob spawn prevention? --> e.g. spawning chamber for creepers
 				//MoundChamber chamber = moundShape.getChamberAt(pos.getX(), pos.getY(), pos.getZ());
 

@@ -1,5 +1,6 @@
-package com.github.elenterius.biomancy.world;
+package com.github.elenterius.biomancy.world.section;
 
+import com.github.elenterius.biomancy.world.ChunkPosConsumer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Cursor3D;
 import net.minecraft.core.SectionPos;

@@ -5,12 +5,8 @@ import net.minecraft.nbt.CompoundTag;
 public interface NBTSerializer<T> {
 	String id();
 
-	CompoundTag serializeNBT(T t);
+	CompoundTag write(T t);
 
-	T deserializeNBT(CompoundTag tag);
+	T read(CompoundTag tag);
 
-	@FunctionalInterface
-	interface Factory<T> {
-		NBTSerializer<T> create(String id);
-	}
 }

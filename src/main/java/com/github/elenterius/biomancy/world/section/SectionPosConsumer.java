@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.world;
+package com.github.elenterius.biomancy.world.section;
 
 @FunctionalInterface
 public interface SectionPosConsumer {
