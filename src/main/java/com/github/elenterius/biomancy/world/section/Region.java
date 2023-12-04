@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.world;
+package com.github.elenterius.biomancy.world.section;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.Vec3;

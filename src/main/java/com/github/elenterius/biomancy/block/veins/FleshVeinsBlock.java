@@ -15,9 +15,9 @@ import com.github.elenterius.biomancy.util.LevelUtil;
 import com.github.elenterius.biomancy.util.random.CellularNoise;
 import com.github.elenterius.biomancy.util.shape.Shape;
 import com.github.elenterius.biomancy.world.PrimordialEcosystem;
-import com.github.elenterius.biomancy.world.RegionManager;
 import com.github.elenterius.biomancy.world.mound.MoundChamber;
 import com.github.elenterius.biomancy.world.mound.MoundShape;
+import com.github.elenterius.biomancy.world.spatial.SpatialShapeManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
@@ -503,7 +503,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		MoundShape mound = null;
 		float nearBoundingCenterPct = 0;
 
-		if (RegionManager.getClosestShape(level, pos) instanceof MoundShape moundShape) {
+		if (SpatialShapeManager.getClosestShape(level, pos) instanceof MoundShape moundShape) {
 			mound = moundShape;
 
 			BlockPos origin = moundShape.getOrigin();
@@ -514,7 +514,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 
 			Shape boundingShape = moundShape.getBoundingShapeAt(pos.getX(), pos.getY(), pos.getZ());
 			if (boundingShape != null) {
-				double radius = boundingShape instanceof Shape.Sphere sphere ? sphere.getRadius() : boundingShape.getAABB().getSize() / 2;
+				double radius = boundingShape instanceof Shape.HasRadius sphere ? sphere.getRadius() : boundingShape.getAABB().getSize() / 2;
 				double radiusSqr = radius * radius;
 				double distSqr = boundingShape.distanceToSqr(pos.getX(), pos.getY(), pos.getZ());
 				nearBoundingCenterPct = Mth.clamp((float) (1 - distSqr / radiusSqr), 0f, 1f);

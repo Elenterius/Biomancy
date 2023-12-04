@@ -1,9 +1,9 @@
 package com.github.elenterius.biomancy.world.mound;
 
 import com.github.elenterius.biomancy.util.serialization.NBTSerializer;
-import com.github.elenterius.biomancy.util.serialization.NBTSerializers;
 import com.github.elenterius.biomancy.util.shape.Shape;
 import com.github.elenterius.biomancy.util.shape.ShapeHierarchy;
+import com.github.elenterius.biomancy.world.spatial.type.ShapeSerializers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.phys.AABB;
@@ -65,7 +65,7 @@ public class MoundShape implements Shape {
 
 	@Override
 	public NBTSerializer<Shape> getNBTSerializer() {
-		return NBTSerializers.MOUND_SERIALIZER;
+		return ShapeSerializers.MOUND_SERIALIZER;
 	}
 
 	public record ProcGenValues(long seed, int maxBuildHeight, int seaLevel, float biomeTemperature, float biomeHumidity) {
@@ -90,7 +90,7 @@ public class MoundShape implements Shape {
 	public record Serializer(String id) implements NBTSerializer<MoundShape> {
 
 		@Override
-		public CompoundTag serializeNBT(MoundShape shape) {
+		public CompoundTag write(MoundShape shape) {
 			CompoundTag tag = new CompoundTag();
 			tag.putLong("Origin", shape.origin.asLong());
 			shape.procGenValues.writeTo(tag);
@@ -98,7 +98,7 @@ public class MoundShape implements Shape {
 		}
 
 		@Override
-		public MoundShape deserializeNBT(CompoundTag tag) {
+		public MoundShape read(CompoundTag tag) {
 			BlockPos origin = BlockPos.of(tag.getLong("Origin"));
 			ProcGenValues procGenValues = ProcGenValues.readFrom(tag);
 			return MoundGenerator.constructShape(origin, procGenValues);
