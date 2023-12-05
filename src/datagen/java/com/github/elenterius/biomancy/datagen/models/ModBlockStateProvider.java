@@ -99,6 +99,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		membraneWithItem(ModBlocks.BABY_PERMEABLE_MEMBRANE);
 		membraneWithItem(ModBlocks.ADULT_PERMEABLE_MEMBRANE);
 		membraneWithItem(ModBlocks.PRIMAL_PERMEABLE_MEMBRANE);
+		membraneWithItem(ModBlocks.UNDEAD_PERMEABLE_MEMBRANE);
 		bioLantern(ModBlocks.YELLOW_BIO_LANTERN);
 		bioLantern(ModBlocks.BLUE_BIO_LANTERN);
 		bioLantern(ModBlocks.PRIMORDIAL_BIO_LANTERN);

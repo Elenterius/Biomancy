@@ -75,6 +75,7 @@ public class MembraneBlock extends HalfTransparentBlock {
 		IgnoreEntityCollisionPredicate IS_BABY_MOB = (state, level, pos, entity) -> entity instanceof LivingEntity livingEntity && livingEntity.isBaby();
 		IgnoreEntityCollisionPredicate IS_ADULT_MOB = (state, level, pos, entity) -> entity instanceof LivingEntity livingEntity && !livingEntity.isBaby();
 		IgnoreEntityCollisionPredicate IS_ALIVE_MOB = (state, level, pos, entity) -> entity instanceof LivingEntity livingEntity && livingEntity.getMobType() != MobType.UNDEAD;
+		IgnoreEntityCollisionPredicate IS_UNDEAD_MOB = (state, level, pos, entity) -> entity instanceof LivingEntity livingEntity && livingEntity.getMobType() == MobType.UNDEAD;
 		IgnoreEntityCollisionPredicate IS_ITEM = (state, level, pos, entity) -> entity instanceof ItemEntity;
 		IgnoreEntityCollisionPredicate NEVER = (state, level, pos, entity) -> false;
 

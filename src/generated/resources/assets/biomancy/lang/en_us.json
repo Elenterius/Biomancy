@@ -213,6 +213,8 @@
 	"block.biomancy.adult_permeable_membrane.tooltip": "Gelatinous-like membrane reinforced with elastic fibers.\n\nAdult mobs can diffuse through the membrane.",
 	"block.biomancy.primal_permeable_membrane": "Primal Membrane",
 	"block.biomancy.primal_permeable_membrane.tooltip": "Gelatinous-like membrane reinforced with elastic fibers.\n\nOnly mobs that are alive can diffuse through the membrane.",
+	"block.biomancy.undead_permeable_membrane": "Phantom Membrane",
+	"block.biomancy.undead_permeable_membrane.tooltip": "Gelatinous-like membrane reinforced with elastic fibers.\n\nOnly mobs that are undead can diffuse through the membrane.",
 	"block.biomancy.primal_flesh": "Primal Flesh Block",
 	"block.biomancy.primal_flesh.tooltip": "Primitive and pure, you better not touch this with your dirty mitts.",
 	"block.biomancy.primal_flesh_slab": "Primal Flesh Slab",
