@@ -1,18 +1,22 @@
 package com.github.elenterius.biomancy.world.mound;
 
 import com.github.elenterius.biomancy.util.serialization.NBTSerializer;
-import com.github.elenterius.biomancy.util.shape.Shape;
-import com.github.elenterius.biomancy.util.shape.ShapeHierarchy;
+import com.github.elenterius.biomancy.world.MobSpawnFilter;
+import com.github.elenterius.biomancy.world.spatial.geometry.Shape;
+import com.github.elenterius.biomancy.world.spatial.geometry.ShapeHierarchy;
 import com.github.elenterius.biomancy.world.spatial.type.ShapeSerializers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class MoundShape implements Shape {
+public class MoundShape implements Shape, MobSpawnFilter {
 	private final ProcGenValues procGenValues;
 	BlockPos origin;
 	ShapeHierarchy<Shape> boundingShapes;
@@ -66,6 +70,11 @@ public class MoundShape implements Shape {
 	@Override
 	public NBTSerializer<Shape> getNBTSerializer() {
 		return ShapeSerializers.MOUND_SERIALIZER;
+	}
+
+	@Override
+	public boolean isMobAllowedToSpawn(Mob mob, MobSpawnType spawnReason, LevelAccessor level, double x, double y, double z) {
+		return false;
 	}
 
 	public record ProcGenValues(long seed, int maxBuildHeight, int seaLevel, float biomeTemperature, float biomeHumidity) {

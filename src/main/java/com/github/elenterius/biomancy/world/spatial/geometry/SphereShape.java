@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.util.shape;
+package com.github.elenterius.biomancy.world.spatial.geometry;
 
 import com.github.elenterius.biomancy.util.serialization.NBTSerializer;
 import com.github.elenterius.biomancy.world.spatial.type.ShapeSerializers;

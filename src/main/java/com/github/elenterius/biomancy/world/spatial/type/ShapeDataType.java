@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.world.spatial.type;
 
 import com.github.elenterius.biomancy.util.serialization.NBTSerializer;
-import com.github.elenterius.biomancy.util.shape.Shape;
+import com.github.elenterius.biomancy.world.spatial.geometry.Shape;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtAccounter;

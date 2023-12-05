@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.world.mound;
 
-import com.github.elenterius.biomancy.util.shape.OctantEllipsoidShape;
-import com.github.elenterius.biomancy.util.shape.SphereShape;
+import com.github.elenterius.biomancy.world.spatial.geometry.OctantEllipsoidShape;
+import com.github.elenterius.biomancy.world.spatial.geometry.SphereShape;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 
 import java.util.function.Consumer;

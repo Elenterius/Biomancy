@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.world.spatial;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.util.shape.Shape;
+import com.github.elenterius.biomancy.world.spatial.geometry.Shape;
 import com.github.elenterius.biomancy.world.spatial.type.ShapeDataType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;

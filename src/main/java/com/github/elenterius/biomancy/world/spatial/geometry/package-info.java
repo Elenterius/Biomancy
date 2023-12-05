@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package com.github.elenterius.biomancy.util.shape;
+package com.github.elenterius.biomancy.world.spatial.geometry;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

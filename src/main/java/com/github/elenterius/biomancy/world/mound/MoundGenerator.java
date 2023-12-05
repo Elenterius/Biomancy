@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.world.mound;
 
 import com.github.elenterius.biomancy.util.TemperatureUtil;
-import com.github.elenterius.biomancy.util.shape.Shape;
-import com.github.elenterius.biomancy.util.shape.SphereShape;
+import com.github.elenterius.biomancy.world.spatial.geometry.Shape;
+import com.github.elenterius.biomancy.world.spatial.geometry.SphereShape;
 import com.mojang.math.Vector3d;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
