@@ -1,10 +1,10 @@
 package com.github.elenterius.biomancy.world.spatial.type;
 
 import com.github.elenterius.biomancy.util.serialization.NBTSerializer;
-import com.github.elenterius.biomancy.util.shape.OctantEllipsoidShape;
-import com.github.elenterius.biomancy.util.shape.Shape;
-import com.github.elenterius.biomancy.util.shape.SphereShape;
 import com.github.elenterius.biomancy.world.mound.MoundShape;
+import com.github.elenterius.biomancy.world.spatial.geometry.OctantEllipsoidShape;
+import com.github.elenterius.biomancy.world.spatial.geometry.Shape;
+import com.github.elenterius.biomancy.world.spatial.geometry.SphereShape;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;

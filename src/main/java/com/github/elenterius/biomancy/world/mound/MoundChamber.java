@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.world.mound;
 
 import com.github.elenterius.biomancy.util.serialization.NBTSerializer;
-import com.github.elenterius.biomancy.util.shape.Shape;
+import com.github.elenterius.biomancy.world.spatial.geometry.Shape;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 

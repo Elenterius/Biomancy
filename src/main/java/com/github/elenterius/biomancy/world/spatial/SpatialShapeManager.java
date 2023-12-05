@@ -1,17 +1,17 @@
 package com.github.elenterius.biomancy.world.spatial;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.util.shape.Shape;
+import com.github.elenterius.biomancy.world.spatial.geometry.Shape;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.h2.mvstore.MVMap;
 import org.h2.mvstore.rtree.MVRTreeMap;
-import org.h2.mvstore.rtree.Spatial;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
@@ -46,27 +46,34 @@ public final class SpatialShapeManager {
 
 	@Nullable
 	public static Shape getClosestShape(ServerLevel level, BlockPos blockPos) {
-		return getClosestShape(level, blockPos, shape -> true);
+		return getClosestShape(level, SpatialQuery.of(blockPos), shape -> true);
 	}
 
 	@Nullable
-	public static Shape getClosestShape(ServerLevel level, BlockPos blockPos, Predicate<Shape> predicate) {
+	public static Shape getClosestShape(ServerLevel level, Entity entity, Predicate<Shape> predicate) {
+		return getClosestShape(level, SpatialQuery.of(entity), predicate);
+	}
+
+	@Nullable
+	public static Shape getClosestShape(ServerLevel level, SpatialQuery query, Predicate<Shape> predicate) {
 		SpatialShapeStorage spatialStorage = SpatialShapeStorage.getInstance(level);
 		String levelKey = getLevelKey(level);
-		Spatial boundingBox = SpatialBoundingBox.of(blockPos);
 
-		Vec3 position = Vec3.atCenterOf(blockPos);
+		final float x = Mth.lerp(0.5f, query.minX(), query.maxX());
+		final float y = Mth.lerp(0.5f, query.minY(), query.maxY());
+		final float z = Mth.lerp(0.5f, query.minZ(), query.maxZ());
+
 		double minDistSqr = Double.MAX_VALUE;
 		Shape closestShape = null;
 
-		MVRTreeMap.RTreeCursor<Long> intersectingKeys = spatialStorage.findIntersecting(levelKey, boundingBox);
+		MVRTreeMap.RTreeCursor<Long> intersectingKeys = spatialStorage.findIntersecting(levelKey, query);
 		MVMap<Long, Shape> shapes = spatialStorage.getShapes(levelKey);
 
 		while (intersectingKeys.hasNext()) {
 			long id = intersectingKeys.next().getId();
 			Shape shape = shapes.get(id);
-			if (shape != null && shape.contains(position.x, position.y, position.z) && predicate.test(shape)) {
-				double distSqr = shape.distanceToSqr(position.x, position.y, position.z);
+			if (shape != null && shape.contains(x, y, z) && predicate.test(shape)) {
+				double distSqr = shape.distanceToSqr(x, y, z);
 				if (distSqr < minDistSqr) {
 					closestShape = shape;
 					minDistSqr = distSqr;
@@ -75,5 +82,34 @@ public final class SpatialShapeManager {
 		}
 
 		return closestShape;
+	}
+
+
+	@Nullable
+	public static Shape getAnyShape(ServerLevel level, Entity entity, Predicate<Shape> predicate) {
+		return getAnyShape(level, SpatialQuery.of(entity), predicate);
+	}
+
+	@Nullable
+	public static Shape getAnyShape(ServerLevel level, SpatialQuery query, Predicate<Shape> predicate) {
+		SpatialShapeStorage spatialStorage = SpatialShapeStorage.getInstance(level);
+		String levelKey = getLevelKey(level);
+
+		final float x = Mth.lerp(0.5f, query.minX(), query.maxX());
+		final float y = Mth.lerp(0.5f, query.minY(), query.maxY());
+		final float z = Mth.lerp(0.5f, query.minZ(), query.maxZ());
+
+		MVRTreeMap.RTreeCursor<Long> intersectingKeys = spatialStorage.findIntersecting(levelKey, query);
+		MVMap<Long, Shape> shapes = spatialStorage.getShapes(levelKey);
+
+		while (intersectingKeys.hasNext()) {
+			long id = intersectingKeys.next().getId();
+			Shape shape = shapes.get(id);
+			if (shape != null && shape.contains(x, y, z) && predicate.test(shape)) {
+				return shape;
+			}
+		}
+
+		return null;
 	}
 }

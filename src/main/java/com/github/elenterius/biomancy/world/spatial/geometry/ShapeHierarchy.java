@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.util.shape;
+package com.github.elenterius.biomancy.world.spatial.geometry;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
