@@ -972,6 +972,13 @@ public class ModRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.MISC)
 				.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
 
+		BioForgeRecipeBuilder.create(ModItems.UNDEAD_PERMEABLE_MEMBRANE.get())
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 4)
+				.addIngredient(ModItems.BILE.get(), 4)
+				.addIngredient(Items.PHANTOM_MEMBRANE, 1)
+				.setCategory(ModBioForgeTabs.MISC)
+				.unlockedBy(Items.PHANTOM_MEMBRANE).save(consumer);
+
 		BioForgeRecipeBuilder.create(ModItems.FLESH_FENCE.get(), 4)
 				.addIngredient(ModItems.FLESH_BITS.get(), fleshBlockCost)
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 2)

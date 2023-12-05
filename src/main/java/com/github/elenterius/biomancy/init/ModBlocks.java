@@ -89,6 +89,7 @@ public final class ModBlocks {
 	public static final RegistryObject<MembraneBlock> BABY_PERMEABLE_MEMBRANE = registerMembrane("baby_permeable_membrane", MembraneBlock.IgnoreEntityCollisionPredicate.IS_BABY_MOB);
 	public static final RegistryObject<MembraneBlock> ADULT_PERMEABLE_MEMBRANE = registerMembrane("adult_permeable_membrane", MembraneBlock.IgnoreEntityCollisionPredicate.IS_ADULT_MOB);
 	public static final RegistryObject<MembraneBlock> PRIMAL_PERMEABLE_MEMBRANE = registerMembrane("primal_permeable_membrane", MembraneBlock.IgnoreEntityCollisionPredicate.IS_ALIVE_MOB);
+	public static final RegistryObject<MembraneBlock> UNDEAD_PERMEABLE_MEMBRANE = registerMembrane("undead_permeable_membrane", MembraneBlock.IgnoreEntityCollisionPredicate.IS_UNDEAD_MOB);
 
 	public static final RegistryObject<LadderBlock> FLESH_LADDER = register("flesh_ladder", () -> new LadderBlock(createFleshyBoneProperties().noOcclusion()));
 	public static final RegistryObject<FleshFenceBlock> FLESH_FENCE = register("flesh_fence", FleshFenceBlock::new);
