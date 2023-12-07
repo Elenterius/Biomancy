@@ -16,6 +16,7 @@ import com.github.elenterius.biomancy.world.PrimordialEcosystem;
 import com.github.elenterius.biomancy.world.mound.MoundChamber;
 import com.github.elenterius.biomancy.world.mound.MoundShape;
 import com.github.elenterius.biomancy.world.spatial.SpatialShapeManager;
+import com.github.elenterius.biomancy.world.spatial.geometry.HasRadius;
 import com.github.elenterius.biomancy.world.spatial.geometry.Shape;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -503,7 +504,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 
 			Shape boundingShape = moundShape.getBoundingShapeAt(pos.getX(), pos.getY(), pos.getZ());
 			if (boundingShape != null) {
-				double radius = boundingShape instanceof Shape.HasRadius sphere ? sphere.getRadius() : boundingShape.getAABB().getSize() / 2;
+				double radius = boundingShape instanceof HasRadius sphere ? sphere.getRadius() : boundingShape.getAABB().getSize() / 2;
 				double radiusSqr = radius * radius;
 				double distSqr = boundingShape.distanceToSqr(pos.getX(), pos.getY(), pos.getZ());
 				nearBoundingCenterPct = Mth.clamp((float) (1 - distSqr / radiusSqr), 0f, 1f);

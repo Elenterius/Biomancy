@@ -10,14 +10,18 @@ public interface Shape extends NBTSerializable<Shape> {
 
 	boolean contains(double x, double y, double z);
 
+	//boolean containsCuboid(double minX, double minY, double minZ, double maxX, double maxY, double maxZ);
+
+	boolean intersectsCuboid(double minX, double minY, double minZ, double maxX, double maxY, double maxZ);
+
 	Vec3 getCenter();
 
 	double distanceToSqr(double x, double y, double z);
 
 	AABB getAABB();
 
-	interface HasRadius {
-		float getRadius();
+	default boolean isEmpty() {
+		return this == EMPTY;
 	}
 
 	Shape EMPTY = new Shape() {
@@ -25,6 +29,11 @@ public interface Shape extends NBTSerializable<Shape> {
 
 		@Override
 		public boolean contains(double x, double y, double z) {
+			return false;
+		}
+
+		@Override
+		public boolean intersectsCuboid(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
 			return false;
 		}
 
@@ -41,6 +50,16 @@ public interface Shape extends NBTSerializable<Shape> {
 		@Override
 		public AABB getAABB() {
 			return AABB.unitCubeFromLowerCorner(Vec3.ZERO);
+		}
+
+		@Override
+		public int hashCode() {
+			return 0;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			return super.equals(obj); //compare by identity
 		}
 
 		@Override
