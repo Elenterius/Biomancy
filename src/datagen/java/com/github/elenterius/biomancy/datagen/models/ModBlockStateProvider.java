@@ -100,6 +100,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		membraneWithItem(ModBlocks.ADULT_PERMEABLE_MEMBRANE);
 		membraneWithItem(ModBlocks.PRIMAL_PERMEABLE_MEMBRANE);
 		membraneWithItem(ModBlocks.UNDEAD_PERMEABLE_MEMBRANE);
+
+		horizontalBlockWithItem(ModBlocks.NEURAL_INTERCEPTOR);
+
 		bioLantern(ModBlocks.YELLOW_BIO_LANTERN);
 		bioLantern(ModBlocks.BLUE_BIO_LANTERN);
 		bioLantern(ModBlocks.PRIMORDIAL_BIO_LANTERN);
@@ -285,6 +288,16 @@ public class ModBlockStateProvider extends BlockStateProvider {
 	public void existingBlockWithItem(Block block) {
 		ModelFile.ExistingModelFile existingModel = models().getExistingFile(blockAsset(block));
 		simpleBlock(block, existingModel);
+		simpleBlockItem(block, existingModel);
+	}
+
+	public <T extends Block> void horizontalBlockWithItem(RegistryObject<T> block) {
+		horizontalBlockWithItem(block.get());
+	}
+
+	public void horizontalBlockWithItem(Block block) {
+		ModelFile.ExistingModelFile existingModel = models().getExistingFile(blockAsset(block));
+		horizontalBlock(block, blockState -> existingModel);
 		simpleBlockItem(block, existingModel);
 	}
 
