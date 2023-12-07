@@ -18,6 +18,7 @@ public final class ShapeSerializers {
 	public static final NBTSerializer<Shape> SPHERE_SERIALIZER = register("sphere", SphereShape.Serializer::new);
 	public static final NBTSerializer<Shape> OCTANT_ELLIPSOID_SERIALIZER = register("octant_ellipsoid", OctantEllipsoidShape.Serializer::new);
 	public static final NBTSerializer<Shape> MOUND_SERIALIZER = register("mound", MoundShape.Serializer::new);
+	public static final NBTSerializer<Shape> MOB_SPAWN_FILTER_SERIALIZER = register("mob_spawn_filter", MobSpawnFilterShape.Serializer::new);
 
 	private ShapeSerializers() {}
 
