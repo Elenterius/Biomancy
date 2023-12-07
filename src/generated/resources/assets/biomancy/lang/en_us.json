@@ -215,6 +215,8 @@
 	"block.biomancy.primal_permeable_membrane.tooltip": "Gelatinous-like membrane reinforced with elastic fibers.\n\nOnly mobs that are alive can diffuse through the membrane.",
 	"block.biomancy.undead_permeable_membrane": "Phantom Membrane",
 	"block.biomancy.undead_permeable_membrane.tooltip": "Gelatinous-like membrane reinforced with elastic fibers.\n\nOnly mobs that are undead can diffuse through the membrane.",
+	"block.biomancy.neural_interceptor": "Neural Interceptor",
+	"block.biomancy.neural_interceptor.tooltip": "A psychic node that prevents natural mob spawning in a 48 block radius.",
 	"block.biomancy.primal_flesh": "Primal Flesh Block",
 	"block.biomancy.primal_flesh.tooltip": "Primitive and pure, you better not touch this with your dirty mitts.",
 	"block.biomancy.primal_flesh_slab": "Primal Flesh Slab",
