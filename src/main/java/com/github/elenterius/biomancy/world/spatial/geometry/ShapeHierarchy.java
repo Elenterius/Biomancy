@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.world.spatial.geometry;
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.core.SectionPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -131,6 +132,34 @@ public class ShapeHierarchy<T extends Shape> {
 			for (Shape shape : shapesInSection) {
 				if (shape.contains(x, y, z)) {
 					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	public boolean intersectsCuboid(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
+		if (!aabb.intersects(minX, minY, minZ, maxX, maxY, maxZ)) return false;
+
+		int sectionMinX = SectionPos.blockToSectionCoord(Mth.clamp(minX, aabb.minX, aabb.maxX));
+		int sectionMinY = SectionPos.blockToSectionCoord(Mth.clamp(minY, aabb.minY, aabb.maxY));
+		int sectionMinZ = SectionPos.blockToSectionCoord(Mth.clamp(minZ, aabb.minZ, aabb.maxZ));
+		int sectionMaxX = SectionPos.blockToSectionCoord(Mth.clamp(maxX, aabb.minX, aabb.maxX));
+		int sectionMaxY = SectionPos.blockToSectionCoord(Mth.clamp(maxY, aabb.minY, aabb.maxY));
+		int sectionMaxZ = SectionPos.blockToSectionCoord(Mth.clamp(maxZ, aabb.minZ, aabb.maxZ));
+
+		for (int y = sectionMinY; y <= sectionMaxY; y++) {
+			for (int x = sectionMinX; x <= sectionMaxX; x++) {
+				for (int z = sectionMinZ; z <= sectionMaxZ; z++) {
+					Set<T> shapesInSection = sections.get(SectionPos.asLong(x, y, z));
+					if (shapesInSection != null) {
+						for (Shape shape : shapesInSection) {
+							if (shape.intersectsCuboid(minX, minY, minZ, maxX, maxY, maxZ)) {
+								return true;
+							}
+						}
+					}
 				}
 			}
 		}

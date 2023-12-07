@@ -129,6 +129,24 @@ public record SABB(long packedPosMin, long packedPosMax) {
 		return (maxZ - minZ + 1);
 	}
 
+	public boolean contains(BlockPos pos) {
+		return containsSection(
+				SectionPos.blockToSectionCoord(pos.getX()),
+				SectionPos.blockToSectionCoord(pos.getY()),
+				SectionPos.blockToSectionCoord(pos.getZ())
+		);
+	}
+
+	public boolean containsSection(int x, int y, int z) {
+		int minX = SectionPos.x(packedPosMin);
+		int minY = SectionPos.y(packedPosMin);
+		int minZ = SectionPos.z(packedPosMin);
+		int maxX = SectionPos.x(packedPosMax);
+		int maxY = SectionPos.y(packedPosMax);
+		int maxZ = SectionPos.z(packedPosMax);
+		return minX <= x && x <= maxX && minY <= y && y <= maxY && minZ <= z && z <= maxZ;
+	}
+
 	public void forEachSection(SectionPosConsumer action) {
 		int minX = SectionPos.x(packedPosMin);
 		int minY = SectionPos.y(packedPosMin);

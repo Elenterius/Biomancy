@@ -39,6 +39,11 @@ public class MoundShape implements Shape, MobSpawnFilter {
 	}
 
 	@Override
+	public boolean intersectsCuboid(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
+		return boundingShapes.intersectsCuboid(minX, minY, minZ, maxX, maxY, maxZ);
+	}
+
+	@Override
 	public Vec3 getCenter() {
 		return boundingShapes.getCenter();
 	}

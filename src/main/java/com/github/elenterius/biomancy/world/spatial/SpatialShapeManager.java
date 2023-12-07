@@ -46,16 +46,12 @@ public final class SpatialShapeManager {
 
 	@Nullable
 	public static Shape getClosestShape(ServerLevel level, BlockPos blockPos) {
-		return getClosestShape(level, SpatialQuery.of(blockPos), shape -> true);
+		return getClosestShape(level, blockPos, shape -> true);
 	}
 
 	@Nullable
-	public static Shape getClosestShape(ServerLevel level, Entity entity, Predicate<Shape> predicate) {
-		return getClosestShape(level, SpatialQuery.of(entity), predicate);
-	}
-
-	@Nullable
-	public static Shape getClosestShape(ServerLevel level, SpatialQuery query, Predicate<Shape> predicate) {
+	private static Shape getClosestShape(ServerLevel level, BlockPos blockPos, Predicate<Shape> predicate) {
+		SpatialQuery query = SpatialQuery.of(blockPos);
 		SpatialShapeStorage spatialStorage = SpatialShapeStorage.getInstance(level);
 		String levelKey = getLevelKey(level);
 
@@ -84,32 +80,46 @@ public final class SpatialShapeManager {
 		return closestShape;
 	}
 
-
 	@Nullable
-	public static Shape getAnyShape(ServerLevel level, Entity entity, Predicate<Shape> predicate) {
-		return getAnyShape(level, SpatialQuery.of(entity), predicate);
+	public static Shape getAnyShape(ServerLevel level, Entity entity, QueryStrategy strategy, Predicate<Shape> predicate) {
+		return getAnyShape(level, strategy, SpatialQuery.of(entity), predicate);
 	}
 
 	@Nullable
-	public static Shape getAnyShape(ServerLevel level, SpatialQuery query, Predicate<Shape> predicate) {
+	public static Shape getAnyShape(ServerLevel level, QueryStrategy strategy, SpatialQuery query, Predicate<Shape> predicate) {
 		SpatialShapeStorage spatialStorage = SpatialShapeStorage.getInstance(level);
 		String levelKey = getLevelKey(level);
 
-		final float x = Mth.lerp(0.5f, query.minX(), query.maxX());
-		final float y = Mth.lerp(0.5f, query.minY(), query.maxY());
-		final float z = Mth.lerp(0.5f, query.minZ(), query.maxZ());
-
-		MVRTreeMap.RTreeCursor<Long> intersectingKeys = spatialStorage.findIntersecting(levelKey, query);
+		MVRTreeMap.RTreeCursor<Long> foundKeys = strategy.find(levelKey, query, spatialStorage);
 		MVMap<Long, Shape> shapes = spatialStorage.getShapes(levelKey);
 
-		while (intersectingKeys.hasNext()) {
-			long id = intersectingKeys.next().getId();
+		while (foundKeys.hasNext()) {
+			long id = foundKeys.next().getId();
 			Shape shape = shapes.get(id);
-			if (shape != null && shape.contains(x, y, z) && predicate.test(shape)) {
+			if (shape != null && strategy.test(query, shape) && predicate.test(shape)) {
 				return shape;
 			}
 		}
 
 		return null;
 	}
+
+	public interface QueryStrategy {
+		MVRTreeMap.RTreeCursor<Long> find(String levelKey, SpatialQuery query, SpatialShapeStorage spatialStorage);
+
+		boolean test(SpatialQuery query, Shape shape);
+
+		QueryStrategy INTERSECTION = new QueryStrategy() {
+			@Override
+			public MVRTreeMap.RTreeCursor<Long> find(String levelKey, SpatialQuery query, SpatialShapeStorage spatialStorage) {
+				return spatialStorage.findIntersecting(levelKey, query);
+			}
+
+			@Override
+			public boolean test(SpatialQuery query, Shape shape) {
+				return shape.intersectsCuboid(query.minX(), query.minY(), query.minZ(), query.maxX(), query.maxY(), query.maxZ());
+			}
+		};
+	}
+
 }

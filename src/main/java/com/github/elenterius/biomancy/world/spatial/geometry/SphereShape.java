@@ -6,7 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public class SphereShape implements Shape, Shape.HasRadius {
+public class SphereShape implements Shape, HasRadius {
 
 	private final Vec3 origin;
 	private final float radius;
@@ -25,6 +25,13 @@ public class SphereShape implements Shape, Shape.HasRadius {
 	@Override
 	public boolean contains(double x, double y, double z) {
 		return origin.distanceToSqr(x, y, z) < radius * radius;
+	}
+
+	@Override
+	public boolean intersectsCuboid(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
+		Vec3 closestPoint = GeometryUtil.closestPointOnAABB(minX, minY, minZ, maxX, maxY, maxZ, origin);
+		double distSqr = closestPoint.distanceToSqr(origin);
+		return distSqr < radius * radius;
 	}
 
 	@Override

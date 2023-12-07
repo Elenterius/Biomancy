@@ -34,8 +34,8 @@ public final class MobSpawnHandler {
 				double y = event.getY();
 				double z = event.getZ();
 
-				Predicate<Shape> denySpawnPredicate = shape -> shape instanceof MobSpawnFilter mobSpawnFilter && !mobSpawnFilter.isMobAllowedToSpawn(mob, spawnReason, serverLevel, x, y, z);
-				boolean denySpawn = SpatialShapeManager.getAnyShape(serverLevel, mob, denySpawnPredicate) != null;
+				Predicate<Shape> denySpawnPredicate = shape -> shape instanceof MobSpawnFilter filter && !filter.isMobAllowedToSpawn(mob, spawnReason, serverLevel, x, y, z);
+				boolean denySpawn = SpatialShapeManager.getAnyShape(serverLevel, mob, SpatialShapeManager.QueryStrategy.INTERSECTION, denySpawnPredicate) != null;
 
 				if (denySpawn) {
 					//TODO: chamber specific mob spawn filters? --> e.g. chamber only allows creepers spawns

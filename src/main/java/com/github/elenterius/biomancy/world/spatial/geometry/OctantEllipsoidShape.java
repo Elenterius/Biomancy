@@ -6,7 +6,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public class OctantEllipsoidShape implements Shape, Shape.HasRadius {
+/**
+ * Axis Aligned Ellipsoid made up of 8 segments (octant's)
+ */
+public class OctantEllipsoidShape implements Shape, HasRadius {
 	private final Vec3 center;
 	private final float radius;
 	private final Vec3 origin;
@@ -51,6 +54,12 @@ public class OctantEllipsoidShape implements Shape, Shape.HasRadius {
 		dz /= dz <= 0 ? cPos : cNeg;
 
 		return dx * dx + dy * dy + dz * dz < 1; // x^2/a^2 + y^2/b^2 + z^2/c^2 = 1
+	}
+
+	@Override
+	public boolean intersectsCuboid(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
+		Vec3 closestPoint = GeometryUtil.closestPointOnAABB(minX, minY, minZ, maxX, maxY, maxZ, origin);
+		return contains(closestPoint.x, closestPoint.y, closestPoint.z);
 	}
 
 	@Override

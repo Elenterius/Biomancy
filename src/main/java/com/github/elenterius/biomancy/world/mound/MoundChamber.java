@@ -25,6 +25,11 @@ public class MoundChamber implements Chamber, Shape {
 	}
 
 	@Override
+	public boolean intersectsCuboid(double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
+		return shape.intersectsCuboid(minX, minY, minZ, maxX, maxY, maxZ);
+	}
+
+	@Override
 	public Vec3 getCenter() {
 		return shape.getCenter();
 	}

@@ -1,7 +1,9 @@
 package com.github.elenterius.biomancy.world.spatial.type;
 
 import com.github.elenterius.biomancy.util.serialization.NBTSerializer;
+import com.github.elenterius.biomancy.world.MobSpawnFilterShape;
 import com.github.elenterius.biomancy.world.mound.MoundShape;
+import com.github.elenterius.biomancy.world.spatial.geometry.CuboidShape;
 import com.github.elenterius.biomancy.world.spatial.geometry.OctantEllipsoidShape;
 import com.github.elenterius.biomancy.world.spatial.geometry.Shape;
 import com.github.elenterius.biomancy.world.spatial.geometry.SphereShape;
@@ -12,6 +14,7 @@ import java.util.Map;
 
 public final class ShapeSerializers {
 	private static final Map<String, NBTSerializer<Shape>> SERIALIZERS = new HashMap<>();
+	public static final NBTSerializer<Shape> CUBOID_SERIALIZER = register("cuboid", CuboidShape.Serializer::new);
 	public static final NBTSerializer<Shape> SPHERE_SERIALIZER = register("sphere", SphereShape.Serializer::new);
 	public static final NBTSerializer<Shape> OCTANT_ELLIPSOID_SERIALIZER = register("octant_ellipsoid", OctantEllipsoidShape.Serializer::new);
 	public static final NBTSerializer<Shape> MOUND_SERIALIZER = register("mound", MoundShape.Serializer::new);
