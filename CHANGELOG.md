@@ -1,3 +1,24 @@
+## [2.6.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.2.5.0...1.19.2-v2.2.6.0) (2023-12-09)
+
+
+### Features
+
+* add neural interceptor block ([4ecc094](https://github.com/Elenterius/Biomancy/commit/4ecc09448bedd3d2c3fcb9b7ba1f7a417d3991aa))
+* add primal membrane block for living mobs ([a0ea6e8](https://github.com/Elenterius/Biomancy/commit/a0ea6e87eb5a29014a5f9a24bedc7cc057615d81))
+* add undead-permeable membrane ([0902a3b](https://github.com/Elenterius/Biomancy/commit/0902a3b936ae782a4b43cc75591124c3c2a630f7))
+* **flesh-mound:** add bloomlight block as flesh type replacement of shroomlight in mounds ([bdfa12f](https://github.com/Elenterius/Biomancy/commit/bdfa12f363b72874f1009d1d8f3b80218f74e98a))
+* **flesh-mound:** allow flesh mounds to excavate chambers and convert the destroyed blocks into primal energy ([593f9c9](https://github.com/Elenterius/Biomancy/commit/593f9c92971a9e8fdb198aec97fbd8d02a4c0b03))
+* **flesh-mound:** create "Doors" between two adjacent chambers with Primal Membranes ([2680d0e](https://github.com/Elenterius/Biomancy/commit/2680d0ed802d75c0abb892627be786a64051e0cb))
+* **flesh-mound:** improve storage and lookup of mound shapes ([e127cf6](https://github.com/Elenterius/Biomancy/commit/e127cf622b0aac3eb1f892f3dcc02421e1386929))
+* **flesh-mound:** make mound shapes persist across unloaded chunks and store mound shape seed in primordial cradle block/item ([32c2efd](https://github.com/Elenterius/Biomancy/commit/32c2efd8a74fdea3e45cd67d231d27217ae2e042))
+* **flesh-mound:** prevent flesh veins from eating living flesh ([36b6e65](https://github.com/Elenterius/Biomancy/commit/36b6e65e96f8c0cc1eb2d973ba99dd16585b1481))
+* **flesh-mound:** prevent natural spawning of mobs inside flesh mounds ([0af5924](https://github.com/Elenterius/Biomancy/commit/0af592432e1ac3dc7f071ec3c3419242ce94328a))
+
+
+### Bug Fixes
+
+* **flesh-mound:** fix unintentional MoundShape removal when the Cradle BlockEntity is unloaded ([a5cb46b](https://github.com/Elenterius/Biomancy/commit/a5cb46b5f2a8112de9a240bf1b85b61ba02cb0db))
+
 ## [2.5.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.2.4.0...1.19.2-v2.2.5.0) (2023-11-19)
 
 
@@ -56,17 +77,4 @@
 * add workaround for NERB incompatibility ("unlocks" all recipes when NERB is detected) ([9dd10ee](https://github.com/Elenterius/Biomancy/commit/9dd10eeeaae04d21804b7d1e325d44836e48df70))
 * fix serum duplication bug with Injector ([1137763](https://github.com/Elenterius/Biomancy/commit/1137763a4b051e5d6eb8c18f00d38a127f755e63))
 * fix Wide Flesh Doors incompatibility with Quark's double door feature ([e9f4eb5](https://github.com/Elenterius/Biomancy/commit/e9f4eb57041e564c486677462d68c85e68cb5217)), closes [#108](https://github.com/Elenterius/Biomancy/issues/108)
-
-## [2.1.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.2.0.0...1.19.2-v2.2.1.0) (2023-09-21)
-
-
-### Features
-
-* add Malignant Bloom and Sapberry ([6d575d2](https://github.com/Elenterius/Biomancy/commit/6d575d2200399b14d28af7793892d92fb54d447a))
-* tweak primal flesh block recipe ([10e80c7](https://github.com/Elenterius/Biomancy/commit/10e80c7236554a422945815f3b4aba76a931653f))
-
-
-### Bug Fixes
-
-* fix machine menus displaying wrong crafting cost ([430d54e](https://github.com/Elenterius/Biomancy/commit/430d54e21f0851b51b68d56df330afb01ca7a8c5))
 
