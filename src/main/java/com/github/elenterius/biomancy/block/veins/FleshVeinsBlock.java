@@ -493,16 +493,16 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		MoundShape mound = null;
 		float nearBoundingCenterPct = 0;
 
-		if (SpatialShapeManager.getClosestShape(level, pos) instanceof MoundShape moundShape) {
+		if (SpatialShapeManager.getClosestShape(level, pos, MoundShape.class::isInstance) instanceof MoundShape moundShape) {
 			mound = moundShape;
 
-			BlockPos origin = moundShape.getOrigin();
+			BlockPos origin = mound.getOrigin();
 			BlockEntity existingBlockEntity = level.getExistingBlockEntity(origin);
 			if (existingBlockEntity instanceof PrimalEnergyHandler peh) {
 				energyHandler = peh;
 			}
 
-			Shape boundingShape = moundShape.getBoundingShapeAt(pos.getX(), pos.getY(), pos.getZ());
+			Shape boundingShape = mound.getBoundingShapeAt(pos.getX(), pos.getY(), pos.getZ());
 			if (boundingShape != null) {
 				double radius = boundingShape instanceof HasRadius sphere ? sphere.getRadius() : boundingShape.getAABB().getSize() / 2;
 				double radiusSqr = radius * radius;
