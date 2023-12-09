@@ -50,7 +50,7 @@ public final class SpatialShapeManager {
 	}
 
 	@Nullable
-	private static Shape getClosestShape(ServerLevel level, BlockPos blockPos, Predicate<Shape> predicate) {
+	public static Shape getClosestShape(ServerLevel level, BlockPos blockPos, Predicate<Shape> predicate) {
 		SpatialQuery query = SpatialQuery.of(blockPos);
 		SpatialShapeStorage spatialStorage = SpatialShapeStorage.getInstance(level);
 		String levelKey = getLevelKey(level);
