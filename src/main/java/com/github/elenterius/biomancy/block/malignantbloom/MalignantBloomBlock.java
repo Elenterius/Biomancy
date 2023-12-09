@@ -144,7 +144,7 @@ public class MalignantBloomBlock extends WaterloggedFacingBlock implements IPlan
 				int count = 1 + (age > 6 ? level.random.nextInt(2) : 0);
 				popResource(level, pos, new ItemStack(ModItems.SAPBERRY.get(), count));
 
-				player.hurt(DamageSource.SWEET_BERRY_BUSH, 1.0F);
+				player.hurt(DamageSource.SWEET_BERRY_BUSH, 1f);
 
 				level.playSound(null, pos, SoundEvents.CAVE_VINES_PICK_BERRIES, SoundSource.BLOCKS, 1f, 0.5f + level.random.nextFloat() * 0.4f);
 				BlockState blockState = AGE.setValue(state, AGE.getMin());

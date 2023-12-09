@@ -81,10 +81,10 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 			}
 		}
 
-		return convertNormal(level, pos, directNeighbors, facesSet);
+		return convertNormal(level, pos, mound, nearBoundingCenterPct, directNeighbors, facesSet);
 	}
 
-	protected static boolean convertNormal(ServerLevel level, BlockPos pos, int directNeighbors, Bit32Set facesSet) {
+	protected static boolean convertNormal(ServerLevel level, BlockPos pos, @Nullable MoundShape mound, float nearBoundingCenterPct, int directNeighbors, Bit32Set facesSet) {
 		int numFaces = facesSet.cardinality();
 
 		boolean hasAnyBlockToAvoidNearby = LevelUtil.isBlockNearby(level, pos, 2, BLOCKS_TO_AVOID_PREDICATE);
@@ -102,7 +102,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 				if (noiseValue >= cellularNoise.borderThreshold()) {
 					return convertSelfIntoSlabBlock(level, pos, axisDirection.getOpposite());
 				}
-				else if (noiseValue < cellularNoise.coreThreshold() && (PrimordialEcosystem.getRandomWithSeed(pos).nextFloat() <= 0.3f) && (LevelUtil.getMaxBrightness(level, pos) > 5)) {
+				else if (noiseValue < cellularNoise.coreThreshold() && (PrimordialEcosystem.getRandomWithSeed(pos).nextFloat() <= 0.3f - nearBoundingCenterPct) && (LevelUtil.getMaxBrightness(level, pos) > 5)) {
 					return convertSelfIntoBloom(level, pos, axisDirection);
 				}
 			}
