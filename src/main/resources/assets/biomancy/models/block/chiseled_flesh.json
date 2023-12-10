@@ -1,0 +1,43 @@
+{
+	"credit": "Made by Elenterius",
+	"parent": "block/block",
+	"render_type": "minecraft:solid",
+	"textures": {
+		"0": "biomancy:block/chiseld_flesh_side",
+		"1": "biomancy:block/chiseled_flesh_top",
+		"2": "biomancy:block/chiseled_flesh_bottom",
+		"particle": "biomancy:block/chiseld_flesh_side"
+	},
+	"elements": [
+		{
+			"from": [ 0, 0, 0 ],
+			"to": [ 16, 16, 16 ],
+			"faces": {
+				"north": {
+					"uv": [ 0, 0, 16, 16 ],
+					"texture": "#0"
+				},
+				"east": {
+					"uv": [ 0, 0, 16, 16 ],
+					"texture": "#0"
+				},
+				"south": {
+					"uv": [ 0, 0, 16, 16 ],
+					"texture": "#0"
+				},
+				"west": {
+					"uv": [ 0, 0, 16, 16 ],
+					"texture": "#0"
+				},
+				"up": {
+					"uv": [ 0, 0, 16, 16 ],
+					"texture": "#1"
+				},
+				"down": {
+					"uv": [ 0, 0, 16, 16 ],
+					"texture": "#2"
+				}
+			}
+		}
+	]
+}
