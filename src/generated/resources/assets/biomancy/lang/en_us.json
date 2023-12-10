@@ -237,6 +237,8 @@
 	"block.biomancy.malignant_flesh_veins.tooltip": "They look almost feral...\nyou better not touch them.",
 	"block.biomancy.malignant_bloom": "Malignant Bloom",
 	"block.biomancy.malignant_bloom.tooltip": "An exotic flower of primordial beauty.\n\nIt will spread itself by launching it's ripe berry into the air.\nOn impact the berry explodes and spreads malignant veins as well.",
+	"block.biomancy.primal_orifice": "Primal Orifice",
+	"block.biomancy.primal_orifice.tooltip": "A primitive piece full of holes. It seems to leak an acidic substance.",
 	"entity.biomancy.hungry_flesh_blob": "Hungry Flesh Blob",
 	"entity.biomancy.flesh_blob": "Flesh Blob",
 	"entity.biomancy.legacy_flesh_blob": "Legacy Flesh Blob",

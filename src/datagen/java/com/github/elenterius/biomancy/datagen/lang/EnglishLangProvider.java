@@ -503,6 +503,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.MALIGNANT_FLESH_WALL, "Malignant Flesh Wall", "Wall of malignant flesh.\nIt's coming for you! ;)");
 		addBlock(ModBlocks.MALIGNANT_FLESH_VEINS, "Malignant Flesh Veins", "They look almost feral...\nyou better not touch them.");
 		addBlock(ModBlocks.MALIGNANT_BLOOM, "Malignant Bloom", "An exotic flower of primordial beauty.\n\nIt will spread itself by launching it's ripe berry into the air.\nOn impact the berry explodes and spreads malignant veins as well.");
+		addBlock(ModBlocks.PRIMAL_ORIFICE, "Primal Orifice", "A primitive piece full of holes. It seems to leak an acidic substance.");
 	}
 
 	private void addEntityTranslations() {
