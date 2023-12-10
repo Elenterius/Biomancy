@@ -13,6 +13,7 @@ import com.github.elenterius.biomancy.block.malignantbloom.MalignantBloomBlock;
 import com.github.elenterius.biomancy.block.mawhopper.MawHopperBlock;
 import com.github.elenterius.biomancy.block.modularlarynx.VoiceBoxBlock;
 import com.github.elenterius.biomancy.block.neural.NeuralInterceptorBlock;
+import com.github.elenterius.biomancy.block.orifice.OrificeBlock;
 import com.github.elenterius.biomancy.block.ownable.OwnablePressurePlateBlock;
 import com.github.elenterius.biomancy.block.storagesac.StorageSacBlock;
 import com.github.elenterius.biomancy.block.tongue.TongueBlock;
@@ -82,6 +83,7 @@ public final class ModBlocks {
 	public static final RegistryObject<FleshVeinsBlock> MALIGNANT_FLESH_VEINS = register("malignant_flesh_veins", properties -> new FleshVeinsBlock(properties.noCollission().noOcclusion()));
 	public static final RegistryObject<MalignantBloomBlock> MALIGNANT_BLOOM = register("malignant_bloom", properties -> new MalignantBloomBlock(properties.randomTicks().noOcclusion().lightLevel(MalignantBloomBlock::getLightEmission)));
 	public static final RegistryObject<Block> BLOOMLIGHT = register("bloomlight", properties -> new Block(properties.sound(SoundType.SHROOMLIGHT).lightLevel(x -> 15)));
+	public static final RegistryObject<OrificeBlock> PRIMAL_ORIFICE = register("primal_orifice", properties -> new OrificeBlock(properties.randomTicks()));
 
 	//## Utility
 	public static final RegistryObject<VoiceBoxBlock> VOICE_BOX = register("voice_box", VoiceBoxBlock::new);

@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.*;
 import com.github.elenterius.biomancy.block.fleshspike.FleshSpikeBlock;
 import com.github.elenterius.biomancy.block.malignantbloom.MalignantBloomBlock;
+import com.github.elenterius.biomancy.block.orifice.OrificeBlock;
 import com.github.elenterius.biomancy.block.ownable.OwnablePressurePlateBlock;
 import com.github.elenterius.biomancy.block.property.DirectionalSlabType;
 import com.github.elenterius.biomancy.block.property.Orientation;
@@ -91,6 +92,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		wallBlock(ModBlocks.MALIGNANT_FLESH_WALL, ModBlocks.MALIGNANT_FLESH);
 		veinsBlock(ModBlocks.MALIGNANT_FLESH_VEINS);
 		malignantBloom(ModBlocks.MALIGNANT_BLOOM);
+		orifice(ModBlocks.PRIMAL_ORIFICE);
 
 		irisDoor(ModBlocks.FLESH_IRIS_DOOR, true);
 		fleshDoor(ModBlocks.FLESH_DOOR);
@@ -325,6 +327,33 @@ public class ModBlockStateProvider extends BlockStateProvider {
 							.rotationY(rotY % 360)
 							.build();
 				}, ignored);
+	}
+
+	public <T extends OrificeBlock> void orifice(RegistryObject<T> block) {
+		orifice(block.get());
+	}
+
+	public void orifice(OrificeBlock block) {
+		ResourceLocation model = blockAsset(block);
+
+		ModelFile.ExistingModelFile defaultModel = models().getExistingFile(model);
+		ModelFile.ExistingModelFile leakingModel = models().getExistingFile(extend(model, "_leaking"));
+
+		ModelFile.ExistingModelFile[] models = {
+				defaultModel,
+				defaultModel,
+				leakingModel
+		};
+
+		getVariantBuilder(block)
+				.forAllStatesExcept(blockState -> {
+					Integer age = OrificeBlock.AGE.getValue(blockState);
+					return ConfiguredModel.builder()
+							.modelFile(models[age])
+							.build();
+				});
+
+		simpleBlockItem(block, models[0]);
 	}
 
 	public <T extends MalignantBloomBlock> void malignantBloom(RegistryObject<T> block) {
