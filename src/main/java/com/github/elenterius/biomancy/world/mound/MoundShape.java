@@ -82,9 +82,23 @@ public class MoundShape implements Shape, MobSpawnFilter {
 		return false;
 	}
 
-	public record ProcGenValues(long seed, int maxBuildHeight, int seaLevel, float biomeTemperature, float biomeHumidity) {
+	public record ProcGenValues(long seed, byte extraRadius, byte extraHeight, byte subSpires, int maxBuildHeight, int seaLevel, float biomeTemperature, float biomeHumidity) {
+
+		public float heightMultiplier() {
+			return extraHeight / 100f;
+		}
+
+		public float radiusMultiplier() {
+			return extraRadius / 100f;
+		}
+
 		public void writeTo(CompoundTag tag) {
 			tag.putLong("Seed", seed);
+
+			tag.putByte("Radius", extraRadius);
+			tag.putByte("Height", extraHeight);
+			tag.putByte("SubSpires", subSpires);
+
 			tag.putInt("MaxBuildHeight", maxBuildHeight);
 			tag.putInt("SeaLevel", seaLevel);
 			tag.putFloat("BiomeTemperature", biomeTemperature);
@@ -93,11 +107,17 @@ public class MoundShape implements Shape, MobSpawnFilter {
 
 		public static ProcGenValues readFrom(CompoundTag tag) {
 			long seed = tag.getLong("Seed");
+
+			byte extraRadius = tag.getByte("Radius");
+			byte height = tag.getByte("Height");
+			byte subSpires = tag.getByte("SubSpires");
+
 			int maxBuildHeight = tag.getInt("MaxBuildHeight");
 			int seaLevel = tag.getInt("SeaLevel");
 			float biomeTemperature = tag.getFloat("BiomeTemperature");
 			float biomeHumidity = tag.getFloat("BiomeHumidity");
-			return new ProcGenValues(seed, maxBuildHeight, seaLevel, biomeTemperature, biomeHumidity);
+
+			return new ProcGenValues(seed, extraRadius, height, subSpires, maxBuildHeight, seaLevel, biomeTemperature, biomeHumidity);
 		}
 	}
 

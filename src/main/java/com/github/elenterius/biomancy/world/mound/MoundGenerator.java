@@ -25,6 +25,9 @@ public final class MoundGenerator {
 		Biome biome = level.getBiome(blockOrigin).get();
 		MoundShape.ProcGenValues procGenValues = new MoundShape.ProcGenValues(
 				seed,
+				(byte) 0,
+				(byte) 0,
+				(byte) 4,
 				level.getMaxBuildHeight(),
 				level.getSeaLevel(),
 				TemperatureUtil.getTemperature(biome, blockOrigin),
@@ -39,12 +42,7 @@ public final class MoundGenerator {
 		ctx.random = RandomSource.create(procGenValues.seed());
 		Vec3 origin = Vec3.atCenterOf(blockOrigin);
 
-		//TODO: add these to the cradle? ////////////////
-		float heightMultiplier = 0;
-		float spireCountModifier = 4;
-		float radiusMultiplier = 0;
-
-		float radius = 8 * (1 + radiusMultiplier);
+		float radius = 8 * (1 + Mth.clamp(procGenValues.radiusMultiplier(), -0.5f, 1.5f));
 
 		/////////////////////////////////////////////////
 
@@ -56,7 +54,7 @@ public final class MoundGenerator {
 		float erosionMultiplier = 0.1f + biomeHumidity * coldMultiplier;
 		float erosionMultiplierInv = 1 - erosionMultiplier;
 
-		ctx.spikiness = Mth.clamp(heightMultiplier + heatMultiplier, 0, 1);
+		ctx.spikiness = Mth.clamp(procGenValues.heightMultiplier() + heatMultiplier, 0, 1);
 		ctx.slantMultiplier = 0.1f + ctx.random.nextFloat() + heatMultiplier * 2f;
 		ctx.relativeWallThickness = Mth.clamp((1 - heatMultiplier) * 32, 2.25f, 32);
 
@@ -65,7 +63,7 @@ public final class MoundGenerator {
 		ctx.maxMoundRadius = ctx.minMoundRadius + ctx.baseMoundRadius;
 
 		float subSpireRadius = ctx.maxMoundRadius / 2;
-		float extraSpires = Mth.clamp(spireCountModifier, 0, countCirclesOnCircumference(ctx.maxMoundRadius, subSpireRadius));
+		float subSpires = Mth.clamp(procGenValues.subSpires(), 0, countCirclesOnCircumference(ctx.maxMoundRadius, subSpireRadius));
 
 		int maxBuildHeight = procGenValues.maxBuildHeight();
 		int seaLevel = procGenValues.seaLevel();
@@ -75,12 +73,12 @@ public final class MoundGenerator {
 		ctx.maxLean = ctx.dirLean.scale(2);
 		genSpire(origin.x, origin.y, origin.z, maxMoundHeight, ctx.baseMoundRadius, ctx, true);
 
-		float subRadius = (ctx.baseMoundRadius + ctx.relativeWallThickness) * Mth.sin(Mth.PI / extraSpires);
+		float subRadius = (ctx.baseMoundRadius + ctx.relativeWallThickness) * Mth.sin(Mth.PI / subSpires);
 		float r = Mth.lerp(ctx.spikiness, subSpireRadius, ctx.baseMoundRadius) + ctx.relativeWallThickness;
 		float startAngle = ctx.random.nextFloat() * (Mth.PI * 2);
-		float angle = (Mth.PI * 2) / extraSpires;
+		float angle = (Mth.PI * 2) / subSpires;
 
-		for (int n = 0; n < extraSpires; n++) {
+		for (int n = 0; n < subSpires; n++) {
 			float arc = startAngle + angle * n;
 			double xn = origin.x + Mth.sin(arc) * r;
 			double zn = origin.z + Mth.cos(arc) * r;
