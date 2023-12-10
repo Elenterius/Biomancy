@@ -41,8 +41,10 @@ public final class MoundGenerator {
 
 		//TODO: add these to the cradle? ////////////////
 		float heightMultiplier = 0;
-		float spireCountModifier = 6;
-		float roomSizeModifier = 4; //clamp between 0 and 4? The more spires the smaller the roomSizeModifier?
+		float spireCountModifier = 4;
+		float radiusMultiplier = 0;
+
+		float radius = 8 * (1 + radiusMultiplier);
 
 		/////////////////////////////////////////////////
 
@@ -59,9 +61,9 @@ public final class MoundGenerator {
 		ctx.relativeWallThickness = Mth.clamp((1 - heatMultiplier) * 32, 2.25f, 32);
 
 		ctx.minMoundRadius = 3 + erosionMultiplier * 3;
-		ctx.baseMoundRadius = 8 + 4 * erosionMultiplierInv;
+		ctx.baseMoundRadius = radius + (radius / 2) * erosionMultiplierInv;
+		ctx.maxMoundRadius = ctx.minMoundRadius + ctx.baseMoundRadius;
 
-		ctx.maxMoundRadius = ctx.baseMoundRadius + Mth.clamp(roomSizeModifier, ctx.minMoundRadius, ctx.baseMoundRadius);
 		float subSpireRadius = ctx.maxMoundRadius / 2;
 		float extraSpires = Mth.clamp(spireCountModifier, 0, countCirclesOnCircumference(ctx.maxMoundRadius, subSpireRadius));
 
