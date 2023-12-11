@@ -38,8 +38,14 @@ public final class ModFluids {
 	private ModFluids() {}
 
 	static void registerInteractions() {
-		FluidInteractionRegistry.addInteraction(ACID_TYPE.get(), new FluidInteractionRegistry
-				.InteractionInformation(ForgeMod.WATER_TYPE.get(), fluidState -> fluidState.isSource() ? Blocks.CALCITE.defaultBlockState() : Blocks.DIORITE.defaultBlockState()));
+		FluidInteractionRegistry.addInteraction(ACID_TYPE.get(), new FluidInteractionRegistry.InteractionInformation(
+				ForgeMod.WATER_TYPE.get(),
+				fluidState -> fluidState.isSource() ? Blocks.CALCITE.defaultBlockState() : Blocks.DIORITE.defaultBlockState()
+		));
+		FluidInteractionRegistry.addInteraction(ACID_TYPE.get(), new FluidInteractionRegistry.InteractionInformation(
+				ForgeMod.LAVA_TYPE.get(),
+				fluidState -> fluidState.isSource() ? Blocks.OBSIDIAN.defaultBlockState() : Blocks.DIORITE.defaultBlockState()
+		));
 	}
 
 	private static <T extends Fluid> RegistryObject<T> register(String name, Supplier<T> factory) {
