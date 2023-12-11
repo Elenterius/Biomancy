@@ -1,3 +1,23 @@
+## [2.7.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.2.6.0...1.19.2-v2.2.7.0) (2023-12-11)
+
+
+### Features
+
+* **acid:** add acid fluid ([61da539](https://github.com/Elenterius/Biomancy/commit/61da539e64936ad6d8020c95a4e408d67d60cd7c))
+* **acid:** add dripping acid particle ([dd32f9d](https://github.com/Elenterius/Biomancy/commit/dd32f9de834d39906799c357f77702a563a7c2a2))
+* **acid:** add fluid compat for open pipes from Create ([dc17391](https://github.com/Elenterius/Biomancy/commit/dc173912e85795326cc80b94c2fb209ae9314b20))
+* **acid:** add fluid interaction with lava & water ([050bf47](https://github.com/Elenterius/Biomancy/commit/050bf47bf08ab59297716c84f380f21cb57be3e7))
+* add primal orifice block ([02a2c84](https://github.com/Elenterius/Biomancy/commit/02a2c84e141bba509855cba92da8bebb30367b75))
+* change chiseled flesh block/texture ([be7e5d9](https://github.com/Elenterius/Biomancy/commit/be7e5d9273be27dd16849993419b1b580dea206e))
+* **flesh-mound:** make Malignant Bloom spawn less likely inside the mound and more likely at the edges or outside ([3acb916](https://github.com/Elenterius/Biomancy/commit/3acb91623456fb86f247a1dfb60857cc79d1976c))
+* **flesh-mound:** tweak default mound gen settings ([7f06b15](https://github.com/Elenterius/Biomancy/commit/7f06b15508f5c86aa85836a3ce391c88fba4084f))
+
+
+### Bug Fixes
+
+* **flesh-mound:** fix flesh veins being unable to find the flesh mound when other types of shapes exist in the same area ([8750164](https://github.com/Elenterius/Biomancy/commit/8750164116ab17518679a615ed8b2e545ec79392))
+* **gradle:** fix build configuration not including the api sourceset in the primary build artifact ([95c32e7](https://github.com/Elenterius/Biomancy/commit/95c32e7f04836a4a0189b2b8321e4e4a9910dc67))
+
 ## [2.6.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.2.5.0...1.19.2-v2.2.6.0) (2023-12-09)
 
 
@@ -57,24 +77,4 @@
 * make wandering trader trades less expensive ([0eb8f80](https://github.com/Elenterius/Biomancy/commit/0eb8f808b43f4d13cfe6f8ccd755a80808577e2f))
 * remove infinite flesh growth near cradles (distance < 8) ([50df048](https://github.com/Elenterius/Biomancy/commit/50df048376bb4cec33912cc760e4ba834c71e3bc))
 * remove legacy item tags for biomass ([dd31596](https://github.com/Elenterius/Biomancy/commit/dd31596e1634a9cfa5fff61855c02e9b246933c9))
-
-## [2.2.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.2.1.0...1.19.2-v2.2.2.0) (2023-10-28)
-
-
-### Features
-
-* improve make malignant bloom shooting and check for blocks obstructing the aim ([d483871](https://github.com/Elenterius/Biomancy/commit/d483871160088e36c43cd0f0eca2d551e19421ef))
-* make it possible to add more cradle tributes via code ([9ab0c36](https://github.com/Elenterius/Biomancy/commit/9ab0c3692757e1261d695774123166bd697f37d0))
-* make life energy affect the energy charge of the Primordial Cradle and allow life energy of sacrifices to exceed 100 ([ca75b23](https://github.com/Elenterius/Biomancy/commit/ca75b235e05beaa495a9c14280b671481fba0be9))
-* make nether stars a valid sacrifice source ([aa92c3a](https://github.com/Elenterius/Biomancy/commit/aa92c3a3122af34f4c53e35a4bb440935d25004c))
-* remove the ability of mob effects to influence the hostility of Flesh Blobs spawned via the cradle ([11fcd4d](https://github.com/Elenterius/Biomancy/commit/11fcd4d33821cd487fcb4c16d760a4c501e8b40e))
-* **tetra-compat:** make Dragon Sinew a valid cradle tribute ([0abd696](https://github.com/Elenterius/Biomancy/commit/0abd69612ff29c58b63b843d8698becabcf8a267))
-* **tetra-compat:** make Dragon Sinew decomposable ([6f4732b](https://github.com/Elenterius/Biomancy/commit/6f4732b8fe718c0092879047f56f26be95506c66))
-
-
-### Bug Fixes
-
-* add workaround for NERB incompatibility ("unlocks" all recipes when NERB is detected) ([9dd10ee](https://github.com/Elenterius/Biomancy/commit/9dd10eeeaae04d21804b7d1e325d44836e48df70))
-* fix serum duplication bug with Injector ([1137763](https://github.com/Elenterius/Biomancy/commit/1137763a4b051e5d6eb8c18f00d38a127f755e63))
-* fix Wide Flesh Doors incompatibility with Quark's double door feature ([e9f4eb5](https://github.com/Elenterius/Biomancy/commit/e9f4eb57041e564c486677462d68c85e68cb5217)), closes [#108](https://github.com/Elenterius/Biomancy/issues/108)
 
