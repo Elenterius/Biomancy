@@ -49,7 +49,7 @@ public class CorrosiveEffect extends StatusEffect {
 		if (livingEntity instanceof Zombie zombie && ForgeEventFactory.canLivingConvert(zombie, EntityType.SKELETON, timer -> {})) {
 			Skeleton skeleton = zombie.convertTo(EntityType.SKELETON, true); // create new entity with same settings & equipment and remove old entity
 			if (skeleton != null) {
-				//				skeleton.finalizeSpawn(level, level.getCurrentDifficultyAt(zombie.blockPosition()), MobSpawnType.CONVERSION, null, null);
+				//skeleton.finalizeSpawn(level, level.getCurrentDifficultyAt(zombie.blockPosition()), MobSpawnType.CONVERSION, null, null);
 				skeleton.invulnerableTime = 60;
 				ForgeEventFactory.onLivingConvert(zombie, skeleton);
 				if (!zombie.isSilent()) {
@@ -61,7 +61,7 @@ public class CorrosiveEffect extends StatusEffect {
 		else if (livingEntity instanceof ZombieHorse zombieHorse && ForgeEventFactory.canLivingConvert(zombieHorse, EntityType.SKELETON_HORSE, timer -> {})) {
 			SkeletonHorse horse = zombieHorse.convertTo(EntityType.SKELETON_HORSE, true); // create new entity with same settings & equipment and remove old entity
 			if (horse != null) {
-				//				horse.finalizeSpawn(level, level.getCurrentDifficultyAt(zombieHorse.blockPosition()), MobSpawnType.CONVERSION, null, null);
+				//horse.finalizeSpawn(level, level.getCurrentDifficultyAt(zombieHorse.blockPosition()), MobSpawnType.CONVERSION, null, null);
 				horse.invulnerableTime = 60;
 				UUID owner = zombieHorse.getOwnerUUID();
 				if (owner != null) {
