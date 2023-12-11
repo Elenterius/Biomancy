@@ -14,6 +14,9 @@ public final class ModParticleTypes {
 	public static final RegistryObject<SimpleParticleType> FALLING_BLOOD = register("falling_blood", false);
 	public static final RegistryObject<SimpleParticleType> LANDING_BLOOD = register("landing_blood", false);
 	public static final RegistryObject<SimpleParticleType> CORROSIVE_SWIPE_ATTACK = register("corrosive_swipe", true);
+	public static final RegistryObject<SimpleParticleType> DRIPPING_ACID = register("dripping_acid", false);
+	public static final RegistryObject<SimpleParticleType> FALLING_ACID = register("falling_acid", false);
+	public static final RegistryObject<SimpleParticleType> LANDING_ACID = register("landing_acid", false);
 
 	private ModParticleTypes() {}
 

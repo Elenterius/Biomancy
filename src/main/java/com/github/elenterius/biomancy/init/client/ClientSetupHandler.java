@@ -7,6 +7,7 @@ import com.github.elenterius.biomancy.client.gui.tooltip.EmptyLineClientComponen
 import com.github.elenterius.biomancy.client.gui.tooltip.HrTooltipClientComponent;
 import com.github.elenterius.biomancy.client.gui.tooltip.StorageSacTooltipClientComponent;
 import com.github.elenterius.biomancy.client.particle.BloodDripParticle;
+import com.github.elenterius.biomancy.client.particle.ParticleProviders;
 import com.github.elenterius.biomancy.client.render.block.bioforge.BioForgeRenderer;
 import com.github.elenterius.biomancy.client.render.block.biolab.BioLabRenderer;
 import com.github.elenterius.biomancy.client.render.block.cradle.PrimordialCradleRenderer;
@@ -132,6 +133,9 @@ public final class ClientSetupHandler {
 		event.register(ModParticleTypes.FALLING_BLOOD.get(), BloodDripParticle.FallingBloodFactory::new);
 		event.register(ModParticleTypes.LANDING_BLOOD.get(), BloodDripParticle.LandingBloodFactory::new);
 		event.register(ModParticleTypes.CORROSIVE_SWIPE_ATTACK.get(), AttackSweepParticle.Provider::new);
+		event.register(ModParticleTypes.DRIPPING_ACID.get(), ParticleProviders.AcidHangProvider::new);
+		event.register(ModParticleTypes.FALLING_ACID.get(), ParticleProviders.AcidFallProvider::new);
+		event.register(ModParticleTypes.LANDING_ACID.get(), ParticleProviders.AcidLandProvider::new);
 	}
 
 	@SubscribeEvent

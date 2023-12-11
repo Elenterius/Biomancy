@@ -82,8 +82,7 @@ public class OrificeBlock extends Block {
 				double x = direction.getStepX() == 0 ? random.nextDouble() : 0.5d + direction.getStepX() * 0.6d;
 				double y = direction.getStepY() == 0 ? random.nextDouble() : 0.5d + direction.getStepY() * 0.6d;
 				double z = direction.getStepZ() == 0 ? random.nextDouble() : 0.5d + direction.getStepZ() * 0.6d;
-				// TODO: implement acid particle
-				level.addParticle(ModParticleTypes.FALLING_BLOOD.get(), pos.getX() + x, pos.getY() + y, pos.getZ() + z, 0, 0, 0);
+				level.addParticle(ModParticleTypes.DRIPPING_ACID.get(), pos.getX() + x, pos.getY() + y, pos.getZ() + z, 0, 0, 0);
 			}
 		}
 	}
