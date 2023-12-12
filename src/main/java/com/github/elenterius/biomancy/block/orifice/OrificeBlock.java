@@ -1,26 +1,30 @@
 package com.github.elenterius.biomancy.block.orifice;
 
+import com.github.elenterius.biomancy.init.ModFluids;
 import com.github.elenterius.biomancy.init.ModParticleTypes;
 import com.github.elenterius.biomancy.init.ModPlantTypes;
 import com.github.elenterius.biomancy.util.EnhancedIntegerProperty;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BucketPickup;
+import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
 
-public class OrificeBlock extends Block {
+import java.util.Optional;
+
+public class OrificeBlock extends Block implements BucketPickup {
 
 	public static final EnhancedIntegerProperty AGE = EnhancedIntegerProperty.wrap(BlockStateProperties.AGE_2);
 
@@ -45,7 +49,7 @@ public class OrificeBlock extends Block {
 	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (!level.isAreaLoaded(pos, 1)) return;
 
-		if (random.nextFloat() < 0.3f) {
+		if (random.nextFloat() < 0.33f) {
 			int age = AGE.getValue(state);
 			if (age < AGE.getMax()) {
 				level.setBlock(pos, AGE.addValue(state, 1), Block.UPDATE_CLIENTS);
@@ -53,17 +57,32 @@ public class OrificeBlock extends Block {
 			else {
 				if (random.nextFloat() < 0.5f) {
 					level.setBlock(pos, AGE.setValue(state, AGE.getMin()), Block.UPDATE_CLIENTS);
+
+					if (FallingBlock.isFree(level.getBlockState(pos.below())) && pos.getY() >= level.getMinBuildHeight()) {
+						//TODO: accumulate acid below the block on the floor,
+						// drop a acid blob entity/projectile?
+
+						//temporary placeholder
+						//FallingBlockEntity.fall(level, pos.below(), ModBlocks.ACID_FLUID_BLOCK.get().defaultBlockState().setValue(LiquidBlock.LEVEL, 8));
+					}
 				}
-				//TODO: accumulate acid below the block on the floor,
-				// drop a acid blob entity/projectile?
 			}
 		}
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		//TODO: allow players to harvest acid from full orifices?
-		return super.use(state, level, pos, player, hand, hit);
+	public ItemStack pickupBlock(LevelAccessor level, BlockPos pos, BlockState state) {
+		if (AGE.getValue(state) == AGE.getMax()) {
+			level.setBlock(pos, AGE.setValue(state, AGE.getMin()), Block.UPDATE_CLIENTS);
+			return new ItemStack(ModFluids.ACID.get().getBucket());
+		}
+
+		return ItemStack.EMPTY;
+	}
+
+	@Override
+	public Optional<SoundEvent> getPickupSound() {
+		return ModFluids.ACID.get().getPickupSound();
 	}
 
 	@Override
@@ -86,4 +105,5 @@ public class OrificeBlock extends Block {
 			}
 		}
 	}
+
 }
