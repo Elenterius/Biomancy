@@ -41,7 +41,7 @@ public class VanillaDripParticle extends TextureSheetParticle {
 
 	@Override
 	public int getLightColor(float partialTick) {
-		return isGlowing ? 240 : super.getLightColor(partialTick);
+		return isGlowing ? 0xf0 : super.getLightColor(partialTick);
 	}
 
 	@Override
@@ -176,11 +176,13 @@ public class VanillaDripParticle extends TextureSheetParticle {
 				remove();
 				level.addParticle(landParticle, x, y, z, 0, 0, 0);
 
-				float volume = Mth.randomBetween(random, 0.3f, 0.5f);
-				float pitch = Mth.randomBetween(random, 1.8f, 3.4f);
-				level.playLocalSound(x, y, z, SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, volume, pitch, false);
-				for (int i = 0; i < 4; i++) {
-					level.addParticle(ParticleTypes.LARGE_SMOKE, x + random.nextDouble(), y + 1.2d, z + random.nextDouble(), 0, 0, 0);
+				if (random.nextInt(4) == 0) {
+					float volume = Mth.randomBetween(random, 0.4f, 0.6f);
+					float pitch = Mth.randomBetween(random, 1.8f, 3.4f);
+					level.playLocalSound(x, y, z, SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, volume, pitch, false);
+					for (int i = 0; i < 4; i++) {
+						level.addParticle(ParticleTypes.LARGE_SMOKE, x + random.nextDouble(), y + 0.2f, z + random.nextDouble(), 0, 0, 0);
+					}
 				}
 			}
 		}
