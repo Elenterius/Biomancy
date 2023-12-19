@@ -65,6 +65,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 		tag(BlockTags.DOORS).add(ModBlocks.FLESH_DOOR.get()).add(ModBlocks.FULL_FLESH_DOOR.get());
 		tag(BlockTags.TRAPDOORS).add(ModBlocks.FLESH_IRIS_DOOR.get());
 
+		tag(Tags.Blocks.CHESTS).add(ModBlocks.FLESHKIN_CHEST.get());
+
 		tag(ModBlockTags.FLESHY_FENCES).add(ModBlocks.FLESH_FENCE.get());
 		tag(BlockTags.FENCES).addTag(ModBlockTags.FLESHY_FENCES);
 		tag(BlockTags.FENCE_GATES).add(ModBlocks.FLESH_FENCE_GATE.get());
