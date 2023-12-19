@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.init.ModTriggers;
+import com.github.elenterius.biomancy.init.tags.ModItemTags;
 import com.github.elenterius.biomancy.integration.ModsCompatHandler;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
@@ -40,7 +41,6 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,8 +52,8 @@ import java.util.stream.Stream;
 
 public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements EntityBlock {
 
-	public static final Predicate<ItemStack> EXPENSIVE_ITEMS = stack -> {
-		if (stack.is(Tags.Items.TOOLS)) return true;
+	public static final Predicate<ItemStack> CANNOT_BE_SACRIFICED = stack -> {
+		if (stack.is(ModItemTags.CANNOT_BE_EATEN_BY_CRADLE)) return true;
 
 		Item item = stack.getItem();
 
@@ -181,7 +181,7 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 
 	private boolean increaseFillLevel(@Nullable Player player, Level level, BlockPos pos, ItemStack stack) {
 		if (!stack.isEmpty() && !level.isClientSide()) {
-			if (EXPENSIVE_ITEMS.test(stack)) return false;
+			if (CANNOT_BE_SACRIFICED.test(stack)) return false;
 
 			ItemStack copyOfStack = ItemHandlerHelper.copyStackWithSize(stack, 1); //creator#insertItem modifies the stack which may lead to it being empty
 			if (level.getBlockEntity(pos) instanceof PrimordialCradleBlockEntity creator && !creator.isFull() && creator.insertItem(stack)) {
