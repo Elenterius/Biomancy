@@ -149,15 +149,6 @@ public class ModRecipeProvider extends RecipeProvider {
 				.pattern("MC ")
 				.unlockedBy(hasName(ModItems.PRIMORDIAL_CORE.get()), has(ModItems.PRIMORDIAL_CORE.get())).save(consumer);
 
-		//		WorkbenchRecipeBuilder.shapeless(ModItems.PRIMORDIAL_LIVING_OCULUS.get())
-		//				.requires(Items.SPIDER_EYE)
-		//				.requires(ModTags.Items.RAW_MEATS)
-		//				.requires(ModTags.Items.RAW_MEATS)
-		//				.requires(ModItems.MOB_SINEW.get())
-		//				.requires(ModItems.MOB_MARROW.get())
-		//				.requires(ModItems.PRIMORDIAL_LIVING_FLESH.get())
-		//				.unlockedBy(hasName(ModItems.PRIMORDIAL_LIVING_FLESH.get()), has(ModItems.PRIMORDIAL_LIVING_FLESH.get())).save(consumer);
-		//
 		//		WorkbenchRecipeBuilder.shapeless(ModItems.GUIDE_BOOK.get())
 		//				.requires(ModItems.MOB_SINEW.get())
 		//				.requires(Items.BOOK)
@@ -165,13 +156,6 @@ public class ModRecipeProvider extends RecipeProvider {
 		//				.requires(ModItems.PRIMORDIAL_LIVING_OCULUS.get())
 		//				.requires(ModItems.MOB_FANG.get())
 		//				.unlockedBy(hasName(ModItems.PRIMORDIAL_LIVING_FLESH.get()), has(ModItems.PRIMORDIAL_LIVING_FLESH.get())).save(consumer);
-
-		//		WorkbenchRecipeBuilder.shaped(ModItems.VIAL.get(), 8)
-		//				.define('G', Tags.Items.GLASS).define('T', Items.CLAY_BALL)
-		//				.pattern("GTG")
-		//				.pattern("G G")
-		//				.pattern(" G ")
-		//				.unlockedBy(hasName(Items.GLASS), has(Tags.Items.GLASS)).save(consumer);
 
 		// machines ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -608,24 +592,24 @@ public class ModRecipeProvider extends RecipeProvider {
 		DecomposerRecipeBuilder.create().setIngredient(ModItems.TOXIN_GLAND).addOutput(ModItems.TOXIN_EXTRACT.get(), 2, 5).addOutput(ModItems.FLESH_BITS.get(), 2, 3).addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 3).unlockedBy(ModItems.TOXIN_GLAND).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(ModItems.VOLATILE_GLAND).addOutput(ModItems.VOLATILE_FLUID.get(), 2, 5).addOutput(ModItems.FLESH_BITS.get(), 2, 3).addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 3).unlockedBy(ModItems.VOLATILE_GLAND).save(consumer);
 
-		DecomposerRecipeBuilder.create().setIngredient(ModItems.BLOOMLIGHT)
-				.addOutput(ModItems.BIO_LUMENS.get(), 5, 9)
-				.addOutput(ModItems.ORGANIC_MATTER.get(), 2, 3)
-				.addOutput(ModItems.EXOTIC_DUST.get(), 0, 3)
-				.addOutput(ModItems.BILE.get(), 1, 2)
-				.unlockedBy(Items.SHROOMLIGHT).save(consumer);
-
 		//Special
 		DecomposerRecipeBuilder.create().setIngredient(ModItems.LIVING_FLESH)
 				.addOutput(ModItems.FLESH_BITS.get(), 3, 6)
 				.addOutput(ModItems.EXOTIC_DUST.get(), 0, 2)
 				.unlockedBy(ModItems.LIVING_FLESH).save(consumer);
+
 		DecomposerRecipeBuilder.create().setIngredient(ModItems.SAPBERRY)
 				.addOutput(ModItems.BIO_LUMENS.get(), 0, 2)
 				.addOutput(ModItems.ORGANIC_MATTER.get(), 0, 1)
 				.addOutput(ModItems.EXOTIC_DUST.get(), 0, 3)
 				.addOutput(ModItems.BILE.get(), 1, 2)
 				.unlockedBy(ModItems.SAPBERRY).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.BLOOMLIGHT)
+				.addOutput(ModItems.BIO_LUMENS.get(), 5, 9)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 2, 3)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 0, 4)
+				.addOutput(ModItems.BILE.get(), 1, 2)
+				.unlockedBy(Items.SHROOMLIGHT).save(consumer);
 
 		registerDecomposerRecipesFor119(consumer);
 		registerDecomposerRecipesForBiomesOPlenty(consumer);
