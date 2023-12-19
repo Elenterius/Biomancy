@@ -37,6 +37,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 	}
 
 	private void addBiomancyTags() {
+
 		createTag(ModItemTags.SUGARS)
 				.add(SUGAR, COOKIE, CAKE, HONEYCOMB, HONEY_BLOCK, HONEYCOMB_BLOCK, HONEY_BOTTLE, SWEET_BERRIES, COCOA_BEANS, APPLE)
 				.addOptional("create:sweet_roll", "create:chocolate_glazed_berries", "create:honeyed_apple", "create:bar_of_chocolate")
@@ -65,6 +66,15 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 		createTag(ModItemTags.FANGS)
 				.add(ModItems.MOB_FANG.get())
 				.add(AMItemRegistry.BONE_SERPENT_TOOTH.get());
+
+		createTag(ModItemTags.CANNOT_BE_EATEN_BY_CRADLE)
+				.add(DRAGON_EGG, SPAWNER, HEART_OF_THE_SEA)
+				.add(NAME_TAG)
+				.addTag(ItemTags.MUSIC_DISCS)
+				.add(ELYTRA)
+				.addTag(Tags.Items.ARMORS, Tags.Items.TOOLS)
+				.add(SHULKER_BOX)
+				.addTag(Tags.Items.ORES_NETHERITE_SCRAP, Tags.Items.INGOTS_NETHERITE, Tags.Items.STORAGE_BLOCKS_NETHERITE);
 	}
 
 	private void addMinecraftTags() {
