@@ -352,21 +352,13 @@ public class ModRecipeProvider extends RecipeProvider {
 				.save(consumer);
 
 		WorkbenchRecipeBuilder.shaped(ModItems.PRIMORDIAL_BIO_LANTERN.get())
-				.define('F', ModItems.YELLOW_BIO_LANTERN.get())
+				.define('B', ModItems.SAPBERRY.get())
 				.define('V', ModItems.MALIGNANT_FLESH_VEINS.get())
-				.pattern("VVV")
-				.pattern("VFV")
-				.pattern("VVV")
-				.unlockedBy(hasName(ModItems.MALIGNANT_FLESH_VEINS.get()), has(ModItems.MALIGNANT_FLESH_VEINS.get()))
-				.save(consumer, getConversionRecipeId(ModItems.PRIMORDIAL_BIO_LANTERN.get(), ModItems.YELLOW_BIO_LANTERN.get()));
-
-		WorkbenchRecipeBuilder.shaped(ModItems.PRIMORDIAL_BIO_LANTERN.get())
-				.define('F', ModItems.BLUE_BIO_LANTERN.get())
-				.define('V', ModItems.MALIGNANT_FLESH_VEINS.get())
-				.pattern("VVV")
-				.pattern("VFV")
-				.pattern("VVV")
-				.unlockedBy(hasName(ModItems.PRIMORDIAL_BIO_LANTERN.get()), has(ModItems.BLUE_BIO_LANTERN.get()))
+				.define('C', ModItems.TENDON_CHAIN.get())
+				.pattern(" C ")
+				.pattern("VBV")
+				.pattern(" V ")
+				.unlockedBy(hasName(ModItems.SAPBERRY.get()), has(ModItems.SAPBERRY.get()))
 				.save(consumer);
 
 		WorkbenchRecipeBuilder.shaped(ModItems.BLOOMLIGHT.get(), 4)
