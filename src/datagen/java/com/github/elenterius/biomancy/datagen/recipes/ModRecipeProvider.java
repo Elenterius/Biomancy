@@ -368,6 +368,15 @@ public class ModRecipeProvider extends RecipeProvider {
 				.pattern("VVV")
 				.unlockedBy(hasName(ModItems.PRIMORDIAL_BIO_LANTERN.get()), has(ModItems.BLUE_BIO_LANTERN.get()))
 				.save(consumer);
+
+		WorkbenchRecipeBuilder.shaped(ModItems.BLOOMLIGHT.get(), 4)
+				.define('B', ModItems.SAPBERRY.get())
+				.define('V', ModItems.MALIGNANT_FLESH_VEINS.get())
+				.pattern("BVB")
+				.pattern("VBV")
+				.pattern("BVB")
+				.unlockedBy(hasName(ModItems.SAPBERRY.get()), has(ModItems.SAPBERRY.get()))
+				.save(consumer);
 	}
 
 	private void registerDigestingRecipes(Consumer<FinishedRecipe> consumer) {
