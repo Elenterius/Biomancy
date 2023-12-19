@@ -10,7 +10,9 @@ import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -73,27 +75,42 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 				.addTag(ItemTags.MUSIC_DISCS)
 				.add(ELYTRA)
 				.addTag(Tags.Items.ARMORS, Tags.Items.TOOLS)
-				.add(SHULKER_BOX)
-				.addTag(Tags.Items.ORES_NETHERITE_SCRAP, Tags.Items.INGOTS_NETHERITE, Tags.Items.STORAGE_BLOCKS_NETHERITE);
+				.addTag(Tags.Items.ORES_NETHERITE_SCRAP, Tags.Items.INGOTS_NETHERITE, Tags.Items.STORAGE_BLOCKS_NETHERITE)
+				.addTag(forgeTag("shulker_boxes"));
 	}
 
 	private void addMinecraftTags() {
 		//		tag(ItemTags.FENCES).getInternalBuilder().addTag(ModTags.Blocks.FLESHY_FENCES.getName(), BiomancyMod.MOD_ID);
+
+		createTag(ItemTags.DOORS)
+				.add(ModItems.FLESH_DOOR.get(), ModItems.FULL_FLESH_DOOR.get());
+
+		createTag(ItemTags.TRAPDOORS)
+				.add(ModItems.FLESH_IRIS_DOOR.get());
 	}
 
 	private void addForgeTags() {
 		//		tag(ModItemTags.FORGE_TOOLS_KNIVES);
 
 		TagKey<Item> clawsTag = forgeTag("tools/claws");
-		tag(clawsTag)
+		createTag(clawsTag)
 				.add(ModItems.RAVENOUS_CLAWS.get());
 
-		tag(Tags.Items.TOOLS_SWORDS)
+		createTag(Tags.Items.TOOLS_SWORDS)
 				.add(ModItems.DESPOIL_SICKLE.get(), ModItems.TOXICUS.get());
 
-		tag(Tags.Items.TOOLS)
+		createTag(Tags.Items.TOOLS)
 				.addTag(clawsTag)
 				.add(ModItems.INJECTOR.get(), ModItems.BIO_EXTRACTOR.get());
+
+		createTag(Tags.Items.CHESTS).add(ModItems.FLESHKIN_CHEST.get());
+
+		EnhancedTagAppender<Item> shulkerBoxes = createTag(forgeTag("shulker_boxes"));
+		for (Item item : ForgeRegistries.ITEMS) {
+			if (item instanceof BlockItem blockItem && blockItem.getBlock() instanceof ShulkerBoxBlock) {
+				shulkerBoxes.add(item);
+			}
+		}
 	}
 
 	protected EnhancedTagAppender<Item> createTag(TagKey<Item> tag) {
