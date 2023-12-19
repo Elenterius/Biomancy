@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.block.cradle;
 
 import com.github.elenterius.biomancy.block.fleshkinchest.FleshkinChestBlock;
+import com.github.elenterius.biomancy.block.storagesac.StorageSacBlock;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModItems;
@@ -57,8 +58,12 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 
 		Item item = stack.getItem();
 
-		if (item instanceof BlockItem blockItem && (blockItem.getBlock() instanceof ShulkerBoxBlock || blockItem.getBlock() instanceof FleshkinChestBlock))
-			return true;
+		if (item instanceof BlockItem blockItem) {
+			Block block = blockItem.getBlock();
+			if (block instanceof ShulkerBoxBlock || block instanceof FleshkinChestBlock || block instanceof StorageSacBlock) {
+				return true;
+			}
+		}
 
 		if (ModsCompatHandler.getTetraHelper().isToolOrModularItem(item)) return true;
 
