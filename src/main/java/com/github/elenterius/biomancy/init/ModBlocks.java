@@ -67,9 +67,9 @@ public final class ModBlocks {
 	//## Decoration
 	public static final RegistryObject<RotatedPillarBlock> TUBULAR_FLESH_BLOCK = register("tubular_flesh", RotatedPillarBlock::new);
 	public static final RegistryObject<FleshBlock> FIBROUS_FLESH = register("fibrous_flesh", FleshBlock::new);
-	public static final RegistryObject<RotatedPillarBlock> FLESH_PILLAR = register("flesh_pillar", RotatedPillarBlock::new);
-	public static final RegistryObject<FleshBlock> CHISELED_FLESH = register("chiseled_flesh", FleshBlock::new);
-	public static final RegistryObject<RotatedPillarBlock> ORNATE_FLESH = register("ornate_flesh", RotatedPillarBlock::new);
+	public static final RegistryObject<RotatedPillarBlock> FLESH_PILLAR = register("flesh_pillar", () -> new RotatedPillarBlock(createFleshyBoneProperties()));
+	public static final RegistryObject<FleshBlock> CHISELED_FLESH = register("chiseled_flesh", () -> new FleshBlock(createFleshyBoneProperties()));
+	public static final RegistryObject<RotatedPillarBlock> ORNATE_FLESH = register("ornate_flesh", () -> new RotatedPillarBlock(createFleshyBoneProperties()));
 
 	//## Primal Ecosystem
 	public static final RegistryObject<FleshBlock> PRIMAL_FLESH = register("primal_flesh", FleshBlock::new);
