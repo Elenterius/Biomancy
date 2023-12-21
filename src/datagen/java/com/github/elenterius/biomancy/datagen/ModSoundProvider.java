@@ -35,6 +35,12 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 		addSimpleSounds(ModSoundEvents.FLESH_BLOCK_BREAK, 4);
 		addSimpleSounds(ModSoundEvents.FLESH_BLOCK_FALL, 3);
 
+		addSimpleRedirects(ModSoundEvents.BONY_FLESH_BLOCK_HIT, ModSoundEvents.FLESH_BLOCK_HIT.get(), SoundEvents.BONE_BLOCK_HIT);
+		addSimpleRedirects(ModSoundEvents.BONY_FLESH_BLOCK_PLACE, ModSoundEvents.FLESH_BLOCK_PLACE.get(), SoundEvents.BONE_BLOCK_PLACE);
+		addSimpleRedirects(ModSoundEvents.BONY_FLESH_BLOCK_STEP, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundEvents.BONE_BLOCK_STEP);
+		addSimpleRedirects(ModSoundEvents.BONY_FLESH_BLOCK_BREAK, ModSoundEvents.FLESH_BLOCK_BREAK.get(), SoundEvents.BONE_BLOCK_BREAK);
+		addSimpleRedirects(ModSoundEvents.BONY_FLESH_BLOCK_FALL, ModSoundEvents.FLESH_BLOCK_FALL.get(), SoundEvents.BONE_BLOCK_FALL);
+
 		addSimpleSounds(ModSoundEvents.FLESH_DOOR_OPEN, 2);
 		addSimpleSounds(ModSoundEvents.FLESH_DOOR_CLOSE, 2);
 
@@ -82,7 +88,7 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 		addSimpleRedirect(ModSoundEvents.DIGESTER_CRAFTING_COMPLETED, SoundEvents.PLAYER_BURP, 1f, 1.25f);
 
 		addSimpleRedirect(ModSoundEvents.FLESH_BLOB_JUMP, SoundEvents.SLIME_JUMP);
-		addSimpleRedirect(ModSoundEvents.FLESH_BLOB_HURT, ModSoundEvents.FLESH_BLOCK_BREAK.get(), 0.8f, 0.9f);
+		addSimpleRedirect(ModSoundEvents.FLESH_BLOB_HURT, ModSoundEvents.FLESH_BLOCK_BREAK, 0.8f, 0.9f);
 		addSimpleRedirect(ModSoundEvents.FLESH_BLOB_DEATH, SoundEvents.GENERIC_DEATH);
 		addSimpleSounds(ModSoundEvents.FLESH_BLOB_AMBIENT, 3, 0.8f, 0.9f);
 		addSimpleSound(ModSoundEvents.GENERIC_MEW_PURR, 0.7f, 0.45f);
@@ -169,4 +175,13 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 		);
 	}
 
+	protected void addSimpleRedirects(RegistryObject<SoundEvent> soundHolder, SoundEvent... redirectTargets) {
+		SoundDefinition soundDefinition = definition().subtitle(translationKey(soundHolder));
+
+		for (SoundEvent redirectTarget : redirectTargets) {
+			soundDefinition.with().with(sound(redirectTarget.getLocation(), SoundDefinition.SoundType.EVENT));
+		}
+
+		add(soundHolder, soundDefinition);
+	}
 }

@@ -254,6 +254,12 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addSound(ModSoundEvents.FLESH_BLOCK_BREAK, "Break Fleshy Block");
 		addSound(ModSoundEvents.FLESH_BLOCK_FALL, "Fall on Fleshy Block");
 
+		addSound(ModSoundEvents.BONY_FLESH_BLOCK_HIT, "Hit Bony Flesh Block");
+		addSound(ModSoundEvents.BONY_FLESH_BLOCK_PLACE, "Place Bony Flesh Block");
+		addSound(ModSoundEvents.BONY_FLESH_BLOCK_STEP, "Step on Bony Flesh Block");
+		addSound(ModSoundEvents.BONY_FLESH_BLOCK_BREAK, "Break Bony Flesh Block");
+		addSound(ModSoundEvents.BONY_FLESH_BLOCK_FALL, "Fall on Bony Flesh Block");
+
 		addSound(ModSoundEvents.FLESH_DOOR_OPEN, "Open Fleshy Door");
 		addSound(ModSoundEvents.FLESH_DOOR_CLOSE, "Close Fleshy Door");
 
