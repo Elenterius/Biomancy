@@ -67,9 +67,9 @@ public final class ModBlocks {
 	//## Decoration
 	public static final RegistryObject<RotatedPillarBlock> TUBULAR_FLESH_BLOCK = register("tubular_flesh", RotatedPillarBlock::new);
 	public static final RegistryObject<FleshBlock> FIBROUS_FLESH = register("fibrous_flesh", FleshBlock::new);
-	public static final RegistryObject<RotatedPillarBlock> FLESH_PILLAR = register("flesh_pillar", () -> new RotatedPillarBlock(createFleshyBoneProperties()));
-	public static final RegistryObject<FleshBlock> CHISELED_FLESH = register("chiseled_flesh", () -> new FleshBlock(createFleshyBoneProperties()));
-	public static final RegistryObject<RotatedPillarBlock> ORNATE_FLESH = register("ornate_flesh", () -> new RotatedPillarBlock(createFleshyBoneProperties()));
+	public static final RegistryObject<RotatedPillarBlock> FLESH_PILLAR = register("flesh_pillar", () -> new RotatedPillarBlock(createBonyFleshProperties()));
+	public static final RegistryObject<FleshBlock> CHISELED_FLESH = register("chiseled_flesh", () -> new FleshBlock(createBonyFleshProperties()));
+	public static final RegistryObject<RotatedPillarBlock> ORNATE_FLESH = register("ornate_flesh", () -> new RotatedPillarBlock(createBonyFleshProperties()));
 
 	//## Primal Ecosystem
 	public static final RegistryObject<FleshBlock> PRIMAL_FLESH = register("primal_flesh", FleshBlock::new);
@@ -87,7 +87,7 @@ public final class ModBlocks {
 
 	//## Utility
 	public static final RegistryObject<VoiceBoxBlock> VOICE_BOX = register("voice_box", VoiceBoxBlock::new);
-	public static final RegistryObject<FleshSpikeBlock> FLESH_SPIKE = register("flesh_spike", () -> new FleshSpikeBlock(createFleshyBoneProperties().noOcclusion()));
+	public static final RegistryObject<FleshSpikeBlock> FLESH_SPIKE = register("flesh_spike", () -> new FleshSpikeBlock(createBonyFleshProperties().noOcclusion()));
 	public static final RegistryObject<VialHolderBlock> VIAL_HOLDER = register("vial_holder", VialHolderBlock::new);
 	public static final RegistryObject<NeuralInterceptorBlock> NEURAL_INTERCEPTOR = register("neural_interceptor", NeuralInterceptorBlock::new);
 
@@ -107,9 +107,9 @@ public final class ModBlocks {
 	public static final RegistryObject<LiquidBlock> ACID_FLUID_BLOCK = register("acid_fluid_block", () -> new LiquidBlock(ModFluids.ACID, copyProperties(Blocks.WATER)));
 
 	//## Misc
-	public static final RegistryObject<LadderBlock> FLESH_LADDER = register("flesh_ladder", () -> new LadderBlock(createFleshyBoneProperties().noOcclusion()));
+	public static final RegistryObject<LadderBlock> FLESH_LADDER = register("flesh_ladder", () -> new LadderBlock(createBonyFleshProperties().noOcclusion()));
 	public static final RegistryObject<FleshFenceBlock> FLESH_FENCE = register("flesh_fence", FleshFenceBlock::new);
-	public static final RegistryObject<FleshFenceGateBlock> FLESH_FENCE_GATE = register("flesh_fence_gate", () -> new FleshFenceGateBlock(createFleshyBoneProperties().noOcclusion()));
+	public static final RegistryObject<FleshFenceGateBlock> FLESH_FENCE_GATE = register("flesh_fence_gate", () -> new FleshFenceGateBlock(createBonyFleshProperties().noOcclusion()));
 	public static final RegistryObject<IrisDoorBlock> FLESH_IRIS_DOOR = register("flesh_iris_door", IrisDoorBlock::new);
 	public static final RegistryObject<FleshDoorBlock> FLESH_DOOR = register("flesh_door", FleshDoorBlock::new);
 	public static final RegistryObject<FullFleshDoorBlock> FULL_FLESH_DOOR = register("full_flesh_door", FullFleshDoorBlock::new);
@@ -168,8 +168,8 @@ public final class ModBlocks {
 		return createFleshProperties().strength(6f, 12f);
 	}
 
-	public static BlockBehaviour.Properties createFleshyBoneProperties() {
-		return BlockBehaviour.Properties.of(ModBlockMaterials.FLESH_MATERIAL).strength(4f, 6f).sound(SoundType.BONE_BLOCK).isValidSpawn(ModBlocks::isValidFleshkinSpawn);
+	public static BlockBehaviour.Properties createBonyFleshProperties() {
+		return BlockBehaviour.Properties.of(ModBlockMaterials.FLESH_MATERIAL).strength(4f, 6f).sound(ModSoundTypes.BONY_FLESH_BLOCK).isValidSpawn(ModBlocks::isValidFleshkinSpawn);
 	}
 
 	public static boolean isValidFleshkinSpawn(BlockState state, BlockGetter level, BlockPos pos, EntityType<?> entityType) {
