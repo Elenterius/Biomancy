@@ -169,7 +169,7 @@ public final class ModBlocks {
 	}
 
 	public static BlockBehaviour.Properties createFleshyBoneProperties() {
-		return BlockBehaviour.Properties.of(ModBlockMaterials.FLESH_MATERIAL).strength(3f, 3f).sound(SoundType.BONE_BLOCK).isValidSpawn(ModBlocks::isValidFleshkinSpawn);
+		return BlockBehaviour.Properties.of(ModBlockMaterials.FLESH_MATERIAL).strength(4f, 6f).sound(SoundType.BONE_BLOCK).isValidSpawn(ModBlocks::isValidFleshkinSpawn);
 	}
 
 	public static boolean isValidFleshkinSpawn(BlockState state, BlockGetter level, BlockPos pos, EntityType<?> entityType) {
