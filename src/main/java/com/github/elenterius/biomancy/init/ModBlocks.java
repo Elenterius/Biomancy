@@ -165,7 +165,7 @@ public final class ModBlocks {
 	}
 
 	public static BlockBehaviour.Properties createToughFleshProperties() {
-		return createFleshProperties().strength(6f, 6f);
+		return createFleshProperties().strength(6f, 12f);
 	}
 
 	public static BlockBehaviour.Properties createFleshyBoneProperties() {
