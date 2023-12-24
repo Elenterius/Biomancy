@@ -1,3 +1,26 @@
+## [2.8.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.2.7.0...1.19.2-v2.2.8.0) (2023-12-24)
+
+
+### Features
+
+* **acid:** reduce probability for acid particles to produce fizzling smoke when landing on ground ([df8e315](https://github.com/Elenterius/Biomancy/commit/df8e31512cc59eada311f5d7584daec4d6673e53))
+* add bloomlight recipe ([2de5134](https://github.com/Elenterius/Biomancy/commit/2de51343c0140e8fe6dbc827f1c3020371e55eb0))
+* buff strength of `FleshyBone` material (increase destroy time from 3 to 4 and explosion resistance from 3 to 6) ([9b7bf5c](https://github.com/Elenterius/Biomancy/commit/9b7bf5cd45e08f88da93ba9984335c455095a8ae))
+* change Primordial Lantern recipe to require a Sapberry ([33f3c25](https://github.com/Elenterius/Biomancy/commit/33f3c25cff5bad886656e8cbf55a0a032c0824d9))
+* change the block material of Flesh Pillar, Chiseled Flesh and Ornate Flesh to `FleshyBone` material ([2c9074a](https://github.com/Elenterius/Biomancy/commit/2c9074af6775f61db591d025e6864940f4d07894))
+* **flesh-mound:** add chamber decorations such as pillars, orifices, etc. ([8f0bdb2](https://github.com/Elenterius/Biomancy/commit/8f0bdb2c836c63dd6c7d47e6f61957c652de53f9))
+* increase explosion resistance of Packed Flesh from 6 to 12 ([cf05380](https://github.com/Elenterius/Biomancy/commit/cf05380ee3e8eb7b9a921517984657cc364b2f18))
+* **item-tag:** add `cannot_be_eaten_by_cradle` tag for items that should not be eaten by the Cradle ([52d2b60](https://github.com/Elenterius/Biomancy/commit/52d2b60e3f61c75ea849404549019fc09247d74f))
+* **item-tag:** add items to forge tags for doors, trapdoors and chests ([138f2f1](https://github.com/Elenterius/Biomancy/commit/138f2f1ed6a68eaa4e6af9ea461f14faf340b53b))
+* make bony flesh blocks play flesh or bone sounds (with equal probability) ([648650c](https://github.com/Elenterius/Biomancy/commit/648650c3ee001f232fedc7ffb9bf71bf655234ee))
+* make primal orifices milk-able with empty buckets ([2949671](https://github.com/Elenterius/Biomancy/commit/2949671e004e770ec831bed03fd68e294c532010))
+* tweak decomposing recipe of bloomlight ([844b217](https://github.com/Elenterius/Biomancy/commit/844b21763b9dcc55673f87a79c20a45a3c572c81))
+
+
+### Bug Fixes
+
+* prevent storage sac from being eaten by the Cradle ([d1e9c66](https://github.com/Elenterius/Biomancy/commit/d1e9c663a22917063e89459384582d468d16dad1))
+
 ## [2.7.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.2.6.0...1.19.2-v2.2.7.0) (2023-12-11)
 
 
@@ -63,18 +86,4 @@
 
 * fix flesh veins inability to spread over dirt paths ([b319e1e](https://github.com/Elenterius/Biomancy/commit/b319e1ee1a16c876064b2bb15483d61f2b7ca335))
 * fix Primordial Cradle not persisting internal sacrifice values when mined ([ac17061](https://github.com/Elenterius/Biomancy/commit/ac17061f805f24fa20ccb32e6633631bb3b01b9e))
-
-## [2.3.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.2.2.0...1.19.2-v2.2.3.0) (2023-11-03)
-
-
-### Features
-
-* add config for enabling unlimited flesh growth globally ([e28dc68](https://github.com/Elenterius/Biomancy/commit/e28dc68b22fe2d0d0cea75f81659a3b5063a965d))
-* add config for enabling unlimited flesh growth near cradles ([826c988](https://github.com/Elenterius/Biomancy/commit/826c9881aeeb9edfd77d0678fca95fa68a448eb7))
-* add server config for BioForge recipe unlocking and villager trades ([47a8b12](https://github.com/Elenterius/Biomancy/commit/47a8b120adcf69ed83ebd239cd467d371b35fb6c))
-* increase life/primal energy value of sacrificed Nether Stars tenfold ([320cc67](https://github.com/Elenterius/Biomancy/commit/320cc67f0a1a3c399c976e695cd9e01460e4092f))
-* make malignant flesh veins replaceable ([c574f3d](https://github.com/Elenterius/Biomancy/commit/c574f3d0fc337b1f87cffe5c603862f15a0bb295))
-* make wandering trader trades less expensive ([0eb8f80](https://github.com/Elenterius/Biomancy/commit/0eb8f808b43f4d13cfe6f8ccd755a80808577e2f))
-* remove infinite flesh growth near cradles (distance < 8) ([50df048](https://github.com/Elenterius/Biomancy/commit/50df048376bb4cec33912cc760e4ba834c71e3bc))
-* remove legacy item tags for biomass ([dd31596](https://github.com/Elenterius/Biomancy/commit/dd31596e1634a9cfa5fff61855c02e9b246933c9))
 
