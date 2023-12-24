@@ -34,8 +34,8 @@ public class MobSpawnFilterShape implements Shape, MobSpawnFilter {
 	}
 
 	@Override
-	public Vec3 getCenter() {
-		return shape.getCenter();
+	public Vec3 center() {
+		return shape.center();
 	}
 
 	@Override

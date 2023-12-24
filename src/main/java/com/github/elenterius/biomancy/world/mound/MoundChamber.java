@@ -1,13 +1,17 @@
 package com.github.elenterius.biomancy.world.mound;
 
 import com.github.elenterius.biomancy.util.serialization.NBTSerializer;
+import com.github.elenterius.biomancy.world.mound.decorator.ChamberDecorator;
+import com.github.elenterius.biomancy.world.mound.decorator.ChamberDecorators;
 import com.github.elenterius.biomancy.world.spatial.geometry.Shape;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public class MoundChamber implements Chamber, Shape {
+public class MoundChamber implements Chamber {
 	private final Shape shape;
 	private final Vec3 origin;
+	private int seed = 1337;
+	private ChamberDecorator chamberDecorator = ChamberDecorators.EMPTY;
 
 	public MoundChamber(Vec3 origin, Shape shape) {
 		this.shape = shape;
@@ -16,7 +20,7 @@ public class MoundChamber implements Chamber, Shape {
 
 	public MoundChamber(Shape shape) {
 		this.shape = shape;
-		origin = shape.getCenter();
+		origin = shape.center();
 	}
 
 	@Override
@@ -30,12 +34,27 @@ public class MoundChamber implements Chamber, Shape {
 	}
 
 	@Override
-	public Vec3 getCenter() {
-		return shape.getCenter();
+	public Vec3 center() {
+		return shape.center();
 	}
 
 	@Override
-	public Vec3 getOrigin() {
+	public int seed() {
+		return seed;
+	}
+
+	public void setDecorator(ChamberDecorator chamberDecorator, int seed) {
+		this.chamberDecorator = chamberDecorator;
+		this.seed = seed;
+	}
+
+	@Override
+	public ChamberDecorator getDecorator() {
+		return chamberDecorator;
+	}
+
+	@Override
+	public Vec3 origin() {
 		return origin;
 	}
 

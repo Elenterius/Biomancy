@@ -36,7 +36,7 @@ public class CuboidShape implements Shape {
 	}
 
 	@Override
-	public Vec3 getCenter() {
+	public Vec3 center() {
 		return origin;
 	}
 

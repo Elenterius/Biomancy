@@ -15,6 +15,8 @@ import com.github.elenterius.biomancy.util.random.CellularNoise;
 import com.github.elenterius.biomancy.world.PrimordialEcosystem;
 import com.github.elenterius.biomancy.world.mound.MoundChamber;
 import com.github.elenterius.biomancy.world.mound.MoundShape;
+import com.github.elenterius.biomancy.world.mound.decorator.ChamberDecorator;
+import com.github.elenterius.biomancy.world.mound.decorator.ChamberSpecialDecorator;
 import com.github.elenterius.biomancy.world.spatial.SpatialShapeManager;
 import com.github.elenterius.biomancy.world.spatial.geometry.HasRadius;
 import com.github.elenterius.biomancy.world.spatial.geometry.Shape;
@@ -54,9 +56,9 @@ import java.util.function.Predicate;
 
 public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterloggedBlock {
 
+	public static final Predicate<BlockState> BLOCKS_TO_AVOID_PREDICATE = blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get());
 	protected static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	protected static final EnhancedIntegerProperty CHARGE = ModBlockProperties.CHARGE;
-	public static final Predicate<BlockState> BLOCKS_TO_AVOID_PREDICATE = blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get());
 	private final MultifaceSpreader spreader = new MultifaceSpreader(new MalignantFleshSpreaderConfig(this));
 
 	public FleshVeinsBlock(Properties properties) {
@@ -75,8 +77,8 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		facesSet.set(0, hasFace(state, Direction.EAST));
 
 		if (mound != null) {
-			MoundChamber chamber = mound.getChamberAt(pos.getX(), pos.getY(), pos.getZ());
-			if (chamber != null) {
+			MoundChamber chamber = mound.getChamberAt(pos);
+			if (chamber != null && chamber.contains(pos)) {
 				return convertInsideChamber(level, pos, directNeighbors, mound, chamber, nearBoundingCenterPct, facesSet, energyHandler);
 			}
 		}
@@ -124,37 +126,51 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 		ArrayUtil.shuffle(axisDirections, level.random);
 
 		for (Direction axisDirection : axisDirections) {
-			BlockPos posRelative = pos.relative(axisDirection);
-			BlockState stateRelative = level.getBlockState(posRelative);
+			BlockPos closeOffsetPos = pos.relative(axisDirection);
+			BlockState closeOffsetState = level.getBlockState(closeOffsetPos);
 
-			if (PrimordialEcosystem.isReplaceable(stateRelative)) {
-				return destroyBlockAndConvertIntoEnergy(level, posRelative, energyHandler, 15);
+			if (PrimordialEcosystem.isReplaceable(closeOffsetState)) {
+				return destroyBlockAndConvertIntoEnergy(level, closeOffsetPos, energyHandler, 15);
 			}
 
-			if (PrimordialEcosystem.FULL_FLESH_BLOCKS.contains(stateRelative.getBlock())) {
-				if (chamber.contains(posRelative.getX(), posRelative.getY(), posRelative.getZ())) {
-					return destroyBlockAndConvertIntoEnergy(level, posRelative, energyHandler, 30); //TODO: this might interfere with future room content generation
+			if (PrimordialEcosystem.FULL_FLESH_BLOCKS.contains(closeOffsetState.getBlock())) {
+				ChamberDecorator chamberDecorator = chamber.getDecorator();
+
+				boolean chamberContainsCloseOffsetPos = chamber.contains(closeOffsetPos);
+
+				if (chamberContainsCloseOffsetPos) {
+					ChamberDecorator.PartOfDecorationResult result = chamberDecorator.isBlockPartOfDecoration(chamber, level, closeOffsetPos, closeOffsetState);
+					if (result.positionIsValid && !result.materialIsValid && !closeOffsetState.is(ModBlocks.BLOOMLIGHT.get())) {
+						return destroyBlockAndConvertIntoEnergy(level, closeOffsetPos, energyHandler, 30);
+					}
 				}
 
-				BlockPos posRelative2 = pos.relative(axisDirection, 2);
-				BlockState stateRelative2 = level.getBlockState(posRelative2);
-
-				// create "Door" between two adjacent chambers
-				MoundChamber neighborChamber = mound.getChamberAt(posRelative2.getX(), posRelative2.getY(), posRelative2.getZ());
-				if (neighborChamber != null && neighborChamber != chamber) {
-					return level.setBlock(posRelative, ModBlocks.PRIMAL_PERMEABLE_MEMBRANE.get().defaultBlockState(), Block.UPDATE_CLIENTS);
+				if (chamberDecorator.canPlace(chamber, level, pos, axisDirection)) {
+					return chamberDecorator.place(chamber, level, pos, axisDirection);
 				}
 
-				boolean isFleshBlock = PrimordialEcosystem.FULL_FLESH_BLOCKS.contains(stateRelative2.getBlock());
+				BlockPos farOffsetPos = pos.relative(axisDirection, 2);
+				BlockState farOffsetState = level.getBlockState(farOffsetPos);
 
-				// create light source in dark corners
-				if (isFleshBlock && axisDirection == Direction.UP && LevelUtil.getMaxBrightness(level, pos) < 5) {
-					return level.setBlock(posRelative, ModBlocks.BLOOMLIGHT.get().defaultBlockState(), Block.UPDATE_CLIENTS);
+				if (!chamberContainsCloseOffsetPos) {
+					// create "Door" between two adjacent chambers that are separated by a one block thick wall
+					boolean hasNoChamberAtPos = mound.getChamberAt(closeOffsetPos) == null;
+					if (hasNoChamberAtPos) {
+						MoundChamber farChamber = mound.getChamberAt(farOffsetPos);
+						if (farChamber != null && farChamber != chamber) {
+							return level.setBlock(closeOffsetPos, ModBlocks.PRIMAL_PERMEABLE_MEMBRANE.get().defaultBlockState(), Block.UPDATE_CLIENTS);
+						}
+					}
 				}
 
-				if (PrimordialEcosystem.isReplaceable(stateRelative2) && stateRelative2.isCollisionShapeFullBlock(level, posRelative2)) {
+				// create light source in dark areas
+				if (ChamberSpecialDecorator.BLOOMLIGHT.canDecorate(chamber, level, pos, axisDirection, closeOffsetPos, closeOffsetState, farOffsetPos, farOffsetState)) {
+					return ChamberSpecialDecorator.BLOOMLIGHT.decorate(chamber, level, pos, axisDirection, closeOffsetPos, closeOffsetState, farOffsetPos, farOffsetState);
+				}
+
+				if (PrimordialEcosystem.isReplaceable(farOffsetState) && farOffsetState.isCollisionShapeFullBlock(level, farOffsetPos)) {
 					BlockState replacementState = level.random.nextFloat() < nearBoundingCenterPct ? ModBlocks.PRIMAL_FLESH.get().defaultBlockState() : ModBlocks.MALIGNANT_FLESH.get().defaultBlockState();
-					return level.setBlock(posRelative2, replacementState, Block.UPDATE_CLIENTS);
+					return level.setBlock(farOffsetPos, replacementState, Block.UPDATE_CLIENTS);
 				}
 			}
 		}
@@ -502,11 +518,11 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 				energyHandler = peh;
 			}
 
-			Shape boundingShape = mound.getBoundingShapeAt(pos.getX(), pos.getY(), pos.getZ());
+			Shape boundingShape = mound.getBoundingShapeAt(pos);
 			if (boundingShape != null) {
 				double radius = boundingShape instanceof HasRadius sphere ? sphere.getRadius() : boundingShape.getAABB().getSize() / 2;
 				double radiusSqr = radius * radius;
-				double distSqr = boundingShape.distanceToSqr(pos.getX(), pos.getY(), pos.getZ());
+				double distSqr = boundingShape.distanceToSqr(pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d);
 				nearBoundingCenterPct = Mth.clamp((float) (1 - distSqr / radiusSqr), 0f, 1f);
 			}
 		}

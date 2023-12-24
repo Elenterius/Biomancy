@@ -35,7 +35,7 @@ public class SphereShape implements Shape, HasRadius {
 	}
 
 	@Override
-	public Vec3 getCenter() {
+	public Vec3 center() {
 		return origin;
 	}
 

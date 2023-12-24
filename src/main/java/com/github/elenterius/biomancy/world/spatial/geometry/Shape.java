@@ -14,7 +14,7 @@ public interface Shape extends NBTSerializable<Shape> {
 
 	boolean intersectsCuboid(double minX, double minY, double minZ, double maxX, double maxY, double maxZ);
 
-	Vec3 getCenter();
+	Vec3 center();
 
 	double distanceToSqr(double x, double y, double z);
 
@@ -38,7 +38,7 @@ public interface Shape extends NBTSerializable<Shape> {
 		}
 
 		@Override
-		public Vec3 getCenter() {
+		public Vec3 center() {
 			return Vec3.ZERO;
 		}
 

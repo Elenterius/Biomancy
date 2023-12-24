@@ -197,7 +197,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 				SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CREATOR_SPAWN_MOB);
 			}
 
-			if (level.random.nextFloat() >= sacrificeHandler.getTumorFactor() / 2) {
+			if (level.random.nextFloat() >= sacrificeHandler.getTumorFactor() / 3) {
 				PrimordialEcosystem.tryToReplaceBlock(level, pos.below(), ModBlocks.PRIMAL_FLESH.get().defaultBlockState());
 			}
 
