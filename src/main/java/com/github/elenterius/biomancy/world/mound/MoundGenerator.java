@@ -99,7 +99,7 @@ public final class MoundGenerator {
 		float prevRadius = baseRadius + context.relativeWallThickness;
 		float totalHeight = 0;
 
-		genSphereWithChambers(x, y, z, prevRadius, prevRadius - context.relativeWallThickness / 2f, context, isMainSpire ? ChamberType.CRADLE : ChamberType.DEFAULT);
+		genSphereWithChambers(x, y, z, prevRadius, prevRadius - context.relativeWallThickness / 2f, context, isMainSpire ? ChamberFactoryType.CRADLE : ChamberFactoryType.DEFAULT);
 
 		while (totalHeight < maxHeight) {
 			float t = totalHeight / maxHeight;
@@ -122,7 +122,7 @@ public final class MoundGenerator {
 				leanZ = prevLean.z - leanOffset.z;
 			}
 
-			genSphereWithChambers(x + leanX, y + height, z + leanZ, radius, radius - context.relativeWallThickness / 2f, context, ChamberType.DEFAULT);
+			genSphereWithChambers(x + leanX, y + height, z + leanZ, radius, radius - context.relativeWallThickness / 2f, context, ChamberFactoryType.DEFAULT);
 
 			prevLean.set(leanX, 0, leanZ);
 			prevRadius = radius;
@@ -130,11 +130,11 @@ public final class MoundGenerator {
 		}
 
 		//end cap shape
-		ChamberType chamberType = isMainSpire ? ChamberType.END_CAP_MAIN_SPIRE : ChamberType.END_CAP_SUB_SPIRE;
+		ChamberFactoryType chamberType = isMainSpire ? ChamberFactoryType.END_CAP_MAIN_SPIRE : ChamberFactoryType.END_CAP_SUB_SPIRE;
 		genSphereWithChambers(x + prevLean.x, y + totalHeight + (prevRadius / 2) * 1.5f, z + prevLean.z, prevRadius / 2f, prevRadius / 2f, context, chamberType);
 	}
 
-	private static void genSphereWithChambers(double x, double y, double z, float radius, float chamberRadius, Context context, ChamberType type) {
+	private static void genSphereWithChambers(double x, double y, double z, float radius, float chamberRadius, Context context, ChamberFactoryType type) {
 		Vec3 pos = new Vec3(x, y, z);
 		context.boundingShapes.add(new SphereShape(pos, radius));
 
@@ -144,16 +144,15 @@ public final class MoundGenerator {
 		}
 
 		switch (type) {
-			case DEFAULT -> ChambersGenerator.RANDOM_DEFAULT.getRandomValue(context.random).orElse(ChambersGenerator.EIGHT_SMALL_ELLIPSOIDS)
-					.generate(x, y, z, chamberRadius, context.chambers::add);
-			case CRADLE -> ChambersGenerator.SPECIAL_CRADLE.generate(x, y, z, chamberRadius, context.chambers::add);
+			case DEFAULT -> ChamberFactory.RANDOM_DEFAULT.create(x, y, z, chamberRadius, context.random, context.chambers::add);
+			case CRADLE -> ChamberFactory.SPECIAL_CRADLE.create(x, y, z, chamberRadius, context.random, context.chambers::add);
 			case END_CAP_MAIN_SPIRE -> {
-				ChambersGenerator generator = context.random.nextFloat() < 0.8f ? ChambersGenerator.ONE_SPHERE : ChambersGenerator.ONE_BIG_FOUR_SMALL_ELLIPSOIDS;
-				generator.generate(x, y, z, chamberRadius, context.chambers::add);
+				ChamberFactory generator = context.random.nextFloat() < 0.8f ? ChamberFactory.ONE_SPHERE : ChamberFactory.ONE_BIG_FOUR_SMALL_ELLIPSOIDS;
+				generator.create(x, y, z, chamberRadius, context.random, context.chambers::add);
 			}
 			case END_CAP_SUB_SPIRE -> {
-				ChambersGenerator generator = context.random.nextFloat() < 0.8f ? ChambersGenerator.ONE_BIG_FOUR_SMALL_ELLIPSOIDS : ChambersGenerator.ONE_SPHERE;
-				generator.generate(x, y, z, chamberRadius, context.chambers::add);
+				ChamberFactory generator = context.random.nextFloat() < 0.8f ? ChamberFactory.ONE_BIG_FOUR_SMALL_ELLIPSOIDS : ChamberFactory.ONE_SPHERE;
+				generator.create(x, y, z, chamberRadius, context.random, context.chambers::add);
 			}
 		}
 	}
@@ -170,10 +169,6 @@ public final class MoundGenerator {
 
 	private static float easeOutQuad(float x) {
 		return 1f - (1f - x) * (1f - x);
-	}
-
-	private enum ChamberType {
-		DEFAULT, CRADLE, END_CAP_MAIN_SPIRE, END_CAP_SUB_SPIRE
 	}
 
 	private static class Context {

@@ -44,7 +44,7 @@ public class MoundShape implements Shape, MobSpawnFilter {
 	}
 
 	@Override
-	public Vec3 getCenter() {
+	public Vec3 center() {
 		return boundingShapes.getCenter();
 	}
 
@@ -59,12 +59,22 @@ public class MoundShape implements Shape, MobSpawnFilter {
 	}
 
 	@Nullable
-	public MoundChamber getChamberAt(int x, int y, int z) {
+	public MoundChamber getChamberAt(BlockPos pos) {
+		return chamberShapes.getClosestShapeContaining(pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d);
+	}
+
+	@Nullable
+	public MoundChamber getChamberAt(double x, double y, double z) {
 		return chamberShapes.getClosestShapeContaining(x, y, z);
 	}
 
 	@Nullable
-	public Shape getBoundingShapeAt(int x, int y, int z) {
+	public Shape getBoundingShapeAt(BlockPos pos) {
+		return boundingShapes.getClosestShapeContaining(pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d);
+	}
+
+	@Nullable
+	public Shape getBoundingShapeAt(double x, double y, double z) {
 		return boundingShapes.getClosestShapeContaining(x, y, z);
 	}
 

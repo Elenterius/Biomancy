@@ -63,7 +63,7 @@ public class OctantEllipsoidShape implements Shape, HasRadius {
 	}
 
 	@Override
-	public Vec3 getCenter() {
+	public Vec3 center() {
 		return center;
 	}
 
