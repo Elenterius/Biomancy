@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.block;
 
+import com.github.elenterius.biomancy.init.tags.ModEntityTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -74,7 +75,7 @@ public class MembraneBlock extends HalfTransparentBlock {
 	public interface IgnoreEntityCollisionPredicate {
 		IgnoreEntityCollisionPredicate IS_BABY_MOB = (state, level, pos, entity) -> entity instanceof LivingEntity livingEntity && livingEntity.isBaby();
 		IgnoreEntityCollisionPredicate IS_ADULT_MOB = (state, level, pos, entity) -> entity instanceof LivingEntity livingEntity && !livingEntity.isBaby();
-		IgnoreEntityCollisionPredicate IS_ALIVE_MOB = (state, level, pos, entity) -> entity instanceof LivingEntity livingEntity && livingEntity.getMobType() != MobType.UNDEAD;
+		IgnoreEntityCollisionPredicate IS_ALIVE_MOB = (state, level, pos, entity) -> entity instanceof LivingEntity livingEntity && !entity.getType().is(ModEntityTags.FORGE_GOLEMS) && livingEntity.getMobType() != MobType.UNDEAD;
 		IgnoreEntityCollisionPredicate IS_UNDEAD_MOB = (state, level, pos, entity) -> entity instanceof LivingEntity livingEntity && livingEntity.getMobType() == MobType.UNDEAD;
 		IgnoreEntityCollisionPredicate IS_ITEM = (state, level, pos, entity) -> entity instanceof ItemEntity;
 		IgnoreEntityCollisionPredicate NEVER = (state, level, pos, entity) -> false;

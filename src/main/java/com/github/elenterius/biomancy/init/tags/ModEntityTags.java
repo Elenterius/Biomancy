@@ -5,10 +5,12 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraftforge.common.Tags;
 
 public final class ModEntityTags {
 
-	public static final TagKey<EntityType<?>> FORGE_BOSSES = forgeTag("bosses");
+	public static final TagKey<EntityType<?>> FORGE_BOSSES = Tags.EntityTypes.BOSSES;
+	public static final TagKey<EntityType<?>> FORGE_GOLEMS = forgeTag("golems");
 	public static final TagKey<EntityType<?>> NOT_CLONEABLE = tag("not_cloneable");
 
 	public static final TagKey<EntityType<?>> FLESHKIN = tag("fleshkin");
