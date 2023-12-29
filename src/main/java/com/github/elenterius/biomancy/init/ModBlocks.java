@@ -95,7 +95,7 @@ public final class ModBlocks {
 	public static final RegistryObject<MembraneBlock> IMPERMEABLE_MEMBRANE = registerMembrane("impermeable_membrane", MembraneBlock.IgnoreEntityCollisionPredicate.NEVER);
 	public static final RegistryObject<MembraneBlock> BABY_PERMEABLE_MEMBRANE = registerMembrane("baby_permeable_membrane", MembraneBlock.IgnoreEntityCollisionPredicate.IS_BABY_MOB);
 	public static final RegistryObject<MembraneBlock> ADULT_PERMEABLE_MEMBRANE = registerMembrane("adult_permeable_membrane", MembraneBlock.IgnoreEntityCollisionPredicate.IS_ADULT_MOB);
-	public static final RegistryObject<MembraneBlock> PRIMAL_PERMEABLE_MEMBRANE = registerMembrane("primal_permeable_membrane", MembraneBlock.IgnoreEntityCollisionPredicate.IS_ALIVE_MOB);
+	public static final RegistryObject<MembraneBlock> PRIMAL_PERMEABLE_MEMBRANE = registerMembrane("primal_permeable_membrane", MembraneBlock.IgnoreEntityCollisionPredicate.IS_ALIVE_MOB, SpreadingMembraneBlock::new);
 	public static final RegistryObject<MembraneBlock> UNDEAD_PERMEABLE_MEMBRANE = registerMembrane("undead_permeable_membrane", MembraneBlock.IgnoreEntityCollisionPredicate.IS_UNDEAD_MOB);
 
 	//## Light Sources
@@ -150,9 +150,13 @@ public final class ModBlocks {
 	}
 
 	private static RegistryObject<MembraneBlock> registerMembrane(String name, MembraneBlock.IgnoreEntityCollisionPredicate predicate) {
+		return registerMembrane(name, predicate, MembraneBlock::new);
+	}
+
+	private static <T extends MembraneBlock> RegistryObject<T> registerMembrane(String name, MembraneBlock.IgnoreEntityCollisionPredicate predicate, MembraneBlockFactory<T> factory) {
 		return register(name, props -> {
 			props = props.noOcclusion().isRedstoneConductor(ModBlocks::neverValid).isSuffocating(ModBlocks::neverValid).isViewBlocking(ModBlocks::neverValid);
-			return new MembraneBlock(props, predicate);
+			return factory.create(props, predicate);
 		});
 	}
 
@@ -189,4 +193,7 @@ public final class ModBlocks {
 		T create(Supplier<BlockState> state, BlockBehaviour.Properties properties);
 	}
 
+	interface MembraneBlockFactory<T extends MembraneBlock> {
+		T create(BlockBehaviour.Properties properties, MembraneBlock.IgnoreEntityCollisionPredicate predicate);
+	}
 }
