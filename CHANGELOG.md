@@ -1,3 +1,14 @@
+## [2.9.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.2.8.0...1.19.2-v2.2.9.0) (2023-12-29)
+
+
+### Features
+
+* **flesh-mound:** add bone pillar generation ([6c65cc1](https://github.com/Elenterius/Biomancy/commit/6c65cc17cf131864d5129b6052a07f7efaf43958))
+* **flesh-mound:** allow destruction of melons, pumpkins and moss ([f7acee8](https://github.com/Elenterius/Biomancy/commit/f7acee8d751e00fc07b7790f8928b615b69fe6f4))
+* **flesh-mound:** make mounds slightly smaller ([0448cd8](https://github.com/Elenterius/Biomancy/commit/0448cd8c30cf00f499a8a4efa637b8f7dada1028))
+* **flesh-mound:** make Primal Membrane self-spreading inside flesh mounds ([3db8c25](https://github.com/Elenterius/Biomancy/commit/3db8c256584c2ac8d1dd664e77fb2d12fa810aa5))
+* make primal membrane consider golems as not alive ([6435e3a](https://github.com/Elenterius/Biomancy/commit/6435e3aafbf866698f42d52ecad25f6e13c798fd))
+
 ## [2.8.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.2.7.0...1.19.2-v2.2.8.0) (2023-12-24)
 
 
@@ -70,20 +81,4 @@
 * add block tags to explicitly allow/disallow attachment of flesh veins to specific blocks ([77c1fee](https://github.com/Elenterius/Biomancy/commit/77c1feee17f736fe2a6768f24b210e072077aedd))
 * **flesh-mound:** add first iteration of the flesh mound growth to the primordial cradle ([8175714](https://github.com/Elenterius/Biomancy/commit/8175714e23668e19e0685edfa14e2b40f9fc22f8))
 * **flesh-mound:** decrease volume of growth ([e528ba8](https://github.com/Elenterius/Biomancy/commit/e528ba833adb903db90877fc5d93e1183a55e281))
-
-## [2.4.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.2.3.0...1.19.2-v2.2.4.0) (2023-11-11)
-
-
-### Features
-
-* **buff:** increase primal energy conversion of sacrifices in the Primordial Cradle ([b3923db](https://github.com/Elenterius/Biomancy/commit/b3923dba38bd909bdea04c02629715670bdd6059))
-* make overworld logs replaceable by malignant veins ([f02208e](https://github.com/Elenterius/Biomancy/commit/f02208e10a1fb539dea67bb597fd2d0abc00f306))
-* make Primordial Cradle block items display their internal sacrifice information in the tooltip ([f244c70](https://github.com/Elenterius/Biomancy/commit/f244c70ce325787061a9b684390893e889c0a9bc))
-* **nerf:** decrease Malignant Bloom spawn rate ([dc1beb9](https://github.com/Elenterius/Biomancy/commit/dc1beb9a0eab70859865005cab529a04087bfc88))
-
-
-### Bug Fixes
-
-* fix flesh veins inability to spread over dirt paths ([b319e1e](https://github.com/Elenterius/Biomancy/commit/b319e1ee1a16c876064b2bb15483d61f2b7ca335))
-* fix Primordial Cradle not persisting internal sacrifice values when mined ([ac17061](https://github.com/Elenterius/Biomancy/commit/ac17061f805f24fa20ccb32e6633631bb3b01b9e))
 
