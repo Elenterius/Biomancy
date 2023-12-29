@@ -7,6 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 public final class ChamberDecorators {
@@ -35,12 +36,15 @@ public final class ChamberDecorators {
 	public static final ChamberDecorator MALIGNANT_FLESH_PILLARS = new PillarsDecorator(ModBlocks.MALIGNANT_FLESH.get().defaultBlockState());
 	public static final ChamberDecorator PRIMAL_ORIFICE_PILLARS = new PillarsDecorator(ModBlocks.PRIMAL_ORIFICE.get().defaultBlockState());
 	public static final ChamberDecorator PRIMAL_ORIFICE_COMBS = new HangingCombsDecorator(ModBlocks.PRIMAL_ORIFICE.get().defaultBlockState());
+	public static final ChamberDecorator BONE_PILLARS = new PillarsDecorator(Blocks.BONE_BLOCK.defaultBlockState());
 
 	public static final SimpleWeightedRandomList<ChamberDecorator> RANDOM_DEFAULTS = SimpleWeightedRandomList.<ChamberDecorator>builder()
 			.add(EMPTY, 10)
-			.add(PRIMAL_FLESH_PILLARS, 30)
+			.add(PRIMAL_FLESH_PILLARS, 25)
 			.add(MALIGNANT_FLESH_PILLARS, 15)
 			.add(PRIMAL_ORIFICE_PILLARS, 5)
+			.add(PRIMAL_ORIFICE_COMBS, 7)
+			.add(BONE_PILLARS, 15)
 			.build();
 
 	private ChamberDecorators() {}
