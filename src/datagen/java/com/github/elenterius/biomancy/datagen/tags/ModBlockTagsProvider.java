@@ -51,13 +51,16 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 				.add(Blocks.SNOW_BLOCK, Blocks.SNOW)
 				.addTag(BlockTags.LEAVES)
 				.addTag(BlockTags.OVERWORLD_NATURAL_LOGS)
+				.addTag(BlockTags.DIRT)
 				.add(
-						Blocks.DIRT, Blocks.COARSE_DIRT, Blocks.PODZOL, Blocks.GRASS_BLOCK, Blocks.DIRT_PATH, Blocks.FARMLAND,
-						Blocks.ROOTED_DIRT, Blocks.MUDDY_MANGROVE_ROOTS, Blocks.MUD
+						Blocks.DIRT_PATH, Blocks.FARMLAND, Blocks.MOSS_BLOCK, Blocks.VINE
+				)
+				.add(
+						Blocks.MELON, Blocks.PUMPKIN
 				);
 
 		tag(ModBlockTags.ALLOW_VEINS_TO_ATTACH)
-				.add(Blocks.DIRT_PATH, Blocks.FARMLAND);
+				.add(Blocks.DIRT_PATH, Blocks.FARMLAND, Blocks.VINE);
 
 		tag(ModBlockTags.DISALLOW_VEINS_TO_ATTACH)
 				.add(ModBlocks.MALIGNANT_BLOOM.get());
