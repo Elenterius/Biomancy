@@ -8,9 +8,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class ShapeHierarchy<T extends Shape> {
 
@@ -122,6 +120,24 @@ public class ShapeHierarchy<T extends Shape> {
 		}
 
 		return closestShape;
+	}
+
+	@Nullable
+	public List<T> getShapesContaining(double x, double y, double z) {
+		if (!aabb.contains(x, y, z)) return null;
+
+		Set<T> shapesInSection = getShapesInSection(x, y, z);
+		if (shapesInSection != null) {
+			List<T> shapes = new ArrayList<>();
+			for (T shape : shapesInSection) {
+				if (shape.contains(x, y, z)) {
+					shapes.add(shape);
+				}
+			}
+			return shapes;
+		}
+
+		return null;
 	}
 
 	public boolean contains(double x, double y, double z) {

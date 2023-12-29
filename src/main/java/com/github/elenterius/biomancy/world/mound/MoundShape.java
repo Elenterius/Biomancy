@@ -58,9 +58,13 @@ public class MoundShape implements Shape, MobSpawnFilter {
 		return boundingShapes.getAABB();
 	}
 
+	public boolean hasChamberAt(BlockPos pos) {
+		return chamberShapes.contains(pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d);
+	}
+
 	@Nullable
 	public MoundChamber getChamberAt(BlockPos pos) {
-		return chamberShapes.getClosestShapeContaining(pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d);
+		return getChamberAt(pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d);
 	}
 
 	@Nullable
@@ -69,8 +73,18 @@ public class MoundShape implements Shape, MobSpawnFilter {
 	}
 
 	@Nullable
+	public List<MoundChamber> getChambersAt(BlockPos pos) {
+		return getChambersAt(pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d);
+	}
+
+	@Nullable
+	public List<MoundChamber> getChambersAt(double x, double y, double z) {
+		return chamberShapes.getShapesContaining(x, y, z);
+	}
+
+	@Nullable
 	public Shape getBoundingShapeAt(BlockPos pos) {
-		return boundingShapes.getClosestShapeContaining(pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d);
+		return getBoundingShapeAt(pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d);
 	}
 
 	@Nullable

@@ -138,9 +138,9 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 
 				boolean chamberContainsCloseOffsetPos = chamber.contains(closeOffsetPos);
 
-				if (chamberContainsCloseOffsetPos) {
+				if (chamberContainsCloseOffsetPos && !closeOffsetState.is(ModBlocks.BLOOMLIGHT.get())) {
 					ChamberDecorator.PartOfDecorationResult result = chamberDecorator.isBlockPartOfDecoration(chamber, level, closeOffsetPos, closeOffsetState);
-					if (result.positionIsValid && !result.materialIsValid && !closeOffsetState.is(ModBlocks.BLOOMLIGHT.get())) {
+					if (result.positionIsValid && !result.materialIsValid) {
 						return destroyBlockAndConvertIntoEnergy(level, closeOffsetPos, energyHandler, 30);
 					}
 				}
@@ -154,8 +154,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 
 				if (!chamberContainsCloseOffsetPos) {
 					// create "Door" between two adjacent chambers that are separated by a one block thick wall
-					boolean hasNoChamberAtPos = mound.getChamberAt(closeOffsetPos) == null;
-					if (hasNoChamberAtPos) {
+					if (!mound.hasChamberAt(closeOffsetPos)) {
 						MoundChamber farChamber = mound.getChamberAt(farOffsetPos);
 						if (farChamber != null && farChamber != chamber) {
 							return level.setBlock(closeOffsetPos, ModBlocks.PRIMAL_PERMEABLE_MEMBRANE.get().defaultBlockState(), Block.UPDATE_CLIENTS);
