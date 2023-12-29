@@ -25,9 +25,9 @@ public final class MoundGenerator {
 		Biome biome = level.getBiome(blockOrigin).get();
 		MoundShape.ProcGenValues procGenValues = new MoundShape.ProcGenValues(
 				seed,
+				(byte) -25,
 				(byte) 0,
-				(byte) 0,
-				(byte) 4,
+				(byte) 2,
 				level.getMaxBuildHeight(),
 				level.getSeaLevel(),
 				TemperatureUtil.getTemperature(biome, blockOrigin),
@@ -42,7 +42,7 @@ public final class MoundGenerator {
 		ctx.random = RandomSource.create(procGenValues.seed());
 		Vec3 origin = Vec3.atCenterOf(blockOrigin);
 
-		float radius = 8 * (1 + Mth.clamp(procGenValues.radiusMultiplier(), -0.5f, 1.5f));
+		float radius = 8f * (1 + Mth.clamp(procGenValues.radiusMultiplier(), -0.5f, 1.5f));
 
 		/////////////////////////////////////////////////
 
@@ -58,7 +58,7 @@ public final class MoundGenerator {
 		ctx.slantMultiplier = 0.1f + ctx.random.nextFloat() + heatMultiplier * 2f;
 		ctx.relativeWallThickness = Mth.clamp((1 - heatMultiplier) * 32, 2.25f, 32);
 
-		ctx.minMoundRadius = 3 + erosionMultiplier * 3;
+		ctx.minMoundRadius = 3 + erosionMultiplier * 2.5f;
 		ctx.baseMoundRadius = radius + (radius / 2) * erosionMultiplierInv;
 		ctx.maxMoundRadius = ctx.minMoundRadius + ctx.baseMoundRadius;
 
