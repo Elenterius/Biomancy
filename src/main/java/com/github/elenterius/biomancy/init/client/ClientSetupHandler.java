@@ -19,6 +19,7 @@ import com.github.elenterius.biomancy.client.render.block.storagesac.StorageSacR
 import com.github.elenterius.biomancy.client.render.block.tongue.TongueRenderer;
 import com.github.elenterius.biomancy.client.render.entity.AcidProjectileRenderer;
 import com.github.elenterius.biomancy.client.render.entity.WitherProjectileRenderer;
+import com.github.elenterius.biomancy.client.render.entity.acidblob.AcidBlobProjectileRenderer;
 import com.github.elenterius.biomancy.client.render.entity.fleshblob.FleshBlobRenderer;
 import com.github.elenterius.biomancy.client.render.entity.fleshblob.LegacyFleshBlobRenderer;
 import com.github.elenterius.biomancy.client.render.entity.fleshblob.PrimordialFleshBlobRenderer;
@@ -100,6 +101,7 @@ public final class ClientSetupHandler {
 		event.registerEntityRenderer(ModEntityTypes.TOOTH_PROJECTILE.get(), ThrownItemRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.WITHER_SKULL_PROJECTILE.get(), WitherProjectileRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.SAPBERRY_PROJECTILE.get(), SapberryProjectileRenderer::new);
+		event.registerEntityRenderer(ModEntityTypes.ACID_BLOB_PROJECTILE.get(), AcidBlobProjectileRenderer::new);
 	}
 
 	@SuppressWarnings("removal")

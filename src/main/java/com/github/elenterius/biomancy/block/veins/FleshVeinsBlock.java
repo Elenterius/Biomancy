@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.block.cradle.PrimalEnergyHandler;
 import com.github.elenterius.biomancy.block.malignantbloom.MalignantBloomBlock;
 import com.github.elenterius.biomancy.init.ModBlockProperties;
 import com.github.elenterius.biomancy.init.ModBlocks;
+import com.github.elenterius.biomancy.init.ModFluids;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.init.tags.ModBlockTags;
 import com.github.elenterius.biomancy.util.ArrayUtil;
@@ -45,6 +46,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.StairsShape;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
@@ -458,6 +460,11 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 	@Override
 	public boolean canBeReplaced(BlockState state, BlockPlaceContext useContext) {
 		return !useContext.getItemInHand().is(asItem()) || super.canBeReplaced(state, useContext);
+	}
+
+	@Override
+	public boolean canBeReplaced(BlockState state, Fluid fluid) {
+		return fluid.getFluidType() == ModFluids.ACID_TYPE.get() || material.isReplaceable() || !material.isSolid();
 	}
 
 	@Override

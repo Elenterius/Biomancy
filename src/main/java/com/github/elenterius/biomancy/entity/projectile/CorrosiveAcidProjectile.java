@@ -24,6 +24,10 @@ public class CorrosiveAcidProjectile extends BaseProjectile {
 		super(ModEntityTypes.CORROSIVE_ACID_PROJECTILE.get(), level, x, y, z);
 	}
 
+	public CorrosiveAcidProjectile(EntityType<? extends CorrosiveAcidProjectile> entityType, Level level, double x, double y, double z) {
+		super(entityType, level, x, y, z);
+	}
+
 	@Override
 	public float getGravity() {
 		return 0.025f;
@@ -55,7 +59,7 @@ public class CorrosiveAcidProjectile extends BaseProjectile {
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
-		playSound(SoundEvents.SLIME_BLOCK_BREAK, 1, 1.2f / (random.nextFloat() * 0.2f + 0.9f));
+		playHitSound();
 	}
 
 	@Override
@@ -76,6 +80,10 @@ public class CorrosiveAcidProjectile extends BaseProjectile {
 			}
 
 		}
+		playHitSound();
+	}
+
+	protected void playHitSound() {
 		playSound(SoundEvents.SLIME_BLOCK_BREAK, 1, 1.2f / (random.nextFloat() * 0.2f + 0.9f));
 	}
 
