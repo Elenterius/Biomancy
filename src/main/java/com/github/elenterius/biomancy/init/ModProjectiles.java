@@ -19,6 +19,8 @@ public final class ModProjectiles {
 	public static final ConfiguredProjectile<ToothProjectile> TOOTH = build("Sharp Tooth", 1.75f, 5f, 0, convertToInaccuracy(0.92f), ToothProjectile::new);
 	public static final ConfiguredProjectile<WitherProjectile> WITHER = build("Withershot", 0.8f, 8f, 0, convertToInaccuracy(0.9f), WitherProjectile::new);
 	public static final ConfiguredProjectile<CorrosiveAcidProjectile> CORROSIVE = build("Corrosive", 1.5f, 4, 0, convertToInaccuracy(0.9f), CorrosiveAcidProjectile::new);
+	public static final ConfiguredProjectile<AcidBlobProjectile> ACID_BLOB = build("Acid Blob", 1.2f, 2, 0, convertToInaccuracy(0.9f), AcidBlobProjectile::new);
+	public static final ConfiguredProjectile<AcidBlobProjectile> FALLING_ACID_BLOB = build("Falling Acid Blob", 0.1f, 2, 0, convertToInaccuracy(0.9f), AcidBlobProjectile::new);
 	public static final ConfiguredProjectile<SapberryProjectile> SAPBERRY = build("Sapberry", 1.25f, 2, 0, convertToInaccuracy(0.9f), SapberryProjectile::new);
 
 	private static float convertToInaccuracy(float accuracy) {

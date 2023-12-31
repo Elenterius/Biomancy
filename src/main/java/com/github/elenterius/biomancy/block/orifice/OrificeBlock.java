@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.block.orifice;
 import com.github.elenterius.biomancy.init.ModFluids;
 import com.github.elenterius.biomancy.init.ModParticleTypes;
 import com.github.elenterius.biomancy.init.ModPlantTypes;
+import com.github.elenterius.biomancy.init.ModProjectiles;
 import com.github.elenterius.biomancy.util.EnhancedIntegerProperty;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,6 +20,7 @@ import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
 
@@ -56,14 +58,12 @@ public class OrificeBlock extends Block implements BucketPickup {
 			}
 			else {
 				if (random.nextFloat() < 0.5f) {
-					level.setBlock(pos, AGE.setValue(state, AGE.getMin()), Block.UPDATE_CLIENTS);
-
-					if (FallingBlock.isFree(level.getBlockState(pos.below())) && pos.getY() >= level.getMinBuildHeight()) {
-						//TODO: accumulate acid below the block on the floor,
-						// drop a acid blob entity/projectile?
-
-						//temporary placeholder
-						//FallingBlockEntity.fall(level, pos.below(), ModBlocks.ACID_FLUID_BLOCK.get().defaultBlockState().setValue(LiquidBlock.LEVEL, 8));
+					BlockPos posBelow = pos.below();
+					if (FallingBlock.isFree(level.getBlockState(posBelow)) && pos.getY() >= level.getMinBuildHeight()) {
+						level.setBlock(pos, AGE.setValue(state, AGE.getMin()), Block.UPDATE_CLIENTS);
+						float x = random.nextIntBetweenInclusive(-6, 6) / 16f;
+						float z = random.nextIntBetweenInclusive(-6, 6) / 16f;
+						ModProjectiles.FALLING_ACID_BLOB.shoot(level, Vec3.atBottomCenterOf(pos).add(x, 0, z), Vec3.atBottomCenterOf(posBelow).add(x, 0, z));
 					}
 				}
 			}
