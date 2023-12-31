@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.statuseffect;
 
 import com.github.elenterius.biomancy.init.ModDamageSources;
+import com.github.elenterius.biomancy.init.ModParticleTypes;
 import com.github.elenterius.biomancy.util.CombatUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
@@ -25,7 +26,8 @@ public class CorrosiveEffect extends StatusEffect {
 	@Override
 	public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
 		int effectLevel = amplifier + 1;
-		float conversionProbability = 0.1f + 0.05f * effectLevel;
+		boolean isWet = livingEntity.isInWaterRainOrBubble();
+		float conversionProbability = 0.1f + 0.05f * effectLevel + (isWet ? 0.15f : 0);
 
 		if (livingEntity.level instanceof ServerLevel serverLevel && livingEntity.level.random.nextFloat() < conversionProbability) {
 			DamageSource lastDamageSource = livingEntity.getLastDamageSource();
@@ -36,13 +38,19 @@ public class CorrosiveEffect extends StatusEffect {
 
 		if (!livingEntity.isAlive()) return;
 
-		int damage = 2 * effectLevel;
+		float damage = 2 * effectLevel + (isWet ? 0.5f : 0);
 		CombatUtil.hurtWithAcid(livingEntity, damage);
+
+		if (livingEntity.level.random.nextFloat() < 0.85f && livingEntity.level instanceof ServerLevel serverLevel) {
+			float xz = livingEntity.getBbWidth() * 0.25f;
+			float y = livingEntity.getBbHeight() * 0.25f;
+			serverLevel.sendParticles(ModParticleTypes.FALLING_ACID.get(), livingEntity.getX(), livingEntity.getY(0.5f), livingEntity.getZ(), 4, xz, y, xz, 0);
+		}
 	}
 
 	@Override
 	public boolean isDurationEffectTick(int duration, int amplifier) {
-		return duration % 7 == 0;
+		return (duration + 1) % 8 == 0;
 	}
 
 	private boolean convertZombieToSkeleton(ServerLevel level, LivingEntity livingEntity) {
