@@ -53,6 +53,7 @@ public final class CombatUtil {
 	public static void hurtWithAcid(LivingEntity livingEntity, float damage) {
 		livingEntity.invulnerableTime = 0; //bypass invulnerable ticks
 		livingEntity.hurt(ModDamageSources.CORROSIVE_ACID, damage);
+		livingEntity.invulnerableTime = 0; //leave open for next damage
 	}
 
 	public static void hurtWithBleed(LivingEntity livingEntity, float damage) {
