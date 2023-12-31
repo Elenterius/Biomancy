@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.fluid;
 
+import com.github.elenterius.biomancy.block.veins.FleshVeinsBlock;
 import com.github.elenterius.biomancy.init.ModFluids;
 import com.github.elenterius.biomancy.util.CombatUtil;
 import net.minecraft.core.BlockPos;
@@ -9,9 +10,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LevelEvent;
-import net.minecraft.world.level.block.WeatheringCopper;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Fluid;
@@ -19,6 +18,8 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
+
+import java.util.Map;
 
 public abstract class AcidFluid extends ForgeFlowingFluid {
 
@@ -52,7 +53,7 @@ public abstract class AcidFluid extends ForgeFlowingFluid {
 
 	@Override
 	protected void randomTick(Level level, BlockPos liquidPos, FluidState fluidState, RandomSource random) {
-		if (level.random.nextFloat() > 0.6f) return;
+		if (level.random.nextFloat() > 0.4f) return;
 
 		for (int i = 0; i < 3; i++) {
 			float p = level.random.nextFloat();
@@ -66,16 +67,47 @@ public abstract class AcidFluid extends ForgeFlowingFluid {
 			BlockState blockState = level.getBlockState(blockPos);
 			if (blockState.isAir()) return;
 
-			if (level.random.nextFloat() >= 0.057f) {
-				corrodeCopper(level, liquidPos, blockState, blockPos);
+			if (level.random.nextFloat() >= 0.1f) {
+				Block block = blockState.getBlock();
+				corrodeCopper(level, liquidPos, block, blockState, blockPos);
+				corrodeStone(level, liquidPos, block, blockState, blockPos);
+				destroyFleshVeins(level, liquidPos, block, blockState, blockPos);
+			}
+			else {
+				Block block = blockState.getBlock();
+				destroyFleshVeins(level, liquidPos, block, blockState, blockPos);
 			}
 		}
 	}
 
-	protected void corrodeCopper(Level level, BlockPos liquidPos, BlockState blockState, BlockPos pos) {
-		Block block = blockState.getBlock();
+	protected void corrodeCopper(Level level, BlockPos liquidPos, Block block, BlockState blockState, BlockPos pos) {
 		if (block instanceof WeatheringCopper weatheringCopper && WeatheringCopper.getNext(block).isPresent()) {
 			weatheringCopper.getNext(blockState).ifPresent(state -> level.setBlockAndUpdate(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, liquidPos, state)));
+			level.levelEvent(LevelEvent.LAVA_FIZZ, pos, 0);
+		}
+	}
+
+	static final Map<Block, BlockState> NORMAL_TO_CRACKED_STONE = Map.of(
+			Blocks.STONE, Blocks.COBBLESTONE.defaultBlockState(),
+			Blocks.STONE_BRICKS, Blocks.CRACKED_STONE_BRICKS.defaultBlockState(),
+			Blocks.DEEPSLATE_BRICKS, Blocks.CRACKED_DEEPSLATE_BRICKS.defaultBlockState(),
+			Blocks.DEEPSLATE_TILES, Blocks.CRACKED_DEEPSLATE_TILES.defaultBlockState(),
+			Blocks.POLISHED_BLACKSTONE_BRICKS, Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS.defaultBlockState(),
+			Blocks.NETHER_BRICKS, Blocks.CRACKED_NETHER_BRICKS.defaultBlockState()
+	);
+
+	protected void corrodeStone(Level level, BlockPos liquidPos, Block block, BlockState blockState, BlockPos pos) {
+		if (NORMAL_TO_CRACKED_STONE.containsKey(block)) {
+			level.setBlockAndUpdate(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, liquidPos, NORMAL_TO_CRACKED_STONE.get(block)));
+			SoundType soundType = block.getSoundType(blockState, level, pos, null);
+			level.playSound(null, pos, soundType.getBreakSound(), SoundSource.BLOCKS, soundType.volume, soundType.pitch);
+			level.levelEvent(LevelEvent.LAVA_FIZZ, pos, 0);
+		}
+	}
+
+	protected void destroyFleshVeins(Level level, BlockPos liquidPos, Block block, BlockState blockState, BlockPos pos) {
+		if (block instanceof FleshVeinsBlock) {
+			level.setBlockAndUpdate(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, liquidPos, Blocks.AIR.defaultBlockState()));
 			level.levelEvent(LevelEvent.LAVA_FIZZ, pos, 0);
 		}
 	}
@@ -131,4 +163,5 @@ public abstract class AcidFluid extends ForgeFlowingFluid {
 			return true;
 		}
 	}
+
 }
