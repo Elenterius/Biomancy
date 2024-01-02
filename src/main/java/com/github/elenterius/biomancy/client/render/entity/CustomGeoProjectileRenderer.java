@@ -64,9 +64,9 @@ public class CustomGeoProjectileRenderer<T extends BaseProjectile & IAnimatable>
 
 		poseStack.pushPose();
 
-		poseStack.translate(0, projectile.getBbHeight() / 2f / 16f, 0);
+		poseStack.translate(0, projectile.getBbHeight() / 2f, 0);
 
-		poseStack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTick, projectile.yRotO, projectile.getYRot()) - 90f));
+		poseStack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTick, projectile.yRotO, projectile.getYRot()) + 180f)); //wtf?
 		poseStack.mulPose(Vector3f.ZP.rotationDegrees(Mth.lerp(partialTick, projectile.xRotO, projectile.getXRot())));
 
 		AnimationEvent<T> predicate = new AnimationEvent<>(projectile, 0, 0, partialTick, false, Collections.singletonList(new EntityModelData()));
