@@ -4,13 +4,15 @@ import com.github.elenterius.biomancy.block.veins.FleshVeinsBlock;
 import com.github.elenterius.biomancy.init.ModFluids;
 import com.github.elenterius.biomancy.util.CombatUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -48,6 +50,32 @@ public abstract class AcidFluid extends ForgeFlowingFluid {
 	}
 
 	@Override
+	protected boolean canPassThrough(BlockGetter level, Fluid fluid, BlockPos fromPos, BlockState fromBlockState, Direction direction, BlockPos toPos, BlockState toBlockState, FluidState toFluidState) {
+		return toBlockState.getBlock() instanceof FleshVeinsBlock || super.canPassThrough(level, fluid, fromPos, fromBlockState, direction, toPos, toBlockState, toFluidState);
+	}
+
+	@Override
+	protected boolean canSpreadTo(BlockGetter level, BlockPos fromPos, BlockState fromBlockState, Direction direction, BlockPos toPos, BlockState toBlockState, FluidState toFluidState, Fluid fluid) {
+		return toBlockState.getBlock() instanceof FleshVeinsBlock || super.canSpreadTo(level, fromPos, fromBlockState, direction, toPos, toBlockState, toFluidState, fluid);
+	}
+
+	@Override
+	protected void spreadTo(LevelAccessor level, BlockPos pos, BlockState state, Direction direction, FluidState fluidState) {
+		if (state.getBlock() instanceof FleshVeinsBlock) {
+			beforeDestroyingBlock(level, pos, state);
+			level.setBlock(pos, fluidState.createLegacyBlock(), Block.UPDATE_ALL);
+			return;
+		}
+
+		super.spreadTo(level, pos, state, direction, fluidState);
+	}
+
+	@Override
+	protected void beforeDestroyingBlock(LevelAccessor level, BlockPos pos, BlockState state) {
+		//super.beforeDestroyingBlock(level, pos, state); //don't drop any block resources
+	}
+
+	@Override
 	protected boolean isRandomlyTicking() {
 		return true;
 	}
@@ -71,8 +99,7 @@ public abstract class AcidFluid extends ForgeFlowingFluid {
 			if (level.random.nextFloat() >= 0.1f) {
 				Block block = blockState.getBlock();
 				corrodeCopper(level, liquidPos, block, blockState, blockPos);
-				erodeStone(level, liquidPos, block, blockState, blockPos);
-				erodeDirt(level, liquidPos, block, blockState, blockPos);
+				erodeBlock(level, liquidPos, block, blockState, blockPos);
 
 				if (fluidState.getAmount() > 2) {
 					destroyFleshVeins(level, liquidPos, block, blockState, blockPos);
@@ -92,7 +119,8 @@ public abstract class AcidFluid extends ForgeFlowingFluid {
 		}
 	}
 
-	static final Map<Block, BlockState> NORMAL_TO_CRACKED_STONE = Map.of(
+	static final Map<Block, BlockState> NORMAL_TO_ERODED_BLOCK = Map.of(
+			Blocks.GRASS_BLOCK, Blocks.DIRT.defaultBlockState(),
 			Blocks.COBBLESTONE, Blocks.GRAVEL.defaultBlockState(),
 			Blocks.STONE_BRICKS, Blocks.CRACKED_STONE_BRICKS.defaultBlockState(),
 			Blocks.DEEPSLATE_BRICKS, Blocks.CRACKED_DEEPSLATE_BRICKS.defaultBlockState(),
@@ -101,19 +129,10 @@ public abstract class AcidFluid extends ForgeFlowingFluid {
 			Blocks.NETHER_BRICKS, Blocks.CRACKED_NETHER_BRICKS.defaultBlockState()
 	);
 
-	protected void erodeStone(Level level, BlockPos liquidPos, Block block, BlockState blockState, BlockPos pos) {
-		if (NORMAL_TO_CRACKED_STONE.containsKey(block)) {
+	protected void erodeBlock(Level level, BlockPos liquidPos, Block block, BlockState blockState, BlockPos pos) {
+		if (NORMAL_TO_ERODED_BLOCK.containsKey(block)) {
 			SoundType soundType = block.getSoundType(blockState, level, pos, null);
-			level.setBlockAndUpdate(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, liquidPos, NORMAL_TO_CRACKED_STONE.get(block)));
-			level.playSound(null, pos, soundType.getBreakSound(), SoundSource.BLOCKS, soundType.volume, soundType.pitch);
-			level.levelEvent(LevelEvent.LAVA_FIZZ, pos, 0);
-		}
-	}
-
-	protected void erodeDirt(Level level, BlockPos liquidPos, Block block, BlockState blockState, BlockPos pos) {
-		if (blockState.is(BlockTags.DIRT)) {
-			SoundType soundType = block.getSoundType(blockState, level, pos, null);
-			level.setBlockAndUpdate(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, liquidPos, Blocks.AIR.defaultBlockState()));
+			level.setBlockAndUpdate(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, liquidPos, NORMAL_TO_ERODED_BLOCK.get(block)));
 			level.playSound(null, pos, soundType.getBreakSound(), SoundSource.BLOCKS, soundType.volume, soundType.pitch);
 			level.levelEvent(LevelEvent.LAVA_FIZZ, pos, 0);
 		}
