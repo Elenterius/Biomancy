@@ -271,7 +271,7 @@ public final class PrimordialEcosystem {
 	}
 
 	public static boolean isReplaceable(BlockState state) {
-		return state.getMaterial().isReplaceable() || state.is(ModBlockTags.PRIMORDIAL_ECO_SYSTEM_REPLACEABLE);
+		return state.getMaterial().isReplaceable() || state.is(ModBlockTags.FLESH_REPLACEABLE);
 	}
 
 	public static boolean isReplaceableLog(BlockState state) {
