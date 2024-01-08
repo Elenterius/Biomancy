@@ -61,6 +61,11 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 				ModBlocks.PRIMAL_PERMEABLE_MEMBRANE.get()
 		);
 
+		tag(ModBlockTags.ACID_DESTRUCTIBLE)
+				.addTag(BlockTags.LEAVES)
+				.add(Blocks.MOSS_BLOCK, Blocks.VINE)
+				.addTag(BlockTags.FLOWERS);
+
 		tag(BlockTags.DOORS).add(ModBlocks.FLESH_DOOR.get()).add(ModBlocks.FULL_FLESH_DOOR.get());
 		tag(BlockTags.TRAPDOORS).add(ModBlocks.FLESH_IRIS_DOOR.get());
 
