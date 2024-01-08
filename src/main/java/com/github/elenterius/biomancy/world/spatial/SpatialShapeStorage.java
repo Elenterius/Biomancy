@@ -30,7 +30,7 @@ public final class SpatialShapeStorage extends SavedData implements AutoCloseabl
 
 	private SpatialShapeStorage(String filePath) {
 		store = new MVStore.Builder().fileName(filePath).cacheSize(8).open();
-		BiomancyMod.LOGGER.debug(MarkerManager.getMarker(LOG_MARKER), "initialized database using file {}", filePath);
+		BiomancyMod.LOGGER.debug(MarkerManager.getMarker(LOG_MARKER), "initialized Store using file {}", filePath);
 	}
 
 	@SuppressWarnings("unused")
@@ -53,7 +53,7 @@ public final class SpatialShapeStorage extends SavedData implements AutoCloseabl
 		levelTrees.clear();
 		levelShapes.clear();
 
-		BiomancyMod.LOGGER.debug(MarkerManager.getMarker(LOG_MARKER), "compacting & saving database");
+		BiomancyMod.LOGGER.debug(MarkerManager.getMarker(LOG_MARKER), "Persisting pending changes and compacting the store");
 		store.close(250);
 	}
 
@@ -92,14 +92,16 @@ public final class SpatialShapeStorage extends SavedData implements AutoCloseabl
 		MVMap<Long, Shape> shapes = getShapes(levelKey);
 
 		if (shapes.containsKey(shapeId)) {
-			return shapes.get(shapeId);
+			Shape shape = shapes.get(shapeId);
+			BiomancyMod.LOGGER.debug(MarkerManager.getMarker(LOG_MARKER), "Fetched existing id={} shape={}", shapeId, shape);
+			return shape;
 		}
 
 		Shape shape = factory.get();
 		shapes.put(shapeId, shape);
 		tree.add(new SpatialKey(shapeId, shape.getAABB()), shapeId);
 
-		BiomancyMod.LOGGER.debug(MarkerManager.getMarker(LOG_MARKER), "created id={} shape={}", shapeId, shape);
+		BiomancyMod.LOGGER.debug(MarkerManager.getMarker(LOG_MARKER), "Created id={} shape={}", shapeId, shape);
 
 		setDirty();
 
@@ -116,7 +118,7 @@ public final class SpatialShapeStorage extends SavedData implements AutoCloseabl
 		Long removed = tree.remove(new SpatialKey(shapeId, shape.getAABB()));
 		shapes.remove(shapeId);
 
-		BiomancyMod.LOGGER.debug(MarkerManager.getMarker(LOG_MARKER), "removed id={} shape={}", removed, shape);
+		BiomancyMod.LOGGER.debug(MarkerManager.getMarker(LOG_MARKER), "Removed id={} shape={}", removed, shape);
 
 		setDirty();
 	}
@@ -135,14 +137,14 @@ public final class SpatialShapeStorage extends SavedData implements AutoCloseabl
 				long version = store.commit();
 
 				if (BiomancyMod.LOGGER.isDebugEnabled()) {
-					String message = version >= 0 ? "flushed changes to disk" : "failed to flush changes";
+					String message = version >= 0 ? "Flushed all changes to disk" : "Failed to flush changes";
 					BiomancyMod.LOGGER.debug(MarkerManager.getMarker(LOG_MARKER), message);
 				}
 			}
 			else {
-				BiomancyMod.LOGGER.debug(MarkerManager.getMarker(LOG_MARKER), "has no unsaved changes");
-				//TODO: compact?
-				//store.compactFile(10);
+				BiomancyMod.LOGGER.debug(MarkerManager.getMarker(LOG_MARKER), "Found no changes");
+				//TODO: should we compact?
+				//store.compactFile(100);
 			}
 		}
 	}
