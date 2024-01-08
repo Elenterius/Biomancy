@@ -71,9 +71,12 @@ public abstract class AcidFluid extends ForgeFlowingFluid {
 				Block block = blockState.getBlock();
 				corrodeCopper(level, liquidPos, block, blockState, blockPos);
 				corrodeStone(level, liquidPos, block, blockState, blockPos);
-				destroyFleshVeins(level, liquidPos, block, blockState, blockPos);
+
+				if (fluidState.getAmount() > 2) {
+					destroyFleshVeins(level, liquidPos, block, blockState, blockPos);
+				}
 			}
-			else {
+			else if (fluidState.getAmount() > 2) {
 				Block block = blockState.getBlock();
 				destroyFleshVeins(level, liquidPos, block, blockState, blockPos);
 			}
