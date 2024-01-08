@@ -93,7 +93,7 @@ public abstract class AcidFluid extends ForgeFlowingFluid {
 	}
 
 	static final Map<Block, BlockState> NORMAL_TO_CRACKED_STONE = Map.of(
-			Blocks.STONE, Blocks.COBBLESTONE.defaultBlockState(),
+			Blocks.COBBLESTONE, Blocks.GRAVEL.defaultBlockState(),
 			Blocks.STONE_BRICKS, Blocks.CRACKED_STONE_BRICKS.defaultBlockState(),
 			Blocks.DEEPSLATE_BRICKS, Blocks.CRACKED_DEEPSLATE_BRICKS.defaultBlockState(),
 			Blocks.DEEPSLATE_TILES, Blocks.CRACKED_DEEPSLATE_TILES.defaultBlockState(),
