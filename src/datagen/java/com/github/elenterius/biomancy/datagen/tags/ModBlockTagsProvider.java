@@ -12,7 +12,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.predicate.BlockMaterialPredicate;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
@@ -52,12 +51,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 				.addTag(BlockTags.LEAVES)
 				.addTag(BlockTags.OVERWORLD_NATURAL_LOGS)
 				.addTag(BlockTags.DIRT)
-				.add(
-						Blocks.DIRT_PATH, Blocks.FARMLAND, Blocks.MOSS_BLOCK, Blocks.VINE
-				)
-				.add(
-						Blocks.MELON, Blocks.PUMPKIN
-				);
+				.add(Blocks.DIRT_PATH, Blocks.FARMLAND, Blocks.MOSS_BLOCK, Blocks.VINE)
+				.add(Blocks.MELON, Blocks.PUMPKIN)
+				.addTag(BlockTags.FLOWERS);
 
 		tag(ModBlockTags.ALLOW_VEINS_TO_ATTACH)
 				.add(Blocks.DIRT_PATH, Blocks.FARMLAND, Blocks.VINE);
@@ -135,9 +131,9 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 	 */
 	private void addQuarkTags() {
 		String modId = "quark";
+
 		TagKey<Block> noDoubleDoor = tagKey(modId, "non_double_door");
 		TagAppender<Block> tag = tag(noDoubleDoor);
-
 		Predicate<Block> predicate = block -> block instanceof FleshDoorBlock || block instanceof FullFleshDoorBlock;
 		ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).filter(predicate).forEach(tag::add);
 	}
