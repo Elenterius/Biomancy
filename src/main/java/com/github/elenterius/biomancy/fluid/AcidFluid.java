@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -70,7 +71,8 @@ public abstract class AcidFluid extends ForgeFlowingFluid {
 			if (level.random.nextFloat() >= 0.1f) {
 				Block block = blockState.getBlock();
 				corrodeCopper(level, liquidPos, block, blockState, blockPos);
-				corrodeStone(level, liquidPos, block, blockState, blockPos);
+				erodeStone(level, liquidPos, block, blockState, blockPos);
+				erodeDirt(level, liquidPos, block, blockState, blockPos);
 
 				if (fluidState.getAmount() > 2) {
 					destroyFleshVeins(level, liquidPos, block, blockState, blockPos);
@@ -99,10 +101,19 @@ public abstract class AcidFluid extends ForgeFlowingFluid {
 			Blocks.NETHER_BRICKS, Blocks.CRACKED_NETHER_BRICKS.defaultBlockState()
 	);
 
-	protected void corrodeStone(Level level, BlockPos liquidPos, Block block, BlockState blockState, BlockPos pos) {
+	protected void erodeStone(Level level, BlockPos liquidPos, Block block, BlockState blockState, BlockPos pos) {
 		if (NORMAL_TO_CRACKED_STONE.containsKey(block)) {
-			level.setBlockAndUpdate(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, liquidPos, NORMAL_TO_CRACKED_STONE.get(block)));
 			SoundType soundType = block.getSoundType(blockState, level, pos, null);
+			level.setBlockAndUpdate(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, liquidPos, NORMAL_TO_CRACKED_STONE.get(block)));
+			level.playSound(null, pos, soundType.getBreakSound(), SoundSource.BLOCKS, soundType.volume, soundType.pitch);
+			level.levelEvent(LevelEvent.LAVA_FIZZ, pos, 0);
+		}
+	}
+
+	protected void erodeDirt(Level level, BlockPos liquidPos, Block block, BlockState blockState, BlockPos pos) {
+		if (blockState.is(BlockTags.DIRT)) {
+			SoundType soundType = block.getSoundType(blockState, level, pos, null);
+			level.setBlockAndUpdate(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, liquidPos, Blocks.AIR.defaultBlockState()));
 			level.playSound(null, pos, soundType.getBreakSound(), SoundSource.BLOCKS, soundType.volume, soundType.pitch);
 			level.levelEvent(LevelEvent.LAVA_FIZZ, pos, 0);
 		}
