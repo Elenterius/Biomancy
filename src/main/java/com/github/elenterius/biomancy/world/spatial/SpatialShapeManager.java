@@ -34,9 +34,9 @@ public final class SpatialShapeManager {
 		return level.dimension().location().toString();
 	}
 
-	public static Shape getOrCreateShape(ServerLevel level, BlockPos shapeId, Supplier<Shape> supplier) {
+	public static Shape getOrCreateShape(ServerLevel level, BlockPos shapeId, Supplier<Shape> factory) {
 		SpatialShapeStorage storage = SpatialShapeStorage.getInstance(level);
-		return storage.getOrCreate(getLevelKey(level), shapeId.asLong(), supplier);
+		return storage.getOrCreate(getLevelKey(level), shapeId.asLong(), factory);
 	}
 
 	public static void remove(ServerLevel level, BlockPos shapeId) {
