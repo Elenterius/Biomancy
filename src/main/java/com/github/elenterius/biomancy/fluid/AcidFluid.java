@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.fluid;
 
 import com.github.elenterius.biomancy.block.veins.FleshVeinsBlock;
 import com.github.elenterius.biomancy.init.ModFluids;
+import com.github.elenterius.biomancy.init.tags.ModBlockTags;
 import com.github.elenterius.biomancy.util.CombatUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,6 +26,16 @@ import net.minecraftforge.fluids.ForgeFlowingFluid;
 import java.util.Map;
 
 public abstract class AcidFluid extends ForgeFlowingFluid {
+
+	protected static final Map<Block, BlockState> NORMAL_TO_ERODED_BLOCK_CONVERSION = Map.of(
+			Blocks.GRASS_BLOCK, Blocks.DIRT.defaultBlockState(),
+			Blocks.COBBLESTONE, Blocks.GRAVEL.defaultBlockState(),
+			Blocks.STONE_BRICKS, Blocks.CRACKED_STONE_BRICKS.defaultBlockState(),
+			Blocks.DEEPSLATE_BRICKS, Blocks.CRACKED_DEEPSLATE_BRICKS.defaultBlockState(),
+			Blocks.DEEPSLATE_TILES, Blocks.CRACKED_DEEPSLATE_TILES.defaultBlockState(),
+			Blocks.POLISHED_BLACKSTONE_BRICKS, Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS.defaultBlockState(),
+			Blocks.NETHER_BRICKS, Blocks.CRACKED_NETHER_BRICKS.defaultBlockState()
+	);
 
 	protected AcidFluid(Properties properties) {
 		super(properties);
@@ -72,7 +83,9 @@ public abstract class AcidFluid extends ForgeFlowingFluid {
 
 	@Override
 	protected void beforeDestroyingBlock(LevelAccessor level, BlockPos pos, BlockState state) {
-		//super.beforeDestroyingBlock(level, pos, state); //don't drop any block resources
+		if (state.is(ModBlockTags.ACID_DESTRUCTIBLE)) return; //don't drop any block resources i.e. "destroy" them
+
+		super.beforeDestroyingBlock(level, pos, state);
 	}
 
 	@Override
@@ -98,8 +111,9 @@ public abstract class AcidFluid extends ForgeFlowingFluid {
 
 			if (level.random.nextFloat() >= 0.1f) {
 				Block block = blockState.getBlock();
-				corrodeCopper(level, liquidPos, block, blockState, blockPos);
-				erodeBlock(level, liquidPos, block, blockState, blockPos);
+				if (corrodeCopper(level, liquidPos, block, blockState, blockPos)) continue;
+				if (destroyBlock(level, liquidPos, block, blockState, blockPos)) continue;
+				if (erodeBlock(level, liquidPos, block, blockState, blockPos)) continue;
 
 				if (fluidState.getAmount() > 2) {
 					destroyFleshVeins(level, liquidPos, block, blockState, blockPos);
@@ -112,30 +126,34 @@ public abstract class AcidFluid extends ForgeFlowingFluid {
 		}
 	}
 
-	protected void corrodeCopper(Level level, BlockPos liquidPos, Block block, BlockState blockState, BlockPos pos) {
+	protected boolean corrodeCopper(Level level, BlockPos liquidPos, Block block, BlockState blockState, BlockPos pos) {
 		if (block instanceof WeatheringCopper weatheringCopper && WeatheringCopper.getNext(block).isPresent()) {
 			weatheringCopper.getNext(blockState).ifPresent(state -> level.setBlockAndUpdate(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, liquidPos, state)));
 			level.levelEvent(LevelEvent.LAVA_FIZZ, pos, 0);
+			return true;
 		}
+
+		return false;
 	}
 
-	static final Map<Block, BlockState> NORMAL_TO_ERODED_BLOCK = Map.of(
-			Blocks.GRASS_BLOCK, Blocks.DIRT.defaultBlockState(),
-			Blocks.COBBLESTONE, Blocks.GRAVEL.defaultBlockState(),
-			Blocks.STONE_BRICKS, Blocks.CRACKED_STONE_BRICKS.defaultBlockState(),
-			Blocks.DEEPSLATE_BRICKS, Blocks.CRACKED_DEEPSLATE_BRICKS.defaultBlockState(),
-			Blocks.DEEPSLATE_TILES, Blocks.CRACKED_DEEPSLATE_TILES.defaultBlockState(),
-			Blocks.POLISHED_BLACKSTONE_BRICKS, Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS.defaultBlockState(),
-			Blocks.NETHER_BRICKS, Blocks.CRACKED_NETHER_BRICKS.defaultBlockState()
-	);
+	protected boolean destroyBlock(Level level, BlockPos liquidPos, Block block, BlockState blockState, BlockPos pos) {
+		if (!blockState.is(ModBlockTags.ACID_DESTRUCTIBLE)) return false;
 
-	protected void erodeBlock(Level level, BlockPos liquidPos, Block block, BlockState blockState, BlockPos pos) {
-		if (NORMAL_TO_ERODED_BLOCK.containsKey(block)) {
-			SoundType soundType = block.getSoundType(blockState, level, pos, null);
-			level.setBlockAndUpdate(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, liquidPos, NORMAL_TO_ERODED_BLOCK.get(block)));
-			level.playSound(null, pos, soundType.getBreakSound(), SoundSource.BLOCKS, soundType.volume, soundType.pitch);
-			level.levelEvent(LevelEvent.LAVA_FIZZ, pos, 0);
-		}
+		SoundType soundType = block.getSoundType(blockState, level, pos, null);
+		level.setBlockAndUpdate(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, liquidPos, Blocks.AIR.defaultBlockState()));
+		level.playSound(null, pos, soundType.getBreakSound(), SoundSource.BLOCKS, soundType.volume, soundType.pitch);
+		level.levelEvent(LevelEvent.LAVA_FIZZ, pos, 0);
+		return true;
+	}
+
+	protected boolean erodeBlock(Level level, BlockPos liquidPos, Block block, BlockState blockState, BlockPos pos) {
+		if (!NORMAL_TO_ERODED_BLOCK_CONVERSION.containsKey(block)) return false;
+
+		SoundType soundType = block.getSoundType(blockState, level, pos, null);
+		level.setBlockAndUpdate(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, liquidPos, NORMAL_TO_ERODED_BLOCK_CONVERSION.get(block)));
+		level.playSound(null, pos, soundType.getBreakSound(), SoundSource.BLOCKS, soundType.volume, soundType.pitch);
+		level.levelEvent(LevelEvent.LAVA_FIZZ, pos, 0);
+		return true;
 	}
 
 	protected void destroyFleshVeins(Level level, BlockPos liquidPos, Block block, BlockState blockState, BlockPos pos) {
