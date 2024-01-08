@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.block;
 
-import com.github.elenterius.biomancy.BiomancyConfig;
 import com.github.elenterius.biomancy.block.cradle.PrimalEnergyHandler;
 import com.github.elenterius.biomancy.world.PrimordialEcosystem;
 import com.github.elenterius.biomancy.world.mound.MoundShape;
@@ -33,11 +32,6 @@ public class SpreadingMembraneBlock extends MembraneBlock {
 		//				.anyMatch(neighborPos -> PrimordialEcosystem.isReplaceable(level.getBlockState(neighborPos)));
 		//
 		//		if (hasInvalidNeighborAtTargetPos) return;
-
-		if (Boolean.TRUE.equals(BiomancyConfig.SERVER.doUnlimitedGrowth.get())) {
-			level.setBlock(targetPos, defaultBlockState(), UPDATE_CLIENTS);
-			return;
-		}
 
 		if (SpatialShapeManager.getClosestShape(level, pos, MoundShape.class::isInstance) instanceof MoundShape mound) {
 			BlockEntity blockEntity = level.getExistingBlockEntity(mound.getOrigin());
