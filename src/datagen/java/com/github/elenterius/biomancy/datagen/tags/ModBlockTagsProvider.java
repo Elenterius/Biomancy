@@ -107,9 +107,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 	}
 
 	private void addFleshyBlocksToHoeTag() {
-		BlockMaterialPredicate predicate = BlockMaterialPredicate.forMaterial(ModBlockMaterials.FLESH_MATERIAL);
 		TagAppender<Block> tag = tag(BlockTags.MINEABLE_WITH_HOE);
-		ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).filter(block -> predicate.test(block.defaultBlockState())).forEach(tag::add);
+		ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).filter(ModBlockMaterials.FLESH_PREDICATE).forEach(tag::add);
 	}
 
 	/**

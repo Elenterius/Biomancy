@@ -1,10 +1,18 @@
 package com.github.elenterius.biomancy.init;
 
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.material.PushReaction;
 
+import java.util.function.Predicate;
+
 public final class ModBlockMaterials {
+
+	public static final Predicate<Block> FLESH_PREDICATE = block -> {
+		Material material = block.defaultBlockState().getMaterial();
+		return material == ModBlockMaterials.FLESH_MATERIAL || material == ModBlockMaterials.FLESH_VEINS_MATERIAL;
+	};
 
 	public static final Material FLESH_MATERIAL = Builder.create().build();
 	public static final Material FLESH_VEINS_MATERIAL = Builder.create().noCollider().notSolidBlocking().nonSolid().destroyOnPush().build();
