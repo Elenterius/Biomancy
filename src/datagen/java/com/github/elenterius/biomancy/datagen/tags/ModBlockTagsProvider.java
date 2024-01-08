@@ -43,9 +43,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 		addCreateTags();
 		addQuarkTags();
 
-		//CONVERTABLE_TO_PRIMAL_FLESH
-		//CONVERTABLE_TO_MALIGNANT_FLESH
-		tag(ModBlockTags.PRIMORDIAL_ECO_SYSTEM_REPLACEABLE)
+		tag(ModBlockTags.FLESH_REPLACEABLE)
 				.add(Blocks.CLAY).addTag(BlockTags.SAND).addTag(Tags.Blocks.GRAVEL)
 				.add(Blocks.SNOW_BLOCK, Blocks.SNOW)
 				.addTag(BlockTags.LEAVES)
