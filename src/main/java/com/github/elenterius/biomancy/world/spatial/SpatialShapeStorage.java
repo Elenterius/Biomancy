@@ -142,9 +142,7 @@ public final class SpatialShapeStorage extends SavedData implements AutoCloseabl
 				}
 			}
 			else {
-				BiomancyMod.LOGGER.debug(MarkerManager.getMarker(LOG_MARKER), "Found no changes");
-				//TODO: should we compact?
-				//store.compactFile(100);
+				BiomancyMod.LOGGER.debug(MarkerManager.getMarker(LOG_MARKER), "Found no changes to flush to disk");
 			}
 		}
 	}
