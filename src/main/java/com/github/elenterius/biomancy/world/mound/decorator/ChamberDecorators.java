@@ -44,7 +44,7 @@ public final class ChamberDecorators {
 			.add(MALIGNANT_FLESH_PILLARS, 15)
 			.add(PRIMAL_ORIFICE_PILLARS, 5)
 			.add(PRIMAL_ORIFICE_COMBS, 7)
-			.add(BONE_PILLARS, 15)
+			.add(BONE_PILLARS, 17)
 			.build();
 
 	private ChamberDecorators() {}
