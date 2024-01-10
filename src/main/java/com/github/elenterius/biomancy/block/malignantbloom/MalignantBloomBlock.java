@@ -142,7 +142,7 @@ public class MalignantBloomBlock extends WaterloggedFacingBlock implements IPlan
 		if (age > 5 && player.getItemInHand(hand).isEmpty()) {
 			if (!level.isClientSide) {
 				int count = 1 + (age > 6 ? level.random.nextInt(2) : 0);
-				popResource(level, pos, new ItemStack(ModItems.SAPBERRY.get(), count));
+				popResource(level, pos, new ItemStack(ModItems.BLOOMBERRY.get(), count));
 
 				player.hurt(DamageSource.SWEET_BERRY_BUSH, 1f);
 

@@ -108,7 +108,7 @@ public final class ModItems {
 	//# Food/Fuel
 	public static final RegistryObject<EffectCureItem> NUTRIENT_PASTE = registerItem("nutrient_paste", props -> new EffectCureItem(props.food(ModFoods.NUTRIENT_PASTE)));
 	public static final RegistryObject<EffectCureItem> NUTRIENT_BAR = registerItem("nutrient_bar", props -> new EffectCureItem(props.food(ModFoods.NUTRIENT_BAR)));
-	public static final RegistryObject<SapberryItem> SAPBERRY = registerItem("sapberry", props -> new SapberryItem(props.food(ModFoods.NUTRIENT_PASTE)));
+	public static final RegistryObject<SapberryItem> BLOOMBERRY = registerItem("bloomberry", props -> new SapberryItem(props.food(ModFoods.NUTRIENT_PASTE)));
 
 	//# Block Items
 

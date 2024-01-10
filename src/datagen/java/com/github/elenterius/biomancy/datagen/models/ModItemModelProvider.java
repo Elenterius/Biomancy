@@ -86,7 +86,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 		basicItem(ModItems.CREATOR_MIX);
 		basicItem(ModItems.NUTRIENT_PASTE);
 		basicItem(ModItems.NUTRIENT_BAR);
-		basicItem(ModItems.SAPBERRY);
+		basicItem(ModItems.BLOOMBERRY);
 		serumItem(ModItems.VIAL);
 		basicItem(ModItems.GIFT_SAC);
 		basicItem(ModItems.FERTILIZER);

@@ -336,22 +336,22 @@ public class ModRecipeProvider extends RecipeProvider {
 				.save(consumer);
 
 		WorkbenchRecipeBuilder.shaped(ModItems.PRIMORDIAL_BIO_LANTERN.get())
-				.define('B', ModItems.SAPBERRY.get())
+				.define('B', ModItems.BLOOMBERRY.get())
 				.define('V', ModItems.MALIGNANT_FLESH_VEINS.get())
 				.define('C', ModItems.TENDON_CHAIN.get())
 				.pattern(" C ")
 				.pattern("VBV")
 				.pattern(" V ")
-				.unlockedBy(hasName(ModItems.SAPBERRY.get()), has(ModItems.SAPBERRY.get()))
+				.unlockedBy(hasName(ModItems.BLOOMBERRY.get()), has(ModItems.BLOOMBERRY.get()))
 				.save(consumer);
 
 		WorkbenchRecipeBuilder.shaped(ModItems.BLOOMLIGHT.get(), 4)
-				.define('B', ModItems.SAPBERRY.get())
+				.define('B', ModItems.BLOOMBERRY.get())
 				.define('V', ModItems.MALIGNANT_FLESH_VEINS.get())
 				.pattern("BVB")
 				.pattern("VBV")
 				.pattern("BVB")
-				.unlockedBy(hasName(ModItems.SAPBERRY.get()), has(ModItems.SAPBERRY.get()))
+				.unlockedBy(hasName(ModItems.BLOOMBERRY.get()), has(ModItems.BLOOMBERRY.get()))
 				.save(consumer);
 	}
 
@@ -598,12 +598,12 @@ public class ModRecipeProvider extends RecipeProvider {
 				.addOutput(ModItems.EXOTIC_DUST.get(), 0, 2)
 				.unlockedBy(ModItems.LIVING_FLESH).save(consumer);
 
-		DecomposerRecipeBuilder.create().setIngredient(ModItems.SAPBERRY)
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.BLOOMBERRY)
 				.addOutput(ModItems.BIO_LUMENS.get(), 0, 2)
 				.addOutput(ModItems.ORGANIC_MATTER.get(), 0, 1)
 				.addOutput(ModItems.EXOTIC_DUST.get(), 0, 3)
 				.addOutput(ModItems.BILE.get(), 1, 2)
-				.unlockedBy(ModItems.SAPBERRY).save(consumer);
+				.unlockedBy(ModItems.BLOOMBERRY).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(ModItems.BLOOMLIGHT)
 				.addOutput(ModItems.BIO_LUMENS.get(), 5, 9)
 				.addOutput(ModItems.ORGANIC_MATTER.get(), 2, 3)

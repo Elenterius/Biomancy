@@ -369,7 +369,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addItem(ModItems.NUTRIENTS, "Nutrients", "Very hard pellets rich in energy that almost look like vitamin pills.");
 		addItem(ModItems.NUTRIENT_PASTE, "Nutrient Paste", "Nutrients combined with Biotic Matter to moisten the hard pellets, producing a paste.\nIt almost looks like yellowish cake, and is a convenient source of energy.");
 		addItem(ModItems.NUTRIENT_BAR, "Nutrient Bar", "Nutrient Paste compressed into the shape of a bar. Looks edible, if a bit bland.");
-		addItem(ModItems.SAPBERRY, "Sapberry", "An exotic delicacy which grants random potion effects.");
+		addItem(ModItems.BLOOMBERRY, "Bloomberry", "An exotic delicacy which has a bioluminescent sheen and grants random potion effects when eaten.");
 
 		addItem(ModItems.REGENERATIVE_FLUID, "Regenerative Fluid", "A fluid with regenerative properties, used to concoct healing additives.");
 		addItem(ModItems.WITHERING_OOZE, "Withering Ooze", "A corrosive extract. It likely has uses in bio-alchemy.");
@@ -490,7 +490,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.FLESH_LADDER, "Flesh Ladder", "Ladder mainly made of bones and a little bit of flesh...");
 		addBlock(ModBlocks.YELLOW_BIO_LANTERN, "Yellow Bio-Lantern", "A bioluminescent light source that is energy-efficient and environmentally friendly.");
 		addBlock(ModBlocks.BLUE_BIO_LANTERN, "Blue Bio-Lantern", "A bioluminescent light source. This one is blue!");
-		addBlock(ModBlocks.PRIMORDIAL_BIO_LANTERN, "Primordial Bio-Lantern", "A primal light source. This one is magenta!");
+		addBlock(ModBlocks.PRIMORDIAL_BIO_LANTERN, "Bloom-Lantern", "A magenta light source made from a bioluminescent berry.");
 		addBlock(ModBlocks.BLOOMLIGHT, "Bloomlight", "A malignant light source. This one is magenta as well!");
 		addBlock(ModBlocks.TENDON_CHAIN, "Tendon Chain", "A chain made of tendons.");
 		addBlock(ModBlocks.VIAL_HOLDER, "Vial Holder", "Display and organize your serums.");
@@ -510,7 +510,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.MALIGNANT_FLESH_STAIRS, "Malignant Flesh Stairs", "Stairs made of malignant flesh.\nLooks diseased...");
 		addBlock(ModBlocks.MALIGNANT_FLESH_WALL, "Malignant Flesh Wall", "Wall of malignant flesh.\nIt's coming for you! ;)");
 		addBlock(ModBlocks.MALIGNANT_FLESH_VEINS, "Malignant Flesh Veins", "They look almost feral...\nyou better not touch them.");
-		addBlock(ModBlocks.MALIGNANT_BLOOM, "Malignant Bloom", "An exotic flower of primordial beauty.\n\nIt will spread itself by launching it's ripe berry into the air.\nOn impact the berry explodes and spreads malignant veins as well.");
+		addBlock(ModBlocks.MALIGNANT_BLOOM, "Primal Bloom", "An exotic flower of primordial beauty.\n\nIt will spread itself by launching it's ripe berry into the air.\nOn impact the berry explodes and spreads malignant veins as well.");
 		addBlock(ModBlocks.PRIMAL_ORIFICE, "Primal Orifice", "A primitive piece full of holes. It seems to leak an acidic substance.");
 
 		addBlock(ModBlocks.ACID_FLUID_BLOCK, "Acid");
