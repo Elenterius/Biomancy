@@ -173,7 +173,7 @@ public class ModBlockLoot extends BlockLoot {
 		dropSelf(ModBlocks.ADULT_PERMEABLE_MEMBRANE.get());
 		dropSelf(ModBlocks.PRIMAL_PERMEABLE_MEMBRANE.get());
 		dropSelf(ModBlocks.UNDEAD_PERMEABLE_MEMBRANE.get());
-		dropSelf(ModBlocks.NEURAL_INTERCEPTOR.get());
+		//dropSelf(ModBlocks.NEURAL_INTERCEPTOR.get());
 
 		dropSelf(ModBlocks.FLESH_IRIS_DOOR.get());
 		dropSelf(ModBlocks.FLESH_FENCE.get());

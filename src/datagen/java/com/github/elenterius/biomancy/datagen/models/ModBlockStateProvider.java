@@ -103,7 +103,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		membraneWithItem(ModBlocks.PRIMAL_PERMEABLE_MEMBRANE);
 		membraneWithItem(ModBlocks.UNDEAD_PERMEABLE_MEMBRANE);
 
-		horizontalBlockWithItem(ModBlocks.NEURAL_INTERCEPTOR);
+		//horizontalBlockWithItem(ModBlocks.NEURAL_INTERCEPTOR);
 
 		bioLantern(ModBlocks.YELLOW_BIO_LANTERN);
 		bioLantern(ModBlocks.BLUE_BIO_LANTERN);
