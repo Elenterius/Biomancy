@@ -12,7 +12,7 @@ updateJSONURL = "https://api.modrinth.com/updates/uAAuyU4M/forge_updates.json"
 displayURL = "https://modrinth.com/mod/biomancy" #optional
 logoFile = "text_logo_small.png" #optional
 logoBlur = false
-credits = "\u00A77RhinoW, Shorepion, Kitteh6660, ZeoMaddox, ItsLumine, RuskieThe3rd, M4rc3ll0"
+credits = "\u00A77RhinoW, The Shroome, Shorepion, Kitteh6660, ZeoMaddox, ItsLumine, RuskieThe3rd, M4rc3ll0"
 authors = "\u00A72Elenterius\u00A7r, \u00A76RhinoW\u00A7r"
 description = '''§7Biopunk and Flesh Magic inspired tech-magic mod that has a fleshy art theme.'''
 

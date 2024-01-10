@@ -6,11 +6,18 @@ Artwork and Game Design help
 
 - most textures and models
 
+## The Shroome
+
+Models and Textures
+
+- Primal Orifice Block
+- Primal Bloom Block
+
 ## Shorepion
 
 Sound Design and Music
 
-- all sound effects
+- most sound effects
 
 ## Kitteh6660
 
