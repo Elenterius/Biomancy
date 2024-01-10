@@ -13,6 +13,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public final class MoundGenerator {
 	private MoundGenerator() {}
@@ -40,7 +41,7 @@ public final class MoundGenerator {
 	private static MoundShape genShape(BlockPos blockOrigin, MoundShape.ProcGenValues procGenValues) {
 		Context ctx = new Context();
 		ctx.random = RandomSource.create(procGenValues.seed());
-		Vec3 origin = Vec3.atCenterOf(blockOrigin);
+		Vec3 origin = ctx.origin = Vec3.atCenterOf(blockOrigin);
 
 		float radius = 8f * (1 + Mth.clamp(procGenValues.radiusMultiplier(), -0.5f, 1.5f));
 
@@ -136,22 +137,52 @@ public final class MoundGenerator {
 		Vec3 pos = new Vec3(x, y, z);
 		context.boundingShapes.add(new SphereShape(pos, radius));
 
+		if (type == ChamberFactoryType.CRADLE) {
+			context.mainChamberRadius = chamberRadius * 0.9f;
+
+			Consumer<MoundChamber> consumer = chamber -> {
+				context.cradleChambers.add(chamber);
+				context.chambers.add(chamber);
+			};
+
+			ChamberFactory.SPECIAL_CRADLE.create(x, y, z, chamberRadius, context.random, consumer);
+			return;
+		}
+
+		Consumer<MoundChamber> filteredConsumer = chamber -> {
+			//			Vec3 closestPoint = GeometryUtil.closestPointOnAABB(chamber.getAABB(), context.origin);
+			//			double distSqr = closestPoint.distanceToSqr(context.origin);
+			//			boolean noIntersectionWithCradleChambers = distSqr > context.mainChamberRadius * context.mainChamberRadius;
+
+			boolean intersectingWithCradleChamber = false;
+			for (MoundChamber cradleChamber : context.cradleChambers) {
+				if (cradleChamber.intersectsCuboid(chamber.getAABB())) {
+					intersectingWithCradleChamber = true;
+					break;
+				}
+			}
+
+			if (!intersectingWithCradleChamber) {
+				context.chambers.add(chamber);
+			}
+		};
+
 		if (chamberRadius < 8) {
-			context.chambers.add(new MoundChamber(new SphereShape(pos, chamberRadius)));
+			filteredConsumer.accept(new MoundChamber(new SphereShape(pos, chamberRadius)));
 			return;
 		}
 
 		switch (type) {
-			case DEFAULT -> ChamberFactory.RANDOM_DEFAULT.create(x, y, z, chamberRadius, context.random, context.chambers::add);
-			case CRADLE -> ChamberFactory.SPECIAL_CRADLE.create(x, y, z, chamberRadius, context.random, context.chambers::add);
+			case DEFAULT -> ChamberFactory.RANDOM_DEFAULT.create(x, y, z, chamberRadius, context.random, filteredConsumer);
 			case END_CAP_MAIN_SPIRE -> {
 				ChamberFactory generator = context.random.nextFloat() < 0.8f ? ChamberFactory.ONE_SPHERE : ChamberFactory.ONE_BIG_FOUR_SMALL_ELLIPSOIDS;
-				generator.create(x, y, z, chamberRadius, context.random, context.chambers::add);
+				generator.create(x, y, z, chamberRadius, context.random, filteredConsumer);
 			}
 			case END_CAP_SUB_SPIRE -> {
 				ChamberFactory generator = context.random.nextFloat() < 0.8f ? ChamberFactory.ONE_BIG_FOUR_SMALL_ELLIPSOIDS : ChamberFactory.ONE_SPHERE;
-				generator.create(x, y, z, chamberRadius, context.random, context.chambers::add);
+				generator.create(x, y, z, chamberRadius, context.random, filteredConsumer);
 			}
+			default -> { /* do nothing */ }
 		}
 	}
 
@@ -172,12 +203,15 @@ public final class MoundGenerator {
 	private static class Context {
 		List<Shape> boundingShapes = new ArrayList<>();
 		List<MoundChamber> chambers = new ArrayList<>();
+		List<MoundChamber> cradleChambers = new ArrayList<>();
 		RandomSource random;
+		Vec3 origin;
 		float spikiness;
 		float slantMultiplier;
 		float minMoundRadius;
 		float baseMoundRadius;
 		float maxMoundRadius;
+		float mainChamberRadius;
 		float relativeWallThickness;
 		Vec3 dirLean;
 		Vec3 maxLean;

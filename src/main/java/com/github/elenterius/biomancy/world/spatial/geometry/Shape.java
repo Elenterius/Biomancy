@@ -12,6 +12,10 @@ public interface Shape extends NBTSerializable<Shape> {
 
 	//boolean containsCuboid(double minX, double minY, double minZ, double maxX, double maxY, double maxZ);
 
+	default boolean intersectsCuboid(AABB aabb) {
+		return intersectsCuboid(aabb.minX, aabb.minY, aabb.minZ, aabb.maxX, aabb.maxY, aabb.maxZ);
+	}
+
 	boolean intersectsCuboid(double minX, double minY, double minZ, double maxX, double maxY, double maxZ);
 
 	Vec3 center();
