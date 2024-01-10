@@ -26,7 +26,7 @@ public final class Tributes {
 	public static final Tribute PRIMORDIAL_CORE = register(ModItems.PRIMORDIAL_CORE.get(), TributeImpl.builder().biomass(80).successModifier(64).anomalyModifier(100).diseaseModifier(50).create());
 
 	public static final Tribute LIVING_FLESH = register(ModItems.LIVING_FLESH.get(), TributeImpl.builder().biomass(10).lifeEnergy(10).successModifier(40).anomalyModifier(55).create());
-	public static final Tribute SAPBERRY = register(ModItems.SAPBERRY.get(), TributeImpl.builder().successModifier(10).lifeEnergy(20).anomalyModifier(20).create());
+	public static final Tribute BLOOMBERRY = register(ModItems.BLOOMBERRY.get(), TributeImpl.builder().successModifier(10).lifeEnergy(20).anomalyModifier(20).create());
 	public static final Tribute GOLDEN_APPLE = register(Items.GOLDEN_APPLE, TributeImpl.builder().successModifier(10).hostileModifier(-100).create());
 	public static final Tribute ENCHANTED_GOLDEN_APPLE = register(Items.ENCHANTED_GOLDEN_APPLE, TributeImpl.builder().lifeEnergy(15).successModifier(40).hostileModifier(-200).create());
 	public static final Tribute CAKE = register(Items.CAKE, TributeImpl.builder().hostileModifier(-80).diseaseModifier(10).create());
