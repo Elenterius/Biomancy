@@ -1,3 +1,10 @@
+### [3.0.1](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.3.0.0...1.19.2-v2.3.0.1) (2024-01-10)
+
+
+### Bug Fixes
+
+* fix incomplete credits ([8b79987](https://github.com/Elenterius/Biomancy/commit/8b799871cc50a31d1a4b8db38f27727529d39c5a))
+
 ## [3.0.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.2.0.0...1.19.2-v2.3.0.0) (2024-01-10)
 
 
@@ -231,11 +238,4 @@
 * fix full block slabs not dropping two slab blocks ([54bb038](https://github.com/Elenterius/Biomancy/commit/54bb038109267982d1b5594df40cbfe589f3de19))
 * fix inability to switch claw modes when holding down ctrl to sprint ([870a033](https://github.com/Elenterius/Biomancy/commit/870a03359169f68ef0d7cd20963b24182918e61f))
 * fix misleading fleshkin chest tooltip ([47b2758](https://github.com/Elenterius/Biomancy/commit/47b2758b5eee547d2bbe7d9eec01402f5ce38cf2))
-
-### [1.11.3](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.11.2...1.19.2-v2.1.11.3) (2023-06-30)
-
-
-### Bug Fixes
-
-* fix Ravenous Claws ability tooltips not using translation keys ([989ff50](https://github.com/Elenterius/Biomancy/commit/989ff50e67110b0037d145f3a804a5455124ae91))
 
