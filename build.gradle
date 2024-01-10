@@ -273,7 +273,7 @@ void minifyJsons(String fdir) {
 tasks.jarJar {
 	archiveClassifier = ''
 	from sourceSets.api.output
-	from { ["CREDITS.md", "LICENSE.txt"] } //copy files from the repository root into the jar
+	from { ["CREDITS.md", "LICENSE.txt", "3RD_PARTY_LICENSE.txt"] } //copy files from the repository root into the jar
 }
 
 jar {
