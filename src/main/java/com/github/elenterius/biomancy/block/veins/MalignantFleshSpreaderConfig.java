@@ -59,7 +59,7 @@ class MalignantFleshSpreaderConfig extends MultifaceSpreader.DefaultSpreaderConf
 				CellularNoise cellularNoise = PrimordialEcosystem.getCellularNoise(serverLevel);
 				float borderThreshold = cellularNoise.borderThreshold() - 0.005f;
 				float n = cellularNoise.getValueAtCenter(pos);
-				return n >= borderThreshold && !LevelUtil.isBlockNearby(serverLevel, spreadPos.pos(), 4, blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get()));
+				return n >= borderThreshold && !LevelUtil.isBlockNearby(serverLevel, spreadPos.pos(), 4, blockState -> blockState.is(ModBlocks.PRIMAL_BLOOM.get()));
 			}
 			return true;
 		}

@@ -82,7 +82,7 @@ public final class PrimordialEcosystem {
 		return false;
 	}
 
-	public static boolean placeMalignantBloomOrBlocks(ServerLevel level, BlockPos pos, Direction direction) {
+	public static boolean placeBloomOrBlocks(ServerLevel level, BlockPos pos, Direction direction) {
 
 		BlockState state = level.getBlockState(pos);
 		if (VALID_UPGRADE_TARGETS.contains(state.getBlock())) {
@@ -95,11 +95,11 @@ public final class PrimordialEcosystem {
 		BlockState relativeState = level.getBlockState(relativePos);
 		RandomSource random = level.getRandom();
 
-		if (random.nextFloat() < 0.7f && ModBlocks.MALIGNANT_BLOOM.get().mayPlaceOn(level, pos, state)) {
+		if (random.nextFloat() < 0.7f && ModBlocks.PRIMAL_BLOOM.get().mayPlaceOn(level, pos, state)) {
 			boolean canBeReplaced = relativeState.canBeReplaced(new DirectionalPlaceContext(level, relativePos, direction.getOpposite(), ItemStack.EMPTY, direction));
-			boolean noBloomNearby = !LevelUtil.isBlockNearby(level, pos, 4, blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get()));
+			boolean noBloomNearby = !LevelUtil.isBlockNearby(level, pos, 4, blockState -> blockState.is(ModBlocks.PRIMAL_BLOOM.get()));
 			if (canBeReplaced && noBloomNearby) {
-				BlockState blockState = ModBlocks.MALIGNANT_BLOOM.get().getStateForPlacement(level, relativePos, direction);
+				BlockState blockState = ModBlocks.PRIMAL_BLOOM.get().getStateForPlacement(level, relativePos, direction);
 				level.playSound(null, relativePos, ModSoundEvents.FLESH_BLOCK_PLACE.get(), SoundSource.BLOCKS, 1f, 0.5f + random.nextFloat() * 0.5f);
 				level.setBlock(relativePos, blockState, Block.UPDATE_CLIENTS);
 				return true;

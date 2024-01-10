@@ -4,7 +4,7 @@
 	"render_type": "minecraft:cutout",
 	"texture_size": [ 64, 64 ],
 	"textures": {
-		"0": "biomancy:block/malignant_bloom_4",
+		"0": "biomancy:block/primal_bloom_4",
 		"particle": "biomancy:block/primal_flesh"
 	},
 	"elements": [

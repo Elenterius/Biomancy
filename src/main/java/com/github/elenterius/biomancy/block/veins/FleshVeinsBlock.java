@@ -57,7 +57,7 @@ import java.util.function.Predicate;
 
 public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterloggedBlock {
 
-	public static final Predicate<BlockState> BLOCKS_TO_AVOID_PREDICATE = blockState -> blockState.is(ModBlocks.MALIGNANT_BLOOM.get());
+	public static final Predicate<BlockState> BLOCKS_TO_AVOID_PREDICATE = blockState -> blockState.is(ModBlocks.PRIMAL_BLOOM.get());
 	protected static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	protected static final EnhancedIntegerProperty CHARGE = ModBlockProperties.CHARGE;
 	private final MultifaceSpreader spreader = new MultifaceSpreader(new MalignantFleshSpreaderConfig(this));
@@ -221,7 +221,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 	}
 
 	protected static boolean convertSelfIntoBloom(ServerLevel level, BlockPos pos, Direction direction) {
-		MalignantBloomBlock bloomBlock = ModBlocks.MALIGNANT_BLOOM.get();
+		MalignantBloomBlock bloomBlock = ModBlocks.PRIMAL_BLOOM.get();
 
 		BlockPos posBelow = pos.relative(direction);
 		BlockState stateBelow = level.getBlockState(posBelow);

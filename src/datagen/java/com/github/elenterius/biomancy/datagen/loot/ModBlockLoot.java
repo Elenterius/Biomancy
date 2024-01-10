@@ -164,7 +164,7 @@ public class ModBlockLoot extends BlockLoot {
 		dropSelf(ModBlocks.MALIGNANT_FLESH_STAIRS.get());
 		dropSelf(ModBlocks.MALIGNANT_FLESH_WALL.get());
 		add(ModBlocks.MALIGNANT_FLESH_VEINS.get(), block -> createMultifaceBlockDrops(block, HAS_SHEARS_OR_SILK_TOUCH));
-		add(ModBlocks.MALIGNANT_BLOOM.get(), noDrop());
+		add(ModBlocks.PRIMAL_BLOOM.get(), noDrop());
 		dropSelf(ModBlocks.PRIMAL_ORIFICE.get());
 
 		dropSelf(ModBlocks.VOICE_BOX.get());

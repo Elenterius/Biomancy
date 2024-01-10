@@ -50,7 +50,7 @@ public class SapberryProjectile extends BaseProjectile implements IAnimatable {
 		super.onHitBlock(result);
 		if (level instanceof ServerLevel serverLevel) {
 			Direction direction = result.getDirection();
-			PrimordialEcosystem.placeMalignantBloomOrBlocks(serverLevel, result.getBlockPos(), direction);
+			PrimordialEcosystem.placeBloomOrBlocks(serverLevel, result.getBlockPos(), direction);
 		}
 		playSound(SoundEvents.SLIME_BLOCK_BREAK, 1, 1.2f / (random.nextFloat() * 0.2f + 0.9f));
 	}
@@ -61,7 +61,7 @@ public class SapberryProjectile extends BaseProjectile implements IAnimatable {
 		if (level instanceof ServerLevel serverLevel) {
 			Direction direction = Direction.orderedByNearest(this)[0];
 			BlockPos pos = new BlockPos(result.getLocation());
-			PrimordialEcosystem.placeMalignantBloomOrBlocks(serverLevel, pos, direction);
+			PrimordialEcosystem.placeBloomOrBlocks(serverLevel, pos, direction);
 		}
 		playSound(SoundEvents.SLIME_BLOCK_BREAK, 1, 1.2f / (random.nextFloat() * 0.2f + 0.9f));
 	}
