@@ -68,7 +68,7 @@ jobs:
 
       - name: Set Output  #supports setting multiline output
         id: set_output
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7.0.1
         with:
           script: |
             core.setOutput("skipped", `${{ steps.changelog.outputs.skipped }}`);  
