@@ -67,7 +67,7 @@ class MobEffectTribute implements Tribute {
 
 		if (LIFE_ENERGY_MODIFIER.contains(effect)) {
 			int level = instance.getAmplifier() + 1;
-			lifeEnergy += level * 50 * chance;
+			lifeEnergy += level * 60 * chance;
 		}
 		else if (DISEASE_MODIFIER.contains(effect)) {
 			int level = instance.getAmplifier() + 1;

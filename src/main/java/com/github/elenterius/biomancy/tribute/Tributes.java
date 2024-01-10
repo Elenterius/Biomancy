@@ -31,7 +31,7 @@ public final class Tributes {
 	public static final Tribute ENCHANTED_GOLDEN_APPLE = register(Items.ENCHANTED_GOLDEN_APPLE, TributeImpl.builder().lifeEnergy(15).successModifier(40).hostileModifier(-200).create());
 	public static final Tribute CAKE = register(Items.CAKE, TributeImpl.builder().hostileModifier(-80).diseaseModifier(10).create());
 
-	public static final Tribute HEALING_ADDITIVE = register(ModItems.HEALING_ADDITIVE.get(), TributeImpl.builder().lifeEnergy(50).successModifier(1).diseaseModifier(-5).hostileModifier(-10).create());
+	public static final Tribute HEALING_ADDITIVE = register(ModItems.HEALING_ADDITIVE.get(), TributeImpl.builder().lifeEnergy(55).successModifier(1).diseaseModifier(-5).hostileModifier(-10).create());
 	public static final Tribute REGENERATIVE_FLUID = register(ModItems.REGENERATIVE_FLUID.get(), TributeImpl.builder().lifeEnergy(5).hostileModifier(-1).create());
 
 	public static final Tribute ROTTEN_FLESH = register(Items.ROTTEN_FLESH, TributeImpl.builder().biomass(10).successModifier(-10).diseaseModifier(20).create());
@@ -51,7 +51,8 @@ public final class Tributes {
 	public static final Tribute MOB_FANG = register(ModItems.MOB_FANG.get(), TributeImpl.builder().successModifier(5).hostileModifier(5).create());
 	public static final Tribute MOB_CLAW = register(ModItems.MOB_CLAW.get(), TributeImpl.builder().successModifier(5).hostileModifier(5).create());
 	public static final Tribute ENDER_PEARL = register(Items.ENDER_PEARL, TributeImpl.builder().hostileModifier(50).anomalyModifier(50).create());
-	public static final Tribute NETHER_STAR = register(Items.NETHER_STAR, TributeImpl.builder().lifeEnergy(10_000).hostileModifier(100).diseaseModifier(100).create());
+	public static final Tribute NETHER_STAR = register(Items.NETHER_STAR, TributeImpl.builder().lifeEnergy(15_000).hostileModifier(100).diseaseModifier(100).create());
+	public static final Tribute TOTEM_OF_UNDYING = register(Items.TOTEM_OF_UNDYING, TributeImpl.builder().lifeEnergy(2_500).successModifier(100).hostileModifier(-500).create());
 
 	public static final Tribute ELASTIC_FIBERS = register(ModItems.ELASTIC_FIBERS.get(), TributeImpl.builder().diseaseModifier(1).anomalyModifier(1).create());
 	public static final Tribute TOUGH_FIBERS = register(ModItems.TOUGH_FIBERS.get(), TributeImpl.builder().diseaseModifier(1).anomalyModifier(1).create());
