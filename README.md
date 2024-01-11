@@ -10,11 +10,11 @@
 <a aria-label="Latest Release" href="https://github.com/Elenterius/Biomancy/releases/">
 <img alt="" src="https://img.shields.io/github/v/release/elenterius/biomancy?include_prereleases&logo=github&style=for-the-badge"></a>
 
-<a aria-label="Project Tracker" href="https://trello.com/b/GUKjOSAl">
-<img alt="" src="https://img.shields.io/badge/Trello-0052CC?style=for-the-badge&logo=trello&logoColor=white"></a>
+<a aria-label="Project Tracker" href="https://github.com/orgs/Creative-Chasm/projects/2/">
+<img alt="" src="https://img.shields.io/badge/-Project-black?style=for-the-badge&logo=github"></a>
 
 <a aria-label="Downloads on CurseForge" href="https://www.curseforge.com/minecraft/mc-mods/biomancy">
-<img alt="" src="https://img.shields.io/endpoint?url=https%3A%2F%2Fdynamic-badge-formatter-ynrxn78r2oye.runkit.sh%2Fjson%3Furl%3Dhttps%253A%252F%252Fapi.curse.tools%252Fv1%252Fcf%252Fmods%252F492939%26query%3D%2524.data.downloadCount%26formatter%3Dmetric%26label%3D%2520%26labelColor%3Dgrey%26color%3DF16436%26logo%3Dcurseforge%26logoWidth%3D16%26style%3Dfor-the-badge%26cacheSeconds%3D86400%26suffix%3D%2520Downloads"></a>
+<img alt="" src="https://cf.way2muchnoise.eu/full_492939_downloads(f16436-f16436-fff-000-fff).svg?badge_style=for_the_badge"></a>
 
 <a aria-label="Downloads on Modrinth" href="https://modrinth.com/mod/biomancy">
 <img alt="" src="https://img.shields.io/modrinth/dt/uAAuyU4M?logo=modrinth&style=for-the-badge&color=1bd96a&labelColor=&logoColor=1bd96a"></a>
@@ -32,7 +32,7 @@ style.
 * [Download]
 * [Discord]
 * [Wiki]
-* [Trello]
+* [Github Project]
 
 ## Tech Stack
 
@@ -73,7 +73,7 @@ the [Creative Commons Attribution-NonCommercial 4.0 International License](http:
 
 ### Maven
 
-Atm there is no dedicated maven, you can use https://www.cursemaven.com/ to include the mod as a dependency.
+Atm there is no dedicated maven, you can use [cursemaven](https://www.cursemaven.com/) or [Modrinth Maven](https://docs.modrinth.com/maven) to include the mod as a dependency.
 
 ### Contributing
 
@@ -84,7 +84,7 @@ request to join the dev team.<br>
 This will give you access to the private mod development channels and resources such as the biomancy design document and
 concept board.
 
-You can track the development progress via our [Trello Board][Trello].
+You can track the development progress via our [Dev Board][Github Project].
 
 This project uses **Conventional Commits Messages** (https://www.conventionalcommits.org/en/v1.0.0/) to automatically
 genereate
@@ -96,7 +96,7 @@ If you need help feel free to [join our Discord][Discord].
 ## User Guide
 The mod provides no ingame guide book but uses tooltip descriptions & flavor texts instead. If you need further information you can read the github [Wiki].
 
-Read the [Getting Started Guide](https://github.com/Elenterius/Biomancy/wiki/v2/Getting-Started) section if you don't know what to do at all.
+Read the [Getting Started Guide](https://github.com/Elenterius/Biomancy/wiki/Biomancy-2-Getting-Started) section if you don't know what to do at all.
 
 ### Recipes
 To conveniently look up recipes ingame I recommend the use of the [JEI] mod.
@@ -104,8 +104,9 @@ To conveniently look up recipes ingame I recommend the use of the [JEI] mod.
 
 [Download]: https://www.curseforge.com/minecraft/mc-mods/biomancy
 [Discord]: https://discord.gg/424awTDdJJ
-[Wiki]: https://github.com/Elenterius/Biomancy/wiki/v2
-[Trello]: https://trello.com/b/GUKjOSAl
-[JitPack]: https://jitpack.io/#Elenterius/Biomancy
+
+[Wiki]: https://github.com/Elenterius/Biomancy/wiki/Biomancy-2
+
+[Github Project]: https://github.com/orgs/Creative-Chasm/projects/2/
 
 [JEI]:https://www.curseforge.com/minecraft/mc-mods/jei
