@@ -1,3 +1,14 @@
+## [3.0.0](https://github.com/Elenterius/Biomancy/compare/1.18.2-v2.0.53.0...1.18.2-v2.3.0.0) (2024-01-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* port Biomancy v2.3.0.0 to 1.18.2
+
+### Features
+
+* port Biomancy v2.3.0.0 to 1.18.2 ([27ef64d](https://github.com/Elenterius/Biomancy/commit/27ef64d009bcf0c4391567ced65cb7959de800a1))
+
 ## [0.53.0](https://github.com/Elenterius/Biomancy/compare/1.18.2-v2.0.48.0...1.18.2-v2.0.53.0) (2023-04-18)
 
 
