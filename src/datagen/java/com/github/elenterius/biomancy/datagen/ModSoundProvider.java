@@ -22,9 +22,8 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 	@Override
 	public void registerSounds() {
 
-		addSimpleRedirect(ModSoundEvents.UI_BUTTON_CLICK, SoundEvents.UI_BUTTON_CLICK);
-		addSimpleSound(ModSoundEvents.UI_MENU_OPEN);
-		addSimpleRedirect(ModSoundEvents.UI_RADIAL_MENU_OPEN, SoundEvents.SHULKER_BOX_OPEN, 0.5f, 1f);
+		addSimpleRedirect(ModSoundEvents.CLAWS_ATTACK_STRONG, SoundEvents.PLAYER_ATTACK_SWEEP, 0.85f, 0.9f);
+		addSimpleRedirect(ModSoundEvents.CLAWS_ATTACK_BLEED_PROC, SoundEvents.PLAYER_ATTACK_CRIT, 1f, 1.5f);
 
 		addSimpleSound(ModSoundEvents.INJECTOR_INJECT);
 		addSimpleRedirect(ModSoundEvents.INJECTOR_FAIL, SoundEvents.DISPENSER_FAIL);
@@ -36,13 +35,24 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 		addSimpleSounds(ModSoundEvents.FLESH_BLOCK_BREAK, 4);
 		addSimpleSounds(ModSoundEvents.FLESH_BLOCK_FALL, 3);
 
+		addSimpleRedirects(ModSoundEvents.BONY_FLESH_BLOCK_HIT, ModSoundEvents.FLESH_BLOCK_HIT.get(), SoundEvents.BONE_BLOCK_HIT);
+		addSimpleRedirects(ModSoundEvents.BONY_FLESH_BLOCK_PLACE, ModSoundEvents.FLESH_BLOCK_PLACE.get(), SoundEvents.BONE_BLOCK_PLACE);
+		addSimpleRedirects(ModSoundEvents.BONY_FLESH_BLOCK_STEP, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundEvents.BONE_BLOCK_STEP);
+		addSimpleRedirects(ModSoundEvents.BONY_FLESH_BLOCK_BREAK, ModSoundEvents.FLESH_BLOCK_BREAK.get(), SoundEvents.BONE_BLOCK_BREAK);
+		addSimpleRedirects(ModSoundEvents.BONY_FLESH_BLOCK_FALL, ModSoundEvents.FLESH_BLOCK_FALL.get(), SoundEvents.BONE_BLOCK_FALL);
+
 		addSimpleSounds(ModSoundEvents.FLESH_DOOR_OPEN, 2);
 		addSimpleSounds(ModSoundEvents.FLESH_DOOR_CLOSE, 2);
+
+		addSimpleRedirect(ModSoundEvents.FLESHKIN_NO, SoundEvents.VILLAGER_NO, 0.75f, 0.3f);
+		addSimpleRedirect(ModSoundEvents.FLESHKIN_EAT, SoundEvents.GENERIC_EAT, 0.9f, 0.9f);
+		addSimpleRedirect(ModSoundEvents.FLESHKIN_BREAK, ModSoundEvents.FLESH_BLOCK_BREAK, 1.2f, 1.25f);
+		addSimpleRedirect(ModSoundEvents.FLESHKIN_BECOME_DORMANT, ModSoundEvents.FLESH_BLOCK_HIT, 1.2f, 1.25f);
+		addSimpleRedirect(ModSoundEvents.FLESHKIN_BECOME_AWAKENED, ModSoundEvents.FLESH_BLOCK_PLACE, 1.2f, 1.25f);
 
 		addSimpleSounds(ModSoundEvents.FLESHKIN_CHEST_OPEN, 2);
 		addSimpleSounds(ModSoundEvents.FLESHKIN_CHEST_CLOSE, 2);
 		addSimpleRedirect(ModSoundEvents.FLESHKIN_CHEST_BITE_ATTACK, SoundEvents.GOAT_SCREAMING_RAM_IMPACT, 1f, 0.5f);
-		addSimpleRedirect(ModSoundEvents.FLESHKIN_CHEST_NO, SoundEvents.VILLAGER_NO, 0.75f, 0.3f);
 
 		addSimpleRedirect(ModSoundEvents.CREATOR_SPIKE_ATTACK, SoundEvents.GOAT_SCREAMING_RAM_IMPACT, 1f, 0.5f);
 		addSimpleRedirect(ModSoundEvents.CREATOR_CRAFTING_RANDOM, SoundEvents.PLAYER_BURP, 1f, 0.5f);
@@ -50,6 +60,10 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 		addSimpleRedirect(ModSoundEvents.CREATOR_BECAME_FULL, SoundEvents.PLAYER_BURP, 1f, 0.25f);
 		addSimpleRedirect(ModSoundEvents.CREATOR_EAT, SoundEvents.GOAT_SCREAMING_EAT, 1f, 0.25f);
 		addSimpleRedirect(ModSoundEvents.CREATOR_NO, SoundEvents.VILLAGER_NO, 0.75f, 0.3f);
+
+		addSimpleRedirect(ModSoundEvents.UI_BUTTON_CLICK, SoundEvents.UI_BUTTON_CLICK);
+		addSimpleSound(ModSoundEvents.UI_MENU_OPEN);
+		addSimpleRedirect(ModSoundEvents.UI_RADIAL_MENU_OPEN, SoundEvents.SHULKER_BOX_OPEN, 0.5f, 1f);
 
 		addSimpleRedirect(ModSoundEvents.UI_STORAGE_SAC_OPEN, ModSoundEvents.UI_MENU_OPEN);
 
@@ -74,7 +88,11 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 		addSimpleRedirect(ModSoundEvents.DIGESTER_CRAFTING_COMPLETED, SoundEvents.PLAYER_BURP, 1f, 1.25f);
 
 		addSimpleRedirect(ModSoundEvents.FLESH_BLOB_JUMP, SoundEvents.SLIME_JUMP);
-		addSimpleRedirect(ModSoundEvents.FLESH_BLOB_HURT, ModSoundEvents.FLESH_BLOCK_BREAK.get(), 0.8f, 0.9f);
+		addSimpleRedirect(ModSoundEvents.FLESH_BLOB_HURT, ModSoundEvents.FLESH_BLOCK_BREAK, 0.8f, 0.9f);
+		addSimpleRedirect(ModSoundEvents.FLESH_BLOB_DEATH, SoundEvents.GENERIC_DEATH);
+		addSimpleSounds(ModSoundEvents.FLESH_BLOB_AMBIENT, 3, 0.8f, 0.9f);
+		addSimpleSound(ModSoundEvents.GENERIC_MEW_PURR, 0.7f, 0.45f);
+		addSimpleSound(ModSoundEvents.GENERIC_GROWL, 0.9f, 0.55f);
 	}
 
 	public String translationKey(RegistryObject<SoundEvent> soundHolder) {
@@ -89,13 +107,21 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 		return new ResourceLocation(rl.getNamespace(), rl.getPath() + variant);
 	}
 
-    protected void addSimpleSounds(RegistryObject<SoundEvent> soundHolder, int variants) {
-        SoundDefinition soundDefinition = definition().subtitle(translationKey(soundHolder));
-        for (int i = 1; i <= variants; i++) {
-	        soundDefinition.with(SoundDefinitionsProvider.sound(extend(soundHolder.getId(), i)));
-        }
-        add(soundHolder, soundDefinition);
-    }
+	protected void addSimpleSounds(RegistryObject<SoundEvent> soundHolder, int variants) {
+		SoundDefinition soundDefinition = definition().subtitle(translationKey(soundHolder));
+		for (int i = 1; i <= variants; i++) {
+			soundDefinition.with(SoundDefinitionsProvider.sound(extend(soundHolder.getId(), i)));
+		}
+		add(soundHolder, soundDefinition);
+	}
+
+	protected void addSimpleSounds(RegistryObject<SoundEvent> soundHolder, int variants, float volume, float pitch) {
+		SoundDefinition soundDefinition = definition().subtitle(translationKey(soundHolder));
+		for (int i = 1; i <= variants; i++) {
+			soundDefinition.with(SoundDefinitionsProvider.sound(extend(soundHolder.getId(), i)).volume(volume).pitch(pitch));
+		}
+		add(soundHolder, soundDefinition);
+	}
 
 	protected void addSimpleSounds(RegistryObject<SoundEvent> soundHolder, String... suffixes) {
 		SoundDefinition soundDefinition = definition().subtitle(translationKey(soundHolder));
@@ -149,4 +175,13 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 		);
 	}
 
+	protected void addSimpleRedirects(RegistryObject<SoundEvent> soundHolder, SoundEvent... redirectTargets) {
+		SoundDefinition soundDefinition = definition().subtitle(translationKey(soundHolder));
+
+		for (SoundEvent redirectTarget : redirectTargets) {
+			soundDefinition.with().with(sound(redirectTarget.getLocation(), SoundDefinition.SoundType.EVENT));
+		}
+
+		add(soundHolder, soundDefinition);
+	}
 }

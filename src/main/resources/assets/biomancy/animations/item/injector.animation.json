@@ -1,247 +1,298 @@
 {
-  "format_version": "1.8.0",
-  "animations": {
-    "injector.anim.inject": {
-      "animation_length": 0.92,
-      "bones": {
-        "injector": {
-          "rotation": {
-            "0.0": {
-              "vector": [ 0, 0, 0 ]
-            },
-            "0.2": {
-              "vector": [ 0, 0, 0 ]
-            },
-            "0.32": {
-              "vector": [ 0, 0, 55 ],
-              "easing": "easeOutSine"
-            },
-            "0.48": {
-              "vector": [ 0, 0, 55 ]
-            },
-            "0.72": {
-              "vector": [ 0, 0, 0 ],
-              "easing": "easeOutSine"
-            }
-          },
-          "position": {
-            "0.0": {
-              "vector": [ 0, 0, 0 ]
-            },
-            "0.2": {
-              "vector": [ 0, 0, 1 ],
-              "easing": "easeOutSine"
-            },
-            "0.32": {
-              "vector": [ -2, 0, -7 ],
-              "easing": "easeOutSine"
-            },
-            "0.48": {
-              "vector": [ -2, 0, -7 ],
-              "easing": "easeOutSine"
-            },
-            "0.72": {
-              "vector": [ 0, 0, 0 ],
-              "easing": "easeOutSine"
-            }
-          }
-        }
-      },
-      "sound_effects": {
-        "0.32": {
-          "effect": "inject"
-        }
-      }
-    },
-    "injector.anim.inject.self": {
-      "animation_length": 0.92,
-      "bones": {
-        "injector": {
-          "rotation": {
-            "0.0": {
-              "vector": [ 0, 0, 0 ]
-            },
-            "0.2": {
-              "vector": [ 0, -35, 0 ]
-            },
-            "0.32": {
-              "vector": [ 0, -105, 0 ]
-            },
-            "0.48": {
-              "vector": [ 0, -105, 0 ]
-            },
-            "0.88": {
-              "vector": [ 0, 0, 0 ]
-            }
-          },
-          "position": {
-            "0.0": {
-              "vector": [ 0, 0, 0 ]
-            },
-            "0.08": {
-              "vector": [ 0, 0, 3 ]
-            },
-            "0.2": {
-              "vector": [ -3, 0, 4 ],
-              "easing": "easeOutSine"
-            },
-            "0.32": {
-              "vector": [ 2, 0, 4 ],
-              "easing": "easeInSine"
-            },
-            "0.48": {
-              "vector": [ 2, 0, 4 ],
-              "easing": "easeInSine"
-            },
-            "0.68": {
-              "vector": [ -1, 0, 2 ],
-              "easing": "easeOutSine"
-            },
-            "0.88": {
-              "vector": [ 0, 0, 0 ]
-            }
-          }
-        }
-      },
-      "sound_effects": {
-        "0.32": {
-          "effect": "inject"
-        }
-      }
-    },
-    "injector.inject": {
-      "animation_length": 0.92,
-      "bones": {
-        "injector": {
-          "rotation": {
-            "0.0": {
-              "vector": [ 0, 0, 0 ]
-            },
-            "0.2": {
-              "vector": [ 0, 0, 0 ]
-            },
-            "0.32": {
-              "vector": [ 0, 0, 55 ],
-              "easing": "easeOutSine"
-            },
-            "0.48": {
-              "vector": [ 0, 0, 55 ]
-            },
-            "0.72": {
-              "vector": [ 0, 0, 0 ],
-              "easing": "easeOutSine"
-            }
-          },
-          "position": {
-            "0.0": {
-              "vector": [ 0, 0, 0 ]
-            },
-            "0.2": {
-              "vector": [ 0, 0, 1 ],
-              "easing": "easeOutSine"
-            },
-            "0.32": {
-              "vector": [ -2, 0, -7 ],
-              "easing": "easeOutSine"
-            },
-            "0.48": {
-              "vector": [ -2, 0, -7 ],
-              "easing": "easeOutSine"
-            },
-            "0.72": {
-              "vector": [ 0, 0, 0 ],
-              "easing": "easeOutSine"
-            }
-          }
-        }
-      },
-      "sound_effects": {
-        "0.32": {
-          "effect": "inject"
-        }
-      }
-    },
-    "injector.inject.self": {
-      "animation_length": 0.92,
-      "bones": {
-        "injector": {
-          "rotation": {
-            "0.0": {
-              "vector": [ 0, 0, 0 ]
-            },
-            "0.2": {
-              "vector": [ 0, -35, 0 ]
-            },
-            "0.32": {
-              "vector": [ 0, -105, 0 ]
-            },
-            "0.48": {
-              "vector": [ 0, -105, 0 ]
-            },
-            "0.88": {
-              "vector": [ 0, 0, 0 ]
-            }
-          },
-          "position": {
-            "0.0": {
-              "vector": [ 0, 0, 0 ]
-            },
-            "0.08": {
-              "vector": [ 0, 0, 3 ]
-            },
-            "0.2": {
-              "vector": [ -3, 0, 4 ],
-              "easing": "easeOutSine"
-            },
-            "0.32": {
-              "vector": [ 2, 0, 4 ],
-              "easing": "easeInSine"
-            },
-            "0.48": {
-              "vector": [ 2, 0, 4 ],
-              "easing": "easeInSine"
-            },
-            "0.68": {
-              "vector": [ -1, 0, 2 ],
-              "easing": "easeOutSine"
-            },
-            "0.88": {
-              "vector": [ 0, 0, 0 ]
-            }
-          }
-        }
-      },
-      "sound_effects": {
-        "0.32": {
-          "effect": "inject"
-        }
-      }
-    },
-    "injector.regrow_needle": {
-      "animation_length": 2.08,
-      "bones": {
-        "needle": {
-          "position": {
-            "0.0": {
-              "vector": [ 0, 0, 6 ]
-            },
-            "0.4": {
-              "vector": [ 0, 0, 4.5 ],
-              "easing": "easeOutBack",
-              "easingArgs": [ 1.1 ]
-            },
-            "0.72": {
-              "vector": [ 0, 0, 4.5 ]
-            },
-            "2.08": {
-              "vector": [ 0, 0, 0 ],
-              "easing": "easeInOutElastic",
-              "easingArgs": [ 1 ]
-            }
-          }
-        }
-      }
-    }
-  },
-  "geckolib_format_version": 2
+	"format_version": "1.8.0",
+	"animations": {
+		"injector.inject": {
+			"animation_length": 0.92,
+			"bones": {
+				"injector": {
+					"rotation": {
+						"0.0": {
+							"vector": [ 0, 0, 0 ]
+						},
+						"0.08": {
+							"vector": [ 0, 0, 0 ],
+							"easing": "easeInSine"
+						},
+						"0.2": {
+							"vector": [ 0, 0, 55 ],
+							"easing": "easeInSine"
+						},
+						"0.64": {
+							"vector": [ 0, 0, 55 ],
+							"easing": "easeInSine"
+						},
+						"0.92": {
+							"vector": [ 0, 0, 0 ],
+							"easing": "easeOutSine"
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [ 0, 0, 0 ]
+						},
+						"0.08": {
+							"vector": [ 0, 0, 1 ],
+							"easing": "easeInSine"
+						},
+						"0.2": {
+							"vector": [ -1, 0, -7 ],
+							"easing": "easeInSine"
+						},
+						"0.64": {
+							"vector": [ -1, 0, -7 ],
+							"easing": "easeInSine"
+						},
+						"0.92": {
+							"vector": [ 0, 0, 0 ],
+							"easing": "easeOutSine"
+						}
+					}
+				},
+				"_serum_core": {
+					"scale": {
+						"0.0": {
+							"vector": [ 1, 1, 1 ]
+						},
+						"0.28": {
+							"vector": [ 1, 1, 1 ]
+						},
+						"0.48": {
+							"vector": [ 1, 0, 1 ],
+							"easing": "step",
+							"easingArgs": [ 5 ]
+						}
+					}
+				}
+			},
+			"sound_effects": {
+				"0.32": {
+					"effect": "inject"
+				}
+			}
+		},
+		"injector.inject_fail": {
+			"animation_length": 0.92,
+			"bones": {
+				"injector": {
+					"rotation": {
+						"0.0": {
+							"vector": [ 0, 0, 0 ]
+						},
+						"0.08": {
+							"vector": [ 0, 0, 0 ],
+							"easing": "easeInSine"
+						},
+						"0.2": {
+							"vector": [ 0, 0, 55 ],
+							"easing": "easeInSine"
+						},
+						"0.24": {
+							"vector": [ 0, 0, 55 ],
+							"easing": "easeInSine"
+						},
+						"0.28": {
+							"vector": [ 9.81234, 25.08935, 54.1883 ]
+						},
+						"0.44": {
+							"vector": [ -10.33805, 28.503, 23.89976 ]
+						},
+						"0.92": {
+							"vector": [ 0, 0, 0 ],
+							"easing": "easeOutSine"
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [ 0, 0, 0 ]
+						},
+						"0.08": {
+							"vector": [ 0, 0, 1 ],
+							"easing": "easeInSine"
+						},
+						"0.2": {
+							"vector": [ -1, 0, -7 ],
+							"easing": "easeInSine"
+						},
+						"0.24": {
+							"vector": [ -1, 0, -7 ],
+							"easing": "easeInSine"
+						},
+						"0.28": {
+							"vector": [ -1, 0, -5 ]
+						},
+						"0.44": {
+							"vector": [ -0.44, 0, -2.22 ]
+						},
+						"0.92": {
+							"vector": [ 0, 0, 0 ],
+							"easing": "easeOutSine"
+						}
+					}
+				},
+				"needle": {
+					"position": {
+						"0.24": {
+							"vector": [ 0, 0, 0 ]
+						},
+						"0.28": {
+							"vector": [ 0, 0, 8 ]
+						}
+					},
+					"scale": {
+						"0.0": {
+							"vector": [ 1, 1, 1 ]
+						},
+						"0.24": {
+							"vector": [ 1, 1, 1 ]
+						},
+						"0.28": {
+							"vector": [ 0, 0, 0 ],
+							"easing": "step",
+							"easingArgs": [ 2 ]
+						},
+						"0.92": {
+							"vector": [ 0, 0, 0 ]
+						}
+					}
+				}
+			},
+			"sound_effects": {
+				"0.24": {
+					"effect": "inject_fail"
+				}
+			}
+		},
+		"injector.regrow_needle": {
+			"animation_length": 0.79167,
+			"bones": {
+				"injector": {
+					"rotation": {
+						"0.0": {
+							"vector": [ 0, 0, 0 ],
+							"easing": "easeOutSine"
+						},
+						"0.0417": {
+							"vector": [ 0, 0, -5 ]
+						},
+						"0.0833": {
+							"vector": [ 0, 0, 5 ]
+						},
+						"0.125": {
+							"vector": [ 0, 0, -5 ]
+						},
+						"0.1667": {
+							"vector": [ 0, 0, 5 ]
+						},
+						"0.2083": {
+							"vector": [ 0, 0, -5 ]
+						},
+						"0.25": {
+							"vector": [ 0, 0, 5 ]
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [ 0, 0, 0 ],
+							"easing": "easeOutSine"
+						},
+						"0.2083": {
+							"vector": [ 0, 0, 0 ],
+							"easing": "easeOutSine"
+						},
+						"0.2917": {
+							"vector": [ 0, 0, -1 ]
+						},
+						"0.4583": {
+							"vector": [ 0, 0, 0 ],
+							"easing": "easeOutSine"
+						}
+					}
+				},
+				"needle": {
+					"scale": {
+						"0.1667": {
+							"vector": [ 0, 0, 0 ]
+						},
+						"0.25": {
+							"vector": [ 0, 0, 0 ]
+						},
+						"0.3333": {
+							"vector": [ 1, 1, 1.7 ]
+						},
+						"0.4167": {
+							"vector": [ 1, 1, 1 ]
+						}
+					}
+				}
+			}
+		},
+		"injector.inject_self": {
+			"animation_length": 0.92,
+			"bones": {
+				"injector": {
+					"rotation": {
+						"0.0": {
+							"vector": [ 0, 0, 0 ]
+						},
+						"0.16": {
+							"vector": [ 0, -35, 0 ],
+							"easing": "easeInSine"
+						},
+						"0.24": {
+							"vector": [ 0, -105, 0 ],
+							"easing": "easeInSine"
+						},
+						"0.72": {
+							"vector": [ 0, -105, 0 ]
+						},
+						"0.92": {
+							"vector": [ 0, 0, 0 ]
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [ 0, 0, 0 ]
+						},
+						"0.08": {
+							"vector": [ 0, 0, 3 ]
+						},
+						"0.16": {
+							"vector": [ -3, 0, 4 ],
+							"easing": "easeInSine"
+						},
+						"0.24": {
+							"vector": [ 2, 0, 4 ],
+							"easing": "easeInSine"
+						},
+						"0.72": {
+							"vector": [ 2, 0, 4 ]
+						},
+						"0.92": {
+							"vector": [ 0, 0, 0 ]
+						}
+					}
+				},
+				"_serum_core": {
+					"scale": {
+						"0.0": {
+							"vector": [ 1, 1, 1 ]
+						},
+						"0.32": {
+							"vector": [ 1, 1, 1 ]
+						},
+						"0.52": {
+							"vector": [ 1, 0, 1 ],
+							"easing": "step"
+						}
+					}
+				}
+			},
+			"sound_effects": {
+				"0.32": {
+					"effect": "inject"
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
 }

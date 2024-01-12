@@ -1,10 +1,11 @@
 package com.github.elenterius.biomancy.datagen.recipes;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.crafting.recipe.DecomposerRecipe;
+import com.github.elenterius.biomancy.crafting.recipe.IngredientStack;
 import com.github.elenterius.biomancy.init.ModBioForgeTabs;
 import com.github.elenterius.biomancy.init.ModRecipes;
-import com.github.elenterius.biomancy.recipe.IngredientStack;
-import com.github.elenterius.biomancy.world.inventory.menu.BioForgeTab;
+import com.github.elenterius.biomancy.menu.BioForgeTab;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;
@@ -17,6 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
@@ -28,13 +30,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class BioForgeRecipeBuilder implements IRecipeBuilder {
 
-	public static final String SUFFIX = "_from_bio_forging";
+	public static final String RECIPE_SUB_FOLDER = ModRecipes.BIO_FORGING_RECIPE_TYPE.getId().getPath();
+	public static final String SUFFIX = "_from_" + RECIPE_SUB_FOLDER;
 
 	private final ResourceLocation recipeId;
 
@@ -44,9 +46,15 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 	private final Advancement.Builder advancement = Advancement.Builder.advancement();
 	private BioForgeTab category = ModBioForgeTabs.MISC.get();
 
+	private int craftingCostNutrients = -1;
+
 	private BioForgeRecipeBuilder(ResourceLocation recipeId, ItemData result) {
-		this.recipeId = recipeId;
+		this.recipeId = new ResourceLocation(recipeId.getNamespace(), RECIPE_SUB_FOLDER + "/" + recipeId.getPath());
 		this.result = result;
+	}
+
+	public static BioForgeRecipeBuilder create(ResourceLocation recipeId, ItemData result) {
+		return new BioForgeRecipeBuilder(recipeId, result);
 	}
 
 	public static BioForgeRecipeBuilder create(String modId, String outputName, ItemData result) {
@@ -59,25 +67,21 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 		return new BioForgeRecipeBuilder(rl, result);
 	}
 
-	public static BioForgeRecipeBuilder create(ResourceLocation recipeId, ItemData result) {
-		return new BioForgeRecipeBuilder(recipeId, result);
-	}
-
 	public static BioForgeRecipeBuilder create(ItemData result) {
-		ResourceLocation rl = BiomancyMod.createRL(result.getItemNamedId() + SUFFIX);
+		ResourceLocation rl = BiomancyMod.createRL(result.getItemPath() + SUFFIX);
 		return new BioForgeRecipeBuilder(rl, result);
 	}
 
+	public static BioForgeRecipeBuilder create(ItemStack stack) {
+		return create(new ItemData(stack));
+	}
+
 	public static BioForgeRecipeBuilder create(ItemLike item) {
-		ItemData itemData = new ItemData(item);
-		ResourceLocation rl = BiomancyMod.createRL(Objects.requireNonNull(item.asItem().getRegistryName()).getPath() + SUFFIX);
-		return new BioForgeRecipeBuilder(rl, itemData);
+		return create(new ItemData(item));
 	}
 
 	public static BioForgeRecipeBuilder create(ItemLike item, int count) {
-		ItemData itemData = new ItemData(item, count);
-		ResourceLocation rl = BiomancyMod.createRL(Objects.requireNonNull(item.asItem().getRegistryName()).getPath() + SUFFIX);
-		return new BioForgeRecipeBuilder(rl, itemData);
+		return create(new ItemData(item, count));
 	}
 
 	//	public BioForgeRecipeBuilder setCraftingTime(int time) {
@@ -85,6 +89,12 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 	//		craftingTime = time;
 	//		return this;
 	//	}
+
+	public BioForgeRecipeBuilder setCraftingCost(int costNutrients) {
+		if (costNutrients < 0) throw new IllegalArgumentException("Invalid crafting cost: " + costNutrients);
+		craftingCostNutrients = costNutrients;
+		return this;
+	}
 
 	public BioForgeRecipeBuilder ifModLoaded(String modId) {
 		return withCondition(new ModLoadedCondition(modId));
@@ -144,12 +154,19 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 	@Override
 	public void save(Consumer<FinishedRecipe> consumer, @Nullable CreativeModeTab itemCategory) {
 		validateCriteria();
+
+		if (craftingCostNutrients < 0) {
+			craftingCostNutrients = DecomposerRecipe.DEFAULT_CRAFTING_COST_NUTRIENTS;
+		}
+
 		advancement.parent(new ResourceLocation("recipes/root"))
 				.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId))
 				.rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
-		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(),
-				"recipes/" + (itemCategory != null ? itemCategory.getRecipeFolderName() : BiomancyMod.MOD_ID) + "/" + recipeId.getPath());
-		consumer.accept(new RecipeResult(this, advancementId));
+
+		String folderName = IRecipeBuilder.getRecipeFolderName(itemCategory, BiomancyMod.MOD_ID);
+		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(), "recipes/%s/%s".formatted(folderName, recipeId.getPath()));
+
+		consumer.accept(new Result(this, advancementId));
 	}
 
 	private void validateCriteria() {
@@ -158,21 +175,23 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 		}
 	}
 
-	public static class RecipeResult implements FinishedRecipe {
+	public static class Result implements FinishedRecipe {
 
 		private final ResourceLocation id;
 		private final List<IngredientStack> ingredients;
 		private final ItemData result;
+		private final int craftingCost;
 		private final BioForgeTab category;
 		private final List<ICondition> conditions;
 		private final Advancement.Builder advancementBuilder;
 		private final ResourceLocation advancementId;
 
-		public RecipeResult(BioForgeRecipeBuilder builder, ResourceLocation advancementId) {
+		public Result(BioForgeRecipeBuilder builder, ResourceLocation advancementId) {
 			id = builder.recipeId;
 			category = builder.category;
 			result = builder.result;
 			ingredients = builder.ingredients;
+			craftingCost = builder.craftingCostNutrients;
 			conditions = builder.conditions;
 
 			advancementBuilder = builder.advancement;
@@ -185,11 +204,13 @@ public class BioForgeRecipeBuilder implements IRecipeBuilder {
 			for (IngredientStack ingredient : ingredients) {
 				jsonArray.add(ingredient.toJson());
 			}
-			json.add("ingredient_quantities", jsonArray);
+			json.add("ingredients", jsonArray);
 
 			json.add("result", result.toJson());
 
 			category.toJson(json);
+
+			json.addProperty("nutrientsCost", craftingCost);
 
 			//serialize conditions
 			if (!conditions.isEmpty()) {

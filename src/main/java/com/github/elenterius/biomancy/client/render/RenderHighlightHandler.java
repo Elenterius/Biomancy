@@ -1,9 +1,9 @@
 package com.github.elenterius.biomancy.client.render;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.block.DirectionalSlabBlock;
-import com.github.elenterius.biomancy.world.block.property.DirectionalSlabType;
-import com.github.elenterius.biomancy.world.item.SimpleBlockItem;
+import com.github.elenterius.biomancy.block.DirectionalSlabBlock;
+import com.github.elenterius.biomancy.block.property.DirectionalSlabType;
+import com.github.elenterius.biomancy.item.SimpleBlockItem;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -31,7 +31,7 @@ public final class RenderHighlightHandler {
 	private RenderHighlightHandler() {}
 
 	@SubscribeEvent
-	public static void onBlockHighlight(final DrawSelectionEvent.HighlightBlock event) {
+	public static void onBlockHighlight(DrawSelectionEvent.HighlightBlock event) {
 		if (event.getCamera().getEntity() instanceof Player player) {
 			ItemStack itemStack = player.getMainHandItem();
 			if (itemStack.getItem() instanceof SimpleBlockItem blockItem && blockItem.getBlock() instanceof DirectionalSlabBlock slabBlock) {

@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.init;
 
+import com.github.elenterius.biomancy.BiomancyConfig;
 import com.github.elenterius.biomancy.BiomancyMod;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.world.entity.npc.VillagerProfession;
@@ -21,6 +22,8 @@ public class ModVillagerTrades {
 
 	@SubscribeEvent
 	public static void onVillagerTrades(final VillagerTradesEvent event) {
+		if (Boolean.FALSE.equals(BiomancyConfig.SERVER.addTradesToVillagers.get())) return;
+
 		if (event.getType() == VillagerProfession.BUTCHER) {
 			addButcherTrades(event.getTrades());
 		}
@@ -31,14 +34,16 @@ public class ModVillagerTrades {
 
 	@SubscribeEvent
 	public static void onWandererTrades(final WandererTradesEvent event) {
+		if (Boolean.FALSE.equals(BiomancyConfig.SERVER.addTradesToWanderingTrader.get())) return;
+
 		List<VillagerTrades.ItemListing> genericTrades = event.getGenericTrades();
 		genericTrades.add(sellToPlayer(ModItems.EXOTIC_DUST.get(), 4, 2, 16, 5));
-		genericTrades.add(sellToPlayer(ModItems.BONE_SPIKE.get(), 2, 16, 5));
+		genericTrades.add(sellToPlayer(ModItems.FLESH_SPIKE.get(), 2, 16, 5));
 		genericTrades.add(buyFromPlayer(ModItems.NUTRIENT_BAR.get(), 2, 8, 5));
 
 		List<VillagerTrades.ItemListing> rareTrades = event.getRareTrades();
-		rareTrades.add(sellToPlayer(ModItems.INSOMNIA_CURE.get(), 20, 8, 20));
-		rareTrades.add(sellToPlayer(ModItems.CREATOR_MIX.get(), 20, 5, 20));
+		rareTrades.add(sellToPlayer(ModItems.INSOMNIA_CURE.get(), 10, 8, 20));
+		rareTrades.add(sellToPlayer(ModItems.CREATOR_MIX.get(), 10, 5, 20));
 	}
 
 	private static BasicItemListing buyFromPlayer(Item item, int emeralds, int maxTrades, int xp) {
@@ -68,7 +73,7 @@ public class ModVillagerTrades {
 
 	private static void addClericTrades(Int2ObjectMap<List<VillagerTrades.ItemListing>> trades) {
 		TradeLevel.JOURNEYMAN.addItemListings(trades,
-				buyFromPlayer(ModItems.GLASS_VIAL.get(), 4, 1, 12, 20)
+				buyFromPlayer(ModItems.VIAL.get(), 4, 1, 12, 20)
 		);
 
 		TradeLevel.EXPERT.addItemListings(trades,

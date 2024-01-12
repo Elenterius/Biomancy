@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.util;
 
-import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
@@ -132,7 +132,7 @@ public final class GuiRenderUtil {
 		BufferUploader.end(bufferbuilder);
 	}
 
-	public static void fill(PoseStack poseStack, float minX, float minY, float maxX, float maxY, int blitOffset, int color) {
+	public static void fill(PoseStack poseStack, float minX, float minY, float maxX, float maxY, int blitOffset, int colorARGB) {
 		Matrix4f matrix4f = poseStack.last().pose();
 
 		BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
@@ -141,10 +141,10 @@ public final class GuiRenderUtil {
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.setShader(GameRenderer::getPositionColorShader);
 		bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-		bufferbuilder.vertex(matrix4f, minX, maxY, blitOffset).color(color).endVertex();
-		bufferbuilder.vertex(matrix4f, maxX, maxY, blitOffset).color(color).endVertex();
-		bufferbuilder.vertex(matrix4f, maxX, minY, blitOffset).color(color).endVertex();
-		bufferbuilder.vertex(matrix4f, minX, minY, blitOffset).color(color).endVertex();
+		bufferbuilder.vertex(matrix4f, minX, maxY, blitOffset).color(colorARGB).endVertex();
+		bufferbuilder.vertex(matrix4f, maxX, maxY, blitOffset).color(colorARGB).endVertex();
+		bufferbuilder.vertex(matrix4f, maxX, minY, blitOffset).color(colorARGB).endVertex();
+		bufferbuilder.vertex(matrix4f, minX, minY, blitOffset).color(colorARGB).endVertex();
 		bufferbuilder.end();
 		BufferUploader.end(bufferbuilder);
 		RenderSystem.enableTexture();

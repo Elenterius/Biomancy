@@ -160,6 +160,7 @@ dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.18:3.0.56')
+	datagenImplementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.18:3.0.56')
 
 	//https://h2database.com/html/mvstore.html
 	minecraftLibrary(group: "com.h2database", name: "h2-mvstore", version: "2.2.224")

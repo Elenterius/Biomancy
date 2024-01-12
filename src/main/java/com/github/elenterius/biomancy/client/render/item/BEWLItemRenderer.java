@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.client.render.item;
 
-import com.github.elenterius.biomancy.world.item.BEWLBlockItem;
+import com.github.elenterius.biomancy.item.BEWLBlockItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -33,7 +33,7 @@ public class BEWLItemRenderer extends BlockEntityWithoutLevelRenderer {
 			BlockEntity cachedBEWL = blockItem.getCachedBEWL();
 			if (cachedBEWL == null) return;
 
-			if (cachedBEWL instanceof IAnimatable && transformType == ItemTransforms.TransformType.GUI) {
+			if (cachedBEWL instanceof IAnimatable && transformType != ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND && transformType != ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND) {
 				poseStack.pushPose();
 				poseStack.translate(0f, 0.5f, 0f); //fix for display translation offset of geo block models
 				renderBlockEntity(poseStack, buffer, packedLight, packedOverlay, cachedBEWL);

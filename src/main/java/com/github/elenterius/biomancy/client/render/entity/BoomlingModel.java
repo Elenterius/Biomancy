@@ -1,32 +1,32 @@
 package com.github.elenterius.biomancy.client.render.entity;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.entity.ownable.Boomling;
+import com.github.elenterius.biomancy.client.render.GeckolibModel;
+import com.github.elenterius.biomancy.entity.ownable.Boomling;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.model.provider.data.EntityModelData;
 
 @Deprecated
-public class BoomlingModel<T extends Boomling> extends AnimatedGeoModel<T> {
+public class BoomlingModel<T extends Boomling> extends GeckolibModel<T> {
 
 	public static final ResourceLocation OVERLAY_TEXTURE = BiomancyMod.createRL("textures/entity/boomling_overlay.png");
 
 	@Override
-	public ResourceLocation getModelLocation(Boomling boomling) {
+	public ResourceLocation getModelResource(Boomling boomling) {
 		return BiomancyMod.createRL("geo/entity/boomling.geo.json");
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(Boomling boomling) {
+	public ResourceLocation getTextureResource(Boomling boomling) {
 		return BiomancyMod.createRL("textures/entity/boomling.png");
 	}
 
 	@Override
-	public ResourceLocation getAnimationFileLocation(Boomling boomling) {
+	public ResourceLocation getAnimationResource(Boomling boomling) {
 		return BiomancyMod.createRL("animations/entity/boomling.animation.json");
 	}
 

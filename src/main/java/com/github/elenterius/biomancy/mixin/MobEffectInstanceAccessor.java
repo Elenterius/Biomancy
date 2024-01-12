@@ -8,6 +8,12 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface MobEffectInstanceAccessor {
 
 	@Accessor("amplifier")
-	void setAmplifier(int amplifier);
+	void biomancy$setAmplifier(int amplifier);
+
+	@Accessor("duration")
+	void biomancy$setDuration(int ticks);
+
+	//	@Accessor("factorData")
+	//	Optional<MobEffectInstance.FactorData> biomancy$getFactorData();
 
 }

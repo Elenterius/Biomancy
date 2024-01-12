@@ -1,28 +1,28 @@
 package com.github.elenterius.biomancy.client.render.item.injector;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.item.InjectorItem;
+import com.github.elenterius.biomancy.client.render.GeckolibModel;
+import com.github.elenterius.biomancy.item.injector.InjectorItem;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
 
-public class InjectorModel extends AnimatedGeoModel<InjectorItem> {
+public class InjectorModel extends GeckolibModel<InjectorItem> {
 
 	protected static final ResourceLocation MODEL = BiomancyMod.createRL("geo/item/injector.geo.json");
-	protected static final ResourceLocation TEXTURE = BiomancyMod.createRL("textures/item/injector_tint.png");
+	protected static final ResourceLocation TEXTURE = BiomancyMod.createRL("textures/item/injector.png");
 	protected static final ResourceLocation ANIMATION = BiomancyMod.createRL("animations/item/injector.animation.json");
 
 	@Override
-	public ResourceLocation getModelLocation(InjectorItem item) {
+	public ResourceLocation getModelResource(InjectorItem item) {
 		return MODEL;
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(InjectorItem item) {
+	public ResourceLocation getTextureResource(InjectorItem item) {
 		return TEXTURE;
 	}
 
 	@Override
-	public ResourceLocation getAnimationFileLocation(InjectorItem item) {
+	public ResourceLocation getAnimationResource(InjectorItem item) {
 		return ANIMATION;
 	}
 

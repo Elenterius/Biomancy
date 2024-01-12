@@ -73,9 +73,9 @@ public final class MobSoundUtil {
 			LivingEntityAccessor livingEntityAccessor = (LivingEntityAccessor) entity;
 //			tag.putFloat(NBT_KEY_VOLUME, livingEntityAccessor.biomancy_getSoundVolume());
 //			tag.putFloat(NBT_KEY_PITCH, livingEntityAccessor.biomancy_getVoicePitch());
-			VoiceType.DEATH.saveSound(tag, livingEntityAccessor.biomancy_getDeathSound());
-			VoiceType.HURT.saveSound(tag, livingEntityAccessor.biomancy_getHurtSound(DamageSource.GENERIC));
-			VoiceType.AMBIENT.saveSound(tag, entity instanceof Mob ? ((MobEntityAccessor) entity).biomancy_getAmbientSound() : null);
+			VoiceType.DEATH.saveSound(tag, livingEntityAccessor.biomancy$getDeathSound());
+			VoiceType.HURT.saveSound(tag, livingEntityAccessor.biomancy$getHurtSound(DamageSource.GENERIC));
+			VoiceType.AMBIENT.saveSound(tag, entity instanceof Mob ? ((MobEntityAccessor) entity).biomancy$getAmbientSound() : null);
 			tag.putByte(NBT_KEY_VOICE, DEATH.id);
 		}
 
@@ -103,7 +103,7 @@ public final class MobSoundUtil {
 
 		private void saveSound(CompoundTag tag, @Nullable SoundEvent soundEvent) {
 			if (soundEvent != null) {
-				ResourceLocation registryName = soundEvent.getRegistryName();
+				ResourceLocation registryName = soundEvent.getLocation();
 				tag.putString(nbtKey, registryName != null ? registryName.toString() : genericSoundId);
 			}
 			else tag.remove(nbtKey);

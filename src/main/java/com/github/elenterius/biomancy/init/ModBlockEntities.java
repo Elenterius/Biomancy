@@ -1,20 +1,22 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.block.bioforge.BioForgeBlockEntity;
-import com.github.elenterius.biomancy.world.block.biolab.BioLabBlockEntity;
-import com.github.elenterius.biomancy.world.block.cradle.PrimordialCradleBlockEntity;
-import com.github.elenterius.biomancy.world.block.decomposer.DecomposerBlockEntity;
-import com.github.elenterius.biomancy.world.block.digester.DigesterBlockEntity;
-import com.github.elenterius.biomancy.world.block.entity.BlockEntityDelegator;
-import com.github.elenterius.biomancy.world.block.fleshkinchest.FleshkinChestBlockEntity;
-import com.github.elenterius.biomancy.world.block.mawhopper.MawHopperBlockEntity;
-import com.github.elenterius.biomancy.world.block.modularlarynx.VoiceBoxBlockEntity;
-import com.github.elenterius.biomancy.world.block.ownable.OwnableBlockEntity;
-import com.github.elenterius.biomancy.world.block.storagesac.StorageSacBlockEntity;
-import com.github.elenterius.biomancy.world.block.tongue.TongueBlockEntity;
+import com.github.elenterius.biomancy.block.bioforge.BioForgeBlockEntity;
+import com.github.elenterius.biomancy.block.biolab.BioLabBlockEntity;
+import com.github.elenterius.biomancy.block.cradle.PrimordialCradleBlockEntity;
+import com.github.elenterius.biomancy.block.decomposer.DecomposerBlockEntity;
+import com.github.elenterius.biomancy.block.digester.DigesterBlockEntity;
+import com.github.elenterius.biomancy.block.entity.BlockEntityDelegator;
+import com.github.elenterius.biomancy.block.fleshkinchest.FleshkinChestBlockEntity;
+import com.github.elenterius.biomancy.block.mawhopper.MawHopperBlockEntity;
+import com.github.elenterius.biomancy.block.modularlarynx.VoiceBoxBlockEntity;
+import com.github.elenterius.biomancy.block.ownable.OwnableBlockEntity;
+import com.github.elenterius.biomancy.block.storagesac.StorageSacBlockEntity;
+import com.github.elenterius.biomancy.block.tongue.TongueBlockEntity;
+import com.github.elenterius.biomancy.block.vialholder.VialHolderBlockEntity;
 import com.mojang.datafixers.types.Type;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -36,11 +38,12 @@ public final class ModBlockEntities {
 	public static final RegistryObject<BlockEntityType<MawHopperBlockEntity>> MAW_HOPPER = register(ModBlocks.MAW_HOPPER, MawHopperBlockEntity::new);
 	public static final RegistryObject<BlockEntityType<StorageSacBlockEntity>> STORAGE_SAC = register(ModBlocks.STORAGE_SAC, StorageSacBlockEntity::new);
 	public static final RegistryObject<BlockEntityType<FleshkinChestBlockEntity>> FLESHKIN_CHEST = register(ModBlocks.FLESHKIN_CHEST, FleshkinChestBlockEntity::new);
+	public static final RegistryObject<BlockEntityType<VialHolderBlockEntity>> VIAL_HOLDER = register(ModBlocks.VIAL_HOLDER, VialHolderBlockEntity::new);
 	public static final RegistryObject<BlockEntityType<VoiceBoxBlockEntity>> VOICE_BOX = register(ModBlocks.VOICE_BOX, VoiceBoxBlockEntity::new);
 
 	//# Special
-	public static final RegistryObject<BlockEntityType<OwnableBlockEntity>> OWNABLE_BE = BLOCK_ENTITIES.register("ownable_block_entity", () -> BlockEntityType.Builder.of(OwnableBlockEntity::new, ModBlocks.FLESHKIN_DOOR.get(), ModBlocks.FLESHKIN_TRAPDOOR.get(), ModBlocks.FLESHKIN_PRESSURE_PLATE.get()).build(noDataFixer()));
-	public static final RegistryObject<BlockEntityType<BlockEntityDelegator>> BE_DELEGATOR = BLOCK_ENTITIES.register("block_entity_delegator", () -> BlockEntityType.Builder.of(BlockEntityDelegator::new, ModBlocks.FLESHKIN_DOOR.get()).build(noDataFixer()));
+	public static final RegistryObject<BlockEntityType<OwnableBlockEntity>> OWNABLE_BE = BLOCK_ENTITIES.register("ownable_block_entity", () -> BlockEntityType.Builder.of(OwnableBlockEntity::new, /*ModBlocks.FLESHKIN_DOOR.get(), ModBlocks.FLESHKIN_TRAPDOOR.get(),*/ ModBlocks.FLESHKIN_PRESSURE_PLATE.get()).build(noDataFixer()));
+	public static final RegistryObject<BlockEntityType<BlockEntityDelegator>> BE_DELEGATOR = BLOCK_ENTITIES.register("block_entity_delegator", () -> BlockEntityType.Builder.of(BlockEntityDelegator::new, Blocks.AIR /*ModBlocks.FLESHKIN_DOOR.get()*/).build(noDataFixer()));
 
 	private ModBlockEntities() {}
 

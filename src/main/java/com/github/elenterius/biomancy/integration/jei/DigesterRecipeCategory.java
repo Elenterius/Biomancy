@@ -1,12 +1,10 @@
 package com.github.elenterius.biomancy.integration.jei;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.chat.ComponentUtil;
+import com.github.elenterius.biomancy.crafting.recipe.DigesterRecipe;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
-import com.github.elenterius.biomancy.recipe.DigesterRecipe;
-import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
-import com.github.elenterius.biomancy.world.block.digester.DigesterBlockEntity;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -35,20 +33,22 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 		background = guiHelper.drawableBuilder(texture, 0, 0, 80, 47).setTextureSize(80, 47).addPadding(0, 4, 0, 0).build();
 	}
 
-	@Override
+	//TODO: Change this code.
+	/*@Override
 	public ResourceLocation getUid() {
 		return getRecipeType().getUid();
-	}
+	}*/
 
 	@Override
 	public RecipeType<DigesterRecipe> getRecipeType() {
 		return RECIPE_TYPE;
 	}
 
-	@Override
+	//TODO: Change this code.
+	/*@Override
 	public Class<? extends DigesterRecipe> getRecipeClass() {
 		return getRecipeType().getRecipeClass();
-	}
+	}*/
 
 	@Override
 	public Component getTitle() {
@@ -76,14 +76,23 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 	public void draw(DigesterRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
 		Font fontRenderer = Minecraft.getInstance().font;
 
-		int ticks = recipe.getCraftingTime();
+		int ticks = recipe.getCraftingTimeTicks();
 		int seconds = ticks > 0 ? ticks / 20 : 0;
 		Component timeText = ComponentUtil.translatable("gui.jei.category.smelting.time.seconds", seconds);
-		fontRenderer.draw(poseStack, timeText, 48, 44 - fontRenderer.lineHeight, 0xff808080);
+		fontRenderer.draw(poseStack, timeText, 48, 44f - fontRenderer.lineHeight, 0xff_808080);
 
-		int fuelCost = NutrientFuelUtil.getFuelCost(DigesterBlockEntity.BASE_COST, ticks);
-		Component costText = ComponentUtil.literal("-" + fuelCost);
-		fontRenderer.draw(poseStack, costText, 15, 44 - fontRenderer.lineHeight, 0xff808080);
+		Component costText = ComponentUtil.literal("-" + recipe.getCraftingCostNutrients());
+		fontRenderer.draw(poseStack, costText, 15, 44f - fontRenderer.lineHeight, 0xff_808080);
+	}
+
+	@Override
+	public ResourceLocation getUid() {
+		return getRecipeType().getUid();
+	}
+
+	@Override
+	public Class<? extends DigesterRecipe> getRecipeClass() {
+		return getRecipeType().getRecipeClass();
 	}
 
 }

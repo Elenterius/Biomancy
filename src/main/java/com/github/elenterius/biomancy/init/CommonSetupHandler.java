@@ -2,9 +2,9 @@ package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.integration.ModsCompatHandler;
+import com.github.elenterius.biomancy.item.BioExtractorItem;
+import com.github.elenterius.biomancy.item.injector.InjectorItem;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
-import com.github.elenterius.biomancy.world.item.BioExtractorItem;
-import com.github.elenterius.biomancy.world.item.InjectorItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
@@ -15,6 +15,12 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
 
 @Mod.EventBusSubscriber(modid = BiomancyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public final class CommonSetupHandler {
@@ -28,14 +34,29 @@ public final class CommonSetupHandler {
 
 		// if not thread safe do it after the common setup event on a single thread
 		event.enqueueWork(() -> {
-			ModTags.init();
 			ModTriggers.register();
+			ModPredicates.registerItemPredicates();
+
 			registerDispenserBehaviors();
 			ModRecipes.registerComposterRecipes();
 		});
 
+		ModFluids.registerInteractions();
 		ModRecipes.registerBrewingRecipes();
 		ModsCompatHandler.onBiomancyCommonSetup(event);
+	}
+
+	public static void dumpBiomeTemperatureAndHumidity() {
+		BiomancyMod.LOGGER.info("dumping biome default temperatures to biome_temperatures.csv...");
+		try {
+			Stream<String> stringStream = ForgeRegistries.BIOMES.getEntries().stream()
+					.map(keyEntry -> "%s,%s,%s".formatted(keyEntry.getKey().location(), keyEntry.getValue().getBaseTemperature(), keyEntry.getValue().getDownfall()));
+
+			Files.write(Paths.get("biome_temperatures.csv"), (Iterable<String>) stringStream::iterator);
+		}
+		catch (IOException e) {
+			BiomancyMod.LOGGER.error("Failed to dump biome temps!", e);
+		}
 	}
 
 	@SubscribeEvent

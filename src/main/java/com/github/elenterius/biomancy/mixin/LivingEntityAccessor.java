@@ -13,16 +13,16 @@ public interface LivingEntityAccessor {
 
 	@Nullable
 	@Invoker("getHurtSound")
-	SoundEvent biomancy_getHurtSound(DamageSource damageSource);
+	SoundEvent biomancy$getHurtSound(DamageSource damageSource);
 
 	@Nullable
 	@Invoker("getDeathSound")
-	SoundEvent biomancy_getDeathSound();
+	SoundEvent biomancy$getDeathSound();
 
 	@Invoker("getSoundVolume")
-	float biomancy_getSoundVolume();
+	float biomancy$getSoundVolume();
 
 	@Invoker("getVoicePitch")
-	float biomancy_getVoicePitch();
+	float biomancy$getVoicePitch();
 
 }

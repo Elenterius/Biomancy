@@ -1,12 +1,13 @@
 package com.github.elenterius.biomancy.client.gui.tooltip;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.init.ModRarities;
 import com.github.elenterius.biomancy.init.client.ModScreens;
+import com.github.elenterius.biomancy.item.CustomTooltipProvider;
 import com.github.elenterius.biomancy.styles.ColorStyles;
+import com.github.elenterius.biomancy.tooltip.EmptyLineTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.PlaceholderComponent;
-import com.github.elenterius.biomancy.world.item.ICustomTooltip;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
@@ -30,6 +31,7 @@ import java.util.List;
 public final class TooltipRenderHandler {
 
 	private static final ResourceLocation TOOLTIP_OVERLAY_TEXTURE = BiomancyMod.createRL("textures/gui/ui_tooltip.png");
+	private static final EmptyLineTooltipComponent EMPTY_LINE = new EmptyLineTooltipComponent();
 
 	private TooltipRenderHandler() {}
 
@@ -40,19 +42,21 @@ public final class TooltipRenderHandler {
 		if (stack.isEmpty() && ModScreens.isBiomancyScreen(Minecraft.getInstance().screen)) {
 			ColorStyles.GENERIC_TOOLTIP.applyColorTo(tooltipEvent);
 		}
-		else if (stack.getItem() instanceof ICustomTooltip iTooltip) {
+		else if (stack.getItem() instanceof CustomTooltipProvider iTooltip) {
 			iTooltip.getTooltipStyle().applyColorTo(tooltipEvent);
 		}
 	}
 
 	@SubscribeEvent
 	public static void onGatherTooltipComponents(final RenderTooltipEvent.GatherComponents event) {
-		final boolean isTooltip = event.getItemStack().getItem() instanceof ICustomTooltip;
+		final boolean isTooltip = event.getItemStack().getItem() instanceof CustomTooltipProvider;
 
 		List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
 		for (int i = 0; i < tooltipElements.size(); i++) {
 			Either<FormattedText, TooltipComponent> either = tooltipElements.get(i);
 			final int index = i;
+
+			//replace formattedText with TooltipComponent
 			either.ifLeft(formattedText -> {
 				if (formattedText instanceof PlaceholderComponent placeholder) {
 					tooltipElements.set(index, Either.right(placeholder.getReplacement()));
@@ -66,7 +70,7 @@ public final class TooltipRenderHandler {
 
 	public static void onPostRenderTooltip(ItemStack stack, List<ClientTooltipComponent> components, Screen screen, PoseStack poseStack, int posX, int posY, int tooltipWidth, int tooltipHeight) {
 		if (!components.isEmpty()) {
-			int color = stack.getItem() instanceof ICustomTooltip iTooltip ? iTooltip.getTooltipColorWithAlpha(stack) : ModRarities.getARGBColor(stack);
+			int color = stack.getItem() instanceof CustomTooltipProvider iTooltip ? iTooltip.getTooltipColorWithAlpha(stack) : ModRarities.getARGBColor(stack);
 
 			int y = posY;
 			for (int i = 0; i < components.size(); i++) {

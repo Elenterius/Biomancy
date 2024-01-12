@@ -1,13 +1,11 @@
 package com.github.elenterius.biomancy.integration.jei;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.chat.ComponentUtil;
+import com.github.elenterius.biomancy.crafting.recipe.BioLabRecipe;
+import com.github.elenterius.biomancy.crafting.recipe.IngredientStack;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
-import com.github.elenterius.biomancy.recipe.BioLabRecipe;
-import com.github.elenterius.biomancy.recipe.IngredientStack;
-import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
-import com.github.elenterius.biomancy.world.block.biolab.BioLabBlockEntity;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -39,20 +37,22 @@ public class BioLabRecipeCategory implements IRecipeCategory<BioLabRecipe> {
 		background = guiHelper.drawableBuilder(texture, 0, 0, 134, 54).setTextureSize(134, 54).addPadding(0, 4, 0, 0).build();
 	}
 
-	@Override
+	//TODO: Change this code.
+	/*@Override
 	public ResourceLocation getUid() {
 		return getRecipeType().getUid();
-	}
+	}*/
 
 	@Override
 	public RecipeType<BioLabRecipe> getRecipeType() {
 		return RECIPE_TYPE;
 	}
 
-	@Override
+	//TODO: Change this code.
+	/*@Override
 	public Class<? extends BioLabRecipe> getRecipeClass() {
 		return getRecipeType().getRecipeClass();
-	}
+	}*/
 
 	@Override
 	public Component getTitle() {
@@ -98,14 +98,23 @@ public class BioLabRecipeCategory implements IRecipeCategory<BioLabRecipe> {
 	public void draw(BioLabRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
 		Font fontRenderer = Minecraft.getInstance().font;
 
-		int ticks = recipe.getCraftingTime();
+		int ticks = recipe.getCraftingTimeTicks();
 		int seconds = ticks > 0 ? ticks / 20 : 0;
 		Component timeText = ComponentUtil.translatable("gui.jei.category.smelting.time.seconds", seconds);
-		fontRenderer.draw(poseStack, timeText, 102, 50 - fontRenderer.lineHeight, 0xff808080);
+		fontRenderer.draw(poseStack, timeText, 102f, 50f - fontRenderer.lineHeight, 0xff808080);
 
-		int fuelCost = NutrientFuelUtil.getFuelCost(BioLabBlockEntity.BASE_COST, ticks);
-		Component costText = ComponentUtil.literal("-" + fuelCost);
-		fontRenderer.draw(poseStack, costText, 69, 50 - fontRenderer.lineHeight, 0xff808080);
+		Component costText = ComponentUtil.literal("-" + recipe.getCraftingCostNutrients());
+		fontRenderer.draw(poseStack, costText, 69f, 50f - fontRenderer.lineHeight, 0xff808080);
+	}
+
+	@Override
+	public ResourceLocation getUid() {
+		return getRecipeType().getUid();
+	}
+
+	@Override
+	public Class<? extends BioLabRecipe> getRecipeClass() {
+		return getRecipeType().getRecipeClass();
 	}
 
 }

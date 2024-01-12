@@ -1,9 +1,10 @@
 package com.github.elenterius.biomancy.datagen.recipes;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.crafting.recipe.BioLabRecipe;
+import com.github.elenterius.biomancy.crafting.recipe.IngredientStack;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
-import com.github.elenterius.biomancy.recipe.IngredientStack;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;
@@ -24,29 +25,33 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
 import net.minecraftforge.common.crafting.conditions.NotCondition;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 public class BioLabRecipeBuilder implements IRecipeBuilder {
 
-	public static final String SUFFIX = "_from_bio_brewing";
+	public static final String RECIPE_SUB_FOLDER = ModRecipes.BIO_BREWING_RECIPE_TYPE.getId().getPath();
+	public static final String SUFFIX = "_from_" + RECIPE_SUB_FOLDER;
 
 	private final ResourceLocation recipeId;
 	private final List<ICondition> conditions = new ArrayList<>();
 	private final ItemData result;
 	private final List<IngredientStack> ingredients = new ArrayList<>();
 	private final Advancement.Builder advancement = Advancement.Builder.advancement();
-	private Ingredient reactant = Ingredient.of(ModItems.GLASS_VIAL.get());
-	private int craftingTime = 4 * 20;
+	private Ingredient reactant = Ingredient.of(ModItems.VIAL.get());
+	private int craftingTimeTicks = -1;
+	private int craftingCostNutrients = -1;
 
 	private BioLabRecipeBuilder(ResourceLocation recipeId, ItemData result) {
-		this.recipeId = recipeId;
+		this.recipeId = new ResourceLocation(recipeId.getNamespace(), RECIPE_SUB_FOLDER + "/" + recipeId.getPath());
 		this.result = result;
+	}
+
+	public static BioLabRecipeBuilder create(ResourceLocation recipeId, ItemData result) {
+		return new BioLabRecipeBuilder(recipeId, result);
 	}
 
 	public static BioLabRecipeBuilder create(String modId, String outputName, ItemData result) {
@@ -59,25 +64,21 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 		return new BioLabRecipeBuilder(rl, result);
 	}
 
-	public static BioLabRecipeBuilder create(ResourceLocation recipeId, ItemData result) {
-		return new BioLabRecipeBuilder(recipeId, result);
-	}
-
 	public static BioLabRecipeBuilder create(ItemData result) {
-		ResourceLocation rl = BiomancyMod.createRL(result.getItemNamedId() + SUFFIX);
+		ResourceLocation rl = BiomancyMod.createRL(result.getItemPath() + SUFFIX);
 		return new BioLabRecipeBuilder(rl, result);
 	}
 
+	public static BioLabRecipeBuilder create(ItemStack stack) {
+		return create(new ItemData(stack));
+	}
+
 	public static BioLabRecipeBuilder create(ItemLike item) {
-		ItemData itemData = new ItemData(item);
-		ResourceLocation rl = BiomancyMod.createRL(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item.asItem())).getPath() + SUFFIX);
-		return new BioLabRecipeBuilder(rl, itemData);
+		return create(new ItemData(item));
 	}
 
 	public static BioLabRecipeBuilder create(ItemLike item, int count) {
-		ItemData itemData = new ItemData(item, count);
-		ResourceLocation rl = BiomancyMod.createRL(Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item.asItem())).getPath() + SUFFIX);
-		return new BioLabRecipeBuilder(rl, itemData);
+		return create(new ItemData(item, count));
 	}
 
 	public BioLabRecipeBuilder ifModLoaded(String modId) {
@@ -93,9 +94,15 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 		return this;
 	}
 
-	public BioLabRecipeBuilder setCraftingTime(int time) {
-		if (time < 0) throw new IllegalArgumentException("Invalid crafting time: " + time);
-		craftingTime = time;
+	public BioLabRecipeBuilder setCraftingTime(int timeTicks) {
+		if (timeTicks < 0) throw new IllegalArgumentException("Invalid crafting time: " + timeTicks);
+		craftingTimeTicks = timeTicks;
+		return this;
+	}
+
+	public BioLabRecipeBuilder setCraftingCost(int costNutrients) {
+		if (costNutrients < 0) throw new IllegalArgumentException("Invalid crafting cost: " + costNutrients);
+		craftingCostNutrients = costNutrients;
 		return this;
 	}
 
@@ -155,15 +162,23 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 	@Override
 	public void save(Consumer<FinishedRecipe> consumer, @Nullable CreativeModeTab itemCategory) {
 		validateCriteria();
+
+		if (craftingTimeTicks < 0) {
+			craftingTimeTicks = 4 * 20;
+		}
+
+		if (craftingCostNutrients < 0) {
+			craftingCostNutrients = CraftingCostUtil.getCost(BioLabRecipe.DEFAULT_CRAFTING_COST_NUTRIENTS, craftingTimeTicks);
+		}
+
 		advancement.parent(new ResourceLocation("recipes/root"))
 				.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId))
 				.rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
-		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(), "recipes/%s/%s".formatted(getRecipeFolderName(itemCategory), recipeId.getPath()));
-		consumer.accept(new RecipeResult(this, advancementId));
-	}
 
-	private String getRecipeFolderName(@Nullable CreativeModeTab itemCategory) {
-		return itemCategory != null ? itemCategory.getRecipeFolderName() : BiomancyMod.MOD_ID;
+		String folderName = IRecipeBuilder.getRecipeFolderName(itemCategory, BiomancyMod.MOD_ID);
+		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(), "recipes/%s/%s".formatted(folderName, recipeId.getPath()));
+
+		consumer.accept(new Result(this, advancementId));
 	}
 
 	private void validateCriteria() {
@@ -172,23 +187,25 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 		}
 	}
 
-	public static class RecipeResult implements FinishedRecipe {
+	public static class Result implements FinishedRecipe {
 		private final ResourceLocation id;
 		private final List<IngredientStack> ingredients;
 		private final Ingredient reactant;
 		private final ItemData result;
 		private final int craftingTime;
+		private final int craftingCost;
 		private final List<ICondition> conditions;
 
 		private final Advancement.Builder advancementBuilder;
 		private final ResourceLocation advancementId;
 
-		public RecipeResult(BioLabRecipeBuilder builder, ResourceLocation advancementId) {
+		public Result(BioLabRecipeBuilder builder, ResourceLocation advancementId) {
 			id = builder.recipeId;
 			ingredients = builder.ingredients;
 			reactant = builder.reactant;
 			result = builder.result;
-			craftingTime = builder.craftingTime;
+			craftingTime = builder.craftingTimeTicks;
+			craftingCost = builder.craftingCostNutrients;
 			conditions = builder.conditions;
 
 			advancementBuilder = builder.advancement;
@@ -201,7 +218,7 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 			for (IngredientStack ingredient : ingredients) {
 				jsonArray.add(ingredient.toJson());
 			}
-			json.add("ingredient_quantities", jsonArray);
+			json.add("ingredients", jsonArray);
 
 			if (!reactant.isEmpty()) {
 				json.add("reactant", reactant.toJson());
@@ -209,7 +226,8 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 
 			json.add("result", result.toJson());
 
-			json.addProperty("time", craftingTime);
+			json.addProperty("processingTime", craftingTime);
+			json.addProperty("nutrientsCost", craftingCost);
 
 			//serialize conditions
 			if (!conditions.isEmpty()) {

@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.client.render.entity;
 
-import com.github.elenterius.biomancy.world.entity.ownable.Boomling;
+import com.github.elenterius.biomancy.entity.ownable.Boomling;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;

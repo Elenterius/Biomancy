@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.util.random;
 
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;

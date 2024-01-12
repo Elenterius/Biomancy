@@ -2,16 +2,17 @@ package com.github.elenterius.biomancy.datagen;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.datagen.advancements.ModAdvancementProvider;
+import com.github.elenterius.biomancy.datagen.lang.EnglishLangProvider;
 import com.github.elenterius.biomancy.datagen.loot.ModGlobalLootModifierProvider;
 import com.github.elenterius.biomancy.datagen.loot.ModLootTableProvider;
 import com.github.elenterius.biomancy.datagen.models.ModBlockStateProvider;
 import com.github.elenterius.biomancy.datagen.models.ModItemModelProvider;
+import com.github.elenterius.biomancy.datagen.particles.ModParticleSpriteProvider;
 import com.github.elenterius.biomancy.datagen.recipes.ModRecipeProvider;
 import com.github.elenterius.biomancy.datagen.tags.ForgeEntityTypeTagsProvider;
 import com.github.elenterius.biomancy.datagen.tags.ModBlockTagsProvider;
 import com.github.elenterius.biomancy.datagen.tags.ModEntityTypeTagsProvider;
 import com.github.elenterius.biomancy.datagen.tags.ModItemTagsProvider;
-import com.github.elenterius.biomancy.datagen.translations.EnglishTranslationProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -49,8 +50,11 @@ public final class DataGenerators {
 		//sounds
 		generator.addProvider(new ModSoundProvider(generator, existingFileHelper));
 
+		//particles
+		generator.addProvider(new ModParticleSpriteProvider(generator, existingFileHelper));
+
 		//translations
-		EnglishTranslationProvider translationProvider = new EnglishTranslationProvider(generator);
+		EnglishLangProvider translationProvider = new EnglishLangProvider(generator);
 
 		//advancements
 		generator.addProvider(new ModAdvancementProvider(generator, existingFileHelper, translationProvider));

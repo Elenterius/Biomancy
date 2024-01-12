@@ -1,13 +1,13 @@
 package com.github.elenterius.biomancy.client.gui;
 
-import com.github.elenterius.biomancy.chat.ComponentUtil;
+import com.github.elenterius.biomancy.api.serum.Serum;
+import com.github.elenterius.biomancy.api.serum.SerumContainer;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
+import com.github.elenterius.biomancy.item.injector.InjectorItem;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.styles.TextStyles;
-import com.github.elenterius.biomancy.world.item.ISerumProvider;
-import com.github.elenterius.biomancy.world.item.InjectorItem;
-import com.github.elenterius.biomancy.world.serum.Serum;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
@@ -149,6 +149,8 @@ public class InjectorScreen extends Screen {
 		if (cachedStacks == null || cachedStacks.isEmpty()) return;
 
 		ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
+		int blitOffset = getBlitOffset();
+
 		ObjectSet<Object2IntMap.Entry<ItemStack>> stackEntries = cachedStacks.object2IntEntrySet();
 
 		int segments = stackEntries.size();
@@ -176,8 +178,8 @@ public class InjectorScreen extends Screen {
 
 			int color = isMouseInSection ? ColorStyles.GENERIC_TOOLTIP.borderStartColor() & 0xFA_FFFFFF : ColorStyles.GENERIC_TOOLTIP.backgroundColor() & 0xE0_FFFFFF; //decrease alpha
 
-			drawSegment(poseStack, x, y, radius, currentAngle - angleIncrement / 2f, currentAngle, color, getBlitOffset());
-			drawSegment(poseStack, x, y, radius, currentAngle, currentAngle + angleIncrement / 2f, color, getBlitOffset());
+			drawSegment(poseStack, x, y, radius, currentAngle - angleIncrement / 2f, currentAngle, color, blitOffset);
+			drawSegment(poseStack, x, y, radius, currentAngle, currentAngle + angleIncrement / 2f, color, blitOffset);
 
 			float v = x + radius * Mth.cos(currentAngle); //polar to cartesian
 			float w = y + radius * Mth.sin(currentAngle);
@@ -225,7 +227,7 @@ public class InjectorScreen extends Screen {
 		float minY = yt - font.lineHeight / 2f - 3;
 		float maxX = xt + lineWidth + 2;
 		float maxY = yt + font.lineHeight / 2f + 2;
-		GuiRenderUtil.fill(poseStack, minX, minY, maxX, maxY, getBlitOffset(), ColorStyles.GENERIC_TOOLTIP.backgroundColor() & 0xE0_FFFFFF);
+		GuiRenderUtil.fill(poseStack, minX, minY, maxX, maxY, blitOffset, ColorStyles.GENERIC_TOOLTIP.backgroundColor() & 0xE0_FFFFFF);
 		font.drawShadow(poseStack, text, xt, yt - font.lineHeight / 2f, ColorStyles.WHITE_ARGB);
 		poseStack.popPose();
 	}
@@ -267,8 +269,8 @@ public class InjectorScreen extends Screen {
 		for (int idx = 0; idx < slots; idx++) {
 			ItemStack stack = inventory.getItem(idx);
 			Item item = stack.getItem();
-			if (item instanceof ISerumProvider serumProvider && !(item instanceof InjectorItem)) {
-				Serum serum = serumProvider.getSerum(stack);
+			if (item instanceof SerumContainer vial) {
+				Serum serum = vial.getSerum();
 				if (!serum.isEmpty()) {
 					if (!foundSerums.containsKey(serum)) {
 						foundStacks.put(stack, idx);

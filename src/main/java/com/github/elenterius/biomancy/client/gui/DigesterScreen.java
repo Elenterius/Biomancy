@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.client.gui;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
 import com.github.elenterius.biomancy.client.util.GuiUtil;
-import com.github.elenterius.biomancy.world.inventory.menu.DigesterMenu;
+import com.github.elenterius.biomancy.menu.DigesterMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -72,7 +72,7 @@ public class DigesterScreen extends AbstractContainerScreen<DigesterMenu> {
 	}
 
 	private void drawFuelTooltip(PoseStack poseStack, int mouseX, int mouseY) {
-		int maxFuel = menu.getMAxFuelAmount();
+		int maxFuel = menu.getMaxFuelAmount();
 		int fuelAmount = menu.getFuelAmount();
 		int totalFuelCost = menu.getFuelCost();
 		GuiRenderUtil.drawFuelTooltip(this, poseStack, mouseX, mouseY, maxFuel, fuelAmount, totalFuelCost);

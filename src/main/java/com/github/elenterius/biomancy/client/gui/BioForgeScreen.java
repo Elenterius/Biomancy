@@ -1,16 +1,16 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.client.gui.component.CustomEditBox;
 import com.github.elenterius.biomancy.client.util.ClientSoundUtil;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
 import com.github.elenterius.biomancy.client.util.GuiUtil;
+import com.github.elenterius.biomancy.crafting.recipe.BioForgeRecipe;
+import com.github.elenterius.biomancy.crafting.recipe.IngredientStack;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
-import com.github.elenterius.biomancy.recipe.BioForgeRecipe;
-import com.github.elenterius.biomancy.recipe.IngredientStack;
+import com.github.elenterius.biomancy.menu.BioForgeMenu;
 import com.github.elenterius.biomancy.styles.ColorStyles;
-import com.github.elenterius.biomancy.world.inventory.menu.BioForgeMenu;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -220,6 +220,7 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 	private void drawRecipes(PoseStack poseStack) {
 		if (!recipeBook.hasRecipesOnPage()) return;
 
+		//TODO: refactor - move into the loop below
 		if (recipeBook.hasSelectedRecipe() && recipeBook.isSelectedRecipeVisible()) {
 			int gridIndex = recipeBook.getGridIndexOfSelectedRecipe();
 			BioForgeRecipe recipe = recipeBook.getRecipeByGrid(gridIndex);
@@ -228,10 +229,10 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 		}
 
 		int maxRecipes = recipeBook.getMaxRecipesOnGrid();
-		for (int i = 0; i < maxRecipes; i++) {
-			BioForgeRecipe recipe = recipeBook.getRecipeByGrid(i);
-			boolean isCraftable = recipeBook.getRecipeCollectionByGrid(i).isCraftable(recipe);
-			drawRecipeTile(poseStack, i, isCraftable, recipe.getResultItem());
+		for (int gridIndex = 0; gridIndex < maxRecipes; gridIndex++) {
+			BioForgeRecipe recipe = recipeBook.getRecipeByGrid(gridIndex);
+			boolean isCraftable = recipeBook.getRecipeCollectionByGrid(gridIndex).isCraftable(recipe);
+			drawRecipeTile(poseStack, gridIndex, isCraftable, recipe.getResultItem());
 		}
 
 		drawPagination(poseStack);
@@ -367,7 +368,10 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 
 		int maxFuel = menu.getMaxFuelAmount();
 		int fuelAmount = menu.getFuelAmount();
-		int totalFuelCost = recipeBook.hasSelectedRecipe() ? 1 : 0;
+
+		BioForgeRecipe selectedRecipe = recipeBook.getSelectedRecipe();
+		int totalFuelCost = selectedRecipe != null ? selectedRecipe.getCraftingCostNutrients() : 0;
+
 		GuiRenderUtil.drawFuelTooltip(this, poseStack, mouseX, mouseY, maxFuel, fuelAmount, totalFuelCost);
 		return true;
 	}

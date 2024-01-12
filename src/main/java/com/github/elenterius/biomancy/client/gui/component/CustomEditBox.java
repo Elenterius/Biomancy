@@ -4,14 +4,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.FormattedText;
 
 /**
  * disables the drawing of the background but keeps the paddings/margins intact
  */
 public class CustomEditBox extends EditBox {
 
-	private Component hint = TextComponent.EMPTY;
+	private FormattedText hint = Component.EMPTY;
 	private final Font font;
 	private boolean isBackgroundDisabled = false;
 
@@ -34,7 +34,7 @@ public class CustomEditBox extends EditBox {
 	public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
 		if (visible) {
 			if (!isFocused() && getValue().isEmpty()) {
-				drawString(poseStack, font, hint, x + 4, y + (height - 8) / 2, -1);
+				drawString(poseStack, font, hint.getString(), x + 4, y + (height - 8) / 2, -1);
 			} else super.render(poseStack, mouseX, mouseY, partialTick);
 		}
 	}

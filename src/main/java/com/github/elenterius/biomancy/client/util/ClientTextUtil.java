@@ -1,11 +1,11 @@
 package com.github.elenterius.biomancy.client.util;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.chat.ComponentUtil;
 import com.github.elenterius.biomancy.init.client.ClientSetupHandler;
+import com.github.elenterius.biomancy.item.CustomTooltipProvider;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
-import com.github.elenterius.biomancy.world.item.ICustomTooltip;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -44,7 +44,7 @@ public final class ClientTextUtil {
 	private static MutableComponent getItemTooltip(ItemStack stack) {
 		Item item = stack.getItem();
 
-		if (item instanceof ICustomTooltip iTooltip) {
+		if (item instanceof CustomTooltipProvider iTooltip) {
 			return iTooltip.getTooltipText(stack);
 		}
 
@@ -87,7 +87,7 @@ public final class ClientTextUtil {
 	}
 
 	public static MutableComponent getDefaultKey() {
-		return ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.getTranslatedKeyMessage().plainCopy();
+		return ComponentUtil.keybind(ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING);
 	}
 
 	public static String tryToGetPlayerNameOnClientSide(UUID uuid) {

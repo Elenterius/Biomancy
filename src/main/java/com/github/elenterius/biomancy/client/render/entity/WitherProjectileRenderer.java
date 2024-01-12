@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.render.entity;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.entity.projectile.WitherProjectile;
+import com.github.elenterius.biomancy.entity.projectile.WitherProjectile;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;

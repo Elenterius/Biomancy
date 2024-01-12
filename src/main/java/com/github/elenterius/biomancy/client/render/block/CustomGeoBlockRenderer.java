@@ -69,7 +69,7 @@ public abstract class CustomGeoBlockRenderer<T extends BlockEntity & IAnimatable
 		//we will keep this translation disabled until some issue reports surface and re-evaluate this change
 
 		poseStack.translate(0.5, 0, 0.5);
-		rotateBlock(getFacing(blockEntity), poseStack);
+		rotateBlock(blockEntity, poseStack);
 
 		RenderSystem.setShaderTexture(0, getTextureLocation(blockEntity));
 		Color renderColor = getRenderColor(blockEntity, partialTick, poseStack, bufferSource, null, packedLight);
@@ -110,6 +110,10 @@ public abstract class CustomGeoBlockRenderer<T extends BlockEntity & IAnimatable
 		renderChildBones(bone, poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
 
 		poseStack.popPose();
+	}
+
+	protected void rotateBlock(T blockEntity, PoseStack poseStack) {
+		rotateBlock(getFacing(blockEntity), poseStack);
 	}
 
 	/**

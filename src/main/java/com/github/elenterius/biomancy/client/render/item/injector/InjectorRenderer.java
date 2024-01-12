@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.client.render.item.injector;
 
-import com.github.elenterius.biomancy.world.item.InjectorItem;
+import com.github.elenterius.biomancy.item.injector.InjectorItem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -30,17 +30,14 @@ public class InjectorRenderer extends GeoItemRenderer<InjectorItem> {
 
 	@Override
 	public void render(InjectorItem item, PoseStack poseStack, MultiBufferSource bufferIn, int packedLight, ItemStack itemStack) {
-		serumColor = item.getSerumColor(itemStack);
+		serumColor = item.getSerum(itemStack).getColor();
 		super.render(item, poseStack, bufferIn, packedLight, itemStack);
 	}
 
 	@Override
 	public void renderRecursively(GeoBone bone, PoseStack stack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		if (bone.name.equals("serum")) {
-			renderSerumBone(bone, stack, buffer, packedLight, packedOverlay, 0.8f);
-		}
-		else if (bone.name.equals("serum_core")) {
-			renderSerumBone(bone, stack, buffer, packedLight, packedOverlay, 1f);
+		if (bone.name.equals("_serum_core")) {
+			renderSerumBone(bone, stack, buffer, packedLight, packedOverlay, alpha);
 		}
 		else {
 			super.renderRecursively(bone, stack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
@@ -57,7 +54,7 @@ public class InjectorRenderer extends GeoItemRenderer<InjectorItem> {
 
 	@Override
 	public RenderType getRenderType(InjectorItem item, float partialTicks, PoseStack stack, @Nullable MultiBufferSource buffer, @Nullable VertexConsumer vertexBuilder, int packedLight, ResourceLocation texture) {
-		return RenderType.entityTranslucent(texture);
+		return RenderType.entityTranslucentCull(texture);
 	}
 
 	@Override

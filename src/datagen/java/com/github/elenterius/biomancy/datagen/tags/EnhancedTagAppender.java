@@ -5,12 +5,13 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagKey;
+import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Objects;
 
-public record EnhancedTagAppender<T extends IForgeRegistryEntry<?>>(TagsProvider.TagAppender<T> delegate) {
+public record EnhancedTagAppender<T extends IForgeRegistryEntry<T>>(TagsProvider.TagAppender<T> delegate, IForgeRegistry<T> forgeRegistry) {
 
 	public EnhancedTagAppender<T> addTag(TagKey<T> tagKey) {
 		if (isValidNamespace(tagKey.location().getNamespace())) {
@@ -39,11 +40,12 @@ public record EnhancedTagAppender<T extends IForgeRegistryEntry<?>>(TagsProvider
 	}
 
 	public EnhancedTagAppender<T> add(T entry) {
-		if (isValidNamespace(Objects.requireNonNull(entry.getRegistryName()).getNamespace())) {
+		ResourceLocation registryName = Objects.requireNonNull(forgeRegistry.getKey(entry));
+		if (isValidNamespace(registryName.getNamespace())) {
 			delegate.add(entry);
 		}
 		else {
-			addOptional(entry.getRegistryName());
+			addOptional(registryName);
 		}
 		return this;
 	}

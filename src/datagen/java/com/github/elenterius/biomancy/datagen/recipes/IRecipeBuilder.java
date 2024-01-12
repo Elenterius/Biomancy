@@ -19,6 +19,10 @@ import java.util.function.Consumer;
 
 public interface IRecipeBuilder {
 
+	static String getRecipeFolderName(@Nullable CreativeModeTab itemCategory, String modId) {
+		return itemCategory != null ? itemCategory.getRecipeFolderName() : modId;
+	}
+
 	private InventoryChangeTrigger.TriggerInstance has(ItemLike itemLike) {
 		return inventoryTrigger(ItemPredicate.Builder.item().of(itemLike).build());
 	}
@@ -41,6 +45,10 @@ public interface IRecipeBuilder {
 	}
 
 	IRecipeBuilder unlockedBy(String name, CriterionTriggerInstance criterionTrigger);
+
+	default IRecipeBuilder unlockedBy(String name, ItemPredicate predicate) {
+		return unlockedBy(name, inventoryTrigger(predicate));
+	}
 
 	default IRecipeBuilder unlockedBy(ItemLike itemLike, CriterionTriggerInstance criterionTrigger) {
 		return unlockedBy("has_" + getItemName(itemLike), criterionTrigger);

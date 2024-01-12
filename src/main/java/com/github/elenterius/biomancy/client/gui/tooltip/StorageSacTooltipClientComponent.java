@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.client.gui.tooltip;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.inventory.itemhandler.EnhancedItemHandler;
 import com.github.elenterius.biomancy.tooltip.StorageSacTooltipComponent;
-import com.github.elenterius.biomancy.world.inventory.itemhandler.EnhancedItemHandler;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.Font;

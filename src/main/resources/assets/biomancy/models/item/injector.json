@@ -1,84 +1,18 @@
 {
-  "parent": "forge:item/default",
-  "loader": "forge:separate-perspective",
-  "base": {
-    "parent": "builtin/entity",
-    "texture_size": [
-      32, 32
-    ],
-    "display": {
-      "thirdperson_righthand": {
-        "translation": [
-          -0.5, -3.5, -1
-        ]
-      },
-      "thirdperson_lefthand": {
-        "rotation": [
-          0, 0, -180
-        ],
-        "translation": [
-          -0.5, -0.5, -1
-        ]
-      },
-      "firstperson_righthand": {
-        "rotation": [
-          18.5, 9.85, 50
-        ],
-        "translation": [
-          -0.75, 0, 0.5
-        ],
-        "scale": [
-          0.79, 0.9, 0.77
-        ]
-      },
-      "firstperson_lefthand": {
-        "rotation": [
-          18.5, 9.849999999999909, -50
-        ],
-        "translation": [
-          -0.75, 0, 0.5
-        ],
-        "scale": [
-          0.79, 0.9, 0.77
-        ]
-      },
-      "ground": {
-        "translation": [
-          -1, 0, -2
-        ]
-      },
-      "gui": {
-        "rotation": [
-          46.71, -34.31, 16.53
-        ],
-        "translation": [
-          0.5, 0.5, 0
-        ]
-      },
-      "head": {
-        "translation": [
-          4.4, 1, -6.25
-        ]
-      },
-      "fixed": {
-        "rotation": [
-          0, 90, 0
-        ],
-        "translation": [
-          -2.5, -2.25, 1
-        ]
-      }
-    }
-  },
-  "textures": {
-    "particle": "biomancy:item/component/bone_fragments"
-  },
-  "perspectives": {
-    "gui": {
-      "parent": "biomancy:item/injector_icon"
-    },
-    "fixed": {
-      "parent": "biomancy:item/injector_icon"
-    }
-  }
+	"parent": "forge:item/default",
+	"loader": "forge:separate-perspective",
+	"base": {
+		"parent": "biomancy:item/injector_display"
+	},
+	"textures": {
+		"particle": "biomancy:item/component/bone_fragments"
+	},
+	"perspectives": {
+		"gui": {
+			"parent": "biomancy:item/injector_icon"
+		},
+		"fixed": {
+			"parent": "biomancy:item/injector_icon"
+		}
+	}
 }

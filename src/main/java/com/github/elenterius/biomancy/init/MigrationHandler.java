@@ -1,8 +1,9 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.serum.Serum;
+import com.github.elenterius.biomancy.api.serum.Serum;
 import com.google.common.collect.ImmutableList;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -23,7 +24,6 @@ public final class MigrationHandler {
 
 	private MigrationHandler() {}
 
-
 	@SubscribeEvent
 	public static void onMissingSerumMappings(final RegistryEvent.MissingMappings<Serum> event) {
 		ImmutableList<RegistryEvent.MissingMappings.Mapping<Serum>> mappings = event.getMappings(BiomancyMod.MOD_ID);
@@ -43,10 +43,11 @@ public final class MigrationHandler {
 
 		BiomancyMod.LOGGER.info("found missing block mappings, attempting to remap...");
 
-		//version 1.0 -> Version 2.0
 		for (RegistryEvent.MissingMappings.Mapping<Block> mapping : mappings) {
 			String path = mapping.key.getPath();
 			switch (path) {
+				case "bio_lantern" -> mapping.remap(ModBlocks.YELLOW_BIO_LANTERN.get());
+				case "bone_spike" -> mapping.remap(ModBlocks.FLESH_SPIKE.get());
 				case "creator" -> mapping.remap(ModBlocks.PRIMORDIAL_CRADLE.get());
 				case "flesh_block" -> mapping.remap(ModBlocks.FLESH.get());
 				case "flesh_block_slab" -> mapping.remap(ModBlocks.FLESH_SLAB.get());
@@ -54,7 +55,27 @@ public final class MigrationHandler {
 				case "flesh_irisdoor" -> mapping.remap(ModBlocks.FLESH_IRIS_DOOR.get());
 				case "necrotic_flesh_block" -> mapping.remap(ModBlocks.MALIGNANT_FLESH.get());
 				case "flesh_tentacle" -> mapping.remap(ModBlocks.MALIGNANT_FLESH_VEINS.get());
-				default -> ignore();
+				case "corrupted_primal_flesh" -> mapping.remap(ModBlocks.PRIMAL_FLESH.get());
+
+				default -> mapping.ignore();
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void onMissingEntityTypes(final RegistryEvent.MissingMappings<EntityType<?>> event) {
+		ImmutableList<RegistryEvent.MissingMappings.Mapping<EntityType<?>>> mappings = event.getMappings(BiomancyMod.MOD_ID);
+		if (mappings.isEmpty()) return;
+
+		BiomancyMod.LOGGER.info("found missing entity mappings, attempting to remap...");
+
+		for (RegistryEvent.MissingMappings.Mapping<EntityType<?>> mapping : mappings) {
+			String path = mapping.key.getPath();
+			if (path.equals("malignant_flesh_blob")) {
+				mapping.remap(ModEntityTypes.PRIMORDIAL_HUNGRY_FLESH_BLOB.get());
+			}
+			else {
+				mapping.ignore();
 			}
 		}
 	}
@@ -65,8 +86,12 @@ public final class MigrationHandler {
 		if (mappings.isEmpty()) return;
 
 		for (RegistryEvent.MissingMappings.Mapping<BlockEntityType<?>> mapping : mappings) {
-			if (mapping.key.getPath().equals("creator")) {
+			String path = mapping.key.getPath();
+			if (path.equals("creator")) {
 				mapping.remap(ModBlockEntities.PRIMORDIAL_CRADLE.get());
+			}
+			else {
+				mapping.ignore();
 			}
 		}
 	}
@@ -78,10 +103,14 @@ public final class MigrationHandler {
 
 		BiomancyMod.LOGGER.info("found missing item mappings, attempting to remap...");
 
-		//version 1.0 -> Version 2.0
 		for (RegistryEvent.MissingMappings.Mapping<Item> mapping : mappings) {
 			String path = mapping.key.getPath();
 			switch (path) {
+				case "long_claws" -> mapping.remap(ModItems.RAVENOUS_CLAWS.get());
+
+				case "bio_lantern" -> mapping.remap(ModItems.YELLOW_BIO_LANTERN.get());
+				case "glass_vial" -> mapping.remap(ModItems.VIAL.get());
+
 				case "creator" -> mapping.remap(ModItems.PRIMORDIAL_CRADLE.get());
 				case "flesh_block" -> mapping.remap(ModItems.FLESH_BLOCK.get());
 				case "flesh_block_slab" -> mapping.remap(ModItems.FLESH_SLAB.get());
@@ -89,6 +118,7 @@ public final class MigrationHandler {
 				case "flesh_irisdoor" -> mapping.remap(ModItems.FLESH_IRIS_DOOR.get());
 				case "necrotic_flesh_block" -> mapping.remap(ModItems.MALIGNANT_FLESH_BLOCK.get());
 				case "flesh_tentacle" -> mapping.remap(ModItems.MALIGNANT_FLESH_VEINS.get());
+				case "corrupted_primal_flesh" -> mapping.remap(ModItems.PRIMAL_FLESH_BLOCK.get());
 
 				case "biometal" -> mapping.remap(ModItems.LIVING_FLESH.get());
 				case "bone_gear" -> mapping.remap(Items.BONE);
@@ -100,18 +130,9 @@ public final class MigrationHandler {
 				case "digestate" -> mapping.remap(ModItems.ORGANIC_MATTER.get());
 				case "oxide_powder", "silicate_paste", "bio_minerals" -> mapping.remap(ModItems.MINERAL_FRAGMENT.get());
 				case "hormone_bile" -> mapping.remap(ModItems.HORMONE_SECRETION.get());
-				default -> ignore();
+				default -> mapping.ignore();
 			}
 		}
-	}
-
-//	@Subscribe
-//	public static void onChangedMappings(RegistryEvent.IdMappingEvent event) {
-//
-//	}
-
-	private static void ignore() {
-		//do nothing
 	}
 
 }

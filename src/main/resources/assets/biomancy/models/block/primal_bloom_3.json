@@ -1,0 +1,111 @@
+{
+	"credit": "Made by The Shroome",
+	"parent": "block/block",
+	"render_type": "minecraft:cutout",
+	"texture_size": [ 48, 48 ],
+	"textures": {
+		"0": "biomancy:block/primal_bloom_3",
+		"particle": "biomancy:block/primal_flesh"
+	},
+	"elements": [
+		{
+			"name": "tentacles",
+			"from": [ 0, 0.01, 0 ],
+			"to": [ 16, 0.01, 16 ],
+			"rotation": {
+				"angle": 0,
+				"axis": "y",
+				"origin": [ 8, 0, 8 ]
+			},
+			"faces": {
+				"up": {
+					"uv": [ 5.33333, 5.33333, 0, 0 ],
+					"texture": "#0"
+				},
+				"down": {
+					"uv": [ 5.33333, 0, 0, 5.33333 ],
+					"texture": "#0"
+				}
+			}
+		},
+		{
+			"name": "base",
+			"from": [ 5, 0, 5 ],
+			"to": [ 11, 2, 11 ],
+			"rotation": {
+				"angle": 0,
+				"axis": "y",
+				"origin": [ 8, 0, 8 ]
+			},
+			"faces": {
+				"north": {
+					"uv": [ 0, 7.33333, 2, 8 ],
+					"texture": "#0"
+				},
+				"east": {
+					"uv": [ 0, 8, 2, 8.66667 ],
+					"texture": "#0"
+				},
+				"south": {
+					"uv": [ 2, 8, 4, 8.66667 ],
+					"texture": "#0"
+				},
+				"west": {
+					"uv": [ 2, 7.33333, 4, 8 ],
+					"texture": "#0"
+				},
+				"up": {
+					"uv": [ 2, 7.33333, 0, 5.33333 ],
+					"texture": "#0"
+				},
+				"down": {
+					"uv": [ 4, 5.33333, 2, 7.33333 ],
+					"texture": "#0"
+				}
+			}
+		},
+		{
+			"from": [ 2, 2, 2 ],
+			"to": [ 14, 15, 14 ],
+			"rotation": {
+				"angle": 0,
+				"axis": "y",
+				"origin": [ 8, 0, 8 ]
+			},
+			"faces": {
+				"north": {
+					"uv": [ 5.33333, 4, 9.33333, 8.33333 ],
+					"texture": "#0"
+				},
+				"east": {
+					"uv": [ 5.33333, 4, 9.33333, 8.33333 ],
+					"texture": "#0"
+				},
+				"south": {
+					"uv": [ 5.33333, 4, 9.33333, 8.33333 ],
+					"texture": "#0"
+				},
+				"west": {
+					"uv": [ 5.33333, 4, 9.33333, 8.33333 ],
+					"texture": "#0"
+				},
+				"up": {
+					"uv": [ 5.33333, 0, 9.33333, 4 ],
+					"texture": "#0"
+				},
+				"down": {
+					"uv": [ 9.33333, 0, 13.33333, 4 ],
+					"texture": "#0"
+				}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "stage3",
+			"origin": [ 8, 0, 8 ],
+			"color": 0,
+			"children": [ 0, 1, 2 ]
+		}
+	]
+}

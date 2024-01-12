@@ -1,11 +1,12 @@
 package com.github.elenterius.biomancy.datagen.recipes;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.crafting.recipe.DecomposerRecipe;
+import com.github.elenterius.biomancy.crafting.recipe.IngredientStack;
+import com.github.elenterius.biomancy.crafting.recipe.ItemCountRange;
+import com.github.elenterius.biomancy.crafting.recipe.VariableProductionOutput;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
-import com.github.elenterius.biomancy.recipe.IngredientStack;
-import com.github.elenterius.biomancy.recipe.ItemCountRange;
-import com.github.elenterius.biomancy.recipe.VariableProductionOutput;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.Advancement;
@@ -25,6 +26,7 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
 import net.minecraftforge.common.crafting.conditions.NotCondition;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,22 +35,25 @@ import java.util.function.Consumer;
 
 public class DecomposerRecipeBuilder implements IRecipeBuilder {
 
+	public static final String RECIPE_SUB_FOLDER = ModRecipes.DECOMPOSING_RECIPE_TYPE.getId().getPath();
 	public static final String SUFFIX = "_decomposing";
+
 	private final List<VariableProductionOutput> outputs = new ArrayList<>();
 	private final Advancement.Builder advancement = Advancement.Builder.advancement();
 	private final List<ICondition> conditions = new ArrayList<>();
 	private ResourceLocation recipeId;
 	private IngredientStack ingredientStack = null;
-	private int craftingTime = -1;
+	private int craftingTimeTicks = -1;
+	private int craftingCostNutrients = -1;
 	@Nullable
 	private String group;
 
-	private DecomposerRecipeBuilder(ResourceLocation recipeId) {
-		this.recipeId = recipeId;
+	private DecomposerRecipeBuilder() {
+		this.recipeId = BiomancyMod.createRL("unknown");
 	}
 
 	public static DecomposerRecipeBuilder create() {
-		return new DecomposerRecipeBuilder(BiomancyMod.createRL("unknown"));
+		return new DecomposerRecipeBuilder();
 	}
 
 	//	public static DecomposerRecipeBuilder create(String modId, String ingredientName) {
@@ -65,9 +70,8 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 	//		return new DecomposerRecipeBuilder(recipeId);
 	//	}
 
-	private static String getName(ItemLike itemLike) {
-		ResourceLocation name = itemLike.asItem().getRegistryName();
-		return name != null ? name.getPath() : "unknown";
+	private static ResourceLocation getRegistryKey(ItemLike itemLike) {
+		return Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(itemLike.asItem()));
 	}
 
 	public DecomposerRecipeBuilder ifModLoaded(String modId) {
@@ -85,7 +89,13 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 
 	public DecomposerRecipeBuilder setCraftingTime(int time) {
 		if (time < 0) throw new IllegalArgumentException("Invalid crafting time: " + time);
-		craftingTime = time;
+		craftingTimeTicks = time;
+		return this;
+	}
+
+	public DecomposerRecipeBuilder setCraftingCost(int costNutrients) {
+		if (costNutrients < 0) throw new IllegalArgumentException("Invalid crafting cost: " + costNutrients);
+		craftingCostNutrients = costNutrients;
 		return this;
 	}
 
@@ -110,7 +120,7 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 	}
 
 	public DecomposerRecipeBuilder setIngredient(ItemLike itemLike, int quantity) {
-		setIngredient(Ingredient.of(itemLike), quantity, BiomancyMod.createRL(getName(itemLike) + SUFFIX));
+		setIngredient(Ingredient.of(itemLike), quantity, BiomancyMod.createRL(getRegistryKey(itemLike).getPath() + SUFFIX));
 		return this;
 	}
 
@@ -122,7 +132,7 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 	public DecomposerRecipeBuilder setIngredient(Ingredient ingredient, int count, ResourceLocation recipeId) {
 		if (ingredientStack != null) throw new IllegalStateException("Ingredient is already set");
 		ingredientStack = new IngredientStack(ingredient, count);
-		this.recipeId = recipeId;
+		this.recipeId = new ResourceLocation(recipeId.getNamespace(), RECIPE_SUB_FOLDER + "/" + recipeId.getPath());
 		return this;
 	}
 
@@ -163,16 +173,20 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 	public void save(Consumer<FinishedRecipe> consumer, @Nullable CreativeModeTab itemCategory) {
 		validate();
 
-		if (craftingTime < 0) {
-			craftingTime = CraftingTimeUtil.getTotalTicks(outputs);
+		if (craftingTimeTicks < 0) {
+			craftingTimeTicks = CraftingTimeUtil.getTotalTicks(outputs);
+		}
+
+		if (craftingCostNutrients < 0) {
+			craftingCostNutrients = CraftingCostUtil.getCost(DecomposerRecipe.DEFAULT_CRAFTING_COST_NUTRIENTS, craftingTimeTicks);
 		}
 
 		advancement.parent(new ResourceLocation("recipes/root"))
 				.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId))
 				.rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
 
-		String folder = itemCategory != null ? itemCategory.getRecipeFolderName() : BiomancyMod.MOD_ID;
-		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(), "recipes/%s/%s".formatted(folder, recipeId.getPath()));
+		String folderName = IRecipeBuilder.getRecipeFolderName(itemCategory, BiomancyMod.MOD_ID);
+		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(), "recipes/%s/%s".formatted(folderName, recipeId.getPath()));
 
 		consumer.accept(new RecipeResult(this, advancementId));
 	}
@@ -192,6 +206,7 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 		private final IngredientStack ingredientStack;
 		private final List<VariableProductionOutput> outputs;
 		private final int craftingTime;
+		private final int craftingCost;
 		private final List<ICondition> conditions;
 		private final Advancement.Builder advancementBuilder;
 		private final ResourceLocation advancementId;
@@ -200,7 +215,8 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 			id = builder.recipeId;
 			group = builder.group == null ? "" : builder.group;
 			ingredientStack = builder.ingredientStack;
-			craftingTime = builder.craftingTime;
+			craftingTime = builder.craftingTimeTicks;
+			craftingCost = builder.craftingCostNutrients;
 			outputs = builder.outputs;
 			conditions = builder.conditions;
 
@@ -214,15 +230,16 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 				json.addProperty("group", group);
 			}
 
-			json.add("input", ingredientStack.toJson());
+			json.add("ingredient", ingredientStack.toJson());
 
 			JsonArray jsonArray = new JsonArray();
 			for (VariableProductionOutput output : outputs) {
 				jsonArray.add(output.serialize());
 			}
-			json.add("outputs", jsonArray);
+			json.add("results", jsonArray);
 
-			json.addProperty("time", craftingTime);
+			json.addProperty("processingTime", craftingTime);
+			json.addProperty("nutrientsCost", craftingCost);
 
 			//serialize conditions
 			if (!conditions.isEmpty()) {

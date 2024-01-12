@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.render.entity;
 
+import com.github.elenterius.biomancy.entity.projectile.CorrosiveAcidProjectile;
 import com.github.elenterius.biomancy.init.ModMobEffects;
-import com.github.elenterius.biomancy.world.entity.projectile.CorrosiveAcidProjectile;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.model.LlamaSpitModel;

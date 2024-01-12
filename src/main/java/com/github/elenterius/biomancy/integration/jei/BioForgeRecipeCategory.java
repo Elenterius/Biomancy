@@ -1,11 +1,11 @@
 package com.github.elenterius.biomancy.integration.jei;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.chat.ComponentUtil;
+import com.github.elenterius.biomancy.crafting.recipe.BioForgeRecipe;
+import com.github.elenterius.biomancy.crafting.recipe.IngredientStack;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
-import com.github.elenterius.biomancy.recipe.BioForgeRecipe;
-import com.github.elenterius.biomancy.recipe.IngredientStack;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -38,20 +38,22 @@ public class BioForgeRecipeCategory implements IRecipeCategory<BioForgeRecipe> {
 		background = guiHelper.drawableBuilder(texture, 0, 0, 152, 32).setTextureSize(152, 32).build();
 	}
 
-	@Override
+	//TODO: Change this code.
+	/*@Override
 	public ResourceLocation getUid() {
 		return getRecipeType().getUid();
-	}
+	}*/
 
 	@Override
 	public RecipeType<BioForgeRecipe> getRecipeType() {
 		return RECIPE_TYPE;
 	}
 
-	@Override
+	//TODO: Change this code.
+	/*@Override
 	public Class<? extends BioForgeRecipe> getRecipeClass() {
 		return getRecipeType().getRecipeClass();
-	}
+	}*/
 
 	@Override
 	public Component getTitle() {
@@ -96,8 +98,17 @@ public class BioForgeRecipeCategory implements IRecipeCategory<BioForgeRecipe> {
 	@Override
 	public void draw(BioForgeRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
 		Font fontRenderer = Minecraft.getInstance().font;
-		int fuelCost = 1; //TODO: use constant
-		MutableComponent costString = ComponentUtil.literal("-" + fuelCost);
-		fontRenderer.draw(poseStack, costString, 108, 32f - fontRenderer.lineHeight + 1, 0xff808080);
+		MutableComponent costString = ComponentUtil.literal("-" + recipe.getCraftingCostNutrients());
+		fontRenderer.draw(poseStack, costString, 108, 32f - fontRenderer.lineHeight + 1, 0xff_808080);
+	}
+
+	@Override
+	public ResourceLocation getUid() {
+		return getRecipeType().getUid();
+	}
+
+	@Override
+	public Class<? extends BioForgeRecipe> getRecipeClass() {
+		return getRecipeType().getRecipeClass();
 	}
 }

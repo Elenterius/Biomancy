@@ -1,12 +1,15 @@
 package com.github.elenterius.biomancy.client.gui;
 
+import com.github.elenterius.biomancy.BiomancyConfig;
+import com.github.elenterius.biomancy.crafting.recipe.BioForgeRecipe;
 import com.github.elenterius.biomancy.init.ModBioForgeTabs;
 import com.github.elenterius.biomancy.init.ModRecipeBookTypes;
 import com.github.elenterius.biomancy.init.client.ModRecipeBookCategories;
+import com.github.elenterius.biomancy.integration.BioForgeCompat;
+import com.github.elenterius.biomancy.menu.BioForgeMenu;
+import com.github.elenterius.biomancy.menu.BioForgeTab;
+import com.github.elenterius.biomancy.mixin.client.RecipeCollectionAccessor;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
-import com.github.elenterius.biomancy.recipe.BioForgeRecipe;
-import com.github.elenterius.biomancy.world.inventory.menu.BioForgeMenu;
-import com.github.elenterius.biomancy.world.inventory.menu.BioForgeTab;
 import com.google.common.collect.Lists;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
@@ -17,16 +20,14 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.searchtree.SearchRegistry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.stats.RecipeBook;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 
 import javax.annotation.Nullable;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 
 class BioForgeScreenController {
 
@@ -151,6 +152,7 @@ class BioForgeScreenController {
 		return Math.min(GRID_SIZE, shownRecipes.size() - startIndex);
 	}
 
+	//TODO: refactor
 	public boolean isSelectedRecipeVisible() {
 		int maxIndex = startIndex + GRID_SIZE;
 		if (recipeSelection.tab == activeTab) {
@@ -158,11 +160,10 @@ class BioForgeScreenController {
 		}
 
 		if (recipeSelection.recipe != null && (activeTab == 0 || getCurrentCategory() == recipeSelection.recipe.getTab())) {
-			//find gridIndex recipeSelection in foreign tab
 			int maxRecipes = getMaxRecipesOnGrid();
-			for (int i = 0; i < maxRecipes; i++) {
-				if (getRecipe(startIndex + i).isRecipeEqual(recipeSelection.recipe)) {
-					crossoverGridIndex = startIndex + i;
+			for (int gridIndex = 0; gridIndex < maxRecipes; gridIndex++) {
+				if (getRecipe(startIndex + gridIndex).isRecipeEqual(recipeSelection.recipe)) {
+					crossoverGridIndex = startIndex + gridIndex;
 					return true;
 				}
 			}
@@ -178,7 +179,7 @@ class BioForgeScreenController {
 		}
 
 		if (recipeSelection.recipe != null && (activeTab == 0 || getCurrentCategory() == recipeSelection.recipe.getTab())) {
-			return crossoverGridIndex;
+			return crossoverGridIndex - startIndex;
 		}
 
 		return 0;
@@ -241,13 +242,41 @@ class BioForgeScreenController {
 		currentSearchString = searchString;
 	}
 
+	private static void canCraftRecipe(RecipeCollection recipeCollection, StackedContents handler, RecipeBook book, boolean isCreativePlayer) {
+		RecipeCollectionAccessor accessor = (RecipeCollectionAccessor) recipeCollection;
+		Set<Recipe<?>> fitDimensions = accessor.biomancy$getFitDimensions();
+		Set<Recipe<?>> craftable = accessor.biomancy$getCraftable();
+
+		for (Recipe<?> recipe : recipeCollection.getRecipes()) {
+			boolean isRecipeKnown = isCreativePlayer || book.contains(recipe);
+			boolean canCraftRecipe = recipe.canCraftInDimensions(0, 0) && isRecipeKnown;
+
+			if (canCraftRecipe) {
+				fitDimensions.add(recipe);
+			}
+			else {
+				fitDimensions.remove(recipe);
+			}
+
+			if (canCraftRecipe && handler.canCraft(recipe, null)) {
+				craftable.add(recipe);
+			}
+			else {
+				craftable.remove(recipe);
+			}
+		}
+	}
+
 	private void updateAndSearchRecipes() {
-		ClientRecipeBook recipeBook = getPlayer().getRecipeBook();
+		LocalPlayer player = getPlayer();
+		boolean isCreativePlayer = player.isCreative() || !BiomancyConfig.SERVER.doBioForgeRecipeProgression.get() || BioForgeCompat.isRecipeCollectionOverwriteEnabled();
+
+		ClientRecipeBook recipeBook = player.getRecipeBook();
 		List<RecipeCollection> recipesForCategory = recipeBook.getCollection(ModRecipeBookCategories.getRecipeBookCategories(tabs.get(activeTab)));
-		recipesForCategory.forEach(recipeCollection -> recipeCollection.canCraft(itemCounter, 0, 0, recipeBook));
+		recipesForCategory.forEach(recipeCollection -> canCraftRecipe(recipeCollection, itemCounter, recipeBook, isCreativePlayer));
 
 		List<RecipeCollection> recipes = Lists.newArrayList(recipesForCategory);
-		recipes.removeIf(recipeCollection -> !recipeCollection.hasKnownRecipes());
+		if (!isCreativePlayer) recipes.removeIf(recipeCollection -> !recipeCollection.hasKnownRecipes());
 		recipes.removeIf(recipeCollection -> !recipeCollection.hasFitting());
 
 		if (!currentSearchString.isEmpty()) {

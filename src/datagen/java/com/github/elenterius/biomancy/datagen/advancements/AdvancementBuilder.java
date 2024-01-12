@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.datagen.advancements;
 
-import com.github.elenterius.biomancy.chat.ComponentUtil;
-import com.github.elenterius.biomancy.datagen.translations.ITranslationProvider;
+import com.github.elenterius.biomancy.datagen.lang.LangProvider;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.FrameType;
@@ -11,6 +11,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -18,7 +19,7 @@ import java.util.function.Consumer;
 public class AdvancementBuilder {
 
 	private final Advancement.Builder internalBuilder;
-	private final ITranslationProvider lang;
+	private final LangProvider lang;
 
 	private final String modId;
 	private final String id;
@@ -34,7 +35,7 @@ public class AdvancementBuilder {
 	private boolean announceToChat = false;
 	private boolean hidden = false;
 
-	private AdvancementBuilder(String modId, final String id, ITranslationProvider lang) {
+	private AdvancementBuilder(String modId, final String id, LangProvider lang) {
 		this.modId = modId;
 		this.id = id;
 		this.lang = lang;
@@ -43,7 +44,7 @@ public class AdvancementBuilder {
 		descriptionTranslationKey = "advancements.%s.%s.description".formatted(modId, id);
 	}
 
-	public static AdvancementBuilder create(String modId, String id, ITranslationProvider lang) {
+	public static AdvancementBuilder create(String modId, String id, LangProvider lang) {
 		return new AdvancementBuilder(modId, id, lang);
 	}
 
@@ -113,7 +114,7 @@ public class AdvancementBuilder {
 	}
 
 	public AdvancementBuilder addHasCriterion(ItemLike item) {
-		ResourceLocation registryName = Objects.requireNonNull(item.asItem().getRegistryName());
+		ResourceLocation registryName = Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item.asItem()));
 		internalBuilder.addCriterion("has_" + registryName.getPath(), ModAdvancementProvider.hasItems(item));
 		return this;
 	}

@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.world.inventory.menu.BioForgeTab;
+import com.github.elenterius.biomancy.menu.BioForgeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.DeferredRegister;
@@ -21,7 +21,7 @@ public final class ModBioForgeTabs {
 
 	public static final RegistryObject<BioForgeTab> BLOCKS = register("blocks", ModItems.FLESH_BLOCK);
 	public static final RegistryObject<BioForgeTab> MACHINES = register("machines", ModItems.DECOMPOSER);
-	public static final RegistryObject<BioForgeTab> WEAPONS = register("weapons", ModItems.LONG_CLAWS);
+	public static final RegistryObject<BioForgeTab> WEAPONS = register("weapons", ModItems.RAVENOUS_CLAWS);
 
 	private ModBioForgeTabs() {}
 

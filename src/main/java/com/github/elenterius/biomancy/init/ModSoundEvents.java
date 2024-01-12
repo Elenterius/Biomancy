@@ -10,6 +10,10 @@ public final class ModSoundEvents {
 
 	public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, BiomancyMod.MOD_ID);
 
+	//# Attacks
+	public static final RegistryObject<SoundEvent> CLAWS_ATTACK_STRONG = registerSoundEvent("claws.attack.strong");
+	public static final RegistryObject<SoundEvent> CLAWS_ATTACK_BLEED_PROC = registerSoundEvent("claws.attack.bleed_proc");
+
 	//# Items
 	public static final RegistryObject<SoundEvent> INJECTOR_INJECT = registerSoundEvent("item.injector.inject");
 	public static final RegistryObject<SoundEvent> INJECTOR_FAIL = registerSoundEvent("item.injector.fail");
@@ -21,14 +25,27 @@ public final class ModSoundEvents {
 	public static final RegistryObject<SoundEvent> FLESH_BLOCK_BREAK = registerSoundEvent("flesh_block.break");
 	public static final RegistryObject<SoundEvent> FLESH_BLOCK_STEP = registerSoundEvent("flesh_block.step");
 	public static final RegistryObject<SoundEvent> FLESH_BLOCK_FALL = registerSoundEvent("flesh_block.fall");
+
+	public static final RegistryObject<SoundEvent> BONY_FLESH_BLOCK_PLACE = registerSoundEvent("bony_flesh_block.place");
+	public static final RegistryObject<SoundEvent> BONY_FLESH_BLOCK_HIT = registerSoundEvent("bony_flesh_block.hit");
+	public static final RegistryObject<SoundEvent> BONY_FLESH_BLOCK_BREAK = registerSoundEvent("bony_flesh_block.break");
+	public static final RegistryObject<SoundEvent> BONY_FLESH_BLOCK_STEP = registerSoundEvent("bony_flesh_block.step");
+	public static final RegistryObject<SoundEvent> BONY_FLESH_BLOCK_FALL = registerSoundEvent("bony_flesh_block.fall");
+
 	public static final RegistryObject<SoundEvent> FLESH_DOOR_OPEN = registerSoundEvent("flesh_door.open");
 	public static final RegistryObject<SoundEvent> FLESH_DOOR_CLOSE = registerSoundEvent("flesh_door.close");
+
+	//# Fleshkin
+	public static final RegistryObject<SoundEvent> FLESHKIN_NO = registerSoundEvent("fleshkin.no");
+	public static final RegistryObject<SoundEvent> FLESHKIN_EAT = registerSoundEvent("fleshkin.eat");
+	public static final RegistryObject<SoundEvent> FLESHKIN_BREAK = registerSoundEvent("fleshkin.break");
+	public static final RegistryObject<SoundEvent> FLESHKIN_BECOME_DORMANT = registerSoundEvent("fleshkin.dormant");
+	public static final RegistryObject<SoundEvent> FLESHKIN_BECOME_AWAKENED = registerSoundEvent("fleshkin.awakened");
 
 	//## Misc
 	public static final RegistryObject<SoundEvent> FLESHKIN_CHEST_OPEN = registerSoundEvent("fleshkin_chest.open");
 	public static final RegistryObject<SoundEvent> FLESHKIN_CHEST_CLOSE = registerSoundEvent("fleshkin_chest.close");
 	public static final RegistryObject<SoundEvent> FLESHKIN_CHEST_BITE_ATTACK = registerSoundEvent("fleshkin_chest.bite_attack");
-	public static final RegistryObject<SoundEvent> FLESHKIN_CHEST_NO = registerSoundEvent("fleshkin_chest.no");
 	public static final RegistryObject<SoundEvent> CREATOR_SPIKE_ATTACK = registerSoundEvent("creator.spike_attack");
 	public static final RegistryObject<SoundEvent> CREATOR_CRAFTING_RANDOM = registerSoundEvent("block.creator.crafting_random");
 	public static final RegistryObject<SoundEvent> CREATOR_SPAWN_MOB = registerSoundEvent("block.creator.spawn_mob");
@@ -63,6 +80,12 @@ public final class ModSoundEvents {
 	//# Mobs
 	public static final RegistryObject<SoundEvent> FLESH_BLOB_JUMP = registerSoundEvent("entity.flesh_blob.jump");
 	public static final RegistryObject<SoundEvent> FLESH_BLOB_HURT = registerSoundEvent("entity.flesh_blob.hurt");
+	public static final RegistryObject<SoundEvent> FLESH_BLOB_DEATH = registerSoundEvent("entity.flesh_blob.death");
+	public static final RegistryObject<SoundEvent> FLESH_BLOB_AMBIENT = registerSoundEvent("entity.flesh_blob.ambient");
+
+	//## Generic
+	public static final RegistryObject<SoundEvent> GENERIC_MEW_PURR = registerSoundEvent("entity.generic.mew_purr");
+	public static final RegistryObject<SoundEvent> GENERIC_GROWL = registerSoundEvent("entity.generic.growl");
 
 	private ModSoundEvents() {}
 
