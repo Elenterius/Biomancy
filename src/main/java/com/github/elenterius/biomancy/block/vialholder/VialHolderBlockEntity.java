@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.block.vialholder;
 
 import com.github.elenterius.biomancy.api.serum.SerumContainer;
-import com.github.elenterius.biomancy.block.entity.SimpleSyncedBlockEntity;
+import com.github.elenterius.biomancy.block.base.SimpleSyncedBlockEntity;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.block.storagesac;
 
-import com.github.elenterius.biomancy.block.entity.SimpleContainerBlockEntity;
+import com.github.elenterius.biomancy.block.base.SimpleContainerBlockEntity;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModCapabilities;
 import com.github.elenterius.biomancy.inventory.BehavioralInventory;

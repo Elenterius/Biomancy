@@ -1,12 +1,12 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.block.base.BlockEntityDelegator;
 import com.github.elenterius.biomancy.block.bioforge.BioForgeBlockEntity;
 import com.github.elenterius.biomancy.block.biolab.BioLabBlockEntity;
 import com.github.elenterius.biomancy.block.cradle.PrimordialCradleBlockEntity;
 import com.github.elenterius.biomancy.block.decomposer.DecomposerBlockEntity;
 import com.github.elenterius.biomancy.block.digester.DigesterBlockEntity;
-import com.github.elenterius.biomancy.block.entity.BlockEntityDelegator;
 import com.github.elenterius.biomancy.block.fleshkinchest.FleshkinChestBlockEntity;
 import com.github.elenterius.biomancy.block.mawhopper.MawHopperBlockEntity;
 import com.github.elenterius.biomancy.block.ownable.OwnableBlockEntity;

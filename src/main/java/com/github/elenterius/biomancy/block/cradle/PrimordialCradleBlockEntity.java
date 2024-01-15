@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.block.cradle;
 
 import com.github.elenterius.biomancy.BiomancyConfig;
-import com.github.elenterius.biomancy.block.entity.SimpleSyncedBlockEntity;
+import com.github.elenterius.biomancy.block.base.SimpleSyncedBlockEntity;
 import com.github.elenterius.biomancy.config.PrimalEnergySettings;
 import com.github.elenterius.biomancy.entity.fleshblob.FleshBlob;
 import com.github.elenterius.biomancy.init.*;

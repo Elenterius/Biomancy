@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.block.entity;
+package com.github.elenterius.biomancy.block.base;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;

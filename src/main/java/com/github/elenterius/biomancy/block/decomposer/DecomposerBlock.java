@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.block.decomposer;
 
-import com.github.elenterius.biomancy.block.HorizontalFacingMachineBlock;
-import com.github.elenterius.biomancy.block.entity.MachineBlockEntity;
+import com.github.elenterius.biomancy.block.base.HorizontalFacingMachineBlock;
+import com.github.elenterius.biomancy.block.base.MachineBlockEntity;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModSoundEvents;

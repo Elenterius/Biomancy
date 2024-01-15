@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.block.tongue;
 
-import com.github.elenterius.biomancy.block.entity.SimpleSyncedBlockEntity;
+import com.github.elenterius.biomancy.block.base.SimpleSyncedBlockEntity;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.inventory.itemhandler.EnhancedItemHandler;
 import com.github.elenterius.biomancy.inventory.itemhandler.SingleItemStackHandler;
