@@ -1,7 +1,6 @@
-package com.github.elenterius.biomancy.block.entity;
+package com.github.elenterius.biomancy.block.base;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.block.MachineBlock;
 import com.github.elenterius.biomancy.crafting.recipe.ProcessingRecipe;
 import com.github.elenterius.biomancy.crafting.state.CraftingState;
 import com.github.elenterius.biomancy.crafting.state.RecipeCraftingStateData;

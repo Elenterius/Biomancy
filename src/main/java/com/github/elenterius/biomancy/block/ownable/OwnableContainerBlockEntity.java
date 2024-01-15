@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.block.ownable;
 
-import com.github.elenterius.biomancy.block.entity.SimpleContainerBlockEntity;
+import com.github.elenterius.biomancy.block.base.SimpleContainerBlockEntity;
 import com.github.elenterius.biomancy.ownable.IOwnable;
 import com.github.elenterius.biomancy.permission.Actions;
 import com.github.elenterius.biomancy.permission.IRestrictedInteraction;

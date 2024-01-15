@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.block.digester;
 
-import com.github.elenterius.biomancy.block.MachineBlock;
-import com.github.elenterius.biomancy.block.entity.MachineBlockEntity;
+import com.github.elenterius.biomancy.block.base.MachineBlock;
+import com.github.elenterius.biomancy.block.base.MachineBlockEntity;
 import com.github.elenterius.biomancy.client.util.ClientLoopingSoundHelper;
 import com.github.elenterius.biomancy.crafting.recipe.DigesterRecipe;
 import com.github.elenterius.biomancy.crafting.recipe.SimpleRecipeType;

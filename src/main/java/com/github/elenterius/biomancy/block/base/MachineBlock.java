@@ -1,6 +1,5 @@
-package com.github.elenterius.biomancy.block;
+package com.github.elenterius.biomancy.block.base;
 
-import com.github.elenterius.biomancy.block.entity.MachineBlockEntity;
 import com.github.elenterius.biomancy.init.ModBlockProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

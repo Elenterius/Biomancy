@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.block;
+package com.github.elenterius.biomancy.block.base;
 
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;

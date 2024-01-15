@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.block.biolab;
 
-import com.github.elenterius.biomancy.block.MachineBlock;
-import com.github.elenterius.biomancy.block.entity.MachineBlockEntity;
+import com.github.elenterius.biomancy.block.base.MachineBlock;
+import com.github.elenterius.biomancy.block.base.MachineBlockEntity;
 import com.github.elenterius.biomancy.client.util.ClientLoopingSoundHelper;
 import com.github.elenterius.biomancy.crafting.recipe.BioLabRecipe;
 import com.github.elenterius.biomancy.crafting.recipe.IngredientStack;

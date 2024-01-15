@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.block.ownable;
 
-import com.github.elenterius.biomancy.block.entity.IBlockEntityDelegator;
+import com.github.elenterius.biomancy.block.base.IBlockEntityDelegator;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.ownable.IOwnable;
 import com.github.elenterius.biomancy.ownable.IOwnableEntityBlock;

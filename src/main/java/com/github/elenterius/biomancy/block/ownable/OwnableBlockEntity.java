@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.block.ownable;
 
-import com.github.elenterius.biomancy.block.entity.SimpleSyncedBlockEntity;
+import com.github.elenterius.biomancy.block.base.SimpleSyncedBlockEntity;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.ownable.IOwnable;
 import com.github.elenterius.biomancy.permission.IRestrictedInteraction;

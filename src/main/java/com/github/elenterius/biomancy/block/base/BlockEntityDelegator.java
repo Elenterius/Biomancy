@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.block.entity;
+package com.github.elenterius.biomancy.block.base;
 
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
