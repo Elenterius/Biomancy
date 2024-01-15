@@ -194,8 +194,6 @@
 	"block.biomancy.bio_forge.tooltip": "Crafting Station",
 	"block.biomancy.bio_lab": "Bio-Lab",
 	"block.biomancy.bio_lab.tooltip": "Bio-alchemical Brewer",
-	"block.biomancy.voice_box": "[PH] Modular Larynx",
-	"block.biomancy.voice_box.tooltip": "",
 	"block.biomancy.tongue": "Tongue",
 	"block.biomancy.tongue.tooltip": "Extracts up to 3 items of the same type every 24 ticks from containers it's attached to, and drops them on the ground.",
 	"block.biomancy.maw_hopper": "Maw Hopper",
