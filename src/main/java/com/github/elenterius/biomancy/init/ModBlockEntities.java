@@ -9,7 +9,6 @@ import com.github.elenterius.biomancy.block.digester.DigesterBlockEntity;
 import com.github.elenterius.biomancy.block.entity.BlockEntityDelegator;
 import com.github.elenterius.biomancy.block.fleshkinchest.FleshkinChestBlockEntity;
 import com.github.elenterius.biomancy.block.mawhopper.MawHopperBlockEntity;
-import com.github.elenterius.biomancy.block.modularlarynx.VoiceBoxBlockEntity;
 import com.github.elenterius.biomancy.block.ownable.OwnableBlockEntity;
 import com.github.elenterius.biomancy.block.storagesac.StorageSacBlockEntity;
 import com.github.elenterius.biomancy.block.tongue.TongueBlockEntity;
@@ -39,7 +38,7 @@ public final class ModBlockEntities {
 	public static final RegistryObject<BlockEntityType<StorageSacBlockEntity>> STORAGE_SAC = register(ModBlocks.STORAGE_SAC, StorageSacBlockEntity::new);
 	public static final RegistryObject<BlockEntityType<FleshkinChestBlockEntity>> FLESHKIN_CHEST = register(ModBlocks.FLESHKIN_CHEST, FleshkinChestBlockEntity::new);
 	public static final RegistryObject<BlockEntityType<VialHolderBlockEntity>> VIAL_HOLDER = register(ModBlocks.VIAL_HOLDER, VialHolderBlockEntity::new);
-	public static final RegistryObject<BlockEntityType<VoiceBoxBlockEntity>> VOICE_BOX = register(ModBlocks.VOICE_BOX, VoiceBoxBlockEntity::new);
+	//	public static final RegistryObject<BlockEntityType<VoiceBoxBlockEntity>> VOICE_BOX = register(ModBlocks.VOICE_BOX, VoiceBoxBlockEntity::new);
 
 	//# Special
 	public static final RegistryObject<BlockEntityType<OwnableBlockEntity>> OWNABLE_BE = BLOCK_ENTITIES.register("ownable_block_entity", () -> BlockEntityType.Builder.of(OwnableBlockEntity::new, /*ModBlocks.FLESHKIN_DOOR.get(), ModBlocks.FLESHKIN_TRAPDOOR.get(),*/ ModBlocks.FLESHKIN_PRESSURE_PLATE.get()).build(noDataFixer()));

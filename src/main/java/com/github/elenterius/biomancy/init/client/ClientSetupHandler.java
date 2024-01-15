@@ -114,7 +114,7 @@ public final class ClientSetupHandler {
 	}
 
 	private static void setBlockRenderLayers() {
-		ItemBlockRenderTypes.setRenderLayer(ModBlocks.VOICE_BOX.get(), RenderType.translucent());
+		//ItemBlockRenderTypes.setRenderLayer(ModBlocks.VOICE_BOX.get(), RenderType.translucent());
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.STORAGE_SAC.get(), RenderType.translucent());
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.VIAL_HOLDER.get(), RenderType.cutout());
 
