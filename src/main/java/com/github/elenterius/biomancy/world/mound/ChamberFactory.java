@@ -75,10 +75,11 @@ public interface ChamberFactory {
 			consumer.accept(chamber);
 		};
 
-		wrappedConsumer.accept(new MoundChamber(new OctantEllipsoidShape(x + p, y - p, z + p, halfR, quarterR, halfR, quarterR, halfR, quarterR)));
-		wrappedConsumer.accept(new MoundChamber(new OctantEllipsoidShape(x - p, y - p, z + p, quarterR, quarterR, halfR, halfR, halfR, quarterR)));
-		wrappedConsumer.accept(new MoundChamber(new OctantEllipsoidShape(x + p, y - p, z - p, halfR, quarterR, quarterR, quarterR, halfR, halfR)));
-		wrappedConsumer.accept(new MoundChamber(new OctantEllipsoidShape(x - p, y - p, z - p, quarterR, quarterR, quarterR, halfR, halfR, halfR)));
+		float offset = 0.25f;
+		wrappedConsumer.accept(new MoundChamber(new OctantEllipsoidShape(x + p, y - p - offset, z + p, halfR, quarterR, halfR, quarterR, halfR, quarterR)));
+		wrappedConsumer.accept(new MoundChamber(new OctantEllipsoidShape(x - p, y - p - offset, z + p, quarterR, quarterR, halfR, halfR, halfR, quarterR)));
+		wrappedConsumer.accept(new MoundChamber(new OctantEllipsoidShape(x + p, y - p - offset, z - p, halfR, quarterR, quarterR, quarterR, halfR, halfR)));
+		wrappedConsumer.accept(new MoundChamber(new OctantEllipsoidShape(x - p, y - p - offset, z - p, quarterR, quarterR, quarterR, halfR, halfR, halfR)));
 	};
 
 	SimpleWeightedRandomList<ChamberFactory> RANDOM_DEFAULTS_LIST = SimpleWeightedRandomList.<ChamberFactory>builder()

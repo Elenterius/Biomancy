@@ -91,7 +91,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 				MoundShape.ProcGenValues values = moundShape.getProcGenValues();
 				if (!values.equals(procGenValues)) {
 					procGenValues = values;
-					setChangedSilent();
+					markChunkAsUnsaved();
 				}
 			}
 		}
@@ -105,7 +105,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 		if (sacrificeHandler.isFull()) return false;
 
 		return sacrificeHandler.addItem(stack, tribute -> {
-			setChangedSilent();
+			markChunkAsUnsaved();
 			syncToClient();
 			spawnTributeParticles((ServerLevel) level, tribute);
 		});
@@ -160,14 +160,14 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 
 	private void resetState() {
 		sacrificeHandler.reset();
-		setChangedSilent();
+		markChunkAsUnsaved();
 		syncToClient();
 	}
 
 	/**
 	 * equivalent to calling #setChanged() but without notifying block neighbors of the change
 	 */
-	protected void setChangedSilent() {
+	protected void markChunkAsUnsaved() {
 		if (level != null && level.hasChunkAt(worldPosition)) {
 			level.getChunkAt(worldPosition).setUnsaved(true);
 		}
@@ -197,18 +197,17 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 				SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CREATOR_SPAWN_MOB);
 			}
 
-			if (level.random.nextFloat() >= sacrificeHandler.getTumorFactor() / 3) {
-				PrimordialEcosystem.tryToReplaceBlock(level, pos.below(), ModBlocks.PRIMAL_FLESH.get().defaultBlockState());
-			}
+			PrimordialEcosystem.tryToReplaceBlock(level, pos.below(), ModBlocks.MALIGNANT_FLESH.get().defaultBlockState());
 
 			level.sendParticles(ParticleTypes.EXPLOSION, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, 1, 0, 0, 0, 0);
 		}
 		else {
 			attackAOE(level, pos);
 			SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CREATOR_SPIKE_ATTACK);
-			if (!PrimordialEcosystem.spreadMalignantVeinsFromSource(level, pos, PrimordialEcosystem.MAX_CHARGE_SUPPLIER)) {
-				PrimordialEcosystem.tryToReplaceBlock(level, pos.below(), ModBlocks.PRIMAL_FLESH.get().defaultBlockState());
-			}
+
+			PrimordialEcosystem.tryToReplaceBlock(level, pos.below(), ModBlocks.MALIGNANT_FLESH.get().defaultBlockState());
+			PrimordialEcosystem.spreadMalignantVeinsFromSource(level, pos, PrimordialEcosystem.MAX_CHARGE_SUPPLIER);
+
 			addPrimalEnergy(Math.round(3072 * energyMultiplier));
 			SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), 1f, 0.15f + level.random.nextFloat() * 0.5f);
 		}
