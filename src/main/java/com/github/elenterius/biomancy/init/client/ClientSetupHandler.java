@@ -20,10 +20,10 @@ import com.github.elenterius.biomancy.client.render.block.tongue.TongueRenderer;
 import com.github.elenterius.biomancy.client.render.entity.AcidProjectileRenderer;
 import com.github.elenterius.biomancy.client.render.entity.WitherProjectileRenderer;
 import com.github.elenterius.biomancy.client.render.entity.acidblob.AcidBlobProjectileRenderer;
+import com.github.elenterius.biomancy.client.render.entity.bloomberry.BloomberryProjectileRenderer;
 import com.github.elenterius.biomancy.client.render.entity.fleshblob.FleshBlobRenderer;
 import com.github.elenterius.biomancy.client.render.entity.fleshblob.LegacyFleshBlobRenderer;
 import com.github.elenterius.biomancy.client.render.entity.fleshblob.PrimordialFleshBlobRenderer;
-import com.github.elenterius.biomancy.client.render.entity.sapberry.SapberryProjectileRenderer;
 import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.integration.ModsCompatHandler;
 import com.github.elenterius.biomancy.tooltip.EmptyLineTooltipComponent;
@@ -109,7 +109,7 @@ public final class ClientSetupHandler {
 		event.registerEntityRenderer(ModEntityTypes.CORROSIVE_ACID_PROJECTILE.get(), AcidProjectileRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.TOOTH_PROJECTILE.get(), ThrownItemRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.WITHER_SKULL_PROJECTILE.get(), WitherProjectileRenderer::new);
-		event.registerEntityRenderer(ModEntityTypes.SAPBERRY_PROJECTILE.get(), SapberryProjectileRenderer::new);
+		event.registerEntityRenderer(ModEntityTypes.BLOOMBERRY_PROJECTILE.get(), BloomberryProjectileRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.ACID_BLOB_PROJECTILE.get(), AcidBlobProjectileRenderer::new);
 	}
 

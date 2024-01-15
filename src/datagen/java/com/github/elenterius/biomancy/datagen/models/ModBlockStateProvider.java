@@ -2,8 +2,8 @@ package com.github.elenterius.biomancy.datagen.models;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.*;
+import com.github.elenterius.biomancy.block.bloom.BloomBlock;
 import com.github.elenterius.biomancy.block.fleshspike.FleshSpikeBlock;
-import com.github.elenterius.biomancy.block.malignantbloom.MalignantBloomBlock;
 import com.github.elenterius.biomancy.block.orifice.OrificeBlock;
 import com.github.elenterius.biomancy.block.ownable.OwnablePressurePlateBlock;
 import com.github.elenterius.biomancy.block.property.DirectionalSlabType;
@@ -357,11 +357,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		simpleBlockItem(block, models[0]);
 	}
 
-	public <T extends MalignantBloomBlock> void malignantBloom(RegistryObject<T> block) {
+	public <T extends BloomBlock> void malignantBloom(RegistryObject<T> block) {
 		malignantBloom(block.get());
 	}
 
-	public void malignantBloom(MalignantBloomBlock block) {
+	public void malignantBloom(BloomBlock block) {
 		ResourceLocation model = blockAsset(block);
 
 		ModelFile.ExistingModelFile[] models = {
@@ -372,7 +372,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 				models().getExistingFile(extend(model, "_5"))
 		};
 
-		directionalBlock(block, blockState -> models[MalignantBloomBlock.getStage(blockState)], BlockStateProperties.WATERLOGGED);
+		directionalBlock(block, blockState -> models[BloomBlock.getStage(blockState)], BlockStateProperties.WATERLOGGED);
 
 		simpleBlockItem(block, models[0]);
 	}

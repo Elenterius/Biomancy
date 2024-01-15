@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.block.veins;
 
+import com.github.elenterius.biomancy.block.bloom.BloomBlock;
 import com.github.elenterius.biomancy.block.cradle.PrimalEnergyHandler;
-import com.github.elenterius.biomancy.block.malignantbloom.MalignantBloomBlock;
 import com.github.elenterius.biomancy.init.ModBlockProperties;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModFluids;
@@ -226,7 +226,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 	}
 
 	protected static boolean convertSelfIntoBloom(ServerLevel level, BlockPos pos, Direction direction) {
-		MalignantBloomBlock bloomBlock = ModBlocks.PRIMAL_BLOOM.get();
+		BloomBlock bloomBlock = ModBlocks.PRIMAL_BLOOM.get();
 
 		BlockPos posBelow = pos.relative(direction);
 		BlockState stateBelow = level.getBlockState(posBelow);

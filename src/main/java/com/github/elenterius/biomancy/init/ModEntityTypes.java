@@ -51,7 +51,7 @@ public final class ModEntityTypes {
 	public static final RegistryObject<EntityType<ToothProjectile>> TOOTH_PROJECTILE = registerProjectile("tooth_projectile", ToothProjectile::new, builder -> builder.sized(0.25f, 0.25f));
 	public static final RegistryObject<EntityType<WitherProjectile>> WITHER_SKULL_PROJECTILE = registerProjectile("wither_projectile", WitherProjectile::new, builder -> builder.sized(0.3125f, 0.3125f));
 	public static final RegistryObject<EntityType<CorrosiveAcidProjectile>> CORROSIVE_ACID_PROJECTILE = registerProjectile("corrosive_acid_projectile", CorrosiveAcidProjectile::new, builder -> builder.sized(0.25f, 0.25f));
-	public static final RegistryObject<EntityType<SapberryProjectile>> SAPBERRY_PROJECTILE = registerProjectile("sapberry_projectile", SapberryProjectile::new, builder -> builder.sized(8f / 16f, 8f / 16f));
+	public static final RegistryObject<EntityType<BloomberryProjectile>> BLOOMBERRY_PROJECTILE = registerProjectile("bloomberry_projectile", BloomberryProjectile::new, builder -> builder.sized(8f / 16f, 8f / 16f));
 	public static final RegistryObject<EntityType<AcidBlobProjectile>> ACID_BLOB_PROJECTILE = registerProjectile("acid_blob_projectile", AcidBlobProjectile::new, builder -> builder.sized(6f / 16f, 6f / 16f));
 
 	private ModEntityTypes() {}

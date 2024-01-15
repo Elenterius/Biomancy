@@ -18,16 +18,16 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-public class SapberryProjectile extends BaseProjectile implements IAnimatable {
+public class BloomberryProjectile extends BaseProjectile implements IAnimatable {
 
 	protected final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
 
-	public SapberryProjectile(EntityType<? extends SapberryProjectile> entityType, Level level) {
+	public BloomberryProjectile(EntityType<? extends BloomberryProjectile> entityType, Level level) {
 		super(entityType, level);
 	}
 
-	public SapberryProjectile(Level level, double x, double y, double z) {
-		super(ModEntityTypes.SAPBERRY_PROJECTILE.get(), level, x, y, z);
+	public BloomberryProjectile(Level level, double x, double y, double z) {
+		super(ModEntityTypes.BLOOMBERRY_PROJECTILE.get(), level, x, y, z);
 	}
 
 	@Override
