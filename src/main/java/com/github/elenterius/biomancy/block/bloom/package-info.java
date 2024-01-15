@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package com.github.elenterius.biomancy.block.malignantbloom;
+package com.github.elenterius.biomancy.block.bloom;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

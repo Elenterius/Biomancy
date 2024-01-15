@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.block.malignantbloom;
+package com.github.elenterius.biomancy.block.bloom;
 
 import com.github.elenterius.biomancy.block.base.WaterloggedFacingBlock;
 import com.github.elenterius.biomancy.init.ModBlocks;
@@ -40,15 +40,15 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
 
-public class MalignantBloomBlock extends WaterloggedFacingBlock implements IPlantable {
+public class BloomBlock extends WaterloggedFacingBlock implements IPlantable {
 
 	public static final EnhancedIntegerProperty AGE = EnhancedIntegerProperty.wrap(BlockStateProperties.AGE_7);
 	protected static final int AIM_DISTANCE = 8;
 
-	public MalignantBloomBlock(Properties properties) {
+	public BloomBlock(Properties properties) {
 		super(properties);
 		registerDefaultState(defaultBlockState().setValue(AGE.get(), AGE.getMin()));
-		MalignantBloomShapes.computePossibleShapes(stateDefinition.getPossibleStates());
+		BloomShapes.computePossibleShapes(stateDefinition.getPossibleStates());
 	}
 
 	public static int getAge(BlockState state) {
@@ -132,7 +132,7 @@ public class MalignantBloomBlock extends WaterloggedFacingBlock implements IPlan
 			int offsetZ = plane.getZ() * random.nextIntBetweenInclusive(-range, range);
 			BlockPos target = pos.relative(direction, AIM_DISTANCE).offset(offsetX, offsetY, offsetZ);
 
-			ModProjectiles.SAPBERRY.shoot(level, Vec3.atCenterOf(pos), Vec3.atCenterOf(target));
+			ModProjectiles.BLOOMBERRY.shoot(level, Vec3.atCenterOf(pos), Vec3.atCenterOf(target));
 		}
 	}
 
@@ -199,12 +199,12 @@ public class MalignantBloomBlock extends WaterloggedFacingBlock implements IPlan
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		return MalignantBloomShapes.getBoundingShape(state);
+		return BloomShapes.getBoundingShape(state);
 	}
 
 	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		return hasCollision ? MalignantBloomShapes.getCollisionShape(state) : Shapes.empty();
+		return hasCollision ? BloomShapes.getCollisionShape(state) : Shapes.empty();
 	}
 
 	@Override

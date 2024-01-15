@@ -4,12 +4,12 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.*;
 import com.github.elenterius.biomancy.block.bioforge.BioForgeBlock;
 import com.github.elenterius.biomancy.block.biolab.BioLabBlock;
+import com.github.elenterius.biomancy.block.bloom.BloomBlock;
 import com.github.elenterius.biomancy.block.cradle.PrimordialCradleBlock;
 import com.github.elenterius.biomancy.block.decomposer.DecomposerBlock;
 import com.github.elenterius.biomancy.block.digester.DigesterBlock;
 import com.github.elenterius.biomancy.block.fleshkinchest.FleshkinChestBlock;
 import com.github.elenterius.biomancy.block.fleshspike.FleshSpikeBlock;
-import com.github.elenterius.biomancy.block.malignantbloom.MalignantBloomBlock;
 import com.github.elenterius.biomancy.block.mawhopper.MawHopperBlock;
 import com.github.elenterius.biomancy.block.orifice.OrificeBlock;
 import com.github.elenterius.biomancy.block.ownable.OwnablePressurePlateBlock;
@@ -79,7 +79,7 @@ public final class ModBlocks {
 	public static final RegistryObject<DirectionalSlabBlock> MALIGNANT_FLESH_SLAB = registerSlab(MALIGNANT_FLESH, DirectionalSlabBlock::new);
 	public static final RegistryObject<WallBlock> MALIGNANT_FLESH_WALL = registerWall(MALIGNANT_FLESH, WallBlock::new);
 	public static final RegistryObject<FleshVeinsBlock> MALIGNANT_FLESH_VEINS = register("malignant_flesh_veins", () -> new FleshVeinsBlock(createFleshVeinsProperties().noCollission().noOcclusion()));
-	public static final RegistryObject<MalignantBloomBlock> PRIMAL_BLOOM = register("primal_bloom", properties -> new MalignantBloomBlock(properties.randomTicks().noOcclusion().lightLevel(MalignantBloomBlock::getLightEmission)));
+	public static final RegistryObject<BloomBlock> PRIMAL_BLOOM = register("primal_bloom", properties -> new BloomBlock(properties.randomTicks().noOcclusion().lightLevel(BloomBlock::getLightEmission)));
 	public static final RegistryObject<Block> BLOOMLIGHT = register("bloomlight", properties -> new Block(properties.sound(SoundType.SHROOMLIGHT).lightLevel(x -> 15)));
 	public static final RegistryObject<OrificeBlock> PRIMAL_ORIFICE = register("primal_orifice", properties -> new OrificeBlock(properties.randomTicks()));
 
