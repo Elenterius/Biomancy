@@ -1,3 +1,10 @@
+## [3.1.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.3.0.1...1.19.2-v2.3.1.0) (2024-01-15)
+
+
+### Features
+
+* **flesh-mound:** increase the minimum cradle room size and make it more likely that it generates with a solid floor ([c12f842](https://github.com/Elenterius/Biomancy/commit/c12f84238d8ffeb80c45b337f2df12ad171a1ed4))
+
 ### [3.0.1](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.3.0.0...1.19.2-v2.3.0.1) (2024-01-10)
 
 
@@ -219,23 +226,4 @@
 ### Features
 
 * enhance tooltip clarity and consistency ([bdbbcb9](https://github.com/Elenterius/Biomancy/commit/bdbbcb96bea8c5b7b8bbb1f2c9772be8ab98ab31))
-
-## [1.12.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.11.3...1.19.2-v2.1.12.0) (2023-07-18)
-
-
-### Features
-
-* add attack reach indicator for the Ravenous Claws ([ccc850f](https://github.com/Elenterius/Biomancy/commit/ccc850fce7a7d08aa86a97676eb2068f9167009b))
-* add Spanish translation ([4c3c35b](https://github.com/Elenterius/Biomancy/commit/4c3c35ba18f09cf94b8c3a8581927ed809fada13))
-* add status effect version of Despoil for use by datapacks etc ([fe2ae46](https://github.com/Elenterius/Biomancy/commit/fe2ae46e524d0b862f5a7ccae769878436589259))
-* improve flesh spike tooltip ([4e4c042](https://github.com/Elenterius/Biomancy/commit/4e4c042654d80f0cc11dab20d3f18fbca87b6082))
-* make bio-machines retain their fuel when destroyed ([8ec768d](https://github.com/Elenterius/Biomancy/commit/8ec768dcf6a5e92717a9be2ac2d6336b8098bb2c))
-* make flesh block texture less repetitive (uses placeholder textures) ([20fb879](https://github.com/Elenterius/Biomancy/commit/20fb87945492eb2cef904b323487dd281bdb7ddc))
-
-
-### Bug Fixes
-
-* fix full block slabs not dropping two slab blocks ([54bb038](https://github.com/Elenterius/Biomancy/commit/54bb038109267982d1b5594df40cbfe589f3de19))
-* fix inability to switch claw modes when holding down ctrl to sprint ([870a033](https://github.com/Elenterius/Biomancy/commit/870a03359169f68ef0d7cd20963b24182918e61f))
-* fix misleading fleshkin chest tooltip ([47b2758](https://github.com/Elenterius/Biomancy/commit/47b2758b5eee547d2bbe7d9eec01402f5ce38cf2))
 
