@@ -1,3 +1,10 @@
+## [3.1.0](https://github.com/Elenterius/Biomancy/compare/1.18.2-v2.3.0.0...1.18.2-v2.3.1.0) (2024-01-15)
+
+
+### Features
+
+* **flesh-mound:** increase the minimum cradle room size and make it more likely that it generates with a solid floor ([3efe121](https://github.com/Elenterius/Biomancy/commit/3efe12160d5505e84068b93962e66521f2bf0eae))
+
 ## [3.0.0](https://github.com/Elenterius/Biomancy/compare/1.18.2-v2.0.53.0...1.18.2-v2.3.0.0) (2024-01-12)
 
 
