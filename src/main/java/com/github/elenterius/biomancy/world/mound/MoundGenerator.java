@@ -98,7 +98,17 @@ public final class MoundGenerator {
 		float prevRadius = baseRadius + context.relativeWallThickness;
 		float totalHeight = 0;
 
-		genSphereWithChambers(x, y, z, prevRadius, prevRadius - context.relativeWallThickness / 2f, context, isMainSpire ? ChamberFactoryType.CRADLE : ChamberFactoryType.DEFAULT);
+		if (isMainSpire) {
+			prevRadius = Math.max(14f, prevRadius);
+			float chamberRadius = Math.max(12f, prevRadius - context.relativeWallThickness / 2f);
+
+			context.mainChamberRadius = chamberRadius * 0.9f;
+
+			genSphereWithChambers(x, y, z, prevRadius, chamberRadius, context, ChamberFactoryType.CRADLE, true);
+		}
+		else {
+			genSphereWithChambers(x, y, z, prevRadius, prevRadius - context.relativeWallThickness / 2f, context, ChamberFactoryType.DEFAULT, false);
+		}
 
 		while (totalHeight < maxHeight) {
 			float t = totalHeight / maxHeight;
@@ -121,7 +131,7 @@ public final class MoundGenerator {
 				leanZ = prevLean.z - leanOffset.z;
 			}
 
-			genSphereWithChambers(x + leanX, y + height, z + leanZ, radius, radius - context.relativeWallThickness / 2f, context, ChamberFactoryType.DEFAULT);
+			genSphereWithChambers(x + leanX, y + height, z + leanZ, radius, radius - context.relativeWallThickness / 2f, context, ChamberFactoryType.DEFAULT, isMainSpire);
 
 			prevLean.set(leanX, 0, leanZ);
 			prevRadius = radius;
@@ -130,16 +140,14 @@ public final class MoundGenerator {
 
 		//end cap shape
 		ChamberFactoryType chamberType = isMainSpire ? ChamberFactoryType.END_CAP_MAIN_SPIRE : ChamberFactoryType.END_CAP_SUB_SPIRE;
-		genSphereWithChambers(x + prevLean.x, y + totalHeight + (prevRadius / 2) * 1.5f, z + prevLean.z, prevRadius / 2f, prevRadius / 2f, context, chamberType);
+		genSphereWithChambers(x + prevLean.x, y + totalHeight + (prevRadius / 2) * 1.5f, z + prevLean.z, prevRadius / 2f, prevRadius / 2f, context, chamberType, isMainSpire);
 	}
 
-	private static void genSphereWithChambers(double x, double y, double z, float radius, float chamberRadius, Context context, ChamberFactoryType type) {
+	private static void genSphereWithChambers(double x, double y, double z, float radius, float chamberRadius, Context context, ChamberFactoryType type, boolean isMainSpire) {
 		Vec3 pos = new Vec3(x, y, z);
 		context.boundingShapes.add(new SphereShape(pos, radius));
 
 		if (type == ChamberFactoryType.CRADLE) {
-			context.mainChamberRadius = chamberRadius * 0.9f;
-
 			Consumer<MoundChamber> consumer = chamber -> {
 				context.cradleChambers.add(chamber);
 				context.chambers.add(chamber);
@@ -154,16 +162,22 @@ public final class MoundGenerator {
 			//			double distSqr = closestPoint.distanceToSqr(context.origin);
 			//			boolean noIntersectionWithCradleChambers = distSqr > context.mainChamberRadius * context.mainChamberRadius;
 
-			boolean intersectingWithCradleChamber = false;
-			for (MoundChamber cradleChamber : context.cradleChambers) {
-				if (cradleChamber.intersectsCuboid(chamber.getAABB())) {
-					intersectingWithCradleChamber = true;
-					break;
-				}
-			}
-
-			if (!intersectingWithCradleChamber) {
+			if (isMainSpire) {
 				context.chambers.add(chamber);
+			}
+			else {
+				boolean intersectingWithCradleChamber = false;
+
+				for (MoundChamber cradleChamber : context.cradleChambers) {
+					if (cradleChamber.intersectsCuboid(chamber.getAABB())) {
+						intersectingWithCradleChamber = true;
+						break;
+					}
+				}
+
+				if (!intersectingWithCradleChamber) {
+					context.chambers.add(chamber);
+				}
 			}
 		};
 
