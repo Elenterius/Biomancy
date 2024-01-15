@@ -445,7 +445,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.BIO_FORGE, "Bio-Forge", "Crafting Station");
 		addBlock(ModBlocks.BIO_LAB, "Bio-Lab", "Bio-alchemical Brewer");
 
-		addBlock(ModBlocks.VOICE_BOX, "[PH] Modular Larynx", EMPTY_STRING);
+		//		addBlock(ModBlocks.VOICE_BOX, "[PH] Modular Larynx", EMPTY_STRING);
 		addBlock(ModBlocks.TONGUE, "Tongue", "Extracts up to 3 items of the same type every 24 ticks from containers it's attached to, and drops them on the ground.");
 		addBlock(ModBlocks.MAW_HOPPER, "Maw Hopper", "A fleshy sister of the hopper. Transfers up to 16 items at a time.");
 

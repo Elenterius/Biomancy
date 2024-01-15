@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.block.modularlarynx;
 
-import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModCapabilities;
 import com.github.elenterius.biomancy.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.inventory.itemhandler.HandlerBehaviors;
@@ -15,6 +14,7 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -30,10 +30,15 @@ public class VoiceBoxBlockEntity extends BlockEntity {
 
 	private final BehavioralInventory<?> inventory;
 
-	public VoiceBoxBlockEntity(BlockPos pos, BlockState state) {
-		super(ModBlockEntities.VOICE_BOX.get(), pos, state);
+	public VoiceBoxBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
+		super(pType, pPos, pBlockState);
 		inventory = BehavioralInventory.createServerContents(1, ish -> HandlerBehaviors.filterInput(ish, VALID_ITEM), player -> false, this::setChanged);
 	}
+
+	//	public VoiceBoxBlockEntity(BlockPos pos, BlockState state) {
+	//		super(ModBlockEntities.VOICE_BOX.get(), pos, state);
+	//		inventory = BehavioralInventory.createServerContents(1, ish -> HandlerBehaviors.filterInput(ish, VALID_ITEM), player -> false, this::setChanged);
+	//	}
 
 	public ItemStack getStoredItemStack() {
 		return inventory.getItem(0);

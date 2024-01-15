@@ -1,7 +1,6 @@
 package com.github.elenterius.biomancy.block.modularlarynx;
 
 import com.github.elenterius.biomancy.block.property.BlockPropertyUtil;
-import com.github.elenterius.biomancy.init.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
@@ -43,7 +42,8 @@ public class VoiceBoxBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return ModBlockEntities.VOICE_BOX.get().create(pos, state);
+		return null;
+		//		return ModBlockEntities.VOICE_BOX.get().create(pos, state);
 	}
 
 	@Override

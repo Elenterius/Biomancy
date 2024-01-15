@@ -158,7 +158,7 @@ public final class ModItems {
 	public static final RegistryObject<ObfuscatedTooltipBlockItem> PRIMAL_ORIFICE = registerBlockItem(ModBlocks.PRIMAL_ORIFICE, ObfuscatedTooltipBlockItem::new);
 
 	//## Utility
-	public static final RegistryObject<SimpleBlockItem> VOICE_BOX = registerSimpleBlockItem(ModBlocks.VOICE_BOX, () -> createProperties().tab(null));
+	//	public static final RegistryObject<SimpleBlockItem> VOICE_BOX = registerSimpleBlockItem(ModBlocks.VOICE_BOX, () -> createProperties().tab(null));
 	public static final RegistryObject<SimpleBlockItem> IMPERMEABLE_MEMBRANE = registerSimpleBlockItem(ModBlocks.IMPERMEABLE_MEMBRANE);
 	public static final RegistryObject<SimpleBlockItem> BABY_PERMEABLE_MEMBRANE = registerSimpleBlockItem(ModBlocks.BABY_PERMEABLE_MEMBRANE);
 	public static final RegistryObject<SimpleBlockItem> ADULT_PERMEABLE_MEMBRANE = registerSimpleBlockItem(ModBlocks.ADULT_PERMEABLE_MEMBRANE);

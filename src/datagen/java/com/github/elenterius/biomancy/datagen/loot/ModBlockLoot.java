@@ -167,7 +167,7 @@ public class ModBlockLoot extends BlockLoot {
 		add(ModBlocks.PRIMAL_BLOOM.get(), noDrop());
 		dropSelf(ModBlocks.PRIMAL_ORIFICE.get());
 
-		dropSelf(ModBlocks.VOICE_BOX.get());
+		//		dropSelf(ModBlocks.VOICE_BOX.get());
 		dropSelf(ModBlocks.IMPERMEABLE_MEMBRANE.get());
 		dropSelf(ModBlocks.BABY_PERMEABLE_MEMBRANE.get());
 		dropSelf(ModBlocks.ADULT_PERMEABLE_MEMBRANE.get());

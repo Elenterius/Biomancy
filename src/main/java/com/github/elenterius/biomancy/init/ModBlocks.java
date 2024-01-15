@@ -11,7 +11,6 @@ import com.github.elenterius.biomancy.block.fleshkinchest.FleshkinChestBlock;
 import com.github.elenterius.biomancy.block.fleshspike.FleshSpikeBlock;
 import com.github.elenterius.biomancy.block.malignantbloom.MalignantBloomBlock;
 import com.github.elenterius.biomancy.block.mawhopper.MawHopperBlock;
-import com.github.elenterius.biomancy.block.modularlarynx.VoiceBoxBlock;
 import com.github.elenterius.biomancy.block.orifice.OrificeBlock;
 import com.github.elenterius.biomancy.block.ownable.OwnablePressurePlateBlock;
 import com.github.elenterius.biomancy.block.storagesac.StorageSacBlock;
@@ -85,7 +84,7 @@ public final class ModBlocks {
 	public static final RegistryObject<OrificeBlock> PRIMAL_ORIFICE = register("primal_orifice", properties -> new OrificeBlock(properties.randomTicks()));
 
 	//## Utility
-	public static final RegistryObject<VoiceBoxBlock> VOICE_BOX = register("voice_box", VoiceBoxBlock::new);
+	//	public static final RegistryObject<VoiceBoxBlock> VOICE_BOX = register("voice_box", VoiceBoxBlock::new);
 	public static final RegistryObject<FleshSpikeBlock> FLESH_SPIKE = register("flesh_spike", () -> new FleshSpikeBlock(createBonyFleshProperties().noOcclusion()));
 	public static final RegistryObject<VialHolderBlock> VIAL_HOLDER = register("vial_holder", VialHolderBlock::new);
 	//public static final RegistryObject<NeuralInterceptorBlock> NEURAL_INTERCEPTOR = register("neural_interceptor", NeuralInterceptorBlock::new);
