@@ -1,52 +1,66 @@
 modLoader = "javafml"
-loaderVersion = "[43,)" #This is typically bumped every Minecraft version by Forge
-license = "MIT & CC-BY-NC-4.0"
-issueTrackerURL = "https://github.com/Elenterius/Biomancy/issues" #optional
+loaderVersion = "${loader_version_range}"
+license = "${mod_license}"
+issueTrackerURL = "https://github.com/Elenterius/Biomancy/issues"
 showAsResourcePack = false
 
 [[mods]]
-modId = "biomancy"
-version = "${file.jarVersion}"
-displayName = "Biomancy 2"
+modId = "${mod_id}"
+version = "${mod_version}"
+displayName = "${mod_name}"
 updateJSONURL = "https://api.modrinth.com/updates/uAAuyU4M/forge_updates.json"
-displayURL = "https://modrinth.com/mod/biomancy" #optional
-logoFile = "text_logo_small.png" #optional
+displayURL = "https://modrinth.com/mod/biomancy"
+logoFile = "text_logo_small.png"
 logoBlur = false
-credits = "\u00A77RhinoW, The Shroome, Shorepion, Kitteh6660, ZeoMaddox, ItsLumine, RuskieThe3rd, M4rc3ll0"
-authors = "\u00A72Elenterius\u00A7r, \u00A76RhinoW\u00A7r"
-description = '''§7Biopunk and Flesh Magic inspired tech-magic mod that has a fleshy art theme.'''
+credits = "${mod_credits}"
+authors = "${mod_authors}"
+description = '''${mod_description}'''
 
-[[dependencies.biomancy]]
-modId = "geckolib3"
-mandatory = true
-versionRange = "[3.1.39,4.0)"
-ordering = "BEFORE"
-side = "BOTH"
+# Display Test controls the display for your mod in the server connection screen
+# MATCH_VERSION means that your mod will cause a red X if the versions on client and server differ. This is the default behaviour and should be what you choose if you have server and client elements to your mod.
+# IGNORE_SERVER_VERSION means that your mod will not cause a red X if it's present on the server but not on the client. This is what you should use if you're a server only mod.
+# IGNORE_ALL_VERSION means that your mod will not cause a red X if it's present on the client or the server. This is a special case and should only be used if your mod has no server component.
+# NONE means that no display test is set on your mod. You need to do this yourself, see IExtensionPoint.DisplayTest for more information. You can define any scheme you wish with this value.
+# IMPORTANT NOTE: this is NOT an instruction as to which environments (CLIENT or DEDICATED SERVER) your mod loads on. Your mod should load (and maybe do nothing!) whereever it finds itself.
+#displayTest="MATCH_VERSION" # MATCH_VERSION is the default if nothing is specified (#optional)
 
-[[dependencies.biomancy]]
-modId = "jei"
-mandatory = false
-versionRange = "[11.5.0,)"
-ordering = "BEFORE"
-side = "BOTH"
-
-[[dependencies.biomancy]]
-modId = "create"
-mandatory = false
-versionRange = "[0.5.0,)"
-ordering = "NONE"
-side = "BOTH"
-
-[[dependencies.biomancy]]
+[[dependencies.${ mod_id }]]
 modId = "forge"
 mandatory = true
-versionRange = "[43.2.0,)"
+versionRange = "${forge_version_range}"
 ordering = "NONE"
 side = "BOTH" # BOTH, CLIENT or SERVER
 
-[[dependencies.biomancy]]
+[[dependencies.${ mod_id }]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.19.2,1.19.3)"
+versionRange = "${minecraft_version_range}"
 ordering = "NONE"
 side = "BOTH"
+
+[[dependencies.${ mod_id }]]
+modId = "geckolib"
+mandatory = true
+versionRange = "${geckolib_version_range}"
+ordering = "BEFORE"
+side = "BOTH"
+
+[[dependencies.${ mod_id }]]
+modId = "jei"
+mandatory = false
+versionRange = "${jei_version_range}"
+ordering = "BEFORE"
+side = "BOTH"
+
+[[dependencies.${ mod_id }]]
+modId = "create"
+mandatory = false
+versionRange = "${create_version_range}"
+ordering = "NONE"
+side = "BOTH"
+
+# Features are specific properties of the game environment, that you may want to declare you require. This example declares
+# that your mod requires GL version 3.2 or higher. Other features will be added. They are side aware so declaring this won't
+# stop your mod loading on the server for example.
+#[features.${mod_id}]
+#openGLVersion="[3.2,)"

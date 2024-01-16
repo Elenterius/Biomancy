@@ -2,7 +2,7 @@
   "required": true,
   "package": "com.github.elenterius.biomancy.mixin",
   "compatibilityLevel": "JAVA_17",
-  "minVersion": "0.8.4",
+	"minVersion": "0.8.5",
   "refmap": "mixins.biomancy.refmap.json",
   "injectors": {
     "defaultRequire": 1
