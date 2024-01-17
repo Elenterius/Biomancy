@@ -7,27 +7,30 @@ import com.klikli_dev.modonomicon.api.datagen.book.BookEntryModel;
 import com.klikli_dev.modonomicon.api.datagen.book.BookModel;
 import com.mojang.logging.LogUtils;
 import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 public abstract class AbstractBookProvider implements DataProvider {
 	protected static final Logger LOGGER = LogUtils.getLogger();
 
-	protected final DataGenerator generator;
+	protected final PackOutput packOutput;
 	protected final LangProvider lang;
 	protected final Map<ResourceLocation, BookModel> bookModels;
 	protected final String modId;
 
-	protected AbstractBookProvider(DataGenerator generator, String modId, LangProvider lang) {
+	protected AbstractBookProvider(PackOutput packOutput, String modId, LangProvider lang) {
 		this.modId = modId;
-		this.generator = generator;
+		this.packOutput = packOutput;
 		this.lang = lang;
 		bookModels = new HashMap<>();
 	}
@@ -64,40 +67,34 @@ public abstract class AbstractBookProvider implements DataProvider {
 	}
 
 	@Override
-	public void run(CachedOutput cache) throws IOException {
-		Path folder = generator.getOutputFolder();
+	public CompletableFuture<?> run(CachedOutput cache) {
+		Path folder = packOutput.getOutputFolder();
 
-		generate();
+		try {
+			generate();
+		}
+		catch (IOException e) {
+			return CompletableFuture.allOf();
+		}
+
+		List<CompletableFuture<?>> completableFutures = new ArrayList<>();
 
 		for (BookModel bookModel : bookModels.values()) {
 			Path bookPath = getPath(folder, bookModel);
-			try {
-				DataProvider.saveStable(cache, bookModel.toJson(), bookPath);
-			}
-			catch (IOException exception) {
-				LOGGER.error("Couldn't save book {}", bookPath, exception);
-			}
+			completableFutures.add(DataProvider.saveStable(cache, bookModel.toJson(), bookPath));
 
 			for (BookCategoryModel bookCategoryModel : bookModel.getCategories()) {
 				Path bookCategoryPath = getPath(folder, bookCategoryModel);
-				try {
-					DataProvider.saveStable(cache, bookCategoryModel.toJson(), bookCategoryPath);
-				}
-				catch (IOException exception) {
-					LOGGER.error("Couldn't save book category {}", bookCategoryPath, exception);
-				}
+				completableFutures.add(DataProvider.saveStable(cache, bookCategoryModel.toJson(), bookCategoryPath));
 
 				for (BookEntryModel bookEntryModel : bookCategoryModel.getEntries()) {
 					Path bookEntryPath = getPath(folder, bookEntryModel);
-					try {
-						DataProvider.saveStable(cache, bookEntryModel.toJson(), bookEntryPath);
-					}
-					catch (IOException exception) {
-						LOGGER.error("Couldn't save book entry {}", bookEntryPath, exception);
-					}
+					completableFutures.add(DataProvider.saveStable(cache, bookEntryModel.toJson(), bookEntryPath));
 				}
 			}
 		}
+
+		return CompletableFuture.allOf(completableFutures.toArray(CompletableFuture[]::new));
 	}
 
 	@Override

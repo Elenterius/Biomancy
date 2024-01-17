@@ -11,7 +11,7 @@ import com.github.elenterius.biomancy.item.SerumItem;
 import com.github.elenterius.biomancy.item.livingtool.LivingToolState;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -21,9 +21,9 @@ import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 public class EnglishLangProvider extends AbstractLangProvider {
@@ -35,38 +35,44 @@ public class EnglishLangProvider extends AbstractLangProvider {
 	private List<Block> blocksToTranslate = List.of();
 	private List<Serum> serumsToTranslate = List.of();
 
-	public EnglishLangProvider(DataGenerator gen) {
-		super(gen, BiomancyMod.MOD_ID, "en_us");
+	public EnglishLangProvider(PackOutput packOutput) {
+		super(packOutput, BiomancyMod.MOD_ID, "en_us");
 	}
 
 	@Override
-	public void run(CachedOutput cache) throws IOException {
+	public CompletableFuture<?> run(CachedOutput cache) {
 		itemsToTranslate = new ArrayList<>(ModItems.ITEMS.getEntries().stream().map(RegistryObject::get).filter(item -> !(item instanceof BlockItem)).toList());
 		blocksToTranslate = new ArrayList<>(ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).toList());
 		serumsToTranslate = new ArrayList<>(ModSerums.SERUMS.getEntries().stream().map(RegistryObject::get).toList());
+		return super.run(cache);
+	}
 
-		super.run(cache);
+	@Override
+	public boolean hasMissingTranslations() {
+		boolean isAllValid = true;
 
 		if (!itemsToTranslate.isEmpty()) {
 			for (Item item : itemsToTranslate) {
-				BiomancyMod.LOGGER.warn(LOG_MARKER, () -> "Missing translation for item '%s'".formatted(item));
+				BiomancyMod.LOGGER.error(LOG_MARKER, () -> "Missing translation for item '%s'".formatted(item));
 			}
-			throw new IllegalStateException("Missing translation for %d items".formatted(itemsToTranslate.size()));
+			isAllValid = false;
 		}
 
 		if (!blocksToTranslate.isEmpty()) {
 			for (Block block : blocksToTranslate) {
-				BiomancyMod.LOGGER.warn(LOG_MARKER, () -> "Missing translation for block '%s'".formatted(block));
+				BiomancyMod.LOGGER.error(LOG_MARKER, () -> "Missing translation for block '%s'".formatted(block));
 			}
-			throw new IllegalStateException("Missing translation for %d blocks".formatted(blocksToTranslate.size()));
+			isAllValid = false;
 		}
 
 		if (!serumsToTranslate.isEmpty()) {
 			for (Serum serum : serumsToTranslate) {
-				BiomancyMod.LOGGER.warn(LOG_MARKER, () -> "Missing translation for serum '%s'".formatted(serum));
+				BiomancyMod.LOGGER.error(LOG_MARKER, () -> "Missing translation for serum '%s'".formatted(serum));
 			}
-			throw new IllegalStateException("Missing translation for %d serums".formatted(serumsToTranslate.size()));
+			isAllValid = false;
 		}
+
+		return isAllValid;
 	}
 
 	private void addBannerPatternItem(RegistryObject<MaykerBannerPatternItem> supplier, String name, String description) {
@@ -154,7 +160,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 
 	@Override
 	protected void addTranslations() {
-		add(BiomancyMod.CREATIVE_TAB.getDisplayName(), "Biomancy 2");
+		add(BiomancyMod.CREATIVE_TAB.get().getDisplayName(), "Biomancy 2");
 		add(ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.getCategory(), "Biomancy 2 Mod");
 		add(ClientSetupHandler.ITEM_DEFAULT_KEY_BINDING.getName(), "Default Item Action");
 

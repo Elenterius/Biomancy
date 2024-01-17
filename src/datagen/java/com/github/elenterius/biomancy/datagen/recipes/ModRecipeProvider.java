@@ -11,12 +11,13 @@ import com.github.elenterius.biomancy.init.tags.ModItemTags;
 import com.github.elenterius.biomancy.item.weapon.RavenousClawsItem;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.food.Foods;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -24,21 +25,18 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
 
-import static com.github.elenterius.biomancy.BiomancyMod.LOGGER;
-
 public class ModRecipeProvider extends RecipeProvider {
 
-	private final Marker logMarker = MarkerManager.getMarker("RecipeProvider");
+	private final static Marker logMarker = MarkerManager.getMarker("RecipeProvider");
 
-	public ModRecipeProvider(DataGenerator generatorIn) {
-		super(generatorIn);
+	public ModRecipeProvider(PackOutput packOutput) {
+		super(packOutput);
 	}
 
 	protected static ItemPredicate createPredicate(ItemLike item) {
@@ -88,7 +86,7 @@ public class ModRecipeProvider extends RecipeProvider {
 	}
 
 	private static void blockFromSlabs(Consumer<FinishedRecipe> consumer, Item result, Item slab) {
-		WorkbenchRecipeBuilder.shaped(result)
+		WorkbenchRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, result)
 				.define('S', slab)
 				.pattern(" S ")
 				.pattern(" S ")
@@ -97,38 +95,33 @@ public class ModRecipeProvider extends RecipeProvider {
 	}
 
 	@Override
-	public String getName() {
-		return StringUtils.capitalize(BiomancyMod.MOD_ID) + " " + super.getName();
-	}
-
-	@Override
-	protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
-		LOGGER.info(logMarker, "registering workbench recipes...");
+	protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
+		//		LOGGER.info(logMarker, "registering workbench recipes...");
 		registerWorkbenchRecipes(consumer);
 
-		LOGGER.info(logMarker, "registering cooking recipes...");
+		//		LOGGER.info(logMarker, "registering cooking recipes...");
 		registerCookingRecipes(consumer);
 
-		LOGGER.info(logMarker, "registering digesting recipes...");
+		//		LOGGER.info(logMarker, "registering digesting recipes...");
 		registerDigestingRecipes(consumer);
 
-		LOGGER.info(logMarker, "registering decomposing recipes...");
+		//		LOGGER.info(logMarker, "registering decomposing recipes...");
 		registerDecomposingRecipes(consumer);
 
-		LOGGER.info(logMarker, "registering bio-forge recipes...");
+		//		LOGGER.info(logMarker, "registering bio-forge recipes...");
 		registerBioForgeRecipes(consumer);
 
-		LOGGER.info(logMarker, "registering bio-lab recipes...");
+		//		LOGGER.info(logMarker, "registering bio-lab recipes...");
 		registerBioLabRecipes(consumer);
 	}
 
 	private void registerCookingRecipes(Consumer<FinishedRecipe> consumer) {
-		SimpleCookingRecipeBuilder.blasting(Ingredient.of(ModItems.STONE_POWDER.get()), Items.GLASS_PANE, 0.01F, 100).unlockedBy(hasName(ModItems.STONE_POWDER.get()), has(ModItems.STONE_POWDER.get())).save(consumer, getBlastingRecipeId(Items.GLASS_PANE));
+		SimpleCookingRecipeBuilder.blasting(Ingredient.of(ModItems.STONE_POWDER.get()), RecipeCategory.BUILDING_BLOCKS, Items.GLASS_PANE, 0.01f, 100).unlockedBy(hasName(ModItems.STONE_POWDER.get()), has(ModItems.STONE_POWDER.get())).save(consumer, getBlastingRecipeId(Items.GLASS_PANE));
 	}
 
 	private void registerWorkbenchRecipes(Consumer<FinishedRecipe> consumer) {
 
-		WorkbenchRecipeBuilder.shaped(ModItems.PRIMORDIAL_CORE.get())
+		WorkbenchRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.PRIMORDIAL_CORE.get())
 				.pattern("P#B")
 				.pattern("#E#")
 				.pattern("C#M")
@@ -140,7 +133,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.define('#', Items.ENDER_PEARL)
 				.unlockedBy(hasName(Items.ENDER_PEARL), has(Items.ENDER_PEARL)).save(consumer);
 
-		WorkbenchRecipeBuilder.shaped(ModItems.DESPOIL_SICKLE.get())
+		WorkbenchRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.DESPOIL_SICKLE.get())
 				.define('B', Tags.Items.BONES)
 				.define('M', ModItemTags.RAW_MEATS)
 				.define('C', ModItems.PRIMORDIAL_CORE.get())
@@ -159,7 +152,7 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		// machines ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		WorkbenchRecipeBuilder.shaped(ModItems.PRIMORDIAL_CRADLE.get())
+		WorkbenchRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.PRIMORDIAL_CRADLE.get())
 				.define('E', ModItems.PRIMORDIAL_CORE.get())
 				.define('M', ModItemTags.RAW_MEATS)
 				.define('F', ModItemTags.FANGS)
@@ -168,7 +161,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.pattern("MMM")
 				.unlockedBy(hasName(ModItems.PRIMORDIAL_CORE.get()), has(ModItems.PRIMORDIAL_CORE.get())).save(consumer);
 
-		WorkbenchRecipeBuilder.shaped(ModItems.DECOMPOSER.get())
+		WorkbenchRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.DECOMPOSER.get())
 				.define('M', ModItemTags.RAW_MEATS)
 				.define('F', ModItemTags.FANGS)
 				.define('G', ModItems.GENERIC_MOB_GLAND.get())
@@ -178,7 +171,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.pattern("MEM")
 				.unlockedBy(hasName(ModItems.LIVING_FLESH.get()), has(ModItems.LIVING_FLESH.get())).save(consumer);
 
-		WorkbenchRecipeBuilder.shaped(ModItems.BIO_FORGE.get())
+		WorkbenchRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BIO_FORGE.get())
 				.define('S', Items.SLIME_BALL)
 				.define('M', ModItemTags.RAW_MEATS)
 				.define('C', ModItemTags.CLAWS)
@@ -190,12 +183,12 @@ public class ModRecipeProvider extends RecipeProvider {
 
 		// fuel ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		WorkbenchRecipeBuilder.shapeless(ModItems.NUTRIENT_BAR.get())
+		WorkbenchRecipeBuilder.shapeless(RecipeCategory.FOOD, ModItems.NUTRIENT_BAR.get())
 				.requires(ModItems.NUTRIENT_PASTE.get(), 9)
 				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
 				.save(consumer);
 
-		WorkbenchRecipeBuilder.shaped(ModItems.NUTRIENT_PASTE.get())
+		WorkbenchRecipeBuilder.shaped(RecipeCategory.FOOD, ModItems.NUTRIENT_PASTE.get())
 				.define('P', ModItems.ORGANIC_MATTER.get())
 				.define('L', ModItems.NUTRIENTS.get())
 				.pattern("LPL")
@@ -204,37 +197,37 @@ public class ModRecipeProvider extends RecipeProvider {
 				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
 				.save(consumer);
 
-		WorkbenchRecipeBuilder.shapeless(ModItems.NUTRIENTS.get(), 5)
+		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.NUTRIENTS.get(), 5)
 				.requires(ModItems.NUTRIENT_PASTE.get())
 				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
 				.save(consumer, getConversionRecipeId(ModItems.NUTRIENTS.get(), ModItems.NUTRIENT_PASTE.get()));
 
-		WorkbenchRecipeBuilder.shapeless(ModItems.NUTRIENT_PASTE.get(), 9)
+		WorkbenchRecipeBuilder.shapeless(RecipeCategory.FOOD, ModItems.NUTRIENT_PASTE.get(), 9)
 				.requires(ModItems.NUTRIENT_BAR.get())
 				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
 				.save(consumer, getConversionRecipeId(ModItems.NUTRIENT_PASTE.get(), ModItems.NUTRIENT_BAR.get()));
 
 		// misc ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		WorkbenchRecipeBuilder.shapeless(Items.DIORITE)
+		WorkbenchRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Items.DIORITE)
 				.requires(Items.COBBLESTONE)
 				.requires(ModItems.MINERAL_FRAGMENT.get())
 				.requires(ModItems.STONE_POWDER.get())
 				.unlockedBy(hasName(ModItems.STONE_POWDER.get()), has(ModItems.STONE_POWDER.get()))
 				.save(consumer, getConversionRecipeId(Items.DIORITE, ModItems.STONE_POWDER.get()));
 
-		WorkbenchRecipeBuilder.shapeless(Items.GRANITE)
+		WorkbenchRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Items.GRANITE)
 				.requires(Items.DIORITE)
 				.requires(ModItems.MINERAL_FRAGMENT.get(), 2)
 				.unlockedBy(hasName(ModItems.MINERAL_FRAGMENT.get()), has(ModItems.MINERAL_FRAGMENT.get()))
 				.save(consumer, getConversionRecipeId(Items.GRANITE, ModItems.MINERAL_FRAGMENT.get()));
 
-		WorkbenchRecipeBuilder.shapeless(Items.RED_SAND)
+		WorkbenchRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, Items.RED_SAND)
 				.requires(Items.SAND)
 				.requires(ModItems.MINERAL_FRAGMENT.get(), 2)
 				.unlockedBy(hasName(ModItems.MINERAL_FRAGMENT.get()), has(ModItems.MINERAL_FRAGMENT.get()))
 				.save(consumer, getConversionRecipeId(Items.RED_SAND, ModItems.MINERAL_FRAGMENT.get()));
 
-		WorkbenchRecipeBuilder.shaped(Items.DIRT)
+		WorkbenchRecipeBuilder.shaped(RecipeCategory.MISC, Items.DIRT)
 				.define('P', ModItems.ORGANIC_MATTER.get())
 				.define('L', ModItems.STONE_POWDER.get())
 				.pattern("LPL")
@@ -243,7 +236,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.unlockedBy(hasName(ModItems.ORGANIC_MATTER.get()), has(ModItems.ORGANIC_MATTER.get()))
 				.save(consumer, getConversionRecipeId(Items.DIRT, ModItems.STONE_POWDER.get()));
 
-		WorkbenchRecipeBuilder.shaped(Items.SAND)
+		WorkbenchRecipeBuilder.shaped(RecipeCategory.MISC, Items.SAND)
 				.define('M', ModItems.MINERAL_FRAGMENT.get())
 				.define('L', ModItems.STONE_POWDER.get())
 				.pattern("LLL")
@@ -252,20 +245,20 @@ public class ModRecipeProvider extends RecipeProvider {
 				.unlockedBy(hasName(ModItems.STONE_POWDER.get()), has(ModItems.STONE_POWDER.get()))
 				.save(consumer, getConversionRecipeId(Items.SAND, ModItems.STONE_POWDER.get()));
 
-		WorkbenchRecipeBuilder.shapeless(Items.CLAY_BALL)
+		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, Items.CLAY_BALL)
 				.requires(Items.WATER_BUCKET)
 				.requires(ModItems.STONE_POWDER.get(), 8)
 				.unlockedBy(hasName(ModItems.STONE_POWDER.get()), has(ModItems.STONE_POWDER.get()))
 				.save(consumer, getConversionRecipeId(Items.CLAY_BALL, ModItems.STONE_POWDER.get()));
 
-		WorkbenchRecipeBuilder.shapeless(Items.GUNPOWDER)
+		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, Items.GUNPOWDER)
 				.requires(Items.CHARCOAL)
 				.requires(ModItems.EXOTIC_DUST.get(), 4)
 				.requires(Items.BLAZE_POWDER, 2)
 				.unlockedBy(hasName(ModItems.EXOTIC_DUST.get()), has(ModItems.EXOTIC_DUST.get()))
 				.save(consumer, getConversionRecipeId(Items.GUNPOWDER, ModItems.EXOTIC_DUST.get()));
 
-		WorkbenchRecipeBuilder.shaped(Items.GLOW_ITEM_FRAME)
+		WorkbenchRecipeBuilder.shaped(RecipeCategory.DECORATIONS, Items.GLOW_ITEM_FRAME)
 				.define('F', Items.ITEM_FRAME)
 				.define('L', ModItems.BIO_LUMENS.get())
 				.pattern(" L ")
@@ -275,12 +268,12 @@ public class ModRecipeProvider extends RecipeProvider {
 				.save(consumer, getSimpleRecipeId(Items.GLOW_ITEM_FRAME));
 
 		// A recipe for converting between two versions of Flesh Door.
-		WorkbenchRecipeBuilder.shapeless(ModItems.FLESH_DOOR.get())
+		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.FLESH_DOOR.get())
 				.requires(ModItems.FULL_FLESH_DOOR.get())
 				.unlockedBy(hasName(ModItems.FULL_FLESH_DOOR.get()), has(ModItems.FULL_FLESH_DOOR.get()))
 				.save(consumer, getConversionRecipeId(ModItems.FLESH_DOOR.get(), ModItems.FULL_FLESH_DOOR.get()));
 
-		WorkbenchRecipeBuilder.shapeless(ModItems.FULL_FLESH_DOOR.get())
+		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.FULL_FLESH_DOOR.get())
 				.requires(ModItems.FLESH_DOOR.get())
 				.unlockedBy(hasName(ModItems.FLESH_DOOR.get()), has(ModItems.FLESH_DOOR.get()))
 				.save(consumer, getConversionRecipeId(ModItems.FULL_FLESH_DOOR.get(), ModItems.FLESH_DOOR.get()));
@@ -307,7 +300,7 @@ public class ModRecipeProvider extends RecipeProvider {
 		stonecutterResultFromBase(consumer, ModItems.PRIMAL_FLESH_STAIRS.get(), ModItems.PRIMAL_FLESH_BLOCK.get());
 		stonecutterResultFromBase(consumer, ModItems.PRIMAL_FLESH_SLAB.get(), ModItems.PRIMAL_FLESH_BLOCK.get(), 2);
 
-		WorkbenchRecipeBuilder.shaped(ModItems.PRIMAL_FLESH_BLOCK.get(), 4)
+		WorkbenchRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.PRIMAL_FLESH_BLOCK.get(), 4)
 				.define('S', ModItems.STONE_POWDER.get())
 				.define('E', ModItems.EXOTIC_DUST.get())
 				.define('F', ModItemTags.RAW_MEATS)
@@ -326,7 +319,7 @@ public class ModRecipeProvider extends RecipeProvider {
 		stonecutterResultFromBase(consumer, ModItems.MALIGNANT_FLESH_STAIRS.get(), ModItems.MALIGNANT_FLESH_BLOCK.get());
 		stonecutterResultFromBase(consumer, ModItems.MALIGNANT_FLESH_SLAB.get(), ModItems.MALIGNANT_FLESH_BLOCK.get(), 2);
 
-		WorkbenchRecipeBuilder.shaped(ModItems.MALIGNANT_FLESH_BLOCK.get())
+		WorkbenchRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.MALIGNANT_FLESH_BLOCK.get())
 				.define('F', ModItems.FLESH_BITS.get())
 				.define('V', ModItems.MALIGNANT_FLESH_VEINS.get())
 				.pattern("VVV")
@@ -335,7 +328,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.unlockedBy(hasName(ModItems.MALIGNANT_FLESH_VEINS.get()), has(ModItems.MALIGNANT_FLESH_VEINS.get()))
 				.save(consumer);
 
-		WorkbenchRecipeBuilder.shaped(ModItems.PRIMORDIAL_BIO_LANTERN.get())
+		WorkbenchRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModItems.PRIMORDIAL_BIO_LANTERN.get())
 				.define('B', ModItems.BLOOMBERRY.get())
 				.define('V', ModItems.MALIGNANT_FLESH_VEINS.get())
 				.define('C', ModItems.TENDON_CHAIN.get())
@@ -345,7 +338,7 @@ public class ModRecipeProvider extends RecipeProvider {
 				.unlockedBy(hasName(ModItems.BLOOMBERRY.get()), has(ModItems.BLOOMBERRY.get()))
 				.save(consumer);
 
-		WorkbenchRecipeBuilder.shaped(ModItems.BLOOMLIGHT.get(), 4)
+		WorkbenchRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BLOOMLIGHT.get(), 4)
 				.define('B', ModItems.BLOOMBERRY.get())
 				.define('V', ModItems.MALIGNANT_FLESH_VEINS.get())
 				.pattern("BVB")
@@ -353,6 +346,24 @@ public class ModRecipeProvider extends RecipeProvider {
 				.pattern("BVB")
 				.unlockedBy(hasName(ModItems.BLOOMBERRY.get()), has(ModItems.BLOOMBERRY.get()))
 				.save(consumer);
+	}
+
+	private void slab(Consumer<FinishedRecipe> consumer, BlockItem result, BlockItem ingredient) {
+		slab(consumer, RecipeCategory.BUILDING_BLOCKS, result, ingredient);
+	}
+
+	private void wall(Consumer<FinishedRecipe> consumer, BlockItem result, BlockItem ingredient) {
+		wall(consumer, RecipeCategory.BUILDING_BLOCKS, result, ingredient);
+	}
+
+	private void stonecutterResultFromBase(Consumer<FinishedRecipe> consumer, ItemLike result, ItemLike ingredient) {
+		stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, result, ingredient, 1);
+	}
+
+	private void stonecutterResultFromBase(Consumer<FinishedRecipe> consumer, ItemLike result, ItemLike ingredient, int count) {
+		SingleItemRecipeBuilder builder = SingleItemRecipeBuilder.stonecutting(Ingredient.of(ingredient), RecipeCategory.BUILDING_BLOCKS, result, count).unlockedBy(getHasName(ingredient), has(ingredient));
+		String recipeName = getConversionRecipeName(result, ingredient);
+		builder.save(consumer, recipeName + "_stonecutting");
 	}
 
 	private void registerDigestingRecipes(Consumer<FinishedRecipe> consumer) {
@@ -1278,20 +1289,20 @@ public class ModRecipeProvider extends RecipeProvider {
 	static final class WorkbenchRecipeBuilder {
 		private WorkbenchRecipeBuilder() {}
 
-		public static ShapedRecipeBuilder shaped(ItemLike result) {
-			return ShapedRecipeBuilder.shaped(result);
+		public static ShapedRecipeBuilder shaped(RecipeCategory category, ItemLike result) {
+			return ShapedRecipeBuilder.shaped(category, result);
 		}
 
-		public static ShapedRecipeBuilder shaped(ItemLike result, int count) {
-			return ShapedRecipeBuilder.shaped(result, count);
+		public static ShapedRecipeBuilder shaped(RecipeCategory category, ItemLike result, int count) {
+			return ShapedRecipeBuilder.shaped(category, result, count);
 		}
 
-		public static ShapelessRecipeBuilder shapeless(ItemLike result) {
-			return ShapelessRecipeBuilder.shapeless(result);
+		public static ShapelessRecipeBuilder shapeless(RecipeCategory category, ItemLike result) {
+			return ShapelessRecipeBuilder.shapeless(category, result);
 		}
 
-		public static ShapelessRecipeBuilder shapeless(ItemLike result, int count) {
-			return ShapelessRecipeBuilder.shapeless(result, count);
+		public static ShapelessRecipeBuilder shapeless(RecipeCategory category, ItemLike result, int count) {
+			return ShapelessRecipeBuilder.shapeless(category, result, count);
 		}
 	}
 

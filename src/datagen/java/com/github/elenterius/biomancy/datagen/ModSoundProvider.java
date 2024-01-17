@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.datagen;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -15,8 +15,8 @@ import java.util.Arrays;
 
 public class ModSoundProvider extends SoundDefinitionsProvider {
 
-	protected ModSoundProvider(DataGenerator generator, ExistingFileHelper helper) {
-		super(generator, BiomancyMod.MOD_ID, helper);
+	protected ModSoundProvider(PackOutput output, ExistingFileHelper helper) {
+		super(output, BiomancyMod.MOD_ID, helper);
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 		addSimpleRedirect(ModSoundEvents.CREATOR_EAT, SoundEvents.GOAT_SCREAMING_EAT, 1f, 0.25f);
 		addSimpleRedirect(ModSoundEvents.CREATOR_NO, SoundEvents.VILLAGER_NO, 0.75f, 0.3f);
 
-		addSimpleRedirect(ModSoundEvents.UI_BUTTON_CLICK, SoundEvents.UI_BUTTON_CLICK);
+		addSimpleRedirect(ModSoundEvents.UI_BUTTON_CLICK, SoundEvents.UI_BUTTON_CLICK.get());
 		addSimpleSound(ModSoundEvents.UI_MENU_OPEN);
 		addSimpleRedirect(ModSoundEvents.UI_RADIAL_MENU_OPEN, SoundEvents.SHULKER_BOX_OPEN, 0.5f, 1f);
 

@@ -6,8 +6,8 @@ import com.google.gson.JsonObject;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -17,21 +17,21 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 public abstract class ParticleSpriteProvider implements DataProvider {
 
 	private static final Logger LOGGER = LogManager.getLogger(ParticleSpriteProvider.class);
-	private final DataGenerator generator;
+	private final PackOutput packOutput;
 	private final String modId;
 	private final ExistingFileHelper fileHelper;
 
 	private final Map<ResourceLocation, ParticleSprite> particles = new LinkedHashMap<>();
 
-	protected ParticleSpriteProvider(DataGenerator generator, String modId, ExistingFileHelper fileHelper) {
-		this.generator = generator;
+	protected ParticleSpriteProvider(PackOutput packOutput, String modId, ExistingFileHelper fileHelper) {
+		this.packOutput = packOutput;
 		this.modId = modId;
 		this.fileHelper = fileHelper;
 	}
@@ -45,13 +45,31 @@ public abstract class ParticleSpriteProvider implements DataProvider {
 	}
 
 	@Override
-	public void run(CachedOutput cachedOutput) throws IOException {
+	public CompletableFuture<?> run(CachedOutput cachedOutput) {
 		particles.clear();
 		registerParticles();
 		validate();
 		if (!particles.isEmpty()) {
-			generate(cachedOutput);
+			return generate(cachedOutput);
 		}
+
+		return CompletableFuture.allOf();
+	}
+
+	private CompletableFuture<?> generate(final CachedOutput cache) {
+		List<CompletableFuture<?>> futures = new ArrayList<>();
+
+		for (Map.Entry<ResourceLocation, ParticleSprite> entry : particles.entrySet()) {
+			ResourceLocation particleId = entry.getKey();
+			ParticleSprite particleSprite = entry.getValue();
+			futures.add(DataProvider.saveStable(cache, particleSprite.toJson(), getPath(particleId)));
+		}
+
+		return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new));
+	}
+
+	private Path getPath(ResourceLocation particleId) {
+		return packOutput.getOutputFolder().resolve("assets/" + particleId.getNamespace() + "/particles/" + particleId.getPath() + ".json");
 	}
 
 	@Override
@@ -112,24 +130,6 @@ public abstract class ParticleSpriteProvider implements DataProvider {
 		}
 
 		return isValid;
-	}
-
-	private void generate(final CachedOutput cache) {
-		for (Map.Entry<ResourceLocation, ParticleSprite> entry : particles.entrySet()) {
-			ResourceLocation particleId = entry.getKey();
-			ParticleSprite particleSprite = entry.getValue();
-
-			try {
-				DataProvider.saveStable(cache, particleSprite.toJson(), getPath(particleId));
-			}
-			catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-		}
-	}
-
-	private Path getPath(ResourceLocation particleId) {
-		return generator.getOutputFolder().resolve("assets/" + particleId.getNamespace() + "/particles/" + particleId.getPath() + ".json");
 	}
 
 	protected record ParticleSprite(ResourceLocation texture, int frameCount, String[] spriteFrames) {

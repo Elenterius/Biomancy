@@ -4,9 +4,10 @@ import com.google.common.hash.Hashing;
 import com.google.common.hash.HashingOutputStream;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
+import net.minecraft.Util;
 import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
+import net.minecraft.data.PackOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
@@ -30,12 +31,12 @@ import org.apache.commons.lang3.text.WordUtils;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 /**
@@ -44,21 +45,23 @@ import java.util.function.Supplier;
 public abstract class AbstractLangProvider implements DataProvider, LangProvider {
 
 	private final Map<String, String> translations = new LinkedHashMap<>();
-	private final DataGenerator dataGenerator;
+	private final PackOutput packOutput;
 	private final String modId;
 	private final String languageLocale;
 
-	protected AbstractLangProvider(DataGenerator dataGenerator, String modId, String languageLocale) {
-		this.dataGenerator = dataGenerator;
+	protected AbstractLangProvider(PackOutput packOutput, String modId, String languageLocale) {
+		this.packOutput = packOutput;
 		this.modId = modId;
 		this.languageLocale = languageLocale;
 	}
 
 	protected abstract void addTranslations();
 
+	protected abstract boolean hasMissingTranslations();
+
 	@SuppressWarnings("UnstableApiUsage")
 	@Override
-	public void run(CachedOutput cache) throws IOException {
+	public CompletableFuture<?> run(CachedOutput cache) {
 
 		//move pre-added translations (modnomicon, etc.) to the end of the translation file
 		LinkedHashMap<String, String> preAdded = null;
@@ -78,18 +81,44 @@ public abstract class AbstractLangProvider implements DataProvider, LangProvider
 			JsonObject json = new JsonObject();
 			translations.forEach(json::addProperty);
 
-			Path path = dataGenerator.getOutputFolder().resolve("assets/%s/lang/%s.json".formatted(modId, languageLocale));
+			if (hasMissingTranslations()) {
+				return CompletableFuture.allOf();
+			}
 
-			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			HashingOutputStream hashingOutputStream = new HashingOutputStream(Hashing.sha1(), outputStream);
-			Writer writer = new OutputStreamWriter(hashingOutputStream, StandardCharsets.UTF_8);
-			JsonWriter jsonWriter = new JsonWriter(writer);
-			jsonWriter.setSerializeNulls(false);
-			jsonWriter.setIndent("\t");
-			GsonHelper.writeValue(jsonWriter, json, null); //no comparator is used to maintain the order of how the translations were added
-			jsonWriter.close();
-			cache.writeIfNeeded(path, outputStream.toByteArray(), hashingOutputStream.hash());
+			Path path = packOutput.getOutputFolder().resolve("assets/%s/lang/%s.json".formatted(modId, languageLocale));
+
+			return CompletableFuture.runAsync(() -> {
+				try {
+					ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+					HashingOutputStream hashingOutputStream = new HashingOutputStream(Hashing.sha1(), outputStream);
+					JsonWriter jsonWriter = new JsonWriter(new OutputStreamWriter(hashingOutputStream, StandardCharsets.UTF_8));
+					jsonWriter.setSerializeNulls(false);
+					jsonWriter.setIndent("\t");
+
+					try {
+						GsonHelper.writeValue(jsonWriter, json, null); //no comparator is used to maintain the order of how the translations were added
+					}
+					catch (IOException e) {
+						try {
+							jsonWriter.close();
+						}
+						catch (IOException suppressed) {
+							e.addSuppressed(suppressed);
+						}
+						throw e;
+					}
+
+					jsonWriter.close();
+					cache.writeIfNeeded(path, outputStream.toByteArray(), hashingOutputStream.hash());
+				}
+				catch (IOException e) {
+					LOGGER.error("Failed to save file to {}", path, e);
+				}
+
+			}, Util.backgroundExecutor());
 		}
+
+		return CompletableFuture.allOf();
 	}
 
 	@Override
@@ -177,7 +206,7 @@ public abstract class AbstractLangProvider implements DataProvider, LangProvider
 	}
 
 	public void addDeathMessage(DamageSource damageSource, String text) {
-		add("death.attack." + damageSource.msgId, text);
+		add("death.attack." + damageSource.getMsgId(), text);
 	}
 
 	public <T extends Projectile> void addDeathMessage(Supplier<EntityType<T>> supplier, String directCause, String indirectCause) {

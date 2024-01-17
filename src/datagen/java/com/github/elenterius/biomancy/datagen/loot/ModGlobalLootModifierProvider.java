@@ -5,15 +5,15 @@ import com.github.elenterius.biomancy.init.ModLoot;
 import com.github.elenterius.biomancy.loot.CatMorningGiftLootModifier;
 import com.github.elenterius.biomancy.loot.DespoilLootModifier;
 import com.mojang.serialization.Codec;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.GlobalLootModifierProvider;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ModGlobalLootModifierProvider extends GlobalLootModifierProvider {
 
-	public ModGlobalLootModifierProvider(DataGenerator gen) {
-		super(gen, BiomancyMod.MOD_ID);
+	public ModGlobalLootModifierProvider(PackOutput packOutput) {
+		super(packOutput, BiomancyMod.MOD_ID);
 	}
 
 	@Override

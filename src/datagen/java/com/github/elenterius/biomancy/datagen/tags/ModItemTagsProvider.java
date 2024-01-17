@@ -4,14 +4,16 @@ import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.tags.ModItemTags;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ShulkerBoxBlock;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -19,12 +21,18 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.concurrent.CompletableFuture;
+
 import static net.minecraft.world.item.Items.*;
 
 public class ModItemTagsProvider extends ItemTagsProvider {
 
-	public ModItemTagsProvider(DataGenerator dataGenerator, BlockTagsProvider blockTagProvider, @Nullable ExistingFileHelper existingFileHelper) {
-		super(dataGenerator, blockTagProvider, BiomancyMod.MOD_ID, existingFileHelper);
+	public ModItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagsProvider.TagLookup<Block>> blockTagLookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
+		super(output, lookupProvider, blockTagLookupProvider, BiomancyMod.MOD_ID, existingFileHelper);
+	}
+
+	protected EnhancedTagAppender<Item> createTag(TagKey<Item> tag) {
+		return new EnhancedTagAppender<>(tag(tag), ForgeRegistries.ITEMS);
 	}
 
 	private static TagKey<Item> forgeTag(String path) {
@@ -32,7 +40,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 	}
 
 	@Override
-	protected void addTags() {
+	protected void addTags(HolderLookup.Provider provider) {
 		addBiomancyTags();
 		addMinecraftTags();
 		addForgeTags();
@@ -96,11 +104,15 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 		createTag(clawsTag)
 				.add(ModItems.RAVENOUS_CLAWS.get());
 
-		createTag(Tags.Items.TOOLS_SWORDS)
+		TagKey<Item> swordsTag = forgeTag("tools/swords");
+		createTag(swordsTag)
+				.add(ModItems.DESPOIL_SICKLE.get(), ModItems.TOXICUS.get());
+		createTag(ItemTags.SWORDS)
 				.add(ModItems.DESPOIL_SICKLE.get(), ModItems.TOXICUS.get());
 
 		createTag(Tags.Items.TOOLS)
 				.addTag(clawsTag)
+				.addTag(swordsTag)
 				.add(ModItems.INJECTOR.get(), ModItems.BIO_EXTRACTOR.get());
 
 		createTag(Tags.Items.CHESTS).add(ModItems.FLESHKIN_CHEST.get());
@@ -111,10 +123,6 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 				shulkerBoxes.add(item);
 			}
 		}
-	}
-
-	protected EnhancedTagAppender<Item> createTag(TagKey<Item> tag) {
-		return new EnhancedTagAppender<>(tag(tag), ForgeRegistries.ITEMS);
 	}
 
 	@Override

@@ -2,18 +2,21 @@ package com.github.elenterius.biomancy.datagen.tags;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModBannerPatterns;
-import net.minecraft.core.Registry;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
-public class ModBannerPatternTagsProvider extends TagsProvider<BannerPattern> {
+import java.util.concurrent.CompletableFuture;
 
-	public ModBannerPatternTagsProvider(DataGenerator generator, @Nullable ExistingFileHelper existingFileHelper) {
-		super(generator, Registry.BANNER_PATTERN, BiomancyMod.MOD_ID, existingFileHelper);
+public class ModBannerPatternTagsProvider extends IntrinsicHolderTagsProvider<BannerPattern> {
+
+	public ModBannerPatternTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
+		super(output, Registries.BANNER_PATTERN, lookupProvider, bannerPattern -> BannerPattern.byHash(bannerPattern.getHashname()).unwrapKey().get(), BiomancyMod.MOD_ID, existingFileHelper);
 	}
 
 	@Override
@@ -22,7 +25,7 @@ public class ModBannerPatternTagsProvider extends TagsProvider<BannerPattern> {
 	}
 
 	@Override
-	protected void addTags() {
+	protected void addTags(HolderLookup.Provider provider) {
 		tag(ModBannerPatterns.TAG_MASCOT).add(
 				ModBannerPatterns.MASCOT_BASE.get(),
 				ModBannerPatterns.MASCOT_ACCENT.get(),

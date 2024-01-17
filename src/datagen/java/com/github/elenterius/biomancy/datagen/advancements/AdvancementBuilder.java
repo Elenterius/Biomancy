@@ -119,11 +119,11 @@ public class AdvancementBuilder {
 		return this;
 	}
 
-	public Advancement save(Consumer<Advancement> consumer, ExistingFileHelper fileHelper) throws Exception {
+	public Advancement save(Consumer<Advancement> consumer, ExistingFileHelper fileHelper) throws IllegalStateException {
 		return save(consumer, fileHelper, modId);
 	}
 
-	public Advancement save(Consumer<Advancement> consumer, ExistingFileHelper fileHelper, String category) throws Exception {
+	public Advancement save(Consumer<Advancement> consumer, ExistingFileHelper fileHelper, String category) throws IllegalStateException {
 		if (title == null || title.isBlank()) throw new IllegalStateException("Missing title for advancement " + createRL(category + "/" + id));
 		if (description == null || description.isBlank()) throw new IllegalStateException("Missing description for advancement " + createRL(category + "/" + id));
 

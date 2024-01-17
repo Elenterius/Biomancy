@@ -7,7 +7,8 @@ import com.github.elenterius.biomancy.entity.MobUtil;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.tags.ModEntityTags;
 import net.minecraft.core.*;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -22,6 +23,7 @@ import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
@@ -45,6 +47,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 
 public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
@@ -86,12 +89,12 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 			AMEntityRegistry.MIMICUBE.get(), AMEntityRegistry.FLUTTER.get(), AMEntityRegistry.GUSTER.get()
 	);
 
-	public ModEntityTypeTagsProvider(DataGenerator pGenerator, @Nullable ExistingFileHelper existingFileHelper) {
-		super(pGenerator, BiomancyMod.MOD_ID, existingFileHelper);
+	public ModEntityTypeTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
+		super(output, lookupProvider, BiomancyMod.MOD_ID, existingFileHelper);
 	}
 
 	@Override
-	protected void addTags() {
+	protected void addTags(HolderLookup.Provider provider) {
 		createTag(ModEntityTags.NOT_CLONEABLE)
 				.addTag(ModEntityTags.FORGE_BOSSES)
 				.add(EntityType.IRON_GOLEM, EntityType.SNOW_GOLEM)
@@ -158,7 +161,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 		EnhancedTagAppender<EntityType<?>> sinewTag = createTag(ModEntityTags.SINEW);
 		EnhancedTagAppender<EntityType<?>> bileGlandTag = createTag(ModEntityTags.BILE_GLAND);
 
-		FakeLevel fakeLevel = new FakeLevel(); //we ignore that this is a AutoClosable object
+		FakeLevel fakeLevel = new FakeLevel(RegistryAccess.EMPTY); //we ignore that this is a AutoClosable object
 
 		for (EntityType<?> entityType : ForgeRegistries.ENTITY_TYPES) {
 			if (!allowedNamespace.test(entityType)) continue;
@@ -199,15 +202,22 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 	private static final class FakeLevel extends Level {
 
 		private final Scoreboard scoreboard;
+		private final RegistryAccess access;
 
-		private FakeLevel() {
-			super(null, null, RegistryAccess.BUILTIN.get().registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getHolderOrThrow(BuiltinDimensionTypes.OVERWORLD), null, false, false, 0, 1);
+		private FakeLevel(RegistryAccess access) {
+			super(null, null, access, access.registryOrThrow(Registries.DIMENSION_TYPE).getHolderOrThrow(BuiltinDimensionTypes.OVERWORLD), null, false, false, 0L, 0);
 			scoreboard = new Scoreboard();
+			this.access = access;
 		}
 
 		@Override
 		public RegistryAccess registryAccess() {
-			return null;
+			return access;
+		}
+
+		@Override
+		public FeatureFlagSet enabledFeatures() {
+			return FeatureFlagSet.of();
 		}
 
 		@Override
@@ -328,19 +338,22 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 		}
 
 		@Override
-		public void gameEvent(GameEvent event, Vec3 ppos, Context context) {
+		public void gameEvent(GameEvent event, Vec3 pos, Context context) {
 			//do nothing
-			
 		}
 
 		@Override
-		public void playSeededSound(Player player, double x, double y, double z, SoundEvent sound, SoundSource source, float volume, float pitch, long seed) {
+		public void playSeededSound(@Nullable Player player, double x, double y, double z, SoundEvent sound, SoundSource source, float volume, float pitch, long seed) {
 			//do nothing
-			
 		}
 
 		@Override
-		public void playSeededSound(Player player, Entity entity, SoundEvent sound, SoundSource source, float volume, float pitch, long seed) {
+		public void playSeededSound(@Nullable Player player, Entity entity, Holder<SoundEvent> holder, SoundSource soundSource, float volume, float pitch, long seed) {
+			//do nothing
+		}
+
+		@Override
+		public void playSeededSound(@Nullable Player player, double x, double y, double z, Holder<SoundEvent> holder, SoundSource soundSource, float volume, float pitch, long seed) {
 			//do nothing
 		}
 	}

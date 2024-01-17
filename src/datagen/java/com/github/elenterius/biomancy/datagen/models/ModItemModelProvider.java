@@ -4,7 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.item.weapon.DespoilingSwordItem;
 import com.google.gson.JsonObject;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BucketItem;
@@ -14,7 +14,7 @@ import net.minecraftforge.client.model.generators.CustomLoaderBuilder;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.loaders.ItemLayersModelBuilder;
+import net.minecraftforge.client.model.generators.loaders.ItemLayerModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -26,8 +26,8 @@ public class ModItemModelProvider extends ItemModelProvider {
 	protected static final String LAYER_0_TEXTURE = "layer0";
 	protected static final String LAYER_1_TEXTURE = "layer1";
 
-	public ModItemModelProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-		super(generator, BiomancyMod.MOD_ID, existingFileHelper);
+	public ModItemModelProvider(PackOutput packOutput, ExistingFileHelper existingFileHelper) {
+		super(packOutput, BiomancyMod.MOD_ID, existingFileHelper);
 	}
 
 	private static ResourceLocation registryKey(Item item) {
@@ -116,7 +116,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 	public void emissiveItem(ResourceLocation registryKey) {
 		getBuilder(registryKey.toString())
 				.parent(new ModelFile.UncheckedModelFile("item/generated"))
-				.customLoader(ItemLayersModelBuilder::begin).emissive(1).end()
+				.customLoader(ItemLayerModelBuilder::begin).emissive(0xFF_FFFFFF, 0xFF_FFFFFF, 1).end()
 				.texture(LAYER_0_TEXTURE, new ResourceLocation(registryKey.getNamespace(), ITEM_FOLDER + "/" + registryKey.getPath()))
 				.texture(LAYER_1_TEXTURE, new ResourceLocation(registryKey.getNamespace(), ITEM_FOLDER + "/" + registryKey.getPath() + "_emissive"));
 	}
@@ -125,7 +125,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 		ResourceLocation registryKey = registryObject.getId();
 		getBuilder(registryKey.toString())
 				.parent(new ModelFile.UncheckedModelFile("item/handheld"))
-				.customLoader(ItemLayersModelBuilder::begin).emissive(1).end()
+				.customLoader(ItemLayerModelBuilder::begin).emissive(0xFF_FFFFFF, 0xFF_FFFFFF, 1).end()
 				.texture(LAYER_0_TEXTURE, new ResourceLocation(registryKey.getNamespace(), ITEM_FOLDER + "/weapon/" + registryKey.getPath()))
 				.texture(LAYER_1_TEXTURE, new ResourceLocation(registryKey.getNamespace(), ITEM_FOLDER + "/weapon/" + registryKey.getPath() + "_emissive"));
 	}

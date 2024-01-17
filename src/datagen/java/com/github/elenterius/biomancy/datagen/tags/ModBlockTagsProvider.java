@@ -2,30 +2,31 @@ package com.github.elenterius.biomancy.datagen.tags;
 
 import com.github.elenterius.biomancy.block.FleshDoorBlock;
 import com.github.elenterius.biomancy.block.FullFleshDoorBlock;
-import com.github.elenterius.biomancy.init.ModBlockMaterials;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.tags.ModBlockTags;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 
 import static com.github.elenterius.biomancy.BiomancyMod.MOD_ID;
 
 public class ModBlockTagsProvider extends BlockTagsProvider {
 
-	public ModBlockTagsProvider(DataGenerator generatorIn, @Nullable ExistingFileHelper existingFileHelper) {
-		super(generatorIn, MOD_ID, existingFileHelper);
+	public ModBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
+		super(output, lookupProvider, MOD_ID, existingFileHelper);
 	}
 
 	private static TagKey<Block> tagKey(String modId, String path) {
@@ -38,7 +39,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 	}
 
 	@Override
-	protected void addTags() {
+	protected void addTags(HolderLookup.Provider provider) {
 		addFleshyBlocksToHoeTag();
 		addCreateTags();
 		addQuarkTags();
@@ -110,8 +111,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 	}
 
 	private void addFleshyBlocksToHoeTag() {
-		TagAppender<Block> tag = tag(BlockTags.MINEABLE_WITH_HOE);
-		ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).filter(ModBlockMaterials.FLESH_PREDICATE).forEach(tag::add);
+		IntrinsicTagAppender<Block> tag = tag(BlockTags.MINEABLE_WITH_HOE);
+		ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).forEach(tag::add);
 	}
 
 	/**
@@ -121,8 +122,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 		String modId = "create";
 
 		//Blocks which should be able to move on contraptions, but would otherwise be ignored due to their empty collision shape
-		TagKey<Block> movableEmptyCollider = tagKey(modId, "movable_empty_collider");
-		tag(movableEmptyCollider).add(
+		tag(tagKey(modId, "movable_empty_collider")).add(
 				ModBlocks.FLESH_DOOR.get(),
 				ModBlocks.FLESH_IRIS_DOOR.get()
 		);
@@ -135,7 +135,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 		String modId = "quark";
 
 		TagKey<Block> noDoubleDoor = tagKey(modId, "non_double_door");
-		TagAppender<Block> tag = tag(noDoubleDoor);
+		IntrinsicTagAppender<Block> tag = tag(noDoubleDoor);
 		Predicate<Block> predicate = block -> block instanceof FleshDoorBlock || block instanceof FullFleshDoorBlock;
 		ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).filter(predicate).forEach(tag::add);
 	}

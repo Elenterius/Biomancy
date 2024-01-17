@@ -8,7 +8,9 @@ import net.minecraft.advancements.critereon.EnchantmentPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
-import net.minecraft.data.loot.BlockLoot;
+import net.minecraft.data.loot.BlockLootSubProvider;
+import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
@@ -29,18 +31,25 @@ import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.Marker;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
 import static com.github.elenterius.biomancy.BiomancyMod.LOGGER;
 
-public class ModBlockLoot extends BlockLoot {
+public class ModBlockLoot extends BlockLootSubProvider {
 
 	private static final Marker logMarker = ModLootTableProvider.LOG_MARKER;
 
 	protected static final LootItemCondition.Builder HAS_SILK_TOUCH = MatchTool.toolMatches(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.Ints.atLeast(1))));
 	protected static final LootItemCondition.Builder HAS_SHEARS = MatchTool.toolMatches(ItemPredicate.Builder.item().of(Items.SHEARS));
 	protected static final LootItemCondition.Builder HAS_SHEARS_OR_SILK_TOUCH = HAS_SHEARS.or(HAS_SILK_TOUCH);
+
+	private static final Set<Item> EXPLOSION_RESISTANT = Set.of();
+
+	public ModBlockLoot() {
+		super(EXPLOSION_RESISTANT, FeatureFlags.REGISTRY.allFlags());
+	}
 
 	@Override
 	protected Iterable<Block> getKnownBlocks() {
@@ -49,7 +58,7 @@ public class ModBlockLoot extends BlockLoot {
 		return blocks;
 	}
 
-	protected static LootTable.Builder createNameableBioMachineTable(Block block) {
+	protected LootTable.Builder createNameableBioMachineTable(Block block) {
 		return LootTable.lootTable().withPool(applyExplosionCondition(block, LootPool.lootPool().setRolls(ConstantValue.exactly(1))
 				.add(LootItem.lootTableItem(block)
 						.apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY))
@@ -57,7 +66,7 @@ public class ModBlockLoot extends BlockLoot {
 				)));
 	}
 
-	protected static LootTable.Builder createPrimordialCradleTable(Block block) {
+	protected LootTable.Builder createPrimordialCradleTable(Block block) {
 		return LootTable.lootTable().withPool(applyExplosionCondition(block, LootPool.lootPool().setRolls(ConstantValue.exactly(1))
 				.add(LootItem.lootTableItem(block)
 						.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("PrimalEnergy", "BlockEntityTag.PrimalEnergy"))
@@ -66,7 +75,7 @@ public class ModBlockLoot extends BlockLoot {
 				)));
 	}
 
-	protected static LootTable.Builder dropWithInventory(Block block) {
+	protected LootTable.Builder dropWithInventory(Block block) {
 		return LootTable.lootTable().withPool(applyExplosionCondition(block, LootPool.lootPool().setRolls(ConstantValue.exactly(1))
 				.add(LootItem.lootTableItem(block)
 						.apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY))
@@ -74,7 +83,7 @@ public class ModBlockLoot extends BlockLoot {
 				)));
 	}
 
-	protected static LootTable.Builder dropOwnableInventory(Block block) {
+	protected LootTable.Builder dropOwnableInventory(Block block) {
 		return LootTable.lootTable().withPool(applyExplosionCondition(block, LootPool.lootPool().setRolls(ConstantValue.exactly(1))
 				.add(LootItem.lootTableItem(block)
 						.apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY))
@@ -84,7 +93,7 @@ public class ModBlockLoot extends BlockLoot {
 				)));
 	}
 
-	protected static LootTable.Builder dropWithOwnableData(Block container) {
+	protected LootTable.Builder dropWithOwnableData(Block container) {
 		return LootTable.lootTable().withPool(applyExplosionCondition(container, LootPool.lootPool().setRolls(ConstantValue.exactly(1))
 				.add(LootItem.lootTableItem(container)
 						.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("OwnerUUID", "BlockEntityTag.OwnerUUID"))
@@ -92,11 +101,11 @@ public class ModBlockLoot extends BlockLoot {
 				)));
 	}
 
-	protected static LootTable.Builder createFleshDoorTable(DoorBlock block) {
+	protected LootTable.Builder createFleshDoorTable(DoorBlock block) {
 		return createSinglePropConditionTable(block, DoorBlock.HALF, DoubleBlockHalf.LOWER);
 	}
 
-	protected static LootTable.Builder createDirectionalSlabTable(Block slab) {
+	protected LootTable.Builder createDirectionalSlabTable(Block slab) {
 		return LootTable.lootTable().withPool(
 				LootPool.lootPool().setRolls(ConstantValue.exactly(1))
 						.add(applyExplosionDecay(slab, LootItem.lootTableItem(slab)
@@ -109,7 +118,7 @@ public class ModBlockLoot extends BlockLoot {
 						)));
 	}
 
-	protected static LootTable.Builder createFleshSpikeTable(FleshSpikeBlock block) {
+	protected LootTable.Builder createFleshSpikeTable(FleshSpikeBlock block) {
 		return LootTable.lootTable().withPool(LootPool.lootPool()
 				.setRolls(ConstantValue.exactly(1))
 				.add(applyExplosionDecay(block, LootItem.lootTableItem(block).apply(
@@ -120,31 +129,29 @@ public class ModBlockLoot extends BlockLoot {
 	}
 
 	@Override
-	protected void addTables() {
+	protected void generate() {
 		LOGGER.info(logMarker, "registering block loot...");
 
-		add(ModBlocks.PRIMORDIAL_CRADLE.get(), ModBlockLoot::createPrimordialCradleTable);
+		add(ModBlocks.PRIMORDIAL_CRADLE.get(), this::createPrimordialCradleTable);
 		dropSelf(ModBlocks.TONGUE.get());
 		dropSelf(ModBlocks.MAW_HOPPER.get());
-		add(ModBlocks.STORAGE_SAC.get(), ModBlockLoot::dropWithInventory);
+		add(ModBlocks.STORAGE_SAC.get(), this::dropWithInventory);
 
-		add(ModBlocks.BIO_FORGE.get(), ModBlockLoot::createNameableBioMachineTable);
-		add(ModBlocks.BIO_LAB.get(), ModBlockLoot::createNameableBioMachineTable);
-		add(ModBlocks.DIGESTER.get(), ModBlockLoot::createNameableBioMachineTable);
-		add(ModBlocks.DECOMPOSER.get(), ModBlockLoot::createNameableBioMachineTable);
+		add(ModBlocks.BIO_FORGE.get(), this::createNameableBioMachineTable);
+		add(ModBlocks.BIO_LAB.get(), this::createNameableBioMachineTable);
+		add(ModBlocks.DIGESTER.get(), this::createNameableBioMachineTable);
+		add(ModBlocks.DECOMPOSER.get(), this::createNameableBioMachineTable);
 
-		add(ModBlocks.FLESHKIN_CHEST.get(), BlockLoot::createNameableBlockEntityTable);
-		//		add(ModBlocks.FLESHKIN_DOOR.get(), ModBlockLoot::dropWithOwnableData);
-		//		add(ModBlocks.FLESHKIN_TRAPDOOR.get(), ModBlockLoot::dropWithOwnableData);
-		add(ModBlocks.FLESHKIN_PRESSURE_PLATE.get(), ModBlockLoot::dropWithOwnableData);
+		add(ModBlocks.FLESHKIN_CHEST.get(), this::createNameableBlockEntityTable);
+		add(ModBlocks.FLESHKIN_PRESSURE_PLATE.get(), this::dropWithOwnableData);
 
 		dropSelf(ModBlocks.FLESH.get());
-		add(ModBlocks.FLESH_SLAB.get(), ModBlockLoot::createDirectionalSlabTable);
+		add(ModBlocks.FLESH_SLAB.get(), this::createDirectionalSlabTable);
 		dropSelf(ModBlocks.FLESH_STAIRS.get());
 		dropSelf(ModBlocks.FLESH_WALL.get());
 
 		dropSelf(ModBlocks.PACKED_FLESH.get());
-		add(ModBlocks.PACKED_FLESH_SLAB.get(), ModBlockLoot::createDirectionalSlabTable);
+		add(ModBlocks.PACKED_FLESH_SLAB.get(), this::createDirectionalSlabTable);
 		dropSelf(ModBlocks.PACKED_FLESH_STAIRS.get());
 		dropSelf(ModBlocks.PACKED_FLESH_WALL.get());
 
@@ -155,12 +162,12 @@ public class ModBlockLoot extends BlockLoot {
 		dropSelf(ModBlocks.TUBULAR_FLESH_BLOCK.get());
 
 		dropSelf(ModBlocks.PRIMAL_FLESH.get());
-		add(ModBlocks.PRIMAL_FLESH_SLAB.get(), ModBlockLoot::createDirectionalSlabTable);
+		add(ModBlocks.PRIMAL_FLESH_SLAB.get(), this::createDirectionalSlabTable);
 		dropSelf(ModBlocks.PRIMAL_FLESH_STAIRS.get());
 		dropSelf(ModBlocks.PRIMAL_FLESH_WALL.get());
 
 		dropSelf(ModBlocks.MALIGNANT_FLESH.get());
-		add(ModBlocks.MALIGNANT_FLESH_SLAB.get(), ModBlockLoot::createDirectionalSlabTable);
+		add(ModBlocks.MALIGNANT_FLESH_SLAB.get(), this::createDirectionalSlabTable);
 		dropSelf(ModBlocks.MALIGNANT_FLESH_STAIRS.get());
 		dropSelf(ModBlocks.MALIGNANT_FLESH_WALL.get());
 		add(ModBlocks.MALIGNANT_FLESH_VEINS.get(), block -> createMultifaceBlockDrops(block, HAS_SHEARS_OR_SILK_TOUCH));
@@ -186,10 +193,10 @@ public class ModBlockLoot extends BlockLoot {
 		dropSelf(ModBlocks.TENDON_CHAIN.get());
 		dropSelf(ModBlocks.VIAL_HOLDER.get());
 
-		addCustom(ModBlocks.FLESH_DOOR.get(), ModBlockLoot::createFleshDoorTable);
-		addCustom(ModBlocks.FULL_FLESH_DOOR.get(), ModBlockLoot::createFleshDoorTable);
+		addCustom(ModBlocks.FLESH_DOOR.get(), this::createFleshDoorTable);
+		addCustom(ModBlocks.FULL_FLESH_DOOR.get(), this::createFleshDoorTable);
 
-		addCustom(ModBlocks.FLESH_SPIKE.get(), ModBlockLoot::createFleshSpikeTable);
+		addCustom(ModBlocks.FLESH_SPIKE.get(), this::createFleshSpikeTable);
 
 		add(ModBlocks.ACID_FLUID_BLOCK.get(), noDrop());
 	}
