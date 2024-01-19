@@ -14,7 +14,7 @@ public class InjectorModel extends DefaultedItemGeoModel<InjectorItem> {
 
 	@Override
 	public RenderType getRenderType(InjectorItem item, ResourceLocation texture) {
-		return RenderType.itemEntityTranslucentCull(texture);
+		return RenderType.entityTranslucentCull(texture);
 	}
 
 	@Override

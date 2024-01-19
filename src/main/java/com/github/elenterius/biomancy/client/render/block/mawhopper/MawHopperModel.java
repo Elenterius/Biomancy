@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.mawhopper.MawHopperBlock;
 import com.github.elenterius.biomancy.block.mawhopper.MawHopperBlockEntity;
 import com.github.elenterius.biomancy.block.property.VertexType;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.GeoModel;
 
@@ -37,6 +38,11 @@ public class MawHopperModel extends GeoModel<MawHopperBlockEntity> {
 		if (vertexType == VertexType.SOURCE) return INPUT_ANIMATION;
 
 		return CONNECTED_ANIMATION;
+	}
+
+	@Override
+	public RenderType getRenderType(MawHopperBlockEntity animatable, ResourceLocation texture) {
+		return RenderType.entityCutout(texture);
 	}
 
 }

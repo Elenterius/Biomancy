@@ -14,7 +14,7 @@ public class DigesterModel extends DefaultedBlockGeoModel<DigesterBlockEntity> {
 
 	@Override
 	public RenderType getRenderType(DigesterBlockEntity animatable, ResourceLocation texture) {
-		return RenderType.entityTranslucent(texture);
+		return RenderType.entityCutout(texture);
 	}
 
 }
