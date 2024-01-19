@@ -183,7 +183,7 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-		guiGraphics.blit(BACKGROUND_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		blit(guiGraphics, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 
 		drawFuelBar(guiGraphics);
 		drawTabs(guiGraphics);
