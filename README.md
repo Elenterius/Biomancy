@@ -4,8 +4,11 @@
 </p>
 
 <p align="center">
-<a aria-label="Build Status" href="https://github.com/Elenterius/Biomancy/actions/workflows/gh_release.yml">
-<img alt="" src="https://img.shields.io/github/actions/workflow/status/Elenterius/Biomancy/gh_release.yml?logo=github&style=for-the-badge"></a>
+<a aria-label="Build Status" href="https://github.com/Elenterius/Biomancy/actions/workflows/build_prod_release.yml">
+<img alt="" src="https://img.shields.io/github/actions/workflow/status/Elenterius/Biomancy/build_prod_release.yml?label=prod%20build&logo=github&style=for-the-badge"></a>
+
+<a aria-label="Build Status" href="https://github.com/Elenterius/Biomancy/actions/workflows/manual_build_dev_release.yml">
+<img alt="" src="https://img.shields.io/github/actions/workflow/status/Elenterius/Biomancy/manual_build_dev_release.yml?label=dev%20build&logo=github&style=for-the-badge"></a>
 
 <a aria-label="Latest Release" href="https://github.com/Elenterius/Biomancy/releases/">
 <img alt="" src="https://img.shields.io/github/v/release/elenterius/biomancy?include_prereleases&logo=github&style=for-the-badge"></a>
