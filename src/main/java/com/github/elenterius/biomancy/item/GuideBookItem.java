@@ -20,32 +20,31 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.constant.DataTickets;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.List;
 import java.util.function.Consumer;
 
-public class GuideBookItem extends SimpleItem implements IAnimatable {
+public class GuideBookItem extends SimpleItem implements GeoItem {
+
+	public static final String MAIN_ANIM_CONTROLLER = "main";
+	public static final RawAnimation CLOSED_IDLE_ANIM = RawAnimation.begin().thenLoop("closed_idle");
+	public static final RawAnimation OPEN_THEN_IDLE_ANIM = RawAnimation.begin().thenPlay("opening").thenLoop("open_idle");
+	public static final RawAnimation CLOSE_THEN_IDLE_ANIM = RawAnimation.begin().thenPlay("closing").thenLoop("closed_idle");
 
 	public static final ResourceLocation GUIDE_BOOK_ID = BiomancyMod.createRL("guide_book");
 	protected static final String BOOK_OPEN_KEY = "IsBookOpen";
-	private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
 	public GuideBookItem(Properties properties) {
 		super(properties);
-	}
-
-	private static ItemStack getItemStack(AnimationEvent<?> event) {
-		List<Object> extraData = event.getExtraData();
-		if (!extraData.isEmpty() && extraData.get(0) instanceof ItemStack stack) return stack;
-		return ItemStack.EMPTY;
 	}
 
 	@Override
@@ -89,13 +88,13 @@ public class GuideBookItem extends SimpleItem implements IAnimatable {
 
 		if (isSelected) {
 			if (!isBookOpen) {
-				GeckoLibUtil.writeIDToStack(stack, (ServerLevel) level);
+				GeoItem.getOrAssignId(stack, (ServerLevel) level);
 				tag.putBoolean(BOOK_OPEN_KEY, true);
 			}
 		}
 		else {
 			if (isBookOpen) {
-				GeckoLibUtil.writeIDToStack(stack, (ServerLevel) level);
+				GeoItem.getOrAssignId(stack, (ServerLevel) level);
 				tag.putBoolean(BOOK_OPEN_KEY, false);
 			}
 		}
@@ -103,11 +102,11 @@ public class GuideBookItem extends SimpleItem implements IAnimatable {
 
 	@Override
 	public boolean onEntityItemUpdate(ItemStack stack, ItemEntity itemEntity) {
-		if (itemEntity.level.isClientSide) return super.onEntityItemUpdate(stack, itemEntity);
+		if (itemEntity.level().isClientSide) return super.onEntityItemUpdate(stack, itemEntity);
 
 		CompoundTag tag = stack.getOrCreateTag();
 		if (tag.getBoolean(BOOK_OPEN_KEY)) {
-			GeckoLibUtil.writeIDToStack(stack, (ServerLevel) itemEntity.level);
+			GeoItem.getOrAssignId(stack, (ServerLevel) itemEntity.level());
 			tag.putBoolean(BOOK_OPEN_KEY, false);
 
 			itemEntity.setItem(stack.copy()); //we need to update ItemEntity with a new ItemStack instance to force the sync to the client
@@ -116,31 +115,31 @@ public class GuideBookItem extends SimpleItem implements IAnimatable {
 		return super.onEntityItemUpdate(stack, itemEntity);
 	}
 
-	private PlayState handleAnim(AnimationEvent<GuideBookItem> event) {
-		AnimationController<GuideBookItem> controller = event.getController();
-		ItemStack stack = getItemStack(event);
+	private PlayState handleAnimation(AnimationState<GuideBookItem> state) {
+		AnimationController<GuideBookItem> controller = state.getController();
+		ItemStack stack = state.getData(DataTickets.ITEMSTACK);
 		boolean isBookOpen = stack.getOrCreateTag().getBoolean(BOOK_OPEN_KEY);
 
 		if (isBookOpen) {
-			controller.setAnimation(new AnimationBuilder().playOnce("opening").loop("open_idle"));
+			controller.setAnimation(OPEN_THEN_IDLE_ANIM);
 		}
 		else {
-			controller.setAnimation(new AnimationBuilder().playOnce("closing").loop("closed_idle"));
+			controller.setAnimation(CLOSE_THEN_IDLE_ANIM);
 		}
 
 		return PlayState.CONTINUE;
 	}
 
 	@Override
-	public void registerControllers(AnimationData data) {
-		AnimationController<GuideBookItem> controller = new AnimationController<>(this, "controller", 10, this::handleAnim);
-		controller.setAnimation(new AnimationBuilder().loop("closed_idle"));
-		data.addAnimationController(controller);
+	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+		AnimationController<GuideBookItem> controller = new AnimationController<>(this, MAIN_ANIM_CONTROLLER, 10, this::handleAnimation);
+		controller.setAnimation(CLOSED_IDLE_ANIM);
+		controllers.add(controller);
 	}
 
 	@Override
-	public AnimationFactory getFactory() {
-		return factory;
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return cache;
 	}
 
 }

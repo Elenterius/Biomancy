@@ -9,11 +9,13 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -36,13 +38,14 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -51,7 +54,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Deprecated
-public class Boomling extends OwnableMob implements IAnimatable {
+public class Boomling extends OwnableMob implements GeoEntity {
 
 	private static final EntityDataAccessor<Byte> CLIMBING = SynchedEntityData.defineId(Boomling.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Byte> STATE = SynchedEntityData.defineId(Boomling.class, EntityDataSerializers.BYTE);
@@ -63,7 +66,7 @@ public class Boomling extends OwnableMob implements IAnimatable {
 	private int fuseTimer;
 	private short maxFuseTimer = 22;
 
-	private final AnimationFactory animationFactory = new AnimationFactory(this);
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
 	public Boomling(EntityType<? extends Boomling> entityType, Level level) {
 		super(entityType, level);
@@ -91,7 +94,7 @@ public class Boomling extends OwnableMob implements IAnimatable {
 		world.addFreshEntity(aoeCloud);
 
 		int event = potion.hasInstantEffects() ? LevelEvent.PARTICLES_SPELL_POTION_SPLASH : LevelEvent.PARTICLES_INSTANT_POTION_SPLASH;
-		world.levelEvent(event, new BlockPos(pos), color);
+		world.levelEvent(event, BlockPos.containing(pos), color);
 	}
 
 	@Override
@@ -145,7 +148,7 @@ public class Boomling extends OwnableMob implements IAnimatable {
 
 	@Override
 	public PathNavigation getNavigation() {
-		return new WallClimberNavigation(this, level);
+		return new WallClimberNavigation(this, level());
 	}
 
 	@Override
@@ -188,7 +191,7 @@ public class Boomling extends OwnableMob implements IAnimatable {
 		}
 
 		super.tick();
-		if (!level.isClientSide) setBesideClimbableBlock(horizontalCollision);
+		if (!level().isClientSide) setBesideClimbableBlock(horizontalCollision);
 	}
 
 	@Override
@@ -272,13 +275,13 @@ public class Boomling extends OwnableMob implements IAnimatable {
 	@Override
 	public void die(@Nonnull DamageSource cause) {
 		super.die(cause);
-		if (!level.isClientSide && !cause.isMagic() && !cause.isFire() && !cause.isExplosion()) {
+		if (!level().isClientSide && !cause.is(DamageTypes.INDIRECT_MAGIC) && !cause.is(DamageTypeTags.IS_FIRE) && !cause.is(DamageTypeTags.IS_EXPLOSION) && !cause.is(DamageTypeTags.IS_FREEZING)) {
 			explode();
 		}
 	}
 
 	private void explode() {
-		if (level.isClientSide) return;
+		if (level().isClientSide) return;
 
 		ItemStack stack = getStoredPotion();
 		if (stack.isEmpty()) return;
@@ -304,13 +307,13 @@ public class Boomling extends OwnableMob implements IAnimatable {
 			color = nbt.getInt("CustomPotionColor");
 		}
 		List<MobEffectInstance> effects = PotionUtils.getCustomEffects(stack);
-		spawnEffectAOE(level, shooter, position(), potion, effects, color);
+		spawnEffectAOE(level(), shooter, position(), potion, effects, color);
 	}
 
 	private void causeWaterAOE() {
 		Optional<Player> owner = getOwnerAsPlayer();
 		LivingEntity shooter = owner.isPresent() ? owner.get() : this;
-		CombatUtil.performWaterAOE(level, shooter, 4d);
+		CombatUtil.performWaterAOE(level(), shooter, 4d);
 	}
 
 	@Override
@@ -325,7 +328,7 @@ public class Boomling extends OwnableMob implements IAnimatable {
 		//				spawnAtLocation(stack);
 		//			}
 		//		}
-		return InteractionResult.sidedSuccess(level.isClientSide());
+		return InteractionResult.sidedSuccess(level().isClientSide());
 	}
 
 	@Override
@@ -384,32 +387,32 @@ public class Boomling extends OwnableMob implements IAnimatable {
 		return Mth.lerp(partialTicks, prevFuseTimer, fuseTimer) / (maxFuseTimer - 2f);
 	}
 
-	private <E extends IAnimatable> PlayState handleAnim(AnimationEvent<E> event) {
-		event.getController().transitionLengthTicks = 0;
+	private <T extends Boomling> PlayState handleAnim(AnimationState<T> state) {
+		state.getController().transitionLength(0);
 
-		if (!isIdle() && getExplodeProgress(event.getPartialTick()) > 0) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("boomling.anim.explode"));
+		if (!isIdle() && getExplodeProgress(state.getPartialTick()) > 0) {
+			state.getController().setAnimation(RawAnimation.begin().thenPlay("boomling.anim.explode"));
 			return PlayState.CONTINUE;
 		}
 
-		if (event.isMoving()) {
-			event.getController().setAnimation(new AnimationBuilder().addAnimation("boomling.anim.armed"));
+		if (state.isMoving()) {
+			state.getController().setAnimation(RawAnimation.begin().thenPlay("boomling.anim.armed"));
 			return PlayState.CONTINUE;
 		}
 
-		event.getController().transitionLengthTicks = 5;
-		event.getController().setAnimation(new AnimationBuilder().addAnimation("boomling.anim.idle", true));
+		state.getController().transitionLength(5);
+		state.getController().setAnimation(RawAnimation.begin().thenLoop("boomling.anim.idle"));
 		return PlayState.CONTINUE;
 	}
 
 	@Override
-	public void registerControllers(AnimationData data) {
-		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::handleAnim));
+	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+		controllers.add(new AnimationController<>(this, "main", 0, this::handleAnim));
 	}
 
 	@Override
-	public AnimationFactory getFactory() {
-		return animationFactory;
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return cache;
 	}
 
 	public enum Flags {

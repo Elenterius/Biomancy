@@ -18,8 +18,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.RegistryObject;
-import org.apache.logging.log4j.Marker;
-import org.apache.logging.log4j.MarkerManager;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ import java.util.function.Supplier;
 
 public class EnglishLangProvider extends AbstractLangProvider {
 
-	public static final Marker LOG_MARKER = MarkerManager.getMarker("EnglishTranslationProvider");
+	public static final Marker LOG_MARKER = MarkerFactory.getMarker("EnglishTranslationProvider");
 	private static final String EMPTY_STRING = "";
 
 	private List<Item> itemsToTranslate = List.of();
@@ -49,30 +49,30 @@ public class EnglishLangProvider extends AbstractLangProvider {
 
 	@Override
 	public boolean hasMissingTranslations() {
-		boolean isAllValid = true;
+		boolean isAnyMissing = false;
 
 		if (!itemsToTranslate.isEmpty()) {
 			for (Item item : itemsToTranslate) {
-				BiomancyMod.LOGGER.error(LOG_MARKER, () -> "Missing translation for item '%s'".formatted(item));
+				LOGGER.error(LOG_MARKER, "Missing translation for item '{}'", item);
 			}
-			isAllValid = false;
+			isAnyMissing = true;
 		}
 
 		if (!blocksToTranslate.isEmpty()) {
 			for (Block block : blocksToTranslate) {
-				BiomancyMod.LOGGER.error(LOG_MARKER, () -> "Missing translation for block '%s'".formatted(block));
+				LOGGER.error(LOG_MARKER, "Missing translation for block '{}'", block);
 			}
-			isAllValid = false;
+			isAnyMissing = true;
 		}
 
 		if (!serumsToTranslate.isEmpty()) {
 			for (Serum serum : serumsToTranslate) {
-				BiomancyMod.LOGGER.error(LOG_MARKER, () -> "Missing translation for serum '%s'".formatted(serum));
+				LOGGER.error(LOG_MARKER, "Missing translation for serum '{}'", serum);
 			}
-			isAllValid = false;
+			isAnyMissing = true;
 		}
 
-		return isAllValid;
+		return isAnyMissing;
 	}
 
 	private void addBannerPatternItem(RegistryObject<MaykerBannerPatternItem> supplier, String name, String description) {
@@ -311,14 +311,14 @@ public class EnglishLangProvider extends AbstractLangProvider {
 	}
 
 	private void addDamageTranslations() {
-		addDeathMessage(ModDamageSources.CHEST_BITE, "%1$s tried opening a chest, but was eaten instead");
-		addDeathMessage(ModDamageSources.PRIMORDIAL_SPIKES, "%1$s was impaled by primordial spikes");
+		addDeathMessage(ModDamageTypes.CHEST_BITE, "%1$s tried opening a chest, but was eaten instead");
+		addDeathMessage(ModDamageTypes.PRIMORDIAL_SPIKES, "%1$s was impaled by primordial spikes");
 
-		addDeathMessage(ModDamageSources.FALL_ON_SPIKE, "%1$s fell on a sharp spike");
-		addDeathMessage(ModDamageSources.IMPALED_BY_SPIKE, "%1$s was skewered by a sharp spike");
+		addDeathMessage(ModDamageTypes.FALL_ON_SPIKE, "%1$s fell on a sharp spike");
+		addDeathMessage(ModDamageTypes.IMPALED_BY_SPIKE, "%1$s was skewered by a sharp spike");
 
-		addDeathMessage(ModDamageSources.CORROSIVE_ACID, "%1$s succumbed from severe acid burns");
-		addDeathMessage(ModDamageSources.BLEED, "%1$s perished from severe blood loss");
+		addDeathMessage(ModDamageTypes.CORROSIVE_ACID, "%1$s succumbed from severe acid burns");
+		addDeathMessage(ModDamageTypes.BLEED, "%1$s perished from severe blood loss");
 
 		addDeathMessage(ModEntityTypes.TOOTH_PROJECTILE, "[WIP] %1$s was forcefully implanted with teeth by %2$s", "[WIP] %1$s received a lethal dental implant by %2$s using %3$s");
 		addDeathMessage(ModEntityTypes.CORROSIVE_ACID_PROJECTILE, "[WIP] %1$s was doused with corrosive acid by %2$s", "[WIP] %1$s was showered in corrosive acid by %2$s using %3$s");

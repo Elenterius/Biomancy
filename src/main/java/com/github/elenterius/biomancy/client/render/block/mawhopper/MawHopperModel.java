@@ -5,9 +5,9 @@ import com.github.elenterius.biomancy.block.mawhopper.MawHopperBlock;
 import com.github.elenterius.biomancy.block.mawhopper.MawHopperBlockEntity;
 import com.github.elenterius.biomancy.block.property.VertexType;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class MawHopperModel extends AnimatedGeoModel<MawHopperBlockEntity> {
+public class MawHopperModel extends GeoModel<MawHopperBlockEntity> {
 
 	protected static final ResourceLocation SOURCE_MODEL = BiomancyMod.createRL("geo/block/maw_hopper.geo.json");
 	protected static final ResourceLocation STRAIGHT_MODEL = BiomancyMod.createRL("geo/block/maw_hopper_connected_straight.geo.json");

@@ -28,7 +28,7 @@ public final class ModRenderTypes {
 
 	@SubscribeEvent
 	public static void onClientSetup(RegisterShadersEvent event) throws IOException {
-		event.registerShader(new ShaderInstance(event.getResourceManager(), BiomancyMod.createRL("entity_cutout_party_time"), DefaultVertexFormat.NEW_ENTITY), instance -> entityCutoutPartyTimeShader = instance);
+		event.registerShader(new ShaderInstance(event.getResourceProvider(), BiomancyMod.createRL("entity_cutout_party_time"), DefaultVertexFormat.NEW_ENTITY), instance -> entityCutoutPartyTimeShader = instance);
 	}
 
 	public static RenderType getCutoutPartyTime(ResourceLocation textureLocation) {

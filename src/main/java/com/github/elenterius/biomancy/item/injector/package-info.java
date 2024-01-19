@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package com.github.elenterius.biomancy.client.render.entity.acidblob;
+package com.github.elenterius.biomancy.item.injector;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

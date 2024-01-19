@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.client.gui.component;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
@@ -11,7 +11,7 @@ import net.minecraft.network.chat.FormattedText;
  */
 public class CustomEditBox extends EditBox {
 
-	private FormattedText hint = Component.EMPTY;
+	private FormattedText hint = FormattedText.EMPTY;
 	private final Font font;
 	private boolean isBackgroundDisabled = false;
 
@@ -31,11 +31,12 @@ public class CustomEditBox extends EditBox {
 	}
 
 	@Override
-	public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		if (visible) {
 			if (!isFocused() && getValue().isEmpty()) {
-				drawString(poseStack, font, hint.getString(), x + 4, y + (height - 8) / 2, -1);
-			} else super.render(poseStack, mouseX, mouseY, partialTick);
+				guiGraphics.drawString(font, hint.getString(), getX() + 4, getY() + (height - 8) / 2, -1);
+			}
+			else super.render(guiGraphics, mouseX, mouseY, partialTick);
 		}
 	}
 
@@ -50,9 +51,9 @@ public class CustomEditBox extends EditBox {
 	}
 
 	@Override
-	public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+	public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		isBackgroundDisabled = true;
-		super.renderButton(poseStack, mouseX, mouseY, partialTick);
+		super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
 		isBackgroundDisabled = false;
 	}
 

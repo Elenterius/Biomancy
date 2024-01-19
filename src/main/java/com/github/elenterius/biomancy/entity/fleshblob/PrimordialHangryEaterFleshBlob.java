@@ -132,7 +132,7 @@ public class PrimordialHangryEaterFleshBlob extends EaterFleshBlob implements En
 
 	@Override
 	public void remove(RemovalReason reason) {
-		if (reason == RemovalReason.KILLED && !level.isClientSide && level instanceof ServerLevel serverLevel) {
+		if (reason == RemovalReason.KILLED && !level().isClientSide && level() instanceof ServerLevel serverLevel) {
 			placeMalignantFleshBlocks(serverLevel);
 		}
 		super.remove(reason);

@@ -9,9 +9,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Collection;
 
-public class SapberryItem extends SimpleItem {
+public class BloomberryItem extends SimpleItem {
 
-	public SapberryItem(Properties properties) {
+	public BloomberryItem(Properties properties) {
 		super(properties);
 	}
 

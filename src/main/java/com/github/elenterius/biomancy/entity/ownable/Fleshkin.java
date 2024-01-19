@@ -120,13 +120,13 @@ public class Fleshkin extends OwnableMonster implements IControllableMob<Fleshki
 
 		if (!player.getMainHandItem().isEmpty() || !isOwner(player)) return InteractionResult.PASS;
 
-		if (!player.level.isClientSide() && player.isShiftKeyDown()) {
+		if (!player.level().isClientSide() && player.isShiftKeyDown()) {
 			Command newCommand = getActiveCommand().cycle();
 			updateRestriction(newCommand);
 			setActiveCommand(newCommand);
 			displayCommandSetMsg(player, getName(), newCommand);
 		}
-		return InteractionResult.sidedSuccess(level.isClientSide());
+		return InteractionResult.sidedSuccess(level().isClientSide());
 	}
 
 	@Override
@@ -190,7 +190,7 @@ public class Fleshkin extends OwnableMonster implements IControllableMob<Fleshki
 	@Override
 	public void setBaby(boolean isChild) {
 		entityData.set(IS_CHILD, isChild);
-		if (!level.isClientSide) {
+		if (!level().isClientSide) {
 			AttributeInstance attribute = getAttribute(Attributes.MOVEMENT_SPEED);
 			if (attribute != null) {
 				attribute.removeModifier(SPEED_MODIFIER);

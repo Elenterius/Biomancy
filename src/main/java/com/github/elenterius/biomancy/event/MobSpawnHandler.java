@@ -7,10 +7,8 @@ import com.github.elenterius.biomancy.world.spatial.geometry.Shape;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.entity.living.MobSpawnEvent;
 import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.function.Predicate;
@@ -20,16 +18,17 @@ public final class MobSpawnHandler {
 
 	private MobSpawnHandler() {}
 
-	@SubscribeEvent(priority = EventPriority.HIGH)
-	public static void onCheckSpawn(LivingSpawnEvent.CheckSpawn event) {
+	public static void onCheckSpawn(final MobSpawnEvent.PositionCheck event) {
 		if (event.isCanceled()) return;
 
 		if (event.getLevel() instanceof ServerLevel serverLevel) {
-			MobSpawnType spawnReason = event.getSpawnReason();
+			MobSpawnType spawnReason = event.getSpawnType();
 
 			//TODO: check unnatural spawns as well??
 			if (MobSpawnFilter.isNaturalSpawn(spawnReason)) {
+
 				Mob mob = event.getEntity();
+
 				double x = event.getX();
 				double y = event.getY();
 				double z = event.getZ();

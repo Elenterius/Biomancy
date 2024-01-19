@@ -24,12 +24,11 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.CustomInstructionKeyframeEvent;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.keyframe.event.CustomInstructionKeyframeEvent;
+import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.function.Predicate;
 
@@ -108,7 +107,7 @@ public abstract class EaterFleshBlob extends FleshBlob implements FoodEater {
 	protected InteractionResult mobInteract(Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 		if (canHoldItem(stack)) {
-			if (level.isClientSide) return InteractionResult.CONSUME;
+			if (level().isClientSide) return InteractionResult.CONSUME;
 
 			ItemStack heldStack = getFoodItem();
 			if (!heldStack.isEmpty()) {
@@ -119,7 +118,7 @@ public abstract class EaterFleshBlob extends FleshBlob implements FoodEater {
 			if (!player.getAbilities().instabuild) stack.shrink(1);
 
 			if (!isSilent()) {
-				level.playSound(null, getX(), getY(), getZ(), SoundEvents.GENERIC_EAT, getSoundSource(), 0.75f + 0.25f * random.nextInt(2), (random.nextFloat() - random.nextFloat()) * 0.2f + 1f);
+				level().playSound(null, getX(), getY(), getZ(), SoundEvents.GENERIC_EAT, getSoundSource(), 0.75f + 0.25f * random.nextInt(2), (random.nextFloat() - random.nextFloat()) * 0.2f + 1f);
 			}
 			gameEvent(GameEvent.EAT, this);
 
@@ -184,7 +183,7 @@ public abstract class EaterFleshBlob extends FleshBlob implements FoodEater {
 
 		for (int i = 0; i < 8; i++) {
 			Vec3 motion = new Vec3((random.nextFloat() - 0.5d) * 0.1d, random.nextFloat() * 0.1d + 0.15d, 0).xRot(pitch).yRot(yaw);
-			level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, stack), x, y, z, motion.x, motion.y, motion.z);
+			level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, stack), x, y, z, motion.x, motion.y, motion.z);
 		}
 	}
 
@@ -193,7 +192,7 @@ public abstract class EaterFleshBlob extends FleshBlob implements FoodEater {
 		if (stack.isEmpty()) return;
 
 		if (stack.getUseAnimation() == UseAnim.DRINK) {
-			playClientLocalSound(getDrinkingSound(stack), 0.75f, level.random.nextFloat() * 0.1f + 0.9f);
+			playClientLocalSound(getDrinkingSound(stack), 0.75f, level().random.nextFloat() * 0.1f + 0.9f);
 		}
 
 		if (stack.getUseAnimation() == UseAnim.EAT) {
@@ -205,11 +204,11 @@ public abstract class EaterFleshBlob extends FleshBlob implements FoodEater {
 
 	private void playClientLocalSound(SoundEvent soundEvent, float volume, float pitch) {
 		if (!isSilent()) {
-			level.playLocalSound(getX(), getY(), getZ(), soundEvent, getSoundSource(), volume, pitch, false);
+			level().playLocalSound(getX(), getY(), getZ(), soundEvent, getSoundSource(), volume, pitch, false);
 		}
 	}
 
-	protected <E extends IAnimatable> PlayState handleEatingAnimation(AnimationEvent<E> event) {
+	protected <T extends EaterFleshBlob> PlayState handleEatingAnimation(AnimationState<T> event) {
 		if (isEating()) {
 			event.getController().setAnimation(EATING_ANIMATION);
 			return PlayState.CONTINUE;
@@ -218,18 +217,18 @@ public abstract class EaterFleshBlob extends FleshBlob implements FoodEater {
 		return PlayState.STOP;
 	}
 
-	protected <E extends IAnimatable> void onEatingSfx(CustomInstructionKeyframeEvent<E> event) {
-		if (event.instructions.equals("eating_fx;")) {
+	protected <E extends EaterFleshBlob> void onEatingSfx(CustomInstructionKeyframeEvent<E> event) {
+		if (event.getKeyframeData().getInstructions().equals("eating_fx;")) {
 			playEatingFX();
 		}
 	}
 
 	@Override
-	public void registerControllers(AnimationData data) {
-		super.registerControllers(data);
-		AnimationController<EaterFleshBlob> controller = new AnimationController<>(this, "eatingController", 4, this::handleEatingAnimation);
-		controller.registerCustomInstructionListener(this::onEatingSfx);
-		data.addAnimationController(controller);
+	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+		super.registerControllers(controllers);
+		AnimationController<EaterFleshBlob> controller = new AnimationController<>(this, "eat", 4, this::handleEatingAnimation);
+		controller.setCustomInstructionKeyframeHandler(this::onEatingSfx);
+		controllers.add(controller);
 	}
 
 }

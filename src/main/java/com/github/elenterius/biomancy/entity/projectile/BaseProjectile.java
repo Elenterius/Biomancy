@@ -4,7 +4,6 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -15,7 +14,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.network.NetworkHooks;
 
 public abstract class BaseProjectile extends Projectile implements IEntityAdditionalSpawnData {
 
@@ -41,10 +39,10 @@ public abstract class BaseProjectile extends Projectile implements IEntityAdditi
 	@Override
 	protected void defineSynchedData() {}
 
-	@Override
-	public Packet<?> getAddEntityPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
-	}
+	//	@Override
+	//	public Packet<ClientGamePacketListener> getAddEntityPacket() {
+	//		return NetworkHooks.getEntitySpawningPacket(this);
+	//	}
 
 	@Override
 	public void writeSpawnData(FriendlyByteBuf buffer) {
@@ -57,7 +55,7 @@ public abstract class BaseProjectile extends Projectile implements IEntityAdditi
 
 	@Override
 	public void readSpawnData(FriendlyByteBuf buffer) {
-		Entity shooter = level.getEntity(buffer.readVarInt());
+		Entity shooter = level().getEntity(buffer.readVarInt());
 		setOwner(shooter);
 		//		accelerationX = buffer.readDouble();
 		//		accelerationY = buffer.readDouble();
@@ -120,11 +118,11 @@ public abstract class BaseProjectile extends Projectile implements IEntityAdditi
 	@Override
 	public void tick() {
 		Entity shooter = getOwner();
-		if (level.isClientSide || ((shooter == null || !shooter.isRemoved()) && level.isAreaLoaded(blockPosition(), 1))) {
+		if (level().isClientSide || ((shooter == null || !shooter.isRemoved()) && level().isAreaLoaded(blockPosition(), 1))) {
 			super.tick();
 
 			if (isInWaterOrRain()) clearFire();
-			HitResult hitResult = ProjectileUtil.getHitResult(this, this::canHitEntity);
+			HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
 			if (hitResult.getType() != HitResult.Type.MISS && !ForgeEventFactory.onProjectileImpact(this, hitResult)) {
 				onHit(hitResult);
 			}
@@ -139,7 +137,7 @@ public abstract class BaseProjectile extends Projectile implements IEntityAdditi
 			float drag = getDrag();
 			if (isInWater()) {
 				for (int i = 0; i < 4; ++i) {
-					level.addParticle(ParticleTypes.BUBBLE, posX - motion.x * 0.25f, posY - motion.y * 0.25f, posZ - motion.z * 0.25f, motion.x, motion.y, motion.z);
+					level().addParticle(ParticleTypes.BUBBLE, posX - motion.x * 0.25f, posY - motion.y * 0.25f, posZ - motion.z * 0.25f, motion.x, motion.y, motion.z);
 				}
 				drag = getWaterDrag();
 			}
@@ -159,11 +157,11 @@ public abstract class BaseProjectile extends Projectile implements IEntityAdditi
 	@Override
 	protected void onHit(HitResult result) {
 		super.onHit(result); //call onEntityHit and onBlockHit before removing the projectile
-		if (!level.isClientSide) discard();
+		if (!level().isClientSide) discard();
 	}
 
 	public void spawnParticle(double x, double y, double z) {
-		level.addParticle(getParticle(), x, y + 0.5d, z, 0, 0, 0);
+		level().addParticle(getParticle(), x, y + 0.5d, z, 0, 0, 0);
 	}
 
 	protected ParticleOptions getParticle() {

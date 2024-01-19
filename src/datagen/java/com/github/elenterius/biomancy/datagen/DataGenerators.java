@@ -28,47 +28,54 @@ public final class DataGenerators {
 
 	@SubscribeEvent
 	public static void gatherData(final GatherDataEvent event) {
+		boolean includeServer = event.includeServer();
+		boolean includeClient = event.includeClient();
+
 		DataGenerator generator = event.getGenerator();
 		ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
 		PackOutput packOutput = generator.getPackOutput();
 		CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
+		DatapackEntriesProvider datapackEntriesProvider = new DatapackEntriesProvider(packOutput, lookupProvider);
+		lookupProvider = datapackEntriesProvider.getRegistryProvider();
+		generator.addProvider(includeServer, datapackEntriesProvider);
+
 		//tags
 		ModBlockTagsProvider blockTagsProvider = new ModBlockTagsProvider(packOutput, lookupProvider, existingFileHelper);
-		generator.addProvider(event.includeServer(), blockTagsProvider);
-		generator.addProvider(event.includeServer(), new ModItemTagsProvider(packOutput, lookupProvider, blockTagsProvider.contentsGetter(), existingFileHelper));
-		generator.addProvider(event.includeServer(), new ForgeEntityTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
-		generator.addProvider(event.includeServer(), new ModEntityTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
-
-		generator.addProvider(event.includeServer(), new ModBannerPatternTagsProvider(packOutput, lookupProvider, existingFileHelper));
+		generator.addProvider(includeServer, blockTagsProvider);
+		generator.addProvider(includeServer, new ModItemTagsProvider(packOutput, lookupProvider, blockTagsProvider.contentsGetter(), existingFileHelper));
+		generator.addProvider(includeServer, new ForgeEntityTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
+		generator.addProvider(includeServer, new ModEntityTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
+		generator.addProvider(includeServer, new ModBannerPatternTagsProvider(packOutput, lookupProvider, existingFileHelper));
+		generator.addProvider(includeServer, new ModDamageTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
 
 		//recipes
-		generator.addProvider(event.includeServer(), new ModRecipeProvider(packOutput));
+		generator.addProvider(includeServer, new ModRecipeProvider(packOutput));
 
 		//loot
-		generator.addProvider(event.includeServer(), new ModLootTableProvider(packOutput));
-		generator.addProvider(event.includeServer(), new ModGlobalLootModifierProvider(packOutput));
+		generator.addProvider(includeServer, new ModLootTableProvider(packOutput));
+		generator.addProvider(includeServer, new ModGlobalLootModifierProvider(packOutput));
 
 		//models & block states
-		generator.addProvider(event.includeServer(), new ModBlockStateProvider(packOutput, existingFileHelper));
-		generator.addProvider(event.includeServer(), new ModItemModelProvider(packOutput, existingFileHelper));
+		generator.addProvider(includeServer, new ModBlockStateProvider(packOutput, existingFileHelper));
+		generator.addProvider(includeServer, new ModItemModelProvider(packOutput, existingFileHelper));
 
 		//sounds
-		generator.addProvider(event.includeClient(), new ModSoundProvider(packOutput, existingFileHelper));
+		generator.addProvider(includeClient, new ModSoundProvider(packOutput, existingFileHelper));
 
 		//particles
-		generator.addProvider(event.includeServer(), new ModParticleSpriteProvider(packOutput, existingFileHelper));
+		generator.addProvider(includeServer, new ModParticleSpriteProvider(packOutput, existingFileHelper));
 
 		//translations
 		EnglishLangProvider translationProvider = new EnglishLangProvider(packOutput);
 
 		//advancements
-		generator.addProvider(event.includeServer(), new ModAdvancementProvider(packOutput, lookupProvider, existingFileHelper, translationProvider));
+		generator.addProvider(includeServer, new ModAdvancementProvider(packOutput, lookupProvider, existingFileHelper, translationProvider));
 
 		//guide book
-		generator.addProvider(event.includeServer(), new GuideBookProvider(packOutput, translationProvider));
+		generator.addProvider(includeServer, new GuideBookProvider(packOutput, translationProvider));
 
-		generator.addProvider(event.includeServer(), translationProvider);
+		generator.addProvider(includeServer, translationProvider);
 	}
 
 }

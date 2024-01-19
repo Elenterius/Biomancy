@@ -61,7 +61,7 @@ public class EatFoodItemGoal<T extends PathfinderMob & FoodEater> extends Goal {
 			if (hasEdibleFood()) {
 				ItemStack stack = mob.getFoodItem();
 				FoodProperties food = stack.getFoodProperties(mob);
-				ItemStack eatenStack = stack.finishUsingItem(mob.level, mob);
+				ItemStack eatenStack = stack.finishUsingItem(mob.level(), mob);
 				if (!eatenStack.isEmpty()) {
 					mob.setFoodItem(eatenStack);
 				}

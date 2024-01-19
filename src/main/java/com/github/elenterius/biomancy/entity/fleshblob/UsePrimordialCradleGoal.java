@@ -48,7 +48,7 @@ class UsePrimordialCradleGoal<T extends PathfinderMob & PrimordialCradleUser> ex
 		if (!isReachedTarget()) return;
 
 		if (canUseCradle) {
-			Level level = cradleUser.level;
+			Level level = cradleUser.level();
 			BlockPos pos = blockPos;
 			BlockState state = level.getBlockState(pos);
 

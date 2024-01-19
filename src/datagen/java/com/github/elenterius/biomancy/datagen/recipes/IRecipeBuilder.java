@@ -1,14 +1,14 @@
 package com.github.elenterius.biomancy.datagen.recipes;
 
 import net.minecraft.advancements.CriterionTriggerInstance;
-import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -19,8 +19,8 @@ import java.util.function.Consumer;
 
 public interface IRecipeBuilder {
 
-	static String getRecipeFolderName(@Nullable CreativeModeTab itemCategory, String modId) {
-		return itemCategory != null ? itemCategory.getRecipeFolderName() : modId;
+	static String getRecipeFolderName(@Nullable RecipeCategory category, String modId) {
+		return category != null ? category.getFolderName() : modId;
 	}
 
 	private InventoryChangeTrigger.TriggerInstance has(ItemLike itemLike) {
@@ -32,7 +32,7 @@ public interface IRecipeBuilder {
 	}
 
 	private InventoryChangeTrigger.TriggerInstance inventoryTrigger(ItemPredicate... predicates) {
-		return new InventoryChangeTrigger.TriggerInstance(EntityPredicate.Composite.ANY, MinMaxBounds.Ints.ANY, MinMaxBounds.Ints.ANY, MinMaxBounds.Ints.ANY, predicates);
+		return new InventoryChangeTrigger.TriggerInstance(ContextAwarePredicate.ANY, MinMaxBounds.Ints.ANY, MinMaxBounds.Ints.ANY, MinMaxBounds.Ints.ANY, predicates);
 	}
 
 	private String getItemName(ItemLike itemLike) {
@@ -75,6 +75,6 @@ public interface IRecipeBuilder {
 		save(consumer, null);
 	}
 
-	void save(Consumer<FinishedRecipe> consumer, @Nullable CreativeModeTab itemCategory);
+	void save(Consumer<FinishedRecipe> consumer, @Nullable RecipeCategory category);
 
 }

@@ -1,5 +1,6 @@
 {
   "ambientocclusion": false,
+	"render_type": "cutout",
   "textures": {
     "particle": "biomancy:block/flesh_ladder",
     "texture": "biomancy:block/flesh_ladder"

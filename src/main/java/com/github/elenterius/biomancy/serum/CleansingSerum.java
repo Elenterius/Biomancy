@@ -30,11 +30,11 @@ public class CleansingSerum extends BasicSerum {
 
 		if (target instanceof ZombieVillager) {
 			if (ForgeEventFactory.canLivingConvert(target, EntityType.VILLAGER, timer -> {})) {
-				((ZombieVillagerMixinAccessor) target).biomancy$cureZombie((ServerLevel) target.level);
+				((ZombieVillagerMixinAccessor) target).biomancy$cureZombie((ServerLevel) target.level());
 			}
 		}
 		else if (target instanceof WitherSkeleton skeleton) {
-			MobUtil.convertMobTo((ServerLevel) target.level, skeleton, EntityType.SKELETON);
+			MobUtil.convertMobTo((ServerLevel) target.level(), skeleton, EntityType.SKELETON);
 		}
 
 		if (target instanceof AgeableMob ageableMob) {

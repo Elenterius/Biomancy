@@ -7,7 +7,6 @@ import com.github.elenterius.biomancy.crafting.recipe.VariableProductionOutput;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.util.ComponentUtil;
-import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
@@ -20,6 +19,7 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
@@ -98,28 +98,28 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 	}
 
 	@Override
-	public void draw(DecomposerRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
-		Font fontRenderer = Minecraft.getInstance().font;
+	public void draw(DecomposerRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+		Font font = Minecraft.getInstance().font;
 
 		int ticks = recipe.getCraftingTimeTicks();
 		int seconds = ticks > 0 ? ticks / 20 : 0;
 		MutableComponent timeString = ComponentUtil.translatable("gui.jei.category.smelting.time.seconds", seconds);
-		fontRenderer.draw(poseStack, timeString, 16, 59f - fontRenderer.lineHeight, 0xff_808080);
+		guiGraphics.drawString(font, timeString, 16, 59 - font.lineHeight, 0xff_808080);
 
 		MutableComponent costString = ComponentUtil.literal("-" + recipe.getCraftingCostNutrients());
-		fontRenderer.draw(poseStack, costString, 16, 43f - fontRenderer.lineHeight, 0xff_808080);
+		guiGraphics.drawString(font, costString, 16, 43 - font.lineHeight, 0xff_808080);
 
 		int x = 68;
 		List<VariableProductionOutput> outputs = recipe.getOutputs();
-		drawOutputAmount(fontRenderer, poseStack, x, 26, outputs, 0);
-		drawOutputAmount(fontRenderer, poseStack, x, 55, outputs, 1);
-		drawOutputAmount(fontRenderer, poseStack, x + 30, 26, outputs, 2);
-		drawOutputAmount(fontRenderer, poseStack, x + 30, 55, outputs, 3);
-		drawOutputAmount(fontRenderer, poseStack, x + 30 * 2, 26, outputs, 4);
-		drawOutputAmount(fontRenderer, poseStack, x + 30 * 2, 55, outputs, 5);
+		drawOutputAmount(font, guiGraphics, x, 26, outputs, 0);
+		drawOutputAmount(font, guiGraphics, x, 55, outputs, 1);
+		drawOutputAmount(font, guiGraphics, x + 30, 26, outputs, 2);
+		drawOutputAmount(font, guiGraphics, x + 30, 55, outputs, 3);
+		drawOutputAmount(font, guiGraphics, x + 30 * 2, 26, outputs, 4);
+		drawOutputAmount(font, guiGraphics, x + 30 * 2, 55, outputs, 5);
 	}
 
-	private void drawOutputAmount(Font fontRenderer, PoseStack poseStack, int x, int y, List<VariableProductionOutput> outputs, int index) {
+	private void drawOutputAmount(Font font, GuiGraphics guiGraphics, int x, int y, List<VariableProductionOutput> outputs, int index) {
 		assert index >= 0;
 		assert index < DecomposerRecipe.MAX_OUTPUTS;
 
@@ -127,26 +127,26 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 			VariableProductionOutput output = outputs.get(index);
 			if (output.getItemStack().isEmpty()) return;
 
-			poseStack.pushPose();
-			poseStack.translate(x, y, 0);
-			poseStack.scale(0.75f, 0.75f, 1f);
-			poseStack.translate(-x, -y, 0);
+			guiGraphics.pose().pushPose();
+			guiGraphics.pose().translate(x, y, 0);
+			guiGraphics.pose().scale(0.75f, 0.75f, 1f);
+			guiGraphics.pose().translate(-x, -y, 0);
 
 			ItemCountRange countRange = output.getCountRange();
 			if (countRange instanceof ItemCountRange.UniformRange uniform) {
 				MutableComponent component = ComponentUtil.literal("%d-%d".formatted(Math.max(uniform.min(), 0), uniform.max()));
-				fontRenderer.draw(poseStack, component, x - fontRenderer.width(component), y, 0xff_808080);
+				guiGraphics.drawString(font, component, x - font.width(component), y, 0xff_808080);
 			}
 			else if (countRange instanceof ItemCountRange.ConstantValue constant) {
 				MutableComponent component = ComponentUtil.literal("" + constant.value());
-				fontRenderer.draw(poseStack, component, x - fontRenderer.width(component), y, 0xff_808080);
+				guiGraphics.drawString(font, component, x - font.width(component), y, 0xff_808080);
 			}
 			else if (countRange instanceof ItemCountRange.BinomialRange binomialRange) {
 				MutableComponent component = ComponentUtil.literal("n: %d, p: %s".formatted(binomialRange.n(), binomialRange.p()));
-				fontRenderer.draw(poseStack, component, x - fontRenderer.width(component), y, 0xff_808080);
+				guiGraphics.drawString(font, component, x - font.width(component), y, 0xff_808080);
 			}
 
-			poseStack.popPose();
+			guiGraphics.pose().popPose();
 		}
 	}
 

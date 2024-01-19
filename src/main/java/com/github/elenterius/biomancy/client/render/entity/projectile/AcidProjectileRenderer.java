@@ -1,9 +1,9 @@
-package com.github.elenterius.biomancy.client.render.entity;
+package com.github.elenterius.biomancy.client.render.entity.projectile;
 
 import com.github.elenterius.biomancy.entity.projectile.CorrosiveAcidProjectile;
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.client.model.LlamaSpitModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -28,8 +28,8 @@ public class AcidProjectileRenderer extends EntityRenderer<CorrosiveAcidProjecti
 		poseStack.pushPose();
 
 		poseStack.translate(0, 0.15f, 0);
-		poseStack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(partialTick, entity.yRotO, entity.getYRot()) - 90f));
-		poseStack.mulPose(Vector3f.ZP.rotationDegrees(Mth.lerp(partialTick, entity.xRotO, entity.getXRot())));
+		poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTick, entity.yRotO, entity.getYRot()) - 90f));
+		poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTick, entity.xRotO, entity.getXRot())));
 
 		int rgb = ModMobEffects.CORROSIVE.get().getColor();
 		float r = (rgb >> 16 & 255) / 255f;

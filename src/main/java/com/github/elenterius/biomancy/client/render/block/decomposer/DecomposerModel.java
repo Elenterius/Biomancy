@@ -2,28 +2,19 @@ package com.github.elenterius.biomancy.client.render.block.decomposer;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.decomposer.DecomposerBlockEntity;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.DefaultedBlockGeoModel;
 
-public class DecomposerModel extends AnimatedGeoModel<DecomposerBlockEntity> {
+public class DecomposerModel extends DefaultedBlockGeoModel<DecomposerBlockEntity> {
 
-	protected static final ResourceLocation MODEL = BiomancyMod.createRL("geo/block/decomposer.geo.json");
-	protected static final ResourceLocation TEXTURE = BiomancyMod.createRL("textures/block/decomposer.png");
-	protected static final ResourceLocation ANIMATION = BiomancyMod.createRL("animations/block/decomposer.animation.json");
-
-	@Override
-	public ResourceLocation getModelResource(DecomposerBlockEntity blockEntity) {
-		return MODEL;
+	public DecomposerModel() {
+		super(BiomancyMod.createRL("decomposer"));
 	}
 
 	@Override
-	public ResourceLocation getTextureResource(DecomposerBlockEntity blockEntity) {
-		return TEXTURE;
-	}
-
-	@Override
-	public ResourceLocation getAnimationResource(DecomposerBlockEntity blockEntity) {
-		return ANIMATION;
+	public RenderType getRenderType(DecomposerBlockEntity animatable, ResourceLocation texture) {
+		return RenderType.entityTranslucentCull(texture);
 	}
 
 }

@@ -12,9 +12,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.ForgeEventFactory;
 
 import java.util.Collection;
 
@@ -41,9 +39,8 @@ public class VolatileGlandItem extends MobLootItem {
 
 		float explosionRadius = 3 - livingEntity.getArmorCoverPercentage() * 1.5f;
 
-		Explosion.BlockInteraction blockInteraction = ForgeEventFactory.getMobGriefingEvent(level, livingEntity) ? Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE;
-		DamageSource damageSource = DamageSource.explosion(livingEntity);
-		level.explode(null, damageSource, null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), explosionRadius, false, blockInteraction);
+		DamageSource damageSource = level.damageSources().explosion(livingEntity, livingEntity);
+		level.explode(null, damageSource, null, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), explosionRadius, false, Level.ExplosionInteraction.MOB);
 
 		if (!livingEntity.isDeadOrDying()) {
 			livingEntity.hurt(damageSource, 0.5f + livingEntity.getArmorCoverPercentage() * 2.5f); //this might kill the entity

@@ -60,8 +60,8 @@ public class JumpMoveHelper<T extends PathfinderMob & JumpMoveHelper.IJumpingPat
 	}
 
 	public void onJumpFromGround() {
-		if (!jumpingMob.level.isClientSide) {
-			jumpingMob.level.broadcastEntityEvent(jumpingMob, stateUpdateId);
+		if (!jumpingMob.level().isClientSide) {
+			jumpingMob.level().broadcastEntityEvent(jumpingMob, stateUpdateId);
 		}
 	}
 
@@ -79,7 +79,7 @@ public class JumpMoveHelper<T extends PathfinderMob & JumpMoveHelper.IJumpingPat
 	public void onCustomServerAiStep() {
 		if (jumpDelay > 0) --jumpDelay;
 
-		if (jumpingMob.isOnGround()) {
+		if (jumpingMob.onGround()) {
 			if (!wasOnGround) {
 				jumpingMob.setJumping(false);
 				jumpDelay = moveController.getSpeedModifier() < 2.2d ? MAX_JUMP_DURATION : 1;
@@ -117,7 +117,7 @@ public class JumpMoveHelper<T extends PathfinderMob & JumpMoveHelper.IJumpingPat
 			}
 		}
 
-		wasOnGround = jumpingMob.isOnGround();
+		wasOnGround = jumpingMob.onGround();
 	}
 
 	public void setJumpHeading(double x, double z) {
@@ -180,7 +180,7 @@ public class JumpMoveHelper<T extends PathfinderMob & JumpMoveHelper.IJumpingPat
 
 		@Override
 		public void tick() {
-			if (jumpingMob.isOnGround() && !jumpingMob.isJumping() && !jumpController.wantsToJump()) {
+			if (jumpingMob.onGround() && !jumpingMob.isJumping() && !jumpController.wantsToJump()) {
 				setSpeedModifier(0);
 			}
 			else if (hasWanted()) {

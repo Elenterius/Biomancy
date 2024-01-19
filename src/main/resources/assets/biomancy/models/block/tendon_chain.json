@@ -1,6 +1,7 @@
 {
 	"credit": "Made by RhinoW",
 	"parent": "block/block",
+	"render_type": "cutout",
 	"textures": {
 		"0": "biomancy:block/tendon_chain",
 		"particle": "biomancy:block/tendon_chain"

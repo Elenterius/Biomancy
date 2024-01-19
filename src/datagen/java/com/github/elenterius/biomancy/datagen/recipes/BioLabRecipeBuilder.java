@@ -13,9 +13,9 @@ import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -160,7 +160,7 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 	}
 
 	@Override
-	public void save(Consumer<FinishedRecipe> consumer, @Nullable CreativeModeTab itemCategory) {
+	public void save(Consumer<FinishedRecipe> consumer, @Nullable RecipeCategory category) {
 		validateCriteria();
 
 		if (craftingTimeTicks < 0) {
@@ -175,7 +175,7 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 				.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId))
 				.rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
 
-		String folderName = IRecipeBuilder.getRecipeFolderName(itemCategory, BiomancyMod.MOD_ID);
+		String folderName = IRecipeBuilder.getRecipeFolderName(category, BiomancyMod.MOD_ID);
 		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(), "recipes/%s/%s".formatted(folderName, recipeId.getPath()));
 
 		consumer.accept(new Result(this, advancementId));

@@ -40,7 +40,7 @@ public class InsomniaCureSerum extends BasicSerum {
 
 		int ticksSinceRest = getTimeSinceRest(targetSelf);
 		if (ticksSinceRest <= PHANTOM_SPAWN_THRESHOLD * 0.833f) {
-			if (!targetSelf.level.isClientSide) {
+			if (!targetSelf.level().isClientSide) {
 				targetSelf.displayClientMessage(TextComponentUtil.getFailureMsgText("not_sleepy"), true);
 			}
 			return false;
@@ -62,7 +62,7 @@ public class InsomniaCureSerum extends BasicSerum {
 	}
 
 	private int getTimeSinceRest(Player player) {
-		StatsCounter statsCounter = player.level.isClientSide ? ((LocalPlayer) player).getStats() : ((ServerPlayer) player).getStats();
+		StatsCounter statsCounter = player.level().isClientSide ? ((LocalPlayer) player).getStats() : ((ServerPlayer) player).getStats();
 		return Mth.clamp(statsCounter.getValue(Stats.CUSTOM.get(Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE);
 	}
 

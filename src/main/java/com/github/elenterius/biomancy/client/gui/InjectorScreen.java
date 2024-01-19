@@ -11,12 +11,12 @@ import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
@@ -28,6 +28,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import org.joml.Matrix4f;
 
 public class InjectorScreen extends Screen {
 
@@ -136,20 +137,20 @@ public class InjectorScreen extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		if (ticks < 0) return;
 		float time = ticks + partialTick;
 		if (time > DURATION) {
 			time = DURATION;
 		}
-		renderWheel(poseStack, mouseX, mouseY, time / DURATION);
+		renderWheel(guiGraphics, mouseX, mouseY, time / DURATION);
 	}
 
-	private void renderWheel(PoseStack poseStack, int mouseX, int mouseY, float pct) {
+	private void renderWheel(GuiGraphics guiGraphics, int mouseX, int mouseY, float pct) {
 		if (cachedStacks == null || cachedStacks.isEmpty()) return;
 
 		ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-		int blitOffset = getBlitOffset();
+		int blitOffset = 0;
 
 		ObjectSet<Object2IntMap.Entry<ItemStack>> stackEntries = cachedStacks.object2IntEntrySet();
 
@@ -178,12 +179,12 @@ public class InjectorScreen extends Screen {
 
 			int color = isMouseInSection ? ColorStyles.GENERIC_TOOLTIP.borderStartColor() & 0xFA_FFFFFF : ColorStyles.GENERIC_TOOLTIP.backgroundColor() & 0xE0_FFFFFF; //decrease alpha
 
-			drawSegment(poseStack, x, y, radius, currentAngle - angleIncrement / 2f, currentAngle, color, blitOffset);
-			drawSegment(poseStack, x, y, radius, currentAngle, currentAngle + angleIncrement / 2f, color, blitOffset);
+			drawSegment(guiGraphics, x, y, radius, currentAngle - angleIncrement / 2f, currentAngle, color, blitOffset);
+			drawSegment(guiGraphics, x, y, radius, currentAngle, currentAngle + angleIncrement / 2f, color, blitOffset);
 
 			float v = x + radius * Mth.cos(currentAngle); //polar to cartesian
 			float w = y + radius * Mth.sin(currentAngle);
-			itemRenderer.renderAndDecorateFakeItem(entry.getKey(), Mth.floor(v - 8), Mth.floor(w - 8));
+			guiGraphics.renderFakeItem(entry.getKey(), Mth.floor(v - 8), Mth.floor(w - 8));
 
 			if (isMouseInSection) {
 				stack = entry.getKey();
@@ -222,21 +223,21 @@ public class InjectorScreen extends Screen {
 			xt -= lineWidth;
 		}
 
-		poseStack.pushPose();
+		guiGraphics.pose().pushPose();
 		float minX = xt - 3;
 		float minY = yt - font.lineHeight / 2f - 3;
 		float maxX = xt + lineWidth + 2;
 		float maxY = yt + font.lineHeight / 2f + 2;
-		GuiRenderUtil.fill(poseStack, minX, minY, maxX, maxY, blitOffset, ColorStyles.GENERIC_TOOLTIP.backgroundColor() & 0xE0_FFFFFF);
-		font.drawShadow(poseStack, text, xt, yt - font.lineHeight / 2f, ColorStyles.WHITE_ARGB);
-		poseStack.popPose();
+		GuiRenderUtil.fill(guiGraphics, minX, minY, maxX, maxY, blitOffset, ColorStyles.GENERIC_TOOLTIP.backgroundColor() & 0xE0_FFFFFF);
+		guiGraphics.drawString(font, text, (int) xt, (int) (yt - font.lineHeight / 2f), ColorStyles.WHITE_ARGB, true);
+		guiGraphics.pose().popPose();
 	}
 
-	public void drawSegment(PoseStack poseStack, float x, float y, float radius, float startAngle, float endAngle, int argbColor, int blitOffset) {
-		Matrix4f matrix4f = poseStack.last().pose();
+	public void drawSegment(GuiGraphics guiGraphics, float x, float y, float radius, float startAngle, float endAngle, int argbColor, int blitOffset) {
+		Matrix4f matrix4f = guiGraphics.pose().last().pose();
 
 		RenderSystem.enableBlend();
-		RenderSystem.disableTexture();
+		//		RenderSystem.disableTexture();
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
@@ -253,7 +254,7 @@ public class InjectorScreen extends Screen {
 
 		BufferUploader.drawWithShader(bufferBuilder.end());
 
-		RenderSystem.enableTexture();
+		//		RenderSystem.enableTexture();
 		RenderSystem.disableBlend();
 	}
 

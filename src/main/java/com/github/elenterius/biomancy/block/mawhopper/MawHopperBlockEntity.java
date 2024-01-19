@@ -26,33 +26,33 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 import java.util.function.Predicate;
 
-public class MawHopperBlockEntity extends BlockEntity implements IAnimatable {
+public class MawHopperBlockEntity extends BlockEntity implements GeoBlockEntity {
 
 	public static final String INVENTORY_TAG = "Inventory";
 	public static final int ITEM_TRANSFER_AMOUNT = 16;
 	public static final int DURATION = 11;
 	public static final int DELAY = 8 + 1;
-	protected static final AnimationBuilder IDLE_ANIM = new AnimationBuilder().loop("maw_hopper.idle");
-	protected static final AnimationBuilder PUMPING_ANIM = new AnimationBuilder().loop("maw_hopper.pumping");
+	protected static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("maw_hopper.idle");
+	protected static final RawAnimation PUMPING_ANIM = RawAnimation.begin().thenLoop("maw_hopper.pumping");
 
 	private int ticks = BiomancyMod.GLOBAL_RANDOM.nextInt(DURATION); //add random tick offset
 
 	private final SingleItemStackHandler inventory;
 	private LazyOptional<IItemHandler> optionalItemHandler;
 
-	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
 	public MawHopperBlockEntity(BlockPos pos, BlockState blockState) {
 		super(ModBlockEntities.MAW_HOPPER.get(), pos, blockState);
@@ -227,7 +227,7 @@ public class MawHopperBlockEntity extends BlockEntity implements IAnimatable {
 		inventory.deserializeNBT(tag.getCompound(INVENTORY_TAG));
 	}
 
-	private <E extends BlockEntity & IAnimatable> PlayState handleAnim(AnimationEvent<E> event) {
+	private <E extends MawHopperBlockEntity> PlayState handleAnim(AnimationState<E> event) {
 		//		if (inventory.isEmpty()) {
 		//			event.getController().setAnimation(IDLE_ANIM);
 		//		}
@@ -239,13 +239,13 @@ public class MawHopperBlockEntity extends BlockEntity implements IAnimatable {
 	}
 
 	@Override
-	public void registerControllers(AnimationData data) {
-		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::handleAnim));
+	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+		controllers.add(new AnimationController<>(this, "main", 0, this::handleAnim));
 	}
 
 	@Override
-	public AnimationFactory getFactory() {
-		return animationFactory;
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return cache;
 	}
 
 }

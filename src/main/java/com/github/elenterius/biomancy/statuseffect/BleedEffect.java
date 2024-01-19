@@ -38,9 +38,9 @@ public class BleedEffect extends StatusEffect implements StackingStatusEffect {
 		}
 
 		int effectLevel = amplifier + 1;
-		livingEntity.hurt(ModDamageSources.BLEED, effectLevel);
+		livingEntity.hurt(ModDamageSources.bleed(livingEntity.level(), null), effectLevel);
 
-		if (livingEntity.level instanceof ServerLevel serverLevel) {
+		if (livingEntity.level() instanceof ServerLevel serverLevel) {
 			float xz = livingEntity.getBbWidth() * 0.25f;
 			float y = livingEntity.getBbHeight() * 0.25f;
 			serverLevel.sendParticles(ModParticleTypes.FALLING_BLOOD.get(), livingEntity.getX(), livingEntity.getY(0.5f), livingEntity.getZ(), 4, xz, y, xz, 0);
@@ -54,7 +54,7 @@ public class BleedEffect extends StatusEffect implements StackingStatusEffect {
 		int reducedDuration = effectInstance.getDuration() - ticks;
 		if (reducedDuration > 0) {
 			((MobEffectInstanceAccessor) effectInstance).biomancy$setDuration(reducedDuration);
-			((MobEffectInstanceAccessor) effectInstance).biomancy$getFactorData().ifPresent(factorData -> factorData.update(effectInstance));
+			((MobEffectInstanceAccessor) effectInstance).biomancy$getFactorData().ifPresent(factorData -> factorData.tick(effectInstance));
 		}
 		else {
 			livingEntity.removeEffect(this);
@@ -67,7 +67,7 @@ public class BleedEffect extends StatusEffect implements StackingStatusEffect {
 
 		int increasedDuration = effectInstance.getDuration() + ticks;
 		((MobEffectInstanceAccessor) effectInstance).biomancy$setDuration(increasedDuration);
-		((MobEffectInstanceAccessor) effectInstance).biomancy$getFactorData().ifPresent(factorData -> factorData.update(effectInstance));
+		((MobEffectInstanceAccessor) effectInstance).biomancy$getFactorData().ifPresent(factorData -> factorData.tick(effectInstance));
 	}
 
 	@Override

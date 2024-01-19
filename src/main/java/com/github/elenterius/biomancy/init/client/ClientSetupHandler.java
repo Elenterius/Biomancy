@@ -17,13 +17,13 @@ import com.github.elenterius.biomancy.client.render.block.fleshkinchest.Fleshkin
 import com.github.elenterius.biomancy.client.render.block.mawhopper.MawHopperRenderer;
 import com.github.elenterius.biomancy.client.render.block.storagesac.StorageSacRenderer;
 import com.github.elenterius.biomancy.client.render.block.tongue.TongueRenderer;
-import com.github.elenterius.biomancy.client.render.entity.AcidProjectileRenderer;
-import com.github.elenterius.biomancy.client.render.entity.WitherProjectileRenderer;
-import com.github.elenterius.biomancy.client.render.entity.acidblob.AcidBlobProjectileRenderer;
-import com.github.elenterius.biomancy.client.render.entity.bloomberry.BloomberryProjectileRenderer;
 import com.github.elenterius.biomancy.client.render.entity.fleshblob.FleshBlobRenderer;
 import com.github.elenterius.biomancy.client.render.entity.fleshblob.LegacyFleshBlobRenderer;
 import com.github.elenterius.biomancy.client.render.entity.fleshblob.PrimordialFleshBlobRenderer;
+import com.github.elenterius.biomancy.client.render.entity.projectile.AcidProjectileRenderer;
+import com.github.elenterius.biomancy.client.render.entity.projectile.WitherProjectileRenderer;
+import com.github.elenterius.biomancy.client.render.entity.projectile.acidblob.AcidBlobProjectileRenderer;
+import com.github.elenterius.biomancy.client.render.entity.projectile.bloomberry.BloomberryProjectileRenderer;
 import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.integration.ModsCompatHandler;
 import com.github.elenterius.biomancy.tooltip.EmptyLineTooltipComponent;
@@ -106,21 +106,9 @@ public final class ClientSetupHandler {
 
 	@SuppressWarnings("removal")
 	private static void setBlockRenderLayers() {
-		ItemBlockRenderTypes.setRenderLayer(ModBlocks.DIGESTER.get(), RenderType.cutout());
-
-		//ItemBlockRenderTypes.setRenderLayer(ModBlocks.VOICE_BOX.get(), RenderType.translucent());
-		//ItemBlockRenderTypes.setRenderLayer(ModBlocks.STORAGE_SAC.get(), RenderType.translucent());
-
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.FLESH_IRIS_DOOR.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(ModBlocks.FLESH_FENCE.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.FLESH_DOOR.get(), RenderType.cutout());
 		ItemBlockRenderTypes.setRenderLayer(ModBlocks.FULL_FLESH_DOOR.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(ModBlocks.FLESH_LADDER.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(ModBlocks.MALIGNANT_FLESH_VEINS.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(ModBlocks.YELLOW_BIO_LANTERN.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLUE_BIO_LANTERN.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(ModBlocks.TENDON_CHAIN.get(), RenderType.cutout());
-		ItemBlockRenderTypes.setRenderLayer(ModBlocks.VIAL_HOLDER.get(), RenderType.cutout());
 
 		ItemBlockRenderTypes.setRenderLayer(ModFluids.ACID.get(), RenderType.translucent());
 		ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_ACID.get(), RenderType.translucent());
@@ -131,13 +119,13 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void registerParticles(final RegisterParticleProvidersEvent event) {
-		event.register(ModParticleTypes.BLOODY_CLAWS_ATTACK.get(), AttackSweepParticle.Provider::new);
-		event.register(ModParticleTypes.FALLING_BLOOD.get(), BloodDripParticle.FallingBloodFactory::new);
-		event.register(ModParticleTypes.LANDING_BLOOD.get(), BloodDripParticle.LandingBloodFactory::new);
-		event.register(ModParticleTypes.CORROSIVE_SWIPE_ATTACK.get(), AttackSweepParticle.Provider::new);
-		event.register(ModParticleTypes.DRIPPING_ACID.get(), ParticleProviders.AcidHangProvider::new);
-		event.register(ModParticleTypes.FALLING_ACID.get(), ParticleProviders.AcidFallProvider::new);
-		event.register(ModParticleTypes.LANDING_ACID.get(), ParticleProviders.AcidLandProvider::new);
+		event.registerSpriteSet(ModParticleTypes.BLOODY_CLAWS_ATTACK.get(), AttackSweepParticle.Provider::new);
+		event.registerSpriteSet(ModParticleTypes.FALLING_BLOOD.get(), BloodDripParticle.FallingBloodFactory::new);
+		event.registerSpriteSet(ModParticleTypes.LANDING_BLOOD.get(), BloodDripParticle.LandingBloodFactory::new);
+		event.registerSpriteSet(ModParticleTypes.CORROSIVE_SWIPE_ATTACK.get(), AttackSweepParticle.Provider::new);
+		event.registerSpriteSet(ModParticleTypes.DRIPPING_ACID.get(), ParticleProviders.AcidHangProvider::new);
+		event.registerSpriteSet(ModParticleTypes.FALLING_ACID.get(), ParticleProviders.AcidFallProvider::new);
+		event.registerSpriteSet(ModParticleTypes.LANDING_ACID.get(), ParticleProviders.AcidLandProvider::new);
 	}
 
 	@SubscribeEvent

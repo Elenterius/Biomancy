@@ -99,7 +99,7 @@ public abstract class MachineBlockEntity<R extends ProcessingRecipe, S extends R
 		if (craftingGoal == null) {
 			state.cancelCrafting();
 		} else {
-			ItemStack itemToCraft = craftingGoal.getResultItem();
+			ItemStack itemToCraft = craftingGoal.getResultItem(level.registryAccess());
 			if (itemToCraft.isEmpty()) {
 				state.cancelCrafting();
 			} else {

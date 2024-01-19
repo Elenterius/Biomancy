@@ -10,10 +10,11 @@ import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -82,7 +83,8 @@ public abstract class AbstractLangProvider implements DataProvider, LangProvider
 			translations.forEach(json::addProperty);
 
 			if (hasMissingTranslations()) {
-				return CompletableFuture.allOf();
+				LOGGER.error("Has Missing Translations!");
+				//				return CompletableFuture.allOf();
 			}
 
 			Path path = packOutput.getOutputFolder().resolve("assets/%s/lang/%s.json".formatted(modId, languageLocale));
@@ -205,8 +207,9 @@ public abstract class AbstractLangProvider implements DataProvider, LangProvider
 		}
 	}
 
-	public void addDeathMessage(DamageSource damageSource, String text) {
-		add("death.attack." + damageSource.getMsgId(), text);
+	public void addDeathMessage(ResourceKey<DamageType> damageType, String text) {
+		String msgId = damageType.location().getNamespace() + "." + damageType.location().getPath();
+		add("death.attack." + msgId, text);
 	}
 
 	public <T extends Projectile> void addDeathMessage(Supplier<EntityType<T>> supplier, String directCause, String indirectCause) {

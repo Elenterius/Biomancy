@@ -34,7 +34,7 @@ public class FollowOwnerGoal<T extends Mob & IOwnableMob & IControllableMob> ext
 
 	public FollowOwnerGoal(T goalOwner, double speedIn, float minDistIn, float maxDistIn, boolean teleportToLeaves) {
 		entity = goalOwner;
-		world = goalOwner.level;
+		world = goalOwner.level();
 		speed = speedIn;
 		navigator = goalOwner.getNavigation();
 		minDist = minDistIn;

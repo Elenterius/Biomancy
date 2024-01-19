@@ -1,62 +1,83 @@
 package com.github.elenterius.biomancy.init;
 
-import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.entity.projectile.BaseProjectile;
-import com.github.elenterius.biomancy.entity.projectile.CorrosiveAcidProjectile;
 import com.github.elenterius.biomancy.entity.projectile.WitherProjectile;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.IndirectEntityDamageSource;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
-import java.util.Objects;
+import static com.github.elenterius.biomancy.init.ModDamageTypes.getHolder;
 
 public final class ModDamageSources {
 
-	public static final DamageSource PRIMORDIAL_SPIKES = createDamage("primordial_spikes").bypassArmor();
-	public static final DamageSource CHEST_BITE = createDamage("chest_bite").bypassArmor();
-
-	public static final DamageSource CORROSIVE_ACID = createDamage("corrosive_acid");
-	public static final DamageSource BLEED = createDamage("bleed").bypassArmor().bypassMagic().bypassEnchantments();
-
-	public static final DamageSource FALL_ON_SPIKE = createDamage("spike_fall_on").bypassArmor().setIsFall();
-	public static final DamageSource IMPALED_BY_SPIKE = createDamage("spike_impale").bypassArmor();
-
 	private ModDamageSources() {}
 
-	private static DamageSource createDamage(String name) {
-		return new DamageSource(BiomancyMod.MOD_ID + "." + name); //normal damage source "bypasses" shields
+	public static DamageSource fallOnSpike(Level level, BlockPos pos) {
+		return source(ModDamageTypes.FALL_ON_SPIKE, level, Vec3.atCenterOf(pos));
 	}
 
-	public static DamageSource createProjectileDamage(BaseProjectile projectile, @Nullable Entity shooter) {
-		ResourceLocation resourceLocation = Objects.requireNonNull(ForgeRegistries.ENTITY_TYPES.getKey(projectile.getType()));
-		String messageId = resourceLocation.toString().replace(":", ".");
-		return new IndirectEntityDamageSource(messageId, projectile, shooter).setProjectile();
+	public static DamageSource impaleBySpike(Level level, BlockPos pos) {
+		return source(ModDamageTypes.IMPALED_BY_SPIKE, level, Vec3.atCenterOf(pos));
 	}
 
-	public static DamageSource createWitherSkullDamage(WitherProjectile projectile, @Nullable Entity shooter) {
-		return new IndirectEntityDamageSource("witherSkull", projectile, shooter).setProjectile();
+	public static DamageSource chestBite(Level level, BlockPos pos) {
+		return source(ModDamageTypes.CHEST_BITE, level, Vec3.atCenterOf(pos));
 	}
 
-	public static boolean isCorrosive(DamageSource damageSource) {
-		return damageSource == CORROSIVE_ACID || damageSource.getDirectEntity() instanceof CorrosiveAcidProjectile;
+	public static DamageSource primalSpikes(Level level, Vec3 pos) {
+		return source(ModDamageTypes.PRIMORDIAL_SPIKES, level, pos);
 	}
 
-	/*public interface IDamageType {}
+	public static DamageSource acid(Level level, @Nullable Entity attacker) {
+		return source(ModDamageTypes.CORROSIVE_ACID, level, attacker);
+	}
 
-	public record DamageType(ResourceLocation id) implements IDamageType {
-		public static DamageType DEFAULT = new DamageType(new ResourceLocation("default"));
-		public static DamageType CORROSIVE = new DamageType(BiomancyMod.createRL("corrosive"));
-		public static DamageType VIRAL = new DamageType(BiomancyMod.createRL("viral"));
-		public static DamageType TOXIN = new DamageType(BiomancyMod.createRL("toxin"));
-		public static DamageType HEAT = new DamageType(BiomancyMod.createRL("neat"));
-		public static DamageType FROST = new DamageType(BiomancyMod.createRL("frost"));
-		public static DamageType BLAST = new DamageType(BiomancyMod.createRL("blast"));
-		public static DamageType GAS = new DamageType(BiomancyMod.createRL("gas"));
-		public static DamageType IMPACT = new DamageType(BiomancyMod.createRL("impact"));
-		public static DamageType SLASH = new DamageType(BiomancyMod.createRL("slash"));
-		public static DamageType PIERCE = new DamageType(BiomancyMod.createRL("pierce"));
-	}*/
+	public static DamageSource bleed(Level level, @Nullable Entity attacker) {
+		return source(ModDamageTypes.BLEED, level, attacker);
+	}
+
+	public static DamageSource toothProjectile(Level level, BaseProjectile projectile, @Nullable Entity shooter) {
+		return source(ModDamageTypes.TOOTH_PROJECTILE, level, projectile, shooter);
+	}
+
+	public static DamageSource acidProjectile(Level level, BaseProjectile projectile, @Nullable Entity shooter) {
+		return source(ModDamageTypes.CORROSIVE_ACID, level, projectile, shooter);
+	}
+
+	public static DamageSource projectile(Holder<DamageType> type, BaseProjectile projectile, @Nullable Entity shooter) {
+		return new DamageSource(type, projectile, shooter);
+	}
+
+	public static DamageSource witherSkull(Level level, WitherProjectile projectile, @Nullable Entity shooter) {
+		return source(DamageTypes.WITHER_SKULL, level, projectile, shooter);
+	}
+
+	private static DamageSource source(ResourceKey<DamageType> key, LevelReader level) {
+		return new DamageSource(getHolder(key, level));
+	}
+
+	private static DamageSource source(ResourceKey<DamageType> key, LevelReader level, BlockPos pos) {
+		return source(key, level, Vec3.atCenterOf(pos));
+	}
+
+	private static DamageSource source(ResourceKey<DamageType> key, LevelReader level, Vec3 pos) {
+		return new DamageSource(getHolder(key, level), pos);
+	}
+
+	private static DamageSource source(ResourceKey<DamageType> key, LevelReader level, @Nullable Entity entity) {
+		return new DamageSource(getHolder(key, level), entity);
+	}
+
+	private static DamageSource source(ResourceKey<DamageType> key, LevelReader level, @Nullable Entity directEntity, @Nullable Entity causingEntity) {
+		return new DamageSource(getHolder(key, level), directEntity, causingEntity);
+	}
+
 }

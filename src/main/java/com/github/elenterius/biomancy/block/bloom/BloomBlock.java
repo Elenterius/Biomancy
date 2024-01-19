@@ -19,7 +19,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.*;
@@ -110,7 +109,7 @@ public class BloomBlock extends WaterloggedFacingBlock implements IPlantable {
 		Direction direction = getFacing(state);
 		BlockPos relativePos = pos.relative(direction);
 		BlockState relativeState = level.getBlockState(relativePos);
-		if (relativeState.getMaterial().isSolid() || !relativeState.getCollisionShape(level, relativePos).isEmpty()) return;
+		if (relativeState.isSolid() || !relativeState.getCollisionShape(level, relativePos).isEmpty()) return;
 
 		int age = AGE.getValue(state);
 		if (age < AGE.getMax()) {
@@ -144,7 +143,7 @@ public class BloomBlock extends WaterloggedFacingBlock implements IPlantable {
 				int count = 1 + (age > 6 ? level.random.nextInt(2) : 0);
 				popResource(level, pos, new ItemStack(ModItems.BLOOMBERRY.get(), count));
 
-				player.hurt(DamageSource.SWEET_BERRY_BUSH, 1f);
+				player.hurt(level.damageSources().sweetBerryBush(), 1f);
 
 				level.playSound(null, pos, SoundEvents.CAVE_VINES_PICK_BERRIES, SoundSource.BLOCKS, 1f, 0.5f + level.random.nextFloat() * 0.4f);
 				BlockState blockState = AGE.setValue(state, AGE.getMin());

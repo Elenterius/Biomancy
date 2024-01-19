@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.block;
 
 import com.github.elenterius.biomancy.block.property.Orientation;
 import com.github.elenterius.biomancy.init.ModBlockProperties;
+import com.github.elenterius.biomancy.init.ModBlockSetTypes;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -48,7 +49,7 @@ public class FleshDoorBlock extends DoorBlock {
 	protected static final VoxelShape[] Z_POS_AABB = createClosedAndOpenShape(0, 0, 16d - THICKNESS, 16, 16, 16);
 
 	public FleshDoorBlock(Properties properties) {
-		super(properties);
+		super(properties, ModBlockSetTypes.FLESH_SET_TYPE.get());
 		registerDefaultState(defaultBlockState().setValue(ORIENTATION, Orientation.X_MIDDLE));
 	}
 

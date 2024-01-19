@@ -8,11 +8,9 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.event.ForgeEventFactory;
 
 @Deprecated(forRemoval = true)
 public class WitherProjectile extends BaseProjectile {
@@ -38,11 +36,11 @@ public class WitherProjectile extends BaseProjectile {
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
-		if (!level.isClientSide) {
+		if (!level().isClientSide) {
 			Entity victim = result.getEntity();
 			Entity shooter = getOwner();
 			if (shooter instanceof LivingEntity livingShooter) {
-				if (victim.hurt(ModDamageSources.createWitherSkullDamage(this, livingShooter), getDamage())) {
+				if (victim.hurt(ModDamageSources.witherSkull(level(), this, livingShooter), getDamage())) {
 					if (!victim.isAlive()) {
 						livingShooter.heal(0.625f * getDamage());
 						return;
@@ -54,7 +52,7 @@ public class WitherProjectile extends BaseProjectile {
 					}
 				}
 			}
-			else if (victim.hurt(DamageSource.MAGIC, 0.625f * getDamage()) && victim instanceof LivingEntity livingEntity) {
+			else if (victim.hurt(level().damageSources().magic(), 0.625f * getDamage()) && victim instanceof LivingEntity livingEntity) {
 				livingEntity.addEffect(new MobEffectInstance(MobEffects.WITHER, 20 * 40, 1));
 			}
 		}
@@ -63,9 +61,8 @@ public class WitherProjectile extends BaseProjectile {
 	@Override
 	protected void onHit(HitResult result) {
 		super.onHit(result);
-		if (!level.isClientSide) {
-			Explosion.BlockInteraction explosionMode = ForgeEventFactory.getMobGriefingEvent(level, getOwner()) ? Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE;
-			level.explode(this, getX(), getY(), getZ(), 1.0F, false, explosionMode);
+		if (!level().isClientSide) {
+			level().explode(this, getX(), getY(), getZ(), 1.0F, false, Level.ExplosionInteraction.TNT);
 			discard();
 		}
 	}

@@ -65,7 +65,7 @@ public class FindItemGoal extends Goal {
 	}
 
 	public List<ItemEntity> findItems(double distance, Predicate<ItemEntity> filter) {
-		return mob.level.getEntitiesOfClass(ItemEntity.class, mob.getBoundingBox().inflate(distance, distance, distance), filter);
+		return mob.level().getEntitiesOfClass(ItemEntity.class, mob.getBoundingBox().inflate(distance, distance, distance), filter);
 	}
 
 }

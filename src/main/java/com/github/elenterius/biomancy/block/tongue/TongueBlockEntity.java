@@ -16,27 +16,26 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.IItemHandler;
-import software.bernie.geckolib3.core.AnimationState;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class TongueBlockEntity extends SimpleSyncedBlockEntity implements IAnimatable {
+public class TongueBlockEntity extends SimpleSyncedBlockEntity implements GeoBlockEntity {
 
 	public static final String INVENTORY_TAG = "Inventory";
 	public static final int ITEM_TRANSFER_AMOUNT = 3;
 	public static final int DURATION = 24;
 	public static final int DELAY = 12;
-	protected static final AnimationBuilder IDLE_ANIM = new AnimationBuilder().loop("tongue.idle");
-	protected static final AnimationBuilder STRETCH_ANIM = new AnimationBuilder().playOnce("tongue.stretch");
+	protected static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("tongue.idle");
+	protected static final RawAnimation STRETCH_ANIM = RawAnimation.begin().thenPlay("tongue.stretch");
 
 	private final SingleItemStackHandler inventory;
-	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
 	private int ticks;
 
@@ -141,11 +140,11 @@ public class TongueBlockEntity extends SimpleSyncedBlockEntity implements IAnima
 		}
 	}
 
-	protected <T extends TongueBlockEntity> PlayState handleAnim(AnimationEvent<T> event) {
-		AnimationController<T> controller = event.getController();
-		boolean isStopped = controller.getAnimationState() == AnimationState.Stopped;
+	protected <T extends TongueBlockEntity> PlayState handleAnimationState(AnimationState<T> state) {
+		AnimationController<T> controller = state.getController();
+		boolean isStopped = controller.getAnimationState() == AnimationController.State.STOPPED;
 
-		if (event.getAnimatable().isHoldingItem()) {
+		if (state.getAnimatable().isHoldingItem()) {
 			controller.setAnimation(STRETCH_ANIM);
 			if (!isStopped) return PlayState.CONTINUE;
 		}
@@ -158,13 +157,13 @@ public class TongueBlockEntity extends SimpleSyncedBlockEntity implements IAnima
 	}
 
 	@Override
-	public void registerControllers(AnimationData data) {
-		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::handleAnim));
+	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+		controllers.add(new AnimationController<>(this, "controller", 0, this::handleAnimationState));
 	}
 
 	@Override
-	public AnimationFactory getFactory() {
-		return animationFactory;
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return cache;
 	}
 
 }

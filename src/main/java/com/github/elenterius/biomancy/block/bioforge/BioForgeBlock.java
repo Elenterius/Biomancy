@@ -15,7 +15,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -115,7 +114,7 @@ public class BioForgeBlock extends BaseEntityBlock {
 
 	@Override
 	public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
-		entity.causeFallDamage(fallDistance, 0.5f, DamageSource.FALL);
+		entity.causeFallDamage(fallDistance, 0.5f, level.damageSources().fall());
 	}
 
 	@Override

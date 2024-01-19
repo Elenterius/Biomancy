@@ -6,38 +6,48 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import software.bernie.geckolib3.core.processor.AnimationProcessor;
-import software.bernie.geckolib3.core.processor.IBone;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
-
-import javax.annotation.Nullable;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
+import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
+import software.bernie.geckolib.core.animation.AnimationProcessor;
+import software.bernie.geckolib.model.GeoModel;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public abstract class AbstractFleshBlobRenderer<T extends FleshBlob> extends GeoEntityRenderer<T> {
 
-	protected AbstractFleshBlobRenderer(EntityRendererProvider.Context context, AnimatedGeoModel<T> modelProvider) {
-		super(context, modelProvider);
+	protected AbstractFleshBlobRenderer(EntityRendererProvider.Context context, GeoModel<T> model) {
+		super(context, model);
 		shadowRadius = 0.65f;
 	}
 
 	@Override
-	public void renderEarly(T entity, PoseStack poseStack, float ticks, @Nullable MultiBufferSource renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLight, int packedOverlay, float red, float green, float blue, float partialTicks) {
-		float scale = entity.getBlobScale();
+	public GeoEntityRenderer<T> withScale(float scale) {
 		shadowRadius = 0.65f * scale;
+		return withScale(scale, scale);
+	}
 
-		AnimationProcessor<?> animationProcessor = modelProvider.getAnimationProcessor();
+	@Override
+	public void preRender(PoseStack poseStack, T fleshBlob, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 
-		int flag = entity.getTumorFlags();
+		withScale(fleshBlob.getBlobScale());
+
+		AnimationProcessor<?> animationProcessor = getGeoModel().getAnimationProcessor();
+
+		int flag = fleshBlob.getTumorFlags();
 		for (TumorFlag tumorFlag : TumorFlag.values()) {
-			IBone tumor = animationProcessor.getBone(tumorFlag.getBoneId());
+			CoreGeoBone tumor = animationProcessor.getBone(tumorFlag.getBoneId());
 			tumor.setHidden(tumorFlag.isNotSet(flag));
 		}
 
-		poseStack.scale(0.999f, 0.999f, 0.999f);
-		poseStack.translate(0, 0.001f, 0);
-		poseStack.scale(scale, scale, scale);
+		super.preRender(poseStack, fleshBlob, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+	}
 
-		super.renderEarly(entity, poseStack, ticks, renderTypeBuffer, vertexBuilder, packedLight, packedOverlay, red, green, blue, partialTicks);
+	@Override
+	public void scaleModelForRender(float widthScale, float heightScale, PoseStack poseStack, T animatable, BakedGeoModel model, boolean isReRender, float partialTick, int packedLight, int packedOverlay) {
+		if (!isReRender && (widthScale != 1 || heightScale != 1)) {
+			poseStack.scale(0.999f, 0.999f, 0.999f);
+			poseStack.translate(0, 0.001f, 0);
+			poseStack.scale(widthScale, heightScale, widthScale);
+		}
 	}
 
 }

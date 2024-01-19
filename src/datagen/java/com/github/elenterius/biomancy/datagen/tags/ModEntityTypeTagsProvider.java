@@ -3,48 +3,20 @@ package com.github.elenterius.biomancy.datagen.tags;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.entity.MobUtil;
 import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.tags.ModEntityTags;
-import net.minecraft.core.*;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.animal.AbstractGolem;
-import net.minecraft.world.entity.animal.horse.ZombieHorse;
-import net.minecraft.world.entity.monster.Slime;
-import net.minecraft.world.entity.monster.Zombie;
-import net.minecraft.world.entity.monster.warden.Warden;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.flag.FeatureFlagSet;
-import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.ChunkSource;
-import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
-import net.minecraft.world.level.entity.LevelEntityGetter;
-import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.gameevent.GameEvent.Context;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.scores.Scoreboard;
-import net.minecraft.world.ticks.LevelTickAccess;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -88,9 +60,47 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 			AMEntityRegistry.SPECTRE.get(), AMEntityRegistry.VOID_WORM.get(), AMEntityRegistry.SKELEWAG.get(), AMEntityRegistry.BONE_SERPENT.get(),
 			AMEntityRegistry.MIMICUBE.get(), AMEntityRegistry.FLUTTER.get(), AMEntityRegistry.GUSTER.get()
 	);
+	protected static final Set<EntityType<?>> SLIME_TYPES = Set.of(
+			EntityType.SLIME,
+			EntityType.MAGMA_CUBE
+	);
+	protected static final Set<EntityType<?>> GOLEM_TYPES = Set.of(
+			EntityType.IRON_GOLEM,
+			EntityType.SNOW_GOLEM
+	);
+	protected static final Set<EntityType<?>> WITHER_TYPES = Set.of(
+			EntityType.WITHER,
+			EntityType.WITHER_SKELETON
+	);
+	protected static final Set<EntityType<?>> ZOMBIE_TYPES = Set.of(
+			EntityType.ZOMBIE,
+			EntityType.ZOMBIE_HORSE,
+			EntityType.ZOMBIE_VILLAGER,
+			EntityType.ZOMBIFIED_PIGLIN
+	);
+	protected static final Set<EntityType<?>> SKELETON_TYPES = Set.of(
+			EntityType.SKELETON,
+			EntityType.SKELETON_HORSE,
+			EntityType.WITHER_SKELETON,
+			EntityType.STRAY,
+			AMEntityRegistry.SKELEWAG.get(),
+			AMEntityRegistry.BONE_SERPENT.get()
+	);
+	protected static final Set<EntityType<?>> UNDEAD_TYPES = createUndeadTypes();
 
 	public ModEntityTypeTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
 		super(output, lookupProvider, BiomancyMod.MOD_ID, existingFileHelper);
+	}
+
+	private static Set<EntityType<?>> createUndeadTypes() {
+		Set<EntityType<?>> set = new HashSet<>();
+		set.addAll(SKELETON_TYPES);
+		set.addAll(ZOMBIE_TYPES);
+		set.addAll(WITHER_TYPES);
+
+		set.add(EntityType.PHANTOM);
+
+		return Set.copyOf(set);
 	}
 
 	@Override
@@ -105,10 +115,10 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 				ModEntityTypes.PRIMORDIAL_FLESH_BLOB.get(), ModEntityTypes.PRIMORDIAL_HUNGRY_FLESH_BLOB.get()
 		);
 
-		addSpecialMobLootTags();
+		addDespoilLootTags();
 	}
 
-	private void addSpecialMobLootTags() {
+	private void addDespoilLootTags() {
 		createTag(ModEntityTags.SHARP_FANG)
 				.add(SHARP_FANG_MOBS)
 				.addOptional(
@@ -161,32 +171,25 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 		EnhancedTagAppender<EntityType<?>> sinewTag = createTag(ModEntityTags.SINEW);
 		EnhancedTagAppender<EntityType<?>> bileGlandTag = createTag(ModEntityTags.BILE_GLAND);
 
-		FakeLevel fakeLevel = new FakeLevel(RegistryAccess.EMPTY); //we ignore that this is a AutoClosable object
-
 		for (EntityType<?> entityType : ForgeRegistries.ENTITY_TYPES) {
 			if (!allowedNamespace.test(entityType)) continue;
 
-			Entity entity = entityType.create(fakeLevel);
-			if (entity instanceof Mob mob) {
-				if (isValidForMeatyLoot(mob, entityType)) {
-					sinewTag.add(entityType);
-					if (canHaveGland.test(entityType)) bileGlandTag.add(entityType);
-				}
-				else if (mob instanceof Zombie || mob instanceof ZombieHorse) {
-					sinewTag.add(entityType);
-				}
+			if (isValidForMeatyLoot(entityType)) {
+				sinewTag.add(entityType);
+				if (canHaveGland.test(entityType)) bileGlandTag.add(entityType);
+			}
+			else if (ZOMBIE_TYPES.contains(entityType)) {
+				sinewTag.add(entityType);
 			}
 		}
 	}
 
-	private boolean isValidForMeatyLoot(Mob mob, EntityType<?> entityType) {
+	private boolean isValidForMeatyLoot(EntityType<?> entityType) {
 		if (INVALID_MOBS_FOR_MEATY_LOOT.contains(entityType)) return false;
-		if (MobUtil.isUndead(mob)) return false;
-		if (MobUtil.isSkeleton(mob)) return false;
-		if (MobUtil.isWithered(mob)) return false;
-		if (mob instanceof AbstractGolem) return false;
-		if (mob instanceof Slime) return false;
-		if (mob instanceof Warden) return false;
+		if (UNDEAD_TYPES.contains(entityType)) return false;
+		if (GOLEM_TYPES.contains(entityType)) return false;
+		if (SLIME_TYPES.contains(entityType)) return false;
+		if (entityType == EntityType.WARDEN) return false;
 		return true;
 	}
 
@@ -197,165 +200,6 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 	@Override
 	public String getName() {
 		return StringUtils.capitalize(modId) + " " + super.getName();
-	}
-
-	private static final class FakeLevel extends Level {
-
-		private final Scoreboard scoreboard;
-		private final RegistryAccess access;
-
-		private FakeLevel(RegistryAccess access) {
-			super(null, null, access, access.registryOrThrow(Registries.DIMENSION_TYPE).getHolderOrThrow(BuiltinDimensionTypes.OVERWORLD), null, false, false, 0L, 0);
-			scoreboard = new Scoreboard();
-			this.access = access;
-		}
-
-		@Override
-		public RegistryAccess registryAccess() {
-			return access;
-		}
-
-		@Override
-		public FeatureFlagSet enabledFeatures() {
-			return FeatureFlagSet.of();
-		}
-
-		@Override
-		public void close() {
-			//do nothing
-		}
-
-		@Override
-		public long getDayTime() {
-			return 0L; //fix for villagers
-		}
-
-		@Override
-		public long getGameTime() {
-			return 0L; //fix for villagers
-		}
-
-		@Override
-		public void sendBlockUpdated(BlockPos pos, BlockState oldState, BlockState newState, int flags) {
-			//do nothing
-		}
-
-		@Override
-		public void playSound(@Nullable Player player, double x, double y, double z, SoundEvent sound, SoundSource category, float volume, float pitch) {
-			//do nothing
-		}
-
-		@Override
-		public void playSound(@Nullable Player player, Entity entity, SoundEvent event, SoundSource category, float volume, float pitch) {
-			//do nothing
-		}
-
-		@Override
-		public String gatherChunkSourceStats() {
-			return null;
-		}
-
-		@Nullable
-		@Override
-		public Entity getEntity(int id) {
-			return null;
-		}
-
-		@Nullable
-		@Override
-		public MapItemSavedData getMapData(String mapName) {
-			return null;
-		}
-
-		@Override
-		public void setMapData(String mapId, MapItemSavedData data) {
-			//do nothing
-		}
-
-		@Override
-		public int getFreeMapId() {
-			return 0;
-		}
-
-		@Override
-		public void destroyBlockProgress(int breakerId, BlockPos pos, int progress) {
-			//do nothing
-		}
-
-		@Override
-		public Scoreboard getScoreboard() {
-			return scoreboard; //fix for wither boss
-		}
-
-		@Override
-		public RecipeManager getRecipeManager() {
-			return null;
-		}
-
-		@Override
-		protected LevelEntityGetter<Entity> getEntities() {
-			return null;
-		}
-
-		@Override
-		public LevelTickAccess<Block> getBlockTicks() {
-			return null;
-		}
-
-		@Override
-		public LevelTickAccess<Fluid> getFluidTicks() {
-			return null;
-		}
-
-		@Override
-		public ChunkSource getChunkSource() {
-			return null;
-		}
-
-		@Override
-		public void levelEvent(@Nullable Player player, int type, BlockPos pos, int data) {
-			//do nothing
-		}
-
-		@Override
-		public void gameEvent(@Nullable Entity entity, GameEvent event, BlockPos pos) {
-			//do nothing
-		}
-
-		@Override
-		public float getShade(Direction direction, boolean shade) {
-			return 0;
-		}
-
-		@Override
-		public List<? extends Player> players() {
-			return List.of();
-		}
-
-		@Override
-		public Holder<Biome> getUncachedNoiseBiome(int x, int y, int z) {
-			return null;
-		}
-
-		@Override
-		public void gameEvent(GameEvent event, Vec3 pos, Context context) {
-			//do nothing
-		}
-
-		@Override
-		public void playSeededSound(@Nullable Player player, double x, double y, double z, SoundEvent sound, SoundSource source, float volume, float pitch, long seed) {
-			//do nothing
-		}
-
-		@Override
-		public void playSeededSound(@Nullable Player player, Entity entity, Holder<SoundEvent> holder, SoundSource soundSource, float volume, float pitch, long seed) {
-			//do nothing
-		}
-
-		@Override
-		public void playSeededSound(@Nullable Player player, double x, double y, double z, Holder<SoundEvent> holder, SoundSource soundSource, float volume, float pitch, long seed) {
-			//do nothing
-		}
 	}
 
 }

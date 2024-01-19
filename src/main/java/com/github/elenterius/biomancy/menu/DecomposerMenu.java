@@ -29,7 +29,7 @@ public class DecomposerMenu extends PlayerContainerMenu {
 
 	protected DecomposerMenu(int id, Inventory playerInventory, BehavioralInventory<?> fuelInventory, BehavioralInventory<?> inputInventory, BehavioralInventory<?> outputInventory, DecomposerStateData stateData) {
 		super(ModMenuTypes.DECOMPOSER.get(), id, playerInventory, 111, 169);
-		level = playerInventory.player.level;
+		level = playerInventory.player.level();
 		isMenuValidPredicate = inputInventory::stillValid;
 		this.stateData = stateData;
 

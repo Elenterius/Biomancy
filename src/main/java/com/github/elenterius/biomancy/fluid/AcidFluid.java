@@ -43,11 +43,11 @@ public abstract class AcidFluid extends ForgeFlowingFluid {
 
 	public static void onEntityInside(LivingEntity livingEntity) {
 		if (livingEntity.tickCount % 5 == 0 && livingEntity.isInFluidType(ModFluids.ACID_TYPE.get())) {
-			if (!livingEntity.level.isClientSide) {
+			if (!livingEntity.level().isClientSide) {
 				CombatUtil.applyAcidEffect(livingEntity, 4);
 			}
 			else if (livingEntity.tickCount % 10 == 0 && livingEntity.getRandom().nextFloat() < 0.4f) {
-				Level level = livingEntity.level;
+				Level level = livingEntity.level();
 				RandomSource random = livingEntity.getRandom();
 				Vec3 pos = livingEntity.position();
 				double height = livingEntity.getBoundingBox().getYsize() * 0.5f;

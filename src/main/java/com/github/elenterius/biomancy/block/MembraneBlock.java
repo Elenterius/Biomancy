@@ -2,7 +2,6 @@ package com.github.elenterius.biomancy.block;
 
 import com.github.elenterius.biomancy.init.tags.ModEntityTags;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -43,7 +42,7 @@ public class MembraneBlock extends HalfTransparentBlock {
 
 	@Override
 	public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
-		entity.causeFallDamage(fallDistance, 0.2f, DamageSource.FALL);
+		entity.causeFallDamage(fallDistance, 0.2f, level.damageSources().fall());
 	}
 
 	@Override

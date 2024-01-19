@@ -463,7 +463,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 
 	@Override
 	public boolean canBeReplaced(BlockState state, Fluid fluid) {
-		return fluid.getFluidType() == ModFluids.ACID_TYPE.get() || material.isReplaceable() || !material.isSolid();
+		return fluid.getFluidType() == ModFluids.ACID_TYPE.get() || state.canBeReplaced() || !state.isSolid();
 	}
 
 	@Override

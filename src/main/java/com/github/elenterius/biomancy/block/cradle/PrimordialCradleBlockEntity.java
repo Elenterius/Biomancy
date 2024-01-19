@@ -5,10 +5,9 @@ import com.github.elenterius.biomancy.block.base.SimpleSyncedBlockEntity;
 import com.github.elenterius.biomancy.config.PrimalEnergySettings;
 import com.github.elenterius.biomancy.entity.fleshblob.FleshBlob;
 import com.github.elenterius.biomancy.init.*;
-import com.github.elenterius.biomancy.network.ISyncableAnimation;
-import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import com.github.elenterius.biomancy.tribute.Tribute;
 import com.github.elenterius.biomancy.util.SoundUtil;
+import com.github.elenterius.biomancy.util.animation.TriggerableAnimation;
 import com.github.elenterius.biomancy.world.PrimordialEcosystem;
 import com.github.elenterius.biomancy.world.mound.MoundGenerator;
 import com.github.elenterius.biomancy.world.mound.MoundShape;
@@ -32,19 +31,19 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.AnimationState;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity implements PrimalEnergyHandler, IAnimatable, ISyncableAnimation {
+public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity implements PrimalEnergyHandler, GeoBlockEntity {
 
 	public static final String SACRIFICE_SYNC_KEY = "SyncSacrificeHandler";
 	public static final String SACRIFICE_KEY = "SacrificeHandler";
@@ -53,11 +52,8 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 
 	public static final int DURATION_TICKS = 20 * 4;
 
-	protected static final AnimationBuilder IDLE_ANIM = new AnimationBuilder().addAnimation("cradle.idle");
-	protected static final AnimationBuilder SPIKE_ANIM = new AnimationBuilder().addAnimation("cradle.spike");
-	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	private final SacrificeHandler sacrificeHandler = new SacrificeHandler();
-	private boolean playAttackAnimation = false;
 	private long ticks;
 	private int primalEnergy;
 	private @Nullable MoundShape.ProcGenValues procGenValues;
@@ -308,7 +304,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 	}
 
 	protected void attackAOE(ServerLevel level, BlockPos pos) {
-		ModNetworkHandler.sendAnimationToClients(this, 0, 0);
+		broadcastAnimation(Animations.SPIKE_ATTACK);
 
 		float maxAttackDistance = 1.5f;
 		float maxAttackDistanceSqr = maxAttackDistance * maxAttackDistance;
@@ -320,7 +316,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 			float distSqr = (float) entity.distanceToSqr(origin);
 			float pct = distSqr / maxAttackDistanceSqr;
 			float damage = Mth.clamp(8f * (1 - pct), 0.5f, 8f); //linear damage falloff
-			entity.hurt(ModDamageSources.PRIMORDIAL_SPIKES, damage);
+			entity.hurt(ModDamageSources.primalSpikes(level, origin), damage);
 		}
 	}
 
@@ -359,45 +355,54 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 		}
 	}
 
-	@Override
-	public void onAnimationSync(int id, int data) {
-		startAttackAnimation();
+	protected void broadcastAnimation(TriggerableAnimation animation) {
+		triggerAnim(animation.controller(), animation.name());
 	}
 
-	public void startAttackAnimation() {
-		playAttackAnimation = true;
-	}
+	protected <T extends PrimordialCradleBlockEntity> PlayState handleAnimationState(AnimationState<T> state) {
 
-	public void stopAttackAnimation() {
-		playAttackAnimation = false;
-	}
-
-	protected PlayState handleAnim(AnimationEvent<PrimordialCradleBlockEntity> event) {
-		//		if (fillLevel >= getMaxFillLevel()) {
-		//			event.getController().setAnimation(new AnimationBuilder().addAnimation("cradle.anim.work"));
-		//		}
-
-		if (event.getAnimatable().playAttackAnimation) {
-			event.getController().setAnimation(SPIKE_ANIM);
-			if (event.getController().getAnimationState() != AnimationState.Stopped) return PlayState.CONTINUE;
-			event.getAnimatable().stopAttackAnimation();
-		}
-
-		if (event.getController().getAnimationState() == AnimationState.Stopped) {
-			event.getController().setAnimation(IDLE_ANIM);
+		if (state.getController().getAnimationState() == AnimationController.State.STOPPED) {
+			state.getController().setAnimation(Animations.IDLE.rawAnimation());
 		}
 
 		return PlayState.CONTINUE;
 	}
 
 	@Override
-	public void registerControllers(AnimationData data) {
-		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::handleAnim));
+	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+		AnimationController<PrimordialCradleBlockEntity> controller = new AnimationController<>(this, Animations.MAIN_CONTROLLER, 0, this::handleAnimationState);
+		Animations.registerTriggerableAnimations(controller);
+		controllers.add(controller);
 	}
 
 	@Override
-	public AnimationFactory getFactory() {
-		return animationFactory;
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return cache;
+	}
+
+	protected static final class Animations {
+		private static final List<TriggerableAnimation> TRIGGERABLE_ANIMATIONS = new ArrayList<>();
+		static final String MAIN_CONTROLLER = "main";
+
+		static final TriggerableAnimation IDLE = register(MAIN_CONTROLLER, "idle", RawAnimation.begin().thenPlay("cradle.idle"));
+		static final TriggerableAnimation WORK = register(MAIN_CONTROLLER, "work", RawAnimation.begin().thenPlay("cradle.work"));
+		static final TriggerableAnimation SPIKE_ATTACK = register(MAIN_CONTROLLER, "spike_attack", RawAnimation.begin().thenPlay("cradle.spike"));
+
+		private Animations() {}
+
+		static TriggerableAnimation register(String controller, String name, RawAnimation rawAnimation) {
+			TriggerableAnimation animation = new TriggerableAnimation(controller, name, rawAnimation);
+			TRIGGERABLE_ANIMATIONS.add(animation);
+			return animation;
+		}
+
+		static void registerTriggerableAnimations(AnimationController<?> controller) {
+			for (TriggerableAnimation animation : TRIGGERABLE_ANIMATIONS) {
+				if (animation.controller().equals(controller.getName())) {
+					controller.triggerableAnim(animation.name(), animation.rawAnimation());
+				}
+			}
+		}
 	}
 
 }

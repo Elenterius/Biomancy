@@ -65,11 +65,11 @@ public class CorrosiveAcidProjectile extends BaseProjectile {
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
-		if (!level.isClientSide) {
+		if (!level().isClientSide) {
 			Entity victim = result.getEntity();
 			Entity owner = getOwner();
 
-			victim.hurt(ModDamageSources.createProjectileDamage(this, owner), getDamage());
+			victim.hurt(ModDamageSources.acidProjectile(level(), this, owner), getDamage());
 
 			if (victim instanceof LivingEntity livingVictim) {
 				CombatUtil.applyAcidEffect(livingVictim, 4);

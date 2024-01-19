@@ -22,33 +22,31 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.network.PacketDistributor;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.network.GeckoLibNetwork;
-import software.bernie.geckolib3.network.ISyncable;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 @Deprecated(forRemoval = true)
-public class BileSpitterItem extends ProjectileWeaponItem implements CustomTooltipProvider, IAnimatable, ISyncable, IArmPoseProvider {
+public class BileSpitterItem extends ProjectileWeaponItem implements CustomTooltipProvider, GeoItem, IArmPoseProvider {
 
-	private static final String CONTROLLER_NAME = "controller";
 	public final float drawTime = 50f;
-	private final AnimationFactory animationFactory = new AnimationFactory(this);
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
 	public BileSpitterItem(Properties properties) {
 		super(properties);
-		GeckoLibNetwork.registerSyncable(this);
+		SingletonGeoAnimatable.registerSyncedAnimatable(this);
 	}
 
 	@Override
@@ -87,7 +85,7 @@ public class BileSpitterItem extends ProjectileWeaponItem implements CustomToolt
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 		if (!level.isClientSide) {
-			broadcastAnimation((ServerLevel) level, player, stack, Animation.CHARGE);
+			broadcastAnimation((ServerLevel) level, player, stack, Animation.CHARGE_THEN_HOLD);
 		}
 		player.startUsingItem(hand);
 		return InteractionResultHolder.consume(stack);
@@ -120,22 +118,21 @@ public class BileSpitterItem extends ProjectileWeaponItem implements CustomToolt
 	}
 
 	@Override
-	public void registerControllers(AnimationData data) {
-		//IMPORTANT: transitionLengthTicks needs to be larger than 0, or else the controller.currentAnimation might be null and a NPE is thrown
-		AnimationController<BileSpitterItem> controller = new AnimationController<>(this, CONTROLLER_NAME, 1, event -> PlayState.CONTINUE);
-		controller.setAnimation(new AnimationBuilder().loop(Animation.IDLE.name()));
-		data.addAnimationController(controller);
+	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+		AnimationController<BileSpitterItem> controller = new AnimationController<>(this, Animation.MAIN_CONTROLLER, 1, event -> PlayState.CONTINUE);
+		controller.setAnimation(Animation.IDLE.rawAnimation);
+		Animation.registerTriggerableAnimations(controller);
+		controllers.add(controller);
 	}
 
 	@Override
-	public AnimationFactory getFactory() {
-		return animationFactory;
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return cache;
 	}
 
-	private void broadcastAnimation(ServerLevel level, Player player, ItemStack stack, Animation state) {
-		int stackId = GeckoLibUtil.guaranteeIDForStack(stack, level);
-		PacketDistributor.PacketTarget target = PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player);
-		GeckoLibNetwork.syncAnimation(target, this, stackId, state.id);
+	protected void broadcastAnimation(ServerLevel level, Player player, ItemStack stack, Animation animation) {
+		long id = GeoItem.getOrAssignId(stack, level);
+		triggerAnim(player, id, animation.controller, animation.name);
 	}
 
 	@Override
@@ -151,26 +148,26 @@ public class BileSpitterItem extends ProjectileWeaponItem implements CustomToolt
 		return HumanoidModel.ArmPose.ITEM;
 	}
 
-	@Override
-	public void onAnimationSync(int id, int state) {
-		if (Animation.CHARGE.is(state)) {
-			AnimationController<?> controller = GeckoLibUtil.getControllerForID(animationFactory, id, CONTROLLER_NAME);
-			controller.markNeedsReload(); //make sure animation can play more than once (animations are usually cached)
-			controller.setAnimation(new AnimationBuilder().addAnimation(Animation.CHARGE.name).loop(Animation.HOLD_CHARGE.name()));
-		} else if (Animation.IDLE.is(state)) {
-			AnimationController<?> controller = GeckoLibUtil.getControllerForID(animationFactory, id, CONTROLLER_NAME);
-			controller.setAnimation(new AnimationBuilder().loop(Animation.IDLE.name()));
-		}
-	}
+	protected record Animation(String controller, String name, RawAnimation rawAnimation) {
+		private static final List<Animation> ANIMATIONS = new ArrayList<>();
+		static final String MAIN_CONTROLLER = "main";
+		static final Animation IDLE = register(MAIN_CONTROLLER, "idle", RawAnimation.begin().thenLoop("bile_spitter.anim.idle"));
+		static final Animation CHARGE_THEN_HOLD = register(MAIN_CONTROLLER, "charge_then_hold", RawAnimation.begin().thenPlay("bile_spitter.anim.charge").thenLoop("bile_spitter.anim.hold_charge"));
 
-	protected record Animation(int id, String name) {
-		static Animation IDLE = new Animation(0, "bile_spitter.anim.idle");
-		static Animation CHARGE = new Animation(1, "bile_spitter.anim.charge");
-		static Animation HOLD_CHARGE = new Animation(2, "bile_spitter.anim.hold_charge");
-
-		public boolean is(int otherId) {
-			return otherId == id;
+		static Animation register(String controller, String name, RawAnimation rawAnimation) {
+			Animation animation = new Animation(controller, name, rawAnimation);
+			ANIMATIONS.add(animation);
+			return animation;
 		}
+
+		static void registerTriggerableAnimations(AnimationController<BileSpitterItem> controller) {
+			for (Animation animation : ANIMATIONS) {
+				if (animation.controller.equals(controller.getName())) {
+					controller.triggerableAnim(animation.name, animation.rawAnimation);
+				}
+			}
+		}
+
 	}
 
 }

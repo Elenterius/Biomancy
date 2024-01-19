@@ -12,9 +12,8 @@ import com.github.elenterius.biomancy.menu.BioForgeMenu;
 import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
@@ -53,12 +52,12 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 
 		recipeBook = new BioForgeScreenController(minecraft, menu);
 
-		minecraft.keyboardHandler.setSendRepeatsToGui(true);
+		//		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 	}
 
 	@Override
 	public void removed() {
-		minecraft.keyboardHandler.setSendRepeatsToGui(false);
+		//		minecraft.keyboardHandler.setSendRepeatsToGui(false);
 	}
 
 	public void onRecipeBookUpdated() {
@@ -141,7 +140,7 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 
 		if (Objects.requireNonNull(minecraft).options.keyChat.matches(keyCode, scanCode) && !searchInput.isFocused()) {
 			ignoreTextInput = true;
-			searchInput.setFocus(true);
+			searchInput.setFocused(true);
 			return true;
 		}
 
@@ -166,58 +165,54 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 		return super.charTyped(codePoint, modifiers);
 	}
 
-	@Override
-	public void blit(PoseStack poseStack, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight) {
-		blit(poseStack, x, y, getBlitOffset(), uOffset, vOffset, uWidth, vHeight, 512, 256);
+	public void blit(GuiGraphics guiGraphics, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight) {
+		guiGraphics.blit(BACKGROUND_TEXTURE, x, y, 0, uOffset, vOffset, uWidth, vHeight, 512, 256);
 	}
 
 	@Override
-	protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
+	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		//don't draw any labels
 	}
 
 	@Override
-	public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
-		renderBackground(poseStack);
-		super.render(poseStack, mouseX, mouseY, partialTick);
-		renderTooltip(poseStack, mouseX, mouseY);
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+		renderBackground(guiGraphics);
+		super.render(guiGraphics, mouseX, mouseY, partialTick);
+		renderTooltip(guiGraphics, mouseX, mouseY);
 	}
 
 	@Override
-	protected void renderBg(PoseStack poseStack, float partialTick, int mouseX, int mouseY) {
-		RenderSystem.setShader(GameRenderer::getPositionTexShader);
-		RenderSystem.setShaderColor(1, 1, 1, 1);
-		RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
-		blit(poseStack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+	protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
+		guiGraphics.blit(BACKGROUND_TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 
-		drawFuelBar(poseStack);
-		drawTabs(poseStack);
-		drawRecipeIngredients(poseStack);
-		drawGhostResult(poseStack);
-		drawRecipes(poseStack);
+		drawFuelBar(guiGraphics);
+		drawTabs(guiGraphics);
+		drawRecipeIngredients(guiGraphics);
+		drawGhostResult(guiGraphics);
+		drawRecipes(guiGraphics);
 
-		searchInput.render(poseStack, mouseX, mouseY, partialTick);
+		searchInput.render(guiGraphics, mouseX, mouseY, partialTick);
 	}
 
-	private void drawGhostResult(PoseStack poseStack) {
+	private void drawGhostResult(GuiGraphics guiGraphics) {
 		BioForgeRecipe selectedRecipe = recipeBook.getSelectedRecipe();
 		if (selectedRecipe != null && menu.isResultEmpty()) {
-			ItemStack stack = selectedRecipe.getResultItem();
+			ItemStack stack = selectedRecipe.getResultItem(null);
 			int x = leftPos + 194 + 2;
 			int y = topPos + 33 + 2;
-			GuiRenderUtil.drawGhostItem(itemRenderer, poseStack, x, y, stack);
-			itemRenderer.renderGuiItemDecorations(font, stack, x, y);
+			GuiRenderUtil.drawGhostItem(guiGraphics, x, y, stack);
+			guiGraphics.renderItemDecorations(font, stack, x, y);
 			RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
 		}
 	}
 
-	private void drawTabs(PoseStack poseStack) {
+	private void drawTabs(GuiGraphics guiGraphics) {
 		for (int index = 0; index < recipeBook.getTabCount(); index++) {
-			drawTab(poseStack, index, recipeBook.isActiveTab(index), recipeBook.getTabIcon(index));
+			drawTab(guiGraphics, index, recipeBook.isActiveTab(index), recipeBook.getTabIcon(index));
 		}
 	}
 
-	private void drawRecipes(PoseStack poseStack) {
+	private void drawRecipes(GuiGraphics guiGraphics) {
 		if (!recipeBook.hasRecipesOnPage()) return;
 
 		//TODO: refactor - move into the loop below
@@ -225,40 +220,40 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 			int gridIndex = recipeBook.getGridIndexOfSelectedRecipe();
 			BioForgeRecipe recipe = recipeBook.getRecipeByGrid(gridIndex);
 			boolean isCraftable = recipeBook.getRecipeCollectionByGrid(gridIndex).isCraftable(recipe);
-			drawTileSelection(poseStack, gridIndex, isCraftable);
+			drawTileSelection(guiGraphics, gridIndex, isCraftable);
 		}
 
 		int maxRecipes = recipeBook.getMaxRecipesOnGrid();
 		for (int gridIndex = 0; gridIndex < maxRecipes; gridIndex++) {
 			BioForgeRecipe recipe = recipeBook.getRecipeByGrid(gridIndex);
 			boolean isCraftable = recipeBook.getRecipeCollectionByGrid(gridIndex).isCraftable(recipe);
-			drawRecipeTile(poseStack, gridIndex, isCraftable, recipe.getResultItem());
+			drawRecipeTile(guiGraphics, gridIndex, isCraftable, recipe.getResultItem(null));
 		}
 
-		drawPagination(poseStack);
+		drawPagination(guiGraphics);
 	}
 
-	private void drawPagination(PoseStack poseStack) {
+	private void drawPagination(GuiGraphics guiGraphics) {
 		if (recipeBook.getMaxPages() < 2) return;
 
 		int x = leftPos + 60 + 1;
 		int y = topPos + 211 - font.lineHeight * 2 - 2;
 		int currentPage = recipeBook.getCurrentPage();
 
-		if (currentPage > 1) blit(poseStack, x - 22 - 8 - 1, y, 298, 58, 8, 13);
-		if (currentPage < recipeBook.getMaxPages()) blit(poseStack, x + 22, y, 334, 58, 8, 13);
+		if (currentPage > 1) blit(guiGraphics, x - 22 - 8 - 1, y, 298, 58, 8, 13);
+		if (currentPage < recipeBook.getMaxPages()) blit(guiGraphics, x + 22, y, 334, 58, 8, 13);
 		String text = "%d/%d".formatted(currentPage, recipeBook.getMaxPages());
-		font.draw(poseStack, text, x - font.width(text) / 2f, y + 3f, ColorStyles.TEXT_ACCENT_FORGE);
+		guiGraphics.drawString(font, text, (int) (x - font.width(text) / 2f), y + 3, ColorStyles.TEXT_ACCENT_FORGE);
 	}
 
-	private void drawRecipeIngredients(PoseStack poseStack) {
+	private void drawRecipeIngredients(GuiGraphics guiGraphics) {
 		BioForgeRecipe selectedRecipe = recipeBook.getSelectedRecipe();
 		if (selectedRecipe != null) {
-			drawRecipeIngredients(poseStack, selectedRecipe);
+			drawRecipeIngredients(guiGraphics, selectedRecipe);
 		}
 	}
 
-	private void drawRecipeIngredients(PoseStack poseStack, BioForgeRecipe recipe) {
+	private void drawRecipeIngredients(GuiGraphics guiGraphics, BioForgeRecipe recipe) {
 		int x = leftPos + 141 + 3;
 		int y = topPos + 82 + 3;
 
@@ -266,81 +261,81 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 		for (int i = 0, size = ingredients.size(); i < size; i++) {
 			IngredientStack ingredientStack = ingredients.get(i);
 			ItemStack itemStack = ingredientStack.ingredient().getItems()[0];
-			drawIngredientQuantity(poseStack, itemStack, recipeBook.getTotalItemCountInPlayerInv(itemStack), ingredientStack.count(), x + 26 * i, y);
+			drawIngredientQuantity(guiGraphics, itemStack, recipeBook.getTotalItemCountInPlayerInv(itemStack), ingredientStack.count(), x + 26 * i, y);
 		}
 	}
 
-	private void drawIngredientQuantity(PoseStack poseStack, ItemStack stack, int currentCount, int requiredCount, int x, int y) {
+	private void drawIngredientQuantity(GuiGraphics guiGraphics, ItemStack stack, int currentCount, int requiredCount, int x, int y) {
 		boolean insufficient = currentCount < requiredCount;
-		blit(poseStack, x - 3, y - 3, insufficient ? 354 : 330, 74, 22, 22);
-		itemRenderer.renderGuiItem(stack, x, y);
+		blit(guiGraphics, x - 3, y - 3, insufficient ? 354 : 330, 74, 22, 22);
+		guiGraphics.renderItem(stack, x, y);
 		String text = "x" + requiredCount;
-		font.draw(poseStack, text, x + 16 + 4f - font.width(text), y + 16 + 4f + 1, insufficient ? ColorStyles.TEXT_ERROR : ColorStyles.TEXT_SUCCESS);
+		guiGraphics.drawString(font, text, x + 16 + 4 - font.width(text), y + 16 + 4 + 1, insufficient ? ColorStyles.TEXT_ERROR : ColorStyles.TEXT_SUCCESS);
 		RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
 	}
 
-	private void drawRecipeTile(PoseStack poseStack, int idx, boolean isCraftable, ItemStack stack) {
+	private void drawRecipeTile(GuiGraphics guiGraphics, int idx, boolean isCraftable, ItemStack stack) {
 		int x = leftPos + 12 + (20 + 5) * (idx % BioForgeScreenController.COLS);
 		int y = topPos + 36 + (20 + 5) * (idx / BioForgeScreenController.COLS);
-		drawRecipeTile(poseStack, x, y, stack, !isCraftable);
+		drawRecipeTile(guiGraphics, x, y, stack, !isCraftable);
 	}
 
-	private void drawRecipeTile(PoseStack poseStack, int x, int y, ItemStack stack, boolean redOverlay) {
-		blit(poseStack, x, y, 295, 30, 22, 22);
+	private void drawRecipeTile(GuiGraphics guiGraphics, int x, int y, ItemStack stack, boolean redOverlay) {
+		blit(guiGraphics, x, y, 295, 30, 22, 22);
 
 		if (redOverlay) {
-			blit(poseStack, x, y, 323, 30, 22, 22);
-			itemRenderer.renderAndDecorateItem(stack, x + 3, y + 3);
+			blit(guiGraphics, x, y, 323, 30, 22, 22);
+			guiGraphics.renderItem(stack, x + 3, y + 3);
 			RenderSystem.depthFunc(GL11.GL_GREATER);
-			fill(poseStack, x, y, x + 22, y + 22, 0x40_00_00_00 | ColorStyles.TEXT_ERROR); // 0x40... | color -> prepend alpha to rgb color
+			guiGraphics.fill(x, y, x + 22, y + 22, 0x40_00_00_00 | ColorStyles.TEXT_ERROR); // 0x40... | color -> prepend alpha to rgb color
 			RenderSystem.depthFunc(GL11.GL_LEQUAL);
 		}
 		else {
-			itemRenderer.renderAndDecorateItem(stack, x + 3, y + 3);
+			guiGraphics.renderItem(stack, x + 3, y + 3);
 		}
 		RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
 	}
 
-	private void drawTileSelection(PoseStack poseStack, int idx, boolean isValid) {
+	private void drawTileSelection(GuiGraphics guiGraphics, int idx, boolean isValid) {
 		int x = leftPos + 12 + 25 * (idx % BioForgeScreenController.COLS) - 1;
 		int y = topPos + 36 + 25 * (idx / BioForgeScreenController.COLS) - 1;
-		blit(poseStack, x, y, isValid ? 295 : 321, 2, 24, 24);
+		blit(guiGraphics, x, y, isValid ? 295 : 321, 2, 24, 24);
 	}
 
-	private void drawTab(PoseStack poseStack, int idx, boolean isActive, ItemStack stack) {
+	private void drawTab(GuiGraphics guiGraphics, int idx, boolean isActive, ItemStack stack) {
 		int w = 24;
 		int h = 32;
 		int x = leftPos - w + 2;
 		int y = topPos + 32 + h * idx;
-		blit(poseStack, x, y, 297, isActive ? 114 : 78, w, h);
-		itemRenderer.renderGuiItem(stack, x + 5, y + 8);
+		blit(guiGraphics, x, y, 297, isActive ? 114 : 78, w, h);
+		guiGraphics.renderItem(stack, x + 5, y + 8);
 		RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
 	}
 
-	private void drawFuelBar(PoseStack poseStack) {
+	private void drawFuelBar(GuiGraphics guiGraphics) {
 		float fuelPct = menu.getFuelAmountNormalized();
 		int vHeight = (int) (fuelPct * 36) + (fuelPct > 0 ? 1 : 0);
-		blit(poseStack, leftPos + 144, topPos + 13 + 36 - vHeight, 353, 9 + 36 - vHeight, 5, vHeight);
+		blit(guiGraphics, leftPos + 144, topPos + 13 + 36 - vHeight, 353, 9 + 36 - vHeight, 5, vHeight);
 	}
 
 	@Override
-	protected void renderTooltip(PoseStack poseStack, int mouseX, int mouseY) {
+	protected void renderTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		if (menu.getCarried().isEmpty()) {
-			if (drawFuelTooltip(poseStack, mouseX, mouseY)) return;
-			if (drawRecipeTooltip(poseStack, mouseX, mouseY)) return;
-			if (drawIngredientsTooltip(poseStack, mouseX, mouseY)) return;
+			if (drawFuelTooltip(guiGraphics, mouseX, mouseY)) return;
+			if (drawRecipeTooltip(guiGraphics, mouseX, mouseY)) return;
+			if (drawIngredientsTooltip(guiGraphics, mouseX, mouseY)) return;
 		}
-		super.renderTooltip(poseStack, mouseX, mouseY);
+		super.renderTooltip(guiGraphics, mouseX, mouseY);
 	}
 
-	private boolean drawRecipeTooltip(PoseStack poseStack, int mouseX, int mouseY) {
+	private boolean drawRecipeTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		if (recipeBook.hasRecipesOnPage()) {
 			int recipes = recipeBook.getMaxRecipesOnGrid();
 			for (int idx = 0; idx < recipes; idx++) {
 				int x = leftPos + 13 + 25 * (idx % BioForgeScreenController.COLS);
 				int y = topPos + 37 + 25 * (idx / BioForgeScreenController.COLS);
 				if (GuiUtil.isInRect(x, y, 20, 20, mouseX, mouseY)) {
-					renderTooltip(poseStack, recipeBook.getRecipeByGrid(idx).getResultItem(), mouseX, mouseY);
+					guiGraphics.renderTooltip(font, recipeBook.getRecipeByGrid(idx).getResultItem(null), mouseX, mouseY);
 					return true;
 				}
 			}
@@ -348,7 +343,7 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 		return false;
 	}
 
-	private boolean drawIngredientsTooltip(PoseStack poseStack, int mouseX, int mouseY) {
+	private boolean drawIngredientsTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		BioForgeRecipe selectedRecipe = recipeBook.getSelectedRecipe();
 		if (selectedRecipe == null) return false;
 
@@ -356,14 +351,14 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 			int x = leftPos + 141 + 3 + 26 * i;
 			int y = topPos + 82 + 3;
 			if (GuiUtil.isInRect(x, y, 20, 20, mouseX, mouseY)) {
-				renderTooltip(poseStack, selectedRecipe.getIngredientQuantities().get(i).ingredient().getItems()[0], mouseX, mouseY);
+				guiGraphics.renderTooltip(font, selectedRecipe.getIngredientQuantities().get(i).ingredient().getItems()[0], mouseX, mouseY);
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private boolean drawFuelTooltip(PoseStack poseStack, int mouseX, int mouseY) {
+	private boolean drawFuelTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		if (!GuiUtil.isInRect(leftPos + 144, topPos + 13, 5, 36, mouseX, mouseY)) return false;
 
 		int maxFuel = menu.getMaxFuelAmount();
@@ -372,7 +367,7 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
 		BioForgeRecipe selectedRecipe = recipeBook.getSelectedRecipe();
 		int totalFuelCost = selectedRecipe != null ? selectedRecipe.getCraftingCostNutrients() : 0;
 
-		GuiRenderUtil.drawFuelTooltip(this, poseStack, mouseX, mouseY, maxFuel, fuelAmount, totalFuelCost);
+		GuiRenderUtil.drawFuelTooltip(font, guiGraphics, mouseX, mouseY, maxFuel, fuelAmount, totalFuelCost);
 		return true;
 	}
 

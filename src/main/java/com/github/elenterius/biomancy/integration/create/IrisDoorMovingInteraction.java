@@ -20,7 +20,7 @@ class IrisDoorMovingInteraction extends SimpleBlockMovingInteraction {
 		if (player != null) {
 			boolean isDoorOpen = Boolean.TRUE.equals(blockState.getValue(IrisDoorBlock.OPEN));
 			SoundEvent soundEvent = isDoorOpen ? ModSoundEvents.FLESH_DOOR_OPEN.get() : ModSoundEvents.FLESH_DOOR_CLOSE.get();
-			float pitch = player.level.random.nextFloat() * 0.1f + 0.9f;
+			float pitch = player.level().random.nextFloat() * 0.1f + 0.9f;
 			playSound(player, soundEvent, pitch);
 		}
 

@@ -6,8 +6,8 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 
 public class FleshkinChestRenderer extends CustomGeoBlockRenderer<FleshkinChestBlockEntity> {
 
-	public FleshkinChestRenderer(BlockEntityRendererProvider.Context rendererDispatcher) {
-		super(rendererDispatcher, new FleshkinChestModel());
+	public FleshkinChestRenderer(BlockEntityRendererProvider.Context context) {
+		super(new FleshkinChestModel());
 	}
 
 }

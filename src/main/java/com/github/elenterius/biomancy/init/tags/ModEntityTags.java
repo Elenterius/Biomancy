@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.init.tags;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -28,11 +28,11 @@ public final class ModEntityTags {
 	private ModEntityTags() {}
 
 	private static TagKey<EntityType<?>> tag(String name) {
-		return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, BiomancyMod.createRL(name));
+		return TagKey.create(Registries.ENTITY_TYPE, BiomancyMod.createRL(name));
 	}
 
 	private static TagKey<EntityType<?>> forgeTag(String name) {
-		return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation("forge", name));
+		return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge", name));
 	}
 
 }

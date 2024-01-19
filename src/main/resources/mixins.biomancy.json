@@ -13,7 +13,7 @@
 		"SwordItemMixinAccessor", "TadpoleAccessor", "TextureSlotAccessor", "ZombieVillagerMixinAccessor"
 	],
 	"client": [
-		"client.ClientPackListenerMixin", "client.ClientRecipeBookMixin", "client.PlayerRendererMixin", "client.RecipeCollectionAccessor", "client.ScreenMixin"
+		"client.ClientPackListenerMixin", "client.ClientRecipeBookMixin", "client.GuiGraphicsMixin", "client.PlayerRendererMixin", "client.RecipeCollectionAccessor"
 	],
   "server": [ ]
 }

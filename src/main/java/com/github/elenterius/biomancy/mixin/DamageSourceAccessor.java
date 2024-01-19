@@ -1,6 +1,8 @@
 package com.github.elenterius.biomancy.mixin;
 
+import net.minecraft.core.Holder;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.gen.Accessor;
@@ -9,7 +11,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface DamageSourceAccessor {
 
 	@Mutable
-	@Accessor("msgId")
-	void biomancy$setMsgId(String id);
+	@Accessor("type")
+	void biomancy$setDamageType(Holder<DamageType> type);
 
 }

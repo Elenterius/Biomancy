@@ -116,7 +116,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 	public void emissiveItem(ResourceLocation registryKey) {
 		getBuilder(registryKey.toString())
 				.parent(new ModelFile.UncheckedModelFile("item/generated"))
-				.customLoader(ItemLayerModelBuilder::begin).emissive(0xFF_FFFFFF, 0xFF_FFFFFF, 1).end()
+				.customLoader(ItemLayerModelBuilder::begin).emissive(0xf, 0xf, 1).end()
 				.texture(LAYER_0_TEXTURE, new ResourceLocation(registryKey.getNamespace(), ITEM_FOLDER + "/" + registryKey.getPath()))
 				.texture(LAYER_1_TEXTURE, new ResourceLocation(registryKey.getNamespace(), ITEM_FOLDER + "/" + registryKey.getPath() + "_emissive"));
 	}
@@ -125,7 +125,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 		ResourceLocation registryKey = registryObject.getId();
 		getBuilder(registryKey.toString())
 				.parent(new ModelFile.UncheckedModelFile("item/handheld"))
-				.customLoader(ItemLayerModelBuilder::begin).emissive(0xFF_FFFFFF, 0xFF_FFFFFF, 1).end()
+				.customLoader(ItemLayerModelBuilder::begin).emissive(0xf, 0xf, 1).end()
 				.texture(LAYER_0_TEXTURE, new ResourceLocation(registryKey.getNamespace(), ITEM_FOLDER + "/weapon/" + registryKey.getPath()))
 				.texture(LAYER_1_TEXTURE, new ResourceLocation(registryKey.getNamespace(), ITEM_FOLDER + "/weapon/" + registryKey.getPath() + "_emissive"));
 	}

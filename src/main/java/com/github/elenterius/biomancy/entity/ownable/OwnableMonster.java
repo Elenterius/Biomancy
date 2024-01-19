@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
@@ -81,12 +82,12 @@ public abstract class OwnableMonster extends Monster implements IOwnableMob {
 
 	@Override
 	public Optional<Player> getOwnerAsPlayer() {
-		return getOptionalOwnerUUID().map(value -> level.getPlayerByUUID(value));
+		return getOptionalOwnerUUID().map(value -> level().getPlayerByUUID(value));
 	}
 
 	@Override
-	public Optional<Entity> getOwnerAsEntity() {
-		return getOptionalOwnerUUID().map(value -> level.getPlayerByUUID(value));
+	public Optional<LivingEntity> getOwnerAsEntity() {
+		return getOptionalOwnerUUID().map(value -> level().getPlayerByUUID(value));
 	}
 
 	@Override
@@ -110,7 +111,7 @@ public abstract class OwnableMonster extends Monster implements IOwnableMob {
 
 	@Override
 	public void die(DamageSource cause) {
-		if (!level.isClientSide && level.getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES)) {
+		if (!level().isClientSide && level().getGameRules().getBoolean(GameRules.RULE_SHOWDEATHMESSAGES)) {
 			Optional<Player> optional = getOwnerAsPlayer();
 			if (optional.isPresent() && optional.get() instanceof ServerPlayer) {
 				optional.get().sendSystemMessage(getCombatTracker().getDeathMessage());

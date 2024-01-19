@@ -47,7 +47,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.text.DecimalFormat;
 import java.util.List;
-import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -162,18 +161,13 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		if (!level.isClientSide() && entity instanceof ItemEntity itemEntity) {
 			ItemStack stack = itemEntity.getItem();
-			UUID thrower = itemEntity.getThrower();
+			Entity thrower = itemEntity.getOwner();
 
 			if (stack.is(ModItems.LIVING_FLESH.get()) && thrower == null && itemEntity.getAge() < 80) {
 				return;
 			}
 
-			Player player = null;
-			if (thrower != null) {
-				player = level.getPlayerByUUID(thrower);
-			}
-
-			if (increaseFillLevel(player, level, pos, stack)) {
+			if (increaseFillLevel(thrower, level, pos, stack)) {
 				if (stack.hasCraftingRemainingItem()) {
 					entity.spawnAtLocation(stack.getCraftingRemainingItem());
 				}
@@ -184,7 +178,7 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 		}
 	}
 
-	private boolean increaseFillLevel(@Nullable Player player, Level level, BlockPos pos, ItemStack stack) {
+	private boolean increaseFillLevel(@Nullable Entity player, Level level, BlockPos pos, ItemStack stack) {
 		if (!stack.isEmpty() && !level.isClientSide()) {
 			if (CANNOT_BE_SACRIFICED.test(stack)) return false;
 

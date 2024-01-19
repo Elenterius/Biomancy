@@ -30,7 +30,7 @@ public class BioLabMenu extends PlayerContainerMenu {
 
 	protected BioLabMenu(int id, Inventory playerInventory, BehavioralInventory<?> fuelInventory, SimpleInventory inputInventory, BehavioralInventory<?> outputInventory, BioLabStateData stateData) {
 		super(ModMenuTypes.BIO_LAB.get(), id, playerInventory, 137, 195);
-		level = playerInventory.player.level;
+		level = playerInventory.player.level();
 
 		//we don't check all three inventories because they all call the same method in the decomposer tile entity
 		isMenuValidPredicate = inputInventory::stillValid;

@@ -31,20 +31,16 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.Animation;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
 
-public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Nameable, IAnimatable {
+public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Nameable, GeoBlockEntity {
 
 	public static final int FUEL_SLOTS = 1;
 	public static final int MAX_FUEL = 1_000;
@@ -79,7 +75,7 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 			return false;
 		}
 	};
-	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	protected int ticks = tickOffset;
 	private boolean playWorkingAnimation = false;
 	private int nearbyTimer = -10;
@@ -265,29 +261,29 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 		nearbyTimer = Mth.clamp(nearbyTimer + (player != null ? 1 : -1), -10, 10);
 	}
 
-	private <E extends BlockEntity & IAnimatable> PlayState handleAnim(AnimationEvent<E> event) {
+	private <T extends BioForgeBlockEntity> PlayState handleAnimationState(AnimationState<T> state) {
 
-		if (event.getController().getCurrentAnimation() == null) { //set default start animation
-			event.getController().setAnimation(Animations.FOLDED);
-			event.getController().transitionLengthTicks = 0;
+		if (state.getController().getCurrentAnimation() == null) { //set default start animation
+			state.getController().setAnimation(Animations.FOLDED);
+			state.getController().transitionLength(0);
 			return PlayState.CONTINUE;
 		}
 
 		if (playWorkingAnimation) {
-			event.getController().setAnimation(Animations.WORKING);
-			event.getController().transitionLengthTicks = 10;
+			state.getController().setAnimation(Animations.WORKING);
+			state.getController().transitionLength(10);
 			return PlayState.CONTINUE;
 		}
 
 		if (nearbyTimer > 0) {
-			boolean isUnfoldedOrWorking = Animations.isUnfoldedOrWorking(event.getController());
-			event.getController().setAnimation(isUnfoldedOrWorking ? Animations.UNFOLDED : Animations.UNFOLDING);
-			event.getController().transitionLengthTicks = 10;
+			boolean isUnfoldedOrWorking = Animations.isUnfoldedOrWorking(state.getController());
+			state.getController().setAnimation(isUnfoldedOrWorking ? Animations.UNFOLDED : Animations.UNFOLDING);
+			state.getController().transitionLength(10);
 		}
 		else {
-			if (!Animations.isFolded(event.getController())) {
-				event.getController().setAnimation(Animations.FOLDING);
-				event.getController().transitionLengthTicks = 10;
+			if (!Animations.isFolded(state.getController())) {
+				state.getController().setAnimation(Animations.FOLDING);
+				state.getController().transitionLength(10);
 			}
 		}
 
@@ -295,34 +291,35 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 	}
 
 	@Override
-	public void registerControllers(AnimationData data) {
-		data.addAnimationController(new AnimationController<>(this, "controller", 10, this::handleAnim));
+	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+		controllers.add(new AnimationController<>(this, Animations.MAIN_CONTROLLER, 10, this::handleAnimationState));
 	}
 
 	@Override
-	public AnimationFactory getFactory() {
-		return animationFactory;
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return cache;
 	}
 
 	protected static class Animations {
-		protected static final AnimationBuilder UNFOLDING = new AnimationBuilder().playOnce("bio_forge.unfold").loop("bio_forge.idle");
-		protected static final AnimationBuilder UNFOLDED = new AnimationBuilder().loop("bio_forge.idle");
-		protected static final AnimationBuilder FOLDING = new AnimationBuilder().playOnce("bio_forge.fold").loop("bio_forge.folded_state");
-		protected static final AnimationBuilder FOLDED = new AnimationBuilder().loop("bio_forge.folded_state");
-		protected static final AnimationBuilder WORKING = new AnimationBuilder().loop("bio_forge.working");
+		protected static final String MAIN_CONTROLLER = "main";
+		protected static final RawAnimation UNFOLDING = RawAnimation.begin().thenPlay("bio_forge.unfold").thenLoop("bio_forge.idle");
+		protected static final RawAnimation UNFOLDED = RawAnimation.begin().thenLoop("bio_forge.idle");
+		protected static final RawAnimation FOLDING = RawAnimation.begin().thenPlay("bio_forge.fold").thenLoop("bio_forge.folded_state");
+		protected static final RawAnimation FOLDED = RawAnimation.begin().thenLoop("bio_forge.folded_state");
+		protected static final RawAnimation WORKING = RawAnimation.begin().thenLoop("bio_forge.working");
 
 		private Animations() {}
 
 		protected static boolean isUnfoldedOrWorking(AnimationController<?> controller) {
-			Animation animation = controller.getCurrentAnimation();
-			if (animation == null) return false;
-			return animation.animationName.equals("bio_forge.idle") || animation.animationName.equals("bio_forge.working");
+			AnimationProcessor.QueuedAnimation queued = controller.getCurrentAnimation();
+			if (queued == null) return false;
+			return queued.animation().name().equals("bio_forge.idle") || queued.animation().name().equals("bio_forge.working");
 		}
 
 		protected static boolean isFolded(AnimationController<?> controller) {
-			Animation animation = controller.getCurrentAnimation();
-			if (animation == null) return false;
-			return animation.animationName.equals("bio_forge.folded_state");
+			AnimationProcessor.QueuedAnimation queued = controller.getCurrentAnimation();
+			if (queued == null) return false;
+			return queued.animation().name().equals("bio_forge.folded_state");
 		}
 	}
 

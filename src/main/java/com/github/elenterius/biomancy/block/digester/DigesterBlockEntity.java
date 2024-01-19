@@ -35,7 +35,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
@@ -43,19 +42,19 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nonnull;
 import java.util.Objects;
 
-public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, DigesterStateData> implements MenuProvider, IAnimatable {
+public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, DigesterStateData> implements MenuProvider, GeoBlockEntity {
 
 	public static final int FUEL_SLOTS = 1;
 	public static final int INPUT_SLOTS = 1;
@@ -64,8 +63,8 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 	public static final int MAX_FUEL = 1_000;
 
 	public static final RegistryObject<SimpleRecipeType.ItemStackRecipeType<DigesterRecipe>> RECIPE_TYPE = ModRecipes.DIGESTING_RECIPE_TYPE;
-	protected static final AnimationBuilder WORKING_ANIM = new AnimationBuilder().loop("digester.working");
-	protected static final AnimationBuilder IDLE_ANIM = new AnimationBuilder().loop("digester.idle");
+	protected static final RawAnimation WORKING_ANIM = RawAnimation.begin().thenLoop("digester.working");
+	protected static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("digester.idle");
 
 	private final DigesterStateData stateData;
 	private final FuelHandler fuelHandler;
@@ -73,7 +72,7 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 	private final BehavioralInventory<?> inputInventory;
 	private final BehavioralInventory<?> outputInventory;
 
-	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	private ILoopingSoundHelper loopingSoundHelper = ILoopingSoundHelper.NULL;
 
 	public DigesterBlockEntity(BlockPos pos, BlockState state) {
@@ -206,7 +205,7 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 
 	@Override
 	protected boolean craftRecipe(DigesterRecipe recipeToCraft, Level level) {
-		ItemStack result = recipeToCraft.assemble(inputInventory);
+		ItemStack result = recipeToCraft.assemble(inputInventory, level.registryAccess());
 
 		if (!result.isEmpty() && doesRecipeResultFitIntoOutputInv(recipeToCraft, result)) {
 			ItemStack craftingRemainder = getCraftingRemainder();
@@ -252,7 +251,7 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 	}
 
 	//client side only
-	private <E extends BlockEntity & IAnimatable> PlayState handleAnim(AnimationEvent<E> event) {
+	private <E extends DigesterBlockEntity> PlayState handleAnimationState(AnimationState<E> event) {
 		Boolean isCrafting = getBlockState().getValue(MachineBlock.CRAFTING);
 
 		if (Boolean.TRUE.equals(isCrafting)) {
@@ -268,13 +267,13 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 	}
 
 	@Override
-	public void registerControllers(AnimationData data) {
-		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::handleAnim));
+	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+		controllers.add(new AnimationController<>(this, "controller", 0, this::handleAnimationState));
 	}
 
 	@Override
-	public AnimationFactory getFactory() {
-		return animationFactory;
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return cache;
 	}
 
 	@Override

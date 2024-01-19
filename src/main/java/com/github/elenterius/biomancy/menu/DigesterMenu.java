@@ -29,7 +29,7 @@ public class DigesterMenu extends PlayerContainerMenu {
 
 	protected DigesterMenu(int id, Inventory playerInventory, BehavioralInventory<?> fuelInventory, BehavioralInventory<?> inputInventory, BehavioralInventory<?> outputInventory, DigesterStateData stateData) {
 		super(ModMenuTypes.DIGESTER.get(), id, playerInventory, 111, 169);
-		level = playerInventory.player.level;
+		level = playerInventory.player.level();
 		isMenuValidPredicate = inputInventory::stillValid;
 		this.stateData = stateData;
 

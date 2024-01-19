@@ -37,7 +37,7 @@ public final class RenderHighlightHandler {
 			if (itemStack.getItem() instanceof SimpleBlockItem blockItem && blockItem.getBlock() instanceof DirectionalSlabBlock slabBlock) {
 				BlockPlaceContext placeContext = new BlockPlaceContext(player, InteractionHand.MAIN_HAND, itemStack, event.getTarget());
 				BlockPos placePos = placeContext.getClickedPos();
-				BlockState foundState = player.level.getBlockState(placePos);
+				BlockState foundState = player.level().getBlockState(placePos);
 
 				DirectionalSlabType type;
 				if (foundState.getBlock() instanceof DirectionalSlabBlock) {

@@ -1,15 +1,15 @@
 package com.github.elenterius.biomancy.world.mound;
 
-import com.github.elenterius.biomancy.util.TemperatureUtil;
+import com.github.elenterius.biomancy.util.ClimateUtil;
 import com.github.elenterius.biomancy.world.spatial.geometry.Shape;
 import com.github.elenterius.biomancy.world.spatial.geometry.SphereShape;
-import com.mojang.math.Vector3d;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3d;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +31,8 @@ public final class MoundGenerator {
 				(byte) 2,
 				level.getMaxBuildHeight(),
 				level.getSeaLevel(),
-				TemperatureUtil.getTemperature(biome, blockOrigin),
-				biome.getDownfall()
+				ClimateUtil.getTemperature(biome, blockOrigin),
+				ClimateUtil.getHumidity(biome)
 		);
 
 		return genShape(blockOrigin, procGenValues);
@@ -48,8 +48,8 @@ public final class MoundGenerator {
 		float biomeTemperature = procGenValues.biomeTemperature();
 		float biomeHumidity = procGenValues.biomeHumidity();
 
-		float heatMultiplier = TemperatureUtil.rescale(biomeTemperature) * 0.5f + biomeTemperature / TemperatureUtil.MAX_TEMP * 0.5f;
-		float coldMultiplier = TemperatureUtil.isFreezing(biomeTemperature) ? 0.1f : 1;
+		float heatMultiplier = ClimateUtil.rescale(biomeTemperature) * 0.5f + biomeTemperature / ClimateUtil.MAX_TEMP * 0.5f;
+		float coldMultiplier = ClimateUtil.isFreezing(biomeTemperature) ? 0.1f : 1;
 		float erosionMultiplier = 0.1f + biomeHumidity * coldMultiplier;
 		float erosionMultiplierInv = 1 - erosionMultiplier;
 
@@ -121,7 +121,7 @@ public final class MoundGenerator {
 			if (height >= maxHeight) break;
 
 			leanOffset.set(context.dirLean.x, context.dirLean.y, context.dirLean.z);
-			leanOffset.scale((context.random.nextFloat() - 1) * context.slantMultiplier);
+			leanOffset.mul((context.random.nextFloat() - 1) * context.slantMultiplier);
 			double leanX = prevLean.x + leanOffset.x;
 			if (Math.abs(leanX) >= context.maxLean.x) {
 				leanX = prevLean.x - leanOffset.z;

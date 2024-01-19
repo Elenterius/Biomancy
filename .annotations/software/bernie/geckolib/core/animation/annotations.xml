@@ -1,0 +1,5 @@
+<root>
+	<item name='software.bernie.geckolib.core.animation.AnimationController software.bernie.geckolib.core.animation.AnimationProcessor.QueuedAnimation getCurrentAnimation()'>
+		<annotation name='org.jetbrains.annotations.Nullable'/>
+	</item>
+</root>

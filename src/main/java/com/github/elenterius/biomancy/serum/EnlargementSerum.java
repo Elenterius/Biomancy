@@ -33,7 +33,8 @@ public class EnlargementSerum extends BasicSerum {
 			fleshBlob.setBlobSize((byte) (blobSize + 1), false);
 		}
 		else {
-			fleshBlob.hurt(DamageSource.explosion(source), fleshBlob.getHealth()); //"explode" fleshBob
+			DamageSource explosionDamage = fleshBlob.level().damageSources().explosion(source, fleshBlob);
+			fleshBlob.hurt(explosionDamage, fleshBlob.getHealth()); //"explode" fleshBob
 		}
 	}
 
@@ -43,7 +44,8 @@ public class EnlargementSerum extends BasicSerum {
 			((SlimeAccessor) slime).biomancy$setSlimeSize(slimeSize + 1, false);
 		}
 		else {
-			slime.hurt(DamageSource.explosion(source), slime.getHealth()); //"explode" slime
+			DamageSource explosionDamage = slime.level().damageSources().explosion(source, slime);
+			slime.hurt(explosionDamage, slime.getHealth()); //"explode" slime
 		}
 	}
 

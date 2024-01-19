@@ -2,28 +2,24 @@ package com.github.elenterius.biomancy.client.render.item.injector;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.item.injector.InjectorItem;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.DefaultedItemGeoModel;
 
-public class InjectorModel extends AnimatedGeoModel<InjectorItem> {
+public class InjectorModel extends DefaultedItemGeoModel<InjectorItem> {
 
-	protected static final ResourceLocation MODEL = BiomancyMod.createRL("geo/item/injector.geo.json");
-	protected static final ResourceLocation TEXTURE = BiomancyMod.createRL("textures/item/injector.png");
-	protected static final ResourceLocation ANIMATION = BiomancyMod.createRL("animations/item/injector.animation.json");
-
-	@Override
-	public ResourceLocation getModelResource(InjectorItem item) {
-		return MODEL;
+	public InjectorModel() {
+		super(BiomancyMod.createRL("injector"));
 	}
 
 	@Override
-	public ResourceLocation getTextureResource(InjectorItem item) {
-		return TEXTURE;
+	public RenderType getRenderType(InjectorItem item, ResourceLocation texture) {
+		return RenderType.itemEntityTranslucentCull(texture);
 	}
 
 	@Override
-	public ResourceLocation getAnimationResource(InjectorItem item) {
-		return ANIMATION;
+	public boolean crashIfBoneMissing() {
+		return true;
 	}
 
 }

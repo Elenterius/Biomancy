@@ -8,6 +8,7 @@ import com.github.elenterius.biomancy.world.PrimordialEcosystem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -17,7 +18,6 @@ import net.minecraft.world.level.block.MultifaceSpreader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.Material;
 
 import java.util.Set;
 
@@ -42,10 +42,9 @@ class MalignantFleshSpreaderConfig extends MultifaceSpreader.DefaultSpreaderConf
 			FluidState fluidState = state.getFluidState();
 			if (!fluidState.isEmpty() && !fluidState.is(Fluids.WATER)) return false;
 
-			Material material = state.getMaterial();
-			if (material == Material.FIRE) return false;
+			if (state.is(BlockTags.FIRE)) return false;
 
-			return material.isReplaceable() || super.stateCanBeReplaced(level, posA, posB, direction, state);
+			return state.canBeReplaced() || super.stateCanBeReplaced(level, posA, posB, direction, state);
 		}
 
 		return super.stateCanBeReplaced(level, posA, posB, direction, state);

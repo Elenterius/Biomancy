@@ -20,7 +20,6 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -31,7 +30,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -59,7 +57,7 @@ public class BioExtractorItem extends Item implements KeyPressListener, CustomTo
 		if (targetEntity.isAlive() && !targetEntity.hasEffect(ModMobEffects.ESSENCE_ANEMIA.get())) {
 			if (CombatUtil.canPierceThroughArmor(stack, targetEntity)) {
 				EssenceItem essenceItem = ModItems.ESSENCE.get();
-				int lootingLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.MOB_LOOTING, stack);
+				int lootingLevel = stack.getEnchantmentLevel(Enchantments.MOB_LOOTING);
 				ItemStack essenceStack = new ItemStack(essenceItem, 1 + targetEntity.getRandom().nextInt(0, 1 + lootingLevel));
 
 				if (essenceItem.setEntityType(essenceStack, targetEntity)) {
@@ -72,11 +70,11 @@ public class BioExtractorItem extends Item implements KeyPressListener, CustomTo
 						stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
 					}
 					else {
-						Containers.dropItemStack(targetEntity.level, targetEntity.getX(), targetEntity.getY(), targetEntity.getZ(), essenceStack);
+						Containers.dropItemStack(targetEntity.level(), targetEntity.getX(), targetEntity.getY(), targetEntity.getZ(), essenceStack);
 					}
 
-					if (EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.ANESTHETIC.get(), stack) <= 0) {
-						targetEntity.hurt(new EntityDamageSource("sting", player), 0.5f);
+					if (stack.getEnchantmentLevel(ModEnchantments.ANESTHETIC.get()) <= 0) {
+						targetEntity.hurt(targetEntity.level().damageSources().sting(player), 0.5f);
 					}
 
 					targetEntity.addEffect(new MobEffectInstance(ModMobEffects.ESSENCE_ANEMIA.get(), 2400));
@@ -108,7 +106,7 @@ public class BioExtractorItem extends Item implements KeyPressListener, CustomTo
 	@Override
 	public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity interactionTarget, InteractionHand usedHand) {
 		//the device is empty
-		if (interactionTarget.level instanceof ServerLevel serverLevel && extractEssence(stack, player, interactionTarget)) {
+		if (interactionTarget.level() instanceof ServerLevel serverLevel && extractEssence(stack, player, interactionTarget)) {
 			SoundUtil.broadcastItemSound(serverLevel, player, ModSoundEvents.INJECTOR_INJECT.get());
 
 			//fix for creative mode (normally the stack is not modified in creative)
@@ -121,7 +119,7 @@ public class BioExtractorItem extends Item implements KeyPressListener, CustomTo
 
 	public boolean interactWithPlayerSelf(ItemStack stack, Player player) {
 		if (player.hasEffect(ModMobEffects.ESSENCE_ANEMIA.get())) return false;
-		if (player.level.isClientSide) return true;
+		if (player.level().isClientSide) return true;
 
 		if (extractEssence(stack, player, player)) {
 			//fix for creative mode (normally the stack is not modified in creative)

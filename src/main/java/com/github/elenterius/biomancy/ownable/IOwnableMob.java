@@ -1,6 +1,5 @@
 package com.github.elenterius.biomancy.ownable;
 
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Player;
@@ -13,7 +12,7 @@ public interface IOwnableMob extends IOwnable, OwnableEntity {
 
 	Optional<Player> getOwnerAsPlayer();
 
-	Optional<Entity> getOwnerAsEntity();
+	Optional<LivingEntity> getOwnerAsEntity();
 
 	@Nullable
 	@Override
@@ -23,7 +22,7 @@ public interface IOwnableMob extends IOwnable, OwnableEntity {
 
 	@Nullable
 	@Override
-	default Entity getOwner() {
+	default LivingEntity getOwner() {
 		return getOwnerAsEntity().orElse(null);
 	}
 

@@ -23,11 +23,11 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -52,8 +52,8 @@ public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableEntit
 	protected static final AABB INFLATED_AABB_VOLUME = new AABB(-0.125d, -0.25d, -0.125d, 1.125d, 1.25d, 1.125d);
 	protected static final VoxelShape BOTTOM_COLLISION_SHAPE = Block.box(0d, 0.1d, 0d, 16d, 3d, 16d);
 
-	public OwnableTrapDoorBlock(Properties properties) {
-		super(properties);
+	public OwnableTrapDoorBlock(Properties properties, BlockSetType type) {
+		super(properties, type);
 		registerDefaultState(defaultBlockState().setValue(SENSITIVITY, UserSensitivity.NONE));
 	}
 
@@ -111,7 +111,7 @@ public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableEntit
 
 	@Override
 	protected void playSound(@Nullable Player player, Level level, BlockPos pos, boolean isOpened) {
-		level.levelEvent(player, isOpened ? LevelEvent.SOUND_OPEN_WOODEN_TRAP_DOOR : LevelEvent.SOUND_CLOSE_WOODEN_TRAP_DOOR, pos, 0);
+		level.playSound(player, pos, isOpened ? type.trapdoorOpen() : type.trapdoorClose(), SoundSource.BLOCKS, 1f, level.getRandom().nextFloat() * 0.1F + 0.9F);
 	}
 
 	@Override

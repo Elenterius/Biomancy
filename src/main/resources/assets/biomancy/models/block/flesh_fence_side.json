@@ -1,5 +1,6 @@
 {
   "credit": "Made by RhinoW",
+	"render_type": "cutout",
   "textures": {
     "1": "biomancy:block/flesh_fence",
     "particle": "biomancy:block/flesh_fence"

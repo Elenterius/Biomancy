@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
@@ -38,8 +39,8 @@ public class OwnablePressurePlateBlock extends PressurePlateBlock implements IOw
 	public static final EnumProperty<UserSensitivity> USER_SENSITIVITY = ModBlockProperties.USER_SENSITIVITY;
 	public static final Predicate<Entity> ENTITY_SELECTOR = entity -> !entity.isSpectator() && !entity.isIgnoringBlockTriggers();
 
-	public OwnablePressurePlateBlock(Properties properties) {
-		super(Sensitivity.MOBS, properties);
+	public OwnablePressurePlateBlock(Properties properties, BlockSetType type) {
+		super(Sensitivity.MOBS, properties, type);
 		registerDefaultState(defaultBlockState().setValue(USER_SENSITIVITY, UserSensitivity.FRIENDLY));
 	}
 

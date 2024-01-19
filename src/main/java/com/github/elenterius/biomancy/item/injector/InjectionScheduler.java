@@ -6,7 +6,6 @@ import com.github.elenterius.biomancy.util.CombatUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,7 +20,7 @@ final class InjectionScheduler {
 	private InjectionScheduler() {}
 
 	public static void schedule(InjectorItem injector, ItemStack stack, Player player, LivingEntity target, int delayInTicks) {
-		if (stack.isEmpty() || player.level.isClientSide || injector.getSerum(stack).isEmpty()) return;
+		if (stack.isEmpty() || player.level().isClientSide || injector.getSerum(stack).isEmpty()) return;
 
 		injector.setEntityHost(stack, player); //who is using the item
 		injector.setEntityVictim(stack, target); //who is the victim
@@ -30,7 +29,7 @@ final class InjectionScheduler {
 
 		CompoundTag tag = stack.getOrCreateTag();
 		tag.putInt(DELAY_KEY, delayInTicks);
-		tag.putLong(TIMESTAMP_KEY, player.level.getGameTime());
+		tag.putLong(TIMESTAMP_KEY, player.level().getGameTime());
 	}
 
 	public static void tick(ServerLevel level, InjectorItem injector, ItemStack stack, ServerPlayer player) {
@@ -39,7 +38,7 @@ final class InjectionScheduler {
 
 		long delayInTicks = tag.getLong(DELAY_KEY);
 		long starTimestamp = tag.getLong(TIMESTAMP_KEY);
-		if (player.level.getGameTime() - starTimestamp > delayInTicks) {
+		if (player.level().getGameTime() - starTimestamp > delayInTicks) {
 			performScheduledSerumInjection(level, injector, stack, player);
 			tag.remove(DELAY_KEY);
 			tag.remove(TIMESTAMP_KEY);
@@ -58,13 +57,13 @@ final class InjectionScheduler {
 			if (!injectionSuccess) {
 				stack.hurtAndBreak(2, player, p -> {});
 				player.broadcastBreakEvent(EquipmentSlot.MAINHAND); //break needle
-				injector.broadcastAnimation(level, player, stack, InjectorItem.InjectorAnimationState.REGROW_NEEDLE.getId());
+				injector.broadcastAnimation(level, player, stack, InjectorItem.InjectorAnimation.REGROW_NEEDLE);
 				player.getCooldowns().addCooldown(stack.getItem(), InjectorItem.COOL_DOWN_TICKS * 2);
 				return;
 			}
 
 			if (stack.getEnchantmentLevel(ModEnchantments.ANESTHETIC.get()) <= 0) {
-				target.hurt(new EntityDamageSource("sting", player), 0.5f);
+				target.hurt(level.damageSources().sting(player), 0.5f);
 			}
 
 			if (host == victim) {

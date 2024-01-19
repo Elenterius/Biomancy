@@ -2,10 +2,12 @@ package com.github.elenterius.biomancy;
 
 import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.integration.ModsCompatHandler;
-import net.minecraft.core.NonNullList;
+import com.github.elenterius.biomancy.util.ComponentUtil;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.EnchantedBookItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
@@ -13,13 +15,14 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import software.bernie.geckolib3.GeckoLib;
+import software.bernie.geckolib.GeckoLib;
 
-import javax.annotation.Nonnull;
 import java.util.Random;
+import java.util.Set;
 
 @Mod(BiomancyMod.MOD_ID)
 public final class BiomancyMod {
@@ -38,6 +41,7 @@ public final class BiomancyMod {
 
 		ModBlocks.BLOCKS.register(modEventBus);
 		ModItems.ITEMS.register(modEventBus);
+		CREATIVE_TABS.register(modEventBus);
 		ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
 
 		ModFluids.FLUID_TYPES.register(modEventBus);
@@ -45,7 +49,6 @@ public final class BiomancyMod {
 
 		ModEntityTypes.ENTITIES.register(modEventBus);
 		ModAttributes.ATTRIBUTES.register(modEventBus);
-
 		ModEnchantments.ENCHANTMENTS.register(modEventBus);
 		ModMobEffects.EFFECTS.register(modEventBus);
 		ModSerums.SERUMS.register(modEventBus);
@@ -73,22 +76,40 @@ public final class BiomancyMod {
 		return MOD_ID + ":" + path;
 	}
 
-	public static final CreativeModeTab CREATIVE_TAB = new CreativeModeTab(MOD_ID) {
+	public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, BiomancyMod.MOD_ID);
+	public static final RegistryObject<CreativeModeTab> CREATIVE_TAB = CREATIVE_TABS.register("example", () -> CreativeModeTab.builder()
+			.title(ComponentUtil.translatable("item_group." + MOD_ID))
+			.icon(() -> new ItemStack(ModItems.LIVING_FLESH.get()))
+			.displayItems((params, output) -> {
+				Set<RegistryObject<? extends Item>> hiddenItems = Set.of(
+						ModItems.GIFT_SAC,
+						ModItems.ESSENCE,
+						ModItems.BIO_EXTRACTOR,
+						ModItems.GUIDE_BOOK,
+						ModItems.TOXICUS,
+						ModItems.BILE_SPITTER,
+						ModItems.DEV_ARM_CANNON
+				);
+				ModItems.ITEMS.getEntries().stream()
+						.filter(entry -> !hiddenItems.contains(entry))
+						.forEach(entry -> {
+							output.accept(entry.get());
 
-		@Override
-		public ItemStack makeIcon() {
-			return new ItemStack(ModItems.LIVING_FLESH.get());
-		}
+							if (entry.equals(ModItems.RAVENOUS_CLAWS)) {
+								output.accept(ModItems.RAVENOUS_CLAWS.get().createItemStackForCreativeTab());
+							}
 
-		@Override
-		public void fillItemList(@Nonnull NonNullList<ItemStack> items) {
-			super.fillItemList(items);
-			for (RegistryObject<Enchantment> entry : ModEnchantments.ENCHANTMENTS.getEntries()) {
-				Enchantment enchantment = entry.get();
-				items.add(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enchantment, enchantment.getMaxLevel())));
-			}
-		}
+							if (entry.equals(ModItems.FLESHKIN_CHEST)) {
+								output.accept(ModBlocks.FLESHKIN_CHEST.get().createItemStackForCreativeTab());
+							}
+						});
 
-	};
+				for (RegistryObject<Enchantment> entry : ModEnchantments.ENCHANTMENTS.getEntries()) {
+					Enchantment enchantment = entry.get();
+					output.accept(EnchantedBookItem.createForEnchantment(new EnchantmentInstance(enchantment, enchantment.getMaxLevel())));
+				}
+			})
+			.build()
+	);
 
 }

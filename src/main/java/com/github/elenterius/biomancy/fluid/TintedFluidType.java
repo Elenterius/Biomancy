@@ -2,11 +2,10 @@ package com.github.elenterius.biomancy.fluid;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.core.BlockPos;
@@ -15,6 +14,8 @@ import net.minecraft.util.FastColor;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 import java.util.function.Consumer;
 
@@ -34,11 +35,12 @@ public class TintedFluidType extends FluidType {
 
 	public static void renderTintedScreenOverlay(Minecraft minecraft, PoseStack poseStack, ResourceLocation texture, int colorARGB) {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
-		RenderSystem.enableTexture();
 		RenderSystem.setShaderTexture(0, texture);
 
-		BlockPos blockPos = new BlockPos(minecraft.player.getX(), minecraft.player.getEyeY(), minecraft.player.getZ());
-		float brightness = LightTexture.getBrightness(minecraft.player.level.dimensionType(), minecraft.player.level.getMaxLocalRawBrightness(blockPos));
+		LocalPlayer player = minecraft.player;
+
+		BlockPos blockPos = BlockPos.containing(player.getX(), player.getEyeY(), player.getZ());
+		float brightness = LightTexture.getBrightness(player.level().dimensionType(), player.level().getMaxLocalRawBrightness(blockPos));
 		float red = (FastColor.ARGB32.red(colorARGB) / 255f) * brightness;
 		float green = (FastColor.ARGB32.green(colorARGB) / 255f) * brightness;
 		float blue = (FastColor.ARGB32.blue(colorARGB) / 255f) * brightness;
@@ -47,8 +49,8 @@ public class TintedFluidType extends FluidType {
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.setShaderColor(red, green, blue, 0.5f);
 
-		float uOffset = -minecraft.player.getYRot() / 64f;
-		float vOffset = minecraft.player.getXRot() / 64f;
+		float uOffset = -player.getYRot() / 64f;
+		float vOffset = player.getXRot() / 64f;
 		float depth = -0.5f;
 
 		Matrix4f matrix4f = poseStack.last().pose();
@@ -60,6 +62,7 @@ public class TintedFluidType extends FluidType {
 		bufferbuilder.vertex(matrix4f, -1f, 1f, depth).uv(4f + uOffset, vOffset).endVertex();
 		BufferUploader.drawWithShader(bufferbuilder.end());
 
+		RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 		RenderSystem.disableBlend();
 	}
 

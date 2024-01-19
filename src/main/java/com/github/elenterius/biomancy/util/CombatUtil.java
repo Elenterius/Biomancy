@@ -3,12 +3,10 @@ package com.github.elenterius.biomancy.util;
 import com.github.elenterius.biomancy.init.ModDamageSources;
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import net.minecraft.world.damagesource.CombatRules;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.projectile.ThrownPotion;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -26,14 +24,14 @@ public final class CombatUtil {
 		return target.getRandom().nextFloat() < pct + 0.075f * pierceLevel;
 	}
 
-	public static void performWaterAOE(Level world, Entity attacker, double maxDistance) {
+	public static void performWaterAOE(Level level, Entity attacker, double maxDistance) {
 		AABB aabb = attacker.getBoundingBox().inflate(maxDistance, maxDistance / 2d, maxDistance);
-		List<LivingEntity> entities = world.getEntitiesOfClass(LivingEntity.class, aabb, ThrownPotion.WATER_SENSITIVE);
+		List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class, aabb, LivingEntity::isSensitiveToWater);
 		if (!entities.isEmpty()) {
 			double maxDistSq = maxDistance * maxDistance;
 			for (LivingEntity victim : entities) {
 				if (attacker.distanceToSqr(victim) < maxDistSq) {
-					victim.hurt(DamageSource.indirectMagic(victim, attacker), 1f);
+					victim.hurt(level.damageSources().indirectMagic(victim, attacker), 1f);
 				}
 			}
 		}
@@ -52,13 +50,14 @@ public final class CombatUtil {
 
 	public static void hurtWithAcid(LivingEntity livingEntity, float damage) {
 		livingEntity.invulnerableTime = 0; //bypass invulnerable ticks
-		livingEntity.hurt(ModDamageSources.CORROSIVE_ACID, damage);
+		livingEntity.hurt(ModDamageSources.acid(livingEntity.level(), null), damage);
 		livingEntity.invulnerableTime = 0; //leave open for next damage
 	}
 
 	public static void hurtWithBleed(LivingEntity livingEntity, float damage) {
 		livingEntity.invulnerableTime = 0; //bypass invulnerable ticks
-		livingEntity.hurt(ModDamageSources.BLEED, damage);
+		livingEntity.hurt(ModDamageSources.bleed(livingEntity.level(), null), damage);
+		livingEntity.invulnerableTime = 0; //leave open for next damage
 	}
 
 	public static void applyBleedEffect(LivingEntity livingEntity, int seconds) {

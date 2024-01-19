@@ -20,7 +20,7 @@ public class SacrificedItemTrigger extends SimpleCriterionTrigger<SacrificedItem
 	}
 
 	@Override
-	public SacrificedItemTrigger.TriggerInstance createInstance(JsonObject json, EntityPredicate.Composite entityPredicate, DeserializationContext conditionsParser) {
+	public SacrificedItemTrigger.TriggerInstance createInstance(JsonObject json, ContextAwarePredicate entityPredicate, DeserializationContext conditionsParser) {
 		ItemPredicate itempredicate = ItemPredicate.fromJson(json.get("item"));
 		return new SacrificedItemTrigger.TriggerInstance(entityPredicate, itempredicate);
 	}
@@ -32,28 +32,28 @@ public class SacrificedItemTrigger extends SimpleCriterionTrigger<SacrificedItem
 	public static class TriggerInstance extends AbstractCriterionTriggerInstance {
 		private final ItemPredicate itemPredicate;
 
-		public TriggerInstance(EntityPredicate.Composite player, ItemPredicate itemPredicate) {
+		public TriggerInstance(ContextAwarePredicate player, ItemPredicate itemPredicate) {
 			super(SacrificedItemTrigger.ID, player);
 			this.itemPredicate = itemPredicate;
 		}
 
 		public static SacrificedItemTrigger.TriggerInstance sacrificedItems(ItemLike... items) {
 			ItemPredicate predicate = ItemPredicate.Builder.item().of(items).build();
-			return new SacrificedItemTrigger.TriggerInstance(EntityPredicate.Composite.ANY, predicate);
+			return new SacrificedItemTrigger.TriggerInstance(ContextAwarePredicate.ANY, predicate);
 		}
 
 		public static SacrificedItemTrigger.TriggerInstance sacrificedItem(ItemLike item) {
 			ItemPredicate predicate = ItemPredicate.Builder.item().of(item).build();
-			return new SacrificedItemTrigger.TriggerInstance(EntityPredicate.Composite.ANY, predicate);
+			return new SacrificedItemTrigger.TriggerInstance(ContextAwarePredicate.ANY, predicate);
 		}
 
 		public static SacrificedItemTrigger.TriggerInstance sacrificedItem(TagKey<Item> tag) {
 			ItemPredicate predicate = ItemPredicate.Builder.item().of(tag).build();
-			return new SacrificedItemTrigger.TriggerInstance(EntityPredicate.Composite.ANY, predicate);
+			return new SacrificedItemTrigger.TriggerInstance(ContextAwarePredicate.ANY, predicate);
 		}
 
 		public static SacrificedItemTrigger.TriggerInstance sacrificedItem() {
-			return new SacrificedItemTrigger.TriggerInstance(EntityPredicate.Composite.ANY, ItemPredicate.ANY);
+			return new SacrificedItemTrigger.TriggerInstance(ContextAwarePredicate.ANY, ItemPredicate.ANY);
 		}
 
 		public boolean matches(ItemStack stack) {

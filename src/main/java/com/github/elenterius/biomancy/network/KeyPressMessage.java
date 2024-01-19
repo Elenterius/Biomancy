@@ -28,8 +28,8 @@ public class KeyPressMessage {
 		ctx.get().enqueueWork(() -> {
 			ServerPlayer player = ctx.get().getSender();
 			if (player != null) {
-				ServerLevel world = player.getLevel();
-				KeyPressListener.onReceiveKeybindingPacket(world, player, UnsignedBytes.toInt(packet.slotIndex), packet.flag); //TODO: add version which is not tied to EquipmentSlotType
+				ServerLevel level = player.serverLevel();
+				KeyPressListener.onReceiveKeybindingPacket(level, player, UnsignedBytes.toInt(packet.slotIndex), packet.flag); //TODO: add version which is not tied to EquipmentSlotType
 			}
 		});
 		ctx.get().setPacketHandled(true);

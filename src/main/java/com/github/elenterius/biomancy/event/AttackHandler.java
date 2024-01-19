@@ -27,8 +27,10 @@ public class AttackHandler {
 		}
 	}
 
+	@Deprecated(forRemoval = true)
 	@SubscribeEvent(receiveCanceled = false)
 	public static void onKnockback(final LivingKnockBackEvent event) {
+		//TODO: mutate damage type to have no knockback
 		event.getEntity().getCapability(ModCapabilities.NO_KNOCKBACK_FLAG_CAP).ifPresent(flag -> {
 			if (flag.isEnabled()) {
 				flag.disable();

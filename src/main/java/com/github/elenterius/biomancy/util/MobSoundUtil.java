@@ -6,7 +6,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
@@ -74,7 +73,7 @@ public final class MobSoundUtil {
 //			tag.putFloat(NBT_KEY_VOLUME, livingEntityAccessor.biomancy_getSoundVolume());
 //			tag.putFloat(NBT_KEY_PITCH, livingEntityAccessor.biomancy_getVoicePitch());
 			VoiceType.DEATH.saveSound(tag, livingEntityAccessor.biomancy$getDeathSound());
-			VoiceType.HURT.saveSound(tag, livingEntityAccessor.biomancy$getHurtSound(DamageSource.GENERIC));
+			VoiceType.HURT.saveSound(tag, livingEntityAccessor.biomancy$getHurtSound(entity.level().damageSources().generic()));
 			VoiceType.AMBIENT.saveSound(tag, entity instanceof Mob ? ((MobEntityAccessor) entity).biomancy$getAmbientSound() : null);
 			tag.putByte(NBT_KEY_VOICE, DEATH.id);
 		}

@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package com.github.elenterius.biomancy.client.render.entity.bloomberry;
+package com.github.elenterius.biomancy.client.render.entity.projectile.bloomberry;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

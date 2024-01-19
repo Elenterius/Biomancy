@@ -14,14 +14,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class AcidBlobProjectile extends CorrosiveAcidProjectile implements IAnimatable {
+public class AcidBlobProjectile extends CorrosiveAcidProjectile implements GeoEntity {
 
-	protected final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
+	protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
 	public AcidBlobProjectile(EntityType<? extends BaseProjectile> entityType, Level level) {
 		super(entityType, level);
@@ -35,20 +35,20 @@ public class AcidBlobProjectile extends CorrosiveAcidProjectile implements IAnim
 	protected void onHitBlock(BlockHitResult result) {
 		BlockPos pos = result.getBlockPos();
 		BlockPos posRelative = pos.relative(result.getDirection());
-		BlockState stateRelative = level.getBlockState(posRelative);
+		BlockState stateRelative = level().getBlockState(posRelative);
 
 		if (stateRelative.canBeReplaced(ModFluids.ACID.get())) {
-			BlockState stateBelow = level.getBlockState(posRelative.below());
-			if (stateBelow.is(ModBlocks.ACID_FLUID_BLOCK.get()) || stateBelow.isFaceSturdy(level, posRelative.below(), Direction.UP)) {
-				if (!level.isClientSide) {
-					level.setBlock(posRelative, ModBlocks.ACID_FLUID_BLOCK.get().defaultBlockState(), Block.UPDATE_CLIENTS);
+			BlockState stateBelow = level().getBlockState(posRelative.below());
+			if (stateBelow.is(ModBlocks.ACID_FLUID_BLOCK.get()) || stateBelow.isFaceSturdy(level(), posRelative.below(), Direction.UP)) {
+				if (!level().isClientSide) {
+					level().setBlock(posRelative, ModBlocks.ACID_FLUID_BLOCK.get().defaultBlockState(), Block.UPDATE_CLIENTS);
 				}
 				playHitSound();
 				return;
 			}
 			else if (stateRelative.getBlock() instanceof FleshVeinsBlock) {
-				if (!level.isClientSide) {
-					level.setBlock(posRelative, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
+				if (!level().isClientSide) {
+					level().setBlock(posRelative, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
 				}
 				playHitSound();
 				return;
@@ -64,13 +64,13 @@ public class AcidBlobProjectile extends CorrosiveAcidProjectile implements IAnim
 	}
 
 	@Override
-	public void registerControllers(AnimationData data) {
+	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
 		//do nothing
 	}
 
 	@Override
-	public AnimationFactory getFactory() {
-		return animationFactory;
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return cache;
 	}
 
 }

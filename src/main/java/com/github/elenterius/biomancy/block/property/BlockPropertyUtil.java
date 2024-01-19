@@ -1,7 +1,6 @@
 package com.github.elenterius.biomancy.block.property;
 
 import com.github.elenterius.biomancy.mixin.IntegerPropertyAccessor;
-import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.properties.Property;
@@ -25,9 +24,9 @@ public final class BlockPropertyUtil {
 	}
 
 	public static Optional<IntegerProperty> getAgeProperty(BlockState state) {
-		if (state.getBlock() instanceof CropBlock crop) {
-			return Optional.of(crop.getAgeProperty());
-		}
+		//		if (state.getBlock() instanceof CropBlock crop) {
+		//			return Optional.of(crop.getAgeProperty());
+		//		}
 		for (Property<?> prop : state.getProperties()) {
 			if (prop.getName().equals(AGE_PROPERTY) && prop instanceof IntegerProperty intProperty) {
 				return Optional.of(intProperty);

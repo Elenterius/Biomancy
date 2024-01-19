@@ -22,7 +22,7 @@ public final class StatusEffectHandler {
 
 	@SubscribeEvent
 	public static void onEffectExpiry(final MobEffectEvent.Expired event) {
-		if (!event.getEntity().level.isClientSide) {
+		if (!event.getEntity().level().isClientSide) {
 			MobEffectInstance effectInstance = event.getEffectInstance();
 			if (effectInstance != null && effectInstance.getEffect() == ModMobEffects.ADRENALINE_RUSH.get()) {
 				event.getEntity().addEffect(new MobEffectInstance(ModMobEffects.ADRENAL_FATIGUE.get(), AdrenalineSerum.DURATION, AdrenalineSerum.AMPLIFIER));
@@ -44,7 +44,7 @@ public final class StatusEffectHandler {
 
 	@SubscribeEvent
 	public static void onFoodEaten(final LivingEntityUseItemEvent.Finish event) {
-		if (!event.getEntity().level.isClientSide) {
+		if (!event.getEntity().level().isClientSide) {
 			ItemStack stack = event.getItem();
 			if (stack.isEdible() && stack.is(ModItemTags.SUGARS)) {
 				FoodProperties food = stack.getItem().getFoodProperties();

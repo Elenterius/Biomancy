@@ -6,6 +6,7 @@ import com.google.common.collect.*;
 import net.minecraft.client.ClientRecipeBook;
 import net.minecraft.client.RecipeBookCategories;
 import net.minecraft.client.gui.screens.recipebook.RecipeCollection;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.item.crafting.Recipe;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -33,21 +34,21 @@ public abstract class ClientRecipeBookMixin {
 	private Map<RecipeBookCategories, List<RecipeCollection>> collectionsByTab;
 
 	@Inject(method = "setupCollections", at = @At("HEAD"))
-	private void onSetupCollections(Iterable<Recipe<?>> recipes, CallbackInfo ci) {
+	private void onSetupCollections(Iterable<Recipe<?>> recipes, RegistryAccess registryAccess, CallbackInfo ci) {
 		if (BioForgeCompat.isRecipeCollectionOverwriteEnabled()) {
-			biomancy$overwriteRecipeCollections(recipes);
+			biomancy$overwriteRecipeCollections(recipes, registryAccess);
 		}
 	}
 
 	@Unique
-	private void biomancy$overwriteRecipeCollections(Iterable<Recipe<?>> allRecipes) {
+	private void biomancy$overwriteRecipeCollections(Iterable<Recipe<?>> allRecipes, RegistryAccess registryAccess) {
 		Map<RecipeBookCategories, List<List<Recipe<?>>>> categorizedRecipes = biomancy$categorizeBioForgeRecipes(allRecipes);
 		Map<RecipeBookCategories, List<RecipeCollection>> recipeCategories = new HashMap<>(); //we can't use EnumMap because of Forge modifying the enum at runtime
 
 		ImmutableList.Builder<RecipeCollection> builder = ImmutableList.builder();
 
 		categorizedRecipes.forEach((category, groupedRecipes) -> recipeCategories.put(category, groupedRecipes.stream().map(recipes -> {
-			RecipeCollection collection = new RecipeCollection(recipes);
+			RecipeCollection collection = new RecipeCollection(registryAccess, recipes);
 			builder.add(collection);
 			return collection;
 		}).toList()));

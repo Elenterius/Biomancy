@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.item.weapon;
 
-import com.github.elenterius.biomancy.init.ModDamageSources;
+import com.github.elenterius.biomancy.init.ModDamageTypes;
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.init.ModParticleTypes;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
@@ -14,7 +14,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -34,17 +33,18 @@ public class ToxicusItem extends SimpleSwordItem implements CriticalHitListener,
 
 	@Override
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		if (attacker.level.isClientSide) return super.hurtEnemy(stack, target, attacker);
+		if (attacker.level().isClientSide) return super.hurtEnemy(stack, target, attacker);
 
 		boolean isFullAttackStrength = !(attacker instanceof Player player) || player.getAttackStrengthScale(0.5f) >= 0.9f;
 		if (isFullAttackStrength) {
-			attacker.level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), ModSoundEvents.CLAWS_ATTACK_STRONG.get(), attacker.getSoundSource(), 1f, 1f + attacker.getRandom().nextFloat() * 0.5f);
+			attacker.level().playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), ModSoundEvents.CLAWS_ATTACK_STRONG.get(), attacker.getSoundSource(), 1f, 1f + attacker.getRandom().nextFloat() * 0.5f);
 			target.addEffect(new MobEffectInstance(ModMobEffects.ARMOR_SHRED.get(), 4 * 20, 0));
 		}
 
+		//TODO: remove this odd hack and deal corrosive acid damage properly
 		DamageSource lastDamageSource = target.getLastDamageSource();
-		if (lastDamageSource instanceof EntityDamageSource && lastDamageSource.getEntity() == attacker) {
-			((DamageSourceAccessor) lastDamageSource).biomancy$setMsgId(ModDamageSources.CORROSIVE_ACID.msgId);
+		if (lastDamageSource != null && lastDamageSource.getEntity() == attacker) {
+			((DamageSourceAccessor) lastDamageSource).biomancy$setDamageType(ModDamageTypes.getHolder(ModDamageTypes.CORROSIVE_ACID, target.level()));
 		}
 
 		return super.hurtEnemy(stack, target, attacker);
@@ -59,7 +59,7 @@ public class ToxicusItem extends SimpleSwordItem implements CriticalHitListener,
 
 	@Override
 	public boolean onSweepAttack(Level level, Player attacker) {
-		if (attacker.level instanceof ServerLevel serverLevel) {
+		if (attacker.level() instanceof ServerLevel serverLevel) {
 			double xOffset = -Mth.sin(attacker.getYRot() * Mth.DEG_TO_RAD);
 			double zOffset = Mth.cos(attacker.getYRot() * Mth.DEG_TO_RAD);
 			serverLevel.sendParticles(ModParticleTypes.CORROSIVE_SWIPE_ATTACK.get(), attacker.getX() + xOffset, attacker.getY(0.5f), attacker.getZ() + zOffset, 0, xOffset, 0, zOffset, 0);

@@ -34,10 +34,10 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -45,10 +45,10 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 @Deprecated
-public class DevArmCannonItem extends Item implements IAnimatable, IArmPoseProvider, CustomTooltipProvider, KeyPressListener {
+public class DevArmCannonItem extends Item implements GeoItem, IArmPoseProvider, CustomTooltipProvider, KeyPressListener {
 
 	public static final Set<Enchantment> VALID_ENCHANTMENTS = Set.of(Enchantments.PUNCH_ARROWS, Enchantments.POWER_ARROWS);
-	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
 	public DevArmCannonItem(Properties properties) {
 		super(properties);
@@ -137,13 +137,13 @@ public class DevArmCannonItem extends Item implements IAnimatable, IArmPoseProvi
 	}
 
 	@Override
-	public void registerControllers(AnimationData data) {
+	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
 		//do nothing
 	}
 
 	@Override
-	public AnimationFactory getFactory() {
-		return animationFactory;
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return cache;
 	}
 
 	@Override

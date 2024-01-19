@@ -44,7 +44,7 @@ public class LivingClawsItem extends SimpleClawsItem implements LivingTool, KeyP
 	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, Level level, Player player, EquipmentSlot slot, byte flags) {
 		if (!hasNutrients(stack)) {
 			player.displayClientMessage(TextComponentUtil.getFailureMsgText("not_enough_nutrients"), true);
-			player.playSound(ModSoundEvents.FLESHKIN_NO.get(), 1f, 1f + player.getLevel().getRandom().nextFloat() * 0.4f);
+			player.playSound(ModSoundEvents.FLESHKIN_NO.get(), 1f, 1f + player.level().getRandom().nextFloat() * 0.4f);
 			return InteractionResultHolder.fail(flags);
 		}
 
@@ -102,7 +102,7 @@ public class LivingClawsItem extends SimpleClawsItem implements LivingTool, KeyP
 	}
 
 	protected void playSound(Player player, SoundEvent soundEvent) {
-		player.playSound(soundEvent, 0.8f, 0.8f + player.getLevel().getRandom().nextFloat() * 0.4f);
+		player.playSound(soundEvent, 0.8f, 0.8f + player.level().getRandom().nextFloat() * 0.4f);
 	}
 
 	@Override

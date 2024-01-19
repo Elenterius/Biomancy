@@ -35,7 +35,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -57,26 +56,23 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.network.PacketDistributor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.AnimationState;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.SoundKeyframeEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.network.GeckoLibNetwork;
-import software.bernie.geckolib3.network.ISyncable;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.keyframe.event.SoundKeyframeEvent;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-public class InjectorItem extends Item implements SerumInjector, CustomTooltipProvider, KeyPressListener, IAnimatable, ISyncable {
+public class InjectorItem extends Item implements SerumInjector, CustomTooltipProvider, KeyPressListener, GeoItem {
 
 	public static final short MAX_SLOT_SIZE = 16;
 	public static final String INVENTORY_TAG = "inventory";
@@ -84,13 +80,12 @@ public class InjectorItem extends Item implements SerumInjector, CustomTooltipPr
 	public static final int SCHEDULE_TICKS = Mth.ceil(0.32f * 20);
 	protected static final String CURRENT_VICTIM_KEY = "CurrentVictimId";
 	protected static final String CURRENT_HOST_KEY = "CurrentHostId";
-	protected static final String NEEDLE_ANIM_CONTROLLER = "needle";
-	private static final String DEFAULT_ANIM_CONTROLLER = "controller";
-	private final AnimationFactory factory = GeckoLibUtil.createFactory(this);
+
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
 	public InjectorItem(Properties properties) {
 		super(properties);
-		GeckoLibNetwork.registerSyncable(this);
+		SingletonGeoAnimatable.registerSyncedAnimatable(this);
 	}
 
 	public static boolean tryInjectLivingEntity(ServerLevel level, BlockPos pos, ItemStack stack) {
@@ -116,10 +111,10 @@ public class InjectorItem extends Item implements SerumInjector, CustomTooltipPr
 			CompoundTag dataTag = Serum.getDataTag(injectorStack);
 			if (serum.canAffectEntity(dataTag, null, target)) {
 				serum.affectEntity(level, dataTag, null, target);
-				injectorItem.consumeSerum(injectorStack, null); //TODO: drop appropriate vials/container
+				injectorItem.consumeSerum(injectorStack, null);
 				injectorStack.hurt(1, level.getRandom(), null);
 				if (injectorStack.getEnchantmentLevel(ModEnchantments.ANESTHETIC.get()) <= 0) {
-					target.hurt(new EntityDamageSource("sting", null), 0.5f);
+					target.hurt(level.damageSources().sting(null), 0.5f);
 				}
 				return true;
 			}
@@ -223,7 +218,7 @@ public class InjectorItem extends Item implements SerumInjector, CustomTooltipPr
 
 		if (!level.isClientSide) {
 			InjectionScheduler.schedule(this, stack, player, player, SCHEDULE_TICKS);
-			broadcastAnimation((ServerLevel) level, player, stack, InjectorAnimationState.INJECT_SELF.id);
+			broadcastAnimation((ServerLevel) level, player, stack, InjectorAnimation.INJECT_SELF);
 			player.getCooldowns().addCooldown(this, COOL_DOWN_TICKS);
 		}
 		return InteractionResultHolder.consume(stack);
@@ -231,19 +226,23 @@ public class InjectorItem extends Item implements SerumInjector, CustomTooltipPr
 
 	@Override
 	public InteractionResult interactLivingEntity(ItemStack copyOfStack, Player player, LivingEntity target, InteractionHand usedHand) {
+		Level level = player.level();
+
 		if (!canInteractWithLivingTarget(copyOfStack, player, target)) {
-			if (player.level.isClientSide) SoundUtil.clientPlayItemSound(player.level, player, ModSoundEvents.INJECTOR_FAIL.get());
+			if (level.isClientSide) {
+				SoundUtil.clientPlayItemSound(level, player, ModSoundEvents.INJECTOR_FAIL.get());
+			}
 			return InteractionResult.FAIL;
 		}
 
-		if (player.level.isClientSide) return InteractionResult.CONSUME;
+		if (level.isClientSide) return InteractionResult.CONSUME;
 		if (player.getCooldowns().isOnCooldown(this)) return InteractionResult.FAIL;
 
 		player.getCooldowns().addCooldown(this, COOL_DOWN_TICKS);
 
 		ItemStack realStack = player.getAbilities().instabuild ? player.getItemInHand(usedHand) : copyOfStack;
 		InjectionScheduler.schedule(this, realStack, player, target, SCHEDULE_TICKS);
-		broadcastAnimation((ServerLevel) target.level, player, realStack, InjectorAnimationState.INJECT_OTHER.id);
+		broadcastAnimation((ServerLevel) target.level(), player, realStack, InjectorAnimation.INJECT_OTHER);
 
 		return InteractionResult.CONSUME;
 	}
@@ -406,50 +405,32 @@ public class InjectorItem extends Item implements SerumInjector, CustomTooltipPr
 
 	private void soundListener(SoundKeyframeEvent<InjectorItem> event) {
 		if (IClientItemExtensions.of(this).getCustomRenderer() instanceof InjectorRenderer renderer) {
-			onSoundKeyFrame(renderer.getCurrentItemStack(), event.sound, event.getAnimationTick());
+			onSoundKeyFrame(renderer.getCurrentItemStack(), event.getKeyframeData().getSound(), event.getAnimationTick());
 		}
 	}
 
 	@Override
-	public void registerControllers(AnimationData data) {
-		//IMPORTANT: transitionLengthTicks needs to be larger than 0, or else the controller.currentAnimation might be null and a NPE is thrown
-		AnimationController<InjectorItem> controller = new AnimationController<>(this, DEFAULT_ANIM_CONTROLLER, 1, event -> PlayState.CONTINUE);
-		controller.registerSoundListener(this::soundListener);
-		data.addAnimationController(controller);
+	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+		//IMPORTANT: transitionLengthTicks needs to be larger than 0, or else the controller.currentAnimation might be null and a NPE is thrown //TODO: test if this holds true for geckolib 4
 
-		data.addAnimationController(new AnimationController<>(this, NEEDLE_ANIM_CONTROLLER, 1, event -> PlayState.CONTINUE));
+		AnimationController<InjectorItem> mainController = new AnimationController<>(this, MAIN_CONTROLLER, 1, event -> PlayState.CONTINUE);
+		InjectorAnimation.registerTriggerableAnimations(mainController);
+		mainController.setSoundKeyframeHandler(this::soundListener);
+		controllers.add(mainController);
+
+		AnimationController<InjectorItem> needleController = new AnimationController<>(this, NEEDLE_CONTROLLER, 1, event -> PlayState.CONTINUE);
+		InjectorAnimation.registerTriggerableAnimations(mainController);
+		controllers.add(needleController);
 	}
 
 	@Override
-	public AnimationFactory getFactory() {
-		return factory;
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return cache;
 	}
 
-	void broadcastAnimation(ServerLevel level, Player player, ItemStack stack, int state) {
-		int id = GeckoLibUtil.guaranteeIDForStack(stack, level);
-		PacketDistributor.PacketTarget target = PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player);
-		GeckoLibNetwork.syncAnimation(target, this, id, state);
-	}
-
-	@Override
-	public void onAnimationSync(int controllerId, int animationStateId) {
-		//client side for living entities: stack.setEntityRepresentation(); ?
-
-		switch (InjectorAnimationState.from(animationStateId)) {
-			case INJECT_OTHER -> playAnimation(controllerId, InjectorAnimationState.INJECT_OTHER, DEFAULT_ANIM_CONTROLLER);
-			case INJECT_SELF -> playAnimation(controllerId, InjectorAnimationState.INJECT_SELF, DEFAULT_ANIM_CONTROLLER);
-			case REGROW_NEEDLE -> playAnimation(controllerId, InjectorAnimationState.REGROW_NEEDLE, NEEDLE_ANIM_CONTROLLER);
-			case INJECT_FAIL -> playAnimation(controllerId, InjectorAnimationState.INJECT_FAIL, DEFAULT_ANIM_CONTROLLER);
-			case EMPTY -> { /* do nothing */ }
-		}
-	}
-
-	private void playAnimation(int controllerId, InjectorAnimationState animationState, String animationController) {
-		AnimationController<?> controller = GeckoLibUtil.getControllerForID(factory, controllerId, animationController);
-		if (controller.getAnimationState() == AnimationState.Stopped) {
-			controller.markNeedsReload(); //make sure animation can play more than once (animations are usually cached)
-			controller.setAnimation(animationState.animation);
-		}
+	void broadcastAnimation(ServerLevel level, Player player, ItemStack stack, InjectorAnimation state) {
+		long id = GeoItem.getOrAssignId(stack, level);
+		triggerAnim(player, id, state.controller, state.name);
 	}
 
 	@Override
@@ -479,40 +460,33 @@ public class InjectorItem extends Item implements SerumInjector, CustomTooltipPr
 		return serum.isEmpty() ? displayName : ComponentUtil.mutable().append(displayName).append(" (").append(serum.getDisplayName()).append(")");
 	}
 
-	enum InjectorAnimationState {
-		EMPTY(-1, ""),
-		INJECT_OTHER(0, "injector.inject"),
-		INJECT_SELF(1, "injector.inject_self"),
-		INJECT_FAIL(3, "injector.inject_fail"),
-		REGROW_NEEDLE(2, "injector.regrow_needle");
+	protected static final String NEEDLE_CONTROLLER = "needle";
+	protected static final String MAIN_CONTROLLER = "main";
 
-		private final int id;
-		private final String nameId;
-		private final AnimationBuilder animation;
+	enum InjectorAnimation {
+		INJECT_OTHER(MAIN_CONTROLLER, "inject", RawAnimation.begin().thenPlay("injector.inject")),
+		INJECT_SELF(MAIN_CONTROLLER, "inject_self", RawAnimation.begin().thenPlay("injector.inject_self")),
+		INJECT_FAIL(MAIN_CONTROLLER, "inject_fail", RawAnimation.begin().thenPlay("injector.inject_fail")),
+		REGROW_NEEDLE(NEEDLE_CONTROLLER, "regrow_needle", RawAnimation.begin().thenPlay("injector.regrow_needle"));
 
-		InjectorAnimationState(int id, String nameId) {
-			this.id = id;
-			this.nameId = nameId;
-			animation = new AnimationBuilder().playOnce(nameId);
+		private final String controller;
+		private final String name;
+		private final RawAnimation rawAnimation;
+
+		InjectorAnimation(String controller, String name, RawAnimation rawAnimation) {
+			this.controller = controller;
+			this.name = name;
+			this.rawAnimation = rawAnimation;
 		}
 
-		public static InjectorAnimationState from(int id) {
-			if (id < 0 || id > 3) return EMPTY;
-			for (InjectorAnimationState animationState : values()) {
-				if (animationState.id == id) {
-					return animationState;
+		public static void registerTriggerableAnimations(AnimationController<InjectorItem> controller) {
+			for (InjectorAnimation injectorAnimation : values()) {
+				if (injectorAnimation.controller.equals(controller.getName())) {
+					controller.triggerableAnim(injectorAnimation.name, injectorAnimation.rawAnimation);
 				}
 			}
-			return EMPTY;
 		}
 
-		public int getId() {
-			return id;
-		}
-
-		public String getNameId() {
-			return nameId;
-		}
 	}
 
 	private static class InventoryCapability implements ICapabilityProvider {

@@ -25,6 +25,8 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -50,7 +52,7 @@ public final class ModBlocks {
 	public static final RegistryObject<TongueBlock> TONGUE = register("tongue", TongueBlock::new);
 	public static final RegistryObject<MawHopperBlock> MAW_HOPPER = register("maw_hopper", MawHopperBlock::new);
 	public static final RegistryObject<FleshkinChestBlock> FLESHKIN_CHEST = register("fleshkin_chest", FleshkinChestBlock::new);
-	public static final RegistryObject<OwnablePressurePlateBlock> FLESHKIN_PRESSURE_PLATE = register("fleshkin_pressure_plate", OwnablePressurePlateBlock::new);
+	public static final RegistryObject<OwnablePressurePlateBlock> FLESHKIN_PRESSURE_PLATE = register("fleshkin_pressure_plate", properties -> new OwnablePressurePlateBlock(properties, ModBlockSetTypes.FLESH_SET_TYPE.get()));
 
 	//## Building Materials
 	public static final RegistryObject<FleshBlock> FLESH = register("flesh", FleshBlock::new);
@@ -163,11 +165,17 @@ public final class ModBlocks {
 	}
 
 	public static BlockBehaviour.Properties createFleshProperties() {
-		return BlockBehaviour.Properties.of(ModBlockMaterials.FLESH_MATERIAL).strength(3f, 3f).sound(ModSoundTypes.FLESH_BLOCK).isValidSpawn(ModBlocks::isValidFleshkinSpawn);
+		return BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PINK).strength(3f, 3f).sound(ModSoundTypes.FLESH_BLOCK).isValidSpawn(ModBlocks::isValidFleshkinSpawn);
 	}
 
 	public static BlockBehaviour.Properties createFleshVeinsProperties() {
-		return BlockBehaviour.Properties.of(ModBlockMaterials.FLESH_VEINS_MATERIAL).strength(3f, 3f).sound(ModSoundTypes.FLESH_BLOCK).isValidSpawn(ModBlocks::isValidFleshkinSpawn);
+		return BlockBehaviour.Properties.of()
+				.strength(3f, 3f)
+				//				.forceSolidOff()
+				.noCollission()
+				.pushReaction(PushReaction.DESTROY)
+				.sound(ModSoundTypes.FLESH_BLOCK)
+				.isValidSpawn(ModBlocks::isValidFleshkinSpawn);
 	}
 
 	public static BlockBehaviour.Properties createToughFleshProperties() {
@@ -175,7 +183,7 @@ public final class ModBlocks {
 	}
 
 	public static BlockBehaviour.Properties createBonyFleshProperties() {
-		return BlockBehaviour.Properties.of(ModBlockMaterials.FLESH_MATERIAL).strength(4f, 6f).sound(ModSoundTypes.BONY_FLESH_BLOCK).isValidSpawn(ModBlocks::isValidFleshkinSpawn);
+		return BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PINK).strength(4f, 6f).sound(ModSoundTypes.BONY_FLESH_BLOCK).isValidSpawn(ModBlocks::isValidFleshkinSpawn);
 	}
 
 	public static boolean isValidFleshkinSpawn(BlockState state, BlockGetter level, BlockPos pos, EntityType<?> entityType) {

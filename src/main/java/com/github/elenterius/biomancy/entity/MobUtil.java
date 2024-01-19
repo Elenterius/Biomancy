@@ -192,12 +192,12 @@ public final class MobUtil {
 	public static Vec3 getAdjustedSpawnPositionFor(BlockPos pos, Vec3 clickLocation, Direction clickedFace, Entity entity) {
 		//check if neighbor blocks are not empty
 		BlockPos offsetPos = pos.offset(clickedFace.getNormal());
-		int down = entity.level.getBlockState(offsetPos.below()).isAir() ? 0 : 1;
-		int up = entity.level.getBlockState(offsetPos.above()).isAir() ? 0 : 1;
-		int north = entity.level.getBlockState(offsetPos.north()).isAir() ? 0 : 1;
-		int south = entity.level.getBlockState(offsetPos.south()).isAir() ? 0 : 1;
-		int west = entity.level.getBlockState(offsetPos.west()).isAir() ? 0 : 1;
-		int east = entity.level.getBlockState(offsetPos.east()).isAir() ? 0 : 1;
+		int down = entity.level().getBlockState(offsetPos.below()).isAir() ? 0 : 1;
+		int up = entity.level().getBlockState(offsetPos.above()).isAir() ? 0 : 1;
+		int north = entity.level().getBlockState(offsetPos.north()).isAir() ? 0 : 1;
+		int south = entity.level().getBlockState(offsetPos.south()).isAir() ? 0 : 1;
+		int west = entity.level().getBlockState(offsetPos.west()).isAir() ? 0 : 1;
+		int east = entity.level().getBlockState(offsetPos.east()).isAir() ? 0 : 1;
 
 		float halfBBWidth = entity.getBbWidth() * 0.5f;
 		float halfBBHeight = entity.getBbHeight() * 0.5f;

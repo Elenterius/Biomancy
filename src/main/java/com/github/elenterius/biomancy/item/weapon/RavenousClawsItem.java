@@ -18,7 +18,6 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -32,7 +31,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
@@ -42,27 +40,24 @@ import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.common.util.Lazy;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.Animation;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.constant.DataTickets;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, ItemCharge, AttackReachIndicator {
+public class RavenousClawsItem extends LivingClawsItem implements GeoItem, ItemCharge, AttackReachIndicator {
 	protected static final UUID BASE_ATTACK_KNOCKBACK_UUID = UUID.fromString("6175525b-56dd-4f87-b035-86b892afe7b3");
 	private final Lazy<Multimap<Attribute, AttributeModifier>> brokenAttributes;
 	private final Lazy<Multimap<Attribute, AttributeModifier>> dormantAttributes;
 	private final Lazy<Multimap<Attribute, AttributeModifier>> awakenedAttributes;
-	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
 	public RavenousClawsItem(Tier tier, float attackDamage, float attackSpeed, int maxNutrients, Properties properties) {
 		super(tier, 0, 0, 0, maxNutrients, properties);
@@ -74,8 +69,8 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 	}
 
 	private static void playBloodyClawsFX(LivingEntity attacker) {
-		attacker.level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), ModSoundEvents.CLAWS_ATTACK_STRONG.get(), attacker.getSoundSource(), 1f, 1f + attacker.getRandom().nextFloat() * 0.5f);
-		if (attacker.level instanceof ServerLevel serverLevel) {
+		attacker.level().playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), ModSoundEvents.CLAWS_ATTACK_STRONG.get(), attacker.getSoundSource(), 1f, 1f + attacker.getRandom().nextFloat() * 0.5f);
+		if (attacker.level() instanceof ServerLevel serverLevel) {
 			double xOffset = -Mth.sin(attacker.getYRot() * Mth.DEG_TO_RAD);
 			double zOffset = Mth.cos(attacker.getYRot() * Mth.DEG_TO_RAD);
 			serverLevel.sendParticles(ModParticleTypes.BLOODY_CLAWS_ATTACK.get(), attacker.getX() + xOffset, attacker.getY(0.52f), attacker.getZ() + zOffset, 0, xOffset, 0, zOffset, 0);
@@ -83,7 +78,7 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 	}
 
 	private static void playBloodExplosionFX(LivingEntity target) {
-		if (target.level instanceof ServerLevel serverLevel) {
+		if (target.level() instanceof ServerLevel serverLevel) {
 			float w = target.getBbWidth() * 0.45f;
 			double x = serverLevel.getRandom().nextGaussian() * w;
 			double y = serverLevel.getRandom().nextGaussian() * 0.2d;
@@ -125,22 +120,17 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, Level level, Player player, EquipmentSlot slot, byte flags) {
 		if (!hasCharge(stack)) {
 			player.displayClientMessage(TextComponentUtil.getFailureMsgText("not_enough_blood_charge"), true);
-			player.playSound(ModSoundEvents.FLESHKIN_NO.get(), 1f, 1f + player.getLevel().getRandom().nextFloat() * 0.4f);
+			player.playSound(ModSoundEvents.FLESHKIN_NO.get(), 1f, 1f + player.level().getRandom().nextFloat() * 0.4f);
 			return InteractionResultHolder.fail(flags);
 		}
 
 		return InteractionResultHolder.success(flags);
 	}
 
-	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		if (allowedIn(tab)) {
-			items.add(new ItemStack(this)); //empty
-
-			ItemStack stack = new ItemStack(this);
-			setNutrients(stack, Integer.MAX_VALUE);
-			items.add(stack);
-		}
+	public ItemStack createItemStackForCreativeTab() {
+		ItemStack stack = new ItemStack(this);
+		setNutrients(stack, Integer.MAX_VALUE);
+		return stack;
 	}
 
 	@Override
@@ -177,7 +167,7 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 
 	@Override
 	public void updateLivingToolState(ItemStack livingTool, ServerLevel level, Player player) {
-		GeckoLibUtil.writeIDToStack(livingTool, level);
+		GeoItem.getOrAssignId(livingTool, level);
 
 		LivingToolState state = getLivingToolState(livingTool);
 		boolean hasNutrients = hasNutrients(livingTool);
@@ -206,13 +196,13 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 
 	@Override
 	public boolean overrideStackedOnOther(ItemStack livingTool, Slot slot, ClickAction action, Player player) {
-		if (player.level instanceof ServerLevel serverLevel) GeckoLibUtil.writeIDToStack(livingTool, serverLevel);
+		if (player.level() instanceof ServerLevel serverLevel) GeoItem.getOrAssignId(livingTool, serverLevel);
 		return super.overrideStackedOnOther(livingTool, slot, action, player);
 	}
 
 	@Override
 	public boolean overrideOtherStackedOnMe(ItemStack livingTool, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
-		if (player.level instanceof ServerLevel serverLevel) GeckoLibUtil.writeIDToStack(livingTool, serverLevel);
+		if (player.level() instanceof ServerLevel serverLevel) GeoItem.getOrAssignId(livingTool, serverLevel);
 		return super.overrideOtherStackedOnMe(livingTool, other, slot, action, player, access);
 	}
 
@@ -229,7 +219,7 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 
 	@Override
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		if (attacker.level.isClientSide) return true;
+		if (attacker.level().isClientSide) return true;
 
 		LivingToolState livingToolState = getLivingToolState(stack);
 		boolean isFullAttackStrength = !(attacker instanceof Player player) || player.getAttackStrengthScale(0.5f) >= 0.9f;
@@ -245,7 +235,7 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 				if (isFullAttackStrength) {
 					playBloodyClawsFX(attacker);
 					if (attacker.getRandom().nextInt(12) == 0) { //8.3%
-						attacker.level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), ModSoundEvents.CLAWS_ATTACK_BLEED_PROC.get(), attacker.getSoundSource(), 1f, 1f);
+						attacker.level().playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), ModSoundEvents.CLAWS_ATTACK_BLEED_PROC.get(), attacker.getSoundSource(), 1f, 1f);
 
 						CombatUtil.applyBleedEffect(target, 20);
 					}
@@ -265,7 +255,7 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 				if (isFullAttackStrength) {
 					playBloodyClawsFX(attacker);
 					if (attacker.getRandom().nextInt(5) == 0) { //20%
-						attacker.level.playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), ModSoundEvents.CLAWS_ATTACK_BLEED_PROC.get(), attacker.getSoundSource(), 1f, 1f);
+						attacker.level().playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), ModSoundEvents.CLAWS_ATTACK_BLEED_PROC.get(), attacker.getSoundSource(), 1f, 1f);
 
 						if (CombatUtil.getBleedEffectLevel(target) < 2) {
 							playBloodExplosionFX(target);
@@ -349,20 +339,6 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 		};
 	}
 
-	private PlayState onAnim(AnimationEvent<RavenousClawsItem> event) {
-		List<ItemStack> extraData = event.getExtraDataOfType(ItemStack.class);
-		LivingToolState state = !extraData.isEmpty() ? getLivingToolState(extraData.get(0)) : LivingToolState.BROKEN;
-
-		AnimationController<RavenousClawsItem> controller = event.getController();
-		switch (state) {
-			case DORMANT -> Animations.setDormant(controller);
-			case AWAKENED -> Animations.setAwakened(controller);
-			case BROKEN -> Animations.setBroken(controller);
-		}
-
-		return PlayState.CONTINUE;
-	}
-
 	@Override
 	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
 		super.initializeClient(consumer);
@@ -376,33 +352,49 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 		});
 	}
 
-	@Override
-	public void registerControllers(AnimationData data) {
-		data.addAnimationController(new AnimationController<>(this, "controller", 1, this::onAnim));
+	private PlayState handleAnimationState(AnimationState<RavenousClawsItem> animationState) {
+		ItemStack stack = animationState.getData(DataTickets.ITEMSTACK);
+		LivingToolState toolState = stack != null ? getLivingToolState(stack) : LivingToolState.BROKEN;
+
+		AnimationController<RavenousClawsItem> controller = animationState.getController();
+		switch (toolState) {
+			case DORMANT -> Animations.setDormant(controller);
+			case AWAKENED -> Animations.setAwakened(controller);
+			case BROKEN -> Animations.setBroken(controller);
+		}
+
+		return PlayState.CONTINUE;
 	}
 
 	@Override
-	public AnimationFactory getFactory() {
-		return animationFactory;
+	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+		controllers.add(new AnimationController<>(this, Animations.MAIN_CONTROLLER, 1, this::handleAnimationState));
+	}
+
+	@Override
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return cache;
 	}
 
 	protected static class Animations {
-		protected static final AnimationBuilder DORMANT = new AnimationBuilder().loop("ravenous_claws.dormant");
-		protected static final AnimationBuilder TO_SLEEP_TRANSITION = new AnimationBuilder().playOnce("ravenous_claws.tosleep").loop("ravenous_claws.dormant");
-		protected static final AnimationBuilder BROKEN = new AnimationBuilder().loop("ravenous_claws.broken");
-		protected static final AnimationBuilder WAKEUP_TRANSITION = new AnimationBuilder().playOnce("ravenous_claws.wakeup").loop("ravenous_claws.awakened");
-		protected static final AnimationBuilder AWAKENED = new AnimationBuilder().loop("ravenous_claws.awakened");
+		public static final String MAIN_CONTROLLER = "main";
+
+		protected static final RawAnimation DORMANT = RawAnimation.begin().thenLoop("ravenous_claws.dormant");
+		protected static final RawAnimation TO_SLEEP_TRANSITION = RawAnimation.begin().thenPlay("ravenous_claws.tosleep").thenLoop("ravenous_claws.dormant");
+		protected static final RawAnimation BROKEN = RawAnimation.begin().thenLoop("ravenous_claws.broken");
+		protected static final RawAnimation WAKEUP_TRANSITION = RawAnimation.begin().thenPlay("ravenous_claws.wakeup").thenLoop("ravenous_claws.awakened");
+		protected static final RawAnimation AWAKENED = RawAnimation.begin().thenLoop("ravenous_claws.awakened");
 
 		private Animations() {}
 
 		protected static void setDormant(AnimationController<?> controller) {
-			Animation animation = controller.getCurrentAnimation();
-			if (animation == null) {
+			AnimationProcessor.QueuedAnimation queued = controller.getCurrentAnimation();
+			if (queued == null) {
 				controller.setAnimation(DORMANT);
 				return;
 			}
 
-			if (!animation.animationName.equals("ravenous_claws.dormant")) {
+			if (!queued.animation().name().equals("ravenous_claws.dormant")) {
 				controller.setAnimation(TO_SLEEP_TRANSITION);
 				return;
 			}
@@ -411,13 +403,13 @@ public class RavenousClawsItem extends LivingClawsItem implements IAnimatable, I
 		}
 
 		protected static void setAwakened(AnimationController<?> controller) {
-			Animation animation = controller.getCurrentAnimation();
-			if (animation == null) {
+			AnimationProcessor.QueuedAnimation queued = controller.getCurrentAnimation();
+			if (queued == null) {
 				controller.setAnimation(AWAKENED);
 				return;
 			}
 
-			if (!animation.animationName.equals("ravenous_claws.awakened")) {
+			if (!queued.animation().name().equals("ravenous_claws.awakened")) {
 				controller.setAnimation(WAKEUP_TRANSITION);
 				return;
 			}

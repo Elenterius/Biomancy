@@ -14,7 +14,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -27,35 +26,36 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.*;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.BiConsumer;
 
-public abstract class FleshBlob extends PathfinderMob implements Fleshkin, JumpMoveHelper.IJumpingPathfinderMob, JukeboxDancer, IAnimatable {
+public abstract class FleshBlob extends PathfinderMob implements Fleshkin, JumpMoveHelper.IJumpingPathfinderMob, JukeboxDancer, GeoEntity {
 
 	public static final byte MAX_SIZE = 10;
 	public static final byte MIN_SIZE = 1;
 	public static final byte JUMPING_STATE_ID = 61;
-	protected static final AnimationBuilder ON_GROUND_ANIMATION = new AnimationBuilder().loop("ground.loop");
-	protected static final AnimationBuilder JUMP_START_ANIMATION = new AnimationBuilder().addAnimation("jump.startup").playAndHold("jump.air.loop");
-	protected static final AnimationBuilder JUMP_IN_AIR_ANIMATION = new AnimationBuilder().loop("jump.air.loop");
-	protected static final AnimationBuilder JUMP_LAND_ANIMATION = new AnimationBuilder().addAnimation("jump.impact");
-	protected static final AnimationBuilder EATING_ANIMATION = new AnimationBuilder().loop("eating.loop");
-	protected static final AnimationBuilder DANCE_ANIMATION = new AnimationBuilder().addAnimation("dancing.loop");
+	protected static final RawAnimation ON_GROUND_ANIMATION = RawAnimation.begin().thenLoop("ground.loop");
+	protected static final RawAnimation JUMP_START_ANIMATION = RawAnimation.begin().thenPlay("jump.startup").thenPlayAndHold("jump.air.loop");
+	protected static final RawAnimation JUMP_IN_AIR_ANIMATION = RawAnimation.begin().thenLoop("jump.air.loop");
+	protected static final RawAnimation JUMP_LAND_ANIMATION = RawAnimation.begin().thenPlay("jump.impact");
+	protected static final RawAnimation EATING_ANIMATION = RawAnimation.begin().thenLoop("eating.loop");
+	protected static final RawAnimation DANCE_ANIMATION = RawAnimation.begin().thenPlay("dancing.loop");
 	protected static final EntityDataAccessor<Byte> BLOB_SIZE = SynchedEntityData.defineId(FleshBlob.class, EntityDataSerializers.BYTE);
 	protected static final EntityDataAccessor<Byte> TUMORS = SynchedEntityData.defineId(FleshBlob.class, EntityDataSerializers.BYTE);
 	protected static final EntityDataAccessor<Boolean> IS_DANCING = SynchedEntityData.defineId(FleshBlob.class, EntityDataSerializers.BOOLEAN);
 
 	protected final JumpMoveHelper<FleshBlob> jumpMoveHelper = new JumpMoveHelper<>(this, JUMPING_STATE_ID);
-	protected final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
+	protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	private final DynamicGameEventListener<JukeboxListener> dynamicJukeboxListener;
 	protected int pettingDelay = 0;
 	private @Nullable BlockPos jukeboxPos;
@@ -109,7 +109,7 @@ public abstract class FleshBlob extends PathfinderMob implements Fleshkin, JumpM
 
 	@Override
 	public void updateDynamicGameEventListener(BiConsumer<DynamicGameEventListener<?>, ServerLevel> listener) {
-		if (level instanceof ServerLevel serverlevel) {
+		if (level() instanceof ServerLevel serverlevel) {
 			listener.accept(dynamicJukeboxListener, serverlevel);
 		}
 	}
@@ -147,8 +147,12 @@ public abstract class FleshBlob extends PathfinderMob implements Fleshkin, JumpM
 		return size.height * 0.5f;
 	}
 
+	public static byte clamp(byte v, byte min, byte max) {
+		return (byte) Math.min(Math.max(v, min), max);
+	}
+
 	public void setBlobSize(byte size, boolean resetHealth) {
-		size = Mth.clamp(size, MIN_SIZE, MAX_SIZE);
+		size = clamp(size, MIN_SIZE, MAX_SIZE);
 		entityData.set(BLOB_SIZE, size);
 
 		reapplyPosition();
@@ -175,7 +179,7 @@ public abstract class FleshBlob extends PathfinderMob implements Fleshkin, JumpM
 		int flags = 0;
 		if (tumorFactor > 0) {
 			for (TumorFlag flag : TumorFlag.values()) {
-				if (level.random.nextFloat() < tumorFactor) flags = TumorFlag.setFlag(flags, flag);
+				if (level().random.nextFloat() < tumorFactor) flags = TumorFlag.setFlag(flags, flag);
 			}
 		}
 		entityData.set(TUMORS, (byte) flags);
@@ -194,7 +198,7 @@ public abstract class FleshBlob extends PathfinderMob implements Fleshkin, JumpM
 	}
 
 	public void setDancing(boolean dancing) {
-		if (!level.isClientSide) entityData.set(IS_DANCING, dancing);
+		if (!level().isClientSide) entityData.set(IS_DANCING, dancing);
 	}
 
 	@Nullable
@@ -258,7 +262,7 @@ public abstract class FleshBlob extends PathfinderMob implements Fleshkin, JumpM
 		boolean wasHurt = lastHurtByPlayer != null || getLastHurtByMob() != null;
 		if (wasHurt) return true;
 
-		return jukeboxPos == null || !jukeboxPos.closerToCenterThan(position(), GameEvent.JUKEBOX_PLAY.getNotificationRadius()) || !level.getBlockState(jukeboxPos).is(Blocks.JUKEBOX);
+		return jukeboxPos == null || !jukeboxPos.closerToCenterThan(position(), GameEvent.JUKEBOX_PLAY.getNotificationRadius()) || !level().getBlockState(jukeboxPos).is(Blocks.JUKEBOX);
 	}
 
 	@Override
@@ -276,22 +280,22 @@ public abstract class FleshBlob extends PathfinderMob implements Fleshkin, JumpM
 	protected InteractionResult mobInteract(Player player, InteractionHand hand) {
 		ItemStack stack = player.getItemInHand(hand);
 		if (stack.isEmpty()) {
-			if (!level.isClientSide && pettingDelay <= 0) {
+			if (!level().isClientSide && pettingDelay <= 0) {
 				pettingDelay = random.nextIntBetweenInclusive(10, 20);
 
 				if (this instanceof Enemy) {
 					playSound(ModSoundEvents.GENERIC_GROWL.get(), getSoundVolume(), getVoicePitch());
 					double offset = getBbWidth() * 0.5d;
-					((ServerLevel) level).sendParticles(ParticleTypes.ANGRY_VILLAGER, getX(), getY(1d) - 0.2d, getZ(), 3, offset, 0.1d, offset, 1);
+					((ServerLevel) level()).sendParticles(ParticleTypes.ANGRY_VILLAGER, getX(), getY(1d) - 0.2d, getZ(), 3, offset, 0.1d, offset, 1);
 				}
 				else {
 					playSound(ModSoundEvents.GENERIC_MEW_PURR.get(), getSoundVolume(), getVoicePitch());
 					double offset = getBbWidth() * 0.5d;
-					((ServerLevel) level).sendParticles(ParticleTypes.HEART, getX(), getY(1d) - 0.2d, getZ(), 3, offset, 0.1d, offset, 1);
+					((ServerLevel) level()).sendParticles(ParticleTypes.HEART, getX(), getY(1d) - 0.2d, getZ(), 3, offset, 0.1d, offset, 1);
 				}
 			}
 
-			return InteractionResult.sidedSuccess(level.isClientSide);
+			return InteractionResult.sidedSuccess(level().isClientSide);
 		}
 
 		return super.mobInteract(player, hand);
@@ -362,10 +366,10 @@ public abstract class FleshBlob extends PathfinderMob implements Fleshkin, JumpM
 		}
 	}
 
-	protected <E extends IAnimatable> PlayState handleJumpAnimation(AnimationEvent<E> event) {
+	protected <T extends FleshBlob> PlayState handleJumpAnimation(AnimationState<T> event) {
 		float jumpPct = jumpMoveHelper.getJumpCompletionPct(event.getPartialTick());
 		if (jumpPct > 0) {
-			event.getController().transitionLengthTicks = 0;
+			event.getController().transitionLength(0);
 			if (jumpPct <= 0.28f) {
 				event.getController().setAnimation(JUMP_START_ANIMATION);
 			}
@@ -377,29 +381,29 @@ public abstract class FleshBlob extends PathfinderMob implements Fleshkin, JumpM
 			}
 		}
 		else {
-			event.getController().transitionLengthTicks = 10;
+			event.getController().transitionLength(10);
 			event.getController().setAnimation(ON_GROUND_ANIMATION);
 		}
 		return PlayState.CONTINUE;
 	}
 
-	protected <E extends IAnimatable> PlayState handleDanceAnimation(AnimationEvent<E> event) {
+	protected <T extends FleshBlob> PlayState handleDanceAnimation(AnimationState<T> state) {
 		if (isDancing()) {
-			event.getController().setAnimation(DANCE_ANIMATION);
+			state.getController().setAnimation(DANCE_ANIMATION);
 			return PlayState.CONTINUE;
 		}
 		return PlayState.STOP;
 	}
 
 	@Override
-	public void registerControllers(AnimationData data) {
-		data.addAnimationController(new AnimationController<>(this, "jumpController", 0, this::handleJumpAnimation));
-		data.addAnimationController(new AnimationController<>(this, "danceController", 10, this::handleDanceAnimation));
+	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+		controllers.add(new AnimationController<>(this, "jump", 0, this::handleJumpAnimation));
+		controllers.add(new AnimationController<>(this, "dance", 10, this::handleDanceAnimation));
 	}
 
 	@Override
-	public AnimationFactory getFactory() {
-		return animationFactory;
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return cache;
 	}
 
 	protected class JukeboxListener implements GameEventListener {
@@ -422,13 +426,13 @@ public abstract class FleshBlob extends PathfinderMob implements Fleshkin, JumpM
 		}
 
 		@Override
-		public boolean handleGameEvent(ServerLevel pLevel, GameEvent.Message message) {
-			if (message.gameEvent() == GameEvent.JUKEBOX_PLAY) {
-				setJukeboxPlaying(new BlockPos(message.source()), true);
+		public boolean handleGameEvent(ServerLevel level, GameEvent gameEvent, GameEvent.Context context, Vec3 pos) {
+			if (gameEvent == GameEvent.JUKEBOX_PLAY) {
+				setJukeboxPlaying(BlockPos.containing(pos), true);
 				return true;
 			}
-			else if (message.gameEvent() == GameEvent.JUKEBOX_STOP_PLAY) {
-				setJukeboxPlaying(new BlockPos(message.source()), false);
+			else if (gameEvent == GameEvent.JUKEBOX_STOP_PLAY) {
+				setJukeboxPlaying(BlockPos.containing(pos), false);
 				return true;
 			}
 

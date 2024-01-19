@@ -13,14 +13,14 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class BloomberryProjectile extends BaseProjectile implements IAnimatable {
+public class BloomberryProjectile extends BaseProjectile implements GeoEntity {
 
-	protected final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
 	public BloomberryProjectile(EntityType<? extends BloomberryProjectile> entityType, Level level) {
 		super(entityType, level);
@@ -48,7 +48,7 @@ public class BloomberryProjectile extends BaseProjectile implements IAnimatable 
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
-		if (level instanceof ServerLevel serverLevel) {
+		if (level() instanceof ServerLevel serverLevel) {
 			Direction direction = result.getDirection();
 			PrimordialEcosystem.placeBloomOrBlocks(serverLevel, result.getBlockPos(), direction);
 		}
@@ -58,9 +58,9 @@ public class BloomberryProjectile extends BaseProjectile implements IAnimatable 
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
-		if (level instanceof ServerLevel serverLevel) {
+		if (level() instanceof ServerLevel serverLevel) {
 			Direction direction = Direction.orderedByNearest(this)[0];
-			BlockPos pos = new BlockPos(result.getLocation());
+			BlockPos pos = BlockPos.containing(result.getLocation());
 			PrimordialEcosystem.placeBloomOrBlocks(serverLevel, pos, direction);
 		}
 		playSound(SoundEvents.SLIME_BLOCK_BREAK, 1, 1.2f / (random.nextFloat() * 0.2f + 0.9f));
@@ -72,12 +72,12 @@ public class BloomberryProjectile extends BaseProjectile implements IAnimatable 
 	}
 
 	@Override
-	public void registerControllers(AnimationData data) {
+	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
 		//do nothing
 	}
 
 	@Override
-	public AnimationFactory getFactory() {
-		return animationFactory;
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return cache;
 	}
 }

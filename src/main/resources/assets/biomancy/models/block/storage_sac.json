@@ -57,7 +57,7 @@
 			"children": [3]
 		}
 	],
-	"parts": {
+	"children": {
 		"first": {
 			"parent": "block/block",
 			"loader": "forge:elements",

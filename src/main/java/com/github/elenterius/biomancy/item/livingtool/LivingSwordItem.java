@@ -45,7 +45,7 @@ public class LivingSwordItem extends SwordItem implements CustomTooltipProvider,
 	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, Level level, Player player, EquipmentSlot slot, byte flags) {
 		if (!hasNutrients(stack)) {
 			player.displayClientMessage(TextComponentUtil.getFailureMsgText("not_enough_nutrients"), true);
-			player.playSound(SoundEvents.VILLAGER_NO, 0.8f, 0.8f + player.getLevel().getRandom().nextFloat() * 0.4f);
+			player.playSound(SoundEvents.VILLAGER_NO, 0.8f, 0.8f + player.level().getRandom().nextFloat() * 0.4f);
 			return InteractionResultHolder.fail(flags);
 		}
 
@@ -103,7 +103,7 @@ public class LivingSwordItem extends SwordItem implements CustomTooltipProvider,
 	}
 
 	protected void playSound(Player player, SoundEvent soundEvent) {
-		player.playSound(soundEvent, 0.8f, 0.8f + player.getLevel().getRandom().nextFloat() * 0.4f);
+		player.playSound(soundEvent, 0.8f, 0.8f + player.level().getRandom().nextFloat() * 0.4f);
 	}
 
 	@Override

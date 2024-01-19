@@ -10,8 +10,8 @@ import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import com.mojang.math.Matrix4f;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -20,7 +20,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import software.bernie.geckolib3.core.util.Color;
+import org.joml.Matrix4f;
+import software.bernie.geckolib.core.object.Color;
 
 public class DevCannonScreen extends Screen {
 
@@ -116,16 +117,16 @@ public class DevCannonScreen extends Screen {
 	}
 
 	@Override
-	public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick) {
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		if (ticks < 0) return;
 		float time = ticks + partialTick;
 		if (time > DURATION) {
 			time = DURATION;
 		}
-		renderWheel(poseStack, mouseX, mouseY, time / DURATION);
+		renderWheel(guiGraphics, mouseX, mouseY, time / DURATION);
 	}
 
-	private void renderWheel(PoseStack poseStack, int mouseX, int mouseY, float pct) {
+	private void renderWheel(GuiGraphics guiGraphics, int mouseX, int mouseY, float pct) {
 		if (ModProjectiles.PRECONFIGURED_PROJECTILES.isEmpty()) return;
 
 		ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
@@ -137,6 +138,7 @@ public class DevCannonScreen extends Screen {
 		float y = height / 2f;
 
 		int radius = Mth.floor(baseRadius * pct);
+		int blitOffset = 0;
 
 		float upperBound = segments * angleIncrement - Mth.HALF_PI + angleIncrement / 2f;
 		float lowerBound = -Mth.HALF_PI - angleIncrement / 2f;
@@ -154,16 +156,18 @@ public class DevCannonScreen extends Screen {
 
 			int color = isMouseInSection ? ColorStyles.GENERIC_TOOLTIP.borderStartColor() & 0xFAFFFFFF : ColorStyles.GENERIC_TOOLTIP.backgroundColor() & 0xE0FFFFFF; //decrease alpha
 
-			drawSegment(poseStack, x, y, radius, currentAngle - angleIncrement / 2f, currentAngle, color, getBlitOffset());
-			drawSegment(poseStack, x, y, radius, currentAngle, currentAngle + angleIncrement / 2f, color, getBlitOffset());
+			drawSegment(guiGraphics, x, y, radius, currentAngle - angleIncrement / 2f, currentAngle, color, blitOffset);
+			drawSegment(guiGraphics, x, y, radius, currentAngle, currentAngle + angleIncrement / 2f, color, blitOffset);
 
 			float v = x + radius * Mth.cos(currentAngle); //polar to cartesian
 			float w = y + radius * Mth.sin(currentAngle);
 
-			if (idx == 0) itemRenderer.renderAndDecorateFakeItem(cachedBarrierStack, Mth.floor(v - 8), Mth.floor(w - 8));
+			if (idx == 0) {
+				guiGraphics.renderFakeItem(cachedBarrierStack, Mth.floor(v - 8), Mth.floor(w - 8));
+			}
 			else {
-				int argb = Color.HSBtoRGB(idx / (float) segments, 0.75f, 0.5f);
-				GuiRenderUtil.fill(poseStack, v - 8, w - 8, v + 8, w + 8, getBlitOffset(), argb);
+				int argb = Color.HSBtoARGB(idx / (float) segments, 0.75f, 0.5f);
+				GuiRenderUtil.fill(guiGraphics, v - 8, w - 8, v + 8, w + 8, blitOffset, argb);
 			}
 
 			if (isMouseInSection) {
@@ -191,21 +195,21 @@ public class DevCannonScreen extends Screen {
 			xt -= lineWidth;
 		}
 
-		poseStack.pushPose();
+		guiGraphics.pose().pushPose();
 		float minX = xt - 3;
 		float minY = yt - font.lineHeight / 2f - 3;
 		float maxX = xt + lineWidth + 2;
 		float maxY = yt + font.lineHeight / 2f + 2;
-		GuiRenderUtil.fill(poseStack, minX, minY, maxX, maxY, getBlitOffset(), ColorStyles.GENERIC_TOOLTIP.backgroundColor() & 0xE0FFFFFF);
-		font.drawShadow(poseStack, text, xt, yt - font.lineHeight / 2f, ColorStyles.WHITE_ARGB);
-		poseStack.popPose();
+		GuiRenderUtil.fill(guiGraphics, minX, minY, maxX, maxY, blitOffset, ColorStyles.GENERIC_TOOLTIP.backgroundColor() & 0xE0FFFFFF);
+		guiGraphics.drawString(font, text, (int) xt, (int) (yt - font.lineHeight / 2f), ColorStyles.WHITE_ARGB, true);
+		guiGraphics.pose().popPose();
 	}
 
-	public void drawSegment(PoseStack poseStack, float x, float y, float radius, float startAngle, float endAngle, int argbColor, int blitOffset) {
-		Matrix4f matrix4f = poseStack.last().pose();
+	public void drawSegment(GuiGraphics guiGraphics, float x, float y, float radius, float startAngle, float endAngle, int argbColor, int z) {
+		Matrix4f matrix4f = guiGraphics.pose().last().pose();
 
 		RenderSystem.enableBlend();
-		RenderSystem.disableTexture();
+		//		RenderSystem.disableTexture();
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
@@ -213,16 +217,16 @@ public class DevCannonScreen extends Screen {
 		bufferBuilder.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
 
 		float innerRadius = Math.max(radius - 16, 0);
-		bufferBuilder.vertex(matrix4f, x + innerRadius * Mth.cos(startAngle), y + innerRadius * Mth.sin(startAngle), blitOffset).color(argbColor).endVertex();
-		bufferBuilder.vertex(matrix4f, x + innerRadius * Mth.cos(endAngle), y + innerRadius * Mth.sin(endAngle), blitOffset).color(argbColor).endVertex();
+		bufferBuilder.vertex(matrix4f, x + innerRadius * Mth.cos(startAngle), y + innerRadius * Mth.sin(startAngle), z).color(argbColor).endVertex();
+		bufferBuilder.vertex(matrix4f, x + innerRadius * Mth.cos(endAngle), y + innerRadius * Mth.sin(endAngle), z).color(argbColor).endVertex();
 
 		float outerRadius = radius + 16;
-		bufferBuilder.vertex(matrix4f, x + outerRadius * Mth.cos(endAngle), y + outerRadius * Mth.sin(endAngle), blitOffset).color(argbColor).endVertex();
-		bufferBuilder.vertex(matrix4f, x + outerRadius * Mth.cos(startAngle), y + outerRadius * Mth.sin(startAngle), blitOffset).color(argbColor).endVertex();
+		bufferBuilder.vertex(matrix4f, x + outerRadius * Mth.cos(endAngle), y + outerRadius * Mth.sin(endAngle), z).color(argbColor).endVertex();
+		bufferBuilder.vertex(matrix4f, x + outerRadius * Mth.cos(startAngle), y + outerRadius * Mth.sin(startAngle), z).color(argbColor).endVertex();
 
 		BufferUploader.draw(bufferBuilder.end());
 
-		RenderSystem.enableTexture();
+		//		RenderSystem.enableTexture();
 		RenderSystem.disableBlend();
 	}
 

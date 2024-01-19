@@ -1,10 +1,10 @@
 package com.github.elenterius.biomancy.block.property;
 
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.Rotation;
+import org.joml.Quaternionf;
 
 import java.util.Locale;
 
@@ -25,7 +25,7 @@ public enum DirectedConnection implements StringRepresentable {
 	public final Direction ingoing;
 	public final Direction outgoing;
 	private final boolean isStraight;
-	private Quaternion quaternion;
+	private Quaternionf quaternion;
 
 	DirectedConnection(Direction in, Direction out) {
 		ingoing = in;
@@ -33,86 +33,86 @@ public enum DirectedConnection implements StringRepresentable {
 		isStraight = in.getAxis() == out.getAxis();
 	}
 
-	private static Quaternion computeRotation(DirectedConnection connection) {
+	private static Quaternionf computeRotation(DirectedConnection connection) {
 		return switch (connection) {
-			case NORTH_DOWN, NORTH_SOUTH -> Vector3f.XP.rotationDegrees(-90);
+			case NORTH_DOWN, NORTH_SOUTH -> Axis.XP.rotationDegrees(-90);
 			case NORTH_EAST -> {
-				Quaternion quaternion = Vector3f.XP.rotationDegrees(-90);
-				quaternion.mul(Vector3f.YP.rotationDegrees(-90));
+				Quaternionf quaternion = Axis.XP.rotationDegrees(-90);
+				quaternion.mul(Axis.YP.rotationDegrees(-90));
 				yield quaternion;
 			}
 			case NORTH_WEST -> {
-				Quaternion quaternion = Vector3f.XP.rotationDegrees(-90);
-				quaternion.mul(Vector3f.YP.rotationDegrees(90));
+				Quaternionf quaternion = Axis.XP.rotationDegrees(-90);
+				quaternion.mul(Axis.YP.rotationDegrees(90));
 				yield quaternion;
 			}
 			case NORTH_UP -> {
-				Quaternion quaternion = Vector3f.XP.rotationDegrees(-90);
-				quaternion.mul(Vector3f.YP.rotationDegrees(-180));
+				Quaternionf quaternion = Axis.XP.rotationDegrees(-90);
+				quaternion.mul(Axis.YP.rotationDegrees(-180));
 				yield quaternion;
 			}
-			case SOUTH_UP, SOUTH_NORTH -> Vector3f.XP.rotationDegrees(90);
+			case SOUTH_UP, SOUTH_NORTH -> Axis.XP.rotationDegrees(90);
 			case SOUTH_EAST -> {
-				Quaternion quaternion = Vector3f.XP.rotationDegrees(90);
-				quaternion.mul(Vector3f.YP.rotationDegrees(-90));
+				Quaternionf quaternion = Axis.XP.rotationDegrees(90);
+				quaternion.mul(Axis.YP.rotationDegrees(-90));
 				yield quaternion;
 			}
 			case SOUTH_WEST -> {
-				Quaternion quaternion = Vector3f.XP.rotationDegrees(90);
-				quaternion.mul(Vector3f.YP.rotationDegrees(90));
+				Quaternionf quaternion = Axis.XP.rotationDegrees(90);
+				quaternion.mul(Axis.YP.rotationDegrees(90));
 				yield quaternion;
 			}
 			case SOUTH_DOWN -> {
-				Quaternion quaternion = Vector3f.XP.rotationDegrees(90);
-				quaternion.mul(Vector3f.YP.rotationDegrees(-180));
+				Quaternionf quaternion = Axis.XP.rotationDegrees(90);
+				quaternion.mul(Axis.YP.rotationDegrees(-180));
 				yield quaternion;
 			}
-			case EAST_WEST, EAST_NORTH -> Vector3f.ZP.rotationDegrees(-90);
+			case EAST_WEST, EAST_NORTH -> Axis.ZP.rotationDegrees(-90);
 			case EAST_SOUTH -> {
-				Quaternion quaternion = Vector3f.ZP.rotationDegrees(90);
-				quaternion.mul(Vector3f.XP.rotationDegrees(-180));
+				Quaternionf quaternion = Axis.ZP.rotationDegrees(90);
+				quaternion.mul(Axis.XP.rotationDegrees(-180));
 				yield quaternion;
 			}
 			case EAST_UP -> {
-				Quaternion quaternion = Vector3f.ZP.rotationDegrees(-90);
-				quaternion.mul(Vector3f.YP.rotationDegrees(90));
+				Quaternionf quaternion = Axis.ZP.rotationDegrees(-90);
+				quaternion.mul(Axis.YP.rotationDegrees(90));
 				yield quaternion;
 			}
 			case EAST_DOWN -> {
-				Quaternion quaternion = Vector3f.ZP.rotationDegrees(-90);
-				quaternion.mul(Vector3f.YP.rotationDegrees(-90));
+				Quaternionf quaternion = Axis.ZP.rotationDegrees(-90);
+				quaternion.mul(Axis.YP.rotationDegrees(-90));
 				yield quaternion;
 			}
-			case WEST_NORTH, WEST_EAST -> Vector3f.ZP.rotationDegrees(90);
+			case WEST_NORTH, WEST_EAST -> Axis.ZP.rotationDegrees(90);
 			case WEST_SOUTH -> {
-				Quaternion quaternion = Vector3f.ZP.rotationDegrees(-90);
-				quaternion.mul(Vector3f.XP.rotationDegrees(-180));
+				Quaternionf quaternion = Axis.ZP.rotationDegrees(-90);
+				quaternion.mul(Axis.XP.rotationDegrees(-180));
 				yield quaternion;
 			}
 			case WEST_UP -> {
-				Quaternion quaternion = Vector3f.ZP.rotationDegrees(90);
-				quaternion.mul(Vector3f.YP.rotationDegrees(-90));
+				Quaternionf quaternion = Axis.ZP.rotationDegrees(90);
+				quaternion.mul(Axis.YP.rotationDegrees(-90));
 				yield quaternion;
 			}
 			case WEST_DOWN -> {
-				Quaternion quaternion = Vector3f.ZP.rotationDegrees(90);
-				quaternion.mul(Vector3f.YP.rotationDegrees(90));
+				Quaternionf quaternion = Axis.ZP.rotationDegrees(90);
+				quaternion.mul(Axis.YP.rotationDegrees(90));
 				yield quaternion;
 			}
-			case UP_NORTH, UP_DOWN -> Quaternion.ONE.copy();
-			case UP_SOUTH -> Vector3f.YP.rotationDegrees(-180);
-			case UP_EAST -> Vector3f.YP.rotationDegrees(-90);
-			case UP_WEST -> Vector3f.YP.rotationDegrees(90);
-			case DOWN_NORTH, DOWN_UP -> Vector3f.ZP.rotationDegrees(-180);
-			case DOWN_SOUTH -> Vector3f.XP.rotationDegrees(-180);
+			case UP_NORTH, UP_DOWN -> new Quaternionf(); //TODO: verify
+			case UP_SOUTH -> Axis.YP.rotationDegrees(-180);
+			case UP_EAST -> Axis.YP.rotationDegrees(-90);
+			case UP_WEST -> Axis.YP.rotationDegrees(90);
+			case DOWN_NORTH, DOWN_UP -> Axis.ZP.rotationDegrees(-180);
+			case DOWN_SOUTH -> Axis.XP.rotationDegrees(-180);
 			case DOWN_EAST -> {
-				Quaternion quaternion = Vector3f.ZP.rotationDegrees(-180);
-				quaternion.mul(Vector3f.YP.rotationDegrees(90));
+				Quaternionf quaternion = Axis.ZP.rotationDegrees(-180);
+				quaternion.mul(Axis.YP.rotationDegrees(90));
 				yield quaternion;
 			}
 			case DOWN_WEST -> {
-				Quaternion quaternion = Vector3f.ZP.rotationDegrees(-180);
-				quaternion.mul(Vector3f.YP.rotationDegrees(-90));
+				Quaternionf quaternion = Axis.ZP.rotationDegrees(-180);
+				quaternion.mul(Axis.YP.rotationDegrees(-90));
 				yield quaternion;
 			}
 		};
@@ -136,12 +136,12 @@ public enum DirectedConnection implements StringRepresentable {
 	/**
 	 * do not modify
 	 */
-	public Quaternion getUnsafeQuaternion() {
+	public Quaternionf getUnsafeQuaternion() {
 		return quaternion;
 	}
 
-	public Quaternion getQuaternion() {
-		return quaternion.copy();
+	public Quaternionf getQuaternion() {
+		return new Quaternionf(quaternion);
 	}
 
 	public DirectedConnection rotate(Rotation rotation) {

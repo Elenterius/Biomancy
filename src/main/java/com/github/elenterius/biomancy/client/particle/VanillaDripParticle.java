@@ -62,7 +62,7 @@ public class VanillaDripParticle extends TextureSheetParticle {
 				xd *= 0.9800000190734863;
 				yd *= 0.9800000190734863;
 				zd *= 0.9800000190734863;
-				BlockPos blockPos = new BlockPos(x, y, z);
+				BlockPos blockPos = BlockPos.containing(x, y, z);
 				FluidState fluidState = level.getFluidState(blockPos);
 				if (fluidState.getType() == type && y < (blockPos.getY() + fluidState.getHeight(level, blockPos))) {
 					remove();

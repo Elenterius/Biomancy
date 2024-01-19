@@ -51,7 +51,7 @@ public final class CommonSetupHandler {
 		BiomancyMod.LOGGER.info("dumping biome default temperatures to biome_temperatures.csv...");
 		try {
 			Stream<String> stringStream = ForgeRegistries.BIOMES.getEntries().stream()
-					.map(keyEntry -> "%s,%s,%s".formatted(keyEntry.getKey().location(), keyEntry.getValue().getBaseTemperature(), keyEntry.getValue().getDownfall()));
+					.map(keyEntry -> "%s,%s,%s".formatted(keyEntry.getKey().location(), keyEntry.getValue().getBaseTemperature(), keyEntry.getValue().getModifiedClimateSettings().downfall()));
 
 			Files.write(Paths.get("biome_temperatures.csv"), (Iterable<String>) stringStream::iterator);
 		}

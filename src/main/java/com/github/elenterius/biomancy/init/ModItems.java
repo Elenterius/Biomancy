@@ -87,28 +87,27 @@ public final class ModItems {
 	public static final RegistryObject<BucketItem> ACID_BUCKET = registerItem("acid_bucket", properties -> new BucketItem(ModFluids.ACID, properties.craftRemainder(Items.BUCKET).stacksTo(1).rarity(Rarity.COMMON)));
 
 	//# Misc
-	public static final RegistryObject<GiftSacItem> GIFT_SAC = registerItem("gift_sac", props -> new GiftSacItem(props.stacksTo(1).rarity(ModRarities.ULTRA_RARE).tab(null)));
+	public static final RegistryObject<GiftSacItem> GIFT_SAC = registerItem("gift_sac", props -> new GiftSacItem(props.stacksTo(1).rarity(ModRarities.ULTRA_RARE)));
 	public static final RegistryObject<SimpleItem> CREATOR_MIX = registerSimpleItem("creator_mix");
 	public static final RegistryObject<FertilizerItem> FERTILIZER = registerItem("fertilizer", props -> new FertilizerItem(props.rarity(ModRarities.UNCOMMON)));
-	public static final RegistryObject<EssenceItem> ESSENCE = registerItem("essence", props -> new EssenceItem(props.tab(null)));
-	public static final RegistryObject<BioExtractorItem> BIO_EXTRACTOR = registerItem("bio_extractor", props -> new BioExtractorItem(props.durability(200).tab(null)));
+	public static final RegistryObject<EssenceItem> ESSENCE = registerItem("essence", EssenceItem::new);
+	public static final RegistryObject<BioExtractorItem> BIO_EXTRACTOR = registerItem("bio_extractor", props -> new BioExtractorItem(props.durability(200)));
 	public static final RegistryObject<InjectorItem> INJECTOR = registerItem("injector", props -> new InjectorItem(props.durability(200).rarity(ModRarities.RARE)));
-	public static final RegistryObject<GuideBookItem> GUIDE_BOOK = registerItem("guide_book", props -> new GuideBookItem(props.stacksTo(1).rarity(ModRarities.RARE).tab(null)));
-	//	public static final RegistryObject<ControlStaffItem> CONTROL_STAFF = registerItem("control_staff", props -> new ControlStaffItem(props.stacksTo(1).rarity(ModRarities.ULTRA_RARE)));
+	public static final RegistryObject<GuideBookItem> GUIDE_BOOK = registerItem("guide_book", props -> new GuideBookItem(props.stacksTo(1).rarity(ModRarities.RARE)));
 
 	public static final RegistryObject<MaykerBannerPatternItem> MASCOT_BANNER_PATTERNS = registerItem("mascot_patterns", props -> new MaykerBannerPatternItem(ModBannerPatterns.TAG_MASCOT, props));
 
 	//# Weapons
 	public static final RegistryObject<DespoilingSwordItem> DESPOIL_SICKLE = registerItem("despoil_sickle", props -> SwordSmithy.forge(DespoilingSwordItem::new, ModTiers.PRIMAL_FLESH, 12, 1, props.rarity(ModRarities.VERY_RARE)));
-	public static final RegistryObject<ToxicusItem> TOXICUS = registerItem("toxicus", props -> SwordSmithy.forge(ToxicusItem::new, ModTiers.LESSER_BIO_FLESH, 14, 0.7f, props.tab(null)));
+	public static final RegistryObject<ToxicusItem> TOXICUS = registerItem("toxicus", props -> SwordSmithy.forge(ToxicusItem::new, ModTiers.LESSER_BIO_FLESH, 14, 0.7f, props));
 	public static final RegistryObject<RavenousClawsItem> RAVENOUS_CLAWS = registerItem("ravenous_claws", props -> new RavenousClawsItem(ModTiers.BIOFLESH, 3, 4, 250, props.setNoRepair().rarity(ModRarities.VERY_RARE)));
-	public static final RegistryObject<DevArmCannonItem> DEV_ARM_CANNON = registerItem("dev_arm_cannon", props -> new DevArmCannonItem(props.stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE).tab(null)));
-	public static final RegistryObject<BileSpitterItem> BILE_SPITTER = registerItem("bile_spitter", props -> new BileSpitterItem(props.stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE).tab(null)));
+	public static final RegistryObject<DevArmCannonItem> DEV_ARM_CANNON = registerItem("dev_arm_cannon", props -> new DevArmCannonItem(props.stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE)));
+	public static final RegistryObject<BileSpitterItem> BILE_SPITTER = registerItem("bile_spitter", props -> new BileSpitterItem(props.stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE)));
 
 	//# Food/Fuel
 	public static final RegistryObject<EffectCureItem> NUTRIENT_PASTE = registerItem("nutrient_paste", props -> new EffectCureItem(props.food(ModFoods.NUTRIENT_PASTE)));
 	public static final RegistryObject<EffectCureItem> NUTRIENT_BAR = registerItem("nutrient_bar", props -> new EffectCureItem(props.food(ModFoods.NUTRIENT_BAR)));
-	public static final RegistryObject<SapberryItem> BLOOMBERRY = registerItem("bloomberry", props -> new SapberryItem(props.food(ModFoods.NUTRIENT_PASTE)));
+	public static final RegistryObject<BloomberryItem> BLOOMBERRY = registerItem("bloomberry", props -> new BloomberryItem(props.food(ModFoods.NUTRIENT_PASTE)));
 
 	//# Block Items
 
@@ -122,7 +121,7 @@ public final class ModItems {
 	//## Storage & Automation
 	public static final RegistryObject<SimpleBlockItem> TONGUE = registerSimpleBlockItem(ModBlocks.TONGUE, ModRarities.UNCOMMON);
 	public static final RegistryObject<SimpleBlockItem> MAW_HOPPER = registerSimpleBlockItem(ModBlocks.MAW_HOPPER, ModRarities.UNCOMMON);
-	public static final RegistryObject<SimpleBlockItem> FLESHKIN_CHEST = registerBlockItem(ModBlocks.FLESHKIN_CHEST, FleshkinChestBlockItem::new, ModRarities.UNCOMMON);
+	public static final RegistryObject<FleshkinChestBlockItem> FLESHKIN_CHEST = registerBlockItem(ModBlocks.FLESHKIN_CHEST, FleshkinChestBlockItem::new, ModRarities.UNCOMMON);
 	public static final RegistryObject<StorageSacBlockItem> STORAGE_SAC = registerBlockItem(ModBlocks.STORAGE_SAC, StorageSacBlockItem::new);
 
 	//## Ownable
@@ -158,7 +157,7 @@ public final class ModItems {
 	public static final RegistryObject<ObfuscatedTooltipBlockItem> PRIMAL_ORIFICE = registerBlockItem(ModBlocks.PRIMAL_ORIFICE, ObfuscatedTooltipBlockItem::new);
 
 	//## Utility
-	//	public static final RegistryObject<SimpleBlockItem> VOICE_BOX = registerSimpleBlockItem(ModBlocks.VOICE_BOX, () -> createProperties().tab(null));
+	//	public static final RegistryObject<SimpleBlockItem> VOICE_BOX = registerSimpleBlockItem(ModBlocks.VOICE_BOX, () -> createProperties());
 	public static final RegistryObject<SimpleBlockItem> IMPERMEABLE_MEMBRANE = registerSimpleBlockItem(ModBlocks.IMPERMEABLE_MEMBRANE);
 	public static final RegistryObject<SimpleBlockItem> BABY_PERMEABLE_MEMBRANE = registerSimpleBlockItem(ModBlocks.BABY_PERMEABLE_MEMBRANE);
 	public static final RegistryObject<SimpleBlockItem> ADULT_PERMEABLE_MEMBRANE = registerSimpleBlockItem(ModBlocks.ADULT_PERMEABLE_MEMBRANE);
@@ -248,7 +247,7 @@ public final class ModItems {
 	}
 
 	private static Item.Properties createProperties() {
-		return new Item.Properties().tab(BiomancyMod.CREATIVE_TAB).rarity(ModRarities.COMMON);
+		return new Item.Properties().rarity(ModRarities.COMMON);
 	}
 
 	private static RegistryObject<SimpleItem> registerSimpleItem(String name, Supplier<Item.Properties> properties) {

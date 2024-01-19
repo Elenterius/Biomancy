@@ -21,8 +21,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.Lazy;
 
-import java.util.Objects;
-
 public class ToothProjectile extends BaseProjectile implements ItemSupplier {
 
 	public ToothProjectile(EntityType<? extends BaseProjectile> entityType, Level world) {
@@ -47,8 +45,8 @@ public class ToothProjectile extends BaseProjectile implements ItemSupplier {
 			livingEntity.setLastHurtMob(victim);
 		}
 
-		boolean success = victim.hurt(ModDamageSources.createProjectileDamage(this, Objects.requireNonNullElse(shooter, this)), getDamage());
-		if (success && victim instanceof LivingEntity && !level.isClientSide) {
+		boolean success = victim.hurt(ModDamageSources.toothProjectile(level(), this, shooter), getDamage());
+		if (success && victim instanceof LivingEntity && !level().isClientSide) {
 			if (getKnockback() > 0) {
 				Vec3 vector3d = getDeltaMovement().multiply(1, 0, 1).normalize().scale(getKnockback() * 0.6d);
 				if (vector3d.lengthSqr() > 0d) {

@@ -5,17 +5,16 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.geo.render.built.GeoBone;
-import software.bernie.geckolib3.renderers.geo.GeoItemRenderer;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
+import software.bernie.geckolib.cache.object.GeoBone;
+import software.bernie.geckolib.renderer.GeoItemRenderer;
 
 public class InjectorRenderer extends GeoItemRenderer<InjectorItem> {
 
-	private TransformType currentTransformType;
+	private ItemDisplayContext currentTransformType;
 	private int serumColor = -1;
 
 	public InjectorRenderer() {
@@ -23,48 +22,44 @@ public class InjectorRenderer extends GeoItemRenderer<InjectorItem> {
 	}
 
 	@Override
-	public void renderByItem(ItemStack stack, TransformType transformType, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
-		currentTransformType = transformType;
-		super.renderByItem(stack, transformType, poseStack, buffer, packedLight, packedOverlay);
+	public void renderByItem(ItemStack stack, ItemDisplayContext displayContext, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+		currentTransformType = displayContext;
+		super.renderByItem(stack, displayContext, poseStack, buffer, packedLight, packedOverlay);
 	}
 
 	@Override
-	public void render(InjectorItem item, PoseStack poseStack, MultiBufferSource bufferIn, int packedLight, ItemStack itemStack) {
-		serumColor = item.getSerum(itemStack).getColor();
-		super.render(item, poseStack, bufferIn, packedLight, itemStack);
+	public void preRender(PoseStack poseStack, InjectorItem item, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		serumColor = item.getSerum(getCurrentItemStack()).getColor();
+		super.preRender(poseStack, item, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
 	}
 
 	@Override
-	public void renderRecursively(GeoBone bone, PoseStack stack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		if (bone.name.equals("_serum_core")) {
-			renderSerumBone(bone, stack, buffer, packedLight, packedOverlay, alpha);
+	public void renderRecursively(PoseStack poseStack, InjectorItem item, GeoBone bone, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		if (bone.getName().equals("_serum_core")) {
+			renderSerumBone(poseStack, item, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, alpha);
 		}
 		else {
-			super.renderRecursively(bone, stack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+			super.renderRecursively(poseStack, item, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
 		}
 	}
 
-	private void renderSerumBone(GeoBone bone, PoseStack stack, VertexConsumer buffer, int packedLight, int packedOverlay, float alpha) {
+	private void renderSerumBone(PoseStack poseStack, InjectorItem item, GeoBone bone, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float alpha) {
 		if (serumColor == -1) return; //don't render
 		float r = FastColor.ARGB32.red(serumColor) / 255f;
 		float g = FastColor.ARGB32.green(serumColor) / 255f;
 		float b = FastColor.ARGB32.blue(serumColor) / 255f;
-		super.renderRecursively(bone, stack, buffer, packedLight, packedOverlay, r, g, b, alpha);
+		super.renderRecursively(poseStack, item, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, r, g, b, alpha);
 	}
 
-	@Override
-	public RenderType getRenderType(InjectorItem item, float partialTicks, PoseStack stack, @Nullable MultiBufferSource buffer, @Nullable VertexConsumer vertexBuilder, int packedLight, ResourceLocation texture) {
-		return RenderType.entityTranslucentCull(texture);
-	}
+	//	@Override
+	//	protected void renderInGui(ItemDisplayContext transformType, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+	//		//don't render in GUI
+	//	}
 
 	@Override
-	public int getInstanceId(InjectorItem item) {
-		if (currentTransformType == TransformType.GUI) return -1; //don't render animation in GUI
+	public long getInstanceId(InjectorItem item) {
+		if (currentTransformType == ItemDisplayContext.GUI) return -1L; //don't render animation in GUI
 		return super.getInstanceId(animatable);
-	}
-
-	public ItemStack getCurrentItemStack() {
-		return currentItemStack;
 	}
 
 }

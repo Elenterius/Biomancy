@@ -86,7 +86,7 @@ public class FleshSpikeBlock extends WaterloggedFacingBlock {
 	public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
 		if (getFacing(state) == Direction.UP) {
 			int spikes = getSpikes(state);
-			entity.causeFallDamage(fallDistance + 2f, 1f + spikes * 0.5f, ModDamageSources.FALL_ON_SPIKE);
+			entity.causeFallDamage(fallDistance + 2f, 1f + spikes * 0.5f, ModDamageSources.fallOnSpike(level, pos));
 		}
 		else super.fallOn(level, state, pos, entity, fallDistance);
 	}
@@ -106,7 +106,7 @@ public class FleshSpikeBlock extends WaterloggedFacingBlock {
 		if (!level.isClientSide) {
 			boolean isMovingAwayCorrectly = entity.getMotionDirection() == direction;
 			int spikes = getSpikes(state);
-			entity.hurt(ModDamageSources.IMPALED_BY_SPIKE, spikes + (!isMovingAwayCorrectly ? 0.5f : 0f));
+			entity.hurt(ModDamageSources.impaleBySpike(level, pos), spikes + (!isMovingAwayCorrectly ? 0.5f : 0f));
 		}
 	}
 

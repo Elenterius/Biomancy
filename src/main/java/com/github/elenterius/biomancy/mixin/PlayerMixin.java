@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.mixin;
 
-import com.github.elenterius.biomancy.init.ModDamageSources;
+import com.github.elenterius.biomancy.init.ModDamageTypes;
 import com.github.elenterius.biomancy.item.SweepAttackListener;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
@@ -15,13 +15,13 @@ public class PlayerMixin {
 
 	@ModifyVariable(method = "hurtArmor", at = @At(value = "HEAD"), argsOnly = true)
 	private float modifyArmorDamage(float damage, DamageSource damageSource) {
-		return ModDamageSources.isCorrosive(damageSource) ? damage * 1.2f : damage;
+		return damageSource.is(ModDamageTypes.CORROSIVE_ACID) ? damage * 1.2f : damage;
 	}
 
 	@Inject(method = "sweepAttack", at = @At(value = "HEAD"), cancellable = true)
 	private void onSweepAttack(CallbackInfo ci) {
 		Player player = (Player) (Object) this;
-		if (player.getMainHandItem().getItem() instanceof SweepAttackListener listener && listener.onSweepAttack(player.level, player)) {
+		if (player.getMainHandItem().getItem() instanceof SweepAttackListener listener && listener.onSweepAttack(player.level(), player)) {
 			ci.cancel();
 		}
 	}

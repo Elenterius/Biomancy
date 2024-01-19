@@ -5,7 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 
-public class TemperatureUtil {
+public class ClimateUtil {
 	public static final float MIN_TEMP = -0.7f; //frozen peaks biome
 	public static final float MAX_TEMP = 2; //desert biome
 	public static final float TEMP_DIFF = MAX_TEMP - MIN_TEMP;
@@ -30,4 +30,9 @@ public class TemperatureUtil {
 	public static float getTemperature(Biome biome, BlockPos pos) {
 		return ((BiomeAccessor) (Object) biome).biomancy$getTemperature(pos);
 	}
+
+	public static float getHumidity(Biome biome) {
+		return biome.getModifiedClimateSettings().downfall();
+	}
+
 }

@@ -2,10 +2,15 @@ package com.github.elenterius.biomancy.client.render.entity.fleshblob;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.entity.fleshblob.EaterFleshBlob;
+import com.github.elenterius.biomancy.init.client.ModRenderTypes;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class LegacyFleshBlobModel<T extends EaterFleshBlob> extends AnimatedGeoModel<T> {
+import java.util.Locale;
+
+public class LegacyFleshBlobModel<T extends EaterFleshBlob> extends GeoModel<T> {
 
 	protected static final ResourceLocation TEXTURE = BiomancyMod.createRL("textures/entity/flesh_blob/flesh_blob_legacy.png");
 
@@ -22,6 +27,20 @@ public class LegacyFleshBlobModel<T extends EaterFleshBlob> extends AnimatedGeoM
 	@Override
 	public ResourceLocation getAnimationResource(T fleshBlob) {
 		return FleshBlobModel.ANIMATION;
+	}
+
+	@Override
+	public RenderType getRenderType(T fleshBlob, ResourceLocation texture) {
+		if (fleshBlob.hasCustomName()) {
+			Component customName = fleshBlob.getCustomName();
+			if (customName != null) {
+				String name = customName.getContents().toString().toLowerCase(Locale.ENGLISH);
+				if (name.contains("party_blob")) {
+					return ModRenderTypes.getCutoutPartyTime(texture);
+				}
+			}
+		}
+		return super.getRenderType(fleshBlob, texture);
 	}
 
 }

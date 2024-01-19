@@ -25,7 +25,6 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.IForgeShearable;
 import net.minecraftforge.common.ToolAction;
@@ -33,13 +32,11 @@ import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.common.util.Lazy;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 public class ClawsItem extends TieredItem implements Vanishable {
 
 	protected static final UUID BASE_ATTACK_RANGE_UUID = UUID.fromString("d76adb08-2bb3-4e88-997d-766a919f0f6b");
-	protected static final Set<Material> MINEABLE_WITH_CLAWS = Set.of(Material.PLANT, Material.REPLACEABLE_PLANT, Material.VEGETABLE);
 	protected final Lazy<Multimap<Attribute, AttributeModifier>> defaultAttributeModifiers;
 
 	public ClawsItem(Tier tier, float baseAttackDamage, float attackSpeedModifier, float attackRangeModifier, Properties properties) {
@@ -52,7 +49,7 @@ public class ClawsItem extends TieredItem implements Vanishable {
 		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
 		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", attackDamageModifier, AttributeModifier.Operation.ADDITION));
 		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", attackSpeedModifier, AttributeModifier.Operation.ADDITION));
-		builder.put(ForgeMod.ATTACK_RANGE.get(), new AttributeModifier(BASE_ATTACK_RANGE_UUID, "Weapon modifier", attackRangeModifier, AttributeModifier.Operation.ADDITION));
+		builder.put(ForgeMod.ENTITY_REACH.get(), new AttributeModifier(BASE_ATTACK_RANGE_UUID, "Weapon modifier", attackRangeModifier, AttributeModifier.Operation.ADDITION));
 		return builder;
 	}
 
@@ -102,7 +99,7 @@ public class ClawsItem extends TieredItem implements Vanishable {
 
 	@Override
 	public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity interactionTarget, InteractionHand usedHand) {
-		if (player.level.isClientSide()) return InteractionResult.PASS;
+		if (player.level().isClientSide()) return InteractionResult.PASS;
 		if (shearInteractionTarget(stack, player, interactionTarget, usedHand)) return InteractionResult.SUCCESS;
 		return InteractionResult.PASS;
 	}
@@ -111,17 +108,15 @@ public class ClawsItem extends TieredItem implements Vanishable {
 		if (state.is(Blocks.COBWEB)) return 15f;
 		if (state.is(BlockTags.LEAVES)) return 15f;
 		if (state.is(BlockTags.WOOL)) return 5f;
-
-		Material material = state.getMaterial();
-		return MINEABLE_WITH_CLAWS.contains(material) ? 1.5F : 1f;
+		return state.is(BlockTags.SWORD_EFFICIENT) ? 1.5F : 1f; //TODO: replace with claws specific tag
 	}
 
 	protected boolean shearInteractionTarget(ItemStack stack, Player player, LivingEntity targetEntity, InteractionHand usedHand) {
 		if (targetEntity instanceof IForgeShearable shearingTarget) {
 			BlockPos pos = targetEntity.blockPosition();
 
-			if (shearingTarget.isShearable(stack, targetEntity.level, pos)) {
-				List<ItemStack> drops = shearingTarget.onSheared(player, stack, targetEntity.level, pos, EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, stack));
+			if (shearingTarget.isShearable(stack, targetEntity.level(), pos)) {
+				List<ItemStack> drops = shearingTarget.onSheared(player, stack, targetEntity.level(), pos, EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_FORTUNE, stack));
 				RandomSource rand = player.getRandom();
 				drops.forEach(lootStack -> {
 					ItemEntity itemEntity = targetEntity.spawnAtLocation(lootStack, 1f);

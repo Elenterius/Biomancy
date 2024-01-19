@@ -13,13 +13,4 @@ public class FleshkinChestBlockItem extends SimpleBlockItem {
 		return true;
 	}
 
-	//	public boolean canFitInsideContainerItems(ItemStack stack) {
-	//		if (!stack.isEmpty()) {
-	//			CompoundTag nbt = stack.getTagElement("BlockEntityTag");
-	//			if (nbt == null) return true;
-	//			return nbt.getCompound("Inventory").isEmpty();
-	//		}
-	//		return false;
-	//	}
-
 }

@@ -5,6 +5,7 @@ import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.animal.CatVariant;
@@ -50,7 +51,10 @@ public class CatMorningGiftLootModifier extends LootModifier {
 		if (!(context.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof Cat cat)) return generatedLoot;
 
 		RandomSource random = context.getRandom();
-		boolean isBlackCat = cat.getCatVariant() == CatVariant.ALL_BLACK || cat.getCatVariant() == CatVariant.BLACK;
+
+		boolean isBlackCat = BuiltInRegistries.CAT_VARIANT.getResourceKey(cat.getVariant())
+				.filter(variant -> variant.equals(CatVariant.ALL_BLACK) || variant.equals(CatVariant.BLACK))
+				.isPresent();
 
 		for (int i = 0; i < generatedLoot.size(); i++) {
 			ItemStack stack = generatedLoot.get(i);

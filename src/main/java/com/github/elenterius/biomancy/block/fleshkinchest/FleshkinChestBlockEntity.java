@@ -6,9 +6,8 @@ import com.github.elenterius.biomancy.init.ModDamageSources;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.inventory.SimpleInventory;
 import com.github.elenterius.biomancy.menu.FleshkinChestMenu;
-import com.github.elenterius.biomancy.network.ISyncableAnimation;
-import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
+import com.github.elenterius.biomancy.util.animation.TriggerableAnimation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -32,24 +31,25 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.AnimationState;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implements IAnimatable, ISyncableAnimation {
+public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implements GeoBlockEntity {
 
 	public static final int SLOTS = 6 * 7;
 
 	private final SimpleInventory inventory;
-	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
 	private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
 		@Override
 		protected void onOpen(Level level, BlockPos pos, BlockState state) {
@@ -78,7 +78,6 @@ public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implem
 		}
 	};
 	private boolean lidShouldBeOpen = false;
-	private boolean playAttackAnimation = false;
 	private boolean lidIsOpen = false;
 
 	public FleshkinChestBlockEntity(BlockPos pos, BlockState state) {
@@ -114,18 +113,21 @@ public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implem
 
 	public void attack(Direction direction, @Nullable LivingEntity target) {
 		if (level != null && !level.isClientSide() && level instanceof ServerLevel serverLevel) {
-			if (target != null) target.hurt(ModDamageSources.CHEST_BITE, 4f);
-			attackAtPosition(serverLevel, getBlockPos().relative(direction), target);
+			BlockPos pos = getBlockPos();
+			if (target != null) {
+				target.hurt(ModDamageSources.chestBite(level, pos), 4f);
+			}
+			attackAtPosition(serverLevel, pos.relative(direction), target);
 		}
 	}
 
 	protected void attackAtPosition(ServerLevel level, BlockPos pos, @Nullable LivingEntity excludedEntity) {
-		ModNetworkHandler.sendAnimationToClients(this, 0, 0);
+		broadcastAnimation(Animations.BITE);
 
 		AABB aabb = new AABB(pos).inflate(0.25f);
 		List<Entity> victims = level.getEntities(excludedEntity, aabb, EntitySelector.LIVING_ENTITY_STILL_ALIVE);
 		for (Entity entity : victims) {
-			entity.hurt(ModDamageSources.CHEST_BITE, 2f);
+			entity.hurt(ModDamageSources.chestBite(level, pos), 2f);
 		}
 	}
 
@@ -189,58 +191,66 @@ public class FleshkinChestBlockEntity extends OwnableContainerBlockEntity implem
 		inventory.revive();
 	}
 
-	@Override
-	public void onAnimationSync(int id, int data) {
-		startAttackAnimation();
+	protected void broadcastAnimation(TriggerableAnimation animation) {
+		triggerAnim(animation.controller(), animation.name());
 	}
 
-	public void startAttackAnimation() {
-		playAttackAnimation = true;
-	}
-
-	public void stopAttackAnimation() {
-		playAttackAnimation = false;
-	}
-
-	private PlayState handleIdleAnim(AnimationEvent<FleshkinChestBlockEntity> event) {
-		if (playAttackAnimation) {
-			event.getController().setAnimation(Animations.BITE);
-			if (event.getController().getAnimationState() != AnimationState.Stopped) return PlayState.CONTINUE;
-			stopAttackAnimation();
-		}
+	private <T extends FleshkinChestBlockEntity> PlayState handleAnimationState(AnimationState<T> state) {
 
 		if (lidShouldBeOpen) {
-			event.getController().setAnimation(Animations.OPENING);
+			state.setAnimation(Animations.OPENING);
 			lidIsOpen = true;
 			return PlayState.CONTINUE;
 		}
 		else if (lidIsOpen) {
-			event.getController().setAnimation(Animations.CLOSING);
-			if (event.getController().getAnimationState() != AnimationState.Stopped) return PlayState.CONTINUE;
+			state.setAnimation(Animations.CLOSING);
+			if (state.getController().getAnimationState() != AnimationController.State.STOPPED) return PlayState.CONTINUE;
 			lidIsOpen = false;
 		}
 
-		event.getController().setAnimation(Animations.CLOSED);
+		if (!state.isCurrentAnimation(Animations.BITE.rawAnimation())) {
+			state.getController().setAnimation(Animations.CLOSED);
+		}
+
 		return PlayState.CONTINUE;
 	}
 
 	@Override
-	public void registerControllers(AnimationData data) {
-		data.addAnimationController(new AnimationController<>(this, "controller", 0, this::handleIdleAnim));
+	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+		AnimationController<FleshkinChestBlockEntity> controller = new AnimationController<>(this, Animations.MAIN_CONTROLLER, 0, this::handleAnimationState);
+		Animations.registerTriggerableAnimations(controller);
+		controllers.add(controller);
 	}
 
 	@Override
-	public AnimationFactory getFactory() {
-		return animationFactory;
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return cache;
 	}
 
-	protected static class Animations {
-		protected static final AnimationBuilder BITE = new AnimationBuilder().addAnimation("fleshkin_chest.bite");
-		protected static final AnimationBuilder OPENING = new AnimationBuilder().addAnimation("fleshkin_chest.open").addAnimation("fleshkin_chest.opened");
-		protected static final AnimationBuilder CLOSING = new AnimationBuilder().addAnimation("fleshkin_chest.close");
-		protected static final AnimationBuilder CLOSED = new AnimationBuilder().addAnimation("fleshkin_chest.closed");
+	protected static final class Animations {
+		private static final List<TriggerableAnimation> TRIGGERABLE_ANIMATIONS = new ArrayList<>();
+		static final String MAIN_CONTROLLER = "main";
+
+		static final TriggerableAnimation BITE = register(MAIN_CONTROLLER, "bite", RawAnimation.begin().thenPlay("fleshkin_chest.bite"));
+		static final RawAnimation OPENING = RawAnimation.begin().thenPlay("fleshkin_chest.open").thenPlay("fleshkin_chest.opened");
+		static final RawAnimation CLOSING = RawAnimation.begin().thenPlay("fleshkin_chest.close");
+		static final RawAnimation CLOSED = RawAnimation.begin().thenPlay("fleshkin_chest.closed");
 
 		private Animations() {}
+
+		static TriggerableAnimation register(String controller, String name, RawAnimation rawAnimation) {
+			TriggerableAnimation animation = new TriggerableAnimation(controller, name, rawAnimation);
+			TRIGGERABLE_ANIMATIONS.add(animation);
+			return animation;
+		}
+
+		static void registerTriggerableAnimations(AnimationController<?> controller) {
+			for (TriggerableAnimation animation : TRIGGERABLE_ANIMATIONS) {
+				if (animation.controller().equals(controller.getName())) {
+					controller.triggerableAnim(animation.name(), animation.rawAnimation());
+				}
+			}
+		}
 	}
 
 }

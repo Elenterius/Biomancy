@@ -27,7 +27,7 @@ class FullFleshDoorMovingInteraction extends SimpleBlockMovingInteraction {
 
 		if (player != null) {
 			SoundEvent soundEvent = doorBlock.isOpen(state) ? ModSoundEvents.FLESH_DOOR_OPEN.get() : ModSoundEvents.FLESH_DOOR_CLOSE.get();
-			float pitch = player.level.random.nextFloat() * 0.1f + 0.9f;
+			float pitch = player.level().random.nextFloat() * 0.1f + 0.9f;
 			playSound(player, soundEvent, pitch);
 		}
 
@@ -37,8 +37,8 @@ class FullFleshDoorMovingInteraction extends SimpleBlockMovingInteraction {
 	private void updateDoorPart(Contraption contraption, BlockPos pos, BlockState state, FullFleshDoorBlock doorBlock) {
 		BlockPos offsetPos = doorBlock.isLowerHalf(state) ? pos.above() : pos.below();
 		StructureTemplate.StructureBlockInfo info = contraption.getBlocks().get(offsetPos);
-		BlockState newState = info.state.setValue(FullFleshDoorBlock.OPEN, doorBlock.isOpen(state));
-		setContraptionBlockData(contraption.entity, offsetPos, new StructureTemplate.StructureBlockInfo(info.pos, newState, info.nbt));
+		BlockState newState = info.state().setValue(FullFleshDoorBlock.OPEN, doorBlock.isOpen(state));
+		setContraptionBlockData(contraption.entity, offsetPos, new StructureTemplate.StructureBlockInfo(info.pos(), newState, info.nbt()));
 	}
 
 	private void setDoubleDoorOpen(Contraption contraption, BlockPos pos, BlockState state, FullFleshDoorBlock doorBlock, boolean open) {
@@ -55,12 +55,12 @@ class FullFleshDoorMovingInteraction extends SimpleBlockMovingInteraction {
 		else return;
 
 		StructureTemplate.StructureBlockInfo info = contraption.getBlocks().get(otherPos);
-		if (!info.state.is(state.getBlock())) return;
-		if (info.state.getValue(FullFleshDoorBlock.ORIENTATION) != orientation || info.state.getValue(FullFleshDoorBlock.HINGE) == hinge) return;
+		if (!info.state().is(state.getBlock())) return;
+		if (info.state().getValue(FullFleshDoorBlock.ORIENTATION) != orientation || info.state().getValue(FullFleshDoorBlock.HINGE) == hinge) return;
 
-		if (doorBlock.isOpen(info.state) != open) { //only updated connected door if its open state mismatches the targetState
-			BlockState newState = info.state.setValue(FullFleshDoorBlock.OPEN, open);
-			setContraptionBlockData(contraption.entity, otherPos, new StructureTemplate.StructureBlockInfo(info.pos, newState, info.nbt));
+		if (doorBlock.isOpen(info.state()) != open) { //only updated connected door if its open state mismatches the targetState
+			BlockState newState = info.state().setValue(FullFleshDoorBlock.OPEN, open);
+			setContraptionBlockData(contraption.entity, otherPos, new StructureTemplate.StructureBlockInfo(info.pos(), newState, info.nbt()));
 			updateDoorPart(contraption, otherPos, newState, doorBlock);
 		}
 	}

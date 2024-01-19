@@ -40,22 +40,22 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.RegistryObject;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.SoundKeyframeEvent;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.keyframe.event.SoundKeyframeEvent;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, DecomposerStateData> implements MenuProvider, IAnimatable {
+public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, DecomposerStateData> implements MenuProvider, GeoBlockEntity {
 
 	public static final int FUEL_SLOTS = 1;
 	public static final int INPUT_SLOTS = DecomposerRecipe.MAX_INGREDIENTS;
@@ -64,8 +64,8 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	public static final int MAX_FUEL = 1_000;
 
 	public static final RegistryObject<SimpleRecipeType.ItemStackRecipeType<DecomposerRecipe>> RECIPE_TYPE = ModRecipes.DECOMPOSING_RECIPE_TYPE;
-	protected static final AnimationBuilder WORKING_ANIM = new AnimationBuilder().loop("decomposer.working");
-	protected static final AnimationBuilder IDLE_ANIM = new AnimationBuilder().loop("decomposer.idle");
+	protected static final RawAnimation WORKING_ANIM = RawAnimation.begin().thenLoop("decomposer.working");
+	protected static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("decomposer.idle");
 
 	private final DecomposerStateData stateData;
 	private final FuelHandler fuelHandler;
@@ -73,7 +73,7 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	private final BehavioralInventory<?> inputInventory;
 	private final BehavioralInventory<?> outputInventory;
 
-	private final AnimationFactory animationFactory = GeckoLibUtil.createFactory(this);
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	@Nullable
 	private DecomposerRecipeResult computedRecipeResult;
 
@@ -243,12 +243,12 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	}
 
 	private <T extends DecomposerBlockEntity> void onSoundKeyframe(final SoundKeyframeEvent<T> event) {
-		if (event.sound.equals("eat") && level != null && !isRemoved()) {
+		if (event.getKeyframeData().getSound().equals("eat") && level != null && !isRemoved()) {
 			SoundUtil.clientPlayBlockSound(level, getBlockPos(), ModSoundEvents.DECOMPOSER_EAT);
 		}
 	}
 
-	private <T extends DecomposerBlockEntity> PlayState onAnimation(final AnimationEvent<T> event) {
+	private <T extends DecomposerBlockEntity> PlayState handleAnimationState(final AnimationState<T> event) {
 		Boolean isCrafting = event.getAnimatable().getBlockState().getValue(MachineBlock.CRAFTING);
 
 		if (Boolean.TRUE.equals(isCrafting)) {
@@ -264,15 +264,15 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	}
 
 	@Override
-	public void registerControllers(AnimationData data) {
-		AnimationController<DecomposerBlockEntity> controller = new AnimationController<>(this, "controller", 10, this::onAnimation);
-		controller.registerSoundListener(this::onSoundKeyframe);
-		data.addAnimationController(controller);
+	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+		AnimationController<DecomposerBlockEntity> controller = new AnimationController<>(this, "controller", 10, this::handleAnimationState);
+		controller.setSoundKeyframeHandler(this::onSoundKeyframe);
+		controllers.add(controller);
 	}
 
 	@Override
-	public AnimationFactory getFactory() {
-		return animationFactory;
+	public AnimatableInstanceCache getAnimatableInstanceCache() {
+		return cache;
 	}
 
 

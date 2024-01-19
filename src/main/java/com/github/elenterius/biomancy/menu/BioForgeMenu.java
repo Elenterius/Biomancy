@@ -69,7 +69,7 @@ public class BioForgeMenu extends PlayerContainerMenu {
 		BehavioralInventory<?> fuelInventory = BehavioralInventory.createClientContents(BioForgeBlockEntity.FUEL_SLOTS);
 
 		BioForgeStateData stateData;
-		if (playerInventory.player.level.getBlockEntity(buffer.readBlockPos()) instanceof BioForgeBlockEntity bioForge) {
+		if (playerInventory.player.level().getBlockEntity(buffer.readBlockPos()) instanceof BioForgeBlockEntity bioForge) {
 			stateData = bioForge.getStateData();
 		}
 		else stateData = new BioForgeStateData();
@@ -79,7 +79,7 @@ public class BioForgeMenu extends PlayerContainerMenu {
 
 	@Override
 	protected void onPlayerMainInventoryChanged(Inventory inventory) {
-		if (!inventory.player.level.isClientSide && inventory.player instanceof ServerPlayer serverPlayer) {
+		if (!inventory.player.level().isClientSide && inventory.player instanceof ServerPlayer serverPlayer) {
 			trackPlayerInvChanges(serverPlayer, inventory);
 		}
 	}
@@ -101,8 +101,8 @@ public class BioForgeMenu extends PlayerContainerMenu {
 		ItemStack resultStack = ItemStack.EMPTY;
 
 		BioForgeRecipe recipe = getSelectedRecipe();
-		if (recipe != null && resultContainer.setRecipeUsed(serverPlayer.level, serverPlayer, recipe) && canCraft(serverPlayer, recipe)) {
-			resultStack = recipe.getResultItem().copy();
+		if (recipe != null && resultContainer.setRecipeUsed(serverPlayer.level(), serverPlayer, recipe) && canCraft(serverPlayer, recipe)) {
+			resultStack = recipe.getResultItem(serverPlayer.level().registryAccess()).copy();
 		}
 
 		resultContainer.setItem(0, resultStack);
@@ -169,7 +169,7 @@ public class BioForgeMenu extends PlayerContainerMenu {
 
 		if (!successfulTransfer) return ItemStack.EMPTY;
 		if (slotZone == SlotZone.OUTPUT_ZONE) {
-			stackInSlot.getItem().onCraftedBy(stackInSlot, player.level, player);
+			stackInSlot.getItem().onCraftedBy(stackInSlot, player.level(), player);
 			slot.onQuickCraft(stackInSlot, copyOfStack);
 		}
 
@@ -278,14 +278,14 @@ public class BioForgeMenu extends PlayerContainerMenu {
 
 		@Override
 		protected void checkTakeAchievements(ItemStack stack) {
-			if (removeCount > 0) stack.onCraftedBy(player.level, player, removeCount);
-			((ResultContainer) container).awardUsedRecipes(player);
+			if (removeCount > 0) stack.onCraftedBy(player.level(), player, removeCount);
+			//			((ResultContainer) container).awardUsedRecipes(player, List.of()); //TODO: verify
 			removeCount = 0;
 		}
 
 		@Override
 		public void onTake(Player player, ItemStack stack) {
-			if (player.level.isClientSide) {
+			if (player.level().isClientSide) {
 				setChanged();
 				return;
 			}

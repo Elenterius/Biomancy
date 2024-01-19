@@ -6,7 +6,6 @@ import com.github.elenterius.biomancy.crafting.recipe.IngredientStack;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.util.ComponentUtil;
-import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
@@ -19,6 +18,7 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -81,7 +81,7 @@ public class BioLabRecipeCategory implements IRecipeCategory<BioLabRecipe> {
 
 		builder.addSlot(RecipeIngredientRole.INPUT, 55, 10).addIngredients(recipe.getReactant());
 
-		builder.addSlot(RecipeIngredientRole.OUTPUT, 113, 10).addItemStack(recipe.getResultItem());
+		builder.addSlot(RecipeIngredientRole.OUTPUT, 113, 10).addItemStack(recipe.getResultItem(null));
 	}
 
 	private void addInputSlot(IRecipeLayoutBuilder builder, int x, int y, List<IngredientStack> ingredients, int index) {
@@ -95,16 +95,16 @@ public class BioLabRecipeCategory implements IRecipeCategory<BioLabRecipe> {
 	}
 
 	@Override
-	public void draw(BioLabRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack poseStack, double mouseX, double mouseY) {
-		Font fontRenderer = Minecraft.getInstance().font;
+	public void draw(BioLabRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+		Font font = Minecraft.getInstance().font;
 
 		int ticks = recipe.getCraftingTimeTicks();
 		int seconds = ticks > 0 ? ticks / 20 : 0;
 		Component timeText = ComponentUtil.translatable("gui.jei.category.smelting.time.seconds", seconds);
-		fontRenderer.draw(poseStack, timeText, 102f, 50f - fontRenderer.lineHeight, 0xff808080);
+		guiGraphics.drawString(font, timeText, 102, 50 - font.lineHeight, 0xff808080);
 
 		Component costText = ComponentUtil.literal("-" + recipe.getCraftingCostNutrients());
-		fontRenderer.draw(poseStack, costText, 69f, 50f - fontRenderer.lineHeight, 0xff808080);
+		guiGraphics.drawString(font, costText, 69, 50 - font.lineHeight, 0xff808080);
 	}
 
 }
