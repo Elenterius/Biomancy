@@ -11,6 +11,7 @@ import com.github.elenterius.biomancy.item.weapon.Gun;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
@@ -79,18 +80,21 @@ public final class IngameOverlays {
 
 	public static final IGuiOverlay ATTACK_REACH_OVERLAY = (gui, guiGraphics, partialTicks, screenWidth, screenHeight) -> {
 		Minecraft minecraft = Minecraft.getInstance();
-		if (!minecraft.options.hideGui && minecraft.player != null) {
-			ItemStack stack = minecraft.player.getMainHandItem();
-			if (stack.isEmpty() || !(stack.getItem() instanceof AttackReachIndicator)) return;
+		Options options = minecraft.options;
 
-			if (GuiUtil.isFirstPersonView()) {
-				gui.setupOverlayRenderState(true, false);
+		if (!options.hideGui) {
+			gui.setupOverlayRenderState(true, false);
+
+			if (options.getCameraType().isFirstPerson() && minecraft.player != null) {
+				ItemStack stack = minecraft.player.getMainHandItem();
+				if (stack.isEmpty() || !(stack.getItem() instanceof AttackReachIndicator)) return;
 
 				if (minecraft.crosshairPickEntity instanceof LivingEntity crosshairTarget && crosshairTarget.isAlive()) {
 					int x = screenWidth / 2 - 8;
 					int y = screenHeight / 2 - 16 - 8;
 					RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 					guiGraphics.blit(ATTACK_REACH, x, y, -90, 0, 0, 16, 16, 16, 16);
+					RenderSystem.defaultBlendFunc();
 				}
 			}
 		}
@@ -123,6 +127,7 @@ public final class IngameOverlays {
 				RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
 				guiGraphics.blit(INJECTOR_COOL_DOWN, x, y, zDepth, 0, 0, 16, 7, 16, 16);
 				guiGraphics.blit(INJECTOR_COOL_DOWN, x, y, zDepth, 0, 7, (int) (progress * 16f), 7, 16, 16);
+				RenderSystem.defaultBlendFunc();
 			}
 
 			ItemStack serumItemStack = injector.getSerumItemStack(stack);
