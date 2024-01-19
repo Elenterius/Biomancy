@@ -1,4 +1,15 @@
-## 4.0.0 (2024-01-19)
+### [4.0.1](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.4.0.0...1.20.1-v2.4.0.1) (2024-01-19)
+
+
+### Bug Fixes
+
+* fix Bio-Forge animations ([fb0e810](https://github.com/Elenterius/Biomancy/commit/fb0e810581aac765614ff1a97150daf850478ebf))
+* fix Bio-Forge gui background rendering ([e937330](https://github.com/Elenterius/Biomancy/commit/e937330d9c2e0fca543a42fdfa7f6887e5170135))
+* fix graphics bug when a biomancy hud overlay is rendered (Ravenous Claws & Bio-Injector) ([4056e63](https://github.com/Elenterius/Biomancy/commit/4056e63f38ef7b84c6b75ba9bf2515c496989c1c))
+* fix rendering of flesh veins ([4c89ada](https://github.com/Elenterius/Biomancy/commit/4c89ada765fbf3fcce2bda1963a7baad684292c8))
+* fix rendering of geo block & geo item models ([0073093](https://github.com/Elenterius/Biomancy/commit/00730934ed6eb29decb3192f43084553bdebd600))
+
+## [4.0.0](https://github.com/Elenterius/Biomancy/compare/b58a8c566c6cebf7c2c2275d56393882c0509661...1.20.1-v2.4.0.0) (2024-01-19)
 
 
 ### ⚠ BREAKING CHANGES
