@@ -52,7 +52,7 @@ jobs:
         uses: christian-draeger/read-properties@1.1.0
         with:
           path: './gradle.properties'
-          properties: 'mc_version'
+          properties: 'minecraft_version'
 
       - name: Generate Conventional Changelog #this also determines the release version
         id: changelog
@@ -63,7 +63,7 @@ jobs:
           version-file: './mod_version.json'
           version-path: 'semantic'
           git-message: 'chore(release): {version}'
-          tag-prefix: '${{ steps.gradle_properties.outputs.mc_version }}-v2.'
+          tag-prefix: '${{ steps.gradle_properties.outputs.minecraft_version }}-v2.'
           create-summary: true
 
       - name: Set Output  #supports setting multiline output
