@@ -537,9 +537,15 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		simpleBlockItem(block, hangingModel);
 	}
 
+	public <T extends FleshVeinsBlock> void veinsBlock(RegistryObject<T> block) {
+		veinsBlock(block.get());
+	}
+
 	public void veinsBlock(MultifaceBlock block) {
 		String name = path(block);
-		ModelFile model = models().singleTexture(name, BiomancyMod.createRL("block/template_veins"), blockAsset(block));
+		ModelFile model = models()
+				.singleTexture(name, BiomancyMod.createRL("block/template_veins"), blockAsset(block))
+				.renderType("cutout");
 
 		MultiPartBlockStateBuilder builder = getMultipartBuilder(block);
 
@@ -681,10 +687,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
 	public <T extends IrisDoorBlock> void irisDoor(RegistryObject<T> block, boolean simpleBlockItem) {
 		irisDoor(block.get(), simpleBlockItem);
-	}
-
-	public <T extends FleshVeinsBlock> void veinsBlock(RegistryObject<T> block) {
-		veinsBlock(block.get());
 	}
 
 	public <T extends VialHolderBlock> void vialHolder(RegistryObject<T> block) {
