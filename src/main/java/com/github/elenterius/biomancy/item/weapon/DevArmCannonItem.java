@@ -5,8 +5,8 @@ import com.github.elenterius.biomancy.client.render.item.dev.DevArmCannonRendere
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModProjectiles;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
-import com.github.elenterius.biomancy.item.CustomTooltipProvider;
 import com.github.elenterius.biomancy.item.IArmPoseProvider;
+import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import com.github.elenterius.biomancy.item.KeyPressListener;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
@@ -45,7 +45,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 
 @Deprecated
-public class DevArmCannonItem extends Item implements GeoItem, IArmPoseProvider, CustomTooltipProvider, KeyPressListener {
+public class DevArmCannonItem extends Item implements GeoItem, IArmPoseProvider, ItemTooltipStyleProvider, KeyPressListener {
 
 	public static final Set<Enchantment> VALID_ENCHANTMENTS = Set.of(Enchantments.PUNCH_ARROWS, Enchantments.POWER_ARROWS);
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);

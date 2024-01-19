@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.client.util;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.client.ClientSetupHandler;
-import com.github.elenterius.biomancy.item.CustomTooltipProvider;
+import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
@@ -43,7 +43,7 @@ public final class ClientTextUtil {
 	private static MutableComponent getItemTooltip(ItemStack stack) {
 		Item item = stack.getItem();
 
-		if (item instanceof CustomTooltipProvider iTooltip) {
+		if (item instanceof ItemTooltipStyleProvider iTooltip) {
 			return iTooltip.getTooltipText(stack);
 		}
 

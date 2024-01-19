@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class FertilizerItem extends Item implements CustomTooltipProvider {
+public class FertilizerItem extends Item implements ItemTooltipStyleProvider {
 
 	public FertilizerItem(Properties properties) {
 		super(properties);

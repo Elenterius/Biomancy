@@ -3,8 +3,8 @@ package com.github.elenterius.biomancy.item.weapon;
 import com.github.elenterius.biomancy.client.render.item.dev.BileSpitterRenderer;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModProjectiles;
-import com.github.elenterius.biomancy.item.CustomTooltipProvider;
 import com.github.elenterius.biomancy.item.IArmPoseProvider;
+import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -39,7 +39,7 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 @Deprecated(forRemoval = true)
-public class BileSpitterItem extends ProjectileWeaponItem implements CustomTooltipProvider, GeoItem, IArmPoseProvider {
+public class BileSpitterItem extends ProjectileWeaponItem implements ItemTooltipStyleProvider, GeoItem, IArmPoseProvider {
 
 	public final float drawTime = 50f;
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);

@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.item.weapon;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.entity.ownable.Fleshkin;
 import com.github.elenterius.biomancy.entity.ownable.IControllableMob;
-import com.github.elenterius.biomancy.item.CustomTooltipProvider;
+import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import com.github.elenterius.biomancy.item.KeyPressListener;
 import com.github.elenterius.biomancy.ownable.IOwnableMob;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
@@ -28,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ControlStaffItem extends Item implements KeyPressListener, CustomTooltipProvider {
+public class ControlStaffItem extends Item implements KeyPressListener, ItemTooltipStyleProvider {
 
 	public ControlStaffItem(Properties properties) {
 		super(properties);

@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.gui.component.CustomEditBox;
+import com.github.elenterius.biomancy.client.gui.tooltip.ScreenTooltipStyleProvider;
 import com.github.elenterius.biomancy.client.util.ClientSoundUtil;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
 import com.github.elenterius.biomancy.client.util.GuiUtil;
@@ -28,7 +29,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> {
+public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implements ScreenTooltipStyleProvider {
 
 	private static final ResourceLocation BACKGROUND_TEXTURE = BiomancyMod.createRL("textures/gui/menu_bio_forge.png");
 	private BioForgeScreenController recipeBook;

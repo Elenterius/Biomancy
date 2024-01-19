@@ -2,9 +2,7 @@ package com.github.elenterius.biomancy.client.gui.tooltip;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModRarities;
-import com.github.elenterius.biomancy.init.client.ModScreens;
-import com.github.elenterius.biomancy.item.CustomTooltipProvider;
-import com.github.elenterius.biomancy.styles.ColorStyles;
+import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import com.github.elenterius.biomancy.tooltip.EmptyLineTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.TooltipContents;
 import com.mojang.datafixers.util.Either;
@@ -38,17 +36,17 @@ public final class TooltipRenderHandler {
 	public static void onRenderTooltipColor(final RenderTooltipEvent.Color tooltipEvent) {
 		ItemStack stack = tooltipEvent.getItemStack();
 
-		if (stack.isEmpty() && ModScreens.isBiomancyScreen(Minecraft.getInstance().screen)) {
-			ColorStyles.GENERIC_TOOLTIP.applyColorTo(tooltipEvent);
+		if (stack.isEmpty() && Minecraft.getInstance().screen instanceof ScreenTooltipStyleProvider screenStyleProvider) {
+			screenStyleProvider.getTooltipStyle().applyColorTo(tooltipEvent);
 		}
-		else if (stack.getItem() instanceof CustomTooltipProvider iTooltip) {
-			iTooltip.getTooltipStyle().applyColorTo(tooltipEvent);
+		else if (stack.getItem() instanceof ItemTooltipStyleProvider itemStyleProvider) {
+			itemStyleProvider.getTooltipStyle().applyColorTo(tooltipEvent);
 		}
 	}
 
 	@SubscribeEvent
 	public static void onGatherTooltipComponents(final RenderTooltipEvent.GatherComponents event) {
-		final boolean isTooltip = event.getItemStack().getItem() instanceof CustomTooltipProvider;
+		final boolean isTooltip = event.getItemStack().getItem() instanceof ItemTooltipStyleProvider;
 
 		List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
 		for (int i = 0; i < tooltipElements.size(); i++) {
@@ -72,7 +70,7 @@ public final class TooltipRenderHandler {
 
 	public static void onPostRenderTooltip(ItemStack stack, List<ClientTooltipComponent> components, Font font, GuiGraphics guiGraphics, int posX, int posY, int tooltipWidth, int tooltipHeight) {
 		if (!components.isEmpty()) {
-			int color = stack.getItem() instanceof CustomTooltipProvider provider ? provider.getTooltipColorWithAlpha(stack) : ModRarities.getARGBColor(stack);
+			int color = stack.getItem() instanceof ItemTooltipStyleProvider provider ? provider.getTooltipColorWithAlpha(stack) : ModRarities.getARGBColor(stack);
 
 			int y = posY;
 			for (int i = 0; i < components.size(); i++) {

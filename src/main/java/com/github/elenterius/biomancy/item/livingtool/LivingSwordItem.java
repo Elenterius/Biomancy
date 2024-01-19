@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.item.livingtool;
 
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.entity.MobUtil;
-import com.github.elenterius.biomancy.item.CustomTooltipProvider;
+import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import com.github.elenterius.biomancy.item.KeyPressListener;
 import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
@@ -32,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LivingSwordItem extends SwordItem implements CustomTooltipProvider, LivingTool, KeyPressListener {
+public class LivingSwordItem extends SwordItem implements ItemTooltipStyleProvider, LivingTool, KeyPressListener {
 
 	private final int maxNutrients;
 

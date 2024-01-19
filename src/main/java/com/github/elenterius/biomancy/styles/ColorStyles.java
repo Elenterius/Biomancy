@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.styles;
 
 import com.github.elenterius.biomancy.init.ModRarities;
-import com.github.elenterius.biomancy.item.CustomTooltipProvider;
+import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 
@@ -21,7 +21,7 @@ public final class ColorStyles {
 	public static final TooltipStyle GENERIC_TOOLTIP = new TooltipStyle(0xFA301020, 0xFF903E55, 0xFF5A233F);
 	public static final ITooltipStyle CUSTOM_RARITY_TOOLTIP = tooltipEvent -> {
 		ItemStack stack = tooltipEvent.getItemStack();
-		int rarityColor = stack.getItem() instanceof CustomTooltipProvider iTooltip ? iTooltip.getTooltipColor(stack) : ModRarities.getRGBColor(stack);
+		int rarityColor = stack.getItem() instanceof ItemTooltipStyleProvider iTooltip ? iTooltip.getTooltipColor(stack) : ModRarities.getRGBColor(stack);
 
 		if (rarityColor > -1) {
 			tooltipEvent.setBackground(TOOLTIP_BACKGROUND_ARGB);

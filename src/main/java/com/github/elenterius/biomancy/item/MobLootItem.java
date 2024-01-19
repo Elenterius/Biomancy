@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Objects;
 
-public class MobLootItem extends Item implements CustomTooltipProvider {
+public class MobLootItem extends Item implements ItemTooltipStyleProvider {
 
 	private final ITag<EntityType<?>> taggedEntities;
 

@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.item.weapon;
 
 import com.github.elenterius.biomancy.entity.projectile.WitherProjectile;
-import com.github.elenterius.biomancy.item.CustomTooltipProvider;
+import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -17,7 +17,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.function.Predicate;
 
 @Deprecated(forRemoval = true)
-public class WithershotItem extends BaseGunItem implements CustomTooltipProvider {
+public class WithershotItem extends BaseGunItem implements ItemTooltipStyleProvider {
 
 	public WithershotItem(Properties properties) {
 		super(properties, new GunProperties()

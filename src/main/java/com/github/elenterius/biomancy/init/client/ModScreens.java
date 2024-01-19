@@ -9,33 +9,23 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.registries.RegistryObject;
 
-import javax.annotation.Nullable;
-import java.util.HashSet;
-import java.util.Set;
-
 
 public final class ModScreens {
 
-	private static final Set<Class<? extends Screen>> SCREENS = new HashSet<>();
 
 	private ModScreens() {}
 
-	public static boolean isBiomancyScreen(@Nullable Screen screen) {
-		return screen != null && SCREENS.stream().anyMatch(screenClass -> screenClass.isInstance(screen));
-	}
-
-	private static <M extends AbstractContainerMenu, U extends Screen & MenuAccess<M>> void registerMenuScreen(RegistryObject<MenuType<M>> registryObject, MenuScreens.ScreenConstructor<M, U> factory, Class<U> clazz) {
-		MenuScreens.register(registryObject.get(), factory);
-		SCREENS.add(clazz);
-	}
-
 	static void registerMenuScreens() {
-		registerMenuScreen(ModMenuTypes.DECOMPOSER, DecomposerScreen::new, DecomposerScreen.class);
-		registerMenuScreen(ModMenuTypes.BIO_LAB, BioLabScreen::new, BioLabScreen.class);
-		registerMenuScreen(ModMenuTypes.STORAGE_SAC, StorageSacScreen::new, StorageSacScreen.class);
-		registerMenuScreen(ModMenuTypes.FLESHKIN_CHEST, FleshkinChestScreen::new, FleshkinChestScreen.class);
-		registerMenuScreen(ModMenuTypes.DIGESTER, DigesterScreen::new, DigesterScreen.class);
-		registerMenuScreen(ModMenuTypes.BIO_FORGE, BioForgeScreen::new, BioForgeScreen.class);
+		registerMenuScreen(ModMenuTypes.DECOMPOSER, DecomposerScreen::new);
+		registerMenuScreen(ModMenuTypes.BIO_LAB, BioLabScreen::new);
+		registerMenuScreen(ModMenuTypes.STORAGE_SAC, StorageSacScreen::new);
+		registerMenuScreen(ModMenuTypes.FLESHKIN_CHEST, FleshkinChestScreen::new);
+		registerMenuScreen(ModMenuTypes.DIGESTER, DigesterScreen::new);
+		registerMenuScreen(ModMenuTypes.BIO_FORGE, BioForgeScreen::new);
+	}
+
+	private static <M extends AbstractContainerMenu, U extends Screen & MenuAccess<M>> void registerMenuScreen(RegistryObject<MenuType<M>> registryObject, MenuScreens.ScreenConstructor<M, U> factory) {
+		MenuScreens.register(registryObject.get(), factory);
 	}
 
 }

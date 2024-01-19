@@ -38,7 +38,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class BioExtractorItem extends Item implements KeyPressListener, CustomTooltipProvider {
+public class BioExtractorItem extends Item implements KeyPressListener, ItemTooltipStyleProvider {
 
 	public BioExtractorItem(Properties properties) {
 		super(properties);

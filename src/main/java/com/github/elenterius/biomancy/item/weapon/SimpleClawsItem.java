@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.item.weapon;
 
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
-import com.github.elenterius.biomancy.item.CustomTooltipProvider;
+import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class SimpleClawsItem extends ClawsItem implements CustomTooltipProvider {
+public class SimpleClawsItem extends ClawsItem implements ItemTooltipStyleProvider {
 
 	public SimpleClawsItem(Tier tier, float baseAttackDamage, float attackSpeedModifier, float attackRangeModifier, Properties properties) {
 		super(tier, baseAttackDamage, attackSpeedModifier, attackRangeModifier, properties);

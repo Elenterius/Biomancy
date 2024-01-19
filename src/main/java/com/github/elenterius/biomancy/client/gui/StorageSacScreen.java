@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.client.gui.tooltip.ScreenTooltipStyleProvider;
 import com.github.elenterius.biomancy.menu.StorageSacMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -8,7 +9,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class StorageSacScreen extends AbstractContainerScreen<StorageSacMenu> {
+public class StorageSacScreen extends AbstractContainerScreen<StorageSacMenu> implements ScreenTooltipStyleProvider {
 
 	private static final ResourceLocation BACKGROUND_TEXTURE = BiomancyMod.createRL("textures/gui/menu_storage_sac.png");
 
