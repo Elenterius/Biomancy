@@ -128,10 +128,6 @@ minecraft {
 				}
 			}
 		}
-
-		dataCI {
-			parent runs.data
-		}
 	}
 }
 

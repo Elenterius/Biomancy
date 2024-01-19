@@ -28,7 +28,7 @@ jobs:
       - name: Test Asset Generation
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: runDataCI
+          arguments: runData
 
       - name: Test Build
         uses: gradle/gradle-build-action@v2
@@ -98,7 +98,7 @@ jobs:
       - name: Generate Assets
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: runDataCI
+          arguments: runData
 
       # We store assets at full raw quality in the repository and only optimize them for the release build
       - name: Setup Oxipng
