@@ -33,7 +33,10 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
@@ -263,36 +266,33 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 
 	private <T extends BioForgeBlockEntity> PlayState handleAnimationState(AnimationState<T> state) {
 
-		if (state.getController().getCurrentAnimation() == null) { //set default start animation
-			state.getController().setAnimation(Animations.FOLDED);
-			state.getController().transitionLength(0);
-			return PlayState.CONTINUE;
-		}
-
 		if (playWorkingAnimation) {
-			state.getController().setAnimation(Animations.WORKING);
-			state.getController().transitionLength(10);
-			return PlayState.CONTINUE;
+			return state.setAndContinue(Animations.WORKING);
 		}
 
 		if (nearbyTimer > 0) {
-			boolean isUnfoldedOrWorking = Animations.isUnfoldedOrWorking(state.getController());
-			state.getController().setAnimation(isUnfoldedOrWorking ? Animations.UNFOLDED : Animations.UNFOLDING);
-			state.getController().transitionLength(10);
+			if (state.isCurrentAnimation(Animations.WORKING)) return state.setAndContinue(Animations.UNFOLDED);
+
+			if (!state.isCurrentAnimation(Animations.UNFOLDED) && !state.isCurrentAnimation(Animations.UNFOLDING)) {
+				return state.setAndContinue(Animations.UNFOLDING);
+			}
+
+			return state.setAndContinue(Animations.UNFOLDED);
 		}
 		else {
-			if (!Animations.isFolded(state.getController())) {
-				state.getController().setAnimation(Animations.FOLDING);
-				state.getController().transitionLength(10);
+			if (!state.isCurrentAnimation(Animations.FOLDED) && !state.isCurrentAnimation(Animations.FOLDING)) {
+				return state.setAndContinue(Animations.FOLDING);
 			}
-		}
 
-		return PlayState.CONTINUE;
+			return state.setAndContinue(Animations.FOLDED);
+		}
 	}
 
 	@Override
 	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-		controllers.add(new AnimationController<>(this, Animations.MAIN_CONTROLLER, 10, this::handleAnimationState));
+		AnimationController<BioForgeBlockEntity> controller = new AnimationController<>(this, Animations.MAIN_CONTROLLER, 10, this::handleAnimationState);
+		controller.setAnimation(Animations.FOLDED);
+		controllers.add(controller);
 	}
 
 	@Override
@@ -310,17 +310,6 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 
 		private Animations() {}
 
-		protected static boolean isUnfoldedOrWorking(AnimationController<?> controller) {
-			AnimationProcessor.QueuedAnimation queued = controller.getCurrentAnimation();
-			if (queued == null) return false;
-			return queued.animation().name().equals("bio_forge.idle") || queued.animation().name().equals("bio_forge.working");
-		}
-
-		protected static boolean isFolded(AnimationController<?> controller) {
-			AnimationProcessor.QueuedAnimation queued = controller.getCurrentAnimation();
-			if (queued == null) return false;
-			return queued.animation().name().equals("bio_forge.folded_state");
-		}
 	}
 
 }
