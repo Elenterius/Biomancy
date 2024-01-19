@@ -40,9 +40,9 @@ jobs:
     needs: [ build_test ]
     runs-on: ubuntu-latest
     outputs:
-      skip_build: ${{ steps.set_output.outputs.skipped }}
-      tag: ${{ steps.set_output.outputs.tag }}
-      clean_changelog: ${{ steps.set_output.outputs.clean_changelog }}
+      skip_build: ${{ steps.set_outputs.outputs.skipped }}
+      tag: ${{ steps.set_outputs.outputs.tag }}
+      clean_changelog: ${{ steps.set_outputs.outputs.changelog }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -66,14 +66,16 @@ jobs:
           tag-prefix: '${{ steps.gradle_properties.outputs.minecraft_version }}-v2.'
           create-summary: true
 
-      - name: Set Output  #supports setting multiline output
-        id: set_output
-        uses: actions/github-script@v7.0.1
-        with:
-          script: |
-            core.setOutput("skipped", `${{ steps.changelog.outputs.skipped }}`);  
-            core.setOutput("tag", `${{ steps.changelog.outputs.tag }}`);  
-            core.setOutput("clean_changelog", `${{ steps.changelog.outputs.clean_changelog }}`);
+      - name: Set Outputs
+        id: set_outputs
+        run: |
+          echo "skipped=${{ steps.changelog.outputs.skipped }}" >> "$GITHUB_OUTPUT"
+          echo "tag=${{ steps.changelog.outputs.tag }}" >> "$GITHUB_OUTPUT"
+          {
+            echo 'changelog<<EOF'
+            echo "${{ steps.changelog.outputs.clean_changelog }}"
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
 
   build_release:
     name: Build Release
