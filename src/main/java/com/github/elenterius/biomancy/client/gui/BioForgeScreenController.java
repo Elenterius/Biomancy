@@ -304,8 +304,8 @@ class BioForgeScreenController {
 		return tabs.size();
 	}
 
-	public ItemStack getTabIcon(int tabIndex) {
-		return tabs.get(tabIndex).getIcon();
+	public BioForgeTab getTab(int tabIndex) {
+		return tabs.get(tabIndex);
 	}
 
 	public int getActiveTab() {

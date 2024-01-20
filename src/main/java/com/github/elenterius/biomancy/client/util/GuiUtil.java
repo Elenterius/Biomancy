@@ -13,6 +13,10 @@ public final class GuiUtil {
 		return ((mouseX >= x && mouseX <= x + xSize) && (mouseY >= y && mouseY <= y + ySize));
 	}
 
+	public static boolean isInRectAB(int xA, int yA, int xB, int yB, int mouseX, int mouseY) {
+		return ((mouseX >= xA && mouseX <= xB) && (mouseY >= yA && mouseY <= yB));
+	}
+
 	public static boolean isInRect(int x, int y, int xSize, int ySize, double mouseX, double mouseY) {
 		return ((mouseX >= x && mouseX <= x + xSize) && (mouseY >= y && mouseY <= y + ySize));
 	}

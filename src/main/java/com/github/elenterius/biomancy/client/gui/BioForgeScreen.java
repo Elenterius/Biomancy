@@ -14,10 +14,12 @@ import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
@@ -32,6 +34,7 @@ import java.util.Objects;
 public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implements ScreenTooltipStyleProvider {
 
 	private static final ResourceLocation BACKGROUND_TEXTURE = BiomancyMod.createRL("textures/gui/menu_bio_forge.png");
+	private final TabHelper tabHelper = new TabHelper();
 	private BioForgeScreenController recipeBook;
 	private CustomEditBox searchInput;
 	private boolean ignoreTextInput;
@@ -111,17 +114,7 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implem
 			}
 		}
 
-		for (int i = 0; i < recipeBook.getTabCount(); i++) {
-			int w = 24;
-			int h = 32;
-			int pX = leftPos - w;
-			int pY = topPos + 32 + h * i;
-			if (!recipeBook.isActiveTab(i) && GuiUtil.isInRect(pX, pY + 3, w, h - 3, mouseX, mouseY)) {
-				ClientSoundUtil.playUISound(ModSoundEvents.UI_BUTTON_CLICK);
-				recipeBook.setActiveTab(i);
-				return true;
-			}
-		}
+		if (tabHelper.clickMouse(mouseX, mouseY)) return true;
 
 		return super.mouseClicked(mouseX, mouseY, button);
 	}
@@ -187,7 +180,7 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implem
 		blit(guiGraphics, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 
 		drawFuelBar(guiGraphics);
-		drawTabs(guiGraphics);
+		tabHelper.drawTabs(guiGraphics);
 		drawRecipeIngredients(guiGraphics);
 		drawGhostResult(guiGraphics);
 		drawRecipes(guiGraphics);
@@ -204,12 +197,6 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implem
 			GuiRenderUtil.drawGhostItem(guiGraphics, x, y, stack);
 			guiGraphics.renderItemDecorations(font, stack, x, y);
 			RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
-		}
-	}
-
-	private void drawTabs(GuiGraphics guiGraphics) {
-		for (int index = 0; index < recipeBook.getTabCount(); index++) {
-			drawTab(guiGraphics, index, recipeBook.isActiveTab(index), recipeBook.getTabIcon(index));
 		}
 	}
 
@@ -303,16 +290,6 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implem
 		blit(guiGraphics, x, y, isValid ? 295 : 321, 2, 24, 24);
 	}
 
-	private void drawTab(GuiGraphics guiGraphics, int idx, boolean isActive, ItemStack stack) {
-		int w = 24;
-		int h = 32;
-		int x = leftPos - w + 2;
-		int y = topPos + 32 + h * idx;
-		blit(guiGraphics, x, y, 297, isActive ? 114 : 78, w, h);
-		guiGraphics.renderItem(stack, x + 5, y + 8);
-		RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
-	}
-
 	private void drawFuelBar(GuiGraphics guiGraphics) {
 		float fuelPct = menu.getFuelAmountNormalized();
 		int vHeight = (int) (fuelPct * 36) + (fuelPct > 0 ? 1 : 0);
@@ -322,6 +299,7 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implem
 	@Override
 	protected void renderTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		if (menu.getCarried().isEmpty()) {
+			if (tabHelper.drawTooltip(guiGraphics, mouseX, mouseY)) return;
 			if (drawFuelTooltip(guiGraphics, mouseX, mouseY)) return;
 			if (drawRecipeTooltip(guiGraphics, mouseX, mouseY)) return;
 			if (drawIngredientsTooltip(guiGraphics, mouseX, mouseY)) return;
@@ -370,6 +348,60 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implem
 
 		GuiRenderUtil.drawFuelTooltip(font, guiGraphics, mouseX, mouseY, maxFuel, fuelAmount, totalFuelCost);
 		return true;
+	}
+
+	private final class TabHelper {
+		private static final int WIDTH = 24;
+		private static final int HEIGHT = 32;
+		private static final int Y_OFFSET = 7;
+
+		private boolean clickMouse(double mouseX, double mouseY) {
+			for (int i = 0; i < recipeBook.getTabCount(); i++) {
+				int pX = leftPos - WIDTH;
+				int pY = topPos + Y_OFFSET + HEIGHT * i;
+				if (!recipeBook.isActiveTab(i) && GuiUtil.isInRect(pX, pY + 3, WIDTH, HEIGHT - 3, mouseX, mouseY)) {
+					ClientSoundUtil.playUISound(ModSoundEvents.UI_BUTTON_CLICK);
+					recipeBook.setActiveTab(i);
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		private void drawTabs(GuiGraphics guiGraphics) {
+			for (int index = 0; index < recipeBook.getTabCount(); index++) {
+				drawTab(guiGraphics, index, recipeBook.isActiveTab(index), recipeBook.getTab(index).getIcon());
+			}
+		}
+
+		private void drawTab(GuiGraphics guiGraphics, int index, boolean isActive, ItemStack stack) {
+			int x = leftPos - WIDTH + 2;
+			int y = topPos + Y_OFFSET + HEIGHT * index;
+			blit(guiGraphics, x, y, 297, isActive ? 114 : 78, WIDTH, HEIGHT);
+			guiGraphics.renderItem(stack, x + 5, y + 8);
+		}
+
+		private boolean drawTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+			int minX = leftPos - WIDTH + 2;
+			int minY = topPos + Y_OFFSET;
+			int maxX = leftPos;
+			int maxY = topPos + Y_OFFSET + HEIGHT * recipeBook.getTabCount();
+
+			if (!GuiUtil.isInRectAB(minX, minY, maxX, maxY, mouseX, mouseY)) return false;
+
+			for (int index = 0; index < recipeBook.getTabCount(); index++) {
+				int x = leftPos - WIDTH + 2;
+				int y = topPos + Y_OFFSET + HEIGHT * index;
+				if (GuiUtil.isInRect(x, y, WIDTH, HEIGHT, mouseX, mouseY)) {
+					guiGraphics.renderTooltip(font, ComponentUtil.translatable(recipeBook.getTab(index).translationKey()), mouseX, mouseY);
+					return true;
+				}
+			}
+
+			return false;
+		}
+
 	}
 
 }

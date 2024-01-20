@@ -52,7 +52,15 @@ public final class BioForgeTab {
 	}
 
 	public String enumId() {
-		return ModBioForgeTabs.REGISTRY.get().getKey(this).toString().replace(":", "_");
+		return enumIdFrom(ModBioForgeTabs.REGISTRY.get().getKey(this));
+	}
+
+	public static String enumIdFrom(ResourceLocation key) {
+		return JSON_KEY + "_" + key.getNamespace() + "_" + key.getPath();
+	}
+
+	public String translationKey() {
+		return ModBioForgeTabs.REGISTRY.get().getKey(this).toLanguageKey(JSON_KEY);
 	}
 
 	public int sortPriority() {

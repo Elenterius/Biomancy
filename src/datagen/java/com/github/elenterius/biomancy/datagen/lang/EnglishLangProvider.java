@@ -9,6 +9,7 @@ import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import com.github.elenterius.biomancy.item.MaykerBannerPatternItem;
 import com.github.elenterius.biomancy.item.SerumItem;
 import com.github.elenterius.biomancy.item.livingtool.LivingToolState;
+import com.github.elenterius.biomancy.menu.BioForgeTab;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.PackOutput;
@@ -73,6 +74,14 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		}
 
 		return isAnyMissing;
+	}
+
+	private void addBioForgeTab(Supplier<BioForgeTab> supplier, String name) {
+		add(supplier.get(), name);
+	}
+
+	private void add(BioForgeTab tab, String name) {
+		add(tab.translationKey(), name);
 	}
 
 	private void addBannerPatternItem(RegistryObject<MaykerBannerPatternItem> supplier, String name, String description) {
@@ -232,6 +241,13 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		add(ClientTextUtil.getAltKey(), "alt");
 		add(ClientTextUtil.getShiftKey(), "shift");
 		add(ClientTextUtil.getRightMouseKey(), "right mouse");
+
+		addBioForgeTab(ModBioForgeTabs.SEARCH, "All");
+		addBioForgeTab(ModBioForgeTabs.BUILDING_BLOCKS, "Building Blocks");
+		addBioForgeTab(ModBioForgeTabs.MACHINES, "Machines");
+		addBioForgeTab(ModBioForgeTabs.WEAPONS, "Combat");
+		addBioForgeTab(ModBioForgeTabs.MISC, "Misc");
+		addBioForgeTab(ModBioForgeTabs.REPLICAS, "Replicas");
 
 		add("jei.biomancy.recipe.bio_lab", "Bio-Lab Recipes");
 		add("jei.biomancy.recipe.decomposer", "Decomposer Recipes");

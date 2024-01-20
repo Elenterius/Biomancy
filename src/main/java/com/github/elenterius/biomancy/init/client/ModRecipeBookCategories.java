@@ -7,12 +7,12 @@ import com.github.elenterius.biomancy.init.ModRecipeBookTypes;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.menu.BioForgeTab;
 import net.minecraft.client.RecipeBookCategories;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterRecipeBookCategoriesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.RegistryObject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,11 +41,8 @@ public final class ModRecipeBookCategories {
 		//inner class prevents pre-mature initialization from the EventBusSubscriber annotation
 
 		private static final Map<String, RecipeBookCategories> TAB_TO_CATEGORY = new HashMap<>();
-		public static final RecipeBookCategories SEARCH_CATEGORY = createRecipeBookCategories(ModBioForgeTabs.SEARCH);
-		public static final RecipeBookCategories MISC_CATEGORY = createRecipeBookCategories(ModBioForgeTabs.MISC);
-		public static final RecipeBookCategories BLOCKS_CATEGORY = createRecipeBookCategories(ModBioForgeTabs.BLOCKS);
-		public static final RecipeBookCategories MACHINES_CATEGORY = createRecipeBookCategories(ModBioForgeTabs.MACHINES);
-		public static final RecipeBookCategories WEAPONS_CATEGORY = createRecipeBookCategories(ModBioForgeTabs.WEAPONS);
+		public static final RecipeBookCategories SEARCH_CATEGORY = createAndRegisterSearchCategory();
+
 		public static final Function<Recipe<?>, RecipeBookCategories> RECIPE_CATEGORY_FINDER = recipe -> {
 			if (recipe instanceof BioForgeRecipe bioForgeRecipe) {
 				return TAB_TO_CATEGORY.get(bioForgeRecipe.getTab().enumId());
@@ -55,14 +52,29 @@ public final class ModRecipeBookCategories {
 
 		private BioForgeCategories() {}
 
-		private static RecipeBookCategories createRecipeBookCategories(RegistryObject<BioForgeTab> tab) {
-			String name = tab.getId().toString().replace(":", "_");
-			RecipeBookCategories categories = RecipeBookCategories.create(name, tab.get().getIcon());
-			TAB_TO_CATEGORY.put(name, categories);
-			return categories;
+		private static RecipeBookCategories createAndRegisterSearchCategory() {
+			BioForgeTab tab = ModBioForgeTabs.SEARCH.get();
+			String name = tab.enumId();
+			RecipeBookCategories category = RecipeBookCategories.create(name, tab.getIcon());
+			TAB_TO_CATEGORY.put(name, category);
+			return category;
+		}
+
+		private static void registerCategories() {
+			for (Map.Entry<ResourceKey<BioForgeTab>, BioForgeTab> entry : ModBioForgeTabs.REGISTRY.get().getEntries()) {
+				BioForgeTab tab = entry.getValue();
+
+				if (tab == ModBioForgeTabs.SEARCH.get()) continue;
+
+				String name = tab.enumId();
+				RecipeBookCategories categories = RecipeBookCategories.create(name, tab.getIcon());
+				TAB_TO_CATEGORY.put(name, categories);
+			}
 		}
 
 		private static void register(RegisterRecipeBookCategoriesEvent event) {
+			registerCategories();
+
 			List<RecipeBookCategories> categories = TAB_TO_CATEGORY.values().stream().toList();
 
 			event.registerBookCategories(ModRecipeBookTypes.BIO_FORGE, categories);
