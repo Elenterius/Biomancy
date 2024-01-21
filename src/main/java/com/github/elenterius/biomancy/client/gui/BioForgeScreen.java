@@ -14,6 +14,7 @@ import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -34,7 +35,8 @@ import java.util.Objects;
 public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implements ScreenTooltipStyleProvider {
 
 	private static final ResourceLocation BACKGROUND_TEXTURE = BiomancyMod.createRL("textures/gui/menu_bio_forge.png");
-	private final TabHelper tabHelper = new TabHelper();
+	private final TabsHelper tabsHelper = new TabsHelper();
+	private final IngredientsHelper ingredientsHelper = new IngredientsHelper();
 	private BioForgeScreenController recipeBook;
 	private CustomEditBox searchInput;
 	private boolean ignoreTextInput;
@@ -114,7 +116,7 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implem
 			}
 		}
 
-		if (tabHelper.clickMouse(mouseX, mouseY)) return true;
+		if (tabsHelper.clickMouse(mouseX, mouseY)) return true;
 
 		return super.mouseClicked(mouseX, mouseY, button);
 	}
@@ -168,8 +170,14 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implem
 		//don't draw any labels
 	}
 
+	private float time;
+
 	@Override
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+		if (!Screen.hasControlDown()) {
+			time += partialTick;
+		}
+
 		renderBackground(guiGraphics);
 		super.render(guiGraphics, mouseX, mouseY, partialTick);
 		renderTooltip(guiGraphics, mouseX, mouseY);
@@ -180,8 +188,8 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implem
 		blit(guiGraphics, leftPos, topPos, 0, 0, imageWidth, imageHeight);
 
 		drawFuelBar(guiGraphics);
-		tabHelper.drawTabs(guiGraphics);
-		drawRecipeIngredients(guiGraphics);
+		tabsHelper.render(guiGraphics, mouseX, mouseY, partialTick);
+		ingredientsHelper.render(guiGraphics, mouseX, mouseY, partialTick);
 		drawGhostResult(guiGraphics);
 		drawRecipes(guiGraphics);
 
@@ -234,34 +242,6 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implem
 		guiGraphics.drawString(font, text, (int) (x - font.width(text) / 2f), y + 3, ColorStyles.TEXT_ACCENT_FORGE);
 	}
 
-	private void drawRecipeIngredients(GuiGraphics guiGraphics) {
-		BioForgeRecipe selectedRecipe = recipeBook.getSelectedRecipe();
-		if (selectedRecipe != null) {
-			drawRecipeIngredients(guiGraphics, selectedRecipe);
-		}
-	}
-
-	private void drawRecipeIngredients(GuiGraphics guiGraphics, BioForgeRecipe recipe) {
-		int x = leftPos + 141 + 3;
-		int y = topPos + 82 + 3;
-
-		List<IngredientStack> ingredients = recipe.getIngredientQuantities();
-		for (int i = 0, size = ingredients.size(); i < size; i++) {
-			IngredientStack ingredientStack = ingredients.get(i);
-			ItemStack itemStack = ingredientStack.ingredient().getItems()[0];
-			drawIngredientQuantity(guiGraphics, itemStack, recipeBook.getTotalItemCountInPlayerInv(itemStack), ingredientStack.count(), x + 26 * i, y);
-		}
-	}
-
-	private void drawIngredientQuantity(GuiGraphics guiGraphics, ItemStack stack, int currentCount, int requiredCount, int x, int y) {
-		boolean insufficient = currentCount < requiredCount;
-		blit(guiGraphics, x - 3, y - 3, insufficient ? 354 : 330, 74, 22, 22);
-		guiGraphics.renderItem(stack, x, y);
-		String text = "x" + requiredCount;
-		guiGraphics.drawString(font, text, x + 16 + 4 - font.width(text), y + 16 + 4 + 1, insufficient ? ColorStyles.TEXT_ERROR : ColorStyles.TEXT_SUCCESS);
-		RenderSystem.setShaderTexture(0, BACKGROUND_TEXTURE);
-	}
-
 	private void drawRecipeTile(GuiGraphics guiGraphics, int idx, boolean isCraftable, ItemStack stack) {
 		int x = leftPos + 12 + (20 + 5) * (idx % BioForgeScreenController.COLS);
 		int y = topPos + 36 + (20 + 5) * (idx / BioForgeScreenController.COLS);
@@ -299,22 +279,29 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implem
 	@Override
 	protected void renderTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		if (menu.getCarried().isEmpty()) {
-			if (tabHelper.drawTooltip(guiGraphics, mouseX, mouseY)) return;
+			if (tabsHelper.renderTooltip(guiGraphics, mouseX, mouseY)) return;
 			if (drawFuelTooltip(guiGraphics, mouseX, mouseY)) return;
 			if (drawRecipeTooltip(guiGraphics, mouseX, mouseY)) return;
-			if (drawIngredientsTooltip(guiGraphics, mouseX, mouseY)) return;
+			if (ingredientsHelper.renderTooltip(guiGraphics, mouseX, mouseY)) return;
 		}
 		super.renderTooltip(guiGraphics, mouseX, mouseY);
 	}
 
 	private boolean drawRecipeTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		if (recipeBook.hasRecipesOnPage()) {
-			int recipes = recipeBook.getMaxRecipesOnGrid();
-			for (int idx = 0; idx < recipes; idx++) {
-				int x = leftPos + 13 + 25 * (idx % BioForgeScreenController.COLS);
-				int y = topPos + 37 + 25 * (idx / BioForgeScreenController.COLS);
+			int maxIndex = recipeBook.getMaxRecipesOnGrid();
+
+			int minX = leftPos + 13;
+			int minY = topPos + 37;
+			int maxX = leftPos + 13 + 25 * BioForgeScreenController.COLS - 5;
+			int maxY = topPos + 37 + 25 * Mth.ceil(maxIndex / (float) BioForgeScreenController.COLS) - 5;
+			if (!GuiUtil.isInRectAB(minX, minY, maxX, maxY, mouseX, mouseY)) return false;
+
+			for (int index = 0; index < maxIndex; index++) {
+				int x = leftPos + 13 + 25 * (index % BioForgeScreenController.COLS);
+				int y = topPos + 37 + 25 * (index / BioForgeScreenController.COLS);
 				if (GuiUtil.isInRect(x, y, 20, 20, mouseX, mouseY)) {
-					guiGraphics.renderTooltip(font, recipeBook.getRecipeByGrid(idx).getResultItem(null), mouseX, mouseY);
+					guiGraphics.renderTooltip(font, recipeBook.getRecipeByGrid(index).getResultItem(null), mouseX, mouseY);
 					return true;
 				}
 			}
@@ -322,20 +309,6 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implem
 		return false;
 	}
 
-	private boolean drawIngredientsTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-		BioForgeRecipe selectedRecipe = recipeBook.getSelectedRecipe();
-		if (selectedRecipe == null) return false;
-
-		for (int i = 0; i < selectedRecipe.getIngredientQuantities().size(); i++) {
-			int x = leftPos + 141 + 3 + 26 * i;
-			int y = topPos + 82 + 3;
-			if (GuiUtil.isInRect(x, y, 20, 20, mouseX, mouseY)) {
-				guiGraphics.renderTooltip(font, selectedRecipe.getIngredientQuantities().get(i).ingredient().getItems()[0], mouseX, mouseY);
-				return true;
-			}
-		}
-		return false;
-	}
 
 	private boolean drawFuelTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
 		if (!GuiUtil.isInRect(leftPos + 144, topPos + 13, 5, 36, mouseX, mouseY)) return false;
@@ -350,7 +323,61 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implem
 		return true;
 	}
 
-	private final class TabHelper {
+	private final class IngredientsHelper implements Renderable {
+
+		private static final int X_OFFSET = 141 + 3;
+		private static final int Y_OFFSET = 82 + 3;
+
+		@Override
+		public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+			BioForgeRecipe recipe = recipeBook.getSelectedRecipe();
+			if (recipe == null) return;
+
+			int x = leftPos + X_OFFSET;
+			int y = topPos + Y_OFFSET;
+
+			List<IngredientStack> ingredients = recipe.getIngredientQuantities();
+			for (int i = 0; i < ingredients.size(); i++) {
+				IngredientStack ingredientStack = ingredients.get(i);
+				ItemStack[] items = ingredientStack.getItems();
+				ItemStack itemStack = items[Mth.floor(time / 30f) % items.length];
+
+				boolean isSufficientCount = recipeBook.hasSufficientIngredientCount(ingredientStack);
+
+				renderItemWithQuantity(guiGraphics, itemStack, isSufficientCount, ingredientStack.count(), x + 26 * i, y);
+			}
+		}
+
+		private void renderItemWithQuantity(GuiGraphics guiGraphics, ItemStack stack, boolean isSufficientCount, int requiredCount, int x, int y) {
+			blit(guiGraphics, x - 3, y - 3, isSufficientCount ? 330 : 354, 74, 22, 22);
+			guiGraphics.renderItem(stack, x, y);
+			String text = "x" + requiredCount;
+			guiGraphics.drawString(font, text, x + 16 + 4 - font.width(text), y + 16 + 4 + 1, isSufficientCount ? ColorStyles.TEXT_SUCCESS : ColorStyles.TEXT_ERROR);
+		}
+
+		private boolean renderTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+			BioForgeRecipe selectedRecipe = recipeBook.getSelectedRecipe();
+			if (selectedRecipe == null) return false;
+
+			List<IngredientStack> ingredients = selectedRecipe.getIngredientQuantities();
+			for (int i = 0; i < ingredients.size(); i++) {
+				int x = leftPos + X_OFFSET + 26 * i;
+				int y = topPos + Y_OFFSET;
+
+				if (GuiUtil.isInRect(x, y, 20, 20, mouseX, mouseY)) {
+					ItemStack[] items = ingredients.get(i).ingredient().getItems();
+					ItemStack itemStack = items[Mth.floor(time / 30f) % items.length];
+
+					guiGraphics.renderTooltip(font, itemStack, mouseX, mouseY);
+					return true;
+				}
+			}
+			return false;
+		}
+
+	}
+
+	private final class TabsHelper implements Renderable {
 		private static final int WIDTH = 24;
 		private static final int HEIGHT = 32;
 		private static final int Y_OFFSET = 7;
@@ -369,20 +396,21 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implem
 			return false;
 		}
 
-		private void drawTabs(GuiGraphics guiGraphics) {
+		@Override
+		public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 			for (int index = 0; index < recipeBook.getTabCount(); index++) {
-				drawTab(guiGraphics, index, recipeBook.isActiveTab(index), recipeBook.getTab(index).getIcon());
+				renderTab(guiGraphics, index, recipeBook.isActiveTab(index), recipeBook.getTab(index).getIcon());
 			}
 		}
 
-		private void drawTab(GuiGraphics guiGraphics, int index, boolean isActive, ItemStack stack) {
+		private void renderTab(GuiGraphics guiGraphics, int index, boolean isActive, ItemStack stack) {
 			int x = leftPos - WIDTH + 2;
 			int y = topPos + Y_OFFSET + HEIGHT * index;
 			blit(guiGraphics, x, y, 297, isActive ? 114 : 78, WIDTH, HEIGHT);
 			guiGraphics.renderItem(stack, x + 5, y + 8);
 		}
 
-		private boolean drawTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+		private boolean renderTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
 			int minX = leftPos - WIDTH + 2;
 			int minY = topPos + Y_OFFSET;
 			int maxX = leftPos;
