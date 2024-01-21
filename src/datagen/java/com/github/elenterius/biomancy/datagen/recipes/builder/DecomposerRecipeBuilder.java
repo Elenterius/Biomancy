@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.datagen.recipes;
+package com.github.elenterius.biomancy.datagen.recipes.builder;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.crafting.recipe.DecomposerRecipe;

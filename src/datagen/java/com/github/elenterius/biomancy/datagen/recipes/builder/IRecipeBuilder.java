@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.datagen.recipes;
+package com.github.elenterius.biomancy.datagen.recipes.builder;
 
 import net.minecraft.advancements.CriterionTriggerInstance;
 import net.minecraft.advancements.critereon.ContextAwarePredicate;

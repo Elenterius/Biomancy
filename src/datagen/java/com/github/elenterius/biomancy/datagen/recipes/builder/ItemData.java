@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.datagen.recipes;
+package com.github.elenterius.biomancy.datagen.recipes.builder;
 
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.CompoundTag;
