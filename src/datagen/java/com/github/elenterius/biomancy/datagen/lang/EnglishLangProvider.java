@@ -245,9 +245,9 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addBioForgeTab(ModBioForgeTabs.SEARCH, "All");
 		addBioForgeTab(ModBioForgeTabs.BUILDING_BLOCKS, "Building Blocks");
 		addBioForgeTab(ModBioForgeTabs.MACHINES, "Machines");
-		addBioForgeTab(ModBioForgeTabs.WEAPONS, "Combat");
+		addBioForgeTab(ModBioForgeTabs.TOOLS, "Tools");
+		addBioForgeTab(ModBioForgeTabs.COMPONENTS, "Components");
 		addBioForgeTab(ModBioForgeTabs.MISC, "Misc");
-		addBioForgeTab(ModBioForgeTabs.REPLICAS, "Replicas");
 
 		add("jei.biomancy.recipe.bio_lab", "Bio-Lab Recipes");
 		add("jei.biomancy.recipe.decomposer", "Decomposer Recipes");
