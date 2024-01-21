@@ -15,12 +15,11 @@ import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -149,7 +148,6 @@ public class InjectorScreen extends Screen {
 	private void renderWheel(GuiGraphics guiGraphics, int mouseX, int mouseY, float pct) {
 		if (cachedStacks == null || cachedStacks.isEmpty()) return;
 
-		ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
 		int blitOffset = 0;
 
 		ObjectSet<Object2IntMap.Entry<ItemStack>> stackEntries = cachedStacks.object2IntEntrySet();
@@ -223,13 +221,20 @@ public class InjectorScreen extends Screen {
 			xt -= lineWidth;
 		}
 
+		drawItemLabel(guiGraphics, xt, yt, blitOffset, text, lineWidth);
+	}
+
+	private void drawItemLabel(GuiGraphics guiGraphics, float x, float y, int zDepth, Component text, int lineWidth) {
 		guiGraphics.pose().pushPose();
-		float minX = xt - 3;
-		float minY = yt - font.lineHeight / 2f - 3;
-		float maxX = xt + lineWidth + 2;
-		float maxY = yt + font.lineHeight / 2f + 2;
-		GuiRenderUtil.fill(guiGraphics, minX, minY, maxX, maxY, blitOffset, ColorStyles.GENERIC_TOOLTIP.backgroundColor() & 0xE0_FFFFFF);
-		guiGraphics.drawString(font, text, (int) xt, (int) (yt - font.lineHeight / 2f), ColorStyles.WHITE_ARGB, true);
+
+		int minX = (int) x;
+		int minY = (int) (y - font.lineHeight / 2f);
+		int maxX = minX + lineWidth;
+		int maxY = (int) (y + font.lineHeight / 2f);
+
+		GuiRenderUtil.fill(guiGraphics, minX - 3f, minY - 3f, maxX + 2f, maxY + 1.5f, zDepth, ColorStyles.GENERIC_TOOLTIP.backgroundColor() & 0xE0_FFFFFF);
+		guiGraphics.drawString(font, text, minX, minY, ColorStyles.WHITE_ARGB, true);
+
 		guiGraphics.pose().popPose();
 	}
 
