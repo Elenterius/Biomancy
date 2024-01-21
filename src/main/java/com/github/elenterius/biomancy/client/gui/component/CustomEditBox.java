@@ -1,17 +1,17 @@
 package com.github.elenterius.biomancy.client.gui.component;
 
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.FormattedText;
 
 /**
  * disables the drawing of the background but keeps the paddings/margins intact
  */
 public class CustomEditBox extends EditBox {
 
-	private FormattedText hint = FormattedText.EMPTY;
+	private Component hint = ComponentUtil.empty();
 	private final Font font;
 	private boolean isBackgroundDisabled = false;
 
@@ -34,7 +34,7 @@ public class CustomEditBox extends EditBox {
 	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
 		if (visible) {
 			if (!isFocused() && getValue().isEmpty()) {
-				guiGraphics.drawString(font, hint.getString(), getX() + 4, getY() + (height - 8) / 2, -1);
+				guiGraphics.drawString(font, hint, getX() + 4, getY() + (height - 8) / 2, 0xff_ffffff);
 			}
 			else super.render(guiGraphics, mouseX, mouseY, partialTick);
 		}

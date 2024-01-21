@@ -57,13 +57,6 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implem
 		searchInput.setTextColor(ColorStyles.TEXT_ACCENT_FORGE);
 
 		recipeBook = new BioForgeScreenController(minecraft, menu);
-
-		//minecraft.keyboardHandler.setSendRepeatsToGui(true);
-	}
-
-	@Override
-	public void removed() {
-		//minecraft.keyboardHandler.setSendRepeatsToGui(false);
 	}
 
 	public void onRecipeBookUpdated() {
@@ -86,7 +79,13 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implem
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		if (searchInput.mouseClicked(mouseX, mouseY, button)) return true;
+		if (searchInput.mouseClicked(mouseX, mouseY, button)) {
+			searchInput.setFocused(true);
+			return true;
+		}
+		else {
+			searchInput.setFocused(false);
+		}
 
 		if (recipeBook.hasRecipesOnPage()) {
 			int recipes = recipeBook.getMaxRecipesOnGrid();
@@ -134,7 +133,7 @@ public class BioForgeScreen extends AbstractContainerScreen<BioForgeMenu> implem
 			return true;
 		}
 
-		if (Objects.requireNonNull(minecraft).options.keyChat.matches(keyCode, scanCode) && !searchInput.isFocused()) {
+		if (minecraft.options.keyChat.matches(keyCode, scanCode) && !searchInput.isFocused()) {
 			ignoreTextInput = true;
 			searchInput.setFocused(true);
 			return true;
