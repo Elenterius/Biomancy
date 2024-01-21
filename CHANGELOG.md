@@ -1,3 +1,19 @@
+## [4.1.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.4.0.1...1.20.1-v2.4.1.0) (2024-01-21)
+
+
+### Features
+
+* **bio-forge:** improve tabs ([0d1b81d](https://github.com/Elenterius/Biomancy/commit/0d1b81d46b49a0ee2461b03baa20e673550d214a))
+* **bio-forge:** render tag ingredients as slideshow (cycles through items) ([42360cd](https://github.com/Elenterius/Biomancy/commit/42360cdc1a6b07a1c059352273d4d96888d7e43d))
+* **bio-forge:** reorganize tabs ([4fc9c33](https://github.com/Elenterius/Biomancy/commit/4fc9c33164864a86ca59d08d46689ae56d161796))
+
+
+### Bug Fixes
+
+* **bio-forge:** fix inability to (un-)focus the search box via mouse click ([b32a997](https://github.com/Elenterius/Biomancy/commit/b32a9978d3d7bee113e17921903909b63a235245))
+* **bio-forge:** fix recipe crafting not working with tag ingredients ([1f7fa9a](https://github.com/Elenterius/Biomancy/commit/1f7fa9a1bc6da8e3b1c4b3d1bd9cd0b721fe58f0))
+* **injector:** fix misaligned item labels rendering of the wheel gui ([89780ba](https://github.com/Elenterius/Biomancy/commit/89780ba11b55bcbf543fde09b7d847ffa0f2899f))
+
 ### [4.0.1](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.4.0.0...1.20.1-v2.4.0.1) (2024-01-19)
 
 
