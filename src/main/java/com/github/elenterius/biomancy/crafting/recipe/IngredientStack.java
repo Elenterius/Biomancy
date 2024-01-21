@@ -2,8 +2,10 @@ package com.github.elenterius.biomancy.crafting.recipe;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.Nullable;
@@ -16,8 +18,24 @@ public record IngredientStack(Ingredient ingredient, int count) {
 	public static final String ALT_INGREDIENT_KEY = "alt"; //legacy support, unused by Biomancy
 	public static final String COUNT_KEY = "count";
 
+	public ItemStack[] getItems() {
+		return ingredient.getItems();
+	}
+
 	public boolean testItem(@Nullable ItemStack stack) {
 		return ingredient.test(stack);
+	}
+
+	public boolean hasSufficientCount(StackedContents itemCounter) {
+		IntList stackingIds = ingredient.getStackingIds();
+
+		int n = 0;
+		for (int i = 0; i < stackingIds.size(); i++) {
+			n += itemCounter.contents.get(stackingIds.getInt(i));
+			if (n >= count) return true;
+		}
+
+		return false;
 	}
 
 	public List<ItemStack> getItemsWithCount() {

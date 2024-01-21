@@ -1177,12 +1177,14 @@ public class ModRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.REPLICAS)
 				.unlockedBy(Items.NAUTILUS_SHELL).save(consumer);
 
-		BioForgeRecipeBuilder.create(ModItems.MASCOT_BANNER_PATTERNS.get())
+		//////////// Testing ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		BioForgeRecipeBuilder.create(Items.PAPER)
+				.addIngredient(ItemTags.PLANKS, 11)
 				.addIngredient(ModItems.ORGANIC_MATTER.get(), 8)
-				.addIngredient(Items.SPIDER_EYE, 1)
-				.addIngredient(ModItems.BILE.get(), 4)
-				.setCategory(ModBioForgeTabs.MISC)
-				.unlockedBy(ModItems.ORGANIC_MATTER.get()).save(consumer);
+				.addIngredient(ItemTags.SMALL_FLOWERS, 3)
+				.setCategory(ModBioForgeTabs.REPLICAS)
+				.unlockedBy(Items.PAPER).save(consumer);
 	}
 
 	private void registerBioLabRecipes(Consumer<FinishedRecipe> consumer) {

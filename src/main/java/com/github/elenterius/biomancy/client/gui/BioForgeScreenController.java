@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyConfig;
 import com.github.elenterius.biomancy.crafting.recipe.BioForgeRecipe;
+import com.github.elenterius.biomancy.crafting.recipe.IngredientStack;
 import com.github.elenterius.biomancy.init.ModBioForgeTabs;
 import com.github.elenterius.biomancy.init.ModRecipeBookTypes;
 import com.github.elenterius.biomancy.init.client.ModRecipeBookCategories;
@@ -146,6 +147,10 @@ class BioForgeScreenController {
 	public int getTotalItemCountInPlayerInv(ItemStack stack) {
 		int index = StackedContents.getStackingIndex(stack);
 		return itemCounter.contents.get(index);
+	}
+
+	public boolean hasSufficientIngredientCount(IngredientStack ingredientStack) {
+		return ingredientStack.hasSufficientCount(itemCounter);
 	}
 
 	public int getMaxRecipesOnGrid() {
