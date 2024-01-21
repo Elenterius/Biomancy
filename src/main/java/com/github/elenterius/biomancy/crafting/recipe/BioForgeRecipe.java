@@ -64,18 +64,13 @@ public class BioForgeRecipe implements Recipe<Container> {
 	}
 
 	public boolean isCraftable(StackedContents itemCounter) {
-		//TODO: make this more precise
-		boolean isCraftable = true;
 		for (IngredientStack ingredientStack : ingredients) {
-			ItemStack stack = ingredientStack.ingredient().getItems()[0];
-			int requiredAmount = ingredientStack.count();
-			int foundAmount = itemCounter.contents.get(StackedContents.getStackingIndex(stack));
-			if (foundAmount < requiredAmount) {
-				isCraftable = false;
-				break;
+			if (!ingredientStack.hasSufficientCount(itemCounter)) {
+				return false;
 			}
 		}
-		return isCraftable;
+
+		return true;
 	}
 
 	@Override
