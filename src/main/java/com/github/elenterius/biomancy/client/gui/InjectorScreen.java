@@ -217,7 +217,7 @@ public class InjectorScreen extends Screen {
 			text = ComponentUtil.literal("Cancel");
 		}
 		else {
-			text = ComponentUtil.mutable().append(stack.getHoverName()).withStyle(stack.getRarity().getStyleModifier());
+			text = ComponentUtil.mutable().append(stack.getHoverName());
 			if (stack.hasCustomHoverName()) text.withStyle(ChatFormatting.ITALIC);
 		}
 
