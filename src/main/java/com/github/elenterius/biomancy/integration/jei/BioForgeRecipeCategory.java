@@ -38,22 +38,10 @@ public class BioForgeRecipeCategory implements IRecipeCategory<BioForgeRecipe> {
 		background = guiHelper.drawableBuilder(texture, 0, 0, 152, 32).setTextureSize(152, 32).build();
 	}
 
-	//TODO: Change this code.
-	/*@Override
-	public ResourceLocation getUid() {
-		return getRecipeType().getUid();
-	}*/
-
 	@Override
 	public RecipeType<BioForgeRecipe> getRecipeType() {
 		return RECIPE_TYPE;
 	}
-
-	//TODO: Change this code.
-	/*@Override
-	public Class<? extends BioForgeRecipe> getRecipeClass() {
-		return getRecipeType().getRecipeClass();
-	}*/
 
 	@Override
 	public Component getTitle() {
@@ -72,7 +60,7 @@ public class BioForgeRecipeCategory implements IRecipeCategory<BioForgeRecipe> {
 
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, BioForgeRecipe recipe, IFocusGroup focuses) {
-		//		builder.setShapeless();
+		//builder.setShapeless();
 
 		List<IngredientStack> ingredientQuantities = recipe.getIngredientQuantities();
 		int y = 5;

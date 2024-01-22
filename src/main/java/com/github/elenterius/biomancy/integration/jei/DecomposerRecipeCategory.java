@@ -37,17 +37,6 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 		background = guiHelper.drawableBuilder(BiomancyMod.createRL("textures/gui/jei/decomposer_recipe.png"), 0, 0, 128, 64).setTextureSize(128, 64).build();
 	}
 
-	//TODO: Change this code.
-	/*@Override
-	public ResourceLocation getUid() {
-		return getRecipeType().getUid();
-	}*/
-
-	/*@Override
-	public Class<? extends DecomposerRecipe> getRecipeClass() {
-		return getRecipeType().getRecipeClass();
-	}*/
-
 	@Override
 	public RecipeType<DecomposerRecipe> getRecipeType() {
 		return RECIPE_TYPE;

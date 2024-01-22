@@ -37,22 +37,10 @@ public class BioLabRecipeCategory implements IRecipeCategory<BioLabRecipe> {
 		background = guiHelper.drawableBuilder(texture, 0, 0, 134, 54).setTextureSize(134, 54).addPadding(0, 4, 0, 0).build();
 	}
 
-	//TODO: Change this code.
-	/*@Override
-	public ResourceLocation getUid() {
-		return getRecipeType().getUid();
-	}*/
-
 	@Override
 	public RecipeType<BioLabRecipe> getRecipeType() {
 		return RECIPE_TYPE;
 	}
-
-	//TODO: Change this code.
-	/*@Override
-	public Class<? extends BioLabRecipe> getRecipeClass() {
-		return getRecipeType().getRecipeClass();
-	}*/
 
 	@Override
 	public Component getTitle() {

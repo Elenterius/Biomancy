@@ -1,11 +1,11 @@
 package com.github.elenterius.biomancy.item.weapon;
 
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
-import com.github.elenterius.biomancy.entity.ownable.Fleshkin;
-import com.github.elenterius.biomancy.entity.ownable.IControllableMob;
+import com.github.elenterius.biomancy.entity.mob.ControllableMob;
+import com.github.elenterius.biomancy.entity.mob.FleshkinHumanoid;
 import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import com.github.elenterius.biomancy.item.KeyPressListener;
-import com.github.elenterius.biomancy.ownable.IOwnableMob;
+import com.github.elenterius.biomancy.ownable.OwnableMob;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.ChatFormatting;
@@ -36,14 +36,14 @@ public class ControlStaffItem extends Item implements KeyPressListener, ItemTool
 
 	@Override
 	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, Level level, Player player, EquipmentSlot slot, byte flags) {
-		IControllableMob.Command command = getCommand(stack).cycle();
+		ControllableMob.Command command = getCommand(stack).cycle();
 		player.playSound(SoundEvents.GENERIC_HURT, 0.8f, 0.25f + level.random.nextFloat() * 0.25f);
 		return InteractionResultHolder.success(command.serialize());
 	}
 
 	@Override
 	public void onServerReceiveKeyPress(ItemStack stack, ServerLevel level, Player player, byte flags) {
-		IControllableMob.Command command = IControllableMob.Command.deserialize(flags);
+		ControllableMob.Command command = ControllableMob.Command.deserialize(flags);
 		setCommand(stack, command);
 	}
 
@@ -53,7 +53,7 @@ public class ControlStaffItem extends Item implements KeyPressListener, ItemTool
 		if (context.getLevel().isClientSide || player == null) return InteractionResult.FAIL;
 
 		List<Mob> mobs = context.getLevel().getEntitiesOfClass(Mob.class, player.getBoundingBox().inflate(16d),
-				mob -> mob instanceof IControllableMob && mob instanceof IOwnableMob ownable && ownable.isOwner(player));
+				mob -> mob instanceof ControllableMob && mob instanceof OwnableMob ownable && ownable.isOwner(player));
 
 		int size = mobs.size();
 		if (size == 0) {
@@ -62,23 +62,23 @@ public class ControlStaffItem extends Item implements KeyPressListener, ItemTool
 			return InteractionResult.FAIL;
 		}
 
-		IControllableMob.Command command = getCommand(stack);
+		ControllableMob.Command command = getCommand(stack);
 		BlockPos pos = context.getClickedPos().relative(context.getClickedFace());
 		for (Mob mob : mobs) {
-			IControllableMob<Mob> controllable = IControllableMob.cast(mob);
+			ControllableMob<Mob> controllable = ControllableMob.cast(mob);
 			controllable.updateRestriction(command, pos);
 			controllable.setActiveCommand(command);
 		}
 
-		Fleshkin.displayCommandSetMsg(player, ComponentUtil.literal(size + (size > 1 ? " mobs" : " mob")), command);
+		FleshkinHumanoid.displayCommandSetMsg(player, ComponentUtil.literal(size + (size > 1 ? " mobs" : " mob")), command);
 		return InteractionResult.SUCCESS;
 	}
 
-	public IControllableMob.Command getCommand(ItemStack stack) {
-		return IControllableMob.Command.deserialize(stack.getOrCreateTag().getByte("Command"));
+	public ControllableMob.Command getCommand(ItemStack stack) {
+		return ControllableMob.Command.deserialize(stack.getOrCreateTag().getByte("Command"));
 	}
 
-	public void setCommand(ItemStack stack, IControllableMob.Command command) {
+	public void setCommand(ItemStack stack, ControllableMob.Command command) {
 		stack.getOrCreateTag().putByte("Command", command.serialize());
 	}
 

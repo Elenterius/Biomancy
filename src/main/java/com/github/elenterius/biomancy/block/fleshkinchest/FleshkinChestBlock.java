@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.block.fleshkinchest;
 
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
-import com.github.elenterius.biomancy.ownable.IOwnableEntityBlock;
+import com.github.elenterius.biomancy.ownable.OwnableEntityBlock;
 import com.github.elenterius.biomancy.permission.Actions;
 import com.github.elenterius.biomancy.permission.IRestrictedInteraction;
 import com.github.elenterius.biomancy.permission.UserType;
@@ -60,7 +60,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterloggedBlock, IOwnableEntityBlock {
+public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterloggedBlock, OwnableEntityBlock {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -77,7 +77,7 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 		ItemStack stack = new ItemStack(this);
 		stack.setHoverName(ComponentUtil.literal("[TEST/other_owner] ").append(stack.getHoverName()));
 		CompoundTag tag = new CompoundTag();
-		tag.putUUID(IOwnableEntityBlock.NBT_KEY_OWNER, Util.NIL_UUID);
+		tag.putUUID(OwnableEntityBlock.NBT_KEY_OWNER, Util.NIL_UUID);
 		BlockItem.setBlockEntityData(stack, ModBlockEntities.FLESHKIN_CHEST.get(), tag);
 		return stack;
 	}
@@ -100,7 +100,7 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 				chest.setCustomName(stack.getHoverName());
 			}
 
-			IOwnableEntityBlock.setupBlockEntityOwner(level, chest, placer, stack);
+			OwnableEntityBlock.setupBlockEntityOwner(level, chest, placer, stack);
 		}
 	}
 
@@ -236,7 +236,7 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 	public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, level, tooltip, flag);
 
-		IOwnableEntityBlock.appendUserListToTooltip(stack, tooltip);
+		OwnableEntityBlock.appendUserListToTooltip(stack, tooltip);
 
 		if (Minecraft.getInstance().player == null) return;
 

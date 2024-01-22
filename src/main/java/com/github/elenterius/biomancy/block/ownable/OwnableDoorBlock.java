@@ -2,8 +2,8 @@ package com.github.elenterius.biomancy.block.ownable;
 
 import com.github.elenterius.biomancy.block.base.IBlockEntityDelegator;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
-import com.github.elenterius.biomancy.ownable.IOwnable;
-import com.github.elenterius.biomancy.ownable.IOwnableEntityBlock;
+import com.github.elenterius.biomancy.ownable.Ownable;
+import com.github.elenterius.biomancy.ownable.OwnableEntityBlock;
 import com.github.elenterius.biomancy.permission.Actions;
 import com.github.elenterius.biomancy.permission.IRestrictedInteraction;
 import net.minecraft.core.BlockPos;
@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class OwnableDoorBlock extends DoorBlock implements IOwnableEntityBlock {
+public class OwnableDoorBlock extends DoorBlock implements OwnableEntityBlock {
 
 	public static final int UPDATE_FLAGS = Block.UPDATE_CLIENTS | Block.UPDATE_IMMEDIATE; //10
 
@@ -132,8 +132,8 @@ public class OwnableDoorBlock extends DoorBlock implements IOwnableEntityBlock {
 			boolean isAllowed = false;
 
 			//check if th owner of the neighbor is allowed to interact with this block
-			if (neighborBlock instanceof IOwnableEntityBlock && level.getBlockState(neighborPos).is(neighborBlock)) { //only allow "direct" neighbors
-				if (level.getBlockEntity(neighborPos) instanceof IOwnable neighbor) {
+			if (neighborBlock instanceof OwnableEntityBlock && level.getBlockState(neighborPos).is(neighborBlock)) { //only allow "direct" neighbors
+				if (level.getBlockEntity(neighborPos) instanceof Ownable neighbor) {
 					Optional<UUID> neighborOwner = neighbor.getOptionalOwnerUUID();
 					if (neighborOwner.isPresent()) {
 						isAllowed = restricted.isActionAllowed(neighborOwner.get(), Actions.USE_BLOCK);
@@ -196,15 +196,15 @@ public class OwnableDoorBlock extends DoorBlock implements IOwnableEntityBlock {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, level, tooltip, flag);
-		IOwnableEntityBlock.appendUserListToTooltip(stack, tooltip);
+		OwnableEntityBlock.appendUserListToTooltip(stack, tooltip);
 	}
 
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
 		super.setPlacedBy(level, pos, state, placer, stack);
 		BlockEntity blockEntity = level.getBlockEntity(pos);
-		if (blockEntity instanceof IOwnable ownable) {
-			IOwnableEntityBlock.setupBlockEntityOwner(level, ownable, placer, stack);
+		if (blockEntity instanceof Ownable ownable) {
+			OwnableEntityBlock.setupBlockEntityOwner(level, ownable, placer, stack);
 		}
 
 		if (blockEntity instanceof IBlockEntityDelegator delegator && level.getBlockEntity(pos.below()) instanceof OwnableBlockEntity ownable) {

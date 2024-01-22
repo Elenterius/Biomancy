@@ -17,9 +17,9 @@ import com.github.elenterius.biomancy.client.render.block.fleshkinchest.Fleshkin
 import com.github.elenterius.biomancy.client.render.block.mawhopper.MawHopperRenderer;
 import com.github.elenterius.biomancy.client.render.block.storagesac.StorageSacRenderer;
 import com.github.elenterius.biomancy.client.render.block.tongue.TongueRenderer;
-import com.github.elenterius.biomancy.client.render.entity.fleshblob.FleshBlobRenderer;
-import com.github.elenterius.biomancy.client.render.entity.fleshblob.LegacyFleshBlobRenderer;
-import com.github.elenterius.biomancy.client.render.entity.fleshblob.PrimordialFleshBlobRenderer;
+import com.github.elenterius.biomancy.client.render.entity.mob.fleshblob.FleshBlobRenderer;
+import com.github.elenterius.biomancy.client.render.entity.mob.fleshblob.LegacyFleshBlobRenderer;
+import com.github.elenterius.biomancy.client.render.entity.mob.fleshblob.PrimordialFleshBlobRenderer;
 import com.github.elenterius.biomancy.client.render.entity.projectile.AcidProjectileRenderer;
 import com.github.elenterius.biomancy.client.render.entity.projectile.WitherProjectileRenderer;
 import com.github.elenterius.biomancy.client.render.entity.projectile.acidblob.AcidBlobProjectileRenderer;

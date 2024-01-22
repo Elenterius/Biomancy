@@ -411,8 +411,6 @@ public class InjectorItem extends Item implements SerumInjector, ItemTooltipStyl
 
 	@Override
 	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-		//IMPORTANT: transitionLengthTicks needs to be larger than 0, or else the controller.currentAnimation might be null and a NPE is thrown //TODO: test if this holds true for geckolib 4
-
 		AnimationController<InjectorItem> mainController = new AnimationController<>(this, MAIN_CONTROLLER, 1, event -> PlayState.CONTINUE);
 		InjectorAnimation.registerTriggerableAnimations(mainController);
 		mainController.setSoundKeyframeHandler(this::soundListener);

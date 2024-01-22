@@ -3,8 +3,8 @@ package com.github.elenterius.biomancy.block.ownable;
 import com.github.elenterius.biomancy.block.property.UserSensitivity;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModBlockProperties;
-import com.github.elenterius.biomancy.ownable.IOwnable;
-import com.github.elenterius.biomancy.ownable.IOwnableEntityBlock;
+import com.github.elenterius.biomancy.ownable.Ownable;
+import com.github.elenterius.biomancy.ownable.OwnableEntityBlock;
 import com.github.elenterius.biomancy.permission.Actions;
 import com.github.elenterius.biomancy.permission.IRestrictedInteraction;
 import net.minecraft.core.BlockPos;
@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableEntityBlock {
+public class OwnableTrapDoorBlock extends TrapDoorBlock implements OwnableEntityBlock {
 
 	public static final EnumProperty<UserSensitivity> SENSITIVITY = ModBlockProperties.USER_SENSITIVITY;
 	protected static final AABB TOP_AABB_VOLUME = new AABB(0d, 0.75d, 0d, 1d, 1.25d, 1d);
@@ -122,8 +122,8 @@ public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableEntit
 			boolean isAllowed = false;
 
 			// check if th owner of the neighbor is allowed to interact with this block
-			if (neighborBlock instanceof IOwnableEntityBlock && level.getBlockState(neighborPos).is(neighborBlock)) { //only allow "direct" neighbors
-				if (level.getBlockEntity(neighborPos) instanceof IOwnable neighbor) {
+			if (neighborBlock instanceof OwnableEntityBlock && level.getBlockState(neighborPos).is(neighborBlock)) { //only allow "direct" neighbors
+				if (level.getBlockEntity(neighborPos) instanceof Ownable neighbor) {
 					Optional<UUID> neighborOwner = neighbor.getOptionalOwnerUUID();
 					if (neighborOwner.isPresent()) {
 						isAllowed = restricted.isActionAllowed(neighborOwner.get(), Actions.USE_BLOCK);
@@ -272,7 +272,7 @@ public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableEntit
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, level, tooltip, flag);
-		IOwnableEntityBlock.appendUserListToTooltip(stack, tooltip);
+		OwnableEntityBlock.appendUserListToTooltip(stack, tooltip);
 	}
 
 //	@Override
@@ -284,8 +284,8 @@ public class OwnableTrapDoorBlock extends TrapDoorBlock implements IOwnableEntit
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
 		super.setPlacedBy(level, pos, state, placer, stack);
-		if (level.getBlockEntity(pos) instanceof IOwnable ownable) {
-			IOwnableEntityBlock.setupBlockEntityOwner(level, ownable, placer, stack);
+		if (level.getBlockEntity(pos) instanceof Ownable ownable) {
+			OwnableEntityBlock.setupBlockEntityOwner(level, ownable, placer, stack);
 		}
 	}
 

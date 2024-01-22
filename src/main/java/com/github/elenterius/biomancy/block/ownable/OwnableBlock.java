@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.block.ownable;
 
-import com.github.elenterius.biomancy.ownable.IOwnable;
-import com.github.elenterius.biomancy.ownable.IOwnableEntityBlock;
+import com.github.elenterius.biomancy.ownable.Ownable;
+import com.github.elenterius.biomancy.ownable.OwnableEntityBlock;
 import com.github.elenterius.biomancy.permission.Actions;
 import com.github.elenterius.biomancy.permission.IRestrictedInteraction;
 import net.minecraft.core.BlockPos;
@@ -19,7 +19,7 @@ import net.minecraft.world.level.material.PushReaction;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public abstract class OwnableBlock extends BaseEntityBlock implements IOwnableEntityBlock {
+public abstract class OwnableBlock extends BaseEntityBlock implements OwnableEntityBlock {
 
 	protected OwnableBlock(Properties properties) {
 		super(properties);
@@ -28,14 +28,14 @@ public abstract class OwnableBlock extends BaseEntityBlock implements IOwnableEn
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, level, tooltip, flag);
-		IOwnableEntityBlock.appendUserListToTooltip(stack, tooltip);
+		OwnableEntityBlock.appendUserListToTooltip(stack, tooltip);
 	}
 
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
 		super.setPlacedBy(level, pos, state, placer, stack);
-		if (level.getBlockEntity(pos) instanceof IOwnable ownable) {
-			IOwnableEntityBlock.setupBlockEntityOwner(level, ownable, placer, stack);
+		if (level.getBlockEntity(pos) instanceof Ownable ownable) {
+			OwnableEntityBlock.setupBlockEntityOwner(level, ownable, placer, stack);
 		}
 	}
 

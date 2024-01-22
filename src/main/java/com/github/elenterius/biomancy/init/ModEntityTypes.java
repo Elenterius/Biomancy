@@ -1,10 +1,10 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.entity.fleshblob.AdulteratedEaterFleshBlob;
-import com.github.elenterius.biomancy.entity.fleshblob.AdulteratedHangryEaterFleshBlob;
-import com.github.elenterius.biomancy.entity.fleshblob.PrimordialEaterFleshBlob;
-import com.github.elenterius.biomancy.entity.fleshblob.PrimordialHangryEaterFleshBlob;
+import com.github.elenterius.biomancy.entity.mob.fleshblob.AdulteratedEaterFleshBlob;
+import com.github.elenterius.biomancy.entity.mob.fleshblob.AdulteratedHangryEaterFleshBlob;
+import com.github.elenterius.biomancy.entity.mob.fleshblob.PrimordialEaterFleshBlob;
+import com.github.elenterius.biomancy.entity.mob.fleshblob.PrimordialHangryEaterFleshBlob;
 import com.github.elenterius.biomancy.entity.projectile.*;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

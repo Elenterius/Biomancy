@@ -99,7 +99,7 @@ public enum DirectedConnection implements StringRepresentable {
 				quaternion.mul(Axis.YP.rotationDegrees(90));
 				yield quaternion;
 			}
-			case UP_NORTH, UP_DOWN -> new Quaternionf(); //TODO: verify
+			case UP_NORTH, UP_DOWN -> new Quaternionf();
 			case UP_SOUTH -> Axis.YP.rotationDegrees(-180);
 			case UP_EAST -> Axis.YP.rotationDegrees(-90);
 			case UP_WEST -> Axis.YP.rotationDegrees(90);

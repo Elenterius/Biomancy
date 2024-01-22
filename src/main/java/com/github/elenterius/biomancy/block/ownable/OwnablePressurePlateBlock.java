@@ -3,8 +3,8 @@ package com.github.elenterius.biomancy.block.ownable;
 import com.github.elenterius.biomancy.block.property.UserSensitivity;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModBlockProperties;
-import com.github.elenterius.biomancy.ownable.IOwnable;
-import com.github.elenterius.biomancy.ownable.IOwnableEntityBlock;
+import com.github.elenterius.biomancy.ownable.Ownable;
+import com.github.elenterius.biomancy.ownable.OwnableEntityBlock;
 import com.github.elenterius.biomancy.permission.Actions;
 import com.github.elenterius.biomancy.permission.IRestrictedInteraction;
 import net.minecraft.core.BlockPos;
@@ -34,7 +34,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class OwnablePressurePlateBlock extends PressurePlateBlock implements IOwnableEntityBlock {
+public class OwnablePressurePlateBlock extends PressurePlateBlock implements OwnableEntityBlock {
 
 	public static final EnumProperty<UserSensitivity> USER_SENSITIVITY = ModBlockProperties.USER_SENSITIVITY;
 	public static final Predicate<Entity> ENTITY_SELECTOR = entity -> !entity.isSpectator() && !entity.isIgnoringBlockTriggers();
@@ -59,8 +59,8 @@ public class OwnablePressurePlateBlock extends PressurePlateBlock implements IOw
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
 		super.setPlacedBy(level, pos, state, placer, stack);
-		if (level.getBlockEntity(pos) instanceof IOwnable ownable) {
-			IOwnableEntityBlock.setupBlockEntityOwner(level, ownable, placer, stack);
+		if (level.getBlockEntity(pos) instanceof Ownable ownable) {
+			OwnableEntityBlock.setupBlockEntityOwner(level, ownable, placer, stack);
 		}
 	}
 
@@ -133,7 +133,7 @@ public class OwnablePressurePlateBlock extends PressurePlateBlock implements IOw
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable BlockGetter pLevel, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, pLevel, tooltip, flag);
-		IOwnableEntityBlock.appendUserListToTooltip(stack, tooltip);
+		OwnableEntityBlock.appendUserListToTooltip(stack, tooltip);
 	}
 
 }

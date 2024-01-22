@@ -11,6 +11,8 @@ import com.github.elenterius.biomancy.block.digester.DigesterBlock;
 import com.github.elenterius.biomancy.block.fleshkinchest.FleshkinChestBlock;
 import com.github.elenterius.biomancy.block.fleshspike.FleshSpikeBlock;
 import com.github.elenterius.biomancy.block.mawhopper.MawHopperBlock;
+import com.github.elenterius.biomancy.block.membrane.MembraneBlock;
+import com.github.elenterius.biomancy.block.membrane.SpreadingMembraneBlock;
 import com.github.elenterius.biomancy.block.orifice.OrificeBlock;
 import com.github.elenterius.biomancy.block.ownable.OwnablePressurePlateBlock;
 import com.github.elenterius.biomancy.block.storagesac.StorageSacBlock;

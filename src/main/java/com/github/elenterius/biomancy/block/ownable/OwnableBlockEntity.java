@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.block.ownable;
 
 import com.github.elenterius.biomancy.block.base.SimpleSyncedBlockEntity;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
-import com.github.elenterius.biomancy.ownable.IOwnable;
+import com.github.elenterius.biomancy.ownable.Ownable;
 import com.github.elenterius.biomancy.permission.IRestrictedInteraction;
 import com.github.elenterius.biomancy.permission.UserType;
 import net.minecraft.core.BlockPos;
@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public class OwnableBlockEntity extends SimpleSyncedBlockEntity implements IOwnable, IRestrictedInteraction {
+public class OwnableBlockEntity extends SimpleSyncedBlockEntity implements Ownable, IRestrictedInteraction {
 
 	public static final int MAX_USERS = 10;
 	private final HashMap<UUID, UserType> users = new HashMap<>(6);

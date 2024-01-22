@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.block.ownable;
 
 import com.github.elenterius.biomancy.block.base.SimpleContainerBlockEntity;
-import com.github.elenterius.biomancy.ownable.IOwnable;
+import com.github.elenterius.biomancy.ownable.Ownable;
 import com.github.elenterius.biomancy.permission.Actions;
 import com.github.elenterius.biomancy.permission.IRestrictedInteraction;
 import com.github.elenterius.biomancy.permission.UserType;
@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class OwnableContainerBlockEntity extends SimpleContainerBlockEntity implements IOwnable, IRestrictedInteraction {
+public abstract class OwnableContainerBlockEntity extends SimpleContainerBlockEntity implements Ownable, IRestrictedInteraction {
 
 	public static final int MAX_USERS = 10;
 	private final HashMap<UUID, UserType> users = new HashMap<>(6);

@@ -33,22 +33,10 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigesterRecipe> {
 		background = guiHelper.drawableBuilder(texture, 0, 0, 80, 47).setTextureSize(80, 47).addPadding(0, 4, 0, 0).build();
 	}
 
-	//TODO: Change this code.
-	/*@Override
-	public ResourceLocation getUid() {
-		return getRecipeType().getUid();
-	}*/
-
 	@Override
 	public RecipeType<DigesterRecipe> getRecipeType() {
 		return RECIPE_TYPE;
 	}
-
-	//TODO: Change this code.
-	/*@Override
-	public Class<? extends DigesterRecipe> getRecipeClass() {
-		return getRecipeType().getRecipeClass();
-	}*/
 
 	@Override
 	public Component getTitle() {
