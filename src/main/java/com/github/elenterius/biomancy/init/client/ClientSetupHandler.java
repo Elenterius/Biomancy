@@ -21,7 +21,6 @@ import com.github.elenterius.biomancy.client.render.entity.mob.fleshblob.FleshBl
 import com.github.elenterius.biomancy.client.render.entity.mob.fleshblob.LegacyFleshBlobRenderer;
 import com.github.elenterius.biomancy.client.render.entity.mob.fleshblob.PrimordialFleshBlobRenderer;
 import com.github.elenterius.biomancy.client.render.entity.projectile.AcidProjectileRenderer;
-import com.github.elenterius.biomancy.client.render.entity.projectile.WitherProjectileRenderer;
 import com.github.elenterius.biomancy.client.render.entity.projectile.acidblob.AcidBlobProjectileRenderer;
 import com.github.elenterius.biomancy.client.render.entity.projectile.bloomberry.BloomberryProjectileRenderer;
 import com.github.elenterius.biomancy.init.*;
@@ -35,7 +34,6 @@ import net.minecraft.client.particle.AttackSweepParticle;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import net.minecraft.client.renderer.entity.WitherSkullRenderer;
 import net.minecraft.world.item.BucketItem;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
@@ -99,7 +97,6 @@ public final class ClientSetupHandler {
 
 		event.registerEntityRenderer(ModEntityTypes.CORROSIVE_ACID_PROJECTILE.get(), AcidProjectileRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.TOOTH_PROJECTILE.get(), ThrownItemRenderer::new);
-		event.registerEntityRenderer(ModEntityTypes.WITHER_SKULL_PROJECTILE.get(), WitherProjectileRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.BLOOMBERRY_PROJECTILE.get(), BloomberryProjectileRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.ACID_BLOB_PROJECTILE.get(), AcidBlobProjectileRenderer::new);
 	}
@@ -130,7 +127,6 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void registerLayerDefinitions(final EntityRenderersEvent.RegisterLayerDefinitions event) {
-		event.registerLayerDefinition(WitherProjectileRenderer.MODEL_LAYER, WitherSkullRenderer::createSkullLayer);
 	}
 
 	private static void registerItemModelProperties() {
