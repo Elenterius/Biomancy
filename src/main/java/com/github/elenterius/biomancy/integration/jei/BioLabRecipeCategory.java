@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.crafting.recipe.BioLabRecipe;
 import com.github.elenterius.biomancy.crafting.recipe.IngredientStack;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
+import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -19,11 +20,13 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
+import java.util.Objects;
 
 public class BioLabRecipeCategory implements IRecipeCategory<BioLabRecipe> {
 
@@ -59,6 +62,8 @@ public class BioLabRecipeCategory implements IRecipeCategory<BioLabRecipe> {
 
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, BioLabRecipe recipe, IFocusGroup focuses) {
+		ClientLevel level = Objects.requireNonNull(Minecraft.getInstance().level);
+
 		builder.setShapeless();
 
 		List<IngredientStack> ingredientQuantities = recipe.getIngredientQuantities();
@@ -69,7 +74,7 @@ public class BioLabRecipeCategory implements IRecipeCategory<BioLabRecipe> {
 
 		builder.addSlot(RecipeIngredientRole.INPUT, 55, 10).addIngredients(recipe.getReactant());
 
-		builder.addSlot(RecipeIngredientRole.OUTPUT, 113, 10).addItemStack(recipe.getResultItem(null));
+		builder.addSlot(RecipeIngredientRole.OUTPUT, 113, 10).addItemStack(recipe.getResultItem(level.registryAccess()));
 	}
 
 	private void addInputSlot(IRecipeLayoutBuilder builder, int x, int y, List<IngredientStack> ingredients, int index) {
@@ -89,10 +94,10 @@ public class BioLabRecipeCategory implements IRecipeCategory<BioLabRecipe> {
 		int ticks = recipe.getCraftingTimeTicks();
 		int seconds = ticks > 0 ? ticks / 20 : 0;
 		Component timeText = ComponentUtil.translatable("gui.jei.category.smelting.time.seconds", seconds);
-		guiGraphics.drawString(font, timeText, 102, 50 - font.lineHeight, 0xff808080);
+		guiGraphics.drawString(font, timeText, 102, 50 - font.lineHeight, ColorStyles.WHITE_ARGB);
 
 		Component costText = ComponentUtil.literal("-" + recipe.getCraftingCostNutrients());
-		guiGraphics.drawString(font, costText, 69, 50 - font.lineHeight, 0xff808080);
+		guiGraphics.drawString(font, costText, 69, 50 - font.lineHeight, ColorStyles.WHITE_ARGB);
 	}
 
 }

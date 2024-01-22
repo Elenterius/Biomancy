@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.crafting.recipe.ItemCountRange;
 import com.github.elenterius.biomancy.crafting.recipe.VariableProductionOutput;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModRecipes;
+import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -93,10 +94,10 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 		int ticks = recipe.getCraftingTimeTicks();
 		int seconds = ticks > 0 ? ticks / 20 : 0;
 		MutableComponent timeString = ComponentUtil.translatable("gui.jei.category.smelting.time.seconds", seconds);
-		guiGraphics.drawString(font, timeString, 16, 59 - font.lineHeight, 0xff_808080);
+		guiGraphics.drawString(font, timeString, 16, 59 - font.lineHeight, ColorStyles.WHITE_ARGB);
 
 		MutableComponent costString = ComponentUtil.literal("-" + recipe.getCraftingCostNutrients());
-		guiGraphics.drawString(font, costString, 16, 43 - font.lineHeight, 0xff_808080);
+		guiGraphics.drawString(font, costString, 16, 43 - font.lineHeight, ColorStyles.WHITE_ARGB);
 
 		int x = 68;
 		List<VariableProductionOutput> outputs = recipe.getOutputs();
@@ -124,15 +125,15 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 			ItemCountRange countRange = output.getCountRange();
 			if (countRange instanceof ItemCountRange.UniformRange uniform) {
 				MutableComponent component = ComponentUtil.literal("%d-%d".formatted(Math.max(uniform.min(), 0), uniform.max()));
-				guiGraphics.drawString(font, component, x - font.width(component), y, 0xff_808080);
+				guiGraphics.drawString(font, component, x - font.width(component), y, ColorStyles.WHITE_ARGB);
 			}
 			else if (countRange instanceof ItemCountRange.ConstantValue constant) {
 				MutableComponent component = ComponentUtil.literal("" + constant.value());
-				guiGraphics.drawString(font, component, x - font.width(component), y, 0xff_808080);
+				guiGraphics.drawString(font, component, x - font.width(component), y, ColorStyles.WHITE_ARGB);
 			}
 			else if (countRange instanceof ItemCountRange.BinomialRange binomialRange) {
 				MutableComponent component = ComponentUtil.literal("n: %d, p: %s".formatted(binomialRange.n(), binomialRange.p()));
-				guiGraphics.drawString(font, component, x - font.width(component), y, 0xff_808080);
+				guiGraphics.drawString(font, component, x - font.width(component), y, ColorStyles.WHITE_ARGB);
 			}
 
 			guiGraphics.pose().popPose();

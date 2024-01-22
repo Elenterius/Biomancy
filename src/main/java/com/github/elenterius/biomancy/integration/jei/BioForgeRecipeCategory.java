@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.crafting.recipe.BioForgeRecipe;
 import com.github.elenterius.biomancy.crafting.recipe.IngredientStack;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
+import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -19,12 +20,14 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
+import java.util.Objects;
 
 public class BioForgeRecipeCategory implements IRecipeCategory<BioForgeRecipe> {
 
@@ -60,7 +63,7 @@ public class BioForgeRecipeCategory implements IRecipeCategory<BioForgeRecipe> {
 
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, BioForgeRecipe recipe, IFocusGroup focuses) {
-		//builder.setShapeless();
+		ClientLevel level = Objects.requireNonNull(Minecraft.getInstance().level);
 
 		List<IngredientStack> ingredientQuantities = recipe.getIngredientQuantities();
 		int y = 5;
@@ -70,7 +73,7 @@ public class BioForgeRecipeCategory implements IRecipeCategory<BioForgeRecipe> {
 		addInputSlot(builder, 55, y, ingredientQuantities, 3);
 		addInputSlot(builder, 73, y, ingredientQuantities, 4);
 
-		builder.addSlot(RecipeIngredientRole.OUTPUT, 131, y).addItemStack(recipe.getResultItem(null));
+		builder.addSlot(RecipeIngredientRole.OUTPUT, 131, y).addItemStack(recipe.getResultItem(level.registryAccess()));
 	}
 
 	private void addInputSlot(IRecipeLayoutBuilder builder, int x, int y, List<IngredientStack> ingredients, int index) {
@@ -87,6 +90,6 @@ public class BioForgeRecipeCategory implements IRecipeCategory<BioForgeRecipe> {
 	public void draw(BioForgeRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
 		Font font = Minecraft.getInstance().font;
 		MutableComponent costString = ComponentUtil.literal("-" + recipe.getCraftingCostNutrients());
-		guiGraphics.drawString(font, costString, 108, 32 - font.lineHeight + 1, 0xff_808080);
+		guiGraphics.drawString(font, costString, 108, 32 - font.lineHeight + 1, ColorStyles.WHITE_ARGB);
 	}
 }
