@@ -12,6 +12,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -19,17 +20,14 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import software.bernie.geckolib3.core.util.Color;
 
 public class DevCannonScreen extends Screen {
 
-	public static final int CANCEL_ID = -1;
 	static final float DIAGONAL_OF_ITEM = Mth.SQRT_OF_TWO * 32; // 16 * 2
 	static final int DURATION = 10;
-	private ItemStack cachedBarrierStack = ItemStack.EMPTY;
 	private int ticks;
-	private InteractionHand itemHoldingHand;
+	private final InteractionHand itemHoldingHand;
 
 	public DevCannonScreen(InteractionHand hand) {
 		super(ComponentUtil.translatable("biomancy.dev.wheel_menu"));
@@ -39,7 +37,6 @@ public class DevCannonScreen extends Screen {
 	@Override
 	protected void init() {
 		ticks = 0;
-		cachedBarrierStack = new ItemStack(Items.BARRIER);
 
 		//move mouse up, to make cancel action selected by default
 		double x = minecraft.getWindow().getScreenWidth() / 2d;
@@ -54,7 +51,6 @@ public class DevCannonScreen extends Screen {
 
 	@Override
 	public void onClose() {
-		cachedBarrierStack = ItemStack.EMPTY;
 		super.onClose();
 	}
 
@@ -137,6 +133,7 @@ public class DevCannonScreen extends Screen {
 		float y = height / 2f;
 
 		int radius = Mth.floor(baseRadius * pct);
+		int blitOffset = 0;
 
 		float upperBound = segments * angleIncrement - Mth.HALF_PI + angleIncrement / 2f;
 		float lowerBound = -Mth.HALF_PI - angleIncrement / 2f;
@@ -160,7 +157,10 @@ public class DevCannonScreen extends Screen {
 			float v = x + radius * Mth.cos(currentAngle); //polar to cartesian
 			float w = y + radius * Mth.sin(currentAngle);
 
-			if (idx == 0) itemRenderer.renderAndDecorateFakeItem(cachedBarrierStack, Mth.floor(v - 8), Mth.floor(w - 8));
+			if (idx == 0) {
+				RenderSystem.setShaderTexture(0, InjectorScreen.ICONS);
+				GuiComponent.blit(poseStack, Mth.floor(v - 8), Mth.floor(w - 8), 16, 0, 16, 16, 32, 16);
+			}
 			else {
 				int argb = Color.HSBtoRGB(idx / (float) segments, 0.75f, 0.5f);
 				GuiRenderUtil.fill(poseStack, v - 8, w - 8, v + 8, w + 8, getBlitOffset(), argb);
@@ -196,12 +196,12 @@ public class DevCannonScreen extends Screen {
 		float minY = yt - font.lineHeight / 2f - 3;
 		float maxX = xt + lineWidth + 2;
 		float maxY = yt + font.lineHeight / 2f + 2;
-		GuiRenderUtil.fill(poseStack, minX, minY, maxX, maxY, getBlitOffset(), ColorStyles.GENERIC_TOOLTIP.backgroundColor() & 0xE0FFFFFF);
-		font.drawShadow(poseStack, text, xt, yt - font.lineHeight / 2f, ColorStyles.WHITE_ARGB);
+		GuiRenderUtil.fill(poseStack, minX, minY, maxX, maxY, blitOffset, ColorStyles.GENERIC_TOOLTIP.backgroundColor() & 0xE0FFFFFF);
+		font.drawShadow(poseStack, text, (int) xt, (int) (yt - font.lineHeight / 2f), ColorStyles.WHITE_ARGB);
 		poseStack.popPose();
 	}
 
-	public void drawSegment(PoseStack poseStack, float x, float y, float radius, float startAngle, float endAngle, int argbColor, int blitOffset) {
+	public void drawSegment(PoseStack poseStack, float x, float y, float radius, float startAngle, float endAngle, int argbColor, int z) {
 		Matrix4f matrix4f = poseStack.last().pose();
 
 		RenderSystem.enableBlend();
@@ -213,12 +213,12 @@ public class DevCannonScreen extends Screen {
 		bufferBuilder.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
 
 		float innerRadius = Math.max(radius - 16, 0);
-		bufferBuilder.vertex(matrix4f, x + innerRadius * Mth.cos(startAngle), y + innerRadius * Mth.sin(startAngle), blitOffset).color(argbColor).endVertex();
-		bufferBuilder.vertex(matrix4f, x + innerRadius * Mth.cos(endAngle), y + innerRadius * Mth.sin(endAngle), blitOffset).color(argbColor).endVertex();
+		bufferBuilder.vertex(matrix4f, x + innerRadius * Mth.cos(startAngle), y + innerRadius * Mth.sin(startAngle), z).color(argbColor).endVertex();
+		bufferBuilder.vertex(matrix4f, x + innerRadius * Mth.cos(endAngle), y + innerRadius * Mth.sin(endAngle), z).color(argbColor).endVertex();
 
 		float outerRadius = radius + 16;
-		bufferBuilder.vertex(matrix4f, x + outerRadius * Mth.cos(endAngle), y + outerRadius * Mth.sin(endAngle), blitOffset).color(argbColor).endVertex();
-		bufferBuilder.vertex(matrix4f, x + outerRadius * Mth.cos(startAngle), y + outerRadius * Mth.sin(startAngle), blitOffset).color(argbColor).endVertex();
+		bufferBuilder.vertex(matrix4f, x + outerRadius * Mth.cos(endAngle), y + outerRadius * Mth.sin(endAngle), z).color(argbColor).endVertex();
+		bufferBuilder.vertex(matrix4f, x + outerRadius * Mth.cos(startAngle), y + outerRadius * Mth.sin(startAngle), z).color(argbColor).endVertex();
 
 		BufferUploader.draw(bufferBuilder.end());
 

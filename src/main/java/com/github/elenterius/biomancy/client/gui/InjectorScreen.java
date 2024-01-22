@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.client.gui;
 
+import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.api.serum.Serum;
 import com.github.elenterius.biomancy.api.serum.SerumContainer;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
@@ -17,11 +18,13 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
@@ -31,6 +34,8 @@ import net.minecraft.world.item.Items;
 
 public class InjectorScreen extends Screen {
 
+	public static final ResourceLocation ICONS = BiomancyMod.createRL("textures/gui/wheel_icons.png");
+
 	public static final int CANCEL_ID = -1;
 	public static final int CLEAR_ID = -2;
 	static final float DIAGONAL_OF_ITEM = Mth.SQRT_OF_TWO * 32; // 16 * 2
@@ -38,7 +43,7 @@ public class InjectorScreen extends Screen {
 	private Object2IntMap<ItemStack> cachedStacks;
 	private int ticks;
 	private int refreshCacheTicks;
-	private InteractionHand itemHoldingHand;
+	private final InteractionHand itemHoldingHand;
 
 	public InjectorScreen(InteractionHand hand) {
 		super(ComponentUtil.translatable("biomancy.injector.wheel_menu"));
@@ -183,10 +188,22 @@ public class InjectorScreen extends Screen {
 
 			float v = x + radius * Mth.cos(currentAngle); //polar to cartesian
 			float w = y + radius * Mth.sin(currentAngle);
-			itemRenderer.renderAndDecorateFakeItem(entry.getKey(), Mth.floor(v - 8), Mth.floor(w - 8));
+
+			ItemStack currentStack = entry.getKey();
+			if (currentStack.isEmpty()) {
+				RenderSystem.setShaderTexture(0, InjectorScreen.ICONS);
+				GuiComponent.blit(poseStack, Mth.floor(v - 8), Mth.floor(w - 8), 0, 0, 16, 16, 32, 16);
+			}
+			else if (currentStack.getItem() == Items.BARRIER) {
+				RenderSystem.setShaderTexture(0, InjectorScreen.ICONS);
+				GuiComponent.blit(poseStack, Mth.floor(v - 8), Mth.floor(w - 8), 16, 0, 16, 16, 32, 16);
+			}
+			else {
+				itemRenderer.renderAndDecorateFakeItem(entry.getKey(), Mth.floor(v - 8), Mth.floor(w - 8));
+			}
 
 			if (isMouseInSection) {
-				stack = entry.getKey();
+				stack = currentStack;
 				textAngle = currentAngle;
 			}
 
@@ -222,13 +239,19 @@ public class InjectorScreen extends Screen {
 			xt -= lineWidth;
 		}
 
+		drawItemLabel(poseStack, xt, yt, blitOffset, text, lineWidth);
+	}
+
+	private void drawItemLabel(PoseStack poseStack, float x, float y, int zDepth, MutableComponent text, int lineWidth) {
 		poseStack.pushPose();
-		float minX = xt - 3;
-		float minY = yt - font.lineHeight / 2f - 3;
-		float maxX = xt + lineWidth + 2;
-		float maxY = yt + font.lineHeight / 2f + 2;
-		GuiRenderUtil.fill(poseStack, minX, minY, maxX, maxY, blitOffset, ColorStyles.GENERIC_TOOLTIP.backgroundColor() & 0xE0_FFFFFF);
-		font.drawShadow(poseStack, text, xt, yt - font.lineHeight / 2f, ColorStyles.WHITE_ARGB);
+
+		int minX = (int) x;
+		int minY = (int) (y - font.lineHeight / 2f);
+		int maxX = minX + lineWidth;
+		int maxY = (int) (y + font.lineHeight / 2f);
+
+		GuiRenderUtil.fill(poseStack, minX - 3f, minY - 3f, maxX + 2f, maxY + 1.5f, zDepth, ColorStyles.GENERIC_TOOLTIP.backgroundColor() & 0xE0_FFFFFF);
+		font.drawShadow(poseStack, text, minX, minY, ColorStyles.WHITE_ARGB);
 		poseStack.popPose();
 	}
 
