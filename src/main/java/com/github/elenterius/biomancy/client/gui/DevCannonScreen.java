@@ -19,18 +19,15 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import org.joml.Matrix4f;
 import software.bernie.geckolib.core.object.Color;
 
 public class DevCannonScreen extends Screen {
 
-	public static final int CANCEL_ID = -1;
 	static final float DIAGONAL_OF_ITEM = Mth.SQRT_OF_TWO * 32; // 16 * 2
 	static final int DURATION = 10;
-	private ItemStack cachedBarrierStack = ItemStack.EMPTY;
 	private int ticks;
-	private InteractionHand itemHoldingHand;
+	private final InteractionHand itemHoldingHand;
 
 	public DevCannonScreen(InteractionHand hand) {
 		super(ComponentUtil.translatable("biomancy.dev.wheel_menu"));
@@ -40,7 +37,6 @@ public class DevCannonScreen extends Screen {
 	@Override
 	protected void init() {
 		ticks = 0;
-		cachedBarrierStack = new ItemStack(Items.BARRIER);
 
 		//move mouse up, to make cancel action selected by default
 		double x = minecraft.getWindow().getScreenWidth() / 2d;
@@ -55,7 +51,6 @@ public class DevCannonScreen extends Screen {
 
 	@Override
 	public void onClose() {
-		cachedBarrierStack = ItemStack.EMPTY;
 		super.onClose();
 	}
 
@@ -163,7 +158,7 @@ public class DevCannonScreen extends Screen {
 			float w = y + radius * Mth.sin(currentAngle);
 
 			if (idx == 0) {
-				guiGraphics.renderFakeItem(cachedBarrierStack, Mth.floor(v - 8), Mth.floor(w - 8));
+				guiGraphics.blit(InjectorScreen.ICONS, Mth.floor(v - 8), Mth.floor(w - 8), 16, 0, 16, 16, 32, 16);
 			}
 			else {
 				int argb = Color.HSBtoARGB(idx / (float) segments, 0.75f, 0.5f);

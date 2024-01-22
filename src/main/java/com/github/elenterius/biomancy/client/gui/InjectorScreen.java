@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.client.gui;
 
+import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.api.serum.Serum;
 import com.github.elenterius.biomancy.api.serum.SerumContainer;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
@@ -21,6 +22,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
@@ -31,6 +33,8 @@ import org.joml.Matrix4f;
 
 public class InjectorScreen extends Screen {
 
+	public static final ResourceLocation ICONS = BiomancyMod.createRL("textures/gui/wheel_icons.png");
+
 	public static final int CANCEL_ID = -1;
 	public static final int CLEAR_ID = -2;
 	static final float DIAGONAL_OF_ITEM = Mth.SQRT_OF_TWO * 32; // 16 * 2
@@ -38,7 +42,7 @@ public class InjectorScreen extends Screen {
 	private Object2IntMap<ItemStack> cachedStacks;
 	private int ticks;
 	private int refreshCacheTicks;
-	private InteractionHand itemHoldingHand;
+	private final InteractionHand itemHoldingHand;
 
 	public InjectorScreen(InteractionHand hand) {
 		super(ComponentUtil.translatable("biomancy.injector.wheel_menu"));
@@ -182,10 +186,20 @@ public class InjectorScreen extends Screen {
 
 			float v = x + radius * Mth.cos(currentAngle); //polar to cartesian
 			float w = y + radius * Mth.sin(currentAngle);
-			guiGraphics.renderFakeItem(entry.getKey(), Mth.floor(v - 8), Mth.floor(w - 8));
+
+			ItemStack currentStack = entry.getKey();
+			if (currentStack.isEmpty()) {
+				guiGraphics.blit(ICONS, Mth.floor(v - 8), Mth.floor(w - 8), 0, 0, 16, 16, 32, 16);
+			}
+			else if (currentStack.getItem() == Items.BARRIER) {
+				guiGraphics.blit(ICONS, Mth.floor(v - 8), Mth.floor(w - 8), 16, 0, 16, 16, 32, 16);
+			}
+			else {
+				guiGraphics.renderFakeItem(currentStack, Mth.floor(v - 8), Mth.floor(w - 8));
+			}
 
 			if (isMouseInSection) {
-				stack = entry.getKey();
+				stack = currentStack;
 				textAngle = currentAngle;
 			}
 
@@ -242,7 +256,6 @@ public class InjectorScreen extends Screen {
 		Matrix4f matrix4f = guiGraphics.pose().last().pose();
 
 		RenderSystem.enableBlend();
-		//		RenderSystem.disableTexture();
 		RenderSystem.defaultBlendFunc();
 		RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
@@ -259,7 +272,6 @@ public class InjectorScreen extends Screen {
 
 		BufferUploader.drawWithShader(bufferBuilder.end());
 
-		//		RenderSystem.enableTexture();
 		RenderSystem.disableBlend();
 	}
 
