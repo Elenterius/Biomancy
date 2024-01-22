@@ -23,7 +23,7 @@ import java.util.function.Consumer;
 
 public class DecomposerRecipeProvider extends RecipeProvider {
 
-	public DecomposerRecipeProvider(PackOutput packOutput) {
+	protected DecomposerRecipeProvider(PackOutput packOutput) {
 		super(packOutput);
 	}
 

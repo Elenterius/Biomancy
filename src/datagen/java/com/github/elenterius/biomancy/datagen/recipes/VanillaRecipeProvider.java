@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 
 public class VanillaRecipeProvider extends RecipeProvider {
 
-	public VanillaRecipeProvider(PackOutput output) {
+	protected VanillaRecipeProvider(PackOutput output) {
 		super(output);
 	}
 

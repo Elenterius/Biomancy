@@ -21,7 +21,7 @@ import java.util.function.Consumer;
 
 public class DigesterRecipeProvider extends RecipeProvider {
 
-	public DigesterRecipeProvider(PackOutput output) {
+	protected DigesterRecipeProvider(PackOutput output) {
 		super(output);
 	}
 

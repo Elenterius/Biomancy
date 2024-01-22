@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 
 public class BioLabRecipeProvider extends RecipeProvider {
 
-	public BioLabRecipeProvider(PackOutput output) {
+	protected BioLabRecipeProvider(PackOutput output) {
 		super(output);
 	}
 

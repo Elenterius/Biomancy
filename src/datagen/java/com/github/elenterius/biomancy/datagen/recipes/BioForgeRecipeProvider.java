@@ -22,7 +22,7 @@ public class BioForgeRecipeProvider extends RecipeProvider {
 	int fleshSlabCost = fleshSlabCostSingle * 4;
 	int fleshStairsCost = 3;
 
-	public BioForgeRecipeProvider(PackOutput output) {
+	protected BioForgeRecipeProvider(PackOutput output) {
 		super(output);
 	}
 
