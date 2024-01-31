@@ -11,6 +11,7 @@ import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.StringUtils;
@@ -185,6 +186,10 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 	}
 
 	private boolean isValidForMeatyLoot(EntityType<?> entityType) {
+		if (entityType == EntityType.PLAYER) return true;
+
+		if (entityType.getCategory() == MobCategory.MISC) return false; //should catch all non-living mobs
+
 		if (INVALID_MOBS_FOR_MEATY_LOOT.contains(entityType)) return false;
 		if (UNDEAD_TYPES.contains(entityType)) return false;
 		if (GOLEM_TYPES.contains(entityType)) return false;
