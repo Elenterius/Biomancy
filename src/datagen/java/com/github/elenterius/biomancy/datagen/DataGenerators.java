@@ -3,7 +3,6 @@ package com.github.elenterius.biomancy.datagen;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.datagen.advancements.ModAdvancementProvider;
 import com.github.elenterius.biomancy.datagen.lang.EnglishLangProvider;
-import com.github.elenterius.biomancy.datagen.lang.PirateLangProvider;
 import com.github.elenterius.biomancy.datagen.loot.ModGlobalLootModifierProvider;
 import com.github.elenterius.biomancy.datagen.loot.ModLootTableProvider;
 import com.github.elenterius.biomancy.datagen.models.ModBlockStateProvider;
@@ -68,17 +67,15 @@ public final class DataGenerators {
 		generator.addProvider(includeServer, new ModParticleSpriteProvider(packOutput, existingFileHelper));
 
 		//translations
-		EnglishLangProvider enLanguage = new EnglishLangProvider(packOutput);
-		PirateLangProvider pirateLanguage = new PirateLangProvider(packOutput);
+		EnglishLangProvider translationProvider = new EnglishLangProvider(packOutput);
 
 		//advancements
-		generator.addProvider(includeServer, new ModAdvancementProvider(packOutput, lookupProvider, existingFileHelper, enLanguage));
+		generator.addProvider(includeServer, new ModAdvancementProvider(packOutput, lookupProvider, existingFileHelper, translationProvider));
 
 		//guide book
-		generator.addProvider(includeServer, new GuideBookProvider(packOutput, enLanguage));
+		generator.addProvider(includeServer, new GuideBookProvider(packOutput, translationProvider));
 
-		generator.addProvider(includeServer, enLanguage);
-		generator.addProvider(includeServer, pirateLanguage);
+		generator.addProvider(includeServer, translationProvider);
 	}
 
 }
