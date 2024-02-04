@@ -58,6 +58,7 @@ public class DecomposerRecipeProvider extends RecipeProvider {
 	protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
 		buildBaseRecipes(consumer);
 		build119Recipes(consumer);
+		build120Recipes(consumer);
 		buildSpecialRecipes(consumer);
 		buildBiomesOPlentyRecipes(consumer);
 		buildAlexsMobsRecipes(consumer);
@@ -219,6 +220,42 @@ public class DecomposerRecipeProvider extends RecipeProvider {
 		DecomposerRecipeBuilder.create().setIngredient(Items.VERDANT_FROGLIGHT).addOutput(ModItems.BIO_LUMENS.get(), 5, 9).addOutput(ModItems.BILE.get(), 2, 3).unlockedBy(Items.VERDANT_FROGLIGHT).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.OCHRE_FROGLIGHT).addOutput(ModItems.BIO_LUMENS.get(), 5, 9).addOutput(ModItems.BILE.get(), 2, 3).unlockedBy(Items.OCHRE_FROGLIGHT).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.FROGSPAWN).addOutput(ModItems.BILE.get(), 0, 1).unlockedBy(Items.FROGSPAWN).save(consumer);
+	}
+
+	private void build120Recipes(Consumer<FinishedRecipe> consumer) {
+		DecomposerRecipeBuilder.create().setIngredient(Items.PITCHER_POD)
+				.addOutput(ModItems.BILE.get(), 1, 3)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 0, 3)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 2, 4)
+				.unlockedBy(Items.PITCHER_POD).save(consumer);
+
+		DecomposerRecipeBuilder.create().setIngredient(Items.PITCHER_PLANT)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 0, 3)
+				.addOutput(ModItems.TOXIN_EXTRACT.get(), 0, 2)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 2, 4)
+				.unlockedBy(Items.PITCHER_PLANT).save(consumer);
+
+		DecomposerRecipeBuilder.create().setIngredient(Items.TORCHFLOWER)
+				.addOutput(ModItems.BIO_LUMENS.get(), 0, 2)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 1, 2)
+				.unlockedBy(Items.TORCHFLOWER).save(consumer);
+
+		DecomposerRecipeBuilder.create().setIngredient(Items.TORCHFLOWER_SEEDS)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 1, 2)
+				.unlockedBy(Items.TORCHFLOWER_SEEDS).save(consumer);
+
+		DecomposerRecipeBuilder.create().setIngredient(Items.SNIFFER_EGG)
+				.addOutput(ModItems.STONE_POWDER.get(), 0, 4)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 1, 4)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 1, 4)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 2, 6)
+				.unlockedBy(Items.SNIFFER_EGG).save(consumer);
+
+		DecomposerRecipeBuilder.create().setIngredient(Items.PIGLIN_HEAD)
+				.addOutput(ModItems.FLESH_BITS.get(), 22, 36)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 8, 12)
+				.addOutput(Items.SKELETON_SKULL, 1)
+				.unlockedBy(Items.PIGLIN_HEAD).save(consumer);
 	}
 
 	private void buildSpecialRecipes(Consumer<FinishedRecipe> consumer) {
