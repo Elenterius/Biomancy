@@ -1,5 +1,7 @@
 package com.github.elenterius.biomancy.datagen.recipes;
 
+import com.github.alexmodguy.alexscaves.AlexsCaves;
+import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
 import com.github.elenterius.biomancy.advancements.predicate.FoodItemPredicate;
 import com.github.elenterius.biomancy.crafting.recipe.FoodNutritionIngredient;
 import com.github.elenterius.biomancy.datagen.recipes.builder.DigesterRecipeBuilder;
@@ -38,6 +40,7 @@ public class DigesterRecipeProvider extends RecipeProvider {
 	protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
 		buildFromFoodRecipes(consumer);
 		buildFromOrganicRecipes(consumer);
+		buildAlexsCavesRecipes(consumer);
 	}
 
 	private void buildFromFoodRecipes(Consumer<FinishedRecipe> consumer) {
@@ -138,4 +141,28 @@ public class DigesterRecipeProvider extends RecipeProvider {
 		return (DigesterRecipeBuilder) DigesterRecipeBuilder.create(result, count, getItemName(ingredient)).setIngredient(ingredient).unlockedBy(ingredient);
 	}
 
+	private DigesterRecipeBuilder createAlexsCavesRecipe(int count, ItemLike ingredient) {
+		return simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), count, ingredient).ifModLoaded(AlexsCaves.MODID);
+	}
+
+	private void buildAlexsCavesRecipes(Consumer<FinishedRecipe> consumer) {
+		createAlexsCavesRecipe(2 * 12, ACBlockRegistry.COOKED_DINOSAUR_CHOP.get()).modifyCraftingTime(x -> x + 20 * 12).save(consumer);
+		createAlexsCavesRecipe(2, ACBlockRegistry.PEWEN_PINES.get()).modifyCraftingTime(x -> x + 20).save(consumer);
+		createAlexsCavesRecipe(2, ACBlockRegistry.PEWEN_BRANCH.get()).modifyCraftingTime(x -> x + 25).save(consumer);
+		createAlexsCavesRecipe(2, ACBlockRegistry.FIDDLEHEAD.get()).save(consumer);
+		createAlexsCavesRecipe(2, ACBlockRegistry.CURLY_FERN.get()).save(consumer);
+		createAlexsCavesRecipe(4, ACBlockRegistry.FLYTRAP.get()).modifyCraftingTime(x -> x + 10).save(consumer);
+		createAlexsCavesRecipe(2, ACBlockRegistry.CYCAD.get()).modifyCraftingTime(x -> x + 40).save(consumer);
+		createAlexsCavesRecipe(4, ACBlockRegistry.TREE_STAR.get()).modifyCraftingTime(x -> x - 10).save(consumer);
+		createAlexsCavesRecipe(2, ACBlockRegistry.ARCHAIC_VINE.get()).save(consumer);
+		createAlexsCavesRecipe(4, ACBlockRegistry.FERN_THATCH.get()).save(consumer);
+		createAlexsCavesRecipe(1, ACBlockRegistry.UNDERWEED.get()).save(consumer);
+		createAlexsCavesRecipe(1, ACBlockRegistry.THORNWOOD_BRANCH.get()).save(consumer);
+
+		createAlexsCavesRecipe(4, ACBlockRegistry.SUBTERRANODON_EGG.get()).save(consumer);
+		createAlexsCavesRecipe(4, ACBlockRegistry.VALLUMRAPTOR_EGG.get()).save(consumer);
+		createAlexsCavesRecipe(4, ACBlockRegistry.GROTTOCERATOPS_EGG.get()).save(consumer);
+		createAlexsCavesRecipe(4, ACBlockRegistry.TREMORSAURUS_EGG.get()).save(consumer);
+		createAlexsCavesRecipe(4, ACBlockRegistry.RELICHEIRUS_EGG.get()).save(consumer);
+	}
 }
