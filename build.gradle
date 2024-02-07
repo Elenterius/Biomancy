@@ -199,8 +199,10 @@ dependencies {
 	implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
 
 	runtimeOnly fg.deobf("maven.modrinth:alexs-mobs:1.22.7")
+	runtimeOnly fg.deobf("maven.modrinth:alexs-caves:1.0.9")
 	runtimeOnly fg.deobf("maven.modrinth:citadel:2.4.9")
 	datagenImplementation fg.deobf("maven.modrinth:alexs-mobs:1.22.7")
+	datagenImplementation fg.deobf("maven.modrinth:alexs-caves:1.0.9")
 	datagenImplementation fg.deobf("maven.modrinth:citadel:2.4.9")
 
 	compileOnly fg.deobf("maven.modrinth:pehkui:3.7.12+1.20.1-forge")
