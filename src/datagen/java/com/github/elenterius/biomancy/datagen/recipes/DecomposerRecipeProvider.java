@@ -1,5 +1,8 @@
 package com.github.elenterius.biomancy.datagen.recipes;
 
+import com.github.alexmodguy.alexscaves.AlexsCaves;
+import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
+import com.github.alexmodguy.alexscaves.server.item.ACItemRegistry;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
@@ -62,6 +65,7 @@ public class DecomposerRecipeProvider extends RecipeProvider {
 		buildSpecialRecipes(consumer);
 		buildBiomesOPlentyRecipes(consumer);
 		buildAlexsMobsRecipes(consumer);
+		buildAlexsCavesRecipes(consumer);
 		buildTetraRecipes(consumer);
 	}
 
@@ -298,6 +302,10 @@ public class DecomposerRecipeProvider extends RecipeProvider {
 
 	private DecomposerRecipeBuilder createAlexsMobsRecipe() {
 		return DecomposerRecipeBuilder.create().ifModLoaded(AlexsMobs.MODID);
+	}
+
+	private DecomposerRecipeBuilder createAlexsCavesRecipe() {
+		return DecomposerRecipeBuilder.create().ifModLoaded(AlexsCaves.MODID);
 	}
 
 	private void buildAlexsMobsRecipes(Consumer<FinishedRecipe> consumer) {
@@ -598,6 +606,193 @@ public class DecomposerRecipeProvider extends RecipeProvider {
 				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 0, 1)
 				.addOutput(ModItems.ORGANIC_MATTER.get(), 0, 1)
 				.unlockedBy(AMBlockRegistry.TRIOPS_EGGS.get()).save(consumer);
+	}
+
+	private void buildAlexsCavesRecipes(Consumer<FinishedRecipe> consumer) {
+		createAlexsCavesRecipe()
+				.setIngredient(ACItemRegistry.RAW_SCARLET_NEODYMIUM)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 5, 9)
+				.addOutput(ModItems.STONE_POWDER.get(), 1, 2)
+				.addOutput(Items.RED_DYE, 1, 2)
+				.unlockedBy(ACItemRegistry.RAW_SCARLET_NEODYMIUM).save(consumer);
+
+		createAlexsCavesRecipe()
+				.setIngredient(ACItemRegistry.RAW_AZURE_NEODYMIUM)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 5, 9)
+				.addOutput(ModItems.STONE_POWDER.get(), 1, 2)
+				.addOutput(Items.BLUE_DYE, 1, 2)
+				.unlockedBy(ACItemRegistry.RAW_AZURE_NEODYMIUM).save(consumer);
+
+		createAlexsCavesRecipe()
+				.setIngredient(ACItemRegistry.FERROUSLIME_BALL)
+				.addOutput(ModItems.BILE.get(), 2, 3)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 4, 7)
+				.unlockedBy(ACItemRegistry.FERROUSLIME_BALL).save(consumer);
+
+		createAlexsCavesRecipe()
+				.setIngredient(ACItemRegistry.PINE_NUTS)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 2, 3)
+				.unlockedBy(ACItemRegistry.PINE_NUTS).save(consumer);
+
+		createAlexsCavesRecipe()
+				.setIngredient(ACItemRegistry.AMBER_CURIOSITY)
+				.addOutput(ModItems.BILE.get(), 3, 6)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 3, 5)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 0, 4)
+				.unlockedBy(ACItemRegistry.AMBER_CURIOSITY).save(consumer);
+
+		createAlexsCavesRecipe()
+				.setIngredient(ACBlockRegistry.DINOSAUR_CHOP.get())
+				.addOutput(ModItems.FLESH_BITS.get(), 3 * 12, 6 * 12)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 12, 2 * 12)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 2 * 6, 3 * 6)
+				.addOutput(ModItems.HORMONE_SECRETION.get(), 3, 6)
+				.unlockedBy(ACBlockRegistry.DINOSAUR_CHOP.get()).save(consumer);
+
+		createAlexsCavesRecipe()
+				.setIngredient(ACItemRegistry.TOUGH_HIDE)
+				.addOutput(ModItems.TOUGH_FIBERS.get(), 2, 4)
+				.unlockedBy(ACItemRegistry.TOUGH_HIDE).save(consumer);
+
+		createAlexsCavesRecipe()
+				.setIngredient(ACItemRegistry.HEAVY_BONE)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 3 * 2, 6 * 2)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 1, 2)
+				.addOutput(ModItems.HORMONE_SECRETION.get(), 1, 4)
+				.unlockedBy(ACItemRegistry.HEAVY_BONE).save(consumer);
+
+		createAlexsCavesRecipe()
+				.setIngredient(ACItemRegistry.RADGILL)
+				.addOutput(ModItems.FLESH_BITS.get(), 2, 4)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 2, 3)
+				.addOutput(ModItems.TOXIN_EXTRACT.get(), 2, 4)
+				.unlockedBy(ACItemRegistry.RADGILL).save(consumer);
+
+		createAlexsCavesRecipe()
+				.setIngredient(ACItemRegistry.TOXIC_PASTE)
+				.addOutput(ModItems.TOXIN_EXTRACT.get(), 2, 4)
+				.unlockedBy(ACItemRegistry.TOXIC_PASTE).save(consumer);
+
+		createAlexsCavesRecipe()
+				.setIngredient(ACItemRegistry.LANTERNFISH)
+				.addOutput(ModItems.FLESH_BITS.get(), 1, 2)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 0, 1)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 0, 2)
+				.addOutput(ModItems.BIO_LUMENS.get(), 2, 4)
+				.unlockedBy(ACItemRegistry.LANTERNFISH).save(consumer);
+
+		createAlexsCavesRecipe()
+				.setIngredient(ACItemRegistry.TRIPODFISH)
+				.addOutput(ModItems.FLESH_BITS.get(), 2, 4)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 2, 3)
+				.unlockedBy(ACItemRegistry.TRIPODFISH).save(consumer);
+
+		createAlexsCavesRecipe()
+				.setIngredient(ACItemRegistry.SEA_PIG)
+				.addOutput(ModItems.FLESH_BITS.get(), 1, 2)
+				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 0, 1)
+				.addOutput(ModItems.BILE.get(), 1, 2)
+				.unlockedBy(ACItemRegistry.SEA_PIG).save(consumer);
+
+		createAlexsCavesRecipe()
+				.setIngredient(ACItemRegistry.BIOLUMINESSCENCE)
+				.addOutput(ModItems.BILE.get(), 2, 3)
+				.addOutput(ModItems.BIO_LUMENS.get(), 4, 7)
+				.unlockedBy(ACItemRegistry.BIOLUMINESSCENCE).save(consumer);
+
+		createAlexsCavesRecipe()
+				.setIngredient(ACItemRegistry.PEARL)
+				.addOutput(ModItems.GEM_FRAGMENTS.get(), 4)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 7)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 5)
+				.unlockedBy(ACItemRegistry.PEARL).save(consumer);
+
+		createAlexsCavesRecipe()
+				.setIngredient(ACItemRegistry.GUANO)
+				.addOutput(ModItems.BILE.get(), 2, 3)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 3, 6)
+				.unlockedBy(ACItemRegistry.GUANO).save(consumer);
+
+		createAlexsCavesRecipe()
+				.setIngredient(ACItemRegistry.CORRODENT_TEETH)
+				.addOutput(ModItems.STONE_POWDER.get(), 0, 3)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 2, 4)
+				.addOutput(ModItems.BONE_FRAGMENTS.get(), 4, 6)
+				.unlockedBy(ACItemRegistry.CORRODENT_TEETH).save(consumer);
+
+		createAlexsCavesRecipe()
+				.setIngredient(ACItemRegistry.VESPER_WING)
+				.addOutput(ModItems.TOUGH_FIBERS.get(), 9, 18)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 8, 10)
+				.unlockedBy(ACItemRegistry.VESPER_WING).save(consumer);
+
+		createAlexsCavesRecipe()
+				.setIngredient(ACBlockRegistry.CURLY_FERN.get())
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 2, 4)
+				.addOutput(Items.LIME_DYE, 1, 2)
+				.unlockedBy(ACBlockRegistry.CURLY_FERN.get()).save(consumer);
+
+		createAlexsCavesRecipe()
+				.setIngredient(ACBlockRegistry.ANCIENT_SAPLING.get())
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 1, 3)
+				.addOutput(ModItems.STONE_POWDER.get(), 0, 3)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 0, 1)
+				.unlockedBy(ACBlockRegistry.ANCIENT_SAPLING.get()).save(consumer);
+
+		createAlexsCavesRecipe()
+				.setIngredient(ACBlockRegistry.FLYTRAP.get())
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 2, 4)
+				.addOutput(Items.RED_DYE, 0, 1)
+				.unlockedBy(ACBlockRegistry.FLYTRAP.get()).save(consumer);
+
+		createAlexsCavesRecipe()
+				.setIngredient(ACBlockRegistry.SUBTERRANODON_EGG.get())
+				.addOutput(ModItems.STONE_POWDER.get(), 0, 4)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 1, 4)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 1, 4)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 2, 6)
+				.unlockedBy(ACBlockRegistry.SUBTERRANODON_EGG.get()).save(consumer);
+
+		createAlexsCavesRecipe()
+				.setIngredient(ACBlockRegistry.VALLUMRAPTOR_EGG.get())
+				.addOutput(ModItems.STONE_POWDER.get(), 0, 4)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 1, 4)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 1, 4)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 2, 6)
+				.unlockedBy(ACBlockRegistry.VALLUMRAPTOR_EGG.get()).save(consumer);
+
+		createAlexsCavesRecipe()
+				.setIngredient(ACBlockRegistry.GROTTOCERATOPS_EGG.get())
+				.addOutput(ModItems.STONE_POWDER.get(), 0, 4)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 1, 4)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 1, 4)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 2, 6)
+				.unlockedBy(ACBlockRegistry.GROTTOCERATOPS_EGG.get()).save(consumer);
+
+		createAlexsCavesRecipe()
+				.setIngredient(ACBlockRegistry.TREMORSAURUS_EGG.get())
+				.addOutput(ModItems.STONE_POWDER.get(), 0, 4)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 1, 4)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 1, 4)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 2, 6)
+				.unlockedBy(ACBlockRegistry.TREMORSAURUS_EGG.get()).save(consumer);
+
+		createAlexsCavesRecipe()
+				.setIngredient(ACBlockRegistry.RELICHEIRUS_EGG.get())
+				.addOutput(ModItems.STONE_POWDER.get(), 0, 4)
+				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 1, 4)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 1, 4)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 2, 6)
+				.unlockedBy(ACBlockRegistry.RELICHEIRUS_EGG.get()).save(consumer);
+
+		createAlexsCavesRecipe()
+				.setIngredient(ACBlockRegistry.CARMINE_FROGLIGHT.get())
+				.addOutput(ModItems.BIO_LUMENS.get(), 5, 9)
+				.addOutput(ModItems.BILE.get(), 2, 3)
+				.unlockedBy(ACBlockRegistry.CARMINE_FROGLIGHT.get()).save(consumer);
 	}
 
 }
