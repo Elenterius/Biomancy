@@ -74,12 +74,16 @@ public class DigesterRecipeProvider extends RecipeProvider {
 		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 1, Items.SEAGRASS).save(consumer);
 		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 1, Items.VINE).save(consumer);
 		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 1, Items.FERN).save(consumer);
+		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 1, Items.HANGING_ROOTS).save(consumer);
 
 		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 1, Items.BAMBOO).modifyCraftingTime(x -> x + 40).save(consumer);
 		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 1, Items.SUGAR_CANE).modifyCraftingTime(x -> x + 20).save(consumer);
 		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 1, Tags.Items.SEEDS).modifyCraftingTime(x -> x + 20).save(consumer);
 		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 1, ItemTags.FLOWERS).modifyCraftingTime(x -> x - 20).save(consumer);
 		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 1, ItemTags.LEAVES).modifyCraftingTime(x -> x - 20).save(consumer);
+
+		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 1, Items.MOSS_CARPET).modifyCraftingTime(x -> x - 20).save(consumer);
+		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 2, Items.MOSS_BLOCK).modifyCraftingTime(x -> x + 20).save(consumer);
 
 		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 2, ItemTags.SAPLINGS).modifyCraftingTime(x -> x + 20).save(consumer);
 		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 2, Items.NETHER_WART).modifyCraftingTime(x -> x - 40).save(consumer);
@@ -92,6 +96,9 @@ public class DigesterRecipeProvider extends RecipeProvider {
 		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 2, Items.WARPED_ROOTS).save(consumer);
 		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 2, Items.CRIMSON_ROOTS).save(consumer);
 		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 2, Items.LILY_PAD).save(consumer);
+
+		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 2, Items.SMALL_DRIPLEAF).save(consumer);
+		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 4, Items.BIG_DRIPLEAF).save(consumer);
 
 		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 4, Items.HONEYCOMB).save(consumer);
 		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 4, Items.SEA_PICKLE).save(consumer);
