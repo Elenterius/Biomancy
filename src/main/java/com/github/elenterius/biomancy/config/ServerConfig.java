@@ -14,7 +14,7 @@ public class ServerConfig {
 
 		doBioForgeRecipeProgression = builder
 				.comment("Determines if the BioForge recipes need to be unlocked to be able to craft them")
-				.define("doBioForgeRecipeProgression", true);
+				.define("doBioForgeRecipeProgression", false);
 
 		builder.pop();
 
