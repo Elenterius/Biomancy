@@ -25,7 +25,7 @@ def mod_version = getModVersion()
 
 version = "${mod_version}"
 group = 'com.github.elenterius.biomancy'
-archivesBaseName = "biomancy-forge-${mc_version}"
+archivesBaseName = "biomancy-forge-${minecraft_version}"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17) // Mojang ships Java 17 to end users in 1.18+
 
@@ -44,7 +44,7 @@ sourceSets {
 }
 
 minecraft {
-	mappings channel: 'parchment', version: "${parchment_version}-${mc_version}"  // official mappings augmented with parameter names and javadocs
+	mappings channel: 'parchment', version: "${parchment_version}-${minecraft_version}"  // official mappings augmented with parameter names and javadocs
 
 	// makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 
@@ -202,7 +202,7 @@ configurations {
 }
 
 dependencies {
-	minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
+	minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
 //    runtimeOnly fg.deobf("curse.maven:debug_utils-783008:4302677") //minecraft 1.19.3
@@ -214,15 +214,15 @@ dependencies {
 	minecraftLibrary(group: "com.h2database", name: "h2-mvstore", version: "2.2.224")
 	jarJar(group: "com.h2database", name: "h2-mvstore", version: "[2.2.220,3.0.0)")
 
-	implementation fg.deobf("com.klikli_dev:modonomicon-${mc_version}:1.34.0")
-	datagenImplementation fg.deobf("com.klikli_dev:modonomicon-${mc_version}:1.34.0")
+	implementation fg.deobf("com.klikli_dev:modonomicon-${minecraft_version}:1.34.0")
+	datagenImplementation fg.deobf("com.klikli_dev:modonomicon-${minecraft_version}:1.34.0")
 
-	compileOnly fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}")
-	compileOnly fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}") // compile against the JEI API but do not include it at runtime
-	runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}") // at runtime, use the full JEI jar
+	compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+	compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}") // compile against the JEI API but do not include it at runtime
+	runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") // at runtime, use the full JEI jar
 
-	implementation fg.deobf("com.simibubi.create:create-${mc_version}:${create_version}:slim") { transitive = false }
-	implementation fg.deobf("com.jozufozu.flywheel:flywheel-forge-${mc_version}:${flywheel_version}")
+	implementation fg.deobf("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
+	implementation fg.deobf("com.jozufozu.flywheel:flywheel-forge-${minecraft_version}:${flywheel_version}")
 	implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
 
 //	runtimeOnly fg.deobf("curse.maven:farmers_delight-398521:4525646") //1.2.1
