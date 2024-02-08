@@ -21,6 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.ItemLike;
+import net.minecraftforge.common.crafting.ConditionalAdvancement;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
@@ -40,7 +41,7 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 	private final List<ICondition> conditions = new ArrayList<>();
 	private final ItemData result;
 	private final List<IngredientStack> ingredients = new ArrayList<>();
-	private final Advancement.Builder advancement = Advancement.Builder.advancement();
+	private final Advancement.Builder advancement = Advancement.Builder.recipeAdvancement();
 	private Ingredient reactant = Ingredient.of(ModItems.VIAL.get());
 	private int craftingTimeTicks = -1;
 	private int craftingCostNutrients = -1;
@@ -250,7 +251,12 @@ public class BioLabRecipeBuilder implements IRecipeBuilder {
 		@Override
 		@Nullable
 		public JsonObject serializeAdvancement() {
-			return advancementBuilder.serializeToJson();
+			if (conditions.isEmpty()) return advancementBuilder.serializeToJson();
+
+			ConditionalAdvancement.Builder conditionalBuilder = ConditionalAdvancement.builder();
+			conditions.forEach(conditionalBuilder::addCondition);
+			conditionalBuilder.addAdvancement(advancementBuilder);
+			return conditionalBuilder.write();
 		}
 
 		@Override
