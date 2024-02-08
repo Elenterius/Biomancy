@@ -2,6 +2,8 @@ package com.github.elenterius.biomancy.datagen.recipes;
 
 import com.github.alexmodguy.alexscaves.AlexsCaves;
 import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
+import com.github.alexthe666.alexsmobs.AlexsMobs;
+import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.elenterius.biomancy.advancements.predicate.FoodItemPredicate;
 import com.github.elenterius.biomancy.crafting.recipe.FoodNutritionIngredient;
 import com.github.elenterius.biomancy.datagen.recipes.builder.DigesterRecipeBuilder;
@@ -40,6 +42,7 @@ public class DigesterRecipeProvider extends RecipeProvider {
 	protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
 		buildFromFoodRecipes(consumer);
 		buildFromOrganicRecipes(consumer);
+		buildAlexsMobsRecipes(consumer);
 		buildAlexsCavesRecipes(consumer);
 	}
 
@@ -144,8 +147,19 @@ public class DigesterRecipeProvider extends RecipeProvider {
 		return (DigesterRecipeBuilder) DigesterRecipeBuilder.create(result, count, getItemName(ingredient)).setIngredient(ingredient).unlockedBy(ingredient);
 	}
 
+	private DigesterRecipeBuilder createAlexsMobsRecipe(int count, ItemLike ingredient) {
+		return simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), count, ingredient).ifModLoaded(AlexsMobs.MODID);
+	}
+
 	private DigesterRecipeBuilder createAlexsCavesRecipe(int count, ItemLike ingredient) {
 		return simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), count, ingredient).ifModLoaded(AlexsCaves.MODID);
+	}
+
+	private void buildAlexsMobsRecipes(Consumer<FinishedRecipe> consumer) {
+		createAlexsMobsRecipe(1, AMBlockRegistry.CAIMAN_EGG.get()).save(consumer);
+		createAlexsMobsRecipe(1, AMBlockRegistry.CROCODILE_EGG.get()).save(consumer);
+		createAlexsMobsRecipe(1, AMBlockRegistry.TERRAPIN_EGG.get()).save(consumer);
+		createAlexsMobsRecipe(2, AMBlockRegistry.PLATYPUS_EGG.get()).save(consumer);
 	}
 
 	private void buildAlexsCavesRecipes(Consumer<FinishedRecipe> consumer) {
