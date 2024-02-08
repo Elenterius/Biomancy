@@ -1,3 +1,22 @@
+## [4.3.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.4.2.0...1.20.1-v2.4.3.0) (2024-02-08)
+
+
+### Features
+
+* Add Pirate-speak lingo. ([010f186](https://github.com/Elenterius/Biomancy/commit/010f18649751b49d5f81dbf5b03f75bf551e3905))
+* disable bio-forge recipe progression in the configs by default (temporary measure until progression rework happens) ([80fe7c1](https://github.com/Elenterius/Biomancy/commit/80fe7c14bf82a188eda6d81093b4e81092eb2da7))
+* make 1.20 Items decomposable ([794a2b3](https://github.com/Elenterius/Biomancy/commit/794a2b3cde5b87d8acee1bf4b2ba08904f27ddd7))
+* make Alex's Caves items decomposable ([9cf7c77](https://github.com/Elenterius/Biomancy/commit/9cf7c77f89eee6e1209b44b72bfab2f6ab5c1c88))
+* make Alex's Caves items digestible ([de8d89d](https://github.com/Elenterius/Biomancy/commit/de8d89d7e5e36f334d798e8c8ffb095adb71b63c))
+* make more Alex's Mobs Items decomposable ([af5c0c2](https://github.com/Elenterius/Biomancy/commit/af5c0c2aedeb4fa6893597ace855c528798e22f3))
+* make moss, dripleaves and hanging roots digestible ([1178799](https://github.com/Elenterius/Biomancy/commit/11787999a30be484b56576b99bfd464fc25408cd))
+* make turtle & sniffer egg digestible ([14b29c8](https://github.com/Elenterius/Biomancy/commit/14b29c80def904c63c211f37ccd0dc7feabad7a8))
+
+
+### Bug Fixes
+
+* exclude non-living entities from entity tags ([1584145](https://github.com/Elenterius/Biomancy/commit/1584145de547dc5eaef38018328e1ae819eff0bf))
+
 ## [4.2.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.4.1.0...1.20.1-v2.4.2.0) (2024-01-22)
 
 
