@@ -265,7 +265,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 
 		addSound(ModSoundEvents.CLAWS_ATTACK_STRONG, "Strong Claw Attack");
 		addSound(ModSoundEvents.CLAWS_ATTACK_BLEED_PROC, "Eviscerating Slash triggers");
-		addSound(ModSoundEvents.FLESHKIN_NO, "Fleshkin says No");
+		addSound(ModSoundEvents.FLESHKIN_NO, "Fleshkin disagrees");
 		addSound(ModSoundEvents.FLESHKIN_BREAK, "Fleshkin Break");
 		addSound(ModSoundEvents.FLESHKIN_BECOME_DORMANT, "Fleshkin becomes Dormant");
 		addSound(ModSoundEvents.FLESHKIN_BECOME_AWAKENED, "Fleshkin becomes Awakened");
@@ -277,7 +277,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addSound(ModSoundEvents.CREATOR_SPAWN_MOB, "Primordial Cradle Spawns a Mob");
 		addSound(ModSoundEvents.CREATOR_BECAME_FULL, "Primordial Cradle became full");
 		addSound(ModSoundEvents.CREATOR_EAT, "Primordial Cradle Eating");
-		addSound(ModSoundEvents.CREATOR_NO, "Primordial Cradle says No");
+		addSound(ModSoundEvents.CREATOR_NO, "Primordial Cradle disagrees");
 
 		addSound(ModSoundEvents.UI_STORAGE_SAC_OPEN, "Open Menu of Storage Sac");
 		addSound(ModSoundEvents.UI_BIO_FORGE_OPEN, "Open Menu of Bio-Forge");
@@ -302,6 +302,11 @@ public class EnglishLangProvider extends AbstractLangProvider {
 
 		addSound(ModSoundEvents.FLESH_BLOB_JUMP, "Flesh Blob Jump");
 		addSound(ModSoundEvents.FLESH_BLOB_HURT, "Flesh Blob Hurt");
+		addSound(ModSoundEvents.FLESH_BLOB_AMBIENT, "Flesh Blob Ambient");
+		addSound(ModSoundEvents.FLESH_BLOB_DEATH, "Flesh Blob Death");
+
+		addSound(ModSoundEvents.GENERIC_GROWL, "Mob Growls");
+		addSound(ModSoundEvents.GENERIC_MEW_PURR, "Mob Purrs");
 	}
 
 	private void addDamageTranslations() {
