@@ -1,5 +1,7 @@
 package com.github.elenterius.biomancy.datagen.tags;
 
+import com.github.alexmodguy.alexscaves.AlexsCaves;
+import com.github.alexmodguy.alexscaves.server.entity.ACEntityRegistry;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.entity.AMEntityRegistry;
 import com.github.elenterius.biomancy.BiomancyMod;
@@ -33,14 +35,21 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 	protected static final EntityType<?>[] VOLATILE_MOBS = {
 			EntityType.CREEPER,
 			EntityType.GHAST, EntityType.BLAZE,
-			EntityType.WITHER, EntityType.ENDER_DRAGON
+			EntityType.WITHER, EntityType.ENDER_DRAGON,
+
+			ACEntityRegistry.NUCLEEPER.get()
 	};
 	protected static final EntityType<?>[] SHARP_CLAW_MOBS = {
 			EntityType.BAT,
 			EntityType.CAT, EntityType.OCELOT,
 			EntityType.WOLF, EntityType.FOX,
 			EntityType.POLAR_BEAR, EntityType.PANDA,
-			EntityType.ENDER_DRAGON
+			EntityType.ENDER_DRAGON,
+
+			ACEntityRegistry.SUBTERRANODON.get(), ACEntityRegistry.VALLUMRAPTOR.get(), ACEntityRegistry.TREMORSAURUS.get(), ACEntityRegistry.RELICHEIRUS.get(),
+			ACEntityRegistry.RAYCAT.get(),
+			ACEntityRegistry.DEEP_ONE.get(), ACEntityRegistry.DEEP_ONE_KNIGHT.get(),
+			ACEntityRegistry.UNDERZEALOT.get(), ACEntityRegistry.WATCHER.get(), ACEntityRegistry.CORRODENT.get(), ACEntityRegistry.VESPER.get(), ACEntityRegistry.FORSAKEN.get()
 	};
 	protected static final EntityType<?>[] SHARP_FANG_MOBS = {
 			EntityType.BAT,
@@ -48,7 +57,12 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 			EntityType.WOLF, EntityType.FOX,
 			EntityType.POLAR_BEAR, EntityType.PANDA,
 			EntityType.HOGLIN, EntityType.ZOGLIN,
-			EntityType.ENDER_DRAGON
+			EntityType.ENDER_DRAGON,
+
+			ACEntityRegistry.VALLUMRAPTOR.get(), ACEntityRegistry.TREMORSAURUS.get(),
+			ACEntityRegistry.RAYCAT.get(),
+			ACEntityRegistry.HULLBREAKER.get(), ACEntityRegistry.DEEP_ONE.get(), ACEntityRegistry.DEEP_ONE_KNIGHT.get(),
+			ACEntityRegistry.VESPER.get(), ACEntityRegistry.FORSAKEN.get()
 	};
 	protected static final Set<EntityType<?>> INVALID_MOBS_FOR_MEATY_LOOT = Set.of(
 			EntityType.SLIME, EntityType.MAGMA_CUBE,
@@ -57,13 +71,20 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 			EntityType.BLAZE,
 			EntityType.HUSK, EntityType.DROWNED, EntityType.ZOMBIE, EntityType.ZOMBIE_HORSE, EntityType.ZOMBIE_VILLAGER,
 			EntityType.SKELETON, EntityType.SKELETON_HORSE, EntityType.STRAY, EntityType.WITHER_SKELETON, EntityType.WITHER,
+			EntityType.CREEPER,
 
 			AMEntityRegistry.SPECTRE.get(), AMEntityRegistry.VOID_WORM.get(), AMEntityRegistry.SKELEWAG.get(), AMEntityRegistry.BONE_SERPENT.get(),
-			AMEntityRegistry.MIMICUBE.get(), AMEntityRegistry.FLUTTER.get(), AMEntityRegistry.GUSTER.get()
+			AMEntityRegistry.MIMICUBE.get(), AMEntityRegistry.FLUTTER.get(), AMEntityRegistry.GUSTER.get(),
+
+			ACEntityRegistry.TELETOR.get(), ACEntityRegistry.MAGNETRON.get(), ACEntityRegistry.BOUNDROID.get(), ACEntityRegistry.NOTOR.get(), ACEntityRegistry.FERROUSLIME.get(),
+			ACEntityRegistry.RAYCAT.get(), ACEntityRegistry.NUCLEEPER.get(),
+			ACEntityRegistry.MINE_GUARDIAN.get()
 	);
 	protected static final Set<EntityType<?>> SLIME_TYPES = Set.of(
 			EntityType.SLIME,
-			EntityType.MAGMA_CUBE
+			EntityType.MAGMA_CUBE,
+
+			ACEntityRegistry.FERROUSLIME.get()
 	);
 	protected static final Set<EntityType<?>> GOLEM_TYPES = Set.of(
 			EntityType.IRON_GOLEM,
@@ -100,6 +121,9 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 		set.addAll(WITHER_TYPES);
 
 		set.add(EntityType.PHANTOM);
+
+		set.add(ACEntityRegistry.RAYCAT.get());
+		set.add(ACEntityRegistry.BRAINIAC.get());
 
 		return Set.copyOf(set);
 	}
@@ -143,8 +167,7 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 		createTag(ModEntityTags.TOXIN_GLAND)
 				.add(TOXIC_MOBS)
 				.addOptional(
-						AMEntityRegistry.KOMODO_DRAGON,
-						AMEntityRegistry.PLATYPUS
+						AMEntityRegistry.KOMODO_DRAGON, AMEntityRegistry.PLATYPUS
 				);
 
 		createTag(ModEntityTags.VOLATILE_GLAND)
@@ -156,13 +179,14 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 				.addOptional(AMEntityRegistry.SKELEWAG, AMEntityRegistry.BONE_SERPENT);
 
 		createTag(ModEntityTags.WITHERED_BONE_MARROW)
-				.add(EntityType.WITHER_SKELETON, EntityType.WITHER);
+				.add(EntityType.WITHER_SKELETON, EntityType.WITHER)
+				.addOptional(ACEntityRegistry.RAYCAT);
 
 		buildSinewAndBileTag();
 	}
 
 	private void buildSinewAndBileTag() {
-		Set<String> validNamespaces = Set.of("minecraft", BiomancyMod.MOD_ID, AlexsMobs.MODID);
+		Set<String> validNamespaces = Set.of("minecraft", BiomancyMod.MOD_ID, AlexsMobs.MODID, AlexsCaves.MODID);
 		Predicate<EntityType<?>> allowedNamespace = entityType -> validNamespaces.contains(Objects.requireNonNull(ForgeRegistries.ENTITY_TYPES.getKey(entityType)).getNamespace());
 
 		Set<EntityType<?>> toxicMobs = Set.of(TOXIC_MOBS);
