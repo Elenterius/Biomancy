@@ -1,3 +1,11 @@
+### [3.1.1](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.3.1.0...1.19.2-v2.3.1.1) (2024-02-08)
+
+
+### Bug Fixes
+
+* add missing sound translations ([7cb51a6](https://github.com/Elenterius/Biomancy/commit/7cb51a6c3f2d1a4e77c069447ceb07bbfa5aede4))
+* **data-gen:** fix advancement parsing errors spamming the logs ([96ef8f3](https://github.com/Elenterius/Biomancy/commit/96ef8f3dc6164fad1a88319657b5eff6bd9c159d)), closes [#115](https://github.com/Elenterius/Biomancy/issues/115)
+
 ## [3.1.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.3.0.1...1.19.2-v2.3.1.0) (2024-01-15)
 
 
@@ -219,11 +227,4 @@
 ### Code Refactoring
 
 * move menu package from inventory package into main package ([3b4796b](https://github.com/Elenterius/Biomancy/commit/3b4796b8d05d515117ce84f4ffccd476894160da))
-
-## [1.13.0](https://github.com/Elenterius/Biomancy/compare/1.19.2-v2.1.12.0...1.19.2-v2.1.13.0) (2023-07-29)
-
-
-### Features
-
-* enhance tooltip clarity and consistency ([bdbbcb9](https://github.com/Elenterius/Biomancy/commit/bdbbcb96bea8c5b7b8bbb1f2c9772be8ab98ab31))
 
