@@ -190,7 +190,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 				}
 
 				addPrimalEnergy(Math.round(2048 * energyMultiplier));
-				SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CREATOR_SPAWN_MOB);
+				SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CRADLE_SPAWN_MOB);
 			}
 
 			PrimordialEcosystem.tryToReplaceBlock(level, pos.below(), ModBlocks.MALIGNANT_FLESH.get().defaultBlockState());
@@ -199,7 +199,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 		}
 		else {
 			attackAOE(level, pos);
-			SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CREATOR_SPIKE_ATTACK);
+			SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CRADLE_SPIKE_ATTACK);
 
 			PrimordialEcosystem.tryToReplaceBlock(level, pos.below(), ModBlocks.MALIGNANT_FLESH.get().defaultBlockState());
 			PrimordialEcosystem.spreadMalignantVeinsFromSource(level, pos, PrimordialEcosystem.MAX_CHARGE_SUPPLIER);

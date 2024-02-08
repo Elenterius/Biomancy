@@ -284,12 +284,12 @@ public abstract class FleshBlob extends PathfinderMob implements Fleshkin, JumpM
 				pettingDelay = random.nextIntBetweenInclusive(10, 20);
 
 				if (this instanceof Enemy) {
-					playSound(ModSoundEvents.GENERIC_GROWL.get(), getSoundVolume(), getVoicePitch());
+					playSound(ModSoundEvents.FLESH_BLOB_GROWL.get(), getSoundVolume(), getVoicePitch());
 					double offset = getBbWidth() * 0.5d;
 					((ServerLevel) level()).sendParticles(ParticleTypes.ANGRY_VILLAGER, getX(), getY(1d) - 0.2d, getZ(), 3, offset, 0.1d, offset, 1);
 				}
 				else {
-					playSound(ModSoundEvents.GENERIC_MEW_PURR.get(), getSoundVolume(), getVoicePitch());
+					playSound(ModSoundEvents.FLESH_BLOB_MEW_PURR.get(), getSoundVolume(), getVoicePitch());
 					double offset = getBbWidth() * 0.5d;
 					((ServerLevel) level()).sendParticles(ParticleTypes.HEART, getX(), getY(1d) - 0.2d, getZ(), 3, offset, 0.1d, offset, 1);
 				}

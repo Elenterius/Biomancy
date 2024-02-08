@@ -296,10 +296,12 @@ public class PirateLangProvider extends AbstractLangProvider {
 		addSound(ModSoundEvents.FLESHKIN_CHEST_CLOSE, "Close Squidgy Chest");
 		addSound(ModSoundEvents.FLESHKIN_CHEST_BITE_ATTACK, "Squidgy Chest Bites Somethin'");
 
-		addSound(ModSoundEvents.CREATOR_SPAWN_MOB, "Summonin' Cauldron Spawns a Mob");
-		addSound(ModSoundEvents.CREATOR_BECAME_FULL, "Summonin' Cauldron is full");
-		addSound(ModSoundEvents.CREATOR_EAT, "Summonin' Cauldron Munchin'");
-		addSound(ModSoundEvents.CREATOR_NO, "Summonin' Cauldron sayin' Nay");
+		addSound(ModSoundEvents.CRADLE_SPAWN_MOB, "Summonin' Cauldron Spawns a Mob");
+		addSound(ModSoundEvents.CRADLE_BECAME_FULL, "Summonin' Cauldron is full");
+		addSound(ModSoundEvents.CRADLE_EAT, "Summonin' Cauldron Munchin'");
+		addSound(ModSoundEvents.CRADLE_NO, "Summonin' Cauldron sayin' Nay");
+		addSound(ModSoundEvents.CRADLE_CRAFTING_RANDOM, "Summonin' Cauldron is summonin'");
+		addSound(ModSoundEvents.CRADLE_SPIKE_ATTACK, "Summonin' Cauldron attacks");
 
 		addSound(ModSoundEvents.UI_STORAGE_SAC_OPEN, "Open Menu of Lootin' Sac");
 		addSound(ModSoundEvents.UI_BIO_FORGE_OPEN, "Open Menu of Forge o' Flesh");
@@ -324,6 +326,10 @@ public class PirateLangProvider extends AbstractLangProvider {
 
 		addSound(ModSoundEvents.FLESH_BLOB_JUMP, "Cube o' Flesh Jump");
 		addSound(ModSoundEvents.FLESH_BLOB_HURT, "Cube o' Flesh Hurt");
+		addSound(ModSoundEvents.FLESH_BLOB_DEATH, "Cube o' Flesh Death");
+		addSound(ModSoundEvents.FLESH_BLOB_AMBIENT, "Cube o' Flesh Ambient");
+		addSound(ModSoundEvents.FLESH_BLOB_GROWL, "Cube o' Flesh Growls");
+		addSound(ModSoundEvents.FLESH_BLOB_MEW_PURR, "Cube o' Flesh Purrs");
 	}
 
 	private void addDamageTranslations() {

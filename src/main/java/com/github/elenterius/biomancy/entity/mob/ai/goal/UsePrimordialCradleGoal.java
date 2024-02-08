@@ -80,7 +80,7 @@ public class UsePrimordialCradleGoal<T extends PathfinderMob & PrimordialCradleU
 
 	private boolean sacrificeItem(Level level, BlockPos pos, PrimordialCradleBlockEntity cradle, ItemStack stack) {
 		if (!cradle.isFull() && cradle.insertItem(stack)) {
-			SoundEvent soundEvent = cradle.isFull() ? ModSoundEvents.CREATOR_BECAME_FULL.get() : ModSoundEvents.CREATOR_EAT.get();
+			SoundEvent soundEvent = cradle.isFull() ? ModSoundEvents.CRADLE_BECAME_FULL.get() : ModSoundEvents.CRADLE_EAT.get();
 			SoundUtil.broadcastBlockSound((ServerLevel) level, pos, soundEvent);
 			return true;
 		}

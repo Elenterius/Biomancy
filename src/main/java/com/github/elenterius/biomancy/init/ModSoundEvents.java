@@ -46,12 +46,12 @@ public final class ModSoundEvents {
 	public static final RegistryObject<SoundEvent> FLESHKIN_CHEST_OPEN = register("fleshkin_chest.open");
 	public static final RegistryObject<SoundEvent> FLESHKIN_CHEST_CLOSE = register("fleshkin_chest.close");
 	public static final RegistryObject<SoundEvent> FLESHKIN_CHEST_BITE_ATTACK = register("fleshkin_chest.bite_attack");
-	public static final RegistryObject<SoundEvent> CREATOR_SPIKE_ATTACK = register("creator.spike_attack");
-	public static final RegistryObject<SoundEvent> CREATOR_CRAFTING_RANDOM = register("block.creator.crafting_random");
-	public static final RegistryObject<SoundEvent> CREATOR_SPAWN_MOB = register("block.creator.spawn_mob");
-	public static final RegistryObject<SoundEvent> CREATOR_BECAME_FULL = register("block.creator.became_full");
-	public static final RegistryObject<SoundEvent> CREATOR_EAT = register("block.creator.eat");
-	public static final RegistryObject<SoundEvent> CREATOR_NO = register("block.creator.no");
+	public static final RegistryObject<SoundEvent> CRADLE_SPIKE_ATTACK = register("cradle.spike_attack");
+	public static final RegistryObject<SoundEvent> CRADLE_CRAFTING_RANDOM = register("block.cradle.crafting_random");
+	public static final RegistryObject<SoundEvent> CRADLE_SPAWN_MOB = register("block.cradle.spawn_mob");
+	public static final RegistryObject<SoundEvent> CRADLE_BECAME_FULL = register("block.cradle.became_full");
+	public static final RegistryObject<SoundEvent> CRADLE_EAT = register("block.cradle.eat");
+	public static final RegistryObject<SoundEvent> CRADLE_NO = register("block.cradle.no");
 
 	//## Crafting
 	public static final RegistryObject<SoundEvent> DECOMPOSER_CRAFTING = register("block.decomposer.crafting");
@@ -82,10 +82,8 @@ public final class ModSoundEvents {
 	public static final RegistryObject<SoundEvent> FLESH_BLOB_HURT = register("entity.flesh_blob.hurt");
 	public static final RegistryObject<SoundEvent> FLESH_BLOB_DEATH = register("entity.flesh_blob.death");
 	public static final RegistryObject<SoundEvent> FLESH_BLOB_AMBIENT = register("entity.flesh_blob.ambient");
-
-	//## Generic
-	public static final RegistryObject<SoundEvent> GENERIC_MEW_PURR = register("entity.generic.mew_purr");
-	public static final RegistryObject<SoundEvent> GENERIC_GROWL = register("entity.generic.growl");
+	public static final RegistryObject<SoundEvent> FLESH_BLOB_MEW_PURR = register("entity.flesh_blob.mew_purr");
+	public static final RegistryObject<SoundEvent> FLESH_BLOB_GROWL = register("entity.flesh_blob.growl");
 
 	private ModSoundEvents() {}
 

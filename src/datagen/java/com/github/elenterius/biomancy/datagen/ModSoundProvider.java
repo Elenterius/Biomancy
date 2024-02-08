@@ -54,12 +54,12 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 		addSimpleSounds(ModSoundEvents.FLESHKIN_CHEST_CLOSE, 2);
 		addSimpleRedirect(ModSoundEvents.FLESHKIN_CHEST_BITE_ATTACK, SoundEvents.GOAT_SCREAMING_RAM_IMPACT, 1f, 0.5f);
 
-		addSimpleRedirect(ModSoundEvents.CREATOR_SPIKE_ATTACK, SoundEvents.GOAT_SCREAMING_RAM_IMPACT, 1f, 0.5f);
-		addSimpleRedirect(ModSoundEvents.CREATOR_CRAFTING_RANDOM, SoundEvents.PLAYER_BURP, 1f, 0.5f);
-		addSimpleRedirect(ModSoundEvents.CREATOR_SPAWN_MOB, SoundEvents.PLAYER_BURP, 1f, 0.5f);
-		addSimpleRedirect(ModSoundEvents.CREATOR_BECAME_FULL, SoundEvents.PLAYER_BURP, 1f, 0.25f);
-		addSimpleRedirect(ModSoundEvents.CREATOR_EAT, SoundEvents.GOAT_SCREAMING_EAT, 1f, 0.25f);
-		addSimpleRedirect(ModSoundEvents.CREATOR_NO, SoundEvents.VILLAGER_NO, 0.75f, 0.3f);
+		addSimpleRedirect(ModSoundEvents.CRADLE_SPIKE_ATTACK, SoundEvents.GOAT_SCREAMING_RAM_IMPACT, 1f, 0.5f);
+		addSimpleRedirect(ModSoundEvents.CRADLE_CRAFTING_RANDOM, SoundEvents.PLAYER_BURP, 1f, 0.5f);
+		addSimpleRedirect(ModSoundEvents.CRADLE_SPAWN_MOB, SoundEvents.PLAYER_BURP, 1f, 0.5f);
+		addSimpleRedirect(ModSoundEvents.CRADLE_BECAME_FULL, SoundEvents.PLAYER_BURP, 1f, 0.25f);
+		addSimpleRedirect(ModSoundEvents.CRADLE_EAT, SoundEvents.GOAT_SCREAMING_EAT, 1f, 0.25f);
+		addSimpleRedirect(ModSoundEvents.CRADLE_NO, SoundEvents.VILLAGER_NO, 0.75f, 0.3f);
 
 		addSimpleRedirect(ModSoundEvents.UI_BUTTON_CLICK, SoundEvents.UI_BUTTON_CLICK.get());
 		addSimpleSound(ModSoundEvents.UI_MENU_OPEN);
@@ -91,8 +91,8 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 		addSimpleRedirect(ModSoundEvents.FLESH_BLOB_HURT, ModSoundEvents.FLESH_BLOCK_BREAK, 0.8f, 0.9f);
 		addSimpleRedirect(ModSoundEvents.FLESH_BLOB_DEATH, SoundEvents.GENERIC_DEATH);
 		addSimpleSounds(ModSoundEvents.FLESH_BLOB_AMBIENT, 3, 0.8f, 0.9f);
-		addSimpleSound(ModSoundEvents.GENERIC_MEW_PURR, 0.7f, 0.45f);
-		addSimpleSound(ModSoundEvents.GENERIC_GROWL, 0.9f, 0.55f);
+		addSimpleSound(ModSoundEvents.FLESH_BLOB_MEW_PURR, 0.7f, 0.45f);
+		addSimpleSound(ModSoundEvents.FLESH_BLOB_GROWL, 0.9f, 0.55f);
 	}
 
 	public String translationKey(RegistryObject<SoundEvent> soundHolder) {
