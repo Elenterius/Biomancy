@@ -324,6 +324,11 @@ public class EnglishLangProvider extends AbstractLangProvider {
 
 		addSound(ModSoundEvents.FLESH_BLOB_JUMP, "Flesh Blob Jump");
 		addSound(ModSoundEvents.FLESH_BLOB_HURT, "Flesh Blob Hurt");
+		addSound(ModSoundEvents.FLESH_BLOB_AMBIENT, "Flesh Blob Ambient");
+		addSound(ModSoundEvents.FLESH_BLOB_DEATH, "Flesh Blob Death");
+
+		addSound(ModSoundEvents.GENERIC_GROWL, "Mob Growls");
+		addSound(ModSoundEvents.GENERIC_MEW_PURR, "Mob Purrs");
 	}
 
 	private void addDamageTranslations() {
