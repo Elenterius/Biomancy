@@ -119,6 +119,9 @@ public class DigesterRecipeProvider extends RecipeProvider {
 
 		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 4, Items.COCOA_BEANS).modifyCraftingTime(x -> x + 25).save(consumer);
 
+		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 1, Items.TURTLE_EGG).save(consumer);
+		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 6, Items.SNIFFER_EGG).save(consumer);
+
 		int mushroomNutrition = Math.max(1, Foods.MUSHROOM_STEW.getNutrition() / 2);
 		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), mushroomNutrition, Tags.Items.MUSHROOMS).save(consumer);
 		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), mushroomNutrition, Items.WARPED_FUNGUS).save(consumer);
