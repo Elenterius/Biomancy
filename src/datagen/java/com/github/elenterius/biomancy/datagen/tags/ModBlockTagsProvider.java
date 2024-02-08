@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.datagen.tags;
 
 import com.github.elenterius.biomancy.block.FleshDoorBlock;
 import com.github.elenterius.biomancy.block.FullFleshDoorBlock;
+import com.github.elenterius.biomancy.block.membrane.MembraneBlock;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.tags.ModBlockTags;
 import net.minecraft.core.HolderLookup;
@@ -122,10 +123,16 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 		String modId = "create";
 
 		//Blocks which should be able to move on contraptions, but would otherwise be ignored due to their empty collision shape
+		//Example: Cobweb
 		tag(tagKey(modId, "movable_empty_collider")).add(
 				ModBlocks.FLESH_DOOR.get(),
 				ModBlocks.FLESH_IRIS_DOOR.get()
 		);
+
+		//Blocks which can count toward a functional windmill structure
+		//Example: Wool
+		IntrinsicTagAppender<Block> windmillSailsTag = tag(tagKey(modId, "windmill_sails"));
+		ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).filter(MembraneBlock.class::isInstance).forEach(windmillSailsTag::add);
 	}
 
 	/**
@@ -134,9 +141,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 	private void addQuarkTags() {
 		String modId = "quark";
 
-		TagKey<Block> noDoubleDoor = tagKey(modId, "non_double_door");
-		IntrinsicTagAppender<Block> tag = tag(noDoubleDoor);
+		IntrinsicTagAppender<Block> nonDoubleDoorTag = tag(tagKey(modId, "non_double_door"));
 		Predicate<Block> predicate = block -> block instanceof FleshDoorBlock || block instanceof FullFleshDoorBlock;
-		ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).filter(predicate).forEach(tag::add);
+		ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).filter(predicate).forEach(nonDoubleDoorTag::add);
 	}
 }
