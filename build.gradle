@@ -145,11 +145,13 @@ minecraft {
 					source sourceSets.datagen
 				}
 			}
+
+			forceExit false
 		}
 
-		dataCI {
+		dataDev {
 			parent runs.data
-			forceExit false
+			forceExit true
 		}
 	}
 }

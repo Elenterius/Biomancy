@@ -1,7 +1,7 @@
 # This workflow will build the Mod with Gradle and cache/restore any dependencies to improve the workflow execution time
 # Note: cache writing only happens on the default branch but child branches do have read access to the default branch
 
-name: Build Release
+name: Build Production Release
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
       - name: Test Asset Generation
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: runDataCI
+          arguments: runData
 
       - name: Test Build
         uses: gradle/gradle-build-action@v2
@@ -40,9 +40,9 @@ jobs:
     needs: [ build_test ]
     runs-on: ubuntu-latest
     outputs:
-      skip_build: ${{ steps.set_output.outputs.skipped }}
-      tag: ${{ steps.set_output.outputs.tag }}
-      clean_changelog: ${{ steps.set_output.outputs.clean_changelog }}
+      skip_build: ${{ steps.set_outputs.outputs.skipped }}
+      tag: ${{ steps.set_outputs.outputs.tag }}
+      clean_changelog: ${{ steps.set_outputs.outputs.changelog }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -52,7 +52,7 @@ jobs:
         uses: christian-draeger/read-properties@1.1.0
         with:
           path: './gradle.properties'
-          properties: 'mc_version'
+          properties: 'minecraft_version'
 
       - name: Generate Conventional Changelog #this also determines the release version
         id: changelog
@@ -63,17 +63,19 @@ jobs:
           version-file: './mod_version.json'
           version-path: 'semantic'
           git-message: 'chore(release): {version}'
-          tag-prefix: '${{ steps.gradle_properties.outputs.mc_version }}-v2.'
+          tag-prefix: '${{ steps.gradle_properties.outputs.minecraft_version }}-v2.'
           create-summary: true
 
-      - name: Set Output  #supports setting multiline output
-        id: set_output
-        uses: actions/github-script@v7.0.1
-        with:
-          script: |
-            core.setOutput("skipped", `${{ steps.changelog.outputs.skipped }}`);  
-            core.setOutput("tag", `${{ steps.changelog.outputs.tag }}`);  
-            core.setOutput("clean_changelog", `${{ steps.changelog.outputs.clean_changelog }}`);
+      - name: Set Outputs
+        id: set_outputs
+        run: |
+          echo "skipped=${{ steps.changelog.outputs.skipped }}" >> "$GITHUB_OUTPUT"
+          echo "tag=${{ steps.changelog.outputs.tag }}" >> "$GITHUB_OUTPUT"
+          {
+            echo 'changelog<<EOF'
+            echo "${{ steps.changelog.outputs.clean_changelog }}"
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
 
   build_release:
     name: Build Release
@@ -98,7 +100,7 @@ jobs:
       - name: Generate Assets
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: runDataCI
+          arguments: runData
 
       # We store assets at full raw quality in the repository and only optimize them for the release build
       - name: Setup Oxipng
