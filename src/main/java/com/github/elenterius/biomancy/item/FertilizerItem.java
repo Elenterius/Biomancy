@@ -2,13 +2,12 @@ package com.github.elenterius.biomancy.item;
 
 import com.github.elenterius.biomancy.block.property.BlockPropertyUtil;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
-import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.github.elenterius.biomancy.util.PillarPlantUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -50,43 +49,33 @@ public class FertilizerItem extends Item implements ItemTooltipStyleProvider {
 		Block block = state.getBlock();
 
 		if (block instanceof BonemealableBlock bonemealableBlock) {
-			if (bonemealableBlock.isValidBonemealTarget(level, pos, state, level.isClientSide)) {
-				if (level instanceof ServerLevel serverLevel) {
-					growBonmealableBlock(serverLevel, pos, state, bonemealableBlock);
-				}
-				return true;
-			}
+			return growBonmealableBlock(level, pos, state, bonemealableBlock);
 		}
 		else if (block == Blocks.DIRT) {
-			if (level instanceof ServerLevel serverLevel) {
-				growDirtIntoGrassBlock(serverLevel, pos);
-			}
-			return true;
+			return growDirtIntoGrassBlock(level, pos);
 		}
 		else if (block instanceof ChorusFlowerBlock) {
-			if (level instanceof ServerLevel serverLevel) {
-				return growChorusFlower(serverLevel, pos, state);
-			}
+			return growChorusFlower(level, pos, state);
 		}
 		else if (PillarPlantUtil.isPillarPlant(block)) {
 			return PillarPlantUtil.applyMegaGrowthBoost(level, pos, state, block);
 		}
 		else if (block instanceof IPlantable) { //e.g. nether wart
-			if (level instanceof ServerLevel serverLevel) {
-				growPlantableBlock(serverLevel, pos, state, block);
-			}
+			return growPlantableBlock(level, pos, state, block);
 		}
 
 		return false;
 	}
 
-	private static boolean growChorusFlower(ServerLevel level, BlockPos pos, BlockState state) {
+	private static boolean growChorusFlower(Level level, BlockPos pos, BlockState state) {
 		if (state.getValue(ChorusFlowerBlock.AGE) >= 5) return false;
 
 		BlockState stateBelow = level.getBlockState(pos.below());
 
 		if (stateBelow.is(Blocks.END_STONE)) {
-			ChorusFlowerBlock.generatePlant(level, pos, level.random, 8);
+			if (!level.isClientSide()) {
+				ChorusFlowerBlock.generatePlant(level, pos, level.random, 8);
+			}
 			return true;
 		}
 
@@ -97,37 +86,57 @@ public class FertilizerItem extends Item implements ItemTooltipStyleProvider {
 				|| level.getBlockState(pos.east()).is(Blocks.CHORUS_PLANT);
 
 		if (isAttachedToChorusPlant) {
-			ChorusFlowerBlock.generatePlant(level, pos, level.random, 8);
+			if (!level.isClientSide()) {
+				ChorusFlowerBlock.generatePlant(level, pos, level.random, 8);
+			}
 			return true;
 		}
 
 		return false;
 	}
 
-	private static void growDirtIntoGrassBlock(ServerLevel level, BlockPos pos) {
+	private static boolean growDirtIntoGrassBlock(Level level, BlockPos pos) {
 		BlockState stateAbove = level.getBlockState(pos.above());
-		level.setBlockAndUpdate(pos, Blocks.GRASS.defaultBlockState());
-		level.levelEvent(LevelEvent.PARTICLES_PLANT_GROWTH, pos, 5);
+		if (!stateAbove.isAir()) return false;
+
+		if (!level.isClientSide()) {
+			level.setBlockAndUpdate(pos, Blocks.GRASS_BLOCK.defaultBlockState());
+			level.levelEvent(LevelEvent.PARTICLES_PLANT_GROWTH, pos, 5);
+
+			//TODO: convert a big patch into grass instead of only one block
+		}
+
+		return true;
 	}
 
-	private static void growPlantableBlock(ServerLevel level, BlockPos pos, BlockState state, Block block) {
+	private static boolean growPlantableBlock(Level level, BlockPos pos, BlockState state, Block block) {
 		Optional<IntegerProperty> property = BlockPropertyUtil.getAgeProperty(state);
 		if (property.isPresent()) {
 			IntegerProperty ageProperty = property.get();
 			int age = state.getValue(ageProperty);
 			int maxAge = BlockPropertyUtil.getMaxAge(ageProperty);
 			if (age < maxAge) {
-				level.setBlock(pos, state.setValue(ageProperty, maxAge), Block.UPDATE_CLIENTS);
-				level.levelEvent(LevelEvent.PARTICLES_PLANT_GROWTH, pos, 5);
+				if (!level.isClientSide()) {
+					level.setBlock(pos, state.setValue(ageProperty, maxAge), Block.UPDATE_CLIENTS);
+					level.levelEvent(LevelEvent.PARTICLES_PLANT_GROWTH, pos, 5);
+				}
+				return true;
 			}
 		}
 		else if (block.isRandomlyTicking(state) && !level.getBlockTicks().willTickThisTick(pos, block)) {
-			level.scheduleTick(pos, block, 2);
-			level.levelEvent(LevelEvent.PARTICLES_PLANT_GROWTH, pos, 5);
+			if (!level.isClientSide()) {
+				level.scheduleTick(pos, block, 2);
+				level.levelEvent(LevelEvent.PARTICLES_PLANT_GROWTH, pos, 5);
+			}
+			return true;
 		}
+
+		return false;
 	}
 
-	private static void growBonmealableBlock(ServerLevel level, BlockPos pos, BlockState state, BonemealableBlock block) {
+	private static boolean growBonmealableBlock(Level level, BlockPos pos, BlockState state, BonemealableBlock block) {
+		if (!block.isValidBonemealTarget(level, pos, state, level.isClientSide)) return false;
+
 		// "power" grow plant to maturity
 		Optional<IntegerProperty> property = BlockPropertyUtil.getAgeProperty(state);
 		if (property.isPresent()) {
@@ -135,13 +144,21 @@ public class FertilizerItem extends Item implements ItemTooltipStyleProvider {
 			int age = state.getValue(ageProperty);
 			int maxAge = BlockPropertyUtil.getMaxAge(ageProperty);
 			if (age < maxAge) {
-				level.setBlock(pos, state.setValue(ageProperty, maxAge), Block.UPDATE_CLIENTS);
-				level.levelEvent(LevelEvent.PARTICLES_PLANT_GROWTH, pos, 5);
+				if (!level.isClientSide()) {
+					level.setBlock(pos, state.setValue(ageProperty, maxAge), Block.UPDATE_CLIENTS);
+					level.levelEvent(LevelEvent.PARTICLES_PLANT_GROWTH, pos, 5);
+				}
+				return true;
 			}
 		}
 		else {
-			block.performBonemeal(level, level.random, pos, state); //fall back
+			if (level instanceof ServerLevel serverLevel) {
+				block.performBonemeal(serverLevel, level.random, pos, state); //fall back
+			}
+			return true;
 		}
+
+		return false;
 	}
 
 	@Override
@@ -151,12 +168,8 @@ public class FertilizerItem extends Item implements ItemTooltipStyleProvider {
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		ClientTextUtil.appendItemInfoTooltip(stack.getItem(), tooltip);
-	}
-
-	@Override
-	public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
-		return Optional.of(new HrTooltipComponent());
+		tooltip.add(ComponentUtil.horizontalLine());
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack));
 	}
 
 }
