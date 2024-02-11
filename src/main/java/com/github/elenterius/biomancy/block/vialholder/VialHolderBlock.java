@@ -5,7 +5,9 @@ import com.github.elenterius.biomancy.init.ModBlockProperties;
 import com.github.elenterius.biomancy.util.VoxelShapeUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -106,6 +108,13 @@ public class VialHolderBlock extends BaseEntityBlock {
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return ModBlockEntities.VIAL_HOLDER.get().create(pos, state);
+	}
+
+	@Override
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+		if (level.getBlockEntity(pos) instanceof VialHolderBlockEntity vialHolder) {
+			vialHolder.updateBlockState(level);
+		}
 	}
 
 	@Override
