@@ -125,6 +125,17 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		geckolibModel(ModBlocks.FLESHKIN_CHEST, FLESH_PARTICLE_TEXTURE);
 		fleshkinPressurePlate(ModBlocks.FLESHKIN_PRESSURE_PLATE);
 		storageSac(ModBlocks.STORAGE_SAC);
+
+		particleOnly(ModBlocks.ACID_FLUID_BLOCK, new ResourceLocation("biomancy:block/acid_flat"));
+	}
+
+	public <T extends Block> void particleOnly(RegistryObject<T> block, ResourceLocation particleTexture) {
+		particleOnly(block.get(), particleTexture);
+	}
+
+	public void particleOnly(Block block, ResourceLocation particleTexture) {
+		String path = path(block);
+		simpleBlock(block, models().getBuilder(path).texture("particle", particleTexture));
 	}
 
 	public <T extends Block> void translucentBlockWithItem(RegistryObject<T> block) {
