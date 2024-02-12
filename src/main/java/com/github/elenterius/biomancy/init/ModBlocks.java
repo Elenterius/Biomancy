@@ -11,6 +11,7 @@ import com.github.elenterius.biomancy.block.digester.DigesterBlock;
 import com.github.elenterius.biomancy.block.fleshkinchest.FleshkinChestBlock;
 import com.github.elenterius.biomancy.block.fleshspike.FleshSpikeBlock;
 import com.github.elenterius.biomancy.block.mawhopper.MawHopperBlock;
+import com.github.elenterius.biomancy.block.membrane.IgnoreEntityCollisionPredicate;
 import com.github.elenterius.biomancy.block.membrane.MembraneBlock;
 import com.github.elenterius.biomancy.block.membrane.SpreadingMembraneBlock;
 import com.github.elenterius.biomancy.block.orifice.OrificeBlock;
@@ -94,11 +95,11 @@ public final class ModBlocks {
 	//public static final RegistryObject<NeuralInterceptorBlock> NEURAL_INTERCEPTOR = register("neural_interceptor", NeuralInterceptorBlock::new);
 
 	//## Membranes
-	public static final RegistryObject<MembraneBlock> IMPERMEABLE_MEMBRANE = registerMembrane("impermeable_membrane", MembraneBlock.IgnoreEntityCollisionPredicate.NEVER);
-	public static final RegistryObject<MembraneBlock> BABY_PERMEABLE_MEMBRANE = registerMembrane("baby_permeable_membrane", MembraneBlock.IgnoreEntityCollisionPredicate.IS_BABY_MOB);
-	public static final RegistryObject<MembraneBlock> ADULT_PERMEABLE_MEMBRANE = registerMembrane("adult_permeable_membrane", MembraneBlock.IgnoreEntityCollisionPredicate.IS_ADULT_MOB);
-	public static final RegistryObject<MembraneBlock> PRIMAL_PERMEABLE_MEMBRANE = registerMembrane("primal_permeable_membrane", MembraneBlock.IgnoreEntityCollisionPredicate.IS_ALIVE_MOB, SpreadingMembraneBlock::new);
-	public static final RegistryObject<MembraneBlock> UNDEAD_PERMEABLE_MEMBRANE = registerMembrane("undead_permeable_membrane", MembraneBlock.IgnoreEntityCollisionPredicate.IS_UNDEAD_MOB);
+	public static final RegistryObject<MembraneBlock> IMPERMEABLE_MEMBRANE = registerMembrane("impermeable_membrane", IgnoreEntityCollisionPredicate.NEVER);
+	public static final RegistryObject<MembraneBlock> BABY_PERMEABLE_MEMBRANE = registerMembrane("baby_permeable_membrane", IgnoreEntityCollisionPredicate.IS_BABY_MOB);
+	public static final RegistryObject<MembraneBlock> ADULT_PERMEABLE_MEMBRANE = registerMembrane("adult_permeable_membrane", IgnoreEntityCollisionPredicate.IS_ADULT_MOB);
+	public static final RegistryObject<MembraneBlock> PRIMAL_PERMEABLE_MEMBRANE = registerMembrane("primal_permeable_membrane", IgnoreEntityCollisionPredicate.IS_ALIVE_MOB, SpreadingMembraneBlock::new);
+	public static final RegistryObject<MembraneBlock> UNDEAD_PERMEABLE_MEMBRANE = registerMembrane("undead_permeable_membrane", IgnoreEntityCollisionPredicate.IS_UNDEAD_MOB);
 
 	//## Light Sources
 	public static final RegistryObject<FleshLanternBlock> PRIMORDIAL_BIO_LANTERN = register("primordial_bio_lantern", properties -> new FleshLanternBlock(properties.sound(SoundType.SHROOMLIGHT).lightLevel(x -> 15).noOcclusion()));
@@ -151,11 +152,11 @@ public final class ModBlocks {
 		return BLOCKS.register(name, () -> factory.apply(copyProperties(parent.get())));
 	}
 
-	private static RegistryObject<MembraneBlock> registerMembrane(String name, MembraneBlock.IgnoreEntityCollisionPredicate predicate) {
+	private static RegistryObject<MembraneBlock> registerMembrane(String name, IgnoreEntityCollisionPredicate predicate) {
 		return registerMembrane(name, predicate, MembraneBlock::new);
 	}
 
-	private static <T extends MembraneBlock> RegistryObject<T> registerMembrane(String name, MembraneBlock.IgnoreEntityCollisionPredicate predicate, MembraneBlockFactory<T> factory) {
+	private static <T extends MembraneBlock> RegistryObject<T> registerMembrane(String name, IgnoreEntityCollisionPredicate predicate, MembraneBlockFactory<T> factory) {
 		return register(name, props -> {
 			props = props.noOcclusion().isRedstoneConductor(ModBlocks::neverValid).isSuffocating(ModBlocks::neverValid).isViewBlocking(ModBlocks::neverValid);
 			return factory.create(props, predicate);
@@ -206,6 +207,6 @@ public final class ModBlocks {
 	}
 
 	interface MembraneBlockFactory<T extends MembraneBlock> {
-		T create(BlockBehaviour.Properties properties, MembraneBlock.IgnoreEntityCollisionPredicate predicate);
+		T create(BlockBehaviour.Properties properties, IgnoreEntityCollisionPredicate predicate);
 	}
 }
