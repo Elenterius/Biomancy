@@ -523,10 +523,15 @@ public class PirateLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.TENDON_CHAIN, "Chain o' Tendons", "A chain made o' tendons.");
 		addBlock(ModBlocks.VIAL_HOLDER, "Vial Rack", "Display an' organize yer serums.");
 		addBlock(ModBlocks.IMPERMEABLE_MEMBRANE, "Solid Membrane", "Membrane that be remindin' me of jellied eels. It be reinforced with stretchy fibers.");
+		addBlock(ModBlocks.IMPERMEABLE_MEMBRANE_PANE, "Skinny Solid Membrane", "Membrane that be remindin' me of jellied eels. It be reinforced with stretchy fibers.");
 		addBlock(ModBlocks.BABY_PERMEABLE_MEMBRANE, "Kiddo-Passable Membrane", "Membrane that be remindin' me of jellied eels. It be reinforced with stretchy fibers.\n\nOnly kiddos can pass through ta' membrane.");
+		addBlock(ModBlocks.BABY_PERMEABLE_MEMBRANE_PANE, "Skinny Kiddo-Passable Membrane", "Membrane that be remindin' me of jellied eels. It be reinforced with stretchy fibers.\n\nOnly kiddos can pass through ta' membrane.");
 		addBlock(ModBlocks.ADULT_PERMEABLE_MEMBRANE, "Adult-Passable Membrane", "Membrane that be remindin' me of jellied eels. It be reinforced with stretchy fibers.\n\nOnly adults can pass through ta' membrane.");
+		addBlock(ModBlocks.ADULT_PERMEABLE_MEMBRANE_PANE, "Skinny Adult-Passable Membrane", "Membrane that be remindin' me of jellied eels. It be reinforced with stretchy fibers.\n\nOnly adults can pass through ta' membrane.");
 		addBlock(ModBlocks.PRIMAL_PERMEABLE_MEMBRANE, "Ol'-Magic Membrane", "Membrane that be remindin' me of jellied eels. It be reinforced with stretchy fibers.\n\nOnly livin' mobs can pass through ta' membrane.");
+		addBlock(ModBlocks.PRIMAL_PERMEABLE_MEMBRANE_PANE, "Thin Ol'-Magic Membrane", "Membrane that be remindin' me of jellied eels. It be reinforced with stretchy fibers.\n\nOnly livin' mobs can pass through ta' membrane.");
 		addBlock(ModBlocks.UNDEAD_PERMEABLE_MEMBRANE, "Diseased Membrane", "Membrane that be remindin' me of jellied eels. It be reinforced with stretchy fibers.\n\nOnly once-dead now-livin' mobs can pass through ta' membrane.");
+		addBlock(ModBlocks.UNDEAD_PERMEABLE_MEMBRANE_PANE, "Skinny & Diseased Membrane", "Membrane that be remindin' me of jellied eels. It be reinforced with stretchy fibers.\n\nOnly once-dead now-livin' mobs can pass through ta' membrane.");
 		//addBlock(ModBlocks.NEURAL_INTERCEPTOR, "Neural Interceptor", "A psychic node that prevents natural mob spawning in a 48 block radius.");
 
 		addBlock(ModBlocks.PRIMAL_FLESH, "Ol'-Magic Block o' Flesh", "Ancient and pure, ye better not touch this with yer dirty hook.");

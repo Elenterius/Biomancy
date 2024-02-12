@@ -283,13 +283,6 @@ public class BioForgeRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.MISC)
 				.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
 
-		//		BioForgeRecipeBuilder.create(ModItems.ITEM_PERMEABLE_MEMBRANE.get())
-		//				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 4)
-		//				.addIngredient(ModItems.BILE.get(), 4)
-		//				.addIngredient(Items.QUARTZ, 1)
-		//				.setCategory(ModBioForgeTabs.MISC)
-		//				.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
-
 		BioForgeRecipeBuilder.create(ModItems.BABY_PERMEABLE_MEMBRANE.get())
 				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 4)
 				.addIngredient(ModItems.REGENERATIVE_FLUID.get(), 4)
@@ -305,6 +298,34 @@ public class BioForgeRecipeProvider extends RecipeProvider {
 				.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
 
 		BioForgeRecipeBuilder.create(ModItems.UNDEAD_PERMEABLE_MEMBRANE.get())
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 4)
+				.addIngredient(ModItems.BILE.get(), 4)
+				.addIngredient(Items.PHANTOM_MEMBRANE, 1)
+				.setCategory(ModBioForgeTabs.MISC)
+				.unlockedBy(Items.PHANTOM_MEMBRANE).save(consumer);
+
+		BioForgeRecipeBuilder.create(ModItems.IMPERMEABLE_MEMBRANE_PANE.get(), 2)
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 2)
+				.addIngredient(ModItems.BILE.get(), 4)
+				.addIngredient(ModItems.GEM_FRAGMENTS.get(), 2)
+				.setCategory(ModBioForgeTabs.MISC)
+				.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
+
+		BioForgeRecipeBuilder.create(ModItems.BABY_PERMEABLE_MEMBRANE_PANE.get(), 2)
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 4)
+				.addIngredient(ModItems.REGENERATIVE_FLUID.get(), 4)
+				.addIngredient(ModItems.GEM_FRAGMENTS.get(), 2)
+				.setCategory(ModBioForgeTabs.MISC)
+				.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
+
+		BioForgeRecipeBuilder.create(ModItems.ADULT_PERMEABLE_MEMBRANE_PANE.get(), 2)
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 4)
+				.addIngredient(ModItems.HORMONE_SECRETION.get(), 4)
+				.addIngredient(ModItems.GEM_FRAGMENTS.get(), 2)
+				.setCategory(ModBioForgeTabs.MISC)
+				.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
+
+		BioForgeRecipeBuilder.create(ModItems.UNDEAD_PERMEABLE_MEMBRANE_PANE.get(), 2)
 				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 4)
 				.addIngredient(ModItems.BILE.get(), 4)
 				.addIngredient(Items.PHANTOM_MEMBRANE, 1)

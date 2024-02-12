@@ -10,7 +10,7 @@
   "mixins": [
 		"AgeableMobAccessor", "ArmorStandAccessor", "BiomeAccessor", "DamageSourceAccessor", "IntegerPropertyAccessor", "LivingEntityAccessor", "LivingEntityMixin",
 		"MobEffectInstanceAccessor", "MobEffectInstanceMixin", "MobEntityAccessor", "PhantomMixin", "PlayerMixin", "ServerLevelMixin", "SlimeAccessor",
-		"SwordItemMixinAccessor", "TadpoleAccessor", "TextureSlotAccessor", "ZombieVillagerMixinAccessor"
+		"SwordItemMixinAccessor", "TadpoleAccessor", "TextureSlotAccessor", "WallBlockMixin", "ZombieVillagerMixinAccessor"
 	],
 	"client": [
 		"client.ClientPackListenerMixin", "client.ClientRecipeBookMixin", "client.GuiGraphicsMixin", "client.PlayerRendererMixin", "client.RecipeCollectionAccessor"

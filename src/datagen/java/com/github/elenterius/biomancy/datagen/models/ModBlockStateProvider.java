@@ -28,6 +28,7 @@ import net.minecraftforge.client.model.generators.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import java.util.Collection;
@@ -104,6 +105,11 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		translucentBlockWithItem(ModBlocks.ADULT_PERMEABLE_MEMBRANE);
 		translucentBlockWithItem(ModBlocks.PRIMAL_PERMEABLE_MEMBRANE);
 		translucentBlockWithItem(ModBlocks.UNDEAD_PERMEABLE_MEMBRANE);
+		membranePaneWithItem(ModBlocks.IMPERMEABLE_MEMBRANE_PANE, ModBlocks.IMPERMEABLE_MEMBRANE);
+		membranePaneWithItem(ModBlocks.BABY_PERMEABLE_MEMBRANE_PANE, ModBlocks.BABY_PERMEABLE_MEMBRANE);
+		membranePaneWithItem(ModBlocks.ADULT_PERMEABLE_MEMBRANE_PANE, ModBlocks.ADULT_PERMEABLE_MEMBRANE);
+		membranePaneWithItem(ModBlocks.PRIMAL_PERMEABLE_MEMBRANE_PANE, ModBlocks.PRIMAL_PERMEABLE_MEMBRANE);
+		membranePaneWithItem(ModBlocks.UNDEAD_PERMEABLE_MEMBRANE_PANE, ModBlocks.UNDEAD_PERMEABLE_MEMBRANE);
 
 		//horizontalBlockWithItem(ModBlocks.NEURAL_INTERCEPTOR);
 
@@ -565,14 +571,77 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		});
 	}
 
+	public <T extends PaneBlock, S extends MembraneBlock> void membranePaneWithItem(RegistryObject<T> block, RegistryObject<S> parentBlock) {
+		membranePaneWithItem(block.get(), parentBlock.get());
+	}
+
+	public void membranePaneWithItem(PaneBlock block, MembraneBlock parentBlock) {
+		ResourceLocation texture = blockAsset(parentBlock);
+		customPaneBlock(block, true, true, texture, "translucent", BlockStateProperties.WATERLOGGED);
+	}
+
+	public void customPaneBlock(PaneBlock block, boolean thick, boolean simpleBlockItem, ResourceLocation texture, @Nullable String renderType, Property<?>... ignored) {
+		String name = path(block);
+		String s = thick ? "thick" : "thin";
+
+		BlockModelBuilder defaultPaneModel = models()
+				.withExistingParent(name, BiomancyMod.createRL("block/template_%s_pane".formatted(s)))
+				.texture("front", texture)
+				.texture("side", extend(texture, "_side"));
+
+		if (renderType != null) {
+			defaultPaneModel.renderType(renderType);
+		}
+
+		BlockModelBuilder middlePaneModel = models().withExistingParent(name + "_middle", BiomancyMod.createRL("block/template_%s_pane_middle".formatted(s)))
+				.texture("front", texture)
+				.texture("side", extend(texture, "_side"));
+
+		if (renderType != null) {
+			middlePaneModel.renderType(renderType);
+		}
+
+		customPaneBlock(block, defaultPaneModel, middlePaneModel, ignored);
+
+		if (simpleBlockItem) simpleBlockItem(block, middlePaneModel);
+	}
+
+	public void customPaneBlock(PaneBlock block, ModelFile defaultPaneModel, ModelFile middlePaneModel, Property<?>... ignored) {
+		getVariantBuilder(block)
+				.forAllStatesExcept(state -> {
+					Orientation orientation = state.getValue(ModBlockProperties.ORIENTATION);
+					ModelFile model = orientation.isMiddle() ? middlePaneModel : defaultPaneModel;
+
+					if (orientation.axis == Direction.Axis.Y) {
+						return ConfiguredModel.builder()
+								.modelFile(model)
+								.rotationX(orientation.isNegative() ? 270 : 90)
+								.build();
+					}
+
+					if (orientation.axis == Direction.Axis.X) {
+						return ConfiguredModel.builder()
+								.modelFile(model)
+								.rotationY(orientation.isNegative() ? 270 : 90)
+								.build();
+					}
+
+					//z axis
+					return ConfiguredModel.builder()
+							.modelFile(model)
+							.rotationY(orientation.isPositive() ? 180 : 0)
+							.build();
+				}, ignored);
+	}
+
 	public void irisDoor(IrisDoorBlock block, boolean simpleBlockItem) {
 		ResourceLocation texture = blockAsset(block);
 		String name = path(block);
 
-		ModelFile openModel = models().singleTexture(name + "_open", BiomancyMod.createRL("block/template_iris_door"), extend(texture, "_open"));
-		ModelFile middleOpenModel = models().singleTexture(name + "_middle_open", BiomancyMod.createRL("block/template_iris_door_middle"), extend(texture, "_open"));
-		ModelFile closedModel = models().singleTexture(name + "_closed", BiomancyMod.createRL("block/template_iris_door"), extend(texture, "_closed"));
-		ModelFile middleClosedModel = models().singleTexture(name + "_middle_closed", BiomancyMod.createRL("block/template_iris_door_middle"), extend(texture, "_closed"));
+		ModelFile openModel = models().singleTexture(name + "_open", BiomancyMod.createRL("block/template_thin_pane"), extend(texture, "_open"));
+		ModelFile middleOpenModel = models().singleTexture(name + "_middle_open", BiomancyMod.createRL("block/template_thin_pane_middle"), extend(texture, "_open"));
+		ModelFile closedModel = models().singleTexture(name + "_closed", BiomancyMod.createRL("block/template_thin_pane"), extend(texture, "_closed"));
+		ModelFile middleClosedModel = models().singleTexture(name + "_middle_closed", BiomancyMod.createRL("block/template_thin_pane_middle"), extend(texture, "_closed"));
 
 		irisDoor(block, openModel, closedModel, middleOpenModel, middleClosedModel);
 

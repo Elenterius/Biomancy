@@ -13,6 +13,7 @@ import com.github.elenterius.biomancy.block.fleshspike.FleshSpikeBlock;
 import com.github.elenterius.biomancy.block.mawhopper.MawHopperBlock;
 import com.github.elenterius.biomancy.block.membrane.IgnoreEntityCollisionPredicate;
 import com.github.elenterius.biomancy.block.membrane.MembraneBlock;
+import com.github.elenterius.biomancy.block.membrane.MembranePaneBlock;
 import com.github.elenterius.biomancy.block.membrane.SpreadingMembraneBlock;
 import com.github.elenterius.biomancy.block.orifice.OrificeBlock;
 import com.github.elenterius.biomancy.block.ownable.OwnablePressurePlateBlock;
@@ -96,10 +97,15 @@ public final class ModBlocks {
 
 	//## Membranes
 	public static final RegistryObject<MembraneBlock> IMPERMEABLE_MEMBRANE = registerMembrane("impermeable_membrane", IgnoreEntityCollisionPredicate.NEVER);
+	public static final RegistryObject<MembranePaneBlock> IMPERMEABLE_MEMBRANE_PANE = registerMembranePane("impermeable_membrane_pane", IgnoreEntityCollisionPredicate.NEVER);
 	public static final RegistryObject<MembraneBlock> BABY_PERMEABLE_MEMBRANE = registerMembrane("baby_permeable_membrane", IgnoreEntityCollisionPredicate.IS_BABY_MOB);
+	public static final RegistryObject<MembranePaneBlock> BABY_PERMEABLE_MEMBRANE_PANE = registerMembranePane("baby_permeable_membrane_pane", IgnoreEntityCollisionPredicate.IS_BABY_MOB);
 	public static final RegistryObject<MembraneBlock> ADULT_PERMEABLE_MEMBRANE = registerMembrane("adult_permeable_membrane", IgnoreEntityCollisionPredicate.IS_ADULT_MOB);
+	public static final RegistryObject<MembranePaneBlock> ADULT_PERMEABLE_MEMBRANE_PANE = registerMembranePane("adult_permeable_membrane_pane", IgnoreEntityCollisionPredicate.IS_ADULT_MOB);
 	public static final RegistryObject<MembraneBlock> PRIMAL_PERMEABLE_MEMBRANE = registerMembrane("primal_permeable_membrane", IgnoreEntityCollisionPredicate.IS_ALIVE_MOB, SpreadingMembraneBlock::new);
+	public static final RegistryObject<MembranePaneBlock> PRIMAL_PERMEABLE_MEMBRANE_PANE = registerMembranePane("primal_permeable_membrane_pane", IgnoreEntityCollisionPredicate.IS_ALIVE_MOB);
 	public static final RegistryObject<MembraneBlock> UNDEAD_PERMEABLE_MEMBRANE = registerMembrane("undead_permeable_membrane", IgnoreEntityCollisionPredicate.IS_UNDEAD_MOB);
+	public static final RegistryObject<MembranePaneBlock> UNDEAD_PERMEABLE_MEMBRANE_PANE = registerMembranePane("undead_permeable_membrane_pane", IgnoreEntityCollisionPredicate.IS_UNDEAD_MOB);
 
 	//## Light Sources
 	public static final RegistryObject<FleshLanternBlock> PRIMORDIAL_BIO_LANTERN = register("primordial_bio_lantern", properties -> new FleshLanternBlock(properties.sound(SoundType.SHROOMLIGHT).lightLevel(x -> 15).noOcclusion()));
@@ -163,6 +169,17 @@ public final class ModBlocks {
 		});
 	}
 
+	private static RegistryObject<MembranePaneBlock> registerMembranePane(String name, IgnoreEntityCollisionPredicate predicate) {
+		return registerMembranePane(name, predicate, MembranePaneBlock::new);
+	}
+
+	private static <T extends MembranePaneBlock> RegistryObject<T> registerMembranePane(String name, IgnoreEntityCollisionPredicate predicate, MembranePaneBlockFactory<T> factory) {
+		return register(name, props -> {
+			props = props.noOcclusion().isRedstoneConductor(ModBlocks::neverValid).isSuffocating(ModBlocks::neverValid).isViewBlocking(ModBlocks::neverValid);
+			return factory.create(props, predicate);
+		});
+	}
+
 	public static BlockBehaviour.Properties copyProperties(BlockBehaviour behaviour) {
 		return BlockBehaviour.Properties.copy(behaviour);
 	}
@@ -207,6 +224,10 @@ public final class ModBlocks {
 	}
 
 	interface MembraneBlockFactory<T extends MembraneBlock> {
+		T create(BlockBehaviour.Properties properties, IgnoreEntityCollisionPredicate predicate);
+	}
+
+	interface MembranePaneBlockFactory<T extends MembranePaneBlock> {
 		T create(BlockBehaviour.Properties properties, IgnoreEntityCollisionPredicate predicate);
 	}
 }

@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.datagen.recipes.builder.WorkbenchRecipeBuilder;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.tags.ModItemTags;
+import com.github.elenterius.biomancy.item.SimpleBlockItem;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
@@ -269,6 +270,26 @@ public class VanillaRecipeProvider extends RecipeProvider {
 				.pattern("BVB")
 				.unlockedBy(hasName(ModItems.BLOOMBERRY.get()), has(ModItems.BLOOMBERRY.get()))
 				.save(consumer);
+
+		membrane(consumer, ModItems.IMPERMEABLE_MEMBRANE_PANE.get(), ModItems.IMPERMEABLE_MEMBRANE.get());
+		membrane(consumer, ModItems.BABY_PERMEABLE_MEMBRANE_PANE.get(), ModItems.BABY_PERMEABLE_MEMBRANE.get());
+		membrane(consumer, ModItems.ADULT_PERMEABLE_MEMBRANE_PANE.get(), ModItems.ADULT_PERMEABLE_MEMBRANE.get());
+		membrane(consumer, ModItems.PRIMAL_PERMEABLE_MEMBRANE_PANE.get(), ModItems.PRIMAL_PERMEABLE_MEMBRANE.get());
+		membrane(consumer, ModItems.UNDEAD_PERMEABLE_MEMBRANE_PANE.get(), ModItems.UNDEAD_PERMEABLE_MEMBRANE.get());
+	}
+
+	private void membrane(Consumer<FinishedRecipe> consumer, SimpleBlockItem pane, SimpleBlockItem membrane) {
+		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, pane, 2)
+				.requires(membrane)
+				.unlockedBy(hasName(membrane), has(membrane))
+				.save(consumer, getConversionRecipeId(pane, membrane));
+
+		WorkbenchRecipeBuilder.shaped(RecipeCategory.MISC, membrane)
+				.define('P', pane)
+				.pattern("P")
+				.pattern("P")
+				.unlockedBy(hasName(pane), has(pane))
+				.save(consumer, getConversionRecipeId(membrane, pane));
 	}
 
 	protected ResourceLocation getSimpleRecipeId(ItemLike itemLike) {

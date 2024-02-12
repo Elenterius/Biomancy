@@ -176,10 +176,15 @@ public class ModBlockLoot extends BlockLootSubProvider {
 
 		//		dropSelf(ModBlocks.VOICE_BOX.get());
 		dropSelf(ModBlocks.IMPERMEABLE_MEMBRANE.get());
+		dropSelf(ModBlocks.IMPERMEABLE_MEMBRANE_PANE.get());
 		dropSelf(ModBlocks.BABY_PERMEABLE_MEMBRANE.get());
+		dropSelf(ModBlocks.BABY_PERMEABLE_MEMBRANE_PANE.get());
 		dropSelf(ModBlocks.ADULT_PERMEABLE_MEMBRANE.get());
+		dropSelf(ModBlocks.ADULT_PERMEABLE_MEMBRANE_PANE.get());
 		dropSelf(ModBlocks.PRIMAL_PERMEABLE_MEMBRANE.get());
+		dropSelf(ModBlocks.PRIMAL_PERMEABLE_MEMBRANE_PANE.get());
 		dropSelf(ModBlocks.UNDEAD_PERMEABLE_MEMBRANE.get());
+		dropSelf(ModBlocks.UNDEAD_PERMEABLE_MEMBRANE_PANE.get());
 		//dropSelf(ModBlocks.NEURAL_INTERCEPTOR.get());
 
 		dropSelf(ModBlocks.FLESH_IRIS_DOOR.get());
