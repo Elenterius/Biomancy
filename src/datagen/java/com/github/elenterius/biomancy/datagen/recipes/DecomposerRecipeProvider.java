@@ -691,10 +691,9 @@ public class DecomposerRecipeProvider extends RecipeProvider {
 
 		createAlexsCavesRecipe()
 				.setIngredient(ACItemRegistry.SEA_PIG)
-				.addOutput(ModItems.FLESH_BITS.get(), 1, 2)
-				.addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2)
-				.addOutput(ModItems.BONE_FRAGMENTS.get(), 0, 1)
-				.addOutput(ModItems.BILE.get(), 1, 2)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 0, 1)
+				.addOutput(ModItems.TOXIN_EXTRACT.get(), 2, 3)
+				.addOutput(ModItems.BILE.get(), 2, 4)
 				.unlockedBy(ACItemRegistry.SEA_PIG).save(consumer);
 
 		createAlexsCavesRecipe()
