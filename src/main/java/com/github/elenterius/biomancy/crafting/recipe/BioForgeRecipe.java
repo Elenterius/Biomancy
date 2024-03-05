@@ -1,10 +1,13 @@
 package com.github.elenterius.biomancy.crafting.recipe;
 
+import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.init.ModBioForgeTabs;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.menu.BioForgeTab;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
@@ -157,6 +160,14 @@ public class BioForgeRecipe implements Recipe<Container> {
 			int cost = GsonHelper.getAsInt(json, "nutrientsCost", DEFAULT_CRAFTING_COST_NUTRIENTS);
 
 			BioForgeTab tab = BioForgeTab.fromJson(json);
+			if (tab == null) {
+				String tabId = BioForgeTab.getTabId(json);
+				if (tabId.equals("biomancy:weapons")) {
+					tab = ModBioForgeTabs.TOOLS.get();
+					BiomancyMod.LOGGER.warn("Recipe {} uses the deprecated \"biomancy:weapons\" bio-forge tab instead of \"biomancy:tools\". Using \"biomancy:tools\" fallback, please update your recipe.", recipeId);
+				}
+				else throw new JsonSyntaxException("Unknown Bio-Forge tab '%s'".formatted(tabId));
+			}
 
 			return new BioForgeRecipe(recipeId, tab, resultStack, ingredients, cost);
 		}
