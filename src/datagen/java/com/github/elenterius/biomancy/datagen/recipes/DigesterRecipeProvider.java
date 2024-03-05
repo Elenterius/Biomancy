@@ -109,7 +109,7 @@ public class DigesterRecipeProvider extends RecipeProvider {
 		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 4, Items.HONEYCOMB).save(consumer);
 		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 4, Items.SEA_PICKLE).save(consumer);
 		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 4, Items.WARPED_WART_BLOCK).save(consumer);
-		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 9 * 2, Items.NETHER_WART_BLOCK).modifyCraftingTime(x -> x - 120).save(consumer);
+		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 9 + 5, Items.NETHER_WART_BLOCK).modifyCraftingTime(x -> x - 120).save(consumer);
 		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), 4, Items.SHROOMLIGHT).save(consumer);
 
 		simpleDigesterRecipe(ModItems.NUTRIENT_PASTE.get(), Foods.DRIED_KELP.getNutrition(), Items.KELP).modifyCraftingTime(x -> x + 20).setCraftingCost(2).save(consumer);
