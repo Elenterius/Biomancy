@@ -97,8 +97,8 @@ public class DecomposerRecipeProvider extends RecipeProvider {
 		DecomposerRecipeBuilder.create().setIngredient(Items.CLAY).addOutput(ModItems.STONE_POWDER.get(), 1, 2).addOutput(ModItems.MINERAL_FRAGMENT.get(), 1, 2).unlockedBy(Items.CLAY).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.GLOWSTONE).addOutput(ModItems.STONE_POWDER.get(), 2, 4).addOutput(ModItems.EXOTIC_DUST.get(), 1, 4).addOutput(ModItems.BIO_LUMENS.get(), -4, 4).unlockedBy(Items.GLOWSTONE).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.GLOW_LICHEN).addOutput(ModItems.BIO_LUMENS.get(), 1, 2).addOutput(ModItems.ORGANIC_MATTER.get(), 0, 1).unlockedBy(Items.GLOW_LICHEN).save(consumer);
-		DecomposerRecipeBuilder.create().setIngredient(Items.DRAGON_EGG).addOutput(ModItems.EXOTIC_DUST.get(), 97, 128).addOutput(ModItems.BIO_LUMENS.get(), 6, 10).addOutput(ModItems.MINERAL_FRAGMENT.get(), 17, 23).unlockedBy(Items.DRAGON_EGG).save(consumer);
-		DecomposerRecipeBuilder.create().setIngredient(Items.TURTLE_EGG).addOutput(ModItems.MINERAL_FRAGMENT.get(), 1, 2).addOutput(ModItems.ORGANIC_MATTER.get(), 0, 1).unlockedBy(Items.TURTLE_EGG).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(Items.DRAGON_EGG).addOutput(ModItems.EXOTIC_DUST.get(), 97, 128).addOutput(ModItems.BIO_LUMENS.get(), 6, 10).addOutput(ModItems.HORMONE_SECRETION.get(), 17, 23).unlockedBy(Items.DRAGON_EGG).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(Items.TURTLE_EGG).addOutput(ModItems.HORMONE_SECRETION.get(), 1, 2).addOutput(ModItems.ORGANIC_MATTER.get(), 0, 1).unlockedBy(Items.TURTLE_EGG).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.TUBE_CORAL).addOutput(ModItems.ORGANIC_MATTER.get(), 1).unlockedBy(Items.TUBE_CORAL).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.BRAIN_CORAL).addOutput(ModItems.ORGANIC_MATTER.get(), 1).unlockedBy(Items.BRAIN_CORAL).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.BUBBLE_CORAL).addOutput(ModItems.ORGANIC_MATTER.get(), 1).unlockedBy(Items.BUBBLE_CORAL).save(consumer);
@@ -147,7 +147,7 @@ public class DecomposerRecipeProvider extends RecipeProvider {
 		DecomposerRecipeBuilder.create().setIngredient(Items.CLAY_BALL).addOutput(ModItems.STONE_POWDER.get(), 1, 2).addOutput(ModItems.MINERAL_FRAGMENT.get(), 0, 1).unlockedBy(Items.CLAY_BALL).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.DRIED_KELP_BLOCK).addOutput(ModItems.ORGANIC_MATTER.get(), 1, 3).unlockedBy(Items.DRIED_KELP_BLOCK).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.SLIME_BALL).addOutput(ModItems.REGENERATIVE_FLUID.get(), 3, 5).addOutput(ModItems.BILE.get(), 1, 2).unlockedBy(Items.SLIME_BALL).save(consumer);
-		DecomposerRecipeBuilder.create().setIngredient(Tags.Items.EGGS).addOutput(ModItems.MINERAL_FRAGMENT.get(), 1).addOutput(ModItems.ORGANIC_MATTER.get(), 0, 2).unlockedBy(Tags.Items.EGGS).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(Tags.Items.EGGS).addOutput(ModItems.HORMONE_SECRETION.get(), 0, 1).addOutput(ModItems.ORGANIC_MATTER.get(), 0, 2).unlockedBy(Tags.Items.EGGS).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.GLOWSTONE_DUST).addOutput(ModItems.STONE_POWDER.get(), 1).addOutput(ModItems.EXOTIC_DUST.get(), 0, 1).addOutput(ModItems.BIO_LUMENS.get(), -1, 1).unlockedBy(Items.GLOWSTONE_DUST).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.COD).addOutput(ModItems.FLESH_BITS.get(), 2, 4).addOutput(ModItems.BONE_FRAGMENTS.get(), 1, 2).addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2).unlockedBy(Items.COD).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.SALMON).addOutput(ModItems.FLESH_BITS.get(), 2, 4).addOutput(ModItems.BONE_FRAGMENTS.get(), 1, 2).addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2).unlockedBy(Items.SALMON).save(consumer);
@@ -169,7 +169,7 @@ public class DecomposerRecipeProvider extends RecipeProvider {
 		DecomposerRecipeBuilder.create().setIngredient(Items.ENDER_PEARL).addOutput(ModItems.EXOTIC_DUST.get(), 2, 3).unlockedBy(Items.ENDER_PEARL).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.BLAZE_ROD).addOutput(ModItems.BIO_LUMENS.get(), 2, 4).addOutput(ModItems.EXOTIC_DUST.get(), 2).unlockedBy(Items.BLAZE_ROD).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.BLAZE_POWDER).addOutput(ModItems.BIO_LUMENS.get(), 1, 2).addOutput(ModItems.EXOTIC_DUST.get(), 1).unlockedBy(Items.BLAZE_POWDER).save(consumer);
-		DecomposerRecipeBuilder.create().setIngredient(Items.GHAST_TEAR).addOutput(ModItems.HORMONE_SECRETION.get(), 1, 2).addOutput(ModItems.BILE.get(), 1, 2).addOutput(ModItems.EXOTIC_DUST.get(), 1, 2).unlockedBy(Items.GHAST_TEAR).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(Items.GHAST_TEAR).addOutput(ModItems.HORMONE_SECRETION.get(), 4, 8).addOutput(ModItems.BILE.get(), 1, 2).addOutput(ModItems.EXOTIC_DUST.get(), 1, 2).unlockedBy(Items.GHAST_TEAR).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.GOLD_NUGGET).addOutput(ModItems.MINERAL_FRAGMENT.get(), 0, 1).unlockedBy(Items.GOLD_NUGGET).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.NETHER_WART).addOutput(ModItems.ORGANIC_MATTER.get(), 1, 2).addOutput(ModItems.EXOTIC_DUST.get(), 0, 1).unlockedBy(Items.NETHER_WART).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(Items.SPIDER_EYE).addOutput(ModItems.BILE.get(), 0, 1).addOutput(ModItems.FLESH_BITS.get(), 1).addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 2).unlockedBy(Items.SPIDER_EYE).save(consumer);
@@ -210,7 +210,7 @@ public class DecomposerRecipeProvider extends RecipeProvider {
 		DecomposerRecipeBuilder.create().setIngredient(ModItems.MOB_FANG).addOutput(ModItems.MINERAL_FRAGMENT.get(), 2, 4).addOutput(ModItems.BONE_FRAGMENTS.get(), 4, 6).unlockedBy(ModItems.MOB_FANG).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(ModItems.MOB_CLAW).addOutput(ModItems.MINERAL_FRAGMENT.get(), 3, 5).addOutput(ModItems.TOUGH_FIBERS.get(), 4, 6).unlockedBy(ModItems.MOB_CLAW).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(ModItems.MOB_SINEW).addOutput(ModItems.ELASTIC_FIBERS.get(), 4, 8).addOutput(ModItems.FLESH_BITS.get(), 1, 2).unlockedBy(ModItems.MOB_SINEW).save(consumer);
-		DecomposerRecipeBuilder.create().setIngredient(ModItems.MOB_MARROW).addOutput(ModItems.HORMONE_SECRETION.get(), 2, 5).addOutput(ModItems.BONE_FRAGMENTS.get(), 2, 4).addOutput(ModItems.MINERAL_FRAGMENT.get(), 1, 2).unlockedBy(ModItems.MOB_MARROW).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.MOB_MARROW).addOutput(ModItems.HORMONE_SECRETION.get(), 1, 4).addOutput(ModItems.BONE_FRAGMENTS.get(), 2, 4).addOutput(ModItems.MINERAL_FRAGMENT.get(), 1, 2).unlockedBy(ModItems.MOB_MARROW).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(ModItems.WITHERED_MOB_MARROW).addOutput(ModItems.WITHERING_OOZE.get(), 3, 5).addOutput(ModItems.BONE_FRAGMENTS.get(), 2, 4).unlockedBy(ModItems.WITHERED_MOB_MARROW).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(ModItems.GENERIC_MOB_GLAND).addOutput(ModItems.BILE.get(), 4, 6).addOutput(ModItems.FLESH_BITS.get(), 2, 3).addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 3).unlockedBy(ModItems.GENERIC_MOB_GLAND).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(ModItems.TOXIN_GLAND).addOutput(ModItems.TOXIN_EXTRACT.get(), 2, 5).addOutput(ModItems.FLESH_BITS.get(), 2, 3).addOutput(ModItems.ELASTIC_FIBERS.get(), 1, 3).unlockedBy(ModItems.TOXIN_GLAND).save(consumer);
@@ -250,7 +250,7 @@ public class DecomposerRecipeProvider extends RecipeProvider {
 
 		DecomposerRecipeBuilder.create().setIngredient(Items.SNIFFER_EGG)
 				.addOutput(ModItems.STONE_POWDER.get(), 0, 4)
-				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 1, 4)
+				.addOutput(ModItems.HORMONE_SECRETION.get(), 1, 4)
 				.addOutput(ModItems.ORGANIC_MATTER.get(), 1, 4)
 				.addOutput(ModItems.EXOTIC_DUST.get(), 2, 6)
 				.unlockedBy(Items.SNIFFER_EGG).save(consumer);
@@ -597,13 +597,13 @@ public class DecomposerRecipeProvider extends RecipeProvider {
 
 		createAlexsMobsRecipe()
 				.setIngredient(AMBlockRegistry.CAIMAN_EGG.get())
-				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 1)
+				.addOutput(ModItems.HORMONE_SECRETION.get(), 1)
 				.addOutput(ModItems.ORGANIC_MATTER.get(), 0, 2)
 				.unlockedBy(AMBlockRegistry.CAIMAN_EGG.get()).save(consumer);
 
 		createAlexsMobsRecipe()
 				.setIngredient(AMBlockRegistry.TRIOPS_EGGS.get())
-				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 0, 1)
+				.addOutput(ModItems.HORMONE_SECRETION.get(), -1, 1)
 				.addOutput(ModItems.ORGANIC_MATTER.get(), 0, 1)
 				.unlockedBy(AMBlockRegistry.TRIOPS_EGGS.get()).save(consumer);
 	}
@@ -750,7 +750,7 @@ public class DecomposerRecipeProvider extends RecipeProvider {
 		createAlexsCavesRecipe()
 				.setIngredient(ACBlockRegistry.SUBTERRANODON_EGG.get())
 				.addOutput(ModItems.STONE_POWDER.get(), 0, 4)
-				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 1, 4)
+				.addOutput(ModItems.HORMONE_SECRETION.get(), 1, 4)
 				.addOutput(ModItems.ORGANIC_MATTER.get(), 1, 4)
 				.addOutput(ModItems.EXOTIC_DUST.get(), 2, 6)
 				.unlockedBy(ACBlockRegistry.SUBTERRANODON_EGG.get()).save(consumer);
@@ -758,7 +758,7 @@ public class DecomposerRecipeProvider extends RecipeProvider {
 		createAlexsCavesRecipe()
 				.setIngredient(ACBlockRegistry.VALLUMRAPTOR_EGG.get())
 				.addOutput(ModItems.STONE_POWDER.get(), 0, 4)
-				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 1, 4)
+				.addOutput(ModItems.HORMONE_SECRETION.get(), 1, 4)
 				.addOutput(ModItems.ORGANIC_MATTER.get(), 1, 4)
 				.addOutput(ModItems.EXOTIC_DUST.get(), 2, 6)
 				.unlockedBy(ACBlockRegistry.VALLUMRAPTOR_EGG.get()).save(consumer);
@@ -766,7 +766,7 @@ public class DecomposerRecipeProvider extends RecipeProvider {
 		createAlexsCavesRecipe()
 				.setIngredient(ACBlockRegistry.GROTTOCERATOPS_EGG.get())
 				.addOutput(ModItems.STONE_POWDER.get(), 0, 4)
-				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 1, 4)
+				.addOutput(ModItems.HORMONE_SECRETION.get(), 1, 4)
 				.addOutput(ModItems.ORGANIC_MATTER.get(), 1, 4)
 				.addOutput(ModItems.EXOTIC_DUST.get(), 2, 6)
 				.unlockedBy(ACBlockRegistry.GROTTOCERATOPS_EGG.get()).save(consumer);
@@ -774,7 +774,7 @@ public class DecomposerRecipeProvider extends RecipeProvider {
 		createAlexsCavesRecipe()
 				.setIngredient(ACBlockRegistry.TREMORSAURUS_EGG.get())
 				.addOutput(ModItems.STONE_POWDER.get(), 0, 4)
-				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 1, 4)
+				.addOutput(ModItems.HORMONE_SECRETION.get(), 1, 4)
 				.addOutput(ModItems.ORGANIC_MATTER.get(), 1, 4)
 				.addOutput(ModItems.EXOTIC_DUST.get(), 2, 6)
 				.unlockedBy(ACBlockRegistry.TREMORSAURUS_EGG.get()).save(consumer);
@@ -782,7 +782,7 @@ public class DecomposerRecipeProvider extends RecipeProvider {
 		createAlexsCavesRecipe()
 				.setIngredient(ACBlockRegistry.RELICHEIRUS_EGG.get())
 				.addOutput(ModItems.STONE_POWDER.get(), 0, 4)
-				.addOutput(ModItems.MINERAL_FRAGMENT.get(), 1, 4)
+				.addOutput(ModItems.HORMONE_SECRETION.get(), 1, 4)
 				.addOutput(ModItems.ORGANIC_MATTER.get(), 1, 4)
 				.addOutput(ModItems.EXOTIC_DUST.get(), 2, 6)
 				.unlockedBy(ACBlockRegistry.RELICHEIRUS_EGG.get()).save(consumer);
