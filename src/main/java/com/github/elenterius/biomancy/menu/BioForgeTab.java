@@ -2,12 +2,12 @@ package com.github.elenterius.biomancy.menu;
 
 import com.github.elenterius.biomancy.init.ModBioForgeTabs;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
@@ -25,13 +25,14 @@ public final class BioForgeTab {
 		this(0, itemSupplier);
 	}
 
+	@Nullable
 	public static BioForgeTab fromJson(JsonObject json) {
 		String categoryId = GsonHelper.getAsString(json, JSON_KEY);
-		BioForgeTab category = ModBioForgeTabs.REGISTRY.get().getValue(new ResourceLocation(categoryId));
-		if (category == null) {
-			throw new JsonSyntaxException("Unknown tab '%s'".formatted(categoryId));
-		}
-		return category;
+		return ModBioForgeTabs.REGISTRY.get().getValue(new ResourceLocation(categoryId));
+	}
+
+	public static String getTabId(JsonObject json) {
+		return GsonHelper.getAsString(json, JSON_KEY);
 	}
 
 	public static BioForgeTab fromNetwork(FriendlyByteBuf buffer) {
