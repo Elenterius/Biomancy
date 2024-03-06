@@ -26,7 +26,7 @@ public class BioLabRecipeProvider extends RecipeProvider {
 	private void buildCompoundRecipes(Consumer<FinishedRecipe> consumer) {
 		BioLabRecipeBuilder.create(ModItems.ORGANIC_COMPOUND.get())
 				.addIngredient(ModItems.BILE.get())
-				.addIngredient(ModItems.NUTRIENTS.get())
+				.addIngredient(ModItems.NUTRIENT_PASTE.get())
 				.setCraftingTime(2 * 20)
 				.unlockedBy(ModItems.BILE.get()).save(consumer);
 
@@ -40,7 +40,7 @@ public class BioLabRecipeProvider extends RecipeProvider {
 
 		BioLabRecipeBuilder.create(ModItems.GENETIC_COMPOUND.get())
 				.addIngredient(ModItems.HORMONE_SECRETION.get())
-				.addIngredient(ModItems.NUTRIENTS.get())
+				.addIngredient(ModItems.NUTRIENT_PASTE.get())
 				.setReactant(ModItems.ORGANIC_COMPOUND.get())
 				.setCraftingTime(4 * 20)
 				.unlockedBy(ModItems.ORGANIC_COMPOUND.get()).save(consumer);
@@ -92,7 +92,7 @@ public class BioLabRecipeProvider extends RecipeProvider {
 				.unlockedBy(ModItems.EXOTIC_COMPOUND.get()).save(consumer);
 
 		BioLabRecipeBuilder.create(ModItems.BREEDING_STIMULANT.get())
-				.addIngredient(ModItems.NUTRIENTS.get())
+				.addIngredient(ModItems.NUTRIENT_PASTE.get())
 				.addIngredient(ItemTags.FLOWERS)
 				.addIngredient(ModItems.HORMONE_SECRETION.get())
 				.addIngredient(Items.COCOA_BEANS)
@@ -102,15 +102,15 @@ public class BioLabRecipeProvider extends RecipeProvider {
 
 		BioLabRecipeBuilder.create(ModItems.REJUVENATION_SERUM.get())
 				.addIngredient(ModItems.HEALING_ADDITIVE.get())
-				.addIngredient(ModItems.NUTRIENTS.get())
+				.addIngredient(ModItems.NUTRIENT_PASTE.get())
 				.addIngredient(ModItems.CORROSIVE_ADDITIVE.get())
 				.setReactant(ModItems.GENETIC_COMPOUND.get())
 				.setCraftingTime(8 * 20)
 				.unlockedBy(ModItems.GENETIC_COMPOUND.get()).save(consumer);
 
 		BioLabRecipeBuilder.create(ModItems.AGEING_SERUM.get())
-				.addIngredient(ModItems.NUTRIENTS.get())
-				.addIngredient(ModItems.NUTRIENTS.get())
+				.addIngredient(ModItems.NUTRIENT_PASTE.get())
+				.addIngredient(ModItems.NUTRIENT_PASTE.get())
 				.addIngredient(ModItems.MINERAL_FRAGMENT.get())
 				.addIngredient(ModItems.CORROSIVE_ADDITIVE.get())
 				.setReactant(ModItems.GENETIC_COMPOUND.get())

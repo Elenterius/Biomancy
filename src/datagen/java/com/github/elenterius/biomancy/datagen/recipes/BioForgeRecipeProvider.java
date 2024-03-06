@@ -181,12 +181,12 @@ public class BioForgeRecipeProvider extends RecipeProvider {
 				.addIngredient(ModItems.FLESH_BITS.get(), 4)
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 3)
 				.addIngredient(ModItems.EXOTIC_DUST.get(), 2)
-				.addIngredient(ModItems.NUTRIENTS.get(), 3)
+				.addIngredient(ModItems.NUTRIENT_PASTE.get(), 3)
 				.setCategory(ModBioForgeTabs.COMPONENTS)
 				.unlockedBy(ModItems.EXOTIC_DUST.get()).save(consumer);
 
 		BioForgeRecipeBuilder.create(ModItems.FERTILIZER.get())
-				.addIngredient(ModItems.NUTRIENTS.get(), 4)
+				.addIngredient(ModItems.NUTRIENT_PASTE.get(), 4)
 				.addIngredient(ModItems.ORGANIC_MATTER.get(), 4)
 				.addIngredient(ModItems.AGEING_SERUM.get())
 				.setCategory(ModBioForgeTabs.COMPONENTS)
