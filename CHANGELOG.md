@@ -1,3 +1,17 @@
+## [4.5.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.4.4.0...1.20.1-v2.4.5.0) (2024-03-06)
+
+
+### Features
+
+* add backwards compatibility for the removed `biomancy:weapons` bio-forge tab ([9d9550f](https://github.com/Elenterius/Biomancy/commit/9d9550f35f85f9a4c5a58b66fc7eae4ee2e2f013)), closes [#118](https://github.com/Elenterius/Biomancy/issues/118)
+* **alexs-caves:** rework decomposer recipe result for sea pigs ([8a4f91d](https://github.com/Elenterius/Biomancy/commit/8a4f91dadf9cf45216cd989368b49a90fa79003c))
+* **buff:** make Primordial Core crafting recipe cheaper ([e1158f2](https://github.com/Elenterius/Biomancy/commit/e1158f258de8381e6a8fbbeaeabe845518352f7d))
+* change decomposer recipe output for any Eggs from `mineral fragments` to `hormone secretions` ([071d3a2](https://github.com/Elenterius/Biomancy/commit/071d3a2bc3d6ff69a35b355ebcec135a7f9d9297))
+* **nerf:** reduce digester recipe output for nether wart blocks ([e123e81](https://github.com/Elenterius/Biomancy/commit/e123e81d50b01f5f143f2e0be61db7fd922cc18d))
+* **nerf:** replace Nutrients with Nutrient Paste in crafting recipes ([a6f3d79](https://github.com/Elenterius/Biomancy/commit/a6f3d79feba8a51acbd1cfe36888be0ca7e4ef27))
+* remove Nutrients to Nutrient Paste recipe ([f3d006a](https://github.com/Elenterius/Biomancy/commit/f3d006a60a6b4d59cb861d6f0bd3f2384771295f))
+* rework starting advancements ([be58fc8](https://github.com/Elenterius/Biomancy/commit/be58fc88442a96b7babc705d9bd37128171e7434))
+
 ## [4.4.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.4.3.0...1.20.1-v2.4.4.0) (2024-02-12)
 
 
@@ -68,15 +82,4 @@
 * **bio-forge:** fix inability to (un-)focus the search box via mouse click ([b32a997](https://github.com/Elenterius/Biomancy/commit/b32a9978d3d7bee113e17921903909b63a235245))
 * **bio-forge:** fix recipe crafting not working with tag ingredients ([1f7fa9a](https://github.com/Elenterius/Biomancy/commit/1f7fa9a1bc6da8e3b1c4b3d1bd9cd0b721fe58f0))
 * **injector:** fix misaligned item labels rendering of the wheel gui ([89780ba](https://github.com/Elenterius/Biomancy/commit/89780ba11b55bcbf543fde09b7d847ffa0f2899f))
-
-### [4.0.1](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.4.0.0...1.20.1-v2.4.0.1) (2024-01-19)
-
-
-### Bug Fixes
-
-* fix Bio-Forge animations ([fb0e810](https://github.com/Elenterius/Biomancy/commit/fb0e810581aac765614ff1a97150daf850478ebf))
-* fix Bio-Forge gui background rendering ([e937330](https://github.com/Elenterius/Biomancy/commit/e937330d9c2e0fca543a42fdfa7f6887e5170135))
-* fix graphics bug when a biomancy hud overlay is rendered (Ravenous Claws & Bio-Injector) ([4056e63](https://github.com/Elenterius/Biomancy/commit/4056e63f38ef7b84c6b75ba9bf2515c496989c1c))
-* fix rendering of flesh veins ([4c89ada](https://github.com/Elenterius/Biomancy/commit/4c89ada765fbf3fcce2bda1963a7baad684292c8))
-* fix rendering of geo block & geo item models ([0073093](https://github.com/Elenterius/Biomancy/commit/00730934ed6eb29decb3192f43084553bdebd600))
 
