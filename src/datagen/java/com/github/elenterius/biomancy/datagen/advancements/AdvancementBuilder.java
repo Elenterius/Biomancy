@@ -2,9 +2,8 @@ package com.github.elenterius.biomancy.datagen.advancements;
 
 import com.github.elenterius.biomancy.datagen.lang.LangProvider;
 import com.github.elenterius.biomancy.util.ComponentUtil;
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.CriterionTriggerInstance;
-import net.minecraft.advancements.FrameType;
+import net.minecraft.advancements.*;
+import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -116,6 +115,31 @@ public class AdvancementBuilder {
 	public AdvancementBuilder addHasCriterion(ItemLike item) {
 		ResourceLocation registryName = Objects.requireNonNull(ForgeRegistries.ITEMS.getKey(item.asItem()));
 		internalBuilder.addCriterion("has_" + registryName.getPath(), ModAdvancementProvider.hasItems(item));
+		return this;
+	}
+
+	public AdvancementBuilder requirements(RequirementsStrategy strategy) {
+		internalBuilder.requirements(strategy);
+		return this;
+	}
+
+	public AdvancementBuilder rewardsDefaultRecipe(ItemLike result) {
+		internalBuilder.rewards(AdvancementRewards.Builder.recipe(RecipeBuilder.getDefaultRecipeId(result)));
+		return this;
+	}
+
+	public AdvancementBuilder rewardsExperience(int amount) {
+		internalBuilder.rewards(AdvancementRewards.Builder.experience(amount));
+		return this;
+	}
+
+	public AdvancementBuilder rewards(AdvancementRewards.Builder rewardsBuilder) {
+		internalBuilder.rewards(rewardsBuilder);
+		return this;
+	}
+
+	public AdvancementBuilder rewards(AdvancementRewards rewards) {
+		internalBuilder.rewards(rewards);
 		return this;
 	}
 
