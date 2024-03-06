@@ -112,7 +112,7 @@ public class VanillaRecipeProvider extends RecipeProvider {
 
 		WorkbenchRecipeBuilder.shapeless(RecipeCategory.FOOD, ModItems.NUTRIENT_BAR.get())
 				.requires(ModItems.NUTRIENT_PASTE.get(), 9)
-				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
+				.unlockedBy(hasName(ModItems.NUTRIENT_PASTE.get()), has(ModItems.NUTRIENT_PASTE.get()))
 				.save(consumer);
 
 		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.NUTRIENTS.get(), 5)
@@ -122,7 +122,7 @@ public class VanillaRecipeProvider extends RecipeProvider {
 
 		WorkbenchRecipeBuilder.shapeless(RecipeCategory.FOOD, ModItems.NUTRIENT_PASTE.get(), 9)
 				.requires(ModItems.NUTRIENT_BAR.get())
-				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
+				.unlockedBy(hasName(ModItems.NUTRIENT_PASTE.get()), has(ModItems.NUTRIENT_PASTE.get()))
 				.save(consumer, getConversionRecipeId(ModItems.NUTRIENT_PASTE.get(), ModItems.NUTRIENT_BAR.get()));
 
 		// misc ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
