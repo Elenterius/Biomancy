@@ -115,15 +115,6 @@ public class VanillaRecipeProvider extends RecipeProvider {
 				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
 				.save(consumer);
 
-		WorkbenchRecipeBuilder.shaped(RecipeCategory.FOOD, ModItems.NUTRIENT_PASTE.get())
-				.define('P', ModItems.ORGANIC_MATTER.get())
-				.define('L', ModItems.NUTRIENTS.get())
-				.pattern("LPL")
-				.pattern("PLP")
-				.pattern("LPL")
-				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
-				.save(consumer);
-
 		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.NUTRIENTS.get(), 5)
 				.requires(ModItems.NUTRIENT_PASTE.get())
 				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
