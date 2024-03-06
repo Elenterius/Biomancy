@@ -46,16 +46,19 @@ public class VanillaRecipeProvider extends RecipeProvider {
 	private void buildWorkbenchRecipes(Consumer<FinishedRecipe> consumer) {
 
 		WorkbenchRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.PRIMORDIAL_CORE.get())
-				.pattern("P#B")
+				.pattern("PRB")
 				.pattern("#E#")
-				.pattern("C#M")
+				.pattern("CFM")
 				.define('B', Items.BEEF)
 				.define('P', Items.PORKCHOP)
 				.define('M', Items.MUTTON)
 				.define('C', Items.CHICKEN)
+				.define('R', Items.RABBIT)
+				.define('F', Items.ROTTEN_FLESH)
 				.define('E', Items.SPIDER_EYE)
 				.define('#', Items.ENDER_PEARL)
-				.unlockedBy(hasName(Items.ENDER_PEARL), has(Items.ENDER_PEARL)).save(consumer);
+				.unlockedBy(hasName(ModItems.PRIMORDIAL_CORE.get()), has(ModItems.PRIMORDIAL_CORE.get()))
+				.save(consumer);
 
 		WorkbenchRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.DESPOIL_SICKLE.get())
 				.define('B', Tags.Items.BONES)
