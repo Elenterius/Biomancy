@@ -43,24 +43,37 @@ public class BiomancyAdvancementsGenerator implements ForgeAdvancementProvider.A
 		}
 	}
 
-	private void saveAdvancements(Consumer<Advancement> consumer, ExistingFileHelper fileHelper) throws Exception {
+	private void saveAdvancements(Consumer<Advancement> consumer, ExistingFileHelper fileHelper) {
 		Advancement root = createAdvancement("root").icon(ModItems.FLESH_BITS.get()).background("textures/block/flesh.png")
-				.title("Meat Whisperer")
-				.description("You feel a presence in the flesh, it whispers into your ears: \"Raw Meat is useful...\"")
-				.showToast().announceToChat()
+				.title("Whispers in the Meat")
+				.description("You feel a presence in the flesh, faint whispers reach your ears:\n\n  \"Raw Meat is useful...\"\n")
+				.showToast()
 				.addHasCriterion(ModItemTags.RAW_MEATS)
 				.save(consumer, fileHelper);
 
-		Advancement primalCore = createAdvancement("flesh").parent(root).icon(ModItems.PRIMORDIAL_CORE.get())
+		Advancement meatCollection = createAdvancement("raw_meat_collection").parent(root).icon(Items.RABBIT)
+				.title("Collector of Raw Meats")
+				.description("Each type of raw meat, reflecting their source. Primal whispers of absurdity. You need them all!")
+				.frameType(FrameType.CHALLENGE)
+				.showToast().announceToChat()
+				.addCriterion("has_raw_porkchop", ModAdvancementProvider.hasItems(Items.PORKCHOP))
+				.addCriterion("has_raw_beef", ModAdvancementProvider.hasItems(Items.BEEF))
+				.addCriterion("has_raw_chicken", ModAdvancementProvider.hasItems(Items.CHICKEN))
+				.addCriterion("has_raw_mutton", ModAdvancementProvider.hasItems(Items.MUTTON))
+				.addCriterion("has_raw_rabbit", ModAdvancementProvider.hasItems(Items.RABBIT))
+				.rewardsDefaultRecipe(ModItems.PRIMORDIAL_CORE.get())
+				.save(consumer, fileHelper);
+
+		Advancement primalCore = createAdvancement("flesh").parent(meatCollection).icon(ModItems.PRIMORDIAL_CORE.get())
 				.title("Primal Vision")
-				.description("You feel an ancient presence from the ender pearl. As you gaze into the pearl... portals... you feel compelled to combine it with raw meat... cross the boundary...")
-				.frameType(FrameType.CHALLENGE).showToast()
-				.addHasCriterion(Items.ENDER_PEARL)
+				.description("You feel bare before the oculus. The mirror leers at you... infinite reflections of yourself... eternal cycles... meaningless existence?")
+				.frameType(FrameType.GOAL).hidden().showToast()
+				.addHasCriterion(ModItems.PRIMORDIAL_CORE.get())
 				.save(consumer, fileHelper);
 
 		Advancement greedyButcher = createAdvancement("greedy_butcher").parent(primalCore).icon(ModItems.DESPOIL_SICKLE.get())
 				.title("Greedy Butcher")
-				.description("You've acquired a taste for organs. Craft the plundering Sickle to get them fresh from your victims death.")
+				.description("You've acquired a taste for organic trinkets. Craft the plundering Sickle to get them fresh from your victims death.")
 				.showToast()
 				.addHasCriterion(ModItems.DESPOIL_SICKLE.get())
 				.save(consumer, fileHelper);
