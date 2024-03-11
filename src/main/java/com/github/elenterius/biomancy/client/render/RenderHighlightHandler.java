@@ -3,7 +3,6 @@ package com.github.elenterius.biomancy.client.render;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.block.DirectionalSlabBlock;
 import com.github.elenterius.biomancy.block.property.DirectionalSlabType;
-import com.github.elenterius.biomancy.item.SimpleBlockItem;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -14,6 +13,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,7 +34,7 @@ public final class RenderHighlightHandler {
 	public static void onBlockHighlight(RenderHighlightEvent.Block event) {
 		if (event.getCamera().getEntity() instanceof Player player) {
 			ItemStack itemStack = player.getMainHandItem();
-			if (itemStack.getItem() instanceof SimpleBlockItem blockItem && blockItem.getBlock() instanceof DirectionalSlabBlock slabBlock) {
+			if (itemStack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof DirectionalSlabBlock slabBlock) {
 				BlockPlaceContext placeContext = new BlockPlaceContext(player, InteractionHand.MAIN_HAND, itemStack, event.getTarget());
 				BlockPos placePos = placeContext.getClickedPos();
 				BlockState foundState = player.level().getBlockState(placePos);
