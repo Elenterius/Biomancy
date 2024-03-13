@@ -434,7 +434,7 @@
 	"block.minecraft.banner.biomancy.mascot_accent.red": "Red Mascot Accent",
 	"block.minecraft.banner.biomancy.mascot_accent.black": "Black Mascot Accent",
 	"advancements.biomancy.root.title": "Whispers in the Meat",
-	"advancements.biomancy.root.description": "You feel a presence in the flesh, faint whispers reach your ears:\n\n§7§o \"Raw Meat is useful...\"\n",
+	"advancements.biomancy.root.description": "You feel a presence in the flesh, faint whispers reach your ears:\n\n  \"Raw Meat is useful...\"\n",
 	"advancements.biomancy.raw_meat_collection.title": "Collector of Raw Meats",
 	"advancements.biomancy.raw_meat_collection.description": "Each type of raw meat, reflecting their source. Primal whispers of absurdity. You need them all!",
 	"advancements.biomancy.flesh.title": "Primal Vision",

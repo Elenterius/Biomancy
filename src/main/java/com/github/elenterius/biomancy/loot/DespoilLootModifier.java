@@ -3,56 +3,55 @@ package com.github.elenterius.biomancy.loot;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModMobEffects;
-import com.github.elenterius.biomancy.init.tags.ModEntityTags;
-import com.github.elenterius.biomancy.util.random.DynamicLootTable;
 import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.advancements.critereon.EntityFlagsPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.animal.AbstractGolem;
+import net.minecraft.world.entity.animal.allay.Allay;
+import net.minecraft.world.entity.animal.horse.ZombieHorse;
+import net.minecraft.world.entity.monster.*;
 import net.minecraft.world.entity.monster.warden.Warden;
+import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.LootingEnchantFunction;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.loot.LootModifier;
-import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static com.github.elenterius.biomancy.util.random.DynamicLootTable.*;
-
 public class DespoilLootModifier extends LootModifier {
+
 	public static final Supplier<Codec<DespoilLootModifier>> CODEC = Suppliers.memoize(() -> RecordCodecBuilder.create(inst ->
-			codecStart(inst)
-					.and(Weights.CODEC.get().fieldOf("weights").forGetter(m -> m.weights))
-					.apply(inst, DespoilLootModifier::new)
+			codecStart(inst).apply(inst, DespoilLootModifier::new)
 	));
 
-	private static final ItemLoot SHARP_FANG = new ItemLoot(ModItems.MOB_FANG, RANDOM_ITEM_AMOUNT_FUNC_2);
-	private static final ItemLoot SHARP_CLAW = new ItemLoot(ModItems.MOB_CLAW, RANDOM_ITEM_AMOUNT_FUNC_2);
-	private static final ItemLoot SINEW = new ItemLoot(ModItems.MOB_SINEW, RANDOM_ITEM_AMOUNT_FUNC_1);
-	private static final ItemLoot TOXIN_GLAND = new ItemLoot(ModItems.TOXIN_GLAND, RANDOM_ITEM_AMOUNT_FUNC_1);
-	private static final ItemLoot VOLATILE_GLAND = new ItemLoot(ModItems.VOLATILE_GLAND, RANDOM_ITEM_AMOUNT_FUNC_1);
-	private static final ItemLoot GENERIC_GLAND = new ItemLoot(ModItems.GENERIC_MOB_GLAND, CONSTANT_ITEM_AMOUNT_FUNC);
-	private static final ItemLoot BONE_MARROW = new ItemLoot(ModItems.MOB_MARROW, RANDOM_ITEM_AMOUNT_FUNC_1);
-	private static final ItemLoot WITHERED_BONE_MARROW = new ItemLoot(ModItems.WITHERED_MOB_MARROW, RANDOM_ITEM_AMOUNT_FUNC_2);
-	private static final ItemLoot ECHO_SHARD = new ItemLoot(() -> Items.ECHO_SHARD, RANDOM_ITEM_AMOUNT_FUNC_1);
-	private static final ItemLoot EMPTY = new ItemLoot(() -> Items.AIR, CONSTANT_ITEM_AMOUNT_FUNC);
-
-	private final Weights weights;
+	public static final String LOOT_PREFIX = "biomancy/despoil/";
 
 	public DespoilLootModifier() {
 		this(
@@ -61,26 +60,20 @@ public class DespoilLootModifier extends LootModifier {
 				new LootItemCondition[]{
 						LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().flags(EntityFlagsPredicate.Builder.flags().setIsBaby(false).build())).build(),
 						LootItemKilledByPlayerCondition.killedByPlayer().build()
-				},
-				new Weights(140, 150, 75, 50, 40, 65, 45, 70));
+				});
 	}
 
-	public DespoilLootModifier(LootItemCondition[] conditions, Weights weights) {
+	public DespoilLootModifier(LootItemCondition[] conditions) {
 		super(conditions);
-		this.weights = weights;
 	}
 
-	private static String getName(RegistryObject<? extends Item> itemHolder) {
-		return itemHolder.getId().toDebugFileName();
+	public static ResourceLocation getLootTableId(EntityType<?> entityType) {
+		ResourceLocation key = BuiltInRegistries.ENTITY_TYPE.getKey(entityType);
+		return key.withPrefix(LOOT_PREFIX);
 	}
 
-	@Override
-	public Codec<? extends IGlobalLootModifier> codec() {
-		return CODEC.get();
-	}
-
-	public LootItemCondition[] getConditions() {
-		return conditions;
+	public static ResourceLocation getLootTableId(ResourceLocation entityTypeId) {
+		return entityTypeId.withPrefix(LOOT_PREFIX);
 	}
 
 	protected static int getDespoilLevel(LootContext lootContext) {
@@ -122,52 +115,40 @@ public class DespoilLootModifier extends LootModifier {
 		return false;
 	}
 
-	protected DynamicLootTable buildLootTable(LivingEntity livingEntity) {
-		EntityType<?> type = livingEntity.getType();
-		boolean hasFangs = type.is(ModEntityTags.SHARP_FANG);
-		boolean hasClaws = type.is(ModEntityTags.SHARP_CLAW);
-		boolean hasToxinGland = type.is(ModEntityTags.TOXIN_GLAND);
-		boolean hasVolatileGland = type.is(ModEntityTags.VOLATILE_GLAND);
-		boolean hasBileGland = type.is(ModEntityTags.BILE_GLAND);
-		boolean hasSinew = type.is(ModEntityTags.SINEW);
-		boolean hasBoneMarrow = type.is(ModEntityTags.BONE_MARROW);
-		boolean hasWitheredBoneMarrow = type.is(ModEntityTags.WITHERED_BONE_MARROW);
+	@Override
+	public Codec<? extends IGlobalLootModifier> codec() {
+		return CODEC.get();
+	}
 
-		DynamicLootTable lootTable = new DynamicLootTable();
-		if (hasFangs) lootTable.add(SHARP_FANG, weights.fang);
-		if (hasClaws) lootTable.add(SHARP_CLAW, weights.claw);
-		if (hasToxinGland) lootTable.add(TOXIN_GLAND, weights.toxinGland);
-		if (hasVolatileGland) lootTable.add(VOLATILE_GLAND, weights.volatileGland);
-		if (hasBileGland) lootTable.addSelfRemoving(GENERIC_GLAND, weights.genericGland);
-		if (hasSinew) lootTable.add(SINEW, weights.sinew);
-		if (hasBoneMarrow && !hasWitheredBoneMarrow) lootTable.add(BONE_MARROW, weights.boneMarrow);
-		if (hasWitheredBoneMarrow) lootTable.add(WITHERED_BONE_MARROW, weights.witheredBoneMarrow);
-
-		if (livingEntity instanceof Warden) {
-			lootTable.add(ECHO_SHARD, 10);
-		}
-
-		return lootTable;
+	public LootItemCondition[] getConditions() {
+		return conditions;
 	}
 
 	@NotNull
 	@Override
 	protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
-		if (context.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof LivingEntity victim) {
+		Entity thisEntity = context.getParamOrNull(LootContextParams.THIS_ENTITY);
+
+		if (thisEntity instanceof LivingEntity || thisEntity instanceof Player) {
 			final int despoilLevel = getDespoilLevel(context);
 
 			if (despoilLevel > 0) {
-				final int lootingLevel = context.getLootingModifier();
+				LootTable lootTable = getLootTable(context.getLevel(), thisEntity);
 
-				DynamicLootTable lootTable = buildLootTable(victim);
-				if (lootTable.isEmpty()) return generatedLoot;
+				if (lootTable == LootTable.EMPTY) return generatedLoot;
 
+				float despoilChance = 1f;
 				if (!hurtAndBreak(context, ModItems.DESPOIL_SICKLE.get(), 1)) {
-					lootTable.add(EMPTY, 15); //only the despoil sickle has a 100% guarantee to drop despoil loot
+					despoilChance -= 0.15f; //only the despoil sickle has a 100% guarantee to drop despoil loot
 				}
 
+				LootParams lootParams = createLootParams(context);
+				Consumer<ItemStack> stackSplitter = LootTable.createStackSplitter(context.getLevel(), generatedLoot::add);
+
 				for (int rolls = despoilLevel; rolls > 0; rolls--) {
-					lootTable.getRandomItemStack(context.getRandom(), lootingLevel).filter(stack -> !stack.isEmpty()).ifPresent(generatedLoot::add);
+					if (context.getRandom().nextFloat() > despoilChance) continue;
+
+					getRandomItems(lootTable, lootParams, stackSplitter);
 				}
 			}
 		}
@@ -175,18 +156,90 @@ public class DespoilLootModifier extends LootModifier {
 		return generatedLoot;
 	}
 
-	record Weights(int fang, int claw, int toxinGland, int volatileGland, int genericGland, int witheredBoneMarrow, int boneMarrow, int sinew) {
-		public static final Supplier<Codec<Weights>> CODEC = Suppliers.memoize(() -> RecordCodecBuilder.create(inst -> inst.group(
-				Codec.INT.fieldOf(getName(ModItems.MOB_FANG)).forGetter(Weights::fang),
-				Codec.INT.fieldOf(getName(ModItems.MOB_CLAW)).forGetter(Weights::claw),
-				Codec.INT.fieldOf(getName(ModItems.TOXIN_GLAND)).forGetter(Weights::toxinGland),
-				Codec.INT.fieldOf(getName(ModItems.VOLATILE_GLAND)).forGetter(Weights::volatileGland),
-				Codec.INT.fieldOf(getName(ModItems.GENERIC_MOB_GLAND)).forGetter(Weights::genericGland),
-				Codec.INT.fieldOf(getName(ModItems.WITHERED_MOB_MARROW)).forGetter(Weights::witheredBoneMarrow),
-						Codec.INT.fieldOf(getName(ModItems.MOB_MARROW)).forGetter(Weights::boneMarrow),
-						Codec.INT.fieldOf(getName(ModItems.MOB_SINEW)).forGetter(Weights::sinew)
-				).apply(inst, Weights::new))
-		);
+	@SuppressWarnings("deprecation")
+	private static void getRandomItems(LootTable lootTable, LootParams lootParams, Consumer<ItemStack> output) {
+		//we use the 'Raw' method to prevent a stackoverflow caused by calling of ForgeHooks#modifyLoot inside GlobalLootModifiers
+		lootTable.getRandomItemsRaw(lootParams, output);
+	}
+
+	protected LootTable getLootTable(ServerLevel level, Entity entity) {
+		ResourceLocation lootTableId = getLootTableId(entity.getType());
+		return level.getServer().getLootData().getLootTable(lootTableId);
+
+		//Fallback
+		//		if (lootTable == LootTable.EMPTY && entity instanceof LivingEntity livingEntity) {
+		//			lootTable = createDynamicLootTableFallback(livingEntity);
+		//		}
+
+		//		return lootTable;
+	}
+
+	protected LootParams createLootParams(LootContext context) {
+		LootParams.Builder builder = new LootParams.Builder(context.getLevel())
+				.withParameter(LootContextParams.THIS_ENTITY, context.getParam(LootContextParams.THIS_ENTITY))
+				.withParameter(LootContextParams.ORIGIN, context.getParam(LootContextParams.ORIGIN))
+				.withParameter(LootContextParams.DAMAGE_SOURCE, context.getParam(LootContextParams.DAMAGE_SOURCE))
+				.withOptionalParameter(LootContextParams.KILLER_ENTITY, context.getParam(LootContextParams.KILLER_ENTITY))
+				.withOptionalParameter(LootContextParams.DIRECT_KILLER_ENTITY, context.getParam(LootContextParams.DIRECT_KILLER_ENTITY));
+
+		if (context.hasParam(LootContextParams.LAST_DAMAGE_PLAYER)) {
+			Player player = context.getParam(LootContextParams.LAST_DAMAGE_PLAYER);
+			builder = builder.withParameter(LootContextParams.LAST_DAMAGE_PLAYER, player).withLuck(player.getLuck());
+		}
+
+		return builder.create(LootContextParamSets.ENTITY);
+	}
+
+	protected LootTable createDynamicLootTableFallback(LivingEntity livingEntity) {
+		EntityType<?> entityType = livingEntity.getType();
+
+		LootTable.Builder lootTable = LootTable.lootTable();
+		LootPool.Builder lootPool = LootPool.lootPool().setRolls(ConstantValue.exactly(1));
+		boolean hasLoot = false;
+
+		if (entityType.is(EntityTypeTags.SKELETONS)) {
+			lootPool.add(
+					LootItem.lootTableItem(ModItems.MOB_MARROW.get()).setWeight(70)
+							.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1)))
+			);
+
+			hasLoot = true;
+		}
+
+		if (isValidForMeatyLoot(livingEntity, entityType)) {
+			lootPool
+					.add(
+							LootItem.lootTableItem(ModItems.MOB_SINEW.get()).setWeight(50)
+									.apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
+									.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1)))
+					)
+					.add(
+							LootItem.lootTableItem(ModItems.GENERIC_MOB_GLAND.get()).setWeight(30)
+									.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1)))
+					);
+
+			hasLoot = true;
+		}
+
+		return hasLoot ? lootTable.withPool(lootPool).build() : LootTable.EMPTY;
+	}
+
+	private boolean isValidForMeatyLoot(LivingEntity livingEntity, EntityType<?> entityType) {
+		if (livingEntity instanceof Zombie) return true;
+		if (livingEntity instanceof ZombieHorse) return true;
+		if (livingEntity instanceof ZombifiedPiglin) return true;
+		if (livingEntity instanceof ZombieVillager) return true;
+
+		if (livingEntity instanceof Villager) return true;
+
+		if (livingEntity instanceof AbstractGolem) return false;
+		if (livingEntity instanceof Slime) return false;
+		if (livingEntity instanceof Allay) return false;
+		if (livingEntity instanceof Vex) return false;
+		if (livingEntity instanceof Phantom) return false;
+		if (livingEntity instanceof Warden) return false;
+
+		return livingEntity.getMobType() != MobType.UNDEAD;
 	}
 
 }
