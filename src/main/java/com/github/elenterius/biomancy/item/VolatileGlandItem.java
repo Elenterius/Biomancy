@@ -1,13 +1,11 @@
 package com.github.elenterius.biomancy.item;
 
 import com.github.elenterius.biomancy.init.ModItems;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.AreaEffectCloud;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -16,10 +14,10 @@ import net.minecraft.world.level.Level;
 
 import java.util.Collection;
 
-public class VolatileGlandItem extends MobLootItem {
+public class VolatileGlandItem extends SimpleItem {
 
-	public VolatileGlandItem(TagKey<EntityType<?>> lootSource, Properties properties) {
-		super(lootSource, properties);
+	public VolatileGlandItem(Properties properties) {
+		super(properties);
 	}
 
 	@Override

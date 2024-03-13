@@ -15,16 +15,6 @@ public final class ModEntityTags {
 
 	public static final TagKey<EntityType<?>> FLESHKIN = tag("fleshkin");
 
-	//Special Mob Loot
-	public static final TagKey<EntityType<?>> SHARP_FANG = tag("sharp_fang");
-	public static final TagKey<EntityType<?>> SHARP_CLAW = tag("sharp_claw");
-	public static final TagKey<EntityType<?>> SINEW = tag("sinew");
-	public static final TagKey<EntityType<?>> TOXIN_GLAND = tag("toxin_gland");
-	public static final TagKey<EntityType<?>> VOLATILE_GLAND = tag("volatile_gland");
-	public static final TagKey<EntityType<?>> BILE_GLAND = tag("bile_gland");
-	public static final TagKey<EntityType<?>> BONE_MARROW = tag("bone_marrow");
-	public static final TagKey<EntityType<?>> WITHERED_BONE_MARROW = tag("withered_bone_marrow");
-
 	private ModEntityTags() {}
 
 	private static TagKey<EntityType<?>> tag(String name) {
