@@ -4,10 +4,10 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.datagen.lang.LangProvider;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModItems;
-import com.github.elenterius.biomancy.init.tags.ModEntityTags;
 import com.github.elenterius.biomancy.init.tags.ModItemTags;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.FrameType;
+import net.minecraft.advancements.RequirementsStrategy;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
@@ -108,6 +108,8 @@ public class BiomancyAdvancementsGenerator implements ForgeAdvancementProvider.A
 				.description("Kill a innocent cat.")
 				.frameType(FrameType.CHALLENGE).showToast().announceToChat().hidden()
 				.addCriterion("has_killed_cat", hasKilledEntity(EntityType.CAT))
+				.addCriterion("has_killed_ocelot", hasKilledEntity(EntityType.OCELOT))
+				.requirements(RequirementsStrategy.OR)
 				.save(consumer, fileHelper);
 
 		Advancement primalCradle = createAdvancement("cradle").parent(primalCore).icon(ModItems.PRIMORDIAL_CRADLE.get())
