@@ -5,11 +5,9 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.stats.Stats;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -17,10 +15,10 @@ import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 
-public class BoneMarrowItem extends MobLootItem {
+public class BoneMarrowItem extends SimpleItem {
 
-	public BoneMarrowItem(TagKey<EntityType<?>> lootSource, Properties properties) {
-		super(lootSource, properties);
+	public BoneMarrowItem(Properties properties) {
+		super(properties);
 	}
 
 	@Override

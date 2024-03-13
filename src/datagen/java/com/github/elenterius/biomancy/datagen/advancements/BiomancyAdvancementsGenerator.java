@@ -98,9 +98,7 @@ public class BiomancyAdvancementsGenerator implements ForgeAdvancementProvider.A
 		createAdvancement("predator_killer").parent(greedyButcher).icon(ModItems.MOB_FANG.get())
 				.title("Predator Killer")
 				.description("Hunt predators and collect their fangs and claws.")
-				.frameType(FrameType.CHALLENGE).showToast().announceToChat()
-				.addCriterion("has_killed_fangs_mob", hasKilledEntityTag(ModEntityTags.SHARP_FANG))
-				.addCriterion("has_killed_claws_mob", hasKilledEntityTag(ModEntityTags.SHARP_CLAW))
+				.frameType(FrameType.CHALLENGE).showToast()
 				.addHasCriterion(ModItems.MOB_FANG.get())
 				.addHasCriterion(ModItems.MOB_CLAW.get())
 				.save(consumer, fileHelper);

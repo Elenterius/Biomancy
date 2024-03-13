@@ -2,11 +2,9 @@ package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.api.serum.Serum;
-import com.github.elenterius.biomancy.init.tags.ModEntityTags;
 import com.github.elenterius.biomancy.item.*;
 import com.github.elenterius.biomancy.item.injector.InjectorItem;
 import com.github.elenterius.biomancy.item.weapon.*;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -28,14 +26,14 @@ public final class ModItems {
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, BiomancyMod.MOD_ID);
 
 	//# Material / Mob Loot
-	public static final RegistryObject<MobLootItem> MOB_FANG = registerMobLootItem("mob_fang", ModEntityTags.SHARP_FANG);
-	public static final RegistryObject<MobLootItem> MOB_CLAW = registerMobLootItem("mob_claw", ModEntityTags.SHARP_CLAW);
-	public static final RegistryObject<MobLootItem> MOB_SINEW = registerMobLootItem("mob_sinew", ModEntityTags.SINEW, ModRarities.UNCOMMON);
-	public static final RegistryObject<BoneMarrowItem> MOB_MARROW = registerItem("mob_marrow", props -> new BoneMarrowItem(ModEntityTags.BONE_MARROW, props.food(ModFoods.MARROW_FLUID).rarity(ModRarities.RARE)));
-	public static final RegistryObject<BoneMarrowItem> WITHERED_MOB_MARROW = registerItem("withered_mob_marrow", props -> new BoneMarrowItem(ModEntityTags.WITHERED_BONE_MARROW, props.food(ModFoods.CORROSIVE_FLUID).rarity(ModRarities.VERY_RARE)));
-	public static final RegistryObject<MobLootItem> GENERIC_MOB_GLAND = registerItem("mob_gland", props -> new MobLootItem(ModEntityTags.BILE_GLAND, props.food(ModFoods.POOR_FLESH).rarity(ModRarities.UNCOMMON)));
-	public static final RegistryObject<MobLootItem> TOXIN_GLAND = registerItem("toxin_gland", props -> new MobLootItem(ModEntityTags.TOXIN_GLAND, props.food(ModFoods.TOXIN_GLAND).rarity(ModRarities.RARE)));
-	public static final RegistryObject<VolatileGlandItem> VOLATILE_GLAND = registerItem("volatile_gland", props -> new VolatileGlandItem(ModEntityTags.VOLATILE_GLAND, props.food(ModFoods.VOLATILE_GLAND).rarity(ModRarities.RARE)));
+	public static final RegistryObject<SimpleItem> MOB_FANG = registerSimpleItem("mob_fang");
+	public static final RegistryObject<SimpleItem> MOB_CLAW = registerSimpleItem("mob_claw");
+	public static final RegistryObject<SimpleItem> MOB_SINEW = registerSimpleItem("mob_sinew", ModRarities.UNCOMMON);
+	public static final RegistryObject<BoneMarrowItem> MOB_MARROW = registerItem("mob_marrow", props -> new BoneMarrowItem(props.food(ModFoods.MARROW_FLUID).rarity(ModRarities.RARE)));
+	public static final RegistryObject<BoneMarrowItem> WITHERED_MOB_MARROW = registerItem("withered_mob_marrow", props -> new BoneMarrowItem(props.food(ModFoods.CORROSIVE_FLUID).rarity(ModRarities.VERY_RARE)));
+	public static final RegistryObject<SimpleItem> GENERIC_MOB_GLAND = registerItem("mob_gland", props -> new SimpleItem(props.food(ModFoods.POOR_FLESH).rarity(ModRarities.UNCOMMON)));
+	public static final RegistryObject<SimpleItem> TOXIN_GLAND = registerItem("toxin_gland", props -> new SimpleItem(props.food(ModFoods.TOXIN_GLAND).rarity(ModRarities.RARE)));
+	public static final RegistryObject<VolatileGlandItem> VOLATILE_GLAND = registerItem("volatile_gland", props -> new VolatileGlandItem(props.food(ModFoods.VOLATILE_GLAND).rarity(ModRarities.RARE)));
 
 	//## Special
 	public static final RegistryObject<SimpleItem> LIVING_FLESH = registerSimpleItem("living_flesh", ModRarities.VERY_RARE);
@@ -237,14 +235,6 @@ public final class ModItems {
 
 	private static RegistryObject<SimpleItem> registerSimpleItem(String name) {
 		return ITEMS.register(name, () -> new SimpleItem(createProperties()));
-	}
-
-	private static RegistryObject<MobLootItem> registerMobLootItem(String name, TagKey<EntityType<?>> lootSource) {
-		return ITEMS.register(name, () -> new MobLootItem(lootSource, createProperties()));
-	}
-
-	private static RegistryObject<MobLootItem> registerMobLootItem(String name, TagKey<EntityType<?>> lootSource, Rarity rarity) {
-		return ITEMS.register(name, () -> new MobLootItem(lootSource, createProperties().rarity(rarity)));
 	}
 
 	private static RegistryObject<SimpleItem> registerSimpleItem(String name, Rarity rarity) {
