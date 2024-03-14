@@ -74,6 +74,7 @@ public final class ModBlocks {
 	public static final RegistryObject<RotatedPillarBlock> FLESH_PILLAR = register("flesh_pillar", () -> new RotatedPillarBlock(createBonyFleshProperties()));
 	public static final RegistryObject<FleshBlock> CHISELED_FLESH = register("chiseled_flesh", () -> new FleshBlock(createBonyFleshProperties()));
 	public static final RegistryObject<RotatedPillarBlock> ORNATE_FLESH = register("ornate_flesh", () -> new RotatedPillarBlock(createBonyFleshProperties()));
+	public static final RegistryObject<DirectionalPillarSlabBlock> ORNATE_FLESH_SLAB = registerSlab(ORNATE_FLESH, DirectionalPillarSlabBlock::new);
 
 	//## Primal Ecosystem
 	public static final RegistryObject<FleshBlock> PRIMAL_FLESH = register("primal_flesh", FleshBlock::new);

@@ -176,6 +176,8 @@
 	"block.biomancy.chiseled_flesh.tooltip": "A regal block of flesh... I'm most delighted",
 	"block.biomancy.ornate_flesh": "Ornamental Flesh Block",
 	"block.biomancy.ornate_flesh.tooltip": "A set of regal teeth and flesh.",
+	"block.biomancy.ornate_flesh_slab": "Ornamental Flesh Slab",
+	"block.biomancy.ornate_flesh_slab.tooltip": "An incomplete set of regal teeth and flesh.",
 	"block.biomancy.tubular_flesh": "Tubular Flesh Block",
 	"block.biomancy.tubular_flesh.tooltip": "Fake flesh pipes for everyone.",
 	"block.biomancy.flesh_fence": "Flesh Fence",

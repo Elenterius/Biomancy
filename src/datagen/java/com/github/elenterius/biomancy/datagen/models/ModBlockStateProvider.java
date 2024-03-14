@@ -82,6 +82,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		simpleBlockWithItem(ModBlocks.FIBROUS_FLESH);
 		existingBlockWithItem(ModBlocks.CHISELED_FLESH);
 		axisBlockWithItem(ModBlocks.ORNATE_FLESH);
+		directionalPillarSlabBlockWithItem(ModBlocks.ORNATE_FLESH_SLAB, ModBlocks.ORNATE_FLESH);
 		axisBlockWithItem(ModBlocks.TUBULAR_FLESH_BLOCK);
 
 		simpleBlockWithItem(ModBlocks.PRIMAL_FLESH);
@@ -504,6 +505,62 @@ public class ModBlockStateProvider extends BlockStateProvider {
 						},
 						DirectionalSlabBlock.WATERLOGGED
 				);
+	}
+
+	public <S extends DirectionalPillarSlabBlock, B extends RotatedPillarBlock> void directionalPillarSlabBlockWithItem(RegistryObject<S> slab, RegistryObject<B> pillarBlock) {
+		directionalPillarSlabBlockWithItem(slab.get(), pillarBlock.get());
+	}
+
+	public void directionalPillarSlabBlockWithItem(DirectionalPillarSlabBlock slab, RotatedPillarBlock pillarBlock) {
+		ResourceLocation side = extend(blockAsset(pillarBlock), "_side");
+		ResourceLocation end = extend(blockAsset(pillarBlock), "_end");
+		ResourceLocation top = extend(blockAsset(slab), "_top");
+
+		directionalPillarSlabBlock(slab, pillarBlock, side, end, top);
+
+		simpleBlockItem(slab);
+	}
+
+	public void directionalPillarSlabBlock(DirectionalPillarSlabBlock slabBlock, RotatedPillarBlock pillarBlock, ResourceLocation side, ResourceLocation end, ResourceLocation top) {
+		BlockModelBuilder slab = models().slab(path(slabBlock), side, end, top);
+
+		ModelFile vertical = models().cubeColumn(path(pillarBlock), side, end);
+		ModelFile horizontal = models().cubeColumnHorizontal(path(pillarBlock) + "_horizontal", side, end);
+
+		directionalPillarSlabBlock(slabBlock, slab, vertical, horizontal);
+	}
+
+	public void directionalPillarSlabBlock(DirectionalPillarSlabBlock block, ModelFile slab, ModelFile vertical, ModelFile horizontal) {
+		getVariantBuilder(block)
+
+				//slab
+				.partialState().with(DirectionalSlabBlock.TYPE, DirectionalSlabType.HALF_DOWN)
+				.modelForState().modelFile(slab).rotationX(180).addModel()
+
+				.partialState().with(DirectionalSlabBlock.TYPE, DirectionalSlabType.HALF_EAST)
+				.modelForState().modelFile(slab).rotationX(90).rotationY(90).addModel()
+
+				.partialState().with(DirectionalSlabBlock.TYPE, DirectionalSlabType.HALF_NORTH)
+				.modelForState().modelFile(slab).rotationX(90).addModel()
+
+				.partialState().with(DirectionalSlabBlock.TYPE, DirectionalSlabType.HALF_SOUTH)
+				.modelForState().modelFile(slab).rotationX(90).rotationY(180).addModel()
+
+				.partialState().with(DirectionalSlabBlock.TYPE, DirectionalSlabType.HALF_UP)
+				.modelForState().modelFile(slab).addModel()
+
+				.partialState().with(DirectionalSlabBlock.TYPE, DirectionalSlabType.HALF_WEST)
+				.modelForState().modelFile(slab).rotationX(90).rotationY(270).addModel()
+
+				//pillar
+				.partialState().with(DirectionalSlabBlock.TYPE, DirectionalSlabType.FULL).with(RotatedPillarBlock.AXIS, Direction.Axis.Y)
+				.modelForState().modelFile(vertical).addModel()
+
+				.partialState().with(DirectionalSlabBlock.TYPE, DirectionalSlabType.FULL).with(RotatedPillarBlock.AXIS, Direction.Axis.Z)
+				.modelForState().modelFile(horizontal).rotationX(90).addModel()
+
+				.partialState().with(DirectionalSlabBlock.TYPE, DirectionalSlabType.FULL).with(RotatedPillarBlock.AXIS, Direction.Axis.X)
+				.modelForState().modelFile(horizontal).rotationX(90).rotationY(90).addModel();
 	}
 
 	public void tendonChain(FleshChainBlock block) {
