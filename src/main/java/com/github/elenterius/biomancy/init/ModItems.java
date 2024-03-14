@@ -140,6 +140,7 @@ public final class ModItems {
 	public static final RegistryObject<ObfuscatedTooltipBlockItem> FIBROUS_FLESH_BLOCK = registerBlockItem(ModBlocks.FIBROUS_FLESH, ObfuscatedTooltipBlockItem::new);
 	public static final RegistryObject<ObfuscatedTooltipBlockItem> CHISELED_FLESH_BLOCK = registerBlockItem(ModBlocks.CHISELED_FLESH, ObfuscatedTooltipBlockItem::new);
 	public static final RegistryObject<ObfuscatedTooltipBlockItem> ORNATE_FLESH_BLOCK = registerBlockItem(ModBlocks.ORNATE_FLESH, ObfuscatedTooltipBlockItem::new);
+	public static final RegistryObject<ObfuscatedTooltipBlockItem> ORNATE_FLESH_SLAB = registerBlockItem(ModBlocks.ORNATE_FLESH_SLAB, ObfuscatedTooltipBlockItem::new);
 	public static final RegistryObject<ObfuscatedTooltipBlockItem> TUBULAR_FLESH_BLOCK = registerBlockItem(ModBlocks.TUBULAR_FLESH_BLOCK, ObfuscatedTooltipBlockItem::new);
 
 	public static final RegistryObject<ObfuscatedTooltipBlockItem> PRIMAL_FLESH_BLOCK = registerBlockItem(ModBlocks.PRIMAL_FLESH, ObfuscatedTooltipBlockItem::new);

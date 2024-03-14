@@ -99,6 +99,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 		tag(BlockTags.SLABS).add(
 				ModBlocks.FLESH_SLAB.get(),
 				ModBlocks.PACKED_FLESH_SLAB.get(),
+				ModBlocks.ORNATE_FLESH_SLAB.get(),
 				ModBlocks.PRIMAL_FLESH_SLAB.get(),
 				ModBlocks.MALIGNANT_FLESH_SLAB.get()
 		);
