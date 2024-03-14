@@ -1,0 +1,37 @@
+{
+	"type": "biomancy:decomposing",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "alexscaves"
+		}
+	],
+	"ingredient": {
+		"item": "alexscaves:pearl"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 750,
+	"results": [
+		{
+			"countRange": {
+				"type": "constant",
+				"value": 4
+			},
+			"item": "biomancy:gem_fragments"
+		},
+		{
+			"countRange": {
+				"type": "constant",
+				"value": 7
+			},
+			"item": "biomancy:exotic_dust"
+		},
+		{
+			"countRange": {
+				"type": "constant",
+				"value": 5
+			},
+			"item": "biomancy:mineral_fragment"
+		}
+	]
+}

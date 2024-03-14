@@ -1,0 +1,56 @@
+{
+	"type": "minecraft:block",
+	"pools": [
+		{
+			"bonus_rolls": 0.0,
+			"conditions": [
+				{
+					"condition": "minecraft:survives_explosion"
+				}
+			],
+			"entries": [
+				{
+					"type": "minecraft:item",
+					"functions": [
+						{
+							"function": "minecraft:copy_nbt",
+							"ops": [
+								{
+									"op": "replace",
+									"source": "PrimalEnergy",
+									"target": "BlockEntityTag.PrimalEnergy"
+								}
+							],
+							"source": "block_entity"
+						},
+						{
+							"function": "minecraft:copy_nbt",
+							"ops": [
+								{
+									"op": "replace",
+									"source": "ProcGenValues",
+									"target": "BlockEntityTag.ProcGenValues"
+								}
+							],
+							"source": "block_entity"
+						},
+						{
+							"function": "minecraft:copy_nbt",
+							"ops": [
+								{
+									"op": "replace",
+									"source": "SacrificeHandler",
+									"target": "BlockEntityTag.SacrificeHandler"
+								}
+							],
+							"source": "block_entity"
+						}
+					],
+					"name": "biomancy:primordial_cradle"
+				}
+			],
+			"rolls": 1.0
+		}
+	],
+	"random_sequence": "biomancy:blocks/primordial_cradle"
+}

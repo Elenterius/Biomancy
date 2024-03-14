@@ -1,0 +1,26 @@
+{
+	"type": "biomancy:decomposing",
+	"ingredient": {
+		"item": "minecraft:poisonous_potato"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 140,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 4,
+				"min": 2
+			},
+			"item": "biomancy:toxin_extract"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 3,
+				"min": 1
+			},
+			"item": "biomancy:organic_matter"
+		}
+	]
+}

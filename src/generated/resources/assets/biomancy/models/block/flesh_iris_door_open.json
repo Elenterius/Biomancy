@@ -1,0 +1,6 @@
+{
+	"parent": "biomancy:block/template_thin_pane",
+	"textures": {
+		"texture": "biomancy:block/flesh_iris_door_open"
+	}
+}

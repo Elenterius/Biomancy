@@ -1,0 +1,14 @@
+{
+	"type": "biomancy:digesting",
+	"ingredient": {
+		"type": "biomancy:food_nutrition",
+		"maxNutrition": 5,
+		"minNutrition": 4
+	},
+	"nutrientsCost": 1,
+	"processingTime": 464,
+	"result": {
+		"count": 4,
+		"item": "biomancy:nutrient_paste"
+	}
+}

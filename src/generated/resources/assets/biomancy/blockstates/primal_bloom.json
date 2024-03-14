@@ -1,0 +1,212 @@
+{
+	"variants": {
+		"age=0,facing=down": {
+			"model": "biomancy:block/primal_bloom_1",
+			"x": 180
+		},
+		"age=0,facing=east": {
+			"model": "biomancy:block/primal_bloom_1",
+			"x": 90,
+			"y": 90
+		},
+		"age=0,facing=north": {
+			"model": "biomancy:block/primal_bloom_1",
+			"x": 90
+		},
+		"age=0,facing=south": {
+			"model": "biomancy:block/primal_bloom_1",
+			"x": 90,
+			"y": 180
+		},
+		"age=0,facing=up": {
+			"model": "biomancy:block/primal_bloom_1"
+		},
+		"age=0,facing=west": {
+			"model": "biomancy:block/primal_bloom_1",
+			"x": 90,
+			"y": 270
+		},
+		"age=1,facing=down": {
+			"model": "biomancy:block/primal_bloom_1",
+			"x": 180
+		},
+		"age=1,facing=east": {
+			"model": "biomancy:block/primal_bloom_1",
+			"x": 90,
+			"y": 90
+		},
+		"age=1,facing=north": {
+			"model": "biomancy:block/primal_bloom_1",
+			"x": 90
+		},
+		"age=1,facing=south": {
+			"model": "biomancy:block/primal_bloom_1",
+			"x": 90,
+			"y": 180
+		},
+		"age=1,facing=up": {
+			"model": "biomancy:block/primal_bloom_1"
+		},
+		"age=1,facing=west": {
+			"model": "biomancy:block/primal_bloom_1",
+			"x": 90,
+			"y": 270
+		},
+		"age=2,facing=down": {
+			"model": "biomancy:block/primal_bloom_2",
+			"x": 180
+		},
+		"age=2,facing=east": {
+			"model": "biomancy:block/primal_bloom_2",
+			"x": 90,
+			"y": 90
+		},
+		"age=2,facing=north": {
+			"model": "biomancy:block/primal_bloom_2",
+			"x": 90
+		},
+		"age=2,facing=south": {
+			"model": "biomancy:block/primal_bloom_2",
+			"x": 90,
+			"y": 180
+		},
+		"age=2,facing=up": {
+			"model": "biomancy:block/primal_bloom_2"
+		},
+		"age=2,facing=west": {
+			"model": "biomancy:block/primal_bloom_2",
+			"x": 90,
+			"y": 270
+		},
+		"age=3,facing=down": {
+			"model": "biomancy:block/primal_bloom_2",
+			"x": 180
+		},
+		"age=3,facing=east": {
+			"model": "biomancy:block/primal_bloom_2",
+			"x": 90,
+			"y": 90
+		},
+		"age=3,facing=north": {
+			"model": "biomancy:block/primal_bloom_2",
+			"x": 90
+		},
+		"age=3,facing=south": {
+			"model": "biomancy:block/primal_bloom_2",
+			"x": 90,
+			"y": 180
+		},
+		"age=3,facing=up": {
+			"model": "biomancy:block/primal_bloom_2"
+		},
+		"age=3,facing=west": {
+			"model": "biomancy:block/primal_bloom_2",
+			"x": 90,
+			"y": 270
+		},
+		"age=4,facing=down": {
+			"model": "biomancy:block/primal_bloom_3",
+			"x": 180
+		},
+		"age=4,facing=east": {
+			"model": "biomancy:block/primal_bloom_3",
+			"x": 90,
+			"y": 90
+		},
+		"age=4,facing=north": {
+			"model": "biomancy:block/primal_bloom_3",
+			"x": 90
+		},
+		"age=4,facing=south": {
+			"model": "biomancy:block/primal_bloom_3",
+			"x": 90,
+			"y": 180
+		},
+		"age=4,facing=up": {
+			"model": "biomancy:block/primal_bloom_3"
+		},
+		"age=4,facing=west": {
+			"model": "biomancy:block/primal_bloom_3",
+			"x": 90,
+			"y": 270
+		},
+		"age=5,facing=down": {
+			"model": "biomancy:block/primal_bloom_3",
+			"x": 180
+		},
+		"age=5,facing=east": {
+			"model": "biomancy:block/primal_bloom_3",
+			"x": 90,
+			"y": 90
+		},
+		"age=5,facing=north": {
+			"model": "biomancy:block/primal_bloom_3",
+			"x": 90
+		},
+		"age=5,facing=south": {
+			"model": "biomancy:block/primal_bloom_3",
+			"x": 90,
+			"y": 180
+		},
+		"age=5,facing=up": {
+			"model": "biomancy:block/primal_bloom_3"
+		},
+		"age=5,facing=west": {
+			"model": "biomancy:block/primal_bloom_3",
+			"x": 90,
+			"y": 270
+		},
+		"age=6,facing=down": {
+			"model": "biomancy:block/primal_bloom_4",
+			"x": 180
+		},
+		"age=6,facing=east": {
+			"model": "biomancy:block/primal_bloom_4",
+			"x": 90,
+			"y": 90
+		},
+		"age=6,facing=north": {
+			"model": "biomancy:block/primal_bloom_4",
+			"x": 90
+		},
+		"age=6,facing=south": {
+			"model": "biomancy:block/primal_bloom_4",
+			"x": 90,
+			"y": 180
+		},
+		"age=6,facing=up": {
+			"model": "biomancy:block/primal_bloom_4"
+		},
+		"age=6,facing=west": {
+			"model": "biomancy:block/primal_bloom_4",
+			"x": 90,
+			"y": 270
+		},
+		"age=7,facing=down": {
+			"model": "biomancy:block/primal_bloom_5",
+			"x": 180
+		},
+		"age=7,facing=east": {
+			"model": "biomancy:block/primal_bloom_5",
+			"x": 90,
+			"y": 90
+		},
+		"age=7,facing=north": {
+			"model": "biomancy:block/primal_bloom_5",
+			"x": 90
+		},
+		"age=7,facing=south": {
+			"model": "biomancy:block/primal_bloom_5",
+			"x": 90,
+			"y": 180
+		},
+		"age=7,facing=up": {
+			"model": "biomancy:block/primal_bloom_5"
+		},
+		"age=7,facing=west": {
+			"model": "biomancy:block/primal_bloom_5",
+			"x": 90,
+			"y": 270
+		}
+	}
+}

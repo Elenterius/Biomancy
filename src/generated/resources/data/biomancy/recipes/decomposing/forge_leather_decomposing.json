@@ -1,0 +1,18 @@
+{
+	"type": "biomancy:decomposing",
+	"ingredient": {
+		"tag": "forge:leather"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 120,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 4,
+				"min": 1
+			},
+			"item": "biomancy:tough_fibers"
+		}
+	]
+}

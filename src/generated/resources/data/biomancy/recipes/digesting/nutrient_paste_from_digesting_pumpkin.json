@@ -1,0 +1,12 @@
+{
+	"type": "biomancy:digesting",
+	"ingredient": {
+		"item": "minecraft:pumpkin"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 673,
+	"result": {
+		"count": 12,
+		"item": "biomancy:nutrient_paste"
+	}
+}

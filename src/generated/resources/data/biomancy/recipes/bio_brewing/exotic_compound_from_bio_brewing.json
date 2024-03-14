@@ -1,0 +1,22 @@
+{
+	"type": "biomancy:bio_brewing",
+	"ingredients": [
+		{
+			"item": "biomancy:exotic_dust"
+		},
+		{
+			"item": "biomancy:exotic_dust"
+		},
+		{
+			"item": "biomancy:mineral_fragment"
+		}
+	],
+	"nutrientsCost": 2,
+	"processingTime": 80,
+	"reactant": {
+		"item": "biomancy:organic_compound"
+	},
+	"result": {
+		"item": "biomancy:exotic_compound"
+	}
+}

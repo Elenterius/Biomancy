@@ -1,0 +1,35 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_adult_permeable_membrane": {
+			"conditions": {
+				"items": [
+					{
+						"items": [
+							"biomancy:adult_permeable_membrane"
+						]
+					}
+				]
+			},
+			"trigger": "minecraft:inventory_changed"
+		},
+		"has_the_recipe": {
+			"conditions": {
+				"recipe": "biomancy:adult_permeable_membrane_pane_from_adult_permeable_membrane"
+			},
+			"trigger": "minecraft:recipe_unlocked"
+		}
+	},
+	"requirements": [
+		[
+			"has_adult_permeable_membrane",
+			"has_the_recipe"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"biomancy:adult_permeable_membrane_pane_from_adult_permeable_membrane"
+		]
+	},
+	"sends_telemetry_event": false
+}

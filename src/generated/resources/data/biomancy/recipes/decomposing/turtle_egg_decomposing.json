@@ -1,0 +1,26 @@
+{
+	"type": "biomancy:decomposing",
+	"ingredient": {
+		"item": "minecraft:turtle_egg"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 60,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 2,
+				"min": 1
+			},
+			"item": "biomancy:hormone_secretion"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 1,
+				"min": 0
+			},
+			"item": "biomancy:organic_matter"
+		}
+	]
+}

@@ -1,0 +1,38 @@
+{
+	"parent": "biomancy:biomancy/raw_meat_collection",
+	"criteria": {
+		"has_primordial_core": {
+			"conditions": {
+				"items": [
+					{
+						"items": [
+							"biomancy:primordial_core"
+						]
+					}
+				]
+			},
+			"trigger": "minecraft:inventory_changed"
+		}
+	},
+	"display": {
+		"announce_to_chat": false,
+		"description": {
+			"translate": "advancements.biomancy.flesh.description"
+		},
+		"frame": "goal",
+		"hidden": true,
+		"icon": {
+			"item": "biomancy:primordial_core"
+		},
+		"show_toast": true,
+		"title": {
+			"translate": "advancements.biomancy.flesh.title"
+		}
+	},
+	"requirements": [
+		[
+			"has_primordial_core"
+		]
+	],
+	"sends_telemetry_event": true
+}

@@ -1,0 +1,48 @@
+{
+	"type": "biomancy:decomposing",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "alexsmobs"
+		}
+	],
+	"ingredient": {
+		"item": "alexsmobs:void_worm_eye"
+	},
+	"nutrientsCost": 3,
+	"processingTime": 3170,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 10,
+				"min": 5
+			},
+			"item": "biomancy:bile"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 50,
+				"min": 40
+			},
+			"item": "biomancy:exotic_dust"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 10,
+				"min": 6
+			},
+			"item": "biomancy:mineral_fragment"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 7,
+				"min": 4
+			},
+			"item": "biomancy:elastic_fibers"
+		}
+	]
+}

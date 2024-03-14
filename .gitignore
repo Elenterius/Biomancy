@@ -24,12 +24,14 @@ run
 # Files from Forge MDK
 forge*changelog.txt
 
-# exclude generated resources except the language files from version control
-/src/generated/resources/*
-!/src/generated/resources/assets
-/src/generated/resources/assets/*/*
-!/src/generated/resources/assets/*/lang
+/src/generated/resources/.cache/
+## exclude generated resources except the language files from version control
+#/src/generated/resources/*
+#!/src/generated/resources/assets
+#/src/generated/resources/assets/*/*
+#!/src/generated/resources/assets/*/lang
 
 # custom
 logs
 /run-data/
+

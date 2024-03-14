@@ -1,0 +1,47 @@
+{
+	"advancements": [
+		{
+			"advancement": {
+				"parent": "minecraft:recipes/root",
+				"criteria": {
+					"has_emu_feather": {
+						"conditions": {
+							"items": [
+								{
+									"items": [
+										"alexsmobs:emu_feather"
+									]
+								}
+							]
+						},
+						"trigger": "minecraft:inventory_changed"
+					},
+					"has_the_recipe": {
+						"conditions": {
+							"recipe": "biomancy:decomposing/emu_feather_decomposing"
+						},
+						"trigger": "minecraft:recipe_unlocked"
+					}
+				},
+				"requirements": [
+					[
+						"has_emu_feather",
+						"has_the_recipe"
+					]
+				],
+				"rewards": {
+					"recipes": [
+						"biomancy:decomposing/emu_feather_decomposing"
+					]
+				},
+				"sends_telemetry_event": false
+			},
+			"conditions": [
+				{
+					"type": "forge:mod_loaded",
+					"modid": "alexsmobs"
+				}
+			]
+		}
+	]
+}

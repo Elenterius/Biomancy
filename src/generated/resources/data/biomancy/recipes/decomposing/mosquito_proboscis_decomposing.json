@@ -1,0 +1,32 @@
+{
+	"type": "biomancy:decomposing",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "alexsmobs"
+		}
+	],
+	"ingredient": {
+		"item": "alexsmobs:mosquito_proboscis"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 90,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 2,
+				"min": 0
+			},
+			"item": "biomancy:tough_fibers"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 3,
+				"min": 1
+			},
+			"item": "biomancy:elastic_fibers"
+		}
+	]
+}

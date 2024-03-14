@@ -1,0 +1,29 @@
+{
+	"type": "biomancy:bio_forging",
+	"bio_forge_tab": "biomancy:machines",
+	"ingredients": [
+		{
+			"item": "biomancy:living_flesh"
+		},
+		{
+			"count": 5,
+			"item": "biomancy:flesh_bits"
+		},
+		{
+			"count": 8,
+			"item": "biomancy:bone_fragments"
+		},
+		{
+			"count": 6,
+			"item": "biomancy:elastic_fibers"
+		},
+		{
+			"count": 2,
+			"item": "biomancy:exotic_dust"
+		}
+	],
+	"nutrientsCost": 1,
+	"result": {
+		"item": "biomancy:bio_forge"
+	}
+}

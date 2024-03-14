@@ -1,0 +1,21 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "misc",
+	"key": {
+		"L": {
+			"item": "biomancy:stone_powder"
+		},
+		"M": {
+			"item": "biomancy:mineral_fragment"
+		}
+	},
+	"pattern": [
+		"LLL",
+		"LML",
+		"LLL"
+	],
+	"result": {
+		"item": "minecraft:sand"
+	},
+	"show_notification": true
+}

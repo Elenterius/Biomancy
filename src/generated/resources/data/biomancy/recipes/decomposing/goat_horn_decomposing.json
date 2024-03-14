@@ -1,0 +1,26 @@
+{
+	"type": "biomancy:decomposing",
+	"ingredient": {
+		"item": "minecraft:goat_horn"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 520,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 7,
+				"min": 5
+			},
+			"item": "biomancy:mineral_fragment"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 8,
+				"min": 6
+			},
+			"item": "biomancy:tough_fibers"
+		}
+	]
+}

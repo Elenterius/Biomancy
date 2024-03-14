@@ -1,0 +1,8 @@
+{
+	"type": "minecraft:stonecutting",
+	"count": 1,
+	"ingredient": {
+		"item": "biomancy:malignant_flesh"
+	},
+	"result": "biomancy:malignant_flesh_stairs"
+}

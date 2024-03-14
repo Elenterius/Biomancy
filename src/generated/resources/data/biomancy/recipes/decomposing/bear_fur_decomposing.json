@@ -1,0 +1,24 @@
+{
+	"type": "biomancy:decomposing",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "alexsmobs"
+		}
+	],
+	"ingredient": {
+		"item": "alexsmobs:bear_fur"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 40,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 1,
+				"min": -1
+			},
+			"item": "biomancy:mineral_fragment"
+		}
+	]
+}

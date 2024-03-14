@@ -1,0 +1,30 @@
+{
+	"type": "biomancy:bio_forging",
+	"bio_forge_tab": "biomancy:tools",
+	"ingredients": [
+		{
+			"item": "biomancy:living_flesh"
+		},
+		{
+			"count": 3,
+			"item": "biomancy:mob_claw"
+		},
+		{
+			"count": 16,
+			"item": "biomancy:flesh_bits"
+		},
+		{
+			"count": 18,
+			"item": "biomancy:tough_fibers"
+		},
+		{
+			"count": 15,
+			"item": "biomancy:mineral_fragment"
+		}
+	],
+	"nutrientsCost": 250,
+	"result": {
+		"item": "biomancy:ravenous_claws",
+		"nbt": "{LivingToolState:1b,Nutrients:250}"
+	}
+}

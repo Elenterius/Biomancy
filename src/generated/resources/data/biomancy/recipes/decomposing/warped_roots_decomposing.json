@@ -1,0 +1,26 @@
+{
+	"type": "biomancy:decomposing",
+	"ingredient": {
+		"item": "minecraft:warped_roots"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 90,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 2,
+				"min": 1
+			},
+			"item": "biomancy:organic_matter"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 1,
+				"min": 0
+			},
+			"item": "biomancy:exotic_dust"
+		}
+	]
+}

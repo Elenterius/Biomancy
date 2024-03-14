@@ -1,0 +1,29 @@
+{
+	"type": "biomancy:bio_forging",
+	"bio_forge_tab": "biomancy:misc",
+	"ingredients": [
+		{
+			"item": "biomancy:living_flesh"
+		},
+		{
+			"count": 10,
+			"item": "biomancy:flesh_bits"
+		},
+		{
+			"count": 12,
+			"item": "biomancy:bone_fragments"
+		},
+		{
+			"count": 8,
+			"item": "biomancy:mineral_fragment"
+		},
+		{
+			"count": 32,
+			"item": "biomancy:tough_fibers"
+		}
+	],
+	"nutrientsCost": 1,
+	"result": {
+		"item": "biomancy:fleshkin_chest"
+	}
+}

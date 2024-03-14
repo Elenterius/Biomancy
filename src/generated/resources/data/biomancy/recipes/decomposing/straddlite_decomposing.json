@@ -1,0 +1,32 @@
+{
+	"type": "biomancy:decomposing",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "alexsmobs"
+		}
+	],
+	"ingredient": {
+		"item": "alexsmobs:straddlite"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 410,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 3,
+				"min": 2
+			},
+			"item": "biomancy:stone_powder"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 8,
+				"min": 4
+			},
+			"item": "biomancy:mineral_fragment"
+		}
+	]
+}

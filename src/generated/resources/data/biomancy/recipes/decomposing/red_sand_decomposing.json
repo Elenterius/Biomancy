@@ -1,0 +1,26 @@
+{
+	"type": "biomancy:decomposing",
+	"ingredient": {
+		"item": "minecraft:red_sand"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 170,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 3,
+				"min": 1
+			},
+			"item": "biomancy:stone_powder"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 2,
+				"min": 1
+			},
+			"item": "biomancy:mineral_fragment"
+		}
+	]
+}

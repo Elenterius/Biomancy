@@ -1,0 +1,23 @@
+{
+	"type": "biomancy:bio_forging",
+	"bio_forge_tab": "biomancy:misc",
+	"ingredients": [
+		{
+			"count": 4,
+			"item": "biomancy:elastic_fibers"
+		},
+		{
+			"count": 4,
+			"item": "biomancy:regenerative_fluid"
+		},
+		{
+			"count": 2,
+			"item": "biomancy:gem_fragments"
+		}
+	],
+	"nutrientsCost": 1,
+	"result": {
+		"count": 2,
+		"item": "biomancy:baby_permeable_membrane_pane"
+	}
+}

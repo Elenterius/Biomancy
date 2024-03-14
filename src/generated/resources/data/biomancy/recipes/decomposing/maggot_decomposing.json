@@ -1,0 +1,32 @@
+{
+	"type": "biomancy:decomposing",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "alexsmobs"
+		}
+	],
+	"ingredient": {
+		"item": "alexsmobs:maggot"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 38,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 1,
+				"min": 0
+			},
+			"item": "biomancy:bile"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 1,
+				"min": 0
+			},
+			"item": "biomancy:flesh_bits"
+		}
+	]
+}

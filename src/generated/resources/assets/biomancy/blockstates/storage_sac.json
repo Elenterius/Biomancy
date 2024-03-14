@@ -1,0 +1,30 @@
+{
+	"variants": {
+		"facing=down": {
+			"model": "biomancy:block/storage_sac",
+			"x": 180
+		},
+		"facing=east": {
+			"model": "biomancy:block/storage_sac",
+			"x": 90,
+			"y": 90
+		},
+		"facing=north": {
+			"model": "biomancy:block/storage_sac",
+			"x": 90
+		},
+		"facing=south": {
+			"model": "biomancy:block/storage_sac",
+			"x": 90,
+			"y": 180
+		},
+		"facing=up": {
+			"model": "biomancy:block/storage_sac"
+		},
+		"facing=west": {
+			"model": "biomancy:block/storage_sac",
+			"x": 90,
+			"y": 270
+		}
+	}
+}

@@ -1,0 +1,26 @@
+{
+	"type": "biomancy:decomposing",
+	"ingredient": {
+		"item": "minecraft:slime_block"
+	},
+	"nutrientsCost": 2,
+	"processingTime": 1935,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 45,
+				"min": 27
+			},
+			"item": "biomancy:regenerative_fluid"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 18,
+				"min": 10
+			},
+			"item": "biomancy:bile"
+		}
+	]
+}

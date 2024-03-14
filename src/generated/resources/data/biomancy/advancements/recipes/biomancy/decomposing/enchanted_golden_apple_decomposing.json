@@ -1,0 +1,35 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_enchanted_golden_apple": {
+			"conditions": {
+				"items": [
+					{
+						"items": [
+							"minecraft:enchanted_golden_apple"
+						]
+					}
+				]
+			},
+			"trigger": "minecraft:inventory_changed"
+		},
+		"has_the_recipe": {
+			"conditions": {
+				"recipe": "biomancy:decomposing/enchanted_golden_apple_decomposing"
+			},
+			"trigger": "minecraft:recipe_unlocked"
+		}
+	},
+	"requirements": [
+		[
+			"has_enchanted_golden_apple",
+			"has_the_recipe"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"biomancy:decomposing/enchanted_golden_apple_decomposing"
+		]
+	},
+	"sends_telemetry_event": false
+}

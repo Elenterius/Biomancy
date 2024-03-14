@@ -1,0 +1,40 @@
+{
+	"type": "biomancy:decomposing",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "alexsmobs"
+		}
+	],
+	"ingredient": {
+		"item": "alexsmobs:rainbow_jelly"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 396,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 4,
+				"min": 3
+			},
+			"item": "biomancy:bile"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 5,
+				"min": 2
+			},
+			"item": "biomancy:exotic_dust"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 3,
+				"min": 1
+			},
+			"item": "biomancy:bio_lumens"
+		}
+	]
+}

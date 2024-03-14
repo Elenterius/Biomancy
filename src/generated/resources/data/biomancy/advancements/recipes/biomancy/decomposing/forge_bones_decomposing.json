@@ -1,0 +1,33 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_bones": {
+			"conditions": {
+				"items": [
+					{
+						"tag": "forge:bones"
+					}
+				]
+			},
+			"trigger": "minecraft:inventory_changed"
+		},
+		"has_the_recipe": {
+			"conditions": {
+				"recipe": "biomancy:decomposing/forge_bones_decomposing"
+			},
+			"trigger": "minecraft:recipe_unlocked"
+		}
+	},
+	"requirements": [
+		[
+			"has_bones",
+			"has_the_recipe"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"biomancy:decomposing/forge_bones_decomposing"
+		]
+	},
+	"sends_telemetry_event": false
+}

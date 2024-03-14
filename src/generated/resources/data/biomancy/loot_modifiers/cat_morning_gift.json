@@ -1,0 +1,14 @@
+{
+	"type": "biomancy:cat_morning_gift",
+	"conditions": [
+		{
+			"condition": "minecraft:entity_properties",
+			"entity": "this",
+			"predicate": { }
+		},
+		{
+			"condition": "forge:loot_table_id",
+			"loot_table_id": "minecraft:gameplay/cat_morning_gift"
+		}
+	]
+}

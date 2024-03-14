@@ -1,0 +1,33 @@
+{
+	"type": "biomancy:decomposing",
+	"ingredient": {
+		"item": "minecraft:piglin_head"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 788,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 36,
+				"min": 22
+			},
+			"item": "biomancy:flesh_bits"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 12,
+				"min": 8
+			},
+			"item": "biomancy:elastic_fibers"
+		},
+		{
+			"countRange": {
+				"type": "constant",
+				"value": 1
+			},
+			"item": "minecraft:skeleton_skull"
+		}
+	]
+}

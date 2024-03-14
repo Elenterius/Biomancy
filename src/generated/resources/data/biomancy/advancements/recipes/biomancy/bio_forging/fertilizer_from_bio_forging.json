@@ -1,0 +1,35 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_ageing_serum": {
+			"conditions": {
+				"items": [
+					{
+						"items": [
+							"biomancy:ageing_serum"
+						]
+					}
+				]
+			},
+			"trigger": "minecraft:inventory_changed"
+		},
+		"has_the_recipe": {
+			"conditions": {
+				"recipe": "biomancy:bio_forging/fertilizer_from_bio_forging"
+			},
+			"trigger": "minecraft:recipe_unlocked"
+		}
+	},
+	"requirements": [
+		[
+			"has_ageing_serum",
+			"has_the_recipe"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"biomancy:bio_forging/fertilizer_from_bio_forging"
+		]
+	},
+	"sends_telemetry_event": false
+}

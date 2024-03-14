@@ -1,0 +1,39 @@
+{
+	"parent": "biomancy:biomancy/bio_lab",
+	"criteria": {
+		"has_injector": {
+			"conditions": {
+				"items": [
+					{
+						"items": [
+							"biomancy:injector"
+						]
+					}
+				]
+			},
+			"trigger": "minecraft:inventory_changed"
+		}
+	},
+	"display": {
+		"announce_to_chat": false,
+		"description": {
+			"translate": "advancements.biomancy.bio_injector.description"
+		},
+		"frame": "task",
+		"hidden": false,
+		"icon": {
+			"item": "biomancy:injector",
+			"nbt": "{Damage:0}"
+		},
+		"show_toast": true,
+		"title": {
+			"translate": "advancements.biomancy.bio_injector.title"
+		}
+	},
+	"requirements": [
+		[
+			"has_injector"
+		]
+	],
+	"sends_telemetry_event": true
+}

@@ -1,0 +1,40 @@
+{
+	"type": "biomancy:decomposing",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "alexscaves"
+		}
+	],
+	"ingredient": {
+		"item": "alexscaves:raw_azure_neodymium"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 460,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 9,
+				"min": 5
+			},
+			"item": "biomancy:mineral_fragment"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 2,
+				"min": 1
+			},
+			"item": "biomancy:stone_powder"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 2,
+				"min": 1
+			},
+			"item": "minecraft:blue_dye"
+		}
+	]
+}

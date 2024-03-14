@@ -1,0 +1,47 @@
+{
+	"advancements": [
+		{
+			"advancement": {
+				"parent": "minecraft:recipes/root",
+				"criteria": {
+					"has_the_recipe": {
+						"conditions": {
+							"recipe": "biomancy:decomposing/tremorsaurus_egg_decomposing"
+						},
+						"trigger": "minecraft:recipe_unlocked"
+					},
+					"has_tremorsaurus_egg": {
+						"conditions": {
+							"items": [
+								{
+									"items": [
+										"alexscaves:tremorsaurus_egg"
+									]
+								}
+							]
+						},
+						"trigger": "minecraft:inventory_changed"
+					}
+				},
+				"requirements": [
+					[
+						"has_tremorsaurus_egg",
+						"has_the_recipe"
+					]
+				],
+				"rewards": {
+					"recipes": [
+						"biomancy:decomposing/tremorsaurus_egg_decomposing"
+					]
+				},
+				"sends_telemetry_event": false
+			},
+			"conditions": [
+				{
+					"type": "forge:mod_loaded",
+					"modid": "alexscaves"
+				}
+			]
+		}
+	]
+}
