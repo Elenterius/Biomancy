@@ -1,0 +1,32 @@
+{
+	"type": "biomancy:decomposing",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "alexscaves"
+		}
+	],
+	"ingredient": {
+		"item": "alexscaves:guano"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 180,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 3,
+				"min": 2
+			},
+			"item": "biomancy:bile"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 6,
+				"min": 3
+			},
+			"item": "biomancy:organic_matter"
+		}
+	]
+}

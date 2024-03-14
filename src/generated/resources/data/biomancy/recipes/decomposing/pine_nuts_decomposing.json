@@ -1,0 +1,24 @@
+{
+	"type": "biomancy:decomposing",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "alexscaves"
+		}
+	],
+	"ingredient": {
+		"item": "alexscaves:pine_nuts"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 60,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 3,
+				"min": 2
+			},
+			"item": "biomancy:organic_matter"
+		}
+	]
+}

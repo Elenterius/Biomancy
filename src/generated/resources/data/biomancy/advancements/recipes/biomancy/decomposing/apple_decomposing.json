@@ -1,0 +1,35 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_apple": {
+			"conditions": {
+				"items": [
+					{
+						"items": [
+							"minecraft:apple"
+						]
+					}
+				]
+			},
+			"trigger": "minecraft:inventory_changed"
+		},
+		"has_the_recipe": {
+			"conditions": {
+				"recipe": "biomancy:decomposing/apple_decomposing"
+			},
+			"trigger": "minecraft:recipe_unlocked"
+		}
+	},
+	"requirements": [
+		[
+			"has_apple",
+			"has_the_recipe"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"biomancy:decomposing/apple_decomposing"
+		]
+	},
+	"sends_telemetry_event": false
+}

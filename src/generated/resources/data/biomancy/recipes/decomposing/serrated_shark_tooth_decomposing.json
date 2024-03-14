@@ -1,0 +1,32 @@
+{
+	"type": "biomancy:decomposing",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "alexsmobs"
+		}
+	],
+	"ingredient": {
+		"item": "alexsmobs:serrated_shark_tooth"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 180,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 2,
+				"min": 1
+			},
+			"item": "biomancy:mineral_fragment"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 4,
+				"min": 2
+			},
+			"item": "biomancy:bone_fragments"
+		}
+	]
+}

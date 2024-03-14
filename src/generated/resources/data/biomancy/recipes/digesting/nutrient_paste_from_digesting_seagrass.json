@@ -1,0 +1,11 @@
+{
+	"type": "biomancy:digesting",
+	"ingredient": {
+		"item": "minecraft:seagrass"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 200,
+	"result": {
+		"item": "biomancy:nutrient_paste"
+	}
+}

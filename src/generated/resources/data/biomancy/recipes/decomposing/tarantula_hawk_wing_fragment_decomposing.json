@@ -1,0 +1,32 @@
+{
+	"type": "biomancy:decomposing",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "alexsmobs"
+		}
+	],
+	"ingredient": {
+		"item": "alexsmobs:tarantula_hawk_wing_fragment"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 100,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 2,
+				"min": 1
+			},
+			"item": "biomancy:tough_fibers"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 1,
+				"min": 0
+			},
+			"item": "biomancy:mineral_fragment"
+		}
+	]
+}

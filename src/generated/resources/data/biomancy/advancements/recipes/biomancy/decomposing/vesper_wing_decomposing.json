@@ -1,0 +1,47 @@
+{
+	"advancements": [
+		{
+			"advancement": {
+				"parent": "minecraft:recipes/root",
+				"criteria": {
+					"has_the_recipe": {
+						"conditions": {
+							"recipe": "biomancy:decomposing/vesper_wing_decomposing"
+						},
+						"trigger": "minecraft:recipe_unlocked"
+					},
+					"has_vesper_wing": {
+						"conditions": {
+							"items": [
+								{
+									"items": [
+										"alexscaves:vesper_wing"
+									]
+								}
+							]
+						},
+						"trigger": "minecraft:inventory_changed"
+					}
+				},
+				"requirements": [
+					[
+						"has_vesper_wing",
+						"has_the_recipe"
+					]
+				],
+				"rewards": {
+					"recipes": [
+						"biomancy:decomposing/vesper_wing_decomposing"
+					]
+				},
+				"sends_telemetry_event": false
+			},
+			"conditions": [
+				{
+					"type": "forge:mod_loaded",
+					"modid": "alexscaves"
+				}
+			]
+		}
+	]
+}

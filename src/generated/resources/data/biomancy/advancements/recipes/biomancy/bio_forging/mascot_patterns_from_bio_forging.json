@@ -1,0 +1,35 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_organic_matter": {
+			"conditions": {
+				"items": [
+					{
+						"items": [
+							"biomancy:organic_matter"
+						]
+					}
+				]
+			},
+			"trigger": "minecraft:inventory_changed"
+		},
+		"has_the_recipe": {
+			"conditions": {
+				"recipe": "biomancy:bio_forging/mascot_patterns_from_bio_forging"
+			},
+			"trigger": "minecraft:recipe_unlocked"
+		}
+	},
+	"requirements": [
+		[
+			"has_organic_matter",
+			"has_the_recipe"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"biomancy:bio_forging/mascot_patterns_from_bio_forging"
+		]
+	},
+	"sends_telemetry_event": false
+}

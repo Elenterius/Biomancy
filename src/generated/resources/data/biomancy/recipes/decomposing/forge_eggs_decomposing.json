@@ -1,0 +1,26 @@
+{
+	"type": "biomancy:decomposing",
+	"ingredient": {
+		"tag": "forge:eggs"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 60,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 1,
+				"min": 0
+			},
+			"item": "biomancy:hormone_secretion"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 2,
+				"min": 0
+			},
+			"item": "biomancy:organic_matter"
+		}
+	]
+}

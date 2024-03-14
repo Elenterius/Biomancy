@@ -1,0 +1,34 @@
+{
+	"type": "biomancy:decomposing",
+	"ingredient": {
+		"item": "minecraft:wither_skeleton_skull"
+	},
+	"nutrientsCost": 2,
+	"processingTime": 1880,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 48,
+				"min": 28
+			},
+			"item": "biomancy:bone_fragments"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 16,
+				"min": 8
+			},
+			"item": "biomancy:withering_ooze"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 7,
+				"min": 4
+			},
+			"item": "biomancy:mineral_fragment"
+		}
+	]
+}

@@ -1,0 +1,17 @@
+{
+	"type": "biomancy:decomposing",
+	"ingredient": {
+		"item": "minecraft:dead_brain_coral"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 30,
+	"results": [
+		{
+			"countRange": {
+				"type": "constant",
+				"value": 1
+			},
+			"item": "biomancy:stone_powder"
+		}
+	]
+}

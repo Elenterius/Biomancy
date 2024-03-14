@@ -1,0 +1,40 @@
+{
+	"type": "biomancy:decomposing",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "alexsmobs"
+		}
+	],
+	"ingredient": {
+		"item": "alexsmobs:void_worm_mandible"
+	},
+	"nutrientsCost": 2,
+	"processingTime": 1860,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 25,
+				"min": 20
+			},
+			"item": "biomancy:exotic_dust"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 10,
+				"min": 6
+			},
+			"item": "biomancy:mineral_fragment"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 7,
+				"min": 4
+			},
+			"item": "biomancy:tough_fibers"
+		}
+	]
+}

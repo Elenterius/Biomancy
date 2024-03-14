@@ -1,0 +1,39 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "misc",
+	"key": {
+		"#": {
+			"item": "minecraft:ender_pearl"
+		},
+		"B": {
+			"item": "minecraft:beef"
+		},
+		"C": {
+			"item": "minecraft:chicken"
+		},
+		"E": {
+			"item": "minecraft:spider_eye"
+		},
+		"F": {
+			"item": "minecraft:rotten_flesh"
+		},
+		"M": {
+			"item": "minecraft:mutton"
+		},
+		"P": {
+			"item": "minecraft:porkchop"
+		},
+		"R": {
+			"item": "minecraft:rabbit"
+		}
+	},
+	"pattern": [
+		"PRB",
+		"#E#",
+		"CFM"
+	],
+	"result": {
+		"item": "biomancy:primordial_core"
+	},
+	"show_notification": true
+}

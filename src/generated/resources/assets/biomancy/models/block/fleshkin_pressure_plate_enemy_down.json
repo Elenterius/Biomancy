@@ -1,0 +1,6 @@
+{
+	"parent": "minecraft:block/pressure_plate_down",
+	"textures": {
+		"texture": "biomancy:block/fleshkin_pressure_plate_enemy_down"
+	}
+}

@@ -1,0 +1,40 @@
+{
+	"type": "biomancy:decomposing",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "alexscaves"
+		}
+	],
+	"ingredient": {
+		"item": "alexscaves:amber_curiosity"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 450,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 6,
+				"min": 3
+			},
+			"item": "biomancy:bile"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 5,
+				"min": 3
+			},
+			"item": "biomancy:exotic_dust"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 4,
+				"min": 0
+			},
+			"item": "biomancy:organic_matter"
+		}
+	]
+}

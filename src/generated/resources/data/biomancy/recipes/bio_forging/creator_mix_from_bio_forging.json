@@ -1,0 +1,26 @@
+{
+	"type": "biomancy:bio_forging",
+	"bio_forge_tab": "biomancy:components",
+	"ingredients": [
+		{
+			"count": 4,
+			"item": "biomancy:flesh_bits"
+		},
+		{
+			"count": 3,
+			"item": "biomancy:bone_fragments"
+		},
+		{
+			"count": 2,
+			"item": "biomancy:exotic_dust"
+		},
+		{
+			"count": 3,
+			"item": "biomancy:nutrient_paste"
+		}
+	],
+	"nutrientsCost": 1,
+	"result": {
+		"item": "biomancy:creator_mix"
+	}
+}

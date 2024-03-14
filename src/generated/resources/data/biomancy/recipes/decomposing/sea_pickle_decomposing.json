@@ -1,0 +1,34 @@
+{
+	"type": "biomancy:decomposing",
+	"ingredient": {
+		"item": "minecraft:sea_pickle"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 164,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 2,
+				"min": 1
+			},
+			"item": "biomancy:mineral_fragment"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 2,
+				"min": 1
+			},
+			"item": "biomancy:bio_lumens"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 2,
+				"min": 1
+			},
+			"item": "biomancy:organic_matter"
+		}
+	]
+}

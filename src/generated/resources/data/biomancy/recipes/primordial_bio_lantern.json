@@ -1,0 +1,24 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "misc",
+	"key": {
+		"B": {
+			"item": "biomancy:bloomberry"
+		},
+		"C": {
+			"item": "biomancy:tendon_chain"
+		},
+		"V": {
+			"item": "biomancy:malignant_flesh_veins"
+		}
+	},
+	"pattern": [
+		" C ",
+		"VBV",
+		" V "
+	],
+	"result": {
+		"item": "biomancy:primordial_bio_lantern"
+	},
+	"show_notification": true
+}

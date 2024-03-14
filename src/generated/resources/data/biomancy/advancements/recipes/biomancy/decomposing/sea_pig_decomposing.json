@@ -1,0 +1,47 @@
+{
+	"advancements": [
+		{
+			"advancement": {
+				"parent": "minecraft:recipes/root",
+				"criteria": {
+					"has_sea_pig": {
+						"conditions": {
+							"items": [
+								{
+									"items": [
+										"alexscaves:sea_pig"
+									]
+								}
+							]
+						},
+						"trigger": "minecraft:inventory_changed"
+					},
+					"has_the_recipe": {
+						"conditions": {
+							"recipe": "biomancy:decomposing/sea_pig_decomposing"
+						},
+						"trigger": "minecraft:recipe_unlocked"
+					}
+				},
+				"requirements": [
+					[
+						"has_sea_pig",
+						"has_the_recipe"
+					]
+				],
+				"rewards": {
+					"recipes": [
+						"biomancy:decomposing/sea_pig_decomposing"
+					]
+				},
+				"sends_telemetry_event": false
+			},
+			"conditions": [
+				{
+					"type": "forge:mod_loaded",
+					"modid": "alexscaves"
+				}
+			]
+		}
+	]
+}

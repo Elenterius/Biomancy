@@ -1,0 +1,7 @@
+{
+	"parent": "minecraft:block/cube_column",
+	"textures": {
+		"end": "biomancy:block/tubular_flesh_end",
+		"side": "biomancy:block/tubular_flesh_side"
+	}
+}

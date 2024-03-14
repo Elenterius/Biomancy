@@ -1,0 +1,55 @@
+{
+	"parent": "biomancy:biomancy/greedy_butcher",
+	"criteria": {
+		"has_killed_cat": {
+			"conditions": {
+				"entity": [
+					{
+						"condition": "minecraft:entity_properties",
+						"entity": "this",
+						"predicate": {
+							"type": "minecraft:cat"
+						}
+					}
+				]
+			},
+			"trigger": "minecraft:player_killed_entity"
+		},
+		"has_killed_ocelot": {
+			"conditions": {
+				"entity": [
+					{
+						"condition": "minecraft:entity_properties",
+						"entity": "this",
+						"predicate": {
+							"type": "minecraft:ocelot"
+						}
+					}
+				]
+			},
+			"trigger": "minecraft:player_killed_entity"
+		}
+	},
+	"display": {
+		"announce_to_chat": true,
+		"description": {
+			"translate": "advancements.biomancy.cat_killer.description"
+		},
+		"frame": "challenge",
+		"hidden": true,
+		"icon": {
+			"item": "minecraft:string"
+		},
+		"show_toast": true,
+		"title": {
+			"translate": "advancements.biomancy.cat_killer.title"
+		}
+	},
+	"requirements": [
+		[
+			"has_killed_cat",
+			"has_killed_ocelot"
+		]
+	],
+	"sends_telemetry_event": true
+}

@@ -1,0 +1,24 @@
+{
+	"type": "biomancy:decomposing",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "alexscaves"
+		}
+	],
+	"ingredient": {
+		"item": "alexscaves:tough_hide"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 120,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 4,
+				"min": 2
+			},
+			"item": "biomancy:tough_fibers"
+		}
+	]
+}

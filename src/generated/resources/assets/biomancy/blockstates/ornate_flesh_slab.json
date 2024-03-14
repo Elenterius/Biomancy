@@ -1,0 +1,42 @@
+{
+	"variants": {
+		"axis=x,type=full": {
+			"model": "biomancy:block/ornate_flesh_horizontal",
+			"x": 90,
+			"y": 90
+		},
+		"axis=y,type=full": {
+			"model": "biomancy:block/ornate_flesh"
+		},
+		"axis=z,type=full": {
+			"model": "biomancy:block/ornate_flesh_horizontal",
+			"x": 90
+		},
+		"type=half_down": {
+			"model": "biomancy:block/ornate_flesh_slab",
+			"x": 180
+		},
+		"type=half_east": {
+			"model": "biomancy:block/ornate_flesh_slab",
+			"x": 90,
+			"y": 90
+		},
+		"type=half_north": {
+			"model": "biomancy:block/ornate_flesh_slab",
+			"x": 90
+		},
+		"type=half_south": {
+			"model": "biomancy:block/ornate_flesh_slab",
+			"x": 90,
+			"y": 180
+		},
+		"type=half_up": {
+			"model": "biomancy:block/ornate_flesh_slab"
+		},
+		"type=half_west": {
+			"model": "biomancy:block/ornate_flesh_slab",
+			"x": 90,
+			"y": 270
+		}
+	}
+}

@@ -1,0 +1,34 @@
+{
+	"type": "biomancy:decomposing",
+	"ingredient": {
+		"item": "minecraft:chicken"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 202,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 4,
+				"min": 3
+			},
+			"item": "biomancy:flesh_bits"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 4,
+				"min": 2
+			},
+			"item": "biomancy:bone_fragments"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 3,
+				"min": 2
+			},
+			"item": "biomancy:elastic_fibers"
+		}
+	]
+}

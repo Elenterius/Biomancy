@@ -1,0 +1,26 @@
+{
+	"type": "biomancy:decomposing",
+	"ingredient": {
+		"item": "minecraft:quartz"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 180,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 2,
+				"min": 1
+			},
+			"item": "biomancy:gem_fragments"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 2,
+				"min": 1
+			},
+			"item": "biomancy:mineral_fragment"
+		}
+	]
+}

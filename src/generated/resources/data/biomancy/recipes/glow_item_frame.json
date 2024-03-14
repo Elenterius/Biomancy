@@ -1,0 +1,21 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "misc",
+	"key": {
+		"F": {
+			"item": "minecraft:item_frame"
+		},
+		"L": {
+			"item": "biomancy:bio_lumens"
+		}
+	},
+	"pattern": [
+		" L ",
+		"LFL",
+		" L "
+	],
+	"result": {
+		"item": "minecraft:glow_item_frame"
+	},
+	"show_notification": true
+}

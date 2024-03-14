@@ -1,0 +1,26 @@
+{
+	"type": "biomancy:decomposing",
+	"ingredient": {
+		"item": "biomancy:withered_mob_marrow"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 225,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 5,
+				"min": 3
+			},
+			"item": "biomancy:withering_ooze"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 4,
+				"min": 2
+			},
+			"item": "biomancy:bone_fragments"
+		}
+	]
+}

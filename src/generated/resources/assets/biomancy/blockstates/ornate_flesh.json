@@ -1,0 +1,16 @@
+{
+	"variants": {
+		"axis=x": {
+			"model": "biomancy:block/ornate_flesh_horizontal",
+			"x": 90,
+			"y": 90
+		},
+		"axis=y": {
+			"model": "biomancy:block/ornate_flesh"
+		},
+		"axis=z": {
+			"model": "biomancy:block/ornate_flesh_horizontal",
+			"x": 90
+		}
+	}
+}

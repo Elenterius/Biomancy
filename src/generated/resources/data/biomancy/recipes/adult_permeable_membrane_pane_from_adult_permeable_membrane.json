@@ -1,0 +1,13 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"category": "misc",
+	"ingredients": [
+		{
+			"item": "biomancy:adult_permeable_membrane"
+		}
+	],
+	"result": {
+		"count": 2,
+		"item": "biomancy:adult_permeable_membrane_pane"
+	}
+}

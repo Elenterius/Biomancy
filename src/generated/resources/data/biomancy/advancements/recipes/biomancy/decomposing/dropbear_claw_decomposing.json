@@ -1,0 +1,47 @@
+{
+	"advancements": [
+		{
+			"advancement": {
+				"parent": "minecraft:recipes/root",
+				"criteria": {
+					"has_dropbear_claw": {
+						"conditions": {
+							"items": [
+								{
+									"items": [
+										"alexsmobs:dropbear_claw"
+									]
+								}
+							]
+						},
+						"trigger": "minecraft:inventory_changed"
+					},
+					"has_the_recipe": {
+						"conditions": {
+							"recipe": "biomancy:decomposing/dropbear_claw_decomposing"
+						},
+						"trigger": "minecraft:recipe_unlocked"
+					}
+				},
+				"requirements": [
+					[
+						"has_dropbear_claw",
+						"has_the_recipe"
+					]
+				],
+				"rewards": {
+					"recipes": [
+						"biomancy:decomposing/dropbear_claw_decomposing"
+					]
+				},
+				"sends_telemetry_event": false
+			},
+			"conditions": [
+				{
+					"type": "forge:mod_loaded",
+					"modid": "alexsmobs"
+				}
+			]
+		}
+	]
+}

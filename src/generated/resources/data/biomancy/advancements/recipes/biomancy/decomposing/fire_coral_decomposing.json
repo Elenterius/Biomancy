@@ -1,0 +1,35 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_fire_coral": {
+			"conditions": {
+				"items": [
+					{
+						"items": [
+							"minecraft:fire_coral"
+						]
+					}
+				]
+			},
+			"trigger": "minecraft:inventory_changed"
+		},
+		"has_the_recipe": {
+			"conditions": {
+				"recipe": "biomancy:decomposing/fire_coral_decomposing"
+			},
+			"trigger": "minecraft:recipe_unlocked"
+		}
+	},
+	"requirements": [
+		[
+			"has_fire_coral",
+			"has_the_recipe"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"biomancy:decomposing/fire_coral_decomposing"
+		]
+	},
+	"sends_telemetry_event": false
+}

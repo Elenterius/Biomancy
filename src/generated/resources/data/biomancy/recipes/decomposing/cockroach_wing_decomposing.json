@@ -1,0 +1,32 @@
+{
+	"type": "biomancy:decomposing",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "alexsmobs"
+		}
+	],
+	"ingredient": {
+		"item": "alexsmobs:cockroach_wing"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 940,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 18,
+				"min": 9
+			},
+			"item": "biomancy:tough_fibers"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 10,
+				"min": 8
+			},
+			"item": "biomancy:mineral_fragment"
+		}
+	]
+}

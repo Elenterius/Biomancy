@@ -1,0 +1,26 @@
+{
+	"type": "biomancy:decomposing",
+	"ingredient": {
+		"item": "minecraft:glow_ink_sac"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 130,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 5,
+				"min": 3
+			},
+			"item": "biomancy:bio_lumens"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 2,
+				"min": 1
+			},
+			"item": "biomancy:elastic_fibers"
+		}
+	]
+}

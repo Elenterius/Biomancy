@@ -1,0 +1,38 @@
+{
+	"parent": "biomancy:biomancy/greedy_butcher",
+	"criteria": {
+		"has_traded_organs": {
+			"conditions": {
+				"item": {
+					"items": [
+						"biomancy:volatile_gland",
+						"biomancy:mob_gland",
+						"biomancy:toxin_gland"
+					]
+				}
+			},
+			"trigger": "minecraft:villager_trade"
+		}
+	},
+	"display": {
+		"announce_to_chat": true,
+		"description": {
+			"translate": "advancements.biomancy.organ_trader.description"
+		},
+		"frame": "challenge",
+		"hidden": true,
+		"icon": {
+			"item": "biomancy:volatile_gland"
+		},
+		"show_toast": true,
+		"title": {
+			"translate": "advancements.biomancy.organ_trader.title"
+		}
+	},
+	"requirements": [
+		[
+			"has_traded_organs"
+		]
+	],
+	"sends_telemetry_event": true
+}

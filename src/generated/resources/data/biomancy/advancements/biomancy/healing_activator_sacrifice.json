@@ -1,0 +1,37 @@
+{
+	"parent": "biomancy:biomancy/cradle",
+	"criteria": {
+		"has_sacrificed_healing_activator": {
+			"conditions": {
+				"item": {
+					"items": [
+						"minecraft:potion"
+					]
+				}
+			},
+			"trigger": "biomancy:sacrificed_item"
+		}
+	},
+	"display": {
+		"announce_to_chat": false,
+		"description": {
+			"translate": "advancements.biomancy.healing_activator_sacrifice.description"
+		},
+		"frame": "task",
+		"hidden": false,
+		"icon": {
+			"item": "minecraft:potion",
+			"nbt": "{Potion:\"minecraft:strong_healing\"}"
+		},
+		"show_toast": true,
+		"title": {
+			"translate": "advancements.biomancy.healing_activator_sacrifice.title"
+		}
+	},
+	"requirements": [
+		[
+			"has_sacrificed_healing_activator"
+		]
+	],
+	"sends_telemetry_event": true
+}

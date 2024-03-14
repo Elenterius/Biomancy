@@ -1,0 +1,82 @@
+{
+	"variants": {
+		"facing=down,spikes=1": {
+			"model": "biomancy:block/flesh_spike_1",
+			"x": 180
+		},
+		"facing=down,spikes=2": {
+			"model": "biomancy:block/flesh_spike_2",
+			"x": 180
+		},
+		"facing=down,spikes=3": {
+			"model": "biomancy:block/flesh_spike_3",
+			"x": 180
+		},
+		"facing=east,spikes=1": {
+			"model": "biomancy:block/flesh_spike_1",
+			"x": 90,
+			"y": 90
+		},
+		"facing=east,spikes=2": {
+			"model": "biomancy:block/flesh_spike_2",
+			"x": 90,
+			"y": 90
+		},
+		"facing=east,spikes=3": {
+			"model": "biomancy:block/flesh_spike_3",
+			"x": 90,
+			"y": 90
+		},
+		"facing=north,spikes=1": {
+			"model": "biomancy:block/flesh_spike_1",
+			"x": 90
+		},
+		"facing=north,spikes=2": {
+			"model": "biomancy:block/flesh_spike_2",
+			"x": 90
+		},
+		"facing=north,spikes=3": {
+			"model": "biomancy:block/flesh_spike_3",
+			"x": 90
+		},
+		"facing=south,spikes=1": {
+			"model": "biomancy:block/flesh_spike_1",
+			"x": 90,
+			"y": 180
+		},
+		"facing=south,spikes=2": {
+			"model": "biomancy:block/flesh_spike_2",
+			"x": 90,
+			"y": 180
+		},
+		"facing=south,spikes=3": {
+			"model": "biomancy:block/flesh_spike_3",
+			"x": 90,
+			"y": 180
+		},
+		"facing=up,spikes=1": {
+			"model": "biomancy:block/flesh_spike_1"
+		},
+		"facing=up,spikes=2": {
+			"model": "biomancy:block/flesh_spike_2"
+		},
+		"facing=up,spikes=3": {
+			"model": "biomancy:block/flesh_spike_3"
+		},
+		"facing=west,spikes=1": {
+			"model": "biomancy:block/flesh_spike_1",
+			"x": 90,
+			"y": 270
+		},
+		"facing=west,spikes=2": {
+			"model": "biomancy:block/flesh_spike_2",
+			"x": 90,
+			"y": 270
+		},
+		"facing=west,spikes=3": {
+			"model": "biomancy:block/flesh_spike_3",
+			"x": 90,
+			"y": 270
+		}
+	}
+}

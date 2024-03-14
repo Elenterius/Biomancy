@@ -1,0 +1,35 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_beef": {
+			"conditions": {
+				"items": [
+					{
+						"items": [
+							"minecraft:beef"
+						]
+					}
+				]
+			},
+			"trigger": "minecraft:inventory_changed"
+		},
+		"has_the_recipe": {
+			"conditions": {
+				"recipe": "biomancy:decomposing/beef_decomposing"
+			},
+			"trigger": "minecraft:recipe_unlocked"
+		}
+	},
+	"requirements": [
+		[
+			"has_beef",
+			"has_the_recipe"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"biomancy:decomposing/beef_decomposing"
+		]
+	},
+	"sends_telemetry_event": false
+}

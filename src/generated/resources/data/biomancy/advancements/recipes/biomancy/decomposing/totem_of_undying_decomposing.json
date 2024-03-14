@@ -1,0 +1,35 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_the_recipe": {
+			"conditions": {
+				"recipe": "biomancy:decomposing/totem_of_undying_decomposing"
+			},
+			"trigger": "minecraft:recipe_unlocked"
+		},
+		"has_totem_of_undying": {
+			"conditions": {
+				"items": [
+					{
+						"items": [
+							"minecraft:totem_of_undying"
+						]
+					}
+				]
+			},
+			"trigger": "minecraft:inventory_changed"
+		}
+	},
+	"requirements": [
+		[
+			"has_totem_of_undying",
+			"has_the_recipe"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"biomancy:decomposing/totem_of_undying_decomposing"
+		]
+	},
+	"sends_telemetry_event": false
+}

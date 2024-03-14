@@ -1,0 +1,19 @@
+{
+	"values": [
+		"minecraft:clay",
+		"#minecraft:sand",
+		"#forge:gravel",
+		"minecraft:snow_block",
+		"minecraft:snow",
+		"#minecraft:leaves",
+		"#minecraft:overworld_natural_logs",
+		"#minecraft:dirt",
+		"minecraft:dirt_path",
+		"minecraft:farmland",
+		"minecraft:moss_block",
+		"minecraft:vine",
+		"minecraft:melon",
+		"minecraft:pumpkin",
+		"#minecraft:flowers"
+	]
+}

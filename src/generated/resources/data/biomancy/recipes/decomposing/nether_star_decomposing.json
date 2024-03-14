@@ -1,0 +1,31 @@
+{
+	"type": "biomancy:decomposing",
+	"ingredient": {
+		"item": "minecraft:nether_star"
+	},
+	"nutrientsCost": 4,
+	"processingTime": 4050,
+	"results": [
+		{
+			"countRange": {
+				"type": "constant",
+				"value": 50
+			},
+			"item": "biomancy:exotic_dust"
+		},
+		{
+			"countRange": {
+				"type": "constant",
+				"value": 25
+			},
+			"item": "biomancy:bio_lumens"
+		},
+		{
+			"countRange": {
+				"type": "constant",
+				"value": 20
+			},
+			"item": "biomancy:gem_fragments"
+		}
+	]
+}

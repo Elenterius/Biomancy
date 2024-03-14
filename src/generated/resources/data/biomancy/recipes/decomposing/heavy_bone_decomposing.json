@@ -1,0 +1,40 @@
+{
+	"type": "biomancy:decomposing",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "alexscaves"
+		}
+	],
+	"ingredient": {
+		"item": "alexscaves:heavy_bone"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 460,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 12,
+				"min": 6
+			},
+			"item": "biomancy:bone_fragments"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 2,
+				"min": 1
+			},
+			"item": "biomancy:mineral_fragment"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 4,
+				"min": 1
+			},
+			"item": "biomancy:hormone_secretion"
+		}
+	]
+}

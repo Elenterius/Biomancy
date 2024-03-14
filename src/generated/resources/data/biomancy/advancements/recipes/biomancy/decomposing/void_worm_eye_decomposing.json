@@ -1,0 +1,47 @@
+{
+	"advancements": [
+		{
+			"advancement": {
+				"parent": "minecraft:recipes/root",
+				"criteria": {
+					"has_the_recipe": {
+						"conditions": {
+							"recipe": "biomancy:decomposing/void_worm_eye_decomposing"
+						},
+						"trigger": "minecraft:recipe_unlocked"
+					},
+					"has_void_worm_eye": {
+						"conditions": {
+							"items": [
+								{
+									"items": [
+										"alexsmobs:void_worm_eye"
+									]
+								}
+							]
+						},
+						"trigger": "minecraft:inventory_changed"
+					}
+				},
+				"requirements": [
+					[
+						"has_void_worm_eye",
+						"has_the_recipe"
+					]
+				],
+				"rewards": {
+					"recipes": [
+						"biomancy:decomposing/void_worm_eye_decomposing"
+					]
+				},
+				"sends_telemetry_event": false
+			},
+			"conditions": [
+				{
+					"type": "forge:mod_loaded",
+					"modid": "alexsmobs"
+				}
+			]
+		}
+	]
+}

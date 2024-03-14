@@ -1,0 +1,47 @@
+{
+	"advancements": [
+		{
+			"advancement": {
+				"parent": "minecraft:recipes/root",
+				"criteria": {
+					"has_the_recipe": {
+						"conditions": {
+							"recipe": "biomancy:decomposing/toxic_paste_decomposing"
+						},
+						"trigger": "minecraft:recipe_unlocked"
+					},
+					"has_toxic_paste": {
+						"conditions": {
+							"items": [
+								{
+									"items": [
+										"alexscaves:toxic_paste"
+									]
+								}
+							]
+						},
+						"trigger": "minecraft:inventory_changed"
+					}
+				},
+				"requirements": [
+					[
+						"has_toxic_paste",
+						"has_the_recipe"
+					]
+				],
+				"rewards": {
+					"recipes": [
+						"biomancy:decomposing/toxic_paste_decomposing"
+					]
+				},
+				"sends_telemetry_event": false
+			},
+			"conditions": [
+				{
+					"type": "forge:mod_loaded",
+					"modid": "alexscaves"
+				}
+			]
+		}
+	]
+}

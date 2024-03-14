@@ -1,0 +1,31 @@
+{
+	"type": "biomancy:decomposing",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "alexsmobs"
+		}
+	],
+	"ingredient": {
+		"item": "alexsmobs:cockroach_ootheca"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 80,
+	"results": [
+		{
+			"countRange": {
+				"type": "constant",
+				"value": 1
+			},
+			"item": "biomancy:mineral_fragment"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 2,
+				"min": 0
+			},
+			"item": "biomancy:organic_matter"
+		}
+	]
+}

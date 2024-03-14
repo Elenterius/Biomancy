@@ -1,0 +1,38 @@
+{
+	"parent": "biomancy:biomancy/organic_compounds",
+	"criteria": {
+		"has_exotic_compound": {
+			"conditions": {
+				"items": [
+					{
+						"items": [
+							"biomancy:exotic_compound"
+						]
+					}
+				]
+			},
+			"trigger": "minecraft:inventory_changed"
+		}
+	},
+	"display": {
+		"announce_to_chat": false,
+		"description": {
+			"translate": "advancements.biomancy.exotic_compounds.description"
+		},
+		"frame": "task",
+		"hidden": false,
+		"icon": {
+			"item": "biomancy:exotic_compound"
+		},
+		"show_toast": true,
+		"title": {
+			"translate": "advancements.biomancy.exotic_compounds.title"
+		}
+	},
+	"requirements": [
+		[
+			"has_exotic_compound"
+		]
+	],
+	"sends_telemetry_event": true
+}

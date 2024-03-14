@@ -1,0 +1,30 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"category": "misc",
+	"ingredients": [
+		{
+			"item": "minecraft:charcoal"
+		},
+		{
+			"item": "biomancy:exotic_dust"
+		},
+		{
+			"item": "biomancy:exotic_dust"
+		},
+		{
+			"item": "biomancy:exotic_dust"
+		},
+		{
+			"item": "biomancy:exotic_dust"
+		},
+		{
+			"item": "minecraft:blaze_powder"
+		},
+		{
+			"item": "minecraft:blaze_powder"
+		}
+	],
+	"result": {
+		"item": "minecraft:gunpowder"
+	}
+}

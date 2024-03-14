@@ -1,0 +1,34 @@
+{
+	"type": "biomancy:decomposing",
+	"ingredient": {
+		"item": "minecraft:golden_apple"
+	},
+	"nutrientsCost": 3,
+	"processingTime": 2920,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 63,
+				"min": 37
+			},
+			"item": "biomancy:mineral_fragment"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 6,
+				"min": 4
+			},
+			"item": "biomancy:organic_matter"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 8,
+				"min": 4
+			},
+			"item": "biomancy:regenerative_fluid"
+		}
+	]
+}

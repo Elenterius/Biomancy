@@ -1,0 +1,11 @@
+{
+	"type": "biomancy:digesting",
+	"ingredient": {
+		"tag": "forge:seeds"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 220,
+	"result": {
+		"item": "biomancy:nutrient_paste"
+	}
+}

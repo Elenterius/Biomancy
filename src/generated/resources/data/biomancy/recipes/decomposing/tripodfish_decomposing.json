@@ -1,0 +1,40 @@
+{
+	"type": "biomancy:decomposing",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "alexscaves"
+		}
+	],
+	"ingredient": {
+		"item": "alexscaves:tripodfish"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 167,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 4,
+				"min": 2
+			},
+			"item": "biomancy:flesh_bits"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 2,
+				"min": 1
+			},
+			"item": "biomancy:elastic_fibers"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 3,
+				"min": 2
+			},
+			"item": "biomancy:bone_fragments"
+		}
+	]
+}

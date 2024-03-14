@@ -1,0 +1,25 @@
+{
+	"type": "biomancy:bio_brewing",
+	"ingredients": [
+		{
+			"item": "biomancy:exotic_dust"
+		},
+		{
+			"item": "biomancy:healing_additive"
+		},
+		{
+			"item": "biomancy:corrosive_additive"
+		},
+		{
+			"item": "biomancy:corrosive_additive"
+		}
+	],
+	"nutrientsCost": 2,
+	"processingTime": 160,
+	"reactant": {
+		"item": "biomancy:genetic_compound"
+	},
+	"result": {
+		"item": "biomancy:shrinking_serum"
+	}
+}

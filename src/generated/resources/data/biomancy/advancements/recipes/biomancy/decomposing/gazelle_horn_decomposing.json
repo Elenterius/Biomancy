@@ -1,0 +1,47 @@
+{
+	"advancements": [
+		{
+			"advancement": {
+				"parent": "minecraft:recipes/root",
+				"criteria": {
+					"has_gazelle_horn": {
+						"conditions": {
+							"items": [
+								{
+									"items": [
+										"alexsmobs:gazelle_horn"
+									]
+								}
+							]
+						},
+						"trigger": "minecraft:inventory_changed"
+					},
+					"has_the_recipe": {
+						"conditions": {
+							"recipe": "biomancy:decomposing/gazelle_horn_decomposing"
+						},
+						"trigger": "minecraft:recipe_unlocked"
+					}
+				},
+				"requirements": [
+					[
+						"has_gazelle_horn",
+						"has_the_recipe"
+					]
+				],
+				"rewards": {
+					"recipes": [
+						"biomancy:decomposing/gazelle_horn_decomposing"
+					]
+				},
+				"sends_telemetry_event": false
+			},
+			"conditions": [
+				{
+					"type": "forge:mod_loaded",
+					"modid": "alexsmobs"
+				}
+			]
+		}
+	]
+}

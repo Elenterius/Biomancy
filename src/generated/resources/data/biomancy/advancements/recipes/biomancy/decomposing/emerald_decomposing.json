@@ -1,0 +1,35 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_emerald": {
+			"conditions": {
+				"items": [
+					{
+						"items": [
+							"minecraft:emerald"
+						]
+					}
+				]
+			},
+			"trigger": "minecraft:inventory_changed"
+		},
+		"has_the_recipe": {
+			"conditions": {
+				"recipe": "biomancy:decomposing/emerald_decomposing"
+			},
+			"trigger": "minecraft:recipe_unlocked"
+		}
+	},
+	"requirements": [
+		[
+			"has_emerald",
+			"has_the_recipe"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"biomancy:decomposing/emerald_decomposing"
+		]
+	},
+	"sends_telemetry_event": false
+}

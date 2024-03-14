@@ -1,0 +1,32 @@
+{
+	"type": "biomancy:decomposing",
+	"conditions": [
+		{
+			"type": "forge:mod_loaded",
+			"modid": "alexsmobs"
+		}
+	],
+	"ingredient": {
+		"item": "alexsmobs:lost_tentacle"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 240,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 15,
+				"min": 8
+			},
+			"item": "biomancy:elastic_fibers"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 5,
+				"min": 3
+			},
+			"item": "biomancy:flesh_bits"
+		}
+	]
+}

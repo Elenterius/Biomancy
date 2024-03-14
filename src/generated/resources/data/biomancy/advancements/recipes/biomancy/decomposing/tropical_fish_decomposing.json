@@ -1,0 +1,35 @@
+{
+	"parent": "minecraft:recipes/root",
+	"criteria": {
+		"has_the_recipe": {
+			"conditions": {
+				"recipe": "biomancy:decomposing/tropical_fish_decomposing"
+			},
+			"trigger": "minecraft:recipe_unlocked"
+		},
+		"has_tropical_fish": {
+			"conditions": {
+				"items": [
+					{
+						"items": [
+							"minecraft:tropical_fish"
+						]
+					}
+				]
+			},
+			"trigger": "minecraft:inventory_changed"
+		}
+	},
+	"requirements": [
+		[
+			"has_tropical_fish",
+			"has_the_recipe"
+		]
+	],
+	"rewards": {
+		"recipes": [
+			"biomancy:decomposing/tropical_fish_decomposing"
+		]
+	},
+	"sends_telemetry_event": false
+}

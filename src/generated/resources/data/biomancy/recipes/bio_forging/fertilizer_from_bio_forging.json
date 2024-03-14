@@ -1,0 +1,21 @@
+{
+	"type": "biomancy:bio_forging",
+	"bio_forge_tab": "biomancy:components",
+	"ingredients": [
+		{
+			"count": 4,
+			"item": "biomancy:nutrient_paste"
+		},
+		{
+			"count": 4,
+			"item": "biomancy:organic_matter"
+		},
+		{
+			"item": "biomancy:ageing_serum"
+		}
+	],
+	"nutrientsCost": 1,
+	"result": {
+		"item": "biomancy:fertilizer"
+	}
+}

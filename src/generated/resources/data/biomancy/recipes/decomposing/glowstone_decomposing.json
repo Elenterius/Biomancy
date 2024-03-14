@@ -1,0 +1,34 @@
+{
+	"type": "biomancy:decomposing",
+	"ingredient": {
+		"item": "minecraft:glowstone"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 408,
+	"results": [
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 4,
+				"min": 2
+			},
+			"item": "biomancy:stone_powder"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 4,
+				"min": 1
+			},
+			"item": "biomancy:exotic_dust"
+		},
+		{
+			"countRange": {
+				"type": "uniform",
+				"max": 4,
+				"min": -4
+			},
+			"item": "biomancy:bio_lumens"
+		}
+	]
+}

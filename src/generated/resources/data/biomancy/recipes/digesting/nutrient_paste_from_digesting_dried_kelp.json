@@ -1,0 +1,11 @@
+{
+	"type": "biomancy:digesting",
+	"ingredient": {
+		"item": "minecraft:dried_kelp"
+	},
+	"nutrientsCost": 1,
+	"processingTime": 180,
+	"result": {
+		"item": "biomancy:nutrient_paste"
+	}
+}

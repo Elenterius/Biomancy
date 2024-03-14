@@ -1,0 +1,47 @@
+{
+	"advancements": [
+		{
+			"advancement": {
+				"parent": "minecraft:recipes/root",
+				"criteria": {
+					"has_archaic_vine": {
+						"conditions": {
+							"items": [
+								{
+									"items": [
+										"alexscaves:archaic_vine"
+									]
+								}
+							]
+						},
+						"trigger": "minecraft:inventory_changed"
+					},
+					"has_the_recipe": {
+						"conditions": {
+							"recipe": "biomancy:digesting/nutrient_paste_from_digesting_archaic_vine"
+						},
+						"trigger": "minecraft:recipe_unlocked"
+					}
+				},
+				"requirements": [
+					[
+						"has_archaic_vine",
+						"has_the_recipe"
+					]
+				],
+				"rewards": {
+					"recipes": [
+						"biomancy:digesting/nutrient_paste_from_digesting_archaic_vine"
+					]
+				},
+				"sends_telemetry_event": false
+			},
+			"conditions": [
+				{
+					"type": "forge:mod_loaded",
+					"modid": "alexscaves"
+				}
+			]
+		}
+	]
+}

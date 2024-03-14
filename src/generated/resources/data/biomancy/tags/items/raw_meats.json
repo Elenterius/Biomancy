@@ -1,0 +1,81 @@
+{
+	"values": [
+		"minecraft:beef",
+		"minecraft:porkchop",
+		"minecraft:chicken",
+		"minecraft:rabbit",
+		"minecraft:mutton",
+		"minecraft:cod",
+		"minecraft:salmon",
+		"minecraft:tropical_fish",
+		"minecraft:pufferfish",
+		{
+			"id": "alexsmobs:moose_ribs",
+			"required": false
+		},
+		{
+			"id": "alexsmobs:kangaroo_meat",
+			"required": false
+		},
+		{
+			"id": "alexsmobs:raw_catfish",
+			"required": false
+		},
+		{
+			"id": "alexsmobs:blobfish",
+			"required": false
+		},
+		{
+			"id": "alexsmobs:maggot",
+			"required": false
+		},
+		{
+			"id": "createfa:ground_chicken",
+			"required": false
+		},
+		{
+			"id": "createfa:ground_beef",
+			"required": false
+		},
+		{
+			"id": "rats:raw_rat",
+			"required": false
+		},
+		{
+			"id": "circus:clown",
+			"required": false
+		},
+		{
+			"id": "evilcraft:flesh_humanoid",
+			"required": false
+		},
+		{
+			"id": "evilcraft:flesh_werewolf",
+			"required": false
+		},
+		{
+			"id": "#forge:raw_fishes",
+			"required": false
+		},
+		{
+			"id": "#forge:raw_bacon",
+			"required": false
+		},
+		{
+			"id": "#forge:raw_beef",
+			"required": false
+		},
+		{
+			"id": "#forge:raw_chicken",
+			"required": false
+		},
+		{
+			"id": "#forge:raw_pork",
+			"required": false
+		},
+		{
+			"id": "#forge:raw_mutton",
+			"required": false
+		}
+	]
+}
