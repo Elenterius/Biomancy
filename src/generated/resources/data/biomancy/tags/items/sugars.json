@@ -1,34 +1,34 @@
 {
-	"values": [
-		"minecraft:sugar",
-		"minecraft:cookie",
-		"minecraft:cake",
-		"minecraft:honeycomb",
-		"minecraft:honey_block",
-		"minecraft:honeycomb_block",
-		"minecraft:honey_bottle",
-		"minecraft:sweet_berries",
-		"minecraft:cocoa_beans",
-		"minecraft:apple",
-		{
-			"id": "create:sweet_roll",
-			"required": false
-		},
-		{
-			"id": "create:chocolate_glazed_berries",
-			"required": false
-		},
-		{
-			"id": "create:honeyed_apple",
-			"required": false
-		},
-		{
-			"id": "create:bar_of_chocolate",
-			"required": false
-		},
-		{
-			"id": "createaddition:chocolate_cake",
-			"required": false
-		}
-	]
+  "values": [
+    "minecraft:sugar",
+    "minecraft:cookie",
+    "minecraft:cake",
+    "minecraft:honeycomb",
+    "minecraft:honey_block",
+    "minecraft:honeycomb_block",
+    "minecraft:honey_bottle",
+    "minecraft:sweet_berries",
+    "minecraft:cocoa_beans",
+    "minecraft:apple",
+    {
+      "id": "create:sweet_roll",
+      "required": false
+    },
+    {
+      "id": "create:chocolate_glazed_berries",
+      "required": false
+    },
+    {
+      "id": "create:honeyed_apple",
+      "required": false
+    },
+    {
+      "id": "create:bar_of_chocolate",
+      "required": false
+    },
+    {
+      "id": "createaddition:chocolate_cake",
+      "required": false
+    }
+  ]
 }

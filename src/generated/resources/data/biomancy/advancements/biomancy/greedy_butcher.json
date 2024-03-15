@@ -1,5 +1,5 @@
 {
-	"parent": "biomancy:biomancy/flesh",
+	"parent": "biomancy:biomancy/primal_vision",
 	"criteria": {
 		"has_despoil_sickle": {
 			"conditions": {

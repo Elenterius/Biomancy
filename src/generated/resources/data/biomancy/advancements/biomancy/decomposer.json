@@ -1,5 +1,5 @@
 {
-	"parent": "biomancy:biomancy/cradle",
+	"parent": "biomancy:biomancy/living_flesh",
 	"criteria": {
 		"has_decomposer": {
 			"conditions": {
