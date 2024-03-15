@@ -44,15 +44,21 @@ public class MawHopperBlockEntity extends BlockEntity implements GeoBlockEntity 
 	public static final int ITEM_TRANSFER_AMOUNT = 16;
 	public static final int DURATION = 11;
 	public static final int DELAY = 8 + 1;
+
+	public static final Predicate<Entity> CONTAINER_ENTITY_SELECTOR = entity ->
+			entity.isAlive()
+					&& (EntitySelector.CONTAINER_ENTITY_SELECTOR.test(entity) || entity instanceof Player)
+					&& entity.getCapability(ModCapabilities.ITEM_HANDLER, null).isPresent();
+
 	protected static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("maw_hopper.idle");
 	protected static final RawAnimation PUMPING_ANIM = RawAnimation.begin().thenLoop("maw_hopper.pumping");
 
+	private final SingleItemStackHandler inventory;
+	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
 	private int ticks = BiomancyMod.GLOBAL_RANDOM.nextInt(DURATION); //add random tick offset
 
-	private final SingleItemStackHandler inventory;
 	private LazyOptional<IItemHandler> optionalItemHandler;
-
-	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
 	public MawHopperBlockEntity(BlockPos pos, BlockState blockState) {
 		super(ModBlockEntities.MAW_HOPPER.get(), pos, blockState);
@@ -79,7 +85,7 @@ public class MawHopperBlockEntity extends BlockEntity implements GeoBlockEntity 
 			}
 		}
 
-		List<Entity> list = level.getEntities((Entity) null, new AABB(pos), entity -> entity.getCapability(ModCapabilities.ITEM_HANDLER, direction).isPresent());
+		List<Entity> list = level.getEntities((Entity) null, new AABB(pos), CONTAINER_ENTITY_SELECTOR);
 		if (!list.isEmpty()) {
 			int index = level.random.nextInt(list.size());
 			return list.get(index).getCapability(ModCapabilities.ITEM_HANDLER, direction);
