@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.datagen.advancements;
 import com.github.elenterius.biomancy.datagen.lang.LangProvider;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.advancements.*;
+import net.minecraft.advancements.critereon.ImpossibleTrigger;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -33,6 +34,7 @@ public class AdvancementBuilder {
 	private boolean showToast = false;
 	private boolean announceToChat = false;
 	private boolean hidden = false;
+	private boolean empty = false;
 
 	private AdvancementBuilder(String modId, final String id, LangProvider lang) {
 		this.modId = modId;
@@ -97,8 +99,19 @@ public class AdvancementBuilder {
 	}
 
 	public AdvancementBuilder hidden() {
-		this.hidden = true;
+		hidden = true;
 		return this;
+	}
+
+	public AdvancementBuilder empty() {
+		empty = true;
+		hidden();
+		impossible();
+		return this;
+	}
+
+	public AdvancementBuilder impossible() {
+		return addCriterion("impossible", new ImpossibleTrigger.TriggerInstance());
 	}
 
 	public AdvancementBuilder addCriterion(String key, CriterionTriggerInstance triggerInstance) {
@@ -148,12 +161,16 @@ public class AdvancementBuilder {
 	}
 
 	public Advancement save(Consumer<Advancement> consumer, ExistingFileHelper fileHelper, String category) throws IllegalStateException {
+		if (empty) {
+			internalBuilder.display(icon, ComponentUtil.empty(), ComponentUtil.empty(), background, frameType, showToast, announceToChat, hidden);
+			return internalBuilder.save(consumer, createRL(category + "/" + id), fileHelper);
+		}
+
 		if (title == null || title.isBlank()) throw new IllegalStateException("Missing title for advancement " + createRL(category + "/" + id));
 		if (description == null || description.isBlank()) throw new IllegalStateException("Missing description for advancement " + createRL(category + "/" + id));
 
 		lang.add(titleTranslationKey, title);
 		lang.add(descriptionTranslationKey, description);
-
 		internalBuilder.display(icon, ComponentUtil.translatable(titleTranslationKey), ComponentUtil.translatable(descriptionTranslationKey), background, frameType, showToast, announceToChat, hidden);
 		return internalBuilder.save(consumer, createRL(category + "/" + id), fileHelper);
 	}

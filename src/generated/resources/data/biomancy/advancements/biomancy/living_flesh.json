@@ -1,0 +1,70 @@
+{
+  "parent": "biomancy:biomancy/empty_after_cradle",
+  "criteria": {
+    "has_killed_flesh_blob": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "biomancy:flesh_blob"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "has_killed_hungry_flesh_blob": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "biomancy:hungry_flesh_blob"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "has_killed_legacy_flesh_blob": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "biomancy:legacy_flesh_blob"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.biomancy.living_flesh.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "biomancy:living_flesh"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.biomancy.living_flesh.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_killed_flesh_blob",
+      "has_killed_hungry_flesh_blob",
+      "has_killed_legacy_flesh_blob"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

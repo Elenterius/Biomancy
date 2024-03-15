@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.datagen.advancements;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.datagen.lang.LangProvider;
 import com.github.elenterius.biomancy.init.ModBlocks;
+import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.tags.ModItemTags;
 import net.minecraft.advancements.Advancement;
@@ -31,6 +32,11 @@ public class BiomancyAdvancementsGenerator implements ForgeAdvancementProvider.A
 
 	private AdvancementBuilder createAdvancement(String id) {
 		return AdvancementBuilder.create(BiomancyMod.MOD_ID, id, lang);
+	}
+
+	private AdvancementBuilder createEmptyAdvancementAfter(Advancement parent) {
+		String id = "empty_after_" + parent.getId().getPath().replace("biomancy/", "");
+		return AdvancementBuilder.create(BiomancyMod.MOD_ID, id, lang).parent(parent).empty();
 	}
 
 	@Override
@@ -64,7 +70,7 @@ public class BiomancyAdvancementsGenerator implements ForgeAdvancementProvider.A
 				.rewardsDefaultRecipe(ModItems.PRIMORDIAL_CORE.get())
 				.save(consumer, fileHelper);
 
-		Advancement primalCore = createAdvancement("flesh").parent(meatCollection).icon(ModItems.PRIMORDIAL_CORE.get())
+		Advancement primalCore = createAdvancement("primal_vision").parent(meatCollection).icon(ModItems.PRIMORDIAL_CORE.get())
 				.title("Primal Vision")
 				.description("You feel bare before the oculus. The mirror leers at you... infinite reflections of yourself... eternal cycles... meaningless existence?")
 				.frameType(FrameType.GOAL).hidden().showToast()
@@ -140,14 +146,26 @@ public class BiomancyAdvancementsGenerator implements ForgeAdvancementProvider.A
 				.addCriterion("has_sacrificed_cooked_meat", hasSacrificedTag(ModItemTags.COOKED_MEATS))
 				.save(consumer, fileHelper);
 
-		createAdvancement("decomposer").parent(primalCradle).icon(ModItems.DECOMPOSER.get())
+		Advancement emptyAfterPrimalCradle = createEmptyAdvancementAfter(primalCradle).save(consumer, fileHelper);
+
+		Advancement livingFlesh = createAdvancement("living_flesh").parent(emptyAfterPrimalCradle).icon(ModItems.LIVING_FLESH.get())
+				.title("Betrayal of Life")
+				.description("Kill a innocent Flesh Blob to progress further. Twist their essence to your will..")
+				.frameType(FrameType.CHALLENGE).showToast().announceToChat()
+				.addCriterion("has_killed_flesh_blob", hasKilledEntity(ModEntityTypes.FLESH_BLOB.get()))
+				.addCriterion("has_killed_hungry_flesh_blob", hasKilledEntity(ModEntityTypes.HUNGRY_FLESH_BLOB.get()))
+				.addCriterion("has_killed_legacy_flesh_blob", hasKilledEntity(ModEntityTypes.LEGACY_FLESH_BLOB.get()))
+				.requirements(RequirementsStrategy.OR)
+				.save(consumer, fileHelper);
+
+		createAdvancement("decomposer").parent(livingFlesh).icon(ModItems.DECOMPOSER.get())
 				.title("Munch & Crunch")
 				.description("You suddenly feel disgusted by the composter. You should use a semi-living construct to decompose things into their base parts.")
 				.showToast()
 				.addHasCriterion(ModItems.DECOMPOSER.get())
 				.save(consumer, fileHelper);
 
-		Advancement bioForge = createAdvancement("bio_forge").parent(primalCradle).icon(ModItems.BIO_FORGE.get())
+		Advancement bioForge = createAdvancement("bio_forge").parent(livingFlesh).icon(ModItems.BIO_FORGE.get())
 				.title("Organic Smithing")
 				.description("You dreamt of a Bio-Construct weaving organic parts together into intricate semi-living things... You don't know when, but you built it.")
 				.frameType(FrameType.GOAL).showToast().announceToChat()

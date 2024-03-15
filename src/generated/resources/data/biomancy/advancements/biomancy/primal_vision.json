@@ -17,7 +17,7 @@
 	"display": {
 		"announce_to_chat": false,
 		"description": {
-			"translate": "advancements.biomancy.flesh.description"
+			"translate": "advancements.biomancy.primal_vision.description"
 		},
 		"frame": "goal",
 		"hidden": true,
@@ -26,7 +26,7 @@
 		},
 		"show_toast": true,
 		"title": {
-			"translate": "advancements.biomancy.flesh.title"
+			"translate": "advancements.biomancy.primal_vision.title"
 		}
 	},
 	"requirements": [
