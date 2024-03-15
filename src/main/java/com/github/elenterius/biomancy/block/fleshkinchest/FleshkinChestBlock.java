@@ -54,6 +54,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
@@ -67,9 +68,11 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 
 	public static final VoxelShape SHAPE_NORTH_OR_SOUTH = Block.box(0, 0, 1, 16, 13, 15);
 	public static final VoxelShape SHAPE_WEST_OR_EAST = Block.box(1, 0, 0, 15, 13, 16);
+	private final float destroySpeed;
 
-	public FleshkinChestBlock(Properties builder) {
-		super(builder);
+	public FleshkinChestBlock(Properties properties, float destroySpeed) {
+		super(properties.destroyTime(-1).explosionResistance(1200)); //set destroy speed to -1f to make the block unbreakable for the Create Drill & other stuff
+		this.destroySpeed = destroySpeed;
 		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, false));
 	}
 
@@ -176,9 +179,10 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 	@Override
 	public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
 		if (level.getBlockEntity(pos) instanceof IRestrictedInteraction interaction && interaction.isActionAllowed(player, Actions.DESTROY_BLOCK)) {
-			return super.getDestroyProgress(state, player, level, pos);
+			int i = ForgeHooks.isCorrectToolForDrops(state, player) ? 30 : 100;
+			return player.getDigSpeed(state, pos) / destroySpeed / i;
 		}
-		return 0f;
+		return 0;
 	}
 
 	@Override
