@@ -1,4 +1,4 @@
 {
-	"type": "minecraft:entity",
-	"random_sequence": "alexsmobs:biomancy/despoil/spectre"
+  "type": "minecraft:entity",
+  "random_sequence": "alexsmobs:biomancy/despoil/spectre"
 }

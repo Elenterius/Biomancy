@@ -1,32 +1,32 @@
 {
-	"type": "biomancy:decomposing",
-	"conditions": [
-		{
-			"type": "forge:mod_loaded",
-			"modid": "biomesoplenty"
-		}
-	],
-	"ingredient": {
-		"item": "biomesoplenty:flesh_tendons"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 116,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 8,
-				"min": 4
-			},
-			"item": "biomancy:elastic_fibers"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 2,
-				"min": 1
-			},
-			"item": "biomancy:flesh_bits"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "biomesoplenty"
+    }
+  ],
+  "ingredient": {
+    "item": "biomesoplenty:flesh_tendons"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 116,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 8,
+        "min": 4
+      },
+      "item": "biomancy:elastic_fibers"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 2,
+        "min": 1
+      },
+      "item": "biomancy:flesh_bits"
+    }
+  ]
 }

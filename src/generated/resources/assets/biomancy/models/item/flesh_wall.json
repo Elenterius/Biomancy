@@ -1,6 +1,6 @@
 {
-	"parent": "minecraft:block/wall_inventory",
-	"textures": {
-		"wall": "biomancy:block/flesh"
-	}
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "biomancy:block/flesh"
+  }
 }

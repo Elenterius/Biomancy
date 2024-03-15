@@ -1,8 +1,8 @@
 {
-	"type": "minecraft:stonecutting",
-	"count": 1,
-	"ingredient": {
-		"item": "biomancy:packed_flesh"
-	},
-	"result": "biomancy:packed_flesh_wall"
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "biomancy:packed_flesh"
+  },
+  "result": "biomancy:packed_flesh_wall"
 }

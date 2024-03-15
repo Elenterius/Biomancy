@@ -1,18 +1,18 @@
 {
-	"type": "biomancy:decomposing",
-	"ingredient": {
-		"item": "minecraft:gravel"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 180,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 6,
-				"min": 3
-			},
-			"item": "biomancy:stone_powder"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "ingredient": {
+    "item": "minecraft:gravel"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 180,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 6,
+        "min": 3
+      },
+      "item": "biomancy:stone_powder"
+    }
+  ]
 }

@@ -1,7 +1,7 @@
 {
-	"parent": "biomancy:block/template_bio_lantern",
-	"render_type": "minecraft:cutout",
-	"textures": {
-		"texture": "biomancy:block/primordial_bio_lantern"
-	}
+  "parent": "biomancy:block/template_bio_lantern",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "texture": "biomancy:block/primordial_bio_lantern"
+  }
 }

@@ -1,17 +1,17 @@
 {
-	"type": "biomancy:digesting",
-	"conditions": [
-		{
-			"type": "forge:mod_loaded",
-			"modid": "alexsmobs"
-		}
-	],
-	"ingredient": {
-		"item": "alexsmobs:caiman_egg"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 200,
-	"result": {
-		"item": "biomancy:nutrient_paste"
-	}
+  "type": "biomancy:digesting",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "alexsmobs"
+    }
+  ],
+  "ingredient": {
+    "item": "alexsmobs:caiman_egg"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 200,
+  "result": {
+    "item": "biomancy:nutrient_paste"
+  }
 }

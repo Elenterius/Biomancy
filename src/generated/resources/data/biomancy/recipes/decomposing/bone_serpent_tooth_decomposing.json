@@ -1,32 +1,32 @@
 {
-	"type": "biomancy:decomposing",
-	"conditions": [
-		{
-			"type": "forge:mod_loaded",
-			"modid": "alexsmobs"
-		}
-	],
-	"ingredient": {
-		"item": "alexsmobs:bone_serpent_tooth"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 310,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 4,
-				"min": 2
-			},
-			"item": "biomancy:mineral_fragment"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 6,
-				"min": 4
-			},
-			"item": "biomancy:bone_fragments"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "alexsmobs"
+    }
+  ],
+  "ingredient": {
+    "item": "alexsmobs:bone_serpent_tooth"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 310,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 4,
+        "min": 2
+      },
+      "item": "biomancy:mineral_fragment"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 6,
+        "min": 4
+      },
+      "item": "biomancy:bone_fragments"
+    }
+  ]
 }

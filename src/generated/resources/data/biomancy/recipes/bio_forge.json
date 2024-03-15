@@ -1,27 +1,27 @@
 {
-	"type": "minecraft:crafting_shaped",
-	"category": "misc",
-	"key": {
-		"C": {
-			"tag": "biomancy:claws"
-		},
-		"E": {
-			"item": "biomancy:living_flesh"
-		},
-		"M": {
-			"tag": "biomancy:raw_meats"
-		},
-		"S": {
-			"item": "minecraft:slime_ball"
-		}
-	},
-	"pattern": [
-		"C C",
-		"MSM",
-		"MEM"
-	],
-	"result": {
-		"item": "biomancy:bio_forge"
-	},
-	"show_notification": true
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "biomancy:claws"
+    },
+    "E": {
+      "item": "biomancy:living_flesh"
+    },
+    "M": {
+      "tag": "biomancy:raw_meats"
+    },
+    "S": {
+      "item": "minecraft:slime_ball"
+    }
+  },
+  "pattern": [
+    "C C",
+    "MSM",
+    "MEM"
+  ],
+  "result": {
+    "item": "biomancy:bio_forge"
+  },
+  "show_notification": true
 }

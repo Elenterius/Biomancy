@@ -1,17 +1,17 @@
 {
-	"type": "minecraft:crafting_shaped",
-	"category": "misc",
-	"key": {
-		"P": {
-			"item": "biomancy:primal_permeable_membrane_pane"
-		}
-	},
-	"pattern": [
-		"P",
-		"P"
-	],
-	"result": {
-		"item": "biomancy:primal_permeable_membrane"
-	},
-	"show_notification": true
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "P": {
+      "item": "biomancy:primal_permeable_membrane_pane"
+    }
+  },
+  "pattern": [
+    "P",
+    "P"
+  ],
+  "result": {
+    "item": "biomancy:primal_permeable_membrane"
+  },
+  "show_notification": true
 }

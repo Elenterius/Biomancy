@@ -1,28 +1,28 @@
 {
-	"type": "minecraft:crafting_shaped",
-	"category": "misc",
-	"key": {
-		"E": {
-			"item": "biomancy:exotic_dust"
-		},
-		"F": {
-			"tag": "biomancy:raw_meats"
-		},
-		"M": {
-			"item": "biomancy:malignant_flesh"
-		},
-		"S": {
-			"item": "biomancy:stone_powder"
-		}
-	},
-	"pattern": [
-		"SME",
-		"MFM",
-		"EMS"
-	],
-	"result": {
-		"count": 4,
-		"item": "biomancy:primal_flesh"
-	},
-	"show_notification": true
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "biomancy:exotic_dust"
+    },
+    "F": {
+      "tag": "biomancy:raw_meats"
+    },
+    "M": {
+      "item": "biomancy:malignant_flesh"
+    },
+    "S": {
+      "item": "biomancy:stone_powder"
+    }
+  },
+  "pattern": [
+    "SME",
+    "MFM",
+    "EMS"
+  ],
+  "result": {
+    "count": 4,
+    "item": "biomancy:primal_flesh"
+  },
+  "show_notification": true
 }

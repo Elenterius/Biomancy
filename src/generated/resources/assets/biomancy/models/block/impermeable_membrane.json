@@ -1,7 +1,7 @@
 {
-	"parent": "minecraft:block/cube_all",
-	"render_type": "minecraft:translucent",
-	"textures": {
-		"all": "biomancy:block/impermeable_membrane"
-	}
+  "parent": "minecraft:block/cube_all",
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "all": "biomancy:block/impermeable_membrane"
+  }
 }

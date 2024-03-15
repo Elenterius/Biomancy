@@ -1,34 +1,34 @@
 {
-	"type": "biomancy:decomposing",
-	"ingredient": {
-		"item": "minecraft:wither_rose"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 215,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 2,
-				"min": 1
-			},
-			"item": "biomancy:organic_matter"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 1,
-				"min": 0
-			},
-			"item": "biomancy:exotic_dust"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 5,
-				"min": 3
-			},
-			"item": "biomancy:withering_ooze"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "ingredient": {
+    "item": "minecraft:wither_rose"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 215,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 2,
+        "min": 1
+      },
+      "item": "biomancy:organic_matter"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 1,
+        "min": 0
+      },
+      "item": "biomancy:exotic_dust"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 5,
+        "min": 3
+      },
+      "item": "biomancy:withering_ooze"
+    }
+  ]
 }

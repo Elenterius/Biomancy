@@ -1,12 +1,12 @@
 {
-	"type": "minecraft:crafting_shapeless",
-	"category": "misc",
-	"ingredients": [
-		{
-			"item": "biomancy:full_flesh_door"
-		}
-	],
-	"result": {
-		"item": "biomancy:flesh_door"
-	}
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "biomancy:full_flesh_door"
+    }
+  ],
+  "result": {
+    "item": "biomancy:flesh_door"
+  }
 }

@@ -1,18 +1,18 @@
 {
-	"type": "biomancy:digesting",
-	"conditions": [
-		{
-			"type": "forge:mod_loaded",
-			"modid": "alexscaves"
-		}
-	],
-	"ingredient": {
-		"item": "alexscaves:subterranodon_egg"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 464,
-	"result": {
-		"count": 4,
-		"item": "biomancy:nutrient_paste"
-	}
+  "type": "biomancy:digesting",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "alexscaves"
+    }
+  ],
+  "ingredient": {
+    "item": "alexscaves:subterranodon_egg"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 464,
+  "result": {
+    "count": 4,
+    "item": "biomancy:nutrient_paste"
+  }
 }

@@ -1,17 +1,17 @@
 {
-	"type": "biomancy:bio_forging",
-	"bio_forge_tab": "biomancy:blocks",
-	"ingredients": [
-		{
-			"count": 4,
-			"item": "biomancy:flesh_bits"
-		},
-		{
-			"item": "biomancy:tough_fibers"
-		}
-	],
-	"nutrientsCost": 1,
-	"result": {
-		"item": "biomancy:packed_flesh_wall"
-	}
+  "type": "biomancy:bio_forging",
+  "bio_forge_tab": "biomancy:blocks",
+  "ingredients": [
+    {
+      "count": 4,
+      "item": "biomancy:flesh_bits"
+    },
+    {
+      "item": "biomancy:tough_fibers"
+    }
+  ],
+  "nutrientsCost": 1,
+  "result": {
+    "item": "biomancy:packed_flesh_wall"
+  }
 }

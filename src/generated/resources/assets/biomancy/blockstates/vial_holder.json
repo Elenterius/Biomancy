@@ -1,234 +1,234 @@
 {
-	"multipart": [
-		{
-			"apply": {
-				"model": "biomancy:block/vial_holder_frame"
-			},
-			"when": {
-				"facing": "north"
-			}
-		},
-		{
-			"apply": {
-				"model": "biomancy:block/vial_holder_frame",
-				"y": 180
-			},
-			"when": {
-				"facing": "south"
-			}
-		},
-		{
-			"apply": {
-				"model": "biomancy:block/vial_holder_frame",
-				"y": 270
-			},
-			"when": {
-				"facing": "west"
-			}
-		},
-		{
-			"apply": {
-				"model": "biomancy:block/vial_holder_frame",
-				"y": 90
-			},
-			"when": {
-				"facing": "east"
-			}
-		},
-		{
-			"apply": {
-				"model": "biomancy:block/vial_holder_vial_0"
-			},
-			"when": {
-				"facing": "north",
-				"vial_0": "true"
-			}
-		},
-		{
-			"apply": {
-				"model": "biomancy:block/vial_holder_vial_0",
-				"y": 180
-			},
-			"when": {
-				"facing": "south",
-				"vial_0": "true"
-			}
-		},
-		{
-			"apply": {
-				"model": "biomancy:block/vial_holder_vial_0",
-				"y": 270
-			},
-			"when": {
-				"facing": "west",
-				"vial_0": "true"
-			}
-		},
-		{
-			"apply": {
-				"model": "biomancy:block/vial_holder_vial_0",
-				"y": 90
-			},
-			"when": {
-				"facing": "east",
-				"vial_0": "true"
-			}
-		},
-		{
-			"apply": {
-				"model": "biomancy:block/vial_holder_vial_1"
-			},
-			"when": {
-				"facing": "north",
-				"vial_1": "true"
-			}
-		},
-		{
-			"apply": {
-				"model": "biomancy:block/vial_holder_vial_1",
-				"y": 180
-			},
-			"when": {
-				"facing": "south",
-				"vial_1": "true"
-			}
-		},
-		{
-			"apply": {
-				"model": "biomancy:block/vial_holder_vial_1",
-				"y": 270
-			},
-			"when": {
-				"facing": "west",
-				"vial_1": "true"
-			}
-		},
-		{
-			"apply": {
-				"model": "biomancy:block/vial_holder_vial_1",
-				"y": 90
-			},
-			"when": {
-				"facing": "east",
-				"vial_1": "true"
-			}
-		},
-		{
-			"apply": {
-				"model": "biomancy:block/vial_holder_vial_2"
-			},
-			"when": {
-				"facing": "north",
-				"vial_2": "true"
-			}
-		},
-		{
-			"apply": {
-				"model": "biomancy:block/vial_holder_vial_2",
-				"y": 180
-			},
-			"when": {
-				"facing": "south",
-				"vial_2": "true"
-			}
-		},
-		{
-			"apply": {
-				"model": "biomancy:block/vial_holder_vial_2",
-				"y": 270
-			},
-			"when": {
-				"facing": "west",
-				"vial_2": "true"
-			}
-		},
-		{
-			"apply": {
-				"model": "biomancy:block/vial_holder_vial_2",
-				"y": 90
-			},
-			"when": {
-				"facing": "east",
-				"vial_2": "true"
-			}
-		},
-		{
-			"apply": {
-				"model": "biomancy:block/vial_holder_vial_3"
-			},
-			"when": {
-				"facing": "north",
-				"vial_3": "true"
-			}
-		},
-		{
-			"apply": {
-				"model": "biomancy:block/vial_holder_vial_3",
-				"y": 180
-			},
-			"when": {
-				"facing": "south",
-				"vial_3": "true"
-			}
-		},
-		{
-			"apply": {
-				"model": "biomancy:block/vial_holder_vial_3",
-				"y": 270
-			},
-			"when": {
-				"facing": "west",
-				"vial_3": "true"
-			}
-		},
-		{
-			"apply": {
-				"model": "biomancy:block/vial_holder_vial_3",
-				"y": 90
-			},
-			"when": {
-				"facing": "east",
-				"vial_3": "true"
-			}
-		},
-		{
-			"apply": {
-				"model": "biomancy:block/vial_holder_vial_4"
-			},
-			"when": {
-				"facing": "north",
-				"vial_4": "true"
-			}
-		},
-		{
-			"apply": {
-				"model": "biomancy:block/vial_holder_vial_4",
-				"y": 180
-			},
-			"when": {
-				"facing": "south",
-				"vial_4": "true"
-			}
-		},
-		{
-			"apply": {
-				"model": "biomancy:block/vial_holder_vial_4",
-				"y": 270
-			},
-			"when": {
-				"facing": "west",
-				"vial_4": "true"
-			}
-		},
-		{
-			"apply": {
-				"model": "biomancy:block/vial_holder_vial_4",
-				"y": 90
-			},
-			"when": {
-				"facing": "east",
-				"vial_4": "true"
-			}
-		}
-	]
+  "multipart": [
+    {
+      "apply": {
+        "model": "biomancy:block/vial_holder_frame"
+      },
+      "when": {
+        "facing": "north"
+      }
+    },
+    {
+      "apply": {
+        "model": "biomancy:block/vial_holder_frame",
+        "y": 180
+      },
+      "when": {
+        "facing": "south"
+      }
+    },
+    {
+      "apply": {
+        "model": "biomancy:block/vial_holder_frame",
+        "y": 270
+      },
+      "when": {
+        "facing": "west"
+      }
+    },
+    {
+      "apply": {
+        "model": "biomancy:block/vial_holder_frame",
+        "y": 90
+      },
+      "when": {
+        "facing": "east"
+      }
+    },
+    {
+      "apply": {
+        "model": "biomancy:block/vial_holder_vial_0"
+      },
+      "when": {
+        "facing": "north",
+        "vial_0": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "biomancy:block/vial_holder_vial_0",
+        "y": 180
+      },
+      "when": {
+        "facing": "south",
+        "vial_0": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "biomancy:block/vial_holder_vial_0",
+        "y": 270
+      },
+      "when": {
+        "facing": "west",
+        "vial_0": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "biomancy:block/vial_holder_vial_0",
+        "y": 90
+      },
+      "when": {
+        "facing": "east",
+        "vial_0": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "biomancy:block/vial_holder_vial_1"
+      },
+      "when": {
+        "facing": "north",
+        "vial_1": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "biomancy:block/vial_holder_vial_1",
+        "y": 180
+      },
+      "when": {
+        "facing": "south",
+        "vial_1": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "biomancy:block/vial_holder_vial_1",
+        "y": 270
+      },
+      "when": {
+        "facing": "west",
+        "vial_1": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "biomancy:block/vial_holder_vial_1",
+        "y": 90
+      },
+      "when": {
+        "facing": "east",
+        "vial_1": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "biomancy:block/vial_holder_vial_2"
+      },
+      "when": {
+        "facing": "north",
+        "vial_2": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "biomancy:block/vial_holder_vial_2",
+        "y": 180
+      },
+      "when": {
+        "facing": "south",
+        "vial_2": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "biomancy:block/vial_holder_vial_2",
+        "y": 270
+      },
+      "when": {
+        "facing": "west",
+        "vial_2": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "biomancy:block/vial_holder_vial_2",
+        "y": 90
+      },
+      "when": {
+        "facing": "east",
+        "vial_2": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "biomancy:block/vial_holder_vial_3"
+      },
+      "when": {
+        "facing": "north",
+        "vial_3": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "biomancy:block/vial_holder_vial_3",
+        "y": 180
+      },
+      "when": {
+        "facing": "south",
+        "vial_3": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "biomancy:block/vial_holder_vial_3",
+        "y": 270
+      },
+      "when": {
+        "facing": "west",
+        "vial_3": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "biomancy:block/vial_holder_vial_3",
+        "y": 90
+      },
+      "when": {
+        "facing": "east",
+        "vial_3": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "biomancy:block/vial_holder_vial_4"
+      },
+      "when": {
+        "facing": "north",
+        "vial_4": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "biomancy:block/vial_holder_vial_4",
+        "y": 180
+      },
+      "when": {
+        "facing": "south",
+        "vial_4": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "biomancy:block/vial_holder_vial_4",
+        "y": 270
+      },
+      "when": {
+        "facing": "west",
+        "vial_4": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "biomancy:block/vial_holder_vial_4",
+        "y": 90
+      },
+      "when": {
+        "facing": "east",
+        "vial_4": "true"
+      }
+    }
+  ]
 }

@@ -1,36 +1,36 @@
 {
-	"criteria": {
-		"has_raw_meats": {
-			"conditions": {
-				"items": [
-					{
-						"tag": "biomancy:raw_meats"
-					}
-				]
-			},
-			"trigger": "minecraft:inventory_changed"
-		}
-	},
-	"display": {
-		"announce_to_chat": false,
-		"background": "biomancy:textures/block/flesh.png",
-		"description": {
-			"translate": "advancements.biomancy.root.description"
-		},
-		"frame": "task",
-		"hidden": false,
-		"icon": {
-			"item": "biomancy:flesh_bits"
-		},
-		"show_toast": true,
-		"title": {
-			"translate": "advancements.biomancy.root.title"
-		}
-	},
-	"requirements": [
-		[
-			"has_raw_meats"
-		]
-	],
-	"sends_telemetry_event": true
+  "criteria": {
+    "has_raw_meats": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "biomancy:raw_meats"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "biomancy:textures/block/flesh.png",
+    "description": {
+      "translate": "advancements.biomancy.root.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "biomancy:flesh_bits"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.biomancy.root.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_raw_meats"
+    ]
+  ],
+  "sends_telemetry_event": true
 }

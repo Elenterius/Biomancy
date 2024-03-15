@@ -1,35 +1,35 @@
 {
-	"parent": "minecraft:recipes/root",
-	"criteria": {
-		"has_prismarine_shard": {
-			"conditions": {
-				"items": [
-					{
-						"items": [
-							"minecraft:prismarine_shard"
-						]
-					}
-				]
-			},
-			"trigger": "minecraft:inventory_changed"
-		},
-		"has_the_recipe": {
-			"conditions": {
-				"recipe": "biomancy:decomposing/prismarine_shard_decomposing"
-			},
-			"trigger": "minecraft:recipe_unlocked"
-		}
-	},
-	"requirements": [
-		[
-			"has_prismarine_shard",
-			"has_the_recipe"
-		]
-	],
-	"rewards": {
-		"recipes": [
-			"biomancy:decomposing/prismarine_shard_decomposing"
-		]
-	},
-	"sends_telemetry_event": false
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_prismarine_shard": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:prismarine_shard"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "biomancy:decomposing/prismarine_shard_decomposing"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_prismarine_shard",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "biomancy:decomposing/prismarine_shard_decomposing"
+    ]
+  },
+  "sends_telemetry_event": false
 }

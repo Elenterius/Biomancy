@@ -1,26 +1,26 @@
 {
-	"type": "biomancy:decomposing",
-	"ingredient": {
-		"item": "minecraft:verdant_froglight"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 258,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 9,
-				"min": 5
-			},
-			"item": "biomancy:bio_lumens"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 3,
-				"min": 2
-			},
-			"item": "biomancy:bile"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "ingredient": {
+    "item": "minecraft:verdant_froglight"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 258,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 9,
+        "min": 5
+      },
+      "item": "biomancy:bio_lumens"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 3,
+        "min": 2
+      },
+      "item": "biomancy:bile"
+    }
+  ]
 }

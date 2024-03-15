@@ -1,32 +1,32 @@
 {
-	"type": "biomancy:decomposing",
-	"conditions": [
-		{
-			"type": "forge:mod_loaded",
-			"modid": "alexsmobs"
-		}
-	],
-	"ingredient": {
-		"item": "alexsmobs:centipede_leg"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 610,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 10,
-				"min": 6
-			},
-			"item": "biomancy:mineral_fragment"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 7,
-				"min": 4
-			},
-			"item": "biomancy:tough_fibers"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "alexsmobs"
+    }
+  ],
+  "ingredient": {
+    "item": "alexsmobs:centipede_leg"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 610,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 10,
+        "min": 6
+      },
+      "item": "biomancy:mineral_fragment"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 7,
+        "min": 4
+      },
+      "item": "biomancy:tough_fibers"
+    }
+  ]
 }

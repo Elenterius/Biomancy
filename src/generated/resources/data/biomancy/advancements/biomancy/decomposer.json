@@ -1,38 +1,38 @@
 {
-	"parent": "biomancy:biomancy/living_flesh",
-	"criteria": {
-		"has_decomposer": {
-			"conditions": {
-				"items": [
-					{
-						"items": [
-							"biomancy:decomposer"
-						]
-					}
-				]
-			},
-			"trigger": "minecraft:inventory_changed"
-		}
-	},
-	"display": {
-		"announce_to_chat": false,
-		"description": {
-			"translate": "advancements.biomancy.decomposer.description"
-		},
-		"frame": "task",
-		"hidden": false,
-		"icon": {
-			"item": "biomancy:decomposer"
-		},
-		"show_toast": true,
-		"title": {
-			"translate": "advancements.biomancy.decomposer.title"
-		}
-	},
-	"requirements": [
-		[
-			"has_decomposer"
-		]
-	],
-	"sends_telemetry_event": true
+  "parent": "biomancy:biomancy/living_flesh",
+  "criteria": {
+    "has_decomposer": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:decomposer"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.biomancy.decomposer.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "biomancy:decomposer"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.biomancy.decomposer.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_decomposer"
+    ]
+  ],
+  "sends_telemetry_event": true
 }

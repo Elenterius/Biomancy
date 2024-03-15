@@ -1,26 +1,26 @@
 {
-	"type": "biomancy:decomposing",
-	"ingredient": {
-		"item": "minecraft:nautilus_shell"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 610,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 10,
-				"min": 6
-			},
-			"item": "biomancy:mineral_fragment"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 7,
-				"min": 4
-			},
-			"item": "biomancy:tough_fibers"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "ingredient": {
+    "item": "minecraft:nautilus_shell"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 610,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 10,
+        "min": 6
+      },
+      "item": "biomancy:mineral_fragment"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 7,
+        "min": 4
+      },
+      "item": "biomancy:tough_fibers"
+    }
+  ]
 }

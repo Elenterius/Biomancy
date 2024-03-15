@@ -1,22 +1,22 @@
 {
-	"type": "biomancy:bio_forging",
-	"bio_forge_tab": "biomancy:components",
-	"ingredients": [
-		{
-			"count": 10,
-			"item": "biomancy:bio_lumens"
-		},
-		{
-			"count": 2,
-			"item": "minecraft:yellow_dye"
-		},
-		{
-			"count": 4,
-			"item": "biomancy:organic_matter"
-		}
-	],
-	"nutrientsCost": 1,
-	"result": {
-		"item": "minecraft:shroomlight"
-	}
+  "type": "biomancy:bio_forging",
+  "bio_forge_tab": "biomancy:components",
+  "ingredients": [
+    {
+      "count": 10,
+      "item": "biomancy:bio_lumens"
+    },
+    {
+      "count": 2,
+      "item": "minecraft:yellow_dye"
+    },
+    {
+      "count": 4,
+      "item": "biomancy:organic_matter"
+    }
+  ],
+  "nutrientsCost": 1,
+  "result": {
+    "item": "minecraft:shroomlight"
+  }
 }

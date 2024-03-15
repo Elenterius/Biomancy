@@ -1,35 +1,35 @@
 {
-	"parent": "minecraft:recipes/root",
-	"criteria": {
-		"has_bloomberry": {
-			"conditions": {
-				"items": [
-					{
-						"items": [
-							"biomancy:bloomberry"
-						]
-					}
-				]
-			},
-			"trigger": "minecraft:inventory_changed"
-		},
-		"has_the_recipe": {
-			"conditions": {
-				"recipe": "biomancy:primordial_bio_lantern"
-			},
-			"trigger": "minecraft:recipe_unlocked"
-		}
-	},
-	"requirements": [
-		[
-			"has_bloomberry",
-			"has_the_recipe"
-		]
-	],
-	"rewards": {
-		"recipes": [
-			"biomancy:primordial_bio_lantern"
-		]
-	},
-	"sends_telemetry_event": false
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_bloomberry": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:bloomberry"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "biomancy:primordial_bio_lantern"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_bloomberry",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "biomancy:primordial_bio_lantern"
+    ]
+  },
+  "sends_telemetry_event": false
 }

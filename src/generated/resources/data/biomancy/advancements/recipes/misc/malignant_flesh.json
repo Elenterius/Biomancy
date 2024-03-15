@@ -1,35 +1,35 @@
 {
-	"parent": "minecraft:recipes/root",
-	"criteria": {
-		"has_malignant_flesh_veins": {
-			"conditions": {
-				"items": [
-					{
-						"items": [
-							"biomancy:malignant_flesh_veins"
-						]
-					}
-				]
-			},
-			"trigger": "minecraft:inventory_changed"
-		},
-		"has_the_recipe": {
-			"conditions": {
-				"recipe": "biomancy:malignant_flesh"
-			},
-			"trigger": "minecraft:recipe_unlocked"
-		}
-	},
-	"requirements": [
-		[
-			"has_malignant_flesh_veins",
-			"has_the_recipe"
-		]
-	],
-	"rewards": {
-		"recipes": [
-			"biomancy:malignant_flesh"
-		]
-	},
-	"sends_telemetry_event": false
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_malignant_flesh_veins": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:malignant_flesh_veins"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "biomancy:malignant_flesh"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_malignant_flesh_veins",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "biomancy:malignant_flesh"
+    ]
+  },
+  "sends_telemetry_event": false
 }

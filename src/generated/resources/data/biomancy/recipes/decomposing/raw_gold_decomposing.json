@@ -1,26 +1,26 @@
 {
-	"type": "biomancy:decomposing",
-	"ingredient": {
-		"item": "minecraft:raw_gold"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 420,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 9,
-				"min": 5
-			},
-			"item": "biomancy:mineral_fragment"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 2,
-				"min": 1
-			},
-			"item": "biomancy:stone_powder"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "ingredient": {
+    "item": "minecraft:raw_gold"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 420,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 9,
+        "min": 5
+      },
+      "item": "biomancy:mineral_fragment"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 2,
+        "min": 1
+      },
+      "item": "biomancy:stone_powder"
+    }
+  ]
 }

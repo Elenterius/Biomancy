@@ -1,7 +1,7 @@
 {
-	"variants": {
-		"": {
-			"model": "biomancy:block/impermeable_membrane"
-		}
-	}
+  "variants": {
+    "": {
+      "model": "biomancy:block/impermeable_membrane"
+    }
+  }
 }

@@ -1,9 +1,9 @@
 {
-	"values": [
-		"biomancy:primordial_spikes",
-		"biomancy:chest_bite",
-		"biomancy:bleed",
-		"biomancy:spike_fall_on",
-		"biomancy:spike_impale"
-	]
+  "values": [
+    "biomancy:primordial_spikes",
+    "biomancy:chest_bite",
+    "biomancy:bleed",
+    "biomancy:spike_fall_on",
+    "biomancy:spike_impale"
+  ]
 }

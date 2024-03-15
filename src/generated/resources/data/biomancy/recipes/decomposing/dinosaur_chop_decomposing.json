@@ -1,48 +1,48 @@
 {
-	"type": "biomancy:decomposing",
-	"conditions": [
-		{
-			"type": "forge:mod_loaded",
-			"modid": "alexscaves"
-		}
-	],
-	"ingredient": {
-		"item": "alexscaves:dinosaur_chop"
-	},
-	"nutrientsCost": 2,
-	"processingTime": 2106,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 72,
-				"min": 36
-			},
-			"item": "biomancy:flesh_bits"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 24,
-				"min": 12
-			},
-			"item": "biomancy:elastic_fibers"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 18,
-				"min": 12
-			},
-			"item": "biomancy:bone_fragments"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 6,
-				"min": 3
-			},
-			"item": "biomancy:hormone_secretion"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "alexscaves"
+    }
+  ],
+  "ingredient": {
+    "item": "alexscaves:dinosaur_chop"
+  },
+  "nutrientsCost": 2,
+  "processingTime": 2106,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 72,
+        "min": 36
+      },
+      "item": "biomancy:flesh_bits"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 24,
+        "min": 12
+      },
+      "item": "biomancy:elastic_fibers"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 18,
+        "min": 12
+      },
+      "item": "biomancy:bone_fragments"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 6,
+        "min": 3
+      },
+      "item": "biomancy:hormone_secretion"
+    }
+  ]
 }

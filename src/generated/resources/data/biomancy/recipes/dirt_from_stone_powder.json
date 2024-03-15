@@ -1,21 +1,21 @@
 {
-	"type": "minecraft:crafting_shaped",
-	"category": "misc",
-	"key": {
-		"L": {
-			"item": "biomancy:stone_powder"
-		},
-		"P": {
-			"item": "biomancy:organic_matter"
-		}
-	},
-	"pattern": [
-		"LPL",
-		"PLP",
-		"LPL"
-	],
-	"result": {
-		"item": "minecraft:dirt"
-	},
-	"show_notification": true
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "L": {
+      "item": "biomancy:stone_powder"
+    },
+    "P": {
+      "item": "biomancy:organic_matter"
+    }
+  },
+  "pattern": [
+    "LPL",
+    "PLP",
+    "LPL"
+  ],
+  "result": {
+    "item": "minecraft:dirt"
+  },
+  "show_notification": true
 }

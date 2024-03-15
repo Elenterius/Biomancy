@@ -1,26 +1,26 @@
 {
-	"type": "biomancy:decomposing",
-	"ingredient": {
-		"item": "minecraft:skeleton_skull"
-	},
-	"nutrientsCost": 2,
-	"processingTime": 1480,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 48,
-				"min": 28
-			},
-			"item": "biomancy:bone_fragments"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 7,
-				"min": 4
-			},
-			"item": "biomancy:mineral_fragment"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "ingredient": {
+    "item": "minecraft:skeleton_skull"
+  },
+  "nutrientsCost": 2,
+  "processingTime": 1480,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 48,
+        "min": 28
+      },
+      "item": "biomancy:bone_fragments"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 7,
+        "min": 4
+      },
+      "item": "biomancy:mineral_fragment"
+    }
+  ]
 }

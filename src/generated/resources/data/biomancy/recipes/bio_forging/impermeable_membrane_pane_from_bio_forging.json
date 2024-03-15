@@ -1,23 +1,23 @@
 {
-	"type": "biomancy:bio_forging",
-	"bio_forge_tab": "biomancy:misc",
-	"ingredients": [
-		{
-			"count": 2,
-			"item": "biomancy:elastic_fibers"
-		},
-		{
-			"count": 4,
-			"item": "biomancy:bile"
-		},
-		{
-			"count": 2,
-			"item": "biomancy:gem_fragments"
-		}
-	],
-	"nutrientsCost": 1,
-	"result": {
-		"count": 2,
-		"item": "biomancy:impermeable_membrane_pane"
-	}
+  "type": "biomancy:bio_forging",
+  "bio_forge_tab": "biomancy:misc",
+  "ingredients": [
+    {
+      "count": 2,
+      "item": "biomancy:elastic_fibers"
+    },
+    {
+      "count": 4,
+      "item": "biomancy:bile"
+    },
+    {
+      "count": 2,
+      "item": "biomancy:gem_fragments"
+    }
+  ],
+  "nutrientsCost": 1,
+  "result": {
+    "count": 2,
+    "item": "biomancy:impermeable_membrane_pane"
+  }
 }

@@ -1,35 +1,35 @@
 {
-	"parent": "minecraft:recipes/root",
-	"criteria": {
-		"has_mineral_fragment": {
-			"conditions": {
-				"items": [
-					{
-						"items": [
-							"biomancy:mineral_fragment"
-						]
-					}
-				]
-			},
-			"trigger": "minecraft:inventory_changed"
-		},
-		"has_the_recipe": {
-			"conditions": {
-				"recipe": "biomancy:red_sand_from_mineral_fragment"
-			},
-			"trigger": "minecraft:recipe_unlocked"
-		}
-	},
-	"requirements": [
-		[
-			"has_mineral_fragment",
-			"has_the_recipe"
-		]
-	],
-	"rewards": {
-		"recipes": [
-			"biomancy:red_sand_from_mineral_fragment"
-		]
-	},
-	"sends_telemetry_event": false
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_mineral_fragment": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:mineral_fragment"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "biomancy:red_sand_from_mineral_fragment"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_mineral_fragment",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "biomancy:red_sand_from_mineral_fragment"
+    ]
+  },
+  "sends_telemetry_event": false
 }

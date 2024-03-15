@@ -1,34 +1,34 @@
 {
-	"type": "biomancy:decomposing",
-	"ingredient": {
-		"item": "biomancy:toxin_gland"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 184,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 5,
-				"min": 2
-			},
-			"item": "biomancy:toxin_extract"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 3,
-				"min": 2
-			},
-			"item": "biomancy:flesh_bits"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 3,
-				"min": 1
-			},
-			"item": "biomancy:elastic_fibers"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "ingredient": {
+    "item": "biomancy:toxin_gland"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 184,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 5,
+        "min": 2
+      },
+      "item": "biomancy:toxin_extract"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 3,
+        "min": 2
+      },
+      "item": "biomancy:flesh_bits"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 3,
+        "min": 1
+      },
+      "item": "biomancy:elastic_fibers"
+    }
+  ]
 }

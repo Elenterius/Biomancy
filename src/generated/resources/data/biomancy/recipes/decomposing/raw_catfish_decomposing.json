@@ -1,40 +1,40 @@
 {
-	"type": "biomancy:decomposing",
-	"conditions": [
-		{
-			"type": "forge:mod_loaded",
-			"modid": "alexsmobs"
-		}
-	],
-	"ingredient": {
-		"item": "alexsmobs:raw_catfish"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 142,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 4,
-				"min": 2
-			},
-			"item": "biomancy:flesh_bits"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 2,
-				"min": 1
-			},
-			"item": "biomancy:bone_fragments"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 2,
-				"min": 1
-			},
-			"item": "biomancy:elastic_fibers"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "alexsmobs"
+    }
+  ],
+  "ingredient": {
+    "item": "alexsmobs:raw_catfish"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 142,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 4,
+        "min": 2
+      },
+      "item": "biomancy:flesh_bits"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 2,
+        "min": 1
+      },
+      "item": "biomancy:bone_fragments"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 2,
+        "min": 1
+      },
+      "item": "biomancy:elastic_fibers"
+    }
+  ]
 }

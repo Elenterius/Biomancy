@@ -1,19 +1,19 @@
 {
-	"variants": {
-		"powered=false,sensitivity=enemy": {
-			"model": "biomancy:block/fleshkin_pressure_plate_enemy"
-		},
-		"powered=false,sensitivity=friend": {
-			"model": "biomancy:block/fleshkin_pressure_plate_friend"
-		},
-		"powered=true,sensitivity=enemy": {
-			"model": "biomancy:block/fleshkin_pressure_plate_enemy_down"
-		},
-		"powered=true,sensitivity=friend": {
-			"model": "biomancy:block/fleshkin_pressure_plate_friend_down"
-		},
-		"sensitivity=none": {
-			"model": "biomancy:block/fleshkin_pressure_plate_friend"
-		}
-	}
+  "variants": {
+    "powered=false,sensitivity=enemy": {
+      "model": "biomancy:block/fleshkin_pressure_plate_enemy"
+    },
+    "powered=false,sensitivity=friend": {
+      "model": "biomancy:block/fleshkin_pressure_plate_friend"
+    },
+    "powered=true,sensitivity=enemy": {
+      "model": "biomancy:block/fleshkin_pressure_plate_enemy_down"
+    },
+    "powered=true,sensitivity=friend": {
+      "model": "biomancy:block/fleshkin_pressure_plate_friend_down"
+    },
+    "sensitivity=none": {
+      "model": "biomancy:block/fleshkin_pressure_plate_friend"
+    }
+  }
 }

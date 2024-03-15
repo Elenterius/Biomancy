@@ -1,16 +1,16 @@
 {
-	"variants": {
-		"axis=x": {
-			"model": "biomancy:block/tendon_chain",
-			"x": 90,
-			"y": 90
-		},
-		"axis=y": {
-			"model": "biomancy:block/tendon_chain"
-		},
-		"axis=z": {
-			"model": "biomancy:block/tendon_chain",
-			"x": 90
-		}
-	}
+  "variants": {
+    "axis=x": {
+      "model": "biomancy:block/tendon_chain",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "biomancy:block/tendon_chain"
+    },
+    "axis=z": {
+      "model": "biomancy:block/tendon_chain",
+      "x": 90
+    }
+  }
 }

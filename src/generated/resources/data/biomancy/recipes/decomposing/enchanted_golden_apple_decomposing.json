@@ -1,34 +1,34 @@
 {
-	"type": "biomancy:decomposing",
-	"ingredient": {
-		"item": "minecraft:enchanted_golden_apple"
-	},
-	"nutrientsCost": 4,
-	"processingTime": 4080,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 72,
-				"min": 43
-			},
-			"item": "biomancy:mineral_fragment"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 20,
-				"min": 12
-			},
-			"item": "biomancy:regenerative_fluid"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 10,
-				"min": 6
-			},
-			"item": "biomancy:exotic_dust"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "ingredient": {
+    "item": "minecraft:enchanted_golden_apple"
+  },
+  "nutrientsCost": 4,
+  "processingTime": 4080,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 72,
+        "min": 43
+      },
+      "item": "biomancy:mineral_fragment"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 20,
+        "min": 12
+      },
+      "item": "biomancy:regenerative_fluid"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 10,
+        "min": 6
+      },
+      "item": "biomancy:exotic_dust"
+    }
+  ]
 }

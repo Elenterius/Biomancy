@@ -1,26 +1,26 @@
 {
-	"type": "minecraft:entity",
-	"pools": [
-		{
-			"bonus_rolls": 0.0,
-			"entries": [
-				{
-					"type": "minecraft:item",
-					"name": "biomancy:living_flesh"
-				}
-			],
-			"rolls": 5.0
-		},
-		{
-			"bonus_rolls": 0.0,
-			"entries": [
-				{
-					"type": "minecraft:loot_table",
-					"name": "biomancy:entities/flesh_blob"
-				}
-			],
-			"rolls": 1.0
-		}
-	],
-	"random_sequence": "biomancy:entities/flesh_blob/size_6"
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "biomancy:living_flesh"
+        }
+      ],
+      "rolls": 5.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "name": "biomancy:entities/flesh_blob"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "biomancy:entities/flesh_blob/size_6"
 }

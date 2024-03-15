@@ -1,13 +1,13 @@
 {
-	"type": "minecraft:crafting_shapeless",
-	"category": "misc",
-	"ingredients": [
-		{
-			"item": "biomancy:undead_permeable_membrane"
-		}
-	],
-	"result": {
-		"count": 2,
-		"item": "biomancy:undead_permeable_membrane_pane"
-	}
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "biomancy:undead_permeable_membrane"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "item": "biomancy:undead_permeable_membrane_pane"
+  }
 }

@@ -1,4 +1,4 @@
 {
-	"type": "minecraft:entity",
-	"random_sequence": "alexscaves:biomancy/despoil/ferrouslime"
+  "type": "minecraft:entity",
+  "random_sequence": "alexscaves:biomancy/despoil/ferrouslime"
 }

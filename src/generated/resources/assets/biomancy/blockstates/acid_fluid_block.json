@@ -1,7 +1,7 @@
 {
-	"variants": {
-		"": {
-			"model": "biomancy:block/acid_fluid_block"
-		}
-	}
+  "variants": {
+    "": {
+      "model": "biomancy:block/acid_fluid_block"
+    }
+  }
 }

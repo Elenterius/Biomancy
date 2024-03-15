@@ -1,34 +1,34 @@
 {
-	"values": [
-		"minecraft:dragon_egg",
-		"minecraft:spawner",
-		"minecraft:heart_of_the_sea",
-		"minecraft:name_tag",
-		"#minecraft:music_discs",
-		"minecraft:elytra",
-		{
-			"id": "#forge:armors",
-			"required": false
-		},
-		{
-			"id": "#forge:tools",
-			"required": false
-		},
-		{
-			"id": "#forge:ores/netherite_scrap",
-			"required": false
-		},
-		{
-			"id": "#forge:ingots/netherite",
-			"required": false
-		},
-		{
-			"id": "#forge:storage_blocks/netherite",
-			"required": false
-		},
-		{
-			"id": "#forge:shulker_boxes",
-			"required": false
-		}
-	]
+  "values": [
+    "minecraft:dragon_egg",
+    "minecraft:spawner",
+    "minecraft:heart_of_the_sea",
+    "minecraft:name_tag",
+    "#minecraft:music_discs",
+    "minecraft:elytra",
+    {
+      "id": "#forge:armors",
+      "required": false
+    },
+    {
+      "id": "#forge:tools",
+      "required": false
+    },
+    {
+      "id": "#forge:ores/netherite_scrap",
+      "required": false
+    },
+    {
+      "id": "#forge:ingots/netherite",
+      "required": false
+    },
+    {
+      "id": "#forge:storage_blocks/netherite",
+      "required": false
+    },
+    {
+      "id": "#forge:shulker_boxes",
+      "required": false
+    }
+  ]
 }

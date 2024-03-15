@@ -1,47 +1,47 @@
 {
-	"advancements": [
-		{
-			"advancement": {
-				"parent": "minecraft:recipes/root",
-				"criteria": {
-					"has_centipede_leg": {
-						"conditions": {
-							"items": [
-								{
-									"items": [
-										"alexsmobs:centipede_leg"
-									]
-								}
-							]
-						},
-						"trigger": "minecraft:inventory_changed"
-					},
-					"has_the_recipe": {
-						"conditions": {
-							"recipe": "biomancy:decomposing/centipede_leg_decomposing"
-						},
-						"trigger": "minecraft:recipe_unlocked"
-					}
-				},
-				"requirements": [
-					[
-						"has_centipede_leg",
-						"has_the_recipe"
-					]
-				],
-				"rewards": {
-					"recipes": [
-						"biomancy:decomposing/centipede_leg_decomposing"
-					]
-				},
-				"sends_telemetry_event": false
-			},
-			"conditions": [
-				{
-					"type": "forge:mod_loaded",
-					"modid": "alexsmobs"
-				}
-			]
-		}
-	]
+  "advancements": [
+    {
+      "advancement": {
+        "parent": "minecraft:recipes/root",
+        "criteria": {
+          "has_centipede_leg": {
+            "conditions": {
+              "items": [
+                {
+                  "items": [
+                    "alexsmobs:centipede_leg"
+                  ]
+                }
+              ]
+            },
+            "trigger": "minecraft:inventory_changed"
+          },
+          "has_the_recipe": {
+            "conditions": {
+              "recipe": "biomancy:decomposing/centipede_leg_decomposing"
+            },
+            "trigger": "minecraft:recipe_unlocked"
+          }
+        },
+        "requirements": [
+          [
+            "has_centipede_leg",
+            "has_the_recipe"
+          ]
+        ],
+        "rewards": {
+          "recipes": [
+            "biomancy:decomposing/centipede_leg_decomposing"
+          ]
+        },
+        "sends_telemetry_event": false
+      },
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexsmobs"
+        }
+      ]
+    }
+  ]
 }

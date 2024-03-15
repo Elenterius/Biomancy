@@ -1,24 +1,24 @@
 {
-	"type": "biomancy:decomposing",
-	"conditions": [
-		{
-			"type": "forge:mod_loaded",
-			"modid": "alexscaves"
-		}
-	],
-	"ingredient": {
-		"item": "alexscaves:toxic_paste"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 80,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 4,
-				"min": 2
-			},
-			"item": "biomancy:toxin_extract"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "alexscaves"
+    }
+  ],
+  "ingredient": {
+    "item": "alexscaves:toxic_paste"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 80,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 4,
+        "min": 2
+      },
+      "item": "biomancy:toxin_extract"
+    }
+  ]
 }

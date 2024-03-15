@@ -1,7 +1,7 @@
 {
-	"parent": "biomancy:block/template_veins",
-	"render_type": "minecraft:cutout",
-	"textures": {
-		"texture": "biomancy:block/malignant_flesh_veins"
-	}
+  "parent": "biomancy:block/template_veins",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "texture": "biomancy:block/malignant_flesh_veins"
+  }
 }

@@ -1,12 +1,12 @@
 {
-	"type": "biomancy:digesting",
-	"ingredient": {
-		"item": "minecraft:honeycomb"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 464,
-	"result": {
-		"count": 4,
-		"item": "biomancy:nutrient_paste"
-	}
+  "type": "biomancy:digesting",
+  "ingredient": {
+    "item": "minecraft:honeycomb"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 464,
+  "result": {
+    "count": 4,
+    "item": "biomancy:nutrient_paste"
+  }
 }

@@ -1,12 +1,12 @@
 {
-	"type": "biomancy:digesting",
-	"ingredient": {
-		"item": "minecraft:melon"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 750,
-	"result": {
-		"count": 18,
-		"item": "biomancy:nutrient_paste"
-	}
+  "type": "biomancy:digesting",
+  "ingredient": {
+    "item": "minecraft:melon"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 750,
+  "result": {
+    "count": 18,
+    "item": "biomancy:nutrient_paste"
+  }
 }

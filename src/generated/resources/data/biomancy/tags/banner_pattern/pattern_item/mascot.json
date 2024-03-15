@@ -1,7 +1,7 @@
 {
-	"values": [
-		"biomancy:mascot_base",
-		"biomancy:mascot_accent",
-		"biomancy:mascot_outline"
-	]
+  "values": [
+    "biomancy:mascot_base",
+    "biomancy:mascot_accent",
+    "biomancy:mascot_outline"
+  ]
 }

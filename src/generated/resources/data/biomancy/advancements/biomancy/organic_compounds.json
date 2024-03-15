@@ -1,38 +1,38 @@
 {
-	"parent": "biomancy:biomancy/bio_lab",
-	"criteria": {
-		"has_organic_compound": {
-			"conditions": {
-				"items": [
-					{
-						"items": [
-							"biomancy:organic_compound"
-						]
-					}
-				]
-			},
-			"trigger": "minecraft:inventory_changed"
-		}
-	},
-	"display": {
-		"announce_to_chat": false,
-		"description": {
-			"translate": "advancements.biomancy.organic_compounds.description"
-		},
-		"frame": "task",
-		"hidden": false,
-		"icon": {
-			"item": "biomancy:organic_compound"
-		},
-		"show_toast": true,
-		"title": {
-			"translate": "advancements.biomancy.organic_compounds.title"
-		}
-	},
-	"requirements": [
-		[
-			"has_organic_compound"
-		]
-	],
-	"sends_telemetry_event": true
+  "parent": "biomancy:biomancy/bio_lab",
+  "criteria": {
+    "has_organic_compound": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:organic_compound"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.biomancy.organic_compounds.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "biomancy:organic_compound"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.biomancy.organic_compounds.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_organic_compound"
+    ]
+  ],
+  "sends_telemetry_event": true
 }

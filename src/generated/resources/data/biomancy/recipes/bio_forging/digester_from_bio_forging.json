@@ -1,29 +1,29 @@
 {
-	"type": "biomancy:bio_forging",
-	"bio_forge_tab": "biomancy:machines",
-	"ingredients": [
-		{
-			"item": "biomancy:living_flesh"
-		},
-		{
-			"count": 10,
-			"item": "biomancy:flesh_bits"
-		},
-		{
-			"count": 3,
-			"item": "biomancy:bone_fragments"
-		},
-		{
-			"count": 8,
-			"item": "biomancy:elastic_fibers"
-		},
-		{
-			"count": 4,
-			"item": "biomancy:bile"
-		}
-	],
-	"nutrientsCost": 1,
-	"result": {
-		"item": "biomancy:digester"
-	}
+  "type": "biomancy:bio_forging",
+  "bio_forge_tab": "biomancy:machines",
+  "ingredients": [
+    {
+      "item": "biomancy:living_flesh"
+    },
+    {
+      "count": 10,
+      "item": "biomancy:flesh_bits"
+    },
+    {
+      "count": 3,
+      "item": "biomancy:bone_fragments"
+    },
+    {
+      "count": 8,
+      "item": "biomancy:elastic_fibers"
+    },
+    {
+      "count": 4,
+      "item": "biomancy:bile"
+    }
+  ],
+  "nutrientsCost": 1,
+  "result": {
+    "item": "biomancy:digester"
+  }
 }

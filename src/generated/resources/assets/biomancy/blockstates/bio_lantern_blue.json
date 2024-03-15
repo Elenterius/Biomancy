@@ -1,10 +1,10 @@
 {
-	"variants": {
-		"hanging=false": {
-			"model": "biomancy:block/bio_lantern_blue"
-		},
-		"hanging=true": {
-			"model": "biomancy:block/bio_lantern_blue_hanging"
-		}
-	}
+  "variants": {
+    "hanging=false": {
+      "model": "biomancy:block/bio_lantern_blue"
+    },
+    "hanging=true": {
+      "model": "biomancy:block/bio_lantern_blue_hanging"
+    }
+  }
 }

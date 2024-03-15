@@ -1,25 +1,25 @@
 {
-	"type": "biomancy:decomposing",
-	"ingredient": {
-		"item": "minecraft:blaze_rod"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 188,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 4,
-				"min": 2
-			},
-			"item": "biomancy:bio_lumens"
-		},
-		{
-			"countRange": {
-				"type": "constant",
-				"value": 2
-			},
-			"item": "biomancy:exotic_dust"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "ingredient": {
+    "item": "minecraft:blaze_rod"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 188,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 4,
+        "min": 2
+      },
+      "item": "biomancy:bio_lumens"
+    },
+    {
+      "countRange": {
+        "type": "constant",
+        "value": 2
+      },
+      "item": "biomancy:exotic_dust"
+    }
+  ]
 }

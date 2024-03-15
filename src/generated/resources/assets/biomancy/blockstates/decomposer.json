@@ -1,7 +1,7 @@
 {
-	"variants": {
-		"": {
-			"model": "biomancy:block/decomposer"
-		}
-	}
+  "variants": {
+    "": {
+      "model": "biomancy:block/decomposer"
+    }
+  }
 }

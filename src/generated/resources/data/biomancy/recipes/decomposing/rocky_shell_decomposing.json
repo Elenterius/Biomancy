@@ -1,40 +1,40 @@
 {
-	"type": "biomancy:decomposing",
-	"conditions": [
-		{
-			"type": "forge:mod_loaded",
-			"modid": "alexsmobs"
-		}
-	],
-	"ingredient": {
-		"item": "alexsmobs:rocky_shell"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 390,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 5,
-				"min": 3
-			},
-			"item": "biomancy:tough_fibers"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 3,
-				"min": 1
-			},
-			"item": "biomancy:mineral_fragment"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 4,
-				"min": 2
-			},
-			"item": "biomancy:stone_powder"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "alexsmobs"
+    }
+  ],
+  "ingredient": {
+    "item": "alexsmobs:rocky_shell"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 390,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 5,
+        "min": 3
+      },
+      "item": "biomancy:tough_fibers"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 3,
+        "min": 1
+      },
+      "item": "biomancy:mineral_fragment"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 4,
+        "min": 2
+      },
+      "item": "biomancy:stone_powder"
+    }
+  ]
 }

@@ -95,7 +95,7 @@ public abstract class AbstractLangProvider implements DataProvider, LangProvider
 					HashingOutputStream hashingOutputStream = new HashingOutputStream(Hashing.sha1(), outputStream);
 					JsonWriter jsonWriter = new JsonWriter(new OutputStreamWriter(hashingOutputStream, StandardCharsets.UTF_8));
 					jsonWriter.setSerializeNulls(false);
-					jsonWriter.setIndent("\t");
+					jsonWriter.setIndent("  ");
 
 					try {
 						GsonHelper.writeValue(jsonWriter, json, null); //no comparator is used to maintain the order of how the translations were added

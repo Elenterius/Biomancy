@@ -1,24 +1,24 @@
 {
-	"type": "biomancy:decomposing",
-	"conditions": [
-		{
-			"type": "forge:mod_loaded",
-			"modid": "alexsmobs"
-		}
-	],
-	"ingredient": {
-		"item": "alexsmobs:fish_bones"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 125,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 5,
-				"min": 2
-			},
-			"item": "biomancy:bone_fragments"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "alexsmobs"
+    }
+  ],
+  "ingredient": {
+    "item": "alexsmobs:fish_bones"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 125,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 5,
+        "min": 2
+      },
+      "item": "biomancy:bone_fragments"
+    }
+  ]
 }

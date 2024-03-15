@@ -1,82 +1,82 @@
 {
-	"type": "minecraft:entity",
-	"pools": [
-		{
-			"bonus_rolls": 0.0,
-			"entries": [
-				{
-					"type": "minecraft:item",
-					"functions": [
-						{
-							"add": false,
-							"count": 1.0,
-							"function": "minecraft:set_count"
-						},
-						{
-							"count": {
-								"type": "minecraft:uniform",
-								"max": 1.0,
-								"min": 0.0
-							},
-							"function": "minecraft:looting_enchant"
-						}
-					],
-					"name": "biomancy:mob_fang",
-					"weight": 140
-				},
-				{
-					"type": "minecraft:item",
-					"functions": [
-						{
-							"add": false,
-							"count": {
-								"type": "minecraft:uniform",
-								"max": 2.0,
-								"min": 1.0
-							},
-							"function": "minecraft:set_count"
-						},
-						{
-							"count": {
-								"type": "minecraft:uniform",
-								"max": 1.0,
-								"min": 0.0
-							},
-							"function": "minecraft:looting_enchant"
-						}
-					],
-					"name": "biomancy:mob_claw",
-					"weight": 150
-				}
-			],
-			"rolls": 1.0
-		},
-		{
-			"bonus_rolls": 0.0,
-			"entries": [
-				{
-					"type": "minecraft:item",
-					"functions": [
-						{
-							"add": false,
-							"count": 1.0,
-							"function": "minecraft:set_count"
-						},
-						{
-							"count": {
-								"type": "minecraft:uniform",
-								"max": 1.0,
-								"min": 0.0
-							},
-							"function": "minecraft:looting_enchant"
-						}
-					],
-					"name": "biomancy:withered_mob_marrow",
-					"weight": 65
-				}
-			],
-			"rolls": 1.0
-		}
-	],
-	"random_sequence": "alexscaves:biomancy/despoil/raycat"
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 1.0,
+                "min": 0.0
+              },
+              "function": "minecraft:looting_enchant"
+            }
+          ],
+          "name": "biomancy:mob_fang",
+          "weight": 140
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 2.0,
+                "min": 1.0
+              },
+              "function": "minecraft:set_count"
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 1.0,
+                "min": 0.0
+              },
+              "function": "minecraft:looting_enchant"
+            }
+          ],
+          "name": "biomancy:mob_claw",
+          "weight": 150
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 1.0,
+                "min": 0.0
+              },
+              "function": "minecraft:looting_enchant"
+            }
+          ],
+          "name": "biomancy:withered_mob_marrow",
+          "weight": 65
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "alexscaves:biomancy/despoil/raycat"
 }

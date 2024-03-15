@@ -1,18 +1,18 @@
 {
-	"type": "minecraft:crafting_shaped",
-	"category": "building",
-	"key": {
-		"#": {
-			"item": "biomancy:flesh"
-		}
-	},
-	"pattern": [
-		"###",
-		"###"
-	],
-	"result": {
-		"count": 6,
-		"item": "biomancy:flesh_wall"
-	},
-	"show_notification": true
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "item": "biomancy:flesh"
+    }
+  },
+  "pattern": [
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "item": "biomancy:flesh_wall"
+  },
+  "show_notification": true
 }

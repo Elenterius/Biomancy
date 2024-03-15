@@ -1,40 +1,40 @@
 {
-	"type": "biomancy:decomposing",
-	"conditions": [
-		{
-			"type": "forge:mod_loaded",
-			"modid": "alexsmobs"
-		}
-	],
-	"ingredient": {
-		"item": "alexsmobs:rattlesnake_rattle"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 310,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 5,
-				"min": 2
-			},
-			"item": "biomancy:toxin_extract"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 3,
-				"min": 2
-			},
-			"item": "biomancy:tough_fibers"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 3,
-				"min": 1
-			},
-			"item": "biomancy:mineral_fragment"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "alexsmobs"
+    }
+  ],
+  "ingredient": {
+    "item": "alexsmobs:rattlesnake_rattle"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 310,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 5,
+        "min": 2
+      },
+      "item": "biomancy:toxin_extract"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 3,
+        "min": 2
+      },
+      "item": "biomancy:tough_fibers"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 3,
+        "min": 1
+      },
+      "item": "biomancy:mineral_fragment"
+    }
+  ]
 }

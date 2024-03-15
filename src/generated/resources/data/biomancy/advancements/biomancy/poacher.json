@@ -1,91 +1,91 @@
 {
-	"parent": "biomancy:biomancy/greedy_butcher",
-	"criteria": {
-		"has_killed_axolotl": {
-			"conditions": {
-				"entity": [
-					{
-						"condition": "minecraft:entity_properties",
-						"entity": "this",
-						"predicate": {
-							"type": "minecraft:axolotl"
-						}
-					}
-				]
-			},
-			"trigger": "minecraft:player_killed_entity"
-		},
-		"has_killed_ocelot": {
-			"conditions": {
-				"entity": [
-					{
-						"condition": "minecraft:entity_properties",
-						"entity": "this",
-						"predicate": {
-							"type": "minecraft:ocelot"
-						}
-					}
-				]
-			},
-			"trigger": "minecraft:player_killed_entity"
-		},
-		"has_killed_panda": {
-			"conditions": {
-				"entity": [
-					{
-						"condition": "minecraft:entity_properties",
-						"entity": "this",
-						"predicate": {
-							"type": "minecraft:panda"
-						}
-					}
-				]
-			},
-			"trigger": "minecraft:player_killed_entity"
-		},
-		"has_killed_polar_bear": {
-			"conditions": {
-				"entity": [
-					{
-						"condition": "minecraft:entity_properties",
-						"entity": "this",
-						"predicate": {
-							"type": "minecraft:polar_bear"
-						}
-					}
-				]
-			},
-			"trigger": "minecraft:player_killed_entity"
-		}
-	},
-	"display": {
-		"announce_to_chat": true,
-		"description": {
-			"translate": "advancements.biomancy.poacher.description"
-		},
-		"frame": "challenge",
-		"hidden": true,
-		"icon": {
-			"item": "minecraft:leather"
-		},
-		"show_toast": true,
-		"title": {
-			"translate": "advancements.biomancy.poacher.title"
-		}
-	},
-	"requirements": [
-		[
-			"has_killed_ocelot"
-		],
-		[
-			"has_killed_panda"
-		],
-		[
-			"has_killed_polar_bear"
-		],
-		[
-			"has_killed_axolotl"
-		]
-	],
-	"sends_telemetry_event": true
+  "parent": "biomancy:biomancy/greedy_butcher",
+  "criteria": {
+    "has_killed_axolotl": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "minecraft:axolotl"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "has_killed_ocelot": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "minecraft:ocelot"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "has_killed_panda": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "minecraft:panda"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "has_killed_polar_bear": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "minecraft:polar_bear"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.biomancy.poacher.description"
+    },
+    "frame": "challenge",
+    "hidden": true,
+    "icon": {
+      "item": "minecraft:leather"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.biomancy.poacher.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_killed_ocelot"
+    ],
+    [
+      "has_killed_panda"
+    ],
+    [
+      "has_killed_polar_bear"
+    ],
+    [
+      "has_killed_axolotl"
+    ]
+  ],
+  "sends_telemetry_event": true
 }

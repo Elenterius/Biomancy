@@ -1,38 +1,38 @@
 {
-	"variants": {
-		"orientation=x_middle": {
-			"model": "biomancy:block/undead_permeable_membrane_pane_middle",
-			"y": 90
-		},
-		"orientation=x_negative": {
-			"model": "biomancy:block/undead_permeable_membrane_pane",
-			"y": 270
-		},
-		"orientation=x_positive": {
-			"model": "biomancy:block/undead_permeable_membrane_pane",
-			"y": 90
-		},
-		"orientation=y_middle": {
-			"model": "biomancy:block/undead_permeable_membrane_pane_middle",
-			"x": 90
-		},
-		"orientation=y_negative": {
-			"model": "biomancy:block/undead_permeable_membrane_pane",
-			"x": 270
-		},
-		"orientation=y_positive": {
-			"model": "biomancy:block/undead_permeable_membrane_pane",
-			"x": 90
-		},
-		"orientation=z_middle": {
-			"model": "biomancy:block/undead_permeable_membrane_pane_middle"
-		},
-		"orientation=z_negative": {
-			"model": "biomancy:block/undead_permeable_membrane_pane"
-		},
-		"orientation=z_positive": {
-			"model": "biomancy:block/undead_permeable_membrane_pane",
-			"y": 180
-		}
-	}
+  "variants": {
+    "orientation=x_middle": {
+      "model": "biomancy:block/undead_permeable_membrane_pane_middle",
+      "y": 90
+    },
+    "orientation=x_negative": {
+      "model": "biomancy:block/undead_permeable_membrane_pane",
+      "y": 270
+    },
+    "orientation=x_positive": {
+      "model": "biomancy:block/undead_permeable_membrane_pane",
+      "y": 90
+    },
+    "orientation=y_middle": {
+      "model": "biomancy:block/undead_permeable_membrane_pane_middle",
+      "x": 90
+    },
+    "orientation=y_negative": {
+      "model": "biomancy:block/undead_permeable_membrane_pane",
+      "x": 270
+    },
+    "orientation=y_positive": {
+      "model": "biomancy:block/undead_permeable_membrane_pane",
+      "x": 90
+    },
+    "orientation=z_middle": {
+      "model": "biomancy:block/undead_permeable_membrane_pane_middle"
+    },
+    "orientation=z_negative": {
+      "model": "biomancy:block/undead_permeable_membrane_pane"
+    },
+    "orientation=z_positive": {
+      "model": "biomancy:block/undead_permeable_membrane_pane",
+      "y": 180
+    }
+  }
 }

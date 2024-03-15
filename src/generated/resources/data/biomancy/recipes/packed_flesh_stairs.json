@@ -1,19 +1,19 @@
 {
-	"type": "minecraft:crafting_shaped",
-	"category": "building",
-	"key": {
-		"#": {
-			"item": "biomancy:packed_flesh"
-		}
-	},
-	"pattern": [
-		"#  ",
-		"## ",
-		"###"
-	],
-	"result": {
-		"count": 4,
-		"item": "biomancy:packed_flesh_stairs"
-	},
-	"show_notification": true
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "item": "biomancy:packed_flesh"
+    }
+  },
+  "pattern": [
+    "#  ",
+    "## ",
+    "###"
+  ],
+  "result": {
+    "count": 4,
+    "item": "biomancy:packed_flesh_stairs"
+  },
+  "show_notification": true
 }

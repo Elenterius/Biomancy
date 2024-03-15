@@ -1,25 +1,25 @@
 {
-	"type": "biomancy:bio_forging",
-	"bio_forge_tab": "biomancy:misc",
-	"ingredients": [
-		{
-			"count": 10,
-			"item": "biomancy:bio_lumens"
-		},
-		{
-			"item": "minecraft:yellow_dye"
-		},
-		{
-			"count": 2,
-			"item": "biomancy:flesh_bits"
-		},
-		{
-			"count": 4,
-			"item": "biomancy:elastic_fibers"
-		}
-	],
-	"nutrientsCost": 1,
-	"result": {
-		"item": "biomancy:bio_lantern_yellow"
-	}
+  "type": "biomancy:bio_forging",
+  "bio_forge_tab": "biomancy:misc",
+  "ingredients": [
+    {
+      "count": 10,
+      "item": "biomancy:bio_lumens"
+    },
+    {
+      "item": "minecraft:yellow_dye"
+    },
+    {
+      "count": 2,
+      "item": "biomancy:flesh_bits"
+    },
+    {
+      "count": 4,
+      "item": "biomancy:elastic_fibers"
+    }
+  ],
+  "nutrientsCost": 1,
+  "result": {
+    "item": "biomancy:bio_lantern_yellow"
+  }
 }

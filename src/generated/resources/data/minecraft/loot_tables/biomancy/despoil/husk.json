@@ -1,4 +1,4 @@
 {
-	"type": "minecraft:entity",
-	"random_sequence": "minecraft:biomancy/despoil/husk"
+  "type": "minecraft:entity",
+  "random_sequence": "minecraft:biomancy/despoil/husk"
 }

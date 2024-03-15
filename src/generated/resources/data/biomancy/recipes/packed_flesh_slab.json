@@ -1,17 +1,17 @@
 {
-	"type": "minecraft:crafting_shaped",
-	"category": "building",
-	"key": {
-		"#": {
-			"item": "biomancy:packed_flesh"
-		}
-	},
-	"pattern": [
-		"###"
-	],
-	"result": {
-		"count": 6,
-		"item": "biomancy:packed_flesh_slab"
-	},
-	"show_notification": true
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "item": "biomancy:packed_flesh"
+    }
+  },
+  "pattern": [
+    "###"
+  ],
+  "result": {
+    "count": 6,
+    "item": "biomancy:packed_flesh_slab"
+  },
+  "show_notification": true
 }

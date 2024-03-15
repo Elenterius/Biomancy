@@ -1,31 +1,31 @@
 {
-	"type": "biomancy:decomposing",
-	"ingredient": {
-		"item": "minecraft:totem_of_undying"
-	},
-	"nutrientsCost": 3,
-	"processingTime": 2400,
-	"results": [
-		{
-			"countRange": {
-				"type": "constant",
-				"value": 25
-			},
-			"item": "biomancy:exotic_dust"
-		},
-		{
-			"countRange": {
-				"type": "constant",
-				"value": 15
-			},
-			"item": "biomancy:gem_fragments"
-		},
-		{
-			"countRange": {
-				"type": "constant",
-				"value": 10
-			},
-			"item": "biomancy:mineral_fragment"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "ingredient": {
+    "item": "minecraft:totem_of_undying"
+  },
+  "nutrientsCost": 3,
+  "processingTime": 2400,
+  "results": [
+    {
+      "countRange": {
+        "type": "constant",
+        "value": 25
+      },
+      "item": "biomancy:exotic_dust"
+    },
+    {
+      "countRange": {
+        "type": "constant",
+        "value": 15
+      },
+      "item": "biomancy:gem_fragments"
+    },
+    {
+      "countRange": {
+        "type": "constant",
+        "value": 10
+      },
+      "item": "biomancy:mineral_fragment"
+    }
+  ]
 }

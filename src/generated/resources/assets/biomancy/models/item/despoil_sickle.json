@@ -1,17 +1,17 @@
 {
-	"parent": "minecraft:item/handheld",
-	"forge_data": {
-		"layers": {
-			"1": {
-				"block_light": 15,
-				"sky_light": 15
-			}
-		}
-	},
-	"loader": "forge:item_layers",
-	"render_types": { },
-	"textures": {
-		"layer0": "biomancy:item/weapon/despoil_sickle",
-		"layer1": "biomancy:item/weapon/despoil_sickle_emissive"
-	}
+  "parent": "minecraft:item/handheld",
+  "forge_data": {
+    "layers": {
+      "1": {
+        "block_light": 15,
+        "sky_light": 15
+      }
+    }
+  },
+  "loader": "forge:item_layers",
+  "render_types": { },
+  "textures": {
+    "layer0": "biomancy:item/weapon/despoil_sickle",
+    "layer1": "biomancy:item/weapon/despoil_sickle_emissive"
+  }
 }

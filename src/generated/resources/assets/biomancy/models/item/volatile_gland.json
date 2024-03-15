@@ -1,6 +1,6 @@
 {
-	"parent": "minecraft:item/generated",
-	"textures": {
-		"layer0": "biomancy:item/loot/volatile_gland"
-	}
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "biomancy:item/loot/volatile_gland"
+  }
 }

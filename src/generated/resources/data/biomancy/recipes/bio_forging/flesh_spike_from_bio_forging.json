@@ -1,20 +1,20 @@
 {
-	"type": "biomancy:bio_forging",
-	"bio_forge_tab": "biomancy:tools",
-	"ingredients": [
-		{
-			"item": "biomancy:mob_fang"
-		},
-		{
-			"count": 2,
-			"item": "biomancy:tough_fibers"
-		},
-		{
-			"item": "biomancy:flesh_bits"
-		}
-	],
-	"nutrientsCost": 1,
-	"result": {
-		"item": "biomancy:flesh_spike"
-	}
+  "type": "biomancy:bio_forging",
+  "bio_forge_tab": "biomancy:tools",
+  "ingredients": [
+    {
+      "item": "biomancy:mob_fang"
+    },
+    {
+      "count": 2,
+      "item": "biomancy:tough_fibers"
+    },
+    {
+      "item": "biomancy:flesh_bits"
+    }
+  ],
+  "nutrientsCost": 1,
+  "result": {
+    "item": "biomancy:flesh_spike"
+  }
 }

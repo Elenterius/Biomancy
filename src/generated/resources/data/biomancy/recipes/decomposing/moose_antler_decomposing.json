@@ -1,32 +1,32 @@
 {
-	"type": "biomancy:decomposing",
-	"conditions": [
-		{
-			"type": "forge:mod_loaded",
-			"modid": "alexsmobs"
-		}
-	],
-	"ingredient": {
-		"item": "alexsmobs:moose_antler"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 380,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 5,
-				"min": 3
-			},
-			"item": "biomancy:mineral_fragment"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 6,
-				"min": 4
-			},
-			"item": "biomancy:tough_fibers"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "alexsmobs"
+    }
+  ],
+  "ingredient": {
+    "item": "alexsmobs:moose_antler"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 380,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 5,
+        "min": 3
+      },
+      "item": "biomancy:mineral_fragment"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 6,
+        "min": 4
+      },
+      "item": "biomancy:tough_fibers"
+    }
+  ]
 }

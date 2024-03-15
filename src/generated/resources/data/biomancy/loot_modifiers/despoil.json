@@ -1,17 +1,17 @@
 {
-	"type": "biomancy:despoil",
-	"conditions": [
-		{
-			"condition": "minecraft:entity_properties",
-			"entity": "this",
-			"predicate": {
-				"flags": {
-					"is_baby": false
-				}
-			}
-		},
-		{
-			"condition": "minecraft:killed_by_player"
-		}
-	]
+  "type": "biomancy:despoil",
+  "conditions": [
+    {
+      "condition": "minecraft:entity_properties",
+      "entity": "this",
+      "predicate": {
+        "flags": {
+          "is_baby": false
+        }
+      }
+    },
+    {
+      "condition": "minecraft:killed_by_player"
+    }
+  ]
 }

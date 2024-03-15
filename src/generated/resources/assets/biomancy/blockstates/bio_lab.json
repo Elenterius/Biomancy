@@ -1,7 +1,7 @@
 {
-	"variants": {
-		"": {
-			"model": "biomancy:block/bio_lab"
-		}
-	}
+  "variants": {
+    "": {
+      "model": "biomancy:block/bio_lab"
+    }
+  }
 }

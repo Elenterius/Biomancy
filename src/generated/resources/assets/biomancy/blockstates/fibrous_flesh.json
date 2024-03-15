@@ -1,7 +1,7 @@
 {
-	"variants": {
-		"": {
-			"model": "biomancy:block/fibrous_flesh"
-		}
-	}
+  "variants": {
+    "": {
+      "model": "biomancy:block/fibrous_flesh"
+    }
+  }
 }

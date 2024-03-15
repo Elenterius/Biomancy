@@ -1,27 +1,27 @@
 {
-	"type": "minecraft:crafting_shaped",
-	"category": "misc",
-	"key": {
-		"E": {
-			"item": "biomancy:living_flesh"
-		},
-		"F": {
-			"tag": "biomancy:fangs"
-		},
-		"G": {
-			"item": "biomancy:mob_gland"
-		},
-		"M": {
-			"tag": "biomancy:raw_meats"
-		}
-	},
-	"pattern": [
-		"F F",
-		"MGM",
-		"MEM"
-	],
-	"result": {
-		"item": "biomancy:decomposer"
-	},
-	"show_notification": true
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "biomancy:living_flesh"
+    },
+    "F": {
+      "tag": "biomancy:fangs"
+    },
+    "G": {
+      "item": "biomancy:mob_gland"
+    },
+    "M": {
+      "tag": "biomancy:raw_meats"
+    }
+  },
+  "pattern": [
+    "F F",
+    "MGM",
+    "MEM"
+  ],
+  "result": {
+    "item": "biomancy:decomposer"
+  },
+  "show_notification": true
 }

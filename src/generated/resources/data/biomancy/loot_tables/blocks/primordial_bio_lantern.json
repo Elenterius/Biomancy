@@ -1,21 +1,21 @@
 {
-	"type": "minecraft:block",
-	"pools": [
-		{
-			"bonus_rolls": 0.0,
-			"conditions": [
-				{
-					"condition": "minecraft:survives_explosion"
-				}
-			],
-			"entries": [
-				{
-					"type": "minecraft:item",
-					"name": "biomancy:primordial_bio_lantern"
-				}
-			],
-			"rolls": 1.0
-		}
-	],
-	"random_sequence": "biomancy:blocks/primordial_bio_lantern"
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "biomancy:primordial_bio_lantern"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "biomancy:blocks/primordial_bio_lantern"
 }

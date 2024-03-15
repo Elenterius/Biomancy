@@ -1,38 +1,38 @@
 {
-	"parent": "biomancy:biomancy/organic_compounds",
-	"criteria": {
-		"has_genetic_compound": {
-			"conditions": {
-				"items": [
-					{
-						"items": [
-							"biomancy:genetic_compound"
-						]
-					}
-				]
-			},
-			"trigger": "minecraft:inventory_changed"
-		}
-	},
-	"display": {
-		"announce_to_chat": false,
-		"description": {
-			"translate": "advancements.biomancy.genetic_compounds.description"
-		},
-		"frame": "task",
-		"hidden": false,
-		"icon": {
-			"item": "biomancy:genetic_compound"
-		},
-		"show_toast": true,
-		"title": {
-			"translate": "advancements.biomancy.genetic_compounds.title"
-		}
-	},
-	"requirements": [
-		[
-			"has_genetic_compound"
-		]
-	],
-	"sends_telemetry_event": true
+  "parent": "biomancy:biomancy/organic_compounds",
+  "criteria": {
+    "has_genetic_compound": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:genetic_compound"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.biomancy.genetic_compounds.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "biomancy:genetic_compound"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.biomancy.genetic_compounds.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_genetic_compound"
+    ]
+  ],
+  "sends_telemetry_event": true
 }

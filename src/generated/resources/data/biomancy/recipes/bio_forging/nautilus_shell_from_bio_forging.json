@@ -1,21 +1,21 @@
 {
-	"type": "biomancy:bio_forging",
-	"bio_forge_tab": "biomancy:components",
-	"ingredients": [
-		{
-			"count": 11,
-			"item": "biomancy:mineral_fragment"
-		},
-		{
-			"count": 8,
-			"item": "biomancy:tough_fibers"
-		},
-		{
-			"item": "biomancy:stone_powder"
-		}
-	],
-	"nutrientsCost": 1,
-	"result": {
-		"item": "minecraft:nautilus_shell"
-	}
+  "type": "biomancy:bio_forging",
+  "bio_forge_tab": "biomancy:components",
+  "ingredients": [
+    {
+      "count": 11,
+      "item": "biomancy:mineral_fragment"
+    },
+    {
+      "count": 8,
+      "item": "biomancy:tough_fibers"
+    },
+    {
+      "item": "biomancy:stone_powder"
+    }
+  ],
+  "nutrientsCost": 1,
+  "result": {
+    "item": "minecraft:nautilus_shell"
+  }
 }

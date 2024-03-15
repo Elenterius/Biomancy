@@ -1,18 +1,18 @@
 {
-	"values": [
-		{
-			"id": "#forge:bosses",
-			"required": false
-		},
-		"minecraft:iron_golem",
-		"minecraft:snow_golem",
-		{
-			"id": "strawgolem:strawgolem",
-			"required": false
-		},
-		{
-			"id": "strawgolem:strawnggolem",
-			"required": false
-		}
-	]
+  "values": [
+    {
+      "id": "#forge:bosses",
+      "required": false
+    },
+    "minecraft:iron_golem",
+    "minecraft:snow_golem",
+    {
+      "id": "strawgolem:strawgolem",
+      "required": false
+    },
+    {
+      "id": "strawgolem:strawnggolem",
+      "required": false
+    }
+  ]
 }

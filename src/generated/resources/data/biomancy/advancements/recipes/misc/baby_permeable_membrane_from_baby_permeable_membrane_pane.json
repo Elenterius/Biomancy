@@ -1,35 +1,35 @@
 {
-	"parent": "minecraft:recipes/root",
-	"criteria": {
-		"has_baby_permeable_membrane_pane": {
-			"conditions": {
-				"items": [
-					{
-						"items": [
-							"biomancy:baby_permeable_membrane_pane"
-						]
-					}
-				]
-			},
-			"trigger": "minecraft:inventory_changed"
-		},
-		"has_the_recipe": {
-			"conditions": {
-				"recipe": "biomancy:baby_permeable_membrane_from_baby_permeable_membrane_pane"
-			},
-			"trigger": "minecraft:recipe_unlocked"
-		}
-	},
-	"requirements": [
-		[
-			"has_baby_permeable_membrane_pane",
-			"has_the_recipe"
-		]
-	],
-	"rewards": {
-		"recipes": [
-			"biomancy:baby_permeable_membrane_from_baby_permeable_membrane_pane"
-		]
-	},
-	"sends_telemetry_event": false
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_baby_permeable_membrane_pane": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:baby_permeable_membrane_pane"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "biomancy:baby_permeable_membrane_from_baby_permeable_membrane_pane"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_baby_permeable_membrane_pane",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "biomancy:baby_permeable_membrane_from_baby_permeable_membrane_pane"
+    ]
+  },
+  "sends_telemetry_event": false
 }

@@ -1,18 +1,18 @@
 {
-	"type": "biomancy:digesting",
-	"conditions": [
-		{
-			"type": "forge:mod_loaded",
-			"modid": "alexscaves"
-		}
-	],
-	"ingredient": {
-		"item": "alexscaves:pewen_pines"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 352,
-	"result": {
-		"count": 2,
-		"item": "biomancy:nutrient_paste"
-	}
+  "type": "biomancy:digesting",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "alexscaves"
+    }
+  ],
+  "ingredient": {
+    "item": "alexscaves:pewen_pines"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 352,
+  "result": {
+    "count": 2,
+    "item": "biomancy:nutrient_paste"
+  }
 }

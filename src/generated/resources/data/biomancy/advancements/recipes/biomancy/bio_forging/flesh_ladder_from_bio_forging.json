@@ -1,35 +1,35 @@
 {
-	"parent": "minecraft:recipes/root",
-	"criteria": {
-		"has_bone_fragments": {
-			"conditions": {
-				"items": [
-					{
-						"items": [
-							"biomancy:bone_fragments"
-						]
-					}
-				]
-			},
-			"trigger": "minecraft:inventory_changed"
-		},
-		"has_the_recipe": {
-			"conditions": {
-				"recipe": "biomancy:bio_forging/flesh_ladder_from_bio_forging"
-			},
-			"trigger": "minecraft:recipe_unlocked"
-		}
-	},
-	"requirements": [
-		[
-			"has_bone_fragments",
-			"has_the_recipe"
-		]
-	],
-	"rewards": {
-		"recipes": [
-			"biomancy:bio_forging/flesh_ladder_from_bio_forging"
-		]
-	},
-	"sends_telemetry_event": false
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_bone_fragments": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:bone_fragments"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "biomancy:bio_forging/flesh_ladder_from_bio_forging"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_bone_fragments",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "biomancy:bio_forging/flesh_ladder_from_bio_forging"
+    ]
+  },
+  "sends_telemetry_event": false
 }
