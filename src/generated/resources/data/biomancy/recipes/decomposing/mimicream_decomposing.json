@@ -1,32 +1,32 @@
 {
-	"type": "biomancy:decomposing",
-	"conditions": [
-		{
-			"type": "forge:mod_loaded",
-			"modid": "alexsmobs"
-		}
-	],
-	"ingredient": {
-		"item": "alexsmobs:mimicream"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 380,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 4,
-				"min": 3
-			},
-			"item": "biomancy:bile"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 6,
-				"min": 4
-			},
-			"item": "biomancy:exotic_dust"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "alexsmobs"
+    }
+  ],
+  "ingredient": {
+    "item": "alexsmobs:mimicream"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 380,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 4,
+        "min": 3
+      },
+      "item": "biomancy:bile"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 6,
+        "min": 4
+      },
+      "item": "biomancy:exotic_dust"
+    }
+  ]
 }

@@ -1,40 +1,40 @@
 {
-	"type": "biomancy:decomposing",
-	"conditions": [
-		{
-			"type": "forge:mod_loaded",
-			"modid": "alexsmobs"
-		}
-	],
-	"ingredient": {
-		"item": "alexsmobs:elastic_tendon"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 540,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 8,
-				"min": 4
-			},
-			"item": "biomancy:elastic_fibers"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 2,
-				"min": 1
-			},
-			"item": "biomancy:tough_fibers"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 8,
-				"min": 4
-			},
-			"item": "biomancy:exotic_dust"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "alexsmobs"
+    }
+  ],
+  "ingredient": {
+    "item": "alexsmobs:elastic_tendon"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 540,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 8,
+        "min": 4
+      },
+      "item": "biomancy:elastic_fibers"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 2,
+        "min": 1
+      },
+      "item": "biomancy:tough_fibers"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 8,
+        "min": 4
+      },
+      "item": "biomancy:exotic_dust"
+    }
+  ]
 }

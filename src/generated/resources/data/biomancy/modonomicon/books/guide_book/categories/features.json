@@ -1,13 +1,13 @@
 {
-	"background": "biomancy:textures/gui/modonomicon/main_background.png",
-	"background_height": 512,
-	"background_parallax_layers": [ ],
-	"background_width": 512,
-	"entry_textures": "biomancy:textures/gui/modonomicon/entry_textures.png",
-	"icon": {
-		"item": "biomancy:living_flesh"
-	},
-	"name": "book.biomancy.guide_book.features.name",
-	"show_category_button": true,
-	"sort_number": -1
+  "background": "biomancy:textures/gui/modonomicon/main_background.png",
+  "background_height": 512,
+  "background_parallax_layers": [ ],
+  "background_width": 512,
+  "entry_textures": "biomancy:textures/gui/modonomicon/entry_textures.png",
+  "icon": {
+    "item": "biomancy:living_flesh"
+  },
+  "name": "book.biomancy.guide_book.features.name",
+  "show_category_button": true,
+  "sort_number": -1
 }

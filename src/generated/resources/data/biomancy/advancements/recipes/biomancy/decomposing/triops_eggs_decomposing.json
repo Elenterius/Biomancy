@@ -1,47 +1,47 @@
 {
-	"advancements": [
-		{
-			"advancement": {
-				"parent": "minecraft:recipes/root",
-				"criteria": {
-					"has_the_recipe": {
-						"conditions": {
-							"recipe": "biomancy:decomposing/triops_eggs_decomposing"
-						},
-						"trigger": "minecraft:recipe_unlocked"
-					},
-					"has_triops_eggs": {
-						"conditions": {
-							"items": [
-								{
-									"items": [
-										"alexsmobs:triops_eggs"
-									]
-								}
-							]
-						},
-						"trigger": "minecraft:inventory_changed"
-					}
-				},
-				"requirements": [
-					[
-						"has_triops_eggs",
-						"has_the_recipe"
-					]
-				],
-				"rewards": {
-					"recipes": [
-						"biomancy:decomposing/triops_eggs_decomposing"
-					]
-				},
-				"sends_telemetry_event": false
-			},
-			"conditions": [
-				{
-					"type": "forge:mod_loaded",
-					"modid": "alexsmobs"
-				}
-			]
-		}
-	]
+  "advancements": [
+    {
+      "advancement": {
+        "parent": "minecraft:recipes/root",
+        "criteria": {
+          "has_the_recipe": {
+            "conditions": {
+              "recipe": "biomancy:decomposing/triops_eggs_decomposing"
+            },
+            "trigger": "minecraft:recipe_unlocked"
+          },
+          "has_triops_eggs": {
+            "conditions": {
+              "items": [
+                {
+                  "items": [
+                    "alexsmobs:triops_eggs"
+                  ]
+                }
+              ]
+            },
+            "trigger": "minecraft:inventory_changed"
+          }
+        },
+        "requirements": [
+          [
+            "has_triops_eggs",
+            "has_the_recipe"
+          ]
+        ],
+        "rewards": {
+          "recipes": [
+            "biomancy:decomposing/triops_eggs_decomposing"
+          ]
+        },
+        "sends_telemetry_event": false
+      },
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexsmobs"
+        }
+      ]
+    }
+  ]
 }

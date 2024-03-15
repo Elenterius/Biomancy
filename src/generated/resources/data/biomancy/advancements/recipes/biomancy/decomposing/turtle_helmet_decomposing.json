@@ -1,35 +1,35 @@
 {
-	"parent": "minecraft:recipes/root",
-	"criteria": {
-		"has_the_recipe": {
-			"conditions": {
-				"recipe": "biomancy:decomposing/turtle_helmet_decomposing"
-			},
-			"trigger": "minecraft:recipe_unlocked"
-		},
-		"has_turtle_helmet": {
-			"conditions": {
-				"items": [
-					{
-						"items": [
-							"minecraft:turtle_helmet"
-						]
-					}
-				]
-			},
-			"trigger": "minecraft:inventory_changed"
-		}
-	},
-	"requirements": [
-		[
-			"has_turtle_helmet",
-			"has_the_recipe"
-		]
-	],
-	"rewards": {
-		"recipes": [
-			"biomancy:decomposing/turtle_helmet_decomposing"
-		]
-	},
-	"sends_telemetry_event": false
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "biomancy:decomposing/turtle_helmet_decomposing"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_turtle_helmet": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:turtle_helmet"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_turtle_helmet",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "biomancy:decomposing/turtle_helmet_decomposing"
+    ]
+  },
+  "sends_telemetry_event": false
 }

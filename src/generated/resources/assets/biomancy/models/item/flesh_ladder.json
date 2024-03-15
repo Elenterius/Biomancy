@@ -1,6 +1,6 @@
 {
-	"parent": "minecraft:item/generated",
-	"textures": {
-		"layer0": "biomancy:block/flesh_ladder"
-	}
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "biomancy:block/flesh_ladder"
+  }
 }

@@ -1,35 +1,35 @@
 {
-	"parent": "minecraft:recipes/root",
-	"criteria": {
-		"has_the_recipe": {
-			"conditions": {
-				"recipe": "biomancy:decomposing/verdant_froglight_decomposing"
-			},
-			"trigger": "minecraft:recipe_unlocked"
-		},
-		"has_verdant_froglight": {
-			"conditions": {
-				"items": [
-					{
-						"items": [
-							"minecraft:verdant_froglight"
-						]
-					}
-				]
-			},
-			"trigger": "minecraft:inventory_changed"
-		}
-	},
-	"requirements": [
-		[
-			"has_verdant_froglight",
-			"has_the_recipe"
-		]
-	],
-	"rewards": {
-		"recipes": [
-			"biomancy:decomposing/verdant_froglight_decomposing"
-		]
-	},
-	"sends_telemetry_event": false
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "biomancy:decomposing/verdant_froglight_decomposing"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_verdant_froglight": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:verdant_froglight"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_verdant_froglight",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "biomancy:decomposing/verdant_froglight_decomposing"
+    ]
+  },
+  "sends_telemetry_event": false
 }

@@ -1,561 +1,561 @@
 {
-	"block.bio_lab.crafting": {
-		"sounds": [
-			"biomancy:block.bio_lab.crafting"
-		],
-		"subtitle": "sounds.biomancy.block.bio_lab.crafting"
-	},
-	"block.bio_lab.crafting_completed": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "entity.witch.drink"
-			}
-		],
-		"subtitle": "sounds.biomancy.block.bio_lab.crafting_completed"
-	},
-	"block.bio_lab.crafting_random": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "block.brewing_stand.brew",
-				"pitch": 0.5,
-				"volume": 0.9
-			}
-		],
-		"subtitle": "sounds.biomancy.block.bio_lab.crafting_random"
-	},
-	"block.cradle.became_full": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "entity.player.burp",
-				"pitch": 0.25
-			}
-		],
-		"subtitle": "sounds.biomancy.block.cradle.became_full"
-	},
-	"block.cradle.crafting_random": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "entity.player.burp",
-				"pitch": 0.5
-			}
-		],
-		"subtitle": "sounds.biomancy.block.cradle.crafting_random"
-	},
-	"block.cradle.eat": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "entity.goat.screaming.eat",
-				"pitch": 0.25
-			}
-		],
-		"subtitle": "sounds.biomancy.block.cradle.eat"
-	},
-	"block.cradle.no": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "entity.villager.no",
-				"pitch": 0.3,
-				"volume": 0.75
-			}
-		],
-		"subtitle": "sounds.biomancy.block.cradle.no"
-	},
-	"block.cradle.spawn_mob": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "entity.player.burp",
-				"pitch": 0.5
-			}
-		],
-		"subtitle": "sounds.biomancy.block.cradle.spawn_mob"
-	},
-	"block.decomposer.crafting": {
-		"sounds": [
-			{
-				"name": "biomancy:block.decomposer.crafting",
-				"volume": 0.5
-			}
-		],
-		"subtitle": "sounds.biomancy.block.decomposer.crafting"
-	},
-	"block.decomposer.crafting_completed": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "entity.player.burp",
-				"pitch": 1.5
-			}
-		],
-		"subtitle": "sounds.biomancy.block.decomposer.crafting_completed"
-	},
-	"block.decomposer.crafting_random": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "entity.player.burp",
-				"pitch": 0.5,
-				"volume": 0.9
-			}
-		],
-		"subtitle": "sounds.biomancy.block.decomposer.crafting_random"
-	},
-	"block.decomposer.eat": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "entity.generic.eat",
-				"pitch": 0.5
-			}
-		],
-		"subtitle": "sounds.biomancy.block.decomposer.eat"
-	},
-	"block.digester.crafting": {
-		"sounds": [
-			"biomancy:block.digester.crafting"
-		],
-		"subtitle": "sounds.biomancy.block.digester.crafting"
-	},
-	"block.digester.crafting_completed": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "entity.player.burp",
-				"pitch": 1.25
-			}
-		],
-		"subtitle": "sounds.biomancy.block.digester.crafting_completed"
-	},
-	"block.digester.crafting_random": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "entity.player.burp",
-				"pitch": 0.5,
-				"volume": 0.9
-			}
-		],
-		"subtitle": "sounds.biomancy.block.digester.crafting_random"
-	},
-	"bony_flesh_block.break": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "biomancy:flesh_block.break"
-			},
-			{
-				"type": "event",
-				"name": "block.bone_block.break"
-			}
-		],
-		"subtitle": "sounds.biomancy.bony_flesh_block.break"
-	},
-	"bony_flesh_block.fall": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "biomancy:flesh_block.fall"
-			},
-			{
-				"type": "event",
-				"name": "block.bone_block.fall"
-			}
-		],
-		"subtitle": "sounds.biomancy.bony_flesh_block.fall"
-	},
-	"bony_flesh_block.hit": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "biomancy:flesh_block.hit"
-			},
-			{
-				"type": "event",
-				"name": "block.bone_block.hit"
-			}
-		],
-		"subtitle": "sounds.biomancy.bony_flesh_block.hit"
-	},
-	"bony_flesh_block.place": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "biomancy:flesh_block.place"
-			},
-			{
-				"type": "event",
-				"name": "block.bone_block.place"
-			}
-		],
-		"subtitle": "sounds.biomancy.bony_flesh_block.place"
-	},
-	"bony_flesh_block.step": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "biomancy:flesh_block.step"
-			},
-			{
-				"type": "event",
-				"name": "block.bone_block.step"
-			}
-		],
-		"subtitle": "sounds.biomancy.bony_flesh_block.step"
-	},
-	"claws.attack.bleed_proc": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "entity.player.attack.crit",
-				"pitch": 1.5
-			}
-		],
-		"subtitle": "sounds.biomancy.claws.attack.bleed_proc"
-	},
-	"claws.attack.strong": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "entity.player.attack.sweep",
-				"pitch": 0.9,
-				"volume": 0.85
-			}
-		],
-		"subtitle": "sounds.biomancy.claws.attack.strong"
-	},
-	"cradle.spike_attack": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "entity.goat.screaming.ram_impact",
-				"pitch": 0.5
-			}
-		],
-		"subtitle": "sounds.biomancy.cradle.spike_attack"
-	},
-	"entity.flesh_blob.ambient": {
-		"sounds": [
-			{
-				"name": "biomancy:entity.flesh_blob.ambient1",
-				"pitch": 0.9,
-				"volume": 0.8
-			},
-			{
-				"name": "biomancy:entity.flesh_blob.ambient2",
-				"pitch": 0.9,
-				"volume": 0.8
-			},
-			{
-				"name": "biomancy:entity.flesh_blob.ambient3",
-				"pitch": 0.9,
-				"volume": 0.8
-			}
-		],
-		"subtitle": "sounds.biomancy.entity.flesh_blob.ambient"
-	},
-	"entity.flesh_blob.death": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "entity.generic.death"
-			}
-		],
-		"subtitle": "sounds.biomancy.entity.flesh_blob.death"
-	},
-	"entity.flesh_blob.growl": {
-		"sounds": [
-			{
-				"name": "biomancy:entity.flesh_blob.growl",
-				"pitch": 0.55,
-				"volume": 0.9
-			}
-		],
-		"subtitle": "sounds.biomancy.entity.flesh_blob.growl"
-	},
-	"entity.flesh_blob.hurt": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "biomancy:flesh_block.break",
-				"pitch": 0.9,
-				"volume": 0.8
-			}
-		],
-		"subtitle": "sounds.biomancy.entity.flesh_blob.hurt"
-	},
-	"entity.flesh_blob.jump": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "entity.slime.jump"
-			}
-		],
-		"subtitle": "sounds.biomancy.entity.flesh_blob.jump"
-	},
-	"entity.flesh_blob.mew_purr": {
-		"sounds": [
-			{
-				"name": "biomancy:entity.flesh_blob.mew_purr",
-				"pitch": 0.45,
-				"volume": 0.7
-			}
-		],
-		"subtitle": "sounds.biomancy.entity.flesh_blob.mew_purr"
-	},
-	"flesh_block.break": {
-		"sounds": [
-			"biomancy:flesh_block.break1",
-			"biomancy:flesh_block.break2",
-			"biomancy:flesh_block.break3",
-			"biomancy:flesh_block.break4"
-		],
-		"subtitle": "sounds.biomancy.flesh_block.break"
-	},
-	"flesh_block.fall": {
-		"sounds": [
-			"biomancy:flesh_block.fall1",
-			"biomancy:flesh_block.fall2",
-			"biomancy:flesh_block.fall3"
-		],
-		"subtitle": "sounds.biomancy.flesh_block.fall"
-	},
-	"flesh_block.hit": {
-		"sounds": [
-			"biomancy:flesh_block.hit1",
-			"biomancy:flesh_block.hit2",
-			"biomancy:flesh_block.hit3",
-			"biomancy:flesh_block.hit4"
-		],
-		"subtitle": "sounds.biomancy.flesh_block.hit"
-	},
-	"flesh_block.place": {
-		"sounds": [
-			"biomancy:flesh_block.place1",
-			"biomancy:flesh_block.place2"
-		],
-		"subtitle": "sounds.biomancy.flesh_block.place"
-	},
-	"flesh_block.step": {
-		"sounds": [
-			"biomancy:flesh_block.step1",
-			"biomancy:flesh_block.step2",
-			"biomancy:flesh_block.step3",
-			"biomancy:flesh_block.step4"
-		],
-		"subtitle": "sounds.biomancy.flesh_block.step"
-	},
-	"flesh_door.close": {
-		"sounds": [
-			"biomancy:flesh_door.close1",
-			"biomancy:flesh_door.close2"
-		],
-		"subtitle": "sounds.biomancy.flesh_door.close"
-	},
-	"flesh_door.open": {
-		"sounds": [
-			"biomancy:flesh_door.open1",
-			"biomancy:flesh_door.open2"
-		],
-		"subtitle": "sounds.biomancy.flesh_door.open"
-	},
-	"fleshkin.awakened": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "biomancy:flesh_block.place",
-				"pitch": 1.25,
-				"volume": 1.2
-			}
-		],
-		"subtitle": "sounds.biomancy.fleshkin.awakened"
-	},
-	"fleshkin.break": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "biomancy:flesh_block.break",
-				"pitch": 1.25,
-				"volume": 1.2
-			}
-		],
-		"subtitle": "sounds.biomancy.fleshkin.break"
-	},
-	"fleshkin.dormant": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "biomancy:flesh_block.hit",
-				"pitch": 1.25,
-				"volume": 1.2
-			}
-		],
-		"subtitle": "sounds.biomancy.fleshkin.dormant"
-	},
-	"fleshkin.eat": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "entity.generic.eat",
-				"pitch": 0.9,
-				"volume": 0.9
-			}
-		],
-		"subtitle": "sounds.biomancy.fleshkin.eat"
-	},
-	"fleshkin.no": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "entity.villager.no",
-				"pitch": 0.3,
-				"volume": 0.75
-			}
-		],
-		"subtitle": "sounds.biomancy.fleshkin.no"
-	},
-	"fleshkin_chest.bite_attack": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "entity.goat.screaming.ram_impact",
-				"pitch": 0.5
-			}
-		],
-		"subtitle": "sounds.biomancy.fleshkin_chest.bite_attack"
-	},
-	"fleshkin_chest.close": {
-		"sounds": [
-			"biomancy:fleshkin_chest.close1",
-			"biomancy:fleshkin_chest.close2"
-		],
-		"subtitle": "sounds.biomancy.fleshkin_chest.close"
-	},
-	"fleshkin_chest.open": {
-		"sounds": [
-			"biomancy:fleshkin_chest.open1",
-			"biomancy:fleshkin_chest.open2"
-		],
-		"subtitle": "sounds.biomancy.fleshkin_chest.open"
-	},
-	"item.bone_marrow.drink": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "item.honey_bottle.drink",
-				"pitch": 1.25,
-				"volume": 0.9
-			}
-		],
-		"subtitle": "sounds.biomancy.item.bone_marrow.drink"
-	},
-	"item.injector.fail": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "block.dispenser.fail"
-			}
-		],
-		"subtitle": "sounds.biomancy.item.injector.fail"
-	},
-	"item.injector.inject": {
-		"sounds": [
-			"biomancy:item.injector.inject"
-		],
-		"subtitle": "sounds.biomancy.item.injector.inject"
-	},
-	"ui.bio_forge.open": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "biomancy:ui.menu.open"
-			}
-		],
-		"subtitle": "sounds.biomancy.ui.bio_forge.open"
-	},
-	"ui.bio_forge.select_recipe": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "ui.stonecutter.select_recipe"
-			}
-		],
-		"subtitle": "sounds.biomancy.ui.bio_forge.select_recipe"
-	},
-	"ui.bio_forge.take_result": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "entity.player.burp",
-				"pitch": 1.25
-			}
-		],
-		"subtitle": "sounds.biomancy.ui.bio_forge.take_result"
-	},
-	"ui.bio_lab.open": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "biomancy:ui.menu.open"
-			}
-		],
-		"subtitle": "sounds.biomancy.ui.bio_lab.open"
-	},
-	"ui.button.click": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "ui.button.click"
-			}
-		],
-		"subtitle": "sounds.biomancy.ui.button.click"
-	},
-	"ui.decomposer.open": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "biomancy:ui.menu.open"
-			}
-		],
-		"subtitle": "sounds.biomancy.ui.decomposer.open"
-	},
-	"ui.digester.open": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "biomancy:ui.menu.open"
-			}
-		],
-		"subtitle": "sounds.biomancy.ui.digester.open"
-	},
-	"ui.menu.open": {
-		"sounds": [
-			"biomancy:ui.menu.open"
-		],
-		"subtitle": "sounds.biomancy.ui.menu.open"
-	},
-	"ui.radial_menu.open": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "block.shulker_box.open",
-				"volume": 0.5
-			}
-		],
-		"subtitle": "sounds.biomancy.ui.radial_menu.open"
-	},
-	"ui.storage_sac.open": {
-		"sounds": [
-			{
-				"type": "event",
-				"name": "biomancy:ui.menu.open"
-			}
-		],
-		"subtitle": "sounds.biomancy.ui.storage_sac.open"
-	}
+  "block.bio_lab.crafting": {
+    "sounds": [
+      "biomancy:block.bio_lab.crafting"
+    ],
+    "subtitle": "sounds.biomancy.block.bio_lab.crafting"
+  },
+  "block.bio_lab.crafting_completed": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.witch.drink"
+      }
+    ],
+    "subtitle": "sounds.biomancy.block.bio_lab.crafting_completed"
+  },
+  "block.bio_lab.crafting_random": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.brewing_stand.brew",
+        "pitch": 0.5,
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "sounds.biomancy.block.bio_lab.crafting_random"
+  },
+  "block.cradle.became_full": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.player.burp",
+        "pitch": 0.25
+      }
+    ],
+    "subtitle": "sounds.biomancy.block.cradle.became_full"
+  },
+  "block.cradle.crafting_random": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.player.burp",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "sounds.biomancy.block.cradle.crafting_random"
+  },
+  "block.cradle.eat": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.goat.screaming.eat",
+        "pitch": 0.25
+      }
+    ],
+    "subtitle": "sounds.biomancy.block.cradle.eat"
+  },
+  "block.cradle.no": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.villager.no",
+        "pitch": 0.3,
+        "volume": 0.75
+      }
+    ],
+    "subtitle": "sounds.biomancy.block.cradle.no"
+  },
+  "block.cradle.spawn_mob": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.player.burp",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "sounds.biomancy.block.cradle.spawn_mob"
+  },
+  "block.decomposer.crafting": {
+    "sounds": [
+      {
+        "name": "biomancy:block.decomposer.crafting",
+        "volume": 0.5
+      }
+    ],
+    "subtitle": "sounds.biomancy.block.decomposer.crafting"
+  },
+  "block.decomposer.crafting_completed": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.player.burp",
+        "pitch": 1.5
+      }
+    ],
+    "subtitle": "sounds.biomancy.block.decomposer.crafting_completed"
+  },
+  "block.decomposer.crafting_random": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.player.burp",
+        "pitch": 0.5,
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "sounds.biomancy.block.decomposer.crafting_random"
+  },
+  "block.decomposer.eat": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.generic.eat",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "sounds.biomancy.block.decomposer.eat"
+  },
+  "block.digester.crafting": {
+    "sounds": [
+      "biomancy:block.digester.crafting"
+    ],
+    "subtitle": "sounds.biomancy.block.digester.crafting"
+  },
+  "block.digester.crafting_completed": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.player.burp",
+        "pitch": 1.25
+      }
+    ],
+    "subtitle": "sounds.biomancy.block.digester.crafting_completed"
+  },
+  "block.digester.crafting_random": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.player.burp",
+        "pitch": 0.5,
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "sounds.biomancy.block.digester.crafting_random"
+  },
+  "bony_flesh_block.break": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "biomancy:flesh_block.break"
+      },
+      {
+        "type": "event",
+        "name": "block.bone_block.break"
+      }
+    ],
+    "subtitle": "sounds.biomancy.bony_flesh_block.break"
+  },
+  "bony_flesh_block.fall": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "biomancy:flesh_block.fall"
+      },
+      {
+        "type": "event",
+        "name": "block.bone_block.fall"
+      }
+    ],
+    "subtitle": "sounds.biomancy.bony_flesh_block.fall"
+  },
+  "bony_flesh_block.hit": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "biomancy:flesh_block.hit"
+      },
+      {
+        "type": "event",
+        "name": "block.bone_block.hit"
+      }
+    ],
+    "subtitle": "sounds.biomancy.bony_flesh_block.hit"
+  },
+  "bony_flesh_block.place": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "biomancy:flesh_block.place"
+      },
+      {
+        "type": "event",
+        "name": "block.bone_block.place"
+      }
+    ],
+    "subtitle": "sounds.biomancy.bony_flesh_block.place"
+  },
+  "bony_flesh_block.step": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "biomancy:flesh_block.step"
+      },
+      {
+        "type": "event",
+        "name": "block.bone_block.step"
+      }
+    ],
+    "subtitle": "sounds.biomancy.bony_flesh_block.step"
+  },
+  "claws.attack.bleed_proc": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.player.attack.crit",
+        "pitch": 1.5
+      }
+    ],
+    "subtitle": "sounds.biomancy.claws.attack.bleed_proc"
+  },
+  "claws.attack.strong": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.player.attack.sweep",
+        "pitch": 0.9,
+        "volume": 0.85
+      }
+    ],
+    "subtitle": "sounds.biomancy.claws.attack.strong"
+  },
+  "cradle.spike_attack": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.goat.screaming.ram_impact",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "sounds.biomancy.cradle.spike_attack"
+  },
+  "entity.flesh_blob.ambient": {
+    "sounds": [
+      {
+        "name": "biomancy:entity.flesh_blob.ambient1",
+        "pitch": 0.9,
+        "volume": 0.8
+      },
+      {
+        "name": "biomancy:entity.flesh_blob.ambient2",
+        "pitch": 0.9,
+        "volume": 0.8
+      },
+      {
+        "name": "biomancy:entity.flesh_blob.ambient3",
+        "pitch": 0.9,
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "sounds.biomancy.entity.flesh_blob.ambient"
+  },
+  "entity.flesh_blob.death": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.generic.death"
+      }
+    ],
+    "subtitle": "sounds.biomancy.entity.flesh_blob.death"
+  },
+  "entity.flesh_blob.growl": {
+    "sounds": [
+      {
+        "name": "biomancy:entity.flesh_blob.growl",
+        "pitch": 0.55,
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "sounds.biomancy.entity.flesh_blob.growl"
+  },
+  "entity.flesh_blob.hurt": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "biomancy:flesh_block.break",
+        "pitch": 0.9,
+        "volume": 0.8
+      }
+    ],
+    "subtitle": "sounds.biomancy.entity.flesh_blob.hurt"
+  },
+  "entity.flesh_blob.jump": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.slime.jump"
+      }
+    ],
+    "subtitle": "sounds.biomancy.entity.flesh_blob.jump"
+  },
+  "entity.flesh_blob.mew_purr": {
+    "sounds": [
+      {
+        "name": "biomancy:entity.flesh_blob.mew_purr",
+        "pitch": 0.45,
+        "volume": 0.7
+      }
+    ],
+    "subtitle": "sounds.biomancy.entity.flesh_blob.mew_purr"
+  },
+  "flesh_block.break": {
+    "sounds": [
+      "biomancy:flesh_block.break1",
+      "biomancy:flesh_block.break2",
+      "biomancy:flesh_block.break3",
+      "biomancy:flesh_block.break4"
+    ],
+    "subtitle": "sounds.biomancy.flesh_block.break"
+  },
+  "flesh_block.fall": {
+    "sounds": [
+      "biomancy:flesh_block.fall1",
+      "biomancy:flesh_block.fall2",
+      "biomancy:flesh_block.fall3"
+    ],
+    "subtitle": "sounds.biomancy.flesh_block.fall"
+  },
+  "flesh_block.hit": {
+    "sounds": [
+      "biomancy:flesh_block.hit1",
+      "biomancy:flesh_block.hit2",
+      "biomancy:flesh_block.hit3",
+      "biomancy:flesh_block.hit4"
+    ],
+    "subtitle": "sounds.biomancy.flesh_block.hit"
+  },
+  "flesh_block.place": {
+    "sounds": [
+      "biomancy:flesh_block.place1",
+      "biomancy:flesh_block.place2"
+    ],
+    "subtitle": "sounds.biomancy.flesh_block.place"
+  },
+  "flesh_block.step": {
+    "sounds": [
+      "biomancy:flesh_block.step1",
+      "biomancy:flesh_block.step2",
+      "biomancy:flesh_block.step3",
+      "biomancy:flesh_block.step4"
+    ],
+    "subtitle": "sounds.biomancy.flesh_block.step"
+  },
+  "flesh_door.close": {
+    "sounds": [
+      "biomancy:flesh_door.close1",
+      "biomancy:flesh_door.close2"
+    ],
+    "subtitle": "sounds.biomancy.flesh_door.close"
+  },
+  "flesh_door.open": {
+    "sounds": [
+      "biomancy:flesh_door.open1",
+      "biomancy:flesh_door.open2"
+    ],
+    "subtitle": "sounds.biomancy.flesh_door.open"
+  },
+  "fleshkin.awakened": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "biomancy:flesh_block.place",
+        "pitch": 1.25,
+        "volume": 1.2
+      }
+    ],
+    "subtitle": "sounds.biomancy.fleshkin.awakened"
+  },
+  "fleshkin.break": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "biomancy:flesh_block.break",
+        "pitch": 1.25,
+        "volume": 1.2
+      }
+    ],
+    "subtitle": "sounds.biomancy.fleshkin.break"
+  },
+  "fleshkin.dormant": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "biomancy:flesh_block.hit",
+        "pitch": 1.25,
+        "volume": 1.2
+      }
+    ],
+    "subtitle": "sounds.biomancy.fleshkin.dormant"
+  },
+  "fleshkin.eat": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.generic.eat",
+        "pitch": 0.9,
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "sounds.biomancy.fleshkin.eat"
+  },
+  "fleshkin.no": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.villager.no",
+        "pitch": 0.3,
+        "volume": 0.75
+      }
+    ],
+    "subtitle": "sounds.biomancy.fleshkin.no"
+  },
+  "fleshkin_chest.bite_attack": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.goat.screaming.ram_impact",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "sounds.biomancy.fleshkin_chest.bite_attack"
+  },
+  "fleshkin_chest.close": {
+    "sounds": [
+      "biomancy:fleshkin_chest.close1",
+      "biomancy:fleshkin_chest.close2"
+    ],
+    "subtitle": "sounds.biomancy.fleshkin_chest.close"
+  },
+  "fleshkin_chest.open": {
+    "sounds": [
+      "biomancy:fleshkin_chest.open1",
+      "biomancy:fleshkin_chest.open2"
+    ],
+    "subtitle": "sounds.biomancy.fleshkin_chest.open"
+  },
+  "item.bone_marrow.drink": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "item.honey_bottle.drink",
+        "pitch": 1.25,
+        "volume": 0.9
+      }
+    ],
+    "subtitle": "sounds.biomancy.item.bone_marrow.drink"
+  },
+  "item.injector.fail": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.dispenser.fail"
+      }
+    ],
+    "subtitle": "sounds.biomancy.item.injector.fail"
+  },
+  "item.injector.inject": {
+    "sounds": [
+      "biomancy:item.injector.inject"
+    ],
+    "subtitle": "sounds.biomancy.item.injector.inject"
+  },
+  "ui.bio_forge.open": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "biomancy:ui.menu.open"
+      }
+    ],
+    "subtitle": "sounds.biomancy.ui.bio_forge.open"
+  },
+  "ui.bio_forge.select_recipe": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "ui.stonecutter.select_recipe"
+      }
+    ],
+    "subtitle": "sounds.biomancy.ui.bio_forge.select_recipe"
+  },
+  "ui.bio_forge.take_result": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.player.burp",
+        "pitch": 1.25
+      }
+    ],
+    "subtitle": "sounds.biomancy.ui.bio_forge.take_result"
+  },
+  "ui.bio_lab.open": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "biomancy:ui.menu.open"
+      }
+    ],
+    "subtitle": "sounds.biomancy.ui.bio_lab.open"
+  },
+  "ui.button.click": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "ui.button.click"
+      }
+    ],
+    "subtitle": "sounds.biomancy.ui.button.click"
+  },
+  "ui.decomposer.open": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "biomancy:ui.menu.open"
+      }
+    ],
+    "subtitle": "sounds.biomancy.ui.decomposer.open"
+  },
+  "ui.digester.open": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "biomancy:ui.menu.open"
+      }
+    ],
+    "subtitle": "sounds.biomancy.ui.digester.open"
+  },
+  "ui.menu.open": {
+    "sounds": [
+      "biomancy:ui.menu.open"
+    ],
+    "subtitle": "sounds.biomancy.ui.menu.open"
+  },
+  "ui.radial_menu.open": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "block.shulker_box.open",
+        "volume": 0.5
+      }
+    ],
+    "subtitle": "sounds.biomancy.ui.radial_menu.open"
+  },
+  "ui.storage_sac.open": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "biomancy:ui.menu.open"
+      }
+    ],
+    "subtitle": "sounds.biomancy.ui.storage_sac.open"
+  }
 }

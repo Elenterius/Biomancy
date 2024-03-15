@@ -1,7 +1,7 @@
 {
-	"variants": {
-		"": {
-			"model": "biomancy:block/primordial_cradle"
-		}
-	}
+  "variants": {
+    "": {
+      "model": "biomancy:block/primordial_cradle"
+    }
+  }
 }

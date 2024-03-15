@@ -1,13 +1,13 @@
 {
-	"type": "biomancy:bio_forging",
-	"bio_forge_tab": "biomancy:blocks",
-	"ingredients": [
-		{
-			"item": "biomancy:flesh_bits"
-		}
-	],
-	"nutrientsCost": 1,
-	"result": {
-		"item": "biomancy:flesh_slab"
-	}
+  "type": "biomancy:bio_forging",
+  "bio_forge_tab": "biomancy:blocks",
+  "ingredients": [
+    {
+      "item": "biomancy:flesh_bits"
+    }
+  ],
+  "nutrientsCost": 1,
+  "result": {
+    "item": "biomancy:flesh_slab"
+  }
 }

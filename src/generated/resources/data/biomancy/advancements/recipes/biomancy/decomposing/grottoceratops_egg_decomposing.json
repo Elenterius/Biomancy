@@ -1,47 +1,47 @@
 {
-	"advancements": [
-		{
-			"advancement": {
-				"parent": "minecraft:recipes/root",
-				"criteria": {
-					"has_grottoceratops_egg": {
-						"conditions": {
-							"items": [
-								{
-									"items": [
-										"alexscaves:grottoceratops_egg"
-									]
-								}
-							]
-						},
-						"trigger": "minecraft:inventory_changed"
-					},
-					"has_the_recipe": {
-						"conditions": {
-							"recipe": "biomancy:decomposing/grottoceratops_egg_decomposing"
-						},
-						"trigger": "minecraft:recipe_unlocked"
-					}
-				},
-				"requirements": [
-					[
-						"has_grottoceratops_egg",
-						"has_the_recipe"
-					]
-				],
-				"rewards": {
-					"recipes": [
-						"biomancy:decomposing/grottoceratops_egg_decomposing"
-					]
-				},
-				"sends_telemetry_event": false
-			},
-			"conditions": [
-				{
-					"type": "forge:mod_loaded",
-					"modid": "alexscaves"
-				}
-			]
-		}
-	]
+  "advancements": [
+    {
+      "advancement": {
+        "parent": "minecraft:recipes/root",
+        "criteria": {
+          "has_grottoceratops_egg": {
+            "conditions": {
+              "items": [
+                {
+                  "items": [
+                    "alexscaves:grottoceratops_egg"
+                  ]
+                }
+              ]
+            },
+            "trigger": "minecraft:inventory_changed"
+          },
+          "has_the_recipe": {
+            "conditions": {
+              "recipe": "biomancy:decomposing/grottoceratops_egg_decomposing"
+            },
+            "trigger": "minecraft:recipe_unlocked"
+          }
+        },
+        "requirements": [
+          [
+            "has_grottoceratops_egg",
+            "has_the_recipe"
+          ]
+        ],
+        "rewards": {
+          "recipes": [
+            "biomancy:decomposing/grottoceratops_egg_decomposing"
+          ]
+        },
+        "sends_telemetry_event": false
+      },
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ]
+    }
+  ]
 }

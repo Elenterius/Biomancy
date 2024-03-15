@@ -1,9 +1,9 @@
 {
-	"values": [
-		"biomancy:mob_claw",
-		{
-			"id": "alexsmobs:dropbear_claw",
-			"required": false
-		}
-	]
+  "values": [
+    "biomancy:mob_claw",
+    {
+      "id": "alexsmobs:dropbear_claw",
+      "required": false
+    }
+  ]
 }

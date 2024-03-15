@@ -1,14 +1,14 @@
 {
-	"values": [
-		"minecraft:iron_golem",
-		"minecraft:snow_golem",
-		{
-			"id": "strawgolem:strawgolem",
-			"required": false
-		},
-		{
-			"id": "strawgolem:strawnggolem",
-			"required": false
-		}
-	]
+  "values": [
+    "minecraft:iron_golem",
+    "minecraft:snow_golem",
+    {
+      "id": "strawgolem:strawgolem",
+      "required": false
+    },
+    {
+      "id": "strawgolem:strawnggolem",
+      "required": false
+    }
+  ]
 }

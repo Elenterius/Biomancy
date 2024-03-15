@@ -1,17 +1,17 @@
 {
-	"parent": "minecraft:item/generated",
-	"forge_data": {
-		"layers": {
-			"1": {
-				"block_light": 15,
-				"sky_light": 15
-			}
-		}
-	},
-	"loader": "forge:item_layers",
-	"render_types": { },
-	"textures": {
-		"layer0": "biomancy:item/primordial_core",
-		"layer1": "biomancy:item/primordial_core_emissive"
-	}
+  "parent": "minecraft:item/generated",
+  "forge_data": {
+    "layers": {
+      "1": {
+        "block_light": 15,
+        "sky_light": 15
+      }
+    }
+  },
+  "loader": "forge:item_layers",
+  "render_types": { },
+  "textures": {
+    "layer0": "biomancy:item/primordial_core",
+    "layer1": "biomancy:item/primordial_core_emissive"
+  }
 }

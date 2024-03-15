@@ -1,35 +1,35 @@
 {
-	"parent": "minecraft:recipes/root",
-	"criteria": {
-		"has_the_recipe": {
-			"conditions": {
-				"recipe": "biomancy:decomposing/toxin_gland_decomposing"
-			},
-			"trigger": "minecraft:recipe_unlocked"
-		},
-		"has_toxin_gland": {
-			"conditions": {
-				"items": [
-					{
-						"items": [
-							"biomancy:toxin_gland"
-						]
-					}
-				]
-			},
-			"trigger": "minecraft:inventory_changed"
-		}
-	},
-	"requirements": [
-		[
-			"has_toxin_gland",
-			"has_the_recipe"
-		]
-	],
-	"rewards": {
-		"recipes": [
-			"biomancy:decomposing/toxin_gland_decomposing"
-		]
-	},
-	"sends_telemetry_event": false
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "biomancy:decomposing/toxin_gland_decomposing"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_toxin_gland": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:toxin_gland"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_toxin_gland",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "biomancy:decomposing/toxin_gland_decomposing"
+    ]
+  },
+  "sends_telemetry_event": false
 }

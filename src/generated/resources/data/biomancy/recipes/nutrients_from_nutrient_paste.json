@@ -1,13 +1,13 @@
 {
-	"type": "minecraft:crafting_shapeless",
-	"category": "misc",
-	"ingredients": [
-		{
-			"item": "biomancy:nutrient_paste"
-		}
-	],
-	"result": {
-		"count": 5,
-		"item": "biomancy:nutrients"
-	}
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "biomancy:nutrient_paste"
+    }
+  ],
+  "result": {
+    "count": 5,
+    "item": "biomancy:nutrients"
+  }
 }

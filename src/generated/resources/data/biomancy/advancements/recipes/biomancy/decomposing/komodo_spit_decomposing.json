@@ -1,47 +1,47 @@
 {
-	"advancements": [
-		{
-			"advancement": {
-				"parent": "minecraft:recipes/root",
-				"criteria": {
-					"has_komodo_spit": {
-						"conditions": {
-							"items": [
-								{
-									"items": [
-										"alexsmobs:komodo_spit"
-									]
-								}
-							]
-						},
-						"trigger": "minecraft:inventory_changed"
-					},
-					"has_the_recipe": {
-						"conditions": {
-							"recipe": "biomancy:decomposing/komodo_spit_decomposing"
-						},
-						"trigger": "minecraft:recipe_unlocked"
-					}
-				},
-				"requirements": [
-					[
-						"has_komodo_spit",
-						"has_the_recipe"
-					]
-				],
-				"rewards": {
-					"recipes": [
-						"biomancy:decomposing/komodo_spit_decomposing"
-					]
-				},
-				"sends_telemetry_event": false
-			},
-			"conditions": [
-				{
-					"type": "forge:mod_loaded",
-					"modid": "alexsmobs"
-				}
-			]
-		}
-	]
+  "advancements": [
+    {
+      "advancement": {
+        "parent": "minecraft:recipes/root",
+        "criteria": {
+          "has_komodo_spit": {
+            "conditions": {
+              "items": [
+                {
+                  "items": [
+                    "alexsmobs:komodo_spit"
+                  ]
+                }
+              ]
+            },
+            "trigger": "minecraft:inventory_changed"
+          },
+          "has_the_recipe": {
+            "conditions": {
+              "recipe": "biomancy:decomposing/komodo_spit_decomposing"
+            },
+            "trigger": "minecraft:recipe_unlocked"
+          }
+        },
+        "requirements": [
+          [
+            "has_komodo_spit",
+            "has_the_recipe"
+          ]
+        ],
+        "rewards": {
+          "recipes": [
+            "biomancy:decomposing/komodo_spit_decomposing"
+          ]
+        },
+        "sends_telemetry_event": false
+      },
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexsmobs"
+        }
+      ]
+    }
+  ]
 }

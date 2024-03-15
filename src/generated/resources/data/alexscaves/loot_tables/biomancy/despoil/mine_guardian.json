@@ -1,4 +1,4 @@
 {
-	"type": "minecraft:entity",
-	"random_sequence": "alexscaves:biomancy/despoil/mine_guardian"
+  "type": "minecraft:entity",
+  "random_sequence": "alexscaves:biomancy/despoil/mine_guardian"
 }

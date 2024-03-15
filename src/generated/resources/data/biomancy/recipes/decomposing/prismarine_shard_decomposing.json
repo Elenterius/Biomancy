@@ -1,18 +1,18 @@
 {
-	"type": "biomancy:decomposing",
-	"ingredient": {
-		"item": "minecraft:prismarine_shard"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 80,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 2,
-				"min": 1
-			},
-			"item": "biomancy:mineral_fragment"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "ingredient": {
+    "item": "minecraft:prismarine_shard"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 80,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 2,
+        "min": 1
+      },
+      "item": "biomancy:mineral_fragment"
+    }
+  ]
 }

@@ -1,40 +1,40 @@
 {
-	"type": "biomancy:decomposing",
-	"conditions": [
-		{
-			"type": "forge:mod_loaded",
-			"modid": "alexscaves"
-		}
-	],
-	"ingredient": {
-		"item": "alexscaves:ancient_sapling"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 200,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 3,
-				"min": 1
-			},
-			"item": "biomancy:organic_matter"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 3,
-				"min": 0
-			},
-			"item": "biomancy:stone_powder"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 1,
-				"min": 0
-			},
-			"item": "biomancy:exotic_dust"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "alexscaves"
+    }
+  ],
+  "ingredient": {
+    "item": "alexscaves:ancient_sapling"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 200,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 3,
+        "min": 1
+      },
+      "item": "biomancy:organic_matter"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 3,
+        "min": 0
+      },
+      "item": "biomancy:stone_powder"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 1,
+        "min": 0
+      },
+      "item": "biomancy:exotic_dust"
+    }
+  ]
 }

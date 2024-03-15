@@ -1,48 +1,48 @@
 {
-	"type": "biomancy:decomposing",
-	"conditions": [
-		{
-			"type": "forge:mod_loaded",
-			"modid": "alexscaves"
-		}
-	],
-	"ingredient": {
-		"item": "alexscaves:subterranodon_egg"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 580,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 4,
-				"min": 0
-			},
-			"item": "biomancy:stone_powder"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 4,
-				"min": 1
-			},
-			"item": "biomancy:hormone_secretion"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 4,
-				"min": 1
-			},
-			"item": "biomancy:organic_matter"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 6,
-				"min": 2
-			},
-			"item": "biomancy:exotic_dust"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "alexscaves"
+    }
+  ],
+  "ingredient": {
+    "item": "alexscaves:subterranodon_egg"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 580,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 4,
+        "min": 0
+      },
+      "item": "biomancy:stone_powder"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 4,
+        "min": 1
+      },
+      "item": "biomancy:hormone_secretion"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 4,
+        "min": 1
+      },
+      "item": "biomancy:organic_matter"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 6,
+        "min": 2
+      },
+      "item": "biomancy:exotic_dust"
+    }
+  ]
 }

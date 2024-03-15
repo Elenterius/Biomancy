@@ -1,7 +1,7 @@
 {
-	"variants": {
-		"": {
-			"model": "biomancy:block/bloomlight"
-		}
-	}
+  "variants": {
+    "": {
+      "model": "biomancy:block/bloomlight"
+    }
+  }
 }

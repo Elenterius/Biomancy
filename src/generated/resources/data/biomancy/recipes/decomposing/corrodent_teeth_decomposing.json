@@ -1,40 +1,40 @@
 {
-	"type": "biomancy:decomposing",
-	"conditions": [
-		{
-			"type": "forge:mod_loaded",
-			"modid": "alexscaves"
-		}
-	],
-	"ingredient": {
-		"item": "alexscaves:corrodent_teeth"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 400,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 3,
-				"min": 0
-			},
-			"item": "biomancy:stone_powder"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 4,
-				"min": 2
-			},
-			"item": "biomancy:mineral_fragment"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 6,
-				"min": 4
-			},
-			"item": "biomancy:bone_fragments"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "alexscaves"
+    }
+  ],
+  "ingredient": {
+    "item": "alexscaves:corrodent_teeth"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 400,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 3,
+        "min": 0
+      },
+      "item": "biomancy:stone_powder"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 4,
+        "min": 2
+      },
+      "item": "biomancy:mineral_fragment"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 6,
+        "min": 4
+      },
+      "item": "biomancy:bone_fragments"
+    }
+  ]
 }

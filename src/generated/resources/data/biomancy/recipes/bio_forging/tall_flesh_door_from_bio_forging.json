@@ -1,32 +1,32 @@
 {
-	"type": "biomancy:bio_forging",
-	"bio_forge_tab": "biomancy:misc",
-	"conditions": [
-		{
-			"type": "forge:mod_loaded",
-			"modid": "dramaticdoors"
-		}
-	],
-	"ingredients": [
-		{
-			"count": 9,
-			"item": "biomancy:flesh_bits"
-		},
-		{
-			"count": 9,
-			"item": "biomancy:bone_fragments"
-		},
-		{
-			"count": 6,
-			"item": "biomancy:elastic_fibers"
-		},
-		{
-			"count": 3,
-			"item": "biomancy:tough_fibers"
-		}
-	],
-	"nutrientsCost": 1,
-	"result": {
-		"item": "dramaticdoors:tall_flesh_door"
-	}
+  "type": "biomancy:bio_forging",
+  "bio_forge_tab": "biomancy:misc",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "dramaticdoors"
+    }
+  ],
+  "ingredients": [
+    {
+      "count": 9,
+      "item": "biomancy:flesh_bits"
+    },
+    {
+      "count": 9,
+      "item": "biomancy:bone_fragments"
+    },
+    {
+      "count": 6,
+      "item": "biomancy:elastic_fibers"
+    },
+    {
+      "count": 3,
+      "item": "biomancy:tough_fibers"
+    }
+  ],
+  "nutrientsCost": 1,
+  "result": {
+    "item": "dramaticdoors:tall_flesh_door"
+  }
 }

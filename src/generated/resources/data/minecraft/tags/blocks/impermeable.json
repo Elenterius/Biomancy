@@ -1,14 +1,14 @@
 {
-	"values": [
-		"biomancy:impermeable_membrane",
-		"biomancy:impermeable_membrane_pane",
-		"biomancy:baby_permeable_membrane",
-		"biomancy:baby_permeable_membrane_pane",
-		"biomancy:adult_permeable_membrane",
-		"biomancy:adult_permeable_membrane_pane",
-		"biomancy:primal_permeable_membrane",
-		"biomancy:primal_permeable_membrane_pane",
-		"biomancy:undead_permeable_membrane",
-		"biomancy:undead_permeable_membrane_pane"
-	]
+  "values": [
+    "biomancy:impermeable_membrane",
+    "biomancy:impermeable_membrane_pane",
+    "biomancy:baby_permeable_membrane",
+    "biomancy:baby_permeable_membrane_pane",
+    "biomancy:adult_permeable_membrane",
+    "biomancy:adult_permeable_membrane_pane",
+    "biomancy:primal_permeable_membrane",
+    "biomancy:primal_permeable_membrane_pane",
+    "biomancy:undead_permeable_membrane",
+    "biomancy:undead_permeable_membrane_pane"
+  ]
 }

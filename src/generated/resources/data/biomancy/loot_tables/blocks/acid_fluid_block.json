@@ -1,4 +1,4 @@
 {
-	"type": "minecraft:block",
-	"random_sequence": "biomancy:blocks/acid_fluid_block"
+  "type": "minecraft:block",
+  "random_sequence": "biomancy:blocks/acid_fluid_block"
 }

@@ -1,19 +1,19 @@
 {
-	"type": "biomancy:bio_brewing",
-	"ingredients": [
-		{
-			"item": "biomancy:withering_ooze"
-		},
-		{
-			"item": "biomancy:bile"
-		}
-	],
-	"nutrientsCost": 2,
-	"processingTime": 40,
-	"reactant": {
-		"item": "biomancy:organic_compound"
-	},
-	"result": {
-		"item": "biomancy:corrosive_additive"
-	}
+  "type": "biomancy:bio_brewing",
+  "ingredients": [
+    {
+      "item": "biomancy:withering_ooze"
+    },
+    {
+      "item": "biomancy:bile"
+    }
+  ],
+  "nutrientsCost": 2,
+  "processingTime": 40,
+  "reactant": {
+    "item": "biomancy:organic_compound"
+  },
+  "result": {
+    "item": "biomancy:corrosive_additive"
+  }
 }

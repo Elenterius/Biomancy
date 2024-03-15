@@ -1,25 +1,25 @@
 {
-	"type": "biomancy:bio_brewing",
-	"ingredients": [
-		{
-			"item": "biomancy:nutrient_paste"
-		},
-		{
-			"item": "biomancy:hormone_secretion"
-		},
-		{
-			"item": "biomancy:healing_additive"
-		},
-		{
-			"item": "biomancy:mineral_fragment"
-		}
-	],
-	"nutrientsCost": 2,
-	"processingTime": 120,
-	"reactant": {
-		"item": "biomancy:genetic_compound"
-	},
-	"result": {
-		"item": "biomancy:enlargement_serum"
-	}
+  "type": "biomancy:bio_brewing",
+  "ingredients": [
+    {
+      "item": "biomancy:nutrient_paste"
+    },
+    {
+      "item": "biomancy:hormone_secretion"
+    },
+    {
+      "item": "biomancy:healing_additive"
+    },
+    {
+      "item": "biomancy:mineral_fragment"
+    }
+  ],
+  "nutrientsCost": 2,
+  "processingTime": 120,
+  "reactant": {
+    "item": "biomancy:genetic_compound"
+  },
+  "result": {
+    "item": "biomancy:enlargement_serum"
+  }
 }

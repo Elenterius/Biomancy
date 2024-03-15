@@ -1,4 +1,4 @@
 {
-	"type": "minecraft:entity",
-	"random_sequence": "alexsmobs:biomancy/despoil/void_worm"
+  "type": "minecraft:entity",
+  "random_sequence": "alexsmobs:biomancy/despoil/void_worm"
 }

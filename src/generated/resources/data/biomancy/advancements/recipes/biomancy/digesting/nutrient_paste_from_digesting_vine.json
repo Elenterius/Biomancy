@@ -1,35 +1,35 @@
 {
-	"parent": "minecraft:recipes/root",
-	"criteria": {
-		"has_the_recipe": {
-			"conditions": {
-				"recipe": "biomancy:digesting/nutrient_paste_from_digesting_vine"
-			},
-			"trigger": "minecraft:recipe_unlocked"
-		},
-		"has_vine": {
-			"conditions": {
-				"items": [
-					{
-						"items": [
-							"minecraft:vine"
-						]
-					}
-				]
-			},
-			"trigger": "minecraft:inventory_changed"
-		}
-	},
-	"requirements": [
-		[
-			"has_vine",
-			"has_the_recipe"
-		]
-	],
-	"rewards": {
-		"recipes": [
-			"biomancy:digesting/nutrient_paste_from_digesting_vine"
-		]
-	},
-	"sends_telemetry_event": false
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "biomancy:digesting/nutrient_paste_from_digesting_vine"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_vine": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:vine"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_vine",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "biomancy:digesting/nutrient_paste_from_digesting_vine"
+    ]
+  },
+  "sends_telemetry_event": false
 }

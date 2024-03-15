@@ -1,12 +1,12 @@
 {
-	"type": "biomancy:digesting",
-	"ingredient": {
-		"item": "minecraft:nether_wart_block"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 582,
-	"result": {
-		"count": 14,
-		"item": "biomancy:nutrient_paste"
-	}
+  "type": "biomancy:digesting",
+  "ingredient": {
+    "item": "minecraft:nether_wart_block"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 582,
+  "result": {
+    "count": 14,
+    "item": "biomancy:nutrient_paste"
+  }
 }

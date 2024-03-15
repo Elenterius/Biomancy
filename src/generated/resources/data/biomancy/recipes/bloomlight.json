@@ -1,22 +1,22 @@
 {
-	"type": "minecraft:crafting_shaped",
-	"category": "misc",
-	"key": {
-		"B": {
-			"item": "biomancy:bloomberry"
-		},
-		"V": {
-			"item": "biomancy:malignant_flesh_veins"
-		}
-	},
-	"pattern": [
-		"BVB",
-		"VBV",
-		"BVB"
-	],
-	"result": {
-		"count": 4,
-		"item": "biomancy:bloomlight"
-	},
-	"show_notification": true
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "biomancy:bloomberry"
+    },
+    "V": {
+      "item": "biomancy:malignant_flesh_veins"
+    }
+  },
+  "pattern": [
+    "BVB",
+    "VBV",
+    "BVB"
+  ],
+  "result": {
+    "count": 4,
+    "item": "biomancy:bloomlight"
+  },
+  "show_notification": true
 }

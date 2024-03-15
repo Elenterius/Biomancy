@@ -1,7 +1,7 @@
 {
-	"variants": {
-		"": {
-			"model": "biomancy:block/fleshkin_chest"
-		}
-	}
+  "variants": {
+    "": {
+      "model": "biomancy:block/fleshkin_chest"
+    }
+  }
 }

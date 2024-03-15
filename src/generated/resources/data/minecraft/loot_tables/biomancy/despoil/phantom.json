@@ -1,4 +1,4 @@
 {
-	"type": "minecraft:entity",
-	"random_sequence": "minecraft:biomancy/despoil/phantom"
+  "type": "minecraft:entity",
+  "random_sequence": "minecraft:biomancy/despoil/phantom"
 }

@@ -1,37 +1,37 @@
 {
-	"parent": "biomancy:biomancy/primal_vision",
-	"criteria": {
-		"has_placed_cradle": {
-			"conditions": {
-				"location": [
-					{
-						"block": "biomancy:primordial_cradle",
-						"condition": "minecraft:block_state_property"
-					}
-				]
-			},
-			"trigger": "minecraft:placed_block"
-		}
-	},
-	"display": {
-		"announce_to_chat": false,
-		"description": {
-			"translate": "advancements.biomancy.cradle.description"
-		},
-		"frame": "task",
-		"hidden": false,
-		"icon": {
-			"item": "biomancy:primordial_cradle"
-		},
-		"show_toast": true,
-		"title": {
-			"translate": "advancements.biomancy.cradle.title"
-		}
-	},
-	"requirements": [
-		[
-			"has_placed_cradle"
-		]
-	],
-	"sends_telemetry_event": true
+  "parent": "biomancy:biomancy/primal_vision",
+  "criteria": {
+    "has_placed_cradle": {
+      "conditions": {
+        "location": [
+          {
+            "block": "biomancy:primordial_cradle",
+            "condition": "minecraft:block_state_property"
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.biomancy.cradle.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "biomancy:primordial_cradle"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.biomancy.cradle.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_placed_cradle"
+    ]
+  ],
+  "sends_telemetry_event": true
 }

@@ -1,17 +1,17 @@
 {
-	"type": "minecraft:crafting_shaped",
-	"category": "building",
-	"key": {
-		"S": {
-			"item": "biomancy:malignant_flesh_slab"
-		}
-	},
-	"pattern": [
-		" S ",
-		" S "
-	],
-	"result": {
-		"item": "biomancy:malignant_flesh"
-	},
-	"show_notification": true
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "S": {
+      "item": "biomancy:malignant_flesh_slab"
+    }
+  },
+  "pattern": [
+    " S ",
+    " S "
+  ],
+  "result": {
+    "item": "biomancy:malignant_flesh"
+  },
+  "show_notification": true
 }

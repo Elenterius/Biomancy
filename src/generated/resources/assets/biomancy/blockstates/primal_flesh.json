@@ -1,7 +1,7 @@
 {
-	"variants": {
-		"": {
-			"model": "biomancy:block/primal_flesh"
-		}
-	}
+  "variants": {
+    "": {
+      "model": "biomancy:block/primal_flesh"
+    }
+  }
 }

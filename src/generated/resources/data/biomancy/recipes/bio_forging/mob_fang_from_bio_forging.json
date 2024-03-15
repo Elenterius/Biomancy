@@ -1,21 +1,21 @@
 {
-	"type": "biomancy:bio_forging",
-	"bio_forge_tab": "biomancy:components",
-	"ingredients": [
-		{
-			"count": 6,
-			"item": "biomancy:mineral_fragment"
-		},
-		{
-			"count": 8,
-			"item": "biomancy:bone_fragments"
-		},
-		{
-			"item": "biomancy:stone_powder"
-		}
-	],
-	"nutrientsCost": 1,
-	"result": {
-		"item": "biomancy:mob_fang"
-	}
+  "type": "biomancy:bio_forging",
+  "bio_forge_tab": "biomancy:components",
+  "ingredients": [
+    {
+      "count": 6,
+      "item": "biomancy:mineral_fragment"
+    },
+    {
+      "count": 8,
+      "item": "biomancy:bone_fragments"
+    },
+    {
+      "item": "biomancy:stone_powder"
+    }
+  ],
+  "nutrientsCost": 1,
+  "result": {
+    "item": "biomancy:mob_fang"
+  }
 }

@@ -1,71 +1,71 @@
 {
-	"background_u_index": 0,
-	"background_v_index": 0,
-	"category": "biomancy:features",
-	"description": "book.biomancy.guide_book.features.mob.description",
-	"hide_while_locked": false,
-	"icon": {
-		"item": "biomancy:living_flesh"
-	},
-	"name": "book.biomancy.guide_book.features.mob.name",
-	"pages": [
-		{
-			"type": "modonomicon:entity",
-			"anchor": "",
-			"default_rotation": -45.0,
-			"entity_id": "biomancy:flesh_blob",
-			"name": "",
-			"offset": 0.0,
-			"rotate": true,
-			"scale": 1.0,
-			"text": ""
-		},
-		{
-			"type": "modonomicon:text",
-			"anchor": "",
-			"show_title_separator": true,
-			"text": "book.biomancy.guide_book.features.mob.flesh_blob_page.text",
-			"title": "",
-			"use_markdown_in_title": false
-		},
-		{
-			"type": "modonomicon:entity",
-			"anchor": "",
-			"default_rotation": -45.0,
-			"entity_id": "biomancy:hungry_flesh_blob",
-			"name": "",
-			"offset": 0.0,
-			"rotate": true,
-			"scale": 1.0,
-			"text": ""
-		},
-		{
-			"type": "modonomicon:text",
-			"anchor": "",
-			"show_title_separator": true,
-			"text": "book.biomancy.guide_book.features.mob.hungry_flesh_blob_text.text",
-			"title": "",
-			"use_markdown_in_title": false
-		},
-		{
-			"type": "modonomicon:spotlight",
-			"anchor": "",
-			"item": {
-				"item": "biomancy:living_flesh"
-			},
-			"text": "book.biomancy.guide_book.features.mob.living_flesh_spotlight.text",
-			"title": ""
-		}
-	],
-	"parents": [
-		{
-			"draw_arrow": true,
-			"entry": "biomancy:features/primordial_cradle",
-			"line_enabled": true,
-			"line_reversed": false
-		}
-	],
-	"show_when_any_parent_unlocked": false,
-	"x": 0,
-	"y": -2
+  "background_u_index": 0,
+  "background_v_index": 0,
+  "category": "biomancy:features",
+  "description": "book.biomancy.guide_book.features.mob.description",
+  "hide_while_locked": false,
+  "icon": {
+    "item": "biomancy:living_flesh"
+  },
+  "name": "book.biomancy.guide_book.features.mob.name",
+  "pages": [
+    {
+      "type": "modonomicon:entity",
+      "anchor": "",
+      "default_rotation": -45.0,
+      "entity_id": "biomancy:flesh_blob",
+      "name": "",
+      "offset": 0.0,
+      "rotate": true,
+      "scale": 1.0,
+      "text": ""
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "show_title_separator": true,
+      "text": "book.biomancy.guide_book.features.mob.flesh_blob_page.text",
+      "title": "",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:entity",
+      "anchor": "",
+      "default_rotation": -45.0,
+      "entity_id": "biomancy:hungry_flesh_blob",
+      "name": "",
+      "offset": 0.0,
+      "rotate": true,
+      "scale": 1.0,
+      "text": ""
+    },
+    {
+      "type": "modonomicon:text",
+      "anchor": "",
+      "show_title_separator": true,
+      "text": "book.biomancy.guide_book.features.mob.hungry_flesh_blob_text.text",
+      "title": "",
+      "use_markdown_in_title": false
+    },
+    {
+      "type": "modonomicon:spotlight",
+      "anchor": "",
+      "item": {
+        "item": "biomancy:living_flesh"
+      },
+      "text": "book.biomancy.guide_book.features.mob.living_flesh_spotlight.text",
+      "title": ""
+    }
+  ],
+  "parents": [
+    {
+      "draw_arrow": true,
+      "entry": "biomancy:features/primordial_cradle",
+      "line_enabled": true,
+      "line_reversed": false
+    }
+  ],
+  "show_when_any_parent_unlocked": false,
+  "x": 0,
+  "y": -2
 }

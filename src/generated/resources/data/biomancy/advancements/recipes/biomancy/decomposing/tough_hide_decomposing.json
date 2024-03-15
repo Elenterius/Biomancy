@@ -1,47 +1,47 @@
 {
-	"advancements": [
-		{
-			"advancement": {
-				"parent": "minecraft:recipes/root",
-				"criteria": {
-					"has_the_recipe": {
-						"conditions": {
-							"recipe": "biomancy:decomposing/tough_hide_decomposing"
-						},
-						"trigger": "minecraft:recipe_unlocked"
-					},
-					"has_tough_hide": {
-						"conditions": {
-							"items": [
-								{
-									"items": [
-										"alexscaves:tough_hide"
-									]
-								}
-							]
-						},
-						"trigger": "minecraft:inventory_changed"
-					}
-				},
-				"requirements": [
-					[
-						"has_tough_hide",
-						"has_the_recipe"
-					]
-				],
-				"rewards": {
-					"recipes": [
-						"biomancy:decomposing/tough_hide_decomposing"
-					]
-				},
-				"sends_telemetry_event": false
-			},
-			"conditions": [
-				{
-					"type": "forge:mod_loaded",
-					"modid": "alexscaves"
-				}
-			]
-		}
-	]
+  "advancements": [
+    {
+      "advancement": {
+        "parent": "minecraft:recipes/root",
+        "criteria": {
+          "has_the_recipe": {
+            "conditions": {
+              "recipe": "biomancy:decomposing/tough_hide_decomposing"
+            },
+            "trigger": "minecraft:recipe_unlocked"
+          },
+          "has_tough_hide": {
+            "conditions": {
+              "items": [
+                {
+                  "items": [
+                    "alexscaves:tough_hide"
+                  ]
+                }
+              ]
+            },
+            "trigger": "minecraft:inventory_changed"
+          }
+        },
+        "requirements": [
+          [
+            "has_tough_hide",
+            "has_the_recipe"
+          ]
+        ],
+        "rewards": {
+          "recipes": [
+            "biomancy:decomposing/tough_hide_decomposing"
+          ]
+        },
+        "sends_telemetry_event": false
+      },
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexscaves"
+        }
+      ]
+    }
+  ]
 }

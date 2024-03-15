@@ -1,35 +1,35 @@
 {
-	"parent": "minecraft:recipes/root",
-	"criteria": {
-		"has_the_recipe": {
-			"conditions": {
-				"recipe": "biomancy:decomposing/zombie_head_decomposing"
-			},
-			"trigger": "minecraft:recipe_unlocked"
-		},
-		"has_zombie_head": {
-			"conditions": {
-				"items": [
-					{
-						"items": [
-							"minecraft:zombie_head"
-						]
-					}
-				]
-			},
-			"trigger": "minecraft:inventory_changed"
-		}
-	},
-	"requirements": [
-		[
-			"has_zombie_head",
-			"has_the_recipe"
-		]
-	],
-	"rewards": {
-		"recipes": [
-			"biomancy:decomposing/zombie_head_decomposing"
-		]
-	},
-	"sends_telemetry_event": false
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "biomancy:decomposing/zombie_head_decomposing"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_zombie_head": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:zombie_head"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_zombie_head",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "biomancy:decomposing/zombie_head_decomposing"
+    ]
+  },
+  "sends_telemetry_event": false
 }

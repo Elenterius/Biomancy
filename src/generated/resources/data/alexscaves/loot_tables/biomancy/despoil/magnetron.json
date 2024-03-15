@@ -1,4 +1,4 @@
 {
-	"type": "minecraft:entity",
-	"random_sequence": "alexscaves:biomancy/despoil/magnetron"
+  "type": "minecraft:entity",
+  "random_sequence": "alexscaves:biomancy/despoil/magnetron"
 }

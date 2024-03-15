@@ -1,14 +1,14 @@
 {
-	"values": [
-		{
-			"id": "#forge:tools/claws",
-			"required": false
-		},
-		{
-			"id": "#forge:tools/swords",
-			"required": false
-		},
-		"biomancy:injector",
-		"biomancy:bio_extractor"
-	]
+  "values": [
+    {
+      "id": "#forge:tools/claws",
+      "required": false
+    },
+    {
+      "id": "#forge:tools/swords",
+      "required": false
+    },
+    "biomancy:injector",
+    "biomancy:bio_extractor"
+  ]
 }

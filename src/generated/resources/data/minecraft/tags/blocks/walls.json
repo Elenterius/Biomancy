@@ -1,8 +1,8 @@
 {
-	"values": [
-		"biomancy:flesh_wall",
-		"biomancy:packed_flesh_wall",
-		"biomancy:malignant_flesh_wall",
-		"biomancy:primal_flesh_wall"
-	]
+  "values": [
+    "biomancy:flesh_wall",
+    "biomancy:packed_flesh_wall",
+    "biomancy:malignant_flesh_wall",
+    "biomancy:primal_flesh_wall"
+  ]
 }

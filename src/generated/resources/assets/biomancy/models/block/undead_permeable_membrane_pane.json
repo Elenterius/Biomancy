@@ -1,8 +1,8 @@
 {
-	"parent": "biomancy:block/template_thick_pane",
-	"render_type": "minecraft:translucent",
-	"textures": {
-		"front": "biomancy:block/undead_permeable_membrane",
-		"side": "biomancy:block/undead_permeable_membrane_side"
-	}
+  "parent": "biomancy:block/template_thick_pane",
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "front": "biomancy:block/undead_permeable_membrane",
+    "side": "biomancy:block/undead_permeable_membrane_side"
+  }
 }

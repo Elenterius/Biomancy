@@ -1,35 +1,35 @@
 {
-	"parent": "minecraft:recipes/root",
-	"criteria": {
-		"has_the_recipe": {
-			"conditions": {
-				"recipe": "biomancy:digesting/nutrient_paste_from_digesting_twisting_vines"
-			},
-			"trigger": "minecraft:recipe_unlocked"
-		},
-		"has_twisting_vines": {
-			"conditions": {
-				"items": [
-					{
-						"items": [
-							"minecraft:twisting_vines"
-						]
-					}
-				]
-			},
-			"trigger": "minecraft:inventory_changed"
-		}
-	},
-	"requirements": [
-		[
-			"has_twisting_vines",
-			"has_the_recipe"
-		]
-	],
-	"rewards": {
-		"recipes": [
-			"biomancy:digesting/nutrient_paste_from_digesting_twisting_vines"
-		]
-	},
-	"sends_telemetry_event": false
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "biomancy:digesting/nutrient_paste_from_digesting_twisting_vines"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_twisting_vines": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:twisting_vines"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_twisting_vines",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "biomancy:digesting/nutrient_paste_from_digesting_twisting_vines"
+    ]
+  },
+  "sends_telemetry_event": false
 }

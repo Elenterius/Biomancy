@@ -1,4 +1,4 @@
 {
-	"type": "minecraft:entity",
-	"random_sequence": "minecraft:biomancy/despoil/zombie_villager"
+  "type": "minecraft:entity",
+  "random_sequence": "minecraft:biomancy/despoil/zombie_villager"
 }

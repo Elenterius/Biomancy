@@ -1,4 +1,4 @@
 {
-	"type": "minecraft:entity",
-	"random_sequence": "alexsmobs:biomancy/despoil/guster"
+  "type": "minecraft:entity",
+  "random_sequence": "alexsmobs:biomancy/despoil/guster"
 }

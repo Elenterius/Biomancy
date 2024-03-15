@@ -1,47 +1,47 @@
 {
-	"advancements": [
-		{
-			"advancement": {
-				"parent": "minecraft:recipes/root",
-				"criteria": {
-					"has_rainbow_jelly": {
-						"conditions": {
-							"items": [
-								{
-									"items": [
-										"alexsmobs:rainbow_jelly"
-									]
-								}
-							]
-						},
-						"trigger": "minecraft:inventory_changed"
-					},
-					"has_the_recipe": {
-						"conditions": {
-							"recipe": "biomancy:decomposing/rainbow_jelly_decomposing"
-						},
-						"trigger": "minecraft:recipe_unlocked"
-					}
-				},
-				"requirements": [
-					[
-						"has_rainbow_jelly",
-						"has_the_recipe"
-					]
-				],
-				"rewards": {
-					"recipes": [
-						"biomancy:decomposing/rainbow_jelly_decomposing"
-					]
-				},
-				"sends_telemetry_event": false
-			},
-			"conditions": [
-				{
-					"type": "forge:mod_loaded",
-					"modid": "alexsmobs"
-				}
-			]
-		}
-	]
+  "advancements": [
+    {
+      "advancement": {
+        "parent": "minecraft:recipes/root",
+        "criteria": {
+          "has_rainbow_jelly": {
+            "conditions": {
+              "items": [
+                {
+                  "items": [
+                    "alexsmobs:rainbow_jelly"
+                  ]
+                }
+              ]
+            },
+            "trigger": "minecraft:inventory_changed"
+          },
+          "has_the_recipe": {
+            "conditions": {
+              "recipe": "biomancy:decomposing/rainbow_jelly_decomposing"
+            },
+            "trigger": "minecraft:recipe_unlocked"
+          }
+        },
+        "requirements": [
+          [
+            "has_rainbow_jelly",
+            "has_the_recipe"
+          ]
+        ],
+        "rewards": {
+          "recipes": [
+            "biomancy:decomposing/rainbow_jelly_decomposing"
+          ]
+        },
+        "sends_telemetry_event": false
+      },
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexsmobs"
+        }
+      ]
+    }
+  ]
 }

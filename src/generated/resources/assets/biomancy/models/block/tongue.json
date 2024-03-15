@@ -1,5 +1,5 @@
 {
-	"textures": {
-		"particle": "biomancy:block/packed_flesh"
-	}
+  "textures": {
+    "particle": "biomancy:block/packed_flesh"
+  }
 }

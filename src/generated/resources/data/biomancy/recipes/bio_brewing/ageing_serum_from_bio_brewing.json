@@ -1,25 +1,25 @@
 {
-	"type": "biomancy:bio_brewing",
-	"ingredients": [
-		{
-			"item": "biomancy:nutrient_paste"
-		},
-		{
-			"item": "biomancy:nutrient_paste"
-		},
-		{
-			"item": "biomancy:mineral_fragment"
-		},
-		{
-			"item": "biomancy:corrosive_additive"
-		}
-	],
-	"nutrientsCost": 2,
-	"processingTime": 120,
-	"reactant": {
-		"item": "biomancy:genetic_compound"
-	},
-	"result": {
-		"item": "biomancy:ageing_serum"
-	}
+  "type": "biomancy:bio_brewing",
+  "ingredients": [
+    {
+      "item": "biomancy:nutrient_paste"
+    },
+    {
+      "item": "biomancy:nutrient_paste"
+    },
+    {
+      "item": "biomancy:mineral_fragment"
+    },
+    {
+      "item": "biomancy:corrosive_additive"
+    }
+  ],
+  "nutrientsCost": 2,
+  "processingTime": 120,
+  "reactant": {
+    "item": "biomancy:genetic_compound"
+  },
+  "result": {
+    "item": "biomancy:ageing_serum"
+  }
 }

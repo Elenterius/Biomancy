@@ -1,31 +1,31 @@
 {
-	"type": "biomancy:decomposing",
-	"conditions": [
-		{
-			"type": "forge:mod_loaded",
-			"modid": "alexsmobs"
-		}
-	],
-	"ingredient": {
-		"item": "alexsmobs:caiman_egg"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 60,
-	"results": [
-		{
-			"countRange": {
-				"type": "constant",
-				"value": 1
-			},
-			"item": "biomancy:hormone_secretion"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 2,
-				"min": 0
-			},
-			"item": "biomancy:organic_matter"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "alexsmobs"
+    }
+  ],
+  "ingredient": {
+    "item": "alexsmobs:caiman_egg"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 60,
+  "results": [
+    {
+      "countRange": {
+        "type": "constant",
+        "value": 1
+      },
+      "item": "biomancy:hormone_secretion"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 2,
+        "min": 0
+      },
+      "item": "biomancy:organic_matter"
+    }
+  ]
 }

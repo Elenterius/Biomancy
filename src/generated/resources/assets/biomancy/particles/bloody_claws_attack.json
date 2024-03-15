@@ -1,12 +1,12 @@
 {
-	"textures": [
-		"biomancy:bloody_claws_attack_1",
-		"biomancy:bloody_claws_attack_2",
-		"biomancy:bloody_claws_attack_3",
-		"biomancy:bloody_claws_attack_4",
-		"biomancy:bloody_claws_attack_5",
-		"biomancy:bloody_claws_attack_6",
-		"biomancy:bloody_claws_attack_7",
-		"biomancy:bloody_claws_attack_8"
-	]
+  "textures": [
+    "biomancy:bloody_claws_attack_1",
+    "biomancy:bloody_claws_attack_2",
+    "biomancy:bloody_claws_attack_3",
+    "biomancy:bloody_claws_attack_4",
+    "biomancy:bloody_claws_attack_5",
+    "biomancy:bloody_claws_attack_6",
+    "biomancy:bloody_claws_attack_7",
+    "biomancy:bloody_claws_attack_8"
+  ]
 }

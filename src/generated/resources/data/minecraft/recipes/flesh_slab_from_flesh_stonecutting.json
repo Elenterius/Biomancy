@@ -1,8 +1,8 @@
 {
-	"type": "minecraft:stonecutting",
-	"count": 2,
-	"ingredient": {
-		"item": "biomancy:flesh"
-	},
-	"result": "biomancy:flesh_slab"
+  "type": "minecraft:stonecutting",
+  "count": 2,
+  "ingredient": {
+    "item": "biomancy:flesh"
+  },
+  "result": "biomancy:flesh_slab"
 }

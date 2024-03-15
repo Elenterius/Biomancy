@@ -1,33 +1,33 @@
 {
-	"type": "biomancy:decomposing",
-	"ingredient": {
-		"item": "minecraft:player_head"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 686,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 32,
-				"min": 19
-			},
-			"item": "biomancy:flesh_bits"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 9,
-				"min": 5
-			},
-			"item": "biomancy:elastic_fibers"
-		},
-		{
-			"countRange": {
-				"type": "constant",
-				"value": 1
-			},
-			"item": "minecraft:skeleton_skull"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "ingredient": {
+    "item": "minecraft:player_head"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 686,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 32,
+        "min": 19
+      },
+      "item": "biomancy:flesh_bits"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 9,
+        "min": 5
+      },
+      "item": "biomancy:elastic_fibers"
+    },
+    {
+      "countRange": {
+        "type": "constant",
+        "value": 1
+      },
+      "item": "minecraft:skeleton_skull"
+    }
+  ]
 }

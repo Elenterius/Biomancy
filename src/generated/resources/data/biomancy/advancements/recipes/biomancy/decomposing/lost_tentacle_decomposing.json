@@ -1,47 +1,47 @@
 {
-	"advancements": [
-		{
-			"advancement": {
-				"parent": "minecraft:recipes/root",
-				"criteria": {
-					"has_lost_tentacle": {
-						"conditions": {
-							"items": [
-								{
-									"items": [
-										"alexsmobs:lost_tentacle"
-									]
-								}
-							]
-						},
-						"trigger": "minecraft:inventory_changed"
-					},
-					"has_the_recipe": {
-						"conditions": {
-							"recipe": "biomancy:decomposing/lost_tentacle_decomposing"
-						},
-						"trigger": "minecraft:recipe_unlocked"
-					}
-				},
-				"requirements": [
-					[
-						"has_lost_tentacle",
-						"has_the_recipe"
-					]
-				],
-				"rewards": {
-					"recipes": [
-						"biomancy:decomposing/lost_tentacle_decomposing"
-					]
-				},
-				"sends_telemetry_event": false
-			},
-			"conditions": [
-				{
-					"type": "forge:mod_loaded",
-					"modid": "alexsmobs"
-				}
-			]
-		}
-	]
+  "advancements": [
+    {
+      "advancement": {
+        "parent": "minecraft:recipes/root",
+        "criteria": {
+          "has_lost_tentacle": {
+            "conditions": {
+              "items": [
+                {
+                  "items": [
+                    "alexsmobs:lost_tentacle"
+                  ]
+                }
+              ]
+            },
+            "trigger": "minecraft:inventory_changed"
+          },
+          "has_the_recipe": {
+            "conditions": {
+              "recipe": "biomancy:decomposing/lost_tentacle_decomposing"
+            },
+            "trigger": "minecraft:recipe_unlocked"
+          }
+        },
+        "requirements": [
+          [
+            "has_lost_tentacle",
+            "has_the_recipe"
+          ]
+        ],
+        "rewards": {
+          "recipes": [
+            "biomancy:decomposing/lost_tentacle_decomposing"
+          ]
+        },
+        "sends_telemetry_event": false
+      },
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "alexsmobs"
+        }
+      ]
+    }
+  ]
 }

@@ -1,32 +1,32 @@
 {
-	"type": "biomancy:decomposing",
-	"conditions": [
-		{
-			"type": "forge:mod_loaded",
-			"modid": "alexscaves"
-		}
-	],
-	"ingredient": {
-		"item": "alexscaves:ferrouslime_ball"
-	},
-	"nutrientsCost": 1,
-	"processingTime": 340,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 3,
-				"min": 2
-			},
-			"item": "biomancy:bile"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 7,
-				"min": 4
-			},
-			"item": "biomancy:mineral_fragment"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "alexscaves"
+    }
+  ],
+  "ingredient": {
+    "item": "alexscaves:ferrouslime_ball"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 340,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 3,
+        "min": 2
+      },
+      "item": "biomancy:bile"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 7,
+        "min": 4
+      },
+      "item": "biomancy:mineral_fragment"
+    }
+  ]
 }

@@ -1,26 +1,26 @@
 {
-	"type": "biomancy:decomposing",
-	"ingredient": {
-		"item": "minecraft:turtle_helmet"
-	},
-	"nutrientsCost": 2,
-	"processingTime": 1350,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 25,
-				"min": 15
-			},
-			"item": "biomancy:tough_fibers"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 15,
-				"min": 9
-			},
-			"item": "biomancy:mineral_fragment"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "ingredient": {
+    "item": "minecraft:turtle_helmet"
+  },
+  "nutrientsCost": 2,
+  "processingTime": 1350,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 25,
+        "min": 15
+      },
+      "item": "biomancy:tough_fibers"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 15,
+        "min": 9
+      },
+      "item": "biomancy:mineral_fragment"
+    }
+  ]
 }

@@ -1,34 +1,34 @@
 {
-	"type": "biomancy:decomposing",
-	"ingredient": {
-		"item": "minecraft:dragon_egg"
-	},
-	"nutrientsCost": 6,
-	"processingTime": 7080,
-	"results": [
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 128,
-				"min": 97
-			},
-			"item": "biomancy:exotic_dust"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 10,
-				"min": 6
-			},
-			"item": "biomancy:bio_lumens"
-		},
-		{
-			"countRange": {
-				"type": "uniform",
-				"max": 23,
-				"min": 17
-			},
-			"item": "biomancy:hormone_secretion"
-		}
-	]
+  "type": "biomancy:decomposing",
+  "ingredient": {
+    "item": "minecraft:dragon_egg"
+  },
+  "nutrientsCost": 6,
+  "processingTime": 7080,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 128,
+        "min": 97
+      },
+      "item": "biomancy:exotic_dust"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 10,
+        "min": 6
+      },
+      "item": "biomancy:bio_lumens"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 23,
+        "min": 17
+      },
+      "item": "biomancy:hormone_secretion"
+    }
+  ]
 }

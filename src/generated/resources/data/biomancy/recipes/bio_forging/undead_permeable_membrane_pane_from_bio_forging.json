@@ -1,22 +1,22 @@
 {
-	"type": "biomancy:bio_forging",
-	"bio_forge_tab": "biomancy:misc",
-	"ingredients": [
-		{
-			"count": 4,
-			"item": "biomancy:elastic_fibers"
-		},
-		{
-			"count": 4,
-			"item": "biomancy:bile"
-		},
-		{
-			"item": "minecraft:phantom_membrane"
-		}
-	],
-	"nutrientsCost": 1,
-	"result": {
-		"count": 2,
-		"item": "biomancy:undead_permeable_membrane_pane"
-	}
+  "type": "biomancy:bio_forging",
+  "bio_forge_tab": "biomancy:misc",
+  "ingredients": [
+    {
+      "count": 4,
+      "item": "biomancy:elastic_fibers"
+    },
+    {
+      "count": 4,
+      "item": "biomancy:bile"
+    },
+    {
+      "item": "minecraft:phantom_membrane"
+    }
+  ],
+  "nutrientsCost": 1,
+  "result": {
+    "count": 2,
+    "item": "biomancy:undead_permeable_membrane_pane"
+  }
 }
