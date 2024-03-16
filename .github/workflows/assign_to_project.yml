@@ -12,9 +12,9 @@ jobs:
     name: Assign to One Project
     steps:
       - name: Assign Issue with bug label to Biomancy Bug Tracker
-      uses: srggrs/assign-one-project-github-action@1.2.1
-      if: |
-        contains(github.event.issue.labels.*.name, 'bug')
-      with:
-        project: 'https://github.com/Elenterius/Biomancy/projects/2'
-        column_name: 'Needs triage'
+        uses: srggrs/assign-one-project-github-action@1.2.1
+        if: |
+          contains(github.event.issue.labels.*.name, 'bug')
+        with:
+          project: 'https://github.com/Elenterius/Biomancy/projects/2'
+          column_name: 'Needs triage'
