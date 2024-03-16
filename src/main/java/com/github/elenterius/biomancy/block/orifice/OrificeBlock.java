@@ -44,7 +44,7 @@ public class OrificeBlock extends Block implements BucketPickup {
 	@Override
 	public boolean canSustainPlant(BlockState state, BlockGetter world, BlockPos pos, Direction facing, IPlantable plantable) {
 		PlantType type = plantable.getPlantType(world, pos.relative(facing));
-		return type == ModPlantTypes.FLESH_PLANT_TYPE;
+		return type == ModPlantTypes.PRIMAL_FLESH;
 	}
 
 	@Override
