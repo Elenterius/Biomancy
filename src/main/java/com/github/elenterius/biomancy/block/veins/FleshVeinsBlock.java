@@ -225,7 +225,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 
 		BlockPos posBelow = pos.relative(direction);
 		BlockState stateBelow = level.getBlockState(posBelow);
-		boolean mayPlace = bloomBlock.mayPlaceOn(level, posBelow, stateBelow);
+		boolean mayPlace = bloomBlock.mayPlaceOn(level, posBelow, stateBelow, Direction.UP);
 
 		if (mayPlace && !LevelUtil.isBlockNearby(level, pos, 4, blockState -> blockState.is(bloomBlock)) && bloomBlock.hasUnobstructedAim(level, pos, direction.getOpposite())) {
 			BlockState stateForPlacement = bloomBlock.getStateForPlacement(level, pos, direction.getOpposite());

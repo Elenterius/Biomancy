@@ -95,7 +95,7 @@ public final class PrimordialEcosystem {
 		BlockState relativeState = level.getBlockState(relativePos);
 		RandomSource random = level.getRandom();
 
-		if (random.nextFloat() < 0.7f && ModBlocks.PRIMAL_BLOOM.get().mayPlaceOn(level, pos, state)) {
+		if (random.nextFloat() < 0.7f && ModBlocks.PRIMAL_BLOOM.get().mayPlaceOn(level, pos, state, direction)) {
 			boolean canBeReplaced = relativeState.canBeReplaced(new DirectionalPlaceContext(level, relativePos, direction.getOpposite(), ItemStack.EMPTY, direction));
 			boolean noBloomNearby = !LevelUtil.isBlockNearby(level, pos, 4, blockState -> blockState.is(ModBlocks.PRIMAL_BLOOM.get()));
 			if (canBeReplaced && noBloomNearby) {

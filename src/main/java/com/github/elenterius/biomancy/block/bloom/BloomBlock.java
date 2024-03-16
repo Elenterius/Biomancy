@@ -1,7 +1,6 @@
 package com.github.elenterius.biomancy.block.bloom;
 
 import com.github.elenterius.biomancy.block.base.WaterloggedFacingBlock;
-import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModPlantTypes;
 import com.github.elenterius.biomancy.init.ModProjectiles;
@@ -174,21 +173,15 @@ public class BloomBlock extends WaterloggedFacingBlock implements IPlantable {
 		return !state.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, direction, neighborState, level, currentPos, neighborPos);
 	}
 
-	public boolean mayPlaceOn(BlockGetter level, BlockPos pos, BlockState state) {
-		return state.is(ModBlocks.PRIMAL_FLESH.get()) || state.is(ModBlocks.MALIGNANT_FLESH.get());
+	public boolean mayPlaceOn(BlockGetter level, BlockPos pos, BlockState state, Direction facing) {
+		return state.canSustainPlant(level, pos, facing, this);
 	}
 
 	@Override
 	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
 		Direction direction = state.getValue(FACING);
 		BlockPos blockPos = pos.relative(direction.getOpposite());
-
-		if (state.getBlock() == this) {
-			//world gen and placement
-			return level.getBlockState(blockPos).canSustainPlant(level, blockPos, direction, this);
-		}
-
-		return mayPlaceOn(level, blockPos, level.getBlockState(blockPos));
+		return mayPlaceOn(level, blockPos, level.getBlockState(blockPos), direction);
 	}
 
 	@Override
