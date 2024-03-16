@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.world.mound.decorator;
 
 import com.github.elenterius.biomancy.init.ModBlocks;
+import com.github.elenterius.biomancy.world.PrimordialEcosystem;
 import com.github.elenterius.biomancy.world.mound.Chamber;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,7 +18,7 @@ public final class ChamberDecorators {
 		public PartOfDecorationResult isBlockPartOfDecoration(Chamber chamber, Level level, BlockPos pos, BlockState state) {
 			//consider everything as a decoration except full primal and malignant flesh blocks
 			//this allows all blocks placed inside the room to survive and not be destroyed
-			boolean materialValid = !state.is(ModBlocks.PRIMAL_FLESH.get()) && !state.is(ModBlocks.MALIGNANT_FLESH.get());
+			boolean materialValid = !PrimordialEcosystem.SOLID_FLESH_BLOCKS.contains(state.getBlock());
 			return PartOfDecorationResult.of(true, materialValid);
 		}
 
@@ -32,9 +33,9 @@ public final class ChamberDecorators {
 		}
 	};
 
-	public static final ChamberDecorator PRIMAL_FLESH_PILLARS = new PillarsDecorator(ModBlocks.PRIMAL_FLESH.get().defaultBlockState());
-	public static final ChamberDecorator MALIGNANT_FLESH_PILLARS = new PillarsDecorator(ModBlocks.MALIGNANT_FLESH.get().defaultBlockState());
-	public static final ChamberDecorator PRIMAL_ORIFICE_PILLARS = new PillarsDecorator(ModBlocks.PRIMAL_ORIFICE.get().defaultBlockState());
+	public static final ChamberDecorator PRIMAL_FLESH_PILLARS = new PillarsDecorator(ModBlocks.PRIMAL_FLESH.get().defaultBlockState(), ModBlocks.SMOOTH_PRIMAL_FLESH.get().defaultBlockState());
+	public static final ChamberDecorator MALIGNANT_FLESH_PILLARS = new PillarsDecorator(ModBlocks.MALIGNANT_FLESH.get().defaultBlockState(), ModBlocks.POROUS_PRIMAL_FLESH.get().defaultBlockState());
+	public static final ChamberDecorator PRIMAL_ORIFICE_PILLARS = new PillarsDecorator(ModBlocks.PRIMAL_ORIFICE.get().defaultBlockState(), ModBlocks.PRIMAL_ORIFICE.get().defaultBlockState(), ModBlocks.PRIMAL_FLESH.get().defaultBlockState());
 	public static final ChamberDecorator PRIMAL_ORIFICE_COMBS = new HangingCombsDecorator(ModBlocks.PRIMAL_ORIFICE.get().defaultBlockState());
 	public static final ChamberDecorator BONE_PILLARS = new PillarsDecorator(Blocks.BONE_BLOCK.defaultBlockState());
 

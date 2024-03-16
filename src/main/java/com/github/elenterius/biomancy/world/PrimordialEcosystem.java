@@ -33,8 +33,24 @@ public final class PrimordialEcosystem {
 
 	private static final RandomSource random = RandomSource.create();
 	public static final IntSupplier MAX_CHARGE_SUPPLIER = () -> 15;
-	public static final Set<Block> VALID_UPGRADE_TARGETS = Set.of(ModBlocks.MALIGNANT_FLESH_SLAB.get(), ModBlocks.MALIGNANT_FLESH_STAIRS.get());
-	public static final Set<Block> FULL_FLESH_BLOCKS = Set.of(ModBlocks.MALIGNANT_FLESH.get(), ModBlocks.PRIMAL_FLESH.get(), ModBlocks.PRIMAL_PERMEABLE_MEMBRANE.get());
+	public static final Set<Block> MALIGNANT_UPGRADE_TARGETS = Set.of(ModBlocks.MALIGNANT_FLESH_SLAB.get(), ModBlocks.MALIGNANT_FLESH_STAIRS.get());
+	//	public static final Set<Block> POROUS_UPGRADE_TARGETS = Set.of(ModBlocks.POROUS_PRIMAL_FLESH_SLAB.get(), ModBlocks.POROUS_PRIMAL_FLESH_STAIRS.get());
+	//	public static final Set<Block> SMOOTH_UPGRADE_TARGETS = Set.of(ModBlocks.SMOOTH_PRIMAL_FLESH_SLAB.get(), ModBlocks.SMOOTH_PRIMAL_FLESH_STAIRS.get());
+
+	public static final Set<Block> FULL_FLESH_BLOCKS = Set.of(
+			ModBlocks.MALIGNANT_FLESH.get(),
+			ModBlocks.PRIMAL_FLESH.get(),
+			ModBlocks.SMOOTH_PRIMAL_FLESH.get(),
+			ModBlocks.POROUS_PRIMAL_FLESH.get(),
+			ModBlocks.PRIMAL_PERMEABLE_MEMBRANE.get()
+	);
+
+	public static final Set<Block> SOLID_FLESH_BLOCKS = Set.of(
+			ModBlocks.MALIGNANT_FLESH.get(),
+			ModBlocks.PRIMAL_FLESH.get(),
+			ModBlocks.SMOOTH_PRIMAL_FLESH.get(),
+			ModBlocks.POROUS_PRIMAL_FLESH.get()
+	);
 
 	private PrimordialEcosystem() {}
 
@@ -85,7 +101,7 @@ public final class PrimordialEcosystem {
 	public static boolean placeBloomOrBlocks(ServerLevel level, BlockPos pos, Direction direction) {
 
 		BlockState state = level.getBlockState(pos);
-		if (VALID_UPGRADE_TARGETS.contains(state.getBlock())) {
+		if (MALIGNANT_UPGRADE_TARGETS.contains(state.getBlock())) {
 			level.setBlock(pos, ModBlocks.MALIGNANT_FLESH.get().defaultBlockState(), Block.UPDATE_CLIENTS);
 			level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_PLACE.get(), SoundSource.BLOCKS, 1f, 0.15f + level.random.nextFloat() * 0.5f);
 			return true;

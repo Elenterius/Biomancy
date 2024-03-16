@@ -169,7 +169,13 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 				}
 
 				if (PrimordialEcosystem.isReplaceable(farOffsetState) && farOffsetState.isCollisionShapeFullBlock(level, farOffsetPos)) {
-					BlockState replacementState = level.random.nextFloat() < nearBoundingCenterPct ? ModBlocks.PRIMAL_FLESH.get().defaultBlockState() : ModBlocks.MALIGNANT_FLESH.get().defaultBlockState();
+					BlockState replacementState;
+					if (level.random.nextFloat() < nearBoundingCenterPct) {
+						replacementState = level.random.nextFloat() < 0.75f ? ModBlocks.PRIMAL_FLESH.get().defaultBlockState() : ModBlocks.SMOOTH_PRIMAL_FLESH.get().defaultBlockState();
+					}
+					else {
+						replacementState = level.random.nextFloat() < 0.75f ? ModBlocks.MALIGNANT_FLESH.get().defaultBlockState() : ModBlocks.POROUS_PRIMAL_FLESH.get().defaultBlockState();
+					}
 					return level.setBlock(farOffsetPos, replacementState, Block.UPDATE_CLIENTS);
 				}
 			}
