@@ -166,7 +166,7 @@ public class BloomBlock extends WaterloggedFacingBlock implements IPlantable {
 
 	@Override
 	public PlantType getPlantType(BlockGetter level, BlockPos pos) {
-		return ModPlantTypes.FLESH_PLANT_TYPE;
+		return ModPlantTypes.PRIMAL_FLESH;
 	}
 
 	@Override
