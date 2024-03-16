@@ -1,3 +1,28 @@
+## [5.0.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.4.5.0...1.20.1-v2.5.0.0) (2024-03-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* removes the following EntityType tags: sharp_fang, sharp_claw, sinew, toxin_gland, volatile_gland, bile_gland, bone_marrow, withered_bone_marrow
+* migrate from entity tags to loot-table based despoil loot
+
+### Features
+
+* add ornamental flesh slab ([eea89b4](https://github.com/Elenterius/Biomancy/commit/eea89b4981714320e50ebd0d342d9227425f12e7))
+* add Smooth & Porous Primal Flesh variants for blocks, slabs, stairs and walls ([32229cc](https://github.com/Elenterius/Biomancy/commit/32229cca7381b3662c4dddbf62438f0b4f0c4c1a))
+* change the requirements of the "Kitty Cat" advancement to also trigger for ocelots ([52ba6ff](https://github.com/Elenterius/Biomancy/commit/52ba6ff9c93981fdb08f739332f3af41a256a0fa))
+* include primal flesh variants in flesh mound growth ([3144a5c](https://github.com/Elenterius/Biomancy/commit/3144a5c485bddbb7cb5725422cf05bfe055b150c))
+* make despoil loot-table driven where each mob has its own loot-table ([dda22ef](https://github.com/Elenterius/Biomancy/commit/dda22efed27486edd5691301649f28439c8b84df))
+* make Primal Bloom placeable on all primal block variants ([44f7f9f](https://github.com/Elenterius/Biomancy/commit/44f7f9f09c0165090c842e362fc9b5a866074528))
+* remove entity tags for despoil loot ([f115445](https://github.com/Elenterius/Biomancy/commit/f1154459c62289ee9b3bc306c17689269eee9e1d))
+
+
+### Bug Fixes
+
+* fix block placement preview render not working for primal & malignant slabs ([8ae13d8](https://github.com/Elenterius/Biomancy/commit/8ae13d8d11e4429fcc942c920f5e38f0b62ed780))
+* fix Fleshkin Chests being breakable by block breaker machines (e.g. Create Drill) ([cc70b33](https://github.com/Elenterius/Biomancy/commit/cc70b3377606b9789a7319b8324fdea904bf60cf)), closes [#109](https://github.com/Elenterius/Biomancy/issues/109)
+* fix maw hopper stealing items from villagers & witches ([0167e51](https://github.com/Elenterius/Biomancy/commit/0167e5194ceb21a829008432b73c4320836a6eeb)), closes [#122](https://github.com/Elenterius/Biomancy/issues/122)
+
 ## [4.5.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.4.4.0...1.20.1-v2.4.5.0) (2024-03-06)
 
 
@@ -66,20 +91,4 @@
 
 * **injector:** fix mismatching serum colors between item and injector model ([5bd8d96](https://github.com/Elenterius/Biomancy/commit/5bd8d9684d1db70771365ce0621508744ce43278))
 * **jei:** fix bad text color in the biomancy recipe previews ([08dc86a](https://github.com/Elenterius/Biomancy/commit/08dc86a22a2b873ed3807d16aa94c7f9230601e9))
-
-## [4.1.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.4.0.1...1.20.1-v2.4.1.0) (2024-01-21)
-
-
-### Features
-
-* **bio-forge:** improve tabs ([0d1b81d](https://github.com/Elenterius/Biomancy/commit/0d1b81d46b49a0ee2461b03baa20e673550d214a))
-* **bio-forge:** render tag ingredients as slideshow (cycles through items) ([42360cd](https://github.com/Elenterius/Biomancy/commit/42360cdc1a6b07a1c059352273d4d96888d7e43d))
-* **bio-forge:** reorganize tabs ([4fc9c33](https://github.com/Elenterius/Biomancy/commit/4fc9c33164864a86ca59d08d46689ae56d161796))
-
-
-### Bug Fixes
-
-* **bio-forge:** fix inability to (un-)focus the search box via mouse click ([b32a997](https://github.com/Elenterius/Biomancy/commit/b32a9978d3d7bee113e17921903909b63a235245))
-* **bio-forge:** fix recipe crafting not working with tag ingredients ([1f7fa9a](https://github.com/Elenterius/Biomancy/commit/1f7fa9a1bc6da8e3b1c4b3d1bd9cd0b721fe58f0))
-* **injector:** fix misaligned item labels rendering of the wheel gui ([89780ba](https://github.com/Elenterius/Biomancy/commit/89780ba11b55bcbf543fde09b7d847ffa0f2899f))
 
