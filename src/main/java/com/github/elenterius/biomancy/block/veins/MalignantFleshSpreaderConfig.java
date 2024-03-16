@@ -53,7 +53,7 @@ class MalignantFleshSpreaderConfig extends MultifaceSpreader.DefaultSpreaderConf
 	@Override
 	public boolean canSpreadInto(BlockGetter level, BlockPos pos, MultifaceSpreader.SpreadPos spreadPos) {
 		BlockState state = level.getBlockState(spreadPos.pos());
-		if (PrimordialEcosystem.VALID_UPGRADE_TARGETS.contains(state.getBlock())) {
+		if (PrimordialEcosystem.MALIGNANT_UPGRADE_TARGETS.contains(state.getBlock())) {
 			if (level instanceof ServerLevel serverLevel) {
 				CellularNoise cellularNoise = PrimordialEcosystem.getCellularNoise(serverLevel);
 				float borderThreshold = cellularNoise.borderThreshold() - 0.005f;
@@ -67,7 +67,7 @@ class MalignantFleshSpreaderConfig extends MultifaceSpreader.DefaultSpreaderConf
 
 	@Override
 	public boolean placeBlock(LevelAccessor level, MultifaceSpreader.SpreadPos spreadPos, BlockState state, boolean markForPostprocessing) {
-		if (PrimordialEcosystem.VALID_UPGRADE_TARGETS.contains(state.getBlock())) {
+		if (PrimordialEcosystem.MALIGNANT_UPGRADE_TARGETS.contains(state.getBlock())) {
 			if (level.getRandom().nextFloat() < 0.25f) {
 				return level.setBlock(spreadPos.pos(), ModBlocks.MALIGNANT_FLESH.get().defaultBlockState(), Block.UPDATE_CLIENTS);
 			}
@@ -82,7 +82,7 @@ class MalignantFleshSpreaderConfig extends MultifaceSpreader.DefaultSpreaderConf
 				neighbors += neighborState.is(block) ? 1 : 0;
 
 				Block belowNeighborBlock = level.getBlockState(neighborPos.below()).getBlock();
-				boolean reduceNeighbors = belowNeighborBlock == ModBlocks.PRIMAL_FLESH.get() || belowNeighborBlock == ModBlocks.MALIGNANT_FLESH.get();
+				boolean reduceNeighbors = PrimordialEcosystem.SOLID_FLESH_BLOCKS.contains(belowNeighborBlock);
 				if (reduceNeighbors) {
 					neighbors--;
 				}
