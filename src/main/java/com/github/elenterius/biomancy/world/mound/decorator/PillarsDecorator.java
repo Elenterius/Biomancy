@@ -11,13 +11,17 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.Set;
+
 public class PillarsDecorator implements ChamberDecorator {
 
 	private final FastNoiseLite simplexNoise;
-	private final BlockState material;
+	private final BlockState[] materials;
+	private final Set<BlockState> materialsSet;
 
-	public PillarsDecorator(BlockState material) {
-		this.material = material;
+	public PillarsDecorator(BlockState... materials) {
+		this.materials = materials;
+		this.materialsSet = Set.of(materials);
 		this.simplexNoise = initNoise();
 	}
 
@@ -30,7 +34,7 @@ public class PillarsDecorator implements ChamberDecorator {
 
 	@Override
 	public PartOfDecorationResult isBlockPartOfDecoration(Chamber chamber, Level level, BlockPos pos, BlockState state) {
-		return PartOfDecorationResult.of(isPosInsideAnyPillar(chamber, pos), state == material);
+		return PartOfDecorationResult.of(isPosInsideAnyPillar(chamber, pos), materialsSet.contains(state));
 	}
 
 	@Override
@@ -40,7 +44,8 @@ public class PillarsDecorator implements ChamberDecorator {
 
 	@Override
 	public boolean place(Chamber chamber, Level level, BlockPos pos, Direction axisDirection) {
-		return level.setBlock(pos, material, Block.UPDATE_CLIENTS);
+		int i = level.getRandom().nextInt(0, materials.length);
+		return level.setBlock(pos, materials[i], Block.UPDATE_CLIENTS);
 	}
 
 	protected float pillarThreshold(float y) {
