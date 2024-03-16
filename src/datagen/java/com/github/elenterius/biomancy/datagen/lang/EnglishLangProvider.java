@@ -539,6 +539,14 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.PRIMAL_FLESH_SLAB, "Primal Flesh Slab", "Primitive and pure, you better not touch this with your dirty mitts.");
 		addBlock(ModBlocks.PRIMAL_FLESH_STAIRS, "Primal Flesh Stairs", "Stairs made of primal flesh.\nFeels primitive and pure...");
 		addBlock(ModBlocks.PRIMAL_FLESH_WALL, "Primal Flesh Wall", "Wall of primal flesh. Is this Terraria?\nYou better start running >:D");
+		addBlock(ModBlocks.SMOOTH_PRIMAL_FLESH, "Smooth Primal Flesh Block", "Primitive and pure, you better not touch this with your dirty mitts.");
+		addBlock(ModBlocks.SMOOTH_PRIMAL_FLESH_SLAB, "Smooth Primal Flesh Slab", "Primitive and pure, you better not touch this with your dirty mitts.");
+		addBlock(ModBlocks.SMOOTH_PRIMAL_FLESH_STAIRS, "Smooth Primal Flesh Stairs", "Stairs made of primal flesh.\nFeels primitive and pure...");
+		addBlock(ModBlocks.SMOOTH_PRIMAL_FLESH_WALL, "Smooth Primal Flesh Wall", "Wall of primal flesh. Is this Terraria?\nYou better start running >:D");
+		addBlock(ModBlocks.POROUS_PRIMAL_FLESH, "Porous Primal Flesh Block", "Primitive and pure, you better not touch this with your dirty mitts.");
+		addBlock(ModBlocks.POROUS_PRIMAL_FLESH_SLAB, "Porous Primal Flesh Slab", "Primitive and pure, you better not touch this with your dirty mitts.");
+		addBlock(ModBlocks.POROUS_PRIMAL_FLESH_STAIRS, "Porous Primal Flesh Stairs", "Stairs made of primal flesh.\nFeels primitive and pure...");
+		addBlock(ModBlocks.POROUS_PRIMAL_FLESH_WALL, "Porous Primal Flesh Wall", "Wall of primal flesh. Is this Terraria?\nYou better start running >:D");
 		addBlock(ModBlocks.MALIGNANT_FLESH, "Malignant Flesh Block", "Looks dangerous, you better not touch it!");
 		addBlock(ModBlocks.MALIGNANT_FLESH_SLAB, "Malignant Flesh Slab", "Looks off-putting, probably best not to touch it.");
 		addBlock(ModBlocks.MALIGNANT_FLESH_STAIRS, "Malignant Flesh Stairs", "Stairs made of malignant flesh.\nLooks diseased...");

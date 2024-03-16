@@ -1,0 +1,33 @@
+{
+  "variants": {
+    "type=full": {
+      "model": "biomancy:block/smooth_primal_flesh"
+    },
+    "type=half_down": {
+      "model": "biomancy:block/smooth_primal_flesh_slab",
+      "x": 180
+    },
+    "type=half_east": {
+      "model": "biomancy:block/smooth_primal_flesh_slab",
+      "x": 90,
+      "y": 90
+    },
+    "type=half_north": {
+      "model": "biomancy:block/smooth_primal_flesh_slab",
+      "x": 90
+    },
+    "type=half_south": {
+      "model": "biomancy:block/smooth_primal_flesh_slab",
+      "x": 90,
+      "y": 180
+    },
+    "type=half_up": {
+      "model": "biomancy:block/smooth_primal_flesh_slab"
+    },
+    "type=half_west": {
+      "model": "biomancy:block/smooth_primal_flesh_slab",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

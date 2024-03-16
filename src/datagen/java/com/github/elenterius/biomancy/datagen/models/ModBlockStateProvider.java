@@ -90,6 +90,16 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		stairsBlockWithItem(ModBlocks.PRIMAL_FLESH_STAIRS, ModBlocks.PRIMAL_FLESH);
 		wallBlock(ModBlocks.PRIMAL_FLESH_WALL, ModBlocks.PRIMAL_FLESH);
 
+		simpleBlockWithItem(ModBlocks.SMOOTH_PRIMAL_FLESH);
+		directionalSlabBlockWithItem(ModBlocks.SMOOTH_PRIMAL_FLESH_SLAB, ModBlocks.SMOOTH_PRIMAL_FLESH);
+		stairsBlockWithItem(ModBlocks.SMOOTH_PRIMAL_FLESH_STAIRS, ModBlocks.SMOOTH_PRIMAL_FLESH);
+		wallBlock(ModBlocks.SMOOTH_PRIMAL_FLESH_WALL, ModBlocks.SMOOTH_PRIMAL_FLESH);
+
+		simpleBlockWithItem(ModBlocks.POROUS_PRIMAL_FLESH);
+		directionalSlabBlockWithItem(ModBlocks.POROUS_PRIMAL_FLESH_SLAB, ModBlocks.POROUS_PRIMAL_FLESH);
+		stairsBlockWithItem(ModBlocks.POROUS_PRIMAL_FLESH_STAIRS, ModBlocks.POROUS_PRIMAL_FLESH);
+		wallBlock(ModBlocks.POROUS_PRIMAL_FLESH_WALL, ModBlocks.POROUS_PRIMAL_FLESH);
+
 		simpleBlockWithItem(ModBlocks.MALIGNANT_FLESH);
 		directionalSlabBlockWithItem(ModBlocks.MALIGNANT_FLESH_SLAB, ModBlocks.MALIGNANT_FLESH);
 		stairsBlockWithItem(ModBlocks.MALIGNANT_FLESH_STAIRS, ModBlocks.MALIGNANT_FLESH);

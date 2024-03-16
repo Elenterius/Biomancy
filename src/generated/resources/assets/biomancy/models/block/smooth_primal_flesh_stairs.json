@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "biomancy:block/smooth_primal_flesh",
+    "side": "biomancy:block/smooth_primal_flesh",
+    "top": "biomancy:block/smooth_primal_flesh"
+  }
+}

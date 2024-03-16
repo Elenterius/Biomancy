@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_smooth_primal_flesh_slab": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:smooth_primal_flesh_slab"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "biomancy:smooth_primal_flesh_from_slabs"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_smooth_primal_flesh_slab",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "biomancy:smooth_primal_flesh_from_slabs"
+    ]
+  },
+  "sends_telemetry_event": false
+}
