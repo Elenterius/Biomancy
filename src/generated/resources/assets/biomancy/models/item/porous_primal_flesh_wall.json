@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "biomancy:block/porous_primal_flesh"
+  }
+}

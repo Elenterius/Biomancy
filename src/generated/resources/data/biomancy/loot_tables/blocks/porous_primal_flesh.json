@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "biomancy:porous_primal_flesh"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "biomancy:blocks/porous_primal_flesh"
+}

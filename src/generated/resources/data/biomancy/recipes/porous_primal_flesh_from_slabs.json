@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "S": {
+      "item": "biomancy:porous_primal_flesh_slab"
+    }
+  },
+  "pattern": [
+    " S ",
+    " S "
+  ],
+  "result": {
+    "item": "biomancy:porous_primal_flesh"
+  },
+  "show_notification": true
+}

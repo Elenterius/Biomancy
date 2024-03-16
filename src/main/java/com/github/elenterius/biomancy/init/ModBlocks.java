@@ -84,6 +84,14 @@ public final class ModBlocks {
 	public static final RegistryObject<StairBlock> PRIMAL_FLESH_STAIRS = registerStairs(PRIMAL_FLESH, StairBlock::new);
 	public static final RegistryObject<DirectionalSlabBlock> PRIMAL_FLESH_SLAB = registerSlab(PRIMAL_FLESH, DirectionalSlabBlock::new);
 	public static final RegistryObject<WallBlock> PRIMAL_FLESH_WALL = registerWall(PRIMAL_FLESH, WallBlock::new);
+	public static final RegistryObject<FleshBlock> SMOOTH_PRIMAL_FLESH = register("smooth_primal_flesh", FleshBlock::new);
+	public static final RegistryObject<StairBlock> SMOOTH_PRIMAL_FLESH_STAIRS = registerStairs(SMOOTH_PRIMAL_FLESH, StairBlock::new);
+	public static final RegistryObject<DirectionalSlabBlock> SMOOTH_PRIMAL_FLESH_SLAB = registerSlab(SMOOTH_PRIMAL_FLESH, DirectionalSlabBlock::new);
+	public static final RegistryObject<WallBlock> SMOOTH_PRIMAL_FLESH_WALL = registerWall(SMOOTH_PRIMAL_FLESH, WallBlock::new);
+	public static final RegistryObject<FleshBlock> POROUS_PRIMAL_FLESH = register("porous_primal_flesh", FleshBlock::new);
+	public static final RegistryObject<StairBlock> POROUS_PRIMAL_FLESH_STAIRS = registerStairs(POROUS_PRIMAL_FLESH, StairBlock::new);
+	public static final RegistryObject<DirectionalSlabBlock> POROUS_PRIMAL_FLESH_SLAB = registerSlab(POROUS_PRIMAL_FLESH, DirectionalSlabBlock::new);
+	public static final RegistryObject<WallBlock> POROUS_PRIMAL_FLESH_WALL = registerWall(POROUS_PRIMAL_FLESH, WallBlock::new);
 	public static final RegistryObject<FleshBlock> MALIGNANT_FLESH = register("malignant_flesh", FleshBlock::new);
 	public static final RegistryObject<StairBlock> MALIGNANT_FLESH_STAIRS = registerStairs(MALIGNANT_FLESH, StairBlock::new);
 	public static final RegistryObject<DirectionalSlabBlock> MALIGNANT_FLESH_SLAB = registerSlab(MALIGNANT_FLESH, DirectionalSlabBlock::new);

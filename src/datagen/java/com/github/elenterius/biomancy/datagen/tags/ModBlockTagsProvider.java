@@ -82,14 +82,18 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 				ModBlocks.FLESH_WALL.get(),
 				ModBlocks.PACKED_FLESH_WALL.get(),
 				ModBlocks.MALIGNANT_FLESH_WALL.get(),
-				ModBlocks.PRIMAL_FLESH_WALL.get()
+				ModBlocks.PRIMAL_FLESH_WALL.get(),
+				ModBlocks.SMOOTH_PRIMAL_FLESH_WALL.get(),
+				ModBlocks.POROUS_PRIMAL_FLESH_WALL.get()
 		);
 
 		tag(BlockTags.STAIRS).add(
 				ModBlocks.FLESH_STAIRS.get(),
 				ModBlocks.PACKED_FLESH_STAIRS.get(),
 				ModBlocks.MALIGNANT_FLESH_STAIRS.get(),
-				ModBlocks.PRIMAL_FLESH_STAIRS.get()
+				ModBlocks.PRIMAL_FLESH_STAIRS.get(),
+				ModBlocks.SMOOTH_PRIMAL_FLESH_STAIRS.get(),
+				ModBlocks.POROUS_PRIMAL_FLESH_STAIRS.get()
 		);
 
 		tag(BlockTags.PRESSURE_PLATES).add(ModBlocks.FLESHKIN_PRESSURE_PLATE.get());
@@ -101,6 +105,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 				ModBlocks.PACKED_FLESH_SLAB.get(),
 				ModBlocks.ORNATE_FLESH_SLAB.get(),
 				ModBlocks.PRIMAL_FLESH_SLAB.get(),
+				ModBlocks.SMOOTH_PRIMAL_FLESH_SLAB.get(),
+				ModBlocks.POROUS_PRIMAL_FLESH_SLAB.get(),
 				ModBlocks.MALIGNANT_FLESH_SLAB.get()
 		);
 

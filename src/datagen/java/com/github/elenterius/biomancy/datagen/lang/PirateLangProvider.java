@@ -539,6 +539,15 @@ public class PirateLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.PRIMAL_FLESH_SLAB, "Ol'-Magic Slab o' Flesh", "Ancient and pure, ye better not touch this with yer dirty mitts.");
 		addBlock(ModBlocks.PRIMAL_FLESH_STAIRS, "Ol'-Magic Stairs o' Flesh", "Stairs made o' primal flesh.\nFeels ancient and pure...");
 		addBlock(ModBlocks.PRIMAL_FLESH_WALL, "Ol'-Magic Wall o' Flesh", "Wall o' primal flesh. Do this be Terraria?\nYe better start running >:D");
+		addBlock(ModBlocks.SMOOTH_PRIMAL_FLESH, "Smooth Ol'-Magic Block o' Flesh", "Ancient and pure, ye better not touch this with yer dirty hook.");
+		addBlock(ModBlocks.SMOOTH_PRIMAL_FLESH_SLAB, "Smooth Ol'-Magic Slab o' Flesh", "Ancient and pure, ye better not touch this with yer dirty mitts.");
+		addBlock(ModBlocks.SMOOTH_PRIMAL_FLESH_STAIRS, "Smooth Ol'-Magic Stairs o' Flesh", "Stairs made o' primal flesh.\nFeels ancient and pure...");
+		addBlock(ModBlocks.SMOOTH_PRIMAL_FLESH_WALL, "Smooth Ol'-Magic Wall o' Flesh", "Wall o' primal flesh. Do this be Terraria?\nYe better start running >:D");
+		addBlock(ModBlocks.POROUS_PRIMAL_FLESH, "Porous Ol'-Magic Block o' Flesh", "Primitive and pure, you better not touch this with your dirty mitts.");
+		addBlock(ModBlocks.POROUS_PRIMAL_FLESH_SLAB, "Porous Ol'-Magic Slab o' Flesh", "Primitive and pure, you better not touch this with your dirty mitts.");
+		addBlock(ModBlocks.POROUS_PRIMAL_FLESH_STAIRS, "Porous Ol'-Magic Stairs o' Flesh", "Stairs made of primal flesh.\nFeels primitive and pure...");
+		addBlock(ModBlocks.POROUS_PRIMAL_FLESH_WALL, "Porous Ol'-Magic Wall o' Flesh", "Wall of primal flesh. Is this Terraria?\nYou better start running >:D");
+
 		addBlock(ModBlocks.MALIGNANT_FLESH, "Scurvy-ridden Block o' Flesh", "It be lookin' dangerous, ye better not touch it!");
 		addBlock(ModBlocks.MALIGNANT_FLESH_SLAB, "Scurvy-ridden Slab o' Flesh", "It be lookin' off-puttin', probably best not to be touchin' it.");
 		addBlock(ModBlocks.MALIGNANT_FLESH_STAIRS, "Scurvy-ridden Stairs o' Flesh", "Stairs made o' scurvy-ridden flesh.");

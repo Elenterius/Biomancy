@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "biomancy:block/smooth_primal_flesh"
+  }
+}

@@ -218,6 +218,22 @@ public class VanillaRecipeProvider extends RecipeProvider {
 		stonecutterResultFromBase(consumer, ModItems.PRIMAL_FLESH_STAIRS.get(), ModItems.PRIMAL_FLESH_BLOCK.get());
 		stonecutterResultFromBase(consumer, ModItems.PRIMAL_FLESH_SLAB.get(), ModItems.PRIMAL_FLESH_BLOCK.get(), 2);
 
+		stairs(consumer, ModItems.SMOOTH_PRIMAL_FLESH_STAIRS.get(), ModItems.SMOOTH_PRIMAL_FLESH_BLOCK.get());
+		slab(consumer, ModItems.SMOOTH_PRIMAL_FLESH_SLAB.get(), ModItems.SMOOTH_PRIMAL_FLESH_BLOCK.get());
+		blockFromSlabs(consumer, ModItems.SMOOTH_PRIMAL_FLESH_BLOCK.get(), ModItems.SMOOTH_PRIMAL_FLESH_SLAB.get());
+		wall(consumer, ModItems.SMOOTH_PRIMAL_FLESH_WALL.get(), ModItems.SMOOTH_PRIMAL_FLESH_BLOCK.get());
+		stonecutterResultFromBase(consumer, ModItems.SMOOTH_PRIMAL_FLESH_WALL.get(), ModItems.SMOOTH_PRIMAL_FLESH_BLOCK.get());
+		stonecutterResultFromBase(consumer, ModItems.SMOOTH_PRIMAL_FLESH_STAIRS.get(), ModItems.SMOOTH_PRIMAL_FLESH_BLOCK.get());
+		stonecutterResultFromBase(consumer, ModItems.SMOOTH_PRIMAL_FLESH_SLAB.get(), ModItems.SMOOTH_PRIMAL_FLESH_BLOCK.get(), 2);
+
+		stairs(consumer, ModItems.POROUS_PRIMAL_FLESH_STAIRS.get(), ModItems.POROUS_PRIMAL_FLESH_BLOCK.get());
+		slab(consumer, ModItems.POROUS_PRIMAL_FLESH_SLAB.get(), ModItems.POROUS_PRIMAL_FLESH_BLOCK.get());
+		blockFromSlabs(consumer, ModItems.POROUS_PRIMAL_FLESH_BLOCK.get(), ModItems.POROUS_PRIMAL_FLESH_SLAB.get());
+		wall(consumer, ModItems.POROUS_PRIMAL_FLESH_WALL.get(), ModItems.POROUS_PRIMAL_FLESH_BLOCK.get());
+		stonecutterResultFromBase(consumer, ModItems.POROUS_PRIMAL_FLESH_WALL.get(), ModItems.POROUS_PRIMAL_FLESH_BLOCK.get());
+		stonecutterResultFromBase(consumer, ModItems.POROUS_PRIMAL_FLESH_STAIRS.get(), ModItems.POROUS_PRIMAL_FLESH_BLOCK.get());
+		stonecutterResultFromBase(consumer, ModItems.POROUS_PRIMAL_FLESH_SLAB.get(), ModItems.POROUS_PRIMAL_FLESH_BLOCK.get(), 2);
+
 		slab(consumer, ModItems.ORNATE_FLESH_SLAB.get(), ModItems.ORNATE_FLESH_BLOCK.get());
 		blockFromSlabs(consumer, ModItems.ORNATE_FLESH_BLOCK.get(), ModItems.ORNATE_FLESH_SLAB.get());
 		stonecutterResultFromBase(consumer, ModItems.ORNATE_FLESH_SLAB.get(), ModItems.ORNATE_FLESH_BLOCK.get(), 2);
