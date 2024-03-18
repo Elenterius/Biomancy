@@ -11,7 +11,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.Arrays;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class PillarsDecorator implements ChamberDecorator {
 
@@ -21,7 +23,7 @@ public class PillarsDecorator implements ChamberDecorator {
 
 	public PillarsDecorator(BlockState... materials) {
 		this.materials = materials;
-		this.materialsSet = Set.of(materials);
+		this.materialsSet = Arrays.stream(materials).collect(Collectors.toUnmodifiableSet());
 		this.simplexNoise = initNoise();
 	}
 
