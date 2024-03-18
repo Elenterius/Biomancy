@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.inventory.itemhandler;
 import com.github.elenterius.biomancy.init.ModCapabilities;
 import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.BundleItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -50,6 +51,7 @@ public final class HandlerBehaviors {
 		//			}
 		//		}
 
+		if (stack.getItem() instanceof BundleItem) return false;
 		if (!stack.getItem().canFitInsideContainerItems()) return false;
 
 		LazyOptional<IItemHandler> capability = stack.getCapability(ModCapabilities.ITEM_HANDLER);
