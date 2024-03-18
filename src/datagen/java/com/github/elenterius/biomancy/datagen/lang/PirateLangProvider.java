@@ -336,14 +336,31 @@ public class PirateLangProvider extends AbstractLangProvider {
 		addDeathMessage(ModDamageTypes.CHEST_BITE, "%1$s tried openin' a coffer, but got cursed instead");
 		addDeathMessage(ModDamageTypes.PRIMORDIAL_SPIKES, "%1$s was impaled by ol'-magic spikes");
 
-		addDeathMessage(ModDamageTypes.FALL_ON_SPIKE, "%1$s fell on a sharp spike");
-		addDeathMessage(ModDamageTypes.IMPALED_BY_SPIKE, "%1$s was skewered by a scarrin' spike");
+		addDeathMessage(ModDamageTypes.FALL_ON_SPIKE,
+				"%1$s fell on a scarrin' spike",
+				"%1$s was thrown into a spike pit by %2$s",
+				"%1$s was skewered by a sharp spike by %2$s using %3$s"
+		);
+		addDeathMessage(ModDamageTypes.IMPALED_BY_SPIKE,
+				"%1$s was impaled by a scarrin' spike",
+				"%1$s was impaled onto a scarrin' spike by %2$s",
+				"%1$s was impaled onto a scarrin' spike by %2$s using %3$s"
+		);
 
-		addDeathMessage(ModDamageTypes.CORROSIVE_ACID, "%1$s succumbed from lots o' acid burnin'");
-		addDeathMessage(ModDamageTypes.BLEED, "%1$s fell to hefty humor imbalance");
+		addDeathMessage(ModDamageTypes.CORROSIVE_ACID,
+				"%1$s succumbed to lots o' acid burnin'",
+				"%1$s was doused with corrosive acid by %2$s",
+				"%1$s was showered in corrosive acid by %2$s using %3$s"
+		);
+		addDeathMessage(ModDamageTypes.BLEED,
+				"%1$s fell to hefty humor imbalance",
+				"%1$s was robbed of humor by %2$s",
+				"%1$s was blood let by %2$s using %3$s"
+		);
 
-		addDeathMessage(ModEntityTypes.TOOTH_PROJECTILE, "[WIP] %1$s was forcefully implanted with teeth by %2$s", "[WIP] %1$s received a lethal dental implant by %2$s using %3$s");
-		addDeathMessage(ModEntityTypes.CORROSIVE_ACID_PROJECTILE, "[WIP] %1$s was doused with corrosive acid by %2$s", "[WIP] %1$s was showered in corrosive acid by %2$s using %3$s");
+		addDeathMessage(ModDamageTypes.TOOTH_PROJECTILE, "[WIP]",
+				"[WIP] %1$s was forcefully implanted with teeth by %2$s",
+				"[WIP] %1$s received a lethal dental implant by %2$s using %3$s");
 	}
 
 	private void addSerumTranslations() {

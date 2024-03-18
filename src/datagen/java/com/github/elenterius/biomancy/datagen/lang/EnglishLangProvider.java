@@ -336,14 +336,31 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addDeathMessage(ModDamageTypes.CHEST_BITE, "%1$s tried opening a chest, but was eaten instead");
 		addDeathMessage(ModDamageTypes.PRIMORDIAL_SPIKES, "%1$s was impaled by primordial spikes");
 
-		addDeathMessage(ModDamageTypes.FALL_ON_SPIKE, "%1$s fell on a sharp spike");
-		addDeathMessage(ModDamageTypes.IMPALED_BY_SPIKE, "%1$s was skewered by a sharp spike");
+		addDeathMessage(ModDamageTypes.FALL_ON_SPIKE,
+				"%1$s fell on a sharp spike",
+				"%1$s was thrown into a spike pit by %2$s",
+				"%1$s was skewered by a sharp spike by %2$s using %3$s"
+		);
+		addDeathMessage(ModDamageTypes.IMPALED_BY_SPIKE,
+				"%1$s was impaled by a sharp spike",
+				"%1$s was impaled onto a sharp spike by %2$s",
+				"%1$s was impaled onto a sharp spike by %2$s using %3$s"
+		);
 
-		addDeathMessage(ModDamageTypes.CORROSIVE_ACID, "%1$s succumbed from severe acid burns");
-		addDeathMessage(ModDamageTypes.BLEED, "%1$s perished from severe blood loss");
+		addDeathMessage(ModDamageTypes.CORROSIVE_ACID,
+				"%1$s succumbed to severe acid burns",
+				"%1$s was doused with corrosive acid by %2$s",
+				"%1$s was showered in corrosive acid by %2$s using %3$s"
+		);
+		addDeathMessage(ModDamageTypes.BLEED,
+				"%1$s perished from severe blood loss",
+				"%1$s was drained of blood by %2$s",
+				"%1$s was blood let by %2$s using %3$s"
+		);
 
-		addDeathMessage(ModEntityTypes.TOOTH_PROJECTILE, "[WIP] %1$s was forcefully implanted with teeth by %2$s", "[WIP] %1$s received a lethal dental implant by %2$s using %3$s");
-		addDeathMessage(ModEntityTypes.CORROSIVE_ACID_PROJECTILE, "[WIP] %1$s was doused with corrosive acid by %2$s", "[WIP] %1$s was showered in corrosive acid by %2$s using %3$s");
+		addDeathMessage(ModDamageTypes.TOOTH_PROJECTILE, "[WIP]",
+				"[WIP] %1$s was forcefully implanted with teeth by %2$s",
+				"[WIP] %1$s received a lethal dental implant by %2$s using %3$s");
 	}
 
 	private void addSerumTranslations() {

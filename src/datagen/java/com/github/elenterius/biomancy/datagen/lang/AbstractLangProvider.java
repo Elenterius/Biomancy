@@ -17,7 +17,6 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -25,7 +24,6 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BannerPattern;
 import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -36,7 +34,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
@@ -207,16 +204,15 @@ public abstract class AbstractLangProvider implements DataProvider, LangProvider
 		}
 	}
 
-	public void addDeathMessage(ResourceKey<DamageType> damageType, String text) {
-		String msgId = damageType.location().getNamespace() + "." + damageType.location().getPath();
-		add("death.attack." + msgId, text);
+	public void addDeathMessage(ResourceKey<DamageType> damageType, String causedByDefault) {
+		add(damageType.location().toLanguageKey("death.attack"), causedByDefault);
 	}
 
-	public <T extends Projectile> void addDeathMessage(Supplier<EntityType<T>> supplier, String directCause, String indirectCause) {
-		ResourceLocation resourceLocation = Objects.requireNonNull(ForgeRegistries.ENTITY_TYPES.getKey(supplier.get()));
-		String msgId = resourceLocation.toString().replace(":", ".");
-		add("death.attack." + msgId, directCause);
-		add("death.attack." + msgId + ".item", indirectCause);
+	public void addDeathMessage(ResourceKey<DamageType> damageType, String causedByDefault, String causedByMobOrPlayer, String causedByItem) {
+		ResourceLocation damageTypeId = damageType.location();
+		add(damageTypeId.toLanguageKey("death.attack"), causedByDefault);
+		add(damageTypeId.toLanguageKey("death.attack", "player"), causedByMobOrPlayer);
+		add(damageTypeId.toLanguageKey("death.attack", "item"), causedByItem);
 	}
 
 	public void addSound(Supplier<SoundEvent> supplier, String text) {
