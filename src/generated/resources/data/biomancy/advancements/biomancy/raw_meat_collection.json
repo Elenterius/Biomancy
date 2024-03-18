@@ -48,18 +48,6 @@
         ]
       },
       "trigger": "minecraft:inventory_changed"
-    },
-    "has_raw_rabbit": {
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "minecraft:rabbit"
-            ]
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
     }
   },
   "display": {
@@ -89,9 +77,6 @@
     ],
     [
       "has_raw_mutton"
-    ],
-    [
-      "has_raw_rabbit"
     ]
   ],
   "rewards": {
