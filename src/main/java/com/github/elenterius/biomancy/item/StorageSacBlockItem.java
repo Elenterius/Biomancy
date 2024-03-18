@@ -20,6 +20,7 @@ import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.BundleItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -68,7 +69,7 @@ public class StorageSacBlockItem extends BlockItem implements ItemTooltipStylePr
 			if (remainder.getCount() < insertAmount) playRemoveFromSacSound(player);
 			itemHandler.ifPresent(h -> h.insertItemOnExistingFirst(remainder));
 		}
-		else if (otherStack.getItem().canFitInsideContainerItems()) {
+		else if (otherStack.getItem().canFitInsideContainerItems() && !(otherStack.getItem() instanceof BundleItem)) {
 			final int prevCount = otherStack.getCount();
 			ItemStack remainder = getItemHandler(stack).map(h -> h.insertItemOnExistingFirst(slot.safeTake(prevCount, Integer.MAX_VALUE, player))).orElse(ItemStack.EMPTY);
 			slot.safeInsert(remainder);
@@ -92,7 +93,7 @@ public class StorageSacBlockItem extends BlockItem implements ItemTooltipStylePr
 				access.set(stackFromInv);
 			}
 		}
-		else if (otherStack.getItem().canFitInsideContainerItems()) {
+		else if (otherStack.getItem().canFitInsideContainerItems() && !(otherStack.getItem() instanceof BundleItem)) {
 			ItemStack remainder = getItemHandler(stack).map(h -> h.insertItemOnExistingFirst(otherStack)).orElse(ItemStack.EMPTY);
 			final int insertedAmount = otherStack.getCount() - remainder.getCount();
 			if (insertedAmount > 0) {
