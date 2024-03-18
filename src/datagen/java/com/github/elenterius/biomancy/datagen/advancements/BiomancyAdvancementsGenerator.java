@@ -59,14 +59,13 @@ public class BiomancyAdvancementsGenerator implements ForgeAdvancementProvider.A
 
 		Advancement meatCollection = createAdvancement("raw_meat_collection").parent(root).icon(Items.RABBIT)
 				.title("Collector of Raw Meats")
-				.description("Each type of raw meat, reflecting their source. Primal whispers of absurdity. You need them all!")
+				.description("Collect each type of prime meat. Pork, beef, chicken and mutton reflect their source. Primeval whispers of absurdity. You need them all!")
 				.frameType(FrameType.CHALLENGE)
 				.showToast().announceToChat()
 				.addCriterion("has_raw_porkchop", ModAdvancementProvider.hasItems(Items.PORKCHOP))
 				.addCriterion("has_raw_beef", ModAdvancementProvider.hasItems(Items.BEEF))
 				.addCriterion("has_raw_chicken", ModAdvancementProvider.hasItems(Items.CHICKEN))
 				.addCriterion("has_raw_mutton", ModAdvancementProvider.hasItems(Items.MUTTON))
-				.addCriterion("has_raw_rabbit", ModAdvancementProvider.hasItems(Items.RABBIT))
 				.rewardsDefaultRecipe(ModItems.PRIMORDIAL_CORE.get())
 				.save(consumer, fileHelper);
 
