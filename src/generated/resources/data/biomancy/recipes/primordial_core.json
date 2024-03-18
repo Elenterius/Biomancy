@@ -22,13 +22,10 @@
     },
     "P": {
       "item": "minecraft:porkchop"
-    },
-    "R": {
-      "item": "minecraft:rabbit"
     }
   },
   "pattern": [
-    "PRB",
+    "PFB",
     "#E#",
     "CFM"
   ],
