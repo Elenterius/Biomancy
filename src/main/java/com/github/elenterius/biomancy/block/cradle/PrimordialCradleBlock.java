@@ -1,12 +1,7 @@
 package com.github.elenterius.biomancy.block.cradle;
 
-import com.github.elenterius.biomancy.block.fleshkinchest.FleshkinChestBlock;
-import com.github.elenterius.biomancy.block.storagesac.StorageSacBlock;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
-import com.github.elenterius.biomancy.init.ModBlockEntities;
-import com.github.elenterius.biomancy.init.ModItems;
-import com.github.elenterius.biomancy.init.ModSoundEvents;
-import com.github.elenterius.biomancy.init.ModTriggers;
+import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.init.tags.ModItemTags;
 import com.github.elenterius.biomancy.integration.ModsCompatHandler;
 import com.github.elenterius.biomancy.styles.TextStyles;
@@ -31,7 +26,10 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -57,16 +55,21 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 
 		Item item = stack.getItem();
 
+		if (item instanceof TieredItem || item instanceof Vanishable) return true;
+
 		if (item instanceof BlockItem blockItem) {
 			Block block = blockItem.getBlock();
-			if (block instanceof ShulkerBoxBlock || block instanceof FleshkinChestBlock || block instanceof StorageSacBlock) {
-				return true;
-			}
+
+			//prevent all items that have a BlockEntity associated with it from being sacrificed
+			// e.g. complex modded blocks such as computers, machines, containers, etc.
+			if (block instanceof EntityBlock) return true;
 		}
 
 		if (ModsCompatHandler.getTetraHelper().isToolOrModularItem(item)) return true;
 
-		return item instanceof TieredItem || item instanceof Vanishable || stack.isEnchanted();
+		if (stack.isEnchanted()) return true;
+		if (!item.canFitInsideContainerItems()) return true;
+		return stack.getCapability(ModCapabilities.ITEM_HANDLER).isPresent();
 	};
 
 	protected static final VoxelShape INSIDE_AABB = box(3, 4, 3, 13, 16, 13);
@@ -93,6 +96,13 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 
 	public static int getPrimalEnergy(CompoundTag tag) {
 		return tag.contains(PrimordialCradleBlockEntity.PRIMAL_ENERGY_KEY) ? tag.getInt(PrimordialCradleBlockEntity.PRIMAL_ENERGY_KEY) : 0;
+	}
+
+	private static MutableComponent createValueComponent(DecimalFormat df, int value, String name) {
+		return ComponentUtil.literal(df.format(value))
+				.withStyle(TextStyles.PRIMORDIAL_RUNES_LIGHT_GRAY)
+				.append(ComponentUtil.space())
+				.append(ComponentUtil.literal(name).withStyle(TextStyles.GRAY));
 	}
 
 	@Override
@@ -179,19 +189,20 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 	}
 
 	private boolean increaseFillLevel(@Nullable Entity player, Level level, BlockPos pos, ItemStack stack) {
-		if (!stack.isEmpty() && !level.isClientSide()) {
-			if (CANNOT_BE_SACRIFICED.test(stack)) return false;
+		if (level.isClientSide()) return false;
+		if (stack.isEmpty()) return false;
+		if (CANNOT_BE_SACRIFICED.test(stack)) return false;
 
-			ItemStack copyOfStack = ItemHandlerHelper.copyStackWithSize(stack, 1); //creator#insertItem modifies the stack which may lead to it being empty
-			if (level.getBlockEntity(pos) instanceof PrimordialCradleBlockEntity creator && !creator.isFull() && creator.insertItem(stack)) {
-				if (player instanceof ServerPlayer serverPlayer) {
-					ModTriggers.SACRIFICED_ITEM_TRIGGER.trigger(serverPlayer, copyOfStack);
-				}
-				SoundEvent soundEvent = creator.isFull() ? ModSoundEvents.CRADLE_BECAME_FULL.get() : ModSoundEvents.CRADLE_EAT.get();
-				SoundUtil.broadcastBlockSound((ServerLevel) level, pos, soundEvent);
-				return true;
+		ItemStack copyOfStack = ItemHandlerHelper.copyStackWithSize(stack, 1); //cradle#insertItem modifies the stack which may lead to it being empty
+		if (level.getBlockEntity(pos) instanceof PrimordialCradleBlockEntity cradle && !cradle.isFull() && cradle.insertItem(stack)) {
+			if (player instanceof ServerPlayer serverPlayer) {
+				ModTriggers.SACRIFICED_ITEM_TRIGGER.trigger(serverPlayer, copyOfStack);
 			}
+			SoundEvent soundEvent = cradle.isFull() ? ModSoundEvents.CRADLE_BECAME_FULL.get() : ModSoundEvents.CRADLE_EAT.get();
+			SoundUtil.broadcastBlockSound((ServerLevel) level, pos, soundEvent);
+			return true;
 		}
+
 		return false;
 	}
 
@@ -257,12 +268,5 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 			if (hostile > 0) tooltip.add(createValueComponent(df, hostile, "Hostile"));
 			if (anomaly > 0) tooltip.add(createValueComponent(df, anomaly, "Anomaly"));
 		}
-	}
-
-	private static MutableComponent createValueComponent(DecimalFormat df, int value, String name) {
-		return ComponentUtil.literal(df.format(value))
-				.withStyle(TextStyles.PRIMORDIAL_RUNES_LIGHT_GRAY)
-				.append(ComponentUtil.space())
-				.append(ComponentUtil.literal(name).withStyle(TextStyles.GRAY));
 	}
 }

@@ -79,7 +79,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 
 		createTag(ModItemTags.CANNOT_BE_EATEN_BY_CRADLE)
 				.add(DRAGON_EGG, SPAWNER, HEART_OF_THE_SEA)
-				.add(NAME_TAG)
+				.add(NAME_TAG, BUNDLE)
 				.addTag(ItemTags.MUSIC_DISCS)
 				.add(ELYTRA)
 				.addTag(Tags.Items.ARMORS, Tags.Items.TOOLS)
