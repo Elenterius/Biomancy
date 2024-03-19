@@ -1,3 +1,20 @@
+## [5.1.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.5.0.0...1.20.1-v2.5.1.0) (2024-03-19)
+
+
+### Features
+
+* improve filtering of items that can't be eaten by the cradle ([c451857](https://github.com/Elenterius/Biomancy/commit/c451857ec4c75179c4a686d43321e628b5488ba9))
+* **nerf:** prevent insertion of Bundles into storage sacs ([5cac542](https://github.com/Elenterius/Biomancy/commit/5cac54258faf894fdbd8bb04c36f0c1d488dd314)), closes [#121](https://github.com/Elenterius/Biomancy/issues/121)
+* **nerf:** reduce max stack size of Storage Sac to 1 ([5a3b253](https://github.com/Elenterius/Biomancy/commit/5a3b2530df822b818bd97ed9db0bc78f22faea99))
+* tweak advancement ([6565ba0](https://github.com/Elenterius/Biomancy/commit/6565ba0e1db565737d4758abd4a7b071d00575dc))
+* tweak Primordial Core recipe ([8b429aa](https://github.com/Elenterius/Biomancy/commit/8b429aac6c433f9a7033d9ea181af8f862e53a10))
+
+
+### Bug Fixes
+
+* add missing translation strings for death messages ([d4b1dbc](https://github.com/Elenterius/Biomancy/commit/d4b1dbc38377736734dff273b788d2f2970cae2e)), closes [#123](https://github.com/Elenterius/Biomancy/issues/123)
+* fix crash when placing down a Primordial Cradle ([f21e77f](https://github.com/Elenterius/Biomancy/commit/f21e77f23cf970d48ae6de9b13c281c64508f365))
+
 ## [5.0.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.4.5.0...1.20.1-v2.5.0.0) (2024-03-16)
 
 
@@ -76,19 +93,4 @@
 ### Bug Fixes
 
 * exclude non-living entities from entity tags ([1584145](https://github.com/Elenterius/Biomancy/commit/1584145de547dc5eaef38018328e1ae819eff0bf))
-
-## [4.2.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.4.1.0...1.20.1-v2.4.2.0) (2024-01-22)
-
-
-### Features
-
-* **injector:** change cancel and clear icons in the wheel menu ([78a2475](https://github.com/Elenterius/Biomancy/commit/78a2475d558ab35d8be40c568ef236f2797f3c40))
-* **injector:** change item label color to white in the wheel menu ([1bc4a00](https://github.com/Elenterius/Biomancy/commit/1bc4a00816a65447469c7e04f775630f12925a26))
-* **injector:** tweak serum colors ([56376a3](https://github.com/Elenterius/Biomancy/commit/56376a393ef39c70212b1abf724bebe013118c68))
-
-
-### Bug Fixes
-
-* **injector:** fix mismatching serum colors between item and injector model ([5bd8d96](https://github.com/Elenterius/Biomancy/commit/5bd8d9684d1db70771365ce0621508744ce43278))
-* **jei:** fix bad text color in the biomancy recipe previews ([08dc86a](https://github.com/Elenterius/Biomancy/commit/08dc86a22a2b873ed3807d16aa94c7f9230601e9))
 
