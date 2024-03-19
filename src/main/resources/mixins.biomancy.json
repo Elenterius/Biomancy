@@ -2,18 +2,18 @@
   "required": true,
   "package": "com.github.elenterius.biomancy.mixin",
   "compatibilityLevel": "JAVA_17",
-	"minVersion": "0.8.5",
+  "minVersion": "0.8.5",
   "refmap": "mixins.biomancy.refmap.json",
   "injectors": {
     "defaultRequire": 1
   },
   "mixins": [
-		"AgeableMobAccessor", "ArmorStandAccessor", "BiomeAccessor", "DamageSourceAccessor", "IntegerPropertyAccessor", "LivingEntityAccessor", "LivingEntityMixin",
-		"MobEffectInstanceAccessor", "MobEffectInstanceMixin", "MobEntityAccessor", "PhantomMixin", "PlayerMixin", "ServerLevelMixin", "SlimeAccessor",
-		"SwordItemMixinAccessor", "TadpoleAccessor", "TextureSlotAccessor", "WallBlockMixin", "ZombieVillagerMixinAccessor"
-	],
-	"client": [
-		"client.ClientPackListenerMixin", "client.ClientRecipeBookMixin", "client.GuiGraphicsMixin", "client.PlayerRendererMixin", "client.RecipeCollectionAccessor"
-	],
+    "AgeableMobAccessor", "ArmorStandAccessor", "BiomeAccessor", "DamageSourceAccessor", "IntegerPropertyAccessor", "LivingEntityAccessor", "LivingEntityMixin",
+    "MobEffectInstanceAccessor", "MobEffectInstanceMixin", "MobEntityAccessor", "PhantomMixin", "PlayerMixin", "ServerLevelMixin", "SlimeAccessor",
+    "SuspiciousStewItemAccessor", "SwordItemMixinAccessor", "TadpoleAccessor", "TextureSlotAccessor", "WallBlockMixin", "ZombieVillagerMixinAccessor"
+  ],
+  "client": [
+    "client.ClientPackListenerMixin", "client.ClientRecipeBookMixin", "client.GuiGraphicsMixin", "client.PlayerRendererMixin", "client.RecipeCollectionAccessor"
+  ],
   "server": [ ]
 }
