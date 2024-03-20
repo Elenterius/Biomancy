@@ -56,7 +56,7 @@ class MobEffectTribute implements Tribute {
 		}
 
 		if (isSuspiciousStewItem) {
-			SuspiciousStewItemAccessor.biomancy$ListPotionEffects(stack, effectInstance -> mobEffectTribute.apply(effectInstance, 0.5f));
+			SuspiciousStewItemAccessor.biomancy$ListPotionEffects(stack, effectInstance -> mobEffectTribute.apply(effectInstance, 0.35f));
 		}
 
 		if (isFoodItem) {
