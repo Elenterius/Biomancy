@@ -13,6 +13,7 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
@@ -56,6 +57,10 @@ public class ModBlockLoot extends BlockLootSubProvider {
 		List<Block> blocks = ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).toList();
 		LOGGER.info(logMarker, "generating loot tables for {} blocks...", blocks.size());
 		return blocks;
+	}
+
+	protected LootTable.Builder createShearsOrSilkTouchOnlyDrop(ItemLike item) {
+		return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).when(HAS_SHEARS_OR_SILK_TOUCH).add(LootItem.lootTableItem(item)));
 	}
 
 	protected LootTable.Builder createNameableBioMachineTable(Block block) {
@@ -182,7 +187,7 @@ public class ModBlockLoot extends BlockLootSubProvider {
 		dropSelf(ModBlocks.MALIGNANT_FLESH_STAIRS.get());
 		dropSelf(ModBlocks.MALIGNANT_FLESH_WALL.get());
 		add(ModBlocks.MALIGNANT_FLESH_VEINS.get(), block -> createMultifaceBlockDrops(block, HAS_SHEARS_OR_SILK_TOUCH));
-		add(ModBlocks.PRIMAL_BLOOM.get(), noDrop());
+		add(ModBlocks.PRIMAL_BLOOM.get(), this::createShearsOrSilkTouchOnlyDrop);
 		dropSelf(ModBlocks.PRIMAL_ORIFICE.get());
 
 		//		dropSelf(ModBlocks.VOICE_BOX.get());
