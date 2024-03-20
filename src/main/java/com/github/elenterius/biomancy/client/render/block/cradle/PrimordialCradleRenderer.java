@@ -56,8 +56,6 @@ public class PrimordialCradleRenderer extends CustomGeoBlockRenderer<PrimordialC
 	public void renderCubesOfBone(PoseStack stack, GeoBone bone, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		if (bone.getName().equals("_eye_overlay")) {
 			if (lifeEnergyPct > 0) {
-				float steps = 8f; //UV face height in pixels
-				lifeEnergyPct = (Mth.floor(lifeEnergyPct * (steps - 1f)) + 1f) / steps; //rescale to fixed step size, -+1 ensures we never get 0
 				isSpecialCube = true;
 				if (!bone.isHidden()) {
 					for (GeoCube cube : bone.getCubes()) {
@@ -77,8 +75,10 @@ public class PrimordialCradleRenderer extends CustomGeoBlockRenderer<PrimordialC
 		GeoVertex[] vertices = quad.vertices();
 
 		if (isSpecialCube && quad.direction() == Direction.NORTH) {
-			float textureV = Mth.lerp(lifeEnergyPct, vertices[2].texV(), vertices[0].texV());
-			float positionY = Mth.lerp(lifeEnergyPct, vertices[2].position().y(), vertices[0].position().y());
+			float steps = (vertices[0].position().y() - vertices[2].position().y()) * 16f; // 6 "pixels"
+			float delta = (Mth.floor(lifeEnergyPct * (steps - 1f)) + 1f) / steps; //rescale to fixed step size, -+1 ensures we never get 0
+			float textureV = Mth.lerp(delta, vertices[2].texV(), vertices[0].texV());
+			float positionY = Mth.lerp(delta, vertices[2].position().y(), vertices[0].position().y());
 
 			GeoVertex topLeft = vertices[0]; // Top left corner
 			GeoVertex topRight = vertices[1]; // Top right corner
