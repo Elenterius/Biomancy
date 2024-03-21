@@ -34,4 +34,5 @@ forge*changelog.txt
 # custom
 logs
 /run-data/
+/run-server/
 
