@@ -21,15 +21,4 @@ public class SimpleItem extends Item implements ItemTooltipStyleProvider {
 		tooltip.addAll(ClientTextUtil.getItemInfoTooltip(stack));
 	}
 
-	public static class ShinySimpleItem extends SimpleItem {
-		public ShinySimpleItem(Properties properties) {
-			super(properties);
-		}
-
-		@Override
-		public boolean isFoil(ItemStack stack) {
-			return true;
-		}
-	}
-
 }
