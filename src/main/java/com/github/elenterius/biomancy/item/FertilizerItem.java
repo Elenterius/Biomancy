@@ -15,10 +15,15 @@ import net.minecraftforge.common.IPlantable;
 
 import java.util.Optional;
 
-public class FertilizerItem extends SimpleItem.ShinySimpleItem {
+public class FertilizerItem extends SimpleItem {
 
 	public FertilizerItem(Properties properties) {
 		super(properties);
+	}
+
+	@Override
+	public boolean isFoil(ItemStack stack) {
+		return true;
 	}
 
 	@Override
