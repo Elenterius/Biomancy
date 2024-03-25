@@ -74,7 +74,7 @@ public final class BiomancyMod {
 
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(new Date());
-		WE_DO_A_LITTLE_FOOLING = calendar.get(Calendar.MONTH)+1 == 4 && calendar.get(Calendar.DATE) == 1;
+		WE_DO_A_LITTLE_FOOLING = calendar.get(Calendar.MONTH) == Calendar.APRIL && calendar.get(Calendar.DATE) == 1;
 	}
 
 	public static ResourceLocation createRL(String path) {
