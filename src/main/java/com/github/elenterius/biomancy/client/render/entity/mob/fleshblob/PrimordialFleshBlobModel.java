@@ -12,6 +12,8 @@ import software.bernie.geckolib.model.GeoModel;
 
 import java.util.Locale;
 
+import static com.github.elenterius.biomancy.client.render.entity.mob.fleshblob.FleshBlobModel.TROLL_TEXTURE;
+
 public class PrimordialFleshBlobModel<T extends EaterFleshBlob & PrimordialFleshkin> extends GeoModel<T> {
 
 	protected static final ResourceLocation BASE_TEXTURE = BiomancyMod.createRL("textures/entity/mob/flesh_blob/primordial_flesh_blob_neutral.png");
@@ -34,6 +36,7 @@ public class PrimordialFleshBlobModel<T extends EaterFleshBlob & PrimordialFlesh
 
 	@Override
 	public RenderType getRenderType(T fleshBlob, ResourceLocation texture) {
+		if (BiomancyMod.WE_DO_A_LITTLE_FOOLING) return ModRenderTypes.getCutoutPartyTime(TROLL_TEXTURE);
 		if (fleshBlob.hasCustomName()) {
 			Component customName = fleshBlob.getCustomName();
 			if (customName != null) {

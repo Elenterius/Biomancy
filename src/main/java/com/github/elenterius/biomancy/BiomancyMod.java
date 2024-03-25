@@ -21,6 +21,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import software.bernie.geckolib.GeckoLib;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Random;
 import java.util.Set;
 
@@ -30,6 +32,8 @@ public final class BiomancyMod {
 	public static final String MOD_ID = "biomancy";
 	public static final Logger LOGGER = LogManager.getLogger("Biomancy");
 	public static final Random GLOBAL_RANDOM = new Random();
+
+	public static boolean WE_DO_A_LITTLE_FOOLING;
 
 	public BiomancyMod() {
 		GeckoLib.initialize();
@@ -66,6 +70,11 @@ public final class BiomancyMod {
 
 		BiomancyConfig.register(modLoadingContext);
 		ModsCompatHandler.onBiomancyInit(modEventBus);
+
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		WE_DO_A_LITTLE_FOOLING = calendar.get(Calendar.MONTH) == Calendar.APRIL && calendar.get(Calendar.DATE) == 1;
 	}
 
 	public static ResourceLocation createRL(String path) {
