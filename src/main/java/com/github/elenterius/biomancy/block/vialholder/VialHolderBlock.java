@@ -113,7 +113,7 @@ public class VialHolderBlock extends BaseEntityBlock {
 	@Override
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		if (level.getBlockEntity(pos) instanceof VialHolderBlockEntity vialHolder) {
-			vialHolder.updateBlockState(level);
+			vialHolder.updateBlockState();
 		}
 	}
 
