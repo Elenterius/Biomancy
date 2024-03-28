@@ -17,7 +17,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class MembranePaneBlock extends PaneBlock {
+public class MembranePaneBlock extends PaneBlock implements Membrane {
 
 	protected final IgnoreEntityCollisionPredicate ignoreEntityCollisionPredicate;
 
@@ -47,10 +47,15 @@ public class MembranePaneBlock extends PaneBlock {
 	}
 
 	@Override
+	public boolean shouldIgnoreEntityCollisionAt(BlockState state, BlockGetter level, BlockPos pos, Entity entity) {
+		return ignoreEntityCollisionPredicate.test(state, level, pos, entity);
+	}
+
+	@Override
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
 		if (context instanceof EntityCollisionContext entityContext) {
 			Entity entity = entityContext.getEntity();
-			if (ignoreEntityCollisionPredicate.test(state, level, pos, entity)) {
+			if (entity != null && shouldIgnoreEntityCollisionAt(state, level, pos, entity)) {
 				return Shapes.empty();
 			}
 		}

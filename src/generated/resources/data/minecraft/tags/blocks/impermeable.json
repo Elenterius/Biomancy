@@ -9,6 +9,7 @@
     "biomancy:primal_permeable_membrane",
     "biomancy:primal_permeable_membrane_pane",
     "biomancy:undead_permeable_membrane",
-    "biomancy:undead_permeable_membrane_pane"
+    "biomancy:undead_permeable_membrane_pane",
+    "biomancy:biometric_membrane"
   ]
 }

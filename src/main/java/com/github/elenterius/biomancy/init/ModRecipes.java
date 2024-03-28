@@ -11,10 +11,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraftforge.common.brewing.BrewingRecipe;
 import net.minecraftforge.common.brewing.BrewingRecipeRegistry;
@@ -39,6 +36,7 @@ public final class ModRecipes {
 	public static final RegistryObject<RecipeSerializer<BioLabRecipe>> BIO_BREWING_SERIALIZER = registerRecipeSerializer(BIO_BREWING_RECIPE_TYPE, BioLabRecipe.Serializer::new);
 	public static final RegistryObject<RecipeSerializer<BioForgeRecipe>> BIO_FORGING_SERIALIZER = registerRecipeSerializer(BIO_FORGING_RECIPE_TYPE, BioForgeRecipe.Serializer::new);
 	public static final RegistryObject<RecipeSerializer<DigesterRecipe>> DIGESTING_SERIALIZER = registerRecipeSerializer(DIGESTING_RECIPE_TYPE, DigesterRecipe.Serializer::new);
+	public static final RegistryObject<RecipeSerializer<BiometricMembraneRecipe>> BIOMETRIC_MEMBRANE_CRAFTING_SERIALIZER = registerRecipeSerializer("crafting_special_biometric_membrane", () -> new SimpleCraftingRecipeSerializer<>(BiometricMembraneRecipe::new));
 
 	private ModRecipes() {}
 
@@ -76,6 +74,10 @@ public final class ModRecipes {
 
 	private static <T extends RecipeType<?>, R extends Recipe<Container>> RegistryObject<RecipeSerializer<R>> registerRecipeSerializer(RegistryObject<T> recipeTypeHolder, Supplier<RecipeSerializer<R>> serializerSupplier) {
 		return RECIPE_SERIALIZERS.register(recipeTypeHolder.getId().getPath(), serializerSupplier);
+	}
+
+	private static <R extends CraftingRecipe> RegistryObject<RecipeSerializer<R>> registerRecipeSerializer(String name, Supplier<RecipeSerializer<R>> serializerSupplier) {
+		return RECIPE_SERIALIZERS.register(name, serializerSupplier);
 	}
 
 	private static <T extends Recipe<Container>> RegistryObject<ItemStackRecipeType<T>> registerItemStackRecipeType(String identifier) {

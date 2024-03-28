@@ -10,6 +10,7 @@ import com.github.elenterius.biomancy.block.decomposer.DecomposerBlockEntity;
 import com.github.elenterius.biomancy.block.digester.DigesterBlockEntity;
 import com.github.elenterius.biomancy.block.fleshkinchest.FleshkinChestBlockEntity;
 import com.github.elenterius.biomancy.block.mawhopper.MawHopperBlockEntity;
+import com.github.elenterius.biomancy.block.membrane.BiometricMembraneBlockEntity;
 import com.github.elenterius.biomancy.block.ownable.OwnableBlockEntity;
 import com.github.elenterius.biomancy.block.storagesac.StorageSacBlockEntity;
 import com.github.elenterius.biomancy.block.tongue.TongueBlockEntity;
@@ -22,6 +23,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
+import java.util.Arrays;
 
 public final class ModBlockEntities {
 
@@ -41,6 +44,7 @@ public final class ModBlockEntities {
 	public static final RegistryObject<BlockEntityType<VialHolderBlockEntity>> VIAL_HOLDER = register(ModBlocks.VIAL_HOLDER, VialHolderBlockEntity::new);
 	//	public static final RegistryObject<BlockEntityType<VoiceBoxBlockEntity>> VOICE_BOX = register(ModBlocks.VOICE_BOX, VoiceBoxBlockEntity::new);
 	public static final RegistryObject<BlockEntityType<ChrysalisBlockEntity>> CHRYSALIS = register(ModBlocks.CHRYSALIS, ChrysalisBlockEntity::new);
+	public static final RegistryObject<BlockEntityType<BiometricMembraneBlockEntity>> BIOMETRIC_MEMBRANE = register(ModBlocks.BIOMETRIC_MEMBRANE, BiometricMembraneBlockEntity::new);
 
 	//# Special
 	public static final RegistryObject<BlockEntityType<OwnableBlockEntity>> OWNABLE_BE = BLOCK_ENTITIES.register("ownable_block_entity", () -> BlockEntityType.Builder.of(OwnableBlockEntity::new, /*ModBlocks.FLESHKIN_DOOR.get(), ModBlocks.FLESHKIN_TRAPDOOR.get(),*/ ModBlocks.FLESHKIN_PRESSURE_PLATE.get()).build(noDataFixer()));
@@ -50,6 +54,14 @@ public final class ModBlockEntities {
 
 	private static <T extends BlockEntity, B extends Block> RegistryObject<BlockEntityType<T>> register(RegistryObject<B> blockHolder, BlockEntityType.BlockEntitySupplier<T> factory) {
 		return BLOCK_ENTITIES.register(blockHolder.getId().getPath(), () -> BlockEntityType.Builder.of(factory, blockHolder.get()).build(noDataFixer()));
+	}
+
+	@SafeVarargs
+	private static <T extends BlockEntity> RegistryObject<BlockEntityType<T>> register(String name, BlockEntityType.BlockEntitySupplier<T> factory, RegistryObject<? extends Block>... blockHolders) {
+		return BLOCK_ENTITIES.register(name, () -> {
+			Block[] blocks = Arrays.stream(blockHolders).map(RegistryObject::get).toList().toArray(new Block[]{});
+			return BlockEntityType.Builder.of(factory, blocks).build(noDataFixer());
+		});
 	}
 
 	private static Type<?> noDataFixer() {

@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.init.client;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.block.membrane.BiometricMembraneBlock;
 import com.github.elenterius.biomancy.block.vialholder.VialHolderBlock;
 import com.github.elenterius.biomancy.client.gui.IngameOverlays;
 import com.github.elenterius.biomancy.client.gui.tooltip.EmptyLineClientComponent;
@@ -147,11 +148,13 @@ public final class ClientSetupHandler {
 	public static void onItemColorRegistry(final RegisterColorHandlersEvent.Item event) {
 		event.register((stack, tintIndex) -> ModItems.ESSENCE.get().getColor(stack, tintIndex), ModItems.ESSENCE.get());
 		event.register((stack, index) -> index == 1 ? IClientFluidTypeExtensions.of(((BucketItem) stack.getItem()).getFluid()).getTintColor() : 0xFF_FFFFFF, ModItems.ACID_BUCKET.get());
+		event.register(BiometricMembraneBlock::getTintColor, ModItems.BIOMETRIC_MEMBRANE.get());
 	}
 
 	@SubscribeEvent
 	public static void onBlockColorRegistry(final RegisterColorHandlersEvent.Block event) {
 		event.register(VialHolderBlock::getTintColor, ModBlocks.VIAL_HOLDER.get());
+		event.register(BiometricMembraneBlock::getTintColor, ModBlocks.BIOMETRIC_MEMBRANE.get());
 	}
 
 	@SubscribeEvent

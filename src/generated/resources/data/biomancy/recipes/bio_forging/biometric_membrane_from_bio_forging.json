@@ -1,0 +1,25 @@
+{
+  "type": "biomancy:bio_forging",
+  "bio_forge_tab": "biomancy:misc",
+  "ingredients": [
+    {
+      "count": 2,
+      "item": "biomancy:elastic_fibers"
+    },
+    {
+      "count": 4,
+      "item": "biomancy:bile"
+    },
+    {
+      "count": 2,
+      "item": "biomancy:gem_fragments"
+    },
+    {
+      "item": "biomancy:living_flesh"
+    }
+  ],
+  "nutrientsCost": 1,
+  "result": {
+    "item": "biomancy:biometric_membrane"
+  }
+}

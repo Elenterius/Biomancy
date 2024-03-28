@@ -1,0 +1,115 @@
+{
+  "credit": "Made by Elenterius",
+  "parent": "block/block",
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "0": "biomancy:block/membrane_layer_0",
+    "1": "biomancy:block/membrane_layer_1",
+    "2": "biomancy:block/membrane_layer_2",
+    "particle": "biomancy:block/membrane_layer_1"
+  },
+  "elements": [
+    {
+      "from": [ 0, 0, 0 ],
+      "to": [ 16, 16, 16 ],
+      "faces": {
+        "north": {
+          "uv": [ 0, 0, 16, 16 ],
+          "texture": "#0",
+          "tintindex": 0
+        },
+        "east": {
+          "uv": [ 0, 0, 16, 16 ],
+          "texture": "#0",
+          "tintindex": 0
+        },
+        "south": {
+          "uv": [ 0, 0, 16, 16 ],
+          "texture": "#0",
+          "tintindex": 0
+        },
+        "west": {
+          "uv": [ 0, 0, 16, 16 ],
+          "texture": "#0",
+          "tintindex": 0
+        },
+        "up": {
+          "uv": [ 0, 0, 16, 16 ],
+          "texture": "#0",
+          "tintindex": 0
+        },
+        "down": {
+          "uv": [ 0, 0, 16, 16 ],
+          "texture": "#0",
+          "tintindex": 0
+        }
+      }
+    },
+    {
+      "from": [ 0, 0, 0 ],
+      "to": [ 16, 16, 16 ],
+      "faces": {
+        "north": {
+          "uv": [ 0, 0, 16, 16 ],
+          "texture": "#1"
+        },
+        "east": {
+          "uv": [ 0, 0, 16, 16 ],
+          "texture": "#1"
+        },
+        "south": {
+          "uv": [ 0, 0, 16, 16 ],
+          "texture": "#1"
+        },
+        "west": {
+          "uv": [ 0, 0, 16, 16 ],
+          "texture": "#1"
+        },
+        "up": {
+          "uv": [ 0, 0, 16, 16 ],
+          "texture": "#1"
+        },
+        "down": {
+          "uv": [ 0, 0, 16, 16 ],
+          "texture": "#1"
+        }
+      }
+    },
+    {
+      "from": [ 0, 0, 0 ],
+      "to": [ 16, 16, 16 ],
+      "faces": {
+        "north": {
+          "uv": [ 0, 0, 16, 16 ],
+          "texture": "#2",
+          "tintindex": 1
+        },
+        "east": {
+          "uv": [ 0, 0, 16, 16 ],
+          "texture": "#2",
+          "tintindex": 1
+        },
+        "south": {
+          "uv": [ 0, 0, 16, 16 ],
+          "texture": "#2",
+          "tintindex": 1
+        },
+        "west": {
+          "uv": [ 0, 0, 16, 16 ],
+          "texture": "#2",
+          "tintindex": 1
+        },
+        "up": {
+          "uv": [ 0, 0, 16, 16 ],
+          "texture": "#2",
+          "tintindex": 1
+        },
+        "down": {
+          "uv": [ 0, 0, 16, 16 ],
+          "texture": "#2",
+          "tintindex": 1
+        }
+      }
+    }
+  ]
+}

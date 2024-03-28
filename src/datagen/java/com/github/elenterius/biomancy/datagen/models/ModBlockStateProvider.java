@@ -111,16 +111,18 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		irisDoor(ModBlocks.FLESH_IRIS_DOOR, true);
 		fleshDoor(ModBlocks.FLESH_DOOR);
 		fleshSpikes(ModBlocks.FLESH_SPIKE);
+
 		translucentBlockWithItem(ModBlocks.IMPERMEABLE_MEMBRANE);
-		translucentBlockWithItem(ModBlocks.BABY_PERMEABLE_MEMBRANE);
-		translucentBlockWithItem(ModBlocks.ADULT_PERMEABLE_MEMBRANE);
-		translucentBlockWithItem(ModBlocks.PRIMAL_PERMEABLE_MEMBRANE);
-		translucentBlockWithItem(ModBlocks.UNDEAD_PERMEABLE_MEMBRANE);
 		membranePaneWithItem(ModBlocks.IMPERMEABLE_MEMBRANE_PANE, ModBlocks.IMPERMEABLE_MEMBRANE);
+		translucentBlockWithItem(ModBlocks.BABY_PERMEABLE_MEMBRANE);
 		membranePaneWithItem(ModBlocks.BABY_PERMEABLE_MEMBRANE_PANE, ModBlocks.BABY_PERMEABLE_MEMBRANE);
+		translucentBlockWithItem(ModBlocks.ADULT_PERMEABLE_MEMBRANE);
 		membranePaneWithItem(ModBlocks.ADULT_PERMEABLE_MEMBRANE_PANE, ModBlocks.ADULT_PERMEABLE_MEMBRANE);
+		translucentBlockWithItem(ModBlocks.PRIMAL_PERMEABLE_MEMBRANE);
 		membranePaneWithItem(ModBlocks.PRIMAL_PERMEABLE_MEMBRANE_PANE, ModBlocks.PRIMAL_PERMEABLE_MEMBRANE);
+		translucentBlockWithItem(ModBlocks.UNDEAD_PERMEABLE_MEMBRANE);
 		membranePaneWithItem(ModBlocks.UNDEAD_PERMEABLE_MEMBRANE_PANE, ModBlocks.UNDEAD_PERMEABLE_MEMBRANE);
+		existingBlockWithItem(ModBlocks.BIOMETRIC_MEMBRANE);
 
 		//horizontalBlockWithItem(ModBlocks.NEURAL_INTERCEPTOR);
 
