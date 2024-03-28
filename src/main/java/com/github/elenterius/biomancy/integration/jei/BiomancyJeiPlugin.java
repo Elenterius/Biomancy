@@ -14,6 +14,7 @@ import com.github.elenterius.biomancy.menu.DigesterMenu;
 import com.github.elenterius.biomancy.menu.slot.ISlotZone;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.registration.*;
 import net.minecraft.client.Minecraft;
@@ -56,6 +57,8 @@ public class BiomancyJeiPlugin implements IModPlugin {
 		registration.addRecipes(BioLabRecipeCategory.RECIPE_TYPE, level.getRecipeManager().getAllRecipesFor(ModRecipes.BIO_BREWING_RECIPE_TYPE.get()));
 		registration.addRecipes(DigesterRecipeCategory.RECIPE_TYPE, level.getRecipeManager().getAllRecipesFor(ModRecipes.DIGESTING_RECIPE_TYPE.get()));
 		registration.addRecipes(BioForgeRecipeCategory.RECIPE_TYPE, level.getRecipeManager().getAllRecipesFor(ModRecipes.BIO_FORGING_RECIPE_TYPE.get()));
+
+		registration.addRecipes(RecipeTypes.CRAFTING, BiometricMembraneRecipeMaker.createRecipes());
 	}
 
 	@Override
@@ -84,5 +87,6 @@ public class BiomancyJeiPlugin implements IModPlugin {
 	private <C extends AbstractContainerMenu, R> void registerInputSlots(IRecipeTransferRegistration registration, @Nullable MenuType<C> menuType, Class<? extends C> containerClass, RecipeType<R> recipeType, ISlotZone slotZone) {
 		registration.addRecipeTransferHandler(containerClass, menuType, recipeType, slotZone.getFirstIndex(), slotZone.getSlotCount(), 0, 36);
 	}
+
 
 }

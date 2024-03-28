@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.datagen.recipes;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.datagen.recipes.builder.WorkbenchRecipeBuilder;
 import com.github.elenterius.biomancy.init.ModItems;
+import com.github.elenterius.biomancy.init.ModRecipes;
 import com.github.elenterius.biomancy.init.tags.ModItemTags;
 import com.github.elenterius.biomancy.item.SimpleBlockItem;
 import net.minecraft.data.PackOutput;
@@ -289,6 +290,8 @@ public class VanillaRecipeProvider extends RecipeProvider {
 		membrane(consumer, ModItems.ADULT_PERMEABLE_MEMBRANE_PANE.get(), ModItems.ADULT_PERMEABLE_MEMBRANE.get());
 		membrane(consumer, ModItems.PRIMAL_PERMEABLE_MEMBRANE_PANE.get(), ModItems.PRIMAL_PERMEABLE_MEMBRANE.get());
 		membrane(consumer, ModItems.UNDEAD_PERMEABLE_MEMBRANE_PANE.get(), ModItems.UNDEAD_PERMEABLE_MEMBRANE.get());
+
+		SpecialRecipeBuilder.special(ModRecipes.BIOMETRIC_MEMBRANE_CRAFTING_SERIALIZER.get()).save(consumer, getSimpleRecipeId(ModItems.BIOMETRIC_MEMBRANE.get()).toString());
 	}
 
 	private void membrane(Consumer<FinishedRecipe> consumer, SimpleBlockItem pane, SimpleBlockItem membrane) {

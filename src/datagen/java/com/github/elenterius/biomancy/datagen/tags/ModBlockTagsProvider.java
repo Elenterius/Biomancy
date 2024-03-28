@@ -2,8 +2,7 @@ package com.github.elenterius.biomancy.datagen.tags;
 
 import com.github.elenterius.biomancy.block.FleshDoorBlock;
 import com.github.elenterius.biomancy.block.FullFleshDoorBlock;
-import com.github.elenterius.biomancy.block.membrane.MembraneBlock;
-import com.github.elenterius.biomancy.block.membrane.MembranePaneBlock;
+import com.github.elenterius.biomancy.block.membrane.Membrane;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.tags.ModBlockTags;
 import net.minecraft.core.HolderLookup;
@@ -111,8 +110,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 		);
 
 		IntrinsicTagAppender<Block> impermeableTag = tag(BlockTags.IMPERMEABLE);
-		Predicate<Block> predicate = block -> block instanceof MembraneBlock || block instanceof MembranePaneBlock;
-		ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).filter(predicate).forEach(impermeableTag::add);
+		ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).filter(Membrane.class::isInstance).forEach(impermeableTag::add);
 	}
 
 	private void addFleshyBlocksToHoeTag() {
@@ -136,8 +134,7 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 		//Blocks which can count toward a functional windmill structure
 		//Example: Wool
 		IntrinsicTagAppender<Block> windmillSailsTag = tag(tagKey(modId, "windmill_sails"));
-		Predicate<Block> predicate = block -> block instanceof MembraneBlock || block instanceof MembranePaneBlock;
-		ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).filter(predicate).forEach(windmillSailsTag::add);
+		ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).filter(Membrane.class::isInstance).forEach(windmillSailsTag::add);
 	}
 
 	/**

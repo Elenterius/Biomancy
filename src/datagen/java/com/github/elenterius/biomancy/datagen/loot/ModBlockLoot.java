@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.datagen.loot;
 import com.github.elenterius.biomancy.block.DirectionalSlabBlock;
 import com.github.elenterius.biomancy.block.chrysalis.Chrysalis;
 import com.github.elenterius.biomancy.block.fleshspike.FleshSpikeBlock;
+import com.github.elenterius.biomancy.block.membrane.BiometricMembraneBlockEntity;
 import com.github.elenterius.biomancy.block.property.DirectionalSlabType;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
@@ -94,6 +95,13 @@ public class ModBlockLoot extends BlockLootSubProvider {
 				.add(LootItem.lootTableItem(block)
 						.apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY))
 						.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy(Chrysalis.ENTITY_KEY, "BlockEntityTag." + Chrysalis.ENTITY_KEY))
+				)));
+	}
+
+	protected LootTable.Builder dropMembraneSettings(Block block) {
+		return LootTable.lootTable().withPool(applyExplosionCondition(block, LootPool.lootPool().setRolls(ConstantValue.exactly(1))
+				.add(LootItem.lootTableItem(block)
+						.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy(BiometricMembraneBlockEntity.MEMBRANE_KEY, "BlockEntityTag." + BiometricMembraneBlockEntity.MEMBRANE_KEY))
 				)));
 	}
 
@@ -200,7 +208,6 @@ public class ModBlockLoot extends BlockLootSubProvider {
 		add(ModBlocks.PRIMAL_BLOOM.get(), this::createShearsOrSilkTouchOnlyDrop);
 		dropSelf(ModBlocks.PRIMAL_ORIFICE.get());
 
-		//		dropSelf(ModBlocks.VOICE_BOX.get());
 		dropSelf(ModBlocks.IMPERMEABLE_MEMBRANE.get());
 		dropSelf(ModBlocks.IMPERMEABLE_MEMBRANE_PANE.get());
 		dropSelf(ModBlocks.BABY_PERMEABLE_MEMBRANE.get());
@@ -211,6 +218,9 @@ public class ModBlockLoot extends BlockLootSubProvider {
 		dropSelf(ModBlocks.PRIMAL_PERMEABLE_MEMBRANE_PANE.get());
 		dropSelf(ModBlocks.UNDEAD_PERMEABLE_MEMBRANE.get());
 		dropSelf(ModBlocks.UNDEAD_PERMEABLE_MEMBRANE_PANE.get());
+		add(ModBlocks.BIOMETRIC_MEMBRANE.get(), this::dropMembraneSettings);
+
+		//		dropSelf(ModBlocks.VOICE_BOX.get());
 		//dropSelf(ModBlocks.NEURAL_INTERCEPTOR.get());
 
 		dropSelf(ModBlocks.FLESH_IRIS_DOOR.get());
