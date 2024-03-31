@@ -199,44 +199,44 @@ public class VanillaRecipeProvider extends RecipeProvider {
 		stairs(consumer, ModItems.FLESH_STAIRS.get(), ModItems.FLESH_BLOCK.get());
 		slab(consumer, ModItems.FLESH_SLAB.get(), ModItems.FLESH_BLOCK.get());
 		wall(consumer, ModItems.FLESH_WALL.get(), ModItems.FLESH_BLOCK.get());
-		stonecutterResultFromBase(consumer, ModItems.FLESH_STAIRS.get(), ModItems.FLESH_BLOCK.get());
-		stonecutterResultFromBase(consumer, ModItems.FLESH_SLAB.get(), ModItems.FLESH_BLOCK.get(), 2);
-		stonecutterResultFromBase(consumer, ModItems.FLESH_WALL.get(), ModItems.FLESH_BLOCK.get());
+		stonecutting(consumer, ModItems.FLESH_STAIRS.get(), ModItems.FLESH_BLOCK.get());
+		stonecutting(consumer, ModItems.FLESH_SLAB.get(), ModItems.FLESH_BLOCK.get(), 2);
+		stonecutting(consumer, ModItems.FLESH_WALL.get(), ModItems.FLESH_BLOCK.get());
 
 		stairs(consumer, ModItems.PACKED_FLESH_STAIRS.get(), ModItems.PACKED_FLESH_BLOCK.get());
 		slab(consumer, ModItems.PACKED_FLESH_SLAB.get(), ModItems.PACKED_FLESH_BLOCK.get());
 		wall(consumer, ModItems.PACKED_FLESH_WALL.get(), ModItems.PACKED_FLESH_BLOCK.get());
-		stonecutterResultFromBase(consumer, ModItems.PACKED_FLESH_STAIRS.get(), ModItems.PACKED_FLESH_BLOCK.get());
-		stonecutterResultFromBase(consumer, ModItems.PACKED_FLESH_SLAB.get(), ModItems.PACKED_FLESH_BLOCK.get(), 2);
-		stonecutterResultFromBase(consumer, ModItems.PACKED_FLESH_WALL.get(), ModItems.PACKED_FLESH_BLOCK.get());
+		stonecutting(consumer, ModItems.PACKED_FLESH_STAIRS.get(), ModItems.PACKED_FLESH_BLOCK.get());
+		stonecutting(consumer, ModItems.PACKED_FLESH_SLAB.get(), ModItems.PACKED_FLESH_BLOCK.get(), 2);
+		stonecutting(consumer, ModItems.PACKED_FLESH_WALL.get(), ModItems.PACKED_FLESH_BLOCK.get());
 
 		stairs(consumer, ModItems.PRIMAL_FLESH_STAIRS.get(), ModItems.PRIMAL_FLESH_BLOCK.get());
 		slab(consumer, ModItems.PRIMAL_FLESH_SLAB.get(), ModItems.PRIMAL_FLESH_BLOCK.get());
 		blockFromSlabs(consumer, ModItems.PRIMAL_FLESH_BLOCK.get(), ModItems.PRIMAL_FLESH_SLAB.get());
 		wall(consumer, ModItems.PRIMAL_FLESH_WALL.get(), ModItems.PRIMAL_FLESH_BLOCK.get());
-		stonecutterResultFromBase(consumer, ModItems.PRIMAL_FLESH_WALL.get(), ModItems.PRIMAL_FLESH_BLOCK.get());
-		stonecutterResultFromBase(consumer, ModItems.PRIMAL_FLESH_STAIRS.get(), ModItems.PRIMAL_FLESH_BLOCK.get());
-		stonecutterResultFromBase(consumer, ModItems.PRIMAL_FLESH_SLAB.get(), ModItems.PRIMAL_FLESH_BLOCK.get(), 2);
+		stonecutting(consumer, ModItems.PRIMAL_FLESH_WALL.get(), ModItems.PRIMAL_FLESH_BLOCK.get());
+		stonecutting(consumer, ModItems.PRIMAL_FLESH_STAIRS.get(), ModItems.PRIMAL_FLESH_BLOCK.get());
+		stonecutting(consumer, ModItems.PRIMAL_FLESH_SLAB.get(), ModItems.PRIMAL_FLESH_BLOCK.get(), 2);
 
 		stairs(consumer, ModItems.SMOOTH_PRIMAL_FLESH_STAIRS.get(), ModItems.SMOOTH_PRIMAL_FLESH_BLOCK.get());
 		slab(consumer, ModItems.SMOOTH_PRIMAL_FLESH_SLAB.get(), ModItems.SMOOTH_PRIMAL_FLESH_BLOCK.get());
 		blockFromSlabs(consumer, ModItems.SMOOTH_PRIMAL_FLESH_BLOCK.get(), ModItems.SMOOTH_PRIMAL_FLESH_SLAB.get());
 		wall(consumer, ModItems.SMOOTH_PRIMAL_FLESH_WALL.get(), ModItems.SMOOTH_PRIMAL_FLESH_BLOCK.get());
-		stonecutterResultFromBase(consumer, ModItems.SMOOTH_PRIMAL_FLESH_WALL.get(), ModItems.SMOOTH_PRIMAL_FLESH_BLOCK.get());
-		stonecutterResultFromBase(consumer, ModItems.SMOOTH_PRIMAL_FLESH_STAIRS.get(), ModItems.SMOOTH_PRIMAL_FLESH_BLOCK.get());
-		stonecutterResultFromBase(consumer, ModItems.SMOOTH_PRIMAL_FLESH_SLAB.get(), ModItems.SMOOTH_PRIMAL_FLESH_BLOCK.get(), 2);
+		stonecutting(consumer, ModItems.SMOOTH_PRIMAL_FLESH_WALL.get(), ModItems.SMOOTH_PRIMAL_FLESH_BLOCK.get());
+		stonecutting(consumer, ModItems.SMOOTH_PRIMAL_FLESH_STAIRS.get(), ModItems.SMOOTH_PRIMAL_FLESH_BLOCK.get());
+		stonecutting(consumer, ModItems.SMOOTH_PRIMAL_FLESH_SLAB.get(), ModItems.SMOOTH_PRIMAL_FLESH_BLOCK.get(), 2);
 
 		stairs(consumer, ModItems.POROUS_PRIMAL_FLESH_STAIRS.get(), ModItems.POROUS_PRIMAL_FLESH_BLOCK.get());
 		slab(consumer, ModItems.POROUS_PRIMAL_FLESH_SLAB.get(), ModItems.POROUS_PRIMAL_FLESH_BLOCK.get());
 		blockFromSlabs(consumer, ModItems.POROUS_PRIMAL_FLESH_BLOCK.get(), ModItems.POROUS_PRIMAL_FLESH_SLAB.get());
 		wall(consumer, ModItems.POROUS_PRIMAL_FLESH_WALL.get(), ModItems.POROUS_PRIMAL_FLESH_BLOCK.get());
-		stonecutterResultFromBase(consumer, ModItems.POROUS_PRIMAL_FLESH_WALL.get(), ModItems.POROUS_PRIMAL_FLESH_BLOCK.get());
-		stonecutterResultFromBase(consumer, ModItems.POROUS_PRIMAL_FLESH_STAIRS.get(), ModItems.POROUS_PRIMAL_FLESH_BLOCK.get());
-		stonecutterResultFromBase(consumer, ModItems.POROUS_PRIMAL_FLESH_SLAB.get(), ModItems.POROUS_PRIMAL_FLESH_BLOCK.get(), 2);
+		stonecutting(consumer, ModItems.POROUS_PRIMAL_FLESH_WALL.get(), ModItems.POROUS_PRIMAL_FLESH_BLOCK.get());
+		stonecutting(consumer, ModItems.POROUS_PRIMAL_FLESH_STAIRS.get(), ModItems.POROUS_PRIMAL_FLESH_BLOCK.get());
+		stonecutting(consumer, ModItems.POROUS_PRIMAL_FLESH_SLAB.get(), ModItems.POROUS_PRIMAL_FLESH_BLOCK.get(), 2);
 
 		slab(consumer, ModItems.ORNATE_FLESH_SLAB.get(), ModItems.ORNATE_FLESH_BLOCK.get());
 		blockFromSlabs(consumer, ModItems.ORNATE_FLESH_BLOCK.get(), ModItems.ORNATE_FLESH_SLAB.get());
-		stonecutterResultFromBase(consumer, ModItems.ORNATE_FLESH_SLAB.get(), ModItems.ORNATE_FLESH_BLOCK.get(), 2);
+		stonecutting(consumer, ModItems.ORNATE_FLESH_SLAB.get(), ModItems.ORNATE_FLESH_BLOCK.get(), 2);
 
 		WorkbenchRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.PRIMAL_FLESH_BLOCK.get(), 4)
 				.define('S', ModItems.STONE_POWDER.get())
@@ -253,9 +253,9 @@ public class VanillaRecipeProvider extends RecipeProvider {
 		slab(consumer, ModItems.MALIGNANT_FLESH_SLAB.get(), ModItems.MALIGNANT_FLESH_BLOCK.get());
 		blockFromSlabs(consumer, ModItems.MALIGNANT_FLESH_BLOCK.get(), ModItems.MALIGNANT_FLESH_SLAB.get());
 		wall(consumer, ModItems.MALIGNANT_FLESH_WALL.get(), ModItems.MALIGNANT_FLESH_BLOCK.get());
-		stonecutterResultFromBase(consumer, ModItems.MALIGNANT_FLESH_WALL.get(), ModItems.MALIGNANT_FLESH_BLOCK.get());
-		stonecutterResultFromBase(consumer, ModItems.MALIGNANT_FLESH_STAIRS.get(), ModItems.MALIGNANT_FLESH_BLOCK.get());
-		stonecutterResultFromBase(consumer, ModItems.MALIGNANT_FLESH_SLAB.get(), ModItems.MALIGNANT_FLESH_BLOCK.get(), 2);
+		stonecutting(consumer, ModItems.MALIGNANT_FLESH_WALL.get(), ModItems.MALIGNANT_FLESH_BLOCK.get());
+		stonecutting(consumer, ModItems.MALIGNANT_FLESH_STAIRS.get(), ModItems.MALIGNANT_FLESH_BLOCK.get());
+		stonecutting(consumer, ModItems.MALIGNANT_FLESH_SLAB.get(), ModItems.MALIGNANT_FLESH_BLOCK.get(), 2);
 
 		WorkbenchRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.MALIGNANT_FLESH_BLOCK.get())
 				.define('F', ModItems.FLESH_BITS.get())
@@ -316,6 +316,10 @@ public class VanillaRecipeProvider extends RecipeProvider {
 		return BiomancyMod.createRL(getItemName(result) + "_from_" + getItemName(ingredient));
 	}
 
+	protected ResourceLocation getStoneCuttingRecipeId(ItemLike result, ItemLike ingredient) {
+		return BiomancyMod.createRL(getItemName(result) + "_from_" + getItemName(ingredient) + "_stonecutting");
+	}
+
 	protected ResourceLocation getSmeltingRecipeId(ItemLike itemLike) {
 		return BiomancyMod.createRL(getItemName(itemLike) + "_from_smelting");
 	}
@@ -332,14 +336,14 @@ public class VanillaRecipeProvider extends RecipeProvider {
 		wall(consumer, RecipeCategory.BUILDING_BLOCKS, result, ingredient);
 	}
 
-	protected void stonecutterResultFromBase(Consumer<FinishedRecipe> consumer, ItemLike result, ItemLike ingredient) {
-		stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, result, ingredient, 1);
+	protected void stonecutting(Consumer<FinishedRecipe> consumer, ItemLike result, ItemLike ingredient) {
+		stonecutting(consumer, result, ingredient, 1);
 	}
 
-	protected void stonecutterResultFromBase(Consumer<FinishedRecipe> consumer, ItemLike result, ItemLike ingredient, int count) {
+	protected void stonecutting(Consumer<FinishedRecipe> consumer, ItemLike result, ItemLike ingredient, int count) {
 		SingleItemRecipeBuilder builder = SingleItemRecipeBuilder.stonecutting(Ingredient.of(ingredient), RecipeCategory.BUILDING_BLOCKS, result, count).unlockedBy(getHasName(ingredient), has(ingredient));
-		String recipeName = getConversionRecipeName(result, ingredient);
-		builder.save(consumer, recipeName + "_stonecutting");
+		ResourceLocation recipeName = getStoneCuttingRecipeId(result, ingredient);
+		builder.save(consumer, recipeName);
 	}
 
 	protected void stairs(Consumer<FinishedRecipe> consumer, ItemLike result, ItemLike ingredient) {

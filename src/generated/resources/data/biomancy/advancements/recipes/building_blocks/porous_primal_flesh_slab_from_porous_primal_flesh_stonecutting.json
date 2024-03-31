@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:porous_primal_flesh_stairs_from_porous_primal_flesh_stonecutting"
+        "recipe": "biomancy:porous_primal_flesh_slab_from_porous_primal_flesh_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:porous_primal_flesh_stairs_from_porous_primal_flesh_stonecutting"
+      "biomancy:porous_primal_flesh_slab_from_porous_primal_flesh_stonecutting"
     ]
   },
   "sends_telemetry_event": false

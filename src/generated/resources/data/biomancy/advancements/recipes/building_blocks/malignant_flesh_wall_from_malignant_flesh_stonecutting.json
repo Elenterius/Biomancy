@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_ornate_flesh": {
+    "has_malignant_flesh": {
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:ornate_flesh"
+              "biomancy:malignant_flesh"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:ornate_flesh_slab_from_ornate_flesh_stonecutting"
+        "recipe": "biomancy:malignant_flesh_wall_from_malignant_flesh_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_ornate_flesh",
+      "has_malignant_flesh",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:ornate_flesh_slab_from_ornate_flesh_stonecutting"
+      "biomancy:malignant_flesh_wall_from_malignant_flesh_stonecutting"
     ]
   },
   "sends_telemetry_event": false
