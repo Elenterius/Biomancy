@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_primal_flesh": {
+    "has_malignant_flesh": {
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:primal_flesh"
+              "biomancy:malignant_flesh"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:primal_flesh_slab_from_primal_flesh_stonecutting"
+        "recipe": "biomancy:malignant_flesh_slab_from_malignant_flesh_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_primal_flesh",
+      "has_malignant_flesh",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:primal_flesh_slab_from_primal_flesh_stonecutting"
+      "biomancy:malignant_flesh_slab_from_malignant_flesh_stonecutting"
     ]
   },
   "sends_telemetry_event": false

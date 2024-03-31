@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_packed_flesh": {
+    "has_porous_primal_flesh": {
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:packed_flesh"
+              "biomancy:porous_primal_flesh"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:packed_flesh_slab_from_packed_flesh_stonecutting"
+        "recipe": "biomancy:porous_primal_flesh_stairs_from_porous_primal_flesh_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_packed_flesh",
+      "has_porous_primal_flesh",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:packed_flesh_slab_from_packed_flesh_stonecutting"
+      "biomancy:porous_primal_flesh_stairs_from_porous_primal_flesh_stonecutting"
     ]
   },
   "sends_telemetry_event": false

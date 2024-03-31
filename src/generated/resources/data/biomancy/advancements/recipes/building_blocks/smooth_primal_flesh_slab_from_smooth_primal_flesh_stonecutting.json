@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:smooth_primal_flesh_wall_from_smooth_primal_flesh_stonecutting"
+        "recipe": "biomancy:smooth_primal_flesh_slab_from_smooth_primal_flesh_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:smooth_primal_flesh_wall_from_smooth_primal_flesh_stonecutting"
+      "biomancy:smooth_primal_flesh_slab_from_smooth_primal_flesh_stonecutting"
     ]
   },
   "sends_telemetry_event": false

@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_malignant_flesh": {
+    "has_packed_flesh": {
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:malignant_flesh"
+              "biomancy:packed_flesh"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:malignant_flesh_stairs_from_malignant_flesh_stonecutting"
+        "recipe": "biomancy:packed_flesh_slab_from_packed_flesh_stonecutting"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_malignant_flesh",
+      "has_packed_flesh",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:malignant_flesh_stairs_from_malignant_flesh_stonecutting"
+      "biomancy:packed_flesh_slab_from_packed_flesh_stonecutting"
     ]
   },
   "sends_telemetry_event": false
