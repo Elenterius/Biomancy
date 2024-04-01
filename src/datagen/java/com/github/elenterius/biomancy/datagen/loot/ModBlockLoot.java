@@ -220,7 +220,7 @@ public class ModBlockLoot extends BlockLootSubProvider {
 		dropSelf(ModBlocks.UNDEAD_PERMEABLE_MEMBRANE_PANE.get());
 		add(ModBlocks.BIOMETRIC_MEMBRANE.get(), this::dropMembraneSettings);
 
-		//		dropSelf(ModBlocks.VOICE_BOX.get());
+		dropSelf(ModBlocks.MODULAR_LARYNX.get());
 		//dropSelf(ModBlocks.NEURAL_INTERCEPTOR.get());
 
 		dropSelf(ModBlocks.FLESH_IRIS_DOOR.get());

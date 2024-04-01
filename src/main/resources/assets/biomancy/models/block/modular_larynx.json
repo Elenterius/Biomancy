@@ -1,0 +1,103 @@
+{
+  "parent": "block/block",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "2": "biomancy:block/modular_larynx_side",
+    "3": "biomancy:block/modular_larynx_top",
+    "5": "biomancy:block/modular_larynx_inside_top",
+    "6": "biomancy:block/chiseled_flesh_bottom",
+    "particle": "biomancy:block/modular_larynx_side"
+  },
+  "elements": [
+    {
+      "name": "base",
+      "from": [ 0, 0, 0 ],
+      "to": [ 16, 8, 16 ],
+      "faces": {
+        "north": {
+          "uv": [ 0, 8, 16, 16 ],
+          "texture": "#2",
+          "cullface": "north"
+        },
+        "east": {
+          "uv": [ 0, 8, 16, 16 ],
+          "texture": "#2",
+          "cullface": "east"
+        },
+        "south": {
+          "uv": [ 0, 8, 16, 16 ],
+          "texture": "#2",
+          "cullface": "south"
+        },
+        "west": {
+          "uv": [ 0, 8, 16, 16 ],
+          "texture": "#2",
+          "cullface": "west"
+        },
+        "up": {
+          "uv": [ 0, 0, 16, 16 ],
+          "texture": "#5"
+        },
+        "down": {
+          "uv": [ 0, 0, 16, 16 ],
+          "texture": "#6",
+          "cullface": "down"
+        }
+      }
+    },
+    {
+      "name": "top",
+      "from": [ 1, 8, 1 ],
+      "to": [ 15, 15, 15 ],
+      "faces": {
+        "north": {
+          "uv": [ 1, 1, 15, 8 ],
+          "texture": "#2"
+        },
+        "east": {
+          "uv": [ 1, 1, 15, 8 ],
+          "texture": "#2"
+        },
+        "south": {
+          "uv": [ 1, 1, 15, 8 ],
+          "texture": "#2"
+        },
+        "west": {
+          "uv": [ 1, 1, 15, 8 ],
+          "texture": "#2"
+        },
+        "up": {
+          "uv": [ 1, 1, 15, 15 ],
+          "texture": "#3"
+        }
+      }
+    },
+    {
+      "name": "top inverted",
+      "from": [ 15, 15, 15 ],
+      "to": [ 1, 8, 1 ],
+      "faces": {
+        "north": {
+          "uv": [ 1, 8, 15, 1 ],
+          "texture": "#2"
+        },
+        "east": {
+          "uv": [ 1, 8, 15, 1 ],
+          "texture": "#2"
+        },
+        "south": {
+          "uv": [ 1, 8, 15, 1 ],
+          "texture": "#2"
+        },
+        "west": {
+          "uv": [ 1, 8, 15, 1 ],
+          "texture": "#2"
+        },
+        "down": {
+          "uv": [ 15, 1, 1, 15 ],
+          "texture": "#3"
+        }
+      }
+    }
+  ]
+}

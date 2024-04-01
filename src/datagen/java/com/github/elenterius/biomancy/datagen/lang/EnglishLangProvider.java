@@ -497,7 +497,6 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.BIO_FORGE, "Bio-Forge", "Crafting Station");
 		addBlock(ModBlocks.BIO_LAB, "Bio-Lab", "Bio-alchemical Brewer");
 
-		//		addBlock(ModBlocks.VOICE_BOX, "[PH] Modular Larynx", EMPTY_STRING);
 		addBlock(ModBlocks.TONGUE, "Tongue", "Extracts up to 3 items of the same type every 24 ticks from containers it's attached to, and drops them on the ground.");
 		addBlock(ModBlocks.MAW_HOPPER, "Maw Hopper", "A fleshy sister of the hopper. Transfers up to 16 items at a time.");
 
@@ -563,6 +562,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		add(ModBlocks.BIOMETRIC_MEMBRANE.get().getDescriptionId() + ".inverted.unique", "Inverted Unique Biometric Membrane");
 		add(ModBlocks.BIOMETRIC_MEMBRANE.get().getDescriptionId() + ".unique", "Unique Biometric Membrane");
 
+		addBlock(ModBlocks.MODULAR_LARYNX, "Modular Larynx", "Similar to a Jukebox but made of an adaptive larynx. Capable of reproducing the sounds of a mob via the insertion of essence and redstone power.");
 		//addBlock(ModBlocks.NEURAL_INTERCEPTOR, "Neural Interceptor", "A psychic node that prevents natural mob spawning in a 48 block radius.");
 
 		addBlock(ModBlocks.PRIMAL_FLESH, "Primal Flesh Block", "Primitive and pure, you better not touch this with your dirty mitts.");
