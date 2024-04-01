@@ -6,6 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ItemStack;
@@ -17,6 +18,19 @@ import java.util.Locale;
 public final class MobSoundUtil {
 
 	private MobSoundUtil() {}
+
+	public static @Nullable SoundEvent findSoundFor(EntityType<?> entityType, SoundType soundType) {
+		ResourceLocation key = EntityType.getKey(entityType);
+
+		String soundTypeSuffix = soundType.name().toLowerCase(Locale.ENGLISH);
+		ResourceLocation soundKey = ResourceLocation.tryBuild(key.getNamespace(), "entity." + key.getPath() + "." + soundTypeSuffix);
+
+		return soundKey != null ? ForgeRegistries.SOUND_EVENTS.getValue(soundKey) : null;
+	}
+
+	public enum SoundType {
+		AMBIENT, HURT, DEATH;
+	}
 
 	public static void saveMobSounds(ItemStack stack, LivingEntity target) {
 		VoiceType.saveAllSounds(target, stack.getOrCreateTag());
@@ -32,13 +46,13 @@ public final class MobSoundUtil {
 
 	public enum VoiceType {
 		NONE(0, "", ""),
-		AMBIENT(1, "AmbientSound", ""),
-		HURT(2, "HurtSound", "minecraft:entity.generic.hurt"),
-		DEATH(3, "DeathSound", "minecraft:entity.generic.death");
+		AMBIENT(1, "ambient_sound", ""),
+		HURT(2, "hurt_sound", "minecraft:entity.generic.hurt"),
+		DEATH(3, "death_sound", "minecraft:entity.generic.death");
 
-		public static final String NBT_KEY_VOLUME = "Volume";
-		public static final String NBT_KEY_PITCH = "Pitch";
-		public static final String NBT_KEY_VOICE = "VoiceType";
+		public static final String NBT_KEY_VOLUME = "volume";
+		public static final String NBT_KEY_PITCH = "pitch";
+		public static final String VOICE_TYPE_KEY = "voice_type";
 
 		public final byte id;
 		private final String nbtKey;
@@ -61,11 +75,11 @@ public final class MobSoundUtil {
 		}
 
 		public static void serialize(CompoundTag tag, VoiceType soundType) {
-			tag.putByte(NBT_KEY_VOICE, soundType.id);
+			tag.putByte(VOICE_TYPE_KEY, soundType.id);
 		}
 
 		public static VoiceType deserialize(CompoundTag tag) {
-			return fromId(tag.getByte(NBT_KEY_VOICE));
+			return fromId(tag.getByte(VOICE_TYPE_KEY));
 		}
 
 		private static void saveAllSounds(LivingEntity entity, CompoundTag tag) {
@@ -75,7 +89,7 @@ public final class MobSoundUtil {
 			VoiceType.DEATH.saveSound(tag, livingEntityAccessor.biomancy$getDeathSound());
 			VoiceType.HURT.saveSound(tag, livingEntityAccessor.biomancy$getHurtSound(entity.level().damageSources().generic()));
 			VoiceType.AMBIENT.saveSound(tag, entity instanceof Mob ? ((MobEntityAccessor) entity).biomancy$getAmbientSound() : null);
-			tag.putByte(NBT_KEY_VOICE, DEATH.id);
+			tag.putByte(VOICE_TYPE_KEY, DEATH.id);
 		}
 
 		private static float getPitch(CompoundTag tag) {
@@ -102,8 +116,8 @@ public final class MobSoundUtil {
 
 		private void saveSound(CompoundTag tag, @Nullable SoundEvent soundEvent) {
 			if (soundEvent != null) {
-				ResourceLocation registryName = soundEvent.getLocation();
-				tag.putString(nbtKey, registryName != null ? registryName.toString() : genericSoundId);
+				ResourceLocation key = soundEvent.getLocation();
+				tag.putString(nbtKey, key.toString());
 			}
 			else tag.remove(nbtKey);
 		}

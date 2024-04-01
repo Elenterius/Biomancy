@@ -11,6 +11,7 @@ import com.github.elenterius.biomancy.block.digester.DigesterBlockEntity;
 import com.github.elenterius.biomancy.block.fleshkinchest.FleshkinChestBlockEntity;
 import com.github.elenterius.biomancy.block.mawhopper.MawHopperBlockEntity;
 import com.github.elenterius.biomancy.block.membrane.BiometricMembraneBlockEntity;
+import com.github.elenterius.biomancy.block.modularlarynx.ModularLarynxBlockEntity;
 import com.github.elenterius.biomancy.block.ownable.OwnableBlockEntity;
 import com.github.elenterius.biomancy.block.storagesac.StorageSacBlockEntity;
 import com.github.elenterius.biomancy.block.tongue.TongueBlockEntity;
@@ -42,7 +43,7 @@ public final class ModBlockEntities {
 	public static final RegistryObject<BlockEntityType<StorageSacBlockEntity>> STORAGE_SAC = register(ModBlocks.STORAGE_SAC, StorageSacBlockEntity::new);
 	public static final RegistryObject<BlockEntityType<FleshkinChestBlockEntity>> FLESHKIN_CHEST = register(ModBlocks.FLESHKIN_CHEST, FleshkinChestBlockEntity::new);
 	public static final RegistryObject<BlockEntityType<VialHolderBlockEntity>> VIAL_HOLDER = register(ModBlocks.VIAL_HOLDER, VialHolderBlockEntity::new);
-	//	public static final RegistryObject<BlockEntityType<VoiceBoxBlockEntity>> VOICE_BOX = register(ModBlocks.VOICE_BOX, VoiceBoxBlockEntity::new);
+	public static final RegistryObject<BlockEntityType<ModularLarynxBlockEntity>> MODULAR_LARYNX = register(ModBlocks.MODULAR_LARYNX, ModularLarynxBlockEntity::new);
 	public static final RegistryObject<BlockEntityType<ChrysalisBlockEntity>> CHRYSALIS = register(ModBlocks.CHRYSALIS, ChrysalisBlockEntity::new);
 	public static final RegistryObject<BlockEntityType<BiometricMembraneBlockEntity>> BIOMETRIC_MEMBRANE = register(ModBlocks.BIOMETRIC_MEMBRANE, BiometricMembraneBlockEntity::new);
 

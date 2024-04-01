@@ -235,6 +235,8 @@
   "block.biomancy.biometric_membrane.inverted": "Inverted Biometric Membrane",
   "block.biomancy.biometric_membrane.inverted.unique": "Inverted Unique Biometric Membrane",
   "block.biomancy.biometric_membrane.unique": "Unique Biometric Membrane",
+  "block.biomancy.modular_larynx": "Modular Larynx",
+  "block.biomancy.modular_larynx.tooltip": "Similar to a Jukebox but made of an adaptive larynx. Capable of reproducing the sounds of a mob via the insertion of essence and redstone power.",
   "block.biomancy.primal_flesh": "Primal Flesh Block",
   "block.biomancy.primal_flesh.tooltip": "Primitive and pure, you better not touch this with your dirty mitts.",
   "block.biomancy.primal_flesh_slab": "Primal Flesh Slab",
