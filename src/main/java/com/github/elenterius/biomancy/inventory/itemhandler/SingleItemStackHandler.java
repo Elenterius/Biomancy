@@ -9,8 +9,6 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 
-import javax.annotation.Nonnull;
-
 public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifiable, INBTSerializable<CompoundTag> {
 
 	public static final String ITEM_TAG = "Item";
@@ -33,13 +31,13 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 		return cachedStack.getMaxStackSize();
 	}
 
-	public boolean isItemValid(@Nonnull ItemStack stack) {
-		return isItemValid(0, stack);
+	public boolean isItemValid(ItemStack stack) {
+		return true;
 	}
 
 	@Override
-	public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-		return slot == 0;
+	public boolean isItemValid(int slot, ItemStack stack) {
+		return slot == 0 && isItemValid(stack);
 	}
 
 	public boolean isEmpty() {
@@ -73,31 +71,29 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 		return cachedStack;
 	}
 
-	@Nonnull
-	@Override
-	public ItemStack getStackInSlot(int slot) {
-		validateSlotIndex(slot);
-		return cachedStack;
-	}
-
 	public void setStack(ItemStack stack) {
 		cachedStack = stack;
 		onContentsChanged();
 	}
 
 	@Override
-	public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
+	public ItemStack getStackInSlot(int slot) {
+		validateSlotIndex(slot);
+		return cachedStack;
+	}
+
+	@Override
+	public void setStackInSlot(int slot, ItemStack stack) {
 		validateSlotIndex(slot);
 		setStack(stack);
 	}
 
-	public ItemStack insertItem(@Nonnull ItemStack stack, boolean simulate) {
+	public ItemStack insertItem(ItemStack stack, boolean simulate) {
 		return insertItem(0, stack, simulate);
 	}
 
-	@Nonnull
 	@Override
-	public ItemStack insertItem(int slot, @Nonnull ItemStack stackIn, boolean simulate) {
+	public ItemStack insertItem(int slot, ItemStack stackIn, boolean simulate) {
 		ItemStack remainder = internalInsertItem(slot, stackIn, simulate);
 		if (!simulate) {
 			onContentsChanged();
@@ -105,7 +101,7 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 		return remainder;
 	}
 
-	protected ItemStack internalInsertItem(int slot, @Nonnull ItemStack stackIn, boolean simulate) {
+	protected ItemStack internalInsertItem(int slot, ItemStack stackIn, boolean simulate) {
 		validateSlotIndex(slot);
 		if (stackIn.isEmpty()) return ItemStack.EMPTY;
 		if (!isItemValid(slot, stackIn)) return stackIn;
@@ -130,7 +126,6 @@ public class SingleItemStackHandler implements IItemHandler, IItemHandlerModifia
 		return extractItem(0, amount, simulate);
 	}
 
-	@Nonnull
 	@Override
 	public ItemStack extractItem(int slot, int amount, boolean simulate) {
 		ItemStack remainder = internalExtractItem(slot, amount, simulate);

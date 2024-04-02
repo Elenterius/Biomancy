@@ -3,12 +3,9 @@ package com.github.elenterius.biomancy.inventory;
 import com.github.elenterius.biomancy.api.serum.SerumContainer;
 import com.github.elenterius.biomancy.inventory.itemhandler.LargeSingleItemStackHandler;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
-
-import javax.annotation.Nonnull;
 
 public class InjectorItemInventory extends BaseInventory<LargeSingleItemStackHandler> {
 
@@ -18,14 +15,12 @@ public class InjectorItemInventory extends BaseInventory<LargeSingleItemStackHan
 		itemHandler = new LargeSingleItemStackHandler(maxSlotSize) {
 
 			@Override
-			public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-				Item item = stack.getItem();
-				return super.isItemValid(slot, stack) && item instanceof SerumContainer;
+			public boolean isItemValid(ItemStack stack) {
+				return stack.getItem() instanceof SerumContainer;
 			}
 
 			@Override
 			protected void onContentsChanged() {
-				super.onContentsChanged();
 				setChanged();
 			}
 		};
