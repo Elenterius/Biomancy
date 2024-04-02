@@ -1,3 +1,26 @@
+## [5.2.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.5.1.0...1.20.1-v2.5.2.0) (2024-04-02)
+
+
+### Features
+
+* add Biometric Membrane ([914cccb](https://github.com/Elenterius/Biomancy/commit/914cccb4e44973c3a43457d8da963b26cbe8b4d5))
+* add Chrysalis Block ([49f04db](https://github.com/Elenterius/Biomancy/commit/49f04db5de9ffad23d0fcaa3d693034128bbb355))
+* add Mob Essence ([63c59ea](https://github.com/Elenterius/Biomancy/commit/63c59ea143b58bbe25c4b6d866959975f77eb238))
+* add mob Essence Extractor ([99d8c7b](https://github.com/Elenterius/Biomancy/commit/99d8c7b49d30689587ffbaa342cdea2e675eec88))
+* add Modular Larynx ([63e55a2](https://github.com/Elenterius/Biomancy/commit/63e55a210bd02f97bf6c5c056847a9282bf3828a))
+* add Surgical Precision enchantment ([710f3ed](https://github.com/Elenterius/Biomancy/commit/710f3ed9d992dc0ab1ba9fcac464f7231101ea18))
+* make Primal Bloom mineable with shears or silk-touch ([891e340](https://github.com/Elenterius/Biomancy/commit/891e340b71f5623d69b31bc797fbece45621b05b))
+* make Suspicious Stew a valid source of life energy for the Primordial Cradle ([1710d5b](https://github.com/Elenterius/Biomancy/commit/1710d5b9b89c4f181133c1ea310e9a2b5bf768bc)), closes [#125](https://github.com/Elenterius/Biomancy/issues/125)
+* **nerf:** decrease value of Suspicious Stew for cradle sacrifices ([5e0bd05](https://github.com/Elenterius/Biomancy/commit/5e0bd0514ed48982c784034688177627a4d2447b))
+
+
+### Bug Fixes
+
+* fix custom shader being applied incorrectly ([5e9e458](https://github.com/Elenterius/Biomancy/commit/5e9e45883b2b95c134bc3eced46d9880772c5ac3))
+* fix the glowing eye of the Primordial Cradle not displaying the amount life energy correctly ([7ca00fa](https://github.com/Elenterius/Biomancy/commit/7ca00fad03ab0b3b2124feff865f2a6d57e9842a))
+* properly fix block tinting issues ([4819c58](https://github.com/Elenterius/Biomancy/commit/4819c586ae61deaca0b443e85bb8f93334354a55))
+* remove biomancy's stonecutting recipes from the minecraft namespace ([ac0b552](https://github.com/Elenterius/Biomancy/commit/ac0b5524122846926e6365b7552239b8cf68733c))
+
 ## [5.1.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.5.0.0...1.20.1-v2.5.1.0) (2024-03-19)
 
 
@@ -74,23 +97,4 @@
 * fix coloring of vials in the vial holder not always updating and defaulting to white ([4712b27](https://github.com/Elenterius/Biomancy/commit/4712b271869760bceb26c27006482cfbc589e43b))
 * fix fertilizer not being consumed and converting dirt into the wrong grass block ([9806d3f](https://github.com/Elenterius/Biomancy/commit/9806d3f0aa9237be118e501c6e1988dd5d2edb41))
 * fix missing acid fluid blockstate model file spamming the logs with errors ([d69ecc7](https://github.com/Elenterius/Biomancy/commit/d69ecc75d14bc15e49cc08fc7b0a1ce9f1f6d093))
-
-## [4.3.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.4.2.0...1.20.1-v2.4.3.0) (2024-02-08)
-
-
-### Features
-
-* Add Pirate-speak lingo. ([010f186](https://github.com/Elenterius/Biomancy/commit/010f18649751b49d5f81dbf5b03f75bf551e3905))
-* disable bio-forge recipe progression in the configs by default (temporary measure until progression rework happens) ([80fe7c1](https://github.com/Elenterius/Biomancy/commit/80fe7c14bf82a188eda6d81093b4e81092eb2da7))
-* make 1.20 Items decomposable ([794a2b3](https://github.com/Elenterius/Biomancy/commit/794a2b3cde5b87d8acee1bf4b2ba08904f27ddd7))
-* make Alex's Caves items decomposable ([9cf7c77](https://github.com/Elenterius/Biomancy/commit/9cf7c77f89eee6e1209b44b72bfab2f6ab5c1c88))
-* make Alex's Caves items digestible ([de8d89d](https://github.com/Elenterius/Biomancy/commit/de8d89d7e5e36f334d798e8c8ffb095adb71b63c))
-* make more Alex's Mobs Items decomposable ([af5c0c2](https://github.com/Elenterius/Biomancy/commit/af5c0c2aedeb4fa6893597ace855c528798e22f3))
-* make moss, dripleaves and hanging roots digestible ([1178799](https://github.com/Elenterius/Biomancy/commit/11787999a30be484b56576b99bfd464fc25408cd))
-* make turtle & sniffer egg digestible ([14b29c8](https://github.com/Elenterius/Biomancy/commit/14b29c80def904c63c211f37ccd0dc7feabad7a8))
-
-
-### Bug Fixes
-
-* exclude non-living entities from entity tags ([1584145](https://github.com/Elenterius/Biomancy/commit/1584145de547dc5eaef38018328e1ae819eff0bf))
 
