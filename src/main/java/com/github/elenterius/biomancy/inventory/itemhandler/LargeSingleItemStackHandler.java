@@ -4,8 +4,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 
-import javax.annotation.Nonnull;
-
 public class LargeSingleItemStackHandler extends SingleItemStackHandler {
 
 	public static final String ITEM_AMOUNT_TAG = "ItemAmount";
@@ -53,9 +51,8 @@ public class LargeSingleItemStackHandler extends SingleItemStackHandler {
 		onContentsChanged();
 	}
 
-	@Nonnull
 	@Override
-	public ItemStack insertItem(int slot, @Nonnull ItemStack stackIn, boolean simulate) {
+	public ItemStack insertItem(int slot, ItemStack stackIn, boolean simulate) {
 		ItemStack remainder = internalInsertItem(slot, stackIn, simulate);
 		if (!simulate) {
 			itemAmount = (short) cachedStack.getCount();
@@ -64,7 +61,6 @@ public class LargeSingleItemStackHandler extends SingleItemStackHandler {
 		return remainder;
 	}
 
-	@Nonnull
 	@Override
 	public ItemStack extractItem(int slot, int amount, boolean simulate) {
 		ItemStack remainder = internalExtractItem(slot, amount, simulate);
