@@ -143,24 +143,27 @@ public final class IngameOverlays {
 	}
 
 	static void renderChargeBar(GuiGraphics guiGraphics, Font font, int screenWidth, int screenHeight, int zDepth, int charge, float chargePct) {
-		int x = screenWidth - 51 - 16;
-		int y = screenHeight - 5 - 16;
+		int x = screenWidth / 2 - 26 + screenWidth % 2;
+		int y = screenHeight / 2 + 8 + 4;
 
 		guiGraphics.blit(CHARGE_BAR, x, y, zDepth, 6, 6, 51, 5, 64, 16); //background
 		guiGraphics.blit(CHARGE_BAR, x, y, zDepth, 6, 11, (int) (chargePct * 51), 5, 64, 16); //foreground
-		guiGraphics.blit(CHARGE_BAR, x, y - 5, zDepth, 6, 0, 51, 6, 64, 16); //ornament
+
+		if (Minecraft.getInstance().crosshairPickEntity instanceof LivingEntity crosshairTarget && crosshairTarget.isAlive()) {
+			guiGraphics.blit(CHARGE_BAR, x, y - 5, zDepth, 6, 0, 51, 6, 64, 16); //ornament
+		}
 
 		if (charge <= 0) return;
 
-		String number = String.valueOf(charge);
-		int pX = x + 26 - font.width(number) / 2;
-		int pY = y - 5 - 4;
-
-		guiGraphics.drawString(font, number, pX + 1, pY, 0);
-		guiGraphics.drawString(font, number, pX - 1, pY, 0);
-		guiGraphics.drawString(font, number, pX, pY + 1, 0);
-		guiGraphics.drawString(font, number, pX, pY - 1, 0);
-		guiGraphics.drawString(font, number, pX, pY, 0xac0404);
+		//		String number = String.valueOf(charge);
+		//		int pX = x + 26 - font.width(number) / 2;
+		//		int pY = y - 5 - 4;
+		//
+		//		guiGraphics.drawString(font, number, pX + 1, pY, 0);
+		//		guiGraphics.drawString(font, number, pX - 1, pY, 0);
+		//		guiGraphics.drawString(font, number, pX, pY + 1, 0);
+		//		guiGraphics.drawString(font, number, pX, pY - 1, 0);
+		//		guiGraphics.drawString(font, number, pX, pY, 0xac0404);
 	}
 
 	static void renderReloadIndicator(GuiGraphics guiGraphics, int screenWidth, int screenHeight, int zDepth, LocalPlayer player, ItemStack stack, Gun gun) {
