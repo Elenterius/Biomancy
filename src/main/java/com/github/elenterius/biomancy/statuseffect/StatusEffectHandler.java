@@ -21,6 +21,14 @@ public final class StatusEffectHandler {
 	private StatusEffectHandler() {}
 
 	@SubscribeEvent
+	public static void onEffectExpiry(final MobEffectEvent.Remove event) {
+		if (event.getEntity().level().isClientSide) return;
+		if (event.getEffect() == ModMobEffects.ESSENCE_ANEMIA.get()) {
+			event.setCanceled(true);
+		}
+	}
+
+	@SubscribeEvent
 	public static void onEffectExpiry(final MobEffectEvent.Expired event) {
 		if (!event.getEntity().level().isClientSide) {
 			MobEffectInstance effectInstance = event.getEffectInstance();
