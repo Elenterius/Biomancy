@@ -238,6 +238,9 @@ public class RavenousClawsItem extends LivingClawsItem implements GeoItem, ItemC
 						attacker.level().playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), ModSoundEvents.CLAWS_ATTACK_BLEED_PROC.get(), attacker.getSoundSource(), 1f, 1f);
 
 						CombatUtil.applyBleedEffect(target, 20);
+						if (isNotCreativePlayer) {
+							consumeNutrients(stack, 1);
+						}
 					}
 
 					target.invulnerableTime = 0; //make victims vulnerable the next attack regardless of the damage amount
@@ -260,9 +263,16 @@ public class RavenousClawsItem extends LivingClawsItem implements GeoItem, ItemC
 						if (CombatUtil.getBleedEffectLevel(target) < 2) {
 							playBloodExplosionFX(target);
 							CombatUtil.hurtWithBleed(target, 0.1f * target.getMaxHealth());
+
+							if (isNotCreativePlayer) {
+								consumeCharge(stack, 4);
+							}
 						}
 
 						CombatUtil.applyBleedEffect(target, 20);
+						if (isNotCreativePlayer) {
+							consumeCharge(stack, 1);
+						}
 					}
 
 					target.invulnerableTime = 0; //make victims vulnerable the next attack regardless of the damage amount
