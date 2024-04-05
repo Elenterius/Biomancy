@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.block.modularlarynx;
 
+import com.github.elenterius.biomancy.block.property.MobSoundType;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModCapabilities;
 import com.github.elenterius.biomancy.inventory.itemhandler.SingleItemStackHandler;
@@ -10,9 +11,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -38,7 +39,7 @@ public class ModularLarynxBlockEntity extends BlockEntity {
 	private final SingleItemStackHandler inventory;
 	private LazyOptional<IItemHandler> optionalItemHandler;
 
-	private SoundEvent soundEvent = SoundEvents.PLAYER_BREATH;
+	private SoundEvent soundEvent;
 
 	public ModularLarynxBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.MODULAR_LARYNX.get(), pos, state);
@@ -60,6 +61,8 @@ public class ModularLarynxBlockEntity extends BlockEntity {
 			}
 		};
 		optionalItemHandler = LazyOptional.of(() -> inventory);
+
+		soundEvent = MobSoundUtil.getSoundFallbackFor(ModularLarynxBlock.getMobSoundType(state));
 	}
 
 	public boolean isInventoryEmpty() {
@@ -72,15 +75,16 @@ public class ModularLarynxBlockEntity extends BlockEntity {
 
 	protected void updateSounds() {
 		ItemStack stack = inventory.getStack();
+		MobSoundType mobSoundType = ModularLarynxBlock.getMobSoundType(getBlockState());
 
 		if (stack.getItem() instanceof EssenceItem essenceItem) {
 			soundEvent = essenceItem
 					.getEntityType(stack)
-					.map(entityType -> MobSoundUtil.findSoundFor(entityType, MobSoundUtil.SoundType.AMBIENT))
-					.orElse(SoundEvents.PLAYER_BREATH);
+					.map(entityType -> MobSoundUtil.findSoundFor(entityType, mobSoundType))
+					.orElse(MobSoundUtil.getSoundFallbackFor(mobSoundType));
 		}
 		else {
-			soundEvent = SoundEvents.PLAYER_BREATH;
+			soundEvent = MobSoundUtil.getSoundFallbackFor(mobSoundType);
 		}
 	}
 
@@ -107,7 +111,7 @@ public class ModularLarynxBlockEntity extends BlockEntity {
 	public void load(CompoundTag tag) {
 		super.load(tag);
 		inventory.deserializeNBT(tag.getCompound(INVENTORY_TAG));
-		soundEvent = deserializeSoundEvent(tag.getString(SOUND_EVENT_TAG)).orElse(SoundEvents.PLAYER_BREATH);
+		soundEvent = deserializeSoundEvent(tag.getString(SOUND_EVENT_TAG)).orElseGet(() -> MobSoundUtil.getSoundFallbackFor(ModularLarynxBlock.getMobSoundType(getBlockState())));
 	}
 
 	public Optional<SoundEvent> deserializeSoundEvent(String stringKey) {
@@ -120,7 +124,16 @@ public class ModularLarynxBlockEntity extends BlockEntity {
 
 	public void dropInventoryContents(Level level, BlockPos pos) {
 		ItemStack stack = inventory.extractItem(inventory.getMaxAmount(), false);
-		Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), stack);
+		if (!stack.isEmpty()) {
+			Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), stack);
+		}
+	}
+
+	public void giveInventoryContentsTo(Level level, BlockPos pos, Player player) {
+		ItemStack stack = inventory.extractItem(inventory.getMaxAmount(), false);
+		if (!stack.isEmpty() && !player.addItem(stack)) {
+			player.drop(stack, false);
+		}
 	}
 
 	@Override

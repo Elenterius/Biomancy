@@ -19,6 +19,7 @@ public final class ModBlockProperties {
 	public static final EnumProperty<DirectedConnection> DIRECTED_CONNECTION = EnumProperty.create("connection", DirectedConnection.class);
 	public static final EnumProperty<VertexType> VERTEX_TYPE = EnumProperty.create("vertex", VertexType.class);
 	public static final EnhancedIntegerProperty SPIKES = EnhancedIntegerProperty.create("spikes", 1, 3);
+	public static final EnumProperty<MobSoundType> MOB_SOUND_TYPE = EnumProperty.create("mob_sound_type", MobSoundType.class);
 
 	private ModBlockProperties() {}
 
