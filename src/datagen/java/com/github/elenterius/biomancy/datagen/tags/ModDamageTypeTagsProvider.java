@@ -41,10 +41,11 @@ public class ModDamageTypeTagsProvider extends DamageTypeTagsProvider {
 				ModDamageTypes.BLEED
 		);
 
-		//		tag(DamageTypeTags.BYPASSES_COOLDOWN).add(
-		//				ModDamageTypes.BLEED,
-		//				ModDamageTypes.CORROSIVE_ACID
-		//		);
+		//damage that ignores Invincibility-Frames
+		tag(DamageTypeTags.BYPASSES_COOLDOWN).add(
+				ModDamageTypes.BLEED,
+				ModDamageTypes.CORROSIVE_ACID
+		);
 
 		tag(DamageTypeTags.NO_IMPACT).add(
 				ModDamageTypes.BLEED,
