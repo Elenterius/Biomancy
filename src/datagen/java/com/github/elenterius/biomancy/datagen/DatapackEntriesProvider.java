@@ -13,8 +13,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class DatapackEntriesProvider extends DatapackBuiltinEntriesProvider {
 
-	private static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
-			.add(Registries.DAMAGE_TYPE, ModDamageTypes::bootstrap);
+	private static final RegistrySetBuilder BUILDER = new RegistrySetBuilder().add(Registries.DAMAGE_TYPE, ModDamageTypes::bootstrap);
 
 	public DatapackEntriesProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
 		super(output, registries, BUILDER, Set.of(BiomancyMod.MOD_ID));
