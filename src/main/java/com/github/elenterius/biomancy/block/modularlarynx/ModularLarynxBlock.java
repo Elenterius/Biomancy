@@ -1,45 +1,78 @@
 package com.github.elenterius.biomancy.block.modularlarynx;
 
 import com.github.elenterius.biomancy.block.property.BlockPropertyUtil;
+import com.github.elenterius.biomancy.block.property.MobSoundType;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
+import com.github.elenterius.biomancy.init.ModBlockProperties;
+import com.github.elenterius.biomancy.styles.TextStyles;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
+import java.util.List;
 
 public class ModularLarynxBlock extends BaseEntityBlock {
 
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final IntegerProperty NOTE = BlockStateProperties.NOTE;
+	public static final EnumProperty<MobSoundType> MOB_SOUND_TYPE = ModBlockProperties.MOB_SOUND_TYPE;
 
-	protected static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 16, 16);
+	protected static final VoxelShape SHAPE = createShape();
 
 	public ModularLarynxBlock(Properties properties) {
 		super(properties);
-		registerDefaultState(getStateDefinition().any().setValue(NOTE, 0).setValue(POWERED, Boolean.FALSE));
+		registerDefaultState(getStateDefinition().any()
+				.setValue(NOTE, 12)
+				.setValue(POWERED, Boolean.FALSE)
+				.setValue(MOB_SOUND_TYPE, MobSoundType.AMBIENT)
+		);
+	}
+
+	private static VoxelShape createShape() {
+		return Shapes.join(
+				Block.box(0, 0, 0, 16, 6, 16),
+				Block.box(3, 5, 3, 13, 15, 13), BooleanOp.OR);
+	}
+
+	public static MobSoundType getMobSoundType(BlockState state) {
+		return state.getValue(MOB_SOUND_TYPE);
+	}
+
+	public static boolean isPowered(BlockState state) {
+		return state.getValue(POWERED);
 	}
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		builder.add(POWERED, NOTE);
+		builder.add(POWERED, NOTE, MOB_SOUND_TYPE);
 	}
 
 	@Override
@@ -85,10 +118,30 @@ public class ModularLarynxBlock extends BaseEntityBlock {
 	@Override
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
 		boolean hasSignal = level.hasNeighborSignal(pos);
-		if (hasSignal != Boolean.TRUE.equals(state.getValue(POWERED))) {
+		if (hasSignal != isPowered(state)) {
 			if (hasSignal) playSound(state, level, pos);
 			level.setBlock(pos, state.setValue(POWERED, hasSignal), Block.UPDATE_ALL);
 		}
+	}
+
+	@Override
+	public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
+		BlockState stateBelow = context.getLevel().getBlockState(context.getClickedPos().below());
+		return defaultBlockState().setValue(MOB_SOUND_TYPE, getSoundTypeFromStateBelow(stateBelow));
+	}
+
+	@Override
+	public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+		if (direction == Direction.DOWN) {
+			return state.setValue(MOB_SOUND_TYPE, getSoundTypeFromStateBelow(neighborState));
+		}
+		return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
+	}
+
+	private MobSoundType getSoundTypeFromStateBelow(BlockState stateBelow) {
+		if (stateBelow.is(Blocks.SOUL_SAND) || stateBelow.is(Blocks.SOUL_SOIL)) return MobSoundType.DEATH;
+		if (stateBelow.is(Blocks.MAGMA_BLOCK)) return MobSoundType.HURT;
+		return MobSoundType.AMBIENT;
 	}
 
 	private void playSound(BlockState state, Level level, BlockPos pos) {
@@ -132,4 +185,16 @@ public class ModularLarynxBlock extends BaseEntityBlock {
 		return RenderShape.MODEL;
 	}
 
+	@Override
+	public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, level, tooltip, flag);
+
+		tooltip.add(ComponentUtil.emptyLine());
+		tooltip.add(ComponentUtil.literal("When Placed on Soul Sand or Soil:").withStyle(TextStyles.GRAY));
+		tooltip.add(ComponentUtil.literal(" Use Death Sound").withStyle(TextStyles.DARK_GRAY));
+		tooltip.add(ComponentUtil.literal("When Placed on Magma:").withStyle(TextStyles.GRAY));
+		tooltip.add(ComponentUtil.literal(" Use Hurt Sound").withStyle(TextStyles.DARK_GRAY));
+		tooltip.add(ComponentUtil.literal("When Placed on Other:").withStyle(TextStyles.GRAY));
+		tooltip.add(ComponentUtil.literal(" Use Ambient Sound").withStyle(TextStyles.DARK_GRAY));
+	}
 }
