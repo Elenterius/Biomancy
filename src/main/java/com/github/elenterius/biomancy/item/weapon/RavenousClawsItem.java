@@ -2,9 +2,11 @@ package com.github.elenterius.biomancy.item.weapon;
 
 import com.github.elenterius.biomancy.client.render.item.ravenousclaws.RavenousClawsRenderer;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
+import com.github.elenterius.biomancy.init.ModDamageSources;
 import com.github.elenterius.biomancy.init.ModParticleTypes;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.item.AttackReachIndicator;
+import com.github.elenterius.biomancy.item.ItemAttackDamageSourceProvider;
 import com.github.elenterius.biomancy.item.ItemCharge;
 import com.github.elenterius.biomancy.item.livingtool.LivingClawsItem;
 import com.github.elenterius.biomancy.item.livingtool.LivingToolState;
@@ -22,6 +24,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SlotAccess;
@@ -52,7 +56,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class RavenousClawsItem extends LivingClawsItem implements GeoItem, ItemCharge, AttackReachIndicator {
+public class RavenousClawsItem extends LivingClawsItem implements GeoItem, ItemCharge, AttackReachIndicator, ItemAttackDamageSourceProvider {
 	protected static final UUID BASE_ATTACK_KNOCKBACK_UUID = UUID.fromString("6175525b-56dd-4f87-b035-86b892afe7b3");
 	private final Lazy<Multimap<Attribute, AttributeModifier>> brokenAttributes;
 	private final Lazy<Multimap<Attribute, AttributeModifier>> dormantAttributes;
@@ -215,6 +219,11 @@ public class RavenousClawsItem extends LivingClawsItem implements GeoItem, ItemC
 	@Override
 	public int getNutrientFuelValue(ItemStack container, ItemStack food) {
 		return super.getNutrientFuelValue(container, food) / 2;
+	}
+
+	@Override
+	public @Nullable DamageSource getDamageSource(ItemStack stack, Entity target, LivingEntity attacker) {
+		return ModDamageSources.bleed(attacker.level(), attacker);
 	}
 
 	@Override
