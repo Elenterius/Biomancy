@@ -39,6 +39,7 @@ import net.minecraft.world.item.BucketItem;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -159,10 +160,8 @@ public final class ClientSetupHandler {
 
 	@SubscribeEvent
 	public static void registerGameOverlays(RegisterGuiOverlaysEvent event) {
-		//		event.registerAboveAll("biomancy_gun", IngameOverlays.GUN_OVERLAY);
-		event.registerAboveAll("biomancy_injector", IngameOverlays.INJECTOR_OVERLAY);
-		event.registerAboveAll("biomancy_charge_bar", IngameOverlays.CHARGE_BAR_OVERLAY);
-		event.registerAboveAll("biomancy_attack_reach", IngameOverlays.ATTACK_REACH_OVERLAY);
+		event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "injector", IngameOverlays.INJECTOR_OVERLAY);
+		event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "charge_bar", IngameOverlays.CHARGE_BAR_OVERLAY);
 	}
 
 	@SubscribeEvent
