@@ -4,14 +4,12 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.api.serum.SerumContainer;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
 import com.github.elenterius.biomancy.client.util.GuiUtil;
-import com.github.elenterius.biomancy.item.AttackReachIndicator;
 import com.github.elenterius.biomancy.item.ItemCharge;
 import com.github.elenterius.biomancy.item.injector.InjectorItem;
 import com.github.elenterius.biomancy.item.weapon.Gun;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.Options;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
@@ -23,24 +21,10 @@ import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
 public final class IngameOverlays {
 
-	//	public static final ResourceLocation COMMAND_ICONS = BiomancyMod.createRL("textures/gui/command_icons.png");
 	public static final ResourceLocation INJECTOR_COOL_DOWN = BiomancyMod.createRL("textures/gui/indicator_injector_cooldown.png");
-	public static final ResourceLocation ATTACK_REACH = BiomancyMod.createRL("textures/gui/indicator_attack_reach.png");
 	public static final ResourceLocation ORNATE_CORNER_BOTTOM_RIGHT = BiomancyMod.createRL("textures/gui/ornate_corner_br.png");
 	public static final ResourceLocation CHARGE_BAR = BiomancyMod.createRL("textures/gui/charge_bar.png");
-
-	//	public static final IIngameOverlay CONTROL_STAFF_OVERLAY = (gui, poseStack, partialTicks, screenWidth, screenHeight) -> {
-	//		Minecraft minecraft = Minecraft.getInstance();
-	//		if (!minecraft.options.hideGui && minecraft.options.getCameraType().isFirstPerson() && minecraft.player != null) {
-	//			ItemStack itemStack = minecraft.player.getMainHandItem();
-	//			if (itemStack.isEmpty() || !itemStack.is(ModItems.CONTROL_STAFF.get())) return;
-	//			IControllableMob.Command command = ModItems.CONTROL_STAFF.get().getCommand(itemStack);
-	//
-	//			gui.setupOverlayRenderState(true, false, COMMAND_ICONS);
-	//			gui.setBlitOffset(-90);
-	//			renderCommandOverlay(poseStack, screenWidth, screenHeight, command);
-	//		}
-	//	};
+	public static final ResourceLocation ATTACK_REACH = BiomancyMod.createRL("textures/gui/indicator_attack_reach.png");
 
 	//	public static final IGuiOverlay GUN_OVERLAY = (gui, poseStack, partialTicks, screenWidth, screenHeight) -> {
 	//		Minecraft minecraft = Minecraft.getInstance();
@@ -78,37 +62,7 @@ public final class IngameOverlays {
 		}
 	};
 
-	public static final IGuiOverlay ATTACK_REACH_OVERLAY = (gui, guiGraphics, partialTicks, screenWidth, screenHeight) -> {
-		Minecraft minecraft = Minecraft.getInstance();
-		Options options = minecraft.options;
-
-		if (!options.hideGui) {
-			gui.setupOverlayRenderState(true, false);
-
-			if (options.getCameraType().isFirstPerson() && minecraft.player != null) {
-				ItemStack stack = minecraft.player.getMainHandItem();
-				if (stack.isEmpty() || !(stack.getItem() instanceof AttackReachIndicator)) return;
-
-				if (minecraft.crosshairPickEntity instanceof LivingEntity crosshairTarget && crosshairTarget.isAlive()) {
-					int x = screenWidth / 2 - 8;
-					int y = screenHeight / 2 - 16 - 8;
-					RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.ONE_MINUS_DST_COLOR, GlStateManager.DestFactor.ONE_MINUS_SRC_COLOR, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-					guiGraphics.blit(ATTACK_REACH, x, y, -90, 0, 0, 16, 16, 16, 16);
-					RenderSystem.defaultBlendFunc();
-				}
-			}
-		}
-	};
-
 	private IngameOverlays() {}
-
-	//	static void renderCommandOverlay(GuiGraphics guiGraphics, int screenWidth, int screenHeight, IControllableMob.Command command) {
-	//		//		if (Minecraft.getInstance().hitResult != null && Minecraft.getInstance().hitResult.getType() == HitResult.Type.BLOCK) {
-	//		int x = screenWidth / 2 + 16;
-	//		int y = screenHeight / 2 - 16;
-	//		guiGraphics.blit(COMMAND_ICONS, x, y, command.serialize() * 32f, 0, 32, 32, 160, 32);
-	//		guiGraphics.drawString(Minecraft.getInstance().font, command.name(), x, y + 16 + 18, 0x55ffff);
-	//	}
 
 	static void renderGunOverlay(ForgeGui gui, GuiGraphics guiGraphics, int screenWidth, int screenHeight, int zDepth, LocalPlayer player, ItemStack stack, Gun gun) {
 		renderAmmoOverlay(guiGraphics, gui.getFont(), screenWidth, screenHeight, zDepth, stack, gun);
@@ -143,18 +97,20 @@ public final class IngameOverlays {
 	}
 
 	static void renderChargeBar(GuiGraphics guiGraphics, Font font, int screenWidth, int screenHeight, int zDepth, int charge, float chargePct) {
-		int x = screenWidth / 2 - 26 + screenWidth % 2;
-		int y = screenHeight / 2 + 8 + 4;
+		int x = screenWidth / 2 - 26 + screenWidth % 2; // 51 / 2 + 51 % 2 = 26
+		int y = screenHeight / 2 + 16;
 
 		guiGraphics.blit(CHARGE_BAR, x, y, zDepth, 6, 6, 51, 5, 64, 16); //background
 		guiGraphics.blit(CHARGE_BAR, x, y, zDepth, 6, 11, (int) (chargePct * 51), 5, 64, 16); //foreground
 
 		if (Minecraft.getInstance().crosshairPickEntity instanceof LivingEntity crosshairTarget && crosshairTarget.isAlive()) {
-			guiGraphics.blit(CHARGE_BAR, x, y - 5, zDepth, 6, 0, 51, 6, 64, 16); //ornament
+			x = screenWidth / 2 - 24;
+			y = screenHeight / 2 - 4;
+			guiGraphics.blit(ATTACK_REACH, x, y, zDepth, 0, 0, 48, 16, 48, 16); //ornament
 		}
 
-		if (charge <= 0) return;
-
+		//		if (charge <= 0) return;
+		//
 		//		String number = String.valueOf(charge);
 		//		int pX = x + 26 - font.width(number) / 2;
 		//		int pY = y - 5 - 4;
