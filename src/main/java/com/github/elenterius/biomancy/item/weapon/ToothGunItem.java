@@ -3,7 +3,6 @@ package com.github.elenterius.biomancy.item.weapon;
 import com.github.elenterius.biomancy.entity.projectile.ToothProjectile;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
-import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -16,6 +15,8 @@ import java.util.function.Predicate;
 
 @Deprecated(forRemoval = true)
 public class ToothGunItem extends BaseGunItem implements ItemTooltipStyleProvider {
+
+	public static final Predicate<ItemStack> AMMO_PREDICATE = stack -> stack.getItem() == ModItems.NUTRIENT_PASTE.get();
 
 	public ToothGunItem(Properties properties) {
 		super(properties, new GunProperties()
@@ -89,7 +90,7 @@ public class ToothGunItem extends BaseGunItem implements ItemTooltipStyleProvide
 
 	@Override
 	public Predicate<ItemStack> getAllSupportedProjectiles() {
-		return NutrientFuelUtil.AMMO_PREDICATE;
+		return AMMO_PREDICATE;
 	}
 
 	@Override
