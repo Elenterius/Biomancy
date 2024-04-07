@@ -3,8 +3,11 @@ package com.github.elenterius.biomancy.client.gui.tooltip;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModRarities;
 import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
+import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.tooltip.EmptyLineTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.TooltipContents;
+import com.github.elenterius.biomancy.util.ComponentUtil;
+import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -14,7 +17,6 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentContents;
 import net.minecraft.network.chat.FormattedText;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
@@ -27,7 +29,7 @@ import java.util.List;
 @Mod.EventBusSubscriber(modid = BiomancyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public final class TooltipRenderHandler {
 
-	private static final ResourceLocation TOOLTIP_OVERLAY_TEXTURE = BiomancyMod.createRL("textures/gui/ui_tooltip.png");
+	//	private static final ResourceLocation TOOLTIP_OVERLAY_TEXTURE = BiomancyMod.createRL("textures/gui/ui_tooltip.png");
 	private static final EmptyLineTooltipComponent EMPTY_LINE = new EmptyLineTooltipComponent();
 
 	private TooltipRenderHandler() {}
@@ -46,7 +48,8 @@ public final class TooltipRenderHandler {
 
 	@SubscribeEvent
 	public static void onGatherTooltipComponents(final RenderTooltipEvent.GatherComponents event) {
-		final boolean isTooltip = event.getItemStack().getItem() instanceof ItemTooltipStyleProvider;
+		ItemStack stack = event.getItemStack();
+		final boolean isTooltip = stack.getItem() instanceof ItemTooltipStyleProvider;
 
 		List<Either<FormattedText, TooltipComponent>> tooltipElements = event.getTooltipElements();
 		for (int i = 0; i < tooltipElements.size(); i++) {
@@ -65,6 +68,15 @@ public final class TooltipRenderHandler {
 					}
 				}
 			});
+		}
+
+		if (Minecraft.getInstance().screen instanceof ScreenNutrientFuelConsumer) {
+			int fuelValue = NutrientFuelUtil.getFuelValue(stack);
+			if (fuelValue > 0) {
+				tooltipElements.add(Either.right(EMPTY_LINE));
+				tooltipElements.add(Either.left(ComponentUtil.translatable("tooltip.biomancy.nutrients_fuel").withStyle(TextStyles.NUTRIENTS)));
+				tooltipElements.add(Either.left(ComponentUtil.literal(" + " + fuelValue + "u").withStyle(TextStyles.GRAY)));
+			}
 		}
 	}
 

@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.client.gui.tooltip.ScreenNutrientFuelConsumer;
 import com.github.elenterius.biomancy.client.gui.tooltip.ScreenTooltipStyleProvider;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
 import com.github.elenterius.biomancy.client.util.GuiUtil;
@@ -11,7 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class DigesterScreen extends AbstractContainerScreen<DigesterMenu> implements ScreenTooltipStyleProvider {
+public class DigesterScreen extends AbstractContainerScreen<DigesterMenu> implements ScreenTooltipStyleProvider, ScreenNutrientFuelConsumer {
 
 	private static final ResourceLocation BACKGROUND_TEXTURE = BiomancyMod.createRL("textures/gui/menu_digester.png");
 
