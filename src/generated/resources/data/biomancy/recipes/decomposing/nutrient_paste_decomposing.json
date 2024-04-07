@@ -1,0 +1,25 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredient": {
+    "item": "biomancy:nutrient_paste"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 120,
+  "results": [
+    {
+      "countRange": {
+        "type": "constant",
+        "value": 5
+      },
+      "item": "biomancy:nutrients"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 1,
+        "min": 0
+      },
+      "item": "biomancy:organic_matter"
+    }
+  ]
+}

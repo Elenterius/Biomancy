@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_nutrients": {
+    "has_shroomlight": {
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:nutrients"
+              "minecraft:shroomlight"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "biomancy:nutrients_from_nutrient_paste"
+        "recipe": "biomancy:decomposing/nutrient_paste_decomposing"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_nutrients",
+      "has_shroomlight",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "biomancy:nutrients_from_nutrient_paste"
+      "biomancy:decomposing/nutrient_paste_decomposing"
     ]
   },
   "sends_telemetry_event": false
