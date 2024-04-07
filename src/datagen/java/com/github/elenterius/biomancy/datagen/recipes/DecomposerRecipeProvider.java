@@ -281,6 +281,11 @@ public class DecomposerRecipeProvider extends RecipeProvider {
 				.addOutput(ModItems.EXOTIC_DUST.get(), 0, 4)
 				.addOutput(ModItems.BILE.get(), 1, 2)
 				.unlockedBy(Items.SHROOMLIGHT).save(consumer);
+
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.NUTRIENT_PASTE)
+				.addOutput(ModItems.NUTRIENTS.get(), 5)
+				.addOutput(ModItems.ORGANIC_MATTER.get(), 0, 1)
+				.unlockedBy(Items.SHROOMLIGHT).save(consumer);
 	}
 
 	private void buildBiomesOPlentyRecipes(Consumer<FinishedRecipe> consumer) {

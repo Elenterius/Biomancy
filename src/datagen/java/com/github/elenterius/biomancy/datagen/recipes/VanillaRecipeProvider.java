@@ -115,11 +115,6 @@ public class VanillaRecipeProvider extends RecipeProvider {
 				.unlockedBy(hasName(ModItems.NUTRIENT_PASTE.get()), has(ModItems.NUTRIENT_PASTE.get()))
 				.save(consumer);
 
-		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.NUTRIENTS.get(), 5)
-				.requires(ModItems.NUTRIENT_PASTE.get())
-				.unlockedBy(hasName(ModItems.NUTRIENTS.get()), has(ModItems.NUTRIENTS.get()))
-				.save(consumer, getConversionRecipeId(ModItems.NUTRIENTS.get(), ModItems.NUTRIENT_PASTE.get()));
-
 		WorkbenchRecipeBuilder.shapeless(RecipeCategory.FOOD, ModItems.NUTRIENT_PASTE.get(), 9)
 				.requires(ModItems.NUTRIENT_BAR.get())
 				.unlockedBy(hasName(ModItems.NUTRIENT_PASTE.get()), has(ModItems.NUTRIENT_PASTE.get()))
