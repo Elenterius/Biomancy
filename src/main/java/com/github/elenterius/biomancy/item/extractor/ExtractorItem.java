@@ -37,6 +37,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
@@ -179,7 +180,8 @@ public class ExtractorItem extends Item implements KeyPressListener, ItemTooltip
 
 			if (state.isCurrentAnimation(Animations.EXTRACT) && state.getController().isPlayingTriggeredAnimation()) return PlayState.CONTINUE;
 
-			boolean isPlayerLookingAtMob = Minecraft.getInstance().crosshairPickEntity instanceof LivingEntity;
+			boolean isFirstPerson = state.getData(DataTickets.ITEM_RENDER_PERSPECTIVE).firstPerson(); //only animate in first person view to mitigate animation of other items
+			boolean isPlayerLookingAtMob = isFirstPerson && Minecraft.getInstance().crosshairPickEntity instanceof LivingEntity;
 
 			if (isPlayerLookingAtMob) {
 				state.setAnimation(Animations.TRANSITION_TO_ARMED);
