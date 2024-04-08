@@ -168,6 +168,16 @@ public class BioForgeRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.TOOLS)
 				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
 
+		BioForgeRecipeBuilder.create(ModItems.THORN_SHIELD.get())
+				.addIngredient(ModItems.LIVING_FLESH.get())
+				.addIngredient(ModItems.MOB_FANG.get(), 8)
+				.addIngredient(ModItems.FLESH_BITS.get(), 10)
+				.addIngredient(ModItems.TOUGH_FIBERS.get(), 32)
+				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 24)
+				.setCraftingCost(250)
+				.setCategory(ModBioForgeTabs.TOOLS)
+				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
+
 		BioForgeRecipeBuilder.create(ModItems.INJECTOR.get())
 				.addIngredient(ModItems.FLESH_BITS.get(), 20)
 				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 10)

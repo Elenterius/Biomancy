@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.api.serum.Serum;
 import com.github.elenterius.biomancy.item.*;
 import com.github.elenterius.biomancy.item.extractor.ExtractorItem;
 import com.github.elenterius.biomancy.item.injector.InjectorItem;
+import com.github.elenterius.biomancy.item.shield.ThornShieldItem;
 import com.github.elenterius.biomancy.item.weapon.*;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
@@ -94,6 +95,9 @@ public final class ModItems {
 	public static final RegistryObject<DevArmCannonItem> DEV_ARM_CANNON = registerItem("dev_arm_cannon", props -> new DevArmCannonItem(props.stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE)));
 	public static final RegistryObject<ToxicusItem> TOXICUS = registerItem("toxicus", props -> SwordSmithy.forge(ToxicusItem::new, ModTiers.LESSER_BIO_FLESH, 14, 0.7f, props));
 	public static final RegistryObject<BileSpitterItem> BILE_SPITTER = registerItem("bile_spitter", props -> new BileSpitterItem(props.stacksTo(1).durability(ModTiers.BIOFLESH.getUses()).rarity(ModRarities.ULTRA_RARE)));
+
+	//# Shield
+	public static final RegistryObject<ThornShieldItem> THORN_SHIELD = registerItem("thorn_shield", props -> new ThornShieldItem(props.stacksTo(1).durability(250).rarity(ModRarities.VERY_RARE)));
 
 	//# Food/Fuel
 	public static final RegistryObject<EffectCureItem> NUTRIENT_PASTE = registerItem("nutrient_paste", props -> new EffectCureItem(props.food(ModFoods.NUTRIENT_PASTE)));

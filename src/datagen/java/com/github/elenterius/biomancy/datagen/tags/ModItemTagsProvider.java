@@ -110,6 +110,9 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 		createTag(ItemTags.SWORDS)
 				.add(ModItems.DESPOIL_SICKLE.get(), ModItems.TOXICUS.get());
 
+		createTag(Tags.Items.TOOLS_SHIELDS)
+				.add(ModItems.THORN_SHIELD.get());
+
 		createTag(Tags.Items.TOOLS)
 				.addTag(clawsTag)
 				.addTag(swordsTag)

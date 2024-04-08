@@ -219,6 +219,8 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addTooltip("ability.shredding_strike.desc", "On heavy attack, adds one Armor Shred stack (max 20)");
 		addTooltip("ability.corrosive_proc", "Corrosive Blow");
 		addTooltip("ability.corrosive_proc.desc", "On critical hit, applies Corrosive status effect");
+		addTooltip("ability.thorny_hide", "Thorny Hide");
+		addTooltip("ability.thorny_hide.desc", "On successful block, deals thorns damage to the attacker");
 
 		//		addTooltip("fire_rate", "Fire Rate");
 		//		addTooltip("accuracy", "Accuracy");
@@ -457,6 +459,8 @@ public class EnglishLangProvider extends AbstractLangProvider {
 				Killing Mobs with these claws grants blood charges, which allow you to use the Awakened mode.""");
 		addItem(ModItems.DEV_ARM_CANNON, "[Dev Tool] Arm Cannon", "Creative/Developer Tool for testing projectiles.");
 		addItem(ModItems.BILE_SPITTER, "[WIP] Bile Spitter", "[WIP] \"living\" projectile weapon that shoots corrosive bile.\nIntended behaviour: charge it like a bow to increase damageShape & size of projectile.");
+
+		addItem(ModItems.THORN_SHIELD, "The Thorn", "Cute but prickly shield.");
 
 		addItem(ModItems.ESSENCE_EXTRACTOR, "Essence Extractor", "Primed Suck, slurps essence from its victims.");
 		addItem(ModItems.ESSENCE, "Essence", "Extracted life essence from a Mob. Contains sequences of genetic information.");

@@ -1,0 +1,16 @@
+{
+  "overrides": [
+    {
+      "predicate": {
+        "blocking": 0
+      },
+      "model": "biomancy:item/thorn_shield_normal"
+    },
+    {
+      "predicate": {
+        "blocking": 1
+      },
+      "model": "biomancy:item/thorn_shield_blocking"
+    }
+  ]
+}

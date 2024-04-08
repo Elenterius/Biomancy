@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "biomancy:item/shield/thorn_shield_icon"
+  }
+}
