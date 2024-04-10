@@ -4,10 +4,10 @@
       "model": "biomancy:block/primal_orifice"
     },
     "age=1": {
-      "model": "biomancy:block/primal_orifice"
+      "model": "biomancy:block/primal_orifice_leaking"
     },
     "age=2": {
-      "model": "biomancy:block/primal_orifice_leaking"
+      "model": "biomancy:block/primal_orifice_full"
     }
   }
 }
