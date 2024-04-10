@@ -1,43 +1,8 @@
 {
-	"credit": "Made by Elenterius",
-	"parent": "block/block",
-	"render_type": "minecraft:solid",
-	"textures": {
-		"1": "biomancy:block/primal_flesh",
-		"3": "biomancy:block/primal_orifice_leaking",
-		"4": "biomancy:block/primal_orifice_2_full",
-		"particle": "biomancy:block/primal_orifice"
-	},
-	"elements": [
-		{
-			"from": [ 0, 0, 0 ],
-			"to": [ 16, 16, 16 ],
-			"faces": {
-				"north": {
-					"uv": [ 0, 0, 16, 16 ],
-					"texture": "#3"
-				},
-				"east": {
-					"uv": [ 0, 0, 16, 16 ],
-					"texture": "#3"
-				},
-				"south": {
-					"uv": [ 0, 0, 16, 16 ],
-					"texture": "#3"
-				},
-				"west": {
-					"uv": [ 0, 0, 16, 16 ],
-					"texture": "#3"
-				},
-				"up": {
-					"uv": [ 0, 0, 16, 16 ],
-					"texture": "#1"
-				},
-				"down": {
-					"uv": [ 0, 0, 16, 16 ],
-					"texture": "#4"
-				}
-			}
-		}
-	]
+  "parent": "biomancy:block/template_primal_orifice",
+  "textures": {
+    "top": "biomancy:block/primal_flesh",
+    "side": "biomancy:block/primal_orifice_leaking",
+    "bottom": "biomancy:block/primal_orifice_leaking_bottom"
+  }
 }

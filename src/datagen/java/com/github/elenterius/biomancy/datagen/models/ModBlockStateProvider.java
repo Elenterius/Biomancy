@@ -372,11 +372,12 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
 		ModelFile.ExistingModelFile defaultModel = models().getExistingFile(model);
 		ModelFile.ExistingModelFile leakingModel = models().getExistingFile(extend(model, "_leaking"));
+		ModelFile.ExistingModelFile fullModel = models().getExistingFile(extend(model, "_full"));
 
 		ModelFile.ExistingModelFile[] models = {
 				defaultModel,
-				defaultModel,
-				leakingModel
+				leakingModel,
+				fullModel,
 		};
 
 		getVariantBuilder(block)
