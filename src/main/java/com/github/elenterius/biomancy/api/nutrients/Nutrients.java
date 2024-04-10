@@ -18,8 +18,8 @@ public final class Nutrients {
 	public static final IntUnaryOperator RAW_MEAT_NUTRITION_MODIFIER = nutrition -> nutrition > 0 ? Mth.ceil(3.75d * Math.exp(0.215d * nutrition)) : 0;
 
 	static {
-		registerFuel(ModItems.NUTRIENT_PASTE.get(), 5);
-		registerFuel(ModItems.NUTRIENT_BAR.get(), 5 * 9);
+		registerFuel(ModItems.NUTRIENT_PASTE.get(), 2);
+		registerFuel(ModItems.NUTRIENT_BAR.get(), 2 * 9);
 	}
 
 	private Nutrients() {}
