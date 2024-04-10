@@ -16,6 +16,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.RegistryObject;
@@ -178,6 +179,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addFluidTranslations();
 		addEntityTranslations();
 		addEnchantmentTranslations();
+		addPotionTranslations();
 		addStatusEffectTranslations();
 		addSerumTranslations();
 		addDamageTranslations();
@@ -373,6 +375,14 @@ public class EnglishLangProvider extends AbstractLangProvider {
 	private void addSerumTranslations() {
 		//serums that are not tied to a specific item
 		add(Serum.EMPTY, "ERROR: INVALID SERUM");
+	}
+
+	private void addPotionTranslations() {
+		String suffix = ModPotions.GASTRIC_JUICE.getId().toLanguageKey();
+		add(Items.POTION.getDescriptionId() + ".effect." + suffix, "Gastric Juice");
+		add(Items.SPLASH_POTION.getDescriptionId() + ".effect." + suffix, "Gastric Splash-Juice");
+		add(Items.LINGERING_POTION.getDescriptionId() + ".effect." + suffix, "Gastric Linger-Juice");
+		add(Items.TIPPED_ARROW.getDescriptionId() + ".effect." + suffix, "Arrow of Gastric Juice");
 	}
 
 	private void addStatusEffectTranslations() {
