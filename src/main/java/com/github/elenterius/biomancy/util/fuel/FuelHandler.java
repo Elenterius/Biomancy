@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.util.fuel;
 
+import com.github.elenterius.biomancy.api.nutrients.Nutrients;
 import com.github.elenterius.biomancy.inventory.Notify;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
@@ -27,7 +28,7 @@ public class FuelHandler implements IFuelHandler, INBTSerializable<CompoundTag> 
 	}
 
 	public static FuelHandler createNutrientFuelHandler(int maxFuel, Notify changeNotifier) {
-		return new FuelHandler(maxFuel, IntUnaryOperator.identity(), NutrientFuelUtil::isValidFuel, NutrientFuelUtil::getFuelValue, changeNotifier);
+		return new FuelHandler(maxFuel, IntUnaryOperator.identity(), Nutrients::isValidFuel, Nutrients::getFuelValue, changeNotifier);
 	}
 
 	@Override

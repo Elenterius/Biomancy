@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.menu;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.api.nutrients.Nutrients;
 import com.github.elenterius.biomancy.block.digester.DigesterBlockEntity;
 import com.github.elenterius.biomancy.block.digester.DigesterStateData;
 import com.github.elenterius.biomancy.init.ModMenuTypes;
@@ -9,7 +10,6 @@ import com.github.elenterius.biomancy.menu.slot.FuelSlot;
 import com.github.elenterius.biomancy.menu.slot.ISlotZone;
 import com.github.elenterius.biomancy.menu.slot.OutputSlot;
 import com.github.elenterius.biomancy.util.fuel.FuelHandler;
-import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
@@ -119,7 +119,7 @@ public class DigesterMenu extends PlayerContainerMenu {
 	}
 
 	private boolean mergeIntoFuelZone(ItemStack stackInSlot) {
-		if (NutrientFuelUtil.isValidFuel(stackInSlot)) {
+		if (Nutrients.isValidFuel(stackInSlot)) {
 			return mergeInto(SlotZone.FUEL_ZONE, stackInSlot, true);
 		}
 		return false;

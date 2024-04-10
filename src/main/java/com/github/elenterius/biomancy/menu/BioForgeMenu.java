@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.menu;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.api.nutrients.Nutrients;
 import com.github.elenterius.biomancy.block.bioforge.BioForgeBlockEntity;
 import com.github.elenterius.biomancy.block.bioforge.BioForgeStateData;
 import com.github.elenterius.biomancy.crafting.recipe.BioForgeRecipe;
@@ -12,7 +13,6 @@ import com.github.elenterius.biomancy.menu.slot.FuelSlot;
 import com.github.elenterius.biomancy.menu.slot.ISlotZone;
 import com.github.elenterius.biomancy.menu.slot.OutputSlot;
 import com.github.elenterius.biomancy.util.SoundUtil;
-import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -186,7 +186,7 @@ public class BioForgeMenu extends PlayerContainerMenu {
 	}
 
 	private boolean mergeIntoFuelZone(ItemStack stackInSlot) {
-		if (NutrientFuelUtil.isValidFuel(stackInSlot)) {
+		if (Nutrients.isValidFuel(stackInSlot)) {
 			return mergeInto(SlotZone.FUEL_ZONE, stackInSlot, true);
 		}
 		return false;

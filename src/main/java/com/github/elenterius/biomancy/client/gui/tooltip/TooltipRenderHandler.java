@@ -1,13 +1,13 @@
 package com.github.elenterius.biomancy.client.gui.tooltip;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.api.nutrients.Nutrients;
 import com.github.elenterius.biomancy.init.ModRarities;
 import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.tooltip.EmptyLineTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.TooltipContents;
 import com.github.elenterius.biomancy.util.ComponentUtil;
-import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -71,7 +71,7 @@ public final class TooltipRenderHandler {
 		}
 
 		if (Minecraft.getInstance().screen instanceof ScreenNutrientFuelConsumer) {
-			int fuelValue = NutrientFuelUtil.getFuelValue(stack);
+			int fuelValue = Nutrients.getFuelValue(stack);
 			if (fuelValue > 0) {
 				tooltipElements.add(Either.right(EMPTY_LINE));
 				tooltipElements.add(Either.left(ComponentUtil.translatable("tooltip.biomancy.nutrients_fuel").withStyle(TextStyles.NUTRIENTS)));
