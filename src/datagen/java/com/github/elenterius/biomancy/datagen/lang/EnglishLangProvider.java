@@ -449,7 +449,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 				Looks like some objects are wrapped in an organic layer of skin. Might be filled with items or toxin if your language is set to German.
 								
 				Right Click the Sac to retrieve the Items.""");
-		addItem(ModItems.ACID_BUCKET, "Acid Bucket");
+		addItem(ModItems.ACID_BUCKET, "Gastric Acid Bucket");
 
 		addItem(ModItems.RAVENOUS_CLAWS, "Ravenous Claws", """
 				Extremely hungry and vicious Claws forged by starving living flesh and grafting claws onto it.
@@ -587,9 +587,9 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.MALIGNANT_FLESH_WALL, "Malignant Flesh Wall", "Wall of malignant flesh.\nIt's coming for you! ;)");
 		addBlock(ModBlocks.MALIGNANT_FLESH_VEINS, "Malignant Flesh Veins", "They look almost feral...\nyou better not touch them.");
 		addBlock(ModBlocks.PRIMAL_BLOOM, "Primal Bloom", "An exotic flower of primordial beauty.\n\nIt will spread itself by launching it's ripe berry into the air.\nOn impact the berry explodes and spreads malignant veins as well.");
-		addBlock(ModBlocks.PRIMAL_ORIFICE, "Primal Orifice", "A primitive piece full of holes. It seems to leak an acidic substance.");
 
-		addBlock(ModBlocks.ACID_FLUID_BLOCK, "Acid");
+		addBlock(ModBlocks.PRIMAL_ORIFICE, "Primal Orifice", "A primitive piece full of holes that seems to generate and leak acidic juices.\nIt can be milked with buckets and bottles.");
+		addBlock(ModBlocks.ACID_FLUID_BLOCK, "Gastric Acid");
 	}
 
 	private void addEntityTranslations() {
