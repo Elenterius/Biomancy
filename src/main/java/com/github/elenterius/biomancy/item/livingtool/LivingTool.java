@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.item.livingtool;
 
+import com.github.elenterius.biomancy.api.nutrients.NutrientsContainerItem;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
-import com.github.elenterius.biomancy.item.NutrientsContainerItem;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.github.elenterius.biomancy.util.SoundUtil;
@@ -67,8 +67,8 @@ public interface LivingTool extends NutrientsContainerItem {
 	}
 
 	@Override
-	default int getNutrientFuelValue(ItemStack container, ItemStack food) {
-		return NutrientsContainerItem.super.getNutrientFuelValue(container, food) * 2;
+	default int getNutrientFuelValue(ItemStack container, ItemStack resource) {
+		return NutrientsContainerItem.super.getNutrientFuelValue(container, resource) * 2;
 	}
 
 	@Override

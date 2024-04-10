@@ -216,8 +216,8 @@ public class RavenousClawsItem extends LivingClawsItem implements GeoItem, ItemC
 	}
 
 	@Override
-	public int getNutrientFuelValue(ItemStack container, ItemStack food) {
-		return super.getNutrientFuelValue(container, food) / 2;
+	public int getNutrientFuelValue(ItemStack container, ItemStack resource) {
+		return super.getNutrientFuelValue(container, resource) / 2;
 	}
 
 	@Override

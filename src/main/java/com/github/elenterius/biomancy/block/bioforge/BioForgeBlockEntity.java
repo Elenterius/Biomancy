@@ -1,13 +1,13 @@
 package com.github.elenterius.biomancy.block.bioforge;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.api.nutrients.Nutrients;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModCapabilities;
 import com.github.elenterius.biomancy.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.inventory.itemhandler.HandlerBehaviors;
 import com.github.elenterius.biomancy.menu.BioForgeMenu;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
-import com.github.elenterius.biomancy.util.fuel.NutrientFuelUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -153,11 +153,11 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 	}
 
 	public boolean isItemValidFuel(ItemStack stack) {
-		return NutrientFuelUtil.isValidFuel(stack);
+		return Nutrients.isValidFuel(stack);
 	}
 
 	public float getItemFuelValue(ItemStack stack) {
-		return NutrientFuelUtil.getFuelValue(stack);
+		return Nutrients.getFuelValue(stack);
 	}
 
 	public void refuel() {
