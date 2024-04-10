@@ -5,10 +5,12 @@ import com.github.elenterius.biomancy.fluid.AcidFluid;
 import com.github.elenterius.biomancy.fluid.TintedFluidType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.fluids.FluidInteractionRegistry;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
@@ -53,11 +55,11 @@ public final class ModFluids {
 	}
 
 	private static RegistryObject<FluidType> registerTintedType(String name, int colorARGB, UnaryOperator<FluidType.Properties> operator) {
-		return FLUID_TYPES.register(name, () -> new TintedFluidType(operator.apply(FluidType.Properties.create()), colorARGB));
+		return FLUID_TYPES.register(name, () -> new TintedFluidType(operator.apply(createFluidTypeProperties()), colorARGB));
 	}
 
 	private static RegistryObject<FluidType> registerType(String name, UnaryOperator<FluidType.Properties> operator) {
-		return FLUID_TYPES.register(name, () -> new FluidType(operator.apply(FluidType.Properties.create())) {
+		return FLUID_TYPES.register(name, () -> new FluidType(operator.apply(createFluidTypeProperties())) {
 
 			private final ResourceLocation stillTexture = BiomancyMod.createRL("fluid/%s_still".formatted(name));
 			private final ResourceLocation flowingTexture = BiomancyMod.createRL("fluid/%s_flowing".formatted(name));
@@ -89,4 +91,11 @@ public final class ModFluids {
 			}
 		});
 	}
+
+	private static FluidType.Properties createFluidTypeProperties() {
+		return FluidType.Properties.create()
+				.sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
+				.sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY);
+	}
+
 }
