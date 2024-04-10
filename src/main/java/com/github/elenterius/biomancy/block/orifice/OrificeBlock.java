@@ -1,16 +1,22 @@
 package com.github.elenterius.biomancy.block.orifice;
 
-import com.github.elenterius.biomancy.init.ModFluids;
-import com.github.elenterius.biomancy.init.ModParticleTypes;
-import com.github.elenterius.biomancy.init.ModPlantTypes;
-import com.github.elenterius.biomancy.init.ModProjectiles;
+import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.util.EnhancedIntegerProperty;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -20,6 +26,8 @@ import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.PlantType;
@@ -78,6 +86,26 @@ public class OrificeBlock extends Block implements BucketPickup {
 		}
 
 		return ItemStack.EMPTY;
+	}
+
+	@Override
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+		ItemStack stack = player.getItemInHand(hand);
+		if (!stack.is(Items.GLASS_BOTTLE)) return InteractionResult.PASS;
+
+		if (AGE.getValue(state) == AGE.getMin()) return InteractionResult.FAIL;
+
+		if (!level.isClientSide) {
+			player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, PotionUtils.setPotion(new ItemStack(Items.POTION), ModPotions.GASTRIC_JUICE.get())));
+			player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
+
+			level.setBlock(pos, AGE.addValue(state, -1), Block.UPDATE_CLIENTS);
+
+			level.playSound(null, pos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1f, 1f);
+			level.gameEvent(player, GameEvent.FLUID_PICKUP, pos);
+		}
+
+		return InteractionResult.sidedSuccess(level.isClientSide);
 	}
 
 	@Override
