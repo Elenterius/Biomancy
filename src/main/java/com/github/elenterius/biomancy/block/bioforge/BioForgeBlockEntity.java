@@ -1,13 +1,15 @@
 package com.github.elenterius.biomancy.block.bioforge;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.api.nutrients.Nutrients;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModCapabilities;
 import com.github.elenterius.biomancy.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.inventory.itemhandler.HandlerBehaviors;
 import com.github.elenterius.biomancy.menu.BioForgeMenu;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
+import com.github.elenterius.biomancy.util.fuel.FluidFuelConsumerHandler;
+import com.github.elenterius.biomancy.util.fuel.FuelHandler;
+import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -29,7 +31,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -49,8 +51,10 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 	public static final int MAX_FUEL = 1_000;
 	static final int OPENERS_CHANGE_EVENT = 1;
 	protected final int tickOffset = BiomancyMod.GLOBAL_RANDOM.nextInt(20);
-	private final BioForgeStateData stateData = new BioForgeStateData();
+	private final BioForgeStateData stateData;
+	private final FuelHandler fuelHandler;
 	private final BehavioralInventory<?> fuelInventory;
+
 	private final ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
 
 		@Override
@@ -83,11 +87,17 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 	private boolean playWorkingAnimation = false;
 	private int nearbyTimer = -10;
 
+	private LazyOptional<IFluidHandler> optionalFluidConsumer;
+
 	public BioForgeBlockEntity(BlockPos worldPosition, BlockState blockState) {
 		super(ModBlockEntities.BIO_FORGE.get(), worldPosition, blockState);
 		fuelInventory = BehavioralInventory.createServerContents(FUEL_SLOTS, HandlerBehaviors::filterFuel, this::canPlayerOpenInv, this::setChanged);
 		fuelInventory.setOpenInventoryConsumer(this::startOpen);
 		fuelInventory.setCloseInventoryConsumer(this::stopOpen);
+
+		fuelHandler = FuelHandler.createNutrientFuelHandler(MAX_FUEL, this::setChanged);
+		stateData = new BioForgeStateData(fuelHandler);
+		optionalFluidConsumer = LazyOptional.of(() -> new FluidFuelConsumerHandler(fuelHandler));
 	}
 
 	public static void serverTick(Level level, BlockPos pos, BlockState state, BioForgeBlockEntity entity) {
@@ -137,14 +147,6 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 		return stateData;
 	}
 
-	public int getFuelAmount() {
-		return stateData.getFuelAmount();
-	}
-
-	public void setFuelAmount(int newAmount) {
-		stateData.setFuelAmount((short) newAmount);
-	}
-
 	protected void serverTick(ServerLevel level) {
 		ticks++;
 		if (ticks % 8 == 0) {
@@ -152,47 +154,21 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 		}
 	}
 
-	public boolean isItemValidFuel(ItemStack stack) {
-		return Nutrients.isValidFuel(stack);
-	}
-
-	public float getItemFuelValue(ItemStack stack) {
-		return Nutrients.getFuelValue(stack);
+	protected IFuelHandler getFuelHandler() {
+		return fuelHandler;
 	}
 
 	public void refuel() {
-		if (getFuelAmount() < getMaxFuelAmount()) {
+		if (getFuelHandler().getFuelAmount() < getFuelHandler().getMaxFuelAmount()) {
 			ItemStack stack = getStackInFuelSlot();
-			if (isItemValidFuel(stack)) {
-				ItemStack remainder = addFuel(stack);
+			if (getFuelHandler().isValidFuel(stack)) {
+				ItemStack remainder = getFuelHandler().addFuel(stack);
 				if (remainder.getCount() != stack.getCount()) {
 					setStackInFuelSlot(remainder);
 					setChanged();
 				}
 			}
 		}
-	}
-
-	public ItemStack addFuel(ItemStack stackIn) {
-		if (level == null || level.isClientSide()) return stackIn;
-
-		if (!stackIn.isEmpty() && getFuelAmount() < getMaxFuelAmount()) {
-			float itemFuelValue = getItemFuelValue(stackIn);
-			if (itemFuelValue <= 0f) return stackIn;
-
-			int itemsNeeded = Mth.floor(Math.max(0, getMaxFuelAmount() - getFuelAmount()) / itemFuelValue);
-			int consumeAmount = Math.min(stackIn.getCount(), itemsNeeded);
-			if (consumeAmount > 0) {
-				short newFuel = (short) Mth.clamp(getFuelAmount() + itemFuelValue * consumeAmount, 0, getMaxFuelAmount());
-				setFuelAmount(newFuel);
-				return ItemHandlerHelper.copyStackWithSize(stackIn, stackIn.getCount() - consumeAmount);
-			}
-		}
-		return stackIn;
-	}
-
-	public void addFuelAmount(int addAmount) {
-		stateData.setFuelAmount((short) (stateData.getFuelAmount() + addAmount));
 	}
 
 	public int getMaxFuelAmount() {
@@ -210,14 +186,14 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 	@Override
 	protected void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
-		stateData.serialize(tag);
+		tag.put("Fuel", fuelHandler.serializeNBT());
 		tag.put("FuelSlots", fuelInventory.serializeNBT());
 	}
 
 	@Override
 	public void load(CompoundTag tag) {
 		super.load(tag);
-		stateData.deserialize(tag);
+		fuelHandler.deserializeNBT(tag.getCompound("Fuel"));
 		fuelInventory.deserializeNBT(tag.getCompound("FuelSlots"));
 	}
 
@@ -228,9 +204,16 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-		if (!remove && cap == ModCapabilities.ITEM_HANDLER) {
-			if (side != null && side.getAxis().isHorizontal()) return fuelInventory.getOptionalItemHandler().cast();
+		if (remove) return super.getCapability(cap, side);
+
+		if (cap == ModCapabilities.ITEM_HANDLER && side != null && side.getAxis().isHorizontal()) {
+			return fuelInventory.getOptionalItemHandler().cast();
 		}
+
+		if (cap == ModCapabilities.FLUID_HANDLER) {
+			return optionalFluidConsumer.cast();
+		}
+
 		return super.getCapability(cap, side);
 	}
 
@@ -238,12 +221,14 @@ public class BioForgeBlockEntity extends BlockEntity implements MenuProvider, Na
 	public void invalidateCaps() {
 		super.invalidateCaps();
 		fuelInventory.invalidate();
+		optionalFluidConsumer.invalidate();
 	}
 
 	@Override
 	public void reviveCaps() {
 		super.reviveCaps();
 		fuelInventory.revive();
+		optionalFluidConsumer = LazyOptional.of(() -> new FluidFuelConsumerHandler(fuelHandler));
 	}
 
 	@Override

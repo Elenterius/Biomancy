@@ -13,6 +13,7 @@ import com.github.elenterius.biomancy.menu.slot.FuelSlot;
 import com.github.elenterius.biomancy.menu.slot.ISlotZone;
 import com.github.elenterius.biomancy.menu.slot.OutputSlot;
 import com.github.elenterius.biomancy.util.SoundUtil;
+import com.github.elenterius.biomancy.util.fuel.FuelHandler;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -72,7 +73,10 @@ public class BioForgeMenu extends PlayerContainerMenu {
 		if (playerInventory.player.level().getBlockEntity(buffer.readBlockPos()) instanceof BioForgeBlockEntity bioForge) {
 			stateData = bioForge.getStateData();
 		}
-		else stateData = new BioForgeStateData();
+		else {
+			FuelHandler fuelHandler = FuelHandler.createNutrientFuelHandler(BioForgeBlockEntity.MAX_FUEL, () -> {});
+			stateData = new BioForgeStateData(fuelHandler);
+		}
 
 		return new BioForgeMenu(screenId, playerInventory, fuelInventory, stateData);
 	}
@@ -138,11 +142,11 @@ public class BioForgeMenu extends PlayerContainerMenu {
 		return fuelInventory.stillValid(player);
 	}
 	public float getFuelAmountNormalized() {
-		return Mth.clamp((float) stateData.getFuelAmount() / BioForgeBlockEntity.MAX_FUEL, 0f, 1f);
+		return Mth.clamp((float) getFuelAmount() / BioForgeBlockEntity.MAX_FUEL, 0f, 1f);
 	}
 
 	public int getFuelAmount() {
-		return stateData.getFuelAmount();
+		return stateData.fuelHandler.getFuelAmount();
 	}
 
 	public int getMaxFuelAmount() {
@@ -309,7 +313,7 @@ public class BioForgeMenu extends PlayerContainerMenu {
 	}
 
 	private boolean canCraft(Player player, @Nullable BioForgeRecipe recipe) {
-		if (recipe == null || stateData.getFuelAmount() < recipe.getCraftingCostNutrients() || !recipe.isCraftable(itemCounter)) return false;
+		if (recipe == null || getFuelAmount() < recipe.getCraftingCostNutrients() || !recipe.isCraftable(itemCounter)) return false;
 
 		Inventory inventory = player.getInventory();
 
@@ -366,7 +370,7 @@ public class BioForgeMenu extends PlayerContainerMenu {
 		inventory.setChanged();
 
 		//consume nutrients
-		stateData.addFuelAmount((short) -recipe.getCraftingCostNutrients());
+		stateData.fuelHandler.addFuelAmount(-recipe.getCraftingCostNutrients());
 	}
 
 }

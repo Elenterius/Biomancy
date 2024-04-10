@@ -15,6 +15,7 @@ import com.github.elenterius.biomancy.menu.DigesterMenu;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.ILoopingSoundHelper;
 import com.github.elenterius.biomancy.util.SoundUtil;
+import com.github.elenterius.biomancy.util.fuel.FluidFuelConsumerHandler;
 import com.github.elenterius.biomancy.util.fuel.FuelHandler;
 import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 import net.minecraft.core.BlockPos;
@@ -39,8 +40,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -51,7 +54,6 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import javax.annotation.Nonnull;
 import java.util.Objects;
 
 public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, DigesterStateData> implements MenuProvider, GeoBlockEntity {
@@ -75,6 +77,8 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	private ILoopingSoundHelper loopingSoundHelper = ILoopingSoundHelper.NULL;
 
+	private LazyOptional<IFluidHandler> optionalFluidConsumer;
+
 	public DigesterBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.DIGESTER.get(), pos, state);
 		inputInventory = BehavioralInventory.createServerContents(INPUT_SLOTS, this::canPlayerOpenInv, this::setChanged);
@@ -84,6 +88,7 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 		fuelHandler = FuelHandler.createNutrientFuelHandler(MAX_FUEL, this::setChanged);
 
 		stateData = new DigesterStateData(fuelHandler);
+		optionalFluidConsumer = LazyOptional.of(() -> new FluidFuelConsumerHandler(fuelHandler));
 	}
 
 	@Override
@@ -176,14 +181,20 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 		Containers.dropContents(level, pos, outputInventory);
 	}
 
-	@Nonnull
 	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-		if (!remove && cap == ModCapabilities.ITEM_HANDLER) {
+	public <T> @NotNull LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
+		if (remove) return super.getCapability(cap, side);
+
+		if (cap == ModCapabilities.ITEM_HANDLER) {
 			if (side == null || side == Direction.DOWN) return outputInventory.getOptionalItemHandler().cast();
 			if (side == Direction.UP) return inputInventory.getOptionalItemHandler().cast();
 			return fuelInventory.getOptionalItemHandler().cast();
 		}
+
+		if (cap == ModCapabilities.FLUID_HANDLER) {
+			return optionalFluidConsumer.cast();
+		}
+
 		return super.getCapability(cap, side);
 	}
 
@@ -193,6 +204,7 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 		fuelInventory.invalidate();
 		inputInventory.invalidate();
 		outputInventory.invalidate();
+		optionalFluidConsumer.invalidate();
 	}
 
 	@Override
@@ -201,6 +213,7 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 		fuelInventory.revive();
 		inputInventory.revive();
 		outputInventory.revive();
+		optionalFluidConsumer = LazyOptional.of(() -> new FluidFuelConsumerHandler(fuelHandler));
 	}
 
 	@Override

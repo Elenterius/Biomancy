@@ -1,45 +1,28 @@
 package com.github.elenterius.biomancy.block.bioforge;
 
-import net.minecraft.nbt.CompoundTag;
+import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 import net.minecraft.world.inventory.ContainerData;
 
 public class BioForgeStateData implements ContainerData {
 
 	public static final int FUEL_INDEX = 0;
-	public static final String NBT_KEY_FUEL = "Fuel";
-	private short fuelAmount;
+	public final IFuelHandler fuelHandler;
 
-	public int getFuelAmount() {
-		return fuelAmount;
-	}
-
-	public void setFuelAmount(short amount) {
-		fuelAmount = amount;
-	}
-
-	public void addFuelAmount(short value) {
-		fuelAmount = (short) Math.max(fuelAmount + value, 0);
-	}
-
-	public void serialize(CompoundTag nbt) {
-		nbt.putShort(NBT_KEY_FUEL, fuelAmount);
-	}
-
-	public void deserialize(CompoundTag nbt) {
-		fuelAmount = nbt.getShort(NBT_KEY_FUEL);
+	public BioForgeStateData(IFuelHandler fuelHandler) {
+		this.fuelHandler = fuelHandler;
 	}
 
 	@Override
 	public int get(int index) {
 		validateIndex(index);
-		if (index == FUEL_INDEX) return fuelAmount;
+		if (index == FUEL_INDEX) return fuelHandler.getFuelAmount();
 		return 0;
 	}
 
 	@Override
 	public void set(int index, int value) {
 		validateIndex(index);
-		if (index == FUEL_INDEX) fuelAmount = (short) value;
+		if (index == FUEL_INDEX) fuelHandler.setFuelAmount(value);
 	}
 
 	@Override
