@@ -17,6 +17,7 @@ import com.github.elenterius.biomancy.menu.BioLabMenu;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.ILoopingSoundHelper;
 import com.github.elenterius.biomancy.util.SoundUtil;
+import com.github.elenterius.biomancy.util.fuel.FluidFuelConsumerHandler;
 import com.github.elenterius.biomancy.util.fuel.FuelHandler;
 import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 import net.minecraft.core.BlockPos;
@@ -34,6 +35,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.minecraftforge.items.wrapper.RangedWrapper;
@@ -60,16 +62,21 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 	public static final int MAX_FUEL = 1_000;
 
 	public static final RegistryObject<SimpleRecipeType.ItemStackRecipeType<BioLabRecipe>> RECIPE_TYPE = ModRecipes.BIO_BREWING_RECIPE_TYPE;
+
 	protected static final RawAnimation WORKING_ANIM = RawAnimation.begin().thenLoop("bio_lab.working");
 	protected static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("bio_lab.idle");
+
 	private final BioLabStateData stateData;
 	private final FuelHandler fuelHandler;
 	private final BehavioralInventory<?> fuelInventory;
 	private final SimpleInventory inputInventory;
 	private final BehavioralInventory<?> outputInventory;
+
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-	private LazyOptional<IItemHandler> optionalCombinedInventory;
 	private ILoopingSoundHelper loopingSoundHelper = ILoopingSoundHelper.NULL;
+
+	private LazyOptional<IItemHandler> optionalCombinedInventory;
+	private LazyOptional<IFluidHandler> optionalFluidConsumer;
 
 	public BioLabBlockEntity(BlockPos worldPosition, BlockState blockState) {
 		super(ModBlockEntities.BIO_LAB.get(), worldPosition, blockState);
@@ -82,6 +89,7 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 
 		fuelHandler = FuelHandler.createNutrientFuelHandler(MAX_FUEL, this::setChanged);
 		stateData = new BioLabStateData(fuelHandler);
+		optionalFluidConsumer = LazyOptional.of(() -> new FluidFuelConsumerHandler(fuelHandler));
 	}
 
 	private LazyOptional<IItemHandler> createCombinedInventory() {
@@ -177,14 +185,20 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 		Containers.dropContents(level, pos, outputInventory);
 	}
 
-	@NotNull
 	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-		if (!remove && cap == ModCapabilities.ITEM_HANDLER) {
+	public <T> @NotNull LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
+		if (remove) return super.getCapability(cap, side);
+
+		if (cap == ModCapabilities.ITEM_HANDLER) {
 			if (side == null || side == Direction.DOWN) return outputInventory.getOptionalItemHandler().cast();
 			if (side == Direction.UP) return inputInventory.getOptionalItemHandler().cast();
 			return optionalCombinedInventory.cast();
 		}
+
+		if (cap == ModCapabilities.FLUID_HANDLER) {
+			return optionalFluidConsumer.cast();
+		}
+
 		return super.getCapability(cap, side);
 	}
 
@@ -195,6 +209,7 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 		inputInventory.invalidate();
 		outputInventory.invalidate();
 		optionalCombinedInventory.invalidate();
+		optionalFluidConsumer.invalidate();
 	}
 
 	@Override
@@ -204,6 +219,7 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 		inputInventory.revive();
 		outputInventory.revive();
 		optionalCombinedInventory = createCombinedInventory();
+		optionalFluidConsumer = LazyOptional.of(() -> new FluidFuelConsumerHandler(fuelHandler));
 	}
 
 	@Override

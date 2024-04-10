@@ -16,6 +16,7 @@ import com.github.elenterius.biomancy.menu.DecomposerMenu;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.ILoopingSoundHelper;
 import com.github.elenterius.biomancy.util.SoundUtil;
+import com.github.elenterius.biomancy.util.fuel.FluidFuelConsumerHandler;
 import com.github.elenterius.biomancy.util.fuel.FuelHandler;
 import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 import net.minecraft.core.BlockPos;
@@ -39,7 +40,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
@@ -50,8 +54,6 @@ import software.bernie.geckolib.core.keyframe.event.SoundKeyframeEvent;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,6 +66,7 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	public static final int MAX_FUEL = 1_000;
 
 	public static final RegistryObject<SimpleRecipeType.ItemStackRecipeType<DecomposerRecipe>> RECIPE_TYPE = ModRecipes.DECOMPOSING_RECIPE_TYPE;
+
 	protected static final RawAnimation WORKING_ANIM = RawAnimation.begin().thenLoop("decomposer.working");
 	protected static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("decomposer.idle");
 
@@ -74,10 +77,10 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	private final BehavioralInventory<?> outputInventory;
 
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-	@Nullable
-	private DecomposerRecipeResult computedRecipeResult;
-
 	private ILoopingSoundHelper loopingSoundHelper = ILoopingSoundHelper.NULL;
+
+	private @Nullable DecomposerRecipeResult computedRecipeResult;
+	private LazyOptional<IFluidHandler> optionalFluidConsumer;
 
 	public DecomposerBlockEntity(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.DECOMPOSER.get(), pos, state);
@@ -89,6 +92,7 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 		fuelHandler = FuelHandler.createNutrientFuelHandler(MAX_FUEL, this::setChanged);
 
 		stateData = new DecomposerStateData(fuelHandler);
+		optionalFluidConsumer = LazyOptional.of(() -> new FluidFuelConsumerHandler(fuelHandler));
 	}
 
 	@Override
@@ -197,14 +201,20 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 		Containers.dropContents(level, pos, outputInventory);
 	}
 
-	@Nonnull
 	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
-		if (!remove && cap == ModCapabilities.ITEM_HANDLER) {
+	public <T> @NotNull LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side) {
+		if (remove) return super.getCapability(cap, side);
+
+		if (cap == ModCapabilities.ITEM_HANDLER) {
 			if (side == null || side == Direction.DOWN) return outputInventory.getOptionalItemHandler().cast();
 			if (side == Direction.UP) return inputInventory.getOptionalItemHandler().cast();
 			return fuelInventory.getOptionalItemHandler().cast();
 		}
+
+		if (cap == ModCapabilities.FLUID_HANDLER) {
+			return optionalFluidConsumer.cast();
+		}
+
 		return super.getCapability(cap, side);
 	}
 
@@ -214,6 +224,7 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 		fuelInventory.invalidate();
 		inputInventory.invalidate();
 		outputInventory.invalidate();
+		optionalFluidConsumer.invalidate();
 	}
 
 	@Override
@@ -222,6 +233,7 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 		fuelInventory.revive();
 		inputInventory.revive();
 		outputInventory.revive();
+		optionalFluidConsumer = LazyOptional.of(() -> new FluidFuelConsumerHandler(fuelHandler));
 	}
 
 	@Override
