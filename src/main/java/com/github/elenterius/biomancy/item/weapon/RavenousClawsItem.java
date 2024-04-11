@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.item.weapon;
 
+import com.github.elenterius.biomancy.api.livingtool.LivingToolState;
 import com.github.elenterius.biomancy.client.render.item.ravenousclaws.RavenousClawsRenderer;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModDamageSources;
@@ -7,8 +8,6 @@ import com.github.elenterius.biomancy.init.ModParticleTypes;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.item.ItemAttackDamageSourceProvider;
 import com.github.elenterius.biomancy.item.ItemCharge;
-import com.github.elenterius.biomancy.item.livingtool.LivingClawsItem;
-import com.github.elenterius.biomancy.item.livingtool.LivingToolState;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.CombatUtil;
