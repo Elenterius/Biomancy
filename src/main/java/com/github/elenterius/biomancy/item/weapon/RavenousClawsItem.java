@@ -216,11 +216,6 @@ public class RavenousClawsItem extends LivingClawsItem implements GeoItem, ItemC
 	}
 
 	@Override
-	public int getNutrientFuelValue(ItemStack container, ItemStack resource) {
-		return super.getNutrientFuelValue(container, resource) / 2;
-	}
-
-	@Override
 	public @Nullable DamageSource getDamageSource(ItemStack stack, Entity target, LivingEntity attacker) {
 		return ModDamageSources.bleed(attacker.level(), attacker);
 	}

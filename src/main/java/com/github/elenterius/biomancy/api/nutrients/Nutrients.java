@@ -8,24 +8,32 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.function.IntUnaryOperator;
 
+@ApiStatus.Experimental
 public final class Nutrients {
 
 	private static final Object2IntMap<Item> FUEL_VALUES = new Object2IntArrayMap<>();
-	private static final Object2IntMap<Item> REPAIR_VALUES = FUEL_VALUES;
+	private static final Object2IntMap<Item> REPAIR_VALUES = new Object2IntArrayMap<>();
+
 	public static final IntUnaryOperator RAW_MEAT_NUTRITION_MODIFIER = nutrition -> nutrition > 0 ? Mth.ceil(3.75d * Math.exp(0.215d * nutrition)) : 0;
 
 	static {
 		registerFuel(ModItems.NUTRIENT_PASTE.get(), 2);
 		registerFuel(ModItems.NUTRIENT_BAR.get(), 2 * 9);
+		registerRepairMaterial(ModItems.NUTRIENT_PASTE.get(), 4);
+		registerRepairMaterial(ModItems.NUTRIENT_BAR.get(), 4 * 9);
 	}
 
 	private Nutrients() {}
 
 	public static void registerFuel(Item resourceItem, int value) {
 		FUEL_VALUES.put(resourceItem, value);
+	}
+	public static void registerRepairMaterial(Item resourceItem, int value) {
+		REPAIR_VALUES.put(resourceItem, value);
 	}
 
 	public static boolean isValidRepairMaterial(ItemStack resource) {
