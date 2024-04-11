@@ -18,7 +18,7 @@ import java.util.List;
 
 @ApiStatus.Experimental
 public interface Serum {
-	String DATA_TAG = "SerumData";
+	String DATA_TAG_KEY = "serum_data";
 	String TRANSLATION_PREFIX = "serum.";
 
 	Serum EMPTY = new Serum() {
@@ -59,21 +59,21 @@ public interface Serum {
 	};
 
 	static CompoundTag getDataTag(ItemStack stack) {
-		return stack.getOrCreateTag().getCompound(DATA_TAG);
+		return stack.getOrCreateTag().getCompound(DATA_TAG_KEY);
 	}
 
-	static String makeTranslationKey(ResourceLocation registryId) {
-		return TRANSLATION_PREFIX + registryId.getNamespace() + "." + registryId.getPath().replace("/", ".");
+	static String makeTranslationKey(ResourceLocation key) {
+		return TRANSLATION_PREFIX + key.getNamespace() + "." + key.getPath().replace("/", ".");
 	}
 
 	static void removeDataTag(CompoundTag tag) {
-		tag.remove(DATA_TAG);
+		tag.remove(DATA_TAG_KEY);
 	}
 
 	static void copyDataTag(CompoundTag fromTag, CompoundTag toTag) {
-		if (fromTag.contains(DATA_TAG)) {
-			CompoundTag data = fromTag.getCompound(DATA_TAG);
-			if (!data.isEmpty()) toTag.put(DATA_TAG, data.copy());
+		if (fromTag.contains(DATA_TAG_KEY)) {
+			CompoundTag data = fromTag.getCompound(DATA_TAG_KEY);
+			if (!data.isEmpty()) toTag.put(DATA_TAG_KEY, data.copy());
 		}
 	}
 
