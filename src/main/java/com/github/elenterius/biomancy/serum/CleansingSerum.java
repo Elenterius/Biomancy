@@ -1,11 +1,14 @@
 package com.github.elenterius.biomancy.serum;
 
+import com.github.elenterius.biomancy.init.tags.ModMobEffectTags;
 import com.github.elenterius.biomancy.integration.ModsCompatHandler;
 import com.github.elenterius.biomancy.mixin.ZombieVillagerMixinAccessor;
 import com.github.elenterius.biomancy.util.MobUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,6 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class CleansingSerum extends BasicSerum {
 
@@ -60,7 +64,18 @@ public class CleansingSerum extends BasicSerum {
 	}
 
 	private void clearPotionEffects(LivingEntity target) {
-		target.removeAllEffects();
+		removeAllEffects(target); //this is a replacement for LivingEntity.removeAllEffects()
+	}
+
+	private void removeAllEffects(LivingEntity target) {
+		List<MobEffectInstance> activeEffects = List.copyOf(target.getActiveEffects());
+
+		for (MobEffectInstance activeEffect : activeEffects) {
+			MobEffect effect = activeEffect.getEffect();
+			if (!ModMobEffectTags.isNotRemovableWithCleansingSerum(effect)) {
+				target.removeEffect(effect);
+			}
+		}
 	}
 
 	private void clearAbsorption(LivingEntity target) {
