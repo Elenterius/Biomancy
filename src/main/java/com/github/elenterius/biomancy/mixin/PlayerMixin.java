@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.mixin;
 import com.github.elenterius.biomancy.init.ModDamageTypes;
 import com.github.elenterius.biomancy.item.ItemAttackDamageSourceProvider;
 import com.github.elenterius.biomancy.item.SweepAttackListener;
+import com.github.elenterius.biomancy.item.shield.LivingShieldItem;
 import com.llamalad7.mixinextras.injector.ModifyReceiver;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
@@ -78,20 +79,14 @@ public abstract class PlayerMixin extends LivingEntity {
 		return source;
 	}
 
-	//	@ModifyReceiver(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"))
-	//	private Entity onAttackModifyHurtTarget(Entity instance, DamageSource source, float damageAmount) {
-	//		if (instance instanceof LivingEntity && getMainHandItem().getItem() instanceof InvincibleFrameIgnoringAttackItem) {
-	//			instance.invulnerableTime = 0;
-	//		}
-	//		return instance;
-	//	}
-	//
-	//	@ModifyReceiver(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"))
-	//	private LivingEntity onAttackModifyHurtSweepTarget(LivingEntity instance, DamageSource damageSource, float damageAmount) {
-	//		if (getMainHandItem().getItem() instanceof InvincibleFrameIgnoringAttackItem) {
-	//			instance.invulnerableTime = 0;
-	//		}
-	//		return instance;
-	//	}
+	@Inject(method = "hurtCurrentlyUsedShield", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;hurtAndBreak(ILnet/minecraft/world/entity/LivingEntity;Ljava/util/function/Consumer;)V"), cancellable = true)
+	private void onHurtCurrentlyUsedShield(float damage, CallbackInfo ci) {
+		if (level().isClientSide()) return;
+
+		if (useItem.getItem() instanceof LivingShieldItem livingShield) {
+			livingShield.damageCurrentlyUsedLivingShield(useItem, damage, this);
+			ci.cancel();
+		}
+	}
 
 }
