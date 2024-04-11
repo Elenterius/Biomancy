@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.statuseffect;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.init.tags.ModItemTags;
+import com.github.elenterius.biomancy.init.tags.ModMobEffectTags;
 import com.github.elenterius.biomancy.serum.AdrenalineSerum;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -21,9 +22,9 @@ public final class StatusEffectHandler {
 	private StatusEffectHandler() {}
 
 	@SubscribeEvent
-	public static void onEffectExpiry(final MobEffectEvent.Remove event) {
+	public static void onEffectRemoval(final MobEffectEvent.Remove event) {
 		if (event.getEntity().level().isClientSide) return;
-		if (event.getEffect() == ModMobEffects.ESSENCE_ANEMIA.get()) {
+		if (event.getEffect() == ModMobEffects.ESSENCE_ANEMIA.get() && ModMobEffectTags.isNotRemovableWithCleansingSerum(ModMobEffects.ESSENCE_ANEMIA.get())) {
 			event.setCanceled(true);
 		}
 	}
