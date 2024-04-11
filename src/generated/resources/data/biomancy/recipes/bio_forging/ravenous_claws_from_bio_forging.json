@@ -25,6 +25,6 @@
   "nutrientsCost": 250,
   "result": {
     "item": "biomancy:ravenous_claws",
-    "nbt": "{LivingToolState:1b,Nutrients:250}"
+    "nbt": "{LivingToolState:1b,\"biomancy:nutrients\":250}"
   }
 }

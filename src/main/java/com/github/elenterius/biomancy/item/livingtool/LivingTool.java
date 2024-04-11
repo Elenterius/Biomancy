@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.item.livingtool;
 
+import com.github.elenterius.biomancy.api.nutrients.Nutrients;
 import com.github.elenterius.biomancy.api.nutrients.NutrientsContainerItem;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
@@ -24,6 +25,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public interface LivingTool extends NutrientsContainerItem {
+
 	Set<Enchantment> INVALID_ENCHANTMENTS = Set.of(Enchantments.FLAMING_ARROWS, Enchantments.FIRE_ASPECT);
 
 	default LivingToolState getLivingToolState(ItemStack livingTool) {
@@ -67,8 +69,13 @@ public interface LivingTool extends NutrientsContainerItem {
 	}
 
 	@Override
-	default int getNutrientFuelValue(ItemStack container, ItemStack resource) {
-		return NutrientsContainerItem.super.getNutrientFuelValue(container, resource) * 2;
+	default boolean isValidNutrientsResource(ItemStack container, ItemStack resource) {
+		return Nutrients.isValidRepairMaterial(resource);
+	}
+
+	@Override
+	default int getNutrientsResourceValue(ItemStack container, ItemStack resource) {
+		return Nutrients.getRepairValue(resource);
 	}
 
 	@Override
@@ -140,9 +147,7 @@ public interface LivingTool extends NutrientsContainerItem {
 		tooltip.add(ComponentUtil.translatable("tooltip.biomancy.nutrients_fuel").withStyle(ChatFormatting.GRAY));
 		tooltip.add(ComponentUtil.literal("%s/%s u".formatted(df.format(getNutrients(stack)), df.format(getMaxNutrients(stack)))).withStyle(TextStyles.NUTRIENTS));
 
-		//		tooltip.add(ComponentFacade.emptyLine());
-		//
-		//		tooltip.add(ComponentFacade.translatable("tooltip.biomancy.consumption").withStyle(ChatFormatting.GRAY));
+		//		tooltip.add(ComponentUtil.translatable("tooltip.biomancy.consumption").withStyle(ChatFormatting.GRAY));
 		//		for (ToolAction toolAction : getLivingToolActions(stack)) {
 		//			int actionCost = getLivingToolActionCost(stack, toolAction);
 		//			String text = "%s:  %s u".formatted(toolAction.name(), df.format(actionCost));
