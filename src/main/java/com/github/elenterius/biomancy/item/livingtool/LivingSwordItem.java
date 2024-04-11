@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.item.livingtool;
 
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
+import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import com.github.elenterius.biomancy.item.KeyPressListener;
 import com.github.elenterius.biomancy.styles.ColorStyles;
@@ -87,7 +88,7 @@ public class LivingSwordItem extends SwordItem implements ItemTooltipStyleProvid
 	@Override
 	public boolean overrideStackedOnOther(ItemStack stack, Slot slot, ClickAction action, Player player) {
 		if (handleOverrideStackedOnOther(stack, slot, action, player)) {
-			playSound(player, SoundEvents.GENERIC_EAT);
+			playSound(player, ModSoundEvents.FLESHKIN_EAT.get());
 			return true;
 		}
 		return false;
@@ -96,7 +97,7 @@ public class LivingSwordItem extends SwordItem implements ItemTooltipStyleProvid
 	@Override
 	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
 		if (handleOverrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
-			playSound(player, SoundEvents.GENERIC_EAT);
+			playSound(player, ModSoundEvents.FLESHKIN_EAT.get());
 			return true;
 		}
 		return false;

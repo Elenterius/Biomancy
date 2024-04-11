@@ -297,6 +297,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addSound(ModSoundEvents.CLAWS_ATTACK_STRONG, "Strong Claw Attack");
 		addSound(ModSoundEvents.CLAWS_ATTACK_BLEED_PROC, "Eviscerating Slash triggers");
 		addSound(ModSoundEvents.FLESHKIN_NO, "Fleshkin disagrees");
+		addSound(ModSoundEvents.FLESHKIN_EAT, "Fleshkin eats");
 		addSound(ModSoundEvents.FLESHKIN_BREAK, "Fleshkin Break");
 		addSound(ModSoundEvents.FLESHKIN_BECOME_DORMANT, "Fleshkin becomes Dormant");
 		addSound(ModSoundEvents.FLESHKIN_BECOME_AWAKENED, "Fleshkin becomes Awakened");
