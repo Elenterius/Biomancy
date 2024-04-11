@@ -1,16 +1,11 @@
 package com.github.elenterius.biomancy.item;
 
 import com.github.elenterius.biomancy.block.property.BlockPropertyUtil;
-import com.github.elenterius.biomancy.client.util.ClientTextUtil;
-import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.github.elenterius.biomancy.util.PillarPlantUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -18,11 +13,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraftforge.common.IPlantable;
 
-import javax.annotation.Nullable;
-import java.util.List;
 import java.util.Optional;
 
-public class FertilizerItem extends Item implements ItemTooltipStyleProvider {
+public class FertilizerItem extends SimpleItem.ShinySimpleItem {
 
 	public FertilizerItem(Properties properties) {
 		super(properties);
@@ -159,17 +152,6 @@ public class FertilizerItem extends Item implements ItemTooltipStyleProvider {
 		}
 
 		return false;
-	}
-
-	@Override
-	public boolean isFoil(ItemStack stack) {
-		return true;
-	}
-
-	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		tooltip.add(ComponentUtil.horizontalLine());
-		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack));
 	}
 
 }

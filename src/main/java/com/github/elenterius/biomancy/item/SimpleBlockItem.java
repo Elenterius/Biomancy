@@ -1,7 +1,6 @@
 package com.github.elenterius.biomancy.item;
 
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
-import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -20,7 +19,6 @@ public class SimpleBlockItem extends BlockItem implements ItemTooltipStyleProvid
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		tooltip.add(ComponentUtil.horizontalLine());
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack));
 		super.appendHoverText(stack, level, tooltip, flag);
 	}

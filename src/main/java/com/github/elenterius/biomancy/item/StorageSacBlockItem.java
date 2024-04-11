@@ -5,7 +5,6 @@ import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModCapabilities;
 import com.github.elenterius.biomancy.inventory.ItemStackInventory;
 import com.github.elenterius.biomancy.inventory.itemhandler.EnhancedItemHandler;
-import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.StorageSacTooltipComponent;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.core.Direction;
@@ -18,7 +17,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BundleItem;
 import net.minecraft.world.item.ItemStack;
@@ -112,14 +110,9 @@ public class StorageSacBlockItem extends BlockItem implements ItemTooltipStylePr
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, level, tooltip, flag);
 		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack));
 		tooltip.add(ComponentUtil.tooltip(new StorageSacTooltipComponent(getItemHandler(stack).orElse(null))));
-	}
-
-	@Override
-	public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
-		return Optional.of(new HrTooltipComponent());
+		super.appendHoverText(stack, level, tooltip, flag);
 	}
 
 	private void playRemoveFromSacSound(Player player) {

@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.item;
 
+import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.network.chat.Component;
@@ -20,7 +21,6 @@ public class ObfuscatedTooltipBlockItem extends BlockItem implements ItemTooltip
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		tooltip.add(ComponentUtil.horizontalLine());
 		tooltip.add(getTooltipText(stack).withStyle(TextStyles.PRIMORDIAL_RUNES_GRAY));
 		super.appendHoverText(stack, level, tooltip, flag);
 	}
