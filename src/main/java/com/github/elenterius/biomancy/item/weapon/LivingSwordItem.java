@@ -1,9 +1,11 @@
-package com.github.elenterius.biomancy.item.livingtool;
+package com.github.elenterius.biomancy.item.weapon;
 
+import com.github.elenterius.biomancy.api.livingtool.LivingToolState;
+import com.github.elenterius.biomancy.api.livingtool.SpecialLivingTool;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import com.github.elenterius.biomancy.item.KeyPressListener;
-import com.github.elenterius.biomancy.item.weapon.SimpleClawsItem;
 import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.ComponentUtil;
@@ -20,6 +22,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -31,12 +34,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LivingClawsItem extends SimpleClawsItem implements LivingTool, KeyPressListener {
+public class LivingSwordItem extends SwordItem implements ItemTooltipStyleProvider, SpecialLivingTool, KeyPressListener {
 
 	private final int maxNutrients;
 
-	public LivingClawsItem(Tier tier, float baseAttackDamage, float attackSpeedModifier, float attackRangeModifier, int maxNutrients, Properties properties) {
-		super(tier, baseAttackDamage, attackSpeedModifier, attackRangeModifier, properties);
+	public LivingSwordItem(Tier tier, int damageModifier, float attackSpeedModifier, int maxNutrients, Properties properties) {
+		super(tier, damageModifier, attackSpeedModifier, properties);
 		this.maxNutrients = maxNutrients;
 	}
 
@@ -44,7 +47,7 @@ public class LivingClawsItem extends SimpleClawsItem implements LivingTool, KeyP
 	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, Level level, Player player, EquipmentSlot slot, byte flags) {
 		if (!hasNutrients(stack)) {
 			player.displayClientMessage(TextComponentUtil.getFailureMsgText("not_enough_nutrients"), true);
-			player.playSound(ModSoundEvents.FLESHKIN_NO.get(), 1f, 1f + player.level().getRandom().nextFloat() * 0.4f);
+			player.playSound(ModSoundEvents.FLESHKIN_NO.get(), 0.8f, 0.8f + player.level().getRandom().nextFloat() * 0.4f);
 			return InteractionResultHolder.fail(flags);
 		}
 
@@ -79,13 +82,13 @@ public class LivingClawsItem extends SimpleClawsItem implements LivingTool, KeyP
 	}
 
 	@Override
-	public int getMaxNutrients(ItemStack container) {
+	public int getMaxNutrients(ItemStack stack) {
 		return maxNutrients;
 	}
 
 	@Override
-	public boolean overrideStackedOnOther(ItemStack livingTool, Slot slot, ClickAction action, Player player) {
-		if (handleOverrideStackedOnOther(livingTool, slot, action, player)) {
+	public boolean overrideStackedOnOther(ItemStack stack, Slot slot, ClickAction action, Player player) {
+		if (handleOverrideStackedOnOther(stack, slot, action, player)) {
 			playSound(player, ModSoundEvents.FLESHKIN_EAT.get());
 			return true;
 		}
@@ -93,8 +96,8 @@ public class LivingClawsItem extends SimpleClawsItem implements LivingTool, KeyP
 	}
 
 	@Override
-	public boolean overrideOtherStackedOnMe(ItemStack livingTool, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
-		if (handleOverrideOtherStackedOnMe(livingTool, other, slot, action, player, access)) {
+	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
+		if (handleOverrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
 			playSound(player, ModSoundEvents.FLESHKIN_EAT.get());
 			return true;
 		}
@@ -106,7 +109,7 @@ public class LivingClawsItem extends SimpleClawsItem implements LivingTool, KeyP
 	}
 
 	@Override
-	public int getLivingToolActionCost(ItemStack livingTool, LivingToolState state, ToolAction toolAction) {
+	public int getLivingToolActionCost(ItemStack stack, LivingToolState state, ToolAction toolAction) {
 		int baseCost = 0;
 		if (toolAction == ToolActions.SWORD_DIG) baseCost = 2;
 		if (toolAction == ToolActions.SWORD_SWEEP) baseCost = 1;
@@ -139,11 +142,6 @@ public class LivingClawsItem extends SimpleClawsItem implements LivingTool, KeyP
 	}
 
 	@Override
-	public boolean isFoil(ItemStack stack) {
-		return false;
-	}
-
-	@Override
 	public boolean isBarVisible(ItemStack stack) {
 		return getNutrients(stack) > 0;
 	}
@@ -165,12 +163,13 @@ public class LivingClawsItem extends SimpleClawsItem implements LivingTool, KeyP
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		super.appendHoverText(stack, level, tooltip, isAdvanced);
+		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack));
 
 		tooltip.add(ComponentUtil.emptyLine());
 		appendLivingToolTooltip(stack, tooltip);
 		tooltip.add(ComponentUtil.emptyLine());
-		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action.switch_mode")));
+		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action_cycle")));
+		tooltip.add(ComponentUtil.emptyLine());
 	}
 
 	@Override
