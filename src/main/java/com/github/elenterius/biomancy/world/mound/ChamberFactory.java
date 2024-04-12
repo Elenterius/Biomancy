@@ -75,7 +75,7 @@ public interface ChamberFactory {
 			consumer.accept(chamber);
 		};
 
-		float offset = 0.25f;
+		float offset = 0.5f;
 		wrappedConsumer.accept(new MoundChamber(new OctantEllipsoidShape(x + p, y - p - offset, z + p, halfR, quarterR, halfR, quarterR, halfR, quarterR)));
 		wrappedConsumer.accept(new MoundChamber(new OctantEllipsoidShape(x - p, y - p - offset, z + p, quarterR, quarterR, halfR, halfR, halfR, quarterR)));
 		wrappedConsumer.accept(new MoundChamber(new OctantEllipsoidShape(x + p, y - p - offset, z - p, halfR, quarterR, quarterR, quarterR, halfR, halfR)));
