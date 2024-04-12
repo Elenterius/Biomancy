@@ -5,10 +5,8 @@ import com.github.elenterius.biomancy.integration.ModsCompatHandler;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.EnchantedBookItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -99,6 +97,7 @@ public final class BiomancyMod {
 						ModItems.BILE_SPITTER,
 						ModItems.DEV_ARM_CANNON
 				);
+
 				ModItems.ITEMS.getEntries().stream()
 						.filter(entry -> !hiddenItems.contains(entry))
 						.forEach(entry -> {
@@ -112,6 +111,10 @@ public final class BiomancyMod {
 								output.accept(ModBlocks.FLESHKIN_CHEST.get().createItemStackForCreativeTab());
 							}
 						});
+
+				output.accept(PotionUtils.setPotion(new ItemStack(Items.POTION), ModPotions.GASTRIC_JUICE.get()));
+				output.accept(PotionUtils.setPotion(new ItemStack(Items.SPLASH_POTION), ModPotions.GASTRIC_JUICE.get()));
+				output.accept(PotionUtils.setPotion(new ItemStack(Items.LINGERING_POTION), ModPotions.GASTRIC_JUICE.get()));
 
 				for (RegistryObject<Enchantment> entry : ModEnchantments.ENCHANTMENTS.getEntries()) {
 					Enchantment enchantment = entry.get();
