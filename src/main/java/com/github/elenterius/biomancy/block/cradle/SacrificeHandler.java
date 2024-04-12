@@ -34,7 +34,7 @@ public class SacrificeHandler implements INBTSerializable<CompoundTag> {
 
 		diseaseValue = 0;
 		hostileValue = 85;
-		anomalyValue = 5;
+		anomalyValue = 7;
 
 		hasModifiers = false;
 	}
