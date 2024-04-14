@@ -8,6 +8,7 @@ import com.github.elenterius.biomancy.init.ModBlockProperties;
 import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Container;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -20,7 +21,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class MachineBlockEntity<R extends ProcessingRecipe, S extends RecipeCraftingStateData<R>> extends BlockEntity implements Nameable {
+public abstract class MachineBlockEntity<R extends ProcessingRecipe<C>, C extends Container, S extends RecipeCraftingStateData<R, C>> extends BlockEntity implements Nameable {
 
 	protected final int tickOffset = BiomancyMod.GLOBAL_RANDOM.nextInt(20);
 	protected int ticks = tickOffset;
@@ -29,7 +30,7 @@ public abstract class MachineBlockEntity<R extends ProcessingRecipe, S extends R
 		super(type, pos, state);
 	}
 
-	public static <R extends ProcessingRecipe, S extends RecipeCraftingStateData<R>> void serverTick(Level level, BlockPos pos, BlockState state, MachineBlockEntity<R, S> entity) {
+	public static <R extends ProcessingRecipe<C>, C extends Container, S extends RecipeCraftingStateData<R, C>> void serverTick(Level level, BlockPos pos, BlockState state, MachineBlockEntity<R, C, S> entity) {
 		entity.serverTick((ServerLevel) level);
 	}
 
@@ -44,10 +45,12 @@ public abstract class MachineBlockEntity<R extends ProcessingRecipe, S extends R
 
 	protected abstract S getStateData();
 
+	protected abstract C getInputInventory();
+
 	protected abstract IFuelHandler getFuelHandler();
 
 	public int getFuelCost(R recipeToCraft) {
-		return getFuelHandler().getFuelCost(recipeToCraft.getCraftingCostNutrients());
+		return getFuelHandler().getFuelCost(recipeToCraft.getCraftingCostNutrients(getInputInventory()));
 	}
 
 	public abstract ItemStack getStackInFuelSlot();
@@ -99,7 +102,7 @@ public abstract class MachineBlockEntity<R extends ProcessingRecipe, S extends R
 		if (craftingGoal == null) {
 			state.cancelCrafting();
 		} else {
-			ItemStack itemToCraft = craftingGoal.getResultItem(level.registryAccess());
+			ItemStack itemToCraft = getItemToCraft(level, craftingGoal);
 			if (itemToCraft.isEmpty()) {
 				state.cancelCrafting();
 			} else {
@@ -107,8 +110,8 @@ public abstract class MachineBlockEntity<R extends ProcessingRecipe, S extends R
 					if (state.getCraftingState() == CraftingState.NONE) { // nothing is being crafted, try to start crafting
 						if (hasEnoughFuel(craftingGoal)) { //make sure there is enough fuel to craft the recipe
 							state.setCraftingState(CraftingState.IN_PROGRESS);
-							state.clear(); //safe guard, shouldn't be needed
-							state.setCraftingGoalRecipe(craftingGoal); // this also sets the time required for crafting
+							state.clear(); //safeguard, shouldn't be needed
+							state.setCraftingGoalRecipe(craftingGoal, getInputInventory()); // this also sets the time required for crafting
 						}
 					} else if (!state.isCraftingCanceled()) { // something is being crafted, check that the crafting goals match
 						R prevCraftingGoal = state.getCraftingGoalRecipe(level).orElse(null);
@@ -156,6 +159,13 @@ public abstract class MachineBlockEntity<R extends ProcessingRecipe, S extends R
 
 		//update BlockState to reflect tile state
 		updateBlockState(level, state, emitRedstoneSignal);
+	}
+
+	private ItemStack getItemToCraft(ServerLevel level, R craftingGoal) {
+		if (craftingGoal.isSpecial()) {
+			return craftingGoal.assemble(getInputInventory(), level.registryAccess());
+		}
+		return craftingGoal.getResultItem(level.registryAccess());
 	}
 
 	protected BooleanProperty getIsCraftingBlockStateProperty() {

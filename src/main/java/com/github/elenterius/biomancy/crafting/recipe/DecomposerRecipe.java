@@ -20,7 +20,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DecomposerRecipe extends ProcessingRecipe {
+public class DecomposerRecipe extends StaticProcessingRecipe {
 	public static final short DEFAULT_CRAFTING_COST_NUTRIENTS = 1;
 	public static final int MAX_INGREDIENTS = 1;
 	public static final int MAX_OUTPUTS = 6;
@@ -40,8 +40,8 @@ public class DecomposerRecipe extends ProcessingRecipe {
 	}
 
 	@Override
-	public boolean matches(Container inv, Level level) {
-		ItemStack stack = inv.getItem(0);
+	public boolean matches(Container inputInventory, Level level) {
+		ItemStack stack = inputInventory.getItem(0);
 		return ingredientStack.ingredient().test(stack) && stack.getCount() >= ingredientStack.count();
 	}
 
@@ -56,7 +56,7 @@ public class DecomposerRecipe extends ProcessingRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(Container inv, RegistryAccess registryAccess) {
+	public ItemStack assemble(Container inputInventory, RegistryAccess registryAccess) {
 		return outputs.get(0).getItemStack().copy();
 	}
 
@@ -131,8 +131,8 @@ public class DecomposerRecipe extends ProcessingRecipe {
 		public void toNetwork(FriendlyByteBuf buffer, DecomposerRecipe recipe) {
 			recipe.ingredientStack.toNetwork(buffer);
 
-			buffer.writeVarInt(recipe.getCraftingTimeTicks());
-			buffer.writeVarInt(recipe.getCraftingCostNutrients());
+			buffer.writeVarInt(recipe.craftingTimeTicks);
+			buffer.writeVarInt(recipe.craftingCostNutrients);
 
 			buffer.writeVarInt(recipe.outputs.size());
 			for (VariableProductionOutput output : recipe.outputs) {

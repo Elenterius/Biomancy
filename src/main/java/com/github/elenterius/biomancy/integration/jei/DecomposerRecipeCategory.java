@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.integration.jei;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.block.digester.DigesterBlockEntity;
 import com.github.elenterius.biomancy.crafting.recipe.DecomposerRecipe;
 import com.github.elenterius.biomancy.crafting.recipe.ItemCountRange;
 import com.github.elenterius.biomancy.crafting.recipe.VariableProductionOutput;
@@ -12,6 +13,7 @@ import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -24,6 +26,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 import java.util.List;
 
@@ -33,9 +37,13 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 	private final IDrawable background;
 	private final IDrawable icon;
 
+	private final RecipeWrapper inputInventoryWrapper;
+
 	public DecomposerRecipeCategory(IGuiHelper guiHelper) {
 		icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModBlocks.DECOMPOSER.get()));
 		background = guiHelper.drawableBuilder(BiomancyMod.createRL("textures/gui/jei/decomposer_recipe.png"), 0, 0, 128, 64).setTextureSize(128, 64).build();
+
+		inputInventoryWrapper = new RecipeWrapper(new ItemStackHandler(DigesterBlockEntity.INPUT_SLOTS));
 	}
 
 	@Override
@@ -91,12 +99,16 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 	public void draw(DecomposerRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
 		Font font = Minecraft.getInstance().font;
 
-		int ticks = recipe.getCraftingTimeTicks();
+		IRecipeSlotView slotView = recipeSlotsView.getSlotViews(RecipeIngredientRole.INPUT).get(0);
+		ItemStack itemStack = slotView.getDisplayedItemStack().orElse(ItemStack.EMPTY);
+		inputInventoryWrapper.setItem(0, itemStack);
+
+		int ticks = recipe.getCraftingTimeTicks(inputInventoryWrapper);
 		int seconds = ticks > 0 ? ticks / 20 : 0;
 		MutableComponent timeString = ComponentUtil.translatable("gui.jei.category.smelting.time.seconds", seconds);
 		guiGraphics.drawString(font, timeString, 16, 59 - font.lineHeight, ColorStyles.WHITE_ARGB);
 
-		MutableComponent costString = ComponentUtil.literal("-" + recipe.getCraftingCostNutrients());
+		MutableComponent costString = ComponentUtil.literal("-" + recipe.getCraftingCostNutrients(inputInventoryWrapper));
 		guiGraphics.drawString(font, costString, 16, 43 - font.lineHeight, ColorStyles.WHITE_ARGB);
 
 		int x = 68;

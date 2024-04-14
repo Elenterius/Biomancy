@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_food": {
+    "has_tall_flowers": {
       "conditions": {
         "items": [
           {
-            "type": "biomancy:is_food_item"
+            "tag": "minecraft:tall_flowers"
           }
         ]
       },
@@ -13,20 +13,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "biomancy:digesting/nutrient_paste_from_digesting_superb_food"
+        "recipe": "biomancy:digesting/nutrient_paste_from_digesting_tall_flowers"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_food",
+      "has_tall_flowers",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "biomancy:digesting/nutrient_paste_from_digesting_superb_food"
+      "biomancy:digesting/nutrient_paste_from_digesting_tall_flowers"
     ]
   },
   "sends_telemetry_event": false

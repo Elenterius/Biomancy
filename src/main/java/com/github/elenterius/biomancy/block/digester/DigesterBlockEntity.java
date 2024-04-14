@@ -3,7 +3,7 @@ package com.github.elenterius.biomancy.block.digester;
 import com.github.elenterius.biomancy.block.base.MachineBlock;
 import com.github.elenterius.biomancy.block.base.MachineBlockEntity;
 import com.github.elenterius.biomancy.client.util.ClientLoopingSoundHelper;
-import com.github.elenterius.biomancy.crafting.recipe.DigesterRecipe;
+import com.github.elenterius.biomancy.crafting.recipe.DigestingRecipe;
 import com.github.elenterius.biomancy.crafting.recipe.SimpleRecipeType;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModCapabilities;
@@ -26,6 +26,7 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -56,7 +57,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Objects;
 
-public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, DigesterStateData> implements MenuProvider, GeoBlockEntity {
+public class DigesterBlockEntity extends MachineBlockEntity<DigestingRecipe, Container, DigesterStateData> implements MenuProvider, GeoBlockEntity {
 
 	public static final int FUEL_SLOTS = 1;
 	public static final int INPUT_SLOTS = 1;
@@ -64,7 +65,7 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 
 	public static final int MAX_FUEL = 1_000;
 
-	public static final RegistryObject<SimpleRecipeType.ItemStackRecipeType<DigesterRecipe>> RECIPE_TYPE = ModRecipes.DIGESTING_RECIPE_TYPE;
+	public static final RegistryObject<SimpleRecipeType.ItemStackRecipeType<DigestingRecipe>> RECIPE_TYPE = ModRecipes.DIGESTING_RECIPE_TYPE;
 	protected static final RawAnimation WORKING_ANIM = RawAnimation.begin().thenLoop("digester.working");
 	protected static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("digester.idle");
 
@@ -125,6 +126,11 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 	}
 
 	@Override
+	protected Container getInputInventory() {
+		return inputInventory;
+	}
+
+	@Override
 	protected IFuelHandler getFuelHandler() {
 		return fuelHandler;
 	}
@@ -140,18 +146,59 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 	}
 
 	@Override
-	protected boolean doesRecipeResultFitIntoOutputInv(DigesterRecipe craftingGoal, ItemStack stackToCraft) {
+	protected boolean doesRecipeResultFitIntoOutputInv(DigestingRecipe craftingGoal, ItemStack stackToCraft) {
 		return outputInventory.doesItemStackFit(stackToCraft);
 	}
 
 	@Override
-	protected @Nullable DigesterRecipe resolveRecipeFromInput(Level level) {
+	protected @Nullable DigestingRecipe resolveRecipeFromInput(Level level) {
 		return RECIPE_TYPE.get().getRecipeFromContainer(level, inputInventory).orElse(null);
 	}
 
 	@Override
-	protected boolean doesRecipeMatchInput(DigesterRecipe recipeToTest, Level level) {
+	protected boolean doesRecipeMatchInput(DigestingRecipe recipeToTest, Level level) {
 		return recipeToTest.matches(inputInventory, level);
+	}
+
+	@Override
+	protected boolean craftRecipe(DigestingRecipe recipeToCraft, Level level) {
+		ItemStack result = recipeToCraft.assemble(inputInventory, level.registryAccess());
+
+		if (!result.isEmpty() && doesRecipeResultFitIntoOutputInv(recipeToCraft, result)) {
+			ItemStack craftingRemainder = getCraftingRemainder();
+
+			inputInventory.removeItem(0, 1); //consume input
+			outputInventory.insertItemStack(result); //output result
+
+			if (!craftingRemainder.isEmpty()) {
+				outputInventory.insertItemStack(craftingRemainder);
+			}
+
+			SoundUtil.broadcastBlockSound((ServerLevel) level, getBlockPos(), ModSoundEvents.DIGESTER_CRAFTING_COMPLETED);
+
+			setChanged();
+			return true;
+		}
+
+		return false;
+	}
+
+	private ItemStack getCraftingRemainder() {
+		ItemStack stack = inputInventory.getItem(0);
+
+		if (stack.hasCraftingRemainingItem()) {
+			return stack.getCraftingRemainingItem();
+		}
+
+		if (stack.getItem() instanceof BowlFoodItem) {
+			return new ItemStack(Items.BOWL);
+		}
+
+		return ItemStack.EMPTY;
+	}
+
+	public ItemStack getInputSlotStack() {
+		return inputInventory.getItem(0);
 	}
 
 	@Override
@@ -214,47 +261,6 @@ public class DigesterBlockEntity extends MachineBlockEntity<DigesterRecipe, Dige
 		inputInventory.revive();
 		outputInventory.revive();
 		optionalFluidConsumer = LazyOptional.of(() -> new FluidFuelConsumerHandler(fuelHandler));
-	}
-
-	@Override
-	protected boolean craftRecipe(DigesterRecipe recipeToCraft, Level level) {
-		ItemStack result = recipeToCraft.assemble(inputInventory, level.registryAccess());
-
-		if (!result.isEmpty() && doesRecipeResultFitIntoOutputInv(recipeToCraft, result)) {
-			ItemStack craftingRemainder = getCraftingRemainder();
-
-			inputInventory.removeItem(0, 1); //consume input
-			outputInventory.insertItemStack(result); //output result
-
-			if (!craftingRemainder.isEmpty()) {
-				outputInventory.insertItemStack(craftingRemainder);
-			}
-
-			SoundUtil.broadcastBlockSound((ServerLevel) level, getBlockPos(), ModSoundEvents.DIGESTER_CRAFTING_COMPLETED);
-
-			setChanged();
-			return true;
-		}
-
-		return false;
-	}
-
-	private ItemStack getCraftingRemainder() {
-		ItemStack stack = inputInventory.getItem(0);
-
-		if (stack.hasCraftingRemainingItem()) {
-			return stack.getCraftingRemainingItem();
-		}
-
-		if (stack.getItem() instanceof BowlFoodItem) {
-			return new ItemStack(Items.BOWL);
-		}
-
-		return ItemStack.EMPTY;
-	}
-
-	public ItemStack getInputSlotStack() {
-		return inputInventory.getItem(0);
 	}
 
 	@Override

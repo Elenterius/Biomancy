@@ -4,8 +4,7 @@ import com.github.alexmodguy.alexscaves.AlexsCaves;
 import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
-import com.github.elenterius.biomancy.advancements.predicate.FoodItemPredicate;
-import com.github.elenterius.biomancy.crafting.recipe.FoodNutritionIngredient;
+import com.github.elenterius.biomancy.crafting.recipe.FoodDigestingRecipe;
 import com.github.elenterius.biomancy.datagen.recipes.builder.DigesterRecipeBuilder;
 import com.github.elenterius.biomancy.init.ModItems;
 import net.minecraft.data.PackOutput;
@@ -47,32 +46,7 @@ public class DigesterRecipeProvider extends RecipeProvider {
 	}
 
 	private void buildFromFoodRecipes(Consumer<FinishedRecipe> consumer) {
-		String predicateName = "has_food";
-		FoodItemPredicate predicate = new FoodItemPredicate();
-
-		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 1, "poor_food")
-				.setIngredient(new FoodNutritionIngredient(0, 1))
-				.unlockedBy(predicateName, predicate).save(consumer);
-
-		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 2, "average_food")
-				.setIngredient(new FoodNutritionIngredient(2, 3))
-				.unlockedBy(predicateName, predicate).save(consumer);
-
-		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 4, "good_food")
-				.setIngredient(new FoodNutritionIngredient(4, 5))
-				.unlockedBy(predicateName, predicate).save(consumer);
-
-		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 6, "superb_food")
-				.setIngredient(new FoodNutritionIngredient(6, 7))
-				.unlockedBy(predicateName, predicate).save(consumer);
-
-		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 8, "excellent_food")
-				.setIngredient(new FoodNutritionIngredient(8, 9))
-				.unlockedBy(predicateName, predicate).save(consumer);
-
-		DigesterRecipeBuilder.create(ModItems.NUTRIENT_PASTE.get(), 10, "godly_food")
-				.setIngredient(new FoodNutritionIngredient(10, Integer.MAX_VALUE))
-				.unlockedBy(predicateName, predicate).save(consumer);
+		FoodDigestingRecipe.RecipeBuilder.save(consumer, 1, ModItems.NUTRIENT_PASTE.get()); //dynamic recipe that handles all food items
 	}
 
 	private void buildFromOrganicRecipes(Consumer<FinishedRecipe> consumer) {
