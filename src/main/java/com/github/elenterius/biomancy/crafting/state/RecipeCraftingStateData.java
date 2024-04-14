@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.crafting.state;
 import com.github.elenterius.biomancy.crafting.recipe.ProcessingRecipe;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Container;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -10,7 +11,7 @@ import net.minecraft.world.level.Level;
 
 import java.util.Optional;
 
-public abstract class RecipeCraftingStateData<T extends ProcessingRecipe> implements ContainerData {
+public abstract class RecipeCraftingStateData<T extends ProcessingRecipe<C>, C extends Container> implements ContainerData {
 
 	public static final String RECIPE_ID_KEY = "RecipeId";
 	public static final String TIME_ELAPSED_KEY = "TimeElapsed";
@@ -45,28 +46,28 @@ public abstract class RecipeCraftingStateData<T extends ProcessingRecipe> implem
 		craftingState = CraftingState.CANCELED;
 	}
 
-	protected abstract Class<T> getRecipeType();
+	protected abstract boolean isRecipeOfInstance(Recipe<?> recipe);
 
-	public Optional<T> getCraftingGoalRecipe(Level world) {
+	public Optional<T> getCraftingGoalRecipe(Level level) {
 		if (recipeId == null) return Optional.empty();
 
-		RecipeManager recipeManager = world.getRecipeManager();
+		RecipeManager recipeManager = level.getRecipeManager();
 		Optional<? extends Recipe<?>> optional = recipeManager.byKey(recipeId);
 		if (optional.isPresent()) {
-			Recipe<?> iRecipe = optional.get();
-			if (getRecipeType().isInstance(iRecipe)) {
+			Recipe<?> recipe = optional.get();
+			if (isRecipeOfInstance(recipe)) {
 				//noinspection unchecked
-				return Optional.of((T) iRecipe);
+				return Optional.of((T) recipe);
 			}
 		}
 
 		return Optional.empty();
 	}
 
-	public void setCraftingGoalRecipe(T recipe) {
+	public void setCraftingGoalRecipe(T recipe, C inputInventory) {
 		recipeId = recipe.getId();
-		timeForCompletion = recipe.getCraftingTimeTicks();
-		nutrientsCost = recipe.getCraftingCostNutrients();
+		timeForCompletion = recipe.getCraftingTimeTicks(inputInventory);
+		nutrientsCost = recipe.getCraftingCostNutrients(inputInventory);
 	}
 
 	public abstract int getFuelCost();

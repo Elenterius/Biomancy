@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BioLabRecipe extends ProcessingRecipe {
+public class BioLabRecipe extends StaticProcessingRecipe {
 
 	public static final short DEFAULT_CRAFTING_COST_NUTRIENTS = 2;
 	public static final int MAX_INGREDIENTS = 4;
@@ -165,8 +165,8 @@ public class BioLabRecipe extends ProcessingRecipe {
 			buffer.writeItem(recipe.result);
 
 			recipe.recipeReactant.toNetwork(buffer);
-			buffer.writeVarInt(recipe.getCraftingTimeTicks());
-			buffer.writeVarInt(recipe.getCraftingCostNutrients());
+			buffer.writeVarInt(recipe.craftingTimeTicks);
+			buffer.writeVarInt(recipe.craftingCostNutrients);
 
 			buffer.writeVarInt(recipe.ingredients.size());
 			for (IngredientStack ingredientStack : recipe.ingredients) {

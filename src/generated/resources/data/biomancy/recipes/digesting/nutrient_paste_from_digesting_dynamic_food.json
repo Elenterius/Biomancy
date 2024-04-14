@@ -1,0 +1,7 @@
+{
+  "type": "biomancy:digesting_dynamic_food",
+  "multiplier": 1,
+  "result_base": {
+    "item": "biomancy:nutrient_paste"
+  }
+}

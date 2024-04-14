@@ -58,7 +58,7 @@ public abstract class MachineBlock extends BaseEntityBlock {
 				updateNeighbors(level, pos);
 			}
 			BlockEntity blockEntity = level.getBlockEntity(pos);
-			if (blockEntity instanceof MachineBlockEntity<?, ?> machine) {
+			if (blockEntity instanceof MachineBlockEntity<?, ?, ?> machine) {
 				machine.dropAllInvContents(level, pos);
 			}
 			if (Boolean.TRUE.equals(state.getValue(CRAFTING))) {

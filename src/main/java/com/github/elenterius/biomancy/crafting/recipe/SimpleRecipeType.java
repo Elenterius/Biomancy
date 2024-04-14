@@ -8,8 +8,8 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.Optional;
 
 public class SimpleRecipeType<T extends Recipe<?>> implements RecipeType<T> {
@@ -40,13 +40,12 @@ public class SimpleRecipeType<T extends Recipe<?>> implements RecipeType<T> {
 			return Optional.ofNullable(castRecipe(recipeManager.byType(this).get(id)));
 		}
 
-		public Optional<R> getRecipeFromContainer(Level level, Container inputInv) {
+		public Optional<R> getRecipeFromContainer(Level level, Container inputInventory) {
 			RecipeManager recipeManager = level.getRecipeManager();
-			return recipeManager.getRecipeFor(this, inputInv, level);
+			return recipeManager.getRecipeFor(this, inputInventory, level);
 		}
 
-		@Nullable
-		private R castRecipe(@Nullable Recipe<Container> recipe) {
+		private @Nullable R castRecipe(@Nullable Recipe<Container> recipe) {
 			//noinspection unchecked
 			return (R) recipe;
 		}
@@ -59,7 +58,8 @@ public class SimpleRecipeType<T extends Recipe<?>> implements RecipeType<T> {
 							if (ingredient.test(stack)) return true;
 						}
 						return false;
-					}).findFirst().map(this::castRecipe);
+					})
+					.findFirst().map(this::castRecipe);
 		}
 
 	}

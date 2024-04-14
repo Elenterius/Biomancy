@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.crafting.recipe.*;
 import com.github.elenterius.biomancy.crafting.recipe.SimpleRecipeType.ItemStackRecipeType;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -21,22 +22,26 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public final class ModRecipes {
 
-	public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, BiomancyMod.MOD_ID);
-	public static final RegistryObject<ItemStackRecipeType<DecomposerRecipe>> DECOMPOSING_RECIPE_TYPE = registerItemStackRecipeType("decomposing");
-	public static final RegistryObject<ItemStackRecipeType<BioLabRecipe>> BIO_BREWING_RECIPE_TYPE = registerItemStackRecipeType("bio_brewing");
-	public static final RegistryObject<ItemStackRecipeType<BioForgeRecipe>> BIO_FORGING_RECIPE_TYPE = registerItemStackRecipeType("bio_forging");
-	public static final RegistryObject<ItemStackRecipeType<DigesterRecipe>> DIGESTING_RECIPE_TYPE = registerItemStackRecipeType("digesting");
-
 	public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, BiomancyMod.MOD_ID);
+	public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, BiomancyMod.MOD_ID);
+
+	public static final RegistryObject<ItemStackRecipeType<DecomposerRecipe>> DECOMPOSING_RECIPE_TYPE = registerItemStackRecipeType("decomposing");
 	public static final RegistryObject<RecipeSerializer<DecomposerRecipe>> DECOMPOSING_SERIALIZER = registerRecipeSerializer(DECOMPOSING_RECIPE_TYPE, DecomposerRecipe.Serializer::new);
+	public static final RegistryObject<ItemStackRecipeType<BioLabRecipe>> BIO_BREWING_RECIPE_TYPE = registerItemStackRecipeType("bio_brewing");
 	public static final RegistryObject<RecipeSerializer<BioLabRecipe>> BIO_BREWING_SERIALIZER = registerRecipeSerializer(BIO_BREWING_RECIPE_TYPE, BioLabRecipe.Serializer::new);
+	public static final RegistryObject<ItemStackRecipeType<BioForgeRecipe>> BIO_FORGING_RECIPE_TYPE = registerItemStackRecipeType("bio_forging");
 	public static final RegistryObject<RecipeSerializer<BioForgeRecipe>> BIO_FORGING_SERIALIZER = registerRecipeSerializer(BIO_FORGING_RECIPE_TYPE, BioForgeRecipe.Serializer::new);
-	public static final RegistryObject<RecipeSerializer<DigesterRecipe>> DIGESTING_SERIALIZER = registerRecipeSerializer(DIGESTING_RECIPE_TYPE, DigesterRecipe.Serializer::new);
-	public static final RegistryObject<RecipeSerializer<BiometricMembraneRecipe>> BIOMETRIC_MEMBRANE_CRAFTING_SERIALIZER = registerRecipeSerializer("crafting_special_biometric_membrane", () -> new SimpleCraftingRecipeSerializer<>(BiometricMembraneRecipe::new));
+	public static final RegistryObject<ItemStackRecipeType<DigestingRecipe>> DIGESTING_RECIPE_TYPE = registerItemStackRecipeType("digesting");
+	public static final RegistryObject<RecipeSerializer<StaticDigestingRecipe>> DIGESTING_SERIALIZER = registerRecipeSerializer(DIGESTING_RECIPE_TYPE, StaticDigestingRecipe.Serializer::new);
+
+	// DYNAMIC
+	public static final RegistryObject<RecipeSerializer<FoodDigestingRecipe>> FOOD_DIGESTING_SERIALIZER = registerDynamicRecipeSerializer(DIGESTING_RECIPE_TYPE, "food", FoodDigestingRecipe.Serializer::new);
+	public static final RegistryObject<RecipeSerializer<BiometricMembraneRecipe>> BIOMETRIC_MEMBRANE_CRAFTING_SERIALIZER = registerDynamicCraftingRecipeSerializer(RecipeType.CRAFTING, "biometric_membrane", () -> new SimpleCraftingRecipeSerializer<>(BiometricMembraneRecipe::new));
 
 	private ModRecipes() {}
 
@@ -69,24 +74,33 @@ public final class ModRecipes {
 	}
 
 	public static void registerIngredientSerializers() {
-		CraftingHelper.register(BiomancyMod.createRL("food_nutrition"), FoodNutritionIngredient.Serializer.INSTANCE);
+		CraftingHelper.register(BiomancyMod.createRL("food_nutrition"), AnyFoodIngredient.Serializer.INSTANCE);
 	}
 
-	private static <T extends RecipeType<?>, R extends Recipe<Container>> RegistryObject<RecipeSerializer<R>> registerRecipeSerializer(RegistryObject<T> recipeTypeHolder, Supplier<RecipeSerializer<R>> serializerSupplier) {
-		return RECIPE_SERIALIZERS.register(recipeTypeHolder.getId().getPath(), serializerSupplier);
+	private static <T extends RecipeType<?>, R extends Recipe<Container>> RegistryObject<RecipeSerializer<R>> registerRecipeSerializer(RegistryObject<T> recipeType, Supplier<RecipeSerializer<R>> serializerSupplier) {
+		return RECIPE_SERIALIZERS.register(recipeType.getId().getPath(), serializerSupplier);
 	}
 
-	private static <R extends CraftingRecipe> RegistryObject<RecipeSerializer<R>> registerRecipeSerializer(String name, Supplier<RecipeSerializer<R>> serializerSupplier) {
-		return RECIPE_SERIALIZERS.register(name, serializerSupplier);
+	private static <T extends RecipeType<?>, R extends Recipe<Container>> RegistryObject<RecipeSerializer<R>> registerDynamicRecipeSerializer(RegistryObject<T> recipeType, String name, Supplier<RecipeSerializer<R>> serializerSupplier) {
+		String prefix = recipeType.getId().getPath() + "_dynamic_";
+		return RECIPE_SERIALIZERS.register(prefix + name, serializerSupplier);
 	}
 
-	private static <T extends Recipe<Container>> RegistryObject<ItemStackRecipeType<T>> registerItemStackRecipeType(String identifier) {
-		return RECIPE_TYPES.register(identifier, () -> new ItemStackRecipeType<>(BiomancyMod.createRLString(identifier)));
+	private static <T extends CraftingRecipe, R extends CraftingRecipe> RegistryObject<RecipeSerializer<R>> registerDynamicCraftingRecipeSerializer(RecipeType<T> recipeType, String name, Supplier<RecipeSerializer<R>> serializerSupplier) {
+		String prefix = Objects.requireNonNull(ResourceLocation.tryParse(recipeType.toString())).getPath() + "_dynamic_";
+		return RECIPE_SERIALIZERS.register(prefix + name, serializerSupplier);
 	}
 
-	//TODO: Determine if this code should be removed.
-	private static <T extends Recipe<Container>> RegistryObject<SimpleRecipeType<T>> createSimpleRecipeType(String identifier) {
-		return RECIPE_TYPES.register(identifier, () -> new SimpleRecipeType<>(BiomancyMod.createRLString(identifier)));
+	private static <R extends CraftingRecipe> RegistryObject<RecipeSerializer<R>> registerCraftingRecipeSerializer(String name, Supplier<RecipeSerializer<R>> serializer) {
+		return RECIPE_SERIALIZERS.register(name, serializer);
+	}
+
+	private static <T extends Recipe<Container>> RegistryObject<ItemStackRecipeType<T>> registerItemStackRecipeType(String namespacedId) {
+		return RECIPE_TYPES.register(namespacedId, () -> new ItemStackRecipeType<>(BiomancyMod.createRLString(namespacedId)));
+	}
+
+	private static <T extends Recipe<Container>> RegistryObject<SimpleRecipeType<T>> createSimpleRecipeType(String namespacedId) {
+		return RECIPE_TYPES.register(namespacedId, () -> new SimpleRecipeType<>(BiomancyMod.createRLString(namespacedId)));
 	}
 
 }

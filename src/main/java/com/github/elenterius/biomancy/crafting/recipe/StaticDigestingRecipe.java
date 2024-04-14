@@ -20,31 +20,30 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 
-public class DigesterRecipe extends ProcessingRecipe {
+public class StaticDigestingRecipe extends StaticProcessingRecipe implements DigestingRecipe {
 
-	public static final short DEFAULT_CRAFTING_COST_NUTRIENTS = 1;
 	private final Ingredient recipeIngredient;
 	private final ItemStack recipeResult;
 
-	public DigesterRecipe(ResourceLocation id, ItemStack result, int craftingTimeTicks, int craftingCostNutrients, Ingredient ingredient) {
+	public StaticDigestingRecipe(ResourceLocation id, ItemStack result, int craftingTimeTicks, int craftingCostNutrients, Ingredient ingredient) {
 		super(id, craftingTimeTicks, craftingCostNutrients);
 		recipeIngredient = ingredient;
 		recipeResult = result;
 	}
 
 	@Override
-	public boolean matches(Container inv, Level worldIn) {
-		return recipeIngredient.test(inv.getItem(0));
+	public boolean matches(Container inputInventory, Level worldIn) {
+		return recipeIngredient.test(inputInventory.getItem(0));
 	}
 
 	@Override
-	public ItemStack assemble(Container inv, RegistryAccess registryAccess) {
+	public ItemStack assemble(Container inputInventory, RegistryAccess registryAccess) {
 		return recipeResult.copy();
 	}
 
 	@Override
 	public boolean canCraftInDimensions(int width, int height) {
-		return width * height <= 1;
+		return width * height == 1;
 	}
 
 	@Override
@@ -52,6 +51,7 @@ public class DigesterRecipe extends ProcessingRecipe {
 		return recipeResult;
 	}
 
+	@Override
 	public Ingredient getIngredient() {
 		return recipeIngredient;
 	}
@@ -60,7 +60,6 @@ public class DigesterRecipe extends ProcessingRecipe {
 	public NonNullList<Ingredient> getIngredients() {
 		return NonNullList.of(Ingredient.EMPTY, recipeIngredient);
 	}
-
 
 	@Override
 	public RecipeSerializer<?> getSerializer() {
@@ -77,10 +76,10 @@ public class DigesterRecipe extends ProcessingRecipe {
 		return new ItemStack(ModItems.DIGESTER.get());
 	}
 
-	public static class Serializer implements RecipeSerializer<DigesterRecipe> {
+	public static class Serializer implements RecipeSerializer<StaticDigestingRecipe> {
 
 		@Override
-		public DigesterRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
+		public StaticDigestingRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
 
 			Ingredient ingredient = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "ingredient"));
 
@@ -90,15 +89,15 @@ public class DigesterRecipe extends ProcessingRecipe {
 
 			ItemStack resultStack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
 			int time = GsonHelper.getAsInt(json, "processingTime", 100);
-			int cost = GsonHelper.getAsInt(json, "nutrientsCost", DEFAULT_CRAFTING_COST_NUTRIENTS);
+			int cost = GsonHelper.getAsInt(json, "nutrientsCost", 1);
 
-			return new DigesterRecipe(recipeId, resultStack, time, cost, ingredient);
+			return new StaticDigestingRecipe(recipeId, resultStack, time, cost, ingredient);
 		}
 
 		//client side
 		@Nullable
 		@Override
-		public DigesterRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+		public StaticDigestingRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
 			ItemStack resultStack = buffer.readItem();
 
 			int craftingTime = buffer.readVarInt();
@@ -106,15 +105,15 @@ public class DigesterRecipe extends ProcessingRecipe {
 
 			Ingredient ingredient = Ingredient.fromNetwork(buffer);
 
-			return new DigesterRecipe(recipeId, resultStack, craftingTime, craftingCost, ingredient);
+			return new StaticDigestingRecipe(recipeId, resultStack, craftingTime, craftingCost, ingredient);
 		}
 
 		//server side
 		@Override
-		public void toNetwork(FriendlyByteBuf buffer, DigesterRecipe recipe) {
+		public void toNetwork(FriendlyByteBuf buffer, StaticDigestingRecipe recipe) {
 			buffer.writeItem(recipe.recipeResult);
-			buffer.writeVarInt(recipe.getCraftingTimeTicks());
-			buffer.writeVarInt(recipe.getCraftingCostNutrients());
+			buffer.writeVarInt(recipe.craftingTimeTicks);
+			buffer.writeVarInt(recipe.craftingCostNutrients);
 			recipe.recipeIngredient.toNetwork(buffer);
 		}
 	}

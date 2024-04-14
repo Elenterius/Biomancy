@@ -2,8 +2,9 @@ package com.github.elenterius.biomancy.crafting.state;
 
 import com.github.elenterius.biomancy.crafting.recipe.ProcessingRecipe;
 import com.github.elenterius.biomancy.util.fuel.IFuelHandler;
+import net.minecraft.world.Container;
 
-public abstract class FuelConsumingRecipeCraftingStateData<T extends ProcessingRecipe> extends RecipeCraftingStateData<T> {
+public abstract class FuelConsumingRecipeCraftingStateData<T extends ProcessingRecipe<C>, C extends Container> extends RecipeCraftingStateData<T, C> {
 
 	public static final int FUEL_INDEX = 3;
 

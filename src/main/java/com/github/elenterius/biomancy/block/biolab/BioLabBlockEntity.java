@@ -25,6 +25,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -53,7 +54,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
-public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabStateData> implements MenuProvider, GeoBlockEntity {
+public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, Container, BioLabStateData> implements MenuProvider, GeoBlockEntity {
 
 	public static final int FUEL_SLOTS = 1;
 	public static final int INPUT_SLOTS = BioLabRecipe.MAX_INGREDIENTS + BioLabRecipe.MAX_REACTANT;
@@ -125,6 +126,11 @@ public class BioLabBlockEntity extends MachineBlockEntity<BioLabRecipe, BioLabSt
 	@Override
 	protected BioLabStateData getStateData() {
 		return stateData;
+	}
+
+	@Override
+	protected Container getInputInventory() {
+		return inputInventory;
 	}
 
 	@Override

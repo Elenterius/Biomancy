@@ -57,7 +57,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, DecomposerStateData> implements MenuProvider, GeoBlockEntity {
+public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, Container, DecomposerStateData> implements MenuProvider, GeoBlockEntity {
 
 	public static final int FUEL_SLOTS = 1;
 	public static final int INPUT_SLOTS = DecomposerRecipe.MAX_INGREDIENTS;
@@ -127,6 +127,11 @@ public class DecomposerBlockEntity extends MachineBlockEntity<DecomposerRecipe, 
 	@Override
 	protected DecomposerStateData getStateData() {
 		return stateData;
+	}
+
+	@Override
+	protected Container getInputInventory() {
+		return inputInventory;
 	}
 
 	@Override

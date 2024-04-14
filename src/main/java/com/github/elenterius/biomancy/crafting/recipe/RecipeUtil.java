@@ -3,8 +3,13 @@ package com.github.elenterius.biomancy.crafting.recipe;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +17,20 @@ import java.util.List;
 public final class RecipeUtil {
 
 	private RecipeUtil() {}
+
+	public static void writeItem(FriendlyByteBuf buffer, @Nullable Item item) {
+		if (item == null || item == Items.AIR) {
+			buffer.writeBoolean(false);
+		}
+		else {
+			buffer.writeBoolean(true);
+			buffer.writeId(BuiltInRegistries.ITEM, item);
+		}
+	}
+
+	public static @Nullable Item readItem(FriendlyByteBuf buffer) {
+		return !buffer.readBoolean() ? null : buffer.readById(BuiltInRegistries.ITEM);
+	}
 
 	public static Ingredient readIngredient(JsonObject json, String memberName) {
 		return Ingredient.fromJson((GsonHelper.isArrayNode(json, memberName) ? GsonHelper.getAsJsonArray(json, memberName) : GsonHelper.getAsJsonObject(json, memberName)));
