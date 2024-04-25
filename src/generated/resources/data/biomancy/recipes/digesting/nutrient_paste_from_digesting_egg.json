@@ -1,10 +1,10 @@
 {
   "type": "biomancy:digesting",
   "ingredient": {
-    "tag": "forge:seeds"
+    "item": "minecraft:egg"
   },
-  "nutrientsCost": 1,
-  "processingTime": 240,
+  "nutrientsCost": 2,
+  "processingTime": 220,
   "result": {
     "item": "biomancy:nutrient_paste"
   }

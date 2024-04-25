@@ -4,9 +4,9 @@
     "item": "minecraft:cake"
   },
   "nutrientsCost": 1,
-  "processingTime": 702,
+  "processingTime": 673,
   "result": {
-    "count": 14,
+    "count": 12,
     "item": "biomancy:nutrient_paste"
   }
 }

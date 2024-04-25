@@ -4,9 +4,9 @@
     "item": "minecraft:melon"
   },
   "nutrientsCost": 1,
-  "processingTime": 750,
+  "processingTime": 702,
   "result": {
-    "count": 18,
+    "count": 14,
     "item": "biomancy:nutrient_paste"
   }
 }
