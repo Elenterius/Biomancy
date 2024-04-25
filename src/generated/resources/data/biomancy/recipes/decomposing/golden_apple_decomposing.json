@@ -4,7 +4,7 @@
     "item": "minecraft:golden_apple"
   },
   "nutrientsCost": 3,
-  "processingTime": 2920,
+  "processingTime": 2850,
   "results": [
     {
       "countRange": {
@@ -25,8 +25,8 @@
     {
       "countRange": {
         "type": "uniform",
-        "max": 8,
-        "min": 4
+        "max": 6,
+        "min": 3
       },
       "item": "biomancy:regenerative_fluid"
     }

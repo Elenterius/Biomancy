@@ -4,7 +4,7 @@
     "item": "minecraft:magma_cream"
   },
   "nutrientsCost": 1,
-  "processingTime": 151,
+  "processingTime": 176,
   "results": [
     {
       "countRange": {
@@ -25,7 +25,7 @@
     {
       "countRange": {
         "type": "uniform",
-        "max": 1,
+        "max": 2,
         "min": 0
       },
       "item": "biomancy:volatile_fluid"
