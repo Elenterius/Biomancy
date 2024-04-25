@@ -4,7 +4,7 @@
     "item": "minecraft:cocoa_beans"
   },
   "nutrientsCost": 1,
-  "processingTime": 489,
+  "processingTime": 524,
   "result": {
     "count": 4,
     "item": "biomancy:nutrient_paste"

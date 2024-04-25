@@ -4,7 +4,7 @@
     "tag": "minecraft:leaves"
   },
   "nutrientsCost": 1,
-  "processingTime": 180,
+  "processingTime": 225,
   "result": {
     "item": "biomancy:nutrient_paste"
   }

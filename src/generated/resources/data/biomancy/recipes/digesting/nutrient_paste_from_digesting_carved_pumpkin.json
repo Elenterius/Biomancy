@@ -4,9 +4,9 @@
     "item": "minecraft:carved_pumpkin"
   },
   "nutrientsCost": 1,
-  "processingTime": 496,
+  "processingTime": 232,
   "result": {
-    "count": 8,
+    "count": 2,
     "item": "biomancy:nutrient_paste"
   }
 }
