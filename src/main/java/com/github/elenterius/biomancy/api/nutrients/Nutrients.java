@@ -21,8 +21,8 @@ public final class Nutrients {
 	public static final IntUnaryOperator RAW_MEAT_NUTRITION_MODIFIER = nutrition -> nutrition > 0 ? Mth.ceil(3.75d * Math.exp(0.215d * nutrition)) : 0;
 
 	static {
-		registerFuel(ModItems.NUTRIENT_PASTE.get(), 2);
-		registerFuel(ModItems.NUTRIENT_BAR.get(), 2 * 9);
+		registerFuel(ModItems.NUTRIENT_PASTE.get(), 3);
+		registerFuel(ModItems.NUTRIENT_BAR.get(), 3 * 9);
 		registerRepairMaterial(ModItems.NUTRIENT_PASTE.get(), 4);
 		registerRepairMaterial(ModItems.NUTRIENT_BAR.get(), 4 * 9);
 	}
