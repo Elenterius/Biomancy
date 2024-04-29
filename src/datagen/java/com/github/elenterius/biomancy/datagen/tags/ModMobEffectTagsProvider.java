@@ -8,6 +8,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +31,42 @@ public class ModMobEffectTagsProvider extends IntrinsicHolderTagsProvider<MobEff
 	protected void addTags(HolderLookup.Provider pProvider) {
 		tag(ModMobEffectTags.NOT_REMOVABLE_WITH_CLEANSING_SERUM).add(
 				ModMobEffects.ESSENCE_ANEMIA.get()
+		);
+
+		tag(ModMobEffectTags.CRADLE_LIFE_ENERGY_SOURCE).add(
+				MobEffects.HEAL,
+				MobEffects.REGENERATION,
+				MobEffects.HEALTH_BOOST,
+				MobEffects.ABSORPTION
+		);
+
+		tag(ModMobEffectTags.CRADLE_DISEASE_SOURCE).add(
+				MobEffects.WEAKNESS,
+				MobEffects.WITHER,
+				MobEffects.POISON,
+				ModMobEffects.BLEED.get()
+		);
+
+		tag(ModMobEffectTags.CRADLE_SUCCESS_SOURCE).add(
+				MobEffects.LUCK,
+				MobEffects.SATURATION,
+				ModMobEffects.LIBIDO.get()
+		);
+
+		tag(ModMobEffectTags.CRADLE_HOSTILITY_SOURCE).add(
+				MobEffects.HUNGER,
+				MobEffects.CONFUSION,
+				MobEffects.BLINDNESS,
+				MobEffects.HARM,
+				MobEffects.WITHER,
+				MobEffects.POISON,
+				ModMobEffects.BLEED.get()
+		);
+
+		tag(ModMobEffectTags.CRADLE_ANOMALY_SOURCE).add(
+				MobEffects.BAD_OMEN,
+				MobEffects.DARKNESS,
+				ModMobEffects.CORROSIVE.get()
 		);
 	}
 

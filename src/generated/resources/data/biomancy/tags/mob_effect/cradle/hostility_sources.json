@@ -1,0 +1,11 @@
+{
+  "values": [
+    "minecraft:hunger",
+    "minecraft:nausea",
+    "minecraft:blindness",
+    "minecraft:instant_damage",
+    "minecraft:wither",
+    "minecraft:poison",
+    "biomancy:bleed"
+  ]
+}

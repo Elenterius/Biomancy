@@ -12,10 +12,36 @@ public final class ModMobEffectTags {
 
 	public static final TagKey<MobEffect> NOT_REMOVABLE_WITH_CLEANSING_SERUM = tag("not_removable_with_cleansing_serum");
 
+	public static final TagKey<MobEffect> CRADLE_LIFE_ENERGY_SOURCE = tag("cradle/life_energy_sources");
+	public static final TagKey<MobEffect> CRADLE_DISEASE_SOURCE = tag("cradle/disease_sources");
+	public static final TagKey<MobEffect> CRADLE_SUCCESS_SOURCE = tag("cradle/success_sources");
+	public static final TagKey<MobEffect> CRADLE_HOSTILITY_SOURCE = tag("cradle/hostility_sources");
+	public static final TagKey<MobEffect> CRADLE_ANOMALY_SOURCE = tag("cradle/anomaly_sources");
+
 	private ModMobEffectTags() {}
 
 	public static boolean isNotRemovableWithCleansingSerum(MobEffect mobEffect) {
 		return getTag(NOT_REMOVABLE_WITH_CLEANSING_SERUM).contains(mobEffect);
+	}
+
+	public static boolean isCradleLifeEnergySource(MobEffect mobEffect) {
+		return getTag(CRADLE_LIFE_ENERGY_SOURCE).contains(mobEffect);
+	}
+
+	public static boolean isCradleDiseaseSource(MobEffect mobEffect) {
+		return getTag(CRADLE_DISEASE_SOURCE).contains(mobEffect);
+	}
+
+	public static boolean isCradleSuccessSource(MobEffect mobEffect) {
+		return getTag(CRADLE_DISEASE_SOURCE).contains(mobEffect);
+	}
+
+	public static boolean isCradleHostilitySource(MobEffect mobEffect) {
+		return getTag(CRADLE_HOSTILITY_SOURCE).contains(mobEffect);
+	}
+
+	public static boolean isCradleAnomalySource(MobEffect mobEffect) {
+		return getTag(CRADLE_ANOMALY_SOURCE).contains(mobEffect);
 	}
 
 	public static ITag<MobEffect> getTag(TagKey<MobEffect> tagKey) {

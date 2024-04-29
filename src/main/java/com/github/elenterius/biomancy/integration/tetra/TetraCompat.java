@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.integration.tetra;
 
-import com.github.elenterius.biomancy.tribute.TributeImpl;
-import com.github.elenterius.biomancy.tribute.Tributes;
+import com.github.elenterius.biomancy.api.tribute.SimpleTribute;
+import com.github.elenterius.biomancy.api.tribute.Tributes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import se.mickelus.tetra.TetraMod;
@@ -28,7 +28,7 @@ public final class TetraCompat {
 		TetraRegistries.items.getEntries().stream()
 				.filter(registryObject -> registryObject.getId().equals(dragonSinewId))
 				.findAny()
-				.ifPresent(registryObject -> Tributes.register(registryObject.get(), TributeImpl.builder().biomass(20).lifeEnergy(25).successModifier(20).hostileModifier(20).anomalyModifier(30).create()));
+				.ifPresent(registryObject -> Tributes.register(registryObject.get(), SimpleTribute.builder().biomass(20).lifeEnergy(25).successModifier(20).hostileModifier(20).anomalyModifier(30).build()));
 	}
 
 	static final class TetraHelperImpl implements TetraHelper {

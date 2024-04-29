@@ -1,0 +1,8 @@
+{
+  "values": [
+    "minecraft:instant_health",
+    "minecraft:regeneration",
+    "minecraft:health_boost",
+    "minecraft:absorption"
+  ]
+}
