@@ -71,10 +71,22 @@
       {
         "type": "event",
         "name": "entity.player.burp",
-        "pitch": 0.5
+        "pitch": 0.55,
+        "volume": 1.5
       }
     ],
     "subtitle": "sounds.biomancy.block.cradle.spawn_mob"
+  },
+  "block.cradle.spawn_primordial_mob": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.fox.screech",
+        "pitch": 0.5,
+        "volume": 2.0
+      }
+    ],
+    "subtitle": "sounds.biomancy.block.cradle.spawn_primordial_mob"
   },
   "block.decomposer.crafting": {
     "sounds": [

@@ -409,6 +409,7 @@
   "sounds.biomancy.fleshkin_chest.close": "Close Fleshy Chest",
   "sounds.biomancy.fleshkin_chest.bite_attack": "Fleshy Chest Bite Attack",
   "sounds.biomancy.block.cradle.spawn_mob": "Primordial Cradle Spawns a Mob",
+  "sounds.biomancy.block.cradle.spawn_primordial_mob": "Primordial Cradle Spawns a Primal Mob",
   "sounds.biomancy.block.cradle.became_full": "Primordial Cradle became full",
   "sounds.biomancy.block.cradle.eat": "Primordial Cradle Eating",
   "sounds.biomancy.block.cradle.no": "Primordial Cradle disagrees",

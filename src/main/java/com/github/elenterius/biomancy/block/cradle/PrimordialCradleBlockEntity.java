@@ -20,7 +20,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
@@ -172,14 +171,15 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 	public void onSacrifice(ServerLevel level) {
 		BlockPos pos = getBlockPos();
 
+		float successChance = sacrificeHandler.getSuccessChance();
 		float energyMultiplier = sacrificeHandler.getLifeEnergyPct();
 
-		if (level.random.nextFloat() < sacrificeHandler.getSuccessChance()) {
+		if (level.random.nextFloat() < successChance) {
 
 			if (level.random.nextFloat() < sacrificeHandler.getAnomalyChance()) {
 				spawnPrimordialFleshBlob(level, pos, sacrificeHandler);
 				addPrimalEnergy(Math.round(4096 * energyMultiplier));
-				SoundUtil.broadcastBlockSound(level, pos, SoundEvents.FOX_SCREECH, 2f, 0.5f);
+				SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CRADLE_SPAWN_PRIMORDIAL_MOB);
 			}
 			else {
 				if (sacrificeHandler.getHostileChance() < -4.2f) {
@@ -193,13 +193,31 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 				SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CRADLE_SPAWN_MOB);
 			}
 
-			PrimordialEcosystem.tryToReplaceBlock(level, pos.below(), ModBlocks.MALIGNANT_FLESH.get().defaultBlockState());
+			PrimordialEcosystem.tryToReplaceBlock(level, pos.below(), ModBlocks.PRIMAL_FLESH.get().defaultBlockState());
 
 			level.sendParticles(ParticleTypes.EXPLOSION, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, 1, 0, 0, 0, 0);
 		}
+		else if (successChance > 0.75f) {
+			if (sacrificeHandler.getHostileChance() > 0.6f) {
+				attackAOE(level, pos);
+			}
+
+			addPrimalEnergy(Math.round(4096 * energyMultiplier));
+
+			if (sacrificeHandler.getAnomalyChance() > 0.8f) {
+				PrimordialEcosystem.tryToReplaceBlock(level, pos.below(), ModBlocks.MALIGNANT_FLESH.get().defaultBlockState());
+				PrimordialEcosystem.spreadMalignantVeinsFromSource(level, pos, PrimordialEcosystem.MAX_CHARGE_SUPPLIER);
+				SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CRADLE_SPAWN_PRIMORDIAL_MOB);
+			}
+			else {
+				PrimordialEcosystem.tryToReplaceBlock(level, pos.below(), ModBlocks.POROUS_PRIMAL_FLESH.get().defaultBlockState());
+				SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CRADLE_SPAWN_MOB);
+			}
+		}
 		else {
-			attackAOE(level, pos);
-			SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CRADLE_SPIKE_ATTACK);
+			if (sacrificeHandler.getHostileChance() + sacrificeHandler.getTumorFactor() > 0.5f) {
+				attackAOE(level, pos);
+			}
 
 			PrimordialEcosystem.tryToReplaceBlock(level, pos.below(), ModBlocks.MALIGNANT_FLESH.get().defaultBlockState());
 			PrimordialEcosystem.spreadMalignantVeinsFromSource(level, pos, PrimordialEcosystem.MAX_CHARGE_SUPPLIER);
@@ -305,6 +323,7 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 
 	protected void attackAOE(ServerLevel level, BlockPos pos) {
 		broadcastAnimation(Animations.SPIKE_ATTACK);
+		SoundUtil.broadcastBlockSound(level, pos, ModSoundEvents.CRADLE_SPIKE_ATTACK);
 
 		float maxAttackDistance = 1.5f;
 		float maxAttackDistanceSqr = maxAttackDistance * maxAttackDistance;
