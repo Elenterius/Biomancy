@@ -307,6 +307,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addSound(ModSoundEvents.FLESHKIN_CHEST_BITE_ATTACK, "Fleshy Chest Bite Attack");
 
 		addSound(ModSoundEvents.CRADLE_SPAWN_MOB, "Primordial Cradle Spawns a Mob");
+		addSound(ModSoundEvents.CRADLE_SPAWN_PRIMORDIAL_MOB, "Primordial Cradle Spawns a Primal Mob");
 		addSound(ModSoundEvents.CRADLE_BECAME_FULL, "Primordial Cradle became full");
 		addSound(ModSoundEvents.CRADLE_EAT, "Primordial Cradle Eating");
 		addSound(ModSoundEvents.CRADLE_NO, "Primordial Cradle disagrees");

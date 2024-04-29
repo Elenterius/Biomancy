@@ -49,6 +49,7 @@ public final class ModSoundEvents {
 	public static final RegistryObject<SoundEvent> CRADLE_SPIKE_ATTACK = register("cradle.spike_attack");
 	public static final RegistryObject<SoundEvent> CRADLE_CRAFTING_RANDOM = register("block.cradle.crafting_random");
 	public static final RegistryObject<SoundEvent> CRADLE_SPAWN_MOB = register("block.cradle.spawn_mob");
+	public static final RegistryObject<SoundEvent> CRADLE_SPAWN_PRIMORDIAL_MOB = register("block.cradle.spawn_primordial_mob");
 	public static final RegistryObject<SoundEvent> CRADLE_BECAME_FULL = register("block.cradle.became_full");
 	public static final RegistryObject<SoundEvent> CRADLE_EAT = register("block.cradle.eat");
 	public static final RegistryObject<SoundEvent> CRADLE_NO = register("block.cradle.no");

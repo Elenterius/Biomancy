@@ -56,7 +56,8 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 
 		addSimpleRedirect(ModSoundEvents.CRADLE_SPIKE_ATTACK, SoundEvents.GOAT_SCREAMING_RAM_IMPACT, 1f, 0.5f);
 		addSimpleRedirect(ModSoundEvents.CRADLE_CRAFTING_RANDOM, SoundEvents.PLAYER_BURP, 1f, 0.5f);
-		addSimpleRedirect(ModSoundEvents.CRADLE_SPAWN_MOB, SoundEvents.PLAYER_BURP, 1f, 0.5f);
+		addSimpleRedirect(ModSoundEvents.CRADLE_SPAWN_MOB, SoundEvents.PLAYER_BURP, 1.5f, 0.55f);
+		addSimpleRedirect(ModSoundEvents.CRADLE_SPAWN_PRIMORDIAL_MOB, SoundEvents.FOX_SCREECH, 2f, 0.5f);
 		addSimpleRedirect(ModSoundEvents.CRADLE_BECAME_FULL, SoundEvents.PLAYER_BURP, 1f, 0.25f);
 		addSimpleRedirect(ModSoundEvents.CRADLE_EAT, SoundEvents.GOAT_SCREAMING_EAT, 1f, 0.25f);
 		addSimpleRedirect(ModSoundEvents.CRADLE_NO, SoundEvents.VILLAGER_NO, 0.75f, 0.3f);
