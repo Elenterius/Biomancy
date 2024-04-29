@@ -1,28 +1,23 @@
-package com.github.elenterius.biomancy.tribute;
+package com.github.elenterius.biomancy.api.tribute;
 
-public record TributeImpl(int biomass, int lifeEnergy, int successModifier, int diseaseModifier, int hostileModifier, int anomalyModifier) implements Tribute {
-	public TributeImpl(Tribute a, Tribute b) {
-		this(
-				a.biomass() + b.biomass(),
-				a.lifeEnergy() + b.lifeEnergy(),
-				a.successModifier() + b.successModifier(),
-				a.diseaseModifier() + b.diseaseModifier(),
-				a.hostileModifier() + b.hostileModifier(),
-				a.anomalyModifier() + b.anomalyModifier()
-		);
-	}
+public record SimpleTribute(int biomass, int lifeEnergy, int successModifier, int diseaseModifier, int hostileModifier, int anomalyModifier) implements Tribute {
 
-	public static TributeImpl.Builder builder() {
-		return new TributeImpl.Builder();
+	public static SimpleTribute.Builder builder() {
+		return new SimpleTribute.Builder();
 	}
 
 	public static class Builder {
-		private int successModifier = 0;
-		private int diseaseModifier = 0;
-		private int hostileModifier = 0;
+
 		private int biomass = 0;
 		private int lifeEnergy = 0;
+
+		private int successModifier = 0;
+
+		private int diseaseModifier = 0;
+		private int hostileModifier = 0;
 		private int anomalyModifier = 0;
+
+		private Builder() {}
 
 		public Builder successModifier(int successModifier) {
 			this.successModifier = successModifier;
@@ -54,8 +49,10 @@ public record TributeImpl(int biomass, int lifeEnergy, int successModifier, int 
 			return this;
 		}
 
-		public Tribute create() {
-			return new TributeImpl(biomass, lifeEnergy, successModifier, diseaseModifier, hostileModifier, anomalyModifier);
+		public Tribute build() {
+			return new SimpleTribute(biomass, lifeEnergy, successModifier, diseaseModifier, hostileModifier, anomalyModifier);
 		}
+
 	}
+
 }
