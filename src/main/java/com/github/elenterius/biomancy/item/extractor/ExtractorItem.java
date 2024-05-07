@@ -154,7 +154,7 @@ public class ExtractorItem extends Item implements KeyPressListener, ItemTooltip
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack));
+		tooltip.addAll(ClientTextUtil.getItemInfoTooltip(stack));
 		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action.self_extract")).withStyle(ChatFormatting.DARK_GRAY));
 
 		if (stack.isEnchanted()) tooltip.add(ComponentUtil.emptyLine());

@@ -16,7 +16,7 @@ public final class ColorStyles {
 	public static final int TEXT_SUCCESS = 0x65B52A;
 	public static final int TEXT_ACCENT_FORGE = 0xA88773;
 	public static final int TEXT_ACCENT_FORGE_DARK = 0x51423A;
-	public static final int TEXT_MUTED_AQUA = 0x43CBCB;
+	public static final int TEXT_MUTED_AQUA = 0x459393;
 
 	public static final TooltipStyle GENERIC_TOOLTIP = new TooltipStyle(0xFA301020, 0xFF903E55, 0xFF5A233F);
 	public static final ITooltipStyle CUSTOM_RARITY_TOOLTIP = tooltipEvent -> {

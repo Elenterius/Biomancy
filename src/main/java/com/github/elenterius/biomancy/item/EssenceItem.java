@@ -168,7 +168,7 @@ public class EssenceItem extends Item implements ItemTooltipStyleProvider {
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack));
+		tooltip.addAll(ClientTextUtil.getItemInfoTooltip(stack));
 
 		tooltip.add(ComponentUtil.emptyLine());
 

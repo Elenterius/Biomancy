@@ -22,9 +22,9 @@ public class ObfuscatedTooltipBlockItem extends BlockItem implements ItemTooltip
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		tooltip.add(ComponentUtil.emptyLine());
-		tooltip.add(getTooltipText(stack).withStyle(TextStyles.PRIMORDIAL_RUNES_GRAY));
+		tooltip.addAll(ClientTextUtil.splitLinesByNewLine(getTooltipText(stack).withStyle(TextStyles.PRIMORDIAL_RUNES_GRAY)));
 		tooltip.add(ComponentUtil.emptyLine());
-		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack));
+		tooltip.addAll(ClientTextUtil.getItemInfoTooltip(stack));
 
 		super.appendHoverText(stack, level, tooltip, flag);
 	}

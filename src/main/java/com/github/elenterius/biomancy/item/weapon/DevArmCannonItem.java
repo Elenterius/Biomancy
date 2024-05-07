@@ -149,7 +149,7 @@ public class DevArmCannonItem extends Item implements GeoItem, IArmPoseProvider,
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
 		tooltip.add(ComponentUtil.horizontalLine());
-		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack.getItem()));
+		tooltip.addAll(ClientTextUtil.getItemInfoTooltip(stack));
 
 		tooltip.add(ComponentUtil.emptyLine());
 		tooltip.add(ComponentUtil.literal("The quick brown fox jumps over the lazy dog.").withStyle(TextStyles.PRIMORDIAL_RUNES_GRAY));

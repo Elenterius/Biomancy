@@ -20,7 +20,7 @@ public class SimpleSwordItem extends SwordItem implements ItemTooltipStyleProvid
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack));
+		tooltip.addAll(ClientTextUtil.getItemInfoTooltip(stack));
 	}
 
 }
