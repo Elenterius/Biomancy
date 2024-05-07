@@ -110,7 +110,7 @@ public class StorageSacBlockItem extends BlockItem implements ItemTooltipStylePr
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack));
+		tooltip.addAll(ClientTextUtil.getItemInfoTooltip(stack));
 		tooltip.add(ComponentUtil.tooltip(new StorageSacTooltipComponent(getItemHandler(stack).orElse(null))));
 		super.appendHoverText(stack, level, tooltip, flag);
 	}

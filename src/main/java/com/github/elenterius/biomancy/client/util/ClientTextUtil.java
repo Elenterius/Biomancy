@@ -10,12 +10,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
+import java.text.BreakIterator;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -35,11 +38,6 @@ public final class ClientTextUtil {
 
 	private ClientTextUtil() {}
 
-	@Deprecated
-	public static void appendItemInfoTooltip(Item item, List<Component> tooltip) {
-		tooltip.add(getItemInfoTooltip(item));
-	}
-
 	private static MutableComponent getItemTooltip(ItemStack stack) {
 		Item item = stack.getItem();
 
@@ -50,13 +48,12 @@ public final class ClientTextUtil {
 		return TextComponentUtil.getItemTooltip(item);
 	}
 
-	public static MutableComponent getItemInfoTooltip(ItemStack stack) {
-		return Screen.hasControlDown() ? getItemTooltip(stack).withStyle(TextStyles.LORE) : pressButtonTo(CTRL_KEY_TEXT.plainCopy(), SHOW_INFO).withStyle(TextStyles.LORE);
-	}
+	public static List<Component> getItemInfoTooltip(ItemStack stack) {
+		if (Screen.hasControlDown()) {
+			return splitLinesByNewLine(getItemTooltip(stack).withStyle(TextStyles.LORE));
+		}
 
-	@Deprecated
-	public static MutableComponent getItemInfoTooltip(Item item) {
-		return Screen.hasControlDown() ? TextComponentUtil.getItemTooltip(item).withStyle(TextStyles.LORE) : pressButtonTo(CTRL_KEY_TEXT.plainCopy(), SHOW_INFO).withStyle(TextStyles.LORE);
+		return List.of(pressButtonTo(CTRL_KEY_TEXT.plainCopy(), SHOW_INFO).withStyle(TextStyles.LORE));
 	}
 
 	public static boolean showExtraInfo(List<Component> tooltip) {
@@ -97,6 +94,56 @@ public final class ClientTextUtil {
 			}
 		}
 		return uuid.toString();
+	}
+
+	public static List<Component> splitLinesByNewLine(Component component) {
+		return splitLines(component, Integer.MAX_VALUE);
+	}
+
+	public static List<Component> splitLines(Component component, int maxLength) {
+		Locale locale = Minecraft.getInstance().getLocale();
+		String text = component.getString();
+		Style style = component.getStyle();
+
+		BreakIterator breakIterator = BreakIterator.getLineInstance(locale);
+		breakIterator.setText(text);
+
+		List<Component> lines = new ArrayList<>();
+		StringBuilder currentLine = new StringBuilder();
+
+		int start = breakIterator.first();
+		int end = breakIterator.next();
+
+		while (end != BreakIterator.DONE) {
+			String word = text.substring(start, end);
+
+			if (currentLine.length() + word.length() >= maxLength) {
+				lines.add(ComponentUtil.literal(currentLine.toString()).withStyle(style));
+				currentLine = new StringBuilder();
+			}
+
+			if (word.equals("\n")) {
+				lines.add(ComponentUtil.emptyLine());
+			}
+			else if (word.contains("\n")) {
+				word = word.replace("\n", "");
+				currentLine.append(word);
+				lines.add(ComponentUtil.literal(currentLine.toString()).withStyle(style));
+				currentLine = new StringBuilder();
+			}
+			else {
+				currentLine.append(word);
+			}
+
+			start = end;
+			end = breakIterator.next();
+		}
+
+		if (!currentLine.isEmpty()) {
+			lines.add(ComponentUtil.literal(currentLine.toString()).withStyle(style));
+		}
+
+		return lines;
 	}
 
 	public static String format(String format, Object... objects) {

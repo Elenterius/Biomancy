@@ -19,7 +19,7 @@ public class SimpleBlockItem extends BlockItem implements ItemTooltipStyleProvid
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		tooltip.add(ClientTextUtil.getItemInfoTooltip(stack));
+		tooltip.addAll(ClientTextUtil.getItemInfoTooltip(stack));
 		super.appendHoverText(stack, level, tooltip, flag);
 	}
 

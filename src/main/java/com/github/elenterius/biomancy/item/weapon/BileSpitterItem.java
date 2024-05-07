@@ -104,7 +104,7 @@ public class BileSpitterItem extends ProjectileWeaponItem implements ItemTooltip
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		ClientTextUtil.appendItemInfoTooltip(stack.getItem(), tooltip);
+		tooltip.addAll(ClientTextUtil.getItemInfoTooltip(stack));
 	}
 
 	@Override

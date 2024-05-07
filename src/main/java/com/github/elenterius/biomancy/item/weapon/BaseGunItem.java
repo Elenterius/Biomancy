@@ -3,7 +3,6 @@ package com.github.elenterius.biomancy.item.weapon;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.item.KeyPressListener;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
-import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -231,7 +230,7 @@ public abstract class BaseGunItem extends ProjectileWeaponItem implements Gun, K
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		tooltip.add(ClientTextUtil.getItemInfoTooltip(this).setStyle(TextStyles.LORE));
+		tooltip.addAll(ClientTextUtil.getItemInfoTooltip(stack));
 		if (ClientTextUtil.showExtraInfo(tooltip)) {
 			DecimalFormat df = ClientTextUtil.getDecimalFormatter("#.###");
 			tooltip.add(TextComponentUtil.getTooltipText("fire_rate").append(String.format(": %s RPS ", df.format(getFireRate(stack)))).append(addBrackets(df.format(ONE_SECOND / baseShootDelay))));
