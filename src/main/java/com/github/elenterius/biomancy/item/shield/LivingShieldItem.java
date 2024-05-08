@@ -102,7 +102,7 @@ public class LivingShieldItem extends SimpleShieldItem implements SimpleLivingTo
 
 	@Override
 	public boolean isBarVisible(ItemStack stack) {
-		return getNutrients(stack) > 0;
+		return getNutrients(stack) < getMaxNutrients(stack);
 	}
 
 	@Override

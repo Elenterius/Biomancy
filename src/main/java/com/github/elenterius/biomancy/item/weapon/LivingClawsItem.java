@@ -146,7 +146,7 @@ public class LivingClawsItem extends SimpleClawsItem implements SpecialLivingToo
 
 	@Override
 	public boolean isBarVisible(ItemStack stack) {
-		return getNutrients(stack) > 0;
+		return getNutrients(stack) < getMaxNutrients(stack);
 	}
 
 	@Override
