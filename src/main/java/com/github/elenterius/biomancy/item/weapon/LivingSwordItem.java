@@ -143,7 +143,7 @@ public class LivingSwordItem extends SwordItem implements ItemTooltipStyleProvid
 
 	@Override
 	public boolean isBarVisible(ItemStack stack) {
-		return getNutrients(stack) > 0;
+		return getNutrients(stack) < getMaxNutrients(stack);
 	}
 
 	@Override
