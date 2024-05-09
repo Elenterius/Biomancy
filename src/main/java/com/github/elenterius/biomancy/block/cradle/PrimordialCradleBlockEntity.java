@@ -1,11 +1,13 @@
 package com.github.elenterius.biomancy.block.cradle;
 
 import com.github.elenterius.biomancy.BiomancyConfig;
+import com.github.elenterius.biomancy.api.tribute.SimpleTribute;
 import com.github.elenterius.biomancy.api.tribute.Tribute;
 import com.github.elenterius.biomancy.block.base.SimpleSyncedBlockEntity;
 import com.github.elenterius.biomancy.config.PrimalEnergySettings;
 import com.github.elenterius.biomancy.entity.mob.fleshblob.FleshBlob;
 import com.github.elenterius.biomancy.init.*;
+import com.github.elenterius.biomancy.item.armor.AcolyteArmorItem;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.util.animation.TriggerableAnimation;
 import com.github.elenterius.biomancy.world.PrimordialEcosystem;
@@ -24,6 +26,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -170,6 +173,22 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 
 	public void onSacrifice(ServerLevel level) {
 		BlockPos pos = getBlockPos();
+
+		float radius = 8f;
+		AABB aabb = AABB.ofSize(Vec3.atCenterOf(pos), radius * 2, radius * 2, radius * 2);
+		List<LivingEntity> nearbyLivingEntities = level.getEntitiesOfClass(LivingEntity.class, aabb, EntitySelector.NO_SPECTATORS.and(Entity::isAlive));
+
+		if (!nearbyLivingEntities.isEmpty()) {
+			Tribute tribute = SimpleTribute.builder().successModifier(1).hostileModifier(-5).build();
+
+			for (LivingEntity livingEntity : nearbyLivingEntities) {
+				for (ItemStack armor : livingEntity.getArmorSlots()) {
+					if (armor.getItem() instanceof AcolyteArmorItem) {
+						sacrificeHandler.addTribute(tribute);
+					}
+				}
+			}
+		}
 
 		float successChance = sacrificeHandler.getSuccessChance();
 		float energyMultiplier = sacrificeHandler.getLifeEnergyPct();

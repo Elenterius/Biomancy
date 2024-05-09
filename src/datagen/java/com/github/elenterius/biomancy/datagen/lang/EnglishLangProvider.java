@@ -223,6 +223,8 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addTooltip("ability.corrosive_proc.desc", "On critical hit, applies Corrosive status effect");
 		addTooltip("ability.thorny_hide", "Thorny Hide");
 		addTooltip("ability.thorny_hide.desc", "On successful block, deals thorns damage to the attacker");
+		addTooltip("ability.fleshkin_affinity", "Fleshkin Affinity");
+		addTooltip("ability.fleshkin_affinity.desc", "-5% Primordial Cradle Hostility");
 
 		//		addTooltip("fire_rate", "Fire Rate");
 		//		addTooltip("accuracy", "Accuracy");
@@ -472,6 +474,11 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addItem(ModItems.DEV_ARM_CANNON, "[Dev Tool] Arm Cannon", "Creative/Developer Tool for testing projectiles.");
 		addItem(ModItems.BILE_SPITTER, "[WIP] Bile Spitter", "[WIP] \"living\" projectile weapon that shoots corrosive bile.\nIntended behaviour: charge it like a bow to increase damageShape & size of projectile.");
 
+		addItem(ModItems.ACOLYTE_ARMOR_HELMET, "Acolyte Helmet");
+		addItem(ModItems.ACOLYTE_ARMOR_CHESTPLATE, "Acolyte Chestplate");
+		addItem(ModItems.ACOLYTE_ARMOR_LEGGINGS, "Acolyte Leggings");
+		addItem(ModItems.ACOLYTE_ARMOR_BOOTS, "Acolyte Boots");
+
 		addItem(ModItems.THORN_SHIELD, "The Thorn", "Cute but prickly shield.");
 
 		addItem(ModItems.ESSENCE_EXTRACTOR, "Essence Extractor", "Primed Suck, slurps essence from its victims.");
@@ -528,7 +535,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.FLESHKIN_PRESSURE_PLATE, "Fleshkin Pressure Sensor", """
 				Fleshkin pancake. Yummy...
 				It has two behaviors, either it only activates for its owner or it only works for everyone else.
-										
+								
 				Sneak click to change its behavior.""");
 
 		addBlock(ModBlocks.FLESH, "Flesh Block", "A generic block of flesh... Don't bother me with this!");
