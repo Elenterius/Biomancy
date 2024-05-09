@@ -93,6 +93,11 @@ public class ModItemModelProvider extends ItemModelProvider {
 		overlayItem(ModItems.ESSENCE);
 		handheldWeaponItem(ModItems.TOXICUS);
 
+		armorItem(ModItems.ACOLYTE_ARMOR_HELMET);
+		armorItem(ModItems.ACOLYTE_ARMOR_CHESTPLATE);
+		armorItem(ModItems.ACOLYTE_ARMOR_LEGGINGS);
+		armorItem(ModItems.ACOLYTE_ARMOR_BOOTS);
+
 		basicItem(ModItems.FLESH_DOOR);
 		basicItem(ModItems.FULL_FLESH_DOOR);
 		wallBlockItem(ModItems.FLESH_WALL);
@@ -165,6 +170,10 @@ public class ModItemModelProvider extends ItemModelProvider {
 
 	public ItemModelBuilder serumItem(Item item) {
 		return basicItem(registryKey(item), "serum");
+	}
+
+	public <T extends Item> ItemModelBuilder armorItem(RegistryObject<T> registryObject) {
+		return basicItem(registryObject.getId(), "armor");
 	}
 
 	public ItemModelBuilder genericSerumItem(Item item) {

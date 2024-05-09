@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.init;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.api.serum.Serum;
 import com.github.elenterius.biomancy.item.*;
+import com.github.elenterius.biomancy.item.armor.AcolyteArmorItem;
 import com.github.elenterius.biomancy.item.extractor.ExtractorItem;
 import com.github.elenterius.biomancy.item.injector.InjectorItem;
 import com.github.elenterius.biomancy.item.shield.ThornShieldItem;
@@ -98,6 +99,16 @@ public final class ModItems {
 
 	//# Shield
 	public static final RegistryObject<ThornShieldItem> THORN_SHIELD = registerItem("thorn_shield", props -> new ThornShieldItem(250, props.stacksTo(1).rarity(ModRarities.VERY_RARE)));
+
+	//# Armor
+	public static final RegistryObject<AcolyteArmorItem> ACOLYTE_ARMOR_HELMET = registerLivingArmorHelmet("acolyte_armor", ModArmorMaterials.ACOLYTE, 200, AcolyteArmorItem::new);
+	public static final RegistryObject<AcolyteArmorItem> ACOLYTE_ARMOR_CHESTPLATE = registerLivingArmorChestplate("acolyte_armor", ModArmorMaterials.ACOLYTE, 200, AcolyteArmorItem::new);
+	public static final RegistryObject<AcolyteArmorItem> ACOLYTE_ARMOR_LEGGINGS = registerLivingArmorLeggings("acolyte_armor", ModArmorMaterials.ACOLYTE, 200, AcolyteArmorItem::new);
+	public static final RegistryObject<AcolyteArmorItem> ACOLYTE_ARMOR_BOOTS = registerLivingArmorBoots("acolyte_armor", ModArmorMaterials.ACOLYTE, 200, AcolyteArmorItem::new);
+	//	public static final RegistryObject<OverseerArmorItem> OVERSEER_ARMOR_HELMET = registerArmorHelmet("overseer_armor", ModArmorMaterials.OVERSEER, OverseerArmorItem::new);
+	//	public static final RegistryObject<OverseerArmorItem> OVERSEER_ARMOR_CHESTPLATE = registerArmorChestplate("overseer_armor", ModArmorMaterials.OVERSEER, OverseerArmorItem::new);
+	//	public static final RegistryObject<OverseerArmorItem> OVERSEER_ARMOR_LEGGINGS = registerArmorLeggings("overseer_armor", ModArmorMaterials.OVERSEER, OverseerArmorItem::new);
+	//	public static final RegistryObject<OverseerArmorItem> OVERSEER_ARMOR_BOOTS = registerArmorBoots("overseer_armor", ModArmorMaterials.OVERSEER, OverseerArmorItem::new);
 
 	//# Food/Fuel
 	public static final RegistryObject<EffectCureItem> NUTRIENT_PASTE = registerItem("nutrient_paste", props -> new EffectCureItem(props.food(ModFoods.NUTRIENT_PASTE)));
@@ -244,6 +255,46 @@ public final class ModItems {
 		return ITEMS.register(blockHolder.getId().getPath(), () -> factory.create(blockHolder.get(), createProperties().rarity(rarity)));
 	}
 
+	private static <M extends ArmorMaterial, I extends ArmorItem> RegistryObject<I> registerArmorHelmet(String name, M material, ArmorFactory<M, ArmorItem.Type, I> factory) {
+		return registerArmor(name + "_helmet", material, ArmorItem.Type.HELMET, factory);
+	}
+
+	private static <M extends ArmorMaterial, I extends ArmorItem> RegistryObject<I> registerArmorChestplate(String name, M material, ArmorFactory<M, ArmorItem.Type, I> factory) {
+		return registerArmor(name + "_chestplate", material, ArmorItem.Type.CHESTPLATE, factory);
+	}
+
+	private static <M extends ArmorMaterial, I extends ArmorItem> RegistryObject<I> registerArmorLeggings(String name, M material, ArmorFactory<M, ArmorItem.Type, I> factory) {
+		return registerArmor(name + "_leggings", material, ArmorItem.Type.LEGGINGS, factory);
+	}
+
+	private static <M extends ArmorMaterial, I extends ArmorItem> RegistryObject<I> registerArmorBoots(String name, M material, ArmorFactory<M, ArmorItem.Type, I> factory) {
+		return registerArmor(name + "_boots", material, ArmorItem.Type.BOOTS, factory);
+	}
+
+	private static <M extends ArmorMaterial, T extends ArmorItem.Type, I extends ArmorItem> RegistryObject<I> registerArmor(String name, M material, T type, ArmorFactory<M, T, I> factory) {
+		return ITEMS.register(name, () -> factory.create(material, type, createProperties()));
+	}
+
+	private static <M extends ArmorMaterial, I extends ArmorItem> RegistryObject<I> registerLivingArmorHelmet(String name, M material, int maxNutrients, LivingArmorFactory<M, ArmorItem.Type, I> factory) {
+		return registerLivingArmor(name + "_helmet", material, ArmorItem.Type.HELMET, maxNutrients, factory);
+	}
+
+	private static <M extends ArmorMaterial, I extends ArmorItem> RegistryObject<I> registerLivingArmorChestplate(String name, M material, int maxNutrients, LivingArmorFactory<M, ArmorItem.Type, I> factory) {
+		return registerLivingArmor(name + "_chestplate", material, ArmorItem.Type.CHESTPLATE, maxNutrients, factory);
+	}
+
+	private static <M extends ArmorMaterial, I extends ArmorItem> RegistryObject<I> registerLivingArmorLeggings(String name, M material, int maxNutrients, LivingArmorFactory<M, ArmorItem.Type, I> factory) {
+		return registerLivingArmor(name + "_leggings", material, ArmorItem.Type.LEGGINGS, maxNutrients, factory);
+	}
+
+	private static <M extends ArmorMaterial, I extends ArmorItem> RegistryObject<I> registerLivingArmorBoots(String name, M material, int maxNutrients, LivingArmorFactory<M, ArmorItem.Type, I> factory) {
+		return registerLivingArmor(name + "_boots", material, ArmorItem.Type.BOOTS, maxNutrients, factory);
+	}
+
+	private static <M extends ArmorMaterial, T extends ArmorItem.Type, I extends ArmorItem> RegistryObject<I> registerLivingArmor(String name, M material, T type, int maxNutrients, LivingArmorFactory<M, T, I> factory) {
+		return ITEMS.register(name, () -> factory.create(material, type, maxNutrients, createProperties().rarity(ModRarities.VERY_RARE)));
+	}
+
 	private static <T extends EntityType<? extends Mob>> RegistryObject<ForgeSpawnEggItem> registerSpawnEgg(RegistryObject<T> mobHolder, int primaryColor, int accentColor) {
 		return ITEMS.register(mobHolder.getId().getPath() + "_spawn_egg", () -> new ForgeSpawnEggItem(mobHolder, primaryColor, accentColor, createProperties()));
 	}
@@ -286,6 +337,14 @@ public final class ModItems {
 
 	interface IBlockItemFactory<T extends Block, I extends BlockItem> {
 		I create(T block, Item.Properties properties);
+	}
+
+	interface ArmorFactory<M extends ArmorMaterial, T extends ArmorItem.Type, I extends ArmorItem> {
+		I create(M material, T type, Item.Properties properties);
+	}
+
+	interface LivingArmorFactory<M extends ArmorMaterial, T extends ArmorItem.Type, I extends ArmorItem> {
+		I create(M material, T type, int maxNutrients, Item.Properties properties);
 	}
 
 }
