@@ -13,6 +13,7 @@ import com.github.elenterius.biomancy.inventory.InjectorItemInventory;
 import com.github.elenterius.biomancy.inventory.itemhandler.LargeSingleItemStackHandler;
 import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import com.github.elenterius.biomancy.item.KeyPressListener;
+import com.github.elenterius.biomancy.item.armor.AcolyteArmorItem;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.CombatUtil;
 import com.github.elenterius.biomancy.util.ComponentUtil;
@@ -107,14 +108,25 @@ public class InjectorItem extends Item implements SerumInjector, ItemTooltipStyl
 	}
 
 	private static boolean dispenserAffectEntity(ServerLevel level, BlockPos pos, Serum serum, ItemStack injectorStack, InjectorItem injectorItem, LivingEntity target) {
-		if (CombatUtil.canPierceThroughArmor(injectorStack, target)) {
+		if (CombatUtil.canPierceThroughArmor(injectorStack, target, null)) {
 			CompoundTag dataTag = Serum.getDataTag(injectorStack);
 			if (serum.canAffectEntity(dataTag, null, target)) {
 				serum.affectEntity(level, dataTag, null, target);
 				injectorItem.consumeSerum(injectorStack, null);
 				injectorStack.hurt(1, level.getRandom(), null);
+
+				float damagePct = 1f;
+				for (ItemStack itemStack : target.getArmorSlots()) {
+					if (itemStack.getItem() instanceof AcolyteArmorItem armor && armor.hasNutrients(itemStack)) {
+						damagePct -= 0.25f;
+					}
+				}
+
 				if (injectorStack.getEnchantmentLevel(ModEnchantments.ANESTHETIC.get()) <= 0) {
-					target.hurt(level.damageSources().sting(null), 0.5f);
+					float damage = 0.5f * damagePct;
+					if (damage > 0) {
+						target.hurt(level.damageSources().sting(null), damage);
+					}
 				}
 				return true;
 			}

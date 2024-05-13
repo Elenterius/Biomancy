@@ -225,6 +225,8 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addTooltip("ability.thorny_hide.desc", "On successful block, deals thorns damage to the attacker");
 		addTooltip("ability.fleshkin_affinity", "Fleshkin Affinity");
 		addTooltip("ability.fleshkin_affinity.desc", "-5% Primordial Cradle Hostility");
+		addTooltip("ability.bio_alchemical_epidermis", "Bio-Alchemical Epidermis");
+		addTooltip("ability.bio_alchemical_epidermis.desc", "+15% Resistance to external application of harmful Status-Effects\n -25% Injection Resistance\n -25% Injection Damage");
 
 		//		addTooltip("fire_rate", "Fire Rate");
 		//		addTooltip("accuracy", "Accuracy");

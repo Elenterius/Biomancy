@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.item.injector;
 
 import com.github.elenterius.biomancy.api.serum.Serum;
 import com.github.elenterius.biomancy.init.ModEnchantments;
+import com.github.elenterius.biomancy.item.armor.AcolyteArmorItem;
 import com.github.elenterius.biomancy.util.CombatUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -25,7 +26,7 @@ final class InjectionScheduler {
 		injector.setEntityHost(stack, player); //who is using the item
 		injector.setEntityVictim(stack, target); //who is the victim
 
-		injector.setInjectionSuccess(stack, CombatUtil.canPierceThroughArmor(stack, target)); //precompute injection success
+		injector.setInjectionSuccess(stack, CombatUtil.canPierceThroughArmor(stack, target, player)); //precompute injection success
 
 		CompoundTag tag = stack.getOrCreateTag();
 		tag.putInt(DELAY_KEY, delayInTicks);
@@ -62,8 +63,18 @@ final class InjectionScheduler {
 				return;
 			}
 
+			float damagePct = 1f;
+			for (ItemStack itemStack : target.getArmorSlots()) {
+				if (itemStack.getItem() instanceof AcolyteArmorItem armor && armor.hasNutrients(itemStack)) {
+					damagePct -= 0.25f;
+				}
+			}
+
 			if (stack.getEnchantmentLevel(ModEnchantments.ANESTHETIC.get()) <= 0) {
-				target.hurt(level.damageSources().sting(player), 0.5f);
+				float damage = 0.5f * damagePct;
+				if (damage > 0) {
+					target.hurt(level.damageSources().sting(player), damage);
+				}
 			}
 
 			if (host == victim) {
