@@ -5,6 +5,7 @@ import net.minecraft.network.chat.Style;
 
 public final class TextStyles {
 
+	public static final Style PRIMORDIAL_RUNES = Style.EMPTY.withFont(Fonts.CARO_INVITICA);
 	public static final Style PRIMORDIAL_RUNES_GRAY = Style.EMPTY.withFont(Fonts.CARO_INVITICA).withColor(ChatFormatting.GRAY);
 	public static final Style PRIMORDIAL_RUNES_LIGHT_GRAY = Style.EMPTY.withFont(Fonts.CARO_INVITICA).withColor(0xff_e5e4e2);
 	public static final Style PRIMORDIAL_RUNES_RED = Style.EMPTY.withFont(Fonts.CARO_INVITICA).withColor(0xff_bb0b3f);

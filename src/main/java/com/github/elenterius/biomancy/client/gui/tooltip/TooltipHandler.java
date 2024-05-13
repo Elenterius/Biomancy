@@ -8,6 +8,7 @@ import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.tooltip.EmptyLineTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.TooltipContents;
 import com.github.elenterius.biomancy.util.ComponentUtil;
+import com.github.elenterius.biomancy.util.FleshTongue;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -21,18 +22,19 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderTooltipEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
 
 @Mod.EventBusSubscriber(modid = BiomancyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
-public final class TooltipRenderHandler {
+public final class TooltipHandler {
 
 	//	private static final ResourceLocation TOOLTIP_OVERLAY_TEXTURE = BiomancyMod.createRL("textures/gui/ui_tooltip.png");
 	private static final EmptyLineTooltipComponent EMPTY_LINE = new EmptyLineTooltipComponent();
 
-	private TooltipRenderHandler() {}
+	private TooltipHandler() {}
 
 	@SubscribeEvent
 	public static void onRenderTooltipColor(final RenderTooltipEvent.Color tooltipEvent) {
@@ -43,6 +45,16 @@ public final class TooltipRenderHandler {
 		}
 		else if (stack.getItem() instanceof ItemTooltipStyleProvider itemStyleProvider) {
 			itemStyleProvider.getTooltipStyle().applyColorTo(tooltipEvent);
+		}
+	}
+
+	@SubscribeEvent
+	public static void onGetTooltipLines(ItemTooltipEvent event) {
+		if (event.getEntity() == null) return;
+
+		List<Component> fleshTongue = FleshTongue.getItemComment(event.getItemStack().getItem());
+		if (fleshTongue != null) {
+			event.getToolTip().addAll(1, fleshTongue);
 		}
 	}
 
