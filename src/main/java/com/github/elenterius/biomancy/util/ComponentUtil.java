@@ -7,12 +7,17 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.contents.DataSource;
 import net.minecraft.network.chat.contents.SelectorContents;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraftforge.client.ForgeHooksClient;
 import org.jetbrains.annotations.Nullable;
 
+import java.text.BreakIterator;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 public final class ComponentUtil {
@@ -126,6 +131,85 @@ public final class ComponentUtil {
 			return MutableComponent.create(new TooltipContents(component));
 		}
 
+	}
+
+	public static List<Component> splitLines(Locale locale, String text, int maxLength, Style style) {
+		BreakIterator breakIterator = BreakIterator.getLineInstance(locale);
+		breakIterator.setText(text);
+
+		List<Component> lines = new ArrayList<>();
+		StringBuilder currentLine = new StringBuilder();
+
+		int start = breakIterator.first();
+		int end = breakIterator.next();
+
+		while (end != BreakIterator.DONE) {
+			String word = text.substring(start, end);
+
+			if (currentLine.length() + word.length() >= maxLength) {
+				lines.add(ComponentUtil.literal(currentLine.toString()).withStyle(style));
+				currentLine = new StringBuilder();
+			}
+
+			if (word.equals("\n")) {
+				lines.add(ComponentUtil.emptyLine());
+			}
+			else if (word.contains("\n")) {
+				word = word.replace("\n", "");
+				currentLine.append(word);
+				lines.add(ComponentUtil.literal(currentLine.toString()).withStyle(style));
+				currentLine = new StringBuilder();
+			}
+			else {
+				currentLine.append(word);
+			}
+
+			start = end;
+			end = breakIterator.next();
+		}
+
+		if (!currentLine.isEmpty()) {
+			lines.add(ComponentUtil.literal(currentLine.toString()).withStyle(style));
+		}
+
+		return lines;
+	}
+
+	public static List<Component> splitLines(Locale locale, String text, Style style) {
+		BreakIterator breakIterator = BreakIterator.getLineInstance(locale);
+		breakIterator.setText(text);
+
+		List<Component> lines = new ArrayList<>();
+		StringBuilder currentLine = new StringBuilder();
+
+		int start = breakIterator.first();
+		int end = breakIterator.next();
+
+		while (end != BreakIterator.DONE) {
+			String word = text.substring(start, end);
+
+			if (word.equals("\n")) {
+				lines.add(ComponentUtil.emptyLine());
+			}
+			else if (word.contains("\n")) {
+				word = word.replace("\n", "");
+				currentLine.append(word);
+				lines.add(ComponentUtil.literal(currentLine.toString()).withStyle(style));
+				currentLine = new StringBuilder();
+			}
+			else {
+				currentLine.append(word);
+			}
+
+			start = end;
+			end = breakIterator.next();
+		}
+
+		if (!currentLine.isEmpty()) {
+			lines.add(ComponentUtil.literal(currentLine.toString()).withStyle(style));
+		}
+
+		return lines;
 	}
 
 }

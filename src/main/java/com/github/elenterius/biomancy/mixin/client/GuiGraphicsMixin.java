@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.mixin.client;
 
-import com.github.elenterius.biomancy.client.gui.tooltip.TooltipRenderHandler;
+import com.github.elenterius.biomancy.client.gui.tooltip.TooltipHandler;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
@@ -27,7 +27,7 @@ public class GuiGraphicsMixin {
 	@Inject(method = "renderTooltipInternal", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;popPose()V", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILSOFT, require = 0)
 	private void onPostRenderTooltipInternal(Font font, List<ClientTooltipComponent> components, int mouseX, int mouseY, ClientTooltipPositioner positioner, CallbackInfo ci, RenderTooltipEvent.Pre event, int width, int height, int w, int h, Vector2ic pos) {
 		GuiGraphics guiGraphics = (GuiGraphics) (Object) this;
-		TooltipRenderHandler.onPostRenderTooltip(tooltipStack, components, font, guiGraphics, pos.x(), pos.y(), width, height);
+		TooltipHandler.onPostRenderTooltip(tooltipStack, components, font, guiGraphics, pos.x(), pos.y(), width, height);
 	}
 
 	@Surrogate

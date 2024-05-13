@@ -15,10 +15,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-import java.text.BreakIterator;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -97,53 +95,27 @@ public final class ClientTextUtil {
 	}
 
 	public static List<Component> splitLinesByNewLine(Component component) {
-		return splitLines(component, Integer.MAX_VALUE);
+		Locale locale = Minecraft.getInstance().getLocale();
+		String text = component.getString();
+		Style style = component.getStyle();
+		return ComponentUtil.splitLines(locale, text, style);
+	}
+
+	public static List<Component> splitLinesByNewLine(String text, Style style) {
+		Locale locale = Minecraft.getInstance().getLocale();
+		return ComponentUtil.splitLines(locale, text, style);
 	}
 
 	public static List<Component> splitLines(Component component, int maxLength) {
 		Locale locale = Minecraft.getInstance().getLocale();
 		String text = component.getString();
 		Style style = component.getStyle();
+		return ComponentUtil.splitLines(locale, text, maxLength, style);
+	}
 
-		BreakIterator breakIterator = BreakIterator.getLineInstance(locale);
-		breakIterator.setText(text);
-
-		List<Component> lines = new ArrayList<>();
-		StringBuilder currentLine = new StringBuilder();
-
-		int start = breakIterator.first();
-		int end = breakIterator.next();
-
-		while (end != BreakIterator.DONE) {
-			String word = text.substring(start, end);
-
-			if (currentLine.length() + word.length() >= maxLength) {
-				lines.add(ComponentUtil.literal(currentLine.toString()).withStyle(style));
-				currentLine = new StringBuilder();
-			}
-
-			if (word.equals("\n")) {
-				lines.add(ComponentUtil.emptyLine());
-			}
-			else if (word.contains("\n")) {
-				word = word.replace("\n", "");
-				currentLine.append(word);
-				lines.add(ComponentUtil.literal(currentLine.toString()).withStyle(style));
-				currentLine = new StringBuilder();
-			}
-			else {
-				currentLine.append(word);
-			}
-
-			start = end;
-			end = breakIterator.next();
-		}
-
-		if (!currentLine.isEmpty()) {
-			lines.add(ComponentUtil.literal(currentLine.toString()).withStyle(style));
-		}
-
-		return lines;
+	public static List<Component> splitLines(String text, int maxLength, Style style) {
+		Locale locale = Minecraft.getInstance().getLocale();
+		return ComponentUtil.splitLines(locale, text, maxLength, style);
 	}
 
 	public static String format(String format, Object... objects) {
