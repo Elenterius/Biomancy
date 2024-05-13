@@ -152,7 +152,7 @@ public final class ModItems {
 	public static final RegistryObject<SimpleBlockItem> FLESH_FENCE_GATE = registerSimpleBlockItem(ModBlocks.FLESH_FENCE_GATE);
 	public static final RegistryObject<SimpleBlockItem> YELLOW_BIO_LANTERN = registerSimpleBlockItem(ModBlocks.YELLOW_BIO_LANTERN);
 	public static final RegistryObject<SimpleBlockItem> BLUE_BIO_LANTERN = registerSimpleBlockItem(ModBlocks.BLUE_BIO_LANTERN);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> PRIMORDIAL_BIO_LANTERN = registerBlockItem(ModBlocks.PRIMORDIAL_BIO_LANTERN, ObfuscatedTooltipBlockItem::new);
+	public static final RegistryObject<SimpleBlockItem> PRIMORDIAL_BIO_LANTERN = registerSimpleBlockItem(ModBlocks.PRIMORDIAL_BIO_LANTERN);
 
 	//## Membranes
 	public static final RegistryObject<SimpleBlockItem> BIOMETRIC_MEMBRANE = registerBlockItem(ModBlocks.BIOMETRIC_MEMBRANE, BiometricMembraneBlockItem::new, ModRarities.VERY_RARE);
@@ -176,33 +176,33 @@ public final class ModItems {
 	public static final RegistryObject<SimpleBlockItem> PACKED_FLESH_SLAB = registerSimpleBlockItem(ModBlocks.PACKED_FLESH_SLAB);
 	public static final RegistryObject<SimpleBlockItem> PACKED_FLESH_STAIRS = registerSimpleBlockItem(ModBlocks.PACKED_FLESH_STAIRS);
 	public static final RegistryObject<SimpleBlockItem> PACKED_FLESH_WALL = registerSimpleBlockItem(ModBlocks.PACKED_FLESH_WALL);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> FLESH_PILLAR = registerBlockItem(ModBlocks.FLESH_PILLAR, ObfuscatedTooltipBlockItem::new);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> FIBROUS_FLESH_BLOCK = registerBlockItem(ModBlocks.FIBROUS_FLESH, ObfuscatedTooltipBlockItem::new);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> CHISELED_FLESH_BLOCK = registerBlockItem(ModBlocks.CHISELED_FLESH, ObfuscatedTooltipBlockItem::new);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> ORNATE_FLESH_BLOCK = registerBlockItem(ModBlocks.ORNATE_FLESH, ObfuscatedTooltipBlockItem::new);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> ORNATE_FLESH_SLAB = registerBlockItem(ModBlocks.ORNATE_FLESH_SLAB, ObfuscatedTooltipBlockItem::new);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> TUBULAR_FLESH_BLOCK = registerBlockItem(ModBlocks.TUBULAR_FLESH_BLOCK, ObfuscatedTooltipBlockItem::new);
+	public static final RegistryObject<SimpleBlockItem> FLESH_PILLAR = registerSimpleBlockItem(ModBlocks.FLESH_PILLAR);
+	public static final RegistryObject<SimpleBlockItem> FIBROUS_FLESH_BLOCK = registerSimpleBlockItem(ModBlocks.FIBROUS_FLESH);
+	public static final RegistryObject<SimpleBlockItem> CHISELED_FLESH_BLOCK = registerSimpleBlockItem(ModBlocks.CHISELED_FLESH);
+	public static final RegistryObject<SimpleBlockItem> ORNATE_FLESH_BLOCK = registerSimpleBlockItem(ModBlocks.ORNATE_FLESH);
+	public static final RegistryObject<SimpleBlockItem> ORNATE_FLESH_SLAB = registerSimpleBlockItem(ModBlocks.ORNATE_FLESH_SLAB);
+	public static final RegistryObject<SimpleBlockItem> TUBULAR_FLESH_BLOCK = registerSimpleBlockItem(ModBlocks.TUBULAR_FLESH_BLOCK);
 
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> PRIMAL_FLESH_BLOCK = registerBlockItem(ModBlocks.PRIMAL_FLESH, ObfuscatedTooltipBlockItem::new);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> PRIMAL_FLESH_SLAB = registerBlockItem(ModBlocks.PRIMAL_FLESH_SLAB, ObfuscatedTooltipBlockItem::new);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> PRIMAL_FLESH_STAIRS = registerBlockItem(ModBlocks.PRIMAL_FLESH_STAIRS, ObfuscatedTooltipBlockItem::new);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> PRIMAL_FLESH_WALL = registerBlockItem(ModBlocks.PRIMAL_FLESH_WALL, ObfuscatedTooltipBlockItem::new);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> SMOOTH_PRIMAL_FLESH_BLOCK = registerBlockItem(ModBlocks.SMOOTH_PRIMAL_FLESH, ObfuscatedTooltipBlockItem::new);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> SMOOTH_PRIMAL_FLESH_SLAB = registerBlockItem(ModBlocks.SMOOTH_PRIMAL_FLESH_SLAB, ObfuscatedTooltipBlockItem::new);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> SMOOTH_PRIMAL_FLESH_STAIRS = registerBlockItem(ModBlocks.SMOOTH_PRIMAL_FLESH_STAIRS, ObfuscatedTooltipBlockItem::new);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> SMOOTH_PRIMAL_FLESH_WALL = registerBlockItem(ModBlocks.SMOOTH_PRIMAL_FLESH_WALL, ObfuscatedTooltipBlockItem::new);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> POROUS_PRIMAL_FLESH_BLOCK = registerBlockItem(ModBlocks.POROUS_PRIMAL_FLESH, ObfuscatedTooltipBlockItem::new);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> POROUS_PRIMAL_FLESH_SLAB = registerBlockItem(ModBlocks.POROUS_PRIMAL_FLESH_SLAB, ObfuscatedTooltipBlockItem::new);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> POROUS_PRIMAL_FLESH_STAIRS = registerBlockItem(ModBlocks.POROUS_PRIMAL_FLESH_STAIRS, ObfuscatedTooltipBlockItem::new);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> POROUS_PRIMAL_FLESH_WALL = registerBlockItem(ModBlocks.POROUS_PRIMAL_FLESH_WALL, ObfuscatedTooltipBlockItem::new);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> MALIGNANT_FLESH_BLOCK = registerBlockItem(ModBlocks.MALIGNANT_FLESH, ObfuscatedTooltipBlockItem::new);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> MALIGNANT_FLESH_SLAB = registerBlockItem(ModBlocks.MALIGNANT_FLESH_SLAB, ObfuscatedTooltipBlockItem::new);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> MALIGNANT_FLESH_STAIRS = registerBlockItem(ModBlocks.MALIGNANT_FLESH_STAIRS, ObfuscatedTooltipBlockItem::new);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> MALIGNANT_FLESH_WALL = registerBlockItem(ModBlocks.MALIGNANT_FLESH_WALL, ObfuscatedTooltipBlockItem::new);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> MALIGNANT_FLESH_VEINS = registerBlockItem(ModBlocks.MALIGNANT_FLESH_VEINS, ObfuscatedTooltipBlockItem::new);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> PRIMAL_BLOOM = registerBlockItem(ModBlocks.PRIMAL_BLOOM, ObfuscatedTooltipBlockItem::new);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> BLOOMLIGHT = registerBlockItem(ModBlocks.BLOOMLIGHT, ObfuscatedTooltipBlockItem::new);
-	public static final RegistryObject<ObfuscatedTooltipBlockItem> PRIMAL_ORIFICE = registerBlockItem(ModBlocks.PRIMAL_ORIFICE, ObfuscatedTooltipBlockItem::new);
+	public static final RegistryObject<SimpleBlockItem> PRIMAL_FLESH_BLOCK = registerSimpleBlockItem(ModBlocks.PRIMAL_FLESH);
+	public static final RegistryObject<SimpleBlockItem> PRIMAL_FLESH_SLAB = registerSimpleBlockItem(ModBlocks.PRIMAL_FLESH_SLAB);
+	public static final RegistryObject<SimpleBlockItem> PRIMAL_FLESH_STAIRS = registerSimpleBlockItem(ModBlocks.PRIMAL_FLESH_STAIRS);
+	public static final RegistryObject<SimpleBlockItem> PRIMAL_FLESH_WALL = registerSimpleBlockItem(ModBlocks.PRIMAL_FLESH_WALL);
+	public static final RegistryObject<SimpleBlockItem> SMOOTH_PRIMAL_FLESH_BLOCK = registerSimpleBlockItem(ModBlocks.SMOOTH_PRIMAL_FLESH);
+	public static final RegistryObject<SimpleBlockItem> SMOOTH_PRIMAL_FLESH_SLAB = registerSimpleBlockItem(ModBlocks.SMOOTH_PRIMAL_FLESH_SLAB);
+	public static final RegistryObject<SimpleBlockItem> SMOOTH_PRIMAL_FLESH_STAIRS = registerSimpleBlockItem(ModBlocks.SMOOTH_PRIMAL_FLESH_STAIRS);
+	public static final RegistryObject<SimpleBlockItem> SMOOTH_PRIMAL_FLESH_WALL = registerSimpleBlockItem(ModBlocks.SMOOTH_PRIMAL_FLESH_WALL);
+	public static final RegistryObject<SimpleBlockItem> POROUS_PRIMAL_FLESH_BLOCK = registerSimpleBlockItem(ModBlocks.POROUS_PRIMAL_FLESH);
+	public static final RegistryObject<SimpleBlockItem> POROUS_PRIMAL_FLESH_SLAB = registerSimpleBlockItem(ModBlocks.POROUS_PRIMAL_FLESH_SLAB);
+	public static final RegistryObject<SimpleBlockItem> POROUS_PRIMAL_FLESH_STAIRS = registerSimpleBlockItem(ModBlocks.POROUS_PRIMAL_FLESH_STAIRS);
+	public static final RegistryObject<SimpleBlockItem> POROUS_PRIMAL_FLESH_WALL = registerSimpleBlockItem(ModBlocks.POROUS_PRIMAL_FLESH_WALL);
+	public static final RegistryObject<SimpleBlockItem> MALIGNANT_FLESH_BLOCK = registerSimpleBlockItem(ModBlocks.MALIGNANT_FLESH);
+	public static final RegistryObject<SimpleBlockItem> MALIGNANT_FLESH_SLAB = registerSimpleBlockItem(ModBlocks.MALIGNANT_FLESH_SLAB);
+	public static final RegistryObject<SimpleBlockItem> MALIGNANT_FLESH_STAIRS = registerSimpleBlockItem(ModBlocks.MALIGNANT_FLESH_STAIRS);
+	public static final RegistryObject<SimpleBlockItem> MALIGNANT_FLESH_WALL = registerSimpleBlockItem(ModBlocks.MALIGNANT_FLESH_WALL);
+	public static final RegistryObject<SimpleBlockItem> MALIGNANT_FLESH_VEINS = registerSimpleBlockItem(ModBlocks.MALIGNANT_FLESH_VEINS);
+	public static final RegistryObject<SimpleBlockItem> PRIMAL_BLOOM = registerSimpleBlockItem(ModBlocks.PRIMAL_BLOOM);
+	public static final RegistryObject<SimpleBlockItem> BLOOMLIGHT = registerSimpleBlockItem(ModBlocks.BLOOMLIGHT);
+	public static final RegistryObject<SimpleBlockItem> PRIMAL_ORIFICE = registerSimpleBlockItem(ModBlocks.PRIMAL_ORIFICE);
 
 	//# Spawn Eggs
 	public static final RegistryObject<ForgeSpawnEggItem> HUNGRY_FLESH_BLOB_SPAWN_EGG = registerSpawnEgg(ModEntityTypes.HUNGRY_FLESH_BLOB, 0xe9967a, 0xf6d2c6);
