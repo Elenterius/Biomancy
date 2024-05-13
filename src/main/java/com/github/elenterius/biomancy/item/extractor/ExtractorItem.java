@@ -8,6 +8,7 @@ import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.item.EssenceItem;
 import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import com.github.elenterius.biomancy.item.KeyPressListener;
+import com.github.elenterius.biomancy.item.armor.AcolyteArmorItem;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.CombatUtil;
 import com.github.elenterius.biomancy.util.ComponentUtil;
@@ -68,7 +69,7 @@ public class ExtractorItem extends Item implements KeyPressListener, ItemTooltip
 
 	private static boolean extractEssence(ItemStack stack, @Nullable Player player, LivingEntity targetEntity) {
 		if (targetEntity.isAlive() && !targetEntity.hasEffect(ModMobEffects.ESSENCE_ANEMIA.get())) {
-			if (CombatUtil.canPierceThroughArmor(stack, targetEntity)) {
+			if (CombatUtil.canPierceThroughArmor(stack, targetEntity, player)) {
 				int lootingLevel = stack.getEnchantmentLevel(Enchantments.MOB_LOOTING);
 				int surgicalPrecisionLevel = stack.getEnchantmentLevel(ModEnchantments.SURGICAL_PRECISION.get());
 
@@ -85,8 +86,18 @@ public class ExtractorItem extends Item implements KeyPressListener, ItemTooltip
 						Containers.dropItemStack(targetEntity.level(), targetEntity.getX(), targetEntity.getY(), targetEntity.getZ(), essenceStack);
 					}
 
+					float damagePct = 1f;
+					for (ItemStack itemStack : targetEntity.getArmorSlots()) {
+						if (itemStack.getItem() instanceof AcolyteArmorItem armor && armor.hasNutrients(itemStack)) {
+							damagePct -= 0.25f;
+						}
+					}
+
 					if (stack.getEnchantmentLevel(ModEnchantments.ANESTHETIC.get()) <= 0) {
-						targetEntity.hurt(targetEntity.level().damageSources().sting(player), 0.5f);
+						float damage = 0.5f * damagePct;
+						if (damage > 0) {
+							targetEntity.hurt(targetEntity.level().damageSources().sting(player), damage);
+						}
 					}
 
 					targetEntity.addEffect(new MobEffectInstance(ModMobEffects.ESSENCE_ANEMIA.get(), 2400 * (lootingLevel + 1)));

@@ -360,6 +360,8 @@
   "tooltip.biomancy.ability.thorny_hide.desc": "On successful block, deals thorns damage to the attacker",
   "tooltip.biomancy.ability.fleshkin_affinity": "Fleshkin Affinity",
   "tooltip.biomancy.ability.fleshkin_affinity.desc": "-5% Primordial Cradle Hostility",
+  "tooltip.biomancy.ability.bio_alchemical_epidermis": "Bio-Alchemical Epidermis",
+  "tooltip.biomancy.ability.bio_alchemical_epidermis.desc": "+15% Resistance to external application of harmful Status-Effects\n -25% Injection Resistance\n -25% Injection Damage",
   "tooltip.biomancy.living_tool_state_is": "The Tool is %1$s",
   "state.biomancy.living_tool.broken": "Broken",
   "state.biomancy.living_tool.dormant": "Dormant",

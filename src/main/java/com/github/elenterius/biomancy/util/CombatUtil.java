@@ -2,26 +2,34 @@ package com.github.elenterius.biomancy.util;
 
 import com.github.elenterius.biomancy.init.ModDamageSources;
 import com.github.elenterius.biomancy.init.ModMobEffects;
+import com.github.elenterius.biomancy.item.armor.AcolyteArmorItem;
 import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public final class CombatUtil {
 	private CombatUtil() {}
 
-	public static boolean canPierceThroughArmor(ItemStack weapon, LivingEntity target) {
-		int pierceLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PIERCING, weapon);
+	public static boolean canPierceThroughArmor(ItemStack weapon, LivingEntity target, @Nullable LivingEntity attacker) {
+		float pierceProbability = 0;
+		for (ItemStack itemStack : target.getArmorSlots()) {
+			if (itemStack.getItem() instanceof AcolyteArmorItem) {
+				pierceProbability += 0.25f;
+			}
+		}
+
+		int pierceLevel = weapon.getEnchantmentLevel(Enchantments.PIERCING);
 		float pct = CombatRules.getDamageAfterAbsorb(20f, target.getArmorValue(), (float) target.getAttributeValue(Attributes.ARMOR_TOUGHNESS)) / 20f;
-		return target.getRandom().nextFloat() < pct + 0.075f * pierceLevel;
+		return target.getRandom().nextFloat() < pct + 0.075f * pierceLevel + pierceProbability;
 	}
 
 	public static void performWaterAOE(Level level, Entity attacker, double maxDistance) {
