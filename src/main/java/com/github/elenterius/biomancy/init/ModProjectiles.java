@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.entity.projectile.*;
-import com.github.elenterius.biomancy.item.weapon.Gun;
+import com.github.elenterius.biomancy.item.weapon.gun.Gun;
 import com.github.elenterius.biomancy.util.function.FloatOperator;
 import com.github.elenterius.biomancy.util.function.IntOperator;
 import net.minecraft.sounds.SoundEvent;

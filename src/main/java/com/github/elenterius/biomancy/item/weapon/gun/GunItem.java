@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.item.weapon;
+package com.github.elenterius.biomancy.item.weapon.gun;
 
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.item.KeyPressListener;
@@ -18,7 +18,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -27,36 +26,44 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Set;
 
-@Deprecated
-public abstract class BaseGunItem extends ProjectileWeaponItem implements Gun, KeyPressListener {
-	public static final Set<Enchantment> VALID_VANILLA_ENCHANTMENTS = Set.of(Enchantments.PUNCH_ARROWS, Enchantments.POWER_ARROWS, Enchantments.QUICK_CHARGE);
+public abstract class GunItem extends ProjectileWeaponItem implements Gun, KeyPressListener {
 
-	private final int baseShootDelay; //measured in ticks
-	private final float baseProjectileDamage;
-	private final int baseMaxAmmo;
-	private final float baseAccuracy;
-	private final int baseReloadTime;
-	private final boolean isAutoReload;
+	public static final Set<Enchantment> VALID_ENCHANTMENTS = Set.of(Enchantments.PUNCH_ARROWS, Enchantments.POWER_ARROWS, Enchantments.QUICK_CHARGE);
 
-	protected BaseGunItem(Properties properties, GunProperties gunProperties) {
+	private final GunProperties gunProperties;
+
+	protected GunItem(Properties properties, GunProperties gunProperties) {
 		super(properties);
-		baseShootDelay = gunProperties.baseShootDelay;
-		baseProjectileDamage = gunProperties.baseProjectileDamage;
-		baseMaxAmmo = gunProperties.baseMaxAmmo;
-		baseAccuracy = gunProperties.baseAccuracy;
-		baseReloadTime = gunProperties.baseReloadTime;
-		isAutoReload = gunProperties.isAutoReload;
+		this.gunProperties = gunProperties;
+	}
+
+	protected static int getBonusReloadReduction(ItemStack stack) {
+		return 5 * stack.getEnchantmentLevel(Enchantments.QUICK_CHARGE);
+	}
+
+	protected static float getBonusProjectileDamageModifier(ItemStack stack) {
+		return 0.6f * stack.getEnchantmentLevel(Enchantments.POWER_ARROWS);
+	}
+
+	protected static int getBonusShootDelayReduction(ItemStack stack) {
+		//int level = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.QUICK_SHOT.get(), stack);
+		int level = 0;
+		return 2 * level;
+	}
+
+	protected static int getBonusProjectileKnockBackModifier(ItemStack stack) {
+		return stack.getEnchantmentLevel(Enchantments.PUNCH_ARROWS);
 	}
 
 	@Override
 	public InteractionResultHolder<Byte> onClientKeyPress(ItemStack stack, Level level, Player player, EquipmentSlot slot, byte flags) {
-		State state = getState(stack);
-		if (state == State.NONE && !canReload(stack, player)) {
+		GunState state = getState(stack);
+		if (state == GunState.NONE && !canReload(stack, player)) {
 			playSFX(level, player, SoundEvents.DISPENSER_FAIL);
 			return InteractionResultHolder.fail(flags); //don't send button press to server
 		}
 
-		if (state == State.SHOOTING) {
+		if (state == GunState.SHOOTING) {
 			return InteractionResultHolder.fail(flags); //don't send button press to server
 		}
 
@@ -65,14 +72,14 @@ public abstract class BaseGunItem extends ProjectileWeaponItem implements Gun, K
 
 	@Override
 	public void onServerReceiveKeyPress(ItemStack stack, ServerLevel level, Player player, byte flags) {
-		State state = getState(stack);
+		GunState state = getState(stack);
 
-		if (state == State.NONE) {
+		if (state == GunState.NONE) {
 			startReload(stack, level, player);
 			return;
 		}
 
-		if (state == State.RELOADING) {
+		if (state == GunState.RELOADING) {
 			cancelReload(stack, level, player);
 		}
 	}
@@ -97,11 +104,11 @@ public abstract class BaseGunItem extends ProjectileWeaponItem implements Gun, K
 		ItemStack stack = player.getItemInHand(usedHand);
 
 		if (hasAmmo(stack)) {
-			State state = getState(stack);
-			if (state == State.RELOADING && level instanceof ServerLevel serverLevel) {
+			GunState state = getState(stack);
+			if (state == GunState.RELOADING && level instanceof ServerLevel serverLevel) {
 				cancelReload(stack, serverLevel, player);
 			}
-			setState(stack, State.SHOOTING);
+			setState(stack, GunState.SHOOTING);
 			player.startUsingItem(usedHand);
 			return InteractionResultHolder.consume(stack);
 		}
@@ -113,7 +120,7 @@ public abstract class BaseGunItem extends ProjectileWeaponItem implements Gun, K
 	@Override
 	public void onUseTick(Level level, LivingEntity shooter, ItemStack stack, int remainingUseDuration) {
 		if (!level.isClientSide && level instanceof ServerLevel serverLevel) {
-			if (getState(stack) != State.SHOOTING) return;
+			if (getState(stack) != GunState.SHOOTING) return;
 
 			if (!hasAmmo(stack)) {
 				if (shooter instanceof Player player) {
@@ -133,25 +140,21 @@ public abstract class BaseGunItem extends ProjectileWeaponItem implements Gun, K
 			}
 
 			if (elapsedTime % shootDelay == 0) {
-				shoot(serverLevel, shooter, shooter.getUsedItemHand(), stack, getProjectileProperties(stack));
-				stack.getOrCreateTag().putLong(NBT_KEY_SHOOT_TIMESTAMP, serverLevel.getGameTime());
+				shoot(serverLevel, shooter, shooter.getUsedItemHand(), stack);
+				stack.getOrCreateTag().putLong(SHOOT_TIMESTAMP_KEY, serverLevel.getGameTime());
 			}
 		}
 	}
 
-	public ProjectileProperties getProjectileProperties(ItemStack stack) {
-		return new ProjectileProperties(getProjectileDamage(stack), getInaccuracy(), getProjectileKnockBack(stack));
-	}
-
 	@Override
 	public void releaseUsing(ItemStack stack, Level level, LivingEntity livingEntity, int timeCharged) {
-		setState(stack, State.NONE);
+		setState(stack, GunState.NONE);
 	}
 
 	@Override
 	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
 		if (!level.isClientSide && level instanceof ServerLevel serverLevel && entity instanceof LivingEntity livingEntity) {
-			if (getState(stack) != State.RELOADING) return;
+			if (getState(stack) != GunState.RELOADING) return;
 
 			if (isSelected && canReload(stack, livingEntity)) {
 				long elapsedTime = serverLevel.getGameTime() - getReloadStartTime(stack);
@@ -171,45 +174,44 @@ public abstract class BaseGunItem extends ProjectileWeaponItem implements Gun, K
 
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return VALID_VANILLA_ENCHANTMENTS.contains(enchantment) || super.canApplyAtEnchantingTable(stack, enchantment);
+		return VALID_ENCHANTMENTS.contains(enchantment) || super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 	@Override
-	public float getAccuracy() {
-		return baseAccuracy;
+	public float getAccuracy(ItemStack stack) {
+		return gunProperties.accuracy();
 	}
 
 	@Override
 	public int getShootDelay(ItemStack stack) {
-		//		int level = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.QUICK_SHOT.get(), stack);
-		int level = 0;
-		return baseShootDelay - 2 * level;
+		return gunProperties.shootDelayTicks() - getBonusShootDelayReduction(stack);
 	}
 
 	@Override
 	public int getReloadTime(ItemStack stack) {
-		return baseReloadTime - 5 * EnchantmentHelper.getItemEnchantmentLevel(Enchantments.QUICK_CHARGE, stack);
+		return gunProperties.reloadDurationTicks() - getBonusReloadReduction(stack);
 	}
 
 	@Override
-	public float getProjectileDamage(ItemStack stack) {
-		return baseProjectileDamage + 0.6f * EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
+	public float getProjectileDamageModifier(ItemStack stack) {
+		return gunProperties.projectileDamageModifier() + getBonusProjectileDamageModifier(stack);
 	}
 
-	public int getProjectileKnockBack(ItemStack stack) {
-		return EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PUNCH_ARROWS, stack);
+	@Override
+	public int getProjectileKnockBackModifier(ItemStack stack) {
+		return getBonusProjectileKnockBackModifier(stack);
 	}
 
 	@Override
 	public int getMaxAmmo(ItemStack stack) {
 		//		int level = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.MAX_AMMO.get(), stack);
 		int level = 0;
-		return Mth.floor(baseMaxAmmo + baseMaxAmmo * 0.5f * level);
+		return Mth.floor(gunProperties.maxAmmo() + gunProperties.maxAmmo() * 0.5f * level);
 	}
 
 	@Override
 	public void stopShooting(ItemStack stack, ServerLevel level, LivingEntity shooter) {
-		if (isAutoReload) startReload(stack, level, shooter);
+		if (gunProperties.isAutoReload()) startReload(stack, level, shooter);
 	}
 
 	@Override
@@ -233,11 +235,11 @@ public abstract class BaseGunItem extends ProjectileWeaponItem implements Gun, K
 		tooltip.addAll(ClientTextUtil.getItemInfoTooltip(stack));
 		if (ClientTextUtil.showExtraInfo(tooltip)) {
 			DecimalFormat df = ClientTextUtil.getDecimalFormatter("#.###");
-			tooltip.add(TextComponentUtil.getTooltipText("fire_rate").append(String.format(": %s RPS ", df.format(getFireRate(stack)))).append(addBrackets(df.format(ONE_SECOND / baseShootDelay))));
-			tooltip.add(TextComponentUtil.getTooltipText("accuracy").append(String.format(": %s ", df.format(getAccuracy()))).append(addBrackets(df.format(baseAccuracy))));
-			tooltip.add(TextComponentUtil.getTooltipText("ammo").append(String.format(": %d/%d ", getAmmo(stack), getMaxAmmo(stack))).append(addBrackets("x/" + baseMaxAmmo)));
-			tooltip.add(TextComponentUtil.getTooltipText("reload_time").append(String.format(": %s ", df.format(getReloadTime(stack) / ONE_SECOND))).append(addBrackets(df.format(baseReloadTime / ONE_SECOND))));
-			tooltip.add(TextComponentUtil.getTooltipText("projectile_damage").append(String.format(": %s ", df.format(getProjectileDamage(stack)))).append(addBrackets(df.format(baseProjectileDamage))));
+			tooltip.add(TextComponentUtil.getTooltipText("fire_rate").append(String.format(": %s RPS ", df.format(getFireRate(stack)))).append(addBrackets(df.format(ONE_SECOND_IN_TICKS / gunProperties.shootDelayTicks()))));
+			tooltip.add(TextComponentUtil.getTooltipText("accuracy").append(String.format(": %s ", df.format(getAccuracy(stack)))).append(addBrackets(df.format(gunProperties.accuracy()))));
+			tooltip.add(TextComponentUtil.getTooltipText("ammo").append(String.format(": %d/%d ", getAmmo(stack), getMaxAmmo(stack))).append(addBrackets("x/" + gunProperties.maxAmmo())));
+			tooltip.add(TextComponentUtil.getTooltipText("reload_time").append(String.format(": %s ", df.format(getReloadTime(stack) / ONE_SECOND_IN_TICKS))).append(addBrackets(df.format(gunProperties.reloadDurationTicks() / ONE_SECOND_IN_TICKS))));
+			tooltip.add(TextComponentUtil.getTooltipText("projectile_damage").append(String.format(": %s ", df.format(getProjectileDamageModifier(stack)))).append(addBrackets(df.format(gunProperties.projectileDamageModifier()))));
 			tooltip.add(ComponentUtil.emptyLine());
 		}
 		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTranslationText("tooltip", "action_reload")).withStyle(ChatFormatting.DARK_GRAY));
@@ -247,50 +249,4 @@ public abstract class BaseGunItem extends ProjectileWeaponItem implements Gun, K
 		return ComponentUtil.literal("(" + obj + ")").withStyle(ChatFormatting.DARK_GRAY);
 	}
 
-	public static class GunProperties {
-
-		private boolean isAutoReload = false;
-		private int baseShootDelay = 20; //measured in ticks
-		private float baseProjectileDamage = 2;
-		private int baseMaxAmmo = 6;
-		private float baseAccuracy = 1f;
-		private int baseReloadTime = 20;
-
-		public GunProperties shootDelay(int shootDelay) {
-			baseShootDelay = shootDelay;
-			return this;
-		}
-
-		public GunProperties fireRate(float fireRate) {
-			baseShootDelay = Math.max(1, Math.round(ONE_SECOND / fireRate));
-			return this;
-		}
-
-		public GunProperties damage(float projectileDamage) {
-			baseProjectileDamage = projectileDamage;
-			return this;
-		}
-
-		public GunProperties maxAmmo(int maxAmmo) {
-			baseMaxAmmo = maxAmmo;
-			return this;
-		}
-
-		public GunProperties accuracy(float accuracy) {
-			if (accuracy < 0f || accuracy > 1f) throw new IllegalArgumentException("Invalid accuracy: " + accuracy);
-			baseAccuracy = accuracy;
-			return this;
-		}
-
-		public GunProperties reloadTime(int reloadTimeInTicks) {
-			baseReloadTime = reloadTimeInTicks;
-			return this;
-		}
-
-		public GunProperties autoReload(boolean bool) {
-			isAutoReload = bool;
-			return this;
-		}
-
-	}
 }

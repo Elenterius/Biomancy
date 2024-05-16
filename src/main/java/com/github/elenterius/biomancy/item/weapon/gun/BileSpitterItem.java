@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.item.weapon;
+package com.github.elenterius.biomancy.item.weapon.gun;
 
 import com.github.elenterius.biomancy.client.render.item.dev.BileSpitterRenderer;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;

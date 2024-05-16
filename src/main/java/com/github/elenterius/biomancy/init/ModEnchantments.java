@@ -8,7 +8,7 @@ import com.github.elenterius.biomancy.init.tags.ModItemTags;
 import com.github.elenterius.biomancy.item.extractor.ExtractorItem;
 import com.github.elenterius.biomancy.item.injector.InjectorItem;
 import com.github.elenterius.biomancy.item.weapon.ClawsItem;
-import com.github.elenterius.biomancy.item.weapon.Gun;
+import com.github.elenterius.biomancy.item.weapon.gun.Gun;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.enchantment.Enchantment;

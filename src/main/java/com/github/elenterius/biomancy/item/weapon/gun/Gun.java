@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.item.weapon;
+package com.github.elenterius.biomancy.item.weapon.gun;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -12,43 +12,40 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-@Deprecated
 public interface Gun {
 
-	record ProjectileProperties(float damage, float inaccuracy, int knockBack) {}
-
-	float ONE_SECOND = 20f; //measured in ticks
+	float ONE_SECOND_IN_TICKS = 20f; //measured in ticks
 	float MAX_INACCURACY = 1f; //0.0 - 1.0
 
-	String NBT_KEY_AMMO = "Ammo";
-	String NBT_KEY_RELOAD_TIMESTAMP = "ReloadStartTime";
-	String NBT_KEY_WEAPON_STATE = "ProjectileWeaponState";
-	String NBT_KEY_SHOOT_TIMESTAMP = "ShootTime";
+	String AMMO_KEY = "ammo";
+	String RELOAD_TIMESTAMP_KEY = "reload_timestamp";
+	String WEAPON_STATE_KEY = "projectile_weapon_state";
+	String SHOOT_TIMESTAMP_KEY = "shoot_timestamp";
 
 	default long getShootTimestamp(ItemStack stack) {
-		return stack.getOrCreateTag().getLong(NBT_KEY_SHOOT_TIMESTAMP);
+		return stack.getOrCreateTag().getLong(SHOOT_TIMESTAMP_KEY);
 	}
 
 	void stopShooting(ItemStack stack, ServerLevel level, LivingEntity shooter);
 
-	void shoot(ServerLevel level, LivingEntity shooter, InteractionHand usedHand, ItemStack projectileWeapon, ProjectileProperties properties);
+	void shoot(ServerLevel level, LivingEntity shooter, InteractionHand usedHand, ItemStack projectileWeapon);
 
-	default State getState(ItemStack stack) {
-		return State.fromId(stack.getOrCreateTag().getByte(NBT_KEY_WEAPON_STATE));
+	default GunState getState(ItemStack stack) {
+		return GunState.fromId(stack.getOrCreateTag().getByte(WEAPON_STATE_KEY));
 	}
 
-	default void setState(ItemStack stack, State state) {
-		stack.getOrCreateTag().putByte(NBT_KEY_WEAPON_STATE, state.getId());
+	default void setState(ItemStack stack, GunState state) {
+		stack.getOrCreateTag().putByte(WEAPON_STATE_KEY, state.getId());
 	}
 
 	default long getReloadStartTime(ItemStack stack) {
-		return stack.getOrCreateTag().getLong(NBT_KEY_RELOAD_TIMESTAMP);
+		return stack.getOrCreateTag().getLong(RELOAD_TIMESTAMP_KEY);
 	}
 
 	default void startReload(ItemStack stack, ServerLevel level, LivingEntity shooter) {
 		if (canReload(stack, shooter)) {
-			setState(stack, State.RELOADING);
-			stack.getOrCreateTag().putLong(NBT_KEY_RELOAD_TIMESTAMP, level.getGameTime());
+			setState(stack, GunState.RELOADING);
+			stack.getOrCreateTag().putLong(RELOAD_TIMESTAMP_KEY, level.getGameTime());
 			onReloadStarted(stack, level, shooter);
 		}
 		else {
@@ -57,7 +54,7 @@ public interface Gun {
 	}
 
 	default void finishReload(ItemStack stack, ServerLevel level, LivingEntity shooter) {
-		setState(stack, State.NONE);
+		setState(stack, GunState.NONE);
 
 		if (shooter instanceof Player player && player.getAbilities().instabuild) {
 			setAmmo(stack, getMaxAmmo(stack));
@@ -77,12 +74,12 @@ public interface Gun {
 	}
 
 	default void stopReload(ItemStack stack, ServerLevel level, LivingEntity shooter) {
-		setState(stack, State.NONE);
+		setState(stack, GunState.NONE);
 		onReloadStopped(stack, level, shooter);
 	}
 
 	default void cancelReload(ItemStack stack, ServerLevel level, LivingEntity shooter) {
-		setState(stack, State.NONE);
+		setState(stack, GunState.NONE);
 		onReloadCanceled(stack, level, shooter);
 	}
 
@@ -114,21 +111,23 @@ public interface Gun {
 		return !ammo.isEmpty() && ammo.getCount() >= getAmmoReloadCost();
 	}
 
-	default float getInaccuracy() {
-		return -MAX_INACCURACY * getAccuracy() + MAX_INACCURACY;
+	default float getProjectileInaccuracyModifier(ItemStack stack) {
+		return -MAX_INACCURACY * getAccuracy(stack) + MAX_INACCURACY;
 	}
 
-	float getAccuracy();
+	float getAccuracy(ItemStack stack);
 
 	int getShootDelay(ItemStack stack);
 
 	default float getFireRate(ItemStack stack) {
-		return ONE_SECOND / getShootDelay(stack);
+		return ONE_SECOND_IN_TICKS / getShootDelay(stack);
 	}
 
 	int getReloadTime(ItemStack stack);
 
-	float getProjectileDamage(ItemStack stack);
+	float getProjectileDamageModifier(ItemStack stack);
+
+	int getProjectileKnockBackModifier(ItemStack stack);
 
 	int getMaxAmmo(ItemStack stack);
 
@@ -146,18 +145,18 @@ public interface Gun {
 	}
 
 	default int getAmmo(ItemStack stack) {
-		return stack.getOrCreateTag().getInt(NBT_KEY_AMMO);
+		return stack.getOrCreateTag().getInt(AMMO_KEY);
 	}
 
 	default void setAmmo(ItemStack stack, int amount) {
 		CompoundTag nbt = stack.getOrCreateTag();
-		nbt.putInt(NBT_KEY_AMMO, Mth.clamp(amount, 0, getMaxAmmo(stack)));
+		nbt.putInt(AMMO_KEY, Mth.clamp(amount, 0, getMaxAmmo(stack)));
 	}
 
 	default void addAmmo(ItemStack stack, int amount) {
 		if (amount == 0) return;
 		CompoundTag nbt = stack.getOrCreateTag();
-		nbt.putInt(NBT_KEY_AMMO, Math.max(0, nbt.getInt(NBT_KEY_AMMO) + amount));
+		nbt.putInt(AMMO_KEY, Math.max(0, nbt.getInt(AMMO_KEY) + amount));
 	}
 
 	default void consumeAmmo(ItemStack stack, int amount) {
@@ -175,16 +174,16 @@ public interface Gun {
 
 	ItemStack getAmmoIcon(ItemStack stack);
 
-	enum State {
+	enum GunState {
 		NONE((byte) 0), SHOOTING((byte) 1), RELOADING((byte) 2);
 
 		private final byte id;
 
-		State(byte id) {
+		GunState(byte id) {
 			this.id = id;
 		}
 
-		public static State fromId(int id) {
+		public static GunState fromId(int id) {
 			if (id == 0) return NONE;
 			if (id == 1) return SHOOTING;
 			if (id == 2) return RELOADING;

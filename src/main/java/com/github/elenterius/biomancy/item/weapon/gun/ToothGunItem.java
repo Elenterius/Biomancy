@@ -1,55 +1,33 @@
-package com.github.elenterius.biomancy.item.weapon;
+package com.github.elenterius.biomancy.item.weapon.gun;
 
-import com.github.elenterius.biomancy.entity.projectile.ToothProjectile;
 import com.github.elenterius.biomancy.init.ModItems;
+import com.github.elenterius.biomancy.init.ModProjectiles;
 import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
+import com.github.elenterius.biomancy.util.function.FloatOperator;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Predicate;
 
 @Deprecated(forRemoval = true)
-public class ToothGunItem extends BaseGunItem implements ItemTooltipStyleProvider {
+public class ToothGunItem extends GunItem implements ItemTooltipStyleProvider {
 
 	public static final Predicate<ItemStack> AMMO_PREDICATE = stack -> stack.getItem() == ModItems.NUTRIENT_PASTE.get();
 
 	public ToothGunItem(Properties properties) {
-		super(properties, new GunProperties()
-				.fireRate(1.25f)
-				.accuracy(0.92f)
-				.damage(5f)
-				.maxAmmo(6)
-				.reloadTime(4 * 20)
-				.autoReload(true));
-	}
-
-	public static void fireProjectile(ServerLevel serverLevel, LivingEntity shooter, InteractionHand usedHand, ItemStack stack, ProjectileProperties properties) {
-		ToothProjectile projectile = new ToothProjectile(serverLevel, shooter.getX(), shooter.getEyeY() - 0.1f, shooter.getZ());
-		projectile.setOwner(shooter);
-
-		projectile.setDamage(properties.damage());
-		if (properties.knockBack() > 0) {
-			projectile.setKnockback((byte) properties.knockBack());
-		}
-
-		Vec3 direction = shooter.getLookAngle();
-		projectile.shoot(direction.x(), direction.y(), direction.z(), 1.75f, properties.inaccuracy());
-
-		stack.hurtAndBreak(1, shooter, entity -> entity.broadcastBreakEvent(usedHand));
-
-		if (serverLevel.addFreshEntity(projectile)) {
-			serverLevel.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 1f, 1.4f);
-		}
+		super(properties, GunProperties.builder()
+				.fireRate(1.25f).accuracy(0.92f).damageModifier(5f)
+				.maxAmmo(6).reloadDuration(4 * 20).autoReload(true)
+				.build());
 	}
 
 	@Override
-	public void shoot(ServerLevel level, LivingEntity shooter, InteractionHand usedHand, ItemStack projectileWeapon, ProjectileProperties properties) {
-		fireProjectile(level, shooter, usedHand, projectileWeapon, properties);
+	public void shoot(ServerLevel level, LivingEntity shooter, InteractionHand usedHand, ItemStack projectileWeapon) {
+		ModProjectiles.TOOTH.shoot(level, shooter, FloatOperator.IDENTITY, d -> d + getProjectileDamageModifier(projectileWeapon), k -> k + getProjectileKnockBackModifier(projectileWeapon), i -> i + getProjectileInaccuracyModifier(projectileWeapon));
+		projectileWeapon.hurtAndBreak(1, shooter, entity -> entity.broadcastBreakEvent(usedHand));
 		consumeAmmo(shooter, projectileWeapon, 1);
 	}
 
