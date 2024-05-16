@@ -6,7 +6,7 @@ import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
 import com.github.elenterius.biomancy.client.util.GuiUtil;
 import com.github.elenterius.biomancy.item.ItemCharge;
 import com.github.elenterius.biomancy.item.injector.InjectorItem;
-import com.github.elenterius.biomancy.item.weapon.Gun;
+import com.github.elenterius.biomancy.item.weapon.gun.Gun;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -123,8 +123,8 @@ public final class IngameOverlays {
 	}
 
 	static void renderReloadIndicator(GuiGraphics guiGraphics, int screenWidth, int screenHeight, int zDepth, LocalPlayer player, ItemStack stack, Gun gun) {
-		Gun.State gunState = gun.getState(stack);
-		if (gunState == Gun.State.RELOADING) {
+		Gun.GunState gunState = gun.getState(stack);
+		if (gunState == Gun.GunState.RELOADING) {
 			long elapsedTime = player.clientLevel.getGameTime() - gun.getReloadStartTime(stack);
 			float reloadProgress = gun.getReloadProgress(elapsedTime, gun.getReloadTime(stack));
 			GuiRenderUtil.drawSquareProgressBar(guiGraphics, screenWidth / 2, screenHeight / 2, zDepth, 10, reloadProgress);
