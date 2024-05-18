@@ -93,8 +93,6 @@ public final class BiomancyMod {
 						ModItems.GIFT_SAC,
 						ModItems.ESSENCE,
 						ModItems.GUIDE_BOOK,
-						ModItems.TOXICUS,
-						ModItems.BILE_SPITTER,
 						ModItems.DEV_ARM_CANNON
 				);
 
