@@ -26,17 +26,16 @@ public final class IngameOverlays {
 	public static final ResourceLocation CHARGE_BAR = BiomancyMod.createRL("textures/gui/charge_bar.png");
 	public static final ResourceLocation ATTACK_REACH = BiomancyMod.createRL("textures/gui/indicator_attack_reach.png");
 
-	//	public static final IGuiOverlay GUN_OVERLAY = (gui, poseStack, partialTicks, screenWidth, screenHeight) -> {
-	//		Minecraft minecraft = Minecraft.getInstance();
-	//		if (!minecraft.options.hideGui && minecraft.player != null) {
-	//			ItemStack itemStack = minecraft.player.getMainHandItem();
-	//			if (itemStack.isEmpty() || !(itemStack.getItem() instanceof IGun gun)) return;
-	//
-	//			gui.setupOverlayRenderState(true, false);
-	//			gui.setBlitOffset(-90);
-	//			renderGunOverlay(gui, poseStack, screenWidth, screenHeight, minecraft.player, itemStack, gun);
-	//		}
-	//	};
+	public static final IGuiOverlay GUN_OVERLAY = (gui, poseStack, partialTicks, screenWidth, screenHeight) -> {
+		Minecraft minecraft = Minecraft.getInstance();
+		if (!minecraft.options.hideGui && minecraft.player != null) {
+			ItemStack itemStack = minecraft.player.getMainHandItem();
+			if (itemStack.isEmpty() || !(itemStack.getItem() instanceof Gun gun)) return;
+
+			gui.setupOverlayRenderState(true, false);
+			renderGunOverlay(gui, poseStack, screenWidth, screenHeight, -90, minecraft.player, itemStack, gun);
+		}
+	};
 
 	public static final IGuiOverlay INJECTOR_OVERLAY = (gui, guiGraphics, partialTicks, screenWidth, screenHeight) -> {
 		Minecraft minecraft = Minecraft.getInstance();
@@ -123,23 +122,21 @@ public final class IngameOverlays {
 	}
 
 	static void renderReloadIndicator(GuiGraphics guiGraphics, int screenWidth, int screenHeight, int zDepth, LocalPlayer player, ItemStack stack, Gun gun) {
-		Gun.GunState gunState = gun.getState(stack);
+		Gun.GunState gunState = gun.getGunState(stack);
 		if (gunState == Gun.GunState.RELOADING) {
 			long elapsedTime = player.clientLevel.getGameTime() - gun.getReloadStartTime(stack);
-			float reloadProgress = gun.getReloadProgress(elapsedTime, gun.getReloadTime(stack));
+			float reloadProgress = gun.getReloadProgress(elapsedTime, gun.getReloadDurationTicks(stack));
 			GuiRenderUtil.drawSquareProgressBar(guiGraphics, screenWidth / 2, screenHeight / 2, zDepth, 10, reloadProgress);
 		}
 		else {
 			long elapsedTime = player.clientLevel.getGameTime() - gun.getShootTimestamp(stack);
-			renderAttackIndicator(guiGraphics, screenWidth, screenHeight, zDepth, player, elapsedTime, gun.getShootDelay(stack));
+			renderAttackIndicator(guiGraphics, screenWidth, screenHeight, zDepth, player, elapsedTime, gun.getShootDelayTicks(stack));
 		}
 	}
 
 	static void renderAmmoOverlay(GuiGraphics guiGraphics, Font font, int screenWidth, int screenHeight, int zDepth, ItemStack stack, Gun gun) {
 		int maxAmmo = gun.getMaxAmmo(stack);
 		int ammo = gun.getAmmo(stack);
-		renderOrnateCorner(guiGraphics, screenWidth - 44, screenHeight - 28);
-		guiGraphics.renderItem(gun.getAmmoIcon(stack), screenWidth - 16 - 4, screenHeight - 28 - 8);
 		renderAmmoCount(guiGraphics, font, screenWidth, screenHeight, zDepth, maxAmmo, ammo, 0xFFFEFEFE, 0xFF9E9E9E);
 	}
 

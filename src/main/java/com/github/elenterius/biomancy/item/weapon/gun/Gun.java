@@ -14,7 +14,8 @@ import net.minecraft.world.level.Level;
 
 public interface Gun {
 
-	float ONE_SECOND_IN_TICKS = 20f; //measured in ticks
+	int ONE_SECOND_IN_TICKS = 20;
+	int ONE_HOUR_IN_TICKS = 60 * 60 * 20;
 	float MAX_INACCURACY = 1f; //0.0 - 1.0
 
 	String AMMO_KEY = "ammo";
@@ -30,11 +31,11 @@ public interface Gun {
 
 	void shoot(ServerLevel level, LivingEntity shooter, InteractionHand usedHand, ItemStack projectileWeapon);
 
-	default GunState getState(ItemStack stack) {
+	default GunState getGunState(ItemStack stack) {
 		return GunState.fromId(stack.getOrCreateTag().getByte(WEAPON_STATE_KEY));
 	}
 
-	default void setState(ItemStack stack, GunState state) {
+	default void setGunState(ItemStack stack, GunState state) {
 		stack.getOrCreateTag().putByte(WEAPON_STATE_KEY, state.getId());
 	}
 
@@ -44,7 +45,7 @@ public interface Gun {
 
 	default void startReload(ItemStack stack, ServerLevel level, LivingEntity shooter) {
 		if (canReload(stack, shooter)) {
-			setState(stack, GunState.RELOADING);
+			setGunState(stack, GunState.RELOADING);
 			stack.getOrCreateTag().putLong(RELOAD_TIMESTAMP_KEY, level.getGameTime());
 			onReloadStarted(stack, level, shooter);
 		}
@@ -54,7 +55,7 @@ public interface Gun {
 	}
 
 	default void finishReload(ItemStack stack, ServerLevel level, LivingEntity shooter) {
-		setState(stack, GunState.NONE);
+		setGunState(stack, GunState.NONE);
 
 		if (shooter instanceof Player player && player.getAbilities().instabuild) {
 			setAmmo(stack, getMaxAmmo(stack));
@@ -74,12 +75,12 @@ public interface Gun {
 	}
 
 	default void stopReload(ItemStack stack, ServerLevel level, LivingEntity shooter) {
-		setState(stack, GunState.NONE);
+		setGunState(stack, GunState.NONE);
 		onReloadStopped(stack, level, shooter);
 	}
 
 	default void cancelReload(ItemStack stack, ServerLevel level, LivingEntity shooter) {
-		setState(stack, GunState.NONE);
+		setGunState(stack, GunState.NONE);
 		onReloadCanceled(stack, level, shooter);
 	}
 
@@ -111,23 +112,23 @@ public interface Gun {
 		return !ammo.isEmpty() && ammo.getCount() >= getAmmoReloadCost();
 	}
 
-	default float getProjectileInaccuracyModifier(ItemStack stack) {
-		return -MAX_INACCURACY * getAccuracy(stack) + MAX_INACCURACY;
+	default float modifyProjectileInaccuracy(float baseInaccuracy, ItemStack stack) {
+		return baseInaccuracy + (-MAX_INACCURACY * getAccuracy(stack) + MAX_INACCURACY);
 	}
 
 	float getAccuracy(ItemStack stack);
 
-	int getShootDelay(ItemStack stack);
+	int getShootDelayTicks(ItemStack stack);
 
 	default float getFireRate(ItemStack stack) {
-		return ONE_SECOND_IN_TICKS / getShootDelay(stack);
+		return ONE_SECOND_IN_TICKS / (float) getShootDelayTicks(stack);
 	}
 
-	int getReloadTime(ItemStack stack);
+	int getReloadDurationTicks(ItemStack stack);
 
-	float getProjectileDamageModifier(ItemStack stack);
+	float modifyProjectileDamage(float baseDamage, ItemStack stack);
 
-	int getProjectileKnockBackModifier(ItemStack stack);
+	int modifyProjectileKnockBack(int baseKnockBack, ItemStack stack);
 
 	int getMaxAmmo(ItemStack stack);
 
@@ -171,8 +172,6 @@ public interface Gun {
 		SoundSource soundSource = shooter instanceof Player ? SoundSource.PLAYERS : SoundSource.HOSTILE;
 		level.playSound(null, shooter.getX(), shooter.getY(), shooter.getZ(), soundEvent, soundSource, 1f, 1f / (shooter.getRandom().nextFloat() * 0.5f + 1f) + 0.2f);
 	}
-
-	ItemStack getAmmoIcon(ItemStack stack);
 
 	enum GunState {
 		NONE((byte) 0), SHOOTING((byte) 1), RELOADING((byte) 2);

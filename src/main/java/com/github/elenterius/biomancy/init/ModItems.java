@@ -80,8 +80,6 @@ public final class ModItems {
 	public static final RegistryObject<SerumItem> ABSORPTION_BOOST = registerSerumItem(ModSerums.ABSORPTION_BOOST);
 	public static final RegistryObject<SerumItem> CLEANSING_SERUM = registerSerumItem(ModSerums.CLEANSING_SERUM);
 	public static final RegistryObject<SerumItem> INSOMNIA_CURE = registerSerumItem(ModSerums.INSOMNIA_CURE);
-	//	public static final RegistryObject<SerumItem> ADRENALINE_SERUM = registerSerumItem(ModSerums.ADRENALINE_SERUM);
-	//	public static final RegistryObject<SerumItem> DECAY_AGENT = registerSerumItem(ModSerums.DECAY_AGENT);
 
 	//## Special
 	public static final RegistryObject<SimpleItem> PRIMORDIAL_CORE = registerSimpleItem("primordial_core", ModRarities.VERY_RARE);
@@ -105,10 +103,6 @@ public final class ModItems {
 	public static final RegistryObject<AcolyteArmorItem> ACOLYTE_ARMOR_CHESTPLATE = registerLivingArmorChestplate("acolyte_armor", ModArmorMaterials.ACOLYTE, 200, AcolyteArmorItem::new);
 	public static final RegistryObject<AcolyteArmorItem> ACOLYTE_ARMOR_LEGGINGS = registerLivingArmorLeggings("acolyte_armor", ModArmorMaterials.ACOLYTE, 200, AcolyteArmorItem::new);
 	public static final RegistryObject<AcolyteArmorItem> ACOLYTE_ARMOR_BOOTS = registerLivingArmorBoots("acolyte_armor", ModArmorMaterials.ACOLYTE, 200, AcolyteArmorItem::new);
-	//	public static final RegistryObject<OverseerArmorItem> OVERSEER_ARMOR_HELMET = registerArmorHelmet("overseer_armor", ModArmorMaterials.OVERSEER, OverseerArmorItem::new);
-	//	public static final RegistryObject<OverseerArmorItem> OVERSEER_ARMOR_CHESTPLATE = registerArmorChestplate("overseer_armor", ModArmorMaterials.OVERSEER, OverseerArmorItem::new);
-	//	public static final RegistryObject<OverseerArmorItem> OVERSEER_ARMOR_LEGGINGS = registerArmorLeggings("overseer_armor", ModArmorMaterials.OVERSEER, OverseerArmorItem::new);
-	//	public static final RegistryObject<OverseerArmorItem> OVERSEER_ARMOR_BOOTS = registerArmorBoots("overseer_armor", ModArmorMaterials.OVERSEER, OverseerArmorItem::new);
 
 	//# Food/Fuel
 	public static final RegistryObject<EffectCureItem> NUTRIENT_PASTE = registerItem("nutrient_paste", props -> new EffectCureItem(props.food(ModFoods.NUTRIENT_PASTE)));
