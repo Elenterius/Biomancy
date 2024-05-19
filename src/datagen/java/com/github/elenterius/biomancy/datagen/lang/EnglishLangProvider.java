@@ -228,11 +228,11 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addTooltip("ability.bio_alchemical_epidermis", "Bio-Alchemical Epidermis");
 		addTooltip("ability.bio_alchemical_epidermis.desc", "+15% Resistance to external application of harmful Status-Effects\n -25% Injection Resistance\n -25% Injection Damage");
 
-		//		addTooltip("fire_rate", "Fire Rate");
-		//		addTooltip("accuracy", "Accuracy");
-		//		addTooltip("ammo", "Ammo");
-		//		addTooltip("reload_time", "Reload Time");
-		//		addTooltip("projectile_damage", "Projectile Damage");
+		addTooltip("fire_rate", "Fire Rate");
+		addTooltip("accuracy", "Accuracy");
+		addTooltip("ammo", "Ammo");
+		addTooltip("reload_time", "Reload Time");
+		addTooltip("projectile_damage", "Projectile Damage");
 
 		add(LivingToolState.getTooltipTranslationKey(), "The Tool is %1$s");
 		add(LivingToolState.BROKEN.getTranslationKey(), "Broken");
@@ -240,8 +240,8 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		add(LivingToolState.AWAKENED.getTranslationKey(), "Awakened");
 
 		addHudMessage("not_sleepy", "You don't feel sleepy...");
-		//		addHudMessage("set_behavior_command", "%1$s will now execute the %2$s command");
-		//		addHudMessage("not_enough_ammo", "Not enough Ammo");
+		//addHudMessage("set_behavior_command", "%1$s will now execute the %2$s command");
+		addHudMessage("not_enough_ammo", "Not enough Ammo");
 		addHudMessage("not_enough_nutrients", "Not enough Nutrients");
 		addHudMessage("not_enough_blood_charge", "Not enough Blood Charge");
 		addHudMessage("mob_too_old", "The Mob is too old");
@@ -266,9 +266,6 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		add("jei.biomancy.recipe.decomposer", "Decomposer Recipes");
 		add("jei.biomancy.recipe.digester", "Digester Recipes");
 		add("jei.biomancy.recipe.bio_forge", "Bio-Forge Recipes");
-
-		//		add("jer.biomancy.requiresDespoilOrBoneCleaver", "Requires Despoil Enchantment or Bone Cleaver (#forge:tools/knives)");
-		//		add("jer.biomancy.requiresBoneCleaver", "Requires Bone Cleaver");
 
 		addSoundTranslations();
 		addBannerPatternTranslations();

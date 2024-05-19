@@ -166,6 +166,7 @@ public final class ClientSetupHandler {
 	public static void registerGameOverlays(RegisterGuiOverlaysEvent event) {
 		event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "injector", IngameOverlays.INJECTOR_OVERLAY);
 		event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "charge_bar", IngameOverlays.CHARGE_BAR_OVERLAY);
+		event.registerAbove(VanillaGuiOverlay.CROSSHAIR.id(), "gun", IngameOverlays.GUN_OVERLAY);
 	}
 
 	@SubscribeEvent

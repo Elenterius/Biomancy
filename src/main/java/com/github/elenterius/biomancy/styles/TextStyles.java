@@ -12,6 +12,7 @@ public final class TextStyles {
 
 	public static final Style GRAY = Style.EMPTY.withColor(ChatFormatting.GRAY);
 	public static final Style DARK_GRAY = Style.EMPTY.withColor(ChatFormatting.DARK_GRAY);
+	public static final Style LIME = Style.EMPTY.withColor(ChatFormatting.GREEN);
 	public static final Style LORE = Style.EMPTY.withColor(ChatFormatting.DARK_GRAY).withItalic(true);
 	public static final Style ITALIC_GRAY = Style.EMPTY.withColor(ChatFormatting.GRAY).withItalic(true);
 	public static final Style ERROR = Style.EMPTY.withColor(ColorStyles.TEXT_ERROR);
