@@ -26,6 +26,7 @@ import com.github.elenterius.biomancy.client.render.entity.projectile.acidblob.A
 import com.github.elenterius.biomancy.client.render.entity.projectile.bloomberry.BloomberryProjectileRenderer;
 import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.integration.ModsCompatHandler;
+import com.github.elenterius.biomancy.item.weapon.gun.GunbladeItem;
 import com.github.elenterius.biomancy.tooltip.EmptyLineTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.HrTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.StorageSacTooltipComponent;
@@ -137,6 +138,8 @@ public final class ClientSetupHandler {
 	private static void registerItemModelProperties() {
 		ItemPropertyFunction shieldPropertyFunc = (stack, level, livingEntity, seed) -> livingEntity != null && livingEntity.isUsingItem() && livingEntity.getUseItem() == stack ? 1f : 0f;
 		ItemProperties.register(ModItems.THORN_SHIELD.get(), new ResourceLocation("blocking"), shieldPropertyFunc);
+
+		ItemProperties.register(ModItems.CAUSTIC_GUNBLADE.get(), new ResourceLocation("melee"), (stack, level, livingEntity, seed) -> GunbladeItem.GunbladeMode.from(stack) == GunbladeItem.GunbladeMode.MELEE ? 1f : 0f);
 	}
 
 	@SubscribeEvent

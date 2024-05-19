@@ -79,6 +79,8 @@
   "item.biomancy.acid_bucket": "Gastric Acid Bucket",
   "item.biomancy.ravenous_claws": "Ravenous Claws",
   "item.biomancy.ravenous_claws.tooltip": "Extremely hungry and vicious Claws forged by starving living flesh and grafting claws onto it.\n\nRepair the famished claws by feeding them with food via the player inventory, as you would fill a bundle.\n\nKilling Mobs with these claws grants blood charges, which allow you to use the Awakened mode.",
+  "item.biomancy.caustic_gunblade": "Caustic Gunblade",
+  "item.biomancy.caustic_gunblade.tooltip": "PLACEHOLDER",
   "item.biomancy.dev_arm_cannon": "[Dev Tool] Arm Cannon",
   "item.biomancy.dev_arm_cannon.tooltip": "Creative/Developer Tool for testing projectiles.",
   "item.biomancy.acolyte_armor_helmet": "Acolyte Helmet",

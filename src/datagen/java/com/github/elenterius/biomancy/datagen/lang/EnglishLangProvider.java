@@ -469,6 +469,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 				Repair the famished claws by feeding them with food via the player inventory, as you would fill a bundle.
 								
 				Killing Mobs with these claws grants blood charges, which allow you to use the Awakened mode.""");
+		addItem(ModItems.CAUSTIC_GUNBLADE, "Caustic Gunblade", "PLACEHOLDER");
 		addItem(ModItems.DEV_ARM_CANNON, "[Dev Tool] Arm Cannon", "Creative/Developer Tool for testing projectiles.");
 
 		addItem(ModItems.ACOLYTE_ARMOR_HELMET, "Acolyte Helmet");
