@@ -109,6 +109,10 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		add("tooltip.biomancy." + id, text);
 	}
 
+	private void addAbility(String id, String text) {
+		add("ability.biomancy." + id, text);
+	}
+
 	private <T extends Item> void addItem(Supplier<T> supplier, String name, String tooltip) {
 		T item = supplier.get();
 		add(item.getDescriptionId(), name);
@@ -217,10 +221,13 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addTooltip("ability.bleed_proc.desc", "When triggered, adds one Bleed Stack (max 2)");
 		addTooltip("ability.blood_explosion", "Blood Explosion");
 		addTooltip("ability.blood_explosion.desc", "On Bleed Stack, deals 10% of max health as damage");
-		addTooltip("ability.shredding_strike", "Shredding Swipe");
-		addTooltip("ability.shredding_strike.desc", "On heavy attack, adds one Armor Shred stack (max 20)");
-		addTooltip("ability.corrosive_proc", "Corrosive Blow");
-		addTooltip("ability.corrosive_proc.desc", "On critical hit, applies Corrosive status effect");
+
+		addAbility("acid_coat", "Acid Coat");
+		addAbility("acid_coat.desc", """
+				On Right-Click coats the blade in Acid for 10 seconds.
+				Full-Strength Attacks inflict one stack of Armor Shred for 4s and one stack of Corrosion for 2s.
+				Critical Hits inflict two stacks of Armor Shred for 4s.""");
+
 		addTooltip("ability.thorny_hide", "Thorny Hide");
 		addTooltip("ability.thorny_hide.desc", "On successful block, deals thorns damage to the attacker");
 		addTooltip("ability.fleshkin_affinity", "Fleshkin Affinity");
@@ -469,7 +476,9 @@ public class EnglishLangProvider extends AbstractLangProvider {
 				Repair the famished claws by feeding them with food via the player inventory, as you would fill a bundle.
 								
 				Killing Mobs with these claws grants blood charges, which allow you to use the Awakened mode.""");
-		addItem(ModItems.CAUSTIC_GUNBLADE, "Caustic Gunblade", "PLACEHOLDER");
+		addItem(ModItems.CAUSTIC_GUNBLADE, "Caustic Gunblade", """
+				A caustic gunblade that can alternate between melee and ranged mode and utilizes acidic ammo to damage its targets.
+				The acidic ammunition regenerates by itself after 5s of no usage.""");
 		addItem(ModItems.DEV_ARM_CANNON, "[Dev Tool] Arm Cannon", "Creative/Developer Tool for testing projectiles.");
 
 		addItem(ModItems.ACOLYTE_ARMOR_HELMET, "Acolyte Helmet");

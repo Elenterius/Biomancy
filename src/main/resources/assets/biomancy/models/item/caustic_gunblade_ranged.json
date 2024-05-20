@@ -1,0 +1,18 @@
+{
+  "parent": "forge:item/default",
+  "loader": "forge:separate_transforms",
+  "textures": {
+    "particle": "biomancy:item/weapon/caustic_gunblade_ranged_icon"
+  },
+  "base": {
+    "parent": "biomancy:item/caustic_gunblade_ranged_display"
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "biomancy:item/caustic_gunblade_ranged_icon"
+    },
+    "fixed": {
+      "parent": "biomancy:item/caustic_gunblade_ranged_icon"
+    }
+  }
+}
