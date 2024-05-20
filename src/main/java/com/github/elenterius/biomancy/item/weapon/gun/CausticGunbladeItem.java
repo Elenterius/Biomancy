@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.item.weapon.gun;
 
+import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.client.render.item.caustic_gunblade.CausticGunbladeRenderer;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.*;
@@ -11,9 +12,9 @@ import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.github.elenterius.biomancy.util.animation.TriggerableAnimation;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -92,10 +93,14 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 	@Override
 	public InteractionResultHolder<ItemStack> useInMeleeMode(Level level, Player player, InteractionHand usedHand, ItemStack stack) {
 		if (level instanceof ServerLevel serverLevel) {
-			broadcastAnimation(serverLevel, player, stack, Animations.COAT_BLADES);
+			if (getAmmo(stack) > 1 && !Abilities.ACID_COAT.isActive(stack)) {
+				consumeAmmo(player, stack, 1);
+				Abilities.ACID_COAT.setActive(serverLevel, stack, player);
+				broadcastAnimation(serverLevel, player, stack, Animations.COAT_BLADES);
+			}
 		}
 
-		return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
+		return InteractionResultHolder.fail(stack);
 	}
 
 	@Override
@@ -104,9 +109,14 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 		if (!(level instanceof ServerLevel serverLevel)) return;
 		if (!(entity instanceof LivingEntity shooter)) return;
 
-		GunState gunState = getGunState(stack);
-		if (gunState == GunState.NONE && serverLevel.getGameTime() - getShootTimestamp(stack) > 5 * 20 && canReload(stack, shooter)) {
-			startReload(stack, serverLevel, shooter);
+		if (isSelected) {
+			Abilities.ACID_COAT.tick(serverLevel, stack, shooter);
+
+			GunState gunState = getGunState(stack);
+			if (gunState == GunState.NONE && serverLevel.getGameTime() - getShootTimestamp(stack) > 5 * 20 && canReload(stack, shooter)) {
+				startReload(stack, serverLevel, shooter);
+				return;
+			}
 		}
 
 		super.inventoryTick(stack, level, entity, slotId, isSelected);
@@ -131,11 +141,12 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 
 	@Override
 	public void onCriticalHitEntity(ItemStack stack, LivingEntity attacker, LivingEntity target) {
+		if (attacker.level().isClientSide) return;
 		if (GunbladeMode.from(stack) != GunbladeMode.MELEE) return;
 
-		int seconds = 4;
-		target.addEffect(new MobEffectInstance(ModMobEffects.CORROSIVE.get(), seconds * 20, 0));
-		target.addEffect(new MobEffectInstance(ModMobEffects.ARMOR_SHRED.get(), seconds * 20, 1));
+		if (Abilities.ACID_COAT.isActive(stack)) {
+			target.addEffect(new MobEffectInstance(ModMobEffects.ARMOR_SHRED.get(), 4 * 20, 1));
+		}
 	}
 
 	@Override
@@ -143,10 +154,13 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 		if (attacker.level().isClientSide) return super.hurtEnemy(stack, target, attacker);
 		if (GunbladeMode.from(stack) != GunbladeMode.MELEE) return super.hurtEnemy(stack, target, attacker);
 
-		boolean isFullAttackStrength = !(attacker instanceof Player player) || player.getAttackStrengthScale(0.5f) >= 0.9f;
-		if (isFullAttackStrength) {
-			playSwipeFX(attacker);
-			target.addEffect(new MobEffectInstance(ModMobEffects.ARMOR_SHRED.get(), 4 * 20, 0));
+		if (Abilities.ACID_COAT.isActive(stack)) {
+			boolean isFullAttackStrength = !(attacker instanceof Player player) || player.getAttackStrengthScale(0.5f) >= 0.9f;
+			if (isFullAttackStrength) {
+				playSwipeFX(attacker);
+				target.addEffect(new MobEffectInstance(ModMobEffects.CORROSIVE.get(), 2 * 20, 0));
+				target.addEffect(new MobEffectInstance(ModMobEffects.ARMOR_SHRED.get(), 4 * 20, 0));
+			}
 		}
 
 		return super.hurtEnemy(stack, target, attacker);
@@ -154,6 +168,8 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 
 	@Override
 	public void onChangeGunbladeMode(ServerLevel level, LivingEntity shooter, ItemStack stack) {
+		Abilities.ACID_COAT.cancel(level, stack, shooter);
+
 		SoundEvent soundEvent = GunbladeMode.from(stack) == GunbladeMode.MELEE ? ModSoundEvents.FLESHKIN_BECOME_DORMANT.get() : ModSoundEvents.FLESHKIN_BECOME_AWAKENED.get();
 		playSFX(level, shooter, soundEvent);
 	}
@@ -184,15 +200,17 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 	}
 
 	@Override
+	public Component getHighlightTip(ItemStack stack, Component displayName) {
+		return !Abilities.ACID_COAT.isActive(stack) ? displayName : ComponentUtil.mutable().append(displayName).append(" (").append(ComponentUtil.translatable(Abilities.ACID_COAT.getTranslationKey())).append(")");
+	}
+
+	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
 		tooltip.addAll(ClientTextUtil.getItemInfoTooltip(stack));
 		tooltip.add(ComponentUtil.emptyLine());
 
 		if (GunbladeMode.from(stack) == GunbladeMode.MELEE) {
-			tooltip.add(TextComponentUtil.getTooltipText("ability.shredding_strike").withStyle(ChatFormatting.GRAY));
-			tooltip.add(ComponentUtil.literal(" ").append(TextComponentUtil.getTooltipText("ability.shredding_strike.desc")).withStyle(ChatFormatting.DARK_GRAY));
-			tooltip.add(TextComponentUtil.getTooltipText("ability.corrosive_proc").withStyle(ChatFormatting.GRAY));
-			tooltip.add(ComponentUtil.literal(" ").append(TextComponentUtil.getTooltipText("ability.corrosive_proc.desc")).withStyle(ChatFormatting.DARK_GRAY));
+			Abilities.ACID_COAT.appendAbilityDescription(stack, tooltip);
 		}
 		else {
 			appendGunStats(stack, tooltip);
@@ -238,21 +256,46 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 		Animations.registerControllers(this, controllers);
 	}
 
-	protected static class Animations {
-		private static final List<TriggerableAnimation> TRIGGERABLE_ANIMATIONS = new ArrayList<>();
-		static final String MAIN_CONTROLLER = "main";
+	public interface ItemAbility {
+		String name();
 
-		static final TriggerableAnimation SHOOT = register(MAIN_CONTROLLER, "shoot", RawAnimation.begin().thenPlay("shoot"));
-		static final TriggerableAnimation COAT_BLADES = register(MAIN_CONTROLLER, "coat_blades", RawAnimation.begin().thenPlay("coat_blades"));
+		void setActive(ServerLevel level, ItemStack stack, LivingEntity itemOwner);
+
+		boolean isActive(ItemStack stack);
+
+		void tick(Level level, ItemStack stack, LivingEntity itemOwner);
+
+		void cancel(ServerLevel level, ItemStack stack, LivingEntity itemOwner);
+
+		default String getTranslationKey() {
+			return TextComponentUtil.getTranslationKey("ability", name());
+		}
+
+		default void appendAbilityDescription(ItemStack stack, List<Component> components) {
+			String translationKey = getTranslationKey();
+			components.add(ComponentUtil.translatable(translationKey).withStyle(TextStyles.GRAY));
+			components.add(ComponentUtil.literal(" ").append(ComponentUtil.translatable(translationKey + ".desc")).withStyle(TextStyles.DARK_GRAY));
+		}
+	}
+
+	protected static final class Animations {
+		static final String MAIN_CONTROLLER = "main";
+		static final String ACID_COAT_CONTROLLER = "acid_blades";
+
 		static final RawAnimation IDLE_RANGED = RawAnimation.begin().thenPlay("idle_ranged");
 		static final RawAnimation IDLE_MELEE = RawAnimation.begin().thenPlay("idle_melee");
 		static final RawAnimation RANGED_TO_MELEE = RawAnimation.begin().thenPlay("ranged_to_melee").thenPlay("idle_melee");
 		static final RawAnimation MELEE_TO_RANGED = RawAnimation.begin().thenPlay("melee_to_ranged").thenPlay("idle_ranged");
-		;
+		static final RawAnimation COATED_BLADES = RawAnimation.begin().thenPlay("coated_blades");
+		static final RawAnimation UNCOATED_BLADES = RawAnimation.begin().thenPlay("uncoated_blades");
+
+		private static final List<TriggerableAnimation> TRIGGERABLE_ANIMATIONS = new ArrayList<>();
+		static final TriggerableAnimation SHOOT = register(MAIN_CONTROLLER, "shoot", RawAnimation.begin().thenPlay("shoot"));
+		static final TriggerableAnimation COAT_BLADES = register(MAIN_CONTROLLER, "coat_blades", RawAnimation.begin().thenPlay("coat_blades"));
 
 		private Animations() {}
 
-		static <T extends CausticGunbladeItem> PlayState handleAnimationState(AnimationState<T> state) {
+		static <T extends CausticGunbladeItem> PlayState handleMainAnimations(AnimationState<T> state) {
 
 			if (state.getController().isPlayingTriggeredAnimation()) return PlayState.CONTINUE;
 
@@ -267,10 +310,21 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 			}
 		}
 
+		static <T extends CausticGunbladeItem> PlayState handleAcidCoatAnimations(AnimationState<T> state) {
+			//			if (state.getController().isPlayingTriggeredAnimation()) return PlayState.CONTINUE;
+
+			ItemStack itemStack = state.getData(DataTickets.ITEMSTACK);
+			return state.setAndContinue(Abilities.ACID_COAT.isActive(itemStack) ? Animations.COATED_BLADES : Animations.UNCOATED_BLADES);
+		}
+
 		static void registerControllers(CausticGunbladeItem animatable, AnimatableManager.ControllerRegistrar controllers) {
-			AnimationController<CausticGunbladeItem> controller = new AnimationController<>(animatable, MAIN_CONTROLLER, 1, Animations::handleAnimationState);
-			Animations.registerTriggerableAnimations(controller);
-			controllers.add(controller);
+			AnimationController<CausticGunbladeItem> mainController = new AnimationController<>(animatable, MAIN_CONTROLLER, 0, Animations::handleMainAnimations);
+			Animations.registerTriggerableAnimations(mainController);
+			controllers.add(mainController);
+
+			AnimationController<CausticGunbladeItem> acidBladesController = new AnimationController<>(animatable, ACID_COAT_CONTROLLER, 0, Animations::handleAcidCoatAnimations);
+			Animations.registerTriggerableAnimations(acidBladesController);
+			controllers.add(acidBladesController);
 		}
 
 		private static TriggerableAnimation register(String controller, String name, RawAnimation rawAnimation) {
@@ -286,6 +340,46 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 				}
 			}
 		}
+	}
+
+	protected static final class Abilities {
+		public static final ItemAbility ACID_COAT = new ItemAbility() {
+			static final String NAME = "acid_coat";
+			static final String KEY = BiomancyMod.createRLString(NAME);
+			static final String TIMESTAMP_KEY = "timestamp";
+
+			@Override
+			public String name() {
+				return NAME;
+			}
+
+			@Override
+			public boolean isActive(ItemStack stack) {
+				CompoundTag tag = stack.getTagElement(KEY);
+				return tag != null;
+			}
+
+			@Override
+			public void setActive(ServerLevel level, ItemStack stack, LivingEntity itemOwner) {
+				CompoundTag tag = stack.getOrCreateTagElement(KEY);
+				tag.putLong(TIMESTAMP_KEY, level.getGameTime());
+			}
+
+			@Override
+			public void tick(Level level, ItemStack stack, LivingEntity itemOwner) {
+				CompoundTag tag = stack.getTagElement(KEY);
+				if (tag == null) return;
+
+				if (level.getGameTime() - tag.getLong(TIMESTAMP_KEY) > 10 * 20) {
+					stack.removeTagKey(KEY);
+				}
+			}
+
+			@Override
+			public void cancel(ServerLevel level, ItemStack stack, LivingEntity itemOwner) {
+				stack.removeTagKey(KEY);
+			}
+		};
 	}
 
 }

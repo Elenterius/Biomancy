@@ -50,42 +50,6 @@
               "vector": [ 1, 1.5, 1 ]
             }
           }
-        },
-        "TOP_BLADE_ACID": {
-          "position": {
-            "0.0": {
-              "vector": [ 0, 0, 0 ]
-            },
-            "0.0833": {
-              "vector": [ 0, 1, 0 ],
-              "easing": "easeInSine"
-            },
-            "0.25": {
-              "vector": [ 2.5, 1, 0 ],
-              "easing": "easeInSine"
-            },
-            "0.375": {
-              "vector": [ 2, 1, 0 ]
-            }
-          }
-        },
-        "BOTTOM_BLADE_ACID": {
-          "position": {
-            "0.0": {
-              "vector": [ 0, 0, 0 ]
-            },
-            "0.0833": {
-              "vector": [ 0, -1, 0 ],
-              "easing": "easeInSine"
-            },
-            "0.25": {
-              "vector": [ 2.5, -1, 0 ],
-              "easing": "easeInSine"
-            },
-            "0.375": {
-              "vector": [ 2, -1, 0 ]
-            }
-          }
         }
       }
     },
@@ -130,40 +94,12 @@
               "vector": [ 1, 1, 1 ]
             }
           }
-        },
-        "TOP_BLADE_ACID": {
-          "position": {
-            "0.0": {
-              "vector": [ 2, 1, 0 ]
-            },
-            "0.25": {
-              "vector": [ -0.5, 0, 0 ],
-              "easing": "easeInSine"
-            },
-            "0.375": {
-              "vector": [ 0, 0, 0 ]
-            }
-          }
-        },
-        "BOTTOM_BLADE_ACID": {
-          "position": {
-            "0.0": {
-              "vector": [ 2, -1, 0 ]
-            },
-            "0.25": {
-              "vector": [ -0.5, 0, 0 ],
-              "easing": "easeInSine"
-            },
-            "0.375": {
-              "vector": [ 0, 0, 0 ]
-            }
-          }
         }
       }
     },
     "idle_ranged": {
       "loop": "hold_on_last_frame",
-      "animation_length": 0.41667,
+      "animation_length": 0.4167,
       "bones": {
         "TOP_BLADE": {
           "position": {
@@ -179,21 +115,11 @@
           "scale": {
             "vector": [ 1, 1.5, 1 ]
           }
-        },
-        "TOP_BLADE_ACID": {
-          "position": {
-            "vector": [ 2, 1, 0 ]
-          }
-        },
-        "BOTTOM_BLADE_ACID": {
-          "position": {
-            "vector": [ 2, -1, 0 ]
-          }
         }
       }
     },
     "shoot": {
-      "animation_length": 0.41667,
+      "animation_length": 0.4167,
       "bones": {
         "TOP_BLADE": {
           "position": {
@@ -246,16 +172,6 @@
             "vector": [ 1, 1.5, 1 ]
           }
         },
-        "TOP_BLADE_ACID": {
-          "position": {
-            "vector": [ 2, 1, 0 ]
-          }
-        },
-        "BOTTOM_BLADE_ACID": {
-          "position": {
-            "vector": [ 2, -1, 0 ]
-          }
-        },
         "CANISTER_BONE": {
           "scale": {
             "0.0": {
@@ -295,8 +211,7 @@
       }
     },
     "coat_blades": {
-      "loop": "hold_on_last_frame",
-      "animation_length": 0.41667,
+      "animation_length": 0.4167,
       "bones": {
         "TOP_BLADE": {
           "rotation": {
@@ -421,13 +336,9 @@
           },
           "scale": {
             "0.0": {
-              "vector": [ 1, 1, 1 ]
+              "vector": [ 0, 0, 0 ]
             },
-            "0.0833": {
-              "vector": [ 1.2, 1, 1 ],
-              "easing": "easeInOutSine"
-            },
-            "0.25": {
+            "0.2917": {
               "vector": [ 1, 1, 1 ]
             }
           }
@@ -464,13 +375,9 @@
           },
           "scale": {
             "0.0": {
-              "vector": [ 1, 1, 1 ]
+              "vector": [ 0, 0, 0 ]
             },
-            "0.0833": {
-              "vector": [ 1.2, 1, 1 ],
-              "easing": "easeInOutSine"
-            },
-            "0.25": {
+            "0.2917": {
               "vector": [ 1, 1, 1 ]
             }
           }
@@ -488,6 +395,36 @@
               "vector": [ 1, 1, 1 ],
               "easing": "easeInSine"
             }
+          }
+        }
+      }
+    },
+    "coated_blades": {
+      "loop": true,
+      "bones": {
+        "TOP_BLADE_ACID": {
+          "scale": {
+            "vector": [ 1, 1, 1 ]
+          }
+        },
+        "BOTTOM_BLADE_ACID": {
+          "scale": {
+            "vector": [ 1, 1, 1 ]
+          }
+        }
+      }
+    },
+    "uncoated_blades": {
+      "loop": true,
+      "bones": {
+        "TOP_BLADE_ACID": {
+          "scale": {
+            "vector": [ 0, 0, 0 ]
+          }
+        },
+        "BOTTOM_BLADE_ACID": {
+          "scale": {
+            "vector": [ 0, 0, 0 ]
           }
         }
       }
