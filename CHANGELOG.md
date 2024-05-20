@@ -1,3 +1,26 @@
+## [7.0.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.6.0.0...1.20.1-v2.7.0.0) (2024-05-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* refactor tributes
+* refactor recipe handling and replace all static food digesting recipes with one dynamic recipe
+
+### Features
+
+* add Acolyte Armor ([ef8e594](https://github.com/Elenterius/Biomancy/commit/ef8e59461180e7b78a048eee56d00662d728bc59))
+* add Bio-Alchemical Epidermis ability to Acoylte Armor ([31a6cc4](https://github.com/Elenterius/Biomancy/commit/31a6cc49c05fc0abc9e169f0b43690a67004813b))
+* add Caustic Gunblade ([e90444a](https://github.com/Elenterius/Biomancy/commit/e90444aedeffcbc6016834ba955d67a303af36a5))
+* add proper flesh tongue comments ([14e2256](https://github.com/Elenterius/Biomancy/commit/14e22566a90492fe916047f3cbb44ec090bec1e6))
+* **buff:** increase fuel value for Nutrient Paste (2 -> 3) and Nutrient Bar (18 -> 27) ([04a6bd0](https://github.com/Elenterius/Biomancy/commit/04a6bd0b0823681e79c30c620d05f3ded2634801))
+* make the durability bar always visible for living tools without max nutrients ([8b0131a](https://github.com/Elenterius/Biomancy/commit/8b0131ac130c0dd1516b82abb91f414f08f22c91))
+* re-balance digesting recipes (nerf cocoa beans, bamboo, melon, pumpkin, cake, etc.) ([a2fdc35](https://github.com/Elenterius/Biomancy/commit/a2fdc3569518f90b868841b89f0ca18e7391dd64))
+* refactor recipe handling and replace all static food digesting recipes with one dynamic recipe ([52b5a5e](https://github.com/Elenterius/Biomancy/commit/52b5a5e1d53cf51285a065e360bea6a9e64e7056))
+* refactor tributes ([ad49699](https://github.com/Elenterius/Biomancy/commit/ad496998442c72791da6c496e20cbe3c17ebfc94))
+* remove experimental Toxicus & Bile-Spitter items ([45a3e4f](https://github.com/Elenterius/Biomancy/commit/45a3e4fc28db8095f71b9bbd2ba7d8fdfb271d49))
+* slightly tweak cradle behavior and limit Cradle attack on failure to sacrifices with high hostility ([0a3728e](https://github.com/Elenterius/Biomancy/commit/0a3728e661fb841db46c632b9afece16a9faf8ff))
+* tweak decomposing recipes (nerf golden carrot & golden apple; buff magma cream) ([f5ccf4d](https://github.com/Elenterius/Biomancy/commit/f5ccf4d5047b9c6349ebbcd00a520f394fd59762))
+
 ## [6.0.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.5.2.0...1.20.1-v2.6.0.0) (2024-04-12)
 
 
@@ -114,18 +137,4 @@
 * fix block placement preview render not working for primal & malignant slabs ([8ae13d8](https://github.com/Elenterius/Biomancy/commit/8ae13d8d11e4429fcc942c920f5e38f0b62ed780))
 * fix Fleshkin Chests being breakable by block breaker machines (e.g. Create Drill) ([cc70b33](https://github.com/Elenterius/Biomancy/commit/cc70b3377606b9789a7319b8324fdea904bf60cf)), closes [#109](https://github.com/Elenterius/Biomancy/issues/109)
 * fix maw hopper stealing items from villagers & witches ([0167e51](https://github.com/Elenterius/Biomancy/commit/0167e5194ceb21a829008432b73c4320836a6eeb)), closes [#122](https://github.com/Elenterius/Biomancy/issues/122)
-
-## [4.5.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.4.4.0...1.20.1-v2.4.5.0) (2024-03-06)
-
-
-### Features
-
-* add backwards compatibility for the removed `biomancy:weapons` bio-forge tab ([9d9550f](https://github.com/Elenterius/Biomancy/commit/9d9550f35f85f9a4c5a58b66fc7eae4ee2e2f013)), closes [#118](https://github.com/Elenterius/Biomancy/issues/118)
-* **alexs-caves:** rework decomposer recipe result for sea pigs ([8a4f91d](https://github.com/Elenterius/Biomancy/commit/8a4f91dadf9cf45216cd989368b49a90fa79003c))
-* **buff:** make Primordial Core crafting recipe cheaper ([e1158f2](https://github.com/Elenterius/Biomancy/commit/e1158f258de8381e6a8fbbeaeabe845518352f7d))
-* change decomposer recipe output for any Eggs from `mineral fragments` to `hormone secretions` ([071d3a2](https://github.com/Elenterius/Biomancy/commit/071d3a2bc3d6ff69a35b355ebcec135a7f9d9297))
-* **nerf:** reduce digester recipe output for nether wart blocks ([e123e81](https://github.com/Elenterius/Biomancy/commit/e123e81d50b01f5f143f2e0be61db7fd922cc18d))
-* **nerf:** replace Nutrients with Nutrient Paste in crafting recipes ([a6f3d79](https://github.com/Elenterius/Biomancy/commit/a6f3d79feba8a51acbd1cfe36888be0ca7e4ef27))
-* remove Nutrients to Nutrient Paste recipe ([f3d006a](https://github.com/Elenterius/Biomancy/commit/f3d006a60a6b4d59cb861d6f0bd3f2384771295f))
-* rework starting advancements ([be58fc8](https://github.com/Elenterius/Biomancy/commit/be58fc88442a96b7babc705d9bd37128171e7434))
 
