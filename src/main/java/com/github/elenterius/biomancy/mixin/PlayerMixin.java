@@ -47,7 +47,7 @@ public abstract class PlayerMixin extends LivingEntity {
 		return instance;
 	}
 
-	@ModifyArg(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"), index = 0)
+	@ModifyArg(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"))
 	private DamageSource adjustAttackDamageSource(DamageSource source, @Share("target") LocalRef<Entity> argRef) {
 		ItemStack stack = getMainHandItem();
 		if (stack.getItem() instanceof ItemAttackDamageSourceProvider damageSourceProvider) {
@@ -66,7 +66,7 @@ public abstract class PlayerMixin extends LivingEntity {
 		return instance;
 	}
 
-	@ModifyArg(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"), index = 0)
+	@ModifyArg(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"))
 	private DamageSource adjustSweepAttackDamageSource(DamageSource source, @Share("sweepTarget") LocalRef<LivingEntity> argRef) {
 		ItemStack stack = getMainHandItem();
 		if (stack.getItem() instanceof ItemAttackDamageSourceProvider damageSourceProvider) {
