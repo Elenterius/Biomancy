@@ -1,6 +1,9 @@
 package com.github.elenterius.biomancy.init;
 
-import com.github.elenterius.biomancy.entity.projectile.*;
+import com.github.elenterius.biomancy.entity.projectile.AcidBlobProjectile;
+import com.github.elenterius.biomancy.entity.projectile.BaseProjectile;
+import com.github.elenterius.biomancy.entity.projectile.BloomberryProjectile;
+import com.github.elenterius.biomancy.entity.projectile.ToothProjectile;
 import com.github.elenterius.biomancy.item.weapon.gun.Gun;
 import com.github.elenterius.biomancy.util.function.FloatOperator;
 import com.github.elenterius.biomancy.util.function.IntOperator;
@@ -18,8 +21,7 @@ public final class ModProjectiles {
 
 	public static final List<ConfiguredProjectile<? extends BaseProjectile>> PRECONFIGURED_PROJECTILES = new ArrayList<>();
 	public static final ConfiguredProjectile<ToothProjectile> TOOTH = build("Sharp Tooth", 1.75f, 5f, 0, convertToInaccuracy(0.92f), ToothProjectile::new);
-	public static final ConfiguredProjectile<CorrosiveAcidProjectile> CORROSIVE = build("Corrosive", 1.5f, 4, 0, convertToInaccuracy(0.9f), CorrosiveAcidProjectile::new);
-	public static final ConfiguredProjectile<AcidBlobProjectile> ACID_BLOB = build("Acid Blob", 1.2f, 2, 0, convertToInaccuracy(0.9f), SoundEvents.SLIME_JUMP_SMALL, AcidBlobProjectile::new);
+	public static final ConfiguredProjectile<AcidBlobProjectile> ACID_BLOB = build("Acid Blob", 1.2f, 2, 0, convertToInaccuracy(0.9f), SoundEvents.SLIME_JUMP_SMALL, (level, x, y, z) -> new AcidBlobProjectile(level, x, y, z, false));
 	public static final ConfiguredProjectile<AcidBlobProjectile> FALLING_ACID_BLOB = build("Falling Acid Blob", 0.1f, 2, 0, convertToInaccuracy(0.9f), SoundEvents.SLIME_SQUISH_SMALL, AcidBlobProjectile::new);
 	public static final ConfiguredProjectile<BloomberryProjectile> BLOOMBERRY = build("Bloomberry", 1.25f, 2, 0, convertToInaccuracy(0.9f), BloomberryProjectile::new);
 

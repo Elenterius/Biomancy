@@ -8,6 +8,7 @@ import com.github.elenterius.biomancy.init.ModParticleTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -22,6 +23,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 public class AcidBlobProjectile extends CorrosiveAcidProjectile implements GeoEntity {
 
 	protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+	protected boolean canPlaceAcidFluid = true;
 
 	public AcidBlobProjectile(EntityType<? extends BaseProjectile> entityType, Level level) {
 		super(entityType, level);
@@ -31,8 +33,38 @@ public class AcidBlobProjectile extends CorrosiveAcidProjectile implements GeoEn
 		super(ModEntityTypes.ACID_BLOB_PROJECTILE.get(), level, x, y, z);
 	}
 
+	public AcidBlobProjectile(Level level, double x, double y, double z, boolean canPlaceAcidFluid) {
+		super(ModEntityTypes.ACID_BLOB_PROJECTILE.get(), level, x, y, z);
+		this.canPlaceAcidFluid = canPlaceAcidFluid;
+	}
+
+	public void setCanPlaceAcidFluid(boolean flag) {
+		canPlaceAcidFluid = flag;
+	}
+
+	@Override
+	public void readAdditionalSaveData(CompoundTag tag) {
+		super.readAdditionalSaveData(tag);
+		canPlaceAcidFluid = tag.getBoolean("place_acid_fluid");
+	}
+
+	@Override
+	public void addAdditionalSaveData(CompoundTag tag) {
+		super.addAdditionalSaveData(tag);
+		tag.putBoolean("place_acid_fluid", canPlaceAcidFluid);
+	}
+
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
+
+		if (canPlaceAcidFluid) {
+			if (placeAcidFluid(result)) return;
+		}
+
+		super.onHitBlock(result);
+	}
+
+	private boolean placeAcidFluid(BlockHitResult result) {
 		BlockPos pos = result.getBlockPos();
 		BlockPos posRelative = pos.relative(result.getDirection());
 		BlockState stateRelative = level().getBlockState(posRelative);
@@ -44,18 +76,17 @@ public class AcidBlobProjectile extends CorrosiveAcidProjectile implements GeoEn
 					level().setBlock(posRelative, ModBlocks.ACID_FLUID_BLOCK.get().defaultBlockState(), Block.UPDATE_CLIENTS);
 				}
 				playHitSound();
-				return;
+				return true;
 			}
 			else if (stateRelative.getBlock() instanceof FleshVeinsBlock) {
 				if (!level().isClientSide) {
 					level().setBlock(posRelative, Blocks.AIR.defaultBlockState(), Block.UPDATE_CLIENTS);
 				}
 				playHitSound();
-				return;
+				return true;
 			}
 		}
-
-		super.onHitBlock(result);
+		return false;
 	}
 
 	@Override
