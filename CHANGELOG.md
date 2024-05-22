@@ -1,3 +1,16 @@
+## [7.1.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.7.0.0...1.20.1-v2.7.1.0) (2024-05-22)
+
+
+### Features
+
+* add Acid Coat ability to Caustic Gunblade ([c0d7fe0](https://github.com/Elenterius/Biomancy/commit/c0d7fe0953fe4e54a6b39194320b1541c43d2687))
+* remove ability to place Acid Fluid with the Caustic Gunblade ([9ffe742](https://github.com/Elenterius/Biomancy/commit/9ffe742f3e6ad07d1f859157eb3d98808ce6c021))
+
+
+### Bug Fixes
+
+* fix mixin incompatibility with Apothic-Attributes mod ([1c8a57c](https://github.com/Elenterius/Biomancy/commit/1c8a57cd69f5a25ee27f32b8e1d8ef46f31d838d))
+
 ## [7.0.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.6.0.0...1.20.1-v2.7.0.0) (2024-05-20)
 
 
@@ -112,29 +125,4 @@
 
 * add missing translation strings for death messages ([d4b1dbc](https://github.com/Elenterius/Biomancy/commit/d4b1dbc38377736734dff273b788d2f2970cae2e)), closes [#123](https://github.com/Elenterius/Biomancy/issues/123)
 * fix crash when placing down a Primordial Cradle ([f21e77f](https://github.com/Elenterius/Biomancy/commit/f21e77f23cf970d48ae6de9b13c281c64508f365))
-
-## [5.0.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.4.5.0...1.20.1-v2.5.0.0) (2024-03-16)
-
-
-### ⚠ BREAKING CHANGES
-
-* removes the following EntityType tags: sharp_fang, sharp_claw, sinew, toxin_gland, volatile_gland, bile_gland, bone_marrow, withered_bone_marrow
-* migrate from entity tags to loot-table based despoil loot
-
-### Features
-
-* add ornamental flesh slab ([eea89b4](https://github.com/Elenterius/Biomancy/commit/eea89b4981714320e50ebd0d342d9227425f12e7))
-* add Smooth & Porous Primal Flesh variants for blocks, slabs, stairs and walls ([32229cc](https://github.com/Elenterius/Biomancy/commit/32229cca7381b3662c4dddbf62438f0b4f0c4c1a))
-* change the requirements of the "Kitty Cat" advancement to also trigger for ocelots ([52ba6ff](https://github.com/Elenterius/Biomancy/commit/52ba6ff9c93981fdb08f739332f3af41a256a0fa))
-* include primal flesh variants in flesh mound growth ([3144a5c](https://github.com/Elenterius/Biomancy/commit/3144a5c485bddbb7cb5725422cf05bfe055b150c))
-* make despoil loot-table driven where each mob has its own loot-table ([dda22ef](https://github.com/Elenterius/Biomancy/commit/dda22efed27486edd5691301649f28439c8b84df))
-* make Primal Bloom placeable on all primal block variants ([44f7f9f](https://github.com/Elenterius/Biomancy/commit/44f7f9f09c0165090c842e362fc9b5a866074528))
-* remove entity tags for despoil loot ([f115445](https://github.com/Elenterius/Biomancy/commit/f1154459c62289ee9b3bc306c17689269eee9e1d))
-
-
-### Bug Fixes
-
-* fix block placement preview render not working for primal & malignant slabs ([8ae13d8](https://github.com/Elenterius/Biomancy/commit/8ae13d8d11e4429fcc942c920f5e38f0b62ed780))
-* fix Fleshkin Chests being breakable by block breaker machines (e.g. Create Drill) ([cc70b33](https://github.com/Elenterius/Biomancy/commit/cc70b3377606b9789a7319b8324fdea904bf60cf)), closes [#109](https://github.com/Elenterius/Biomancy/issues/109)
-* fix maw hopper stealing items from villagers & witches ([0167e51](https://github.com/Elenterius/Biomancy/commit/0167e5194ceb21a829008432b73c4320836a6eeb)), closes [#122](https://github.com/Elenterius/Biomancy/issues/122)
 
