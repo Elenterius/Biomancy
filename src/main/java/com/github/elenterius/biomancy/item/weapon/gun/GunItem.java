@@ -35,8 +35,8 @@ public abstract class GunItem extends ProjectileWeaponItem implements Gun, KeyPr
 
 	public static final Set<Enchantment> VALID_ENCHANTMENTS = Set.of(Enchantments.PUNCH_ARROWS, Enchantments.POWER_ARROWS, Enchantments.QUICK_CHARGE);
 
-	private final GunProperties gunProperties;
-	private final ModProjectiles.ConfiguredProjectile<?> configuredProjectile;
+	protected final GunProperties gunProperties;
+	protected final ModProjectiles.ConfiguredProjectile<?> configuredProjectile;
 
 	protected GunItem(Properties properties, GunProperties gunProperties, ModProjectiles.ConfiguredProjectile<?> configuredProjectile) {
 		super(properties);

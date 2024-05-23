@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.item.weapon.gun;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.api.livingtool.SimpleLivingTool;
 import com.github.elenterius.biomancy.client.render.item.caustic_gunblade.CausticGunbladeRenderer;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.*;
@@ -8,10 +9,12 @@ import com.github.elenterius.biomancy.item.CriticalHitListener;
 import com.github.elenterius.biomancy.item.ItemAttackDamageSourceProvider;
 import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import com.github.elenterius.biomancy.item.weapon.BladeProperties;
+import com.github.elenterius.biomancy.styles.ColorStyles;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.github.elenterius.biomancy.util.animation.TriggerableAnimation;
+import com.github.elenterius.biomancy.util.function.FloatOperator;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.nbt.CompoundTag;
@@ -25,14 +28,17 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import net.minecraftforge.common.ToolAction;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
@@ -50,13 +56,15 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public class CausticGunbladeItem extends GunbladeItem implements CriticalHitListener, ItemAttackDamageSourceProvider, ItemTooltipStyleProvider, GeoItem {
+public class CausticGunbladeItem extends GunbladeItem implements SimpleLivingTool, CriticalHitListener, ItemAttackDamageSourceProvider, ItemTooltipStyleProvider, GeoItem {
+
+	private final int maxNutrients;
 
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
 	String LAST_USE_TIMESTAMP_KEY = "last_use_timestamp";
 
-	public CausticGunbladeItem(Properties itemProperties) {
+	public CausticGunbladeItem(int maxNutrients, Properties itemProperties) {
 		super(itemProperties,
 				BladeProperties.builder().attackDamage(6).attackSpeed(1).build(),
 				GunProperties.builder()
@@ -64,6 +72,8 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 						.maxAmmo(10).reloadDuration(10 * 20).autoReload(true)
 						.build(),
 				ModProjectiles.ACID_BLOB);
+
+		this.maxNutrients = maxNutrients;
 
 		SingletonGeoAnimatable.registerSyncedAnimatable(this);
 	}
@@ -98,8 +108,47 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 	@Override
 	public void shoot(ServerLevel level, LivingEntity shooter, InteractionHand usedHand, ItemStack projectileWeapon) {
 		broadcastAnimation(level, shooter, projectileWeapon, Animations.SHOOT);
-		super.shoot(level, shooter, usedHand, projectileWeapon);
+
+		configuredProjectile.shoot(level, shooter,
+				FloatOperator.IDENTITY,
+				baseDamage -> modifyProjectileDamage(baseDamage, projectileWeapon),
+				baseKnockBack -> modifyProjectileKnockBack(baseKnockBack, projectileWeapon),
+				baseInaccuracy -> modifyProjectileInaccuracy(baseInaccuracy, projectileWeapon));
+
+		consumeAmmo(shooter, projectileWeapon, 1);
+		consumeNutrients(projectileWeapon, 1);
+
 		setLastUseTimestamp(projectileWeapon, level.getGameTime());
+	}
+
+	@Override
+	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+		ItemStack stack = player.getItemInHand(hand);
+
+		if (!hasNutrients(stack)) {
+			if (level.isClientSide()) {
+				player.displayClientMessage(TextComponentUtil.getFailureMsgText("not_enough_nutrients"), true);
+				playSound(player, ModSoundEvents.FLESHKIN_NO.get());
+			}
+			return InteractionResultHolder.fail(stack);
+		}
+
+		return super.use(level, player, hand);
+	}
+
+	@Override
+	public void onUseTick(Level level, LivingEntity shooter, ItemStack stack, int remainingUseDuration) {
+		if (level.isClientSide) return;
+		if (!(level instanceof ServerLevel serverLevel)) return;
+		if (getGunState(stack) != GunState.SHOOTING) return;
+
+		if (!hasNutrients(stack)) {
+			shooter.releaseUsingItem();
+			stopShooting(stack, serverLevel, shooter);
+		}
+		else {
+			super.onUseTick(level, shooter, stack, remainingUseDuration);
+		}
 	}
 
 	@Override
@@ -137,7 +186,12 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 	@Override
 	public boolean canReload(ItemStack stack, LivingEntity shooter) {
 		long elapsedTime = shooter.level().getGameTime() - getLastUseTimestamp(stack);
-		return elapsedTime > 5 * 20 && getAmmo(stack) < getMaxAmmo(stack) && stack.getDamageValue() < stack.getMaxDamage() - 5;
+		return elapsedTime > 5 * 20 && getAmmo(stack) < getMaxAmmo(stack) && getNutrients(stack) >= getAmmoReloadCost();
+	}
+
+	@Override
+	public int getAmmoReloadCost() {
+		return 5;
 	}
 
 	@Override
@@ -165,11 +219,13 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 
 	@Override
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		if (attacker.level().isClientSide) return super.hurtEnemy(stack, target, attacker);
+		if (attacker.level().isClientSide) return true;
 
 		setLastUseTimestamp(stack, attacker.level().getGameTime());
 
-		if (GunbladeMode.from(stack) != GunbladeMode.MELEE) return super.hurtEnemy(stack, target, attacker);
+		consumeNutrients(stack, 2);
+
+		if (GunbladeMode.from(stack) != GunbladeMode.MELEE) return true;
 
 		if (Abilities.ACID_COAT.isActive(stack)) {
 			boolean isFullAttackStrength = !(attacker instanceof Player player) || player.getAttackStrengthScale(0.5f) >= 0.9f;
@@ -180,7 +236,7 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 			}
 		}
 
-		return super.hurtEnemy(stack, target, attacker);
+		return true;
 	}
 
 	@Override
@@ -214,7 +270,7 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 
 	@Override
 	public void onReloadFinished(ItemStack stack, ServerLevel level, LivingEntity shooter) {
-		stack.hurtAndBreak(5, shooter, livingEntity -> livingEntity.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+		consumeNutrients(stack, getAmmoReloadCost());
 		playSFX(level, shooter, SoundEvents.PLAYER_BURP);
 	}
 
@@ -228,6 +284,9 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 		tooltip.addAll(ClientTextUtil.getItemInfoTooltip(stack));
 		tooltip.add(ComponentUtil.emptyLine());
 
+		appendLivingToolTooltip(stack, tooltip);
+		tooltip.add(ComponentUtil.emptyLine());
+
 		if (GunbladeMode.from(stack) == GunbladeMode.MELEE) {
 			Abilities.ACID_COAT.appendAbilityDescription(stack, tooltip);
 		}
@@ -237,6 +296,78 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 
 		tooltip.add(ComponentUtil.emptyLine());
 		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action.switch_mode")).withStyle(TextStyles.DARK_GRAY));
+	}
+
+	@Override
+	public int getMaxNutrients(ItemStack stack) {
+		return maxNutrients;
+	}
+
+	@Override
+	public boolean overrideStackedOnOther(ItemStack stack, Slot slot, ClickAction action, Player player) {
+		if (handleOverrideStackedOnOther(stack, slot, action, player)) {
+			playSound(player, ModSoundEvents.FLESHKIN_EAT.get());
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
+		if (handleOverrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+			playSound(player, ModSoundEvents.FLESHKIN_EAT.get());
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
+		return super.canPerformAction(stack, toolAction) && hasNutrients(stack);
+	}
+
+	@Override
+	public boolean isBarVisible(ItemStack stack) {
+		return getNutrients(stack) < getMaxNutrients(stack);
+	}
+
+	@Override
+	public int getBarWidth(ItemStack stack) {
+		return Math.round(getNutrientsPct(stack) * 13f);
+	}
+
+	@Override
+	public int getBarColor(ItemStack stack) {
+		return ColorStyles.NUTRIENTS_FUEL_BAR;
+	}
+
+	@Override
+	public boolean isDamageable(ItemStack stack) {
+		return false;
+	}
+
+	@Override
+	public void setDamage(ItemStack stack, int damage) {
+		//do nothing
+	}
+
+	@Override
+	public int getDamage(ItemStack stack) {
+		return 0;
+	}
+
+	@Override
+	public int getMaxDamage(ItemStack stack) {
+		return 0;
+	}
+
+	@Override
+	public boolean canBeDepleted() {
+		return false;
+	}
+
+	protected void playSound(Player player, SoundEvent soundEvent) {
+		player.playSound(soundEvent, 0.8f, 0.8f + player.level().getRandom().nextFloat() * 0.4f);
 	}
 
 	@Override
@@ -252,7 +383,7 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 
 			@Override
 			public @Nullable HumanoidModel.ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
-				if (entityLiving.getUseItemRemainingTicks() > 0) {
+				if (GunbladeMode.from(itemStack) == GunbladeMode.RANGED && entityLiving.getUseItemRemainingTicks() > 0) {
 					return HumanoidModel.ArmPose.CROSSBOW_HOLD;
 				}
 				return null;
