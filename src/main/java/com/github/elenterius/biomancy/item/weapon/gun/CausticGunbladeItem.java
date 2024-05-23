@@ -66,7 +66,7 @@ public class CausticGunbladeItem extends GunbladeItem implements SimpleLivingToo
 
 	public CausticGunbladeItem(int maxNutrients, Properties itemProperties) {
 		super(itemProperties,
-				BladeProperties.builder().attackDamage(6).attackSpeed(1).build(),
+				BladeProperties.builder().attackDamage(6).attackSpeed(1.2f).build(),
 				GunProperties.builder()
 						.fireRate(0.5f)
 						.maxAmmo(10).reloadDuration(10 * 20).autoReload(true)

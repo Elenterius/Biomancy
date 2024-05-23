@@ -104,7 +104,7 @@ public abstract class GunbladeItem extends GunItem implements Vanishable {
 	protected Multimap<Attribute, AttributeModifier> createDefaultGunModifiers(BladeProperties bladeProperties) {
 		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
 		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", Math.max(bladeProperties.attackDamageModifier() - 2d, 0.5d), AttributeModifier.Operation.ADDITION));
-		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", bladeProperties.attackSpeedModifier(), AttributeModifier.Operation.ADDITION));
+		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", Math.max(bladeProperties.attackSpeedModifier() - 0.2d, -3.8d), AttributeModifier.Operation.ADDITION));
 		return builder.build();
 	}
 
