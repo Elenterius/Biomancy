@@ -25,6 +25,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -52,6 +53,8 @@ import java.util.function.Predicate;
 public class CausticGunbladeItem extends GunbladeItem implements CriticalHitListener, ItemAttackDamageSourceProvider, ItemTooltipStyleProvider, GeoItem {
 
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
+	String LAST_USE_TIMESTAMP_KEY = "last_use_timestamp";
 
 	public CausticGunbladeItem(Properties itemProperties) {
 		super(itemProperties,
@@ -84,10 +87,19 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 		return 16;
 	}
 
+	protected long getLastUseTimestamp(ItemStack stack) {
+		return stack.getOrCreateTag().getLong(LAST_USE_TIMESTAMP_KEY);
+	}
+
+	protected void setLastUseTimestamp(ItemStack stack, long timestamp) {
+		stack.getOrCreateTag().putLong(LAST_USE_TIMESTAMP_KEY, timestamp);
+	}
+
 	@Override
 	public void shoot(ServerLevel level, LivingEntity shooter, InteractionHand usedHand, ItemStack projectileWeapon) {
 		broadcastAnimation(level, shooter, projectileWeapon, Animations.SHOOT);
 		super.shoot(level, shooter, usedHand, projectileWeapon);
+		setLastUseTimestamp(projectileWeapon, level.getGameTime());
 	}
 
 	@Override
@@ -97,6 +109,7 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 				consumeAmmo(player, stack, 1);
 				Abilities.ACID_COAT.setActive(serverLevel, stack, player);
 				broadcastAnimation(serverLevel, player, stack, Animations.COAT_BLADES);
+				setLastUseTimestamp(stack, serverLevel.getGameTime());
 			}
 		}
 
@@ -112,8 +125,7 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 		if (isSelected) {
 			Abilities.ACID_COAT.tick(serverLevel, stack, shooter);
 
-			GunState gunState = getGunState(stack);
-			if (gunState == GunState.NONE && serverLevel.getGameTime() - getShootTimestamp(stack) > 5 * 20 && canReload(stack, shooter)) {
+			if (getGunState(stack) == GunState.NONE && !Abilities.ACID_COAT.isActive(stack) && canReload(stack, shooter)) {
 				startReload(stack, serverLevel, shooter);
 				return;
 			}
@@ -124,7 +136,8 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 
 	@Override
 	public boolean canReload(ItemStack stack, LivingEntity shooter) {
-		return getAmmo(stack) < getMaxAmmo(stack);
+		long elapsedTime = shooter.level().getGameTime() - getLastUseTimestamp(stack);
+		return elapsedTime > 5 * 20 && getAmmo(stack) < getMaxAmmo(stack) && stack.getDamageValue() < stack.getMaxDamage() - 5;
 	}
 
 	@Override
@@ -152,6 +165,9 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 	@Override
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		if (attacker.level().isClientSide) return super.hurtEnemy(stack, target, attacker);
+
+		setLastUseTimestamp(stack, attacker.level().getGameTime());
+
 		if (GunbladeMode.from(stack) != GunbladeMode.MELEE) return super.hurtEnemy(stack, target, attacker);
 
 		if (Abilities.ACID_COAT.isActive(stack)) {
@@ -169,6 +185,7 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 	@Override
 	public void onChangeGunbladeMode(ServerLevel level, LivingEntity shooter, ItemStack stack) {
 		Abilities.ACID_COAT.cancel(level, stack, shooter);
+		setLastUseTimestamp(stack, level.getGameTime());
 
 		SoundEvent soundEvent = GunbladeMode.from(stack) == GunbladeMode.MELEE ? ModSoundEvents.FLESHKIN_BECOME_DORMANT.get() : ModSoundEvents.FLESHKIN_BECOME_AWAKENED.get();
 		playSFX(level, shooter, soundEvent);
@@ -176,7 +193,7 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 
 	@Override
 	public void onReloadTick(ItemStack stack, ServerLevel level, LivingEntity shooter, long elapsedTime) {
-		if (elapsedTime % 20L == 0L) playSFX(level, shooter, SoundEvents.GENERIC_EAT);
+		//if (elapsedTime % 20L == 0L) playSFX(level, shooter, SoundEvents.GENERIC_EAT);
 	}
 
 	@Override
@@ -196,6 +213,7 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 
 	@Override
 	public void onReloadFinished(ItemStack stack, ServerLevel level, LivingEntity shooter) {
+		stack.hurtAndBreak(5, shooter, livingEntity -> livingEntity.broadcastBreakEvent(EquipmentSlot.MAINHAND));
 		playSFX(level, shooter, SoundEvents.PLAYER_BURP);
 	}
 
