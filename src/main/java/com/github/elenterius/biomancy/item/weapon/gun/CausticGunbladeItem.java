@@ -148,6 +148,7 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 	@Override
 	public @Nullable DamageSource getDamageSource(ItemStack stack, Entity target, LivingEntity attacker) {
 		if (GunbladeMode.from(stack) != GunbladeMode.MELEE) return null;
+		if (!Abilities.ACID_COAT.isActive(stack)) return null;
 
 		return ModDamageSources.acid(attacker.level(), attacker);
 	}
