@@ -311,10 +311,9 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 		}
 
 		static <T extends CausticGunbladeItem> PlayState handleAcidCoatAnimations(AnimationState<T> state) {
-			//			if (state.getController().isPlayingTriggeredAnimation()) return PlayState.CONTINUE;
-
 			ItemStack itemStack = state.getData(DataTickets.ITEMSTACK);
-			return state.setAndContinue(Abilities.ACID_COAT.isActive(itemStack) ? Animations.COATED_BLADES : Animations.UNCOATED_BLADES);
+			boolean hasCoatedBlades = Abilities.ACID_COAT.isActive(itemStack);
+			return state.setAndContinue(hasCoatedBlades ? Animations.COATED_BLADES : Animations.UNCOATED_BLADES);
 		}
 
 		static void registerControllers(CausticGunbladeItem animatable, AnimatableManager.ControllerRegistrar controllers) {
