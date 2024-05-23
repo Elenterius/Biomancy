@@ -119,14 +119,14 @@
           ]
         },
         {
-          "name": "CANISTER_BONE",
+          "name": "CANISTER",
           "parent": "root",
           "pivot": [ 5, 4, 0.9 ],
           "rotation": [ 0, -45, 0 ]
         },
         {
           "name": "FULL_CANISTER",
-          "parent": "CANISTER_BONE",
+          "parent": "CANISTER",
           "pivot": [ 5.76373, 4, 0.73518 ],
           "cubes": [
             {
@@ -165,7 +165,7 @@
         },
         {
           "name": "HALF_CANISTER",
-          "parent": "CANISTER_BONE",
+          "parent": "CANISTER",
           "pivot": [ 5.76373, 4, 0.73518 ],
           "cubes": [
             {
@@ -204,7 +204,7 @@
         },
         {
           "name": "EMPTY_CANISTER",
-          "parent": "CANISTER_BONE",
+          "parent": "CANISTER",
           "pivot": [ 5.76373, 4, 0.73518 ],
           "cubes": [
             {

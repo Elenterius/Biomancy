@@ -172,7 +172,7 @@
             "vector": [ 1, 1.5, 1 ]
           }
         },
-        "CANISTER_BONE": {
+        "CANISTER": {
           "scale": {
             "0.0": {
               "vector": [ 1, 1, 1 ]
@@ -324,7 +324,7 @@
             }
           }
         },
-        "CANISTER_BONE": {
+        "CANISTER": {
           "scale": {
             "0.0": {
               "vector": [ 1, 1, 1 ]
@@ -387,6 +387,66 @@
           }
         },
         "TOP_BLADE_NORMAL": {
+          "scale": {
+            "vector": [ 1, 1, 1 ]
+          }
+        }
+      }
+    },
+    "full_ammo": {
+      "loop": true,
+      "bones": {
+        "FULL_CANISTER": {
+          "scale": {
+            "vector": [ 1, 1, 1 ]
+          }
+        },
+        "HALF_CANISTER": {
+          "scale": {
+            "vector": [ 0, 0, 0 ]
+          }
+        },
+        "EMPTY_CANISTER": {
+          "scale": {
+            "vector": [ 0, 0, 0 ]
+          }
+        }
+      }
+    },
+    "half_ammo": {
+      "loop": true,
+      "bones": {
+        "FULL_CANISTER": {
+          "scale": {
+            "vector": [ 0, 0, 0 ]
+          }
+        },
+        "HALF_CANISTER": {
+          "scale": {
+            "vector": [ 1, 1, 1 ]
+          }
+        },
+        "EMPTY_CANISTER": {
+          "scale": {
+            "vector": [ 0, 0, 0 ]
+          }
+        }
+      }
+    },
+    "no_ammo": {
+      "loop": true,
+      "bones": {
+        "FULL_CANISTER": {
+          "scale": {
+            "vector": [ 0, 0, 0 ]
+          }
+        },
+        "HALF_CANISTER": {
+          "scale": {
+            "vector": [ 0, 0, 0 ]
+          }
+        },
+        "EMPTY_CANISTER": {
           "scale": {
             "vector": [ 1, 1, 1 ]
           }

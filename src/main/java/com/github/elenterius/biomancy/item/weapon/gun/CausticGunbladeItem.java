@@ -296,69 +296,6 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 		}
 	}
 
-	protected static final class Animations {
-		static final String MAIN_CONTROLLER = "main";
-		static final String ACID_COAT_CONTROLLER = "acid_blades";
-
-		static final RawAnimation IDLE_RANGED = RawAnimation.begin().thenPlay("idle_ranged");
-		static final RawAnimation IDLE_MELEE = RawAnimation.begin().thenPlay("idle_melee");
-		static final RawAnimation RANGED_TO_MELEE = RawAnimation.begin().thenPlay("ranged_to_melee").thenPlay("idle_melee");
-		static final RawAnimation MELEE_TO_RANGED = RawAnimation.begin().thenPlay("melee_to_ranged").thenPlay("idle_ranged");
-		static final RawAnimation COATED_BLADES = RawAnimation.begin().thenPlay("coated_blades");
-		static final RawAnimation UNCOATED_BLADES = RawAnimation.begin().thenPlay("uncoated_blades");
-
-		private static final List<TriggerableAnimation> TRIGGERABLE_ANIMATIONS = new ArrayList<>();
-		static final TriggerableAnimation SHOOT = register(MAIN_CONTROLLER, "shoot", RawAnimation.begin().thenPlay("shoot"));
-		static final TriggerableAnimation COAT_BLADES = register(MAIN_CONTROLLER, "coat_blades", RawAnimation.begin().thenPlay("coat_blades"));
-
-		private Animations() {}
-
-		static <T extends CausticGunbladeItem> PlayState handleMainAnimations(AnimationState<T> state) {
-
-			if (state.getController().isPlayingTriggeredAnimation()) return PlayState.CONTINUE;
-
-			ItemStack itemStack = state.getData(DataTickets.ITEMSTACK);
-			GunbladeMode gunbladeMode = GunbladeMode.from(itemStack);
-
-			if (gunbladeMode == GunbladeMode.MELEE) {
-				return state.setAndContinue(Animations.RANGED_TO_MELEE);
-			}
-			else {
-				return state.setAndContinue(Animations.MELEE_TO_RANGED);
-			}
-		}
-
-		static <T extends CausticGunbladeItem> PlayState handleAcidCoatAnimations(AnimationState<T> state) {
-			ItemStack itemStack = state.getData(DataTickets.ITEMSTACK);
-			boolean hasCoatedBlades = Abilities.ACID_COAT.isActive(itemStack);
-			return state.setAndContinue(hasCoatedBlades ? Animations.COATED_BLADES : Animations.UNCOATED_BLADES);
-		}
-
-		static void registerControllers(CausticGunbladeItem animatable, AnimatableManager.ControllerRegistrar controllers) {
-			AnimationController<CausticGunbladeItem> mainController = new AnimationController<>(animatable, MAIN_CONTROLLER, 0, Animations::handleMainAnimations);
-			Animations.registerTriggerableAnimations(mainController);
-			controllers.add(mainController);
-
-			AnimationController<CausticGunbladeItem> acidBladesController = new AnimationController<>(animatable, ACID_COAT_CONTROLLER, 0, Animations::handleAcidCoatAnimations);
-			Animations.registerTriggerableAnimations(acidBladesController);
-			controllers.add(acidBladesController);
-		}
-
-		private static TriggerableAnimation register(String controller, String name, RawAnimation rawAnimation) {
-			TriggerableAnimation animation = new TriggerableAnimation(controller, name, rawAnimation);
-			TRIGGERABLE_ANIMATIONS.add(animation);
-			return animation;
-		}
-
-		private static void registerTriggerableAnimations(AnimationController<?> controller) {
-			for (TriggerableAnimation animation : TRIGGERABLE_ANIMATIONS) {
-				if (animation.controller().equals(controller.getName())) {
-					controller.triggerableAnim(animation.name(), animation.rawAnimation());
-				}
-			}
-		}
-	}
-
 	protected static final class Abilities {
 		public static final ItemAbility ACID_COAT = new ItemAbility() {
 			static final String NAME = "acid_coat";
@@ -397,6 +334,86 @@ public class CausticGunbladeItem extends GunbladeItem implements CriticalHitList
 				stack.removeTagKey(KEY);
 			}
 		};
+	}
+
+	protected static final class Animations {
+		static final String MAIN_CONTROLLER = "main";
+		static final String ACID_COAT_CONTROLLER = "acid_blades";
+		static final String AMMO_CONTROLLER = "ammo";
+
+		static final RawAnimation IDLE_RANGED = RawAnimation.begin().thenPlay("idle_ranged");
+		static final RawAnimation IDLE_MELEE = RawAnimation.begin().thenPlay("idle_melee");
+		static final RawAnimation RANGED_TO_MELEE = RawAnimation.begin().thenPlay("ranged_to_melee").thenPlay("idle_melee");
+		static final RawAnimation MELEE_TO_RANGED = RawAnimation.begin().thenPlay("melee_to_ranged").thenPlay("idle_ranged");
+		static final RawAnimation COATED_BLADES = RawAnimation.begin().thenPlay("coated_blades");
+		static final RawAnimation UNCOATED_BLADES = RawAnimation.begin().thenPlay("uncoated_blades");
+		static final RawAnimation FULL_AMMO = RawAnimation.begin().thenPlay("full_ammo");
+		static final RawAnimation HALF_AMMO = RawAnimation.begin().thenPlay("half_ammo");
+		static final RawAnimation NO_AMMO = RawAnimation.begin().thenPlay("no_ammo");
+
+		private static final List<TriggerableAnimation> TRIGGERABLE_ANIMATIONS = new ArrayList<>();
+		static final TriggerableAnimation SHOOT = register(MAIN_CONTROLLER, "shoot", RawAnimation.begin().thenPlay("shoot"));
+		static final TriggerableAnimation COAT_BLADES = register(MAIN_CONTROLLER, "coat_blades", RawAnimation.begin().thenPlay("coat_blades"));
+
+		private Animations() {}
+
+		static <T extends CausticGunbladeItem> PlayState handleMain(AnimationState<T> state) {
+
+			if (state.getController().isPlayingTriggeredAnimation()) return PlayState.CONTINUE;
+
+			ItemStack itemStack = state.getData(DataTickets.ITEMSTACK);
+			GunbladeMode gunbladeMode = GunbladeMode.from(itemStack);
+
+			if (gunbladeMode == GunbladeMode.MELEE) {
+				return state.setAndContinue(Animations.RANGED_TO_MELEE);
+			}
+			else {
+				return state.setAndContinue(Animations.MELEE_TO_RANGED);
+			}
+		}
+
+		static <T extends CausticGunbladeItem> PlayState handleAcidCoat(AnimationState<T> state) {
+			ItemStack itemStack = state.getData(DataTickets.ITEMSTACK);
+			boolean hasCoatedBlades = Abilities.ACID_COAT.isActive(itemStack);
+			return state.setAndContinue(hasCoatedBlades ? Animations.COATED_BLADES : Animations.UNCOATED_BLADES);
+		}
+
+		static <T extends CausticGunbladeItem> PlayState handleAmmo(AnimationState<T> state) {
+			ItemStack itemStack = state.getData(DataTickets.ITEMSTACK);
+			CausticGunbladeItem item = (CausticGunbladeItem) itemStack.getItem();
+
+			int ammo = item.getAmmo(itemStack);
+			int maxAmmo = item.getMaxAmmo(itemStack);
+
+			if (ammo <= 0) {
+				return state.setAndContinue(Animations.NO_AMMO);
+			}
+
+			return state.setAndContinue(ammo < maxAmmo ? Animations.HALF_AMMO : Animations.FULL_AMMO);
+		}
+
+		static void registerControllers(CausticGunbladeItem animatable, AnimatableManager.ControllerRegistrar controllers) {
+			AnimationController<CausticGunbladeItem> mainController = new AnimationController<>(animatable, MAIN_CONTROLLER, 0, Animations::handleMain);
+			Animations.registerTriggerableAnimations(mainController);
+			controllers.add(mainController);
+
+			controllers.add(new AnimationController<>(animatable, ACID_COAT_CONTROLLER, 0, Animations::handleAcidCoat));
+			controllers.add(new AnimationController<>(animatable, AMMO_CONTROLLER, 0, Animations::handleAmmo));
+		}
+
+		private static TriggerableAnimation register(String controller, String name, RawAnimation rawAnimation) {
+			TriggerableAnimation animation = new TriggerableAnimation(controller, name, rawAnimation);
+			TRIGGERABLE_ANIMATIONS.add(animation);
+			return animation;
+		}
+
+		private static void registerTriggerableAnimations(AnimationController<?> controller) {
+			for (TriggerableAnimation animation : TRIGGERABLE_ANIMATIONS) {
+				if (animation.controller().equals(controller.getName())) {
+					controller.triggerableAnim(animation.name(), animation.rawAnimation());
+				}
+			}
+		}
 	}
 
 }
