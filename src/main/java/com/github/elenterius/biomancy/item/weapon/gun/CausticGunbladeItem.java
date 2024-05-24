@@ -424,7 +424,7 @@ public class CausticGunbladeItem extends GunbladeItem implements SimpleLivingToo
 		default void appendAbilityDescription(ItemStack stack, List<Component> components) {
 			String translationKey = getTranslationKey();
 			components.add(ComponentUtil.translatable(translationKey).withStyle(TextStyles.GRAY));
-			components.add(ComponentUtil.literal(" ").append(ComponentUtil.translatable(translationKey + ".desc")).withStyle(TextStyles.DARK_GRAY));
+			components.addAll(ClientTextUtil.splitLinesByNewLine(ComponentUtil.translatable(translationKey + ".desc").withStyle(TextStyles.DARK_GRAY)));
 		}
 	}
 
