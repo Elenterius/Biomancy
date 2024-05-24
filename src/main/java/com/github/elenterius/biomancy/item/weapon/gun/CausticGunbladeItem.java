@@ -15,6 +15,8 @@ import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.github.elenterius.biomancy.util.animation.TriggerableAnimation;
 import com.github.elenterius.biomancy.util.function.FloatOperator;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.nbt.CompoundTag;
@@ -28,8 +30,12 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SlotAccess;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
@@ -58,6 +64,8 @@ import java.util.function.Predicate;
 
 public class CausticGunbladeItem extends GunbladeItem implements SimpleLivingTool, CriticalHitListener, ItemAttackDamageSourceProvider, ItemTooltipStyleProvider, GeoItem {
 
+	protected final Multimap<Attribute, AttributeModifier> disabledBladeModifiers;
+	protected final Multimap<Attribute, AttributeModifier> disabledGunModifiers;
 	private final int maxNutrients;
 
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
@@ -75,7 +83,24 @@ public class CausticGunbladeItem extends GunbladeItem implements SimpleLivingToo
 
 		this.maxNutrients = maxNutrients;
 
+		disabledBladeModifiers = ImmutableMultimap.<Attribute, AttributeModifier>builder().putAll(Attributes.ATTACK_SPEED, defaultBladeModifiers.get(Attributes.ATTACK_SPEED)).build();
+		disabledGunModifiers = ImmutableMultimap.<Attribute, AttributeModifier>builder().putAll(Attributes.ATTACK_SPEED, defaultGunModifiers.get(Attributes.ATTACK_SPEED)).build();
+
 		SingletonGeoAnimatable.registerSyncedAnimatable(this);
+	}
+
+	@Override
+	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+		if (slot == EquipmentSlot.MAINHAND) {
+			boolean isMeleeMode = GunbladeMode.from(stack).isBlade();
+
+			if (hasNutrients(stack)) {
+				return isMeleeMode ? defaultBladeModifiers : defaultGunModifiers;
+			}
+			return isMeleeMode ? disabledBladeModifiers : disabledGunModifiers;
+		}
+
+		return ImmutableMultimap.of();
 	}
 
 	private static void playSwipeFX(LivingEntity attacker) {
