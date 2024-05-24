@@ -383,7 +383,7 @@ public class CausticGunbladeItem extends GunbladeItem implements SimpleLivingToo
 
 			@Override
 			public @Nullable HumanoidModel.ArmPose getArmPose(LivingEntity entityLiving, InteractionHand hand, ItemStack itemStack) {
-				if (GunbladeMode.from(itemStack) == GunbladeMode.RANGED && entityLiving.getUseItemRemainingTicks() > 0) {
+				if (GunbladeMode.from(itemStack) == GunbladeMode.RANGED) {
 					return HumanoidModel.ArmPose.CROSSBOW_HOLD;
 				}
 				return null;
