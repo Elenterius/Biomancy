@@ -1,3 +1,21 @@
+## [7.2.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.7.1.0...1.20.1-v2.7.2.0) (2024-05-24)
+
+
+### Features
+
+* add rudimentary placeholder icons for Caustic Gunblade ([533e2cc](https://github.com/Elenterius/Biomancy/commit/533e2ccdd84cf85a5e2cbe80580cc4e3652f094e))
+* crossbow hold Caustic Gunblade in ranged mode ([5cf5541](https://github.com/Elenterius/Biomancy/commit/5cf5541c9c4f84fefd08a1c1215c5584a8d23df2))
+* only deal acid melee damage when Caustic Gunblade is coated in acid ([c4aa926](https://github.com/Elenterius/Biomancy/commit/c4aa926edc690ad834f191a413c8534b24d21fa2))
+* show ammo amount status on Caustic Gunblade model ([b734692](https://github.com/Elenterius/Biomancy/commit/b734692cfd9485337edd3b3a608d3847eb8aac65))
+* tweak Caustic Gunblade attack speed ([abebc1b](https://github.com/Elenterius/Biomancy/commit/abebc1b27ec828680e06efc057c12d8729a11ad9))
+* tweak reload behavior of Caustic Gunblade ([fdc3ad7](https://github.com/Elenterius/Biomancy/commit/fdc3ad7dc8da272371508d4d4ed63ef3e9d8388f))
+* use nutrients for Caustic Gunblade durability ([58a79a6](https://github.com/Elenterius/Biomancy/commit/58a79a662b678bc774aa924e50e816a0be227ea8))
+
+
+### Bug Fixes
+
+* fix Caustic Gunblade animation not showing the acid coat ([684a509](https://github.com/Elenterius/Biomancy/commit/684a5096f4ff1a2a6317b3788d4298d9e42fbf6f))
+
 ## [7.1.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.7.0.0...1.20.1-v2.7.1.0) (2024-05-22)
 
 
@@ -108,21 +126,4 @@
 * fix the glowing eye of the Primordial Cradle not displaying the amount life energy correctly ([7ca00fa](https://github.com/Elenterius/Biomancy/commit/7ca00fad03ab0b3b2124feff865f2a6d57e9842a))
 * properly fix block tinting issues ([4819c58](https://github.com/Elenterius/Biomancy/commit/4819c586ae61deaca0b443e85bb8f93334354a55))
 * remove biomancy's stonecutting recipes from the minecraft namespace ([ac0b552](https://github.com/Elenterius/Biomancy/commit/ac0b5524122846926e6365b7552239b8cf68733c))
-
-## [5.1.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.5.0.0...1.20.1-v2.5.1.0) (2024-03-19)
-
-
-### Features
-
-* improve filtering of items that can't be eaten by the cradle ([c451857](https://github.com/Elenterius/Biomancy/commit/c451857ec4c75179c4a686d43321e628b5488ba9))
-* **nerf:** prevent insertion of Bundles into storage sacs ([5cac542](https://github.com/Elenterius/Biomancy/commit/5cac54258faf894fdbd8bb04c36f0c1d488dd314)), closes [#121](https://github.com/Elenterius/Biomancy/issues/121)
-* **nerf:** reduce max stack size of Storage Sac to 1 ([5a3b253](https://github.com/Elenterius/Biomancy/commit/5a3b2530df822b818bd97ed9db0bc78f22faea99))
-* tweak advancement ([6565ba0](https://github.com/Elenterius/Biomancy/commit/6565ba0e1db565737d4758abd4a7b071d00575dc))
-* tweak Primordial Core recipe ([8b429aa](https://github.com/Elenterius/Biomancy/commit/8b429aac6c433f9a7033d9ea181af8f862e53a10))
-
-
-### Bug Fixes
-
-* add missing translation strings for death messages ([d4b1dbc](https://github.com/Elenterius/Biomancy/commit/d4b1dbc38377736734dff273b788d2f2970cae2e)), closes [#123](https://github.com/Elenterius/Biomancy/issues/123)
-* fix crash when placing down a Primordial Cradle ([f21e77f](https://github.com/Elenterius/Biomancy/commit/f21e77f23cf970d48ae6de9b13c281c64508f365))
 
