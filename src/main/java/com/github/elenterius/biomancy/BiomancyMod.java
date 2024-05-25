@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy;
 
+import com.github.elenterius.biomancy.api.livingtool.LivingTool;
 import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.integration.ModsCompatHandler;
 import com.github.elenterius.biomancy.util.ComponentUtil;
@@ -99,10 +100,13 @@ public final class BiomancyMod {
 				ModItems.ITEMS.getEntries().stream()
 						.filter(entry -> !hiddenItems.contains(entry))
 						.forEach(entry -> {
-							output.accept(entry.get());
+							Item item = entry.get();
+							output.accept(item);
 
-							if (entry.equals(ModItems.RAVENOUS_CLAWS)) {
-								output.accept(ModItems.RAVENOUS_CLAWS.get().createItemStackForCreativeTab());
+							if (item instanceof LivingTool livingTool) {
+								ItemStack itemStack = item.getDefaultInstance();
+								livingTool.setNutrients(itemStack, Integer.MAX_VALUE);
+								output.accept(itemStack);
 							}
 
 							if (entry.equals(ModItems.FLESHKIN_CHEST)) {
