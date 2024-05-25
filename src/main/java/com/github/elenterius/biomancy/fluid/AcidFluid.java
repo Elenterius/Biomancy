@@ -42,20 +42,22 @@ public abstract class AcidFluid extends ForgeFlowingFluid {
 	}
 
 	public static void onEntityInside(LivingEntity livingEntity) {
-		if (livingEntity.tickCount % 5 == 0 && livingEntity.isInFluidType(ModFluids.ACID_TYPE.get())) {
-			if (!livingEntity.level().isClientSide) {
-				CombatUtil.applyAcidEffect(livingEntity, 4);
-			}
-			else if (livingEntity.tickCount % 10 == 0 && livingEntity.getRandom().nextFloat() < 0.4f) {
-				Level level = livingEntity.level();
-				RandomSource random = livingEntity.getRandom();
-				Vec3 pos = livingEntity.position();
-				double height = livingEntity.getBoundingBox().getYsize() * 0.5f;
+		if (livingEntity.isSpectator()) return;
+		if (livingEntity.tickCount % 5 != 0) return;
+		if (!livingEntity.isInFluidType(ModFluids.ACID_TYPE.get())) return;
 
-				level.playLocalSound(pos.x, pos.y, pos.z, SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, 0.5f, 2.6f + (random.nextFloat() - random.nextFloat()) * 0.8f, false);
-				for (int i = 0; i < 4; i++) {
-					level.addParticle(ParticleTypes.LARGE_SMOKE, pos.x + random.nextDouble(), pos.y + random.nextDouble() * height, pos.z + random.nextDouble(), 0, 0.1d, 0);
-				}
+		if (!livingEntity.level().isClientSide) {
+			CombatUtil.applyAcidEffect(livingEntity, 4);
+		}
+		else if (livingEntity.tickCount % 10 == 0 && livingEntity.getRandom().nextFloat() < 0.4f) {
+			Level level = livingEntity.level();
+			RandomSource random = livingEntity.getRandom();
+			Vec3 pos = livingEntity.position();
+			double height = livingEntity.getBoundingBox().getYsize() * 0.5f;
+
+			level.playLocalSound(pos.x, pos.y, pos.z, SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, 0.5f, 2.6f + (random.nextFloat() - random.nextFloat()) * 0.8f, false);
+			for (int i = 0; i < 4; i++) {
+				level.addParticle(ParticleTypes.LARGE_SMOKE, pos.x + random.nextDouble(), pos.y + random.nextDouble() * height, pos.z + random.nextDouble(), 0, 0.1d, 0);
 			}
 		}
 	}
