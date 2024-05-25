@@ -129,12 +129,6 @@ public class RavenousClawsItem extends LivingClawsItem implements GeoItem, ItemC
 		return InteractionResultHolder.success(flags);
 	}
 
-	public ItemStack createItemStackForCreativeTab() {
-		ItemStack stack = new ItemStack(this);
-		setNutrients(stack, Integer.MAX_VALUE);
-		return stack;
-	}
-
 	@Override
 	public int getMaxCharge(ItemStack container) {
 		return 50;
