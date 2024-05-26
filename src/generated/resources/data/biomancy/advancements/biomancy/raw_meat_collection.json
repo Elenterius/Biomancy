@@ -58,7 +58,7 @@
     "frame": "challenge",
     "hidden": false,
     "icon": {
-      "item": "minecraft:rabbit"
+      "item": "minecraft:porkchop"
     },
     "show_toast": true,
     "title": {
