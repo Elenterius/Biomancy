@@ -1,3 +1,27 @@
+## [7.3.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.7.2.0...1.20.1-v2.7.3.0) (2024-05-26)
+
+
+### Features
+
+* add crafting recipe for the removal of Flesh Mound settings from a Primordial Cradle item ([91aff61](https://github.com/Elenterius/Biomancy/commit/91aff61b0033eea275c23947ce5d1aab913c07be))
+* add living tools with max nutrients amount to creative tab ([ebdb41d](https://github.com/Elenterius/Biomancy/commit/ebdb41dc579c97d6e42530a0ac0cebdca749d604))
+* add recipes for armor and gunblade ([c5ca421](https://github.com/Elenterius/Biomancy/commit/c5ca421ef8dfaa3d316dd47529ced0abd943cce3))
+* add symbiontic repair enchantment ([6b3ee6d](https://github.com/Elenterius/Biomancy/commit/6b3ee6d05eaaed927190b761d83ac45c7a85d610))
+* make minor tweaks to advancements ([956d3e6](https://github.com/Elenterius/Biomancy/commit/956d3e69a17c20aa9b670fe9ba0f2616940ec914))
+* tweak which enchantments can be applied to living tools ([fa3fb99](https://github.com/Elenterius/Biomancy/commit/fa3fb99d15f0ffe5d94c079ba58071e758d2f58a))
+* update Bloomberry texture ([d21dbaf](https://github.com/Elenterius/Biomancy/commit/d21dbafacf05337b82bb1d844eeab8b59875df20))
+* update chrysalis textures ([f3f683f](https://github.com/Elenterius/Biomancy/commit/f3f683fcc00741f6a706a186a42e3d5f5856ef83))
+* update Extractor texture ([9c6dc2a](https://github.com/Elenterius/Biomancy/commit/9c6dc2a43e7dce2dbfbd2e011bd12832ba01bfd8))
+* update Flesh Door textures ([fc74c5a](https://github.com/Elenterius/Biomancy/commit/fc74c5a8381b1f8c35ca884a8697d110b9745c8c))
+* update nutrient paste & bar textures ([8f98568](https://github.com/Elenterius/Biomancy/commit/8f98568e5ce458c5bd5f6f36ffddc5c720e46a66))
+* update Primordial Flesh Blob textures ([1166b26](https://github.com/Elenterius/Biomancy/commit/1166b26d7b5d614ec32d226408d4fcec1e2be98c))
+
+
+### Bug Fixes
+
+* fix acid fluid applying potion effects to spectators ([b14b1be](https://github.com/Elenterius/Biomancy/commit/b14b1be0ab75805320d7351858d459895c65b6ff))
+* remove ability to enchant flesh armor with unbreaking ([464f4c9](https://github.com/Elenterius/Biomancy/commit/464f4c9c0d5dcc013bd2cb67b383f37aafc5515c))
+
 ## [7.2.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.7.1.0...1.20.1-v2.7.2.0) (2024-05-24)
 
 
@@ -103,27 +127,4 @@
 * refactor living tools ([9e6f0db](https://github.com/Elenterius/Biomancy/commit/9e6f0db6be607f6382ffa518848c498c8f3dd948))
 * refactor nutrients api ([3e1f68f](https://github.com/Elenterius/Biomancy/commit/3e1f68f7c4c59291a5348a523a32b726a73e0c98))
 * rework Nutrients handling and add fluid fuel support ([20a2682](https://github.com/Elenterius/Biomancy/commit/20a2682130d9243060e8779e5cb299d8989c0fdb))
-
-## [5.2.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.5.1.0...1.20.1-v2.5.2.0) (2024-04-02)
-
-
-### Features
-
-* add Biometric Membrane ([914cccb](https://github.com/Elenterius/Biomancy/commit/914cccb4e44973c3a43457d8da963b26cbe8b4d5))
-* add Chrysalis Block ([49f04db](https://github.com/Elenterius/Biomancy/commit/49f04db5de9ffad23d0fcaa3d693034128bbb355))
-* add Mob Essence ([63c59ea](https://github.com/Elenterius/Biomancy/commit/63c59ea143b58bbe25c4b6d866959975f77eb238))
-* add mob Essence Extractor ([99d8c7b](https://github.com/Elenterius/Biomancy/commit/99d8c7b49d30689587ffbaa342cdea2e675eec88))
-* add Modular Larynx ([63e55a2](https://github.com/Elenterius/Biomancy/commit/63e55a210bd02f97bf6c5c056847a9282bf3828a))
-* add Surgical Precision enchantment ([710f3ed](https://github.com/Elenterius/Biomancy/commit/710f3ed9d992dc0ab1ba9fcac464f7231101ea18))
-* make Primal Bloom mineable with shears or silk-touch ([891e340](https://github.com/Elenterius/Biomancy/commit/891e340b71f5623d69b31bc797fbece45621b05b))
-* make Suspicious Stew a valid source of life energy for the Primordial Cradle ([1710d5b](https://github.com/Elenterius/Biomancy/commit/1710d5b9b89c4f181133c1ea310e9a2b5bf768bc)), closes [#125](https://github.com/Elenterius/Biomancy/issues/125)
-* **nerf:** decrease value of Suspicious Stew for cradle sacrifices ([5e0bd05](https://github.com/Elenterius/Biomancy/commit/5e0bd0514ed48982c784034688177627a4d2447b))
-
-
-### Bug Fixes
-
-* fix custom shader being applied incorrectly ([5e9e458](https://github.com/Elenterius/Biomancy/commit/5e9e45883b2b95c134bc3eced46d9880772c5ac3))
-* fix the glowing eye of the Primordial Cradle not displaying the amount life energy correctly ([7ca00fa](https://github.com/Elenterius/Biomancy/commit/7ca00fad03ab0b3b2124feff865f2a6d57e9842a))
-* properly fix block tinting issues ([4819c58](https://github.com/Elenterius/Biomancy/commit/4819c586ae61deaca0b443e85bb8f93334354a55))
-* remove biomancy's stonecutting recipes from the minecraft namespace ([ac0b552](https://github.com/Elenterius/Biomancy/commit/ac0b5524122846926e6365b7552239b8cf68733c))
 
