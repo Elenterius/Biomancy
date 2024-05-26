@@ -59,6 +59,7 @@ public class BiomancyJeiPlugin implements IModPlugin {
 		registration.addRecipes(BioForgeRecipeCategory.RECIPE_TYPE, level.getRecipeManager().getAllRecipesFor(ModRecipes.BIO_FORGING_RECIPE_TYPE.get()));
 
 		registration.addRecipes(RecipeTypes.CRAFTING, BiometricMembraneRecipeMaker.createRecipes());
+		registration.addRecipes(RecipeTypes.CRAFTING, CradleCleansingRecipeMaker.createRecipes());
 	}
 
 	@Override
