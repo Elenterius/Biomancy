@@ -7,6 +7,7 @@ import com.github.elenterius.biomancy.integration.ModsCompatHandler;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.github.elenterius.biomancy.util.SoundUtil;
+import com.github.elenterius.biomancy.world.mound.MoundShape;
 import com.github.elenterius.biomancy.world.spatial.SpatialShapeManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -238,21 +239,46 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 		CompoundTag tag = BlockItem.getBlockEntityData(stack);
 		if (tag == null) return;
 
-		tooltip.add(ComponentUtil.emptyLine());
-
 		DecimalFormat df = ClientTextUtil.getDecimalFormatter("#,###,###");
 
 		int primalEnergy = getPrimalEnergy(tag);
-		if (primalEnergy > 0) {
+		boolean hasPrimalEnergy = primalEnergy > 0;
+		boolean hasTributes = tag.contains(PrimordialCradleBlockEntity.SACRIFICE_KEY);
+		boolean hasProcGenValues = tag.contains(PrimordialCradleBlockEntity.PROC_GEN_VALUES_KEY);
+
+		if (hasProcGenValues) {
+			tooltip.add(ComponentUtil.emptyLine());
+			tooltip.add(ComponentUtil.literal("Seeded with:").withStyle(TextStyles.PRIMORDIAL_RUNES_MUTED_PURPLE));
+
+			MoundShape.ProcGenValues procGenValues = MoundShape.ProcGenValues.readFrom(tag.getCompound(PrimordialCradleBlockEntity.PROC_GEN_VALUES_KEY));
+
 			tooltip.add(
-					ComponentUtil.literal(df.format(primalEnergy))
-							.withStyle(TextStyles.PRIMORDIAL_RUNES_LIGHT_GRAY)
-							.append(ComponentUtil.space())
-							.append(ComponentUtil.translatable("tooltip.biomancy.primal_energy").withStyle(TextStyles.GRAY))
+					ComponentUtil.literal(df.format(procGenValues.biomeTemperature()))
+							.withStyle(TextStyles.PRIMORDIAL_RUNES_PURPLE)
+							.append(ComponentUtil.literal(" Temperature").withStyle(TextStyles.PRIMORDIAL_RUNES_MUTED_PURPLE))
 			);
+			tooltip.add(
+					ComponentUtil.literal(df.format(procGenValues.biomeHumidity()))
+							.withStyle(TextStyles.PRIMORDIAL_RUNES_PURPLE)
+							.append(ComponentUtil.literal(" Humidity").withStyle(TextStyles.PRIMORDIAL_RUNES_MUTED_PURPLE))
+			);
+
+			if (!hasPrimalEnergy) tooltip.add(ComponentUtil.emptyLine());
 		}
 
-		if (tag.contains(PrimordialCradleBlockEntity.SACRIFICE_KEY)) {
+		if (hasPrimalEnergy) {
+			tooltip.add(ComponentUtil.emptyLine());
+			tooltip.add(
+					ComponentUtil.literal(df.format(primalEnergy)).withStyle(TextStyles.PRIMORDIAL_RUNES_PURPLE)
+							.append(ComponentUtil.literal(" Primal Energy").withStyle(TextStyles.PRIMORDIAL_RUNES_MUTED_PURPLE))
+			);
+
+			if (!hasTributes) tooltip.add(ComponentUtil.emptyLine());
+		}
+
+		if (hasTributes) {
+			tooltip.add(ComponentUtil.emptyLine());
+
 			CompoundTag sacrificeTag = tag.getCompound(PrimordialCradleBlockEntity.SACRIFICE_KEY);
 			byte biomass = sacrificeTag.getByte("Biomass");
 			int lifeEnergy = sacrificeTag.getInt("LifeEnergy");

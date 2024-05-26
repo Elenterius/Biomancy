@@ -286,6 +286,9 @@ public class VanillaRecipeProvider extends RecipeProvider {
 
 		SpecialRecipeBuilder.special(ModRecipes.BIOMETRIC_MEMBRANE_CRAFTING_SERIALIZER.get())
 				.save(consumer, getSimpleRecipeId(ModItems.BIOMETRIC_MEMBRANE.get()).toString());
+
+		SpecialRecipeBuilder.special(ModRecipes.CRADLE_CLEANSING_SERIALIZER.get())
+				.save(consumer, BiomancyMod.createRLString(ModItems.PRIMORDIAL_CRADLE.getId().toLanguageKey() + "_cleansing"));
 	}
 
 	private void membrane(Consumer<FinishedRecipe> consumer, SimpleBlockItem pane, SimpleBlockItem membrane) {
