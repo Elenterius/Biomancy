@@ -1,14 +1,15 @@
 package com.github.elenterius.biomancy.datagen.recipes;
 
+import com.github.elenterius.biomancy.api.nutrients.NutrientsContainerItem;
 import com.github.elenterius.biomancy.datagen.recipes.builder.BioForgeRecipeBuilder;
 import com.github.elenterius.biomancy.datagen.recipes.builder.ItemData;
 import com.github.elenterius.biomancy.init.ModBioForgeTabs;
 import com.github.elenterius.biomancy.init.ModItems;
-import com.github.elenterius.biomancy.item.weapon.RavenousClawsItem;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
@@ -154,11 +155,14 @@ public class BioForgeRecipeProvider extends RecipeProvider {
 				.unlockedBy(ModItems.BONE_FRAGMENTS.get()).save(consumer);
 	}
 
+	private <T extends Item & NutrientsContainerItem> ItemStack withMaxNutrients(T item) {
+		ItemStack itemStack = item.getDefaultInstance();
+		item.setNutrients(itemStack, Integer.MAX_VALUE);
+		return itemStack;
+	}
+
 	private void buildToolRecipes(Consumer<FinishedRecipe> consumer) {
-		RavenousClawsItem ravenousClawsItem = ModItems.RAVENOUS_CLAWS.get();
-		ItemStack ravenousClawsStack = new ItemStack(ravenousClawsItem);
-		ravenousClawsItem.setNutrients(ravenousClawsStack, Integer.MAX_VALUE);
-		BioForgeRecipeBuilder.create(ravenousClawsStack)
+		BioForgeRecipeBuilder.create(withMaxNutrients(ModItems.RAVENOUS_CLAWS.get()))
 				.addIngredient(ModItems.LIVING_FLESH.get())
 				.addIngredient(ModItems.MOB_CLAW.get(), 3)
 				.addIngredient(ModItems.FLESH_BITS.get(), 16)
@@ -168,7 +172,7 @@ public class BioForgeRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.TOOLS)
 				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
 
-		BioForgeRecipeBuilder.create(ModItems.THORN_SHIELD.get())
+		BioForgeRecipeBuilder.create(withMaxNutrients(ModItems.THORN_SHIELD.get()))
 				.addIngredient(ModItems.LIVING_FLESH.get())
 				.addIngredient(ModItems.MOB_FANG.get(), 8)
 				.addIngredient(ModItems.FLESH_BITS.get(), 10)
@@ -178,11 +182,62 @@ public class BioForgeRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.TOOLS)
 				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
 
+		BioForgeRecipeBuilder.create(withMaxNutrients(ModItems.ACOLYTE_ARMOR_HELMET.get()))
+				.addIngredient(ModItems.LIVING_FLESH.get())
+				.addIngredient(ModItems.FLESH_BITS.get(), 8)
+				.addIngredient(ModItems.TOUGH_FIBERS.get(), 30)
+				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 22)
+				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 6)
+				.setCraftingCost(250)
+				.setCategory(ModBioForgeTabs.TOOLS)
+				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
+
+		BioForgeRecipeBuilder.create(withMaxNutrients(ModItems.ACOLYTE_ARMOR_CHESTPLATE.get()))
+				.addIngredient(ModItems.LIVING_FLESH.get())
+				.addIngredient(ModItems.FLESH_BITS.get(), 10)
+				.addIngredient(ModItems.TOUGH_FIBERS.get(), 32)
+				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 24)
+				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 8)
+				.setCraftingCost(250)
+				.setCategory(ModBioForgeTabs.TOOLS)
+				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
+
+		BioForgeRecipeBuilder.create(withMaxNutrients(ModItems.ACOLYTE_ARMOR_LEGGINGS.get()))
+				.addIngredient(ModItems.LIVING_FLESH.get())
+				.addIngredient(ModItems.FLESH_BITS.get(), 10)
+				.addIngredient(ModItems.TOUGH_FIBERS.get(), 32)
+				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 24)
+				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 8)
+				.setCraftingCost(250)
+				.setCategory(ModBioForgeTabs.TOOLS)
+				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
+
+		BioForgeRecipeBuilder.create(withMaxNutrients(ModItems.ACOLYTE_ARMOR_BOOTS.get()))
+				.addIngredient(ModItems.LIVING_FLESH.get())
+				.addIngredient(ModItems.FLESH_BITS.get(), 5)
+				.addIngredient(ModItems.TOUGH_FIBERS.get(), 16)
+				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 12)
+				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 4)
+				.setCraftingCost(250)
+				.setCategory(ModBioForgeTabs.TOOLS)
+				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
+
+		BioForgeRecipeBuilder.create(withMaxNutrients(ModItems.CAUSTIC_GUNBLADE.get()))
+				.addIngredient(ModItems.LIVING_FLESH.get())
+				.addIngredient(ModItems.FLESH_BITS.get(), 16)
+				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 8)
+				.addIngredient(ModItems.GENERIC_MOB_GLAND.get(), 2)
+				.addIngredient(ModItems.PRIMAL_ORIFICE.get(), 4)
+				.setCraftingCost(250)
+				.setCategory(ModBioForgeTabs.TOOLS)
+				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
+
 		BioForgeRecipeBuilder.create(ModItems.INJECTOR.get())
 				.addIngredient(ModItems.FLESH_BITS.get(), 20)
 				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 10)
 				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 3)
 				.addIngredient(ModItems.TOUGH_FIBERS.get(), 5)
+				.setCraftingCost(5)
 				.setCategory(ModBioForgeTabs.TOOLS)
 				.unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
 

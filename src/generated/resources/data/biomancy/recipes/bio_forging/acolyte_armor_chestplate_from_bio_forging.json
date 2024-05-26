@@ -6,10 +6,6 @@
       "item": "biomancy:living_flesh"
     },
     {
-      "count": 8,
-      "item": "biomancy:mob_fang"
-    },
-    {
       "count": 10,
       "item": "biomancy:flesh_bits"
     },
@@ -20,11 +16,15 @@
     {
       "count": 24,
       "item": "biomancy:mineral_fragment"
+    },
+    {
+      "count": 8,
+      "item": "biomancy:bone_fragments"
     }
   ],
   "nutrientsCost": 250,
   "result": {
-    "item": "biomancy:thorn_shield",
-    "nbt": "{\"biomancy:nutrients\":250}"
+    "item": "biomancy:acolyte_armor_chestplate",
+    "nbt": "{\"biomancy:nutrients\":200}"
   }
 }
