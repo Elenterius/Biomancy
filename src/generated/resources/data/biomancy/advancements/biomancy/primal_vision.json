@@ -1,5 +1,5 @@
 {
-  "parent": "biomancy:biomancy/raw_meat_collection",
+  "parent": "biomancy:biomancy/craft_primal_core",
   "criteria": {
     "has_primordial_core": {
       "conditions": {

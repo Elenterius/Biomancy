@@ -50,16 +50,16 @@ public class BiomancyAdvancementsGenerator implements ForgeAdvancementProvider.A
 	}
 
 	private void saveAdvancements(Consumer<Advancement> consumer, ExistingFileHelper fileHelper) {
-		Advancement root = createAdvancement("root").icon(ModItems.FLESH_BITS.get()).background("textures/block/flesh.png")
+		Advancement root = createAdvancement("root").icon(ModItems.FLESH_BITS.get()).background("textures/block/smooth_primal_flesh.png")
 				.title("Whispers in the Meat")
 				.description("You feel a presence in the flesh, faint whispers reach your ears:\n\n  \"Raw Meat is useful...\"\n")
 				.showToast()
 				.addHasCriterion(ModItemTags.RAW_MEATS)
 				.save(consumer, fileHelper);
 
-		Advancement meatCollection = createAdvancement("raw_meat_collection").parent(root).icon(Items.RABBIT)
+		Advancement meatCollection = createAdvancement("raw_meat_collection").parent(root).icon(Items.PORKCHOP)
 				.title("Collector of Raw Meats")
-				.description("Collect each type of prime meat. Pork, beef, chicken and mutton reflect their source. Primeval whispers of absurdity. You need them all!")
+				.description("Collect each type of prime meat. Pork, beef, chicken and mutton reflect their source. Primeval whispers of absurdity. You need to catch them all!")
 				.frameType(FrameType.CHALLENGE)
 				.showToast().announceToChat()
 				.addCriterion("has_raw_porkchop", ModAdvancementProvider.hasItems(Items.PORKCHOP))
@@ -69,7 +69,14 @@ public class BiomancyAdvancementsGenerator implements ForgeAdvancementProvider.A
 				.rewardsDefaultRecipe(ModItems.PRIMORDIAL_CORE.get())
 				.save(consumer, fileHelper);
 
-		Advancement primalCore = createAdvancement("primal_vision").parent(meatCollection).icon(ModItems.PRIMORDIAL_CORE.get())
+		Advancement craftPrimalCore = createAdvancement("craft_primal_core").parent(meatCollection).icon(Items.SPIDER_EYE)
+				.title("Primal Crafting")
+				.description("The presence seems lost, fading into the dark...\n\nCraft the Primordial Core from raw meats and ender pearls to cross the void and re-establish the link.")
+				.hidden()
+				.addCriterion("has_unlocked_recipe", hasUnlockedDefaultRecipe(ModItems.PRIMORDIAL_CORE.get()))
+				.save(consumer, fileHelper);
+
+		Advancement primalCore = createAdvancement("primal_vision").parent(craftPrimalCore).icon(ModItems.PRIMORDIAL_CORE.get())
 				.title("Primal Vision")
 				.description("You feel bare before the oculus. The mirror leers at you... infinite reflections of yourself... eternal cycles... meaningless existence?")
 				.frameType(FrameType.GOAL).hidden().showToast()
@@ -126,7 +133,7 @@ public class BiomancyAdvancementsGenerator implements ForgeAdvancementProvider.A
 
 		createAdvancement("healing_activator_sacrifice").parent(primalCradle).icon(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_HEALING))
 				.title("Healing Activator")
-				.description("It's seems like fluids enriched in life energy are needed. Jumpstart the process with a few healing potions.")
+				.description("It's seems like items rich in life energy are needed. Jumpstart the process with a few healing/regen potions, other special foods or artifacts.")
 				.showToast()
 				.addCriterion("has_sacrificed_healing_activator", hasSacrificedItem(Items.POTION))
 				.save(consumer, fileHelper);

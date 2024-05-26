@@ -1,0 +1,32 @@
+{
+  "parent": "biomancy:biomancy/raw_meat_collection",
+  "criteria": {
+    "has_unlocked_recipe": {
+      "conditions": {
+        "recipe": "biomancy:primordial_core"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.biomancy.craft_primal_core.description"
+    },
+    "frame": "task",
+    "hidden": true,
+    "icon": {
+      "item": "minecraft:spider_eye"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancements.biomancy.craft_primal_core.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_unlocked_recipe"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

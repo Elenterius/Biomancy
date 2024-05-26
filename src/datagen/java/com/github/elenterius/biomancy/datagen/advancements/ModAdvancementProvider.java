@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.datagen.lang.LangProvider;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -52,6 +53,10 @@ public class ModAdvancementProvider extends ForgeAdvancementProvider {
 
 	protected static TradeTrigger.TriggerInstance hasTradedItems(ItemLike... items) {
 		return new TradeTrigger.TriggerInstance(EntityPredicate.wrap(EntityPredicate.ANY), EntityPredicate.wrap(EntityPredicate.ANY), ItemPredicate.Builder.item().of(items).build());
+	}
+
+	protected static RecipeUnlockedTrigger.TriggerInstance hasUnlockedDefaultRecipe(ItemLike itemLike) {
+		return RecipeUnlockedTrigger.unlocked(RecipeBuilder.getDefaultRecipeId(itemLike));
 	}
 
 }
