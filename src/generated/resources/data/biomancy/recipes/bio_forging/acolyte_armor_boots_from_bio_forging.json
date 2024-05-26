@@ -6,25 +6,25 @@
       "item": "biomancy:living_flesh"
     },
     {
-      "count": 8,
-      "item": "biomancy:mob_fang"
-    },
-    {
-      "count": 10,
+      "count": 5,
       "item": "biomancy:flesh_bits"
     },
     {
-      "count": 32,
+      "count": 16,
       "item": "biomancy:tough_fibers"
     },
     {
-      "count": 24,
+      "count": 12,
       "item": "biomancy:mineral_fragment"
+    },
+    {
+      "count": 4,
+      "item": "biomancy:bone_fragments"
     }
   ],
   "nutrientsCost": 250,
   "result": {
-    "item": "biomancy:thorn_shield",
-    "nbt": "{\"biomancy:nutrients\":250}"
+    "item": "biomancy:acolyte_armor_boots",
+    "nbt": "{\"biomancy:nutrients\":200}"
   }
 }

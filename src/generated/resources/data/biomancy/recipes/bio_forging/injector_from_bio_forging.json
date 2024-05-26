@@ -19,7 +19,7 @@
       "item": "biomancy:tough_fibers"
     }
   ],
-  "nutrientsCost": 1,
+  "nutrientsCost": 5,
   "result": {
     "item": "biomancy:injector"
   }

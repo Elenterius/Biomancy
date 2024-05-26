@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_living_flesh": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:living_flesh"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "biomancy:bio_forging/caustic_gunblade_from_bio_forging"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_living_flesh",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "biomancy:bio_forging/caustic_gunblade_from_bio_forging"
+    ]
+  },
+  "sends_telemetry_event": false
+}

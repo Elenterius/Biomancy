@@ -1,0 +1,30 @@
+{
+  "type": "biomancy:bio_forging",
+  "bio_forge_tab": "biomancy:tools",
+  "ingredients": [
+    {
+      "item": "biomancy:living_flesh"
+    },
+    {
+      "count": 16,
+      "item": "biomancy:flesh_bits"
+    },
+    {
+      "count": 8,
+      "item": "biomancy:bone_fragments"
+    },
+    {
+      "count": 2,
+      "item": "biomancy:mob_gland"
+    },
+    {
+      "count": 4,
+      "item": "biomancy:primal_orifice"
+    }
+  ],
+  "nutrientsCost": 250,
+  "result": {
+    "item": "biomancy:caustic_gunblade",
+    "nbt": "{\"biomancy:nutrients\":200}"
+  }
+}
