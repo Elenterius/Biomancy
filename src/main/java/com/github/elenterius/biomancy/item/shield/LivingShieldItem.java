@@ -156,7 +156,7 @@ public class LivingShieldItem extends SimpleShieldItem implements SimpleLivingTo
 
 	@Override
 	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-		return false;
+		return isValidEnchantment(stack, enchantment) && super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 }

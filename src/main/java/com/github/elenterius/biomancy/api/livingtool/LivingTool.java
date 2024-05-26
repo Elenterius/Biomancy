@@ -9,6 +9,7 @@ import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.common.ToolAction;
 import org.jetbrains.annotations.ApiStatus;
@@ -20,10 +21,10 @@ import java.util.Set;
 @ApiStatus.Experimental
 public interface LivingTool extends NutrientsContainerItem {
 
-	Set<Enchantment> INVALID_ENCHANTMENTS = Set.of(Enchantments.FLAMING_ARROWS, Enchantments.FIRE_ASPECT);
+	Set<Enchantment> INVALID_ENCHANTMENTS = Set.of(Enchantments.FLAMING_ARROWS, Enchantments.FIRE_ASPECT, Enchantments.FIRE_PROTECTION, Enchantments.UNBREAKING);
 
 	default boolean isValidEnchantment(ItemStack livingTool, Enchantment enchantment) {
-		return !INVALID_ENCHANTMENTS.contains(enchantment);
+		return enchantment.category != EnchantmentCategory.BREAKABLE && !INVALID_ENCHANTMENTS.contains(enchantment);
 	}
 
 	@Override

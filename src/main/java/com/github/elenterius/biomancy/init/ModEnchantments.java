@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.api.livingtool.LivingTool;
 import com.github.elenterius.biomancy.enchantment.AnestheticEnchantment;
 import com.github.elenterius.biomancy.enchantment.DespoilEnchantment;
 import com.github.elenterius.biomancy.enchantment.SurgicalPrecisionEnchantment;
@@ -19,6 +20,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public final class ModEnchantments {
 
+	public static final EnchantmentCategory LIVING_CATEGORY = EnchantmentCategory.create("biomancy_living", item -> item instanceof LivingTool);
 	public static final EnchantmentCategory SYRINGE_CATEGORY = EnchantmentCategory.create("biomancy_syringe", item -> item instanceof ExtractorItem || item instanceof InjectorItem);
 	public static final EnchantmentCategory SURGERY_CATEGORY = EnchantmentCategory.create("biomancy_surgery", item -> item instanceof ExtractorItem);
 	public static final EnchantmentCategory GUN_CATEGORY = EnchantmentCategory.create("biomancy_gun", Gun.class::isInstance);
