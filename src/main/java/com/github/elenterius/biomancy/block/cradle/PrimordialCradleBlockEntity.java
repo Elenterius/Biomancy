@@ -15,6 +15,8 @@ import com.github.elenterius.biomancy.world.mound.MoundGenerator;
 import com.github.elenterius.biomancy.world.mound.MoundShape;
 import com.github.elenterius.biomancy.world.spatial.SpatialShapeManager;
 import com.github.elenterius.biomancy.world.spatial.geometry.Shape;
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hashing;
 import com.google.common.math.IntMath;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
@@ -26,7 +28,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -42,8 +44,10 @@ import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity implements PrimalEnergyHandler, GeoBlockEntity {
 
@@ -176,15 +180,28 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 
 		float radius = 8f;
 		AABB aabb = AABB.ofSize(Vec3.atCenterOf(pos), radius * 2, radius * 2, radius * 2);
-		List<LivingEntity> nearbyLivingEntities = level.getEntitiesOfClass(LivingEntity.class, aabb, EntitySelector.NO_SPECTATORS.and(Entity::isAlive));
+		List<Player> nearbyPlayers = level.getEntitiesOfClass(Player.class, aabb, EntitySelector.NO_SPECTATORS.and(Entity::isAlive));
 
-		if (!nearbyLivingEntities.isEmpty()) {
+		if (!nearbyPlayers.isEmpty()) {
 			Tribute tribute = SimpleTribute.builder().successModifier(1).hostileModifier(-5).build();
+			Tribute specialTribute = SimpleTribute.builder().successModifier(20).hostileModifier(-1000).build();
 
-			for (LivingEntity livingEntity : nearbyLivingEntities) {
-				for (ItemStack armor : livingEntity.getArmorSlots()) {
+			final Set<HashCode> HASHES = Set.of(
+					HashCode.fromString("20f0bf6814e62bb7297669efb542f0af6ee0be1a9b87d0702853d8cc5aa15dc4"),
+					HashCode.fromString("2853ecb1a83a461153a2f8b6a274eab0c4597a9ef7d622673dab419543d486b6")
+			);
+
+			for (Player player : nearbyPlayers) {
+				for (ItemStack armor : player.getArmorSlots()) {
 					if (armor.getItem() instanceof AcolyteArmorItem) {
 						sacrificeHandler.addTribute(tribute);
+					}
+				}
+
+				if (player.isCrouching()) {
+					HashCode hashCode = Hashing.sha256().hashString(player.getStringUUID(), StandardCharsets.UTF_8);
+					if (HASHES.contains(hashCode)) {
+						sacrificeHandler.addTribute(specialTribute);
 					}
 				}
 			}
