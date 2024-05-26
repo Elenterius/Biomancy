@@ -9,6 +9,8 @@ public final class TextStyles {
 	public static final Style PRIMORDIAL_RUNES_GRAY = Style.EMPTY.withFont(Fonts.CARO_INVITICA).withColor(ChatFormatting.GRAY);
 	public static final Style PRIMORDIAL_RUNES_LIGHT_GRAY = Style.EMPTY.withFont(Fonts.CARO_INVITICA).withColor(0xff_e5e4e2);
 	public static final Style PRIMORDIAL_RUNES_RED = Style.EMPTY.withFont(Fonts.CARO_INVITICA).withColor(0xff_bb0b3f);
+	public static final Style PRIMORDIAL_RUNES_PURPLE = Style.EMPTY.withFont(Fonts.CARO_INVITICA).withColor(0xff_A870E1);
+	public static final Style PRIMORDIAL_RUNES_MUTED_PURPLE = Style.EMPTY.withFont(Fonts.CARO_INVITICA).withColor(0xff_8655b9);
 
 	public static final Style GRAY = Style.EMPTY.withColor(ChatFormatting.GRAY);
 	public static final Style DARK_GRAY = Style.EMPTY.withColor(ChatFormatting.DARK_GRAY);
