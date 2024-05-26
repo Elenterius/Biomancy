@@ -9,10 +9,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.ApiStatus;
 
+import java.util.function.Predicate;
+
 @ApiStatus.Experimental
 public interface NutrientsContainerItem {
 
 	String NUTRIENTS_TAG_KEY = "biomancy:nutrients";
+
+	Predicate<ItemStack> NEED_NUTRIENTS_PREDICATE = stack -> stack.getItem() instanceof NutrientsContainerItem item && item.getNutrients(stack) < item.getMaxNutrients(stack);
 
 	default void decreaseNutrients(ItemStack container, int decrement) {
 		increaseNutrients(container, -decrement);
