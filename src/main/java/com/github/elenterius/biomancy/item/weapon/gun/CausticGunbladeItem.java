@@ -42,6 +42,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ToolAction;
@@ -349,6 +350,11 @@ public class CausticGunbladeItem extends GunbladeItem implements SimpleLivingToo
 	@Override
 	public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
 		return super.canPerformAction(stack, toolAction) && hasNutrients(stack);
+	}
+
+	@Override
+	public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+		return isValidEnchantment(stack, enchantment) && super.canApplyAtEnchantingTable(stack, enchantment);
 	}
 
 	@Override
