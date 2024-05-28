@@ -4,8 +4,8 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.api.livingtool.LivingTool;
 import com.github.elenterius.biomancy.enchantment.AnestheticEnchantment;
 import com.github.elenterius.biomancy.enchantment.DespoilEnchantment;
+import com.github.elenterius.biomancy.enchantment.ParasiticMetabolismEnchantment;
 import com.github.elenterius.biomancy.enchantment.SurgicalPrecisionEnchantment;
-import com.github.elenterius.biomancy.enchantment.SymbioticMendingEnchantment;
 import com.github.elenterius.biomancy.init.tags.ModItemTags;
 import com.github.elenterius.biomancy.item.extractor.ExtractorItem;
 import com.github.elenterius.biomancy.item.injector.InjectorItem;
@@ -32,7 +32,7 @@ public final class ModEnchantments {
 	public static final RegistryObject<DespoilEnchantment> DESPOIL = ENCHANTMENTS.register("despoil", () -> new DespoilEnchantment(Enchantment.Rarity.RARE, WEAPON_CATEGORY, EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND));
 	public static final RegistryObject<AnestheticEnchantment> ANESTHETIC = ENCHANTMENTS.register("anesthetic", () -> new AnestheticEnchantment(Enchantment.Rarity.RARE, SYRINGE_CATEGORY, EquipmentSlot.MAINHAND));
 	public static final RegistryObject<SurgicalPrecisionEnchantment> SURGICAL_PRECISION = ENCHANTMENTS.register("surgical_precision", () -> new SurgicalPrecisionEnchantment(Enchantment.Rarity.RARE, SURGERY_CATEGORY, EquipmentSlot.MAINHAND));
-	public static final RegistryObject<SymbioticMendingEnchantment> SYMBIOTIC_MENDING = ENCHANTMENTS.register("symbiotic_mending", () -> new SymbioticMendingEnchantment(Enchantment.Rarity.RARE, EquipmentSlot.values()));
+	public static final RegistryObject<ParasiticMetabolismEnchantment> PARASITIC_METABOLISM = ENCHANTMENTS.register("parasitic_metabolism", () -> new ParasiticMetabolismEnchantment(Enchantment.Rarity.RARE, EquipmentSlot.values()));
 
 	private ModEnchantments() {}
 

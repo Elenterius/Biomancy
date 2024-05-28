@@ -409,7 +409,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addEnchantment(ModEnchantments.DESPOIL, "Despoil", "When killing something with a weapon that has this enchantment, they will drop additional special loot.");
 		addEnchantment(ModEnchantments.ANESTHETIC, "Anesthetic Touch", "Prevents the Damage & Aggro caused by injecting mobs with the Injector. Mobs won't know who attacked them, and animals won't panic anymore.");
 		addEnchantment(ModEnchantments.SURGICAL_PRECISION, "Surgical Precision", "Improves the quality and success of surgeries or extraction of essences from mobs.");
-		addEnchantment(ModEnchantments.SYMBIOTIC_MENDING, "[PH] Symbiotic Mending", "[PH] Auto heals equipped or held Living Items using the players food bar.");
+		addEnchantment(ModEnchantments.PARASITIC_METABOLISM, "Parasitic Metabolism", "When any held or equipped living item is damaged, consumes every 1.5 seconds nutrition from a healthy players food bar to restore nutrients.");
 	}
 
 	private void addBannerPatternTranslations() {
