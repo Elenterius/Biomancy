@@ -84,10 +84,12 @@ public final class TooltipHandler {
 
 		if (Minecraft.getInstance().screen instanceof ScreenNutrientFuelConsumer) {
 			int fuelValue = Nutrients.getFuelValue(stack);
-			if (fuelValue > 0) {
+			int repairValue = Nutrients.getRepairValue(stack);
+			if (fuelValue > 0 || repairValue > 0) {
 				tooltipElements.add(Either.right(EMPTY_LINE));
 				tooltipElements.add(Either.left(ComponentUtil.translatable("tooltip.biomancy.nutrients_fuel").withStyle(TextStyles.NUTRIENTS)));
-				tooltipElements.add(Either.left(ComponentUtil.literal(" + " + fuelValue + "u").withStyle(TextStyles.GRAY)));
+				if (fuelValue > 0) tooltipElements.add(Either.left(ComponentUtil.literal(" +" + fuelValue + " Fuel").withStyle(TextStyles.GRAY)));
+				if (repairValue > 0) tooltipElements.add(Either.left(ComponentUtil.literal(" +" + repairValue + " Repair").withStyle(TextStyles.GRAY)));
 			}
 		}
 	}
