@@ -23,8 +23,8 @@ public final class Nutrients {
 	static {
 		registerFuel(ModItems.NUTRIENT_PASTE.get(), 3);
 		registerFuel(ModItems.NUTRIENT_BAR.get(), 3 * 9);
-		registerRepairMaterial(ModItems.NUTRIENT_PASTE.get(), 4);
-		registerRepairMaterial(ModItems.NUTRIENT_BAR.get(), 4 * 9);
+		registerRepairMaterial(ModItems.NUTRIENT_PASTE.get(), 6);
+		registerRepairMaterial(ModItems.NUTRIENT_BAR.get(), 6 * 9);
 	}
 
 	private Nutrients() {}
@@ -63,7 +63,7 @@ public final class Nutrients {
 			if (foodProperties == null) return 0;
 
 			if (foodProperties.isMeat() && resource.is(ModItemTags.RAW_MEATS)) {
-				return RAW_MEAT_NUTRITION_MODIFIER.applyAsInt(foodProperties.getNutrition());
+				return RAW_MEAT_NUTRITION_MODIFIER.applyAsInt(foodProperties.getNutrition()) * 2; //TODO: don't give bonus for rotten meats
 			}
 		}
 
