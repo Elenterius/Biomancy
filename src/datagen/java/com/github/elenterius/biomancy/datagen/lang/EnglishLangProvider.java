@@ -410,6 +410,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addEnchantment(ModEnchantments.ANESTHETIC, "Anesthetic Touch", "Prevents the Damage & Aggro caused by injecting mobs with the Injector. Mobs won't know who attacked them, and animals won't panic anymore.");
 		addEnchantment(ModEnchantments.SURGICAL_PRECISION, "Surgical Precision", "Improves the quality and success of surgeries or extraction of essences from mobs.");
 		addEnchantment(ModEnchantments.PARASITIC_METABOLISM, "Parasitic Metabolism", "When any held or equipped living item is damaged, consumes every 1.5 seconds nutrition from a healthy players food bar to restore nutrients.");
+		addEnchantment(ModEnchantments.SELF_FEEDING, "Self-Feeding", "When any held or equipped living item is damaged, consumes every 1.5 seconds nutrients from the players hotbar.");
 	}
 
 	private void addBannerPatternTranslations() {

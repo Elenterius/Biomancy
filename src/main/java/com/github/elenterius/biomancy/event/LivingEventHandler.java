@@ -25,6 +25,7 @@ public final class LivingEventHandler {
 		if (event.phase == TickEvent.Phase.START) return;
 
 		if (event.player.tickCount % 30 == 0) {
+			ModEnchantments.SELF_FEEDING.get().repairLivingItems(event.player);
 			ModEnchantments.PARASITIC_METABOLISM.get().repairLivingItems(event.player);
 		}
 	}
