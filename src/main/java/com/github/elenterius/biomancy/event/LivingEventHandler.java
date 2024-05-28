@@ -24,8 +24,8 @@ public final class LivingEventHandler {
 		if (event.side == LogicalSide.CLIENT) return;
 		if (event.phase == TickEvent.Phase.START) return;
 
-		if ((event.player.tickCount + 3) % 20 == 0) {
-			ModEnchantments.SYMBIOTIC_MENDING.get().repairLivingItems(event.player);
+		if (event.player.tickCount % 30 == 0) {
+			ModEnchantments.PARASITIC_METABOLISM.get().repairLivingItems(event.player);
 		}
 	}
 
