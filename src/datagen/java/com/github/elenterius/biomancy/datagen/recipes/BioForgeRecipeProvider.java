@@ -245,6 +245,16 @@ public class BioForgeRecipeProvider extends RecipeProvider {
 				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 1)
 				.setCategory(ModBioForgeTabs.TOOLS)
 				.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
+
+		BioForgeRecipeBuilder.create(ModItems.ESSENCE_EXTRACTOR.get())
+				.addIngredient(ModItems.FLESH_BITS.get(), 20)
+				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 10)
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 25)
+				.addIngredient(ModItems.EXOTIC_DUST.get(), 4)
+				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 6)
+				.setCraftingCost(20)
+				.setCategory(ModBioForgeTabs.TOOLS)
+				.unlockedBy(ModItems.EXOTIC_DUST.get()).save(consumer);
 	}
 
 	private void buildComponentRecipes(Consumer<FinishedRecipe> consumer) {
@@ -312,7 +322,7 @@ public class BioForgeRecipeProvider extends RecipeProvider {
 	}
 
 	private void buildMiscRecipes(Consumer<FinishedRecipe> consumer) {
-		BioForgeRecipeBuilder.create(new ItemData(ModItems.FLESHKIN_PRESSURE_PLATE.get()))
+		BioForgeRecipeBuilder.create(ModItems.FLESHKIN_PRESSURE_PLATE.get())
 				.addIngredient(ModItems.LIVING_FLESH.get())
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 3)
 				.addIngredient(ModItems.FLESH_BITS.get(), 5)
@@ -321,15 +331,15 @@ public class BioForgeRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.MISC)
 				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
 
-		//BioForgeRecipeBuilder.create(new ItemData(ModItems.VOICE_BOX.get()))
-		//		.addIngredient(Items.NOTE_BLOCK)
-		//		.addIngredient(ModItems.FLESH_BITS.get(), 6)
-		//		.addIngredient(ModItems.BONE_FRAGMENTS.get(), 4)
-		//		.addIngredient(ModItems.ELASTIC_FIBERS.get(), 8)
-		//		.setCategory(ModRecipeBooks.BioForgeCategory.MISC)
-		//		.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
+		BioForgeRecipeBuilder.create(ModItems.MODULAR_LARYNX.get())
+				.addIngredient(ModItems.LIVING_FLESH.get())
+				.addIngredient(ModItems.GEM_FRAGMENTS.get(), 4)
+				.addIngredient(ModItems.FLESH_BITS.get(), 6)
+				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 12)
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 16)
+				.setCategory(ModBioForgeTabs.MISC)
+				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
 
-		//////////// STORAGE ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		BioForgeRecipeBuilder.create(ModItems.STORAGE_SAC.get())
 				.addIngredient(ModItems.FLESH_BITS.get(), 4)
 				.addIngredient(ModItems.TOUGH_FIBERS.get(), 6)

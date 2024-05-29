@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_exotic_dust": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:exotic_dust"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "biomancy:bio_forging/extractor_from_bio_forging"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_exotic_dust",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "biomancy:bio_forging/extractor_from_bio_forging"
+    ]
+  },
+  "sends_telemetry_event": false
+}

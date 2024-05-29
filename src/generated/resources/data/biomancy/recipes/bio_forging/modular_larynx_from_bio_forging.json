@@ -1,0 +1,29 @@
+{
+  "type": "biomancy:bio_forging",
+  "bio_forge_tab": "biomancy:misc",
+  "ingredients": [
+    {
+      "item": "biomancy:living_flesh"
+    },
+    {
+      "count": 4,
+      "item": "biomancy:gem_fragments"
+    },
+    {
+      "count": 6,
+      "item": "biomancy:flesh_bits"
+    },
+    {
+      "count": 12,
+      "item": "biomancy:bone_fragments"
+    },
+    {
+      "count": 16,
+      "item": "biomancy:elastic_fibers"
+    }
+  ],
+  "nutrientsCost": 1,
+  "result": {
+    "item": "biomancy:modular_larynx"
+  }
+}
