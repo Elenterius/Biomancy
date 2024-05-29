@@ -310,9 +310,6 @@ public class CausticGunbladeItem extends GunbladeItem implements SimpleLivingToo
 		tooltip.addAll(ClientTextUtil.getItemInfoTooltip(stack));
 		tooltip.add(ComponentUtil.emptyLine());
 
-		appendLivingToolTooltip(stack, tooltip);
-		tooltip.add(ComponentUtil.emptyLine());
-
 		if (GunbladeMode.from(stack) == GunbladeMode.MELEE) {
 			Abilities.ACID_COAT.appendAbilityDescription(stack, tooltip);
 		}
@@ -320,8 +317,15 @@ public class CausticGunbladeItem extends GunbladeItem implements SimpleLivingToo
 			appendGunStats(stack, tooltip);
 		}
 
+		appendLivingToolTooltip(stack, tooltip);
+		tooltip.add(ComponentUtil.emptyLine());
+
 		tooltip.add(ComponentUtil.emptyLine());
 		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action.switch_mode")).withStyle(TextStyles.DARK_GRAY));
+
+		if (stack.isEnchanted()) {
+			tooltip.add(ComponentUtil.emptyLine());
+		}
 	}
 
 	@Override
