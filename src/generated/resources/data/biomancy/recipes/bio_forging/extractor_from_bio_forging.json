@@ -1,0 +1,30 @@
+{
+  "type": "biomancy:bio_forging",
+  "bio_forge_tab": "biomancy:tools",
+  "ingredients": [
+    {
+      "count": 20,
+      "item": "biomancy:flesh_bits"
+    },
+    {
+      "count": 10,
+      "item": "biomancy:mineral_fragment"
+    },
+    {
+      "count": 25,
+      "item": "biomancy:elastic_fibers"
+    },
+    {
+      "count": 4,
+      "item": "biomancy:exotic_dust"
+    },
+    {
+      "count": 6,
+      "item": "biomancy:bone_fragments"
+    }
+  ],
+  "nutrientsCost": 20,
+  "result": {
+    "item": "biomancy:extractor"
+  }
+}
