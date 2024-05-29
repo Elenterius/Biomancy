@@ -592,7 +592,14 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		add(ModBlocks.BIOMETRIC_MEMBRANE.get().getDescriptionId() + ".inverted.unique", "Inverted Unique Biometric Membrane");
 		add(ModBlocks.BIOMETRIC_MEMBRANE.get().getDescriptionId() + ".unique", "Unique Biometric Membrane");
 
-		addBlock(ModBlocks.MODULAR_LARYNX, "Modular Larynx", "Similar to a Jukebox but made of an adaptive larynx. Capable of reproducing the sounds of a mob via the insertion of essence and redstone power.");
+		addBlock(ModBlocks.MODULAR_LARYNX, "Modular Larynx", """
+				Similar to a Jukebox but made of an adaptive larynx. Capable of reproducing the sounds of a mob via the insertion of essence and redstone power.
+						
+				Right-Click with Mob Essence in hand to insert it.
+				Or Shift Right-Click with empty hand to extract Mob Essence.
+						
+				You can also use automation like Hoppers to insert and extract the Mob Essence.
+				""");
 		//addBlock(ModBlocks.NEURAL_INTERCEPTOR, "Neural Interceptor", "A psychic node that prevents natural mob spawning in a 48 block radius.");
 
 		addBlock(ModBlocks.PRIMAL_FLESH, "Primal Flesh Block", "Primitive and pure, you better not touch this with your dirty mitts.");
