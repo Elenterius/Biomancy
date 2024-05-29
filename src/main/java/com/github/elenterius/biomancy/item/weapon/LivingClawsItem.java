@@ -167,11 +167,16 @@ public class LivingClawsItem extends SimpleClawsItem implements SpecialLivingToo
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tooltip, isAdvanced);
+		tooltip.add(ComponentUtil.emptyLine());
+
+		appendLivingToolTooltip(stack, tooltip);
 
 		tooltip.add(ComponentUtil.emptyLine());
-		appendLivingToolTooltip(stack, tooltip);
-		tooltip.add(ComponentUtil.emptyLine());
 		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action.switch_mode")));
+
+		if (stack.isEnchanted()) {
+			tooltip.add(ComponentUtil.emptyLine());
+		}
 	}
 
 	@Override

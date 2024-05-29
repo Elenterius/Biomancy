@@ -164,12 +164,16 @@ public class LivingSwordItem extends SwordItem implements ItemTooltipStyleProvid
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
 		tooltip.addAll(ClientTextUtil.getItemInfoTooltip(stack));
+		tooltip.add(ComponentUtil.emptyLine());
+
+		appendLivingToolTooltip(stack, tooltip);
 
 		tooltip.add(ComponentUtil.emptyLine());
-		appendLivingToolTooltip(stack, tooltip);
-		tooltip.add(ComponentUtil.emptyLine());
 		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action_cycle")));
-		tooltip.add(ComponentUtil.emptyLine());
+
+		if (stack.isEnchanted()) {
+			tooltip.add(ComponentUtil.emptyLine());
+		}
 	}
 
 	@Override

@@ -16,10 +16,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.constant.DataTickets;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
@@ -41,11 +39,11 @@ public class ThornShieldItem extends LivingShieldItem implements Equipable, Shie
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-		super.appendHoverText(stack, level, tooltip, isAdvanced);
-		tooltip.add(ComponentUtil.emptyLine());
+	public void appendLivingToolTooltip(ItemStack stack, List<Component> tooltip) {
 		tooltip.add(TextComponentUtil.getAbilityText("thorny_hide").withStyle(TextStyles.GRAY));
 		tooltip.add(ComponentUtil.literal(" ").append(TextComponentUtil.getAbilityText("thorny_hide.desc")).withStyle(TextStyles.DARK_GRAY));
+
+		super.appendLivingToolTooltip(stack, tooltip);
 	}
 
 	@Override

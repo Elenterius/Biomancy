@@ -82,10 +82,14 @@ public final class AcolyteArmorItem extends LivingArmorGeoItem implements ItemTo
 		tooltip.add(ComponentUtil.literal(" ").append(TextComponentUtil.getAbilityText("bio_alchemical_epidermis.desc")).withStyle(ChatFormatting.DARK_GRAY));
 		tooltip.add(ComponentUtil.emptyLine());
 
-		appendLivingToolTooltip(stack, tooltip);
-
 		CompoundTag compoundTag = stack.getOrCreateTag().getCompound("damage_resistance_tracker");
 		AdaptiveDamageResistanceHandler.DamageTypeResistanceTracker.appendTooltipText(compoundTag, tooltip);
+
+		appendLivingToolTooltip(stack, tooltip);
+
+		if (stack.isEnchanted()) {
+			tooltip.add(ComponentUtil.emptyLine());
+		}
 	}
 
 }
