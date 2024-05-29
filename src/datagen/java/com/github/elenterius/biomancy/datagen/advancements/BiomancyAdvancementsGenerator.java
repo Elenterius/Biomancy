@@ -71,7 +71,7 @@ public class BiomancyAdvancementsGenerator implements ForgeAdvancementProvider.A
 
 		Advancement craftPrimalCore = createAdvancement("craft_primal_core").parent(meatCollection).icon(Items.SPIDER_EYE)
 				.title("Primal Crafting")
-				.description("The presence seems lost, fading into the dark...\n\nCraft the Primordial Core from raw meats and ender pearls to cross the void and re-establish the link.")
+				.description("The presence seems lost, fading into the dark...\n\nCraft the Primordial Core from raw meats and ender pearls to bridge the gap.")
 				.hidden()
 				.addCriterion("has_unlocked_recipe", hasUnlockedDefaultRecipe(ModItems.PRIMORDIAL_CORE.get()))
 				.save(consumer, fileHelper);
