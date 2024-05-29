@@ -75,11 +75,11 @@ public final class AcolyteArmorItem extends LivingArmorGeoItem implements ItemTo
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
 		tooltip.add(ComponentUtil.emptyLine());
 
-		tooltip.add(TextComponentUtil.getTooltipText("ability.fleshkin_affinity").withStyle(ChatFormatting.GRAY));
-		tooltip.add(ComponentUtil.literal(" ").append(TextComponentUtil.getTooltipText("ability.fleshkin_affinity.desc")).withStyle(ChatFormatting.DARK_GRAY));
+		tooltip.add(TextComponentUtil.getAbilityText("fleshkin_affinity").withStyle(ChatFormatting.GRAY));
+		tooltip.add(ComponentUtil.literal(" ").append(TextComponentUtil.getAbilityText("fleshkin_affinity.desc")).withStyle(ChatFormatting.DARK_GRAY));
 		tooltip.add(ComponentUtil.emptyLine());
-		tooltip.add(TextComponentUtil.getTooltipText("ability.bio_alchemical_epidermis").withStyle(ChatFormatting.GRAY));
-		tooltip.add(ComponentUtil.literal(" ").append(TextComponentUtil.getTooltipText("ability.bio_alchemical_epidermis.desc")).withStyle(ChatFormatting.DARK_GRAY));
+		tooltip.add(TextComponentUtil.getAbilityText("bio_alchemical_epidermis").withStyle(ChatFormatting.GRAY));
+		tooltip.add(ComponentUtil.literal(" ").append(TextComponentUtil.getAbilityText("bio_alchemical_epidermis.desc")).withStyle(ChatFormatting.DARK_GRAY));
 		tooltip.add(ComponentUtil.emptyLine());
 
 		appendLivingToolTooltip(stack, tooltip);

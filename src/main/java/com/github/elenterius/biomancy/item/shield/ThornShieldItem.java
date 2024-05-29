@@ -44,8 +44,8 @@ public class ThornShieldItem extends LivingShieldItem implements Equipable, Shie
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tooltip, isAdvanced);
 		tooltip.add(ComponentUtil.emptyLine());
-		tooltip.add(TextComponentUtil.getTooltipText("ability.thorny_hide").withStyle(TextStyles.GRAY));
-		tooltip.add(ComponentUtil.literal(" ").append(TextComponentUtil.getTooltipText("ability.thorny_hide.desc")).withStyle(TextStyles.DARK_GRAY));
+		tooltip.add(TextComponentUtil.getAbilityText("thorny_hide").withStyle(TextStyles.GRAY));
+		tooltip.add(ComponentUtil.literal(" ").append(TextComponentUtil.getAbilityText("thorny_hide.desc")).withStyle(TextStyles.DARK_GRAY));
 	}
 
 	@Override

@@ -217,23 +217,21 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addTooltip("action.enable_awakened_mode", "activate Awakened Mode");
 		addTooltip("action.disable_awakened_mode", "cancel Awakened Mode");
 
-		addTooltip("ability.bleed_proc", "Eviscerating Slash");
-		addTooltip("ability.bleed_proc.desc", "When triggered, adds one Bleed Stack (max 2)");
-		addTooltip("ability.blood_explosion", "Blood Explosion");
-		addTooltip("ability.blood_explosion.desc", "On Bleed Stack, deals 10% of max health as damage");
-
+		addAbility("bleed_proc", "Eviscerating Slash");
+		addAbility("bleed_proc.desc", "When triggered, adds one Bleed Stack (max 2)");
+		addAbility("blood_explosion", "Blood Explosion");
+		addAbility("blood_explosion.desc", "On Bleed Stack, deals 10% of max health as damage");
 		addAbility("acid_coat", "Acid Coat");
 		addAbility("acid_coat.desc", """
 				On Right-Click coats the blade in Acid for 10 seconds.
 				Full-Strength Attacks inflict one stack of Armor Shred for 4s and one stack of Corrosion for 2s.
 				Critical Hits inflict two stacks of Armor Shred for 4s.""");
-
-		addTooltip("ability.thorny_hide", "Thorny Hide");
-		addTooltip("ability.thorny_hide.desc", "On successful block, deals thorns damage to the attacker");
-		addTooltip("ability.fleshkin_affinity", "Fleshkin Affinity");
-		addTooltip("ability.fleshkin_affinity.desc", "-5% Primordial Cradle Hostility");
-		addTooltip("ability.bio_alchemical_epidermis", "Bio-Alchemical Epidermis");
-		addTooltip("ability.bio_alchemical_epidermis.desc", "+15% Resistance to external application of harmful Status-Effects\n -25% Injection Resistance\n -25% Injection Damage");
+		addAbility("thorny_hide", "Thorny Hide");
+		addAbility("thorny_hide.desc", "On successful block, deals thorns damage to the attacker");
+		addAbility("fleshkin_affinity", "Fleshkin Affinity");
+		addAbility("fleshkin_affinity.desc", "-5% Primordial Cradle Hostility");
+		addAbility("bio_alchemical_epidermis", "Bio-Alchemical Epidermis");
+		addAbility("bio_alchemical_epidermis.desc", "+15% Resistance to external application of harmful Status-Effects\n -25% Injection Resistance\n -25% Injection Damage");
 
 		addTooltip("fire_rate", "Fire Rate");
 		addTooltip("accuracy", "Accuracy");
