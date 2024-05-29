@@ -54,4 +54,8 @@ public final class TextComponentUtil {
 		return getMsgText(msgKey, formatArgs).withStyle(TextStyles.ERROR);
 	}
 
+	public static MutableComponent getAbilityText(String key) {
+		return ComponentUtil.translatable(getTranslationKey("ability", key));
+	}
+
 }

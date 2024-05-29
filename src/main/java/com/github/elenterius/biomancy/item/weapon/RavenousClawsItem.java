@@ -299,15 +299,15 @@ public class RavenousClawsItem extends LivingClawsItem implements GeoItem, ItemC
 				//do nothing
 			}
 			case DORMANT -> {
-				tooltip.add(TextComponentUtil.getTooltipText("ability.bleed_proc").append(" (8% chance)").withStyle(ChatFormatting.GRAY));
-				tooltip.add(ComponentUtil.literal(" ").append(TextComponentUtil.getTooltipText("ability.bleed_proc.desc")).withStyle(ChatFormatting.DARK_GRAY));
+				tooltip.add(TextComponentUtil.getAbilityText("bleed_proc").append(" (8% chance)").withStyle(ChatFormatting.GRAY));
+				tooltip.add(ComponentUtil.literal(" ").append(TextComponentUtil.getAbilityText("bleed_proc.desc")).withStyle(ChatFormatting.DARK_GRAY));
 				tooltip.add(ComponentUtil.emptyLine());
 			}
 			case AWAKENED -> {
-				tooltip.add(TextComponentUtil.getTooltipText("ability.bleed_proc").append(" (20% chance)").withStyle(ChatFormatting.GRAY));
-				tooltip.add(ComponentUtil.literal(" ").append(TextComponentUtil.getTooltipText("ability.bleed_proc.desc")).withStyle(ChatFormatting.DARK_GRAY));
-				tooltip.add(TextComponentUtil.getTooltipText("ability.blood_explosion").append(" (20% chance)").withStyle(ChatFormatting.GRAY));
-				tooltip.add(ComponentUtil.literal(" ").append(TextComponentUtil.getTooltipText("ability.blood_explosion.desc")).withStyle(ChatFormatting.DARK_GRAY));
+				tooltip.add(TextComponentUtil.getAbilityText("bleed_proc").append(" (20% chance)").withStyle(ChatFormatting.GRAY));
+				tooltip.add(ComponentUtil.literal(" ").append(TextComponentUtil.getAbilityText("bleed_proc.desc")).withStyle(ChatFormatting.DARK_GRAY));
+				tooltip.add(TextComponentUtil.getAbilityText("blood_explosion").append(" (20% chance)").withStyle(ChatFormatting.GRAY));
+				tooltip.add(ComponentUtil.literal(" ").append(TextComponentUtil.getAbilityText("blood_explosion.desc")).withStyle(ChatFormatting.DARK_GRAY));
 				tooltip.add(ComponentUtil.emptyLine());
 			}
 		}
