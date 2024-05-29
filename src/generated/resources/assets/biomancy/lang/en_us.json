@@ -334,7 +334,7 @@
   "tooltip.biomancy.bile_fuel": "Bile",
   "tooltip.biomancy.blood_charge": "Blood Charge",
   "tooltip.biomancy.contains_unique_dna": "Contains Unique Genetic Sequences",
-  "tooltip.biomancy.press_button_to": "Press %1$s to %2$s",
+  "tooltip.biomancy.press_button_to": "Hold %1$s to %2$s",
   "tooltip.biomancy.owner": "Owner: %1$s",
   "tooltip.biomancy.slots": "Slots",
   "tooltip.biomancy.drops_from": "Drops from",

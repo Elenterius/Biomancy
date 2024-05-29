@@ -197,7 +197,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addTooltip("bile_fuel", "Bile");
 		addTooltip("blood_charge", "Blood Charge");
 		addTooltip("contains_unique_dna", "Contains Unique Genetic Sequences");
-		addTooltip("press_button_to", "Press %1$s to %2$s");
+		addTooltip("press_button_to", "Hold %1$s to %2$s");
 
 		addTooltip("owner", "Owner: %1$s");
 
