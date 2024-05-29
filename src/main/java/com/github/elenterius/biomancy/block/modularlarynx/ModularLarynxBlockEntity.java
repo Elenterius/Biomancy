@@ -79,8 +79,7 @@ public class ModularLarynxBlockEntity extends BlockEntity {
 
 		if (stack.getItem() instanceof EssenceItem essenceItem) {
 			soundEvent = essenceItem
-					.getEntityType(stack)
-					.map(entityType -> MobSoundUtil.findSoundFor(entityType, mobSoundType))
+					.getMobSound(stack, mobSoundType)
 					.orElse(MobSoundUtil.getSoundFallbackFor(mobSoundType));
 		}
 		else {

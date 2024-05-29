@@ -1,14 +1,17 @@
 package com.github.elenterius.biomancy.item;
 
+import com.github.elenterius.biomancy.block.property.MobSoundType;
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.util.ComponentUtil;
+import com.github.elenterius.biomancy.util.MobSoundUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,6 +33,7 @@ public class EssenceItem extends Item implements ItemTooltipStyleProvider {
 	public static final String ENTITY_TYPE_KEY = "entity_type";
 	public static final String ESSENCE_DATA_KEY = "essence_data";
 	public static final String COLORS_KEY = "colors";
+	public static final String SOUNDS_KEY = "sounds";
 	public static final String ENTITY_NAME_KEY = "name";
 	public static final String ENTITY_UUID_KEY = "entity_uuid";
 	protected static final String ESSENCE_TIER_KEY = "essence_tier";
@@ -41,9 +45,11 @@ public class EssenceItem extends Item implements ItemTooltipStyleProvider {
 	public static ItemStack fromEntity(LivingEntity livingEntity, int surgicalPrecisionLevel, int lootingLevel) {
 		int count = 1 + livingEntity.getRandom().nextInt(0, 1 + lootingLevel);
 		int essenceTier = 1 + livingEntity.getRandom().nextInt(0, 1 + surgicalPrecisionLevel);
-		ItemStack stack = new ItemStack(ModItems.ESSENCE.get(), count);
 
-		if (ModItems.ESSENCE.get().setEssenceData(stack, Mth.clamp(essenceTier, 1, 3), livingEntity)) {
+		EssenceItem essenceItem = ModItems.ESSENCE.get();
+		ItemStack stack = new ItemStack(essenceItem, count);
+
+		if (essenceItem.setEssenceData(stack, Mth.clamp(essenceTier, 1, 3), livingEntity)) {
 			return stack;
 		}
 
@@ -51,11 +57,12 @@ public class EssenceItem extends Item implements ItemTooltipStyleProvider {
 	}
 
 	public static ItemStack fromEntityType(EntityType<?> entityType, int essenceTier) {
-		ItemStack stack = new ItemStack(ModItems.ESSENCE.get(), 1);
+		EssenceItem essenceItem = ModItems.ESSENCE.get();
+		ItemStack stack = new ItemStack(essenceItem, 1);
 
 		int[] colors = getEssenceColors(entityType);
 
-		if (ModItems.ESSENCE.get().setEssenceData(stack, Mth.clamp(essenceTier, 1, 3), entityType, null, colors)) {
+		if (essenceItem.setEssenceData(stack, Mth.clamp(essenceTier, 1, 3), entityType, null, colors, null)) {
 			return stack;
 		}
 
@@ -107,10 +114,12 @@ public class EssenceItem extends Item implements ItemTooltipStyleProvider {
 		UUID entityUUID = tier >= 3 ? livingEntity.getUUID() : null;
 		int[] colors = getEssenceColors(livingEntity, tier);
 
-		return setEssenceData(stack, tier, livingEntity.getType(), entityUUID, colors);
+		CompoundTag mobSounds = MobSoundUtil.saveSounds(livingEntity);
+
+		return setEssenceData(stack, tier, livingEntity.getType(), entityUUID, colors, mobSounds);
 	}
 
-	public boolean setEssenceData(ItemStack stack, int tier, EntityType<?> entityType, @Nullable UUID entityUUID, int[] colors) {
+	public boolean setEssenceData(ItemStack stack, int tier, EntityType<?> entityType, @Nullable UUID entityUUID, int[] colors, @Nullable CompoundTag mobSounds) {
 		if (entityType != EntityType.PLAYER && !entityType.canSerialize()) return false;
 
 		ResourceLocation entityTypeId = EntityType.getKey(entityType);
@@ -127,6 +136,11 @@ public class EssenceItem extends Item implements ItemTooltipStyleProvider {
 		tag.put(ESSENCE_DATA_KEY, essenceTag);
 		tag.putIntArray(COLORS_KEY, colors);
 		tag.putInt(ESSENCE_TIER_KEY, tier);
+
+		if (mobSounds != null) {
+			tag.put(SOUNDS_KEY, mobSounds);
+		}
+
 		return true;
 
 	}
@@ -146,6 +160,11 @@ public class EssenceItem extends Item implements ItemTooltipStyleProvider {
 			return Optional.of(tag.getUUID(ENTITY_UUID_KEY));
 		}
 		return Optional.empty();
+	}
+
+	public Optional<SoundEvent> getMobSound(ItemStack stack, MobSoundType soundType) {
+		CompoundTag tag = stack.getOrCreateTag().getCompound(SOUNDS_KEY);
+		return Optional.ofNullable(MobSoundUtil.getSound(tag, soundType));
 	}
 
 	public int getColor(ItemStack stack, int tintIndex) {
