@@ -67,7 +67,7 @@ public class RavenousClawsItem extends LivingClawsItem implements GeoItem, ItemC
 		float attackSpeedModifier = (float) (attackSpeed - Attributes.ATTACK_SPEED.getDefaultValue());
 		brokenAttributes = Lazy.of(() -> createDefaultAttributeModifiers(0, 0, -0.5f).build());
 		dormantAttributes = Lazy.of(() -> createDefaultAttributeModifiers(-1 + attackDamage, attackSpeedModifier, 0).build());
-		awakenedAttributes = Lazy.of(() -> createDefaultAttributeModifiers(-1 + attackDamage + 2, attackSpeedModifier, 0.5f).build());
+		awakenedAttributes = Lazy.of(() -> createDefaultAttributeModifiers(-1 + attackDamage + 2.5f, attackSpeedModifier, 0.5f).build());
 	}
 
 	private static void playBloodyClawsFX(LivingEntity attacker) {
