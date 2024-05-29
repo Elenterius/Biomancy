@@ -25,6 +25,6 @@
   "nutrientsCost": 250,
   "result": {
     "item": "biomancy:acolyte_armor_chestplate",
-    "nbt": "{\"biomancy:nutrients\":200}"
+    "nbt": "{\"biomancy:nutrients\":250}"
   }
 }
