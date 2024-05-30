@@ -334,7 +334,7 @@
 	"tooltip.biomancy.bile_fuel": "胆汁",
 	"tooltip.biomancy.blood_charge": "血能",
 	"tooltip.biomancy.contains_unique_dna": "含有唯一的遗传序列",
-	"tooltip.biomancy.press_button_to": "按住%1$s键%2$s",
+	"tooltip.biomancy.press_button_to": "按%1$s键%2$s",
 	"tooltip.biomancy.owner": "所有者：%1$s",
 	"tooltip.biomancy.slots": "槽位",
 	"tooltip.biomancy.drops_from": "掉落自",
