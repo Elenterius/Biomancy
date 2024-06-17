@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SlotAccess;
@@ -103,7 +104,7 @@ public class LivingArmorItem extends ArmorItem implements SimpleLivingTool {
 
 	@Override
 	public boolean isDamageable(ItemStack stack) {
-		return true;
+		return hasNutrients(stack);
 	}
 
 	@Override
@@ -118,12 +119,13 @@ public class LivingArmorItem extends ArmorItem implements SimpleLivingTool {
 
 	@Override
 	public int getDamage(ItemStack stack) {
-		return 0;
+		int max = getMaxNutrients(stack);
+		return Mth.clamp(max - getNutrients(stack), 0, max);
 	}
 
 	@Override
 	public int getMaxDamage(ItemStack stack) {
-		return Integer.MAX_VALUE;
+		return getMaxNutrients(stack);
 	}
 
 	@Override
