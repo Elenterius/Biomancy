@@ -61,13 +61,13 @@ public class ChrysalisBlockItem extends SimpleBlockItem {
 		if (player.level().isClientSide()) return InteractionResult.PASS;
 
 		if (!isEmpty(stack)) {
-			player.displayClientMessage(TextComponentUtil.getMsgText("already_full").withStyle(TextStyles.PRIMORDIAL_RUNES_RED), true);
+			player.displayClientMessage(TextComponentUtil.getFailureMsgText("already_full"), true);
 			return InteractionResult.PASS;
 		}
 
 		boolean isValidTarget = isValidEntity(interactionTarget) && (!MobUtil.isBoss(interactionTarget) || player.isCreative()); // blame creative player if something breaks due to storing boss mobs
 		if (!isValidTarget) {
-			player.displayClientMessage(TextComponentUtil.getMsgText("mob_too_old").withStyle(TextStyles.PRIMORDIAL_RUNES_RED), true);
+			player.displayClientMessage(TextComponentUtil.getFailureMsgText("mob_too_old"), true);
 			return InteractionResult.PASS;
 		}
 
