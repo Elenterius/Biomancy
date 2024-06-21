@@ -4,8 +4,8 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.integration.create.CreateCompat;
 import com.github.elenterius.biomancy.integration.modonomicon.ModonomiconHelper;
 import com.github.elenterius.biomancy.integration.modonomicon.ModonomiconIntegration;
-import com.github.elenterius.biomancy.integration.pehkui.PehkuiCompat;
 import com.github.elenterius.biomancy.integration.pehkui.PehkuiHelper;
+import com.github.elenterius.biomancy.integration.pehkui.PehkuiIntegration;
 import com.github.elenterius.biomancy.integration.tetra.TetraCompat;
 import com.github.elenterius.biomancy.integration.tetra.TetraHelper;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -29,7 +29,7 @@ public final class ModsCompatHandler {
 	public static void onBiomancyInit(final IEventBus eventBus) {
 		if (ModList.get().isLoaded("pehkui")) {
 			BiomancyMod.LOGGER.info(LOG_MARKER, "Initialize Pehkui compat...");
-			PehkuiCompat.init(helper -> PEHKUI_HELPER = helper);
+			PehkuiIntegration.init(helper -> PEHKUI_HELPER = helper);
 		}
 
 		if (ModList.get().isLoaded("modonomicon")) {

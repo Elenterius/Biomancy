@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.integration.pehkui;
 
 import net.minecraft.world.entity.LivingEntity;
 
-public sealed interface PehkuiHelper permits PehkuiHelper.EmptyPehkuiHelper, PehkuiCompat.PehkuiHelperImpl {
+public sealed interface PehkuiHelper permits PehkuiHelper.EmptyPehkuiHelper, PehkuiIntegration.PehkuiHelperImpl {
 
 	PehkuiHelper EMPTY = new EmptyPehkuiHelper();
 
