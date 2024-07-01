@@ -1,9 +1,14 @@
-### [8.2.1](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.2.0...1.20.1-v2.8.2.1) (2024-06-19)
+## [8.3.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.2.0...1.20.1-v2.8.3.0) (2024-07-01)
+
+
+### Features
+
+* add Korean (South Korean) translation by Mexwell12 ([2521dcf](https://github.com/Elenterius/Biomancy/commit/2521dcf21c354fa87b9416a5a01bba1da0315574))
 
 
 ### Bug Fixes
 
-* try to fix StackOverflow caused by Biomancy's ScaleModifier implementation (Pehkui integration) ([b062f36](https://github.com/Elenterius/Biomancy/commit/b062f3621784ea0dd8d39c0cf5c10d75a79e2ae5)), closes [#133](https://github.com/Elenterius/Biomancy/issues/133)
+* try to fix StackOverflow caused by Biomancy's ScaleModifier implementation (Pehkui integration) ([712cad0](https://github.com/Elenterius/Biomancy/commit/712cad09c25f4ea86cf3f316fe179bd33dc8d135)), closes [#133](https://github.com/Elenterius/Biomancy/issues/133)
 
 ## [8.2.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.1.0...1.20.1-v2.8.2.0) (2024-06-17)
 
