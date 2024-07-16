@@ -44,8 +44,8 @@ public abstract class AbstractLangProvider implements DataProvider, LangProvider
 
 	private final Map<String, String> translations = new LinkedHashMap<>();
 	private final PackOutput packOutput;
-	private final String modId;
-	private final String languageLocale;
+	protected final String modId;
+	protected final String languageLocale;
 
 	protected AbstractLangProvider(PackOutput packOutput, String modId, String languageLocale) {
 		this.packOutput = packOutput;

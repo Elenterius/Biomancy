@@ -55,21 +55,21 @@ public class EnglishLangProvider extends AbstractLangProvider {
 
 		if (!itemsToTranslate.isEmpty()) {
 			for (Item item : itemsToTranslate) {
-				LOGGER.error(LOG_MARKER, "Missing translation for item '{}'", item);
+				LOGGER.error(LOG_MARKER, "Missing {} translation for item '{}'", languageLocale, item);
 			}
 			isAnyMissing = true;
 		}
 
 		if (!blocksToTranslate.isEmpty()) {
 			for (Block block : blocksToTranslate) {
-				LOGGER.error(LOG_MARKER, "Missing translation for block '{}'", block);
+				LOGGER.error(LOG_MARKER, "Missing {} translation for block '{}'", languageLocale, block);
 			}
 			isAnyMissing = true;
 		}
 
 		if (!serumsToTranslate.isEmpty()) {
 			for (Serum serum : serumsToTranslate) {
-				LOGGER.error(LOG_MARKER, "Missing translation for serum '{}'", serum);
+				LOGGER.error(LOG_MARKER, "Missing {} translation for serum '{}'", languageLocale, serum);
 			}
 			isAnyMissing = true;
 		}
