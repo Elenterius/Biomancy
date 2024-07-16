@@ -10,6 +10,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.AbstractCauldronBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
@@ -115,7 +116,10 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
 	private void addFleshyBlocksToHoeTag() {
 		IntrinsicTagAppender<Block> tag = tag(BlockTags.MINEABLE_WITH_HOE);
-		ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).forEach(tag::add);
+		ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).forEach((block)->{
+			if (block instanceof AbstractCauldronBlock) tag(BlockTags.MINEABLE_WITH_PICKAXE).add(block); //Lazy hack to get around Elen's lazy hack :P
+			else tag.add(block);
+		});
 	}
 
 	/**

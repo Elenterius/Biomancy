@@ -11,6 +11,7 @@ import com.github.elenterius.biomancy.item.weapon.DespoilingSwordItem;
 import com.github.elenterius.biomancy.item.weapon.RavenousClawsItem;
 import com.github.elenterius.biomancy.item.weapon.gun.CausticGunbladeItem;
 import com.github.elenterius.biomancy.item.weapon.gun.DevArmCannonItem;
+import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -20,10 +21,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeSpawnEggItem;
+import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -224,7 +227,14 @@ public final class ModItems {
 	}
 
 	private static <T extends Item> RegistryObject<T> registerItem(String name, Function<Item.Properties, T> factory) {
-		return ITEMS.register(name, () -> factory.apply(createProperties()));
+		RegistryObject<T> ret = ITEMS.register(name, () -> factory.apply(createProperties()));
+		if (name.equals("biomancy:acid_bucket")) {
+			//Register Cauldron filling for Acid
+			CauldronInteraction.EMPTY.put(ret.get(),(state, level, pos, player, hand, stack)->{
+				return CauldronInteraction.emptyBucket(level,pos,player,hand,stack, ModBlocks.ACID_CAULDRON.get().defaultBlockState(), Objects.requireNonNull(ModFluids.ACID.get().getFluidType().getSound(SoundActions.BUCKET_EMPTY)));
+			});
+		}
+		return ret;
 	}
 
 	private static <T extends Block> RegistryObject<SimpleBlockItem> registerSimpleBlockItem(RegistryObject<T> blockHolder) {

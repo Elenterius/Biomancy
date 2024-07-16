@@ -5,6 +5,7 @@ import com.github.elenterius.biomancy.block.*;
 import com.github.elenterius.biomancy.block.bioforge.BioForgeBlock;
 import com.github.elenterius.biomancy.block.biolab.BioLabBlock;
 import com.github.elenterius.biomancy.block.bloom.BloomBlock;
+import com.github.elenterius.biomancy.block.cauldron.AcidCauldron;
 import com.github.elenterius.biomancy.block.chrysalis.ChrysalisBlock;
 import com.github.elenterius.biomancy.block.cradle.PrimordialCradleBlock;
 import com.github.elenterius.biomancy.block.decomposer.DecomposerBlock;
@@ -136,6 +137,7 @@ public final class ModBlocks {
 	public static final RegistryObject<FleshDoorBlock> FLESH_DOOR = register("flesh_door", FleshDoorBlock::new);
 	public static final RegistryObject<FullFleshDoorBlock> FULL_FLESH_DOOR = register("full_flesh_door", FullFleshDoorBlock::new);
 	public static final RegistryObject<FleshChainBlock> TENDON_CHAIN = register("tendon_chain", properties -> new FleshChainBlock(properties.noOcclusion()));
+	public static final RegistryObject<AcidCauldron> ACID_CAULDRON = register("acid_cauldron", AcidCauldron::new);
 
 	private ModBlocks() {}
 
