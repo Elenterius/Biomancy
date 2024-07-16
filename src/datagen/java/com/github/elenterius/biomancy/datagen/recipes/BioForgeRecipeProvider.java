@@ -8,7 +8,6 @@ import com.github.elenterius.biomancy.init.ModItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -46,7 +45,7 @@ public class BioForgeRecipeProvider extends RecipeProvider {
 	}
 
 	private void buildMachineRecipes(Consumer<FinishedRecipe> consumer) {
-		BioForgeRecipeBuilder.create(new ItemData(ModItems.DECOMPOSER.get()))
+		BioForgeRecipeBuilder.create(ModItems.DECOMPOSER.get())
 				.addIngredient(ModItems.LIVING_FLESH.get())
 				.addIngredient(ModItems.FLESH_BITS.get(), 8)
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 5)
@@ -55,7 +54,7 @@ public class BioForgeRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.MACHINES)
 				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
 
-		BioForgeRecipeBuilder.create(new ItemData(ModItems.DIGESTER.get()))
+		BioForgeRecipeBuilder.create(ModItems.DIGESTER.get())
 				.addIngredient(ModItems.LIVING_FLESH.get())
 				.addIngredient(ModItems.FLESH_BITS.get(), 10)
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 3)
@@ -64,7 +63,7 @@ public class BioForgeRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.MACHINES)
 				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
 
-		BioForgeRecipeBuilder.create(new ItemData(ModItems.BIO_LAB.get()))
+		BioForgeRecipeBuilder.create(ModItems.BIO_LAB.get())
 				.addIngredient(ModItems.LIVING_FLESH.get())
 				.addIngredient(ModItems.FLESH_BITS.get(), 5)
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 8)
@@ -73,7 +72,7 @@ public class BioForgeRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.MACHINES)
 				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
 
-		BioForgeRecipeBuilder.create(new ItemData(ModItems.BIO_FORGE.get()))
+		BioForgeRecipeBuilder.create(ModItems.BIO_FORGE.get())
 				.addIngredient(ModItems.LIVING_FLESH.get())
 				.addIngredient(ModItems.FLESH_BITS.get(), 5)
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 8)
@@ -82,7 +81,7 @@ public class BioForgeRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.MACHINES)
 				.unlockedBy(ModItems.LIVING_FLESH.get()).save(consumer);
 
-		//		BioForgeRecipeBuilder.create(new ItemData(ModItems.PRIMORDIAL_CRADLE.get()))
+		//		BioForgeRecipeBuilder.create(ModItems.PRIMORDIAL_CRADLE.get())
 		//				.addIngredient(ModItems.PRIMORDIAL_CORE.get())
 		//				.addIngredient(ModItems.FLESH_BITS.get(), 5)
 		//				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 8)
@@ -466,7 +465,7 @@ public class BioForgeRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.MISC)
 				.unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
 
-		BioForgeRecipeBuilder.create(new ItemData(new ResourceLocation("dramaticdoors", "tall_flesh_door")))
+		BioForgeRecipeBuilder.create(ItemData.from("dramaticdoors", "tall_flesh_door"))
 				.ifModLoaded("dramaticdoors")
 				.addIngredient(ModItems.FLESH_BITS.get(), 9)
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 9)
@@ -475,7 +474,7 @@ public class BioForgeRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.MISC)
 				.unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
 
-		BioForgeRecipeBuilder.create(new ItemData(new ResourceLocation("dramaticdoors", "tall_full_flesh_door")))
+		BioForgeRecipeBuilder.create(ItemData.from("dramaticdoors", "tall_full_flesh_door"))
 				.ifModLoaded("dramaticdoors")
 				.addIngredient(ModItems.FLESH_BITS.get(), 9)
 				.addIngredient(ModItems.BONE_FRAGMENTS.get(), 9)

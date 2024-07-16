@@ -14,8 +14,7 @@ public final class ItemData {
 
 	private final ResourceLocation registryName;
 	private final int count;
-	private final @Nullable
-	CompoundTag tag;
+	private final @Nullable CompoundTag tag;
 
 	public ItemData(ItemStack stack) {
 		this(stack, stack.getCount());
@@ -39,8 +38,12 @@ public final class ItemData {
 		this.count = count;
 	}
 
-	public ItemData(ResourceLocation itemRegistryName) {
-		this(itemRegistryName, null, 1);
+	public static ItemData from(String namespace, String path) {
+		return new ItemData(new ResourceLocation(namespace, path));
+	}
+
+	public ItemData(ResourceLocation registryName) {
+		this(registryName, null, 1);
 	}
 
 	public ItemData(ResourceLocation registryName, @Nullable CompoundTag tag, int count) {

@@ -34,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class DecomposerRecipeBuilder implements IRecipeBuilder {
+public final class DecomposerRecipeBuilder implements RecipeBuilder {
 
 	public static final String RECIPE_SUB_FOLDER = ModRecipes.DECOMPOSING_RECIPE_TYPE.getId().getPath();
 	public static final String SUFFIX = "_decomposing";
@@ -179,14 +179,14 @@ public class DecomposerRecipeBuilder implements IRecipeBuilder {
 		}
 
 		if (craftingCostNutrients < 0) {
-			craftingCostNutrients = CraftingCostUtil.getCost(DecomposerRecipe.DEFAULT_CRAFTING_COST_NUTRIENTS, craftingTimeTicks);
+			craftingCostNutrients = RecipeCostUtil.getCost(DecomposerRecipe.DEFAULT_CRAFTING_COST_NUTRIENTS, craftingTimeTicks);
 		}
 
 		advancement.parent(new ResourceLocation("recipes/root"))
 				.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId))
 				.rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
 
-		String folderName = IRecipeBuilder.getRecipeFolderName(category, BiomancyMod.MOD_ID);
+		String folderName = RecipeBuilder.getRecipeFolderName(category, BiomancyMod.MOD_ID);
 		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(), "recipes/%s/%s".formatted(folderName, recipeId.getPath()));
 
 		consumer.accept(new RecipeResult(this, advancementId));

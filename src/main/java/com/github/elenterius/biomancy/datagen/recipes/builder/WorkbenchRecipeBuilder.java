@@ -6,6 +6,7 @@ import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.world.level.ItemLike;
 
 public final class WorkbenchRecipeBuilder {
+
 	private WorkbenchRecipeBuilder() {}
 
 	public static ShapedRecipeBuilder shaped(RecipeCategory category, ItemLike result) {
@@ -23,4 +24,5 @@ public final class WorkbenchRecipeBuilder {
 	public static ShapelessRecipeBuilder shapeless(RecipeCategory category, ItemLike result, int count) {
 		return ShapelessRecipeBuilder.shapeless(category, result, count);
 	}
+
 }

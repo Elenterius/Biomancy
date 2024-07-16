@@ -17,7 +17,7 @@ import net.minecraftforge.registries.RegistryObject;
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
-public interface IRecipeBuilder {
+public sealed interface RecipeBuilder permits BioForgeRecipeBuilder, BioLabRecipeBuilder, DecomposerRecipeBuilder, DigesterRecipeBuilder {
 
 	static String getRecipeFolderName(@Nullable RecipeCategory category, String modId) {
 		return category != null ? category.getFolderName() : modId;
@@ -44,30 +44,30 @@ public interface IRecipeBuilder {
 		return tag.location().getPath();
 	}
 
-	IRecipeBuilder unlockedBy(String name, CriterionTriggerInstance criterionTrigger);
+	RecipeBuilder unlockedBy(String name, CriterionTriggerInstance criterionTrigger);
 
-	default IRecipeBuilder unlockedBy(String name, ItemPredicate predicate) {
+	default RecipeBuilder unlockedBy(String name, ItemPredicate predicate) {
 		return unlockedBy(name, inventoryTrigger(predicate));
 	}
 
-	default IRecipeBuilder unlockedBy(ItemLike itemLike, CriterionTriggerInstance criterionTrigger) {
+	default RecipeBuilder unlockedBy(ItemLike itemLike, CriterionTriggerInstance criterionTrigger) {
 		return unlockedBy("has_" + getItemName(itemLike), criterionTrigger);
 	}
 
-	default IRecipeBuilder unlockedBy(ItemLike itemLike) {
+	default RecipeBuilder unlockedBy(ItemLike itemLike) {
 		return unlockedBy("has_" + getItemName(itemLike), has(itemLike));
 	}
 
-	default IRecipeBuilder unlockedBy(RegistryObject<? extends Item> itemHolder) {
+	default RecipeBuilder unlockedBy(RegistryObject<? extends Item> itemHolder) {
 		Item item = itemHolder.get();
 		return unlockedBy("has_" + getItemName(item), has(item));
 	}
 
-	default IRecipeBuilder unlockedBy(TagKey<Item> tag, CriterionTriggerInstance criterionTrigger) {
+	default RecipeBuilder unlockedBy(TagKey<Item> tag, CriterionTriggerInstance criterionTrigger) {
 		return unlockedBy("has_" + getTagName(tag), criterionTrigger);
 	}
 
-	default IRecipeBuilder unlockedBy(TagKey<Item> tag) {
+	default RecipeBuilder unlockedBy(TagKey<Item> tag) {
 		return unlockedBy("has_" + getTagName(tag), has(tag));
 	}
 

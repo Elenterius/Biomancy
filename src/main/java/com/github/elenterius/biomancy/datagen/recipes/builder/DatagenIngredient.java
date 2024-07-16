@@ -8,18 +8,23 @@ import net.minecraft.world.item.crafting.Ingredient;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public class DatagenIngredient extends Ingredient {
+public final class DatagenIngredient extends Ingredient {
 
 	final ResourceLocation resourceLocation;
 
-	public DatagenIngredient(String namespacedItemId) {
+	public DatagenIngredient(String itemKey) {
 		super(Stream.empty());
-		resourceLocation = Objects.requireNonNull(ResourceLocation.tryParse(namespacedItemId));
+		resourceLocation = Objects.requireNonNull(ResourceLocation.tryParse(itemKey));
 	}
 
-	public DatagenIngredient(ResourceLocation resourceLocation) {
+	public DatagenIngredient(String namespace, String path) {
 		super(Stream.empty());
-		this.resourceLocation = resourceLocation;
+		resourceLocation = Objects.requireNonNull(ResourceLocation.tryBuild(namespace, path));
+	}
+
+	public DatagenIngredient(ResourceLocation itemKey) {
+		super(Stream.empty());
+		this.resourceLocation = itemKey;
 	}
 
 	@Override
