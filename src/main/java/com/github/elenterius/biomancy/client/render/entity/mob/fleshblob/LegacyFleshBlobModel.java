@@ -33,7 +33,8 @@ public class LegacyFleshBlobModel<T extends EaterFleshBlob> extends GeoModel<T> 
 
 	@Override
 	public RenderType getRenderType(T fleshBlob, ResourceLocation texture) {
-		if (BiomancyMod.WE_DO_A_LITTLE_FOOLING) return ModRenderTypes.getCutoutPartyTime(TROLL_TEXTURE);
+		if (BiomancyMod.EVENT_CALENDAR.isAprilFools()) return ModRenderTypes.getCutoutPartyTime(TROLL_TEXTURE);
+
 		if (fleshBlob.hasCustomName()) {
 			Component customName = fleshBlob.getCustomName();
 			if (customName != null) {
@@ -43,6 +44,7 @@ public class LegacyFleshBlobModel<T extends EaterFleshBlob> extends GeoModel<T> 
 				}
 			}
 		}
+
 		return super.getRenderType(fleshBlob, texture);
 	}
 

@@ -36,7 +36,8 @@ public class PrimordialFleshBlobModel<T extends EaterFleshBlob & PrimordialFlesh
 
 	@Override
 	public RenderType getRenderType(T fleshBlob, ResourceLocation texture) {
-		if (BiomancyMod.WE_DO_A_LITTLE_FOOLING) return ModRenderTypes.getCutoutPartyTime(TROLL_TEXTURE);
+		if (BiomancyMod.EVENT_CALENDAR.isAprilFools()) return ModRenderTypes.getCutoutPartyTime(TROLL_TEXTURE);
+
 		if (fleshBlob.hasCustomName()) {
 			Component customName = fleshBlob.getCustomName();
 			if (customName != null) {
@@ -46,6 +47,7 @@ public class PrimordialFleshBlobModel<T extends EaterFleshBlob & PrimordialFlesh
 				}
 			}
 		}
+
 		return super.getRenderType(fleshBlob, texture);
 	}
 
