@@ -135,21 +135,6 @@ public class LivingShieldItem extends SimpleShieldItem implements SimpleLivingTo
 	}
 
 	@Override
-	public void setDamage(ItemStack stack, int damage) {
-		//do nothing
-	}
-
-	@Override
-	public int getDamage(ItemStack stack) {
-		return 0;
-	}
-
-	@Override
-	public int getMaxDamage(ItemStack stack) {
-		return 0;
-	}
-
-	@Override
 	public boolean canBeDepleted() {
 		return false;
 	}

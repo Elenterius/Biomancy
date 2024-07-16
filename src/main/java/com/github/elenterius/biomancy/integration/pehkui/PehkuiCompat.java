@@ -52,12 +52,7 @@ public final class PehkuiCompat {
 
 	}
 
-	private static final ScaleModifier SCALE_MODIFIER = registerScaleModifier("scale", () -> new ScaleModifier() {
-		@Override
-		public float modifyScale(final ScaleData scaleData, float modifiedScale, final float delta) {
-			return SCALE_TYPE.getScaleData(scaleData.getEntity()).getScale(delta) * modifiedScale;
-		}
-	});
+	private static final ScaleModifier SCALE_MODIFIER = registerScaleModifier("scale", () -> new TypedScaleModifier(() -> PehkuiCompat.SCALE_TYPE));
 
 	private static final ScaleType SCALE_TYPE = registerScaleType("size", builder -> builder.affectsDimensions().addDependentModifier(SCALE_MODIFIER));
 
