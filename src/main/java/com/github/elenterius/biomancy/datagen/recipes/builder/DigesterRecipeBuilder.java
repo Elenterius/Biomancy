@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.IntUnaryOperator;
 
-public class DigesterRecipeBuilder implements IRecipeBuilder {
+public final class DigesterRecipeBuilder implements RecipeBuilder {
 
 	public static final String RECIPE_SUB_FOLDER = ModRecipes.DIGESTING_RECIPE_TYPE.getId().getPath();
 	public static final String SUFFIX = "_from_" + RECIPE_SUB_FOLDER;
@@ -162,12 +162,12 @@ public class DigesterRecipeBuilder implements IRecipeBuilder {
 		}
 
 		if (craftingCostNutrients < 0) {
-			craftingCostNutrients = CraftingCostUtil.getCost(DEFAULT_CRAFTING_COST_NUTRIENTS, craftingTimeTicks);
+			craftingCostNutrients = RecipeCostUtil.getCost(DEFAULT_CRAFTING_COST_NUTRIENTS, craftingTimeTicks);
 		}
 
 		advancement.parent(new ResourceLocation("recipes/root")).addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId)).rewards(AdvancementRewards.Builder.recipe(recipeId)).requirements(RequirementsStrategy.OR);
 
-		String folderName = IRecipeBuilder.getRecipeFolderName(category, BiomancyMod.MOD_ID);
+		String folderName = RecipeBuilder.getRecipeFolderName(category, BiomancyMod.MOD_ID);
 		ResourceLocation advancementId = new ResourceLocation(recipeId.getNamespace(), "recipes/%s/%s".formatted(folderName, recipeId.getPath()));
 
 		consumer.accept(new Result(this, advancementId));
