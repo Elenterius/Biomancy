@@ -623,6 +623,8 @@ public class EnglishLangProvider extends AbstractLangProvider {
 
 		addBlock(ModBlocks.PRIMAL_ORIFICE, "Primal Orifice", "A primitive piece full of holes that seems to generate and leak acidic juices.\nIt can be milked with buckets and bottles.");
 		addBlock(ModBlocks.ACID_FLUID_BLOCK, "Gastric Acid");
+
+		addBlock(ModBlocks.ACID_CAULDRON,"Gastric Acid Cauldron");
 	}
 
 	private void addEntityTranslations() {

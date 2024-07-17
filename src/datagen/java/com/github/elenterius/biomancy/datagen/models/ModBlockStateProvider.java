@@ -150,6 +150,15 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		directionalBlockWithItem(ModBlocks.CHRYSALIS.get());
 
 		particleOnly(ModBlocks.ACID_FLUID_BLOCK, new ResourceLocation("biomancy:block/acid_flat"));
+
+		cauldron(ModBlocks.ACID_CAULDRON,new ResourceLocation("biomancy:fluid/acid_overlay"));
+	}
+
+	public <T extends Block> void cauldron(RegistryObject<T> block, ResourceLocation fluidTexture) {
+		BlockModelBuilder model = models().withExistingParent(path(block.get()),"minecraft:block/lava_cauldron")
+			.texture("content",fluidTexture);
+
+		simpleBlock(block.get(),model);
 	}
 
 	public <T extends Block> void particleOnly(RegistryObject<T> block, ResourceLocation particleTexture) {

@@ -572,6 +572,7 @@ public class PirateLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.PRIMAL_ORIFICE, "Oozin' Flesh", "An ancient hunk o' flesh that be full of holes. It be leakin' somethin' acidic.");
 
 		addBlock(ModBlocks.ACID_FLUID_BLOCK, "Acid");
+		addBlock(ModBlocks.ACID_CAULDRON, "Pot o' Acid");
 	}
 
 	private void addEntityTranslations() {

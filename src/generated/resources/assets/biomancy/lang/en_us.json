@@ -280,6 +280,7 @@
   "block.biomancy.primal_orifice": "Primal Orifice",
   "block.biomancy.primal_orifice.tooltip": "A primitive piece full of holes that seems to generate and leak acidic juices.\nIt can be milked with buckets and bottles.",
   "block.biomancy.acid_fluid_block": "Gastric Acid",
+  "block.biomancy.acid_cauldron": "Gastric Acid Cauldron",
   "fluid_type.biomancy.acid": "Acid",
   "entity.biomancy.hungry_flesh_blob": "Hungry Flesh Blob",
   "entity.biomancy.flesh_blob": "Flesh Blob",

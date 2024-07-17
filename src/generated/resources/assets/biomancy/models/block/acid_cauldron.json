@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/lava_cauldron",
+  "textures": {
+    "content": "biomancy:fluid/acid_overlay"
+  }
+}
