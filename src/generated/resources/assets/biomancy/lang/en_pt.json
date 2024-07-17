@@ -261,6 +261,7 @@
   "block.biomancy.primal_orifice": "Oozin' Flesh",
   "block.biomancy.primal_orifice.tooltip": "An ancient hunk o' flesh that be full of holes. It be leakin' somethin' acidic.",
   "block.biomancy.acid_fluid_block": "Acid",
+  "block.biomancy.acid_cauldron": "Pot o' Acid",
   "fluid_type.biomancy.acid": "Acid",
   "entity.biomancy.hungry_flesh_blob": "Hungry Cube o' Flesh",
   "entity.biomancy.flesh_blob": "Cube o' Flesh",
