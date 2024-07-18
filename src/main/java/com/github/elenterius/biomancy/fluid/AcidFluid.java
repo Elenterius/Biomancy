@@ -1,17 +1,14 @@
 package com.github.elenterius.biomancy.fluid;
 
 import com.github.elenterius.biomancy.block.veins.FleshVeinsBlock;
-import com.github.elenterius.biomancy.init.ModBlocks;
-import com.github.elenterius.biomancy.init.ModFluids;
+import com.github.elenterius.biomancy.init.AcidInteractions;
 import com.github.elenterius.biomancy.init.tags.ModBlockTags;
-import com.github.elenterius.biomancy.util.CombatUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -20,60 +17,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Map;
 
 public abstract class AcidFluid extends ForgeFlowingFluid {
 
-	protected static final Map<Block, BlockState> NORMAL_TO_ERODED_BLOCK_CONVERSION = Map.of(
-			Blocks.GRASS_BLOCK, Blocks.DIRT.defaultBlockState(),
-			Blocks.COBBLESTONE, Blocks.GRAVEL.defaultBlockState(),
-			Blocks.STONE_BRICKS, Blocks.CRACKED_STONE_BRICKS.defaultBlockState(),
-			Blocks.DEEPSLATE_BRICKS, Blocks.CRACKED_DEEPSLATE_BRICKS.defaultBlockState(),
-			Blocks.DEEPSLATE_TILES, Blocks.CRACKED_DEEPSLATE_TILES.defaultBlockState(),
-			Blocks.POLISHED_BLACKSTONE_BRICKS, Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS.defaultBlockState(),
-			Blocks.NETHER_BRICKS, Blocks.CRACKED_NETHER_BRICKS.defaultBlockState()
-	);
-
 	protected AcidFluid(Properties properties) {
 		super(properties);
-	}
-
-	public static void onEntityInside(LivingEntity livingEntity) {
-		if (livingEntity.isSpectator()) return;
-		if (livingEntity.tickCount % 5 != 0) return;
-		if (!livingEntity.isInFluidType(ModFluids.ACID_TYPE.get()) && !livingEntity.getFeetBlockState().is(ModBlocks.ACID_CAULDRON.get())) return;
-
-		if (!livingEntity.level().isClientSide) {
-			CombatUtil.applyAcidEffect(livingEntity, 4);
-		}
-		else if (livingEntity.tickCount % 10 == 0 && livingEntity.getRandom().nextFloat() < 0.4f) {
-			Level level = livingEntity.level();
-			RandomSource random = livingEntity.getRandom();
-			Vec3 pos = livingEntity.position();
-			double height = livingEntity.getBoundingBox().getYsize() * 0.5f;
-
-			level.playLocalSound(pos.x, pos.y, pos.z, SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, 0.5f, 2.6f + (random.nextFloat() - random.nextFloat()) * 0.8f, false);
-			for (int i = 0; i < 4; i++) {
-				level.addParticle(ParticleTypes.LARGE_SMOKE, pos.x + random.nextDouble(), pos.y + random.nextDouble() * height, pos.z + random.nextDouble(), 0, 0.1d, 0);
-			}
-		}
-	}
-
-	@Nullable
-	public static BlockState getEroded(BlockState state) {
-		if (state instanceof WeatheringCopper && WeatheringCopper.getNext(state.getBlock()).isPresent()) {
-			return WeatheringCopper.getNext(state.getBlock()).get().defaultBlockState();
-		} else if (state.is(ModBlockTags.ACID_DESTRUCTIBLE)) {
-			return Blocks.AIR.defaultBlockState();
-		} else if (NORMAL_TO_ERODED_BLOCK_CONVERSION.containsKey(state.getBlock())) {
-			return NORMAL_TO_ERODED_BLOCK_CONVERSION.get(state.getBlock());
-		}
-		return null;
 	}
 
 	@Override
@@ -163,10 +113,10 @@ public abstract class AcidFluid extends ForgeFlowingFluid {
 	}
 
 	protected boolean erodeBlock(Level level, BlockPos liquidPos, Block block, BlockState blockState, BlockPos pos) {
-		if (!NORMAL_TO_ERODED_BLOCK_CONVERSION.containsKey(block)) return false;
+		if (!AcidInteractions.NORMAL_TO_ERODED_BLOCK_CONVERSION.containsKey(block)) return false;
 
 		SoundType soundType = block.getSoundType(blockState, level, pos, null);
-		level.setBlockAndUpdate(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, liquidPos, NORMAL_TO_ERODED_BLOCK_CONVERSION.get(block)));
+		level.setBlockAndUpdate(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, liquidPos, AcidInteractions.NORMAL_TO_ERODED_BLOCK_CONVERSION.get(block)));
 		level.playSound(null, pos, soundType.getBreakSound(), SoundSource.BLOCKS, soundType.volume, soundType.pitch);
 		level.levelEvent(LevelEvent.LAVA_FIZZ, pos, 0);
 		return true;

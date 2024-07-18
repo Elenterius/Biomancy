@@ -39,6 +39,8 @@ public final class CommonSetupHandler {
 			registerDispenserBehaviors();
 			ModRecipes.registerComposterRecipes();
 
+			AcidInteractions.register();
+
 			//dumpBiomeTemperatureAndHumidity();
 		});
 

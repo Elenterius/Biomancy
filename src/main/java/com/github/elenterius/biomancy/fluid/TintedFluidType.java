@@ -109,4 +109,9 @@ public class TintedFluidType extends FluidType {
 			}
 		});
 	}
+
+	public int getTintColor() {
+		return colorARGB;
+	}
+
 }

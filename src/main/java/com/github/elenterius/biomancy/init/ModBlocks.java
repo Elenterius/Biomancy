@@ -137,7 +137,7 @@ public final class ModBlocks {
 	public static final RegistryObject<FleshDoorBlock> FLESH_DOOR = register("flesh_door", FleshDoorBlock::new);
 	public static final RegistryObject<FullFleshDoorBlock> FULL_FLESH_DOOR = register("full_flesh_door", FullFleshDoorBlock::new);
 	public static final RegistryObject<FleshChainBlock> TENDON_CHAIN = register("tendon_chain", properties -> new FleshChainBlock(properties.noOcclusion()));
-	public static final RegistryObject<AcidCauldron> ACID_CAULDRON = register("acid_cauldron", AcidCauldron::new);
+	public static final RegistryObject<AcidCauldron> ACID_CAULDRON = register("acid_cauldron", () -> new AcidCauldron(copyProperties(Blocks.CAULDRON)));
 
 	private ModBlocks() {}
 

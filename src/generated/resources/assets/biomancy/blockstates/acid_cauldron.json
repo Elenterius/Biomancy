@@ -1,7 +1,13 @@
 {
   "variants": {
-    "": {
-      "model": "biomancy:block/acid_cauldron"
+    "level=1": {
+      "model": "biomancy:block/acid_cauldron_level_1"
+    },
+    "level=2": {
+      "model": "biomancy:block/acid_cauldron_level_2"
+    },
+    "level=3": {
+      "model": "biomancy:block/acid_cauldron_full"
     }
   }
 }
