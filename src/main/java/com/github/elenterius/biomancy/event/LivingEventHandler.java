@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.event;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.fluid.AcidFluid;
+import com.github.elenterius.biomancy.init.AcidInteractions;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -16,7 +16,7 @@ public final class LivingEventHandler {
 
 	@SubscribeEvent
 	public static void onLivingTick(final LivingEvent.LivingTickEvent event) {
-		AcidFluid.onEntityInside(event.getEntity());
+		AcidInteractions.handleEntityInsideAcidFluid(event.getEntity());
 	}
 
 	@SubscribeEvent

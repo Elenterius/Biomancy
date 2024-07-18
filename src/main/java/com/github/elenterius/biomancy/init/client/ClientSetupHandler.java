@@ -163,6 +163,7 @@ public final class ClientSetupHandler {
 	public static void onBlockColorRegistry(final RegisterColorHandlersEvent.Block event) {
 		event.register(VialHolderBlock::getTintColor, ModBlocks.VIAL_HOLDER.get());
 		event.register(BiometricMembraneBlock::getTintColor, ModBlocks.BIOMETRIC_MEMBRANE.get());
+		event.register((state, level, pos, tintIndex) -> tintIndex == 0 ? ModFluids.ACID_TYPE.get().getTintColor() : 0xFF_FFFFFF, ModBlocks.ACID_CAULDRON.get());
 	}
 
 	@SubscribeEvent

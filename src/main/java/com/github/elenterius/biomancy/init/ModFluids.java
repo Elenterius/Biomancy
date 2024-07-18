@@ -27,7 +27,7 @@ public final class ModFluids {
 	public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES, BiomancyMod.MOD_ID);
 	public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, BiomancyMod.MOD_ID);
 
-	public static final RegistryObject<FluidType> ACID_TYPE = registerTintedType("acid", 0xFF_39FF14, properties -> properties.density(1024).viscosity(1024));
+	public static final RegistryObject<TintedFluidType> ACID_TYPE = registerTintedType("acid", 0xFF_39FF14, properties -> properties.density(1024).viscosity(1024));
 	public static final Supplier<ForgeFlowingFluid.Properties> ACID_FLUID_PROPERTIES = () -> new ForgeFlowingFluid
 			.Properties(ACID_TYPE, ModFluids.ACID, ModFluids.FLOWING_ACID)
 			.slopeFindDistance(2)
@@ -54,7 +54,7 @@ public final class ModFluids {
 		return FLUIDS.register(name, factory);
 	}
 
-	private static RegistryObject<FluidType> registerTintedType(String name, int colorARGB, UnaryOperator<FluidType.Properties> operator) {
+	private static RegistryObject<TintedFluidType> registerTintedType(String name, int colorARGB, UnaryOperator<FluidType.Properties> operator) {
 		return FLUID_TYPES.register(name, () -> new TintedFluidType(operator.apply(createFluidTypeProperties()), colorARGB));
 	}
 

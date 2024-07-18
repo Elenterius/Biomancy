@@ -16,6 +16,8 @@ import com.github.elenterius.biomancy.init.ModBlockProperties;
 import com.github.elenterius.biomancy.init.ModBlocks;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.models.model.TextureMapping;
+import net.minecraft.data.models.model.TextureSlot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.*;
@@ -151,14 +153,32 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
 		particleOnly(ModBlocks.ACID_FLUID_BLOCK, new ResourceLocation("biomancy:block/acid_flat"));
 
-		cauldron(ModBlocks.ACID_CAULDRON,new ResourceLocation("biomancy:fluid/acid_overlay"));
+		layeredCauldron(ModBlocks.ACID_CAULDRON);
 	}
 
-	public <T extends Block> void cauldron(RegistryObject<T> block, ResourceLocation fluidTexture) {
-		BlockModelBuilder model = models().withExistingParent(path(block.get()),"minecraft:block/lava_cauldron")
-			.texture("content",fluidTexture);
+	public <T extends LayeredCauldronBlock> void layeredCauldron(RegistryObject<T> registryObject) {
+		T block = registryObject.get();
+		String path = path(block);
 
-		simpleBlock(block.get(),model);
+		TextureMapping textureMapping = TextureMapping.cauldron(TextureMapping.getBlockTexture(Blocks.WATER, "_still"));
+		TextureSlot[] texturesSlots = {TextureSlot.CONTENT, TextureSlot.INSIDE, TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE, TextureSlot.PARTICLE};
+
+		ModelFile modelLevel1 = getTemplateModelWithTextures(path + "_level_1", new ResourceLocation("minecraft:block/template_cauldron_level1"), texturesSlots, textureMapping).renderType("translucent");
+		ModelFile modelLevel2 = getTemplateModelWithTextures(path + "_level_2", new ResourceLocation("minecraft:block/template_cauldron_level2"), texturesSlots, textureMapping).renderType("translucent");
+		ModelFile modelFull = getTemplateModelWithTextures(path + "_full", new ResourceLocation("minecraft:block/template_cauldron_full"), texturesSlots, textureMapping).renderType("translucent");
+
+		getVariantBuilder(block)
+				.partialState().with(LayeredCauldronBlock.LEVEL, 1).modelForState().modelFile(modelLevel1).addModel()
+				.partialState().with(LayeredCauldronBlock.LEVEL, 2).modelForState().modelFile(modelLevel2).addModel()
+				.partialState().with(LayeredCauldronBlock.LEVEL, 3).modelForState().modelFile(modelFull).addModel();
+	}
+
+	private BlockModelBuilder getTemplateModelWithTextures(String name, ResourceLocation template, TextureSlot[] texturesSlots, TextureMapping textureMapping) {
+		BlockModelBuilder modelBuilder = models().withExistingParent(name, template);
+		for (TextureSlot textureSlot : texturesSlots) {
+			modelBuilder.texture(textureSlot.getId(), textureMapping.get(textureSlot));
+		}
+		return modelBuilder;
 	}
 
 	public <T extends Block> void particleOnly(RegistryObject<T> block, ResourceLocation particleTexture) {

@@ -8,7 +8,7 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "AbstractCauldronBlockMixin", "AgeableMobAccessor", "AreaEffectCloudMixin", "ArmorStandAccessor", "ArrowMixin", "BiomeAccessor", "DamageSourceAccessor",
+    "AgeableMobAccessor", "AreaEffectCloudMixin", "ArmorStandAccessor", "ArrowMixin", "BiomeAccessor", "DamageSourceAccessor",
     "EntityAccessor", "IntegerPropertyAccessor", "LivingEntityAccessor", "LivingEntityMixin", "MobEffectInstanceAccessor", "MobEffectInstanceMixin",
     "MobEntityAccessor", "PhantomMixin", "PlayerMixin", "ServerLevelAccessor", "ServerLevelMixin", "SlimeAccessor", "SuspiciousStewItemAccessor",
     "SwordItemMixinAccessor", "TadpoleAccessor", "TextureSlotAccessor", "ThrownPotionMixin", "UnbreakingEnchantmentMixin", "WallBlockMixin",
