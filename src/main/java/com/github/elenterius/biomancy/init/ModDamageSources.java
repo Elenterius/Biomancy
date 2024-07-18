@@ -42,6 +42,10 @@ public final class ModDamageSources {
 		return source(ModDamageTypes.BLEED, level, attacker);
 	}
 
+	public static DamageSource slash(Level level, @Nullable Entity attacker) {
+		return source(ModDamageTypes.SLASH, level, attacker);
+	}
+
 	public static DamageSource toothProjectile(Level level, BaseProjectile projectile, @Nullable Entity shooter) {
 		return source(ModDamageTypes.TOOTH_PROJECTILE, level, projectile, shooter);
 	}

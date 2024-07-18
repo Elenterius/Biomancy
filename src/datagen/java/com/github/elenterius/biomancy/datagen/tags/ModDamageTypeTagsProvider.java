@@ -18,7 +18,6 @@ public class ModDamageTypeTagsProvider extends DamageTypeTagsProvider {
 		super(output, lookupProvider, BiomancyMod.MOD_ID, existingFileHelper);
 	}
 
-	@SuppressWarnings("DataFlowIssue")
 	@Override
 	protected void addTags(HolderLookup.Provider pProvider) {
 		tag(DamageTypeTags.BYPASSES_ARMOR).add(
@@ -44,12 +43,14 @@ public class ModDamageTypeTagsProvider extends DamageTypeTagsProvider {
 		//damage that ignores Invincibility-Frames
 		tag(DamageTypeTags.BYPASSES_COOLDOWN).add(
 				ModDamageTypes.BLEED,
-				ModDamageTypes.CORROSIVE_ACID
+				ModDamageTypes.CORROSIVE_ACID,
+				ModDamageTypes.SLASH
 		);
 
 		tag(DamageTypeTags.NO_IMPACT).add(
 				ModDamageTypes.BLEED,
-				ModDamageTypes.CORROSIVE_ACID
+				ModDamageTypes.CORROSIVE_ACID,
+				ModDamageTypes.SLASH
 		);
 
 		tag(DamageTypeTags.ALWAYS_HURTS_ENDER_DRAGONS).add(
