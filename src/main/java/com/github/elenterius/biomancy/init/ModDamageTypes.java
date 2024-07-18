@@ -17,6 +17,7 @@ public final class ModDamageTypes {
 	public static final ResourceKey<DamageType> CHEST_BITE = key("chest_bite");
 	public static final ResourceKey<DamageType> CORROSIVE_ACID = key("corrosive_acid");
 	public static final ResourceKey<DamageType> BLEED = key("bleed");
+	public static final ResourceKey<DamageType> SLASH = key("slash");
 	public static final ResourceKey<DamageType> FALL_ON_SPIKE = key("spike_fall_on");
 	public static final ResourceKey<DamageType> IMPALED_BY_SPIKE = key("spike_impale");
 
@@ -36,6 +37,7 @@ public final class ModDamageTypes {
 		bootstrap(ctx, CHEST_BITE, DamageScaling.ALWAYS, 0.25f);
 		bootstrap(ctx, CORROSIVE_ACID, 0.1f);
 		bootstrap(ctx, BLEED, 0.25f);
+		bootstrap(ctx, SLASH, 0.25f);
 		bootstrap(ctx, FALL_ON_SPIKE);
 		bootstrap(ctx, IMPALED_BY_SPIKE);
 	}

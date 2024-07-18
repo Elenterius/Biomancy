@@ -210,7 +210,7 @@ public class RavenousClawsItem extends LivingClawsItem implements GeoItem, ItemC
 
 	@Override
 	public @Nullable DamageSource getDamageSource(ItemStack stack, Entity target, LivingEntity attacker) {
-		return ModDamageSources.bleed(attacker.level(), attacker);
+		return ModDamageSources.slash(attacker.level(), attacker);
 	}
 
 	@Override

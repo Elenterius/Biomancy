@@ -374,6 +374,11 @@ public class EnglishLangProvider extends AbstractLangProvider {
 				"%1$s was drained of blood by %2$s",
 				"%1$s was blood let by %2$s using %3$s"
 		);
+		addDeathMessage(ModDamageTypes.SLASH,
+				"%1$s was shredded to ribbons",
+				"%1$s was ripped apart by %2$s",
+				"%1$s was eviscerate by %2$s using %3$s"
+		);
 
 		addDeathMessage(ModDamageTypes.TOOTH_PROJECTILE, "[WIP]",
 				"[WIP] %1$s was forcefully implanted with teeth by %2$s",
