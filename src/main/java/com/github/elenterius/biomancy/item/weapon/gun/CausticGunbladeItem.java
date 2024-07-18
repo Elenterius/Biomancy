@@ -317,8 +317,8 @@ public class CausticGunbladeItem extends GunbladeItem implements SimpleLivingToo
 			appendGunStats(stack, tooltip);
 		}
 
-		appendLivingToolTooltip(stack, tooltip);
 		tooltip.add(ComponentUtil.emptyLine());
+		appendLivingToolTooltip(stack, tooltip);
 
 		tooltip.add(ComponentUtil.emptyLine());
 		tooltip.add(ClientTextUtil.pressButtonTo(ClientTextUtil.getDefaultKey(), TextComponentUtil.getTooltipText("action.switch_mode")).withStyle(TextStyles.DARK_GRAY));
