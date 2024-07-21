@@ -100,8 +100,6 @@
   "item.biomancy.essence.tooltip": "Извлечённая из существа жизненная сущность. Содержит последовательности генетической информации.",
   "item.biomancy.essence.mob": "Сущность (%1$s)",
   "item.biomancy.essence.unique_mob": "Уникальная сущность (%1$s)",
-  "item.biomancy.bone_cleaver": "Костяной тесак",
-  "item.biomancy.bone_cleaver.tooltip": "Специализированный костяной инструмент для получения дополнительной специальной добычи со своих жертв.",
   "item.biomancy.organic_compound": "Органическое соединение",
   "item.biomancy.organic_compound.tooltip": "Слизистое вещество, состоящее из желчи, наполненной питательными веществами.",
   "item.biomancy.unstable_compound": "Нестабильное соединение",
