@@ -85,6 +85,9 @@ public final class ModSoundEvents {
 	public static final RegistryObject<SoundEvent> FLESH_BLOB_AMBIENT = register("entity.flesh_blob.ambient");
 	public static final RegistryObject<SoundEvent> FLESH_BLOB_MEW_PURR = register("entity.flesh_blob.mew_purr");
 	public static final RegistryObject<SoundEvent> FLESH_BLOB_GROWL = register("entity.flesh_blob.growl");
+	public static final RegistryObject<SoundEvent> FLESH_COW_AMBIENT = register("entity.flesh_cow.ambient");
+	public static final RegistryObject<SoundEvent> FLESH_COW_HURT = register("entity.flesh_cow.hurt");
+	public static final RegistryObject<SoundEvent> FLESH_COW_DEATH = register("entity.flesh_cow.death");
 
 	private ModSoundEvents() {}
 
