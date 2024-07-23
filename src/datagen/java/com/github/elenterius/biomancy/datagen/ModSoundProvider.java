@@ -94,6 +94,9 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 		addSimpleSounds(ModSoundEvents.FLESH_BLOB_AMBIENT, 3, 0.8f, 0.9f);
 		addSimpleSound(ModSoundEvents.FLESH_BLOB_MEW_PURR, 0.7f, 0.45f);
 		addSimpleSound(ModSoundEvents.FLESH_BLOB_GROWL, 0.9f, 0.55f);
+		addSimpleRedirect(ModSoundEvents.FLESH_COW_AMBIENT, SoundEvents.COW_AMBIENT, 1f, 0.25f);
+		addSimpleRedirect(ModSoundEvents.FLESH_COW_HURT, SoundEvents.COW_HURT, 1f, 0.25f);
+		addSimpleRedirect(ModSoundEvents.FLESH_COW_DEATH, SoundEvents.COW_DEATH, 1f, 0.25f);
 	}
 
 	public String translationKey(RegistryObject<SoundEvent> soundHolder) {

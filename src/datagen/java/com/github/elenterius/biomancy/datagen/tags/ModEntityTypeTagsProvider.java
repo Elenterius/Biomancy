@@ -30,7 +30,8 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 
 		createTag(ModEntityTags.FLESHKIN).add(
 				ModEntityTypes.FLESH_BLOB.get(), ModEntityTypes.HUNGRY_FLESH_BLOB.get(), ModEntityTypes.LEGACY_FLESH_BLOB.get(),
-				ModEntityTypes.PRIMORDIAL_FLESH_BLOB.get(), ModEntityTypes.PRIMORDIAL_HUNGRY_FLESH_BLOB.get()
+				ModEntityTypes.PRIMORDIAL_FLESH_BLOB.get(), ModEntityTypes.PRIMORDIAL_HUNGRY_FLESH_BLOB.get(),
+				ModEntityTypes.FLESH_COW.get()
 		);
 	}
 
