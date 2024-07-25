@@ -26,6 +26,7 @@ public final class ModLoot {
 
 	public static final class Entity {
 		private static final Set<ResourceLocation> LOOT_TABLE_KEYS = Sets.newHashSet();
+
 		public static final ResourceLocation FLESH_BLOB_SIZE_2 = register("entities/flesh_blob/size_2");
 		public static final ResourceLocation FLESH_BLOB_SIZE_3 = register("entities/flesh_blob/size_3");
 		public static final ResourceLocation FLESH_BLOB_SIZE_4 = register("entities/flesh_blob/size_4");
@@ -35,6 +36,9 @@ public final class ModLoot {
 		public static final ResourceLocation FLESH_BLOB_SIZE_8 = register("entities/flesh_blob/size_8");
 		public static final ResourceLocation FLESH_BLOB_SIZE_9 = register("entities/flesh_blob/size_9");
 		public static final ResourceLocation FLESH_BLOB_SIZE_10 = register("entities/flesh_blob/size_10");
+
+		public static final ResourceLocation FLESH_SHEEP_UNSHORN = register("entities/flesh_sheep/unshorn");
+
 		private static final Set<ResourceLocation> IMMUTABLE_LOOT_TABLE_KEYS = Collections.unmodifiableSet(LOOT_TABLE_KEYS);
 
 		private Entity() {}
