@@ -1,0 +1,97 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "baby_transform": {
+      "loop": true,
+      "bones": {
+        "head_transform": {
+          "position": {
+            "vector": [ 0, 4, 4 ]
+          },
+          "scale": {
+            "vector": [ 2.1, 2.1, 2.1 ]
+          }
+        },
+        "tumors": {
+          "scale": {
+            "vector": [ 0, 0, 0 ]
+          }
+        }
+      }
+    },
+    "grazing": {
+      "animation_length": 2,
+      "bones": {
+        "head": {
+          "rotation": {
+            "0.0": {
+              "vector": [ 0, 0, 0 ]
+            },
+            "0.2083": {
+              "vector": [ "180.0 * (0.2 + 0.07 * math.sin(query.anim_time * 1644.39))", 0, 0 ],
+              "easing": "linear"
+            },
+            "1.7917": {
+              "vector": [ "180.0 * (0.2 + 0.07 * math.sin(query.anim_time * 1644.39))", 0, 0 ],
+              "easing": "linear"
+            },
+            "2.0": {
+              "vector": [ 0, 0, 0 ],
+              "easing": "linear"
+            }
+          },
+          "position": {
+            "0.0": {
+              "vector": [ 0, 0, 0 ]
+            },
+            "0.2083": {
+              "vector": [ 0, -9, 0 ]
+            },
+            "1.7917": {
+              "vector": [ 0, -9, 0 ]
+            },
+            "2.0": {
+              "vector": [ 0, 0, 0 ]
+            }
+          }
+        }
+      }
+    },
+    "walk": {
+      "loop": true,
+      "bones": {
+        "leg0": {
+          "rotation": {
+            "vector": [ "math.cos(query.anim_time * 360) *  80.0", 0, 0 ]
+          }
+        },
+        "leg1": {
+          "rotation": {
+            "vector": [ "math.cos(query.anim_time * 360) * -80.0", 0, 0 ]
+          }
+        },
+        "leg2": {
+          "rotation": {
+            "vector": [ "math.cos(query.anim_time * 360) * -80.0", 0, 0 ]
+          }
+        },
+        "leg3": {
+          "rotation": {
+            "vector": [ "math.cos(query.anim_time * 360) *  80.0", 0, 0 ]
+          }
+        }
+      }
+    },
+    "sheared": {
+      "loop": true,
+      "bones": {
+        "tumors": {
+          "scale": {
+            "vector": [ 0, 0, 0 ]
+          }
+        }
+      }
+    }
+  },
+  "geckolib_format_version": 2
+}

@@ -76,7 +76,6 @@ public class FleshCow extends Cow implements GeoEntity {
 		return ModSoundEvents.FLESH_COW_DEATH.get();
 	}
 
-
 	@Override
 	public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
 		controllers.add(MobAnimations.walkController(this));

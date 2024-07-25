@@ -48,10 +48,32 @@ public class ModEntityLoot extends EntityLootSubProvider {
 
 	private LootTable.Builder cowLootTable() {
 		return LootTable.lootTable()
-				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1f)).add(LootItem.lootTableItem(Items.BEEF)
-						.apply(SetItemCountFunction.setCount(UniformGenerator.between(2f, 5f)))
+				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(Items.BEEF)
+						.apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5)))
 						.apply(SmeltItemFunction.smelted().when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, ENTITY_ON_FIRE)))
-						.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1f))))
+						.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1))))
+				);
+	}
+
+	private LootTable.Builder sheepLootTable() {
+		return LootTable.lootTable()
+				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(Items.MUTTON)
+						.apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5)))
+						.apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))
+						.apply(SmeltItemFunction.smelted().when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, ENTITY_ON_FIRE)))
+						.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1))))
+				);
+	}
+
+	protected static LootTable.Builder unshornSheepLootTable() {
+		return LootTable.lootTable()
+				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(ModItems.FLESH_BITS.get())
+						.apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))))
+				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootTableReference.lootTableReference(ModEntityTypes.FLESH_SHEEP.get().getDefaultLootTable())));
+	}
+
+						.apply(SmeltItemFunction.smelted().when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, ENTITY_ON_FIRE)))
+						.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1))))
 				);
 	}
 
@@ -77,6 +99,8 @@ public class ModEntityLoot extends EntityLootSubProvider {
 		add(ModEntityTypes.PRIMORDIAL_FLESH_BLOB.get(), fleshBlobLootTable());
 		add(ModEntityTypes.PRIMORDIAL_HUNGRY_FLESH_BLOB.get(), fleshBlobLootTable());
 		add(ModEntityTypes.FLESH_COW.get(), cowLootTable());
+		add(ModEntityTypes.FLESH_SHEEP.get(), sheepLootTable());
+		add(ModEntityTypes.FLESH_SHEEP.get(), ModLoot.Entity.FLESH_SHEEP_UNSHORN, unshornSheepLootTable());
 	}
 
 	@Override

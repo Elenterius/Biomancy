@@ -97,6 +97,9 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 		addSimpleRedirect(ModSoundEvents.FLESH_COW_AMBIENT, SoundEvents.COW_AMBIENT, 1f, 0.25f);
 		addSimpleRedirect(ModSoundEvents.FLESH_COW_HURT, SoundEvents.COW_HURT, 1f, 0.25f);
 		addSimpleRedirect(ModSoundEvents.FLESH_COW_DEATH, SoundEvents.COW_DEATH, 1f, 0.25f);
+		addSimpleRedirect(ModSoundEvents.FLESH_SHEEP_AMBIENT, SoundEvents.SHEEP_AMBIENT, 1f, 0.25f);
+		addSimpleRedirect(ModSoundEvents.FLESH_SHEEP_HURT, SoundEvents.SHEEP_HURT, 1f, 0.25f);
+		addSimpleRedirect(ModSoundEvents.FLESH_SHEEP_DEATH, SoundEvents.SHEEP_DEATH, 1f, 0.25f);
 	}
 
 	public String translationKey(RegistryObject<SoundEvent> soundHolder) {

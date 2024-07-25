@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.entity.mob.FleshCow;
+import com.github.elenterius.biomancy.entity.mob.FleshSheep;
 import com.github.elenterius.biomancy.entity.mob.fleshblob.AdulteratedEaterFleshBlob;
 import com.github.elenterius.biomancy.entity.mob.fleshblob.AdulteratedHangryEaterFleshBlob;
 import com.github.elenterius.biomancy.entity.mob.fleshblob.PrimordialEaterFleshBlob;
@@ -11,6 +12,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.animal.Cow;
+import net.minecraft.world.entity.animal.Sheep;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -34,8 +36,8 @@ public final class ModEntityTypes {
 
 	//# Aberrations
 	//	public static final RegistryObject<EntityType<OculusObserverEntity>> OCULUS_OBSERVER = register("oculus_observer", EntityType.Builder.of(OculusObserverEntity::new, EntityClassification.CREATURE).sized(0.6F, 0.5F));
-	//	public static final RegistryObject<EntityType<FailedSheepEntity>> FAILED_SHEEP = register("failed_sheep", EntityType.Builder.of(FailedSheepEntity::new, EntityClassification.CREATURE).sized(0.9f, 1.3f).clientTrackingRange(10));
 	public static final RegistryObject<EntityType<FleshCow>> FLESH_COW = register("flesh_cow", EntityType.Builder.of(FleshCow::new, MobCategory.CREATURE).sized(0.9f, 1.4f).clientTrackingRange(10));
+	public static final RegistryObject<EntityType<FleshSheep>> FLESH_SHEEP = register("flesh_sheep", EntityType.Builder.of(FleshSheep::new, MobCategory.CREATURE).sized(0.9f, 1.3f).clientTrackingRange(10));
 
 	//# Ownable
 	//	public static final RegistryObject<EntityType<Boomling>> BOOMLING = register("boomling", EntityType.Builder.of(Boomling::new, MobCategory.MONSTER).sized(0.4F, 0.35F));
@@ -73,6 +75,7 @@ public final class ModEntityTypes {
 		event.put(PRIMORDIAL_FLESH_BLOB.get(), PrimordialEaterFleshBlob.createAttributes().build());
 		event.put(PRIMORDIAL_HUNGRY_FLESH_BLOB.get(), PrimordialHangryEaterFleshBlob.createAttributes().build());
 		event.put(FLESH_COW.get(), Cow.createAttributes().build());
+		event.put(FLESH_SHEEP.get(), Sheep.createAttributes().build());
 	}
 
 }
