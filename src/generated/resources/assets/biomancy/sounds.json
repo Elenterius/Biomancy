@@ -320,6 +320,36 @@
     ],
     "subtitle": "sounds.biomancy.entity.flesh_blob.mew_purr"
   },
+  "entity.flesh_chicken.ambient": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.chicken.ambient",
+        "pitch": 0.25
+      }
+    ],
+    "subtitle": "sounds.biomancy.entity.flesh_chicken.ambient"
+  },
+  "entity.flesh_chicken.death": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.chicken.death",
+        "pitch": 0.25
+      }
+    ],
+    "subtitle": "sounds.biomancy.entity.flesh_chicken.death"
+  },
+  "entity.flesh_chicken.hurt": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.chicken.hurt",
+        "pitch": 0.25
+      }
+    ],
+    "subtitle": "sounds.biomancy.entity.flesh_chicken.hurt"
+  },
   "entity.flesh_cow.ambient": {
     "sounds": [
       {

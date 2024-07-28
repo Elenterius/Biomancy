@@ -6,6 +6,7 @@ import com.github.elenterius.biomancy.init.tags.ModEntityTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -31,7 +32,15 @@ public class ModEntityTypeTagsProvider extends EntityTypeTagsProvider {
 		createTag(ModEntityTags.FLESHKIN).add(
 				ModEntityTypes.FLESH_BLOB.get(), ModEntityTypes.HUNGRY_FLESH_BLOB.get(), ModEntityTypes.LEGACY_FLESH_BLOB.get(),
 				ModEntityTypes.PRIMORDIAL_FLESH_BLOB.get(), ModEntityTypes.PRIMORDIAL_HUNGRY_FLESH_BLOB.get(),
-				ModEntityTypes.FLESH_COW.get(), ModEntityTypes.FLESH_SHEEP.get(), ModEntityTypes.FLESH_PIG.get()
+				ModEntityTypes.FLESH_COW.get(), ModEntityTypes.FLESH_SHEEP.get(), ModEntityTypes.FLESH_PIG.get(), ModEntityTypes.FLESH_CHICKEN.get()
+		);
+
+		tag(EntityTypeTags.FALL_DAMAGE_IMMUNE).add(
+				ModEntityTypes.FLESH_CHICKEN.get()
+		);
+
+		tag(EntityTypeTags.DISMOUNTS_UNDERWATER).add(
+				ModEntityTypes.FLESH_CHICKEN.get()
 		);
 	}
 

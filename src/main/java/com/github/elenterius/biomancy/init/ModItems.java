@@ -209,6 +209,7 @@ public final class ModItems {
 	public static final RegistryObject<ForgeSpawnEggItem> FLESH_COW_SPAWN_EGG = registerSpawnEgg(ModEntityTypes.FLESH_COW, 0xe9967a, 0xf6d2c6);
 	public static final RegistryObject<ForgeSpawnEggItem> FLESH_SHEEP_SPAWN_EGG = registerSpawnEgg(ModEntityTypes.FLESH_SHEEP, 0xe9967a, 0xf6d2c6);
 	public static final RegistryObject<ForgeSpawnEggItem> FLESH_PIG_SPAWN_EGG = registerSpawnEgg(ModEntityTypes.FLESH_PIG, 0xe9967a, 0xf6d2c6);
+	public static final RegistryObject<ForgeSpawnEggItem> FLESH_CHICKEN_SPAWN_EGG = registerSpawnEgg(ModEntityTypes.FLESH_CHICKEN, 0xe9967a, 0xf6d2c6);
 
 	private ModItems() {}
 
