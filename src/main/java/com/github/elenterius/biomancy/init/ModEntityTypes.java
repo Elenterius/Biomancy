@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.entity.mob.FleshChicken;
 import com.github.elenterius.biomancy.entity.mob.FleshCow;
 import com.github.elenterius.biomancy.entity.mob.FleshPig;
 import com.github.elenterius.biomancy.entity.mob.FleshSheep;
@@ -12,6 +13,7 @@ import com.github.elenterius.biomancy.entity.projectile.*;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -39,6 +41,7 @@ public final class ModEntityTypes {
 	public static final RegistryObject<EntityType<FleshCow>> FLESH_COW = register("flesh_cow", EntityType.Builder.of(FleshCow::new, MobCategory.CREATURE).sized(0.9f, 1.4f).clientTrackingRange(10));
 	public static final RegistryObject<EntityType<FleshSheep>> FLESH_SHEEP = register("flesh_sheep", EntityType.Builder.of(FleshSheep::new, MobCategory.CREATURE).sized(0.9f, 1.3f).clientTrackingRange(10));
 	public static final RegistryObject<EntityType<FleshPig>> FLESH_PIG = register("flesh_pig", EntityType.Builder.of(FleshPig::new, MobCategory.CREATURE).sized(0.9f, 0.9f).clientTrackingRange(10));
+	public static final RegistryObject<EntityType<FleshChicken>> FLESH_CHICKEN = register("flesh_chicken", EntityType.Builder.of(FleshChicken::new, MobCategory.CREATURE).sized(0.4f, 0.7f).clientTrackingRange(10));
 
 	//# Ownable
 	//	public static final RegistryObject<EntityType<Boomling>> BOOMLING = register("boomling", EntityType.Builder.of(Boomling::new, MobCategory.MONSTER).sized(0.4F, 0.35F));
@@ -78,6 +81,7 @@ public final class ModEntityTypes {
 		event.put(FLESH_COW.get(), Cow.createAttributes().build());
 		event.put(FLESH_SHEEP.get(), Sheep.createAttributes().build());
 		event.put(FLESH_PIG.get(), FleshPig.createAttributes().build());
+		event.put(FLESH_CHICKEN.get(), Chicken.createAttributes().build());
 	}
 
 }

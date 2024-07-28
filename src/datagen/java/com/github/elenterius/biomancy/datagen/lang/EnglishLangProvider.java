@@ -356,6 +356,9 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addSound(ModSoundEvents.FLESH_PIG_AMBIENT, "Flesh Pig oinks");
 		addSound(ModSoundEvents.FLESH_PIG_HURT, "Flesh Pig hurts");
 		addSound(ModSoundEvents.FLESH_PIG_DEATH, "Flesh Pig dies");
+		addSound(ModSoundEvents.FLESH_CHICKEN_AMBIENT, "Flesh Chicken clucks");
+		addSound(ModSoundEvents.FLESH_CHICKEN_HURT, "Flesh Chicken hurts");
+		addSound(ModSoundEvents.FLESH_CHICKEN_DEATH, "Flesh Chicken dies");
 	}
 
 	private void addDamageTranslations() {
@@ -534,6 +537,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addItem(ModItems.FLESH_COW_SPAWN_EGG, "Flesh Cow Spawn Egg");
 		addItem(ModItems.FLESH_SHEEP_SPAWN_EGG, "Flesh Sheep Spawn Egg");
 		addItem(ModItems.FLESH_PIG_SPAWN_EGG, "Flesh Pig Spawn Egg");
+		addItem(ModItems.FLESH_CHICKEN_SPAWN_EGG, "Flesh Chicken Spawn Egg");
 	}
 
 	private void addBlockTranslations() {
@@ -653,6 +657,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addEntityType(ModEntityTypes.FLESH_COW, "Flesh Cow");
 		addEntityType(ModEntityTypes.FLESH_SHEEP, "Flesh Sheep");
 		addEntityType(ModEntityTypes.FLESH_PIG, "Flesh Pig");
+		addEntityType(ModEntityTypes.FLESH_CHICKEN, "Flesh Chicken");
 	}
 
 	private void addFluidTranslations() {

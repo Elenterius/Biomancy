@@ -1,0 +1,31 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "baby_transform": {
+      "loop": true,
+      "bones": {
+        "head": {
+          "scale": {
+            "vector": [ 2.1, 2.1, 2.1 ]
+          }
+        }
+      }
+    },
+    "walk": {
+      "loop": true,
+      "bones": {
+        "leg0": {
+          "rotation": {
+            "vector": [ "math.cos(query.anim_time * 360) *  80.0", 0, 0 ]
+          }
+        },
+        "leg1": {
+          "rotation": {
+            "vector": [ "math.cos(query.anim_time * 360) * -80.0", 0, 0 ]
+          }
+        }
+      }
+    }
+  },
+  "geckolib_format_version": 2
+}

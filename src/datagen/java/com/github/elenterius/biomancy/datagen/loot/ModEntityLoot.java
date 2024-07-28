@@ -50,7 +50,7 @@ public class ModEntityLoot extends EntityLootSubProvider {
 	private LootTable.Builder cowLootTable() {
 		return LootTable.lootTable()
 				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(Items.BEEF)
-						.apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5)))
+						.apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))
 						.apply(SmeltItemFunction.smelted().when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, ENTITY_ON_FIRE)))
 						.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1))))
 				);
@@ -65,7 +65,7 @@ public class ModEntityLoot extends EntityLootSubProvider {
 				);
 	}
 
-	protected static LootTable.Builder unshornSheepLootTable() {
+	private LootTable.Builder unshornSheepLootTable() {
 		return LootTable.lootTable()
 				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(ModItems.FLESH_BITS.get())
 						.apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))))
@@ -79,6 +79,13 @@ public class ModEntityLoot extends EntityLootSubProvider {
 						.apply(SmeltItemFunction.smelted().when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, ENTITY_ON_FIRE)))
 						.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1))))
 				);
+	}
+
+	private LootTable.Builder chickenLootTable() {
+		return LootTable.lootTable().withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(Items.CHICKEN)
+				.apply(SmeltItemFunction.smelted().when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, ENTITY_ON_FIRE)))
+				.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1))))
+		);
 	}
 
 	private LootTable.Builder noLoot() {
@@ -106,6 +113,7 @@ public class ModEntityLoot extends EntityLootSubProvider {
 		add(ModEntityTypes.FLESH_SHEEP.get(), sheepLootTable());
 		add(ModEntityTypes.FLESH_SHEEP.get(), ModLoot.Entity.FLESH_SHEEP_UNSHORN, unshornSheepLootTable());
 		add(ModEntityTypes.FLESH_PIG.get(), pigLootTable());
+		add(ModEntityTypes.FLESH_CHICKEN.get(), chickenLootTable());
 	}
 
 	@Override

@@ -103,6 +103,9 @@ public class ModSoundProvider extends SoundDefinitionsProvider {
 		addSimpleRedirect(ModSoundEvents.FLESH_PIG_AMBIENT, SoundEvents.PIG_AMBIENT, 1f, 0.25f);
 		addSimpleRedirect(ModSoundEvents.FLESH_PIG_HURT, SoundEvents.PIG_HURT, 1f, 0.25f);
 		addSimpleRedirect(ModSoundEvents.FLESH_PIG_DEATH, SoundEvents.PIG_DEATH, 1f, 0.25f);
+		addSimpleRedirect(ModSoundEvents.FLESH_CHICKEN_AMBIENT, SoundEvents.CHICKEN_AMBIENT, 1f, 0.25f);
+		addSimpleRedirect(ModSoundEvents.FLESH_CHICKEN_HURT, SoundEvents.CHICKEN_HURT, 1f, 0.25f);
+		addSimpleRedirect(ModSoundEvents.FLESH_CHICKEN_DEATH, SoundEvents.CHICKEN_DEATH, 1f, 0.25f);
 	}
 
 	public String translationKey(RegistryObject<SoundEvent> soundHolder) {
