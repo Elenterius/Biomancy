@@ -21,7 +21,7 @@ public final class ModProjectiles {
 	public static final ConfiguredProjectile<AcidBlobProjectile> ACID_BLOB = build("Acid Blob", 1.2f, 2, 0, convertToInaccuracy(0.9f), SoundEvents.SLIME_JUMP_SMALL, (level, x, y, z) -> new AcidBlobProjectile(level, x, y, z, false));
 	public static final ConfiguredProjectile<AcidBlobProjectile> FALLING_ACID_BLOB = build("Falling Acid Blob", 0.1f, 2, 0, convertToInaccuracy(0.9f), SoundEvents.SLIME_SQUISH_SMALL, AcidBlobProjectile::new);
 	public static final ConfiguredProjectile<BloomberryProjectile> BLOOMBERRY = build("Bloomberry", 1.25f, 2, 0, convertToInaccuracy(0.9f), BloomberryProjectile::new);
-	public static final ConfiguredProjectile<CorrosiveAcidProjectile> GASTRIC_SPIT = build("Gastric Spit", 1.5f, 1, 0, 0.25f, SoundEvents.LLAMA_SPIT, CorrosiveAcidProjectile::new);
+	public static final ConfiguredProjectile<AcidSpitProjectile> GASTRIC_SPIT = build("Gastric Spit", 1.5f, 1, 0, 0.25f, SoundEvents.LLAMA_SPIT, AcidSpitProjectile::new);
 
 	private static float convertToInaccuracy(float accuracy) {
 		return -Gun.MAX_INACCURACY * accuracy + Gun.MAX_INACCURACY;

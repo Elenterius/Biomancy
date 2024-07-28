@@ -14,17 +14,17 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 
-public class CorrosiveAcidProjectile extends BaseProjectile {
+public class AcidSpitProjectile extends BaseProjectile {
 
-	public CorrosiveAcidProjectile(EntityType<? extends BaseProjectile> entityType, Level level) {
+	public AcidSpitProjectile(EntityType<? extends BaseProjectile> entityType, Level level) {
 		super(entityType, level);
 	}
 
-	public CorrosiveAcidProjectile(Level level, double x, double y, double z) {
+	public AcidSpitProjectile(Level level, double x, double y, double z) {
 		super(ModEntityTypes.CORROSIVE_ACID_PROJECTILE.get(), level, x, y, z);
 	}
 
-	public CorrosiveAcidProjectile(EntityType<? extends CorrosiveAcidProjectile> entityType, Level level, double x, double y, double z) {
+	public AcidSpitProjectile(EntityType<? extends AcidSpitProjectile> entityType, Level level, double x, double y, double z) {
 		super(entityType, level, x, y, z);
 	}
 
