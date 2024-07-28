@@ -1,0 +1,49 @@
+{
+  "format_version": "1.8.0",
+  "animations": {
+    "baby_transform": {
+      "loop": true,
+      "bones": {
+        "head": {
+          "position": {
+            "vector": [ 0, 4, 4 ]
+          },
+          "scale": {
+            "vector": [ 2, 2, 2 ]
+          }
+        },
+        "tumors": {
+          "scale": {
+            "vector": [ 0, 0, 0 ]
+          }
+        }
+      }
+    },
+    "walk": {
+      "loop": true,
+      "bones": {
+        "leg0": {
+          "rotation": {
+            "vector": [ "math.cos(query.anim_time * 360) *  80.0", 0, 0 ]
+          }
+        },
+        "leg1": {
+          "rotation": {
+            "vector": [ "math.cos(query.anim_time * 360) * -80.0", 0, 0 ]
+          }
+        },
+        "leg2": {
+          "rotation": {
+            "vector": [ "math.cos(query.anim_time * 360) * -80.0", 0, 0 ]
+          }
+        },
+        "leg3": {
+          "rotation": {
+            "vector": [ "math.cos(query.anim_time * 360) *  80.0", 0, 0 ]
+          }
+        }
+      }
+    }
+  },
+  "geckolib_format_version": 2
+}

@@ -19,6 +19,7 @@ import com.github.elenterius.biomancy.client.render.block.mawhopper.MawHopperRen
 import com.github.elenterius.biomancy.client.render.block.storagesac.StorageSacRenderer;
 import com.github.elenterius.biomancy.client.render.block.tongue.TongueRenderer;
 import com.github.elenterius.biomancy.client.render.entity.mob.FleshCowRenderer;
+import com.github.elenterius.biomancy.client.render.entity.mob.FleshPigRenderer;
 import com.github.elenterius.biomancy.client.render.entity.mob.FleshSheepRenderer;
 import com.github.elenterius.biomancy.client.render.entity.mob.fleshblob.FleshBlobRenderer;
 import com.github.elenterius.biomancy.client.render.entity.mob.fleshblob.LegacyFleshBlobRenderer;
@@ -104,6 +105,7 @@ public final class ClientSetupHandler {
 		event.registerEntityRenderer(ModEntityTypes.PRIMORDIAL_HUNGRY_FLESH_BLOB.get(), PrimordialFleshBlobRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.FLESH_COW.get(), FleshCowRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.FLESH_SHEEP.get(), FleshSheepRenderer::new);
+		event.registerEntityRenderer(ModEntityTypes.FLESH_PIG.get(), FleshPigRenderer::new);
 
 		event.registerEntityRenderer(ModEntityTypes.CORROSIVE_ACID_PROJECTILE.get(), AcidProjectileRenderer::new);
 		event.registerEntityRenderer(ModEntityTypes.TOOTH_PROJECTILE.get(), ThrownItemRenderer::new);
