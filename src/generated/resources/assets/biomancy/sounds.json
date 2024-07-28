@@ -350,6 +350,36 @@
     ],
     "subtitle": "sounds.biomancy.entity.flesh_cow.hurt"
   },
+  "entity.flesh_pig.ambient": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.pig.ambient",
+        "pitch": 0.25
+      }
+    ],
+    "subtitle": "sounds.biomancy.entity.flesh_pig.ambient"
+  },
+  "entity.flesh_pig.death": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.pig.death",
+        "pitch": 0.25
+      }
+    ],
+    "subtitle": "sounds.biomancy.entity.flesh_pig.death"
+  },
+  "entity.flesh_pig.hurt": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "entity.pig.hurt",
+        "pitch": 0.25
+      }
+    ],
+    "subtitle": "sounds.biomancy.entity.flesh_pig.hurt"
+  },
   "entity.flesh_sheep.ambient": {
     "sounds": [
       {
