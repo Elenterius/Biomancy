@@ -22,7 +22,7 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class AcidBlobProjectile extends CorrosiveAcidProjectile implements GeoEntity {
+public class AcidBlobProjectile extends AcidSpitProjectile implements GeoEntity {
 
 	protected final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 	protected boolean canPlaceAcidFluid = true;

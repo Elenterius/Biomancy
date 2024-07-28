@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.client.render.entity.projectile;
 
-import com.github.elenterius.biomancy.entity.projectile.CorrosiveAcidProjectile;
+import com.github.elenterius.biomancy.entity.projectile.AcidSpitProjectile;
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -13,10 +13,10 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-public class AcidProjectileRenderer extends EntityRenderer<CorrosiveAcidProjectile> {
+public class AcidProjectileRenderer extends EntityRenderer<AcidSpitProjectile> {
 
 	private static final ResourceLocation TEXTURE = new ResourceLocation("textures/entity/llama/spit.png");
-	private final LlamaSpitModel<CorrosiveAcidProjectile> model;
+	private final LlamaSpitModel<AcidSpitProjectile> model;
 
 	public AcidProjectileRenderer(EntityRendererProvider.Context context) {
 		super(context);
@@ -24,7 +24,7 @@ public class AcidProjectileRenderer extends EntityRenderer<CorrosiveAcidProjecti
 	}
 
 	@Override
-	public void render(CorrosiveAcidProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+	public void render(AcidSpitProjectile entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
 		poseStack.pushPose();
 
 		poseStack.translate(0, 0.15f, 0);
@@ -43,7 +43,7 @@ public class AcidProjectileRenderer extends EntityRenderer<CorrosiveAcidProjecti
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(CorrosiveAcidProjectile entity) {
+	public ResourceLocation getTextureLocation(AcidSpitProjectile entity) {
 		return TEXTURE;
 	}
 
