@@ -2,12 +2,16 @@ package com.github.elenterius.biomancy.mixin;
 
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.item.ShieldBlockingListener;
+import com.github.elenterius.biomancy.serum.FrenzySerum;
 import com.github.elenterius.biomancy.statuseffect.StatusEffectHandler;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.ThrownPotion;
 import net.minecraft.world.item.ItemStack;
@@ -28,6 +32,16 @@ public abstract class LivingEntityMixin {
 
 	@Shadow
 	public abstract boolean hasEffect(MobEffect effect);
+
+	@Shadow
+	public abstract AttributeMap getAttributes();
+
+	@Inject(method = "getAttributeValue(Lnet/minecraft/world/entity/ai/attributes/Attribute;)D", at = @At("HEAD"), cancellable = true)
+	protected void onGetAttributeValue(Attribute attribute, CallbackInfoReturnable<Double> cir) {
+		if (attribute == Attributes.ATTACK_DAMAGE && !getAttributes().hasAttribute(Attributes.ATTACK_DAMAGE) && hasEffect(ModMobEffects.FRENZY.get())) {
+			cir.setReturnValue(FrenzySerum.ATTACK_DAMAGE_FALLBACK);
+		}
+	}
 
 	@Inject(method = "isSensitiveToWater", at = @At(value = "HEAD"), cancellable = true)
 	private void onIsSensitiveToWater(CallbackInfoReturnable<Boolean> cir) {

@@ -1,0 +1,19 @@
+{
+  "type": "biomancy:bio_brewing",
+  "ingredients": [
+    {
+      "item": "biomancy:volatile_fluid"
+    },
+    {
+      "item": "biomancy:hormone_secretion"
+    }
+  ],
+  "nutrientsCost": 2,
+  "processingTime": 160,
+  "reactant": {
+    "item": "biomancy:exotic_compound"
+  },
+  "result": {
+    "item": "biomancy:frenzy_serum"
+  }
+}
