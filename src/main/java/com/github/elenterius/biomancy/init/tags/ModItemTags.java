@@ -17,7 +17,6 @@ public final class ModItemTags {
 
 	public static final TagKey<Item> CANNOT_BE_EATEN_BY_CRADLE = tag("cannot_be_eaten_by_cradle");
 
-	@Deprecated
 	public static final TagKey<Item> SUGARS = tag("sugars");
 
 	private ModItemTags() {}

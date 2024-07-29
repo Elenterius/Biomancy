@@ -91,6 +91,13 @@ public class BioLabRecipeProvider extends RecipeProvider {
 				.setCraftingTime(8 * 20)
 				.unlockedBy(ModItems.EXOTIC_COMPOUND.get()).save(consumer);
 
+		BioLabRecipeBuilder.create(ModItems.FRENZY_SERUM.get())
+				.addIngredient(ModItems.VOLATILE_FLUID.get())
+				.addIngredient(ModItems.HORMONE_SECRETION.get())
+				.setReactant(ModItems.EXOTIC_COMPOUND.get())
+				.setCraftingTime(8 * 20)
+				.unlockedBy(ModItems.EXOTIC_COMPOUND.get()).save(consumer);
+
 		BioLabRecipeBuilder.create(ModItems.BREEDING_STIMULANT.get())
 				.addIngredient(ModItems.NUTRIENT_PASTE.get())
 				.addIngredient(ItemTags.FLOWERS)

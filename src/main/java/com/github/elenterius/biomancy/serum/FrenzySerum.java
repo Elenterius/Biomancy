@@ -1,6 +1,8 @@
 package com.github.elenterius.biomancy.serum;
 
 import com.github.elenterius.biomancy.client.util.ClientTextUtil;
+import com.github.elenterius.biomancy.entity.mob.ai.goal.FrenzyAttackableTargetGoal;
+import com.github.elenterius.biomancy.entity.mob.ai.goal.FrenzyMeleeAttackGoal;
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.util.ComponentUtil;
@@ -14,8 +16,14 @@ import net.minecraft.util.StringUtil;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.WrappedGoal;
+import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -24,18 +32,24 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
-public class AdrenalineSerum extends BasicSerum {
+public class FrenzySerum extends BasicSerum {
 
-	public static final int DURATION = 20 * (2 * 60 + 30); // 2 min : 30 sec
+	public static final int DEFAULT_DURATION_TICKS = 20 * (2 * 60 + 30); // 2 min : 30 sec
+	public static final int MIN_DURATION_TICKS = 20 * 30; // 30 sec
 	public static final int AMPLIFIER = 1;
+	public static final double ATTACK_DAMAGE_FALLBACK = 1;
 
-	public AdrenalineSerum(int colorIn) {
+	public FrenzySerum(int colorIn) {
 		super(colorIn);
 	}
 
 	@Override
 	public void affectEntity(ServerLevel level, CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
 		addStatusEffect(target);
+
+		if (target instanceof Mob mob) {
+			injectAIBehavior(mob);
+		}
 	}
 
 	@Override
@@ -44,13 +58,15 @@ public class AdrenalineSerum extends BasicSerum {
 	}
 
 	private void addStatusEffect(LivingEntity target) {
-		int duration = DURATION;
-		MobEffectInstance effectInstance = target.getEffect(ModMobEffects.ADRENAL_FATIGUE.get());
-		if (effectInstance != null) {
-			duration -= Math.min(effectInstance.getDuration() / 2, 20 * 30);
-			target.removeEffect(ModMobEffects.ADRENAL_FATIGUE.get());
+		int duration = DEFAULT_DURATION_TICKS;
+
+		MobEffectInstance withdrawalEffect = target.getEffect(ModMobEffects.WITHDRAWAL.get());
+		if (withdrawalEffect != null) {
+			duration -= Math.min(withdrawalEffect.getDuration() / 2, MIN_DURATION_TICKS);
+			target.removeEffect(ModMobEffects.WITHDRAWAL.get());
 		}
-		target.addEffect(new MobEffectInstance(ModMobEffects.ADRENALINE_RUSH.get(), duration, AMPLIFIER));
+
+		target.addEffect(new MobEffectInstance(ModMobEffects.FRENZY.get(), duration, AMPLIFIER));
 	}
 
 	@Override
@@ -59,13 +75,12 @@ public class AdrenalineSerum extends BasicSerum {
 			tooltip.add(ComponentUtil.translatable(getDescriptionTranslationKey()).withStyle(TextStyles.LORE));
 		}
 
-		addEffectToClientTooltip(tooltip, ModMobEffects.ADRENALINE_RUSH.get(), AMPLIFIER, DURATION);
+		addEffectToClientTooltip(tooltip, ModMobEffects.FRENZY.get(), AMPLIFIER, DEFAULT_DURATION_TICKS);
 	}
 
 	public void addEffectToClientTooltip(List<Component> tooltips, MobEffect effect, int amplifier, int duration) {
 		MutableComponent effectText = ComponentUtil.translatable(effect.getDescriptionId());
-		if (amplifier > 0)
-			effectText = ComponentUtil.translatable("potion.withAmplifier", effectText, ComponentUtil.translatable("potion.potency." + amplifier));
+		if (amplifier > 0) effectText = ComponentUtil.translatable("potion.withAmplifier", effectText, ComponentUtil.translatable("potion.potency." + amplifier));
 		if (duration > 20) effectText = ComponentUtil.translatable("potion.withDuration", effectText, StringUtil.formatTickDuration(duration));
 		tooltips.add(effectText.withStyle(effect.getCategory().getTooltipFormatting()));
 
@@ -89,6 +104,34 @@ public class AdrenalineSerum extends BasicSerum {
 				}
 			}
 		}
+	}
+
+	public static void injectAIBehavior(Mob mob) {
+		if (!(mob instanceof PathfinderMob) && !(mob instanceof RangedAttackMob)) return;
+
+		if (!hasFrenzyTargetGoal(mob)) {
+			mob.targetSelector.addGoal(1, new FrenzyAttackableTargetGoal<>(mob, LivingEntity.class));
+		}
+
+		if (!(mob instanceof RangedAttackMob) && !(mob instanceof Enemy) && mob instanceof PathfinderMob pathfinderMob) {
+			if (!hasMeleeAttackGoal(mob)) {
+				mob.goalSelector.addGoal(4, new FrenzyMeleeAttackGoal(pathfinderMob, 1d, false));
+			}
+		}
+	}
+
+	private static boolean hasMeleeAttackGoal(Mob mob) {
+		for (WrappedGoal availableGoal : mob.goalSelector.getAvailableGoals()) {
+			if (availableGoal.getGoal() instanceof MeleeAttackGoal) return true;
+		}
+		return false;
+	}
+
+	private static boolean hasFrenzyTargetGoal(Mob mob) {
+		for (WrappedGoal availableGoal : mob.targetSelector.getAvailableGoals()) {
+			if (availableGoal.getGoal() instanceof FrenzyAttackableTargetGoal) return true;
+		}
+		return false;
 	}
 
 }

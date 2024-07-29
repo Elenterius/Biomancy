@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_exotic_compound": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:exotic_compound"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "biomancy:bio_brewing/frenzy_serum_from_bio_brewing"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_exotic_compound",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "biomancy:bio_brewing/frenzy_serum_from_bio_brewing"
+    ]
+  },
+  "sends_telemetry_event": false
+}

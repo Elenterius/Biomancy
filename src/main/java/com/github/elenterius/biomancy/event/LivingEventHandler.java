@@ -3,7 +3,11 @@ package com.github.elenterius.biomancy.event;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.AcidInteractions;
 import com.github.elenterius.biomancy.init.ModEnchantments;
+import com.github.elenterius.biomancy.init.ModMobEffects;
+import com.github.elenterius.biomancy.serum.FrenzySerum;
+import net.minecraft.world.entity.Mob;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
@@ -27,6 +31,14 @@ public final class LivingEventHandler {
 		if (event.player.tickCount % 30 == 0) {
 			ModEnchantments.SELF_FEEDING.get().repairLivingItems(event.player);
 			ModEnchantments.PARASITIC_METABOLISM.get().repairLivingItems(event.player);
+		}
+	}
+
+	@SubscribeEvent
+	public static void onLivingJoinLevel(final EntityJoinLevelEvent event) {
+		if (event.getLevel().isClientSide()) return;
+		if (event.getEntity() instanceof Mob mob && mob.hasEffect(ModMobEffects.FRENZY.get())) {
+			FrenzySerum.injectAIBehavior(mob);
 		}
 	}
 
