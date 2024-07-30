@@ -4,6 +4,7 @@ import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.IdentityHashMap;
