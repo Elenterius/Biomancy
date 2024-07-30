@@ -26,6 +26,7 @@ public final class FleshTongue {
 		createItemComment(ModItems.AGEING_SERUM.get(), "We can regard our life as a uselessly disturbing episode in the blissful repose of nothingness.\n- Arthur Schopenhauer");
 		createItemComment(ModItems.BREEDING_STIMULANT.get(), "Happiness and the absurd are two sons of the same earth. They are inseparable.\n- Albert Camus");
 		createItemComment(ModItems.SHRINKING_SERUM.get(), "Normalize the idea of living inside of Someone.\n- Tarael Blackwing");
+		createItemComment(Items.CAULDRON,"I've been sprinting towards the horizon of insanity since birth.\n- kd8lvt");
 	}
 
 	private static void createItemComment(Item item, String text) {
