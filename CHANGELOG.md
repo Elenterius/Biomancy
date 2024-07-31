@@ -1,3 +1,26 @@
+## [8.4.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.3.0...1.20.1-v2.8.4.0) (2024-07-31)
+
+
+### Features
+
+* add Acid Cauldron ([930d03d](https://github.com/Elenterius/Biomancy/commit/930d03d9471f00e8a69a66b39bbdc36989844fa5))
+* add breeding stimulant backfire for cows, sheep, pigs and chickens ([fbb90a1](https://github.com/Elenterius/Biomancy/commit/fbb90a1afff3c4249bc0a0933283c9c4e3dbd84c))
+* add Flesh Chicken mob ([8877759](https://github.com/Elenterius/Biomancy/commit/88777596deab1f557bdc66a2216b2f6cb37a3c1a))
+* add Flesh Cow mob ([094e750](https://github.com/Elenterius/Biomancy/commit/094e750b79ce2229833612f28a8ca38b1724d2b2))
+* add Flesh Pig mob ([1c9148a](https://github.com/Elenterius/Biomancy/commit/1c9148a649d9cdc14988b9b3258f37716bfe0c86))
+* add Flesh Sheep mob ([4a35785](https://github.com/Elenterius/Biomancy/commit/4a357854df698e0cb8d1eeca5a0374a4d6ba32b9))
+* add Frenzy Serum ([9f5e48e](https://github.com/Elenterius/Biomancy/commit/9f5e48e83802f05fab17917a42662e6e51d3af91))
+* expose Biomancy specific RecipeBuilders for datagen ([0393170](https://github.com/Elenterius/Biomancy/commit/0393170592973fd9eb58e56e73faaad3d839d802))
+* make Shrink and Enlargement Serums affect max health ([4311cac](https://github.com/Elenterius/Biomancy/commit/4311cac21ec02c65af3b345f84a61b524d749d07))
+* update Russian translation by Quarkrus ([4f2f73f](https://github.com/Elenterius/Biomancy/commit/4f2f73ff95dcd2cf4d8f33cc022fbeabd70adf3b))
+
+
+### Bug Fixes
+
+* fix Acolyte Armor z-fighting and render type ([36b1732](https://github.com/Elenterius/Biomancy/commit/36b173230ec3bbc2f1d68d0db4876c5c0f270629))
+* fix missing pixels on the Caustic Gunblade texture ([968aed4](https://github.com/Elenterius/Biomancy/commit/968aed44ea1b7e6f9905b96dbd3d8af5b06d8123))
+* fix Ravenous Claws normal attack bypassing armor, resistances and enchantments ([003529b](https://github.com/Elenterius/Biomancy/commit/003529b4802c9a7706f15f53c747aeeb9be7b535))
+
 ## [8.3.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.2.0...1.20.1-v2.8.3.0) (2024-07-01)
 
 
@@ -172,25 +195,4 @@
 * refactor living tools ([cba0018](https://github.com/Elenterius/Biomancy/commit/cba00188b968340def31fb47650a123a04a75c8c))
 * refactor nutrients api ([ca0e39f](https://github.com/Elenterius/Biomancy/commit/ca0e39f8b1dc3835807387e96b473b5fc805cfa2))
 * rework Nutrients handling and add fluid fuel support ([e73eef4](https://github.com/Elenterius/Biomancy/commit/e73eef42487d8ef2ca598d69abd9be9332f924a0))
-
-## [4.4.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.4.3.0...1.20.1-v2.4.4.0) (2024-02-12)
-
-
-### Features
-
-* add despoil loot to Alex's Caves mobs ([5da2dd4](https://github.com/Elenterius/Biomancy/commit/5da2dd4a28dadb7344d30aa0fe4a684c946dac4e))
-* add thick pane variants of the membrane blocks ([c6696b3](https://github.com/Elenterius/Biomancy/commit/c6696b3c22cc19e5a0629e39806416f2305e2722))
-* make Alxe's Mobs eggs digestible ([76d9375](https://github.com/Elenterius/Biomancy/commit/76d9375f58cba3b50aced12cdae2d5e1e4fb7476))
-* make Membranes valid windmill sails for Create ([2d8ed8b](https://github.com/Elenterius/Biomancy/commit/2d8ed8b7a4c02649fb04732fd8319d4c8db74db9))
-* rename sound events ([7211edf](https://github.com/Elenterius/Biomancy/commit/7211edf2226ac762721729749fb411e51793fd7b))
-* update membrane block model & colors ([c2d9174](https://github.com/Elenterius/Biomancy/commit/c2d91744da9acf7c985e068bfb578bdd7111a723))
-
-
-### Bug Fixes
-
-* add missing sound translations ([7079b3a](https://github.com/Elenterius/Biomancy/commit/7079b3ac28732fa52522bd661f771d284a733af0))
-* **data-gen:** fix advancement parsing errors spamming the logs ([750b6e4](https://github.com/Elenterius/Biomancy/commit/750b6e49973ccc4bec8fe75e070559f4da898633)), closes [#115](https://github.com/Elenterius/Biomancy/issues/115)
-* fix coloring of vials in the vial holder not always updating and defaulting to white ([4712b27](https://github.com/Elenterius/Biomancy/commit/4712b271869760bceb26c27006482cfbc589e43b))
-* fix fertilizer not being consumed and converting dirt into the wrong grass block ([9806d3f](https://github.com/Elenterius/Biomancy/commit/9806d3f0aa9237be118e501c6e1988dd5d2edb41))
-* fix missing acid fluid blockstate model file spamming the logs with errors ([d69ecc7](https://github.com/Elenterius/Biomancy/commit/d69ecc75d14bc15e49cc08fc7b0a1ce9f1f6d093))
 
