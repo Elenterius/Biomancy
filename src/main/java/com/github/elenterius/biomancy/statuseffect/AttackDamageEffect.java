@@ -12,7 +12,11 @@ public class AttackDamageEffect extends StatusEffect {
 	protected UUID attackDamageUUID;
 
 	public AttackDamageEffect(MobEffectCategory category, int color) {
-		super(category, color, false);
+		this(category, color, true);
+	}
+
+	public AttackDamageEffect(MobEffectCategory category, int color, boolean isCurable) {
+		super(category, color, isCurable);
 	}
 
 	public AttackDamageEffect addAttackDamageModifier(String uuid, double damageMultiplier, double amount, AttributeModifier.Operation operation) {

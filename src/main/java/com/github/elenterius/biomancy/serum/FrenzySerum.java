@@ -36,7 +36,6 @@ public class FrenzySerum extends BasicSerum {
 
 	public static final int DEFAULT_DURATION_TICKS = 20 * (2 * 60 + 30); // 2 min : 30 sec
 	public static final int MIN_DURATION_TICKS = 20 * 30; // 30 sec
-	public static final int AMPLIFIER = 1;
 	public static final double ATTACK_DAMAGE_FALLBACK = 1;
 
 	public FrenzySerum(int colorIn) {
@@ -66,7 +65,7 @@ public class FrenzySerum extends BasicSerum {
 			target.removeEffect(ModMobEffects.WITHDRAWAL.get());
 		}
 
-		target.addEffect(new MobEffectInstance(ModMobEffects.FRENZY.get(), duration, AMPLIFIER));
+		target.addEffect(new MobEffectInstance(ModMobEffects.FRENZY.get(), duration, 0));
 	}
 
 	@Override
@@ -75,7 +74,7 @@ public class FrenzySerum extends BasicSerum {
 			tooltip.add(ComponentUtil.translatable(getDescriptionTranslationKey()).withStyle(TextStyles.LORE));
 		}
 
-		addEffectToClientTooltip(tooltip, ModMobEffects.FRENZY.get(), AMPLIFIER, DEFAULT_DURATION_TICKS);
+		addEffectToClientTooltip(tooltip, ModMobEffects.FRENZY.get(), 0, DEFAULT_DURATION_TICKS);
 	}
 
 	public void addEffectToClientTooltip(List<Component> tooltips, MobEffect effect, int amplifier, int duration) {
