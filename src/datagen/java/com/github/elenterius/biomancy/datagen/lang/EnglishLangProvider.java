@@ -528,7 +528,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addSerumItem(ModItems.BREEDING_STIMULANT, "Breeding Stimulant", "Makes Animals hyper-fertile, making them able to repeatedly reproduce for a short time.");
 		addSerumItem(ModItems.ABSORPTION_BOOST, "Absorption Stimulant", "Grants stackable absorption health points to Mobs and Players.");
 		addSerumItem(ModItems.INSOMNIA_CURE, "Insomnia Cure", "Resets the last slept time, no need to sleep for quite some time.\nCoffee who?");
-		addSerumItem(ModItems.FRENZY_SERUM, "Frenzy Serum", "Quickly boost your attack damage and speed. But greatly increases hostility and aggression.\nSide effects include withdrawal symptoms after use.");
+		addSerumItem(ModItems.FRENZY_SERUM, "Frenzy Serum", "Potent stackable drug that greatly boost your attack damage and speed at the cost of withdrawal symptoms. Increases hostility and aggression of affected mobs.\nSide effects after stoppage of use include weakness, sluggish movement and nausea. Continue the use to alleviate the withdrawal or try your luck with sugary foods.");
 
 		addBannerPatternItem(ModItems.MASCOT_BANNER_PATTERNS, "Banner Pattern", "Biomancy Mascot");
 

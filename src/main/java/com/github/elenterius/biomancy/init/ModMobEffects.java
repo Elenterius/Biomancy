@@ -26,15 +26,15 @@ public final class ModMobEffects {
 	public static final RegistryObject<LibidoEffect> LIBIDO = EFFECTS.register("libido", () -> new LibidoEffect(MobEffectCategory.NEUTRAL, 0xe06a78));
 	public static final RegistryObject<DrowsyEffect> DROWSY = EFFECTS.register("drowsy", () -> new DrowsyEffect(MobEffectCategory.NEUTRAL, 0x9b70b2));
 
-	public static final RegistryObject<AttackDamageEffect> FRENZY = EFFECTS.register("frenzy", () -> new AttackDamageEffect(MobEffectCategory.BENEFICIAL, 0xd1001c)
-			.addAttackDamageModifier("1f1fb00f-d6bc-4b42-8533-422054cea63d", 4f, 0, AttributeModifier.Operation.ADDITION) // Strength ~II
+	public static final RegistryObject<AttackDamageEffect> FRENZY = EFFECTS.register("frenzy", () -> new FrenzyEffect(MobEffectCategory.BENEFICIAL, 0xd1001c)
+			.addAttackDamageModifier("1f1fb00f-d6bc-4b42-8533-422054cea63d", 6f, 0, AttributeModifier.Operation.ADDITION) // Strength ~II
 			.addModifier(Attributes.MOVEMENT_SPEED, "14e2a39c-abb5-43a4-9449-522eec57ff2e", 0.225f, AttributeModifier.Operation.MULTIPLY_TOTAL)
 			.addModifier(Attributes.ATTACK_SPEED, "08a20d5b-60ce-4769-9e67-71cab0abe989", 0.175f, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
 	public static final RegistryObject<WithdrawalEffect> WITHDRAWAL = EFFECTS.register("withdrawal", () -> new WithdrawalEffect(0x5c4b88)
 			.addAttackDamageModifier("8dadcbe5-9098-4545-b07c-3e9120c84232", -3, 0, AttributeModifier.Operation.ADDITION)
-			.addModifier(Attributes.MOVEMENT_SPEED, "0f1be88c-cbb2-455c-8559-0b420caa980d", -0.225f, AttributeModifier.Operation.MULTIPLY_TOTAL)
-			.addModifier(Attributes.ATTACK_SPEED, "ab116bd1-196b-4bf8-a136-6c24e7c0e80d", -0.125f, AttributeModifier.Operation.MULTIPLY_TOTAL));
+			.addModifier(Attributes.MOVEMENT_SPEED, "0f1be88c-cbb2-455c-8559-0b420caa980d", -0.1125f, AttributeModifier.Operation.MULTIPLY_TOTAL)
+			.addModifier(Attributes.ATTACK_SPEED, "ab116bd1-196b-4bf8-a136-6c24e7c0e80d", -0.0625f, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
 	private ModMobEffects() {}
 

@@ -30,7 +30,8 @@ public class ModMobEffectTagsProvider extends IntrinsicHolderTagsProvider<MobEff
 	@Override
 	protected void addTags(HolderLookup.Provider pProvider) {
 		tag(ModMobEffectTags.NOT_REMOVABLE_WITH_CLEANSING_SERUM).add(
-				ModMobEffects.ESSENCE_ANEMIA.get()
+				ModMobEffects.ESSENCE_ANEMIA.get(),
+				ModMobEffects.WITHDRAWAL.get()
 		);
 
 		tag(ModMobEffectTags.CRADLE_LIFE_ENERGY_SOURCE).add(
