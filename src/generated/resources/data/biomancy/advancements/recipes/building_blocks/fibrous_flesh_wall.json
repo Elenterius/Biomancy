@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_flesh_bits": {
+    "has_fibrous_flesh": {
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:flesh_bits"
+              "biomancy:fibrous_flesh"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "biomancy:bio_forging/fibrous_flesh_from_bio_forging"
+        "recipe": "biomancy:fibrous_flesh_wall"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_flesh_bits",
+      "has_fibrous_flesh",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "biomancy:bio_forging/fibrous_flesh_from_bio_forging"
+      "biomancy:fibrous_flesh_wall"
     ]
   },
   "sends_telemetry_event": false

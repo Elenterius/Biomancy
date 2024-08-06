@@ -2,9 +2,10 @@
   "values": [
     "biomancy:flesh_stairs",
     "biomancy:packed_flesh_stairs",
-    "biomancy:malignant_flesh_stairs",
+    "biomancy:fibrous_flesh_stairs",
     "biomancy:primal_flesh_stairs",
     "biomancy:smooth_primal_flesh_stairs",
-    "biomancy:porous_primal_flesh_stairs"
+    "biomancy:porous_primal_flesh_stairs",
+    "biomancy:malignant_flesh_stairs"
   ]
 }

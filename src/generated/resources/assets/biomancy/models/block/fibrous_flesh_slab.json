@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "biomancy:block/fibrous_flesh",
+    "side": "biomancy:block/fibrous_flesh",
+    "top": "biomancy:block/fibrous_flesh"
+  }
+}

@@ -184,8 +184,12 @@ public class ModBlockLoot extends BlockLootSubProvider {
 		dropSelf(ModBlocks.PACKED_FLESH_STAIRS.get());
 		dropSelf(ModBlocks.PACKED_FLESH_WALL.get());
 
-		dropSelf(ModBlocks.FLESH_PILLAR.get());
 		dropSelf(ModBlocks.FIBROUS_FLESH.get());
+		add(ModBlocks.FIBROUS_FLESH_SLAB.get(), this::createDirectionalSlabTable);
+		dropSelf(ModBlocks.FIBROUS_FLESH_STAIRS.get());
+		dropSelf(ModBlocks.FIBROUS_FLESH_WALL.get());
+
+		dropSelf(ModBlocks.FLESH_PILLAR.get());
 		dropSelf(ModBlocks.CHISELED_FLESH.get());
 		dropSelf(ModBlocks.ORNATE_FLESH.get());
 		add(ModBlocks.ORNATE_FLESH_SLAB.get(), this::createDirectionalSlabTable);

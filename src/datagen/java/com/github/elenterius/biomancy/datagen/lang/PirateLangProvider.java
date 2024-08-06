@@ -514,9 +514,12 @@ public class PirateLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.PACKED_FLESH_SLAB, "Packed Slab o' Flesh", "Tenacious Slab of flesh. Is it tough enough?");
 		addBlock(ModBlocks.PACKED_FLESH_STAIRS, "Packed Stairs o' Flesh", "Stairs made of tenacious flesh. Is it tough enough?");
 		addBlock(ModBlocks.PACKED_FLESH_WALL, "Packed Wall o' Flesh", "Tenacious wall of flesh.");
+		addBlock(ModBlocks.FIBROUS_FLESH, "Fibrous Block o' Flesh", "A unusual block flesh made from the innards of someone.");
+		addBlock(ModBlocks.FIBROUS_FLESH_SLAB, "Fibrous Slab", "A unusual slab of flesh made from the innards of someone.");
+		addBlock(ModBlocks.FIBROUS_FLESH_STAIRS, "Fibrous Stairs", "Stairs made of unusual flesh made from the innards of someone.");
+		addBlock(ModBlocks.FIBROUS_FLESH_WALL, "Fibrous Wall", "A unusual wall of flesh made from the innards of someone.");
 
 		addBlock(ModBlocks.FLESH_PILLAR, "Squidgy Pillar", "A Pillar made of bones and flesh.");
-		addBlock(ModBlocks.FIBROUS_FLESH, "Fibrous Block o' Flesh", "A unusual block flesh made from the innards of someone.");
 		addBlock(ModBlocks.CHISELED_FLESH, "Carv'd Block o' Flesh", "A regal block of flesh... I'm most delighted");
 		addBlock(ModBlocks.ORNATE_FLESH, "Beau'iful Block o' Flesh", "A set of regal teeth and flesh.");
 		addBlock(ModBlocks.ORNATE_FLESH_SLAB, "Beau'iful Slab o' Flesh", "A set of regal teeth and flesh.");

@@ -1,0 +1,16 @@
+{
+  "type": "biomancy:bio_forging",
+  "bio_forge_tab": "biomancy:blocks",
+  "ingredients": [
+    {
+      "item": "biomancy:flesh_bits"
+    },
+    {
+      "item": "biomancy:elastic_fibers"
+    }
+  ],
+  "nutrientsCost": 1,
+  "result": {
+    "item": "biomancy:fibrous_flesh_slab"
+  }
+}

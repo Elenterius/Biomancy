@@ -115,12 +115,10 @@ public class BioForgeRecipeProvider extends RecipeProvider {
 		BioForgeRecipeBuilder.create(ModItems.PACKED_FLESH_STAIRS.get(), 2).addIngredient(ModItems.FLESH_BITS.get(), fleshStairsCost * 2).addIngredient(ModItems.TOUGH_FIBERS.get(), 2).setCategory(ModBioForgeTabs.BUILDING_BLOCKS).unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
 		BioForgeRecipeBuilder.create(ModItems.PACKED_FLESH_SLAB.get(), 1).addIngredient(ModItems.FLESH_BITS.get(), fleshSlabCostSingle * 2).addIngredient(ModItems.TOUGH_FIBERS.get(), 1).setCategory(ModBioForgeTabs.BUILDING_BLOCKS).unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
 		BioForgeRecipeBuilder.create(ModItems.PACKED_FLESH_WALL.get(), 1).addIngredient(ModItems.FLESH_BITS.get(), fleshBlockCostSingle * 2).addIngredient(ModItems.TOUGH_FIBERS.get(), 1).setCategory(ModBioForgeTabs.BUILDING_BLOCKS).unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
-
-		BioForgeRecipeBuilder.create(ModItems.FIBROUS_FLESH_BLOCK.get())
-				.addIngredient(ModItems.FLESH_BITS.get(), 1)
-				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 2)
-				.setCategory(ModBioForgeTabs.BUILDING_BLOCKS)
-				.unlockedBy(ModItems.ELASTIC_FIBERS.get()).save(consumer);
+		BioForgeRecipeBuilder.create(ModItems.FIBROUS_FLESH_BLOCK.get(), 1).addIngredient(ModItems.FLESH_BITS.get(), 1).addIngredient(ModItems.ELASTIC_FIBERS.get(), 2).setCategory(ModBioForgeTabs.BUILDING_BLOCKS).unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
+		BioForgeRecipeBuilder.create(ModItems.FIBROUS_FLESH_STAIRS.get(), 2).addIngredient(ModItems.FLESH_BITS.get(), 2).addIngredient(ModItems.ELASTIC_FIBERS.get(), 3).setCategory(ModBioForgeTabs.BUILDING_BLOCKS).unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
+		BioForgeRecipeBuilder.create(ModItems.FIBROUS_FLESH_SLAB.get(), 1).addIngredient(ModItems.FLESH_BITS.get(), 1).addIngredient(ModItems.ELASTIC_FIBERS.get(), 1).setCategory(ModBioForgeTabs.BUILDING_BLOCKS).unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
+		BioForgeRecipeBuilder.create(ModItems.FIBROUS_FLESH_WALL.get(), 1).addIngredient(ModItems.FLESH_BITS.get(), 1).addIngredient(ModItems.ELASTIC_FIBERS.get(), 2).setCategory(ModBioForgeTabs.BUILDING_BLOCKS).unlockedBy(ModItems.FLESH_BITS.get()).save(consumer);
 
 		BioForgeRecipeBuilder.create(ModItems.CHISELED_FLESH_BLOCK.get())
 				.addIngredient(ModItems.FLESH_BITS.get(), 2)

@@ -71,10 +71,13 @@ public final class ModBlocks {
 	public static final RegistryObject<StairBlock> PACKED_FLESH_STAIRS = registerStairs(PACKED_FLESH, StairBlock::new);
 	public static final RegistryObject<WallBlock> PACKED_FLESH_WALL = registerWall(PACKED_FLESH, WallBlock::new);
 	public static final RegistryObject<DirectionalSlabBlock> PACKED_FLESH_SLAB = registerSlab(PACKED_FLESH, DirectionalSlabBlock::new);
+	public static final RegistryObject<FleshBlock> FIBROUS_FLESH = register("fibrous_flesh", FleshBlock::new);
+	public static final RegistryObject<StairBlock> FIBROUS_FLESH_STAIRS = registerStairs(FIBROUS_FLESH, StairBlock::new);
+	public static final RegistryObject<WallBlock> FIBROUS_FLESH_WALL = registerWall(FIBROUS_FLESH, WallBlock::new);
+	public static final RegistryObject<DirectionalSlabBlock> FIBROUS_FLESH_SLAB = registerSlab(FIBROUS_FLESH, DirectionalSlabBlock::new);
 
 	//## Decoration
 	public static final RegistryObject<RotatedPillarBlock> TUBULAR_FLESH_BLOCK = register("tubular_flesh", RotatedPillarBlock::new);
-	public static final RegistryObject<FleshBlock> FIBROUS_FLESH = register("fibrous_flesh", FleshBlock::new);
 	public static final RegistryObject<RotatedPillarBlock> FLESH_PILLAR = register("flesh_pillar", () -> new RotatedPillarBlock(createBonyFleshProperties()));
 	public static final RegistryObject<FleshBlock> CHISELED_FLESH = register("chiseled_flesh", () -> new FleshBlock(createBonyFleshProperties()));
 	public static final RegistryObject<RotatedPillarBlock> ORNATE_FLESH = register("ornate_flesh", () -> new RotatedPillarBlock(createBonyFleshProperties()));
