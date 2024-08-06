@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.datagen.tags;
 
+import com.github.elenterius.biomancy.block.DirectionalSlabBlock;
 import com.github.elenterius.biomancy.block.FleshDoorBlock;
 import com.github.elenterius.biomancy.block.FullFleshDoorBlock;
 import com.github.elenterius.biomancy.block.membrane.Membrane;
@@ -10,9 +11,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.level.block.AbstractCauldronBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.*;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -78,37 +77,18 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 		tag(BlockTags.FENCES).addTag(ModBlockTags.FLESHY_FENCES);
 		tag(BlockTags.FENCE_GATES).add(ModBlocks.FLESH_FENCE_GATE.get());
 
-		tag(BlockTags.WALLS).add(
-				ModBlocks.FLESH_WALL.get(),
-				ModBlocks.PACKED_FLESH_WALL.get(),
-				ModBlocks.MALIGNANT_FLESH_WALL.get(),
-				ModBlocks.PRIMAL_FLESH_WALL.get(),
-				ModBlocks.SMOOTH_PRIMAL_FLESH_WALL.get(),
-				ModBlocks.POROUS_PRIMAL_FLESH_WALL.get()
-		);
+		IntrinsicTagAppender<Block> wallsTag = tag(BlockTags.WALLS);
+		ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).filter(WallBlock.class::isInstance).forEach(wallsTag::add);
 
-		tag(BlockTags.STAIRS).add(
-				ModBlocks.FLESH_STAIRS.get(),
-				ModBlocks.PACKED_FLESH_STAIRS.get(),
-				ModBlocks.MALIGNANT_FLESH_STAIRS.get(),
-				ModBlocks.PRIMAL_FLESH_STAIRS.get(),
-				ModBlocks.SMOOTH_PRIMAL_FLESH_STAIRS.get(),
-				ModBlocks.POROUS_PRIMAL_FLESH_STAIRS.get()
-		);
+		IntrinsicTagAppender<Block> stairsTag = tag(BlockTags.STAIRS);
+		ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).filter(StairBlock.class::isInstance).forEach(stairsTag::add);
 
 		tag(BlockTags.PRESSURE_PLATES).add(ModBlocks.FLESHKIN_PRESSURE_PLATE.get());
 
 		tag(BlockTags.CLIMBABLE).add(ModBlocks.FLESH_LADDER.get());
 
-		tag(BlockTags.SLABS).add(
-				ModBlocks.FLESH_SLAB.get(),
-				ModBlocks.PACKED_FLESH_SLAB.get(),
-				ModBlocks.ORNATE_FLESH_SLAB.get(),
-				ModBlocks.PRIMAL_FLESH_SLAB.get(),
-				ModBlocks.SMOOTH_PRIMAL_FLESH_SLAB.get(),
-				ModBlocks.POROUS_PRIMAL_FLESH_SLAB.get(),
-				ModBlocks.MALIGNANT_FLESH_SLAB.get()
-		);
+		IntrinsicTagAppender<Block> slabsTag = tag(BlockTags.SLABS);
+		ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).filter(block -> block instanceof DirectionalSlabBlock || block instanceof SlabBlock).forEach(slabsTag::add);
 
 		IntrinsicTagAppender<Block> impermeableTag = tag(BlockTags.IMPERMEABLE);
 		ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).filter(Membrane.class::isInstance).forEach(impermeableTag::add);
