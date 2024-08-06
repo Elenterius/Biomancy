@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "biomancy:bio_forging/fibrous_flesh_from_bio_forging"
+        "recipe": "biomancy:bio_forging/fibrous_flesh_stairs_from_bio_forging"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "biomancy:bio_forging/fibrous_flesh_from_bio_forging"
+      "biomancy:bio_forging/fibrous_flesh_stairs_from_bio_forging"
     ]
   },
   "sends_telemetry_event": false

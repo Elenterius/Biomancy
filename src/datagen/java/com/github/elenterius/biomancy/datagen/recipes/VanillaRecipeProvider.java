@@ -205,6 +205,13 @@ public class VanillaRecipeProvider extends RecipeProvider {
 		stonecutting(consumer, ModItems.PACKED_FLESH_SLAB.get(), ModItems.PACKED_FLESH_BLOCK.get(), 2);
 		stonecutting(consumer, ModItems.PACKED_FLESH_WALL.get(), ModItems.PACKED_FLESH_BLOCK.get());
 
+		stairs(consumer, ModItems.FIBROUS_FLESH_STAIRS.get(), ModItems.FIBROUS_FLESH_BLOCK.get());
+		slab(consumer, ModItems.FIBROUS_FLESH_SLAB.get(), ModItems.FIBROUS_FLESH_BLOCK.get());
+		wall(consumer, ModItems.FIBROUS_FLESH_WALL.get(), ModItems.FIBROUS_FLESH_BLOCK.get());
+		stonecutting(consumer, ModItems.FIBROUS_FLESH_STAIRS.get(), ModItems.FIBROUS_FLESH_BLOCK.get());
+		stonecutting(consumer, ModItems.FIBROUS_FLESH_SLAB.get(), ModItems.FIBROUS_FLESH_BLOCK.get(), 2);
+		stonecutting(consumer, ModItems.FIBROUS_FLESH_WALL.get(), ModItems.FIBROUS_FLESH_BLOCK.get());
+
 		slab(consumer, ModItems.ORNATE_FLESH_SLAB.get(), ModItems.ORNATE_FLESH_BLOCK.get());
 		blockFromSlabs(consumer, ModItems.ORNATE_FLESH_BLOCK.get(), ModItems.ORNATE_FLESH_SLAB.get());
 		stonecutting(consumer, ModItems.ORNATE_FLESH_SLAB.get(), ModItems.ORNATE_FLESH_BLOCK.get(), 2);

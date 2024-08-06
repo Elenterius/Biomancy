@@ -80,8 +80,12 @@ public class ModBlockStateProvider extends BlockStateProvider {
 		stairsBlockWithItem(ModBlocks.PACKED_FLESH_STAIRS, ModBlocks.PACKED_FLESH);
 		wallBlock(ModBlocks.PACKED_FLESH_WALL, ModBlocks.PACKED_FLESH);
 
-		axisBlockWithItem(ModBlocks.FLESH_PILLAR);
 		simpleBlockWithItem(ModBlocks.FIBROUS_FLESH);
+		directionalSlabBlockWithItem(ModBlocks.FIBROUS_FLESH_SLAB, ModBlocks.FIBROUS_FLESH);
+		stairsBlockWithItem(ModBlocks.FIBROUS_FLESH_STAIRS, ModBlocks.FIBROUS_FLESH);
+		wallBlock(ModBlocks.FIBROUS_FLESH_WALL, ModBlocks.FIBROUS_FLESH);
+
+		axisBlockWithItem(ModBlocks.FLESH_PILLAR);
 		existingBlockWithItem(ModBlocks.CHISELED_FLESH);
 		axisBlockWithItem(ModBlocks.ORNATE_FLESH);
 		directionalPillarSlabBlockWithItem(ModBlocks.ORNATE_FLESH_SLAB, ModBlocks.ORNATE_FLESH);

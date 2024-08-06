@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "biomancy:fibrous_flesh"
+  },
+  "result": "biomancy:fibrous_flesh_stairs"
+}

@@ -173,8 +173,11 @@ public final class ModItems {
 	public static final RegistryObject<SimpleBlockItem> PACKED_FLESH_SLAB = registerSimpleBlockItem(ModBlocks.PACKED_FLESH_SLAB);
 	public static final RegistryObject<SimpleBlockItem> PACKED_FLESH_STAIRS = registerSimpleBlockItem(ModBlocks.PACKED_FLESH_STAIRS);
 	public static final RegistryObject<SimpleBlockItem> PACKED_FLESH_WALL = registerSimpleBlockItem(ModBlocks.PACKED_FLESH_WALL);
-	public static final RegistryObject<SimpleBlockItem> FLESH_PILLAR = registerSimpleBlockItem(ModBlocks.FLESH_PILLAR);
 	public static final RegistryObject<SimpleBlockItem> FIBROUS_FLESH_BLOCK = registerSimpleBlockItem(ModBlocks.FIBROUS_FLESH);
+	public static final RegistryObject<SimpleBlockItem> FIBROUS_FLESH_SLAB = registerSimpleBlockItem(ModBlocks.FIBROUS_FLESH_SLAB);
+	public static final RegistryObject<SimpleBlockItem> FIBROUS_FLESH_STAIRS = registerSimpleBlockItem(ModBlocks.FIBROUS_FLESH_STAIRS);
+	public static final RegistryObject<SimpleBlockItem> FIBROUS_FLESH_WALL = registerSimpleBlockItem(ModBlocks.FIBROUS_FLESH_WALL);
+	public static final RegistryObject<SimpleBlockItem> FLESH_PILLAR = registerSimpleBlockItem(ModBlocks.FLESH_PILLAR);
 	public static final RegistryObject<SimpleBlockItem> CHISELED_FLESH_BLOCK = registerSimpleBlockItem(ModBlocks.CHISELED_FLESH);
 	public static final RegistryObject<SimpleBlockItem> ORNATE_FLESH_BLOCK = registerSimpleBlockItem(ModBlocks.ORNATE_FLESH);
 	public static final RegistryObject<SimpleBlockItem> ORNATE_FLESH_SLAB = registerSimpleBlockItem(ModBlocks.ORNATE_FLESH_SLAB);
