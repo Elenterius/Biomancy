@@ -1,10 +1,7 @@
 package com.github.elenterius.biomancy.init;
 
 import com.github.elenterius.biomancy.BiomancyMod;
-import com.github.elenterius.biomancy.entity.mob.FleshChicken;
-import com.github.elenterius.biomancy.entity.mob.FleshCow;
-import com.github.elenterius.biomancy.entity.mob.FleshPig;
-import com.github.elenterius.biomancy.entity.mob.FleshSheep;
+import com.github.elenterius.biomancy.entity.mob.*;
 import com.github.elenterius.biomancy.entity.mob.fleshblob.AdulteratedEaterFleshBlob;
 import com.github.elenterius.biomancy.entity.mob.fleshblob.AdulteratedHangryEaterFleshBlob;
 import com.github.elenterius.biomancy.entity.mob.fleshblob.PrimordialEaterFleshBlob;
@@ -43,16 +40,8 @@ public final class ModEntityTypes {
 	public static final RegistryObject<EntityType<FleshPig>> FLESH_PIG = register("flesh_pig", EntityType.Builder.of(FleshPig::new, MobCategory.CREATURE).sized(0.9f, 0.9f).clientTrackingRange(10));
 	public static final RegistryObject<EntityType<FleshChicken>> FLESH_CHICKEN = register("flesh_chicken", EntityType.Builder.of(FleshChicken::new, MobCategory.CREATURE).sized(0.4f, 0.7f).clientTrackingRange(10));
 
-	//# Ownable
-	//	public static final RegistryObject<EntityType<Boomling>> BOOMLING = register("boomling", EntityType.Builder.of(Boomling::new, MobCategory.MONSTER).sized(0.4F, 0.35F));
-	//	public static final RegistryObject<EntityType<Fleshkin>> FLESHKIN = register("fleshkin", EntityType.Builder.of(Fleshkin::new, MobCategory.MONSTER).sized(0.6f, 1.95f).clientTrackingRange(10));
-	//
-	//	public static final RegistryObject<EntityType<BeetlingEntity>> BEETLING = register("beetling", EntityType.Builder.of(BeetlingEntity::new, EntityClassification.CREATURE).sized(0.475F, 0.34F));
-	//	public static final RegistryObject<EntityType<CrocospiderEntity>> BROOD_MOTHER = register("brood_mother", EntityType.Builder.of(CrocospiderEntity::new, EntityClassification.MONSTER).sized(1.6F, 0.7F));
-
-	//	//GMOs
-	//	public static final RegistryObject<EntityType<ChromaSheepEntity>> CHROMA_SHEEP = register("chroma_sheep", EntityType.Builder.of(ChromaSheepEntity::new, EntityClassification.CREATURE).sized(0.9f, 1.3f).clientTrackingRange(10));
-	//	public static final RegistryObject<EntityType<SilkyWoolSheepEntity>> SILKY_WOOL_SHEEP = register("silky_wool_sheep", EntityType.Builder.of(SilkyWoolSheepEntity::new, EntityClassification.CREATURE).sized(0.9f, 1.3f).clientTrackingRange(10));
+	//# Genetic Mutations
+	public static final RegistryObject<EntityType<ChromaSheep>> CHROMA_SHEEP = register("chroma_sheep", EntityType.Builder.of(ChromaSheep::new, MobCategory.CREATURE).sized(0.9f, 1.3f).clientTrackingRange(10));
 	//	public static final RegistryObject<EntityType<ThickWoolSheepEntity>> THICK_WOOL_SHEEP = register("thick_wool_sheep", EntityType.Builder.of(ThickWoolSheepEntity::new, EntityClassification.CREATURE).sized(0.9f, 1.3f).clientTrackingRange(10));
 
 	//Projectiles
@@ -82,6 +71,7 @@ public final class ModEntityTypes {
 		event.put(FLESH_SHEEP.get(), Sheep.createAttributes().build());
 		event.put(FLESH_PIG.get(), FleshPig.createAttributes().build());
 		event.put(FLESH_CHICKEN.get(), Chicken.createAttributes().build());
+		event.put(CHROMA_SHEEP.get(), Sheep.createAttributes().build());
 	}
 
 }
