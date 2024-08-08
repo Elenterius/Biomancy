@@ -56,7 +56,7 @@ public class ModEntityLoot extends EntityLootSubProvider {
 				);
 	}
 
-	private LootTable.Builder sheepLootTable() {
+	private LootTable.Builder fleshSheepLootTable() {
 		return LootTable.lootTable()
 				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(Items.MUTTON)
 						.apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4)))
@@ -72,7 +72,7 @@ public class ModEntityLoot extends EntityLootSubProvider {
 				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootTableReference.lootTableReference(ModEntityTypes.FLESH_SHEEP.get().getDefaultLootTable())));
 	}
 
-	private LootTable.Builder chromaSheepLootTable() {
+	private LootTable.Builder sheepLootTable() {
 		return LootTable.lootTable()
 				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(Items.MUTTON)
 						.apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
@@ -118,11 +118,12 @@ public class ModEntityLoot extends EntityLootSubProvider {
 		add(ModEntityTypes.PRIMORDIAL_FLESH_BLOB.get(), fleshBlobLootTable());
 		add(ModEntityTypes.PRIMORDIAL_HUNGRY_FLESH_BLOB.get(), fleshBlobLootTable());
 		add(ModEntityTypes.FLESH_COW.get(), cowLootTable());
-		add(ModEntityTypes.FLESH_SHEEP.get(), sheepLootTable());
+		add(ModEntityTypes.FLESH_SHEEP.get(), fleshSheepLootTable());
 		add(ModEntityTypes.FLESH_SHEEP.get(), ModLoot.Entity.FLESH_SHEEP_UNSHORN, unshornSheepLootTable());
 		add(ModEntityTypes.FLESH_PIG.get(), pigLootTable());
 		add(ModEntityTypes.FLESH_CHICKEN.get(), chickenLootTable());
-		add(ModEntityTypes.CHROMA_SHEEP.get(), chromaSheepLootTable());
+		add(ModEntityTypes.CHROMA_SHEEP.get(), sheepLootTable());
+		add(ModEntityTypes.THICK_FUR_SHEEP.get(), sheepLootTable());
 	}
 
 	@Override

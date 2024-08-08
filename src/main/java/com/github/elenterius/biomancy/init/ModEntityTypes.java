@@ -42,7 +42,7 @@ public final class ModEntityTypes {
 
 	//# Genetic Mutations
 	public static final RegistryObject<EntityType<ChromaSheep>> CHROMA_SHEEP = register("chroma_sheep", EntityType.Builder.of(ChromaSheep::new, MobCategory.CREATURE).sized(0.9f, 1.3f).clientTrackingRange(10));
-	//	public static final RegistryObject<EntityType<ThickWoolSheepEntity>> THICK_WOOL_SHEEP = register("thick_wool_sheep", EntityType.Builder.of(ThickWoolSheepEntity::new, EntityClassification.CREATURE).sized(0.9f, 1.3f).clientTrackingRange(10));
+	public static final RegistryObject<EntityType<ThickFurSheep>> THICK_FUR_SHEEP = register("thick_fur_sheep", EntityType.Builder.of(ThickFurSheep::new, MobCategory.CREATURE).sized(0.9f, 1.3f).clientTrackingRange(10));
 
 	//Projectiles
 	public static final RegistryObject<EntityType<ToothProjectile>> TOOTH_PROJECTILE = registerProjectile("tooth_projectile", ToothProjectile::new, builder -> builder.sized(0.25f, 0.25f));
@@ -72,6 +72,7 @@ public final class ModEntityTypes {
 		event.put(FLESH_PIG.get(), FleshPig.createAttributes().build());
 		event.put(FLESH_CHICKEN.get(), Chicken.createAttributes().build());
 		event.put(CHROMA_SHEEP.get(), Sheep.createAttributes().build());
+		event.put(THICK_FUR_SHEEP.get(), Sheep.createAttributes().build());
 	}
 
 }
