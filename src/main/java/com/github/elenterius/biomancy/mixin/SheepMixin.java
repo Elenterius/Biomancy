@@ -30,6 +30,10 @@ public abstract class SheepMixin extends Animal {
 				FleshSheep sheep = ModEntityTypes.FLESH_SHEEP.get().create(level);
 				cir.setReturnValue(sheep);
 			}
+			else if (random.nextFloat() < p) {
+				Sheep sheep = ModEntityTypes.THICK_FUR_SHEEP.get().create(level);
+				cir.setReturnValue(sheep);
+			}
 			else if (random.nextFloat() < p * 0.5f) {
 				ChromaSheep sheep = ModEntityTypes.CHROMA_SHEEP.get().create(level);
 				cir.setReturnValue(sheep);

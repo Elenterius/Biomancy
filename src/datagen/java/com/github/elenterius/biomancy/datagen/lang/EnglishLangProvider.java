@@ -542,6 +542,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addItem(ModItems.FLESH_PIG_SPAWN_EGG, "Flesh Pig Spawn Egg");
 		addItem(ModItems.FLESH_CHICKEN_SPAWN_EGG, "Flesh Chicken Spawn Egg");
 		addItem(ModItems.CHROMA_SHEEP_SPAWN_EGG, "Chroma Sheep Spawn Egg");
+		addItem(ModItems.THICK_FUR_SHEEP_SPAWN_EGG, "Thick Fur Sheep Spawn Egg");
 	}
 
 	private void addBlockTranslations() {
@@ -666,6 +667,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addEntityType(ModEntityTypes.FLESH_PIG, "Flesh Pig");
 		addEntityType(ModEntityTypes.FLESH_CHICKEN, "Flesh Chicken");
 		addEntityType(ModEntityTypes.CHROMA_SHEEP, "Chroma Sheep");
+		addEntityType(ModEntityTypes.THICK_FUR_SHEEP, "Thick Fur Sheep");
 	}
 
 	private void addFluidTranslations() {
