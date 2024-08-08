@@ -29,7 +29,7 @@ vec3 hsb2rgb(in vec3 c){
 }
 
 const float DENSITY = 0.55;
-const float SPEED = 1.25;
+const float SPEED = 0.45;
 
 void main() {
     vec4 color = texture(Sampler0, texCoord0);

@@ -72,6 +72,14 @@ public class ModEntityLoot extends EntityLootSubProvider {
 				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootTableReference.lootTableReference(ModEntityTypes.FLESH_SHEEP.get().getDefaultLootTable())));
 	}
 
+	private LootTable.Builder chromaSheepLootTable() {
+		return LootTable.lootTable()
+				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(Items.MUTTON)
+						.apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
+						.apply(SmeltItemFunction.smelted().when(LootItemEntityPropertyCondition.hasProperties(LootContext.EntityTarget.THIS, ENTITY_ON_FIRE)))
+						.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1)))));
+	}
+
 	private LootTable.Builder pigLootTable() {
 		return LootTable.lootTable()
 				.withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(Items.PORKCHOP)
@@ -114,6 +122,7 @@ public class ModEntityLoot extends EntityLootSubProvider {
 		add(ModEntityTypes.FLESH_SHEEP.get(), ModLoot.Entity.FLESH_SHEEP_UNSHORN, unshornSheepLootTable());
 		add(ModEntityTypes.FLESH_PIG.get(), pigLootTable());
 		add(ModEntityTypes.FLESH_CHICKEN.get(), chickenLootTable());
+		add(ModEntityTypes.CHROMA_SHEEP.get(), chromaSheepLootTable());
 	}
 
 	@Override
