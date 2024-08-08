@@ -23,6 +23,7 @@ public final class FleshTongue {
 		createItemComment(ModItems.DIGESTER.get(), "Digest her? I barely know her...\n- spicynips");
 		createItemComment(ModItems.ORNATE_FLESH_BLOCK.get(), "Birthplace of Crembo and Jarky");
 		createItemComment(ModItems.ACOLYTE_ARMOR_CHESTPLATE.get(), "If you're hot, take off your skin.\n- Karmatic");
+		createItemComment(ModItems.ACOLYTE_ARMOR_LEGGINGS.get(), "I've been sprinting towards the horizon of insanity since birth.\n- kd8lvt");
 		createItemComment(ModItems.AGEING_SERUM.get(), "We can regard our life as a uselessly disturbing episode in the blissful repose of nothingness.\n- Arthur Schopenhauer");
 		createItemComment(ModItems.BREEDING_STIMULANT.get(), "Happiness and the absurd are two sons of the same earth. They are inseparable.\n- Albert Camus");
 		createItemComment(ModItems.SHRINKING_SERUM.get(), "Normalize the idea of living inside of Someone.\n- Tarael Blackwing");
