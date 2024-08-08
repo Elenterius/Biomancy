@@ -124,7 +124,7 @@
   "serum.biomancy.cleansing_serum.tooltip": "Burns away all foreign substances inside a creature.\nVery effective on sticky status effects that refuse to be healed with milk.",
   "serum.biomancy.breeding_stimulant": "Breeding Stimulant",
   "item.biomancy.breeding_stimulant": "Breeding Stimulant",
-  "serum.biomancy.breeding_stimulant.tooltip": "Makes Animals hyper-fertile, making them able to repeatedly reproduce for a short time.",
+  "serum.biomancy.breeding_stimulant.tooltip": "Potent drug that that temporarily forces animals into a state of hyper-fertility, allowing them to reproduce repeatedly for a short time.\nUse with caution, as this stimulant may lead to undesirable mutations in the offspring.",
   "serum.biomancy.absorption_boost": "Absorption Stimulant",
   "item.biomancy.absorption_boost": "Absorption Stimulant",
   "serum.biomancy.absorption_boost.tooltip": "Grants stackable absorption health points to Mobs and Players.",
