@@ -24,22 +24,22 @@
       "bones": {
         "leg0": {
           "rotation": {
-            "vector": [ "math.cos(query.anim_time * 360) * 80.0", 0, 0 ]
+            "vector": [ "math.cos(custom_query.limb_swing * 38.1704) * 80.0 * custom_query.limb_swing_amount", 0, 0 ]
           }
         },
         "leg1": {
           "rotation": {
-            "vector": [ "math.cos(query.anim_time * 360) * -80.0", 0, 0 ]
+            "vector": [ "math.cos(custom_query.limb_swing * 38.1704) * -80.0 * custom_query.limb_swing_amount", 0, 0 ]
           }
         },
         "leg2": {
           "rotation": {
-            "vector": [ "math.cos(query.anim_time * 360) * -80.0", 0, 0 ]
+            "vector": [ "math.cos(custom_query.limb_swing * 38.1704) * -80.0 * custom_query.limb_swing_amount", 0, 0 ]
           }
         },
         "leg3": {
           "rotation": {
-            "vector": [ "math.cos(query.anim_time * 360) * 80.0", 0, 0 ]
+            "vector": [ "math.cos(custom_query.limb_swing * 38.1704) * 80.0 * custom_query.limb_swing_amount", 0, 0 ]
           }
         }
       }
