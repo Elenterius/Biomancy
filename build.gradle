@@ -151,6 +151,10 @@ repositories {
 	maven {
 		name = 'Geckolib'
 		url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+		content {
+			includeGroupByRegex("software\\.bernie.*")
+			includeGroup("com.eliotlash.mclib")
+		}
 	}
 	maven { url = 'https://maven.blamejared.com' }
 	maven {
@@ -186,6 +190,7 @@ dependencies {
 	}
 
 	implementation fg.deobf("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
+	implementation("com.eliotlash.mclib:mclib:20")
 	datagenImplementation fg.deobf("software.bernie.geckolib:geckolib-forge-${minecraft_version}:${geckolib_version}")
 
 	//https://h2database.com/html/mvstore.html
