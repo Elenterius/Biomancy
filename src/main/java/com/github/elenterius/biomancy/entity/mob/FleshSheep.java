@@ -21,6 +21,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.Nullable;
@@ -59,9 +60,21 @@ public class FleshSheep extends Sheep implements GeoEntity {
 
 		setSheared(true);
 
-		int count = random.nextIntBetweenInclusive(1, 5);
+		int count = random.nextIntBetweenInclusive(1, 4);
 		for (int i = 0; i < count; i++) {
 			ItemEntity itemEntity = spawnAtLocation(ModItems.FLESH_BITS.get(), 1);
+			if (itemEntity != null) {
+				itemEntity.setDeltaMovement(itemEntity.getDeltaMovement().add(
+						(random.nextFloat() - random.nextFloat()) * 0.1f,
+						random.nextFloat() * 0.05f,
+						(random.nextFloat() - random.nextFloat()) * 0.1f)
+				);
+			}
+		}
+
+		count = random.nextIntBetweenInclusive(2, 4);
+		for (int i = 0; i < count; i++) {
+			ItemEntity itemEntity = spawnAtLocation(Items.STRING, 1);
 			if (itemEntity != null) {
 				itemEntity.setDeltaMovement(itemEntity.getDeltaMovement().add(
 						(random.nextFloat() - random.nextFloat()) * 0.1f,
@@ -80,12 +93,18 @@ public class FleshSheep extends Sheep implements GeoEntity {
 		if (!world.isClientSide) {
 			setSheared(true);
 
-			int count = random.nextIntBetweenInclusive(1, 5);
-
 			List<ItemStack> list = new ArrayList<>();
+
+			int count = random.nextIntBetweenInclusive(1, 4);
 			for (int i = 0; i < count; i++) {
 				list.add(new ItemStack(ModItems.FLESH_BITS.get()));
 			}
+
+			count = random.nextIntBetweenInclusive(2, 4);
+			for (int i = 0; i < count; i++) {
+				list.add(new ItemStack(Items.STRING));
+			}
+
 			return list;
 		}
 
