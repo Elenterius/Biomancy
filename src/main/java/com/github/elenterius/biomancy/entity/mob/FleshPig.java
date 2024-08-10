@@ -13,7 +13,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.LeapAtTargetGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -48,7 +47,6 @@ public class FleshPig extends Pig implements Enemy, GeoEntity {
 	@Override
 	protected void registerGoals() {
 		super.registerGoals();
-		goalSelector.addGoal(1, new LeapAtTargetGoal(this, 0.4f));
 		goalSelector.addGoal(2, new MeleeAttackGoal(this, 1d, true));
 
 		targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
