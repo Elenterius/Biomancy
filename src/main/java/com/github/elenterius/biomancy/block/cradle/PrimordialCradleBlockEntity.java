@@ -156,6 +156,22 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 		return sacrificeHandler.getLifeEnergyPct();
 	}
 
+	public float getSuccessChance() {
+		return sacrificeHandler.getSuccessChance();
+	}
+
+	public float getHostileChance() {
+		return sacrificeHandler.getHostileChance();
+	}
+
+	public float getAnomalyChance() {
+		return sacrificeHandler.getAnomalyChance();
+	}
+
+	public float getDiseaseChance() {
+		return sacrificeHandler.getTumorFactor();
+	}
+
 	public boolean hasModifiers() {
 		return sacrificeHandler.hasModifiers();
 	}
@@ -390,7 +406,8 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 
 	@Override
 	protected void saveForSyncToClient(CompoundTag tag) {
-		tag.put(SACRIFICE_SYNC_KEY, sacrificeHandler.serializeNBT());
+		//		tag.put(SACRIFICE_SYNC_KEY, sacrificeHandler.serializeNBT());
+		tag.put(SACRIFICE_KEY, sacrificeHandler.serializeNBT());
 	}
 
 	@Override
@@ -399,9 +416,9 @@ public class PrimordialCradleBlockEntity extends SimpleSyncedBlockEntity impleme
 		if (tag.contains(SACRIFICE_KEY)) {
 			sacrificeHandler.deserializeNBT(tag.getCompound(SACRIFICE_KEY));
 		}
-		else if (tag.contains(SACRIFICE_SYNC_KEY)) {
-			sacrificeHandler.deserializeNBT(tag.getCompound(SACRIFICE_SYNC_KEY));
-		}
+		//		else if (tag.contains(SACRIFICE_SYNC_KEY)) {
+		//			sacrificeHandler.deserializeNBT(tag.getCompound(SACRIFICE_SYNC_KEY));
+		//		}
 
 		primalEnergy = tag.getInt(PRIMAL_ENERGY_KEY);
 

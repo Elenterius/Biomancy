@@ -212,4 +212,14 @@ public final class ComponentUtil {
 		return lines;
 	}
 
+	public static <T extends Component> T setStyles(T component, Style style) {
+		if (component instanceof MutableComponent mutable) {
+			mutable.withStyle(style);
+		}
+
+		component.getSiblings().forEach(sibling -> setStyles(sibling, style));
+
+		return component;
+	}
+
 }

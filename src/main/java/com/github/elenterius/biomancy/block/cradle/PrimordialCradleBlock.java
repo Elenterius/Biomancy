@@ -99,7 +99,7 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 		return tag.contains(PrimordialCradleBlockEntity.PRIMAL_ENERGY_KEY) ? tag.getInt(PrimordialCradleBlockEntity.PRIMAL_ENERGY_KEY) : 0;
 	}
 
-	private static MutableComponent createValueComponent(DecimalFormat df, int value, String name) {
+	public static MutableComponent createValueComponent(DecimalFormat df, int value, String name) {
 		return ComponentUtil.literal(df.format(value))
 				.withStyle(TextStyles.PRIMORDIAL_RUNES_LIGHT_GRAY)
 				.append(ComponentUtil.space())
@@ -291,7 +291,7 @@ public class PrimordialCradleBlock extends HorizontalDirectionalBlock implements
 			if (lifeEnergy > 0) tooltip.add(createValueComponent(df, lifeEnergy, "Life Energy"));
 			if (success > 0) tooltip.add(createValueComponent(df, success, "Success"));
 			if (disease > 0) tooltip.add(createValueComponent(df, disease, "Disease"));
-			if (hostile > 0) tooltip.add(createValueComponent(df, hostile, "Hostile"));
+			if (hostile != 0) tooltip.add(createValueComponent(df, hostile, "Hostile"));
 			if (anomaly > 0) tooltip.add(createValueComponent(df, anomaly, "Anomaly"));
 		}
 	}

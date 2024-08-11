@@ -2,22 +2,35 @@ package com.github.elenterius.biomancy.client.gui;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.api.serum.SerumContainer;
+import com.github.elenterius.biomancy.block.cradle.PrimordialCradleBlock;
+import com.github.elenterius.biomancy.block.cradle.PrimordialCradleBlockEntity;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
 import com.github.elenterius.biomancy.client.util.GuiUtil;
+import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.item.ItemCharge;
 import com.github.elenterius.biomancy.item.injector.InjectorItem;
 import com.github.elenterius.biomancy.item.weapon.gun.Gun;
+import com.github.elenterius.biomancy.styles.TextStyles;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
+import org.jetbrains.annotations.Nullable;
 
 public final class IngameOverlays {
 
@@ -61,7 +74,57 @@ public final class IngameOverlays {
 		}
 	};
 
+	public static final IGuiOverlay KNOWLEDGE_OVERLAY = (gui, guiGraphics, partialTicks, screenWidth, screenHeight) -> {
+		Minecraft minecraft = Minecraft.getInstance();
+
+		if (minecraft.player == null || minecraft.level == null) return;
+		if (minecraft.options.hideGui) return;
+		if (!GuiUtil.isFirstPersonView()) return;
+
+		BlockHitResult blockHitResult = getBlockHitResult(minecraft);
+		if (blockHitResult == null) return;
+
+		ItemStack itemStack = minecraft.player.getItemBySlot(EquipmentSlot.HEAD);
+		if (itemStack.isEmpty()) return;
+
+		int knowledgeLevel = itemStack.getEnchantmentLevel(ModEnchantments.PRIMORDIAL_KNOWLEDGE.get());
+		if (knowledgeLevel < 1) return;
+
+		BlockPos blockPos = blockHitResult.getBlockPos();
+		BlockState blockState = minecraft.level.getBlockState(blockPos);
+		if (blockState.getBlock() instanceof PrimordialCradleBlock && minecraft.level.getExistingBlockEntity(blockPos) instanceof PrimordialCradleBlockEntity cradle) {
+			gui.setupOverlayRenderState(true, false);
+			renderKnowledgeOverlay(gui, guiGraphics, screenWidth, screenHeight, -90, cradle, knowledgeLevel);
+		}
+	};
+
 	private IngameOverlays() {}
+
+	static void renderKnowledgeOverlay(ForgeGui gui, GuiGraphics guiGraphics, int screenWidth, int screenHeight, int zDepth, PrimordialCradleBlockEntity cradle, int knowledgeLevel) {
+		Font font = gui.getFont();
+
+		int x = screenWidth / 2 + 64;
+		int y = screenHeight / 2 - font.lineHeight - 2;
+
+		drawValueWithLabel(guiGraphics, font, cradle.getSuccessChance(), "Success", x, y);
+		y += font.lineHeight;
+		drawValueWithLabel(guiGraphics, font, cradle.getBiomassPct(), "Biomass", x, y += font.lineHeight + 2);
+		drawValueWithLabel(guiGraphics, font, cradle.getLifeEnergyPct(), "Life Energy", x, y += font.lineHeight + 2);
+		drawValueWithLabel(guiGraphics, font, cradle.getDiseaseChance(), "Disease", x, y += font.lineHeight + 2);
+		drawValueWithLabel(guiGraphics, font, cradle.getHostileChance(), "Hostile", x, y += font.lineHeight + 2);
+		drawValueWithLabel(guiGraphics, font, cradle.getAnomalyChance(), "Anomaly", x, y + (font.lineHeight + 2));
+	}
+
+	static void drawValueWithLabel(GuiGraphics guiGraphics, Font font, String valueString, String label, int x, int y, Style numberStyle, Style labelStyle) {
+		MutableComponent valueText = ComponentUtil.literal(valueString).withStyle(numberStyle);
+		MutableComponent labelText = ComponentUtil.literal(label).withStyle(labelStyle);
+		guiGraphics.drawString(font, valueText, x - font.width(valueText) - 4, y, 0xff_ffffff);
+		guiGraphics.drawString(font, labelText, x, y, 0xff_ffffff);
+	}
+
+	static void drawValueWithLabel(GuiGraphics guiGraphics, Font font, float value, String label, int x, int y) {
+		drawValueWithLabel(guiGraphics, font, String.valueOf(value), label, x, y, TextStyles.PRIMORDIAL_RUNES_LIGHT_GRAY, TextStyles.PRIMORDIAL_RUNES_GRAY);
+	}
 
 	static void renderGunOverlay(ForgeGui gui, GuiGraphics guiGraphics, int screenWidth, int screenHeight, int zDepth, LocalPlayer player, ItemStack stack, Gun gun) {
 		renderAmmoOverlay(guiGraphics, gui.getFont(), screenWidth, screenHeight, zDepth, stack, gun);
@@ -163,6 +226,13 @@ public final class IngameOverlays {
 				GuiRenderUtil.drawAttackIndicator(guiGraphics, x, y, progress);
 			}
 		}
+	}
+
+	static @Nullable BlockHitResult getBlockHitResult(Minecraft minecraft) {
+		if (minecraft.hitResult == null) return null;
+		if (minecraft.hitResult.getType() != HitResult.Type.BLOCK) return null;
+		if (minecraft.hitResult instanceof BlockHitResult blockHitResult) return blockHitResult;
+		return null;
 	}
 
 }
