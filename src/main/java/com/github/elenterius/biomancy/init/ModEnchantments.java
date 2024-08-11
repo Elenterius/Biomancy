@@ -31,6 +31,7 @@ public final class ModEnchantments {
 	public static final RegistryObject<SurgicalPrecisionEnchantment> SURGICAL_PRECISION = ENCHANTMENTS.register("surgical_precision", () -> new SurgicalPrecisionEnchantment(Enchantment.Rarity.RARE, SURGERY_CATEGORY, EquipmentSlot.MAINHAND));
 	public static final RegistryObject<ParasiticMetabolismEnchantment> PARASITIC_METABOLISM = ENCHANTMENTS.register("parasitic_metabolism", () -> new ParasiticMetabolismEnchantment(Enchantment.Rarity.RARE, EquipmentSlot.values()));
 	public static final RegistryObject<SelfFeedingEnchantment> SELF_FEEDING = ENCHANTMENTS.register("self_feeding", () -> new SelfFeedingEnchantment(Enchantment.Rarity.RARE, EquipmentSlot.values()));
+	public static final RegistryObject<PrimordialKnowledgeEnchantment> PRIMORDIAL_KNOWLEDGE = ENCHANTMENTS.register("primordial_knowledge", () -> new PrimordialKnowledgeEnchantment(Enchantment.Rarity.RARE, EquipmentSlot.HEAD));
 
 	private ModEnchantments() {}
 

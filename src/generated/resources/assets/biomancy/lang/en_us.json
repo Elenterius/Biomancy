@@ -318,6 +318,8 @@
   "enchantment.biomancy.parasitic_metabolism.desc": "When any held or equipped living item is damaged, consumes every 1.5 seconds nutrition from a healthy players food bar to restore nutrients.",
   "enchantment.biomancy.self_feeding": "Self-Feeding",
   "enchantment.biomancy.self_feeding.desc": "When any held or equipped living item is damaged, consumes every 1.5 seconds nutrients from the players hotbar.",
+  "enchantment.biomancy.primordial_knowledge": "Primordial Knowledge",
+  "enchantment.biomancy.primordial_knowledge.desc": "When holding or wearing any living items primordial knowledge is injected into your brain.",
   "item.minecraft.potion.effect.biomancy.gastric_juice": "Gastric Juice",
   "item.minecraft.splash_potion.effect.biomancy.gastric_juice": "Gastric Splash-Juice",
   "item.minecraft.lingering_potion.effect.biomancy.gastric_juice": "Gastric Linger-Juice",
