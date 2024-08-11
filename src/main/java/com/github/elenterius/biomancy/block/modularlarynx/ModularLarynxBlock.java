@@ -4,12 +4,14 @@ import com.github.elenterius.biomancy.block.property.BlockPropertyUtil;
 import com.github.elenterius.biomancy.block.property.MobSoundType;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModBlockProperties;
-import com.github.elenterius.biomancy.styles.TextStyles;
+import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.ComponentUtil;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -190,11 +192,15 @@ public class ModularLarynxBlock extends BaseEntityBlock {
 		super.appendHoverText(stack, level, tooltip, flag);
 
 		tooltip.add(ComponentUtil.emptyLine());
-		tooltip.add(ComponentUtil.literal("When Placed on Soul Sand or Soil:").withStyle(TextStyles.GRAY));
-		tooltip.add(ComponentUtil.literal(" Use Death Sound").withStyle(TextStyles.DARK_GRAY));
-		tooltip.add(ComponentUtil.literal("When Placed on Magma:").withStyle(TextStyles.GRAY));
-		tooltip.add(ComponentUtil.literal(" Use Hurt Sound").withStyle(TextStyles.DARK_GRAY));
-		tooltip.add(ComponentUtil.literal("When Placed on Other:").withStyle(TextStyles.GRAY));
-		tooltip.add(ComponentUtil.literal(" Use Ambient Sound").withStyle(TextStyles.DARK_GRAY));
+		tooltip.add(getExtraTooltip(this, "1").withStyle(ChatFormatting.GRAY));
+		tooltip.add(ComponentUtil.literal(" ").append(getExtraTooltip(this, "2")).withStyle(ChatFormatting.DARK_GRAY));
+		tooltip.add(getExtraTooltip(this, "3").withStyle(ChatFormatting.GRAY));
+		tooltip.add(ComponentUtil.literal(" ").append(getExtraTooltip(this, "4")).withStyle(ChatFormatting.DARK_GRAY));
+		tooltip.add(getExtraTooltip(this, "5").withStyle(ChatFormatting.GRAY));
+		tooltip.add(ComponentUtil.literal(" ").append(getExtraTooltip(this, "6")).withStyle(ChatFormatting.DARK_GRAY));
+	}
+
+	public static MutableComponent getExtraTooltip(Block block, String suffix) {
+		return ComponentUtil.translatable(TextComponentUtil.getItemTooltipKey(block) + "." + suffix);
 	}
 }
