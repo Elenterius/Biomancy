@@ -630,6 +630,13 @@ public class EnglishLangProvider extends AbstractLangProvider {
 						
 				You can also use automation like Hoppers to insert and extract the Mob Essence.
 				""");
+		add(TextComponentUtil.getItemTooltipKey(ModBlocks.MODULAR_LARYNX.get()) + ".1", "When Placed on Soul Sand or Soil:");
+		add(TextComponentUtil.getItemTooltipKey(ModBlocks.MODULAR_LARYNX.get()) + ".2", "Use Death Sound");
+		add(TextComponentUtil.getItemTooltipKey(ModBlocks.MODULAR_LARYNX.get()) + ".3", "When Placed on Magma:");
+		add(TextComponentUtil.getItemTooltipKey(ModBlocks.MODULAR_LARYNX.get()) + ".4", "Use Hurt Sound");
+		add(TextComponentUtil.getItemTooltipKey(ModBlocks.MODULAR_LARYNX.get()) + ".5", "When Placed on Other:");
+		add(TextComponentUtil.getItemTooltipKey(ModBlocks.MODULAR_LARYNX.get()) + ".6", "Use Ambient Sound");
+
 		//addBlock(ModBlocks.NEURAL_INTERCEPTOR, "Neural Interceptor", "A psychic node that prevents natural mob spawning in a 48 block radius.");
 
 		addBlock(ModBlocks.PRIMAL_FLESH, "Primal Flesh Block", "Primitive and pure, you better not touch this with your dirty mitts.");
