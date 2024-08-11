@@ -68,6 +68,16 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 				.add(Blocks.MOSS_BLOCK, Blocks.VINE)
 				.addTag(BlockTags.FLOWERS);
 
+		tag(ModBlockTags.LAVA_DESTRUCTIBLE).add(
+				ModBlocks.MALIGNANT_FLESH_VEINS.get(),
+				ModBlocks.MALIGNANT_FLESH_SLAB.get(),
+				ModBlocks.MALIGNANT_FLESH_STAIRS.get(),
+				ModBlocks.MALIGNANT_FLESH_WALL.get(),
+				ModBlocks.PRIMAL_BLOOM.get(),
+				ModBlocks.PRIMAL_PERMEABLE_MEMBRANE.get(),
+				ModBlocks.PRIMAL_PERMEABLE_MEMBRANE_PANE.get()
+		);
+
 		tag(BlockTags.DOORS).add(ModBlocks.FLESH_DOOR.get()).add(ModBlocks.FULL_FLESH_DOOR.get());
 		tag(BlockTags.TRAPDOORS).add(ModBlocks.FLESH_IRIS_DOOR.get());
 
