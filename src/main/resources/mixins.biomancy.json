@@ -12,7 +12,8 @@
     "CreeperAccessor", "DamageSourceAccessor", "EntityAccessor", "FlowingFluidMixin", "IntegerPropertyAccessor", "LivingEntityAccessor", "LivingEntityMixin",
     "MobEffectInstanceAccessor", "MobEffectInstanceMixin", "MobEntityAccessor", "PhantomMixin", "PigMixin", "PlayerMixin", "ServerLevelAccessor",
     "ServerLevelMixin", "SheepAccessor", "SheepMixin", "SlimeAccessor", "SuspiciousStewItemAccessor", "SwordItemMixinAccessor", "TadpoleAccessor",
-    "TextureSlotAccessor", "ThrownPotionMixin", "UnbreakingEnchantmentMixin", "WallBlockMixin", "ZombieVillagerMixinAccessor", "BlockMixin"
+    "TextureSlotAccessor", "ThrownPotionMixin", "UnbreakingEnchantmentMixin", "WallBlockMixin", "ZombieVillagerMixinAccessor", "BlockMixin",
+    "NodeEvaluatorMixin"
   ],
   "client": [
     "client.ClientPackListenerMixin", "client.ClientRecipeBookMixin", "client.GuiGraphicsMixin", "client.PlayerRendererMixin", "client.RecipeCollectionAccessor"
