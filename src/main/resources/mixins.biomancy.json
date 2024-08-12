@@ -11,7 +11,8 @@
     "AgeableMobAccessor", "AreaEffectCloudMixin", "ArmorStandAccessor", "ArrowMixin", "BiomeAccessor", "DamageSourceAccessor", "EntityAccessor",
     "IntegerPropertyAccessor", "LivingEntityAccessor", "LivingEntityMixin", "MobEffectInstanceAccessor", "MobEffectInstanceMixin", "MobEntityAccessor",
     "PhantomMixin", "PlayerMixin", "ServerLevelAccessor", "ServerLevelMixin", "SlimeAccessor", "SuspiciousStewItemAccessor", "SwordItemMixinAccessor",
-    "TadpoleAccessor", "TextureSlotAccessor", "ThrownPotionMixin", "UnbreakingEnchantmentMixin", "WallBlockMixin", "ZombieVillagerMixinAccessor"
+    "TadpoleAccessor", "TextureSlotAccessor", "ThrownPotionMixin", "UnbreakingEnchantmentMixin", "WallBlockMixin", "ZombieVillagerMixinAccessor",
+    "NodeEvaluatorMixin"
   ],
   "client": [
     "client.ClientPackListenerMixin", "client.ClientRecipeBookMixin", "client.GuiGraphicsMixin", "client.PlayerRendererMixin", "client.RecipeCollectionAccessor"

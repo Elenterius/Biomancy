@@ -60,19 +60,4 @@ public class MembraneBlock extends HalfTransparentBlock implements Membrane {
 		return state.getShape(level, pos);
 	}
 
-	/**
-	 * WARNING: broken Forge API
-	 * <p>
-	 * Gets the path type of this block when an entity is pathfinding. When
-	 * {@code null}, uses vanilla behavior.
-	 *
-	 * @param mob is always null
-	 * @see <a href="https://github.com/MinecraftForge/MinecraftForge/issues/9283">Forge Issue 9283</a>
-	 */
-	@Override
-	public @Nullable BlockPathTypes getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
-		//		if (ignoreEntityCollisionPredicate.test(state, level, pos, mob)) return BlockPathTypes.DOOR_OPEN; //doesn't work due to broken Forge API
-		return BlockPathTypes.STICKY_HONEY;
-	}
-
 }
