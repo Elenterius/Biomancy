@@ -5,17 +5,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
 
 public class MembranePaneBlock extends PaneBlock implements Membrane {
 
@@ -60,21 +57,6 @@ public class MembranePaneBlock extends PaneBlock implements Membrane {
 			}
 		}
 		return state.getShape(level, pos);
-	}
-
-	/**
-	 * WARNING: broken Forge API
-	 * <p>
-	 * Gets the path type of this block when an entity is pathfinding. When
-	 * {@code null}, uses vanilla behavior.
-	 *
-	 * @param mob is always null
-	 * @see <a href="https://github.com/MinecraftForge/MinecraftForge/issues/9283">Forge Issue 9283</a>
-	 */
-	@Override
-	public @Nullable BlockPathTypes getBlockPathType(BlockState state, BlockGetter level, BlockPos pos, @Nullable Mob mob) {
-		//		if (ignoreEntityCollisionPredicate.test(state, level, pos, mob)) return BlockPathTypes.DOOR_OPEN; //doesn't work due to broken Forge API
-		return BlockPathTypes.STICKY_HONEY;
 	}
 
 	@Override
