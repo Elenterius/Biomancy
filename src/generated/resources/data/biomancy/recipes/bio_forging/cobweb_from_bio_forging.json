@@ -1,0 +1,18 @@
+{
+  "type": "biomancy:bio_forging",
+  "bio_forge_tab": "biomancy:components",
+  "ingredients": [
+    {
+      "count": 8,
+      "item": "biomancy:elastic_fibers"
+    },
+    {
+      "count": 4,
+      "item": "biomancy:mineral_fragment"
+    }
+  ],
+  "nutrientsCost": 1,
+  "result": {
+    "item": "minecraft:cobweb"
+  }
+}

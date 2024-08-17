@@ -303,6 +303,12 @@ public class BioForgeRecipeProvider extends RecipeProvider {
 				.setCategory(ModBioForgeTabs.COMPONENTS)
 				.unlockedBy(Items.STRING).save(consumer);
 
+		BioForgeRecipeBuilder.create(Items.COBWEB)
+				.addIngredient(ModItems.ELASTIC_FIBERS.get(), 2 * 4)
+				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 4)
+				.setCategory(ModBioForgeTabs.COMPONENTS)
+				.unlockedBy(Items.STRING).save(consumer);
+
 		BioForgeRecipeBuilder.create(Items.SCUTE)
 				.addIngredient(ModItems.TOUGH_FIBERS.get(), 6)
 				.addIngredient(ModItems.MINERAL_FRAGMENT.get(), 4)
