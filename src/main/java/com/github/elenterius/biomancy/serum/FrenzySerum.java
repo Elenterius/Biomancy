@@ -22,6 +22,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
+import net.minecraft.world.entity.animal.Rabbit;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.item.ItemStack;
@@ -44,6 +45,11 @@ public class FrenzySerum extends BasicSerum {
 
 	@Override
 	public void affectEntity(ServerLevel level, CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
+		if (target instanceof Rabbit rabbit && rabbit.getVariant() != Rabbit.Variant.EVIL) {
+			rabbit.setVariant(Rabbit.Variant.EVIL);
+			return;
+		}
+
 		addStatusEffect(target);
 
 		if (target instanceof Mob mob) {
