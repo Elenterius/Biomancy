@@ -133,7 +133,7 @@
   "serum.biomancy.insomnia_cure.tooltip": "Resets the last slept time, no need to sleep for quite some time.\nCoffee who?",
   "serum.biomancy.frenzy_serum": "Frenzy Serum",
   "item.biomancy.frenzy_serum": "Frenzy Serum",
-  "serum.biomancy.frenzy_serum.tooltip": "Potent stackable drug that greatly boost your attack damage and speed at the cost of withdrawal symptoms. Increases hostility and aggression of affected mobs.\nSide effects after stoppage of use include weakness, sluggish movement and nausea. Continue the use to alleviate the withdrawal or try your luck with sugary foods.",
+  "serum.biomancy.frenzy_serum.tooltip": "Potent stackable drug that greatly boost your attack damage and speed at the cost of withdrawal symptoms. Increases hostility and aggression of affected mobs. Rabbits seems to be affected in an irreversible manner.\nCommon side effects after stoppage of use include weakness, sluggish movement and nausea. Continue the use to alleviate the withdrawal or try your luck with sugary foods.",
   "item.biomancy.mascot_patterns": "Banner Pattern",
   "item.biomancy.mascot_patterns.desc": "Biomancy Mascot",
   "item.biomancy.hungry_flesh_blob_spawn_egg": "Hungry Flesh Blob Spawn Egg",
