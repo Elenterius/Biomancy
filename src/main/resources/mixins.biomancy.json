@@ -9,7 +9,7 @@
   },
   "mixins": [
     "AgeableMobAccessor", "AnimalMixin", "AreaEffectCloudMixin", "ArmorStandAccessor", "ArrowMixin", "BiomeAccessor", "ChickenMixin", "CowMixin",
-    "DamageSourceAccessor", "EntityAccessor", "FlowingFluidMixin", "IntegerPropertyAccessor", "LivingEntityAccessor", "LivingEntityMixin",
+    "CreeperAccessor", "DamageSourceAccessor", "EntityAccessor", "FlowingFluidMixin", "IntegerPropertyAccessor", "LivingEntityAccessor", "LivingEntityMixin",
     "MobEffectInstanceAccessor", "MobEffectInstanceMixin", "MobEntityAccessor", "PhantomMixin", "PigMixin", "PlayerMixin", "ServerLevelAccessor",
     "ServerLevelMixin", "SheepAccessor", "SheepMixin", "SlimeAccessor", "SuspiciousStewItemAccessor", "SwordItemMixinAccessor", "TadpoleAccessor",
     "TextureSlotAccessor", "ThrownPotionMixin", "UnbreakingEnchantmentMixin", "WallBlockMixin", "ZombieVillagerMixinAccessor"
