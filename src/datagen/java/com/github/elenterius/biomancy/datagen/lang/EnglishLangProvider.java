@@ -514,7 +514,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		add(ModItems.ESSENCE.get().getDescriptionId() + ".unique_mob", "Unique %1$s Essence");
 
 		addItem(ModItems.ORGANIC_COMPOUND, "Organic Compound", "Slimy substance made of bile infused with nutrients.");
-		addItem(ModItems.UNSTABLE_COMPOUND, "Unstable Compound", "Very unstable and reactive substance. Seems like it will combust if it comes in contact with just about anything else.");
+		addItem(ModItems.UNSTABLE_COMPOUND, "Unstable Compound", "Very unstable and reactive substance. Seems like it will combust if it comes in contact with just about anything else.\nThe explosion is highly incendiary and has been known to liquefy magma blocks.");
 		addItem(ModItems.EXOTIC_COMPOUND, "Exotic Compound", "Substance of a questionable nature, comprised of exotic material and other trace elements.");
 		addItem(ModItems.GENETIC_COMPOUND, "Genetic Compound", "Cocktail of various hormones, nutrients and organic elements. It seems useful for producing potent stimulants.");
 		addItem(ModItems.CORROSIVE_ADDITIVE, "Corrosive Additive", "A highly corrosive fluid that seems useful for alchemically burning away organic material, or weakening the bonds of complex substances.");
