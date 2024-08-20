@@ -98,7 +98,7 @@
   "item.biomancy.organic_compound": "Organic Compound",
   "item.biomancy.organic_compound.tooltip": "Slimy substance made of bile infused with nutrients.",
   "item.biomancy.unstable_compound": "Unstable Compound",
-  "item.biomancy.unstable_compound.tooltip": "Very unstable and reactive substance. Seems like it will combust if it comes in contact with just about anything else.",
+  "item.biomancy.unstable_compound.tooltip": "Very unstable and reactive substance. Seems like it will combust if it comes in contact with just about anything else.\nThe explosion is highly incendiary and has been known to liquefy magma blocks.",
   "item.biomancy.exotic_compound": "Exotic Compound",
   "item.biomancy.exotic_compound.tooltip": "Substance of a questionable nature, comprised of exotic material and other trace elements.",
   "item.biomancy.genetic_compound": "Genetic Compound",
