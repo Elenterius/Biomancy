@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.entity.projectile;
 
 import com.github.elenterius.biomancy.init.ModEntityTypes;
+import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.world.PrimordialEcosystem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -9,7 +10,9 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -59,9 +62,14 @@ public class BloomberryProjectile extends BaseProjectile implements GeoEntity {
 	protected void onHitEntity(EntityHitResult result) {
 		super.onHitEntity(result);
 		if (level() instanceof ServerLevel serverLevel) {
-			Direction direction = Direction.orderedByNearest(this)[0];
-			BlockPos pos = BlockPos.containing(result.getLocation());
-			PrimordialEcosystem.placeBloomOrBlocks(serverLevel, pos, direction);
+			if (result.getEntity() instanceof LivingEntity livingEntity) {
+				livingEntity.addEffect(new MobEffectInstance(ModMobEffects.PRIMORDIAL_INFESTATION.get(), 20 * 60), this);
+			}
+			else {
+				Direction direction = Direction.orderedByNearest(this)[0];
+				BlockPos pos = BlockPos.containing(result.getLocation());
+				PrimordialEcosystem.placeBloomOrBlocks(serverLevel, pos, direction);
+			}
 		}
 		playSound(SoundEvents.SLIME_BLOCK_BREAK, 1, 1.2f / (random.nextFloat() * 0.2f + 0.9f));
 	}

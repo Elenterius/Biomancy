@@ -6,8 +6,8 @@ import com.github.elenterius.biomancy.block.cradle.PrimordialCradleBlock;
 import com.github.elenterius.biomancy.block.cradle.PrimordialCradleBlockEntity;
 import com.github.elenterius.biomancy.client.util.GuiRenderUtil;
 import com.github.elenterius.biomancy.client.util.GuiUtil;
-import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.item.ItemCharge;
+import com.github.elenterius.biomancy.item.ShowKnowledgeOverlay;
 import com.github.elenterius.biomancy.item.injector.InjectorItem;
 import com.github.elenterius.biomancy.item.weapon.gun.Gun;
 import com.github.elenterius.biomancy.styles.TextStyles;
@@ -85,22 +85,19 @@ public final class IngameOverlays {
 		if (blockHitResult == null) return;
 
 		ItemStack itemStack = minecraft.player.getItemBySlot(EquipmentSlot.HEAD);
-		if (itemStack.isEmpty()) return;
-
-		int knowledgeLevel = itemStack.getEnchantmentLevel(ModEnchantments.PRIMORDIAL_KNOWLEDGE.get());
-		if (knowledgeLevel < 1) return;
-
-		BlockPos blockPos = blockHitResult.getBlockPos();
-		BlockState blockState = minecraft.level.getBlockState(blockPos);
-		if (blockState.getBlock() instanceof PrimordialCradleBlock && minecraft.level.getExistingBlockEntity(blockPos) instanceof PrimordialCradleBlockEntity cradle) {
-			gui.setupOverlayRenderState(true, false);
-			renderKnowledgeOverlay(gui, guiGraphics, screenWidth, screenHeight, -90, cradle, knowledgeLevel);
+		if (itemStack.getItem() instanceof ShowKnowledgeOverlay knowledgeOverlay && knowledgeOverlay.canShowKnowledgeOverlay(itemStack, minecraft.player)) {
+			BlockPos blockPos = blockHitResult.getBlockPos();
+			BlockState blockState = minecraft.level.getBlockState(blockPos);
+			if (blockState.getBlock() instanceof PrimordialCradleBlock && minecraft.level.getExistingBlockEntity(blockPos) instanceof PrimordialCradleBlockEntity cradle) {
+				gui.setupOverlayRenderState(true, false);
+				renderKnowledgeOverlay(gui, guiGraphics, screenWidth, screenHeight, cradle);
+			}
 		}
 	};
 
 	private IngameOverlays() {}
 
-	static void renderKnowledgeOverlay(ForgeGui gui, GuiGraphics guiGraphics, int screenWidth, int screenHeight, int zDepth, PrimordialCradleBlockEntity cradle, int knowledgeLevel) {
+	static void renderKnowledgeOverlay(ForgeGui gui, GuiGraphics guiGraphics, int screenWidth, int screenHeight, PrimordialCradleBlockEntity cradle) {
 		Font font = gui.getFont();
 
 		int x = screenWidth / 2 + 64;
@@ -122,7 +119,7 @@ public final class IngameOverlays {
 		guiGraphics.drawString(font, labelText, x, y, 0xff_ffffff);
 	}
 
-	static void drawValueWithLabel(GuiGraphics guiGraphics, Font font, float value, String label, int x, int y) {
+	private static void drawValueWithLabel(GuiGraphics guiGraphics, Font font, float value, String label, int x, int y) {
 		drawValueWithLabel(guiGraphics, font, String.valueOf(value), label, x, y, TextStyles.PRIMORDIAL_RUNES_LIGHT_GRAY, TextStyles.PRIMORDIAL_RUNES_GRAY);
 	}
 

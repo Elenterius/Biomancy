@@ -5,10 +5,15 @@ import com.github.elenterius.biomancy.init.AcidInteractions;
 import com.github.elenterius.biomancy.init.ModEnchantments;
 import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.serum.FrenzySerum;
+import com.github.elenterius.biomancy.world.PrimordialEcosystem;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
@@ -31,6 +36,14 @@ public final class LivingEventHandler {
 		if (event.player.tickCount % 30 == 0) {
 			ModEnchantments.SELF_FEEDING.get().repairLivingItems(event.player);
 			ModEnchantments.PARASITIC_METABOLISM.get().repairLivingItems(event.player);
+		}
+	}
+
+	@SubscribeEvent(priority = EventPriority.LOWEST)
+	public static void onLivingDeath(final LivingDeathEvent event) {
+		LivingEntity livingEntity = event.getEntity();
+		if (livingEntity.level() instanceof ServerLevel serverLevel && livingEntity.hasEffect(ModMobEffects.PRIMORDIAL_INFESTATION.get())) {
+			PrimordialEcosystem.placeMalignantBlocksOnLivingDeath(serverLevel, livingEntity);
 		}
 	}
 

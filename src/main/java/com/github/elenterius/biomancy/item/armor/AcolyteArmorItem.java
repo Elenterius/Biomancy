@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.item.armor;
 
 import com.github.elenterius.biomancy.client.render.item.armor.AcolyteArmorRenderer;
 import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
+import com.github.elenterius.biomancy.item.ShowKnowledgeOverlay;
 import com.github.elenterius.biomancy.styles.TextComponentUtil;
 import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.ChatFormatting;
@@ -10,6 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -25,7 +27,7 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.List;
 import java.util.function.Consumer;
 
-public final class AcolyteArmorItem extends LivingArmorGeoItem implements ItemTooltipStyleProvider {
+public final class AcolyteArmorItem extends LivingArmorGeoItem implements ShowKnowledgeOverlay, ItemTooltipStyleProvider {
 
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
@@ -49,6 +51,11 @@ public final class AcolyteArmorItem extends LivingArmorGeoItem implements ItemTo
 				return renderer;
 			}
 		});
+	}
+
+	@Override
+	public boolean canShowKnowledgeOverlay(ItemStack stack, Player player) {
+		return type == Type.HELMET;
 	}
 
 	@Override

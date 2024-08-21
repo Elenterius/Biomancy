@@ -408,6 +408,12 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		add(Items.SPLASH_POTION.getDescriptionId() + ".effect." + suffix, "Gastric Splash-Juice");
 		add(Items.LINGERING_POTION.getDescriptionId() + ".effect." + suffix, "Gastric Linger-Juice");
 		add(Items.TIPPED_ARROW.getDescriptionId() + ".effect." + suffix, "Arrow of Gastric Juice");
+
+		suffix = ModPotions.PRIMORDIAL_INFESTATION.getId().toLanguageKey();
+		add(Items.POTION.getDescriptionId() + ".effect." + suffix, "Potion of Primordial Infestation");
+		add(Items.SPLASH_POTION.getDescriptionId() + ".effect." + suffix, "Splash Potion of Primordial Infestation");
+		add(Items.LINGERING_POTION.getDescriptionId() + ".effect." + suffix, "Lingering Potion of Primordial Infestation");
+		add(Items.TIPPED_ARROW.getDescriptionId() + ".effect." + suffix, "Arrow of Primordial Infestation");
 	}
 
 	private void addStatusEffectTranslations() {
@@ -420,6 +426,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addEffect(ModMobEffects.DESPOIL, "Despoil");
 		addEffect(ModMobEffects.FRENZY, "Frenzy");
 		addEffect(ModMobEffects.WITHDRAWAL, "Withdrawal");
+		addEffect(ModMobEffects.PRIMORDIAL_INFESTATION, "Primordial Infestation");
 	}
 
 	private void addEnchantmentTranslations() {
@@ -428,7 +435,6 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addEnchantment(ModEnchantments.SURGICAL_PRECISION, "Surgical Precision", "Improves the quality and success of surgeries or extraction of essences from mobs.");
 		addEnchantment(ModEnchantments.PARASITIC_METABOLISM, "Parasitic Metabolism", "When any held or equipped living item is damaged, consumes every 1.5 seconds nutrition from a healthy players food bar to restore nutrients.");
 		addEnchantment(ModEnchantments.SELF_FEEDING, "Self-Feeding", "When any held or equipped living item is damaged, consumes every 1.5 seconds nutrients from the players hotbar.");
-		addEnchantment(ModEnchantments.PRIMORDIAL_KNOWLEDGE, "Primordial Knowledge", "When holding or wearing any living items primordial knowledge is injected into your brain.");
 	}
 
 	private void addBannerPatternTranslations() {
