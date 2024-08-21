@@ -166,10 +166,10 @@ public class VanillaRecipeProvider extends RecipeProvider {
 
 		WorkbenchRecipeBuilder.shapeless(RecipeCategory.MISC, Items.GUNPOWDER)
 				.requires(Items.CHARCOAL)
-				.requires(ModItems.EXOTIC_DUST.get(), 4)
-				.requires(Items.BLAZE_POWDER, 2)
-				.unlockedBy(hasName(ModItems.EXOTIC_DUST.get()), has(ModItems.EXOTIC_DUST.get()))
-				.save(consumer, getConversionRecipeId(Items.GUNPOWDER, ModItems.EXOTIC_DUST.get()));
+				.requires(ModItems.UNSTABLE_COMPOUND.get())
+				.requires(Items.BLAZE_POWDER)
+				.unlockedBy(hasName(ModItems.UNSTABLE_COMPOUND.get()), has(ModItems.UNSTABLE_COMPOUND.get()))
+				.save(consumer, getConversionRecipeId(Items.GUNPOWDER, ModItems.UNSTABLE_COMPOUND.get()));
 
 		WorkbenchRecipeBuilder.shaped(RecipeCategory.DECORATIONS, Items.GLOW_ITEM_FRAME)
 				.define('F', Items.ITEM_FRAME)
