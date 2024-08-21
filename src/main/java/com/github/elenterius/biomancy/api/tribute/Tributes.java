@@ -42,6 +42,15 @@ public final class Tributes {
 
 		register(ModItems.HEALING_ADDITIVE.get(), SimpleTribute.builder().lifeEnergy(55).successModifier(1).diseaseModifier(-5).hostileModifier(-10).build());
 		register(ModItems.REGENERATIVE_FLUID.get(), SimpleTribute.builder().lifeEnergy(5).hostileModifier(-1).build());
+		register(ModItems.WITHERING_OOZE.get(), SimpleTribute.builder().biomass(-5).successModifier(-1).diseaseModifier(1).build());
+		register(ModItems.CORROSIVE_ADDITIVE.get(), SimpleTribute.builder().biomass(-20).successModifier(-5).diseaseModifier(5).build());
+		register(ModItems.ORGANIC_COMPOUND.get(), SimpleTribute.builder().successModifier(10).build());
+		register(ModItems.EXOTIC_COMPOUND.get(), SimpleTribute.builder().successModifier(5).anomalyModifier(20).build());
+		register(ModItems.GENETIC_COMPOUND.get(), SimpleTribute.builder().successModifier(1).diseaseModifier(-10).build());
+		register(ModItems.FRENZY_SERUM.get(), SimpleTribute.builder().hostileModifier(1000).anomalyModifier(10).build());
+		register(ModItems.ABSORPTION_BOOST.get(), SimpleTribute.builder().lifeEnergy(60).build());
+		register(ModItems.REJUVENATION_SERUM.get(), SimpleTribute.builder().lifeEnergy(60).build());
+		register(ModItems.CLEANSING_SERUM.get(), SimpleTribute.builder().lifeEnergy(-20).diseaseModifier(-120).build());
 
 		register(Items.ROTTEN_FLESH, SimpleTribute.builder().biomass(10).successModifier(-10).diseaseModifier(20).build());
 		register(ModItems.MOB_SINEW.get(), SimpleTribute.builder().biomass(5).successModifier(2).hostileModifier(-2).build());
