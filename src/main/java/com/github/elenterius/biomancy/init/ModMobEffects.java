@@ -15,7 +15,7 @@ public final class ModMobEffects {
 	public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, BiomancyMod.MOD_ID);
 
 	public static final RegistryObject<CorrosiveEffect> CORROSIVE = EFFECTS.register("corrosive", () -> new CorrosiveEffect(MobEffectCategory.HARMFUL, 0x39FF14));
-	public static final RegistryObject<StatusEffect> ARMOR_SHRED = EFFECTS.register("armor_shred", () -> new ArmorShredEffect(MobEffectCategory.HARMFUL, 20, 0x909090)
+	public static final RegistryObject<ArmorShredEffect> ARMOR_SHRED = EFFECTS.register("armor_shred", () -> new ArmorShredEffect(MobEffectCategory.HARMFUL, 20, 0x909090)
 			.addModifier(Attributes.ARMOR, "a15ed03e-c5db-4cf8-a0f5-4eb4657bb731", -1f, AttributeModifier.Operation.ADDITION));
 	public static final RegistryObject<BleedEffect> BLEED = EFFECTS.register("bleed", () -> new BleedEffect(MobEffectCategory.HARMFUL, 0x8a0303, 2));
 
@@ -35,6 +35,8 @@ public final class ModMobEffects {
 			.addAttackDamageModifier("8dadcbe5-9098-4545-b07c-3e9120c84232", -3, 0, AttributeModifier.Operation.ADDITION)
 			.addModifier(Attributes.MOVEMENT_SPEED, "0f1be88c-cbb2-455c-8559-0b420caa980d", -0.1125f, AttributeModifier.Operation.MULTIPLY_TOTAL)
 			.addModifier(Attributes.ATTACK_SPEED, "ab116bd1-196b-4bf8-a136-6c24e7c0e80d", -0.0625f, AttributeModifier.Operation.MULTIPLY_TOTAL));
+
+	public static final RegistryObject<StatusEffect> PRIMORDIAL_INFESTATION = EFFECTS.register("primordial_infestation", () -> new StatusEffect(MobEffectCategory.HARMFUL, 0xbe3ee1, false));
 
 	private ModMobEffects() {}
 

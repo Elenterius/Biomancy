@@ -67,7 +67,8 @@ public class ModMobEffectTagsProvider extends IntrinsicHolderTagsProvider<MobEff
 		tag(ModMobEffectTags.CRADLE_ANOMALY_SOURCE).add(
 				MobEffects.BAD_OMEN,
 				MobEffects.DARKNESS,
-				ModMobEffects.CORROSIVE.get()
+				ModMobEffects.CORROSIVE.get(),
+				ModMobEffects.PRIMORDIAL_INFESTATION.get()
 		);
 	}
 

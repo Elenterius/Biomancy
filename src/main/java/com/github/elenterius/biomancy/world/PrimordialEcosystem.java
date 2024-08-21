@@ -10,6 +10,7 @@ import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
 import com.github.elenterius.biomancy.init.tags.ModBlockTags;
 import com.github.elenterius.biomancy.util.LevelUtil;
+import com.github.elenterius.biomancy.util.MobUtil;
 import com.github.elenterius.biomancy.util.random.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -18,6 +19,8 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.DirectionalPlaceContext;
 import net.minecraft.world.level.block.Block;
@@ -53,6 +56,64 @@ public final class PrimordialEcosystem {
 	);
 
 	private PrimordialEcosystem() {}
+
+	public static void placeMalignantBlocksOnLivingDeath(ServerLevel level, LivingEntity livingEntity) {
+		BlockPos pos = livingEntity.getOnPos().above();
+
+		float volume = MobUtil.getVolume(livingEntity);
+		float referenceVolume = MobUtil.getVolume(EntityType.PLAYER);
+		float pct = volume / referenceVolume;
+
+		if (!PrimordialEcosystem.placeMalignantBlocks(level, pos, livingEntity.getRandom(), pct)) {
+			for (int i = 0; i < 4; i++) {
+				BlockPos relativePos = pos.relative(Direction.from2DDataValue(i));
+				if (PrimordialEcosystem.placeMalignantBlocks(level, relativePos, livingEntity.getRandom(), pct)) break;
+			}
+		}
+	}
+
+	public static boolean placeMalignantBlocks(ServerLevel level, BlockPos pos, RandomSource random, float chargePct) {
+		BlockState currentState = level.getBlockState(pos);
+		FleshVeinsBlock veinsBlock = ModBlocks.MALIGNANT_FLESH_VEINS.get();
+
+		if (currentState.is(veinsBlock)) {
+			if (veinsBlock.getSpreader().spreadAll(currentState, level, pos, false) > 0) {
+				for (Direction subDirection : Direction.allShuffled(random)) {
+					BlockPos neighborPos = pos.relative(subDirection);
+					BlockState neighborState = level.getBlockState(neighborPos);
+					veinsBlock.increaseCharge(level, neighborPos, neighborState, 1);
+				}
+				level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 1f, 0.15f + random.nextFloat() * 0.5f);
+			}
+			else {
+				Block block = chargePct < 1f ? ModBlocks.MALIGNANT_FLESH_SLAB.get() : ModBlocks.MALIGNANT_FLESH.get();
+				level.setBlockAndUpdate(pos, block.defaultBlockState());
+				level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_PLACE.get(), SoundSource.BLOCKS, 1f, 0.15f + random.nextFloat() * 0.5f);
+			}
+			return true;
+		}
+		else if (currentState.is(ModBlocks.MALIGNANT_FLESH_SLAB.get())) {
+			if (currentState.getValue(DirectionalSlabBlock.TYPE) == DirectionalSlabType.FULL) return false;
+
+			level.setBlockAndUpdate(pos, ModBlocks.MALIGNANT_FLESH.get().defaultBlockState());
+
+			level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_PLACE.get(), SoundSource.BLOCKS, 1f, 0.15f + level.random.nextFloat() * 0.5f);
+			return true;
+		}
+		else if (currentState.canBeReplaced(new DirectionalPlaceContext(level, pos, Direction.DOWN, ItemStack.EMPTY, Direction.UP))) {
+			BlockState stateForPlacement = veinsBlock.getStateForPlacement(currentState, level, pos, Direction.DOWN, Math.max(1, Mth.ceil(chargePct * 15)));
+			if (stateForPlacement != null) {
+				level.setBlockAndUpdate(pos, stateForPlacement);
+				if (random.nextFloat() < chargePct) {
+					veinsBlock.getSpreader().spreadFromRandomFaceTowardRandomDirection(stateForPlacement, level, pos, random);
+				}
+				level.playSound(null, pos, ModSoundEvents.FLESH_BLOCK_STEP.get(), SoundSource.BLOCKS, 0.7f, 0.15f + random.nextFloat() * 0.5f);
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 	public static <T extends FleshBlob & PrimordialFleshkin> boolean placeMalignantBlocks(ServerLevel level, BlockPos pos, T fleshBlob) {
 		BlockState currentState = level.getBlockState(pos);

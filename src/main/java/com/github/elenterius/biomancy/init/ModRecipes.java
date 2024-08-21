@@ -56,6 +56,8 @@ public final class ModRecipes {
 		registerBrewingRecipe(ModItems.TOXIN_GLAND.get(), Potions.THICK, Potions.STRONG_POISON);
 		registerBrewingRecipe(ModItems.WITHERING_OOZE.get(), Potions.POISON, Potions.HARMING);
 		registerBrewingRecipe(ModItems.WITHERING_OOZE.get(), Potions.STRONG_POISON, Potions.STRONG_HARMING);
+		registerBrewingRecipe(ModItems.BLOOMBERRY.get(), Potions.MUNDANE, ModPotions.PRIMORDIAL_INFESTATION.get());
+		registerBrewingRecipe(Items.REDSTONE, ModPotions.PRIMORDIAL_INFESTATION.get(), ModPotions.LONG_PRIMORDIAL_INFESTATION.get());
 	}
 
 	private static void registerBrewingRecipe(Item reactant, Potion potionBase, Potion potionResult) {
