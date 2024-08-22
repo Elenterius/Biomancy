@@ -1,3 +1,22 @@
+## [8.6.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.5.0...1.20.1-v2.8.6.0) (2024-08-22)
+
+
+### Features
+
+* add Cobweb recipe to the Bio-Forge ([d20154e](https://github.com/Elenterius/Biomancy/commit/d20154e599cde628343b4d898f1a580c80ed0318))
+* change unstable compound explosion to be incendiary and capable of converting magma blocks to lava ([17f3392](https://github.com/Elenterius/Biomancy/commit/17f3392e6ce87091553b0d6db5e1ec0ddc0bdb63))
+* make frenzy serum convert normal rabbits into killer rabbits ([c11aae5](https://github.com/Elenterius/Biomancy/commit/c11aae5ba11f3ed24000c064beaab3304d2de516))
+* make Living Flesh consumable ([8280a02](https://github.com/Elenterius/Biomancy/commit/8280a0283b4fcbd068cc16a198e7c75ea5564792))
+* make most serums and compounds cradle tributes ([0916f04](https://github.com/Elenterius/Biomancy/commit/0916f043e05dbcc7985039633336cee409ed8512))
+* make using unstable compound on creepers or tnt cause an immediate explosion ([97bb305](https://github.com/Elenterius/Biomancy/commit/97bb30518c418da194f83c07485fef5d9d60613f))
+* remove Primordial Knowledge enchantment and split its features into the Acolyte Armor helmet and Primdordial Infestation effect ([b67714a](https://github.com/Elenterius/Biomancy/commit/b67714a619e1790448bf46947c168a75455fcec5))
+* update gunpowder recipe to require unstable compound ([909cd50](https://github.com/Elenterius/Biomancy/commit/909cd5002bd9dd7502d75d38a54a7757dc580577))
+
+
+### Bug Fixes
+
+* fix membranes not blocking pathfinding. Thanks to cdbarrett ([b11440d](https://github.com/Elenterius/Biomancy/commit/b11440d846aa0363c5ca9ba0fa974b0c5af04fb2)), closes [#143](https://github.com/Elenterius/Biomancy/issues/143)
+
 ## [8.5.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.4.0...1.20.1-v2.8.5.0) (2024-08-11)
 
 
@@ -67,11 +86,4 @@
 * fix durability display of living armor items ([b72bb72](https://github.com/Elenterius/Biomancy/commit/b72bb72f318a829cfe8f516f4205bee8d44a8b1a))
 * remove ability to stack Caustic Gunblade items ([59483f4](https://github.com/Elenterius/Biomancy/commit/59483f456dbffd0b0256c98780ce8e12c8e86552))
 * remove unintentional fleshtongue obfuscation of Chrysalis error messages ([bc58ba2](https://github.com/Elenterius/Biomancy/commit/bc58ba2e8412be3ff22c83843d39a519d1e30477))
-
-## [8.1.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.0.0...1.20.1-v2.8.1.0) (2024-05-30)
-
-
-### Features
-
-* update zh_cn translation ([#131](https://github.com/Elenterius/Biomancy/issues/131)) ([82de348](https://github.com/Elenterius/Biomancy/commit/82de34806e467d569a537dec3d306006f5719ba1))
 
