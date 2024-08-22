@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.mixin;
+package com.github.elenterius.biomancy.mixin.accessor;
 
 import net.minecraft.data.models.model.TextureSlot;
 import org.spongepowered.asm.mixin.Mixin;

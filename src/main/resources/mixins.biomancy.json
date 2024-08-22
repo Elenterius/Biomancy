@@ -8,15 +8,18 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "AgeableMobAccessor", "AnimalMixin", "AreaEffectCloudMixin", "ArmorStandAccessor", "ArrowMixin", "BiomeAccessor", "ChickenMixin", "CowMixin",
-    "CreeperAccessor", "DamageSourceAccessor", "EntityAccessor", "FlowingFluidMixin", "IntegerPropertyAccessor", "LivingEntityAccessor", "LivingEntityMixin",
-    "MobEffectInstanceAccessor", "MobEffectInstanceMixin", "MobEntityAccessor", "PhantomMixin", "PigMixin", "PlayerMixin", "ServerLevelAccessor",
-    "ServerLevelMixin", "SheepAccessor", "SheepMixin", "SlimeAccessor", "SuspiciousStewItemAccessor", "SwordItemMixinAccessor", "TadpoleAccessor",
-    "TextureSlotAccessor", "ThrownPotionMixin", "UnbreakingEnchantmentMixin", "WallBlockMixin", "ZombieVillagerMixinAccessor", "BlockMixin",
+    "accessor.AgeableMobAccessor", "accessor.ArmorStandAccessor", "accessor.BiomeAccessor", "accessor.CreeperAccessor", "accessor.DamageSourceAccessor",
+    "accessor.EntityAccessor", "accessor.IntegerPropertyAccessor", "accessor.LivingEntityAccessor", "accessor.MobEffectInstanceAccessor",
+    "accessor.MobEntityAccessor", "accessor.ServerLevelAccessor", "accessor.SheepAccessor", "accessor.SlimeAccessor", "accessor.SuspiciousStewItemAccessor",
+    "accessor.SwordItemMixinAccessor", "accessor.TadpoleAccessor", "accessor.TextureSlotAccessor", "accessor.ZombieVillagerMixinAccessor",
+    "AnimalMixin", "AreaEffectCloudMixin", "ArrowMixin", "ChickenMixin", "CowMixin", "FlowingFluidMixin", "LivingEntityMixin", "MobEffectInstanceMixin",
+    "PhantomMixin", "PigMixin", "PlayerMixin", "ServerLevelMixin", "SheepMixin", "ThrownPotionMixin", "UnbreakingEnchantmentMixin", "WallBlockMixin",
+    "BlockMixin",
     "NodeEvaluatorMixin"
   ],
   "client": [
-    "client.ClientPackListenerMixin", "client.ClientRecipeBookMixin", "client.GuiGraphicsMixin", "client.PlayerRendererMixin", "client.RecipeCollectionAccessor"
+    "accessor.RecipeCollectionAccessor", "client.ClientPackListenerMixin", "client.ClientRecipeBookMixin", "client.GuiGraphicsMixin",
+    "client.PlayerRendererMixin"
   ],
   "server": [ ]
 }

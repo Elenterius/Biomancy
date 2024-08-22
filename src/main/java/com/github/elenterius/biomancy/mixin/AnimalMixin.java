@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 
 @Mixin(Animal.class)
-public class AnimalMixin {
+public abstract class AnimalMixin {
 
 	@Inject(at = @At(value = "HEAD"), cancellable = true, method = "canMate")
 	private void onCanMate(Animal otherAnimal, CallbackInfoReturnable<Boolean> cir) {

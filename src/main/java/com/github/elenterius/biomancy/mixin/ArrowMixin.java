@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(Arrow.class)
-public class ArrowMixin {
+public abstract class ArrowMixin {
 
 	@WrapWithCondition(method = "doPostHurtEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;addEffect(Lnet/minecraft/world/effect/MobEffectInstance;Lnet/minecraft/world/entity/Entity;)Z"))
 	private boolean onlyApplyEffectIfAllowed(LivingEntity target, MobEffectInstance effectInstance, Entity source) {

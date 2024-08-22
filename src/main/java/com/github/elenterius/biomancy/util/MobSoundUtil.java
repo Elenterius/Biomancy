@@ -1,8 +1,8 @@
 package com.github.elenterius.biomancy.util;
 
 import com.github.elenterius.biomancy.block.property.MobSoundType;
-import com.github.elenterius.biomancy.mixin.LivingEntityAccessor;
-import com.github.elenterius.biomancy.mixin.MobEntityAccessor;
+import com.github.elenterius.biomancy.mixin.accessor.LivingEntityAccessor;
+import com.github.elenterius.biomancy.mixin.accessor.MobEntityAccessor;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;

@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.mixin;
+package com.github.elenterius.biomancy.mixin.accessor;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.biome.Biome;

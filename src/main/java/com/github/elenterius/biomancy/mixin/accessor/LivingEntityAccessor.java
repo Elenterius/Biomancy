@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.mixin;
+package com.github.elenterius.biomancy.mixin.accessor;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;

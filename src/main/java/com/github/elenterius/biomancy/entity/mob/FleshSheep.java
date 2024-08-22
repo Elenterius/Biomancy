@@ -4,7 +4,7 @@ import com.github.elenterius.biomancy.init.ModEntityTypes;
 import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.init.ModLoot;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
-import com.github.elenterius.biomancy.mixin.SheepAccessor;
+import com.github.elenterius.biomancy.mixin.accessor.SheepAccessor;
 import com.github.elenterius.biomancy.util.animation.MobAnimations;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;

@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.util;
 
-import com.github.elenterius.biomancy.mixin.IntegerPropertyAccessor;
+import com.github.elenterius.biomancy.mixin.accessor.IntegerPropertyAccessor;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;

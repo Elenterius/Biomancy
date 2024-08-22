@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.serum;
 
-import com.github.elenterius.biomancy.mixin.TadpoleAccessor;
+import com.github.elenterius.biomancy.mixin.accessor.TadpoleAccessor;
 import com.github.elenterius.biomancy.util.MobUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;

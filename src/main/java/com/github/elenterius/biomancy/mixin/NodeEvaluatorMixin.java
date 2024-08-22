@@ -18,15 +18,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = {FlyNodeEvaluator.class, SwimNodeEvaluator.class, WalkNodeEvaluator.class})
 public abstract class NodeEvaluatorMixin {
+
 	@Inject(method = "getBlockPathType(Lnet/minecraft/world/level/BlockGetter;IIILnet/minecraft/world/entity/Mob;)Lnet/minecraft/world/level/pathfinder/BlockPathTypes;", at = @At(value = "HEAD"), cancellable = true)
-	public void getBlockPathType(BlockGetter pLevel, int pX, int pY, int pZ, Mob pMob, @NotNull CallbackInfoReturnable<BlockPathTypes> ci) {
-		BlockPos pos = new BlockPos(pX, pY, pZ);
-		BlockState state = pLevel.getBlockState(pos);
+	private void onGetBlockPathType(BlockGetter level, int x, int y, int z, Mob mob, @NotNull CallbackInfoReturnable<BlockPathTypes> cir) {
+		BlockPos pos = new BlockPos(x, y, z);
+		BlockState state = level.getBlockState(pos);
 		Block block = state.getBlock();
 
-		if (block instanceof Membrane) {
-			ci.setReturnValue(((Membrane) block).shouldIgnoreEntityCollisionAt(state, pLevel, pos, pMob) ? BlockPathTypes.DOOR_OPEN : BlockPathTypes.BLOCKED);
-			ci.cancel();
+		if (block instanceof Membrane membrane) {
+			cir.setReturnValue(membrane.shouldIgnoreEntityCollisionAt(state, level, pos, mob) ? BlockPathTypes.DOOR_OPEN : BlockPathTypes.BLOCKED);
 		}
 	}
+
 }
