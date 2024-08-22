@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.mixin.client;
+package com.github.elenterius.biomancy.mixin.accessor;
 
 import net.minecraft.client.gui.screens.recipebook.RecipeCollection;
 import net.minecraft.world.item.crafting.Recipe;

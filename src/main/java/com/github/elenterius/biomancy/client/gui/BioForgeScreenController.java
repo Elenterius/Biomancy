@@ -9,7 +9,7 @@ import com.github.elenterius.biomancy.init.client.ModRecipeBookCategories;
 import com.github.elenterius.biomancy.integration.BioForgeCompat;
 import com.github.elenterius.biomancy.menu.BioForgeMenu;
 import com.github.elenterius.biomancy.menu.BioForgeTab;
-import com.github.elenterius.biomancy.mixin.client.RecipeCollectionAccessor;
+import com.github.elenterius.biomancy.mixin.accessor.RecipeCollectionAccessor;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import com.google.common.collect.Lists;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;

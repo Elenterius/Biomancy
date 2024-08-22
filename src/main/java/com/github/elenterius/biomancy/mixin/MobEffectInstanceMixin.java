@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.mixin;
 
+import com.github.elenterius.biomancy.mixin.accessor.MobEffectInstanceAccessor;
 import com.github.elenterius.biomancy.statuseffect.StackingStatusEffect;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -21,7 +22,7 @@ public abstract class MobEffectInstanceMixin {
 	private MobEffect effect;
 
 	@Inject(method = "update", at = @At(value = "HEAD"))
-	protected void onUpdate(MobEffectInstance other, CallbackInfoReturnable<Boolean> cir) {
+	private void onUpdate(MobEffectInstance other, CallbackInfoReturnable<Boolean> cir) {
 		if (other.getEffect() != effect) return;
 
 		if (other.getEffect() instanceof StackingStatusEffect stackingStatusEffect) {

@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.statuseffect;
 
 import com.github.elenterius.biomancy.init.ModDamageSources;
 import com.github.elenterius.biomancy.init.ModParticleTypes;
-import com.github.elenterius.biomancy.mixin.MobEffectInstanceAccessor;
+import com.github.elenterius.biomancy.mixin.accessor.MobEffectInstanceAccessor;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;

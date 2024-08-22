@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.entity.mob;
 
-import com.github.elenterius.biomancy.mixin.MobEntityAccessor;
+import com.github.elenterius.biomancy.mixin.accessor.MobEntityAccessor;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;

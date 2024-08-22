@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.mixin;
+package com.github.elenterius.biomancy.mixin.accessor;
 
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;

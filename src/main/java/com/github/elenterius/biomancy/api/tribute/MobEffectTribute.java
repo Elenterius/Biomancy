@@ -1,7 +1,7 @@
 package com.github.elenterius.biomancy.api.tribute;
 
 import com.github.elenterius.biomancy.init.tags.ModMobEffectTags;
-import com.github.elenterius.biomancy.mixin.SuspiciousStewItemAccessor;
+import com.github.elenterius.biomancy.mixin.accessor.SuspiciousStewItemAccessor;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;

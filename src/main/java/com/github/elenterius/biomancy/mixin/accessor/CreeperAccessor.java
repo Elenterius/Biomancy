@@ -1,4 +1,4 @@
-package com.github.elenterius.biomancy.mixin;
+package com.github.elenterius.biomancy.mixin.accessor;
 
 import net.minecraft.world.entity.monster.Creeper;
 import org.spongepowered.asm.mixin.Mixin;

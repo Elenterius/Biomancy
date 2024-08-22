@@ -2,9 +2,9 @@ package com.github.elenterius.biomancy.util;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.tags.ModEntityTags;
-import com.github.elenterius.biomancy.mixin.AgeableMobAccessor;
-import com.github.elenterius.biomancy.mixin.EntityAccessor;
-import com.github.elenterius.biomancy.mixin.ServerLevelAccessor;
+import com.github.elenterius.biomancy.mixin.accessor.AgeableMobAccessor;
+import com.github.elenterius.biomancy.mixin.accessor.EntityAccessor;
+import com.github.elenterius.biomancy.mixin.accessor.ServerLevelAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;

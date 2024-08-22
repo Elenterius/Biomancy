@@ -2,7 +2,7 @@ package com.github.elenterius.biomancy.serum;
 
 import com.github.elenterius.biomancy.init.tags.ModMobEffectTags;
 import com.github.elenterius.biomancy.integration.ModsCompatHandler;
-import com.github.elenterius.biomancy.mixin.ZombieVillagerMixinAccessor;
+import com.github.elenterius.biomancy.mixin.accessor.ZombieVillagerMixinAccessor;
 import com.github.elenterius.biomancy.util.MobUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;

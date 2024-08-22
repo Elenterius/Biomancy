@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(DigDurabilityEnchantment.class)
-public class UnbreakingEnchantmentMixin {
+public abstract class UnbreakingEnchantmentMixin {
 
 	@Inject(method = "canEnchant", at = @At(value = "HEAD"), cancellable = true)
 	private void onCanEnchant(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {

@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.item;
 
-import com.github.elenterius.biomancy.mixin.CreeperAccessor;
+import com.github.elenterius.biomancy.mixin.accessor.CreeperAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.game.ClientboundExplodePacket;
 import net.minecraft.server.level.ServerLevel;

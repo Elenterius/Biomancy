@@ -1,6 +1,6 @@
 package com.github.elenterius.biomancy.util;
 
-import com.github.elenterius.biomancy.mixin.BiomeAccessor;
+import com.github.elenterius.biomancy.mixin.accessor.BiomeAccessor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
