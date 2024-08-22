@@ -85,7 +85,7 @@ public final class ModItems {
 
 	//## Special
 	public static final RegistryObject<SimpleItem> PRIMORDIAL_CORE = registerSimpleItem("primordial_core", ModRarities.VERY_RARE);
-	public static final RegistryObject<SimpleItem> LIVING_FLESH = registerSimpleItem("living_flesh", ModRarities.VERY_RARE);
+	public static final RegistryObject<SimpleItem> LIVING_FLESH = registerItem("living_flesh", props -> new SimpleItem(props.food(ModFoods.LIVING_FLESH).rarity(ModRarities.VERY_RARE)));
 	public static final RegistryObject<EssenceItem> ESSENCE = registerItem("essence", EssenceItem::new);
 	public static final RegistryObject<GiftSacItem> GIFT_SAC = registerItem("gift_sac", props -> new GiftSacItem(props.stacksTo(1).rarity(ModRarities.ULTRA_RARE)));
 
