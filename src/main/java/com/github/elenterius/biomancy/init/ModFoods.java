@@ -23,6 +23,11 @@ public final class ModFoods {
 	public static final FoodProperties POOR_FLESH = new FoodProperties.Builder().nutrition(1).saturationMod(0.2f).meat().build();
 	public static final FoodProperties AVERAGE_FLESH = new FoodProperties.Builder().nutrition(2).saturationMod(0.4f).meat().build();
 
+	public static final FoodProperties LIVING_FLESH = new FoodProperties.Builder().nutrition(2).saturationMod(0.4f).meat()
+			.effect(() -> new MobEffectInstance(ModMobEffects.PRIMORDIAL_INFESTATION.get(), 20 * 12, 0), 0.4f)
+			.effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 20 * 6, 0), 0.8f)
+			.build();
+
 	public static final FoodProperties NUTRIENT_BAR = new FoodProperties.Builder().nutrition(9).saturationMod(1.8f).build();
 	public static final FoodProperties NUTRIENT_PASTE = new FoodProperties.Builder().nutrition(1).saturationMod(0.2f).build();
 	public static final FoodProperties PROTEIN_BAR = new FoodProperties.Builder().nutrition(5).saturationMod(0.4f).meat().build();
