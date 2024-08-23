@@ -3,8 +3,9 @@
     "minecraft:clay",
     "#minecraft:sand",
     "#forge:gravel",
-    "minecraft:snow_block",
-    "minecraft:snow",
+    "minecraft:ice",
+    "minecraft:frosted_ice",
+    "#minecraft:snow",
     "#minecraft:leaves",
     "#minecraft:overworld_natural_logs",
     "#minecraft:dirt",
@@ -14,6 +15,9 @@
     "minecraft:vine",
     "minecraft:melon",
     "minecraft:pumpkin",
+    "minecraft:brown_mushroom_block",
+    "minecraft:red_mushroom_block",
+    "minecraft:mushroom_stem",
     "#minecraft:flowers"
   ]
 }

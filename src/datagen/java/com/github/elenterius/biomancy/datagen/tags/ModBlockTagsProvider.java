@@ -47,12 +47,14 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
 
 		tag(ModBlockTags.FLESH_REPLACEABLE)
 				.add(Blocks.CLAY).addTag(BlockTags.SAND).addTag(Tags.Blocks.GRAVEL)
-				.add(Blocks.SNOW_BLOCK, Blocks.SNOW)
+				.add(Blocks.ICE, Blocks.FROSTED_ICE)
+				.addTag(BlockTags.SNOW)
 				.addTag(BlockTags.LEAVES)
 				.addTag(BlockTags.OVERWORLD_NATURAL_LOGS)
 				.addTag(BlockTags.DIRT)
 				.add(Blocks.DIRT_PATH, Blocks.FARMLAND, Blocks.MOSS_BLOCK, Blocks.VINE)
 				.add(Blocks.MELON, Blocks.PUMPKIN)
+				.add(Blocks.BROWN_MUSHROOM_BLOCK, Blocks.RED_MUSHROOM_BLOCK, Blocks.MUSHROOM_STEM)
 				.addTag(BlockTags.FLOWERS);
 
 		tag(ModBlockTags.ALLOW_VEINS_TO_ATTACH)
