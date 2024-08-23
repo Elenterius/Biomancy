@@ -1,0 +1,53 @@
+{
+  "parent": "biomancy:biomancy/empty_after_cradle",
+  "criteria": {
+    "has_malignant_block": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:malignant_flesh"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_malignant_veins": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:malignant_flesh_veins"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.biomancy.malignant_growth.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "biomancy:malignant_flesh"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.biomancy.malignant_growth.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_malignant_veins"
+    ],
+    [
+      "has_malignant_block"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

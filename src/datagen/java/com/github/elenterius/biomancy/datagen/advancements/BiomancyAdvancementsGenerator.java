@@ -131,11 +131,18 @@ public class BiomancyAdvancementsGenerator implements ForgeAdvancementProvider.A
 				.addCriterion("has_placed_cradle", hasPlacedBlock(ModBlocks.PRIMORDIAL_CRADLE.get()))
 				.save(consumer, fileHelper);
 
-		createAdvancement("healing_activator_sacrifice").parent(primalCradle).icon(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_HEALING))
+		Advancement healingActivator = createAdvancement("healing_activator_sacrifice").parent(primalCradle).icon(PotionUtils.setPotion(new ItemStack(Items.POTION), Potions.STRONG_HEALING))
 				.title("Healing Activator")
-				.description("It's seems like items rich in life energy are needed. Jumpstart the process with a few healing/regen potions, other special foods or artifacts.")
+				.description("It's seems like items rich in life energy are needed. Jumpstart the process with a few healing/regen potions, other special foods or artifacts containing health properties.")
 				.showToast()
 				.addCriterion("has_sacrificed_healing_activator", hasSacrificedItem(Items.POTION))
+				.save(consumer, fileHelper);
+
+		createAdvancement("nether_star_sacrifice").parent(healingActivator).icon(Items.NETHER_STAR)
+				.title("Superior Sacrifice")
+				.description("Sacrifice a Nether Star and watch it's consequences.")
+				.showToast().hidden().announceToChat()
+				.addCriterion("has_sacrificed_nether_star", hasSacrificedItem(Items.NETHER_STAR))
 				.save(consumer, fileHelper);
 
 		createAdvancement("raw_meat_sacrifice").parent(primalCradle).icon(Items.BEEF)
@@ -153,6 +160,21 @@ public class BiomancyAdvancementsGenerator implements ForgeAdvancementProvider.A
 				.save(consumer, fileHelper);
 
 		Advancement emptyAfterPrimalCradle = createEmptyAdvancementAfter(primalCradle).save(consumer, fileHelper);
+
+		Advancement malignantGrowth = createAdvancement("malignant_growth").parent(emptyAfterPrimalCradle).icon(ModItems.MALIGNANT_FLESH_BLOCK.get())
+				.title("Malignant Growth")
+				.description("Cultivate a flesh mound and harvest it's flesh. Excessively use your cradle or sacrifice items that contain superior life energy.")
+				.showToast()
+				.addCriterion("has_malignant_veins", hasItems(ModItems.MALIGNANT_FLESH_VEINS.get()))
+				.addCriterion("has_malignant_block", hasItems(ModItems.MALIGNANT_FLESH_BLOCK.get()))
+				.save(consumer, fileHelper);
+
+		createAdvancement("primal_orifice").parent(malignantGrowth).icon(ModItems.PRIMAL_ORIFICE.get())
+				.title("Trypophobia?")
+				.description("Explore your flesh mound and harvest flesh blocks perforated with many holes.")
+				.frameType(FrameType.CHALLENGE).showToast()
+				.addCriterion("has_primal_orifice", hasItems(ModItems.PRIMAL_ORIFICE.get()))
+				.save(consumer, fileHelper);
 
 		Advancement livingFlesh = createAdvancement("living_flesh").parent(emptyAfterPrimalCradle).icon(ModItems.LIVING_FLESH.get())
 				.title("Betrayal of Life")
