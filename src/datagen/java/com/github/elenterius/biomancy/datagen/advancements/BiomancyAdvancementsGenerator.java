@@ -135,13 +135,16 @@ public class BiomancyAdvancementsGenerator implements ForgeAdvancementProvider.A
 				.title("Healing Activator")
 				.description("It's seems like items rich in life energy are needed. Jumpstart the process with a few healing/regen potions, other special foods or artifacts containing health properties.")
 				.showToast()
-				.addCriterion("has_sacrificed_healing_activator", hasSacrificedItem(Items.POTION))
+				.addCriterion("has_sacrificed_potion", hasSacrificedItem(Items.POTION))
+				.addCriterion("has_sacrificed_healing_additive", hasSacrificedItem(ModItems.HEALING_ADDITIVE.get()))
+				.addCriterion("has_sacrificed_regen_fluid", hasSacrificedItem(ModItems.REGENERATIVE_FLUID.get()))
+				.requirements(RequirementsStrategy.OR)
 				.save(consumer, fileHelper);
 
 		createAdvancement("nether_star_sacrifice").parent(healingActivator).icon(Items.NETHER_STAR)
 				.title("Superior Sacrifice")
 				.description("Sacrifice a Nether Star and watch it's consequences.")
-				.showToast().hidden().announceToChat()
+				.hidden().showToast().announceToChat()
 				.addCriterion("has_sacrificed_nether_star", hasSacrificedItem(Items.NETHER_STAR))
 				.save(consumer, fileHelper);
 

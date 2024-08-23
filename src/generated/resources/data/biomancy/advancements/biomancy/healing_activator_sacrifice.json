@@ -1,11 +1,31 @@
 {
   "parent": "biomancy:biomancy/cradle",
   "criteria": {
-    "has_sacrificed_healing_activator": {
+    "has_sacrificed_healing_additive": {
+      "conditions": {
+        "item": {
+          "items": [
+            "biomancy:healing_additive"
+          ]
+        }
+      },
+      "trigger": "biomancy:sacrificed_item"
+    },
+    "has_sacrificed_potion": {
       "conditions": {
         "item": {
           "items": [
             "minecraft:potion"
+          ]
+        }
+      },
+      "trigger": "biomancy:sacrificed_item"
+    },
+    "has_sacrificed_regen_fluid": {
+      "conditions": {
+        "item": {
+          "items": [
+            "biomancy:regenerative_fluid"
           ]
         }
       },
@@ -30,7 +50,9 @@
   },
   "requirements": [
     [
-      "has_sacrificed_healing_activator"
+      "has_sacrificed_potion",
+      "has_sacrificed_healing_additive",
+      "has_sacrificed_regen_fluid"
     ]
   ],
   "sends_telemetry_event": true
