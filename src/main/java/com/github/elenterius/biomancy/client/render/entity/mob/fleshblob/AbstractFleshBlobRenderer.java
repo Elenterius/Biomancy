@@ -20,15 +20,8 @@ public abstract class AbstractFleshBlobRenderer<T extends FleshBlob> extends Geo
 	}
 
 	@Override
-	public GeoEntityRenderer<T> withScale(float scale) {
-		shadowRadius = 0.65f * scale;
-		return withScale(scale, scale);
-	}
-
-	@Override
 	public void preRender(PoseStack poseStack, T fleshBlob, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-
-		withScale(fleshBlob.getBlobScale());
+		shadowRadius = 0.65f * fleshBlob.getBlobScale();
 
 		AnimationProcessor<?> animationProcessor = getGeoModel().getAnimationProcessor();
 
@@ -42,11 +35,11 @@ public abstract class AbstractFleshBlobRenderer<T extends FleshBlob> extends Geo
 	}
 
 	@Override
-	public void scaleModelForRender(float widthScale, float heightScale, PoseStack poseStack, T animatable, BakedGeoModel model, boolean isReRender, float partialTick, int packedLight, int packedOverlay) {
-		if (!isReRender && (widthScale != 1 || heightScale != 1)) {
-			poseStack.scale(0.999f, 0.999f, 0.999f);
-			poseStack.translate(0, 0.001f, 0);
-			poseStack.scale(widthScale, heightScale, widthScale);
+	public void scaleModelForRender(float widthScale, float heightScale, PoseStack poseStack, T fleshBlob, BakedGeoModel model, boolean isReRender, float partialTick, int packedLight, int packedOverlay) {
+		float blobScale = fleshBlob.getBlobScale();
+
+		if (!isReRender && blobScale != 1) {
+			poseStack.scale(blobScale, blobScale, blobScale);
 		}
 	}
 
