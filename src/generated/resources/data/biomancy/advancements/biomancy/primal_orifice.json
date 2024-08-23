@@ -1,0 +1,38 @@
+{
+  "parent": "biomancy:biomancy/malignant_growth",
+  "criteria": {
+    "has_primal_orifice": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:primal_orifice"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancements.biomancy.primal_orifice.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "biomancy:primal_orifice"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.biomancy.primal_orifice.title"
+    }
+  },
+  "requirements": [
+    [
+      "has_primal_orifice"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -664,11 +664,11 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addBlock(ModBlocks.MALIGNANT_FLESH_VEINS, "Malignant Flesh Veins", "They look almost feral...\nyou better not touch them.");
 		addBlock(ModBlocks.PRIMAL_BLOOM, "Primal Bloom", "An exotic flower of primordial beauty.\n\nIt will spread itself by launching it's ripe berry into the air.\nOn impact the berry explodes and spreads malignant veins as well.");
 
-		addBlock(ModBlocks.PRIMAL_ORIFICE, "Primal Orifice", "A primitive piece full of holes that seems to generate and leak acidic juices.\nIt can be milked with buckets and bottles.");
+		addBlock(ModBlocks.PRIMAL_ORIFICE, "Primal Orifice", "A grotesque, flesh mass riddled with holes, oozing gastric juices. These orifices appear to grow inside flesh mound chambers and can be harvested using buckets or bottles, yielding a highly acidic fluid.");
 		addBlock(ModBlocks.ACID_FLUID_BLOCK, "Gastric Acid");
 
 		addBlock(ModBlocks.ACID_CAULDRON,"Gastric Acid Cauldron");
-	}
+	}   
 
 	private void addEntityTranslations() {
 		addEntityType(ModEntityTypes.HUNGRY_FLESH_BLOB, "Hungry Flesh Blob");
