@@ -63,6 +63,7 @@ public abstract class FleshBlob extends PathfinderMob implements Fleshkin, JumpM
 	protected FleshBlob(EntityType<? extends FleshBlob> entityType, Level level) {
 		super(entityType, level);
 		dynamicJukeboxListener = new DynamicGameEventListener<>(new JukeboxListener(new EntityPositionSource(this, getEyeHeight()), GameEvent.JUKEBOX_PLAY.getNotificationRadius()));
+		fixupDimensions(); //refreshes mob dimensions. fixes issues with wrong bounding box size
 	}
 
 	@Nullable
@@ -76,8 +77,6 @@ public abstract class FleshBlob extends PathfinderMob implements Fleshkin, JumpM
 			setTumorFlags(tumorFlags);
 			spawnData = new FleshBlobSpawnData.Tumors(tumorFlags);
 		}
-
-		setBlobSize((byte) 1, true); //refreshes mob dimensions, etc. This also makes sure the path navigator uses the correct bounding box size
 
 		if (reason == MobSpawnType.SPAWNER) {
 			xpReward = 0;
@@ -121,7 +120,12 @@ public abstract class FleshBlob extends PathfinderMob implements Fleshkin, JumpM
 
 	@Override
 	public EntityDimensions getDimensions(Pose pose) {
-		return super.getDimensions(pose).scale(getBlobScale());
+		return getType().getDimensions().scale(getScale());
+	}
+
+	@Override
+	public float getScale() {
+		return getBlobScale();
 	}
 
 	public float getBlobScale() {
@@ -131,15 +135,6 @@ public abstract class FleshBlob extends PathfinderMob implements Fleshkin, JumpM
 	@Override
 	public int getMaxHeadXRot() {
 		return 0;
-	}
-
-	@Override
-	public void refreshDimensions() {
-		double x = getX();
-		double y = getY();
-		double z = getZ();
-		super.refreshDimensions();
-		setPos(x, y, z);
 	}
 
 	@Override
@@ -154,15 +149,17 @@ public abstract class FleshBlob extends PathfinderMob implements Fleshkin, JumpM
 	public void setBlobSize(byte size, boolean resetHealth) {
 		size = clamp(size, MIN_SIZE, MAX_SIZE);
 		entityData.set(BLOB_SIZE, size);
-
-		reapplyPosition();
 		refreshDimensions();
 
 		updateBaseAttributes(size);
 
-		if (resetHealth) setHealth(getMaxHealth());
+		if (resetHealth) {
+			setHealth(getMaxHealth());
+		}
 
-		xpReward = size;
+		if (getSpawnType() != MobSpawnType.SPAWNER) {
+			xpReward = size;
+		}
 	}
 
 	protected abstract void updateBaseAttributes(byte size);
