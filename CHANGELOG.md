@@ -1,3 +1,18 @@
+## [8.7.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.6.0...1.20.1-v2.8.7.0) (2024-08-24)
+
+
+### Features
+
+* add advancements with hints on how to find primal orifices and update the blocks tooltip to mention where the block can be found ([c4be08a](https://github.com/Elenterius/Biomancy/commit/c4be08a6b2993f85b24b5f58732449052ae2e320))
+* make all snow, weak ice and giant mushroom blocks replaceable by flesh ([0203225](https://github.com/Elenterius/Biomancy/commit/02032258d416e8437adf014a1605048cba97125e))
+* make Healing Activator advancement also trigger for healing additive or regenerative fluid ([931b0c2](https://github.com/Elenterius/Biomancy/commit/931b0c225afbc0cbbec23e99d74d82e94839aa62))
+
+
+### Bug Fixes
+
+* fix bounding box scaling issues with Flesh Blobs ([45e3ed1](https://github.com/Elenterius/Biomancy/commit/45e3ed1d83e1c6e32dcc0ece104851dccdc09974))
+* improve render scaling of Flesh Blob models ([46e6df6](https://github.com/Elenterius/Biomancy/commit/46e6df67df7f344e45eed29c6dac1594677bbead))
+
 ## [8.6.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.5.0...1.20.1-v2.8.6.0) (2024-08-22)
 
 
@@ -72,18 +87,4 @@
 ### Bug Fixes
 
 * try to fix StackOverflow caused by Biomancy's ScaleModifier implementation (Pehkui integration) ([712cad0](https://github.com/Elenterius/Biomancy/commit/712cad09c25f4ea86cf3f316fe179bd33dc8d135)), closes [#133](https://github.com/Elenterius/Biomancy/issues/133)
-
-## [8.2.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.1.0...1.20.1-v2.8.2.0) (2024-06-17)
-
-
-### Features
-
-* add russian translation by VladYslaV ([a9312a9](https://github.com/Elenterius/Biomancy/commit/a9312a96330f7d2cb4f5741ce0a959ee0d3a37fd))
-
-
-### Bug Fixes
-
-* fix durability display of living armor items ([b72bb72](https://github.com/Elenterius/Biomancy/commit/b72bb72f318a829cfe8f516f4205bee8d44a8b1a))
-* remove ability to stack Caustic Gunblade items ([59483f4](https://github.com/Elenterius/Biomancy/commit/59483f456dbffd0b0256c98780ce8e12c8e86552))
-* remove unintentional fleshtongue obfuscation of Chrysalis error messages ([bc58ba2](https://github.com/Elenterius/Biomancy/commit/bc58ba2e8412be3ff22c83843d39a519d1e30477))
 
