@@ -63,7 +63,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 	private final MultifaceSpreader spreader = new MultifaceSpreader(new MalignantFleshSpreaderConfig(this));
 
 	public FleshVeinsBlock(Properties properties) {
-		super(properties.randomTicks());
+		super(properties.randomTicks().ignitedByLava());
 		registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false).setValue(CHARGE.get(), CHARGE.getMin()));
 	}
 
@@ -650,4 +650,15 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 	public MultifaceSpreader getSpreader() {
 		return spreader;
 	}
+
+	@Override
+	public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+		return Boolean.TRUE.equals(state.getValue(WATERLOGGED)) ? 0 : 100;
+	}
+
+	@Override
+	public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+		return Boolean.TRUE.equals(state.getValue(WATERLOGGED)) ? 0 : 15;
+	}
+
 }
