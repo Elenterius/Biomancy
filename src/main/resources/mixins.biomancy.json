@@ -14,8 +14,7 @@
     "accessor.SwordItemMixinAccessor", "accessor.TadpoleAccessor", "accessor.TextureSlotAccessor", "accessor.ZombieVillagerMixinAccessor",
     "AnimalMixin", "AreaEffectCloudMixin", "ArrowMixin", "ChickenMixin", "CowMixin", "FlowingFluidMixin", "LivingEntityMixin", "MobEffectInstanceMixin",
     "PhantomMixin", "PigMixin", "PlayerMixin", "ServerLevelMixin", "SheepMixin", "ThrownPotionMixin", "UnbreakingEnchantmentMixin", "WallBlockMixin",
-    "BlockMixin",
-    "NodeEvaluatorMixin"
+    "BlockMixin", "NodeEvaluatorMixin", "SignBlockEntityMixin", "ServerGamePacketListenerImplMixin"
   ],
   "client": [
     "accessor.RecipeCollectionAccessor", "client.ClientPackListenerMixin", "client.ClientRecipeBookMixin", "client.GuiGraphicsMixin",
