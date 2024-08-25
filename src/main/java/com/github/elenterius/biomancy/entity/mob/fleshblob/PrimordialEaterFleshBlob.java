@@ -3,6 +3,7 @@ package com.github.elenterius.biomancy.entity.mob.fleshblob;
 import com.github.elenterius.biomancy.entity.mob.PrimordialCradleUser;
 import com.github.elenterius.biomancy.entity.mob.PrimordialFleshkin;
 import com.github.elenterius.biomancy.entity.mob.ai.goal.*;
+import com.github.elenterius.biomancy.init.ModMobEffects;
 import com.github.elenterius.biomancy.util.MobUtil;
 import com.github.elenterius.biomancy.world.PrimordialEcosystem;
 import net.minecraft.core.BlockPos;
@@ -10,6 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -102,6 +104,12 @@ public class PrimordialEaterFleshBlob extends EaterFleshBlob implements Primordi
 		else {
 			super.pickUpItem(itemEntity);
 		}
+	}
+
+	@Override
+	public boolean canBeAffected(MobEffectInstance effectInstance) {
+		if (effectInstance.getEffect() == ModMobEffects.PRIMORDIAL_INFESTATION.get()) return false;
+		return super.canBeAffected(effectInstance);
 	}
 
 	@Override
