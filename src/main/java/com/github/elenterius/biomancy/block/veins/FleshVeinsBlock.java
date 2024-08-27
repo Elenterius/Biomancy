@@ -2,10 +2,7 @@ package com.github.elenterius.biomancy.block.veins;
 
 import com.github.elenterius.biomancy.block.bloom.BloomBlock;
 import com.github.elenterius.biomancy.block.cradle.PrimalEnergyHandler;
-import com.github.elenterius.biomancy.init.ModBlockProperties;
-import com.github.elenterius.biomancy.init.ModBlocks;
-import com.github.elenterius.biomancy.init.ModFluids;
-import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.init.*;
 import com.github.elenterius.biomancy.init.tags.ModBlockTags;
 import com.github.elenterius.biomancy.init.tags.ModItemTags;
 import com.github.elenterius.biomancy.util.ArrayUtil;
@@ -491,6 +488,7 @@ public class FleshVeinsBlock extends MultifaceBlock implements SimpleWaterlogged
 			if (charge >= CHARGE.getMax()) return;
 
 			ItemStack stack = itemEntity.getItem();
+			if (stack.is(ModItems.LIVING_FLESH.get())) return;
 
 			int nutrition = getRawMeatNutrition(stack);
 			if (nutrition <= 0) return;
