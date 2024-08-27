@@ -18,7 +18,7 @@ public final class PlayerInteractHandler {
 
 	private PlayerInteractHandler() {}
 
-	@SubscribeEvent(receiveCanceled = false)
+	@SubscribeEvent
 	public static void onPlayerInteractWithEntity(final PlayerInteractEvent.EntityInteract event) {
 		ItemStack stack = event.getItemStack();
 		Item item = stack.getItem();

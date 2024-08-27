@@ -7,6 +7,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 
 import javax.annotation.Nullable;
@@ -17,15 +18,23 @@ public class BreedingSerum extends BasicSerum {
 		super(colorIn);
 	}
 
-	@Override
-	public boolean canAffectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
+	private static boolean isMatureVillager(LivingEntity target) {
+		return target instanceof Villager villager && !villager.isBaby();
+	}
+
+	private static boolean isMatureAnimal(LivingEntity target) {
 		return target instanceof Animal animal && !animal.isBaby();
 	}
 
 	@Override
+	public boolean canAffectEntity(CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
+		return isMatureAnimal(target) || isMatureVillager(target);
+	}
+
+	@Override
 	public void affectEntity(ServerLevel level, CompoundTag tag, @Nullable LivingEntity source, LivingEntity target) {
-		if (target instanceof Animal animal && !animal.isBaby()) {
-			animal.addEffect(new MobEffectInstance(ModMobEffects.LIBIDO.get(), 14 * 20, 1, false, true));
+		if (isMatureAnimal(target) || isMatureVillager(target)) {
+			target.addEffect(new MobEffectInstance(ModMobEffects.LIBIDO.get(), 14 * 20, 1, false, true));
 		}
 	}
 

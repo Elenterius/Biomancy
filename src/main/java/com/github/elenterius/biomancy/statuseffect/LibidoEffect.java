@@ -3,8 +3,11 @@ package com.github.elenterius.biomancy.statuseffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.npc.Villager;
 
 public class LibidoEffect extends StatusEffect {
+
+	public static final int VILLAGER_BREED_DELAY = 20 * 3;
 
 	public LibidoEffect(MobEffectCategory category, int color) {
 		super(category, color, false);
@@ -20,12 +23,17 @@ public class LibidoEffect extends StatusEffect {
 				animal.setInLoveTime(animal.getInLoveTime());
 			}
 		}
+		else if (livingEntity instanceof Villager villager && !villager.isBaby()) {
+			int age = villager.getAge();
+			if (age > VILLAGER_BREED_DELAY) {
+				villager.setAge(VILLAGER_BREED_DELAY); //growing age has to be 0 for villagers to be able to breed
+			}
+		}
 	}
 
 	@Override
 	public boolean isDurationEffectTick(int duration, int amplifier) {
-		int nTicks = 80 >> amplifier;
-		return nTicks == 0 || duration % nTicks == 0;
+		return duration % 40 == 0;
 	}
 
 }
