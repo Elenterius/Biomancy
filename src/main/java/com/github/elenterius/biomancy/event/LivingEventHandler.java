@@ -43,6 +43,7 @@ public final class LivingEventHandler {
 	public static void onLivingDeath(final LivingDeathEvent event) {
 		LivingEntity livingEntity = event.getEntity();
 		if (livingEntity.level() instanceof ServerLevel serverLevel && livingEntity.hasEffect(ModMobEffects.PRIMORDIAL_INFESTATION.get())) {
+			if (livingEntity.isFreezing() || livingEntity.isOnFire()) return;
 			PrimordialEcosystem.placeMalignantBlocksOnLivingDeath(serverLevel, livingEntity);
 		}
 	}
