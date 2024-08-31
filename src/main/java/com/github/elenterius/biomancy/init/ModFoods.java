@@ -24,7 +24,7 @@ public final class ModFoods {
 	public static final FoodProperties AVERAGE_FLESH = new FoodProperties.Builder().nutrition(2).saturationMod(0.4f).meat().build();
 
 	public static final FoodProperties LIVING_FLESH = new FoodProperties.Builder().nutrition(2).saturationMod(0.4f).meat()
-			.effect(() -> new MobEffectInstance(ModMobEffects.PRIMORDIAL_INFESTATION.get(), 20 * 12, 0), 0.4f)
+			.effect(() -> new MobEffectInstance(ModMobEffects.PRIMORDIAL_INFESTATION.get(), 20 * 20, 0), 0.4f)
 			.effect(() -> new MobEffectInstance(MobEffects.CONFUSION, 20 * 6, 0), 0.8f)
 			.build();
 
