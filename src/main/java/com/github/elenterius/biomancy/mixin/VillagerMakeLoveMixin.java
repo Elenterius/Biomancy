@@ -6,7 +6,6 @@ import net.minecraft.world.entity.ai.behavior.VillagerMakeLove;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.npc.Villager;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.gen.Invoker;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,12 +16,9 @@ import java.util.Optional;
 @Mixin(VillagerMakeLove.class)
 public abstract class VillagerMakeLoveMixin {
 
-	@Shadow
-	private long birthTimestamp;
-
 	@Inject(
 			method = "tick(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/npc/Villager;J)V",
-			at = @At(value = "FIELD", target = "net/minecraft/world/entity/ai/behavior/VillagerMakeLove.birthTimestamp:J", shift = At.Shift.BEFORE),
+			at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ai/behavior/BehaviorUtils;lockGazeAndWalkToEachOther(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/entity/LivingEntity;F)V", shift = At.Shift.AFTER),
 			cancellable = true
 	)
 	private void onCanBreed(ServerLevel level, Villager owner, long gameTime, CallbackInfo ci) {
