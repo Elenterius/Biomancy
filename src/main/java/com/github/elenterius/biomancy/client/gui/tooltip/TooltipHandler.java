@@ -2,13 +2,13 @@ package com.github.elenterius.biomancy.client.gui.tooltip;
 
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.api.nutrients.Nutrients;
+import com.github.elenterius.biomancy.init.ItemComments;
 import com.github.elenterius.biomancy.init.ModRarities;
 import com.github.elenterius.biomancy.item.ItemTooltipStyleProvider;
 import com.github.elenterius.biomancy.styles.TextStyles;
 import com.github.elenterius.biomancy.tooltip.EmptyLineTooltipComponent;
 import com.github.elenterius.biomancy.tooltip.TooltipContents;
 import com.github.elenterius.biomancy.util.ComponentUtil;
-import com.github.elenterius.biomancy.util.FleshTongue;
 import com.mojang.datafixers.util.Either;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -52,9 +52,9 @@ public final class TooltipHandler {
 	public static void onGetTooltipLines(ItemTooltipEvent event) {
 		if (event.getEntity() == null) return;
 
-		List<Component> fleshTongue = FleshTongue.getItemComment(event.getItemStack().getItem());
-		if (fleshTongue != null) {
-			event.getToolTip().addAll(1, fleshTongue);
+		List<Component> specialComment = ItemComments.getComment(event.getItemStack().getItem());
+		if (specialComment != null) {
+			event.getToolTip().addAll(1, specialComment);
 		}
 	}
 

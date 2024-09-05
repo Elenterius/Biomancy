@@ -1,7 +1,7 @@
-package com.github.elenterius.biomancy.util;
+package com.github.elenterius.biomancy.init;
 
-import com.github.elenterius.biomancy.init.ModItems;
 import com.github.elenterius.biomancy.styles.TextStyles;
+import com.github.elenterius.biomancy.util.ComponentUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.Nullable;
@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public final class FleshTongue {
+public final class ItemComments {
 
-	private static final Map<Item, List<Component>> ITEM_COMMENTS = new IdentityHashMap<>();
+	private static final Map<Item, List<Component>> COMMENTS = new IdentityHashMap<>();
 
-	private FleshTongue() {}
+	private ItemComments() {}
 
 	static {
 		createItemComment(ModItems.PRIMORDIAL_CRADLE.get(), "Basically, at the very bottom of life, which seduces us all, there is only absurdity, and more absurdity. And maybe that's what gives us our joy for living, because the only thing that can defeat absurdity is lucidity.\n- Albert Camus");
@@ -30,15 +30,15 @@ public final class FleshTongue {
 	}
 
 	private static void createItemComment(Item item, String text) {
-		ITEM_COMMENTS.put(item, toFleshTongue(text + "\n\n"));
-	}
-
-	public static @Nullable List<Component> getItemComment(Item item) {
-		return ITEM_COMMENTS.get(item);
+		COMMENTS.put(item, toFleshTongue(text + "\n\n"));
 	}
 
 	private static List<Component> toFleshTongue(String text) {
 		return ComponentUtil.splitLines(Locale.ENGLISH, text, TextStyles.PRIMORDIAL_RUNES_GRAY);
+	}
+
+	public static @Nullable List<Component> getComment(Item item) {
+		return COMMENTS.get(item);
 	}
 
 }
