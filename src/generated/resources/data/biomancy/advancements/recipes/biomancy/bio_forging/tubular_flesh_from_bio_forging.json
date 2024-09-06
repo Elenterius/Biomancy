@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_bone_fragments": {
+    "has_elastic_fibers": {
       "conditions": {
         "items": [
           {
             "items": [
-              "biomancy:bone_fragments"
+              "biomancy:elastic_fibers"
             ]
           }
         ]
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_bone_fragments",
+      "has_elastic_fibers",
       "has_the_recipe"
     ]
   ],

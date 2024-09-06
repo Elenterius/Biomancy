@@ -3,7 +3,7 @@
   "bio_forge_tab": "biomancy:blocks",
   "ingredients": [
     {
-      "count": 2,
+      "count": 4,
       "item": "biomancy:flesh_bits"
     },
     {

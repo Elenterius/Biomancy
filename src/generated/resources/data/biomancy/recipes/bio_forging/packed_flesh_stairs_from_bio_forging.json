@@ -7,13 +7,12 @@
       "item": "biomancy:flesh_bits"
     },
     {
-      "count": 2,
+      "count": 3,
       "item": "biomancy:tough_fibers"
     }
   ],
   "nutrientsCost": 1,
   "result": {
-    "count": 2,
     "item": "biomancy:packed_flesh_stairs"
   }
 }

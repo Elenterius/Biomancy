@@ -3,10 +3,11 @@
   "bio_forge_tab": "biomancy:blocks",
   "ingredients": [
     {
-      "count": 4,
+      "count": 8,
       "item": "biomancy:flesh_bits"
     },
     {
+      "count": 4,
       "item": "biomancy:tough_fibers"
     }
   ],

@@ -3,7 +3,6 @@
   "bio_forge_tab": "biomancy:blocks",
   "ingredients": [
     {
-      "count": 2,
       "item": "biomancy:flesh_bits"
     },
     {
@@ -13,7 +12,6 @@
   ],
   "nutrientsCost": 1,
   "result": {
-    "count": 2,
     "item": "biomancy:fibrous_flesh_stairs"
   }
 }
