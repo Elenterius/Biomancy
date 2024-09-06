@@ -1,5 +1,7 @@
 package com.github.elenterius.biomancy.datagen.tags;
 
+import com.github.alexmodguy.alexscaves.server.block.ACBlockRegistry;
+import com.github.alexmodguy.alexscaves.server.item.ACItemRegistry;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
 import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
@@ -56,6 +58,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 		createTag(ModItemTags.RAW_MEATS)
 				.add(BEEF, PORKCHOP, CHICKEN, RABBIT, MUTTON, COD, SALMON, TROPICAL_FISH, PUFFERFISH)
 				.add(AMItemRegistry.MOOSE_RIBS.get(), AMItemRegistry.KANGAROO_MEAT.get(), AMItemRegistry.RAW_CATFISH.get(), AMItemRegistry.BLOBFISH.get(), AMItemRegistry.MAGGOT.get())
+				.add(ACItemRegistry.TRILOCARIS_TAIL.get())
 				.addOptional("createfa:ground_chicken", "createfa:ground_beef")
 				.addOptional("rats:raw_rat")
 				.addOptional("circus:clown")
@@ -66,6 +69,7 @@ public class ModItemTagsProvider extends ItemTagsProvider {
 		createTag(ModItemTags.COOKED_MEATS)
 				.add(COOKED_BEEF, COOKED_PORKCHOP, COOKED_CHICKEN, COOKED_SALMON, COOKED_MUTTON, COOKED_COD, COOKED_RABBIT)
 				.add(AMItemRegistry.COOKED_MOOSE_RIBS.get())
+				.add(ACItemRegistry.COOKED_TRILOCARIS_TAIL.get(), ACBlockRegistry.COOKED_DINOSAUR_CHOP.get().asItem())
 				.addOptional("createfa:schnitzel", "createfa:meatballs", "createfa:chicken_nuggets")
 				.addOptional("rats:cooked_rat");
 

@@ -1,6 +1,7 @@
 package com.github.elenterius.biomancy.integration;
 
 import com.github.elenterius.biomancy.BiomancyMod;
+import com.github.elenterius.biomancy.integration.alexscaves.AlexsCavesCompat;
 import com.github.elenterius.biomancy.integration.create.CreateCompat;
 import com.github.elenterius.biomancy.integration.modonomicon.ModonomiconHelper;
 import com.github.elenterius.biomancy.integration.modonomicon.ModonomiconIntegration;
@@ -67,6 +68,11 @@ public final class ModsCompatHandler {
 			if (ModList.get().isLoaded("tetra")) {
 				BiomancyMod.LOGGER.info(LOG_MARKER, "Setup Tetra compat...");
 				TetraCompat.onPostSetup();
+			}
+
+			if (ModList.get().isLoaded("alexscaves")) {
+				BiomancyMod.LOGGER.info(LOG_MARKER, "Setup Alex's Caves compat...");
+				AlexsCavesCompat.onPostSetup();
 			}
 		});
 	}

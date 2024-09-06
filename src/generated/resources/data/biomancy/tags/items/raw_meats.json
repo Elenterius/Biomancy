@@ -30,6 +30,10 @@
       "required": false
     },
     {
+      "id": "alexscaves:trilocaris_tail",
+      "required": false
+    },
+    {
       "id": "createfa:ground_chicken",
       "required": false
     },

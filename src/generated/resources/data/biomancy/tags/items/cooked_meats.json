@@ -12,6 +12,14 @@
       "required": false
     },
     {
+      "id": "alexscaves:cooked_trilocaris_tail",
+      "required": false
+    },
+    {
+      "id": "alexscaves:cooked_dinosaur_chop",
+      "required": false
+    },
+    {
       "id": "createfa:schnitzel",
       "required": false
     },
