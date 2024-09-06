@@ -9,7 +9,7 @@
   "ingredient": {
     "item": "alexscaves:thornwood_branch"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 200,
   "result": {
     "item": "biomancy:nutrient_paste"

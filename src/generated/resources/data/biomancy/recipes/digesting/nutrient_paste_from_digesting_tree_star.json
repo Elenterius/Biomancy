@@ -9,7 +9,7 @@
   "ingredient": {
     "item": "alexscaves:tree_star"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 454,
   "result": {
     "count": 4,

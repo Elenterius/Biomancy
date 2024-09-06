@@ -9,7 +9,7 @@
   "ingredient": {
     "item": "alexscaves:grottoceratops_egg"
   },
-  "nutrientsCost": 2,
+  "nutrientsCost": 3,
   "processingTime": 464,
   "result": {
     "count": 4,

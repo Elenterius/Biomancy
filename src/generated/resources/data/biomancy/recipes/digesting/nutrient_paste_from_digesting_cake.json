@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:cake"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 673,
   "result": {
     "count": 12,

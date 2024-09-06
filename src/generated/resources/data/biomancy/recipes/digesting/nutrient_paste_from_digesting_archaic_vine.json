@@ -9,7 +9,7 @@
   "ingredient": {
     "item": "alexscaves:archaic_vine"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 332,
   "result": {
     "count": 2,

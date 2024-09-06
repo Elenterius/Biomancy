@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:sea_pickle"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 464,
   "result": {
     "count": 4,

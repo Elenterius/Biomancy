@@ -3,8 +3,8 @@
   "ingredient": {
     "item": "minecraft:hay_block"
   },
-  "nutrientsCost": 1,
-  "processingTime": 618,
+  "nutrientsCost": 2,
+  "processingTime": 658,
   "result": {
     "count": 9,
     "item": "biomancy:nutrient_paste"

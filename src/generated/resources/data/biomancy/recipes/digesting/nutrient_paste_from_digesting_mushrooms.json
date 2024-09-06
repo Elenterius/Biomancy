@@ -3,7 +3,7 @@
   "ingredient": {
     "tag": "forge:mushrooms"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 409,
   "result": {
     "count": 3,

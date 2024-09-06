@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:wheat"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 200,
   "result": {
     "item": "biomancy:nutrient_paste"

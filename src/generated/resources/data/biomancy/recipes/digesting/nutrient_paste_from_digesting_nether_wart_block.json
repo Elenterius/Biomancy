@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:nether_wart_block"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 582,
   "result": {
     "count": 14,

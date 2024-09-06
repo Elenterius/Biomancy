@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:red_mushroom_block"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 3,
   "processingTime": 541,
   "result": {
     "count": 6,

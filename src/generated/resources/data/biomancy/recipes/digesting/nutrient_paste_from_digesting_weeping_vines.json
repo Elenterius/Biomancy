@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:weeping_vines"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 332,
   "result": {
     "count": 2,

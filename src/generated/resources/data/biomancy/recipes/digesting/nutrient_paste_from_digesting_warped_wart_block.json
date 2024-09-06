@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:warped_wart_block"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 464,
   "result": {
     "count": 4,

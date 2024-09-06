@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:sniffer_egg"
   },
-  "nutrientsCost": 2,
+  "nutrientsCost": 3,
   "processingTime": 541,
   "result": {
     "count": 6,

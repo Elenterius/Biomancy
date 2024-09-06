@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:nether_sprouts"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 332,
   "result": {
     "count": 2,

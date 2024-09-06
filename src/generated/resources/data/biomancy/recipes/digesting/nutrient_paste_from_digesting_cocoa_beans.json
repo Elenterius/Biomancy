@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:cocoa_beans"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 3,
   "processingTime": 524,
   "result": {
     "count": 4,

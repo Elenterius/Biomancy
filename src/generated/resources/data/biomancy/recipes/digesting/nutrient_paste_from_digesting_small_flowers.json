@@ -3,7 +3,7 @@
   "ingredient": {
     "tag": "minecraft:small_flowers"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 180,
   "result": {
     "item": "biomancy:nutrient_paste"

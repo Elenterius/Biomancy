@@ -37,7 +37,7 @@ public final class DigesterRecipeBuilder implements RecipeBuilder {
 	public static final String RECIPE_SUB_FOLDER = ModRecipes.DIGESTING_RECIPE_TYPE.getId().getPath();
 	public static final String SUFFIX = "_from_" + RECIPE_SUB_FOLDER;
 
-	public static final short DEFAULT_CRAFTING_COST_NUTRIENTS = 1;
+	public static final short DEFAULT_CRAFTING_COST_NUTRIENTS = 2;
 
 	private final ResourceLocation recipeId;
 	private final List<ICondition> conditions = new ArrayList<>();

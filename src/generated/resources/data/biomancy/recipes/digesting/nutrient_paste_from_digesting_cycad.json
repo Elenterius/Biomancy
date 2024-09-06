@@ -9,7 +9,7 @@
   "ingredient": {
     "item": "alexscaves:cycad"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 372,
   "result": {
     "count": 2,

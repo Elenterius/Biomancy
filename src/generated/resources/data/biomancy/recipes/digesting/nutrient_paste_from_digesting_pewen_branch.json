@@ -9,7 +9,7 @@
   "ingredient": {
     "item": "alexscaves:pewen_branch"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 357,
   "result": {
     "count": 2,

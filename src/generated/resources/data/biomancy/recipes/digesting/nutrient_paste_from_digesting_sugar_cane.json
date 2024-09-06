@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:sugar_cane"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 220,
   "result": {
     "item": "biomancy:nutrient_paste"

@@ -3,7 +3,7 @@
   "ingredient": {
     "tag": "minecraft:tall_flowers"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 332,
   "result": {
     "count": 2,

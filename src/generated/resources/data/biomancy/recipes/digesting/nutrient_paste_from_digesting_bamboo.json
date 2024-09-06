@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:bamboo"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 260,
   "result": {
     "item": "biomancy:nutrient_paste"

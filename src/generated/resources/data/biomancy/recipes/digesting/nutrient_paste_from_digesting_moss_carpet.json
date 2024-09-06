@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:moss_carpet"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 180,
   "result": {
     "item": "biomancy:nutrient_paste"

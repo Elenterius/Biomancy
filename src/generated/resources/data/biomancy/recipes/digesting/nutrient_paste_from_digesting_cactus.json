@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:cactus"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 3,
   "processingTime": 332,
   "result": {
     "count": 2,

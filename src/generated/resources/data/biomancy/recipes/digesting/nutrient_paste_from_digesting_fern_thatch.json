@@ -9,7 +9,7 @@
   "ingredient": {
     "item": "alexscaves:fern_thatch"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 464,
   "result": {
     "count": 4,

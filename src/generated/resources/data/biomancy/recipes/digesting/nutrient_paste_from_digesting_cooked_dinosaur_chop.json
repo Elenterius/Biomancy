@@ -9,7 +9,7 @@
   "ingredient": {
     "item": "alexscaves:cooked_dinosaur_chop"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 1044,
   "result": {
     "count": 24,

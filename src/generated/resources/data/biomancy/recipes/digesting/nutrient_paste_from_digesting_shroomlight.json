@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:shroomlight"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 3,
   "processingTime": 464,
   "result": {
     "count": 4,

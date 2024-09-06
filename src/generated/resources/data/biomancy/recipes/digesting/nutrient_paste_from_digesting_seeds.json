@@ -3,7 +3,7 @@
   "ingredient": {
     "tag": "forge:seeds"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 240,
   "result": {
     "item": "biomancy:nutrient_paste"

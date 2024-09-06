@@ -3,7 +3,7 @@
   "ingredient": {
     "tag": "minecraft:saplings"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 215,
   "result": {
     "item": "biomancy:nutrient_paste"

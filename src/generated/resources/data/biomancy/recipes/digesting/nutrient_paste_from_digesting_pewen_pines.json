@@ -9,7 +9,7 @@
   "ingredient": {
     "item": "alexscaves:pewen_pines"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 352,
   "result": {
     "count": 2,

@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:kelp"
   },
-  "nutrientsCost": 2,
+  "nutrientsCost": 3,
   "processingTime": 235,
   "result": {
     "item": "biomancy:nutrient_paste"

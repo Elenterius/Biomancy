@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:carved_pumpkin"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 232,
   "result": {
     "count": 2,

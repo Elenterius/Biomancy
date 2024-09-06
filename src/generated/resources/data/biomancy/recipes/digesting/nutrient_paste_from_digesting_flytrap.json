@@ -9,7 +9,7 @@
   "ingredient": {
     "item": "alexscaves:flytrap"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 474,
   "result": {
     "count": 4,

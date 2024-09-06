@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:dried_kelp_block"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 528,
   "result": {
     "count": 9,
