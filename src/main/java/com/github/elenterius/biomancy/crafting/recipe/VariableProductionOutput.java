@@ -34,6 +34,10 @@ public class VariableProductionOutput {
 		this(stack.getItem(), stack.getTag(), new ItemCountRange.UniformRange(min, max));
 	}
 
+	public VariableProductionOutput(ItemStack stack, int n, float p) {
+		this(stack.getItem(), stack.getTag(), new ItemCountRange.BinomialRange(n, p));
+	}
+
 	public VariableProductionOutput(ItemLike item) {
 		this(item, 1);
 	}
@@ -44,6 +48,10 @@ public class VariableProductionOutput {
 
 	public VariableProductionOutput(ItemLike item, int min, int max) {
 		this(item, new ItemCountRange.UniformRange(min, max));
+	}
+
+	public VariableProductionOutput(ItemLike item, int n, float p) {
+		this(item, new ItemCountRange.BinomialRange(n, p));
 	}
 
 	public VariableProductionOutput(ItemStack stack, ItemCountRange countRange) {

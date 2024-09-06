@@ -137,16 +137,24 @@ public final class DecomposerRecipeBuilder implements RecipeBuilder {
 		return this;
 	}
 
-	public DecomposerRecipeBuilder addOutput(ItemLike resultIn) {
-		return addOutput(resultIn, 1);
+	public DecomposerRecipeBuilder addOutput(ItemLike result) {
+		return addOutput(result, 1);
 	}
 
-	public DecomposerRecipeBuilder addOutput(ItemLike resultIn, int count) {
-		return addOutput(new VariableProductionOutput(resultIn, count));
+	public DecomposerRecipeBuilder addOutput(ItemLike result, int count) {
+		return addOutput(new VariableProductionOutput(result, count));
 	}
 
-	public DecomposerRecipeBuilder addOutput(ItemLike resultIn, int min, int max) {
-		return addOutput(new VariableProductionOutput(resultIn, min, max));
+	public DecomposerRecipeBuilder addOutput(ItemLike result, int min, int max) {
+		return addOutput(new VariableProductionOutput(result, min, max));
+	}
+
+	public DecomposerRecipeBuilder addOutput(ItemLike result, int n, float p) {
+		return addOutput(new VariableProductionOutput(result, n, p));
+	}
+
+	public DecomposerRecipeBuilder addRecyclingOutput(ItemLike result, int originalCount) {
+		return addOutput(new VariableProductionOutput(result, (originalCount - 1) / 2, originalCount - 1));
 	}
 
 	public DecomposerRecipeBuilder addOutput(VariableProductionOutput output) {
