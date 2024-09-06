@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_ornate_flesh_slab": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:ornate_flesh_slab"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "biomancy:decomposing/ornate_flesh_slab_decomposing"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_ornate_flesh_slab",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "biomancy:decomposing/ornate_flesh_slab_decomposing"
+    ]
+  },
+  "sends_telemetry_event": false
+}

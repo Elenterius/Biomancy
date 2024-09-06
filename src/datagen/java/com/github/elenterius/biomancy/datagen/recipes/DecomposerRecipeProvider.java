@@ -6,8 +6,10 @@ import com.github.alexmodguy.alexscaves.server.item.ACItemRegistry;
 import com.github.alexthe666.alexsmobs.AlexsMobs;
 import com.github.alexthe666.alexsmobs.block.AMBlockRegistry;
 import com.github.alexthe666.alexsmobs.item.AMItemRegistry;
+import com.github.elenterius.biomancy.block.membrane.Membrane;
 import com.github.elenterius.biomancy.datagen.recipes.builder.DatagenIngredient;
 import com.github.elenterius.biomancy.datagen.recipes.builder.DecomposerRecipeBuilder;
+import com.github.elenterius.biomancy.init.ModBlocks;
 import com.github.elenterius.biomancy.init.ModItems;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
@@ -21,6 +23,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
@@ -63,6 +66,8 @@ public class DecomposerRecipeProvider extends RecipeProvider {
 		build119Recipes(consumer);
 		build120Recipes(consumer);
 		buildSpecialRecipes(consumer);
+		buildRecyclingRecipes(consumer);
+
 		buildBiomesOPlentyRecipes(consumer);
 		buildAlexsMobsRecipes(consumer);
 		buildAlexsCavesRecipes(consumer);
@@ -260,6 +265,72 @@ public class DecomposerRecipeProvider extends RecipeProvider {
 				.addOutput(ModItems.ELASTIC_FIBERS.get(), 8, 12)
 				.addOutput(Items.SKELETON_SKULL, 1)
 				.unlockedBy(Items.PIGLIN_HEAD).save(consumer);
+	}
+
+	private void buildRecyclingRecipes(Consumer<FinishedRecipe> consumer) {
+		final int blockCost = BioForgeRecipeProvider.blockCost;
+		final int slabCost = BioForgeRecipeProvider.slabCost;
+		final int stairsCost = BioForgeRecipeProvider.stairsCost;
+		final int wallCost = BioForgeRecipeProvider.wallCost;
+
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.FLESH_BLOCK).addRecyclingOutput(ModItems.FLESH_BITS.get(), blockCost).unlockedBy(ModItems.FLESH_BLOCK).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.FLESH_STAIRS).addRecyclingOutput(ModItems.FLESH_BITS.get(), stairsCost).unlockedBy(ModItems.FLESH_STAIRS).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.FLESH_SLAB).addRecyclingOutput(ModItems.FLESH_BITS.get(), slabCost).unlockedBy(ModItems.FLESH_SLAB).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.FLESH_WALL).addRecyclingOutput(ModItems.FLESH_BITS.get(), wallCost).unlockedBy(ModItems.FLESH_WALL).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.PACKED_FLESH_BLOCK).addRecyclingOutput(ModItems.FLESH_BITS.get(), blockCost * 2).addRecyclingOutput(ModItems.TOUGH_FIBERS.get(), blockCost).unlockedBy(ModItems.PACKED_FLESH_BLOCK).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.PACKED_FLESH_STAIRS).addRecyclingOutput(ModItems.FLESH_BITS.get(), stairsCost * 2).addRecyclingOutput(ModItems.TOUGH_FIBERS.get(), stairsCost).unlockedBy(ModItems.PACKED_FLESH_STAIRS).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.PACKED_FLESH_SLAB).addRecyclingOutput(ModItems.FLESH_BITS.get(), slabCost * 2).addRecyclingOutput(ModItems.TOUGH_FIBERS.get(), slabCost).unlockedBy(ModItems.PACKED_FLESH_SLAB).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.PACKED_FLESH_WALL).addRecyclingOutput(ModItems.FLESH_BITS.get(), wallCost * 2).addRecyclingOutput(ModItems.TOUGH_FIBERS.get(), wallCost).unlockedBy(ModItems.PACKED_FLESH_WALL).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.FIBROUS_FLESH_BLOCK).addRecyclingOutput(ModItems.FLESH_BITS.get(), blockCost / 2).addRecyclingOutput(ModItems.ELASTIC_FIBERS.get(), blockCost).unlockedBy(ModItems.FIBROUS_FLESH_BLOCK).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.FIBROUS_FLESH_STAIRS).addRecyclingOutput(ModItems.FLESH_BITS.get(), stairsCost / 2).addRecyclingOutput(ModItems.ELASTIC_FIBERS.get(), stairsCost).unlockedBy(ModItems.FIBROUS_FLESH_STAIRS).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.FIBROUS_FLESH_SLAB).addRecyclingOutput(ModItems.FLESH_BITS.get(), slabCost / 2).addRecyclingOutput(ModItems.ELASTIC_FIBERS.get(), slabCost).unlockedBy(ModItems.FIBROUS_FLESH_SLAB).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.FIBROUS_FLESH_WALL).addRecyclingOutput(ModItems.FLESH_BITS.get(), wallCost / 2).addRecyclingOutput(ModItems.ELASTIC_FIBERS.get(), wallCost).unlockedBy(ModItems.FIBROUS_FLESH_WALL).save(consumer);
+
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.CHISELED_FLESH_BLOCK.get())
+				.addRecyclingOutput(ModItems.FLESH_BITS.get(), blockCost)
+				.addRecyclingOutput(ModItems.BONE_FRAGMENTS.get(), 2)
+				.unlockedBy(ModItems.CHISELED_FLESH_BLOCK.get()).save(consumer);
+
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.ORNATE_FLESH_BLOCK.get())
+				.addRecyclingOutput(ModItems.FLESH_BITS.get(), blockCost)
+				.addRecyclingOutput(ModItems.BONE_FRAGMENTS.get(), 4)
+				.unlockedBy(ModItems.ORNATE_FLESH_BLOCK.get()).save(consumer);
+
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.ORNATE_FLESH_SLAB.get())
+				.addRecyclingOutput(ModItems.FLESH_BITS.get(), slabCost)
+				.addRecyclingOutput(ModItems.BONE_FRAGMENTS.get(), 2)
+				.unlockedBy(ModItems.ORNATE_FLESH_SLAB.get()).save(consumer);
+
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.TUBULAR_FLESH_BLOCK.get())
+				.addRecyclingOutput(ModItems.FLESH_BITS.get(), blockCost / 2)
+				.addRecyclingOutput(ModItems.ELASTIC_FIBERS.get(), blockCost)
+				.unlockedBy(ModItems.TUBULAR_FLESH_BLOCK.get()).save(consumer);
+
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.FLESH_PILLAR.get())
+				.addRecyclingOutput(ModItems.FLESH_BITS.get(), blockCost / 2)
+				.addRecyclingOutput(ModItems.BONE_FRAGMENTS.get(), blockCost / 2)
+				.unlockedBy(ModItems.FLESH_PILLAR.get()).save(consumer);
+
+		ModBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get).filter(Membrane.class::isInstance).forEach(
+				block -> DecomposerRecipeBuilder.create().setIngredient(block).addOutput(ModItems.BILE.get(), 0, 2).unlockedBy(block).save(consumer)
+		);
+
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.MALIGNANT_FLESH_BLOCK.get()).addOutput(ModItems.FLESH_BITS.get(), 2, 0.04f).unlockedBy(ModItems.MALIGNANT_FLESH_BLOCK.get()).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.MALIGNANT_FLESH_SLAB.get()).addOutput(ModItems.FLESH_BITS.get(), 1, 0.15f).unlockedBy(ModItems.MALIGNANT_FLESH_SLAB.get()).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.MALIGNANT_FLESH_STAIRS.get()).addOutput(ModItems.FLESH_BITS.get(), 1, 0.13f).unlockedBy(ModItems.MALIGNANT_FLESH_STAIRS.get()).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.MALIGNANT_FLESH_WALL.get()).addOutput(ModItems.FLESH_BITS.get(), 2, 0.04f).unlockedBy(ModItems.MALIGNANT_FLESH_WALL.get()).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.PRIMAL_FLESH_BLOCK.get()).addOutput(ModItems.FLESH_BITS.get(), 0, 2).unlockedBy(ModItems.PRIMAL_FLESH_BLOCK.get()).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.PRIMAL_FLESH_SLAB.get()).addOutput(ModItems.FLESH_BITS.get(), 0, 1).unlockedBy(ModItems.PRIMAL_FLESH_SLAB.get()).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.PRIMAL_FLESH_STAIRS.get()).addOutput(ModItems.FLESH_BITS.get(), 0, 1).unlockedBy(ModItems.PRIMAL_FLESH_STAIRS.get()).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.PRIMAL_FLESH_WALL.get()).addOutput(ModItems.FLESH_BITS.get(), 0, 2).unlockedBy(ModItems.PRIMAL_FLESH_WALL.get()).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.SMOOTH_PRIMAL_FLESH_BLOCK.get()).addOutput(ModItems.FLESH_BITS.get(), 0, 2).unlockedBy(ModItems.SMOOTH_PRIMAL_FLESH_BLOCK.get()).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.SMOOTH_PRIMAL_FLESH_SLAB.get()).addOutput(ModItems.FLESH_BITS.get(), 0, 1).unlockedBy(ModItems.SMOOTH_PRIMAL_FLESH_SLAB.get()).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.SMOOTH_PRIMAL_FLESH_STAIRS.get()).addOutput(ModItems.FLESH_BITS.get(), 0, 1).unlockedBy(ModItems.SMOOTH_PRIMAL_FLESH_STAIRS.get()).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.SMOOTH_PRIMAL_FLESH_WALL.get()).addOutput(ModItems.FLESH_BITS.get(), 0, 2).unlockedBy(ModItems.SMOOTH_PRIMAL_FLESH_WALL.get()).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.POROUS_PRIMAL_FLESH_BLOCK.get()).addOutput(ModItems.FLESH_BITS.get(), 0, 2).unlockedBy(ModItems.POROUS_PRIMAL_FLESH_BLOCK.get()).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.POROUS_PRIMAL_FLESH_SLAB.get()).addOutput(ModItems.FLESH_BITS.get(), 0, 1).unlockedBy(ModItems.POROUS_PRIMAL_FLESH_SLAB.get()).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.POROUS_PRIMAL_FLESH_STAIRS.get()).addOutput(ModItems.FLESH_BITS.get(), 0, 1).unlockedBy(ModItems.POROUS_PRIMAL_FLESH_STAIRS.get()).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.POROUS_PRIMAL_FLESH_WALL.get()).addOutput(ModItems.FLESH_BITS.get(), 0, 2).unlockedBy(ModItems.POROUS_PRIMAL_FLESH_WALL.get()).save(consumer);
 	}
 
 	private void buildSpecialRecipes(Consumer<FinishedRecipe> consumer) {

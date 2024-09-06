@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_smooth_primal_flesh_stairs": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "biomancy:smooth_primal_flesh_stairs"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "biomancy:decomposing/smooth_primal_flesh_stairs_decomposing"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_smooth_primal_flesh_stairs",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "biomancy:decomposing/smooth_primal_flesh_stairs_decomposing"
+    ]
+  },
+  "sends_telemetry_event": false
+}

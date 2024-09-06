@@ -1,0 +1,26 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredient": {
+    "item": "biomancy:tubular_flesh"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 48,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 1,
+        "min": 0
+      },
+      "item": "biomancy:flesh_bits"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 3,
+        "min": 1
+      },
+      "item": "biomancy:elastic_fibers"
+    }
+  ]
+}

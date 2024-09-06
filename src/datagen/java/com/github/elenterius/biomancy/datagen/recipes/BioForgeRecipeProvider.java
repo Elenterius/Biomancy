@@ -16,10 +16,10 @@ import java.util.function.Consumer;
 
 public class BioForgeRecipeProvider extends RecipeProvider {
 
-	final int blockCost = 4;
-	final int slabCost = blockCost / 2;
-	final int stairsCost = blockCost - 1;
-	final int wallCost = blockCost;
+	static final int blockCost = 4;
+	static final int slabCost = blockCost / 2;
+	static final int stairsCost = blockCost - 1;
+	static final int wallCost = blockCost;
 
 	protected BioForgeRecipeProvider(PackOutput output) {
 		super(output);

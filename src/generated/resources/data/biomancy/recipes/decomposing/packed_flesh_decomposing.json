@@ -1,0 +1,26 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredient": {
+    "item": "biomancy:packed_flesh"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 216,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 7,
+        "min": 3
+      },
+      "item": "biomancy:flesh_bits"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 3,
+        "min": 1
+      },
+      "item": "biomancy:tough_fibers"
+    }
+  ]
+}
