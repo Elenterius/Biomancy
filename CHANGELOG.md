@@ -1,3 +1,27 @@
+## [8.10.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.9.0...1.20.1-v2.8.10.0) (2024-09-07)
+
+
+### Features
+
+* add Chinese (zh_tw) translation by vomiter-scp-zh ([6397c56](https://github.com/Elenterius/Biomancy/commit/6397c56c43f770286006cd006021e7a70e42b562))
+* add non-latin character handling to the text to rune conversion of the Primordial Infestation effect ([50a9487](https://github.com/Elenterius/Biomancy/commit/50a948752dba38b4af322071c91054b8bc9f77ab))
+* add rare chance to get Primordial Infection when eating raw meat ([f9d612b](https://github.com/Elenterius/Biomancy/commit/f9d612bcdb523c35c82477556d867f65ff0944f6))
+* **alexs-caves:** make dinosaur chop a valid fuel and cradle tribute ([d248a7d](https://github.com/Elenterius/Biomancy/commit/d248a7d339ba87930ec97b3bc6b8ccc93c93c067))
+* change Primordial Infestation effect to not spread malignant flesh on when the victim is burning or freezing ([c5ad128](https://github.com/Elenterius/Biomancy/commit/c5ad12842871a502c064314bc5b1804f8c9c0aa4))
+* increase duration of Primordial Infestation effect when eating living flesh ([aff26e5](https://github.com/Elenterius/Biomancy/commit/aff26e581ee85a71c060f09ed4969fa96999fee3))
+* make Breeding Stimulant applicable to villagers ([47d3739](https://github.com/Elenterius/Biomancy/commit/47d373985e8edbce71c56b7e482820d85cf0d4a0))
+* make flesh blocks decomposable ([c25eae0](https://github.com/Elenterius/Biomancy/commit/c25eae0d0ed01faef3e9791e01bd2eeeabc1d8c3))
+* nerf Nutrient Bar saturation from 1.8 to 1.2 and buff Nutrient Paste saturation from 0.2 to 0.6 ([c82fb77](https://github.com/Elenterius/Biomancy/commit/c82fb7764a71a3bab5d40d72324675c18baa882a))
+* **nerf:** increase bio-forge crafting cost of flesh blocks ([5a4d0fc](https://github.com/Elenterius/Biomancy/commit/5a4d0fc30afb0503d8fd9def25cfc211314f385e))
+* **nerf:** increase crafting cost of digesting recipes for non-food items ([07e077b](https://github.com/Elenterius/Biomancy/commit/07e077bdd536530bbc722eb5dd5edd9ade300c1d))
+* update Caro Invitica font with additional glyphs ([8926687](https://github.com/Elenterius/Biomancy/commit/8926687c4035135e67891f2f4c7e5d060ceb1866))
+
+
+### Bug Fixes
+
+* fix Chrysalis item interaction with mobs from Alex's Mobs ([62b5d9c](https://github.com/Elenterius/Biomancy/commit/62b5d9cbfa959b0e695da375407fbd4485b11a04))
+* prevent Living Flesh from being eaten by flesh veins ([c7d95dc](https://github.com/Elenterius/Biomancy/commit/c7d95dc48dca72d9ec23541be1dd2ee570acbee8))
+
 ## [8.9.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.8.0...1.20.1-v2.8.9.0) (2024-08-26)
 
 
@@ -81,11 +105,4 @@
 * fix durability display of living armor items ([b72bb72](https://github.com/Elenterius/Biomancy/commit/b72bb72f318a829cfe8f516f4205bee8d44a8b1a))
 * remove ability to stack Caustic Gunblade items ([59483f4](https://github.com/Elenterius/Biomancy/commit/59483f456dbffd0b0256c98780ce8e12c8e86552))
 * remove unintentional fleshtongue obfuscation of Chrysalis error messages ([bc58ba2](https://github.com/Elenterius/Biomancy/commit/bc58ba2e8412be3ff22c83843d39a519d1e30477))
-
-## [8.1.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.0.0...1.20.1-v2.8.1.0) (2024-05-30)
-
-
-### Features
-
-* update zh_cn translation ([#131](https://github.com/Elenterius/Biomancy/issues/131)) ([82de348](https://github.com/Elenterius/Biomancy/commit/82de34806e467d569a537dec3d306006f5719ba1))
 
