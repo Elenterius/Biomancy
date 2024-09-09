@@ -315,10 +315,10 @@ public class DecomposerRecipeProvider extends RecipeProvider {
 				block -> DecomposerRecipeBuilder.create().setIngredient(block).addOutput(ModItems.BILE.get(), 0, 2).unlockedBy(block).save(consumer)
 		);
 
-		DecomposerRecipeBuilder.create().setIngredient(ModItems.MALIGNANT_FLESH_BLOCK.get()).addOutput(ModItems.FLESH_BITS.get(), 2, 0.04f).unlockedBy(ModItems.MALIGNANT_FLESH_BLOCK.get()).save(consumer);
-		DecomposerRecipeBuilder.create().setIngredient(ModItems.MALIGNANT_FLESH_SLAB.get()).addOutput(ModItems.FLESH_BITS.get(), 1, 0.15f).unlockedBy(ModItems.MALIGNANT_FLESH_SLAB.get()).save(consumer);
-		DecomposerRecipeBuilder.create().setIngredient(ModItems.MALIGNANT_FLESH_STAIRS.get()).addOutput(ModItems.FLESH_BITS.get(), 1, 0.13f).unlockedBy(ModItems.MALIGNANT_FLESH_STAIRS.get()).save(consumer);
-		DecomposerRecipeBuilder.create().setIngredient(ModItems.MALIGNANT_FLESH_WALL.get()).addOutput(ModItems.FLESH_BITS.get(), 2, 0.04f).unlockedBy(ModItems.MALIGNANT_FLESH_WALL.get()).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.MALIGNANT_FLESH_BLOCK.get()).addOutput(ModItems.FLESH_BITS.get(), -3, 1).unlockedBy(ModItems.MALIGNANT_FLESH_BLOCK.get()).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.MALIGNANT_FLESH_SLAB.get()).addOutput(ModItems.FLESH_BITS.get(), -6, 1).unlockedBy(ModItems.MALIGNANT_FLESH_SLAB.get()).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.MALIGNANT_FLESH_STAIRS.get()).addOutput(ModItems.FLESH_BITS.get(), -4, 1).unlockedBy(ModItems.MALIGNANT_FLESH_STAIRS.get()).save(consumer);
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.MALIGNANT_FLESH_WALL.get()).addOutput(ModItems.FLESH_BITS.get(), -3, 1).unlockedBy(ModItems.MALIGNANT_FLESH_WALL.get()).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(ModItems.PRIMAL_FLESH_BLOCK.get()).addOutput(ModItems.FLESH_BITS.get(), 0, 2).unlockedBy(ModItems.PRIMAL_FLESH_BLOCK.get()).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(ModItems.PRIMAL_FLESH_SLAB.get()).addOutput(ModItems.FLESH_BITS.get(), 0, 1).unlockedBy(ModItems.PRIMAL_FLESH_SLAB.get()).save(consumer);
 		DecomposerRecipeBuilder.create().setIngredient(ModItems.PRIMAL_FLESH_STAIRS.get()).addOutput(ModItems.FLESH_BITS.get(), 0, 1).unlockedBy(ModItems.PRIMAL_FLESH_STAIRS.get()).save(consumer);

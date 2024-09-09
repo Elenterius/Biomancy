@@ -4,13 +4,13 @@
     "item": "biomancy:malignant_flesh_wall"
   },
   "nutrientsCost": 1,
-  "processingTime": 36,
+  "processingTime": 18,
   "results": [
     {
       "countRange": {
-        "type": "binomial",
-        "n": 2,
-        "p": 0.04
+        "type": "uniform",
+        "max": 1,
+        "min": -3
       },
       "item": "biomancy:flesh_bits"
     }

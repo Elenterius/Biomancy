@@ -8,9 +8,9 @@
   "results": [
     {
       "countRange": {
-        "type": "binomial",
-        "n": 1,
-        "p": 0.15
+        "type": "uniform",
+        "max": 1,
+        "min": -6
       },
       "item": "biomancy:flesh_bits"
     }
