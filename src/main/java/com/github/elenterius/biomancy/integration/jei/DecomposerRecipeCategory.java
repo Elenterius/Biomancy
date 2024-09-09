@@ -136,7 +136,7 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 
 			ItemCountRange countRange = output.getCountRange();
 			if (countRange instanceof ItemCountRange.UniformRange uniform) {
-				MutableComponent component = ComponentUtil.literal("%d-%d".formatted(Math.max(uniform.min(), 0), uniform.max()));
+				MutableComponent component = ComponentUtil.literal("%d–%d".formatted(uniform.min(), uniform.max()));
 				guiGraphics.drawString(font, component, x - font.width(component), y, ColorStyles.WHITE_ARGB);
 			}
 			else if (countRange instanceof ItemCountRange.ConstantValue constant) {
@@ -144,7 +144,7 @@ public class DecomposerRecipeCategory implements IRecipeCategory<DecomposerRecip
 				guiGraphics.drawString(font, component, x - font.width(component), y, ColorStyles.WHITE_ARGB);
 			}
 			else if (countRange instanceof ItemCountRange.BinomialRange binomialRange) {
-				MutableComponent component = ComponentUtil.literal("n: %d, p: %s".formatted(binomialRange.n(), binomialRange.p()));
+				MutableComponent component = ComponentUtil.literal("n=%d p=%s".formatted(binomialRange.n(), binomialRange.p()));
 				guiGraphics.drawString(font, component, x - font.width(component), y, ColorStyles.WHITE_ARGB);
 			}
 
