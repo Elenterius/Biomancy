@@ -1,3 +1,20 @@
+## [8.11.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.10.0...1.20.1-v2.8.11.0) (2024-09-09)
+
+
+### Features
+
+* buff Flesh Plunderer to not receive extra damage when the target dies ([6249ae1](https://github.com/Elenterius/Biomancy/commit/6249ae186440acb332b1c4fbbea3e0783339392c))
+* make Primal Bloom and Orifice decomposable ([72ab9c9](https://github.com/Elenterius/Biomancy/commit/72ab9c95540fdd2578d340baae80896f1368200a))
+* make Primal Flesh Block craftable ([534c007](https://github.com/Elenterius/Biomancy/commit/534c007cd745c4179adf6ad0e3b666c1a202da26))
+* re-balance Flesh Plunderer, buff durability from 250 to 500 and nerf attack damage from 12 to 8 ([ce7d9b5](https://github.com/Elenterius/Biomancy/commit/ce7d9b549fa6b30a85fafd239107345301d1ec4d))
+* tweak Malignant Flesh decomposing recipes ([2f8b4d2](https://github.com/Elenterius/Biomancy/commit/2f8b4d2f4074f436ecdeff9f664d0f254bf59436))
+
+
+### Bug Fixes
+
+* fix JEI recipe display for food decomposer recipes not showing negative values ([624ac37](https://github.com/Elenterius/Biomancy/commit/624ac373d79fb10bfb5f217e50059196fc82e057))
+* fix JEI recipe display for food digesting recipes ([e60fd76](https://github.com/Elenterius/Biomancy/commit/e60fd76b4f5fa441f74b0299951f6de2b2507854))
+
 ## [8.10.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.9.0...1.20.1-v2.8.10.0) (2024-09-07)
 
 
@@ -91,18 +108,4 @@
 ### Bug Fixes
 
 * try to fix StackOverflow caused by Biomancy's ScaleModifier implementation (Pehkui integration) ([712cad0](https://github.com/Elenterius/Biomancy/commit/712cad09c25f4ea86cf3f316fe179bd33dc8d135)), closes [#133](https://github.com/Elenterius/Biomancy/issues/133)
-
-## [8.2.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.1.0...1.20.1-v2.8.2.0) (2024-06-17)
-
-
-### Features
-
-* add russian translation by VladYslaV ([a9312a9](https://github.com/Elenterius/Biomancy/commit/a9312a96330f7d2cb4f5741ce0a959ee0d3a37fd))
-
-
-### Bug Fixes
-
-* fix durability display of living armor items ([b72bb72](https://github.com/Elenterius/Biomancy/commit/b72bb72f318a829cfe8f516f4205bee8d44a8b1a))
-* remove ability to stack Caustic Gunblade items ([59483f4](https://github.com/Elenterius/Biomancy/commit/59483f456dbffd0b0256c98780ce8e12c8e86552))
-* remove unintentional fleshtongue obfuscation of Chrysalis error messages ([bc58ba2](https://github.com/Elenterius/Biomancy/commit/bc58ba2e8412be3ff22c83843d39a519d1e30477))
 
