@@ -21,7 +21,9 @@ public class DespoilingSwordItem extends SimpleSwordItem {
 
 	@Override
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		stack.hurtAndBreak(5, attacker, a -> a.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+		if (!target.isDeadOrDying()) {
+			stack.hurtAndBreak(5, attacker, a -> a.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+		}
 		return true;
 	}
 
