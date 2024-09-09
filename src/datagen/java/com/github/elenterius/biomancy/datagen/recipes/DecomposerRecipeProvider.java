@@ -339,6 +339,17 @@ public class DecomposerRecipeProvider extends RecipeProvider {
 				.addOutput(ModItems.EXOTIC_DUST.get(), 0, 2)
 				.unlockedBy(ModItems.LIVING_FLESH).save(consumer);
 
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.PRIMAL_ORIFICE)
+				.addOutput(ModItems.FLESH_BITS.get(), 0, 2)
+				.addOutput(ModItems.BILE.get(), 1, 4)
+				.unlockedBy(ModItems.PRIMAL_BLOOM).save(consumer);
+
+		DecomposerRecipeBuilder.create().setIngredient(ModItems.PRIMAL_BLOOM)
+				.addOutput(ModItems.FLESH_BITS.get(), 0, 2)
+				.addOutput(ModItems.EXOTIC_DUST.get(), 2, 3)
+				.addOutput(ModItems.BILE.get(), 1, 3)
+				.unlockedBy(ModItems.PRIMAL_BLOOM).save(consumer);
+
 		DecomposerRecipeBuilder.create().setIngredient(ModItems.BLOOMBERRY)
 				.addOutput(ModItems.BIO_LUMENS.get(), 0, 2)
 				.addOutput(ModItems.ORGANIC_MATTER.get(), 0, 1)

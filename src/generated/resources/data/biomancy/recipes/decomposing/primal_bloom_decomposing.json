@@ -1,0 +1,34 @@
+{
+  "type": "biomancy:decomposing",
+  "ingredient": {
+    "item": "biomancy:primal_bloom"
+  },
+  "nutrientsCost": 1,
+  "processingTime": 246,
+  "results": [
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 2,
+        "min": 0
+      },
+      "item": "biomancy:flesh_bits"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 3,
+        "min": 2
+      },
+      "item": "biomancy:exotic_dust"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 3,
+        "min": 1
+      },
+      "item": "biomancy:bile"
+    }
+  ]
+}
