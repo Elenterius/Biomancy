@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class DigesterRecipeCategory implements IRecipeCategory<DigestingRecipe> {
+public class DigestingRecipeCategory implements IRecipeCategory<DigestingRecipe> {
 
 	public static final RecipeType<DigestingRecipe> RECIPE_TYPE = new RecipeType<>(ModRecipes.DIGESTING_RECIPE_TYPE.getId(), DigestingRecipe.class);
 	private final IDrawable background;
@@ -40,7 +40,7 @@ public class DigesterRecipeCategory implements IRecipeCategory<DigestingRecipe> 
 
 	private final RecipeWrapper inputInventoryWrapper;
 
-	public DigesterRecipeCategory(IGuiHelper guiHelper) {
+	public DigestingRecipeCategory(IGuiHelper guiHelper) {
 		icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModItems.DIGESTER.get()));
 		ResourceLocation texture = BiomancyMod.createRL("textures/gui/jei/digester_recipe.png");
 		background = guiHelper.drawableBuilder(texture, 0, 0, 80, 47).setTextureSize(80, 47).addPadding(0, 4, 0, 0).build();
