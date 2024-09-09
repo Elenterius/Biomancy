@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": {
+      "item": "biomancy:flesh_bits"
+    },
+    "V": {
+      "item": "biomancy:malignant_flesh"
+    }
+  },
+  "pattern": [
+    "VVV",
+    "VFV",
+    "VVV"
+  ],
+  "result": {
+    "item": "biomancy:primal_flesh"
+  },
+  "show_notification": true
+}

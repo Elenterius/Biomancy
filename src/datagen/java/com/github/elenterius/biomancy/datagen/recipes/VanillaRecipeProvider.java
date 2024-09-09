@@ -266,6 +266,15 @@ public class VanillaRecipeProvider extends RecipeProvider {
 				.unlockedBy(hasName(ModItems.MALIGNANT_FLESH_VEINS.get()), has(ModItems.MALIGNANT_FLESH_VEINS.get()))
 				.save(consumer);
 
+		WorkbenchRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.PRIMAL_FLESH_BLOCK.get())
+				.define('F', ModItems.FLESH_BITS.get())
+				.define('V', ModItems.MALIGNANT_FLESH_BLOCK.get())
+				.pattern("VVV")
+				.pattern("VFV")
+				.pattern("VVV")
+				.unlockedBy(hasName(ModItems.MALIGNANT_FLESH_BLOCK.get()), has(ModItems.MALIGNANT_FLESH_BLOCK.get()))
+				.save(consumer);
+
 		WorkbenchRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModItems.PRIMORDIAL_BIO_LANTERN.get())
 				.define('B', ModItems.BLOOMBERRY.get())
 				.define('V', ModItems.MALIGNANT_FLESH_VEINS.get())
