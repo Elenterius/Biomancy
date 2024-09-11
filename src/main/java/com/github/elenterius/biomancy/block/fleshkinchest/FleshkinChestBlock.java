@@ -2,6 +2,7 @@ package com.github.elenterius.biomancy.block.fleshkinchest;
 
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.item.EssenceItem;
 import com.github.elenterius.biomancy.ownable.OwnableEntityBlock;
 import com.github.elenterius.biomancy.permission.Actions;
 import com.github.elenterius.biomancy.permission.IRestrictedInteraction;
@@ -103,7 +104,7 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 				chest.setCustomName(stack.getHoverName());
 			}
 
-			OwnableEntityBlock.setupBlockEntityOwner(level, chest, placer, stack);
+			OwnableEntityBlock.setBlockEntityOwner(level, chest, placer, stack);
 		}
 	}
 
@@ -128,13 +129,29 @@ public class FleshkinChestBlock extends BaseEntityBlock implements SimpleWaterlo
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand usedHand, BlockHitResult hit) {
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (level.isClientSide()) return InteractionResult.SUCCESS;
 
 		if (player instanceof ServerPlayer serverPlayer && !ChestBlock.isChestBlockedAt(level, pos)) {
 			BlockEntity blockEntity = level.getBlockEntity(pos);
 			if (blockEntity instanceof FleshkinChestBlockEntity chest) {
 				if (chest.canPlayerOpenContainer(player)) {
+
+					ItemStack stack = player.getItemInHand(hand);
+					if (stack.getItem() instanceof EssenceItem essenceItem) {
+						if (chest.isActionAllowed(player, Actions.CONFIGURE)) {
+							boolean success = essenceItem.getEntityUUID(stack).map(chest::addUser).orElse(false);
+							if (success) {
+								stack.shrink(1);
+								level.playSound(null, pos, ModSoundEvents.FLESHKIN_EAT.get(), SoundSource.BLOCKS, 1f, level.random.nextFloat() * 0.1f + 0.9f);
+								return InteractionResult.SUCCESS;
+							}
+						}
+
+						level.playSound(null, pos, ModSoundEvents.FLESHKIN_NO.get(), SoundSource.BLOCKS, 1f, level.random.nextFloat() * 0.1f + 0.9f);
+						return InteractionResult.CONSUME;
+					}
+
 					MenuProvider menuProvider = getMenuProvider(state, level, pos);
 					if (menuProvider != null) {
 						NetworkHooks.openScreen(serverPlayer, menuProvider, byteBuffer -> {});

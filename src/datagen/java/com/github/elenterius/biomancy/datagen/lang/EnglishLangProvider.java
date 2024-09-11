@@ -515,7 +515,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addItem(ModItems.THORN_SHIELD, "The Thorn", "Cute but prickly shield.");
 
 		addItem(ModItems.ESSENCE_EXTRACTOR, "Essence Extractor", "Primed Suck, slurps essence from its victims.");
-		addItem(ModItems.ESSENCE, "Essence", "Extracted life essence from a Mob. Contains sequences of genetic information.");
+		addItem(ModItems.ESSENCE, "Essence", "Extracted life essence from a Mob. Contains sequences of genetic information.\n\nCan be used on various blocks that are picky about their users.");
 		add(ModItems.ESSENCE.get().getDescriptionId() + ".mob", "%1$s Essence");
 		add(ModItems.ESSENCE.get().getDescriptionId() + ".unique_mob", "Unique %1$s Essence");
 
@@ -568,15 +568,18 @@ public class EnglishLangProvider extends AbstractLangProvider {
 
 		addBlock(ModBlocks.FLESHKIN_CHEST, "Fleshkin Chest", """
 				Crafted from living flesh, the organic composition of the chest grants it remarkable resilience, ensuring the safety of its precious contents even from explosions.
-								
-				Only its true master can unlock its contents without invoking the wrath of its razor-sharp fangs.""");
+				Only its true master can unlock its contents without invoking the wrath of its razor-sharp fangs.
+				
+				You can add new Users by applying Tier 3 Essence to the block.
+				""");
 		//		addBlock(ModBlocks.FLESHKIN_DOOR, "[WIP] Fleshkin Door", EMPTY_STRING);
 		//		addBlock(ModBlocks.FLESHKIN_TRAPDOOR, "[WIP] Fleshkin Trap Door", EMPTY_STRING);
 		addBlock(ModBlocks.FLESHKIN_PRESSURE_PLATE, "Fleshkin Pressure Sensor", """
 				Fleshkin pancake. Yummy...
 				It has two behaviors, either it only activates for its owner or it only works for everyone else.
-								
-				Sneak click to change its behavior.""");
+				Sneak click to change its behavior.
+				
+				You can add new Users by applying Tier 3 Essence to the block.""");
 
 		addBlock(ModBlocks.FLESH, "Flesh Block", "A generic block of flesh... Don't bother me with this!");
 		addBlock(ModBlocks.FLESH_SLAB, "Flesh Slab", "A generic slab of flesh... Don't bother me with this!");

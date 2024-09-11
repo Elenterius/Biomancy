@@ -48,6 +48,7 @@ public abstract class OwnableContainerBlockEntity extends SimpleContainerBlockEn
 		if (users.size() >= MAX_USERS && !users.containsKey(userId)) return false;
 		users.put(userId, userType);
 		syncToClient();
+		setChanged();
 		return true;
 	}
 
@@ -56,6 +57,7 @@ public abstract class OwnableContainerBlockEntity extends SimpleContainerBlockEn
 		if (users.containsKey(userId)) {
 			users.remove(userId);
 			syncToClient();
+			setChanged();
 		}
 	}
 
@@ -112,7 +114,7 @@ public abstract class OwnableContainerBlockEntity extends SimpleContainerBlockEn
 	protected void saveForSyncToClient(CompoundTag tag) {
 		if (ownerId != null) tag.putUUID("OwnerUUID", ownerId);
 
-		if (users.size() > 0) {
+		if (!users.isEmpty()) {
 			ListTag listNBT = new ListTag();
 			for (Map.Entry<UUID, UserType> user : users.entrySet()) {
 				CompoundTag userTag = new CompoundTag();
@@ -146,7 +148,7 @@ public abstract class OwnableContainerBlockEntity extends SimpleContainerBlockEn
 		super.saveAdditional(tag);
 		if (ownerId != null) tag.putUUID("OwnerUUID", ownerId);
 
-		if (users.size() > 0) {
+		if (!users.isEmpty()) {
 			ListTag listNBT = new ListTag();
 			for (Map.Entry<UUID, UserType> user : users.entrySet()) {
 				CompoundTag userTag = new CompoundTag();

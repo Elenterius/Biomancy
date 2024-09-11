@@ -3,6 +3,8 @@ package com.github.elenterius.biomancy.block.ownable;
 import com.github.elenterius.biomancy.block.property.UserSensitivity;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
 import com.github.elenterius.biomancy.init.ModBlockProperties;
+import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.item.EssenceItem;
 import com.github.elenterius.biomancy.ownable.Ownable;
 import com.github.elenterius.biomancy.ownable.OwnableEntityBlock;
 import com.github.elenterius.biomancy.permission.Actions;
@@ -10,6 +12,7 @@ import com.github.elenterius.biomancy.permission.IRestrictedInteraction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -60,7 +63,7 @@ public class OwnablePressurePlateBlock extends PressurePlateBlock implements Own
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
 		super.setPlacedBy(level, pos, state, placer, stack);
 		if (level.getBlockEntity(pos) instanceof Ownable ownable) {
-			OwnableEntityBlock.setupBlockEntityOwner(level, ownable, placer, stack);
+			OwnableEntityBlock.setBlockEntityOwner(level, ownable, placer, stack);
 		}
 	}
 
@@ -71,13 +74,32 @@ public class OwnablePressurePlateBlock extends PressurePlateBlock implements Own
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		if (level.getBlockEntity(pos) instanceof IRestrictedInteraction interaction && interaction.isActionAllowed(player, Actions.USE_BLOCK)) {
+		if (level.getBlockEntity(pos) instanceof IRestrictedInteraction restrictedBlock && restrictedBlock.isActionAllowed(player, Actions.USE_BLOCK)) {
+
+			ItemStack stack = player.getItemInHand(hand);
+			if (stack.getItem() instanceof EssenceItem essenceItem) {
+				if (level.isClientSide) return InteractionResult.SUCCESS;
+
+				if (restrictedBlock.isActionAllowed(player, Actions.CONFIGURE)) {
+					boolean success = essenceItem.getEntityUUID(stack).map(restrictedBlock::addUser).orElse(false);
+					if (success) {
+						stack.shrink(1);
+						level.playSound(null, pos, ModSoundEvents.FLESHKIN_EAT.get(), SoundSource.BLOCKS, 1f, level.random.nextFloat() * 0.1f + 0.9f);
+						return InteractionResult.SUCCESS;
+					}
+				}
+
+				level.playSound(null, pos, ModSoundEvents.FLESHKIN_NO.get(), SoundSource.BLOCKS, 1f, level.random.nextFloat() * 0.1f + 0.9f);
+				return InteractionResult.CONSUME;
+			}
+
 			if (player.isShiftKeyDown()) {
 				state = state.setValue(USER_SENSITIVITY, state.getValue(USER_SENSITIVITY).cycle());
 				level.setBlock(pos, state, Block.UPDATE_CLIENTS);
 				return InteractionResult.sidedSuccess(level.isClientSide);
 			}
 		}
+
 		return InteractionResult.PASS;
 	}
 

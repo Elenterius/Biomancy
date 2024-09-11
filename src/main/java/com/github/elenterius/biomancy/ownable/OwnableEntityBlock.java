@@ -32,7 +32,7 @@ public interface OwnableEntityBlock extends EntityBlock {
 	String NBT_KEY_USER_LIST = "UserList";
 	String NBT_KEY_USER = "UserUUID";
 
-	static void setupBlockEntityOwner(Level level, Ownable ownable, @Nullable LivingEntity placer, ItemStack stack) {
+	static void setBlockEntityOwner(Level level, Ownable ownable, @Nullable LivingEntity placer, ItemStack stack) {
 		if (placer == null) return;
 
 		CompoundTag entityData = BlockItem.getBlockEntityData(stack);

@@ -44,6 +44,7 @@ public class OwnableBlockEntity extends SimpleSyncedBlockEntity implements Ownab
 		if (users.size() >= MAX_USERS && !users.containsKey(userId)) return false;
 		users.put(userId, userType);
 		syncToClient();
+		setChanged();
 		return true;
 	}
 
@@ -52,6 +53,7 @@ public class OwnableBlockEntity extends SimpleSyncedBlockEntity implements Ownab
 		if (users.containsKey(userId)) {
 			users.remove(userId);
 			syncToClient();
+			setChanged();
 		}
 	}
 

@@ -2,6 +2,8 @@ package com.github.elenterius.biomancy.block.ownable;
 
 import com.github.elenterius.biomancy.block.base.IBlockEntityDelegator;
 import com.github.elenterius.biomancy.init.ModBlockEntities;
+import com.github.elenterius.biomancy.init.ModSoundEvents;
+import com.github.elenterius.biomancy.item.EssenceItem;
 import com.github.elenterius.biomancy.ownable.Ownable;
 import com.github.elenterius.biomancy.ownable.OwnableEntityBlock;
 import com.github.elenterius.biomancy.permission.Actions;
@@ -80,7 +82,25 @@ public class OwnableDoorBlock extends DoorBlock implements OwnableEntityBlock {
 	@Override
 	public InteractionResult use(BlockState state, Level level, final BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 
-		if (!isInteractionAllowed(state, level, pos, player)) return InteractionResult.PASS;
+		if (!(getCorrectBlockEntity(state, level, pos) instanceof IRestrictedInteraction restrictedBlock)) return InteractionResult.PASS;
+		if (!restrictedBlock.isActionAllowed(player, Actions.USE_BLOCK)) return InteractionResult.PASS;
+
+		ItemStack stack = player.getItemInHand(hand);
+		if (stack.getItem() instanceof EssenceItem essenceItem) {
+			if (level.isClientSide) return InteractionResult.SUCCESS;
+
+			if (restrictedBlock.isActionAllowed(player, Actions.CONFIGURE)) {
+				boolean success = essenceItem.getEntityUUID(stack).map(restrictedBlock::addUser).orElse(false);
+				if (success) {
+					stack.shrink(1);
+					level.playSound(null, pos, ModSoundEvents.FLESHKIN_EAT.get(), SoundSource.BLOCKS, 1f, level.random.nextFloat() * 0.1f + 0.9f);
+					return InteractionResult.SUCCESS;
+				}
+			}
+
+			level.playSound(null, pos, ModSoundEvents.FLESHKIN_NO.get(), SoundSource.BLOCKS, 1f, level.random.nextFloat() * 0.1f + 0.9f);
+			return InteractionResult.CONSUME;
+		}
 
 		state = state.cycle(OPEN);
 		level.setBlock(pos, state, UPDATE_FLAGS);
@@ -204,7 +224,7 @@ public class OwnableDoorBlock extends DoorBlock implements OwnableEntityBlock {
 		super.setPlacedBy(level, pos, state, placer, stack);
 		BlockEntity blockEntity = level.getBlockEntity(pos);
 		if (blockEntity instanceof Ownable ownable) {
-			OwnableEntityBlock.setupBlockEntityOwner(level, ownable, placer, stack);
+			OwnableEntityBlock.setBlockEntityOwner(level, ownable, placer, stack);
 		}
 
 		if (blockEntity instanceof IBlockEntityDelegator delegator && level.getBlockEntity(pos.below()) instanceof OwnableBlockEntity ownable) {

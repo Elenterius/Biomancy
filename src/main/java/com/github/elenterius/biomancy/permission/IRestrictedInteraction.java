@@ -26,12 +26,14 @@ public interface IRestrictedInteraction {
 
 	boolean setUserType(UUID userId, UserType userType);
 
-	default void addUser(UUID userId) {
-		addUser(userId, UserType.DEFAULT);
+	default boolean addUser(UUID userId) {
+		return addUser(userId, UserType.DEFAULT);
 	}
 
-	default void addUser(UUID userId, UserType userType) {
+	default boolean addUser(UUID userId, UserType userType) {
+		if (userType.getAccessLevel() <= getUserType(userId).getAccessLevel()) return false;
 		setUserType(userId, userType);
+		return true;
 	}
 
 	void removeUser(UUID userId);

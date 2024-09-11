@@ -22,4 +22,6 @@ public final class Actions {
 	 */
 	public static final IAction USE_BLOCK = type -> type.getAccessLevel() > UserType.NONE.getAccessLevel();
 
+	public static final IAction CONFIGURE = type -> type.getAccessLevel() > UserType.DEFAULT.getAccessLevel();
+
 }
