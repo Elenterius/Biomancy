@@ -11,15 +11,17 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+
 public final class ParticleProviders {
+
 	private ParticleProviders() {}
 
 	@OnlyIn(Dist.CLIENT)
 	public static class AcidLandProvider implements ParticleProvider<SimpleParticleType> {
 		protected final SpriteSet sprite;
 
-		public AcidLandProvider(SpriteSet pSprites) {
-			this.sprite = pSprites;
+		public AcidLandProvider(SpriteSet sprites) {
+			sprite = sprites;
 		}
 
 		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
@@ -34,8 +36,8 @@ public final class ParticleProviders {
 	public static class AcidHangProvider implements ParticleProvider<SimpleParticleType> {
 		protected final SpriteSet sprite;
 
-		public AcidHangProvider(SpriteSet pSprites) {
-			this.sprite = pSprites;
+		public AcidHangProvider(SpriteSet sprites) {
+			sprite = sprites;
 		}
 
 		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
@@ -50,8 +52,8 @@ public final class ParticleProviders {
 	public static class AcidFallProvider implements ParticleProvider<SimpleParticleType> {
 		protected final SpriteSet sprite;
 
-		public AcidFallProvider(SpriteSet pSprites) {
-			this.sprite = pSprites;
+		public AcidFallProvider(SpriteSet sprites) {
+			sprite = sprites;
 		}
 
 		public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {

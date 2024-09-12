@@ -20,6 +20,10 @@ public class ModParticleSpriteProvider extends ParticleSpriteProvider {
 		addParticle(ModParticleTypes.DRIPPING_ACID, "minecraft:drip_hang");
 		addParticle(ModParticleTypes.FALLING_ACID, "minecraft:drip_fall");
 		addParticle(ModParticleTypes.LANDING_ACID, "minecraft:drip_land");
+		addParticle(ModParticleTypes.PINK_GLOW, "minecraft:glow");
+		addParticle(ModParticleTypes.LIGHT_GREEN_GLOW, "minecraft:glow");
+		addParticle(ModParticleTypes.HOSTILE, "biomancy:hostile");
+		addParticle(ModParticleTypes.BIOHAZARD, "biomancy:biohazard");
 	}
 
 }
