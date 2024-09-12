@@ -1,3 +1,12 @@
+## [8.12.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.11.0...1.20.1-v2.8.12.0) (2024-09-12)
+
+
+### Features
+
+* buff drop chances for Bile Glands and buff drop amount of Fangs and Claws for mobs with high attack damage ([1a212e8](https://github.com/Elenterius/Biomancy/commit/1a212e87b9c0a3fb3c41df4145e71b20290bcb07))
+* display more distinct particles for tributes added to a Cradle ([d9a613f](https://github.com/Elenterius/Biomancy/commit/d9a613f4b5935d5a9e26ecdb54012d3ab95bdf3a))
+* make it possible to add new users to Fleshkin Chests and Pressure Sensors with Tier 3 Essence ([ce7907a](https://github.com/Elenterius/Biomancy/commit/ce7907aee596869d36df8e45f4d29a386a97bf83))
+
 ## [8.11.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.10.0...1.20.1-v2.8.11.0) (2024-09-09)
 
 
@@ -96,16 +105,4 @@
 * fix untranslatable text in the Modular Larynx tooltip ([9046493](https://github.com/Elenterius/Biomancy/commit/904649364737b7f8e7dc358292c7d6b4b820fff6))
 * improve render scaling of Flesh Blob models ([e1f4d32](https://github.com/Elenterius/Biomancy/commit/e1f4d32307d0c246d5141262969e1876bbffd24f))
 * make Primordial Infestation not applicable to Primordial Flesh Blobs ([df88bcc](https://github.com/Elenterius/Biomancy/commit/df88bccc92caad88c7d8e1ee053bb2fba5e92f81))
-
-## [8.3.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.2.0...1.20.1-v2.8.3.0) (2024-07-01)
-
-
-### Features
-
-* add Korean (South Korean) translation by Mexwell12 ([2521dcf](https://github.com/Elenterius/Biomancy/commit/2521dcf21c354fa87b9416a5a01bba1da0315574))
-
-
-### Bug Fixes
-
-* try to fix StackOverflow caused by Biomancy's ScaleModifier implementation (Pehkui integration) ([712cad0](https://github.com/Elenterius/Biomancy/commit/712cad09c25f4ea86cf3f316fe179bd33dc8d135)), closes [#133](https://github.com/Elenterius/Biomancy/issues/133)
 
