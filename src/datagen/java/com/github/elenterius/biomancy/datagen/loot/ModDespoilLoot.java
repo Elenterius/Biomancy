@@ -8,7 +8,11 @@ import com.github.elenterius.biomancy.BiomancyMod;
 import com.github.elenterius.biomancy.init.ModItems;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -159,6 +163,9 @@ public class ModDespoilLoot extends DespoilLootProvider {
 		LootPool.Builder builder = LootPool.lootPool().setRolls(ConstantValue.exactly(1));
 		boolean hasLoot = false;
 
+		EntityType<? extends LivingEntity> livingEntityType = (EntityType<? extends LivingEntity>) entityType;
+		AttributeSupplier baseAttributes = DefaultAttributes.getSupplier(livingEntityType);
+
 		float volume = entityType.getWidth() * entityType.getHeight() * entityType.getWidth();
 		float fangMultiplier = 0.825f;
 		float clawMultiplier = 7f;
@@ -171,6 +178,11 @@ public class ModDespoilLoot extends DespoilLootProvider {
 
 		if (SHARP_FANG_MOBS.contains(entityType)) {
 			int maxCount = Mth.ceil(Math.log(volume * fangMultiplier + 1));
+
+			if (baseAttributes.hasAttribute(Attributes.ATTACK_DAMAGE) && baseAttributes.getValue(Attributes.ATTACK_DAMAGE) >= 5d) {
+				maxCount += 1;
+			}
+
 			NumberProvider countProvider = maxCount > 1 ? UniformGenerator.between(1, maxCount) : ConstantValue.exactly(1);
 
 			builder.add(
@@ -184,6 +196,11 @@ public class ModDespoilLoot extends DespoilLootProvider {
 
 		if (SHARP_CLAW_MOBS.contains(entityType)) {
 			int maxCount = Mth.ceil(Math.log(volume * clawMultiplier + 1));
+
+			if (baseAttributes.hasAttribute(Attributes.ATTACK_DAMAGE) && baseAttributes.getValue(Attributes.ATTACK_DAMAGE) >= 5d) {
+				maxCount += 1;
+			}
+
 			NumberProvider countProvider = maxCount > 1 ? UniformGenerator.between(1, maxCount) : ConstantValue.exactly(1);
 
 			builder.add(
@@ -208,10 +225,16 @@ public class ModDespoilLoot extends DespoilLootProvider {
 
 		if (volume >= 0.25f && !hasToxinGland && !hasVolatileGland && !INVALID_MOBS_FOR_MEATY_LOOT.contains(entityType)) {
 			int maxCount = Mth.ceil(Math.log(volume * bileGlandMultiplier + 1));
-			NumberProvider countProvider = UniformGenerator.between(-1, maxCount);
+			NumberProvider countProvider = UniformGenerator.between(0, maxCount);
+
+			int weight = 40;
+
+			if (!baseAttributes.hasAttribute(Attributes.ATTACK_DAMAGE) || baseAttributes.getValue(Attributes.ATTACK_DAMAGE) <= 0.125d) {
+				weight += 10;
+			}
 
 			builder.add(
-					LootItem.lootTableItem(ModItems.GENERIC_MOB_GLAND.get()).setWeight(40)
+					LootItem.lootTableItem(ModItems.GENERIC_MOB_GLAND.get()).setWeight(weight)
 							.apply(SetItemCountFunction.setCount(countProvider))
 							.apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1)))
 			);

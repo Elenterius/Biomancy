@@ -36,7 +36,7 @@
               "count": {
                 "type": "minecraft:uniform",
                 "max": 1.0,
-                "min": -1.0
+                "min": 0.0
               },
               "function": "minecraft:set_count"
             },
@@ -50,7 +50,7 @@
             }
           ],
           "name": "biomancy:mob_gland",
-          "weight": 40
+          "weight": 50
         }
       ],
       "rolls": 1.0

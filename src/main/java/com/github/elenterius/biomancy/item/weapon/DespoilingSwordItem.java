@@ -16,7 +16,12 @@ public class DespoilingSwordItem extends SimpleSwordItem {
 	@Override
 	public int getEnchantmentLevel(ItemStack stack, Enchantment enchantment) {
 		int level = super.getEnchantmentLevel(stack, enchantment);
-		return enchantment == ModEnchantments.DESPOIL.get() ? level + 1 : level;
+
+		if (enchantment == ModEnchantments.DESPOIL.get()) {
+			return level + 1;
+		}
+
+		return level;
 	}
 
 	@Override
