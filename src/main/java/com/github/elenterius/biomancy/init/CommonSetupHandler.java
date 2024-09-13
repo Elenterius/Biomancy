@@ -7,8 +7,12 @@ import com.github.elenterius.biomancy.item.injector.InjectorItem;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
+import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
+import net.minecraft.world.item.DispensibleContainerItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -91,6 +95,24 @@ public final class CommonSetupHandler {
 					stack.setCount(0);
 				}
 				return stack;
+			}
+		});
+
+		DispenserBlock.registerBehavior(ModItems.ACID_BUCKET.get(), new DefaultDispenseItemBehavior() {
+			private final DefaultDispenseItemBehavior defaultDispenseItemBehavior = new DefaultDispenseItemBehavior();
+
+			public ItemStack execute(BlockSource source, ItemStack stack) {
+				BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+				Level level = source.getLevel();
+
+				DispensibleContainerItem containerItem = (DispensibleContainerItem) stack.getItem();
+				if (containerItem.emptyContents(null, level, pos, null, stack)) {
+					containerItem.checkExtraContent(null, level, stack, pos);
+					return new ItemStack(Items.BUCKET);
+				}
+				else {
+					return defaultDispenseItemBehavior.dispense(source, stack);
+				}
 			}
 		});
 	}
