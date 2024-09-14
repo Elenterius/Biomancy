@@ -4,13 +4,13 @@
     "item": "minecraft:slime_ball"
   },
   "nutrientsCost": 1,
-  "processingTime": 215,
+  "processingTime": 145,
   "results": [
     {
       "countRange": {
         "type": "uniform",
-        "max": 5,
-        "min": 3
+        "max": 3,
+        "min": 2
       },
       "item": "biomancy:regenerative_fluid"
     },
