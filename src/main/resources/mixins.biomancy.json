@@ -8,17 +8,17 @@
     "defaultRequire": 1
   },
   "mixins": [
+    "AnimalMixin", "AreaEffectCloudMixin", "ArrowMixin", "BlockMixin", "ChickenMixin", "CowMixin", "FlowingFluidMixin", "LivingEntityMixin",
+    "MobEffectInstanceMixin", "NodeEvaluatorMixin", "PhantomMixin", "PigMixin", "PlayerMixin", "ServerGamePacketListenerImplMixin", "ServerLevelMixin",
+    "SheepMixin", "SignBlockEntityMixin", "ThrownPotionMixin", "UnbreakingEnchantmentMixin", "VillagerMakeLoveMixin", "VillagerMixin", "WallBlockMixin",
     "accessor.AgeableMobAccessor", "accessor.ArmorStandAccessor", "accessor.BiomeAccessor", "accessor.CreeperAccessor", "accessor.DamageSourceAccessor",
     "accessor.EntityAccessor", "accessor.IntegerPropertyAccessor", "accessor.LivingEntityAccessor", "accessor.MobEffectInstanceAccessor",
     "accessor.MobEntityAccessor", "accessor.ServerLevelAccessor", "accessor.SheepAccessor", "accessor.SlimeAccessor", "accessor.SuspiciousStewItemAccessor",
-    "accessor.SwordItemMixinAccessor", "accessor.TadpoleAccessor", "accessor.TextureSlotAccessor", "accessor.ZombieVillagerMixinAccessor",
-    "AnimalMixin", "AreaEffectCloudMixin", "ArrowMixin", "ChickenMixin", "CowMixin", "FlowingFluidMixin", "LivingEntityMixin", "MobEffectInstanceMixin",
-    "PhantomMixin", "PigMixin", "PlayerMixin", "ServerLevelMixin", "SheepMixin", "ThrownPotionMixin", "UnbreakingEnchantmentMixin", "WallBlockMixin",
-    "BlockMixin", "NodeEvaluatorMixin", "SignBlockEntityMixin", "ServerGamePacketListenerImplMixin", "VillagerMixin", "VillagerMakeLoveMixin"
+    "accessor.SwordItemMixinAccessor", "accessor.TadpoleAccessor", "accessor.TextureSlotAccessor", "accessor.ZombieVillagerMixinAccessor"
   ],
   "client": [
-    "accessor.RecipeCollectionAccessor", "client.ClientPackListenerMixin", "client.ClientRecipeBookMixin", "client.GuiGraphicsMixin",
-    "client.PlayerRendererMixin"
+    "accessor.RecipeCollectionAccessor", "client.AbstractSignEditScreenMixin", "client.AnvilScreenMixin", "client.ClientPackListenerMixin",
+    "client.ClientRecipeBookMixin", "client.GuiGraphicsMixin", "client.PlayerRendererMixin"
   ],
   "server": [ ]
 }
