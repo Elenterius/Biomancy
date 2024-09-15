@@ -1,3 +1,10 @@
+### [8.13.1](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.13.0...1.20.1-v2.8.13.1) (2024-09-15)
+
+
+### Bug Fixes
+
+* fix server crash related to the primordial infestation effect ([3dcdc0a](https://github.com/Elenterius/Biomancy/commit/3dcdc0a10d3e14712bf577dbf2c5a5c6c0cbd6e5))
+
 ## [8.13.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.12.0...1.20.1-v2.8.13.0) (2024-09-13)
 
 
@@ -54,11 +61,4 @@
 
 * fix Chrysalis item interaction with mobs from Alex's Mobs ([62b5d9c](https://github.com/Elenterius/Biomancy/commit/62b5d9cbfa959b0e695da375407fbd4485b11a04))
 * prevent Living Flesh from being eaten by flesh veins ([c7d95dc](https://github.com/Elenterius/Biomancy/commit/c7d95dc48dca72d9ec23541be1dd2ee570acbee8))
-
-## [8.9.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.8.0...1.20.1-v2.8.9.0) (2024-08-26)
-
-
-### Features
-
-* update Chinese (zh_cn) translation ([473ba44](https://github.com/Elenterius/Biomancy/commit/473ba44dde2acd8f57ecbe3ffc952d28ee5dd4f0))
 
