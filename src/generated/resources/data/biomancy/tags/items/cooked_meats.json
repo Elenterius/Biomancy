@@ -3,16 +3,40 @@
     "minecraft:cooked_beef",
     "minecraft:cooked_porkchop",
     "minecraft:cooked_chicken",
-    "minecraft:cooked_salmon",
+    "minecraft:cooked_rabbit",
     "minecraft:cooked_mutton",
     "minecraft:cooked_cod",
-    "minecraft:cooked_rabbit",
+    "minecraft:cooked_salmon",
     {
       "id": "alexsmobs:cooked_moose_ribs",
       "required": false
     },
     {
+      "id": "alexsmobs:cooked_kangaroo_meat",
+      "required": false
+    },
+    {
+      "id": "alexsmobs:cooked_catfish",
+      "required": false
+    },
+    {
+      "id": "alexsmobs:cooked_lobster_tail",
+      "required": false
+    },
+    {
       "id": "alexscaves:cooked_trilocaris_tail",
+      "required": false
+    },
+    {
+      "id": "alexscaves:cooked_lanternfish",
+      "required": false
+    },
+    {
+      "id": "alexscaves:cooked_tripodfish",
+      "required": false
+    },
+    {
+      "id": "alexscaves:cooked_radgill",
       "required": false
     },
     {
