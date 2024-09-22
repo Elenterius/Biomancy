@@ -3,36 +3,44 @@
   "conditions": [
     {
       "type": "forge:mod_loaded",
-      "modid": "alexsmobs"
+      "modid": "alexscaves"
     }
   ],
   "ingredient": {
-    "item": "alexsmobs:mimicream"
+    "item": "alexscaves:atlatitan_egg"
   },
   "nutrientsCost": 1,
-  "processingTime": 430,
+  "processingTime": 580,
   "results": [
     {
       "countRange": {
         "type": "uniform",
-        "max": 3,
-        "min": 2
+        "max": 4,
+        "min": 0
       },
-      "item": "biomancy:bile"
+      "item": "biomancy:stone_powder"
     },
     {
       "countRange": {
         "type": "uniform",
-        "max": 2,
+        "max": 4,
         "min": 1
       },
-      "item": "biomancy:regenerative_fluid"
+      "item": "biomancy:hormone_secretion"
+    },
+    {
+      "countRange": {
+        "type": "uniform",
+        "max": 4,
+        "min": 1
+      },
+      "item": "biomancy:organic_matter"
     },
     {
       "countRange": {
         "type": "uniform",
         "max": 6,
-        "min": 4
+        "min": 2
       },
       "item": "biomancy:exotic_dust"
     }

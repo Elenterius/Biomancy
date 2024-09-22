@@ -3,22 +3,22 @@
   "conditions": [
     {
       "type": "forge:mod_loaded",
-      "modid": "alexsmobs"
+      "modid": "alexscaves"
     }
   ],
   "ingredient": {
-    "item": "alexsmobs:mimicream"
+    "item": "alexscaves:trilocaris_tail"
   },
   "nutrientsCost": 1,
-  "processingTime": 430,
+  "processingTime": 152,
   "results": [
     {
       "countRange": {
         "type": "uniform",
-        "max": 3,
+        "max": 4,
         "min": 2
       },
-      "item": "biomancy:bile"
+      "item": "biomancy:flesh_bits"
     },
     {
       "countRange": {
@@ -26,15 +26,15 @@
         "max": 2,
         "min": 1
       },
-      "item": "biomancy:regenerative_fluid"
+      "item": "biomancy:tough_fibers"
     },
     {
       "countRange": {
         "type": "uniform",
-        "max": 6,
-        "min": 4
+        "max": 2,
+        "min": 1
       },
-      "item": "biomancy:exotic_dust"
+      "item": "biomancy:elastic_fibers"
     }
   ]
 }

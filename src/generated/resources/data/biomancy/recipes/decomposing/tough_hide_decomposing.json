@@ -10,13 +10,13 @@
     "item": "alexscaves:tough_hide"
   },
   "nutrientsCost": 1,
-  "processingTime": 120,
+  "processingTime": 150,
   "results": [
     {
       "countRange": {
         "type": "uniform",
-        "max": 4,
-        "min": 2
+        "max": 5,
+        "min": 3
       },
       "item": "biomancy:tough_fibers"
     }

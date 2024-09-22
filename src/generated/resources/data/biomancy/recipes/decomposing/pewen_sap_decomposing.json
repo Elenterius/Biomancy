@@ -3,20 +3,20 @@
   "conditions": [
     {
       "type": "forge:mod_loaded",
-      "modid": "alexsmobs"
+      "modid": "alexscaves"
     }
   ],
   "ingredient": {
-    "item": "alexsmobs:mimicream"
+    "item": "alexscaves:pewen_sap"
   },
   "nutrientsCost": 1,
-  "processingTime": 430,
+  "processingTime": 60,
   "results": [
     {
       "countRange": {
         "type": "uniform",
-        "max": 3,
-        "min": 2
+        "max": 1,
+        "min": 0
       },
       "item": "biomancy:bile"
     },
@@ -24,17 +24,9 @@
       "countRange": {
         "type": "uniform",
         "max": 2,
-        "min": 1
+        "min": 0
       },
-      "item": "biomancy:regenerative_fluid"
-    },
-    {
-      "countRange": {
-        "type": "uniform",
-        "max": 6,
-        "min": 4
-      },
-      "item": "biomancy:exotic_dust"
+      "item": "biomancy:organic_matter"
     }
   ]
 }
