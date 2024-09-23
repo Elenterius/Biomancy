@@ -31,7 +31,7 @@
   "item.biomancy.gem_fragments": "Gem Fragments",
   "item.biomancy.gem_fragments.tooltip": "Bedazzle your fleshy creations!\nUsed to enhance hardened fibers to their maximum resilience, but they're very expensive.",
   "item.biomancy.bio_lumens": "Bioluminescent Goo",
-  "item.biomancy.bio_lumens.tooltip": "A basic component only obtained via the Decomposer, usually alongside biotic matter.\n\nUsed as a cosmetic upgrade to make things glow.",
+  "item.biomancy.bio_lumens.tooltip": "A basic component only obtained via the Decomposer, usually alongside biotic matter.\n\nUsed as a cosmetic upgrade to make things glow, like the text on signs.",
   "item.biomancy.organic_matter": "Biotic Matter",
   "item.biomancy.organic_matter.tooltip": "Moist organic material, extracted from plants. With its dark and fibrous texture, it almost seems like humus.",
   "item.biomancy.exotic_dust": "Exotic Dust",
