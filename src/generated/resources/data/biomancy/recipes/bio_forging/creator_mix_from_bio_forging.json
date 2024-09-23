@@ -15,8 +15,8 @@
       "item": "biomancy:exotic_dust"
     },
     {
-      "count": 3,
-      "item": "biomancy:nutrient_paste"
+      "count": 15,
+      "item": "biomancy:nutrients"
     }
   ],
   "nutrientsCost": 1,

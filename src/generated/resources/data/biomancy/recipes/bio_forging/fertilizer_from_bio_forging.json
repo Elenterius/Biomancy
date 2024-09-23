@@ -3,15 +3,24 @@
   "bio_forge_tab": "biomancy:components",
   "ingredients": [
     {
-      "count": 4,
-      "item": "biomancy:nutrient_paste"
+      "count": 30,
+      "item": "biomancy:nutrients"
     },
     {
       "count": 4,
       "item": "biomancy:organic_matter"
     },
     {
-      "item": "biomancy:ageing_serum"
+      "count": 6,
+      "item": "biomancy:hormone_secretion"
+    },
+    {
+      "count": 4,
+      "item": "biomancy:mineral_fragment"
+    },
+    {
+      "count": 4,
+      "item": "biomancy:regenerative_fluid"
     }
   ],
   "nutrientsCost": 1,
