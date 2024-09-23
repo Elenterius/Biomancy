@@ -3,7 +3,9 @@ package com.github.elenterius.biomancy.item;
 import com.github.elenterius.biomancy.block.property.BlockPropertyUtil;
 import com.github.elenterius.biomancy.util.PillarPlantUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -21,27 +23,6 @@ public class FertilizerItem extends SimpleItem {
 		super(properties);
 	}
 
-	@Override
-	public boolean isFoil(ItemStack stack) {
-		return true;
-	}
-
-	@Override
-	public InteractionResult useOn(UseOnContext context) {
-		Level level = context.getLevel();
-		BlockPos clickedPos = context.getClickedPos();
-		ItemStack stack = context.getItemInHand();
-		if (applyFertilizer(stack, level, clickedPos)) {
-			if (!level.isClientSide) {
-				stack.shrink(1);
-				level.levelEvent(LevelEvent.PARTICLES_AND_SOUND_PLANT_GROWTH, clickedPos, 0);
-			}
-			return InteractionResult.sidedSuccess(level.isClientSide);
-		}
-
-		return InteractionResult.PASS;
-	}
-
 	public static boolean applyFertilizer(ItemStack stack, Level level, BlockPos pos) {
 		BlockState state = level.getBlockState(pos);
 		Block block = state.getBlock();
@@ -50,7 +31,7 @@ public class FertilizerItem extends SimpleItem {
 			return growBonmealableBlock(level, pos, state, bonemealableBlock);
 		}
 		else if (block == Blocks.DIRT) {
-			return growDirtIntoGrassBlock(level, pos);
+			return growDirtAreaIntoGrassBlocks(level, pos);
 		}
 		else if (block instanceof ChorusFlowerBlock) {
 			return growChorusFlower(level, pos, state);
@@ -93,15 +74,43 @@ public class FertilizerItem extends SimpleItem {
 		return false;
 	}
 
-	private static boolean growDirtIntoGrassBlock(Level level, BlockPos pos) {
-		BlockState stateAbove = level.getBlockState(pos.above());
-		if (!stateAbove.isAir()) return false;
+	private static boolean growDirtAreaIntoGrassBlocks(Level level, BlockPos pos) {
+		if (!level.getBlockState(pos.above()).isAir()) return false;
 
-		if (!level.isClientSide()) {
+		if (!level.isClientSide() && level instanceof ServerLevel serverLevel) {
 			level.setBlockAndUpdate(pos, Blocks.GRASS_BLOCK.defaultBlockState());
-			level.levelEvent(LevelEvent.PARTICLES_PLANT_GROWTH, pos, 5);
+			serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5d, pos.getY() + 1.25d, pos.getZ() + 0.5d, 5, 0.25, 0.25, 0.25, 0);
 
-			//TODO: convert a big patch into grass instead of only one block
+			BlockPos.breadthFirstTraversal(pos, 10, 20,
+					(blockPos, queue) -> {
+						queue.accept(blockPos.offset(-1, 1, 0));
+						queue.accept(blockPos.offset(-1, 0, 0));
+						queue.accept(blockPos.offset(-1, -1, 0));
+						queue.accept(blockPos.offset(1, 1, 0));
+						queue.accept(blockPos.offset(1, 0, 0));
+						queue.accept(blockPos.offset(1, -1, 0));
+						queue.accept(blockPos.offset(0, 1, 1));
+						queue.accept(blockPos.offset(0, 0, 1));
+						queue.accept(blockPos.offset(0, -1, 1));
+						queue.accept(blockPos.offset(0, 1, -1));
+						queue.accept(blockPos.offset(0, 0, -1));
+						queue.accept(blockPos.offset(0, -1, -1));
+					},
+					blockPos -> {
+						if (blockPos.equals(pos)) return true;
+
+						BlockState state = level.getBlockState(blockPos);
+						boolean isAirAbove = level.getBlockState(blockPos.above()).isAir();
+
+						if (state.is(Blocks.DIRT) && isAirAbove) {
+							level.setBlockAndUpdate(blockPos, Blocks.GRASS_BLOCK.defaultBlockState());
+							serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, blockPos.getX() + 0.5d, blockPos.getY() + 1.25d, blockPos.getZ() + 0.5d, 5, 0.25, 0.25, 0.25, 0);
+							return true;
+						}
+
+						return state.is(BlockTags.DIRT) && isAirAbove;
+					}
+			);
 		}
 
 		return true;
@@ -157,6 +166,27 @@ public class FertilizerItem extends SimpleItem {
 		}
 
 		return false;
+	}
+
+	@Override
+	public boolean isFoil(ItemStack stack) {
+		return true;
+	}
+
+	@Override
+	public InteractionResult useOn(UseOnContext context) {
+		Level level = context.getLevel();
+		BlockPos clickedPos = context.getClickedPos();
+		ItemStack stack = context.getItemInHand();
+		if (applyFertilizer(stack, level, clickedPos)) {
+			if (!level.isClientSide) {
+				stack.shrink(1);
+				level.levelEvent(LevelEvent.PARTICLES_AND_SOUND_PLANT_GROWTH, clickedPos, 0);
+			}
+			return InteractionResult.sidedSuccess(level.isClientSide);
+		}
+
+		return InteractionResult.PASS;
 	}
 
 }
