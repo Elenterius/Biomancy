@@ -1,20 +1,26 @@
 {
   "type": "create:compacting",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "create"
+    }
+  ],
   "ingredients": [
     {
+      "item": "biomancy:malignant_flesh_veins"
+    },
+    {
+      "item": "biomancy:malignant_flesh_veins"
+    },
+    {
+      "item": "biomancy:malignant_flesh_veins"
+    },
+    {
+      "item": "biomancy:malignant_flesh_veins"
+    },
+    {
       "item": "biomancy:flesh_bits"
-    },
-    {
-      "item": "biomancy:malignant_flesh_veins"
-    },
-    {
-      "item": "biomancy:malignant_flesh_veins"
-    },
-    {
-      "item": "biomancy:malignant_flesh_veins"
-    },
-    {
-      "item": "biomancy:malignant_flesh_veins"
     },
     {
       "item": "biomancy:malignant_flesh_veins"

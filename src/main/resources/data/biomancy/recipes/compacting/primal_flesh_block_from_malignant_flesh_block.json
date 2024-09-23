@@ -1,0 +1,43 @@
+{
+  "type": "create:compacting",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "biomancy:malignant_flesh"
+    },
+    {
+      "item": "biomancy:malignant_flesh"
+    },
+    {
+      "item": "biomancy:malignant_flesh"
+    },
+    {
+      "item": "biomancy:malignant_flesh"
+    },
+    {
+      "item": "biomancy:flesh_bits"
+    },
+    {
+      "item": "biomancy:malignant_flesh"
+    },
+    {
+      "item": "biomancy:malignant_flesh"
+    },
+    {
+      "item": "biomancy:malignant_flesh"
+    },
+    {
+      "item": "biomancy:malignant_flesh"
+    }
+  ],
+  "results": [
+    {
+      "item": "biomancy:primal_flesh"
+    }
+  ]
+}
