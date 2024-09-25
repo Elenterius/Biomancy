@@ -489,7 +489,15 @@ public class EnglishLangProvider extends AbstractLangProvider {
 				Can be enchanted with:
 				 - Piercing: Increases the chance to pierce through armor
 				 - Anesthetic Touch: Nullifies the damage from the needle""");
-		addItem(ModItems.FERTILIZER, "Bio-Alchemical Fertilizer", "Fertilizer that induces hyper-growth in plants, even for reeds, cactus, nether wart and chorus.");
+		addItem(ModItems.FERTILIZER, "Bio-Alchemical Fertilizer", """
+				The Fertilizer induces hyper-growth in plants maturing them fully. It even affects bone-meal resistant plants such as:
+				- sugarcane
+				- cactus
+				- nether wart
+				- chorus
+				
+				Furthermore it has the ability to convert patches of dirt into grass or force spread mycelium.
+				""");
 		addItem(ModItems.GIFT_SAC, "Gift Sac", """
 				Looks like some objects are wrapped in an organic layer of skin. Might be filled with items or toxin if your language is set to German.
 								

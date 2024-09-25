@@ -73,7 +73,7 @@
   "item.biomancy.injector": "Bio-Injector",
   "item.biomancy.injector.tooltip": "A simple device which utilizes a razor sharp needle to quickly and forcefully inject Serums into Mobs and Players.\n\nCan be enchanted with:\n - Piercing: Increases the chance to pierce through armor\n - Anesthetic Touch: Nullifies the damage from the needle",
   "item.biomancy.fertilizer": "Bio-Alchemical Fertilizer",
-  "item.biomancy.fertilizer.tooltip": "Fertilizer that induces hyper-growth in plants, even for reeds, cactus, nether wart and chorus.",
+  "item.biomancy.fertilizer.tooltip": "The Fertilizer induces hyper-growth in plants maturing them fully. It even affects bone-meal resistant plants such as:\n- sugarcane\n- cactus\n- nether wart\n- chorus\n\nFurthermore it has the ability to convert patches of dirt into grass or force spread mycelium.\n",
   "item.biomancy.gift_sac": "Gift Sac",
   "item.biomancy.gift_sac.tooltip": "Looks like some objects are wrapped in an organic layer of skin. Might be filled with items or toxin if your language is set to German.\n\nRight Click the Sac to retrieve the Items.",
   "item.biomancy.acid_bucket": "Gastric Acid Bucket",

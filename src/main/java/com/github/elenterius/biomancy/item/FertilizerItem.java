@@ -6,6 +6,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BoneMealItem;
@@ -38,6 +40,9 @@ public class FertilizerItem extends SimpleItem {
 		}
 		else if (block == Blocks.DIRT) {
 			return growDirtAreaIntoGrassBlocks(level, pos);
+		}
+		else if (block == Blocks.MYCELIUM) {
+			return growDirtAndGrassAreaIntoMycelium(level, pos);
 		}
 		else if (block instanceof ChorusFlowerBlock) {
 			return growChorusFlower(level, pos, state);
@@ -80,43 +85,83 @@ public class FertilizerItem extends SimpleItem {
 		return false;
 	}
 
-	private static boolean growDirtAreaIntoGrassBlocks(Level level, BlockPos pos) {
-		if (!level.getBlockState(pos.above()).isAir()) return false;
+	private static boolean growDirtAreaIntoGrassBlocks(Level level, BlockPos startPos) {
+		if (!level.getBlockState(startPos.above()).isAir()) return false;
 
-		if (!level.isClientSide() && level instanceof ServerLevel serverLevel) {
-			level.setBlockAndUpdate(pos, Blocks.GRASS_BLOCK.defaultBlockState());
-			serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5d, pos.getY() + 1.25d, pos.getZ() + 0.5d, 5, 0.25, 0.25, 0.25, 0);
+		if (level instanceof ServerLevel serverLevel) {
+			serverLevel.setBlockAndUpdate(startPos, Blocks.GRASS_BLOCK.defaultBlockState());
+			serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, startPos.getX() + 0.5d, startPos.getY() + 1.25d, startPos.getZ() + 0.5d, 5, 0.25, 0.25, 0.25, 0);
 
-			BlockPos.breadthFirstTraversal(pos, 10, 20,
-					(blockPos, queue) -> {
-						queue.accept(blockPos.offset(-1, 1, 0));
-						queue.accept(blockPos.offset(-1, 0, 0));
-						queue.accept(blockPos.offset(-1, -1, 0));
-						queue.accept(blockPos.offset(1, 1, 0));
-						queue.accept(blockPos.offset(1, 0, 0));
-						queue.accept(blockPos.offset(1, -1, 0));
-						queue.accept(blockPos.offset(0, 1, 1));
-						queue.accept(blockPos.offset(0, 0, 1));
-						queue.accept(blockPos.offset(0, -1, 1));
-						queue.accept(blockPos.offset(0, 1, -1));
-						queue.accept(blockPos.offset(0, 0, -1));
-						queue.accept(blockPos.offset(0, -1, -1));
+			BlockPos.breadthFirstTraversal(startPos, 10, 20,
+					(pos, queue) -> {
+						queue.accept(pos.offset(-1, 1, 0));
+						queue.accept(pos.offset(-1, 0, 0));
+						queue.accept(pos.offset(-1, -1, 0));
+						queue.accept(pos.offset(1, 1, 0));
+						queue.accept(pos.offset(1, 0, 0));
+						queue.accept(pos.offset(1, -1, 0));
+						queue.accept(pos.offset(0, 1, 1));
+						queue.accept(pos.offset(0, 0, 1));
+						queue.accept(pos.offset(0, -1, 1));
+						queue.accept(pos.offset(0, 1, -1));
+						queue.accept(pos.offset(0, 0, -1));
+						queue.accept(pos.offset(0, -1, -1));
 					},
-					blockPos -> {
-						if (blockPos.equals(pos)) return true;
+					pos -> {
+						if (pos.equals(startPos)) return true;
 
-						BlockState state = level.getBlockState(blockPos);
-						boolean isAirAbove = level.getBlockState(blockPos.above()).isAir();
+						BlockState currentState = serverLevel.getBlockState(pos);
+						boolean isAirAbove = serverLevel.getBlockState(pos.above()).isAir();
 
-						if (state.is(Blocks.DIRT) && isAirAbove) {
-							level.setBlockAndUpdate(blockPos, Blocks.GRASS_BLOCK.defaultBlockState());
-							serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, blockPos.getX() + 0.5d, blockPos.getY() + 1.25d, blockPos.getZ() + 0.5d, 5, 0.25, 0.25, 0.25, 0);
+						if (currentState.is(Blocks.DIRT) && isAirAbove) {
+							serverLevel.setBlockAndUpdate(pos, Blocks.GRASS_BLOCK.defaultBlockState());
+							serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5d, pos.getY() + 1.25d, pos.getZ() + 0.5d, 5, 0.25, 0.25, 0.25, 0);
 							return true;
 						}
 
-						return state.is(BlockTags.DIRT) && isAirAbove;
+						return (currentState.is(BlockTags.DIRT) || currentState.is(Blocks.GRASS_BLOCK)) && isAirAbove;
 					}
 			);
+		}
+
+		return true;
+	}
+
+	private static boolean growDirtAndGrassAreaIntoMycelium(Level level, BlockPos startPos) {
+		if (!level.getBlockState(startPos.above()).isAir()) return false;
+
+		if (level instanceof ServerLevel serverLevel) {
+			int visited = BlockPos.breadthFirstTraversal(startPos, 10, 20,
+					(pos, queue) -> {
+						queue.accept(pos.offset(-1, 1, 0));
+						queue.accept(pos.offset(-1, 0, 0));
+						queue.accept(pos.offset(-1, -1, 0));
+						queue.accept(pos.offset(1, 1, 0));
+						queue.accept(pos.offset(1, 0, 0));
+						queue.accept(pos.offset(1, -1, 0));
+						queue.accept(pos.offset(0, 1, 1));
+						queue.accept(pos.offset(0, 0, 1));
+						queue.accept(pos.offset(0, -1, 1));
+						queue.accept(pos.offset(0, 1, -1));
+						queue.accept(pos.offset(0, 0, -1));
+						queue.accept(pos.offset(0, -1, -1));
+					},
+					pos -> {
+						if (pos.equals(startPos)) return true;
+
+						BlockState currentState = serverLevel.getBlockState(pos);
+						boolean isAirAbove = serverLevel.getBlockState(pos.above()).isAir();
+
+						if ((currentState.is(Blocks.DIRT) || currentState.is(Blocks.GRASS_BLOCK)) && isAirAbove) {
+							serverLevel.setBlockAndUpdate(pos, Blocks.MYCELIUM.defaultBlockState());
+							serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5d, pos.getY() + 1.25d, pos.getZ() + 0.5d, 5, 0.25, 0.25, 0.25, 0);
+							return true;
+						}
+
+						return (currentState.is(BlockTags.DIRT) || currentState.is(Blocks.MYCELIUM)) && isAirAbove;
+					}
+			);
+			return visited > 1;
 		}
 
 		return true;
@@ -191,7 +236,7 @@ public class FertilizerItem extends SimpleItem {
 		if (applyFertilizer(stack, level, clickedPos, context.getClickedFace())) {
 			if (!level.isClientSide) {
 				stack.shrink(1);
-				level.levelEvent(LevelEvent.PARTICLES_AND_SOUND_PLANT_GROWTH, clickedPos, 0);
+				level.playSound(null, clickedPos, SoundEvents.BONE_MEAL_USE, SoundSource.BLOCKS, 1f, 1f);
 			}
 			return InteractionResult.sidedSuccess(level.isClientSide);
 		}
