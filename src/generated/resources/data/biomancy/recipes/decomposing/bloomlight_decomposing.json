@@ -3,8 +3,8 @@
   "ingredient": {
     "item": "biomancy:bloomlight"
   },
-  "nutrientsCost": 1,
-  "processingTime": 498,
+  "nutrientsCost": 2,
+  "processingTime": 538,
   "results": [
     {
       "countRange": {

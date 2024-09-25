@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:gold_ingot"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 3,
   "processingTime": 360,
   "results": [
     {

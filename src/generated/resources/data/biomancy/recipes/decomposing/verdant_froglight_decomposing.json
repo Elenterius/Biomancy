@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:verdant_froglight"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 258,
   "results": [
     {

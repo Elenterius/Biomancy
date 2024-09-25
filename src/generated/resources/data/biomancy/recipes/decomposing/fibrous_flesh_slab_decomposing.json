@@ -3,8 +3,8 @@
   "ingredient": {
     "item": "biomancy:fibrous_flesh_slab"
   },
-  "nutrientsCost": 1,
-  "processingTime": 28,
+  "nutrientsCost": 2,
+  "processingTime": 88,
   "results": [
     {
       "countRange": {

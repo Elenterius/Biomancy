@@ -3,8 +3,8 @@
   "ingredient": {
     "item": "biomancy:fibrous_flesh_stairs"
   },
-  "nutrientsCost": 1,
-  "processingTime": 38,
+  "nutrientsCost": 2,
+  "processingTime": 98,
   "results": [
     {
       "countRange": {

@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:amethyst_shard"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 250,
   "results": [
     {

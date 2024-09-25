@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:diamond"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 400,
   "results": [
     {

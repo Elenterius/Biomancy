@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:lapis_lazuli"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 100,
   "results": [
     {

@@ -3,8 +3,8 @@
   "ingredient": {
     "item": "biomancy:packed_flesh_slab"
   },
-  "nutrientsCost": 1,
-  "processingTime": 84,
+  "nutrientsCost": 2,
+  "processingTime": 144,
   "results": [
     {
       "countRange": {

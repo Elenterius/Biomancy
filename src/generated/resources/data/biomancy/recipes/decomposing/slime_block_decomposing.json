@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:slime_block"
   },
-  "nutrientsCost": 2,
+  "nutrientsCost": 5,
   "processingTime": 1305,
   "results": [
     {

@@ -45,7 +45,9 @@ public final class DecomposerRecipeBuilder implements RecipeBuilder {
 	private ResourceLocation recipeId;
 	private IngredientStack ingredientStack = null;
 	private int craftingTimeTicks = -1;
+	private int extraCraftingTimeTicks = 0;
 	private int craftingCostNutrients = -1;
+	private int extraCraftingCostNutrients = 0;
 	@Nullable
 	private String group;
 
@@ -94,9 +96,21 @@ public final class DecomposerRecipeBuilder implements RecipeBuilder {
 		return this;
 	}
 
+	public DecomposerRecipeBuilder addExtraCraftingTime(int time) {
+		if (time < 0) throw new IllegalArgumentException("Invalid extra crafting time: " + time);
+		extraCraftingTimeTicks = time;
+		return this;
+	}
+
 	public DecomposerRecipeBuilder setCraftingCost(int costNutrients) {
 		if (costNutrients < 0) throw new IllegalArgumentException("Invalid crafting cost: " + costNutrients);
 		craftingCostNutrients = costNutrients;
+		return this;
+	}
+
+	public DecomposerRecipeBuilder addExtraCraftingCost(int costNutrients) {
+		if (costNutrients < 0) throw new IllegalArgumentException("Invalid extra crafting cost: " + costNutrients);
+		extraCraftingCostNutrients = costNutrients;
 		return this;
 	}
 
@@ -154,7 +168,7 @@ public final class DecomposerRecipeBuilder implements RecipeBuilder {
 	}
 
 	public DecomposerRecipeBuilder addRecyclingOutput(ItemLike result, int originalCount) {
-		return addOutput(new VariableProductionOutput(result, (originalCount - 1) / 2, originalCount - 1));
+		return addExtraCraftingTime(3 * 20).addExtraCraftingCost(1).addOutput(new VariableProductionOutput(result, (originalCount - 1) / 2, originalCount - 1));
 	}
 
 	public DecomposerRecipeBuilder addOutput(VariableProductionOutput output) {
@@ -189,6 +203,9 @@ public final class DecomposerRecipeBuilder implements RecipeBuilder {
 		if (craftingCostNutrients < 0) {
 			craftingCostNutrients = RecipeCostUtil.getCost(DecomposerRecipe.DEFAULT_CRAFTING_COST_NUTRIENTS, craftingTimeTicks);
 		}
+
+		craftingTimeTicks += extraCraftingTimeTicks;
+		craftingCostNutrients += extraCraftingCostNutrients;
 
 		advancement.parent(new ResourceLocation("recipes/root"))
 				.addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(recipeId))

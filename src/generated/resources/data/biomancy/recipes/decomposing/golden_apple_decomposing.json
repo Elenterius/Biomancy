@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:golden_apple"
   },
-  "nutrientsCost": 3,
+  "nutrientsCost": 4,
   "processingTime": 2850,
   "results": [
     {

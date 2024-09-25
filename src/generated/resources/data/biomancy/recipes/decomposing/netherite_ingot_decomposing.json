@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:netherite_ingot"
   },
-  "nutrientsCost": 3,
+  "nutrientsCost": 5,
   "processingTime": 2880,
   "results": [
     {

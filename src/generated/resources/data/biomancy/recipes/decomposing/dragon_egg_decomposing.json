@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:dragon_egg"
   },
-  "nutrientsCost": 6,
+  "nutrientsCost": 10,
   "processingTime": 7080,
   "results": [
     {

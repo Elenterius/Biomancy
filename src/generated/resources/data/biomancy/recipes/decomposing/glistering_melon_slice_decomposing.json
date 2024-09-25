@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:glistering_melon_slice"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 280,
   "results": [
     {

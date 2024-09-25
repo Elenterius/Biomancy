@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "minecraft:raw_iron"
   },
-  "nutrientsCost": 1,
+  "nutrientsCost": 2,
   "processingTime": 420,
   "results": [
     {

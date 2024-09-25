@@ -3,8 +3,8 @@
   "ingredient": {
     "item": "biomancy:flesh"
   },
-  "nutrientsCost": 1,
-  "processingTime": 54,
+  "nutrientsCost": 2,
+  "processingTime": 114,
   "results": [
     {
       "countRange": {

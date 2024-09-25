@@ -3,8 +3,8 @@
   "ingredient": {
     "item": "biomancy:chiseled_flesh"
   },
-  "nutrientsCost": 1,
-  "processingTime": 79,
+  "nutrientsCost": 2,
+  "processingTime": 139,
   "results": [
     {
       "countRange": {
