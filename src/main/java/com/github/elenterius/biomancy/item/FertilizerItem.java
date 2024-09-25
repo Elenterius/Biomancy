@@ -14,6 +14,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraftforge.common.IPlantable;
 
@@ -126,7 +127,7 @@ public class FertilizerItem extends SimpleItem {
 		if (property.isPresent()) {
 			IntegerProperty ageProperty = property.get();
 			int age = state.getValue(ageProperty);
-			int maxAge = BlockPropertyUtil.getMaxAge(ageProperty);
+			int maxAge = BlockPropertyUtil.getMaxValue(ageProperty);
 			if (age < maxAge) {
 				if (!level.isClientSide()) {
 					level.setBlock(pos, state.setValue(ageProperty, maxAge), Block.UPDATE_CLIENTS);
@@ -148,29 +149,33 @@ public class FertilizerItem extends SimpleItem {
 
 	private static boolean growBonmealableBlock(Level level, BlockPos pos, BlockState state, BonemealableBlock block) {
 		if (!block.isValidBonemealTarget(level, pos, state, level.isClientSide)) return false;
+		if (!(level instanceof ServerLevel serverLevel)) return false;
 
-		// "power" grow plant to maturity
+		final BlockState prevState = state;
+
+		if (state.is(BlockTags.SAPLINGS) && state.hasProperty(BlockStateProperties.STAGE)) {
+			state = state.setValue(BlockStateProperties.STAGE, 1);
+		}
+
+		// "power" grow plant with age property to maturity - i.e. crops, etc.
 		Optional<IntegerProperty> property = BlockPropertyUtil.getAgeProperty(state);
 		if (property.isPresent()) {
 			IntegerProperty ageProperty = property.get();
 			int age = state.getValue(ageProperty);
-			int maxAge = BlockPropertyUtil.getMaxAge(ageProperty);
+			int maxAge = BlockPropertyUtil.getMaxValue(ageProperty);
 			if (age < maxAge) {
-				if (!level.isClientSide()) {
-					level.setBlock(pos, state.setValue(ageProperty, maxAge), Block.UPDATE_CLIENTS);
-					level.levelEvent(LevelEvent.PARTICLES_PLANT_GROWTH, pos, 5);
-				}
-				return true;
+				state = state.setValue(ageProperty, maxAge);
 			}
-		}
-		else {
-			if (level instanceof ServerLevel serverLevel) {
-				block.performBonemeal(serverLevel, level.random, pos, state); //fall back
-			}
-			return true;
 		}
 
-		return false;
+		if (state != prevState) {
+			serverLevel.setBlock(pos, state, Block.UPDATE_CLIENTS);
+		}
+		block.performBonemeal(serverLevel, serverLevel.random, pos, state);
+
+		serverLevel.levelEvent(LevelEvent.PARTICLES_PLANT_GROWTH, pos, 5);
+
+		return true;
 	}
 
 	@Override
