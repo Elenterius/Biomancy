@@ -3,10 +3,12 @@ package com.github.elenterius.biomancy.item;
 import com.github.elenterius.biomancy.block.property.BlockPropertyUtil;
 import com.github.elenterius.biomancy.util.PillarPlantUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -23,12 +25,15 @@ public class FertilizerItem extends SimpleItem {
 		super(properties);
 	}
 
-	public static boolean applyFertilizer(ItemStack stack, Level level, BlockPos pos) {
+	public static boolean applyFertilizer(ItemStack stack, Level level, BlockPos pos, Direction clickedFace) {
 		BlockState state = level.getBlockState(pos);
 		Block block = state.getBlock();
 
 		if (block instanceof BonemealableBlock bonemealableBlock) {
 			return growBonmealableBlock(level, pos, state, bonemealableBlock);
+		}
+		else if (state.isFaceSturdy(level, pos, clickedFace) && BoneMealItem.growWaterPlant(ItemStack.EMPTY, level, pos.relative(clickedFace), clickedFace)) {
+			return true;
 		}
 		else if (block == Blocks.DIRT) {
 			return growDirtAreaIntoGrassBlocks(level, pos);
@@ -130,8 +135,8 @@ public class FertilizerItem extends SimpleItem {
 				return true;
 			}
 		}
-		else if (block.isRandomlyTicking(state) && !level.getBlockTicks().willTickThisTick(pos, block)) {
-			if (!level.isClientSide()) {
+		else if (block.isRandomlyTicking(state)) {
+			if (!level.isClientSide() && !level.getBlockTicks().willTickThisTick(pos, block)) {
 				level.scheduleTick(pos, block, 2);
 				level.levelEvent(LevelEvent.PARTICLES_PLANT_GROWTH, pos, 5);
 			}
@@ -178,7 +183,7 @@ public class FertilizerItem extends SimpleItem {
 		Level level = context.getLevel();
 		BlockPos clickedPos = context.getClickedPos();
 		ItemStack stack = context.getItemInHand();
-		if (applyFertilizer(stack, level, clickedPos)) {
+		if (applyFertilizer(stack, level, clickedPos, context.getClickedFace())) {
 			if (!level.isClientSide) {
 				stack.shrink(1);
 				level.levelEvent(LevelEvent.PARTICLES_AND_SOUND_PLANT_GROWTH, clickedPos, 0);
