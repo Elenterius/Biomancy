@@ -1,3 +1,15 @@
+## [8.15.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.14.0...1.20.1-v2.8.15.0) (2024-10-01)
+
+
+### Features
+
+* add player and mob head recipes to the bio-forge ([03f9910](https://github.com/Elenterius/Biomancy/commit/03f99108219d21cf766eb3e0dcb85c4f236f4fad))
+
+
+### Bug Fixes
+
+* fix bio-forge not counting ingredients with nbt data correctly ([333e8a3](https://github.com/Elenterius/Biomancy/commit/333e8a35ca7a1722b2bb0fe437c9d9fa67257410))
+
 ## [8.14.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.13.1...1.20.1-v2.8.14.0) (2024-09-25)
 
 
@@ -45,21 +57,4 @@
 * buff drop chances for Bile Glands and buff drop amount of Fangs and Claws for mobs with high attack damage ([1a212e8](https://github.com/Elenterius/Biomancy/commit/1a212e87b9c0a3fb3c41df4145e71b20290bcb07))
 * display more distinct particles for tributes added to a Cradle ([d9a613f](https://github.com/Elenterius/Biomancy/commit/d9a613f4b5935d5a9e26ecdb54012d3ab95bdf3a))
 * make it possible to add new users to Fleshkin Chests and Pressure Sensors with Tier 3 Essence ([ce7907a](https://github.com/Elenterius/Biomancy/commit/ce7907aee596869d36df8e45f4d29a386a97bf83))
-
-## [8.11.0](https://github.com/Elenterius/Biomancy/compare/1.20.1-v2.8.10.0...1.20.1-v2.8.11.0) (2024-09-09)
-
-
-### Features
-
-* buff Flesh Plunderer to not receive extra damage when the target dies ([6249ae1](https://github.com/Elenterius/Biomancy/commit/6249ae186440acb332b1c4fbbea3e0783339392c))
-* make Primal Bloom and Orifice decomposable ([72ab9c9](https://github.com/Elenterius/Biomancy/commit/72ab9c95540fdd2578d340baae80896f1368200a))
-* make Primal Flesh Block craftable ([534c007](https://github.com/Elenterius/Biomancy/commit/534c007cd745c4179adf6ad0e3b666c1a202da26))
-* re-balance Flesh Plunderer, buff durability from 250 to 500 and nerf attack damage from 12 to 8 ([ce7d9b5](https://github.com/Elenterius/Biomancy/commit/ce7d9b549fa6b30a85fafd239107345301d1ec4d))
-* tweak Malignant Flesh decomposing recipes ([2f8b4d2](https://github.com/Elenterius/Biomancy/commit/2f8b4d2f4074f436ecdeff9f664d0f254bf59436))
-
-
-### Bug Fixes
-
-* fix JEI recipe display for food decomposer recipes not showing negative values ([624ac37](https://github.com/Elenterius/Biomancy/commit/624ac373d79fb10bfb5f217e50059196fc82e057))
-* fix JEI recipe display for food digesting recipes ([e60fd76](https://github.com/Elenterius/Biomancy/commit/e60fd76b4f5fa441f74b0299951f6de2b2507854))
 
