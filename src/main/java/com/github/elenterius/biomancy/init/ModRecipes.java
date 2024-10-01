@@ -43,6 +43,7 @@ public final class ModRecipes {
 	public static final RegistryObject<RecipeSerializer<FoodDigestingRecipe>> FOOD_DIGESTING_SERIALIZER = registerDynamicRecipeSerializer(DIGESTING_RECIPE_TYPE, "food", FoodDigestingRecipe.Serializer::new);
 	public static final RegistryObject<RecipeSerializer<BiometricMembraneRecipe>> BIOMETRIC_MEMBRANE_CRAFTING_SERIALIZER = registerDynamicCraftingRecipeSerializer(RecipeType.CRAFTING, "biometric_membrane", () -> new SimpleCraftingRecipeSerializer<>(BiometricMembraneRecipe::new));
 	public static final RegistryObject<RecipeSerializer<CradleCleansingRecipe>> CRADLE_CLEANSING_SERIALIZER = registerDynamicCraftingRecipeSerializer(RecipeType.CRAFTING, "cradle_cleansing", () -> new SimpleCraftingRecipeSerializer<>(CradleCleansingRecipe::new));
+	public static final RegistryObject<RecipeSerializer<PlayerHeadRecipe>> PLAYER_HEAD_SERIALIZER = registerDynamicCraftingRecipeSerializer(RecipeType.CRAFTING, "player_head", () -> new SimpleCraftingRecipeSerializer<>(PlayerHeadRecipe::new));
 
 	private ModRecipes() {}
 

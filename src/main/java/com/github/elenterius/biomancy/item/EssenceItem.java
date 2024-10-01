@@ -36,7 +36,8 @@ public class EssenceItem extends Item implements ItemTooltipStyleProvider {
 	public static final String SOUNDS_KEY = "sounds";
 	public static final String ENTITY_NAME_KEY = "name";
 	public static final String ENTITY_UUID_KEY = "entity_uuid";
-	protected static final String ESSENCE_TIER_KEY = "essence_tier";
+	public static final String ESSENCE_TIER_KEY = "essence_tier";
+	public static final String PLAYER_NAME_KEY = "player_name";
 
 	public EssenceItem(Properties properties) {
 		super(properties);
@@ -49,7 +50,12 @@ public class EssenceItem extends Item implements ItemTooltipStyleProvider {
 		EssenceItem essenceItem = ModItems.ESSENCE.get();
 		ItemStack stack = new ItemStack(essenceItem, count);
 
-		if (essenceItem.setEssenceData(stack, Mth.clamp(essenceTier, 1, 3), livingEntity)) {
+		essenceTier = Mth.clamp(essenceTier, 1, 3);
+
+		if (essenceItem.setEssenceData(stack, essenceTier, livingEntity)) {
+			if (essenceTier >= 3 && livingEntity instanceof Player player) {
+				stack.getOrCreateTag().putString(PLAYER_NAME_KEY, player.getGameProfile().getName());
+			}
 			return stack;
 		}
 
@@ -73,14 +79,17 @@ public class EssenceItem extends Item implements ItemTooltipStyleProvider {
 		if (livingEntity instanceof Player player) {
 			if (tier < 3) return getEssenceColors(player.getType());
 
-			UUID uuid = player.getUUID();
-			int background = (int) (uuid.getMostSignificantBits() & 0xffffff);
-			int highlight = (int) (uuid.getLeastSignificantBits() & 0xffffff);
-			return new int[]{background, highlight};
+			return getEssenceColors(player.getUUID());
 		}
 		else {
 			return getEssenceColors(livingEntity.getType());
 		}
+	}
+
+	public static int[] getEssenceColors(UUID uuid) {
+		int background = (int) (uuid.getMostSignificantBits() & 0xffffff);
+		int highlight = (int) (uuid.getLeastSignificantBits() & 0xffffff);
+		return new int[]{background, highlight};
 	}
 
 	public static int[] getEssenceColors(EntityType<?> entityType) {
@@ -199,8 +208,8 @@ public class EssenceItem extends Item implements ItemTooltipStyleProvider {
 			if (tag.hasUUID(ENTITY_UUID_KEY)) {
 				UUID entityUUID = tag.getUUID(ENTITY_UUID_KEY);
 
-				if (tag.getString(ENTITY_NAME_KEY).equals(EntityType.PLAYER.getDescriptionId())) {
-					String name = ClientTextUtil.tryToGetPlayerNameOnClientSide(entityUUID);
+				if (tag.getString(ENTITY_NAME_KEY).equals(EntityType.PLAYER.getDescriptionId()) && compoundTag.contains(PLAYER_NAME_KEY)) {
+					String name = compoundTag.getString(PLAYER_NAME_KEY);
 					tooltip.add(ComponentUtil.literal("Player: " + name).withStyle(ChatFormatting.GRAY));
 				}
 				else {

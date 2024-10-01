@@ -1,0 +1,26 @@
+{
+  "type": "biomancy:bio_forging",
+  "bio_forge_tab": "biomancy:components",
+  "ingredients": [
+    {
+      "item": "minecraft:skeleton_skull"
+    },
+    {
+      "type": "forge:partial_nbt",
+      "item": "biomancy:essence",
+      "nbt": "{essence_data:{entity_type:\"minecraft:player\",name:\"entity.minecraft.player\"},essence_tier:1}"
+    },
+    {
+      "count": 34,
+      "item": "biomancy:flesh_bits"
+    },
+    {
+      "count": 11,
+      "item": "biomancy:elastic_fibers"
+    }
+  ],
+  "nutrientsCost": 4,
+  "result": {
+    "item": "minecraft:player_head"
+  }
+}

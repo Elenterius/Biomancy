@@ -1,0 +1,18 @@
+{
+  "type": "biomancy:bio_forging",
+  "bio_forge_tab": "biomancy:components",
+  "ingredients": [
+    {
+      "count": 50,
+      "item": "biomancy:bone_fragments"
+    },
+    {
+      "count": 9,
+      "item": "biomancy:mineral_fragment"
+    }
+  ],
+  "nutrientsCost": 4,
+  "result": {
+    "item": "minecraft:skeleton_skull"
+  }
+}
