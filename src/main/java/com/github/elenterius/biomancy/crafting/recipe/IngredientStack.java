@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.crafting.recipe;
 
+import com.github.elenterius.biomancy.util.ItemStackCounter;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import it.unimi.dsi.fastutil.ints.IntList;
@@ -32,6 +33,18 @@ public record IngredientStack(Ingredient ingredient, int count) {
 		int n = 0;
 		for (int i = 0; i < stackingIds.size(); i++) {
 			n += itemCounter.contents.get(stackingIds.getInt(i));
+			if (n >= count) return true;
+		}
+
+		return false;
+	}
+
+	public boolean hasSufficientCount(ItemStackCounter itemCounter) {
+		List<ItemStackCounter.CountedItem> itemCounts = itemCounter.getItemCounts();
+
+		int n = 0;
+		for (ItemStackCounter.CountedItem countedItem : itemCounts) {
+			if (ingredient.test(countedItem.stack())) n += countedItem.amount();
 			if (n >= count) return true;
 		}
 

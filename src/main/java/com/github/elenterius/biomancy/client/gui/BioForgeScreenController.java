@@ -11,6 +11,7 @@ import com.github.elenterius.biomancy.menu.BioForgeMenu;
 import com.github.elenterius.biomancy.menu.BioForgeTab;
 import com.github.elenterius.biomancy.mixin.accessor.RecipeCollectionAccessor;
 import com.github.elenterius.biomancy.network.ModNetworkHandler;
+import com.github.elenterius.biomancy.util.ItemStackCounter;
 import com.google.common.collect.Lists;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
@@ -23,7 +24,6 @@ import net.minecraft.client.searchtree.SearchRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.RecipeBook;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 
@@ -40,7 +40,7 @@ class BioForgeScreenController {
 		return b.sortPriority() - a.sortPriority();
 	};
 	private static RecipeSelection recipeSelection = RecipeSelection.EMPTY; //volatile client cache
-	private final StackedContents itemCounter;
+	private final ItemStackCounter itemCounter;
 	private final List<BioForgeTab> tabs;
 	private final Minecraft minecraft;
 	private final BioForgeMenu menu;
@@ -59,8 +59,8 @@ class BioForgeScreenController {
 		tabs = ModBioForgeTabs.REGISTRY.get().getValues().stream().sorted(CATEGORY_COMPARATOR).toList();
 
 		playerInvChanges = getPlayer().getInventory().getTimesChanged();
-		itemCounter = new StackedContents();
-		getPlayer().getInventory().fillStackedContents(itemCounter);
+		itemCounter = new ItemStackCounter();
+		itemCounter.accountStacks(getPlayer().getInventory().items);
 
 		//restore selected recipe from volatile client cache
 		if (recipeSelection != RecipeSelection.EMPTY && menu.getSelectedRecipe() == null && recipeSelection.recipe != null) {
@@ -145,8 +145,7 @@ class BioForgeScreenController {
 	}
 
 	public int getTotalItemCountInPlayerInv(ItemStack stack) {
-		int index = StackedContents.getStackingIndex(stack);
-		return itemCounter.contents.get(index);
+		return itemCounter.getCount(stack);
 	}
 
 	public boolean hasSufficientIngredientCount(IngredientStack ingredientStack) {
@@ -236,7 +235,7 @@ class BioForgeScreenController {
 
 	private void countPlayerInvItems() {
 		itemCounter.clear();
-		getPlayer().getInventory().fillStackedContents(itemCounter);
+		itemCounter.accountStacks(getPlayer().getInventory().items);
 		updateAndSearchRecipes();
 	}
 
@@ -247,7 +246,7 @@ class BioForgeScreenController {
 		currentSearchString = searchString;
 	}
 
-	private static void canCraftRecipe(RecipeCollection recipeCollection, StackedContents handler, RecipeBook book, boolean isCreativePlayer) {
+	private static void canCraftRecipe(RecipeCollection recipeCollection, ItemStackCounter itemCounter, RecipeBook book, boolean isCreativePlayer) {
 		RecipeCollectionAccessor accessor = (RecipeCollectionAccessor) recipeCollection;
 		Set<Recipe<?>> fitDimensions = accessor.biomancy$getFitDimensions();
 		Set<Recipe<?>> craftable = accessor.biomancy$getCraftable();
@@ -263,8 +262,13 @@ class BioForgeScreenController {
 				fitDimensions.remove(recipe);
 			}
 
-			if (canCraftRecipe && handler.canCraft(recipe, null)) {
-				craftable.add(recipe);
+			if (recipe instanceof BioForgeRecipe bioForgeRecipe) {
+				if (canCraftRecipe && bioForgeRecipe.isCraftable(itemCounter)) {
+					craftable.add(recipe);
+				}
+				else {
+					craftable.remove(recipe);
+				}
 			}
 			else {
 				craftable.remove(recipe);

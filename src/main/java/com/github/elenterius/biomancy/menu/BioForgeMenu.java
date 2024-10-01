@@ -12,6 +12,7 @@ import com.github.elenterius.biomancy.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.menu.slot.FuelSlot;
 import com.github.elenterius.biomancy.menu.slot.ISlotZone;
 import com.github.elenterius.biomancy.menu.slot.OutputSlot;
+import com.github.elenterius.biomancy.util.ItemStackCounter;
 import com.github.elenterius.biomancy.util.SoundUtil;
 import com.github.elenterius.biomancy.util.fuel.FuelHandler;
 import net.minecraft.network.FriendlyByteBuf;
@@ -20,7 +21,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.Slot;
@@ -37,7 +37,7 @@ public class BioForgeMenu extends PlayerContainerMenu {
 	private final BehavioralInventory<?> fuelInventory;
 	private final BioForgeStateData stateData;
 	private int playerInvChanges;
-	private final StackedContents itemCounter = new StackedContents();
+	private final ItemStackCounter itemCounter = new ItemStackCounter();
 	@Nullable
 	private BioForgeRecipe selectedRecipe;
 
@@ -97,7 +97,7 @@ public class BioForgeMenu extends PlayerContainerMenu {
 
 	private void countPlayerInvItems(ServerPlayer serverPlayer, Inventory inventory) {
 		itemCounter.clear();
-		inventory.fillStackedContents(itemCounter);
+		itemCounter.accountStacks(inventory.items);
 		updateResultSlot(serverPlayer);
 	}
 
@@ -105,7 +105,7 @@ public class BioForgeMenu extends PlayerContainerMenu {
 		ItemStack resultStack = ItemStack.EMPTY;
 
 		BioForgeRecipe recipe = getSelectedRecipe();
-		if (recipe != null && resultContainer.setRecipeUsed(serverPlayer.level(), serverPlayer, recipe) && canCraft(serverPlayer, recipe)) {
+		if (recipe != null && resultContainer.setRecipeUsed(serverPlayer.level(), serverPlayer, recipe) && canCraft(recipe)) {
 			resultStack = recipe.getResultItem(serverPlayer.level().registryAccess()).copy();
 		}
 
@@ -312,33 +312,8 @@ public class BioForgeMenu extends PlayerContainerMenu {
 
 	}
 
-	private boolean canCraft(Player player, @Nullable BioForgeRecipe recipe) {
-		if (recipe == null || getFuelAmount() < recipe.getCraftingCostNutrients() || !recipe.isCraftable(itemCounter)) return false;
-
-		Inventory inventory = player.getInventory();
-
-		//count available ingredients
-		List<IngredientStack> ingredients = recipe.getIngredientQuantities();
-		int[] countedIngredients = new int[ingredients.size()];
-		for (int idx = 0; idx < inventory.items.size(); idx++) {
-			ItemStack foundStack = inventory.items.get(idx);
-			if (!foundStack.isEmpty()) {
-				for (int i = 0; i < ingredients.size(); i++) {
-					if (ingredients.get(i).testItem(foundStack)) {
-						countedIngredients[i] += foundStack.getCount();
-						break;
-					}
-				}
-			}
-		}
-
-		//check that all requirements are fulfilled
-		for (int i = 0; i < ingredients.size(); i++) {
-			int requiredCount = ingredients.get(i).count();
-			if (countedIngredients[i] < requiredCount) return false;
-		}
-
-		return true;
+	private boolean canCraft(@Nullable BioForgeRecipe recipe) {
+		return recipe != null && getFuelAmount() >= recipe.getCraftingCostNutrients() && recipe.isCraftable(itemCounter);
 	}
 
 	private void consumeCraftingIngredients(Player player, BioForgeRecipe recipe) {
