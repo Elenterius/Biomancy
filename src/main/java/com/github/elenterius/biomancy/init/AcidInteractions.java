@@ -1,9 +1,15 @@
 package com.github.elenterius.biomancy.init;
 
+import com.github.elenterius.biomancy.block.digester.DigesterBlockEntity;
+import com.github.elenterius.biomancy.crafting.recipe.DigestingRecipe;
 import com.github.elenterius.biomancy.init.tags.ModBlockTags;
+import com.github.elenterius.biomancy.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.util.CombatUtil;
+import net.minecraft.core.Direction;
 import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -11,6 +17,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
@@ -29,6 +36,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 public final class AcidInteractions {
 
@@ -155,6 +163,57 @@ public final class AcidInteractions {
 				level.addParticle(ParticleTypes.LARGE_SMOKE, pos.x + random.nextDouble(), pos.y + random.nextDouble() * height, pos.z + random.nextDouble(), 0, 0.1d, 0);
 			}
 		}
+	}
+
+	private static final String TIMER_KEY = "biomancy:digestion_timer";
+	private static final float EFFICIENCY = 0.8f;
+	public static void tryDigest(ItemEntity itemEntity) {
+		if (!digestible(itemEntity)) return;
+		CompoundTag data = itemEntity.getPersistentData();
+		if (data.contains(TIMER_KEY) && data.getInt(TIMER_KEY) < 100) {
+			data.putInt(TIMER_KEY,data.getInt(TIMER_KEY)+1);
+			//TODO: Bubble particles? Couldn't get it working for some reason.
+			// Copied the addParticle call from handleEntityInsideAcid and it said no.
+		} else if (data.contains(TIMER_KEY) && data.getInt(TIMER_KEY) >= 100){
+			digestIntoNutrientPasteStacks(itemEntity);
+			itemEntity.getPersistentData().remove(TIMER_KEY);
+		} else {
+			data.putInt(TIMER_KEY,1);
+		}
+	}
+
+	private static void digestIntoNutrientPasteStacks(ItemEntity itemEntity) {
+		if (getDigestionRecipe(itemEntity).isEmpty()) return;
+		DigestingRecipe recipe = getDigestionRecipe(itemEntity).get();
+		BehavioralInventory<?> inv = BehavioralInventory.createServerContents(1,player->false,()->{});
+		inv.insertItemStack(itemEntity.getItem());
+		ItemStack resultStack = recipe.assemble(inv,itemEntity.level().registryAccess());
+		int amt = (int)Math.floor(resultStack.getCount()*itemEntity.getItem().getCount()*EFFICIENCY);
+		if (amt > 64) amt = splitIntoStacks(itemEntity,resultStack);
+		itemEntity.setItem(new ItemStack(ModItems.NUTRIENT_PASTE.get(), amt));
+		itemEntity.playSound(SoundEvents.PLAYER_BURP);
+	}
+
+	private static int splitIntoStacks(ItemEntity itemEntity, ItemStack resultStack) {
+		int numItems = (int)Math.floor(resultStack.getCount()*itemEntity.getItem().getCount()*EFFICIENCY);
+		Level level = itemEntity.level();
+		while (numItems > 64) {
+			DefaultDispenseItemBehavior.spawnItem(level,new ItemStack(ModItems.NUTRIENT_PASTE.get(),64),1, Direction.UP, itemEntity.position());
+			numItems -= 64;
+		}
+		return numItems;
+	}
+
+	@SuppressWarnings("RedundantIfStatement")
+	private static boolean digestible(ItemEntity itemEntity) {
+		if (!itemEntity.isInFluidType(ModFluids.ACID_TYPE.get()) && !itemEntity.level().getBlockState(itemEntity.blockPosition()).is(ModBlocks.ACID_CAULDRON.get())) return false;
+		if (itemEntity.getItem().is(ModItems.NUTRIENT_PASTE.get())) return false;
+		if (getDigestionRecipe(itemEntity).isEmpty()) return false;
+		return true;
+	}
+
+	private static Optional<DigestingRecipe> getDigestionRecipe(ItemEntity itemEntity) {
+		return DigesterBlockEntity.RECIPE_TYPE.get().getRecipeForIngredient(itemEntity.level(), itemEntity.getItem());
 	}
 
 }
