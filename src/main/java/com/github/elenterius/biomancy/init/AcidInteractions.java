@@ -1,9 +1,15 @@
 package com.github.elenterius.biomancy.init;
 
+import com.github.elenterius.biomancy.block.digester.DigesterBlockEntity;
+import com.github.elenterius.biomancy.crafting.recipe.DigestingRecipe;
 import com.github.elenterius.biomancy.init.tags.ModBlockTags;
+import com.github.elenterius.biomancy.inventory.BehavioralInventory;
 import com.github.elenterius.biomancy.util.CombatUtil;
+import net.minecraft.core.Direction;
 import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -11,6 +17,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
@@ -25,10 +32,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.SoundActions;
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 public final class AcidInteractions {
 
@@ -155,6 +164,61 @@ public final class AcidInteractions {
 				level.addParticle(ParticleTypes.LARGE_SMOKE, pos.x + random.nextDouble(), pos.y + random.nextDouble() * height, pos.z + random.nextDouble(), 0, 0.1d, 0);
 			}
 		}
+	}
+
+	private static final String TIMER_KEY = "biomancy:digestion_timer";
+	private static final float EFFICIENCY = 0.8f;
+	public static void tryDigest(ItemEntity itemEntity, boolean onClient) {
+		DigestingRecipe recipe = getDigestionRecipe(itemEntity);
+		if (!digestible(itemEntity,recipe)) return;
+		CompoundTag data = itemEntity.getPersistentData();
+		if (data.contains(TIMER_KEY) && data.getInt(TIMER_KEY) < 10) {
+			data.putInt(TIMER_KEY, data.getInt(TIMER_KEY) + 1);
+		} else if (data.contains(TIMER_KEY) && data.getInt(TIMER_KEY) >= 10 && !onClient){
+			digestIntoNutrientPasteStacks(itemEntity,recipe);
+			itemEntity.getPersistentData().remove(TIMER_KEY);
+		} else {
+			data.putInt(TIMER_KEY,1);
+		}
+	}
+
+	private static void digestIntoNutrientPasteStacks(ItemEntity itemEntity, DigestingRecipe recipe) {
+		BehavioralInventory<?> tempInventory = BehavioralInventory.createServerContents(1,player->false,()->{});
+		tempInventory.insertItemStack(itemEntity.getItem());
+		ItemStack resultStack = recipe.assemble(tempInventory,itemEntity.level().registryAccess());
+		int totalToOutput = (int)Math.floor(resultStack.getCount()*itemEntity.getItem().getCount()*EFFICIENCY);
+		if (totalToOutput > 64) totalToOutput = splitIntoStacks(itemEntity,totalToOutput);
+		itemEntity.setItem(new ItemStack(ModItems.NUTRIENT_PASTE.get(), totalToOutput));
+		itemEntity.playSound(SoundEvents.PLAYER_BURP);
+	}
+
+	private static int splitIntoStacks(ItemEntity itemEntity, int numToSplit) {
+		Level level = itemEntity.level();
+		while (numToSplit > 64) {
+			DefaultDispenseItemBehavior.spawnItem(level,new ItemStack(ModItems.NUTRIENT_PASTE.get(),64),1, Direction.UP, itemEntity.position());
+			numToSplit -= 64;
+		}
+		return numToSplit;
+	}
+
+
+	@SuppressWarnings("RedundantIfStatement")
+	private static boolean digestible(ItemEntity itemEntity, @Nullable DigestingRecipe recipe) {
+		if (recipe == null) return false;
+		if (!itemEntity.isInFluidType(ModFluids.ACID_TYPE.get()) && !itemEntity.level().getBlockState(itemEntity.blockPosition()).is(ModBlocks.ACID_CAULDRON.get())) return false;
+		//Inside method to prevent missing registry object errors during init
+		Item[] blacklistedItems = {ModItems.NUTRIENT_PASTE.get(),ModItems.NUTRIENT_BAR.get(),ModItems.LIVING_FLESH.get()};
+		if (ArrayUtils.contains(blacklistedItems,itemEntity.getItem().getItem())) return false;
+		return true;
+	}
+
+	private static DigestingRecipe cachedRecipe = null;
+	private static @Nullable DigestingRecipe getDigestionRecipe(ItemEntity itemEntity) {
+		if (cachedRecipe != null && cachedRecipe.getIngredient().test(itemEntity.getItem())) return cachedRecipe;
+		Optional<DigestingRecipe> foundRecipe =  DigesterBlockEntity.RECIPE_TYPE.get().getRecipeForIngredient(itemEntity.level(), itemEntity.getItem());
+		if (foundRecipe.isEmpty()) return null;
+		cachedRecipe = foundRecipe.get();
+		return cachedRecipe;
 	}
 
 }
