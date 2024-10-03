@@ -13,11 +13,14 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.WorldWorkerManager;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Consumer;
 
 @Mod.EventBusSubscriber(modid = BiomancyMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class StatusEffectHandler {
@@ -31,17 +34,12 @@ public final class StatusEffectHandler {
 		if (event.getEffect() == ModMobEffects.ESSENCE_ANEMIA.get() && ModMobEffectTags.isNotRemovableWithCleansingSerum(ModMobEffects.ESSENCE_ANEMIA.get())) {
 			event.setCanceled(true);
 		}
-
-		addWithdrawalAfterFrenzy(event.getEntity(), event.getEffectInstance());
 	}
 
-	@SubscribeEvent
-	public static void onEffectExpiry(final MobEffectEvent.Expired event) {
-		if (event.getEntity().level().isClientSide) return;
-		addWithdrawalAfterFrenzy(event.getEntity(), event.getEffectInstance());
-	}
-
-	private static void addWithdrawalAfterFrenzy(LivingEntity livingEntity, @Nullable MobEffectInstance removedEffectInstance) {
+	/**
+	 * We can't call this method from within a MobEffectEvent due to ConcurrentModification Exceptions
+	 */
+	public static void addWithdrawalAfterFrenzy(LivingEntity livingEntity, @Nullable MobEffectInstance removedEffectInstance) {
 		if (removedEffectInstance == null) return;
 		if (removedEffectInstance.getEffect() != ModMobEffects.FRENZY.get()) return;
 
@@ -64,11 +62,18 @@ public final class StatusEffectHandler {
 		MobEffectInstance withdrawalEffect = livingEntity.getEffect(ModMobEffects.WITHDRAWAL.get());
 		if (withdrawalEffect != null) {
 			int duration = withdrawalEffect.getDuration() - ((nutrition * nutrition / 2 + 4) * 20); //decrease effect duration by at least 4 sec
+		if (withdrawalEffect != null && !withdrawalEffect.isInfiniteDuration()) {
 			int amplifier = withdrawalEffect.getAmplifier();
 			boolean ambient = withdrawalEffect.isAmbient();
 			boolean visible = withdrawalEffect.isVisible();
 			boolean showIcon = withdrawalEffect.showIcon();
-			overrideMobEffect(livingEntity, new MobEffectInstance(ModMobEffects.WITHDRAWAL.get(), duration, amplifier, ambient, visible, showIcon));
+
+			if (duration <= 0) {
+				livingEntity.removeEffect(withdrawalEffect.getEffect());
+			}
+			else {
+				overrideMobEffect(livingEntity, new MobEffectInstance(ModMobEffects.WITHDRAWAL.get(), duration, amplifier, ambient, visible, showIcon));
+			}
 		}
 	}
 
@@ -106,6 +111,33 @@ public final class StatusEffectHandler {
 		}
 
 		return true;
+	}
+
+	public static void modifyOnNextWorldTick(LivingEntity livingEntity, Consumer<LivingEntity> modify) {
+		WorldWorkerManager.addWorker(new OneShotTaskWorker() {
+			@Override
+			public void doTask() {
+				if (livingEntity.isAlive()) {
+					modify.accept(livingEntity);
+				}
+			}
+		});
+	}
+
+	private abstract static class OneShotTaskWorker implements WorldWorkerManager.IWorker {
+
+		@Override
+		public boolean hasWork() {
+			return false;
+		}
+
+		@Override
+		public boolean doWork() {
+			doTask();
+			return false;
+		}
+
+		public abstract void doTask();
 	}
 
 }
