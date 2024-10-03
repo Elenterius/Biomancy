@@ -18,7 +18,7 @@
   ],
   "client": [
     "accessor.RecipeCollectionAccessor", "client.AbstractSignEditScreenMixin", "client.AnvilScreenMixin", "client.ClientPackListenerMixin",
-    "client.ClientRecipeBookMixin", "client.GuiGraphicsMixin", "client.PlayerRendererMixin"
+    "client.ClientRecipeBookMixin", "client.ForgeGuiMixin", "client.GuiGraphicsMixin", "client.HeartTypeMixin", "client.PlayerRendererMixin"
   ],
   "server": [ ]
 }

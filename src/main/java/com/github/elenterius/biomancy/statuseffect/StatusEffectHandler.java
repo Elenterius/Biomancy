@@ -60,9 +60,8 @@ public final class StatusEffectHandler {
 
 	public static void reduceWithdrawal(int nutrition, LivingEntity livingEntity) {
 		MobEffectInstance withdrawalEffect = livingEntity.getEffect(ModMobEffects.WITHDRAWAL.get());
-		if (withdrawalEffect != null) {
-			int duration = withdrawalEffect.getDuration() - ((nutrition * nutrition / 2 + 4) * 20); //decrease effect duration by at least 4 sec
 		if (withdrawalEffect != null && !withdrawalEffect.isInfiniteDuration()) {
+			int duration = withdrawalEffect.getDuration() - ((nutrition * nutrition + 5) * 3 * 20); //decrease effect duration by at least 4 sec
 			int amplifier = withdrawalEffect.getAmplifier();
 			boolean ambient = withdrawalEffect.isAmbient();
 			boolean visible = withdrawalEffect.isVisible();

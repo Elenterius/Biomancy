@@ -16,13 +16,31 @@ public class WithdrawalEffect extends AttackDamageEffect {
 	@Override
 	public void applyEffectTick(LivingEntity livingEntity, int amplifier) {
 		if (livingEntity instanceof Player player) {
-			if (livingEntity.getRandom().nextFloat() < 0.1f) {
-				livingEntity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 20 * livingEntity.getRandom().nextIntBetweenInclusive(3, 7 + amplifier * 2), 0));
+
+			if (livingEntity.getRandom().nextFloat() < 0.09f) {
+				if (amplifier < 1) {
+					if (livingEntity.getRandom().nextFloat() < 0.7f) {
+						MobEffectInstance effectInstance = new MobEffectInstance(MobEffects.CONFUSION, 20 * livingEntity.getRandom().nextIntBetweenInclusive(3, 5), 0);
+						StatusEffectHandler.modifyOnNextWorldTick(livingEntity, living -> living.addEffect(effectInstance));
+					}
+					player.causeFoodExhaustion(1.5F);
+				}
+				else if (amplifier < 2 || livingEntity.getRandom().nextFloat() < 0.4f) {
+					MobEffectInstance effectInstance = new MobEffectInstance(MobEffects.CONFUSION, 20 * livingEntity.getRandom().nextIntBetweenInclusive(3, 4 + amplifier * 2), 1);
+					StatusEffectHandler.modifyOnNextWorldTick(livingEntity, living -> living.addEffect(effectInstance));
+					player.causeFoodExhaustion(2F * (amplifier + 1f));
+				}
+				else {
+					if (livingEntity.getHealth() > 1f) {
+						livingEntity.hurt(livingEntity.damageSources().magic(), 1f);
+					}
+					player.causeFoodExhaustion(0.5F);
+				}
 			}
+
 			if (!livingEntity.isSleeping()) {
 				player.awardStat(Stats.CUSTOM.get(Stats.TIME_SINCE_REST), 20 * 2); //increase insomnia counter
 			}
-			player.causeFoodExhaustion(0.05F * (amplifier + 1f));
 		}
 	}
 
