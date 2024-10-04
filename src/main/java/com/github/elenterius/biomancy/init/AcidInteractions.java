@@ -32,6 +32,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.SoundActions;
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -167,53 +168,57 @@ public final class AcidInteractions {
 
 	private static final String TIMER_KEY = "biomancy:digestion_timer";
 	private static final float EFFICIENCY = 0.8f;
-	public static void tryDigest(ItemEntity itemEntity) {
-		if (!digestible(itemEntity)) return;
+	public static void tryDigest(ItemEntity itemEntity, boolean onClient) {
+		DigestingRecipe recipe = getDigestionRecipe(itemEntity);
+		if (!digestible(itemEntity,recipe)) return;
 		CompoundTag data = itemEntity.getPersistentData();
-		if (data.contains(TIMER_KEY) && data.getInt(TIMER_KEY) < 100) {
-			data.putInt(TIMER_KEY,data.getInt(TIMER_KEY)+1);
-			//TODO: Bubble particles? Couldn't get it working for some reason.
-			// Copied the addParticle call from handleEntityInsideAcid and it said no.
-		} else if (data.contains(TIMER_KEY) && data.getInt(TIMER_KEY) >= 100){
-			digestIntoNutrientPasteStacks(itemEntity);
+		if (data.contains(TIMER_KEY) && data.getInt(TIMER_KEY) < 10) {
+			data.putInt(TIMER_KEY, data.getInt(TIMER_KEY) + 1);
+		} else if (data.contains(TIMER_KEY) && data.getInt(TIMER_KEY) >= 10 && !onClient){
+			digestIntoNutrientPasteStacks(itemEntity,recipe);
 			itemEntity.getPersistentData().remove(TIMER_KEY);
 		} else {
 			data.putInt(TIMER_KEY,1);
 		}
 	}
 
-	private static void digestIntoNutrientPasteStacks(ItemEntity itemEntity) {
-		if (getDigestionRecipe(itemEntity).isEmpty()) return;
-		DigestingRecipe recipe = getDigestionRecipe(itemEntity).get();
-		BehavioralInventory<?> inv = BehavioralInventory.createServerContents(1,player->false,()->{});
-		inv.insertItemStack(itemEntity.getItem());
-		ItemStack resultStack = recipe.assemble(inv,itemEntity.level().registryAccess());
-		int amt = (int)Math.floor(resultStack.getCount()*itemEntity.getItem().getCount()*EFFICIENCY);
-		if (amt > 64) amt = splitIntoStacks(itemEntity,resultStack);
-		itemEntity.setItem(new ItemStack(ModItems.NUTRIENT_PASTE.get(), amt));
+	private static void digestIntoNutrientPasteStacks(ItemEntity itemEntity, DigestingRecipe recipe) {
+		BehavioralInventory<?> tempInventory = BehavioralInventory.createServerContents(1,player->false,()->{});
+		tempInventory.insertItemStack(itemEntity.getItem());
+		ItemStack resultStack = recipe.assemble(tempInventory,itemEntity.level().registryAccess());
+		int totalToOutput = (int)Math.floor(resultStack.getCount()*itemEntity.getItem().getCount()*EFFICIENCY);
+		if (totalToOutput > 64) totalToOutput = splitIntoStacks(itemEntity,totalToOutput);
+		itemEntity.setItem(new ItemStack(ModItems.NUTRIENT_PASTE.get(), totalToOutput));
 		itemEntity.playSound(SoundEvents.PLAYER_BURP);
 	}
 
-	private static int splitIntoStacks(ItemEntity itemEntity, ItemStack resultStack) {
-		int numItems = (int)Math.floor(resultStack.getCount()*itemEntity.getItem().getCount()*EFFICIENCY);
+	private static int splitIntoStacks(ItemEntity itemEntity, int numToSplit) {
 		Level level = itemEntity.level();
-		while (numItems > 64) {
+		while (numToSplit > 64) {
 			DefaultDispenseItemBehavior.spawnItem(level,new ItemStack(ModItems.NUTRIENT_PASTE.get(),64),1, Direction.UP, itemEntity.position());
-			numItems -= 64;
+			numToSplit -= 64;
 		}
-		return numItems;
+		return numToSplit;
 	}
 
+
 	@SuppressWarnings("RedundantIfStatement")
-	private static boolean digestible(ItemEntity itemEntity) {
+	private static boolean digestible(ItemEntity itemEntity, @Nullable DigestingRecipe recipe) {
+		if (recipe == null) return false;
 		if (!itemEntity.isInFluidType(ModFluids.ACID_TYPE.get()) && !itemEntity.level().getBlockState(itemEntity.blockPosition()).is(ModBlocks.ACID_CAULDRON.get())) return false;
-		if (itemEntity.getItem().is(ModItems.NUTRIENT_PASTE.get())) return false;
-		if (getDigestionRecipe(itemEntity).isEmpty()) return false;
+		//Inside method to prevent missing registry object errors during init
+		Item[] blacklistedItems = {ModItems.NUTRIENT_PASTE.get(),ModItems.NUTRIENT_BAR.get(),ModItems.LIVING_FLESH.get()};
+		if (ArrayUtils.contains(blacklistedItems,itemEntity.getItem().getItem())) return false;
 		return true;
 	}
 
-	private static Optional<DigestingRecipe> getDigestionRecipe(ItemEntity itemEntity) {
-		return DigesterBlockEntity.RECIPE_TYPE.get().getRecipeForIngredient(itemEntity.level(), itemEntity.getItem());
+	private static DigestingRecipe cachedRecipe = null;
+	private static @Nullable DigestingRecipe getDigestionRecipe(ItemEntity itemEntity) {
+		if (cachedRecipe != null && cachedRecipe.getIngredient().test(itemEntity.getItem())) return cachedRecipe;
+		Optional<DigestingRecipe> foundRecipe =  DigesterBlockEntity.RECIPE_TYPE.get().getRecipeForIngredient(itemEntity.level(), itemEntity.getItem());
+		if (foundRecipe.isEmpty()) return null;
+		cachedRecipe = foundRecipe.get();
+		return cachedRecipe;
 	}
 
 }
