@@ -72,7 +72,7 @@ public final class ModItems {
 	public static final RegistryObject<SimpleItem> GENETIC_COMPOUND = registerSimpleVialItem("genetic_compound");
 	public static final RegistryObject<SimpleItem> EXOTIC_COMPOUND = registerSimpleVialItem("exotic_compound");
 	public static final RegistryObject<SimpleItem> HEALING_ADDITIVE = registerSimpleVialItem("healing_additive");
-	public static final RegistryObject<SimpleItem> CORROSIVE_ADDITIVE = registerSimpleVialItem("corrosive_additive");
+	public static final RegistryObject<SimpleItem> DECAYING_ADDITIVE = registerSimpleVialItem("decaying_additive");
 	public static final RegistryObject<SerumItem> REJUVENATION_SERUM = registerSerumItem(ModSerums.REJUVENATION_SERUM);
 	public static final RegistryObject<SerumItem> AGEING_SERUM = registerSerumItem(ModSerums.AGEING_SERUM);
 	public static final RegistryObject<SerumItem> ENLARGEMENT_SERUM = registerSerumItem(ModSerums.ENLARGEMENT_SERUM);

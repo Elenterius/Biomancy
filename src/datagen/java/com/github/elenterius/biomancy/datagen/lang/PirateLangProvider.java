@@ -458,7 +458,7 @@ public class PirateLangProvider extends AbstractLangProvider {
 		addItem(ModItems.UNSTABLE_COMPOUND, "Cannoneer's Compound", "Mighty unstable substance. Seems it'd explode if it be touchin' just about anythin' else.");
 		addItem(ModItems.EXOTIC_COMPOUND, "Wicthes' Compound", "It be o' questionable nature, made o' magic essence and other bits n' bobs.");
 		addItem(ModItems.GENETIC_COMPOUND, "Hereditary Compound", "Mixer o' various humors, nutrients and other livin' bits. It be used fer producin' potent drugs.");
-		addItem(ModItems.CORROSIVE_ADDITIVE, "Burnin' Additive", "A fluid that be quickly corrodin' even ta' thickest o' cannon barrels. It be useful for burnin' away livin' material, or weakenin' the hulls of yer rivals' ships.");
+		addItem(ModItems.DECAYING_ADDITIVE, "Burnin' Additive", "A fluid that be quickly corrodin' even ta' thickest o' cannon barrels. It be useful for burnin' away livin' material, or weakenin' the hulls of yer rivals' ships.");
 		addItem(ModItems.HEALING_ADDITIVE, "Healin' Additive", "A mightily concentrated brew that be used to imbue its healin' powers ta other brews.");
 
 		addSerumItem(ModItems.AGEING_SERUM, "Agin' Serum", "Forces the agin' of young Mobs inta Adults. Some rare Mobs may even turn inta Elders.");

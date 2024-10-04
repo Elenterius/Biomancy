@@ -471,7 +471,7 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addItem(ModItems.BLOOMBERRY, "Bloomberry", "An exotic delicacy which has a bioluminescent sheen and grants random potion effects when eaten.");
 
 		addItem(ModItems.REGENERATIVE_FLUID, "Regenerative Fluid", "A fluid with regenerative properties, used to concoct healing additives.");
-		addItem(ModItems.WITHERING_OOZE, "Withering Ooze", "A corrosive extract. It likely has uses in bio-alchemy.");
+		addItem(ModItems.WITHERING_OOZE, "Withering Ooze", "A black to steel gray liquid extracted from decaying material of wither origin.");
 		addItem(ModItems.HORMONE_SECRETION, "Hormone Secretion", "A fluid extract very rich in various hormones. A potent material for making drugs.");
 		addItem(ModItems.TOXIN_EXTRACT, "Toxin Extract", "A fluid so toxic you probably shouldn't touch it. Good for making a plethora of dubious substances.");
 		addItem(ModItems.VOLATILE_FLUID, "Volatile Fluid", "A very combustible extract, however it needs further processing to be truly dangerous.");
@@ -531,11 +531,11 @@ public class EnglishLangProvider extends AbstractLangProvider {
 		addItem(ModItems.UNSTABLE_COMPOUND, "Unstable Compound", "Very unstable and reactive substance. Seems like it will combust if it comes in contact with just about anything else.\nThe explosion is highly incendiary and has been known to liquefy magma blocks.");
 		addItem(ModItems.EXOTIC_COMPOUND, "Exotic Compound", "Substance of a questionable nature, comprised of exotic material and other trace elements.");
 		addItem(ModItems.GENETIC_COMPOUND, "Genetic Compound", "Cocktail of various hormones, nutrients and organic elements. It seems useful for producing potent stimulants.");
-		addItem(ModItems.CORROSIVE_ADDITIVE, "Corrosive Additive", "A highly corrosive fluid that seems useful for alchemically burning away organic material, or weakening the bonds of complex substances.");
-		addItem(ModItems.HEALING_ADDITIVE, "Healing Additive", "An highly concentrated substance that is used to imbue its properties to other compounds.");
+		addItem(ModItems.DECAYING_ADDITIVE, "Decaying Additive", "A viscous liquid that destabilizes life energy and accelerates the decay of organic material, weakening it at the molecular level.");
+		addItem(ModItems.HEALING_ADDITIVE, "Healing Additive", "A concentrated syrup of life energy that enhances other substances with vitality.");
 
 		addSerumItem(ModItems.AGEING_SERUM, "Aging Serum", "Forces the maturation of young Mobs into Adults. Some rare Mobs may even turn into Elders.");
-		addSerumItem(ModItems.REJUVENATION_SERUM, "Rejuvenation Serum", "Reverses the maturation of Mobs, in most cases turning them into children.");
+		addSerumItem(ModItems.REJUVENATION_SERUM, "Rejuvenation Serum", "Promotes cellular regeneration, reversing the maturation of Mobs and in most cases turning them into children.");
 		addSerumItem(ModItems.ENLARGEMENT_SERUM, "Enlargement Serum", "Induces growth in Slimes, Magma Cubes and Flesh Blobs.\n\n(If Pehkui is installed you can enlarge yourself and all Mobs)");
 		addSerumItem(ModItems.SHRINKING_SERUM, "Shrinking Serum", "Shrinks Slimes, Magma Cubes and Flesh Blobs.\n\n(If Pehkui is installed you can shrink yourself and all Mobs)");
 

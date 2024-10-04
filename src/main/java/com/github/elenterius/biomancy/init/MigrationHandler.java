@@ -137,6 +137,8 @@ public final class MigrationHandler {
 				case "digestate" -> mapping.remap(ModItems.ORGANIC_MATTER.get());
 				case "oxide_powder", "silicate_paste", "bio_minerals" -> mapping.remap(ModItems.MINERAL_FRAGMENT.get());
 				case "hormone_bile" -> mapping.remap(ModItems.HORMONE_SECRETION.get());
+				case "corrosive_additive" -> mapping.remap(ModItems.DECAYING_ADDITIVE.get());
+
 				default -> mapping.ignore();
 			}
 		}

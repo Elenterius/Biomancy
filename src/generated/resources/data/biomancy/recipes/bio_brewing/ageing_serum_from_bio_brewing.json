@@ -5,13 +5,10 @@
       "item": "biomancy:nutrient_paste"
     },
     {
-      "item": "biomancy:nutrient_paste"
-    },
-    {
       "item": "biomancy:mineral_fragment"
     },
     {
-      "item": "biomancy:corrosive_additive"
+      "item": "biomancy:decaying_additive"
     }
   ],
   "nutrientsCost": 2,

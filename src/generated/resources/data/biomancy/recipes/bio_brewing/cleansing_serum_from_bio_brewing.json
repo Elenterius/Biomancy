@@ -2,7 +2,7 @@
   "type": "biomancy:bio_brewing",
   "ingredients": [
     {
-      "item": "biomancy:corrosive_additive"
+      "item": "biomancy:decaying_additive"
     },
     {
       "item": "biomancy:healing_additive"
