@@ -1,5 +1,6 @@
 package com.github.elenterius.biomancy.crafting.recipe;
 
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
@@ -10,6 +11,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.Optional;
 
 public class SimpleRecipeType<T extends Recipe<?>> implements RecipeType<T> {
@@ -50,18 +52,36 @@ public class SimpleRecipeType<T extends Recipe<?>> implements RecipeType<T> {
 			return (R) recipe;
 		}
 
+		private boolean matches(R recipe, ItemStack stack) {
+			for (Ingredient ingredient : recipe.getIngredients()) {
+				if (ingredient.test(stack)) return true;
+			}
+			return false;
+		}
+
 		public Optional<R> getRecipeForIngredient(Level level, ItemStack stack) {
 			RecipeManager recipeManager = level.getRecipeManager();
 			return recipeManager.byType(this).values().stream()
-					.filter(recipe -> {
-						for (Ingredient ingredient : recipe.getIngredients()) {
-							if (ingredient.test(stack)) return true;
-						}
-						return false;
-					})
+					.filter(recipe -> matches(recipe, stack))
 					.findFirst().map(this::castRecipe);
 		}
 
+		public Optional<Pair<ResourceLocation, R>> getRecipeForIngredient(Level level, ItemStack stack, @Nullable ResourceLocation lastRecipeId) {
+			RecipeManager recipeManager = level.getRecipeManager();
+
+			Map<ResourceLocation, R> map = recipeManager.byType(this);
+			if (lastRecipeId != null) {
+				R recipe = map.get(lastRecipeId);
+				if (recipe != null && matches(recipe, stack)) {
+					return Optional.of(Pair.of(lastRecipeId, recipe));
+				}
+			}
+
+			return map.entrySet().stream()
+					.filter(entry -> matches(entry.getValue(), stack))
+					.findFirst()
+					.map(entry -> Pair.of(entry.getKey(), entry.getValue()));
+		}
 	}
 
 }
