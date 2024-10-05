@@ -11,6 +11,7 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
+@Deprecated
 public class BehavioralInventory<T extends IItemHandler & IItemHandlerModifiable & INBTSerializable<CompoundTag>> extends BaseInventory<T> {
 
 	private final T behavioralItemHandler;
