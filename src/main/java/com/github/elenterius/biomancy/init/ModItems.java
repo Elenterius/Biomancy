@@ -306,7 +306,7 @@ public final class ModItems {
 	}
 
 	private static <T extends Serum> RegistryObject<SerumItem> registerSerumItem(RegistryObject<T> registryObject) {
-		return ITEMS.register(registryObject.getId().getPath(), () -> new SerumItem(createProperties().stacksTo(8).rarity(ModRarities.UNCOMMON), registryObject));
+		return ITEMS.register(registryObject.getId().getPath(), () -> new SerumItem(createProperties().stacksTo(16).rarity(ModRarities.UNCOMMON), registryObject));
 	}
 
 	private static RegistryObject<SimpleItem> registerSimpleVialItem(String name) {
